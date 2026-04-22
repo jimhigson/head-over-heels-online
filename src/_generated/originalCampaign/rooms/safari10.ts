@@ -6,17 +6,17 @@ export const room = inferRoomJson({
   color: { hue: "green", shade: "basic" },
   id: "safari10",
   items: {
-    "barrier@4,0,0": {
+    br: {
       config: { axis: "y", times: { y: 6, z: 3 } },
       position: { x: 4, y: 0, z: 0 },
       type: "barrier",
     },
-    "door@8,2,0": {
+    d: {
       config: { direction: "left", toRoom: "safari11" },
       position: { x: 8, y: 2, z: 0 },
       type: "door",
     },
-    "floor@0,0,0": {
+    f: {
       config: {
         floorType: "standable",
         scenery: "safari",
@@ -25,22 +25,18 @@ export const room = inferRoomJson({
       position: { x: 0, y: 0, z: 0 },
       type: "floor",
     },
-    "spring@0,5,0": {
-      config: {},
-      position: { x: 0, y: 5, z: 0 },
-      type: "spring",
-    },
-    "wall(right)@0,0,0": {
+    sg: { config: {}, position: { x: 0, y: 5, z: 0 }, type: "spring" },
+    w: {
       config: { direction: "right", times: { y: 6 } },
       position: { x: 0, y: 0, z: 0 },
       type: "wall",
     },
-    "wall(towards)@0,0,0": {
+    w1: {
       config: { direction: "towards", times: { x: 8 } },
       position: { x: 0, y: 0, z: 0 },
       type: "wall",
     },
-    "wall@0,6,0": {
+    w2: {
       config: {
         direction: "away",
         tiles: [
@@ -57,12 +53,12 @@ export const room = inferRoomJson({
       position: { x: 0, y: 6, z: 0 },
       type: "wall",
     },
-    "wall@8,0,0": {
+    w3: {
       config: { direction: "left", tiles: ["wall", "shield"] },
       position: { x: 8, y: 0, z: 0 },
       type: "wall",
     },
-    "wall@8,4,0": {
+    w4: {
       config: { direction: "left", tiles: ["shield", "wall"] },
       position: { x: 8, y: 4, z: 0 },
       type: "wall",

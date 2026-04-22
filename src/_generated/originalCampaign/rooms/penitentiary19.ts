@@ -6,17 +6,22 @@ export const room = inferRoomJson({
   color: { hue: "white", shade: "dimmed" },
   id: "penitentiary19",
   items: {
-    "door@1,0,0": {
+    b: {
+      config: { style: "artificial", times: { y: 8 } },
+      position: { x: 3, y: 0, z: 5 },
+      type: "block",
+    },
+    d: {
       config: { direction: "towards", toRoom: "penitentiary12" },
       position: { x: 1, y: 0, z: 0 },
       type: "door",
     },
-    "door@1,8,3": {
+    d1: {
       config: { direction: "away", toRoom: "penitentiary21" },
       position: { x: 1, y: 8, z: 3 },
       type: "door",
     },
-    "floor@0,0,0": {
+    f: {
       config: {
         floorType: "standable",
         scenery: "penitentiary",
@@ -25,7 +30,7 @@ export const room = inferRoomJson({
       position: { x: 0, y: 0, z: 0 },
       type: "floor",
     },
-    "monster@1,3,0": {
+    m: {
       config: {
         activated: "on",
         movement: "patrol-randomly-diagonal",
@@ -34,7 +39,7 @@ export const room = inferRoomJson({
       position: { x: 3, y: 3, z: 6 },
       type: "monster",
     },
-    "monster@2,4,0": {
+    m1: {
       config: {
         activated: "on",
         movement: "patrol-randomly-diagonal",
@@ -43,42 +48,37 @@ export const room = inferRoomJson({
       position: { x: 3, y: 4, z: 6 },
       type: "monster",
     },
-    "portableBlock@2,3,0": {
+    pr: {
       config: { style: "drum" },
       position: { x: 2, y: 3, z: 0 },
       type: "portableBlock",
     },
-    walkway: {
-      config: { style: "artificial", times: { y: 8 } },
-      position: { x: 3, y: 0, z: 5 },
-      type: "block",
-    },
-    "wall(right)@0,0,0": {
+    w: {
       config: { direction: "right", times: { y: 8 } },
       position: { x: 0, y: 0, z: 0 },
       type: "wall",
     },
-    "wall(towards)@0,0,0": {
+    w1: {
       config: { direction: "towards" },
       position: { x: 0, y: 0, z: 0 },
       type: "wall",
     },
-    "wall@0,8,0": {
+    w2: {
       config: { direction: "away", tiles: ["loop"] },
       position: { x: 0, y: 8, z: 0 },
       type: "wall",
     },
-    "wall@3,0,0": {
+    w3: {
       config: { direction: "towards" },
       position: { x: 3, y: 0, z: 0 },
       type: "wall",
     },
-    "wall@3,8,0": {
+    w4: {
       config: { direction: "away", tiles: ["loop"] },
       position: { x: 3, y: 8, z: 0 },
       type: "wall",
     },
-    "wall@4,0,0": {
+    w5: {
       config: {
         direction: "left",
         tiles: [

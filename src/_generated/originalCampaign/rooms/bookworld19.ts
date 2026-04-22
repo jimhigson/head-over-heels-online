@@ -6,27 +6,27 @@ export const room = inferRoomJson({
   color: { hue: "yellow", shade: "basic" },
   id: "bookworld19",
   items: {
-    "deadlyBlock@1,2,0": {
-      config: { style: "toaster", times: { y: 4 } },
-      position: { x: 1, y: 2, z: 0 },
-      type: "deadlyBlock",
-    },
-    "deadlyBlock@1,3,1": {
-      config: { style: "toaster", times: { y: 2 } },
-      position: { x: 1, y: 3, z: 1 },
-      type: "deadlyBlock",
-    },
-    "door@0,0,0": {
+    d: {
       config: { direction: "towards", toRoom: "bookworld20" },
       position: { x: 0, y: 0, z: 0 },
       type: "door",
     },
-    "door@0,8,0": {
+    d1: {
       config: { direction: "away", toRoom: "bookworld18" },
       position: { x: 0, y: 8, z: 0 },
       type: "door",
     },
-    "floor@0,0,0": {
+    db: {
+      config: { style: "toaster", times: { y: 4 } },
+      position: { x: 1, y: 2, z: 0 },
+      type: "deadlyBlock",
+    },
+    db1: {
+      config: { style: "toaster", times: { y: 2 } },
+      position: { x: 1, y: 3, z: 1 },
+      type: "deadlyBlock",
+    },
+    f: {
       config: {
         floorType: "standable",
         scenery: "bookworld",
@@ -35,7 +35,7 @@ export const room = inferRoomJson({
       position: { x: 0, y: 0, z: 0 },
       type: "floor",
     },
-    "monster@0,6,0": {
+    m: {
       config: {
         activated: "on",
         movement: "back-forth",
@@ -46,12 +46,12 @@ export const room = inferRoomJson({
       position: { x: 0, y: 6, z: 0 },
       type: "monster",
     },
-    "wall@0,0,0": {
+    w: {
       config: { direction: "right", times: { y: 8 } },
       position: { x: 0, y: 0, z: 0 },
       type: "wall",
     },
-    "wall@2,0,0": {
+    w1: {
       config: {
         direction: "left",
         tiles: [

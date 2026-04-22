@@ -1,12 +1,40 @@
 [
   {
     "op": "remove",
-    "path": "/items/teleporter@7,2,1/config/toPosition"
+    "path": "/items/w1/config/times/y"
   },
   {
     "op": "add",
-    "path": "/items/teleporter@7,2,1/config/toItemId",
-    "value": "block@7,2,1"
+    "path": "/items/w1/config/times/x",
+    "value": 8
+  },
+  {
+    "op": "replace",
+    "path": "/items/w1/config/direction",
+    "value": "towards"
+  },
+  {
+    "op": "remove",
+    "path": "/items/w/config/times/x"
+  },
+  {
+    "op": "add",
+    "path": "/items/w/config/times/y",
+    "value": 3
+  },
+  {
+    "op": "replace",
+    "path": "/items/w/config/direction",
+    "value": "right"
+  },
+  {
+    "op": "remove",
+    "path": "/items/t/config/toPosition"
+  },
+  {
+    "op": "add",
+    "path": "/items/t/config/toItemId",
+    "value": "b3"
   },
   {
     "op": "replace",

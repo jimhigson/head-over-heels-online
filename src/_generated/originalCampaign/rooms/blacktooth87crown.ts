@@ -6,42 +6,42 @@ export const room = inferRoomJson({
   color: { hue: "white", shade: "basic" },
   id: "blacktooth87crown",
   items: {
-    "deadlyBlock@6,1,0": {
-      config: { style: "volcano", times: { x: 2 } },
-      position: { x: 6, y: 1, z: 0 },
-      type: "deadlyBlock",
-    },
-    "deadlyBlock@6,2,1": {
-      config: { style: "volcano" },
-      position: { x: 6, y: 2, z: 1 },
-      type: "deadlyBlock",
-    },
-    "deadlyBlock@6,3,0": {
-      config: { style: "volcano" },
-      position: { x: 6, y: 3, z: 0 },
-      type: "deadlyBlock",
-    },
-    "deadlyBlock@6,4,1": {
-      config: { style: "volcano" },
-      position: { x: 6, y: 4, z: 1 },
-      type: "deadlyBlock",
-    },
-    "deadlyBlock@6,5,0": {
-      config: { style: "volcano", times: { x: 2 } },
-      position: { x: 6, y: 5, z: 0 },
-      type: "deadlyBlock",
-    },
-    "deadlyBlock@7,3,1": {
-      config: { style: "volcano" },
-      position: { x: 7, y: 3, z: 2 },
-      type: "deadlyBlock",
-    },
-    "door@3,8,1": {
+    d: {
       config: { direction: "away", toRoom: "blacktooth86" },
       position: { x: 3, y: 8, z: 1 },
       type: "door",
     },
-    "floor@0,0,0": {
+    db: {
+      config: { style: "volcano", times: { x: 2 } },
+      position: { x: 6, y: 1, z: 0 },
+      type: "deadlyBlock",
+    },
+    db1: {
+      config: { style: "volcano" },
+      position: { x: 6, y: 2, z: 1 },
+      type: "deadlyBlock",
+    },
+    db2: {
+      config: { style: "volcano" },
+      position: { x: 6, y: 3, z: 0 },
+      type: "deadlyBlock",
+    },
+    db3: {
+      config: { style: "volcano" },
+      position: { x: 6, y: 4, z: 1 },
+      type: "deadlyBlock",
+    },
+    db4: {
+      config: { style: "volcano", times: { x: 2 } },
+      position: { x: 6, y: 5, z: 0 },
+      type: "deadlyBlock",
+    },
+    db5: {
+      config: { style: "volcano" },
+      position: { x: 7, y: 3, z: 2 },
+      type: "deadlyBlock",
+    },
+    f: {
       config: {
         floorType: "standable",
         scenery: "blacktooth",
@@ -50,7 +50,7 @@ export const room = inferRoomJson({
       position: { x: 0, y: 0, z: 0 },
       type: "floor",
     },
-    "monster@3,3,0": {
+    m: {
       config: {
         activated: "on",
         movement: "patrol-randomly-diagonal",
@@ -59,7 +59,7 @@ export const room = inferRoomJson({
       position: { x: 3, y: 3, z: 0 },
       type: "monster",
     },
-    "monster@6,3,1": {
+    m1: {
       config: {
         activated: "on",
         movement: "towards-analogue",
@@ -68,32 +68,32 @@ export const room = inferRoomJson({
       position: { x: 6, y: 3, z: 1 },
       type: "monster",
     },
-    "pickup@7,3,0": {
+    pi: {
       config: { gives: "crown", planet: "blacktooth" },
       position: { x: 7, y: 3, z: 0 },
       type: "pickup",
     },
-    "wall(right)@0,0,0": {
+    w: {
       config: { direction: "right", times: { y: 8 } },
       position: { x: 0, y: 0, z: 0 },
       type: "wall",
     },
-    "wall(towards)@0,0,0": {
+    w1: {
       config: { direction: "towards", times: { x: 8 } },
       position: { x: 0, y: 0, z: 0 },
       type: "wall",
     },
-    "wall@0,8,0": {
+    w2: {
       config: { direction: "away", tiles: ["plain", "shield", "plain"] },
       position: { x: 0, y: 8, z: 0 },
       type: "wall",
     },
-    "wall@5,8,0": {
+    w3: {
       config: { direction: "away", tiles: ["plain", "shield", "plain"] },
       position: { x: 5, y: 8, z: 0 },
       type: "wall",
     },
-    "wall@8,0,0": {
+    w4: {
       config: {
         direction: "left",
         tiles: [

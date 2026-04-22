@@ -6,7 +6,7 @@ export const room = inferRoomJson({
   color: { hue: "white", shade: "basic" },
   id: "moonbase17",
   items: {
-    "door@2,6,0": {
+    d: {
       config: {
         direction: "away",
         meta: { toSubRoom: "left" },
@@ -15,7 +15,7 @@ export const room = inferRoomJson({
       position: { x: 2, y: 6, z: 0 },
       type: "door",
     },
-    "floor@0,0,0": {
+    f: {
       config: {
         floorType: "standable",
         scenery: "moonbase",
@@ -24,32 +24,32 @@ export const room = inferRoomJson({
       position: { x: 0, y: 0, z: 0 },
       type: "floor",
     },
-    "teleporter@2,2,0": {
+    t: {
       config: { times: { x: 2, y: 2 }, toRoom: "moonbase18" },
       position: { x: 2, y: 2, z: 0 },
       type: "teleporter",
     },
-    "wall(right)@0,0,0": {
+    w: {
       config: { direction: "right", times: { y: 6 } },
       position: { x: 0, y: 0, z: 0 },
       type: "wall",
     },
-    "wall(towards)@0,0,0": {
+    w1: {
       config: { direction: "towards", times: { x: 6 } },
       position: { x: 0, y: 0, z: 0 },
       type: "wall",
     },
-    "wall@0,6,0": {
+    w2: {
       config: { direction: "away", tiles: ["window2", "window3"] },
       position: { x: 0, y: 6, z: 0 },
       type: "wall",
     },
-    "wall@4,6,0": {
+    w3: {
       config: { direction: "away", tiles: ["window3", "window1"] },
       position: { x: 4, y: 6, z: 0 },
       type: "wall",
     },
-    "wall@6,0,0": {
+    w4: {
       config: {
         direction: "left",
         tiles: ["window1", "coil", "window2", "window3", "coil", "window1"],

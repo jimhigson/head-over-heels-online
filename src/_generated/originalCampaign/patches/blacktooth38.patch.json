@@ -1,25 +1,35 @@
 [
   {
-    "op": "add",
-    "path": "/items/extraBarrier",
-    "value": {
-      "config": {
-        "axis": "x",
-        "times": {
-          "x": 5
-        }
-      },
-      "position": {
-        "x": 0,
-        "y": 4.5,
-        "z": 1
-      },
-      "type": "barrier"
-    }
+    "op": "remove",
+    "path": "/items/w1/config/times/y"
   },
   {
     "op": "add",
-    "path": "/items/extraBlock",
+    "path": "/items/w1/config/times/x",
+    "value": 2
+  },
+  {
+    "op": "replace",
+    "path": "/items/w1/config/direction",
+    "value": "towards"
+  },
+  {
+    "op": "remove",
+    "path": "/items/w/config/times/x"
+  },
+  {
+    "op": "add",
+    "path": "/items/w/config/times/y",
+    "value": 6
+  },
+  {
+    "op": "replace",
+    "path": "/items/w/config/direction",
+    "value": "right"
+  },
+  {
+    "op": "add",
+    "path": "/items/b1",
     "value": {
       "config": {
         "style": "artificial",
@@ -37,7 +47,25 @@
   },
   {
     "op": "add",
-    "path": "/items/extraMonster",
+    "path": "/items/br",
+    "value": {
+      "config": {
+        "axis": "x",
+        "times": {
+          "x": 5
+        }
+      },
+      "position": {
+        "x": 0,
+        "y": 4.5,
+        "z": 1
+      },
+      "type": "barrier"
+    }
+  },
+  {
+    "op": "add",
+    "path": "/items/m",
     "value": {
       "config": {
         "activated": "on",

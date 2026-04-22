@@ -6,37 +6,53 @@ export const room = inferRoomJson({
   color: { hue: "cyan", shade: "basic" },
   id: "egyptus10",
   items: {
-    barrier2: {
-      config: { axis: "y", times: { z: 6 } },
-      position: { x: 7.5, y: 1, z: 0 },
-      type: "barrier",
-    },
-    "block@7,2,0": {
+    b: {
       config: { style: "organic", times: { z: 5 } },
       position: { x: 8, y: 1, z: 0 },
       type: "block",
     },
-    "block@7,2,3": {
+    b1: {
       config: { style: "organic", times: { y: 3 } },
       position: { x: 8, y: 1, z: 6 },
       type: "block",
     },
-    "door@3,0,0": {
+    b2: {
+      config: { style: "organic", times: { x: 5, y: 5 } },
+      position: { x: 1, y: 1, z: 0 },
+      type: "block",
+    },
+    b3: {
+      config: { style: "organic", times: { x: 3, y: 3 } },
+      position: { x: 2, y: 2, z: 1 },
+      type: "block",
+    },
+    b4: {
+      config: { style: "organic" },
+      position: { x: 3, y: 3, z: 2 },
+      type: "block",
+    },
+    bl: { config: {}, position: { x: 3, y: 3, z: 3 }, type: "ball" },
+    br: {
+      config: { axis: "y", times: { z: 6 } },
+      position: { x: 7.5, y: 1, z: 0 },
+      type: "barrier",
+    },
+    d: {
       config: { direction: "towards", toRoom: "egyptus9fish" },
       position: { x: 3, y: 0, z: 0 },
       type: "door",
     },
-    "door@3,8,5": {
+    d1: {
       config: { direction: "away", toRoom: "egyptus15" },
       position: { x: 5, y: 9, z: 6 },
       type: "door",
     },
-    "door@8,3,5": {
+    d2: {
       config: { direction: "left", toRoom: "egyptus11" },
       position: { x: 9, y: 2, z: 7 },
       type: "door",
     },
-    "floor@0,0,0": {
+    f: {
       config: {
         floorType: "standable",
         scenery: "egyptus",
@@ -45,53 +61,25 @@ export const room = inferRoomJson({
       position: { x: 0, y: 0, z: 0 },
       type: "floor",
     },
-    "hushPuppy@2,7,1": {
-      config: {},
-      position: { x: 2, y: 8, z: 1 },
-      type: "hushPuppy",
-    },
-    "hushPuppy@3,7,2": {
-      config: {},
-      position: { x: 3, y: 8, z: 2 },
-      type: "hushPuppy",
-    },
-    "hushPuppy@4,7,3": {
-      config: {},
-      position: { x: 4, y: 8, z: 3 },
-      type: "hushPuppy",
-    },
-    portable: {
+    h: { config: {}, position: { x: 2, y: 8, z: 1 }, type: "hushPuppy" },
+    h1: { config: {}, position: { x: 3, y: 8, z: 2 }, type: "hushPuppy" },
+    h2: { config: {}, position: { x: 4, y: 8, z: 3 }, type: "hushPuppy" },
+    pr: {
       config: { style: "cube" },
       position: { x: 4, y: 8, z: 4 },
       type: "portableBlock",
     },
-    pyramid1: {
-      config: { style: "organic", times: { x: 5, y: 5 } },
-      position: { x: 1, y: 1, z: 0 },
-      type: "block",
-    },
-    pyramid2: {
-      config: { style: "organic", times: { x: 3, y: 3 } },
-      position: { x: 2, y: 2, z: 1 },
-      type: "block",
-    },
-    pyramid3: {
-      config: { style: "organic" },
-      position: { x: 3, y: 3, z: 2 },
-      type: "block",
-    },
-    pyramidBall: { config: {}, position: { x: 3, y: 3, z: 3 }, type: "ball" },
-    "wall(right)@0,0,0": {
+    w: {
       config: { direction: "right", times: { y: 9 } },
       position: { x: 0, y: 0, z: 0 },
       type: "wall",
     },
-    "wall(towards)@0,0,0": {
+    w1: {
       config: { direction: "towards", times: { x: 3 } },
       position: { x: 0, y: 0, z: 0 },
       type: "wall",
     },
-    "wall@0,8,0": {
+    w2: {
       config: {
         direction: "away",
         tiles: [
@@ -105,22 +93,22 @@ export const room = inferRoomJson({
       position: { x: 0, y: 9, z: 0 },
       type: "wall",
     },
-    "wall@5,0,0": {
+    w3: {
       config: { direction: "towards", times: { x: 4 } },
       position: { x: 5, y: 0, z: 0 },
       type: "wall",
     },
-    "wall@5,8,0": {
+    w4: {
       config: { direction: "away", tiles: ["hieroglyphics", "hieroglyphics"] },
       position: { x: 7, y: 9, z: 0 },
       type: "wall",
     },
-    "wall@8,0,0": {
+    w5: {
       config: { direction: "left", tiles: ["hieroglyphics", "hieroglyphics"] },
       position: { x: 9, y: 0, z: 0 },
       type: "wall",
     },
-    "wall@8,5,0": {
+    w6: {
       config: {
         direction: "left",
         tiles: [

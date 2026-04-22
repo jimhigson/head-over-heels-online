@@ -6,67 +6,67 @@ export const room = inferRoomJson({
   color: { hue: "cyan", shade: "basic" },
   id: "safari3",
   items: {
-    "block@1,0,0": {
+    b: {
       config: { style: "organic", times: { x: 2 } },
       position: { x: 1, y: 0, z: 0 },
       type: "block",
     },
-    "block@1,7,0": {
+    b1: {
       config: { style: "organic", times: { x: 2 } },
       position: { x: 1, y: 7, z: 0 },
       type: "block",
     },
-    "door@1,0,5": {
+    d: {
       config: { direction: "towards", toRoom: "safari2" },
       position: { x: 1, y: 0, z: 5 },
       type: "door",
     },
-    "door@1,8,5": {
+    d1: {
       config: { direction: "away", toRoom: "safari4" },
       position: { x: 1, y: 8, z: 5 },
       type: "door",
     },
-    "floor@0,0,0": {
+    f: {
       config: { floorType: "deadly", times: { x: 4, y: 8 } },
       position: { x: 0, y: 0, z: 0 },
       type: "floor",
     },
-    "lift@1,4,0": {
+    l: {
       config: { bottom: 0, top: 8 },
       position: { x: 1, y: 4, z: 0 },
       type: "lift",
     },
-    liftExtra: {
+    l1: {
       config: { bottom: 0, top: 8 },
       position: { x: 2, y: 4, z: 0 },
       type: "lift",
     },
-    "wall(right)@0,0,0": {
+    w: {
       config: { direction: "right", times: { y: 8 } },
       position: { x: 0, y: 0, z: 0 },
       type: "wall",
     },
-    "wall(towards)@0,0,0": {
+    w1: {
       config: { direction: "towards" },
       position: { x: 0, y: 0, z: 0 },
       type: "wall",
     },
-    "wall@0,8,0": {
+    w2: {
       config: { direction: "away", tiles: ["wall"] },
       position: { x: 0, y: 8, z: 0 },
       type: "wall",
     },
-    "wall@3,0,0": {
+    w3: {
       config: { direction: "towards" },
       position: { x: 3, y: 0, z: 0 },
       type: "wall",
     },
-    "wall@3,8,0": {
+    w4: {
       config: { direction: "away", tiles: ["wall"] },
       position: { x: 3, y: 8, z: 0 },
       type: "wall",
     },
-    "wall@4,0,0": {
+    w5: {
       config: {
         direction: "left",
         tiles: [

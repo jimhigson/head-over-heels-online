@@ -1,24 +1,64 @@
 [
   {
     "op": "replace",
-    "path": "/items/floor@0,0,0/config/scenery",
+    "path": "/items/f/config/scenery",
     "value": "bookworld"
   },
   {
+    "op": "replace",
+    "path": "/items/d1/position/z",
+    "value": 5
+  },
+  {
+    "op": "replace",
+    "path": "/items/d1/position/x",
+    "value": 8
+  },
+  {
+    "op": "replace",
+    "path": "/items/d1/config/toRoom",
+    "value": "blacktooth62fish"
+  },
+  {
+    "op": "replace",
+    "path": "/items/d1/config/direction",
+    "value": "left"
+  },
+  {
     "op": "add",
-    "path": "/items/door@8,0,5/config/meta",
+    "path": "/items/d1/config/meta",
     "value": {
       "toSubRoom": "right"
     }
   },
   {
     "op": "replace",
-    "path": "/items/block@7,0,3/position/x",
+    "path": "/items/d/position/z",
+    "value": 0
+  },
+  {
+    "op": "replace",
+    "path": "/items/d/position/x",
+    "value": 0
+  },
+  {
+    "op": "replace",
+    "path": "/items/d/config/toRoom",
+    "value": "blacktooth59"
+  },
+  {
+    "op": "replace",
+    "path": "/items/d/config/direction",
+    "value": "right"
+  },
+  {
+    "op": "replace",
+    "path": "/items/b1/position/x",
     "value": 6
   },
   {
     "op": "replace",
-    "path": "/items/block@6,0,3/position/x",
+    "path": "/items/b/position/x",
     "value": 7
   }
 ]

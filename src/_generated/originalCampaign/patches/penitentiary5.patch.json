@@ -1,19 +1,65 @@
 [
   {
+    "op": "remove",
+    "path": "/items/w1/config/times/y"
+  },
+  {
+    "op": "add",
+    "path": "/items/w1/config/times/x",
+    "value": 6
+  },
+  {
     "op": "replace",
-    "path": "/items/block@5,5,2/position/z",
+    "path": "/items/w1/config/direction",
+    "value": "towards"
+  },
+  {
+    "op": "remove",
+    "path": "/items/w/config/times/x"
+  },
+  {
+    "op": "add",
+    "path": "/items/w/config/times/y",
+    "value": 6
+  },
+  {
+    "op": "replace",
+    "path": "/items/w/config/direction",
+    "value": "right"
+  },
+  {
+    "op": "replace",
+    "path": "/items/b4/position/z",
     "value": 0
   },
   {
     "op": "add",
-    "path": "/items/block@5,5,2/config/times",
+    "path": "/items/b4/config/times",
     "value": {
       "z": 3
     }
   },
   {
     "op": "add",
-    "path": "/items/extra1",
+    "path": "/items/b10",
+    "value": {
+      "config": {
+        "disappearing": {
+          "on": "stand"
+        },
+        "style": "artificial"
+      },
+      "position": {
+        "x": 2,
+        "y": 5,
+        "z": 0
+      },
+      "type": "block"
+    }
+  },
+  {
+    "op": "add",
+    "path": "/items/b6",
     "value": {
       "config": {
         "disappearing": {
@@ -31,7 +77,7 @@
   },
   {
     "op": "add",
-    "path": "/items/extra2",
+    "path": "/items/b7",
     "value": {
       "config": {
         "disappearing": {
@@ -49,7 +95,7 @@
   },
   {
     "op": "add",
-    "path": "/items/extra3",
+    "path": "/items/b8",
     "value": {
       "config": {
         "disappearing": {
@@ -67,7 +113,7 @@
   },
   {
     "op": "add",
-    "path": "/items/extra4",
+    "path": "/items/b9",
     "value": {
       "config": {
         "disappearing": {
@@ -79,24 +125,6 @@
         "x": 2,
         "y": 5,
         "z": 1
-      },
-      "type": "block"
-    }
-  },
-  {
-    "op": "add",
-    "path": "/items/extra5",
-    "value": {
-      "config": {
-        "disappearing": {
-          "on": "stand"
-        },
-        "style": "artificial"
-      },
-      "position": {
-        "x": 2,
-        "y": 5,
-        "z": 0
       },
       "type": "block"
     }

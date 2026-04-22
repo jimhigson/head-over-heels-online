@@ -6,107 +6,71 @@ export const room = inferRoomJson({
   color: { hue: "white", shade: "dimmed" },
   id: "blacktooth47market",
   items: {
-    "block@0,1,0": {
+    b: {
       config: { style: "organic", times: { x: 3 } },
       position: { x: 0, y: 1, z: 0 },
       type: "block",
     },
-    "block@1,0,0": {
+    b1: {
       config: { style: "organic", times: { x: 3 } },
       position: { x: 1, y: 0, z: 0 },
       type: "block",
     },
-    "block@1,2,0": {
+    b2: {
       config: { style: "organic" },
       position: { x: 1, y: 2, z: 0 },
       type: "block",
     },
-    "block@4,7,0": {
+    b3: {
       config: { style: "organic", times: { x: 3 } },
       position: { x: 4, y: 7, z: 0 },
       type: "block",
     },
-    "block@5,6,0": {
+    b4: {
       config: { style: "organic", times: { x: 3 } },
       position: { x: 5, y: 6, z: 0 },
       type: "block",
     },
-    "block@6,5,0": {
+    b5: {
       config: { style: "organic" },
       position: { x: 6, y: 5, z: 0 },
       type: "block",
     },
-    "charles@0,7,0": {
-      config: {},
-      position: { x: 0, y: 7, z: 0 },
-      type: "charles",
-    },
-    "door@3,0,1": {
+    ch: { config: {}, position: { x: 0, y: 7, z: 0 }, type: "charles" },
+    d: {
       config: { direction: "towards", toRoom: "blacktooth46market" },
       position: { x: 3, y: 0, z: 1 },
       type: "door",
     },
-    "door@3,8,2": {
+    d1: {
       config: { direction: "away", toRoom: "blacktooth48market" },
       position: { x: 3, y: 8, z: 2 },
       type: "door",
     },
-    "floor@0,0,0": {
+    f: {
       config: { floorType: "deadly", times: { x: 8, y: 8 } },
       position: { x: 0, y: 0, z: 0 },
       type: "floor",
     },
-    "joystick@0,1,1": {
-      config: { controls: ["charles@0,7,0"] },
-      position: { x: 0, y: 1, z: 1 },
-      type: "joystick",
-    },
-    "joystick@1,0,1": {
-      config: { controls: ["charles@0,7,0"] },
-      position: { x: 1, y: 0, z: 1 },
-      type: "joystick",
-    },
-    "joystick@1,2,1": {
-      config: { controls: ["charles@0,7,0"] },
-      position: { x: 1, y: 2, z: 1 },
-      type: "joystick",
-    },
-    "joystick@2,1,1": {
-      config: { controls: ["charles@0,7,0"] },
-      position: { x: 2, y: 1, z: 1 },
-      type: "joystick",
-    },
-    "joystick@5,6,1": {
-      config: { controls: ["charles@0,7,0"] },
-      position: { x: 5, y: 6, z: 1 },
-      type: "joystick",
-    },
-    "joystick@6,5,1": {
-      config: { controls: ["charles@0,7,0"] },
-      position: { x: 6, y: 5, z: 1 },
-      type: "joystick",
-    },
-    "joystick@6,7,1": {
-      config: { controls: ["charles@0,7,0"] },
-      position: { x: 6, y: 7, z: 1 },
-      type: "joystick",
-    },
-    "joystick@7,6,1": {
-      config: { controls: ["charles@0,7,0"] },
-      position: { x: 7, y: 6, z: 1 },
-      type: "joystick",
-    },
-    "wall(right)@0,0,0": {
+    j: { config: {}, position: { x: 0, y: 1, z: 1 }, type: "joystick" },
+    j1: { config: {}, position: { x: 1, y: 0, z: 1 }, type: "joystick" },
+    j2: { config: {}, position: { x: 1, y: 2, z: 1 }, type: "joystick" },
+    j3: { config: {}, position: { x: 2, y: 1, z: 1 }, type: "joystick" },
+    j4: { config: {}, position: { x: 5, y: 6, z: 1 }, type: "joystick" },
+    j5: { config: {}, position: { x: 6, y: 5, z: 1 }, type: "joystick" },
+    j6: { config: {}, position: { x: 6, y: 7, z: 1 }, type: "joystick" },
+    j7: { config: {}, position: { x: 7, y: 6, z: 1 }, type: "joystick" },
+    w: {
       config: { direction: "right", times: { y: 8 } },
       position: { x: 0, y: 0, z: 0 },
       type: "wall",
     },
-    "wall(towards)@0,0,0": {
+    w1: {
       config: { direction: "towards", times: { x: 3 } },
       position: { x: 0, y: 0, z: 0 },
       type: "wall",
     },
-    "wall@0,8,0": {
+    w2: {
       config: {
         direction: "away",
         tiles: ["passage", "more-fruits", "fruits"],
@@ -114,12 +78,12 @@ export const room = inferRoomJson({
       position: { x: 0, y: 8, z: 0 },
       type: "wall",
     },
-    "wall@5,0,0": {
+    w3: {
       config: { direction: "towards", times: { x: 3 } },
       position: { x: 5, y: 0, z: 0 },
       type: "wall",
     },
-    "wall@5,8,0": {
+    w4: {
       config: {
         direction: "away",
         tiles: ["more-fruits", "fruits", "passage"],
@@ -127,7 +91,7 @@ export const room = inferRoomJson({
       position: { x: 5, y: 8, z: 0 },
       type: "wall",
     },
-    "wall@8,0,0": {
+    w5: {
       config: {
         direction: "left",
         tiles: [

@@ -1,14 +1,123 @@
 [
   {
+    "op": "replace",
+    "path": "/items/d1/position/z",
+    "value": 2
+  },
+  {
+    "op": "replace",
+    "path": "/items/d1/position/y",
+    "value": 16
+  },
+  {
+    "op": "replace",
+    "path": "/items/d1/config/toRoom",
+    "value": "safari19triple"
+  },
+  {
+    "op": "replace",
+    "path": "/items/d1/config/direction",
+    "value": "away"
+  },
+  {
     "op": "add",
-    "path": "/items/door@0,16,2/config/meta",
+    "path": "/items/d1/config/meta",
     "value": {
       "toSubRoom": "middle"
     }
   },
   {
+    "op": "replace",
+    "path": "/items/d/position/z",
+    "value": 3
+  },
+  {
+    "op": "replace",
+    "path": "/items/d/position/y",
+    "value": 0
+  },
+  {
+    "op": "replace",
+    "path": "/items/d/config/toRoom",
+    "value": "safari4"
+  },
+  {
+    "op": "replace",
+    "path": "/items/d/config/direction",
+    "value": "towards"
+  },
+  {
+    "op": "replace",
+    "path": "/items/b5/position/y",
+    "value": 5
+  },
+  {
     "op": "add",
-    "path": "/items/extraSupports",
+    "path": "/items/b5/config/times",
+    "value": {
+      "y": 5
+    }
+  },
+  {
+    "op": "replace",
+    "path": "/items/b4/position/y",
+    "value": 15
+  },
+  {
+    "op": "remove",
+    "path": "/items/b4/config/times"
+  },
+  {
+    "op": "remove",
+    "path": "/items/b4/config/disappearing"
+  },
+  {
+    "op": "replace",
+    "path": "/items/b3/position/y",
+    "value": 12
+  },
+  {
+    "op": "add",
+    "path": "/items/b3/config/disappearing",
+    "value": {
+      "on": "stand"
+    }
+  },
+  {
+    "op": "add",
+    "path": "/items/b3/config/times",
+    "value": {
+      "y": 3
+    }
+  },
+  {
+    "op": "replace",
+    "path": "/items/b2/position/y",
+    "value": 11
+  },
+  {
+    "op": "remove",
+    "path": "/items/b2/config/disappearing"
+  },
+  {
+    "op": "replace",
+    "path": "/items/b1/position/y",
+    "value": 10
+  },
+  {
+    "op": "remove",
+    "path": "/items/b1/config/times"
+  },
+  {
+    "op": "add",
+    "path": "/items/b1/config/disappearing",
+    "value": {
+      "on": "stand"
+    }
+  },
+  {
+    "op": "add",
+    "path": "/items/b6",
     "value": {
       "config": {
         "style": "tower",

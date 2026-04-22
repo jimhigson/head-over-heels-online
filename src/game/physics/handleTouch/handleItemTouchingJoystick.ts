@@ -6,6 +6,7 @@ import type { Xy } from "../../../utils/vectors/vectors";
 import type { FreeItemTypes } from "../itemPredicates";
 import type { ItemTouchEventByItemType } from "./ItemTouchEvent";
 
+import { roomItemsIterable } from "../../../model/RoomState";
 import {
   scaleXy,
   scaleXyz,
@@ -13,6 +14,7 @@ import {
   vectorClosestDirectionXy4,
 } from "../../../utils/vectors/vectors";
 import { assignLatentMovement } from "../../gameState/mutators/assignLatentMovement";
+import { isItemType } from "../itemPredicates";
 import { moveSpeedPixPerMs } from "../mechanicsConstants";
 import { mtv } from "../mtv";
 import { recordActedOnBy } from "../recordActedOnBy";
@@ -69,33 +71,33 @@ export const handleItemTouchingJoystick = <
     }
   >;
 
-  for (const sillyOldFaceId of controls) {
-    const sillyOldFace = room.items[sillyOldFaceId] as CompatibleItem;
+  // if controls is omitted, this joystick controls every charles in the
+  // room — which is how joysticks always behaved in the original game
+  const controlledItems: Iterable<CompatibleItem | undefined> =
+    controls === undefined ?
+      roomItemsIterable(room.items).filter(isItemType("charles"))
+    : controls.map((id) => room.items[id] as CompatibleItem | undefined);
 
-    if (sillyOldFace === undefined) {
-      // it's possible the controlled item could have been removed from the room
+  for (const controlledItem of controlledItems) {
+    if (controlledItem === undefined) {
+      // item could have been removed from the room
       continue;
     }
 
     const { roomTime } = room;
 
-    if (sillyOldFace.state.controlledWithJoystickAtRoomTime === roomTime) {
+    if (controlledItem.state.controlledWithJoystickAtRoomTime === roomTime) {
       // can only be controlled by one joystick per frame - skip this
       continue;
     }
 
-    if (sillyOldFaceId === undefined) {
-      // it's possible the controlled item could have been moved out of the room
-      continue;
-    }
-
     const posDelta = scaleXyz(unitM, -moveSpeedPixPerMs.charles * deltaMS);
-    sillyOldFace.state.facing = posDelta;
-    sillyOldFace.state.controlledWithJoystickAtRoomTime = roomTime;
+    controlledItem.state.facing = posDelta;
+    controlledItem.state.controlledWithJoystickAtRoomTime = roomTime;
 
     recordActedOnBy(
       joystickItem.id,
-      sillyOldFace,
+      controlledItem,
       room,
       // joysticks always act in xy plane
       true,
@@ -104,7 +106,7 @@ export const handleItemTouchingJoystick = <
     );
 
     assignLatentMovement(
-      sillyOldFace,
+      controlledItem,
       room,
       posDelta,
       deltaMS,

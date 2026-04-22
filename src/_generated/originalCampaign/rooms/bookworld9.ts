@@ -6,22 +6,22 @@ export const room = inferRoomJson({
   color: { hue: "white", shade: "basic" },
   id: "bookworld9",
   items: {
-    "door@0,1,0": {
+    d: {
       config: { direction: "right", toRoom: "bookworld10" },
       position: { x: 0, y: 1, z: 0 },
       type: "door",
     },
-    "door@3,0,0": {
+    d1: {
       config: { direction: "towards", toRoom: "bookworld21" },
       position: { x: 3, y: 0, z: 0 },
       type: "door",
     },
-    "door@8,1,0": {
+    d2: {
       config: { direction: "left", toRoom: "bookworld8" },
       position: { x: 8, y: 1, z: 0 },
       type: "door",
     },
-    "floor@0,0,0": {
+    f: {
       config: {
         floorType: "standable",
         scenery: "bookworld",
@@ -30,27 +30,27 @@ export const room = inferRoomJson({
       position: { x: 0, y: 0, z: 0 },
       type: "floor",
     },
-    "slidingBlock@3,2,0": {
+    sb: {
       config: { style: "book" },
       position: { x: 3, y: 2, z: 0 },
       type: "slidingBlock",
     },
-    "wall(right)@0,0,0": {
+    w: {
       config: { direction: "right" },
       position: { x: 0, y: 0, z: 0 },
       type: "wall",
     },
-    "wall(towards)@0,0,0": {
+    w1: {
       config: { direction: "towards", times: { x: 3 } },
       position: { x: 0, y: 0, z: 0 },
       type: "wall",
     },
-    "wall@0,3,0": {
+    w2: {
       config: { direction: "right" },
       position: { x: 0, y: 3, z: 0 },
       type: "wall",
     },
-    "wall@0,4,0": {
+    w3: {
       config: {
         direction: "away",
         tiles: [
@@ -67,17 +67,17 @@ export const room = inferRoomJson({
       position: { x: 0, y: 4, z: 0 },
       type: "wall",
     },
-    "wall@5,0,0": {
+    w4: {
       config: { direction: "towards", times: { x: 3 } },
       position: { x: 5, y: 0, z: 0 },
       type: "wall",
     },
-    "wall@8,0,0": {
+    w5: {
       config: { direction: "left", tiles: ["book"] },
       position: { x: 8, y: 0, z: 0 },
       type: "wall",
     },
-    "wall@8,3,0": {
+    w6: {
       config: { direction: "left", tiles: ["book"] },
       position: { x: 8, y: 3, z: 0 },
       type: "wall",

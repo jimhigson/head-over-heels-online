@@ -1,37 +1,80 @@
 [
   {
-    "op": "replace",
-    "path": "/items/lift@3,3,1/position/z",
-    "value": 3
+    "op": "remove",
+    "path": "/items/w1/config/times/y"
+  },
+  {
+    "op": "add",
+    "path": "/items/w1/config/times/x",
+    "value": 8
   },
   {
     "op": "replace",
-    "path": "/items/lift@3,3,1/config/top",
+    "path": "/items/w1/config/direction",
+    "value": "towards"
+  },
+  {
+    "op": "remove",
+    "path": "/items/w/config/times/x"
+  },
+  {
+    "op": "add",
+    "path": "/items/w/config/times/y",
     "value": 16
   },
   {
     "op": "replace",
-    "path": "/items/block@4,8,0/position/x",
+    "path": "/items/w/config/direction",
+    "value": "right"
+  },
+  {
+    "op": "replace",
+    "path": "/items/l/position/z",
+    "value": 3
+  },
+  {
+    "op": "replace",
+    "path": "/items/l/config/top",
+    "value": 16
+  },
+  {
+    "op": "replace",
+    "path": "/items/b3/position/x",
     "value": 3
   },
   {
     "op": "add",
-    "path": "/items/block@4,8,0/config/times/x",
+    "path": "/items/b3/config/times/x",
     "value": 2
   },
   {
     "op": "replace",
-    "path": "/items/block@0,1,0/config/times/y",
+    "path": "/items/b1/config/times/y",
     "value": 2
   },
   {
     "op": "replace",
-    "path": "/items/block@0,0,0/config/times/x",
+    "path": "/items/b/config/times/x",
     "value": 3
   },
   {
     "op": "add",
-    "path": "/items/afterJumpingOFf",
+    "path": "/items/b10",
+    "value": {
+      "config": {
+        "style": "artificial"
+      },
+      "position": {
+        "x": 3,
+        "y": 0,
+        "z": 0
+      },
+      "type": "block"
+    }
+  },
+  {
+    "op": "add",
+    "path": "/items/b5",
     "value": {
       "config": {
         "style": "organic",
@@ -49,7 +92,7 @@
   },
   {
     "op": "add",
-    "path": "/items/afterJumpingOFf2",
+    "path": "/items/b6",
     "value": {
       "config": {
         "style": "organic",
@@ -67,151 +110,7 @@
   },
   {
     "op": "add",
-    "path": "/items/extraBarrier",
-    "value": {
-      "config": {
-        "axis": "y",
-        "times": {
-          "y": 6
-        }
-      },
-      "position": {
-        "x": 2.375,
-        "y": 8,
-        "z": 1
-      },
-      "type": "barrier"
-    }
-  },
-  {
-    "op": "add",
-    "path": "/items/extraBarrier2",
-    "value": {
-      "config": {
-        "axis": "y",
-        "times": {
-          "y": 6
-        }
-      },
-      "position": {
-        "x": 4.625,
-        "y": 8,
-        "z": 1
-      },
-      "type": "barrier"
-    }
-  },
-  {
-    "op": "add",
-    "path": "/items/extraBarrier3",
-    "value": {
-      "config": {
-        "axis": "y",
-        "times": {
-          "y": 2
-        }
-      },
-      "position": {
-        "x": 4.625,
-        "y": 13,
-        "z": 2
-      },
-      "type": "barrier"
-    }
-  },
-  {
-    "op": "add",
-    "path": "/items/extraBarrier4",
-    "value": {
-      "config": {
-        "axis": "y",
-        "times": {
-          "y": 2
-        }
-      },
-      "position": {
-        "x": 4.625,
-        "y": 14,
-        "z": 3
-      },
-      "type": "barrier"
-    }
-  },
-  {
-    "op": "add",
-    "path": "/items/extraBarrier5",
-    "value": {
-      "config": {
-        "axis": "y",
-        "times": {
-          "y": 2
-        }
-      },
-      "position": {
-        "x": 2.375,
-        "y": 13,
-        "z": 2
-      },
-      "type": "barrier"
-    }
-  },
-  {
-    "op": "add",
-    "path": "/items/extraBarrier6",
-    "value": {
-      "config": {
-        "axis": "y",
-        "times": {
-          "y": 2
-        }
-      },
-      "position": {
-        "x": 2.375,
-        "y": 14,
-        "z": 3
-      },
-      "type": "barrier"
-    }
-  },
-  {
-    "op": "add",
-    "path": "/items/extraBarrier7",
-    "value": {
-      "config": {
-        "axis": "x",
-        "times": {
-          "x": 3
-        }
-      },
-      "position": {
-        "x": 0,
-        "y": 7.375,
-        "z": 1
-      },
-      "type": "barrier"
-    }
-  },
-  {
-    "op": "add",
-    "path": "/items/extraBarrier8",
-    "value": {
-      "config": {
-        "axis": "x",
-        "times": {
-          "x": 3
-        }
-      },
-      "position": {
-        "x": 5,
-        "y": 7.375,
-        "z": 1
-      },
-      "type": "barrier"
-    }
-  },
-  {
-    "op": "add",
-    "path": "/items/extraStep",
+    "path": "/items/b7",
     "value": {
       "config": {
         "style": "organic",
@@ -230,7 +129,7 @@
   },
   {
     "op": "add",
-    "path": "/items/extraStep2",
+    "path": "/items/b8",
     "value": {
       "config": {
         "style": "organic",
@@ -248,7 +147,166 @@
   },
   {
     "op": "add",
-    "path": "/items/extraTurtle1",
+    "path": "/items/b9",
+    "value": {
+      "config": {
+        "style": "artificial"
+      },
+      "position": {
+        "x": 0,
+        "y": 3,
+        "z": 0
+      },
+      "type": "block"
+    }
+  },
+  {
+    "op": "add",
+    "path": "/items/br",
+    "value": {
+      "config": {
+        "axis": "y",
+        "times": {
+          "y": 6
+        }
+      },
+      "position": {
+        "x": 2.375,
+        "y": 8,
+        "z": 1
+      },
+      "type": "barrier"
+    }
+  },
+  {
+    "op": "add",
+    "path": "/items/br1",
+    "value": {
+      "config": {
+        "axis": "y",
+        "times": {
+          "y": 6
+        }
+      },
+      "position": {
+        "x": 4.625,
+        "y": 8,
+        "z": 1
+      },
+      "type": "barrier"
+    }
+  },
+  {
+    "op": "add",
+    "path": "/items/br2",
+    "value": {
+      "config": {
+        "axis": "y",
+        "times": {
+          "y": 2
+        }
+      },
+      "position": {
+        "x": 4.625,
+        "y": 13,
+        "z": 2
+      },
+      "type": "barrier"
+    }
+  },
+  {
+    "op": "add",
+    "path": "/items/br3",
+    "value": {
+      "config": {
+        "axis": "y",
+        "times": {
+          "y": 2
+        }
+      },
+      "position": {
+        "x": 4.625,
+        "y": 14,
+        "z": 3
+      },
+      "type": "barrier"
+    }
+  },
+  {
+    "op": "add",
+    "path": "/items/br4",
+    "value": {
+      "config": {
+        "axis": "y",
+        "times": {
+          "y": 2
+        }
+      },
+      "position": {
+        "x": 2.375,
+        "y": 13,
+        "z": 2
+      },
+      "type": "barrier"
+    }
+  },
+  {
+    "op": "add",
+    "path": "/items/br5",
+    "value": {
+      "config": {
+        "axis": "y",
+        "times": {
+          "y": 2
+        }
+      },
+      "position": {
+        "x": 2.375,
+        "y": 14,
+        "z": 3
+      },
+      "type": "barrier"
+    }
+  },
+  {
+    "op": "add",
+    "path": "/items/br6",
+    "value": {
+      "config": {
+        "axis": "x",
+        "times": {
+          "x": 3
+        }
+      },
+      "position": {
+        "x": 0,
+        "y": 7.375,
+        "z": 1
+      },
+      "type": "barrier"
+    }
+  },
+  {
+    "op": "add",
+    "path": "/items/br7",
+    "value": {
+      "config": {
+        "axis": "x",
+        "times": {
+          "x": 3
+        }
+      },
+      "position": {
+        "x": 5,
+        "y": 7.375,
+        "z": 1
+      },
+      "type": "barrier"
+    }
+  },
+  {
+    "op": "add",
+    "path": "/items/m",
     "value": {
       "config": {
         "activated": "on",
@@ -266,7 +324,7 @@
   },
   {
     "op": "add",
-    "path": "/items/extraTurtle2",
+    "path": "/items/m1",
     "value": {
       "config": {
         "activated": "on",
@@ -280,36 +338,6 @@
         "z": 1
       },
       "type": "monster"
-    }
-  },
-  {
-    "op": "add",
-    "path": "/items/jumpingOff",
-    "value": {
-      "config": {
-        "style": "artificial"
-      },
-      "position": {
-        "x": 0,
-        "y": 3,
-        "z": 0
-      },
-      "type": "block"
-    }
-  },
-  {
-    "op": "add",
-    "path": "/items/jumpingOff2",
-    "value": {
-      "config": {
-        "style": "artificial"
-      },
-      "position": {
-        "x": 3,
-        "y": 0,
-        "z": 0
-      },
-      "type": "block"
     }
   },
   {

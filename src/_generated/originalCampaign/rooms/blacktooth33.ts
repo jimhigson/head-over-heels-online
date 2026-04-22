@@ -6,12 +6,12 @@ export const room = inferRoomJson({
   color: { hue: "cyan", shade: "basic" },
   id: "blacktooth33",
   items: {
-    "door@3,0,0": {
+    d: {
       config: { direction: "towards", toRoom: "blacktooth32" },
       position: { x: 3, y: 0, z: 0 },
       type: "door",
     },
-    "floor@0,0,0": {
+    f: {
       config: {
         floorType: "standable",
         scenery: "blacktooth",
@@ -20,12 +20,12 @@ export const room = inferRoomJson({
       position: { x: 0, y: 0, z: 0 },
       type: "floor",
     },
-    "lift@7,7,0": {
+    l: {
       config: { bottom: 0, top: 11 },
       position: { x: 7, y: 7, z: 0 },
       type: "lift",
     },
-    "monster@0,3,0": {
+    m: {
       config: {
         activated: "on",
         movement: "towards-on-shortest-axis-xy4",
@@ -35,7 +35,7 @@ export const room = inferRoomJson({
       position: { x: 0, y: 3, z: 0 },
       type: "monster",
     },
-    "monster@7,4,0": {
+    m1: {
       config: {
         activated: "on",
         movement: "patrol-randomly-diagonal",
@@ -44,22 +44,22 @@ export const room = inferRoomJson({
       position: { x: 7, y: 4, z: 0 },
       type: "monster",
     },
-    "pickup@0,7,0": {
+    pi: {
       config: { gives: "jumps" },
       position: { x: 0, y: 7, z: 0 },
       type: "pickup",
     },
-    "wall(right)@0,0,0": {
+    w: {
       config: { direction: "right", times: { y: 8 } },
       position: { x: 0, y: 0, z: 0 },
       type: "wall",
     },
-    "wall(towards)@0,0,0": {
+    w1: {
       config: { direction: "towards", times: { x: 3 } },
       position: { x: 0, y: 0, z: 0 },
       type: "wall",
     },
-    "wall@0,8,0": {
+    w2: {
       config: {
         direction: "away",
         tiles: [
@@ -76,12 +76,12 @@ export const room = inferRoomJson({
       position: { x: 0, y: 8, z: 0 },
       type: "wall",
     },
-    "wall@5,0,0": {
+    w3: {
       config: { direction: "towards", times: { x: 3 } },
       position: { x: 5, y: 0, z: 0 },
       type: "wall",
     },
-    "wall@8,0,0": {
+    w4: {
       config: {
         direction: "left",
         tiles: [

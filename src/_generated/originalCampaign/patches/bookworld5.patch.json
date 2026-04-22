@@ -1,1 +1,73 @@
-[]
+[
+  {
+    "op": "remove",
+    "path": "/items/w1/config/times"
+  },
+  {
+    "op": "replace",
+    "path": "/items/w1/config/direction",
+    "value": "towards"
+  },
+  {
+    "op": "replace",
+    "path": "/items/w/config/direction",
+    "value": "right"
+  },
+  {
+    "op": "add",
+    "path": "/items/w/config/times",
+    "value": {
+      "y": 8
+    }
+  },
+  {
+    "op": "replace",
+    "path": "/items/m1/position/y",
+    "value": 4
+  },
+  {
+    "op": "replace",
+    "path": "/items/m1/position/x",
+    "value": 2
+  },
+  {
+    "op": "replace",
+    "path": "/items/m/position/y",
+    "value": 3
+  },
+  {
+    "op": "replace",
+    "path": "/items/m/position/x",
+    "value": 1
+  },
+  {
+    "op": "replace",
+    "path": "/items/d1/position/y",
+    "value": 8
+  },
+  {
+    "op": "replace",
+    "path": "/items/d1/config/toRoom",
+    "value": "bookworld4"
+  },
+  {
+    "op": "replace",
+    "path": "/items/d1/config/direction",
+    "value": "away"
+  },
+  {
+    "op": "replace",
+    "path": "/items/d/position/y",
+    "value": 0
+  },
+  {
+    "op": "replace",
+    "path": "/items/d/config/toRoom",
+    "value": "bookworld6"
+  },
+  {
+    "op": "replace",
+    "path": "/items/d/config/direction",
+    "value": "towards"
+  }
+]

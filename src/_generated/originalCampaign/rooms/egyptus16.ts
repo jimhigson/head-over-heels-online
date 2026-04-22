@@ -6,12 +6,12 @@ export const room = inferRoomJson({
   color: { hue: "white", shade: "basic" },
   id: "egyptus16",
   items: {
-    "block@0,5,0": {
+    b: {
       config: { style: "organic", times: { x: 6 } },
       position: { x: 0, y: 5, z: 0 },
       type: "block",
     },
-    "door@2,6,1": {
+    d: {
       config: {
         direction: "away",
         meta: { toSubRoom: "right" },
@@ -20,32 +20,32 @@ export const room = inferRoomJson({
       position: { x: 2, y: 6, z: 1 },
       type: "door",
     },
-    "floor@0,0,0": {
+    f: {
       config: { floorType: "none", times: { x: 6, y: 6 } },
       position: { x: 0, y: 0, z: 0 },
       type: "floor",
     },
-    "wall(right)@0,0,0": {
+    w: {
       config: { direction: "right", times: { y: 6 } },
       position: { x: 0, y: 0, z: 0 },
       type: "wall",
     },
-    "wall(towards)@0,0,0": {
+    w1: {
       config: { direction: "towards", times: { x: 6 } },
       position: { x: 0, y: 0, z: 0 },
       type: "wall",
     },
-    "wall@0,6,0": {
+    w2: {
       config: { direction: "away", tiles: ["hieroglyphics", "hieroglyphics"] },
       position: { x: 0, y: 6, z: 0 },
       type: "wall",
     },
-    "wall@4,6,0": {
+    w3: {
       config: { direction: "away", tiles: ["hieroglyphics", "hieroglyphics"] },
       position: { x: 4, y: 6, z: 0 },
       type: "wall",
     },
-    "wall@6,0,0": {
+    w4: {
       config: {
         direction: "left",
         tiles: [

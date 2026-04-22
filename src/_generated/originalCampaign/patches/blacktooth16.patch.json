@@ -1,19 +1,127 @@
 [
   {
+    "op": "remove",
+    "path": "/items/w1/config/times/y"
+  },
+  {
+    "op": "add",
+    "path": "/items/w1/config/times/x",
+    "value": 3
+  },
+  {
     "op": "replace",
-    "path": "/items/slidingDeadly@4,4,0/position/x",
+    "path": "/items/w1/config/direction",
+    "value": "towards"
+  },
+  {
+    "op": "remove",
+    "path": "/items/w/config/times/x"
+  },
+  {
+    "op": "add",
+    "path": "/items/w/config/times/y",
+    "value": 8
+  },
+  {
+    "op": "replace",
+    "path": "/items/w/config/direction",
+    "value": "right"
+  },
+  {
+    "op": "replace",
+    "path": "/items/sd1/position/y",
+    "value": 4
+  },
+  {
+    "op": "replace",
+    "path": "/items/sd1/position/x",
     "value": 5
   },
   {
     "op": "replace",
-    "path": "/items/slidingDeadly@3,3,0/position/x",
+    "path": "/items/sd1/config/startingPhase",
     "value": 2
   },
   {
+    "op": "replace",
+    "path": "/items/sd/position/y",
+    "value": 3
+  },
+  {
+    "op": "replace",
+    "path": "/items/sd/position/x",
+    "value": 2
+  },
+  {
+    "op": "replace",
+    "path": "/items/sd/config/startingPhase",
+    "value": 1
+  },
+  {
+    "op": "replace",
+    "path": "/items/m2/position/y",
+    "value": 7
+  },
+  {
+    "op": "replace",
+    "path": "/items/m1/position/y",
+    "value": 0
+  },
+  {
+    "op": "replace",
+    "path": "/items/m1/position/x",
+    "value": 7
+  },
+  {
+    "op": "replace",
+    "path": "/items/m/position/x",
+    "value": 0
+  },
+  {
+    "op": "replace",
+    "path": "/items/d1/position/y",
+    "value": 3
+  },
+  {
+    "op": "replace",
+    "path": "/items/d1/position/x",
+    "value": 8
+  },
+  {
+    "op": "replace",
+    "path": "/items/d1/config/toRoom",
+    "value": "blacktooth17triple"
+  },
+  {
+    "op": "replace",
+    "path": "/items/d1/config/direction",
+    "value": "left"
+  },
+  {
     "op": "add",
-    "path": "/items/door@8,3,0/config/meta",
+    "path": "/items/d1/config/meta",
     "value": {
       "toSubRoom": "middle"
     }
+  },
+  {
+    "op": "replace",
+    "path": "/items/d/position/y",
+    "value": 0
+  },
+  {
+    "op": "replace",
+    "path": "/items/d/position/x",
+    "value": 3
+  },
+  {
+    "op": "replace",
+    "path": "/items/d/config/toRoom",
+    "value": "blacktooth15"
+  },
+  {
+    "op": "replace",
+    "path": "/items/d/config/direction",
+    "value": "towards"
   }
 ]

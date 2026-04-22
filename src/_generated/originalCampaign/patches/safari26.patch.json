@@ -1,5 +1,132 @@
 [
   {
+    "op": "replace",
+    "path": "/items/w3/position/y",
+    "value": 4
+  },
+  {
+    "op": "remove",
+    "path": "/items/w3/config/tiles"
+  },
+  {
+    "op": "replace",
+    "path": "/items/w3/config/direction",
+    "value": "right"
+  },
+  {
+    "op": "add",
+    "path": "/items/w3/config/times",
+    "value": {
+      "y": 8
+    }
+  },
+  {
+    "op": "replace",
+    "path": "/items/w2/position/y",
+    "value": 12
+  },
+  {
+    "op": "remove",
+    "path": "/items/w2/config/times"
+  },
+  {
+    "op": "replace",
+    "path": "/items/w2/config/direction",
+    "value": "away"
+  },
+  {
+    "op": "add",
+    "path": "/items/w2/config/tiles",
+    "value": [
+      "wall",
+      "window",
+      "wall",
+      "shield",
+      "shield",
+      "wall",
+      "window",
+      "wall"
+    ]
+  },
+  {
+    "op": "remove",
+    "path": "/items/w1/config/times/y"
+  },
+  {
+    "op": "add",
+    "path": "/items/w1/config/times/x",
+    "value": 8
+  },
+  {
+    "op": "replace",
+    "path": "/items/w1/config/direction",
+    "value": "towards"
+  },
+  {
+    "op": "remove",
+    "path": "/items/w/config/times/x"
+  },
+  {
+    "op": "add",
+    "path": "/items/w/config/times/y",
+    "value": 2
+  },
+  {
+    "op": "replace",
+    "path": "/items/w/config/direction",
+    "value": "right"
+  },
+  {
+    "op": "replace",
+    "path": "/items/db2/position/y",
+    "value": 5
+  },
+  {
+    "op": "replace",
+    "path": "/items/db1/position/y",
+    "value": 10
+  },
+  {
+    "op": "replace",
+    "path": "/items/d1/position/y",
+    "value": 8
+  },
+  {
+    "op": "replace",
+    "path": "/items/d1/position/x",
+    "value": 8
+  },
+  {
+    "op": "replace",
+    "path": "/items/d1/config/toRoom",
+    "value": "safari27"
+  },
+  {
+    "op": "replace",
+    "path": "/items/d1/config/direction",
+    "value": "left"
+  },
+  {
+    "op": "replace",
+    "path": "/items/d/position/y",
+    "value": 2
+  },
+  {
+    "op": "replace",
+    "path": "/items/d/position/x",
+    "value": 0
+  },
+  {
+    "op": "replace",
+    "path": "/items/d/config/toRoom",
+    "value": "safari23"
+  },
+  {
+    "op": "replace",
+    "path": "/items/d/config/direction",
+    "value": "right"
+  },
+  {
     "op": "add",
     "path": "/meta",
     "value": {

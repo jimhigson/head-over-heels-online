@@ -7,22 +7,22 @@ export const room = inferRoomJson({
   height: 12,
   id: "egyptus13",
   items: {
-    "block@2,0,4": {
+    b: {
       config: { style: "organic", times: { x: 6 } },
       position: { x: 2, y: 0, z: 4 },
       type: "block",
     },
-    "block@7,0,6": {
+    b1: {
       config: { style: "organic" },
       position: { x: 7, y: 0, z: 6 },
       type: "block",
     },
-    "door@3,0,0": {
+    d: {
       config: { direction: "towards", toRoom: "egyptus12" },
       position: { x: 3, y: 0, z: 0 },
       type: "door",
     },
-    "floor@0,0,0": {
+    f: {
       config: {
         floorType: "standable",
         scenery: "egyptus",
@@ -31,37 +31,29 @@ export const room = inferRoomJson({
       position: { x: 0, y: 0, z: 0 },
       type: "floor",
     },
-    "lift@0,0,2": {
+    l: {
       config: { bottom: 2, top: 5 },
       position: { x: 0, y: 0, z: 2 },
       type: "lift",
     },
-    "pushableBlock@1,0,0": {
-      config: {},
-      position: { x: 1, y: 0, z: 0 },
-      type: "pushableBlock",
-    },
-    "spring@7,0,7": {
-      config: {},
-      position: { x: 7, y: 0, z: 7 },
-      type: "spring",
-    },
-    "teleporter@4,0,5": {
+    pu: { config: {}, position: { x: 1, y: 0, z: 0 }, type: "pushableBlock" },
+    sg: { config: {}, position: { x: 7, y: 0, z: 7 }, type: "spring" },
+    t: {
       config: { toRoom: "egyptus9fish" },
       position: { x: 4, y: 0, z: 5 },
       type: "teleporter",
     },
-    "wall(right)@0,0,0": {
+    w: {
       config: { direction: "right", times: { y: 10 } },
       position: { x: 0, y: 0, z: 0 },
       type: "wall",
     },
-    "wall(towards)@0,0,0": {
+    w1: {
       config: { direction: "towards", times: { x: 3 } },
       position: { x: 0, y: 0, z: 0 },
       type: "wall",
     },
-    "wall@0,8,0": {
+    w2: {
       config: {
         direction: "away",
         tiles: [
@@ -78,12 +70,12 @@ export const room = inferRoomJson({
       position: { x: 0, y: 10, z: 0 },
       type: "wall",
     },
-    "wall@5,0,0": {
+    w3: {
       config: { direction: "towards", times: { x: 3 } },
       position: { x: 5, y: 0, z: 0 },
       type: "wall",
     },
-    "wall@8,0,0": {
+    w4: {
       config: {
         direction: "left",
         tiles: [

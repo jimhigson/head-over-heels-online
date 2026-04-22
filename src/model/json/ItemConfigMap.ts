@@ -293,7 +293,11 @@ export type ItemConfigMap<
     RoomItemId
   >;
   joystick: {
-    // item ids of all the items (probably Charles) that this joystick controls
-    controls: RoomItemId[];
+    /**
+     * item ids of all the items (probably Charles) that this joystick controls.
+     * if omitted, the joystick controls every charles in its room — which is
+     * how the original game always behaved.
+     */
+    controls?: RoomItemId[];
   };
 };

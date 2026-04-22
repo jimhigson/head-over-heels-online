@@ -7,7 +7,32 @@ export const room = inferRoomJson({
   height: 13,
   id: "penitentiary20",
   items: {
-    "floor@0,0,0": {
+    b: {
+      config: { style: "organic", times: { x: 6 } },
+      position: { x: 0, y: 6, z: 14 },
+      type: "block",
+    },
+    b1: {
+      config: { style: "organic", times: { y: 8 } },
+      position: { x: 6, y: -1, z: 14 },
+      type: "block",
+    },
+    b2: {
+      config: { style: "organic", times: { y: 8 } },
+      position: { x: -1, y: -1, z: 14 },
+      type: "block",
+    },
+    b3: {
+      config: { disappearing: { on: "stand" }, style: "organic" },
+      position: { x: 0, y: 0, z: 14 },
+      type: "block",
+    },
+    b4: {
+      config: { style: "organic", times: { x: 6 } },
+      position: { x: 0, y: -1, z: 14 },
+      type: "block",
+    },
+    f: {
       config: {
         floorType: "standable",
         scenery: "penitentiary",
@@ -16,32 +41,7 @@ export const room = inferRoomJson({
       position: { x: 0, y: 0, z: 0 },
       type: "floor",
     },
-    hintAboveA: {
-      config: { style: "organic", times: { x: 6 } },
-      position: { x: 0, y: 6, z: 14 },
-      type: "block",
-    },
-    hintAboveL: {
-      config: { style: "organic", times: { y: 8 } },
-      position: { x: 6, y: -1, z: 14 },
-      type: "block",
-    },
-    hintAboveR: {
-      config: { style: "organic", times: { y: 8 } },
-      position: { x: -1, y: -1, z: 14 },
-      type: "block",
-    },
-    hintAboveSingle: {
-      config: { disappearing: { on: "stand" }, style: "organic" },
-      position: { x: 0, y: 0, z: 14 },
-      type: "block",
-    },
-    hintAboveT: {
-      config: { style: "organic", times: { x: 6 } },
-      position: { x: 0, y: -1, z: 14 },
-      type: "block",
-    },
-    "monster@2,3,1": {
+    m: {
       config: {
         activated: "on",
         movement: "patrol-randomly-diagonal",
@@ -50,57 +50,53 @@ export const room = inferRoomJson({
       position: { x: 2, y: 3, z: 1 },
       type: "monster",
     },
-    "portableBlock@1,1,0": {
+    pr: {
       config: { style: "cube" },
       position: { x: 1, y: 1, z: 0 },
       type: "portableBlock",
     },
-    "portableBlock@1,4,0": {
+    pr1: {
       config: { style: "cube" },
       position: { x: 1, y: 4, z: 0 },
       type: "portableBlock",
     },
-    "portableBlock@2,2,0": {
+    pr2: {
       config: { style: "cube" },
       position: { x: 2, y: 2, z: 0 },
       type: "portableBlock",
     },
-    "portableBlock@2,3,0": {
+    pr3: {
       config: { style: "cube" },
       position: { x: 2, y: 3, z: 0 },
       type: "portableBlock",
     },
-    "portableBlock@3,2,0": {
+    pr4: {
       config: { style: "cube" },
       position: { x: 3, y: 2, z: 0 },
       type: "portableBlock",
     },
-    "portableBlock@3,3,0": {
+    pr5: {
       config: { style: "cube" },
       position: { x: 3, y: 3, z: 0 },
       type: "portableBlock",
     },
-    "portableBlock@4,1,0": {
+    pr6: {
       config: { style: "cube" },
       position: { x: 4, y: 1, z: 0 },
       type: "portableBlock",
     },
-    "spring@3,2,1": {
-      config: {},
-      position: { x: 3, y: 2, z: 1 },
-      type: "spring",
-    },
-    "wall(right)@0,0,0": {
+    sg: { config: {}, position: { x: 3, y: 2, z: 1 }, type: "spring" },
+    w: {
       config: { direction: "right", times: { y: 6 } },
       position: { x: 0, y: 0, z: 0 },
       type: "wall",
     },
-    "wall(towards)@0,0,0": {
+    w1: {
       config: { direction: "towards", times: { x: 6 } },
       position: { x: 0, y: 0, z: 0 },
       type: "wall",
     },
-    "wall@0,6,0": {
+    w2: {
       config: {
         direction: "away",
         tiles: ["loop", "skeleton", "loop", "loop", "skeleton", "loop"],
@@ -108,7 +104,7 @@ export const room = inferRoomJson({
       position: { x: 0, y: 6, z: 0 },
       type: "wall",
     },
-    "wall@6,0,0": {
+    w3: {
       config: {
         direction: "left",
         tiles: ["loop", "skeleton", "loop", "loop", "skeleton", "loop"],

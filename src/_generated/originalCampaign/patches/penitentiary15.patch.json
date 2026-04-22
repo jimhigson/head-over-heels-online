@@ -1,11 +1,39 @@
 [
   {
     "op": "remove",
-    "path": "/items/block@7,1,0/config/times"
+    "path": "/items/w1/config/times/y"
   },
   {
     "op": "add",
-    "path": "/items/block",
+    "path": "/items/w1/config/times/x",
+    "value": 8
+  },
+  {
+    "op": "replace",
+    "path": "/items/w1/config/direction",
+    "value": "towards"
+  },
+  {
+    "op": "remove",
+    "path": "/items/w/config/times/x"
+  },
+  {
+    "op": "add",
+    "path": "/items/w/config/times/y",
+    "value": 8
+  },
+  {
+    "op": "replace",
+    "path": "/items/w/config/direction",
+    "value": "right"
+  },
+  {
+    "op": "remove",
+    "path": "/items/b6/config/times"
+  },
+  {
+    "op": "add",
+    "path": "/items/b11",
     "value": {
       "config": {
         "style": "organic",
@@ -23,7 +51,7 @@
   },
   {
     "op": "add",
-    "path": "/items/lift",
+    "path": "/items/l",
     "value": {
       "config": {
         "bottom": 0,

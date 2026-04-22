@@ -1,12 +1,40 @@
 [
   {
+    "op": "remove",
+    "path": "/items/w1/config/times/y"
+  },
+  {
+    "op": "add",
+    "path": "/items/w1/config/times/x",
+    "value": 8
+  },
+  {
     "op": "replace",
-    "path": "/items/lift@3,3,0/config/bottom",
+    "path": "/items/w1/config/direction",
+    "value": "towards"
+  },
+  {
+    "op": "remove",
+    "path": "/items/w/config/times/x"
+  },
+  {
+    "op": "add",
+    "path": "/items/w/config/times/y",
+    "value": 3
+  },
+  {
+    "op": "replace",
+    "path": "/items/w/config/direction",
+    "value": "right"
+  },
+  {
+    "op": "replace",
+    "path": "/items/l/config/bottom",
     "value": -7
   },
   {
     "op": "add",
-    "path": "/items/patroller",
+    "path": "/items/m",
     "value": {
       "config": {
         "activated": "on",
@@ -24,7 +52,7 @@
   },
   {
     "op": "add",
-    "path": "/items/patroller2",
+    "path": "/items/m1",
     "value": {
       "config": {
         "activated": "on",

@@ -1,15 +1,66 @@
 [
   {
+    "op": "remove",
+    "path": "/items/w1/config/times"
+  },
+  {
+    "op": "replace",
+    "path": "/items/w1/config/direction",
+    "value": "towards"
+  },
+  {
+    "op": "replace",
+    "path": "/items/w/config/direction",
+    "value": "right"
+  },
+  {
     "op": "add",
-    "path": "/items/switch@0,7,0/config/modifies/0",
+    "path": "/items/w/config/times",
+    "value": {
+      "y": 8
+    }
+  },
+  {
+    "op": "add",
+    "path": "/items/sw/config/modifies/0",
     "value": {
       "activates": true,
       "expectType": "monster"
     }
   },
   {
+    "op": "replace",
+    "path": "/items/d1/position/y",
+    "value": 8
+  },
+  {
+    "op": "replace",
+    "path": "/items/d1/config/toRoom",
+    "value": "blacktooth38"
+  },
+  {
+    "op": "replace",
+    "path": "/items/d1/config/direction",
+    "value": "away"
+  },
+  {
+    "op": "replace",
+    "path": "/items/d/position/y",
+    "value": 0
+  },
+  {
+    "op": "replace",
+    "path": "/items/d/config/toRoom",
+    "value": "blacktooth36"
+  },
+  {
+    "op": "replace",
+    "path": "/items/d/config/direction",
+    "value": "towards"
+  },
+  {
     "op": "add",
-    "path": "/items/block",
+    "path": "/items/b",
     "value": {
       "config": {
         "style": "organic",
@@ -27,7 +78,7 @@
   },
   {
     "op": "add",
-    "path": "/items/block_2",
+    "path": "/items/b1",
     "value": {
       "config": {
         "style": "tower",
@@ -45,22 +96,7 @@
   },
   {
     "op": "add",
-    "path": "/items/pickup",
-    "value": {
-      "config": {
-        "gives": "jumps"
-      },
-      "position": {
-        "x": 3,
-        "y": 6,
-        "z": 3
-      },
-      "type": "pickup"
-    }
-  },
-  {
-    "op": "add",
-    "path": "/items/tower",
+    "path": "/items/b2",
     "value": {
       "config": {
         "style": "tower",
@@ -74,6 +110,21 @@
         "z": 0
       },
       "type": "block"
+    }
+  },
+  {
+    "op": "add",
+    "path": "/items/pi",
+    "value": {
+      "config": {
+        "gives": "jumps"
+      },
+      "position": {
+        "x": 3,
+        "y": 6,
+        "z": 3
+      },
+      "type": "pickup"
     }
   }
 ]

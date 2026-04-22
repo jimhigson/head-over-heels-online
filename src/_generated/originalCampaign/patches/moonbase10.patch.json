@@ -1,89 +1,183 @@
 [
   {
-    "op": "replace",
-    "path": "/items/wall@5,8,0/position/x",
-    "value": 6
-  },
-  {
     "op": "remove",
-    "path": "/items/wall@5,8,0/config/tiles/2"
+    "path": "/items/w5"
   },
   {
     "op": "replace",
-    "path": "/items/wall@5,8,0/config/tiles/1",
-    "value": "window1"
+    "path": "/items/w4/position/y",
+    "value": 0
   },
   {
     "op": "replace",
-    "path": "/items/wall@0,8,0/config/tiles/2",
-    "value": "window1"
+    "path": "/items/w4/position/x",
+    "value": 8
   },
   {
     "op": "replace",
-    "path": "/items/wall@0,8,0/config/tiles/1",
-    "value": "window2"
-  },
-  {
-    "op": "add",
-    "path": "/items/wall@0,8,0/config/tiles/3",
+    "path": "/items/w4/config/tiles/2",
     "value": "coil"
   },
   {
     "op": "replace",
-    "path": "/items/wall@0,5,0/position/y",
-    "value": 2
+    "path": "/items/w4/config/tiles/1",
+    "value": "window1"
   },
   {
     "op": "replace",
-    "path": "/items/wall@0,5,0/config/times/y",
+    "path": "/items/w4/config/tiles/0",
+    "value": "window3"
+  },
+  {
+    "op": "add",
+    "path": "/items/w4/config/tiles/3",
+    "value": "window2"
+  },
+  {
+    "op": "add",
+    "path": "/items/w4/config/tiles/4",
+    "value": "window3"
+  },
+  {
+    "op": "add",
+    "path": "/items/w4/config/tiles/5",
+    "value": "coil"
+  },
+  {
+    "op": "add",
+    "path": "/items/w4/config/tiles/6",
+    "value": "window3"
+  },
+  {
+    "op": "add",
+    "path": "/items/w4/config/tiles/7",
+    "value": "window1"
+  },
+  {
+    "op": "replace",
+    "path": "/items/w4/config/direction",
+    "value": "left"
+  },
+  {
+    "op": "replace",
+    "path": "/items/w3/position/x",
     "value": 6
   },
   {
     "op": "remove",
-    "path": "/items/wall(right)@0,0,0"
+    "path": "/items/w3/config/tiles/2"
   },
   {
     "op": "replace",
-    "path": "/items/door@3,8,5/position/z",
-    "value": 4
+    "path": "/items/w3/config/tiles/1",
+    "value": "window1"
   },
   {
     "op": "replace",
-    "path": "/items/door@3,8,5/position/x",
-    "value": 4
+    "path": "/items/w3/config/tiles/0",
+    "value": "window2"
   },
   {
     "op": "replace",
-    "path": "/items/door@0,3,5/position/z",
-    "value": 4
+    "path": "/items/w2/position/y",
+    "value": 8
+  },
+  {
+    "op": "remove",
+    "path": "/items/w2/config/times"
   },
   {
     "op": "replace",
-    "path": "/items/door@0,3,5/position/y",
-    "value": 0
+    "path": "/items/w2/config/direction",
+    "value": "away"
   },
   {
     "op": "add",
-    "path": "/items/block@4,7,3/config/times",
+    "path": "/items/w2/config/tiles",
+    "value": ["window3", "window2", "window1", "coil"]
+  },
+  {
+    "op": "replace",
+    "path": "/items/w1/position/y",
+    "value": 2
+  },
+  {
+    "op": "replace",
+    "path": "/items/w1/config/times/y",
+    "value": 6
+  },
+  {
+    "op": "replace",
+    "path": "/items/d1/position/z",
+    "value": 4
+  },
+  {
+    "op": "replace",
+    "path": "/items/d1/position/y",
+    "value": 8
+  },
+  {
+    "op": "replace",
+    "path": "/items/d1/position/x",
+    "value": 4
+  },
+  {
+    "op": "replace",
+    "path": "/items/d1/config/toRoom",
+    "value": "moonbase11"
+  },
+  {
+    "op": "replace",
+    "path": "/items/d1/config/direction",
+    "value": "away"
+  },
+  {
+    "op": "replace",
+    "path": "/items/d/position/z",
+    "value": 4
+  },
+  {
+    "op": "replace",
+    "path": "/items/d/position/y",
+    "value": 0
+  },
+  {
+    "op": "replace",
+    "path": "/items/d/position/x",
+    "value": 0
+  },
+  {
+    "op": "replace",
+    "path": "/items/d/config/toRoom",
+    "value": "moonbase9"
+  },
+  {
+    "op": "replace",
+    "path": "/items/d/config/direction",
+    "value": "right"
+  },
+  {
+    "op": "add",
+    "path": "/items/b3/config/times",
     "value": {
       "x": 2
     }
   },
   {
     "op": "replace",
-    "path": "/items/block@0,3,3/position/y",
+    "path": "/items/b/position/y",
     "value": 0
   },
   {
     "op": "add",
-    "path": "/items/block@0,3,3/config/times",
+    "path": "/items/b/config/times",
     "value": {
       "y": 4
     }
   },
   {
     "op": "add",
-    "path": "/items/block",
+    "path": "/items/b4",
     "value": {
       "config": {
         "style": "tower",
@@ -102,7 +196,7 @@
   },
   {
     "op": "add",
-    "path": "/items/block_3",
+    "path": "/items/b5",
     "value": {
       "config": {
         "style": "tower",
@@ -120,7 +214,7 @@
   },
   {
     "op": "add",
-    "path": "/items/block_4",
+    "path": "/items/b6",
     "value": {
       "config": {
         "style": "tower",

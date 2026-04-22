@@ -6,7 +6,7 @@ export const room = inferRoomJson({
   color: { hue: "green", shade: "basic" },
   id: "blacktooth57",
   items: {
-    "door@3,8,0": {
+    d: {
       config: {
         direction: "away",
         meta: { toSubRoom: "middle" },
@@ -15,12 +15,12 @@ export const room = inferRoomJson({
       position: { x: 3, y: 8, z: 0 },
       type: "door",
     },
-    "door@8,3,0": {
+    d1: {
       config: { direction: "left", toRoom: "blacktooth56" },
       position: { x: 8, y: 3, z: 0 },
       type: "door",
     },
-    "floor@0,0,0": {
+    f: {
       config: {
         floorType: "standable",
         scenery: "bookworld",
@@ -29,37 +29,37 @@ export const room = inferRoomJson({
       position: { x: 0, y: 0, z: 0 },
       type: "floor",
     },
-    "teleporter@3,3,0": {
+    t: {
       config: { times: { x: 2, y: 2 }, toRoom: "moonbase9" },
       position: { x: 3, y: 3, z: 0 },
       type: "teleporter",
     },
-    "wall(right)@0,0,0": {
+    w: {
       config: { direction: "right", times: { y: 8 } },
       position: { x: 0, y: 0, z: 0 },
       type: "wall",
     },
-    "wall(towards)@0,0,0": {
+    w1: {
       config: { direction: "towards", times: { x: 8 } },
       position: { x: 0, y: 0, z: 0 },
       type: "wall",
     },
-    "wall@0,8,0": {
+    w2: {
       config: { direction: "away", tiles: ["plain", "shield", "plain"] },
       position: { x: 0, y: 8, z: 0 },
       type: "wall",
     },
-    "wall@5,8,0": {
+    w3: {
       config: { direction: "away", tiles: ["plain", "shield", "plain"] },
       position: { x: 5, y: 8, z: 0 },
       type: "wall",
     },
-    "wall@8,0,0": {
+    w4: {
       config: { direction: "left", tiles: ["plain", "shield", "plain"] },
       position: { x: 8, y: 0, z: 0 },
       type: "wall",
     },
-    "wall@8,5,0": {
+    w5: {
       config: { direction: "left", tiles: ["plain", "shield", "plain"] },
       position: { x: 8, y: 5, z: 0 },
       type: "wall",

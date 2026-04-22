@@ -56,17 +56,18 @@ export const applyCampaignPatches = async (
               true,
             ).newDocument;
           } catch (e) {
-            if (e instanceof fastJsonPatch.JsonPatchError) {
-              if (e.name === "OPERATION_PATH_UNRESOLVABLE") {
-                const failedPath = e.operation.path;
-                console.warn(
-                  `⚠️⚠️⚠️ Could not apply a path ${failedPath} for a patch at room ${room.id} - will drop this, but please check if this was not expected`,
-                  "room ids are",
-                  Object.keys(room.items),
-                );
-
-                roomPatch = roomPatch?.filter((op) => op.path !== failedPath);
-              }
+            if (
+              e instanceof fastJsonPatch.JsonPatchError &&
+              (e.name === "OPERATION_PATH_UNRESOLVABLE" ||
+                e.name === "OPERATION_PATH_CANNOT_ADD")
+            ) {
+              const failedPath = e.operation.path;
+              console.warn(
+                `⚠️⚠️⚠️ Could not apply a path ${failedPath} for a patch at room ${room.id} (${e.name}) - will drop this, but please check if this was not expected`,
+                "room ids are",
+                Object.keys(room.items),
+              );
+              roomPatch = roomPatch?.filter((op) => op.path !== failedPath);
             } else {
               throw new Error(`Error applying patch to room ${room.id}`, {
                 cause: e,

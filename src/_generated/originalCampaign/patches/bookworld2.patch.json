@@ -1,75 +1,357 @@
 [
   {
+    "op": "remove",
+    "path": "/items/w5"
+  },
+  {
     "op": "replace",
-    "path": "/items/wall@12,4,0/position/y",
+    "path": "/items/w4/position/y",
     "value": 2
   },
   {
     "op": "add",
-    "path": "/items/wall@12,4,0/config/tiles/2",
+    "path": "/items/w4/config/tiles/2",
     "value": "book"
   },
   {
     "op": "add",
-    "path": "/items/wall@12,4,0/config/tiles/3",
+    "path": "/items/w4/config/tiles/3",
     "value": "book"
   },
   {
     "op": "remove",
-    "path": "/items/wall@12,0,0"
-  },
-  {
-    "op": "replace",
-    "path": "/items/door@12,2,3/position/z",
-    "value": 5
-  },
-  {
-    "op": "replace",
-    "path": "/items/door@12,2,3/position/y",
-    "value": 0
-  },
-  {
-    "op": "replace",
-    "path": "/items/deadlyBlock@5,5,2/position/x",
-    "value": 4
-  },
-  {
-    "op": "replace",
-    "path": "/items/deadlyBlock@5,5,2/config/times/x",
-    "value": 4
+    "path": "/items/w1/config/times/y"
   },
   {
     "op": "add",
-    "path": "/items/deadlyBlock@4,0,2/config/times",
-    "value": {
-      "y": 2
-    }
+    "path": "/items/w1/config/times/x",
+    "value": 12
+  },
+  {
+    "op": "replace",
+    "path": "/items/w1/config/direction",
+    "value": "towards"
+  },
+  {
+    "op": "remove",
+    "path": "/items/w/config/times/x"
   },
   {
     "op": "add",
-    "path": "/items/deadlyBlock@0,0,2/config/times",
-    "value": {
-      "y": 2
-    }
-  },
-  {
-    "op": "replace",
-    "path": "/items/conveyor@11,2,0/position/y",
-    "value": 3
-  },
-  {
-    "op": "replace",
-    "path": "/items/conveyor@11,2,0/config/times/y",
+    "path": "/items/w/config/times/y",
     "value": 2
   },
   {
     "op": "replace",
-    "path": "/items/conveyor@0,0,0/config/times/y",
+    "path": "/items/w/config/direction",
+    "value": "right"
+  },
+  {
+    "op": "replace",
+    "path": "/items/db3/position/y",
+    "value": 5
+  },
+  {
+    "op": "replace",
+    "path": "/items/db3/position/x",
+    "value": 4
+  },
+  {
+    "op": "remove",
+    "path": "/items/db3/config/times/y"
+  },
+  {
+    "op": "add",
+    "path": "/items/db3/config/times/x",
+    "value": 4
+  },
+  {
+    "op": "replace",
+    "path": "/items/db2/position/y",
+    "value": 0
+  },
+  {
+    "op": "replace",
+    "path": "/items/db2/position/x",
+    "value": 4
+  },
+  {
+    "op": "remove",
+    "path": "/items/db2/config/times/x"
+  },
+  {
+    "op": "add",
+    "path": "/items/db2/config/times/y",
+    "value": 2
+  },
+  {
+    "op": "replace",
+    "path": "/items/db1/position/y",
+    "value": 4
+  },
+  {
+    "op": "replace",
+    "path": "/items/db1/position/x",
+    "value": 11
+  },
+  {
+    "op": "add",
+    "path": "/items/db1/config/times",
+    "value": {
+      "y": 2
+    }
+  },
+  {
+    "op": "add",
+    "path": "/items/db/config/times",
+    "value": {
+      "y": 2
+    }
+  },
+  {
+    "op": "replace",
+    "path": "/items/d1/position/z",
+    "value": 5
+  },
+  {
+    "op": "replace",
+    "path": "/items/d1/position/y",
+    "value": 0
+  },
+  {
+    "op": "replace",
+    "path": "/items/d1/position/x",
+    "value": 12
+  },
+  {
+    "op": "replace",
+    "path": "/items/d1/config/toRoom",
+    "value": "bookworld1"
+  },
+  {
+    "op": "replace",
+    "path": "/items/d1/config/direction",
+    "value": "left"
+  },
+  {
+    "op": "replace",
+    "path": "/items/d/position/x",
+    "value": 0
+  },
+  {
+    "op": "replace",
+    "path": "/items/d/config/toRoom",
+    "value": "bookworld3"
+  },
+  {
+    "op": "replace",
+    "path": "/items/d/config/direction",
+    "value": "right"
+  },
+  {
+    "op": "replace",
+    "path": "/items/co9/position/y",
+    "value": 5
+  },
+  {
+    "op": "replace",
+    "path": "/items/co9/position/x",
+    "value": 5
+  },
+  {
+    "op": "remove",
+    "path": "/items/co9/config/disappearing"
+  },
+  {
+    "op": "replace",
+    "path": "/items/co9/config/direction",
+    "value": "right"
+  },
+  {
+    "op": "add",
+    "path": "/items/co9/config/times",
+    "value": {
+      "x": 4
+    }
+  },
+  {
+    "op": "replace",
+    "path": "/items/co8/position/y",
+    "value": 4
+  },
+  {
+    "op": "replace",
+    "path": "/items/co8/position/x",
+    "value": 4
+  },
+  {
+    "op": "remove",
+    "path": "/items/co8/config/disappearing"
+  },
+  {
+    "op": "replace",
+    "path": "/items/co8/config/direction",
+    "value": "towards"
+  },
+  {
+    "op": "add",
+    "path": "/items/co8/config/times",
+    "value": {
+      "y": 2
+    }
+  },
+  {
+    "op": "replace",
+    "path": "/items/co7/position/y",
+    "value": 3
+  },
+  {
+    "op": "replace",
+    "path": "/items/co7/position/x",
+    "value": 4
+  },
+  {
+    "op": "remove",
+    "path": "/items/co7/config/times"
+  },
+  {
+    "op": "replace",
+    "path": "/items/co7/config/direction",
+    "value": "towards"
+  },
+  {
+    "op": "add",
+    "path": "/items/co7/config/disappearing",
+    "value": {
+      "on": "stand"
+    }
+  },
+  {
+    "op": "replace",
+    "path": "/items/co6/position/y",
+    "value": 1
+  },
+  {
+    "op": "replace",
+    "path": "/items/co6/position/x",
+    "value": 4
+  },
+  {
+    "op": "remove",
+    "path": "/items/co6/config/times/x"
+  },
+  {
+    "op": "add",
+    "path": "/items/co6/config/times/y",
+    "value": 2
+  },
+  {
+    "op": "replace",
+    "path": "/items/co6/config/direction",
+    "value": "towards"
+  },
+  {
+    "op": "replace",
+    "path": "/items/co5/position/y",
+    "value": 0
+  },
+  {
+    "op": "replace",
+    "path": "/items/co5/position/x",
+    "value": 3
+  },
+  {
+    "op": "replace",
+    "path": "/items/co5/config/times/x",
+    "value": 2
+  },
+  {
+    "op": "replace",
+    "path": "/items/co4/position/y",
+    "value": 0
+  },
+  {
+    "op": "replace",
+    "path": "/items/co4/position/x",
+    "value": 2
+  },
+  {
+    "op": "remove",
+    "path": "/items/co4/config/times"
+  },
+  {
+    "op": "replace",
+    "path": "/items/co4/config/direction",
+    "value": "right"
+  },
+  {
+    "op": "add",
+    "path": "/items/co4/config/disappearing",
+    "value": {
+      "on": "stand"
+    }
+  },
+  {
+    "op": "replace",
+    "path": "/items/co3/position/y",
+    "value": 3
+  },
+  {
+    "op": "replace",
+    "path": "/items/co3/position/x",
+    "value": 11
+  },
+  {
+    "op": "replace",
+    "path": "/items/co3/config/direction",
+    "value": "away"
+  },
+  {
+    "op": "replace",
+    "path": "/items/co2/position/y",
+    "value": 5
+  },
+  {
+    "op": "replace",
+    "path": "/items/co2/position/x",
+    "value": 10
+  },
+  {
+    "op": "replace",
+    "path": "/items/co10/position/y",
+    "value": 5
+  },
+  {
+    "op": "replace",
+    "path": "/items/co10/position/x",
+    "value": 9
+  },
+  {
+    "op": "replace",
+    "path": "/items/co/config/times/y",
     "value": 4
   },
   {
     "op": "add",
-    "path": "/items/canary",
+    "path": "/items/b",
+    "value": {
+      "config": {
+        "style": "organic",
+        "times": {
+          "y": 3
+        }
+      },
+      "position": {
+        "x": 11,
+        "y": 0,
+        "z": 0
+      },
+      "type": "block"
+    }
+  },
+  {
+    "op": "add",
+    "path": "/items/pr",
     "value": {
       "config": {
         "style": "cube"
@@ -84,7 +366,7 @@
   },
   {
     "op": "add",
-    "path": "/items/canary2",
+    "path": "/items/pr1",
     "value": {
       "config": {
         "style": "cube"
@@ -95,24 +377,6 @@
         "z": 2
       },
       "type": "portableBlock"
-    }
-  },
-  {
-    "op": "add",
-    "path": "/items/extraBlock",
-    "value": {
-      "config": {
-        "style": "organic",
-        "times": {
-          "y": 3
-        }
-      },
-      "position": {
-        "x": 11,
-        "y": 0,
-        "z": 0
-      },
-      "type": "block"
     }
   },
   {

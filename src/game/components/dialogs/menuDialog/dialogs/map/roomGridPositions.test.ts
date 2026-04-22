@@ -14,6 +14,21 @@ test("traversing original campaign from the start room", () => {
     ),
   ).toMatchInlineSnapshot(`
     {
+      "blacktooth0switches/*": {
+        "boundaries": {
+          "away": "wall",
+          "left": "wall",
+          "right": "doorway",
+          "towards": "wall",
+        },
+        "gridPosition": {
+          "x": 1,
+          "y": 0,
+          "z": 0,
+        },
+        "roomId": "blacktooth0switches",
+        "subRoomId": "*",
+      },
       "blacktooth10/left": {
         "boundaries": {
           "away": "wall",
@@ -2054,21 +2069,6 @@ test("traversing original campaign from the start room", () => {
         "roomId": "moonbase9",
         "subRoomId": "*",
       },
-      "switch_room/*": {
-        "boundaries": {
-          "away": "wall",
-          "left": "wall",
-          "right": "doorway",
-          "towards": "wall",
-        },
-        "gridPosition": {
-          "x": 1,
-          "y": 0,
-          "z": 0,
-        },
-        "roomId": "switch_room",
-        "subRoomId": "*",
-      },
     }
   `);
 });
@@ -2083,6 +2083,21 @@ test("traversing original campaign from the final room", () => {
     ),
   ).toMatchInlineSnapshot(`
     {
+      "blacktooth0switches/*": {
+        "boundaries": {
+          "away": "wall",
+          "left": "wall",
+          "right": "doorway",
+          "towards": "wall",
+        },
+        "gridPosition": {
+          "x": -49,
+          "y": -52,
+          "z": 2,
+        },
+        "roomId": "blacktooth0switches",
+        "subRoomId": "*",
+      },
       "blacktooth10/left": {
         "boundaries": {
           "away": "wall",
@@ -4121,21 +4136,6 @@ test("traversing original campaign from the final room", () => {
           "z": 0,
         },
         "roomId": "moonbase9",
-        "subRoomId": "*",
-      },
-      "switch_room/*": {
-        "boundaries": {
-          "away": "wall",
-          "left": "wall",
-          "right": "doorway",
-          "towards": "wall",
-        },
-        "gridPosition": {
-          "x": -49,
-          "y": -52,
-          "z": 2,
-        },
-        "roomId": "switch_room",
         "subRoomId": "*",
       },
     }

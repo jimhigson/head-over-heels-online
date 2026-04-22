@@ -7,112 +7,112 @@ export const room = inferRoomJson({
   height: 12,
   id: "penitentiary22",
   items: {
-    "block@0,0,0": {
+    b: {
       config: { style: "organic", times: { x: 8 } },
       position: { x: 0, y: 0, z: 0 },
       type: "block",
     },
-    "block@0,1,0": {
+    b1: {
       config: { style: "organic", times: { y: 7 } },
       position: { x: 0, y: 1, z: 0 },
       type: "block",
     },
-    "block@0,4,7": {
-      config: { style: "artificial" },
-      position: { x: 0, y: 4, z: 7 },
-      type: "block",
-    },
-    "block@1,4,6": {
-      config: { disappearing: { on: "stand" }, style: "organic" },
-      position: { x: 1, y: 4, z: 6 },
-      type: "block",
-    },
-    "block@1,7,0": {
-      config: { style: "organic", times: { x: 7 } },
-      position: { x: 1, y: 7, z: 0 },
-      type: "block",
-    },
-    "block@2,4,5": {
-      config: { disappearing: { on: "stand" }, style: "organic" },
-      position: { x: 2, y: 4, z: 5 },
-      type: "block",
-    },
-    "block@3,4,4": {
-      config: { style: "artificial", times: { x: 2 } },
-      position: { x: 3, y: 4, z: 4 },
-      type: "block",
-    },
-    "block@4,1,1": {
-      config: { disappearing: { on: "stand" }, style: "organic" },
-      position: { x: 4, y: 1, z: 1 },
-      type: "block",
-    },
-    "block@4,2,2": {
-      config: { disappearing: { on: "stand" }, style: "organic" },
-      position: { x: 4, y: 2, z: 2 },
-      type: "block",
-    },
-    "block@4,3,3": {
-      config: { disappearing: { on: "stand" }, style: "organic" },
-      position: { x: 4, y: 3, z: 3 },
-      type: "block",
-    },
-    "block@7,1,0": {
+    b10: {
       config: { style: "organic", times: { y: 6 } },
       position: { x: 7, y: 1, z: 0 },
       type: "block",
     },
-    extra1: {
+    b11: {
       config: { style: "tower" },
       position: { x: 0, y: 4, z: 1 },
       type: "block",
     },
-    extra2: {
+    b12: {
       config: { style: "tower" },
       position: { x: 0, y: 4, z: 2 },
       type: "block",
     },
-    extra3: {
+    b13: {
       config: { style: "tower" },
       position: { x: 0, y: 4, z: 3 },
       type: "block",
     },
-    extra4: {
+    b14: {
       config: { style: "tower" },
       position: { x: 0, y: 4, z: 4 },
       type: "block",
     },
-    extra5: {
+    b15: {
       config: { style: "tower" },
       position: { x: 0, y: 4, z: 5 },
       type: "block",
     },
-    extra6: {
+    b16: {
       config: { style: "tower" },
       position: { x: 0, y: 4, z: 6 },
       type: "block",
     },
-    "floor@0,0,0": {
+    b2: {
+      config: { style: "artificial" },
+      position: { x: 0, y: 4, z: 7 },
+      type: "block",
+    },
+    b3: {
+      config: { disappearing: { on: "stand" }, style: "organic" },
+      position: { x: 1, y: 4, z: 6 },
+      type: "block",
+    },
+    b4: {
+      config: { style: "organic", times: { x: 7 } },
+      position: { x: 1, y: 7, z: 0 },
+      type: "block",
+    },
+    b5: {
+      config: { disappearing: { on: "stand" }, style: "organic" },
+      position: { x: 2, y: 4, z: 5 },
+      type: "block",
+    },
+    b6: {
+      config: { style: "artificial", times: { x: 2 } },
+      position: { x: 3, y: 4, z: 4 },
+      type: "block",
+    },
+    b7: {
+      config: { disappearing: { on: "stand" }, style: "organic" },
+      position: { x: 4, y: 1, z: 1 },
+      type: "block",
+    },
+    b8: {
+      config: { disappearing: { on: "stand" }, style: "organic" },
+      position: { x: 4, y: 2, z: 2 },
+      type: "block",
+    },
+    b9: {
+      config: { disappearing: { on: "stand" }, style: "organic" },
+      position: { x: 4, y: 3, z: 3 },
+      type: "block",
+    },
+    f: {
       config: { floorType: "none", times: { x: 8, y: 8 } },
       position: { x: 0, y: 0, z: 0 },
       type: "floor",
     },
-    "pickup@4,4,5": {
+    pi: {
       config: { gives: "extra-life" },
       position: { x: 4, y: 4, z: 5 },
       type: "pickup",
     },
-    "wall(right)@0,0,0": {
+    w: {
       config: { direction: "right", times: { y: 8 } },
       position: { x: 0, y: 0, z: 0 },
       type: "wall",
     },
-    "wall(towards)@0,0,0": {
+    w1: {
       config: { direction: "towards", times: { x: 8 } },
       position: { x: 0, y: 0, z: 0 },
       type: "wall",
     },
-    "wall@0,8,0": {
+    w2: {
       config: {
         direction: "away",
         tiles: [
@@ -129,7 +129,7 @@ export const room = inferRoomJson({
       position: { x: 0, y: 8, z: 0 },
       type: "wall",
     },
-    "wall@8,0,0": {
+    w3: {
       config: {
         direction: "left",
         tiles: [

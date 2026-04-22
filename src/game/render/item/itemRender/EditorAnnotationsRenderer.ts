@@ -490,17 +490,22 @@ export class EditorAnnotationsRenderer<T extends ItemInPlayType>
             },
           )) ||
         // highlight charles when controlling joystick hovered:
+        // undefined controls = the joystick controls every charles in the room
         (item.type === "charles" &&
           roomItemsIterable(room.items).some((otherItem) => {
             return (
               otherItem.jsonItemId === hoveredJsonItem?.jsonItemId &&
               otherItem.type === "joystick" &&
-              otherItem.config.controls.some((c) => c === jsonItemId)
+              (otherItem.config.controls === undefined ||
+                otherItem.config.controls.some((c) => c === jsonItemId))
             );
           })) ||
         // highlight joysticks when the charles they control is hovered:
         (item.type === "joystick" &&
-          item.config.controls.some((c) => hoveredJsonItem?.jsonItemId === c)));
+          (item.config.controls === undefined ||
+            item.config.controls.some(
+              (c) => hoveredJsonItem?.jsonItemId === c,
+            ))));
 
     this.output.filters =
       isHovered && isSelected ?

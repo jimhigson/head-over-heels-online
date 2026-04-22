@@ -1,17 +1,115 @@
 [
   {
     "op": "remove",
-    "path": "/items/teleporter@2,2,0/config/toPosition"
+    "path": "/items/w1/config/times/y"
+  },
+  {
+    "op": "add",
+    "path": "/items/w1/config/times/x",
+    "value": 2
   },
   {
     "op": "replace",
-    "path": "/items/monster@5,4,1/config/activated",
+    "path": "/items/w1/config/direction",
+    "value": "towards"
+  },
+  {
+    "op": "remove",
+    "path": "/items/w/config/times/x"
+  },
+  {
+    "op": "add",
+    "path": "/items/w/config/times/y",
+    "value": 6
+  },
+  {
+    "op": "replace",
+    "path": "/items/w/config/direction",
+    "value": "right"
+  },
+  {
+    "op": "remove",
+    "path": "/items/t/config/toPosition"
+  },
+  {
+    "op": "replace",
+    "path": "/items/m7/position/y",
+    "value": 4
+  },
+  {
+    "op": "replace",
+    "path": "/items/m7/position/x",
+    "value": 5
+  },
+  {
+    "op": "replace",
+    "path": "/items/m7/config/startDirection",
+    "value": "right"
+  },
+  {
+    "op": "replace",
+    "path": "/items/m7/config/activated",
     "value": "after-player-near"
   },
   {
     "op": "replace",
-    "path": "/items/monster@0,2,1/config/activated",
+    "path": "/items/m6/position/y",
+    "value": 3
+  },
+  {
+    "op": "replace",
+    "path": "/items/m5/position/x",
+    "value": 5
+  },
+  {
+    "op": "replace",
+    "path": "/items/m5/config/startDirection",
+    "value": "right"
+  },
+  {
+    "op": "replace",
+    "path": "/items/m4/position/y",
+    "value": 1
+  },
+  {
+    "op": "replace",
+    "path": "/items/m3/position/y",
+    "value": 4
+  },
+  {
+    "op": "replace",
+    "path": "/items/m2/position/x",
+    "value": 0
+  },
+  {
+    "op": "replace",
+    "path": "/items/m2/config/startDirection",
+    "value": "left"
+  },
+  {
+    "op": "replace",
+    "path": "/items/m1/position/y",
+    "value": 2
+  },
+  {
+    "op": "replace",
+    "path": "/items/m1/config/activated",
     "value": "after-player-near"
+  },
+  {
+    "op": "replace",
+    "path": "/items/m/position/y",
+    "value": 1
+  },
+  {
+    "op": "replace",
+    "path": "/items/m/position/x",
+    "value": 0
+  },
+  {
+    "op": "replace",
+    "path": "/items/m/config/startDirection",
+    "value": "left"
   },
   {
     "op": "replace",

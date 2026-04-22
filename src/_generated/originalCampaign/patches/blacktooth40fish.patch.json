@@ -1,5 +1,160 @@
 [
   {
+    "op": "remove",
+    "path": "/items/w1/config/times/y"
+  },
+  {
+    "op": "add",
+    "path": "/items/w1/config/times/x",
+    "value": 2
+  },
+  {
+    "op": "replace",
+    "path": "/items/w1/config/direction",
+    "value": "towards"
+  },
+  {
+    "op": "remove",
+    "path": "/items/w/config/times/x"
+  },
+  {
+    "op": "add",
+    "path": "/items/w/config/times/y",
+    "value": 16
+  },
+  {
+    "op": "replace",
+    "path": "/items/w/config/direction",
+    "value": "right"
+  },
+  {
+    "op": "replace",
+    "path": "/items/pi2/position/x",
+    "value": 5
+  },
+  {
+    "op": "replace",
+    "path": "/items/pi2/config/gives",
+    "value": "reincarnation"
+  },
+  {
+    "op": "replace",
+    "path": "/items/pi/position/x",
+    "value": 3
+  },
+  {
+    "op": "replace",
+    "path": "/items/pi/config/gives",
+    "value": "extra-life"
+  },
+  {
+    "op": "replace",
+    "path": "/items/co9/position/y",
+    "value": 10
+  },
+  {
+    "op": "remove",
+    "path": "/items/co9/config/times"
+  },
+  {
+    "op": "replace",
+    "path": "/items/co9/config/direction",
+    "value": "left"
+  },
+  {
+    "op": "replace",
+    "path": "/items/co8/position/y",
+    "value": 4
+  },
+  {
+    "op": "replace",
+    "path": "/items/co8/config/direction",
+    "value": "right"
+  },
+  {
+    "op": "replace",
+    "path": "/items/co7/position/y",
+    "value": 10
+  },
+  {
+    "op": "replace",
+    "path": "/items/co7/config/direction",
+    "value": "left"
+  },
+  {
+    "op": "replace",
+    "path": "/items/co5/position/y",
+    "value": 4
+  },
+  {
+    "op": "remove",
+    "path": "/items/co5/config/times"
+  },
+  {
+    "op": "replace",
+    "path": "/items/co5/config/direction",
+    "value": "right"
+  },
+  {
+    "op": "replace",
+    "path": "/items/co4/position/y",
+    "value": 3
+  },
+  {
+    "op": "replace",
+    "path": "/items/co3/position/y",
+    "value": 14
+  },
+  {
+    "op": "replace",
+    "path": "/items/co3/config/direction",
+    "value": "left"
+  },
+  {
+    "op": "add",
+    "path": "/items/co3/config/times",
+    "value": {
+      "x": 4
+    }
+  },
+  {
+    "op": "replace",
+    "path": "/items/co2/position/y",
+    "value": 12
+  },
+  {
+    "op": "replace",
+    "path": "/items/co2/config/direction",
+    "value": "left"
+  },
+  {
+    "op": "replace",
+    "path": "/items/co10/position/y",
+    "value": 4
+  },
+  {
+    "op": "replace",
+    "path": "/items/co10/config/direction",
+    "value": "away"
+  },
+  {
+    "op": "add",
+    "path": "/items/co10/config/times",
+    "value": {
+      "y": 6
+    }
+  },
+  {
+    "op": "replace",
+    "path": "/items/co1/position/y",
+    "value": 10
+  },
+  {
+    "op": "replace",
+    "path": "/items/co1/config/direction",
+    "value": "away"
+  },
+  {
     "op": "add",
     "path": "/meta",
     "value": {

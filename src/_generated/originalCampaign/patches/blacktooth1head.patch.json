@@ -1,19 +1,68 @@
 [
   {
-    "op": "remove",
-    "path": "/items/wall@6,0,0"
+    "op": "replace",
+    "path": "/items/w4/position/y",
+    "value": 5
   },
   {
     "op": "remove",
-    "path": "/items/teleporter@5,7,0/config/toPosition"
+    "path": "/items/w4/config/tiles/7"
+  },
+  {
+    "op": "remove",
+    "path": "/items/w4/config/tiles/6"
+  },
+  {
+    "op": "remove",
+    "path": "/items/w4/config/tiles/5"
+  },
+  {
+    "op": "remove",
+    "path": "/items/w4/config/tiles/4"
+  },
+  {
+    "op": "remove",
+    "path": "/items/w4/config/tiles/3"
+  },
+  {
+    "op": "remove",
+    "path": "/items/w1/config/times/y"
   },
   {
     "op": "add",
-    "path": "/items/door",
+    "path": "/items/w1/config/times/x",
+    "value": 6
+  },
+  {
+    "op": "replace",
+    "path": "/items/w1/config/direction",
+    "value": "towards"
+  },
+  {
+    "op": "remove",
+    "path": "/items/w/config/times/x"
+  },
+  {
+    "op": "add",
+    "path": "/items/w/config/times/y",
+    "value": 3
+  },
+  {
+    "op": "replace",
+    "path": "/items/w/config/direction",
+    "value": "right"
+  },
+  {
+    "op": "remove",
+    "path": "/items/t/config/toPosition"
+  },
+  {
+    "op": "add",
+    "path": "/items/d1",
     "value": {
       "config": {
         "direction": "left",
-        "toRoom": "switch_room"
+        "toRoom": "blacktooth0switches"
       },
       "position": {
         "x": 6,
@@ -40,7 +89,7 @@
   },
   {
     "op": "add",
-    "path": "/items/scrollRabbit",
+    "path": "/items/pi1",
     "value": {
       "config": {
         "gives": "scroll",
@@ -57,7 +106,7 @@
   },
   {
     "op": "add",
-    "path": "/items/scrollTheGame",
+    "path": "/items/pi2",
     "value": {
       "config": {
         "gives": "scroll",
@@ -74,23 +123,7 @@
   },
   {
     "op": "add",
-    "path": "/items/wall@6,0,0~1afterDoor",
-    "value": {
-      "config": {
-        "direction": "left",
-        "tiles": ["bars", "bars", "bars"]
-      },
-      "position": {
-        "x": 6,
-        "y": 5,
-        "z": 0
-      },
-      "type": "wall"
-    }
-  },
-  {
-    "op": "add",
-    "path": "/items/wall@6,0,0~1beforeDoor",
+    "path": "/items/w5",
     "value": {
       "config": {
         "direction": "left",

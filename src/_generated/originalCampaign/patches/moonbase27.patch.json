@@ -1,6 +1,36 @@
 [
   {
     "op": "replace",
+    "path": "/items/d2/position/y",
+    "value": 8
+  },
+  {
+    "op": "replace",
+    "path": "/items/d2/config/toRoom",
+    "value": "moonbase28"
+  },
+  {
+    "op": "replace",
+    "path": "/items/d2/config/direction",
+    "value": "away"
+  },
+  {
+    "op": "replace",
+    "path": "/items/d/position/y",
+    "value": 0
+  },
+  {
+    "op": "replace",
+    "path": "/items/d/config/toRoom",
+    "value": "moonbase30"
+  },
+  {
+    "op": "replace",
+    "path": "/items/d/config/direction",
+    "value": "towards"
+  },
+  {
+    "op": "replace",
     "path": "/color/hue",
     "value": "cyan"
   }

@@ -1,16 +1,44 @@
 [
   {
+    "op": "remove",
+    "path": "/items/w1/config/times/y"
+  },
+  {
     "op": "add",
-    "path": "/items/switch@6,0,1/config/modifies/0",
+    "path": "/items/w1/config/times/x",
+    "value": 8
+  },
+  {
+    "op": "replace",
+    "path": "/items/w1/config/direction",
+    "value": "towards"
+  },
+  {
+    "op": "remove",
+    "path": "/items/w/config/times/x"
+  },
+  {
+    "op": "add",
+    "path": "/items/w/config/times/y",
+    "value": 3
+  },
+  {
+    "op": "replace",
+    "path": "/items/w/config/direction",
+    "value": "right"
+  },
+  {
+    "op": "add",
+    "path": "/items/sw/config/modifies/0",
     "value": {
       "expectType": "block",
       "makesStable": false,
-      "targets": ["block@0,7,0", "block@3,7,0"]
+      "targets": ["b2", "b4"]
     }
   },
   {
     "op": "add",
-    "path": "/items/switch@6,0,1/config/modifies/1",
+    "path": "/items/sw/config/modifies/1",
     "value": {
       "activates": true,
       "expectType": "monster"
@@ -18,7 +46,22 @@
   },
   {
     "op": "add",
-    "path": "/items/extraMonster",
+    "path": "/items/b7",
+    "value": {
+      "config": {
+        "style": "organic"
+      },
+      "position": {
+        "x": 2,
+        "y": 3,
+        "z": 0
+      },
+      "type": "block"
+    }
+  },
+  {
+    "op": "add",
+    "path": "/items/m1",
     "value": {
       "config": {
         "activated": "on",
@@ -35,7 +78,7 @@
   },
   {
     "op": "add",
-    "path": "/items/extraMonster2",
+    "path": "/items/m2",
     "value": {
       "config": {
         "activated": "on",
@@ -52,7 +95,7 @@
   },
   {
     "op": "add",
-    "path": "/items/extraMonster3",
+    "path": "/items/m3",
     "value": {
       "config": {
         "activated": "on",
@@ -69,7 +112,7 @@
   },
   {
     "op": "add",
-    "path": "/items/extraMonster4",
+    "path": "/items/m4",
     "value": {
       "config": {
         "activated": "on",
@@ -86,7 +129,7 @@
   },
   {
     "op": "add",
-    "path": "/items/extraMonster5",
+    "path": "/items/m5",
     "value": {
       "config": {
         "activated": "on",
@@ -103,7 +146,7 @@
   },
   {
     "op": "add",
-    "path": "/items/scroll",
+    "path": "/items/pi1",
     "value": {
       "config": {
         "gives": "scroll",
@@ -116,21 +159,6 @@
         "z": 1
       },
       "type": "pickup"
-    }
-  },
-  {
-    "op": "add",
-    "path": "/items/scrollBlock",
-    "value": {
-      "config": {
-        "style": "organic"
-      },
-      "position": {
-        "x": 2,
-        "y": 3,
-        "z": 0
-      },
-      "type": "block"
     }
   }
 ]

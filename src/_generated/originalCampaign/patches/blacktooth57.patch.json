@@ -1,16 +1,44 @@
 [
   {
     "op": "remove",
-    "path": "/items/teleporter@3,3,0/config/toPosition"
+    "path": "/items/w1/config/times/y"
+  },
+  {
+    "op": "add",
+    "path": "/items/w1/config/times/x",
+    "value": 8
   },
   {
     "op": "replace",
-    "path": "/items/floor@0,0,0/config/scenery",
+    "path": "/items/w1/config/direction",
+    "value": "towards"
+  },
+  {
+    "op": "remove",
+    "path": "/items/w/config/times/x"
+  },
+  {
+    "op": "add",
+    "path": "/items/w/config/times/y",
+    "value": 8
+  },
+  {
+    "op": "replace",
+    "path": "/items/w/config/direction",
+    "value": "right"
+  },
+  {
+    "op": "remove",
+    "path": "/items/t/config/toPosition"
+  },
+  {
+    "op": "replace",
+    "path": "/items/f/config/scenery",
     "value": "bookworld"
   },
   {
     "op": "add",
-    "path": "/items/door@3,8,0/config/meta",
+    "path": "/items/d/config/meta",
     "value": {
       "toSubRoom": "middle"
     }

@@ -1,22 +1,264 @@
 [
   {
     "op": "replace",
-    "path": "/items/floor@0,0,0/config/times/y",
+    "path": "/items/w8/position/y",
+    "value": 10
+  },
+  {
+    "op": "replace",
+    "path": "/items/w8/position/x",
     "value": 6
   },
   {
     "op": "replace",
-    "path": "/items/deadlyBlock@1,2,0/type",
-    "value": "block"
+    "path": "/items/w7/position/y",
+    "value": 4
   },
   {
     "op": "replace",
-    "path": "/items/deadlyBlock@1,2,0/config/style",
-    "value": "organic"
+    "path": "/items/w7/config/tiles/1",
+    "value": "plain"
+  },
+  {
+    "op": "replace",
+    "path": "/items/w7/config/tiles/0",
+    "value": "shield"
+  },
+  {
+    "op": "replace",
+    "path": "/items/w6/position/y",
+    "value": 0
+  },
+  {
+    "op": "replace",
+    "path": "/items/w6/position/x",
+    "value": 12
+  },
+  {
+    "op": "replace",
+    "path": "/items/w6/config/tiles/1",
+    "value": "shield"
+  },
+  {
+    "op": "replace",
+    "path": "/items/w6/config/tiles/0",
+    "value": "plain"
+  },
+  {
+    "op": "replace",
+    "path": "/items/w5/position/y",
+    "value": 4
+  },
+  {
+    "op": "replace",
+    "path": "/items/w5/position/x",
+    "value": 0
+  },
+  {
+    "op": "remove",
+    "path": "/items/w5/config/tiles"
+  },
+  {
+    "op": "replace",
+    "path": "/items/w5/config/direction",
+    "value": "right"
   },
   {
     "op": "add",
-    "path": "/items/floorR",
+    "path": "/items/w5/config/times",
+    "value": {
+      "y": 8
+    }
+  },
+  {
+    "op": "replace",
+    "path": "/items/w4/position/y",
+    "value": 12
+  },
+  {
+    "op": "replace",
+    "path": "/items/w4/position/x",
+    "value": 0
+  },
+  {
+    "op": "replace",
+    "path": "/items/w3/position/y",
+    "value": 0
+  },
+  {
+    "op": "remove",
+    "path": "/items/w3/config/tiles"
+  },
+  {
+    "op": "replace",
+    "path": "/items/w3/config/direction",
+    "value": "towards"
+  },
+  {
+    "op": "add",
+    "path": "/items/w3/config/times",
+    "value": {
+      "x": 12
+    }
+  },
+  {
+    "op": "replace",
+    "path": "/items/w2/position/y",
+    "value": 0
+  },
+  {
+    "op": "replace",
+    "path": "/items/w2/config/times/y",
+    "value": 2
+  },
+  {
+    "op": "replace",
+    "path": "/items/w1/position/y",
+    "value": 6
+  },
+  {
+    "op": "replace",
+    "path": "/items/w1/position/x",
+    "value": 6
+  },
+  {
+    "op": "remove",
+    "path": "/items/w1/config/times"
+  },
+  {
+    "op": "replace",
+    "path": "/items/w1/config/direction",
+    "value": "left"
+  },
+  {
+    "op": "add",
+    "path": "/items/w1/config/tiles",
+    "value": ["plain", "shield"]
+  },
+  {
+    "op": "replace",
+    "path": "/items/w/position/y",
+    "value": 6
+  },
+  {
+    "op": "replace",
+    "path": "/items/w/position/x",
+    "value": 6
+  },
+  {
+    "op": "remove",
+    "path": "/items/w/config/times"
+  },
+  {
+    "op": "replace",
+    "path": "/items/w/config/direction",
+    "value": "away"
+  },
+  {
+    "op": "add",
+    "path": "/items/w/config/tiles",
+    "value": ["plain", "armour", "shield", "shield", "armour", "plain"]
+  },
+  {
+    "op": "replace",
+    "path": "/items/f/config/times/y",
+    "value": 6
+  },
+  {
+    "op": "replace",
+    "path": "/items/db5/position/y",
+    "value": 7
+  },
+  {
+    "op": "replace",
+    "path": "/items/db4/position/y",
+    "value": 4
+  },
+  {
+    "op": "replace",
+    "path": "/items/db3/position/y",
+    "value": 10
+  },
+  {
+    "op": "remove",
+    "path": "/items/db11"
+  },
+  {
+    "op": "replace",
+    "path": "/items/db1/position/y",
+    "value": 2
+  },
+  {
+    "op": "replace",
+    "path": "/items/db1/position/x",
+    "value": 10
+  },
+  {
+    "op": "replace",
+    "path": "/items/db/position/y",
+    "value": 8
+  },
+  {
+    "op": "replace",
+    "path": "/items/d2/position/y",
+    "value": 8
+  },
+  {
+    "op": "replace",
+    "path": "/items/d2/position/x",
+    "value": 6
+  },
+  {
+    "op": "replace",
+    "path": "/items/d2/config/toRoom",
+    "value": "blacktooth18"
+  },
+  {
+    "op": "replace",
+    "path": "/items/d2/config/direction",
+    "value": "left"
+  },
+  {
+    "op": "replace",
+    "path": "/items/d/position/y",
+    "value": 2
+  },
+  {
+    "op": "replace",
+    "path": "/items/d/position/x",
+    "value": 0
+  },
+  {
+    "op": "replace",
+    "path": "/items/d/config/toRoom",
+    "value": "blacktooth16"
+  },
+  {
+    "op": "replace",
+    "path": "/items/d/config/direction",
+    "value": "right"
+  },
+  {
+    "op": "add",
+    "path": "/items/b",
+    "value": {
+      "config": {
+        "style": "organic",
+        "times": {
+          "y": 2
+        }
+      },
+      "position": {
+        "x": 1,
+        "y": 2,
+        "z": 0
+      },
+      "type": "block"
+    }
+  },
+  {
+    "op": "add",
+    "path": "/items/f1",
     "value": {
       "config": {
         "floorType": "standable",

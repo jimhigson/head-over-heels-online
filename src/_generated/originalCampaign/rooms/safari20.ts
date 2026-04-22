@@ -6,7 +6,7 @@ export const room = inferRoomJson({
   color: { hue: "cyan", shade: "dimmed" },
   id: "safari20",
   items: {
-    "door@0,3,0": {
+    d: {
       config: {
         direction: "right",
         meta: { toSubRoom: "left" },
@@ -15,17 +15,17 @@ export const room = inferRoomJson({
       position: { x: 0, y: 3, z: 0 },
       type: "door",
     },
-    "door@1,8,0": {
+    d1: {
       config: { direction: "away", toRoom: "safari22" },
       position: { x: 1, y: 8, z: 0 },
       type: "door",
     },
-    "door@4,3,0": {
+    d2: {
       config: { direction: "left", toRoom: "safari21" },
       position: { x: 4, y: 3, z: 0 },
       type: "door",
     },
-    "floor@0,0,0": {
+    f: {
       config: {
         floorType: "standable",
         scenery: "safari",
@@ -34,37 +34,37 @@ export const room = inferRoomJson({
       position: { x: 0, y: 0, z: 0 },
       type: "floor",
     },
-    "wall(right)@0,0,0": {
+    w: {
       config: { direction: "right", times: { y: 3 } },
       position: { x: 0, y: 0, z: 0 },
       type: "wall",
     },
-    "wall(towards)@0,0,0": {
+    w1: {
       config: { direction: "towards", times: { x: 4 } },
       position: { x: 0, y: 0, z: 0 },
       type: "wall",
     },
-    "wall@0,5,0": {
+    w2: {
       config: { direction: "right", times: { y: 3 } },
       position: { x: 0, y: 5, z: 0 },
       type: "wall",
     },
-    "wall@0,8,0": {
+    w3: {
       config: { direction: "away", tiles: ["wall"] },
       position: { x: 0, y: 8, z: 0 },
       type: "wall",
     },
-    "wall@3,8,0": {
+    w4: {
       config: { direction: "away", tiles: ["wall"] },
       position: { x: 3, y: 8, z: 0 },
       type: "wall",
     },
-    "wall@4,0,0": {
+    w5: {
       config: { direction: "left", tiles: ["wall", "shield", "wall"] },
       position: { x: 4, y: 0, z: 0 },
       type: "wall",
     },
-    "wall@4,5,0": {
+    w6: {
       config: { direction: "left", tiles: ["wall", "window", "wall"] },
       position: { x: 4, y: 5, z: 0 },
       type: "wall",

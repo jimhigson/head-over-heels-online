@@ -6,37 +6,37 @@ export const room = inferRoomJson({
   color: { hue: "white", shade: "dimmed" },
   id: "penitentiary10",
   items: {
-    "block@0,4,0": {
+    b: {
       config: { style: "artificial" },
       position: { x: 0, y: 4, z: 0 },
       type: "block",
     },
-    "block@0,7,0": {
+    b1: {
       config: { style: "artificial", times: { x: 2 } },
       position: { x: 0, y: 7, z: 0 },
       type: "block",
     },
-    "door@0,8,2": {
+    d: {
       config: { direction: "away", toRoom: "penitentiary11" },
       position: { x: 0, y: 8, z: 2 },
       type: "door",
     },
-    "floor@0,0,0": {
+    f: {
       config: { floorType: "none", times: { x: 2, y: 8 } },
       position: { x: 0, y: 0, z: 0 },
       type: "floor",
     },
-    "wall(right)@0,0,0": {
+    w: {
       config: { direction: "right", times: { y: 8 } },
       position: { x: 0, y: 0, z: 0 },
       type: "wall",
     },
-    "wall(towards)@0,0,0": {
+    w1: {
       config: { direction: "towards", times: { x: 2 } },
       position: { x: 0, y: 0, z: 0 },
       type: "wall",
     },
-    "wall@2,0,0": {
+    w2: {
       config: {
         direction: "left",
         tiles: [

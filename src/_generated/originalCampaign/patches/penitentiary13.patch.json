@@ -1,43 +1,71 @@
 [
   {
     "op": "replace",
-    "path": "/items/wall@8,0,0/config/tiles/2",
+    "path": "/items/w4/config/tiles/2",
     "value": "skeleton"
   },
   {
     "op": "replace",
-    "path": "/items/wall@0,4,0/config/tiles/6",
+    "path": "/items/w2/config/tiles/6",
     "value": "skeleton"
   },
   {
     "op": "replace",
-    "path": "/items/wall@0,4,0/config/tiles/5",
+    "path": "/items/w2/config/tiles/5",
     "value": "loop"
   },
   {
     "op": "replace",
-    "path": "/items/wall@0,4,0/config/tiles/2",
+    "path": "/items/w2/config/tiles/2",
     "value": "loop"
   },
   {
     "op": "replace",
-    "path": "/items/wall@0,4,0/config/tiles/0",
+    "path": "/items/w2/config/tiles/0",
     "value": "skeleton"
   },
   {
     "op": "remove",
-    "path": "/items/block@1,0,1/config/times"
+    "path": "/items/w1/config/times/y"
   },
   {
     "op": "add",
-    "path": "/items/block@0,3,5/config/disappearing",
+    "path": "/items/w1/config/times/x",
+    "value": 3
+  },
+  {
+    "op": "replace",
+    "path": "/items/w1/config/direction",
+    "value": "towards"
+  },
+  {
+    "op": "remove",
+    "path": "/items/w/config/times/x"
+  },
+  {
+    "op": "add",
+    "path": "/items/w/config/times/y",
+    "value": 4
+  },
+  {
+    "op": "replace",
+    "path": "/items/w/config/direction",
+    "value": "right"
+  },
+  {
+    "op": "remove",
+    "path": "/items/b1/config/times"
+  },
+  {
+    "op": "add",
+    "path": "/items/b/config/disappearing",
     "value": {
       "on": "stand"
     }
   },
   {
     "op": "add",
-    "path": "/items/extra1",
+    "path": "/items/b8",
     "value": {
       "config": {
         "style": "artificial"
@@ -52,7 +80,7 @@
   },
   {
     "op": "add",
-    "path": "/items/secondOverToaster",
+    "path": "/items/b9",
     "value": {
       "config": {
         "disappearing": {

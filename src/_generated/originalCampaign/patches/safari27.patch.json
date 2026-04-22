@@ -1,7 +1,105 @@
 [
   {
+    "op": "remove",
+    "path": "/items/w1/config/times/y"
+  },
+  {
     "op": "add",
-    "path": "/items/door@0,2,4/config/meta",
+    "path": "/items/w1/config/times/x",
+    "value": 8
+  },
+  {
+    "op": "replace",
+    "path": "/items/w1/config/direction",
+    "value": "towards"
+  },
+  {
+    "op": "remove",
+    "path": "/items/w/config/times/x"
+  },
+  {
+    "op": "add",
+    "path": "/items/w/config/times/y",
+    "value": 2
+  },
+  {
+    "op": "replace",
+    "path": "/items/w/config/direction",
+    "value": "right"
+  },
+  {
+    "op": "replace",
+    "path": "/items/m2/position/y",
+    "value": 3
+  },
+  {
+    "op": "replace",
+    "path": "/items/m2/config/which",
+    "value": "elephant"
+  },
+  {
+    "op": "replace",
+    "path": "/items/m2/config/movement",
+    "value": "patrol-randomly-xy4"
+  },
+  {
+    "op": "replace",
+    "path": "/items/m1/position/y",
+    "value": 2
+  },
+  {
+    "op": "replace",
+    "path": "/items/m1/position/x",
+    "value": 4
+  },
+  {
+    "op": "replace",
+    "path": "/items/m/position/x",
+    "value": 3
+  },
+  {
+    "op": "replace",
+    "path": "/items/m/config/which",
+    "value": "helicopterBug"
+  },
+  {
+    "op": "replace",
+    "path": "/items/m/config/movement",
+    "value": "patrol-randomly-xy8"
+  },
+  {
+    "op": "replace",
+    "path": "/items/d1/position/x",
+    "value": 8
+  },
+  {
+    "op": "replace",
+    "path": "/items/d1/config/toRoom",
+    "value": "safari28"
+  },
+  {
+    "op": "replace",
+    "path": "/items/d1/config/direction",
+    "value": "left"
+  },
+  {
+    "op": "replace",
+    "path": "/items/d/position/x",
+    "value": 0
+  },
+  {
+    "op": "replace",
+    "path": "/items/d/config/toRoom",
+    "value": "safari26"
+  },
+  {
+    "op": "replace",
+    "path": "/items/d/config/direction",
+    "value": "right"
+  },
+  {
+    "op": "add",
+    "path": "/items/d/config/meta",
     "value": {
       "toSubRoom": "right"
     }

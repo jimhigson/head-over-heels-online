@@ -1,13 +1,13 @@
 {
   "$schema": "../../room.schema.json",
-  "id": "switch_room",
+  "id": "blacktooth0switches",
   "planet": "jail",
   "color": {
     "hue": "cyan",
     "shade": "basic"
   },
   "items": {
-    "floor": {
+    "f": {
       "type": "floor",
       "config": {
         "floorType": "standable",
@@ -23,7 +23,7 @@
         "z": 0
       }
     },
-    "towardsWall": {
+    "w": {
       "type": "wall",
       "config": {
         "direction": "towards",
@@ -37,7 +37,7 @@
         "z": 0
       }
     },
-    "rightWall/beforeDoor": {
+    "w1": {
       "type": "wall",
       "config": {
         "direction": "right",
@@ -51,7 +51,7 @@
         "z": 0
       }
     },
-    "rightWall/afterDoor": {
+    "w2": {
       "type": "wall",
       "config": {
         "direction": "right",
@@ -65,7 +65,7 @@
         "z": 0
       }
     },
-    "awayWall": {
+    "w3": {
       "type": "wall",
       "config": {
         "direction": "away",
@@ -77,7 +77,7 @@
         "z": 0
       }
     },
-    "leftWall": {
+    "w4": {
       "type": "wall",
       "config": {
         "direction": "left",
@@ -89,7 +89,7 @@
         "z": 0
       }
     },
-    "block": {
+    "b": {
       "type": "block",
       "config": {
         "style": "artificial",
@@ -104,7 +104,7 @@
         "z": 0
       }
     },
-    "changeSpritesheet": {
+    "bu": {
       "type": "button",
       "config": {
         "type": "in-store",
@@ -116,7 +116,7 @@
         "z": 1
       }
     },
-    "crtSwitch": {
+    "sw": {
       "type": "switch",
       "config": {
         "initialSetting": "left",
@@ -140,7 +140,7 @@
           "",
           "Rest assured the effects are entirely harmless. Most subjects adapt to the loss of black outlines within a week or two.",
           "",
-          "*Step on the button to cycle the castle\u2019s visual rendering*. The Emperor grew tired of the monochrome decor after thirty-eight years and commissioned a colourised renovation from some enthusiast on the internet, who for reasons best known to himself spent the last year painstakingly remaking our castle.",
+          "*Step on the button to cycle the castle’s visual rendering*. The Emperor grew tired of the monochrome decor after thirty-eight years and commissioned a colourised renovation from some enthusiast on the internet, who for reasons best known to himself spent the last year painstakingly remaking our castle.",
           "",
           "The second setting restores the *original monochrome look*, for those minions who prefer squinting at things the old-fashioned way.",
           "",
@@ -160,7 +160,7 @@
         "z": 3
       }
     },
-    "door": {
+    "d": {
       "type": "door",
       "config": {
         "direction": "right",

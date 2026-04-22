@@ -6,17 +6,17 @@ export const room = inferRoomJson({
   color: { hue: "white", shade: "basic" },
   id: "blacktooth41",
   items: {
-    "door@0,0,0": {
+    d: {
       config: { direction: "right", toRoom: "blacktooth39" },
       position: { x: 0, y: 0, z: 0 },
       type: "door",
     },
-    "door@8,0,0": {
+    d1: {
       config: { direction: "left", toRoom: "blacktooth42" },
       position: { x: 8, y: 0, z: 0 },
       type: "door",
     },
-    "floor@0,0,0": {
+    f: {
       config: {
         floorType: "standable",
         scenery: "blacktooth",
@@ -25,12 +25,12 @@ export const room = inferRoomJson({
       position: { x: 0, y: 0, z: 0 },
       type: "floor",
     },
-    "wall@0,0,0": {
+    w: {
       config: { direction: "towards", times: { x: 8 } },
       position: { x: 0, y: 0, z: 0 },
       type: "wall",
     },
-    "wall@0,2,0": {
+    w1: {
       config: {
         direction: "away",
         tiles: [

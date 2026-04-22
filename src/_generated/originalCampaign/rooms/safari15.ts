@@ -6,32 +6,37 @@ export const room = inferRoomJson({
   color: { hue: "white", shade: "dimmed" },
   id: "safari15",
   items: {
-    "deadlyBlock@3,2,0": {
-      config: { style: "volcano" },
-      position: { x: 3, y: 2, z: 0 },
-      type: "deadlyBlock",
+    br: {
+      config: { axis: "x" },
+      position: { x: 1, y: 9, z: 0 },
+      type: "barrier",
     },
-    "deadlyBlock@3,4,0": {
-      config: { style: "volcano" },
-      position: { x: 3, y: 4, z: 0 },
-      type: "deadlyBlock",
-    },
-    "deadlyBlock@3,6,0": {
-      config: { style: "volcano" },
-      position: { x: 3, y: 6, z: 0 },
-      type: "deadlyBlock",
-    },
-    "door@1,0,0": {
+    d: {
       config: { direction: "towards", toRoom: "safari13" },
       position: { x: 1, y: 0, z: 0 },
       type: "door",
     },
-    "door@1,16,0": {
+    d1: {
       config: { direction: "away", toRoom: "safari16" },
       position: { x: 1, y: 16, z: 0 },
       type: "door",
     },
-    "floor@0,0,0": {
+    db: {
+      config: { style: "volcano" },
+      position: { x: 3, y: 2, z: 0 },
+      type: "deadlyBlock",
+    },
+    db1: {
+      config: { style: "volcano" },
+      position: { x: 3, y: 4, z: 0 },
+      type: "deadlyBlock",
+    },
+    db2: {
+      config: { style: "volcano" },
+      position: { x: 3, y: 6, z: 0 },
+      type: "deadlyBlock",
+    },
+    f: {
       config: {
         floorType: "standable",
         scenery: "safari",
@@ -40,7 +45,7 @@ export const room = inferRoomJson({
       position: { x: 0, y: 0, z: 0 },
       type: "floor",
     },
-    "monster@0,6,0": {
+    m: {
       config: {
         activated: "on",
         movement: "back-forth",
@@ -51,7 +56,7 @@ export const room = inferRoomJson({
       position: { x: 0, y: 6, z: 0 },
       type: "monster",
     },
-    "monster@1,4,0": {
+    m1: {
       config: {
         activated: "on",
         movement: "back-forth",
@@ -62,7 +67,7 @@ export const room = inferRoomJson({
       position: { x: 1, y: 4, z: 0 },
       type: "monster",
     },
-    "monster@2,12,1": {
+    m2: {
       config: {
         activated: "on",
         movement: "patrol-randomly-diagonal",
@@ -71,7 +76,7 @@ export const room = inferRoomJson({
       position: { x: 2, y: 12, z: 1 },
       type: "monster",
     },
-    "monster@2,2,0": {
+    m3: {
       config: {
         activated: "on",
         movement: "back-forth",
@@ -82,72 +87,39 @@ export const room = inferRoomJson({
       position: { x: 2, y: 2, z: 0 },
       type: "monster",
     },
-    monsterpen: {
-      config: { axis: "x" },
-      position: { x: 1, y: 9, z: 0 },
-      type: "barrier",
-    },
-    "spikes@0,13,0": {
-      config: {},
-      position: { x: 0, y: 13, z: 0 },
-      type: "spikes",
-    },
-    "spikes@0,9,0": {
-      config: {},
-      position: { x: 0, y: 9, z: 0 },
-      type: "spikes",
-    },
-    "spikes@1,11,0": {
-      config: {},
-      position: { x: 1, y: 11, z: 0 },
-      type: "spikes",
-    },
-    "spikes@2,12,0": {
-      config: {},
-      position: { x: 2, y: 12, z: 0 },
-      type: "spikes",
-    },
-    "spikes@2,9,0": {
-      config: {},
-      position: { x: 2, y: 9, z: 0 },
-      type: "spikes",
-    },
-    "spikes@3,10,0": {
-      config: {},
-      position: { x: 3, y: 10, z: 0 },
-      type: "spikes",
-    },
-    "spikes@3,14,0": {
-      config: {},
-      position: { x: 3, y: 14, z: 0 },
-      type: "spikes",
-    },
-    "wall(right)@0,0,0": {
+    sk: { config: {}, position: { x: 0, y: 13, z: 0 }, type: "spikes" },
+    sk1: { config: {}, position: { x: 0, y: 9, z: 0 }, type: "spikes" },
+    sk2: { config: {}, position: { x: 1, y: 11, z: 0 }, type: "spikes" },
+    sk3: { config: {}, position: { x: 2, y: 12, z: 0 }, type: "spikes" },
+    sk4: { config: {}, position: { x: 2, y: 9, z: 0 }, type: "spikes" },
+    sk5: { config: {}, position: { x: 3, y: 10, z: 0 }, type: "spikes" },
+    sk6: { config: {}, position: { x: 3, y: 14, z: 0 }, type: "spikes" },
+    w: {
       config: { direction: "right", times: { y: 16 } },
       position: { x: 0, y: 0, z: 0 },
       type: "wall",
     },
-    "wall(towards)@0,0,0": {
+    w1: {
       config: { direction: "towards" },
       position: { x: 0, y: 0, z: 0 },
       type: "wall",
     },
-    "wall@0,16,0": {
+    w2: {
       config: { direction: "away", tiles: ["wall"] },
       position: { x: 0, y: 16, z: 0 },
       type: "wall",
     },
-    "wall@3,0,0": {
+    w3: {
       config: { direction: "towards" },
       position: { x: 3, y: 0, z: 0 },
       type: "wall",
     },
-    "wall@3,16,0": {
+    w4: {
       config: { direction: "away", tiles: ["wall"] },
       position: { x: 3, y: 16, z: 0 },
       type: "wall",
     },
-    "wall@4,0,0": {
+    w5: {
       config: {
         direction: "left",
         tiles: [

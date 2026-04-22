@@ -7,67 +7,67 @@ export const room = inferRoomJson({
   height: 11,
   id: "egyptus19",
   items: {
-    "barrier@7,3,2": {
-      config: { axis: "y" },
-      position: { x: 7, y: 3, z: 2 },
-      type: "barrier",
-    },
-    "barrier@7,3,4": {
-      config: { axis: "y" },
-      position: { x: 7, y: 3, z: 4 },
-      type: "barrier",
-    },
-    "barrier@7,3,6": {
-      config: { axis: "y" },
-      position: { x: 7, y: 3, z: 6 },
-      type: "barrier",
-    },
-    "block@0,7,0": {
+    b: {
       config: { style: "organic" },
       position: { x: 0, y: 9, z: 0 },
       type: "block",
     },
-    "block@2,7,1": {
+    b1: {
       config: { style: "organic" },
       position: { x: 2, y: 9, z: 1 },
       type: "block",
     },
-    "block@4,7,2": {
+    b2: {
       config: { style: "organic" },
       position: { x: 4, y: 9, z: 2 },
       type: "block",
     },
-    "block@7,0,7": {
+    b3: {
       config: { style: "organic" },
       position: { x: 7, y: 0, z: 7 },
       type: "block",
     },
-    "block@7,1,0": {
+    b4: {
       config: { style: "organic" },
       position: { x: 7, y: 1, z: 0 },
       type: "block",
     },
-    "floor@0,0,0": {
+    br: {
+      config: { axis: "y" },
+      position: { x: 7, y: 3, z: 2 },
+      type: "barrier",
+    },
+    br1: {
+      config: { axis: "y" },
+      position: { x: 7, y: 3, z: 4 },
+      type: "barrier",
+    },
+    br2: {
+      config: { axis: "y" },
+      position: { x: 7, y: 3, z: 6 },
+      type: "barrier",
+    },
+    f: {
       config: { floorType: "none", times: { x: 8, y: 10 } },
       position: { x: 0, y: 0, z: 0 },
       type: "floor",
     },
-    "lift@5,7,0": {
+    l: {
       config: { bottom: 0, top: 11 },
       position: { x: 5, y: 9, z: 0 },
       type: "lift",
     },
-    "wall(right)@0,0,0": {
+    w: {
       config: { direction: "right", times: { y: 10 } },
       position: { x: 0, y: 0, z: 0 },
       type: "wall",
     },
-    "wall(towards)@0,0,0": {
+    w1: {
       config: { direction: "towards", times: { x: 8 } },
       position: { x: 0, y: 0, z: 0 },
       type: "wall",
     },
-    "wall@0,8,0": {
+    w2: {
       config: {
         direction: "away",
         tiles: [
@@ -84,7 +84,7 @@ export const room = inferRoomJson({
       position: { x: 0, y: 10, z: 0 },
       type: "wall",
     },
-    "wall@8,0,0": {
+    w3: {
       config: {
         direction: "left",
         tiles: [

@@ -6,27 +6,27 @@ export const room = inferRoomJson({
   color: { hue: "magenta", shade: "basic" },
   id: "blacktooth5",
   items: {
-    "deadlyBlock@0,2,0": {
-      config: { style: "toaster", times: { x: 2 } },
-      position: { x: 0, y: 2, z: 0 },
-      type: "deadlyBlock",
-    },
-    "door@0,0,0": {
+    d: {
       config: { direction: "towards", toRoom: "blacktooth7" },
       position: { x: 0, y: 0, z: 0 },
       type: "door",
     },
-    "door@0,8,0": {
+    d1: {
       config: { direction: "away", toRoom: "blacktooth4" },
       position: { x: 0, y: 8, z: 0 },
       type: "door",
     },
-    "door@2,3,0": {
+    d2: {
       config: { direction: "left", toRoom: "blacktooth6" },
       position: { x: 2, y: 3, z: 0 },
       type: "door",
     },
-    "floor@0,0,0": {
+    db: {
+      config: { style: "toaster", times: { x: 2 } },
+      position: { x: 0, y: 2, z: 0 },
+      type: "deadlyBlock",
+    },
+    f: {
       config: {
         floorType: "standable",
         scenery: "blacktooth",
@@ -35,17 +35,17 @@ export const room = inferRoomJson({
       position: { x: 0, y: 0, z: 0 },
       type: "floor",
     },
-    "wall@0,0,0": {
+    w: {
       config: { direction: "right", times: { y: 8 } },
       position: { x: 0, y: 0, z: 0 },
       type: "wall",
     },
-    "wall@2,0,0": {
+    w1: {
       config: { direction: "left", tiles: ["plain", "shield", "plain"] },
       position: { x: 2, y: 0, z: 0 },
       type: "wall",
     },
-    "wall@2,5,0": {
+    w2: {
       config: { direction: "left", tiles: ["plain", "shield", "plain"] },
       position: { x: 2, y: 5, z: 0 },
       type: "wall",

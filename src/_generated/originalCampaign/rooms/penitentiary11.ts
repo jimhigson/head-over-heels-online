@@ -6,22 +6,22 @@ export const room = inferRoomJson({
   color: { hue: "yellow", shade: "dimmed" },
   id: "penitentiary11",
   items: {
-    "block@5,5,0": {
+    b: {
       config: { style: "artificial", times: { z: 3 } },
       position: { x: 5, y: 5, z: 0 },
       type: "block",
     },
-    "door@0,2,0": {
+    d: {
       config: { direction: "right", toRoom: "penitentiary12" },
       position: { x: 0, y: 2, z: 0 },
       type: "door",
     },
-    "door@2,0,0": {
+    d1: {
       config: { direction: "towards", toRoom: "penitentiary10" },
       position: { x: 2, y: 0, z: 0 },
       type: "door",
     },
-    "floor@0,0,0": {
+    f: {
       config: {
         floorType: "standable",
         scenery: "penitentiary",
@@ -30,27 +30,27 @@ export const room = inferRoomJson({
       position: { x: 0, y: 0, z: 0 },
       type: "floor",
     },
-    "moveableDeadly@5,5,3": {
+    md: {
       config: { style: "deadFish" },
       position: { x: 5, y: 5, z: 3 },
       type: "moveableDeadly",
     },
-    "wall(right)@0,0,0": {
+    w: {
       config: { direction: "right", times: { y: 2 } },
       position: { x: 0, y: 0, z: 0 },
       type: "wall",
     },
-    "wall(towards)@0,0,0": {
+    w1: {
       config: { direction: "towards", times: { x: 2 } },
       position: { x: 0, y: 0, z: 0 },
       type: "wall",
     },
-    "wall@0,4,0": {
+    w2: {
       config: { direction: "right", times: { y: 2 } },
       position: { x: 0, y: 4, z: 0 },
       type: "wall",
     },
-    "wall@0,6,0": {
+    w3: {
       config: {
         direction: "away",
         tiles: ["loop", "skeleton", "loop", "loop", "skeleton", "loop"],
@@ -58,12 +58,12 @@ export const room = inferRoomJson({
       position: { x: 0, y: 6, z: 0 },
       type: "wall",
     },
-    "wall@4,0,0": {
+    w4: {
       config: { direction: "towards", times: { x: 2 } },
       position: { x: 4, y: 0, z: 0 },
       type: "wall",
     },
-    "wall@6,0,0": {
+    w5: {
       config: {
         direction: "left",
         tiles: ["loop", "skeleton", "loop", "loop", "skeleton", "loop"],

@@ -6,12 +6,7 @@ export const room = inferRoomJson({
   color: { hue: "cyan", shade: "basic" },
   id: "moonbase34",
   items: {
-    "deadlyBlock@7,0,0": {
-      config: { style: "toaster", times: { y: 4 } },
-      position: { x: 7, y: 0, z: 0 },
-      type: "deadlyBlock",
-    },
-    "door@0,1,0": {
+    d: {
       config: {
         direction: "right",
         meta: { toSubRoom: "middle" },
@@ -20,12 +15,17 @@ export const room = inferRoomJson({
       position: { x: 0, y: 1, z: 0 },
       type: "door",
     },
-    "door@3,4,0": {
+    d1: {
       config: { direction: "away", toRoom: "moonbase35" },
       position: { x: 3, y: 4, z: 0 },
       type: "door",
     },
-    "floor@0,0,0": {
+    db: {
+      config: { style: "toaster", times: { y: 4 } },
+      position: { x: 7, y: 0, z: 0 },
+      type: "deadlyBlock",
+    },
+    f: {
       config: {
         floorType: "standable",
         scenery: "moonbase",
@@ -34,7 +34,7 @@ export const room = inferRoomJson({
       position: { x: 0, y: 0, z: 0 },
       type: "floor",
     },
-    "monster@7,0,1": {
+    m: {
       config: {
         activated: "after-player-near",
         movement: "towards-on-shortest-axis-xy4",
@@ -44,7 +44,7 @@ export const room = inferRoomJson({
       position: { x: 7, y: 0, z: 1 },
       type: "monster",
     },
-    "monster@7,1,1": {
+    m1: {
       config: {
         activated: "off",
         movement: "towards-on-shortest-axis-xy4",
@@ -54,7 +54,7 @@ export const room = inferRoomJson({
       position: { x: 7, y: 1, z: 1 },
       type: "monster",
     },
-    "monster@7,2,1": {
+    m2: {
       config: {
         activated: "off",
         movement: "towards-on-shortest-axis-xy4",
@@ -64,7 +64,7 @@ export const room = inferRoomJson({
       position: { x: 7, y: 2, z: 1 },
       type: "monster",
     },
-    "monster@7,3,1": {
+    m3: {
       config: {
         activated: "off",
         movement: "towards-on-shortest-axis-xy4",
@@ -74,32 +74,32 @@ export const room = inferRoomJson({
       position: { x: 7, y: 3, z: 1 },
       type: "monster",
     },
-    "wall(right)@0,0,0": {
+    w: {
       config: { direction: "right" },
       position: { x: 0, y: 0, z: 0 },
       type: "wall",
     },
-    "wall(towards)@0,0,0": {
+    w1: {
       config: { direction: "towards", times: { x: 8 } },
       position: { x: 0, y: 0, z: 0 },
       type: "wall",
     },
-    "wall@0,3,0": {
+    w2: {
       config: { direction: "right" },
       position: { x: 0, y: 3, z: 0 },
       type: "wall",
     },
-    "wall@0,4,0": {
+    w3: {
       config: { direction: "away", tiles: ["window3", "coil", "window2"] },
       position: { x: 0, y: 4, z: 0 },
       type: "wall",
     },
-    "wall@5,4,0": {
+    w4: {
       config: { direction: "away", tiles: ["window2", "coil", "window1"] },
       position: { x: 5, y: 4, z: 0 },
       type: "wall",
     },
-    "wall@8,0,0": {
+    w5: {
       config: {
         direction: "left",
         tiles: ["window2", "window3", "window1", "coil"],

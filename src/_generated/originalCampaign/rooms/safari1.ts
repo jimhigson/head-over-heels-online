@@ -6,12 +6,12 @@ export const room = inferRoomJson({
   color: { hue: "white", shade: "dimmed" },
   id: "safari1",
   items: {
-    "door@2,8,0": {
+    d: {
       config: { direction: "away", toRoom: "safari2" },
       position: { x: 2, y: 8, z: 0 },
       type: "door",
     },
-    "floor@0,0,0": {
+    f: {
       config: {
         floorType: "standable",
         scenery: "safari",
@@ -20,32 +20,32 @@ export const room = inferRoomJson({
       position: { x: 0, y: 0, z: 0 },
       type: "floor",
     },
-    "teleporter@2,3,0": {
+    t: {
       config: { times: { x: 2, y: 2 }, toRoom: "moonbase21tosafari" },
       position: { x: 2, y: 3, z: 0 },
       type: "teleporter",
     },
-    "wall(right)@0,0,0": {
+    w: {
       config: { direction: "right", times: { y: 8 } },
       position: { x: 0, y: 0, z: 0 },
       type: "wall",
     },
-    "wall(towards)@0,0,0": {
+    w1: {
       config: { direction: "towards", times: { x: 6 } },
       position: { x: 0, y: 0, z: 0 },
       type: "wall",
     },
-    "wall@0,8,0": {
+    w2: {
       config: { direction: "away", tiles: ["wall", "shield"] },
       position: { x: 0, y: 8, z: 0 },
       type: "wall",
     },
-    "wall@4,8,0": {
+    w3: {
       config: { direction: "away", tiles: ["shield", "wall"] },
       position: { x: 4, y: 8, z: 0 },
       type: "wall",
     },
-    "wall@6,0,0": {
+    w4: {
       config: {
         direction: "left",
         tiles: [

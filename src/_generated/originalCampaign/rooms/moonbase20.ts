@@ -6,32 +6,27 @@ export const room = inferRoomJson({
   color: { hue: "cyan", shade: "dimmed" },
   id: "moonbase20",
   items: {
-    crownsScroll: {
-      config: { gives: "scroll", page: "crowns", source: "manual" },
-      position: { x: 5, y: 3.5, z: 1 },
-      type: "pickup",
-    },
-    "door@0,3,0": {
+    d: {
       config: { direction: "right", toRoom: "moonbase19" },
       position: { x: 0, y: 3, z: 0 },
       type: "door",
     },
-    "door@3,0,0": {
+    d1: {
       config: { direction: "towards", toRoom: "moonbase22topenitentiary" },
       position: { x: 3, y: 0, z: 0 },
       type: "door",
     },
-    "door@3,8,0": {
+    d2: {
       config: { direction: "away", toRoom: "moonbase21tosafari" },
       position: { x: 3, y: 8, z: 0 },
       type: "door",
     },
-    "door@8,3,0": {
+    d3: {
       config: { direction: "left", toRoom: "moonbase23" },
       position: { x: 8, y: 3, z: 0 },
       type: "door",
     },
-    "floor@0,0,0": {
+    f: {
       config: {
         floorType: "standable",
         scenery: "moonbase",
@@ -40,92 +35,97 @@ export const room = inferRoomJson({
       position: { x: 0, y: 0, z: 0 },
       type: "floor",
     },
-    "slidingBlock@1,4,0": {
+    pi: {
+      config: { gives: "scroll", page: "crowns", source: "manual" },
+      position: { x: 5, y: 3.5, z: 1 },
+      type: "pickup",
+    },
+    sb: {
       config: { style: "puck" },
       position: { x: 1, y: 3.5, z: 0 },
       type: "slidingBlock",
     },
-    "slidingBlock@2,4,0": {
+    sb1: {
       config: { style: "puck" },
       position: { x: 2, y: 3.5, z: 0 },
       type: "slidingBlock",
     },
-    "slidingBlock@3,4,0": {
+    sb2: {
       config: { style: "puck" },
       position: { x: 3, y: 3.5, z: 0 },
       type: "slidingBlock",
     },
-    "slidingBlock@4,2,0": {
+    sb3: {
       config: { style: "puck" },
       position: { x: 4, y: 1.5, z: 0 },
       type: "slidingBlock",
     },
-    "slidingBlock@4,4,0": {
+    sb4: {
       config: { style: "puck" },
       position: { x: 4, y: 3.5, z: 0 },
       type: "slidingBlock",
     },
-    "slidingBlock@4,6,0": {
+    sb5: {
       config: { style: "puck" },
       position: { x: 4, y: 5.5, z: 0 },
       type: "slidingBlock",
     },
-    "slidingBlock@5,3,0": {
+    sb6: {
       config: { style: "puck" },
       position: { x: 5, y: 2.5, z: 0 },
       type: "slidingBlock",
     },
-    "slidingBlock@5,4,0": {
+    sb7: {
       config: { style: "puck" },
       position: { x: 5, y: 3.5, z: 0 },
       type: "slidingBlock",
     },
-    "slidingBlock@5,5,0": {
+    sb8: {
       config: { style: "puck" },
       position: { x: 5, y: 4.5, z: 0 },
       type: "slidingBlock",
     },
-    "slidingBlock@6,4,0": {
+    sb9: {
       config: { style: "puck" },
       position: { x: 6, y: 3.5, z: 0 },
       type: "slidingBlock",
     },
-    "wall(right)@0,0,0": {
+    w: {
       config: { direction: "right", times: { y: 3 } },
       position: { x: 0, y: 0, z: 0 },
       type: "wall",
     },
-    "wall(towards)@0,0,0": {
+    w1: {
       config: { direction: "towards", times: { x: 3 } },
       position: { x: 0, y: 0, z: 0 },
       type: "wall",
     },
-    "wall@0,5,0": {
+    w2: {
       config: { direction: "right", times: { y: 3 } },
       position: { x: 0, y: 5, z: 0 },
       type: "wall",
     },
-    "wall@0,8,0": {
+    w3: {
       config: { direction: "away", tiles: ["window3", "coil", "window2"] },
       position: { x: 0, y: 8, z: 0 },
       type: "wall",
     },
-    "wall@5,0,0": {
+    w4: {
       config: { direction: "towards", times: { x: 3 } },
       position: { x: 5, y: 0, z: 0 },
       type: "wall",
     },
-    "wall@5,8,0": {
+    w5: {
       config: { direction: "away", tiles: ["window2", "coil", "window1"] },
       position: { x: 5, y: 8, z: 0 },
       type: "wall",
     },
-    "wall@8,0,0": {
+    w6: {
       config: { direction: "left", tiles: ["window3", "coil", "window2"] },
       position: { x: 8, y: 0, z: 0 },
       type: "wall",
     },
-    "wall@8,5,0": {
+    w7: {
       config: { direction: "left", tiles: ["window2", "coil", "window1"] },
       position: { x: 8, y: 5, z: 0 },
       type: "wall",

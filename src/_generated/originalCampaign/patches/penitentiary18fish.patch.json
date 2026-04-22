@@ -1,30 +1,124 @@
 [
   {
-    "op": "remove",
-    "path": "/items/teleporter@15,4,4/config/toPosition"
+    "op": "replace",
+    "path": "/items/w5/position/y",
+    "value": 0
+  },
+  {
+    "op": "replace",
+    "path": "/items/w5/position/x",
+    "value": 5
   },
   {
     "op": "remove",
-    "path": "/items/teleporter@0,4,4/config/toPosition"
+    "path": "/items/w5/config/tiles"
+  },
+  {
+    "op": "replace",
+    "path": "/items/w5/config/direction",
+    "value": "towards"
   },
   {
     "op": "add",
-    "path": "/items/extraShield",
+    "path": "/items/w5/config/times",
     "value": {
-      "config": {
-        "gives": "shield"
-      },
-      "position": {
-        "x": 15,
-        "y": 5,
-        "z": 3
-      },
-      "type": "pickup"
+      "x": 11
     }
   },
   {
+    "op": "replace",
+    "path": "/items/w4/position/y",
+    "value": 4
+  },
+  {
+    "op": "replace",
+    "path": "/items/w3/position/x",
+    "value": 16
+  },
+  {
+    "op": "remove",
+    "path": "/items/w3/config/times"
+  },
+  {
+    "op": "replace",
+    "path": "/items/w3/config/direction",
+    "value": "left"
+  },
+  {
     "op": "add",
-    "path": "/items/supportTowers0",
+    "path": "/items/w3/config/tiles",
+    "value": ["loop", "loop"]
+  },
+  {
+    "op": "remove",
+    "path": "/items/w1/config/times/y"
+  },
+  {
+    "op": "add",
+    "path": "/items/w1/config/times/x",
+    "value": 3
+  },
+  {
+    "op": "replace",
+    "path": "/items/w1/config/direction",
+    "value": "towards"
+  },
+  {
+    "op": "remove",
+    "path": "/items/w/config/times/x"
+  },
+  {
+    "op": "add",
+    "path": "/items/w/config/times/y",
+    "value": 6
+  },
+  {
+    "op": "replace",
+    "path": "/items/w/config/direction",
+    "value": "right"
+  },
+  {
+    "op": "remove",
+    "path": "/items/t1/config/toPosition"
+  },
+  {
+    "op": "remove",
+    "path": "/items/t/config/toPosition"
+  },
+  {
+    "op": "replace",
+    "path": "/items/b4/position/x",
+    "value": 7
+  },
+  {
+    "op": "add",
+    "path": "/items/b4/config/times",
+    "value": {
+      "x": 7
+    }
+  },
+  {
+    "op": "replace",
+    "path": "/items/b3/position/x",
+    "value": 6
+  },
+  {
+    "op": "replace",
+    "path": "/items/b2/position/x",
+    "value": 15
+  },
+  {
+    "op": "remove",
+    "path": "/items/b2/config/times"
+  },
+  {
+    "op": "replace",
+    "path": "/items/b1/position/x",
+    "value": 14
+  },
+  {
+    "op": "add",
+    "path": "/items/b5",
     "value": {
       "config": {
         "style": "tower",
@@ -43,7 +137,7 @@
   },
   {
     "op": "add",
-    "path": "/items/supportTowers1",
+    "path": "/items/b6",
     "value": {
       "config": {
         "style": "tower",
@@ -62,7 +156,7 @@
   },
   {
     "op": "add",
-    "path": "/items/supportTowers2",
+    "path": "/items/b7",
     "value": {
       "config": {
         "style": "tower",
@@ -77,6 +171,21 @@
         "z": 0
       },
       "type": "block"
+    }
+  },
+  {
+    "op": "add",
+    "path": "/items/pi1",
+    "value": {
+      "config": {
+        "gives": "shield"
+      },
+      "position": {
+        "x": 15,
+        "y": 5,
+        "z": 3
+      },
+      "type": "pickup"
     }
   },
   {

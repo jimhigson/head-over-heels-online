@@ -1,57 +1,205 @@
 [
   {
+    "op": "remove",
+    "path": "/items/w1/config/times/y"
+  },
+  {
+    "op": "add",
+    "path": "/items/w1/config/times/x",
+    "value": 3
+  },
+  {
     "op": "replace",
-    "path": "/items/slidingBlock@6,4,0/position/y",
+    "path": "/items/w1/config/direction",
+    "value": "towards"
+  },
+  {
+    "op": "remove",
+    "path": "/items/w/config/times/x"
+  },
+  {
+    "op": "add",
+    "path": "/items/w/config/times/y",
+    "value": 3
+  },
+  {
+    "op": "replace",
+    "path": "/items/w/config/direction",
+    "value": "right"
+  },
+  {
+    "op": "replace",
+    "path": "/items/sb9/position/y",
     "value": 3.5
   },
   {
     "op": "replace",
-    "path": "/items/slidingBlock@5,5,0/position/y",
+    "path": "/items/sb9/position/x",
+    "value": 6
+  },
+  {
+    "op": "replace",
+    "path": "/items/sb8/position/y",
     "value": 4.5
   },
   {
     "op": "replace",
-    "path": "/items/slidingBlock@5,4,0/position/y",
+    "path": "/items/sb7/position/y",
     "value": 3.5
   },
   {
     "op": "replace",
-    "path": "/items/slidingBlock@5,3,0/position/y",
+    "path": "/items/sb7/position/x",
+    "value": 5
+  },
+  {
+    "op": "replace",
+    "path": "/items/sb6/position/y",
     "value": 2.5
   },
   {
     "op": "replace",
-    "path": "/items/slidingBlock@4,6,0/position/y",
+    "path": "/items/sb6/position/x",
+    "value": 5
+  },
+  {
+    "op": "replace",
+    "path": "/items/sb5/position/y",
     "value": 5.5
   },
   {
     "op": "replace",
-    "path": "/items/slidingBlock@4,4,0/position/y",
+    "path": "/items/sb5/position/x",
+    "value": 4
+  },
+  {
+    "op": "replace",
+    "path": "/items/sb4/position/y",
     "value": 3.5
   },
   {
     "op": "replace",
-    "path": "/items/slidingBlock@4,2,0/position/y",
+    "path": "/items/sb3/position/y",
     "value": 1.5
   },
   {
     "op": "replace",
-    "path": "/items/slidingBlock@3,4,0/position/y",
+    "path": "/items/sb3/position/x",
+    "value": 4
+  },
+  {
+    "op": "replace",
+    "path": "/items/sb2/position/y",
     "value": 3.5
   },
   {
     "op": "replace",
-    "path": "/items/slidingBlock@2,4,0/position/y",
+    "path": "/items/sb2/position/x",
+    "value": 3
+  },
+  {
+    "op": "replace",
+    "path": "/items/sb1/position/y",
     "value": 3.5
   },
   {
     "op": "replace",
-    "path": "/items/slidingBlock@1,4,0/position/y",
+    "path": "/items/sb1/position/x",
+    "value": 2
+  },
+  {
+    "op": "replace",
+    "path": "/items/sb/position/y",
     "value": 3.5
+  },
+  {
+    "op": "replace",
+    "path": "/items/sb/position/x",
+    "value": 1
+  },
+  {
+    "op": "replace",
+    "path": "/items/d3/position/y",
+    "value": 3
+  },
+  {
+    "op": "replace",
+    "path": "/items/d3/position/x",
+    "value": 8
+  },
+  {
+    "op": "replace",
+    "path": "/items/d3/config/toRoom",
+    "value": "moonbase23"
+  },
+  {
+    "op": "replace",
+    "path": "/items/d3/config/direction",
+    "value": "left"
+  },
+  {
+    "op": "replace",
+    "path": "/items/d2/position/y",
+    "value": 8
+  },
+  {
+    "op": "replace",
+    "path": "/items/d2/position/x",
+    "value": 3
+  },
+  {
+    "op": "replace",
+    "path": "/items/d2/config/toRoom",
+    "value": "moonbase21tosafari"
+  },
+  {
+    "op": "replace",
+    "path": "/items/d2/config/direction",
+    "value": "away"
+  },
+  {
+    "op": "replace",
+    "path": "/items/d1/position/y",
+    "value": 0
+  },
+  {
+    "op": "replace",
+    "path": "/items/d1/position/x",
+    "value": 3
+  },
+  {
+    "op": "replace",
+    "path": "/items/d1/config/toRoom",
+    "value": "moonbase22topenitentiary"
+  },
+  {
+    "op": "replace",
+    "path": "/items/d1/config/direction",
+    "value": "towards"
+  },
+  {
+    "op": "replace",
+    "path": "/items/d/position/y",
+    "value": 3
+  },
+  {
+    "op": "replace",
+    "path": "/items/d/position/x",
+    "value": 0
+  },
+  {
+    "op": "replace",
+    "path": "/items/d/config/toRoom",
+    "value": "moonbase19"
+  },
+  {
+    "op": "replace",
+    "path": "/items/d/config/direction",
+    "value": "right"
   },
   {
     "op": "add",
-    "path": "/items/crownsScroll",
+    "path": "/items/pi",
     "value": {
       "config": {
         "gives": "scroll",

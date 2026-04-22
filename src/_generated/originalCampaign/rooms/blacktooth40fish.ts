@@ -6,107 +6,107 @@ export const room = inferRoomJson({
   color: { hue: "cyan", shade: "basic" },
   id: "blacktooth40fish",
   items: {
-    "block@2,0,0": {
+    b: {
       config: { style: "organic", times: { x: 2 } },
       position: { x: 2, y: 0, z: 0 },
       type: "block",
     },
-    "block@3,15,0": {
+    b1: {
       config: { style: "organic", times: { x: 3 } },
       position: { x: 3, y: 15, z: 0 },
       type: "block",
     },
-    "conveyor@0,1,0": {
+    co: {
       config: { direction: "left" },
       position: { x: 0, y: 1, z: 0 },
       type: "conveyor",
     },
-    "conveyor@0,10,0": {
+    co1: {
       config: { direction: "away" },
       position: { x: 0, y: 10, z: 0 },
       type: "conveyor",
     },
-    "conveyor@0,12,0": {
-      config: { direction: "left" },
-      position: { x: 0, y: 12, z: 0 },
-      type: "conveyor",
-    },
-    "conveyor@0,14,0": {
-      config: { direction: "left", times: { x: 4 } },
-      position: { x: 0, y: 14, z: 0 },
-      type: "conveyor",
-    },
-    "conveyor@0,3,0": {
-      config: { direction: "left" },
-      position: { x: 0, y: 3, z: 0 },
-      type: "conveyor",
-    },
-    "conveyor@0,4,0": {
-      config: { direction: "right" },
-      position: { x: 0, y: 4, z: 0 },
-      type: "conveyor",
-    },
-    "conveyor@2,1,0": {
-      config: { direction: "right" },
-      position: { x: 2, y: 1, z: 0 },
-      type: "conveyor",
-    },
-    "conveyor@2,10,0": {
-      config: { direction: "left" },
-      position: { x: 2, y: 10, z: 0 },
-      type: "conveyor",
-    },
-    "conveyor@2,4,0": {
-      config: { direction: "right" },
-      position: { x: 2, y: 4, z: 0 },
-      type: "conveyor",
-    },
-    "conveyor@4,10,0": {
-      config: { direction: "left" },
-      position: { x: 4, y: 10, z: 0 },
-      type: "conveyor",
-    },
-    "conveyor@4,4,0": {
+    co10: {
       config: { direction: "away", times: { y: 6 } },
       position: { x: 4, y: 4, z: 0 },
       type: "conveyor",
     },
-    "door@2,0,1": {
+    co2: {
+      config: { direction: "left" },
+      position: { x: 0, y: 12, z: 0 },
+      type: "conveyor",
+    },
+    co3: {
+      config: { direction: "left", times: { x: 4 } },
+      position: { x: 0, y: 14, z: 0 },
+      type: "conveyor",
+    },
+    co4: {
+      config: { direction: "left" },
+      position: { x: 0, y: 3, z: 0 },
+      type: "conveyor",
+    },
+    co5: {
+      config: { direction: "right" },
+      position: { x: 0, y: 4, z: 0 },
+      type: "conveyor",
+    },
+    co6: {
+      config: { direction: "right" },
+      position: { x: 2, y: 1, z: 0 },
+      type: "conveyor",
+    },
+    co7: {
+      config: { direction: "left" },
+      position: { x: 2, y: 10, z: 0 },
+      type: "conveyor",
+    },
+    co8: {
+      config: { direction: "right" },
+      position: { x: 2, y: 4, z: 0 },
+      type: "conveyor",
+    },
+    co9: {
+      config: { direction: "left" },
+      position: { x: 4, y: 10, z: 0 },
+      type: "conveyor",
+    },
+    d: {
       config: { direction: "towards", toRoom: "blacktooth39" },
       position: { x: 2, y: 0, z: 1 },
       type: "door",
     },
-    "floor@0,0,0": {
+    f: {
       config: { floorType: "deadly", times: { x: 6, y: 16 } },
       position: { x: 0, y: 0, z: 0 },
       type: "floor",
     },
-    "pickup@3,15,1": {
+    pi: {
       config: { gives: "extra-life" },
       position: { x: 3, y: 15, z: 1 },
       type: "pickup",
     },
-    "pickup@4,15,1": {
+    pi1: {
       config: { gives: "shield" },
       position: { x: 4, y: 15, z: 1 },
       type: "pickup",
     },
-    "pickup@5,15,1": {
+    pi2: {
       config: { gives: "reincarnation" },
       position: { x: 5, y: 15, z: 1 },
       type: "pickup",
     },
-    "wall(right)@0,0,0": {
+    w: {
       config: { direction: "right", times: { y: 16 } },
       position: { x: 0, y: 0, z: 0 },
       type: "wall",
     },
-    "wall(towards)@0,0,0": {
+    w1: {
       config: { direction: "towards", times: { x: 2 } },
       position: { x: 0, y: 0, z: 0 },
       type: "wall",
     },
-    "wall@0,16,0": {
+    w2: {
       config: {
         direction: "away",
         tiles: ["plain", "armour", "shield", "shield", "armour", "plain"],
@@ -114,12 +114,12 @@ export const room = inferRoomJson({
       position: { x: 0, y: 16, z: 0 },
       type: "wall",
     },
-    "wall@4,0,0": {
+    w3: {
       config: { direction: "towards", times: { x: 2 } },
       position: { x: 4, y: 0, z: 0 },
       type: "wall",
     },
-    "wall@6,0,0": {
+    w4: {
       config: {
         direction: "left",
         tiles: [

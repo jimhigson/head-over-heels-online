@@ -1,7 +1,35 @@
 [
   {
+    "op": "remove",
+    "path": "/items/w1/config/times/y"
+  },
+  {
     "op": "add",
-    "path": "/items/extra1",
+    "path": "/items/w1/config/times/x",
+    "value": 8
+  },
+  {
+    "op": "replace",
+    "path": "/items/w1/config/direction",
+    "value": "towards"
+  },
+  {
+    "op": "remove",
+    "path": "/items/w/config/times/x"
+  },
+  {
+    "op": "add",
+    "path": "/items/w/config/times/y",
+    "value": 8
+  },
+  {
+    "op": "replace",
+    "path": "/items/w/config/direction",
+    "value": "right"
+  },
+  {
+    "op": "add",
+    "path": "/items/b11",
     "value": {
       "config": {
         "style": "tower"
@@ -16,7 +44,7 @@
   },
   {
     "op": "add",
-    "path": "/items/extra2",
+    "path": "/items/b12",
     "value": {
       "config": {
         "style": "tower"
@@ -31,7 +59,7 @@
   },
   {
     "op": "add",
-    "path": "/items/extra3",
+    "path": "/items/b13",
     "value": {
       "config": {
         "style": "tower"
@@ -46,7 +74,7 @@
   },
   {
     "op": "add",
-    "path": "/items/extra4",
+    "path": "/items/b14",
     "value": {
       "config": {
         "style": "tower"
@@ -61,7 +89,7 @@
   },
   {
     "op": "add",
-    "path": "/items/extra5",
+    "path": "/items/b15",
     "value": {
       "config": {
         "style": "tower"
@@ -76,7 +104,7 @@
   },
   {
     "op": "add",
-    "path": "/items/extra6",
+    "path": "/items/b16",
     "value": {
       "config": {
         "style": "tower"

@@ -1,17 +1,75 @@
 [
   {
+    "op": "remove",
+    "path": "/items/w1/config/times/y"
+  },
+  {
+    "op": "add",
+    "path": "/items/w1/config/times/x",
+    "value": 8
+  },
+  {
     "op": "replace",
-    "path": "/items/monster@11,0,0/position/z",
+    "path": "/items/w1/config/direction",
+    "value": "towards"
+  },
+  {
+    "op": "remove",
+    "path": "/items/w/config/times/x"
+  },
+  {
+    "op": "add",
+    "path": "/items/w/config/times/y",
+    "value": 2
+  },
+  {
+    "op": "replace",
+    "path": "/items/w/config/direction",
+    "value": "right"
+  },
+  {
+    "op": "replace",
+    "path": "/items/pr3/position/y",
+    "value": 0
+  },
+  {
+    "op": "replace",
+    "path": "/items/pr3/position/x",
+    "value": 4
+  },
+  {
+    "op": "replace",
+    "path": "/items/pr2/position/x",
+    "value": 3
+  },
+  {
+    "op": "replace",
+    "path": "/items/pr1/position/y",
     "value": 1
   },
   {
     "op": "replace",
-    "path": "/items/monster@11,0,0/position/y",
+    "path": "/items/pr1/position/x",
+    "value": 0
+  },
+  {
+    "op": "replace",
+    "path": "/items/pr/position/x",
+    "value": 0
+  },
+  {
+    "op": "replace",
+    "path": "/items/m/position/z",
+    "value": 1
+  },
+  {
+    "op": "replace",
+    "path": "/items/m/position/y",
     "value": 6
   },
   {
     "op": "add",
-    "path": "/items/barier1",
+    "path": "/items/br",
     "value": {
       "config": {
         "axis": "y",
@@ -29,7 +87,7 @@
   },
   {
     "op": "add",
-    "path": "/items/portableBlock",
+    "path": "/items/pr4",
     "value": {
       "config": {
         "style": "drum"
@@ -44,7 +102,7 @@
   },
   {
     "op": "add",
-    "path": "/items/portableBlock_2",
+    "path": "/items/pr5",
     "value": {
       "config": {
         "style": "drum"

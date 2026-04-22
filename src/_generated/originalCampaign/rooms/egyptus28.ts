@@ -6,22 +6,22 @@ export const room = inferRoomJson({
   color: { hue: "white", shade: "dimmed" },
   id: "egyptus28",
   items: {
-    "door@0,2,0": {
+    d: {
       config: { direction: "right", toRoom: "egyptus29" },
       position: { x: 0, y: 2, z: 0 },
       type: "door",
     },
-    "door@3,0,0": {
+    d1: {
       config: { direction: "towards", toRoom: "egyptus27" },
       position: { x: 3, y: 0, z: 0 },
       type: "door",
     },
-    "door@8,2,0": {
+    d2: {
       config: { direction: "left", toRoom: "egyptus26" },
       position: { x: 8, y: 2, z: 0 },
       type: "door",
     },
-    "floor@0,0,0": {
+    f: {
       config: {
         floorType: "standable",
         scenery: "egyptus",
@@ -30,27 +30,27 @@ export const room = inferRoomJson({
       position: { x: 0, y: 0, z: 0 },
       type: "floor",
     },
-    "moveableDeadly@4,3,0": {
+    md: {
       config: { style: "deadFish" },
       position: { x: 4, y: 3, z: 0 },
       type: "moveableDeadly",
     },
-    "wall(right)@0,0,0": {
+    w: {
       config: { direction: "right", times: { y: 2 } },
       position: { x: 0, y: 0, z: 0 },
       type: "wall",
     },
-    "wall(towards)@0,0,0": {
+    w1: {
       config: { direction: "towards", times: { x: 3 } },
       position: { x: 0, y: 0, z: 0 },
       type: "wall",
     },
-    "wall@0,4,0": {
+    w2: {
       config: { direction: "right", times: { y: 2 } },
       position: { x: 0, y: 4, z: 0 },
       type: "wall",
     },
-    "wall@0,6,0": {
+    w3: {
       config: {
         direction: "away",
         tiles: [
@@ -67,17 +67,17 @@ export const room = inferRoomJson({
       position: { x: 0, y: 6, z: 0 },
       type: "wall",
     },
-    "wall@5,0,0": {
+    w4: {
       config: { direction: "towards", times: { x: 3 } },
       position: { x: 5, y: 0, z: 0 },
       type: "wall",
     },
-    "wall@8,0,0": {
+    w5: {
       config: { direction: "left", tiles: ["hieroglyphics", "hieroglyphics"] },
       position: { x: 8, y: 0, z: 0 },
       type: "wall",
     },
-    "wall@8,4,0": {
+    w6: {
       config: { direction: "left", tiles: ["hieroglyphics", "hieroglyphics"] },
       position: { x: 8, y: 4, z: 0 },
       type: "wall",

@@ -1,5 +1,125 @@
 [
   {
+    "op": "remove",
+    "path": "/items/w1/config/times/y"
+  },
+  {
+    "op": "add",
+    "path": "/items/w1/config/times/x",
+    "value": 6
+  },
+  {
+    "op": "replace",
+    "path": "/items/w1/config/direction",
+    "value": "towards"
+  },
+  {
+    "op": "remove",
+    "path": "/items/w/config/times/x"
+  },
+  {
+    "op": "add",
+    "path": "/items/w/config/times/y",
+    "value": 12
+  },
+  {
+    "op": "replace",
+    "path": "/items/w/config/direction",
+    "value": "right"
+  },
+  {
+    "op": "replace",
+    "path": "/items/pr1/position/y",
+    "value": 9
+  },
+  {
+    "op": "replace",
+    "path": "/items/pr1/position/x",
+    "value": 3
+  },
+  {
+    "op": "replace",
+    "path": "/items/pr/position/y",
+    "value": 8
+  },
+  {
+    "op": "replace",
+    "path": "/items/pr/position/x",
+    "value": 2
+  },
+  {
+    "op": "replace",
+    "path": "/items/db9/position/y",
+    "value": 5
+  },
+  {
+    "op": "add",
+    "path": "/items/db9/config/times",
+    "value": {
+      "y": 2
+    }
+  },
+  {
+    "op": "replace",
+    "path": "/items/db8/position/y",
+    "value": 11
+  },
+  {
+    "op": "remove",
+    "path": "/items/db8/config/times"
+  },
+  {
+    "op": "replace",
+    "path": "/items/db6/position/y",
+    "value": 5
+  },
+  {
+    "op": "add",
+    "path": "/items/db6/config/times",
+    "value": {
+      "y": 2
+    }
+  },
+  {
+    "op": "replace",
+    "path": "/items/db5/position/y",
+    "value": 11
+  },
+  {
+    "op": "remove",
+    "path": "/items/db5/config/times"
+  },
+  {
+    "op": "replace",
+    "path": "/items/db3/position/y",
+    "value": 7
+  },
+  {
+    "op": "replace",
+    "path": "/items/db2/position/y",
+    "value": 4
+  },
+  {
+    "op": "replace",
+    "path": "/items/db13/position/y",
+    "value": 7
+  },
+  {
+    "op": "replace",
+    "path": "/items/db12/position/y",
+    "value": 4
+  },
+  {
+    "op": "replace",
+    "path": "/items/db11/position/y",
+    "value": 10
+  },
+  {
+    "op": "replace",
+    "path": "/items/db1/position/y",
+    "value": 10
+  },
+  {
     "op": "add",
     "path": "/meta",
     "value": {

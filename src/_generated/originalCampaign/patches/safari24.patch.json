@@ -1,51 +1,109 @@
 [
   {
+    "op": "remove",
+    "path": "/items/w1/config/times/y"
+  },
+  {
+    "op": "add",
+    "path": "/items/w1/config/times/x",
+    "value": 8
+  },
+  {
     "op": "replace",
-    "path": "/items/movingPlatform@0,2,0/position/y",
+    "path": "/items/w1/config/direction",
+    "value": "towards"
+  },
+  {
+    "op": "remove",
+    "path": "/items/w/config/times/x"
+  },
+  {
+    "op": "add",
+    "path": "/items/w/config/times/y",
+    "value": 2
+  },
+  {
+    "op": "replace",
+    "path": "/items/w/config/direction",
+    "value": "right"
+  },
+  {
+    "op": "replace",
+    "path": "/items/mp/position/y",
     "value": 2.5
   },
   {
     "op": "replace",
-    "path": "/items/movingPlatform@0,2,0/config/startDirection",
+    "path": "/items/mp/config/startDirection",
     "value": "towards"
   },
   {
     "op": "replace",
-    "path": "/items/movingPlatform@0,2,0/config/activated",
+    "path": "/items/mp/config/activated",
     "value": "on"
   },
   {
     "op": "replace",
-    "path": "/items/door@0,2,1/position/z",
+    "path": "/items/d1/position/z",
     "value": 3
   },
   {
+    "op": "replace",
+    "path": "/items/d1/position/x",
+    "value": 8
+  },
+  {
+    "op": "replace",
+    "path": "/items/d1/config/toRoom",
+    "value": "safari23"
+  },
+  {
+    "op": "replace",
+    "path": "/items/d1/config/direction",
+    "value": "left"
+  },
+  {
+    "op": "replace",
+    "path": "/items/d/position/x",
+    "value": 0
+  },
+  {
+    "op": "replace",
+    "path": "/items/d/config/toRoom",
+    "value": "safari25"
+  },
+  {
+    "op": "replace",
+    "path": "/items/d/config/direction",
+    "value": "right"
+  },
+  {
     "op": "add",
-    "path": "/items/block@7,2,1/config/times",
+    "path": "/items/b1/config/times",
     "value": {
       "y": 2
     }
   },
   {
     "op": "replace",
-    "path": "/items/block@1,2,0/position/z",
+    "path": "/items/b/position/z",
     "value": 1
   },
   {
     "op": "replace",
-    "path": "/items/block@1,2,0/position/x",
+    "path": "/items/b/position/x",
     "value": 0
   },
   {
     "op": "add",
-    "path": "/items/block@1,2,0/config/times",
+    "path": "/items/b/config/times",
     "value": {
       "y": 2
     }
   },
   {
     "op": "add",
-    "path": "/items/movingPlatform2",
+    "path": "/items/mp1",
     "value": {
       "config": {
         "activated": "on",
@@ -62,7 +120,7 @@
   },
   {
     "op": "add",
-    "path": "/items/movingPlatform3",
+    "path": "/items/mp2",
     "value": {
       "config": {
         "activated": "on",
@@ -79,7 +137,7 @@
   },
   {
     "op": "add",
-    "path": "/items/movingPlatform4",
+    "path": "/items/mp3",
     "value": {
       "config": {
         "activated": "on",

@@ -6,7 +6,7 @@ export const room = inferRoomJson({
   color: { hue: "magenta", shade: "basic" },
   id: "blacktooth39",
   items: {
-    "door@2,6,5": {
+    d: {
       config: {
         direction: "away",
         meta: { toSubRoom: "left" },
@@ -15,12 +15,12 @@ export const room = inferRoomJson({
       position: { x: 2, y: 6, z: 5 },
       type: "door",
     },
-    "door@6,2,5": {
+    d1: {
       config: { direction: "left", toRoom: "blacktooth41" },
       position: { x: 6, y: 2, z: 5 },
       type: "door",
     },
-    "floor@0,0,0": {
+    f: {
       config: {
         floorType: "standable",
         scenery: "blacktooth",
@@ -29,12 +29,12 @@ export const room = inferRoomJson({
       position: { x: 0, y: 0, z: 0 },
       type: "floor",
     },
-    "lift@2,0,0": {
+    l: {
       config: { bottom: 0, top: 11 },
       position: { x: 2, y: 0, z: 0 },
       type: "lift",
     },
-    "monster@3,3,0": {
+    m: {
       config: {
         activated: "on",
         movement: "patrol-randomly-diagonal",
@@ -43,52 +43,52 @@ export const room = inferRoomJson({
       position: { x: 5, y: 5, z: 11 },
       type: "monster",
     },
-    "portableBlock@1,1,0": {
+    pr: {
       config: { style: "cube" },
       position: { x: 1, y: 1, z: 0 },
       type: "portableBlock",
     },
-    "portableBlock@1,4,0": {
+    pr1: {
       config: { style: "cube" },
       position: { x: 1, y: 4, z: 0 },
       type: "portableBlock",
     },
-    "portableBlock@4,1,0": {
+    pr2: {
       config: { style: "cube" },
       position: { x: 4, y: 1, z: 0 },
       type: "portableBlock",
     },
-    "portableBlock@4,4,0": {
+    pr3: {
       config: { style: "cube" },
       position: { x: 4, y: 4, z: 0 },
       type: "portableBlock",
     },
-    "wall(right)@0,0,0": {
+    w: {
       config: { direction: "right", times: { y: 6 } },
       position: { x: 0, y: 0, z: 0 },
       type: "wall",
     },
-    "wall(towards)@0,0,0": {
+    w1: {
       config: { direction: "towards", times: { x: 6 } },
       position: { x: 0, y: 0, z: 0 },
       type: "wall",
     },
-    "wall@0,6,0": {
+    w2: {
       config: { direction: "away", tiles: ["plain", "shield"] },
       position: { x: 0, y: 6, z: 0 },
       type: "wall",
     },
-    "wall@4,6,0": {
+    w3: {
       config: { direction: "away", tiles: ["shield", "plain"] },
       position: { x: 4, y: 6, z: 0 },
       type: "wall",
     },
-    "wall@6,0,0": {
+    w4: {
       config: { direction: "left", tiles: ["plain", "shield"] },
       position: { x: 6, y: 0, z: 0 },
       type: "wall",
     },
-    "wall@6,4,0": {
+    w5: {
       config: { direction: "left", tiles: ["shield", "plain"] },
       position: { x: 6, y: 4, z: 0 },
       type: "wall",

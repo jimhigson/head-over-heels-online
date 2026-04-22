@@ -1,9 +1,70 @@
 [
   {
+    "op": "replace",
+    "path": "/items/w1/config/direction",
+    "value": "towards"
+  },
+  {
     "op": "add",
-    "path": "/items/door@8,1,4/config/meta",
+    "path": "/items/w1/config/times",
+    "value": {
+      "x": 8
+    }
+  },
+  {
+    "op": "remove",
+    "path": "/items/w/config/times"
+  },
+  {
+    "op": "replace",
+    "path": "/items/w/config/direction",
+    "value": "right"
+  },
+  {
+    "op": "replace",
+    "path": "/items/d1/position/z",
+    "value": 4
+  },
+  {
+    "op": "replace",
+    "path": "/items/d1/position/x",
+    "value": 8
+  },
+  {
+    "op": "replace",
+    "path": "/items/d1/config/toRoom",
+    "value": "safari6triple"
+  },
+  {
+    "op": "replace",
+    "path": "/items/d1/config/direction",
+    "value": "left"
+  },
+  {
+    "op": "add",
+    "path": "/items/d1/config/meta",
     "value": {
       "toSubRoom": "middle"
     }
+  },
+  {
+    "op": "replace",
+    "path": "/items/d/position/z",
+    "value": 0
+  },
+  {
+    "op": "replace",
+    "path": "/items/d/position/x",
+    "value": 0
+  },
+  {
+    "op": "replace",
+    "path": "/items/d/config/toRoom",
+    "value": "safari4"
+  },
+  {
+    "op": "replace",
+    "path": "/items/d/config/direction",
+    "value": "right"
   }
 ]

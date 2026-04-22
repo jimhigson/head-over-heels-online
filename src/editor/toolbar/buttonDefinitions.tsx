@@ -3,7 +3,6 @@ import type {
   AnimatedTextureTailwindClass,
   TextureTailwindClass,
 } from "../../sprites/spritesheet/spritesheetData/TextureTailwindClass";
-import type { EditorRoomItemId } from "../editorTypes";
 import type { LevelEditorState } from "../slice/levelEditorSlice";
 import type { ItemToolButtonProps } from "./ItemToolButton";
 
@@ -561,10 +560,7 @@ turns so poisonous that a single lick can kill`,
     itemTool: {
       type: "joystick",
       config: {
-        controls: [
-          // the first charles put into a room will always have 'charles' as the id:
-          "charles",
-        ] as EditorRoomItemId[],
+        // omit list of charles by default = controls all in the room
       },
     },
     tooltipContent: `## Joystick

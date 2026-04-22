@@ -1,14 +1,54 @@
 [
   {
+    "op": "replace",
+    "path": "/items/d1/position/z",
+    "value": 0
+  },
+  {
+    "op": "replace",
+    "path": "/items/d1/position/y",
+    "value": 8
+  },
+  {
+    "op": "replace",
+    "path": "/items/d1/config/toRoom",
+    "value": "bookworld23"
+  },
+  {
+    "op": "replace",
+    "path": "/items/d1/config/direction",
+    "value": "away"
+  },
+  {
+    "op": "replace",
+    "path": "/items/d/position/z",
+    "value": 4
+  },
+  {
+    "op": "replace",
+    "path": "/items/d/position/y",
+    "value": 0
+  },
+  {
+    "op": "replace",
+    "path": "/items/d/config/toRoom",
+    "value": "bookworld28"
+  },
+  {
+    "op": "replace",
+    "path": "/items/d/config/direction",
+    "value": "towards"
+  },
+  {
     "op": "add",
-    "path": "/items/door@0,0,4/config/meta",
+    "path": "/items/d/config/meta",
     "value": {
       "toSubRoom": "right"
     }
   },
   {
     "op": "add",
-    "path": "/items/block@0,0,3/config/times",
+    "path": "/items/b1/config/times",
     "value": {
       "x": 2,
       "y": 2
@@ -16,7 +56,7 @@
   },
   {
     "op": "replace",
-    "path": "/items/block@0,0,0/position/y",
+    "path": "/items/b/position/y",
     "value": 1
   },
   {

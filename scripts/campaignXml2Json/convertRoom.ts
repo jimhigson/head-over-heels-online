@@ -38,16 +38,23 @@ export const convertRoom = async (
     roomXmlJson,
     roomSidesWithDoors,
   );
-  const items = consolidateItemsMap(
-    keyItems([
-      ...convertFloor(roomDimensions, xmlFloorKind, xmlScenery),
-      ...convertedItems,
-      ...convertWalls(
-        roomXmlJson,
-        roomSidesWithDoors,
-        convertedItems.filter((i) => i.type === "door"),
+  // consolidateItemsMap needs items already keyed, but some walls/floors
+  // get merged into `times` multipliers and dropped, so we re-key the
+  // consolidated result to keep the counter-based keys sequential
+  const items = keyItems(
+    Object.values(
+      consolidateItemsMap(
+        keyItems([
+          ...convertFloor(roomDimensions, xmlFloorKind, xmlScenery),
+          ...convertedItems,
+          ...convertWalls(
+            roomXmlJson,
+            roomSidesWithDoors,
+            convertedItems.filter((i) => i.type === "door"),
+          ),
+        ]),
       ),
-    ]),
+    ),
   );
 
   const roomId = convertRoomId(xmlRoomName);

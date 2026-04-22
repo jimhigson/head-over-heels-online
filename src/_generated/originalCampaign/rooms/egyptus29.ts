@@ -6,37 +6,37 @@ export const room = inferRoomJson({
   color: { hue: "yellow", shade: "basic" },
   id: "egyptus29",
   items: {
-    "block@5,0,0": {
+    b: {
       config: { style: "organic" },
       position: { x: 5, y: 0, z: 0 },
       type: "block",
     },
-    "block@5,3,0": {
+    b1: {
       config: { style: "organic", times: { y: 2 } },
       position: { x: 5, y: 3, z: 0 },
       type: "block",
     },
-    "door@6,3,2": {
+    d: {
       config: { direction: "left", toRoom: "egyptus28" },
       position: { x: 6, y: 3, z: 2 },
       type: "door",
     },
-    "floor@0,0,0": {
+    f: {
       config: { floorType: "none", times: { x: 6, y: 8 } },
       position: { x: 0, y: 0, z: 0 },
       type: "floor",
     },
-    "wall(right)@0,0,0": {
+    w: {
       config: { direction: "right", times: { y: 8 } },
       position: { x: 0, y: 0, z: 0 },
       type: "wall",
     },
-    "wall(towards)@0,0,0": {
+    w1: {
       config: { direction: "towards", times: { x: 6 } },
       position: { x: 0, y: 0, z: 0 },
       type: "wall",
     },
-    "wall@0,8,0": {
+    w2: {
       config: {
         direction: "away",
         tiles: [
@@ -51,7 +51,7 @@ export const room = inferRoomJson({
       position: { x: 0, y: 8, z: 0 },
       type: "wall",
     },
-    "wall@6,0,0": {
+    w3: {
       config: {
         direction: "left",
         tiles: ["hieroglyphics", "sarcophagus", "hieroglyphics"],
@@ -59,7 +59,7 @@ export const room = inferRoomJson({
       position: { x: 6, y: 0, z: 0 },
       type: "wall",
     },
-    "wall@6,5,0": {
+    w4: {
       config: {
         direction: "left",
         tiles: ["hieroglyphics", "sarcophagus", "hieroglyphics"],

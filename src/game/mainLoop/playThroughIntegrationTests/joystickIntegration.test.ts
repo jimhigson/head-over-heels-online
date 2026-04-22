@@ -1,4 +1,4 @@
-import { beforeEach, test, vi } from "vitest";
+import { beforeEach, expect, test, vi } from "vitest";
 vi.mock("../../sprites/samplePalette", () => ({
   spritesheetPalette: vi.fn().mockReturnValue({}),
 }));
@@ -61,6 +61,123 @@ test("pushing joystick can move a charles bot", () => {
       mockInputStateTracker.mockDirectionPressed = "left";
     },
   });
+});
+
+test("joystick with no controls config moves every charles in the room", () => {
+  const gameState = setUpBasicGame({
+    firstRoomItems: {
+      heels: {
+        type: "player",
+        position: { x: 0, y: 0, z: 0 },
+        config: { which: "heels" },
+      },
+      joystick: {
+        type: "joystick",
+        config: {},
+        position: { x: 1, y: 0, z: 0 },
+      },
+      charles: {
+        type: "charles",
+        config: {},
+        position: { x: 0, y: 3, z: 0 },
+      },
+      charles2: {
+        type: "charles",
+        config: {},
+        position: { x: 0, y: 5, z: 0 },
+      },
+      switch: {
+        type: "switch",
+        config: {
+          initialSetting: "left",
+          modifies: [],
+          type: "in-room",
+        },
+        position: { x: 3, y: 3, z: 0 },
+      },
+      switch2: {
+        type: "switch",
+        config: {
+          initialSetting: "left",
+          modifies: [],
+          type: "in-room",
+        },
+        position: { x: 3, y: 5, z: 0 },
+      },
+    },
+  });
+
+  playGameThrough(gameState, {
+    until(gameState) {
+      return (
+        itemState<"switch">(gameState, "switch").setting === "right" &&
+        itemState<"switch">(gameState, "switch2").setting === "right"
+      );
+    },
+    setupInitialInput(mockInputStateTracker) {
+      mockInputStateTracker.mockDirectionPressed = "left";
+    },
+  });
+});
+
+test("joystick with an explicit controls list only moves the listed charles", () => {
+  const gameState = setUpBasicGame({
+    firstRoomItems: {
+      heels: {
+        type: "player",
+        position: { x: 0, y: 0, z: 0 },
+        config: { which: "heels" },
+      },
+      joystick: {
+        type: "joystick",
+        config: { controls: ["charles"] },
+        position: { x: 1, y: 0, z: 0 },
+      },
+      charles: {
+        type: "charles",
+        config: {},
+        position: { x: 0, y: 3, z: 0 },
+      },
+      charles2: {
+        type: "charles",
+        config: {},
+        position: { x: 0, y: 5, z: 0 },
+      },
+      switch: {
+        type: "switch",
+        config: {
+          initialSetting: "left",
+          modifies: [],
+          type: "in-room",
+        },
+        position: { x: 3, y: 3, z: 0 },
+      },
+      // place switch2 right next to charles2 so even a single tick of
+      // unintended movement would flip it
+      switch2: {
+        type: "switch",
+        config: {
+          initialSetting: "left",
+          modifies: [],
+          type: "in-room",
+        },
+        position: { x: 1, y: 5, z: 0 },
+      },
+    },
+  });
+
+  playGameThrough(gameState, {
+    until(gameState) {
+      return itemState<"switch">(gameState, "switch").setting === "right";
+    },
+    setupInitialInput(mockInputStateTracker) {
+      mockInputStateTracker.mockDirectionPressed = "left";
+    },
+  });
+
+  // charles2 is not in the controls list, so it should never have moved —
+  // its switch should still be on the initial setting
+  expect(itemState<"switch">(gameState, "switch2").setting).toBe("left");
 });
 
 // not sure how to implement the condition on this one

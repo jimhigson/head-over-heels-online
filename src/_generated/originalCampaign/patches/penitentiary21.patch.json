@@ -1,17 +1,45 @@
 [
   {
+    "op": "remove",
+    "path": "/items/w1/config/times/y"
+  },
+  {
+    "op": "add",
+    "path": "/items/w1/config/times/x",
+    "value": 3
+  },
+  {
     "op": "replace",
-    "path": "/items/portableBlock@7,7,1/position/y",
+    "path": "/items/w1/config/direction",
+    "value": "towards"
+  },
+  {
+    "op": "remove",
+    "path": "/items/w/config/times/x"
+  },
+  {
+    "op": "add",
+    "path": "/items/w/config/times/y",
+    "value": 8
+  },
+  {
+    "op": "replace",
+    "path": "/items/w/config/direction",
+    "value": "right"
+  },
+  {
+    "op": "replace",
+    "path": "/items/pr/position/y",
     "value": 6
   },
   {
     "op": "replace",
-    "path": "/items/portableBlock@7,7,1/position/x",
+    "path": "/items/pr/position/x",
     "value": 1
   },
   {
     "op": "add",
-    "path": "/items/extraBlock",
+    "path": "/items/b10",
     "value": {
       "config": {
         "style": "organic"

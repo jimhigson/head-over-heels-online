@@ -6,22 +6,22 @@ export const room = inferRoomJson({
   color: { hue: "cyan", shade: "basic" },
   id: "blacktooth8fish",
   items: {
-    "block@3,0,0": {
+    b: {
       config: { style: "tower", times: { z: 4 } },
       position: { x: 3, y: 0, z: 0 },
       type: "block",
     },
-    "door@0,3,0": {
+    d: {
       config: { direction: "right", toRoom: "blacktooth9" },
       position: { x: 0, y: 3, z: 0 },
       type: "door",
     },
-    "door@1,8,2": {
+    d1: {
       config: { direction: "away", toRoom: "blacktooth7" },
       position: { x: 1, y: 8, z: 2 },
       type: "door",
     },
-    "floor@0,0,0": {
+    f: {
       config: {
         floorType: "standable",
         scenery: "blacktooth",
@@ -30,7 +30,7 @@ export const room = inferRoomJson({
       position: { x: 0, y: 0, z: 0 },
       type: "floor",
     },
-    "monster@3,3,1": {
+    m: {
       config: {
         activated: "on",
         movement: "patrol-randomly-diagonal",
@@ -39,47 +39,43 @@ export const room = inferRoomJson({
       position: { x: 3, y: 3, z: 1 },
       type: "monster",
     },
-    "pickup@3,0,3": {
+    pi: {
       config: { gives: "reincarnation" },
       position: { x: 3, y: 0, z: 4 },
       type: "pickup",
     },
-    scroll: {
+    pi1: {
       config: { gives: "scroll", page: "reincarnationFish", source: "manual" },
       position: { x: 3, y: 7, z: 0 },
       type: "pickup",
     },
-    "spring@3,3,0": {
-      config: {},
-      position: { x: 3, y: 3, z: 0 },
-      type: "spring",
-    },
-    "wall(right)@0,0,0": {
+    sg: { config: {}, position: { x: 3, y: 3, z: 0 }, type: "spring" },
+    w: {
       config: { direction: "right", times: { y: 3 } },
       position: { x: 0, y: 0, z: 0 },
       type: "wall",
     },
-    "wall(towards)@0,0,0": {
+    w1: {
       config: { direction: "towards", times: { x: 4 } },
       position: { x: 0, y: 0, z: 0 },
       type: "wall",
     },
-    "wall@0,5,0": {
+    w2: {
       config: { direction: "right", times: { y: 3 } },
       position: { x: 0, y: 5, z: 0 },
       type: "wall",
     },
-    "wall@0,8,0": {
+    w3: {
       config: { direction: "away", tiles: ["shield"] },
       position: { x: 0, y: 8, z: 0 },
       type: "wall",
     },
-    "wall@3,8,0": {
+    w4: {
       config: { direction: "away", tiles: ["shield"] },
       position: { x: 3, y: 8, z: 0 },
       type: "wall",
     },
-    "wall@4,0,0": {
+    w5: {
       config: {
         direction: "left",
         tiles: [

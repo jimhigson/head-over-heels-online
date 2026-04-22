@@ -6,97 +6,97 @@ export const room = inferRoomJson({
   color: { hue: "green", shade: "basic" },
   id: "blacktooth31",
   items: {
-    "block@5,2,0": {
+    b: {
       config: { style: "organic", times: { y: 2 } },
       position: { x: 5, y: 2, z: 0 },
       type: "block",
     },
-    "block@5,2,1": {
+    b1: {
       config: { style: "organic" },
       position: { x: 5, y: 2, z: 1 },
       type: "block",
     },
-    "deadlyBlock@0,1,0": {
-      config: { style: "volcano" },
-      position: { x: 0, y: 1, z: 0 },
-      type: "deadlyBlock",
-    },
-    "deadlyBlock@0,10,0": {
-      config: { style: "volcano" },
-      position: { x: 0, y: 10, z: 0 },
-      type: "deadlyBlock",
-    },
-    "deadlyBlock@0,4,0": {
-      config: { style: "volcano" },
-      position: { x: 0, y: 4, z: 0 },
-      type: "deadlyBlock",
-    },
-    "deadlyBlock@0,7,0": {
-      config: { style: "volcano" },
-      position: { x: 0, y: 7, z: 0 },
-      type: "deadlyBlock",
-    },
-    "deadlyBlock@1,0,0": {
-      config: { style: "volcano" },
-      position: { x: 1, y: 0, z: 0 },
-      type: "deadlyBlock",
-    },
-    "deadlyBlock@1,11,0": {
-      config: { style: "volcano" },
-      position: { x: 1, y: 11, z: 0 },
-      type: "deadlyBlock",
-    },
-    "deadlyBlock@1,5,0": {
-      config: { style: "volcano", times: { y: 2 } },
-      position: { x: 1, y: 5, z: 0 },
-      type: "deadlyBlock",
-    },
-    "deadlyBlock@4,0,0": {
-      config: { style: "volcano" },
-      position: { x: 4, y: 0, z: 0 },
-      type: "deadlyBlock",
-    },
-    "deadlyBlock@4,11,0": {
-      config: { style: "volcano" },
-      position: { x: 4, y: 11, z: 0 },
-      type: "deadlyBlock",
-    },
-    "deadlyBlock@4,5,0": {
-      config: { style: "volcano", times: { y: 2 } },
-      position: { x: 4, y: 5, z: 0 },
-      type: "deadlyBlock",
-    },
-    "deadlyBlock@5,1,0": {
-      config: { style: "volcano" },
-      position: { x: 5, y: 1, z: 0 },
-      type: "deadlyBlock",
-    },
-    "deadlyBlock@5,10,0": {
-      config: { style: "volcano" },
-      position: { x: 5, y: 10, z: 0 },
-      type: "deadlyBlock",
-    },
-    "deadlyBlock@5,4,0": {
-      config: { style: "volcano" },
-      position: { x: 5, y: 4, z: 0 },
-      type: "deadlyBlock",
-    },
-    "deadlyBlock@5,7,0": {
-      config: { style: "volcano" },
-      position: { x: 5, y: 7, z: 0 },
-      type: "deadlyBlock",
-    },
-    "door@2,12,3": {
+    d: {
       config: { direction: "away", toRoom: "blacktooth11" },
       position: { x: 2, y: 12, z: 3 },
       type: "door",
     },
-    "door@6,2,3": {
+    d1: {
       config: { direction: "left", toRoom: "blacktooth30" },
       position: { x: 6, y: 2, z: 3 },
       type: "door",
     },
-    "floor@0,0,0": {
+    db: {
+      config: { style: "volcano" },
+      position: { x: 0, y: 1, z: 0 },
+      type: "deadlyBlock",
+    },
+    db1: {
+      config: { style: "volcano" },
+      position: { x: 0, y: 10, z: 0 },
+      type: "deadlyBlock",
+    },
+    db10: {
+      config: { style: "volcano" },
+      position: { x: 5, y: 1, z: 0 },
+      type: "deadlyBlock",
+    },
+    db11: {
+      config: { style: "volcano" },
+      position: { x: 5, y: 10, z: 0 },
+      type: "deadlyBlock",
+    },
+    db12: {
+      config: { style: "volcano" },
+      position: { x: 5, y: 4, z: 0 },
+      type: "deadlyBlock",
+    },
+    db13: {
+      config: { style: "volcano" },
+      position: { x: 5, y: 7, z: 0 },
+      type: "deadlyBlock",
+    },
+    db2: {
+      config: { style: "volcano" },
+      position: { x: 0, y: 4, z: 0 },
+      type: "deadlyBlock",
+    },
+    db3: {
+      config: { style: "volcano" },
+      position: { x: 0, y: 7, z: 0 },
+      type: "deadlyBlock",
+    },
+    db4: {
+      config: { style: "volcano" },
+      position: { x: 1, y: 0, z: 0 },
+      type: "deadlyBlock",
+    },
+    db5: {
+      config: { style: "volcano" },
+      position: { x: 1, y: 11, z: 0 },
+      type: "deadlyBlock",
+    },
+    db6: {
+      config: { style: "volcano", times: { y: 2 } },
+      position: { x: 1, y: 5, z: 0 },
+      type: "deadlyBlock",
+    },
+    db7: {
+      config: { style: "volcano" },
+      position: { x: 4, y: 0, z: 0 },
+      type: "deadlyBlock",
+    },
+    db8: {
+      config: { style: "volcano" },
+      position: { x: 4, y: 11, z: 0 },
+      type: "deadlyBlock",
+    },
+    db9: {
+      config: { style: "volcano", times: { y: 2 } },
+      position: { x: 4, y: 5, z: 0 },
+      type: "deadlyBlock",
+    },
+    f: {
       config: {
         floorType: "standable",
         scenery: "blacktooth",
@@ -105,42 +105,42 @@ export const room = inferRoomJson({
       position: { x: 0, y: 0, z: 0 },
       type: "floor",
     },
-    "portableBlock@2,8,0": {
+    pr: {
       config: { style: "drum" },
       position: { x: 2, y: 8, z: 0 },
       type: "portableBlock",
     },
-    "portableBlock@3,9,0": {
+    pr1: {
       config: { style: "drum" },
       position: { x: 3, y: 9, z: 0 },
       type: "portableBlock",
     },
-    "wall(right)@0,0,0": {
+    w: {
       config: { direction: "right", times: { y: 12 } },
       position: { x: 0, y: 0, z: 0 },
       type: "wall",
     },
-    "wall(towards)@0,0,0": {
+    w1: {
       config: { direction: "towards", times: { x: 6 } },
       position: { x: 0, y: 0, z: 0 },
       type: "wall",
     },
-    "wall@0,12,0": {
+    w2: {
       config: { direction: "away", tiles: ["plain", "shield"] },
       position: { x: 0, y: 12, z: 0 },
       type: "wall",
     },
-    "wall@4,12,0": {
+    w3: {
       config: { direction: "away", tiles: ["shield", "plain"] },
       position: { x: 4, y: 12, z: 0 },
       type: "wall",
     },
-    "wall@6,0,0": {
+    w4: {
       config: { direction: "left", tiles: ["plain", "shield"] },
       position: { x: 6, y: 0, z: 0 },
       type: "wall",
     },
-    "wall@6,4,0": {
+    w5: {
       config: {
         direction: "left",
         tiles: [

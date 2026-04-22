@@ -6,52 +6,47 @@ export const room = inferRoomJson({
   color: { hue: "white", shade: "basic" },
   id: "safari37crown",
   items: {
-    JonsBlock: {
-      config: {},
-      position: { x: 5, y: 1, z: 0 },
-      type: "pushableBlock",
-    },
-    "block@0,2,0": {
+    b: {
       config: { style: "organic", times: { x: 8 } },
       position: { x: 0, y: 2, z: 0 },
       type: "block",
     },
-    "block@0,4,0": {
+    b1: {
       config: { style: "organic" },
       position: { x: 0, y: 4, z: 0 },
       type: "block",
     },
-    "block@0,7,0": {
+    b2: {
       config: { style: "artificial", times: { z: 6 } },
       position: { x: 0, y: 7, z: 0 },
       type: "block",
     },
-    "block@1,4,0": {
+    b3: {
       config: { disappearing: { on: "stand" }, style: "organic" },
       position: { x: 1, y: 4, z: 0 },
       type: "block",
     },
-    "block@2,4,0": {
+    b4: {
       config: { style: "organic", times: { x: 6 } },
       position: { x: 2, y: 4, z: 0 },
       type: "block",
     },
-    "block@6,3,0": {
+    b5: {
       config: { style: "tower", times: { z: 3 } },
       position: { x: 6, y: 3, z: 0 },
       type: "block",
     },
-    "block@7,3,0": {
+    b6: {
       config: { style: "organic" },
       position: { x: 7, y: 3, z: 0 },
       type: "block",
     },
-    "door@3,0,0": {
+    d: {
       config: { direction: "towards", toRoom: "safari33" },
       position: { x: 0, y: 0, z: 0 },
       type: "door",
     },
-    "floor@0,0,0": {
+    f: {
       config: {
         floorType: "standable",
         scenery: "safari",
@@ -60,7 +55,7 @@ export const room = inferRoomJson({
       position: { x: 0, y: 0, z: 0 },
       type: "floor",
     },
-    "monster@7,2,1": {
+    m: {
       config: {
         activated: "on",
         movement: "back-forth",
@@ -71,37 +66,30 @@ export const room = inferRoomJson({
       position: { x: 7, y: 2, z: 1 },
       type: "monster",
     },
-    "pickup@0,7,7": {
+    pi: {
       config: { gives: "crown", planet: "safari" },
       position: { x: 0, y: 7, z: 7 },
       type: "pickup",
     },
-    "portableBlock@7,3,1": {
+    pr: {
       config: { style: "drum" },
       position: { x: 7, y: 3, z: 1 },
       type: "portableBlock",
     },
-    "pushableBlock@0,7,6": {
-      config: {},
-      position: { x: 0, y: 7, z: 6 },
-      type: "pushableBlock",
-    },
-    "pushableBlock@3,5,0": {
-      config: {},
-      position: { x: 3, y: 5, z: 0 },
-      type: "pushableBlock",
-    },
-    "wall(right)@0,0,0": {
+    pu: { config: {}, position: { x: 0, y: 7, z: 6 }, type: "pushableBlock" },
+    pu1: { config: {}, position: { x: 3, y: 5, z: 0 }, type: "pushableBlock" },
+    pu2: { config: {}, position: { x: 5, y: 1, z: 0 }, type: "pushableBlock" },
+    w: {
       config: { direction: "right", times: { y: 8 } },
       position: { x: 0, y: 0, z: 0 },
       type: "wall",
     },
-    "wall(towards)@0,0,0": {
+    w1: {
       config: { direction: "towards", times: { x: 6 } },
       position: { x: 2, y: 0, z: 0 },
       type: "wall",
     },
-    "wall@0,8,0": {
+    w2: {
       config: {
         direction: "away",
         tiles: [
@@ -118,7 +106,7 @@ export const room = inferRoomJson({
       position: { x: 0, y: 8, z: 0 },
       type: "wall",
     },
-    "wall@8,0,0": {
+    w3: {
       config: {
         direction: "left",
         tiles: [

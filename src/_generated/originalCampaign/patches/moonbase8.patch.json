@@ -1,30 +1,88 @@
 [
   {
     "op": "remove",
-    "path": "/items/teleporter@6,6,0/config/toPosition"
+    "path": "/items/w1/config/times/y"
   },
   {
     "op": "add",
-    "path": "/items/teleporter@6,6,0/config/toItemId",
-    "value": "teleporter@6,6,0"
-  },
-  {
-    "op": "remove",
-    "path": "/items/teleporter@0,6,0/config/toPosition"
-  },
-  {
-    "op": "add",
-    "path": "/items/teleporter@0,6,0/config/toItemId",
-    "value": "teleporter@0,6,0"
+    "path": "/items/w1/config/times/x",
+    "value": 8
   },
   {
     "op": "replace",
-    "path": "/items/monster@5,0,1/config/activated",
-    "value": "after-player-near"
+    "path": "/items/w1/config/direction",
+    "value": "towards"
+  },
+  {
+    "op": "remove",
+    "path": "/items/w/config/times/x"
   },
   {
     "op": "add",
-    "path": "/items/portable1",
+    "path": "/items/w/config/times/y",
+    "value": 8
+  },
+  {
+    "op": "replace",
+    "path": "/items/w/config/direction",
+    "value": "right"
+  },
+  {
+    "op": "remove",
+    "path": "/items/t1/config/toPosition"
+  },
+  {
+    "op": "add",
+    "path": "/items/t1/config/toItemId",
+    "value": "t1"
+  },
+  {
+    "op": "remove",
+    "path": "/items/t/config/toPosition"
+  },
+  {
+    "op": "add",
+    "path": "/items/t/config/toItemId",
+    "value": "t"
+  },
+  {
+    "op": "replace",
+    "path": "/items/m5/position/x",
+    "value": 7
+  },
+  {
+    "op": "replace",
+    "path": "/items/m4/position/x",
+    "value": 6
+  },
+  {
+    "op": "replace",
+    "path": "/items/m3/position/x",
+    "value": 5
+  },
+  {
+    "op": "replace",
+    "path": "/items/m3/config/activated",
+    "value": "after-player-near"
+  },
+  {
+    "op": "replace",
+    "path": "/items/m2/position/x",
+    "value": 2
+  },
+  {
+    "op": "replace",
+    "path": "/items/m1/position/x",
+    "value": 1
+  },
+  {
+    "op": "replace",
+    "path": "/items/m/position/x",
+    "value": 0
+  },
+  {
+    "op": "add",
+    "path": "/items/pr",
     "value": {
       "config": {
         "style": "cube"
@@ -39,7 +97,7 @@
   },
   {
     "op": "add",
-    "path": "/items/portable2",
+    "path": "/items/pr1",
     "value": {
       "config": {
         "style": "cube"

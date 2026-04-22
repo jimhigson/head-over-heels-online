@@ -6,12 +6,12 @@ export const room = inferRoomJson({
   color: { hue: "magenta", shade: "basic" },
   id: "blacktooth61",
   items: {
-    "door@1,0,0": {
+    d: {
       config: { direction: "towards", toRoom: "blacktooth55" },
       position: { x: 1, y: 0, z: 0 },
       type: "door",
     },
-    "door@1,8,5": {
+    d1: {
       config: {
         direction: "away",
         meta: { toSubRoom: "left" },
@@ -20,7 +20,7 @@ export const room = inferRoomJson({
       position: { x: 1, y: 8, z: 5 },
       type: "door",
     },
-    "floor@0,0,0": {
+    f: {
       config: {
         floorType: "standable",
         scenery: "bookworld",
@@ -29,22 +29,18 @@ export const room = inferRoomJson({
       position: { x: 0, y: 0, z: 0 },
       type: "floor",
     },
-    "hushPuppy@0,7,0": {
+    h: {
       config: { times: { x: 3 } },
       position: { x: 0, y: 7, z: 0 },
       type: "hushPuppy",
     },
-    "hushPuppy@1,7,1": {
+    h1: {
       config: { times: { x: 2 } },
       position: { x: 1, y: 7, z: 1 },
       type: "hushPuppy",
     },
-    "hushPuppy@2,7,2": {
-      config: {},
-      position: { x: 2, y: 7, z: 2 },
-      type: "hushPuppy",
-    },
-    "monster@3,7,1": {
+    h2: { config: {}, position: { x: 2, y: 7, z: 2 }, type: "hushPuppy" },
+    m: {
       config: {
         activated: "on",
         movement: "patrol-randomly-diagonal",
@@ -53,37 +49,37 @@ export const room = inferRoomJson({
       position: { x: 3, y: 7, z: 1 },
       type: "monster",
     },
-    "portableBlock@3,7,0": {
+    pr: {
       config: { style: "drum" },
       position: { x: 3, y: 7, z: 0 },
       type: "portableBlock",
     },
-    "wall(right)@0,0,0": {
+    w: {
       config: { direction: "right", times: { y: 8 } },
       position: { x: 0, y: 0, z: 0 },
       type: "wall",
     },
-    "wall(towards)@0,0,0": {
+    w1: {
       config: { direction: "towards" },
       position: { x: 0, y: 0, z: 0 },
       type: "wall",
     },
-    "wall@0,8,0": {
+    w2: {
       config: { direction: "away", tiles: ["bars"] },
       position: { x: 0, y: 8, z: 0 },
       type: "wall",
     },
-    "wall@3,0,0": {
+    w3: {
       config: { direction: "towards" },
       position: { x: 3, y: 0, z: 0 },
       type: "wall",
     },
-    "wall@3,8,0": {
+    w4: {
       config: { direction: "away", tiles: ["bars"] },
       position: { x: 3, y: 8, z: 0 },
       type: "wall",
     },
-    "wall@4,0,0": {
+    w5: {
       config: {
         direction: "left",
         tiles: ["bars", "bars", "bars", "bars", "bars", "bars", "bars", "bars"],

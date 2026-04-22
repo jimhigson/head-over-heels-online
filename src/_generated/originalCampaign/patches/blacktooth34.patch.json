@@ -1,14 +1,57 @@
 [
   {
+    "op": "remove",
+    "path": "/items/w1/config/times/y"
+  },
+  {
     "op": "add",
-    "path": "/items/door@3,8,2/config/meta",
+    "path": "/items/w1/config/times/x",
+    "value": 8
+  },
+  {
+    "op": "replace",
+    "path": "/items/w1/config/direction",
+    "value": "towards"
+  },
+  {
+    "op": "remove",
+    "path": "/items/w/config/times/x"
+  },
+  {
+    "op": "add",
+    "path": "/items/w/config/times/y",
+    "value": 8
+  },
+  {
+    "op": "replace",
+    "path": "/items/w/config/direction",
+    "value": "right"
+  },
+  {
+    "op": "add",
+    "path": "/items/d/config/meta",
     "value": {
       "toSubRoom": "left"
     }
   },
   {
     "op": "add",
-    "path": "/items/scroll",
+    "path": "/items/b2",
+    "value": {
+      "config": {
+        "style": "organic"
+      },
+      "position": {
+        "x": 2,
+        "y": 7,
+        "z": 0
+      },
+      "type": "block"
+    }
+  },
+  {
+    "op": "add",
+    "path": "/items/pi",
     "value": {
       "config": {
         "gives": "scroll",
@@ -21,21 +64,6 @@
         "z": 1
       },
       "type": "pickup"
-    }
-  },
-  {
-    "op": "add",
-    "path": "/items/scrollBlock",
-    "value": {
-      "config": {
-        "style": "organic"
-      },
-      "position": {
-        "x": 2,
-        "y": 7,
-        "z": 0
-      },
-      "type": "block"
     }
   }
 ]

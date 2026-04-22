@@ -6,42 +6,42 @@ export const room = inferRoomJson({
   color: { hue: "yellow", shade: "basic" },
   id: "penitentiary27",
   items: {
-    "block@0,0,0": {
+    b: {
       config: { style: "organic", times: { y: 2 } },
       position: { x: 0, y: 0, z: 0 },
       type: "block",
     },
-    "block@7,0,0": {
+    b1: {
       config: { style: "organic", times: { y: 2 } },
       position: { x: 7, y: 0, z: 0 },
       type: "block",
     },
-    "deadlyBlock@3,0,1": {
-      config: { style: "volcano", times: { y: 2 } },
-      position: { x: 3, y: 0, z: 1 },
-      type: "deadlyBlock",
-    },
-    "deadlyBlock@3,1,0": {
-      config: { style: "volcano" },
-      position: { x: 3, y: 1, z: 0 },
-      type: "deadlyBlock",
-    },
-    "door@0,0,1": {
+    d: {
       config: { direction: "right", toRoom: "penitentiary28" },
       position: { x: 0, y: 0, z: 1 },
       type: "door",
     },
-    "door@8,0,2": {
+    d1: {
       config: { direction: "left", toRoom: "penitentiary26" },
       position: { x: 8, y: 0, z: 2 },
       type: "door",
     },
-    "floor@0,0,0": {
+    db: {
+      config: { style: "volcano", times: { y: 2 } },
+      position: { x: 3, y: 0, z: 1 },
+      type: "deadlyBlock",
+    },
+    db1: {
+      config: { style: "volcano" },
+      position: { x: 3, y: 1, z: 0 },
+      type: "deadlyBlock",
+    },
+    f: {
       config: { floorType: "deadly", times: { x: 8, y: 2 } },
       position: { x: 0, y: 0, z: 0 },
       type: "floor",
     },
-    "movingPlatform@6,0,0": {
+    mp: {
       config: {
         activated: "on-stand",
         movement: "clockwise",
@@ -50,12 +50,12 @@ export const room = inferRoomJson({
       position: { x: 6, y: 0, z: 0 },
       type: "movingPlatform",
     },
-    "wall@0,0,0": {
+    w: {
       config: { direction: "towards", times: { x: 8 } },
       position: { x: 0, y: 0, z: 0 },
       type: "wall",
     },
-    "wall@0,2,0": {
+    w1: {
       config: {
         direction: "away",
         tiles: [

@@ -6,22 +6,22 @@ export const room = inferRoomJson({
   color: { hue: "magenta", shade: "basic" },
   id: "safari18",
   items: {
-    "block@0,0,2": {
+    b: {
       config: { style: "organic", times: { y: 4 } },
       position: { x: 0, y: 0, z: 2 },
       type: "block",
     },
-    "block@1,10,0": {
+    b1: {
       config: { disappearing: { on: "stand" }, style: "organic" },
       position: { x: 1, y: 10, z: 0 },
       type: "block",
     },
-    "block@1,11,0": {
+    b2: {
       config: { style: "organic" },
       position: { x: 1, y: 11, z: 0 },
       type: "block",
     },
-    "block@1,12,0": {
+    b3: {
       config: {
         disappearing: { on: "stand" },
         style: "organic",
@@ -30,22 +30,27 @@ export const room = inferRoomJson({
       position: { x: 1, y: 12, z: 0 },
       type: "block",
     },
-    "block@1,15,0": {
+    b4: {
       config: { style: "organic" },
       position: { x: 1, y: 15, z: 0 },
       type: "block",
     },
-    "block@1,5,0": {
+    b5: {
       config: { style: "organic", times: { y: 5 } },
       position: { x: 1, y: 5, z: 0 },
       type: "block",
     },
-    "door@0,0,3": {
+    b6: {
+      config: { style: "tower", times: { y: 4, z: 2 } },
+      position: { x: 0, y: 0, z: 0 },
+      type: "block",
+    },
+    d: {
       config: { direction: "towards", toRoom: "safari4" },
       position: { x: 0, y: 0, z: 3 },
       type: "door",
     },
-    "door@0,16,2": {
+    d1: {
       config: {
         direction: "away",
         meta: { toSubRoom: "middle" },
@@ -54,22 +59,17 @@ export const room = inferRoomJson({
       position: { x: 0, y: 16, z: 2 },
       type: "door",
     },
-    extraSupports: {
-      config: { style: "tower", times: { y: 4, z: 2 } },
-      position: { x: 0, y: 0, z: 0 },
-      type: "block",
-    },
-    "floor@0,0,0": {
+    f: {
       config: { floorType: "deadly", times: { x: 2, y: 16 } },
       position: { x: 0, y: 0, z: 0 },
       type: "floor",
     },
-    "wall@0,0,0": {
+    w: {
       config: { direction: "right", times: { y: 16 } },
       position: { x: 0, y: 0, z: 0 },
       type: "wall",
     },
-    "wall@2,0,0": {
+    w1: {
       config: {
         direction: "left",
         tiles: [
