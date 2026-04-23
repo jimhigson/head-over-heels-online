@@ -5,6 +5,7 @@ import type {
   ItemRenderContext,
   ItemTickContext,
 } from "../../ItemRenderContexts";
+import type { DecorateItemRenderer } from "./DecorateItemRenderer";
 import type { ItemPixiRenderer } from "./ItemPixiRenderer";
 
 import { roomItemsIterable } from "../../../../model/RoomState";
@@ -107,15 +108,16 @@ export class ItemFlashOnSwitchedRenderer<T extends ItemInPlayType>
   }
 }
 
-export const maybeWrapInFlashOnSwitchedRenderer = <T extends ItemInPlayType>(
-  itemRenderContext: ItemRenderContext<T>,
-  childRenderer: ItemPixiRenderer<T>,
-): ItemPixiRenderer<T> => {
+export const flashOnSwitchedDecorateItemRenderer: DecorateItemRenderer = (
+  itemRenderContext,
+  childRenderer,
+) => {
   const {
     item,
     room: { items },
   } = itemRenderContext;
 
+  // check if this item is modified by any switch etc in the room:
   const isModifiedItem = roomItemsIterable(items)
     .filter(isModifier)
     .some(({ config: { modifies } }) => {

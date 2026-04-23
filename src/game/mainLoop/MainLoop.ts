@@ -240,7 +240,6 @@ export class MainLoop<RoomId extends string> {
           spriteOption: tickSpriteOption,
           spritesheetMeta: spritesheetMetaForOption(tickSpriteOption.name),
           upscale: tickUpscale,
-          editor: false,
           onScreenControls: tickOnScreenControls,
         },
 
@@ -284,7 +283,6 @@ export class MainLoop<RoomId extends string> {
             spriteOption: tickSpriteOption,
             spritesheetMeta: spritesheetMetaForOption(tickSpriteOption.name),
             upscale: tickUpscale,
-            editor: false,
             onScreenControls: tickOnScreenControls,
           },
           room: tickEndRoom,

@@ -116,14 +116,17 @@ export class RoomRenderer<RoomId extends string, RoomItemId extends string>
     if (itemRenderer === undefined) {
       // have never ticked this item before - either first tick in the room or item was introduced to the
       // room since the last tick
-      itemRenderer = createItemRenderer({
-        ...this.renderContext,
-        colourClashLayer: this.#colourClashLayer,
-        frontLayer: this.#frontLayer,
-        item,
-        zEdges: this.#zEdges,
-        getItemRenderPipeline: this.#getItemRenderPipeline,
-      });
+      itemRenderer = createItemRenderer(
+        {
+          ...this.renderContext,
+          colourClashLayer: this.#colourClashLayer,
+          frontLayer: this.#frontLayer,
+          item,
+          zEdges: this.#zEdges,
+          getItemRenderPipeline: this.#getItemRenderPipeline,
+        },
+        this.renderContext.wrapItemAppearanceRenderer,
+      );
 
       this.#itemRenderers.set(item.id as RoomItemId, itemRenderer);
 

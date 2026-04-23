@@ -6,10 +6,10 @@ import type {
 } from "../../../sprites/spritesheet/spritesheetData/TextureTailwindClass";
 import type { DirectionXy8 } from "../../../utils/vectors/vectors";
 
-import { twClass } from "../../../editor/twClass";
 import { spritesheetMetas } from "../../../sprites/spritesheet/spritesheetData/spritesheetMetaData";
 import { useAppSelector } from "../../../store/hooks";
 import { selectSpritesOption } from "../../../store/slices/gameMenus/gameMenusSelectors";
+import { twClass } from "../../../utils/twClass";
 
 const idleHeadClass = (
   facingXy8: DirectionXy8,

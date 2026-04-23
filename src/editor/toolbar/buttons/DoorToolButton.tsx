@@ -7,12 +7,12 @@ import type { ItemTool } from "../../RoomEditingArea/interactivity/Tool";
 
 import { store } from "../../../store/store";
 import { Switch } from "../../../ui/Switch";
+import { twClass } from "../../../utils/twClass";
 import {
   selectCurrentEditingRoomJson,
   setTool,
   useAppSelectorWithLevelEditorSlice,
 } from "../../slice/levelEditorSlice";
-import { twClass } from "../../twClass";
 import { buttonSpriteRevertColourClasses } from "../buttonSizeClassNames";
 import { ItemToolButton } from "../ItemToolButton";
 import { useIsCurrentItemTool } from "../useIsCurrentItemTool";

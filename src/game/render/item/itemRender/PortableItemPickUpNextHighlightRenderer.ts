@@ -1,11 +1,11 @@
 import { Container } from "pixi.js";
 
-import type { ItemTypeUnion } from "../../../../_generated/types/ItemInPlayUnion";
 import type { ItemInPlayType } from "../../../../model/ItemInPlay";
 import type {
   ItemRenderContext,
   ItemTickContext,
 } from "../../ItemRenderContexts";
+import type { DecorateItemRenderer } from "./DecorateItemRenderer";
 import type { ItemPixiRenderer } from "./ItemPixiRenderer";
 
 import { zxSpectrumColor } from "../../../../originalGame";
@@ -64,17 +64,12 @@ class PortableItemPickUpNextHighlightRenderer
   }
 }
 
-export const maybeWrapInPortableItemPickUpNextHighlightRenderer = <
-  T extends ItemInPlayType,
->(
-  item: ItemTypeUnion<T, string, string>,
-  itemRenderContext: ItemRenderContext<T>,
-  childRenderer: ItemPixiRenderer<T>,
-): ItemPixiRenderer<T> => {
-  return isPortable(item) ?
-      (new PortableItemPickUpNextHighlightRenderer(
-        itemRenderContext as ItemRenderContext<PortableItemType>,
-        childRenderer,
-      ) as ItemPixiRenderer<T>)
-    : childRenderer;
-};
+export const portableItemPickHighlightDecorateItemRenderer: DecorateItemRenderer =
+  (itemRenderContext, childRenderer) => {
+    return isPortable(itemRenderContext.item) ?
+        (new PortableItemPickUpNextHighlightRenderer(
+          itemRenderContext as ItemRenderContext<PortableItemType>,
+          childRenderer,
+        ) as typeof childRenderer)
+      : childRenderer;
+  };

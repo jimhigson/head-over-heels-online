@@ -16,14 +16,17 @@ import { debugItemClicked } from "../../../../store/slices/gameMenus/gameMenusSl
 import { store } from "../../../../store/store";
 import { appearanceForItem } from "../../itemAppearances/appearanceForItem";
 import { CompositeItemGraphicsRenderer } from "./CompositeItemGraphicsRenderer";
-import { maybeWrapInEditorSelectedRenderer } from "./EditorAnnotationsRenderer";
+import {
+  type DecorateItemRenderer,
+  noopDecorateItemRenderer,
+} from "./DecorateItemRenderer";
 import { ItemAppearancePixiRenderer } from "./ItemAppearancePixiRenderer";
 import { ItemBoundingBoxRenderer } from "./ItemBoundingBoxRenderer";
-import { maybeWrapInFlashOnSwitchedRenderer } from "./ItemFlashOnSwitchedRenderer";
+import { flashOnSwitchedDecorateItemRenderer } from "./ItemFlashOnSwitchedRenderer";
 import { ItemPositionRenderer } from "./ItemPositionRenderer";
 import { maybeCreateItemShadowRenderer } from "./ItemShadowRenderer";
 import { ItemSoundAndGraphicsRenderer } from "./ItemSoundAndGraphicsRenderer";
-import { maybeWrapInPortableItemPickUpNextHighlightRenderer } from "./PortableItemPickUpNextHighlightRenderer";
+import { portableItemPickHighlightDecorateItemRenderer } from "./PortableItemPickUpNextHighlightRenderer";
 
 /** for debugging */
 const assignPointerActions = <RoomId extends string>(
@@ -62,6 +65,12 @@ export type ItemRenderPipeline<T extends ItemInPlayType> = {
 /** factory to create the correct combinations of renderer(s) for any item */
 export const createItemRenderer = <T extends ItemInPlayType>(
   itemRenderContext: ItemRenderContext<T>,
+  /**
+   * optional decorator factory, used to wrap the item's visual rendering
+   * for adding to its appearance (eg, editor annotation). Defaults to an
+   * identity wrapper that returns the child unchanged.
+   */
+  injectedDecorator: DecorateItemRenderer = noopDecorateItemRenderer,
 ): ItemRenderPipeline<T> => {
   const state = store.getState();
   const showBoundingBoxes = selectShowBoundingBoxes(state);
@@ -89,18 +98,15 @@ export const createItemRenderer = <T extends ItemInPlayType>(
       itemRenderContext,
       appearance,
     );
-    const rendererWithMaybeSwitchFlashing = maybeWrapInFlashOnSwitchedRenderer(
-      itemRenderContext,
-      itemAppearanceRenderer,
-    );
     siblingPixiRenderers.push(
-      maybeWrapInEditorSelectedRenderer(
-        item,
+      injectedDecorator(
         itemRenderContext,
-        maybeWrapInPortableItemPickUpNextHighlightRenderer(
-          item,
+        portableItemPickHighlightDecorateItemRenderer(
           itemRenderContext,
-          rendererWithMaybeSwitchFlashing,
+          flashOnSwitchedDecorateItemRenderer(
+            itemRenderContext,
+            itemAppearanceRenderer,
+          ),
         ),
       ),
     );

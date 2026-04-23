@@ -1,9 +1,9 @@
 import type { PlanetName } from "../../../../../../sprites/planets";
 import type { TextureTailwindClass } from "../../../../../../sprites/spritesheet/spritesheetData/TextureTailwindClass";
 
-import { twClass } from "../../../../../../editor/twClass";
 import { useAppSelector } from "../../../../../../store/hooks";
 import { useIsUncolourised } from "../../../../../../store/slices/gameMenus/gameMenusSelectors";
+import { twClass } from "../../../../../../utils/twClass";
 import { BitmapText } from "../../../../tailwindSprites/BitmapText";
 
 const colourCycle: Record<PlanetName, string[]> = {
