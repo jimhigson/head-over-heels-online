@@ -90,7 +90,6 @@
     "tailwind-merge": "^2.6.0",
     "tailwind-scrollbar": "^3.1.0",
     "timeago.js": "^4.0.2",
-    "use-immer": "^0.11.0",
     "wouter": "^3.9.0"
   },
   "devDependencies": {
