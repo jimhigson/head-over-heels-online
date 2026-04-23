@@ -13,11 +13,11 @@ import type { EditorJsonItemUnion, EditorRoomJsonItems } from "../editorTypes";
 
 import { playableTailwindSpriteClassname } from "../../game/components/tailwindSprites/playableTailwindSpriteClassname";
 import { keys } from "../../utils/entries";
+import { twClass } from "../../utils/twClass";
 import {
   selectCurrentEditingRoomJson,
   useAppSelectorWithLevelEditorSlice,
 } from "../slice/levelEditorSlice";
-import { twClass } from "../twClass";
 import { getParsedJsonFromEditor } from "./getParsedJsonFromEditor";
 import { useLoadMonaco } from "./useLoadMonaco";
 

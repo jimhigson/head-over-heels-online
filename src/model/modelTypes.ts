@@ -1,4 +1,5 @@
 import type { SpritesheetFrameData } from "pixi.js";
+import type { Merge, SetOptional } from "type-fest";
 
 import type { SceneryName, Wall } from "../sprites/planets";
 import type { RoomJson } from "./RoomJson";
@@ -50,6 +51,15 @@ export type Campaign<RoomId extends string> = {
     //lastEditedRoom: EditorRoomId;
   };
 };
+
+/**
+ * Variant of Campaign where the locator's campaignName is optional — used
+ * by the editor when a campaign hasn't been named yet.
+ */
+export type OptionallyNamedCampaign<RoomId extends string> = Merge<
+  Campaign<RoomId>,
+  { locator: SetOptional<CampaignLocator, "campaignName"> }
+>;
 
 export type UnknownCampaign = Campaign<string>;
 

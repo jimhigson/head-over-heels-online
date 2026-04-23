@@ -1,4 +1,4 @@
-import { twClass } from "../../../editor/twClass";
+import { twClass } from "../../../utils/twClass";
 
 export const optionsDialogClasses =
   "bg-white zx:bg-zxWhite toppy:bg-toppyCool1 py-0 gap-y-0 " +

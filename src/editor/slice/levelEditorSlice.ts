@@ -80,6 +80,16 @@ export type LevelEditorState = {
 };
 
 /**
+ * Register this slice's shape into the store's LazyLoadedSlices interface,
+ * so the store knows about it without having to import any editor code.
+ */
+declare module "../../store/store" {
+  interface LazyLoadedSlices {
+    levelEditor: LevelEditorState;
+  }
+}
+
+/**
  * a slice for all the state that is controlled in react-land
  * (most state is controlled in the game itself and not touched here)
  */

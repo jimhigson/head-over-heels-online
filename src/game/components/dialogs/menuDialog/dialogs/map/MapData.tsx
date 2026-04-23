@@ -1,5 +1,7 @@
-import type { MaybeUnnamedCampaign } from "../../../../../../editor/editorTypes";
-import type { CharacterName } from "../../../../../../model/modelTypes";
+import type {
+  CharacterName,
+  OptionallyNamedCampaign,
+} from "../../../../../../model/modelTypes";
 import type { SceneryName } from "../../../../../../sprites/planets";
 import type {
   CharacterRooms,
@@ -20,7 +22,7 @@ export type MapDataError = {
 
 export type MapData<RoomId extends string> = {
   isError: false;
-  campaign: MaybeUnnamedCampaign<RoomId>;
+  campaign: OptionallyNamedCampaign<RoomId>;
   characterRooms: CharacterRooms<RoomId>;
   currentCharacterName: CharacterName;
   curRoomId: RoomId | undefined;

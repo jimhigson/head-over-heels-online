@@ -6,7 +6,7 @@ import type {
 } from "../../../sprites/spritesheet/spritesheetData/TextureTailwindClass";
 
 import { BitmapText } from "../../../game/components/tailwindSprites/BitmapText";
-import { twClass } from "../../twClass";
+import { twClass } from "../../../utils/twClass";
 import { buttonSpriteRevertColourClasses } from "../buttonSizeClassNames";
 
 /** a main icon, plus a small explanatory side-icon giving some attribute such as conveyor direction */

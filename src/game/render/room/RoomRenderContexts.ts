@@ -11,6 +11,7 @@ import type {
 import type { Upscale } from "../../../store/slices/upscale/Upscale";
 import type { GameState } from "../../gameState/GameState";
 import type { MovedItems } from "../../mainLoop/progressGameState";
+import type { DecorateItemRenderer } from "../item/itemRender/DecorateItemRenderer";
 
 /** some context that most renderers need, to be composed into their contexts
  *
@@ -34,12 +35,6 @@ export type GeneralRenderContext<RoomId extends string> = {
   upscale: Upscale;
 
   onScreenControls: boolean;
-
-  /**
-   * if true, we are rendering for the room editor. Otherwise, we are
-   * in-game
-   */
-  editor: boolean;
 };
 
 export type RoomRenderContext<
@@ -48,6 +43,11 @@ export type RoomRenderContext<
 > = {
   room: RoomState<RoomId, RoomItemId>;
   general: GeneralRenderContext<RoomId>;
+  /**
+   * optional decorator applied when an item's renderer is first constructed —
+   * used by eg, the level editor to inject annotation/selection overlays
+   */
+  wrapItemAppearanceRenderer?: DecorateItemRenderer;
 };
 
 /**

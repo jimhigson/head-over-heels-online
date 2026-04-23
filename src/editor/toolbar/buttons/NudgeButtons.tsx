@@ -5,6 +5,7 @@ import { BitmapText } from "../../../game/components/tailwindSprites/BitmapText"
 import { getJsonItemTimes } from "../../../model/times";
 import { useAppDispatch } from "../../../store/hooks";
 import { store } from "../../../store/store";
+import { twClass } from "../../../utils/twClass";
 import { unitVectors } from "../../../utils/vectors/unitVectors";
 import {
   elementWiseProductXyz,
@@ -21,7 +22,6 @@ import {
   useAppSelectorWithLevelEditorSlice,
 } from "../../slice/levelEditorSlice";
 import { getMovableVector } from "../../slice/reducers/moveOrResizeItemPreview/getMovableVector";
-import { twClass } from "../../twClass";
 import { ToolbarButton } from "./ToolbarButton";
 
 const lineContainerClassName = twClass(

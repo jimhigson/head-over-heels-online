@@ -8,9 +8,9 @@ import type { ItemToolButtonProps } from "./ItemToolButton";
 
 import { playableTailwindSpriteClassname } from "../../game/components/tailwindSprites/playableTailwindSpriteClassname";
 import { emptyArray, emptyObject } from "../../utils/empty";
+import { twClass } from "../../utils/twClass";
 import { selectCurrentEditingRoomJson } from "../slice/levelEditorSlice";
 import { rotatingSceneryTiles } from "../slice/rotatingSceneryTiles";
-import { twClass } from "../twClass";
 import {
   DissapearingItemToolbarIcon,
   LabelledToolbarIcon,

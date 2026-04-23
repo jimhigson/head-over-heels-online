@@ -15,6 +15,7 @@ import { spritesheetMetaForOption } from "../../sprites/spritesheet/spritesheetD
 import { useShowBoundingBoxes } from "../../store/slices/gameMenus/gameMenusSelectors";
 import { selectUpscale } from "../../store/slices/upscale/upscaleSlice";
 import { store } from "../../store/store";
+import { editorAnnotationsDecorateItemRenderer } from "../rendering/EditorAnnotationsRenderer";
 import { useEditorRoomStateWithPreviews } from "../slice/levelEditorSelectors";
 import { useProvidedPixiApplication } from "./PixiApplicationProvider";
 
@@ -38,7 +39,6 @@ const editorGeneralRenderContext = (
   spritesheetMeta: spritesheetMetaForOption("BlockStack"),
   upscale: selectUpscale(store.getState()),
   onScreenControls: false,
-  editor: true,
 });
 
 const createRoomRenderer = (
@@ -49,6 +49,7 @@ const createRoomRenderer = (
   return new RoomRenderer({
     room: roomState,
     general: editorGeneralRenderContext(pixiRenderer, showBoundingBoxes),
+    wrapItemAppearanceRenderer: editorAnnotationsDecorateItemRenderer,
   });
 };
 

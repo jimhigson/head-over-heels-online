@@ -1,4 +1,4 @@
-import type { UnknownAction, WithSlice } from "@reduxjs/toolkit";
+import type { UnknownAction } from "@reduxjs/toolkit";
 
 import { combineSlices, configureStore } from "@reduxjs/toolkit";
 import {
@@ -10,8 +10,6 @@ import {
   REGISTER,
   REHYDRATE,
 } from "redux-persist";
-
-import type { LevelEditorSlice } from "../editor/slice/levelEditorSlice";
 
 import { listenerMiddleware } from "./listenerMiddleware";
 import {
@@ -33,6 +31,15 @@ import {
 } from "./slices/upscale/updateUpscaleOnStoreChanges";
 import { upscaleSlice } from "./slices/upscale/upscaleSlice";
 
+/**
+ * Shape of lazy-loaded slices registered with the store.
+ *
+ * Extended via TypeScript declaration merging from the module that owns each
+ * lazy slice — keeps the store decoupled from any particular lazy slice.
+ */
+// eslint-disable-next-line @typescript-eslint/no-empty-object-type
+export interface LazyLoadedSlices {}
+
 const appReducer = combineSlices({
   [gameMenusSlice.reducerPath]: gameMenusPersistedReducer,
   [upscaleSlice.reducerPath]: upscaleSlice.reducer,
@@ -40,11 +47,7 @@ const appReducer = combineSlices({
   [githubApiSlice.reducerPath]: githubApiSlice.reducer,
   [gameAssetsLoadingSlice.reducerPath]: gameAssetsLoadingSlice.reducer,
   [spritesheetOverrideSlice.reducerPath]: spritesheetOverridePersistedReducer,
-}).withLazyLoadedSlices<
-  // pre-empting the lazy-loaded slices for the types only (no run-time importing)
-  // because it is easier. This could also be done via module augmentation in typescript
-  WithSlice<LevelEditorSlice>
->();
+}).withLazyLoadedSlices<LazyLoadedSlices>();
 
 export const injectSlice = appReducer.inject;
 

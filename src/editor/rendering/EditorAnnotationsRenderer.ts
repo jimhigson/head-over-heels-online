@@ -4,43 +4,43 @@ import type { AllUnionFields } from "type-fest";
 
 import { Container } from "pixi.js";
 
-import type { ItemTypeUnion } from "../../../../_generated/types/ItemInPlayUnion";
+import type { DecorateItemRenderer } from "../../game/render/item/itemRender/DecorateItemRenderer";
+import type { ItemPixiRenderer } from "../../game/render/item/itemRender/ItemPixiRenderer";
+import type {
+  ItemRenderContext,
+  ItemTickContext,
+} from "../../game/render/ItemRenderContexts";
+import type {
+  ItemInPlay,
+  ItemInPlayType,
+  UnionOfAllItemInPlayTypes,
+} from "../../model/ItemInPlay";
+import type { SwitchItemModificationUnion } from "../../model/json/SwitchConfig";
+import type { JsonMovement } from "../../model/json/utilityJsonConfigTypes";
+import type { DirectionXy4 } from "../../utils/vectors/vectors";
 import type {
   EditorItemInPlayUnion,
   EditorRoomId,
   EditorRoomItemId,
   EditorUnionOfAllItemInPlayTypes,
-} from "../../../../editor/editorTypes";
-import type { RootStateWithLevelEditorSlice } from "../../../../editor/slice/levelEditorSlice";
-import type {
-  ItemInPlay,
-  ItemInPlayType,
-  UnionOfAllItemInPlayTypes,
-} from "../../../../model/ItemInPlay";
-import type { SwitchItemModificationUnion } from "../../../../model/json/SwitchConfig";
-import type { JsonMovement } from "../../../../model/json/utilityJsonConfigTypes";
-import type { DirectionXy4 } from "../../../../utils/vectors/vectors";
-import type {
-  ItemRenderContext,
-  ItemTickContext,
-} from "../../ItemRenderContexts";
-import type { ItemPixiRenderer } from "./ItemPixiRenderer";
+} from "../editorTypes";
+import type { RootStateWithLevelEditorSlice } from "../slice/levelEditorSlice";
 
+import { outlineFilters } from "../../game/render/filters/OutlineFilter";
+import { RevertColouriseFilter } from "../../game/render/filters/RevertColouriseFilter";
+import { noFilters } from "../../game/render/filters/standardFilters";
+import { TextContainer } from "../../game/render/text/TextContainer";
+import { exitGameRoomId } from "../../model/json/ItemConfigMap";
+import { roomItemsIterable } from "../../model/RoomState";
+import { paletteBlockstack } from "../../sprites/palette/spritesheetPalette";
+import { store } from "../../store/store";
 import {
   changeToRoom,
   selectHoveredItem,
   selectSelectedJsonItemIds,
   selectTool,
   setClickableAnnotationHovered,
-} from "../../../../editor/slice/levelEditorSlice";
-import { exitGameRoomId } from "../../../../model/json/ItemConfigMap";
-import { roomItemsIterable } from "../../../../model/RoomState";
-import { paletteBlockstack } from "../../../../sprites/palette/spritesheetPalette";
-import { store } from "../../../../store/store";
-import { outlineFilters } from "../../filters/OutlineFilter";
-import { RevertColouriseFilter } from "../../filters/RevertColouriseFilter";
-import { noFilters } from "../../filters/standardFilters";
-import { TextContainer } from "../../text/TextContainer";
+} from "../slice/levelEditorSlice";
 
 const selectionColour = paletteBlockstack.pastelBlue;
 const pointerHoverFilter = outlineFilters.highlightBeige;
@@ -532,17 +532,11 @@ export class EditorAnnotationsRenderer<T extends ItemInPlayType>
 }
 
 /**
- * create this renderer *iff* we are rendering in the editor
+ * {@link DecorateItemRenderer} that wraps an item's appearance in
+ * {@link EditorAnnotationsRenderer}. Passed to the game's RoomRenderer via
+ * `wrapItemAppearanceRenderer` when the level editor constructs it.
  */
-export const maybeWrapInEditorSelectedRenderer = <T extends ItemInPlayType>(
-  item: ItemTypeUnion<T, string, string>,
-  itemRenderContext: ItemRenderContext<T>,
-  childRenderer: ItemPixiRenderer<T>,
-): ItemPixiRenderer<T> => {
-  return itemRenderContext.general.editor ?
-      (new EditorAnnotationsRenderer(
-        itemRenderContext as ItemRenderContext<T>,
-        childRenderer,
-      ) as ItemPixiRenderer<T>)
-    : childRenderer;
-};
+export const editorAnnotationsDecorateItemRenderer: DecorateItemRenderer = (
+  itemRenderContext,
+  childRenderer,
+) => new EditorAnnotationsRenderer(itemRenderContext, childRenderer);

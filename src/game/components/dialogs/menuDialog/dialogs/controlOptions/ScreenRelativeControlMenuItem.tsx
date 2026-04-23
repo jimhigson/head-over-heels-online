@@ -1,6 +1,5 @@
 import type { AnimatedTextureTailwindClass } from "../../../../../../sprites/spritesheet/spritesheetData/TextureTailwindClass";
 
-import { twClass } from "../../../../../../editor/twClass";
 import {
   type DirectionsRelativeToMode,
   directionsRelativeToModes,
@@ -9,6 +8,7 @@ import { useDirectionsRelativeTo } from "../../../../../../store/slices/gameMenu
 import { nextDirectionRelativeTo } from "../../../../../../store/slices/gameMenus/gameMenusSlice";
 import { useDispatchActionCallback } from "../../../../../../store/useDispatchActionCallback";
 import { SwitchN } from "../../../../../../ui/Switch";
+import { twClass } from "../../../../../../utils/twClass";
 import { BlockyMarkdown } from "../../../../BlockyMarkdown";
 import { usePlayableTailwindSpriteClassname } from "../../../../tailwindSprites/playableTailwindSpriteClassname";
 import {

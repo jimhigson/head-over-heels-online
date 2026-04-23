@@ -3,12 +3,12 @@ import type { Xy } from "../../../utils/vectors/vectors";
 
 import { BitmapText } from "../../../game/components/tailwindSprites/BitmapText";
 import { useDispatchActionCallback } from "../../../store/useDispatchActionCallback";
+import { twClass } from "../../../utils/twClass";
 import {
   addRoom,
   removeRoom,
   useAppSelectorWithLevelEditorSlice,
 } from "../../slice/levelEditorSlice";
-import { twClass } from "../../twClass";
 import { MenuButton, MenuItemButton } from "./MenuButton";
 import { ToolbarButton } from "./ToolbarButton";
 

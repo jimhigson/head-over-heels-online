@@ -6,8 +6,8 @@ import { useEffect, useRef, useState } from "react";
 
 import type { EditorRoomItemId } from "../editorTypes";
 
+import { twClass } from "../../utils/twClass";
 import { useAppSelectorWithLevelEditorSlice } from "../slice/levelEditorSlice";
-import { twClass } from "../twClass";
 import { useLoadMonaco } from "./useLoadMonaco";
 
 const useMonacoEditorText = (

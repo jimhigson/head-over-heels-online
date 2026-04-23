@@ -8,9 +8,9 @@ import {
   useState,
 } from "react";
 
-import { twClass } from "../editor/twClass";
 import { BitmapText } from "../game/components/tailwindSprites/BitmapText";
 import { soundUrls } from "../sound/soundUrls";
+import { twClass } from "../utils/twClass";
 import { cn } from "./cn";
 import { enhanceTooltipWithHotkeys } from "./enhanceTooltipWithHotkeys";
 import { getSwitchPaddedLabels } from "./getSwitchPaddedLabels";
