@@ -94,4 +94,6 @@ export type TailwindSpectrumColourName =
   | keyof typeof zxSpecTailwindColoursDimmed;
 
 export type TailwindTextColourClassname =
-  `text-${TailwindColourisedColourName} zx:text-${TailwindColourName} toppy:text-${TailwindToppyColourName}`;
+  | `text-${TailwindColourisedColourName}`
+  | `toppy:text-${TailwindToppyColourName}`
+  | `zx:text-${TailwindColourName}`;

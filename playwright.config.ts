@@ -1,4 +1,5 @@
 import { defineConfig, devices } from "@playwright/test";
+import getPort from "get-port";
 import { produce } from "immer";
 
 import type { ScreenshotTestOptions } from "./screenshotTests/ScreenshotTestOptions";
@@ -19,7 +20,19 @@ const phoneSize = {
   deviceScaleFactor: 1,
 };
 
-const port = 5222;
+// Playwright re-imports this config in every worker process, so a bare
+// `await getPort()` would hand each worker a different port and only the
+// main runner would match the actual preview server. Pick once in the
+// parent and stash it in an env var that forked workers inherit.
+const inheritedPort: string | undefined = process.env.PW_WEBSERVER_PORT;
+const isRootPlaywrightProcess = inheritedPort === undefined;
+const webserverPort =
+  isRootPlaywrightProcess ? await getPort() : Number(inheritedPort);
+
+if (isRootPlaywrightProcess) {
+  console.log("playwright.config.ts: webserverPort:", webserverPort);
+  process.env.PW_WEBSERVER_PORT = String(webserverPort);
+}
 
 export default defineConfig<ScreenshotTestOptions>({
   testDir: "./screenshotTests",
@@ -29,7 +42,7 @@ export default defineConfig<ScreenshotTestOptions>({
   retries: process.env.CI ? 1 : 0,
   reporter: "html",
   use: {
-    baseURL: `http://localhost:${port}`,
+    baseURL: `http://localhost:${webserverPort}`,
     trace: "on-first-retry",
     screenshot: "only-on-failure",
   },
@@ -97,8 +110,10 @@ export default defineConfig<ScreenshotTestOptions>({
   ],
 
   webServer: {
-    command: `pnpm kill-port ${port} && pnpm preview:game --port ${port}`,
-    url: `http://localhost:${port}`,
-    reuseExistingServer: !process.env.CI,
+    command: `pnpm preview:game --port ${webserverPort}`,
+    url: `http://localhost:${webserverPort}`,
+    // Each run picks a fresh port above, so there is never a previous
+    // server to reuse
+    reuseExistingServer: false,
   },
 });
