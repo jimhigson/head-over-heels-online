@@ -81,6 +81,10 @@ cool1
 cool2
 cool3
 cool4
+bg_grey1
+bg_grey2
+bg_grey3
+bg_blue
 replaceLight
 replaceDark
 )

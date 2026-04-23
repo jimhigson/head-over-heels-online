@@ -15,6 +15,10 @@
   "cool2": "#6094E0",
   "cool3": "#6060C0",
   "cool4": "#003060",
+  "bg_grey1": "#C0AFA9",
+  "bg_grey2": "#7C6E6C",
+  "bg_grey3": "#31413B",
+  "bg_blue": "#1366D0",
   "replaceLight": "#3FDB8B",
   "replaceDark": "#2EA17C"
 }

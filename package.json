@@ -126,6 +126,7 @@
     "execa": "^9.6.1",
     "fast-json-patch": "^3.1.1",
     "fullscreen-ink": "^0.1.0",
+    "get-port": "^7.2.0",
     "gh-pages": "^6.3.0",
     "git-format-staged": "^3.1.1",
     "globals": "^15.15.0",
