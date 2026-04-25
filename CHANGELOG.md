@@ -1,5 +1,58 @@
 # Changelog
 
+## [22.0.0](https://github.com/jimhigson/head-over-heels-online/compare/v21.0.0...v22.0.0) (2026-04-23)
+
+
+### Features
+
+* auto-converted room items get shorter names ([#818](https://github.com/jimhigson/head-over-heels-online/issues/818)) ([e60c6d6](https://github.com/jimhigson/head-over-heels-online/commit/e60c6d6ccd8fc0100f01f59b734206e3d3d15596))
+* conveyors can have variable speeds ([#792](https://github.com/jimhigson/head-over-heels-online/issues/792)) ([9867a52](https://github.com/jimhigson/head-over-heels-online/commit/9867a52ff0e61b57a8282627af702d8dae4de905))
+* do not show original-game-accurate overlays on the edge of floors when using Toppy spritesheet ([#819](https://github.com/jimhigson/head-over-heels-online/issues/819)) ([2849b8e](https://github.com/jimhigson/head-over-heels-online/commit/2849b8e0fd75de74fb252bd83749426f9b399dc7))
+* door sound effects ([#807](https://github.com/jimhigson/head-over-heels-online/issues/807)) ([936d298](https://github.com/jimhigson/head-over-heels-online/commit/936d2987ac681fa6f2ed0630fe0c77cb660af9c0))
+* emitters can have an in-room-at-once maximum created item count, which allows creation of pickup makers that wont create a new one until the last one is collected ([#791](https://github.com/jimhigson/head-over-heels-online/issues/791)) ([f1eaf71](https://github.com/jimhigson/head-over-heels-online/commit/f1eaf71a2bf21655b0beb0abd41dcc99b3d1bd51))
+* Head doesn't play walking animation while in symbiosis ([#803](https://github.com/jimhigson/head-over-heels-online/issues/803)) ([8a8b268](https://github.com/jimhigson/head-over-heels-online/commit/8a8b268a9191ab70d6c36ff5d450bd2ef7750f4b))
+* more sound fx in-game and in menus - switching character, monster (de)activating, doughnuts hitting, elephants, monkeys, buttons on/off, crowns sparkling ([#804](https://github.com/jimhigson/head-over-heels-online/issues/804)) ([906b988](https://github.com/jimhigson/head-over-heels-online/commit/906b9880f7744611346b3aa455c5129bbcaff212))
+* new spritesheet by Toppy ([#776](https://github.com/jimhigson/head-over-heels-online/issues/776)) ([550d9fb](https://github.com/jimhigson/head-over-heels-online/commit/550d9fbe8f5b264f8fbde81031eef4978b48e4a0))
+* palette tweaks ([#811](https://github.com/jimhigson/head-over-heels-online/issues/811)) ([5ece881](https://github.com/jimhigson/head-over-heels-online/commit/5ece881e7e8f78ee524cc78ad347a22767ca6cae))
+* sound effect in menus ([#805](https://github.com/jimhigson/head-over-heels-online/issues/805)) ([49eae5a](https://github.com/jimhigson/head-over-heels-online/commit/49eae5af65e22952eb8f0dd712401e6adcc5d3f3))
+* use toppy palette in dialogs ([#814](https://github.com/jimhigson/head-over-heels-online/issues/814)) ([7e2f281](https://github.com/jimhigson/head-over-heels-online/commit/7e2f28152f41d95fadc98fed8f7cf19107853e1a))
+
+
+### Bug Fixes
+
+* all monster types can be rendered as deactivated ([#789](https://github.com/jimhigson/head-over-heels-online/issues/789)) ([dda6a92](https://github.com/jimhigson/head-over-heels-online/commit/dda6a92196d3414ac5bb099c7f3872f1d363451e))
+* bug when pushing character through a door with ?cheats=1 enabled ([#813](https://github.com/jimhigson/head-over-heels-online/issues/813)) ([d2e3e92](https://github.com/jimhigson/head-over-heels-online/commit/d2e3e92bfa9b295087c59bcabec74cded5b43ff1))
+* fanfare not playing on game start ([#806](https://github.com/jimhigson/head-over-heels-online/issues/806)) ([4ed4c4a](https://github.com/jimhigson/head-over-heels-online/commit/4ed4c4a505a7806e81a5ec833644002ba4ef12da))
+* let big rooms be positioned relative to each other on the map ([#797](https://github.com/jimhigson/head-over-heels-online/issues/797)) ([e5c523c](https://github.com/jimhigson/head-over-heels-online/commit/e5c523c1ab90edadc23ee1d2c072f60b4f29906e))
+* pickups that slide on top of player are collected ([#790](https://github.com/jimhigson/head-over-heels-online/issues/790)) ([742ca50](https://github.com/jimhigson/head-over-heels-online/commit/742ca50784be2b407a7e4744a7bc2b27be722dac))
+* portable teleporters get the same standard sound effects as other movable items (falling, scraping, etc) ([#778](https://github.com/jimhigson/head-over-heels-online/issues/778)) ([a75559e](https://github.com/jimhigson/head-over-heels-online/commit/a75559e2af8d5c38db98dd169ccb4c0c2dbef593))
+* pressing a switch does not cause player to slide around the switch ([#796](https://github.com/jimhigson/head-over-heels-online/issues/796)) ([5ef619c](https://github.com/jimhigson/head-over-heels-online/commit/5ef619c53d5126e128601a8c2f3df25e2809ed1a))
+* sorting items for rendering logging too much and slowing down the engine ([#795](https://github.com/jimhigson/head-over-heels-online/issues/795)) ([d2f096b](https://github.com/jimhigson/head-over-heels-online/commit/d2f096b599221aab6afbff10331b340dd4863f36))
+
+
+### Room Changes
+
+* final room has slower firing salute to palyer ([#799](https://github.com/jimhigson/head-over-heels-online/issues/799)) ([6d184a7](https://github.com/jimhigson/head-over-heels-online/commit/6d184a7a840ea0f719c37569ef053f7604457d64))
+* minor changes in two original campaign penitentiary rooms ([#782](https://github.com/jimhigson/head-over-heels-online/issues/782)) ([aa17048](https://github.com/jimhigson/head-over-heels-online/commit/aa1704825f3b4f8f2cda7d8190c8aab45c66ea2a))
+* moonbase16 avoids a sudden death on entering the room because enemy starts close to the player ([#780](https://github.com/jimhigson/head-over-heels-online/issues/780)) ([6295d89](https://github.com/jimhigson/head-over-heels-online/commit/6295d89368b3f4baeca510ee726f0e4fb761a3f7))
+* safari21 does not have an instadeath on entry if entering at the edge of the door ([#800](https://github.com/jimhigson/head-over-heels-online/issues/800)) ([6af1dbf](https://github.com/jimhigson/head-over-heels-online/commit/6af1dbf7a2f5538640b99327787f2b119691098a))
+
+
+### Editor Changes
+
+* cmd-k command palette ([#775](https://github.com/jimhigson/head-over-heels-online/issues/775)) ([13bcaab](https://github.com/jimhigson/head-over-heels-online/commit/13bcaaba49d745175a7a0c0a748315655966be13))
+* drop down menu on room back/forward buttons ([#794](https://github.com/jimhigson/head-over-heels-online/issues/794)) ([b119fbd](https://github.com/jimhigson/head-over-heels-online/commit/b119fbd4755cd9d45751dcd0c20c3f623930c4db))
+* fix race condition in loading monaco editor ([#783](https://github.com/jimhigson/head-over-heels-online/issues/783)) ([fa2ea77](https://github.com/jimhigson/head-over-heels-online/commit/fa2ea7711c130e880988b6400930267044b07b78))
+* only package monaco workers that we need ([#777](https://github.com/jimhigson/head-over-heels-online/issues/777)) ([c553c17](https://github.com/jimhigson/head-over-heels-online/commit/c553c173d9de952a3cae4e82f46996b9f2656604))
+* refactor json schema for room json in editor to be ~70% smaller by reducing duplication ([#770](https://github.com/jimhigson/head-over-heels-online/issues/770)) ([023a950](https://github.com/jimhigson/head-over-heels-online/commit/023a9508e8023e47b53023153c81fdb19ebb4b50))
+
+
+### Miscellaneous
+
+* add tsgo as an alternative to tsc ([#786](https://github.com/jimhigson/head-over-heels-online/issues/786)) ([af95d65](https://github.com/jimhigson/head-over-heels-online/commit/af95d65c8a7ea7bdcd72ea25352ad2841985bdd2))
+* augment IterableIterator type with new helper methods, drop iter-tools helper library ([#787](https://github.com/jimhigson/head-over-heels-online/issues/787)) ([856153d](https://github.com/jimhigson/head-over-heels-online/commit/856153d22d46a909377736cfad8bf5fea8676b90))
+* upgraded to typescript v6 ([#781](https://github.com/jimhigson/head-over-heels-online/issues/781)) ([75dcbb9](https://github.com/jimhigson/head-over-heels-online/commit/75dcbb9f2f1bc22128f0d441d4706af56e61219b))
+
 ## [21.0.0](https://github.com/jimhigson/head-over-heels-online/compare/v20.0.0...v21.0.0) (2026-03-15)
 
 
