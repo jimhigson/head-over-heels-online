@@ -149,4 +149,7 @@ export const blockStackSpritesheetMeta: SpritesheetMetadata<
   ],
   supportsUncolourised: true,
   showFloorOverDraw: true,
+  // we have black outlines, so use an almost black blackpoint
+  // on this spritesheet:
+  teleporterEffectBlackPoint: 0.1,
 };

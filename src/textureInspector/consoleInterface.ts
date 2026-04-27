@@ -250,7 +250,9 @@ declare global {
  */
 export const addToConsole = (): void => {
   if (typeof window !== "undefined") {
-    window.textureInspector = logTextures;
+    // void to not return the promise to the console:
+    window.textureInspector = (...args: Parameters<typeof logTextures>) =>
+      void logTextures(...args);
     window.textureInspectorStart = patchPixiToTrackTextures;
 
     console.log(`✅ Texture inspector ready. Use these commands in the console:

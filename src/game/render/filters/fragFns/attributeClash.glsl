@@ -73,12 +73,15 @@ vec4 attributeClash(
         for (int x = 0; x < sampleCount; x++) {
             samplePos01.x += stepSize01.x;
 
-            // sample (possibly out-of-bounds of the texture, but this result will be 
-            // ignored if such)
+            // sample (possibly out-of-bounds of the texture, but this result will be
+            // ignored if such).
+            vec4 raw = texture(inputTexture, samplePos01);
             vec4 sampleColor = lutColourReplace(
                 lut,
-                texture(inputTexture, samplePos01)
-            ) * inputDim;
+                // dim only the rgb, keeping the alpha channel intact so the lut's
+                // alpha-gated replacement still triggers.
+                vec4(raw.rgb * inputDim, raw.a)
+            );
 
             // detect OOB:
             float isInBounds = 

@@ -14,7 +14,7 @@ const glProgram = GlProgram.from({
  * Filter to put graphics back to how they looked on the spectrum!
  */
 export class RevertColouriseFilter extends Filter {
-  public uniforms: {
+  #uniforms: {
     uTargetColor: Float32Array;
   };
 
@@ -30,15 +30,15 @@ export class RevertColouriseFilter extends Filter {
       },
     });
 
-    this.uniforms = this.resources.colorReplaceUniforms.uniforms;
+    this.#uniforms = this.resources.colorReplaceUniforms.uniforms;
 
     this.targetColor = targetColor;
   }
 
   set targetColor(value: ColorSource) {
     const [r, g, b] = new Color(value).toArray();
-    this.uniforms.uTargetColor[0] = r;
-    this.uniforms.uTargetColor[1] = g;
-    this.uniforms.uTargetColor[2] = b;
+    this.#uniforms.uTargetColor[0] = r;
+    this.#uniforms.uTargetColor[1] = g;
+    this.#uniforms.uTargetColor[2] = b;
   }
 }

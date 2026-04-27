@@ -3,10 +3,17 @@ import { useEffect, useState } from "react";
 
 import { blockstackToSpectrumLut } from "../game/render/filters/lutTexture/stdLuts/blockstackToSpectrumLut";
 import { paletteQuantisationLut } from "../game/render/filters/lutTexture/stdLuts/paletteQuantisationLut";
+import { spectrumLumLut } from "../game/render/filters/lutTexture/stdLuts/spectrumLumLut";
+import { toppyToSpectrumLut } from "../game/render/filters/lutTexture/stdLuts/toppyToSpectrumLut";
 
 const lutDisplaySize = 512;
 
-const luts = [paletteQuantisationLut, blockstackToSpectrumLut];
+const luts = [
+  paletteQuantisationLut,
+  blockstackToSpectrumLut(),
+  toppyToSpectrumLut(),
+  spectrumLumLut(),
+];
 
 interface SingleLutDisplayProps {
   /**

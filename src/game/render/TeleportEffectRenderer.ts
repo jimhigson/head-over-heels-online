@@ -127,12 +127,16 @@ export class TeleportEffectRenderer<
             renderContext: {
               general: {
                 upscale: { gameEngineUpscale },
+                spriteOption,
+                spritesheetMeta,
               },
             },
           } = this;
 
           this.#teleportingEffectFilter = new TeleportingEffectFilter({
             blockSize: gameEngineUpscale * 8,
+            spriteOption,
+            spritesheetMeta,
           });
           this.#updateFilterCentreXy(currentPlayable);
           this.output.graphics.filters = [this.#teleportingEffectFilter];

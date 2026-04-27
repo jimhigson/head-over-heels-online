@@ -1,6 +1,9 @@
 import { defaultFilterVert, Filter, GlProgram } from "pixi.js";
 
-import { blockstackToSpectrumLut } from "./lutTexture/stdLuts/blockstackToSpectrumLut";
+import type { SpritesheetMetadata } from "../../../sprites/spritesheet/spritesheetData/spritesheetMetaData";
+import type { SpriteOption } from "../../../store/slices/gameMenus/gameMenusSlice";
+
+import { lutForSpriteOption } from "./lutTexture/stdLuts/lutForSpriteOption";
 import fragment from "./teleportingEffect.frag";
 
 const glProgram = GlProgram.from({
@@ -13,30 +16,26 @@ type TeleportingEffectOptions = {
   /**
    * Size of each attribute block in pixels (e.g., 8 for spectacular 8x8 blocks)
    */
-  blockSize?: number;
-  /**
-   * Threshold below which a color is considered black. 0-1 range where 0 means only pure black is
-   * considered black, and 1 means nothing is considered black
-   */
-  blackPoint?: number;
+  blockSize: number;
 
-  centreX?: number;
-  centreY?: number;
+  spriteOption: SpriteOption;
+  spritesheetMeta: SpritesheetMetadata;
 };
 
 export class TeleportingEffectFilter extends Filter {
-  public uniforms: {
+  #uniforms: {
+    uBlockSize: number;
+    uBlackPoint: number;
     uProgress: number;
-    centreX: number;
-    centreY: number;
+    uCentreX: number;
+    uCentreY: number;
   };
 
   constructor({
-    blockSize = 8,
-    blackPoint = 0.1,
-    centreX = 0.5,
-    centreY = 0.5,
-  }: TeleportingEffectOptions = {}) {
+    blockSize,
+    spriteOption,
+    spritesheetMeta,
+  }: TeleportingEffectOptions) {
     super({
       glProgram,
       resources: {
@@ -46,7 +45,7 @@ export class TeleportingEffectFilter extends Filter {
             type: "f32",
           },
           uBlackPoint: {
-            value: blackPoint,
+            value: spritesheetMeta.teleporterEffectBlackPoint,
             type: "f32",
           },
           /** progress uniform 0 for just starting, 1 for finished */
@@ -55,28 +54,28 @@ export class TeleportingEffectFilter extends Filter {
             type: "f32",
           },
           uCentreX: {
-            value: centreX,
+            value: 0,
             type: "f32",
           },
           uCentreY: {
-            value: centreY,
+            value: 0,
             type: "f32",
           },
         },
-        uLut: blockstackToSpectrumLut.source,
+        uLut: lutForSpriteOption(spriteOption).source,
       },
     });
 
-    this.uniforms = this.resources.attributeBlockUniforms.uniforms;
+    this.#uniforms = this.resources.attributeBlockUniforms.uniforms;
   }
 
   set progress(value: number) {
-    this.resources.attributeBlockUniforms.uniforms.uProgress = value;
+    this.#uniforms.uProgress = value;
   }
   set centreX(value: number) {
-    this.resources.attributeBlockUniforms.uniforms.uCentreX = value;
+    this.#uniforms.uCentreX = value;
   }
   set centreY(value: number) {
-    this.resources.attributeBlockUniforms.uniforms.uCentreY = value;
+    this.#uniforms.uCentreY = value;
   }
 }

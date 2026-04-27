@@ -17,6 +17,7 @@ export interface TrackedTextureSource {
     | "PaletteSwapFilter"
     | "spritesheet(original)"
     | "spritesheet(variant)"
+    | "TeleporterFilterLut"
     | "TextContainer";
 }
 
@@ -29,6 +30,9 @@ const trackedTextures = new Map<TextureSource, TrackedTextureSource>();
 const detectType = (stack: string): TrackedTextureSource["type"] => {
   if (stack.includes("ItemShadowRenderer.ts")) {
     return "ItemShadowRenderer";
+  }
+  if (stack.includes("TeleportingEffectFilter")) {
+    return "TeleporterFilterLut";
   }
   if (stack.includes("PaletteSwapFilter.ts")) {
     return "PaletteSwapFilter";

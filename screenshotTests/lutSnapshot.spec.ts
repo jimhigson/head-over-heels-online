@@ -20,7 +20,7 @@ test.describe("LUT Texture Visualization", () => {
     await expect(page).toHaveScreenshot("lut-texture.png", {
       fullPage: true,
       animations: "disabled",
-      clip: { x: 0, y: 0, width: 512, height: 512 * 3 },
+      clip: { x: 0, y: 0, width: 512, height: 512 * 4 },
       threshold: 0.02,
       maxDiffPixels: 0,
       scale: "css",
