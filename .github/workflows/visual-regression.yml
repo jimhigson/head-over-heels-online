@@ -21,7 +21,7 @@ jobs:
           filters: |
             visual-regression-trigger-files:
               - 'src/**'
-              - 'screenshotTests/**'
+              - 'e2e/**'
               - 'gfx/**'
               - 'pnpm-lock.yaml'
               - '.github/workflows/visual-regression.yml'
@@ -139,9 +139,8 @@ jobs:
           # PORTRAIT - room + menu snapshots on a single agent (suite filter not needed, project testMatch restricts specs)
           - { os: ubuntu-24.04-arm, suite: "", projectOption: --project mobile-safari-portrait }
 
-          # SPRITES and OFFLINE - single batch, chromium-desktop only on Linux
-          # these are both quite quick so grouping together to save an agent:
-          - { os: ubuntu-24.04-arm, suite: "spritesPage offlineCampaignCache", projectOption: --project chromium-desktop }
+          # SPRITES - single batch, chromium-desktop only on Linux
+          - { os: ubuntu-24.04-arm, suite: spritesPage, projectOption: --project chromium-desktop }
     # name is super-compressed to fit on the github UI with enough info to identify what's being run
     name: >-
       ${{
@@ -149,7 +148,7 @@ jobs:
         || matrix.suite == 'menuSnapshotsDialogs' && format('MnuDlg {0}', contains(matrix.os, 'windows') && 'Win' || 'Lnx')
         || matrix.suite == 'menuSnapshotsInGame' && format('MnuGame {0}', contains(matrix.os, 'windows') && 'Win' || 'Lnx')
         || matrix.suite == 'menuSnapshotsMainMenu' && format('MnuMain {0}', contains(matrix.os, 'windows') && 'Win' || 'Lnx')
-        || contains(matrix.suite, 'spritesPage') && 'Sprites+Offline'
+        || matrix.suite == 'spritesPage' && 'Sprites'
         || matrix.suite == '' && format('All:{0}',
             contains(matrix.projectOption, 'mobile-safari-portrait') && 'mobile-safari-portrait'
               || matrix.projectOption)

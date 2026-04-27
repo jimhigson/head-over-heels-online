@@ -77,6 +77,18 @@ export const isSolid = (
   return !isUnsolid(item, toucher);
 };
 
+/** true iff the item is possible to stand on (ie, solid, not a portal) */
+export const isStandable = (item: UnionOfAllItemInPlayTypes) => {
+  return !(
+    // unsolid items are never standable:
+    (
+      isNeverSolidItemType(item) ||
+      // protals are sometimes solid, but are never standable:
+      item.type === "portal"
+    )
+  );
+};
+
 /**
  * 'heavy' items stop lifts from rising (see blacktooth 78) - only
  * the metal stepStools and moving platform sandwiches are heavy

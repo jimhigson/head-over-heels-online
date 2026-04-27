@@ -4,6 +4,7 @@ import type { Xyz } from "../../../utils/vectors/vectors";
 import type { FreeItem } from "../../physics/itemPredicates";
 
 import { otherIndividualCharacterName } from "../../../model/modelTypes";
+import { store } from "../../../store/store";
 import { epsilon } from "../../../utils/epsilon";
 import {
   addXyzWriteInto,
@@ -18,6 +19,7 @@ import { moveItem } from "../../physics/moveItem/moveItem";
 import { type GameState } from "../GameState";
 import { selectCanCombine } from "../gameStateSelectors/selectCanCombine";
 import { selectPlayableItem } from "../gameStateSelectors/selectPlayableItem";
+import { dispatchSaveGame } from "../saving/dispatchSaveGame";
 import { addItemToRoom } from "./addItemToRoom";
 import { deleteItemFromRoom } from "./deleteItemFromRoom";
 import { setStandingOnWithoutRemovingOldFirst } from "./standingOn/setStandingOnWithoutRemovingOldFirst";
@@ -208,4 +210,7 @@ export const swopPlayables = <RoomId extends string>(
   // even if no switch happened (which can only happen if toPlayable was given),
   // highlight the character that was requested to switch to to give some feedback
   highlightCurrentPlayable(gameState);
+
+  // saving on swop is cheap and lets the active character persist across reloads
+  dispatchSaveGame(gameState, store);
 };

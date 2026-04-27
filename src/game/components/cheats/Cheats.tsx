@@ -98,6 +98,7 @@ const SummonPlayableButton = <RoomId extends string>({
   const spriteClassname = usePlayableTailwindSpriteClassname();
   return (
     <Button
+      data-test-id={`cheats-summon-character-${playableName}`}
       className={cheatsButtonClasses}
       onClick={(e) => {
         if (gameApi.gameState.currentCharacterName === playableName) {
@@ -214,6 +215,7 @@ export const GoToRoomButton = <RoomId extends string>({
 }: PropsWithChildren<GoToRoomButtonProps<RoomId>>) => {
   return (
     <Button
+      data-test-id={`cheats-goto-room-${roomId}`}
       className={cheatsButtonClasses}
       onClick={(e) => {
         gameApi.changeRoom(roomId);
@@ -419,6 +421,7 @@ export const Cheats = <RoomId extends string>(_emptyProps: EmptyObject) => {
                 />
               </Button>
               <Button
+                data-test-id="cheats-summon-monster-dalek"
                 className={cheatsButtonClasses}
                 onClick={(e) => {
                   summonItem("monster", {
@@ -470,6 +473,7 @@ export const Cheats = <RoomId extends string>(_emptyProps: EmptyObject) => {
             </div>
             <div className="flex flex-row items-center">
               <Button
+                data-test-id="cheats-summon-crown-bookworld"
                 className={cheatsButtonClasses}
                 onClick={(e) => {
                   summonItem("pickup", { gives: "crown", planet: "bookworld" });
@@ -481,6 +485,7 @@ export const Cheats = <RoomId extends string>(_emptyProps: EmptyObject) => {
                 />
               </Button>
               <Button
+                data-test-id="cheats-summon-crown-egyptus"
                 className={cheatsButtonClasses}
                 onClick={(e) => {
                   summonItem("pickup", { gives: "crown", planet: "egyptus" });
@@ -492,6 +497,7 @@ export const Cheats = <RoomId extends string>(_emptyProps: EmptyObject) => {
                 />
               </Button>
               <Button
+                data-test-id="cheats-summon-crown-safari"
                 className={cheatsButtonClasses}
                 onClick={(e) => {
                   summonItem("pickup", { gives: "crown", planet: "safari" });
@@ -503,6 +509,7 @@ export const Cheats = <RoomId extends string>(_emptyProps: EmptyObject) => {
                 />
               </Button>
               <Button
+                data-test-id="cheats-summon-crown-penitentiary"
                 className={cheatsButtonClasses}
                 onClick={(e) => {
                   summonItem("pickup", {
@@ -517,6 +524,7 @@ export const Cheats = <RoomId extends string>(_emptyProps: EmptyObject) => {
                 />
               </Button>
               <Button
+                data-test-id="cheats-summon-crown-blacktooth"
                 className={cheatsButtonClasses}
                 onClick={(e) => {
                   summonItem("pickup", {
@@ -589,6 +597,7 @@ export const Cheats = <RoomId extends string>(_emptyProps: EmptyObject) => {
                 />
               </Button>
               <Button
+                data-test-id="cheats-summon-reincarnation"
                 className={cheatsButtonClasses}
                 onClick={(e) => {
                   summonItem("pickup", { gives: "reincarnation" });

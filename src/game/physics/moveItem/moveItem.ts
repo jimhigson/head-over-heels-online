@@ -23,7 +23,12 @@ import { removeStandingOn } from "../../gameState/mutators/standingOn/removeStan
 import { setStandingOnWithoutRemovingOldFirst } from "../../gameState/mutators/standingOn/setStandingOnWithoutRemovingOldFirst";
 import { updateItemPosition } from "../../gameState/mutators/updateItemPosition";
 import { sortObstaclesAboutPriorityAndVector } from "../collisionsOrder";
-import { isLift, isPushable, isSlidingItem } from "../itemPredicates";
+import {
+  isLift,
+  isPushable,
+  isSlidingItem,
+  isStandable,
+} from "../itemPredicates";
 import { isFreeItem } from "../itemPredicates";
 import { isSolid } from "../itemPredicates";
 import { maxPushRecursionDepth } from "../mechanicsConstants";
@@ -399,6 +404,7 @@ export const moveItem = <RoomId extends string, RoomItemId extends string>({
     // check if we landed on the item we collided with to take over the standingOn slot::
     if (
       isFreeItem(subjectItem) &&
+      isStandable(collidedWithItem) &&
       // item is pushing us off it vertically - a good sign that we're standing on it
       backingOffMtv.z > 0 &&
       // have to be moving downwards to stand on something. It is possible to have a positive

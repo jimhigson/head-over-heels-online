@@ -10,5 +10,5 @@ build-stats-editor.html
 .vscode
 hohjs.code-workspace
 .claude
-screenshotTests/*-snapshots
+e2e/*-snapshots
 src-tauri/target

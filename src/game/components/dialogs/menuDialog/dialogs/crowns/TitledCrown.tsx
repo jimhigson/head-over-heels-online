@@ -71,10 +71,14 @@ export const TitledCrown = ({
   const uncolourised = useIsUncolourised();
 
   return (
-    <div className={`flex flex-col ${className}`}>
+    <div
+      className={`flex flex-col ${className}`}
+      data-test-id={`crown-${planet}`}
+      data-collected={collected ? "true" : "false"}
+    >
       <span
         className={`sprite block mx-auto
-          ${uncolourised ? `${"texture-crown_uncolourised" satisfies TextureTailwindClass} sprite-tinted` : crownTextureClasses[planet]} 
+          ${uncolourised ? `${"texture-crown_uncolourised" satisfies TextureTailwindClass} sprite-tinted` : crownTextureClasses[planet]}
           ${collected ? `zx:text-zxYellow toppy:text-toppyWarm1` : "colourised:brightness-halfBrite zx:text-zxMagentaDimmed toppy:brightness-halfBrite"}
           `}
       />
