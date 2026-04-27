@@ -43,7 +43,7 @@ export class AttributeBlockFilter extends Filter {
             type: "f32",
           },
         },
-        uLut: blockstackToSpectrumLut.source,
+        uLut: blockstackToSpectrumLut().source,
       },
     });
   }

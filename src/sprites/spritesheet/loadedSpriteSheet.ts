@@ -90,12 +90,9 @@ export const loadSpritesheetAssets = async (
       loadedTexture = Texture.EMPTY;
       loadedFor = spriteOption;
     } else {
-      throw new Error(
-        `failed to load spritesheet from ${url} while not running under node`,
-        {
-          cause: e,
-        },
-      );
+      throw new Error(`failed to load spritesheet from ${url}`, {
+        cause: e,
+      });
     }
   } finally {
     if (strippedImageObjectUrl !== undefined) {

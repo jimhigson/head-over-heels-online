@@ -70,6 +70,14 @@ export type SpritesheetMetadata<
   supportsUncolourised: boolean;
   /** if true, shows original-game correct overdraws to emulate rendering artifacts on floors */
   showFloorOverDraw: boolean;
+
+  /**
+   * when teleporting, how black does a colour have to be to be snapped to black (like a zx spectrum
+   * game where the ink colour is always black, but the paper colour changes). If the spritesheet
+   * contains true black outlines, should be close to zero, otherwise should be a value of the darker
+   * end of the palette, but not necessarily pure black
+   */
+  teleporterEffectBlackPoint: number;
 };
 
 export type PlayableSpritesheetMetaData = {

@@ -8,13 +8,9 @@ import { paletteBlockstack } from "../../../../../sprites/palette/spritesheetPal
 import { resolveSwops } from "../../../../../utils/palette/palette";
 import { sparseLut } from "../sparseLut";
 
-/**
- * Maps some of the BlockStack palette to Spectrum equivalents.
- * This gives the colour clash simulation effect an easier target to aim for
- */
-export const blockstackToSpectrumLut: Texture = sparseLut(
-  resolveSwops(paletteBlockstack, {
-    // although moss is our green, it isn't actually *that* green- help the shader to find it:
+export const blockstackPaletteToSpectrumMapping = resolveSwops(
+  paletteBlockstack,
+  {
     moss: zxSpectrumColors.green,
     pink: zxSpectrumColors.magenta,
     metallicBlue: zxSpectrumColorsDimmed.cyan,
@@ -24,8 +20,15 @@ export const blockstackToSpectrumLut: Texture = sparseLut(
     midRed: zxSpectrumColors.red,
     redShadow: zxSpectrumColorsDimmed.red,
     lightGrey: zxSpectrumColors.white,
-    // don't do this - it makes the mid-grey less likely to be mixed to dimmed
-    // white when mixed with other colours
-    //midGrey: new Color(0x888888),
-  }),
+  },
 );
+
+/**
+ * Maps some of the BlockStack palette to Spectrum equivalents.
+ * This gives the colour clash simulation effect an easier target to aim for.
+ *
+ * Created on demand - the texture is GPU-resident, so callers should cache
+ * the result rather than rebuild it.
+ */
+export const blockstackToSpectrumLut = (): Texture =>
+  sparseLut(blockstackPaletteToSpectrumMapping);

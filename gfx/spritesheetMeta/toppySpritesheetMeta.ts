@@ -150,4 +150,5 @@ export const toppySpritesheetMeta: SpritesheetMetadata<
   ],
   supportsUncolourised: false,
   showFloorOverDraw: false,
+  teleporterEffectBlackPoint: 0.25,
 };
