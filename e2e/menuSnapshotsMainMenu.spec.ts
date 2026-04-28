@@ -16,6 +16,7 @@ import {
   clickPlayTheGame,
   exitCrownsDialog,
   openInGameMainMenu,
+  waitForDialog,
 } from "./testUtils/menuNavigation";
 import { setupE2ePage } from "./testUtils/pageSetup";
 import {
@@ -61,11 +62,14 @@ for (const spriteOption of enabledSpriteModes) {
               );
               await page.goto(`/?track=0&deployment=${deploymentType}`);
 
-              const mainMenuSelector = "[data-dialog-id=mainMenu]";
-              await page.waitForSelector(mainMenuSelector, {
+              await waitForDialog(page, "mainMenu", {
                 timeout: 5_000 * osSlowness,
               });
-              await logSelectorExistence(page, mainMenuSelector, formattedName);
+              await logSelectorExistence(
+                page,
+                '[data-dialog-id="mainMenu"]',
+                formattedName,
+              );
 
               await page.waitForTimeout(500);
             },

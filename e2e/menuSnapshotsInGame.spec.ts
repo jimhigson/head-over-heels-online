@@ -19,6 +19,7 @@ import {
   clickPlayTheGame,
   exitCrownsDialog,
   openInGameMainMenu,
+  waitForDialog,
 } from "./testUtils/menuNavigation";
 import { setupE2ePage } from "./testUtils/pageSetup";
 import {
@@ -61,8 +62,7 @@ for (const spriteOption of enabledSpriteModes) {
             await page.goto("/?track=0");
 
             // Wait for main menu to appear
-            const mainMenuSelector = "[data-dialog-id=mainMenu]";
-            await page.waitForSelector(mainMenuSelector, {
+            await waitForDialog(page, "mainMenu", {
               timeout: 5_000 * osSlowness,
             });
 
@@ -93,16 +93,15 @@ for (const spriteOption of enabledSpriteModes) {
       await test.step("Screenshot: crowns", async () => {
         await retryWithRecovery({
           async action() {
-            const crownsDialogSelector = "[data-dialog-id=crowns]";
             console.log(
               `${formattedName} ${elapsed()}: Waiting for crowns dialog`,
             );
-            await page.waitForSelector(crownsDialogSelector, {
+            await waitForDialog(page, "crowns", {
               timeout: 5_000 * osSlowness,
             });
             await logSelectorExistence(
               page,
-              crownsDialogSelector,
+              '[data-dialog-id="crowns"]',
               formattedName,
             );
 
@@ -144,11 +143,12 @@ for (const spriteOption of enabledSpriteModes) {
             await dispatchKeyPress(page, "m", "KeyM");
             await page.waitForTimeout(500);
 
-            const mapDialogSelector = "[data-dialog-id=map]";
-            await page.waitForSelector(mapDialogSelector, {
-              timeout: 5_000 * osSlowness,
-            });
-            await logSelectorExistence(page, mapDialogSelector, formattedName);
+            await waitForDialog(page, "map", { timeout: 5_000 * osSlowness });
+            await logSelectorExistence(
+              page,
+              '[data-dialog-id="map"]',
+              formattedName,
+            );
           },
           logHeader: formattedName,
           actionDescription: "open map dialog",
@@ -181,14 +181,13 @@ for (const spriteOption of enabledSpriteModes) {
       await test.step("Exit map dialog", async () => {
         await retryWithRecovery({
           async action() {
-            const mapDialogSelector = "[data-dialog-id=map]";
             console.log(
               `${formattedName} ${elapsed()}: Pressing Escape to exit map`,
             );
             await dispatchKeyPress(page, "Escape", "Escape");
 
             // Wait for the map dialog to disappear
-            await page.waitForSelector(mapDialogSelector, {
+            await waitForDialog(page, "map", {
               state: "detached",
               timeout: 5_000 * osSlowness,
             });
@@ -216,11 +215,12 @@ for (const spriteOption of enabledSpriteModes) {
             await dispatchKeyPress(page, "p", "KeyP");
             await page.waitForTimeout(500);
 
-            const holdDialogSelector = "[data-dialog-id=hold]";
-            await page.waitForSelector(holdDialogSelector, {
-              timeout: 5_000 * osSlowness,
-            });
-            await logSelectorExistence(page, holdDialogSelector, formattedName);
+            await waitForDialog(page, "hold", { timeout: 5_000 * osSlowness });
+            await logSelectorExistence(
+              page,
+              '[data-dialog-id="hold"]',
+              formattedName,
+            );
           },
           logHeader: formattedName,
           actionDescription: "open hold dialog",
@@ -253,13 +253,12 @@ for (const spriteOption of enabledSpriteModes) {
       await test.step("Exit hold dialog", async () => {
         await retryWithRecovery({
           async action() {
-            const holdDialogSelector = "[data-dialog-id=hold]";
             console.log(
               `${formattedName} ${elapsed()}: Pressing P to exit hold`,
             );
             await dispatchKeyPress(page, "p", "KeyP");
 
-            await page.waitForSelector(holdDialogSelector, {
+            await waitForDialog(page, "hold", {
               state: "detached",
               timeout: 5_000 * osSlowness,
             });
@@ -306,13 +305,12 @@ for (const spriteOption of enabledSpriteModes) {
             await page.click(progressSelector);
             await page.waitForTimeout(500);
 
-            const scoreDialogSelector = "[data-dialog-id=score]";
-            await page.waitForSelector(scoreDialogSelector, {
+            await waitForDialog(page, "score", {
               timeout: 5_000 * osSlowness,
             });
             await logSelectorExistence(
               page,
-              scoreDialogSelector,
+              '[data-dialog-id="score"]',
               formattedName,
             );
           },

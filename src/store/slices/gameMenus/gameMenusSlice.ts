@@ -727,8 +727,16 @@ export const gameMenusSlice = createSlice({
     reincarnationFishEaten(state, { payload }: PayloadAction<SavedGame>) {
       state.gameInPlay.reincarnationPoint = payload;
     },
+    /**
+     * Signals that the player chose to reincarnate. The state mutation
+     * — popping the reincarnationPoint stack and rolling back
+     * roomsExplored / scrollsRead / freeCharacters etc. to the fish-eaten
+     * snapshot — is handled by `gameRestoreFromSave`, which the dispatch
+     * site fires immediately before this. The saved snapshot's inner
+     * gameInPlay carries the prior reincarnationPoint, so each pop walks
+     * one link back through the linked-list chain.
+     */
     reincarnationAccepted(state) {
-      delete state.gameInPlay.reincarnationPoint;
       // close the menu offering reincarnation
       state.openMenus = [
         {
