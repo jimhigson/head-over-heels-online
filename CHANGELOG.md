@@ -1,5 +1,12 @@
 # Changelog
 
+## [23.0.0](https://github.com/jimhigson/head-over-heels-online/compare/v22.0.0...v23.0.0) (2026-04-28)
+
+
+### Features
+
+* improved teleporter effect for different spritesheet options ([#822](https://github.com/jimhigson/head-over-heels-online/issues/822)) ([ce7fdfb](https://github.com/jimhigson/head-over-heels-online/commit/ce7fdfb5bc440d88f94b2536e757c8b4aeed1b33))
+
 ## [22.0.0](https://github.com/jimhigson/head-over-heels-online/compare/v21.0.0...v22.0.0) (2026-04-23)
 
 
