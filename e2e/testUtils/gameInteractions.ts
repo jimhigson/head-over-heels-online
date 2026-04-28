@@ -45,11 +45,34 @@ export const clickCheat = async (page: Page, testId: string) => {
   await menu.waitFor({ state: "hidden" });
 };
 
-/** Repeatedly summon daleks until all lives are lost. */
+/**
+ * Repeatedly summon daleks until all lives are lost.
+ *
+ * Opens the cheats panel once for the whole sequence rather than
+ * toggling it between every summon. Each toggle remounts the panel
+ * (Radix Collapsible) and re-renders its hundreds of buttons; doing
+ * that in a tight loop is enough work on slower runners (CI) that
+ * the open-button is mid-rerender between Playwright's locator
+ * resolution and click stability check, leaving the close click
+ * stuck retrying until the test times out.
+ *
+ * Game speed is left at normal — the sped-up cheat puts extra load
+ * on the engine for no test-time benefit (waitForTimeout is wall
+ * clock either way).
+ *
+ * One dalek per life: the room resets after each death, wiping out
+ * any previously-summoned daleks, so summoning a batch up front is
+ * pointless. Wait 1.5s between summons to match the engine's
+ * `afterDeathInvulnerabilityTime` so the next dalek can land a hit
+ * once the post-death invincibility window has expired.
+ */
 export const loseAllLives = async (page: Page) => {
-  await clickCheat(page, "cheats-speed-5");
-  for (let i = 0; i < 12; i++) {
-    await clickCheat(page, "cheats-summon-monster-dalek");
+  const openButton = page.locator('[data-test-id="cheats-open-button"]');
+  const menu = page.locator('[data-test-id="cheats-menu"]');
+
+  if (!(await menu.isVisible())) {
+    await openButton.click();
+    await menu.waitFor({ state: "visible" });
   }
 
   const deadline = Date.now() + 60_000 * osSlowness;
@@ -62,8 +85,8 @@ export const loseAllLives = async (page: Page) => {
       .isVisible()
       .catch(() => false);
     if (died) return;
-    await clickCheat(page, "cheats-summon-monster-dalek");
-    await page.waitForTimeout(500);
+    await page.click('[data-test-id="cheats-summon-monster-dalek"]');
+    await page.waitForTimeout(1_500 * osSlowness);
   }
   throw new Error("never reached an end-of-life dialog");
 };

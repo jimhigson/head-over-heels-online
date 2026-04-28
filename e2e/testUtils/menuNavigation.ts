@@ -8,7 +8,11 @@ import type { DialogId } from "../../src/game/components/dialogs/menuDialog/Dial
 import { dispatchKeyPress } from "./gameInteractions";
 import { waitForGameState } from "./gameStateQueries";
 import { maximumWaitForStep } from "./gameStateQueries";
-import { osSlowness, retryWithRecovery } from "./infrastructure";
+import {
+  osSlowness,
+  retryWithRecovery,
+  slownessForHumanObserver,
+} from "./infrastructure";
 import {
   elapsed,
   formatDuration,
@@ -160,6 +164,9 @@ export const navigateToSubmenu = async (
       const selector = `[data-menuitem_id="${menuItemId}"]`;
       await logSelectorExistence(page, selector, logHeader);
 
+      // small pause so the menu item is visibly highlighted before the click
+      // when watching tests run in headed mode
+      await page.waitForTimeout(slownessForHumanObserver());
       await page.click(selector);
     },
     logHeader,
@@ -352,7 +359,14 @@ export const openInGameMainMenu = async (page: Page, logHeader: string) => {
 };
 
 /** Generous timeout to wait through game-over and animation pauses. */
-export const waitForDialog = (page: Page, dialogId: string) =>
-  page
-    .locator(`[data-dialog-id="${dialogId}"]`)
-    .waitFor({ timeout: longTimeout });
+export const waitForDialog = (
+  page: Page,
+  dialogId: string,
+  {
+    state = "visible",
+    timeout = longTimeout,
+  }: {
+    state?: "attached" | "detached" | "hidden" | "visible";
+    timeout?: number;
+  } = {},
+) => page.locator(`[data-dialog-id="${dialogId}"]`).waitFor({ state, timeout });

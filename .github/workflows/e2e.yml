@@ -66,11 +66,14 @@ jobs:
     strategy:
       fail-fast: false
       matrix:
-        suite:
-          - lifeAndDeath
-          - persistOnReload
-          - crownsDialogs
-          - offlineCampaignCache
+        include:
+          # 3 groups of ~8 tests each, batched roughly by domain
+          - suite: persistence
+            pattern: "persistOnReload offlineCampaignCache"
+          - suite: endgame
+            pattern: "lifeAndDeath savesAndGameOver quitGameFlow gameComplete reincarnationStack"
+          - suite: gameplayAndMenus
+            pattern: "crownsDialogs scrollAndKeyRebind mainMenuClosability playtestNoSave"
     name: E2E ${{ matrix.suite }}
     steps:
       - uses: actions/checkout@v6
@@ -104,7 +107,7 @@ jobs:
         run: pnpm playwright install chromium
 
       - name: Run Playwright tests
-        run: pnpm playwright test ${{ matrix.suite }} --project chromium-desktop
+        run: pnpm playwright test ${{ matrix.pattern }} --project chromium-desktop
 
       - name: Upload test results
         uses: actions/upload-artifact@v7
