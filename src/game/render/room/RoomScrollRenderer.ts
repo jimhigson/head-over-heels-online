@@ -14,7 +14,7 @@ import type {
   RoomRendererTypeInGameOnly,
 } from "./RoomRendererType";
 
-import { defaultUserSettings } from "../../../store/slices/gameMenus/defaultUserSettings";
+import { defaultUserSettings } from "../../../store/slices/userSettings/defaultUserSettings";
 import { epsilon } from "../../../utils/epsilon";
 import { neverTime } from "../../../utils/neverTime";
 import { assignRoundedXy } from "../../../utils/pixi/assignRoundedXy";

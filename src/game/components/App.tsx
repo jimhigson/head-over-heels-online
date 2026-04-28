@@ -2,14 +2,13 @@ import { lazy, Suspense, useEffect } from "react";
 import { Provider } from "react-redux";
 import { Route, Switch } from "wouter";
 
-import { typedURLSearchParams } from "../../options/queryParams.ts";
 import { GamePage } from "../../pages/gamePage/GamePage.tsx";
 import { importLutPage } from "../../pages/LutPage.import.ts";
 import { importSpritesPage } from "../../pages/spritesPage/SpritesPage.import.ts";
 import { useSpritesOption } from "../../store/slices/gameMenus/gameMenusSelectors.ts";
-import { gameStarted } from "../../store/slices/gameMenus/gameMenusSlice.ts";
 import { store } from "../../store/store.ts";
 import { SpinnerHead } from "../../ui/Spinner.tsx";
+import { handleGameBoot } from "../handleGameBoot.ts";
 import { InputStateProvider } from "../input/InputStateProvider.tsx";
 import { CssVariables } from "./CssVariables.tsx";
 import { NotFound404Page } from "./NotFound404Page.tsx";
@@ -18,25 +17,7 @@ import { WantedEditor404 } from "./WantedEditor404.tsx";
 const LazyLutPage = lazy(importLutPage);
 const LazySpritesPage = lazy(importSpritesPage);
 
-const searchParams = typedURLSearchParams();
-const campaignName = searchParams.get("campaignName");
-// one-off reading of query params
-// if the campaignName starts with "data:" this is a playtest session from the editor
-// so start the game directly:
-// if it has non-data campaignName and campaignAuthorUserId, that's a db level that was shared
-if (campaignName !== null) {
-  store.dispatch(
-    gameStarted({
-      campaignLocator: {
-        userId: searchParams.get("campaignAuthorUserId") || "editorUser",
-        campaignName,
-        version: -1,
-      },
-      // skip the crowns for playtesting
-      noShowCrowns: true,
-    }),
-  );
-}
+handleGameBoot();
 
 const AppInner = () => {
   const spritesOption = useSpritesOption();

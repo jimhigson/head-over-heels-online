@@ -3,7 +3,7 @@ import type { RenderTexture } from "pixi.js";
 import { Container, type Renderer, Sprite, Texture } from "pixi.js";
 
 import type { RoomState } from "../../../../model/RoomState";
-import type { SpriteOption } from "../../../../store/slices/gameMenus/gameMenusSlice";
+import type { SpriteOption } from "../../../../store/slices/userSettings/userSettingsSlice";
 import type { ButtonId } from "./OnScreenButtonRenderer";
 
 import { zxSpectrumColor } from "../../../../originalGame";

@@ -3,8 +3,7 @@ import { useLayoutEffect } from "react";
 import type { ResolutionName } from "../../../originalGame";
 
 import { useAppDispatch } from "../../hooks";
-import { store } from "../../store";
-import { updateUpscaleNow } from "./updateUpscaleNow";
+import { updateUpscaleThunk } from "./updateUpscaleThunk";
 
 export const useUpdateUpscaleWhenElementResizes = (
   /**
@@ -23,22 +22,12 @@ export const useUpdateUpscaleWhenElementResizes = (
 
   useLayoutEffect(() => {
     // on first load, put the correct size in the store:
-    updateUpscaleNow(
-      store.dispatch,
-      store.getState,
-      fixedEmulatedResolution,
-      targetElement,
-    );
-  }, [fixedEmulatedResolution, targetElement]);
+    dispatch(updateUpscaleThunk(fixedEmulatedResolution, targetElement));
+  }, [dispatch, fixedEmulatedResolution, targetElement]);
 
   useLayoutEffect(() => {
     const handler = () =>
-      updateUpscaleNow(
-        store.dispatch,
-        store.getState,
-        fixedEmulatedResolution,
-        targetElement,
-      );
+      dispatch(updateUpscaleThunk(fixedEmulatedResolution, targetElement));
     // if an element is given, use its size instead of the window size:
     if (targetElement) {
       const resizeObserver = new ResizeObserver(handler);

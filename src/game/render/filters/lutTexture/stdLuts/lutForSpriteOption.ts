@@ -1,6 +1,6 @@
 import type { Texture } from "pixi.js";
 
-import type { SpriteOption } from "../../../../../store/slices/gameMenus/gameMenusSlice";
+import type { SpriteOption } from "../../../../../store/slices/userSettings/userSettingsSlice";
 
 import { blockstackToSpectrumLut } from "./blockstackToSpectrumLut";
 import { spectrumLumLut } from "./spectrumLumLut";

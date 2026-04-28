@@ -2,8 +2,8 @@ import type { Application, Ticker } from "pixi.js";
 
 import { Container, Rectangle } from "pixi.js";
 
-import type { SpriteOption } from "../../store/slices/gameMenus/gameMenusSlice";
 import type { Upscale } from "../../store/slices/upscale/Upscale";
+import type { SpriteOption } from "../../store/slices/userSettings/userSettingsSlice";
 import type { GameState } from "../gameState/GameState";
 import type { RoomRenderContextInGame } from "../render/room/RoomRenderContexts";
 import type { RoomRendererType } from "../render/room/RoomRendererType";
@@ -21,8 +21,8 @@ import {
   errorCaught,
   selectHasError,
 } from "../../store/slices/gameMenus/gameMenusSlice";
-import { spriteOptionEquals } from "../../store/slices/gameMenus/spriteOptionEquals";
 import { selectGameEngineUpscale } from "../../store/slices/upscale/upscaleSlice";
+import { spriteOptionEquals } from "../../store/slices/userSettings/spriteOptionEquals";
 import { store } from "../../store/store";
 import { emptySet } from "../../utils/empty";
 import { validateSceneGraph } from "../../utils/pixi/validateSceneGraph";
@@ -106,7 +106,7 @@ export class MainLoop<RoomId extends string> {
 
   #initTopLevelFilters() {
     const {
-      gameMenus: {
+      userSettings: {
         userSettings: { displaySettings },
       },
       upscale: { upscale },
@@ -152,11 +152,13 @@ export class MainLoop<RoomId extends string> {
 
     const isPaused = selectIsPaused(tickState);
     const {
-      gameMenus: {
+      userSettings: {
         userSettings: {
           displaySettings: tickDisplaySettings,
           soundSettings: tickSoundSettings,
         },
+      },
+      gameInPlay: {
         gameInPlay: { freeCharacters: tickFreeCharacters },
       },
       upscale: { upscale: tickUpscale },

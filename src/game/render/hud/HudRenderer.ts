@@ -14,7 +14,7 @@ import type { RoomState } from "../../../model/RoomState";
 import type { ZxSpectrumRoomColour } from "../../../originalGame";
 import type { TextureId } from "../../../sprites/spritesheet/spritesheetData/makeSpritesheetData";
 import type { SpritesheetMetadata } from "../../../sprites/spritesheet/spritesheetData/spritesheetMetaData";
-import type { SpriteOption } from "../../../store/slices/gameMenus/gameMenusSlice";
+import type { SpriteOption } from "../../../store/slices/userSettings/userSettingsSlice";
 import type { DirectionXy4, Xy } from "../../../utils/vectors/vectors";
 import type { GameState } from "../../gameState/GameState";
 import type { PortableItem } from "../../physics/itemPredicates";

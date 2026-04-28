@@ -3,7 +3,7 @@ import type { FederatedPointerEvent } from "pixi.js";
 import { Container, Graphics } from "pixi.js";
 
 import type { RoomState } from "../../../../model/RoomState";
-import type { InputDirectionMode } from "../../../../store/slices/gameMenus/gameMenusSlice";
+import type { InputDirectionMode } from "../../../../store/slices/userSettings/userSettingsSlice";
 import type { Xy } from "../../../../utils/vectors/vectors";
 import type { Renderer } from "../../Renderer";
 import type { GeneralRenderContext } from "../../room/RoomRenderContexts";

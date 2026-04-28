@@ -19,7 +19,7 @@ import {
 import { zxSpectrumColor } from "../../../originalGame";
 import { audioCtx } from "../../../sound/audioCtx";
 import { soundsFadeDurationSec } from "../../../sound/soundUtils/stopWithFade";
-import { defaultUserSettings } from "../../../store/slices/gameMenus/defaultUserSettings";
+import { defaultUserSettings } from "../../../store/slices/userSettings/defaultUserSettings";
 import { createItemRenderer } from "../item/itemRender/createItemRenderer";
 import { type ZGraph } from "../sortZ/GraphEdges";
 import { toposort } from "../sortZ/toposort/toposort";

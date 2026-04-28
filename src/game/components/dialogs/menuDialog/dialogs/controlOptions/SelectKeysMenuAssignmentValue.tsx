@@ -14,7 +14,7 @@ export const SelectKeysMenuAssignmentValue = ({
   action: BooleanAction;
 }) => {
   const assigning = useAppSelector(
-    (store) => store.gameMenus.assigningInput?.action === action,
+    (store) => store.userSettings.assigningInput?.action === action,
   );
 
   return (

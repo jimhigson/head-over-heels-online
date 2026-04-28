@@ -1,6 +1,6 @@
 import type { RequiredDeep, Simplify } from "type-fest";
 
-import type { UserSettings } from "./gameMenusSlice";
+import type { UserSettings } from "./userSettingsSlice";
 
 import { keyAssignmentPresets } from "../../../game/input/keyAssignmentPresets";
 import { detectDeviceType } from "../../../utils/detectEnv/detectDeviceType";

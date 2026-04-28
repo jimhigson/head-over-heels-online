@@ -117,7 +117,9 @@ test("MAME assignment", () => {
           },
           "menu_exit": {
             "gamepadButtons": [],
-            "keys": [],
+            "keys": [
+              "Backspace",
+            ],
           },
           "menu_openOrExit": {
             "gamepadButtons": [],
@@ -347,7 +349,9 @@ test("Default assignment", () => {
             "gamepadButtons": [
               1,
             ],
-            "keys": [],
+            "keys": [
+              "Backspace",
+            ],
           },
           "menu_openOrExit": {
             "gamepadButtons": [

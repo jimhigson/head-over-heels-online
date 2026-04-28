@@ -1,5 +1,5 @@
 import { useIsUserPreferenceOnScreenControls } from "../../../../../../store/slices/gameMenus/gameMenusSelectors";
-import { toggleUserSetting } from "../../../../../../store/slices/gameMenus/gameMenusSlice";
+import { toggleUserSetting } from "../../../../../../store/slices/userSettings/userSettingsSlice";
 import { useDispatchActionCallback } from "../../../../../../store/useDispatchActionCallback";
 import { Switch } from "../../../../../../ui/Switch";
 import { BlockyMarkdown } from "../../../../BlockyMarkdown";

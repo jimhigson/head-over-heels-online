@@ -1,6 +1,6 @@
 import { useEffect } from "react";
 
-import type { SpriteOption } from "../../store/slices/gameMenus/gameMenusSlice";
+import type { SpriteOption } from "../../store/slices/userSettings/userSettingsSlice";
 
 import {
   BitmapText,
@@ -12,7 +12,7 @@ import { useSpritesOption } from "../../store/slices/gameMenus/gameMenusSelector
 import {
   nextSpritesOption,
   setSpritesOption,
-} from "../../store/slices/gameMenus/gameMenusSlice";
+} from "../../store/slices/userSettings/userSettingsSlice";
 import { Select } from "../../ui/Select";
 
 const spriteOptionLabel = (spriteOption: SpriteOption): string =>

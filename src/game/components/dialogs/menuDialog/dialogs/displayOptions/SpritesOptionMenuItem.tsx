@@ -2,13 +2,13 @@ import type {
   AnimatedTextureTailwindClass,
   TextureTailwindClass,
 } from "../../../../../../sprites/spritesheet/spritesheetData/TextureTailwindClass";
-import type { SpriteOption } from "../../../../../../store/slices/gameMenus/gameMenusSlice";
+import type { SpriteOption } from "../../../../../../store/slices/userSettings/userSettingsSlice";
 
 import { spriteOptionValues } from "../../../../../../sprites/spritesheet/spritesheetData/spritesheetMetaData";
 import { useAppSelector } from "../../../../../../store/hooks";
 import { selectSpritesOption } from "../../../../../../store/slices/gameMenus/gameMenusSelectors";
-import { nextSpritesOption } from "../../../../../../store/slices/gameMenus/gameMenusSlice";
-import { spriteOptionEquals } from "../../../../../../store/slices/gameMenus/spriteOptionEquals";
+import { spriteOptionEquals } from "../../../../../../store/slices/userSettings/spriteOptionEquals";
+import { nextSpritesOption } from "../../../../../../store/slices/userSettings/userSettingsSlice";
 import { useDispatchActionCallback } from "../../../../../../store/useDispatchActionCallback";
 import { SwitchN } from "../../../../../../ui/Switch";
 import { BlockyMarkdown } from "../../../../BlockyMarkdown";

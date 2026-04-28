@@ -19,7 +19,7 @@ import { moveItem } from "../../physics/moveItem/moveItem";
 import { type GameState } from "../GameState";
 import { selectCanCombine } from "../gameStateSelectors/selectCanCombine";
 import { selectPlayableItem } from "../gameStateSelectors/selectPlayableItem";
-import { dispatchSaveGame } from "../saving/dispatchSaveGame";
+import { saveGameThunk } from "../saving/saveGameThunk";
 import { addItemToRoom } from "./addItemToRoom";
 import { deleteItemFromRoom } from "./deleteItemFromRoom";
 import { setStandingOnWithoutRemovingOldFirst } from "./standingOn/setStandingOnWithoutRemovingOldFirst";
@@ -212,5 +212,5 @@ export const swopPlayables = <RoomId extends string>(
   highlightCurrentPlayable(gameState);
 
   // saving on swop is cheap and lets the active character persist across reloads
-  dispatchSaveGame(gameState, store);
+  store.dispatch(saveGameThunk(gameState));
 };

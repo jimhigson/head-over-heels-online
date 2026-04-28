@@ -1,4 +1,4 @@
-import type { UserSettings } from "./gameMenusSlice";
+import type { UserSettings } from "./userSettingsSlice";
 
 export const emptyUserSettings: UserSettings = {
   displaySettings: {},

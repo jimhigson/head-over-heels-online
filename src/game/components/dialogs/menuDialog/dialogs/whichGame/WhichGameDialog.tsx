@@ -4,7 +4,7 @@ import type { TextureTailwindClass } from "../../../../../../sprites/spritesheet
 
 import { jimAtBlockstackingUserId } from "../../../../../../gameInfo";
 import { originalCampaignLocator } from "../../../../../../model/modelTypes";
-import { gameStarted } from "../../../../../../store/slices/gameMenus/gameMenusSlice";
+import { gameStarted } from "../../../../../../store/slices/gameInPlay/gameInPlaySlice";
 import { useDispatchActionCallback } from "../../../../../../store/useDispatchActionCallback";
 import { Dialog } from "../../../../../../ui/Dialog";
 import { DialogPortal } from "../../../../../../ui/DialogPortal";

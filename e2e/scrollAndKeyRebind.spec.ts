@@ -44,7 +44,7 @@ const getTowardsKeys = (page: Page) =>
   page.evaluate(() => {
     const store = window._e2e_store;
     if (!store) throw new Error("E2E store not available");
-    const { inputAssignment } = store.getState().gameMenus.userSettings;
+    const { inputAssignment } = store.getState().userSettings.userSettings;
     if (!inputAssignment) throw new Error("inputAssignment not yet populated");
     return inputAssignment.presses.towards.keys;
   });

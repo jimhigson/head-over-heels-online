@@ -10,7 +10,7 @@ import { type SavedGame, savedGameStateFields } from "./SavedGameState";
 
 export const createSavedGame = <RoomId extends string>(
   gameState: GameState<RoomId>,
-  storeState: RootState,
+  { gameInPlay: { gameInPlay } }: RootState,
   /**
    * if saving due to a pickup (creating a reincarnation point by eating a fish),
    * this is the id of the pickup. It will be removed from the current room of
@@ -24,19 +24,11 @@ export const createSavedGame = <RoomId extends string>(
   const savedGame: SavedGame = badJsonClone({
     saveTime: Date.now(),
     gameState: pick(gameState, ...savedGameStateFields),
-    store:
-      // a deep-pick of just one object from the store - none others are needed
-      // currently but could potentially be added later:
-      {
-        gameMenus: { gameInPlay: storeState.gameMenus.gameInPlay },
-      },
+    gameInPlay,
   } satisfies SavedGame);
 
   if (pickingUp) {
     const { characterPickingUp, pickupId } = pickingUp;
-
-    // TODO1: add test for case of removing properly
-    // TODO: use deleteItemFromRoom instead of this
 
     const savedGameState = savedGame.gameState;
 

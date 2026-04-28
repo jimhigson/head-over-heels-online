@@ -2,7 +2,7 @@ import type { SetRequired } from "type-fest";
 
 import { Container } from "pixi.js";
 
-import type { InputDirectionMode } from "../../../../store/slices/gameMenus/gameMenusSlice";
+import type { InputDirectionMode } from "../../../../store/slices/userSettings/userSettingsSlice";
 import type { Xy } from "../../../../utils/vectors/vectors";
 import type { Renderer } from "../../Renderer";
 import type { GeneralRenderContext } from "../../room/RoomRenderContexts";

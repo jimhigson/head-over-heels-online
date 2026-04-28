@@ -3,7 +3,7 @@ import type { Renderer } from "pixi.js";
 import { RenderTexture, Sprite, Spritesheet, Texture } from "pixi.js";
 
 import type { PaletteSwopSpec } from "../../game/render/filters/PaletteSwapFilter";
-import type { SpriteOption } from "../../store/slices/gameMenus/gameMenusSlice";
+import type { SpriteOption } from "../../store/slices/userSettings/userSettingsSlice";
 import type { TextureId } from "./spritesheetData/makeSpritesheetData";
 
 import blockStackSpritesheetUrl from "../../../gfx/sprites.png";

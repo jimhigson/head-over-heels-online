@@ -57,7 +57,7 @@ const useCreateGameApi = (): GameApi<string> | undefined => {
   // shallowEqual: don't re-run the effect on equivalent campaign locator objects
   // eg, if redux-persist rehydration replaces it with an equivalent one
   const currentCampaignLocator = useAppSelector(
-    (store) => store.gameMenus.gameInPlay.campaignLocator,
+    (store) => store.gameInPlay.gameInPlay.campaignLocator,
     shallowEqual,
   );
   const inputState = useInputStateTracker();

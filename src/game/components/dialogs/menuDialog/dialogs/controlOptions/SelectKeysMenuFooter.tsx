@@ -7,7 +7,7 @@ const highlightTextClass = "text-pink zx:text-zxCyan toppy:text-toppyPink1";
 
 export const SelectKeysMenuFooter = () => {
   const actionBeingAssigned = useAppSelector(
-    ({ gameMenus }) => gameMenus.assigningInput?.action,
+    ({ userSettings }) => userSettings.assigningInput?.action,
   );
 
   if (actionBeingAssigned === undefined) {

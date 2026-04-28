@@ -15,7 +15,7 @@ import type { RoomState } from "../../../model/RoomState";
 import type { ItemTouchEventByItemType } from "./ItemTouchEvent";
 
 import { roomItemsIterable } from "../../../model/RoomState";
-import { toggleUserSetting } from "../../../store/slices/gameMenus/gameMenusSlice";
+import { toggleUserSetting } from "../../../store/slices/userSettings/userSettingsSlice";
 import { store } from "../../../store/store";
 import { emptyObject } from "../../../utils/empty";
 import { neverTime } from "../../../utils/neverTime";

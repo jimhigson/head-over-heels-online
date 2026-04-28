@@ -10,7 +10,7 @@ import {
 import {
   characterReachesFreedom,
   gameOver,
-} from "../../../store/slices/gameMenus/gameMenusSlice";
+} from "../../../store/slices/gameInPlay/gameInPlaySlice";
 import { store } from "../../../store/store";
 import { dotProductXyz } from "../../../utils/vectors/vectors";
 import { changeCharacterRoom } from "../../gameState/mutators/changeCharacterRoom";
@@ -64,7 +64,7 @@ export const handlePlayerTouchingPortal = <
       store.dispatch(characterReachesFreedom("head"));
       store.dispatch(characterReachesFreedom("heels"));
       // exited the game
-      store.dispatch(gameOver({ offerReincarnation: false }));
+      store.dispatch(gameOver({ reincarnationDeclined: false }));
     } else {
       store.dispatch(characterReachesFreedom(playableItem.type));
 
@@ -77,7 +77,7 @@ export const handlePlayerTouchingPortal = <
         );
       } else {
         // exited the game
-        store.dispatch(gameOver({ offerReincarnation: false }));
+        store.dispatch(gameOver({ reincarnationDeclined: false }));
       }
     }
   } else {

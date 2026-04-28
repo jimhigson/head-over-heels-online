@@ -1,10 +1,7 @@
 import type { SetOptional } from "type-fest";
 
 import type { roomSpatialIndexKey, RoomState } from "../../../model/RoomState";
-import type {
-  GameInPlayStoreState,
-  gameMenusSlice,
-} from "../../../store/slices/gameMenus/gameMenusSlice";
+import type { GameInPlayStoreState } from "../../../store/slices/gameInPlay/gameInPlaySlice";
 import type { CharacterRooms, GameState } from "../GameState";
 
 /**
@@ -54,13 +51,9 @@ export type SavedStoreGameInPlay = SetOptional<
 export type SavedGame<RoomId extends string = string> = {
   saveTime: number;
   gameState: SavedGameState<RoomId>;
-  store: {
-    /**
-     * gameInPlay is everything in the store that stores crowns collected,
-     * scrolls read etc @see {GameInPlayStoreState}
-     */
-    [gameMenusSlice.reducerPath]: {
-      gameInPlay: SavedStoreGameInPlay;
-    };
-  };
+  /**
+   * the game-in-play snapshot — crowns collected, scrolls read, current
+   * campaign, etc. @see {GameInPlayStoreState}
+   */
+  gameInPlay: SavedStoreGameInPlay;
 };

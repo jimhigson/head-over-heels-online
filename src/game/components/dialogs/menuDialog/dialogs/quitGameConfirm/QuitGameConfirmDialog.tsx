@@ -6,10 +6,8 @@ import type {
 } from "../../../../../../sprites/spritesheet/spritesheetData/TextureTailwindClass";
 
 import { useAppSelector } from "../../../../../../store/hooks";
-import {
-  backToParentMenu,
-  gameOver,
-} from "../../../../../../store/slices/gameMenus/gameMenusSlice";
+import { gameOver } from "../../../../../../store/slices/gameInPlay/gameInPlaySlice";
+import { backToParentMenu } from "../../../../../../store/slices/gameMenus/gameMenusSlice";
 import { useDispatchActionCallback } from "../../../../../../store/useDispatchActionCallback";
 import { Border } from "../../../../../../ui/Border";
 import { Dialog } from "../../../../../../ui/Dialog";
@@ -37,7 +35,7 @@ export const QuitGameConfirmDialog = () => {
     facingXy8: "towardsRight",
   })}`;
   const hasReincarnationPoint = useAppSelector(
-    (state) => state.gameMenus.gameInPlay.reincarnationPoint !== undefined,
+    (state) => state.gameInPlay.gameInPlay.reincarnationPoint !== undefined,
   );
   const gameApi = useGameApi();
   return (
@@ -94,7 +92,7 @@ export const QuitGameConfirmDialog = () => {
                 label="End game"
                 className="selectedMenuItem:text-midRed zx:selectedMenuItem:text-zxYellow toppy:selectedMenuItem:text-toppyPink2"
                 onSelect={useDispatchActionCallback(gameOver, {
-                  offerReincarnation: false,
+                  reincarnationDeclined: false,
                 })}
                 leader={
                   <span

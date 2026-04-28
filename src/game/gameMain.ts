@@ -18,8 +18,8 @@ import "pixi.js/advanced-blend-modes";
 import {
   gameRestoreFromSave,
   roomExplored,
-  selectSaveForCampaign,
-} from "../store/slices/gameMenus/gameMenusSlice";
+} from "../store/slices/gameInPlay/gameInPlaySlice";
+import { selectSaveForCampaign } from "../store/slices/savedGames/savedGamesSlice";
 import { store } from "../store/store";
 import { trackTextures } from "../textureInspector/trackTextures";
 import { stopAppAutoRendering } from "../utils/pixi/stopAppAutoRendering";
@@ -104,7 +104,7 @@ export const gameMain = async <RoomId extends string>(
     savedGame: savedGameToContinueFrom,
   });
   if (savedGameToContinueFrom !== undefined) {
-    const savedGameInPlay = savedGameToContinueFrom.store.gameMenus.gameInPlay;
+    const savedGameInPlay = savedGameToContinueFrom.gameInPlay;
     store.dispatch(gameRestoreFromSave(savedGameInPlay));
   } else {
     // starting a new game - the player has at least explored the rooms they start in:
@@ -126,9 +126,11 @@ export const gameMain = async <RoomId extends string>(
       // fine, but if the upscale changes without a window resize it can mean that we get the wrong size initially
       // instead - be explicit about it:
       if (rot90) {
-        app.renderer.resize(newSize.y, newSize.x);
+        // app.renderer can be null (despite what pixi types say) if the game was just reset
+        // via the options menu 'reset all'
+        app.renderer?.resize(newSize.y, newSize.x);
       } else {
-        app.renderer.resize(newSize.x, newSize.y);
+        app.renderer?.resize(newSize.x, newSize.y);
       }
     },
     changeRoom(roomId: RoomId) {

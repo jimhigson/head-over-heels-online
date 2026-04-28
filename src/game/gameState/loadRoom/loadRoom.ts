@@ -1,9 +1,7 @@
 import type { UnionOfAllItemInPlayTypes } from "../../../model/ItemInPlay";
 import type { RoomJson } from "../../../model/RoomJson";
-import type {
-  ScrollsRead,
-  UserSettings,
-} from "../../../store/slices/gameMenus/gameMenusSlice";
+import type { ScrollsRead } from "../../../store/slices/gameInPlay/gameInPlaySlice";
+import type { UserSettings } from "../../../store/slices/userSettings/userSettingsSlice";
 import type { RoomPickupsCollected } from "../GameState";
 
 import {

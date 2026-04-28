@@ -1,5 +1,8 @@
-import { keyAssignmentPresetChosen } from "../../../../../../store/slices/gameMenus/gameMenusSlice";
-import { useDispatchActionCallback } from "../../../../../../store/useDispatchActionCallback";
+import { useCallback } from "react";
+
+import { useAppDispatch } from "../../../../../../store/hooks";
+import { backToParentMenu } from "../../../../../../store/slices/gameMenus/gameMenusSlice";
+import { keyAssignmentPresetApplied } from "../../../../../../store/slices/userSettings/userSettingsSlice";
 import {
   type KeyAssignmentPresetName,
   keyAssignmentPresets,
@@ -14,6 +17,13 @@ export const InputPresetMenuItem = ({
   presetName: KeyAssignmentPresetName;
 }) => {
   const { description } = keyAssignmentPresets[presetName];
+  const dispatch = useAppDispatch();
+  const onSelect = useCallback(() => {
+    // choose the option:
+    dispatch(keyAssignmentPresetApplied(presetName));
+    // close the preset menu:
+    dispatch(backToParentMenu());
+  }, [dispatch, presetName]);
   return (
     <MenuItem
       hintInline
@@ -28,10 +38,7 @@ export const InputPresetMenuItem = ({
           </BitmapText>
         )
       }
-      onSelect={useDispatchActionCallback(
-        keyAssignmentPresetChosen,
-        presetName,
-      )}
+      onSelect={onSelect}
     />
   );
 };

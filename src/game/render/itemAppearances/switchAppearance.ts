@@ -13,15 +13,15 @@ type SwitchRenderProps = {
 const settingFromStore = (
   switchConfig: Extract<SwitchConfig<string, string>, { type: "in-store" }>,
 ): SwitchSetting => {
-  const { gameMenus } = store.getState();
+  const { userSettings } = store.getState();
 
   try {
-    const boolValue = selectBooleanUserSetting(gameMenus, switchConfig.path);
+    const boolValue = selectBooleanUserSetting(userSettings, switchConfig.path);
     return boolValue ? "right" : "left";
   } catch (e) {
     throw new Error(
       `Error getting switch setting from store for switch with path "${switchConfig.path}"\n
-while store has: ${JSON.stringify(gameMenus, null, 2)}`,
+while store has: ${JSON.stringify(userSettings, null, 2)}`,
       { cause: e },
     );
   }

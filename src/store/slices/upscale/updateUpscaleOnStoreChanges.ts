@@ -1,46 +1,35 @@
 import { detectDeviceType } from "../../../utils/detectEnv/detectDeviceType";
 import { startAppListening } from "../../listenerMiddleware";
-import { setEmulatedResolution } from "../gameMenus/gameMenusSlice";
-import { updateUpscaleNow } from "./updateUpscaleNow";
+import { updateUpscaleThunk } from "./updateUpscaleThunk";
 
-export const updateUpscaleWhenEmulatedResolutionChanges = () => {
-  if (detectDeviceType() !== "server") {
-    // when the emulated resolution setting changes in user settings, update the upscale
-    // in our slice. This is cross-slice chaining via listener api.
-    startAppListening({
-      actionCreator: setEmulatedResolution,
-      effect(_action, { dispatch, getState }) {
-        updateUpscaleNow(dispatch, getState);
-      },
-    });
-  }
-};
-
+/**
+ * Recompute the upscale whenever any displaySettings field changes. The
+ * predicate uses reference inequality on `userSettings.displaySettings`
+ * — Immer produces a new reference on any sub-field change, so this fires
+ * for emulatedResolution, crtFilter, and the rest. The over-eager fields
+ * (showBoundingBoxes etc.) re-dispatch with the same calculated upscale,
+ * which is a noop at the slice level.
+ */
 export const updateUpscaleWhenDisplaySettingsChange = () => {
   if (detectDeviceType() !== "server") {
-    // when the emulated resolution setting changes in user settings, update the upscale
-    // in our slice. This is cross-slice chaining via listener api.
     startAppListening({
       predicate(
         _action,
         {
-          gameMenus: {
+          userSettings: {
             userSettings: { displaySettings: currentDisplaySettings },
           },
         },
         {
-          gameMenus: {
+          userSettings: {
             userSettings: { displaySettings: previousDisplaySettings },
           },
         },
       ) {
         return currentDisplaySettings !== previousDisplaySettings;
       },
-      effect(_action, { dispatch, getState }) {
-        // any time the display settings change, update the upscale. Currently, only
-        // turning on/off the CRT filter will change the upscale (because with it on we have a lower
-        // maximum upscale) but this seem prudent anyway
-        updateUpscaleNow(dispatch, getState);
+      effect(_action, { dispatch }) {
+        dispatch(updateUpscaleThunk());
       },
     });
   }

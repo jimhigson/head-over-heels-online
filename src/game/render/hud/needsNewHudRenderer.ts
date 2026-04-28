@@ -1,8 +1,8 @@
+import type { Upscale } from "../../../store/slices/upscale/Upscale";
 import type {
   InputDirectionMode,
   SpriteOption,
-} from "../../../store/slices/gameMenus/gameMenusSlice";
-import type { Upscale } from "../../../store/slices/upscale/Upscale";
+} from "../../../store/slices/userSettings/userSettingsSlice";
 import type { HudRenderer } from "./HudRenderer";
 
 export const needsNewHudRenderer = <

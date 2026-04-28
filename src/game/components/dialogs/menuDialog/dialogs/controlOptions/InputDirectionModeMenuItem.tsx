@@ -4,7 +4,7 @@ import { useInputDirectionMode } from "../../../../../../store/slices/gameMenus/
 import {
   inputDirectionModes,
   nextInputDirectionMode,
-} from "../../../../../../store/slices/gameMenus/gameMenusSlice";
+} from "../../../../../../store/slices/userSettings/userSettingsSlice";
 import { useDispatchActionCallback } from "../../../../../../store/useDispatchActionCallback";
 import { SwitchN } from "../../../../../../ui/Switch";
 import { BlockyMarkdown } from "../../../../BlockyMarkdown";

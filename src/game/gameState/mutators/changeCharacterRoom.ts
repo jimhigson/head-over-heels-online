@@ -20,11 +20,11 @@ import {
   type RoomState,
 } from "../../../model/RoomState";
 import { isSoundId } from "../../../sound/soundUrls";
-import { selectCurrentCampaign } from "../../../store/slices/gameMenus/gameMenusSelectors";
 import {
   characterRoomChange,
   roomExplored,
-} from "../../../store/slices/gameMenus/gameMenusSlice";
+} from "../../../store/slices/gameInPlay/gameInPlaySlice";
+import { selectCurrentCampaign } from "../../../store/slices/gameMenus/gameMenusSelectors";
 import { store } from "../../../store/store";
 import { emptyObject } from "../../../utils/empty";
 import { neverTime } from "../../../utils/neverTime";
@@ -43,7 +43,7 @@ import { selectHeelsAbilities } from "../gameStateSelectors/selectPlayableItem";
 import { loadRoom } from "../loadRoom/loadRoom";
 import { createRoomEntrySound } from "../loadRoom/loadRoomEntrySound";
 import { entryState } from "../PlayableEntryState";
-import { dispatchSaveGame } from "../saving/dispatchSaveGame";
+import { saveGameThunk } from "../saving/saveGameThunk";
 import { addItemToRoom } from "./addItemToRoom";
 import { deleteItemFromRoom } from "./deleteItemFromRoom";
 import { removeHushPuppiesFromRoom } from "./removeHushPuppiesFromRoom";
@@ -412,8 +412,8 @@ export const changeCharacterRoom = <
         roomJson: toRoomJson,
         roomPickupsCollected:
           gameState.pickupsCollected[toRoomId] ?? emptyObject,
-        scrollsRead: store.getState().gameMenus.gameInPlay.scrollsRead,
-        userSettings: store.getState().gameMenus.userSettings,
+        scrollsRead: store.getState().gameInPlay.gameInPlay.scrollsRead,
+        userSettings: store.getState().userSettings.userSettings,
       }) as RoomState<RoomId, RoomItemId>);
 
   // heels can't carry items to different rooms:
@@ -639,7 +639,7 @@ export const changeCharacterRoom = <
     characterRoomChange({ characterName: playableItem.type, roomId: toRoomId }),
   );
   // good time to save:
-  dispatchSaveGame(gameState, store);
+  store.dispatch(saveGameThunk(gameState));
 
   return toRoom;
 };

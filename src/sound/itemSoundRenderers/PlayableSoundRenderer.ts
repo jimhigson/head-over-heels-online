@@ -5,7 +5,7 @@ import type { ItemSoundRenderer } from "../ItemSoundRenderer";
 
 import { selectHeelsAbilities } from "../../game/gameState/gameStateSelectors/selectPlayableItem";
 import { isHighlightedPlayableItem } from "../../game/render/itemAppearances/playableAppearance";
-import { defaultUserSettings } from "../../store/slices/gameMenus/defaultUserSettings";
+import { defaultUserSettings } from "../../store/slices/userSettings/defaultUserSettings";
 import { epsilon } from "../../utils/epsilon";
 import { lengthXy } from "../../utils/vectors/vectors";
 import { audioCtx } from "../audioCtx";

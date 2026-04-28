@@ -6,7 +6,7 @@ import type { UnindexedRoomState } from "./saving/SavedGameState";
 
 import { campaign } from "../../_generated/originalCampaign/campaign";
 import { roomSpatialIndexKey } from "../../model/RoomState";
-import { noPlanetsLiberated } from "../../store/slices/gameMenus/gameMenusSlice";
+import { noPlanetsLiberated } from "../../store/slices/gameInPlay/gameInPlaySlice";
 import { badJsonClone } from "../../utils/badJsonClone";
 import { InputStateTracker } from "../input/InputStateTracker";
 import { loadGameState } from "./loadGameState";
@@ -58,20 +58,16 @@ test("if there is a saved game with both characters in the same room, only load 
     campaign,
     inputStateTracker: new InputStateTracker(new Map(), {} as HudInputState),
     savedGame: {
-      store: {
-        gameMenus: {
-          gameInPlay: {
-            planetsLiberated: noPlanetsLiberated,
-            scrollsRead: {},
-            roomsExplored: {},
-            campaignLocator: {
-              campaignName: "original",
-              userId: "@@original",
-              version: -1,
-            },
-            freeCharacters: {},
-          },
+      gameInPlay: {
+        planetsLiberated: noPlanetsLiberated,
+        scrollsRead: {},
+        roomsExplored: {},
+        campaignLocator: {
+          campaignName: "original",
+          userId: "@@original",
+          version: -1,
         },
+        freeCharacters: {},
       },
       saveTime: 0,
       gameState: {

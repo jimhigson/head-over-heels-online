@@ -32,7 +32,7 @@ import {
   otherIndividualCharacterName,
 } from "../model/modelTypes";
 import { startAppListening } from "../store/listenerMiddleware";
-import { gameOver } from "../store/slices/gameMenus/gameMenusSlice";
+import { gameOver } from "../store/slices/gameInPlay/gameInPlaySlice";
 import { valuesIter } from "../utils/entries";
 import { addXyz } from "../utils/vectors/vectors";
 import { gameStartedWithCampaign } from "./initStoreForTests";

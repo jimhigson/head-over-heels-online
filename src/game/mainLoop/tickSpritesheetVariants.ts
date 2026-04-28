@@ -3,7 +3,7 @@ import type { Renderer } from "pixi.js";
 import type { ZxSpectrumRoomColour } from "../../originalGame";
 import type { SceneryName } from "../../sprites/planets";
 import type { VariantBuildContext } from "../../sprites/spritesheet/VariantBuildContext";
-import type { SpriteOption } from "../../store/slices/gameMenus/gameMenusSlice";
+import type { SpriteOption } from "../../store/slices/userSettings/userSettingsSlice";
 
 import {
   initOriginalSpritesheet,

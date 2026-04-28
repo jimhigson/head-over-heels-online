@@ -3,7 +3,7 @@ import { produce } from "immer";
 import type { UnionOfAllItemInPlayTypes } from "../../../model/ItemInPlay";
 import type { JsonItemUnion } from "../../../model/json/JsonItem";
 import type { RoomJson } from "../../../model/RoomJson";
-import type { ScrollsRead } from "../../../store/slices/gameMenus/gameMenusSlice";
+import type { ScrollsRead } from "../../../store/slices/gameInPlay/gameInPlaySlice";
 import type { Xyz } from "../../../utils/vectors/vectors";
 import type { RoomPickupsCollected } from "../GameState";
 
@@ -103,7 +103,7 @@ export function* loadItemFromJson<
     }
 
     case jsonItem.type === "sceneryCrown" &&
-      !store.getState().gameMenus.gameInPlay.planetsLiberated[
+      !store.getState().gameInPlay.gameInPlay.planetsLiberated[
         jsonItem.config.planet
       ]: {
       // yield nothing - scenery crowns only show if we have collected that crown

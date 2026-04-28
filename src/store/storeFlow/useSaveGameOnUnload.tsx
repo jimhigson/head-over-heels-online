@@ -1,10 +1,10 @@
 import { useEffect } from "react";
 
 import { useMaybeGameApi } from "../../game/components/GameApiContext";
-import { dispatchSaveGame } from "../../game/gameState/saving/dispatchSaveGame";
+import { saveGameThunk } from "../../game/gameState/saving/saveGameThunk";
 import { isInPlaytestMode } from "../../game/isInPlaytestMode";
 import { addUnloadListener } from "../../utils/tauri/addUnloadListener";
-import { useAppStore } from "../hooks";
+import { useAppDispatch } from "../hooks";
 import { persistor } from "../store";
 
 /**
@@ -19,7 +19,7 @@ export type ListenForUnload = (
 ) => Promise<() => void>;
 
 export const useSaveGameOnUnload = (): void => {
-  const store = useAppStore();
+  const dispatch = useAppDispatch();
   const gameApi = useMaybeGameApi();
 
   useEffect(() => {
@@ -32,7 +32,7 @@ export const useSaveGameOnUnload = (): void => {
     }
 
     const saveAndFlush = async () => {
-      dispatchSaveGame(gameApi.gameState, store);
+      dispatch(saveGameThunk(gameApi.gameState));
       await persistor.flush();
     };
 
@@ -52,5 +52,5 @@ export const useSaveGameOnUnload = (): void => {
       unloadUnsub?.();
       effectUnmounted = true;
     };
-  }, [gameApi, store]);
+  }, [gameApi, dispatch]);
 };

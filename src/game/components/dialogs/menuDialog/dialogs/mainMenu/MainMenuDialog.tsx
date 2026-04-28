@@ -3,7 +3,7 @@ import type { EmptyObject } from "type-fest";
 import { isAnyOf } from "@reduxjs/toolkit";
 import { useCallback, useEffect, useState } from "react";
 
-import { useAppSelector, useAppStore } from "../../../../../../store/hooks";
+import { useAppDispatch, useAppSelector } from "../../../../../../store/hooks";
 import { startAppListening } from "../../../../../../store/listenerMiddleware";
 import { useGetAllUsersLatestCampaignsQuery } from "../../../../../../store/slices/campaigns/campaignsApiSlice";
 import {
@@ -24,7 +24,7 @@ import { DialogPortal } from "../../../../../../ui/DialogPortal";
 import { detectDeploymentType } from "../../../../../../utils/detectEnv/detectDeploymentType";
 import { detectDeviceType } from "../../../../../../utils/detectEnv/detectDeviceType";
 import { importTauriProcess } from "../../../../../../utils/tauri/dynamicLoad";
-import { dispatchSaveGame } from "../../../../../gameState/saving/dispatchSaveGame";
+import { saveGameThunk } from "../../../../../gameState/saving/saveGameThunk";
 import { useMaybeGameApi } from "../../../../GameApiContext";
 import {
   BitmapText,
@@ -96,7 +96,7 @@ const LevelEditorMenuItem = () => {
 const QuitGameMenuItem = () => {
   const isGameRunning = useIsGameRunning();
   const hasReincarnationPoint = useAppSelector(
-    (state) => state.gameMenus.gameInPlay.reincarnationPoint !== undefined,
+    (state) => state.gameInPlay.gameInPlay.reincarnationPoint !== undefined,
   );
 
   return (
@@ -115,7 +115,7 @@ const ExitAppMenuItem = () => {
   const [selectedOnce, setSelectedOnce] = useState(false);
   const isGameRunning = useIsGameRunning();
   const gameApi = useMaybeGameApi();
-  const store = useAppStore();
+  const dispatch = useAppDispatch();
 
   useEffect(() => {
     // selecting away from the exit item resets the selectedOnce state
@@ -150,7 +150,7 @@ const ExitAppMenuItem = () => {
           setSelectedOnce(true);
         } else {
           if (isGameRunning) {
-            dispatchSaveGame(gameApi!.gameState, store);
+            dispatch(saveGameThunk(gameApi!.gameState));
             await persistor.flush();
           }
           const { exit } = await importTauriProcess();

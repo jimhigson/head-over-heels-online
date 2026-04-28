@@ -3,7 +3,7 @@ import type { AnimatedSprite } from "pixi.js";
 import { Container, type Renderer } from "pixi.js";
 
 import type { RoomState } from "../../../../../model/RoomState";
-import type { SpriteOption } from "../../../../../store/slices/gameMenus/gameMenusSlice";
+import type { SpriteOption } from "../../../../../store/slices/userSettings/userSettingsSlice";
 import type { ButtonAppearance } from "../OnScreenButtonRenderer";
 
 import { getSpriteSheetVariant } from "../../../../../sprites/spritesheet/variants/getSpriteSheetVariant";

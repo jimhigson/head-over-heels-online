@@ -17,7 +17,7 @@ const getSavedGames = (page: Page) =>
   page.evaluate(() => {
     const store = window._e2e_store;
     if (!store) throw new Error("E2E store not available");
-    const { savedGames } = store.getState().gameMenus;
+    const { savedGames } = store.getState();
     return {
       saveKeys: Object.keys(savedGames.saves),
       lastSavedCampaignName: savedGames.lastSavedCampaignLocator?.campaignName,

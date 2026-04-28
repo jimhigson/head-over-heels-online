@@ -1,6 +1,6 @@
 import { Ticker, UPDATE_PRIORITY } from "pixi.js";
 
-import type { DirectionsRelativeToMode } from "../../store/slices/gameMenus/directionsRelativeToModes";
+import type { DirectionsRelativeToMode } from "../../store/slices/userSettings/directionsRelativeToModes";
 import type { Xyz } from "../../utils/vectors/vectors";
 import type { GamepadState } from "./GamepadState";
 import type { HudInputState } from "./hudInputState";

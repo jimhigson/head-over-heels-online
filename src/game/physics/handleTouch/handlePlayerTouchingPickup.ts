@@ -10,7 +10,7 @@ import {
   crownCollected,
   reincarnationFishEaten,
   scrollRead,
-} from "../../../store/slices/gameMenus/gameMenusSlice";
+} from "../../../store/slices/gameInPlay/gameInPlaySlice";
 import { store } from "../../../store/store";
 import { addXyz, originXyz } from "../../../utils/vectors/vectors";
 import {
@@ -20,7 +20,7 @@ import {
 import { defaultBaseState } from "../../gameState/loadRoom/itemDefaultStates";
 import { addItemToRoom } from "../../gameState/mutators/addItemToRoom";
 import { createSavedGame } from "../../gameState/saving/createSavedGame";
-import { dispatchSaveGame } from "../../gameState/saving/dispatchSaveGame";
+import { saveGameThunk } from "../../gameState/saving/saveGameThunk";
 import { floatingTextFixedZIndex } from "../../render/sortZ/fixedZIndexes";
 import { blockSizePx } from "../mechanicsConstants";
 
@@ -73,7 +73,7 @@ export const handlePlayerTouchingPickup = <
     }
 
     // probably a good time to save the game:
-    dispatchSaveGame(gameState, store);
+    store.dispatch(saveGameThunk(gameState));
   };
 
   const loadFloatingText = (textLines: string[]) => {

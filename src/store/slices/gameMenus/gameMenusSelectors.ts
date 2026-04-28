@@ -9,12 +9,12 @@ import type { Campaign } from "../../../model/modelTypes";
 import type { AppSpritesheetData } from "../../../sprites/spritesheet/loadedSpriteSheet";
 import type { RootState } from "../../store";
 import type {
-  GameMenusState,
   InputDirectionMode,
   ShowBoundingBoxes,
   UserSettings,
   UserSettingsBooleanPaths,
-} from "./gameMenusSlice";
+  UserSettingsState,
+} from "../userSettings/userSettingsSlice";
 
 import { keyAssignmentPresets } from "../../../game/input/keyAssignmentPresets";
 import { makeSpritesheetData } from "../../../sprites/spritesheet/spritesheetData/makeSpritesheetData";
@@ -25,12 +25,12 @@ import { size } from "../../../utils/iterators/size";
 import { selectorHook } from "../../../utils/react/selectorHook";
 import { useAppSelector } from "../../hooks";
 import { selectMaybeLoadedCampaignData } from "../campaigns/campaignsApiSlice";
-import { defaultUserSettings } from "./defaultUserSettings";
+import { defaultUserSettings } from "../userSettings/defaultUserSettings";
 
 const selectUserSetting =
   <Path extends Paths<UserSettings>>(path: Path) =>
   (state: RootState): NonNullable<Get<UserSettings, Path>> =>
-    getAtPath(state.gameMenus.userSettings, path) ??
+    getAtPath(state.userSettings.userSettings, path) ??
     getAtPath(defaultUserSettings, path);
 
 export const selectInputAssignment = selectUserSetting("inputAssignment");
@@ -40,11 +40,14 @@ export const useInputAssignment = () => useAppSelector(selectInputAssignment);
 export const selectIsPaused = (state: RootState) =>
   state.gameMenus.openMenus.length > 0;
 
+export const selectAssigningInput = (state: RootState) =>
+  state.userSettings.assigningInput;
+
 export const useCheatsOn = (): boolean =>
-  useAppSelector((state) => state.gameMenus.cheatsOn);
+  useAppSelector((state) => state.debug.cheatsOn);
 
 export const selectIsAssigningKeys = (state: RootState): boolean =>
-  state.gameMenus.assigningInput !== undefined;
+  state.userSettings.assigningInput !== undefined;
 
 export const useIsAssigningKeys = (): boolean =>
   useAppSelector(selectIsAssigningKeys);
@@ -55,7 +58,7 @@ export const useIsAssigningKeys = (): boolean =>
 export const selectCurrentInputPreset = (
   state: RootState,
 ): KeyAssignmentPresetName | undefined => {
-  if (state.gameMenus.userSettings.inputAssignment === undefined) {
+  if (state.userSettings.userSettings.inputAssignment === undefined) {
     // having no settings is the same as having the default preset:
     return "Default";
   }
@@ -64,7 +67,7 @@ export const selectCurrentInputPreset = (
     if (
       nanoEqual(
         preset.inputAssignment,
-        state.gameMenus.userSettings.inputAssignment,
+        state.userSettings.userSettings.inputAssignment,
       )
     ) {
       return name;
@@ -76,7 +79,7 @@ export const selectCurrentInputPreset = (
 };
 
 export const useIsGameRunning = () =>
-  useAppSelector((state: RootState): boolean => state.gameMenus.gameRunning);
+  useAppSelector((state: RootState): boolean => state.gameInPlay.gameRunning);
 
 export const selectShowFps = selectUserSetting("showFps");
 export const selectEmulatedResolutionName = selectUserSetting(
@@ -100,10 +103,10 @@ export const selectIsInfiniteDoughnutsPoke = selectUserSetting(
 
 export const selectHasAllPlanetCrowns = (state: RootState) => {
   return (
-    state.gameMenus.gameInPlay.planetsLiberated.egyptus &&
-    state.gameMenus.gameInPlay.planetsLiberated.bookworld &&
-    state.gameMenus.gameInPlay.planetsLiberated.penitentiary &&
-    state.gameMenus.gameInPlay.planetsLiberated.safari
+    state.gameInPlay.gameInPlay.planetsLiberated.egyptus &&
+    state.gameInPlay.gameInPlay.planetsLiberated.bookworld &&
+    state.gameInPlay.gameInPlay.planetsLiberated.penitentiary &&
+    state.gameInPlay.gameInPlay.planetsLiberated.safari
   );
 };
 
@@ -120,7 +123,9 @@ export const useInputDirectionMode = (): InputDirectionMode =>
   useAppSelector(selectInputDirectionMode);
 
 export const selectPlanetsLiberatedCount = (state: RootState) =>
-  size(valuesIter(state.gameMenus.gameInPlay.planetsLiberated).filter(Boolean));
+  size(
+    valuesIter(state.gameInPlay.gameInPlay.planetsLiberated).filter(Boolean),
+  );
 
 export const selectSpritesOption = selectUserSetting("displaySettings.sprites");
 
@@ -151,9 +156,9 @@ export const selectIsNoRoomEntryTunes = selectUserSetting(
 );
 
 export const selectShouldRenderOnScreenControls = ({
-  gameMenus,
+  userSettings,
 }: RootState): boolean =>
-  gameMenus.userSettings.onScreenControls ??
+  userSettings.userSettings.onScreenControls ??
   defaultUserSettings.onScreenControls;
 
 export const useIsUserPreferenceOnScreenControls = () => {
@@ -161,11 +166,11 @@ export const useIsUserPreferenceOnScreenControls = () => {
 };
 
 export const selectBooleanUserSetting = (
-  gameMenusState: GameMenusState | WritableDraft<GameMenusState>,
+  state: UserSettingsState | WritableDraft<UserSettingsState>,
   path: UserSettingsBooleanPaths,
 ): boolean => {
   return !!(
-    getAtPath(gameMenusState.userSettings, path) ??
+    getAtPath(state.userSettings, path) ??
     getAtPath(defaultUserSettings, path) ??
     false
   );
@@ -173,7 +178,8 @@ export const selectBooleanUserSetting = (
 
 export const useRoomsExplored = <RoomId extends string>() => {
   return useAppSelector(
-    (state) => state.gameMenus.gameInPlay.roomsExplored as Record<RoomId, true>,
+    (state) =>
+      state.gameInPlay.gameInPlay.roomsExplored as Record<RoomId, true>,
   );
 };
 
@@ -183,7 +189,7 @@ export const selectCurrentCampaign = <RoomId extends string = string>(
   const maybeCampaign = selectMaybeCurrentCampaign<RoomId>(state);
   if (!maybeCampaign) {
     throw new Error(
-      `No current campaign. Campaign locator is:\n${JSON.stringify(state.gameMenus.gameInPlay.campaignLocator, null, 2)}`,
+      `No current campaign. Campaign locator is:\n${JSON.stringify(state.gameInPlay.gameInPlay.campaignLocator, null, 2)}`,
     );
   }
   return maybeCampaign;
@@ -196,7 +202,7 @@ export const useCurrentCampaign = selectorHook(selectCurrentCampaign) as <
 export const selectMaybeCurrentCampaign = <RoomId extends string = string>(
   state: RootState,
 ): Campaign<RoomId> | undefined => {
-  const currentCampaignLocator = state.gameMenus.gameInPlay.campaignLocator;
+  const currentCampaignLocator = state.gameInPlay.gameInPlay.campaignLocator;
   return currentCampaignLocator === undefined ? undefined : (
       selectMaybeLoadedCampaignData<RoomId>(state, currentCampaignLocator)
     );

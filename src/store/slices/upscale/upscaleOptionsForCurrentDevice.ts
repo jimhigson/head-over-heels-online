@@ -1,5 +1,5 @@
 import type { Xy } from "../../../utils/vectors/vectors";
-import type { DisplaySettings } from "../gameMenus/gameMenusSlice";
+import type { DisplaySettings } from "../userSettings/userSettingsSlice";
 import type { CalculateUpscaleOptions } from "./calculateUpscale";
 
 import { type ResolutionName, resolutions } from "../../../originalGame";

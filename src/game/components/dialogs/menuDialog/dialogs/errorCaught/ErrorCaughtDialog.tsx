@@ -3,10 +3,9 @@ import { useEffect, useState } from "react";
 import type { SerialisableError } from "../../../../../../utils/redux/createSerialisableErrors";
 
 import { useAppSelector } from "../../../../../../store/hooks";
-import {
-  errorDismissed,
-  reincarnationAccepted,
-} from "../../../../../../store/slices/gameMenus/gameMenusSlice";
+import { clearAllData } from "../../../../../../store/slices/clearAllData";
+import { reincarnationAccepted } from "../../../../../../store/slices/gameInPlay/gameInPlaySlice";
+import { errorDismissed } from "../../../../../../store/slices/gameMenus/gameMenusSlice";
 import { useDispatchActionCallback } from "../../../../../../store/useDispatchActionCallback";
 import { Border } from "../../../../../../ui/Border";
 import { Dialog } from "../../../../../../ui/Dialog";
@@ -111,7 +110,7 @@ export const ErrorCaughtDialog = ({
   errors: Array<SerialisableError>;
 }) => {
   const hasReincarnationPoint = useAppSelector(
-    (state) => state.gameMenus.gameInPlay.reincarnationPoint !== undefined,
+    (state) => state.gameInPlay.gameInPlay.reincarnationPoint !== undefined,
   );
   const [copied, setCopied] = useState<boolean>(false);
   const reincarnateCallback = useDispatchActionCallback(reincarnationAccepted);
@@ -150,7 +149,7 @@ export const ErrorCaughtDialog = ({
               doubleHeightWhenFocussed
               id="tryContinue"
               label="Ignore, hope it goes away"
-              onSelect={useDispatchActionCallback(errorDismissed, "ignore")}
+              onSelect={useDispatchActionCallback(errorDismissed)}
             />
             {hasReincarnationPoint && (
               <MenuItem
@@ -164,10 +163,7 @@ export const ErrorCaughtDialog = ({
               doubleHeightWhenFocussed
               id="clearAllData"
               label="Clear all data, reboot game"
-              onSelect={useDispatchActionCallback(
-                errorDismissed,
-                "clearAllData",
-              )}
+              onSelect={useDispatchActionCallback(clearAllData)}
             />
             {copied ?
               <BitmapText className="text-metallicBlue col-span-2 sprites-double-height ml-3">

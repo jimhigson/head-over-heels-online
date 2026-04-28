@@ -1,11 +1,11 @@
-import type { ShowBoundingBoxes } from "../../store/slices/gameMenus/gameMenusSlice";
+import type { ShowBoundingBoxes } from "../../store/slices/userSettings/userSettingsSlice";
 
 import { useAppDispatch } from "../../store/hooks";
 import { useShowBoundingBoxes } from "../../store/slices/gameMenus/gameMenusSelectors";
 import {
   setShowBoundingBoxes,
   showBoundingBoxOptions,
-} from "../../store/slices/gameMenus/gameMenusSlice";
+} from "../../store/slices/userSettings/userSettingsSlice";
 import { Select } from "../../ui/Select";
 
 export const ShowBoundingBoxSelect = () => {

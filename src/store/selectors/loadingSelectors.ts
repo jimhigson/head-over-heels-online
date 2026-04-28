@@ -43,7 +43,7 @@ export const selectIsGameLoading = (state: RootState): boolean => {
   }
 
   // Check if the current campaign is still loading
-  const { campaignLocator } = state.gameMenus.gameInPlay;
+  const { campaignLocator } = state.gameInPlay.gameInPlay;
   if (
     campaignLocator !== undefined &&
     // the original campaign is loaded via game assets, not the db:

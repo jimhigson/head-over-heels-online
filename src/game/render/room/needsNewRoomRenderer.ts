@@ -1,8 +1,8 @@
+import type { Upscale } from "../../../store/slices/upscale/Upscale";
 import type {
   DisplaySettings,
   SoundSettings,
-} from "../../../store/slices/gameMenus/gameMenusSlice";
-import type { Upscale } from "../../../store/slices/upscale/Upscale";
+} from "../../../store/slices/userSettings/userSettingsSlice";
 import type { RoomRendererType } from "./RoomRendererType";
 
 export const needsNewRoomRenderer = <

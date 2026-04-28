@@ -9,16 +9,18 @@ import {
   holdPressed,
   mapPressed,
   menuOpenOrExitPressed,
+} from "../slices/gameMenus/gameMenusSlice";
+import {
   nextSpritesOption,
   setEmulatedResolution,
   toggleUserSetting,
-} from "../slices/gameMenus/gameMenusSlice";
+} from "../slices/userSettings/userSettingsSlice";
 import { store } from "../store";
 import { useDispatchActionCallback } from "../useDispatchActionCallback";
 
 export const useUniversalKeys = () => {
   const assigningKeys = useAppSelector(
-    (store) => store.gameMenus.assigningInput !== undefined,
+    (store) => store.userSettings.assigningInput !== undefined,
   );
   const menuOpen = useAppSelector(
     (store) => store.gameMenus.openMenus.length > 0,
@@ -31,14 +33,16 @@ export const useUniversalKeys = () => {
         // when playtesting, don't show a menu, just close the window
         window.close();
       }
-      store.dispatch(menuOpenOrExitPressed());
+      store.dispatch(menuOpenOrExitPressed({ openMainIfEmpty: true }));
     }, []),
     disabled: assigningKeys,
   });
 
   useActionTap({
     action: "menu_exit",
-    handler: useDispatchActionCallback(menuOpenOrExitPressed),
+    handler: useDispatchActionCallback(menuOpenOrExitPressed, {
+      openMainIfEmpty: false,
+    }),
     disabled: !menuOpen,
   });
 

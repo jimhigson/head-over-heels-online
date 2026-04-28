@@ -1,7 +1,7 @@
 import { Container, Graphics, type Sprite, TilingSprite } from "pixi.js";
 
 import type { ItemInPlay } from "../../../../model/ItemInPlay";
-import type { SpriteOption } from "../../../../store/slices/gameMenus/gameMenusSlice";
+import type { SpriteOption } from "../../../../store/slices/userSettings/userSettingsSlice";
 import type { Subset } from "../../../../utils/Subset";
 import type { Xy, Xyz } from "../../../../utils/vectors/vectors";
 import type { ItemAppearance } from "../ItemAppearance";
