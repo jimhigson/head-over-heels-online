@@ -541,6 +541,7 @@ export const Cheats = <RoomId extends string>(_emptyProps: EmptyObject) => {
             </div>
             <div className="flex flex-row items-center">
               <Button
+                data-test-id="cheats-summon-extra-life"
                 className={cheatsButtonClasses}
                 onClick={(e) => {
                   summonItem("pickup", { gives: "extra-life" });

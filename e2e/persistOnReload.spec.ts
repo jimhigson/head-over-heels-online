@@ -200,4 +200,58 @@ test.describe("persistence across reload", () => {
     );
     expect(campaignName).toBe("sequel");
   });
+
+  test("reincarnation point set in one room survives reload from another, then takes player back", async ({
+    page,
+  }, testInfo) => {
+    const formattedName = formatProjectName(testInfo.project.name);
+
+    await test.step("Start original campaign", async () => {
+      await startCampaignViaMenu(page, testInfo.project.name, "originalGame");
+    });
+
+    await test.step("Move to a second room before eating the fish", async () => {
+      await clickCheat(page, "cheats-goto-room-egyptus1");
+      await page.waitForTimeout(1_000 * osSlowness);
+      expect(await getCurrentRoomId(page)).toBe("egyptus1");
+    });
+
+    let fishRoom: string | undefined;
+    await test.step("Eat a reincarnation fish; saveGameThunk fires on pickup", async () => {
+      await clickCheat(page, "cheats-summon-reincarnation");
+      await page.waitForTimeout(2_000 * osSlowness);
+      fishRoom = await getCurrentRoomId(page);
+      expect(fishRoom).toBe("egyptus1");
+    });
+
+    await test.step("Jump to a different planet (Penitentiary)", async () => {
+      await clickCheat(page, "cheats-goto-room-penitentiary1");
+      await page.waitForTimeout(1_000 * osSlowness);
+      expect(await getCurrentRoomId(page)).toBe("penitentiary1");
+    });
+
+    await test.step("Reload and dismiss the hold dialog", async () => {
+      await page.reload();
+      await waitForGameState(page);
+      await dismissHoldAfterReload(page);
+    });
+
+    // The reincarnationPoint surviving rehydrate is verified end-to-end by
+    // the next step finding the Reincarnate menu item (only rendered when
+    // hasReincarnationPoint is true), and the step after that landing in
+    // the right room.
+    await test.step("Open in-game main menu → quitGameConfirm → Reincarnate", async () => {
+      await openInGameMainMenu(page, formattedName);
+      await navigateToSubmenu(page, "quitGame", formattedName);
+      await waitForDialog(page, "quitGameConfirm");
+      await navigateToSubmenu(page, "reincarnate", formattedName);
+      await waitForDialog(page, "reincarnatedRestart");
+      await page.click('[data-dialog-id="reincarnatedRestart"]');
+      await waitForDialog(page, "reincarnatedRestart", { state: "detached" });
+    });
+
+    await test.step("Player is back at the fish room, not the room before reload", async () => {
+      expect(await getCurrentRoomId(page)).toBe(fishRoom);
+    });
+  });
 });

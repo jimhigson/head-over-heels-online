@@ -3,6 +3,7 @@ import type { GameApi } from "../../../../../GameApi";
 
 import {
   gameOver,
+  gameRestoreFromSave,
   reincarnationAccepted,
 } from "../../../../../../store/slices/gameMenus/gameMenusSlice";
 import { store } from "../../../../../../store/store";
@@ -17,10 +18,17 @@ import { MenuItem } from "../../MenuItem";
 import { MenuItems } from "../../MenuItems";
 
 export const reincarnateSelected = (gameApi: GameApi<string>) => {
-  gameApi.reincarnateFrom(
-    store.getState().gameMenus.gameInPlay.reincarnationPoint!,
-  );
-  // dispatch something to close the menu and remove the reincarnation point
+  const savedGame = store.getState().gameMenus.gameInPlay.reincarnationPoint!;
+  gameApi.reincarnateFrom(savedGame);
+  // Pop the reincarnationPoint stack: restore the redux gameInPlay from
+  // the saved snapshot, which carries the prior reincarnationPoint (one
+  // link back) plus the rolled-back roomsExplored / scrollsRead /
+  // freeCharacters at fish-eaten time. Each fish save was created with
+  // the previous reincarnationPoint nested inside, so each pop walks
+  // one link back through the chain.
+  store.dispatch(gameRestoreFromSave(savedGame.store.gameMenus.gameInPlay));
+  // Closes the offerReincarnation/quitGameConfirm menu and opens the
+  // reincarnatedRestart confirmation.
   store.dispatch(reincarnationAccepted());
 };
 
