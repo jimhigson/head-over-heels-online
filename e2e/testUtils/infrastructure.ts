@@ -1,5 +1,6 @@
 import type { Page } from "@playwright/test";
 
+import { test } from "@playwright/test";
 import chalk from "chalk";
 
 import type {
@@ -17,6 +18,15 @@ export const osSlowness =
   process.platform === "win32" ? 4
   : process.env.CI ? 1.5
   : 1;
+
+/**
+ * Pause before user-visible UI events (eg menu item clicks) so a human
+ * watching the test in headed mode can follow what's happening. Returns 0
+ * in headless mode (CI etc.) so tests don't pay the cost when nobody's
+ * looking.
+ */
+export const slownessForHumanObserver = (): number =>
+  test.info().project.use.headless === false ? 1000 : 0;
 
 export const retryWithRecovery = async <T>({
   action,

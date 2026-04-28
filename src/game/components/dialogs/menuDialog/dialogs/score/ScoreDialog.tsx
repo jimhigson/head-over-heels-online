@@ -81,7 +81,10 @@ const FreeCharacterText = ({
 }: {
   freeCharacterName: IndividualCharacterName;
 }) => (
-  <span className="block text-center mx-auto text-lightGrey zx:text-zxYellow toppy:text-toppyWarm3">
+  <span
+    data-test-id={`free-${freeCharacterName}`}
+    className="block text-center mx-auto text-lightGrey zx:text-zxYellow toppy:text-toppyWarm3"
+  >
     {freeCharacterName === "head" ?
       <BitmapText className="text-metallicBlue zx:text-zxBlue toppy:text-toppyCool2">
         Head
@@ -144,10 +147,16 @@ export const ScoreDialog = () => {
               <FreeCharacterText key={fc} freeCharacterName={fc} />
             ))}
           </div>
-          <BitmapText className="mt-1 block text-center mx-auto text-pink zx:text-zxCyan toppy:text-toppyPink1">
-            Explored {roomsExploredCount} / {roomCount} rooms{" "}
-            {`(${asPercentage(roomsExploredCount, roomCount)})`}
-          </BitmapText>
+          <span
+            data-test-id="rooms-explored-summary"
+            data-rooms-explored={roomsExploredCount}
+            data-rooms-total={roomCount}
+          >
+            <BitmapText className="mt-1 block text-center mx-auto text-pink zx:text-zxCyan toppy:text-toppyPink1">
+              Explored {roomsExploredCount} / {roomCount} rooms{" "}
+              {`(${asPercentage(roomsExploredCount, roomCount)})`}
+            </BitmapText>
+          </span>
           <BitmapText className="mt-1 block text-center mx-auto text-lightGrey zx:text-zxWhite toppy:text-toppyGrey1">
             Liberated {planetsLiberatedCount} planets
           </BitmapText>
