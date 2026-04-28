@@ -2,7 +2,7 @@ import { defineConfig, devices } from "@playwright/test";
 import getPort from "get-port";
 import { produce } from "immer";
 
-import type { ScreenshotTestOptions } from "./screenshotTests/ScreenshotTestOptions";
+import type { ScreenshotTestOptions } from "./e2e/ScreenshotTestOptions";
 
 const desktopSize = {
   // this size gives us an upscale of exactly 2 for the game in default settings - hopefully
@@ -35,7 +35,7 @@ if (isRootPlaywrightProcess) {
 }
 
 export default defineConfig<ScreenshotTestOptions>({
-  testDir: "./screenshotTests",
+  testDir: "./e2e",
   testMatch: "**/*.spec.ts",
   fullyParallel: true,
   forbidOnly: !!process.env.CI,

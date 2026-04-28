@@ -23,7 +23,7 @@ const program = new Command()
   .description(
     "Compare visual regression screenshots between two git revisions",
   )
-  .argument("[dir]", "directory to filter PNGs", "screenshotTests")
+  .argument("[dir]", "directory to filter PNGs", "e2e")
   .option("--base <rev>", "base git revision to compare against", "main")
   .option("--later <rev>", 'later revision ("." = working copy)', ".")
   .option("--limit <n>", "max rows to show", "2000")
@@ -40,7 +40,7 @@ const parallelism = Number.parseInt(opts.parallelism);
 const resolveDir = (): string => {
   if (opts.spec === undefined) return dirArg;
 
-  const snapshotDirs = readdirSync("screenshotTests", { withFileTypes: true })
+  const snapshotDirs = readdirSync("e2e", { withFileTypes: true })
     .filter((d) => d.isDirectory() && d.name.endsWith(".spec.ts-snapshots"))
     .map((d) => d.name.replace(".spec.ts-snapshots", ""));
 
@@ -59,7 +59,7 @@ const resolveDir = (): string => {
     process.exit(1);
   }
 
-  return `screenshotTests/${matches[0]}.spec.ts-snapshots`;
+  return `e2e/${matches[0]}.spec.ts-snapshots`;
 };
 
 const dir = resolveDir();

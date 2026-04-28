@@ -1,4 +1,5 @@
 import { lazy, Suspense, useEffect, useState } from "react";
+import { shallowEqual } from "react-redux";
 
 import type Cheats from "../../game/components/cheats/Cheats.tsx";
 
@@ -53,8 +54,11 @@ const loadGameAssets = importOnce(() => {
 const useCreateGameApi = (): GameApi<string> | undefined => {
   const [gameApi, setGameApi] = useState<GameApi<string> | undefined>();
   const isGameRunning = useIsGameRunning();
+  // shallowEqual: don't re-run the effect on equivalent campaign locator objects
+  // eg, if redux-persist rehydration replaces it with an equivalent one
   const currentCampaignLocator = useAppSelector(
     (store) => store.gameMenus.gameInPlay.campaignLocator,
+    shallowEqual,
   );
   const inputState = useInputStateTracker();
 
@@ -90,6 +94,12 @@ const useCreateGameApi = (): GameApi<string> | undefined => {
             currentCampaignLocator,
             inputState,
           );
+          if (thisEffectCancelled) {
+            // creating the game api is async, so while we were creating it is possible
+            // it has already been cleaned up, ie if the effect is mounting/unmounting often.
+            thisEffectGameApi.stop();
+            return;
+          }
           setGameApi(thisEffectGameApi);
           window._e2e_gamePageGameAi = thisEffectGameApi;
         }

@@ -23,7 +23,7 @@
     "check:build:editor": "pnpm build:editor",
     "watch:type": "tsc --noEmit --watch --project ./tsconfig.app.json",
     "check:type": "tsc --noEmit --project ./tsconfig.app.json",
-    "check:type:screenshotTests": "tsc --noEmit --project ./screenshotTests/tsconfig.json",
+    "check:type:e2e": "tsc --noEmit --project ./e2e/tsconfig.json",
     "check:type:scripts": "tsc --noEmit --project ./scripts/tsconfig.json",
     "tsgo": "tsgo --noEmit --project ./tsconfig.app.json",
     "check:lint": "eslint .",
