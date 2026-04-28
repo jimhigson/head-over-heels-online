@@ -1,6 +1,7 @@
 import type { ConsoleMessage, Page } from "@playwright/test";
 import type { ChalkInstance } from "chalk";
 
+import { test } from "@playwright/test";
 import chalk from "chalk";
 
 export const formatDuration = (ms: number): string => {
@@ -272,13 +273,27 @@ export const getProjectColour = (projectName: string): ChalkInstance => {
 };
 
 export const formatProjectName = (projectName: string): string => {
-  // Use pre-calculated colored names if available
-  if (coloredBrowserNames[projectName]) {
-    return coloredBrowserNames[projectName];
-  }
+  const projectPart =
+    coloredBrowserNames[projectName] ??
+    getProjectColour(projectName)(projectName);
+  const titlePart = currentTestTitle();
+  return titlePart ? `${projectPart}/${chalk.dim(titlePart)}` : projectPart;
+};
 
-  // Default formatting for unknown browsers
-  return getProjectColour(projectName)(projectName);
+/**
+ * Returns the current test's title (truncated) when called from within a
+ * Playwright test. Returns undefined outside of test execution. Used to
+ * disambiguate log lines from concurrently running tests in the same
+ * worker pool — without it, two tests' logs share an identical project
+ * prefix and become hard to attribute when interleaved.
+ */
+const currentTestTitle = (): string | undefined => {
+  try {
+    const { title } = test.info();
+    return title.length > 30 ? `${title.slice(0, 30)}…` : title;
+  } catch {
+    return undefined;
+  }
 };
 
 export const progressLogHeader = (
