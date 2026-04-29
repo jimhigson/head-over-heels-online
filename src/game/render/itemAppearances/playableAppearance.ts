@@ -130,11 +130,18 @@ const playableCreateSpriteOptions = ({
   }
 
   if (action === "jumping") {
+    if (gravityZ < jumpSpriteGravityZThreshold) {
+      return {
+        textureId: `${name}.walking.${facingXy8}.2`,
+        spritesheet,
+      };
+    }
+
+    const jumpAscentWalkTextureNo =
+      spritesheet.spritesheetMeta.playable[name][facingXy8]?.jumpAscent ?? 1;
+
     return {
-      textureId:
-        gravityZ < jumpSpriteGravityZThreshold ?
-          `${name}.walking.${facingXy8}.2`
-        : `${name}.walking.${facingXy8}.1`,
+      textureId: `${name}.walking.${facingXy8}.${jumpAscentWalkTextureNo}`,
       spritesheet,
     };
   }

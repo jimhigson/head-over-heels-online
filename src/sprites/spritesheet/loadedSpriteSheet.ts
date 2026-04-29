@@ -5,6 +5,7 @@ import { RenderTexture, Sprite, Spritesheet, Texture } from "pixi.js";
 import type { PaletteSwopSpec } from "../../game/render/filters/PaletteSwapFilter";
 import type { SpriteOption } from "../../store/slices/userSettings/userSettingsSlice";
 import type { TextureId } from "./spritesheetData/makeSpritesheetData";
+import type { SpritesheetMetadata } from "./spritesheetData/spritesheetMetaData";
 
 import blockStackSpritesheetUrl from "../../../gfx/sprites.png";
 import toppySpritesheetUrl from "../../../gfx/spritesToppy.png";
@@ -21,6 +22,7 @@ export type AppSpritesheetData = ReturnType<typeof makeSpritesheetData>;
 export type AppSpritesheet = Spritesheet<AppSpritesheetData> & {
   spriteOption: LoadableSpriteOption;
   ambient?: PaletteSwopSpec[];
+  spritesheetMeta: SpritesheetMetadata;
 };
 
 export type LoadableSpriteOption = SpriteOption["name"];
@@ -115,7 +117,8 @@ export const initOriginalSpritesheet = (pixiRenderer: Renderer): void => {
   }
 
   const texture = loadedTexture;
-  const spriteSheetData = makeSpritesheetData(spritesheetMetas[loadedFor]);
+  const spritesheetMeta = spritesheetMetas[loadedFor];
+  const spriteSheetData = makeSpritesheetData(spritesheetMeta);
 
   const shadowSpritesMask = renderMaskTexture(pixiRenderer, {
     rects: {
@@ -150,6 +153,7 @@ export const initOriginalSpritesheet = (pixiRenderer: Renderer): void => {
   spriteSheet.parseSync();
   spriteSheet.textureSource.scaleMode = "nearest";
   spriteSheet.spriteOption = loadedFor;
+  spriteSheet.spritesheetMeta = spritesheetMeta;
   currentSpritesheet = spriteSheet;
 
   sprite.destroy();

@@ -51,14 +51,20 @@ export const toppySpritesheetMeta: SpritesheetMetadata<
     },
     heels: {
       awayLeft: { shadowMask: true },
-      away: { shadowMask: true },
+      away: { shadowMask: true, jumpAscent: 3 },
       awayRight: {
         blinking: true,
         looking1: true,
         shadowMask: true,
         standing: 2,
       },
-      right: { blinking: true, looking1: true, shadowMask: true, standing: 2 },
+      right: {
+        blinking: true,
+        looking1: true,
+        shadowMask: true,
+        standing: 2,
+        jumpAscent: 3,
+      },
       towardsRight: {
         blinking: true,
         looking1: true,
@@ -66,9 +72,9 @@ export const toppySpritesheetMeta: SpritesheetMetadata<
         shadowMask: true,
         standing: 2,
       },
-      towards: { blinking: true, looking1: true, standing: 2 },
+      towards: { blinking: true, looking1: true, standing: 2, jumpAscent: 3 },
       towardsLeft: { blinking: true, looking1: true, standing: 2 },
-      left: {},
+      left: { jumpAscent: 3 },
     },
   },
   missedTextures: [
