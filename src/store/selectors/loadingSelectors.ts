@@ -1,6 +1,6 @@
 import type { RootState } from "../store";
 
-import { originalCampaignLocator } from "../../model/modelTypes";
+import { originalCampaignLocator } from "../../gameInfo";
 import { campaignsApiSlice } from "../slices/campaigns/campaignsApiSlice";
 import { selectGameAssetsLoadingCount } from "../slices/gameAssetsLoading/gameAssetsLoadingSlice";
 

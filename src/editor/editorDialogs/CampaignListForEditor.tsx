@@ -5,15 +5,15 @@ import type {
   CampaignDirectory,
   CampaignInfoInDirectory,
 } from "../../db/campaign";
+import type { CampaignLocator } from "../../model/modelTypes";
 
 import { BlockyMarkdown } from "../../game/components/BlockyMarkdown";
 import { BitmapText } from "../../game/components/tailwindSprites/BitmapText";
 import {
-  type CampaignLocator,
   originalCampaignLocator,
   originalCampaignName,
   originalUserId,
-} from "../../model/modelTypes";
+} from "../../gameInfo";
 import { releaseDateIso8601 } from "../../originalGame";
 import { Button } from "../../ui/Button";
 

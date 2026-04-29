@@ -2,8 +2,10 @@ import type { EmptyObject } from "type-fest";
 
 import type { TextureTailwindClass } from "../../../../../../sprites/spritesheet/spritesheetData/TextureTailwindClass";
 
-import { jimAtBlockstackingUserId } from "../../../../../../gameInfo";
-import { originalCampaignLocator } from "../../../../../../model/modelTypes";
+import {
+  originalCampaignLocator,
+  sequelCampaignLocator,
+} from "../../../../../../gameInfo";
 import { gameStarted } from "../../../../../../store/slices/gameInPlay/gameInPlaySlice";
 import { useDispatchActionCallback } from "../../../../../../store/useDispatchActionCallback";
 import { Dialog } from "../../../../../../ui/Dialog";
@@ -64,11 +66,7 @@ export const WhichGameDialog = (_emptyProps: EmptyObject) => {
               className="sprites-double-height"
               hintInline
               onSelect={useDispatchActionCallback(gameStarted, {
-                campaignLocator: {
-                  userId: jimAtBlockstackingUserId,
-                  campaignName: "sequel",
-                  version: -1,
-                },
+                campaignLocator: sequelCampaignLocator,
               })}
               leader={
                 <span

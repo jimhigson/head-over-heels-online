@@ -1,5 +1,6 @@
 import { readdir } from "node:fs/promises";
 
+import type { Campaign } from "../../src/model/modelTypes";
 import type { AnyRoomJson } from "../../src/model/RoomJson";
 import type {
   ZxSpectrumRoomHue,
@@ -8,10 +9,7 @@ import type {
 import type { DirectionXy4 } from "../../src/utils/vectors/vectors";
 import type { Xml2JsonRoom } from "./readToJson";
 
-import {
-  type Campaign,
-  originalCampaignLocator,
-} from "../../src/model/modelTypes";
+import { originalCampaignLocator } from "../../src/gameInfo";
 import { convertRoom } from "./convertRoom";
 import { convertRoomId } from "./convertRoomId";
 import { gamedataMapXmlLocation } from "./gamedataMapXmlLocation";

@@ -24,21 +24,6 @@ export type AnyWall = Wall<SceneryName>;
 export const floorThickness = blockSizePx.z;
 export const wallThickness = blockSizePx.x / 2;
 
-/**
- * special value to use in place of a superbase auth.users.id
- * for *.ts campaigns created baked-in to the game's deploy
- * (ie, the original game)
- *
- * @see Campaign.userId
- */
-export const originalUserId = "@@original" as const;
-export const originalCampaignName = "original" as const;
-export const originalCampaignLocator: CampaignLocator = {
-  userId: originalUserId,
-  campaignName: originalCampaignName,
-  version: -1,
-};
-
 export type Campaign<RoomId extends string> = {
   rooms: Record<RoomId, RoomJson<RoomId, string, SceneryName>>;
   locator: CampaignLocator;
@@ -79,8 +64,8 @@ export type SpriteSize = Pick<SpriteFrame, "h" | "w">;
 export type CampaignLocator = {
   /**
    * the id (from supabase at auth.users.id, which is a uuid) of the user who
-   * created this campaign, or special value '@@original'
-   * @see originalUserId
+   * created this campaign, or the sentinel `originalUserId` (`@@original`)
+   * for the bundled original campaign.
    */
   userId: string;
   campaignName: string;
