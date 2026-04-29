@@ -1,12 +1,12 @@
 import { useEffect } from "react";
 
 import { useMaybeGameApi } from "../../game/components/GameApiContext";
-import { dispatchSaveGame } from "../../game/gameState/saving/dispatchSaveGame";
-import { useAppStore } from "../hooks";
+import { saveGameThunk } from "../../game/gameState/saving/saveGameThunk";
+import { useAppDispatch } from "../hooks";
 import { holdPressed } from "../slices/gameMenus/gameMenusSlice";
 
 export const useHoldOnWindowHidden = (): void => {
-  const store = useAppStore();
+  const dispatch = useAppDispatch();
   const gameApi = useMaybeGameApi();
 
   useEffect(() => {
@@ -16,10 +16,10 @@ export const useHoldOnWindowHidden = (): void => {
 
     const handleVisibilityChangeByHolding = () => {
       if (document.visibilityState === "hidden") {
-        store.dispatch(holdPressed("hold"));
+        dispatch(holdPressed("hold"));
 
         // probably a good time to save:
-        dispatchSaveGame(gameApi.gameState, store);
+        dispatch(saveGameThunk(gameApi.gameState));
       }
     };
 
@@ -34,5 +34,5 @@ export const useHoldOnWindowHidden = (): void => {
         handleVisibilityChangeByHolding,
       );
     };
-  }, [gameApi, store]);
+  }, [gameApi, dispatch]);
 };

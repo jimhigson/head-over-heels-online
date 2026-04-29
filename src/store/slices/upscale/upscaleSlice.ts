@@ -6,7 +6,8 @@ import { createSlice } from "@reduxjs/toolkit";
 import type { CalculateUpscaleOptions } from "./calculateUpscale";
 import type { Upscale } from "./Upscale";
 
-import { defaultUserSettings } from "../gameMenus/defaultUserSettings";
+import { clearAllData } from "../clearAllData";
+import { defaultUserSettings } from "../userSettings/defaultUserSettings";
 import { calculateUpscale } from "./calculateUpscale";
 import { upscaleOptionsForCurrentDevice } from "./upscaleOptionsForCurrentDevice";
 
@@ -14,15 +15,20 @@ export type UpscaleState = {
   upscale: Upscale;
 };
 
-export const initialUpscaleSliceState: UpscaleState = {
+/**
+ * Computes a fresh initial UpscaleState from current window dimensions and
+ * default display settings. Called both at slice creation and on
+ * `clearAllData`, so the post-reset upscale matches the current viewport
+ * rather than whatever was snapshotted at first load.
+ */
+const computeInitialUpscaleSliceState = (): UpscaleState => ({
   upscale: calculateUpscale(
     upscaleOptionsForCurrentDevice(
-      // use the default for initial upscale:
       defaultUserSettings.displaySettings.emulatedResolution,
       defaultUserSettings.displaySettings,
     ),
   ),
-};
+});
 
 /**
  * a slice for all the state that is controlled in react-land
@@ -30,7 +36,7 @@ export const initialUpscaleSliceState: UpscaleState = {
  */
 export const upscaleSlice = createSlice({
   name: "upscale",
-  initialState: initialUpscaleSliceState,
+  initialState: computeInitialUpscaleSliceState(),
   reducers: {
     upscaleToWindow(
       state,
@@ -40,6 +46,9 @@ export const upscaleSlice = createSlice({
     ) {
       state.upscale = calculateUpscale(calculateUpscaleOptions);
     },
+  },
+  extraReducers(builder) {
+    builder.addCase(clearAllData, () => computeInitialUpscaleSliceState());
   },
   selectors: {
     selectCanvasSize(state) {

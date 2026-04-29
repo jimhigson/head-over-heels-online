@@ -5,7 +5,7 @@ import type { ItemTypeUnion } from "../../../_generated/types/ItemInPlayUnion";
 import type { PlayableActionState } from "../../../model/ItemStateMap";
 import type { AppSpritesheet } from "../../../sprites/spritesheet/loadedSpriteSheet";
 import type { SpritesheetMetadata } from "../../../sprites/spritesheet/spritesheetData/spritesheetMetaData";
-import type { SpriteOption } from "../../../store/slices/gameMenus/gameMenusSlice";
+import type { SpriteOption } from "../../../store/slices/userSettings/userSettingsSlice";
 import type { DirectionXy8 } from "../../../utils/vectors/vectors";
 import type { GameState } from "../../gameState/GameState";
 import type { PlayableItem } from "../../physics/itemPredicates";

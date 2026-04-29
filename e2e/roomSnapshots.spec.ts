@@ -4,16 +4,16 @@ import { expect, test } from "@playwright/test";
 import chalk from "chalk";
 
 import type { OriginalCampaignRoomId } from "../src/_generated/originalCampaign/OriginalCampaignRoomId";
+import type { SelectableGameSpeeds } from "../src/store/slices/userSettings/selectableGameSpeeds";
 import type {
   setGameSpeed,
   SpriteOption,
   toggleUserSetting,
-} from "../src/store/slices/gameMenus/gameMenusSlice";
-import type { SelectableGameSpeeds } from "../src/store/slices/gameMenus/selectableGameSpeeds";
+} from "../src/store/slices/userSettings/userSettingsSlice";
 import type { ScreenshotTestOptions } from "./ScreenshotTestOptions";
 
 import { campaign } from "../src/_generated/originalCampaign/campaign";
-import { spriteOptionEquals } from "../src/store/slices/gameMenus/spriteOptionEquals";
+import { spriteOptionEquals } from "../src/store/slices/userSettings/spriteOptionEquals";
 import { keys } from "../src/utils/entries";
 import { dispatchToStore } from "./testUtils/gameStateQueries";
 import {
@@ -209,13 +209,13 @@ const gameRunsAtZeroSpeed = async (page: Page, projectName: string) => {
       // we need to fake a zero speed, since this isn't in the menu as a selectable option
       // this freezes the game to make the screenshots deterministic
       const successSetSpeed = await dispatchToStore(page, {
-        type: "gameMenus/setGameSpeed",
+        type: "userSettings/setGameSpeed",
         payload: 0 as SelectableGameSpeeds,
       } satisfies SetGameSpeedAction);
 
       // turn off the crt filter (on by default)
       const successToggleCrtFilter = await dispatchToStore(page, {
-        type: "gameMenus/toggleUserSetting",
+        type: "userSettings/toggleUserSetting",
         payload: { path: "displaySettings.crtFilter", value: false },
       } satisfies ToggleUserSettingAction);
 

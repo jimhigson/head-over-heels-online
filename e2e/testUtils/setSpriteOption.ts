@@ -3,7 +3,7 @@ import type { Page } from "@playwright/test";
 import type {
   setSpritesOption,
   SpriteOption,
-} from "../../src/store/slices/gameMenus/gameMenusSlice";
+} from "../../src/store/slices/userSettings/userSettingsSlice";
 
 import { dispatchToStore } from "./gameStateQueries";
 import { osSlowness, retryWithRecovery } from "./infrastructure";
@@ -22,7 +22,7 @@ export const setSpriteOption = async (
 
       type SetSpritesOption = ReturnType<typeof setSpritesOption>;
       const success = await dispatchToStore(page, {
-        type: "gameMenus/setSpritesOption",
+        type: "userSettings/setSpritesOption",
         payload: spriteOption,
       } satisfies SetSpritesOption);
 

@@ -59,6 +59,9 @@ const standardKeyAssignment = {
       // escape alone isn't good because it can leave fullscreen in browser sometimes - use the others!
       keys: ["Escape", "§"],
     },
+    menu_exit: {
+      keys: ["Backspace"],
+    },
     menu_select: {
       keys: ["Enter"],
     },

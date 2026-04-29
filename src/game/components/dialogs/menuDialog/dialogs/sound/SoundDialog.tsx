@@ -4,7 +4,7 @@ import {
   selectIsNoRoomEntryTunes,
   selectIsSoundMuted,
 } from "../../../../../../store/slices/gameMenus/gameMenusSelectors";
-import { toggleUserSetting } from "../../../../../../store/slices/gameMenus/gameMenusSlice";
+import { toggleUserSetting } from "../../../../../../store/slices/userSettings/userSettingsSlice";
 import { useDispatchActionCallback } from "../../../../../../store/useDispatchActionCallback";
 import { Dialog } from "../../../../../../ui/Dialog";
 import { Switch } from "../../../../../../ui/Switch";

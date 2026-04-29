@@ -4,7 +4,7 @@ import type {
 } from "../../../../../../sprites/spritesheet/spritesheetData/TextureTailwindClass";
 
 import { useDirectionsRelativeTo } from "../../../../../../store/slices/gameMenus/gameMenusSelectors";
-import { assignInputStart } from "../../../../../../store/slices/gameMenus/gameMenusSlice";
+import { assignInputStart } from "../../../../../../store/slices/userSettings/userSettingsSlice";
 import { useDispatchActionCallback } from "../../../../../../store/useDispatchActionCallback";
 import { BlockyMarkdown } from "../../../../BlockyMarkdown";
 import { BitmapText } from "../../../../tailwindSprites/BitmapText";

@@ -1,7 +1,7 @@
 import type { ItemInPlay } from "../../../model/ItemInPlay";
 import type { RoomState } from "../../../model/RoomState";
 
-import { nextSpritesOption } from "../../../store/slices/gameMenus/gameMenusSlice";
+import { nextSpritesOption } from "../../../store/slices/userSettings/userSettingsSlice";
 import { store } from "../../../store/store";
 import { objectEmpty } from "../../../utils/objectEmpty";
 import { applyModifiesList } from "../handleTouch/handleItemTouchingSwitch";

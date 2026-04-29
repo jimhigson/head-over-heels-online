@@ -1,7 +1,7 @@
 import { defaultFilterVert, Filter, GlProgram } from "pixi.js";
 
 import type { SpritesheetMetadata } from "../../../sprites/spritesheet/spritesheetData/spritesheetMetaData";
-import type { SpriteOption } from "../../../store/slices/gameMenus/gameMenusSlice";
+import type { SpriteOption } from "../../../store/slices/userSettings/userSettingsSlice";
 
 import { lutForSpriteOption } from "./lutTexture/stdLuts/lutForSpriteOption";
 import fragment from "./teleportingEffect.frag";

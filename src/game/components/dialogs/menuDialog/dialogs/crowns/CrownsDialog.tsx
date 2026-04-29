@@ -1,5 +1,7 @@
-import music from "../../../../../../../sounds/music/rock.mp3";
+import rockMusicUrl from "../../../../../../../sounds/music/rock.mp3";
+import { useAppSelector } from "../../../../../../store/hooks";
 import { useIsGameLoading } from "../../../../../../store/hooks/loadingHooks";
+import { selectIsSoundMuted } from "../../../../../../store/slices/gameMenus/gameMenusSelectors";
 import { backToParentMenu } from "../../../../../../store/slices/gameMenus/gameMenusSlice";
 import { useDispatchActionCallback } from "../../../../../../store/useDispatchActionCallback";
 import { Border } from "../../../../../../ui/Border";
@@ -11,11 +13,17 @@ import { MenuItems } from "../../MenuItems";
 import { FiveCrownsDisplay } from "./FiveCrownsDisplay";
 
 export const CrownsDialog = ({
+  /**
+   * Should we play music? (if user has sound muted will not play regardless
+   * of this value)
+   */
   playMusic = false,
 }: {
   playMusic?: boolean;
 }) => {
   const isLoading = useIsGameLoading();
+  const muted = useAppSelector(selectIsSoundMuted);
+  const shouldPlayMusic = playMusic && !muted;
 
   const closeDialog = useDispatchActionCallback(backToParentMenu);
   return (
@@ -27,7 +35,7 @@ export const CrownsDialog = ({
         onClick={isLoading ? undefined : closeDialog}
         dialogId="crowns"
       >
-        {playMusic && <audio src={music} autoPlay loop />}
+        {shouldPlayMusic && <audio src={rockMusicUrl} autoPlay loop />}
         <FiveCrownsDisplay />
         {isLoading && (
           <div>

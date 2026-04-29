@@ -17,7 +17,7 @@ import type {
   AnimatedTextureTailwindClass,
   TextureTailwindClass,
 } from "../../../sprites/spritesheet/spritesheetData/TextureTailwindClass";
-import type { SelectableGameSpeeds } from "../../../store/slices/gameMenus/selectableGameSpeeds";
+import type { SelectableGameSpeeds } from "../../../store/slices/userSettings/selectableGameSpeeds";
 import type { GameApi } from "../../GameApi";
 
 import { addPokeableNumbers } from "../../../model/ItemStateMap";
@@ -31,7 +31,7 @@ import { useShowShadowMasks } from "../../../store/slices/gameMenus/gameMenusSel
 import {
   setGameSpeed,
   setShowShadowMasks,
-} from "../../../store/slices/gameMenus/gameMenusSlice";
+} from "../../../store/slices/userSettings/userSettingsSlice";
 import { Button } from "../../../ui/Button";
 import { Switch } from "../../../ui/Switch";
 import { ShowBoundingBoxSelect } from "../../debug/ShowBoundingBoxSelect";
@@ -60,7 +60,7 @@ interface SpeedButtonProps {
 const SpeedButton = ({ speed, className = "" }: SpeedButtonProps) => {
   const dispatch = useAppDispatch();
   const currentSpeed = useAppSelector(
-    (state) => state.gameMenus.userSettings.gameSpeed,
+    (state) => state.userSettings.userSettings.gameSpeed,
   );
 
   return (
@@ -355,39 +355,7 @@ export const Cheats = <RoomId extends string>(_emptyProps: EmptyObject) => {
             <Heading>summon item:</Heading>
             <div className="flex flex-row items-center flex-wrap">
               <Button
-                className={cheatsButtonClasses}
-                onClick={(e) => {
-                  summonItem("pickup", { gives: "bag" });
-                  e?.currentTarget.blur();
-                }}
-              >
-                <span
-                  className={`sprite ${"texture-bag" satisfies TextureTailwindClass}`}
-                />
-              </Button>
-              <Button
-                className={cheatsButtonClasses}
-                onClick={(e) => {
-                  summonItem("pickup", { gives: "hooter" });
-                  e?.currentTarget.blur();
-                }}
-              >
-                <span
-                  className={`sprite ${"texture-hooter" satisfies TextureTailwindClass}`}
-                />
-              </Button>
-              <Button
-                className={cheatsButtonClasses}
-                onClick={(e) => {
-                  summonItem("pickup", { gives: "doughnuts" });
-                  e?.currentTarget.blur();
-                }}
-              >
-                <span
-                  className={`sprite ${"texture-doughnuts" satisfies TextureTailwindClass}`}
-                />
-              </Button>
-              <Button
+                data-test-id="cheats-summon-portableBlock-cube"
                 className={cheatsButtonClasses}
                 onClick={(e) => {
                   summonItem("portableBlock", { style: "cube" });
@@ -399,6 +367,7 @@ export const Cheats = <RoomId extends string>(_emptyProps: EmptyObject) => {
                 />
               </Button>
               <Button
+                data-test-id="cheats-summon-ball"
                 className={cheatsButtonClasses}
                 onClick={(e) => {
                   summonItem("ball", {});
@@ -410,6 +379,7 @@ export const Cheats = <RoomId extends string>(_emptyProps: EmptyObject) => {
                 />
               </Button>
               <Button
+                data-test-id="cheats-summon-spring"
                 className={cheatsButtonClasses}
                 onClick={(e) => {
                   summonItem("spring", {});
@@ -437,6 +407,7 @@ export const Cheats = <RoomId extends string>(_emptyProps: EmptyObject) => {
                 />
               </Button>
               <Button
+                data-test-id="cheats-summon-monster-turtle"
                 className={cheatsButtonClasses}
                 onClick={(e) => {
                   summonItem("monster", {
@@ -453,6 +424,7 @@ export const Cheats = <RoomId extends string>(_emptyProps: EmptyObject) => {
                 />
               </Button>
               <Button
+                data-test-id="cheats-summon-monster-skiHead"
                 className={cheatsButtonClasses}
                 onClick={(e) => {
                   summonItem("monster", {
@@ -470,8 +442,60 @@ export const Cheats = <RoomId extends string>(_emptyProps: EmptyObject) => {
                   className={`sprite ${"texture-skiHead_greenAndPink_towards" satisfies TextureTailwindClass}`}
                 />
               </Button>
+              <Button
+                data-test-id="cheats-summon-monster-emperorsGuardian"
+                className={cheatsButtonClasses}
+                onClick={(e) => {
+                  summonItem("monster", {
+                    which: "emperorsGuardian",
+                    activated: "on",
+                    movement: "towards-analogue-unless-planet-crowns",
+                  });
+                  e?.currentTarget.blur();
+                }}
+              >
+                <span
+                  className={`sprite ${"texture-emperorsGuardian_1" satisfies TextureTailwindClass} ${"hover:texture-animated-emperorsGuardian" satisfies AnimatedTextureTailwindClass}`}
+                />
+              </Button>
             </div>
             <div className="flex flex-row items-center">
+              <Button
+                data-test-id="cheats-summon-bag"
+                className={cheatsButtonClasses}
+                onClick={(e) => {
+                  summonItem("pickup", { gives: "bag" });
+                  e?.currentTarget.blur();
+                }}
+              >
+                <span
+                  className={`sprite ${"texture-bag" satisfies TextureTailwindClass}`}
+                />
+              </Button>
+              <Button
+                data-test-id="cheats-summon-hooter"
+                className={cheatsButtonClasses}
+                onClick={(e) => {
+                  summonItem("pickup", { gives: "hooter" });
+                  e?.currentTarget.blur();
+                }}
+              >
+                <span
+                  className={`sprite ${"texture-hooter" satisfies TextureTailwindClass}`}
+                />
+              </Button>
+              <Button
+                data-test-id="cheats-summon-doughnuts"
+                className={cheatsButtonClasses}
+                onClick={(e) => {
+                  summonItem("pickup", { gives: "doughnuts" });
+                  e?.currentTarget.blur();
+                }}
+              >
+                <span
+                  className={`sprite ${"texture-doughnuts" satisfies TextureTailwindClass}`}
+                />
+              </Button>
               <Button
                 data-test-id="cheats-summon-crown-bookworld"
                 className={cheatsButtonClasses}
@@ -556,6 +580,7 @@ export const Cheats = <RoomId extends string>(_emptyProps: EmptyObject) => {
                 />
               </Button>
               <Button
+                data-test-id="cheats-summon-shield"
                 className={cheatsButtonClasses}
                 onClick={(e) => {
                   summonItem("pickup", { gives: "shield" });
@@ -570,6 +595,7 @@ export const Cheats = <RoomId extends string>(_emptyProps: EmptyObject) => {
                 />
               </Button>
               <Button
+                data-test-id="cheats-summon-fast"
                 className={cheatsButtonClasses}
                 onClick={(e) => {
                   summonItem("pickup", { gives: "fast" });
@@ -584,6 +610,7 @@ export const Cheats = <RoomId extends string>(_emptyProps: EmptyObject) => {
                 />
               </Button>
               <Button
+                data-test-id="cheats-summon-jumps"
                 className={cheatsButtonClasses}
                 onClick={(e) => {
                   summonItem("pickup", { gives: "jumps" });
@@ -632,6 +659,7 @@ export const Cheats = <RoomId extends string>(_emptyProps: EmptyObject) => {
             <Heading>pokes:</Heading>
             <div className="flex flex-row items-center flex-wrap">
               <Button
+                data-test-id="cheats-poke-lives-plus"
                 className="flex-grow h-3"
                 onClick={(e) => {
                   if (!gameApi) {
@@ -663,6 +691,7 @@ export const Cheats = <RoomId extends string>(_emptyProps: EmptyObject) => {
                 lives++
               </Button>
               <Button
+                data-test-id="cheats-poke-lives-minus"
                 className="flex-grow h-3"
                 onClick={(e) => {
                   if (!gameApi) {

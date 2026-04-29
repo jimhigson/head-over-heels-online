@@ -65,7 +65,7 @@ const getScoreLabel = (score: number, maxScore: number): string => {
 
 const selectFreeCharacters = createSelector(
   ({
-    gameMenus: {
+    gameInPlay: {
       gameInPlay: { freeCharacters },
     },
   }: RootState) => freeCharacters,
@@ -104,7 +104,7 @@ export const ScoreDialog = () => {
   const planetsLiberatedCount = useAppSelector(selectPlanetsLiberatedCount);
   const roomsExploredCount = useAppSelector(
     ({
-      gameMenus: {
+      gameInPlay: {
         gameInPlay: { roomsExplored },
       },
     }) => objectSize(roomsExplored),

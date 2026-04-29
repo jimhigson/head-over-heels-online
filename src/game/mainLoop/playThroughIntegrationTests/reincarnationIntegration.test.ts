@@ -36,17 +36,17 @@ describe("reincarnation", () => {
       },
     });
     // check there isn't already a reincarnation point before we start (the store is initialised)
-    expect(store.getState().gameMenus.gameInPlay.reincarnationPoint).toBe(
+    expect(store.getState().gameInPlay.gameInPlay.reincarnationPoint).toBe(
       undefined,
     );
 
     playGameThrough(gameState, {
       until: () =>
-        store.getState().gameMenus.gameInPlay.reincarnationPoint !== undefined,
+        store.getState().gameInPlay.gameInPlay.reincarnationPoint !== undefined,
     });
 
     const {
-      gameMenus: {
+      gameInPlay: {
         gameInPlay: { reincarnationPoint },
       },
     } = store.getState();
@@ -117,7 +117,7 @@ describe("reincarnation", () => {
       },
     });
     // check there isn't already a reincarnation point before we start (the store is initialised)
-    expect(store.getState().gameMenus.gameInPlay.reincarnationPoint).toBe(
+    expect(store.getState().gameInPlay.gameInPlay.reincarnationPoint).toBe(
       undefined,
     );
     // both characters were loaded into the same room (referentially same object)
@@ -126,11 +126,11 @@ describe("reincarnation", () => {
     playGameThrough(gameState, {
       until: () =>
         // play until the reincarnation point has been saved:
-        store.getState().gameMenus.gameInPlay.reincarnationPoint !== undefined,
+        store.getState().gameInPlay.gameInPlay.reincarnationPoint !== undefined,
     });
 
     const {
-      gameMenus: {
+      gameInPlay: {
         gameInPlay: { reincarnationPoint },
       },
     } = store.getState();

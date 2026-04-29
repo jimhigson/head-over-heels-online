@@ -4,7 +4,7 @@ import type { UnionOfAllItemInPlayTypes } from "../../../model/ItemInPlay";
 
 import { exitGameRoomId } from "../../../model/json/ItemConfigMap";
 import { startAppListening } from "../../../store/listenerMiddleware";
-import { debugItemClicked } from "../../../store/slices/gameMenus/gameMenusSlice";
+import { debugItemClicked } from "../../../store/slices/gameInPlay/gameInPlaySlice";
 import { pixiContainerToString } from "../../../utils/pixi/pixiContainerToString";
 import { isFreeItem, isItemType } from "../../physics/itemPredicates";
 import { useGameApi } from "../GameApiContext";

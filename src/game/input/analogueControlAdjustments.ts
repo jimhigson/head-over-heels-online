@@ -1,4 +1,4 @@
-import type { InputDirectionMode } from "../../store/slices/gameMenus/gameMenusSlice";
+import type { InputDirectionMode } from "../../store/slices/userSettings/userSettingsSlice";
 
 import { nonZero } from "../../utils/epsilon";
 import { unitVectors } from "../../utils/vectors/unitVectors";

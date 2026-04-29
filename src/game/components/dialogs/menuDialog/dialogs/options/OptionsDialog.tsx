@@ -7,11 +7,11 @@ import {
   selectIsInfiniteLivesPoke,
   useIsGameRunning,
 } from "../../../../../../store/slices/gameMenus/gameMenusSelectors";
+import { selectableGameSpeeds } from "../../../../../../store/slices/userSettings/selectableGameSpeeds";
 import {
   setGameSpeed,
   toggleUserSetting,
-} from "../../../../../../store/slices/gameMenus/gameMenusSlice";
-import { selectableGameSpeeds } from "../../../../../../store/slices/gameMenus/selectableGameSpeeds";
+} from "../../../../../../store/slices/userSettings/userSettingsSlice";
 import { useDispatchActionCallback } from "../../../../../../store/useDispatchActionCallback";
 import { Dialog } from "../../../../../../ui/Dialog";
 import { DialogPortal } from "../../../../../../ui/DialogPortal";
@@ -28,6 +28,7 @@ import { MenuItem } from "../../MenuItem";
 import { MenuItems } from "../../MenuItems";
 import { MenuItemSeparator } from "../../MenuItemSeparator";
 import { DialogTitleBar } from "../DialogTitleBar";
+import { ClearAllDataMenuSection } from "./ClearAllDataMenuSection";
 
 const gameSpeedMarkdown = `Play at the original **1x** speed, **1.2x (default)** or faster **1.5x** or **2x** speeds`;
 
@@ -128,7 +129,7 @@ export const OptionsDialog = () => {
               verticalAlignItemsCentre
             />
 
-            <div className="col-span-3 pb-1">
+            <div className="col-span-3 pb-1 mt-2">
               <BlockyMarkdown
                 markdown={pokesMarkdown}
                 className={optionsHintMarkdownClassname}
@@ -185,6 +186,8 @@ export const OptionsDialog = () => {
               })}
               disabled={useIsGameRunning()}
             />
+
+            <ClearAllDataMenuSection />
             <MenuItemSeparator />
           </MenuItems>
         </div>

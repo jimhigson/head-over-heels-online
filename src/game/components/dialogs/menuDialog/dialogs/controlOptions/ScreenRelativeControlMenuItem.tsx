@@ -1,11 +1,11 @@
 import type { AnimatedTextureTailwindClass } from "../../../../../../sprites/spritesheet/spritesheetData/TextureTailwindClass";
 
+import { useDirectionsRelativeTo } from "../../../../../../store/slices/gameMenus/gameMenusSelectors";
 import {
   type DirectionsRelativeToMode,
   directionsRelativeToModes,
-} from "../../../../../../store/slices/gameMenus/directionsRelativeToModes";
-import { useDirectionsRelativeTo } from "../../../../../../store/slices/gameMenus/gameMenusSelectors";
-import { nextDirectionRelativeTo } from "../../../../../../store/slices/gameMenus/gameMenusSlice";
+} from "../../../../../../store/slices/userSettings/directionsRelativeToModes";
+import { nextDirectionRelativeTo } from "../../../../../../store/slices/userSettings/userSettingsSlice";
 import { useDispatchActionCallback } from "../../../../../../store/useDispatchActionCallback";
 import { SwitchN } from "../../../../../../ui/Switch";
 import { twClass } from "../../../../../../utils/twClass";

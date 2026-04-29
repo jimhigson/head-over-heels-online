@@ -3,7 +3,7 @@ import type { Page } from "@playwright/test";
 import { test } from "@playwright/test";
 import chalk from "chalk";
 
-import type { SpriteOption } from "../src/store/slices/gameMenus/gameMenusSlice";
+import type { SpriteOption } from "../src/store/slices/userSettings/userSettingsSlice";
 import type { ScreenshotTestOptions } from "./ScreenshotTestOptions";
 
 import { osSlowness, retryWithRecovery } from "./testUtils/infrastructure";

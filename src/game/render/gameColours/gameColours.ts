@@ -1,6 +1,6 @@
 import type { Color } from "pixi.js";
 
-import type { SpriteOption } from "../../../store/slices/gameMenus/gameMenusSlice";
+import type { SpriteOption } from "../../../store/slices/userSettings/userSettingsSlice";
 import type { NamedColours } from "../../../utils/palette/palette";
 
 import { blockStackSpritesheetMeta } from "../../../../gfx/spritesheetMeta/blockStackSpritesheetMeta";

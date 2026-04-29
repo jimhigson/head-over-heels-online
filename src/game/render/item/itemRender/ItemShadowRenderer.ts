@@ -136,7 +136,7 @@ class ItemShadowRenderer<T extends ItemInPlayType>
 
   /** convenience for getting the shadow mask setting from the store */
   get #showShadowMasks() {
-    return store.getState().gameMenus.userSettings.displaySettings
+    return store.getState().userSettings.userSettings.displaySettings
       .showShadowMasks;
   }
 

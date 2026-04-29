@@ -10,9 +10,9 @@ import type { ItemPixiRenderer } from "./ItemPixiRenderer";
 
 import { createSoundRenderer } from "../../../../sound/createSoundRenderer";
 import { SoundPanRenderer } from "../../../../sound/SoundPanRenderer";
-import { defaultUserSettings } from "../../../../store/slices/gameMenus/defaultUserSettings";
+import { debugItemClicked } from "../../../../store/slices/gameInPlay/gameInPlaySlice";
 import { selectShowBoundingBoxes } from "../../../../store/slices/gameMenus/gameMenusSelectors";
-import { debugItemClicked } from "../../../../store/slices/gameMenus/gameMenusSlice";
+import { defaultUserSettings } from "../../../../store/slices/userSettings/defaultUserSettings";
 import { store } from "../../../../store/store";
 import { appearanceForItem } from "../../itemAppearances/appearanceForItem";
 import { CompositeItemGraphicsRenderer } from "./CompositeItemGraphicsRenderer";
@@ -34,7 +34,7 @@ const assignPointerActions = <RoomId extends string>(
   container: Container,
 ) => {
   const {
-    gameMenus: { cheatsOn },
+    debug: { cheatsOn },
   } = store.getState();
 
   if (container !== undefined && cheatsOn) {

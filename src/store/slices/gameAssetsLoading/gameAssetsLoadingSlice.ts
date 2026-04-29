@@ -1,5 +1,7 @@
 import { createSlice } from "@reduxjs/toolkit";
 
+import { clearAllData } from "../clearAllData";
+
 export type GameAssetsLoadingState = {
   count: number;
 };
@@ -22,6 +24,9 @@ export const gameAssetsLoadingSlice = createSlice({
     gameAssetsLoadingFinished(state) {
       state.count = Math.max(0, state.count - 1);
     },
+  },
+  extraReducers(builder) {
+    builder.addCase(clearAllData, () => initialState);
   },
   selectors: {
     selectGameAssetsLoadingCount(state: GameAssetsLoadingState) {

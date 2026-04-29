@@ -3,7 +3,7 @@ import type { ResolutionName } from "../../../../../../originalGame";
 import { resolutions } from "../../../../../../originalGame";
 import { useAppSelector } from "../../../../../../store/hooks";
 import { selectEmulatedResolutionName } from "../../../../../../store/slices/gameMenus/gameMenusSelectors";
-import { setEmulatedResolution } from "../../../../../../store/slices/gameMenus/gameMenusSlice";
+import { setEmulatedResolution } from "../../../../../../store/slices/userSettings/userSettingsSlice";
 import { useDispatchActionCallback } from "../../../../../../store/useDispatchActionCallback";
 import { Dialog } from "../../../../../../ui/Dialog";
 import { DialogPortal } from "../../../../../../ui/DialogPortal";

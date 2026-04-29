@@ -190,7 +190,7 @@ const _loadGameState = <RoomId extends string>({
       roomJson: campaign.rooms[campaignStartingRoomIds.head],
       // we are not loading so nothing has been collected/read:
       ...defaultLoadRoom,
-      userSettings: store.getState().gameMenus.userSettings,
+      userSettings: store.getState().userSettings.userSettings,
     });
 
   const heelsRoom: RoomState<RoomId, string> | undefined =
@@ -202,7 +202,7 @@ const _loadGameState = <RoomId extends string>({
         roomJson: campaign.rooms[campaignStartingRoomIds.heels],
         // we are not loading so nothing has been collected/read:
         ...defaultLoadRoom,
-        userSettings: store.getState().gameMenus.userSettings,
+        userSettings: store.getState().userSettings.userSettings,
       });
 
   // both players, in their starting rooms:

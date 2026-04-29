@@ -12,11 +12,11 @@ import {
   pokeableToNumber,
 } from "../../../model/ItemStateMap";
 import { otherIndividualCharacterName } from "../../../model/modelTypes";
-import { selectCurrentCampaign } from "../../../store/slices/gameMenus/gameMenusSelectors";
 import {
-  gameOver,
+  lostAllLives,
   lostLife,
-} from "../../../store/slices/gameMenus/gameMenusSlice";
+} from "../../../store/slices/gameInPlay/gameInPlaySlice";
+import { selectCurrentCampaign } from "../../../store/slices/gameMenus/gameMenusSelectors";
 import { store } from "../../../store/store";
 import { emptyObject } from "../../../utils/empty";
 import { neverTime } from "../../../utils/neverTime";
@@ -28,7 +28,7 @@ import {
 } from "../gameStateSelectors/selectPlayableItem";
 import { loadRoom } from "../loadRoom/loadRoom";
 import { entryState } from "../PlayableEntryState";
-import { dispatchSaveGame } from "../saving/dispatchSaveGame";
+import { saveGameThunk } from "../saving/saveGameThunk";
 import { addItemToRoom } from "./addItemToRoom";
 import { removeHushPuppiesFromRoom } from "./removeHushPuppiesFromRoom";
 import {
@@ -230,13 +230,20 @@ const reloadRoomWithCharacterInIt = <RoomId extends string>({
   playableItems: Array<PlayableItem<CharacterName, NoInfer<RoomId>>>;
   roomId: RoomId;
 }) => {
-  const campaign = selectCurrentCampaign<RoomId>(store.getState());
+  const state = store.getState();
+  const campaign = selectCurrentCampaign<RoomId>(state);
+  const {
+    gameInPlay: {
+      gameInPlay: { scrollsRead },
+    },
+    userSettings: { userSettings },
+  } = state;
 
   const reloadedRoom = loadRoom({
     roomJson: campaign.rooms[roomId],
     roomPickupsCollected: gameState.pickupsCollected[roomId] ?? emptyObject,
-    scrollsRead: store.getState().gameMenus.gameInPlay.scrollsRead,
-    userSettings: store.getState().gameMenus.userSettings,
+    scrollsRead,
+    userSettings,
   });
   for (const playableItem of playableItems) {
     addItemToRoom({ room: reloadedRoom, item: playableItem });
@@ -427,10 +434,10 @@ const playableLosesLifeImpl = <RoomId extends string>(
   }
 
   if (selectCurrentPlayableItem(gameState) === undefined) {
-    store.dispatch(gameOver({ offerReincarnation: true }));
+    store.dispatch(lostAllLives());
   } else {
     // probably a good time to save the game:
-    dispatchSaveGame(gameState, store);
+    store.dispatch(saveGameThunk(gameState));
   }
 };
 

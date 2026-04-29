@@ -37,9 +37,6 @@ test.describe("life and death flows", () => {
     await waitForDialog(page, "offerReincarnation");
 
     await page.click('[data-menuitem_id="donotreincarnate"]');
-    // BUG: score dialog shown a second time here — player already saw it before offerReincarnation
-    await waitForDialog(page, "score");
-    await page.click('[data-dialog-id="score"]');
     await waitForDialog(page, "mainMenu");
   });
 

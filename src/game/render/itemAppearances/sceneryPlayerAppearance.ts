@@ -1,6 +1,6 @@
 import type { IndividualCharacterName } from "../../../model/modelTypes";
 import type { SpritesheetVariant } from "../../../sprites/spritesheet/variants/SpritesheetVariant";
-import type { SpriteOption } from "../../../store/slices/gameMenus/gameMenusSlice";
+import type { SpriteOption } from "../../../store/slices/userSettings/userSettingsSlice";
 import type { DirectionXy8 } from "../../../utils/vectors/vectors";
 import type { CreateSpriteOptions } from "../createSprite";
 import type { ItemAppearance } from "./ItemAppearance";

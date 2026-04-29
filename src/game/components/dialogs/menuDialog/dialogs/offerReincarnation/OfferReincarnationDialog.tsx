@@ -5,7 +5,7 @@ import {
   gameOver,
   gameRestoreFromSave,
   reincarnationAccepted,
-} from "../../../../../../store/slices/gameMenus/gameMenusSlice";
+} from "../../../../../../store/slices/gameInPlay/gameInPlaySlice";
 import { store } from "../../../../../../store/store";
 import { useDispatchActionCallback } from "../../../../../../store/useDispatchActionCallback";
 import { Border } from "../../../../../../ui/Border";
@@ -18,7 +18,7 @@ import { MenuItem } from "../../MenuItem";
 import { MenuItems } from "../../MenuItems";
 
 export const reincarnateSelected = (gameApi: GameApi<string>) => {
-  const savedGame = store.getState().gameMenus.gameInPlay.reincarnationPoint!;
+  const savedGame = store.getState().gameInPlay.gameInPlay.reincarnationPoint!;
   gameApi.reincarnateFrom(savedGame);
   // Pop the reincarnationPoint stack: restore the redux gameInPlay from
   // the saved snapshot, which carries the prior reincarnationPoint (one
@@ -26,7 +26,7 @@ export const reincarnateSelected = (gameApi: GameApi<string>) => {
   // freeCharacters at fish-eaten time. Each fish save was created with
   // the previous reincarnationPoint nested inside, so each pop walks
   // one link back through the chain.
-  store.dispatch(gameRestoreFromSave(savedGame.store.gameMenus.gameInPlay));
+  store.dispatch(gameRestoreFromSave(savedGame.gameInPlay));
   // Closes the offerReincarnation/quitGameConfirm menu and opens the
   // reincarnatedRestart confirmation.
   store.dispatch(reincarnationAccepted());
@@ -45,7 +45,7 @@ export const OfferReincarnationDialog = () => {
         dialogId="offerReincarnation"
       >
         <BitmapText className="sprites-double-height mt-1 mb-2 resHandheld:mt-0 text-redShadow zx:text-zxWhite toppy:text-toppyWarm1">
-          Uh-oh! Game over.
+          Uh-oh! No lives left.
         </BitmapText>
         <BlockyMarkdown
           markdown={markdown}
@@ -65,7 +65,7 @@ export const OfferReincarnationDialog = () => {
             id="donotreincarnate"
             label="Stay dead"
             onSelect={useDispatchActionCallback(gameOver, {
-              offerReincarnation: false,
+              reincarnationDeclined: true,
             })}
           />
         </MenuItems>

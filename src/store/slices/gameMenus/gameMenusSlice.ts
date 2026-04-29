@@ -1,79 +1,15 @@
 import type { PayloadAction } from "@reduxjs/toolkit";
-import type { Container } from "pixi.js";
 import type { EmptyObject, ValueOf } from "type-fest";
 
 import { createSlice } from "@reduxjs/toolkit";
-import { canonicalize } from "json-canonicalize";
-import { REHYDRATE } from "redux-persist";
 
 import type { DialogId } from "../../../game/components/dialogs/menuDialog/DialogId";
-import type {
-  SavedGame,
-  SavedStoreGameInPlay,
-} from "../../../game/gameState/saving/SavedGameState";
-import type { BooleanAction } from "../../../game/input/actions";
-import type {
-  ActionInputAssignment,
-  InputAssignment,
-  InputPress,
-} from "../../../game/input/InputAssignment";
-import type { KeyAssignmentPresetName } from "../../../game/input/keyAssignmentPresets";
-import type { PlayableItem } from "../../../game/physics/itemPredicates";
-import type { MarkdownPageName } from "../../../manual/pages";
-import type { UnionOfAllItemInPlayTypes } from "../../../model/ItemInPlay";
 import type { ScrollConfig } from "../../../model/json/ItemConfigMap";
-import type {
-  CampaignLocator,
-  CharacterName,
-  IndividualCharacterName,
-} from "../../../model/modelTypes";
-import type { ResolutionName } from "../../../originalGame";
-import type { PlanetName } from "../../../sprites/planets";
 import type { SerialisableError } from "../../../utils/redux/createSerialisableErrors";
-import type { ToggleablePaths } from "../../../utils/Toggleable";
-import type { gameMenusSliceWhitelist } from "../../persist/gameMenusSliceWhitelist";
-import type { RootState } from "../../store";
-import type { DirectionsRelativeToMode } from "./directionsRelativeToModes";
 
-import { keyAssignmentPresets } from "../../../game/input/keyAssignmentPresets";
-import { isInPlaytestMode } from "../../../game/isInPlaytestMode";
-import { typedURLSearchParams } from "../../../options/queryParams";
-import { resolutionNames } from "../../../originalGame";
-import { spriteOptionValues } from "../../../sprites/spritesheet/spritesheetData/spritesheetMetaData";
-import { detectDeviceType } from "../../../utils/detectEnv/detectDeviceType";
 import { emptyObject } from "../../../utils/empty";
-import { setAtPath } from "../../../utils/getAtPath";
-import { nextInCycle } from "../../../utils/nextInCycle";
-import { pick } from "../../../utils/pick";
-import { directionsXy4 } from "../../../utils/vectors/vectors";
-import { defaultUserSettings } from "./defaultUserSettings";
-import { directionsRelativeToModes } from "./directionsRelativeToModes";
-import { emptyUserSettings } from "./emptyUserSettings";
-import {
-  selectBooleanUserSetting,
-  selectDirectionsRelativeTo,
-  selectEmulatedResolutionName,
-  selectGameSpeed,
-  selectInputDirectionMode,
-} from "./gameMenusSelectors";
-import {
-  selectableGameSpeeds,
-  type SelectableGameSpeeds,
-} from "./selectableGameSpeeds";
-import { spriteOptionEquals } from "./spriteOptionEquals";
-
-export const showBoundingBoxOptions = ["none", "non-wall", "all"] as const;
-export type ShowBoundingBoxes = (typeof showBoundingBoxOptions)[number];
-
-/**
- * make a key so we can store campaigns against campaign locators, with composite keys,
- * as values on a plain old js objects in the store
- */
-const gameStateLocatorKey = (campaignLocator: CampaignLocator) => {
-  // leave version out, since a new version of a campaign can be made and hopefully the saves
-  // can still apply
-  return canonicalize(pick(campaignLocator, "userId", "campaignName"));
-};
+import { clearAllData } from "../clearAllData";
+import { savedGameLoadedOnAppLoad } from "../savedGames/savedGamesSlice";
 
 type BaseOpenMenu = {
   // will be undefined if the menu items have not been rendered yet, since relies
@@ -82,6 +18,7 @@ type BaseOpenMenu = {
   // maintain because selecting by mouse doesn't trigger scrolling in the renderer
   scrollableSelection: boolean;
 };
+
 export type OpenMenu =
   | (BaseOpenMenu & {
       menuId: "crowns";
@@ -95,370 +32,105 @@ export type OpenMenu =
       menuParam: Array<SerialisableError>;
     })
   | (BaseOpenMenu & {
+      menuId: "mainMenu";
+      /**
+       * Whether the user can dismiss this main-menu instance by pressing
+       * exit/escape. Set at creation time:
+       * - boot/post-game-over: `false` (no game to return to — popping would
+       *   leave nothing on screen)
+       * - mid-game (user pressed exit during gameplay, opening this menu):
+       *   `true`
+       *
+       * Invariant: every transition from `gameRunning: true` to `false`
+       * rebuilds the menu stack from scratch (gameOver listener,
+       * `clearAllData` extraReducer), so `isClosable: true` is never
+       * observably stale — its presence implies a game is in play.
+       */
+      menuParam: { isClosable: boolean };
+    })
+  | (BaseOpenMenu & {
       menuId: "markdown/inline";
       // the markdown content
       menuParam: { markdown: string };
     })
   | (BaseOpenMenu & {
-      menuId: Exclude<DialogId, "crowns" | "errorCaught" | "markdown/inline">;
-
-      /**
-       * menu-specific parameters - for example, the crowns menu can play music
-       */
+      menuId: Exclude<
+        DialogId,
+        "crowns" | "errorCaught" | "mainMenu" | "markdown/inline"
+      >;
       menuParam: EmptyObject;
     });
-
-export type SpriteOption =
-  | { name: "BlockStack"; uncolourised: false }
-  | { name: "BlockStack"; uncolourised: true }
-  | { name: "Toppy"; uncolourised: false };
-
-export type DisplaySettings = {
-  emulatedResolution?: ResolutionName;
-  crtFilter?: boolean;
-  showBoundingBoxes?: ShowBoundingBoxes;
-  showShadowMasks?: boolean;
-  sprites?: SpriteOption;
-};
-
-export const inputDirectionModes = ["4-way", "8-way", "analogue"] as const;
-export type InputDirectionMode = (typeof inputDirectionModes)[number];
-
-export type SoundSettings = {
-  mute?: boolean;
-  noRoomEntryTunes?: boolean;
-  noFootsteps?: boolean;
-};
-
-export type UserSettings = {
-  inputAssignment?: InputAssignment;
-  displaySettings: DisplaySettings;
-  infiniteLivesPoke?: boolean;
-  infiniteDoughnutsPoke?: boolean;
-  showFps?: boolean;
-  inputDirectionMode?: InputDirectionMode;
-  directionsRelativeTo?: DirectionsRelativeToMode;
-  onScreenControls?: boolean;
-  gameSpeed?: SelectableGameSpeeds;
-
-  // sound options
-  soundSettings: SoundSettings;
-};
-
-const inBrowser = detectDeviceType() !== "server";
-const cheatsOn =
-  inBrowser ?
-    // in a browser
-    typedURLSearchParams().has("cheats")
-    // in node (probably vitest)
-  : false;
-
-export type ScrollsRead = {
-  [m in MarkdownPageName]?: true;
-};
-
-export type FreeCharacters = {
-  [C in IndividualCharacterName]?: true;
-};
-
-/**
- * the parts of a game in play state that are kept in the store. Not everything
- * goes in the store because in-play rooms etc need to be mutated in-place fo
- * performance
- *
- * this works:
- *  * in play
- *  * for saves (plus serialisation of the gameState)
- *  * for reincarnation fish save points
- */
-export type GameInPlayStoreState = {
-  planetsLiberated: Record<PlanetName, boolean>;
-  roomsExplored: Record<string, true>;
-  /**
-    we don't want to show the same scroll twice, even if it is in a different room
-    so record what we've read:
-  */
-  scrollsRead: ScrollsRead;
-  /**
-   * The reincarnation point to continue from after losing all lives.
-   *
-   * Recursively (optionally) contains another reincarnationPoint, so it naturally
-   * creates a linked-list of saves. This is how multiple saves are handled from
-   * a single property.
-   */
-  reincarnationPoint?: SavedGame;
-  /**
-   * the userid/name of the campaign being played, or undefined if none
-   */
-  campaignLocator?: CampaignLocator;
-
-  /** which characters have exited the game and found freedom? */
-  freeCharacters: FreeCharacters;
-};
-
-export const noPlanetsLiberated = {
-  blacktooth: false,
-  bookworld: false,
-  egyptus: false,
-  penitentiary: false,
-  safari: false,
-};
-const initialGameInPlayStoreState = {
-  planetsLiberated: noPlanetsLiberated,
-  roomsExplored: {},
-  scrollsRead: {},
-  reincarnationPoint: undefined,
-  freeCharacters: {},
-} satisfies GameInPlayStoreState;
 
 export type GameMenusState = {
   /**
    * stack of menus currently open - empty if none are
    */
   openMenus: OpenMenu[];
-
-  /**
-   * for the key assignment menu, the key currently being assigned
-   */
-  assigningInput:
-    | {
-        action: BooleanAction;
-        presses: ActionInputAssignment;
-        axes: number[];
-      }
-    | undefined;
-
-  /* all user settings are optional - if not stated in the store, the selector's
-    job is to use a default instead */
-  userSettings: UserSettings;
-
-  /**
-   * this could maybe be replaced with conditionality of gameInPlay. However, currently
-   * this would break the score dialog after game over, since at that point the game is
-   * not playing, but it does need the data from this object.
-   */
-  gameRunning: boolean;
-  gameInPlay: GameInPlayStoreState;
-
-  /**
-   * current saved games, per-campaign, saved in case the game is closed and come back
-   * to later - eg mobile app is switched away from, or the user switches
-   * to another tab
-   */
-  savedGames: {
-    saves: { [campaignLocatorFlat: string]: SavedGame };
-    /**
-     * location of the campaign that was most recently saved. This is the one the
-     * app will automatically restore from on reloading - must exist as
-     * a key in saves
-     */
-    lastSavedCampaignLocator?: CampaignLocator;
-  };
-
-  // if cheats are on, some cheat/debugging options are available
-  cheatsOn: boolean;
 };
-
-/**
- * paths used in in-game store-switches and settings menus for getting/setting
- * user setting values
- */
-export type UserSettingsBooleanPaths = ToggleablePaths<
-  GameMenusState["userSettings"]
->;
-/**
- * paths used in in-game for deciding if a teleporter should be on or not
- */
-export type GameInPlayBooleanPaths = ToggleablePaths<
-  GameMenusState["gameInPlay"]
->;
 
 export const initialGameMenuSliceState: GameMenusState = {
-  userSettings: emptyUserSettings,
-
-  gameRunning: false,
-  gameInPlay: initialGameInPlayStoreState,
-
-  openMenus:
-    // this feature is off - ?cheats=1 no longer linked to skipping  menus
-    // maybe a separate flag could be added if we need this later
-    //cheatsOn ? [] :
-
-    // start the app with the main menu showing:
-    [
-      {
-        menuId: "mainMenu",
-        scrollableSelection: false,
-        menuParam: emptyObject,
-      },
-    ],
-  assigningInput: undefined,
-  cheatsOn,
-
-  savedGames: {
-    saves: {},
-  },
+  openMenus: [
+    {
+      menuId: "mainMenu",
+      scrollableSelection: false,
+      // boot main menu: no game in play, so the user mustn't be able to pop
+      // it (would leave the screen blank)
+      menuParam: { isClosable: false },
+    },
+  ],
 };
 
 /**
- * a slice for all the state that is controlled in react-land
- * (most state is controlled in the game itself and not touched here)
+ * a slice for the menu/dialog stack. Cross-cutting effects from gameInPlay
+ * actions (open the crowns menu after collecting a crown, open the markdown
+ * dialog when reading a scroll, etc.) live in `gameMenusListeners.ts` rather
+ * than as inline reducer writes here.
  */
 export const gameMenusSlice = createSlice({
   name: "gameMenus",
   initialState: initialGameMenuSliceState,
   reducers: {
-    setEmulatedResolution(
+    /**
+     * Pop the top menu. If `openIfEmpty` is true and `openMenus` is empty,
+     * push the main menu instead — letting one action serve both "exit a
+     * menu" and "open the main menu mid-game" intents (caller picks via the
+     * payload).
+     *
+     * Refuses to pop a length-1 mainMenu marked `isClosable: false` (its
+     * `isClosable` flag is set by whichever site created it — boot,
+     * post-game-over, etc.); popping it would leave the screen blank.
+     *
+     * The empty-stack branch is only reachable mid-game (a game must be
+     * running for the stack to have been emptied), so any mainMenu pushed
+     * here is closable.
+     */
+    menuOpenOrExitPressed(
       state,
-      { payload }: PayloadAction<ResolutionName | undefined>,
+      {
+        payload: { openMainIfEmpty },
+      }: PayloadAction<{ openMainIfEmpty: boolean }>,
     ) {
-      let emulatedResolution;
-      if (payload === undefined) {
-        emulatedResolution = nextInCycle(
-          resolutionNames,
-          selectEmulatedResolutionName({ gameMenus: state } as RootState),
-        );
-      } else {
-        emulatedResolution = payload;
-      }
-
-      state.userSettings.displaySettings.emulatedResolution =
-        emulatedResolution;
-    },
-    setGameSpeed(
-      state,
-      { payload }: PayloadAction<SelectableGameSpeeds | undefined>,
-    ) {
-      let gameSpeed: SelectableGameSpeeds;
-      if (payload === undefined) {
-        gameSpeed = nextInCycle(
-          selectableGameSpeeds,
-          selectGameSpeed({ gameMenus: state } as RootState),
-        );
-      } else {
-        gameSpeed = payload;
-      }
-
-      state.userSettings.gameSpeed = gameSpeed;
-    },
-    scrollRead(state, { payload: scrollConfig }: PayloadAction<ScrollConfig>) {
-      if (scrollConfig.source === "manual") {
-        state.gameInPlay.scrollsRead[scrollConfig.page] = true;
-        state.openMenus = [
-          {
-            menuId: `markdown/${scrollConfig.page}`,
-            scrollableSelection: false,
-            menuParam: emptyObject,
-          },
-        ];
-      } else {
-        state.openMenus = [
-          {
-            menuId: `markdown/inline`,
-            scrollableSelection: false,
-            menuParam: {
-              markdown:
-                Array.isArray(scrollConfig.markdown) ?
-                  scrollConfig.markdown.join("\n\n")
-                : scrollConfig.markdown,
-            },
-          },
-        ];
-      }
-    },
-    nextInputDirectionMode(state) {
-      state.userSettings.inputDirectionMode = nextInCycle(
-        inputDirectionModes,
-        selectInputDirectionMode({ gameMenus: state } as RootState),
-      );
-    },
-    nextDirectionRelativeTo(state) {
-      state.userSettings.directionsRelativeTo = nextInCycle(
-        directionsRelativeToModes,
-        selectDirectionsRelativeTo({ gameMenus: state } as RootState),
-      );
-    },
-    /** adds another input to the currently being assigned action */
-    inputAddedDuringAssignment(state, { payload }: PayloadAction<InputPress>) {
-      if (state.assigningInput === undefined) {
-        throw new Error("reducer called while not assigning keys");
-      }
-
-      const addIfUnique = <E>(arr: E[], el: NoInfer<E>) => {
-        if (!arr.includes(el)) {
-          arr.push(el);
-        }
-      };
-
-      const { presses: actionInput, axes, action } = state.assigningInput;
-      switch (payload.type) {
-        case "key":
-          addIfUnique(actionInput.keys, payload.input);
-          break;
-        case "gamepadButtons":
-          addIfUnique(actionInput.gamepadButtons, payload.input);
-          break;
-        case "gamepadAxes": {
-          const actionCanHaveAxisAssigned = (
-            directionsXy4 as Readonly<string[]>
-          ).includes(action);
-
-          if (actionCanHaveAxisAssigned) {
-            addIfUnique(axes, payload.input);
-          }
-          break;
-        }
-        default:
-          payload satisfies never;
-      }
-    },
-    doneAssigningInput(state) {
-      if (state.assigningInput === undefined) {
-        throw new Error("illegal action for state");
-      }
-      const { action, presses: actionInput, axes } = state.assigningInput;
-
-      const totalInputs =
-        actionInput.keys.length +
-        actionInput.gamepadButtons.length +
-        axes.length;
-
-      const inputAssignment =
-        state.userSettings.inputAssignment === undefined ?
-          // user didn't previously have any keys set - copy the defaults in
-          (state.userSettings.inputAssignment = structuredClone(
-            keyAssignmentPresets.Default.inputAssignment,
-          ))
-        : state.userSettings.inputAssignment;
-
-      if (totalInputs > 0) {
-        // the user inputted something - use the boolean actions:
-        inputAssignment.presses[action] = actionInput;
-        // copy axes if we're assigning something that can use them
-        if (action === "left" || action === "right") {
-          inputAssignment.axes.x = axes;
-        }
-        if (action === "towards" || action === "away") {
-          inputAssignment.axes.y = axes;
-        }
-      }
-      state.assigningInput = undefined;
-    },
-    menuOpenOrExitPressed(state) {
       if (state.openMenus.length > 0) {
-        if (state.openMenus.length === 1 && !state.gameRunning) {
-          return; // can't exit main menu if game not running
-        }
+        // a menu is open, pop it off if it is closable:
 
-        // go up one menu:
-        const [, ...tail] = state.openMenus;
-        state.openMenus = tail;
-      } else {
+        const [top] = state.openMenus;
+
+        const topIsUnclosable =
+          state.openMenus.length === 1 &&
+          top.menuId === "mainMenu" &&
+          !top.menuParam.isClosable;
+
+        if (!topIsUnclosable) {
+          const [, ...tail] = state.openMenus;
+          state.openMenus = tail;
+        }
+      } else if (openMainIfEmpty) {
+        // no menus open, open one:
         state.openMenus = [
           {
             menuId: "mainMenu",
             scrollableSelection: false,
-            menuParam: emptyObject,
+            menuParam: { isClosable: true },
           },
         ];
       }
@@ -476,61 +148,9 @@ export const gameMenusSlice = createSlice({
     closeAllMenus(state) {
       state.openMenus = [];
     },
-    gameStarted(
-      state,
-      {
-        payload: { campaignLocator, noShowCrowns },
-      }: PayloadAction<{
-        campaignLocator: CampaignLocator;
-        // set to true to skip the crowns screen on game start -
-        // eg, for playtest mode
-        noShowCrowns?: boolean;
-      }>,
-    ) {
-      if (state.gameRunning) {
-        // resuming an already-running game:
-        throw new Error("game is already running");
-      } else {
-        // starting a new game:
-        // go to crowns menu page if not already started the game
-        state.openMenus =
-          noShowCrowns ?
-            []
-          : [
-              {
-                menuId: "crowns",
-                scrollableSelection: false,
-                menuParam: { playMusic: false },
-              },
-            ];
-        state.gameRunning = true;
-        state.gameInPlay = {
-          ...initialGameInPlayStoreState,
-          campaignLocator,
-        };
-      }
-    },
     backToParentMenu(state) {
       const [, ...tail] = state.openMenus;
       state.openMenus = tail;
-    },
-    assignInputStart(state, { payload: action }: PayloadAction<BooleanAction>) {
-      state.assigningInput = {
-        action,
-        presses: { gamepadButtons: [], keys: [] },
-        axes: [],
-      };
-    },
-    keyAssignmentPresetChosen(
-      state,
-      {
-        payload: keyAssignmentPresetName,
-      }: PayloadAction<KeyAssignmentPresetName>,
-    ) {
-      const [, ...tail] = state.openMenus;
-      state.openMenus = tail;
-      (state as GameMenusState).userSettings.inputAssignment =
-        keyAssignmentPresets[keyAssignmentPresetName].inputAssignment;
     },
     setFocussedMenuItemId(
       state,
@@ -599,187 +219,6 @@ export const gameMenusSlice = createSlice({
         state.openMenus = [mapMenu];
       }
     },
-    setShowBoundingBoxes(
-      state,
-      { payload: showBoundingBoxes }: PayloadAction<ShowBoundingBoxes>,
-    ) {
-      state.userSettings.displaySettings.showBoundingBoxes = showBoundingBoxes;
-    },
-    setShowShadowMasks(
-      state,
-      { payload: showShadowMasks }: PayloadAction<boolean>,
-    ) {
-      state.userSettings.displaySettings.showShadowMasks = showShadowMasks;
-    },
-
-    nextSpritesOption(state) {
-      state.userSettings.displaySettings.sprites = nextInCycle(
-        spriteOptionValues,
-        state.userSettings.displaySettings.sprites ??
-          defaultUserSettings.displaySettings.sprites,
-        spriteOptionEquals,
-      );
-    },
-    setSpritesOption(state, { payload }: PayloadAction<SpriteOption>) {
-      state.userSettings.displaySettings.sprites = payload;
-    },
-    toggleUserSetting(
-      state,
-      {
-        payload: { path, value },
-      }: PayloadAction<{
-        path: UserSettingsBooleanPaths;
-        // value to set to. If not given, will toggle
-        value?: boolean;
-      }>,
-    ) {
-      setAtPath(
-        state.userSettings,
-        path,
-        value ?? !selectBooleanUserSetting(state, path),
-      );
-    },
-
-    crownCollected(state, { payload: planet }: PayloadAction<PlanetName>) {
-      state.gameInPlay.planetsLiberated[planet] = true;
-
-      const allCrowns = Object.values(state.gameInPlay.planetsLiberated).every(
-        (b) => b,
-      );
-
-      const playMusic = !(
-        state.userSettings.soundSettings.mute ??
-        defaultUserSettings.soundSettings.mute
-      );
-
-      const crownsMenu = {
-        menuId: "crowns",
-        scrollableSelection: false,
-        menuParam: {
-          playMusic,
-        },
-      } as const;
-
-      if (allCrowns) {
-        state.openMenus = [
-          {
-            menuId: "proclaimEmperor",
-            scrollableSelection: false,
-            menuParam: emptyObject,
-          },
-          crownsMenu,
-        ];
-      } else {
-        state.openMenus = [crownsMenu];
-      }
-    },
-    roomExplored(state, { payload: roomId }: PayloadAction<string>) {
-      state.gameInPlay.roomsExplored[roomId] = true;
-    },
-    gameOver(
-      state,
-      {
-        payload: { offerReincarnation },
-      }: PayloadAction<{ offerReincarnation: boolean }>,
-    ) {
-      if (
-        offerReincarnation &&
-        state.gameInPlay.reincarnationPoint !== undefined
-      ) {
-        state.openMenus = [
-          {
-            menuId: "score",
-            scrollableSelection: false,
-            menuParam: emptyObject,
-          },
-          {
-            menuId: "offerReincarnation",
-            scrollableSelection: false,
-            menuParam: emptyObject,
-          },
-        ];
-      } else {
-        state.gameRunning = false;
-        delete state.gameInPlay.reincarnationPoint;
-        const currentCampaignLocator = state.gameInPlay.campaignLocator;
-        const locatorKey =
-          currentCampaignLocator && gameStateLocatorKey(currentCampaignLocator);
-
-        if (locatorKey) {
-          delete state.savedGames.saves[locatorKey];
-          delete state.savedGames.lastSavedCampaignLocator;
-        }
-
-        state.openMenus = [
-          {
-            menuId: "score",
-            scrollableSelection: false,
-            menuParam: emptyObject,
-          },
-          {
-            menuId: "mainMenu",
-            scrollableSelection: true,
-            menuParam: emptyObject,
-          },
-        ];
-      }
-    },
-    reincarnationFishEaten(state, { payload }: PayloadAction<SavedGame>) {
-      state.gameInPlay.reincarnationPoint = payload;
-    },
-    /**
-     * Signals that the player chose to reincarnate. The state mutation
-     * — popping the reincarnationPoint stack and rolling back
-     * roomsExplored / scrollsRead / freeCharacters etc. to the fish-eaten
-     * snapshot — is handled by `gameRestoreFromSave`, which the dispatch
-     * site fires immediately before this. The saved snapshot's inner
-     * gameInPlay carries the prior reincarnationPoint, so each pop walks
-     * one link back through the linked-list chain.
-     */
-    reincarnationAccepted(state) {
-      // close the menu offering reincarnation
-      state.openMenus = [
-        {
-          menuId: "reincarnatedRestart",
-          scrollableSelection: false,
-          menuParam: emptyObject,
-        },
-      ];
-    },
-    saveGame(state, { payload }: PayloadAction<SavedGame>) {
-      const currentCampaignLocator = state.gameInPlay.campaignLocator;
-
-      if (currentCampaignLocator === undefined) {
-        throw new Error(
-          "trying to save a game, but seems like there's no campaign to save against",
-        );
-      }
-
-      if (isInPlaytestMode()) {
-        throw new Error("shouldn't be saving in playtest mode");
-      }
-
-      // only puts the saved game in the store - it is up to
-      // redux-persist to actually save it. The savedGame property should be
-      // on its whitelist
-      state.savedGames.saves[gameStateLocatorKey(currentCampaignLocator)] =
-        payload;
-      state.savedGames.lastSavedCampaignLocator = currentCampaignLocator;
-    },
-    gameRestoreFromSave(
-      state,
-      { payload }: PayloadAction<SavedStoreGameInPlay>,
-    ) {
-      state.gameInPlay = {
-        freeCharacters: {},
-        ...payload,
-      };
-      if (payload.freeCharacters === undefined) {
-        // this is not possible as per the current ts types, but we could be loading from
-        // an old save state
-        state.gameInPlay.freeCharacters = {};
-      }
-    },
     errorCaught(
       state,
       { payload: error }: PayloadAction<Array<SerialisableError>>,
@@ -793,167 +232,180 @@ export const gameMenusSlice = createSlice({
         },
       ];
     },
-    errorDismissed(
-      state,
-      { payload: strategy }: PayloadAction<"clearAllData" | "ignore">,
-    ) {
-      switch (strategy) {
-        case "ignore":
-          state.openMenus = [];
-          break;
-        case "clearAllData":
-          Object.assign(state, initialGameMenuSliceState);
-          state.gameRunning = false;
-          break;
-        default:
-          strategy satisfies never;
-      }
-    },
-    /** for when the cheats are on, a no-op reducer (exists for the listener api)
-     * that is dispatched after clicking on items
-     */
-    debugItemClicked(
-      _state,
-      _action: PayloadAction<{
-        item: UnionOfAllItemInPlayTypes<string, string>;
-        pixiContainer: Container;
-      }>,
-    ) {},
     /**
-     * @deprecated characterRoomChange is redundant and can be merged with roomExplored
-     * since they do almost the same thing, and are (almost) always fired together
+     * Dismiss the error dialog by clearing all open menus. The "clear all
+     * data" recovery strategy is a separate top-level action (`clearAllData`)
+     * that all slices reset on via `extraReducers`.
      */
-    characterRoomChange(
-      _state,
-      _action: PayloadAction<{ characterName: CharacterName; roomId: string }>,
-    ) {
-      // currently a noop for listeners.
-      // Could be used to update the player rooms if this state
-      // is moved into the store
+    errorDismissed(state) {
+      state.openMenus = [];
     },
-    lostLife(
-      _state,
-      _action: PayloadAction<{
-        characterLosingLifeItem: PlayableItem<CharacterName, string>;
-      }>,
-    ) {
-      // currently a noop for listeners.
-      // Could be used to update the player rooms if this state
-      // is moved into the store
-    },
+    // --- Listener-driven menu transitions -----------------------------------
+    //
+    // The reducers below are dispatched by listener middleware in
+    // gameMenusListeners.ts in response to cross-slice events from
+    // gameInPlaySlice. Each names the menu transition it produces; the
+    // listener supplies the payload context.
+
     /**
-     * Woohoo! Won the game!
+     * Show the crowns menu after a crown is collected. If `allCrowns` is true,
+     * also pushes the "proclaim emperor" dialog above the crowns menu.
      */
-    characterReachesFreedom(
+    crownsMenuShown(
       state,
       {
-        payload: individualCharacterName,
-      }: PayloadAction<IndividualCharacterName>,
+        payload: { playMusic, allCrowns },
+      }: PayloadAction<{ playMusic: boolean; allCrowns: boolean }>,
     ) {
-      state.gameInPlay.freeCharacters[individualCharacterName] = true;
+      const crownsMenu: OpenMenu = {
+        menuId: "crowns",
+        scrollableSelection: false,
+        menuParam: { playMusic },
+      };
+      state.openMenus =
+        allCrowns ?
+          [
+            {
+              menuId: "proclaimEmperor",
+              scrollableSelection: false,
+              menuParam: emptyObject,
+            },
+            crownsMenu,
+          ]
+        : [crownsMenu];
+    },
+
+    /**
+     * Reset the menu stack at the start of a game. Either clears menus
+     * entirely (e.g. playtest mode) or shows the crowns intro screen.
+     */
+    gameStartedMenusOpened(
+      state,
+      { payload: { showCrowns } }: PayloadAction<{ showCrowns: boolean }>,
+    ) {
+      state.openMenus =
+        showCrowns ?
+          [
+            {
+              menuId: "crowns",
+              scrollableSelection: false,
+              menuParam: { playMusic: false },
+            },
+          ]
+        : [];
+    },
+
+    /**
+     * Reset the menu stack on game over. Three shapes:
+     *  - `offerReincarnation: true` → score + offerReincarnation.
+     *  - `offerReincarnation: false`, `scoreAlreadyShown: false` → score +
+     *    non-closable mainMenu (the standard post-game-over flow).
+     *  - `offerReincarnation: false`, `scoreAlreadyShown: true` → just the
+     *    non-closable mainMenu, used after the player declines a
+     *    reincarnation offer (they saw the score on the way in, no point
+     *    showing it again).
+     *
+     * The mainMenu is non-closable post-game-over because there's no game
+     * to return to.
+     */
+    gameEndedMenusOpened(
+      state,
+      {
+        payload,
+      }: PayloadAction<
+        | { offerReincarnation: false; scoreAlreadyShown: boolean }
+        | { offerReincarnation: true }
+      >,
+    ) {
+      const score = {
+        menuId: "score",
+        scrollableSelection: false,
+        menuParam: emptyObject,
+      } as const;
+      const offerReincarnation = {
+        menuId: "offerReincarnation",
+        scrollableSelection: false,
+        menuParam: emptyObject,
+      } as const;
+      const mainMenu = {
+        menuId: "mainMenu",
+        scrollableSelection: true,
+        menuParam: { isClosable: false },
+      } as const;
+
+      if (payload.offerReincarnation) {
+        state.openMenus = [score, offerReincarnation];
+      } else if (payload.scoreAlreadyShown) {
+        state.openMenus = [mainMenu];
+      } else {
+        state.openMenus = [score, mainMenu];
+      }
+    },
+
+    /**
+     * Show a scroll's markdown content as a dialog. Picks `markdown/<page>`
+     * for manual-source scrolls or `markdown/inline` for inline content.
+     */
+    scrollContentMenuShown(
+      state,
+      { payload: scrollConfig }: PayloadAction<ScrollConfig>,
+    ) {
+      state.openMenus =
+        scrollConfig.source === "manual" ?
+          [
+            {
+              menuId: `markdown/${scrollConfig.page}`,
+              scrollableSelection: false,
+              menuParam: emptyObject,
+            },
+          ]
+        : [
+            {
+              menuId: "markdown/inline",
+              scrollableSelection: false,
+              menuParam: {
+                markdown:
+                  Array.isArray(scrollConfig.markdown) ?
+                    scrollConfig.markdown.join("\n\n")
+                  : scrollConfig.markdown,
+              },
+            },
+          ];
+    },
+
+    /**
+     * Show the "you've been reincarnated, restart from save" prompt after
+     * the user accepts a reincarnation offer.
+     */
+    reincarnationRestartMenuShown(state) {
+      state.openMenus = [
+        {
+          menuId: "reincarnatedRestart",
+          scrollableSelection: false,
+          menuParam: emptyObject,
+        },
+      ];
     },
   },
   extraReducers(builder) {
-    type RehydrateAction = PayloadAction<
-      | Pick<GameMenusState, (typeof gameMenusSliceWhitelist)[number]>
-      | undefined,
-      typeof REHYDRATE
-    >;
-
-    // add a case for when the state is restored from redux-persist. Redux persist
-    // will put the .savedGame property in for us, we just do a bit of housekeeping
-    // for it
-    builder.addCase<typeof REHYDRATE, RehydrateAction>(
-      REHYDRATE,
-      (state, action) => {
-        if (typedURLSearchParams().get("campaignName")?.startsWith("data:")) {
-          // this is a playtest session, we can skip loading any saves
-          return;
-        }
-
-        const menusAfterRestore: OpenMenu[] = [
-          // after restoring, start paused:
-          {
-            menuId: "hold",
-            scrollableSelection: false,
-            menuParam: emptyObject,
-          },
-        ];
-
-        const paramCampaignLocator: Partial<CampaignLocator> = {
-          userId:
-            typedURLSearchParams().get("campaignAuthorUserId") ?? undefined,
-          campaignName: typedURLSearchParams().get("campaignName") ?? undefined,
-        };
-
-        const savedGames = action.payload?.savedGames;
-
-        const isCompleteCampaignLocator = (
-          campaignLocator: Partial<CampaignLocator>,
-        ): campaignLocator is CampaignLocator => {
-          return (
-            campaignLocator.userId !== undefined &&
-            campaignLocator.campaignName !== undefined
-          );
-        };
-
-        if (isCompleteCampaignLocator(paramCampaignLocator)) {
-          state.gameRunning = true;
-          const savedGameForParamCampaign =
-            savedGames?.saves[gameStateLocatorKey(paramCampaignLocator)];
-
-          if (savedGameForParamCampaign) {
-            // have a campaign url and a save for that campaign:
-            state.gameRunning = true;
-            state.gameInPlay = {
-              // in case the saved game is old and doesn't have all the properties:
-              freeCharacters: {},
-              ...savedGameForParamCampaign.store.gameMenus.gameInPlay,
-            };
-            state.openMenus = menusAfterRestore;
-            return;
-          } else {
-            // have a campaign url and no save for this campaign:
-            state.gameRunning = true;
-            state.gameInPlay = {
-              ...initialGameInPlayStoreState,
-              campaignLocator: paramCampaignLocator,
-            };
-            state.openMenus = menusAfterRestore;
-            return;
-          }
-        }
-
-        // no campaign in url params - check what the last campaign the user was playing
-        // is and if they have a save:
-        const lastSavedCampaignLocator = savedGames?.lastSavedCampaignLocator;
-
-        const inPlaySave =
-          lastSavedCampaignLocator &&
-          savedGames.saves[gameStateLocatorKey(lastSavedCampaignLocator)];
-
-        if (inPlaySave) {
-          // we have just loaded and a game is already in progress from a previous session
-          state.gameRunning = true;
-          state.gameInPlay = {
-            // in case the saved game is old and doesn't have all the properties:
-            freeCharacters: {},
-            ...inPlaySave.store.gameMenus.gameInPlay,
-          };
-          state.openMenus = menusAfterRestore;
-        }
-      },
-    );
+    builder.addCase(clearAllData, () => initialGameMenuSliceState);
+    // After loading a save on app start, show the hold (paused) menu so the
+    // player resumes on their own time rather than dropping straight into
+    // gameplay — they may have just opened the tab, may need to re-orient,
+    // or may have intended to navigate via URL without auto-playing.
+    builder.addCase(savedGameLoadedOnAppLoad, (state) => {
+      state.openMenus = [
+        {
+          menuId: "hold",
+          scrollableSelection: false,
+          menuParam: emptyObject,
+        },
+      ];
+    });
   },
   selectors: {
     selectHasError(state: GameMenusState) {
       return state.openMenus.some((menu) => menu.menuId === "errorCaught");
-    },
-    selectSaveForCampaign(
-      state: GameMenusState,
-      campaignLocator: CampaignLocator,
-    ) {
-      return state.savedGames.saves[gameStateLocatorKey(campaignLocator)];
     },
   },
 });
@@ -967,54 +419,22 @@ export type GameMenusSliceActionCreator = ValueOf<
 >;
 
 export const {
-  assignInputStart,
   backToParentMenu,
-  characterReachesFreedom,
-  /**
-   * @deprecated characterRoomChange is redundant and can be merged with roomExplored
-   * since they do almost the same thing, and are (almost) always fired together
-   */
-  characterRoomChange,
   closeAllMenus,
-  crownCollected,
-  debugItemClicked,
-  doneAssigningInput,
+  crownsMenuShown,
   errorCaught,
   errorDismissed,
-  gameOver,
-  gameRestoreFromSave,
-  gameStarted,
+  gameEndedMenusOpened,
+  gameStartedMenusOpened,
   goToSubmenu,
   holdPressed,
-  inputAddedDuringAssignment,
-  keyAssignmentPresetChosen,
-  lostLife,
   mapPressed,
   menuOpenOrExitPressed,
-  nextDirectionRelativeTo,
-  nextSpritesOption,
-  setSpritesOption,
-  nextInputDirectionMode,
-  reincarnationAccepted,
-  reincarnationFishEaten,
-  roomExplored,
-  saveGame,
-  scrollRead,
-  setEmulatedResolution,
+  reincarnationRestartMenuShown,
+  scrollContentMenuShown,
   setFocussedMenuItemId,
-  setGameSpeed,
-  setShowBoundingBoxes,
-  setShowShadowMasks,
-  toggleUserSetting,
 } = gameMenusSlice.actions;
 
 export const { selectHasError } = gameMenusSlice.selectors;
-
-// provide a variant of this selector that can provide a RoomId without the callsite casting
-export const selectSaveForCampaign = gameMenusSlice.selectors
-  .selectSaveForCampaign as <RoomId extends string>(
-  state: { gameMenus: GameMenusState },
-  campaignLocator: CampaignLocator,
-) => SavedGame<RoomId>;
 
 export const gameMenusSliceActions = gameMenusSlice.actions;

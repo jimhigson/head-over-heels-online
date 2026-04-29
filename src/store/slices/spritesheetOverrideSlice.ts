@@ -4,6 +4,8 @@ import { createSlice } from "@reduxjs/toolkit";
 
 import type { LoadableSpriteOption } from "../../sprites/spritesheet/loadedSpriteSheet";
 
+import { clearAllData } from "./clearAllData";
+
 type SpritesheetOverrideState = {
   overrides: Partial<Record<LoadableSpriteOption, string>>;
 };
@@ -30,6 +32,9 @@ export const spritesheetOverrideSlice = createSlice({
     ) {
       delete state.overrides[spriteOption];
     },
+  },
+  extraReducers(builder) {
+    builder.addCase(clearAllData, () => initialState);
   },
   selectors: {
     selectSpritesheetOverrideDataUrl: (

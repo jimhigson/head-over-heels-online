@@ -5,11 +5,11 @@ import {
   useInputDirectionMode,
   useIsAssigningKeys,
 } from "../../../../../../store/slices/gameMenus/gameMenusSelectors";
+import { backToParentMenu } from "../../../../../../store/slices/gameMenus/gameMenusSlice";
 import {
-  backToParentMenu,
   doneAssigningInput,
   inputAddedDuringAssignment,
-} from "../../../../../../store/slices/gameMenus/gameMenusSlice";
+} from "../../../../../../store/slices/userSettings/userSettingsSlice";
 import { store } from "../../../../../../store/store";
 import { useDispatchActionCallback } from "../../../../../../store/useDispatchActionCallback";
 import { Border } from "../../../../../../ui/Border";

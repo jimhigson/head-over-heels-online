@@ -3,7 +3,7 @@ import { useEffect } from "react";
 import type { GameApi } from "../../GameApi";
 
 import { startAppListening } from "../../../store/listenerMiddleware";
-import { characterRoomChange } from "../../../store/slices/gameMenus/gameMenusSlice";
+import { characterRoomChange } from "../../../store/slices/gameInPlay/gameInPlaySlice";
 import { cheatRoomIdFromUrlHash } from "./cheatRoomIdFromUrlHash";
 
 export const useLevelSelectByUrlHash = <RoomId extends string>(

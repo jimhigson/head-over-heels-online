@@ -101,7 +101,7 @@ test.describe("persistence across reload", () => {
     const skinName = await page.evaluate(() => {
       const store = window._e2e_store;
       if (!store) return undefined;
-      return store.getState().gameMenus.userSettings.displaySettings.sprites
+      return store.getState().userSettings.userSettings.displaySettings.sprites
         ?.name;
     });
     expect(skinName).toBe("Toppy");
@@ -150,11 +150,17 @@ test.describe("persistence across reload", () => {
 
   test("campaign in URL - switch character, reload -> same campaign+character", async ({
     page,
-  }) => {
+  }, testInfo) => {
+    const formattedName = formatProjectName(testInfo.project.name);
     const url = `/?cheats=1&track=0&campaignName=sequel&campaignAuthorUserId=${jimAtBlockstackingUserId}`;
     await page.goto(url);
     await waitForGameState(page);
-    await dismissHoldAfterReload(page);
+    // first visit to a named URL with no save shows the crowns intro
+    await waitForDialog(page, "crowns");
+    await exitCrownsDialog(page, formattedName);
+    await page
+      .locator('[data-dialog-id="crowns"]')
+      .waitFor({ state: "detached" });
 
     const startCharacter = await getCurrentCharacter(page);
     await dispatchKeyPress(page, "Enter", "Enter");
@@ -169,7 +175,7 @@ test.describe("persistence across reload", () => {
     expect(await getCurrentCharacter(page)).toBe(expectedCharacter);
     const campaignName = await page.evaluate(
       () =>
-        window._e2e_store?.getState().gameMenus.gameInPlay.campaignLocator
+        window._e2e_store?.getState().gameInPlay.gameInPlay.campaignLocator
           ?.campaignName,
     );
     expect(campaignName).toBe("sequel");
@@ -177,11 +183,17 @@ test.describe("persistence across reload", () => {
 
   test("campaign URL dropped on reload - state still restored", async ({
     page,
-  }) => {
+  }, testInfo) => {
+    const formattedName = formatProjectName(testInfo.project.name);
     const url = `/?cheats=1&track=0&campaignName=sequel&campaignAuthorUserId=${jimAtBlockstackingUserId}`;
     await page.goto(url);
     await waitForGameState(page);
-    await dismissHoldAfterReload(page);
+    // first visit to a named URL with no save shows the crowns intro
+    await waitForDialog(page, "crowns");
+    await exitCrownsDialog(page, formattedName);
+    await page
+      .locator('[data-dialog-id="crowns"]')
+      .waitFor({ state: "detached" });
 
     await dispatchKeyPress(page, "Enter", "Enter");
     await page.waitForTimeout(500 * osSlowness);
@@ -195,10 +207,56 @@ test.describe("persistence across reload", () => {
     expect(await getCurrentCharacter(page)).toBe(expectedCharacter);
     const campaignName = await page.evaluate(
       () =>
-        window._e2e_store?.getState().gameMenus.gameInPlay.campaignLocator
+        window._e2e_store?.getState().gameInPlay.gameInPlay.campaignLocator
           ?.campaignName,
     );
     expect(campaignName).toBe("sequel");
+  });
+
+  test("community URL - first visit shows crowns; save survives reload at same URL and at /", async ({
+    page,
+  }, testInfo) => {
+    const formattedName = formatProjectName(testInfo.project.name);
+    const url = `/?cheats=1&track=0&campaignName=swops_test&campaignAuthorUserId=${jimAtBlockstackingUserId}`;
+
+    await test.step("Visit named URL with no save → crowns intro shown (case 3)", async () => {
+      await page.goto(url);
+      await waitForGameState(page);
+      await waitForDialog(page, "crowns");
+      await exitCrownsDialog(page, formattedName);
+      await page
+        .locator('[data-dialog-id="crowns"]')
+        .waitFor({ state: "detached" });
+    });
+
+    let expectedCharacter: string | undefined;
+    await test.step("Switch character → triggers save", async () => {
+      const startCharacter = await getCurrentCharacter(page);
+      await dispatchKeyPress(page, "Enter", "Enter");
+      await page.waitForTimeout(500 * osSlowness);
+      expectedCharacter = await getCurrentCharacter(page);
+      expect(expectedCharacter).not.toBe(startCharacter);
+    });
+
+    await test.step("Reload at same URL → save restored, paused (case 2)", async () => {
+      await page.reload();
+      await waitForGameState(page);
+      await dismissHoldAfterReload(page);
+      expect(await getCurrentCharacter(page)).toBe(expectedCharacter);
+    });
+
+    await test.step("Reload at / (no params) → last-saved restored, still on swopped character (case 4)", async () => {
+      await page.goto("/?cheats=1&track=0");
+      await waitForGameState(page);
+      await dismissHoldAfterReload(page);
+      expect(await getCurrentCharacter(page)).toBe(expectedCharacter);
+      const campaignName = await page.evaluate(
+        () =>
+          window._e2e_store?.getState().gameInPlay.gameInPlay.campaignLocator
+            ?.campaignName,
+      );
+      expect(campaignName).toBe("swops_test");
+    });
   });
 
   test("reincarnation point set in one room survives reload from another, then takes player back", async ({

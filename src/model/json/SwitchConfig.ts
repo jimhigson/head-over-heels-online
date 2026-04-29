@@ -1,4 +1,4 @@
-import type { UserSettingsBooleanPaths } from "../../store/slices/gameMenus/gameMenusSlice";
+import type { UserSettingsBooleanPaths } from "../../store/slices/userSettings/userSettingsSlice";
 import type { Subset } from "../../utils/Subset";
 import type { DirectionXy4, Xyz } from "../../utils/vectors/vectors";
 import type { SwitchSetting } from "../ItemInPlay";
@@ -175,17 +175,19 @@ export type SwitchInRoomConfig<
   modifies: Array<SwitchItemModificationUnion<RoomId, RoomItemId>>;
 };
 
+type SwitchConfigForUserSettings = {
+  /** this switch targets the redux store */
+  type: "in-store";
+  // special case for switches that read from and dispatch to the store:
+  path: UserSettingsBooleanPaths;
+};
+
 export type SwitchConfig<
   RoomId extends string,
   /** ids of items in this room */
   RoomItemId extends string,
 > = { initialSetting: SwitchSetting } & (
-  | {
-      /** this switch targets the redux store */
-      type: "in-store";
-      // special case for switches that read from and dispatch to the store:
-      path: UserSettingsBooleanPaths;
-    }
+  | SwitchConfigForUserSettings
   | SwitchInRoomConfig<
       RoomId,
       /** ids of items in this room */
@@ -195,16 +197,28 @@ export type SwitchConfig<
 
 export type StoreActionName = "nextSpritesOption";
 
+type ButtonConfigForUserSettings = {
+  type: "in-store";
+  action: StoreActionName;
+};
+
+type ButtonInRoomConfig<
+  RoomId extends string,
+  /** ids of items in this room */
+  RoomItemId extends string,
+> = {
+  type: "in-room";
+  modifies: Array<SwitchItemModificationUnion<RoomId, RoomItemId>>;
+};
+
 export type ButtonConfig<
   RoomId extends string,
   /** ids of items in this room */
   RoomItemId extends string,
 > =
-  | {
-      type: "in-room";
-      modifies: Array<SwitchItemModificationUnion<RoomId, RoomItemId>>;
-    }
-  | {
-      type: "in-store";
-      action: StoreActionName;
-    };
+  | ButtonConfigForUserSettings
+  | ButtonInRoomConfig<
+      RoomId,
+      /** ids of items in this room */
+      RoomItemId
+    >;

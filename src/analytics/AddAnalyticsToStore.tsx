@@ -7,12 +7,13 @@ import { startAppListening } from "../store/listenerMiddleware";
 import {
   characterRoomChange,
   crownCollected,
-  errorCaught,
   gameOver,
   gameStarted,
+  lostAllLives,
   lostLife,
   reincarnationAccepted,
-} from "../store/slices/gameMenus/gameMenusSlice";
+} from "../store/slices/gameInPlay/gameInPlaySlice";
+import { errorCaught } from "../store/slices/gameMenus/gameMenusSlice";
 import { isLocalNetwork } from "./isLocalNetwork";
 
 const umamiScriptSrc = "https://cloud.umami.is/script.js";
@@ -45,6 +46,7 @@ const shouldTrack = () => {
 
 const isTrackedEvent = isAnyOf(
   gameOver,
+  lostAllLives,
   reincarnationAccepted,
   // roomExplored is almost the same as characterRoomChange, but has less information
   //roomExplored,
@@ -73,22 +75,20 @@ const useAddTrackingToStore = () => {
           gameState ? Math.round(gameState.gameTime / 1000) : undefined;
 
         const payloadProperties =
-          action.payload === undefined ? {}
-          : action.type === "gameMenus/crownCollected" ?
-            { crownForPlanet: action.payload }
-          : action.type === "gameMenus/gameStarted" ? undefined
-          : action.type === "gameMenus/lostLife" ?
+          crownCollected.match(action) ? { crownForPlanet: action.payload }
+          : lostLife.match(action) ?
             {
               position: action.payload.characterLosingLifeItem.state.position,
             }
+          : gameStarted.match(action) ? undefined
           : action.payload;
 
         const eventProperties = {
           gameTimeSeconds,
           // this makes a lot of properties in umami, which are each counted as one event:
-          //...state.gameMenus.gameInPlay,
-          cheatsOn: state.gameMenus.cheatsOn,
-          ...payloadProperties,
+          //...state.gameInPlay.gameInPlay,
+          cheatsOn: state.debug.cheatsOn,
+          ...(typeof payloadProperties === "object" ? payloadProperties : {}),
           currentCharacter: gameState?.currentCharacterName,
           inRoom: gameState?.characterRooms[gameState.currentCharacterName],
         };

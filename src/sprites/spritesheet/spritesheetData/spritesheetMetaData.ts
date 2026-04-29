@@ -1,6 +1,6 @@
 import type { Simplify } from "type-fest";
 
-import type { SpriteOption } from "../../../store/slices/gameMenus/gameMenusSlice";
+import type { SpriteOption } from "../../../store/slices/userSettings/userSettingsSlice";
 import type { NamedColours, NamedSwops } from "../../../utils/palette/palette";
 import type { DirectionXy8 } from "../../../utils/vectors/vectors";
 import type { LoadableSpriteOption } from "../loadedSpriteSheet";

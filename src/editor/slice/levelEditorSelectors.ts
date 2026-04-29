@@ -17,7 +17,7 @@ import type {
 
 import { loadRoom } from "../../game/gameState/loadRoom/loadRoom";
 import { floorsRenderExtent } from "../../game/render/room/floorsExtent";
-import { emptyUserSettings } from "../../store/slices/gameMenus/emptyUserSettings";
+import { emptyUserSettings } from "../../store/slices/userSettings/emptyUserSettings";
 import { emptyObject } from "../../utils/empty";
 import { objectEntriesIter } from "../../utils/entries";
 import { selectorHook } from "../../utils/react/selectorHook";

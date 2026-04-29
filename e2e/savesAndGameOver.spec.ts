@@ -19,15 +19,14 @@ const getSaveKeys = (page: Page) =>
   page.evaluate(() => {
     const store = window._e2e_store;
     if (!store) throw new Error("E2E store not available");
-    return Object.keys(store.getState().gameMenus.savedGames.saves);
+    return Object.keys(store.getState().savedGames.saves);
   });
 
 const getLastSavedCampaignName = (page: Page) =>
   page.evaluate(() => {
     const store = window._e2e_store;
     if (!store) throw new Error("E2E store not available");
-    return store.getState().gameMenus.savedGames.lastSavedCampaignLocator
-      ?.campaignName;
+    return store.getState().savedGames.lastSavedCampaignLocator?.campaignName;
   });
 
 test.describe("save lifecycle around game over", () => {

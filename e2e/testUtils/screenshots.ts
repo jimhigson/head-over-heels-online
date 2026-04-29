@@ -7,7 +7,7 @@ import { expect, test } from "@playwright/test";
 import chalk from "chalk";
 
 import type { DialogId } from "../../src/game/components/dialogs/menuDialog/DialogId";
-import type { SpriteOption } from "../../src/store/slices/gameMenus/gameMenusSlice";
+import type { SpriteOption } from "../../src/store/slices/userSettings/userSettingsSlice";
 
 import spritesheetColours from "../../src/_generated/palette/spritesheetPalette.json" with { type: "json" };
 import {

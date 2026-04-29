@@ -202,7 +202,7 @@ export const afterDeathInvulnerabilityFlashPhaseDuration = 0.25;
 
 /**
  * how long after releasing a button does it act, and render as 'up'?
- * this is needed because otherwise, instntaneously jumping on and off a button
+ * this is needed because otherwise, instantaneously jumping on and off a button
  * would make it act for a single sub-frame, and also never render
  */
 export const buttonStayPressedAfterReleasePeriod = 150;

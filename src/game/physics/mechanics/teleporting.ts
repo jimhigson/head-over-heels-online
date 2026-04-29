@@ -24,7 +24,7 @@ export const teleporterIsActive = <
   RoomItemId
 >): boolean => {
   return activatedOnStoreValue === undefined ? true : (
-      !!getAtPath(store.getState().gameMenus.gameInPlay, activatedOnStoreValue)
+      !!getAtPath(store.getState().gameInPlay.gameInPlay, activatedOnStoreValue)
     );
 };
 

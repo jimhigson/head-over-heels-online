@@ -3,7 +3,7 @@ import { Container } from "pixi.js";
 import type { ItemTypeUnion } from "../../../../_generated/types/ItemInPlayUnion";
 import type { ItemInPlay } from "../../../../model/ItemInPlay";
 import type { RoomState } from "../../../../model/RoomState";
-import type { SpriteOption } from "../../../../store/slices/gameMenus/gameMenusSlice";
+import type { SpriteOption } from "../../../../store/slices/userSettings/userSettingsSlice";
 
 import { roomItemsIterable } from "../../../../model/RoomState";
 import { wallTimes } from "../../../../model/times";

@@ -3,12 +3,12 @@ import type { SetRequired } from "type-fest";
 
 import type { RoomState } from "../../../model/RoomState";
 import type { SpritesheetMetadata } from "../../../sprites/spritesheet/spritesheetData/spritesheetMetaData";
+import type { Upscale } from "../../../store/slices/upscale/Upscale";
 import type {
   DisplaySettings,
   SoundSettings,
   SpriteOption,
-} from "../../../store/slices/gameMenus/gameMenusSlice";
-import type { Upscale } from "../../../store/slices/upscale/Upscale";
+} from "../../../store/slices/userSettings/userSettingsSlice";
 import type { GameState } from "../../gameState/GameState";
 import type { MovedItems } from "../../mainLoop/progressGameState";
 import type { DecorateItemRenderer } from "../item/itemRender/DecorateItemRenderer";

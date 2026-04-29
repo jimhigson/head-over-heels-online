@@ -36,7 +36,7 @@ export class SwitchSoundRenderer implements ItemSoundRenderer<"switch"> {
       switchConfig.type === "in-store" ?
         (
           selectBooleanUserSetting(
-            store.getState().gameMenus,
+            store.getState().userSettings,
             switchConfig.path,
           )
         ) ?

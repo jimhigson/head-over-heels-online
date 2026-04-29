@@ -62,16 +62,17 @@ export const clickCheat = async (page: Page, testId: string) => {
 };
 
 /**
- * Repeatedly summon daleks until all lives are lost.
+ * Repeatedly summon emperor's guardians until all lives are lost. The
+ * guardian homes onto the player so contact is reliable.
  *
  * Game speed is left at normal — the sped-up cheat puts extra load
  * on the engine for no test-time benefit (waitForTimeout is wall
  * clock either way).
  *
- * One dalek per life: the room resets after each death, wiping out
- * any previously-summoned daleks, so summoning a batch up front is
+ * One guardian per life: the room resets after each death, wiping out
+ * any previously-summoned monsters, so summoning a batch up front is
  * pointless. Wait 1.5s between summons to match the engine's
- * `afterDeathInvulnerabilityTime` so the next dalek can land a hit
+ * `afterDeathInvulnerabilityTime` so the next guardian can land a hit
  * once the post-death invincibility window has expired.
  */
 export const loseAllLives = async (page: Page) => {
@@ -86,14 +87,14 @@ export const loseAllLives = async (page: Page) => {
       .isVisible()
       .catch(() => false);
     if (died) {
-      log(`died after ${iteration} dalek summons`);
+      log(`died after ${iteration} guardian summons`);
       return;
     }
     iteration++;
     log(
-      `iter=${iteration} lives=${await getCurrentLives(page)} → summon dalek`,
+      `iter=${iteration} lives=${await getCurrentLives(page)} → summon guardian`,
     );
-    await clickCheat(page, "cheats-summon-monster-dalek");
+    await clickCheat(page, "cheats-summon-monster-emperorsGuardian");
     await page.waitForTimeout(1_500 * osSlowness);
   }
   throw new Error("never reached an end-of-life dialog");
