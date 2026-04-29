@@ -13,6 +13,7 @@ import { store } from "../../../store/store";
 import { emptyObject } from "../../../utils/empty";
 import { valuesIter } from "../../../utils/entries";
 import { nonZero } from "../../../utils/epsilon";
+import { smoothstep } from "../../../utils/maths/maths";
 import { randomFromArray } from "../../../utils/random/randomFromArray";
 import { unitVectors } from "../../../utils/vectors/unitVectors";
 import {
@@ -240,14 +241,14 @@ const walkTowardAnalogueIfInSquare = <
   opposite: boolean = false,
 ): MechanicResult<"monster", RoomId, RoomItemId> => {
   const {
-    state: { position: monsterPosition, standingOnItemId },
+    state: { position: moverPosition, standingOnItemId },
   } = itemWithMovement;
 
   if (standingOnItemId === null) {
     return notWalking;
   }
 
-  const closestPlayable = findClosestPlayable(monsterPosition, room);
+  const closestPlayable = findClosestPlayable(moverPosition, room);
 
   if (closestPlayable === undefined) {
     // no players in this room; stay still - not expecting this in normal play
@@ -256,27 +257,30 @@ const walkTowardAnalogueIfInSquare = <
 
   const playablePosition = closestPlayable.state.position;
 
-  const radius = blockSizePx.x * 3;
-  const inSquare =
-    monsterPosition.x > playablePosition.x - radius &&
-    monsterPosition.x < playablePosition.x + radius &&
-    monsterPosition.y > playablePosition.y - radius &&
-    monsterPosition.y < playablePosition.y + radius;
+  const moverCentreX = moverPosition.x + itemWithMovement.aabb.x / 2;
+  const moverCentreY = moverPosition.y + itemWithMovement.aabb.y / 2;
+  const playerCentreX = playablePosition.x + closestPlayable.aabb.x / 2;
+  const playerCentreY = playablePosition.y + closestPlayable.aabb.y / 2;
 
-  if (!inSquare) {
-    // outside of a 5x5 square around the monster
-    return notWalking;
-  }
+  const maxDistance = blockSizePx.x * 3;
+  const minDistance = 2;
+  const rampWidth = blockSizePx.x * 0.5;
 
-  if (closestPlayable.state.standingOnItemId === itemWithMovement.id) {
-    // for example, platforms that follow the player will only move when jumping,
-    // not when standing. If a monster, the player has lost a life anyway here
+  const manhattanXy =
+    Math.abs(moverCentreX - playerCentreX) +
+    Math.abs(moverCentreY - playerCentreY);
+
+  const rangeFactor =
+    smoothstep(minDistance, minDistance + rampWidth, manhattanXy) *
+    smoothstep(maxDistance, maxDistance - rampWidth, manhattanXy);
+
+  if (rangeFactor === 0) {
     return notWalking;
   }
 
   const vectorXyToClosestPlayer = subXy(
     closestPlayable.state.position,
-    monsterPosition,
+    moverPosition,
   );
 
   const monsterSpeed = speedForItem(itemWithMovement);
@@ -285,7 +289,7 @@ const walkTowardAnalogueIfInSquare = <
   // in diagonal directions [ie, moving in vector (0,2) or (2,2) pixels in (x,y)]. Instead, I always move the average of these
   // two to keep the end result about the same without any strange-looking speed changes:
   const adjustCoefficient = (1 + Math.SQRT2) / 2;
-  const adjustedSpeed = monsterSpeed * adjustCoefficient;
+  const adjustedSpeed = monsterSpeed * adjustCoefficient * rangeFactor;
 
   const walkVelocity = scaleXyz(
     { ...vectorXyToClosestPlayer, z: 0 },
