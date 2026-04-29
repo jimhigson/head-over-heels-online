@@ -93,6 +93,9 @@ export type PlayableDirectionFrames = {
   shadowMaskFalling?: boolean;
   /** true = dedicated standing frame, 1-3 = use the stated walking frame as the standing frame */
   standing?: 1 | 2 | 3 | boolean;
+
+  /** which walking frame to use for the upwards jump motion, defaults to 1 if not given */
+  jumpAscent?: 1 | 2 | 3;
 };
 
 /**

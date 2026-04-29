@@ -216,6 +216,7 @@ export const createSpritesheetVariant = (
   swoppedSpritesheet.textureSource.scaleMode = "nearest";
   swoppedSpritesheet.spriteOption = spriteOption;
   swoppedSpritesheet.ambient = spritesheetTextureSwops.ambient;
+  swoppedSpritesheet.spritesheetMeta = spritesheetMetas[spriteOption];
   return swoppedSpritesheet;
 };
 
