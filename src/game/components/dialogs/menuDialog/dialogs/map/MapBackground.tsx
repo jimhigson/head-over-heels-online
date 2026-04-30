@@ -1,7 +1,7 @@
 import type { SceneryName } from "../../../../../../sprites/planets";
 import type { MapData } from "./MapData";
 
-import { originalUserId } from "../../../../../../model/modelTypes";
+import { originalUserId } from "../../../../../../gameInfo";
 import { MapBackgroundSection } from "./MapBackgroundSection";
 import { getMapColoursClass } from "./mapColours";
 import { OriginalCampaignMainMapBackground } from "./OriginalCampaignMainMapBackground";

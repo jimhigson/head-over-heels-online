@@ -489,6 +489,10 @@ export const dotProductXyz = (a: Xyz, b: Xyz): number => {
   return a.x * b.x + a.y * b.y + a.z * b.z;
 };
 
+export const dotProductXy = (a: Xy, b: Xy): number => {
+  return a.x * b.x + a.y * b.y;
+};
+
 export const multiplyMatrixVector = (
   matrix: Matrix3x3,
   { x, y, z }: Xyz,

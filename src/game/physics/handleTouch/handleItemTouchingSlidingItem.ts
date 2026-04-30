@@ -3,6 +3,7 @@ import type { ItemTouchEventByItemType } from "./ItemTouchEvent";
 
 import { epsilon } from "../../../utils/epsilon";
 import {
+  dotProductXy,
   dotProductXyz,
   lengthXySquared,
   originXyz,
@@ -13,7 +14,7 @@ import {
 import { visualiseVectorForLogs } from "../../../utils/vectors/visualiseVectorForLogs";
 import { isSolid, type SlidingItemTypes } from "../itemPredicates";
 import { moveSpeedPixPerMs } from "../mechanicsConstants";
-import { mtv, mtvAlongVector } from "../mtv";
+import { mtv, mtvAlongVector, mtvXy } from "../mtv";
 
 const log = import.meta.env.VITE_LOG_MOVE_ITEM;
 
@@ -34,7 +35,12 @@ export const handleItemTouchingSlidingItem = <
     movementVector,
   } = opts;
 
-  if (!isSolid(touchingItem)) return;
+  if (
+    !isSolid(touchingItem) &&
+    // fired doughnuts aren't solid but they can start a sliding item moving:
+    touchingItem.type !== "firedDoughnut"
+  )
+    return;
 
   if (log)
     console.group(
@@ -50,7 +56,7 @@ export const handleItemTouchingSlidingItem = <
   // the overlap mtv is the simple mtv required to get the pusher and pushee
   // to no longer overlap. Usually, but not always, this would be in the direction
   // of travel, but because of chain reactions it is possible for them to be orthogonal
-  const mtvOverlap = mtv(
+  const mtvOverlap = mtvXy(
     touchingItem.state.position,
     touchingItem.aabb,
     slidingItemPosition,
@@ -75,7 +81,7 @@ export const handleItemTouchingSlidingItem = <
   }
 
   const backingOffProjectedOnMovementVectorMagnitude: number =
-    dotProductXyz(mtvOverlap, slidingVector) / mtvAvMagnitudeSquared;
+    dotProductXy(mtvOverlap, slidingVector) / mtvAvMagnitudeSquared;
 
   if (log)
     console.log(
@@ -160,7 +166,9 @@ export const handleSlidingItemTouchingAnyItem = <
     // stop sliding
     slidingItem.state.vels.sliding = originXyz;
     if (log)
-      console.log(`non-zero dot product, stopping ${slidingItem.id} sliding`);
+      console.log(
+        `non-zero dot product, stopping ${slidingItem.id} sliding because of touch with ${touchedItem.id}`,
+      );
   } else {
     if (log)
       console.log(`dot product <= 0, not stopping ${slidingItem.id} sliding`);

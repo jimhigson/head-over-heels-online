@@ -1,7 +1,7 @@
-import type { Xyz } from "./vectors";
+import type { Xy, Xyz } from "./vectors";
 
 /** spread returned generator into the params of console.log to visualise a vector */
-export function* visualiseVectorForLogs(vec: Xyz) {
+export function* visualiseVectorForLogs(vec: Xy | Xyz) {
   yield { ...vec };
   yield `${
     vec.x > 0 ? "↖️"
@@ -12,8 +12,10 @@ export function* visualiseVectorForLogs(vec: Xyz) {
     : vec.y < 0 ? "↙️"
     : ""
   }${
-    vec.z > 0 ? "⬆️"
-    : vec.z < 0 ? "⬇️"
+    "z" in vec ?
+      vec.z > 0 ? "⬆️"
+      : vec.z < 0 ? "⬇️"
+      : ""
     : ""
   }`;
 }

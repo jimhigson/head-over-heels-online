@@ -1,4 +1,4 @@
-import type { Xyz } from "../../utils/vectors/vectors";
+import type { Xy, Xyz } from "../../utils/vectors/vectors";
 
 import {
   axesXyz,
@@ -229,6 +229,62 @@ export const mtv = (
   obstacleAabb: Xyz,
 ): Xyz => {
   return mtvWriteInto(
+    moverPosition,
+    moverAabb,
+    obstaclePosition,
+    obstacleAabb,
+    {},
+  );
+};
+
+/**
+ * @see mtvWriteInto in two dimensions.
+ */
+export const mtvWriteIntoXy = (
+  moverPosition: Xy,
+  moverAabb: Xy,
+  obstaclePosition: Xy,
+  obstacleAabb: Xy,
+  writeInto: Partial<Xy>,
+): Xy => {
+  const oXMin = obstaclePosition.x;
+  const oXMax = oXMin + obstacleAabb.x;
+  const oYMin = obstaclePosition.y;
+  const oYMax = oYMin + obstacleAabb.y;
+
+  const mXMin = moverPosition.x;
+  const mXMax = mXMin + moverAabb.x;
+  const mYMin = moverPosition.y;
+  const mYMax = mYMin + moverAabb.y;
+
+  const dx1 = oXMax - mXMin;
+  const dy1 = oYMax - mYMin;
+  const dx2 = mXMax - oXMin;
+  const dy2 = mYMax - oYMin;
+
+  const mtvX = Math.abs(dx1) < Math.abs(dx2) ? dx1 : -dx2;
+  const mtvY = Math.abs(dy1) < Math.abs(dy2) ? dy1 : -dy2;
+
+  if (Math.abs(mtvX) < Math.abs(mtvY)) {
+    writeInto.x = mtvX;
+    writeInto.y = 0;
+    return writeInto as Xy;
+  }
+  writeInto.x = 0;
+  writeInto.y = mtvY;
+  return writeInto as Xy;
+};
+
+/**
+ * @see mtvWriteIntoXy but returns a new object for the result.
+ */
+export const mtvXy = (
+  moverPosition: Xy,
+  moverAabb: Xy,
+  obstaclePosition: Xy,
+  obstacleAabb: Xy,
+): Xy => {
+  return mtvWriteIntoXy(
     moverPosition,
     moverAabb,
     obstaclePosition,
