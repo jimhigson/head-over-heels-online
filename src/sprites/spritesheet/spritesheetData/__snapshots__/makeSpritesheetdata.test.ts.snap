@@ -5270,6 +5270,14 @@ exports[`for tailwind plugin we must have all possible frames and animations 1`]
       "y": 102,
     },
   },
+  "shadowMask.spring.moreCompressed": {
+    "frame": {
+      "h": 24,
+      "w": 24,
+      "x": 526,
+      "y": 102,
+    },
+  },
   "shadowMask.spring.released": {
     "frame": {
       "h": 24,
@@ -5547,6 +5555,14 @@ exports[`for tailwind plugin we must have all possible frames and animations 1`]
       "h": 24,
       "w": 24,
       "x": 476,
+      "y": 102,
+    },
+  },
+  "spring.moreCompressed": {
+    "frame": {
+      "h": 24,
+      "w": 24,
+      "x": 451,
       "y": 102,
     },
   },
@@ -6063,9 +6079,10 @@ exports[`for tailwind plugin we must have all possible frames and animations 2`]
     "shadow.lift.4",
   ],
   "shadowMask.spring.bounce": [
+    "shadowMask.spring.moreCompressed",
     "shadowMask.spring.released",
     "shadowMask.spring.compressed",
-    "shadowMask.spring.released",
+    "shadowMask.spring.moreCompressed",
     "shadowMask.spring.compressed",
     "shadowMask.spring.released",
   ],
@@ -6114,9 +6131,10 @@ exports[`for tailwind plugin we must have all possible frames and animations 2`]
     "blank",
   ],
   "spring.bounce": [
+    "spring.moreCompressed",
     "spring.released",
     "spring.compressed",
-    "spring.released",
+    "spring.moreCompressed",
     "spring.compressed",
     "spring.released",
   ],

@@ -51,7 +51,7 @@ const springAppearanceImpl: (
           spriteOption.uncolourised ? "uncolourised" : "for-current-room",
       });
       rendering.loop = false;
-      rendering.gotoAndStop(0);
+      rendering.gotoAndStop(rendering.totalFrames - 1);
     }
 
     const boing =
@@ -68,13 +68,14 @@ const springAppearanceImpl: (
 
       if (missmatch) {
         if (compressed) {
-          rendering.gotoAndStop(1);
+          // this frame has to be the 'compressed' frame for this to work:
+          rendering.gotoAndStop(rendering.totalFrames - 2);
         } else {
           // released case - this isn't technically needed for the item renderer, since
           // the animation will naturally get to the last frame and stop. However, for the
           // shadow mask this is necessary if the shadow goes away before the animation
           // finishes and then comes back onto the spring again later
-          rendering.gotoAndStop(0);
+          rendering.gotoAndStop(rendering.totalFrames - 1);
         }
       }
     }
