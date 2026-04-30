@@ -17,6 +17,16 @@ import { withSpeed } from "./withSpeed";
 let x: number = 0;
 let y: number = 0;
 
+const springBounce = [
+  "moreCompressed",
+  "released",
+  "compressed",
+  "moreCompressed",
+  "compressed",
+  "released",
+] as const;
+type SpringBounceFrame = (typeof springBounce)[number];
+
 const frames = {
   ...seriesOfNumberedTextures(
     "dalek",
@@ -329,9 +339,15 @@ const frames = {
     },
   },
 
+  "spring.moreCompressed": {
+    frame: {
+      ...smallItemGridLocation({ x: (x = 18), y: (y = 4) }),
+      ...smallItemTextureSize,
+    },
+  },
   "spring.compressed": {
     frame: {
-      ...smallItemGridLocation({ x: (x = 19), y: (y = 4) }),
+      ...smallItemGridLocation({ x: ++x, y }),
       ...smallItemTextureSize,
     },
   },
@@ -341,9 +357,15 @@ const frames = {
       ...smallItemTextureSize,
     },
   },
+  "shadowMask.spring.moreCompressed": {
+    frame: {
+      ...smallItemGridLocation({ x: ++x, y }),
+      ...smallItemTextureSize,
+    },
+  },
   "shadowMask.spring.compressed": {
     frame: {
-      ...smallItemGridLocation({ x: (x += 2), y }),
+      ...smallItemGridLocation({ x: ++x, y }),
       ...smallItemTextureSize,
     },
   },
@@ -1001,24 +1023,17 @@ export const itemsSpritesheetData = {
       3 / 16,
     ),
     "spring.bounce": withSpeed(
-      [
-        "spring.released",
-        "spring.compressed",
-        "spring.released",
-        "spring.compressed",
-        "spring.released",
-      ] as const,
-      0.5,
+      springBounce.map(
+        (frame): `spring.${SpringBounceFrame}` => `spring.${frame}`,
+      ),
+      0.75,
     ),
     "shadowMask.spring.bounce": withSpeed(
-      [
-        "shadowMask.spring.released",
-        "shadowMask.spring.compressed",
-        "shadowMask.spring.released",
-        "shadowMask.spring.compressed",
-        "shadowMask.spring.released",
-      ] as const,
-      0.5,
+      springBounce.map(
+        (frame): `shadowMask.spring.${SpringBounceFrame}` =>
+          `shadowMask.spring.${frame}`,
+      ),
+      0.75,
     ),
     "headlessBase.scan": withSpeed(
       [
