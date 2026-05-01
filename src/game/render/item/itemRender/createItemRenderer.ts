@@ -16,6 +16,7 @@ import { defaultUserSettings } from "../../../../store/slices/userSettings/defau
 import { store } from "../../../../store/store";
 import { appearanceForItem } from "../../itemAppearances/appearanceForItem";
 import { CompositeItemGraphicsRenderer } from "./CompositeItemGraphicsRenderer";
+import { conveyorBobDecorateItemRenderer } from "./ConveyorBobRenderer";
 import {
   type DecorateItemRenderer,
   noopDecorateItemRenderer,
@@ -101,11 +102,14 @@ export const createItemRenderer = <T extends ItemInPlayType>(
     siblingPixiRenderers.push(
       injectedDecorator(
         itemRenderContext,
-        portableItemPickHighlightDecorateItemRenderer(
+        conveyorBobDecorateItemRenderer(
           itemRenderContext,
-          flashOnSwitchedDecorateItemRenderer(
+          portableItemPickHighlightDecorateItemRenderer(
             itemRenderContext,
-            itemAppearanceRenderer,
+            flashOnSwitchedDecorateItemRenderer(
+              itemRenderContext,
+              itemAppearanceRenderer,
+            ),
           ),
         ),
       ),

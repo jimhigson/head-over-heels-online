@@ -86,7 +86,7 @@ const conveyorAppearanceImpl: ItemAppearance<
       state: { stoodOnBy, direction },
     },
     room: { roomTime },
-    general: { spriteOption, pixiRenderer },
+    general: { spriteOption, pixiRenderer, paused },
   },
   currentRendering,
 }) => {
@@ -127,7 +127,8 @@ const conveyorAppearanceImpl: ItemAppearance<
     : currentOutput;
 
   // how fast to play the animation, with slowdown for how long since it stopped moving
-  const playSpeedFrac = Math.max(0, 1 - periodSinceStopped / slowdownTimeMs);
+  const playSpeedFrac =
+    paused ? 0 : Math.max(0, 1 - periodSinceStopped / slowdownTimeMs);
 
   if (playSpeedFrac === 0) {
     rendering.stop();
