@@ -676,6 +676,78 @@ test("teleporting when destination teleporter is missing leaves player in the sa
   expect(heelsState(gameState).position).toEqual(originalPosition);
 });
 
+test("intra-room teleport does not overwrite door entry state, so respawn after death is near the door", () => {
+  const gameState = setUpBasicGame({
+    firstRoomItems: {
+      heels: {
+        type: "player",
+        position: { x: 3.5, y: 7, z: 0 },
+        config: { which: "heels" },
+      },
+      doorToSecondRoom: {
+        type: "door",
+        position: { x: 3, y: 8, z: 0 },
+        config: { direction: "away", toRoom: secondRoomId },
+      },
+    },
+    secondRoomItems: {
+      doorToFirstRoom: {
+        type: "door",
+        position: { x: 3, y: 0, z: 1 },
+        config: { direction: "towards", toRoom: firstRoomId },
+      },
+      bridge: {
+        type: "block",
+        position: { x: 3, y: 0, z: 0 },
+        config: { style: "organic", times: { x: 2, y: 4 } },
+      },
+      teleporter: {
+        type: "teleporter",
+        position: { x: 3.5, y: 4, z: 0 },
+        config: { toItemId: "deadlyBlock" },
+      },
+      deadlyBlock: {
+        type: "deadlyBlock",
+        position: { x: 0, y: 7, z: 0 },
+        config: { style: "volcano" },
+      },
+    },
+  });
+
+  // walk heels through the door into room 2
+  playGameThrough(gameState, {
+    frameRate: { fps: [15] },
+    setupInitialInput(mockInputStateTracker) {
+      mockInputStateTracker.mockDirectionPressed = "away";
+    },
+    until(gameState) {
+      return gameState.characterRooms.heels?.id === "secondRoom";
+    },
+  });
+
+  // heels entered room 2 near the door (low y). The teleport destination is at high y.
+  const entryY = heelsState(gameState).position.y;
+  const startingLives = heelsState(gameState).lives as number;
+
+  // walk away from the door onto the teleporter, teleport to deadly block, die
+  playGameThrough(gameState, {
+    frameRate: { fps: [15] },
+    until(gameState) {
+      if (heelsState(gameState).standingOnItemId === "teleporter") {
+        gameState.inputStateTracker.mockDirectionPressed = undefined;
+        gameState.inputStateTracker.mockPressing("jump");
+      }
+      if (heelsState(gameState).teleporting !== null) {
+        gameState.inputStateTracker.mockNotPressing("jump");
+      }
+      return heelsState(gameState).lives === startingLives - 1;
+    },
+  });
+
+  // heels should have respawned at the door entry position, not the teleport destination
+  expect(heelsState(gameState).position.y).toBeLessThan(entryY + 1);
+});
+
 test("teleporting clamps position so player doesn't overhang destination", () => {
   const gameState = setUpBasicGame({
     firstRoomItems: {
