@@ -16,7 +16,7 @@ import type { ItemAppearance } from "./ItemAppearance";
 import { isAnimationId, isTextureId } from "../../../sprites/assertIsTextureId";
 import { originalSpriteSheet } from "../../../sprites/spritesheet/loadedSpriteSheet";
 import { getSpriteSheetVariant } from "../../../sprites/spritesheet/variants/getSpriteSheetVariant";
-import { hashStringToNumber0to1 } from "../../../utils/maths/hashStringToNumber0to1";
+import { renderBobSine } from "../../../utils/maths/renderBob";
 import {
   originXy,
   vectorClosestDirectionXy4,
@@ -56,18 +56,6 @@ type MonsterRenderProps = {
   busyLickingDoughnutsOffFace: boolean;
 };
 
-const floatingVerticalBob = (
-  roomTime: number,
-  bobPeriod: number,
-  bobAmplitude: number,
-  itemId: string,
-) => {
-  const itemsNameHash = hashStringToNumber0to1(itemId);
-  return (
-    Math.sin((roomTime + itemsNameHash * 20_000) / bobPeriod) * bobAmplitude
-  );
-};
-
 const bobPeriodNervous = 50;
 const bobPeriodSlow = 200;
 const bobAmplitudeNervous = 0.25;
@@ -97,9 +85,9 @@ const maybeAddBob = (
       const outputTyped = currentOutput as StackedSpritesContainer<Sprite>;
       outputTyped[stackedTopSymbol].y =
         -blockSizePx.z +
-        floatingVerticalBob(room.roomTime, bobPeriod, bobAmplitude, id);
+        renderBobSine(room.roomTime, bobPeriod, bobAmplitude, id);
     } else {
-      currentOutput.y = floatingVerticalBob(
+      currentOutput.y = renderBobSine(
         room.roomTime,
         bobPeriod,
         bobAmplitude,
