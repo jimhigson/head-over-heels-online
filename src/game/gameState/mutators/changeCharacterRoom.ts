@@ -606,9 +606,10 @@ export const changeCharacterRoom = <
     }
   }
 
-  /** TODO: @knownRoomIds - remove casts */
-  gameState.entryState[playableItem.id as CharacterName] =
-    entryState(playableItem);
+  if (!isSameRoomTransport) {
+    gameState.entryState[playableItem.id as CharacterName] =
+      entryState(playableItem);
+  }
 
   // delete entry states that no longer apply:
   if (playableItem.id === "headOverHeels") {

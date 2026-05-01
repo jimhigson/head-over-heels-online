@@ -262,14 +262,10 @@ const resetPlayableToEntryState = <RoomId extends string>(
   /** if given, will use someone else's entry state. This is only really useful
    * to give headOverHeels heels' entry state when rejoining after losing a life
    */
-  /** TODO: @knownRoomIds - remove cast */
   whoseEntryState: CharacterName = playableItem.id as CharacterName,
 ) => {
   const entryState = gameState.entryState[whoseEntryState];
-
-  if (entryState === undefined) {
-    //throw new Error(`No entry state for ${whoseEntryState}`);
-  }
+  const room = gameState.characterRooms[playableItem.type]!;
 
   playableItem.state = {
     ...playableItem.state,
@@ -279,6 +275,19 @@ const resetPlayableToEntryState = <RoomId extends string>(
     //vels: { ...entryState.vels },
     expires: null,
     standingOnItemId: null,
+    // teleporting is a special case because it has a timestamp relative to room time,
+    // which will have moved on since the original room entry
+    ...(entryState ?
+      entryState.teleporting === null ?
+        { teleporting: null }
+      : {
+          teleporting: {
+            ...entryState.teleporting,
+            startRoomTime: room.roomTime,
+            phase: "in",
+          },
+        }
+    : {}),
   };
 };
 

@@ -8,16 +8,19 @@ import type { PlayableItem } from "../physics/itemPredicates";
  */
 export type PlayableEntryState = Pick<
   ItemState<CharacterName, string, string>,
-  "action" | "autoWalk" | "facing" | "position" | "vels"
+  "action" | "autoWalk" | "facing" | "position" | "teleporting" | "vels"
 >;
 export const entryState = ({
-  state: { position, facing, autoWalk, action, vels },
+  state: { position, facing, autoWalk, action, vels, teleporting },
 }: PlayableItem): PlayableEntryState => {
   return {
     position,
     facing,
     autoWalk,
     action,
+    // need to capture this so a player who dies teleporting doesn't stay teleporting when they respawn,
+    // or if they teleported in, they teleport in again:
+    teleporting,
     // vels is (unusually) a mutable object on the state, so it needs to be
     // copied for safety:
     vels: { ...vels },
