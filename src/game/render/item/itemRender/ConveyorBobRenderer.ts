@@ -17,7 +17,7 @@ import {
 } from "../../../physics/itemPredicates";
 
 const baseBobPeriod = 50;
-const bobAmplitude = 1;
+const bobAmplitude = 0.66;
 
 class ConveyorBobRenderer<T extends FreeItemTypes>
   implements ItemPixiRenderer<T>
