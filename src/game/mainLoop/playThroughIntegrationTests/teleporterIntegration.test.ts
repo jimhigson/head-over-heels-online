@@ -748,6 +748,77 @@ test("intra-room teleport does not overwrite door entry state, so respawn after 
   expect(heelsState(gameState).position.y).toBeLessThan(entryY + 1);
 });
 
+test("cross-room teleport entry state has phase 'in', and respawn after death replays the fade-in", () => {
+  const gameState = setUpBasicGame({
+    firstRoomItems: {
+      heels: {
+        type: "player",
+        position: { x: 0, y: 2, z: 1 },
+        config: { which: "heels" },
+      },
+      teleporter: {
+        type: "teleporter",
+        position: { x: 0, y: 2, z: 0 },
+        config: { toRoom: secondRoomId, toItemId: "landingBlock" },
+      },
+    },
+    secondRoomItems: {
+      landingBlock: {
+        type: "block",
+        position: { x: 0, y: 2, z: 0 },
+        config: { style: "organic" },
+      },
+      toaster: {
+        type: "deadlyBlock",
+        position: { x: 2, y: 2, z: 0 },
+        config: { style: "toaster" },
+      },
+    },
+  });
+
+  const startingLives = heelsState(gameState).lives as number;
+
+  // teleport to the second room
+  playGameThrough(gameState, {
+    setupInitialInput(mockInputStateTracker) {
+      mockInputStateTracker.mockPressing("jump");
+    },
+    until(gameState) {
+      if (heelsState(gameState).teleporting !== null) {
+        gameState.inputStateTracker.mockNotPressing("jump");
+      }
+      return (
+        gameState.characterRooms.heels?.id === "secondRoom" &&
+        heelsState(gameState).standingOnItemId === "landingBlock"
+      );
+    },
+  });
+
+  // entry state should have captured the teleport-in phase
+  expect(gameState.entryState.heels?.teleporting).toMatchInlineSnapshot(`
+    {
+      "otherRoom": "firstRoom",
+      "phase": "in",
+      "startRoomTime": 0,
+    }
+  `);
+
+  // walk onto the toaster to die
+  playGameThrough(gameState, {
+    setupInitialInput(mockInputStateTracker) {
+      mockInputStateTracker.mockDirectionPressed = "left";
+    },
+    until(gameState) {
+      return heelsState(gameState).lives === startingLives - 1;
+    },
+  });
+
+  // after respawn, should be fading in (not out)
+  expect<string | undefined>(heelsState(gameState).teleporting?.phase).toEqual(
+    "in",
+  );
+});
+
 test("teleporting clamps position so player doesn't overhang destination", () => {
   const gameState = setUpBasicGame({
     firstRoomItems: {

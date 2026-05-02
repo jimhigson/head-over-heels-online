@@ -284,7 +284,6 @@ const resetPlayableToEntryState = <RoomId extends string>(
           teleporting: {
             ...entryState.teleporting,
             startRoomTime: room.roomTime,
-            phase: "in",
           },
         }
     : {}),

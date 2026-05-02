@@ -65,15 +65,10 @@ export const teleporting: Mechanic<CharacterName> = <
     const startTeleporting =
       jumpInput !== "released" && standingOnActivatedTeleporter;
     if (startTeleporting) {
-      return {
-        movementType: "steady",
-        stateDelta: {
-          teleporting: {
-            phase: "out",
-            otherRoom: standingOn.state.toRoom ?? room.id,
-            startRoomTime: room.roomTime,
-          },
-        },
+      playableItem.state.teleporting = {
+        phase: "out",
+        otherRoom: standingOn.state.toRoom ?? room.id,
+        startRoomTime: room.roomTime,
       };
     }
     return unitMechanicalResult;
@@ -89,15 +84,16 @@ export const teleporting: Mechanic<CharacterName> = <
         // this can sometimes happen due to vagueness in floating point collision detection
         // if they were on the edge of the teleporter enough that the mtv will next move them
         // of it, or if something pushes them - abort teleporting!
-        return {
-          movementType: "steady",
-          stateDelta: {
-            teleporting: null,
-          },
-        };
+        playableItem.state.teleporting = null;
+        return unitMechanicalResult;
       }
 
       if (finished) {
+        playableItem.state.teleporting = {
+          phase: "in",
+          startRoomTime: room.roomTime,
+          otherRoom: room.id,
+        };
         const newRoom = changeCharacterRoom({
           changeType: "teleport",
           sourceItem: standingOn as ItemInPlay<
@@ -109,27 +105,13 @@ export const teleporting: Mechanic<CharacterName> = <
           gameState,
           toRoomId: teleporting.otherRoom as RoomId,
         });
-        return {
-          movementType: "steady",
-          stateDelta: {
-            teleporting: {
-              phase: "in",
-              startRoomTime: newRoom.roomTime,
-              otherRoom: room.id,
-            },
-          },
-        };
+        playableItem.state.teleporting.startRoomTime = newRoom.roomTime;
       }
       break;
     }
     case "in":
       if (finished) {
-        return {
-          movementType: "steady",
-          stateDelta: {
-            teleporting: null,
-          },
-        };
+        playableItem.state.teleporting = null;
       }
       break;
     default:
