@@ -177,6 +177,17 @@ export type SwitchItemModificationUnion<
           toPosition: Xyz;
         }
       >;
+    }
+  | {
+      expectType: "timer";
+      targets?: RoomItemId[];
+      activates?: boolean;
+      leftState?: Partial<
+        Pick<ItemStateMap<RoomId, RoomItemId>["timer"], "activated">
+      >;
+      rightState?: Partial<
+        Pick<ItemStateMap<RoomId, RoomItemId>["timer"], "activated">
+      >;
     };
 
 export type SwitchInRoomConfig<
@@ -184,8 +195,11 @@ export type SwitchInRoomConfig<
   /** ids of items in this room */
   RoomItemId extends string,
 > = {
-  /** this switch targets items in the room */
-  type: "in-room";
+  /**
+   * this switch targets items in the room. This is the default, so
+   * also used if undefined
+   */
+  type?: "in-room" | undefined;
   // list of all items (de)activated by this switch
   modifies: Array<SwitchItemModificationUnion<RoomId, RoomItemId>>;
 };
@@ -222,7 +236,11 @@ type ButtonInRoomConfig<
   /** ids of items in this room */
   RoomItemId extends string,
 > = {
-  type: "in-room";
+  /**
+   * this button targets items in the room. This is the default, so
+   * also used if undefined
+   */
+  type?: "in-room" | undefined;
   modifies: Array<SwitchItemModificationUnion<RoomId, RoomItemId>>;
 };
 

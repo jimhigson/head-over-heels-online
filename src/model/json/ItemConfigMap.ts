@@ -11,10 +11,15 @@ import type {
   Xyz,
 } from "../../utils/vectors/vectors";
 import type { Disappear } from "../Disappear";
+import type { SwitchSetting } from "../ItemInPlay";
 import type { CharacterName } from "../modelTypes";
 import type { JsonItemUnion } from "./JsonItem";
 import type { MonsterJsonConfig } from "./MonsterJsonConfig";
-import type { ButtonConfig, SwitchConfig } from "./SwitchConfig";
+import type {
+  ButtonConfig,
+  SwitchConfig,
+  SwitchItemModificationUnion,
+} from "./SwitchConfig";
 import type {
   ActivatedWhenSubset,
   BlockStyle,
@@ -300,5 +305,11 @@ export type ItemConfigMap<
      * how the original game always behaved.
      */
     controls?: RoomItemId[];
+  };
+  timer: {
+    period: number;
+    delay?: number;
+    initialSetting: SwitchSetting;
+    modifies: Array<SwitchItemModificationUnion<RoomId, RoomItemId>>;
   };
 };

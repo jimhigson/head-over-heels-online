@@ -8,7 +8,7 @@ import {
   handleItemTouchingSlidingItem,
   handleSlidingItemTouchingAnyItem,
 } from "./handleItemTouchingSlidingItem";
-import { handleItemTouchingSwitch } from "./handleItemTouchingSwitch";
+import { handleItemTouchingSwitch } from "./handleItemTouchingSwitch/handleItemTouchingSwitch";
 import { handlePlayerTouchingItem } from "./handlePlayerTouchingItem";
 import {
   type ItemTouchEvent,

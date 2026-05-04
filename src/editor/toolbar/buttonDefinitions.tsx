@@ -578,7 +578,6 @@ Change *which* Charles in the json`,
       type: "switch",
       config: {
         initialSetting: "left",
-        type: "in-room",
         modifies: emptyArray,
       },
     },
@@ -603,7 +602,6 @@ edit the json to choose:
     itemTool: {
       type: "button",
       config: {
-        type: "in-room",
         modifies: emptyArray,
       },
     },
@@ -611,6 +609,38 @@ edit the json to choose:
     children: (
       <span
         className={`sprite ${"texture-buttonInGame" satisfies TextureTailwindClass} ${"activated:texture-buttonInGame_pressed" satisfies TextureTailwindClass} ${buttonSpriteRevertColourClasses}`}
+      />
+    ),
+  },
+  emitter: {
+    itemTool: {
+      type: "emitter",
+      config: {
+        emits: { type: "firedDoughnut", config: { direction: "left" } },
+        period: 4_000,
+        maximum: 10,
+      },
+    },
+    tooltipContent: `## Emitter\nCreates items at regular intervals\n\nEdit the json to configure what it emits`,
+    children: (
+      <span
+        className={`sprite ${"texture-hud_char_E" satisfies TextureTailwindClass} ${buttonSpriteRevertColourClasses}`}
+      />
+    ),
+  },
+  timer: {
+    itemTool: {
+      type: "timer",
+      config: {
+        period: 2_000,
+        initialSetting: "left",
+        modifies: [],
+      },
+    },
+    tooltipContent: `## Timer\nPeriodically toggles switch-style modifications\n\nEdit the json to configure targets`,
+    children: (
+      <span
+        className={`sprite ${"texture-hud_char_T" satisfies TextureTailwindClass} ${buttonSpriteRevertColourClasses}`}
       />
     ),
   },

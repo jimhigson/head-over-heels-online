@@ -14,7 +14,7 @@ import { entries } from "../../../utils/entries";
 import { collisionItemWithIndex } from "../../collision/aabbCollision";
 import { findStandingOnWithHighestPriorityAndMostOverlap } from "../../collision/checkStandingOn";
 import { GridSpatialIndex } from "../../physics/gridSpace/GridSpatialIndex";
-import { isFreeItem, isSolid } from "../../physics/itemPredicates";
+import { isFreeItem, isSolid, isSpatial } from "../../physics/itemPredicates";
 import { setStandingOnWithoutRemovingOldFirst } from "../mutators/standingOn/setStandingOnWithoutRemovingOldFirst";
 import { loadItemFromJson } from "./loadItemFromJson";
 import { loadOutOfBoundsItem } from "./loadOutOfBoundsItem";
@@ -89,7 +89,9 @@ export const loadRoom = <RoomId extends string, RoomItemId extends string>({
     [outOfBoundsItem.id]: outOfBoundsItem,
   };
 
-  const spatialIndex = new GridSpatialIndex(roomItemsIterable(items));
+  const spatialIndex = new GridSpatialIndex(
+    roomItemsIterable(items).filter(isSpatial),
+  );
 
   // warn if anything is overlapping in the room
   for (const i of roomItemsIterable(items)) {

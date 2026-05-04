@@ -31,6 +31,17 @@ export const isItemType = <T extends ItemInPlayType>(...types: Array<T>) => {
   };
 };
 
+export const isSpatial = <
+  T_In extends ItemInPlayType,
+  RoomId extends string,
+  RoomItemId extends string,
+>(
+  item: ItemTypeUnion<T_In, RoomId, RoomItemId>,
+): item is Exclude<
+  ItemTypeUnion<T_In, RoomId, RoomItemId>,
+  { type: "timer" }
+> => item.type !== "timer";
+
 /** @internal don't use this directly, use isSolid */
 const isNeverSolidItemType = isItemType(
   "bubbles",
@@ -38,6 +49,7 @@ const isNeverSolidItemType = isItemType(
   "firedDoughnut",
   "floatingText",
   "emitter",
+  "timer",
   "particle",
   "soundEffect",
   "outOfBounds",
@@ -277,6 +289,8 @@ export const isMonster = isItemType("monster");
 export const isFloor = isItemType("floor");
 export const isPickup = isItemType("pickup");
 
+export const isTimer = isItemType("timer");
+
 // an item that can modify other items:
 export const isModifier = <RoomId extends string, RoomItemId extends string>(
   item: UnionOfAllItemInPlayTypes<RoomId, RoomItemId>,
@@ -286,10 +300,12 @@ export const isModifier = <RoomId extends string, RoomItemId extends string>(
     })
   | (ItemInPlay<"switch", RoomId, RoomItemId> & {
       config: { type: "in-room" };
-    }) => {
+    })
+  | ItemInPlay<"timer", RoomId, RoomItemId> => {
   return (
     (item.type === "button" && item.config.type === "in-room") ||
-    (item.type === "switch" && item.config.type === "in-room")
+    (item.type === "switch" && item.config.type === "in-room") ||
+    item.type === "timer"
   );
 };
 

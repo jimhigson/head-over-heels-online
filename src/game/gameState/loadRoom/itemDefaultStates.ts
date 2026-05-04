@@ -82,6 +82,7 @@ export const initialState = (jsonItem: JsonItemUnion) => {
     ...((
       jsonItem.type === "joystick" ||
       jsonItem.type === "emitter" ||
+      jsonItem.type === "timer" ||
       jsonItem.type === "lift" ||
       jsonItem.type === "conveyor" ||
       jsonItem.type === "teleporter" ||
@@ -179,8 +180,19 @@ export const initialState = (jsonItem: JsonItemUnion) => {
     : emptyObject),
     ...(jsonItem.type === "emitter" ?
       ({
-        lastEmittedAtRoomTime: neverTime,
+        lastEmittedAtRoomTime:
+          (jsonItem.config.delay ?? jsonItem.config.period) -
+          jsonItem.config.period,
         quantityEmitted: 0,
+      } satisfies StateFragment<typeof jsonItem.type>)
+    : emptyObject),
+    ...(jsonItem.type === "timer" ?
+      ({
+        lastFiredAtRoomTime:
+          (jsonItem.config.delay ?? jsonItem.config.period) -
+          jsonItem.config.period,
+        setting: jsonItem.config.initialSetting,
+        activated: true,
       } satisfies StateFragment<typeof jsonItem.type>)
     : emptyObject),
     ...(jsonItem.type === "firedDoughnut" ?

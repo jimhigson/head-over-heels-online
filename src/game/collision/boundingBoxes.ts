@@ -168,8 +168,7 @@ const barrierXAabbInfo: ItemInPlayAAbbInfo = {
 const barrierYAabbInfo: ItemInPlayAAbbInfo = {
   aabb: { x: 4, y: 15, z: blockSizePx.z },
 };
-const emitterAabbInfo: ItemInPlayAAbbInfo = {
-  // zero size:
+const zeroVolumeAabb: ItemInPlayAAbbInfo = {
   aabb: originXyz,
 };
 const skiHeadAabbInfo: ItemInPlayAAbbInfo = {
@@ -317,7 +316,8 @@ export const boundingBoxForItem = (
       }
 
     case "emitter":
-      return emitterAabbInfo;
+    case "timer":
+      return zeroVolumeAabb;
 
     default:
       //console.warn("giving default aabb for item", item);

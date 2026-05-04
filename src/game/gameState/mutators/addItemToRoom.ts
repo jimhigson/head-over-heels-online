@@ -8,10 +8,10 @@ import type {
 import type { Xyz } from "../../../utils/vectors/vectors";
 import type { GameState } from "../GameState";
 
-import { roomSpatialIndexKey } from "../../../model/RoomState";
-import { type RoomState } from "../../../model/RoomState";
+import { roomSpatialIndexKey, type RoomState } from "../../../model/RoomState";
 import { emptyObject } from "../../../utils/empty";
 import { originXyz } from "../../../utils/vectors/vectors";
+import { isSpatial } from "../../physics/itemPredicates";
 import { loadItemFromJson } from "../loadRoom/loadItemFromJson";
 
 export const addItemFromJsonToRoom = <
@@ -81,8 +81,10 @@ export const addItemToRoom = <
     item.state.position = atPosition;
   }
 
-  const spatialIndex = room[roomSpatialIndexKey];
-  spatialIndex.addItem(item);
+  if (isSpatial(item)) {
+    const spatialIndex = room[roomSpatialIndexKey];
+    spatialIndex.addItem(item);
+  }
 
   return item;
 };

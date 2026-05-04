@@ -334,6 +334,13 @@ export type ItemStateMap<RoomId extends string, RoomItemId extends string> = {
   button: {
     pressed: boolean;
   };
+  timer: Simplify<
+    {
+      lastFiredAtRoomTime: number;
+      setting: SwitchSetting;
+      activated: boolean;
+    } & ItemConfigMap<RoomId, RoomItemId, SceneryName>["timer"]
+  >;
   charles: FreeItemState<RoomItemId> & {
     facing: Xy;
     activated?: boolean;

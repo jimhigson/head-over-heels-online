@@ -44,6 +44,7 @@ type GeneratedTypeUnion =
   | "stopAutowalk"
   | "switch"
   | "teleporter"
+  | "timer"
   | "wall";
 type Check1<T extends GeneratedTypeUnion> = { anything: T };
 type Check2<T extends ItemInPlayType> = { anything: T };
@@ -175,6 +176,9 @@ export type ItemTypeUnion<
     : never)
   | (T extends "teleporter" ?
       ItemInPlay<"teleporter", RoomId, RoomItemId, RoomItemId, ScN>
+    : never)
+  | (T extends "timer" ?
+      ItemInPlay<"timer", RoomId, RoomItemId, RoomItemId, ScN>
     : never)
   | (T extends "wall" ? ItemInPlay<"wall", RoomId, RoomItemId, RoomItemId, ScN>
     : never);

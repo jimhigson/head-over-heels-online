@@ -6,6 +6,7 @@ import { roomItemsIterable, type RoomState } from "../../../model/RoomState";
 import { originXyz, scaleXyz, subXyz } from "../../../utils/vectors/vectors";
 import { loadItemFromJson } from "../../gameState/loadRoom/loadItemFromJson";
 import { addItemToRoom } from "../../gameState/mutators/addItemToRoom";
+import { periodicItemShouldAct } from "./periodicItemShouldAct";
 
 const hasFewerThanInRoom = <RoomId extends string, RoomItemId extends string>(
   limit: number,
@@ -42,26 +43,26 @@ export const emitting = <RoomId extends string, RoomItemId extends string>(
     return;
   }
 
-  const delay = state.delay ?? 0;
-
-  const { roomTime } = room;
-  if (roomTime < delay) {
-    return;
-  }
-
-  const { period } = state;
-
-  if (lastEmittedAtRoomTime + period < roomTime) {
+  if (
+    periodicItemShouldAct(
+      {
+        delay: state.delay,
+        period: state.period,
+        lastActedAtRoomTime: lastEmittedAtRoomTime,
+      },
+      room.roomTime,
+    )
+  ) {
     const maximumAtOnce = state.maximumAtOnce ?? Infinity;
 
     if (hasFewerThanInRoom(maximumAtOnce, emitterId, room)) {
       const { emits } = state;
 
       const [newlyEmittedItem] = loadItemFromJson(
-        // by using roomTime, this emitter can be reset by switch/button
+        // by using room.roomTime, this emitter can be reset by switch/button
         // and emit another number 1, 2, etc - avoids id clashes so long as no
         // two are emitted at the same millisecond
-        `${emitterId}-${quantityEmitted}-${Math.floor(roomTime)}`,
+        `${emitterId}-${quantityEmitted}-${Math.floor(room.roomTime)}`,
         {
           ...emits,
           // temporary position, to be overwritten in item-in-play

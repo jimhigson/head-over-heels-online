@@ -20,6 +20,7 @@ import { zxSpectrumColor } from "../../../originalGame";
 import { audioCtx } from "../../../sound/audioCtx";
 import { soundsFadeDurationSec } from "../../../sound/soundUtils/stopWithFade";
 import { defaultUserSettings } from "../../../store/slices/userSettings/defaultUserSettings";
+import { isSpatial } from "../../physics/itemPredicates";
 import { createItemRenderer } from "../item/itemRender/createItemRenderer";
 import { type ZGraph } from "../sortZ/GraphEdges";
 import { toposort } from "../sortZ/toposort/toposort";
@@ -273,7 +274,9 @@ export class RoomRenderer<RoomId extends string, RoomItemId extends string>
         {
           ...givenTickContext,
           // if we have never rendered before, consider that all items have moved:
-          movedItems: new Set(roomItemsIterable(this.renderContext.room.items)),
+          movedItems: new Set(
+            roomItemsIterable(this.renderContext.room.items).filter(isSpatial),
+          ),
         }
       );
 
@@ -281,17 +284,28 @@ export class RoomRenderer<RoomId extends string, RoomItemId extends string>
       renderContext: { room },
     } = this;
 
-    // it it important that we sort before rendering. This is because sorting updates
-    // this.#brokenLinks, which will be used in this.#tickItems to update the rendering,
-    // which can be influenced by the broken links (by showing masking)
-    updateZEdges<UnionOfAllItemInPlayTypes<RoomId, RoomItemId>, RoomItemId>(
-      room.items,
-      room[roomSpatialIndexKey],
-      tickContext.movedItems,
-      // this.#incrementalZEdges will be updated in-place by the zEdges function to match
-      // the current ordering state of the room, starting from the previous ordering state
-      this.#zEdges,
-    );
+    try {
+      // it it important that we sort before rendering. This is because sorting updates
+      // this.#brokenLinks, which will be used in this.#tickItems to update the rendering,
+      // which can be influenced by the broken links (by showing masking)
+      updateZEdges<UnionOfAllItemInPlayTypes<RoomId, RoomItemId>, RoomItemId>(
+        room.items,
+        room[roomSpatialIndexKey],
+        tickContext.movedItems,
+        // this.#incrementalZEdges will be updated in-place by the zEdges function to match
+        // the current ordering state of the room, starting from the previous ordering state
+        this.#zEdges,
+      );
+    } catch (e) {
+      throw new Error(
+        `error updating Z edges for moved items: ${tickContext.movedItems
+          .values()
+          .map((item) => item.id)
+          .toArray()
+          .join(", ")}`,
+        { cause: e },
+      );
+    }
 
     const order = toposort(this.#zEdges);
 

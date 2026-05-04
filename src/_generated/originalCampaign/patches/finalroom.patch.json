@@ -506,6 +506,7 @@
     "path": "/items/e",
     "value": {
       "config": {
+        "delay": 0,
         "emits": {
           "config": {
             "direction": "left"

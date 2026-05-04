@@ -175,6 +175,8 @@ export const LevelEditorToolbar = () => {
         <ItemToolButton {...buttonDefinitions["joystick"]} />
         <ItemToolButton {...buttonDefinitions["switch"]} />
         <ItemToolButton {...buttonDefinitions["button"]} />
+        <ItemToolButton {...buttonDefinitions["emitter"]} />
+        <ItemToolButton {...buttonDefinitions["timer"]} />
       </div>
       <div className={buttonGroupClassname}>
         <BitmapText className="w-full">Movable</BitmapText>
