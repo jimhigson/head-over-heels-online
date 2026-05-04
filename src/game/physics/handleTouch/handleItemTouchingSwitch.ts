@@ -20,7 +20,7 @@ import { store } from "../../../store/store";
 import { emptyObject } from "../../../utils/empty";
 import { neverTime } from "../../../utils/neverTime";
 import { unitVectors } from "../../../utils/vectors/unitVectors";
-import { scaleXyz } from "../../../utils/vectors/vectors";
+import { oppositeDirection, scaleXyz } from "../../../utils/vectors/vectors";
 import { switchMinTimeBetweenToggleMs } from "../mechanicsConstants";
 
 const oppositeSetting = (setting: string) => {
@@ -30,6 +30,7 @@ const oppositeSetting = (setting: string) => {
 const getNewState = <RoomId extends string, RoomItemId extends string>(
   modifiesItem: SwitchItemModificationUnion<RoomId, RoomItemId>,
   setting: SwitchSetting,
+  targetItem: UnionOfAllItemInPlayTypes<RoomId, RoomItemId>,
 ) => {
   // controlling other switches has a shorthand syntax:
   if (modifiesItem.expectType === "switch" && "flip" in modifiesItem) {
@@ -95,7 +96,22 @@ const getNewState = <RoomId extends string, RoomItemId extends string>(
       setting === (disables ? "left" : "right") ?
         { disabled: true }
       : { disabled: false }) satisfies Partial<
-      ItemState<"deadlyBlock" | "conveyor", RoomId, RoomItemId>
+      ItemState<"conveyor" | "deadlyBlock", RoomId, RoomItemId>
+    >;
+  }
+
+  if (
+    modifiesItem.expectType === "conveyor" &&
+    "reverses" in modifiesItem &&
+    targetItem.type === "conveyor"
+  ) {
+    const { reverses } = modifiesItem;
+    const configDirection = targetItem.config.direction;
+    return (
+      setting === (reverses ? "left" : "right") ?
+        { direction: oppositeDirection(configDirection) }
+      : { direction: configDirection }) satisfies Partial<
+      ItemState<"conveyor", RoomId, RoomItemId>
     >;
   }
 
@@ -164,7 +180,7 @@ export const applyModifiesList = <
       // loop the states to modify:
       targetItemCast.state = {
         ...roomItem.state,
-        ...getNewState(modifiesItem, newSetting),
+        ...getNewState(modifiesItem, newSetting, roomItem),
         switchedAtRoomTime: room.roomTime,
         switchedSetting: newSetting,
       };

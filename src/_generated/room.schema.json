@@ -956,6 +956,11 @@
                                     "leftState": {
                                       "$ref": "#/definitions/r22"
                                     },
+                                    "reverses": {
+                                      "description": "true means the left setting reverses the conveyor (opposite of config direction), false means the right setting reverses it. \"reverse\" = set direction to the opposite of the item's config.direction.",
+                                      "enum": [false, true],
+                                      "type": "boolean"
+                                    },
                                     "rightState": {
                                       "$ref": "#/definitions/r22"
                                     },
@@ -1797,6 +1802,11 @@
                                     },
                                     "leftState": {
                                       "$ref": "#/definitions/r22"
+                                    },
+                                    "reverses": {
+                                      "description": "true means the left setting reverses the conveyor (opposite of config direction), false means the right setting reverses it. \"reverse\" = set direction to the opposite of the item's config.direction.",
+                                      "enum": [false, true],
+                                      "type": "boolean"
                                     },
                                     "rightState": {
                                       "$ref": "#/definitions/r22"

@@ -85,23 +85,6 @@ export type SwitchItemModificationUnion<
       >;
     }
   | {
-      expectType: "deadlyBlock";
-      targets?: RoomItemId[];
-      /**
-       * true is a shorthand for deadly blocks that start disabled:
-       *   {leftState: {disabled: true}, rightState: {disabled: false}},
-       * false is a shorthand for deadly blocks that start enabled:
-       *   {leftState: {disabled: false}, rightState: {disabled: true}},
-       */
-      disables?: boolean;
-      leftState?: Partial<
-        Pick<ItemState<"deadlyBlock", RoomId, RoomItemId>, "disabled">
-      >;
-      rightState?: Partial<
-        Pick<ItemState<"deadlyBlock", RoomId, RoomItemId>, "disabled">
-      >;
-    }
-  | {
       expectType: "charles";
       targets?: RoomItemId[];
       /**
@@ -128,7 +111,13 @@ export type SwitchItemModificationUnion<
        *   {leftState: {disabled: false}, rightState: {disabled: true}},
        */
       disables?: boolean;
-      leftState: Subset<
+      /**
+       * true means the left setting reverses the conveyor (opposite of config direction),
+       * false means the right setting reverses it.
+       * "reverse" = set direction to the opposite of the item's config.direction.
+       */
+      reverses?: boolean;
+      leftState?: Subset<
         Partial<ItemState<"conveyor", RoomId, RoomItemId>>,
         {
           disabled?: boolean;
@@ -138,7 +127,7 @@ export type SwitchItemModificationUnion<
           } | null;
         }
       >;
-      rightState: Subset<
+      rightState?: Subset<
         Partial<ItemState<"conveyor", RoomId, RoomItemId>>,
         {
           disabled?: boolean;
@@ -147,6 +136,23 @@ export type SwitchItemModificationUnion<
             on: "stand";
           } | null;
         }
+      >;
+    }
+  | {
+      expectType: "deadlyBlock";
+      targets?: RoomItemId[];
+      /**
+       * true is a shorthand for deadly blocks that start disabled:
+       *   {leftState: {disabled: true}, rightState: {disabled: false}},
+       * false is a shorthand for deadly blocks that start enabled:
+       *   {leftState: {disabled: false}, rightState: {disabled: true}},
+       */
+      disables?: boolean;
+      leftState?: Partial<
+        Pick<ItemState<"deadlyBlock", RoomId, RoomItemId>, "disabled">
+      >;
+      rightState?: Partial<
+        Pick<ItemState<"deadlyBlock", RoomId, RoomItemId>, "disabled">
       >;
     }
   | {

@@ -821,6 +821,12 @@ export type RoomJsonSchema = {
                      *   {leftState: {disabled: false}, rightState: {disabled: true}},
                      */
                     disables?: false | true;
+                    /**
+                     * true means the left setting reverses the conveyor (opposite of config direction),
+                     * false means the right setting reverses it.
+                     * "reverse" = set direction to the opposite of the item's config.direction.
+                     */
+                    reverses?: false | true;
                     leftState: {
                       disabled?: false | true;
                       direction?: "right" | "towards" | "away" | "left";
@@ -2696,6 +2702,12 @@ export type RoomJsonSchema = {
                      *   {leftState: {disabled: false}, rightState: {disabled: true}},
                      */
                     disables?: false | true;
+                    /**
+                     * true means the left setting reverses the conveyor (opposite of config direction),
+                     * false means the right setting reverses it.
+                     * "reverse" = set direction to the opposite of the item's config.direction.
+                     */
+                    reverses?: false | true;
                     leftState: {
                       disabled?: false | true;
                       direction?: "right" | "towards" | "away" | "left";
