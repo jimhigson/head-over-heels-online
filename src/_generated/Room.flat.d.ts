@@ -232,6 +232,7 @@ export type RoomJsonSchema = {
             z?: number;
           };
           style: "toaster" | "volcano";
+          disabled?: false | true;
         };
       }
     | {
@@ -773,6 +774,23 @@ export type RoomJsonSchema = {
                     };
                     rightState: {
                       disappearing?: null;
+                    };
+                  }
+                | {
+                    expectType: "deadlyBlock";
+                    targets?: string[];
+                    /**
+                     * true is a shorthand for deadly blocks that start disabled:
+                     *   {leftState: {disabled: true}, rightState: {disabled: false}},
+                     * false is a shorthand for deadly blocks that start enabled:
+                     *   {leftState: {disabled: false}, rightState: {disabled: true}},
+                     */
+                    disables?: false | true;
+                    leftState?: {
+                      disabled?: false | true;
+                    };
+                    rightState?: {
+                      disabled?: false | true;
                     };
                   }
                 | {
@@ -2622,6 +2640,23 @@ export type RoomJsonSchema = {
                     };
                     rightState: {
                       disappearing?: null;
+                    };
+                  }
+                | {
+                    expectType: "deadlyBlock";
+                    targets?: string[];
+                    /**
+                     * true is a shorthand for deadly blocks that start disabled:
+                     *   {leftState: {disabled: true}, rightState: {disabled: false}},
+                     * false is a shorthand for deadly blocks that start enabled:
+                     *   {leftState: {disabled: false}, rightState: {disabled: true}},
+                     */
+                    disables?: false | true;
+                    leftState?: {
+                      disabled?: false | true;
+                    };
+                    rightState?: {
+                      disabled?: false | true;
                     };
                   }
                 | {

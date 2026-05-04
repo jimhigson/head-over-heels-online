@@ -20,6 +20,7 @@ type ChargingCybermanGridPositions = Array<Array<string | undefined>>;
 type ToasterRenderProps = {
   chargePositions: ChargingCybermanGridPositions;
   cybermanActivationBitmask: number;
+  disabled: boolean;
 };
 
 const findChargingPositions = (
@@ -97,6 +98,7 @@ export const toasterAppearance: ItemAppearance<
 }) => {
   const {
     config: { times },
+    state: { disabled },
   } = item;
 
   const chargePositions =
@@ -113,11 +115,17 @@ export const toasterAppearance: ItemAppearance<
 
   const render =
     cybermanActivationBitmask !==
-    currentRendering?.renderProps.cybermanActivationBitmask;
+      currentRendering?.renderProps.cybermanActivationBitmask ||
+    !!disabled !== !!currentRendering?.renderProps.disabled;
 
   if (!render) {
     return "no-update";
   }
+
+  const spritesheetVariant =
+    spriteOption.uncolourised ? "uncolourised"
+    : disabled ? "deactivated"
+    : "for-current-room";
 
   const outputContainer = createSprite({
     subSpriteVariations(x, y) {
@@ -133,8 +141,7 @@ export const toasterAppearance: ItemAppearance<
         : { textureId: "toaster.on" };
     },
     times: times ?? emptyObject,
-    spritesheetVariant:
-      spriteOption.uncolourised ? "uncolourised" : "for-current-room",
+    spritesheetVariant,
   });
 
   // that container potentially contains many sprites - reduce to a single sprite
@@ -149,6 +156,7 @@ export const toasterAppearance: ItemAppearance<
     renderProps: {
       chargePositions,
       cybermanActivationBitmask,
+      disabled: !!disabled,
     },
   };
 };

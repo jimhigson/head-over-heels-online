@@ -165,6 +165,7 @@ export type ItemConfigMap<
   };
   deadlyBlock: ConsolidatableConfig & {
     style: DeadlyBlockStyle;
+    disabled?: boolean;
   };
   spikes: ConsolidatableConfig;
   moveableDeadly: {

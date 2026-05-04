@@ -177,6 +177,11 @@ export const initialState = (jsonItem: JsonItemUnion) => {
         activated: jsonItem.config.activated ?? true,
       } satisfies StateFragment<typeof jsonItem.type>)
     : emptyObject),
+    ...(jsonItem.type === "deadlyBlock" ?
+      ({
+        disabled: jsonItem.config.disabled ?? false,
+      } satisfies StateFragment<typeof jsonItem.type>)
+    : emptyObject),
     ...(jsonItem.type === "emitter" ?
       ({
         lastEmittedAtRoomTime: neverTime,
