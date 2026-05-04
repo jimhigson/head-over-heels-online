@@ -2,6 +2,8 @@ import type { EditorJsonItemUnion } from "../../editorTypes";
 import type { LevelEditorState } from "../levelEditorSlice";
 
 import { consolidateItemsMap } from "../../../consolidateItems/consolidateItems";
+import { reconsolidateItems } from "../../../consolidateItems/reconsolidateItems";
+import { makeToasterConsolidationPredicate } from "../../../consolidateItems/toasterConsolidationPredicate";
 import { selectCurrentRoomFromLevelEditorState } from "../levelEditorSelectors";
 
 export const consolidateCurrentRoomInPlace = (
@@ -11,7 +13,16 @@ export const consolidateCurrentRoomInPlace = (
   const currentRoom = selectCurrentRoomFromLevelEditorState(
     levelEditorSliceState,
   );
-  currentRoom.items = consolidateItemsMap(currentRoom.items, considerItem);
+  const toasterPredicate = makeToasterConsolidationPredicate(currentRoom.items);
+  const combinedPredicate =
+    considerItem ?
+      (item: EditorJsonItemUnion) =>
+        considerItem(item) && toasterPredicate(item)
+    : toasterPredicate;
+  currentRoom.items = reconsolidateItems(
+    consolidateItemsMap(currentRoom.items, combinedPredicate),
+    toasterPredicate,
+  );
 
   // consolidation could have removed some items, so no longer let them
   // be selected. However, we want to avoid a state update if nothing is being filtered,

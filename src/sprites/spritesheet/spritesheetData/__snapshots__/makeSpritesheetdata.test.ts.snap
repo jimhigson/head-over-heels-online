@@ -5323,7 +5323,15 @@ exports[`for tailwind plugin we must have all possible frames and animations 1`]
       "h": 28,
       "w": 32,
       "x": 331,
-      "y": 711,
+      "y": 769,
+    },
+  },
+  "shadowMask.toaster.disabled": {
+    "frame": {
+      "h": 28,
+      "w": 32,
+      "x": 364,
+      "y": 769,
     },
   },
   "shadowMask.tower": {
@@ -5354,8 +5362,16 @@ exports[`for tailwind plugin we must have all possible frames and animations 1`]
     "frame": {
       "h": 28,
       "w": 32,
-      "x": 133,
-      "y": 711,
+      "x": 331,
+      "y": 798,
+    },
+  },
+  "shadowMask.volcano.disabled": {
+    "frame": {
+      "h": 28,
+      "w": 32,
+      "x": 364,
+      "y": 798,
     },
   },
   "shadowMask.whiteRabbit": {
@@ -5638,36 +5654,28 @@ exports[`for tailwind plugin we must have all possible frames and animations 1`]
       "y": 52,
     },
   },
-  "toaster.off": {
-    "frame": {
-      "h": 28,
-      "w": 32,
-      "x": 265,
-      "y": 711,
-    },
-  },
-  "toaster.off.1": {
-    "frame": {
-      "h": 28,
-      "w": 32,
-      "x": 265,
-      "y": 711,
-    },
-  },
-  "toaster.off.2": {
-    "frame": {
-      "h": 28,
-      "w": 32,
-      "x": 298,
-      "y": 711,
-    },
-  },
-  "toaster.on": {
+  "toaster.1": {
     "frame": {
       "h": 28,
       "w": 32,
       "x": 232,
-      "y": 711,
+      "y": 769,
+    },
+  },
+  "toaster.2": {
+    "frame": {
+      "h": 28,
+      "w": 32,
+      "x": 265,
+      "y": 769,
+    },
+  },
+  "toaster.disabled": {
+    "frame": {
+      "h": 28,
+      "w": 32,
+      "x": 298,
+      "y": 769,
     },
   },
   "tower": {
@@ -5754,16 +5762,24 @@ exports[`for tailwind plugin we must have all possible frames and animations 1`]
     "frame": {
       "h": 28,
       "w": 32,
-      "x": 67,
-      "y": 711,
+      "x": 232,
+      "y": 798,
     },
   },
   "volcano.2": {
     "frame": {
       "h": 28,
       "w": 32,
-      "x": 100,
-      "y": 711,
+      "x": 265,
+      "y": 798,
+    },
+  },
+  "volcano.disabled": {
+    "frame": {
+      "h": 28,
+      "w": 32,
+      "x": 298,
+      "y": 798,
     },
   },
   "whiteRabbit.extra-life": {
@@ -6146,9 +6162,9 @@ exports[`for tailwind plugin we must have all possible frames and animations 2`]
     "teleporter.flashing.1",
     "teleporter.flashing.2",
   ],
-  "toaster.off": [
-    "toaster.off.1",
-    "toaster.off.2",
+  "toaster": [
+    "toaster.1",
+    "toaster.2",
   ],
   "turtle.away": [
     "turtle.away.1",

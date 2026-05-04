@@ -806,28 +806,9 @@ const frames = {
     },
   },
 
-  "volcano.1": {
-    frame: {
-      ...largeItemGridLocation({ x: ++x, y }),
-      ...largeItemTextureSize,
-    },
-  },
-  "volcano.2": {
-    frame: {
-      ...largeItemGridLocation({ x: ++x, y }),
-      ...largeItemTextureSize,
-    },
-  },
-  "shadowMask.volcano": {
-    frame: {
-      ...largeItemGridLocation({ x: ++x, y }),
-      ...largeItemTextureSize,
-    },
-  },
-
   hushPuppy: {
     frame: {
-      ...largeItemGridLocation({ x: ++x, y }),
+      ...largeItemGridLocation({ x: (x += 4), y }),
       ...largeItemTextureSize,
     },
   },
@@ -837,40 +818,10 @@ const frames = {
       ...largeItemTextureSize,
     },
   },
-  "toaster.on": {
-    frame: {
-      ...largeItemGridLocation({ x: ++x, y }),
-      ...largeItemTextureSize,
-    },
-  },
-  // same as sprite below: kept for backwards compatibility with old saves (Jan '26)
-  "toaster.off": {
-    frame: {
-      ...largeItemGridLocation({ x: ++x, y }),
-      ...largeItemTextureSize,
-    },
-  },
-  "toaster.off.1": {
-    frame: {
-      ...largeItemGridLocation({ x, y }),
-      ...largeItemTextureSize,
-    },
-  },
-  "toaster.off.2": {
-    frame: {
-      ...largeItemGridLocation({ x: ++x, y }),
-      ...largeItemTextureSize,
-    },
-  },
-  "shadowMask.toaster": {
-    frame: {
-      ...largeItemGridLocation({ x: ++x, y }),
-      ...largeItemTextureSize,
-    },
-  },
+
   sandwich: {
     frame: {
-      ...largeItemGridLocation({ x: ++x, y }),
+      ...largeItemGridLocation({ x: (x = 11), y }),
       ...largeItemTextureSize,
     },
   },
@@ -913,9 +864,62 @@ const frames = {
   ...seriesOfNumberedTextures(
     "conveyor.y",
     7,
-    largeItemGridLocation({ x: 0, y: 3 }),
+    largeItemGridLocation({ x: 0, y: (y = 3) }),
     largeItemTextureSize,
   ),
+
+  // toaster:
+  ...seriesOfNumberedTextures(
+    "toaster",
+    2,
+    largeItemGridLocation({ x: 7, y }),
+    largeItemTextureSize,
+  ),
+  "toaster.disabled": {
+    frame: {
+      ...largeItemGridLocation({ x: 9, y }),
+      ...largeItemTextureSize,
+    },
+  },
+  "shadowMask.toaster": {
+    frame: {
+      ...largeItemGridLocation({ x: 10, y }),
+      ...largeItemTextureSize,
+    },
+  },
+  "shadowMask.toaster.disabled": {
+    frame: {
+      ...largeItemGridLocation({ x: 11, y }),
+      ...largeItemTextureSize,
+    },
+  },
+
+  // volcano:
+  ...seriesOfNumberedTextures(
+    "volcano",
+    2,
+    largeItemGridLocation({ x: 7, y: ++y }),
+    largeItemTextureSize,
+  ),
+  "volcano.disabled": {
+    frame: {
+      ...largeItemGridLocation({ x: 9, y }),
+      ...largeItemTextureSize,
+    },
+  },
+  "shadowMask.volcano": {
+    frame: {
+      ...largeItemGridLocation({ x: 10, y }),
+      ...largeItemTextureSize,
+    },
+  },
+  "shadowMask.volcano.disabled": {
+    frame: {
+      ...largeItemGridLocation({ x: 11, y }),
+      ...largeItemTextureSize,
+    },
+  },
+
   ...seriesOfNumberedTextures(
     "particle.head",
     4,
@@ -1018,10 +1022,7 @@ export const itemsSpritesheetData = {
       0.5,
     ),
     volcano: withSpeed(seriesOfAnimationFrameTextureIds("volcano", 2), 3 / 16),
-    "toaster.off": withSpeed(
-      seriesOfAnimationFrameTextureIds("toaster.off", 2),
-      3 / 16,
-    ),
+    toaster: withSpeed(seriesOfAnimationFrameTextureIds("toaster", 2), 3 / 16),
     "spring.bounce": withSpeed(
       springBounce.map(
         (frame): `spring.${SpringBounceFrame}` => `spring.${frame}`,

@@ -157,6 +157,26 @@
     "value": "away"
   },
   {
+    "op": "replace",
+    "path": "/items/db1/config/times/x",
+    "value": 2
+  },
+  {
+    "op": "add",
+    "path": "/items/db1_2",
+    "value": {
+      "config": {
+        "style": "toaster"
+      },
+      "position": {
+        "x": 2,
+        "y": 7,
+        "z": 0
+      },
+      "type": "deadlyBlock"
+    }
+  },
+  {
     "op": "add",
     "path": "/items/pi",
     "value": {

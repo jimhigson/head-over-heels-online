@@ -56,6 +56,7 @@ import { recordActedOnBy } from "../physics/recordActedOnBy";
 import { addParticlesAroundCrown } from "./addParticlesToRoom";
 import { applyMechanicsResults } from "./applyMechanicsResults";
 import { constrainToMaximumSpeedInPlace } from "./constrainToMaximumSpeedInPlace";
+import { disableToasterOnMonsterActivation } from "./disableToasterOnMonsterActivation";
 
 function* itemMechanicResultGen<
   T extends ItemInPlayType,
@@ -135,11 +136,16 @@ function* itemMechanicResultGen<
       RoomItemId
     >;
   } else if (isMoving(item)) {
-    yield tickActivation(item, room, gameState, deltaMS) as MechanicResult<
-      T,
-      RoomId,
-      RoomItemId
-    >;
+    const activationMechanicResult = tickActivation(
+      item,
+      room,
+      gameState,
+      deltaMS,
+    ) as MechanicResult<T, RoomId, RoomItemId>;
+
+    disableToasterOnMonsterActivation(item, activationMechanicResult, room);
+
+    yield activationMechanicResult;
     yield tickMovement(item, room, gameState, deltaMS) as MechanicResult<
       T,
       RoomId,

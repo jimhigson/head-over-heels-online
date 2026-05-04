@@ -466,6 +466,23 @@ export type RoomJsonSchema = {
                     };
                   }
                 | {
+                    expectType: "deadlyBlock";
+                    targets?: string[];
+                    /**
+                     * true is a shorthand for deadly blocks that start disabled:
+                     *   {leftState: {disabled: true}, rightState: {disabled: false}},
+                     * false is a shorthand for deadly blocks that start enabled:
+                     *   {leftState: {disabled: false}, rightState: {disabled: true}},
+                     */
+                    disables?: false | true;
+                    leftState?: {
+                      disabled?: false | true;
+                    };
+                    rightState?: {
+                      disabled?: false | true;
+                    };
+                  }
+                | {
                     expectType: "emitter";
                     targets?: string[];
                     leftState: {
@@ -1372,6 +1389,7 @@ export type RoomJsonSchema = {
             z?: number;
           };
           style: "toaster" | "volcano";
+          disabled?: false | true;
         };
       }
     | {
@@ -2637,6 +2655,23 @@ export type RoomJsonSchema = {
                     };
                   }
                 | {
+                    expectType: "deadlyBlock";
+                    targets?: string[];
+                    /**
+                     * true is a shorthand for deadly blocks that start disabled:
+                     *   {leftState: {disabled: true}, rightState: {disabled: false}},
+                     * false is a shorthand for deadly blocks that start enabled:
+                     *   {leftState: {disabled: false}, rightState: {disabled: true}},
+                     */
+                    disables?: false | true;
+                    leftState?: {
+                      disabled?: false | true;
+                    };
+                    rightState?: {
+                      disabled?: false | true;
+                    };
+                  }
+                | {
                     expectType: "emitter";
                     targets?: string[];
                     leftState: {
@@ -3897,6 +3932,23 @@ export type RoomJsonSchema = {
                   disappearing?: null | {
                     on: "stand";
                   };
+                };
+              }
+            | {
+                expectType: "deadlyBlock";
+                targets?: string[];
+                /**
+                 * true is a shorthand for deadly blocks that start disabled:
+                 *   {leftState: {disabled: true}, rightState: {disabled: false}},
+                 * false is a shorthand for deadly blocks that start enabled:
+                 *   {leftState: {disabled: false}, rightState: {disabled: true}},
+                 */
+                disables?: false | true;
+                leftState?: {
+                  disabled?: false | true;
+                };
+                rightState?: {
+                  disabled?: false | true;
                 };
               }
             | {

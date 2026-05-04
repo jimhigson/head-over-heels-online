@@ -139,6 +139,23 @@ export type SwitchItemModificationUnion<
       >;
     }
   | {
+      expectType: "deadlyBlock";
+      targets?: RoomItemId[];
+      /**
+       * true is a shorthand for deadly blocks that start disabled:
+       *   {leftState: {disabled: true}, rightState: {disabled: false}},
+       * false is a shorthand for deadly blocks that start enabled:
+       *   {leftState: {disabled: false}, rightState: {disabled: true}},
+       */
+      disables?: boolean;
+      leftState?: Partial<
+        Pick<ItemState<"deadlyBlock", RoomId, RoomItemId>, "disabled">
+      >;
+      rightState?: Partial<
+        Pick<ItemState<"deadlyBlock", RoomId, RoomItemId>, "disabled">
+      >;
+    }
+  | {
       expectType: "emitter";
       targets?: RoomItemId[];
       leftState: Partial<ItemStateMap<RoomId, RoomItemId>["emitter"]>;

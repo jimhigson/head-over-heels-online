@@ -46,6 +46,10 @@
     "value": "after-player-near"
   },
   {
+    "op": "remove",
+    "path": "/items/db/config/times"
+  },
+  {
     "op": "replace",
     "path": "/items/d1/position/y",
     "value": 4
@@ -90,6 +94,24 @@
     "path": "/items/d/config/meta",
     "value": {
       "toSubRoom": "middle"
+    }
+  },
+  {
+    "op": "add",
+    "path": "/items/db_1",
+    "value": {
+      "config": {
+        "style": "toaster",
+        "times": {
+          "y": 3
+        }
+      },
+      "position": {
+        "x": 7,
+        "y": 1,
+        "z": 0
+      },
+      "type": "deadlyBlock"
     }
   },
   {

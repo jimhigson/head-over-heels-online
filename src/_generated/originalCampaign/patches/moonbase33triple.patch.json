@@ -624,13 +624,12 @@
     "value": 11
   },
   {
-    "op": "replace",
-    "path": "/items/db1/config/times/y",
-    "value": 5
+    "op": "remove",
+    "path": "/items/db1/config/times/x"
   },
   {
     "op": "remove",
-    "path": "/items/db1/config/times/x"
+    "path": "/items/db/config/times"
   },
   {
     "op": "replace",
@@ -703,6 +702,39 @@
         "z": 0
       },
       "type": "block"
+    }
+  },
+  {
+    "op": "add",
+    "path": "/items/db_1",
+    "value": {
+      "config": {
+        "style": "toaster"
+      },
+      "position": {
+        "x": 0,
+        "y": 11,
+        "z": 0
+      },
+      "type": "deadlyBlock"
+    }
+  },
+  {
+    "op": "add",
+    "path": "/items/db_2",
+    "value": {
+      "config": {
+        "style": "toaster",
+        "times": {
+          "y": 2
+        }
+      },
+      "position": {
+        "x": 0,
+        "y": 12,
+        "z": 0
+      },
+      "type": "deadlyBlock"
     }
   },
   {

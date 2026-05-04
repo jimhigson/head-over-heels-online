@@ -51,5 +51,27 @@
     "op": "replace",
     "path": "/items/m1/config/activated",
     "value": "after-player-near"
+  },
+  {
+    "op": "remove",
+    "path": "/items/db/config/times"
+  },
+  {
+    "op": "add",
+    "path": "/items/db_1",
+    "value": {
+      "config": {
+        "style": "toaster",
+        "times": {
+          "y": 3
+        }
+      },
+      "position": {
+        "x": 5,
+        "y": 3,
+        "z": 0
+      },
+      "type": "deadlyBlock"
+    }
   }
 ]

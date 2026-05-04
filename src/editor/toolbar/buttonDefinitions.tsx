@@ -502,7 +502,7 @@ head's doughnut firing hooter`,
     tooltipContent: `## Toaster\n\ncharging stations for the Emperor's Guardians`,
     children: (
       <span
-        className={`sprite ${"texture-toaster_off" satisfies TextureTailwindClass} ${buttonSpriteRevertColourClasses}`}
+        className={`sprite ${"texture-toaster_1" satisfies TextureTailwindClass} ${buttonSpriteRevertColourClasses}`}
       />
     ),
   },

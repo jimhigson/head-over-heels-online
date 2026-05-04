@@ -4,7 +4,11 @@ vi.mock("../../sprites/samplePalette", () => ({
 }));
 
 import { setUpBasicGame } from "../../../_testUtils/basicRoom";
-import { headState } from "../../../_testUtils/characterState";
+import {
+  headState,
+  heelsState,
+  itemState,
+} from "../../../_testUtils/characterState";
 import { resetStore } from "../../../_testUtils/initStoreForTests";
 import { playGameThrough } from "../../../_testUtils/playGameThrough";
 import { selectCurrentRoomState } from "../../gameState/gameStateSelectors/selectCurrentRoomState";
@@ -112,6 +116,58 @@ test.for([
     });
   },
 );
+
+test("switch disables a deadly block, player walks over it safely", () => {
+  const gameState = setUpBasicGame({
+    firstRoomItems: {
+      heels: {
+        type: "player",
+        position: { x: 0, y: 0, z: 0 },
+        config: {
+          which: "heels",
+        },
+      },
+      switch: {
+        type: "switch",
+        position: { x: 2, y: 0, z: 0 },
+        config: {
+          type: "in-room",
+          initialSetting: "right",
+          modifies: [{ expectType: "deadlyBlock", disables: true }],
+        },
+      },
+      deadlyBlock: {
+        type: "deadlyBlock",
+        position: { x: 4, y: 0, z: 0 },
+        config: { style: "volcano" },
+      },
+    },
+  });
+
+  expect<boolean | undefined>(
+    itemState<"deadlyBlock">(gameState, "deadlyBlock")?.disabled,
+  ).toBe(false);
+
+  playGameThrough(gameState, {
+    setupInitialInput(mockInputStateTracker) {
+      mockInputStateTracker.mockDirectionPressed = "left";
+    },
+    until(gameState) {
+      return !!itemState<"deadlyBlock">(gameState, "deadlyBlock")?.disabled;
+    },
+  });
+
+  expect<boolean | undefined>(
+    itemState<"deadlyBlock">(gameState, "deadlyBlock")?.disabled,
+  ).toBe(true);
+
+  playGameThrough(gameState, {
+    until: 3_000,
+    frameRate: { fps: [15] },
+  });
+
+  expect(heelsState(gameState).lives).toBe(8);
+});
 
 test("can't jump off of spikes during death animation", () => {
   const gameState = setUpBasicGame({

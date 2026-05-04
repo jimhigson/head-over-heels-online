@@ -1,36 +1,20 @@
 import type { ItemTickContext } from "../../game/render/ItemRenderContexts";
-import type { ItemInPlay } from "../../model/ItemInPlay";
-import type { RoomState } from "../../model/RoomState";
 import type { ItemSoundRenderContext } from "../ItemSoundRenderContext";
 import type { ItemSoundRenderer } from "../ItemSoundRenderer";
 
-import { isChargingCyberman } from "../../game/physics/itemPredicates";
-import { iterateStoodOnByItems } from "../../model/stoodOnItemsLookup";
-import { size } from "../../utils/iterators/size";
 import { audioCtx } from "../audioCtx";
-import { createAudioNode } from "../soundUtils/createAudioNode";
-
-/**
- * Count how many are charging on this toaster.
- *
- * The sound of a toaster only cares how many cybermen are chargin on it, not
- * their positions
- */
-const chargingCybermanOnToasterCount = (
-  toaster: ItemInPlay<"deadlyBlock", string, string>,
-  room: RoomState<string, string>,
-): number => {
-  return size(
-    iterateStoodOnByItems(toaster.state.stoodOnBy, room).filter(
-      isChargingCyberman,
-    ),
-  );
-};
+import { createBracketedSound } from "../soundUtils/createBracketedSound";
 
 export class ToasterSoundRenderer implements ItemSoundRenderer<"deadlyBlock"> {
   public readonly output: GainNode = audioCtx.createGain();
 
-  #currentStoodOnCount: number | undefined = undefined;
+  #bracketed = createBracketedSound(
+    {
+      start: { soundId: "toasterPushDown" },
+      stop: { soundId: "toasterPopUp" },
+    },
+    this.output,
+  );
 
   readonly renderContext: ItemSoundRenderContext<"deadlyBlock">;
 
@@ -40,25 +24,10 @@ export class ToasterSoundRenderer implements ItemSoundRenderer<"deadlyBlock"> {
   }
 
   tick(_tickContext: ItemTickContext) {
-    const {
-      renderContext: { item, room },
-    } = this;
-
-    const stoodOnCount = chargingCybermanOnToasterCount(item, room);
-
-    const poppingUp =
-      this.#currentStoodOnCount !== undefined &&
-      stoodOnCount < this.#currentStoodOnCount;
-
-    if (poppingUp) {
-      createAudioNode({
-        soundId: "toasterPopUp",
-        connectTo: this.output,
-      });
-    }
-
-    this.#currentStoodOnCount = stoodOnCount;
+    this.#bracketed(!this.renderContext.item.state.disabled);
   }
 
-  destroy(): void {}
+  destroy(): void {
+    //this.#bracketed(false);
+  }
 }
