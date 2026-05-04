@@ -778,23 +778,6 @@ export type RoomJsonSchema = {
                     };
                   }
                 | {
-                    expectType: "deadlyBlock";
-                    targets?: string[];
-                    /**
-                     * true is a shorthand for deadly blocks that start disabled:
-                     *   {leftState: {disabled: true}, rightState: {disabled: false}},
-                     * false is a shorthand for deadly blocks that start enabled:
-                     *   {leftState: {disabled: false}, rightState: {disabled: true}},
-                     */
-                    disables?: false | true;
-                    leftState?: {
-                      disabled?: false | true;
-                    };
-                    rightState?: {
-                      disabled?: false | true;
-                    };
-                  }
-                | {
                     expectType: "charles";
                     targets?: string[];
                     /**
@@ -827,19 +810,36 @@ export type RoomJsonSchema = {
                      * "reverse" = set direction to the opposite of the item's config.direction.
                      */
                     reverses?: false | true;
-                    leftState: {
+                    leftState?: {
                       disabled?: false | true;
                       direction?: "right" | "towards" | "away" | "left";
                       disappearing?: null | {
                         on: "stand";
                       };
                     };
-                    rightState: {
+                    rightState?: {
                       disabled?: false | true;
                       direction?: "right" | "towards" | "away" | "left";
                       disappearing?: null | {
                         on: "stand";
                       };
+                    };
+                  }
+                | {
+                    expectType: "deadlyBlock";
+                    targets?: string[];
+                    /**
+                     * true is a shorthand for deadly blocks that start disabled:
+                     *   {leftState: {disabled: true}, rightState: {disabled: false}},
+                     * false is a shorthand for deadly blocks that start enabled:
+                     *   {leftState: {disabled: false}, rightState: {disabled: true}},
+                     */
+                    disables?: false | true;
+                    leftState?: {
+                      disabled?: false | true;
+                    };
+                    rightState?: {
+                      disabled?: false | true;
                     };
                   }
                 | {
@@ -2659,23 +2659,6 @@ export type RoomJsonSchema = {
                     };
                   }
                 | {
-                    expectType: "deadlyBlock";
-                    targets?: string[];
-                    /**
-                     * true is a shorthand for deadly blocks that start disabled:
-                     *   {leftState: {disabled: true}, rightState: {disabled: false}},
-                     * false is a shorthand for deadly blocks that start enabled:
-                     *   {leftState: {disabled: false}, rightState: {disabled: true}},
-                     */
-                    disables?: false | true;
-                    leftState?: {
-                      disabled?: false | true;
-                    };
-                    rightState?: {
-                      disabled?: false | true;
-                    };
-                  }
-                | {
                     expectType: "charles";
                     targets?: string[];
                     /**
@@ -2708,19 +2691,36 @@ export type RoomJsonSchema = {
                      * "reverse" = set direction to the opposite of the item's config.direction.
                      */
                     reverses?: false | true;
-                    leftState: {
+                    leftState?: {
                       disabled?: false | true;
                       direction?: "right" | "towards" | "away" | "left";
                       disappearing?: null | {
                         on: "stand";
                       };
                     };
-                    rightState: {
+                    rightState?: {
                       disabled?: false | true;
                       direction?: "right" | "towards" | "away" | "left";
                       disappearing?: null | {
                         on: "stand";
                       };
+                    };
+                  }
+                | {
+                    expectType: "deadlyBlock";
+                    targets?: string[];
+                    /**
+                     * true is a shorthand for deadly blocks that start disabled:
+                     *   {leftState: {disabled: true}, rightState: {disabled: false}},
+                     * false is a shorthand for deadly blocks that start enabled:
+                     *   {leftState: {disabled: false}, rightState: {disabled: true}},
+                     */
+                    disables?: false | true;
+                    leftState?: {
+                      disabled?: false | true;
+                    };
+                    rightState?: {
+                      disabled?: false | true;
                     };
                   }
                 | {

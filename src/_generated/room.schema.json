@@ -888,34 +888,6 @@
                                 {
                                   "additionalProperties": false,
                                   "properties": {
-                                    "disables": {
-                                      "description": "true is a shorthand for deadly blocks that start disabled:   {leftState: {disabled: true}, rightState: {disabled: false}}, false is a shorthand for deadly blocks that start enabled:   {leftState: {disabled: false}, rightState: {disabled: true}},",
-                                      "enum": [false, true],
-                                      "type": "boolean"
-                                    },
-                                    "expectType": {
-                                      "const": "deadlyBlock",
-                                      "type": "string"
-                                    },
-                                    "leftState": {
-                                      "$ref": "#/definitions/r59"
-                                    },
-                                    "rightState": {
-                                      "$ref": "#/definitions/r59"
-                                    },
-                                    "targets": {
-                                      "items": {
-                                        "type": "string"
-                                      },
-                                      "type": "array"
-                                    }
-                                  },
-                                  "required": ["expectType"],
-                                  "type": "object"
-                                },
-                                {
-                                  "additionalProperties": false,
-                                  "properties": {
                                     "activates": {
                                       "description": "true is a shorthand for charles bots that are activated by default:   {leftState: {activated: true}, rightState: {activated: false}}, false is shorthand for charles bots that are deactivated by default:   {leftState: {activated: false}, rightState: {activated: true}},",
                                       "enum": [false, true],
@@ -971,11 +943,35 @@
                                       "type": "array"
                                     }
                                   },
-                                  "required": [
-                                    "expectType",
-                                    "leftState",
-                                    "rightState"
-                                  ],
+                                  "required": ["expectType"],
+                                  "type": "object"
+                                },
+                                {
+                                  "additionalProperties": false,
+                                  "properties": {
+                                    "disables": {
+                                      "description": "true is a shorthand for deadly blocks that start disabled:   {leftState: {disabled: true}, rightState: {disabled: false}}, false is a shorthand for deadly blocks that start enabled:   {leftState: {disabled: false}, rightState: {disabled: true}},",
+                                      "enum": [false, true],
+                                      "type": "boolean"
+                                    },
+                                    "expectType": {
+                                      "const": "deadlyBlock",
+                                      "type": "string"
+                                    },
+                                    "leftState": {
+                                      "$ref": "#/definitions/r59"
+                                    },
+                                    "rightState": {
+                                      "$ref": "#/definitions/r59"
+                                    },
+                                    "targets": {
+                                      "items": {
+                                        "type": "string"
+                                      },
+                                      "type": "array"
+                                    }
+                                  },
+                                  "required": ["expectType"],
                                   "type": "object"
                                 },
                                 {
@@ -1735,34 +1731,6 @@
                                 {
                                   "additionalProperties": false,
                                   "properties": {
-                                    "disables": {
-                                      "description": "true is a shorthand for deadly blocks that start disabled:   {leftState: {disabled: true}, rightState: {disabled: false}}, false is a shorthand for deadly blocks that start enabled:   {leftState: {disabled: false}, rightState: {disabled: true}},",
-                                      "enum": [false, true],
-                                      "type": "boolean"
-                                    },
-                                    "expectType": {
-                                      "const": "deadlyBlock",
-                                      "type": "string"
-                                    },
-                                    "leftState": {
-                                      "$ref": "#/definitions/r59"
-                                    },
-                                    "rightState": {
-                                      "$ref": "#/definitions/r59"
-                                    },
-                                    "targets": {
-                                      "items": {
-                                        "type": "string"
-                                      },
-                                      "type": "array"
-                                    }
-                                  },
-                                  "required": ["expectType"],
-                                  "type": "object"
-                                },
-                                {
-                                  "additionalProperties": false,
-                                  "properties": {
                                     "activates": {
                                       "description": "true is a shorthand for charles bots that are activated by default:   {leftState: {activated: true}, rightState: {activated: false}}, false is shorthand for charles bots that are deactivated by default:   {leftState: {activated: false}, rightState: {activated: true}},",
                                       "enum": [false, true],
@@ -1818,11 +1786,35 @@
                                       "type": "array"
                                     }
                                   },
-                                  "required": [
-                                    "expectType",
-                                    "leftState",
-                                    "rightState"
-                                  ],
+                                  "required": ["expectType"],
+                                  "type": "object"
+                                },
+                                {
+                                  "additionalProperties": false,
+                                  "properties": {
+                                    "disables": {
+                                      "description": "true is a shorthand for deadly blocks that start disabled:   {leftState: {disabled: true}, rightState: {disabled: false}}, false is a shorthand for deadly blocks that start enabled:   {leftState: {disabled: false}, rightState: {disabled: true}},",
+                                      "enum": [false, true],
+                                      "type": "boolean"
+                                    },
+                                    "expectType": {
+                                      "const": "deadlyBlock",
+                                      "type": "string"
+                                    },
+                                    "leftState": {
+                                      "$ref": "#/definitions/r59"
+                                    },
+                                    "rightState": {
+                                      "$ref": "#/definitions/r59"
+                                    },
+                                    "targets": {
+                                      "items": {
+                                        "type": "string"
+                                      },
+                                      "type": "array"
+                                    }
+                                  },
+                                  "required": ["expectType"],
                                   "type": "object"
                                 },
                                 {
