@@ -56,7 +56,11 @@ export const onConveyor: Mechanic<FreeItemTypes> = <
 
   const standingOn = stoodOnItem(standingOnItemId, room);
 
-  if (standingOn === null || !isConveyor(standingOn)) {
+  if (
+    standingOn === null ||
+    !isConveyor(standingOn) ||
+    standingOn.state.disabled
+  ) {
     return resetConveyorStateForItem;
   }
 

@@ -213,6 +213,7 @@ export type RoomJsonSchema = {
            * speed multiplier — undefined is treated as 1 (original game speed)
            */
           speed?: number;
+          disabled?: false | true;
           disappearing?: {
             on: "stand";
           };
@@ -813,13 +814,22 @@ export type RoomJsonSchema = {
                 | {
                     expectType: "conveyor";
                     targets?: string[];
+                    /**
+                     * true is a shorthand for conveyors that start disabled:
+                     *   {leftState: {disabled: true}, rightState: {disabled: false}},
+                     * false is a shorthand for conveyors that start enabled:
+                     *   {leftState: {disabled: false}, rightState: {disabled: true}},
+                     */
+                    disables?: false | true;
                     leftState: {
+                      disabled?: false | true;
                       direction?: "right" | "towards" | "away" | "left";
                       disappearing?: null | {
                         on: "stand";
                       };
                     };
                     rightState: {
+                      disabled?: false | true;
                       direction?: "right" | "towards" | "away" | "left";
                       disappearing?: null | {
                         on: "stand";
@@ -2679,13 +2689,22 @@ export type RoomJsonSchema = {
                 | {
                     expectType: "conveyor";
                     targets?: string[];
+                    /**
+                     * true is a shorthand for conveyors that start disabled:
+                     *   {leftState: {disabled: true}, rightState: {disabled: false}},
+                     * false is a shorthand for conveyors that start enabled:
+                     *   {leftState: {disabled: false}, rightState: {disabled: true}},
+                     */
+                    disables?: false | true;
                     leftState: {
+                      disabled?: false | true;
                       direction?: "right" | "towards" | "away" | "left";
                       disappearing?: null | {
                         on: "stand";
                       };
                     };
                     rightState: {
+                      disabled?: false | true;
                       direction?: "right" | "towards" | "away" | "left";
                       disappearing?: null | {
                         on: "stand";

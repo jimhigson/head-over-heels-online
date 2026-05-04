@@ -121,9 +121,17 @@ export type SwitchItemModificationUnion<
   | {
       expectType: "conveyor";
       targets?: RoomItemId[];
+      /**
+       * true is a shorthand for conveyors that start disabled:
+       *   {leftState: {disabled: true}, rightState: {disabled: false}},
+       * false is a shorthand for conveyors that start enabled:
+       *   {leftState: {disabled: false}, rightState: {disabled: true}},
+       */
+      disables?: boolean;
       leftState: Subset<
         Partial<ItemState<"conveyor", RoomId, RoomItemId>>,
         {
+          disabled?: boolean;
           direction?: DirectionXy4;
           disappearing?: {
             on: "stand";
@@ -133,6 +141,7 @@ export type SwitchItemModificationUnion<
       rightState: Subset<
         Partial<ItemState<"conveyor", RoomId, RoomItemId>>,
         {
+          disabled?: boolean;
           direction?: DirectionXy4;
           disappearing?: {
             on: "stand";

@@ -85,13 +85,17 @@ const getNewState = <RoomId extends string, RoomItemId extends string>(
     >;
   }
 
-  if (modifiesItem.expectType === "deadlyBlock" && "disables" in modifiesItem) {
+  if (
+    (modifiesItem.expectType === "deadlyBlock" ||
+      modifiesItem.expectType === "conveyor") &&
+    "disables" in modifiesItem
+  ) {
     const { disables } = modifiesItem;
     return (
       setting === (disables ? "left" : "right") ?
         { disabled: true }
       : { disabled: false }) satisfies Partial<
-      ItemState<"deadlyBlock", RoomId, RoomItemId>
+      ItemState<"deadlyBlock" | "conveyor", RoomId, RoomItemId>
     >;
   }
 

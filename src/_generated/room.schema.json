@@ -351,6 +351,10 @@
                       "direction": {
                         "$ref": "#/definitions/r71"
                       },
+                      "disabled": {
+                        "enum": [false, true],
+                        "type": "boolean"
+                      },
                       "disappearing": {
                         "$ref": "#/definitions/r57"
                       },
@@ -475,7 +479,7 @@
                 "additionalProperties": false,
                 "properties": {
                   "config": {
-                    "$ref": "#/definitions/r23"
+                    "$ref": "#/definitions/r24"
                   },
                   "position": {
                     "$ref": "#/definitions/r29"
@@ -524,7 +528,7 @@
                         "$ref": "#/definitions/r34"
                       },
                       {
-                        "$ref": "#/definitions/r24"
+                        "$ref": "#/definitions/r25"
                       },
                       {
                         "$ref": "#/definitions/r35"
@@ -940,15 +944,20 @@
                                 {
                                   "additionalProperties": false,
                                   "properties": {
+                                    "disables": {
+                                      "description": "true is a shorthand for conveyors that start disabled:   {leftState: {disabled: true}, rightState: {disabled: false}}, false is a shorthand for conveyors that start enabled:   {leftState: {disabled: false}, rightState: {disabled: true}},",
+                                      "enum": [false, true],
+                                      "type": "boolean"
+                                    },
                                     "expectType": {
                                       "const": "conveyor",
                                       "type": "string"
                                     },
                                     "leftState": {
-                                      "$ref": "#/definitions/r25"
+                                      "$ref": "#/definitions/r22"
                                     },
                                     "rightState": {
-                                      "$ref": "#/definitions/r25"
+                                      "$ref": "#/definitions/r22"
                                     },
                                     "targets": {
                                       "items": {
@@ -999,10 +1008,10 @@
                                       "type": "string"
                                     },
                                     "leftState": {
-                                      "$ref": "#/definitions/r23"
+                                      "$ref": "#/definitions/r24"
                                     },
                                     "rightState": {
-                                      "$ref": "#/definitions/r23"
+                                      "$ref": "#/definitions/r24"
                                     },
                                     "targets": {
                                       "items": {
@@ -1136,7 +1145,7 @@
                 "additionalProperties": false,
                 "properties": {
                   "config": {
-                    "$ref": "#/definitions/r22"
+                    "$ref": "#/definitions/r23"
                   },
                   "position": {
                     "$ref": "#/definitions/r29"
@@ -1269,7 +1278,7 @@
                                     "$ref": "#/definitions/r34"
                                   },
                                   {
-                                    "$ref": "#/definitions/r24"
+                                    "$ref": "#/definitions/r25"
                                   },
                                   {
                                     "$ref": "#/definitions/r35"
@@ -1363,7 +1372,7 @@
                             "additionalProperties": false,
                             "properties": {
                               "config": {
-                                "$ref": "#/definitions/r22"
+                                "$ref": "#/definitions/r23"
                               },
                               "type": {
                                 "const": "movingPlatform",
@@ -1777,15 +1786,20 @@
                                 {
                                   "additionalProperties": false,
                                   "properties": {
+                                    "disables": {
+                                      "description": "true is a shorthand for conveyors that start disabled:   {leftState: {disabled: true}, rightState: {disabled: false}}, false is a shorthand for conveyors that start enabled:   {leftState: {disabled: false}, rightState: {disabled: true}},",
+                                      "enum": [false, true],
+                                      "type": "boolean"
+                                    },
                                     "expectType": {
                                       "const": "conveyor",
                                       "type": "string"
                                     },
                                     "leftState": {
-                                      "$ref": "#/definitions/r25"
+                                      "$ref": "#/definitions/r22"
                                     },
                                     "rightState": {
-                                      "$ref": "#/definitions/r25"
+                                      "$ref": "#/definitions/r22"
                                     },
                                     "targets": {
                                       "items": {
@@ -1836,10 +1850,10 @@
                                       "type": "string"
                                     },
                                     "leftState": {
-                                      "$ref": "#/definitions/r23"
+                                      "$ref": "#/definitions/r24"
                                     },
                                     "rightState": {
-                                      "$ref": "#/definitions/r23"
+                                      "$ref": "#/definitions/r24"
                                     },
                                     "targets": {
                                       "items": {
@@ -2534,7 +2548,7 @@
           "$ref": "#/definitions/r34"
         },
         {
-          "$ref": "#/definitions/r24"
+          "$ref": "#/definitions/r25"
         },
         {
           "$ref": "#/definitions/r35"
@@ -2594,7 +2608,7 @@
           "$ref": "#/definitions/r6"
         },
         {
-          "$ref": "#/definitions/r22"
+          "$ref": "#/definitions/r23"
         },
         {
           "$ref": "#/definitions/r53"
@@ -2980,6 +2994,22 @@
     "r22": {
       "additionalProperties": false,
       "properties": {
+        "direction": {
+          "$ref": "#/definitions/r71"
+        },
+        "disabled": {
+          "enum": [false, true],
+          "type": "boolean"
+        },
+        "disappearing": {
+          "$ref": "#/definitions/r52"
+        }
+      },
+      "type": "object"
+    },
+    "r23": {
+      "additionalProperties": false,
+      "properties": {
         "activated": {
           "enum": ["off", "on", "on-stand"],
           "type": "string"
@@ -2994,7 +3024,7 @@
       "required": ["movement", "activated", "startDirection"],
       "type": "object"
     },
-    "r23": {
+    "r24": {
       "additionalProperties": false,
       "properties": {
         "controls": {
@@ -3003,7 +3033,7 @@
       },
       "type": "object"
     },
-    "r24": {
+    "r25": {
       "additionalProperties": false,
       "properties": {
         "activated": {
@@ -3019,18 +3049,6 @@
         }
       },
       "required": ["which", "movement", "activated"],
-      "type": "object"
-    },
-    "r25": {
-      "additionalProperties": false,
-      "properties": {
-        "direction": {
-          "$ref": "#/definitions/r71"
-        },
-        "disappearing": {
-          "$ref": "#/definitions/r52"
-        }
-      },
       "type": "object"
     },
     "r26": {
