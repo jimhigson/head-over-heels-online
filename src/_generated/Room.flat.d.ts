@@ -213,6 +213,7 @@ export type RoomJsonSchema = {
            * speed multiplier — undefined is treated as 1 (original game speed)
            */
           speed?: number;
+          disabled?: false | true;
           disappearing?: {
             on: "stand";
           };
@@ -795,13 +796,28 @@ export type RoomJsonSchema = {
                 | {
                     expectType: "conveyor";
                     targets?: string[];
-                    leftState: {
+                    /**
+                     * true is a shorthand for conveyors that the switch enables
+                     *   {leftState: {disabled: false}, rightState: {disabled: true}},
+                     * false is a shorthand for conveyors that the switch disables
+                     *   {leftState: {disabled: true}, rightState: {disabled: false}},
+                     */
+                    activates?: false | true;
+                    /**
+                     * true means the left setting reverses the conveyor (opposite of config direction),
+                     * false means the right setting reverses it.
+                     * "reverse" = set direction to the opposite of the item's config.direction.
+                     */
+                    reverses?: false | true;
+                    leftState?: {
+                      disabled?: false | true;
                       direction?: "right" | "towards" | "away" | "left";
                       disappearing?: null | {
                         on: "stand";
                       };
                     };
-                    rightState: {
+                    rightState?: {
+                      disabled?: false | true;
                       direction?: "right" | "towards" | "away" | "left";
                       disappearing?: null | {
                         on: "stand";
@@ -2644,13 +2660,28 @@ export type RoomJsonSchema = {
                 | {
                     expectType: "conveyor";
                     targets?: string[];
-                    leftState: {
+                    /**
+                     * true is a shorthand for conveyors that the switch enables
+                     *   {leftState: {disabled: false}, rightState: {disabled: true}},
+                     * false is a shorthand for conveyors that the switch disables
+                     *   {leftState: {disabled: true}, rightState: {disabled: false}},
+                     */
+                    activates?: false | true;
+                    /**
+                     * true means the left setting reverses the conveyor (opposite of config direction),
+                     * false means the right setting reverses it.
+                     * "reverse" = set direction to the opposite of the item's config.direction.
+                     */
+                    reverses?: false | true;
+                    leftState?: {
+                      disabled?: false | true;
                       direction?: "right" | "towards" | "away" | "left";
                       disappearing?: null | {
                         on: "stand";
                       };
                     };
-                    rightState: {
+                    rightState?: {
+                      disabled?: false | true;
                       direction?: "right" | "towards" | "away" | "left";
                       disappearing?: null | {
                         on: "stand";

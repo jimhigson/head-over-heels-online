@@ -29,11 +29,11 @@ export class ConveyorSoundRenderer implements ItemSoundRenderer<"conveyor"> {
     const {
       renderContext: {
         item: {
-          state: { stoodOnBy },
+          state: { stoodOnBy, disabled },
         },
       },
     } = this;
-    const stoodOn = isStoodOn(stoodOnBy);
+    const stoodOn = !disabled && isStoodOn(stoodOnBy);
 
     this.#bracketedSound(stoodOn);
   }

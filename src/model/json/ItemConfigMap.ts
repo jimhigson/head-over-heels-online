@@ -181,6 +181,7 @@ export type ItemConfigMap<
     direction: DirectionXy4;
     /** speed multiplier — undefined is treated as 1 (original game speed) */
     speed?: number;
+    disabled?: boolean;
     // conveyors can only disappear on stand (never touch):
     disappearing?: Subset<Disappear, { on: "stand" }>;
   };

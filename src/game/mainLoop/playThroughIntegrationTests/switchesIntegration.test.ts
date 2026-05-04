@@ -1,12 +1,14 @@
-import { beforeEach, expect, test } from "vitest";
+import { beforeEach, describe, expect, test } from "vitest";
 
 import type { TestRoomId } from "../../../_testUtils/basicRoom";
 import type { SwitchConfig } from "../../../model/json/SwitchConfig";
 
 import { setUpBasicGame } from "../../../_testUtils/basicRoom";
-import { itemState } from "../../../_testUtils/characterState";
+import { heelsState, itemState } from "../../../_testUtils/characterState";
 import { resetStore } from "../../../_testUtils/initStoreForTests";
 import { playGameThrough } from "../../../_testUtils/playGameThrough";
+import { unitVectors } from "../../../utils/vectors/unitVectors";
+import { oppositeDirection, tangentAxis } from "../../../utils/vectors/vectors";
 
 beforeEach(() => {
   resetStore();
@@ -200,4 +202,135 @@ test("ganged switches fire their knock-on effects in a chain", () => {
       return blockState.disappearing?.on === "stand";
     },
   });
+});
+
+describe("switching conveyors", () => {
+  test.for([
+    ["left", true],
+    ["left", false],
+    ["right", true],
+    ["right", false],
+    ["towards", true],
+    ["towards", false],
+    ["away", true],
+    ["away", false],
+  ] as const)(
+    "switch reverses a conveyor (direction: %s, reverses: %s)",
+    ([direction, reverses]) => {
+      const axis = tangentAxis(direction);
+      const positiveMovement = unitVectors[direction][axis] > 0;
+
+      const gameState = setUpBasicGame({
+        firstRoomItems: {
+          heels: {
+            type: "player",
+            position: { x: 3, y: 3, z: 1 },
+            config: {
+              which: "heels",
+            },
+          },
+          conveyor: {
+            type: "conveyor",
+            position: { x: 2, y: 2, z: 0 },
+            config: { direction, times: { x: 4, y: 4 } },
+          },
+          ball: {
+            type: "ball",
+            position: { x: 6, y: 6, z: 5 },
+            config: {},
+          },
+          switch: {
+            type: "switch",
+            position: { x: 6, y: 6, z: 0 },
+            config: {
+              type: "in-room",
+              initialSetting: "right",
+              modifies: [{ expectType: "conveyor", reverses }],
+            },
+          },
+        },
+      });
+
+      const startPos = heelsState(gameState).position[axis];
+
+      playGameThrough(gameState, {
+        until: 500,
+      });
+
+      const movedPositive = heelsState(gameState).position[axis] > startPos;
+      expect(movedPositive).toBe(positiveMovement);
+
+      playGameThrough(gameState, {
+        until: 3_000,
+      });
+
+      const reversedDirection = oppositeDirection(direction);
+      const expectedPositive =
+        reverses ?
+          unitVectors[reversedDirection][axis] > 0
+        : unitVectors[direction][axis] > 0;
+      const finalMovedPositive =
+        heelsState(gameState).position[axis] > startPos;
+      expect(finalMovedPositive).toBe(expectedPositive);
+    },
+  );
+
+  test.for([
+    { startsDisabled: false, activates: false, expectedDisabledAfter: true },
+    { startsDisabled: false, activates: true, expectedDisabledAfter: false },
+    { startsDisabled: true, activates: false, expectedDisabledAfter: true },
+    { startsDisabled: true, activates: true, expectedDisabledAfter: false },
+  ])(
+    "switch activates a conveyor (startsDisabled: $startsDisabled, activates: $activates, expectedDisabledAfter: $expectedDisabledAfter)",
+    ({ startsDisabled, activates, expectedDisabledAfter }) => {
+      const gameState = setUpBasicGame({
+        firstRoomItems: {
+          heels: {
+            type: "player",
+            position: { x: 3, y: 3, z: 1 },
+            config: {
+              which: "heels",
+            },
+          },
+          conveyor: {
+            type: "conveyor",
+            position: { x: 2, y: 2, z: 0 },
+            config: {
+              direction: "left",
+              times: { x: 4, y: 4 },
+              disabled: startsDisabled,
+            },
+          },
+          ball: {
+            type: "ball",
+            position: { x: 6, y: 6, z: 5 },
+            config: {},
+          },
+          switch: {
+            type: "switch",
+            position: { x: 6, y: 6, z: 0 },
+            config: {
+              type: "in-room",
+              initialSetting: "right",
+              modifies: [{ expectType: "conveyor", activates }],
+            },
+          },
+        },
+      });
+
+      const conveyorState = () => itemState<"conveyor">(gameState, "conveyor");
+      const switchState = () => itemState<"switch">(gameState, "switch");
+
+      expect(conveyorState().disabled).toBe(startsDisabled);
+
+      playGameThrough(gameState, {
+        until(gameState) {
+          return switchState().setting === "left" || gameState.gameTime > 3_000;
+        },
+      });
+
+      expect(switchState().setting).toBe("left");
+      expect(conveyorState().disabled).toBe(expectedDisabledAfter);
+    },
+  );
 });

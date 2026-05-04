@@ -17,6 +17,7 @@ const slowdownTimeMs = 250;
 
 type ConveyorRenderProps = {
   moving: boolean;
+  disabled: boolean;
   roomTimeStoppedMoving?: number;
   // normally won't change, but then there are switches...
   direction: DirectionXy4;
@@ -83,7 +84,7 @@ const conveyorAppearanceImpl: ItemAppearance<
   renderContext: {
     item: {
       config: { times },
-      state: { stoodOnBy, direction },
+      state: { stoodOnBy, direction, disabled },
     },
     room: { roomTime },
     general: { spriteOption, pixiRenderer, paused },
@@ -91,7 +92,7 @@ const conveyorAppearanceImpl: ItemAppearance<
   currentRendering,
 }) => {
   const currentlyRenderedProps = currentRendering?.renderProps;
-  const moving = isStoodOn(stoodOnBy);
+  const moving = !disabled && isStoodOn(stoodOnBy);
 
   const justStopped = !moving && (currentlyRenderedProps?.moving ?? false);
 
@@ -107,10 +108,15 @@ const conveyorAppearanceImpl: ItemAppearance<
     moving ? 0 : Math.min(roomTime - roomTimeStoppedMoving, slowdownTimeMs);
 
   const currentOutput = currentRendering?.output;
+  const disabledChanged = !!disabled !== !!currentlyRenderedProps?.disabled;
   const rerender =
-    !currentOutput || direction !== currentlyRenderedProps?.direction;
-  const spritesheetVariant =
-    spriteOption.uncolourised ? "uncolourised" : "for-current-room";
+    !currentOutput ||
+    direction !== currentlyRenderedProps?.direction ||
+    disabledChanged;
+  const spritesheetVariant: SpritesheetVariant =
+    spriteOption.uncolourised ? "uncolourised"
+    : disabled ? "deactivated"
+    : "for-current-room";
 
   const spritesheet = getSpriteSheetVariant(spritesheetVariant);
   const conveyorAnimationSpeed: number =
@@ -128,7 +134,9 @@ const conveyorAppearanceImpl: ItemAppearance<
 
   // how fast to play the animation, with slowdown for how long since it stopped moving
   const playSpeedFrac =
-    paused ? 0 : Math.max(0, 1 - periodSinceStopped / slowdownTimeMs);
+    disabled || paused ? 0 : (
+      Math.max(0, 1 - periodSinceStopped / slowdownTimeMs)
+    );
 
   if (playSpeedFrac === 0) {
     rendering.stop();
@@ -141,7 +149,12 @@ const conveyorAppearanceImpl: ItemAppearance<
   return rerender || justStopped || moving !== currentlyRenderedProps?.moving ?
       {
         output: rendering,
-        renderProps: { moving, roomTimeStoppedMoving, direction },
+        renderProps: {
+          moving,
+          disabled: !!disabled,
+          roomTimeStoppedMoving,
+          direction,
+        },
       }
     : "no-update";
 };
