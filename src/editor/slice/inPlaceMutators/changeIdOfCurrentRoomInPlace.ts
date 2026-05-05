@@ -3,6 +3,7 @@ import type { LevelEditorState } from "../../../editor/slice/levelEditorSlice";
 
 import { roomJsonItemsIterable } from "../../../model/RoomJson";
 import { valuesIter } from "../../../utils/entries";
+import { initialLevelEditorSliceState } from "../initialLevelEditorSliceState";
 import { selectCurrentRoomFromLevelEditorState } from "../levelEditorSelectors";
 
 export const changeIdOfCurrentRoomInPlace = (
@@ -53,4 +54,15 @@ export const changeIdOfCurrentRoomInPlace = (
   delete state.campaignInProgress.rooms[prevRoomId];
 
   state.currentlyEditingRoomId = newRoomId;
+
+  state.editingRoomIdHistory.back = state.editingRoomIdHistory.back.map((id) =>
+    id === prevRoomId ? newRoomId : id,
+  );
+  state.editingRoomIdHistory.forward = state.editingRoomIdHistory.forward.map(
+    (id) => (id === prevRoomId ? newRoomId : id),
+  );
+
+  // undo snapshots include the room id, so they'd restore a state that never
+  // existed under the new name — clear rather than rewrite
+  state.history = initialLevelEditorSliceState.history;
 };

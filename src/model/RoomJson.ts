@@ -112,17 +112,29 @@ export const inferRoomJson = <
   return json;
 };
 
-/** Re-export of valuesIter under a more convenient type specialised for room JSON items */
+/** Iterate over items in a room, optionally filtering to specific item types */
 export const roomJsonItemsIterable = <
   RoomId extends string,
   RoomItemId extends string,
   ScN extends SceneryName = SceneryName,
+  Types extends JsonItemType = JsonItemType,
 >(
   roomJson: RoomJson<RoomId, RoomItemId, ScN>,
+  ...types: Types[]
 ) => {
-  return valuesIter(roomJson.items) as IterableIterator<
+  const allItems = valuesIter(roomJson.items) as IterableIterator<
     JsonItemUnion<RoomId, RoomItemId>
   >;
+
+  if (types.length === 0) {
+    return allItems as IterableIterator<
+      JsonItemUnion<RoomId, RoomItemId, Types>
+    >;
+  }
+
+  return allItems.filter((item) =>
+    types.includes(item.type as Types),
+  ) as IterableIterator<JsonItemUnion<RoomId, RoomItemId, Types>>;
 };
 
 /** Re-export of objectEntriesIter under a more convenient type specialised for room JSON items */

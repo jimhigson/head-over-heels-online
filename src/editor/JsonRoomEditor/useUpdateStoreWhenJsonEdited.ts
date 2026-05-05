@@ -75,6 +75,7 @@ export const useUpdateStoreWhenJsonEdited = (
         if (!ajvValidate(parsedJson)) {
           console.warn(
             "Text in editor: after JSON parse, does not match schema. Not dispatching.",
+            ajvValidate.errors,
           );
           return;
         }
