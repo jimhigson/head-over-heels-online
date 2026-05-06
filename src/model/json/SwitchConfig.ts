@@ -104,18 +104,33 @@ export type SwitchItemModificationUnion<
   | {
       expectType: "conveyor";
       targets?: RoomItemId[];
-      leftState: Subset<
+      /**
+       * true is a shorthand for conveyors that the switch enables
+       *   {leftState: {disabled: false}, rightState: {disabled: true}},
+       * false is a shorthand for conveyors that the switch disables
+       *   {leftState: {disabled: true}, rightState: {disabled: false}},
+       */
+      activates?: boolean;
+      /**
+       * true means the left setting reverses the conveyor (opposite of config direction),
+       * false means the right setting reverses it.
+       * "reverse" = set direction to the opposite of the item's config.direction.
+       */
+      reverses?: boolean;
+      leftState?: Subset<
         Partial<ItemState<"conveyor", RoomId, RoomItemId>>,
         {
+          disabled?: boolean;
           direction?: DirectionXy4;
           disappearing?: {
             on: "stand";
           } | null;
         }
       >;
-      rightState: Subset<
+      rightState?: Subset<
         Partial<ItemState<"conveyor", RoomId, RoomItemId>>,
         {
+          disabled?: boolean;
           direction?: DirectionXy4;
           disappearing?: {
             on: "stand";

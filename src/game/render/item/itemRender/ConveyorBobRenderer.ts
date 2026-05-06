@@ -47,7 +47,11 @@ class ConveyorBobRenderer<T extends FreeItemTypes>
 
     if (standingOnItemId !== null) {
       const standingOn = room.items[standingOnItemId];
-      if (standingOn !== undefined && isConveyor(standingOn)) {
+      if (
+        standingOn !== undefined &&
+        isConveyor(standingOn) &&
+        !standingOn.state.disabled
+      ) {
         const speedMultiplier = standingOn.config.speed ?? 1;
         this.output.y = renderBobBounce(
           room.roomTime,
