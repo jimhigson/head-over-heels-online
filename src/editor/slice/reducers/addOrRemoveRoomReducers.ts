@@ -12,6 +12,7 @@ import { keysIter } from "../../../utils/entries";
 import { first } from "../../../utils/iterators/first";
 import { addNewRoomInPlace } from "../inPlaceMutators/addNewRoomInPlace";
 import { changeCurrentRoomInPlace } from "../inPlaceMutators/changeCurrentRoomInPlace";
+import { removeInboundRoomReferencesInPlace } from "../inPlaceMutators/removeInboundRoomReferencesInPlace";
 import { selectCurrentRoomFromLevelEditorState } from "../levelEditorSelectors";
 
 export const addOrRemoveRoomReducers = {
@@ -50,7 +51,15 @@ export const addOrRemoveRoomReducers = {
       return;
     }
 
-    delete state.campaignInProgress.rooms[state.currentlyEditingRoomId];
-    state.currentlyEditingRoomId = nextRoom;
+    const deletedRoomId = state.currentlyEditingRoomId;
+    changeCurrentRoomInPlace(state, nextRoom);
+    delete state.campaignInProgress.rooms[deletedRoomId];
+    removeInboundRoomReferencesInPlace(state, deletedRoomId);
+
+    const isNotDeleted = (id: EditorRoomId) => id !== deletedRoomId;
+    state.editingRoomIdHistory.back =
+      state.editingRoomIdHistory.back.filter(isNotDeleted);
+    state.editingRoomIdHistory.forward =
+      state.editingRoomIdHistory.forward.filter(isNotDeleted);
   },
 } satisfies SliceCaseReducers<LevelEditorState>;
