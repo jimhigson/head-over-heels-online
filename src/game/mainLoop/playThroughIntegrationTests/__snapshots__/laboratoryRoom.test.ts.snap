@@ -2369,8 +2369,8 @@ exports[`playing through a complex, deterministic room ("laboratory") should alw
     },
     "door@5,0,2/stopAutowalk": {
       "aabb": {
-        "x": 32,
-        "y": 32,
+        "x": 8,
+        "y": 8,
         "z": 24,
       },
       "castsShadowWhileStoodOn": false,
@@ -2388,7 +2388,7 @@ exports[`playing through a complex, deterministic room ("laboratory") should alw
         "disappearing": null,
         "expires": null,
         "position": {
-          "x": 80,
+          "x": 92,
           "y": 8,
           "z": 24,
         },
@@ -2688,8 +2688,8 @@ exports[`playing through a complex, deterministic room ("laboratory") should alw
     },
     "door@5,14,2/stopAutowalk": {
       "aabb": {
-        "x": 32,
-        "y": 32,
+        "x": 8,
+        "y": 8,
         "z": 24,
       },
       "castsShadowWhileStoodOn": false,
@@ -2707,8 +2707,8 @@ exports[`playing through a complex, deterministic room ("laboratory") should alw
         "disappearing": null,
         "expires": null,
         "position": {
-          "x": 80,
-          "y": 184,
+          "x": 92,
+          "y": 208,
           "z": 24,
         },
         "stoodOnBy": {},
