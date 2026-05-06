@@ -68,7 +68,7 @@ const autoWalkDistanceBlocks = 0.5;
 // the stop autowalk isn't just a plane, in case the player gets pushed
 // through a long way in one frame, like an item being introduced to
 // the room, like the other player walking through the door
-const stopAutoWalkDepthBlocks = 2;
+const stopAutoWalkDepthBlocks = 0.5;
 
 export function* loadDoor<RoomId extends string, RoomItemId extends string>(
   jsonDoor: JsonItem<"door", RoomId, RoomItemId>,
@@ -401,7 +401,7 @@ export function* loadDoor<RoomId extends string, RoomItemId extends string>(
     id: `${jsonItemId}/stopAutowalk` as RoomItemId,
     jsonItemId,
     aabb: blockXyzToFineXyz({
-      [alongWallAxis]: 2,
+      [alongWallAxis]: 0.5,
       [throughDoorAxis]: stopAutoWalkDepthBlocks,
       z: 2,
     } as Xyz),
@@ -410,10 +410,16 @@ export function* loadDoor<RoomId extends string, RoomItemId extends string>(
     state: {
       ...defaultBaseState(),
       position: blockXyzToFineXyz(
-        subXyz(
-          position,
-          scaleXyz(unitVectors[direction], autoWalkDistanceBlocks),
-          inHidden ? originXyz : { [throughDoorAxis]: stopAutoWalkDepthBlocks },
+        addXyz(
+          subXyz(
+            position,
+            scaleXyz(unitVectors[direction], autoWalkDistanceBlocks),
+            // a bit extra if in a hidden wall:
+            inHidden ? originXyz : (
+              { [throughDoorAxis]: stopAutoWalkDepthBlocks }
+            ),
+          ),
+          { [alongWallAxis]: 0.75 },
         ),
       ),
       stoodOnBy: emptyObject as StoodOnBy<RoomItemId>,
