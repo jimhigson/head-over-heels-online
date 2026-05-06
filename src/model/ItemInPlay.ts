@@ -7,40 +7,43 @@ import type { SceneryName } from "../sprites/planets";
 import type { Aabb, DirectionXy4, Xyz } from "../utils/vectors/vectors";
 import type { ItemState } from "./ItemState";
 import type { ExitGameRoomId } from "./json/ItemConfigMap";
-import type { JsonItemConfig, JsonItemType } from "./json/JsonItem";
-import type { CharacterName, IndividualCharacterName } from "./modelTypes";
+
+import {
+  type JsonItemConfig,
+  type JsonItemType,
+  jsonItemTypes,
+} from "./json/JsonItem";
+import { characterNames, type IndividualCharacterName } from "./modelTypes";
 
 /** types of items in-game (as opposed to in the json) - there are a few extra types */
-export type ItemInPlayType =
-  | CharacterName
-  | Exclude<JsonItemType, "door" | "player">
-
+export const itemInPlayTypes = [
+  ...characterNames,
+  ...jsonItemTypes.filter(
+    (jsonItemType): jsonItemType is Exclude<JsonItemType, "door" | "player"> =>
+      jsonItemType !== "door" && jsonItemType !== "player",
+  ),
   // in-play, doors resolve to these four types instead of the single json "door" type:
-  | "doorFrame"
-  | "doorLegs"
-  | "portal"
-  | "stopAutowalk"
-
+  "doorFrame",
+  "doorLegs",
+  "portal",
+  "stopAutowalk",
   /** a non-rendering, invisible, general-purpose, collideable blocker */
-  | "blocker"
-  /**
-   * when another item is fading out, the bubbles are a separate item
-   */
-  | "bubbles"
-  /**
-   * jumping or running fast, with a power-up, crown shine effect
-   */
-  | "particle"
+  "blocker",
+  /** jumping or running fast, with a power-up, crown shine effect */
+  "particle",
   /** when collecting pickups */
-  | "floatingText"
+  "floatingText",
   /** a sound that plays from a point in a room */
-  | "soundEffect"
+  "soundEffect",
   /**
    * an item that if touched, the toucher is deleted out of the universe - eg, it has been detected
    * now as out of bounds. Maybe because of falling below a room with no floor - if the player touches
    * this it is probably a bug. If anything else does, it is unreachable already so it can be removed
    */
-  | "outOfBounds";
+  "outOfBounds",
+] as const;
+
+export type ItemInPlayType = (typeof itemInPlayTypes)[number];
 
 export type SwitchSetting = "left" | "right";
 

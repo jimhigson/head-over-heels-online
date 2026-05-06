@@ -1,5 +1,4 @@
 import type { PayloadAction } from "@reduxjs/toolkit";
-import type { Container } from "pixi.js";
 import type { ValueOf } from "type-fest";
 
 import { createAction, createSlice } from "@reduxjs/toolkit";
@@ -10,7 +9,6 @@ import type {
 } from "../../../game/gameState/saving/SavedGameState";
 import type { PlayableItem } from "../../../game/physics/itemPredicates";
 import type { MarkdownPageName } from "../../../manual/pages";
-import type { UnionOfAllItemInPlayTypes } from "../../../model/ItemInPlay";
 import type { ScrollConfig } from "../../../model/json/ItemConfigMap";
 import type {
   CampaignLocator,
@@ -136,15 +134,6 @@ export const reincarnationAccepted = createAction(
  */
 export const lostAllLives = createAction(`${sliceName}/lostAllLives`);
 
-/**
- * For when the cheats are on, dispatched after clicking on items so the
- * cheats hook can inspect the clicked item.
- */
-export const debugItemClicked = createAction<{
-  item: UnionOfAllItemInPlayTypes<string, string>;
-  pixiContainer: Container;
-}>(`${sliceName}/debugItemClicked`);
-
 export const gameInPlaySlice = createSlice({
   name: sliceName,
   initialState: initialGameInPlaySliceState,
@@ -240,7 +229,6 @@ export const gameInPlaySlice = createSlice({
 
 export type GameInPlaySliceAction =
   | ReturnType<typeof characterRoomChange>
-  | ReturnType<typeof debugItemClicked>
   | ReturnType<typeof lostAllLives>
   | ReturnType<typeof lostLife>
   | ReturnType<typeof reincarnationAccepted>

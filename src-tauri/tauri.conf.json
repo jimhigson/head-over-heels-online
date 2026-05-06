@@ -6,7 +6,7 @@
   "build": {
     "frontendDist": "../dist-tauri",
     "devUrl": "http://localhost:5299",
-    "beforeDevCommand": "pnpm kill-port 5299 && pnpm dev:game --port 5299",
+    "beforeDevCommand": "pnpm kill-port 5299 && pnpm dev:game --port 5299 --strictPort",
     "beforeBuildCommand": "pnpm build:game --mode tauri"
   },
   "app": {

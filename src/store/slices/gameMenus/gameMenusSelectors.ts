@@ -5,12 +5,12 @@ import { createSelector } from "@reduxjs/toolkit";
 import nanoEqual from "nano-equal";
 
 import type { KeyAssignmentPresetName } from "../../../game/input/keyAssignmentPresets";
+import type { ItemInPlayType } from "../../../model/ItemInPlay";
 import type { Campaign } from "../../../model/modelTypes";
 import type { AppSpritesheetData } from "../../../sprites/spritesheet/loadedSpriteSheet";
 import type { RootState } from "../../store";
 import type {
   InputDirectionMode,
-  ShowBoundingBoxes,
   UserSettings,
   UserSettingsBooleanPaths,
   UserSettingsState,
@@ -129,12 +129,25 @@ export const selectPlanetsLiberatedCount = (state: RootState) =>
 
 export const selectSpritesOption = selectUserSetting("displaySettings.sprites");
 
-export const selectShowBoundingBoxes = selectUserSetting(
-  "displaySettings.showBoundingBoxes",
+export const selectShowBoundingBoxTypes = selectUserSetting(
+  "displaySettings.showBoundingBoxTypes",
 );
 
-export const useShowBoundingBoxes = (): ShowBoundingBoxes => {
-  return useAppSelector(selectShowBoundingBoxes);
+export const selectShowBoundingBoxTypesSet = createSelector(
+  [selectShowBoundingBoxTypes],
+  (types): ReadonlySet<ItemInPlayType> => new Set(types),
+);
+
+export const useShowBoundingBoxTypes = (): ItemInPlayType[] => {
+  return useAppSelector(selectShowBoundingBoxTypes);
+};
+
+export const selectShowRoomScrollBounds = selectUserSetting(
+  "displaySettings.showRoomScrollBounds",
+);
+
+export const useShowRoomScrollBounds = (): boolean => {
+  return useAppSelector(selectShowRoomScrollBounds);
 };
 
 export const selectShowShadowMasks = selectUserSetting(

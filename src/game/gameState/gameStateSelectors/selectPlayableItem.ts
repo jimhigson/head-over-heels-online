@@ -14,21 +14,25 @@ import { isHead, isHeadOverHeels, isHeels } from "../../physics/itemPredicates";
 export const selectPlayableItem = <
   C extends CharacterName = CharacterName,
   RoomId extends string = string,
+  RoomItemId extends string = string,
 >(
   gameState: Pick<GameState<RoomId>, "characterRooms">,
   character: C,
-): PlayableItem<C, RoomId> | undefined => {
+): PlayableItem<C, RoomId, RoomItemId> | undefined => {
   return gameState.characterRooms[character]?.items[character] as
-    | PlayableItem<C, RoomId>
+    | PlayableItem<C, RoomId, RoomItemId>
     | undefined;
 };
 
 /**
  * @returns undefined only if both players have lost all lives
  */
-export const selectCurrentPlayableItem = <RoomId extends string>(
+export const selectCurrentPlayableItem = <
+  RoomId extends string,
+  RoomItemId extends string = string,
+>(
   gameState: Pick<GameState<RoomId>, "characterRooms" | "currentCharacterName">,
-): PlayableItem<CharacterName, RoomId> | undefined =>
+): PlayableItem<CharacterName, RoomId, RoomItemId> | undefined =>
   // assuming both players haven't lost all their lives, or this is not reliable!
   selectPlayableItem(gameState, gameState.currentCharacterName)!;
 

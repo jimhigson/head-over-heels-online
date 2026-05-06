@@ -121,9 +121,6 @@ export default defineConfig(({ mode: _mode }) => {
       allowedHosts: [".local"],
       // consistent port number for this project (not vite default)
       port: 5200,
-      // don't try other ports - this causes issues in `tauri dev` if the port is
-      // different form what Tauri expects
-      strictPort: true,
     },
     preview: {
       port: 5201,

@@ -1,4 +1,4 @@
-import type { AriaRole, MouseEventHandler, ReactElement } from "react";
+import type { JSX, MouseEventHandler, ReactElement } from "react";
 
 import {
   cloneElement,
@@ -19,25 +19,24 @@ export interface CssSpriteProps {
   tint?: boolean;
 }
 
-export interface BitmapTextProps {
+type BitmapTextTagName = "h1" | "h2" | "label" | "li" | "span";
+
+export type BitmapTextProps<Tag extends BitmapTextTagName = "span"> = {
   children: (number | string)[] | number | string;
   /**
    * per-char colour (or any other style) cycling
    */
   classnameCycle?: string[];
   className?: string;
-  id?: string;
   noSlitWords?: boolean;
   onClick?: MouseEventHandler<HTMLSpanElement>;
   noTint?: boolean;
-  TagName?: "h1" | "h2" | "li" | "span";
-  role?: AriaRole;
-}
+  TagName?: Tag;
+} & JSX.IntrinsicElements[Tag];
 
-export const BitmapText = ({
+export const BitmapText = <Tag extends BitmapTextTagName = "span">({
   children: text,
   className,
-  id,
   noSlitWords,
   classnameCycle,
   onClick,
@@ -47,9 +46,9 @@ export const BitmapText = ({
    * inside translated foreign objects
    */
   noTint = false,
-  TagName = "span",
-  role,
-}: BitmapTextProps) => {
+  TagName = "span" as Tag,
+  ...tagProps
+}: BitmapTextProps<Tag>) => {
   const textString =
     // trimming helps for some markdown-rendering:
     Array.isArray(text) ? text.join(" ")
@@ -61,46 +60,29 @@ export const BitmapText = ({
   const words = noSlitWords ? [textString] : textString.split(/\s+/);
 
   return (
-    <TagName className={className} id={id} onClick={onClick}>
+    // eslint-disable-next-line @typescript-eslint/no-explicit-any -- typescript can't infer TagName = JSX.IntrinsicElements[Tag] = is safe for TagName
+    <TagName {...(tagProps as any)} className={className} onClick={onClick}>
       <span className="sr-only">{textString}</span>
-      {words.map((word, wordIndex) => {
-        return (
-          // me- is margin end - for a space before the next word
-          <span
-            className={twMerge(
-              // inline-block only needed for Firefox, no-wrap is enough in Chrome/Safari
-              `text-nowrap inline-block [&>*]:align-top`,
-              wordIndex === words.length - 1 ?
-                ""
-                // when forcing all-caps, keep strictly on the grid; otherwise,
-                // use 3/4 of a grid space for the spaces between words:
-              : "me-threeQuarters sprites-uppercase:me-1",
-            )}
-            key={wordIndex}
-          >
-            {/* Array.from(string) is unicode-aware */}
-            {Array.from(word).map((c, charIndex) => {
-              const textureId = `hud.char.${escapeCharForTailwind(c)}`;
-
-              const imgSpriteEle = (
-                <span
-                  role={role}
-                  key={charIndex}
-                  className={`sprite ${`texture-${sanitiseForClassName(textureId)}`}
-                  ${noTint ? "" : "sprite-tinted"}
-                  ${
-                    classnameCycle === undefined ? "" : (
-                      classnameCycle[charIndex % classnameCycle.length]
-                    )
-                  }`}
-                />
-              );
-
-              return imgSpriteEle;
-            })}
-          </span>
-        );
-      })}
+      {words.map((word, wordIndex) => (
+        <span
+          className={twMerge(
+            `text-nowrap inline-block [&>*]:align-top`,
+            wordIndex === words.length - 1 ?
+              ""
+            : "me-threeQuarters sprites-uppercase:me-1",
+          )}
+          key={wordIndex}
+        >
+          {Array.from(word).map((c, charIndex) => (
+            <span
+              key={charIndex}
+              className={`sprite ${`texture-${sanitiseForClassName(`hud.char.${escapeCharForTailwind(c)}`)}`}
+              ${noTint ? "" : "sprite-tinted"}
+              ${classnameCycle === undefined ? "" : classnameCycle[charIndex % classnameCycle.length]}`}
+            />
+          ))}
+        </span>
+      ))}
     </TagName>
   );
 };

@@ -104,7 +104,7 @@ export const teleporting: Mechanic<CharacterName> = <
           playableItem,
           gameState,
           toRoomId: teleporting.otherRoom as RoomId,
-        });
+        })!;
         playableItem.state.teleporting.startRoomTime = newRoom.roomTime;
       }
       break;

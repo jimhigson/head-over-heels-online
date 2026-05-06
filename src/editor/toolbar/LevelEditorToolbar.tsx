@@ -1,5 +1,4 @@
 import { BitmapText } from "../../game/components/tailwindSprites/BitmapText";
-import { ShowBoundingBoxSelect } from "../../game/debug/ShowBoundingBoxSelect";
 import { useAppDispatch } from "../../store/hooks";
 import { RoomSelect } from "../../ui/RoomSelect";
 import {
@@ -32,6 +31,7 @@ import { UndoRedoButtons } from "./buttons/UndoRedoButtons";
 import { WallsFloorsLockedSwitch } from "./buttons/WallsFloorsLockedSwitch";
 import { WallToolButton } from "./buttons/WallToolButton";
 import { buttonGroupClassname } from "./buttonSizeClassNames";
+import { EditorShowBoundingBoxSelect } from "./EditorShowBoundingBoxSelect";
 import { ItemToolButton } from "./ItemToolButton";
 import { MultipleToolButtons } from "./MultipleToolButtons";
 import { SaveAndLoadButtons } from "./saving/SaveAndLoadButtons";
@@ -224,7 +224,7 @@ export const LevelEditorToolbar = () => {
       </div>
       <div className={buttonGroupClassname}>
         <BitmapText className="w-full pt-2">Debug</BitmapText>
-        <ShowBoundingBoxSelect />
+        <EditorShowBoundingBoxSelect />
       </div>
     </div>
   );

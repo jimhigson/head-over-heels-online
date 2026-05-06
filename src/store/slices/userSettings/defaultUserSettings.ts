@@ -17,7 +17,8 @@ export const defaultUserSettings: DefaultUserSettings = {
   infiniteDoughnutsPoke: false,
 
   displaySettings: {
-    showBoundingBoxes: "none",
+    showBoundingBoxTypes: [],
+    showRoomScrollBounds: false,
     showShadowMasks: false,
     // crt filters are distinctive look for the game,
     // but also maybe slow it down on older devices

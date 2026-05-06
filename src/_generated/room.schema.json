@@ -329,6 +329,54 @@
                 "additionalProperties": false,
                 "properties": {
                   "config": {
+                    "anyOf": [
+                      {
+                        "additionalProperties": false,
+                        "properties": {
+                          "action": {
+                            "const": "nextSpritesOption",
+                            "type": "string"
+                          },
+                          "type": {
+                            "const": "in-store",
+                            "type": "string"
+                          }
+                        },
+                        "required": ["type", "action"],
+                        "type": "object"
+                      },
+                      {
+                        "additionalProperties": false,
+                        "properties": {
+                          "modifies": {
+                            "$ref": "#/definitions/r1"
+                          },
+                          "type": {
+                            "const": "in-room",
+                            "description": "this button targets items in the room. This is the default, so also used if undefined",
+                            "type": "string"
+                          }
+                        },
+                        "required": ["modifies"],
+                        "type": "object"
+                      }
+                    ]
+                  },
+                  "position": {
+                    "$ref": "#/definitions/r45"
+                  },
+                  "type": {
+                    "const": "button",
+                    "type": "string"
+                  }
+                },
+                "required": ["type", "position", "config"],
+                "type": "object"
+              },
+              {
+                "additionalProperties": false,
+                "properties": {
+                  "config": {
                     "$ref": "#/definitions/r77"
                   },
                   "position": {
@@ -454,449 +502,6 @@
                   "config": {
                     "additionalProperties": false,
                     "properties": {
-                      "times": {
-                        "$ref": "#/definitions/r56"
-                      }
-                    },
-                    "type": "object"
-                  },
-                  "position": {
-                    "$ref": "#/definitions/r45"
-                  },
-                  "type": {
-                    "const": "hushPuppy",
-                    "type": "string"
-                  }
-                },
-                "required": ["type", "position", "config"],
-                "type": "object"
-              },
-              {
-                "additionalProperties": false,
-                "properties": {
-                  "config": {
-                    "$ref": "#/definitions/r38"
-                  },
-                  "position": {
-                    "$ref": "#/definitions/r45"
-                  },
-                  "type": {
-                    "const": "joystick",
-                    "type": "string"
-                  }
-                },
-                "required": ["type", "position", "config"],
-                "type": "object"
-              },
-              {
-                "additionalProperties": false,
-                "properties": {
-                  "config": {
-                    "additionalProperties": false,
-                    "properties": {
-                      "bottom": {
-                        "type": "number"
-                      },
-                      "top": {
-                        "type": "number"
-                      }
-                    },
-                    "required": ["top", "bottom"],
-                    "type": "object"
-                  },
-                  "position": {
-                    "$ref": "#/definitions/r45"
-                  },
-                  "type": {
-                    "const": "lift",
-                    "type": "string"
-                  }
-                },
-                "required": ["type", "position", "config"],
-                "type": "object"
-              },
-              {
-                "additionalProperties": false,
-                "properties": {
-                  "config": {
-                    "anyOf": [
-                      {
-                        "$ref": "#/definitions/r50"
-                      },
-                      {
-                        "$ref": "#/definitions/r40"
-                      },
-                      {
-                        "$ref": "#/definitions/r51"
-                      },
-                      {
-                        "$ref": "#/definitions/r53"
-                      },
-                      {
-                        "$ref": "#/definitions/r34"
-                      },
-                      {
-                        "$ref": "#/definitions/r54"
-                      },
-                      {
-                        "$ref": "#/definitions/r46"
-                      },
-                      {
-                        "$ref": "#/definitions/r52"
-                      },
-                      {
-                        "$ref": "#/definitions/r49"
-                      },
-                      {
-                        "$ref": "#/definitions/r48"
-                      },
-                      {
-                        "$ref": "#/definitions/r43"
-                      },
-                      {
-                        "$ref": "#/definitions/r25"
-                      },
-                      {
-                        "$ref": "#/definitions/r29"
-                      },
-                      {
-                        "$ref": "#/definitions/r30"
-                      }
-                    ]
-                  },
-                  "position": {
-                    "$ref": "#/definitions/r45"
-                  },
-                  "type": {
-                    "const": "monster",
-                    "type": "string"
-                  }
-                },
-                "required": ["type", "position", "config"],
-                "type": "object"
-              },
-              {
-                "additionalProperties": false,
-                "properties": {
-                  "config": {
-                    "$ref": "#/definitions/r74"
-                  },
-                  "position": {
-                    "$ref": "#/definitions/r45"
-                  },
-                  "type": {
-                    "const": "moveableDeadly",
-                    "type": "string"
-                  }
-                },
-                "required": ["type", "position", "config"],
-                "type": "object"
-              },
-              {
-                "additionalProperties": false,
-                "properties": {
-                  "config": {
-                    "anyOf": [
-                      {
-                        "$ref": "#/definitions/r60"
-                      },
-                      {
-                        "$ref": "#/definitions/r63"
-                      },
-                      {
-                        "$ref": "#/definitions/r47"
-                      },
-                      {
-                        "$ref": "#/definitions/r21"
-                      }
-                    ]
-                  },
-                  "position": {
-                    "$ref": "#/definitions/r45"
-                  },
-                  "type": {
-                    "const": "pickup",
-                    "type": "string"
-                  }
-                },
-                "required": ["type", "position", "config"],
-                "type": "object"
-              },
-              {
-                "additionalProperties": false,
-                "properties": {
-                  "config": {
-                    "additionalProperties": false,
-                    "properties": {
-                      "which": {
-                        "$ref": "#/definitions/r92"
-                      }
-                    },
-                    "required": ["which"],
-                    "type": "object"
-                  },
-                  "position": {
-                    "$ref": "#/definitions/r45"
-                  },
-                  "type": {
-                    "const": "player",
-                    "type": "string"
-                  }
-                },
-                "required": ["type", "position", "config"],
-                "type": "object"
-              },
-              {
-                "additionalProperties": false,
-                "properties": {
-                  "config": {
-                    "$ref": "#/definitions/r42"
-                  },
-                  "position": {
-                    "$ref": "#/definitions/r45"
-                  },
-                  "type": {
-                    "const": "sceneryPlayer",
-                    "type": "string"
-                  }
-                },
-                "required": ["type", "position", "config"],
-                "type": "object"
-              },
-              {
-                "additionalProperties": false,
-                "properties": {
-                  "config": {
-                    "$ref": "#/definitions/r73"
-                  },
-                  "position": {
-                    "$ref": "#/definitions/r45"
-                  },
-                  "type": {
-                    "const": "slidingBlock",
-                    "type": "string"
-                  }
-                },
-                "required": ["type", "position", "config"],
-                "type": "object"
-              },
-              {
-                "additionalProperties": false,
-                "properties": {
-                  "config": {
-                    "$ref": "#/definitions/r66"
-                  },
-                  "position": {
-                    "$ref": "#/definitions/r45"
-                  },
-                  "type": {
-                    "const": "slidingDeadly",
-                    "type": "string"
-                  }
-                },
-                "required": ["type", "position", "config"],
-                "type": "object"
-              },
-              {
-                "additionalProperties": false,
-                "properties": {
-                  "config": {
-                    "$ref": "#/definitions/r95"
-                  },
-                  "position": {
-                    "$ref": "#/definitions/r45"
-                  },
-                  "type": {
-                    "const": "spring",
-                    "type": "string"
-                  }
-                },
-                "required": ["type", "position", "config"],
-                "type": "object"
-              },
-              {
-                "additionalProperties": false,
-                "properties": {
-                  "config": {
-                    "anyOf": [
-                      {
-                        "additionalProperties": false,
-                        "properties": {
-                          "initialSetting": {
-                            "enum": ["right", "left"],
-                            "type": "string"
-                          },
-                          "path": {
-                            "enum": [
-                              "displaySettings",
-                              "infiniteLivesPoke",
-                              "infiniteDoughnutsPoke",
-                              "showFps",
-                              "onScreenControls",
-                              "soundSettings",
-                              "displaySettings.crtFilter",
-                              "displaySettings.showShadowMasks",
-                              "soundSettings.mute",
-                              "soundSettings.noRoomEntryTunes",
-                              "soundSettings.noFootsteps"
-                            ],
-                            "type": "string"
-                          },
-                          "type": {
-                            "const": "in-store",
-                            "description": "this switch targets the redux store",
-                            "type": "string"
-                          }
-                        },
-                        "required": ["initialSetting", "type", "path"],
-                        "type": "object"
-                      },
-                      {
-                        "additionalProperties": false,
-                        "properties": {
-                          "initialSetting": {
-                            "enum": ["right", "left"],
-                            "type": "string"
-                          },
-                          "modifies": {
-                            "$ref": "#/definitions/r1"
-                          },
-                          "type": {
-                            "const": "in-room",
-                            "description": "this switch targets items in the room. This is the default, so also used if undefined",
-                            "type": "string"
-                          }
-                        },
-                        "required": ["initialSetting", "modifies"],
-                        "type": "object"
-                      }
-                    ]
-                  },
-                  "position": {
-                    "$ref": "#/definitions/r45"
-                  },
-                  "type": {
-                    "const": "switch",
-                    "type": "string"
-                  }
-                },
-                "required": ["type", "position", "config"],
-                "type": "object"
-              },
-              {
-                "additionalProperties": false,
-                "properties": {
-                  "config": {
-                    "$ref": "#/definitions/r8"
-                  },
-                  "position": {
-                    "$ref": "#/definitions/r45"
-                  },
-                  "type": {
-                    "const": "teleporter",
-                    "type": "string"
-                  }
-                },
-                "required": ["type", "position", "config"],
-                "type": "object"
-              },
-              {
-                "additionalProperties": false,
-                "properties": {
-                  "config": {
-                    "$ref": "#/definitions/r8"
-                  },
-                  "position": {
-                    "$ref": "#/definitions/r45"
-                  },
-                  "type": {
-                    "const": "portableTeleporter",
-                    "type": "string"
-                  }
-                },
-                "required": ["type", "position", "config"],
-                "type": "object"
-              },
-              {
-                "additionalProperties": false,
-                "properties": {
-                  "config": {
-                    "$ref": "#/definitions/r36"
-                  },
-                  "position": {
-                    "$ref": "#/definitions/r45"
-                  },
-                  "type": {
-                    "const": "movingPlatform",
-                    "type": "string"
-                  }
-                },
-                "required": ["type", "position", "config"],
-                "type": "object"
-              },
-              {
-                "additionalProperties": false,
-                "properties": {
-                  "config": {
-                    "additionalProperties": false,
-                    "properties": {
-                      "times": {
-                        "$ref": "#/definitions/r56"
-                      }
-                    },
-                    "type": "object"
-                  },
-                  "position": {
-                    "$ref": "#/definitions/r45"
-                  },
-                  "type": {
-                    "const": "spikes",
-                    "type": "string"
-                  }
-                },
-                "required": ["type", "position", "config"],
-                "type": "object"
-              },
-              {
-                "additionalProperties": false,
-                "properties": {
-                  "config": {
-                    "$ref": "#/definitions/r72"
-                  },
-                  "position": {
-                    "$ref": "#/definitions/r45"
-                  },
-                  "type": {
-                    "const": "portableBlock",
-                    "type": "string"
-                  }
-                },
-                "required": ["type", "position", "config"],
-                "type": "object"
-              },
-              {
-                "additionalProperties": false,
-                "properties": {
-                  "config": {
-                    "$ref": "#/definitions/r95"
-                  },
-                  "position": {
-                    "$ref": "#/definitions/r45"
-                  },
-                  "type": {
-                    "const": "pushableBlock",
-                    "type": "string"
-                  }
-                },
-                "required": ["type", "position", "config"],
-                "type": "object"
-              },
-              {
-                "additionalProperties": false,
-                "properties": {
-                  "config": {
-                    "additionalProperties": false,
-                    "properties": {
                       "delay": {
                         "description": "how long to delay until the first emitting? after this time the first emit will happen, then all others will continue at the period interval. undefined is treated the same as 0",
                         "type": "number"
@@ -966,7 +571,7 @@
                                     "$ref": "#/definitions/r34"
                                   },
                                   {
-                                    "$ref": "#/definitions/r54"
+                                    "$ref": "#/definitions/r55"
                                   },
                                   {
                                     "$ref": "#/definitions/r46"
@@ -1081,7 +686,7 @@
                                     "$ref": "#/definitions/r60"
                                   },
                                   {
-                                    "$ref": "#/definitions/r63"
+                                    "$ref": "#/definitions/r64"
                                   },
                                   {
                                     "$ref": "#/definitions/r47"
@@ -1265,105 +870,6 @@
                       {
                         "additionalProperties": false,
                         "properties": {
-                          "action": {
-                            "const": "nextSpritesOption",
-                            "type": "string"
-                          },
-                          "type": {
-                            "const": "in-store",
-                            "type": "string"
-                          }
-                        },
-                        "required": ["type", "action"],
-                        "type": "object"
-                      },
-                      {
-                        "additionalProperties": false,
-                        "properties": {
-                          "modifies": {
-                            "$ref": "#/definitions/r1"
-                          },
-                          "type": {
-                            "const": "in-room",
-                            "description": "this button targets items in the room. This is the default, so also used if undefined",
-                            "type": "string"
-                          }
-                        },
-                        "required": ["modifies"],
-                        "type": "object"
-                      }
-                    ]
-                  },
-                  "position": {
-                    "$ref": "#/definitions/r45"
-                  },
-                  "type": {
-                    "const": "button",
-                    "type": "string"
-                  }
-                },
-                "required": ["type", "position", "config"],
-                "type": "object"
-              },
-              {
-                "additionalProperties": false,
-                "properties": {
-                  "config": {
-                    "additionalProperties": false,
-                    "properties": {
-                      "delay": {
-                        "type": "number"
-                      },
-                      "initialSetting": {
-                        "enum": ["right", "left"],
-                        "type": "string"
-                      },
-                      "modifies": {
-                        "$ref": "#/definitions/r1"
-                      },
-                      "period": {
-                        "type": "number"
-                      }
-                    },
-                    "required": ["period", "initialSetting", "modifies"],
-                    "type": "object"
-                  },
-                  "position": {
-                    "$ref": "#/definitions/r45"
-                  },
-                  "type": {
-                    "const": "timer",
-                    "type": "string"
-                  }
-                },
-                "required": ["type", "position", "config"],
-                "type": "object"
-              },
-              {
-                "additionalProperties": false,
-                "properties": {
-                  "config": {
-                    "$ref": "#/definitions/r68"
-                  },
-                  "position": {
-                    "$ref": "#/definitions/r45"
-                  },
-                  "type": {
-                    "const": "sceneryCrown",
-                    "type": "string"
-                  }
-                },
-                "required": ["type", "position", "config"],
-                "type": "object"
-              },
-              {
-                "additionalProperties": false,
-                "properties": {
-                  "config": {
-                    "anyOf": [
-                      {
-                        "additionalProperties": false,
-                        "properties": {
                           "floorType": {
                             "const": "none",
                             "description": "the room has no floor, but it is included to draw the floor edge",
@@ -1424,6 +930,501 @@
                   },
                   "type": {
                     "const": "floor",
+                    "type": "string"
+                  }
+                },
+                "required": ["type", "position", "config"],
+                "type": "object"
+              },
+              {
+                "additionalProperties": false,
+                "properties": {
+                  "config": {
+                    "additionalProperties": false,
+                    "properties": {
+                      "times": {
+                        "$ref": "#/definitions/r56"
+                      }
+                    },
+                    "type": "object"
+                  },
+                  "position": {
+                    "$ref": "#/definitions/r45"
+                  },
+                  "type": {
+                    "const": "hushPuppy",
+                    "type": "string"
+                  }
+                },
+                "required": ["type", "position", "config"],
+                "type": "object"
+              },
+              {
+                "additionalProperties": false,
+                "properties": {
+                  "config": {
+                    "$ref": "#/definitions/r38"
+                  },
+                  "position": {
+                    "$ref": "#/definitions/r45"
+                  },
+                  "type": {
+                    "const": "joystick",
+                    "type": "string"
+                  }
+                },
+                "required": ["type", "position", "config"],
+                "type": "object"
+              },
+              {
+                "additionalProperties": false,
+                "properties": {
+                  "config": {
+                    "additionalProperties": false,
+                    "properties": {
+                      "bottom": {
+                        "type": "number"
+                      },
+                      "top": {
+                        "type": "number"
+                      }
+                    },
+                    "required": ["top", "bottom"],
+                    "type": "object"
+                  },
+                  "position": {
+                    "$ref": "#/definitions/r45"
+                  },
+                  "type": {
+                    "const": "lift",
+                    "type": "string"
+                  }
+                },
+                "required": ["type", "position", "config"],
+                "type": "object"
+              },
+              {
+                "additionalProperties": false,
+                "properties": {
+                  "config": {
+                    "anyOf": [
+                      {
+                        "$ref": "#/definitions/r50"
+                      },
+                      {
+                        "$ref": "#/definitions/r40"
+                      },
+                      {
+                        "$ref": "#/definitions/r51"
+                      },
+                      {
+                        "$ref": "#/definitions/r53"
+                      },
+                      {
+                        "$ref": "#/definitions/r34"
+                      },
+                      {
+                        "$ref": "#/definitions/r55"
+                      },
+                      {
+                        "$ref": "#/definitions/r46"
+                      },
+                      {
+                        "$ref": "#/definitions/r52"
+                      },
+                      {
+                        "$ref": "#/definitions/r49"
+                      },
+                      {
+                        "$ref": "#/definitions/r48"
+                      },
+                      {
+                        "$ref": "#/definitions/r43"
+                      },
+                      {
+                        "$ref": "#/definitions/r25"
+                      },
+                      {
+                        "$ref": "#/definitions/r29"
+                      },
+                      {
+                        "$ref": "#/definitions/r30"
+                      }
+                    ]
+                  },
+                  "position": {
+                    "$ref": "#/definitions/r45"
+                  },
+                  "type": {
+                    "const": "monster",
+                    "type": "string"
+                  }
+                },
+                "required": ["type", "position", "config"],
+                "type": "object"
+              },
+              {
+                "additionalProperties": false,
+                "properties": {
+                  "config": {
+                    "$ref": "#/definitions/r74"
+                  },
+                  "position": {
+                    "$ref": "#/definitions/r45"
+                  },
+                  "type": {
+                    "const": "moveableDeadly",
+                    "type": "string"
+                  }
+                },
+                "required": ["type", "position", "config"],
+                "type": "object"
+              },
+              {
+                "additionalProperties": false,
+                "properties": {
+                  "config": {
+                    "$ref": "#/definitions/r36"
+                  },
+                  "position": {
+                    "$ref": "#/definitions/r45"
+                  },
+                  "type": {
+                    "const": "movingPlatform",
+                    "type": "string"
+                  }
+                },
+                "required": ["type", "position", "config"],
+                "type": "object"
+              },
+              {
+                "additionalProperties": false,
+                "properties": {
+                  "config": {
+                    "anyOf": [
+                      {
+                        "$ref": "#/definitions/r60"
+                      },
+                      {
+                        "$ref": "#/definitions/r64"
+                      },
+                      {
+                        "$ref": "#/definitions/r47"
+                      },
+                      {
+                        "$ref": "#/definitions/r21"
+                      }
+                    ]
+                  },
+                  "position": {
+                    "$ref": "#/definitions/r45"
+                  },
+                  "type": {
+                    "const": "pickup",
+                    "type": "string"
+                  }
+                },
+                "required": ["type", "position", "config"],
+                "type": "object"
+              },
+              {
+                "additionalProperties": false,
+                "properties": {
+                  "config": {
+                    "additionalProperties": false,
+                    "properties": {
+                      "which": {
+                        "$ref": "#/definitions/r92"
+                      }
+                    },
+                    "required": ["which"],
+                    "type": "object"
+                  },
+                  "position": {
+                    "$ref": "#/definitions/r45"
+                  },
+                  "type": {
+                    "const": "player",
+                    "type": "string"
+                  }
+                },
+                "required": ["type", "position", "config"],
+                "type": "object"
+              },
+              {
+                "additionalProperties": false,
+                "properties": {
+                  "config": {
+                    "$ref": "#/definitions/r72"
+                  },
+                  "position": {
+                    "$ref": "#/definitions/r45"
+                  },
+                  "type": {
+                    "const": "portableBlock",
+                    "type": "string"
+                  }
+                },
+                "required": ["type", "position", "config"],
+                "type": "object"
+              },
+              {
+                "additionalProperties": false,
+                "properties": {
+                  "config": {
+                    "$ref": "#/definitions/r8"
+                  },
+                  "position": {
+                    "$ref": "#/definitions/r45"
+                  },
+                  "type": {
+                    "const": "portableTeleporter",
+                    "type": "string"
+                  }
+                },
+                "required": ["type", "position", "config"],
+                "type": "object"
+              },
+              {
+                "additionalProperties": false,
+                "properties": {
+                  "config": {
+                    "$ref": "#/definitions/r95"
+                  },
+                  "position": {
+                    "$ref": "#/definitions/r45"
+                  },
+                  "type": {
+                    "const": "pushableBlock",
+                    "type": "string"
+                  }
+                },
+                "required": ["type", "position", "config"],
+                "type": "object"
+              },
+              {
+                "additionalProperties": false,
+                "properties": {
+                  "config": {
+                    "$ref": "#/definitions/r68"
+                  },
+                  "position": {
+                    "$ref": "#/definitions/r45"
+                  },
+                  "type": {
+                    "const": "sceneryCrown",
+                    "type": "string"
+                  }
+                },
+                "required": ["type", "position", "config"],
+                "type": "object"
+              },
+              {
+                "additionalProperties": false,
+                "properties": {
+                  "config": {
+                    "$ref": "#/definitions/r42"
+                  },
+                  "position": {
+                    "$ref": "#/definitions/r45"
+                  },
+                  "type": {
+                    "const": "sceneryPlayer",
+                    "type": "string"
+                  }
+                },
+                "required": ["type", "position", "config"],
+                "type": "object"
+              },
+              {
+                "additionalProperties": false,
+                "properties": {
+                  "config": {
+                    "$ref": "#/definitions/r73"
+                  },
+                  "position": {
+                    "$ref": "#/definitions/r45"
+                  },
+                  "type": {
+                    "const": "slidingBlock",
+                    "type": "string"
+                  }
+                },
+                "required": ["type", "position", "config"],
+                "type": "object"
+              },
+              {
+                "additionalProperties": false,
+                "properties": {
+                  "config": {
+                    "$ref": "#/definitions/r66"
+                  },
+                  "position": {
+                    "$ref": "#/definitions/r45"
+                  },
+                  "type": {
+                    "const": "slidingDeadly",
+                    "type": "string"
+                  }
+                },
+                "required": ["type", "position", "config"],
+                "type": "object"
+              },
+              {
+                "additionalProperties": false,
+                "properties": {
+                  "config": {
+                    "additionalProperties": false,
+                    "properties": {
+                      "times": {
+                        "$ref": "#/definitions/r56"
+                      }
+                    },
+                    "type": "object"
+                  },
+                  "position": {
+                    "$ref": "#/definitions/r45"
+                  },
+                  "type": {
+                    "const": "spikes",
+                    "type": "string"
+                  }
+                },
+                "required": ["type", "position", "config"],
+                "type": "object"
+              },
+              {
+                "additionalProperties": false,
+                "properties": {
+                  "config": {
+                    "$ref": "#/definitions/r95"
+                  },
+                  "position": {
+                    "$ref": "#/definitions/r45"
+                  },
+                  "type": {
+                    "const": "spring",
+                    "type": "string"
+                  }
+                },
+                "required": ["type", "position", "config"],
+                "type": "object"
+              },
+              {
+                "additionalProperties": false,
+                "properties": {
+                  "config": {
+                    "anyOf": [
+                      {
+                        "additionalProperties": false,
+                        "properties": {
+                          "initialSetting": {
+                            "enum": ["right", "left"],
+                            "type": "string"
+                          },
+                          "path": {
+                            "enum": [
+                              "displaySettings",
+                              "infiniteLivesPoke",
+                              "infiniteDoughnutsPoke",
+                              "showFps",
+                              "onScreenControls",
+                              "soundSettings",
+                              "displaySettings.crtFilter",
+                              "displaySettings.showRoomScrollBounds",
+                              "displaySettings.showShadowMasks",
+                              "soundSettings.mute",
+                              "soundSettings.noRoomEntryTunes",
+                              "soundSettings.noFootsteps"
+                            ],
+                            "type": "string"
+                          },
+                          "type": {
+                            "const": "in-store",
+                            "description": "this switch targets the redux store",
+                            "type": "string"
+                          }
+                        },
+                        "required": ["initialSetting", "type", "path"],
+                        "type": "object"
+                      },
+                      {
+                        "additionalProperties": false,
+                        "properties": {
+                          "initialSetting": {
+                            "enum": ["right", "left"],
+                            "type": "string"
+                          },
+                          "modifies": {
+                            "$ref": "#/definitions/r1"
+                          },
+                          "type": {
+                            "const": "in-room",
+                            "description": "this switch targets items in the room. This is the default, so also used if undefined",
+                            "type": "string"
+                          }
+                        },
+                        "required": ["initialSetting", "modifies"],
+                        "type": "object"
+                      }
+                    ]
+                  },
+                  "position": {
+                    "$ref": "#/definitions/r45"
+                  },
+                  "type": {
+                    "const": "switch",
+                    "type": "string"
+                  }
+                },
+                "required": ["type", "position", "config"],
+                "type": "object"
+              },
+              {
+                "additionalProperties": false,
+                "properties": {
+                  "config": {
+                    "$ref": "#/definitions/r8"
+                  },
+                  "position": {
+                    "$ref": "#/definitions/r45"
+                  },
+                  "type": {
+                    "const": "teleporter",
+                    "type": "string"
+                  }
+                },
+                "required": ["type", "position", "config"],
+                "type": "object"
+              },
+              {
+                "additionalProperties": false,
+                "properties": {
+                  "config": {
+                    "additionalProperties": false,
+                    "properties": {
+                      "delay": {
+                        "type": "number"
+                      },
+                      "initialSetting": {
+                        "enum": ["right", "left"],
+                        "type": "string"
+                      },
+                      "modifies": {
+                        "$ref": "#/definitions/r1"
+                      },
+                      "period": {
+                        "type": "number"
+                      }
+                    },
+                    "required": ["period", "initialSetting", "modifies"],
+                    "type": "object"
+                  },
+                  "position": {
+                    "$ref": "#/definitions/r45"
+                  },
+                  "type": {
+                    "const": "timer",
                     "type": "string"
                   }
                 },
@@ -1990,7 +1991,7 @@
           "$ref": "#/definitions/r60"
         },
         {
-          "$ref": "#/definitions/r63"
+          "$ref": "#/definitions/r64"
         },
         {
           "$ref": "#/definitions/r47"
@@ -1999,7 +2000,13 @@
           "$ref": "#/definitions/r21"
         },
         {
+          "type": "object"
+        },
+        {
           "$ref": "#/definitions/r77"
+        },
+        {
+          "$ref": "#/definitions/r67"
         },
         {
           "$ref": "#/definitions/r50"
@@ -2017,7 +2024,7 @@
           "$ref": "#/definitions/r34"
         },
         {
-          "$ref": "#/definitions/r54"
+          "$ref": "#/definitions/r55"
         },
         {
           "$ref": "#/definitions/r46"
@@ -2047,16 +2054,10 @@
           "$ref": "#/definitions/r74"
         },
         {
-          "$ref": "#/definitions/r42"
+          "$ref": "#/definitions/r36"
         },
         {
-          "$ref": "#/definitions/r73"
-        },
-        {
-          "$ref": "#/definitions/r66"
-        },
-        {
-          "type": "object"
+          "$ref": "#/definitions/r72"
         },
         {
           "$ref": "#/definitions/r11"
@@ -2065,16 +2066,16 @@
           "$ref": "#/definitions/r10"
         },
         {
-          "$ref": "#/definitions/r36"
-        },
-        {
-          "$ref": "#/definitions/r72"
-        },
-        {
-          "$ref": "#/definitions/r67"
-        },
-        {
           "$ref": "#/definitions/r68"
+        },
+        {
+          "$ref": "#/definitions/r42"
+        },
+        {
+          "$ref": "#/definitions/r73"
+        },
+        {
+          "$ref": "#/definitions/r66"
         }
       ]
     },
@@ -2126,7 +2127,7 @@
           "$ref": "#/definitions/r13"
         },
         "everActivated": {
-          "$ref": "#/definitions/r64"
+          "$ref": "#/definitions/r63"
         },
         "expires": {
           "$ref": "#/definitions/r32"
@@ -2191,7 +2192,7 @@
           "$ref": "#/definitions/r35"
         },
         "reverses": {
-          "$ref": "#/definitions/r55"
+          "$ref": "#/definitions/r54"
         },
         "rightState": {
           "$ref": "#/definitions/r35"
@@ -2257,12 +2258,12 @@
         "scrollsRead.bag",
         "scrollsRead.doughnuts",
         "scrollsRead.hooter",
+        "scrollsRead.head",
+        "scrollsRead.heels",
         "scrollsRead.teleportBack",
         "scrollsRead.historyOfTheBlacktoothEmpire",
         "scrollsRead.theGame",
         "scrollsRead.bookWorld",
-        "scrollsRead.head",
-        "scrollsRead.heels",
         "scrollsRead.reincarnationFish",
         "scrollsRead.cuddlyStuffedWhiteRabbits",
         "scrollsRead.crowns",
@@ -2400,32 +2401,32 @@
         "barrier",
         "block",
         "bubbles",
+        "button",
         "charles",
         "conveyor",
         "deadlyBlock",
+        "emitter",
+        "firedDoughnut",
+        "floor",
         "hushPuppy",
         "joystick",
         "lift",
         "monster",
         "moveableDeadly",
+        "movingPlatform",
         "pickup",
+        "portableBlock",
+        "portableTeleporter",
+        "pushableBlock",
+        "sceneryCrown",
         "sceneryPlayer",
         "slidingBlock",
         "slidingDeadly",
+        "spikes",
         "spring",
         "switch",
         "teleporter",
-        "portableTeleporter",
-        "movingPlatform",
-        "spikes",
-        "portableBlock",
-        "pushableBlock",
-        "emitter",
-        "firedDoughnut",
-        "button",
         "timer",
-        "sceneryCrown",
-        "floor",
         "head",
         "heels",
         "headOverHeels",
@@ -2564,12 +2565,12 @@
         "bag",
         "doughnuts",
         "hooter",
+        "head",
+        "heels",
         "teleportBack",
         "historyOfTheBlacktoothEmpire",
         "theGame",
         "bookWorld",
-        "head",
-        "heels",
         "reincarnationFish",
         "cuddlyStuffedWhiteRabbits",
         "crowns",
@@ -2990,6 +2991,11 @@
       "type": "object"
     },
     "r54": {
+      "description": "true means the left setting reverses the conveyor (opposite of config direction), false means the right setting reverses it. \"reverse\" = set direction to the opposite of the item's config.direction.",
+      "enum": [false, true],
+      "type": "boolean"
+    },
+    "r55": {
       "additionalProperties": false,
       "properties": {
         "activated": {
@@ -3007,11 +3013,6 @@
       },
       "required": ["which", "movement", "activated"],
       "type": "object"
-    },
-    "r55": {
-      "description": "true means the left setting reverses the conveyor (opposite of config direction), false means the right setting reverses it. \"reverse\" = set direction to the opposite of the item's config.direction.",
-      "enum": [false, true],
-      "type": "boolean"
     },
     "r56": {
       "additionalProperties": false,
@@ -3058,19 +3059,19 @@
       "enum": [
         "ball",
         "charles",
+        "firedDoughnut",
         "monster",
         "moveableDeadly",
+        "movingPlatform",
         "pickup",
+        "portableBlock",
+        "portableTeleporter",
+        "pushableBlock",
+        "sceneryCrown",
         "sceneryPlayer",
         "slidingBlock",
         "slidingDeadly",
-        "spring",
-        "portableTeleporter",
-        "movingPlatform",
-        "portableBlock",
-        "pushableBlock",
-        "firedDoughnut",
-        "sceneryCrown"
+        "spring"
       ],
       "type": "string"
     },
@@ -3113,6 +3114,11 @@
       "type": "object"
     },
     "r63": {
+      "description": "if this item has ever been activated, in the lifetime of the room. Charging cybermen will have this flag as false so long as they are charging",
+      "enum": [false, true],
+      "type": "boolean"
+    },
+    "r64": {
       "additionalProperties": false,
       "properties": {
         "gives": {
@@ -3121,11 +3127,6 @@
       },
       "required": ["gives"],
       "type": "object"
-    },
-    "r64": {
-      "description": "if this item has ever been activated, in the lifetime of the room. Charging cybermen will have this flag as false so long as they are charging",
-      "enum": [false, true],
-      "type": "boolean"
     },
     "r65": {
       "additionalProperties": false,
@@ -3340,7 +3341,7 @@
       ]
     },
     "r87": {
-      "enum": ["towards-analogue", "back-forth", "clockwise"],
+      "enum": ["back-forth", "clockwise", "towards-analogue"],
       "type": "string"
     },
     "r88": {

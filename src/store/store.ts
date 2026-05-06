@@ -22,10 +22,7 @@ import { campaignsApiSlice } from "./slices/campaigns/campaignsApiSlice";
 import { registerClearAllDataListeners } from "./slices/clearAllDataListeners";
 import { debugSlice } from "./slices/debug/debugSlice";
 import { gameAssetsLoadingSlice } from "./slices/gameAssetsLoading/gameAssetsLoadingSlice";
-import {
-  debugItemClicked,
-  gameInPlaySlice,
-} from "./slices/gameInPlay/gameInPlaySlice";
+import { gameInPlaySlice } from "./slices/gameInPlay/gameInPlaySlice";
 import { registerGameMenusListeners } from "./slices/gameMenus/gameMenusListeners";
 import { gameMenusSlice } from "./slices/gameMenus/gameMenusSlice";
 import { playMenuSoundsOnStoreChanges } from "./slices/gameMenus/playMenuSoundsOnStoreChanges";
@@ -33,7 +30,6 @@ import { githubApiSlice } from "./slices/githubApiSlice";
 import { registerSavedGamesListeners } from "./slices/savedGames/savedGamesListeners";
 import { savedGamesSlice } from "./slices/savedGames/savedGamesSlice";
 import { spritesheetOverrideSlice } from "./slices/spritesheetOverrideSlice";
-import { updateUpscaleWhenDisplaySettingsChange } from "./slices/upscale/updateUpscaleOnStoreChanges";
 import { upscaleSlice } from "./slices/upscale/upscaleSlice";
 import { userSettingsSlice } from "./slices/userSettings/userSettingsSlice";
 
@@ -82,16 +78,7 @@ export const store = configureStore({
   middleware: (getDefaultMiddleware) =>
     getDefaultMiddleware({
       serializableCheck: {
-        ignoredActions: [
-          FLUSH,
-          REHYDRATE,
-          PAUSE,
-          PERSIST,
-          PURGE,
-          REGISTER,
-          // this action has pixi containers in the payload. It is only for debugging and logging those containers:
-          debugItemClicked.type,
-        ],
+        ignoredActions: [FLUSH, REHYDRATE, PAUSE, PERSIST, PURGE, REGISTER],
       },
     })
       .prepend(listenerMiddleware.middleware)
@@ -103,7 +90,6 @@ if (typeof window !== "undefined") {
   window._e2e_store = store;
 }
 
-updateUpscaleWhenDisplaySettingsChange();
 playMenuSoundsOnStoreChanges();
 registerSavedGamesListeners();
 registerGameMenusListeners();
