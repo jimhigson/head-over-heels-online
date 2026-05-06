@@ -1,4 +1,10 @@
-import type { UnionOfAllItemInPlayTypes } from "../../model/ItemInPlay";
+import type { OverrideProperties } from "type-fest";
+
+import type { ItemTypeUnion } from "../../_generated/types/ItemInPlayUnion";
+import type {
+  ItemInPlayType,
+  UnionOfAllItemInPlayTypes,
+} from "../../model/ItemInPlay";
 import type { RoomStateItems } from "../../model/RoomState";
 import type { Xyz } from "../../utils/vectors/vectors";
 import type { GameState } from "../gameState/GameState";
@@ -17,7 +23,7 @@ import { deleteItemFromRoom } from "../gameState/mutators/deleteItemFromRoom";
 import { playableLosesLife } from "../gameState/mutators/playableLosesLife";
 import { updateStandingOn } from "../gameState/mutators/standingOn/updateStandingOn";
 import { validateStandingOn } from "../gameState/mutators/standingOn/validateStandingOn";
-import { isPlayableItem } from "../physics/itemPredicates";
+import { isPlayableItem, isSpatial } from "../physics/itemPredicates";
 import { addParticlesForPlayablesInRoom } from "./addParticlesToRoom";
 import { advanceTime } from "./advanceTime";
 import { correctFloatingPointErrorsInRoom } from "./correctFloatingPointErrorsInRoom";
@@ -28,9 +34,17 @@ import { tickItem } from "./tickItem";
 
 // set to 1 to check for inconsistencies in the model for every subtick
 const extraDebugChecks = 0;
-/* the items that moved while progressing the game state */
-export type MovedItems<RoomId extends string, RoomItemId extends string> = Set<
-  UnionOfAllItemInPlayTypes<RoomId, RoomItemId>
+type SpatialItem<
+  RoomId extends string,
+  RoomItemId extends string,
+> = ItemTypeUnion<Exclude<ItemInPlayType, "timer">, RoomId, RoomItemId>;
+
+export type MovedItems<
+  RoomId extends string,
+  RoomItemId extends string,
+> = OverrideProperties<
+  Set<SpatialItem<RoomId, RoomItemId>>,
+  { has(item: UnionOfAllItemInPlayTypes<RoomId, RoomItemId>): boolean }
 >;
 
 const calculateMovedItems = <RoomId extends string, RoomItemId extends string>(
@@ -41,7 +55,10 @@ const calculateMovedItems = <RoomId extends string, RoomItemId extends string>(
 
   for (const item of roomItemsIterable(roomItems)) {
     const prev = startingPositions[item.id];
-    if (prev === undefined || !xyzEqual(prev, item.state.position)) {
+    if (
+      (prev === undefined || !xyzEqual(prev, item.state.position)) &&
+      isSpatial(item)
+    ) {
       movedItems.add(item);
     }
   }

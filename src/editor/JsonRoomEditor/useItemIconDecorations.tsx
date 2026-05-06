@@ -354,9 +354,11 @@ const textureForItem = (
     case "bubbles":
       return twClass(`texture-bubbles_white_1`);
     case "emitter":
-      return twClass("texture-hud_char_questMk");
+      return twClass("texture-hud_char_E");
+    case "timer":
+      return twClass("texture-hud_char_T");
     case "button":
-      return twClass("texture-button");
+      return twClass("texture-buttonInGame");
     default:
       item satisfies never;
       return twClass("texture-hud_char_questMk");

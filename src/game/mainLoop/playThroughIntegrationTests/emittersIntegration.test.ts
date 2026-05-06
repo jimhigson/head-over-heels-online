@@ -47,23 +47,23 @@ test("emitter respects period and maximum", () => {
     },
   });
 
-  // emits immediately on first tick (lastEmittedAtRoomTime starts at neverTime, a large negative sentinel for JSON-serialisability)
+  // no emission before first period elapses
   playGameThrough(gameState, {
-    until: 10,
+    until: 400,
     frameRate,
   });
-  expect(countEmittedItems(gameState)).toBe(1);
+  expect(countEmittedItems(gameState)).toBe(0);
 
-  // before second period elapses, still only one
+  // first period elapses, should emit first
   playGameThrough(gameState, {
-    until: 499,
+    until: 510,
     frameRate,
   });
   expect(countEmittedItems(gameState)).toBe(1);
 
   // second period elapses, should emit second
   playGameThrough(gameState, {
-    until: 501,
+    until: 1_010,
     frameRate,
   });
   expect(countEmittedItems(gameState)).toBe(2);

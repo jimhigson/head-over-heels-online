@@ -9,6 +9,7 @@ import type {
   EditorUnionOfAllItemInPlayTypes,
 } from "../editorTypes";
 
+import { isSpatial } from "../../game/physics/itemPredicates";
 import { valuesIter } from "../../utils/entries";
 import { useEditorRoomStateWithPreviews } from "../slice/levelEditorSelectors";
 import { useProvidedPixiApplication } from "./PixiApplicationProvider";
@@ -32,9 +33,11 @@ export const useTickRoomRenderer = (roomRenderer: EditorRoomRenderer) => {
           EditorRoomId,
           EditorRoomItemId
         > = new Set(
-          valuesIter(
-            currentEditingRoomState.items,
-          ) as Iterable<EditorUnionOfAllItemInPlayTypes>,
+          (
+            valuesIter(
+              currentEditingRoomState.items,
+            ) as IterableIterator<EditorUnionOfAllItemInPlayTypes>
+          ).filter(isSpatial),
         );
 
         // some animations (ie, cyberman bob) depend on the roomTime

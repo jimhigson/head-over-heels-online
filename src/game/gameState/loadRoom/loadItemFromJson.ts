@@ -144,7 +144,9 @@ export function* loadItemFromJson<
         id: `${jsonItemId}${itemIdSuffix}`,
         jsonItemId,
         fixedZIndex:
-          jsonItem.type === "emitter" ? nonRenderingItemFixedZIndex : undefined,
+          jsonItem.type === "emitter" || jsonItem.type === "timer" ?
+            nonRenderingItemFixedZIndex
+          : undefined,
         shadowCastTexture: loadItemShadowCast(jsonItem),
         // items that have true here are items that let a little bit of the floor below them
         // be seen while they are standing on it

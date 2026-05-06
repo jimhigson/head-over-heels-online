@@ -44,6 +44,8 @@ export type JsonItemType =
   | "firedDoughnut"
   // new one for the remake - like a switch except you have to stay standing on it
   | "button"
+  // periodically toggles switch-style modifications on other items
+  | "timer"
   // the crowns in the final room - these are for decoration and can't be picked up:
   | "sceneryCrown"
   /**

@@ -143,6 +143,7 @@ export const typeOrderPreference: Record<ItemInPlayType, number> = {
   floatingText: 200,
   particle: 200,
   emitter: 200,
+  timer: 200,
   soundEffect: 200,
   outOfBounds: 200,
 };

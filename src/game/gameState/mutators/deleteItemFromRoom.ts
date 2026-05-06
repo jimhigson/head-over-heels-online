@@ -3,7 +3,7 @@ import type { UnindexedRoomState } from "../saving/SavedGameState";
 
 import { roomSpatialIndexKey, type RoomState } from "../../../model/RoomState";
 import { iterateStoodOnByItems } from "../../../model/stoodOnItemsLookup";
-import { isFreeItem } from "../../physics/itemPredicates";
+import { isFreeItem, isSpatial } from "../../physics/itemPredicates";
 import { removeStandingOn } from "./standingOn/removeStandingOn";
 
 export const deleteItemFromRoom = <
@@ -16,10 +16,11 @@ export const deleteItemFromRoom = <
   room: RoomState<RoomId, ItemId>;
   item: ItemId | UnionOfAllItemInPlayTypes<RoomId, ItemId>;
 }) => {
-  // same as removing from an unindexed room, except we also remove from the index
   const item = deleteItemFromUnindexedRoom({ room, item: itemParam });
-  const spatialIndex = room[roomSpatialIndexKey];
-  spatialIndex.removeItem(item);
+  if (isSpatial(item)) {
+    const spatialIndex = room[roomSpatialIndexKey];
+    spatialIndex.removeItem(item);
+  }
 };
 
 /**

@@ -4,7 +4,7 @@ import type { RoomState } from "../../../model/RoomState";
 import { nextSpritesOption } from "../../../store/slices/userSettings/userSettingsSlice";
 import { store } from "../../../store/store";
 import { objectEmpty } from "../../../utils/objectEmpty";
-import { applyModifiesList } from "../handleTouch/handleItemTouchingSwitch";
+import { applyModifiesList } from "../handleTouch/handleItemTouchingSwitch/handleItemTouchingSwitch";
 import { type MechanicResult, unitMechanicalResult } from "../MechanicResult";
 import { buttonStayPressedAfterReleasePeriod } from "../mechanicsConstants";
 

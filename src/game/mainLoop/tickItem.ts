@@ -29,6 +29,7 @@ import {
   isLift,
   isMoving,
   isPickup,
+  isTimer,
   itemIsStandingOnSomething,
 } from "../physics/itemPredicates";
 import { isFreeItem } from "../physics/itemPredicates";
@@ -48,6 +49,7 @@ import { pickingUp } from "../physics/mechanics/pickingUp";
 import { puttingDown } from "../physics/mechanics/puttingDown";
 import { rotateTowardsFacing } from "../physics/mechanics/rotateTowardsFacing";
 import { teleporting } from "../physics/mechanics/teleporting";
+import { timerToggle } from "../physics/mechanics/timerToggle";
 import { walking } from "../physics/mechanics/walking";
 import { moveItem } from "../physics/moveItem/moveItem";
 import { recordActedOnBy } from "../physics/recordActedOnBy";
@@ -145,6 +147,8 @@ function* itemMechanicResultGen<
     >;
   } else if (isEmitter(item)) {
     emitting(item, room, gameState, deltaMS);
+  } else if (isTimer(item)) {
+    timerToggle(item, room, gameState, deltaMS);
   } else if (isButton(item)) {
     yield buttonPressAndRelease(item, room) as MechanicResult<
       T,

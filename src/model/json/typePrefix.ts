@@ -37,5 +37,6 @@ export const typePrefix: Record<JsonItemType, string> = {
   spring: "sg",
   switch: "sw",
   teleporter: "t",
+  timer: "ti",
   wall: "w",
 };
