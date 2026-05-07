@@ -2,6 +2,17 @@
   "name": "hohjs",
   "private": true,
   "version": "22.0.0",
+  "sideEffects": [
+    "*.css",
+    "src/main.tsx",
+    "src/editor/main.tsx",
+    "src/game/gameMain.ts",
+    "src/game/components/App.tsx",
+    "src/store/store.ts",
+    "src/editor/JsonRoomEditor/monaco-loader.ts",
+    "src/game/mainLoop/frameTiming/FrameTimingStats.ts",
+    "src/game/render/filters/lutTexture/stdLuts/paletteQuantisationLut.ts"
+  ],
   "repository": {
     "type": "git",
     "url": "https://github.com/jimhigson/head-over-heels-online"
