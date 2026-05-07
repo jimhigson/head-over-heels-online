@@ -1,6 +1,6 @@
 import type { PluginOption } from "vite";
 
-import react from "@vitejs/plugin-react-swc";
+import preact from "@preact/preset-vite";
 import path from "path";
 import { visualizer } from "rollup-plugin-visualizer";
 import { defineConfig } from "vite";
@@ -24,10 +24,8 @@ export default defineConfig(({ mode: _mode }) => {
     envPrefix: ["VITE_", "TAURI_"],
 
     plugins: [
-      react({
-        // during development, use the same build target as builds - ie,
-        // assume a capable browser and avoid unnecessary transpilation
-        devTarget: "esnext",
+      preact({
+        devtoolsInProd: false,
       }),
       visualizer({
         gzipSize: true,

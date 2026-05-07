@@ -1,5 +1,4 @@
 import { Suspense, useMemo } from "react";
-import { useResizeDetector } from "react-resize-detector";
 
 import type { OnRoomClick } from "./Map.svg";
 
@@ -14,12 +13,13 @@ import { useGameApi } from "../../../../GameApiContext";
 import { useScrollingFromInput } from "../useScrollingFromInput";
 import { MapSvg } from "./Map.svg";
 import { getMapColoursClass } from "./mapColours";
+import { useElementWidth } from "./useElementWidth";
 import { useMapDataForCurrentGame } from "./useMapDataForCurrentGame";
 import { useAllowCharacterSwopping } from "./useTickingCurrentCharacterName";
 
 const MapDialog = <RoomId extends string>() => {
   const { ref: mapContainerRef, width: mapContainerWidth } =
-    useResizeDetector();
+    useElementWidth<HTMLDialogElement>();
   const scrollingContentRef = useScrollingFromInput();
 
   const cheatsOn = useCheatsOn();
