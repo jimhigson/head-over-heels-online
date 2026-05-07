@@ -7,6 +7,7 @@ import type {
   UnionOfAllItemInPlayTypes,
 } from "../../../model/ItemInPlay";
 import type { ItemRenderPipeline } from "../item/itemRender/createItemRenderer";
+import type { DecorateItemMaybeRenderer } from "../item/itemRender/DecorateItemRenderer";
 import type { ItemTickContext } from "../ItemRenderContexts";
 import type { SoundAndGraphicsOutput } from "../SoundAndGraphicsOutput";
 import type { RoomRenderContext, RoomTickContext } from "./RoomRenderContexts";
@@ -29,6 +30,8 @@ import { updateZEdges } from "../sortZ/updateZEdges";
 export class RoomRenderer<RoomId extends string, RoomItemId extends string>
   implements RoomRendererType<RoomId, RoomItemId>
 {
+  static itemDecorators: DecorateItemMaybeRenderer[][] = [];
+
   #destroyed = false;
 
   /**
@@ -126,7 +129,7 @@ export class RoomRenderer<RoomId extends string, RoomItemId extends string>
           zEdges: this.#zEdges,
           getItemRenderPipeline: this.#getItemRenderPipeline,
         },
-        this.renderContext.wrapItemAppearanceRenderer,
+        RoomRenderer.itemDecorators,
       );
 
       this.#itemRenderers.set(item.id as RoomItemId, itemRenderer);

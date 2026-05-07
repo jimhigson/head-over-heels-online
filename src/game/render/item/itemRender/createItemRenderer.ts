@@ -1,50 +1,23 @@
 import type { Container } from "pixi.js";
 
-import type {
-  ItemInPlayType,
-  UnionOfAllItemInPlayTypes,
-} from "../../../../model/ItemInPlay";
+import type { ItemInPlayType } from "../../../../model/ItemInPlay";
 import type { ItemAppearanceOutsideView } from "../../itemAppearances/itemAppearanceOutsideView";
 import type { ItemRenderContext } from "../../ItemRenderContexts";
+import type { DecorateItemMaybeRenderer } from "./DecorateItemRenderer";
 import type { ItemPixiRenderer } from "./ItemPixiRenderer";
 
 import { createSoundRenderer } from "../../../../sound/createSoundRenderer";
 import { SoundPanRenderer } from "../../../../sound/SoundPanRenderer";
-import { debugItemClicked } from "../../../../store/slices/gameInPlay/gameInPlaySlice";
-import { selectShowBoundingBoxes } from "../../../../store/slices/gameMenus/gameMenusSelectors";
 import { defaultUserSettings } from "../../../../store/slices/userSettings/defaultUserSettings";
-import { store } from "../../../../store/store";
 import { appearanceForItem } from "../../itemAppearances/appearanceForItem";
 import { CompositeItemGraphicsRenderer } from "./CompositeItemGraphicsRenderer";
 import { conveyorBobDecorateItemRenderer } from "./ConveyorBobRenderer";
-import {
-  type DecorateItemRenderer,
-  noopDecorateItemRenderer,
-} from "./DecorateItemRenderer";
 import { ItemAppearancePixiRenderer } from "./ItemAppearancePixiRenderer";
-import { ItemBoundingBoxRenderer } from "./ItemBoundingBoxRenderer";
 import { flashOnSwitchedDecorateItemRenderer } from "./ItemFlashOnSwitchedRenderer";
 import { ItemPositionRenderer } from "./ItemPositionRenderer";
 import { maybeCreateItemShadowRenderer } from "./ItemShadowRenderer";
 import { ItemSoundAndGraphicsRenderer } from "./ItemSoundAndGraphicsRenderer";
 import { portableItemPickHighlightDecorateItemRenderer } from "./PortableItemPickUpNextHighlightRenderer";
-
-/** for debugging */
-const assignPointerActions = <RoomId extends string>(
-  item: UnionOfAllItemInPlayTypes<RoomId>,
-  container: Container,
-) => {
-  const {
-    debug: { cheatsOn },
-  } = store.getState();
-
-  if (container !== undefined && cheatsOn) {
-    container.eventMode = "static";
-    container.on("pointertap", () => {
-      store.dispatch(debugItemClicked({ item, pixiContainer: container }));
-    });
-  }
-};
 
 /**
  * creating an item renderer creates one special 'top' property which is the "render this item
@@ -63,29 +36,35 @@ export type ItemRenderPipeline<T extends ItemInPlayType> = {
   itemAppearanceRenderer?: ItemAppearancePixiRenderer<T, object, Container>;
 };
 
+const maybeWrapWithInjected = <T extends ItemInPlayType>(
+  injectedDecorators: DecorateItemMaybeRenderer[][],
+  itemRenderContext: ItemRenderContext<T>,
+  childRenderer?: ItemPixiRenderer<T>,
+) => {
+  if (injectedDecorators.length === 0) {
+    return childRenderer;
+  }
+
+  let composed = childRenderer;
+  for (const group of injectedDecorators) {
+    for (const decorator of group) {
+      composed = decorator(itemRenderContext, composed);
+    }
+  }
+  return composed;
+};
+
 /** factory to create the correct combinations of renderer(s) for any item */
 export const createItemRenderer = <T extends ItemInPlayType>(
   itemRenderContext: ItemRenderContext<T>,
-  /**
-   * optional decorator factory, used to wrap the item's visual rendering
-   * for adding to its appearance (eg, editor annotation). Defaults to an
-   * identity wrapper that returns the child unchanged.
-   */
-  injectedDecorator: DecorateItemRenderer = noopDecorateItemRenderer,
+  injectedDecorators: DecorateItemMaybeRenderer[][],
 ): ItemRenderPipeline<T> => {
-  const state = store.getState();
-  const showBoundingBoxes = selectShowBoundingBoxes(state);
   const colourise = !itemRenderContext.general.spriteOption.uncolourised;
   const {
     general: { paused },
   } = itemRenderContext;
 
   const { item } = itemRenderContext;
-
-  const renderBoundingBoxes =
-    showBoundingBoxes === "all" ||
-    (showBoundingBoxes === "non-wall" &&
-      itemRenderContext.item.type !== "wall");
 
   const siblingPixiRenderers: ItemPixiRenderer<T>[] = [];
 
@@ -94,26 +73,28 @@ export const createItemRenderer = <T extends ItemInPlayType>(
     | ItemRenderPipeline<T>["itemAppearanceRenderer"]
     | undefined = undefined;
 
-  if (appearance !== undefined) {
-    itemAppearanceRenderer = new ItemAppearancePixiRenderer(
-      itemRenderContext,
-      appearance,
-    );
-    siblingPixiRenderers.push(
-      injectedDecorator(
+  const mainRenderChain = maybeWrapWithInjected(
+    injectedDecorators,
+    itemRenderContext,
+    appearance === undefined ? undefined : (
+      conveyorBobDecorateItemRenderer(
         itemRenderContext,
-        conveyorBobDecorateItemRenderer(
+        portableItemPickHighlightDecorateItemRenderer(
           itemRenderContext,
-          portableItemPickHighlightDecorateItemRenderer(
+          flashOnSwitchedDecorateItemRenderer(
             itemRenderContext,
-            flashOnSwitchedDecorateItemRenderer(
+            (itemAppearanceRenderer = new ItemAppearancePixiRenderer(
               itemRenderContext,
-              itemAppearanceRenderer,
-            ),
+              appearance,
+            )),
           ),
         ),
-      ),
-    );
+      )
+    ),
+  );
+
+  if (mainRenderChain !== undefined) {
+    siblingPixiRenderers.push(mainRenderChain);
   }
 
   // non-colourised rendering doesn't have shadows since it prevents
@@ -124,10 +105,6 @@ export const createItemRenderer = <T extends ItemInPlayType>(
     if (maybeItemShadowRenderer !== undefined) {
       siblingPixiRenderers.push(maybeItemShadowRenderer);
     }
-  }
-
-  if (renderBoundingBoxes) {
-    siblingPixiRenderers.push(new ItemBoundingBoxRenderer(itemRenderContext));
   }
 
   let graphics: ItemPixiRenderer<T> | undefined;
@@ -143,8 +120,6 @@ export const createItemRenderer = <T extends ItemInPlayType>(
         );
 
     graphics = new ItemPositionRenderer(itemRenderContext, compositeRenderer);
-
-    assignPointerActions(item, graphics.output);
   }
 
   const mute =

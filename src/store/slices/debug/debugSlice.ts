@@ -14,7 +14,7 @@ const cheatsOnFromUrl =
 export type DebugSliceState = {
   /**
    * When true, the cheats UI is rendered and debug-only behaviours (e.g.
-   * pointer-tap to dispatch `debugItemClicked`) are wired in. Initialised
+   * pointer-tap debug decorators on items) are wired in. Initialised
    * from the `?cheats=1` URL param at app boot. May in future be unlocked
    * via in-game code entry.
    */

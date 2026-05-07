@@ -7,6 +7,8 @@ import type { Aabb } from "../../../../utils/vectors/vectors";
 import type { ItemRenderContext } from "../../ItemRenderContexts";
 import type { ItemPixiRenderer } from "./ItemPixiRenderer";
 
+import { selectShowBoundingBoxTypesSet } from "../../../../store/slices/gameMenus/gameMenusSelectors";
+import { store } from "../../../../store/store";
 import { isItemType } from "../../../physics/itemPredicates";
 import { projectWorldXyzToScreenXy } from "../../projections";
 
@@ -76,30 +78,36 @@ const renderBB = (aabb: Aabb, color: ColorSource) => {
 
 const bbColors: Partial<Record<ItemInPlayType, string>> = {
   head: "rgba(255,184,0)",
+  heels: "rgba(255,184,0)",
+  headOverHeels: "rgba(255,184,0)",
   wall: "rgba(128,200,0)",
   portal: "rgba(255,0,255)",
   pickup: "rgba(0,196,255)",
   emitter: "rgba(0,255,255)",
   stopAutowalk: "rgba(255,128,128)",
   floatingText: "rgba(128,0,255)",
+  deadlyBlock: "#7FD8BB",
+  outOfBounds: "rgba(128,128,128)",
 };
-
+const defaultBbColour = "rgba(255,255,255)";
 export class ItemBoundingBoxRenderer<T extends ItemInPlayType>
   implements ItemPixiRenderer<T>
 {
   #container: Container;
+  #shown = false;
 
   readonly renderContext: ItemRenderContext<T>;
 
   constructor(renderContext: ItemRenderContext<T>) {
     this.renderContext = renderContext;
-    const { item } = renderContext;
-
-    const color = bbColors[item.type] ?? "rgba(255,255,255)";
-
     this.#container = new Container({
-      label: `ItemBoundingBoxRenderer ${item.id}`,
+      label: `ItemBoundingBoxRenderer ${renderContext.item.id}`,
     });
+  }
+
+  #render() {
+    const { item } = this.renderContext;
+    const color = bbColors[item.type] ?? defaultBbColour;
 
     if (isItemType("portal")(item)) {
       const relativePointScreenXy = projectWorldXyzToScreenXy(
@@ -161,22 +169,33 @@ export class ItemBoundingBoxRenderer<T extends ItemInPlayType>
       textNode = undefined;
     });
 
-    renderContext.frontLayer.attach(this.#container);
+    this.renderContext.frontLayer.attach(this.#container);
+    this.#shown = true;
+  }
 
-    /*this.#container.on("pointerleave", () => {
-      graphics.clear();
-      cuboidBB(aabb, graphics);
-  
-      graphics.stroke({
-        width: 0.5,
-        color,
-        alpha: 1,
-      });
-    });*/
+  #clear() {
+    this.#shown = false;
+    this.#container.removeChildren();
+    this.#container.removeAllListeners();
+    this.renderContext.frontLayer.detach(this.#container);
   }
+
   tick() {
-    // never update the rendering
+    const shouldShow = selectShowBoundingBoxTypesSet(store.getState()).has(
+      this.renderContext.item.type,
+    );
+
+    if (shouldShow === this.#shown) {
+      return;
+    }
+
+    if (shouldShow) {
+      this.#render();
+    } else {
+      this.#clear();
+    }
   }
+
   destroy(): void {
     this.#container.destroy({ children: true });
   }

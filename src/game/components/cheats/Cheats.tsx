@@ -44,12 +44,14 @@ import { addItemFromJsonToRoom } from "../../gameState/mutators/addItemToRoom";
 import { changeCharacterRoom } from "../../gameState/mutators/changeCharacterRoom";
 import { swopFromUncombinedToCombinedPlayables } from "../../gameState/mutators/swopPlayables";
 import { blockSizePx } from "../../physics/mechanicsConstants";
+import { boundingBoxDecorateItemRenderer } from "../../render/item/itemRender/boundingBoxDecorateItemRenderer";
+import { debugPointerDecorateItemRenderer } from "../../render/item/itemRender/debugPointerDecorateItemRenderer";
+import { useRegisterDecorateItemRenderers } from "../../render/useRegisterDecorateItemRenderers";
 import { CssVariables } from "../CssVariables";
 import { useGameApi } from "../GameApiContext";
 import { BitmapText } from "../tailwindSprites/BitmapText";
 import { usePlayableTailwindSpriteClassname } from "../tailwindSprites/playableTailwindSpriteClassname";
 import { GameApiConnectedRoomSelect } from "./GameApiConnectedRoomSelect";
-import { useDebugClickOnItem } from "./useDebugClickOnItem";
 import { useLevelSelectByUrlHash } from "./useLevelSelectByUrlHash";
 
 interface SpeedButtonProps {
@@ -233,11 +235,15 @@ const Heading = ({ children }: { children: string }) => {
 
 let summonedItemNumber = 0;
 
+const cheatsDecorators = [
+  boundingBoxDecorateItemRenderer,
+  debugPointerDecorateItemRenderer,
+];
+
 export const Cheats = <RoomId extends string>(_emptyProps: EmptyObject) => {
+  useRegisterDecorateItemRenderers(cheatsDecorators);
   const gameApi = useGameApi<RoomId>();
   const spriteClassname = usePlayableTailwindSpriteClassname();
-
-  useDebugClickOnItem();
 
   const showShadowMasks = useShowShadowMasks();
   const dispatch = useAppDispatch();
@@ -328,11 +334,16 @@ export const Cheats = <RoomId extends string>(_emptyProps: EmptyObject) => {
               >
                 Penitentiary
               </GoToRoomButton>
+              ~
             </div>
             <Heading>debug rendering:</Heading>
             <div className="flex flex-row items-center gap-x-1 justify-center pb-1 pt-1 bg-shadow text-white">
-              <BitmapText>BBs:</BitmapText>
-              <ShowBoundingBoxSelect />
+              <BitmapText>BB:</BitmapText>
+              <ShowBoundingBoxSelect
+                getCurrentRoomItems={() =>
+                  selectCurrentRoomState(gameApi.gameState)?.items
+                }
+              />
               <Switch
                 label="shadow"
                 value={showShadowMasks}
@@ -638,22 +649,49 @@ export const Cheats = <RoomId extends string>(_emptyProps: EmptyObject) => {
               </Button>
             </div>
 
-            <Heading>game speed x:</Heading>
+            <Heading>game speed:</Heading>
             <div className="flex flex-row items-center">
-              <SpeedButton speed={-1} />
-              <SpeedButton speed={0} className="bg-midGrey" />
+              <SpeedButton
+                speed={-1}
+                className="bg-midRed text-white zx:bg-zxRed toppy:bg-toppyPink2"
+              />
+              <SpeedButton
+                speed={0}
+                className="bg-midGrey text-white zx:bg-zxBlack toppy:bg-toppyGrey3"
+              />
               <SpeedButton speed={0.05} />
               <SpeedButton speed={0.2} />
               <SpeedButton speed={0.5} />
-              <SpeedButton speed={1} />
-              <SpeedButton speed={1.2} className="bg-moss" />
-              <SpeedButton speed={1.5} />
-              <SpeedButton speed={2} />
+              <SpeedButton
+                speed={1}
+                className="bg-pastelBlue text-shadow zx:bg-zxCyan zx:text-zxBlack toppy:bg-toppyCool1 toppy:text-toppyGrey4"
+              />
+              <SpeedButton
+                speed={1.2}
+                className="bg-moss text-shadow zx:bg-zxGreen zx:text-zxBlack toppy:bg-toppyCool2 toppy:text-toppyGrey4"
+              />
+              <SpeedButton
+                speed={1.5}
+                className="bg-pastelBlue text-shadow zx:bg-zxCyan zx:text-zxBlack toppy:bg-toppyCool1 toppy:text-toppyGrey4"
+              />
+              <SpeedButton
+                speed={2}
+                className="bg-pastelBlue text-shadow zx:bg-zxCyan zx:text-zxBlack toppy:bg-toppyCool1 toppy:text-toppyGrey4"
+              />
               <SpeedButton speed={5} />
               <SpeedButton speed={10} />
-              <SpeedButton speed={25} className="bg-highlightBeige" />
-              <SpeedButton speed={100} className="bg-lightBeige" />
-              <SpeedButton speed={250} className="bg-midRed" />
+              <SpeedButton
+                speed={25}
+                className="bg-highlightBeige text-shadow zx:bg-zxYellow zx:text-zxBlack toppy:bg-toppyWarm3 toppy:text-toppyGrey4"
+              />
+              <SpeedButton
+                speed={100}
+                className="bg-lightBeige text-shadow zx:bg-zxYellowDimmed zx:text-zxBlack toppy:bg-toppyWarm2 toppy:text-toppyGrey4"
+              />
+              <SpeedButton
+                speed={250}
+                className="bg-midRed text-white zx:bg-zxRed toppy:bg-toppyPink2"
+              />
             </div>
 
             <Heading>pokes:</Heading>
@@ -796,7 +834,6 @@ export const Cheats = <RoomId extends string>(_emptyProps: EmptyObject) => {
                     console.log("playable on window.playable");
 
                     if (playable.id !== "headOverHeels") {
-                      /** TODO: @knownRoomIds - remove casts */
                       const otherName = otherIndividualCharacterName(
                         playable.id as IndividualCharacterName,
                       );

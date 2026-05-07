@@ -1,5 +1,5 @@
 import type { PayloadAction } from "@reduxjs/toolkit";
-import type { ValueOf } from "type-fest";
+import type { ValueOf, Writable } from "type-fest";
 
 import { createSlice } from "@reduxjs/toolkit";
 
@@ -17,6 +17,10 @@ import {
   type KeyAssignmentPresetName,
   keyAssignmentPresets,
 } from "../../../game/input/keyAssignmentPresets";
+import {
+  type ItemInPlayType,
+  itemInPlayTypes,
+} from "../../../model/ItemInPlay";
 import { resolutionNames } from "../../../originalGame";
 import { spriteOptionValues } from "../../../sprites/spritesheet/spritesheetData/spritesheetMetaData";
 import { getAtPath, setAtPath } from "../../../utils/getAtPath";
@@ -32,9 +36,6 @@ import {
 } from "./selectableGameSpeeds";
 import { spriteOptionEquals } from "./spriteOptionEquals";
 
-export const showBoundingBoxOptions = ["none", "non-wall", "all"] as const;
-export type ShowBoundingBoxes = (typeof showBoundingBoxOptions)[number];
-
 export type SpriteOption =
   | { name: "BlockStack"; uncolourised: false }
   | { name: "BlockStack"; uncolourised: true }
@@ -43,7 +44,8 @@ export type SpriteOption =
 export type DisplaySettings = {
   emulatedResolution?: ResolutionName;
   crtFilter?: boolean;
-  showBoundingBoxes?: ShowBoundingBoxes;
+  showBoundingBoxTypes?: ItemInPlayType[];
+  showRoomScrollBounds?: boolean;
   showShadowMasks?: boolean;
   sprites?: SpriteOption;
 };
@@ -151,11 +153,26 @@ export const userSettingsSlice = createSlice({
         current,
       );
     },
-    setShowBoundingBoxes(
+    setShowBoundingBoxType(
       state,
-      { payload: showBoundingBoxes }: PayloadAction<ShowBoundingBoxes>,
+      {
+        payload: { itemType, value },
+      }: PayloadAction<{ itemType?: ItemInPlayType; value: boolean }>,
     ) {
-      state.userSettings.displaySettings.showBoundingBoxes = showBoundingBoxes;
+      if (itemType === undefined) {
+        state.userSettings.displaySettings.showBoundingBoxTypes =
+          value ? (itemInPlayTypes as Writable<typeof itemInPlayTypes>) : [];
+        return;
+      }
+      const current =
+        state.userSettings.displaySettings.showBoundingBoxTypes ?? [];
+      const index = current.indexOf(itemType);
+      if (value && index === -1) {
+        current.push(itemType);
+      } else if (!value && index !== -1) {
+        current.splice(index, 1);
+      }
+      state.userSettings.displaySettings.showBoundingBoxTypes = current;
     },
     setShowShadowMasks(state, { payload }: PayloadAction<boolean>) {
       state.userSettings.displaySettings.showShadowMasks = payload;
@@ -287,7 +304,7 @@ export const {
   nextSpritesOption,
   setEmulatedResolution,
   setGameSpeed,
-  setShowBoundingBoxes,
+  setShowBoundingBoxType,
   setShowShadowMasks,
   setSpritesOption,
   toggleUserSetting,

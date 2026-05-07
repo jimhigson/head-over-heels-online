@@ -3,7 +3,6 @@ import type { Renderer } from "pixi.js";
 import { useEffect, useState } from "react";
 
 import type { GeneralRenderContext } from "../../game/render/room/RoomRenderContexts";
-import type { ShowBoundingBoxes } from "../../store/slices/userSettings/userSettingsSlice";
 import type {
   EditorRoomId,
   EditorRoomRenderer,
@@ -12,20 +11,16 @@ import type {
 
 import { RoomRenderer } from "../../game/render/room/RoomRenderer";
 import { spritesheetMetaForOption } from "../../sprites/spritesheet/spritesheetData/spritesheetMetaData";
-import { useShowBoundingBoxes } from "../../store/slices/gameMenus/gameMenusSelectors";
 import { selectUpscale } from "../../store/slices/upscale/upscaleSlice";
 import { store } from "../../store/store";
-import { editorAnnotationsDecorateItemRenderer } from "../rendering/EditorAnnotationsRenderer";
 import { useEditorRoomStateWithPreviews } from "../slice/levelEditorSelectors";
 import { useProvidedPixiApplication } from "./PixiApplicationProvider";
 
 const editorGeneralRenderContext = (
   pixiRenderer: Renderer,
-  showBoundingBoxes: ShowBoundingBoxes,
 ): GeneralRenderContext<EditorRoomId> => ({
   displaySettings: {
     emulatedResolution: "amigaLowResPal",
-    showBoundingBoxes,
   },
   soundSettings: {
     // don't load/play sounds during room editing
@@ -44,18 +39,15 @@ const editorGeneralRenderContext = (
 const createRoomRenderer = (
   roomState: EditorRoomState,
   pixiRenderer: Renderer,
-  showBoundingBoxes: ShowBoundingBoxes,
 ) => {
   return new RoomRenderer({
     room: roomState,
-    general: editorGeneralRenderContext(pixiRenderer, showBoundingBoxes),
-    wrapItemAppearanceRenderer: editorAnnotationsDecorateItemRenderer,
+    general: editorGeneralRenderContext(pixiRenderer),
   });
 };
 
 export const useRoomRenderer = () => {
   const { renderer: pixiRenderer } = useProvidedPixiApplication();
-  const showBoundingBoxes = useShowBoundingBoxes();
 
   if (!pixiRenderer) {
     throw new Error("this should never be falsey (typescript violation)");
@@ -63,25 +55,20 @@ export const useRoomRenderer = () => {
 
   const currentEditingRoomState = useEditorRoomStateWithPreviews();
   const [roomRenderer, setRoomRenderer] = useState<EditorRoomRenderer>(() =>
-    createRoomRenderer(
-      currentEditingRoomState,
-      pixiRenderer,
-      showBoundingBoxes,
-    ),
+    createRoomRenderer(currentEditingRoomState, pixiRenderer),
   );
 
   useEffect(() => {
     const createdThisEffectRoomRenderer = createRoomRenderer(
       currentEditingRoomState,
       pixiRenderer,
-      showBoundingBoxes,
     );
     setRoomRenderer(createdThisEffectRoomRenderer);
 
     return () => {
       createdThisEffectRoomRenderer.destroy();
     };
-  }, [currentEditingRoomState, pixiRenderer, showBoundingBoxes]);
+  }, [currentEditingRoomState, pixiRenderer]);
 
   return roomRenderer;
 };

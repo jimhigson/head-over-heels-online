@@ -214,13 +214,11 @@ export class RoomScrollRenderer<
       }),
     };
 
-    const showBoundingBoxes =
-      displaySettings?.showBoundingBoxes ??
-      defaultUserSettings.displaySettings.showBoundingBoxes;
+    const showScrollBounds =
+      displaySettings?.showRoomScrollBounds ??
+      defaultUserSettings.displaySettings.showRoomScrollBounds;
 
-    if (showBoundingBoxes !== "none") {
-      // these aren't really bounding boxes, but it is useful to be abl to turn them on and I don't want to add
-      // any more switches:
+    if (showScrollBounds) {
       output.graphics.addChild(showRoomScrollBounds(renderContext.room));
     }
     this.output = output;

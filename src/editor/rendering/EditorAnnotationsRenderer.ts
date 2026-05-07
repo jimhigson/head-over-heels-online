@@ -4,7 +4,7 @@ import type { AllUnionFields } from "type-fest";
 
 import { Container } from "pixi.js";
 
-import type { DecorateItemRenderer } from "../../game/render/item/itemRender/DecorateItemRenderer";
+import type { DecorateItemMaybeRenderer } from "../../game/render/item/itemRender/DecorateItemRenderer";
 import type { ItemPixiRenderer } from "../../game/render/item/itemRender/ItemPixiRenderer";
 import type {
   ItemRenderContext,
@@ -192,8 +192,6 @@ export class EditorAnnotationsRenderer<T extends ItemInPlayType>
     this.output.addChild(childRenderer.output);
 
     this.#initAnnotations();
-    // if (item.type === "doorFrame" && item.config.part === "top") {
-    // }
   }
 
   #initAnnotations() {
@@ -533,10 +531,11 @@ export class EditorAnnotationsRenderer<T extends ItemInPlayType>
 
 /**
  * {@link DecorateItemRenderer} that wraps an item's appearance in
- * {@link EditorAnnotationsRenderer}. Passed to the game's RoomRenderer via
- * `wrapItemAppearanceRenderer` when the level editor constructs it.
+ * {@link EditorAnnotationsRenderer}. Registered via
+ * `RoomRenderer.itemDecorators` when the level editor starts.
  */
-export const editorAnnotationsDecorateItemRenderer: DecorateItemRenderer = (
-  itemRenderContext,
-  childRenderer,
-) => new EditorAnnotationsRenderer(itemRenderContext, childRenderer);
+export const editorAnnotationsDecorateItemRenderer: DecorateItemMaybeRenderer =
+  (itemRenderContext, childRenderer) =>
+    childRenderer ?
+      new EditorAnnotationsRenderer(itemRenderContext, childRenderer)
+    : undefined;

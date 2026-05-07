@@ -1,9 +1,13 @@
 import { TextureStyle } from "pixi.js";
 import { useState } from "react";
 
+import { boundingBoxDecorateItemRenderer } from "../../game/render/item/itemRender/boundingBoxDecorateItemRenderer";
+import { useRegisterDecorateItemRenderers } from "../../game/render/useRegisterDecorateItemRenderers";
 import { type ResolutionName } from "../../originalGame";
+import { useUpdateUpscaleOnDisplaySettingsChange } from "../../store/slices/upscale/useUpdateUpscaleOnDisplaySettingsChange";
 import { useUpdateUpscaleWhenElementResizes } from "../../store/slices/upscale/useUpdateUpscaleWhenElementResizes";
 import { useCanvasTransform } from "../../utils/scaledRendering/useCanvasInlineStyle";
+import { editorAnnotationsDecorateItemRenderer } from "../rendering/EditorAnnotationsRenderer";
 import { useRoomEditorInteractivity } from "./interactivity/useRoomEditorInteractivity";
 import { PixiApplicationProvider } from "./PixiApplicationProvider";
 import { ResolutionControls } from "./ResolutionControls";
@@ -19,7 +23,13 @@ import { useTickRoomRenderer } from "./useTickRoomRenderer";
 import { useTickSpritesheetVariants } from "./useTickSpritesheetVariants";
 TextureStyle.defaultOptions.scaleMode = "nearest";
 
+const editorItemRendererDecorators = [
+  editorAnnotationsDecorateItemRenderer,
+  boundingBoxDecorateItemRenderer,
+];
+
 const RoomEditingAreaInner = () => {
+  useRegisterDecorateItemRenderers(editorItemRendererDecorators);
   const roomRenderer = useRoomRenderer();
   const [renderArea, setRenderArea] = useState<HTMLDivElement | null>(null);
   const [renderSizingArea, setRenderSizingArea] =
@@ -30,6 +40,10 @@ const RoomEditingAreaInner = () => {
   const cursorClassname = useRoomEditingAreaCursorClassName();
 
   useUpdateUpscaleWhenElementResizes(
+    selectedResolution,
+    renderSizingArea ?? undefined,
+  );
+  useUpdateUpscaleOnDisplaySettingsChange(
     selectedResolution,
     renderSizingArea ?? undefined,
   );

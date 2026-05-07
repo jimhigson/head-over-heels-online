@@ -4,6 +4,7 @@ import {
   type ReactNode,
   useCallback,
   useEffect,
+  useId,
   useRef,
   useState,
 } from "react";
@@ -19,8 +20,19 @@ import { type ShortcutKeys, useKeyboardShortcut } from "./useKeyboardShortcut";
 
 const uiSoundVolume = 0.3;
 
-const SwitchLabel = ({ label }: { label: string }) => (
-  <BitmapText className="inline-block mr-1 text-lightGrey py-half" noSlitWords>
+const SwitchLabel = ({
+  label,
+  htmlFor,
+}: {
+  label: string;
+  htmlFor: string;
+}) => (
+  <BitmapText
+    TagName="label"
+    htmlFor={htmlFor}
+    className="inline-block mr-1 text-lightGrey py-half"
+    noSlitWords
+  >
     {label}
   </BitmapText>
 );
@@ -48,6 +60,7 @@ export const Switch = ({
   shortcutKeys,
   tooltipContent,
 }: SwitchProps) => {
+  const switchId = useId();
   const labelLength = Math.max(trueLabel.length, falseLabel.length) + 1;
   const trueLabelPadded = trueLabel.padStart(labelLength, " ");
   const falseLabelPadded = falseLabel.padEnd(labelLength, " ");
@@ -81,8 +94,9 @@ export const Switch = ({
           }}
         />
       )}
-      {label && <SwitchLabel label={label} />}
+      {label && <SwitchLabel label={label} htmlFor={switchId} />}
       <BitmapText
+        id={switchId}
         role="switch"
         className={clsx(
           "inline-block w-min h-min py-half px-half sprites-uppercase",
@@ -143,6 +157,7 @@ export const SwitchN = <TValue extends number | string>({
   shortcutKeys,
   tooltipContent,
 }: SwitchNProps<TValue>) => {
+  const switchId = useId();
   const valueIndex = values.indexOf(value);
   const numValues = values.length;
 
@@ -186,8 +201,9 @@ export const SwitchN = <TValue extends number | string>({
           }}
         />
       )}
-      {label && <SwitchLabel label={label} />}
+      {label && <SwitchLabel label={label} htmlFor={switchId} />}
       <BitmapText
+        id={switchId}
         role="switch"
         className={clsx(
           "inline-block w-min h-min py-half px-half sprites-uppercase",

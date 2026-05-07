@@ -39,7 +39,10 @@ import { isPortal, isSolid, isTeleporter } from "../../physics/itemPredicates";
 import { blockSizePx } from "../../physics/mechanicsConstants";
 import { moveItem } from "../../physics/moveItem/moveItem";
 import { blockXyzToFineXyz } from "../../render/projections";
-import { selectHeelsAbilities } from "../gameStateSelectors/selectPlayableItem";
+import {
+  selectCurrentPlayableItem,
+  selectHeelsAbilities,
+} from "../gameStateSelectors/selectPlayableItem";
 import { loadRoom } from "../loadRoom/loadRoom";
 import { createRoomEntrySound } from "../loadRoom/loadRoomEntrySound";
 import { entryState } from "../PlayableEntryState";
@@ -61,7 +64,7 @@ type ChangeCharacterRoomOptions<
       changeType: "level-select";
       gameState: GameState<RoomId>;
       // infer RoomItemId from the playable item - could take a room parameter too to infer this from
-      playableItem: PlayableItem<CharacterName, NoInfer<RoomId>, RoomItemId>;
+      playableItem?: PlayableItem<CharacterName, NoInfer<RoomId>, RoomItemId>;
       toRoomId: NoInfer<RoomId>;
       sourceItem?: undefined;
     }
@@ -69,7 +72,7 @@ type ChangeCharacterRoomOptions<
       changeType: "portal";
       gameState: GameState<RoomId>;
       // infer RoomItemId from the playable item - could take a room parameter too to infer this from
-      playableItem: PlayableItem<CharacterName, NoInfer<RoomId>, RoomItemId>;
+      playableItem?: PlayableItem<CharacterName, NoInfer<RoomId>, RoomItemId>;
       toRoomId: NoInfer<RoomId>;
       /* position relative to the portal in the source room */
       sourceItem: ItemInPlay<"portal", NoInfer<RoomId>, NoInfer<RoomItemId>>;
@@ -78,7 +81,7 @@ type ChangeCharacterRoomOptions<
       changeType: "teleport";
       gameState: GameState<RoomId>;
       // infer RoomItemId from the playable item - could take a room parameter too to infer this from
-      playableItem: PlayableItem<CharacterName, NoInfer<RoomId>, RoomItemId>;
+      playableItem?: PlayableItem<CharacterName, NoInfer<RoomId>, RoomItemId>;
       toRoomId: NoInfer<RoomId>;
       sourceItem: ItemInPlay<
         "teleporter",
@@ -326,16 +329,40 @@ const backOffAndPushBack = <RoomId extends string, RoomItemId extends string>(
 };
 
 /**
- * @returns the room the character is in after the call
+ * @returns the room the character is in after the call, or undefined if the character is not
+ * in any room (eg game over). When playableItem is provided, the return is always defined.
  */
-export const changeCharacterRoom = <
+export function changeCharacterRoom<
+  RoomId extends string,
+  RoomItemId extends string,
+>(
+  changeCharacterRoomOptions: ChangeCharacterRoomOptions<RoomId, RoomItemId> & {
+    playableItem: PlayableItem<CharacterName, NoInfer<RoomId>, RoomItemId>;
+  },
+): RoomState<RoomId, RoomItemId>;
+export function changeCharacterRoom<
   RoomId extends string,
   RoomItemId extends string,
 >(
   changeCharacterRoomOptions: ChangeCharacterRoomOptions<RoomId, RoomItemId>,
-): RoomState<RoomId, RoomItemId> => {
-  const { playableItem, gameState, toRoomId, changeType, sourceItem } =
-    changeCharacterRoomOptions;
+): RoomState<RoomId, RoomItemId> | undefined;
+export function changeCharacterRoom<
+  RoomId extends string,
+  RoomItemId extends string,
+>(
+  changeCharacterRoomOptions: ChangeCharacterRoomOptions<RoomId, RoomItemId>,
+): RoomState<RoomId, RoomItemId> | undefined {
+  const {
+    gameState,
+    toRoomId,
+    changeType,
+    sourceItem,
+    playableItem = selectCurrentPlayableItem(gameState),
+  } = changeCharacterRoomOptions;
+
+  if (playableItem === undefined) {
+    return undefined;
+  }
 
   /** TODO: @knownRoomIds - remove casts */
   const leavingRoom = gameState.characterRooms[
@@ -643,4 +670,4 @@ export const changeCharacterRoom = <
   store.dispatch(saveGameThunk(gameState));
 
   return toRoom;
-};
+}
