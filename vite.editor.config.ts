@@ -54,7 +54,16 @@ export default defineConfig({
     },
     target: "esnext",
     cssTarget: "esnext", // Don't transpile CSS for modern browsers
-    minify: "esbuild", // Use esbuild for faster minification
+    minify: "terser",
+    terserOptions: {
+      ecma: 2024,
+      module: true,
+      compress: {
+        passes: 2,
+        unsafe_arrows: true,
+        pure_getters: true,
+      },
+    },
     // Optional: adjust module preload for better performance
     modulePreload: {
       polyfill: false, // Modern browsers don't need the polyfill
