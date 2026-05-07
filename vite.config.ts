@@ -101,7 +101,16 @@ export default defineConfig(({ mode: _mode }) => {
       cssTarget: "esnext", // Don't transpile CSS for modern browsers
 
       // visual-regression builds are unminified for easier debugging of failures
-      minify: mode === "visual-regression" ? false : "esbuild",
+      minify: mode === "visual-regression" ? false : "terser",
+      terserOptions: {
+        ecma: 2024,
+        module: true,
+        compress: {
+          passes: 2,
+          unsafe_arrows: true,
+          pure_getters: true,
+        },
+      },
       // Optional: adjust module preload for better performance
       modulePreload: {
         polyfill: false, // Modern browsers don't need the polyfill
