@@ -6,6 +6,7 @@ import { basicEmptyRoom } from "../../_testUtils/basicRoom";
 import { defaultItemProperties } from "../../model/defaultItemProperties";
 import { unitVectors } from "../../utils/vectors/unitVectors";
 import { originXyz } from "../../utils/vectors/vectors";
+import { emptyRoomJsonDirectionalIndex } from "../gameState/loadRoom/buildRoomJsonDirectionalIndex";
 import { defaultBaseState } from "../gameState/loadRoom/itemDefaultStates";
 import { loadItemFromJson } from "../gameState/loadRoom/loadItemFromJson";
 import { loadPlayer } from "../gameState/loadRoom/loadPlayer";
@@ -29,7 +30,7 @@ const [monster] = loadItemFromJson(
     position: originXyz,
   },
   basicEmptyRoom("firstRoom"),
-  {},
+  emptyRoomJsonDirectionalIndex,
 );
 
 const [pushableBlock] = loadItemFromJson(
@@ -40,7 +41,7 @@ const [pushableBlock] = loadItemFromJson(
     position: originXyz,
   },
   basicEmptyRoom("firstRoom"),
-  {},
+  emptyRoomJsonDirectionalIndex,
 );
 
 const horizontalPortal: UnionOfAllItemInPlayTypes = {

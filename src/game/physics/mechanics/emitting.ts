@@ -2,8 +2,10 @@ import type { ItemInPlay } from "../../../model/ItemInPlay";
 import type { EmittableItemJson } from "../../../model/json/ItemConfigMap";
 import type { GameState } from "../../gameState/GameState";
 
+import { roomJsonItemsIterable } from "../../../model/RoomJson";
 import { roomItemsIterable, type RoomState } from "../../../model/RoomState";
 import { originXyz, scaleXyz, subXyz } from "../../../utils/vectors/vectors";
+import { buildRoomJsonDirectionalIndex } from "../../gameState/loadRoom/buildRoomJsonDirectionalIndex";
 import { loadItemFromJson } from "../../gameState/loadRoom/loadItemFromJson";
 import { addItemToRoom } from "../../gameState/mutators/addItemToRoom";
 import { periodicItemShouldAct } from "./periodicItemShouldAct";
@@ -69,6 +71,7 @@ export const emitting = <RoomId extends string, RoomItemId extends string>(
           position: originXyz,
         } as EmittableItemJson,
         room.roomJson,
+        buildRoomJsonDirectionalIndex(roomJsonItemsIterable(room.roomJson)),
       );
       if (newlyEmittedItem === undefined) {
         throw new Error("emitter failed to create a new item");

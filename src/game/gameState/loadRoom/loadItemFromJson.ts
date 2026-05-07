@@ -8,6 +8,7 @@ import type { Xyz } from "../../../utils/vectors/vectors";
 import type { RoomPickupsCollected } from "../GameState";
 
 import { defaultItemProperties } from "../../../model/defaultItemProperties";
+import { roomJsonItemsIterable } from "../../../model/RoomJson";
 import { getJsonItemTimes } from "../../../model/times";
 import { store } from "../../../store/store";
 import { emptyObject } from "../../../utils/empty";
@@ -15,6 +16,10 @@ import { lengthXyz, unitXyz } from "../../../utils/vectors/vectors";
 import { boundingBoxForItem } from "../../collision/boundingBoxes";
 import { multiplyBoundingBox } from "../../collision/multiplyBoundingBox";
 import { nonRenderingItemFixedZIndex } from "../../render/sortZ/fixedZIndexes";
+import {
+  buildRoomJsonDirectionalIndex,
+  type RoomDirectionalIndex,
+} from "./buildRoomJsonDirectionalIndex";
 import { initialState } from "./itemDefaultStates";
 import { loadDoor } from "./loadDoor";
 import { loadFloor } from "./loadFloor";
@@ -33,6 +38,10 @@ export function* loadItemFromJson<
   jsonItemId: RoomItemId,
   jsonItem: JsonItemUnion<RoomId, RoomItemId>,
   roomJson: RoomJson<RoomId, RoomItemId>,
+  directionalIndex: RoomDirectionalIndex<
+    RoomId,
+    RoomItemId
+  > = buildRoomJsonDirectionalIndex(roomJsonItemsIterable(roomJson)),
   roomPickupsCollected: RoomPickupsCollected = emptyObject,
   /** may be safely omitted if we know that the item is not a scroll */
   scrollsRead: ScrollsRead = {},
@@ -54,7 +63,11 @@ export function* loadItemFromJson<
 
   switch (true) {
     case jsonItem.type === "door": {
-      return yield* loadDoor<RoomId, RoomItemId>(jsonItem, jsonItemId);
+      return yield* loadDoor<RoomId, RoomItemId>(
+        jsonItem,
+        jsonItemId,
+        directionalIndex,
+      );
     }
     case jsonItem.type === "player": {
       yield loadPlayer(jsonItem, jsonItemId);
@@ -91,6 +104,7 @@ export function* loadItemFromJson<
               jsonItemId,
               individualBlock,
               roomJson,
+              directionalIndex,
               roomPickupsCollected,
               scrollsRead,
               `${itemIdSuffix}_${x}_${y}_${z}`,

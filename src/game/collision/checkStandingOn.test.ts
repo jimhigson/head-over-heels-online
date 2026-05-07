@@ -3,7 +3,9 @@ import { describe, expect, test } from "vitest";
 import type { FreeItem } from "../physics/itemPredicates";
 
 import { basicEmptyRoom } from "../../_testUtils/basicRoom";
+import { roomJsonItemsIterable } from "../../model/RoomJson";
 import { originXyz } from "../../utils/vectors/vectors";
+import { buildRoomJsonDirectionalIndex } from "../gameState/loadRoom/buildRoomJsonDirectionalIndex";
 import { loadItemFromJson } from "../gameState/loadRoom/loadItemFromJson";
 import { blockSizePx } from "../physics/mechanicsConstants";
 import {
@@ -22,7 +24,7 @@ describe("findStandingOnWithHighestPriorityAndMostOverlap", () => {
         position: { x: 2.1, y: 0, z: 1 },
       },
       roomJson,
-      {},
+      buildRoomJsonDirectionalIndex(roomJsonItemsIterable(roomJson)),
     );
     const result = findStandingOnWithHighestPriorityAndMostOverlap(
       movable as FreeItem<string, string>,
@@ -37,7 +39,7 @@ describe("findStandingOnWithHighestPriorityAndMostOverlap", () => {
             position: { x: 2, y: 0, z: 0 },
           },
           roomJson,
-          {},
+          buildRoomJsonDirectionalIndex(roomJsonItemsIterable(roomJson)),
         ),
 
         ...loadItemFromJson(
@@ -50,7 +52,7 @@ describe("findStandingOnWithHighestPriorityAndMostOverlap", () => {
             position: { x: 3, y: 0, z: 0 },
           },
           roomJson,
-          {},
+          buildRoomJsonDirectionalIndex(roomJsonItemsIterable(roomJson)),
         ),
       ],
     );
@@ -68,7 +70,7 @@ describe("findStandingOnWithHighestPriorityAndMostOverlap", () => {
         position: { x: 2.2, y: 0, z: 1 },
       },
       roomJson,
-      {},
+      buildRoomJsonDirectionalIndex(roomJsonItemsIterable(roomJson)),
     );
     const result = findStandingOnWithHighestPriorityAndMostOverlap(
       movable as FreeItem<string, string>,
@@ -83,7 +85,7 @@ describe("findStandingOnWithHighestPriorityAndMostOverlap", () => {
             position: { x: 2, y: 0, z: 0 },
           },
           roomJson,
-          {},
+          buildRoomJsonDirectionalIndex(roomJsonItemsIterable(roomJson)),
         ),
 
         ...loadItemFromJson(
@@ -96,7 +98,7 @@ describe("findStandingOnWithHighestPriorityAndMostOverlap", () => {
             position: { x: 3, y: 0, z: 0 },
           },
           roomJson,
-          {},
+          buildRoomJsonDirectionalIndex(roomJsonItemsIterable(roomJson)),
         ),
       ],
     );
@@ -116,7 +118,7 @@ describe("spatiallyCheckStandingOn", () => {
         position: { x: 2, y: 0, z: 1 },
       },
       roomJson,
-      {},
+      buildRoomJsonDirectionalIndex(roomJsonItemsIterable(roomJson)),
     );
 
     const [itemMaybeBeingStoodOn] = loadItemFromJson(
@@ -127,7 +129,7 @@ describe("spatiallyCheckStandingOn", () => {
         position: { x: 2, y: 0, z: 0 },
       },
       roomJson,
-      {},
+      buildRoomJsonDirectionalIndex(roomJsonItemsIterable(roomJson)),
     );
 
     const result = spatiallyCheckStandingOn(
@@ -153,7 +155,7 @@ describe("spatiallyCheckStandingOn", () => {
         },
       },
       roomJson,
-      {},
+      buildRoomJsonDirectionalIndex(roomJsonItemsIterable(roomJson)),
     );
 
     const [itemMaybeBeingStoodOn] = loadItemFromJson(
@@ -164,7 +166,7 @@ describe("spatiallyCheckStandingOn", () => {
         position: { x: 2, y: 0, z: 0 },
       },
       roomJson,
-      {},
+      buildRoomJsonDirectionalIndex(roomJsonItemsIterable(roomJson)),
     );
 
     const result = spatiallyCheckStandingOn(
@@ -191,7 +193,7 @@ describe("spatiallyCheckStandingOn", () => {
         },
       },
       roomJson,
-      {},
+      buildRoomJsonDirectionalIndex(roomJsonItemsIterable(roomJson)),
     );
 
     const [itemMaybeBeingStoodOn] = loadItemFromJson(
@@ -202,7 +204,7 @@ describe("spatiallyCheckStandingOn", () => {
         position: { x: 2, y: 0, z: 0 },
       },
       roomJson,
-      {},
+      buildRoomJsonDirectionalIndex(roomJsonItemsIterable(roomJson)),
     );
 
     const result = spatiallyCheckStandingOn(
@@ -224,7 +226,7 @@ describe("spatiallyCheckStandingOn", () => {
         position: { x: 3, y: 0, z: 0.99 },
       },
       roomJson,
-      {},
+      buildRoomJsonDirectionalIndex(roomJsonItemsIterable(roomJson)),
     );
 
     const [itemMaybeBeingStoodOn] = loadItemFromJson(
@@ -235,7 +237,7 @@ describe("spatiallyCheckStandingOn", () => {
         position: { x: 2, y: 0, z: 0 },
       },
       roomJson,
-      {},
+      buildRoomJsonDirectionalIndex(roomJsonItemsIterable(roomJson)),
     );
 
     const result = spatiallyCheckStandingOn(
@@ -256,7 +258,7 @@ describe("spatiallyCheckStandingOn", () => {
         position: originXyz, // <- doesn't matter, will be overwritten soon
       },
       roomJson,
-      {},
+      buildRoomJsonDirectionalIndex(roomJsonItemsIterable(roomJson)),
     );
 
     const [itemMaybeBeingStoodOn] = loadItemFromJson(
@@ -267,7 +269,7 @@ describe("spatiallyCheckStandingOn", () => {
         position: originXyz, // <- doesn't matter, will be overwritten soon
       },
       roomJson,
-      {},
+      buildRoomJsonDirectionalIndex(roomJsonItemsIterable(roomJson)),
     );
 
     playable.state.position = { x: 4.1, y: 0, z: 2 };
@@ -291,7 +293,7 @@ describe("spatiallyCheckStandingOn", () => {
         position: originXyz, // <- doesn't matter, will be overwritten soon
       },
       roomJson,
-      {},
+      buildRoomJsonDirectionalIndex(roomJsonItemsIterable(roomJson)),
     );
 
     const [itemMaybeBeingStoodOn] = loadItemFromJson(
@@ -302,7 +304,7 @@ describe("spatiallyCheckStandingOn", () => {
         position: originXyz, // <- doesn't matter, will be overwritten soon
       },
       roomJson,
-      {},
+      buildRoomJsonDirectionalIndex(roomJsonItemsIterable(roomJson)),
     );
 
     playable.state.position = {

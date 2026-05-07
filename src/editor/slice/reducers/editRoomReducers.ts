@@ -13,6 +13,7 @@ import type {
 } from "../../editorTypes";
 import type { LevelEditorState } from "../levelEditorSlice";
 
+import { changeRoomSceneryInPlace } from "../../../model/inPlaceMutators/changeRoomSceneryInPlace";
 import {
   exitGameRoomId,
   type FloorType,
@@ -26,7 +27,6 @@ import { oppositeDirection, scaleXyz } from "../../../utils/vectors/vectors";
 import { addReturnDoorInPlace } from "../inPlaceMutators/addDoorInPlace";
 import { addNewRoomInPlace } from "../inPlaceMutators/addNewRoomInPlace";
 import { changeIdOfCurrentRoomInPlace } from "../inPlaceMutators/changeIdOfCurrentRoomInPlace";
-import { changeRoomSceneryInPlace } from "../inPlaceMutators/changeRoomSceneryInPlace";
 import { consolidateCurrentRoomInPlace } from "../inPlaceMutators/consolidateCurrentRoomInPlace";
 import { deleteItemInPlace } from "../inPlaceMutators/deleteItemInPlace";
 import {

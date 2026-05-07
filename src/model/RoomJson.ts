@@ -119,7 +119,7 @@ export const roomJsonItemsIterable = <
   ScN extends SceneryName = SceneryName,
   Types extends JsonItemType = JsonItemType,
 >(
-  roomJson: RoomJson<RoomId, RoomItemId, ScN>,
+  roomJson: Pick<RoomJson<RoomId, RoomItemId, ScN>, "items">,
   ...types: Types[]
 ) => {
   const allItems = valuesIter(roomJson.items) as IterableIterator<

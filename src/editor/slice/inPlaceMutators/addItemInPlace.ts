@@ -16,28 +16,10 @@ import type {
   PreviewedRoomItemEdits,
 } from "../levelEditorSlice";
 
+import { nextItemId } from "../../../model/inPlaceMutators/nextItemId";
 import { typePrefix } from "../../../model/json/typePrefix";
 import { keys } from "../../../utils/entries";
 import { selectCurrentRoomFromLevelEditorState } from "../levelEditorSelectors";
-
-/**
- * Finds the next unused id of the form `<baseName>`, `<baseName>1`,
- * `<baseName>2`, … — matches the scheme used by `keyItems` for auto-converted
- * rooms so ids look consistent across both sources.
- */
-export const nextItemId = (
-  existingIds: Iterable<EditorRoomItemId>,
-  baseName: string,
-): EditorRoomItemId => {
-  const existing = new Set(existingIds);
-  // eslint-disable-next-line no-constant-condition -- while(true) is ok; this will terminate
-  for (let i = 0; true; i++) {
-    const itemId = (i === 0 ? baseName : `${baseName}${i}`) as EditorRoomItemId;
-    if (!existing.has(itemId)) {
-      return itemId;
-    }
-  }
-};
 
 export const nextItemIdForItemTool = <T extends JsonItemType = JsonItemType>(
   existingIds: Iterable<EditorRoomItemId>,

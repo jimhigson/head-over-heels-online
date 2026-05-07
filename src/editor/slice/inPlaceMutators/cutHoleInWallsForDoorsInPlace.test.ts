@@ -8,7 +8,7 @@ import type { SceneryName } from "../../../sprites/planets";
 import type { EditorJsonItem, EditorRoomItemId } from "../../editorTypes";
 import type { PreviewedRoomItemEdits } from "../levelEditorSlice";
 
-import { generateHoleInWallsForDoor } from "./cutHoleInWallsForDoorsInPlace";
+import { generateHoleInWallsForDoor } from "../../../model/inPlaceMutators/generateHoleInWallsForDoor";
 
 describe("generateHoleInWallsForDoor", () => {
   // Helper to create a wall

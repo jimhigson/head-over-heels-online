@@ -2,9 +2,10 @@ import type { ItemTypeUnion } from "../../../_generated/types/ItemInPlayUnion";
 import type { StoodOnBy } from "../../../model/StoodOnBy";
 import type { Xyz } from "../../../utils/vectors/vectors";
 import type { SpecifiedTextureCreateSpriteOptions } from "../../render/createSprite";
+import type { RoomDirectionalIndex } from "./buildRoomJsonDirectionalIndex";
 
 import { defaultItemProperties } from "../../../model/defaultItemProperties";
-import { inHiddenWall, type JsonItem } from "../../../model/json/JsonItem";
+import { type JsonItem } from "../../../model/json/JsonItem";
 import { emptyObject } from "../../../utils/empty";
 import { pick } from "../../../utils/pick";
 import { unitVectors } from "../../../utils/vectors/unitVectors";
@@ -20,6 +21,8 @@ import { blockSizePx } from "../../physics/mechanicsConstants";
 import { veryHighZ } from "../../physics/mechanicsConstants";
 import { blockXyzToFineXyz } from "../../render/projections";
 import { nonRenderingItemFixedZIndex } from "../../render/sortZ/fixedZIndexes";
+import { floorZAtPosition } from "./floorZAtPosition";
+import { isDoorInHiddenWall } from "./isDoorInHiddenWall";
 import { defaultBaseState } from "./itemDefaultStates";
 
 const shadowDoorFloatingThresholdY: SpecifiedTextureCreateSpriteOptions =
@@ -73,6 +76,7 @@ const stopAutoWalkDepthBlocks = 0.5;
 export function* loadDoor<RoomId extends string, RoomItemId extends string>(
   jsonDoor: JsonItem<"door", RoomId, RoomItemId>,
   jsonItemId: RoomItemId,
+  directionalIndex: RoomDirectionalIndex<RoomId, RoomItemId>,
 ): Generator<
   ItemTypeUnion<
     "blocker" | "doorFrame" | "doorLegs" | "portal" | "stopAutowalk" | "wall",
@@ -88,7 +92,9 @@ export function* loadDoor<RoomId extends string, RoomItemId extends string>(
   const alongWallAxis = doorAlongAxis(direction);
   const throughDoorAxis = perpendicularAxisXy(alongWallAxis);
 
-  const inHidden = inHiddenWall(jsonDoor);
+  const inHidden = isDoorInHiddenWall(jsonDoor, directionalIndex);
+  const floorZ = floorZAtPosition(position, directionalIndex) ?? 0;
+  const legHeight = position.z - floorZ;
 
   // doors on the left/towards side are set back half a square to embed them inside the unseen near-side wall:
   const invisibleWallSetBackBlocks: Xyz = {
@@ -319,7 +325,7 @@ export function* loadDoor<RoomId extends string, RoomItemId extends string>(
   };
 
   // door legs
-  if (position.z !== 0) {
+  if (legHeight !== 0) {
     yield {
       ...jsonDoor,
       ...defaultItemProperties,
@@ -332,7 +338,7 @@ export function* loadDoor<RoomId extends string, RoomItemId extends string>(
           inHiddenWall: inHidden,
           style: "none",
           side: "away", // TODO: look at typings - this isn't needed for hidden walls
-          height: position.z,
+          height: legHeight,
         },
         renders: true,
         shadowCastTexture:
@@ -348,14 +354,14 @@ export function* loadDoor<RoomId extends string, RoomItemId extends string>(
             ...blockXyzToFineXyz(
               addXyz(position, invisibleWallSetBackBlocks, tunnelSetbackBlocks),
             ),
-            z: 0,
+            z: floorZ * blockSizePx.z,
           },
         },
         aabb: addXyz(
           blockXyzToFineXyz({
             [alongWallAxis]: 2,
             [throughDoorAxis]: 0.5,
-            z: position.z,
+            z: legHeight,
           }),
           doorTunnelAabbPx,
         ),
@@ -379,7 +385,7 @@ export function* loadDoor<RoomId extends string, RoomItemId extends string>(
               {
                 [alongWallAxis]: 0,
                 [throughDoorAxis]: 0,
-                z: (position.z - 0.5) * blockSizePx.z,
+                z: (legHeight - 0.5) * blockSizePx.z,
               } as Xyz,
               {
                 [throughDoorAxis]: doorTunnelAabbPx[throughDoorAxis],
@@ -388,7 +394,7 @@ export function* loadDoor<RoomId extends string, RoomItemId extends string>(
           : undefined,
         shadowOffset: {
           // bring shadows up to the top of the legs:
-          z: position.z * blockSizePx.z,
+          z: legHeight * blockSizePx.z,
           [throughDoorAxis]:
             inHidden ? doorTunnelAabbPx[throughDoorAxis] : undefined,
         },

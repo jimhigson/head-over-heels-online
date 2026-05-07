@@ -1,6 +1,6 @@
 import { describe, expect, test } from "vitest";
 
-import { rotatingSceneryTiles } from "./rotatingSceneryTiles";
+import { rotatingSceneryTiles } from "../../model/inPlaceMutators/rotatingSceneryTiles";
 
 describe("rotatingSceneryTiles", () => {
   describe("blacktooth scenery", () => {

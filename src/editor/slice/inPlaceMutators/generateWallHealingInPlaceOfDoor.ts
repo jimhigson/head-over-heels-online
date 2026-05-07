@@ -1,11 +1,11 @@
 import type { SceneryName } from "../../../sprites/planets";
 import type { EditorJsonItem, EditorRoomItemId } from "../../editorTypes";
 
+import { rotatingSceneryTiles } from "../../../model/inPlaceMutators/rotatingSceneryTiles";
 import {
   isWallHidden,
   type WallJsonConfig,
 } from "../../../model/json/WallJsonConfig";
-import { rotatingSceneryTiles } from "../rotatingSceneryTiles";
 import { nextItemIdForItemTool } from "./addItemInPlace";
 
 export function* generateWallHealingInPlaceOfDoor(

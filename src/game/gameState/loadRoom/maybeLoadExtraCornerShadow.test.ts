@@ -3,7 +3,9 @@ import { expect, test } from "vitest";
 import type { OriginalCampaignRoomId } from "../../../_generated/originalCampaign/OriginalCampaignRoomId";
 
 import { campaign } from "../../../_generated/originalCampaign/campaign";
+import { roomJsonItemsIterable } from "../../../model/RoomJson";
 import { entries } from "../../../utils/entries";
+import { buildRoomJsonDirectionalIndex } from "./buildRoomJsonDirectionalIndex";
 import { maybeLoadExtraCornerShadow } from "./maybeLoadExtraCornerShadow";
 
 const roomsWithExtraCornerShadow = new Set<OriginalCampaignRoomId>([
@@ -47,14 +49,22 @@ const roomsWithoutShadow = entries(campaign.rooms).filter(
 );
 
 test.each(roomsWithShadow)("%s has the extra corner shadow", (_, roomJson) => {
-  const yieldCount = [...maybeLoadExtraCornerShadow(roomJson)].length;
+  const yieldCount = [
+    ...maybeLoadExtraCornerShadow(
+      buildRoomJsonDirectionalIndex(roomJsonItemsIterable(roomJson)),
+    ),
+  ].length;
   expect(yieldCount).toBe(1);
 });
 
 test.each(roomsWithoutShadow)(
   "%s does not have the extra corner shadow",
   (_, roomJson) => {
-    const yieldCount = [...maybeLoadExtraCornerShadow(roomJson)].length;
+    const yieldCount = [
+      ...maybeLoadExtraCornerShadow(
+        buildRoomJsonDirectionalIndex(roomJsonItemsIterable(roomJson)),
+      ),
+    ].length;
     expect(yieldCount).toBe(0);
   },
 );

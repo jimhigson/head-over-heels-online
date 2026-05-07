@@ -8,10 +8,12 @@ import type {
 import type { Xyz } from "../../../utils/vectors/vectors";
 import type { GameState } from "../GameState";
 
+import { roomJsonItemsIterable } from "../../../model/RoomJson";
 import { roomSpatialIndexKey, type RoomState } from "../../../model/RoomState";
 import { emptyObject } from "../../../utils/empty";
 import { originXyz } from "../../../utils/vectors/vectors";
 import { isSpatial } from "../../physics/itemPredicates";
+import { buildRoomJsonDirectionalIndex } from "../loadRoom/buildRoomJsonDirectionalIndex";
 import { loadItemFromJson } from "../loadRoom/loadItemFromJson";
 
 export const addItemFromJsonToRoom = <
@@ -47,6 +49,7 @@ export const addItemFromJsonToRoom = <
     itemId,
     itemJson as JsonItemUnion<RoomId>,
     room.roomJson,
+    buildRoomJsonDirectionalIndex(roomJsonItemsIterable(room.roomJson)),
     gameState.pickupsCollected[room.id] ?? emptyObject,
   );
   if (item === undefined) {

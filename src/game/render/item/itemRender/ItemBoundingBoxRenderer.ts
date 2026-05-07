@@ -48,12 +48,14 @@ const addCuboidPaths = (cuboid: Aabb, graphics: Graphics) => {
     ]);
 };
 
-const renderBB = (aabb: Aabb, color: ColorSource) => {
+const bbLineWidth = 0.66;
+
+const renderBB = (aabb: Aabb, color: ColorSource, lineWidth = bbLineWidth) => {
   const graphics = new Graphics();
   addCuboidPaths(aabb, graphics);
 
   graphics.stroke({
-    width: 0.5,
+    width: lineWidth,
     color,
     alpha: 1,
   });
@@ -67,7 +69,7 @@ const renderBB = (aabb: Aabb, color: ColorSource) => {
     addCuboidPaths(aabb, graphics);
 
     graphics.stroke({
-      width: 0.5,
+      width: lineWidth,
       color,
       alpha: 1,
     });
@@ -76,20 +78,77 @@ const renderBB = (aabb: Aabb, color: ColorSource) => {
   return graphics;
 };
 
-const bbColors: Partial<Record<ItemInPlayType, string>> = {
-  head: "rgba(255,184,0)",
-  heels: "rgba(255,184,0)",
-  headOverHeels: "rgba(255,184,0)",
-  wall: "rgba(128,200,0)",
-  portal: "rgba(255,0,255)",
-  pickup: "rgba(0,196,255)",
-  emitter: "rgba(0,255,255)",
-  stopAutowalk: "rgba(255,128,128)",
-  floatingText: "rgba(128,0,255)",
-  deadlyBlock: "#7FD8BB",
-  outOfBounds: "rgba(128,128,128)",
+const bbColors: Record<ItemInPlayType, string> = {
+  // players
+  head: "#FFB800",
+  heels: "#FFB800",
+  headOverHeels: "#FFB800",
+
+  // structural / static geometry
+  wall: "#80C800",
+  floor: "#4A7A2E",
+  block: "#8B6914",
+  doorFrame: "#FF8000",
+  doorLegs: "#CC6600",
+
+  // deadly / hazardous
+  deadlyBlock: "#FF2040",
+  moveableDeadly: "#D01030",
+  slidingDeadly: "#FF4060",
+  spikes: "#E00050",
+
+  // enemies
+  monster: "#FF6020",
+  charles: "#FF4500",
+  hushPuppy: "#E05820",
+
+  // moveable / interactive blocks
+  portableBlock: "#CDA040",
+  pushableBlock: "#A08030",
+  slidingBlock: "#D4A850",
+
+  // transport / movement
+  portal: "#FF00FF",
+  teleporter: "#CC44FF",
+  portableTeleporter: "#AA66FF",
+  lift: "#4488FF",
+  conveyor: "#2266DD",
+  spring: "#00BBFF",
+
+  // pickups & rewards
+  pickup: "#00C4FF",
+  sceneryCrown: "#FFD700",
+
+  // switches & triggers
+  switch: "#CCDD00",
+  button: "#AACC00",
+  joystick: "#DDEE22",
+  timer: "#EEDD00",
+
+  // emitters & projectiles
+  emitter: "#00FFFF",
+  firedDoughnut: "#00DDAA",
+  bubbles: "#88EEFF",
+
+  // platforms
+  movingPlatform: "#20B0A0",
+
+  // barriers & blockers
+  barrier: "#A0A0C0",
+  blocker: "#808080",
+  outOfBounds: "#606060",
+  stopAutowalk: "#FF8080",
+
+  // visual effects / non-physical
+  particle: "#DD88FF",
+  floatingText: "#8000FF",
+  soundEffect: "#B060D0",
+  sceneryPlayer: "#FFB060",
+
+  // misc
+  ball: "#FF9944",
 };
-const defaultBbColour = "rgba(255,255,255)";
+
 export class ItemBoundingBoxRenderer<T extends ItemInPlayType>
   implements ItemPixiRenderer<T>
 {
@@ -107,7 +166,7 @@ export class ItemBoundingBoxRenderer<T extends ItemInPlayType>
 
   #render() {
     const { item } = this.renderContext;
-    const color = bbColors[item.type] ?? defaultBbColour;
+    const color = bbColors[item.type];
 
     if (isItemType("portal")(item)) {
       const relativePointScreenXy = projectWorldXyzToScreenXy(
@@ -130,12 +189,15 @@ export class ItemBoundingBoxRenderer<T extends ItemInPlayType>
     );
     this.#container.addChild(renderBB(item.aabb, color));
     if (item.renderAabb) {
-      const renderAabbColour = "rgba(184, 184, 255)";
-      const renderAabbGraphics = renderBB(item.renderAabb, renderAabbColour);
+      const renderAabbGraphics = renderBB(
+        item.renderAabb,
+        color,
+        bbLineWidth / 2,
+      );
       if (item.renderAabbOffset) {
         const offset = projectWorldXyzToScreenXy(item.renderAabbOffset);
         renderAabbGraphics.position.set(offset.x, offset.y);
-        renderAabbGraphics.circle(0, 0, 2).fill(renderAabbColour);
+        renderAabbGraphics.circle(0, 0, 2).fill(color);
       }
       this.#container.addChild(renderAabbGraphics);
     }

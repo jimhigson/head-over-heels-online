@@ -7,10 +7,10 @@ import type { LevelEditorState } from "../slice/levelEditorSlice";
 import type { ItemToolButtonProps } from "./ItemToolButton";
 
 import { playableTailwindSpriteClassname } from "../../game/components/tailwindSprites/playableTailwindSpriteClassname";
+import { rotatingSceneryTiles } from "../../model/inPlaceMutators/rotatingSceneryTiles";
 import { emptyArray, emptyObject } from "../../utils/empty";
 import { twClass } from "../../utils/twClass";
 import { selectCurrentEditingRoomJson } from "../slice/levelEditorSlice";
-import { rotatingSceneryTiles } from "../slice/rotatingSceneryTiles";
 import {
   DissapearingItemToolbarIcon,
   LabelledToolbarIcon,
