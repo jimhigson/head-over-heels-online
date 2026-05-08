@@ -69,6 +69,10 @@ export const ShowBoundingBoxSelect = ({
     sortedItemInPlayTypes,
   );
 
+  const [typesNotInRoom, setTypesNotInRoom] = useState<
+    readonly ItemInPlayType[]
+  >([]);
+
   const handleOpenChange = (nextOpen: boolean) => {
     if (nextOpen && getCurrentRoomItems) {
       const items = getCurrentRoomItems();
@@ -79,8 +83,12 @@ export const ShowBoundingBoxSelect = ({
         setVisibleTypes(
           sortedItemInPlayTypes.filter((t) => typesInRoom.has(t)),
         );
+        setTypesNotInRoom(
+          sortedItemInPlayTypes.filter((t) => !typesInRoom.has(t)),
+        );
       } else {
         setVisibleTypes(sortedItemInPlayTypes);
+        setTypesNotInRoom([]);
       }
     }
     setOpen(nextOpen);
@@ -139,7 +147,16 @@ export const ShowBoundingBoxSelect = ({
                   />
                 </div>
               </CommandGroup>
-              <CommandGroup>
+              <CommandGroup
+                heading={
+                  <BitmapText
+                    doubleHeight
+                    className="pl-1 mt-1 text-moss zx:text-zxGreen toppy:text-toppyCool2 block"
+                  >
+                    In room:
+                  </BitmapText>
+                }
+              >
                 {visibleTypes.map((itemType) => (
                   <CommandItem
                     key={itemType}
@@ -162,6 +179,41 @@ export const ShowBoundingBoxSelect = ({
                   </CommandItem>
                 ))}
               </CommandGroup>
+
+              {typesNotInRoom.length > 0 && (
+                <CommandGroup
+                  heading={
+                    <BitmapText
+                      doubleHeight
+                      className="pl-1 mt-1 text-moss zx:text-zxGreen toppy:text-toppyCool2 block"
+                    >
+                      Others
+                    </BitmapText>
+                  }
+                >
+                  {typesNotInRoom.map((itemType) => (
+                    <CommandItem
+                      key={itemType}
+                      value={itemType}
+                      onSelect={() => {
+                        dispatch(
+                          setShowBoundingBoxType({
+                            itemType,
+                            value: !selectedSet.has(itemType),
+                          }),
+                        );
+                      }}
+                      className="px-1"
+                    >
+                      <Switch
+                        className="w-full"
+                        value={selectedSet.has(itemType)}
+                        label={itemType}
+                      />
+                    </CommandItem>
+                  ))}
+                </CommandGroup>
+              )}
             </CommandList>
           </Command>
         </CssVariables>

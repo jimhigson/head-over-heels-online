@@ -13,7 +13,7 @@ const Command = ({
 }: ComponentProps<typeof CommandPrimitive> & { onClose?: () => void }) => (
   <CommandPrimitive
     className={cn(
-      "flex h-full w-full flex-col overflow-hidden bg-metallicBlue text-popover-foreground",
+      "flex h-full w-full flex-col overflow-hidden bg-metallicBlue zx:bg-zxBlue toppy:bg-toppyCool3 text-popover-foreground",
       className,
     )}
     onKeyDown={(e) => {
@@ -33,7 +33,7 @@ const CommandInput = ({
     />
     <CommandPrimitive.Input
       className={cn(
-        "flex h-1 w-full bg-pastelBlue py-1 outline-none placeholder:text-shadow disabled:cursor-not-allowed",
+        "flex h-1 w-full bg-pastelBlue zx:bg-zxCyan toppy:bg-toppyCool1 py-1 outline-none placeholder:text-shadow zx:placeholder:text-zxBlack toppy:placeholder:text-toppyGrey4 disabled:cursor-not-allowed",
         className,
       )}
       {...props}
@@ -70,7 +70,10 @@ const CommandSeparator = ({
   ...props
 }: ComponentProps<typeof CommandPrimitive.Separator>) => (
   <CommandPrimitive.Separator
-    className={cn("-mx-1 h-px bg-shadow", className)}
+    className={cn(
+      "-mx-1 h-px bg-shadow zx:bg-zxBlack toppy:bg-toppyGrey3",
+      className,
+    )}
     {...props}
   />
 );
@@ -81,7 +84,7 @@ const CommandItem = ({
 }: ComponentProps<typeof CommandPrimitive.Item>) => (
   <CommandPrimitive.Item
     className={cn(
-      "relative flex cursor-default select-none items-center text-sm outline-none data-[disabled=true]:pointer-events-none data-[selected='true']:bg-midRed hover:bg-pastelBlue data-[selected=true]:text-accent-foreground data-[disabled=true]:opacity-50",
+      "relative flex cursor-default select-none items-center text-sm outline-none data-[disabled=true]:pointer-events-none data-[selected='true']:bg-midRed zx:data-[selected='true']:bg-zxRed toppy:data-[selected='true']:bg-toppyPink2 hover:bg-pastelBlue zx:hover:bg-zxCyan toppy:hover:bg-toppyCool1 data-[selected=true]:text-accent-foreground data-[disabled=true]:opacity-50",
       className,
     )}
     {...props}
