@@ -153,7 +153,7 @@ const textureForItem = (
     case "deadlyBlock":
       switch (item.config.style) {
         case "toaster":
-          return twClass(`texture-toaster_off`);
+          return twClass(`texture-toaster_1`);
         case "volcano":
           return twClass(`texture-volcano_1`);
         default:

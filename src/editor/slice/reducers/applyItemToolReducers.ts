@@ -81,6 +81,7 @@ export const applyItemToolReducers = {
       }
 
       case isCybermanTool(tool.item) &&
+        tool.item.config.activated === "on" &&
         pointedAtItemJson.type === "deadlyBlock" &&
         pointedAtItemJson.config.style === "toaster" &&
         // putting down one block above the toaster:

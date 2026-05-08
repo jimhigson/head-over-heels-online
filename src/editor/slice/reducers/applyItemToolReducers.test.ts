@@ -7,14 +7,26 @@ import type {
   EditorJsonItemUnion,
   EditorRoomId,
   EditorRoomItemId,
+  EditorRoomJson,
   EditorRoomJsonItems,
 } from "../../editorTypes";
 import type { Tool } from "../../RoomEditingArea/interactivity/Tool";
+import type { LevelEditorState } from "../levelEditorSlice";
 import type { ApplyToolToRoomJsonPayload } from "./applyItemToolReducers";
 
+import {
+  iterateRoomJsonItemsWithIds,
+  roomJsonItemsIterable,
+} from "../../../model/RoomJson";
 import { zxSpectrumRoomHue, zxSpectrumShades } from "../../../originalGame";
 import { originXyz } from "../../../utils/vectors/vectors";
-import { applyItemTool, setTool } from "../levelEditorSlice";
+import { initialLevelEditorSliceState } from "../initialLevelEditorSliceState";
+import {
+  applyItemTool,
+  deleteSelected,
+  setAutoCoalesce,
+  setTool,
+} from "../levelEditorSlice";
 import {
   doorItemToolWithAutoAddRooms,
   doorItemToolWithoutAutoAddRooms,
@@ -430,5 +442,143 @@ describe("applying tools", () => {
         ]);
       });
     });
+  });
+
+  const currentRoom = (state: LevelEditorState) =>
+    state.campaignInProgress.rooms[
+      state.currentlyEditingRoomId!
+    ] as EditorRoomJson;
+
+  const findFloor = (state: LevelEditorState) => {
+    const floor = roomJsonItemsIterable(currentRoom(state)).find(
+      (i) => i.type === "floor",
+    );
+    if (floor === undefined) {
+      throw new Error("no floor in room");
+    }
+    return floor;
+  };
+
+  describe("toaster consolidation with monsters", () => {
+    test("two adjacent toasters consolidate, adding a cyberman on top prevents consolidation, removing it restores consolidation", () => {
+      // 1. add two adjacent toasters — they should consolidate into one with times.x=2
+      const stateWithTwoToasters = reduceLevelEditorActions(
+        initialLevelEditorSliceState,
+        setTool({
+          type: "item",
+          item: { type: "deadlyBlock", config: { style: "toaster" } },
+        }),
+        (state) => {
+          return applyItemTool({
+            blockPosition: { x: 0, y: 0, z: 0 },
+            pointedAtItemJson: findFloor(state),
+            preview: false,
+          });
+        },
+        (state) => {
+          return applyItemTool({
+            blockPosition: { x: 1, y: 0, z: 0 },
+            pointedAtItemJson: findFloor(state),
+            preview: false,
+          });
+        },
+      );
+
+      const toasters = roomJsonItemsIterable(currentRoom(stateWithTwoToasters))
+        .filter((i) => i.type === "deadlyBlock")
+        .toArray();
+      expect(toasters).toHaveLength(1);
+      expect(toasters[0].config).toMatchObject({
+        style: "toaster",
+        times: { x: 2 },
+      });
+
+      // 2. add a sleeping cyberman on top of one toaster — toasters should
+      //    de-consolidate so each block under a monster stays individual
+      const stateWithCyberman = reduceLevelEditorActions(
+        stateWithTwoToasters,
+        setTool({
+          type: "item",
+          item: {
+            type: "monster",
+            config: {
+              which: "cyberman",
+              activated: "after-player-near",
+              movement: "towards-on-shortest-axis-xy4",
+              startDirection: "towards",
+            },
+          },
+        }),
+        applyItemTool({
+          blockPosition: { x: 0, y: 0, z: 1 },
+          pointedAtItemJson: toasters[0] as EditorJsonItemUnion,
+          preview: false,
+        }),
+      );
+
+      const toastersAfterCyberman = roomJsonItemsIterable(
+        currentRoom(stateWithCyberman),
+      )
+        .filter((i) => i.type === "deadlyBlock")
+        .toArray();
+      expect(toastersAfterCyberman).toHaveLength(2);
+
+      // 3. remove the cyberman — toasters should re-consolidate
+      const [[cybermanId]] = iterateRoomJsonItemsWithIds(
+        currentRoom(stateWithCyberman).items,
+        "monster",
+      );
+
+      const stateWithoutCyberman = reduceLevelEditorActions(
+        {
+          ...stateWithCyberman,
+          selectedJsonItemIds: [cybermanId],
+        },
+        deleteSelected(),
+      );
+
+      const toastersAfterRemoval = roomJsonItemsIterable(
+        currentRoom(stateWithoutCyberman),
+      )
+        .filter((i) => i.type === "deadlyBlock")
+        .toArray();
+      expect(toastersAfterRemoval).toHaveLength(1);
+      expect(toastersAfterRemoval[0].config).toMatchObject({
+        style: "toaster",
+        times: { x: 2 },
+      });
+    });
+  });
+
+  test("two adjacent blocks do not consolidate when autoCoalesce is off", () => {
+    const state = reduceLevelEditorActions(
+      initialLevelEditorSliceState,
+      setTool({
+        type: "item",
+        item: { type: "block", config: { style: "organic" } },
+      }),
+      setAutoCoalesce(false),
+      (state) => {
+        const floor = findFloor(state);
+        return applyItemTool({
+          blockPosition: { x: 0, y: 0, z: 0 },
+          pointedAtItemJson: floor,
+          preview: false,
+        });
+      },
+      (state) => {
+        const floor = findFloor(state);
+        return applyItemTool({
+          blockPosition: { x: 1, y: 0, z: 0 },
+          pointedAtItemJson: floor,
+          preview: false,
+        });
+      },
+    );
+
+    const blocks = roomJsonItemsIterable(currentRoom(state))
+      .filter((i) => i.type === "block")
+      .toArray();
+    expect(blocks).toHaveLength(2);
   });
 });

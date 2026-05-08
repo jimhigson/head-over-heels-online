@@ -82,13 +82,32 @@ export const applyModifiesList = <
         state: Record<string, unknown>;
       };
 
+      const newState = getNewState(modifiesItem, newSetting, roomItem);
+
       // loop the states to modify:
       targetItemCast.state = {
         ...roomItem.state,
-        ...getNewState(modifiesItem, newSetting, roomItem),
+        ...newState,
         switchedAtRoomTime: room.roomTime,
         switchedSetting: newSetting,
       };
+
+      if (
+        roomItem.type === "monster" &&
+        "activated" in newState &&
+        newState.activated === true
+      ) {
+        const { standingOnItemId } = roomItem.state;
+        if (standingOnItemId !== null) {
+          const standingOn = room.items[standingOnItemId];
+          if (
+            standingOn.type === "deadlyBlock" &&
+            standingOn.config.style === "toaster"
+          ) {
+            standingOn.state.disabled = true;
+          }
+        }
+      }
 
       //mark that we shouldn't visit this room item again:
       visited.add(roomItem);

@@ -27,6 +27,7 @@ import { addReturnDoorInPlace } from "../inPlaceMutators/addDoorInPlace";
 import { addNewRoomInPlace } from "../inPlaceMutators/addNewRoomInPlace";
 import { changeIdOfCurrentRoomInPlace } from "../inPlaceMutators/changeIdOfCurrentRoomInPlace";
 import { changeRoomSceneryInPlace } from "../inPlaceMutators/changeRoomSceneryInPlace";
+import { consolidateCurrentRoomInPlace } from "../inPlaceMutators/consolidateCurrentRoomInPlace";
 import { deleteItemInPlace } from "../inPlaceMutators/deleteItemInPlace";
 import {
   selectCurrentRoomFromLevelEditorState,
@@ -237,6 +238,10 @@ export const editRoomReducers = {
     });
 
     state.selectedJsonItemIds = [];
+
+    if (state.autoCoalesce) {
+      consolidateCurrentRoomInPlace(state);
+    }
   },
   clearRoom(_state) {
     // DO REMOVE CAST - for some reason, a severe typescript performance issue was narrowed

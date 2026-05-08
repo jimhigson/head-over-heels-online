@@ -1,6 +1,7 @@
 import type { AnyRoomJson } from "../../src/model/RoomJson";
 
 import { consolidateItemsMap } from "../../src/consolidateItems/consolidateItems";
+import { makeToasterConsolidationPredicate } from "../../src/consolidateItems/toasterConsolidationPredicate";
 import { keyItems } from "../../src/utils/keyItems";
 import { convertRoomColour, map } from "./convertCampaign";
 import { convertFloor } from "./convertFloor";
@@ -41,18 +42,20 @@ export const convertRoom = async (
   // consolidateItemsMap needs items already keyed, but some walls/floors
   // get merged into `times` multipliers and dropped, so we re-key the
   // consolidated result to keep the counter-based keys sequential
+  const preConsolidation = keyItems([
+    ...convertFloor(roomDimensions, xmlFloorKind, xmlScenery),
+    ...convertedItems,
+    ...convertWalls(
+      roomXmlJson,
+      roomSidesWithDoors,
+      convertedItems.filter((i) => i.type === "door"),
+    ),
+  ]);
   const items = keyItems(
     Object.values(
       consolidateItemsMap(
-        keyItems([
-          ...convertFloor(roomDimensions, xmlFloorKind, xmlScenery),
-          ...convertedItems,
-          ...convertWalls(
-            roomXmlJson,
-            roomSidesWithDoors,
-            convertedItems.filter((i) => i.type === "door"),
-          ),
-        ]),
+        preConsolidation,
+        makeToasterConsolidationPredicate(preConsolidation),
       ),
     ),
   );

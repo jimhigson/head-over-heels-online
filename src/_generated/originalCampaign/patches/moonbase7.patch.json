@@ -96,6 +96,10 @@
     "value": 0
   },
   {
+    "op": "remove",
+    "path": "/items/db1/config/times"
+  },
+  {
     "op": "replace",
     "path": "/items/d2/position/z",
     "value": 0
@@ -182,6 +186,24 @@
         "z": 0
       },
       "type": "block"
+    }
+  },
+  {
+    "op": "add",
+    "path": "/items/db1_1",
+    "value": {
+      "config": {
+        "style": "toaster",
+        "times": {
+          "x": 2
+        }
+      },
+      "position": {
+        "x": 6,
+        "y": 7,
+        "z": 0
+      },
+      "type": "deadlyBlock"
     }
   },
   {

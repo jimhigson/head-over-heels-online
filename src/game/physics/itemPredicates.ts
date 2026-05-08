@@ -256,6 +256,10 @@ export const isDeadly = <RoomId extends string, RoomItemId extends string>(
     return false;
   }
 
+  if (item.type === "deadlyBlock" && item.state.disabled) {
+    return false;
+  }
+
   return (
     isDeadlyType(item) ||
     (item.type === "floor" && item.config.floorType === "deadly")

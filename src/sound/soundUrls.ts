@@ -70,7 +70,8 @@ import switchClickSoundUrl from "../../sounds/switch-shorter.mp3";
 import teleportInSoundUrl from "../../sounds/teleportIn.mp3";
 import teleportOutSoundUrl from "../../sounds/teleportOut.mp3";
 import teleportWarningSirenSoundUrl from "../../sounds/teleportWarningSiren.mp3";
-import toasterPopUpSoundUrl from "../../sounds/toasterPopUp.mp3";
+import toasterPopUpSoundUrl from "../../sounds/toasterPopUp.opus";
+import toasterPushDownSoundUrl from "../../sounds/toasterPushDown.opus";
 import woodScrapeSoundUrl from "../../sounds/woodScrape.mp3";
 
 export const soundUrls = {
@@ -138,6 +139,7 @@ export const soundUrls = {
   teleportOut: teleportOutSoundUrl,
   teleportWarningSiren: teleportWarningSirenSoundUrl,
   toasterPopUp: toasterPopUpSoundUrl,
+  toasterPushDown: toasterPushDownSoundUrl,
   woodScrape: woodScrapeSoundUrl,
   ...({
     "roomEntry.blacktooth": blacktoothMusicUrl,

@@ -6,15 +6,13 @@ import type { ItemAppearanceOutsideView } from "./itemAppearanceOutsideView";
 
 import { type ItemInPlayType } from "../../../model/ItemInPlay";
 import { smallItemTextureSize } from "../../../sprites/spritesheet/spritesheetData/textureSizes";
-import {
-  maybeRenderContainerToAnimatedSprite,
-  maybeRenderContainerToSprite,
-} from "../../../utils/pixi/renderContainerToSprite";
+import { maybeRenderContainerToSprite } from "../../../utils/pixi/renderContainerToSprite";
 import { createSprite } from "../createSprite";
 import { blockAppearance } from "./blockAppearance";
 import { buttonAppearance } from "./buttonAppearance";
 import { charlesAppearance } from "./charlesAppearance";
 import { conveyorAppearance } from "./conveyorAppearance";
+import { deadlyBlockAppearance } from "./deadlyBlockAppearance";
 import { doorFrameAppearance, doorLegsAppearance } from "./door/doorAppearance";
 import { floatingTextAppearance } from "./floatingTextAppearance";
 import { floorAppearance } from "./floorAppearance/floorAppearance";
@@ -31,7 +29,6 @@ import { spikyBallAppearance } from "./spikyBallAppearance";
 import { springAppearance } from "./springAppearance";
 import { switchAppearance } from "./switchAppearance";
 import { teleporterAppearance } from "./teleporterAppearance";
-import { toasterAppearance } from "./toasterAppearance";
 import { farWallAppearance } from "./wallAppearance";
 
 const itemAppearancesMap: {
@@ -68,38 +65,7 @@ const itemAppearancesMap: {
     },
   ),
 
-  deadlyBlock: itemAppearanceRenderOnce(
-    ({
-      renderContext: {
-        item: { config, id },
-        general: { paused, spriteOption, pixiRenderer },
-      },
-    }) => {
-      switch (config.style) {
-        case "volcano": {
-          const rendering = createSprite({
-            animationId: "volcano",
-            times: config.times,
-            randomiseStartFrame: id,
-            paused,
-            spritesheetVariant:
-              spriteOption.uncolourised ? "uncolourised" : "for-current-room",
-          });
-
-          return maybeRenderContainerToAnimatedSprite(
-            pixiRenderer,
-            rendering,
-            "volcano",
-          );
-        }
-        case "toaster":
-          throw new Error("use the special toaster appearance instead");
-        default:
-          config.style satisfies never;
-          throw new Error("unknown deadly block style");
-      }
-    },
-  ),
+  deadlyBlock: deadlyBlockAppearance,
   spikes: itemStaticAppearance("spikes"),
 
   slidingDeadly: spikyBallAppearance,
@@ -331,10 +297,6 @@ export const appearanceForItem = <T extends ItemInPlayType>(
     } else {
       return farWallAppearance as ItemAppearanceOutsideView<T>;
     }
-  }
-
-  if (item.type === "deadlyBlock" && item.config.style === "toaster") {
-    return toasterAppearance as ItemAppearanceOutsideView<T>;
   }
 
   return itemAppearancesMap[item.type as T];

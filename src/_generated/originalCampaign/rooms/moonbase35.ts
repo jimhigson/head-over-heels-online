@@ -12,13 +12,28 @@ export const room = inferRoomJson({
       type: "door",
     },
     db: {
-      config: { style: "toaster", times: { y: 4 } },
+      config: { style: "toaster" },
       position: { x: 0, y: 1, z: 0 },
       type: "deadlyBlock",
     },
     db1: {
-      config: { style: "toaster", times: { y: 4 } },
+      config: { style: "toaster", times: { y: 3 } },
       position: { x: 5, y: 1, z: 0 },
+      type: "deadlyBlock",
+    },
+    db1_3: {
+      config: { style: "toaster" },
+      position: { x: 5, y: 4, z: 0 },
+      type: "deadlyBlock",
+    },
+    db_1: {
+      config: { style: "toaster" },
+      position: { x: 0, y: 2, z: 0 },
+      type: "deadlyBlock",
+    },
+    db_2: {
+      config: { style: "toaster", times: { y: 2 } },
+      position: { x: 0, y: 3, z: 0 },
       type: "deadlyBlock",
     },
     f: {

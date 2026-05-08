@@ -614,7 +614,9 @@ export const consolidateItemsMap = <T extends Record<string, JsonItemUnion>>(
   return Object.fromEntries(
     consolidateItems(
       Object.entries(items) as Iterable<ItemWithId>,
-      considerItem as unknown as (item: ItemWithId) => boolean,
+      considerItem ?
+        ([, item]: ItemWithId) => considerItem(item as ValueOf<T>)
+      : undefined,
     ),
   ) as T;
 };

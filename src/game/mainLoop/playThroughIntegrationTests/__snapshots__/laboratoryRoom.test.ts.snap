@@ -1886,6 +1886,7 @@ exports[`playing through a complex, deterministic room ("laboratory") should alw
           "by": {},
           "roomTime": -9007199254740991,
         },
+        "disabled": false,
         "disappearing": null,
         "expires": null,
         "position": {
@@ -1941,6 +1942,7 @@ exports[`playing through a complex, deterministic room ("laboratory") should alw
           "by": {},
           "roomTime": -9007199254740991,
         },
+        "disabled": false,
         "disappearing": null,
         "expires": null,
         "position": {
@@ -1996,6 +1998,7 @@ exports[`playing through a complex, deterministic room ("laboratory") should alw
           "by": {},
           "roomTime": -9007199254740991,
         },
+        "disabled": false,
         "disappearing": null,
         "expires": null,
         "position": {
@@ -2048,6 +2051,7 @@ exports[`playing through a complex, deterministic room ("laboratory") should alw
           "by": {},
           "roomTime": -9007199254740991,
         },
+        "disabled": false,
         "disappearing": null,
         "expires": null,
         "position": {

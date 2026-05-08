@@ -40659,7 +40659,7 @@ exports[`covert campaign handbrake to protect against accidental changes > moonb
       "config": {
         "style": "toaster",
         "times": {
-          "y": 5,
+          "y": 4,
         },
       },
       "position": {
@@ -40687,6 +40687,17 @@ exports[`covert campaign handbrake to protect against accidental changes > moonb
       "position": {
         "x": 11,
         "y": 14,
+        "z": 0,
+      },
+      "type": "deadlyBlock",
+    },
+    "db6": {
+      "config": {
+        "style": "toaster",
+      },
+      "position": {
+        "x": 11,
+        "y": 5,
         "z": 0,
       },
       "type": "deadlyBlock",
