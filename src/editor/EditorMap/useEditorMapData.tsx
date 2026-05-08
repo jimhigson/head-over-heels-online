@@ -13,28 +13,26 @@ import type { EditorRoomId } from "../editorTypes";
 import { findMapBounds } from "../../game/components/dialogs/menuDialog/dialogs/map/findMapBounds";
 import { roomGridPositions } from "../../game/components/dialogs/menuDialog/dialogs/map/roomGridPositions";
 import { sortRoomGridPositions } from "../../game/components/dialogs/menuDialog/dialogs/map/sortRoomGridPositions";
+import { useEditorAppSelector } from "../../store/store";
 import { emptyObject } from "../../utils/empty";
 import { createSerialisableErrors } from "../../utils/redux/createSerialisableErrors";
-import {
-  selectCurrentEditingRoomJson,
-  useAppSelectorWithLevelEditorSlice,
-} from "../slice/levelEditorSlice";
+import { selectCurrentEditingRoomJson } from "../slice/levelEditorSlice";
 
 export const useEditorMapData = (): MapData<EditorRoomId> | MapDataError => {
-  const campaign = useAppSelectorWithLevelEditorSlice(
+  const campaign = useEditorAppSelector(
     (state) => state.levelEditor.campaignInProgress,
   );
-  const curRoomSubroom = useAppSelectorWithLevelEditorSlice((state) => {
+  const curRoomSubroom = useEditorAppSelector((state) => {
     const roomJson = selectCurrentEditingRoomJson(state);
     const subRooms = roomJson.meta?.subRooms;
     // find any sub-room for the current room:
     return (subRooms && Object.keys(subRooms)[0]) ?? "*";
   });
-  const curRoomScenery = useAppSelectorWithLevelEditorSlice((state) => {
+  const curRoomScenery = useEditorAppSelector((state) => {
     const roomJson = selectCurrentEditingRoomJson(state);
     return roomJson.planet;
   });
-  const curRoomEditingRoomId = useAppSelectorWithLevelEditorSlice(
+  const curRoomEditingRoomId = useEditorAppSelector(
     (state) => state.levelEditor.currentlyEditingRoomId,
   );
 

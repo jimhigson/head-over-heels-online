@@ -1,6 +1,8 @@
 import type { UnionOfAllItemInPlayTypes } from "../../../model/ItemInPlay";
+import type { PlanetName } from "../../../sprites/planets";
 import type { ScrollsRead } from "../../../store/slices/gameInPlay/gameInPlaySlice";
 import type { UserSettings } from "../../../store/slices/userSettings/userSettingsSlice";
+import type { PokesEnabled } from "../../../store/slices/userSettings/userSettingsSlice";
 import type { RoomPickupsCollected } from "../GameState";
 
 import { type RoomJson, roomJsonItemsIterable } from "../../../model/RoomJson";
@@ -10,6 +12,7 @@ import {
   type RoomState,
   type RoomStateItems,
 } from "../../../model/RoomState";
+import { emptyObject } from "../../../utils/empty";
 import { entries } from "../../../utils/entries";
 import { collisionItemWithIndex } from "../../collision/aabbCollision";
 import { findStandingOnWithHighestPriorityAndMostOverlap } from "../../collision/checkStandingOn";
@@ -31,6 +34,8 @@ function* loadItems<RoomId extends string, RoomItemId extends string>(
   directionalIndex: RoomDirectionalIndex<RoomId, RoomItemId>,
   roomPickupsCollected: RoomPickupsCollected,
   scrollsRead: ScrollsRead,
+  planetsLiberated: Partial<Record<PlanetName, boolean>>,
+  pokesEnabled: PokesEnabled,
   isNewGame: boolean,
 ): Generator<UnionOfAllItemInPlayTypes<RoomId>> {
   const ent = entries(roomJson.items);
@@ -45,6 +50,8 @@ function* loadItems<RoomId extends string, RoomItemId extends string>(
       directionalIndex,
       roomPickupsCollected,
       scrollsRead,
+      planetsLiberated,
+      pokesEnabled,
     );
   }
 }
@@ -62,6 +69,22 @@ const itemsInItemObjectMap = <RoomId extends string, RoomItemId extends string>(
   return map;
 };
 
+export type LoadRoomOptions<
+  RoomId extends string,
+  RoomItemId extends string,
+> = {
+  roomJson: RoomJson<RoomId, RoomItemId>;
+  roomPickupsCollected: RoomPickupsCollected;
+  scrollsRead: ScrollsRead;
+  planetsLiberated?: Partial<Record<PlanetName, boolean>>;
+  /**
+   * if true, this is a new game - ie, load head and heels at using their starting json
+   * item if they are in the room
+   */
+  isNewGame?: boolean;
+  userSettings: UserSettings;
+};
+
 /**
  * convert a room from it's storage (json) format to its in-play (loaded) format
  */
@@ -69,19 +92,10 @@ export const loadRoom = <RoomId extends string, RoomItemId extends string>({
   roomJson,
   roomPickupsCollected,
   scrollsRead,
+  planetsLiberated,
   isNewGame = false,
   userSettings,
-}: {
-  roomJson: RoomJson<RoomId, RoomItemId>;
-  roomPickupsCollected: RoomPickupsCollected;
-  scrollsRead: ScrollsRead;
-  /**
-   * if true, this is a new game - ie, load head and heels at using their starting json
-   * item if they are in the room
-   */
-  isNewGame?: boolean;
-  userSettings: UserSettings;
-}): RoomState<RoomId, RoomItemId> => {
+}: LoadRoomOptions<RoomId, RoomItemId>): RoomState<RoomId, RoomItemId> => {
   const directionalIndex = buildRoomJsonDirectionalIndex(
     roomJsonItemsIterable(roomJson),
   );
@@ -91,6 +105,8 @@ export const loadRoom = <RoomId extends string, RoomItemId extends string>({
       directionalIndex,
       roomPickupsCollected,
       scrollsRead,
+      planetsLiberated ?? emptyObject,
+      userSettings.pokesEnabled,
       isNewGame,
     ),
   );

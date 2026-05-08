@@ -1,11 +1,11 @@
 import type { GridResolution } from "../../slice/levelEditorSlice";
 
 import { useAppDispatch } from "../../../store/hooks";
+import { useEditorAppSelector } from "../../../store/store";
 import { Switch3 } from "../../../ui/Switch";
 import {
   changeGridResolution,
   gridResolutions,
-  useAppSelectorWithLevelEditorSlice,
 } from "../../slice/levelEditorSlice";
 
 export const HalfGridResolutionSwitch = ({
@@ -20,9 +20,7 @@ export const HalfGridResolutionSwitch = ({
       className={className}
       label="Snap"
       values={gridResolutions}
-      value={useAppSelectorWithLevelEditorSlice(
-        (state) => state.levelEditor.gridResolution,
-      )}
+      value={useEditorAppSelector((state) => state.levelEditor.gridResolution)}
       onChange={(value: GridResolution) => {
         dispatch(changeGridResolution(value));
       }}

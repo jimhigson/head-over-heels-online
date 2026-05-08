@@ -1,18 +1,17 @@
+import type { SharedUnionFields } from "type-fest";
+
 import type {
-  CommonAbilities,
-  PlayableState,
+  HeadOverHeelsState,
+  HeadState,
+  HeelsState,
 } from "../../../model/ItemStateMap";
 import type { JsonItem } from "../../../model/json/JsonItem";
 import type { CharacterName } from "../../../model/modelTypes";
+import type { PokesEnabled } from "../../../store/slices/userSettings/userSettingsSlice";
 import type { PlayableItem } from "../../physics/itemPredicates";
 import type { SpecifiedTextureCreateSpriteOptions } from "../../render/createSprite";
 
 import { defaultItemProperties } from "../../../model/defaultItemProperties";
-import {
-  selectIsInfiniteDoughnutsPoke,
-  selectIsInfiniteLivesPoke,
-} from "../../../store/slices/gameMenus/gameMenusSelectors";
-import { store } from "../../../store/store";
 import { emptyObject } from "../../../utils/empty";
 import { neverTime } from "../../../utils/neverTime";
 import { unitVectors } from "../../../utils/vectors/unitVectors";
@@ -33,9 +32,10 @@ export const defaultPlayableRootAttributes = {
   castsShadowWhileStoodOn: true,
 } satisfies Partial<PlayableItem<CharacterName, string>>;
 
-export const defaultPlayerState = () => {
-  const infiniteLivesPoke = selectIsInfiniteLivesPoke(store.getState());
-  type ReturnType = Partial<PlayableState<string> & CommonAbilities>;
+export const defaultCommonPlayableState = () => {
+  type CommonToAllPlayablesState = SharedUnionFields<
+    HeadOverHeelsState<string> | HeadState<string> | HeelsState<string>
+  >;
 
   return {
     action: "idle",
@@ -51,21 +51,34 @@ export const defaultPlayerState = () => {
       gravity: originXyz,
       movingFloor: originXyz,
     },
-    switchedToAt: neverTime,
-    lastDiedAt: neverTime,
-    gameTime: 0,
-    lives:
-      infiniteLivesPoke ? ("infinite" as const) : originalGameStartingLives,
-    // since a jump hasn't started this value doesn't matter:
     jumpStartZ: 0,
-  } satisfies ReturnType;
+  } as const satisfies Partial<CommonToAllPlayablesState>;
 };
+
+/** what individual playables always start with, in addition to what's in defaultCommonPlayableState */
+export function defaultCommonIndividualPlayableState(
+  pokesEnabled: PokesEnabled,
+) {
+  type CommonToBothIndividualPlayablesState = SharedUnionFields<
+    HeadState<string> | HeelsState<string>
+  >;
+  return {
+    lives:
+      pokesEnabled!.infiniteLives ?
+        ("infinite" as const)
+      : originalGameStartingLives,
+    lastDiedAt: neverTime,
+    switchedToAt: neverTime,
+    gameTime: 0,
+  } as const satisfies Partial<CommonToBothIndividualPlayablesState>;
+}
 
 export const loadPlayer = <RoomId extends string, RoomItemId extends string>(
   jsonItem: JsonItem<"player", RoomId, RoomItemId>,
-  jsonItemId?: RoomItemId,
+  jsonItemId: RoomItemId | undefined,
+  pokesEnabled: PokesEnabled = emptyObject,
 ): PlayableItem<CharacterName, RoomId, RoomItemId> => {
-  const infiniteDoughnutsPoke = selectIsInfiniteDoughnutsPoke(store.getState());
+  const { infiniteDoughnuts } = pokesEnabled;
 
   if (jsonItem.config.which === "head") {
     return {
@@ -80,12 +93,13 @@ export const loadPlayer = <RoomId extends string, RoomItemId extends string>(
       state: {
         ...defaultBaseState<RoomItemId>(),
         ...defaultFreeItemState(),
-        ...defaultPlayerState(),
+        ...defaultCommonPlayableState(),
+        ...defaultCommonIndividualPlayableState(pokesEnabled),
         hasHooter: false,
         gameWalkDistance: 0,
         fastStepsStartedAtDistance: neverTime,
         shieldCollectedAt: neverTime,
-        doughnuts: infiniteDoughnutsPoke ? "infinite" : 0,
+        doughnuts: infiniteDoughnuts ? "infinite" : 0,
         position: positionCentredInBlock(jsonItem),
         stoodOnUntilRoomTime: neverTime,
       },
@@ -103,7 +117,8 @@ export const loadPlayer = <RoomId extends string, RoomItemId extends string>(
       state: {
         ...defaultBaseState<RoomItemId>(),
         ...defaultFreeItemState(),
-        ...defaultPlayerState(),
+        ...defaultCommonPlayableState(),
+        ...defaultCommonIndividualPlayableState(pokesEnabled),
         carrying: null,
         hasBag: false,
         bigJumps: 0,

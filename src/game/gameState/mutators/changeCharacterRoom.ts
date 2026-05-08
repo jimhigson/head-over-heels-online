@@ -425,7 +425,8 @@ export function changeCharacterRoom<
         // TODO: this cast is a bit off - 2/3 rooms are in scope here and not reason for them to have the same RoomItemId type
       ] as RoomState<RoomId, RoomItemId>);
 
-  const campaign = selectCurrentCampaign(store.getState());
+  const storeState = store.getState();
+  const campaign = selectCurrentCampaign(storeState);
   const toRoomJson = campaign.rooms[toRoomId] as RoomJson<RoomId, RoomItemId>;
   if (toRoomJson === undefined) {
     throw new Error(`room ${toRoomId} does not exist in campaign`);
@@ -439,8 +440,9 @@ export function changeCharacterRoom<
         roomJson: toRoomJson,
         roomPickupsCollected:
           gameState.pickupsCollected[toRoomId] ?? emptyObject,
-        scrollsRead: store.getState().gameInPlay.gameInPlay.scrollsRead,
-        userSettings: store.getState().userSettings.userSettings,
+        scrollsRead: storeState.gameInPlay.gameInPlay.scrollsRead,
+        planetsLiberated: storeState.gameInPlay.gameInPlay.planetsLiberated,
+        userSettings: storeState.userSettings.userSettings,
       }) as RoomState<RoomId, RoomItemId>);
 
   // heels can't carry items to different rooms:

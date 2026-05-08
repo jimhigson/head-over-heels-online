@@ -6,8 +6,8 @@ import { useEffect, useRef, useState } from "preact/hooks";
 
 import type { EditorRoomItemId } from "../editorTypes";
 
+import { useEditorAppSelector } from "../../store/store";
 import { twClass } from "../../utils/twClass";
-import { useAppSelectorWithLevelEditorSlice } from "../slice/levelEditorSlice";
 import { useLoadMonaco } from "./useLoadMonaco";
 
 const useMonacoEditorText = (
@@ -86,7 +86,7 @@ export const useSyncStoreItemSelectionToMonacoDecorations = (
     }
   }
 
-  const selectedJsonItemIds = useAppSelectorWithLevelEditorSlice(
+  const selectedJsonItemIds = useEditorAppSelector(
     (state) => state.levelEditor.selectedJsonItemIds,
   );
 

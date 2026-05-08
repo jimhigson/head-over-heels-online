@@ -5,7 +5,7 @@ import type { TextureTailwindClass } from "../../sprites/spritesheet/spritesheet
 import { BlockyMarkdown } from "../../game/components/BlockyMarkdown";
 import { multilineTextClass } from "../../game/components/dialogs/menuDialog/multilineTextClass";
 import { BitmapText } from "../../game/components/tailwindSprites/BitmapText";
-import { store } from "../../store/store";
+import { editorStore, useEditorAppSelector } from "../../store/store";
 import { Border } from "../../ui/Border";
 import { Button } from "../../ui/Button";
 import { cn } from "../../ui/cn";
@@ -13,10 +13,6 @@ import { Dialog } from "../../ui/Dialog";
 import { DialogPortal } from "../../ui/DialogPortal";
 import { Switch } from "../../ui/Switch";
 import { useKeyboardShortcut } from "../../ui/useKeyboardShortcut";
-import {
-  type RootStateWithLevelEditorSlice,
-  useAppSelectorWithLevelEditorSlice,
-} from "../slice/levelEditorSlice";
 import { useSupabaseUser } from "../toolbar/useSupabaseUser";
 
 export const SaveAsDialog = ({
@@ -36,11 +32,11 @@ export const SaveAsDialog = ({
   const inputRef = useRef<HTMLInputElement | null>(null);
   const [campaignName, setCampaignName] = useState(
     () =>
-      (store.getState() as RootStateWithLevelEditorSlice).levelEditor
-        .campaignInProgress.locator.campaignName ?? "",
+      editorStore.getState().levelEditor.campaignInProgress.locator
+        .campaignName ?? "",
   );
   const [publish, setPublish] = useState(false);
-  const campaignUserId = useAppSelectorWithLevelEditorSlice(
+  const campaignUserId = useEditorAppSelector(
     (state) => state.levelEditor.campaignInProgress.locator.userId,
   );
   const supabaseUser = useSupabaseUser();

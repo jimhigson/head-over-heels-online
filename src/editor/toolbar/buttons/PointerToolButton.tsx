@@ -1,15 +1,11 @@
 import type { TextureTailwindClass } from "../../../sprites/spritesheet/spritesheetData/TextureTailwindClass";
 
-import { store } from "../../../store/store";
-import {
-  selectTool,
-  setTool,
-  useAppSelectorWithLevelEditorSlice,
-} from "../../slice/levelEditorSlice";
+import { store, useEditorAppSelector } from "../../../store/store";
+import { selectTool, setTool } from "../../slice/levelEditorSlice";
 import { ToolbarButton } from "./ToolbarButton";
 
 export const PointerToolButton = () => {
-  const currentTool = useAppSelectorWithLevelEditorSlice(selectTool);
+  const currentTool = useEditorAppSelector(selectTool);
 
   const isCurrentTool = currentTool?.type === "pointer";
 

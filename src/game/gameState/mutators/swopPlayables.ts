@@ -68,7 +68,10 @@ const stepTowards = <RoomId extends string>(
 };
 
 /**
- * @returns true is successful. Returns false if can't find a way to
+ * Tries to combine Head and Heels into HeadOverHeels by moving them
+ * towards each other until aligned
+ *
+ * @returns true if successful. Returns false if can't find a way to
  * align the characters with each other after several times trying
  */
 export const swopFromUncombinedToCombinedPlayables = <RoomId extends string>(

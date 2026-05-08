@@ -5,13 +5,12 @@ import type { TextureTailwindClass } from "../../../sprites/spritesheet/spritesh
 import type { EditorRoomId, EditorRoomItemId } from "../../editorTypes";
 import type { ItemTool } from "../../RoomEditingArea/interactivity/Tool";
 
-import { store } from "../../../store/store";
+import { store, useEditorAppSelector } from "../../../store/store";
 import { Switch } from "../../../ui/Switch";
 import { twClass } from "../../../utils/twClass";
 import {
   selectCurrentEditingRoomJson,
   setTool,
-  useAppSelectorWithLevelEditorSlice,
 } from "../../slice/levelEditorSlice";
 import { buttonSpriteRevertColourClasses } from "../buttonSizeClassNames";
 import { ItemToolButton } from "../ItemToolButton";
@@ -31,7 +30,7 @@ function doorItemTool(autoAddRoom: boolean): ItemTool {
 
 export const DoorToolButton = () => {
   const [autoAddRoom, setAutoAddRoom] = useState(true);
-  const scenery = useAppSelectorWithLevelEditorSlice(
+  const scenery = useEditorAppSelector(
     (state) => selectCurrentEditingRoomJson(state).planet,
   );
 

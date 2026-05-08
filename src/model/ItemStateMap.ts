@@ -253,20 +253,33 @@ export type MonsterState<RoomItemId extends string> =
       busyLickingDoughnutsOffFace: boolean;
     };
 
-export type ItemStateMap<RoomId extends string, RoomItemId extends string> = {
-  head: PlayableState<RoomItemId> & HeadAbilities;
-  heels: PlayableState<RoomItemId> &
-    HeelsAbilities<RoomId> & {
-      /**
-       * true if heels is jumping, and the jump was a big jump using a power-up. THis can be used to
-       * decide to show the particle effect or not
-       */
-      isBigJump: boolean;
-    };
-  headOverHeels: PlayableState<RoomItemId> & {
-    head: HeadAbilities;
-    heels: HeelsAbilities<RoomId>;
+export type HeadState<RoomItemId extends string> = PlayableState<RoomItemId> &
+  HeadAbilities;
+
+export type HeelsState<
+  RoomItemId extends string,
+  RoomId extends string = string,
+> = PlayableState<RoomItemId> &
+  HeelsAbilities<RoomId> & {
+    /**
+     * true if heels is jumping, and the jump was a big jump using a power-up. This can be used to
+     * decide to show the particle effect or not
+     */
+    isBigJump: boolean;
   };
+
+export type HeadOverHeelsState<
+  RoomItemId extends string,
+  RoomId extends string = string,
+> = PlayableState<RoomItemId> & {
+  head: HeadAbilities;
+  heels: HeelsAbilities<RoomId>;
+};
+
+export type ItemStateMap<RoomId extends string, RoomItemId extends string> = {
+  head: HeadState<RoomItemId>;
+  heels: HeelsState<RoomItemId, RoomId>;
+  headOverHeels: HeadOverHeelsState<RoomItemId, RoomId>;
   spring: FreeItemState<RoomItemId> & PortableItemState;
   portableBlock: FreeItemState<RoomItemId> & PortableItemState;
   sceneryPlayer: FreeItemState<RoomItemId> & PortableItemState;

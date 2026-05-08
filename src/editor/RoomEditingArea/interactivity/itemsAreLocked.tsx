@@ -1,11 +1,11 @@
+import type { EditorRootState } from "../../../store/store";
 import type {
   EditorJsonItemUnion,
   EditorUnionOfAllItemInPlayTypes,
 } from "../../editorTypes";
-import type { RootStateWithLevelEditorSlice } from "../../slice/levelEditorSlice";
 
 export const itemsAreLocked = (
-  storeState: RootStateWithLevelEditorSlice,
+  storeState: EditorRootState,
   ...items: EditorJsonItemUnion[] | EditorUnionOfAllItemInPlayTypes[]
 ) => {
   return (

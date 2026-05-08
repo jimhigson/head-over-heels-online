@@ -12,12 +12,10 @@ import type {
 import type { EditorJsonItemUnion, EditorRoomJsonItems } from "../editorTypes";
 
 import { playableTailwindSpriteClassname } from "../../game/components/tailwindSprites/playableTailwindSpriteClassname";
+import { useEditorAppSelector } from "../../store/store";
 import { keys } from "../../utils/entries";
 import { twClass } from "../../utils/twClass";
-import {
-  selectCurrentEditingRoomJson,
-  useAppSelectorWithLevelEditorSlice,
-} from "../slice/levelEditorSlice";
+import { selectCurrentEditingRoomJson } from "../slice/levelEditorSlice";
 import { getParsedJsonFromEditor } from "./getParsedJsonFromEditor";
 import { useLoadMonaco } from "./useLoadMonaco";
 
@@ -416,10 +414,10 @@ export const useItemIconDecorations = (
   editor: editor.IStandaloneCodeEditor | null,
 ): editor.IEditorDecorationsCollection | null => {
   const monaco = useLoadMonaco();
-  const jsonItems = useAppSelectorWithLevelEditorSlice(
+  const jsonItems = useEditorAppSelector(
     (state) => selectCurrentEditingRoomJson(state).items,
   );
-  const scenery = useAppSelectorWithLevelEditorSlice(
+  const scenery = useEditorAppSelector(
     (state) => selectCurrentEditingRoomJson(state).planet,
   );
 

@@ -4,17 +4,17 @@ import type { editor } from "monaco-editor";
 import { findNodeAtLocation, getLocation, parseTree } from "jsonc-parser";
 import { useEffect, useRef } from "preact/hooks";
 
-import { store } from "../../store/store";
 import {
-  type RootStateWithLevelEditorSlice,
-  selectCurrentEditingRoomJson,
-  useAppSelectorWithLevelEditorSlice,
-} from "../slice/levelEditorSlice";
+  type EditorRootState,
+  editorStore,
+  useEditorAppSelector,
+} from "../../store/store";
+import { selectCurrentEditingRoomJson } from "../slice/levelEditorSlice";
 import { useLoadMonaco } from "./useLoadMonaco";
 
 const updateTextNow = (
   editor: editor.IStandaloneCodeEditor,
-  state: RootStateWithLevelEditorSlice,
+  state: EditorRootState,
   monaco: null | typeof Monaco,
 ) => {
   if (!monaco) {
@@ -107,10 +107,8 @@ const useUpdateTextWhenJsonChangesInSameRoom = (
   editor: editor.IStandaloneCodeEditor | null,
   monaco: null | typeof Monaco,
 ) => {
-  const currentRoomJson = useAppSelectorWithLevelEditorSlice(
-    selectCurrentEditingRoomJson,
-  );
-  const currentlyEditingRoomId = useAppSelectorWithLevelEditorSlice(
+  const currentRoomJson = useEditorAppSelector(selectCurrentEditingRoomJson);
+  const currentlyEditingRoomId = useEditorAppSelector(
     (state) => state.levelEditor.currentlyEditingRoomId,
   );
   const previousRoomIdRef = useRef<string | undefined>(undefined);
@@ -132,7 +130,7 @@ const useUpdateTextWhenJsonChangesInSameRoom = (
 
     previousRoomIdRef.current = currentlyEditingRoomId;
 
-    const state = store.getState() as RootStateWithLevelEditorSlice;
+    const state = editorStore.getState();
     updateTextNow(editor, state, monaco);
   }, [editor, monaco, currentRoomJson, currentlyEditingRoomId]);
 };
@@ -147,7 +145,7 @@ const useUpdateTextWhenJsonChangesInSameRoom = (
 const useCreateDocumentsInMonacoWhenCurrentRoomChanges = (
   monaco: null | typeof Monaco,
 ) => {
-  const currentlyEditingRoomId = useAppSelectorWithLevelEditorSlice(
+  const currentlyEditingRoomId = useEditorAppSelector(
     (state) => state.levelEditor.currentlyEditingRoomId,
   );
 
@@ -167,14 +165,14 @@ const useCreateDocumentsInMonacoWhenCurrentRoomChanges = (
 
     if (!existingModel) {
       // Create a new model for this room
-      const state = store.getState() as RootStateWithLevelEditorSlice;
+      const state = editorStore.getState();
       const roomJson = selectCurrentEditingRoomJson(state);
       const content = roomJson ? JSON.stringify(roomJson, null, 2) : "";
 
       monaco.editor.createModel(content, "json", modelUri);
     } else {
       // Update existing model's content
-      const state = store.getState() as RootStateWithLevelEditorSlice;
+      const state = editorStore.getState();
       const roomJson = selectCurrentEditingRoomJson(state);
       const content = roomJson ? JSON.stringify(roomJson, null, 2) : "";
 

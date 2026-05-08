@@ -5,6 +5,7 @@ import type { Xyz } from "../../../utils/vectors/vectors";
 import type { EditorRoomItemId, EditorRoomState } from "../../editorTypes";
 
 import { loadRoom } from "../../../game/gameState/loadRoom/loadRoom";
+import { emptyUserSettings } from "../../../store/slices/userSettings/emptyUserSettings";
 import { itemMoveOrResizeWouldCollide } from "./editWouldCollide";
 
 const xyz = (x: number, y: number, z: number): Xyz => ({ x, y, z });
@@ -51,7 +52,7 @@ describe("itemMoveOrResizeWouldCollide", () => {
         scrollsRead: {},
         roomPickupsCollected: {},
         isNewGame: false,
-        userSettings: { soundSettings: {}, displaySettings: {} },
+        userSettings: emptyUserSettings,
       }) as EditorRoomState;
     };
 

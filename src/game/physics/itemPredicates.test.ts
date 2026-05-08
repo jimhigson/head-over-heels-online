@@ -12,11 +12,14 @@ import { loadItemFromJson } from "../gameState/loadRoom/loadItemFromJson";
 import { loadPlayer } from "../gameState/loadRoom/loadPlayer";
 import { isSolid } from "./itemPredicates";
 
-const player = loadPlayer({
-  type: "player",
-  config: { which: "head" },
-  position: originXyz,
-});
+const player = loadPlayer(
+  {
+    type: "player",
+    config: { which: "head" },
+    position: originXyz,
+  },
+  undefined,
+);
 
 const [monster] = loadItemFromJson(
   "monster",

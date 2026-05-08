@@ -2,7 +2,7 @@ import type { ReactNode } from "react";
 
 import { Fragment } from "react";
 
-import { linkOpenExternalClickHandler } from "../../../../../../utils/tauri/openExternalLink";
+import { linkOpenExternalClickHandler } from "../utils/tauri/openExternalLink";
 
 type StackTracesWithLinksProps = {
   children: string;

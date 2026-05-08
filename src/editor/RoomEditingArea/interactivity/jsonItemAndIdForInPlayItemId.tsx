@@ -1,14 +1,14 @@
+import type { EditorRootState } from "../../../store/store";
 import type {
   EditorJsonItemUnion,
   EditorRoomItemId,
   EditorRoomState,
 } from "../../editorTypes";
-import type { RootStateWithLevelEditorSlice } from "../../slice/levelEditorSlice";
 
 import { selectItemInLevelEditorState } from "../../slice/levelEditorSelectors";
 
 export const jsonItemAndIdForInPlayItemId = (
-  { levelEditor: levelEditorState }: RootStateWithLevelEditorSlice,
+  { levelEditor: levelEditorState }: EditorRootState,
   roomState: EditorRoomState,
   itemId: EditorRoomItemId,
 ): [EditorRoomItemId, EditorJsonItemUnion] | undefined => {

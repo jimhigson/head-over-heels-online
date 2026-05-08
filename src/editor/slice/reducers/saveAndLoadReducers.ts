@@ -7,8 +7,10 @@ import type { EditorCampaign } from "../../editorTypes";
 import { roomJsonItemsIterable } from "../../../model/RoomJson";
 import { keysIter, valuesIter } from "../../../utils/entries";
 import { first } from "../../../utils/iterators/first";
+import { pick } from "../../../utils/pick";
 import { initialLevelEditorSliceState } from "../initialLevelEditorSliceState";
 import { type LevelEditorState } from "../levelEditorSlice";
+import { levelEditorSliceNonPersistedFields } from "../levelEditorSliceTransientFields";
 
 export const saveAndLoadReducers = {
   loadCampaign(
@@ -23,11 +25,15 @@ export const saveAndLoadReducers = {
     state.remoteCampaign = campaign;
     state.campaignInProgress = campaign;
 
-    state.hoveredItem = undefined;
-    state.selectedJsonItemIds = [];
-    state.clickableAnnotationHovered = false;
-    state.dragInProgress = false;
-    state.history = initialLevelEditorSliceState.history;
+    // clear transient editor state - this shouldn't be kept between campaigns:
+    Object.assign(
+      state,
+      pick(
+        initialLevelEditorSliceState,
+        ...levelEditorSliceNonPersistedFields,
+        "history",
+      ),
+    );
 
     // choose which room to start the editor in.
     const startingRoom =

@@ -2,7 +2,6 @@ import { useState } from "preact/hooks";
 
 import type { CampaignLocator } from "../../../model/modelTypes";
 import type { TextureTailwindClass } from "../../../sprites/spritesheet/spritesheetData/TextureTailwindClass";
-import type { RootStateWithLevelEditorSlice } from "../../slice/levelEditorSlice";
 
 import { importSupabaseDb } from "../../../db/supabaseDb.import";
 import { BitmapText } from "../../../game/components/tailwindSprites/BitmapText";
@@ -10,7 +9,7 @@ import {
   loadCampaignFromApi,
   saveCampaignViaApi,
 } from "../../../store/slices/campaigns/campaignApiHelpers";
-import { store } from "../../../store/store";
+import { editorStore, store, useEditorAppSelector } from "../../../store/store";
 import { cn } from "../../../ui/cn";
 import { emptyArray } from "../../../utils/empty";
 import { OpenCampaignDialog } from "../../editorDialogs/OpenCampaignDialog";
@@ -46,7 +45,7 @@ Load your saved campaign, or anyone else's for editing
 `;
 
 const save = async () => {
-  const state = store.getState() as RootStateWithLevelEditorSlice;
+  const state = editorStore.getState();
   const campaign = selectCurrentCampaignInProgress(state);
   if (!campaignIsNamed(campaign)) {
     throw new Error("Campaign is not named, can't save");
@@ -93,6 +92,9 @@ export const SaveAndLoadButtons = () => {
   const { doneNow, justDone } = useShortTimeDisplay();
   const [saveAsDialogOpen, setSaveAsDialogOpen] = useState(false);
   const [openDialogOpen, setOpenDialogOpen] = useState(false);
+  const haveNamedCampaign: boolean = useEditorAppSelector((state) =>
+    campaignIsNamed(selectCurrentCampaignInProgress(state)),
+  );
 
   return (
     <>
@@ -106,7 +108,7 @@ export const SaveAndLoadButtons = () => {
             <ToolbarButton
               disabled={user === null || savedIsInSync}
               onClick={async () => {
-                const state = store.getState() as RootStateWithLevelEditorSlice;
+                const state = editorStore.getState();
                 const campaign = selectCurrentCampaignInProgress(state);
 
                 if (!campaignIsNamed(campaign)) {
@@ -151,24 +153,51 @@ export const SaveAndLoadButtons = () => {
         </MenuButton>
       }
 
-      <ToolbarButton
-        onClick={() => setOpenDialogOpen(true)}
-        tooltipContent={loadTooltipMarkdown}
-        shortcutKeys={["^O", "⌘O"]}
+      <MenuButton
+        closeOnSelect
+        main={
+          <ToolbarButton
+            onClick={() => setOpenDialogOpen(true)}
+            tooltipContent={loadTooltipMarkdown}
+            shortcutKeys={["^O", "⌘O"]}
+          >
+            <div className="flex flex-row items-center">
+              <span
+                className={cn(
+                  `sprite ${"texture-editor_tool_open" satisfies TextureTailwindClass} relative`,
+                )}
+              />
+              <span
+                className={cn(
+                  `sprite sprite-tinted text-highlightBeige ${"texture-hud_char_➡" satisfies TextureTailwindClass} relative`,
+                )}
+              />
+            </div>
+          </ToolbarButton>
+        }
       >
-        <div className="flex flex-row items-center">
-          <span
-            className={cn(
-              `sprite ${"texture-editor_tool_open" satisfies TextureTailwindClass} relative`,
-            )}
-          />
-          <span
-            className={cn(
-              `sprite sprite-tinted text-highlightBeige ${"texture-hud_char_➡" satisfies TextureTailwindClass} relative`,
-            )}
-          />
-        </div>
-      </ToolbarButton>
+        {haveNamedCampaign && !savedIsInSync ?
+          [
+            <MenuItemButton
+              key="revert"
+              onClick={() => {
+                const state = editorStore.getState();
+                const campaign = selectCurrentCampaignInProgress(state);
+
+                if (!campaignIsNamed(campaign)) {
+                  throw new Error(
+                    "can only revert if already on a named campaign",
+                  );
+                }
+                const { locator } = campaign;
+                load(locator);
+              }}
+            >
+              Revert
+            </MenuItemButton>,
+          ]
+        : emptyArray}
+      </MenuButton>
 
       {saveAsDialogOpen && (
         <SaveAsDialog

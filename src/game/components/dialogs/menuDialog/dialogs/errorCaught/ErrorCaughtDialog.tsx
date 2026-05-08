@@ -1,83 +1,18 @@
-import { useEffect, useState } from "preact/hooks";
+import { useState } from "preact/hooks";
 
 import type { SerialisableError } from "../../../../../../utils/redux/createSerialisableErrors";
 
-import { useAppSelector } from "../../../../../../store/hooks";
+import { useAppDispatch, useAppSelector } from "../../../../../../store/hooks";
 import { clearAllData } from "../../../../../../store/slices/clearAllData";
 import { reincarnationAccepted } from "../../../../../../store/slices/gameInPlay/gameInPlaySlice";
 import { errorDismissed } from "../../../../../../store/slices/gameMenus/gameMenusSlice";
 import { useDispatchActionCallback } from "../../../../../../store/useDispatchActionCallback";
-import { Border } from "../../../../../../ui/Border";
-import { Dialog } from "../../../../../../ui/Dialog";
-import { DialogPortal } from "../../../../../../ui/DialogPortal";
+import { ErrorDialog } from "../../../../../../ui/ErrorDialog";
 import { BlockyMarkdown } from "../../../../BlockyMarkdown";
 import { BitmapText } from "../../../../tailwindSprites/BitmapText";
 import { MenuItem } from "../../MenuItem";
 import { MenuItems } from "../../MenuItems";
 import { multilineTextClass } from "../../multilineTextClass";
-import { StackTracesWithLinks } from "./StackTracesWithLinks";
-
-/**
- * Parses an error to extract the message and sanitized stack.
- * Some browsers include the error message in the stack trace, so this function
- * removes the message from the stack if it's included to avoid duplication.
- */
-const parseErrorForDisplay = (
-  error: SerialisableError,
-): { message: string; sanitizedStack: string } => {
-  const { message, stack } = error;
-
-  if (!stack) {
-    return { message, sanitizedStack: "" };
-  }
-
-  // Check if the stack includes the message
-  // Different browsers format this differently:
-  // Chrome/V8: "Error: message\n    at ..."
-  // Firefox: "functionName@file:line:column\n..."
-  // Safari: "message@file:line:column\n..."
-
-  // First, check if the stack starts with the error type and message
-  // eg one of: TypeError|ReferenceError|SyntaxError|RangeError|EvalError|URIError
-  // or any generic "FooError"
-  const errorPrefixPattern = /^(?:[A-Z]\w*)?Error:\s*/;
-  const stackStartsWithError = errorPrefixPattern.test(stack);
-
-  let sanitizedStack = stack;
-
-  if (stackStartsWithError) {
-    // Remove "Error: " prefix if present
-    sanitizedStack = sanitizedStack.replace(errorPrefixPattern, "");
-  }
-
-  // Check if the (remaining) stack starts with the message
-  if (sanitizedStack.startsWith(message)) {
-    // Remove the message from the beginning
-    sanitizedStack = sanitizedStack.slice(message.length);
-
-    // Also remove any immediate newline after the message
-    sanitizedStack = sanitizedStack.replace(/^\n/, "");
-  }
-
-  // Some browsers put the message as the first line without "Error:" prefix
-  // Check if the first line of the stack is exactly the message
-  const firstLineEnd = sanitizedStack.indexOf("\n");
-  if (firstLineEnd !== -1) {
-    const firstLine = sanitizedStack.slice(0, firstLineEnd);
-    if (firstLine === message || firstLine === `Error: ${message}`) {
-      sanitizedStack = sanitizedStack.slice(firstLineEnd + 1);
-    }
-  }
-
-  // Trim whitespace from each line of the stack
-  sanitizedStack = sanitizedStack
-    .split("\n")
-    .map((line) => line.trim())
-    .filter((line) => line.length > 0)
-    .join("\n");
-
-  return { message, sanitizedStack };
-};
 
 const markdownIntro = `## Uh-oh! The game crashed!
 You could:
@@ -86,23 +21,6 @@ You could:
 * Email [jim@blockstack.ing](mailto:jim@blockstack.ing)
 * Rant on the [Discord server](https://discord.gg/XmV9QNWY)
 * Play [the MSX remake](https://www.file-hunter.com/Homebrew/?id=headoverheels) instead`;
-
-const writeErrorReport = (errors: SerialisableError[]) => {
-  return errors.toReversed().map((error) => {
-    const { message, sanitizedStack } = parseErrorForDisplay(error);
-    return `
-${message}
-
-${sanitizedStack}
-  `;
-  }).join(`
-    
-⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯
-⬆ ERROR        CAUGHT, WRAPPED, & RETHROWN ⬇
-⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯
-
-`);
-};
 
 export const ErrorCaughtDialog = ({
   errors,
@@ -114,84 +32,54 @@ export const ErrorCaughtDialog = ({
   );
   const [copied, setCopied] = useState<boolean>(false);
   const reincarnateCallback = useDispatchActionCallback(reincarnationAccepted);
-
-  const errorsReportText = writeErrorReport(errors);
-
-  useEffect(() => {
-    // in case in visual regression, log the error to console too as a side-effect
-    console.error("ErrorCaughtDialog: Showing Report:", errorsReportText);
-  }, [errorsReportText]);
+  const dispatch = useAppDispatch();
 
   return (
-    <DialogPortal>
-      <Border className="loading-border zx:zx-loading-border toppy:toppy-loading-border" />
-      <Dialog
-        className="bg-white zx:bg-zxRed toppy:bg-toppyWarm1 gap-y-0 text-redShadow zx:text-zxBlack toppy:text-toppyCool4 px-1"
-        tall
-        wide
-        dialogId="errorCaught"
-      >
-        <div
-          className={
-            "overflow-y-scroll h-full " +
-            "scrollbar scrollbar-w-1 pl-1 " +
-            "scrollbar-thumb-midRed scrollbar-track-highlightBeige " +
-            "zx:scrollbar-thumb-zxCyanDimmed zx:scrollbar-track-zxCyan " +
-            "toppy:scrollbar-thumb-toppyCool3 toppy:scrollbar-track-toppyCool1"
-          }
+    <ErrorDialog
+      errors={errors}
+      intro={<BlockyMarkdown markdown={markdownIntro} />}
+    >
+      {(errorsReportText) => (
+        <MenuItems
+          className={`text-lightGrey zx:text-zxWhite toppy:text-toppyGrey1 mt-1 resHandheld:mt-0 selectedMenuItem:text-midRed zx:selectedMenuItem:text-zxYellow toppy:selectedMenuItem:text-toppyPink2 resHandheld:!gap-y-1 ${multilineTextClass}`}
         >
-          <BlockyMarkdown markdown={markdownIntro} />
-          <hr className="bg-pastelBlue zx:bg-zxWhite toppy:bg-toppyCool2 h-1 my-1 border-none" />
-          <MenuItems
-            className={`text-lightGrey zx:text-zxWhite toppy:text-toppyGrey1 mt-1 resHandheld:mt-0 selectedMenuItem:text-midRed zx:selectedMenuItem:text-zxYellow toppy:selectedMenuItem:text-toppyPink2 resHandheld:!gap-y-1 ${multilineTextClass}`}
-          >
+          <MenuItem
+            doubleHeightWhenFocussed
+            id="tryContinue"
+            label="Ignore, hope it goes away"
+            onSelect={() => dispatch(errorDismissed())}
+          />
+          {hasReincarnationPoint && (
             <MenuItem
               doubleHeightWhenFocussed
-              id="tryContinue"
-              label="Ignore, hope it goes away"
-              onSelect={useDispatchActionCallback(errorDismissed)}
+              id="reincarnate"
+              label="Try reincarnating"
+              onSelect={reincarnateCallback}
             />
-            {hasReincarnationPoint && (
-              <MenuItem
-                doubleHeightWhenFocussed
-                id="reincarnate"
-                label="Try reincarnating"
-                onSelect={reincarnateCallback}
-              />
-            )}
-            <MenuItem
+          )}
+          <MenuItem
+            doubleHeightWhenFocussed
+            id="clearAllData"
+            label="Clear all data, reboot game"
+            onSelect={() => dispatch(clearAllData())}
+          />
+          {copied ?
+            <BitmapText className="text-metallicBlue col-span-2 sprites-double-height ml-3">
+              Error report copied
+            </BitmapText>
+          : <MenuItem
               doubleHeightWhenFocussed
-              id="clearAllData"
-              label="Clear all data, reboot game"
-              onSelect={useDispatchActionCallback(clearAllData)}
+              id="copyClipboard"
+              label="Copy error to clipboard"
+              onSelect={() =>
+                navigator.clipboard
+                  .writeText(errorsReportText)
+                  .then(() => setCopied(true))
+              }
             />
-            {copied ?
-              <BitmapText className="text-metallicBlue col-span-2 sprites-double-height ml-3">
-                Error report copied
-              </BitmapText>
-            : <MenuItem
-                doubleHeightWhenFocussed
-                id="copyClipboard"
-                label="Copy error to clipboard"
-                onSelect={() =>
-                  navigator.clipboard
-                    .writeText(errorsReportText)
-                    .then(() => setCopied(true))
-                }
-              />
-            }
-          </MenuItems>
-          <hr className="bg-pastelBlue zx:bg-zxWhite toppy:bg-toppyCool2 h-1 my-1 border-none" />
-          <BitmapText className="block sprites-double-height my-1 text-midRed zx:text-zxWhite toppy:text-toppyPink2">
-            Error message for nerds:
-          </BitmapText>
-          <pre
-            className={`bg-shadow zx:bg-zxBlack toppy:bg-toppyGrey3 text-white zx:text-zxWhite toppy:text-toppyWarm1 leading-[1em] [&_a]:text-pastelBlue px-1 w-max min-w-full`}
-          >
-            <StackTracesWithLinks>{errorsReportText}</StackTracesWithLinks>
-          </pre>
-        </div>
-      </Dialog>
-    </DialogPortal>
+          }
+        </MenuItems>
+      )}
+    </ErrorDialog>
   );
 };

@@ -4,6 +4,8 @@ import { Panel, PanelGroup, PanelResizeHandle } from "react-resizable-panels";
 import { CssVariables } from "../game/components/CssVariables";
 import { usePageAsAnApp } from "../pages/gamePage/usePageAsAnApp";
 import { SpinnerHead, SpinnerHeels } from "../ui/Spinner";
+import { LoadingCampaignDialog } from "./editorDialogs/LoadingCampaignDialog";
+import { EditorErrorBoundary } from "./EditorErrorBoundary";
 import { EditorMap } from "./EditorMap/EditorMap";
 import { LazyJsonRoomEditor } from "./JsonRoomEditor/JsonRoomEditor.lazy";
 import { LazyRoomEditingArea } from "./RoomEditingArea/RoomEditingArea.lazy";
@@ -13,8 +15,8 @@ const LevelEditor = () => {
   usePageAsAnApp();
 
   return (
-    // <ErrorBoundary>
-    <>
+    <EditorErrorBoundary>
+      <LoadingCampaignDialog />
       <CssVariables>
         <PanelGroup direction="horizontal" className="w-full h-full">
           <Panel id="jsonEditor" defaultSize={18} minSize={12} collapsible>
@@ -42,8 +44,7 @@ const LevelEditor = () => {
           </Panel>
         </PanelGroup>
       </CssVariables>
-    </>
-    // </ErrorBoundary>
+    </EditorErrorBoundary>
   );
 };
 

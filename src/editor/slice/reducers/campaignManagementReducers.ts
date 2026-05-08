@@ -4,7 +4,27 @@ import { type SliceCaseReducers } from "@reduxjs/toolkit";
 
 import type { LevelEditorState } from "../levelEditorSlice";
 
+import { pick } from "../../../utils/pick";
+import { initialLevelEditorSliceState } from "../initialLevelEditorSliceState";
+import { levelEditorSliceNonPersistedFields } from "../levelEditorSliceTransientFields";
+
 export const campaignManagementReducers = {
+  newCampaign(_state) {
+    const state = _state as LevelEditorState;
+
+    Object.assign(
+      state,
+      pick(
+        initialLevelEditorSliceState,
+        ...levelEditorSliceNonPersistedFields,
+        "campaignInProgress",
+        "currentlyEditingRoomId",
+        "remoteCampaign",
+        "history",
+        "editingRoomIdHistory",
+      ),
+    );
+  },
   setCampaignName(state, { payload: name }: PayloadAction<string>) {
     // DO REMOVE CAST - for some reason, a severe typescript performance issue was narrowed
     // down specifically to the WritableDraft<> type here - immer was making ts slow when we

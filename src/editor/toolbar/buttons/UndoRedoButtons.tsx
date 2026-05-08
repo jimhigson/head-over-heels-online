@@ -1,11 +1,11 @@
 import { BitmapText } from "../../../game/components/tailwindSprites/BitmapText";
 import { useAppDispatch } from "../../../store/hooks";
+import { useEditorAppSelector } from "../../../store/store";
 import {
   redo,
   selectCanRedo,
   selectCanUndo,
   undo,
-  useAppSelectorWithLevelEditorSlice,
 } from "../../slice/levelEditorSlice";
 import { ToolbarButton } from "./ToolbarButton";
 import { IconWithTwoLineHoverText } from "./ToolbarButtonContentPatterns";
@@ -13,8 +13,8 @@ import { IconWithTwoLineHoverText } from "./ToolbarButtonContentPatterns";
 export const UndoRedoButtons = () => {
   const dispatch = useAppDispatch();
 
-  const canUndo = useAppSelectorWithLevelEditorSlice(selectCanUndo);
-  const canRedo = useAppSelectorWithLevelEditorSlice(selectCanRedo);
+  const canUndo = useEditorAppSelector(selectCanUndo);
+  const canRedo = useEditorAppSelector(selectCanRedo);
 
   return (
     <div className="flex flex-row gap-oneScaledPix bg-metallicBlue">

@@ -2,13 +2,10 @@ import type { TextureTailwindClass } from "../../../sprites/spritesheet/spritesh
 import type { Xy } from "../../../utils/vectors/vectors";
 
 import { BitmapText } from "../../../game/components/tailwindSprites/BitmapText";
+import { useEditorAppSelector } from "../../../store/store";
 import { useDispatchActionCallback } from "../../../store/useDispatchActionCallback";
 import { twClass } from "../../../utils/twClass";
-import {
-  addRoom,
-  removeRoom,
-  useAppSelectorWithLevelEditorSlice,
-} from "../../slice/levelEditorSlice";
+import { addRoom, removeRoom } from "../../slice/levelEditorSlice";
 import { MenuButton, MenuItemButton } from "./MenuButton";
 import { ToolbarButton } from "./ToolbarButton";
 
@@ -52,7 +49,7 @@ Delete this room
 `;
 
 export const AddAndDeleteRoomButtons = () => {
-  const hasOtherRooms = useAppSelectorWithLevelEditorSlice(
+  const hasOtherRooms = useEditorAppSelector(
     (state) =>
       Object.keys(state.levelEditor.campaignInProgress.rooms).length > 1,
   );

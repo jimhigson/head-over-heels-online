@@ -1,14 +1,11 @@
 import type { TextureTailwindClass } from "../../../sprites/spritesheet/spritesheetData/TextureTailwindClass";
 
-import { store } from "../../../store/store";
-import {
-  setTool,
-  useAppSelectorWithLevelEditorSlice,
-} from "../../slice/levelEditorSlice";
+import { store, useEditorAppSelector } from "../../../store/store";
+import { setTool } from "../../slice/levelEditorSlice";
 import { ToolbarButton } from "./ToolbarButton";
 
 export const EyeDropperButton = () => {
-  const isCurrentTool = useAppSelectorWithLevelEditorSlice(
+  const isCurrentTool = useEditorAppSelector(
     ({ levelEditor }) => levelEditor.tool.type === "eyeDropper",
   );
 

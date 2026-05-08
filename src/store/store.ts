@@ -1,6 +1,12 @@
-import type { ThunkAction, UnknownAction } from "@reduxjs/toolkit";
+import type {
+  EnhancedStore,
+  ThunkAction,
+  UnknownAction,
+} from "@reduxjs/toolkit";
+import type { EmptyObject } from "type-fest";
 
 import { combineSlices, configureStore } from "@reduxjs/toolkit";
+import { useDispatch, useSelector } from "react-redux";
 import {
   FLUSH,
   PAUSE,
@@ -11,7 +17,18 @@ import {
   REHYDRATE,
 } from "redux-persist";
 
+import type {
+  LevelEditorSliceAction,
+  LevelEditorState,
+} from "../editor/slice/levelEditorSlice";
+import type {
+  StoreActionOf,
+  StoreEnhancersOf,
+} from "../utils/redux/EnhancedStoreTypeHelpers";
+
+import { emptyObject } from "../utils/empty";
 import { listenerMiddleware } from "./listenerMiddleware";
+import { levelEditorPersistedReducer } from "./persist/levelEditorPersist";
 import { migrateLegacySavedGames } from "./persist/migrateLegacySavedGames";
 import {
   savedGamesPersistedReducer,
@@ -33,15 +50,6 @@ import { spritesheetOverrideSlice } from "./slices/spritesheetOverrideSlice";
 import { upscaleSlice } from "./slices/upscale/upscaleSlice";
 import { userSettingsSlice } from "./slices/userSettings/userSettingsSlice";
 
-/**
- * Shape of lazy-loaded slices registered with the store.
- *
- * Extended via TypeScript declaration merging from the module that owns each
- * lazy slice — keeps the store decoupled from any particular lazy slice.
- */
-// eslint-disable-next-line @typescript-eslint/no-empty-object-type
-export interface LazyLoadedSlices {}
-
 // Run BEFORE building the store so persistReducer's initial read picks up the
 // migrated key.
 migrateLegacySavedGames();
@@ -57,9 +65,10 @@ const appReducer = combineSlices({
   [gameAssetsLoadingSlice.reducerPath]: gameAssetsLoadingSlice.reducer,
   [spritesheetOverrideSlice.reducerPath]: spritesheetOverridePersistedReducer,
   [debugSlice.reducerPath]: debugSlice.reducer,
-}).withLazyLoadedSlices<LazyLoadedSlices>();
-
-export const injectSlice = appReducer.inject;
+  ...(import.meta.env.VITE_APP === "editor" ?
+    { levelEditor: levelEditorPersistedReducer }
+  : (emptyObject as EmptyObject)),
+});
 
 const rootReducer = (
   state: ReturnType<typeof appReducer> | undefined,
@@ -98,14 +107,13 @@ registerClearAllDataListeners();
 export const persistor = persistStore(store);
 
 export type AppStore = typeof store;
-// Infer the `RootState` and `AppDispatch` types from the store itself
-export type RootState = Omit<
-  ReturnType<typeof store.getState>,
-  // inside the app (ie, in selectors etc), we never actually care about this _persist type
-  // and keeping it sometimes makes it hard to pass values to selectors
-  "_persist"
->;
-// Inferred type: {posts: PostsState, comments: CommentsState, users: UsersState}
+
+export type RootState = Omit<ReturnType<typeof store.getState>, "_persist">;
+
+export type EditorRootState = RootState & {
+  levelEditor: LevelEditorState;
+};
+
 export type AppDispatch = typeof store.dispatch;
 
 /**
@@ -120,3 +128,22 @@ export type AppThunk<ReturnType = void> = ThunkAction<
   unknown,
   UnknownAction
 >;
+
+export type EditorAppThunk<ReturnType = void> = ThunkAction<
+  ReturnType,
+  EditorRootState,
+  unknown,
+  UnknownAction
+>;
+
+export type EditorAppDispatch = typeof store.dispatch;
+
+export const editorStore = store as EnhancedStore<
+  EditorRootState,
+  LevelEditorSliceAction | StoreActionOf<typeof store>,
+  StoreEnhancersOf<typeof store>
+>;
+
+export const useEditorAppSelector = useSelector.withTypes<EditorRootState>();
+
+export const useEditorAppDispatch = useDispatch.withTypes<EditorAppDispatch>();

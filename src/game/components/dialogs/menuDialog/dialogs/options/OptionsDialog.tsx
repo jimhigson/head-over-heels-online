@@ -155,7 +155,7 @@ export const OptionsDialog = () => {
                 <Switch className="ml-auto" value={infiniteLivesPokeOn} />
               }
               onSelect={useDispatchActionCallback(toggleUserSetting, {
-                path: "infiniteLivesPoke",
+                path: "pokesEnabled.infiniteLives",
               })}
               disabled={useIsGameRunning()}
             />
@@ -176,7 +176,7 @@ export const OptionsDialog = () => {
                 />
               }
               onSelect={useDispatchActionCallback(toggleUserSetting, {
-                path: "infiniteDoughnutsPoke",
+                path: "pokesEnabled.infiniteDoughnuts",
               })}
               disabled={useIsGameRunning()}
             />

@@ -1,10 +1,8 @@
 import type { PayloadAction } from "@reduxjs/toolkit";
-import type { SetRequired, ValueOf } from "type-fest";
+import type { ValueOf } from "type-fest";
 
 import { createSlice } from "@reduxjs/toolkit";
-import { useSelector } from "react-redux";
 
-import type { RootState } from "../../store/store";
 import type {
   EditorCampaign,
   EditorRoomJson,
@@ -13,6 +11,7 @@ import type {
 import type { PointingAtOnItem } from "../RoomEditingArea/cursor/PointingAt";
 import type { Tool } from "../RoomEditingArea/interactivity/Tool";
 
+import { clearAllData } from "../../store/slices/clearAllData";
 import { type EditorRoomId, type EditorRoomItemId } from "../editorTypes";
 import { initialLevelEditorSliceState } from "./initialLevelEditorSliceState";
 import {
@@ -80,16 +79,6 @@ export type LevelEditorState = {
 };
 
 /**
- * Register this slice's shape into the store's LazyLoadedSlices interface,
- * so the store knows about it without having to import any editor code.
- */
-declare module "../../store/store" {
-  interface LazyLoadedSlices {
-    levelEditor: LevelEditorState;
-  }
-}
-
-/**
  * a slice for all the state that is controlled in react-land
  * (most state is controlled in the game itself and not touched here)
  */
@@ -115,12 +104,6 @@ export const levelEditorSlice = createSlice({
       state.tool = tool;
     },
 
-    /**
-     * noop reducer to force the store to give this slice its initial value in the store, since this slice is lazy-loaded.
-     * Dispatching anything would also have this effect, we just need the reducer to run so it can give the initial state
-     */
-    injected() {},
-
     ...editorSettingsReducers,
     ...undoReducers,
     ...applyItemToolReducers,
@@ -133,6 +116,11 @@ export const levelEditorSlice = createSlice({
     ...addOrRemoveRoomReducers,
     ...changeRoomReducers,
     ...campaignManagementReducers,
+  },
+  extraReducers(builder) {
+    builder.addCase(clearAllData, () =>
+      structuredClone(initialLevelEditorSliceState),
+    );
   },
   selectors: {
     selectCurrentCampaignInProgress: (state) => state.campaignInProgress,
@@ -173,9 +161,9 @@ export const {
   clearRoom,
   commitCurrentPreviewedEdits,
   deleteSelected,
-  injected,
   loadCampaign,
   moveOrResizeItemAsPreview,
+  newCampaign,
   redo,
   removeRoom,
   resetPreviewedEdits,
@@ -210,12 +198,3 @@ export const {
   selectSelectedJsonItemIds,
   selectTool,
 } = levelEditorSlice.selectors;
-
-export type RootStateWithLevelEditorSlice = SetRequired<
-  RootState,
-  "levelEditor"
->;
-
-/** special useSelector for when we know the level editor slice is loaded */
-export const useAppSelectorWithLevelEditorSlice =
-  useSelector.withTypes<RootStateWithLevelEditorSlice>();
