@@ -31,6 +31,7 @@ export type BitmapTextProps<Tag extends BitmapTextTagName = "span"> = {
   noSlitWords?: boolean;
   onClick?: MouseEventHandler<HTMLSpanElement>;
   noTint?: boolean;
+  doubleHeight?: boolean;
   TagName?: Tag;
 } & JSX.IntrinsicElements[Tag];
 
@@ -46,6 +47,7 @@ export const BitmapText = <Tag extends BitmapTextTagName = "span">({
    * inside translated foreign objects
    */
   noTint = false,
+  doubleHeight = false,
   TagName = "span" as Tag,
   ...tagProps
 }: BitmapTextProps<Tag>) => {
@@ -60,8 +62,16 @@ export const BitmapText = <Tag extends BitmapTextTagName = "span">({
   const words = noSlitWords ? [textString] : textString.split(/\s+/);
 
   return (
-    // eslint-disable-next-line @typescript-eslint/no-explicit-any -- typescript can't infer TagName = JSX.IntrinsicElements[Tag] = is safe for TagName
-    <TagName {...(tagProps as any)} className={className} onClick={onClick}>
+    <TagName
+      // eslint-disable-next-line @typescript-eslint/no-explicit-any -- typescript can't infer TagName = JSX.IntrinsicElements[Tag] = is safe for TagName
+      {...(tagProps as any)}
+      className={
+        className || doubleHeight ?
+          `${className ?? ""}${doubleHeight ? " sprites-double-height" : ""}`
+        : undefined
+      }
+      onClick={onClick}
+    >
       <span className="sr-only">{textString}</span>
       {words.map((word, wordIndex) => (
         <span
