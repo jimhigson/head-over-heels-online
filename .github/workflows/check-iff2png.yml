@@ -5,6 +5,7 @@ on:
     branches: ["main"]
     paths:
       - "gfx/*.iff"
+      - "gfx/*.webp"
       - "src/_generated/palette/*.json"
       - "scripts/iff2png.sh"
   workflow_dispatch:
@@ -33,11 +34,11 @@ jobs:
         run: |
           sudo apt-get update
           sudo apt-get install -y pngquant ffmpeg jq
-      - name: Save original PNG files before regeneration
+      - name: Save original image files before regeneration
         run: |
-          PNG_FILES=(gfx/sprites.png gfx/sprites.borders.png)
-          for png in "${PNG_FILES[@]}"; do
-            cp "$png" "/tmp/$(basename $png).original"
+          IMAGE_FILES=(gfx/sprites.webp gfx/sprites.borders.png)
+          for img in "${IMAGE_FILES[@]}"; do
+            cp "$img" "/tmp/$(basename $img).original"
           done
       - run: pnpm iff2png
       - name: Check image processing scripts are a no-op
@@ -45,18 +46,19 @@ jobs:
           NON_IMAGE_FILES="
             src/_generated/palette/spritesheetPalette.json
             src/_generated/palette/spritesheetPaletteDim.json
+            src/_generated/palette/spritesheetToppyPalette.json
           "
           git diff --exit-code -- $NON_IMAGE_FILES || (echo "Files were modified by 'pnpm iff2png'. Please run 'pnpm iff2png' locally and commit the changes." && exit 1)
 
-          # For PNG files, compare pixels only (ignore metadata)
-          PNG_FILES=(gfx/sprites.png gfx/sprites.borders.png)
-          for png in "${PNG_FILES[@]}"; do
-            diff_pixels=$(magick compare -metric AE "$png" "/tmp/$(basename $png).original" null: 2>&1 || true)
+          # For image files, compare pixels only (ignore metadata)
+          IMAGE_FILES=(gfx/sprites.webp gfx/sprites.borders.png)
+          for img in "${IMAGE_FILES[@]}"; do
+            diff_pixels=$(magick compare -metric AE "$img" "/tmp/$(basename $img).original" null: 2>&1 || true)
             # magick compare outputs format "N (normalized)" where N is pixel count
             # Extract just the first number (pixel count) from output like "0 (0)"
             diff_count=$(echo "$diff_pixels" | awk '{print $1}')
             if [ "$diff_count" != "0" ]; then
-              echo "PNG file $png has pixel differences: $diff_pixels pixels differ"
+              echo "Image file $img has pixel differences: $diff_pixels pixels differ"
               echo "Please run 'pnpm iff2png' locally and commit the changes."
               exit 1
             fi

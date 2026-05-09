@@ -169,7 +169,7 @@ write_palette "$TMP_DIR/sprites.png" spritesheetPalette blockstackColourNames 17
 # but we can sample the palette from it:
 write_palette gfx/palette_dim_lut.png spritesheetPaletteDim blockstackColourNames 17
 
-write_palette gfx/spritesToppy.png spritesheetToppyPalette toppyColourNames 999
+write_palette gfx/spritesToppy.webp spritesheetToppyPalette toppyColourNames 999
 
 
 # make sprite mask colours actually transparent in the png (dpaint uses rgb colours, no alpha channel)
@@ -181,19 +181,12 @@ print_with_bg_color "background: $backgroundColor" "$backgroundColor"
 
 magick "$TMP_DIR/sprites.png" -transparent "$alphaKeyColor" -transparent "$backgroundColor" "$TMP_DIR/sprites.png"
 
-echo "🤖🎨 reducing 🎨 palette for $TMP_DIR/sprites.png"
-pngquant -vf --quality 100-100 \
-    --ext .png \
-    -- "$TMP_DIR/sprites.png"
-magick identify -verbose "$TMP_DIR/sprites.png" | grep -E "^  (Geometry|Colorspace|Type|Depth|Colors):"
-echo "  Filesize: $(ls -lh "$TMP_DIR/sprites.png" | awk '{print $5}')"
-
 # Tag as Display P3 by embedding a compact ICC profile (456 bytes)
 # from https://github.com/saucecontrol/Compact-ICC-Profiles
 echo "🤖 tagging sprites.png as Display P3"
 magick "$TMP_DIR/sprites.png" -profile gfx/DisplayP3-v2-micro.icc "$TMP_DIR/sprites.png"
 
-#make the sprite:
+#make the icon (from the p3-tagged png, before we convert to webp):
 ICON_FRAME=$(scripts/iconLocationOnSpriteSheet.ts)
 echo "🤖 ✂️ cutting out icon at frame (XxY+W+H) is $ICON_FRAME"
 # crop out
@@ -216,8 +209,14 @@ for icon in $TMP_DIR_ICONS/icon-{192,512}.png; do
     echo "  Filesize: $(ls -lh "$icon" | awk '{print $5}')"
 done
 
+echo "🤖 converting sprites to webp (lossless)"
+magick "$TMP_DIR/sprites.png" -define webp:lossless=true -define webp:method=6 "$TMP_DIR/sprites.webp"
+magick identify -verbose "$TMP_DIR/sprites.webp" | grep -E "^  (Geometry|Colorspace|Type|Depth|Colors):"
+echo "  Filesize: $(ls -lh "$TMP_DIR/sprites.webp" | awk '{print $5}')"
+
 echo "🤖 moving temp to real"
-cp $TMP_DIR/*.png $OUT_DIR
+cp $TMP_DIR/sprites.borders.png $OUT_DIR
+cp $TMP_DIR/sprites.webp $OUT_DIR
 cp $TMP_DIR/*.json src/_generated/palette
 rm public/icon*.png
 cp $TMP_DIR_ICONS/*.png public
@@ -237,8 +236,8 @@ echo "🤖 deleting the temp dirs"
 rm -fR $TMP_DIR
 rm -fR $TMP_DIR_ICONS
 
-echo "🤖 reverting noop PNGs"
-revert_noop_pngs public/icon*.png gfx/sprites*.png src-tauri/icons/*.png
+echo "🤖 reverting noop files"
+revert_noop_images public/icon*.png gfx/sprites.borders.png gfx/sprites.webp src-tauri/icons/*.png
 
 
 

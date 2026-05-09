@@ -48,7 +48,7 @@ export const SpritesheetOverrideButtons = () => {
         <input
           ref={inputRef}
           type="file"
-          accept=".png"
+          accept=".webp"
           className="hidden"
           onChange={handleFileChange}
         />

@@ -36,7 +36,7 @@ export default defineConfig(({ mode: _mode }) => {
       VitePWA({
         registerType: "autoUpdate",
         workbox: {
-          globPatterns: ["**/*.{js,css,html,png,mp3,m4a}"],
+          globPatterns: ["**/*.{js,css,html,png,webp,mp3,m4a}"],
           // visual-regression builds are unminified so assets are larger
           ...(mode === "visual-regression" && {
             maximumFileSizeToCacheInBytes: 5 * 1024 * 1024,

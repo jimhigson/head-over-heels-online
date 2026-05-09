@@ -3,7 +3,7 @@
  * This ensures raw RGB values are preserved when the image is decoded,
  * regardless of browser color management behaviour.
  */
-export const stripIccProfile = (pngBuffer: ArrayBuffer): ArrayBuffer => {
+export const stripIccProfilePng = (pngBuffer: ArrayBuffer): ArrayBuffer => {
   const view = new DataView(pngBuffer);
   const chunks: ArrayBuffer[] = [];
 

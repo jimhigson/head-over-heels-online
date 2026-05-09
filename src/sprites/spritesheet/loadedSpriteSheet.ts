@@ -7,13 +7,13 @@ import type { SpriteOption } from "../../store/slices/userSettings/userSettingsS
 import type { TextureId } from "./spritesheetData/makeSpritesheetData";
 import type { SpritesheetMetadata } from "./spritesheetData/spritesheetMetaData";
 
-import blockStackSpritesheetUrl from "../../../gfx/sprites.png";
-import toppySpritesheetUrl from "../../../gfx/spritesToppy.png";
+import blockStackSpritesheetUrl from "../../../gfx/sprites.webp";
+import toppySpritesheetUrl from "../../../gfx/spritesToppy.webp";
 import { PreprocessShadowTexturesFilter } from "../../game/render/filters/PreprocessShadowTexturesFilter";
 import { selectSpritesheetOverrideBlobUrl } from "../../store/slices/spritesheetOverrideSlice";
 import { store } from "../../store/store";
 import { detectDeviceType } from "../../utils/detectEnv/detectDeviceType";
-import { stripIccProfile } from "../../utils/png/stripIccProfile";
+import { stripIccProfileWebp } from "../../utils/image/stripIccProfileWebp";
 import { black, renderMaskTexture, white } from "./renderMaskTexture";
 import { makeSpritesheetData } from "./spritesheetData/makeSpritesheetData";
 import { spritesheetMetas } from "./spritesheetData/spritesheetMetaData";
@@ -54,10 +54,10 @@ export const loadSpritesheetAssets = async (
   let strippedImageObjectUrl: string | undefined = undefined;
 
   try {
-    // strip ICC profile from PNG to preserve raw RGB values for shader colour matching
+    // strip ICC profile to preserve raw RGB values for shader colour matching
     // - this is more reliable than colorSpaceConversion: "none" across browsers/platforms, especially when
     //   running playwright on github ci/cd Linux+Safari
-    // - the ICC profile in the PNG is still used when loaded via CSS
+    // - the ICC profile is still used when loaded via CSS (from the original file)
     // - the final image shown on the canvas will be in p3 to make it more vibrant, but all the calculations
     //   are done in raw sRGB/hex space
     const response = await fetch(url);
@@ -65,12 +65,12 @@ export const loadSpritesheetAssets = async (
     if (!response.ok) {
       throw new Error(`HTTP ${response.status} - ${response.statusText}`);
     }
-    const pngBuffer = await response.arrayBuffer();
-    const strippedBuffer = stripIccProfile(pngBuffer);
-    const blob = new Blob([strippedBuffer], { type: "image/png" });
+    const buffer = await response.arrayBuffer();
+    const strippedBuffer = stripIccProfileWebp(buffer);
+    const blob = new Blob([strippedBuffer], { type: "image/webp" });
 
-    // unfortunately Tauri's createImageBitmap() implementation is buggy and chokes on many valid PNG files
-    // - this is is used internally in Pixi's Assets.load()
+    // unfortunately Tauri's createImageBitmap() implementation is buggy and chokes on many valid image files
+    // - this is used internally in Pixi's Assets.load()
     // So use an HTML img element to load the image (more robust) and don't refactor this to either of:
     //  * createImageBitmap
     //  * Assets.load
