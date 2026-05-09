@@ -62,12 +62,14 @@ const blobUrlCache = new Map<string, string>();
 const dataUrlToBlobUrl = (dataUrl: string): string => {
   const cached = blobUrlCache.get(dataUrl);
   if (cached) return cached;
-  const binary = atob(dataUrl.split(",")[1]);
+  const [header, base64] = dataUrl.split(",");
+  const type = header.slice(header.indexOf(":") + 1, header.indexOf(";"));
+  const binary = atob(base64);
   const bytes = new Uint8Array(binary.length);
   for (let i = 0; i < binary.length; i++) {
     bytes[i] = binary.charCodeAt(i);
   }
-  const blobUrl = URL.createObjectURL(new Blob([bytes], { type: "image/png" }));
+  const blobUrl = URL.createObjectURL(new Blob([bytes], { type }));
   blobUrlCache.set(dataUrl, blobUrl);
   return blobUrl;
 };

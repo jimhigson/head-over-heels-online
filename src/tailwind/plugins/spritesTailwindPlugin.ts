@@ -29,7 +29,7 @@ import {
   spriteSpecificCssVars,
 } from "./spriteCss";
 
-const spritesheetSize = imageSize("gfx/sprites.png");
+const spritesheetSize = imageSize("gfx/sprites.webp");
 
 // https://tailwindcss.com/docs/plugins
 export const spritesTailwindPlugin = plugin(
@@ -130,10 +130,10 @@ export const spritesTailwindPlugin = plugin(
         "--spritesheetH": `${spritesheetSize.height}`,
       },
       ".blockstack-spritesheet": {
-        "--spritesheetUrl": `url('gfx/sprites.png')`,
+        "--spritesheetUrl": `url('gfx/sprites.webp')`,
       },
       ".toppy-spritesheet": {
-        "--spritesheetUrl": `url('gfx/spritesToppy.png')`,
+        "--spritesheetUrl": `url('gfx/spritesToppy.webp')`,
       },
       ".sprite-scale-2": {
         "--sprite-scale": "2",

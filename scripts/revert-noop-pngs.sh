@@ -2,7 +2,7 @@
 #
 # revert-noop-pngs.sh
 #
-# Provides revert_noop_pngs() — a function that scans a directory for PNG
+# Provides revert_noop_images() — a function that scans for image
 # files with unstaged changes, compares them pixel-for-pixel against the
 # version in the index (staging area), and reverts any that are visually
 # identical — removing noop changes that bloat the repo.
@@ -15,15 +15,17 @@
 #
 # Usage:
 #   source revert-noop-pngs.sh
-#   revert_noop_pngs [paths...]
+#   revert_noop_images [paths...]
 #
 # Examples:
-#   revert_noop_pngs                              # scan current directory
-#   revert_noop_pngs assets/sprites               # single directory
-#   revert_noop_pngs foo.png bar.png              # specific files
-#   revert_noop_pngs foo.png bar.png dirOfImages  # mix of both
+#   revert_noop_images                              # scan current directory
+#   revert_noop_images assets/sprites               # single directory
+#   revert_noop_images foo.png bar.webp             # specific files
+#   revert_noop_images foo.png bar.webp dirOfImages # mix of both
 
-revert_noop_pngs() {
+revert_noop_pngs() { revert_noop_images "$@"; }
+
+revert_noop_images() {
     local targets=("$@")
     if [[ ${#targets[@]} -eq 0 ]]; then
         targets=(".")
@@ -43,39 +45,34 @@ revert_noop_pngs() {
     local repo_root
     repo_root="$(git rev-parse --show-toplevel)"
 
-    # Validate all targets exist, and that any files are PNGs
+    # Validate all targets exist
     local t
     for t in "${targets[@]}"; do
         if [[ ! -e "$t" ]]; then
             echo "Error: '${t}' does not exist." >&2
             return 1
         fi
-        if [[ -f "$t" ]] && ! echo "$t" | grep -qi '\.png$'; then
-            echo "Error: '${t}' is not a PNG file." >&2
-            return 1
-        fi
     done
 
-    # Collect PNGs with unstaged modifications (worktree differs from index)
-    # git diff --name-only accepts multiple files and directories
-    local dirty_pngs=()
+    # Collect image files with unstaged modifications (worktree differs from index)
+    local dirty_images=()
     while IFS= read -r line; do
-        dirty_pngs+=("$line")
-    done < <(git diff --name-only -- "${targets[@]}" 2>/dev/null | grep -i '\.png$' || true)
+        dirty_images+=("$line")
+    done < <(git diff --name-only -- "${targets[@]}" 2>/dev/null | grep -iE '\.(png|webp)$' || true)
 
-    if [[ ${#dirty_pngs[@]} -eq 0 ]]; then
-        echo "No unstaged PNG changes found."
+    if [[ ${#dirty_images[@]} -eq 0 ]]; then
+        echo "No unstaged image changes found."
         return 0
     fi
 
-    echo "Found ${#dirty_pngs[@]} PNG file(s) with unstaged changes. Comparing pixels..."
+    echo "Found ${#dirty_images[@]} image file(s) with unstaged changes. Comparing pixels..."
     echo
 
     local tmpdir
     tmpdir="$(mktemp -d /tmp/noop-png-XXXXXX)"
 
-    local relpath filepath baseline_png baseline_label ae_count ae_int
-    for relpath in "${dirty_pngs[@]}"; do
+    local relpath filepath baseline_img baseline_label ae_count ae_int
+    for relpath in "${dirty_images[@]}"; do
         filepath="${repo_root}/${relpath}"
 
         # Skip if the working copy file doesn't exist (deleted in worktree)
@@ -86,11 +83,11 @@ revert_noop_pngs() {
 
         # Determine the baseline: index first, then HEAD
         # git show :<path> retrieves the version from the index (staging area)
-        baseline_png="${tmpdir}/baseline.png"
+        baseline_img="${tmpdir}/baseline.png"
 
-        if git show ":${relpath}" > "$baseline_png" 2>/dev/null; then
+        if git show ":${relpath}" > "$baseline_img" 2>/dev/null; then
             baseline_label="index"
-        elif git show "HEAD:${relpath}" > "$baseline_png" 2>/dev/null; then
+        elif git show "HEAD:${relpath}" > "$baseline_img" 2>/dev/null; then
             baseline_label="HEAD"
         else
             echo "  SKIP (new file): ${relpath}"
@@ -100,7 +97,7 @@ revert_noop_pngs() {
 
         # Pixel-for-pixel comparison using ImageMagick 7.
         # `magick compare -metric AE` outputs the number of differing pixels.
-        ae_count=$(magick compare -metric AE "$baseline_png" "$filepath" null: 2>&1) || true
+        ae_count=$(magick compare -metric AE "$baseline_img" "$filepath" null: 2>&1) || true
         # ImageMagick may output "0 (0)" (raw count + normalised); keep only the first token
         ae_count="${ae_count%% *}"
 
@@ -134,5 +131,5 @@ revert_noop_pngs() {
 # Allow direct execution as well as sourcing
 if [[ "${BASH_SOURCE[0]}" == "${0}" ]]; then
     set -euo pipefail
-    revert_noop_pngs "$@"
+    revert_noop_images "$@"
 fi
