@@ -1,4 +1,4 @@
-import { useCallback, useEffect } from "react";
+import { useCallback, useEffect } from "preact/hooks";
 
 import { startAppListening } from "../../store/listenerMiddleware";
 import { changeToRoom } from "../slice/levelEditorSlice";

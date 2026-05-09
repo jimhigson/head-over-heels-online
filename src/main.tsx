@@ -1,9 +1,9 @@
 import type { RegisterSWOptions } from "vite-plugin-pwa/types";
 
-import { StrictMode, Suspense } from "react";
+import { render } from "preact";
 
 import "./index.css";
-import { createRoot } from "react-dom/client";
+import { Suspense } from "react";
 import { registerSW } from "virtual:pwa-register";
 
 import { importAppOnce } from "./game/components/App.import";
@@ -41,17 +41,16 @@ const AppLoader = () => {
   return <App />;
 };
 
-createRoot(document.getElementById("root")!).render(
-  <StrictMode>
-    <Suspense
-      fallback={
-        <>
-          <LoadingBorder />
-          <Dialog className="bg-metallicBlueHalfbrite !max-h-[80%] !w-[80%] !h-[unset] aspect-pal" />
-        </>
-      }
-    >
-      <AppLoader />
-    </Suspense>
-  </StrictMode>,
+render(
+  <Suspense
+    fallback={
+      <>
+        <LoadingBorder />
+        <Dialog className="bg-metallicBlueHalfbrite !max-h-[80%] !w-[80%] !h-[unset] aspect-pal" />
+      </>
+    }
+  >
+    <AppLoader />
+  </Suspense>,
+  document.getElementById("root")!,
 );

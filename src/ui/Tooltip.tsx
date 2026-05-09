@@ -1,12 +1,20 @@
-import type { ReactNode } from "react";
+import type { ReactElement, ReactNode } from "react";
 
 import {
-  TooltipContent,
-  TooltipPortal,
-  Provider as TooltipProvider,
-  Root as TooltipRoot,
-  TooltipTrigger,
-} from "@radix-ui/react-tooltip";
+  autoUpdate,
+  flip,
+  FloatingPortal,
+  offset,
+  shift,
+  useDismiss,
+  useFloating,
+  useFocus,
+  useHover,
+  useInteractions,
+  useRole,
+} from "@floating-ui/react";
+import { useState } from "preact/hooks";
+import { cloneElement, isValidElement } from "react";
 
 import { BlockyMarkdown } from "../game/components/BlockyMarkdown";
 import { CssVariables } from "../game/components/CssVariables";
@@ -17,29 +25,55 @@ export type TooltipProps = {
 };
 
 export const Tooltip = ({ triggerContent, tooltipContent }: TooltipProps) => {
-  if (tooltipContent) {
-    return (
-      <TooltipRoot>
-        <TooltipTrigger asChild>{triggerContent}</TooltipTrigger>
-        <TooltipPortal>
+  const [isOpen, setIsOpen] = useState(false);
+
+  const { refs, floatingStyles, context } = useFloating({
+    open: isOpen,
+    onOpenChange: setIsOpen,
+    placement: "bottom-end",
+    whileElementsMounted: autoUpdate,
+    middleware: [offset(0), flip(), shift()],
+  });
+
+  const { getReferenceProps, getFloatingProps } = useInteractions([
+    useHover(context, { delay: { open: 450, close: 0 } }),
+    useFocus(context),
+    useDismiss(context),
+    useRole(context, { role: "tooltip" }),
+  ]);
+
+  if (!tooltipContent) {
+    return triggerContent;
+  }
+
+  const referenceProps = getReferenceProps({ ref: refs.setReference });
+
+  const trigger =
+    isValidElement(triggerContent) ?
+      cloneElement(triggerContent as ReactElement, referenceProps)
+    : <div {...referenceProps}>{triggerContent}</div>;
+
+  return (
+    <>
+      {trigger}
+      {isOpen && (
+        <FloatingPortal>
           <CssVariables scaleFactor={2}>
-            <TooltipContent
-              side="bottom"
-              align="end"
-              className="bg-lightBeige zx:bg-zxYellowDimmed toppy:bg-toppyWarm2 toppy:text-toppyCool4 text-white p-1 mt-oneScaledPix drop-shadow-oneBlock z-popups"
+            <div
+              ref={refs.setFloating}
+              style={floatingStyles}
+              {...getFloatingProps()}
+              className="bg-lightBeige zx:bg-zxYellowDimmed toppy:bg-toppyWarm2 toppy:text-toppyCool4 text-white p-1 drop-shadow-oneBlock z-popups"
             >
               {typeof tooltipContent === "string" ?
                 <div className="max-w-16">
                   <BlockyMarkdown markdown={tooltipContent} />
                 </div>
               : tooltipContent}
-            </TooltipContent>
+            </div>
           </CssVariables>
-        </TooltipPortal>
-      </TooltipRoot>
-    );
-  }
-  return triggerContent;
+        </FloatingPortal>
+      )}
+    </>
+  );
 };
-
-export { TooltipProvider };

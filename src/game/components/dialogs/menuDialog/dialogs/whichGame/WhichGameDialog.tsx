@@ -40,7 +40,6 @@ export const WhichGameDialog = (_emptyProps: EmptyObject) => {
               className="sprites-double-height"
               id="originalGame"
               label="Original Remastered"
-              hintInline
               onSelect={useDispatchActionCallback(gameStarted, {
                 campaignLocator: originalCampaignLocator,
               })}
@@ -64,7 +63,6 @@ export const WhichGameDialog = (_emptyProps: EmptyObject) => {
               id="remake"
               label="38 Years Later"
               className="sprites-double-height"
-              hintInline
               onSelect={useDispatchActionCallback(gameStarted, {
                 campaignLocator: sequelCampaignLocator,
               })}
@@ -88,7 +86,6 @@ export const WhichGameDialog = (_emptyProps: EmptyObject) => {
               id="community"
               label="Community contributed"
               className="sprites-double-height"
-              hintInline
               subMenuId="communityGames"
               leader={
                 <span

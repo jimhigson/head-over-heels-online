@@ -1,4 +1,4 @@
-import { useEffect, useRef } from "react";
+import { useEffect, useRef } from "preact/hooks";
 
 import type { CampaignLocator } from "../../model/modelTypes";
 

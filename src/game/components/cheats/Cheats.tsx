@@ -1,11 +1,7 @@
 import type { PropsWithChildren } from "react";
 import type { EmptyObject } from "type-fest";
 
-import {
-  Collapsible,
-  CollapsibleContent,
-  CollapsibleTrigger,
-} from "@radix-ui/react-collapsible";
+import { useState } from "preact/hooks";
 
 import type { ItemInPlay } from "../../../model/ItemInPlay";
 import type {
@@ -77,7 +73,7 @@ const SpeedButton = ({ speed, className = "" }: SpeedButtonProps) => {
             speed as SelectableGameSpeeds,
           ),
         );
-        e?.currentTarget.blur();
+        (e?.currentTarget as HTMLElement | undefined)?.blur();
       }}
     >
       {/* remove leading zeros etc: */}
@@ -176,7 +172,7 @@ const SummonPlayableButton = <RoomId extends string>({
           changeType: "level-select",
           toRoomId: roomId,
         });
-        e?.currentTarget.blur();
+        (e?.currentTarget as HTMLElement | undefined)?.blur();
       }}
     >
       {playableName === "headOverHeels" ?
@@ -221,7 +217,7 @@ export const GoToRoomButton = <RoomId extends string>({
       className={cheatsButtonClasses}
       onClick={(e) => {
         gameApi.changeRoom(roomId);
-        e?.currentTarget.blur();
+        (e?.currentTarget as HTMLElement | undefined)?.blur();
       }}
     >
       {children || roomId}
@@ -279,19 +275,28 @@ export const Cheats = <RoomId extends string>(_emptyProps: EmptyObject) => {
     });
   };
 
+  const [open, setOpen] = useState(false);
+
   return (
-    <Collapsible>
-      <CollapsibleTrigger
+    <>
+      <button
+        type="button"
         data-test-id="cheats-open-button"
+        aria-expanded={open}
+        aria-controls="cheats-menu"
         className="absolute bottom-0 right-1 flex flex-col z-cheats text-midRed hover:text-metallicBlue "
-        onClick={(e) => e.currentTarget.blur()}
+        onClick={(e) => {
+          setOpen((o) => !o);
+          (e.currentTarget as HTMLElement).blur();
+        }}
       >
         <span
           className={`sprite ${"texture-helicopterBug_1" satisfies TextureTailwindClass} ${"hover:texture-animated-helicopterBug" satisfies AnimatedTextureTailwindClass} zx:sprite-revert-to-two-tone`}
         />
-      </CollapsibleTrigger>
-      <CollapsibleContent>
+      </button>
+      {open && (
         <div
+          id="cheats-menu"
           data-test-id="cheats-menu"
           className="absolute bottom-3 max-h-[calc(100vh-var(--block)*3)] right-0 flex flex-col w-[500px] zx:[&_.sprite]:sprite-revert-to-white overflow-y-scroll z-cheats text-white"
         >
@@ -349,7 +354,7 @@ export const Cheats = <RoomId extends string>(_emptyProps: EmptyObject) => {
                 value={showShadowMasks}
                 onChange={(newValue, e) => {
                   dispatch(setShowShadowMasks(newValue));
-                  e?.currentTarget.blur();
+                  (e?.currentTarget as HTMLElement | undefined)?.blur();
                 }}
               />
             </div>
@@ -370,7 +375,7 @@ export const Cheats = <RoomId extends string>(_emptyProps: EmptyObject) => {
                 className={cheatsButtonClasses}
                 onClick={(e) => {
                   summonItem("portableBlock", { style: "cube" });
-                  e?.currentTarget.blur();
+                  (e?.currentTarget as HTMLElement | undefined)?.blur();
                 }}
               >
                 <span
@@ -382,7 +387,7 @@ export const Cheats = <RoomId extends string>(_emptyProps: EmptyObject) => {
                 className={cheatsButtonClasses}
                 onClick={(e) => {
                   summonItem("ball", {});
-                  e?.currentTarget.blur();
+                  (e?.currentTarget as HTMLElement | undefined)?.blur();
                 }}
               >
                 <span
@@ -394,7 +399,7 @@ export const Cheats = <RoomId extends string>(_emptyProps: EmptyObject) => {
                 className={cheatsButtonClasses}
                 onClick={(e) => {
                   summonItem("spring", {});
-                  e?.currentTarget.blur();
+                  (e?.currentTarget as HTMLElement | undefined)?.blur();
                 }}
               >
                 <span
@@ -410,7 +415,7 @@ export const Cheats = <RoomId extends string>(_emptyProps: EmptyObject) => {
                     activated: "on",
                     movement: "patrol-randomly-diagonal",
                   });
-                  e?.currentTarget.blur();
+                  (e?.currentTarget as HTMLElement | undefined)?.blur();
                 }}
               >
                 <span
@@ -427,7 +432,7 @@ export const Cheats = <RoomId extends string>(_emptyProps: EmptyObject) => {
                     movement: "clockwise",
                     startDirection: "towards",
                   });
-                  e?.currentTarget.blur();
+                  (e?.currentTarget as HTMLElement | undefined)?.blur();
                 }}
               >
                 <span
@@ -446,7 +451,7 @@ export const Cheats = <RoomId extends string>(_emptyProps: EmptyObject) => {
                     style:
                       Math.random() > 0.5 ? "greenAndPink" : "starsAndStripes",
                   });
-                  e?.currentTarget.blur();
+                  (e?.currentTarget as HTMLElement | undefined)?.blur();
                 }}
               >
                 <span
@@ -462,7 +467,7 @@ export const Cheats = <RoomId extends string>(_emptyProps: EmptyObject) => {
                     activated: "on",
                     movement: "towards-analogue-unless-planet-crowns",
                   });
-                  e?.currentTarget.blur();
+                  (e?.currentTarget as HTMLElement | undefined)?.blur();
                 }}
               >
                 <span
@@ -476,7 +481,7 @@ export const Cheats = <RoomId extends string>(_emptyProps: EmptyObject) => {
                 className={cheatsButtonClasses}
                 onClick={(e) => {
                   summonItem("pickup", { gives: "bag" });
-                  e?.currentTarget.blur();
+                  (e?.currentTarget as HTMLElement | undefined)?.blur();
                 }}
               >
                 <span
@@ -488,7 +493,7 @@ export const Cheats = <RoomId extends string>(_emptyProps: EmptyObject) => {
                 className={cheatsButtonClasses}
                 onClick={(e) => {
                   summonItem("pickup", { gives: "hooter" });
-                  e?.currentTarget.blur();
+                  (e?.currentTarget as HTMLElement | undefined)?.blur();
                 }}
               >
                 <span
@@ -500,7 +505,7 @@ export const Cheats = <RoomId extends string>(_emptyProps: EmptyObject) => {
                 className={cheatsButtonClasses}
                 onClick={(e) => {
                   summonItem("pickup", { gives: "doughnuts" });
-                  e?.currentTarget.blur();
+                  (e?.currentTarget as HTMLElement | undefined)?.blur();
                 }}
               >
                 <span
@@ -512,7 +517,7 @@ export const Cheats = <RoomId extends string>(_emptyProps: EmptyObject) => {
                 className={cheatsButtonClasses}
                 onClick={(e) => {
                   summonItem("pickup", { gives: "crown", planet: "bookworld" });
-                  e?.currentTarget.blur();
+                  (e?.currentTarget as HTMLElement | undefined)?.blur();
                 }}
               >
                 <span
@@ -524,7 +529,7 @@ export const Cheats = <RoomId extends string>(_emptyProps: EmptyObject) => {
                 className={cheatsButtonClasses}
                 onClick={(e) => {
                   summonItem("pickup", { gives: "crown", planet: "egyptus" });
-                  e?.currentTarget.blur();
+                  (e?.currentTarget as HTMLElement | undefined)?.blur();
                 }}
               >
                 <span
@@ -536,7 +541,7 @@ export const Cheats = <RoomId extends string>(_emptyProps: EmptyObject) => {
                 className={cheatsButtonClasses}
                 onClick={(e) => {
                   summonItem("pickup", { gives: "crown", planet: "safari" });
-                  e?.currentTarget.blur();
+                  (e?.currentTarget as HTMLElement | undefined)?.blur();
                 }}
               >
                 <span
@@ -551,7 +556,7 @@ export const Cheats = <RoomId extends string>(_emptyProps: EmptyObject) => {
                     gives: "crown",
                     planet: "penitentiary",
                   });
-                  e?.currentTarget.blur();
+                  (e?.currentTarget as HTMLElement | undefined)?.blur();
                 }}
               >
                 <span
@@ -566,7 +571,7 @@ export const Cheats = <RoomId extends string>(_emptyProps: EmptyObject) => {
                     gives: "crown",
                     planet: "blacktooth",
                   });
-                  e?.currentTarget.blur();
+                  (e?.currentTarget as HTMLElement | undefined)?.blur();
                 }}
               >
                 <span
@@ -580,7 +585,7 @@ export const Cheats = <RoomId extends string>(_emptyProps: EmptyObject) => {
                 className={cheatsButtonClasses}
                 onClick={(e) => {
                   summonItem("pickup", { gives: "extra-life" });
-                  e?.currentTarget.blur();
+                  (e?.currentTarget as HTMLElement | undefined)?.blur();
                 }}
               >
                 <span
@@ -595,7 +600,7 @@ export const Cheats = <RoomId extends string>(_emptyProps: EmptyObject) => {
                 className={cheatsButtonClasses}
                 onClick={(e) => {
                   summonItem("pickup", { gives: "shield" });
-                  e?.currentTarget.blur();
+                  (e?.currentTarget as HTMLElement | undefined)?.blur();
                 }}
               >
                 <span
@@ -610,7 +615,7 @@ export const Cheats = <RoomId extends string>(_emptyProps: EmptyObject) => {
                 className={cheatsButtonClasses}
                 onClick={(e) => {
                   summonItem("pickup", { gives: "fast" });
-                  e?.currentTarget.blur();
+                  (e?.currentTarget as HTMLElement | undefined)?.blur();
                 }}
               >
                 <span
@@ -625,7 +630,7 @@ export const Cheats = <RoomId extends string>(_emptyProps: EmptyObject) => {
                 className={cheatsButtonClasses}
                 onClick={(e) => {
                   summonItem("pickup", { gives: "jumps" });
-                  e?.currentTarget.blur();
+                  (e?.currentTarget as HTMLElement | undefined)?.blur();
                 }}
               >
                 <span
@@ -640,7 +645,7 @@ export const Cheats = <RoomId extends string>(_emptyProps: EmptyObject) => {
                 className={cheatsButtonClasses}
                 onClick={(e) => {
                   summonItem("pickup", { gives: "reincarnation" });
-                  e?.currentTarget.blur();
+                  (e?.currentTarget as HTMLElement | undefined)?.blur();
                 }}
               >
                 <span
@@ -723,7 +728,7 @@ export const Cheats = <RoomId extends string>(_emptyProps: EmptyObject) => {
                     );
                   }
 
-                  e?.currentTarget.blur();
+                  (e?.currentTarget as HTMLElement | undefined)?.blur();
                 }}
               >
                 lives++
@@ -755,7 +760,7 @@ export const Cheats = <RoomId extends string>(_emptyProps: EmptyObject) => {
                     );
                   }
 
-                  e?.currentTarget.blur();
+                  (e?.currentTarget as HTMLElement | undefined)?.blur();
                 }}
               >
                 lives--
@@ -772,7 +777,7 @@ export const Cheats = <RoomId extends string>(_emptyProps: EmptyObject) => {
                     (window as any).gs = gameApi.gameState;
                     console.log("gameState on window.gs");
                   }
-                  e?.currentTarget.blur();
+                  (e?.currentTarget as HTMLElement | undefined)?.blur();
                 }}
               >
                 gameState
@@ -789,7 +794,7 @@ export const Cheats = <RoomId extends string>(_emptyProps: EmptyObject) => {
                     console.log("roomJson:", roomJson);
                     console.log("roomJson on window.roomJson");
                   }
-                  e?.currentTarget.blur();
+                  (e?.currentTarget as HTMLElement | undefined)?.blur();
                 }}
               >
                 Room JSON
@@ -811,7 +816,7 @@ export const Cheats = <RoomId extends string>(_emptyProps: EmptyObject) => {
                       console.log("currentRoom on window.room");
                     }
                   }
-                  e?.currentTarget.blur();
+                  (e?.currentTarget as HTMLElement | undefined)?.blur();
                 }}
               >
                 Room state
@@ -848,7 +853,7 @@ export const Cheats = <RoomId extends string>(_emptyProps: EmptyObject) => {
                     }
                   }
 
-                  e?.currentTarget.blur();
+                  (e?.currentTarget as HTMLElement | undefined)?.blur();
                 }}
               >
                 <span
@@ -861,8 +866,8 @@ export const Cheats = <RoomId extends string>(_emptyProps: EmptyObject) => {
             </div>
           </CssVariables>
         </div>
-      </CollapsibleContent>
-    </Collapsible>
+      )}
+    </>
   );
 };
 

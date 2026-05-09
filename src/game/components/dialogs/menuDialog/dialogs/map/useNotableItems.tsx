@@ -1,4 +1,4 @@
-import { useMemo } from "react";
+import { useMemo } from "preact/hooks";
 
 import type { RoomJson } from "../../../../../../model/RoomJson";
 import type { RoomPickupsCollected } from "../../../../../gameState/GameState";

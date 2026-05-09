@@ -1,4 +1,4 @@
-import { useEffect, useRef, useState } from "react";
+import { useEffect, useRef, useState } from "preact/hooks";
 
 import { BitmapText } from "../../game/components/tailwindSprites/BitmapText";
 import { useAppSelector } from "../../store/hooks";

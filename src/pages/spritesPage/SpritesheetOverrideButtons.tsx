@@ -1,4 +1,4 @@
-import { useCallback, useRef } from "react";
+import { useCallback, useRef } from "preact/hooks";
 
 import { BitmapText } from "../../game/components/tailwindSprites/BitmapText";
 import { useAppDispatch, useAppSelector } from "../../store/hooks";

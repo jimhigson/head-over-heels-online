@@ -1,9 +1,10 @@
 import type { PropsWithChildren } from "react";
-import type { EmptyObject } from "type-fest";
 
-import { createContext, useContext, useEffect, useState } from "react";
+import { useEffect, useState } from "preact/hooks";
+import { createContext, useContext } from "react";
 
 import type { InputStateTrackerInterface } from "./InputStateTracker";
+import type { InputTicker } from "./InputStateTracker";
 
 import { createEmptyHudInputState } from "./hudInputState";
 import { InputStateTracker } from "./InputStateTracker";
@@ -16,12 +17,18 @@ import {
 const InputStateTrackerContext =
   createContext<InputStateTrackerInterface | null>(null);
 
+export type InputStateProviderProps = PropsWithChildren<{
+  ticker: InputTicker;
+}>;
+
 export const InputStateProvider = ({
   children,
-}: PropsWithChildren<EmptyObject>) => {
+  ticker,
+}: InputStateProviderProps) => {
   const [keyboardState] = useState<KeyboardStateMap>(createEmptyKeyboardState);
   const [inputStateTracker] = useState<InputStateTrackerInterface>(
-    () => new InputStateTracker(keyboardState, createEmptyHudInputState()),
+    () =>
+      new InputStateTracker(keyboardState, createEmptyHudInputState(), ticker),
   );
 
   useEffect(() => {

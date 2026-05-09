@@ -1,5 +1,5 @@
 import { Ticker } from "pixi.js";
-import { useEffect, useMemo } from "react";
+import { useEffect, useMemo } from "preact/hooks";
 
 import type { DirectionXy4 } from "../../../utils/vectors/vectors";
 import type { BooleanAction } from "../../input/actions";

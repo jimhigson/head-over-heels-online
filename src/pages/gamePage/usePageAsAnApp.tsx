@@ -1,4 +1,4 @@
-import { useEffect } from "react";
+import { useEffect } from "preact/hooks";
 
 import { resolutions } from "../../originalGame";
 import { useAppSelector } from "../../store/hooks";

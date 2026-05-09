@@ -1,4 +1,4 @@
-import { useEffect } from "react";
+import { useEffect } from "preact/hooks";
 
 import { useAppSelector } from "../../store/hooks";
 import { useEditorRoomRenderDimensions } from "../slice/levelEditorSelectors";

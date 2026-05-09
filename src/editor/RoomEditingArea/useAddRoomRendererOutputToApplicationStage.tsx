@@ -1,5 +1,5 @@
 import { Container } from "pixi.js";
-import { useEffect, useState } from "react";
+import { useEffect, useState } from "preact/hooks";
 
 import type { EditorRoomRenderer } from "../editorTypes";
 

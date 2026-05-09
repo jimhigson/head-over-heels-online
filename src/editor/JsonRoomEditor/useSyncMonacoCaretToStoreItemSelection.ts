@@ -1,7 +1,7 @@
 import type { editor } from "monaco-editor";
 
 import { getLocation } from "jsonc-parser";
-import { useEffect } from "react";
+import { useEffect } from "preact/hooks";
 
 import type { AnyRoomJson } from "../../model/RoomJson";
 import type { EditorRoomItemId } from "../editorTypes";

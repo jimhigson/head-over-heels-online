@@ -1,4 +1,4 @@
-import { useEffect } from "react";
+import { useEffect } from "preact/hooks";
 
 import { useMaybeGameApi } from "../../game/components/GameApiContext";
 import { saveGameThunk } from "../../game/gameState/saving/saveGameThunk";

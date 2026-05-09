@@ -1,8 +1,6 @@
-import type { PropsWithChildren, Ref } from "react";
+import type { PropsWithChildren, ReactNode, Ref } from "react";
 import type { ButtonHTMLAttributes, MouseEvent } from "react";
 import type { Simplify } from "type-fest";
-
-import { type ReactNode } from "react";
 
 import type { ShortcutKeys } from "./useKeyboardShortcut";
 
@@ -23,7 +21,7 @@ export type ButtonProps = Simplify<
       shortcutKeys?: ShortcutKeys;
       ref?: Ref<HTMLButtonElement>;
       /** make the event optional, in case the button wasn't triggered by clicking */
-      onClick?: (event?: MouseEvent<HTMLButtonElement>) => void;
+      onClick?: (event?: MouseEvent) => void;
     }>
 >;
 

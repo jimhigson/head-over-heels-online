@@ -1,6 +1,7 @@
-import { lazy } from "react";
+import { lazy, Suspense } from "react";
 
 import { injectSlice, store } from "../store/store";
+import { SpinnerHead } from "../ui/Spinner";
 import { importOnce } from "../utils/importOnce";
 import { LoadSpritesheetGate } from "./AssetLoadGate";
 
@@ -23,7 +24,9 @@ const LevelEditorLazy = lazy(importLevelEditorOnce);
 export const LevelEditorLoader = () => {
   return (
     <LoadSpritesheetGate>
-      <LevelEditorLazy />
+      <Suspense fallback={<SpinnerHead loadingBorder />}>
+        <LevelEditorLazy />
+      </Suspense>
     </LoadSpritesheetGate>
   );
 };

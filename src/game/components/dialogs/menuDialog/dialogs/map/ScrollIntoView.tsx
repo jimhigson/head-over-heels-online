@@ -1,6 +1,6 @@
 import type { RefObject } from "react";
 
-import { useLayoutEffect, useRef } from "react";
+import { useLayoutEffect, useRef } from "preact/hooks";
 
 /** tiny component that scrolls itself into view, and does nothing else */
 export const ScrollIntoView = ({

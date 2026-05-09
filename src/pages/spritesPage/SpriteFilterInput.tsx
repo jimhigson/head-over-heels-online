@@ -1,4 +1,4 @@
-import { useEffect, useRef } from "react";
+import { useEffect, useRef } from "preact/hooks";
 
 import { BitmapText } from "../../game/components/tailwindSprites/BitmapText";
 import { Button } from "../../ui/Button";

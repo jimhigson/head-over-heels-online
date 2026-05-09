@@ -1,5 +1,5 @@
 import { findNodeAtOffset, getLocation, parseTree } from "jsonc-parser";
-import { useEffect } from "react";
+import { useEffect } from "preact/hooks";
 
 import { store } from "../../../store/store";
 import {

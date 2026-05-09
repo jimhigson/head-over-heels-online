@@ -1,5 +1,6 @@
-import Portal from "@mutabazia/react-portal";
-import { type ReactElement, useCallback } from "react";
+import type { ReactElement } from "react";
+
+import { useCallback } from "preact/hooks";
 import { twMerge } from "tailwind-merge";
 
 import type { DialogId } from "./DialogId";
@@ -24,7 +25,6 @@ export type BaseMenuItemProps = {
   disabled?: boolean;
   className?: string;
   hint?: ReactElement | string;
-  hintInline?: boolean;
   verticalAlignItemsCentre?: boolean;
   // explicity state if this menu item opens a sub-menu or not. Usually this can be implied
   opensSubMenu?: boolean;
@@ -70,7 +70,6 @@ export const MenuItem = ({
   onSelect = noop,
   hidden = false,
   disabled = false,
-  hintInline = false,
   className,
   hint,
   leader,
@@ -156,17 +155,10 @@ export const MenuItem = ({
           {valueElement}
         </div>
       )}
-      {!focussed || hint === undefined || hintInline ? null : (
-        <Portal>
-          {typeof hint === "string" ?
-            <BitmapText className={multilineTextClass}>{hint}</BitmapText>
-          : hint}
-        </Portal>
-      )}
     </li>
   );
 
-  if (hintInline && hint) {
+  if (hint) {
     return (
       <>
         {menuItem}
@@ -177,7 +169,7 @@ export const MenuItem = ({
         </div>
       </>
     );
-  } else {
-    return menuItem;
   }
+
+  return menuItem;
 };

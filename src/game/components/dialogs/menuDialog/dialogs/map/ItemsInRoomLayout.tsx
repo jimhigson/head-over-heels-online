@@ -1,4 +1,6 @@
-import { type ReactElement, useMemo } from "react";
+import type { ReactElement } from "react";
+
+import { useMemo } from "preact/hooks";
 
 import type { JsonItemUnion } from "../../../../../../model/json/JsonItem";
 import type { ConsolidatableConfig } from "../../../../../../model/json/utilityJsonConfigTypes";

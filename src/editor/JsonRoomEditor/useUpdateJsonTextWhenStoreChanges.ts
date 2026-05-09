@@ -2,7 +2,7 @@ import type * as Monaco from "monaco-editor";
 import type { editor } from "monaco-editor";
 
 import { findNodeAtLocation, getLocation, parseTree } from "jsonc-parser";
-import { useEffect, useRef } from "react";
+import { useEffect, useRef } from "preact/hooks";
 
 import { store } from "../../store/store";
 import {

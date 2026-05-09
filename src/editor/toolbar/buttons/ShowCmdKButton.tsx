@@ -1,4 +1,4 @@
-import { useState } from "react";
+import { useState } from "preact/hooks";
 
 import { BitmapText } from "../../../game/components/tailwindSprites/BitmapText";
 import { store } from "../../../store/store";
@@ -75,7 +75,11 @@ export const ShowCmdKButton = () => {
 
   return (
     <>
-      <ToolbarButton onClick={() => setOpen(true)} shortcutKeys={["^K", "⌘K"]}>
+      <ToolbarButton
+        onClick={() => setOpen(true)}
+        shortcutKeys={["^K", "⌘K"]}
+        tooltipContent={"## Cmd-K menu\nFast access to most items"}
+      >
         <BitmapText className="relative leading-none">CMD</BitmapText>
       </ToolbarButton>
       {open && (

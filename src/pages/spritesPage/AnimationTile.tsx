@@ -1,4 +1,4 @@
-import { useEffect, useRef } from "react";
+import { useEffect, useRef } from "preact/hooks";
 
 import type { AppSpritesheetData } from "../../sprites/spritesheet/loadedSpriteSheet";
 import type {

@@ -1,5 +1,5 @@
 import nanoEqual from "nano-equal";
-import { useEffect, useRef } from "react";
+import { useEffect, useRef } from "preact/hooks";
 
 import type { Xyz } from "../../../utils/vectors/vectors";
 import type { RootStateWithLevelEditorSlice } from "../../slice/levelEditorSlice";

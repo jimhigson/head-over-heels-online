@@ -1,4 +1,4 @@
-import { useEffect } from "react";
+import { useEffect } from "preact/hooks";
 
 import { HookComponent } from "../../../utils/react/HookComponent";
 import { useAppDispatch } from "../../hooks";

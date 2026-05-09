@@ -31,7 +31,6 @@ You can turn this off for phones paired with joypads/keyboards`;
         path: "onScreenControls",
       })}
       verticalAlignItemsCentre
-      hintInline
       hint={
         <BlockyMarkdown
           className={optionsHintMarkdownClassname}

@@ -63,7 +63,6 @@ export const ScreenRelativeControlMenuItem = () => {
       }
       valueElement={<ScreenRelativeControlValue />}
       onSelect={useDispatchActionCallback(nextDirectionRelativeTo)}
-      hintInline
       verticalAlignItemsCentre
       className="sprites-double-height"
       hint={

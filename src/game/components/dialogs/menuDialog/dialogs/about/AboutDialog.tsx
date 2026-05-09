@@ -32,7 +32,6 @@ export const AboutDialog = (_emptyProps: EmptyObject) => {
               id="manual"
               label="Read the manual"
               subMenuId="readTheManual"
-              hintInline
               hint={
                 <BitmapText
                   className={`text-lightBeige zx:text-zxYellow toppy:text-toppyCool1 ${multilineTextClass}`}
@@ -47,7 +46,6 @@ export const AboutDialog = (_emptyProps: EmptyObject) => {
               leader={<BitmapText>{nerdFontDiscordChar}</BitmapText>}
               label="Discord"
               href={discordInviteUrl}
-              hintInline
               hint={
                 <BitmapText
                   className={`text-lightBeige zx:text-zxYellow toppy:text-toppyCool1 ${multilineTextClass}`}
@@ -62,7 +60,6 @@ export const AboutDialog = (_emptyProps: EmptyObject) => {
               leader={<BitmapText>{nerdFontGithubChar}</BitmapText>}
               label="Github"
               href={repository.url}
-              hintInline
               hint={
                 <BitmapText
                   className={`text-lightBeige zx:text-zxYellow toppy:text-toppyCool1 ${multilineTextClass}`}
@@ -77,7 +74,6 @@ export const AboutDialog = (_emptyProps: EmptyObject) => {
               leader={<BitmapText>{nerdFontGithubChar}</BitmapText>}
               label="Changelog"
               href={`${repository.url}/releases`}
-              hintInline
               hint={
                 <BitmapText
                   className={`text-lightBeige zx:text-zxYellow toppy:text-toppyCool1 ${multilineTextClass}`}

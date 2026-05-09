@@ -1,10 +1,9 @@
-import { useResizeDetector } from "react-resize-detector";
-
 import type { EditorRoomId } from "../editorTypes";
 
 import { MapSvg } from "../../game/components/dialogs/menuDialog/dialogs/map/Map.svg";
 import { BitmapText } from "../../game/components/tailwindSprites/BitmapText";
 import { store } from "../../store/store";
+import { useElementSize } from "../../utils/react/useElementSize";
 import { changeToRoom } from "../slice/levelEditorSlice";
 import { useEditorMapData } from "./useEditorMapData";
 
@@ -13,7 +12,7 @@ export const EditorMap = () => {
     ref: mapContainerRef,
     width: mapContainerWidth,
     height: mapContainerHeight,
-  } = useResizeDetector();
+  } = useElementSize<HTMLDivElement>();
   const mapData = useEditorMapData();
 
   if (mapData.isError) {

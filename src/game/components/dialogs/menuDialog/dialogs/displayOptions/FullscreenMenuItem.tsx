@@ -10,7 +10,6 @@ export const FullscreenMenuItem = () => {
 
   return (
     <MenuItem
-      hintInline
       className="sprites-double-height"
       id="fullScreen"
       label="Full Screen"

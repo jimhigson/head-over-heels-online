@@ -1,5 +1,5 @@
 import { register, unregister } from "@tauri-apps/plugin-global-shortcut";
-import { useCallback, useEffect } from "react";
+import { useCallback, useEffect } from "preact/hooks";
 
 import { useActionTap } from "../../game/components/dialogs/useActionTap";
 import { isInPlaytestMode } from "../../game/isInPlaytestMode";
