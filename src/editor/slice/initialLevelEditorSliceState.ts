@@ -1,10 +1,17 @@
-import type { EditorCampaign, EditorRoomId } from "../editorTypes";
+import type {
+  EditorCampaign,
+  EditorRoomId,
+  EditorRoomItemId,
+} from "../editorTypes";
 import type { LevelEditorState } from "./levelEditorSlice";
 
-import { starterRoom } from "./starterRoom";
+import { starterRoom } from "../../model/inPlaceMutators/starterRoom";
 
 const initialRoomId = "room_0" as EditorRoomId;
-const initialRoom = { id: initialRoomId, ...starterRoom({ x: 8, y: 8 }) };
+const initialRoom = {
+  id: initialRoomId,
+  ...starterRoom<EditorRoomId, EditorRoomItemId>({ x: 8, y: 8 }),
+};
 const initialCampaign: EditorCampaign = {
   meta: {
     published: false,

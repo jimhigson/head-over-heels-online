@@ -11,8 +11,10 @@ import type {
 import type { ItemTool } from "../interactivity/Tool";
 
 import { collision1toManyIter } from "../../../game/collision/aabbCollision";
+import { buildRoomJsonDirectionalIndex } from "../../../game/gameState/loadRoom/buildRoomJsonDirectionalIndex";
 import { loadItemFromJson } from "../../../game/gameState/loadRoom/loadItemFromJson";
 import { isSolid } from "../../../game/physics/itemPredicates";
+import { roomJsonItemsIterable } from "../../../model/RoomJson";
 import { roomItemsIterable } from "../../../model/RoomState";
 import { isEmpty } from "../../../utils/iterators/isEmpty";
 import { addXyz, type Xyz } from "../../../utils/vectors/vectors";
@@ -56,6 +58,10 @@ export const itemMoveOrResizeWouldCollide = ({
   blockPositionDelta: Xyz;
   timesDelta?: Xyz;
 }) => {
+  const directionalIndex = buildRoomJsonDirectionalIndex(
+    roomJsonItemsIterable(roomState.roomJson),
+  );
+
   const loadedModifiedItemTuples = Iterator.from(jsonItemIds)
     // get the json items from the room json:
     .map(
@@ -88,6 +94,7 @@ export const itemMoveOrResizeWouldCollide = ({
         jsonItemId,
         modifiedJsonItem,
         roomState.roomJson,
+        directionalIndex,
       )) {
         yield [jsonItemId, modifiedJsonItem, loadedItem] as [
           EditorRoomItemId,
@@ -153,6 +160,9 @@ export const addingItemWouldCollide = ({
   itemTool: ItemTool;
 }) => {
   // load the modified version of the item from JSON:
+  const directionalIndex = buildRoomJsonDirectionalIndex(
+    roomJsonItemsIterable(roomState.roomJson),
+  );
   const newItems = loadItemFromJson(
     "maybeAddedItem" as EditorRoomItemId,
     {
@@ -160,6 +170,7 @@ export const addingItemWouldCollide = ({
       position: blockPosition,
     } as EditorJsonItemUnion,
     roomState.roomJson,
+    directionalIndex,
   )
     // our new item may have some non-solid items, which are fine to collide (eg, stopAutowalk doors)
     .filter((i) => isSolid(i));

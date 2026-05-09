@@ -9,6 +9,7 @@ import type { LevelEditorState } from "../levelEditorSlice";
 
 import { findSubRoomForItem } from "../../../game/components/dialogs/menuDialog/dialogs/map/itemIsInSubRoom";
 import { roomGridPositions } from "../../../game/components/dialogs/menuDialog/dialogs/map/roomGridPositions";
+import { nextItemId } from "../../../model/inPlaceMutators/nextItemId";
 import { typePrefix } from "../../../model/json/typePrefix";
 import { iterateRoomJsonItemsWithIds } from "../../../model/RoomJson";
 import { keys } from "../../../utils/entries";
@@ -19,7 +20,7 @@ import {
   xyzEqual,
 } from "../../../utils/vectors/vectors";
 import { selectCurrentRoomFromLevelEditorState } from "../levelEditorSelectors";
-import { addItemInPlace, nextItemId } from "./addItemInPlace";
+import { addItemInPlace } from "./addItemInPlace";
 import { addNewRoomInPlace } from "./addNewRoomInPlace";
 import { cutHoleInWallsForDoorsInPlace } from "./cutHoleInWallsForDoorsInPlace";
 

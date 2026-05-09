@@ -1,17 +1,20 @@
-import type { PlanetName } from "../../../sprites/planets";
-import type { EditorRoomJson } from "../../editorTypes";
+import type { PlanetName } from "../../sprites/planets";
+import type { RoomJson } from "../RoomJson";
 
-import { planets, type SceneryName } from "../../../sprites/planets";
-import { rotatingSceneryTiles } from "../rotatingSceneryTiles";
+import { planets, type SceneryName } from "../../sprites/planets";
+import { roomJsonItemsIterable } from "../RoomJson";
+import { rotatingSceneryTiles } from "./rotatingSceneryTiles";
 
-export const changeRoomSceneryInPlace = (
-  roomJson: EditorRoomJson,
+export const changeRoomSceneryInPlace = <
+  RoomId extends string,
+  RoomItemId extends string,
+>(
+  roomJson: RoomJson<RoomId, RoomItemId>,
   sceneryName: SceneryName,
 ) => {
   roomJson.planet = sceneryName;
 
-  // reset the walls to tiles that are allowed in this scenery:
-  for (const i of Object.values(roomJson.items)) {
+  for (const i of roomJsonItemsIterable(roomJson)) {
     if (i.type === "floor" && i.config.floorType === "standable") {
       i.config.scenery = sceneryName;
     }

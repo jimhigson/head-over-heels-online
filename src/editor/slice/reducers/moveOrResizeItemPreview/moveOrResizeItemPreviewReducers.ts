@@ -13,6 +13,7 @@ import type {
 } from "../../../editorTypes";
 
 import { getConsolidatableVector } from "../../../../consolidateItems/ConsolidatableJsonItem";
+import { generateHoleInWallsForDoor } from "../../../../model/inPlaceMutators/generateHoleInWallsForDoor";
 import { iterateRoomJsonItemsWithIds } from "../../../../model/RoomJson";
 import {
   getJsonItemTimes,
@@ -30,7 +31,6 @@ import {
   type Xyz,
 } from "../../../../utils/vectors/vectors";
 import { addOrRemoveWallTilesInPlace } from "../../inPlaceMutators/addOrRemoveWallTilesInPlace";
-import { generateHoleInWallsForDoor } from "../../inPlaceMutators/cutHoleInWallsForDoorsInPlace";
 import { generateWallHealingInPlaceOfDoor } from "../../inPlaceMutators/generateWallHealingInPlaceOfDoor";
 import {
   selectCurrentRoomFromLevelEditorState,

@@ -4,6 +4,7 @@ import type { ItemInPlay } from "../../../model/ItemInPlay";
 
 import { basicEmptyRoom } from "../../../_testUtils/basicRoom";
 import { addXyz, type Xyz } from "../../../utils/vectors/vectors";
+import { emptyRoomJsonDirectionalIndex } from "../../gameState/loadRoom/buildRoomJsonDirectionalIndex";
 import { loadItemFromJson } from "../../gameState/loadRoom/loadItemFromJson";
 import { combinePlayablesInSymbiosis } from "../../gameState/mutators/symbiosis";
 import { GridSpatialIndex } from "../gridSpace/GridSpatialIndex";
@@ -18,7 +19,7 @@ const makeHeels = (position: Xyz) => {
       config: { which: "heels" },
     },
     basicEmptyRoom("firstRoom"),
-    {},
+    emptyRoomJsonDirectionalIndex,
   );
   return heels as ItemInPlay<"heels">;
 };
@@ -32,7 +33,7 @@ const makeHeadOverHeels = (position: Xyz) => {
       config: { which: "heels" },
     },
     basicEmptyRoom("firstRoom"),
-    {},
+    emptyRoomJsonDirectionalIndex,
   );
   const [head] = loadItemFromJson(
     "heels",
@@ -42,7 +43,7 @@ const makeHeadOverHeels = (position: Xyz) => {
       config: { which: "head" },
     },
     basicEmptyRoom("firstRoom"),
-    {},
+    emptyRoomJsonDirectionalIndex,
   );
 
   return combinePlayablesInSymbiosis({
@@ -60,7 +61,7 @@ const makeBlock = (position: Xyz) => {
       config: { style: "organic" },
     },
     basicEmptyRoom("firstRoom"),
-    {},
+    emptyRoomJsonDirectionalIndex,
   );
   return block as ItemInPlay<"block">;
 };
@@ -74,7 +75,7 @@ const makePortableBlock = (position: Xyz) => {
       config: { style: "cube" },
     },
     basicEmptyRoom("firstRoom"),
-    {},
+    emptyRoomJsonDirectionalIndex,
   );
   return portableBlock as ItemInPlay<"block">;
 };

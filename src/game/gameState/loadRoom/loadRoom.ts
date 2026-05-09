@@ -1,9 +1,9 @@
 import type { UnionOfAllItemInPlayTypes } from "../../../model/ItemInPlay";
-import type { RoomJson } from "../../../model/RoomJson";
 import type { ScrollsRead } from "../../../store/slices/gameInPlay/gameInPlaySlice";
 import type { UserSettings } from "../../../store/slices/userSettings/userSettingsSlice";
 import type { RoomPickupsCollected } from "../GameState";
 
+import { type RoomJson, roomJsonItemsIterable } from "../../../model/RoomJson";
 import {
   roomItemsIterable,
   roomSpatialIndexKey,
@@ -16,6 +16,10 @@ import { findStandingOnWithHighestPriorityAndMostOverlap } from "../../collision
 import { GridSpatialIndex } from "../../physics/gridSpace/GridSpatialIndex";
 import { isFreeItem, isSolid, isSpatial } from "../../physics/itemPredicates";
 import { setStandingOnWithoutRemovingOldFirst } from "../mutators/standingOn/setStandingOnWithoutRemovingOldFirst";
+import {
+  buildRoomJsonDirectionalIndex,
+  type RoomDirectionalIndex,
+} from "./buildRoomJsonDirectionalIndex";
 import { loadItemFromJson } from "./loadItemFromJson";
 import { loadOutOfBoundsItem } from "./loadOutOfBoundsItem";
 import { loadPortalsAboveAndBelow } from "./loadPortalsAboveAndBelow";
@@ -24,6 +28,7 @@ import { maybeLoadExtraCornerShadow } from "./maybeLoadExtraCornerShadow";
 
 function* loadItems<RoomId extends string, RoomItemId extends string>(
   roomJson: RoomJson<RoomId, RoomItemId>,
+  directionalIndex: RoomDirectionalIndex<RoomId, RoomItemId>,
   roomPickupsCollected: RoomPickupsCollected,
   scrollsRead: ScrollsRead,
   isNewGame: boolean,
@@ -37,6 +42,7 @@ function* loadItems<RoomId extends string, RoomItemId extends string>(
       id,
       item,
       roomJson,
+      directionalIndex,
       roomPickupsCollected,
       scrollsRead,
     );
@@ -76,15 +82,24 @@ export const loadRoom = <RoomId extends string, RoomItemId extends string>({
   isNewGame?: boolean;
   userSettings: UserSettings;
 }): RoomState<RoomId, RoomItemId> => {
+  const directionalIndex = buildRoomJsonDirectionalIndex(
+    roomJsonItemsIterable(roomJson),
+  );
   const roomItems = itemsInItemObjectMap(
-    loadItems(roomJson, roomPickupsCollected, scrollsRead, isNewGame),
+    loadItems(
+      roomJson,
+      directionalIndex,
+      roomPickupsCollected,
+      scrollsRead,
+      isNewGame,
+    ),
   );
   const roomEntrySound = loadRoomEntrySound(roomJson, userSettings, isNewGame);
   const outOfBoundsItem = loadOutOfBoundsItem<RoomId, RoomItemId>();
   const items: RoomStateItems<RoomId, RoomItemId> = {
     ...itemsInItemObjectMap(loadPortalsAboveAndBelow(roomJson, roomItems)),
     ...roomItems,
-    ...itemsInItemObjectMap(maybeLoadExtraCornerShadow(roomJson)),
+    ...itemsInItemObjectMap(maybeLoadExtraCornerShadow(directionalIndex)),
     ...(roomEntrySound ? { [roomEntrySound.id]: roomEntrySound } : undefined),
     [outOfBoundsItem.id]: outOfBoundsItem,
   };

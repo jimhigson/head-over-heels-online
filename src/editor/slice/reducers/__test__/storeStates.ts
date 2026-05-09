@@ -7,9 +7,9 @@ import type {
   LevelEditorState,
 } from "../../levelEditorSlice";
 
+import { rotatingSceneryTiles } from "../../../../model/inPlaceMutators/rotatingSceneryTiles";
 import { initialLevelEditorSliceState } from "../../initialLevelEditorSliceState";
 import { levelEditorSlice } from "../../levelEditorSlice";
-import { rotatingSceneryTiles } from "../../rotatingSceneryTiles";
 
 export const doorItemToolWithAutoAddRooms: Tool = {
   type: "item",
