@@ -139,6 +139,9 @@ const switchNColours = twClass([
   "bg-pinkHalfbrite text-pink zx:bg-zxBlack zx:text-zxYellow toppy:bg-toppyGrey3 toppy:text-toppyWarm3",
   "bg-redShadowHalfbrite text-midRed zx:bg-zxBlack zx:text-zxRed toppy:bg-toppyGrey3 toppy:text-toppyPink2",
 ]);
+const switchNErrorColours = twClass(
+  "bg-white text-midRed zx:bg-zxWhite zx:text-zxRed toppy:bg-toppyGrey1 toppy:text-toppyPink2",
+);
 
 const settingSounds = [
   soundUrls.setting0,
@@ -159,6 +162,14 @@ export const SwitchN = <TValue extends number | string>({
 }: SwitchNProps<TValue>) => {
   const switchId = useId();
   const valueIndex = values.indexOf(value);
+
+  const notFound = valueIndex === -1;
+  if (notFound) {
+    console.error(
+      `SwitchN: value ${JSON.stringify(value)} is not in values ${JSON.stringify(values)}`,
+    );
+  }
+
   const numValues = values.length;
 
   const prevValueRef = useRef(value);
@@ -191,9 +202,9 @@ export const SwitchN = <TValue extends number | string>({
       onClick={goToNextValue}
       className={cn("inline-flex justify-between leading-none", className)}
     >
-      {hasChanged && (
+      {hasChanged && !notFound && (
         <audio
-          src={settingSounds[valueIndex % 4]}
+          src={settingSounds[valueIndex % settingSounds.length]}
           key={`${value}`}
           autoPlay
           ref={(el) => {
@@ -207,11 +218,13 @@ export const SwitchN = <TValue extends number | string>({
         role="switch"
         className={clsx(
           "inline-block w-min h-min py-half px-half sprites-uppercase",
-          switchNColours[colorIndex] ?? switchNColours[0],
+          notFound ? switchNErrorColours : (
+            (switchNColours[colorIndex] ?? switchNColours[0])
+          ),
         )}
         noSlitWords
       >
-        {paddedLabels[valueIndex]}
+        {notFound ? `${value}` : paddedLabels[valueIndex]}
       </BitmapText>
     </span>
   );
