@@ -1,4 +1,4 @@
-import { useState } from "react";
+import { useState } from "preact/hooks";
 
 import type { JsonItemConfig } from "../../../model/json/JsonItem";
 import type { TextureTailwindClass } from "../../../sprites/spritesheet/spritesheetData/TextureTailwindClass";

@@ -1,5 +1,5 @@
 import { Application, type Texture } from "pixi.js";
-import { useEffect, useState } from "react";
+import { useEffect, useState } from "preact/hooks";
 
 import { blockstackToSpectrumLut } from "../game/render/filters/lutTexture/stdLuts/blockstackToSpectrumLut";
 import { paletteQuantisationLut } from "../game/render/filters/lutTexture/stdLuts/paletteQuantisationLut";

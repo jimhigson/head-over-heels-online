@@ -1,4 +1,4 @@
-import { useCallback } from "react";
+import { useCallback } from "preact/hooks";
 
 import { useAppDispatch } from "../../../../../../store/hooks";
 import { backToParentMenu } from "../../../../../../store/slices/gameMenus/gameMenusSlice";
@@ -26,7 +26,6 @@ export const InputPresetMenuItem = ({
   }, [dispatch, presetName]);
   return (
     <MenuItem
-      hintInline
       id={presetName}
       key={presetName}
       label={presetName}

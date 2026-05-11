@@ -1,5 +1,3 @@
-import { Ticker, UPDATE_PRIORITY } from "pixi.js";
-
 import type { DirectionsRelativeToMode } from "../../store/slices/userSettings/directionsRelativeToModes";
 import type { Xyz } from "../../utils/vectors/vectors";
 import type { GamepadState } from "./GamepadState";
@@ -199,6 +197,13 @@ const maybeRotate45InPlace = (shouldRotate: boolean, v: Xyz) =>
  * read from the given inputState (and anything else) to get the current interpretation
  * of the input, according to the
  */
+export type TickFn = (tick: { lastTime: number }) => void;
+
+export type InputTicker = {
+  start(fn: TickFn): void;
+  stop(fn: TickFn): void;
+};
+
 export class InputStateTracker {
   /**
    * snapshot of the input this frame, the previous frame, and going back as
@@ -228,14 +233,17 @@ export class InputStateTracker {
   #actionsHandled: Map<BooleanAction, number> = new Map();
 
   #keyboardStateMap: KeyboardStateMap;
+  #ticker: InputTicker;
   readonly hudInputState: HudInputState;
 
   constructor(
     keyboardStateMap: KeyboardStateMap,
     hudInputState: HudInputState,
+    ticker: InputTicker,
   ) {
     this.#keyboardStateMap = keyboardStateMap;
     this.hudInputState = hudInputState;
+    this.#ticker = ticker;
   }
 
   /**
@@ -467,7 +475,7 @@ export class InputStateTracker {
     );
   }
 
-  #tick = ({ lastTime: atTime }: Ticker) => {
+  #tick: TickFn = ({ lastTime: atTime }) => {
     const inputDirectionMode = selectInputDirectionMode(store.getState());
 
     const snapXyFn = snapXyFnMap[inputDirectionMode];
@@ -654,13 +662,10 @@ export class InputStateTracker {
   }
 
   startTicking() {
-    // we want this to run at a lower update priority than anything else so that it back-runs
-    // the interactions and only updates the last frame's record after everything else has had
-    // a change to query it
-    Ticker.shared.add(this.#tick, undefined, UPDATE_PRIORITY.INTERACTION);
+    this.#ticker.start(this.#tick);
   }
   stopTicking() {
-    Ticker.shared.remove(this.#tick);
+    this.#ticker.stop(this.#tick);
   }
 }
 

@@ -1,6 +1,7 @@
 import type { ReactElement } from "react";
 
-import { cloneElement, useRef, useState } from "react";
+import { useRef, useState } from "preact/hooks";
+import { cloneElement } from "react";
 
 import type { ToolbarButtonProps } from "./buttons/ToolbarButton";
 

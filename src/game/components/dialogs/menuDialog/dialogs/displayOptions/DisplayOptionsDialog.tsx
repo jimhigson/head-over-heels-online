@@ -45,7 +45,6 @@ export const DisplayOptionsDialog = () => {
           }
           <SpritesOptionMenuItem />
           <MenuItem
-            hintInline
             className="sprites-double-height"
             id="crtFilter"
             verticalAlignItemsCentre
@@ -82,7 +81,6 @@ export const DisplayOptionsDialog = () => {
             }
           />
           <MenuItem
-            hintInline
             className="sprites-double-height"
             id="emulatedResolution"
             label="Emulated Resolution"
@@ -96,7 +94,6 @@ export const DisplayOptionsDialog = () => {
             }
           />
           <MenuItem
-            hintInline
             className="sprites-double-height"
             verticalAlignItemsCentre
             id="showFps"

@@ -132,7 +132,6 @@ export const SelectTheKeysMenuItems = () => {
             markdown={`Carrying is **Heels only** and requires the bag`}
           />
         }
-        hintInline
       />
       <MenuItem
         id="fire"
@@ -152,7 +151,6 @@ export const SelectTheKeysMenuItems = () => {
             markdown={`Firing doughnuts is **Head only** and requires the hooter`}
           />
         }
-        hintInline
         valueElement={<SelectKeysMenuAssignmentValue action="fire" />}
         onSelect={useDispatchActionCallback(assignInputStart, "fire")}
       />
@@ -175,7 +173,6 @@ export const SelectTheKeysMenuItems = () => {
             markdown={`Works like the original game. *Cycles through* the characters, Moves *in and out of symbiosis* if head is on top of heels`}
           />
         }
-        hintInline
         leader={
           <span
             className={`${spriteLeaderClasses} ${"texture-blank" satisfies TextureTailwindClass} relative overflow-hidden`}
@@ -204,7 +201,6 @@ export const SelectTheKeysMenuItems = () => {
             markdown={`Go *directly* to *Head*, avoiding cycling if in symbiosis`}
           />
         }
-        hintInline
         leader={
           <span
             className={`${spriteLeaderClasses} ${spriteClassname({ character: "head", action: "idle", facingXy8: "towardsRight" })} ${"selectedMenuItem:texture-animated-head_walking_towardsRight" satisfies AnimatedTextureTailwindClass}`}
@@ -231,7 +227,6 @@ export const SelectTheKeysMenuItems = () => {
             markdown={`Go *directly* to *Heels*, avoiding cycling if in symbiosis`}
           />
         }
-        hintInline
         leader={
           <span
             className={`${spriteLeaderClasses} ${spriteClassname({ character: "heels", action: "idle", facingXy8: "towardsRight" })} ${"selectedMenuItem:texture-animated-heels_walking_towardsRight" satisfies AnimatedTextureTailwindClass}`}
@@ -304,7 +299,6 @@ export const SelectTheKeysMenuItems = () => {
             markdown={`Hold the look key and press a direction to look around the room`}
           />
         }
-        hintInline
       />
       <MenuItem
         id="lookLeft"

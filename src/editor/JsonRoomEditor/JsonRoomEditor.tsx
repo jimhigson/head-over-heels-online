@@ -1,7 +1,7 @@
 import type { editor } from "monaco-editor";
 
 import { Editor } from "@monaco-editor/react";
-import { useState } from "react";
+import { useState } from "preact/hooks";
 
 import { useAppSelectorWithLevelEditorSlice } from "../slice/levelEditorSlice";
 import { useMonacoSuggestions } from "./suggestions/useMonacoSuggestions";

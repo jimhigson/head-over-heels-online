@@ -1,4 +1,5 @@
 "use client";
+
 import type { MouseEvent } from "react";
 
 import { useIsLoading } from "../store/hooks/loadingHooks";

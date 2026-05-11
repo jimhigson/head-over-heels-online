@@ -1,5 +1,5 @@
 import { Ticker } from "pixi.js";
-import { useEffect } from "react";
+import { useEffect } from "preact/hooks";
 
 import type { MovedItems } from "../../game/mainLoop/progressGameState";
 import type {

@@ -1,4 +1,4 @@
-import { useCallback, useEffect, useState } from "react";
+import { useCallback, useEffect, useState } from "preact/hooks";
 
 import type { TextureTailwindClass } from "../../../../../../sprites/spritesheet/spritesheetData/TextureTailwindClass";
 
@@ -52,7 +52,6 @@ export const ClearAllDataMenuSection = () => {
         />
       </div>
       <MenuItem
-        hintInline
         className="sprites-double-height"
         leader={
           <span

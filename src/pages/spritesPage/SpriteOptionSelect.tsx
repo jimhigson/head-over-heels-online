@@ -1,4 +1,4 @@
-import { useEffect } from "react";
+import { useEffect } from "preact/hooks";
 
 import type { SpriteOption } from "../../store/slices/userSettings/userSettingsSlice";
 

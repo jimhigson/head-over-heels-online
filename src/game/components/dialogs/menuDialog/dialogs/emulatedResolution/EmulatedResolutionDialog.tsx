@@ -32,7 +32,6 @@ export const ResolutionMenuItem = ({
       key={resolutionName}
       label={`${currentResolutionName === resolutionName ? "* " : ""}${resolution.name}`}
       doubleHeightWhenFocussed
-      hintInline
       hint={
         <BitmapText className={optionsHintMarkdownClassname}>
           {resolution.size.x} x {resolution.size.y}

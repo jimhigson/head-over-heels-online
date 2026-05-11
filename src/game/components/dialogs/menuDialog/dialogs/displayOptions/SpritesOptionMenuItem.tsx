@@ -45,7 +45,6 @@ export const SpritesOptionMenuItem = () => {
   const spritesOption = useAppSelector(selectSpritesOption);
   return (
     <MenuItem
-      hintInline
       className="sprites-double-height"
       id="spritesOption"
       label="Skin"

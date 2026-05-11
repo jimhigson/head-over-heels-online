@@ -1,5 +1,5 @@
 import { TextureStyle } from "pixi.js";
-import { useState } from "react";
+import { useState } from "preact/hooks";
 
 import { boundingBoxDecorateItemRenderer } from "../../game/render/item/itemRender/boundingBoxDecorateItemRenderer";
 import { useRegisterDecorateItemRenderers } from "../../game/render/useRegisterDecorateItemRenderers";

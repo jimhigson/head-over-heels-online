@@ -22,7 +22,7 @@ export const EyeDropperButton = () => {
       ]}
       isCurrentTool={isCurrentTool}
       onClick={() => store.dispatch(setTool({ type: "eyeDropper" }))}
-      tooltipContent={`## eye-dropper
+      tooltipContent={`## Eye-dropper
 
 click on an item in the room to copy it and put a copy down somewhere else`}
     >

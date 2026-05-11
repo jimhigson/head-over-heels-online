@@ -1,4 +1,4 @@
-import { useCallback, useRef } from "react";
+import { useCallback, useRef } from "preact/hooks";
 
 import type { DirectionXy4 } from "../../../../../utils/vectors/vectors";
 

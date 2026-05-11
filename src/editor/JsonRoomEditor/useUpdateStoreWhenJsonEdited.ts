@@ -4,7 +4,7 @@ import type { editor } from "monaco-editor";
 import { debounce } from "@github/mini-throttle";
 import Ajv from "ajv";
 import nanoEqual from "nano-equal";
-import { useMemo } from "react";
+import { useMemo } from "preact/hooks";
 
 import type { EditorRoomJson } from "../editorTypes";
 import type { RootStateWithLevelEditorSlice } from "../slice/levelEditorSlice";

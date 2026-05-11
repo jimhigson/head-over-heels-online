@@ -1,4 +1,4 @@
-import { useLayoutEffect } from "react";
+import { useLayoutEffect } from "preact/hooks";
 
 import type { ResolutionName } from "../../../originalGame";
 

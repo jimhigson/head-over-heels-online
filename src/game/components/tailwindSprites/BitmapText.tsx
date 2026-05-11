@@ -1,11 +1,12 @@
-import type { JSX, MouseEventHandler, ReactElement } from "react";
-
-import {
-  cloneElement,
-  isValidElement,
-  type PropsWithChildren,
-  type ReactNode,
+import type {
+  JSX,
+  MouseEventHandler,
+  PropsWithChildren,
+  ReactElement,
+  ReactNode,
 } from "react";
+
+import { cloneElement, isValidElement } from "react";
 import "react";
 import { twMerge } from "tailwind-merge";
 
@@ -99,9 +100,9 @@ export const BitmapText = <Tag extends BitmapTextTagName = "span">({
 
 const elementHasChildrenProp = (
   element: ReactElement,
-): element is ReactElement<{ children: React.ReactNode }> => {
+): element is ReactElement<{ children: ReactNode }> => {
   return (
-    (element as ReactElement<{ children: React.ReactNode }>).props.children !==
+    (element as ReactElement<{ children: ReactNode }>).props.children !==
     undefined
   );
 };

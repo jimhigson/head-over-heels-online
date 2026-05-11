@@ -1,4 +1,4 @@
-import { useRef } from "react";
+import { useRef } from "preact/hooks";
 
 import { useAppSelector } from "../../../../../../store/hooks";
 import { setFocussedMenuItemId } from "../../../../../../store/slices/gameMenus/gameMenusSlice";

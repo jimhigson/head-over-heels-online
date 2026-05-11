@@ -1,4 +1,4 @@
-import { useEffect } from "react";
+import { useEffect } from "preact/hooks";
 
 import type { Key } from "../game/input/keys";
 

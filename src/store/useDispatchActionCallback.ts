@@ -4,7 +4,7 @@ import type {
   ActionCreatorWithPayload,
 } from "@reduxjs/toolkit";
 
-import { useCallback } from "react";
+import { useCallback } from "preact/hooks";
 
 import { useAppDispatch } from "./hooks";
 

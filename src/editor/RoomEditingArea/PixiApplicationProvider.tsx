@@ -2,7 +2,8 @@ import type { PropsWithChildren } from "react";
 import type { EmptyObject } from "type-fest";
 
 import { Application } from "pixi.js";
-import { createContext, useContext, useEffect, useState } from "react";
+import { useEffect, useState } from "preact/hooks";
+import { createContext, useContext } from "react";
 
 import { paletteBlockstack } from "../../sprites/palette/spritesheetPalette";
 import { stopAppAutoRendering } from "../../utils/pixi/stopAppAutoRendering";

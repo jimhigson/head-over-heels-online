@@ -1,9 +1,8 @@
-import { useState } from "react";
+import { useState } from "preact/hooks";
 
 import "./spritesPage.css";
 import { CssVariables } from "../../game/components/CssVariables";
 import { typedURLSearchParams } from "../../options/queryParams";
-import { TooltipProvider } from "../../ui/Tooltip";
 import { SpritesPageContent } from "./SpritesPageContent";
 import { SpritesPageToolbar } from "./SpritesPageToolbar";
 
@@ -24,18 +23,16 @@ export const SpritesPage = () => {
   };
 
   return (
-    <TooltipProvider>
-      <CssVariables scaleFactor={scale}>
-        <title>Sprites</title>
-        <SpritesPageToolbar
-          scale={scale}
-          onScaleChange={handleScaleChange}
-          spriteFilter={spriteFilter}
-          onSpriteFilterChange={setSpriteFilter}
-        />
-        <SpritesPageContent scale={scale} spriteFilter={spriteFilter} />
-      </CssVariables>
-    </TooltipProvider>
+    <CssVariables scaleFactor={scale}>
+      <title>Sprites</title>
+      <SpritesPageToolbar
+        scale={scale}
+        onScaleChange={handleScaleChange}
+        spriteFilter={spriteFilter}
+        onSpriteFilterChange={setSpriteFilter}
+      />
+      <SpritesPageContent scale={scale} spriteFilter={spriteFilter} />
+    </CssVariables>
   );
 };
 

@@ -1,4 +1,5 @@
-import { lazy, Suspense, useEffect, useState } from "react";
+import { useEffect, useState } from "preact/hooks";
+import { lazy, Suspense } from "react";
 import { shallowEqual } from "react-redux";
 
 import type Cheats from "../../game/components/cheats/Cheats.tsx";

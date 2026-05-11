@@ -45,6 +45,5 @@ export const PresetMenuItem = () => (
         markdown={markdown}
       />
     }
-    hintInline
   />
 );

@@ -1,4 +1,4 @@
-import { Suspense, useMemo } from "react";
+import { useMemo } from "preact/hooks";
 
 import type { OnRoomClick } from "./Map.svg";
 
@@ -7,19 +7,18 @@ import { backToParentMenu } from "../../../../../../store/slices/gameMenus/gameM
 import { useDispatchActionCallback } from "../../../../../../store/useDispatchActionCallback";
 import { Dialog } from "../../../../../../ui/Dialog";
 import { DialogPortal } from "../../../../../../ui/DialogPortal";
-import { LazyTooltipProvider } from "../../../../../../ui/LazyTooltip";
+import { useElementSize } from "../../../../../../utils/react/useElementSize";
 import { swopPlayables } from "../../../../../gameState/mutators/swopPlayables";
 import { useGameApi } from "../../../../GameApiContext";
 import { useScrollingFromInput } from "../useScrollingFromInput";
 import { MapSvg } from "./Map.svg";
 import { getMapColoursClass } from "./mapColours";
-import { useElementWidth } from "./useElementWidth";
 import { useMapDataForCurrentGame } from "./useMapDataForCurrentGame";
 import { useAllowCharacterSwopping } from "./useTickingCurrentCharacterName";
 
 const MapDialog = <RoomId extends string>() => {
   const { ref: mapContainerRef, width: mapContainerWidth } =
-    useElementWidth<HTMLDialogElement>();
+    useElementSize<HTMLDialogElement>();
   const scrollingContentRef = useScrollingFromInput();
 
   const cheatsOn = useCheatsOn();
@@ -62,14 +61,7 @@ const MapDialog = <RoomId extends string>() => {
           className="overflow-y-scroll scrollbar scrollbar-w-1 h-min"
           ref={scrollingContentRef}
         >
-          {handleRoomClick !== undefined ?
-            // TooltipProvider is lazy-loaded to keep the game's core bundle small,
-            // since tooltips are only used with cheats on (don't load radix into the
-            // game engine)
-            <Suspense fallback={mapSvg}>
-              <LazyTooltipProvider>{mapSvg}</LazyTooltipProvider>
-            </Suspense>
-          : mapSvg}
+          {mapSvg}
         </div>
       </Dialog>
     </DialogPortal>

@@ -1,8 +1,7 @@
-import type { JSX, ReactElement } from "react";
+import type { JSX, PropsWithChildren, ReactElement } from "react";
 import type { CustomComponentsOption } from "snarkdown-in-react";
 import type { EmptyObject } from "type-fest";
 
-import { type PropsWithChildren } from "react";
 import { SnarkdownInReact } from "snarkdown-in-react";
 import { twMerge } from "tailwind-merge";
 

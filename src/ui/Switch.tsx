@@ -1,13 +1,7 @@
+import type { MouseEvent, ReactNode } from "react";
+
 import clsx from "clsx";
-import {
-  type MouseEvent,
-  type ReactNode,
-  useCallback,
-  useEffect,
-  useId,
-  useRef,
-  useState,
-} from "react";
+import { useCallback, useEffect, useId, useRef, useState } from "preact/hooks";
 
 import { BitmapText } from "../game/components/tailwindSprites/BitmapText";
 import { soundUrls } from "../sound/soundUrls";
@@ -37,7 +31,7 @@ const SwitchLabel = ({
   </BitmapText>
 );
 
-type OnSwitchChange = (newValue: boolean, e?: MouseEvent<HTMLElement>) => void;
+type OnSwitchChange = (newValue: boolean, e?: MouseEvent) => void;
 
 export type SwitchProps = {
   value: boolean;
@@ -125,7 +119,7 @@ export const Switch = ({
 export type SwitchNProps<TValue extends number | string> = {
   value: TValue;
   className?: string;
-  onChange?: (newValue: TValue, e?: MouseEvent<HTMLElement>) => void;
+  onChange?: (newValue: TValue, e?: MouseEvent) => void;
   values: readonly TValue[];
   valueLabels?: readonly string[];
   label?: string;
@@ -244,7 +238,7 @@ export const SwitchN = <TValue extends number | string>({
 export type Switch3Props<TValue extends number | string> = {
   value: TValue;
   className?: string;
-  onChange?: (newValue: TValue, e?: MouseEvent<HTMLElement>) => void;
+  onChange?: (newValue: TValue, e?: MouseEvent) => void;
   values: Readonly<[TValue, TValue, TValue]>;
   valueLabels?: Readonly<[string, string, string]>;
   label?: string;

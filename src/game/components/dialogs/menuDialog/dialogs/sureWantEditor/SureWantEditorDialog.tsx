@@ -5,11 +5,9 @@ import { useDispatchActionCallback } from "../../../../../../store/useDispatchAc
 import { Border } from "../../../../../../ui/Border";
 import { Dialog } from "../../../../../../ui/Dialog";
 import { DialogPortal } from "../../../../../../ui/DialogPortal";
-import { isTouchDevice } from "../../../../../../utils/detectEnv/detectDeviceType";
 import { BlockyMarkdown } from "../../../../BlockyMarkdown";
 import { MenuItem } from "../../MenuItem";
 import { MenuItems } from "../../MenuItems";
-import { SelectedItemHint } from "../../SelectedItemHint";
 import { DialogTitleBar } from "../DialogTitleBar";
 
 const blurbMarkdown = `I built an *editor* so I could make the **sequel levels**
@@ -50,9 +48,6 @@ export const SureWantEditorDialog = () => {
               href={editorUrl}
             />
           </MenuItems>
-          {isTouchDevice() || (
-            <SelectedItemHint className="text-midGrey zx:text-zxWhite resHandheld:hidden" />
-          )}
         </div>
       </Dialog>
     </DialogPortal>

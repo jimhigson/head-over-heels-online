@@ -1,7 +1,7 @@
 import { throttle } from "@github/mini-throttle";
 import { listen } from "@tauri-apps/api/event";
 import { getCurrentWindow } from "@tauri-apps/api/window";
-import { useEffect, useState } from "react";
+import { useEffect, useState } from "preact/hooks";
 
 /**
  * Listen for fullscreen state changes and call the provided callback

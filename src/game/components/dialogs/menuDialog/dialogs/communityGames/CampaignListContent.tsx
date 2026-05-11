@@ -33,7 +33,6 @@ const CampaignMenuItem = ({
           version: -1,
         } satisfies CampaignLocator,
       })}
-      hintInline
       hint={
         <div className="screenshot-mask">
           <BitmapText

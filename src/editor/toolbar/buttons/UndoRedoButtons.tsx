@@ -23,6 +23,7 @@ export const UndoRedoButtons = () => {
         onClick={() => {
           dispatch(undo());
         }}
+        tooltipContent="## Undo"
         shortcutKeys={["⌘Z", "^Z"]}
       >
         <IconWithTwoLineHoverText
@@ -36,6 +37,7 @@ export const UndoRedoButtons = () => {
         onClick={() => {
           dispatch(redo());
         }}
+        tooltipContent="## Redo"
         shortcutKeys={["⌘⇧Z", "^⇧Z"]}
       >
         <IconWithTwoLineHoverText

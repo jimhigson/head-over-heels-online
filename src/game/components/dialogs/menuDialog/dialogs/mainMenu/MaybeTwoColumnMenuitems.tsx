@@ -1,4 +1,6 @@
-import { Children, type Fragment, type ReactElement } from "react";
+import type { Fragment, ReactElement } from "react";
+
+import { Children } from "react";
 
 import { MenuItems } from "../../MenuItems";
 import { MenuSeparator } from "./MenuSeparator";

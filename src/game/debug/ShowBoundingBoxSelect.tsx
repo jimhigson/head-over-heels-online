@@ -1,4 +1,4 @@
-import { useState } from "react";
+import { useState } from "preact/hooks";
 
 import { type ItemInPlayType, itemInPlayTypes } from "../../model/ItemInPlay";
 import { roomItemsIterable, type RoomStateItems } from "../../model/RoomState";
@@ -20,9 +20,8 @@ import {
   CommandItem,
   CommandList,
 } from "../../ui/command";
-import { Popover, PopoverContent, PopoverTrigger } from "../../ui/Popover";
+import { Popover } from "../../ui/Popover";
 import { Switch, SwitchN } from "../../ui/Switch";
-import { CssVariables } from "../components/CssVariables";
 import { BitmapText } from "../components/tailwindSprites/BitmapText";
 
 const sortedItemInPlayTypes = itemInPlayTypes.toSorted();
@@ -95,8 +94,10 @@ export const ShowBoundingBoxSelect = ({
   };
 
   return (
-    <Popover open={open} onOpenChange={handleOpenChange}>
-      <PopoverTrigger asChild>
+    <Popover
+      open={open}
+      onOpenChange={handleOpenChange}
+      trigger={
         <Button
           className={cn(
             "h-2 px-1 flex flex-row gap-1 justify-start leading-none w-13",
@@ -107,19 +108,64 @@ export const ShowBoundingBoxSelect = ({
           </BitmapText>
           <BitmapText className="grow-0">{open ? "X" : "⬇"}</BitmapText>
         </Button>
-      </PopoverTrigger>
-      <PopoverContent className="p-0">
-        <CssVariables scaleFactor={2}>
-          <Command className="w-24">
-            <CommandInput placeholder="filter types..." />
-            <CommandList>
-              <CommandGroup>
+      }
+      contents={
+        <Command className="w-24">
+          <CommandInput placeholder="filter types..." />
+          <CommandList>
+            <CommandGroup>
+              <CommandItem
+                value="__room-scroll-bounds__"
+                onSelect={() => {
+                  dispatch(
+                    toggleUserSetting({
+                      path: "displaySettings.showRoomScrollBounds",
+                    }),
+                  );
+                }}
+                className="px-1"
+              >
+                <Switch
+                  className="w-full"
+                  value={showRoomScrollBounds}
+                  label="scroll bounds"
+                />
+              </CommandItem>
+            </CommandGroup>
+            <CommandGroup>
+              <div className="px-1 py-half">
+                <SwitchN
+                  className="w-full"
+                  value={allItemsState(selected.length)}
+                  values={allItemsStates}
+                  onChange={(newValue) => {
+                    dispatch(
+                      setShowBoundingBoxType({ value: newValue !== "none" }),
+                    );
+                  }}
+                  label="items"
+                />
+              </div>
+            </CommandGroup>
+            <CommandGroup
+              heading={
+                <BitmapText
+                  doubleHeight
+                  className="pl-1 mt-1 text-moss zx:text-zxGreen toppy:text-toppyCool2 block"
+                >
+                  In room:
+                </BitmapText>
+              }
+            >
+              {visibleTypes.map((itemType) => (
                 <CommandItem
-                  value="__room-scroll-bounds__"
+                  key={itemType}
+                  value={itemType}
                   onSelect={() => {
                     dispatch(
-                      toggleUserSetting({
-                        path: "displaySettings.showRoomScrollBounds",
+                      setShowBoundingBoxType({
+                        itemType,
+                        value: !selectedSet.has(itemType),
                       }),
                     );
                   }}
@@ -127,37 +173,25 @@ export const ShowBoundingBoxSelect = ({
                 >
                   <Switch
                     className="w-full"
-                    value={showRoomScrollBounds}
-                    label="scroll bounds"
+                    value={selectedSet.has(itemType)}
+                    label={itemType}
                   />
                 </CommandItem>
-              </CommandGroup>
-              <CommandGroup>
-                <div className="px-1 py-half">
-                  <SwitchN
-                    className="w-full"
-                    value={allItemsState(selected.length)}
-                    values={allItemsStates}
-                    onChange={(newValue) => {
-                      dispatch(
-                        setShowBoundingBoxType({ value: newValue !== "none" }),
-                      );
-                    }}
-                    label="items"
-                  />
-                </div>
-              </CommandGroup>
+              ))}
+            </CommandGroup>
+
+            {typesNotInRoom.length > 0 && (
               <CommandGroup
                 heading={
                   <BitmapText
                     doubleHeight
                     className="pl-1 mt-1 text-moss zx:text-zxGreen toppy:text-toppyCool2 block"
                   >
-                    In room:
+                    Others
                   </BitmapText>
                 }
               >
-                {visibleTypes.map((itemType) => (
+                {typesNotInRoom.map((itemType) => (
                   <CommandItem
                     key={itemType}
                     value={itemType}
@@ -179,45 +213,10 @@ export const ShowBoundingBoxSelect = ({
                   </CommandItem>
                 ))}
               </CommandGroup>
-
-              {typesNotInRoom.length > 0 && (
-                <CommandGroup
-                  heading={
-                    <BitmapText
-                      doubleHeight
-                      className="pl-1 mt-1 text-moss zx:text-zxGreen toppy:text-toppyCool2 block"
-                    >
-                      Others
-                    </BitmapText>
-                  }
-                >
-                  {typesNotInRoom.map((itemType) => (
-                    <CommandItem
-                      key={itemType}
-                      value={itemType}
-                      onSelect={() => {
-                        dispatch(
-                          setShowBoundingBoxType({
-                            itemType,
-                            value: !selectedSet.has(itemType),
-                          }),
-                        );
-                      }}
-                      className="px-1"
-                    >
-                      <Switch
-                        className="w-full"
-                        value={selectedSet.has(itemType)}
-                        label={itemType}
-                      />
-                    </CommandItem>
-                  ))}
-                </CommandGroup>
-              )}
-            </CommandList>
-          </Command>
-        </CssVariables>
-      </PopoverContent>
-    </Popover>
+            )}
+          </CommandList>
+        </Command>
+      }
+    />
   );
 };

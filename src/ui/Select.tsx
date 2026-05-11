@@ -1,8 +1,7 @@
 import type { CSSProperties, FC, ReactNode } from "react";
 
-import { useRef, useState } from "react";
+import { useRef, useState } from "preact/hooks";
 
-import { CssVariables } from "../game/components/CssVariables";
 import { BitmapText } from "../game/components/tailwindSprites/BitmapText";
 import { emptyObject } from "../utils/empty";
 import { Button } from "./Button";
@@ -15,7 +14,7 @@ import {
   CommandItem,
   CommandList,
 } from "./command";
-import { Popover, PopoverContent, PopoverTrigger } from "./Popover";
+import { Popover } from "./Popover";
 import { useMouseWheelOptions } from "./useMouseWheel";
 
 type OptionCommandItemComponent<Value extends string> = FC<{
@@ -83,8 +82,10 @@ export const Select = <Value extends string>(props: SelectProps<Value>) => {
   );
 
   return (
-    <Popover open={open} onOpenChange={setOpen}>
-      <PopoverTrigger asChild>
+    <Popover
+      open={open}
+      onOpenChange={setOpen}
+      trigger={
         <Button
           className={cn(
             `h-2 px-1 flex flex-row gap-1 justify-start leading-none`,
@@ -101,38 +102,32 @@ export const Select = <Value extends string>(props: SelectProps<Value>) => {
           : triggerButtonLabel}
           <BitmapText className="grow-0">{open ? "X" : "⬇"}</BitmapText>
         </Button>
-      </PopoverTrigger>
-      <PopoverContent className="p-0">
-        <CssVariables scaleFactor={2}>
-          <Command
-            value={value}
-            // onValueChange here to react to preselection of the items (changing the command's value)
-            className="w-[--radix-popper-anchor-width]"
-          >
-            {props.disableCommandInput === true ? null : (
-              <CommandInput placeholder={props.placeholder} />
-            )}
-            <CommandList>
-              <CommandEmpty>
-                <BitmapText>Nothing found</BitmapText>
-              </CommandEmpty>
-              <CommandGroup>
-                {values.map((value) => (
-                  <OptionCommandItem
-                    key={value}
-                    value={value}
-                    onSelect={(newValue) => {
-                      setOpen(false);
-                      onSelect(newValue as Value);
-                    }}
-                    valueDisplayFormat={valueDisplayFormat}
-                  />
-                ))}
-              </CommandGroup>
-            </CommandList>
-          </Command>
-        </CssVariables>
-      </PopoverContent>
-    </Popover>
+      }
+      contents={
+        <Command value={value} className="w-[--popover-anchor-width]">
+          {props.disableCommandInput === true ? null : (
+            <CommandInput placeholder={props.placeholder} />
+          )}
+          <CommandList>
+            <CommandEmpty>
+              <BitmapText>Nothing found</BitmapText>
+            </CommandEmpty>
+            <CommandGroup>
+              {values.map((value) => (
+                <OptionCommandItem
+                  key={value}
+                  value={value}
+                  onSelect={(newValue) => {
+                    setOpen(false);
+                    onSelect(newValue as Value);
+                  }}
+                  valueDisplayFormat={valueDisplayFormat}
+                />
+              ))}
+            </CommandGroup>
+          </CommandList>
+        </Command>
+      }
+    />
   );
 };

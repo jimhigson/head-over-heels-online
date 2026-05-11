@@ -1,12 +1,11 @@
-import type { PropsWithChildren, ReactElement } from "react";
+import type { PropsWithChildren, ReactElement, ReactNode } from "react";
 
-import { useState } from "react";
+import { useState } from "preact/hooks";
 
-import { CssVariables } from "../../../game/components/CssVariables";
 import { BitmapText } from "../../../game/components/tailwindSprites/BitmapText";
 import { Button } from "../../../ui/Button";
 import { cn } from "../../../ui/cn";
-import { Popover, PopoverContent, PopoverTrigger } from "../../../ui/Popover";
+import { Popover } from "../../../ui/Popover";
 import { buttonSizeClassNames } from "../buttonSizeClassNames";
 
 export interface MenuButtonProps {
@@ -25,47 +24,47 @@ export const MenuButton = ({
   const [open, setOpen] = useState(false);
 
   return (
-    <Popover open={open} onOpenChange={setOpen}>
-      <div
-        ref={ref}
-        className={cn(buttonSizeClassNames, "relative group", {
-          "drop-shadow-oneBlock z-popups": open,
-        })}
-      >
-        <span className="content">
-          {main}
+    <div
+      ref={ref}
+      className={cn(buttonSizeClassNames, "relative group", {
+        "drop-shadow-oneBlock z-popups": open,
+      })}
+    >
+      <span className="content">
+        {main}
 
-          {children.length > 0 && (
-            <PopoverTrigger asChild>
+        {children.length > 0 && (
+          <Popover
+            open={open}
+            onOpenChange={setOpen}
+            trigger={
               <Button className="absolute right-0 bottom-0 bg-metallicBlueHalfbrite invisible group-hover:visible">
                 <BitmapText className="pl-oneScaledPix leading-none py-oneScaledPix">
                   {open ? "X" : "⬇"}
                 </BitmapText>
               </Button>
-            </PopoverTrigger>
-          )}
-        </span>
-      </div>
-      <PopoverContent>
-        <CssVariables scaleFactor={2}>
-          <div className="flex flex-col gap-oneScaledPix py-oneScaledPix bg-metallicBlueHalfbrite max-h-20 overflow-y-auto scrollbar scrollbar-w-1 scrollbar-thumb-highlightBeige">
-            {children.map((child, index) => {
-              return child === null ? null : (
-                  <div
-                    key={index}
-                    className="leading-none"
-                    onClick={() => {
-                      if (closeOnSelect) setOpen(false);
-                    }}
-                  >
-                    {child}
-                  </div>
-                );
-            })}
-          </div>
-        </CssVariables>
-      </PopoverContent>
-    </Popover>
+            }
+            contents={
+              <div className="flex flex-col gap-oneScaledPix py-oneScaledPix bg-metallicBlueHalfbrite max-h-20 overflow-y-auto scrollbar scrollbar-w-1 scrollbar-thumb-highlightBeige">
+                {children.map((child, index) => {
+                  return child === null ? null : (
+                      <div
+                        key={index}
+                        className="leading-none"
+                        onClick={() => {
+                          if (closeOnSelect) setOpen(false);
+                        }}
+                      >
+                        {child}
+                      </div>
+                    );
+                })}
+              </div>
+            }
+          />
+        )}
+      </span>
+    </div>
   );
 };
 
@@ -79,7 +78,7 @@ export const MenuItemButton = ({
   style,
 }: {
   onClick: () => void;
-  children: React.ReactNode;
+  children: ReactNode;
   style?: React.CSSProperties;
 }) => (
   <Button

@@ -1,7 +1,7 @@
 import type { RefObject } from "react";
 
 import normalizeWheel from "normalize-wheel-es";
-import { useCallback, useEffect, useRef } from "react";
+import { useCallback, useEffect, useRef } from "preact/hooks";
 
 export const useMouseWheel = (
   elementRef: RefObject<Element | null>,

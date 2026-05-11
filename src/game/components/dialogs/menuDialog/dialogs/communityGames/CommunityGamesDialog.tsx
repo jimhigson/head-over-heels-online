@@ -1,6 +1,6 @@
 import type { EmptyObject } from "type-fest";
 
-import { useEffect } from "react";
+import { useEffect } from "preact/hooks";
 
 import { useGetAllUsersLatestCampaignsQuery } from "../../../../../../store/slices/campaigns/campaignsApiSlice";
 import { Dialog } from "../../../../../../ui/Dialog";

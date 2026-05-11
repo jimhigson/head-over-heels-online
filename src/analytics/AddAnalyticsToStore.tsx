@@ -1,5 +1,5 @@
 import { isAnyOf } from "@reduxjs/toolkit";
-import { useEffect, useRef } from "react";
+import { useEffect, useRef } from "preact/hooks";
 
 import { useMaybeGameApi } from "../game/components/GameApiContext";
 import { typedURLSearchParams } from "../options/queryParams";

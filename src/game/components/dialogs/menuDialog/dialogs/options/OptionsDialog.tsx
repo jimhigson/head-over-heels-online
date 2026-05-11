@@ -60,7 +60,6 @@ export const OptionsDialog = () => {
         <div className={optionsMenuScrollClasses}>
           <MenuItems className={`gap-y-half`}>
             <MenuItem
-              hintInline
               id="controlOptions"
               label="Controls"
               verticalAlignItemsCentre
@@ -79,7 +78,6 @@ export const OptionsDialog = () => {
               }
             />
             <MenuItem
-              hintInline
               id="sound"
               label="Sounds"
               className="sprites-double-height"
@@ -93,7 +91,6 @@ export const OptionsDialog = () => {
               }
             />
             <MenuItem
-              hintInline
               id="display"
               label="Display"
               className="sprites-double-height"
@@ -107,7 +104,6 @@ export const OptionsDialog = () => {
               }
             />
             <MenuItem
-              hintInline
               id="gameSpeed"
               label="Game Speed"
               className="sprites-double-height"
@@ -136,7 +132,6 @@ export const OptionsDialog = () => {
               />
             </div>
             <MenuItem
-              hintInline
               className="sprites-double-height"
               id="livesModel"
               verticalAlignItemsCentre
@@ -165,7 +160,6 @@ export const OptionsDialog = () => {
               disabled={useIsGameRunning()}
             />
             <MenuItem
-              hintInline
               leader={
                 <span
                   className={`${spriteLeaderClasses} sprite ${"texture-doughnuts" satisfies TextureTailwindClass} sprites-normal-height zx:sprite-revert-to-white`}
