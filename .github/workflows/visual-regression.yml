@@ -136,6 +136,9 @@ jobs:
           - { os: windows-latest, suite: menuSnapshotsInGame, projectOption: --project chromium-desktop, no_uncolourised: "1", no_toppy: "1" }
           - { os: windows-latest, suite: menuSnapshotsMainMenu, projectOption: --project chromium-desktop, no_uncolourised: "1", no_toppy: "1" }
 
+          # SETTINGS REFLECT IN GAME - single agent, all browsers
+          - { os: ubuntu-24.04-arm, suite: settingsReflectInGame, projectOption: "--project chromium-desktop --project webkit-desktop --project mobile-chrome --project mobile-safari" }
+
           # PORTRAIT - room + menu snapshots on a single agent (suite filter not needed, project testMatch restricts specs)
           - { os: ubuntu-24.04-arm, suite: "", projectOption: --project mobile-safari-portrait }
 
@@ -148,6 +151,7 @@ jobs:
         || matrix.suite == 'menuSnapshotsDialogs' && format('MnuDlg {0}', contains(matrix.os, 'windows') && 'Win' || 'Lnx')
         || matrix.suite == 'menuSnapshotsInGame' && format('MnuGame {0}', contains(matrix.os, 'windows') && 'Win' || 'Lnx')
         || matrix.suite == 'menuSnapshotsMainMenu' && format('MnuMain {0}', contains(matrix.os, 'windows') && 'Win' || 'Lnx')
+        || matrix.suite == 'settingsReflectInGame' && 'Settings'
         || matrix.suite == 'spritesPage' && 'Sprites'
         || matrix.suite == '' && format('All:{0}',
             contains(matrix.projectOption, 'mobile-safari-portrait') && 'mobile-safari-portrait'

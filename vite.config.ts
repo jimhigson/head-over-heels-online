@@ -26,6 +26,9 @@ export default defineConfig(({ mode: _mode }) => {
     plugins: [
       preact({
         devtoolsInProd: false,
+        // only fast-load tsx files - this prevents Prefresh from misdetecting
+        // other class exporting files as being preact class components
+        include: [/\.tsx$/],
       }),
       visualizer({
         gzipSize: true,
