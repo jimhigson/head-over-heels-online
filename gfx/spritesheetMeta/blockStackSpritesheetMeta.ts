@@ -147,6 +147,14 @@ export const blockStackSpritesheetMeta: SpritesheetMetadata<
     "lightGrey",
     "highlightBeige",
   ],
+  buttonColours: {
+    jump: "pastelBlue",
+    fire: "highlightBeige",
+    carry: "moss",
+    carryAndJump: "midRed",
+    menu: "lightGrey",
+    map: "lightGrey",
+  },
   supportsUncolourised: true,
   showFloorOverDraw: true,
   // we have black outlines, so use an almost black blackpoint

@@ -4,7 +4,7 @@ import type { AppSpritesheet } from "../loadedSpriteSheet";
 
 import { resolveSwops } from "../../../utils/palette/palette";
 import { paletteBlockstack } from "../../palette/spritesheetPalette";
-import { spritesheetMetaForOption } from "../spritesheetData/spritesheetMetaData";
+import { spritesheetMetas } from "../spritesheetData/spritesheetMetaData";
 import { createSpritesheetVariant } from "../spritesheetPaletteSwop";
 
 let swopped: AppSpritesheet | undefined = undefined;
@@ -24,7 +24,7 @@ export const createUncolourisedSpritesheet = (pixiRenderer: Renderer): void => {
     {
       pixiRenderer,
       spriteOption: "BlockStack",
-      spritesheetMetaData: spritesheetMetaForOption("BlockStack"),
+      spritesheetMetaData: spritesheetMetas.BlockStack,
     },
     {
       ambient: [
