@@ -7,6 +7,18 @@ import { defineConfig } from "vite";
 import glsl from "vite-plugin-glsl";
 import { VitePWA } from "vite-plugin-pwa";
 
+function hmrOnlyPreact(): PluginOption {
+  return {
+    name: "hmr-only-preact",
+    handleHotUpdate({ file, server }) {
+      if (!file.endsWith(".tsx")) {
+        server.ws.send({ type: "full-reload" });
+        return [];
+      }
+    },
+  };
+}
+
 const oneWeekInSeconds = 60 * 60 * 24 * 7;
 
 type Mode = "development" | "production" | "tauri" | "visual-regression";
@@ -24,6 +36,7 @@ export default defineConfig(({ mode: _mode }) => {
     envPrefix: ["VITE_", "TAURI_"],
 
     plugins: [
+      hmrOnlyPreact(),
       preact({
         devtoolsInProd: false,
         // only fast-load tsx files - this prevents Prefresh from misdetecting
