@@ -6,6 +6,18 @@ import { visualizer } from "rollup-plugin-visualizer";
 import { defineConfig } from "vite";
 import glsl from "vite-plugin-glsl";
 
+function hmrOnlyPreact(): PluginOption {
+  return {
+    name: "hmr-only-preact",
+    handleHotUpdate({ file, server }) {
+      if (!file.endsWith(".tsx")) {
+        server.ws.send({ type: "full-reload" });
+        return [];
+      }
+    },
+  };
+}
+
 /**
  * vite config specific to the level editor, which is a separately
  * built and deployed web-app. Otherwise, the PWA for the main game
@@ -30,8 +42,10 @@ export default defineConfig({
   publicDir: path.resolve(__dirname, "public"),
 
   plugins: [
+    hmrOnlyPreact(),
     preact({
       devtoolsInProd: false,
+      include: [/\.tsx$/],
     }),
     visualizer({
       gzipSize: true,
