@@ -243,7 +243,8 @@
     "path": "/items/b",
     "value": {
       "config": {
-        "style": "organic",
+        "disabled": true,
+        "style": "volcano",
         "times": {
           "y": 2
         }
@@ -253,7 +254,7 @@
         "y": 2,
         "z": 0
       },
-      "type": "block"
+      "type": "deadlyBlock"
     }
   },
   {
