@@ -10,7 +10,7 @@ import type {
 } from "../editorTypes";
 
 import { RoomRenderer } from "../../game/render/room/RoomRenderer";
-import { spritesheetMetaForOption } from "../../sprites/spritesheet/spritesheetData/spritesheetMetaData";
+import { spritesheetMetas } from "../../sprites/spritesheet/spritesheetData/spritesheetMetaData";
 import { selectUpscale } from "../../store/slices/upscale/upscaleSlice";
 import { store } from "../../store/store";
 import { useEditorRoomStateWithPreviews } from "../slice/levelEditorSelectors";
@@ -31,7 +31,7 @@ const editorGeneralRenderContext = (
   gameState: undefined,
   paused: false,
   spriteOption: { name: "BlockStack", uncolourised: false as const },
-  spritesheetMeta: spritesheetMetaForOption("BlockStack"),
+  spritesheetMeta: spritesheetMetas.BlockStack,
   upscale: selectUpscale(store.getState()),
   onScreenControls: false,
 });

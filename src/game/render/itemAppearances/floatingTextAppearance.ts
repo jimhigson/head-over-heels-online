@@ -17,13 +17,13 @@ const maxLineHeight = blockSizePx.z * 3;
 
 const buildFadeOrder = <PaletteColourName extends string>(
   spritesheetMeta: SpritesheetMetadata<PaletteColourName>,
+  uncolourised: boolean,
 ): Color[] => {
+  const variant = getSpriteSheetVariant(
+    uncolourised ? "uncolourised" : "for-current-room",
+  );
   const lightening = spritesheetMeta.floatingTextGradient.map((name) =>
-    getAmbientSwoppedColour(
-      spritesheetMeta.palette,
-      name,
-      getSpriteSheetVariant("for-current-room").ambient,
-    ),
+    getAmbientSwoppedColour(spritesheetMeta.palette, name, variant.ambient),
   );
   const peakColour = lightening[lightening.length - 1];
   return [
@@ -34,7 +34,7 @@ const buildFadeOrder = <PaletteColourName extends string>(
 };
 
 type FloatingTextRenderProps = {
-  fadeOrderColourised: Color[] | undefined;
+  fadeOrder: Color[];
 };
 
 export const floatingTextAppearance: ItemAppearance<
@@ -54,10 +54,10 @@ export const floatingTextAppearance: ItemAppearance<
   // cache the fade order on renderProps between frames — the result only
   // changes when the current-room spritesheet variant is rebuilt, at which
   // point the room renderer itself is recreated (taking its renderProps with it)
-  const fadeOrderColourised =
-    currentRendering ? currentRendering.renderProps.fadeOrderColourised
-    : spriteOption.uncolourised ? undefined
-    : buildFadeOrder(spritesheetMeta);
+  const fadeOrder =
+    currentRendering ?
+      currentRendering.renderProps.fadeOrder
+    : buildFadeOrder(spritesheetMeta, spriteOption.uncolourised);
   const previousRendering = currentRendering?.output;
   let mainContainer: Container<Container>;
 
@@ -100,11 +100,11 @@ export const floatingTextAppearance: ItemAppearance<
       lineContainer.x = Math.sin(lineHeight * 0.3) * 4;
     }
 
-    if (visible && fadeOrderColourised !== undefined) {
+    if (visible) {
       const colourIndex = Math.floor(
-        (lineHeight / maxLineHeight) * fadeOrderColourised.length,
+        (lineHeight / maxLineHeight) * fadeOrder.length,
       );
-      lineContainer.tint = fadeOrderColourised[colourIndex];
+      lineContainer.tint = fadeOrder[colourIndex];
     }
   }
 
@@ -118,6 +118,6 @@ export const floatingTextAppearance: ItemAppearance<
 
   return {
     output: mainContainer,
-    renderProps: { fadeOrderColourised },
+    renderProps: { fadeOrder },
   };
 };

@@ -3,19 +3,19 @@ import type { RenderTexture } from "pixi.js";
 import { Container, type Renderer, Sprite, Texture } from "pixi.js";
 
 import type { RoomState } from "../../../../model/RoomState";
-import type { SpriteOption } from "../../../../store/slices/userSettings/userSettingsSlice";
+import type { SpritesheetMetadata } from "../../../../sprites/spritesheet/spritesheetData/spritesheetMetaData";
 import type { ButtonId } from "./OnScreenButtonRenderer";
 
-import { zxSpectrumColor } from "../../../../originalGame";
-import { paletteBlockstack } from "../../../../sprites/palette/spritesheetPalette";
+import {
+  maybeDimPalette,
+  paletteBlockstack,
+} from "../../../../sprites/palette/spritesheetPalette";
 import { originalSpriteSheet } from "../../../../sprites/spritesheet/loadedSpriteSheet";
 import { halfbrite } from "../../../../utils/colour/halfbrite";
 import { resolveSwops } from "../../../../utils/palette/palette";
 import { renderContainerToTexture } from "../../../../utils/pixi/renderContainerToSprite";
 import { createSprite } from "../../createSprite";
 import { PaletteSwapFilter } from "../../filters/PaletteSwapFilter";
-import { gameColour } from "../../gameColours/gameColours";
-import { buttonColours } from "./buttonAppearances/buttonColours";
 
 /**
  * A round button shape with a masked top surface to render into if required
@@ -33,18 +33,18 @@ export class ArcadeStyleButtonContainer<
   #buttonSprite: Sprite;
   #pressedButtonSprite: Sprite;
 
-  #spriteOption: SpriteOption;
+  #spritesheetMeta: SpritesheetMetadata;
   #which: ButtonId;
   #pixiRenderer: Renderer;
 
   constructor(
-    spriteOption: SpriteOption,
+    spritesheetMeta: SpritesheetMetadata,
     which: ButtonId,
     pixiRenderer: Renderer,
     initiallyShowOnSurface: SurfaceContent,
   ) {
     super({ label: `arcadeButton (${which})` });
-    this.#spriteOption = spriteOption;
+    this.#spritesheetMeta = spritesheetMeta;
     this.#which = which;
     this.#pixiRenderer = pixiRenderer;
 
@@ -98,33 +98,20 @@ export class ArcadeStyleButtonContainer<
 
   generateButtonSpriteTextures(room: RoomState<string, string>): void {
     const which = this.#which;
-    const spriteOption = this.#spriteOption;
+    const meta = this.#spritesheetMeta;
 
     const spriteTemplate = createSprite({
       textureId: "button",
       spritesheetVariant: "original",
     });
-    const colour =
-      spriteOption.uncolourised ?
-        zxSpectrumColor(buttonColours.zx[which])
-      : gameColour(
-          buttonColours.colourised[which],
-          room.color.shade === "dimmed",
-        );
 
-    const colourDim =
-      spriteOption.uncolourised ?
-        zxSpectrumColor(buttonColours.zx[which], "dimmed")
-      : halfbrite(colour, 0.66);
-
-    const colourBlack =
-      spriteOption.uncolourised ?
-        zxSpectrumColor("black")
-      : gameColour("pureBlack", room.color.shade === "dimmed");
+    const palette = maybeDimPalette(meta, room.color.shade === "dimmed");
+    const colour = palette[meta.buttonColours[which]];
+    const colourDim = halfbrite(colour, 0.66);
+    const colourBlack = palette[meta.effectColours.outline];
 
     const filter = new PaletteSwapFilter({
       lutType: "sparse",
-      // all skins currently use the blockstack palette for the buttons colours:
       swops: resolveSwops(paletteBlockstack, {
         replaceLight: colour,
         replaceDark: colourDim,

@@ -67,7 +67,7 @@ export const jumpButtonAppearance: ButtonAppearance<
   renderContext: {
     button,
     inputStateTracker,
-    general: { spriteOption, pixiRenderer, paused },
+    general: { spriteOption, spritesheetMeta, pixiRenderer, paused },
   },
   tickContext: { room, currentPlayable },
   currentRendering,
@@ -90,7 +90,7 @@ export const jumpButtonAppearance: ButtonAppearance<
   const buttonContainer =
     previousRendering ??
     new ArcadeStyleButtonContainer<JumpButtonSurfaceContainer>(
-      spriteOption,
+      spritesheetMeta,
       button.which,
       pixiRenderer,
       createSurface(spriteOption, pixiRenderer),

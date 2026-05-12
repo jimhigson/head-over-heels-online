@@ -68,7 +68,7 @@ export const fireButtonAppearance: ButtonAppearance<
   renderContext: {
     button,
     inputStateTracker,
-    general: { spriteOption, pixiRenderer },
+    general: { spriteOption, spritesheetMeta, pixiRenderer },
   },
   currentRendering,
   tickContext: { currentPlayable, room },
@@ -110,7 +110,7 @@ export const fireButtonAppearance: ButtonAppearance<
   const container =
     currentRendering?.output ??
     new ArcadeStyleButtonContainer<Container<Sprite | TextContainer>>(
-      spriteOption,
+      spritesheetMeta,
       button.which,
       pixiRenderer,
       createSurface(pixiRenderer),

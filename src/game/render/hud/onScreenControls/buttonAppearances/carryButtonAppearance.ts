@@ -54,7 +54,7 @@ export const carryButtonAppearance: ButtonAppearance<
   const {
     button,
     inputStateTracker,
-    general: { spriteOption, pixiRenderer },
+    general: { spriteOption, spritesheetMeta, pixiRenderer },
   } = renderContext;
   const { currentPlayable, room } = tickContext;
   const previouslyRenderedProps = currentRendering?.renderProps;
@@ -79,7 +79,7 @@ export const carryButtonAppearance: ButtonAppearance<
   const container =
     previousRendering ??
     new ArcadeStyleButtonContainer<Container>(
-      spriteOption,
+      spritesheetMeta,
       button.which,
       pixiRenderer,
       createSurface(),

@@ -168,7 +168,7 @@ export class MainLoop<RoomId extends string> {
     const tickSpriteOption: SpriteOption =
       (
         isPaused &&
-        spritesheetMetaForOption(selectedSpriteOption.name).supportsUncolourised
+        spritesheetMetaForOption(selectedSpriteOption).supportsUncolourised
       ) ?
         ({ ...selectedSpriteOption, uncolourised: true } as SpriteOption)
       : selectedSpriteOption;
@@ -240,7 +240,7 @@ export class MainLoop<RoomId extends string> {
           displaySettings: tickDisplaySettings,
           soundSettings: tickSoundSettings,
           spriteOption: tickSpriteOption,
-          spritesheetMeta: spritesheetMetaForOption(tickSpriteOption.name),
+          spritesheetMeta: spritesheetMetaForOption(tickSpriteOption),
           upscale: tickUpscale,
           onScreenControls: tickOnScreenControls,
         },
@@ -283,7 +283,7 @@ export class MainLoop<RoomId extends string> {
             displaySettings: tickDisplaySettings,
             soundSettings: tickSoundSettings,
             spriteOption: tickSpriteOption,
-            spritesheetMeta: spritesheetMetaForOption(tickSpriteOption.name),
+            spritesheetMeta: spritesheetMetaForOption(tickSpriteOption),
             upscale: tickUpscale,
             onScreenControls: tickOnScreenControls,
           },

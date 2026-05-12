@@ -72,7 +72,7 @@ export const tickSpritesheetVariants = (
     roomScenery,
     roomColor,
     spriteOption: name,
-    spritesheetMetaData: spritesheetMetaForOption(name),
+    spritesheetMetaData: spritesheetMetaForOption(spriteOption),
   };
 
   if (!isTextureLoaded(name)) {

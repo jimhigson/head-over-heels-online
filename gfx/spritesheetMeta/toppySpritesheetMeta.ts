@@ -154,6 +154,14 @@ export const toppySpritesheetMeta: SpritesheetMetadata<
     "warm2", //  223.7
     "warm1", //  248.1
   ],
+  buttonColours: {
+    jump: "cool2",
+    fire: "warm2",
+    carry: "warm4",
+    carryAndJump: "pink2",
+    menu: "grey1",
+    map: "grey1",
+  },
   supportsUncolourised: false,
   showFloorOverDraw: false,
   teleporterEffectBlackPoint: 0.25,
