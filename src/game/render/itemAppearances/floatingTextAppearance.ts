@@ -76,7 +76,7 @@ export const floatingTextAppearance: ItemAppearance<
         pixiRenderer,
         y: i * lineHeightPx,
         outline: true,
-        text: textLine.toUpperCase(),
+        text: textLine,
       });
       mainContainer.addChild(lineContainer);
     }

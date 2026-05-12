@@ -130,7 +130,7 @@ export class TextContainer extends Container {
     this.#renderToCacheContainer.boundsArea = new Rectangle(
       -1,
       -1,
-      (hudCharTextureSize.w * str.length + 2) * this.#widthMult,
+      (this.#contentWidth() + 2) * this.#widthMult,
       (hudCharTextureSize.h + 2) * this.#heightMult,
     );
 
@@ -150,6 +150,15 @@ export class TextContainer extends Container {
     this.#renderToCacheContainer.visible = false;
 
     this.#currentText = str;
+  }
+
+  #contentWidth(): number {
+    const { children } = this.#characterSpriteContainer;
+    let width = 0;
+    for (let i = 0; i < children.length; i++) {
+      width += children[i].texture.frame.width;
+    }
+    return width;
   }
 
   #updateCharacterSpriteContainer(str: string) {
@@ -197,11 +206,11 @@ export class TextContainer extends Container {
       if (strLength < oldLength) {
         this.#characterSpriteContainer.removeChildren(strLength);
       }
-      // since the length changed, update the x position of the sprites to be
-      // centre-aligned again:
+      let xOffset = 0;
       for (let i = 0; i < strLength; i++) {
         const sprite = this.#characterSpriteContainer.getChildAt<Sprite>(i);
-        sprite.x = i * hudCharTextureSize.w;
+        sprite.x = xOffset;
+        xOffset += sprite.texture.frame.width;
       }
     }
   }

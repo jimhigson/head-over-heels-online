@@ -149,7 +149,7 @@ export const fireButtonAppearance: ButtonAppearance<
   }
 
   if (doughnutsCount !== previouslyRenderedProps?.doughnutsCount) {
-    text.text = pokeableToNumber(doughnutsCount);
+    text.text = doughnutsCount === "infinite" ? "∞" : doughnutsCount;
   }
 
   return {

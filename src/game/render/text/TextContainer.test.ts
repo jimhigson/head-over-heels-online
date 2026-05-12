@@ -58,6 +58,7 @@ beforeEach(() => {
         const mockTexture = {
           width: 8,
           height: 8,
+          frame: new Rectangle(0, 0, 8, 8),
           orig: new Rectangle(0, 0, 8, 8),
           rotate: 0,
           defaultAnchor: { x: 0, y: 0 },
