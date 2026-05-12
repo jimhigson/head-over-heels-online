@@ -1,14 +1,14 @@
 import type { Container } from "pixi.js";
 
-import type { RoomState } from "../../../../model/RoomState";
-import type { Xy } from "../../../../utils/vectors/vectors";
-import type { BooleanAction } from "../../../input/actions";
-import type { InputStateTrackerInterface } from "../../../input/InputStateTracker";
-import type { PlayableItem } from "../../../physics/itemPredicates";
-import type { Appearance } from "../../appearance/Appearance";
-import type { GeneralRenderContext } from "../../room/RoomRenderContexts";
+import type { RoomState } from "../../../model/RoomState";
+import type { Xy } from "../../../utils/vectors/vectors";
+import type { BooleanAction } from "../../input/actions";
+import type { InputStateTrackerInterface } from "../../input/InputStateTracker";
+import type { PlayableItem } from "../../physics/itemPredicates";
+import type { Appearance } from "../appearance/Appearance";
+import type { GeneralRenderContext } from "../room/RoomRenderContexts";
 
-import { AppearanceRenderer } from "../../appearance/AppearanceRenderer";
+import { AppearanceRenderer } from "../appearance/AppearanceRenderer";
 
 export type ButtonId =
   | "carry"
@@ -34,6 +34,7 @@ export type ButtonTickContext = {
   room: RoomState<string, string>;
   currentPlayable: PlayableItem | undefined;
   screenSize: Xy;
+  hovered?: boolean;
 };
 
 export type ButtonAppearance<
@@ -50,7 +51,7 @@ export type ButtonAppearance<
 
 export const textYForButtonCentre = -11;
 
-export class OnScreenButtonRenderer<
+export class HudButtonRenderer<
   BT extends ButtonId,
   RoomId extends string,
   RP extends object,
@@ -61,10 +62,23 @@ export class OnScreenButtonRenderer<
   RP,
   TContainer
 > {
+  hovered = false;
+
   constructor(
     renderContext: ButtonRenderContext<BT, RoomId>,
     appearance: ButtonAppearance<BT, RoomId, RP, TContainer>,
+    listenForHover = false,
   ) {
     super(renderContext, appearance);
+    if (listenForHover) {
+      this.output.eventMode = "static";
+      this.output.cursor = "pointer";
+      this.output.on("pointerover", () => {
+        this.hovered = true;
+      });
+      this.output.on("pointerout", () => {
+        this.hovered = false;
+      });
+    }
   }
 }

@@ -4,7 +4,7 @@ import { Container } from "pixi.js";
 
 import type { PokeableNumber } from "../../../../../model/ItemStateMap";
 import type { RoomState } from "../../../../../model/RoomState";
-import type { ButtonAppearance } from "../OnScreenButtonRenderer";
+import type { ButtonAppearance } from "../../HudButtonRenderer";
 
 import { pokeableToNumber } from "../../../../../model/ItemStateMap";
 import { getSpriteSheetVariant } from "../../../../../sprites/spritesheet/variants/getSpriteSheetVariant";
@@ -12,8 +12,8 @@ import { selectHeadAbilities } from "../../../../gameState/gameStateSelectors/se
 import { createSprite } from "../../../createSprite";
 import { getWhite } from "../../../gameColours/gameColours";
 import { TextContainer } from "../../../text/TextContainer";
+import { textYForButtonCentre } from "../../HudButtonRenderer";
 import { ArcadeStyleButtonContainer } from "../ArcadeStyleButtonContainer";
-import { textYForButtonCentre } from "../OnScreenButtonRenderer";
 import { buttonActionsPressed } from "./buttonActionsPressed";
 
 type ShowingSprite = "doughnuts" | "hooter" | "none";

@@ -1,6 +1,6 @@
 import type { Simplify } from "type-fest";
 
-import type { ButtonId } from "../../../game/render/hud/onScreenControls/OnScreenButtonRenderer";
+import type { ButtonId } from "../../../game/render/hud/HudButtonRenderer";
 import type { SpriteOption } from "../../../store/slices/userSettings/userSettingsSlice";
 import type { NamedColours, NamedSwops } from "../../../utils/palette/palette";
 import type { DirectionXy8 } from "../../../utils/vectors/vectors";

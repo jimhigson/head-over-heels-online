@@ -253,6 +253,7 @@ export class MainLoop<RoomId extends string> {
     this.#hudRenderer!.tick({
       screenSize: tickUpscale.gameEngineScreenSize,
       deltaMS,
+      paused: isPaused,
       room: tickEndRoom,
       freeCharacters: tickFreeCharacters,
     });

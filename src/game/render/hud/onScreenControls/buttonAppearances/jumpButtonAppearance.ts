@@ -4,7 +4,7 @@ import { Container, type Renderer } from "pixi.js";
 
 import type { RoomState } from "../../../../../model/RoomState";
 import type { SpriteOption } from "../../../../../store/slices/userSettings/userSettingsSlice";
-import type { ButtonAppearance } from "../OnScreenButtonRenderer";
+import type { ButtonAppearance } from "../../HudButtonRenderer";
 
 import { getSpriteSheetVariant } from "../../../../../sprites/spritesheet/variants/getSpriteSheetVariant";
 import { teleporterIsActive } from "../../../../physics/mechanics/teleporting";
@@ -14,9 +14,9 @@ import {
 } from "../../../createSprite";
 import { getWhite } from "../../../gameColours/gameColours";
 import { TextContainer } from "../../../text/TextContainer";
+import { textYForButtonCentre } from "../../HudButtonRenderer";
 import { spritesheetVariantForHud } from "../../spritesheetVariantForHud";
 import { ArcadeStyleButtonContainer } from "../ArcadeStyleButtonContainer";
-import { textYForButtonCentre } from "../OnScreenButtonRenderer";
 import { buttonActionsPressed } from "./buttonActionsPressed";
 
 export type JumpButtonSurfaceContainer = Container<

@@ -7,18 +7,15 @@ import type { Xy } from "../../../../utils/vectors/vectors";
 import type { Renderer } from "../../Renderer";
 import type { GeneralRenderContext } from "../../room/RoomRenderContexts";
 import type { HudRendererTickContextWithRoom } from "../hudRendererContexts";
-import type { ButtonId } from "./OnScreenButtonRenderer";
 
 import { valuesIter } from "../../../../utils/entries";
 import { selectCurrentPlayableItem } from "../../../gameState/gameStateSelectors/selectPlayableItem";
+import { HudButtonRenderer } from "../HudButtonRenderer";
 import { carryAndJumpButtonAppearance } from "./buttonAppearances/carryAndJumpButtonAppearance";
 import { carryButtonAppearance } from "./buttonAppearances/carryButtonAppearance";
 import { fireButtonAppearance } from "./buttonAppearances/fireButtonAppearance";
 import { jumpButtonAppearance } from "./buttonAppearances/jumpButtonAppearance";
-import { mapButtonAppearance } from "./buttonAppearances/mapButtonAppearance";
-import { menuButtonAppearance } from "./buttonAppearances/menuButtonAppearance";
 import { OnScreenLookRenderer } from "./look/OnScreenLookRenderer";
-import { OnScreenButtonRenderer } from "./OnScreenButtonRenderer";
 import { OnScreenJoystickRenderer } from "./OnScreenJoystickRenderer";
 
 const mainButtonsSpreadXPx = 30;
@@ -63,7 +60,7 @@ export class OnScreenControls<RoomId extends string, RoomItemId extends string>
     this.#hudElements = {
       mainButtonNest: new Container({ label: "mainButtonNest" }),
       buttons: {
-        jump: new OnScreenButtonRenderer(
+        jump: new HudButtonRenderer(
           {
             button: {
               which: "jump",
@@ -75,7 +72,7 @@ export class OnScreenControls<RoomId extends string, RoomItemId extends string>
           },
           jumpButtonAppearance,
         ),
-        fire: new OnScreenButtonRenderer(
+        fire: new HudButtonRenderer(
           {
             button: { which: "fire", actions: ["fire"], id: "fire" },
             general,
@@ -83,7 +80,7 @@ export class OnScreenControls<RoomId extends string, RoomItemId extends string>
           },
           fireButtonAppearance,
         ),
-        carry: new OnScreenButtonRenderer(
+        carry: new HudButtonRenderer(
           {
             button: { which: "carry", actions: ["carry"], id: "carry" },
             general,
@@ -91,7 +88,7 @@ export class OnScreenControls<RoomId extends string, RoomItemId extends string>
           },
           carryButtonAppearance,
         ),
-        carryAndJump: new OnScreenButtonRenderer(
+        carryAndJump: new HudButtonRenderer(
           {
             button: {
               which: "carryAndJump",
@@ -103,25 +100,6 @@ export class OnScreenControls<RoomId extends string, RoomItemId extends string>
           },
           carryAndJumpButtonAppearance,
         ),
-        menu: new OnScreenButtonRenderer(
-          {
-            button: { which: "menu", actions: ["menu_openOrExit"], id: "menu" },
-            general,
-            inputStateTracker,
-          },
-          menuButtonAppearance,
-        ),
-        map: new OnScreenButtonRenderer(
-          {
-            button: { which: "map", actions: ["map"], id: "map" },
-            general,
-            inputStateTracker,
-          },
-          mapButtonAppearance,
-        ),
-      } satisfies {
-        // eslint-disable-next-line @typescript-eslint/no-explicit-any
-        [BT in ButtonId]: OnScreenButtonRenderer<BT, RoomId, any, any>;
       },
       joystick: new OnScreenJoystickRenderer({
         inputStateTracker,
@@ -149,27 +127,14 @@ export class OnScreenControls<RoomId extends string, RoomItemId extends string>
     // sits behind everything else, so has to be added first
     this.#container.addChild(look.output);
 
-    for (const {
-      renderContext: {
-        button: { which },
-      },
-      output,
-    } of valuesIter(buttons)) {
-      if (which === "menu" || which === "map") {
-        this.#container.addChild(output);
-      } else {
-        mainButtonNest.addChild(output);
-      }
+    for (const { output } of valuesIter(buttons)) {
+      mainButtonNest.addChild(output);
     }
 
     buttons.jump.output.y = mainButtonsSpreadYPx;
     buttons.carry.output.x = -mainButtonsSpreadXPx;
     buttons.carryAndJump.output.y = -mainButtonsSpreadYPx;
     buttons.fire.output.x = mainButtonsSpreadXPx;
-
-    buttons.menu.output.x = 24;
-    buttons.menu.output.y = 24;
-    buttons.map.output.y = 16;
 
     this.#container.addChild(mainButtonNest);
     this.#container.addChild(joystick.output);
@@ -191,7 +156,6 @@ export class OnScreenControls<RoomId extends string, RoomItemId extends string>
         },
       } = buttonRenderer;
 
-      buttonRenderer.output.eventMode = "static";
       buttonRenderer.output.on("pointerdown", () => {
         for (const action of actions) {
           inputStateTracker.hudInputState[action] = true;
@@ -217,8 +181,6 @@ export class OnScreenControls<RoomId extends string, RoomItemId extends string>
 
     this.#hudElements.joystick.output.x = joystickX;
     this.#hudElements.joystick.output.y = screenSize.y - joystickYFromBottom;
-
-    this.#hudElements.buttons.map.output.x = screenSize.x - 3 * 8;
   }
 
   tick(tickContext: HudRendererTickContextWithRoom<RoomId, RoomItemId>): void {
@@ -228,6 +190,10 @@ export class OnScreenControls<RoomId extends string, RoomItemId extends string>
     } = this.renderContext;
 
     this.#updateElementPositions(screenSize);
+
+    this.#hudElements.mainButtonNest.visible = !tickContext.paused;
+    this.#hudElements.joystick.output.visible = !tickContext.paused;
+
     for (const b of valuesIter(this.#hudElements.buttons)) {
       b.tick({
         ...tickContext,

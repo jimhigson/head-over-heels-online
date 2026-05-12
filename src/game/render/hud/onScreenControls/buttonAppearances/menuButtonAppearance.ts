@@ -1,6 +1,6 @@
 import type { EmptyObject } from "type-fest";
 
-import type { ButtonAppearance } from "../OnScreenButtonRenderer";
+import type { ButtonAppearance } from "../../HudButtonRenderer";
 
 import { emptyObject } from "../../../../../utils/empty";
 import { TextContainer } from "../../../text/TextContainer";
@@ -18,7 +18,7 @@ export const menuButtonAppearance: ButtonAppearance<
     currentRendering.output!.tint = tintForHud(
       general.spriteOption,
       tickContext.room.color,
-      false,
+      tickContext.hovered ?? false,
       general.spritesheetMeta,
     );
     return "no-update";
