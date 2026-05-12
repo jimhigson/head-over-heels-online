@@ -243,6 +243,7 @@ export type RoomJsonSchema = {
                           | "deadlyBlock"
                           | "emitter"
                           | "firedDoughnut"
+                          | "floatingText"
                           | "floor"
                           | "hushPuppy"
                           | "joystick"
@@ -273,7 +274,6 @@ export type RoomJsonSchema = {
                           | "portal"
                           | "blocker"
                           | "particle"
-                          | "floatingText"
                           | "outOfBounds"
                         )[];
                       };
@@ -328,6 +328,7 @@ export type RoomJsonSchema = {
                           | "deadlyBlock"
                           | "emitter"
                           | "firedDoughnut"
+                          | "floatingText"
                           | "floor"
                           | "hushPuppy"
                           | "joystick"
@@ -358,7 +359,6 @@ export type RoomJsonSchema = {
                           | "portal"
                           | "blocker"
                           | "particle"
-                          | "floatingText"
                           | "outOfBounds"
                         )[];
                       };
@@ -488,6 +488,7 @@ export type RoomJsonSchema = {
                     leftState: {
                       lastEmittedAtRoomTime?: number;
                       quantityEmitted?: number;
+                      playerInsideAtRoomTime?: number;
                       /**
                        * what does this emitter emit? Could be (potentially) any free item
                        */
@@ -496,6 +497,7 @@ export type RoomJsonSchema = {
                           | "ball"
                           | "charles"
                           | "firedDoughnut"
+                          | "floatingText"
                           | "monster"
                           | "moveableDeadly"
                           | "movingPlatform"
@@ -580,6 +582,22 @@ export type RoomJsonSchema = {
                                 | "towardsRight"
                                 | "towardsLeft"
                                 | "awayLeft";
+                            }
+                          | {
+                              /**
+                               * the lines of text to display, each rendered as a separate row
+                               */
+                              textLines: string[];
+                              /**
+                               * the room time when this floating text starts; used to calculate the rise animation age.
+                               * if not given, will start right away at time zero.
+                               * if given, will delay starting until this time
+                               */
+                              appearanceRoomTime?: number;
+                              /**
+                               * if true, lines oscillate horizontally as they rise
+                               */
+                              sway?: false | true;
                             }
                           | {
                               which: "bubbleRobot";
@@ -874,6 +892,7 @@ export type RoomJsonSchema = {
                     rightState: {
                       lastEmittedAtRoomTime?: number;
                       quantityEmitted?: number;
+                      playerInsideAtRoomTime?: number;
                       /**
                        * what does this emitter emit? Could be (potentially) any free item
                        */
@@ -882,6 +901,7 @@ export type RoomJsonSchema = {
                           | "ball"
                           | "charles"
                           | "firedDoughnut"
+                          | "floatingText"
                           | "monster"
                           | "moveableDeadly"
                           | "movingPlatform"
@@ -966,6 +986,22 @@ export type RoomJsonSchema = {
                                 | "towardsRight"
                                 | "towardsLeft"
                                 | "awayLeft";
+                            }
+                          | {
+                              /**
+                               * the lines of text to display, each rendered as a separate row
+                               */
+                              textLines: string[];
+                              /**
+                               * the room time when this floating text starts; used to calculate the rise animation age.
+                               * if not given, will start right away at time zero.
+                               * if given, will delay starting until this time
+                               */
+                              appearanceRoomTime?: number;
+                              /**
+                               * if true, lines oscillate horizontally as they rise
+                               */
+                              sway?: false | true;
                             }
                           | {
                               which: "bubbleRobot";
@@ -1825,6 +1861,26 @@ export type RoomJsonSchema = {
            * (for example, collecting an emitted pickup)
            */
           maximumAtOnce?: number;
+          /**
+           * size of the emitter's collision volume in blocks; if undefined, the emitter has no volume
+           */
+          times?: {
+            x?: number;
+            y?: number;
+            z?: number;
+          };
+          /**
+           * if true, only emits while the currently selected player overlaps the emitter's bounds; timing resets on each entry
+           */
+          whenPlayerInside?: false | true;
+          /**
+           * offset in blocks applied to the emission position, relative to the emitter's origin
+           */
+          offset?: {
+            x?: number;
+            y?: number;
+            z?: number;
+          };
         };
       }
     | {
@@ -1844,6 +1900,30 @@ export type RoomJsonSchema = {
             | "towardsRight"
             | "towardsLeft"
             | "awayLeft";
+        };
+      }
+    | {
+        type: "floatingText";
+        position: {
+          x: number;
+          y: number;
+          z: number;
+        };
+        config: {
+          /**
+           * the lines of text to display, each rendered as a separate row
+           */
+          textLines: string[];
+          /**
+           * the room time when this floating text starts; used to calculate the rise animation age.
+           * if not given, will start right away at time zero.
+           * if given, will delay starting until this time
+           */
+          appearanceRoomTime?: number;
+          /**
+           * if true, lines oscillate horizontally as they rise
+           */
+          sway?: false | true;
         };
       }
     | {
@@ -2433,6 +2513,7 @@ export type RoomJsonSchema = {
                           | "deadlyBlock"
                           | "emitter"
                           | "firedDoughnut"
+                          | "floatingText"
                           | "floor"
                           | "hushPuppy"
                           | "joystick"
@@ -2463,7 +2544,6 @@ export type RoomJsonSchema = {
                           | "portal"
                           | "blocker"
                           | "particle"
-                          | "floatingText"
                           | "outOfBounds"
                         )[];
                       };
@@ -2518,6 +2598,7 @@ export type RoomJsonSchema = {
                           | "deadlyBlock"
                           | "emitter"
                           | "firedDoughnut"
+                          | "floatingText"
                           | "floor"
                           | "hushPuppy"
                           | "joystick"
@@ -2548,7 +2629,6 @@ export type RoomJsonSchema = {
                           | "portal"
                           | "blocker"
                           | "particle"
-                          | "floatingText"
                           | "outOfBounds"
                         )[];
                       };
@@ -2678,6 +2758,7 @@ export type RoomJsonSchema = {
                     leftState: {
                       lastEmittedAtRoomTime?: number;
                       quantityEmitted?: number;
+                      playerInsideAtRoomTime?: number;
                       /**
                        * what does this emitter emit? Could be (potentially) any free item
                        */
@@ -2686,6 +2767,7 @@ export type RoomJsonSchema = {
                           | "ball"
                           | "charles"
                           | "firedDoughnut"
+                          | "floatingText"
                           | "monster"
                           | "moveableDeadly"
                           | "movingPlatform"
@@ -2770,6 +2852,22 @@ export type RoomJsonSchema = {
                                 | "towardsRight"
                                 | "towardsLeft"
                                 | "awayLeft";
+                            }
+                          | {
+                              /**
+                               * the lines of text to display, each rendered as a separate row
+                               */
+                              textLines: string[];
+                              /**
+                               * the room time when this floating text starts; used to calculate the rise animation age.
+                               * if not given, will start right away at time zero.
+                               * if given, will delay starting until this time
+                               */
+                              appearanceRoomTime?: number;
+                              /**
+                               * if true, lines oscillate horizontally as they rise
+                               */
+                              sway?: false | true;
                             }
                           | {
                               which: "bubbleRobot";
@@ -3064,6 +3162,7 @@ export type RoomJsonSchema = {
                     rightState: {
                       lastEmittedAtRoomTime?: number;
                       quantityEmitted?: number;
+                      playerInsideAtRoomTime?: number;
                       /**
                        * what does this emitter emit? Could be (potentially) any free item
                        */
@@ -3072,6 +3171,7 @@ export type RoomJsonSchema = {
                           | "ball"
                           | "charles"
                           | "firedDoughnut"
+                          | "floatingText"
                           | "monster"
                           | "moveableDeadly"
                           | "movingPlatform"
@@ -3156,6 +3256,22 @@ export type RoomJsonSchema = {
                                 | "towardsRight"
                                 | "towardsLeft"
                                 | "awayLeft";
+                            }
+                          | {
+                              /**
+                               * the lines of text to display, each rendered as a separate row
+                               */
+                              textLines: string[];
+                              /**
+                               * the room time when this floating text starts; used to calculate the rise animation age.
+                               * if not given, will start right away at time zero.
+                               * if given, will delay starting until this time
+                               */
+                              appearanceRoomTime?: number;
+                              /**
+                               * if true, lines oscillate horizontally as they rise
+                               */
+                              sway?: false | true;
                             }
                           | {
                               which: "bubbleRobot";
@@ -3713,6 +3829,7 @@ export type RoomJsonSchema = {
                       | "deadlyBlock"
                       | "emitter"
                       | "firedDoughnut"
+                      | "floatingText"
                       | "floor"
                       | "hushPuppy"
                       | "joystick"
@@ -3743,7 +3860,6 @@ export type RoomJsonSchema = {
                       | "portal"
                       | "blocker"
                       | "particle"
-                      | "floatingText"
                       | "outOfBounds"
                     )[];
                   };
@@ -3798,6 +3914,7 @@ export type RoomJsonSchema = {
                       | "deadlyBlock"
                       | "emitter"
                       | "firedDoughnut"
+                      | "floatingText"
                       | "floor"
                       | "hushPuppy"
                       | "joystick"
@@ -3828,7 +3945,6 @@ export type RoomJsonSchema = {
                       | "portal"
                       | "blocker"
                       | "particle"
-                      | "floatingText"
                       | "outOfBounds"
                     )[];
                   };
@@ -3958,6 +4074,7 @@ export type RoomJsonSchema = {
                 leftState: {
                   lastEmittedAtRoomTime?: number;
                   quantityEmitted?: number;
+                  playerInsideAtRoomTime?: number;
                   /**
                    * what does this emitter emit? Could be (potentially) any free item
                    */
@@ -3966,6 +4083,7 @@ export type RoomJsonSchema = {
                       | "ball"
                       | "charles"
                       | "firedDoughnut"
+                      | "floatingText"
                       | "monster"
                       | "moveableDeadly"
                       | "movingPlatform"
@@ -4050,6 +4168,22 @@ export type RoomJsonSchema = {
                             | "towardsRight"
                             | "towardsLeft"
                             | "awayLeft";
+                        }
+                      | {
+                          /**
+                           * the lines of text to display, each rendered as a separate row
+                           */
+                          textLines: string[];
+                          /**
+                           * the room time when this floating text starts; used to calculate the rise animation age.
+                           * if not given, will start right away at time zero.
+                           * if given, will delay starting until this time
+                           */
+                          appearanceRoomTime?: number;
+                          /**
+                           * if true, lines oscillate horizontally as they rise
+                           */
+                          sway?: false | true;
                         }
                       | {
                           which: "bubbleRobot";
@@ -4324,6 +4458,7 @@ export type RoomJsonSchema = {
                 rightState: {
                   lastEmittedAtRoomTime?: number;
                   quantityEmitted?: number;
+                  playerInsideAtRoomTime?: number;
                   /**
                    * what does this emitter emit? Could be (potentially) any free item
                    */
@@ -4332,6 +4467,7 @@ export type RoomJsonSchema = {
                       | "ball"
                       | "charles"
                       | "firedDoughnut"
+                      | "floatingText"
                       | "monster"
                       | "moveableDeadly"
                       | "movingPlatform"
@@ -4416,6 +4552,22 @@ export type RoomJsonSchema = {
                             | "towardsRight"
                             | "towardsLeft"
                             | "awayLeft";
+                        }
+                      | {
+                          /**
+                           * the lines of text to display, each rendered as a separate row
+                           */
+                          textLines: string[];
+                          /**
+                           * the room time when this floating text starts; used to calculate the rise animation age.
+                           * if not given, will start right away at time zero.
+                           * if given, will delay starting until this time
+                           */
+                          appearanceRoomTime?: number;
+                          /**
+                           * if true, lines oscillate horizontally as they rise
+                           */
+                          sway?: false | true;
                         }
                       | {
                           which: "bubbleRobot";

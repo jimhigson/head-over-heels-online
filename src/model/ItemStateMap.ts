@@ -287,8 +287,13 @@ export type ItemStateMap<RoomId extends string, RoomItemId extends string> = {
     {
       lastEmittedAtRoomTime: number;
       quantityEmitted: number;
-    } & ItemConfigMap<RoomId, RoomItemId, SceneryName>["emitter"]
-  >; // copying the config into the state means that these settings are mutable at run-time. eg, by switches
+      playerInsideAtRoomTime?: number;
+    } & Omit<
+      // copying the config into the state means that these settings are mutable at play-time. eg, by switches
+      ItemConfigMap<RoomId, RoomItemId, SceneryName>["emitter"],
+      "offset" | "times" | "whenPlayerInside"
+    >
+  >;
 
   joystick: {
     // the direction this joystick was pushed most recently:

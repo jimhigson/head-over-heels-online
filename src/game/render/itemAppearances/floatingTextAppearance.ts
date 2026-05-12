@@ -43,7 +43,7 @@ export const floatingTextAppearance: ItemAppearance<
 > = ({
   renderContext: {
     item: {
-      config: { textLines, appearanceRoomTime },
+      config: { textLines, appearanceRoomTime = 0, sway },
     },
     room: { roomTime },
     general: { spriteOption, spritesheetMeta, pixiRenderer },
@@ -95,6 +95,10 @@ export const floatingTextAppearance: ItemAppearance<
 
     lineContainer.visible = visible;
     anyVisible ||= visible;
+
+    if (visible && sway) {
+      lineContainer.x = Math.sin(lineHeight * 0.3) * 4;
+    }
 
     if (visible && fadeOrderColourised !== undefined) {
       const colourIndex = Math.floor(

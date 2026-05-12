@@ -315,9 +315,12 @@ export const boundingBoxForItem = (
           throw new Error(`unknown sceneryPlayer character`);
       }
 
-    case "emitter":
+    case "floatingText":
     case "timer":
       return zeroVolumeAabb;
+
+    case "emitter":
+      return item.config.times ? { aabb: fullBlockAabb } : zeroVolumeAabb;
 
     default:
       //console.warn("giving default aabb for item", item);

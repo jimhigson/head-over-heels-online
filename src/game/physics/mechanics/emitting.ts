@@ -4,10 +4,19 @@ import type { GameState } from "../../gameState/GameState";
 
 import { roomJsonItemsIterable } from "../../../model/RoomJson";
 import { roomItemsIterable, type RoomState } from "../../../model/RoomState";
-import { originXyz, scaleXyz, subXyz } from "../../../utils/vectors/vectors";
+import { completeTimesXyz } from "../../../model/times";
+import {
+  addXyz,
+  originXyz,
+  productXyz,
+  scaleXyz,
+  subXyz,
+} from "../../../utils/vectors/vectors";
+import { collision2Items } from "../../collision/aabbCollision";
 import { buildRoomJsonDirectionalIndex } from "../../gameState/loadRoom/buildRoomJsonDirectionalIndex";
 import { loadItemFromJson } from "../../gameState/loadRoom/loadItemFromJson";
 import { addItemToRoom } from "../../gameState/mutators/addItemToRoom";
+import { blockSizePx } from "../mechanicsConstants";
 import { periodicItemShouldAct } from "./periodicItemShouldAct";
 
 const hasFewerThanInRoom = <RoomId extends string, RoomItemId extends string>(
@@ -27,10 +36,25 @@ const hasFewerThanInRoom = <RoomId extends string, RoomItemId extends string>(
   return true;
 };
 
+const isCurrentPlayerInsideEmitter = <
+  RoomId extends string,
+  RoomItemId extends string,
+>(
+  emitter: ItemInPlay<"emitter", RoomId, RoomItemId>,
+  room: RoomState<RoomId, RoomItemId>,
+  gameState: GameState<RoomId>,
+): boolean => {
+  const currentPlayable =
+    room.items[gameState.currentCharacterName as RoomItemId];
+  return (
+    currentPlayable !== undefined && collision2Items(emitter, currentPlayable)
+  );
+};
+
 export const emitting = <RoomId extends string, RoomItemId extends string>(
   emitter: ItemInPlay<"emitter", RoomId, RoomItemId>,
   room: RoomState<RoomId, RoomItemId>,
-  _gameState: GameState<RoomId>,
+  gameState: GameState<RoomId>,
   _deltaMS: number,
 ): undefined => {
   const { id: emitterId, state } = emitter;
@@ -45,6 +69,27 @@ export const emitting = <RoomId extends string, RoomItemId extends string>(
     return;
   }
 
+  let startTime = 0;
+
+  if (emitter.config.whenPlayerInside) {
+    const playerInside = isCurrentPlayerInsideEmitter(emitter, room, gameState);
+
+    if (playerInside && state.playerInsideAtRoomTime === undefined) {
+      state.playerInsideAtRoomTime = room.roomTime;
+      state.lastEmittedAtRoomTime =
+        room.roomTime + (state.delay ?? state.period) - state.period;
+      state.quantityEmitted = 0;
+    } else if (!playerInside && state.playerInsideAtRoomTime !== undefined) {
+      state.playerInsideAtRoomTime = undefined;
+    }
+
+    if (state.playerInsideAtRoomTime === undefined) {
+      return;
+    }
+
+    startTime = state.playerInsideAtRoomTime;
+  }
+
   if (
     periodicItemShouldAct(
       {
@@ -53,6 +98,7 @@ export const emitting = <RoomId extends string, RoomItemId extends string>(
         lastActedAtRoomTime: lastEmittedAtRoomTime,
       },
       room.roomTime,
+      startTime,
     )
   ) {
     const maximumAtOnce = state.maximumAtOnce ?? Infinity;
@@ -77,10 +123,22 @@ export const emitting = <RoomId extends string, RoomItemId extends string>(
         throw new Error("emitter failed to create a new item");
       }
       newlyEmittedItem.state.createdByEmitter = emitterId;
+      if (newlyEmittedItem.type === "floatingText") {
+        newlyEmittedItem.config.appearanceRoomTime = room.roomTime;
+        newlyEmittedItem.state.expires = room.roomTime + 3_000;
+      }
+      const emitOffset =
+        emitter.config.offset ?
+          productXyz(completeTimesXyz(emitter.config.offset), blockSizePx)
+        : originXyz;
+
       addItemToRoom({
         room,
         item: newlyEmittedItem,
-        atPosition: subXyz(position, scaleXyz(newlyEmittedItem.aabb, 0.5)),
+        atPosition: subXyz(
+          addXyz(position, emitOffset),
+          scaleXyz(newlyEmittedItem.aabb, 0.5),
+        ),
       });
       emitter.state.quantityEmitted++;
     }

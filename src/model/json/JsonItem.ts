@@ -16,6 +16,7 @@ export const jsonItemTypes = [
   "door",
   "emitter",
   "firedDoughnut",
+  "floatingText",
   "floor",
   "hushPuppy",
   "joystick",
