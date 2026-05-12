@@ -2,12 +2,10 @@ import nanoEqual from "nano-equal";
 
 import type { ItemTool } from "../RoomEditingArea/interactivity/Tool";
 
-import {
-  selectTool,
-  useAppSelectorWithLevelEditorSlice,
-} from "../slice/levelEditorSlice";
+import { useEditorAppSelector } from "../../store/store";
+import { selectTool } from "../slice/levelEditorSlice";
 
 export const useIsCurrentItemTool = (itemTool: ItemTool) => {
-  const currentTool = useAppSelectorWithLevelEditorSlice(selectTool);
+  const currentTool = useEditorAppSelector(selectTool);
   return nanoEqual(currentTool?.type === "item" && currentTool.item, itemTool);
 };

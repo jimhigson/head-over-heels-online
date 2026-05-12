@@ -17,6 +17,7 @@ declare module "virtual:pwa-register" {
   ): (reloadPage?: boolean) => void;
 }
 interface ImportMetaEnv {
+  readonly VITE_APP: "editor" | "game";
   readonly VITE_GAME_URL: string;
   readonly VITE_LOG_MOVE_ITEM?: string;
 }

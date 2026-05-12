@@ -1,8 +1,8 @@
 import type { Node } from "jsonc-parser";
 
 import type { JsonItemType } from "../../../model/json/JsonItem";
+import type { EditorRootState } from "../../../store/store";
 import type { EditorRoomId, EditorRoomJson } from "../../editorTypes";
-import type { RootStateWithLevelEditorSlice } from "../../slice/levelEditorSlice";
 
 import { iterateRoomJsonItemsWithIds } from "../../../model/RoomJson";
 import { emptyArray, emptySet } from "../../../utils/empty";
@@ -13,7 +13,7 @@ import {
 import { getNodePropertyValue } from "./getNodePropertyValue";
 
 export type SuggestionGenerator = (
-  storeState: RootStateWithLevelEditorSlice,
+  storeState: EditorRootState,
   currentRoomJson: EditorRoomJson,
   ...nodeAncestors: Node[]
 ) => string[];
@@ -23,7 +23,7 @@ export type SuggestionPatterns = Record<string, SuggestionGenerator>;
 /**
  * Get all room IDs except the currently editing one
  */
-const getOtherRoomIds = (storeState: RootStateWithLevelEditorSlice): string[] =>
+const getOtherRoomIds = (storeState: EditorRootState): string[] =>
   Object.keys(storeState.levelEditor.campaignInProgress.rooms).filter(
     (roomId) => roomId !== storeState.levelEditor.currentlyEditingRoomId,
   );
@@ -31,11 +31,11 @@ const getOtherRoomIds = (storeState: RootStateWithLevelEditorSlice): string[] =>
 /**
  * Get all room IDs INCLUDING the currently editing one
  */
-const getRoomIds = (storeState: RootStateWithLevelEditorSlice): string[] =>
+const getRoomIds = (storeState: EditorRootState): string[] =>
   Object.keys(storeState.levelEditor.campaignInProgress.rooms);
 
 const getJoystickControllableItemIds = (
-  storeState: RootStateWithLevelEditorSlice,
+  storeState: EditorRootState,
   currentRoomJson: EditorRoomJson,
   _stringNode: Node,
   targetsArray: Node,

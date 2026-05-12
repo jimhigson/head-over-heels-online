@@ -1,9 +1,7 @@
 import { useAppDispatch } from "../../../store/hooks";
+import { useEditorAppSelector } from "../../../store/store";
 import { Switch } from "../../../ui/Switch";
-import {
-  changeWallsFloorsLocked,
-  useAppSelectorWithLevelEditorSlice,
-} from "../../slice/levelEditorSlice";
+import { changeWallsFloorsLocked } from "../../slice/levelEditorSlice";
 
 export const WallsFloorsLockedSwitch = ({
   className,
@@ -16,7 +14,7 @@ export const WallsFloorsLockedSwitch = ({
     <Switch
       className={className}
       label="Scenery"
-      value={useAppSelectorWithLevelEditorSlice(
+      value={useEditorAppSelector(
         (state) => state.levelEditor.wallsFloorsLocked,
       )}
       onChange={(value) => {

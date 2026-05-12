@@ -7,10 +7,9 @@ import nanoEqual from "nano-equal";
 import { useMemo } from "preact/hooks";
 
 import type { EditorRoomJson } from "../editorTypes";
-import type { RootStateWithLevelEditorSlice } from "../slice/levelEditorSlice";
 
 import roomSchema from "../../_generated/room.schema.json";
-import { store } from "../../store/store";
+import { editorStore, store } from "../../store/store";
 import { selectCurrentRoomFromLevelEditorState } from "../slice/levelEditorSelectors";
 import { roomJsonEdited } from "../slice/levelEditorSlice";
 import { fixJson } from "./fixJson";
@@ -43,9 +42,7 @@ export const useUpdateStoreWhenJsonEdited = (
   return useMemo<OnChange>(() => {
     return debounce(
       (text: string | undefined, _ev: editor.IModelContentChangedEvent) => {
-        const levelEditorState = (
-          store.getState() as RootStateWithLevelEditorSlice
-        ).levelEditor;
+        const levelEditorState = editorStore.getState().levelEditor;
         const roomJson =
           selectCurrentRoomFromLevelEditorState(levelEditorState);
 

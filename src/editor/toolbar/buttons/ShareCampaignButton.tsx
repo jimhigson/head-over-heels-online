@@ -2,8 +2,8 @@ import type { TypedURLSearchParams } from "../../../options/queryParams";
 import type { TextureTailwindClass } from "../../../sprites/spritesheet/spritesheetData/TextureTailwindClass";
 
 import { BitmapText } from "../../../game/components/tailwindSprites/BitmapText";
+import { useEditorAppSelector } from "../../../store/store";
 import { cn } from "../../../ui/cn";
-import { useAppSelectorWithLevelEditorSlice } from "../../slice/levelEditorSlice";
 import { useRemoteIsInSync } from "../saving/useRemoteIsInSync";
 import { useShortTimeDisplay } from "../useShortTimeDisplay";
 import { ToolbarButton } from "./ToolbarButton";
@@ -21,7 +21,7 @@ Give anyone the link to your game
 export const ShareCampaignButton = () => {
   const remoteIsInSync = useRemoteIsInSync();
   const { doneNow, justDone } = useShortTimeDisplay();
-  const { userId, campaignName } = useAppSelectorWithLevelEditorSlice(
+  const { userId, campaignName } = useEditorAppSelector(
     (state) => state.levelEditor.campaignInProgress.locator,
   );
   const disabled = !remoteIsInSync || campaignName === undefined;

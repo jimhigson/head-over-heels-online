@@ -53,7 +53,7 @@ export const defaultFreeItemState = <RoomItemId extends string>() =>
     standingOnItemId: null,
     standingOnUntilRoomTime: neverTime,
     previousStandingOnItemId: null,
-  }) satisfies Partial<FreeItemState<RoomItemId>>;
+  }) as const satisfies Partial<FreeItemState<RoomItemId>>;
 
 export const initialState = (jsonItem: JsonItemUnion) => {
   const isFree = (freeItemTypes as JsonItemType[]).includes(jsonItem.type);

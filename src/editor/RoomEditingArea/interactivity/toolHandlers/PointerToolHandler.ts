@@ -4,7 +4,6 @@ import type {
   EditorRoomItemId,
   EditorRoomState,
 } from "../../../editorTypes";
-import type { RootStateWithLevelEditorSlice } from "../../../slice/levelEditorSlice";
 import type { MaybePointingAtSomething } from "../../cursor/PointingAt";
 import type { Tool } from "../Tool";
 import type {
@@ -23,7 +22,11 @@ import {
   fineXyzToBlockXyz,
   unprojectScreenXyToWorldXyz,
 } from "../../../../game/render/projections";
-import { store } from "../../../../store/store";
+import {
+  type EditorRootState,
+  editorStore,
+  store,
+} from "../../../../store/store";
 import { emptyArray } from "../../../../utils/empty";
 import { planeAxesDesc } from "../../../../utils/vectors/orthoPlane";
 import {
@@ -68,7 +71,7 @@ const { dispatch } = store;
  *  - either single or multiple
  */
 const getJsonItemIdsToUseForPointingAt = (
-  storeState: RootStateWithLevelEditorSlice,
+  storeState: EditorRootState,
   roomState: EditorRoomState,
   mouseDownPointingAt: MaybePointingAtSomething | undefined,
 ): EditorRoomItemId[] => {
@@ -210,8 +213,7 @@ const roundDragVector = (
    */
   alwaysFullBlocks = false,
 ) => {
-  const levelEditorState = (store.getState() as RootStateWithLevelEditorSlice)
-    .levelEditor;
+  const levelEditorState = editorStore.getState().levelEditor;
 
   return roundXyzProjection(
     dragVector,

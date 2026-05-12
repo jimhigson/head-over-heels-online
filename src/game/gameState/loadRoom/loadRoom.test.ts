@@ -20,7 +20,7 @@ const loadTestRoom = (roomJson: Parameters<typeof loadRoom>[0]["roomJson"]) =>
     scrollsRead: {},
     roomPickupsCollected: {},
     isNewGame: false,
-    userSettings: { soundSettings: {}, displaySettings: {} },
+    userSettings: { soundSettings: {}, displaySettings: {}, pokesEnabled: {} },
   }) as TestRoomState;
 
 const roomOrigins: Xyz[] = [

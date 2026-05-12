@@ -3,13 +3,13 @@ import type { TextureTailwindClass } from "../../../sprites/spritesheet/spritesh
 import { BitmapText } from "../../../game/components/tailwindSprites/BitmapText";
 import { useAppDispatch } from "../../../store/hooks";
 import { useIsUncolourised } from "../../../store/slices/gameMenus/gameMenusSelectors";
+import { useEditorAppSelector } from "../../../store/store";
 import {
   roomBack,
   roomForward,
   selectBackRooms,
   selectCurrentCampaignInProgress,
   selectForwardRooms,
-  useAppSelectorWithLevelEditorSlice,
 } from "../../slice/levelEditorSlice";
 import { MenuButton, MenuItemButton } from "./MenuButton";
 import { itemColourCss } from "./RoomColourSelect";
@@ -30,11 +30,9 @@ The opposite of back
 const maxHistoryItems = 8;
 
 export const BackAndForwardRoomButtons = () => {
-  const backRooms = useAppSelectorWithLevelEditorSlice(selectBackRooms);
-  const forwardRooms = useAppSelectorWithLevelEditorSlice(selectForwardRooms);
-  const campaign = useAppSelectorWithLevelEditorSlice(
-    selectCurrentCampaignInProgress,
-  );
+  const backRooms = useEditorAppSelector(selectBackRooms);
+  const forwardRooms = useEditorAppSelector(selectForwardRooms);
+  const campaign = useEditorAppSelector(selectCurrentCampaignInProgress);
   const uncolourised = useIsUncolourised();
   const dispatch = useAppDispatch();
 

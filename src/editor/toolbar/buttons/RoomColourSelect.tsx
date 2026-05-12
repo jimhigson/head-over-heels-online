@@ -9,13 +9,13 @@ import { gameColour } from "../../../game/render/gameColours/gameColours";
 import { zxSpectrumColor, zxSpectrumRoomHue } from "../../../originalGame";
 import { useAppDispatch } from "../../../store/hooks";
 import { useIsUncolourised } from "../../../store/slices/gameMenus/gameMenusSelectors";
+import { useEditorAppSelector } from "../../../store/store";
 import { CommandItem } from "../../../ui/command";
 import { Select } from "../../../ui/Select";
 import { Switch } from "../../../ui/Switch";
 import {
   changeRoomColour,
   selectCurrentEditingRoomColour,
-  useAppSelectorWithLevelEditorSlice,
 } from "../../slice/levelEditorSlice";
 
 export const itemColourCss = (
@@ -43,7 +43,7 @@ export const RoomColourSelect = () => {
   const dispatch = useAppDispatch();
   const uncolourised = useIsUncolourised();
 
-  const currentRoomColour = useAppSelectorWithLevelEditorSlice(
+  const currentRoomColour = useEditorAppSelector(
     selectCurrentEditingRoomColour,
   );
 

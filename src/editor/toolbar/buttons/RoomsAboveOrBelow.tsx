@@ -2,12 +2,12 @@ import type { EditorRoomId } from "../../editorTypes";
 
 import { BitmapText } from "../../../game/components/tailwindSprites/BitmapText";
 import { useAppDispatch } from "../../../store/hooks";
+import { useEditorAppSelector } from "../../../store/store";
 import { RoomSelect } from "../../../ui/RoomSelect";
 import { selectCurrentRoomFromLevelEditorState } from "../../slice/levelEditorSelectors";
 import {
   changeToRoom,
   setRoomAboveOrBelow,
-  useAppSelectorWithLevelEditorSlice,
 } from "../../slice/levelEditorSlice";
 import { ToolbarButton } from "./ToolbarButton";
 
@@ -18,10 +18,10 @@ const RoomsAboveOrBelowSelectOrCreate = ({
   currentRoomId: EditorRoomId | undefined;
   direction: "above" | "below";
 }) => {
-  const campaign = useAppSelectorWithLevelEditorSlice(
+  const campaign = useEditorAppSelector(
     ({ levelEditor }) => levelEditor.campaignInProgress,
   );
-  const currentlyEditingRoomId = useAppSelectorWithLevelEditorSlice(
+  const currentlyEditingRoomId = useEditorAppSelector(
     ({ levelEditor }) => levelEditor.currentlyEditingRoomId,
   );
   const dispatch = useAppDispatch();
@@ -111,7 +111,7 @@ const RoomsAboveOrBelowSelectOrCreate = ({
 };
 
 export const RoomAboveSelectOrCreate = () => {
-  const roomAboveId = useAppSelectorWithLevelEditorSlice(({ levelEditor }) => {
+  const roomAboveId = useEditorAppSelector(({ levelEditor }) => {
     return selectCurrentRoomFromLevelEditorState(levelEditor).roomAbove;
   });
 
@@ -126,7 +126,7 @@ export const RoomAboveSelectOrCreate = () => {
 };
 
 export const RoomBelowSelectOrCreate = () => {
-  const roomBelowId = useAppSelectorWithLevelEditorSlice(({ levelEditor }) => {
+  const roomBelowId = useEditorAppSelector(({ levelEditor }) => {
     return selectCurrentRoomFromLevelEditorState(levelEditor).roomBelow;
   });
 

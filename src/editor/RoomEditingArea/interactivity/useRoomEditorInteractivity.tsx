@@ -2,14 +2,13 @@ import nanoEqual from "nano-equal";
 import { useEffect, useRef } from "preact/hooks";
 
 import type { Xyz } from "../../../utils/vectors/vectors";
-import type { RootStateWithLevelEditorSlice } from "../../slice/levelEditorSlice";
 import type { MaybePointingAtSomething } from "../cursor/PointingAt";
 import type { Tool } from "./Tool";
 import type { ToolHandler } from "./toolHandlers/ToolHandler";
 
 import { useAppDispatch, useAppSelector } from "../../../store/hooks";
 import { selectUpscale } from "../../../store/slices/upscale/upscaleSlice";
-import { store } from "../../../store/store";
+import { editorStore, store } from "../../../store/store";
 import { catchErrors } from "../../../utils/errors/errors";
 import {
   selectEditorRoomRenderDimensions,
@@ -52,7 +51,7 @@ export const useRoomEditorInteractivity = (
 
     const handleMouseMove = (mouseEvent: MouseEvent) => {
       // no point in re-running this effect when it changes so select it 'live':
-      const storeState = store.getState() as RootStateWithLevelEditorSlice;
+      const storeState = editorStore.getState();
       const roomState = selectEditorRoomState(storeState);
       const roomRenderSize = selectEditorRoomRenderDimensions(storeState);
       const upscaledMouseXy = upscaledMousePosition(
@@ -95,7 +94,7 @@ export const useRoomEditorInteractivity = (
     };
 
     const handleMouseUp = (mouseEvent: MouseEvent) => {
-      const storeState = store.getState() as RootStateWithLevelEditorSlice;
+      const storeState = editorStore.getState();
       const roomState = selectEditorRoomState(storeState);
 
       if (roomState.id !== storeState.levelEditor.currentlyEditingRoomId) {
@@ -110,9 +109,7 @@ export const useRoomEditorInteractivity = (
       );
 
       // no point in re-running this effect when it changes so select it 'live':
-      const tool = selectTool(
-        store.getState() as RootStateWithLevelEditorSlice,
-      );
+      const tool = selectTool(editorStore.getState());
 
       // get a fresh PointingAt - the one in the ref could be pointing
       // at a previous room if we just switched
@@ -164,7 +161,7 @@ export const useRoomEditorInteractivity = (
     };
 
     const handleMouseLeave = (mouseEvent: MouseEvent) => {
-      const storeState = store.getState() as RootStateWithLevelEditorSlice;
+      const storeState = editorStore.getState();
       const roomState = selectEditorRoomState(storeState);
       const tool = selectTool(storeState);
 
@@ -181,7 +178,7 @@ export const useRoomEditorInteractivity = (
     };
 
     const handleMouseDown = (mouseEvent: MouseEvent) => {
-      const storeState = store.getState() as RootStateWithLevelEditorSlice;
+      const storeState = editorStore.getState();
       const roomState = selectEditorRoomState(storeState);
       const roomRenderSize = selectEditorRoomRenderDimensions(storeState);
       const upscaledMouseXy = upscaledMousePosition(

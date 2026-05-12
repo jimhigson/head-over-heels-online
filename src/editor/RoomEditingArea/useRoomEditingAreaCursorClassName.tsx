@@ -1,12 +1,10 @@
 import nanoEqual from "nano-equal";
 
-import type { RootStateWithLevelEditorSlice } from "../slice/levelEditorSlice";
-
 import { isConsolidatable } from "../../consolidateItems/ConsolidatableJsonItem";
+import { type EditorRootState, useEditorAppSelector } from "../../store/store";
 import { twClass } from "../../utils/twClass";
 import { xyzEqual } from "../../utils/vectors/vectors";
 import { selectItemInLevelEditorState } from "../slice/levelEditorSelectors";
-import { useAppSelectorWithLevelEditorSlice } from "../slice/levelEditorSlice";
 import {
   betweenLeftAndTowards,
   betweenRightAndAway,
@@ -21,7 +19,7 @@ import {
 
 export const selectCursor = ({
   levelEditor,
-}: RootStateWithLevelEditorSlice): `cursor-${string}` => {
+}: EditorRootState): `cursor-${string}` => {
   const {
     dragInProgress,
     clickableAnnotationHovered,
@@ -98,5 +96,5 @@ export const selectCursor = ({
 };
 
 export const useRoomEditingAreaCursorClassName = () => {
-  return useAppSelectorWithLevelEditorSlice(selectCursor);
+  return useEditorAppSelector(selectCursor);
 };

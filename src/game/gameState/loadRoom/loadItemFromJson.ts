@@ -3,14 +3,15 @@ import { produce } from "immer";
 import type { UnionOfAllItemInPlayTypes } from "../../../model/ItemInPlay";
 import type { JsonItemUnion } from "../../../model/json/JsonItem";
 import type { RoomJson } from "../../../model/RoomJson";
+import type { PlanetName } from "../../../sprites/planets";
 import type { ScrollsRead } from "../../../store/slices/gameInPlay/gameInPlaySlice";
+import type { PokesEnabled } from "../../../store/slices/userSettings/userSettingsSlice";
 import type { Xyz } from "../../../utils/vectors/vectors";
 import type { RoomPickupsCollected } from "../GameState";
 
 import { defaultItemProperties } from "../../../model/defaultItemProperties";
 import { roomJsonItemsIterable } from "../../../model/RoomJson";
 import { getJsonItemTimes } from "../../../model/times";
-import { store } from "../../../store/store";
 import { emptyObject } from "../../../utils/empty";
 import { lengthXyz, unitXyz } from "../../../utils/vectors/vectors";
 import { boundingBoxForItem } from "../../collision/boundingBoxes";
@@ -45,6 +46,8 @@ export function* loadItemFromJson<
   roomPickupsCollected: RoomPickupsCollected = emptyObject,
   /** may be safely omitted if we know that the item is not a scroll */
   scrollsRead: ScrollsRead = {},
+  planetsLiberated: Partial<Record<PlanetName, boolean>> = emptyObject,
+  pokesEnabled: PokesEnabled = {},
   itemIdSuffix = "",
 ): Generator<UnionOfAllItemInPlayTypes<RoomId>, undefined> {
   if (roomPickupsCollected[jsonItemId]) {
@@ -70,7 +73,7 @@ export function* loadItemFromJson<
       );
     }
     case jsonItem.type === "player": {
-      yield loadPlayer(jsonItem, jsonItemId);
+      yield loadPlayer(jsonItem, jsonItemId, pokesEnabled);
       return;
     }
 
@@ -107,6 +110,8 @@ export function* loadItemFromJson<
               directionalIndex,
               roomPickupsCollected,
               scrollsRead,
+              planetsLiberated,
+              pokesEnabled,
               `${itemIdSuffix}_${x}_${y}_${z}`,
             );
           }
@@ -117,9 +122,7 @@ export function* loadItemFromJson<
     }
 
     case jsonItem.type === "sceneryCrown" &&
-      !store.getState().gameInPlay.gameInPlay.planetsLiberated[
-        jsonItem.config.planet
-      ]: {
+      !planetsLiberated[jsonItem.config.planet]: {
       // yield nothing - scenery crowns only show if we have collected that crown
       return;
     }

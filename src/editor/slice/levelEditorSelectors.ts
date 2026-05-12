@@ -3,6 +3,7 @@ import type { ValueOf } from "type-fest";
 import { createSelector } from "@reduxjs/toolkit";
 import { produce } from "immer";
 
+import type { EditorRootState } from "../../store/store";
 import type {
   EditorJsonItemUnion,
   EditorRoomId,
@@ -10,10 +11,7 @@ import type {
   EditorRoomJson,
   EditorRoomState,
 } from "../editorTypes";
-import type {
-  LevelEditorState,
-  RootStateWithLevelEditorSlice,
-} from "./levelEditorSlice";
+import type { LevelEditorState } from "./levelEditorSlice";
 
 import { loadRoom } from "../../game/gameState/loadRoom/loadRoom";
 import { floorsRenderExtent } from "../../game/render/room/floorsExtent";
@@ -33,7 +31,7 @@ export const useCurrentEditingRoomJson = selectorHook((state) =>
 export const selectCurrentEditingRoomJsonWithPreviews = createSelector(
   [
     (state) => selectCurrentRoomFromLevelEditorState(state.levelEditor),
-    (state: RootStateWithLevelEditorSlice) => state.levelEditor.previewedEdits,
+    (state: EditorRootState) => state.levelEditor.previewedEdits,
   ],
   (roomJson, previewedEdits): EditorRoomJson => {
     // apply previews on top of the current room:

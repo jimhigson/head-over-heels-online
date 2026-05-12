@@ -1,10 +1,8 @@
-import type { RootStateWithLevelEditorSlice } from "../../slice/levelEditorSlice";
-
 import { getConsolidatableVector } from "../../../consolidateItems/ConsolidatableJsonItem";
 import { BitmapText } from "../../../game/components/tailwindSprites/BitmapText";
 import { getJsonItemTimes } from "../../../model/times";
 import { useAppDispatch } from "../../../store/hooks";
-import { store } from "../../../store/store";
+import { editorStore, useEditorAppSelector } from "../../../store/store";
 import { twClass } from "../../../utils/twClass";
 import { unitVectors } from "../../../utils/vectors/unitVectors";
 import {
@@ -19,7 +17,6 @@ import { selectCurrentRoomFromLevelEditorState } from "../../slice/levelEditorSe
 import {
   commitCurrentPreviewedEdits,
   moveOrResizeItemAsPreview,
-  useAppSelectorWithLevelEditorSlice,
 } from "../../slice/levelEditorSlice";
 import { getMovableVector } from "../../slice/reducers/moveOrResizeItemPreview/getMovableVector";
 import { ToolbarButton } from "./ToolbarButton";
@@ -35,7 +32,7 @@ const lineTitleHeaderClassName = twClass(
 export const NudgeButtons = () => {
   const dispatch = useAppDispatch();
 
-  const selectedJsonItems = useAppSelectorWithLevelEditorSlice((state) =>
+  const selectedJsonItems = useEditorAppSelector((state) =>
     state.levelEditor.selectedJsonItemIds.map(
       (jsonItemId) =>
         selectCurrentRoomFromLevelEditorState(state.levelEditor).items[
@@ -80,12 +77,8 @@ export const NudgeButtons = () => {
   const nudgeBy =
     (posVector: Xyz = originXyz, timesDelta?: Partial<Xyz>) =>
     () => {
-      const levelEditorStoreState = (
-        store.getState() as RootStateWithLevelEditorSlice
-      ).levelEditor;
-      const roomState = selectEditorRoomState(
-        store.getState() as RootStateWithLevelEditorSlice,
-      );
+      const levelEditorStoreState = editorStore.getState().levelEditor;
+      const roomState = selectEditorRoomState(editorStore.getState());
 
       const { gridResolution, selectedJsonItemIds: jsonItemIds } =
         levelEditorStoreState;

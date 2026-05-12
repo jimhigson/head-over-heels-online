@@ -17,8 +17,8 @@ import {
   defaultFreeItemState,
 } from "../loadRoom/itemDefaultStates";
 import {
+  defaultCommonPlayableState,
   defaultPlayableRootAttributes,
-  defaultPlayerState,
 } from "../loadRoom/loadPlayer";
 
 export const uncombinePlayablesFromSymbiosis = <
@@ -28,7 +28,6 @@ export const uncombinePlayablesFromSymbiosis = <
   headOverHeels: PlayableItem<"headOverHeels", RoomId, RoomItemId>,
 ) => {
   const head: PlayableItem<"head", RoomId, RoomItemId> = {
-    // TODO: remove cast with known ids
     id: "head" as RoomItemId,
     type: "head",
     ...defaultItemProperties,
@@ -36,20 +35,25 @@ export const uncombinePlayablesFromSymbiosis = <
     ...headAabbInfo,
     state: {
       ...defaultBaseState<RoomItemId>(),
-      ...defaultFreeItemState(),
-      ...defaultPlayerState(),
+      ...defaultFreeItemState<RoomItemId>(),
+      ...defaultCommonPlayableState(),
       ...headOverHeels.state.head,
-      facing: headOverHeels.state.facing,
-      visualFacingVector: headOverHeels.state.visualFacingVector,
+      ...pick(
+        headOverHeels.state,
+        "facing",
+        "walkStartFacing",
+        "visualFacingVector",
+        "actedOnAt",
+        "collidedWith",
+        "stoodOnUntilRoomTime",
+        "autoWalk",
+        "teleporting",
+      ),
       position: addXyz(headOverHeels.state.position, { z: blockSizePx.z }),
       switchedToAt: neverTime,
-      actedOnAt: headOverHeels.state.actedOnAt,
-      collidedWith: headOverHeels.state.collidedWith,
-      stoodOnUntilRoomTime: headOverHeels.state.stoodOnUntilRoomTime,
     },
   };
   const heels: PlayableItem<"heels", RoomId, RoomItemId> = {
-    // TODO: remove cast with known ids
     id: "heels" as RoomItemId,
     type: "heels",
     ...defaultItemProperties,
@@ -57,16 +61,22 @@ export const uncombinePlayablesFromSymbiosis = <
     ...heelsAabbInfo,
     state: {
       ...defaultBaseState<RoomItemId>(),
-      ...defaultFreeItemState(),
-      ...defaultPlayerState(),
+      ...defaultFreeItemState<RoomItemId>(),
+      ...defaultCommonPlayableState(),
       ...headOverHeels.state.heels,
-      facing: headOverHeels.state.facing,
-      visualFacingVector: headOverHeels.state.visualFacingVector,
+      ...pick(
+        headOverHeels.state,
+        "facing",
+        "walkStartFacing",
+        "visualFacingVector",
+        "actedOnAt",
+        "collidedWith",
+        "stoodOnUntilRoomTime",
+        "autoWalk",
+        "teleporting",
+      ),
       position: addXyz(headOverHeels.state.position),
       switchedToAt: neverTime,
-      actedOnAt: headOverHeels.state.actedOnAt,
-      collidedWith: headOverHeels.state.collidedWith,
-      stoodOnUntilRoomTime: headOverHeels.state.stoodOnUntilRoomTime,
       isBigJump: false,
     },
   };
@@ -94,7 +104,6 @@ export const combinePlayablesInSymbiosis = <
     previousPlayable === "head" ? head.state : heels.state;
 
   return {
-    // TODO: remove cast with known ids
     id: "headOverHeels" as RoomItemId,
     type: "headOverHeels",
     ...defaultItemProperties,
@@ -105,7 +114,7 @@ export const combinePlayablesInSymbiosis = <
     state: {
       ...defaultBaseState<RoomItemId>(),
       ...defaultFreeItemState(),
-      ...defaultPlayerState(),
+      ...defaultCommonPlayableState(),
       position: heels.state.position,
       action: "idle",
       jumped: false,

@@ -2372,14 +2372,15 @@ export type RoomJsonSchema = {
               type: "in-store";
               path:
                 | "displaySettings"
-                | "infiniteLivesPoke"
-                | "infiniteDoughnutsPoke"
                 | "showFps"
+                | "pokesEnabled"
                 | "onScreenControls"
                 | "soundSettings"
                 | "displaySettings.crtFilter"
                 | "displaySettings.showRoomScrollBounds"
                 | "displaySettings.showShadowMasks"
+                | "pokesEnabled.infiniteLives"
+                | "pokesEnabled.infiniteDoughnuts"
                 | "soundSettings.mute"
                 | "soundSettings.noRoomEntryTunes"
                 | "soundSettings.noFootsteps";

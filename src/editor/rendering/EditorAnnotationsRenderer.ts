@@ -24,7 +24,6 @@ import type {
   EditorRoomItemId,
   EditorUnionOfAllItemInPlayTypes,
 } from "../editorTypes";
-import type { RootStateWithLevelEditorSlice } from "../slice/levelEditorSlice";
 
 import { outlineFilters } from "../../game/render/filters/OutlineFilter";
 import { RevertColouriseFilter } from "../../game/render/filters/RevertColouriseFilter";
@@ -33,7 +32,7 @@ import { TextContainer } from "../../game/render/text/TextContainer";
 import { exitGameRoomId } from "../../model/json/ItemConfigMap";
 import { roomItemsIterable } from "../../model/RoomState";
 import { paletteBlockstack } from "../../sprites/palette/spritesheetPalette";
-import { store } from "../../store/store";
+import { editorStore, store } from "../../store/store";
 import {
   changeToRoom,
   selectHoveredItem,
@@ -228,8 +227,8 @@ export class EditorAnnotationsRenderer<T extends ItemInPlayType>
           // pointer hit testing)
           item.config.part === "near"
         ) {
-          const { rooms } = (store.getState() as RootStateWithLevelEditorSlice)
-            .levelEditor.campaignInProgress;
+          const { rooms } =
+            editorStore.getState().levelEditor.campaignInProgress;
 
           const {
             config: { toRoom, direction },
@@ -263,8 +262,8 @@ export class EditorAnnotationsRenderer<T extends ItemInPlayType>
       case "teleporter":
       case "portableTeleporter":
         {
-          const { rooms } = (store.getState() as RootStateWithLevelEditorSlice)
-            .levelEditor.campaignInProgress;
+          const { rooms } =
+            editorStore.getState().levelEditor.campaignInProgress;
 
           const config = item.config as AllUnionFields<typeof item.config>;
 
@@ -399,10 +398,7 @@ export class EditorAnnotationsRenderer<T extends ItemInPlayType>
         store.dispatch(clickDispatch());
       });
       annotationContainer.on("mouseover", () => {
-        if (
-          (store.getState() as RootStateWithLevelEditorSlice).levelEditor.tool
-            .type !== "pointer"
-        ) {
+        if (editorStore.getState().levelEditor.tool.type !== "pointer") {
           return;
         }
         // TODO: this is over-dispatching - need some way to
@@ -433,13 +429,11 @@ export class EditorAnnotationsRenderer<T extends ItemInPlayType>
     } = this;
     const item = this.renderContext.item as unknown as EditorItemInPlayUnion<T>;
 
-    const { clickableAnnotationHovered } = (
-      store.getState() as RootStateWithLevelEditorSlice
-    ).levelEditor;
+    const { clickableAnnotationHovered } = editorStore.getState().levelEditor;
 
     const { jsonItemId } = item;
 
-    const state = store.getState() as RootStateWithLevelEditorSlice;
+    const state = editorStore.getState();
     const hoveredJsonItem = selectHoveredItem(state);
     const selectedJsonItemIds = selectSelectedJsonItemIds(state);
     const tool = selectTool(state);

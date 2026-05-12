@@ -1,23 +1,18 @@
 import { produce } from "immer";
 
-import type { RootStateWithLevelEditorSlice } from "../../slice/levelEditorSlice";
-
 import { BitmapText } from "../../../game/components/tailwindSprites/BitmapText";
 import { useAppDispatch } from "../../../store/hooks";
-import { store } from "../../../store/store";
+import { editorStore, useEditorAppSelector } from "../../../store/store";
 import { pick } from "../../../utils/pick";
 import { selectCurrentRoomFromLevelEditorState } from "../../slice/levelEditorSelectors";
-import {
-  roomJsonEdited,
-  useAppSelectorWithLevelEditorSlice,
-} from "../../slice/levelEditorSlice";
+import { roomJsonEdited } from "../../slice/levelEditorSlice";
 import { ToolbarButton } from "./ToolbarButton";
 import { IconWithTwoLineHoverText } from "./ToolbarButtonContentPatterns";
 
 export const CopyPasteButtons = () => {
   const dispatch = useAppDispatch();
 
-  const somethingSelected = useAppSelectorWithLevelEditorSlice(
+  const somethingSelected = useEditorAppSelector(
     (state) => state.levelEditor.selectedJsonItemIds.length > 0,
   );
 
@@ -26,8 +21,7 @@ export const CopyPasteButtons = () => {
       <ToolbarButton
         disabled={!somethingSelected}
         onClick={async () => {
-          const storeState = (store.getState() as RootStateWithLevelEditorSlice)
-            .levelEditor;
+          const storeState = editorStore.getState().levelEditor;
 
           const { selectedJsonItemIds } = storeState;
           const currentRoomJson =
@@ -60,9 +54,7 @@ export const CopyPasteButtons = () => {
             const clipboardText = await navigator.clipboard.readText();
             const clipboardItems = JSON.parse(clipboardText);
 
-            const storeState = (
-              store.getState() as RootStateWithLevelEditorSlice
-            ).levelEditor;
+            const storeState = editorStore.getState().levelEditor;
             const currentRoomJson =
               selectCurrentRoomFromLevelEditorState(storeState);
 

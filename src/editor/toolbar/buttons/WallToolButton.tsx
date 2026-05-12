@@ -1,9 +1,9 @@
-import { useAppSelectorWithLevelEditorSlice } from "../../slice/levelEditorSlice";
+import { useEditorAppSelector } from "../../../store/store";
 import { buttonDefinitions } from "../buttonDefinitions";
 import { ItemToolButton } from "../ItemToolButton";
 
 export const WallToolButton = () => {
-  const wallProps = useAppSelectorWithLevelEditorSlice((state) =>
+  const wallProps = useEditorAppSelector((state) =>
     buttonDefinitions.wall(state.levelEditor),
   );
 

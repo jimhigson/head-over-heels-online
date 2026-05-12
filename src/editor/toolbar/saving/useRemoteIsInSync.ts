@@ -1,9 +1,9 @@
 import nanoEqual from "nano-equal";
 
-import { useAppSelectorWithLevelEditorSlice } from "../../slice/levelEditorSlice";
+import { useEditorAppSelector } from "../../../store/store";
 
 export const useRemoteIsInSync = () => {
-  return useAppSelectorWithLevelEditorSlice(
+  return useEditorAppSelector(
     ({ levelEditor: { remoteCampaign, campaignInProgress } }) =>
       nanoEqual(remoteCampaign, campaignInProgress),
   );

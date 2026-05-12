@@ -1,14 +1,11 @@
 import type { TextureTailwindClass } from "../../../sprites/spritesheet/spritesheetData/TextureTailwindClass";
 
-import { store } from "../../../store/store";
-import {
-  deleteSelected,
-  useAppSelectorWithLevelEditorSlice,
-} from "../../slice/levelEditorSlice";
+import { store, useEditorAppSelector } from "../../../store/store";
+import { deleteSelected } from "../../slice/levelEditorSlice";
 import { ToolbarButton } from "./ToolbarButton";
 
 export const DeleteItemToolButton = () => {
-  const somethingSelected = useAppSelectorWithLevelEditorSlice(
+  const somethingSelected = useEditorAppSelector(
     (state) => state.levelEditor.selectedJsonItemIds.length > 0,
   );
 

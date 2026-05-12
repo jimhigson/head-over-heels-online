@@ -3,6 +3,7 @@ import type { RoomJson } from "../../model/RoomJson";
 import type { RoomState } from "../../model/RoomState";
 import type { InputStateTrackerInterface } from "../input/InputStateTracker";
 import type { CharacterRooms, GameState, PickupsCollected } from "./GameState";
+import type { LoadRoomOptions } from "./loadRoom/loadRoom";
 import type { SavedCharacterRooms, SavedGame } from "./saving/SavedGameState";
 
 import {
@@ -176,10 +177,15 @@ const _loadGameState = <RoomId extends string>({
     changedCharacterRoomFromCampaign,
   } = getStartingRoomIds(campaign);
 
-  const defaultLoadRoom = {
+  const { userSettings } = store.getState().userSettings;
+  const sharedLoadRoomOptions: Omit<
+    LoadRoomOptions<RoomId, string>,
+    "roomJson"
+  > = {
     roomPickupsCollected: emptyObject,
     scrollsRead: emptyObject,
     isNewGame: true,
+    userSettings,
   };
 
   /** head's current room state, if head is in this game */
@@ -189,8 +195,7 @@ const _loadGameState = <RoomId extends string>({
       // note - always load into their original room as per the campaign - if need to change, we can do later:
       roomJson: campaign.rooms[campaignStartingRoomIds.head],
       // we are not loading so nothing has been collected/read:
-      ...defaultLoadRoom,
-      userSettings: store.getState().userSettings.userSettings,
+      ...sharedLoadRoomOptions,
     });
 
   const heelsRoom: RoomState<RoomId, string> | undefined =
@@ -201,8 +206,7 @@ const _loadGameState = <RoomId extends string>({
         // note - always load into their original room as per the campaign - if need to change, we can do later:
         roomJson: campaign.rooms[campaignStartingRoomIds.heels],
         // we are not loading so nothing has been collected/read:
-        ...defaultLoadRoom,
-        userSettings: store.getState().userSettings.userSettings,
+        ...sharedLoadRoomOptions,
       });
 
   // both players, in their starting rooms:

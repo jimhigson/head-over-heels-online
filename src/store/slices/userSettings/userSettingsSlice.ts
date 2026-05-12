@@ -59,12 +59,16 @@ export type SoundSettings = {
   noFootsteps?: boolean;
 };
 
+export type PokesEnabled = {
+  infiniteLives?: boolean;
+  infiniteDoughnuts?: boolean;
+};
+
 export type UserSettings = {
   inputAssignment?: InputAssignment;
   displaySettings: DisplaySettings;
-  infiniteLivesPoke?: boolean;
-  infiniteDoughnutsPoke?: boolean;
   showFps?: boolean;
+  pokesEnabled: PokesEnabled;
   inputDirectionMode?: InputDirectionMode;
   directionsRelativeTo?: DirectionsRelativeToMode;
   onScreenControls?: boolean;

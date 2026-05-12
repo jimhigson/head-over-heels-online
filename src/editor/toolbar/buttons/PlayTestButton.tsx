@@ -4,12 +4,9 @@ import type { TypedURLSearchParams } from "../../../options/queryParams";
 import type { TextureTailwindClass } from "../../../sprites/spritesheet/spritesheetData/TextureTailwindClass";
 
 import { compressObject } from "../../../db/compressObject";
-import { store } from "../../../store/store";
+import { editorStore } from "../../../store/store";
 import { Switch } from "../../../ui/Switch";
-import {
-  type RootStateWithLevelEditorSlice,
-  selectCurrentCampaignInProgress,
-} from "../../slice/levelEditorSlice";
+import { selectCurrentCampaignInProgress } from "../../slice/levelEditorSlice";
 import { MenuButton } from "./MenuButton";
 import { ToolbarButton } from "./ToolbarButton";
 import { IconWithTwoLineHoverText } from "./ToolbarButtonContentPatterns";
@@ -23,7 +20,7 @@ export const PlayTestButton = () => {
       main={
         <ToolbarButton
           onClick={async () => {
-            const state = store.getState() as RootStateWithLevelEditorSlice;
+            const state = editorStore.getState();
             const campaign = selectCurrentCampaignInProgress(state);
             const encodedCampaign = await compressObject(campaign);
 

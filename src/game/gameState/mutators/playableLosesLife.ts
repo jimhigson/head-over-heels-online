@@ -37,7 +37,7 @@ import {
 } from "./symbiosis";
 
 /**
- * copy the invoation from Retrospec to avoid an unwinnable game when one
+ * copy the innovation from Retrospec to avoid an unwinnable game when one
  * character loses all their lives but the other is still playing while still
  * making getting down to zero lives a problem
  * */
@@ -243,6 +243,7 @@ const reloadRoomWithCharacterInIt = <RoomId extends string>({
     roomJson: campaign.rooms[roomId],
     roomPickupsCollected: gameState.pickupsCollected[roomId] ?? emptyObject,
     scrollsRead,
+    planetsLiberated: state.gameInPlay.gameInPlay.planetsLiberated,
     userSettings,
   });
   for (const playableItem of playableItems) {

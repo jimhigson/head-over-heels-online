@@ -1,10 +1,8 @@
 import { BitmapText } from "../../game/components/tailwindSprites/BitmapText";
 import { useAppDispatch } from "../../store/hooks";
+import { useEditorAppSelector } from "../../store/store";
 import { RoomSelect } from "../../ui/RoomSelect";
-import {
-  changeToRoom,
-  useAppSelectorWithLevelEditorSlice,
-} from "../slice/levelEditorSlice";
+import { changeToRoom } from "../slice/levelEditorSlice";
 import { buttonDefinitions } from "./buttonDefinitions";
 import { AddAndDeleteRoomButtons } from "./buttons/AddAndDeleteRoomButtons";
 import { AutoCoalesceSwitch } from "./buttons/AutoCoalesceSwitch";
@@ -16,6 +14,7 @@ import { DoorToolButton } from "./buttons/DoorToolButton";
 import { EyeDropperButton } from "./buttons/EyeDropperButton";
 import { HalfGridResolutionSwitch } from "./buttons/HalfGridResolutionSwitch";
 import { LoggedInStatus } from "./buttons/LoggedInStatus";
+import { NewCampaignButton } from "./buttons/NewCampaignButton";
 import { NudgeButtons } from "./buttons/NudgeButtons";
 import { PlayTestButton } from "./buttons/PlayTestButton";
 import { PointerToolButton } from "./buttons/PointerToolButton";
@@ -39,14 +38,14 @@ import { SaveAndLoadButtons } from "./saving/SaveAndLoadButtons";
 const HorizontalGap = () => <div className="w-[calc(var(--block)-1px)]" />;
 
 export const LevelEditorToolbar = () => {
-  const campaign = useAppSelectorWithLevelEditorSlice(
+  const campaign = useEditorAppSelector(
     (state) => state.levelEditor.campaignInProgress,
   );
-  const currentlyEditingRoomId = useAppSelectorWithLevelEditorSlice(
+  const currentlyEditingRoomId = useEditorAppSelector(
     (state) => state.levelEditor.currentlyEditingRoomId,
   );
   const dispatch = useAppDispatch();
-  const campaignName = useAppSelectorWithLevelEditorSlice(
+  const campaignName = useEditorAppSelector(
     (state) => state.levelEditor.campaignInProgress.locator.campaignName,
   );
 
@@ -64,6 +63,8 @@ export const LevelEditorToolbar = () => {
             </BitmapText>
           : <BitmapText className="text-midRed">{`(untitled)`}</BitmapText>}
         </div>
+        <NewCampaignButton />
+        <HorizontalGap />
         <SaveAndLoadButtons />
         <HorizontalGap />
         <ShareCampaignButton />

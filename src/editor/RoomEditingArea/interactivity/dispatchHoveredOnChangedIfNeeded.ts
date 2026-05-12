@@ -1,13 +1,10 @@
 import nanoEqual from "nano-equal";
 
 import type { EditorRoomState } from "../../editorTypes";
-import type {
-  HoveredItem,
-  RootStateWithLevelEditorSlice,
-} from "../../slice/levelEditorSlice";
+import type { HoveredItem } from "../../slice/levelEditorSlice";
 import type { MaybePointingAtSomething } from "../cursor/PointingAt";
 
-import { store } from "../../../store/store";
+import { editorStore, store } from "../../../store/store";
 import {
   selectHoveredItem,
   setHoveredItemInRoom,
@@ -18,7 +15,7 @@ export const dispatchHoveredOnChangedIfNeeded = (
   roomState: EditorRoomState,
   pointingAt: MaybePointingAtSomething,
 ) => {
-  const storeState = store.getState() as RootStateWithLevelEditorSlice;
+  const storeState = editorStore.getState();
 
   let newHoveredItem: HoveredItem | undefined;
 

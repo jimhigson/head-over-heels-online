@@ -3,7 +3,7 @@ import type { editor } from "monaco-editor";
 import { Editor } from "@monaco-editor/react";
 import { useState } from "preact/hooks";
 
-import { useAppSelectorWithLevelEditorSlice } from "../slice/levelEditorSlice";
+import { useEditorAppSelector } from "../../store/store";
 import { useMonacoSuggestions } from "./suggestions/useMonacoSuggestions";
 import { useItemIconDecorations } from "./useItemIconDecorations";
 import { useLoadMonaco } from "./useLoadMonaco";
@@ -16,7 +16,7 @@ const JsonRoomEditor = () => {
   const [editor, setEditor] = useState<editor.IStandaloneCodeEditor | null>(
     null,
   );
-  const currentlyEditingRoomId = useAppSelectorWithLevelEditorSlice(
+  const currentlyEditingRoomId = useEditorAppSelector(
     (state) => state.levelEditor.currentlyEditingRoomId,
   );
 

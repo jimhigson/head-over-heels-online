@@ -1,10 +1,11 @@
 import { afterEach, beforeEach, expect, test, vi } from "vitest";
 
 import { migrateLegacySavedGames } from "./migrateLegacySavedGames";
-import { persistVersion } from "./persist";
 
 const LEGACY_KEY = "persist:hohol/gameMenus/userSettings";
-const NEW_KEY = "persist:hohol/savedGames";
+const NEW_SAVED_GAMES_KEY = "persist:hohol/savedGames";
+const NEW_USER_SETTINGS_KEY = "persist:hohol/userSettings";
+const LEGACY_PERSIST_VERSION = 17;
 
 /**
  * Build the legacy outer redux-persist blob (the JSON string stored under
@@ -16,28 +17,31 @@ const legacyOuterBlob = (savedGames: object, userSettings: object = {}) =>
   JSON.stringify({
     userSettings: JSON.stringify(userSettings),
     savedGames: JSON.stringify(savedGames),
-    _persist: JSON.stringify({ version: 17, rehydrated: true }),
+    _persist: JSON.stringify({
+      version: LEGACY_PERSIST_VERSION,
+      rehydrated: true,
+    }),
   });
 
 /**
- * Parse the post-migration new key. Each top-level field of savedGames was
- * serialised separately by redux-persist, so we double-decode the string
- * fields to reconstruct the slice's logical shape.
+ * Parse a post-migration new key. Each top-level field was serialised
+ * separately by redux-persist, so we double-decode to reconstruct the
+ * logical shape.
  */
 const parseNewBlob = (raw: string) => {
   const outer = JSON.parse(raw) as Record<string, string>;
-  return {
-    saves: JSON.parse(outer.saves) as Record<string, unknown>,
-    _persist: JSON.parse(outer._persist) as {
-      version: number;
-      rehydrated: boolean;
-    },
-    lastSavedCampaignLocator:
-      outer.lastSavedCampaignLocator === undefined ?
-        undefined
-      : (JSON.parse(outer.lastSavedCampaignLocator) as unknown),
+  const result: Record<string, unknown> = {
+    _persist: JSON.parse(outer._persist),
   };
+  for (const [k, v] of Object.entries(outer)) {
+    if (k !== "_persist") {
+      result[k] = JSON.parse(v);
+    }
+  }
+  return result;
 };
+
+const exampleSaveKey = `{"campaignName":"original","userId":"@@original"}`;
 
 const exampleGameInPlay = {
   planetsLiberated: {
@@ -47,21 +51,9 @@ const exampleGameInPlay = {
     penitentiary: false,
     safari: false,
   },
-  roomsExplored: { egyptus1: true },
-  scrollsRead: {},
-  freeCharacters: {},
-  campaignLocator: {
-    userId: "@@original",
-    campaignName: "original",
-    version: -1,
-  },
 };
 
-const exampleSaveKey = `{"campaignName":"original","userId":"@@original"}`;
-
 beforeEach(() => {
-  // Provide a minimal in-memory window.localStorage. The migration function
-  // checks `typeof window === "undefined"` so this also covers that branch.
   const store = new Map<string, string>();
   vi.stubGlobal("window", {
     localStorage: {
@@ -76,12 +68,11 @@ afterEach(() => {
   vi.unstubAllGlobals();
 });
 
-test("oldest save shape (`save.store.gameMenus.gameInPlay`) is lifted to `save.gameInPlay`", () => {
-  const legacy = legacyOuterBlob({
+test("savedGames blob is re-keyed without shape transformation", () => {
+  const saveData = {
     saves: {
       [exampleSaveKey]: {
         saveTime: 1_700_000_000_000,
-        gameState: { dummy: true },
         store: { gameMenus: { gameInPlay: exampleGameInPlay } },
       },
     },
@@ -90,102 +81,110 @@ test("oldest save shape (`save.store.gameMenus.gameInPlay`) is lifted to `save.g
       campaignName: "original",
       version: -1,
     },
-  });
-  window.localStorage.setItem(LEGACY_KEY, legacy);
+  };
+  window.localStorage.setItem(LEGACY_KEY, legacyOuterBlob(saveData));
 
   migrateLegacySavedGames();
 
-  const newRaw = window.localStorage.getItem(NEW_KEY);
-  expect(newRaw).not.toBeNull();
-  const parsed = parseNewBlob(newRaw!);
-  const save = parsed.saves[exampleSaveKey] as Record<string, unknown>;
-  expect(save.gameInPlay).toEqual(exampleGameInPlay);
-  expect(save.store).toBeUndefined();
-  expect(parsed._persist.version).toBe(persistVersion);
-  expect(parsed.lastSavedCampaignLocator).toEqual({
-    userId: "@@original",
-    campaignName: "original",
-    version: -1,
-  });
-  // legacy key removed
+  const parsed = parseNewBlob(
+    window.localStorage.getItem(NEW_SAVED_GAMES_KEY)!,
+  );
+  const save = (parsed.saves as Record<string, Record<string, unknown>>)[
+    exampleSaveKey
+  ];
+  // shape rewriting is now done by createMigrate, not by re-keying
+  expect(save.store).toEqual({ gameMenus: { gameInPlay: exampleGameInPlay } });
+  expect(parsed.lastSavedCampaignLocator).toEqual(
+    saveData.lastSavedCampaignLocator,
+  );
+});
+
+test("preserves the original _persist version for both slices", () => {
+  const userSettings = { infiniteLivesPoke: true };
+  window.localStorage.setItem(
+    LEGACY_KEY,
+    legacyOuterBlob({ saves: {} }, userSettings),
+  );
+
+  migrateLegacySavedGames();
+
+  const savedGamesParsed = parseNewBlob(
+    window.localStorage.getItem(NEW_SAVED_GAMES_KEY)!,
+  );
+  const userSettingsParsed = parseNewBlob(
+    window.localStorage.getItem(NEW_USER_SETTINGS_KEY)!,
+  );
+  expect((savedGamesParsed._persist as { version: number }).version).toBe(
+    LEGACY_PERSIST_VERSION,
+  );
+  expect((userSettingsParsed._persist as { version: number }).version).toBe(
+    LEGACY_PERSIST_VERSION,
+  );
+});
+
+test("userSettings is re-keyed", () => {
+  const userSettings = {
+    displaySettings: {},
+    soundSettings: { mute: true },
+    infiniteLivesPoke: true,
+  };
+  window.localStorage.setItem(
+    LEGACY_KEY,
+    legacyOuterBlob({ saves: {} }, userSettings),
+  );
+
+  migrateLegacySavedGames();
+
+  const parsed = parseNewBlob(
+    window.localStorage.getItem(NEW_USER_SETTINGS_KEY)!,
+  );
+  expect(parsed.userSettings).toEqual(userSettings);
+});
+
+test("legacy key is removed after migration", () => {
+  window.localStorage.setItem(LEGACY_KEY, legacyOuterBlob({ saves: {} }));
+
+  migrateLegacySavedGames();
+
   expect(window.localStorage.getItem(LEGACY_KEY)).toBeNull();
-});
-
-test("intermediate save shape (`save.store.gameInPlay.gameInPlay`) is also lifted", () => {
-  const legacy = legacyOuterBlob({
-    saves: {
-      [exampleSaveKey]: {
-        saveTime: 1_700_000_000_000,
-        gameState: { dummy: true },
-        store: { gameInPlay: { gameInPlay: exampleGameInPlay } },
-      },
-    },
-  });
-  window.localStorage.setItem(LEGACY_KEY, legacy);
-
-  migrateLegacySavedGames();
-
-  const parsed = parseNewBlob(window.localStorage.getItem(NEW_KEY)!);
-  const save = parsed.saves[exampleSaveKey] as Record<string, unknown>;
-  expect(save.gameInPlay).toEqual(exampleGameInPlay);
-  expect(save.store).toBeUndefined();
-});
-
-test("newest save shape (`save.gameInPlay` already at root) is preserved unchanged", () => {
-  const legacy = legacyOuterBlob({
-    saves: {
-      [exampleSaveKey]: {
-        saveTime: 1_700_000_000_000,
-        gameState: { dummy: true },
-        gameInPlay: exampleGameInPlay,
-      },
-    },
-  });
-  window.localStorage.setItem(LEGACY_KEY, legacy);
-
-  migrateLegacySavedGames();
-
-  const parsed = parseNewBlob(window.localStorage.getItem(NEW_KEY)!);
-  const save = parsed.saves[exampleSaveKey] as Record<string, unknown>;
-  expect(save.gameInPlay).toEqual(exampleGameInPlay);
 });
 
 test("legacy key absent is a no-op", () => {
   migrateLegacySavedGames();
-  expect(window.localStorage.getItem(NEW_KEY)).toBeNull();
-  expect(window.localStorage.getItem(LEGACY_KEY)).toBeNull();
+  expect(window.localStorage.getItem(NEW_SAVED_GAMES_KEY)).toBeNull();
+  expect(window.localStorage.getItem(NEW_USER_SETTINGS_KEY)).toBeNull();
 });
 
-test("legacy key with unparseable JSON: silent failure, but legacy key still removed", () => {
+test("unparseable JSON: silent failure, legacy key still removed", () => {
   window.localStorage.setItem(LEGACY_KEY, "not-json{{{");
 
   migrateLegacySavedGames();
 
-  expect(window.localStorage.getItem(NEW_KEY)).toBeNull();
+  expect(window.localStorage.getItem(NEW_SAVED_GAMES_KEY)).toBeNull();
+  expect(window.localStorage.getItem(NEW_USER_SETTINGS_KEY)).toBeNull();
   expect(window.localStorage.getItem(LEGACY_KEY)).toBeNull();
 });
 
-test("new key already populated: legacy is removed but the existing new save is not clobbered", () => {
-  const legacy = legacyOuterBlob({
-    saves: {
-      [exampleSaveKey]: {
-        saveTime: 1_700_000_000_000,
-        gameState: { dummy: true },
-        store: { gameMenus: { gameInPlay: exampleGameInPlay } },
-      },
-    },
+test("existing new keys are not clobbered", () => {
+  window.localStorage.setItem(
+    LEGACY_KEY,
+    legacyOuterBlob({ saves: { old: true } }, { old: true }),
+  );
+  const existingSavedGames = JSON.stringify({ saves: "{}", _persist: "{}" });
+  const existingUserSettings = JSON.stringify({
+    userSettings: "{}",
+    _persist: "{}",
   });
-  const existingNewBlob = JSON.stringify({
-    saves: JSON.stringify({
-      existing: { saveTime: 999, gameInPlay: { keep: true } },
-    }),
-    _persist: JSON.stringify({ version: persistVersion, rehydrated: true }),
-  });
-  window.localStorage.setItem(LEGACY_KEY, legacy);
-  window.localStorage.setItem(NEW_KEY, existingNewBlob);
+  window.localStorage.setItem(NEW_SAVED_GAMES_KEY, existingSavedGames);
+  window.localStorage.setItem(NEW_USER_SETTINGS_KEY, existingUserSettings);
 
   migrateLegacySavedGames();
 
-  expect(window.localStorage.getItem(NEW_KEY)).toBe(existingNewBlob);
+  expect(window.localStorage.getItem(NEW_SAVED_GAMES_KEY)).toBe(
+    existingSavedGames,
+  );
+  expect(window.localStorage.getItem(NEW_USER_SETTINGS_KEY)).toBe(
+    existingUserSettings,
+  );
   expect(window.localStorage.getItem(LEGACY_KEY)).toBeNull();
 });

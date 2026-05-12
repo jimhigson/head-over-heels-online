@@ -73,7 +73,7 @@ jobs:
           - suite: endgame
             pattern: "lifeAndDeath savesAndGameOver quitGameFlow gameComplete reincarnationStack"
           - suite: gameplayAndMenus
-            pattern: "crownsDialogs scrollAndKeyRebind mainMenuClosability playtestNoSave"
+            pattern: "crownsDialogs scrollAndKeyRebind mainMenuClosability playtestNoSave migrations"
     name: E2E ${{ matrix.suite }}
     steps:
       - uses: actions/checkout@v6

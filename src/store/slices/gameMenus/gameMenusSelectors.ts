@@ -29,9 +29,19 @@ import { defaultUserSettings } from "../userSettings/defaultUserSettings";
 
 const selectUserSetting =
   <Path extends Paths<UserSettings>>(path: Path) =>
-  (state: RootState): NonNullable<Get<UserSettings, Path>> =>
-    getAtPath(state.userSettings.userSettings, path) ??
-    getAtPath(defaultUserSettings, path);
+  (state: RootState): NonNullable<Get<UserSettings, Path>> => {
+    try {
+      return (
+        getAtPath(state.userSettings.userSettings, path) ??
+        getAtPath(defaultUserSettings, path)
+      );
+    } catch (e) {
+      throw new Error(
+        `error getting user setting ${path} while settings are ${JSON.stringify(state.userSettings)}`,
+        { cause: e },
+      );
+    }
+  };
 
 export const selectInputAssignment = selectUserSetting("inputAssignment");
 
@@ -96,9 +106,11 @@ export const useSpritesOption = () => useAppSelector(selectSpritesOption);
 
 export const useIsUncolourised = () => useAppSelector(selectIsUncolourised);
 export const selectIsCrtFilter = selectUserSetting("displaySettings.crtFilter");
-export const selectIsInfiniteLivesPoke = selectUserSetting("infiniteLivesPoke");
+export const selectIsInfiniteLivesPoke = selectUserSetting(
+  "pokesEnabled.infiniteLives",
+);
 export const selectIsInfiniteDoughnutsPoke = selectUserSetting(
-  "infiniteDoughnutsPoke",
+  "pokesEnabled.infiniteDoughnuts",
 );
 
 export const selectHasAllPlanetCrowns = (state: RootState) => {

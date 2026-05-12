@@ -4,17 +4,17 @@ import type { SceneryName } from "../../../sprites/planets";
 
 import { sceneryNames } from "../../../sprites/planets";
 import { useAppDispatch } from "../../../store/hooks";
+import { useEditorAppSelector } from "../../../store/store";
 import { Select } from "../../../ui/Select";
 import {
   changeRoomScenery,
   selectCurrentEditingRoomScenery,
-  useAppSelectorWithLevelEditorSlice,
 } from "../../slice/levelEditorSlice";
 
 export function RoomScenerySelect() {
   const dispatch = useAppDispatch();
 
-  const currentRoomScenery = useAppSelectorWithLevelEditorSlice(
+  const currentRoomScenery = useEditorAppSelector(
     selectCurrentEditingRoomScenery,
   );
   return (

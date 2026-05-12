@@ -1,9 +1,7 @@
 import { useAppDispatch } from "../../../store/hooks";
+import { useEditorAppSelector } from "../../../store/store";
 import { Switch } from "../../../ui/Switch";
-import {
-  setAutoCoalesce,
-  useAppSelectorWithLevelEditorSlice,
-} from "../../slice/levelEditorSlice";
+import { setAutoCoalesce } from "../../slice/levelEditorSlice";
 
 export const AutoCoalesceSwitch = ({ className }: { className?: string }) => {
   const dispatch = useAppDispatch();
@@ -12,9 +10,7 @@ export const AutoCoalesceSwitch = ({ className }: { className?: string }) => {
     <Switch
       className={className}
       label="Coalesce"
-      value={useAppSelectorWithLevelEditorSlice(
-        (state) => state.levelEditor.autoCoalesce,
-      )}
+      value={useEditorAppSelector((state) => state.levelEditor.autoCoalesce)}
       onChange={(value) => {
         dispatch(setAutoCoalesce(value));
       }}
