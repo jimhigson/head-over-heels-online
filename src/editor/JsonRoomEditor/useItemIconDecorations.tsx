@@ -357,6 +357,8 @@ const textureForItem = (
       return twClass("texture-hud_char_T");
     case "button":
       return twClass("texture-buttonInGame");
+    case "floatingText":
+      return twClass("texture-hud_char_t");
     default:
       item satisfies never;
       return twClass("texture-hud_char_questMk");

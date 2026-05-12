@@ -61,7 +61,7 @@ type PickupConfig =
 export type EmittableItemJson = Extract<
   JsonItemUnion,
   {
-    type: "firedDoughnut" | FreeItemTypes;
+    type: "firedDoughnut" | "floatingText" | FreeItemTypes;
   }
 >;
 
@@ -153,6 +153,19 @@ export type ItemConfigMap<
 > = {
   door: DoorConfig<RoomId>;
 
+  floatingText: {
+    /** the lines of text to display, each rendered as a separate row */
+    textLines: string[];
+    /**
+     * the room time when this floating text starts; used to calculate the rise animation age.
+     * if not given, will start right away at time zero.
+     * if given, will delay starting until this time
+     */
+    appearanceRoomTime?: number;
+    /** if true, lines oscillate horizontally as they rise */
+    sway?: boolean;
+  };
+
   floor: FloorConfig<ScN>;
   wall: WallJsonConfig<ScN>;
   teleporter: TeleporterConfig<RoomId>;
@@ -234,6 +247,15 @@ export type ItemConfigMap<
      * (for example, collecting an emitted pickup)
      */
     maximumAtOnce?: number;
+
+    /** size of the emitter's collision volume in blocks; if undefined, the emitter has no volume */
+    times?: Partial<Xyz>;
+
+    /** if true, only emits while the currently selected player overlaps the emitter's bounds; timing resets on each entry */
+    whenPlayerInside?: boolean;
+
+    /** offset in blocks applied to the emission position, relative to the emitter's origin */
+    offset?: Partial<Xyz>;
   };
   firedDoughnut: {
     // if the doughnut is given via json, can be used to give its direction

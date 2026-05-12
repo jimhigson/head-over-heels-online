@@ -13,10 +13,13 @@ import { defaultItemProperties } from "../../../model/defaultItemProperties";
 import { roomJsonItemsIterable } from "../../../model/RoomJson";
 import { getJsonItemTimes } from "../../../model/times";
 import { emptyObject } from "../../../utils/empty";
-import { lengthXyz, unitXyz } from "../../../utils/vectors/vectors";
+import { addXyz, lengthXyz, unitXyz } from "../../../utils/vectors/vectors";
 import { boundingBoxForItem } from "../../collision/boundingBoxes";
 import { multiplyBoundingBox } from "../../collision/multiplyBoundingBox";
-import { nonRenderingItemFixedZIndex } from "../../render/sortZ/fixedZIndexes";
+import {
+  floatingTextFixedZIndex,
+  nonRenderingItemFixedZIndex,
+} from "../../render/sortZ/fixedZIndexes";
 import {
   buildRoomJsonDirectionalIndex,
   type RoomDirectionalIndex,
@@ -163,6 +166,7 @@ export function* loadItemFromJson<
         fixedZIndex:
           jsonItem.type === "emitter" || jsonItem.type === "timer" ?
             nonRenderingItemFixedZIndex
+          : jsonItem.type === "floatingText" ? floatingTextFixedZIndex
           : undefined,
         shadowCastTexture: loadItemShadowCast(jsonItem),
         // items that have true here are items that let a little bit of the floor below them
@@ -187,6 +191,37 @@ export function* loadItemFromJson<
         config: jsonItem.config as any,
         state,
       };
+
+      if (jsonItem.type === "teleporter") {
+        const teleporterTimes = getJsonItemTimes(jsonItem);
+        yield* loadItemFromJson(
+          `${jsonItemId}-help` as RoomItemId,
+          {
+            type: "emitter",
+            position: addXyz(jsonItem.position, { z: teleporterTimes.z }),
+            config: {
+              emits: {
+                type: "floatingText",
+                config: {
+                  textLines: ["Press jump", "to teleport"],
+                  sway: true,
+                },
+              },
+              period: 8_000,
+              delay: 1_000,
+              maximum: null,
+              whenPlayerInside: true,
+              offset: { z: 0.5 },
+              times: {
+                ...teleporterTimes,
+                z: 0.1,
+              },
+            },
+          },
+          roomJson,
+          directionalIndex,
+        );
+      }
     }
   }
 }

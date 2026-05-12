@@ -8007,6 +8007,90 @@ exports[`playing through a complex, deterministic room ("laboratory") should alw
       },
       "type": "teleporter",
     },
+    "teleporter@1,0,0-help": {
+      "aabb": {
+        "x": 16,
+        "y": 16,
+        "z": 1.2000000000000002,
+      },
+      "castsShadowWhileStoodOn": false,
+      "config": {
+        "delay": 1000,
+        "emits": {
+          "config": {
+            "sway": true,
+            "textLines": [
+              "Press jump",
+              "to teleport",
+            ],
+          },
+          "type": "floatingText",
+        },
+        "maximum": null,
+        "offset": {
+          "z": 0.5,
+        },
+        "period": 8000,
+        "times": {
+          "x": 1,
+          "y": 1,
+          "z": 0.1,
+        },
+        "whenPlayerInside": true,
+      },
+      "fixedZIndex": -2,
+      "id": "teleporter@1,0,0-help",
+      "jsonItemId": "teleporter@1,0,0-help",
+      "position": {
+        "x": 1,
+        "y": 0,
+        "z": 1,
+      },
+      "shadowCastTexture": undefined,
+      "state": {
+        "actedOnAt": {
+          "actedInXY": false,
+          "actedInZ": false,
+          "by": {},
+          "roomTime": -9007199254740991,
+        },
+        "delay": 1000,
+        "disappearing": null,
+        "emits": {
+          "config": {
+            "sway": true,
+            "textLines": [
+              "Press jump",
+              "to teleport",
+            ],
+          },
+          "type": "floatingText",
+        },
+        "expires": null,
+        "lastEmittedAtRoomTime": -7000,
+        "maximum": null,
+        "offset": {
+          "z": 0.5,
+        },
+        "period": 8000,
+        "position": {
+          "x": 16,
+          "y": 0,
+          "z": 12,
+        },
+        "quantityEmitted": 0,
+        "stoodOnBy": {},
+        "stoodOnUntilRoomTime": -9007199254740991,
+        "switchedAtRoomTime": -9007199254740991,
+        "times": {
+          "x": 1,
+          "y": 1,
+          "z": 0.1,
+        },
+        "whenPlayerInside": true,
+      },
+      "type": "emitter",
+    },
     "wall(right)@0,0,0": {
       "aabb": {
         "x": 16,

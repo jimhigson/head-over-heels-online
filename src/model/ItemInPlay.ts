@@ -31,8 +31,6 @@ export const itemInPlayTypes = [
   "blocker",
   /** jumping or running fast, with a power-up, crown shine effect */
   "particle",
-  /** when collecting pickups */
-  "floatingText",
   /** a sound that plays from a point in a room */
   "soundEffect",
   /**
@@ -79,10 +77,6 @@ type ItemInPlayConfigMap<RoomId extends string, RoomItemId extends string> = {
      * the direction this portal has to be hit (with a dot product in) to be walked through
      */
     direction: Xyz;
-  };
-  floatingText: {
-    textLines: string[];
-    appearanceRoomTime: number;
   };
   particle: {
     forCharacter: "crown" | IndividualCharacterName;

@@ -11,6 +11,8 @@ import {
 import { headState, heelsState } from "../../../_testUtils/characterState";
 import { resetStore } from "../../../_testUtils/initStoreForTests";
 import { playGameThrough } from "../../../_testUtils/playGameThrough";
+import { roomItemsIterable } from "../../../model/RoomState";
+import { selectCurrentRoomState } from "../../gameState/gameStateSelectors/selectCurrentRoomState";
 
 beforeEach(() => {
   resetStore();
@@ -867,4 +869,46 @@ test("teleporting clamps position so player doesn't overhang destination", () =>
       "z": 12,
     }
   `);
+});
+
+test("teleporter generates a companion help-text emitter", () => {
+  const gameState = setUpBasicGame({
+    firstRoomItems: {
+      heels: {
+        type: "player",
+        position: { x: 4, y: 4, z: 1 },
+        config: { which: "heels" },
+      },
+      teleporter: {
+        type: "teleporter",
+        position: { x: 0, y: 2, z: 0 },
+        config: {},
+      },
+    },
+  });
+
+  const room = selectCurrentRoomState(gameState)!;
+  const emitter = roomItemsIterable(room.items)
+    .filter((item) => item.type === "emitter")
+    .toArray();
+
+  expect(emitter).toHaveLength(1);
+  const [helpEmitter] = emitter;
+
+  expect(helpEmitter.id).toBe("teleporter-help");
+  expect(helpEmitter.config.whenPlayerInside).toBe(true);
+  expect(helpEmitter.state.emits).toEqual({
+    type: "floatingText",
+    config: { textLines: ["Press jump", "to teleport"], sway: true },
+  });
+  expect(helpEmitter.state.position).toEqual({
+    x: 0,
+    y: 32,
+    z: 12,
+  });
+  expect(helpEmitter.aabb).toEqual({
+    x: expect.closeTo(16),
+    y: expect.closeTo(16),
+    z: expect.closeTo(1.2),
+  });
 });

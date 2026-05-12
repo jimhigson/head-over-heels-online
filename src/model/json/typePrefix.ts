@@ -17,6 +17,7 @@ export const typePrefix: Record<JsonItemType, string> = {
   door: "d",
   emitter: "e",
   firedDoughnut: "fd",
+  floatingText: "ft",
   floor: "f",
   hushPuppy: "h",
   joystick: "j",
