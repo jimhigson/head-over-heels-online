@@ -42,11 +42,17 @@ import {
   fastStepsRemaining,
   shieldRemainingForAbilities,
 } from "../../gameState/gameStateSelectors/selectPickupAbilities";
-import { selectAbilities } from "../../gameState/gameStateSelectors/selectPlayableItem";
+import {
+  selectAbilities,
+  selectCurrentPlayableItem,
+} from "../../gameState/gameStateSelectors/selectPlayableItem";
 import { outlineFilters } from "../filters/OutlineFilter";
 import { getRoomColorScheme } from "../gameColours/colourScheme";
 import { TextContainer } from "../text/TextContainer";
 import { FpsRenderer } from "./FpsRenderer";
+import { HudButtonRenderer } from "./HudButtonRenderer";
+import { mapButtonAppearance } from "./onScreenControls/buttonAppearances/mapButtonAppearance";
+import { menuButtonAppearance } from "./onScreenControls/buttonAppearances/menuButtonAppearance";
 import { OnScreenControls } from "./onScreenControls/OnScreenControls";
 import { renderCarriedOnce } from "./renderCarriedOnce";
 import {
@@ -140,6 +146,12 @@ export class HudRenderer<RoomId extends string, RoomItemId extends string>
   };
 
   #characterTextureIds: Record<IndividualCharacterName, TextureId>;
+
+  // eslint-disable-next-line @typescript-eslint/no-explicit-any
+  #mapButton: HudButtonRenderer<"map", RoomId, any, any>;
+  // eslint-disable-next-line @typescript-eslint/no-explicit-any
+  #menuButton: HudButtonRenderer<"menu", RoomId, any, any>;
+  #lastPointerMoveTime = 0;
 
   #unlisten;
   #carryingItemRoom: RoomState<RoomId, RoomItemId> | undefined = undefined;
@@ -238,6 +250,54 @@ export class HudRenderer<RoomId extends string, RoomItemId extends string>
         inputDirectionMode: renderContext.inputDirectionMode,
       });
       this.#container.addChild(this.#onScreenControls.output);
+    }
+
+    const { inputStateTracker } = general.gameState;
+
+    this.#menuButton = new HudButtonRenderer(
+      {
+        button: { which: "menu", actions: ["menu_openOrExit"], id: "menu" },
+        general,
+        inputStateTracker,
+      },
+      menuButtonAppearance,
+      true,
+    );
+    this.#mapButton = new HudButtonRenderer(
+      {
+        button: { which: "map", actions: ["map"], id: "map" },
+        general,
+        inputStateTracker,
+      },
+      mapButtonAppearance,
+      true,
+    );
+
+    for (const button of [this.#menuButton, this.#mapButton]) {
+      const { actions } = button.renderContext.button;
+      button.output.on("pointerdown", () => {
+        for (const action of actions) {
+          inputStateTracker.hudInputState[action] = true;
+        }
+      });
+      button.output.on("pointerup", () => {
+        for (const action of actions) {
+          inputStateTracker.hudInputState[action] = false;
+        }
+      });
+      button.output.on("pointerleave", () => {
+        for (const action of actions) {
+          inputStateTracker.hudInputState[action] = false;
+        }
+      });
+      this.#container.addChild(button.output);
+    }
+
+    if (!general.onScreenControls) {
+      this.#container.eventMode = "static";
+      this.#container.on("globalpointermove", () => {
+        this.#lastPointerMoveTime = Date.now();
+      });
     }
 
     // these have to come after the on-screen controls, since they are tappable to
@@ -719,6 +779,31 @@ export class HudRenderer<RoomId extends string, RoomItemId extends string>
     this.#tickBagAndCarrying(tickContext);
 
     this.#onScreenControls?.tick(tickContext);
+
+    const { onScreenControls, gameState } = this.renderContext.general;
+    const buttonTickContext = {
+      ...tickContext,
+      currentPlayable: selectCurrentPlayableItem(gameState),
+    };
+    this.#menuButton.tick({
+      ...buttonTickContext,
+      hovered: this.#menuButton.hovered,
+    });
+    this.#mapButton.tick({
+      ...buttonTickContext,
+      hovered: this.#mapButton.hovered,
+    });
+
+    this.#menuButton.output.x = 24;
+    this.#menuButton.output.y = 24;
+    this.#mapButton.output.x = tickContext.screenSize.x - 3 * 8;
+    this.#mapButton.output.y = 16;
+
+    const buttonsVisible =
+      !tickContext.paused &&
+      (onScreenControls || Date.now() - this.#lastPointerMoveTime < 2_000);
+    this.#menuButton.output.visible = buttonsVisible;
+    this.#mapButton.output.visible = buttonsVisible;
 
     if (this.#fpsRenderer) {
       this.#fpsRenderer.isDark = tickContext.room.color.shade === "dimmed";

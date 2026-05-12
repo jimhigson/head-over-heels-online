@@ -22,6 +22,12 @@ export type HudRendererTickContext<
   room?: RoomState<RoomId, RoomItemId>;
   /** Delta time in milliseconds since last tick */
   deltaMS: number;
+  /**
+   * duplicated from GeneralRenderContext because the HudRenderer is not
+   * recreated when pause state changes (unlike the room renderer), so the
+   * render context's value is stale
+   */
+  paused: boolean;
 
   freeCharacters: FreeCharacters;
 };

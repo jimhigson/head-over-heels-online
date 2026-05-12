@@ -1,11 +1,11 @@
 import type { RoomState } from "../../../../../model/RoomState";
-import type { ButtonAppearance } from "../OnScreenButtonRenderer";
+import type { ButtonAppearance } from "../../HudButtonRenderer";
 
 import { selectHeelsAbilities } from "../../../../gameState/gameStateSelectors/selectPlayableItem";
 import { getWhite } from "../../../gameColours/gameColours";
 import { TextContainer } from "../../../text/TextContainer";
+import { textYForButtonCentre } from "../../HudButtonRenderer";
 import { ArcadeStyleButtonContainer } from "../ArcadeStyleButtonContainer";
-import { textYForButtonCentre } from "../OnScreenButtonRenderer";
 import { buttonActionsPressed } from "./buttonActionsPressed";
 
 export type CarryAndJumpButtonRenderProps = {

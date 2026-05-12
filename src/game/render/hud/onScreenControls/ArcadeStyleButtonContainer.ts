@@ -4,7 +4,7 @@ import { Container, type Renderer, Sprite, Texture } from "pixi.js";
 
 import type { RoomState } from "../../../../model/RoomState";
 import type { SpritesheetMetadata } from "../../../../sprites/spritesheet/spritesheetData/spritesheetMetaData";
-import type { ButtonId } from "./OnScreenButtonRenderer";
+import type { ButtonId } from "../HudButtonRenderer";
 
 import {
   maybeDimPalette,

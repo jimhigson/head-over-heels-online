@@ -7,7 +7,7 @@ import type {
   PlayableItem,
   PortableItem,
 } from "../../../../physics/itemPredicates";
-import type { ButtonAppearance } from "../OnScreenButtonRenderer";
+import type { ButtonAppearance } from "../../HudButtonRenderer";
 
 import { getSpriteSheetVariant } from "../../../../../sprites/spritesheet/variants/getSpriteSheetVariant";
 import { selectHeelsAbilities } from "../../../../gameState/gameStateSelectors/selectPlayableItem";
