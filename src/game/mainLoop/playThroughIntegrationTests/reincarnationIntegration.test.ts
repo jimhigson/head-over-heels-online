@@ -69,9 +69,9 @@ describe("reincarnation", () => {
     ] as ItemInPlay<"floatingText">;
     expect(restoredTextInSave.config.textLines).toMatchInlineSnapshot(`
       [
-        "reincarnation",
-        "point",
-        "restored",
+        "REINCARNATION",
+        "POINT",
+        "RESTORED",
       ]
     `);
 
@@ -165,9 +165,9 @@ describe("reincarnation", () => {
     ] as ItemInPlay<"floatingText">;
     expect(restoredTextInHeadsRoomSave.config.textLines).toMatchInlineSnapshot(`
       [
-        "reincarnation",
-        "point",
-        "restored",
+        "REINCARNATION",
+        "POINT",
+        "RESTORED",
       ]
     `);
     const restoredTextInHeelsRoomSave = heelsRoomItemsInReincarnationPoint[
@@ -175,9 +175,9 @@ describe("reincarnation", () => {
     ] as ItemInPlay<"floatingText">;
     expect(restoredTextInHeelsRoomSave.config.textLines).toMatchInlineSnapshot(`
       [
-        "reincarnation",
-        "point",
-        "restored",
+        "REINCARNATION",
+        "POINT",
+        "RESTORED",
       ]
     `);
   });

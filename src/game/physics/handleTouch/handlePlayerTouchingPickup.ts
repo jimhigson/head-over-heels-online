@@ -106,7 +106,7 @@ export const handlePlayerTouchingPickup = <
       toModify.hasHooter = true;
       addItemToRoom({
         room: roomWithPickup,
-        item: loadFloatingText(["hooter", "collected"]),
+        item: loadFloatingText(["HOOTER", "COLLECTED"]),
       });
       pickupWasCollected();
       break;
@@ -120,7 +120,7 @@ export const handlePlayerTouchingPickup = <
       toModify.doughnuts = addPokeableNumbers(toModify.doughnuts, 6);
       addItemToRoom({
         room: roomWithPickup,
-        item: loadFloatingText(["+6", "doughnuts"]),
+        item: loadFloatingText(["+6", "DOUGHNUTS"]),
       });
       pickupWasCollected();
       break;
@@ -134,7 +134,7 @@ export const handlePlayerTouchingPickup = <
       toModify.hasBag = true;
       addItemToRoom({
         room: roomWithPickup,
-        item: loadFloatingText(["bag", "collected"]),
+        item: loadFloatingText(["BAG", "COLLECTED"]),
       });
       pickupWasCollected();
       break;
@@ -149,7 +149,7 @@ export const handlePlayerTouchingPickup = <
       }
       addItemToRoom({
         room: roomWithPickup,
-        item: loadFloatingText(["🛡", "shield"]),
+        item: loadFloatingText(["🛡", "SHIELD"]),
       });
       pickupWasCollected();
       break;
@@ -163,7 +163,7 @@ export const handlePlayerTouchingPickup = <
       toModify.fastStepsStartedAtDistance = toModify.gameWalkDistance;
       addItemToRoom({
         room: roomWithPickup,
-        item: loadFloatingText(["⚡", "fast steps"]),
+        item: loadFloatingText(["⚡", "FAST STEPS"]),
       });
       pickupWasCollected();
       break;
@@ -177,7 +177,7 @@ export const handlePlayerTouchingPickup = <
       toModify.bigJumps += 10;
       addItemToRoom({
         room: roomWithPickup,
-        item: loadFloatingText(["♨", "10", "big jumps"]),
+        item: loadFloatingText(["♨", "10", "BIG JUMPS"]),
       });
       pickupWasCollected();
       break;
@@ -195,13 +195,13 @@ export const handlePlayerTouchingPickup = <
         );
         addItemToRoom({
           room: roomWithPickup,
-          item: loadFloatingText(["+2", "lives", "each"]),
+          item: loadFloatingText(["+2", "LIVES", "EACH"]),
         });
       } else {
         player.state.lives = addPokeableNumbers(player.state.lives, 2);
         addItemToRoom({
           room: roomWithPickup,
-          item: loadFloatingText(["+2", "lives"]),
+          item: loadFloatingText(["+2", "LIVES"]),
         });
       }
       pickupWasCollected();
@@ -229,9 +229,9 @@ export const handlePlayerTouchingPickup = <
       )) {
         if (savedRoom.id === roomWithPickup.id) {
           const floatingText = loadFloatingText([
-            "reincarnation",
-            "point",
-            "restored",
+            "REINCARNATION",
+            "POINT",
+            "RESTORED",
           ]);
           // saved games are unindexed, so add the 'restored' version directly
           // to the room:
@@ -244,7 +244,7 @@ export const handlePlayerTouchingPickup = <
       // in the reloaded room
       addItemToRoom({
         room: roomWithPickup,
-        item: loadFloatingText(["reincarnation", "point", "saved"]),
+        item: loadFloatingText(["REINCARNATION", "POINT", "SAVED"]),
       });
 
       break;
@@ -256,7 +256,10 @@ export const handlePlayerTouchingPickup = <
       store.dispatch(crownCollected(pickupConfig.planet));
       addItemToRoom({
         room: roomWithPickup,
-        item: loadFloatingText([pickupConfig.planet, "liberated!"]),
+        item: loadFloatingText([
+          pickupConfig.planet.toUpperCase(),
+          "LIBERATED!",
+        ]),
       });
       pickupWasCollected();
       break;

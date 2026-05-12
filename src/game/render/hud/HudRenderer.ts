@@ -493,7 +493,8 @@ export class HudRenderer<RoomId extends string, RoomItemId extends string>
       "doughnuts",
     );
 
-    this.#hudElements.head.doughnuts.textContainer.text = doughnutCount;
+    this.#hudElements.head.doughnuts.textContainer.text =
+      doughnutCount === "infinite" ? "∞" : doughnutCount;
     doughnutsText.tint = tintForHud(
       spriteOption,
       room.color,
