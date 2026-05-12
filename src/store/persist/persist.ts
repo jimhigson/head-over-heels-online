@@ -23,14 +23,11 @@ import {
  * package.json) so a developer working on the v(N) release sees v(N) in
  * their local persist data, not v(N-1).
  *
- * Bump manually at the start of each dev cycle. Not managed by
- * release-please because release-please bumps at release time, which would
- * lag development by one version.
+ * Bump manually the first time the store format changes for a given release.
  *
- * redux-persist's default `migrate` is the identity function — bumping this
- * integer without adding a `migrate` entry is safe; persisted data passes
- * through unchanged. Add a `createMigrate({ N: ... })` to the relevant
- * persistConfig only when a release actually changes a slice's schema.
+ * This will not be bumped for version changes inside a release - every non-released
+ * version building up to a new release will have the same version, and may break
+ * - it only matters if released versions can migrate.
  */
 export const persistVersion = 23;
 

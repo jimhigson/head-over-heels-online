@@ -4,7 +4,6 @@ import type { GameState } from "../../gameState/GameState";
 
 import { roomJsonItemsIterable } from "../../../model/RoomJson";
 import { roomItemsIterable, type RoomState } from "../../../model/RoomState";
-import { completeTimesXyz } from "../../../model/times";
 import {
   addXyz,
   originXyz,
@@ -129,7 +128,7 @@ export const emitting = <RoomId extends string, RoomItemId extends string>(
       }
       const emitOffset =
         emitter.config.offset ?
-          productXyz(completeTimesXyz(emitter.config.offset), blockSizePx)
+          productXyz({ ...originXyz, ...emitter.config.offset }, blockSizePx)
         : originXyz;
 
       addItemToRoom({

@@ -19,7 +19,7 @@ beforeEach(() => {
 
 // fps that's easy to reason on since this test tests timings
 const fineFrameRate: FrameRateSpec = { fps: [100] };
-const courseFrameRate: FrameRateSpec = { fps: [15] };
+const coarseFrameRate: FrameRateSpec = { fps: [15] };
 
 const countEmittedItems = (gameState: ReturnType<typeof setUpBasicGame>) => {
   const room = selectCurrentRoomState(gameState)!;
@@ -223,6 +223,83 @@ test("emitter with delay does not emit until delay has elapsed", () => {
   expect(countEmittedItems(gameState)).toBe(2);
 });
 
+describe("emitted item position with offset", () => {
+  const emittedItemPosition = (
+    gameState: ReturnType<typeof setUpBasicGame>,
+  ) => {
+    const room = selectCurrentRoomState(gameState)!;
+    const [emitted] = roomItemsIterable(room.items)
+      .filter((item) => item.state.createdByEmitter === "emitter")
+      .toArray();
+    return emitted?.state.position;
+  };
+
+  test("emitted item with no offset appears centred on the emitter", () => {
+    const gameState = setUpBasicGame({
+      firstRoomItems: {
+        heels: {
+          type: "player",
+          position: { x: 4, y: 4, z: 0 },
+          config: { which: "heels" },
+        },
+        emitter: {
+          type: "emitter",
+          position: { x: 2, y: 2, z: 2 },
+          config: {
+            emits: { type: "portableBlock", config: { style: "cube" } },
+            period: 200,
+            maximum: 1,
+          },
+        },
+      },
+    });
+
+    playGameThrough(gameState, {
+      until: (gameState) => countEmittedItems(gameState) > 0,
+      frameRate: fineFrameRate,
+    });
+
+    const pos = emittedItemPosition(gameState)!;
+    expect(pos.x).toBe(34);
+    expect(pos.y).toBe(34);
+    // emitter pixel z (2 * 12 = 24) - half portableBlock aabb z (12 / 2 = 6)
+    expect(pos.z).toBeCloseTo(18);
+  });
+
+  test("offset with only z set does not shift x or y", () => {
+    const gameState = setUpBasicGame({
+      firstRoomItems: {
+        heels: {
+          type: "player",
+          position: { x: 4, y: 4, z: 0 },
+          config: { which: "heels" },
+        },
+        emitter: {
+          type: "emitter",
+          position: { x: 2, y: 2, z: 2 },
+          config: {
+            emits: { type: "portableBlock", config: { style: "cube" } },
+            period: 200,
+            maximum: 1,
+            offset: { z: 0.5 },
+          },
+        },
+      },
+    });
+
+    playGameThrough(gameState, {
+      until: (gameState) => countEmittedItems(gameState) > 0,
+      frameRate: fineFrameRate,
+    });
+
+    const pos = emittedItemPosition(gameState)!;
+    expect(pos.x).toBe(34);
+    expect(pos.y).toBe(34);
+    // no-offset z (18) + offset z (0.5 * 12 = 6)
+    expect(pos.z).toBeCloseTo(24);
+  });
+});
+
 describe("whenPlayableInside", () => {
   const heelsOverlapsEmitter = (
     gameState: ReturnType<typeof setUpBasicGame>,
@@ -346,7 +423,7 @@ describe("whenPlayableInside", () => {
       until(gameState) {
         return heelsOverlapsEmitter(gameState);
       },
-      frameRate: courseFrameRate,
+      frameRate: coarseFrameRate,
     });
 
     // stop and wait for first emission (delay 1s + period 500ms)
@@ -357,7 +434,7 @@ describe("whenPlayableInside", () => {
       until(gameState) {
         return countEmittedItems(gameState) > 0;
       },
-      frameRate: courseFrameRate,
+      frameRate: coarseFrameRate,
     });
 
     // walk left out of the emitter
@@ -368,7 +445,7 @@ describe("whenPlayableInside", () => {
       until(gameState) {
         return !heelsOverlapsEmitter(gameState);
       },
-      frameRate: courseFrameRate,
+      frameRate: coarseFrameRate,
     });
 
     const emittedAfterLeaving = countEmittedItems(gameState);
@@ -381,7 +458,7 @@ describe("whenPlayableInside", () => {
       until(gameState) {
         return heelsOverlapsEmitter(gameState);
       },
-      frameRate: courseFrameRate,
+      frameRate: coarseFrameRate,
     });
 
     // the delay should restart — no immediate emission
@@ -390,7 +467,7 @@ describe("whenPlayableInside", () => {
 
     playGameThrough(gameState, {
       until: roomTimeAtReEntry + 500,
-      frameRate: courseFrameRate,
+      frameRate: coarseFrameRate,
     });
 
     expect(countEmittedItems(gameState)).toBe(emittedAfterLeaving);
@@ -398,7 +475,7 @@ describe("whenPlayableInside", () => {
     // after full delay elapses, should emit again
     playGameThrough(gameState, {
       until: roomTimeAtReEntry + 2_000,
-      frameRate: courseFrameRate,
+      frameRate: coarseFrameRate,
     });
 
     expect(countEmittedItems(gameState)).toBeGreaterThan(emittedAfterLeaving);

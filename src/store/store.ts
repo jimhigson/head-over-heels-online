@@ -28,6 +28,10 @@ import type {
 
 import { emptyObject } from "../utils/empty";
 import { listenerMiddleware } from "./listenerMiddleware";
+/**
+ * note that levelEditorPersistedReducer should be tree-shaken out if VITE_APP === "editor" since it is not listed
+ * as having side-effects - if the editor is brought into the game, this is an error.
+ */
 import { levelEditorPersistedReducer } from "./persist/levelEditorPersist";
 import { migrateLegacySavedGames } from "./persist/migrateLegacySavedGames";
 import {
