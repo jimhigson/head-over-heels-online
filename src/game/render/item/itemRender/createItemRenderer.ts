@@ -59,7 +59,6 @@ export const createItemRenderer = <T extends ItemInPlayType>(
   itemRenderContext: ItemRenderContext<T>,
   injectedDecorators: DecorateItemMaybeRenderer[][],
 ): ItemRenderPipeline<T> => {
-  const colourise = !itemRenderContext.general.spriteOption.uncolourised;
   const {
     general: { paused },
   } = itemRenderContext;
@@ -99,12 +98,10 @@ export const createItemRenderer = <T extends ItemInPlayType>(
 
   // non-colourised rendering doesn't have shadows since it prevents
   // the colour revert shader from properly identifying black/non-black pixels
-  if (colourise) {
-    const maybeItemShadowRenderer =
-      maybeCreateItemShadowRenderer(itemRenderContext);
-    if (maybeItemShadowRenderer !== undefined) {
-      siblingPixiRenderers.push(maybeItemShadowRenderer);
-    }
+  const maybeItemShadowRenderer =
+    maybeCreateItemShadowRenderer(itemRenderContext);
+  if (maybeItemShadowRenderer !== undefined) {
+    siblingPixiRenderers.push(maybeItemShadowRenderer);
   }
 
   let graphics: ItemPixiRenderer<T> | undefined;
