@@ -23,10 +23,13 @@ export class EmitterSoundRenderer implements ItemSoundRenderer<"emitter"> {
     const { lastEmittedAtRoomTime } = this.renderContext.item.state;
 
     if (lastEmittedAtRoomTime > this.#lastEmittedAtRoomTime) {
-      createAudioNode({
-        soundId: "emit",
-        connectTo: this.output,
-      });
+      const { sound = "emit" } = this.renderContext.item.config;
+      if (sound !== null) {
+        createAudioNode({
+          soundId: sound,
+          connectTo: this.output,
+        });
+      }
     }
 
     this.#lastEmittedAtRoomTime = lastEmittedAtRoomTime;
