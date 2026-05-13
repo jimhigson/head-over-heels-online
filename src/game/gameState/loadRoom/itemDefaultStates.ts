@@ -6,6 +6,7 @@ import type { StoodOnBy } from "../../../model/StoodOnBy";
 
 import { emptyObject } from "../../../utils/empty";
 import { neverTime } from "../../../utils/neverTime";
+import { omit } from "../../../utils/pick";
 import { unitVectors } from "../../../utils/vectors/unitVectors";
 import { originXyz, scaleXyz } from "../../../utils/vectors/vectors";
 import {
@@ -81,7 +82,6 @@ export const initialState = (jsonItem: JsonItemUnion) => {
     : emptyObject),
     ...((
       jsonItem.type === "joystick" ||
-      jsonItem.type === "emitter" ||
       jsonItem.type === "timer" ||
       jsonItem.type === "lift" ||
       jsonItem.type === "conveyor" ||
@@ -93,6 +93,15 @@ export const initialState = (jsonItem: JsonItemUnion) => {
       ({
         ...structuredClone(jsonItem.config),
       } satisfies StateFragment<typeof jsonItem.type>)
+    : emptyObject),
+    ...(jsonItem.type === "emitter" ?
+      (omit(
+        jsonItem.config,
+        "offset",
+        "sound",
+        "times",
+        "whenPlayerInside",
+      ) satisfies StateFragment<typeof jsonItem.type>)
     : emptyObject),
     ...(jsonItem.type === "monster" ?
       ({

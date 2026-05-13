@@ -46,6 +46,24 @@
   },
   {
     "op": "add",
+    "path": "/items/sw/config/modifies/2",
+    "value": {
+      "expectType": "emitter",
+      "leftState": {
+        "maximum": 6
+      },
+      "rightState": {
+        "maximum": 0
+      },
+      "targets": ["em"]
+    }
+  },
+  {
+    "op": "remove",
+    "path": "/items/m"
+  },
+  {
+    "op": "add",
     "path": "/items/b7",
     "value": {
       "config": {
@@ -61,87 +79,27 @@
   },
   {
     "op": "add",
-    "path": "/items/m1",
+    "path": "/items/em",
     "value": {
       "config": {
-        "activated": "on",
-        "movement": "patrol-randomly-diagonal",
-        "which": "dalek"
-      },
-      "position": {
-        "x": 0,
-        "y": 0,
-        "z": 5
-      },
-      "type": "monster"
-    }
-  },
-  {
-    "op": "add",
-    "path": "/items/m2",
-    "value": {
-      "config": {
-        "activated": "on",
-        "movement": "patrol-randomly-diagonal",
-        "which": "dalek"
+        "delay": 0,
+        "emits": {
+          "config": {
+            "activated": "on",
+            "movement": "patrol-randomly-diagonal",
+            "which": "dalek"
+          },
+          "type": "monster"
+        },
+        "maximum": 6,
+        "period": 3000
       },
       "position": {
         "x": 7,
-        "y": 7,
-        "z": 7
-      },
-      "type": "monster"
-    }
-  },
-  {
-    "op": "add",
-    "path": "/items/m3",
-    "value": {
-      "config": {
-        "activated": "on",
-        "movement": "patrol-randomly-diagonal",
-        "which": "dalek"
-      },
-      "position": {
-        "x": 6,
-        "y": 7,
+        "y": 3.5,
         "z": 4
       },
-      "type": "monster"
-    }
-  },
-  {
-    "op": "add",
-    "path": "/items/m4",
-    "value": {
-      "config": {
-        "activated": "on",
-        "movement": "patrol-randomly-diagonal",
-        "which": "dalek"
-      },
-      "position": {
-        "x": 7,
-        "y": 3,
-        "z": 3
-      },
-      "type": "monster"
-    }
-  },
-  {
-    "op": "add",
-    "path": "/items/m5",
-    "value": {
-      "config": {
-        "activated": "on",
-        "movement": "patrol-randomly-diagonal",
-        "which": "dalek"
-      },
-      "position": {
-        "x": 7,
-        "y": 4,
-        "z": 6
-      },
-      "type": "monster"
+      "type": "emitter"
     }
   },
   {

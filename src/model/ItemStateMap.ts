@@ -291,7 +291,7 @@ export type ItemStateMap<RoomId extends string, RoomItemId extends string> = {
     } & Omit<
       // copying the config into the state means that these settings are mutable at play-time. eg, by switches
       ItemConfigMap<RoomId, RoomItemId, SceneryName>["emitter"],
-      "offset" | "times" | "whenPlayerInside"
+      "offset" | "sound" | "times" | "whenPlayerInside"
     >
   >;
 

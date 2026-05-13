@@ -51,64 +51,27 @@ export const room = inferRoomJson({
       position: { x: 0, y: 3, z: 1 },
       type: "door",
     },
+    em: {
+      config: {
+        delay: 0,
+        emits: {
+          config: {
+            activated: "on",
+            movement: "patrol-randomly-diagonal",
+            which: "dalek",
+          },
+          type: "monster",
+        },
+        maximum: 6,
+        period: 3000,
+      },
+      position: { x: 7, y: 3.5, z: 4 },
+      type: "emitter",
+    },
     f: {
       config: { floorType: "deadly", times: { x: 8, y: 8 } },
       position: { x: 0, y: 0, z: 0 },
       type: "floor",
-    },
-    m: {
-      config: {
-        activated: "on",
-        movement: "patrol-randomly-diagonal",
-        which: "dalek",
-      },
-      position: { x: 3, y: 0, z: 1 },
-      type: "monster",
-    },
-    m1: {
-      config: {
-        activated: "on",
-        movement: "patrol-randomly-diagonal",
-        which: "dalek",
-      },
-      position: { x: 0, y: 0, z: 5 },
-      type: "monster",
-    },
-    m2: {
-      config: {
-        activated: "on",
-        movement: "patrol-randomly-diagonal",
-        which: "dalek",
-      },
-      position: { x: 7, y: 7, z: 7 },
-      type: "monster",
-    },
-    m3: {
-      config: {
-        activated: "on",
-        movement: "patrol-randomly-diagonal",
-        which: "dalek",
-      },
-      position: { x: 6, y: 7, z: 4 },
-      type: "monster",
-    },
-    m4: {
-      config: {
-        activated: "on",
-        movement: "patrol-randomly-diagonal",
-        which: "dalek",
-      },
-      position: { x: 7, y: 3, z: 3 },
-      type: "monster",
-    },
-    m5: {
-      config: {
-        activated: "on",
-        movement: "patrol-randomly-diagonal",
-        which: "dalek",
-      },
-      position: { x: 7, y: 4, z: 6 },
-      type: "monster",
     },
     pi: {
       config: { gives: "doughnuts" },
@@ -126,6 +89,12 @@ export const room = inferRoomJson({
         modifies: [
           { expectType: "block", makesStable: false, targets: ["b2", "b4"] },
           { activates: true, expectType: "monster" },
+          {
+            expectType: "emitter",
+            leftState: { maximum: 6 },
+            rightState: { maximum: 0 },
+            targets: ["em"],
+          },
         ],
         type: "in-room",
       },

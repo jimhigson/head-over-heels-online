@@ -1,5 +1,6 @@
 import type { FreeItemTypes } from "../../game/physics/itemPredicates";
 import type { MarkdownPageName } from "../../manual/pages";
+import type { SoundId } from "../../sound/soundUrls";
 import type { PlanetName, SceneryName } from "../../sprites/planets";
 import type { GameInPlayBooleanPaths } from "../../store/slices/gameInPlay/gameInPlaySlice";
 import type { Subset } from "../../utils/Subset";
@@ -256,6 +257,9 @@ export type ItemConfigMap<
 
     /** offset in blocks applied to the emission position, relative to the emitter's origin */
     offset?: Partial<Xyz>;
+
+    /** The sound to play on emit, undefined to use the default sound, or null for no sound */
+    sound?: null | SoundId;
   };
   firedDoughnut: {
     // if the doughnut is given via json, can be used to give its direction

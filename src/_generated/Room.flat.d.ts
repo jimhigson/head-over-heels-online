@@ -714,7 +714,7 @@ export type RoomJsonSchema = {
                                 | "left";
                             }
                           | {
-                              style: "cube" | "drum" | "sticks";
+                              style: "drum" | "cube" | "sticks";
                             }
                           | {
                               times?: {
@@ -1118,7 +1118,7 @@ export type RoomJsonSchema = {
                                 | "left";
                             }
                           | {
-                              style: "cube" | "drum" | "sticks";
+                              style: "drum" | "cube" | "sticks";
                             }
                           | {
                               times?: {
@@ -1653,7 +1653,7 @@ export type RoomJsonSchema = {
             | {
                 type: "portableBlock";
                 config: {
-                  style: "cube" | "drum" | "sticks";
+                  style: "drum" | "cube" | "sticks";
                 };
               }
             | {
@@ -1881,6 +1881,84 @@ export type RoomJsonSchema = {
             y?: number;
             z?: number;
           };
+          /**
+           * The sound to play on emit, undefined to use the default sound, or null for no sound
+           */
+          sound?:
+            | null
+            | "door"
+            | "hooter"
+            | "roomEntry.blacktooth"
+            | "roomEntry.bookworld"
+            | "roomEntry.egyptus"
+            | "roomEntry.market"
+            | "roomEntry.moonbase"
+            | "roomEntry.penitentiary"
+            | "roomEntry.safari"
+            | "activate"
+            | "ballHit"
+            | "bonus"
+            | "bubbleRobotLoop"
+            | "buttonOff"
+            | "buttonOn"
+            | "carry"
+            | "conveyorEnd"
+            | "conveyorLoop"
+            | "conveyorStart"
+            | "crownSparkle"
+            | "deactivate"
+            | "destroy"
+            | "detect"
+            | "doughnutSplat"
+            | "drum"
+            | "elephantHoot"
+            | "emit"
+            | "fall"
+            | "fanfare"
+            | "glassClink"
+            | "headAccent"
+            | "headFall"
+            | "headJump"
+            | "headOverHeelsAccent"
+            | "headWalk"
+            | "heavyMetalScraping"
+            | "heelsAccent"
+            | "heelsJump"
+            | "heelsWalk"
+            | "helicopter"
+            | "hushPuppyVanish"
+            | "iceScrape"
+            | "jetpackLoop"
+            | "jetpackTurnaround"
+            | "landing"
+            | "lowerSmallMotorLoop"
+            | "lowHum"
+            | "menuSofter"
+            | "metalHit"
+            | "mojoLoop"
+            | "mojoTurn"
+            | "monkeyTurn"
+            | "moonbaseDoor"
+            | "robotBeepingLoop"
+            | "robotWhirLoop"
+            | "rollingBallLoop"
+            | "scrollOpen"
+            | "servoLoop"
+            | "servoStart"
+            | "servoStop"
+            | "setting0"
+            | "setting1"
+            | "setting2"
+            | "setting3"
+            | "softBump"
+            | "springBoing"
+            | "switchClick"
+            | "teleportIn"
+            | "teleportOut"
+            | "teleportWarningSiren"
+            | "toasterPopUp"
+            | "toasterPushDown"
+            | "woodScrape";
         };
       }
     | {
@@ -2210,7 +2288,7 @@ export type RoomJsonSchema = {
           z: number;
         };
         config: {
-          style: "cube" | "drum" | "sticks";
+          style: "drum" | "cube" | "sticks";
         };
       }
     | {
@@ -2984,7 +3062,7 @@ export type RoomJsonSchema = {
                                 | "left";
                             }
                           | {
-                              style: "cube" | "drum" | "sticks";
+                              style: "drum" | "cube" | "sticks";
                             }
                           | {
                               times?: {
@@ -3388,7 +3466,7 @@ export type RoomJsonSchema = {
                                 | "left";
                             }
                           | {
-                              style: "cube" | "drum" | "sticks";
+                              style: "drum" | "cube" | "sticks";
                             }
                           | {
                               times?: {
@@ -4280,7 +4358,7 @@ export type RoomJsonSchema = {
                           startDirection: "right" | "towards" | "away" | "left";
                         }
                       | {
-                          style: "cube" | "drum" | "sticks";
+                          style: "drum" | "cube" | "sticks";
                         }
                       | {
                           times?: {
@@ -4664,7 +4742,7 @@ export type RoomJsonSchema = {
                           startDirection: "right" | "towards" | "away" | "left";
                         }
                       | {
-                          style: "cube" | "drum" | "sticks";
+                          style: "drum" | "cube" | "sticks";
                         }
                       | {
                           times?: {
