@@ -102,7 +102,10 @@ class ItemShadowRenderer<T extends ItemInPlayType>
     this.renderContext = renderContext;
     this.#appearance = appearance;
     this.#output.addChild(this.#shadowsContainer);
-    if (!this.#showShadowMasks) {
+    if (
+      !this.#showShadowMasks &&
+      !renderContext.general.spriteOption.uncolourised
+    ) {
       this.#output.filters = new AlphaFilter({ alpha: shadowAlpha });
     }
   }
