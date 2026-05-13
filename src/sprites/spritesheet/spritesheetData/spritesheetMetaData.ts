@@ -1,6 +1,7 @@
 import type { Simplify } from "type-fest";
 
 import type { ButtonId } from "../../../game/render/hud/HudButtonRenderer";
+import type { ZxSpectrumPaletteColour } from "../../../originalGame";
 import type { SpriteOption } from "../../../store/slices/userSettings/userSettingsSlice";
 import type { NamedColours, NamedSwops } from "../../../utils/palette/palette";
 import type { DirectionXy8 } from "../../../utils/vectors/vectors";
@@ -81,6 +82,14 @@ export type SpritesheetMetadata<
    */
   teleporterEffectBlackPoint: number;
   buttonColours: Record<ButtonId, PaletteColourName>;
+  /** maps palette colour names to their closest ZX Spectrum equivalents, used by the teleporter colour clash effect */
+  mapToZxSpectrumPalette?: Partial<
+    Record<PaletteColourName, ZxSpectrumPaletteColour>
+  >;
+  /** maps palette colours to blue/cyan/white spectrum equivalents by luminance (rounding down), used by the death colour clash effect */
+  mapToZxSpectrumForDeathEffectPalette?: Partial<
+    Record<PaletteColourName, ZxSpectrumPaletteColour>
+  >;
 };
 
 export type PlayableSpritesheetMetaData = {

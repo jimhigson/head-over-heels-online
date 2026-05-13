@@ -1,10 +1,15 @@
 import type { GameState } from "../gameState/GameState";
 
+import { selectCurrentPlayableItem } from "../gameState/gameStateSelectors/selectPlayableItem";
 import { swopPlayables } from "../gameState/mutators/swopPlayables";
 
 export const swopPlayablesIfInput = <RoomId extends string>(
   gameState: GameState<RoomId>,
 ) => {
+  if (selectCurrentPlayableItem(gameState)?.state.action === "death") {
+    return false;
+  }
+
   const { inputStateTracker } = gameState;
 
   if (inputStateTracker.currentActionPress("swop") === "tap") {

@@ -313,10 +313,14 @@ export const isFlashing = (playableItem: PlayableItem): boolean => {
 
   const timeSinceLastDied = gameTime - lastDiedAt;
 
-  return (
-    timeSinceLastDied % afterDeathInvulnerabilityFlashPeriod <
+  const flashPhaseDuration =
     afterDeathInvulnerabilityFlashPeriod *
-      afterDeathInvulnerabilityFlashPhaseDuration
+    afterDeathInvulnerabilityFlashPhaseDuration;
+
+  return (
+    (timeSinceLastDied + flashPhaseDuration) %
+      afterDeathInvulnerabilityFlashPeriod <
+    flashPhaseDuration
   );
 };
 

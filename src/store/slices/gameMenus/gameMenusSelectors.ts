@@ -47,8 +47,15 @@ export const selectInputAssignment = selectUserSetting("inputAssignment");
 
 export const useInputAssignment = () => useAppSelector(selectInputAssignment);
 
-export const selectIsPaused = (state: RootState) =>
-  state.gameMenus.openMenus.length > 0;
+export const selectIsPaused = (state: RootState) => {
+  const [topMenu] = state.gameMenus.openMenus;
+  if (topMenu === undefined) {
+    return false;
+  }
+  // the death dialog showing is a special case, it isn't considered paused since the game runs very slowly still
+  // while this dialog is showing
+  return topMenu.menuId !== "death";
+};
 
 export const selectAssigningInput = (state: RootState) =>
   state.userSettings.assigningInput;

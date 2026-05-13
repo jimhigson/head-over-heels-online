@@ -22,19 +22,24 @@ uniform sampler2D uLut;
 uniform float uCentreX;
 uniform float uCentreY;
 
+uniform float uZxCircleSpeed;
+uniform float uZxCircleOffset;
+uniform float uZxCircleMinSize;
+uniform float uBlackCircleOffset;
+uniform float uBlackCircleMinSize;
+uniform float uTimeStep;
+uniform float uBlackCircleDarkening;
+uniform float uBlackCircleFeathering;
+uniform float uDistancePower;
+
 // uInputClamp is a Pixi built-in uniform (provided automatically)
 uniform vec4 uInputClamp;  // xy: min texture coords, zw: max texture coords of visible area
-
-// the smallest the circle is allowed to get to:
-const float blackCircleMinSize = 0.33;
-
-const float blackCircleFeathering = 0.4;
 
 // how much of the duration of the effect to use to fade out at the end, so that
 // any radius that is still showing doesn't disappear suddenly when the effect finishes
 const float fadeDuration = 0.1;
-float fade() {
-    return 1.0 - smoothstep(1.0 - fadeDuration, 1.0, uProgress);
+float fade(float progress) {
+    return 1.0 - smoothstep(1.0 - fadeDuration, 1.0, progress);
 }
 
 float blockDistToCentre(
@@ -76,32 +81,33 @@ float isInCirc(
         // by blocks)
         progress - feathering, 
         progress + feathering, 
-        // ^3 makes the initial (mostly hidden) fade fast, and the end of the fade anim slower
-        pow(1.0 - blockDistToCentre01, 3.0) + circleMinSize
+        pow(1.0 - blockDistToCentre01, uDistancePower) + circleMinSize
     );
 }
 
 void main(void) {
 
+    float progress = floor(uProgress / uTimeStep) * uTimeStep;
+
     // gets more elliptical towards the end of the animation - initially very circular
     // to ensure more coverage of the screen
-    float elipticalFactor = mix(1.0, 0.5, uProgress);
+    float elipticalFactor = mix(1.0, 0.5, progress);
 
     float blockDistToCentre = blockDistToCentre(elipticalFactor);
 
     float insideBlackCirc01 = isInCirc(
-        blockDistToCentre, 
-        blackCircleFeathering,
-        blackCircleMinSize,
-        uProgress - 0.2
+        blockDistToCentre,
+        uBlackCircleFeathering,
+        uBlackCircleMinSize,
+        progress + uBlackCircleOffset
     );
 
     // circle that defines how much of the final image has the effect applied
     float insideInnerCirc01 = isInCirc(
-        blockDistToCentre, 
-        blackCircleFeathering,
-        0.0, // min size zero = close the circle completely
-        uProgress * 1.5 - 0.3
+        blockDistToCentre,
+        0.0,
+        uZxCircleMinSize,
+        progress * uZxCircleSpeed + uZxCircleOffset
     );
 
     // round insideInnerCirc01 to nearest half:
@@ -114,21 +120,21 @@ void main(void) {
         uBlackPoint,        
         max(
             // darken outside of the black circle - creating the fade-out effect:
-            insideBlackCirc01  
+            insideBlackCirc01
             // also apply a general darkening as the effect progresses:
             // by raising to the 4th power, the darkening is delayed until the end of
-            // the fading out, allowing colour clash colours other than dark blue to 
+            // the fading out, allowing colour clash colours other than dark blue to
             // be shown for longer
-            - pow(uProgress, 4.0)
-            , 
-            0.0
+            - pow(progress, 4.0)
+            ,
+            1.0 - uBlackCircleDarkening
         ),
         vTextureCoord
     );
 
     vec4 c = texture(uTexture, vTextureCoord);
 
-    finalColor = mix( clashColour, c, insideInnerCirc01 * fade());
+    finalColor = mix( clashColour, c, step(0.2, insideInnerCirc01 * fade(progress)));
 
     // uncomment to see the centre of the circle highlighted:
     // finalColor = mix( 

@@ -5,6 +5,7 @@ export type DialogId =
   | "communityGames"
   | "controlOptions"
   | "crowns"
+  | "death"
   | "displayOptions"
   | "emulatedResolution"
   | "errorCaught"

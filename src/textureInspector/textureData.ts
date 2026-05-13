@@ -31,7 +31,7 @@ const detectType = (stack: string): TrackedTextureSource["type"] => {
   if (stack.includes("ItemShadowRenderer.ts")) {
     return "ItemShadowRenderer";
   }
-  if (stack.includes("TeleportingEffectFilter")) {
+  if (stack.includes("ColourClashCircleEffectFilter")) {
     return "TeleporterFilterLut";
   }
   if (stack.includes("PaletteSwapFilter.ts")) {

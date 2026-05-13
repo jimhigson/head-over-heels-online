@@ -107,7 +107,7 @@ jobs:
         run: pnpm playwright install chromium
 
       - name: Run Playwright tests
-        run: pnpm playwright test ${{ matrix.pattern }} --project chromium-desktop
+        run: pnpm playwright test ${{ matrix.pattern }} --project chromium-desktop --project mobile-chrome
 
       - name: Upload test results
         uses: actions/upload-artifact@v7

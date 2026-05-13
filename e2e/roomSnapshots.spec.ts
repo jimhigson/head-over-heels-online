@@ -4,9 +4,7 @@ import { expect, test } from "@playwright/test";
 import chalk from "chalk";
 
 import type { OriginalCampaignRoomId } from "../src/_generated/originalCampaign/OriginalCampaignRoomId";
-import type { SelectableGameSpeeds } from "../src/store/slices/userSettings/selectableGameSpeeds";
 import type {
-  setGameSpeed,
   SpriteOption,
   toggleUserSetting,
 } from "../src/store/slices/userSettings/userSettingsSlice";
@@ -15,7 +13,10 @@ import type { ScreenshotTestOptions } from "./ScreenshotTestOptions";
 import { campaign } from "../src/_generated/originalCampaign/campaign";
 import { spriteOptionEquals } from "../src/store/slices/userSettings/spriteOptionEquals";
 import { keys } from "../src/utils/entries";
-import { dispatchToStore } from "./testUtils/gameStateQueries";
+import {
+  dispatchToStore,
+  setZeroGameSpeed,
+} from "./testUtils/gameStateQueries";
 import {
   maximumWaitForStep,
   waitForRoomRenderEvent,
@@ -195,7 +196,6 @@ const gameRunsAtZeroSpeed = async (page: Page, projectName: string) => {
     async action(attempt) {
       const gameApiFound = await page.evaluate(() => {
         if (window._e2e_gamePageGameAi && window._e2e_pixiApplication) {
-          window._e2e_gamePageGameAi.gameState.gameSpeed = 0;
           // set the frame rate very low - this reduces how much cpu the tests need to run
           window._e2e_pixiApplication.ticker.maxFPS = 5;
           return true;
@@ -203,15 +203,9 @@ const gameRunsAtZeroSpeed = async (page: Page, projectName: string) => {
         return false;
       });
 
-      type SetGameSpeedAction = ReturnType<typeof setGameSpeed>;
       type ToggleUserSettingAction = ReturnType<typeof toggleUserSetting>;
 
-      // we need to fake a zero speed, since this isn't in the menu as a selectable option
-      // this freezes the game to make the screenshots deterministic
-      const successSetSpeed = await dispatchToStore(page, {
-        type: "userSettings/setGameSpeed",
-        payload: 0 as SelectableGameSpeeds,
-      } satisfies SetGameSpeedAction);
+      const successSetSpeed = await setZeroGameSpeed(page);
 
       // turn off the crt filter (on by default)
       const successToggleCrtFilter = await dispatchToStore(page, {

@@ -39,6 +39,7 @@ import {
   spritesheetOverridePersistedReducer,
   userSettingsPersistedReducer,
 } from "./persist/persist";
+import { recentActionsMiddleware } from "./recentActions";
 import { campaignsApiSlice } from "./slices/campaigns/campaignsApiSlice";
 import { registerClearAllDataListeners } from "./slices/clearAllDataListeners";
 import { debugSlice } from "./slices/debug/debugSlice";
@@ -96,7 +97,8 @@ export const store = configureStore({
     })
       .prepend(listenerMiddleware.middleware)
       .concat(campaignsApiSlice.middleware)
-      .concat(githubApiSlice.middleware),
+      .concat(githubApiSlice.middleware)
+      .concat(import.meta.env.DEV ? [recentActionsMiddleware] : []),
 });
 
 if (typeof window !== "undefined") {

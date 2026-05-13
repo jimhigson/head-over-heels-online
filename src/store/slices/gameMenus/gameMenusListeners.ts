@@ -4,12 +4,14 @@ import {
   gameOver,
   gameStarted,
   lostAllLives,
+  lostLife,
   reincarnationAccepted,
   scrollRead,
 } from "../gameInPlay/gameInPlaySlice";
 import { defaultUserSettings } from "../userSettings/defaultUserSettings";
 import {
   crownsMenuShown,
+  deathDialogShown,
   gameEndedMenusOpened,
   gameStartedMenusOpened,
   reincarnationRestartMenuShown,
@@ -88,6 +90,14 @@ export const registerGameMenusListeners = () => {
           scoreAlreadyShown: action.payload.reincarnationDeclined,
         }),
       );
+    },
+  });
+
+  // lostLife → show the death dialog
+  startAppListening({
+    actionCreator: lostLife,
+    effect(action, { dispatch }) {
+      dispatch(deathDialogShown(action.payload.deathMenuParam));
     },
   });
 

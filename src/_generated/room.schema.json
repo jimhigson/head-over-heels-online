@@ -926,6 +926,7 @@
                           "teleportWarningSiren",
                           "toasterPopUp",
                           "toasterPushDown",
+                          "uhOh",
                           "woodScrape"
                         ],
                         "type": ["null", "string"]

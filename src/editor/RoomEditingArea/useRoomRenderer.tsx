@@ -34,6 +34,7 @@ const editorGeneralRenderContext = (
   spritesheetMeta: spritesheetMetas.BlockStack,
   upscale: selectUpscale(store.getState()),
   onScreenControls: false,
+  speedCoefficient: 1,
 });
 
 const createRoomRenderer = (

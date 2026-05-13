@@ -4,7 +4,9 @@ import type { EmptyObject, ValueOf } from "type-fest";
 import { createSlice } from "@reduxjs/toolkit";
 
 import type { DialogId } from "../../../game/components/dialogs/menuDialog/DialogId";
+import type { PokeableNumber } from "../../../model/ItemStateMap";
 import type { ScrollConfig } from "../../../model/json/ItemConfigMap";
+import type { CharacterName } from "../../../model/modelTypes";
 import type { SerialisableError } from "../../../utils/redux/createSerialisableErrors";
 
 import { emptyObject } from "../../../utils/empty";
@@ -26,6 +28,10 @@ export type OpenMenu =
        * menu-specific parameters - for example, the crowns menu can play music
        */
       menuParam: { playMusic: boolean };
+    })
+  | (BaseOpenMenu & {
+      menuId: "death";
+      menuParam: DeathMenuParam;
     })
   | (BaseOpenMenu & {
       menuId: "errorCaught";
@@ -56,10 +62,18 @@ export type OpenMenu =
   | (BaseOpenMenu & {
       menuId: Exclude<
         DialogId,
-        "crowns" | "errorCaught" | "mainMenu" | "markdown/inline"
+        "crowns" | "death" | "errorCaught" | "mainMenu" | "markdown/inline"
       >;
       menuParam: EmptyObject;
     });
+
+export type DeathMenuParam = {
+  dyingCharacterName: CharacterName;
+  // 0 if out of the game
+  headLives: PokeableNumber;
+  // 0 if out of the game
+  heelsLives: PokeableNumber;
+};
 
 export type GameMenusState = {
   /**
@@ -247,6 +261,26 @@ export const gameMenusSlice = createSlice({
     // gameInPlaySlice. Each names the menu transition it produces; the
     // listener supplies the payload context.
 
+    deathDialogShown(state, { payload }: PayloadAction<DeathMenuParam>) {
+      const newMenu: OpenMenu = {
+        menuId: "death",
+        scrollableSelection: false,
+        menuParam: payload,
+      };
+
+      if (
+        state.openMenus.length === 1 &&
+        state.openMenus[0].menuId === "death"
+      ) {
+        // already one game dialog - slip the new one in below it
+        // to show after that one is dismissed. Ie, if two playable
+        // characters die very close to each other in time.
+        state.openMenus = [state.openMenus[0], newMenu];
+      } else {
+        state.openMenus = [newMenu];
+      }
+    },
+
     /**
      * Show the crowns menu after a crown is collected. If `allCrowns` is true,
      * also pushes the "proclaim emperor" dialog above the crowns menu.
@@ -422,6 +456,7 @@ export const {
   backToParentMenu,
   closeAllMenus,
   crownsMenuShown,
+  deathDialogShown,
   errorCaught,
   errorDismissed,
   gameEndedMenusOpened,

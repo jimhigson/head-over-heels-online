@@ -36,7 +36,7 @@ export const HoldDialog = () => {
                 <div className="flex flex-row gap-1 mx-auto">
                   <CurrentKeyAssignments
                     className="flex flex-row gap-1"
-                    keyClassName="text-pink zx:text-zxRed toppy:text-toppyPink2"
+                    keyClassName="text-zxRed toppy:text-toppyPink2"
                     action="hold"
                   />
                 </div>
@@ -50,7 +50,7 @@ export const HoldDialog = () => {
                 <div className="flex flex-row gap-1 mx-auto">
                   <CurrentKeyAssignments
                     className="flex flex-row gap-1"
-                    keyClassName="text-pink zx:text-zxRed toppy:text-toppyPink2"
+                    keyClassName="text-zxRed toppy:text-toppyPink2"
                     action="map"
                   />
                 </div>
@@ -59,7 +59,7 @@ export const HoldDialog = () => {
           : <div
               className={`${multilineTextClass} px-1 bg-zxBlack py-oneScaledPix`}
             >
-              <BitmapText className="me-1 text-pink zx:text-zxRed toppy:text-toppyPink2">
+              <BitmapText className="me-1 text-zxRed toppy:text-toppyPink2">
                 Tap screen
               </BitmapText>
               <BitmapText>to continue</BitmapText>

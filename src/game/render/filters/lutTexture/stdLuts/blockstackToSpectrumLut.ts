@@ -1,26 +1,11 @@
 import { type Texture } from "pixi.js";
 
-import {
-  zxSpectrumColors,
-  zxSpectrumColorsDimmed,
-} from "../../../../../originalGame";
-import { paletteBlockstack } from "../../../../../sprites/palette/spritesheetPalette";
-import { resolveSwops } from "../../../../../utils/palette/palette";
+import { blockStackSpritesheetMeta } from "../../../../../../gfx/spritesheetMeta/blockStackSpritesheetMeta";
 import { sparseLut } from "../sparseLut";
+import { resolveZxSpectrumMapping } from "./resolveZxSpectrumMapping";
 
-export const blockstackPaletteToSpectrumMapping = resolveSwops(
-  paletteBlockstack,
-  {
-    moss: zxSpectrumColors.green,
-    pink: zxSpectrumColors.magenta,
-    metallicBlue: zxSpectrumColorsDimmed.cyan,
-    pastelBlue: zxSpectrumColors.cyan,
-    highlightBeige: zxSpectrumColors.yellow,
-    lightBeige: zxSpectrumColorsDimmed.yellow,
-    midRed: zxSpectrumColors.red,
-    redShadow: zxSpectrumColorsDimmed.red,
-    lightGrey: zxSpectrumColors.white,
-  },
+export const blockstackPaletteToSpectrumMapping = resolveZxSpectrumMapping(
+  blockStackSpritesheetMeta,
 );
 
 /**

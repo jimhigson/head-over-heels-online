@@ -8,10 +8,28 @@ import type { PlayableItem } from "../physics/itemPredicates";
  */
 export type PlayableEntryState = Pick<
   ItemState<CharacterName, string, string>,
-  "action" | "autoWalk" | "facing" | "position" | "teleporting" | "vels"
+  | "action"
+  | "autoWalk"
+  | "facing"
+  | "jumped"
+  | "jumpStartZ"
+  | "position"
+  | "teleporting"
+  | "vels"
+  | "visualFacingVector"
 >;
 export const entryState = ({
-  state: { position, facing, autoWalk, action, vels, teleporting },
+  state: {
+    position,
+    facing,
+    autoWalk,
+    action,
+    vels,
+    teleporting,
+    jumped,
+    jumpStartZ,
+    visualFacingVector,
+  },
 }: PlayableItem): PlayableEntryState => {
   return {
     position,
@@ -24,5 +42,8 @@ export const entryState = ({
     // vels is (unusually) a mutable object on the state, so it needs to be
     // copied for safety:
     vels: { ...vels },
+    jumped,
+    jumpStartZ,
+    visualFacingVector,
   };
 };

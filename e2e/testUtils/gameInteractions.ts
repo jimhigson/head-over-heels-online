@@ -2,8 +2,9 @@ import type { Page } from "@playwright/test";
 
 import chalk from "chalk";
 
-import { osSlowness } from "./infrastructure";
-import { elapsed } from "./logging";
+import { getCurrentCharacter } from "./gameStateQueries";
+import { osSlowness, retryWithRecovery } from "./infrastructure";
+import { elapsed, formatProjectName } from "./logging";
 
 const getCurrentLives = (page: Page): Promise<number | undefined> =>
   page.evaluate(() => {
@@ -45,6 +46,24 @@ export const dispatchKeyPress = async (
   );
 };
 
+export const holdKeysForDuration = async (
+  page: Page,
+  keys: string[],
+  durationMs: number,
+) => {
+  await page.evaluate((keys) => {
+    for (const key of keys) {
+      window.dispatchEvent(new KeyboardEvent("keydown", { key, code: key }));
+    }
+  }, keys);
+  await page.waitForTimeout(durationMs);
+  await page.evaluate((keys) => {
+    for (const key of keys) {
+      window.dispatchEvent(new KeyboardEvent("keyup", { key, code: key }));
+    }
+  }, keys);
+};
+
 /**
  * The cheats panel is a Radix Collapsible — clicking the trigger toggles
  * visibility, so only click the trigger when the menu isn't currently open.
@@ -75,29 +94,81 @@ export const clickCheat = async (page: Page, testId: string) => {
  * `afterDeathInvulnerabilityTime` so the next guardian can land a hit
  * once the post-death invincibility window has expired.
  */
-export const loseAllLives = async (page: Page) => {
-  let iteration = 0;
-  const deadline = Date.now() + 60_000 * osSlowness;
+/**
+ * Summon a guardian and wait for either a death dialog or an end-of-game
+ * dialog. If a death dialog appears, dismiss it and return the sr-only text.
+ * If an end-of-game dialog appears, return undefined (game over).
+ */
+export const loseOneLife = async (page: Page): Promise<string | undefined> => {
+  const deadline = Date.now() + 30_000 * osSlowness;
+  let summoned = false;
   while (Date.now() < deadline) {
-    const died = await page
+    const gameOverShown = await page
       .locator(
         '[data-dialog-id="offerReincarnation"], [data-dialog-id="score"]',
       )
       .first()
       .isVisible()
       .catch(() => false);
-    if (died) {
-      log(`died after ${iteration} guardian summons`);
-      return;
+    if (gameOverShown) {
+      return undefined;
     }
-    iteration++;
-    log(
-      `iter=${iteration} lives=${await getCurrentLives(page)} → summon guardian`,
-    );
-    await clickCheat(page, "cheats-summon-monster-emperorsGuardian");
-    await page.waitForTimeout(1_500 * osSlowness);
+    const deathDialog = page.locator('[data-dialog-id="death"]');
+    if (await deathDialog.isVisible().catch(() => false)) {
+      const srTexts = await deathDialog.locator(".sr-only").allTextContents();
+      const dialogText = srTexts.join(" ").replace(/\s+/g, " ").trim();
+      log(`death dialog text: "${dialogText}"`);
+      log("dismissing death dialog");
+      await dispatchKeyPress(page, " ", "Space");
+      await page.waitForTimeout(500 * osSlowness);
+      return dialogText;
+    }
+    if (!summoned) {
+      summoned = true;
+      // short wait in case engine needs to switch chars:
+      await page.waitForTimeout(1_000 * osSlowness);
+      log(`lives=${await getCurrentLives(page)} → summon guardian`);
+      await clickCheat(page, "cheats-summon-monster-emperorsGuardian");
+    }
+    await page.waitForTimeout(500 * osSlowness);
+  }
+  throw new Error("timed out waiting for death or game over");
+};
+
+export const loseAllLives = async (page: Page): Promise<string[]> => {
+  const collectedMessages: string[] = [];
+  const deadline = Date.now() + 60_000 * osSlowness;
+  while (Date.now() < deadline) {
+    const message = await loseOneLife(page);
+    if (message === undefined) {
+      return collectedMessages;
+    }
+    collectedMessages.push(message);
   }
   throw new Error("never reached an end-of-life dialog");
+};
+
+export const switchCharacter = async (
+  page: Page,
+  projectName: string,
+): Promise<void> => {
+  const startCharacter = await getCurrentCharacter(page);
+  await retryWithRecovery({
+    async action() {
+      await dispatchKeyPress(page, "Enter", "Enter");
+      await page.waitForFunction(
+        (start) =>
+          window._e2e_gamePageGameAi?.gameState.currentCharacterName !== start,
+        startCharacter,
+        { timeout: 2_000 * osSlowness },
+      );
+    },
+    maxAttempts: 5,
+    logHeader: formatProjectName(projectName),
+    actionDescription: "switch character via Enter",
+    page,
+    screenshotPrefix: `switch-char-${projectName}`,
+  });
 };
 
 /** After reloading while a game is running, the game restarts paused. Wait for the hold dialog then press P to unpause. */

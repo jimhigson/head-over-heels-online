@@ -27,6 +27,7 @@ export class PlayableSoundRenderer implements ItemSoundRenderer<CharacterName> {
   #walkBracketedSound?: BracketedSound;
   #jumpChannel: GainNode = audioCtx.createGain();
   #jumpBracketedSound: BracketedSound;
+  #deathBracketedSound: BracketedSound;
 
   #carryChannel: GainNode = audioCtx.createGain();
   #carryBracketedSound = createBracketedSound(
@@ -101,6 +102,11 @@ export class PlayableSoundRenderer implements ItemSoundRenderer<CharacterName> {
       this.#jumpChannel,
     );
 
+    this.#deathBracketedSound = createBracketedSound(
+      { start: { soundId: "uhOh" } },
+      this.output,
+    );
+
     this.#freeItemSoundRenderer = new FreeItemSoundRenderer(renderContext, {
       fall:
         name === "headOverHeels" || name === "head" ?
@@ -144,6 +150,7 @@ export class PlayableSoundRenderer implements ItemSoundRenderer<CharacterName> {
       velZ > 0;
 
     this.#jumpBracketedSound(playJumpSound);
+    this.#deathBracketedSound(action === "death");
 
     const playFallSound =
       positionZ < this.#freeItemSoundRenderer.currentPositionZ &&
@@ -151,7 +158,10 @@ export class PlayableSoundRenderer implements ItemSoundRenderer<CharacterName> {
       standingOnItemId === null;
 
     const playWalkSound =
-      !playJumpSound && !playFallSound && lengthXy(walking) > epsilon;
+      !playJumpSound &&
+      !playFallSound &&
+      action !== "death" &&
+      lengthXy(walking) > epsilon;
 
     // walking
     if (this.#walkBracketedSound !== undefined) {

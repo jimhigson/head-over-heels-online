@@ -31,7 +31,6 @@ import {
 } from "../../store/slices/upscale/upscaleSlice.ts";
 import { store } from "../../store/store.ts";
 import { ConnectInputToStore } from "../../store/storeFlow/ConnectInputToStore.tsx";
-import { SetSpeedOnSharedTickerFromStore } from "../../store/storeFlow/SetSpeedOnSharedTickerFromStore.tsx";
 import { importOnce } from "../../utils/importOnce.ts";
 import { DispatchingErrorBoundary } from "../../utils/react/DispatchingErrorBoundary.tsx";
 import { createSerialisableErrors } from "../../utils/redux/createSerialisableErrors.ts";
@@ -179,7 +178,7 @@ export const GamePage = () => {
         <DispatchingErrorBoundary>
           <AddAnalyticsToStore />
           <ConnectInputToStore />
-          <SetSpeedOnSharedTickerFromStore />
+
           {/* 
           dialogs are html and therefore rotated using css, as opposed
           to the game engine which can be rotated using opengl transforms

@@ -98,6 +98,16 @@ export const getCurrentRoomId = async (
     return state.characterRooms[state.currentCharacterName]?.id;
   });
 
+export const setZeroGameSpeed = async (page: Page): Promise<boolean> => {
+  await page.evaluate(() => {
+    window._e2e_pixiApplication!.ticker.speed = 0;
+  });
+  return dispatchToStore(page, {
+    type: "userSettings/setGameSpeed",
+    payload: 0,
+  });
+};
+
 export const dispatchToStore = async (
   page: Page,
   action: Parameters<AppDispatch>[0],

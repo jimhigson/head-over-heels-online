@@ -1,3 +1,4 @@
+import type { UnknownAction } from "@reduxjs/toolkit";
 import type { ReactNode } from "react";
 
 import { useEffect } from "react";
@@ -5,6 +6,7 @@ import { useEffect } from "react";
 import type { SerialisableError } from "../utils/redux/createSerialisableErrors";
 
 import { BitmapText } from "../game/components/tailwindSprites/BitmapText";
+import { getRecentActions } from "../store/recentActions";
 import { Border } from "./Border";
 import { Dialog } from "./Dialog";
 import { DialogPortal } from "./DialogPortal";
@@ -50,8 +52,11 @@ const parseErrorForDisplay = (
   return { message, sanitizedStack };
 };
 
-export const writeErrorReport = (errors: SerialisableError[]) => {
-  return errors.toReversed().map((error) => {
+export const writeErrorReport = (
+  errors: SerialisableError[],
+  recentActions?: UnknownAction[],
+) => {
+  const errorsPart = errors.toReversed().map((error) => {
     const { message, sanitizedStack } = parseErrorForDisplay(error);
     return `
 ${message}
@@ -65,6 +70,20 @@ ${sanitizedStack}
 ⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯
 
 `);
+
+  if (import.meta.env.DEV && recentActions && recentActions.length > 0) {
+    const formatLine = (a: UnknownAction, i: number) =>
+      `${i}: ${JSON.stringify(a)}`;
+
+    return `${errorsPart}
+
+Last ${recentActions.length} redux actions (oldest to newest):
+
+${recentActions.map((a, i) => formatLine(a, i)).join("\n")}
+`;
+  }
+
+  return errorsPart;
 };
 
 export type ErrorDialogProps = {
@@ -76,7 +95,10 @@ export type ErrorDialogProps = {
 };
 
 export const ErrorDialog = ({ errors, intro, children }: ErrorDialogProps) => {
-  const errorsReportText = writeErrorReport(errors);
+  const errorsReportText = writeErrorReport(
+    errors,
+    import.meta.env.DEV ? getRecentActions() : undefined,
+  );
 
   useEffect(() => {
     console.error("ErrorDialog: Showing Report:", errorsReportText);
