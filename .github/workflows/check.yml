@@ -17,4 +17,10 @@ jobs:
           node-version: 25.x
           cache: "pnpm"
       - run: pnpm install
-      - run: pnpm run check
+      - name: Run checks
+        run: |
+          for script in $(jq -r '.scripts | keys[] | select(startswith("check:"))' package.json); do
+            echo "::group::$script"
+            pnpm run "$script" || { echo "::endgroup::"; exit 1; }
+            echo "::endgroup::"
+          done
