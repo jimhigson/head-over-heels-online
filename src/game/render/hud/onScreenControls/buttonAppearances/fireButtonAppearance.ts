@@ -145,7 +145,7 @@ export const fireButtonAppearance: ButtonAppearance<
 
     hooter.texture = spritesheet.textures["hooter"];
     doughnuts.texture = spritesheet.textures["doughnuts"];
-    text.tint = getWhite(spriteOption, room.color.shade === "dimmed");
+    text.colour = getWhite(spriteOption, room.color.shade === "dimmed");
   }
 
   if (doughnutsCount !== previouslyRenderedProps?.doughnutsCount) {

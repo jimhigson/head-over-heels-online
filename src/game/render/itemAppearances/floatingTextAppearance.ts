@@ -59,14 +59,14 @@ export const floatingTextAppearance: ItemAppearance<
       currentRendering.renderProps.fadeOrder
     : buildFadeOrder(spritesheetMeta, spriteOption.uncolourised);
   const previousRendering = currentRendering?.output;
-  let mainContainer: Container<Container>;
+  let mainContainer: Container<TextContainer>;
 
   const age = roomTime - appearanceRoomTime;
 
   const itemRenderHeight = age * floatingTextRiseSpeedPxPerMs;
 
   if (previousRendering === undefined) {
-    mainContainer = new Container();
+    mainContainer = new Container<TextContainer>();
     frontLayer?.attach(mainContainer);
 
     // add all lines early, even if some will be hidden right away:
@@ -81,7 +81,7 @@ export const floatingTextAppearance: ItemAppearance<
       mainContainer.addChild(lineContainer);
     }
   } else {
-    mainContainer = previousRendering!;
+    mainContainer = previousRendering as Container<TextContainer>;
   }
 
   let anyVisible = false;
@@ -104,7 +104,7 @@ export const floatingTextAppearance: ItemAppearance<
       const colourIndex = Math.floor(
         (lineHeight / maxLineHeight) * fadeOrder.length,
       );
-      lineContainer.tint = fadeOrder[colourIndex];
+      lineContainer.colour = fadeOrder[colourIndex];
     }
   }
 

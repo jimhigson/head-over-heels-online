@@ -555,10 +555,16 @@ export class HudRenderer<RoomId extends string, RoomItemId extends string>
 
     this.#hudElements.head.doughnuts.textContainer.text =
       doughnutCount === "infinite" ? "∞" : doughnutCount;
-    doughnutsText.tint = tintForHud(
+    doughnutsText.colour = tintForHud(
       spriteOption,
       room.color,
       false,
+      spritesheetMeta,
+    );
+    doughnutsText.flashColour = tintForHud(
+      spriteOption,
+      room.color,
+      true,
       spritesheetMeta,
     );
 
@@ -630,16 +636,28 @@ export class HudRenderer<RoomId extends string, RoomItemId extends string>
         screenSize.y - extraSkillFromBottom(onScreenControls);
     }
 
-    skillText.tint = tintForHud(
+    skillText.colour = tintForHud(
       spriteOption,
       room.color,
       false,
       spritesheetMeta,
     );
-    shieldText.tint = tintForHud(
+    skillText.flashColour = tintForHud(
+      spriteOption,
+      room.color,
+      true,
+      spritesheetMeta,
+    );
+    shieldText.colour = tintForHud(
       spriteOption,
       room.color,
       false,
+      spritesheetMeta,
+    );
+    shieldText.flashColour = tintForHud(
+      spriteOption,
+      room.color,
+      true,
       spritesheetMeta,
     );
     shieldIcon.tint = tintForIcon(spriteOption, room.color);
@@ -753,7 +771,7 @@ export class HudRenderer<RoomId extends string, RoomItemId extends string>
 
     livesTextContainer.text = livesText;
 
-    livesTextContainer.tint = this.#characterTextColour(
+    livesTextContainer.colour = this.#characterTextColour(
       spritesheetMeta,
       spriteOption,
       characterName,
