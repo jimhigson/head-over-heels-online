@@ -1,5 +1,6 @@
-import type { Color, Renderer } from "pixi.js";
+import type { Renderer } from "pixi.js";
 
+import { Color } from "pixi.js";
 import { Container, Rectangle, Sprite } from "pixi.js";
 
 import type { PokeableNumber } from "../../../model/ItemStateMap";
@@ -44,6 +45,9 @@ const printableString = (input: PokeableNumber | string): string => {
   );
 };
 
+const white: Color = new Color(0xffffff);
+const flashDurationMs = 100;
+
 export type TextContainerOptions = {
   pixiRenderer: Renderer;
   doubleHeight?: boolean;
@@ -52,7 +56,8 @@ export type TextContainerOptions = {
   label?: string;
   x?: number;
   y?: number;
-  tint?: Color;
+  colour?: Color;
+  flashColour?: Color;
   text?: number | string;
 };
 
@@ -64,6 +69,9 @@ export class TextContainer extends Container {
   #renderToCacheContainer: Container<Container<Sprite>>;
   #heightMult: number;
   #widthMult: number;
+  #colour: Color;
+  #flashColour: Color | undefined;
+  #flashTimeout: ReturnType<typeof setTimeout> | undefined;
 
   constructor({
     pixiRenderer,
@@ -73,10 +81,14 @@ export class TextContainer extends Container {
     label = "text",
     x,
     y,
-    tint,
+    colour,
+    flashColour,
     text,
   }: TextContainerOptions) {
-    super({ label, x, y, tint });
+    super({ label, x, y, tint: colour });
+
+    this.#colour = colour ?? white;
+    this.#flashColour = flashColour;
 
     this.#pixiRenderer = pixiRenderer;
     this.#heightMult = doubleHeight ? 2 : 1;
@@ -150,6 +162,32 @@ export class TextContainer extends Container {
     this.#renderToCacheContainer.visible = false;
 
     this.#currentText = str;
+
+    this.#startFlash();
+  }
+
+  set colour(value: Color) {
+    this.#colour = value;
+    if (this.#flashTimeout === undefined) {
+      this.tint = value;
+    }
+  }
+
+  set flashColour(value: Color | undefined) {
+    this.#flashColour = value;
+  }
+
+  #startFlash() {
+    if (this.#flashColour === undefined) {
+      return;
+    }
+
+    clearTimeout(this.#flashTimeout);
+    this.tint = this.#flashColour;
+    this.#flashTimeout = setTimeout(() => {
+      this.#flashTimeout = undefined;
+      this.tint = this.#colour;
+    }, flashDurationMs);
   }
 
   #contentWidth(): number {
@@ -216,6 +254,7 @@ export class TextContainer extends Container {
   }
 
   override destroy(options?: Parameters<Container["destroy"]>[0]): void {
+    clearTimeout(this.#flashTimeout);
     // always destroy the cached texture/source when the text container is destroyed:
     this.#renderCacheSprite.destroy({ texture: true, textureSource: true });
     super.destroy(options);

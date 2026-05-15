@@ -70,7 +70,7 @@ export class FpsRenderer
     const colourName =
       fpsValue === undefined ? "white" : this.#colourNameForFps(fpsValue, 60);
     const palette = maybeDimPalette(blockStackSpritesheetMeta, this.#isDark);
-    this.#fpsText.tint = palette[colourName];
+    this.#fpsText.colour = palette[colourName];
   }
 
   tick = (frameTimingStatsEvent: FrameTimingStatsEvent): void => {

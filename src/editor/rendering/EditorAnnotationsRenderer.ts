@@ -384,7 +384,7 @@ export class EditorAnnotationsRenderer<T extends ItemInPlayType>
       pixiRenderer,
       label: "EditorAnnotationTextContainer",
       outline: true,
-      tint,
+      colour: tint,
       text: annotationText,
       y: yAdj,
     });
@@ -404,11 +404,11 @@ export class EditorAnnotationsRenderer<T extends ItemInPlayType>
         // TODO: this is over-dispatching - need some way to
         // prevent firing when enter/leave children
         store.dispatch(setClickableAnnotationHovered(true));
-        annotationContainer.tint = textClickableAnnotationHoverColour;
+        annotationContainer.colour = textClickableAnnotationHoverColour;
       });
       annotationContainer.on("mouseout", () => {
         store.dispatch(setClickableAnnotationHovered(false));
-        annotationContainer.tint = tint;
+        annotationContainer.colour = tint;
       });
       annotationContainer.cursor = "pointer";
     }

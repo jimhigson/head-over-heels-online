@@ -148,7 +148,7 @@ export const jumpButtonAppearance: ButtonAppearance<
       teleporter.gotoAndPlay(0);
     }
 
-    text.tint = getWhite(spriteOption, room?.color.shade === "dimmed");
+    text.colour = getWhite(spriteOption, room?.color.shade === "dimmed");
 
     buttonContainer.generateButtonSpriteTextures(room);
   }
