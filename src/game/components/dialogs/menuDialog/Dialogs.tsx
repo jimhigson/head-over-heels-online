@@ -20,6 +20,7 @@ import { InstallDialog } from "./dialogs/install/InstallDialog";
 import { MainMenuDialog } from "./dialogs/mainMenu/MainMenuDialog";
 import { LazyMapDialog } from "./dialogs/map/MapDialog.lazy";
 import { LazyMarkdownDialog } from "./dialogs/markdown/MarkdownDialog.lazy";
+import { LazyNeedRefreshDialog } from "./dialogs/needRefresh/NeedRefreshDialog.lazy";
 import { OfferReincarnationDialog } from "./dialogs/offerReincarnation/OfferReincarnationDialog";
 import { OptionsDialog } from "./dialogs/options/OptionsDialog";
 import { ProclaimEmperorDialog } from "./dialogs/proclaimEmperor/ProclaimEmperorDialog";
@@ -93,6 +94,8 @@ export const Dialogs = (_emptyProps: EmptyObject) => {
       return <MainMenuDialog />;
     case "map":
       return <LazyMapDialog />;
+    case "needRefresh":
+      return <LazyNeedRefreshDialog />;
     case "modernisationOptions":
       return <OptionsDialog />;
     case "offerReincarnation":

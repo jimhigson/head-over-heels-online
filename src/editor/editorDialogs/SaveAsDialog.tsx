@@ -10,6 +10,7 @@ import { Border } from "../../ui/Border";
 import { Button } from "../../ui/Button";
 import { cn } from "../../ui/cn";
 import { Dialog } from "../../ui/Dialog";
+import { DialogHeader } from "../../ui/DialogHeader";
 import { DialogPortal } from "../../ui/DialogPortal";
 import { Switch } from "../../ui/Switch";
 import { useKeyboardShortcut } from "../../ui/useKeyboardShortcut";
@@ -66,9 +67,7 @@ export const SaveAsDialog = ({
       {/* stop window-level shortcuts catching our keypresses that match their shortcuts */}
       <div className="contents no-keyboard-shortcuts">
         <Dialog ref={dialogRef} wide className="scale-editor p-1 !h-min">
-          <BitmapText className="text-white sprites-double-height bg-midRed text-center py-half">
-            Save as...
-          </BitmapText>
+          <DialogHeader>Save as...</DialogHeader>
           {isSomeoneElses && (
             <BitmapText className={`${multilineTextClass} text-midRed `}>
               You are saving a fork of another user's campaign under your own

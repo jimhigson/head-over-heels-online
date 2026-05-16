@@ -7,17 +7,14 @@ import { Suspense } from "react";
 import { registerSW } from "virtual:pwa-register";
 
 import { importAppOnce } from "./game/components/App.import";
+import { importOnNeedRefreshOnce } from "./onNeedRefresh.import";
 import { Dialog } from "./ui/Dialog";
 import { LoadingBorder } from "./ui/LoadingBorder";
 import { importOnceForReactSuspense } from "./utils/importOnce";
 
 const updateSW = registerSW({
-  onNeedRefresh() {
-    // I don't ask the user, I just jump to the new one whenever the service worker
-    // is updated, since the game should be able to handle reloading at any time.
-    // This could (and maybe should) be changed to show a dialog instead - it could be
-    // jarring for the page to suddenly reload without warning
-    updateSW(true);
+  async onNeedRefresh() {
+    (await importOnNeedRefreshOnce()).onNeedRefresh(updateSW);
   },
 } satisfies RegisterSWOptions);
 
@@ -30,7 +27,7 @@ const loadApp = importOnceForReactSuspense(async () => {
     await import("es-iterator-helpers/auto");
     console.info("iterator helper polyfill loaded");
   } else {
-    console.info("iterator helper polyfill not needed on this browser");
+    // iterator helper polyfill not needed on this browser"
   }
 
   return (await importAppOnce()).App;

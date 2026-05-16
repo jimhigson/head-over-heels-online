@@ -67,7 +67,7 @@ export default defineConfig(({ mode: _mode }) => {
         filename: "build-stats.html",
       }) as PluginOption,
       VitePWA({
-        registerType: "autoUpdate",
+        registerType: "prompt",
         workbox: {
           globPatterns: ["**/*.{js,css,html,png,webp,mp3,m4a}"],
           // visual-regression builds are unminified so assets are larger
