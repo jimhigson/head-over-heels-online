@@ -66,54 +66,57 @@ export default defineConfig(({ mode: _mode }) => {
         template: "treemap",
         filename: "build-stats.html",
       }) as PluginOption,
-      VitePWA({
-        registerType: "prompt",
-        workbox: {
-          globPatterns: ["**/*.{js,css,html,png,webp,mp3,m4a}"],
-          // visual-regression builds are unminified so assets are larger
-          ...(mode === "visual-regression" && {
-            maximumFileSizeToCacheInBytes: 5 * 1024 * 1024,
-          }),
-          runtimeCaching: [
-            {
-              // Cache everything *except* /editor/*
-              urlPattern: ({ url }) => !url.pathname.startsWith("/editor"),
-              handler: "NetworkFirst",
-              options: {
-                cacheName: "app-cache",
-                expiration: {
-                  maxEntries: 999,
-                  maxAgeSeconds: oneWeekInSeconds,
+      // tauri builds package the app as a native binary, so the PWA service
+      // worker is not needed (and would conflict with tauri's own update flow)
+      mode !== "tauri" &&
+        VitePWA({
+          registerType: "prompt",
+          workbox: {
+            globPatterns: ["**/*.{js,css,html,png,webp,mp3,m4a}"],
+            // visual-regression builds are unminified so assets are larger
+            ...(mode === "visual-regression" && {
+              maximumFileSizeToCacheInBytes: 5 * 1024 * 1024,
+            }),
+            runtimeCaching: [
+              {
+                // Cache everything *except* /editor/*
+                urlPattern: ({ url }) => !url.pathname.startsWith("/editor"),
+                handler: "NetworkFirst",
+                options: {
+                  cacheName: "app-cache",
+                  expiration: {
+                    maxEntries: 999,
+                    maxAgeSeconds: oneWeekInSeconds,
+                  },
                 },
               },
-            },
-          ],
-          navigateFallback: "/index.html",
-          navigateFallbackDenylist: [/^\/editor/], // Don’t redirect /editor/* to index.html
-        },
-        manifest: {
-          background_color: "#000000",
-          theme_color: "#000000",
-          name: "Head over Heels",
-          short_name: "Head over Heels",
-          orientation: "landscape",
-          display: "fullscreen",
-          scope: "/",
-          start_url: "/",
-          icons: [
-            {
-              src: "/icon-192.png",
-              sizes: "192x192",
-              type: "image/png",
-            },
-            {
-              src: "/icon-512.png",
-              sizes: "512x512",
-              type: "image/png",
-            },
-          ],
-        },
-      }),
+            ],
+            navigateFallback: "/index.html",
+            navigateFallbackDenylist: [/^\/editor/], // Don’t redirect /editor/* to index.html
+          },
+          manifest: {
+            background_color: "#000000",
+            theme_color: "#000000",
+            name: "Head over Heels",
+            short_name: "Head over Heels",
+            orientation: "landscape",
+            display: "fullscreen",
+            scope: "/",
+            start_url: "/",
+            icons: [
+              {
+                src: "/icon-192.png",
+                sizes: "192x192",
+                type: "image/png",
+              },
+              {
+                src: "/icon-512.png",
+                sizes: "512x512",
+                type: "image/png",
+              },
+            ],
+          },
+        }),
       glsl({
         minify: true,
       }),
