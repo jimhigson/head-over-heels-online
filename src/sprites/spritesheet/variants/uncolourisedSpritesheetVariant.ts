@@ -1,6 +1,7 @@
 import { Color, type Renderer } from "pixi.js";
 
 import type { AppSpritesheet } from "../loadedSpriteSheet";
+import type { TextureId } from "../spritesheetData/makeSpritesheetData";
 
 import { resolveSwops } from "../../../utils/palette/palette";
 import { paletteBlockstack } from "../../palette/spritesheetPalette";
@@ -37,6 +38,8 @@ export const createUncolourisedSpritesheet = (pixiRenderer: Renderer): void => {
           }),
         },
       ],
+      hardenAlphaTextureIds: (id: TextureId) =>
+        id.startsWith("shadow.") || id.startsWith("shadowMask."),
     },
   );
 };

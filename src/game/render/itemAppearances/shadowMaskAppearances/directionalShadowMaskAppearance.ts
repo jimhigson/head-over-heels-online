@@ -10,6 +10,7 @@ import type { ItemAppearance } from "../ItemAppearance";
 
 import { isTextureId } from "../../../../sprites/assertIsTextureId";
 import { originalSpriteSheet } from "../../../../sprites/spritesheet/loadedSpriteSheet";
+import { getSpriteSheetVariant } from "../../../../sprites/spritesheet/variants/getSpriteSheetVariant";
 import {
   type DirectionXy4,
   type DirectionXy8,
@@ -30,6 +31,7 @@ export const directionalShadowMaskAppearanceXy4 =
   ): ItemAppearance<"charles" | "monster", RenderPropsXy4, Sprite> =>
   ({
     renderContext: {
+      general: { spriteOption },
       item: {
         state: { facing },
       },
@@ -51,7 +53,8 @@ export const directionalShadowMaskAppearanceXy4 =
         facingXy4 === "left" || facingXy4 === "away" ?
           `shadowMask.${shadowMaskBaseShadowId}.away`
         : `shadowMask.${shadowMaskBaseShadowId}.right`,
-      spritesheetVariant: "original",
+      spritesheetVariant:
+        spriteOption.uncolourised ? "uncolourised" : "original",
     });
 
     sprite.y = -(blockSizePx.z * (heightBlocks - 1));
@@ -102,7 +105,13 @@ export const playableShadowMaskAppearanceXy8 =
     PlayableShadowMaskRenderProps,
     Sprite
   > =>
-  ({ renderContext: { item }, currentRendering }) => {
+  ({
+    renderContext: {
+      general: { spriteOption },
+      item,
+    },
+    currentRendering,
+  }) => {
     const action = item.type === "sceneryPlayer" ? "idle" : item.state.action;
 
     const currentlyRenderedProps = currentRendering?.renderProps;
@@ -127,8 +136,10 @@ export const playableShadowMaskAppearanceXy8 =
     const flippedDirection = flipXy8[facingXy8];
     const shadowMaskDirection = flippedDirection ?? facingXy8;
 
-    // shadow masks always use the original spritesheet
-    const spritesheet = originalSpriteSheet();
+    const spritesheet =
+      spriteOption.uncolourised ?
+        getSpriteSheetVariant("uncolourised")
+      : originalSpriteSheet();
 
     const textureId = getPlayableShadowMaskTextureId(
       shadowMaskBaseShadowTextureId,

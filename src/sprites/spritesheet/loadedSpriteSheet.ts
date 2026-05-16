@@ -9,7 +9,7 @@ import type { SpritesheetMetadata } from "./spritesheetData/spritesheetMetaData"
 
 import blockStackSpritesheetUrl from "../../../gfx/sprites.webp";
 import toppySpritesheetUrl from "../../../gfx/spritesToppy.webp";
-import { PreprocessShadowTexturesFilter } from "../../game/render/filters/PreprocessShadowTexturesFilter";
+import { ShadowPreprocessFilter } from "../../game/render/filters/shadows/ShadowPreprocessFilter";
 import { selectSpritesheetOverrideBlobUrl } from "../../store/slices/spritesheetOverrideSlice";
 import { store } from "../../store/store";
 import { detectDeviceType } from "../../utils/detectEnv/detectDeviceType";
@@ -129,7 +129,8 @@ export const initOriginalSpritesheet = (pixiRenderer: Renderer): void => {
     clearColour: black,
   });
 
-  const preprocessShadowTexturesFilter = new PreprocessShadowTexturesFilter(
+  const preprocessShadowTexturesFilter = new ShadowPreprocessFilter(
+    "invertRedToAlpha",
     shadowSpritesMask,
   );
 

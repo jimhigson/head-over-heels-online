@@ -258,6 +258,10 @@ class ItemShadowRenderer<T extends ItemInPlayType>
           {
             ...shadowCastTexture,
             paused: this.renderContext.general.paused,
+            spritesheetVariant:
+              this.renderContext.general.spriteOption.uncolourised ?
+                "uncolourised"
+              : "original",
           } as SpecifiedTextureCreateSpriteOptions,
           times,
         );

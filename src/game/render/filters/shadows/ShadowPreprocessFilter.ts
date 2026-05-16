@@ -2,26 +2,35 @@ import type { Texture } from "pixi.js";
 
 import { defaultFilterVert, Filter, GlProgram } from "pixi.js";
 
-import fragment from "./preprocessShadowTextures.frag";
+import hardenAlphaFrag from "./hardenAlpha.frag";
+import invertRedToAlphaFrag from "./preprocessShadowTextures.frag";
+
+export type ShadowPreprocessMode = "hardenChannels" | "invertRedToAlpha";
+
+const fragmentSources: Record<ShadowPreprocessMode, string> = {
+  invertRedToAlpha: invertRedToAlphaFrag,
+  hardenChannels: hardenAlphaFrag,
+};
 
 /**
- * Filter to preprocess textures for shadow rendering.
- * Adds alpha to the spritesheet
+ * Masked filter for shadow/shadowMask sprite preprocessing.
+ * "invertRedToAlpha" converts opaque black-on-white shadows to alpha-based.
+ * "hardenChannels" snaps all channels to binary 0 or 1.
  */
-export class PreprocessShadowTexturesFilter extends Filter {
+export class ShadowPreprocessFilter extends Filter {
   #mask: Texture;
 
   constructor(
-    /**
-     * where to apply the shadow preprocessing - white is on, black is off
-     */
+    /** which fragment shader transformation to apply */
+    mode: ShadowPreprocessMode,
+    /** white = apply preprocessing, black = pass through */
     mask: Texture,
   ) {
     super({
       glProgram: GlProgram.from({
         vertex: defaultFilterVert,
-        fragment,
-        name: "preprocess-shadow-textures-filter",
+        fragment: fragmentSources[mode],
+        name: `shadow-preprocess-${mode}`,
       }),
       resources: {
         uMask: mask.source,
