@@ -33,7 +33,7 @@ Tauri builds to native executables for these platforms:
 ```sh
 pnpm tauri dev # - like vite dev
 pnpm tauri build # -like vite build
-cd src-tauri && cargo build # building rust side side
+cd src-tauri && cargo build # building rust side
 ```
 
 ## Building a MacOS universal binary
@@ -43,7 +43,7 @@ Universal binaries work on both Apple Silicon and Intel Macs
 ```sh
 # Install both rust targets:
 rustup target add aarch64-apple-darwin x86_64-apple-darwin
-# Build a package for both Apple Silicon and Intel:
+# Build a package for both Apple Silicon (newer) and Intel Macs (older):
 pnpm tauri build --target universal-apple-darwin
 
 # universal binary should now be at:

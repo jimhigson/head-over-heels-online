@@ -21,8 +21,12 @@
       "section": "Sprite Changes"
     },
     {
+      "type": "app",
+      "section": "Native App"
+    },
+    {
       "type": "editor",
-      "section": "Editor Changes"
+      "section": "Level Editor"
     },
     {
       "type": "chore",
