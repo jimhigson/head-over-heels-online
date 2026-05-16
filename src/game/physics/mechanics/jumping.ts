@@ -16,6 +16,7 @@ import {
   isDeadly,
   isPickup,
   isPlayableItem,
+  isSolid,
   isSpring,
   isTeleporter,
   type PlayableItem,
@@ -132,7 +133,14 @@ const canRefreshJump = <RoomId extends string, RoomItemId extends string>(
 
   const hasShield = playableHasShield(playableItem);
   const jumpoffable = (item: UnionOfAllItemInPlayTypes<RoomId, RoomItemId>) => {
-    return isJumpOffable(item) && (!isDeadly(item) || hasShield);
+    return (
+      isJumpOffable(item) &&
+      (!isDeadly(item) || hasShield) &&
+      // // can't normally stand on a non-solid item to jump off of it, but jump
+      // // refresh doesn't require to be standing on so also need to filter out
+      // // non-solid items:
+      isSolid(item, playableItem)
+    );
   };
 
   // still have something below to jump off (even if the standingOnItemId was cleared by the jump):
