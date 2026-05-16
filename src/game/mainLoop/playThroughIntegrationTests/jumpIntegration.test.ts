@@ -5,7 +5,7 @@ vi.mock("../../sprites/samplePalette", () => ({
 
 import type { ItemsInTestRoomJson } from "../../../_testUtils/basicRoom";
 
-import { setUpBasicGame } from "../../../_testUtils/basicRoom";
+import { secondRoomId, setUpBasicGame } from "../../../_testUtils/basicRoom";
 import {
   currentPlayableState,
   headState,
@@ -796,4 +796,62 @@ describe("jump grace", () => {
 
     expect(headState(gameState).lives).toBeLessThan(startLives as number);
   });
+});
+
+test("heels can't refresh-jump off a door's portal or stopAutowalk", () => {
+  const frameRate = { fps: [165] };
+  const gameState = setUpBasicGame({
+    firstRoomItems: {
+      heels: {
+        type: "player",
+        position: { x: -0.25, y: 2.75, z: 1 },
+        config: {
+          which: "heels",
+        },
+      },
+      door: {
+        type: "door",
+        position: { x: 0, y: 2, z: 1 },
+        config: { direction: "right", toRoom: secondRoomId },
+      },
+    },
+    secondRoomItems: {
+      returnDoor: {
+        type: "door",
+        position: { x: 8, y: 2, z: 0 },
+        config: { direction: "left", toRoom: "firstRoom" },
+      },
+    },
+  });
+
+  // directly write in a position known to trigger this bug
+  heelsState(gameState).position = {
+    x: -4,
+    y: 44,
+    z: 12,
+  };
+
+  // face toward the door
+  playGameThrough(gameState, {
+    until: 1,
+    setupInitialInput(mockInputStateTracker) {
+      mockInputStateTracker.mockDirectionPressed = "right";
+    },
+  });
+
+  let maxZ = Number.NEGATIVE_INFINITY;
+
+  playGameThrough(gameState, {
+    frameRate,
+    until: 1_000,
+    setupInitialInput(mockInputStateTracker) {
+      mockInputStateTracker.mockPressing("jump");
+    },
+    frameCallbacks(gameState) {
+      const frameZ = heelsState(gameState).position.z;
+      maxZ = Math.max(maxZ, frameZ);
+    },
+  });
+
+  expect(maxZ).toBeLessThan(blockSizePx.z * 1.6);
 });
