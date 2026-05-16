@@ -6,12 +6,6 @@ import { sparseLut } from "./lutTexture/sparseLut";
 import { voronoiLut } from "./lutTexture/voronoiLut";
 import fragment from "./paletteSwap.frag";
 
-const glProgram = GlProgram.from({
-  vertex: defaultFilterVert,
-  fragment,
-  name: "palette-swop-filter1",
-});
-
 export type LutType = "sparse" | "voronoi";
 
 export type PaletteSwopSpec = {
@@ -44,7 +38,11 @@ export class PaletteSwapFilter extends Filter {
       lutType === "voronoi" ? voronoiLut(swops) : sparseLut(swops);
 
     super({
-      glProgram,
+      glProgram: GlProgram.from({
+        vertex: defaultFilterVert,
+        fragment,
+        name: "palette-swop-filter1",
+      }),
       resources: {
         colorReplaceUniforms: {},
         uLut: lutTexture.source,

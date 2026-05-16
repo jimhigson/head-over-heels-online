@@ -197,6 +197,8 @@ Steps per file move:
 
 * Don't switch to main first when creating a new branch, do `git fetch && git switch -c (new branch) origin/main`
 * For tasks assigned that include making a branch, completing a task on it, always use a worktree 
+* before writing commit messages check the release-please schema
+* always make PRs with `gh pr create -f` -ie, don't put a title or description body
 
 ## Style & Tooling:
  * do not make barrel files inside a package. Within a package, import directly from the file that declares the property you want. The single exception: each package's top-level `src/index.ts` serves as the package's public API and must re-export every symbol the package exposes externally, so the barrel doubles as an explicit list of the package's public surface. Cross-package imports always go through the barrel (eg `import { RoomJson } from "@blockstacking/hoh-common"`, never via deep paths).

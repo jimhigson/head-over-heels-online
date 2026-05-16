@@ -8,19 +8,17 @@ import {
 
 import fragment from "./colourClash.frag";
 
-const glProgram = GlProgram.from({
-  vertex: defaultFilterVert,
-  fragment,
-  name: "colour-clash-filter",
-});
-
 /**
  * Filter to use a colour from the backbuffer for non-black pixels
  */
 export class ColourClashFilter extends Filter {
   constructor(colour: ColorSource) {
     super({
-      glProgram,
+      glProgram: GlProgram.from({
+        vertex: defaultFilterVert,
+        fragment,
+        name: "colour-clash-filter",
+      }),
       resources: {
         uBackTexture: Texture.EMPTY,
         colourClashUniforms: {
