@@ -32,7 +32,7 @@ const zWeight = 0.5;
  *                 Can be any direction, not limited to axis-aligned.
  * @returns The minimum translation vector along the constraint direction to separate the objects.
  */
-export const mtvAlongVectorWriteInto = (
+const mtvAlongVectorWriteInto = (
   moverPosition: Xyz,
   moverAabb: Xyz,
   obstaclePosition: Xyz,
@@ -156,7 +156,7 @@ export const mtvAlongVector = (
  * Calculate the standard axis-aligned Minimum Translation Vector (MTV) to separate two rectangular objects.
  * Returns the shortest axis-aligned vector to push the mover out of the obstacle.
  */
-export const mtvWriteInto = (
+const mtvWriteInto = (
   moverPosition: Xyz,
   moverAabb: Xyz,
   obstaclePosition: Xyz,
@@ -240,7 +240,7 @@ export const mtv = (
 /**
  * @see mtvWriteInto in two dimensions.
  */
-export const mtvWriteIntoXy = (
+const mtvWriteIntoXy = (
   moverPosition: Xy,
   moverAabb: Xy,
   obstaclePosition: Xy,

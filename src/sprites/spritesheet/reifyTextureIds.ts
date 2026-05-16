@@ -3,7 +3,7 @@ import type { TextureId } from "./spritesheetData/makeSpritesheetData";
 
 import { keysIter } from "../../utils/entries";
 
-export type TexturesPredicate = (candidate: TextureId) => boolean;
+type TexturesPredicate = (candidate: TextureId) => boolean;
 export type TexturesSpecifier = Iterable<TextureId> | TexturesPredicate;
 
 export const reifyTextureIds = (

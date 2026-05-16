@@ -2,7 +2,7 @@ import type { DeploymentType } from "../utils/detectEnv/detectDeploymentType";
 import type { DeviceType } from "../utils/detectEnv/detectDeviceType";
 
 /** strong-typing for query params used in the game or editor */
-export type AllowedQueryParams = {
+type AllowedQueryParams = {
   cheats: "1" | null;
   playAsHeels: "1" | null;
   campaignName: null | string;

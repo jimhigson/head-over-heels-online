@@ -139,14 +139,8 @@ export const levelEditorSlice = createSlice({
   },
 });
 
-export type LevelEditorSlice = typeof levelEditorSlice;
-
 export type LevelEditorSliceAction = ReturnType<
   ValueOf<typeof levelEditorSlice.actions>
->;
-
-export type LevelEditorSliceActionCreator = ValueOf<
-  typeof levelEditorSlice.actions
 >;
 
 export const {

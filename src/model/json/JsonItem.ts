@@ -45,17 +45,6 @@ export const jsonItemTypes = [
 
 export type JsonItemType = (typeof jsonItemTypes)[number];
 
-/**
- * test for if a door is embedded in an undrawn wall - ie, is on the right or towards
- * edge of the room and needs extra space for it
- */
-export const inHiddenWall = ({
-  config: { direction },
-  position,
-}: JsonItem<"door" | "wall", string, string>) =>
-  (direction === "right" && position.x === 0) ||
-  (direction === "towards" && position.y === 0);
-
 /** config used in both json and in-play items */
 export type JsonItemConfig<
   T extends JsonItemType,

@@ -1,5 +1,4 @@
 import type { PayloadAction } from "@reduxjs/toolkit";
-import type { ValueOf } from "type-fest";
 
 import { createAction, createSlice } from "@reduxjs/toolkit";
 import { canonicalize } from "json-canonicalize";
@@ -30,7 +29,7 @@ export type SavedGamesSliceState = {
   lastSavedCampaignLocator?: CampaignLocator;
 };
 
-export const initialSavedGamesSliceState: SavedGamesSliceState = {
+const initialSavedGamesSliceState: SavedGamesSliceState = {
   saves: {},
 };
 
@@ -108,13 +107,7 @@ export const savedGamesSlice = createSlice({
   },
 });
 
-export type SavedGamesSliceAction =
-  | ReturnType<typeof savedGameLoadedOnAppLoad>
-  | ReturnType<ValueOf<typeof savedGamesSlice.actions>>;
-
 export const { saveGameRecorded, savedGameRemoved } = savedGamesSlice.actions;
-
-export const savedGamesSliceActions = savedGamesSlice.actions;
 
 // typed variant so callers don't need to cast for RoomId
 export const selectSaveForCampaign = savedGamesSlice.selectors

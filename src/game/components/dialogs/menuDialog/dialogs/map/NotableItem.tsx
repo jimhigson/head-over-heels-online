@@ -21,7 +21,7 @@ export type NotableItem<RoomId extends string> =
   | JsonItem<"pickup", RoomId>
   | JsonItem<"teleporter", RoomId>;
 
-export const SpriteInRoom = ({
+const SpriteInRoom = ({
   className,
   scrollTo = false,
   onClick,

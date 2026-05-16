@@ -46,7 +46,7 @@ export const markdownPages = {
 export type MarkdownPageName = keyof typeof markdownPages;
 
 // regex to ge the title from any markdown page
-export const titleRegex = /^##\s+(.*)$/m;
+const titleRegex = /^##\s+(.*)$/m;
 
 export const pageTitle = (pageContent: string): string => {
   const match = pageContent.match(titleRegex);

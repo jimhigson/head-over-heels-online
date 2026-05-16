@@ -22,7 +22,7 @@ export type JsonMovement =
   // turns towards the player while staying still (elephant heads in the remake)
   | "turn-to-player";
 
-export type MovementActivated =
+type MovementActivated =
   // on and off potentially overridable switchable in item state in-game using switches
   | "off"
   | "on"

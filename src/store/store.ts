@@ -6,7 +6,7 @@ import type {
 import type { EmptyObject } from "type-fest";
 
 import { combineSlices, configureStore } from "@reduxjs/toolkit";
-import { useDispatch, useSelector } from "react-redux";
+import { useSelector } from "react-redux";
 import {
   FLUSH,
   PAUSE,
@@ -135,15 +135,6 @@ export type AppThunk<ReturnType = void> = ThunkAction<
   UnknownAction
 >;
 
-export type EditorAppThunk<ReturnType = void> = ThunkAction<
-  ReturnType,
-  EditorRootState,
-  unknown,
-  UnknownAction
->;
-
-export type EditorAppDispatch = typeof store.dispatch;
-
 export const editorStore = store as EnhancedStore<
   EditorRootState,
   LevelEditorSliceAction | StoreActionOf<typeof store>,
@@ -151,5 +142,3 @@ export const editorStore = store as EnhancedStore<
 >;
 
 export const useEditorAppSelector = useSelector.withTypes<EditorRootState>();
-
-export const useEditorAppDispatch = useDispatch.withTypes<EditorAppDispatch>();

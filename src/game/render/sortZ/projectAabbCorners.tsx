@@ -1,9 +1,5 @@
 import { addXyz, type Xyz } from "../../../utils/vectors/vectors";
-import {
-  projectWorldXyzToScreenX,
-  projectWorldXyzToScreenXy,
-  projectWorldXyzToScreenY,
-} from "../projections";
+import { projectWorldXyzToScreenXy } from "../projections";
 
 export type ProjectionOnAxes = {
   xAxisProjectionMin: number;
@@ -37,39 +33,11 @@ export const projectTopLeft = (position: Xyz, aabb: Xyz) =>
 export const projectTopRight = (position: Xyz, aabb: Xyz) =>
   projectWorldXyzToScreenXy(addXyz(position, { y: aabb.y, z: aabb.z }));
 
-export const projectTop = (position: Xyz, aabb: Xyz) =>
-  projectWorldXyzToScreenY(addXyz(position, aabb));
-
-export const projectBottom = (position: Xyz) =>
-  projectWorldXyzToScreenY(position);
-
-export const projectLeft = (position: Xyz, aabb: Xyz) =>
-  projectWorldXyzToScreenX(addXyz(position, { x: aabb.x }));
-
-export const projectRight = (position: Xyz, aabb: Xyz) =>
-  projectWorldXyzToScreenX(addXyz(position, { y: aabb.y }));
-
-// All 8 corners: cXYZ where X,Y,Z are 0 or 1
-export const projectC000 = (position: Xyz) =>
-  projectWorldXyzToScreenXy(position);
-
-export const projectC001 = (position: Xyz, aabb: Xyz) =>
-  projectWorldXyzToScreenXy(addXyz(position, { z: aabb.z }));
-
 export const projectC010 = (position: Xyz, aabb: Xyz) =>
   projectWorldXyzToScreenXy(addXyz(position, { y: aabb.y }));
 
-export const projectC011 = (position: Xyz, aabb: Xyz) =>
-  projectWorldXyzToScreenXy(addXyz(position, { y: aabb.y, z: aabb.z }));
-
 export const projectC100 = (position: Xyz, aabb: Xyz) =>
   projectWorldXyzToScreenXy(addXyz(position, { x: aabb.x }));
-
-export const projectC101 = (position: Xyz, aabb: Xyz) =>
-  projectWorldXyzToScreenXy(addXyz(position, { x: aabb.x, z: aabb.z }));
-
-export const projectC110 = (position: Xyz, aabb: Xyz) =>
-  projectWorldXyzToScreenXy(addXyz(position, { x: aabb.x, y: aabb.y }));
 
 export const projectC111 = (position: Xyz, aabb: Xyz) =>
   projectWorldXyzToScreenXy(addXyz(position, aabb));

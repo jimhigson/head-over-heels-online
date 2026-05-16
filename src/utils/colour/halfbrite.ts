@@ -5,14 +5,14 @@ import { parseHex } from "./parseHex";
 /**
  * how dark to make the shadows in range 0..1 to emulate Amiga EHB (lower is darker)
  */
-export const amigaHalfBriteBrightness = 0.4;
+const amigaHalfBriteBrightness = 0.4;
 /**
  * an alternative brightness level for when calculating replacements for placeholder
  * colours that can be used if halfbrite looks too dark
  */
-export const slightlyBrighterReducedBrightness = 0.5;
+const slightlyBrighterReducedBrightness = 0.5;
 
-export const shadowAliasingBrightness = 0.7;
+const shadowAliasingBrightness = 0.7;
 
 export const standardBrightnessLevels = [
   1,

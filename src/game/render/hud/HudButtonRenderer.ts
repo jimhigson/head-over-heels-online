@@ -18,7 +18,7 @@ export type ButtonId =
   | "map"
   | "menu";
 
-export type Button<Which extends ButtonId = ButtonId> = {
+type Button<Which extends ButtonId = ButtonId> = {
   id: string;
   which: Which;
   actions: BooleanAction[];

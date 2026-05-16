@@ -433,10 +433,7 @@ export class RoomScrollRenderer<
 /**
  * for debugging, show scroll info overlaid on a room
  */
-export const showRoomScrollBounds = <
-  RoomId extends string,
-  RoomItemId extends string,
->(
+const showRoomScrollBounds = <RoomId extends string, RoomItemId extends string>(
   roomState: RoomState<RoomId, RoomItemId>,
 ) => {
   const {

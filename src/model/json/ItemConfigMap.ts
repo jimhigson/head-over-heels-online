@@ -68,8 +68,8 @@ export type EmittableItemJson = Extract<
 
 export type EmittableItemRecipe = Omit<EmittableItemJson, "position">;
 
-export type PortableBlockStyle = "cube" | "drum" | "sticks";
-export type DeadlyBlockStyle = "toaster" | "volcano";
+type PortableBlockStyle = "cube" | "drum" | "sticks";
+type DeadlyBlockStyle = "toaster" | "volcano";
 
 export type FloorType = "deadly" | "none" | "standable";
 

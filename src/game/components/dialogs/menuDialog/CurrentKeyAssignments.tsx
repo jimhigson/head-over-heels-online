@@ -18,7 +18,7 @@ const specialCharClassName =
  * put the keys array into a more readable order for displaying on the mapping
  * choices screen
  */
-export const sortKeys = (keys: Key[]): Key[] => {
+const sortKeys = (keys: Key[]): Key[] => {
   const keyCategory = (key: Key): number => {
     if (key.startsWith("Arrow")) {
       return 1;

@@ -49,9 +49,3 @@ export const stackSprites = <C extends Container>({
   container[stackedBottomSymbol] = bottom;
   return container;
 };
-
-export const isStackedSpritesContainer = (
-  container: Container,
-): container is StackedSpritesContainer => {
-  return stackedTopSymbol in container;
-};

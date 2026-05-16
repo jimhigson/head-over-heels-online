@@ -56,7 +56,7 @@ export const selectHeelsAbilities = (
     return playable.state.heels;
   }
 };
-export const _selectAbilities = <RoomId extends string>(
+const _selectAbilities = <RoomId extends string>(
   gameState: Pick<GameState<RoomId>, "characterRooms" | "currentCharacterName">,
   individualCharacterName: IndividualCharacterName,
 ):

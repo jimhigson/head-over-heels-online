@@ -8,14 +8,14 @@ import { type Aabb, addXyz, originXyz } from "../../utils/vectors/vectors";
 import { blockSizePx } from "../physics/mechanicsConstants";
 
 export const smallItemAabb: Aabb = { x: 12, y: 12, z: blockSizePx.z };
-export const mediumItemAabb: Aabb = { x: 14, y: 14, z: blockSizePx.z };
+const mediumItemAabb: Aabb = { x: 14, y: 14, z: blockSizePx.z };
 export const fullBlockAabb: Aabb = { x: 16, y: 16, z: blockSizePx.z };
-export const doubleHeightCharacter: Aabb = {
+const doubleHeightCharacter: Aabb = {
   ...smallItemAabb,
   z: blockSizePx.z * 2,
 };
 
-export const volcanoAabbInfo: ItemInPlayAAbbInfo = {
+const volcanoAabbInfo: ItemInPlayAAbbInfo = {
   aabb: fullBlockAabb,
   renderAabbOffset: { x: -1, y: -1, z: 0 },
   renderAabb: addXyz(fullBlockAabb, { x: 2, y: 2 }),

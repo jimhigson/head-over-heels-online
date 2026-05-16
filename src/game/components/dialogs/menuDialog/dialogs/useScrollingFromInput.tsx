@@ -7,7 +7,7 @@ import { useTotalUpscale } from "../../../../../store/slices/upscale/upscaleSele
 import { unitVectors } from "../../../../../utils/vectors/unitVectors";
 import { useActionTap } from "../../useActionTap";
 
-export const scrollLinesAtOnce = 4;
+const scrollLinesAtOnce = 4;
 export const charHeight = hudCharTextureSize.h;
 
 /**

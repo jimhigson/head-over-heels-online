@@ -19,7 +19,7 @@ import { OutlineFilter } from "../../filters/OutlineFilter";
 
 const flashDurationMs = 75;
 
-export class ItemFlashOnSwitchedRenderer<T extends ItemInPlayType>
+class ItemFlashOnSwitchedRenderer<T extends ItemInPlayType>
   implements ItemPixiRenderer<T>
 {
   public readonly output: Container = new Container({

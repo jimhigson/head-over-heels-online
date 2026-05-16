@@ -6,7 +6,7 @@ import { sparseLut } from "./lutTexture/sparseLut";
 import { voronoiLut } from "./lutTexture/voronoiLut";
 import fragment from "./paletteSwap.frag";
 
-export type LutType = "sparse" | "voronoi";
+type LutType = "sparse" | "voronoi";
 
 export type PaletteSwopSpec = {
   /**

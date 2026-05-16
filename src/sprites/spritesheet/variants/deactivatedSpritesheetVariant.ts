@@ -63,7 +63,7 @@ const buildDeactivatedSwops = <
   };
 };
 
-export const destroyDeactivatedSpritesheetVariant = () => {
+const destroyDeactivatedSpritesheetVariant = () => {
   if (swopped !== undefined) {
     swopped.textureSource.destroy();
     swopped.destroy(true);

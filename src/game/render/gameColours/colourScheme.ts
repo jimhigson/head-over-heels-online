@@ -1,8 +1,6 @@
 import type { Color } from "pixi.js";
 
-import type { IndividualCharacterName } from "../../../model/modelTypes";
 import type { UnknownRoomState } from "../../../model/RoomState";
-import type { BlockstackPaletteColourName } from "../../../sprites/palette/spritesheetPalette";
 
 import {
   zxSpectrumColor,
@@ -185,14 +183,6 @@ export const colorScheme: Record<
 export const getRoomColorScheme = (
   colour: ZxSpectrumRoomColour,
 ): RoomColorScheme => colorScheme[colour.hue][colour.shade];
-
-export const playableAccentColours: Record<
-  IndividualCharacterName,
-  BlockstackPaletteColourName
-> = {
-  head: "pastelBlue",
-  heels: "pink",
-};
 
 export const edgeOriginalGameColour = (
   room: Pick<UnknownRoomState, "color">,

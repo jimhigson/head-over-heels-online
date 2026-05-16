@@ -56,12 +56,12 @@ const shadowDoorFloatingThresholdX: SpecifiedTextureCreateSpriteOptions =
  * the playable characters go inside the doorframes a bit too much when
  * it is set to exactly match the door sprite's internal height
  */
-export const doorPortalHeight = blockSizePx.z * 2;
-export const doorPostHeightBlocks = 4;
+const doorPortalHeight = blockSizePx.z * 2;
+const doorPostHeightBlocks = 4;
 export const doorPostHeightPx = blockSizePx.z * doorPostHeightBlocks;
 
 /** how many blocks wide is the door, including frame and doorway? */
-export const doorOverallWidthBlocks = 2;
+const doorOverallWidthBlocks = 2;
 export const doorOverallWidthPx = 2 * blockSizePx.x;
 
 // to be true to the original game, this should be 0.75 blocks, which is

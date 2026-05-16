@@ -4,17 +4,9 @@
  */
 
 import { objectEmpty } from "../utils/objectEmpty";
-import { objectSize } from "../utils/objectSize";
 
 export type StoodOnBy<RoomItemId extends string = string> = {
   [r in RoomItemId]: true;
-};
-
-/**
- * convenience to get how many items are standing on an item
- */
-export const stoodOnByCount = (stoodOnBy: StoodOnBy) => {
-  return objectSize(stoodOnBy);
 };
 
 /**

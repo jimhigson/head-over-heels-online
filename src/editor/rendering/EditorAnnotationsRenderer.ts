@@ -172,7 +172,7 @@ const isWakingMonster = (item: EditorUnionOfAllItemInPlayTypes) => {
  *    * hovered item visual effect
  *    * doors (destination and clickthrough)
  */
-export class EditorAnnotationsRenderer<T extends ItemInPlayType>
+class EditorAnnotationsRenderer<T extends ItemInPlayType>
   implements ItemPixiRenderer<T>
 {
   public readonly output: Container = new Container({

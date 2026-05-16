@@ -17,9 +17,7 @@ import {
   betweenUpAndLeft,
 } from "./cursor/pointerIntersectionEdge";
 
-export const selectCursor = ({
-  levelEditor,
-}: EditorRootState): `cursor-${string}` => {
+const selectCursor = ({ levelEditor }: EditorRootState): `cursor-${string}` => {
   const {
     dragInProgress,
     clickableAnnotationHovered,

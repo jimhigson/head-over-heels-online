@@ -52,7 +52,7 @@ const parseErrorForDisplay = (
   return { message, sanitizedStack };
 };
 
-export const writeErrorReport = (
+const writeErrorReport = (
   errors: SerialisableError[],
   recentActions?: UnknownAction[],
 ) => {

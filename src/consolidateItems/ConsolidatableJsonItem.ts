@@ -1,4 +1,4 @@
-import type { JsonItemType, JsonItemUnion } from "../model/json/JsonItem";
+import type { JsonItemUnion } from "../model/json/JsonItem";
 import type { Xyz } from "../utils/vectors/vectors";
 
 import {
@@ -12,19 +12,16 @@ import {
   unitXyz_yz,
 } from "../utils/vectors/vectors";
 
-export const consolidatableJsonItemTypes = [
-  "block",
-  "deadlyBlock",
-  "barrier",
-  "conveyor",
-  "hushPuppy",
-  "wall",
-  "teleporter",
-  "floor",
-  "spikes",
-] as const satisfies JsonItemType[];
 export type ConsolidatableJsonItemType =
-  (typeof consolidatableJsonItemTypes)[number];
+  | "barrier"
+  | "block"
+  | "conveyor"
+  | "deadlyBlock"
+  | "floor"
+  | "hushPuppy"
+  | "spikes"
+  | "teleporter"
+  | "wall";
 
 export type ConsolidatableJsonItem = Extract<
   JsonItemUnion,

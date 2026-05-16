@@ -16,7 +16,7 @@ export interface ToolHandler<T extends Tool> {
 }
 
 // Base type containing common fields
-export type BaseMouseParams<T extends Tool> = {
+type BaseMouseParams<T extends Tool> = {
   roomState: EditorRoomState;
   tool: T;
   storeState: EditorRootState;
@@ -24,7 +24,7 @@ export type BaseMouseParams<T extends Tool> = {
 };
 
 // Base type for events that involve pointing at something
-export type BasePointingParams<T extends Tool> = BaseMouseParams<T> & {
+type BasePointingParams<T extends Tool> = BaseMouseParams<T> & {
   pointingAt: MaybePointingAtSomething;
   upscale: Upscale;
 };

@@ -1,8 +1,5 @@
 import type { Container } from "pixi.js";
 
-/** anything that can be rendered by the appearance system */
-export type RenderSubject = { id: string };
-
 export type AppearanceRendering<
   RenderProps extends object,
   Output extends Container = Container,
@@ -64,7 +61,3 @@ export type Appearance<
 > = (
   options: AppearanceOptions<RenderContext, TickContext, RP, RenderTarget>,
 ) => AppearanceReturn<RP, RenderTarget>;
-
-export const renderedBefore = (renderContainer: Container) => {
-  return renderContainer.children.length > 0;
-};

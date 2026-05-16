@@ -3,7 +3,6 @@ import type { Tagged } from "type-fest";
 import type { ItemTypeUnion } from "../_generated/types/ItemInPlayUnion";
 import type { RoomRenderer } from "../game/render/room/RoomRenderer";
 import type {
-  ItemInPlay,
   ItemInPlayType,
   UnionOfAllItemInPlayTypes,
 } from "../model/ItemInPlay";
@@ -41,11 +40,6 @@ export type EditorJsonItem<T extends JsonItemType> = JsonItem<
   EditorRoomItemId
 >;
 export type EditorRoomRenderer = RoomRenderer<EditorRoomId, EditorRoomItemId>;
-export type EditorItemInPlay<T extends ItemInPlayType> = ItemInPlay<
-  T,
-  EditorRoomId,
-  EditorRoomItemId
->;
 export type EditorItemInPlayUnion<T extends ItemInPlayType> = ItemTypeUnion<
   T,
   EditorRoomId,

@@ -10,7 +10,7 @@ import {
   type Xyz,
 } from "../../../utils/vectors/vectors";
 
-export const cornerTolerancePx = 3;
+const cornerTolerancePx = 3;
 
 /**
  * get the corner of the item being pointed at

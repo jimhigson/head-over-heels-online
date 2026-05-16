@@ -364,7 +364,7 @@ const randomlyChangeDirection = <
   };
 };
 
-export const keepWalkingInSameDirection = <
+const keepWalkingInSameDirection = <
   RoomId extends string,
   RoomItemId extends string,
 >(

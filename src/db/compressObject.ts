@@ -3,7 +3,7 @@ import { fromUint8Array, toUint8Array } from "js-base64";
 const urlSafeBase64 = true;
 
 /** browsers don't yet have brotli native */
-export const compressionFormat: CompressionFormat = "gzip";
+const compressionFormat: CompressionFormat = "gzip";
 
 export const compressObject = async (obj: object): Promise<string> => {
   const jsonStr = JSON.stringify(obj);

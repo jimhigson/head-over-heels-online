@@ -119,6 +119,3 @@ export const zComparatorOfVisuallyOverlappingByMtv = (
     : mtvZ
   );
 };
-
-export const zScore = (itemPosition: Xyz) =>
-  itemPosition.x + itemPosition.y - itemPosition.z;

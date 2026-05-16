@@ -10,7 +10,7 @@ import { Dialog } from "./Dialog";
 import { DialogPortal } from "./DialogPortal";
 import { SpinnerHead } from "./Spinner";
 
-export const LazyDialog = ({ children }: { children: ReactNode }) => (
+const LazyDialog = ({ children }: { children: ReactNode }) => (
   <Suspense
     fallback={
       <DialogPortal>

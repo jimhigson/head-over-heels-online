@@ -20,7 +20,7 @@ export type PlayableActionState =
   /** death animation is playing - character will have had expired set  */
   | "death";
 
-export type PlayableTeleportingState = {
+type PlayableTeleportingState = {
   phase: "in" | "out";
   startRoomTime: number;
   otherRoom: string;
@@ -172,7 +172,7 @@ export const pokeableToNumber = (a: PokeableNumber): number =>
   // it is ok to use POSITIVE_INFINITY anywhere where it doesn't get serialised
   a === "infinite" ? Number.POSITIVE_INFINITY : a;
 
-export type CommonAbilities = {
+type CommonAbilities = {
   lives: PokeableNumber;
   /** time specific to this character - how must time has the character experienced? Ie,
    * long have they been in the currently playing room
@@ -246,12 +246,11 @@ type ItemWithMovementState = {
   };
 };
 
-export type MonsterState<RoomItemId extends string> =
-  FreeItemState<RoomItemId> &
-    PortableItemState &
-    ItemWithMovementState & {
-      busyLickingDoughnutsOffFace: boolean;
-    };
+type MonsterState<RoomItemId extends string> = FreeItemState<RoomItemId> &
+  PortableItemState &
+  ItemWithMovementState & {
+    busyLickingDoughnutsOffFace: boolean;
+  };
 
 export type HeadState<RoomItemId extends string> = PlayableState<RoomItemId> &
   HeadAbilities;

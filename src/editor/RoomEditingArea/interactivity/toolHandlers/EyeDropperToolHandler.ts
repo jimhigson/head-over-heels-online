@@ -77,11 +77,3 @@ export class EyeDropperToolHandler
     // EyeDropper tool doesn't need to do anything on mouse leave
   }
 }
-
-// Legacy export for backwards compatibility - to be removed after migration
-export const eyeDropperMouseMove = (
-  params: MouseMoveParams<Extract<Tool, { type: "eyeDropper" }>>,
-) => {
-  const handler = new EyeDropperToolHandler();
-  handler.handleMouseMove(params);
-};

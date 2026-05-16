@@ -1,16 +1,9 @@
 import type { JsonItemUnion } from "../../../../../../model/json/JsonItem";
 import type { RoomJson } from "../../../../../../model/RoomJson";
-import type { Xy, Xyz } from "../../../../../../utils/vectors/vectors";
+import type { Xy } from "../../../../../../utils/vectors/vectors";
 
 import { keysIter } from "../../../../../../utils/entries";
 import { blockSizePx } from "../../../../../physics/mechanicsConstants";
-
-export type InPlayItemLocatableInSubRoom = {
-  id: string;
-  state: {
-    position: Xyz;
-  };
-};
 
 export type MaybeDividedRoom = {
   id: string;
@@ -27,7 +20,7 @@ export type MaybeDividedRoom = {
   };
 };
 
-export const blockXyIsInSubRoom = <RoomId extends string>(
+const blockXyIsInSubRoom = <RoomId extends string>(
   blockXy: Xy,
   subRoomId: string,
   room: RoomJson<RoomId, string>,

@@ -87,7 +87,7 @@ export const getTrackedTextures = (): Array<TrackedTextureSource> => {
 /**
  * Get bytes per pixel for a given texture format
  */
-export const getBytesPerPixel = (format: TEXTURE_FORMATS): number => {
+const getBytesPerPixel = (format: TEXTURE_FORMATS): number => {
   // Single channel formats (1 byte)
   if (format.startsWith("r8") || format === "stencil8") {
     return 1;

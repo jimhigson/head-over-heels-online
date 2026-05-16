@@ -37,7 +37,7 @@ type StateFragment<T extends ItemInPlayType> = Partial<
   ItemState<T, string, string>
 >;
 
-export const defaultFreeItemStateVels = () => ({
+const defaultFreeItemStateVels = () => ({
   gravity: originXyz,
   movingFloor: originXyz,
 });

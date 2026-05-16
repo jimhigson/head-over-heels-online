@@ -52,8 +52,6 @@ import { deleteItemFromRoom } from "./deleteItemFromRoom";
 import { removeHushPuppiesFromRoom } from "./removeHushPuppiesFromRoom";
 import { updateItemPosition } from "./updateItemPosition";
 
-export type ChangeType = "level-select" | "portal" | "teleport";
-
 const log = 0;
 
 type ChangeCharacterRoomOptions<

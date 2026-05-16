@@ -1,7 +1,7 @@
 import type { UnionOfAllItemInPlayTypes } from "../../model/ItemInPlay";
 import type { Xy } from "../../utils/vectors/vectors";
 
-export const xyRectangleOverlapArea = (
+const xyRectangleOverlapArea = (
   pos1: Xy,
   bb1: Xy,
   pos2: Xy,

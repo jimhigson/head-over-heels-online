@@ -15,7 +15,7 @@ import { seriesOfNumberedTextures } from "./spriteGenerators";
 import { floorTileSize, wallTileSize } from "./textureSizes";
 import { withSpeed } from "./withSpeed";
 
-export type WallTextureId<
+type WallTextureId<
   PS extends SceneryName,
   TDark extends ".dark" | "",
 > = string &
