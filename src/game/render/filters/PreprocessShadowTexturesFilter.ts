@@ -4,12 +4,6 @@ import { defaultFilterVert, Filter, GlProgram } from "pixi.js";
 
 import fragment from "./preprocessShadowTextures.frag";
 
-const glProgram = GlProgram.from({
-  vertex: defaultFilterVert,
-  fragment,
-  name: "preprocess-shadow-textures-filter",
-});
-
 /**
  * Filter to preprocess textures for shadow rendering.
  * Adds alpha to the spritesheet
@@ -24,7 +18,11 @@ export class PreprocessShadowTexturesFilter extends Filter {
     mask: Texture,
   ) {
     super({
-      glProgram,
+      glProgram: GlProgram.from({
+        vertex: defaultFilterVert,
+        fragment,
+        name: "preprocess-shadow-textures-filter",
+      }),
       resources: {
         uMask: mask.source,
       },

@@ -3,12 +3,6 @@ import { defaultFilterVert, Filter, GlProgram } from "pixi.js";
 import fragment from "./attributeBlock.frag";
 import { blockstackToSpectrumLut } from "./lutTexture/stdLuts/blockstackToSpectrumLut";
 
-const glProgram = GlProgram.from({
-  vertex: defaultFilterVert,
-  fragment,
-  name: "attribute-block-filter",
-});
-
 /**
  * Filter that divides the screen into blocks where each block
  * can only display black plus one other colour, emulating
@@ -31,7 +25,11 @@ export class AttributeBlockFilter extends Filter {
     blackPoint?: number;
   } = {}) {
     super({
-      glProgram,
+      glProgram: GlProgram.from({
+        vertex: defaultFilterVert,
+        fragment,
+        name: "attribute-block-filter",
+      }),
       resources: {
         attributeBlockUniforms: {
           uBlockSize: {

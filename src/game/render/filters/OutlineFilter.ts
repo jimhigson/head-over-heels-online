@@ -23,12 +23,6 @@ store.subscribe(() => {
   currentUpscale = selectGameEngineUpscale(store.getState());
 });
 
-const glProgram = GlProgram.from({
-  vertex: defaultFilterVert,
-  fragment,
-  name: "outline-filter",
-});
-
 export class OutlineFilter extends Filter {
   #outlineWidth?: number;
 
@@ -36,7 +30,11 @@ export class OutlineFilter extends Filter {
     const upscale = width ?? currentUpscale;
 
     super({
-      glProgram,
+      glProgram: GlProgram.from({
+        vertex: defaultFilterVert,
+        fragment,
+        name: "outline-filter",
+      }),
       padding: upscale,
       resources: {
         colorReplaceUniforms: {

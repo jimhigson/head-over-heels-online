@@ -9,12 +9,6 @@ import {
   teleportingLutForSpriteOption,
 } from "./lutTexture/stdLuts/lutForSpriteOption";
 
-const glProgram = GlProgram.from({
-  vertex: defaultFilterVert,
-  fragment,
-  name: "attribute-block-filter",
-});
-
 type ColourClashCircleEffectOptions = {
   /**
    * Size of each attribute block in pixels (e.g., 8 for spectacular 8x8 blocks)
@@ -75,7 +69,11 @@ export class ColourClashCircleEffectFilter extends Filter {
     distancePower = 3.0,
   }: ColourClashCircleEffectOptions) {
     super({
-      glProgram,
+      glProgram: GlProgram.from({
+        vertex: defaultFilterVert,
+        fragment,
+        name: "colour-clash-circle-effect-filter",
+      }),
       resources: {
         attributeBlockUniforms: {
           uBlockSize: {

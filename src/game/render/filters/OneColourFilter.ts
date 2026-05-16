@@ -9,17 +9,15 @@ type Uniforms = {
   uColour: Float32Array;
 };
 
-const glProgram = GlProgram.from({
-  vertex: defaultFilterVert,
-  fragment,
-  name: "oneColour-filter",
-});
-
 /* very simple filter - render non-transparent pixels as a single colour */
 export class OneColourFilter extends Filter {
   constructor(colour: Color) {
     super({
-      glProgram,
+      glProgram: GlProgram.from({
+        vertex: defaultFilterVert,
+        fragment,
+        name: "oneColour-filter",
+      }),
       resources: {
         colorReplaceUniforms: {
           uColour: {
