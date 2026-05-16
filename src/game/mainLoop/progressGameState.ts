@@ -119,7 +119,7 @@ export const progressGameState = <
 
   for (const item of sortedItems) {
     const playable = selectCurrentPlayableItem(gameState);
-    if (playable === undefined || playable.state.action === "death") {
+    if (playable === undefined) {
       // all physics is suspended if no characters left (lost all lives) or
       // while death animation plays
       break;

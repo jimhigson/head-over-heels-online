@@ -160,4 +160,32 @@ export const blockStackSpritesheetMeta: SpritesheetMetadata<
   // we have black outlines, so use an almost black blackpoint
   // on this spritesheet:
   teleporterEffectBlackPoint: 0.1,
+  mapToZxSpectrumForDeathEffectPalette: {
+    pureBlack: "blackBasic",
+    shadow: "blueBasic",
+    midGrey: "cyanDimmed",
+    lightGrey: "whiteDimmed",
+    white: "whiteBasic",
+    pastelBlue: "whiteDimmed",
+    metallicBlue: "cyanDimmed",
+    pink: "magentaBasic",
+    moss: "cyanDimmed",
+    redShadow: "cyanDimmed",
+    midRed: "cyanDimmed",
+    lightBeige: "yellowBasic",
+    highlightBeige: "cyanBasic",
+    replaceLight: "whiteDimmed",
+    replaceDark: "cyanDimmed",
+  },
+  mapToZxSpectrumPalette: {
+    moss: "greenBasic",
+    pink: "magentaBasic",
+    metallicBlue: "cyanDimmed",
+    pastelBlue: "cyanBasic",
+    highlightBeige: "yellowBasic",
+    lightBeige: "yellowDimmed",
+    midRed: "redBasic",
+    redShadow: "redDimmed",
+    lightGrey: "whiteBasic",
+  },
 };

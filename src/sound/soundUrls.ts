@@ -72,6 +72,7 @@ import teleportOutSoundUrl from "../../sounds/teleportOut.mp3";
 import teleportWarningSirenSoundUrl from "../../sounds/teleportWarningSiren.mp3";
 import toasterPopUpSoundUrl from "../../sounds/toasterPopUp.opus";
 import toasterPushDownSoundUrl from "../../sounds/toasterPushDown.opus";
+import uhOhSoundUrl from "../../sounds/uhOh.opus";
 import woodScrapeSoundUrl from "../../sounds/woodScrape.mp3";
 
 export const soundUrls = {
@@ -140,6 +141,7 @@ export const soundUrls = {
   teleportWarningSiren: teleportWarningSirenSoundUrl,
   toasterPopUp: toasterPopUpSoundUrl,
   toasterPushDown: toasterPushDownSoundUrl,
+  uhOh: uhOhSoundUrl,
   woodScrape: woodScrapeSoundUrl,
   ...({
     "roomEntry.blacktooth": blacktoothMusicUrl,

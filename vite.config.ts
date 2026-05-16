@@ -1,5 +1,6 @@
 import type { PluginOption } from "vite";
 
+import { debounce } from "@github/mini-throttle";
 import preact from "@preact/preset-vite";
 import path from "path";
 import { visualizer } from "rollup-plugin-visualizer";
@@ -7,12 +8,28 @@ import { defineConfig } from "vite";
 import glsl from "vite-plugin-glsl";
 import { VitePWA } from "vite-plugin-pwa";
 
+const nonRuntimeDirPattern =
+  /[/\\](e2e|_testUtils|scripts|db|manual|sounds|zx_savestates|campaignXml2Json)[/\\]/;
+
 function hmrOnlyPreact(): PluginOption {
+  let reload: (() => void) | undefined;
+
   return {
     name: "hmr-only-preact",
-    handleHotUpdate({ file, server }) {
-      if (!file.endsWith(".tsx")) {
+    configureServer(server) {
+      reload = debounce(() => {
         server.ws.send({ type: "full-reload" });
+      }, 500);
+    },
+    handleHotUpdate({ file }) {
+      if (
+        /\.(test|spec)\.[tj]sx?$/.test(file) ||
+        nonRuntimeDirPattern.test(file)
+      ) {
+        return [];
+      }
+      if (!file.endsWith(".tsx")) {
+        reload?.();
         return [];
       }
     },

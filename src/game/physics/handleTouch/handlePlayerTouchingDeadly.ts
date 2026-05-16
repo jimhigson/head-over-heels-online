@@ -1,22 +1,54 @@
 import type { ItemTypeUnion } from "../../../_generated/types/ItemInPlayUnion";
 import type { CharacterName } from "../../../model/modelTypes";
+import type { DeathMenuParam } from "../../../store/slices/gameMenus/gameMenusSlice";
+import type { GameState } from "../../gameState/GameState";
 import type { DeadlyItemType, PlayableItem } from "../itemPredicates";
 import type { ItemTouchEvent } from "./ItemTouchEvent";
 
+import { otherIndividualCharacterName } from "../../../model/modelTypes";
+import { lostLife } from "../../../store/slices/gameInPlay/gameInPlaySlice";
+import { store } from "../../../store/store";
 import { playerDiedRecently } from "../../gameState/gameStateSelectors/playerDiedRecently";
 import { playableHasShield } from "../../gameState/gameStateSelectors/selectPickupAbilities";
+import { selectPlayableItem } from "../../gameState/gameStateSelectors/selectPlayableItem";
+import { saveGameThunk } from "../../gameState/saving/saveGameThunk";
+import { isHeadOverHeels } from "../../physics/itemPredicates";
 import { fadeInOrOutDuration } from "../../render/animationTimings";
 
-/**
- *
- * @returns true if the player lost a life
- */
+const gatherLivesInfo = <RoomId extends string>(
+  playableItem: PlayableItem<CharacterName, RoomId>,
+  gameState: GameState<RoomId>,
+): DeathMenuParam => {
+  if (isHeadOverHeels(playableItem)) {
+    return {
+      dyingCharacterName: playableItem.type,
+      headLives: playableItem.state.head.lives,
+      heelsLives: playableItem.state.heels.lives,
+    };
+  }
+
+  const otherCharacter = selectPlayableItem(
+    gameState,
+    otherIndividualCharacterName(playableItem.type),
+  );
+  const otherLives = otherCharacter?.state.lives ?? 0;
+
+  return {
+    dyingCharacterName: playableItem.type,
+    headLives:
+      playableItem.type === "head" ? playableItem.state.lives : otherLives,
+    heelsLives:
+      playableItem.type === "heels" ? playableItem.state.lives : otherLives,
+  };
+};
+
 export function handlePlayerTouchingDeadly<
   RoomId extends string,
   RoomItemId extends string,
 >({
   room: { roomTime },
   movingItem: playableItem,
+  gameState,
 }: ItemTouchEvent<
   RoomId,
   RoomItemId,
@@ -24,20 +56,25 @@ export function handlePlayerTouchingDeadly<
   ItemTypeUnion<"floor" | "spikes" | DeadlyItemType, RoomId, RoomItemId>
 >) {
   if (playableItem.state.action === "death") {
-    // player is already showing death animation - do nothing
     return;
   }
 
   if (playableHasShield(playableItem)) {
-    // has shield - ignore touching the deadly item
     return;
   }
 
   if (playerDiedRecently(playableItem)) {
-    // player is invulnerable after death
     return;
   }
 
   playableItem.state.action = "death";
   playableItem.state.expires = roomTime + fadeInOrOutDuration;
+
+  store.dispatch(
+    lostLife({
+      characterLosingLifeItem: playableItem,
+      deathMenuParam: gatherLivesInfo(playableItem, gameState),
+    }),
+  );
+  store.dispatch(saveGameThunk(gameState));
 }

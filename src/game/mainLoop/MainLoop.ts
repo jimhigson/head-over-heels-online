@@ -29,16 +29,17 @@ import { validateSceneGraph } from "../../utils/pixi/validateSceneGraph";
 import { createSerialisableErrors } from "../../utils/redux/createSerialisableErrors";
 import { selectCurrentRoomState } from "../gameState/gameStateSelectors/selectCurrentRoomState";
 import { maxFps, maxSubTickDeltaMs } from "../physics/mechanicsConstants";
+import { ColourClashCircleEffectRenderer } from "../render/ColourClashCircleEffectRenderer";
 import { HudRenderer } from "../render/hud/HudRenderer";
 import { needsNewHudRenderer } from "../render/hud/needsNewHudRenderer";
 import { needsNewRoomRenderer } from "../render/room/needsNewRoomRenderer";
 import { RoomRenderer } from "../render/room/RoomRenderer";
 import { RoomScrollRenderer } from "../render/room/RoomScrollRenderer";
-import { TeleportEffectRenderer } from "../render/TeleportEffectRenderer";
 import { frameTimingStats } from "./frameTiming/FrameTimingStats";
 import { textInterfaceToShowDetailedFrameTiming } from "./frameTiming/textInterfaceToShowDetailedFrameTiming";
 import { progressGameState } from "./progressGameState";
 import { progressWithSubTicks } from "./progressWithSubTicks";
+import { tickGameSpeed } from "./tickGameSpeed";
 import { tickSpritesheetVariants } from "./tickSpritesheetVariants";
 import { topLevelFilters } from "./topLevelFilters";
 
@@ -138,10 +139,16 @@ export class MainLoop<RoomId extends string> {
     this.#mainContainer.position.x = rotate90 ? gameEngineScreenSize.y : 0;
   }
 
-  #tick = ({ deltaMS }: Ticker): void => {
+  #tick = ({ deltaMS: tickerDeltaMS }: Ticker): void => {
     const tickState = store.getState();
     const timingRecord =
       selectShowFps(tickState) ? frameTimingStats : undefined;
+
+    if (!tickState.gameInPlay.gameRunning) {
+      // the effect that starts this loop may not unmount exactly when the game stops due
+      // to react/preact being async, so we may get a few ticks after the game has stopped
+      return;
+    }
 
     if (selectHasError(tickState)) {
       // if there is an error, we don't want to tick the game state
@@ -150,7 +157,6 @@ export class MainLoop<RoomId extends string> {
       return;
     }
 
-    const isPaused = selectIsPaused(tickState);
     const {
       userSettings: {
         userSettings: {
@@ -162,7 +168,14 @@ export class MainLoop<RoomId extends string> {
         gameInPlay: { freeCharacters: tickFreeCharacters },
       },
       upscale: { upscale: tickUpscale },
-    } = store.getState();
+    } = tickState;
+
+    tickGameSpeed(this.#app.ticker, tickState, this.#gameState);
+    // tickGameSpeed can only set for the next frame - is the current frame's speed should be zero
+    // but isn't, make sure one frame's worth of physics movement doesn't happen here:
+    const deltaMS = this.#app.ticker.speed === 0 ? 0 : tickerDeltaMS;
+
+    const isPaused = selectIsPaused(tickState);
 
     const selectedSpriteOption = selectSpritesOption(tickState);
     const tickSpriteOption: SpriteOption =
@@ -180,13 +193,19 @@ export class MainLoop<RoomId extends string> {
     // so we need to tick physics considering recreating the room renderer
     timingRecord?.startPhysics();
     const movedItems =
-      isPaused ? emptySet : this.#physicsTicker(this.#gameState, deltaMS);
+      deltaMS === 0 ? emptySet : this.#physicsTicker(this.#gameState, deltaMS);
     timingRecord?.endPhysics();
 
     timingRecord?.startUpdateSceneGraph();
     // the tick could end on a different room than it started on, eg if ticking
     // the physics caused the player to go through a door:
     const tickEndRoom = selectCurrentRoomState(this.#gameState);
+
+    if (tickEndRoom === undefined) {
+      // the game is over - there's no need to do any more in this loop, and the loop should
+      // soon terminate:
+      return;
+    }
 
     const roomChanged = this.#roomRenderer?.renderContext.room !== tickEndRoom;
     if (
@@ -243,6 +262,7 @@ export class MainLoop<RoomId extends string> {
           spritesheetMeta: spritesheetMetaForOption(tickSpriteOption),
           upscale: tickUpscale,
           onScreenControls: tickOnScreenControls,
+          speedCoefficient: this.#app.ticker.speed,
         },
 
         inputDirectionMode: tickInputDirectionMode,
@@ -287,12 +307,13 @@ export class MainLoop<RoomId extends string> {
             spritesheetMeta: spritesheetMetaForOption(tickSpriteOption),
             upscale: tickUpscale,
             onScreenControls: tickOnScreenControls,
+            speedCoefficient: this.#app.ticker.speed,
           },
           room: tickEndRoom,
         };
         this.#roomRenderer = new RoomScrollRenderer(
           roomRenderContext,
-          new TeleportEffectRenderer(
+          new ColourClashCircleEffectRenderer(
             roomRenderContext,
             new RoomRenderer(roomRenderContext),
           ),
@@ -323,6 +344,10 @@ export class MainLoop<RoomId extends string> {
 
     // the room renderer runs even while paused - it is its responsibility to
     // exit quickly when nothing has changed
+    if (this.#roomRenderer) {
+      this.#roomRenderer.renderContext.general.speedCoefficient =
+        this.#app.ticker.speed;
+    }
 
     this.#roomRenderer?.tick({
       movedItems,
@@ -353,7 +378,7 @@ export class MainLoop<RoomId extends string> {
     timingRecord?.tickDone();
 
     // throttle framerate when paused to reduce CPU/GPU load (nothing is moving anyway)
-    this.#app.ticker.maxFPS = isPaused ? 10 : maxFps;
+    this.#app.ticker.maxFPS = this.#app.ticker.speed === 0 ? 10 : maxFps;
   };
 
   start() {

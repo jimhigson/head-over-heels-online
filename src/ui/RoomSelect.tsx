@@ -55,6 +55,7 @@ export function RoomSelect<RoomId extends string>({
             value={value}
             onSelect={onSelect}
             className="px-1"
+            data-test-id={`room-select-${value}`}
             style={itemColourCss(campaign.rooms[value].color.hue, uncolourised)}
           >
             {headRoomId === value && (

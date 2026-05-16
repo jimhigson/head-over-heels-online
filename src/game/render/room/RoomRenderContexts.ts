@@ -39,6 +39,8 @@ export type GeneralRenderContext<RoomId extends string> = {
   upscale: Upscale;
 
   onScreenControls: boolean;
+  /** game speed multiplier for the current frame — 0 when paused, <1 during slow-motion (e.g. death animation) */
+  speedCoefficient: number;
 };
 
 export type RoomRenderContext<

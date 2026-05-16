@@ -2,6 +2,7 @@ import { Application, type Texture } from "pixi.js";
 import { useEffect, useState } from "preact/hooks";
 
 import { blockstackToSpectrumLut } from "../game/render/filters/lutTexture/stdLuts/blockstackToSpectrumLut";
+import { deathLutForSpriteOption } from "../game/render/filters/lutTexture/stdLuts/lutForSpriteOption";
 import { paletteQuantisationLut } from "../game/render/filters/lutTexture/stdLuts/paletteQuantisationLut";
 import { spectrumLumLut } from "../game/render/filters/lutTexture/stdLuts/spectrumLumLut";
 import { toppyToSpectrumLut } from "../game/render/filters/lutTexture/stdLuts/toppyToSpectrumLut";
@@ -13,6 +14,9 @@ const luts = [
   blockstackToSpectrumLut(),
   toppyToSpectrumLut(),
   spectrumLumLut(),
+  deathLutForSpriteOption({ name: "BlockStack", uncolourised: false }),
+  deathLutForSpriteOption({ name: "Toppy", uncolourised: false }),
+  deathLutForSpriteOption({ name: "BlockStack", uncolourised: true }),
 ];
 
 interface SingleLutDisplayProps {

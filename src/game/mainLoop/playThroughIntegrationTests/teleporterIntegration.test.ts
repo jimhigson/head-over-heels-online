@@ -750,76 +750,89 @@ test("intra-room teleport does not overwrite door entry state, so respawn after 
   expect(heelsState(gameState).position.y).toBeLessThan(entryY + 1);
 });
 
-test("cross-room teleport entry state has phase 'in', and respawn after death replays the fade-in", () => {
-  const gameState = setUpBasicGame({
-    firstRoomItems: {
-      heels: {
-        type: "player",
-        position: { x: 0, y: 2, z: 1 },
-        config: { which: "heels" },
+test.for([{ otherCharacterPresent: false }, { otherCharacterPresent: true }])(
+  "cross-room teleport respawn replays fade-in with restamped roomTime (other character present: $otherCharacterPresent)",
+  ({ otherCharacterPresent }) => {
+    const gameState = setUpBasicGame({
+      firstRoomItems: {
+        head: {
+          type: "player",
+          position: { x: 0, y: 2, z: 1 },
+          config: { which: "head" },
+        },
+        teleporter: {
+          type: "teleporter",
+          position: { x: 0, y: 2, z: 0 },
+          config: { toRoom: secondRoomId, toItemId: "landingBlock" },
+        },
       },
-      teleporter: {
-        type: "teleporter",
-        position: { x: 0, y: 2, z: 0 },
-        config: { toRoom: secondRoomId, toItemId: "landingBlock" },
+      secondRoomItems: {
+        landingBlock: {
+          type: "block",
+          position: { x: 0, y: 2, z: 0 },
+          config: { style: "organic" },
+        },
+        toaster: {
+          type: "deadlyBlock",
+          position: { x: 2, y: 2, z: 0 },
+          config: { style: "toaster" },
+        },
+        ...(otherCharacterPresent ?
+          {
+            heels: {
+              type: "player" as "player",
+              position: { x: 4, y: 4, z: 0 },
+              config: { which: "heels" as "heels" },
+            },
+          }
+        : {}),
       },
-    },
-    secondRoomItems: {
-      landingBlock: {
-        type: "block",
-        position: { x: 0, y: 2, z: 0 },
-        config: { style: "organic" },
+    });
+
+    const startingLives = headState(gameState).lives as number;
+
+    // teleport to the second room
+    playGameThrough(gameState, {
+      setupInitialInput(mockInputStateTracker) {
+        mockInputStateTracker.mockPressing("jump");
       },
-      toaster: {
-        type: "deadlyBlock",
-        position: { x: 2, y: 2, z: 0 },
-        config: { style: "toaster" },
+      until(gameState) {
+        if (headState(gameState).teleporting !== null) {
+          gameState.inputStateTracker.mockNotPressing("jump");
+        }
+        return (
+          gameState.characterRooms.head?.id === "secondRoom" &&
+          headState(gameState).standingOnItemId === "landingBlock"
+        );
       },
-    },
-  });
+    });
 
-  const startingLives = heelsState(gameState).lives as number;
+    // entry state should have captured the teleport-in phase
+    expect(gameState.entryState.head?.teleporting?.phase).toEqual("in");
 
-  // teleport to the second room
-  playGameThrough(gameState, {
-    setupInitialInput(mockInputStateTracker) {
-      mockInputStateTracker.mockPressing("jump");
-    },
-    until(gameState) {
-      if (heelsState(gameState).teleporting !== null) {
-        gameState.inputStateTracker.mockNotPressing("jump");
-      }
-      return (
-        gameState.characterRooms.heels?.id === "secondRoom" &&
-        heelsState(gameState).standingOnItemId === "landingBlock"
-      );
-    },
-  });
+    // walk onto the toaster to die
+    playGameThrough(gameState, {
+      setupInitialInput(mockInputStateTracker) {
+        mockInputStateTracker.mockDirectionPressed = "left";
+      },
+      until(gameState) {
+        return headState(gameState).lives === startingLives - 1;
+      },
+    });
 
-  // entry state should have captured the teleport-in phase
-  expect(gameState.entryState.heels?.teleporting).toMatchInlineSnapshot(`
-    {
-      "otherRoom": "firstRoom",
-      "phase": "in",
-      "startRoomTime": 0,
-    }
-  `);
+    // after respawn, should be fading in (not out)
+    expect<string | undefined>(headState(gameState).teleporting?.phase).toEqual(
+      "in",
+    );
 
-  // walk onto the toaster to die
-  playGameThrough(gameState, {
-    setupInitialInput(mockInputStateTracker) {
-      mockInputStateTracker.mockDirectionPressed = "left";
-    },
-    until(gameState) {
-      return heelsState(gameState).lives === startingLives - 1;
-    },
-  });
-
-  // after respawn, should be fading in (not out)
-  expect<string | undefined>(heelsState(gameState).teleporting?.phase).toEqual(
-    "in",
-  );
-});
+    // teleporting.startRoomTime should be restamped to the current room time
+    const room = gameState.characterRooms.head!;
+    // comparing in seconds at 1dp means the test passes if a few frames happened since
+    expect(
+      (headState(gameState).teleporting?.startRoomTime ?? 0) / 1_000,
+    ).toBeCloseTo(room.roomTime / 1_000, 1);
+  },
+);
 
 test("teleporting clamps position so player doesn't overhang destination", () => {
   const gameState = setUpBasicGame({

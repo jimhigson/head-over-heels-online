@@ -12,10 +12,7 @@ import {
   pokeableToNumber,
 } from "../../../model/ItemStateMap";
 import { otherIndividualCharacterName } from "../../../model/modelTypes";
-import {
-  lostAllLives,
-  lostLife,
-} from "../../../store/slices/gameInPlay/gameInPlaySlice";
+import { lostAllLives } from "../../../store/slices/gameInPlay/gameInPlaySlice";
 import { selectCurrentCampaign } from "../../../store/slices/gameMenus/gameMenusSelectors";
 import { store } from "../../../store/store";
 import { emptyObject } from "../../../utils/empty";
@@ -266,7 +263,6 @@ const resetPlayableToEntryState = <RoomId extends string>(
   whoseEntryState: CharacterName = playableItem.id as CharacterName,
 ) => {
   const entryState = gameState.entryState[whoseEntryState];
-  const room = gameState.characterRooms[playableItem.type]!;
 
   playableItem.state = {
     ...playableItem.state,
@@ -276,18 +272,6 @@ const resetPlayableToEntryState = <RoomId extends string>(
     //vels: { ...entryState.vels },
     expires: null,
     standingOnItemId: null,
-    // teleporting is a special case because it has a timestamp relative to room time,
-    // which will have moved on since the original room entry
-    ...(entryState ?
-      entryState.teleporting === null ?
-        { teleporting: null }
-      : {
-          teleporting: {
-            ...entryState.teleporting,
-            startRoomTime: room.roomTime,
-          },
-        }
-    : {}),
   };
 };
 
@@ -433,18 +417,24 @@ const playableLosesLifeImpl = <RoomId extends string>(
   characterLosingLifeItem: PlayableItem<CharacterName, RoomId>,
   livesLost: -1 | 0 = -1,
 ) => {
-  if (livesLost) {
-    store.dispatch(lostLife({ characterLosingLifeItem }));
-  }
   if (characterLosingLifeItem.type === "headOverHeels") {
     combinedPlayableLosesLife(gameState, characterLosingLifeItem, livesLost);
   } else {
     individualPlayableLosesLife(gameState, characterLosingLifeItem, livesLost);
   }
 
-  if (selectCurrentPlayableItem(gameState) === undefined) {
+  const currentPlayable = selectCurrentPlayableItem(gameState);
+
+  if (currentPlayable === undefined) {
     store.dispatch(lostAllLives());
   } else {
+    // teleporting startRoomTime was captured relative to the old room's time —
+    // re-stamp it to the current (possibly reloaded) room's time:
+    if (currentPlayable.state.teleporting !== null) {
+      const room = gameState.characterRooms[currentPlayable.type]!;
+      currentPlayable.state.teleporting.startRoomTime = room.roomTime;
+    }
+
     // probably a good time to save the game:
     store.dispatch(saveGameThunk(gameState));
   }

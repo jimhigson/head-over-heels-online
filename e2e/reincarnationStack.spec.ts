@@ -4,7 +4,11 @@ import { expect, test } from "@playwright/test";
 
 import type { CharacterName } from "../src/model/modelTypes";
 
-import { clickCheat, dispatchKeyPress } from "./testUtils/gameInteractions";
+import {
+  clickCheat,
+  dispatchKeyPress,
+  switchCharacter,
+} from "./testUtils/gameInteractions";
 import {
   getCurrentCharacter,
   getCurrentRoomId,
@@ -83,11 +87,6 @@ const readRoomsExploredCount = async (
   return count;
 };
 
-const swopCharacters = async (page: Page) => {
-  await dispatchKeyPress(page, "Enter", "Enter");
-  await page.waitForTimeout(500 * osSlowness);
-};
-
 test.describe("reincarnation points stack across multiple fish", () => {
   test.setTimeout(120_000 * osSlowness);
 
@@ -107,7 +106,7 @@ test.describe("reincarnation points stack across multiple fish", () => {
     let snapshotAtFishC: PlayerSnapshot;
 
     await test.step("Swop to heels, go to room A (egyptus1), summon extra life, eat fish", async () => {
-      await swopCharacters(page);
+      await switchCharacter(page, testInfo.project.name);
       expect(await getCurrentCharacter(page)).toBe("heels");
       await clickCheat(page, "cheats-goto-room-egyptus1");
       await page.waitForTimeout(1_000 * osSlowness);
@@ -127,7 +126,7 @@ test.describe("reincarnation points stack across multiple fish", () => {
     });
 
     await test.step("Swop to head, go to room B (moonbase1), summon extra life, eat fish", async () => {
-      await swopCharacters(page);
+      await switchCharacter(page, testInfo.project.name);
       expect(await getCurrentCharacter(page)).toBe("head");
       await clickCheat(page, "cheats-goto-room-moonbase1");
       await page.waitForTimeout(1_000 * osSlowness);
@@ -142,7 +141,7 @@ test.describe("reincarnation points stack across multiple fish", () => {
     });
 
     await test.step("Swop to heels, go to room C (penitentiary1), summon extra life, eat fish", async () => {
-      await swopCharacters(page);
+      await switchCharacter(page, testInfo.project.name);
       expect(await getCurrentCharacter(page)).toBe("heels");
       await clickCheat(page, "cheats-goto-room-penitentiary1");
       await page.waitForTimeout(1_000 * osSlowness);
@@ -157,7 +156,7 @@ test.describe("reincarnation points stack across multiple fish", () => {
     });
 
     await test.step("Swop to head and walk to room D (safari1) — no fish here", async () => {
-      await swopCharacters(page);
+      await switchCharacter(page, testInfo.project.name);
       await clickCheat(page, "cheats-goto-room-safari1");
       await page.waitForTimeout(1_000 * osSlowness);
       expect(await getCurrentRoomId(page)).toBe("safari1");

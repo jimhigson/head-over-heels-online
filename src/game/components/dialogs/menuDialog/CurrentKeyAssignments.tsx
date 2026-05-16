@@ -139,6 +139,7 @@ const friendlyButtonName = (button: number) => {
 
 type CurrentKeyAssignmentsProp = {
   action: BooleanAction;
+  doNotShowForAction?: BooleanAction;
   keyClassName?: string;
   className?: string;
   flashingCursor?: boolean;
@@ -147,6 +148,7 @@ type CurrentKeyAssignmentsProp = {
 
 export const CurrentKeyAssignments = ({
   action,
+  doNotShowForAction,
   keyClassName,
   className,
   flashingCursor = false,
@@ -157,6 +159,12 @@ export const CurrentKeyAssignments = ({
       // assigning input so show provisional:
       state.userSettings.assigningInput?.presses
     : selectInputAssignment(state).presses[action],
+  );
+
+  const excludedPresses = useAppSelector((state) =>
+    doNotShowForAction !== undefined ?
+      selectInputAssignment(state).presses[doNotShowForAction]
+    : undefined,
   );
 
   const axisAssignments = useAppSelector((state) => {
@@ -171,9 +179,21 @@ export const CurrentKeyAssignments = ({
     }
   });
 
+  const filteredKeys =
+    excludedPresses ?
+      pressAssignments.keys.filter((k) => !excludedPresses.keys.includes(k))
+    : pressAssignments.keys;
+
+  const filteredGamepadButtons =
+    excludedPresses ?
+      pressAssignments.gamepadButtons.filter(
+        (b) => !excludedPresses.gamepadButtons.includes(b),
+      )
+    : pressAssignments.gamepadButtons;
+
   const keyboardAssignments = (
     <>
-      {sortKeys(pressAssignments.keys).map((k) => {
+      {sortKeys(filteredKeys).map((k) => {
         return (
           <span
             className={twMerge(
@@ -213,7 +233,7 @@ export const CurrentKeyAssignments = ({
         );
       })}
 
-      {pressAssignments.gamepadButtons.map((k) => {
+      {filteredGamepadButtons.map((k) => {
         return (
           <span
             className={twMerge(

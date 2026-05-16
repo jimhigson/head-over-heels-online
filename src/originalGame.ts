@@ -11,6 +11,8 @@ export type ZxSpectrumRoomHue = (typeof zxSpectrumRoomHue)[number];
 export type ZxSpectrumHue = "black" | "blue" | "red" | ZxSpectrumRoomHue;
 export const zxSpectrumShades = ["basic", "dimmed"] as const;
 export type ZxSpectrumShade = (typeof zxSpectrumShades)[number];
+export type ZxSpectrumPaletteColour =
+  `${ZxSpectrumHue}${Capitalize<ZxSpectrumShade>}`;
 export type ZxSpectrumRoomColour = {
   hue: ZxSpectrumRoomHue;
   shade: ZxSpectrumShade;
@@ -65,6 +67,26 @@ export const zxSpectrumColorsDimmed = {
   black: new Color("#000"),
   white: new Color("#BBB"),
 };
+
+export const zxSpectrumPaletteColours: Record<ZxSpectrumPaletteColour, Color> =
+  {
+    redBasic: zxSpectrumColors.red,
+    greenBasic: zxSpectrumColors.green,
+    blueBasic: zxSpectrumColors.blue,
+    cyanBasic: zxSpectrumColors.cyan,
+    magentaBasic: zxSpectrumColors.magenta,
+    yellowBasic: zxSpectrumColors.yellow,
+    blackBasic: zxSpectrumColors.black,
+    whiteBasic: zxSpectrumColors.white,
+    redDimmed: zxSpectrumColorsDimmed.red,
+    greenDimmed: zxSpectrumColorsDimmed.green,
+    blueDimmed: zxSpectrumColorsDimmed.blue,
+    cyanDimmed: zxSpectrumColorsDimmed.cyan,
+    magentaDimmed: zxSpectrumColorsDimmed.magenta,
+    yellowDimmed: zxSpectrumColorsDimmed.yellow,
+    blackDimmed: zxSpectrumColorsDimmed.black,
+    whiteDimmed: zxSpectrumColorsDimmed.white,
+  };
 
 // don't know exact date but a guess based on the date of this review:
 // https://www.everygamegoing.com/larticle/Head-Over-Heels-000/32831

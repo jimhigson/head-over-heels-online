@@ -3,9 +3,7 @@ import type { Page } from "@playwright/test";
 import { expect, test } from "@playwright/test";
 import chalk from "chalk";
 
-import type { SelectableGameSpeeds } from "../src/store/slices/userSettings/selectableGameSpeeds";
 import type {
-  setGameSpeed,
   SpriteOption,
   toggleUserSetting,
 } from "../src/store/slices/userSettings/userSettingsSlice";
@@ -15,6 +13,7 @@ import { spriteOptionEquals } from "../src/store/slices/userSettings/spriteOptio
 import { dispatchKeyPress } from "./testUtils/gameInteractions";
 import {
   dispatchToStore,
+  setZeroGameSpeed,
   waitForGameState,
 } from "./testUtils/gameStateQueries";
 import { osSlowness, retryWithRecovery } from "./testUtils/infrastructure";
@@ -162,20 +161,15 @@ test.describe("Settings reflect in game", () => {
         async action(attempt) {
           const gameApiFound = await page.evaluate(() => {
             if (window._e2e_gamePageGameAi && window._e2e_pixiApplication) {
-              window._e2e_gamePageGameAi.gameState.gameSpeed = 0;
               window._e2e_pixiApplication.ticker.maxFPS = 5;
               return true;
             }
             return false;
           });
 
-          type SetGameSpeedAction = ReturnType<typeof setGameSpeed>;
           type ToggleUserSettingAction = ReturnType<typeof toggleUserSetting>;
 
-          const successSetSpeed = await dispatchToStore(page, {
-            type: "userSettings/setGameSpeed",
-            payload: 0 as SelectableGameSpeeds,
-          } satisfies SetGameSpeedAction);
+          const successSetSpeed = await setZeroGameSpeed(page);
 
           const successToggleCrtFilter = await dispatchToStore(page, {
             type: "userSettings/toggleUserSetting",

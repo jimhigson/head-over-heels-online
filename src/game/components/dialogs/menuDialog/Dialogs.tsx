@@ -10,6 +10,7 @@ import { AboutDialog } from "./dialogs/about/AboutDialog";
 import { CommunityGamesDialog } from "./dialogs/communityGames/CommunityGamesDialog";
 import { ControlOptionsDialog } from "./dialogs/controlOptions/ControlOptionsDialog";
 import { CrownsDialog } from "./dialogs/crowns/CrownsDialog";
+import { DeathDialog } from "./dialogs/death/DeathDialog";
 import { DisplayOptionsDialog } from "./dialogs/displayOptions/DisplayOptionsDialog";
 import { EmulatedResolutionDialog } from "./dialogs/emulatedResolution/EmulatedResolutionDialog";
 import { ErrorCaughtDialog } from "./dialogs/errorCaught/ErrorCaughtDialog";
@@ -74,6 +75,8 @@ export const Dialogs = (_emptyProps: EmptyObject) => {
       return <AboutDialog />;
     case "communityGames":
       return <CommunityGamesDialog />;
+    case "death":
+      return <DeathDialog {...topOpenMenu.menuParam} />;
     case "controlOptions":
       return <ControlOptionsDialog />;
     case "crowns":

@@ -5,6 +5,7 @@ import {
   clickCheat,
   dismissHoldAfterReload,
   dispatchKeyPress,
+  switchCharacter,
 } from "./testUtils/gameInteractions";
 import {
   getCurrentCharacter,
@@ -12,7 +13,10 @@ import {
   waitForGameState,
 } from "./testUtils/gameStateQueries";
 import { osSlowness } from "./testUtils/infrastructure";
-import { formatProjectName } from "./testUtils/logging";
+import {
+  formatProjectName,
+  forwardBrowserConsoleToNodeConsole,
+} from "./testUtils/logging";
 import {
   backToMainMenu,
   clickOriginalCampaign,
@@ -29,7 +33,11 @@ import { setupE2ePage } from "./testUtils/pageSetup";
 test.describe("persistence across reload", () => {
   test.setTimeout(60_000 * osSlowness);
 
-  test.beforeEach(async ({ page }) => {
+  test.beforeEach(async ({ page }, testInfo) => {
+    forwardBrowserConsoleToNodeConsole(
+      page,
+      formatProjectName(testInfo.project.name),
+    );
     await setupE2ePage(page);
   });
 
@@ -162,11 +170,8 @@ test.describe("persistence across reload", () => {
       .locator('[data-dialog-id="crowns"]')
       .waitFor({ state: "detached" });
 
-    const startCharacter = await getCurrentCharacter(page);
-    await dispatchKeyPress(page, "Enter", "Enter");
-    await page.waitForTimeout(500 * osSlowness);
+    await switchCharacter(page, testInfo.project.name);
     const expectedCharacter = await getCurrentCharacter(page);
-    expect(expectedCharacter).not.toBe(startCharacter);
 
     await page.reload();
     await waitForGameState(page);
@@ -195,8 +200,7 @@ test.describe("persistence across reload", () => {
       .locator('[data-dialog-id="crowns"]')
       .waitFor({ state: "detached" });
 
-    await dispatchKeyPress(page, "Enter", "Enter");
-    await page.waitForTimeout(500 * osSlowness);
+    await switchCharacter(page, testInfo.project.name);
     const expectedCharacter = await getCurrentCharacter(page);
 
     // strip the campaign params - persisted state should still restore
@@ -231,11 +235,8 @@ test.describe("persistence across reload", () => {
 
     let expectedCharacter: string | undefined;
     await test.step("Switch character → triggers save", async () => {
-      const startCharacter = await getCurrentCharacter(page);
-      await dispatchKeyPress(page, "Enter", "Enter");
-      await page.waitForTimeout(500 * osSlowness);
+      await switchCharacter(page, testInfo.project.name);
       expectedCharacter = await getCurrentCharacter(page);
-      expect(expectedCharacter).not.toBe(startCharacter);
     });
 
     await test.step("Reload at same URL → save restored, paused (case 2)", async () => {

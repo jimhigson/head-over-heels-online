@@ -58,6 +58,23 @@ jobs:
           toolchain: ${{ matrix.rust-toolchain || 'stable' }}
           targets: ${{ matrix.rust-target }}
 
+      # macOS runner images sometimes ship a preinstalled `rustup-init` binary
+      # that places shims for `cargo`, `rustc`, etc. on a system PATH entry.
+      # These shims are actually `rustup-init` and fail with:
+      #   "unexpected argument 'metadata' found — Usage: rustup-init[EXE]"
+      # when Tauri calls `cargo metadata`.
+      #
+      # The dtolnay/rust-toolchain action installs the real cargo into
+      # ~/.cargo/bin, but the preinstalled shims can shadow it if they appear
+      # earlier on PATH. This step puts ~/.cargo/bin first to ensure the real
+      # binaries win.
+      #
+      # References:
+      #   https://github.com/actions/runner/issues/3257
+      - name: Ensure real cargo is on PATH (macOS)
+        if: runner.os == 'macOS'
+        run: echo "$HOME/.cargo/bin" >> $GITHUB_PATH
+
       - name: Rust cache
         uses: swatinem/rust-cache@v2
         with:
@@ -88,6 +105,30 @@ jobs:
           args: ${{ matrix.tauri-build-args }}
         env:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+
+      # Tauri's .output_ok() swallows bundle_dmg.sh's stdout/stderr, so on
+      # failure we re-run it with bash -x to see every command and its output.
+      - name: Re-run bundle_dmg.sh with tracing (debug)
+        if: failure() && runner.os == 'macOS'
+        shell: bash
+        run: |
+          script=$(find src-tauri/target -name "bundle_dmg.sh" -print -quit)
+          if [[ -z "$script" ]]; then
+            echo "bundle_dmg.sh not found — build failed before DMG stage"
+            exit 0
+          fi
+          echo "::group::bundle_dmg.sh trace"
+          echo "Re-running: $script"
+          # extract the args Tauri would have passed by reading the generated script's sibling files
+          dmg_dir=$(dirname "$script")
+          app_dir=$(dirname "$dmg_dir")/macos
+          dmg_name=$(ls "$dmg_dir"/*.dmg 2>/dev/null | head -1 | xargs basename 2>/dev/null || echo "")
+          app_name=$(ls "$app_dir"/*.app 2>/dev/null | head -1 | xargs basename 2>/dev/null || echo "")
+          echo "dmg_name=$dmg_name app_name=$app_name"
+          # run with tracing — don't fail the job again, we just want the output
+          cd "$app_dir"
+          bash -x "$script" --skip-jenkins "$dmg_name" "$app_name" 2>&1 || true
+          echo "::endgroup::"
 
       - name: List build artefacts
         shell: bash

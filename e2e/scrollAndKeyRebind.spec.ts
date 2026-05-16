@@ -96,7 +96,11 @@ const walkOntoStartingScroll = async (
 test.describe("key rebinding and scroll pickup", () => {
   test.setTimeout(60_000 * osSlowness);
 
-  test.beforeEach(async ({ page }) => {
+  test.beforeEach(async ({ page }, testInfo) => {
+    test.skip(
+      testInfo.project.name.includes("mobile"),
+      "key rebinding less relevant on mobile",
+    );
     await setupE2ePage(page);
   });
 

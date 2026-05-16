@@ -1958,6 +1958,7 @@ export type RoomJsonSchema = {
             | "teleportWarningSiren"
             | "toasterPopUp"
             | "toasterPushDown"
+            | "uhOh"
             | "woodScrape";
         };
       }

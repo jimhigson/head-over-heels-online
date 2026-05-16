@@ -17,6 +17,7 @@ import type {
 } from "../../../model/modelTypes";
 import type { PlanetName } from "../../../sprites/planets";
 import type { ToggleablePaths } from "../../../utils/Toggleable";
+import type { DeathMenuParam } from "../gameMenus/gameMenusSlice";
 
 import { clearAllData } from "../clearAllData";
 import { savedGameLoadedOnAppLoad } from "../savedGames/savedGamesSlice";
@@ -102,6 +103,7 @@ const sliceName = "gameInPlay" as const;
 /** Signal: a character lost a life. Analytics middleware tracks the event. */
 export const lostLife = createAction<{
   characterLosingLifeItem: PlayableItem<CharacterName, string>;
+  deathMenuParam: DeathMenuParam;
 }>(`${sliceName}/lostLife`);
 
 /**
