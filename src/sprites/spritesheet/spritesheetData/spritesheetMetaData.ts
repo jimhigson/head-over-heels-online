@@ -13,7 +13,7 @@ import { speccySpritesheetMeta } from "../../../../gfx/spritesheetMeta/speccySpr
 import { toppySpritesheetMeta } from "../../../../gfx/spritesheetMeta/toppySpritesheetMeta";
 import { entries } from "../../../utils/entries";
 
-export type SpriteOverrides = Partial<
+type SpriteOverrides = Partial<
   Record<
     TextureId,
     {

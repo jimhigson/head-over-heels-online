@@ -73,11 +73,6 @@ export const heelsJumpForwardSpeedFraction = 0.8;
  */
 export const heelsJumpForwardDecel = 0.001;
 
-export const walkMinSpeedPixPerMs = {
-  head: 0.25 * onePxPerFrameInOriginalGamePxPerMs,
-  heels: 0.25 * onePxPerFrameInOriginalGamePxPerMs,
-};
-
 const originalMoveSpeedMultiples = {
   // original game timed at 5s to move 8 blocks
   head: 1,
@@ -178,9 +173,6 @@ export const playerJumpHeightPx = {
   heels: blockSizePx.z + 1 + jumpFudge,
 };
 
-// original game lift speed was 1px per frame
-export const liftSpeed = pxPerFrameSpeed(2);
-
 export const defaultRoomHeightBlocks = 10;
 
 /** how long (in ms) a shield bunny lasts for */
@@ -215,7 +207,7 @@ export const maxPushRecursionDepth = 8;
 
 // the height of a wall tile without the width - ie, the height from wall bottom on a x-coord of the sprite
 // to the wall-top on the same x-coord column
-export const wallHeightPx = wallTileSize.h - wallTileSize.w / 2;
+const wallHeightPx = wallTileSize.h - wallTileSize.w / 2;
 
 // in practice, walls render details above their height, so give the render height a few
 // extra pixels:

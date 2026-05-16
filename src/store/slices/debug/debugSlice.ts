@@ -11,7 +11,7 @@ const cheatsOnFromUrl =
     // in node (probably vitest)
   : false;
 
-export type DebugSliceState = {
+type DebugSliceState = {
   /**
    * When true, the cheats UI is rendered and debug-only behaviours (e.g.
    * pointer-tap debug decorators on items) are wired in. Initialised
@@ -40,11 +40,4 @@ export const debugSlice = createSlice({
   extraReducers(builder) {
     builder.addCase(clearAllData, () => ({ cheatsOn: cheatsOnFromUrl }));
   },
-  selectors: {
-    selectCheatsOn(state) {
-      return state.cheatsOn;
-    },
-  },
 });
-
-export const { selectCheatsOn } = debugSlice.selectors;

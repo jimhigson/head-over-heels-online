@@ -1,5 +1,5 @@
 import type { PayloadAction } from "@reduxjs/toolkit";
-import type { EmptyObject, ValueOf } from "type-fest";
+import type { EmptyObject } from "type-fest";
 
 import { createSlice } from "@reduxjs/toolkit";
 
@@ -82,7 +82,7 @@ export type GameMenusState = {
   openMenus: OpenMenu[];
 };
 
-export const initialGameMenuSliceState: GameMenusState = {
+const initialGameMenuSliceState: GameMenusState = {
   openMenus: [
     {
       menuId: "mainMenu",
@@ -455,14 +455,6 @@ export const gameMenusSlice = createSlice({
   },
 });
 
-export type GameMenusSliceAction = ReturnType<
-  ValueOf<typeof gameMenusSlice.actions>
->;
-
-export type GameMenusSliceActionCreator = ValueOf<
-  typeof gameMenusSlice.actions
->;
-
 export const {
   backToParentMenu,
   closeAllMenus,
@@ -483,5 +475,3 @@ export const {
 } = gameMenusSlice.actions;
 
 export const { selectHasError } = gameMenusSlice.selectors;
-
-export const gameMenusSliceActions = gameMenusSlice.actions;

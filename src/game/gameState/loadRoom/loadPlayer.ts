@@ -56,9 +56,7 @@ export const defaultCommonPlayableState = () => {
 };
 
 /** what individual playables always start with, in addition to what's in defaultCommonPlayableState */
-export function defaultCommonIndividualPlayableState(
-  pokesEnabled: PokesEnabled,
-) {
+function defaultCommonIndividualPlayableState(pokesEnabled: PokesEnabled) {
   type CommonToBothIndividualPlayablesState = SharedUnionFields<
     HeadState<string> | HeelsState<string>
   >;

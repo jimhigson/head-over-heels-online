@@ -19,7 +19,7 @@ import { MenuItem } from "../../MenuItem";
 import { MenuItems } from "../../MenuItems";
 import { DialogTitleBar } from "../DialogTitleBar";
 
-export const ResolutionMenuItem = ({
+const ResolutionMenuItem = ({
   resolutionName,
 }: {
   resolutionName: ResolutionName;

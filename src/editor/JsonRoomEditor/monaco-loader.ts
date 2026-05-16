@@ -36,7 +36,7 @@ self.MonacoEnvironment = {
 };
 loader.config({ monaco });
 
-export const monacoLoader = async (): Promise<typeof Monaco> => {
+const monacoLoader = async (): Promise<typeof Monaco> => {
   const monacoInstance = await loader.init();
 
   const roomSchema = await import("../../_generated/room.schema.json").then(

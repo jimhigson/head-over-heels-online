@@ -105,7 +105,7 @@ export const isStandable = (item: UnionOfAllItemInPlayTypes) => {
  * 'heavy' items stop lifts from rising (see blacktooth 78) - only
  * the metal stepStools and moving platform sandwiches are heavy
  */
-export const isHeavyItem = (item: UnionOfAllItemInPlayTypes): boolean => {
+const isHeavyItem = (item: UnionOfAllItemInPlayTypes): boolean => {
   return item.type === "movingPlatform" || item.type === "pushableBlock";
 };
 
@@ -247,7 +247,7 @@ const deadlyItemTypes = [
 ] as const satisfies ItemInPlayType[];
 export type DeadlyItemType = (typeof deadlyItemTypes)[number];
 
-export const isDeadlyType = isItemType(...deadlyItemTypes);
+const isDeadlyType = isItemType(...deadlyItemTypes);
 
 export const isDeadly = <RoomId extends string, RoomItemId extends string>(
   item: UnionOfAllItemInPlayTypes<RoomId, RoomItemId>,
@@ -330,15 +330,6 @@ export const isDoorframeOrLegs = isItemType("doorFrame", "doorLegs");
 export const isWallOrDoorFrame = isItemType("wall", "doorFrame");
 // items that can move clockwise/back-forth or in any other pattern:
 export const isMoving = isItemType("monster", "movingPlatform");
-
-/**
- * sufficient to tell if a cyberman (given they are already on a toaster)
- * is charging
- */
-export const isChargingCyberman = (i: FreeItem<string, string>): boolean =>
-  isMonster(i) &&
-  i.config.which === "cyberman" &&
-  i.state.everActivated === false;
 
 export const itemIsStandingOnSomething = <
   RoomId extends string,

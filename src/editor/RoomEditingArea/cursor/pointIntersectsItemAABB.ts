@@ -36,7 +36,7 @@ const itemVisibleBounds = (
   };
 };
 
-export const pointIntersectsAABB = (
+const pointIntersectsAABB = (
   /**
    * the pointer screen location
    */

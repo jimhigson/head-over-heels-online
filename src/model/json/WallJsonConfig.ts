@@ -8,7 +8,7 @@ export type AwayWallConfig<ScN extends SceneryName> = {
   tiles: Array<Wall<ScN>>;
 };
 
-export type LeftWallConfig<ScN extends SceneryName> = {
+type LeftWallConfig<ScN extends SceneryName> = {
   /** this wall would normally be found/rendered on the left side of the room */
   direction: "left";
   /** the tiles to show - the length of this array also determines the size of the wall */

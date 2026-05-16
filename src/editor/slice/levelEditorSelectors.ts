@@ -20,15 +20,11 @@ import { emptyObject } from "../../utils/empty";
 import { objectEntriesIter } from "../../utils/entries";
 import { selectorHook } from "../../utils/react/selectorHook";
 
-export const useCurrentEditingRoomJson = selectorHook((state) =>
-  selectCurrentRoomFromLevelEditorState(state.levelEditor),
-);
-
 /**
  * gets the current editing room json with temporary previews applied on
  * top of it
  */
-export const selectCurrentEditingRoomJsonWithPreviews = createSelector(
+const selectCurrentEditingRoomJsonWithPreviews = createSelector(
   [
     (state) => selectCurrentRoomFromLevelEditorState(state.levelEditor),
     (state: EditorRootState) => state.levelEditor.previewedEdits,
@@ -75,7 +71,7 @@ export const selectEditorRoomState = createSelector(
  * Selector that loads the room state with preview edits applied.
  * Memoized so it only recomputes when the room JSON or previews change.
  */
-export const selectEditorRoomStateWithPreviews = createSelector(
+const selectEditorRoomStateWithPreviews = createSelector(
   [selectCurrentEditingRoomJsonWithPreviews],
   (roomJsonWithPreviews): EditorRoomState => {
     return loadRoom({

@@ -4,7 +4,7 @@ import { useEffect, useState } from "preact/hooks";
 
 import { loadSpritesheetAssets } from "../sprites/spritesheet/loadedSpriteSheet";
 
-export const AssetLoadGateHoc = (load: () => Promise<unknown>) => {
+const AssetLoadGateHoc = (load: () => Promise<unknown>) => {
   const LoadGate = ({ children }: { children: ReactNode }) => {
     const [loaded, setLoaded] = useState(false);
 

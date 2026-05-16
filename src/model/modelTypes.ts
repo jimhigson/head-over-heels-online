@@ -4,8 +4,6 @@ import type { Merge, SetOptional } from "type-fest";
 import type { SceneryName, Wall } from "../sprites/planets";
 import type { RoomJson } from "./RoomJson";
 
-import { blockSizePx } from "../game/physics/mechanicsConstants";
-
 export const individualCharacterNames = ["head", "heels"] as const;
 export const characterNames = [
   ...individualCharacterNames,
@@ -16,13 +14,8 @@ export type CharacterName = (typeof characterNames)[number];
 export const otherIndividualCharacterName = (
   name: IndividualCharacterName,
 ): IndividualCharacterName => (name === "head" ? "heels" : "head");
-export const isCharacterName = (name: string): name is CharacterName =>
-  name === "head" || name === "heels";
 
 export type AnyWall = Wall<SceneryName>;
-
-export const floorThickness = blockSizePx.z;
-export const wallThickness = blockSizePx.x / 2;
 
 export type Campaign<RoomId extends string> = {
   rooms: Record<RoomId, RoomJson<RoomId, string, SceneryName>>;
@@ -46,16 +39,7 @@ export type OptionallyNamedCampaign<RoomId extends string> = Merge<
   { locator: SetOptional<CampaignLocator, "campaignName"> }
 >;
 
-export type UnknownCampaign = Campaign<string>;
-
-export type CampaignRoomId<C extends UnknownCampaign> = string &
-  keyof C["rooms"];
-export type CampaignRoom<C extends UnknownCampaign> =
-  C extends Campaign<infer RoomId> ? RoomJson<RoomId, string, SceneryName>
-  : never;
-
-export type SpriteFrame = SpritesheetFrameData["frame"];
-export type SpritePosition = Pick<SpriteFrame, "x" | "y">;
+type SpriteFrame = SpritesheetFrameData["frame"];
 export type SpriteSize = Pick<SpriteFrame, "h" | "w">;
 
 /**

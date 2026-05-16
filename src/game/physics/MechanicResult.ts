@@ -15,8 +15,6 @@ export type Mechanic<T extends ItemInPlayType> = <
   deltaMS: number,
 ) => MechanicResult<T, RoomId, RoomItemId>;
 
-export type MechanicsNames = "gravity" | "jumping" | "walking";
-
 export type VelocitiesForItem<T extends ItemInPlayType> =
   string & ItemState<T, string, string> extends (
     { vels: { [s in infer M]: Xyz } }

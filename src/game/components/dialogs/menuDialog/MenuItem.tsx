@@ -13,7 +13,7 @@ import { MenuItemLeader } from "./dialogs/MenuItemLeader";
 import { useMenuItem } from "./dialogs/menus/useMenuItem";
 import { multilineTextClass } from "./multilineTextClass";
 
-export type BaseMenuItemProps = {
+type BaseMenuItemProps = {
   id: string;
   label: ReactElement | string;
   valueElement?: ReactElement;
@@ -31,7 +31,7 @@ export type BaseMenuItemProps = {
   toParentMenu?: boolean;
 };
 
-export type LinkMenuItemProps = BaseMenuItemProps & {
+type LinkMenuItemProps = BaseMenuItemProps & {
   /**
    * if given, the menu item is a link, probably to
    * a url external to this app
@@ -41,13 +41,13 @@ export type LinkMenuItemProps = BaseMenuItemProps & {
   onSelect?: undefined;
 };
 
-export type SubMenuMenuItemProps = BaseMenuItemProps & {
+type SubMenuMenuItemProps = BaseMenuItemProps & {
   subMenuId: DialogId;
   href?: undefined;
   onSelect?: undefined;
 };
 
-export type CallbackMenuItemProps = BaseMenuItemProps & {
+type CallbackMenuItemProps = BaseMenuItemProps & {
   onSelect?: () => void;
   subMenuId?: undefined;
   href?: undefined;

@@ -14,10 +14,10 @@ import { hudCharTextureSize } from "./textureSizes";
 // https://www.nerdfonts.com/cheat-sheet
 export const nerdFontDiscordChar = "\uf1ff";
 export const nerdFontGithubChar = "\ue709";
-export const chromePwaInstall = ""; // \uea78
-export const iosMacShare = ""; // \uf50e;
-export const iosMacAddToDock = "󱂩"; // \uf10a9;
-export const iosMacAddToHomeScreen = ""; // \uf457;
+const chromePwaInstall = ""; // \uea78
+const iosMacShare = ""; // \uf50e;
+const iosMacAddToDock = "󱂩"; // \uf10a9;
+const iosMacAddToHomeScreen = ""; // \uf457;
 
 type CharWidth = number;
 

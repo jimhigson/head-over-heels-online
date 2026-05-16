@@ -14,12 +14,12 @@ import { defaultBaseState } from "./itemDefaultStates";
 
 // a value of 3 makes items less likely to get pushed through the floor if
 // there are collisions on-load, than if it were just 1.
-export const floorThicknessBlocks = 3;
+const floorThicknessBlocks = 3;
 /**
  * the room edge is much thinner since we don't have to worry about things
  * being pushed through it
  */
-export const floorEdgeRenderThicknessPx = 10;
+const floorEdgeRenderThicknessPx = 10;
 
 /**
  * how much (in blocks) to extend the floor for doors?

@@ -24,5 +24,5 @@ export const planets = [
 
 export type PlanetName = Subset<SceneryName, (typeof planets)[number]>;
 
-export type AllScenery = typeof wallTiles;
+type AllScenery = typeof wallTiles;
 export type Wall<S extends SceneryName> = AllScenery[S][number];

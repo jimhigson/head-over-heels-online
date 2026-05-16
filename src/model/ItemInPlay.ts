@@ -45,7 +45,7 @@ export type ItemInPlayType = (typeof itemInPlayTypes)[number];
 
 export type SwitchSetting = "left" | "right";
 
-export type DoorFrameConfig<RoomId extends string> = {
+type DoorFrameConfig<RoomId extends string> = {
   direction: DirectionXy4;
   inHiddenWall: boolean;
   toRoom: ExitGameRoomId | RoomId;
@@ -53,7 +53,7 @@ export type DoorFrameConfig<RoomId extends string> = {
   /** is this the near post of the doorframe, or the far one? */
   part: "far" | "near" | "top";
 };
-export type DoorLegsConfig = {
+type DoorLegsConfig = {
   direction: DirectionXy4;
   inHiddenWall: boolean;
   // equal to the z of the door

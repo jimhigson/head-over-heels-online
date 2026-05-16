@@ -19,7 +19,7 @@ const defaultTextureId: TextureId = "thisIsABug";
  * their size matches — sprites of the same size as the bug inherit from the
  * base class.
  */
-export const defaultSpriteDims = (
+const defaultSpriteDims = (
   spritesheetData: AppSpritesheetData,
 ): { w: number; h: number } => {
   const { w, h } = spritesheetData.frames[defaultTextureId].frame;

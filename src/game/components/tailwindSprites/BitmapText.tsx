@@ -14,12 +14,6 @@ import { escapeCharForTailwind } from "../../../sprites/escapeCharForTailwind";
 import { ClassnameWrap } from "../../../utils/react/ClassnameWrap";
 import { sanitiseForClassName } from "./SanitiseForClassName";
 
-export interface CssSpriteProps {
-  className?: string;
-  /** if true, will tint to the colour in the --bitmapTextColour css variable */
-  tint?: boolean;
-}
-
 type BitmapTextTagName = "h1" | "h2" | "label" | "li" | "span";
 
 export type BitmapTextProps<Tag extends BitmapTextTagName = "span"> = {

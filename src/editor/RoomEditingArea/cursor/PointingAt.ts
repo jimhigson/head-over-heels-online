@@ -3,7 +3,7 @@ import type { Simplify } from "type-fest";
 import type { Plane, Xy, Xyz } from "../../../utils/vectors/vectors";
 import type { EditorRoomId, EditorRoomItemId } from "../../editorTypes";
 
-export type BasePointingAt = {
+type BasePointingAt = {
   /** the room that we're pointing at */
   roomId: EditorRoomId;
   /** the xy position of the pointer */

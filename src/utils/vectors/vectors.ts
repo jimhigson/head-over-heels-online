@@ -12,26 +12,14 @@ export const directionsXyDiagonal = [
   "awayLeft",
 ] as const;
 
-export type DirectionXyDiagonal = (typeof directionsXyDiagonal)[number];
-
 export const directionsXy8 = [
   ...directionsXy4,
   ...directionsXyDiagonal,
 ] as const;
 export type DirectionXy8 = (typeof directionsXy8)[number];
 
-// prettier-ignore
-type Matrix3x3 = [
-  number, number, number, // Row 1
-  number, number, number, // Row 2
-  number, number, number, // Row 3
-];
-
 export const tangentAxis = (direction: DirectionXy4): AxisXy =>
   direction === "away" || direction === "towards" ? "y" : "x";
-
-export const normalAxis = (direction: DirectionXy4): AxisXy =>
-  perpendicularAxisXy(tangentAxis(direction));
 
 export const oppositeDirection = (direction: DirectionXy4): DirectionXy4 =>
   direction === "away" ? "towards"
@@ -45,8 +33,7 @@ export const oppositeDirection = (direction: DirectionXy4): DirectionXy4 =>
 export const doorAlongAxis = (doorDirection: DirectionXy4): AxisXy =>
   perpendicularAxisXy(tangentAxis(doorDirection));
 
-export type DirectionZ = "down" | "up";
-export type Direction4Xyz = DirectionXy4 | DirectionZ;
+type DirectionZ = "down" | "up";
 export type Direction8Xyz = DirectionXy8 | DirectionZ;
 
 export type Xy = {
@@ -71,14 +58,6 @@ export const addXy = (xy: Xy, ...xys: Array<Partial<Xy>>): Xy => {
   return result;
 };
 
-export const addXyInPlace = (xy: Xy, ...xys: Array<Partial<Xy>>): Xy => {
-  for (const xyi of xys) {
-    xy.x += xyi.x ?? 0;
-    xy.y += xyi.y ?? 0;
-  }
-  return xy;
-};
-
 export const subXy = (xy: Xy, ...xys: Array<Partial<Xy>>): Xy => {
   const result = {
     x: xy.x,
@@ -93,45 +72,10 @@ export const subXy = (xy: Xy, ...xys: Array<Partial<Xy>>): Xy => {
   return result;
 };
 
-export const subXyInPlace = (xy: Xy, ...xys: Array<Partial<Xy>>): Xy => {
-  for (const xyi of xys) {
-    xy.x -= xyi.x ?? 0;
-    xy.y -= xyi.y ?? 0;
-  }
-  return xy;
-};
-
-export const subXyWriteInto = (
-  writeInto: object,
-  xy: Xy,
-  ...xys: Array<Partial<Xy>>
-): Xy => {
-  const writeIntoTyped = writeInto as Xy;
-  writeIntoTyped.x = xy.x;
-  writeIntoTyped.y = xy.y;
-
-  for (const xyi of xys) {
-    writeIntoTyped.x -= xyi.x ?? 0;
-    writeIntoTyped.y -= xyi.y ?? 0;
-  }
-  return writeIntoTyped;
-};
-
 export const scaleXy = (xy: Xy, scale: number): Xy => ({
   x: xy.x * scale,
   y: xy.y * scale,
 });
-
-export const scaleXyWriteInto = (
-  writeInto: object,
-  xy: Xy,
-  scale: number,
-): Xy => {
-  const writeIntoTyped = writeInto as Xy;
-  writeIntoTyped.x = xy.x * scale;
-  writeIntoTyped.y = xy.y * scale;
-  return writeIntoTyped;
-};
 
 export const scaleXyInPlace = (xy: Xy, scale: number): Xy => {
   xy.x *= scale;
@@ -170,13 +114,6 @@ export const productXyz = (a: Xyz, b: Xyz): Xyz => ({
   z: a.z * b.z,
 });
 
-export const productXyzInPlace = (xyz: Xyz, other: Xyz): Xyz => {
-  xyz.x *= other.x;
-  xyz.y *= other.y;
-  xyz.z *= other.z;
-  return xyz;
-};
-
 export const lengthXyz = ({ x, y, z }: Xyz) => Math.hypot(x, y, z);
 export const lengthXy = ({ x, y }: Xy) => Math.hypot(x, y);
 export const lengthXyzSquared = ({ x, y, z }: Xyz) => x ** 2 + y ** 2 + z ** 2;
@@ -198,16 +135,6 @@ export const unitVectorInPlace = (xyz: Xyz): Xyz => {
   return scaleXyzInPlace(xyz, 1 / l);
 };
 
-export const cornerVectorsXyz = [
-  { x: 0, y: 0, z: 0 },
-  { x: 0, y: 0, z: 1 },
-  { x: 0, y: 1, z: 0 },
-  { x: 0, y: 1, z: 1 },
-  { x: 1, y: 0, z: 0 },
-  { x: 1, y: 0, z: 1 },
-  { x: 1, y: 1, z: 0 },
-  { x: 1, y: 1, z: 1 },
-] as const satisfies Array<Xyz>;
 /** the corners that are visible in the isometric view */
 export const visibleCornerVectorsXyz = [
   { x: 0, y: 0, z: 0 },
@@ -218,22 +145,6 @@ export const visibleCornerVectorsXyz = [
   { x: 1, y: 0, z: 1 },
   { x: 1, y: 1, z: 1 },
 ] as const satisfies Array<Xyz>;
-
-/**
- * clockwise rotation of the xy component
- */
-export const perpendicularXyz = ({ x, y, z }: Xyz): Xyz => ({
-  x: y,
-  y: -x,
-  z,
-});
-
-export const perpendicularXyzInPlace = (xyz: Xyz): Xyz => {
-  const temp = xyz.x;
-  xyz.x = xyz.y;
-  xyz.y = -temp;
-  return xyz;
-};
 
 export const addXyz = (...xyzs: Array<Partial<Xyz>>): Xyz => {
   if (xyzs.length === 0) {
@@ -303,18 +214,6 @@ export const elementWiseProductXyz = (...xyzs: Array<Xyz>): Xyz => {
     }),
     unitXyz,
   );
-};
-
-export const elementWiseProductXyzInPlace = (
-  xyz: Xyz,
-  ...xyzs: Array<Xyz>
-): Xyz => {
-  for (const other of xyzs) {
-    xyz.x *= other.x;
-    xyz.y *= other.y;
-    xyz.z *= other.z;
-  }
-  return xyz;
 };
 
 export const subXyz = (xyz: Xyz, ...xyzs: Array<Partial<Xyz>>): Xyz => {
@@ -399,26 +298,6 @@ export const xyzSnapIfCloseToIntegers = (input: Xyz): Xyz => {
   }
 };
 
-export const xyzSnapIfCloseToIntegersInPlace = (xyz: Xyz): Xyz => {
-  const { x } = xyz;
-  const xNearest = Math.round(x);
-  const xNeedsCorrect = !Number.isInteger(x) && veryClose(x, xNearest);
-
-  const { y } = xyz;
-  const yNearest = Math.round(y);
-  const yNeedsCorrect = !Number.isInteger(y) && veryClose(y, yNearest);
-
-  const { z } = xyz;
-  const zNearest = Math.round(z);
-  const zNeedsCorrect = !Number.isInteger(z) && veryClose(z, zNearest);
-
-  if (xNeedsCorrect) xyz.x = xNearest;
-  if (yNeedsCorrect) xyz.y = yNearest;
-  if (zNeedsCorrect) xyz.z = zNearest;
-
-  return xyz;
-};
-
 export const isExactIntegerXyz = ({ x = 0, y = 0, z = 0 }: Partial<Xyz>) =>
   Number.isInteger(x) && Number.isInteger(y) && Number.isInteger(z);
 
@@ -427,26 +306,6 @@ export const roundXyz = ({ x, y, z }: Xyz) => ({
   y: Math.round(y),
   z: Math.round(z),
 });
-
-export const roundXyzInPlace = (xyz: Xyz): Xyz => {
-  xyz.x = Math.round(xyz.x);
-  xyz.y = Math.round(xyz.y);
-  xyz.z = Math.round(xyz.z);
-  return xyz;
-};
-
-export const roundXyzToXyHalves = ({ x, y, z }: Xyz) => ({
-  x: Math.round(x * 2) / 2,
-  y: Math.round(y * 2) / 2,
-  z: Math.round(z),
-});
-
-export const roundXyzToXyHalvesInPlace = (xyz: Xyz): Xyz => {
-  xyz.x = Math.round(xyz.x * 2) / 2;
-  xyz.y = Math.round(xyz.y * 2) / 2;
-  xyz.z = Math.round(xyz.z);
-  return xyz;
-};
 
 export const originXy: Xy = Object.freeze({ x: 0, y: 0 });
 export const originXyz: Xyz = Object.freeze({ x: 0, y: 0, z: 0 });
@@ -469,16 +328,9 @@ export type Xyz = {
   y: number;
   z: number;
 };
-export type XyMaybeZ = {
-  x: number;
-  y: number;
-  z?: number;
-};
-export const axesXy = ["x", "y"] as const;
-export type AxisXy = (typeof axesXy)[number];
+export type AxisXy = "x" | "y";
 
 export const axesXyz = ["x", "y", "z"] as const;
-export type AxisXyz = (typeof axesXyz)[number];
 
 export type Aabb = Readonly<Xyz>;
 
@@ -492,23 +344,6 @@ export const dotProductXyz = (a: Xyz, b: Xyz): number => {
 export const dotProductXy = (a: Xy, b: Xy): number => {
   return a.x * b.x + a.y * b.y;
 };
-
-export const multiplyMatrixVector = (
-  matrix: Matrix3x3,
-  { x, y, z }: Xyz,
-): Xyz => ({
-  x: matrix[0] * x + matrix[1] * y + matrix[2] * z,
-  y: matrix[3] * x + matrix[4] * y + matrix[5] * z,
-  z: matrix[6] * x + matrix[7] * y + matrix[8] * z,
-});
-
-// prettier-ignore
-/** matrix to multiply against to discard the z component of a vector */
-export const xyOnlyMatrix : Matrix3x3 = [
-  1, 0, 0, // Row 1
-  0, 1, 0, // Row 2
-  0, 0, 0, // Row 3
-];
 
 export const vectorClosestDirectionXy4 = ({
   x,
@@ -573,28 +408,11 @@ export const manhattanDistanceXy = (
   return Math.abs(x2 - x1) + Math.abs(y2 - y1);
 };
 
-export const distanceXyz = (a: Xyz, b: Xyz) => {
-  return lengthXyz(subXyz(a, b));
-};
-
 export type Plane = {
   /** vector of a normal to all points on the plane */
   normal: Xyz;
   /** any point on the plane */
   point: Xyz;
-};
-
-export const absXyz = ({ x, y, z }: Xyz): Xyz => ({
-  x: Math.abs(x),
-  y: Math.abs(y),
-  z: Math.abs(z),
-});
-
-export const absXyzInPlace = (xyz: Xyz): Xyz => {
-  xyz.x = Math.abs(xyz.x);
-  xyz.y = Math.abs(xyz.y);
-  xyz.z = Math.abs(xyz.z);
-  return xyz;
 };
 
 /**

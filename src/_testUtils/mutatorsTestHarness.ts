@@ -42,7 +42,7 @@ export type TestCampaignRoomId =
   | "headStartingRoom"
   | "heelsStartingRoom"
   | "thirdRoom";
-export const roomProperties = {
+const roomProperties = {
   color: { hue: "yellow", shade: "basic" },
   planet: "blacktooth",
 } as const satisfies Partial<RoomState<"blacktooth", TestCampaignRoomId>>;

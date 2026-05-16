@@ -45,8 +45,6 @@ const selectUserSetting =
 
 export const selectInputAssignment = selectUserSetting("inputAssignment");
 
-export const useInputAssignment = () => useAppSelector(selectInputAssignment);
-
 export const selectIsPaused = (state: RootState) => {
   const [topMenu] = state.gameMenus.openMenus;
   if (topMenu === undefined) {
@@ -56,9 +54,6 @@ export const selectIsPaused = (state: RootState) => {
   // while this dialog is showing
   return topMenu.menuId !== "death";
 };
-
-export const selectAssigningInput = (state: RootState) =>
-  state.userSettings.assigningInput;
 
 export const useCheatsOn = (): boolean =>
   useAppSelector((state) => state.debug.cheatsOn);
@@ -106,7 +101,7 @@ export const selectGameSpeed = selectUserSetting("gameSpeed");
 export const useEmulatedResolutionName = () =>
   useAppSelector(selectEmulatedResolutionName);
 
-export const selectIsUncolourised = (state: RootState): boolean =>
+const selectIsUncolourised = (state: RootState): boolean =>
   selectSpritesOption(state).uncolourised;
 
 export const useSpritesOption = () => useAppSelector(selectSpritesOption);
@@ -148,7 +143,7 @@ export const selectPlanetsLiberatedCount = (state: RootState) =>
 
 export const selectSpritesOption = selectUserSetting("displaySettings.sprites");
 
-export const selectShowBoundingBoxTypes = selectUserSetting(
+const selectShowBoundingBoxTypes = selectUserSetting(
   "displaySettings.showBoundingBoxTypes",
 );
 
@@ -161,7 +156,7 @@ export const useShowBoundingBoxTypes = (): ItemInPlayType[] => {
   return useAppSelector(selectShowBoundingBoxTypes);
 };
 
-export const selectShowRoomScrollBounds = selectUserSetting(
+const selectShowRoomScrollBounds = selectUserSetting(
   "displaySettings.showRoomScrollBounds",
 );
 
@@ -169,14 +164,14 @@ export const useShowRoomScrollBounds = (): boolean => {
   return useAppSelector(selectShowRoomScrollBounds);
 };
 
-export const selectShowShadowMasks = selectUserSetting(
+const selectShowShadowMasks = selectUserSetting(
   "displaySettings.showShadowMasks",
 );
 export const useShowShadowMasks = (): boolean => {
   return useAppSelector(selectShowShadowMasks);
 };
 
-export const selectUserPreferenceOnScreenControls =
+const selectUserPreferenceOnScreenControls =
   selectUserSetting("onScreenControls");
 
 export const selectIsSoundMuted = selectUserSetting("soundSettings.mute");
@@ -244,7 +239,7 @@ export const selectMaybeCurrentCampaign = <RoomId extends string = string>(
  * caching selector to get the spritesheet data for the currently
  * selected spritesOption
  */
-export const selectCurrentSpritesheetData = createSelector(
+const selectCurrentSpritesheetData = createSelector(
   [selectSpritesOption],
   (spriteOption): AppSpritesheetData =>
     makeSpritesheetData(spritesheetMetas[spriteOption.name]),

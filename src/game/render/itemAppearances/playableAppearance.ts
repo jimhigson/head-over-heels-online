@@ -256,7 +256,7 @@ const createOutputContainer = <PaletteColourName extends string>(
   return container;
 };
 
-export const isHighlighted = (
+const isHighlighted = (
   {
     gameTime,
     switchedToAt,
@@ -299,7 +299,7 @@ export const isHighlightedPlayableItem = (
 };
 
 /** should player have the flashing effect after losing a life */
-export const isFlashing = (playableItem: PlayableItem): boolean => {
+const isFlashing = (playableItem: PlayableItem): boolean => {
   if (!playerDiedRecently(playableItem)) {
     return false;
   }

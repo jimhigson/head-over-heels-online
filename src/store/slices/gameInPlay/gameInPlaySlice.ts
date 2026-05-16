@@ -1,5 +1,4 @@
 import type { PayloadAction } from "@reduxjs/toolkit";
-import type { ValueOf } from "type-fest";
 
 import { createAction, createSlice } from "@reduxjs/toolkit";
 
@@ -65,7 +64,7 @@ export type GameInPlayStoreState = {
   freeCharacters: FreeCharacters;
 };
 
-export type GameInPlaySliceState = {
+type GameInPlaySliceState = {
   gameInPlay: GameInPlayStoreState;
   /**
    * could maybe be replaced with conditionality of gameInPlay. However, currently
@@ -85,7 +84,7 @@ export const noPlanetsLiberated = {
   safari: false,
 };
 
-export const initialGameInPlayStoreState = {
+const initialGameInPlayStoreState = {
   planetsLiberated: noPlanetsLiberated,
   roomsExplored: {},
   scrollsRead: {},
@@ -93,7 +92,7 @@ export const initialGameInPlayStoreState = {
   freeCharacters: {},
 } satisfies GameInPlayStoreState;
 
-export const initialGameInPlaySliceState: GameInPlaySliceState = {
+const initialGameInPlaySliceState: GameInPlaySliceState = {
   gameInPlay: initialGameInPlayStoreState,
   gameRunning: false,
 };
@@ -229,13 +228,6 @@ export const gameInPlaySlice = createSlice({
   },
 });
 
-export type GameInPlaySliceAction =
-  | ReturnType<typeof characterRoomChange>
-  | ReturnType<typeof lostAllLives>
-  | ReturnType<typeof lostLife>
-  | ReturnType<typeof reincarnationAccepted>
-  | ReturnType<ValueOf<typeof gameInPlaySlice.actions>>;
-
 export const {
   characterReachesFreedom,
   crownCollected,
@@ -246,5 +238,3 @@ export const {
   roomExplored,
   scrollRead,
 } = gameInPlaySlice.actions;
-
-export const gameInPlaySliceActions = gameInPlaySlice.actions;

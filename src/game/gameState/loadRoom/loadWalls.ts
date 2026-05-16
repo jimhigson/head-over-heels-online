@@ -35,25 +35,25 @@ const shadowWallX: SpecifiedTextureCreateSpriteOptions = Object.freeze({
 // jump over the wall in some cases in rooms without a ceiling portal.
 // this could be thicker for more safety, but for walls-in-rooms situations (not around the
 // edges of rooms) is would get in the way of gameplay
-export const wallThicknessBlocks = 1;
+const wallThicknessBlocks = 1;
 
-export const xAxisWallAabb = {
+const xAxisWallAabb = {
   x: blockSizePx.x,
   y: blockSizePx.y * wallThicknessBlocks,
   z: veryHighZ,
 };
-export const xAxisWallRenderAabb = {
+const xAxisWallRenderAabb = {
   x: blockSizePx.x,
   y: 0,
   // for rendering it extends to the drawn height of the wall tile:
   z: wallRenderHeight,
 };
-export const yAxisWallAabb = {
+const yAxisWallAabb = {
   x: blockSizePx.x * wallThicknessBlocks,
   y: blockSizePx.y,
   z: veryHighZ,
 };
-export const yAxisWallRenderAabb = {
+const yAxisWallRenderAabb = {
   x: 0,
   y: blockSizePx.y,
   z: wallRenderHeight,

@@ -426,11 +426,3 @@ export class PointerToolHandler
     dispatch(setHoveredItemInRoom(undefined));
   }
 }
-
-// Legacy export for backwards compatibility - to be removed after migration
-export const pointerMouseMove = (
-  params: MouseMoveParams<Extract<Tool, { type: "pointer" }>>,
-) => {
-  const handler = new PointerToolHandler();
-  handler.handleMouseMove(params);
-};

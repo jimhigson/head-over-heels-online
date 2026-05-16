@@ -13,7 +13,7 @@ import {
 
 let swopped: AppSpritesheet | undefined = undefined;
 
-export const destroyDoughnuttedSpritesheetVariant = () => {
+const destroyDoughnuttedSpritesheetVariant = () => {
   if (swopped !== undefined) {
     swopped.textureSource.destroy();
     swopped.destroy(true);

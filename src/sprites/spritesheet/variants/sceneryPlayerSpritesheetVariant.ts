@@ -13,15 +13,14 @@ import {
 let swopped: AppSpritesheet | undefined = undefined;
 
 /** Change the appearance of the citizens of Freedom to distinguish from the player */
-export const sceneryPlayerSwaps: PartialNamedColours<
-  keyof typeof paletteBlockstack
-> = {
-  pastelBlue: paletteBlockstack.moss,
-  metallicBlue: paletteBlockstack.moss,
-  pink: paletteBlockstack.moss,
-};
+const sceneryPlayerSwaps: PartialNamedColours<keyof typeof paletteBlockstack> =
+  {
+    pastelBlue: paletteBlockstack.moss,
+    metallicBlue: paletteBlockstack.moss,
+    pink: paletteBlockstack.moss,
+  };
 
-export const destroySceneryPlayerSpritesheetVariant = () => {
+const destroySceneryPlayerSpritesheetVariant = () => {
   if (swopped !== undefined) {
     swopped.textureSource.destroy();
     swopped.destroy(true);

@@ -50,7 +50,7 @@ const extractTextureSourceToBase64 = async (
   }
 };
 
-export const textureToConsoleArgs = async (
+const textureToConsoleArgs = async (
   textureSource: TextureSource,
   renderer: Renderer,
   maxSize = 100,

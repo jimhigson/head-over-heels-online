@@ -61,4 +61,3 @@ export type GameState<RoomId extends string = string> = {
 
 // if you don't care about the RoomId generic, you can't emit events (since they are callbacks)
 // but that's fine since most code never emits events
-export type AnyGameState = Omit<GameState<string>, "renderOptions">;

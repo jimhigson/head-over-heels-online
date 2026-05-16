@@ -1,11 +1,21 @@
 {
-  "$schema": "https://unpkg.com/knip@5/schema.json",
-  "entry": ["src/main.tsx", "src/editor/main.tsx", "scripts/**/*.ts"],
+  "$schema": "https://unpkg.com/knip@6/schema.json",
+  "entry": ["scripts/**/*.ts"],
   "ignore": [
     "src/_generated/**",
     "**/*.bench.*",
     "**/*.test-d.*",
-    "**/*.test.d.ts"
+    "**/*.test.d.ts",
+    "src/editor/monaco-env.d.ts",
+    "src/es-iterator-helpers.d.ts",
+    "src/iterableIterator-augmentation.d.ts"
   ],
-  "project": ["src/**/*.ts", "src/**/*.tsx", "scripts/**/*.ts"]
+  "project": ["src/**/*.ts", "src/**/*.tsx", "scripts/**/*.ts"],
+  "ignoreDependencies": ["@tauri-apps/cli", "git-format-staged", "kill-port"],
+  "ignoreBinaries": [
+    "pg_dump-17",
+    "magick",
+    "scripts/schema/postProcessSchema.ts",
+    "scripts/schema/deduplicateSchema.ts"
+  ]
 }

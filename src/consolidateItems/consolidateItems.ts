@@ -21,7 +21,7 @@ import {
 } from "./ConsolidatableJsonItem";
 import { Grid } from "./Grid";
 
-export type ItemWithId = [itemId: string, item: JsonItemUnion];
+type ItemWithId = [itemId: string, item: JsonItemUnion];
 export type ConsolidatableItemWithId = [
   itemId: string,
   item: ConsolidatableJsonItem,
@@ -123,7 +123,7 @@ const consolidateBin = (
   }
 };
 
-export const consolidateItems = (
+const consolidateItems = (
   items: Iterable<ItemWithId>,
   /**
    * A function to determine if an item should be considered for consolidation,

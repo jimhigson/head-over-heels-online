@@ -31,7 +31,7 @@ import {
 import { roomItemPositions } from "./roomItemPositions";
 import { translateXyz } from "./svgHelpers";
 
-export const ItemsInRoomLayout = <ItemId extends string, Item>({
+const ItemsInRoomLayout = <ItemId extends string, Item>({
   items,
   positions,
   ItemComponent,

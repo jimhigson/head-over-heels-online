@@ -1,38 +1,12 @@
-import type { Container } from "pixi.js";
-
 import { orthoPlaneForNormal } from "../../utils/vectors/orthoPlane";
-import {
-  addXyz,
-  subXy,
-  type Xy,
-  type XyMaybeZ,
-  type Xyz,
-} from "../../utils/vectors/vectors";
+import { addXyz, subXy, type Xy, type Xyz } from "../../utils/vectors/vectors";
 import { blockSizePx } from "../physics/mechanicsConstants";
-
-export const moveContainerToBlockXyz = (
-  blockXyz: XyMaybeZ,
-  sprite: Container,
-) => {
-  const projectionXyz = projectBlockXyzToScreenXy(blockXyz);
-
-  sprite.x = projectionXyz.x;
-  sprite.y = projectionXyz.y;
-
-  return sprite;
-};
 
 /* position on 2d screen for a given xyz in game-space 3d pixels */
 export const projectWorldXyzToScreenX = ({
   x: xw = 0,
   y: yw = 0,
 }: Partial<Xyz>): number => yw - xw;
-
-export const projectWorldXyzToScreenY = ({
-  x: xw = 0,
-  y: yw = 0,
-  z: zw = 0,
-}: Partial<Xyz>): number => -(xw + yw) / 2 - zw;
 
 export const projectWorldXyzToScreenXy = ({
   x: xw = 0,

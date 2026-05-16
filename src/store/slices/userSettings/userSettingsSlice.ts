@@ -1,5 +1,5 @@
 import type { PayloadAction } from "@reduxjs/toolkit";
-import type { ValueOf, Writable } from "type-fest";
+import type { Writable } from "type-fest";
 
 import { createSlice } from "@reduxjs/toolkit";
 
@@ -78,7 +78,7 @@ export type UserSettings = {
   soundSettings: SoundSettings;
 };
 
-export type AssigningInput =
+type AssigningInput =
   | {
       action: BooleanAction;
       presses: ActionInputAssignment;
@@ -101,7 +101,7 @@ export type UserSettingsState = {
 
 export type UserSettingsBooleanPaths = ToggleablePaths<UserSettings>;
 
-export const initialUserSettingsSliceState: UserSettingsState = {
+const initialUserSettingsSliceState: UserSettingsState = {
   userSettings: emptyUserSettings,
   assigningInput: undefined,
 };
@@ -294,10 +294,6 @@ export const userSettingsSlice = createSlice({
   },
 });
 
-export type UserSettingsSliceAction = ReturnType<
-  ValueOf<typeof userSettingsSlice.actions>
->;
-
 export const {
   assignInputStart,
   doneAssigningInput,
@@ -313,5 +309,3 @@ export const {
   setSpritesOption,
   toggleUserSetting,
 } = userSettingsSlice.actions;
-
-export const userSettingsSliceActions = userSettingsSlice.actions;

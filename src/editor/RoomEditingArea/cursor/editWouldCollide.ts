@@ -24,7 +24,7 @@ import { addTimesDeltaToJsonItemInPlace } from "../../slice/reducers/moveOrResiz
  * find items that items being (added to/moved in/resized in) a room would
  * need to care about colliding with, when they are added/moved
  */
-export const collideableItemsInRoom = (
+const collideableItemsInRoom = (
   roomState: EditorRoomState,
 ): IterableIterator<EditorUnionOfAllItemInPlayTypes> => {
   return roomItemsIterable(roomState.items).filter((item) => isSolid(item));

@@ -1,5 +1,4 @@
 import type { PayloadAction } from "@reduxjs/toolkit";
-import type { ValueOf } from "type-fest";
 
 import { createSlice } from "@reduxjs/toolkit";
 
@@ -57,9 +56,6 @@ export const upscaleSlice = createSlice({
     selectGameEngineUpscale(state) {
       return state.upscale.gameEngineUpscale;
     },
-    selectGameEngineScreenSize(state) {
-      return state.upscale.gameEngineScreenSize;
-    },
     selectRot90(state) {
       return state.upscale.rotate90;
     },
@@ -72,12 +68,6 @@ export const upscaleSlice = createSlice({
   },
 });
 
-export type UpscaleSliceAction = ReturnType<
-  ValueOf<typeof upscaleSlice.actions>
->;
-
-export type UpscaleSliceActionCreator = ValueOf<typeof upscaleSlice.actions>;
-
 export const { upscaleToWindow } = upscaleSlice.actions;
 export const {
   selectCanvasSize,
@@ -85,7 +75,4 @@ export const {
   selectUpscale,
   selectGameEngineUpscale,
   selectTotalUpscale,
-  selectGameEngineScreenSize,
 } = upscaleSlice.selectors;
-
-export const upscaleSliceActions = upscaleSlice.actions;

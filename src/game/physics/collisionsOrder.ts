@@ -53,7 +53,7 @@ const conveyorOrderComparator = (
 };
 */
 
-export const obstaclePointEarliestPointInVector = (
+const obstaclePointEarliestPointInVector = (
   vector: Xyz,
   obstacle: SortableObstacle,
 ): Xyz => {
@@ -76,7 +76,7 @@ export const obstaclePointEarliestPointInVector = (
  * When hitting two items simultaneously, the order for which to collide with first.
  * Lower is sooner.
  */
-export const typeOrderPreference: Record<ItemInPlayType, number> = {
+const typeOrderPreference: Record<ItemInPlayType, number> = {
   // least impactful to touch:
   stopAutowalk: 5,
   portal: 5,

@@ -21,7 +21,7 @@ import { projectBlockXyzToScreenXy } from "./projections";
 /**
  * allow spritesheet to be specified either by variant or by the whole spritesheet
  */
-export type CreateSpriteSpritesheetSpecifier =
+type CreateSpriteSpritesheetSpecifier =
   | {
       spritesheet: AppSpritesheet;
     }

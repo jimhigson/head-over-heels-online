@@ -94,11 +94,7 @@ export const campaignsApiSlice = createApi({
   }),
 });
 
-export const {
-  useGetCampaignQuery,
-  useGetAllUsersLatestCampaignsQuery,
-  useSaveCampaignMutation,
-} = campaignsApiSlice;
+export const { useGetAllUsersLatestCampaignsQuery } = campaignsApiSlice;
 
 const selectCampaignRaw = campaignsApiSlice.endpoints.getCampaign.select;
 
@@ -109,17 +105,4 @@ export const selectMaybeLoadedCampaignData = <RowId extends string>(
 ): Campaign<RowId> | undefined => {
   const result = selectCampaignRaw(campaignLocator)(state);
   return result.data as Campaign<RowId> | undefined;
-};
-
-export const selectLoadedCampaignData = <RowId extends string>(
-  state: RootState,
-  campaignLocator: CampaignLocator,
-): Campaign<RowId> => {
-  const result = selectCampaignRaw(campaignLocator)(state);
-  if (result.data === undefined) {
-    throw new Error(
-      `Campaign not loaded ${campaignLocator.campaignName} ${campaignLocator.userId}`,
-    );
-  }
-  return result.data as Campaign<RowId>;
 };

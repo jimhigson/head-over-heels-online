@@ -65,19 +65,6 @@ const CommandGroup = ({
   />
 );
 
-const CommandSeparator = ({
-  className,
-  ...props
-}: ComponentProps<typeof CommandPrimitive.Separator>) => (
-  <CommandPrimitive.Separator
-    className={cn(
-      "-mx-1 h-px bg-shadow zx:bg-zxBlack toppy:bg-toppyGrey3",
-      className,
-    )}
-    {...props}
-  />
-);
-
 const CommandItem = ({
   className,
   ...props
@@ -91,16 +78,6 @@ const CommandItem = ({
   />
 );
 
-const CommandShortcut = ({ className, ...props }: ComponentProps<"span">) => (
-  <span
-    className={cn(
-      "ml-auto text-xs tracking-widest text-muted-foreground",
-      className,
-    )}
-    {...props}
-  />
-);
-
 export {
   Command,
   CommandInput,
@@ -108,6 +85,4 @@ export {
   CommandEmpty,
   CommandGroup,
   CommandItem,
-  CommandShortcut,
-  CommandSeparator,
 };

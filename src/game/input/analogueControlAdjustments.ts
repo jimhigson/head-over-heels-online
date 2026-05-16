@@ -1,13 +1,8 @@
 import type { InputDirectionMode } from "../../store/slices/userSettings/userSettingsSlice";
 
-import { nonZero } from "../../utils/epsilon";
 import { unitVectors } from "../../utils/vectors/unitVectors";
 import {
-  dotProductXyz,
-  lengthXyz,
   originXyz,
-  scaleXyz,
-  unitVectorInPlace,
   vectorClosestDirectionXy4,
   vectorClosestDirectionXy8,
   type Xyz,
@@ -39,34 +34,13 @@ export const rotateInputVector45InPlace = (vector: Xyz): Xyz => {
   return vector;
 };
 
-const isometricX: Xyz = unitVectorInPlace({ x: 1, y: 2, z: 0 });
-const isometricY: Xyz = unitVectorInPlace({ x: -1, y: 2, z: 0 });
-export const isometricInputVector = (input: Xyz): Xyz => {
-  const inputMagnitude = lengthXyz(input);
-
-  if (inputMagnitude === 0) {
-    return input;
-  }
-
-  const newDirection = {
-    x: dotProductXyz(input, isometricX),
-    y: dotProductXyz(input, isometricY),
-    z: 0,
-  };
-
-  return scaleXyz(
-    newDirection,
-    inputMagnitude / nonZero(lengthXyz(newDirection)),
-  );
-};
-
 type SnapXyFn = (input: Xyz) => Xyz;
 
-export const strictSnapXy4: SnapXyFn = (input) => {
+const strictSnapXy4: SnapXyFn = (input) => {
   const direction = vectorClosestDirectionXy4(input);
   return direction === undefined ? originXyz : unitVectors[direction];
 };
-export const strictSnapXy8: SnapXyFn = (input) => {
+const strictSnapXy8: SnapXyFn = (input) => {
   const direction = vectorClosestDirectionXy8(input);
   return direction === undefined ? originXyz : unitVectors[direction];
 };

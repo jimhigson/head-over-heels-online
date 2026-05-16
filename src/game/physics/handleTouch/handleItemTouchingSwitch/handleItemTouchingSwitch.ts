@@ -137,7 +137,7 @@ const toggleSwitchInRoom = <RoomId extends string, RoomItemId extends string>(
   applyModifiesList(modifiesList, newSetting, switchItem, room, visited);
 };
 
-export const handleSwitchActivation = <
+const handleSwitchActivation = <
   RoomId extends string,
   RoomItemId extends string,
 >(
