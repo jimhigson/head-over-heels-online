@@ -12,6 +12,22 @@ if (!import.meta.env.TAURI_ENV_PLATFORM) {
   import("./registerAppSW");
 }
 
+if (import.meta.env.TAURI_ENV_PLATFORM) {
+  // On macOS, AppKit treats Escape in fullscreen as a request to exit
+  // fullscreen. preventDefault on the keydown blocks that without
+  // stopping propagation, so the game's own Escape handling still
+  // works (opens/closes menus by default).
+  window.addEventListener(
+    "keydown",
+    (e) => {
+      if (e.key === "Escape") {
+        e.preventDefault();
+      }
+    },
+    { capture: true },
+  );
+}
+
 const loadApp = importOnceForReactSuspense(async () => {
   const polyfillNeeded =
     !globalThis.Iterator ||
