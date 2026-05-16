@@ -16,6 +16,7 @@ export type DialogId =
   | "map"
   | "markdown/inline"
   | "modernisationOptions"
+  | "needRefresh"
   | "offerReincarnation"
   | "proclaimEmperor"
   | "quitGameConfirm"

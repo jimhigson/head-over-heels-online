@@ -420,6 +420,17 @@ export const gameMenusSlice = createSlice({
         },
       ];
     },
+
+    needRefreshMenuShown(state) {
+      state.openMenus = [
+        {
+          menuId: "needRefresh",
+          scrollableSelection: false,
+          menuParam: emptyObject,
+        },
+        ...state.openMenus,
+      ];
+    },
   },
   extraReducers(builder) {
     builder.addCase(clearAllData, () => initialGameMenuSliceState);
@@ -465,6 +476,7 @@ export const {
   holdPressed,
   mapPressed,
   menuOpenOrExitPressed,
+  needRefreshMenuShown,
   reincarnationRestartMenuShown,
   scrollContentMenuShown,
   setFocussedMenuItemId,
