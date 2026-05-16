@@ -1,12 +1,7 @@
 import type { Container } from "pixi.js";
 import type { EmptyObject } from "type-fest";
 
-import { Sprite } from "pixi.js";
-
-import type {
-  ItemInPlayConfig,
-  ItemInPlayType,
-} from "../../../model/ItemInPlay";
+import type { ItemInPlayType } from "../../../model/ItemInPlay";
 import type { TextureId } from "../../../sprites/spritesheet/spritesheetData/makeSpritesheetData";
 import type {
   AppearanceOptions,
@@ -20,13 +15,7 @@ import type { ItemRenderContext, ItemTickContext } from "../ItemRenderContexts";
 
 import { itemInPlayTimes } from "../../../model/times";
 import { emptyObject } from "../../../utils/empty";
-import {
-  maybeRenderContainerToSprite,
-  renderContainerToSprite,
-} from "../../../utils/pixi/renderContainerToSprite";
-import { renderMultipliedXy } from "../../../utils/pixi/renderMultipliedXy";
 import { isMultipliedItem } from "../../physics/itemPredicates";
-import { blockSizePx } from "../../physics/mechanicsConstants";
 import { createSprite } from "../createSprite";
 
 export type ItemAppearanceOptions<
@@ -117,36 +106,6 @@ export const itemStaticAnimatedAppearance = <T extends ItemInPlayType>(
   );
 
 /**
- * A static appearance, but renders only to Sprite, via rendertextures
- * if needed. This is mostly for shadow masks, since they need to be sprites
- */
-export const itemStaticSpriteAppearance = <T extends ItemInPlayType>(
-  createSpriteOptions: SpecifiedTextureCreateSpriteOptions,
-): ItemAppearance<T, EmptyObject, Sprite> =>
-  itemAppearanceRenderOnce(
-    ({
-      renderContext: {
-        item: subject,
-        general: { pixiRenderer },
-      },
-    }) => {
-      if (isMultipliedItem(subject)) {
-        return maybeRenderContainerToSprite(
-          pixiRenderer,
-          renderMultipliedXy(createSpriteOptions, itemInPlayTimes(subject)),
-        );
-      } else {
-        const container = createSprite(createSpriteOptions);
-        if (container instanceof Sprite) {
-          return container;
-        } else {
-          return renderContainerToSprite(pixiRenderer, container);
-        }
-      }
-    },
-  );
-
-/**
  * plenty of items never need to be re-rendered and have no render props - convenience for that case
  * that handles not rendering again after the first render
  */
@@ -180,59 +139,6 @@ export const itemAppearanceRenderOnce =
         }),
         renderProps: emptyObject,
       };
-    } else {
-      return "no-update";
-    }
-  };
-
-/**
- * convenience for creating appearances for shadow masks. Works for
- * any item that needs a mask based off its config, and does not
- * late change the shadow mask based on its state or any other
- * factors.
- *
- * Also handles the case where the item is multiplied in x and y, but
- * not z (not needed for shadow masks). However, does move the sprite up
- * in z for items multiplied in z
- */
-export const itemAppearanceShadowMaskFromConfig =
-  <T extends ItemInPlayType>(
-    spriteOptionsFromConfig: (
-      config: ItemInPlayConfig<T, string, string>,
-    ) => SpecifiedTextureCreateSpriteOptions,
-  ): ((
-    options: ItemAppearanceOptions<T, EmptyObject, Sprite>,
-  ) => AppearanceReturn<EmptyObject, Sprite>) =>
-  // inner function - calls renderWith
-  ({
-    renderContext: {
-      general: { pixiRenderer },
-      item,
-    },
-    currentRendering,
-  }) => {
-    if (currentRendering === undefined) {
-      const times = itemInPlayTimes(item);
-
-      const appearanceReturn = {
-        output: maybeRenderContainerToSprite(
-          pixiRenderer,
-          renderMultipliedXy(
-            spriteOptionsFromConfig(
-              item.config as ItemInPlayConfig<T, string, string>,
-            ),
-            times,
-          ),
-        ),
-        renderProps: emptyObject,
-      };
-
-      if (times) {
-        // move the shadow mast up if the item is multiplied in z:
-        appearanceReturn.output.y -= ((times.z ?? 1) - 1) * blockSizePx.z;
-      }
-
-      return appearanceReturn;
     } else {
       return "no-update";
     }

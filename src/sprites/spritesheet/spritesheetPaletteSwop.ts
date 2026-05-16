@@ -10,6 +10,7 @@ import type { SpritesheetMetadata } from "./spritesheetData/spritesheetMetaData"
 import type { VariantBuildContext } from "./VariantBuildContext";
 
 import { PaletteSwapFilter } from "../../game/render/filters/PaletteSwapFilter";
+import { ShadowPreprocessFilter } from "../../game/render/filters/shadows/ShadowPreprocessFilter";
 import { emptyArray } from "../../utils/empty";
 import { entries } from "../../utils/entries";
 import { concat } from "../../utils/iterators/concat";
@@ -37,6 +38,8 @@ export type SpritesheetTextureSwops = {
   ambient: Array<PaletteSwopSpec>;
   textureSpecific?: Array<TextureSpecificPaletteSwops>;
   noReplacePlaceholderTextures?: TextureIdsListOrPredicate;
+  /** textures whose alpha/red channels should be snapped to binary 0 or 1 */
+  hardenAlphaTextureIds?: TextureIdsListOrPredicate;
 };
 
 export const noopSpritesheetTextureSwops = {
@@ -82,6 +85,7 @@ const spritesheetPaletteSwop = (
      * in a single room, ie for doors taking on the colour of the room that they lead to
      */
     noReplacePlaceholderTextures,
+    hardenAlphaTextureIds,
   }: SpritesheetTextureSwops,
   baseTexture: Texture = baseSpritesheetTexture(),
   spritesheetData: AppSpritesheetData,
@@ -107,6 +111,18 @@ const spritesheetPaletteSwop = (
     );
 
     filters.push(textureFilter);
+  }
+
+  if (hardenAlphaTextureIds !== undefined) {
+    const hardenMask = renderMaskTexture(pixiRenderer, {
+      rects: {
+        textureIds: hardenAlphaTextureIds,
+        color: white,
+        spritesheetDataFrames: spritesheetData.frames,
+      },
+      clearColour: black,
+    });
+    filters.push(new ShadowPreprocessFilter("hardenChannels", hardenMask));
   }
 
   // Draw black rectangles over shadow/shadowMask/hud frames (filter does not apply)
@@ -183,6 +199,8 @@ const spritesheetPaletteSwop = (
         destroyMask: true,
         destroyPrograms: false,
       });
+    } else if (filter instanceof ShadowPreprocessFilter) {
+      filter.destroy({ destroyMask: true });
     } else {
       // false = do not destroy the programs - the filter will need to be used again!
       filter.destroy(false);
