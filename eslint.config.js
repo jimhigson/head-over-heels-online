@@ -5,6 +5,7 @@ import reactRefresh from "eslint-plugin-react-refresh";
 import prettier from "eslint-plugin-prettier";
 import tseslint from "typescript-eslint";
 import unusedImports from "eslint-plugin-unused-imports";
+import importPlugin from "eslint-plugin-import";
 import perfectionist from "eslint-plugin-perfectionist";
 
 export default tseslint.config(
@@ -31,6 +32,7 @@ export default tseslint.config(
       "react-refresh": reactRefresh,
       prettier: prettier,
       "unused-imports": unusedImports,
+      import: importPlugin,
       perfectionist,
     },
     rules: {
@@ -60,7 +62,14 @@ export default tseslint.config(
           caughtErrorsIgnorePattern: "^_",
         },
       ],
-      "@typescript-eslint/consistent-type-imports": "error",
+      "@typescript-eslint/consistent-type-imports": [
+        "error",
+        {
+          prefer: "type-imports",
+          fixStyle: "inline-type-imports",
+        },
+      ],
+      "import/no-duplicates": ["error", { "prefer-inline": true }],
       "prettier/prettier": ["error", { experimentalTernaries: true }],
       "no-restricted-syntax": [
         "error",

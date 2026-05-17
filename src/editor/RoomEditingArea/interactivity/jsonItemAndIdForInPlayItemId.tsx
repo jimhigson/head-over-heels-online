@@ -1,10 +1,9 @@
-import type { EditorRootState } from "../../../store/store";
-import type {
-  EditorJsonItemUnion,
-  EditorRoomItemId,
-  EditorRoomState,
+import { type EditorRootState } from "../../../store/store";
+import {
+  type EditorJsonItemUnion,
+  type EditorRoomItemId,
+  type EditorRoomState,
 } from "../../editorTypes";
-
 import { selectItemInLevelEditorState } from "../../slice/levelEditorSelectors";
 
 export const jsonItemAndIdForInPlayItemId = (

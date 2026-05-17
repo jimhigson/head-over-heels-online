@@ -1,7 +1,6 @@
-import type { ItemInPlay } from "../../../model/ItemInPlay";
-import type { RoomState } from "../../../model/RoomState";
-import type { GameState } from "../../gameState/GameState";
-
+import { type ItemInPlay } from "../../../model/ItemInPlay";
+import { type RoomState } from "../../../model/RoomState";
+import { type GameState } from "../../gameState/GameState";
 import { applyModifiesList } from "../handleTouch/handleItemTouchingSwitch/handleItemTouchingSwitch";
 import { periodicItemShouldAct } from "./periodicItemShouldAct";
 

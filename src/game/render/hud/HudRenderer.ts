@@ -1,35 +1,26 @@
-import type { Color, Texture } from "pixi.js";
+import { type Color, Container, Sprite, type Texture } from "pixi.js";
 
-import { Container, Sprite } from "pixi.js";
-
-import type {
-  HeadAbilities,
-  HeelsAbilities,
+import {
+  type HeadAbilities,
+  type HeelsAbilities,
 } from "../../../model/ItemStateMap";
-import type {
-  CharacterName,
-  IndividualCharacterName,
+import {
+  type CharacterName,
+  type IndividualCharacterName,
+  individualCharacterNames,
 } from "../../../model/modelTypes";
-import type { RoomState } from "../../../model/RoomState";
-import type { ZxSpectrumRoomColour } from "../../../originalGame";
-import type { TextureId } from "../../../sprites/spritesheet/spritesheetData/makeSpritesheetData";
-import type { SpritesheetMetadata } from "../../../sprites/spritesheet/spritesheetData/spritesheetMetaData";
-import type { SpriteOption } from "../../../store/slices/userSettings/userSettingsSlice";
-import type { DirectionXy4, Xy } from "../../../utils/vectors/vectors";
-import type { GameState } from "../../gameState/GameState";
-import type { PortableItem } from "../../physics/itemPredicates";
-import type { Renderer } from "../Renderer";
-import type {
-  HudRenderContext,
-  HudRendererTickContext,
-  HudRendererTickContextWithRoom,
-} from "./hudRendererContexts";
-
-import { individualCharacterNames } from "../../../model/modelTypes";
-import { zxSpectrumColor } from "../../../originalGame";
+import { type RoomState } from "../../../model/RoomState";
+import {
+  zxSpectrumColor,
+  type ZxSpectrumRoomColour,
+} from "../../../originalGame";
 import { effectColour } from "../../../sprites/palette/spritesheetPalette";
 import { originalSpriteSheet } from "../../../sprites/spritesheet/loadedSpriteSheet";
-import { spritesheetMetas } from "../../../sprites/spritesheet/spritesheetData/spritesheetMetaData";
+import { type TextureId } from "../../../sprites/spritesheet/spritesheetData/makeSpritesheetData";
+import {
+  type SpritesheetMetadata,
+  spritesheetMetas,
+} from "../../../sprites/spritesheet/spritesheetData/spritesheetMetaData";
 import {
   hudCharTextureSize,
   smallItemTextureSize,
@@ -37,7 +28,10 @@ import {
 import { getSpriteSheetVariantTexture } from "../../../sprites/spritesheet/variants/getSpriteSheetVariant";
 import { startAppListening } from "../../../store/listenerMiddleware";
 import { selectShowFps } from "../../../store/slices/gameMenus/gameMenusSelectors";
+import { type SpriteOption } from "../../../store/slices/userSettings/userSettingsSlice";
 import { store } from "../../../store/store";
+import { type DirectionXy4, type Xy } from "../../../utils/vectors/vectors";
+import { type GameState } from "../../gameState/GameState";
 import {
   fastStepsRemaining,
   shieldRemainingForAbilities,
@@ -46,11 +40,18 @@ import {
   selectAbilities,
   selectCurrentPlayableItem,
 } from "../../gameState/gameStateSelectors/selectPlayableItem";
+import { type PortableItem } from "../../physics/itemPredicates";
 import { outlineFilters } from "../filters/OutlineFilter";
 import { getRoomColorScheme } from "../gameColours/colourScheme";
+import { type Renderer } from "../Renderer";
 import { TextContainer } from "../text/TextContainer";
 import { FpsRenderer } from "./FpsRenderer";
 import { HudButtonRenderer } from "./HudButtonRenderer";
+import {
+  type HudRenderContext,
+  type HudRendererTickContext,
+  type HudRendererTickContextWithRoom,
+} from "./hudRendererContexts";
 import { mapButtonAppearance } from "./onScreenControls/buttonAppearances/mapButtonAppearance";
 import { menuButtonAppearance } from "./onScreenControls/buttonAppearances/menuButtonAppearance";
 import { OnScreenControls } from "./onScreenControls/OnScreenControls";

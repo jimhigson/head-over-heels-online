@@ -1,13 +1,11 @@
-import type { ItemInPlay } from "../../../model/ItemInPlay";
-import type { Xy, Xyz } from "../../../utils/vectors/vectors";
-import type { RoomDirectionalIndex } from "./buildRoomJsonDirectionalIndex";
-
+import { type ItemInPlay } from "../../../model/ItemInPlay";
 import { wallTimes } from "../../../model/times";
 import { emptyObject } from "../../../utils/empty";
 import { entries } from "../../../utils/entries";
-import { addXyz } from "../../../utils/vectors/vectors";
+import { addXyz, type Xy, type Xyz } from "../../../utils/vectors/vectors";
 import { blockXyzToFineXyz } from "../../render/projections";
 import { nonRenderingItemFixedZIndex } from "../../render/sortZ/fixedZIndexes";
+import { type RoomDirectionalIndex } from "./buildRoomJsonDirectionalIndex";
 import { defaultBaseState } from "./itemDefaultStates";
 
 const setback: Xy = { x: -9 / 12, y: -9 / 12 };

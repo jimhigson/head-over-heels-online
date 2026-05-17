@@ -1,6 +1,4 @@
-import type { Container } from "pixi.js";
-
-import { RenderTexture, Sprite } from "pixi.js";
+import { type Container, RenderTexture, Sprite } from "pixi.js";
 
 /**
  * since render textures are usually created dynamically, often when a container is removed, the

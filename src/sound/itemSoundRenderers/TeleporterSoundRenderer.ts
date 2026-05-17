@@ -1,11 +1,10 @@
-import type { ItemTickContext } from "../../game/render/ItemRenderContexts";
-import type { ItemSoundRenderContext } from "../ItemSoundRenderContext";
-import type { ItemSoundRenderer } from "../ItemSoundRenderer";
-
 import { isPlayableItem } from "../../game/physics/itemPredicates";
 import { teleporterIsActive } from "../../game/physics/mechanics/teleporting";
+import { type ItemTickContext } from "../../game/render/ItemRenderContexts";
 import { iterateStoodOnByItems } from "../../model/stoodOnItemsLookup";
 import { audioCtx } from "../audioCtx";
+import { type ItemSoundRenderContext } from "../ItemSoundRenderContext";
+import { type ItemSoundRenderer } from "../ItemSoundRenderer";
 import { createBracketedSound } from "../soundUtils/createBracketedSound";
 import { FreeItemSoundRenderer } from "./generic/FreeItemSoundRenderer";
 

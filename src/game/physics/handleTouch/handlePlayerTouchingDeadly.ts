@@ -1,19 +1,20 @@
-import type { ItemTypeUnion } from "../../../_generated/types/ItemInPlayUnion";
-import type { CharacterName } from "../../../model/modelTypes";
-import type { DeathMenuParam } from "../../../store/slices/gameMenus/gameMenusSlice";
-import type { GameState } from "../../gameState/GameState";
-import type { DeadlyItemType, PlayableItem } from "../itemPredicates";
-import type { ItemTouchEvent } from "./ItemTouchEvent";
-
-import { otherIndividualCharacterName } from "../../../model/modelTypes";
+import { type ItemTypeUnion } from "../../../_generated/types/ItemInPlayUnion";
+import {
+  type CharacterName,
+  otherIndividualCharacterName,
+} from "../../../model/modelTypes";
 import { lostLife } from "../../../store/slices/gameInPlay/gameInPlaySlice";
+import { type DeathMenuParam } from "../../../store/slices/gameMenus/gameMenusSlice";
 import { store } from "../../../store/store";
+import { type GameState } from "../../gameState/GameState";
 import { playerDiedRecently } from "../../gameState/gameStateSelectors/playerDiedRecently";
 import { playableHasShield } from "../../gameState/gameStateSelectors/selectPickupAbilities";
 import { selectPlayableItem } from "../../gameState/gameStateSelectors/selectPlayableItem";
 import { saveGameThunk } from "../../gameState/saving/saveGameThunk";
 import { isHeadOverHeels } from "../../physics/itemPredicates";
 import { fadeInOrOutDuration } from "../../render/animationTimings";
+import { type DeadlyItemType, type PlayableItem } from "../itemPredicates";
+import { type ItemTouchEvent } from "./ItemTouchEvent";
 
 const gatherLivesInfo = <RoomId extends string>(
   playableItem: PlayableItem<CharacterName, RoomId>,

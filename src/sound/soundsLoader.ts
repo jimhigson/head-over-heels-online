@@ -1,9 +1,7 @@
-import type { SoundId } from "./soundUrls";
-
 import { entries, fromAllEntries } from "../utils/entries";
 import { importOnce } from "../utils/importOnce";
 import { loadAndDecode } from "./loadAndDecode";
-import { soundUrls } from "./soundUrls";
+import { type SoundId, soundUrls } from "./soundUrls";
 
 type AppSounds = { [K in SoundId]: AudioBuffer };
 

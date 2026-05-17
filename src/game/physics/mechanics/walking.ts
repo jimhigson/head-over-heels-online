@@ -1,10 +1,5 @@
-import type { CharacterName } from "../../../model/modelTypes";
-import type { RoomState } from "../../../model/RoomState";
-import type { Xyz } from "../../../utils/vectors/vectors";
-import type { GameState } from "../../gameState/GameState";
-import type { PressStatus } from "../../input/InputStateTracker";
-import type { Mechanic } from "../MechanicResult";
-
+import { type CharacterName } from "../../../model/modelTypes";
+import { type RoomState } from "../../../model/RoomState";
 import {
   getEffectivelyStandingOnItemIdForPlayable,
   stoodOnItem,
@@ -21,11 +16,14 @@ import {
   subXyz,
   unitVector,
   xyEqual,
+  type Xyz,
   xyzEqual,
 } from "../../../utils/vectors/vectors";
+import { type GameState } from "../../gameState/GameState";
 import { fastStepsRemaining } from "../../gameState/gameStateSelectors/selectPickupAbilities";
+import { type PressStatus } from "../../input/InputStateTracker";
 import { isSpring, type PlayableItem } from "../itemPredicates";
-import { type MechanicResult } from "../MechanicResult";
+import { type Mechanic, type MechanicResult } from "../MechanicResult";
 import {
   heelsJumpForwardDecel,
   heelsJumpForwardSpeedFraction,

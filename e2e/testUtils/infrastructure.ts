@@ -1,14 +1,11 @@
-import type { Page } from "@playwright/test";
-
-import { test } from "@playwright/test";
+import { type Page, test } from "@playwright/test";
 import chalk from "chalk";
 
-import type {
-  JsonItemType,
-  JsonItemUnion,
+import {
+  type JsonItemType,
+  type JsonItemUnion,
 } from "../../src/model/json/JsonItem";
-import type { Campaign } from "../../src/model/modelTypes";
-
+import { type Campaign } from "../../src/model/modelTypes";
 import { entries } from "../../src/utils/entries";
 import { elapsed, formatDuration } from "./logging";
 

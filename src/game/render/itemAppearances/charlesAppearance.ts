@@ -1,6 +1,4 @@
-import type { SpritesheetVariant } from "../../../sprites/spritesheet/variants/SpritesheetVariant";
-import type { ItemAppearance } from "./ItemAppearance";
-
+import { type SpritesheetVariant } from "../../../sprites/spritesheet/variants/SpritesheetVariant";
 import { keysIter } from "../../../utils/entries";
 import {
   type DirectionXy4,
@@ -8,6 +6,7 @@ import {
 } from "../../../utils/vectors/vectors";
 import { isJoystick } from "../../physics/itemPredicates";
 import { createStackedSprites } from "./createStackedSprites";
+import { type ItemAppearance } from "./ItemAppearance";
 
 type CharlesRenderProps = {
   facingXy4: DirectionXy4;

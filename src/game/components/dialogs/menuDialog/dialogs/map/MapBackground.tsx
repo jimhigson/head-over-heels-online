@@ -1,9 +1,8 @@
-import type { SceneryName } from "../../../../../../sprites/planets";
-import type { MapData } from "./MapData";
-
 import { originalUserId } from "../../../../../../gameInfo";
+import { type SceneryName } from "../../../../../../sprites/planets";
 import { MapBackgroundSection } from "./MapBackgroundSection";
 import { getMapColoursClass } from "./mapColours";
+import { type MapData } from "./MapData";
 import { OriginalCampaignMainMapBackground } from "./OriginalCampaignMainMapBackground";
 
 const sceneryToMapTitle: Record<SceneryName, string> = {

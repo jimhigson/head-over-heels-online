@@ -1,12 +1,9 @@
-import type { Operation } from "fast-json-patch";
-
 import chalk from "chalk";
-import fastJsonPatch from "fast-json-patch";
+import fastJsonPatch, { type Operation } from "fast-json-patch";
 import { readFile } from "node:fs/promises";
 
-import type { Campaign } from "../../src/model/modelTypes";
-import type { AnyRoomJson } from "../../src/model/RoomJson";
-
+import { type Campaign } from "../../src/model/modelTypes";
+import { type AnyRoomJson } from "../../src/model/RoomJson";
 import { valuesIter } from "../../src/utils/entries";
 
 const targetDir = "src/_generated/originalCampaign/";

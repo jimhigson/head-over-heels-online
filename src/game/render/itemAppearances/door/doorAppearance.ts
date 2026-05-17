@@ -1,14 +1,11 @@
 import { Container } from "pixi.js";
 
-import type { ItemInPlay } from "../../../../model/ItemInPlay";
-import type { Campaign } from "../../../../model/modelTypes";
-import type { SceneryName } from "../../../../sprites/planets";
-import type { AppSpritesheet } from "../../../../sprites/spritesheet/loadedSpriteSheet";
-import type { DirectionXy4, Xy, Xyz } from "../../../../utils/vectors/vectors";
-import type { ItemAppearance } from "../ItemAppearance";
-
+import { type ItemInPlay } from "../../../../model/ItemInPlay";
+import { type Campaign } from "../../../../model/modelTypes";
 import { paletteBlockstack } from "../../../../sprites/palette/spritesheetPalette";
+import { type SceneryName } from "../../../../sprites/planets";
 import { planetSpecificIfExists } from "../../../../sprites/planetSpecificIfExists";
+import { type AppSpritesheet } from "../../../../sprites/spritesheet/loadedSpriteSheet";
 import { getSpriteSheetVariant } from "../../../../sprites/spritesheet/variants/getSpriteSheetVariant";
 import { selectMaybeCurrentCampaign } from "../../../../store/slices/gameMenus/gameMenusSelectors";
 import { store } from "../../../../store/store";
@@ -17,9 +14,12 @@ import { iterateToContainer } from "../../../../utils/pixi/iterateToContainer";
 import { renderContainerToSprite } from "../../../../utils/pixi/renderContainerToSprite";
 import {
   addXy,
+  type DirectionXy4,
   doorAlongAxis,
   originXy,
   perpendicularAxisXy,
+  type Xy,
+  type Xyz,
 } from "../../../../utils/vectors/vectors";
 import { blockSizePx } from "../../../physics/mechanicsConstants";
 import { createSprite } from "../../createSprite";
@@ -29,7 +29,10 @@ import {
   projectBlockXyzToScreenXy,
   projectWorldXyzToScreenXy,
 } from "../../projections";
-import { itemAppearanceRenderOnce } from "../ItemAppearance";
+import {
+  type ItemAppearance,
+  itemAppearanceRenderOnce,
+} from "../ItemAppearance";
 import { doorTexture } from "./doorTexture";
 
 function* doorLegsGenerator<RoomId extends string, RoomItemId extends string>(

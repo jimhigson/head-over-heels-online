@@ -1,21 +1,24 @@
-import type { RenderTexture } from "pixi.js";
+import {
+  Container,
+  type Renderer,
+  type RenderTexture,
+  Sprite,
+  Texture,
+} from "pixi.js";
 
-import { Container, type Renderer, Sprite, Texture } from "pixi.js";
-
-import type { RoomState } from "../../../../model/RoomState";
-import type { SpritesheetMetadata } from "../../../../sprites/spritesheet/spritesheetData/spritesheetMetaData";
-import type { ButtonId } from "../HudButtonRenderer";
-
+import { type RoomState } from "../../../../model/RoomState";
 import {
   maybeDimPalette,
   paletteBlockstack,
 } from "../../../../sprites/palette/spritesheetPalette";
 import { originalSpriteSheet } from "../../../../sprites/spritesheet/loadedSpriteSheet";
+import { type SpritesheetMetadata } from "../../../../sprites/spritesheet/spritesheetData/spritesheetMetaData";
 import { halfbrite } from "../../../../utils/colour/halfbrite";
 import { resolveSwops } from "../../../../utils/palette/palette";
 import { renderContainerToTexture } from "../../../../utils/pixi/renderContainerToSprite";
 import { createSprite } from "../../createSprite";
 import { PaletteSwapFilter } from "../../filters/PaletteSwapFilter";
+import { type ButtonId } from "../HudButtonRenderer";
 
 /**
  * A round button shape with a masked top surface to render into if required

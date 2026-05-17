@@ -1,7 +1,6 @@
 import { useLayoutEffect } from "preact/hooks";
 
-import type { ResolutionName } from "../../../originalGame";
-
+import { type ResolutionName } from "../../../originalGame";
 import { useAppDispatch } from "../../hooks";
 import { updateUpscaleThunk } from "./updateUpscaleThunk";
 

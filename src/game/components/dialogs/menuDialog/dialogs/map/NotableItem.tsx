@@ -1,14 +1,15 @@
-import type { MouseEvent } from "react";
+import { type MouseEvent } from "react";
 
-import type { JsonItem } from "../../../../../../model/json/JsonItem";
-import type { IndividualCharacterName } from "../../../../../../model/modelTypes";
-import type {
-  AnimatedTextureTailwindClass,
-  TextureTailwindClass,
+import { type JsonItem } from "../../../../../../model/json/JsonItem";
+import { type IndividualCharacterName } from "../../../../../../model/modelTypes";
+import {
+  type AnimatedTextureTailwindClass,
+  type TextureTailwindClass,
 } from "../../../../../../sprites/spritesheet/spritesheetData/TextureTailwindClass";
-import type { Xyz } from "../../../../../../utils/vectors/vectors";
-
-import { vectorClosestDirectionXy8 } from "../../../../../../utils/vectors/vectors";
+import {
+  vectorClosestDirectionXy8,
+  type Xyz,
+} from "../../../../../../utils/vectors/vectors";
 import { usePlayableTailwindSpriteClassname } from "../../../../tailwindSprites/playableTailwindSpriteClassname";
 import { ScrollIntoView } from "./ScrollIntoView";
 

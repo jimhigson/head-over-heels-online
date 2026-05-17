@@ -1,6 +1,4 @@
-import type { Renderer } from "pixi.js";
-
-import { Container, Rectangle, Sprite, Texture } from "pixi.js";
+import { Container, Rectangle, type Renderer, Sprite, Texture } from "pixi.js";
 import { afterEach, beforeEach, expect, test, vi } from "vitest";
 
 import { TextContainer } from "./TextContainer";
@@ -38,9 +36,8 @@ vi.mock("../../../utils/pixi/renderContainerToSprite", () => ({
   renderContainerToTexture: vi.fn(() => Texture.EMPTY),
 }));
 
-import type { TextureId } from "../../../sprites/spritesheet/spritesheetData/makeSpritesheetData";
-
 import { originalSpriteSheet } from "../../../sprites/spritesheet/loadedSpriteSheet";
+import { type TextureId } from "../../../sprites/spritesheet/spritesheetData/makeSpritesheetData";
 // Import the mocked functions
 import { createSprite } from "../createSprite";
 

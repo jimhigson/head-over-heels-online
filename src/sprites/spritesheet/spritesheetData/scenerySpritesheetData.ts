@@ -1,16 +1,15 @@
-import type { SpritesheetData, SpritesheetFrameData } from "pixi.js";
-
-import type { Xy } from "../../../utils/vectors/vectors";
-import type { SceneryName, Wall } from "../../planets";
-import type { AnimationsOfFrames } from "./AnimationsOfFrames";
-import type {
-  DoorFrameTextureName,
-  SceneryWithOwnDoors,
-} from "./doorSpritesheetData";
+import { type SpritesheetData, type SpritesheetFrameData } from "pixi.js";
 
 import { fromAllEntries } from "../../../utils/entries";
-import { wallTiles } from "../../planets";
-import { doorFrames, sceneryWithOwnDoors } from "./doorSpritesheetData";
+import { type Xy } from "../../../utils/vectors/vectors";
+import { type SceneryName, type Wall, wallTiles } from "../../planets";
+import { type AnimationsOfFrames } from "./AnimationsOfFrames";
+import {
+  doorFrames,
+  type DoorFrameTextureName,
+  type SceneryWithOwnDoors,
+  sceneryWithOwnDoors,
+} from "./doorSpritesheetData";
 import { seriesOfNumberedTextures } from "./spriteGenerators";
 import { floorTileSize, wallTileSize } from "./textureSizes";
 import { withSpeed } from "./withSpeed";

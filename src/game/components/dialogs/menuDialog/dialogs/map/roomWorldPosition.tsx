@@ -1,5 +1,4 @@
-import type { Xyz } from "../../../../../../utils/vectors/vectors";
-
+import { type Xyz } from "../../../../../../utils/vectors/vectors";
 import { roomGridSizeXY, roomGridSizeZ } from "./mapConstants";
 
 export const roomWorldPosition = (gridPosition: Partial<Xyz>): Xyz => ({

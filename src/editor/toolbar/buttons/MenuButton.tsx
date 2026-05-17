@@ -1,6 +1,9 @@
-import type { PropsWithChildren, ReactElement, ReactNode } from "react";
-
 import { useState } from "preact/hooks";
+import {
+  type PropsWithChildren,
+  type ReactElement,
+  type ReactNode,
+} from "react";
 
 import { BitmapText } from "../../../game/components/tailwindSprites/BitmapText";
 import { Button } from "../../../ui/Button";

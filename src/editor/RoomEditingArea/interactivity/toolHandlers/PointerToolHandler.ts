@@ -1,19 +1,3 @@
-import type { Plane, Xy, Xyz } from "../../../../utils/vectors/vectors";
-import type {
-  EditorJsonItemUnion,
-  EditorRoomItemId,
-  EditorRoomState,
-} from "../../../editorTypes";
-import type { MaybePointingAtSomething } from "../../cursor/PointingAt";
-import type { Tool } from "../Tool";
-import type {
-  MouseDownParams,
-  MouseLeaveParams,
-  MouseMoveParams,
-  MouseUpParams,
-  ToolHandler,
-} from "./ToolHandler";
-
 import {
   getConsolidatableVector,
   isConsolidatable,
@@ -35,12 +19,20 @@ import {
   lengthXy,
   lengthXyz,
   originXyz,
+  type Plane,
   subXy,
   unitXyz_x,
   unitXyz_y,
   unitXyz_z,
+  type Xy,
+  type Xyz,
   xyzEqual,
 } from "../../../../utils/vectors/vectors";
+import {
+  type EditorJsonItemUnion,
+  type EditorRoomItemId,
+  type EditorRoomState,
+} from "../../../editorTypes";
 import {
   commitCurrentPreviewedEdits,
   moveOrResizeItemAsPreview,
@@ -53,6 +45,7 @@ import {
 import { getMovableVector } from "../../../slice/reducers/moveOrResizeItemPreview/getMovableVector";
 import { itemMoveOrResizeWouldCollide } from "../../cursor/editWouldCollide";
 import { roundXyzProjection } from "../../cursor/findPointerPointingAt";
+import { type MaybePointingAtSomething } from "../../cursor/PointingAt";
 import {
   upscaledMouseMove,
   upscaledMousePosition,
@@ -61,6 +54,14 @@ import { resizeTimesAndPosition } from "../../resizeTimesAndPosition";
 import { dispatchHoveredOnChangedIfNeeded } from "../dispatchHoveredOnChangedIfNeeded";
 import { itemsAreLocked } from "../itemsAreLocked";
 import { jsonItemAndIdForInPlayItemId } from "../jsonItemAndIdForInPlayItemId";
+import { type Tool } from "../Tool";
+import {
+  type MouseDownParams,
+  type MouseLeaveParams,
+  type MouseMoveParams,
+  type MouseUpParams,
+  type ToolHandler,
+} from "./ToolHandler";
 
 const dragMinimumDistance = 5; // pixels
 

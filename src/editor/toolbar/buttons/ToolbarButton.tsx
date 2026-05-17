@@ -1,8 +1,7 @@
-import type { PropsWithChildren, ReactNode } from "react";
-
-import type { ShortcutKeys } from "../../../ui/useKeyboardShortcut";
+import { type PropsWithChildren, type ReactNode } from "react";
 
 import { Button } from "../../../ui/Button";
+import { type ShortcutKeys } from "../../../ui/useKeyboardShortcut";
 import {
   buttonSizeClassNames,
   buttonSmallSizeClassNames,

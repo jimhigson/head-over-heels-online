@@ -1,10 +1,4 @@
-import type { UnionOfAllItemInPlayTypes } from "../../../model/ItemInPlay";
-import type { PlanetName } from "../../../sprites/planets";
-import type { ScrollsRead } from "../../../store/slices/gameInPlay/gameInPlaySlice";
-import type { UserSettings } from "../../../store/slices/userSettings/userSettingsSlice";
-import type { PokesEnabled } from "../../../store/slices/userSettings/userSettingsSlice";
-import type { RoomPickupsCollected } from "../GameState";
-
+import { type UnionOfAllItemInPlayTypes } from "../../../model/ItemInPlay";
 import { type RoomJson, roomJsonItemsIterable } from "../../../model/RoomJson";
 import {
   roomItemsIterable,
@@ -12,12 +6,19 @@ import {
   type RoomState,
   type RoomStateItems,
 } from "../../../model/RoomState";
+import { type PlanetName } from "../../../sprites/planets";
+import { type ScrollsRead } from "../../../store/slices/gameInPlay/gameInPlaySlice";
+import {
+  type PokesEnabled,
+  type UserSettings,
+} from "../../../store/slices/userSettings/userSettingsSlice";
 import { emptyObject } from "../../../utils/empty";
 import { entries } from "../../../utils/entries";
 import { collisionItemWithIndex } from "../../collision/aabbCollision";
 import { findStandingOnWithHighestPriorityAndMostOverlap } from "../../collision/checkStandingOn";
 import { GridSpatialIndex } from "../../physics/gridSpace/GridSpatialIndex";
 import { isFreeItem, isSolid, isSpatial } from "../../physics/itemPredicates";
+import { type RoomPickupsCollected } from "../GameState";
 import { setStandingOnWithoutRemovingOldFirst } from "../mutators/standingOn/setStandingOnWithoutRemovingOldFirst";
 import {
   buildRoomJsonDirectionalIndex,

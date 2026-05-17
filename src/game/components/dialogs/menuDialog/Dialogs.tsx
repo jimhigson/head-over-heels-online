@@ -1,11 +1,10 @@
-import type { EmptyObject } from "type-fest";
+import { type EmptyObject } from "type-fest";
 
-import type { MarkdownPageName } from "../../../../manual/pages";
-import type { DialogId } from "./DialogId";
-
+import { type MarkdownPageName } from "../../../../manual/pages";
 import { useAppSelector } from "../../../../store/hooks";
 import { Dialog } from "../../../../ui/Dialog";
 import { BitmapText } from "../../tailwindSprites/BitmapText";
+import { type DialogId } from "./DialogId";
 import { AboutDialog } from "./dialogs/about/AboutDialog";
 import { CommunityGamesDialog } from "./dialogs/communityGames/CommunityGamesDialog";
 import { ControlOptionsDialog } from "./dialogs/controlOptions/ControlOptionsDialog";

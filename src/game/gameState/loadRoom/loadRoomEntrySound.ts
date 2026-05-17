@@ -1,10 +1,8 @@
-import type { ItemInPlay } from "../../../model/ItemInPlay";
-import type { SoundId } from "../../../sound/soundUrls";
-import type { UserSettings } from "../../../store/slices/userSettings/userSettingsSlice";
-
+import { type ItemInPlay } from "../../../model/ItemInPlay";
 import { type RoomJson, roomJsonItemsIterable } from "../../../model/RoomJson";
-import { isSoundId } from "../../../sound/soundUrls";
+import { isSoundId, type SoundId } from "../../../sound/soundUrls";
 import { defaultUserSettings } from "../../../store/slices/userSettings/defaultUserSettings";
+import { type UserSettings } from "../../../store/slices/userSettings/userSettingsSlice";
 import { originXyz, type Xyz } from "../../../utils/vectors/vectors";
 import { blockXyzToFineXyz } from "../../render/projections";
 import { nonRenderingItemFixedZIndex } from "../../render/sortZ/fixedZIndexes";

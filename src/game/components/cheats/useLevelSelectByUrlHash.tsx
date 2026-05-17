@@ -1,9 +1,8 @@
 import { useEffect } from "preact/hooks";
 
-import type { GameApi } from "../../GameApi";
-
 import { startAppListening } from "../../../store/listenerMiddleware";
 import { characterRoomChange } from "../../../store/slices/gameInPlay/gameInPlaySlice";
+import { type GameApi } from "../../GameApi";
 import { cheatRoomIdFromUrlHash } from "./cheatRoomIdFromUrlHash";
 
 export const useLevelSelectByUrlHash = <RoomId extends string>(

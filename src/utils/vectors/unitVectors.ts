@@ -1,6 +1,9 @@
-import type { Direction8Xyz, Xyz } from "./vectors";
-
-import { addXyz, unitVectorInPlace } from "./vectors";
+import {
+  addXyz,
+  type Direction8Xyz,
+  unitVectorInPlace,
+  type Xyz,
+} from "./vectors";
 
 const l = { x: 1, y: 0, z: 0 };
 const r = { x: -1, y: 0, z: 0 };

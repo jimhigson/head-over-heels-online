@@ -1,8 +1,8 @@
 /* eslint-disable @typescript-eslint/no-unused-vars */
 import { describe, test } from "vitest";
 
-import type { DoorFrameTextureName } from "./doorSpritesheetData";
-import type { BackgroundTextureId } from "./scenerySpritesheetData";
+import { type DoorFrameTextureName } from "./doorSpritesheetData";
+import { type BackgroundTextureId } from "./scenerySpritesheetData";
 
 describe("generating frame string union type", () => {
   test("blacktooth", () => {

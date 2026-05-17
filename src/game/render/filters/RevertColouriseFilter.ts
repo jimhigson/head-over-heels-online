@@ -1,6 +1,10 @@
-import type { ColorSource } from "pixi.js";
-
-import { Color, defaultFilterVert, Filter, GlProgram } from "pixi.js";
+import {
+  Color,
+  type ColorSource,
+  defaultFilterVert,
+  Filter,
+  GlProgram,
+} from "pixi.js";
 
 import fragment from "./revertColourise.frag";
 

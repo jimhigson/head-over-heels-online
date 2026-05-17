@@ -1,14 +1,13 @@
-import type { ItemTickContext } from "../../game/render/ItemRenderContexts";
-import type { CharacterName } from "../../model/modelTypes";
-import type { ItemSoundRenderContext } from "../ItemSoundRenderContext";
-import type { ItemSoundRenderer } from "../ItemSoundRenderer";
-
 import { selectHeelsAbilities } from "../../game/gameState/gameStateSelectors/selectPlayableItem";
 import { isHighlightedPlayableItem } from "../../game/render/itemAppearances/playableAppearance";
+import { type ItemTickContext } from "../../game/render/ItemRenderContexts";
+import { type CharacterName } from "../../model/modelTypes";
 import { defaultUserSettings } from "../../store/slices/userSettings/defaultUserSettings";
 import { epsilon } from "../../utils/epsilon";
 import { lengthXy } from "../../utils/vectors/vectors";
 import { audioCtx } from "../audioCtx";
+import { type ItemSoundRenderContext } from "../ItemSoundRenderContext";
+import { type ItemSoundRenderer } from "../ItemSoundRenderer";
 import { loadedSounds } from "../soundsLoader";
 import {
   type BracketedSound,

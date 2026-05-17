@@ -1,7 +1,6 @@
-import type { PersistPartial } from "redux-persist/es/persistReducer";
+import { type PersistPartial } from "redux-persist/es/persistReducer";
 
-import type { CampaignLocator } from "../model/modelTypes";
-
+import { type CampaignLocator } from "../model/modelTypes";
 import { typedURLSearchParams } from "../options/queryParams";
 import { startAppListening } from "../store/listenerMiddleware";
 import { gameStarted } from "../store/slices/gameInPlay/gameInPlaySlice";

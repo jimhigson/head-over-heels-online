@@ -1,12 +1,12 @@
-import type { RefObject } from "react";
+import { type RefObject } from "react";
 
-import type { Upscale } from "../../../../store/slices/upscale/Upscale";
-import type { EditorRootState } from "../../../../store/store";
-import type { Xyz } from "../../../../utils/vectors/vectors";
-import type { EditorRoomState } from "../../../editorTypes";
-import type { RenderedRoomDimensions } from "../../../slice/levelEditorSelectors";
-import type { MaybePointingAtSomething } from "../../cursor/PointingAt";
-import type { Tool } from "../Tool";
+import { type Upscale } from "../../../../store/slices/upscale/Upscale";
+import { type EditorRootState } from "../../../../store/store";
+import { type Xyz } from "../../../../utils/vectors/vectors";
+import { type EditorRoomState } from "../../../editorTypes";
+import { type RenderedRoomDimensions } from "../../../slice/levelEditorSelectors";
+import { type MaybePointingAtSomething } from "../../cursor/PointingAt";
+import { type Tool } from "../Tool";
 
 export interface ToolHandler<T extends Tool> {
   handleMouseMove(params: MouseMoveParams<T>): void;

@@ -1,16 +1,15 @@
 import { expect, test } from "vitest";
 
-import type { OriginalCampaignRoomId } from "../../_generated/originalCampaign/OriginalCampaignRoomId";
-import type { HudInputState } from "../input/hudInputState";
-import type { UnindexedRoomState } from "./saving/SavedGameState";
-
 import { campaign } from "../../_generated/originalCampaign/campaign";
+import { type OriginalCampaignRoomId } from "../../_generated/originalCampaign/OriginalCampaignRoomId";
 import { roomSpatialIndexKey } from "../../model/RoomState";
 import { noPlanetsLiberated } from "../../store/slices/gameInPlay/gameInPlaySlice";
 import { badJsonClone } from "../../utils/badJsonClone";
+import { type HudInputState } from "../input/hudInputState";
 import { InputStateTracker } from "../input/InputStateTracker";
 import { loadGameState } from "./loadGameState";
 import { loadPlayer } from "./loadRoom/loadPlayer";
+import { type UnindexedRoomState } from "./saving/SavedGameState";
 
 test("if there is a saved game with both characters in the same room, only load one copy of that room", () => {
   const savedRoom: UnindexedRoomState<OriginalCampaignRoomId, string> = {

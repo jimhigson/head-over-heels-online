@@ -1,11 +1,11 @@
 import { Container } from "pixi.js";
 
-import type { ItemInPlayType } from "../../../../model/ItemInPlay";
-import type {
-  ItemRenderContext,
-  ItemTickContext,
+import { type ItemInPlayType } from "../../../../model/ItemInPlay";
+import {
+  type ItemRenderContext,
+  type ItemTickContext,
 } from "../../ItemRenderContexts";
-import type { ItemPixiRenderer } from "./ItemPixiRenderer";
+import { type ItemPixiRenderer } from "./ItemPixiRenderer";
 
 export class CompositeItemGraphicsRenderer<T extends ItemInPlayType>
   implements ItemPixiRenderer<T>

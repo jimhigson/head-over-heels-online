@@ -1,16 +1,14 @@
-import type { Renderer } from "pixi.js";
+import { Color, Container, Rectangle, type Renderer, Sprite } from "pixi.js";
 
-import { Color } from "pixi.js";
-import { Container, Rectangle, Sprite } from "pixi.js";
-
-import type { PokeableNumber } from "../../../model/ItemStateMap";
-import type { AppSpritesheetData } from "../../../sprites/spritesheet/loadedSpriteSheet";
-import type { TextureId } from "../../../sprites/spritesheet/spritesheetData/makeSpritesheetData";
-
+import { type PokeableNumber } from "../../../model/ItemStateMap";
 import { assertIsTextureId } from "../../../sprites/assertIsTextureId";
 import { escapeCharForTailwind } from "../../../sprites/escapeCharForTailwind";
 import { paletteBlockstack } from "../../../sprites/palette/spritesheetPalette";
-import { originalSpriteSheet } from "../../../sprites/spritesheet/loadedSpriteSheet";
+import {
+  type AppSpritesheetData,
+  originalSpriteSheet,
+} from "../../../sprites/spritesheet/loadedSpriteSheet";
+import { type TextureId } from "../../../sprites/spritesheet/spritesheetData/makeSpritesheetData";
 import { hudCharTextureSize } from "../../../sprites/spritesheet/spritesheetData/textureSizes";
 import { size } from "../../../utils/iterators/size";
 import { renderContainerToTexture } from "../../../utils/pixi/renderContainerToSprite";

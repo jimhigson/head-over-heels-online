@@ -2,9 +2,8 @@ import { canonicalize } from "json-canonicalize";
 import { orderBy } from "natural-orderby";
 import { writeFile } from "node:fs/promises";
 
-import type { Campaign } from "../../src/model/modelTypes";
-import type { AnyRoomJson } from "../../src/model/RoomJson";
-
+import { type Campaign } from "../../src/model/modelTypes";
+import { type AnyRoomJson } from "../../src/model/RoomJson";
 import { valuesIter } from "../../src/utils/entries";
 
 const roomTs = ({ $schema: _, ...room }: AnyRoomJson): string =>

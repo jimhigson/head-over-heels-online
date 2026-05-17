@@ -1,15 +1,18 @@
-import type {
-  HeadAbilities,
-  HeelsAbilities,
+import {
+  type HeadAbilities,
+  type HeelsAbilities,
 } from "../../../model/ItemStateMap";
-import type {
-  CharacterName,
-  IndividualCharacterName,
+import {
+  type CharacterName,
+  type IndividualCharacterName,
 } from "../../../model/modelTypes";
-import type { PlayableItem } from "../../physics/itemPredicates";
-import type { GameState } from "../GameState";
-
-import { isHead, isHeadOverHeels, isHeels } from "../../physics/itemPredicates";
+import {
+  isHead,
+  isHeadOverHeels,
+  isHeels,
+  type PlayableItem,
+} from "../../physics/itemPredicates";
+import { type GameState } from "../GameState";
 
 export const selectPlayableItem = <
   C extends CharacterName = CharacterName,

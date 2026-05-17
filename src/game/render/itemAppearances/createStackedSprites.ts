@@ -1,6 +1,4 @@
-import type { ContainerChild } from "pixi.js";
-
-import { Container } from "pixi.js";
+import { Container, type ContainerChild } from "pixi.js";
 
 import { blockSizePx } from "../../physics/mechanicsConstants";
 import { createSprite, type CreateSpriteOptions } from "../createSprite";

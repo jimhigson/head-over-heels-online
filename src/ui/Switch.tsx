@@ -1,7 +1,6 @@
-import type { MouseEvent, ReactNode } from "react";
-
 import clsx from "clsx";
 import { useCallback, useEffect, useId, useRef, useState } from "preact/hooks";
+import { type MouseEvent, type ReactNode } from "react";
 
 import { BitmapText } from "../game/components/tailwindSprites/BitmapText";
 import { soundUrls } from "../sound/soundUrls";

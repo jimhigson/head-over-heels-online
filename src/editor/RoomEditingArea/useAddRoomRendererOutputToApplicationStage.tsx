@@ -1,8 +1,7 @@
 import { Container } from "pixi.js";
 import { useEffect, useState } from "preact/hooks";
 
-import type { EditorRoomRenderer } from "../editorTypes";
-
+import { type EditorRoomRenderer } from "../editorTypes";
 import { useEditorRoomRenderDimensions } from "../slice/levelEditorSelectors";
 import { useProvidedPixiApplication } from "./PixiApplicationProvider";
 import { roomEditingAreaMarginPx } from "./roomEditingAreaMarginPx";

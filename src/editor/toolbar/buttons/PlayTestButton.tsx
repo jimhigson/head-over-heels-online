@@ -1,9 +1,8 @@
 import { useState } from "preact/hooks";
 
-import type { TypedURLSearchParams } from "../../../options/queryParams";
-import type { TextureTailwindClass } from "../../../sprites/spritesheet/spritesheetData/TextureTailwindClass";
-
 import { compressObject } from "../../../db/compressObject";
+import { type TypedURLSearchParams } from "../../../options/queryParams";
+import { type TextureTailwindClass } from "../../../sprites/spritesheet/spritesheetData/TextureTailwindClass";
 import { editorStore } from "../../../store/store";
 import { Switch } from "../../../ui/Switch";
 import { selectCurrentCampaignInProgress } from "../../slice/levelEditorSlice";

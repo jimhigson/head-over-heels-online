@@ -1,28 +1,38 @@
-import type { Color, Filter } from "pixi.js";
+import {
+  type Color,
+  type Filter,
+  RenderTexture,
+  Sprite,
+  Spritesheet,
+  Texture,
+} from "pixi.js";
 
-import { RenderTexture, Sprite, Spritesheet, Texture } from "pixi.js";
-
-import type { PaletteSwopSpec } from "../../game/render/filters/PaletteSwapFilter";
-import type { NamedColours } from "../../utils/palette/palette";
-import type { AppSpritesheet, AppSpritesheetData } from "./loadedSpriteSheet";
-import type { TextureId } from "./spritesheetData/makeSpritesheetData";
-import type { SpritesheetMetadata } from "./spritesheetData/spritesheetMetaData";
-import type { VariantBuildContext } from "./VariantBuildContext";
-
-import { PaletteSwapFilter } from "../../game/render/filters/PaletteSwapFilter";
+import {
+  PaletteSwapFilter,
+  type PaletteSwopSpec,
+} from "../../game/render/filters/PaletteSwapFilter";
 import { ShadowPreprocessFilter } from "../../game/render/filters/shadows/ShadowPreprocessFilter";
 import { emptyArray } from "../../utils/empty";
 import { entries } from "../../utils/entries";
 import { concat } from "../../utils/iterators/concat";
-import { resolveSwops } from "../../utils/palette/palette";
+import { type NamedColours, resolveSwops } from "../../utils/palette/palette";
 import {
+  type AppSpritesheet,
+  type AppSpritesheetData,
   baseSpritesheetTexture,
   originalSpriteSheet,
 } from "./loadedSpriteSheet";
 import { reifyTextureIds } from "./reifyTextureIds";
 import { black, renderMaskTexture, white } from "./renderMaskTexture";
-import { makeSpritesheetData } from "./spritesheetData/makeSpritesheetData";
-import { spritesheetMetas } from "./spritesheetData/spritesheetMetaData";
+import {
+  makeSpritesheetData,
+  type TextureId,
+} from "./spritesheetData/makeSpritesheetData";
+import {
+  type SpritesheetMetadata,
+  spritesheetMetas,
+} from "./spritesheetData/spritesheetMetaData";
+import { type VariantBuildContext } from "./VariantBuildContext";
 
 export type TextureSpecificPaletteSwops = {
   textureIds: TextureIdsListOrPredicate;

@@ -1,4 +1,4 @@
-import type { Middleware, UnknownAction } from "@reduxjs/toolkit";
+import { type Middleware, type UnknownAction } from "@reduxjs/toolkit";
 
 const maxRecentActions = 20;
 const recentActions: UnknownAction[] = [];

@@ -1,6 +1,4 @@
-import type { JsonItemUnion } from "../model/json/JsonItem";
-import type { Xyz } from "../utils/vectors/vectors";
-
+import { type JsonItemUnion } from "../model/json/JsonItem";
 import {
   lengthXyz,
   originXyz,
@@ -10,6 +8,7 @@ import {
   unitXyz_xz,
   unitXyz_y,
   unitXyz_yz,
+  type Xyz,
 } from "../utils/vectors/vectors";
 
 export type ConsolidatableJsonItemType =

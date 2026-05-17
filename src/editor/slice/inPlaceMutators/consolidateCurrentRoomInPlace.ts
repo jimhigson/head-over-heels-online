@@ -1,10 +1,9 @@
-import type { EditorJsonItemUnion } from "../../editorTypes";
-import type { LevelEditorState } from "../levelEditorSlice";
-
 import { consolidateItemsMap } from "../../../consolidateItems/consolidateItems";
 import { reconsolidateItems } from "../../../consolidateItems/reconsolidateItems";
 import { makeToasterConsolidationPredicate } from "../../../consolidateItems/toasterConsolidationPredicate";
+import { type EditorJsonItemUnion } from "../../editorTypes";
 import { selectCurrentRoomFromLevelEditorState } from "../levelEditorSelectors";
+import { type LevelEditorState } from "../levelEditorSlice";
 
 export const consolidateCurrentRoomInPlace = (
   levelEditorSliceState: LevelEditorState,

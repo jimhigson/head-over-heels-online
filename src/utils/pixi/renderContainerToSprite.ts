@@ -1,14 +1,17 @@
-import type { Texture } from "pixi.js";
-
-import { AnimatedSprite } from "pixi.js";
-import { type Container, type Renderer, RenderTexture, Sprite } from "pixi.js";
-
-import type { AnimationId } from "../../sprites/spritesheet/spritesheetData/makeSpritesheetData";
+import {
+  AnimatedSprite,
+  type Container,
+  type Renderer,
+  RenderTexture,
+  Sprite,
+  type Texture,
+} from "pixi.js";
 
 import {
   animationSpeed,
   framesWithOriginalGameTimings,
 } from "../../game/render/createSprite";
+import { type AnimationId } from "../../sprites/spritesheet/spritesheetData/makeSpritesheetData";
 import { range } from "../iterators/range";
 import { pixiContainerToString } from "./pixiContainerToString";
 import { UniqueTextureAnimatedSprite } from "./UniqueTextureAnimatedSprite";

@@ -1,5 +1,4 @@
-import type { ListenForUnload } from "../../store/storeFlow/useSaveGameOnUnload";
-
+import { type ListenForUnload } from "../../store/storeFlow/useSaveGameOnUnload";
 import { importTauriWindow } from "./dynamicLoad";
 
 /**

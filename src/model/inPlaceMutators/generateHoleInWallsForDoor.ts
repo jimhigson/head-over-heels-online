@@ -1,15 +1,16 @@
 import { produce } from "immer";
 
-import type { DirectionXy4, Xy, Xyz } from "../../utils/vectors/vectors";
-import type { JsonItem, JsonItemUnion } from "../json/JsonItem";
-
 import { entries } from "../../utils/entries";
 import {
   addXyz,
+  type DirectionXy4,
   perpendicularAxisXy,
   subXyz,
   tangentAxis,
+  type Xy,
+  type Xyz,
 } from "../../utils/vectors/vectors";
+import { type JsonItem, type JsonItemUnion } from "../json/JsonItem";
 import { completeTimesXy, wallTimes } from "../times";
 
 export function* generateHoleInWallsForDoor<

@@ -1,22 +1,19 @@
-import type { Filter } from "pixi.js";
+import { Container, type Filter } from "pixi.js";
 
-import { Container } from "pixi.js";
-
-import type { ItemInPlayType } from "../../../../model/ItemInPlay";
-import type { UniqueTextureSprite } from "../../../../utils/pixi/UniqueTextureSprite";
-import type {
-  ItemRenderContext,
-  ItemTickContext,
-} from "../../ItemRenderContexts";
-import type { ItemPixiRenderer } from "./ItemPixiRenderer";
-
+import { type ItemInPlayType } from "../../../../model/ItemInPlay";
 import { emptySet } from "../../../../utils/empty";
 import { assignRoundedXy } from "../../../../utils/pixi/assignRoundedXy";
 import { pixiContainerToString } from "../../../../utils/pixi/pixiContainerToString";
 import { renderContainerToSprite } from "../../../../utils/pixi/renderContainerToSprite";
+import { type UniqueTextureSprite } from "../../../../utils/pixi/UniqueTextureSprite";
 import { subXy } from "../../../../utils/vectors/vectors";
 import { redAsAlphaFilter } from "../../filters/redAsAlphaFilter";
+import {
+  type ItemRenderContext,
+  type ItemTickContext,
+} from "../../ItemRenderContexts";
 import { projectWorldXyzToScreenXy } from "../../projections";
+import { type ItemPixiRenderer } from "./ItemPixiRenderer";
 
 /** specialisation of Container that always contains a thing to be masked, and the (sprite) mask */
 interface MaskingContainer extends Container {

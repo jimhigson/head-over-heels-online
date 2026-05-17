@@ -1,9 +1,8 @@
-import type { RequiredDeep, SimplifyDeep } from "type-fest";
-
-import type { UserSettings } from "./userSettingsSlice";
+import { type RequiredDeep, type SimplifyDeep } from "type-fest";
 
 import { keyAssignmentPresets } from "../../../game/input/keyAssignmentPresets";
 import { detectDeviceType } from "../../../utils/detectEnv/detectDeviceType";
+import { type UserSettings } from "./userSettingsSlice";
 
 // like UserSettings but with less optionality:
 type DefaultUserSettings = SimplifyDeep<

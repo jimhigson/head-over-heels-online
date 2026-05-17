@@ -1,19 +1,15 @@
-import type { AllUnionFields } from "type-fest";
+import { type AllUnionFields } from "type-fest";
 
-import type {
-  ItemInPlay,
-  UnionOfAllItemInPlayTypes,
+import {
+  type ItemInPlay,
+  type UnionOfAllItemInPlayTypes,
 } from "../../../model/ItemInPlay";
-import type {
-  CharacterName,
-  IndividualCharacterName,
+import {
+  type CharacterName,
+  type IndividualCharacterName,
+  otherIndividualCharacterName,
 } from "../../../model/modelTypes";
-import type { RoomJson } from "../../../model/RoomJson";
-import type { Xyz } from "../../../utils/vectors/vectors";
-import type { PlayableItem } from "../../physics/itemPredicates";
-import type { GameState } from "../GameState";
-
-import { otherIndividualCharacterName } from "../../../model/modelTypes";
+import { type RoomJson } from "../../../model/RoomJson";
 import {
   roomItemsIterable,
   roomSpatialIndexKey,
@@ -32,13 +28,20 @@ import {
   addXyz,
   scaleXyz,
   subXyz,
+  type Xyz,
   xyzEqual,
 } from "../../../utils/vectors/vectors";
 import { collisionItemWithIndex } from "../../collision/aabbCollision";
-import { isPortal, isSolid, isTeleporter } from "../../physics/itemPredicates";
+import {
+  isPortal,
+  isSolid,
+  isTeleporter,
+  type PlayableItem,
+} from "../../physics/itemPredicates";
 import { blockSizePx } from "../../physics/mechanicsConstants";
 import { moveItem } from "../../physics/moveItem/moveItem";
 import { blockXyzToFineXyz } from "../../render/projections";
+import { type GameState } from "../GameState";
 import {
   selectCurrentPlayableItem,
   selectHeelsAbilities,

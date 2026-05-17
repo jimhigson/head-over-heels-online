@@ -1,7 +1,6 @@
 import { useCallback, useEffect, useState } from "preact/hooks";
 
-import type { TextureTailwindClass } from "../../../../../../sprites/spritesheet/spritesheetData/TextureTailwindClass";
-
+import { type TextureTailwindClass } from "../../../../../../sprites/spritesheet/spritesheetData/TextureTailwindClass";
 import { useAppDispatch } from "../../../../../../store/hooks";
 import { startAppListening } from "../../../../../../store/listenerMiddleware";
 import { clearAllData } from "../../../../../../store/slices/clearAllData";

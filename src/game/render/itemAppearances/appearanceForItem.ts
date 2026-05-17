@@ -1,13 +1,10 @@
 import { Container } from "pixi.js";
 
-import type { ItemTypeUnion } from "../../../_generated/types/ItemInPlayUnion";
-import type { CreateSpriteOptions } from "../createSprite";
-import type { ItemAppearanceOutsideView } from "./itemAppearanceOutsideView";
-
+import { type ItemTypeUnion } from "../../../_generated/types/ItemInPlayUnion";
 import { type ItemInPlayType } from "../../../model/ItemInPlay";
 import { smallItemTextureSize } from "../../../sprites/spritesheet/spritesheetData/textureSizes";
 import { maybeRenderContainerToSprite } from "../../../utils/pixi/renderContainerToSprite";
-import { createSprite } from "../createSprite";
+import { createSprite, type CreateSpriteOptions } from "../createSprite";
 import { blockAppearance } from "./blockAppearance";
 import { buttonAppearance } from "./buttonAppearance";
 import { charlesAppearance } from "./charlesAppearance";
@@ -21,6 +18,7 @@ import {
   itemStaticAnimatedAppearance,
   itemStaticAppearance,
 } from "./ItemAppearance";
+import { type ItemAppearanceOutsideView } from "./itemAppearanceOutsideView";
 import { joystickAppearance } from "./joystickAppearance";
 import { monsterAppearance } from "./monsterAppearance";
 import { playableAppearance } from "./playableAppearance";

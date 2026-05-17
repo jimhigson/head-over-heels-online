@@ -1,24 +1,25 @@
-import type { PayloadAction } from "@reduxjs/toolkit";
+import {
+  createAction,
+  createSlice,
+  type PayloadAction,
+} from "@reduxjs/toolkit";
 
-import { createAction, createSlice } from "@reduxjs/toolkit";
-
-import type {
-  SavedGame,
-  SavedStoreGameInPlay,
+import {
+  type SavedGame,
+  type SavedStoreGameInPlay,
 } from "../../../game/gameState/saving/SavedGameState";
-import type { PlayableItem } from "../../../game/physics/itemPredicates";
-import type { MarkdownPageName } from "../../../manual/pages";
-import type { ScrollConfig } from "../../../model/json/ItemConfigMap";
-import type {
-  CampaignLocator,
-  CharacterName,
-  IndividualCharacterName,
+import { type PlayableItem } from "../../../game/physics/itemPredicates";
+import { type MarkdownPageName } from "../../../manual/pages";
+import { type ScrollConfig } from "../../../model/json/ItemConfigMap";
+import {
+  type CampaignLocator,
+  type CharacterName,
+  type IndividualCharacterName,
 } from "../../../model/modelTypes";
-import type { PlanetName } from "../../../sprites/planets";
-import type { ToggleablePaths } from "../../../utils/Toggleable";
-import type { DeathMenuParam } from "../gameMenus/gameMenusSlice";
-
+import { type PlanetName } from "../../../sprites/planets";
+import { type ToggleablePaths } from "../../../utils/Toggleable";
 import { clearAllData } from "../clearAllData";
+import { type DeathMenuParam } from "../gameMenus/gameMenusSlice";
 import { savedGameLoadedOnAppLoad } from "../savedGames/savedGamesSlice";
 
 export type ScrollsRead = {

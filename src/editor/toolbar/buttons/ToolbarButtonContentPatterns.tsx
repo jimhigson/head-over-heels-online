@@ -1,11 +1,10 @@
-import type { ReactElement } from "react";
-
-import type {
-  AnimatedTextureTailwindClass,
-  TextureTailwindClass,
-} from "../../../sprites/spritesheet/spritesheetData/TextureTailwindClass";
+import { type ReactElement } from "react";
 
 import { BitmapText } from "../../../game/components/tailwindSprites/BitmapText";
+import {
+  type AnimatedTextureTailwindClass,
+  type TextureTailwindClass,
+} from "../../../sprites/spritesheet/spritesheetData/TextureTailwindClass";
 import { twClass } from "../../../utils/twClass";
 import { buttonSpriteRevertColourClasses } from "../buttonSizeClassNames";
 

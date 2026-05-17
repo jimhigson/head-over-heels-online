@@ -1,18 +1,15 @@
-import type { Sprite } from "pixi.js";
+import { Container, type Sprite } from "pixi.js";
 
-import { Container } from "pixi.js";
-
-import type { RoomState } from "../../../../../model/RoomState";
-import type {
-  PlayableItem,
-  PortableItem,
-} from "../../../../physics/itemPredicates";
-import type { ButtonAppearance } from "../../HudButtonRenderer";
-
+import { type RoomState } from "../../../../../model/RoomState";
 import { getSpriteSheetVariant } from "../../../../../sprites/spritesheet/variants/getSpriteSheetVariant";
 import { selectHeelsAbilities } from "../../../../gameState/gameStateSelectors/selectPlayableItem";
+import {
+  type PlayableItem,
+  type PortableItem,
+} from "../../../../physics/itemPredicates";
 import { findItemToPickup } from "../../../../physics/mechanics/pickingUp";
 import { createSprite } from "../../../createSprite";
+import { type ButtonAppearance } from "../../HudButtonRenderer";
 import { renderCarriedOnce } from "../../renderCarriedOnce";
 import { ArcadeStyleButtonContainer } from "../ArcadeStyleButtonContainer";
 import { buttonActionsPressed } from "./buttonActionsPressed";

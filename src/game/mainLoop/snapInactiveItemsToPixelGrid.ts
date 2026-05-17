@@ -1,18 +1,17 @@
-import type { UnionOfAllItemInPlayTypes } from "../../model/ItemInPlay";
-import type { Xyz } from "../../utils/vectors/vectors";
-import type { MovedItems } from "./progressGameState";
-
+import { type UnionOfAllItemInPlayTypes } from "../../model/ItemInPlay";
 import {
   roomItemsIterable,
   roomSpatialIndexKey,
   type RoomState,
 } from "../../model/RoomState";
+import { type Xyz } from "../../utils/vectors/vectors";
 import {
   collisionItemWithIndex,
   hasCollisionItemWithIndex,
 } from "../collision/aabbCollision";
 import { updateItemPosition } from "../gameState/mutators/updateItemPosition";
 import { type FreeItem, isFreeItem, isSolid } from "../physics/itemPredicates";
+import { type MovedItems } from "./progressGameState";
 
 const logSnapping = 0;
 

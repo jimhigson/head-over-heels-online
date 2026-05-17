@@ -1,4 +1,4 @@
-import type { PickDeep } from "type-fest";
+import { type PickDeep } from "type-fest";
 
 /**
  * a cut-down version of Gamepad with only the stuff we need to carry

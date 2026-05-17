@@ -1,4 +1,4 @@
-import type { Xyz } from "../../../utils/vectors/vectors";
+import { type Xyz } from "../../../utils/vectors/vectors";
 
 export const Z_COMPARATOR_OF_VISUALLY_OVERLAPPING_UNDECIDED = 2 as const;
 

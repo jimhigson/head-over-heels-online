@@ -1,9 +1,9 @@
-import type { UnionOfAllItemInPlayTypes } from "../../../model/ItemInPlay";
-import type { Xyz } from "../../../utils/vectors/vectors";
-import type { ProjectionOnAxes } from "../../render/sortZ/projectAabbCorners";
-
-import { addXyz } from "../../../utils/vectors/vectors";
-import { projectAabbAxes } from "../../render/sortZ/projectAabbCorners";
+import { type UnionOfAllItemInPlayTypes } from "../../../model/ItemInPlay";
+import { addXyz, type Xyz } from "../../../utils/vectors/vectors";
+import {
+  projectAabbAxes,
+  type ProjectionOnAxes,
+} from "../../render/sortZ/projectAabbCorners";
 import { blockSizePx } from "../mechanicsConstants";
 
 // Enable debug logging and verification for spatial index operations

@@ -2,7 +2,7 @@ import { defineConfig, devices } from "@playwright/test";
 import getPort from "get-port";
 import { produce } from "immer";
 
-import type { ScreenshotTestOptions } from "./e2e/ScreenshotTestOptions";
+import { type ScreenshotTestOptions } from "./e2e/ScreenshotTestOptions";
 
 const desktopSize = {
   // this size gives us an upscale of exactly 2 for the game in default settings - hopefully

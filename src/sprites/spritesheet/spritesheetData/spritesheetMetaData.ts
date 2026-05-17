@@ -1,17 +1,19 @@
-import type { Simplify } from "type-fest";
-
-import type { ButtonId } from "../../../game/render/hud/HudButtonRenderer";
-import type { ZxSpectrumPaletteColour } from "../../../originalGame";
-import type { SpriteOption } from "../../../store/slices/userSettings/userSettingsSlice";
-import type { NamedColours, NamedSwops } from "../../../utils/palette/palette";
-import type { DirectionXy8 } from "../../../utils/vectors/vectors";
-import type { LoadableSpriteOption } from "../loadedSpriteSheet";
-import type { TextureId } from "./makeSpritesheetData";
+import { type Simplify } from "type-fest";
 
 import { blockStackSpritesheetMeta } from "../../../../gfx/spritesheetMeta/blockStackSpritesheetMeta";
 import { speccySpritesheetMeta } from "../../../../gfx/spritesheetMeta/speccySpritesheetMeta";
 import { toppySpritesheetMeta } from "../../../../gfx/spritesheetMeta/toppySpritesheetMeta";
+import { type ButtonId } from "../../../game/render/hud/HudButtonRenderer";
+import { type ZxSpectrumPaletteColour } from "../../../originalGame";
+import { type SpriteOption } from "../../../store/slices/userSettings/userSettingsSlice";
 import { entries } from "../../../utils/entries";
+import {
+  type NamedColours,
+  type NamedSwops,
+} from "../../../utils/palette/palette";
+import { type DirectionXy8 } from "../../../utils/vectors/vectors";
+import { type LoadableSpriteOption } from "../loadedSpriteSheet";
+import { type TextureId } from "./makeSpritesheetData";
 
 type SpriteOverrides = Partial<
   Record<

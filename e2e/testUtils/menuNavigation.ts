@@ -1,13 +1,9 @@
-import type { Page } from "@playwright/test";
-
-import { expect, test } from "@playwright/test";
+import { expect, type Page, test } from "@playwright/test";
 import chalk from "chalk";
 
-import type { DialogId } from "../../src/game/components/dialogs/menuDialog/DialogId";
-
+import { type DialogId } from "../../src/game/components/dialogs/menuDialog/DialogId";
 import { dispatchKeyPress } from "./gameInteractions";
-import { waitForGameState } from "./gameStateQueries";
-import { maximumWaitForStep } from "./gameStateQueries";
+import { maximumWaitForStep, waitForGameState } from "./gameStateQueries";
 import {
   osSlowness,
   retryWithRecovery,

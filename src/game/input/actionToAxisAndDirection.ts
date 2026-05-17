@@ -1,7 +1,7 @@
-import type { ValueOf } from "type-fest";
+import { type ValueOf } from "type-fest";
 
-import type { BooleanAction } from "./actions";
-import type { AxisAssignableAction } from "./InputAssignment";
+import { type BooleanAction } from "./actions";
+import { type AxisAssignableAction } from "./InputAssignment";
 
 type AxisAndDirection = {
   axis: AxisAssignableAction;

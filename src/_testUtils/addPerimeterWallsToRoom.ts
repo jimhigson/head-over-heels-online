@@ -1,16 +1,17 @@
-import type { JsonItem } from "../model/json/JsonItem";
-import type { RoomJsonItems } from "../model/RoomJson";
-import type { Wall } from "../sprites/planets";
-import type { Xy } from "../utils/vectors/vectors";
-
 import { consolidateItemsMap } from "../consolidateItems/consolidateItems";
-import { type RoomJson, roomJsonItemsIterable } from "../model/RoomJson";
-import { type SceneryName, wallTiles } from "../sprites/planets";
+import { type JsonItem } from "../model/json/JsonItem";
+import {
+  type RoomJson,
+  type RoomJsonItems,
+  roomJsonItemsIterable,
+} from "../model/RoomJson";
+import { type SceneryName, type Wall, wallTiles } from "../sprites/planets";
 import { keyItems } from "../utils/keyItems";
 import {
   type DirectionXy4,
   perpendicularAxisXy,
   tangentAxis,
+  type Xy,
 } from "../utils/vectors/vectors";
 
 const rotatingScenery = <S extends SceneryName>(

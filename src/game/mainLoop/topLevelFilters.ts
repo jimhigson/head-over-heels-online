@@ -10,10 +10,9 @@ import {
 } from "@blockstacking/jims-shaders";
 import { type Filter } from "pixi.js";
 
-import type { Upscale } from "../../store/slices/upscale/Upscale";
-import type { DisplaySettings } from "../../store/slices/userSettings/userSettingsSlice";
-
+import { type Upscale } from "../../store/slices/upscale/Upscale";
 import { defaultUserSettings } from "../../store/slices/userSettings/defaultUserSettings";
+import { type DisplaySettings } from "../../store/slices/userSettings/userSettingsSlice";
 import { noFilters } from "../render/filters/standardFilters";
 
 // darken initially, then re-lighten at the end. This helps some detail

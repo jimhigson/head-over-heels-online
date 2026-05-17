@@ -1,8 +1,7 @@
 import { describe, expect, test } from "vitest";
 
-import type { ItemInPlay } from "../../../model/ItemInPlay";
-
 import { basicEmptyRoom } from "../../../_testUtils/basicRoom";
+import { type ItemInPlay } from "../../../model/ItemInPlay";
 import { addXyz, type Xyz } from "../../../utils/vectors/vectors";
 import { emptyRoomJsonDirectionalIndex } from "../../gameState/loadRoom/buildRoomJsonDirectionalIndex";
 import { loadItemFromJson } from "../../gameState/loadRoom/loadItemFromJson";

@@ -1,33 +1,33 @@
-import type { FreeItemTypes } from "../../game/physics/itemPredicates";
-import type { MarkdownPageName } from "../../manual/pages";
-import type { SoundId } from "../../sound/soundUrls";
-import type { PlanetName, SceneryName } from "../../sprites/planets";
-import type { GameInPlayBooleanPaths } from "../../store/slices/gameInPlay/gameInPlaySlice";
-import type { Subset } from "../../utils/Subset";
-import type {
-  AxisXy,
-  DirectionXy4,
-  DirectionXy8,
-  Xy,
-  Xyz,
+import { type FreeItemTypes } from "../../game/physics/itemPredicates";
+import { type MarkdownPageName } from "../../manual/pages";
+import { type SoundId } from "../../sound/soundUrls";
+import { type PlanetName, type SceneryName } from "../../sprites/planets";
+import { type GameInPlayBooleanPaths } from "../../store/slices/gameInPlay/gameInPlaySlice";
+import { type Subset } from "../../utils/Subset";
+import {
+  type AxisXy,
+  type DirectionXy4,
+  type DirectionXy8,
+  type Xy,
+  type Xyz,
 } from "../../utils/vectors/vectors";
-import type { Disappear } from "../Disappear";
-import type { SwitchSetting } from "../ItemInPlay";
-import type { CharacterName } from "../modelTypes";
-import type { JsonItemUnion } from "./JsonItem";
-import type { MonsterJsonConfig } from "./MonsterJsonConfig";
-import type {
-  ButtonConfig,
-  SwitchConfig,
-  SwitchItemModificationUnion,
+import { type Disappear } from "../Disappear";
+import { type SwitchSetting } from "../ItemInPlay";
+import { type CharacterName } from "../modelTypes";
+import { type JsonItemUnion } from "./JsonItem";
+import { type MonsterJsonConfig } from "./MonsterJsonConfig";
+import {
+  type ButtonConfig,
+  type SwitchConfig,
+  type SwitchItemModificationUnion,
 } from "./SwitchConfig";
-import type {
-  ActivatedWhenSubset,
-  BlockStyle,
-  ConsolidatableConfig,
-  MovementsSubset,
+import {
+  type ActivatedWhenSubset,
+  type BlockStyle,
+  type ConsolidatableConfig,
+  type MovementsSubset,
 } from "./utilityJsonConfigTypes";
-import type { WallJsonConfig } from "./WallJsonConfig";
+import { type WallJsonConfig } from "./WallJsonConfig";
 
 export type ScrollConfig =
   | {

@@ -1,16 +1,13 @@
-import type { ColorSource } from "pixi.js";
+import { type ColorSource, Container, Graphics, Text } from "pixi.js";
 
-import { Container, Graphics, Text } from "pixi.js";
-
-import type { ItemInPlayType } from "../../../../model/ItemInPlay";
-import type { Aabb } from "../../../../utils/vectors/vectors";
-import type { ItemRenderContext } from "../../ItemRenderContexts";
-import type { ItemPixiRenderer } from "./ItemPixiRenderer";
-
+import { type ItemInPlayType } from "../../../../model/ItemInPlay";
 import { selectShowBoundingBoxTypesSet } from "../../../../store/slices/gameMenus/gameMenusSelectors";
 import { store } from "../../../../store/store";
+import { type Aabb } from "../../../../utils/vectors/vectors";
 import { isItemType } from "../../../physics/itemPredicates";
+import { type ItemRenderContext } from "../../ItemRenderContexts";
 import { projectWorldXyzToScreenXy } from "../../projections";
+import { type ItemPixiRenderer } from "./ItemPixiRenderer";
 
 const addCuboidPaths = (cuboid: Aabb, graphics: Graphics) => {
   graphics

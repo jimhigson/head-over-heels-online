@@ -1,4 +1,4 @@
-import type { AnimatedTextureTailwindClass } from "../sprites/spritesheet/spritesheetData/TextureTailwindClass";
+import { type AnimatedTextureTailwindClass } from "../sprites/spritesheet/spritesheetData/TextureTailwindClass";
 
 type LoaderProps = {
   loadingBorder?: boolean;

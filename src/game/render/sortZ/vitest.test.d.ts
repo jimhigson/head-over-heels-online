@@ -1,6 +1,6 @@
 import "vitest";
 
-import type { DrawOrderComparable } from "./DrawOrderComparable";
+import { type DrawOrderComparable } from "./DrawOrderComparable";
 
 interface CustomMatchers<R = unknown> {
   toBeInFrontOf: (expected: DrawOrderComparable) => R;

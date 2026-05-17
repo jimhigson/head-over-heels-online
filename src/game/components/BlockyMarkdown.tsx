@@ -1,9 +1,10 @@
-import type { JSX, PropsWithChildren, ReactElement } from "react";
-import type { CustomComponentsOption } from "snarkdown-in-react";
-import type { EmptyObject } from "type-fest";
-
-import { SnarkdownInReact } from "snarkdown-in-react";
+import { type JSX, type PropsWithChildren, type ReactElement } from "react";
+import {
+  type CustomComponentsOption,
+  SnarkdownInReact,
+} from "snarkdown-in-react";
 import { twMerge } from "tailwind-merge";
+import { type EmptyObject } from "type-fest";
 
 import { linkOpenExternalClickHandler } from "../../utils/tauri/openExternalLink";
 import { multilineTextClass } from "./dialogs/menuDialog/multilineTextClass";

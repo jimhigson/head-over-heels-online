@@ -1,5 +1,5 @@
-import type { UnionOfAllItemInPlayTypes } from "../../../../model/ItemInPlay";
-import type { FreeItem } from "../../../physics/itemPredicates";
+import { type UnionOfAllItemInPlayTypes } from "../../../../model/ItemInPlay";
+import { type FreeItem } from "../../../physics/itemPredicates";
 
 /**
  * WARN: calling this could cause inconsistent state if the item

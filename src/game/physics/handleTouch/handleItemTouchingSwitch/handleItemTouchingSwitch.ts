@@ -1,23 +1,21 @@
-import type { ItemTypeUnion } from "../../../../_generated/types/ItemInPlayUnion";
-import type {
-  ItemInPlay,
-  ItemInPlayType,
-  SwitchSetting,
-  UnionOfAllItemInPlayTypes,
+import { type ItemTypeUnion } from "../../../../_generated/types/ItemInPlayUnion";
+import {
+  type ItemInPlay,
+  type ItemInPlayType,
+  type SwitchSetting,
+  type UnionOfAllItemInPlayTypes,
 } from "../../../../model/ItemInPlay";
-import type {
-  SwitchConfig,
-  SwitchInRoomConfig,
-  SwitchItemModificationUnion,
+import {
+  type SwitchConfig,
+  type SwitchInRoomConfig,
+  type SwitchItemModificationUnion,
 } from "../../../../model/json/SwitchConfig";
-import type { RoomState } from "../../../../model/RoomState";
-import type { ItemTouchEventByItemType } from "../ItemTouchEvent";
-
-import { roomItemsIterable } from "../../../../model/RoomState";
+import { roomItemsIterable, type RoomState } from "../../../../model/RoomState";
 import { toggleUserSetting } from "../../../../store/slices/userSettings/userSettingsSlice";
 import { store } from "../../../../store/store";
 import { neverTime } from "../../../../utils/neverTime";
 import { switchMinTimeBetweenToggleMs } from "../../mechanicsConstants";
+import { type ItemTouchEventByItemType } from "../ItemTouchEvent";
 import { getNewState } from "./getNewState";
 
 const oppositeSetting = (setting: SwitchSetting): SwitchSetting => {

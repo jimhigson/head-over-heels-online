@@ -1,12 +1,10 @@
 import { Fragment } from "react/jsx-runtime";
 import { format } from "timeago.js";
 
-import type {
-  CampaignDirectory,
-  CampaignInfoInDirectory,
+import {
+  type CampaignDirectory,
+  type CampaignInfoInDirectory,
 } from "../../db/campaign";
-import type { CampaignLocator } from "../../model/modelTypes";
-
 import { BlockyMarkdown } from "../../game/components/BlockyMarkdown";
 import { BitmapText } from "../../game/components/tailwindSprites/BitmapText";
 import {
@@ -14,6 +12,7 @@ import {
   originalCampaignName,
   originalUserId,
 } from "../../gameInfo";
+import { type CampaignLocator } from "../../model/modelTypes";
 import { releaseDateIso8601 } from "../../originalGame";
 import { Button } from "../../ui/Button";
 

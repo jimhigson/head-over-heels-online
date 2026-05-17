@@ -1,6 +1,4 @@
-import type { SceneryName } from "../../sprites/planets";
-
-import { type Wall } from "../../sprites/planets";
+import { type SceneryName, type Wall } from "../../sprites/planets";
 import { cycle } from "../../utils/iterators/cycle";
 
 /**

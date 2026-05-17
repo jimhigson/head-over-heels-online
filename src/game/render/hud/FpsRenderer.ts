@@ -1,8 +1,5 @@
 import { Container } from "pixi.js";
 
-import type { Renderer } from "../Renderer";
-import type { HudRenderContext } from "./hudRendererContexts";
-
 import { blockStackSpritesheetMeta } from "../../../../gfx/spritesheetMeta/blockStackSpritesheetMeta";
 import {
   type BlockstackPaletteColourName,
@@ -13,7 +10,9 @@ import {
   frameTimingStats,
   type FrameTimingStatsEvent,
 } from "../../mainLoop/frameTiming/FrameTimingStats";
+import { type Renderer } from "../Renderer";
 import { TextContainer } from "../text/TextContainer";
+import { type HudRenderContext } from "./hudRendererContexts";
 
 export class FpsRenderer
   implements

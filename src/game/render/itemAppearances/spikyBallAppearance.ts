@@ -1,11 +1,10 @@
-import type { Sprite } from "pixi.js";
-
-import type { ItemAppearance } from "./ItemAppearance";
+import { type Sprite } from "pixi.js";
 
 import { wallTileSize } from "../../../sprites/spritesheet/spritesheetData/textureSizes";
 import { getSpriteSheetVariant } from "../../../sprites/spritesheet/variants/getSpriteSheetVariant";
 import { lengthXy } from "../../../utils/vectors/vectors";
 import { createSprite } from "../createSprite";
+import { type ItemAppearance } from "./ItemAppearance";
 import { itemAppearanceOutsideView } from "./itemAppearanceOutsideView";
 
 type SpikyBallRenderProps = {

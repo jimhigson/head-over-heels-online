@@ -1,15 +1,12 @@
-import type { PayloadAction } from "@reduxjs/toolkit";
-import type { EmptyObject } from "type-fest";
+import { createSlice, type PayloadAction } from "@reduxjs/toolkit";
+import { type EmptyObject } from "type-fest";
 
-import { createSlice } from "@reduxjs/toolkit";
-
-import type { DialogId } from "../../../game/components/dialogs/menuDialog/DialogId";
-import type { PokeableNumber } from "../../../model/ItemStateMap";
-import type { ScrollConfig } from "../../../model/json/ItemConfigMap";
-import type { CharacterName } from "../../../model/modelTypes";
-import type { SerialisableError } from "../../../utils/redux/createSerialisableErrors";
-
+import { type DialogId } from "../../../game/components/dialogs/menuDialog/DialogId";
+import { type PokeableNumber } from "../../../model/ItemStateMap";
+import { type ScrollConfig } from "../../../model/json/ItemConfigMap";
+import { type CharacterName } from "../../../model/modelTypes";
 import { emptyObject } from "../../../utils/empty";
+import { type SerialisableError } from "../../../utils/redux/createSerialisableErrors";
 import { clearAllData } from "../clearAllData";
 import { savedGameLoadedOnAppLoad } from "../savedGames/savedGamesSlice";
 

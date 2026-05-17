@@ -1,8 +1,6 @@
-import type { PropsWithChildren } from "react";
+import { createContext, type PropsWithChildren, useContext } from "react";
 
-import { createContext, useContext } from "react";
-
-import type { GameApi } from "../GameApi";
+import { type GameApi } from "../GameApi";
 
 const GameApiContext = createContext<
   | GameApi<string>

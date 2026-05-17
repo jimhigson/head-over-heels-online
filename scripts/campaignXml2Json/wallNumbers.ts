@@ -1,4 +1,4 @@
-import type { SceneryName, Wall } from "../../src/sprites/planets";
+import { type SceneryName, type Wall } from "../../src/sprites/planets";
 
 /**
  * the walls are numbered in the xml - convert from the numbers to my names (which

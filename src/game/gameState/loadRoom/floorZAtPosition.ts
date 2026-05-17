@@ -1,5 +1,5 @@
-import type { Xy } from "../../../utils/vectors/vectors";
-import type { RoomDirectionalIndex } from "./buildRoomJsonDirectionalIndex";
+import { type Xy } from "../../../utils/vectors/vectors";
+import { type RoomDirectionalIndex } from "./buildRoomJsonDirectionalIndex";
 
 export const floorZAtPosition = <
   RoomId extends string,

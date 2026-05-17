@@ -1,6 +1,4 @@
-import type { Texture } from "pixi.js";
-
-import { defaultFilterVert, Filter, GlProgram } from "pixi.js";
+import { defaultFilterVert, Filter, GlProgram, type Texture } from "pixi.js";
 
 import hardenAlphaFrag from "./hardenAlpha.frag";
 import invertRedToAlphaFrag from "./preprocessShadowTextures.frag";

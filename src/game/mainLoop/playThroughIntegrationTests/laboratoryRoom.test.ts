@@ -1,7 +1,5 @@
 import { expect, test } from "vitest";
 
-import type { UnindexedRoomState } from "../../gameState/saving/SavedGameState";
-
 import {
   basicEmptyRoom,
   setupGameForCampaign,
@@ -9,6 +7,7 @@ import {
 import { playGameThrough } from "../../../_testUtils/playGameThrough";
 import { roomSpatialIndexKey } from "../../../model/RoomState";
 import { omit } from "../../../utils/pick";
+import { type UnindexedRoomState } from "../../gameState/saving/SavedGameState";
 import { complexRoom } from "./complexRoom";
 
 test(

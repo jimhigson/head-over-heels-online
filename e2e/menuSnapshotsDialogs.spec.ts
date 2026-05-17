@@ -1,11 +1,8 @@
-import type { Page } from "@playwright/test";
-
-import { test } from "@playwright/test";
+import { type Page, test } from "@playwright/test";
 import chalk from "chalk";
 
-import type { SpriteOption } from "../src/store/slices/userSettings/userSettingsSlice";
-import type { ScreenshotTestOptions } from "./ScreenshotTestOptions";
-
+import { type SpriteOption } from "../src/store/slices/userSettings/userSettingsSlice";
+import { type ScreenshotTestOptions } from "./ScreenshotTestOptions";
 import { osSlowness, retryWithRecovery } from "./testUtils/infrastructure";
 import {
   elapsed,

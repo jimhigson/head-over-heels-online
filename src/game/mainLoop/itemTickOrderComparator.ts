@@ -1,6 +1,6 @@
-import type {
-  ItemInPlayType,
-  UnionOfAllItemInPlayTypes,
+import {
+  type ItemInPlayType,
+  type UnionOfAllItemInPlayTypes,
 } from "../../model/ItemInPlay";
 
 /**

@@ -1,6 +1,5 @@
-import type { ReactNode } from "react";
-
 import { useEffect, useState } from "preact/hooks";
+import { type ReactNode } from "react";
 
 import { loadSpritesheetAssets } from "../sprites/spritesheet/loadedSpriteSheet";
 

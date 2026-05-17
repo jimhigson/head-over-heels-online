@@ -1,18 +1,12 @@
-import type { PayloadAction } from "@reduxjs/toolkit";
-import type { Writable } from "type-fest";
+import { createSlice, type PayloadAction } from "@reduxjs/toolkit";
+import { type Writable } from "type-fest";
 
-import { createSlice } from "@reduxjs/toolkit";
-
-import type { BooleanAction } from "../../../game/input/actions";
-import type {
-  ActionInputAssignment,
-  InputAssignment,
-  InputPress,
+import { type BooleanAction } from "../../../game/input/actions";
+import {
+  type ActionInputAssignment,
+  type InputAssignment,
+  type InputPress,
 } from "../../../game/input/InputAssignment";
-import type { ResolutionName } from "../../../originalGame";
-import type { ToggleablePaths } from "../../../utils/Toggleable";
-import type { DirectionsRelativeToMode } from "./directionsRelativeToModes";
-
 import {
   type KeyAssignmentPresetName,
   keyAssignmentPresets,
@@ -21,14 +15,18 @@ import {
   type ItemInPlayType,
   itemInPlayTypes,
 } from "../../../model/ItemInPlay";
-import { resolutionNames } from "../../../originalGame";
+import { type ResolutionName, resolutionNames } from "../../../originalGame";
 import { spriteOptionValues } from "../../../sprites/spritesheet/spritesheetData/spritesheetMetaData";
 import { getAtPath, setAtPath } from "../../../utils/getAtPath";
 import { nextInCycle } from "../../../utils/nextInCycle";
+import { type ToggleablePaths } from "../../../utils/Toggleable";
 import { directionsXy4 } from "../../../utils/vectors/vectors";
 import { clearAllData } from "../clearAllData";
 import { defaultUserSettings } from "./defaultUserSettings";
-import { directionsRelativeToModes } from "./directionsRelativeToModes";
+import {
+  type DirectionsRelativeToMode,
+  directionsRelativeToModes,
+} from "./directionsRelativeToModes";
 import { emptyUserSettings } from "./emptyUserSettings";
 import {
   type SelectableGameSpeeds,

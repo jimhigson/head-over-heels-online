@@ -1,7 +1,6 @@
-import type { ItemInPlay } from "../../../model/ItemInPlay";
-import type { RoomJson } from "../../../model/RoomJson";
-
 import { defaultItemProperties } from "../../../model/defaultItemProperties";
+import { type ItemInPlay } from "../../../model/ItemInPlay";
+import { type RoomJson } from "../../../model/RoomJson";
 import {
   roomItemsIterable,
   type RoomStateItems,
@@ -9,8 +8,10 @@ import {
 import { unitVectors } from "../../../utils/vectors/unitVectors";
 import { addXyz } from "../../../utils/vectors/vectors";
 import { isFloor } from "../../physics/itemPredicates";
-import { blockSizePx } from "../../physics/mechanicsConstants";
-import { defaultRoomHeightBlocks } from "../../physics/mechanicsConstants";
+import {
+  blockSizePx,
+  defaultRoomHeightBlocks,
+} from "../../physics/mechanicsConstants";
 import { blockXyzToFineXyz } from "../../render/projections";
 import { nonRenderingItemFixedZIndex } from "../../render/sortZ/fixedZIndexes";
 import { defaultBaseState } from "./itemDefaultStates";

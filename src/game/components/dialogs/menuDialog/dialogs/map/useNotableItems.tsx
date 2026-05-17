@@ -1,12 +1,13 @@
 import { useMemo } from "preact/hooks";
 
-import type { RoomJson } from "../../../../../../model/RoomJson";
-import type { RoomPickupsCollected } from "../../../../../gameState/GameState";
-import type { NotableItem } from "./NotableItem";
-
-import { roomJsonItemsEntriesIterable } from "../../../../../../model/RoomJson";
+import {
+  type RoomJson,
+  roomJsonItemsEntriesIterable,
+} from "../../../../../../model/RoomJson";
 import { fromAllEntries } from "../../../../../../utils/entries";
+import { type RoomPickupsCollected } from "../../../../../gameState/GameState";
 import { jsonItemIsNotable } from "./jsonItemIsNotable";
+import { type NotableItem } from "./NotableItem";
 import { restrictItemsToShowInRoomCount } from "./restrictItemsToShowInRoomCount";
 import { maximumItemsForRoomLayoutOnMap } from "./roomItemPositions";
 

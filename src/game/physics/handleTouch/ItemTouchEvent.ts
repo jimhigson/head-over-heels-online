@@ -1,15 +1,19 @@
-import type { ItemTypeUnion } from "../../../_generated/types/ItemInPlayUnion";
-import type {
-  ItemInPlayType,
-  UnionOfAllItemInPlayTypes,
+import { type ItemTypeUnion } from "../../../_generated/types/ItemInPlayUnion";
+import {
+  type ItemInPlayType,
+  type UnionOfAllItemInPlayTypes,
 } from "../../../model/ItemInPlay";
-import type { CharacterName } from "../../../model/modelTypes";
-import type { RoomState } from "../../../model/RoomState";
-import type { Xyz } from "../../../utils/vectors/vectors";
-import type { GameState } from "../../gameState/GameState";
-import type { DeadlyItemType, PlayableItem } from "../itemPredicates";
-
-import { isDeadly, isItemType, isPlayableItem } from "../itemPredicates";
+import { type CharacterName } from "../../../model/modelTypes";
+import { type RoomState } from "../../../model/RoomState";
+import { type Xyz } from "../../../utils/vectors/vectors";
+import { type GameState } from "../../gameState/GameState";
+import {
+  type DeadlyItemType,
+  isDeadly,
+  isItemType,
+  isPlayableItem,
+  type PlayableItem,
+} from "../itemPredicates";
 
 export type ItemTouchEvent<
   RoomId extends string,

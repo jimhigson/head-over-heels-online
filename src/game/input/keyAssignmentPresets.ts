@@ -1,11 +1,13 @@
-import type { PartialInputAssignment } from "./combineInputAssignments";
-import type { ControllerLayout, MamePlayer } from "./controllers";
-
-import { combineInputAssignments } from "./combineInputAssignments";
 import {
+  combineInputAssignments,
+  type PartialInputAssignment,
+} from "./combineInputAssignments";
+import {
+  type ControllerLayout,
   eightBitDoKeyboard,
   mameButtonsPlayer1,
   mameButtonsPlayer2,
+  type MamePlayer,
   standardControllerLayout,
   wired8BitDoUltimate2cControllerLayout,
 } from "./controllers";

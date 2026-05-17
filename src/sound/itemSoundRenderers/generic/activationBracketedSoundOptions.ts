@@ -1,4 +1,4 @@
-import type { CreateBracketedEventOptions } from "../../soundUtils/createBracketedSound";
+import { type CreateBracketedEventOptions } from "../../soundUtils/createBracketedSound";
 
 export const activationBracketedSoundOptions: CreateBracketedEventOptions = {
   start: {

@@ -1,10 +1,9 @@
 import { Color, type Renderer } from "pixi.js";
 
-import type { AppSpritesheet } from "../loadedSpriteSheet";
-import type { TextureId } from "../spritesheetData/makeSpritesheetData";
-
 import { resolveSwops } from "../../../utils/palette/palette";
 import { paletteBlockstack } from "../../palette/spritesheetPalette";
+import { type AppSpritesheet } from "../loadedSpriteSheet";
+import { type TextureId } from "../spritesheetData/makeSpritesheetData";
 import { spritesheetMetas } from "../spritesheetData/spritesheetMetaData";
 import { createSpritesheetVariant } from "../spritesheetPaletteSwop";
 

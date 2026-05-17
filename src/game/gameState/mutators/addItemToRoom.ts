@@ -1,18 +1,16 @@
-import type { UnionOfAllItemInPlayTypes } from "../../../model/ItemInPlay";
-import type {
-  JsonItem,
-  JsonItemConfig,
-  JsonItemType,
-  JsonItemUnion,
+import { type UnionOfAllItemInPlayTypes } from "../../../model/ItemInPlay";
+import {
+  type JsonItem,
+  type JsonItemConfig,
+  type JsonItemType,
+  type JsonItemUnion,
 } from "../../../model/json/JsonItem";
-import type { Xyz } from "../../../utils/vectors/vectors";
-import type { GameState } from "../GameState";
-
 import { roomJsonItemsIterable } from "../../../model/RoomJson";
 import { roomSpatialIndexKey, type RoomState } from "../../../model/RoomState";
 import { emptyObject } from "../../../utils/empty";
-import { originXyz } from "../../../utils/vectors/vectors";
+import { originXyz, type Xyz } from "../../../utils/vectors/vectors";
 import { isSpatial } from "../../physics/itemPredicates";
+import { type GameState } from "../GameState";
 import { buildRoomJsonDirectionalIndex } from "../loadRoom/buildRoomJsonDirectionalIndex";
 import { loadItemFromJson } from "../loadRoom/loadItemFromJson";
 

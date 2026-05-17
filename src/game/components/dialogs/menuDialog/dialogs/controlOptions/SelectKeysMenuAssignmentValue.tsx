@@ -1,8 +1,7 @@
 import { twMerge } from "tailwind-merge";
 
-import type { BooleanAction } from "../../../../../input/actions";
-
 import { useAppSelector } from "../../../../../../store/hooks";
+import { type BooleanAction } from "../../../../../input/actions";
 import { CurrentKeyAssignments } from "../../CurrentKeyAssignments";
 import { controlMenuValueClass } from "./controlMenuValueClass";
 

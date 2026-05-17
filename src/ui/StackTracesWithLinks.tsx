@@ -1,6 +1,4 @@
-import type { ReactNode } from "react";
-
-import { Fragment } from "react";
+import { Fragment, type ReactNode } from "react";
 
 import { linkOpenExternalClickHandler } from "../utils/tauri/openExternalLink";
 

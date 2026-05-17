@@ -1,8 +1,8 @@
-import type { SpritesheetFrameData } from "pixi.js";
-import type { Merge, SetOptional } from "type-fest";
+import { type SpritesheetFrameData } from "pixi.js";
+import { type Merge, type SetOptional } from "type-fest";
 
-import type { SceneryName, Wall } from "../sprites/planets";
-import type { RoomJson } from "./RoomJson";
+import { type SceneryName, type Wall } from "../sprites/planets";
+import { type RoomJson } from "./RoomJson";
 
 export const individualCharacterNames = ["head", "heels"] as const;
 export const characterNames = [

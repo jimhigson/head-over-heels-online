@@ -1,13 +1,10 @@
-import type { WritableDeep } from "type-fest";
+import { type WritableDeep } from "type-fest";
 
-import type { UnionOfAllItemInPlayTypes } from "../../model/ItemInPlay";
-import type { FreeItem } from "../physics/itemPredicates";
-import type { CollideableItem } from "./aabbCollision";
-
+import { type UnionOfAllItemInPlayTypes } from "../../model/ItemInPlay";
 import { epsilon } from "../../utils/epsilon";
 import { collisionsPriorityComparator } from "../physics/collisionsOrder";
-import { isSolid } from "../physics/itemPredicates";
-import { collision2Items } from "./aabbCollision";
+import { type FreeItem, isSolid } from "../physics/itemPredicates";
+import { type CollideableItem, collision2Items } from "./aabbCollision";
 import { itemXyOverlapArea } from "./xyRectangleOverlap";
 
 // avoid allocating memory by keeping two buffers to copy values into

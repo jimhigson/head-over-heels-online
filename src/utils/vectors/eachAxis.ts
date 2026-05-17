@@ -1,4 +1,4 @@
-import type { Xyz } from "./vectors";
+import { type Xyz } from "./vectors";
 
 /**
  * Convenience for setting each of x,y,z or an Xyz vector based on zero or more

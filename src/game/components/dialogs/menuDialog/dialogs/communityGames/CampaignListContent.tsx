@@ -1,9 +1,8 @@
 import { Fragment } from "react/jsx-runtime";
 import { format } from "timeago.js";
 
-import type { CampaignDirectory } from "../../../../../../db/campaign";
-import type { CampaignLocator } from "../../../../../../model/modelTypes";
-
+import { type CampaignDirectory } from "../../../../../../db/campaign";
+import { type CampaignLocator } from "../../../../../../model/modelTypes";
 import { gameStarted } from "../../../../../../store/slices/gameInPlay/gameInPlaySlice";
 import { useDispatchActionCallback } from "../../../../../../store/useDispatchActionCallback";
 import { BitmapText } from "../../../../tailwindSprites/BitmapText";

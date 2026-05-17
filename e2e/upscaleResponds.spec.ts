@@ -1,6 +1,4 @@
-import type { Page } from "@playwright/test";
-
-import { expect, test } from "@playwright/test";
+import { expect, type Page, test } from "@playwright/test";
 
 import { osSlowness } from "./testUtils/infrastructure";
 import { setupE2ePage } from "./testUtils/pageSetup";

@@ -1,15 +1,13 @@
-import type { OnChange } from "@monaco-editor/react";
-import type { editor } from "monaco-editor";
-
 import { debounce } from "@github/mini-throttle";
+import { type OnChange } from "@monaco-editor/react";
 import Ajv from "ajv";
+import { type editor } from "monaco-editor";
 import nanoEqual from "nano-equal";
 import { useMemo } from "preact/hooks";
 
-import type { EditorRoomJson } from "../editorTypes";
-
 import roomSchema from "../../_generated/room.schema.json";
 import { editorStore, store } from "../../store/store";
+import { type EditorRoomJson } from "../editorTypes";
 import { selectCurrentRoomFromLevelEditorState } from "../slice/levelEditorSelectors";
 import { roomJsonEdited } from "../slice/levelEditorSlice";
 import { fixJson } from "./fixJson";

@@ -1,21 +1,19 @@
-import type { AllUnionFields, ValueOf } from "type-fest";
-
 import { canonicalize } from "json-canonicalize";
-
-import type { JsonItemUnion } from "../model/json/JsonItem";
-import type {
-  RightWallConfig,
-  TowardsWallConfig,
-  WallJsonConfigWithTiles,
-} from "../model/json/WallJsonConfig";
-import type { SceneryName } from "../sprites/planets";
-import type { ConsolidatableJsonItem } from "./ConsolidatableJsonItem";
+import { type AllUnionFields, type ValueOf } from "type-fest";
 
 import { blockSizePx } from "../game/physics/mechanicsConstants";
+import { type JsonItemUnion } from "../model/json/JsonItem";
+import {
+  type RightWallConfig,
+  type TowardsWallConfig,
+  type WallJsonConfigWithTiles,
+} from "../model/json/WallJsonConfig";
 import { getJsonItemTimes, optimiseTimesXyz } from "../model/times";
+import { type SceneryName } from "../sprites/planets";
 import { omit } from "../utils/pick";
 import { type Xyz } from "../utils/vectors/vectors";
 import {
+  type ConsolidatableJsonItem,
   getConsolidatableVector,
   isConsolidatable,
 } from "./ConsolidatableJsonItem";

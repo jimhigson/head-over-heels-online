@@ -1,10 +1,11 @@
-import type { ItemTickContext } from "../../game/render/ItemRenderContexts";
-import type { ItemSoundRenderContext } from "../ItemSoundRenderContext";
-import type { ItemSoundRenderer } from "../ItemSoundRenderer";
-import type { FreeItemSoundRendererConstructorOptions } from "./generic/FreeItemSoundRenderer";
-
+import { type ItemTickContext } from "../../game/render/ItemRenderContexts";
 import { audioCtx } from "../audioCtx";
-import { FreeItemSoundRenderer } from "./generic/FreeItemSoundRenderer";
+import { type ItemSoundRenderContext } from "../ItemSoundRenderContext";
+import { type ItemSoundRenderer } from "../ItemSoundRenderer";
+import {
+  FreeItemSoundRenderer,
+  type FreeItemSoundRendererConstructorOptions,
+} from "./generic/FreeItemSoundRenderer";
 
 const glassyOptions: FreeItemSoundRendererConstructorOptions = {
   collision: { soundId: "glassClink", varyPlaybackRate: true, gain: 0.8 },

@@ -1,6 +1,5 @@
-import type { ResolutionName } from "../../../originalGame";
-import type { AppThunk } from "../../store";
-
+import { type ResolutionName } from "../../../originalGame";
+import { type AppThunk } from "../../store";
 import { selectEmulatedResolutionName } from "../gameMenus/gameMenusSelectors";
 import { upscaleOptionsForCurrentDevice } from "./upscaleOptionsForCurrentDevice";
 import { upscaleToWindow } from "./upscaleSlice";

@@ -1,23 +1,22 @@
-import type { SharedUnionFields } from "type-fest";
-
-import type {
-  HeadOverHeelsState,
-  HeadState,
-  HeelsState,
-} from "../../../model/ItemStateMap";
-import type { JsonItem } from "../../../model/json/JsonItem";
-import type { CharacterName } from "../../../model/modelTypes";
-import type { PokesEnabled } from "../../../store/slices/userSettings/userSettingsSlice";
-import type { PlayableItem } from "../../physics/itemPredicates";
-import type { SpecifiedTextureCreateSpriteOptions } from "../../render/createSprite";
+import { type SharedUnionFields } from "type-fest";
 
 import { defaultItemProperties } from "../../../model/defaultItemProperties";
+import {
+  type HeadOverHeelsState,
+  type HeadState,
+  type HeelsState,
+} from "../../../model/ItemStateMap";
+import { type JsonItem } from "../../../model/json/JsonItem";
+import { type CharacterName } from "../../../model/modelTypes";
+import { type PokesEnabled } from "../../../store/slices/userSettings/userSettingsSlice";
 import { emptyObject } from "../../../utils/empty";
 import { neverTime } from "../../../utils/neverTime";
 import { unitVectors } from "../../../utils/vectors/unitVectors";
 import { originXyz } from "../../../utils/vectors/vectors";
 import { headAabbInfo, heelsAabbInfo } from "../../collision/boundingBoxes";
+import { type PlayableItem } from "../../physics/itemPredicates";
 import { originalGameStartingLives } from "../../physics/mechanicsConstants";
+import { type SpecifiedTextureCreateSpriteOptions } from "../../render/createSprite";
 import { defaultBaseState, defaultFreeItemState } from "./itemDefaultStates";
 import { positionCentredInBlock } from "./positionCentredInBlock";
 

@@ -1,15 +1,14 @@
 import { produce } from "immer";
 
-import type { EditorRoomId, EditorRoomItemId } from "../../../editorTypes";
-import type { Tool } from "../../../RoomEditingArea/interactivity/Tool";
-import type {
-  LevelEditorSliceAction,
-  LevelEditorState,
-} from "../../levelEditorSlice";
-
 import { rotatingSceneryTiles } from "../../../../model/inPlaceMutators/rotatingSceneryTiles";
+import { type EditorRoomId, type EditorRoomItemId } from "../../../editorTypes";
+import { type Tool } from "../../../RoomEditingArea/interactivity/Tool";
 import { initialLevelEditorSliceState } from "../../initialLevelEditorSliceState";
-import { levelEditorSlice } from "../../levelEditorSlice";
+import {
+  levelEditorSlice,
+  type LevelEditorSliceAction,
+  type LevelEditorState,
+} from "../../levelEditorSlice";
 
 export const doorItemToolWithAutoAddRooms: Tool = {
   type: "item",

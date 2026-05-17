@@ -1,14 +1,12 @@
 import { Ticker } from "pixi.js";
 import { afterEach, beforeEach, expect, test, vi } from "vitest";
 
-import type { TestRoomId } from "../../_testUtils/basicRoom";
-import type { ItemInPlay } from "../../model/ItemInPlay";
-import type { RoomStateItems } from "../../model/RoomState";
-import type { GameState } from "../gameState/GameState";
-import type { MovedItems, ProgressGameState } from "./progressGameState";
-
-import { setUpBasicGame } from "../../_testUtils/basicRoom";
+import { setUpBasicGame, type TestRoomId } from "../../_testUtils/basicRoom";
 import { resetStore } from "../../_testUtils/initStoreForTests";
+import { type ItemInPlay } from "../../model/ItemInPlay";
+import { type RoomStateItems } from "../../model/RoomState";
+import { type GameState } from "../gameState/GameState";
+import { type MovedItems, type ProgressGameState } from "./progressGameState";
 import { progressWithSubTicks } from "./progressWithSubTicks";
 
 const createGameState = ({

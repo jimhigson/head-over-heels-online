@@ -1,10 +1,8 @@
-import type {
-  ItemInPlayType,
-  UnionOfAllItemInPlayTypes,
+import {
+  type ItemInPlayType,
+  type UnionOfAllItemInPlayTypes,
 } from "../../model/ItemInPlay";
-import type { Xyz } from "../../utils/vectors/vectors";
-
-import { dotProductXyz } from "../../utils/vectors/vectors";
+import { dotProductXyz, type Xyz } from "../../utils/vectors/vectors";
 
 export type SortableObstacle = Pick<
   UnionOfAllItemInPlayTypes,

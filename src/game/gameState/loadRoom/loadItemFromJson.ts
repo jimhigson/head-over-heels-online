@@ -1,25 +1,27 @@
 import { produce } from "immer";
 
-import type { UnionOfAllItemInPlayTypes } from "../../../model/ItemInPlay";
-import type { JsonItemUnion } from "../../../model/json/JsonItem";
-import type { RoomJson } from "../../../model/RoomJson";
-import type { PlanetName } from "../../../sprites/planets";
-import type { ScrollsRead } from "../../../store/slices/gameInPlay/gameInPlaySlice";
-import type { PokesEnabled } from "../../../store/slices/userSettings/userSettingsSlice";
-import type { Xyz } from "../../../utils/vectors/vectors";
-import type { RoomPickupsCollected } from "../GameState";
-
 import { defaultItemProperties } from "../../../model/defaultItemProperties";
-import { roomJsonItemsIterable } from "../../../model/RoomJson";
+import { type UnionOfAllItemInPlayTypes } from "../../../model/ItemInPlay";
+import { type JsonItemUnion } from "../../../model/json/JsonItem";
+import { type RoomJson, roomJsonItemsIterable } from "../../../model/RoomJson";
 import { getJsonItemTimes } from "../../../model/times";
+import { type PlanetName } from "../../../sprites/planets";
+import { type ScrollsRead } from "../../../store/slices/gameInPlay/gameInPlaySlice";
+import { type PokesEnabled } from "../../../store/slices/userSettings/userSettingsSlice";
 import { emptyObject } from "../../../utils/empty";
-import { addXyz, lengthXyz, unitXyz } from "../../../utils/vectors/vectors";
+import {
+  addXyz,
+  lengthXyz,
+  unitXyz,
+  type Xyz,
+} from "../../../utils/vectors/vectors";
 import { boundingBoxForItem } from "../../collision/boundingBoxes";
 import { multiplyBoundingBox } from "../../collision/multiplyBoundingBox";
 import {
   floatingTextFixedZIndex,
   nonRenderingItemFixedZIndex,
 } from "../../render/sortZ/fixedZIndexes";
+import { type RoomPickupsCollected } from "../GameState";
 import {
   buildRoomJsonDirectionalIndex,
   type RoomDirectionalIndex,

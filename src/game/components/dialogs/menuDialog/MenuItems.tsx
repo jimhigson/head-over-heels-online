@@ -1,6 +1,5 @@
-import type { AriaRole, PropsWithChildren, RefObject } from "react";
-
 import { useCallback, useEffect, useRef } from "preact/hooks";
+import { type AriaRole, type PropsWithChildren, type RefObject } from "react";
 import { twMerge } from "tailwind-merge";
 
 import { useIsAssigningKeys } from "../../../../store/slices/gameMenus/gameMenusSelectors";

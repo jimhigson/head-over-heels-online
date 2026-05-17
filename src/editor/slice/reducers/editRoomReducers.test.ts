@@ -1,23 +1,22 @@
 import { produce } from "immer";
 import { describe, expect, test } from "vitest";
 
-import type {
-  EditorJsonItem,
-  EditorJsonItemUnion,
-  EditorRoomId,
-  EditorRoomItemId,
-  EditorRoomJson,
-} from "../../editorTypes";
-import type { LevelEditorState } from "../levelEditorSlice";
-
 import {
   iterateRoomJsonItemsWithIds,
   roomJsonItemsIterable,
 } from "../../../model/RoomJson";
+import {
+  type EditorJsonItem,
+  type EditorJsonItemUnion,
+  type EditorRoomId,
+  type EditorRoomItemId,
+  type EditorRoomJson,
+} from "../../editorTypes";
 import { selectCurrentRoomFromLevelEditorState } from "../levelEditorSelectors";
 import {
   applyItemTool,
   deleteSelected,
+  type LevelEditorState,
   roomJsonEdited,
   setSelectedItemsInRoom,
   setTool,

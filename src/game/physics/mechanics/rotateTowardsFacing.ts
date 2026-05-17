@@ -1,11 +1,9 @@
-import type { CharacterName } from "../../../model/modelTypes";
-import type { RoomState } from "../../../model/RoomState";
-import type { GameState } from "../../gameState/GameState";
-import type { Mechanic } from "../MechanicResult";
-
+import { type CharacterName } from "../../../model/modelTypes";
+import { type RoomState } from "../../../model/RoomState";
 import { rotateVectorTowards } from "../../../utils/vectors/rotateVectorTowards";
+import { type GameState } from "../../gameState/GameState";
 import { type PlayableItem } from "../itemPredicates";
-import { type MechanicResult } from "../MechanicResult";
+import { type Mechanic, type MechanicResult } from "../MechanicResult";
 
 const playableTurnVisualAngularVelocityRadiansPerMs = 0.009;
 

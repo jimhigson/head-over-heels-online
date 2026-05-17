@@ -1,7 +1,8 @@
-import type { JsonItemUnion } from "../model/json/JsonItem";
-import type { RoomJsonItems } from "../model/RoomJson";
-
-import { roomJsonItemsEntriesIterable } from "../model/RoomJson";
+import { type JsonItemUnion } from "../model/json/JsonItem";
+import {
+  type RoomJsonItems,
+  roomJsonItemsEntriesIterable,
+} from "../model/RoomJson";
 import { getJsonItemTimes } from "../model/times";
 import { omit } from "../utils/pick";
 import { consolidateItemsMap } from "./consolidateItems";

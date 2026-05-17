@@ -1,11 +1,10 @@
-import type { EmptyObject } from "type-fest";
-
-import type { TextureTailwindClass } from "../../../../../../sprites/spritesheet/spritesheetData/TextureTailwindClass";
+import { type EmptyObject } from "type-fest";
 
 import {
   originalCampaignLocator,
   sequelCampaignLocator,
 } from "../../../../../../gameInfo";
+import { type TextureTailwindClass } from "../../../../../../sprites/spritesheet/spritesheetData/TextureTailwindClass";
 import { gameStarted } from "../../../../../../store/slices/gameInPlay/gameInPlaySlice";
 import { useDispatchActionCallback } from "../../../../../../store/useDispatchActionCallback";
 import { Dialog } from "../../../../../../ui/Dialog";

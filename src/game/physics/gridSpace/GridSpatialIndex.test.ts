@@ -1,9 +1,7 @@
 import { test } from "vitest";
 
-import type { Xyz } from "../../../utils/vectors/vectors";
-import type { Indexable } from "./GridSpatialIndex";
-
-import { GridSpatialIndex } from "./GridSpatialIndex";
+import { type Xyz } from "../../../utils/vectors/vectors";
+import { GridSpatialIndex, type Indexable } from "./GridSpatialIndex";
 
 test("add and remove item with id=head", () => {
   const spatialIndex = new GridSpatialIndex<string, string, Indexable>();

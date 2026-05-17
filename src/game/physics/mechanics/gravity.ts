@@ -1,12 +1,10 @@
-import type { ItemTypeUnion } from "../../../_generated/types/ItemInPlayUnion";
-import type { RoomState } from "../../../model/RoomState";
-import type { GameState } from "../../gameState/GameState";
-import type { Mechanic } from "../MechanicResult";
-
+import { type ItemTypeUnion } from "../../../_generated/types/ItemInPlayUnion";
+import { type RoomState } from "../../../model/RoomState";
 import { stoodOnItem } from "../../../model/stoodOnItemsLookup";
 import { originXyz } from "../../../utils/vectors/vectors";
+import { type GameState } from "../../gameState/GameState";
 import { type FreeItemTypes, isLift, isSolid } from "../itemPredicates";
-import { type MechanicResult } from "../MechanicResult";
+import { type Mechanic, type MechanicResult } from "../MechanicResult";
 import { fallG, terminalVelocityPixPerMs } from "../mechanicsConstants";
 
 const notFalling = {

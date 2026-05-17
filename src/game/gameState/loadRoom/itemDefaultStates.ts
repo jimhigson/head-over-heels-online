@@ -1,9 +1,11 @@
-import type { ItemInPlayType } from "../../../model/ItemInPlay";
-import type { BaseItemState, ItemState } from "../../../model/ItemState";
-import type { FreeItemState } from "../../../model/ItemStateMap";
-import type { JsonItemType, JsonItemUnion } from "../../../model/json/JsonItem";
-import type { StoodOnBy } from "../../../model/StoodOnBy";
-
+import { type ItemInPlayType } from "../../../model/ItemInPlay";
+import { type BaseItemState, type ItemState } from "../../../model/ItemState";
+import { type FreeItemState } from "../../../model/ItemStateMap";
+import {
+  type JsonItemType,
+  type JsonItemUnion,
+} from "../../../model/json/JsonItem";
+import { type StoodOnBy } from "../../../model/StoodOnBy";
 import { emptyObject } from "../../../utils/empty";
 import { neverTime } from "../../../utils/neverTime";
 import { omit } from "../../../utils/pick";

@@ -1,7 +1,5 @@
 import { twMerge } from "tailwind-merge";
 
-import type { DialogId } from "../../DialogId";
-
 import {
   type MarkdownPageName,
   markdownPages,
@@ -13,6 +11,7 @@ import { Border } from "../../../../../../ui/Border";
 import { Dialog } from "../../../../../../ui/Dialog";
 import { DialogPortal } from "../../../../../../ui/DialogPortal";
 import { BlockyMarkdown } from "../../../../BlockyMarkdown";
+import { type DialogId } from "../../DialogId";
 import { DialogTitleBar } from "../DialogTitleBar";
 import { useScrollingFromInput } from "../useScrollingFromInput";
 

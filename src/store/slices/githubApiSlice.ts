@@ -1,5 +1,4 @@
-import type { components } from "@octokit/openapi-types";
-
+import { type components } from "@octokit/openapi-types";
 import { createApi, fetchBaseQuery } from "@reduxjs/toolkit/query/react";
 
 type Release = components["schemas"]["release"];

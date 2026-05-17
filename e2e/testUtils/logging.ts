@@ -1,8 +1,5 @@
-import type { ConsoleMessage, Page } from "@playwright/test";
-import type { ChalkInstance } from "chalk";
-
-import { test } from "@playwright/test";
-import chalk from "chalk";
+import { type ConsoleMessage, type Page, test } from "@playwright/test";
+import chalk, { type ChalkInstance } from "chalk";
 
 export const formatDuration = (ms: number): string => {
   if (ms < 1000) {

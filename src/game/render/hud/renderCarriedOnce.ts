@@ -1,13 +1,12 @@
-import type { Container, RenderLayer } from "pixi.js";
+import { type Container, type RenderLayer } from "pixi.js";
 
-import type { RoomState } from "../../../model/RoomState";
-import type { PortableItem } from "../../physics/itemPredicates";
-import type { GeneralRenderContext } from "../room/RoomRenderContexts";
-import type { ZGraph } from "../sortZ/GraphEdges";
-
+import { type RoomState } from "../../../model/RoomState";
 import { emptyMap, emptySet } from "../../../utils/empty";
 import { neverTime } from "../../../utils/neverTime";
+import { type PortableItem } from "../../physics/itemPredicates";
 import { appearanceForItem } from "../itemAppearances/appearanceForItem";
+import { type GeneralRenderContext } from "../room/RoomRenderContexts";
+import { type ZGraph } from "../sortZ/GraphEdges";
 
 type RenderContextSubset<RoomId extends string> = {
   general: GeneralRenderContext<RoomId>;

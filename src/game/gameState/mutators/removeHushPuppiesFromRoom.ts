@@ -1,7 +1,6 @@
-import type { GameState } from "../GameState";
-
 import { roomItemsIterable, type RoomState } from "../../../model/RoomState";
 import { isHushPuppy } from "../../physics/itemPredicates";
+import { type GameState } from "../GameState";
 import { makeItemFadeOut } from "./makeItemFadeOut";
 
 export const removeHushPuppiesFromRoom = <

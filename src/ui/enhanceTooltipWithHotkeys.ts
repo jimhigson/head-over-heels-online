@@ -1,4 +1,4 @@
-import type { ShortcutKeys } from "./useKeyboardShortcut";
+import { type ShortcutKeys } from "./useKeyboardShortcut";
 
 const formatShortcutKey = (key: string): string => {
   // Convert modifier symbols and keys to display format

@@ -1,12 +1,10 @@
 import { Container } from "pixi.js";
 
-import type { ItemTypeUnion } from "../../../../_generated/types/ItemInPlayUnion";
-import type { ItemInPlay } from "../../../../model/ItemInPlay";
-import type { RoomState } from "../../../../model/RoomState";
-import type { SpriteOption } from "../../../../store/slices/userSettings/userSettingsSlice";
-
-import { roomItemsIterable } from "../../../../model/RoomState";
+import { type ItemTypeUnion } from "../../../../_generated/types/ItemInPlayUnion";
+import { type ItemInPlay } from "../../../../model/ItemInPlay";
+import { roomItemsIterable, type RoomState } from "../../../../model/RoomState";
 import { wallTimes } from "../../../../model/times";
+import { type SpriteOption } from "../../../../store/slices/userSettings/userSettingsSlice";
 import { iterateToContainer } from "../../../../utils/pixi/iterateToContainer";
 import {
   perpendicularAxisXy,

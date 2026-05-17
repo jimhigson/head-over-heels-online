@@ -1,22 +1,19 @@
-import type { JsonItem } from "../../../../../../model/json/JsonItem";
-import type { Campaign } from "../../../../../../model/modelTypes";
-import type { SubRooms } from "../../../../../../model/RoomJson";
-import type {
-  DirectionXy4,
-  Xy,
-  Xyz,
-} from "../../../../../../utils/vectors/vectors";
-
 import { exitGameRoomId } from "../../../../../../model/json/ItemConfigMap";
+import { type JsonItem } from "../../../../../../model/json/JsonItem";
+import { type Campaign } from "../../../../../../model/modelTypes";
+import { type SubRooms } from "../../../../../../model/RoomJson";
 import { objectEntriesIter, valuesIter } from "../../../../../../utils/entries";
 import { unitVectors } from "../../../../../../utils/vectors/unitVectors";
 import {
   addXyz,
+  type DirectionXy4,
   originXy,
   originXyz,
   subXy,
   subXyz,
+  type Xy,
   xyEqual,
+  type Xyz,
 } from "../../../../../../utils/vectors/vectors";
 import { findSubRoomForItem } from "./itemIsInSubRoom";
 

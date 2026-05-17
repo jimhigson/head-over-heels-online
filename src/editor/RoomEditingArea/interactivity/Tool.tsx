@@ -1,8 +1,8 @@
-import type {
-  JsonItemConfig,
-  JsonItemType,
+import {
+  type JsonItemConfig,
+  type JsonItemType,
 } from "../../../model/json/JsonItem";
-import type { EditorRoomId, EditorRoomItemId } from "../../editorTypes";
+import { type EditorRoomId, type EditorRoomItemId } from "../../editorTypes";
 
 /**
  * If using the tool with type: 'item', describes the item to be placed

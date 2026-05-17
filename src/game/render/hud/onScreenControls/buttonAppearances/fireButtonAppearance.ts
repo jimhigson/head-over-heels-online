@@ -1,18 +1,19 @@
-import type { Renderer, Sprite } from "pixi.js";
+import { Container, type Renderer, type Sprite } from "pixi.js";
 
-import { Container } from "pixi.js";
-
-import type { PokeableNumber } from "../../../../../model/ItemStateMap";
-import type { RoomState } from "../../../../../model/RoomState";
-import type { ButtonAppearance } from "../../HudButtonRenderer";
-
-import { pokeableToNumber } from "../../../../../model/ItemStateMap";
+import {
+  type PokeableNumber,
+  pokeableToNumber,
+} from "../../../../../model/ItemStateMap";
+import { type RoomState } from "../../../../../model/RoomState";
 import { getSpriteSheetVariant } from "../../../../../sprites/spritesheet/variants/getSpriteSheetVariant";
 import { selectHeadAbilities } from "../../../../gameState/gameStateSelectors/selectPlayableItem";
 import { createSprite } from "../../../createSprite";
 import { getWhite } from "../../../gameColours/gameColours";
 import { TextContainer } from "../../../text/TextContainer";
-import { textYForButtonCentre } from "../../HudButtonRenderer";
+import {
+  type ButtonAppearance,
+  textYForButtonCentre,
+} from "../../HudButtonRenderer";
 import { ArcadeStyleButtonContainer } from "../ArcadeStyleButtonContainer";
 import { buttonActionsPressed } from "./buttonActionsPressed";
 

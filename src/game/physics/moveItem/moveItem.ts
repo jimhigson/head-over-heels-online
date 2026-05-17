@@ -1,7 +1,3 @@
-import type { Xyz } from "../../../utils/vectors/vectors";
-import type { GameState } from "../../gameState/GameState";
-import type { handleItemsTouchingItems } from "../handleTouch/handleItemsTouchingItems";
-
 import { type UnionOfAllItemInPlayTypes } from "../../../model/ItemInPlay";
 import { roomSpatialIndexKey, type RoomState } from "../../../model/RoomState";
 import { stoodOnItem } from "../../../model/stoodOnItemsLookup";
@@ -12,6 +8,7 @@ import {
   lengthXyz,
   originXyz,
   subXyz,
+  type Xyz,
   xyzEqual,
 } from "../../../utils/vectors/vectors";
 import { visualiseVectorForLogs } from "../../../utils/vectors/visualiseVectorForLogs";
@@ -19,18 +16,20 @@ import {
   collision2Items,
   collisionItemWithIndex,
 } from "../../collision/aabbCollision";
+import { type GameState } from "../../gameState/GameState";
 import { removeStandingOn } from "../../gameState/mutators/standingOn/removeStandingOn";
 import { setStandingOnWithoutRemovingOldFirst } from "../../gameState/mutators/standingOn/setStandingOnWithoutRemovingOldFirst";
 import { updateItemPosition } from "../../gameState/mutators/updateItemPosition";
 import { sortObstaclesAboutPriorityAndVector } from "../collisionsOrder";
+import { type handleItemsTouchingItems } from "../handleTouch/handleItemsTouchingItems";
 import {
+  isFreeItem,
   isLift,
   isPushable,
   isSlidingItem,
+  isSolid,
   isStandable,
 } from "../itemPredicates";
-import { isFreeItem } from "../itemPredicates";
-import { isSolid } from "../itemPredicates";
 import { maxPushRecursionDepth } from "../mechanicsConstants";
 import { mtv } from "../mtv";
 import { recordActedOnBy, recordCollision } from "../recordActedOnBy";

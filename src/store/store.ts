@@ -1,11 +1,10 @@
-import type {
-  EnhancedStore,
-  ThunkAction,
-  UnknownAction,
+import {
+  combineSlices,
+  configureStore,
+  type EnhancedStore,
+  type ThunkAction,
+  type UnknownAction,
 } from "@reduxjs/toolkit";
-import type { EmptyObject } from "type-fest";
-
-import { combineSlices, configureStore } from "@reduxjs/toolkit";
 import { useSelector } from "react-redux";
 import {
   FLUSH,
@@ -16,17 +15,17 @@ import {
   REGISTER,
   REHYDRATE,
 } from "redux-persist";
+import { type EmptyObject } from "type-fest";
 
-import type {
-  LevelEditorSliceAction,
-  LevelEditorState,
+import {
+  type LevelEditorSliceAction,
+  type LevelEditorState,
 } from "../editor/slice/levelEditorSlice";
-import type {
-  StoreActionOf,
-  StoreEnhancersOf,
-} from "../utils/redux/EnhancedStoreTypeHelpers";
-
 import { emptyObject } from "../utils/empty";
+import {
+  type StoreActionOf,
+  type StoreEnhancersOf,
+} from "../utils/redux/EnhancedStoreTypeHelpers";
 import { listenerMiddleware } from "./listenerMiddleware";
 /**
  * note that levelEditorPersistedReducer should be tree-shaken out if VITE_APP === "editor" since it is not listed

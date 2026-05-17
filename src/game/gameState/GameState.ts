@@ -1,9 +1,10 @@
-import type { IndividualCharacterName } from "../../model/modelTypes";
-import type { RoomState } from "../../model/RoomState";
-import type { InputStateTrackerInterface } from "../input/InputStateTracker";
-import type { PlayableEntryState } from "./PlayableEntryState";
-
-import { type CharacterName } from "../../model/modelTypes";
+import {
+  type CharacterName,
+  type IndividualCharacterName,
+} from "../../model/modelTypes";
+import { type RoomState } from "../../model/RoomState";
+import { type InputStateTrackerInterface } from "../input/InputStateTracker";
+import { type PlayableEntryState } from "./PlayableEntryState";
 
 export type RoomPickupsCollected = Record<string, true>;
 

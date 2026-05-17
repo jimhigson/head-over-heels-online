@@ -1,10 +1,9 @@
 "use client";
 
-import type { MouseEvent, ReactNode, Ref } from "react";
-
+import { type MouseEvent, type ReactNode, type Ref } from "react";
 import { twMerge } from "tailwind-merge";
 
-import type { DialogId } from "../game/components/dialogs/menuDialog/DialogId";
+import { type DialogId } from "../game/components/dialogs/menuDialog/DialogId";
 
 export type DialogProps = {
   children?: ReactNode;

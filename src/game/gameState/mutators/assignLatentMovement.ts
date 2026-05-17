@@ -1,17 +1,16 @@
-import type { UnionOfAllItemInPlayTypes } from "../../../model/ItemInPlay";
-import type { LatentMovementFrame } from "../../../model/ItemStateMap";
-import type { RoomState } from "../../../model/RoomState";
-import type { Xyz } from "../../../utils/vectors/vectors";
-import type { MovedItems } from "../../mainLoop/progressGameState";
-import type { FreeItem } from "../../physics/itemPredicates";
-
+import { type UnionOfAllItemInPlayTypes } from "../../../model/ItemInPlay";
+import { type LatentMovementFrame } from "../../../model/ItemStateMap";
+import { type RoomState } from "../../../model/RoomState";
 import { iterateStoodOnByItems } from "../../../model/stoodOnItemsLookup";
 import {
   originXy,
   scaleXyz,
   subXyz,
   xyEqual,
+  type Xyz,
 } from "../../../utils/vectors/vectors";
+import { type MovedItems } from "../../mainLoop/progressGameState";
+import { type FreeItem } from "../../physics/itemPredicates";
 import { originalFramePeriod } from "../../render/animationTimings";
 
 // since the original game pushes items every other frame, the practical latency

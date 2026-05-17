@@ -1,8 +1,7 @@
-import type { EditorRoomId } from "../../editorTypes";
-import type { LevelEditorState } from "../levelEditorSlice";
-
 import { roomJsonItemsIterable } from "../../../model/RoomJson";
 import { keys, valuesIter } from "../../../utils/entries";
+import { type EditorRoomId } from "../../editorTypes";
+import { type LevelEditorState } from "../levelEditorSlice";
 
 export const removeInboundRoomReferencesInPlace = (
   state: LevelEditorState,

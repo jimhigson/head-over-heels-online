@@ -1,10 +1,11 @@
-import type { RoomState } from "../../../../../model/RoomState";
-import type { ButtonAppearance } from "../../HudButtonRenderer";
-
+import { type RoomState } from "../../../../../model/RoomState";
 import { selectHeelsAbilities } from "../../../../gameState/gameStateSelectors/selectPlayableItem";
 import { getWhite } from "../../../gameColours/gameColours";
 import { TextContainer } from "../../../text/TextContainer";
-import { textYForButtonCentre } from "../../HudButtonRenderer";
+import {
+  type ButtonAppearance,
+  textYForButtonCentre,
+} from "../../HudButtonRenderer";
 import { ArcadeStyleButtonContainer } from "../ArcadeStyleButtonContainer";
 import { buttonActionsPressed } from "./buttonActionsPressed";
 

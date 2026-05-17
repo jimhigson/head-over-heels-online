@@ -1,7 +1,6 @@
 import { useEffect } from "preact/hooks";
 
-import type { DecorateItemMaybeRenderer } from "./item/itemRender/DecorateItemRenderer";
-
+import { type DecorateItemMaybeRenderer } from "./item/itemRender/DecorateItemRenderer";
 import { RoomRenderer } from "./room/RoomRenderer";
 
 export const useRegisterDecorateItemRenderers = (

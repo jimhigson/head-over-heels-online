@@ -1,11 +1,11 @@
-import type { SetRequired } from "type-fest";
+import { type SetRequired } from "type-fest";
 
-import type { Renderer } from "../Renderer";
-import type { SoundAndGraphicsOutput } from "../SoundAndGraphicsOutput";
-import type {
-  RoomRenderContext,
-  RoomRenderContextInGame,
-  RoomTickContext,
+import { type Renderer } from "../Renderer";
+import { type SoundAndGraphicsOutput } from "../SoundAndGraphicsOutput";
+import {
+  type RoomRenderContext,
+  type RoomRenderContextInGame,
+  type RoomTickContext,
 } from "./RoomRenderContexts";
 
 /**

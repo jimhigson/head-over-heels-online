@@ -1,9 +1,8 @@
-import type {
-  ItemInPlayAAbbInfo,
-  UnionOfAllItemInPlayTypes,
+import {
+  type ItemInPlayAAbbInfo,
+  type UnionOfAllItemInPlayTypes,
 } from "../../model/ItemInPlay";
-import type { JsonItemUnion } from "../../model/json/JsonItem";
-
+import { type JsonItemUnion } from "../../model/json/JsonItem";
 import { type Aabb, addXyz, originXyz } from "../../utils/vectors/vectors";
 import { blockSizePx } from "../physics/mechanicsConstants";
 

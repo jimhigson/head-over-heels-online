@@ -1,9 +1,8 @@
-import type { ValueOf } from "type-fest";
-
-import type { EditorRoomItemId, EditorRoomJson } from "../editorTypes";
-import type { PreviewedRoomItemEdits } from "./levelEditorSlice";
+import { type ValueOf } from "type-fest";
 
 import { objectEntriesIter } from "../../utils/entries";
+import { type EditorRoomItemId, type EditorRoomJson } from "../editorTypes";
+import { type PreviewedRoomItemEdits } from "./levelEditorSlice";
 
 export const applyPreviewedEditsInPlace = (
   draftRoomJson: EditorRoomJson,

@@ -1,14 +1,15 @@
-import type { PartialNamedColours } from "../../../utils/palette/palette";
-import type { AppSpritesheet } from "../loadedSpriteSheet";
-import type { VariantBuildContext } from "../VariantBuildContext";
-
-import { resolveSwops } from "../../../utils/palette/palette";
+import {
+  type PartialNamedColours,
+  resolveSwops,
+} from "../../../utils/palette/palette";
 import { paletteBlockstack } from "../../palette/spritesheetPalette";
+import { type AppSpritesheet } from "../loadedSpriteSheet";
 import {
   ambientDimSwops,
   createSpritesheetVariant,
   replaceSpritesheetWithSwopped,
 } from "../spritesheetPaletteSwop";
+import { type VariantBuildContext } from "../VariantBuildContext";
 
 let swopped: AppSpritesheet | undefined = undefined;
 

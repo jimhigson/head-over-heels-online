@@ -1,30 +1,36 @@
-import type { Container, Sprite } from "pixi.js";
+import { type Container, type Sprite } from "pixi.js";
 
-import type { ItemInPlay } from "../../../model/ItemInPlay";
-import type { RoomState } from "../../../model/RoomState";
-import type { AppSpritesheet } from "../../../sprites/spritesheet/loadedSpriteSheet";
-import type {
-  AnimationId,
-  TextureId,
-} from "../../../sprites/spritesheet/spritesheetData/makeSpritesheetData";
-import type { SpritesheetVariant } from "../../../sprites/spritesheet/variants/SpritesheetVariant";
-import type { DirectionXy4 } from "../../../utils/vectors/vectors";
-import type { AnimatedCreateSpriteOptions } from "../createSprite";
-import type { StackedSpritesContainer } from "./createStackedSprites";
-import type { ItemAppearance } from "./ItemAppearance";
-
+import { type ItemInPlay } from "../../../model/ItemInPlay";
+import { type RoomState } from "../../../model/RoomState";
 import { isAnimationId, isTextureId } from "../../../sprites/assertIsTextureId";
-import { originalSpriteSheet } from "../../../sprites/spritesheet/loadedSpriteSheet";
+import {
+  type AppSpritesheet,
+  originalSpriteSheet,
+} from "../../../sprites/spritesheet/loadedSpriteSheet";
+import {
+  type AnimationId,
+  type TextureId,
+} from "../../../sprites/spritesheet/spritesheetData/makeSpritesheetData";
 import { getSpriteSheetVariant } from "../../../sprites/spritesheet/variants/getSpriteSheetVariant";
+import { type SpritesheetVariant } from "../../../sprites/spritesheet/variants/SpritesheetVariant";
 import { renderBobSine } from "../../../utils/maths/renderBob";
 import {
+  type DirectionXy4,
   originXy,
   vectorClosestDirectionXy4,
   xyEqual,
 } from "../../../utils/vectors/vectors";
 import { blockSizePx } from "../../physics/mechanicsConstants";
-import { createSprite } from "../createSprite";
-import { createStackedSprites, stackedTopSymbol } from "./createStackedSprites";
+import {
+  type AnimatedCreateSpriteOptions,
+  createSprite,
+} from "../createSprite";
+import {
+  createStackedSprites,
+  type StackedSpritesContainer,
+  stackedTopSymbol,
+} from "./createStackedSprites";
+import { type ItemAppearance } from "./ItemAppearance";
 
 /** resolve the dalek animation id, using the dark variant if available for this room's scenery */
 const dalekAnimationId = (

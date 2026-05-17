@@ -1,9 +1,8 @@
-import type {
-  Action,
-  ActionCreatorWithoutPayload,
-  ActionCreatorWithPayload,
+import {
+  type Action,
+  type ActionCreatorWithoutPayload,
+  type ActionCreatorWithPayload,
 } from "@reduxjs/toolkit";
-
 import { useCallback } from "preact/hooks";
 
 import { useAppDispatch } from "./hooks";

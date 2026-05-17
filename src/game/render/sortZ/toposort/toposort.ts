@@ -17,9 +17,8 @@
  * @returns {Array}
  */
 
-import type { ZGraph } from "../GraphEdges";
-
 import { emptySet } from "../../../../utils/empty";
+import { type ZGraph } from "../GraphEdges";
 
 const logCyclicRendering = import.meta.env.VITE_LOG_CYCLIC_RENDERING === "true";
 

@@ -1,9 +1,8 @@
-import type { IndividualCharacterName } from "../../../model/modelTypes";
-import type { RoomState } from "../../../model/RoomState";
-import type { Xyz } from "../../../utils/vectors/vectors";
-import type { FreeItem } from "../../physics/itemPredicates";
-
-import { otherIndividualCharacterName } from "../../../model/modelTypes";
+import {
+  type IndividualCharacterName,
+  otherIndividualCharacterName,
+} from "../../../model/modelTypes";
+import { type RoomState } from "../../../model/RoomState";
 import { store } from "../../../store/store";
 import { epsilon } from "../../../utils/epsilon";
 import {
@@ -12,8 +11,10 @@ import {
   manhattanDistanceXy,
   scaleXyzWriteInto,
   subXyzWriteInto,
+  type Xyz,
 } from "../../../utils/vectors/vectors";
 import { handleItemsTouchingItems } from "../../physics/handleTouch/handleItemsTouchingItems";
+import { type FreeItem } from "../../physics/itemPredicates";
 import { blockSizePx } from "../../physics/mechanicsConstants";
 import { moveItem } from "../../physics/moveItem/moveItem";
 import { type GameState } from "../GameState";

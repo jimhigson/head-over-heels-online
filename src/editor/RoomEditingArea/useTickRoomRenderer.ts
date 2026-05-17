@@ -1,16 +1,15 @@
 import { Ticker } from "pixi.js";
 import { useEffect } from "preact/hooks";
 
-import type { MovedItems } from "../../game/mainLoop/progressGameState";
-import type {
-  EditorRoomId,
-  EditorRoomItemId,
-  EditorRoomRenderer,
-  EditorUnionOfAllItemInPlayTypes,
-} from "../editorTypes";
-
+import { type MovedItems } from "../../game/mainLoop/progressGameState";
 import { isSpatial } from "../../game/physics/itemPredicates";
 import { valuesIter } from "../../utils/entries";
+import {
+  type EditorRoomId,
+  type EditorRoomItemId,
+  type EditorRoomRenderer,
+  type EditorUnionOfAllItemInPlayTypes,
+} from "../editorTypes";
 import { useEditorRoomStateWithPreviews } from "../slice/levelEditorSelectors";
 import { useProvidedPixiApplication } from "./PixiApplicationProvider";
 

@@ -1,26 +1,28 @@
-import type {
-  EditorRoomState,
-  EditorUnionOfAllItemInPlayTypes,
-} from "../../editorTypes";
-import type { GridResolution } from "../../slice/levelEditorSlice";
-import type { Tool } from "../interactivity/Tool";
-import type { MaybePointingAtSomething, PointingAtNothing } from "./PointingAt";
-import type {
-  PointerItemIntersection,
-  PointerItemMaybeIntersection,
-} from "./pointIntersectsItemAABB";
-
 import { isSolid } from "../../../game/physics/itemPredicates";
 import { blockSizePx } from "../../../game/physics/mechanicsConstants";
 import { unprojectScreenXyToWorldXyzOnFace } from "../../../game/render/projections";
 import { roomItemsIterable } from "../../../model/RoomState";
 import { orthoPlaneForNormal } from "../../../utils/vectors/orthoPlane";
 import { type Xy, type Xyz } from "../../../utils/vectors/vectors";
+import {
+  type EditorRoomState,
+  type EditorUnionOfAllItemInPlayTypes,
+} from "../../editorTypes";
+import { type GridResolution } from "../../slice/levelEditorSlice";
+import { type Tool } from "../interactivity/Tool";
 import { frontItemFromPointerIntersections } from "./frontItemFromPointerIntersections";
 import { pointerIntersectionCorner } from "./pointerIntersectionCorner";
 import { pointerIntersectionEdge } from "./pointerIntersectionEdge";
 import { pointerIntersectionFace } from "./pointerIntersectionFace";
-import { pointIntersectsItemAABB } from "./pointIntersectsItemAABB";
+import {
+  type MaybePointingAtSomething,
+  type PointingAtNothing,
+} from "./PointingAt";
+import {
+  type PointerItemIntersection,
+  type PointerItemMaybeIntersection,
+  pointIntersectsItemAABB,
+} from "./pointIntersectsItemAABB";
 
 export const roundXyzProjection = (
   /** the world position to round */

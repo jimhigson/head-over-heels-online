@@ -1,15 +1,15 @@
-import type { Sprite } from "pixi.js";
+import { type Sprite } from "pixi.js";
 
-import type {
-  CharacterName,
-  IndividualCharacterName,
+import {
+  type CharacterName,
+  type IndividualCharacterName,
 } from "../../../../model/modelTypes";
-import type { AppSpritesheet } from "../../../../sprites/spritesheet/loadedSpriteSheet";
-import type { TextureId } from "../../../../sprites/spritesheet/spritesheetData/makeSpritesheetData";
-import type { ItemAppearance } from "../ItemAppearance";
-
 import { isTextureId } from "../../../../sprites/assertIsTextureId";
-import { originalSpriteSheet } from "../../../../sprites/spritesheet/loadedSpriteSheet";
+import {
+  type AppSpritesheet,
+  originalSpriteSheet,
+} from "../../../../sprites/spritesheet/loadedSpriteSheet";
+import { type TextureId } from "../../../../sprites/spritesheet/spritesheetData/makeSpritesheetData";
 import { getSpriteSheetVariant } from "../../../../sprites/spritesheet/variants/getSpriteSheetVariant";
 import {
   type DirectionXy4,
@@ -19,6 +19,7 @@ import {
 } from "../../../../utils/vectors/vectors";
 import { blockSizePx } from "../../../physics/mechanicsConstants";
 import { createSprite } from "../../createSprite";
+import { type ItemAppearance } from "../ItemAppearance";
 
 type RenderPropsXy4 = {
   facingXy4: DirectionXy4;

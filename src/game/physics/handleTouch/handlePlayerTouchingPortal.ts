@@ -1,7 +1,4 @@
-import type { ItemInPlay } from "../../../model/ItemInPlay";
-import type { PlayableItem } from "../itemPredicates";
-import type { ItemTouchEvent } from "./ItemTouchEvent";
-
+import { type ItemInPlay } from "../../../model/ItemInPlay";
 import { exitGameRoomId } from "../../../model/json/ItemConfigMap";
 import {
   type CharacterName,
@@ -15,6 +12,8 @@ import { store } from "../../../store/store";
 import { dotProductXyz } from "../../../utils/vectors/vectors";
 import { changeCharacterRoom } from "../../gameState/mutators/changeCharacterRoom";
 import { deleteItemFromRoom } from "../../gameState/mutators/deleteItemFromRoom";
+import { type PlayableItem } from "../itemPredicates";
+import { type ItemTouchEvent } from "./ItemTouchEvent";
 
 /**
  *

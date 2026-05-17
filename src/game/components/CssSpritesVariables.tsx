@@ -1,7 +1,5 @@
-import type { PropsWithChildren } from "react";
-
-import "react";
-import type { EmptyObject } from "type-fest";
+import { type PropsWithChildren } from "react";
+import { type EmptyObject } from "type-fest";
 
 import { useAppSelector } from "../../store/hooks";
 import { selectSpritesOption } from "../../store/slices/gameMenus/gameMenusSelectors";

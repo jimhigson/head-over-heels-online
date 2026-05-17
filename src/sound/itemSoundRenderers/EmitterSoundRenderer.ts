@@ -1,8 +1,7 @@
-import type { ItemTickContext } from "../../game/render/ItemRenderContexts";
-import type { ItemSoundRenderContext } from "../ItemSoundRenderContext";
-import type { ItemSoundRenderer } from "../ItemSoundRenderer";
-
+import { type ItemTickContext } from "../../game/render/ItemRenderContexts";
 import { audioCtx } from "../audioCtx";
+import { type ItemSoundRenderContext } from "../ItemSoundRenderContext";
+import { type ItemSoundRenderer } from "../ItemSoundRenderer";
 import { createAudioNode } from "../soundUtils/createAudioNode";
 
 export class EmitterSoundRenderer implements ItemSoundRenderer<"emitter"> {

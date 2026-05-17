@@ -1,4 +1,4 @@
-import type { EmptyObject } from "type-fest";
+import { type EmptyObject } from "type-fest";
 
 import { Border } from "../../../../../../ui/Border";
 import { Dialog } from "../../../../../../ui/Dialog";

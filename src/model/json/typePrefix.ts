@@ -1,4 +1,4 @@
-import type { JsonItemType } from "./JsonItem";
+import { type JsonItemType } from "./JsonItem";
 
 /**
  * Short (1–2 char) prefix for each item type, used to build compact item

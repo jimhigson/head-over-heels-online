@@ -1,9 +1,9 @@
-import type { AnyRoomJson } from "../../../model/RoomJson";
-import type { Xyz } from "../../../utils/vectors/vectors";
-
-import { roomJsonItemsIterable } from "../../../model/RoomJson";
+import {
+  type AnyRoomJson,
+  roomJsonItemsIterable,
+} from "../../../model/RoomJson";
 import { roomItemsIterable, type RoomState } from "../../../model/RoomState";
-import { addXyz, originXyz } from "../../../utils/vectors/vectors";
+import { addXyz, originXyz, type Xyz } from "../../../utils/vectors/vectors";
 import { blockSizePx } from "../../physics/mechanicsConstants";
 import { projectWorldXyzToScreenXy } from "../projections";
 import { nonRenderingItemFixedZIndex } from "../sortZ/fixedZIndexes";

@@ -1,5 +1,4 @@
-import type { JsonItemUnion } from "../../../../model/json/JsonItem";
-
+import { type JsonItemUnion } from "../../../../model/json/JsonItem";
 import {
   doorAlongAxis,
   unitXyz,

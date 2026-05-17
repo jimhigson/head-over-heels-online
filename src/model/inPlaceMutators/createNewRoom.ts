@@ -1,11 +1,9 @@
-import type { SceneryName } from "../../sprites/planets";
-import type { Xy, Xyz } from "../../utils/vectors/vectors";
-import type { JsonItemUnion } from "../json/JsonItem";
-
 import { consolidateItemsMap } from "../../consolidateItems/consolidateItems";
 import { buildRoomJsonDirectionalIndex } from "../../game/gameState/loadRoom/buildRoomJsonDirectionalIndex";
 import { type ZxSpectrumRoomColour } from "../../originalGame";
-import { originXyz } from "../../utils/vectors/vectors";
+import { type SceneryName } from "../../sprites/planets";
+import { originXyz, type Xy, type Xyz } from "../../utils/vectors/vectors";
+import { type JsonItemUnion } from "../json/JsonItem";
 import { typePrefix } from "../json/typePrefix";
 import { type RoomJson, roomJsonItemsIterable } from "../RoomJson";
 import { changeRoomSceneryInPlace } from "./changeRoomSceneryInPlace";

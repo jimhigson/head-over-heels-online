@@ -1,5 +1,4 @@
-import type { GameState } from "../gameState/GameState";
-
+import { type GameState } from "../gameState/GameState";
 import { selectCurrentPlayableItem } from "../gameState/gameStateSelectors/selectPlayableItem";
 import { swopPlayables } from "../gameState/mutators/swopPlayables";
 

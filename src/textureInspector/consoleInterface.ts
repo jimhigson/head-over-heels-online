@@ -1,7 +1,5 @@
 /* eslint-disable no-console -- the point of this file is to log to the console */
-import type { Renderer, TextureSource } from "pixi.js";
-
-import { Texture } from "pixi.js";
+import { type Renderer, Texture, type TextureSource } from "pixi.js";
 
 import spritesheetPalette from "../_generated/palette/spritesheetPalette.json" with { type: "json" };
 import {

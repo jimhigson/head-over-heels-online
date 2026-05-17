@@ -1,7 +1,5 @@
 import { useMemo } from "preact/hooks";
 
-import type { OnRoomClick } from "./Map.svg";
-
 import { useCheatsOn } from "../../../../../../store/slices/gameMenus/gameMenusSelectors";
 import { backToParentMenu } from "../../../../../../store/slices/gameMenus/gameMenusSlice";
 import { useDispatchActionCallback } from "../../../../../../store/useDispatchActionCallback";
@@ -11,7 +9,7 @@ import { useElementSize } from "../../../../../../utils/react/useElementSize";
 import { swopPlayables } from "../../../../../gameState/mutators/swopPlayables";
 import { useGameApi } from "../../../../GameApiContext";
 import { useScrollingFromInput } from "../useScrollingFromInput";
-import { MapSvg } from "./Map.svg";
+import { MapSvg, type OnRoomClick } from "./Map.svg";
 import { getMapColoursClass } from "./mapColours";
 import { useMapDataForCurrentGame } from "./useMapDataForCurrentGame";
 import { useAllowCharacterSwopping } from "./useTickingCurrentCharacterName";

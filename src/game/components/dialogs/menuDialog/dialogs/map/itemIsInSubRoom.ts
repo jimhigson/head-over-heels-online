@@ -1,8 +1,7 @@
-import type { JsonItemUnion } from "../../../../../../model/json/JsonItem";
-import type { RoomJson } from "../../../../../../model/RoomJson";
-import type { Xy } from "../../../../../../utils/vectors/vectors";
-
+import { type JsonItemUnion } from "../../../../../../model/json/JsonItem";
+import { type RoomJson } from "../../../../../../model/RoomJson";
 import { keysIter } from "../../../../../../utils/entries";
+import { type Xy } from "../../../../../../utils/vectors/vectors";
 import { blockSizePx } from "../../../../../physics/mechanicsConstants";
 
 export type MaybeDividedRoom = {

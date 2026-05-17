@@ -1,10 +1,11 @@
-import type { DirectionXy4, Xy, Xyz } from "../../../../utils/vectors/vectors";
-
 import { addDoorToRoom } from "../../../../model/inPlaceMutators/addDoorToRoom";
 import { createNewRoom } from "../../../../model/inPlaceMutators/createNewRoom";
 import {
+  type DirectionXy4,
   doorAlongAxis,
   perpendicularAxisXy,
+  type Xy,
+  type Xyz,
 } from "../../../../utils/vectors/vectors";
 
 const doorPosition = (

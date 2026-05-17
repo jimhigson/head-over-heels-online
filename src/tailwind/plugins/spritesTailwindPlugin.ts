@@ -1,7 +1,6 @@
-import type { CSSRuleObject } from "tailwindcss/types/config";
-
 import { imageSize } from "image-size";
 import plugin from "tailwindcss/plugin";
+import { type CSSRuleObject } from "tailwindcss/types/config";
 
 import spritesheetPalette from "../../_generated/palette/spritesheetPalette.json" with { type: "json" };
 import toppyPalette from "../../_generated/palette/spritesheetToppyPalette.json" with { type: "json" };

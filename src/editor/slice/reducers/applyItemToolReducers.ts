@@ -1,17 +1,16 @@
 import { type PayloadAction, type SliceCaseReducers } from "@reduxjs/toolkit";
 
-import type {
-  CybermanConfig,
-  MonsterJsonConfig,
+import {
+  type CybermanConfig,
+  type MonsterJsonConfig,
 } from "../../../model/json/MonsterJsonConfig";
-import type { EditorJsonItemUnion } from "../../editorTypes";
-import type { ItemTool } from "../../RoomEditingArea/interactivity/Tool";
-import type { LevelEditorState } from "../levelEditorSlice";
-
 import { type Xyz } from "../../../utils/vectors/vectors";
+import { type EditorJsonItemUnion } from "../../editorTypes";
+import { type ItemTool } from "../../RoomEditingArea/interactivity/Tool";
 import { addDoorInPlace } from "../inPlaceMutators/addDoorInPlace";
 import { addItemInPlace } from "../inPlaceMutators/addItemInPlace";
 import { consolidateCurrentRoomInPlace } from "../inPlaceMutators/consolidateCurrentRoomInPlace";
+import { type LevelEditorState } from "../levelEditorSlice";
 import { pushUndoInPlace } from "./undoReducers";
 
 const isDoorTool = (itemTool: ItemTool): itemTool is ItemTool<"door"> => {

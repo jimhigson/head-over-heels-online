@@ -1,7 +1,6 @@
-import type { DrawOrderComparable } from "../DrawOrderComparable";
-import type { ZGraph } from "../GraphEdges";
-
 import { GridSpatialIndex } from "../../../physics/gridSpace/GridSpatialIndex";
+import { type DrawOrderComparable } from "../DrawOrderComparable";
+import { type ZGraph } from "../GraphEdges";
 import { updateZEdges } from "../updateZEdges";
 
 export const itemCount = 100;

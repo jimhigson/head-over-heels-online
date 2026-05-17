@@ -1,6 +1,5 @@
-import type { ItemInPlay } from "../../../model/ItemInPlay";
-
 import { defaultItemProperties } from "../../../model/defaultItemProperties";
+import { type ItemInPlay } from "../../../model/ItemInPlay";
 import { blockSizePx } from "../../physics/mechanicsConstants";
 import { nonRenderingItemFixedZIndex } from "../../render/sortZ/fixedZIndexes";
 import { defaultBaseState } from "./itemDefaultStates";

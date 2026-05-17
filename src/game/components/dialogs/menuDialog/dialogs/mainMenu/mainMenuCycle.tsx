@@ -1,4 +1,4 @@
-import type { TailwindTextColourClassname } from "../../../../../../tailwind/tailwindColours";
+import { type TailwindTextColourClassname } from "../../../../../../tailwind/tailwindColours";
 
 export const mainMenuCycle = [
   (

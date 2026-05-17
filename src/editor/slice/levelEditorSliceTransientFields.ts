@@ -1,4 +1,4 @@
-import type { LevelEditorState } from "./levelEditorSlice";
+import { type LevelEditorState } from "./levelEditorSlice";
 
 export const levelEditorSliceNonPersistedFields: (keyof LevelEditorState)[] = [
   "previewedEdits",

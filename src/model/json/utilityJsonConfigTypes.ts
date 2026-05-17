@@ -1,4 +1,4 @@
-import type { Xyz } from "../../utils/vectors/vectors";
+import { type Xyz } from "../../utils/vectors/vectors";
 
 export type BlockStyle = "artificial" | "book" | "organic" | "tower";
 

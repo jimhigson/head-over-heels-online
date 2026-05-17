@@ -1,6 +1,4 @@
-import type { Texture } from "pixi.js";
-
-import { Container, Graphics, Sprite, Text } from "pixi.js";
+import { Container, Graphics, Sprite, Text, type Texture } from "pixi.js";
 import { describe, expect, test } from "vitest";
 
 import { pixiContainerToString } from "./pixiContainerToString";

@@ -1,8 +1,5 @@
-import type { ItemTypeUnion } from "../../../_generated/types/ItemInPlayUnion";
-import type { RoomState } from "../../../model/RoomState";
-import type { GameState } from "../../gameState/GameState";
-import type { Mechanic } from "../MechanicResult";
-
+import { type ItemTypeUnion } from "../../../_generated/types/ItemInPlayUnion";
+import { type RoomState } from "../../../model/RoomState";
 import { stoodOnItem } from "../../../model/stoodOnItemsLookup";
 import { unitVectors } from "../../../utils/vectors/unitVectors";
 import {
@@ -11,13 +8,14 @@ import {
   scaleXyz,
   vectorClosestDirectionXy4,
 } from "../../../utils/vectors/vectors";
+import { type GameState } from "../../gameState/GameState";
 import {
   type FreeItemTypes,
   isConveyor,
   isHeels,
   isPlayableItem,
 } from "../itemPredicates";
-import { type MechanicResult } from "../MechanicResult";
+import { type Mechanic, type MechanicResult } from "../MechanicResult";
 import {
   conveyorSpeedPixPerMs,
   moveSpeedPixPerMs,

@@ -1,8 +1,7 @@
-import type { Page } from "@playwright/test";
+import { type Page } from "@playwright/test";
 
-import type { CharacterName } from "../../src/model/modelTypes";
-import type { AppDispatch } from "../../src/store/store";
-
+import { type CharacterName } from "../../src/model/modelTypes";
+import { type AppDispatch } from "../../src/store/store";
 import { osSlowness } from "./infrastructure";
 import { formatDuration } from "./logging";
 

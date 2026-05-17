@@ -1,4 +1,4 @@
-import type { Xy } from "../../../../../utils/vectors/vectors";
+import { type Xy } from "../../../../../utils/vectors/vectors";
 
 /**
  * Constant deceleration rate in pixels/ms²

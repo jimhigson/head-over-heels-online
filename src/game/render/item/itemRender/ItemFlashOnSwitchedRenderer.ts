@@ -1,13 +1,6 @@
 import { Container } from "pixi.js";
 
-import type { ItemInPlayType } from "../../../../model/ItemInPlay";
-import type {
-  ItemRenderContext,
-  ItemTickContext,
-} from "../../ItemRenderContexts";
-import type { DecorateItemRenderer } from "./DecorateItemRenderer";
-import type { ItemPixiRenderer } from "./ItemPixiRenderer";
-
+import { type ItemInPlayType } from "../../../../model/ItemInPlay";
 import { roomItemsIterable } from "../../../../model/RoomState";
 import { zxSpectrumColor, zxSpectrumColors } from "../../../../originalGame";
 import { effectColour } from "../../../../sprites/palette/spritesheetPalette";
@@ -16,6 +9,12 @@ import { getAmbientSwoppedColour } from "../../../../utils/palette/palette";
 import { isModifier } from "../../../physics/itemPredicates";
 import { OneColourFilter } from "../../filters/OneColourFilter";
 import { OutlineFilter } from "../../filters/OutlineFilter";
+import {
+  type ItemRenderContext,
+  type ItemTickContext,
+} from "../../ItemRenderContexts";
+import { type DecorateItemRenderer } from "./DecorateItemRenderer";
+import { type ItemPixiRenderer } from "./ItemPixiRenderer";
 
 const flashDurationMs = 75;
 

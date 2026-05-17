@@ -1,11 +1,7 @@
-import type { ItemTypeUnion } from "../../../_generated/types/ItemInPlayUnion";
-import type { StoodOnBy } from "../../../model/StoodOnBy";
-import type { Xyz } from "../../../utils/vectors/vectors";
-import type { SpecifiedTextureCreateSpriteOptions } from "../../render/createSprite";
-import type { RoomDirectionalIndex } from "./buildRoomJsonDirectionalIndex";
-
+import { type ItemTypeUnion } from "../../../_generated/types/ItemInPlayUnion";
 import { defaultItemProperties } from "../../../model/defaultItemProperties";
 import { type JsonItem } from "../../../model/json/JsonItem";
+import { type StoodOnBy } from "../../../model/StoodOnBy";
 import { emptyObject } from "../../../utils/empty";
 import { pick } from "../../../utils/pick";
 import { unitVectors } from "../../../utils/vectors/unitVectors";
@@ -16,11 +12,13 @@ import {
   perpendicularAxisXy,
   scaleXyz,
   subXyz,
+  type Xyz,
 } from "../../../utils/vectors/vectors";
-import { blockSizePx } from "../../physics/mechanicsConstants";
-import { veryHighZ } from "../../physics/mechanicsConstants";
+import { blockSizePx, veryHighZ } from "../../physics/mechanicsConstants";
+import { type SpecifiedTextureCreateSpriteOptions } from "../../render/createSprite";
 import { blockXyzToFineXyz } from "../../render/projections";
 import { nonRenderingItemFixedZIndex } from "../../render/sortZ/fixedZIndexes";
+import { type RoomDirectionalIndex } from "./buildRoomJsonDirectionalIndex";
 import { floorZAtPosition } from "./floorZAtPosition";
 import { isDoorInHiddenWall } from "./isDoorInHiddenWall";
 import { defaultBaseState } from "./itemDefaultStates";

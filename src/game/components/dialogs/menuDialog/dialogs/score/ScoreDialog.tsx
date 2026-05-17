@@ -1,14 +1,13 @@
 import { createSelector } from "@reduxjs/toolkit";
 
-import type { IndividualCharacterName } from "../../../../../../model/modelTypes";
-import type { RootState } from "../../../../../../store/store";
-
+import { type IndividualCharacterName } from "../../../../../../model/modelTypes";
 import { useAppSelector } from "../../../../../../store/hooks";
 import {
   selectPlanetsLiberatedCount,
   useCurrentCampaign,
 } from "../../../../../../store/slices/gameMenus/gameMenusSelectors";
 import { backToParentMenu } from "../../../../../../store/slices/gameMenus/gameMenusSlice";
+import { type RootState } from "../../../../../../store/store";
 import { useDispatchActionCallback } from "../../../../../../store/useDispatchActionCallback";
 import { Border } from "../../../../../../ui/Border";
 import { Dialog } from "../../../../../../ui/Dialog";

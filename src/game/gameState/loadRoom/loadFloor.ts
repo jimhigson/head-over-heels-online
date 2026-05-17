@@ -1,14 +1,15 @@
-import type { ItemInPlay } from "../../../model/ItemInPlay";
-import type { RoomJson } from "../../../model/RoomJson";
-import type { DirectionXy4 } from "../../../utils/vectors/vectors";
-import type { SpecifiedTextureCreateSpriteOptions } from "../../render/createSprite";
-
 import { defaultItemProperties } from "../../../model/defaultItemProperties";
+import { type ItemInPlay } from "../../../model/ItemInPlay";
 import { type JsonItem } from "../../../model/json/JsonItem";
-import { roomJsonItemsIterable } from "../../../model/RoomJson";
-import { addXyz, originXyz } from "../../../utils/vectors/vectors";
+import { type RoomJson, roomJsonItemsIterable } from "../../../model/RoomJson";
+import {
+  addXyz,
+  type DirectionXy4,
+  originXyz,
+} from "../../../utils/vectors/vectors";
 import { fullBlockAabb } from "../../collision/boundingBoxes";
 import { multiplyBoundingBox } from "../../collision/multiplyBoundingBox";
+import { type SpecifiedTextureCreateSpriteOptions } from "../../render/createSprite";
 import { blockXyzToFineXyz } from "../../render/projections";
 import { defaultBaseState } from "./itemDefaultStates";
 

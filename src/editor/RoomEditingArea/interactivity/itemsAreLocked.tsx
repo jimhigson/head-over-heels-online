@@ -1,7 +1,7 @@
-import type { EditorRootState } from "../../../store/store";
-import type {
-  EditorJsonItemUnion,
-  EditorUnionOfAllItemInPlayTypes,
+import { type EditorRootState } from "../../../store/store";
+import {
+  type EditorJsonItemUnion,
+  type EditorUnionOfAllItemInPlayTypes,
 } from "../../editorTypes";
 
 export const itemsAreLocked = (

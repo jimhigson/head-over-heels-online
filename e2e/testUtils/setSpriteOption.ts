@@ -1,10 +1,9 @@
-import type { Page } from "@playwright/test";
+import { type Page } from "@playwright/test";
 
-import type {
-  setSpritesOption,
-  SpriteOption,
+import {
+  type setSpritesOption,
+  type SpriteOption,
 } from "../../src/store/slices/userSettings/userSettingsSlice";
-
 import { dispatchToStore } from "./gameStateQueries";
 import { osSlowness, retryWithRecovery } from "./infrastructure";
 import { elapsed } from "./logging";

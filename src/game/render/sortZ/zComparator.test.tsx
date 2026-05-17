@@ -1,7 +1,6 @@
 import { describe, expect, test } from "vitest";
 
-import type { ItemInPlayAAbbInfo } from "../../../model/ItemInPlay";
-
+import { type ItemInPlayAAbbInfo } from "../../../model/ItemInPlay";
 import { GridSpatialIndex } from "../../physics/gridSpace/GridSpatialIndex";
 import { type DrawOrderComparable } from "./DrawOrderComparable";
 import { zComparator } from "./zComparator";

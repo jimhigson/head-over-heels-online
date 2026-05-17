@@ -1,13 +1,16 @@
 import { afterAll, beforeAll, describe, expect, test } from "vitest";
 
-import type { DirectionXy4, Xy, Xyz } from "../../../utils/vectors/vectors";
-
 import {
   roomItemsIterable,
   roomSpatialIndexKey,
   type RoomState,
 } from "../../../model/RoomState";
 import { epsilon } from "../../../utils/epsilon";
+import {
+  type DirectionXy4,
+  type Xy,
+  type Xyz,
+} from "../../../utils/vectors/vectors";
 import { hasCollisionItemWithIndex } from "../../collision/aabbCollision";
 import { makeRoomJsonWithDoors } from "./__testUtils/makeRoomJsonWithDoors";
 import { loadRoom } from "./loadRoom";

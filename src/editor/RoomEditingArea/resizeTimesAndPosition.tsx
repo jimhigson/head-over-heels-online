@@ -1,5 +1,3 @@
-import type { EditorJsonItemUnion } from "../editorTypes";
-
 import { getConsolidatableVector } from "../../consolidateItems/ConsolidatableJsonItem";
 import { getJsonItemTimes } from "../../model/times";
 import { eachAxis } from "../../utils/vectors/eachAxis";
@@ -9,6 +7,7 @@ import {
   subXyz,
   type Xyz,
 } from "../../utils/vectors/vectors";
+import { type EditorJsonItemUnion } from "../editorTypes";
 
 /* times has to be a natural number (>=1)
  *  Map:

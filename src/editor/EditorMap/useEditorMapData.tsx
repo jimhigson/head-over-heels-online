@@ -1,21 +1,20 @@
 import { useMemo } from "preact/hooks";
 
-import type {
-  MapData,
-  MapDataError,
-} from "../../game/components/dialogs/menuDialog/dialogs/map/MapData";
-import type {
-  CharacterRooms,
-  PickupsCollected,
-} from "../../game/gameState/GameState";
-import type { EditorRoomId } from "../editorTypes";
-
 import { findMapBounds } from "../../game/components/dialogs/menuDialog/dialogs/map/findMapBounds";
+import {
+  type MapData,
+  type MapDataError,
+} from "../../game/components/dialogs/menuDialog/dialogs/map/MapData";
 import { roomGridPositions } from "../../game/components/dialogs/menuDialog/dialogs/map/roomGridPositions";
 import { sortRoomGridPositions } from "../../game/components/dialogs/menuDialog/dialogs/map/sortRoomGridPositions";
+import {
+  type CharacterRooms,
+  type PickupsCollected,
+} from "../../game/gameState/GameState";
 import { useEditorAppSelector } from "../../store/store";
 import { emptyObject } from "../../utils/empty";
 import { createSerialisableErrors } from "../../utils/redux/createSerialisableErrors";
+import { type EditorRoomId } from "../editorTypes";
 import { selectCurrentEditingRoomJson } from "../slice/levelEditorSlice";
 
 export const useEditorMapData = (): MapData<EditorRoomId> | MapDataError => {

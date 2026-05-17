@@ -1,13 +1,12 @@
-import type { ItemTickContext } from "../../game/render/ItemRenderContexts";
-import type { ItemSoundRenderContext } from "../ItemSoundRenderContext";
-import type {
-  ItemSoundRenderer,
-  ItemSoundRendererConstructableClass,
-} from "../ItemSoundRenderer";
-
 import { isJoystick } from "../../game/physics/itemPredicates";
+import { type ItemTickContext } from "../../game/render/ItemRenderContexts";
 import { keysIter } from "../../utils/entries";
 import { audioCtx } from "../audioCtx";
+import { type ItemSoundRenderContext } from "../ItemSoundRenderContext";
+import {
+  type ItemSoundRenderer,
+  type ItemSoundRendererConstructableClass,
+} from "../ItemSoundRenderer";
 import {
   type BracketedSound,
   createBracketedSound,

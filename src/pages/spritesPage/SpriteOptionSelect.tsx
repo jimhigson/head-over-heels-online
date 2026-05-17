@@ -1,7 +1,5 @@
 import { useEffect } from "preact/hooks";
 
-import type { SpriteOption } from "../../store/slices/userSettings/userSettingsSlice";
-
 import {
   BitmapText,
   MultipleBitmapText,
@@ -12,6 +10,7 @@ import { useSpritesOption } from "../../store/slices/gameMenus/gameMenusSelector
 import {
   nextSpritesOption,
   setSpritesOption,
+  type SpriteOption,
 } from "../../store/slices/userSettings/userSettingsSlice";
 import { Select } from "../../ui/Select";
 

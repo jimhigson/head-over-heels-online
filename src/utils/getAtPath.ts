@@ -1,4 +1,4 @@
-import type { Get, Paths } from "type-fest";
+import { type Get, type Paths } from "type-fest";
 
 export const getAtPath = <O extends object, P extends Paths<O> & string>(
   obj: O,

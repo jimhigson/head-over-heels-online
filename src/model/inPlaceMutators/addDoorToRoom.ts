@@ -1,8 +1,7 @@
-import type { DirectionXy4, Xyz } from "../../utils/vectors/vectors";
-import type { JsonItemConfig } from "../json/JsonItem";
-import type { RoomJson, RoomJsonItems } from "../RoomJson";
-
+import { type DirectionXy4, type Xyz } from "../../utils/vectors/vectors";
+import { type JsonItemConfig } from "../json/JsonItem";
 import { typePrefix } from "../json/typePrefix";
+import { type RoomJson, type RoomJsonItems } from "../RoomJson";
 import { generateHoleInWallsForDoor } from "./generateHoleInWallsForDoor";
 import { nextItemId } from "./nextItemId";
 

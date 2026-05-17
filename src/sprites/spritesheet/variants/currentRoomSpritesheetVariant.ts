@@ -1,12 +1,11 @@
-import type { AppSpritesheet } from "../loadedSpriteSheet";
-import type { SpritesheetTextureSwops } from "../spritesheetPaletteSwop";
-import type { VariantBuildContext } from "../VariantBuildContext";
-
+import { type AppSpritesheet } from "../loadedSpriteSheet";
 import { roomSpritesheetTextureSwops } from "../roomSpritesheetTextureSwops";
 import {
   createSpritesheetVariant,
   noopSpritesheetTextureSwops,
+  type SpritesheetTextureSwops,
 } from "../spritesheetPaletteSwop";
+import { type VariantBuildContext } from "../VariantBuildContext";
 
 let swopped: AppSpritesheet | undefined = undefined;
 

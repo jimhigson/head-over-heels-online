@@ -1,6 +1,7 @@
-import type { BitmapTextProps } from "../game/components/tailwindSprites/BitmapText";
-
-import { BitmapText } from "../game/components/tailwindSprites/BitmapText";
+import {
+  BitmapText,
+  type BitmapTextProps,
+} from "../game/components/tailwindSprites/BitmapText";
 
 export const DialogHeader = (props: BitmapTextProps) => (
   <BitmapText

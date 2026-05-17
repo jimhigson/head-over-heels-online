@@ -1,13 +1,12 @@
-import type {
-  JSX,
-  MouseEventHandler,
-  PropsWithChildren,
-  ReactElement,
-  ReactNode,
+import {
+  cloneElement,
+  isValidElement,
+  type JSX,
+  type MouseEventHandler,
+  type PropsWithChildren,
+  type ReactElement,
+  type ReactNode,
 } from "react";
-
-import { cloneElement, isValidElement } from "react";
-import "react";
 import { twMerge } from "tailwind-merge";
 
 import { escapeCharForTailwind } from "../../../sprites/escapeCharForTailwind";

@@ -1,9 +1,8 @@
-import type { FloorConfig } from "../../model/json/ItemConfigMap";
-import type { SceneryName } from "../../sprites/planets";
-import type { AppSpritesheetData } from "../../sprites/spritesheet/loadedSpriteSheet";
-import type { TextureId } from "../../sprites/spritesheet/spritesheetData/makeSpritesheetData";
-
+import { type FloorConfig } from "../../model/json/ItemConfigMap";
 import { isTextureId } from "../../sprites/assertIsTextureId";
+import { type SceneryName } from "../../sprites/planets";
+import { type AppSpritesheetData } from "../../sprites/spritesheet/loadedSpriteSheet";
+import { type TextureId } from "../../sprites/spritesheet/spritesheetData/makeSpritesheetData";
 
 export const floorTextureId = (
   floorConfig: FloorConfig<SceneryName>,

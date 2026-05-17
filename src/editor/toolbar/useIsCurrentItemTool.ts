@@ -1,8 +1,7 @@
 import nanoEqual from "nano-equal";
 
-import type { ItemTool } from "../RoomEditingArea/interactivity/Tool";
-
 import { useEditorAppSelector } from "../../store/store";
+import { type ItemTool } from "../RoomEditingArea/interactivity/Tool";
 import { selectTool } from "../slice/levelEditorSlice";
 
 export const useIsCurrentItemTool = (itemTool: ItemTool) => {

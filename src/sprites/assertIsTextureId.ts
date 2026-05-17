@@ -1,9 +1,8 @@
-import type {
-  AnimationId,
-  TextureId,
-} from "./spritesheet/spritesheetData/makeSpritesheetData";
-
 import { type AppSpritesheetData } from "./spritesheet/loadedSpriteSheet";
+import {
+  type AnimationId,
+  type TextureId,
+} from "./spritesheet/spritesheetData/makeSpritesheetData";
 
 export function assertIsTextureId(
   textureId: string,

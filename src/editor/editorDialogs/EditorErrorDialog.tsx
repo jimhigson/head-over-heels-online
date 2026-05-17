@@ -1,13 +1,12 @@
 import { useState } from "react";
 
-import type { SerialisableError } from "../../utils/redux/createSerialisableErrors";
-
 import { BlockyMarkdown } from "../../game/components/BlockyMarkdown";
 import { BitmapText } from "../../game/components/tailwindSprites/BitmapText";
 import { useAppDispatch } from "../../store/hooks";
 import { clearAllData } from "../../store/slices/clearAllData";
 import { Button } from "../../ui/Button";
 import { ErrorDialog } from "../../ui/ErrorDialog";
+import { type SerialisableError } from "../../utils/redux/createSerialisableErrors";
 
 const markdownIntro = `## Uh-oh! The level editor crashed!
 You could:

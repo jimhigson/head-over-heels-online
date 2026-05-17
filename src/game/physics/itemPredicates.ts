@@ -1,16 +1,14 @@
-import type { ItemTypeUnion } from "../../_generated/types/ItemInPlayUnion";
-import type { ConsolidatableJsonItemType } from "../../consolidateItems/ConsolidatableJsonItem";
-import type {
-  ItemInPlay,
-  ItemInPlayType,
-  UnionOfAllItemInPlayTypes,
+import { type ItemTypeUnion } from "../../_generated/types/ItemInPlayUnion";
+import { type ConsolidatableJsonItemType } from "../../consolidateItems/ConsolidatableJsonItem";
+import {
+  type ItemInPlay,
+  type ItemInPlayType,
+  type UnionOfAllItemInPlayTypes,
 } from "../../model/ItemInPlay";
-import type { MonsterWhich } from "../../model/json/MonsterJsonConfig";
-import type { CharacterName } from "../../model/modelTypes";
-import type { SceneryName } from "../../sprites/planets";
-import type { Xyz } from "../../utils/vectors/vectors";
-
-import { characterNames } from "../../model/modelTypes";
+import { type MonsterWhich } from "../../model/json/MonsterJsonConfig";
+import { type CharacterName, characterNames } from "../../model/modelTypes";
+import { type SceneryName } from "../../sprites/planets";
+import { type Xyz } from "../../utils/vectors/vectors";
 
 export const isItemType = <T extends ItemInPlayType>(...types: Array<T>) => {
   if (types.length === 1) {

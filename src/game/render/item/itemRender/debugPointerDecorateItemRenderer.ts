@@ -1,12 +1,11 @@
 import { Container } from "pixi.js";
 
-import type { GameState } from "../../../gameState/GameState";
-import type { DecorateItemMaybeRenderer } from "./DecorateItemRenderer";
-
 import { exitGameRoomId } from "../../../../model/json/ItemConfigMap";
 import { pixiContainerToString } from "../../../../utils/pixi/pixiContainerToString";
+import { type GameState } from "../../../gameState/GameState";
 import { changeCharacterRoom } from "../../../gameState/mutators/changeCharacterRoom";
 import { isFreeItem, isItemType } from "../../../physics/itemPredicates";
+import { type DecorateItemMaybeRenderer } from "./DecorateItemRenderer";
 
 export const debugPointerDecorateItemRenderer: DecorateItemMaybeRenderer = (
   itemRenderContext,

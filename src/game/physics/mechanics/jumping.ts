@@ -1,7 +1,4 @@
-import type { UnionOfAllItemInPlayTypes } from "../../../model/ItemInPlay";
-import type { GameState } from "../../gameState/GameState";
-import type { Mechanic } from "../MechanicResult";
-
+import { type UnionOfAllItemInPlayTypes } from "../../../model/ItemInPlay";
 import { type CharacterName } from "../../../model/modelTypes";
 import { roomSpatialIndexKey, type RoomState } from "../../../model/RoomState";
 import { getEffectivelyStandingOnItemIdForPlayable } from "../../../model/stoodOnItemsLookup";
@@ -11,6 +8,7 @@ import {
   hasCollisionItemWithIndex,
 } from "../../collision/aabbCollision";
 import { smallItemAabb } from "../../collision/boundingBoxes";
+import { type GameState } from "../../gameState/GameState";
 import { playableHasShield } from "../../gameState/gameStateSelectors/selectPickupAbilities";
 import {
   isDeadly,
@@ -21,9 +19,13 @@ import {
   isTeleporter,
   type PlayableItem,
 } from "../itemPredicates";
-import { type MechanicResult, unitMechanicalResult } from "../MechanicResult";
-import { blockSizePx } from "../mechanicsConstants";
 import {
+  type Mechanic,
+  type MechanicResult,
+  unitMechanicalResult,
+} from "../MechanicResult";
+import {
+  blockSizePx,
   fallG,
   jumpFudge,
   originalGameJumpPxPerFrame,

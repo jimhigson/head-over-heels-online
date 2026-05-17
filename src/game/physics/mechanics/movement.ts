@@ -1,12 +1,6 @@
 import { Ticker } from "pixi.js";
 
-import type { ItemInPlay } from "../../../model/ItemInPlay";
-import type { DirectionXy8 } from "../../../utils/vectors/vectors";
-import type { GameState } from "../../gameState/GameState";
-import type { ItemTouchEvent } from "../handleTouch/ItemTouchEvent";
-import type { Mechanic } from "../MechanicResult";
-import type { TurnStrategy } from "./turnedVector";
-
+import { type ItemInPlay } from "../../../model/ItemInPlay";
 import { playablesInRoom, type RoomState } from "../../../model/RoomState";
 import { selectHasAllPlanetCrowns } from "../../../store/slices/gameMenus/gameMenusSelectors";
 import { store } from "../../../store/store";
@@ -21,6 +15,7 @@ import {
   directionsXy4,
   directionsXy8,
   directionsXyDiagonal,
+  type DirectionXy8,
   lengthXy,
   originXy,
   originXyz,
@@ -32,14 +27,19 @@ import {
   xyEqual,
   xyzEqual,
 } from "../../../utils/vectors/vectors";
+import { type GameState } from "../../gameState/GameState";
 import { findClosestPlayable } from "../../gameState/gameStateSelectors/findClosestPlayable";
+import { type ItemTouchEvent } from "../handleTouch/ItemTouchEvent";
 import { isMonster, isSolid } from "../itemPredicates";
-import { type MechanicResult, unitMechanicalResult } from "../MechanicResult";
-import { blockSizePx } from "../mechanicsConstants";
-import { moveSpeedPixPerMs } from "../mechanicsConstants";
+import {
+  type Mechanic,
+  type MechanicResult,
+  unitMechanicalResult,
+} from "../MechanicResult";
+import { blockSizePx, moveSpeedPixPerMs } from "../mechanicsConstants";
 import { mtv } from "../mtv";
 import { speedForItem } from "./speedForItem";
-import { turnedVector } from "./turnedVector";
+import { turnedVector, type TurnStrategy } from "./turnedVector";
 
 // either how long it takes after touching an item to turn around, or how long has to
 // pass between turning and turning again, depending on the movement pattern

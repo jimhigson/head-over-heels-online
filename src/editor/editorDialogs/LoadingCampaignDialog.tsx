@@ -1,10 +1,9 @@
 import { createSelector } from "@reduxjs/toolkit";
 
-import type { RootState } from "../../store/store";
-
 import { BitmapText } from "../../game/components/tailwindSprites/BitmapText";
 import { useAppSelector } from "../../store/hooks";
 import { campaignsApiSlice } from "../../store/slices/campaigns/campaignsApiSlice";
+import { type RootState } from "../../store/store";
 import { Dialog } from "../../ui/Dialog";
 import { DialogPortal } from "../../ui/DialogPortal";
 import { LoadingBorder } from "../../ui/LoadingBorder";

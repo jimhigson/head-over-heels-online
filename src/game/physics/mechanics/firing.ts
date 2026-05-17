@@ -1,12 +1,10 @@
-import type { ItemInPlay } from "../../../model/ItemInPlay";
-import type { RoomState } from "../../../model/RoomState";
-import type { GameState } from "../../gameState/GameState";
-
 import { defaultItemProperties } from "../../../model/defaultItemProperties";
+import { type ItemInPlay } from "../../../model/ItemInPlay";
 import {
   addPokeableNumbers,
   pokeableToNumber,
 } from "../../../model/ItemStateMap";
+import { type RoomState } from "../../../model/RoomState";
 import { emptyObject } from "../../../utils/empty";
 import {
   addXyz,
@@ -14,12 +12,12 @@ import {
   scaleXyz,
   unitVector,
 } from "../../../utils/vectors/vectors";
+import { type GameState } from "../../gameState/GameState";
 import { defaultBaseState } from "../../gameState/loadRoom/itemDefaultStates";
 import { shadowSmallRound } from "../../gameState/loadRoom/loadItemShadowCast";
 import { addItemToRoom } from "../../gameState/mutators/addItemToRoom";
 import { type PlayableItem } from "../itemPredicates";
-import { blockSizePx } from "../mechanicsConstants";
-import { moveSpeedPixPerMs } from "../mechanicsConstants";
+import { blockSizePx, moveSpeedPixPerMs } from "../mechanicsConstants";
 
 /**
  * how far ahead of head the doughnuts start.

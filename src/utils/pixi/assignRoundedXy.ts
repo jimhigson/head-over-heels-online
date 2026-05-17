@@ -1,5 +1,5 @@
 //# allFunctionsCalledOnLoad
-import type { Container } from "pixi.js";
+import { type Container } from "pixi.js";
 
 import { roundToNearest } from "../maths/maths";
 

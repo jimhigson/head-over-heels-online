@@ -1,5 +1,3 @@
-import type { ReactElement, ReactNode } from "react";
-
 import {
   autoUpdate,
   flip,
@@ -12,7 +10,12 @@ import {
   useFloating,
   useInteractions,
 } from "@floating-ui/react";
-import { cloneElement, isValidElement } from "react";
+import {
+  cloneElement,
+  isValidElement,
+  type ReactElement,
+  type ReactNode,
+} from "react";
 
 import { CssVariables } from "../game/components/CssVariables";
 import { cn } from "./cn";

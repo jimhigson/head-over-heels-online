@@ -1,12 +1,9 @@
-import type { UnknownAction } from "@reduxjs/toolkit";
-import type { ReactNode } from "react";
-
-import { useEffect } from "react";
-
-import type { SerialisableError } from "../utils/redux/createSerialisableErrors";
+import { type UnknownAction } from "@reduxjs/toolkit";
+import { type ReactNode, useEffect } from "react";
 
 import { BitmapText } from "../game/components/tailwindSprites/BitmapText";
 import { getRecentActions } from "../store/recentActions";
+import { type SerialisableError } from "../utils/redux/createSerialisableErrors";
 import { Border } from "./Border";
 import { Dialog } from "./Dialog";
 import { DialogPortal } from "./DialogPortal";

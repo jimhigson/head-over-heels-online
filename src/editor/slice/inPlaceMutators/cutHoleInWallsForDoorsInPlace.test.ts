@@ -1,14 +1,13 @@
 import { describe, expect, test } from "vitest";
 
-import type {
-  AwayWallConfig,
-  TowardsWallConfig,
-} from "../../../model/json/WallJsonConfig";
-import type { SceneryName } from "../../../sprites/planets";
-import type { EditorJsonItem, EditorRoomItemId } from "../../editorTypes";
-import type { PreviewedRoomItemEdits } from "../levelEditorSlice";
-
 import { generateHoleInWallsForDoor } from "../../../model/inPlaceMutators/generateHoleInWallsForDoor";
+import {
+  type AwayWallConfig,
+  type TowardsWallConfig,
+} from "../../../model/json/WallJsonConfig";
+import { type SceneryName } from "../../../sprites/planets";
+import { type EditorJsonItem, type EditorRoomItemId } from "../../editorTypes";
+import { type PreviewedRoomItemEdits } from "../levelEditorSlice";
 
 describe("generateHoleInWallsForDoor", () => {
   // Helper to create a wall

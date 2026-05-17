@@ -1,10 +1,9 @@
-import type { CharacterName } from "../../../model/modelTypes";
-import type { RootState } from "../../../store/store";
-import type { GameState } from "../GameState";
-
+import { type CharacterName } from "../../../model/modelTypes";
+import { type RootState } from "../../../store/store";
 import { badJsonClone } from "../../../utils/badJsonClone";
 import { valuesIter } from "../../../utils/entries";
 import { pick } from "../../../utils/pick";
+import { type GameState } from "../GameState";
 import { deleteItemFromUnindexedRoom } from "../mutators/deleteItemFromRoom";
 import { type SavedGame, savedGameStateFields } from "./SavedGameState";
 

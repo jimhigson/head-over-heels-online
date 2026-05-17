@@ -1,11 +1,10 @@
-import type { SpritesheetData, SpritesheetFrameData } from "pixi.js";
-
-import type { Xy } from "../../../utils/vectors/vectors";
-import type { EscapedForTailwind } from "../../escapeCharForTailwind";
+import { type SpritesheetData, type SpritesheetFrameData } from "pixi.js";
 
 import { fromAllEntries } from "../../../utils/entries";
+import { type Xy } from "../../../utils/vectors/vectors";
 import {
   escapeCharForTailwind,
+  type EscapedForTailwind,
   uppercaseCharReplacement,
 } from "../../escapeCharForTailwind";
 import { hudCharTextureSize } from "./textureSizes";

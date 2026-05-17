@@ -1,12 +1,13 @@
-import type { CSSProperties } from "react";
-
+import { type CSSProperties } from "react";
 import { capitalize } from "string-transform";
-
-import type { ZxSpectrumRoomHue } from "../../../originalGame";
 
 import { BitmapText } from "../../../game/components/tailwindSprites/BitmapText";
 import { gameColour } from "../../../game/render/gameColours/gameColours";
-import { zxSpectrumColor, zxSpectrumRoomHue } from "../../../originalGame";
+import {
+  zxSpectrumColor,
+  type ZxSpectrumRoomHue,
+  zxSpectrumRoomHue,
+} from "../../../originalGame";
 import { useAppDispatch } from "../../../store/hooks";
 import { useIsUncolourised } from "../../../store/slices/gameMenus/gameMenusSelectors";
 import { useEditorAppSelector } from "../../../store/store";

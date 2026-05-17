@@ -1,4 +1,4 @@
-import type { ProjectionOnAxes } from "./projectAabbCorners";
+import { type ProjectionOnAxes } from "./projectAabbCorners";
 
 /** to compensate for floating point error, ranges have to be overlapping by this much to consider them to be visually overlapping */
 const visuallyOverlapsMinimumOverlap = 0.000_01;

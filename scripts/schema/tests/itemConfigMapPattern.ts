@@ -1,5 +1,5 @@
 /* eslint-disable @typescript-eslint/no-unused-vars */
-import type { EmptyObject } from "type-fest";
+import { type EmptyObject } from "type-fest";
 
 // Simplified version of the actual ItemConfigMap
 type ItemConfigMap<RoomId extends string> = {

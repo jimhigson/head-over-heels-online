@@ -1,4 +1,4 @@
-import type { DirectionXy4, Xy } from "../../../utils/vectors/vectors";
+import { type DirectionXy4, type Xy } from "../../../utils/vectors/vectors";
 
 interface CustomMatchers<R = unknown> {
   toHaveWall: (expected: {

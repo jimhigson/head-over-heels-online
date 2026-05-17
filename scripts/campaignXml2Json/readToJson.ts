@@ -2,10 +2,9 @@
 import { readFile } from "node:fs/promises";
 import { xml2js } from "xml-js";
 
-import type { Xml2JsonItem } from "./Xml2JsonItem";
-
 import { gamedataMapXmlLocation } from "./gamedataMapXmlLocation";
 import { roomNameFromXmlFilename } from "./roomNameFromXmlFilename";
+import { type Xml2JsonItem } from "./Xml2JsonItem";
 
 const readXmlToJson = async (fileName: string) => {
   const xmlText = await readFile(`${gamedataMapXmlLocation}/${fileName}.xml`, {

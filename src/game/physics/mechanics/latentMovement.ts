@@ -1,9 +1,7 @@
-import type { ItemInPlay } from "../../../model/ItemInPlay";
-import type { RoomState } from "../../../model/RoomState";
-import type { Xyz } from "../../../utils/vectors/vectors";
-import type { GameState } from "../../gameState/GameState";
-
-import { scaleXyz } from "../../../utils/vectors/vectors";
+import { type ItemInPlay } from "../../../model/ItemInPlay";
+import { type RoomState } from "../../../model/RoomState";
+import { scaleXyz, type Xyz } from "../../../utils/vectors/vectors";
+import { type GameState } from "../../gameState/GameState";
 import { type FreeItemTypes } from "../itemPredicates";
 
 export type ApplicableLatentMovement<RoomItemId extends string> = {

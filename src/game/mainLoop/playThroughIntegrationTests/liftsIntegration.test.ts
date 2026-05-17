@@ -5,18 +5,19 @@ vi.mock("../../sprites/samplePalette", () => ({
 
 import { produce } from "immer";
 
-import type {
-  BasicGameStateOptions,
-  TestRoomId,
+import {
+  type BasicGameStateOptions,
+  setUpBasicGame,
+  type TestRoomId,
 } from "../../../_testUtils/basicRoom";
-import type { PlayableItem } from "../../physics/itemPredicates";
-
-import { setUpBasicGame } from "../../../_testUtils/basicRoom";
 import { heelsState, itemState } from "../../../_testUtils/characterState";
 import { resetStore } from "../../../_testUtils/initStoreForTests";
 import { playGameThrough } from "../../../_testUtils/playGameThrough";
-import { blockSizePx } from "../../physics/mechanicsConstants";
-import { defaultRoomHeightBlocks } from "../../physics/mechanicsConstants";
+import { type PlayableItem } from "../../physics/itemPredicates";
+import {
+  blockSizePx,
+  defaultRoomHeightBlocks,
+} from "../../physics/mechanicsConstants";
 
 beforeEach(() => {
   resetStore();

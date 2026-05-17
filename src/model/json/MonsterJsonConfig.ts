@@ -1,7 +1,7 @@
-import type { DirectionXy4 } from "../../utils/vectors/vectors";
-import type {
-  ActivatedWhenSubset,
-  MovementsSubset,
+import { type DirectionXy4 } from "../../utils/vectors/vectors";
+import {
+  type ActivatedWhenSubset,
+  type MovementsSubset,
 } from "./utilityJsonConfigTypes";
 
 export type CybermanConfig = {

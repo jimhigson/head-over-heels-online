@@ -1,6 +1,10 @@
-import type { Application, TextureSourceLike } from "pixi.js";
-
-import { RenderTexture, Texture, TextureSource } from "pixi.js";
+import {
+  type Application,
+  RenderTexture,
+  Texture,
+  TextureSource,
+  type TextureSourceLike,
+} from "pixi.js";
 
 import { addTexture, removeTexture } from "./textureData";
 

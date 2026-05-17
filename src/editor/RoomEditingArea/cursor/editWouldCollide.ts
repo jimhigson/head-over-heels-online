@@ -1,24 +1,23 @@
 import { produce } from "immer";
 
-import type { JsonItemType } from "../../../model/json/JsonItem";
-import type {
-  EditorJsonItemUnion,
-  EditorJsonItemWithTimes,
-  EditorRoomItemId,
-  EditorRoomState,
-  EditorUnionOfAllItemInPlayTypes,
-} from "../../editorTypes";
-import type { ItemTool } from "../interactivity/Tool";
-
 import { collision1toManyIter } from "../../../game/collision/aabbCollision";
 import { buildRoomJsonDirectionalIndex } from "../../../game/gameState/loadRoom/buildRoomJsonDirectionalIndex";
 import { loadItemFromJson } from "../../../game/gameState/loadRoom/loadItemFromJson";
 import { isSolid } from "../../../game/physics/itemPredicates";
+import { type JsonItemType } from "../../../model/json/JsonItem";
 import { roomJsonItemsIterable } from "../../../model/RoomJson";
 import { roomItemsIterable } from "../../../model/RoomState";
 import { isEmpty } from "../../../utils/iterators/isEmpty";
 import { addXyz, type Xyz } from "../../../utils/vectors/vectors";
+import {
+  type EditorJsonItemUnion,
+  type EditorJsonItemWithTimes,
+  type EditorRoomItemId,
+  type EditorRoomState,
+  type EditorUnionOfAllItemInPlayTypes,
+} from "../../editorTypes";
 import { addTimesDeltaToJsonItemInPlace } from "../../slice/reducers/moveOrResizeItemPreview/moveOrResizeItemPreviewReducers";
+import { type ItemTool } from "../interactivity/Tool";
 
 /**
  * find items that items being (added to/moved in/resized in) a room would

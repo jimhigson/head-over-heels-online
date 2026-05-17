@@ -1,6 +1,6 @@
 import { expectTypeOf, test } from "vitest";
 
-import type { VelocitiesForItem } from "../MechanicResult";
+import { type VelocitiesForItem } from "../MechanicResult";
 
 test("implies velocities on mechanics from allowed velocities on item", () => {
   expectTypeOf<VelocitiesForItem<"head">>().toEqualTypeOf<

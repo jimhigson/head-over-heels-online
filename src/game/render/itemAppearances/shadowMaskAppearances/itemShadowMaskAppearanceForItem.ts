@@ -1,17 +1,12 @@
-import type { EmptyObject } from "type-fest";
-
 import { Sprite } from "pixi.js";
+import { type EmptyObject } from "type-fest";
 
-import type { ItemTypeUnion } from "../../../../_generated/types/ItemInPlayUnion";
-import type {
-  ItemInPlayConfig,
-  ItemInPlayType,
+import { type ItemTypeUnion } from "../../../../_generated/types/ItemInPlayUnion";
+import {
+  type ItemInPlayConfig,
+  type ItemInPlayType,
 } from "../../../../model/ItemInPlay";
-import type { MonsterJsonConfig } from "../../../../model/json/MonsterJsonConfig";
-import type { AppearanceReturn } from "../../appearance/Appearance";
-import type { SpecifiedTextureCreateSpriteOptions } from "../../createSprite";
-import type { ItemAppearance, ItemAppearanceOptions } from "../ItemAppearance";
-
+import { type MonsterJsonConfig } from "../../../../model/json/MonsterJsonConfig";
 import { itemInPlayTimes } from "../../../../model/times";
 import { emptyObject } from "../../../../utils/empty";
 import {
@@ -22,8 +17,16 @@ import { renderMultipliedXy } from "../../../../utils/pixi/renderMultipliedXy";
 import { tangentAxis } from "../../../../utils/vectors/vectors";
 import { isMultipliedItem } from "../../../physics/itemPredicates";
 import { blockSizePx } from "../../../physics/mechanicsConstants";
-import { createSprite } from "../../createSprite";
-import { itemAppearanceRenderOnce } from "../ItemAppearance";
+import { type AppearanceReturn } from "../../appearance/Appearance";
+import {
+  createSprite,
+  type SpecifiedTextureCreateSpriteOptions,
+} from "../../createSprite";
+import {
+  type ItemAppearance,
+  type ItemAppearanceOptions,
+  itemAppearanceRenderOnce,
+} from "../ItemAppearance";
 import { springShadowMaskAppearance } from "../springAppearance";
 import {
   directionalShadowMaskAppearanceXy4,

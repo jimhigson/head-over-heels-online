@@ -1,15 +1,14 @@
-import type { Node } from "jsonc-parser";
+import { type Node } from "jsonc-parser";
 
-import type { JsonItemType } from "../../../model/json/JsonItem";
-import type { EditorRootState } from "../../../store/store";
-import type { EditorRoomId, EditorRoomJson } from "../../editorTypes";
-
+import { type JsonItemType } from "../../../model/json/JsonItem";
 import { iterateRoomJsonItemsWithIds } from "../../../model/RoomJson";
+import { type EditorRootState } from "../../../store/store";
 import { emptyArray, emptySet } from "../../../utils/empty";
 import {
   type DirectionXy4,
   oppositeDirection,
 } from "../../../utils/vectors/vectors";
+import { type EditorRoomId, type EditorRoomJson } from "../../editorTypes";
 import { getNodePropertyValue } from "./getNodePropertyValue";
 
 export type SuggestionGenerator = (

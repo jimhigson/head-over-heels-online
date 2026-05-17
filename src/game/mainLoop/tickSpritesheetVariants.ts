@@ -1,16 +1,14 @@
-import type { Renderer } from "pixi.js";
+import { type Renderer } from "pixi.js";
 
-import type { ZxSpectrumRoomColour } from "../../originalGame";
-import type { SceneryName } from "../../sprites/planets";
-import type { VariantBuildContext } from "../../sprites/spritesheet/VariantBuildContext";
-import type { SpriteOption } from "../../store/slices/userSettings/userSettingsSlice";
-
+import { type ZxSpectrumRoomColour } from "../../originalGame";
+import { type SceneryName } from "../../sprites/planets";
 import {
   initOriginalSpritesheet,
   isTextureLoaded,
   loadSpritesheetAssets,
 } from "../../sprites/spritesheet/loadedSpriteSheet";
 import { spritesheetMetaForOption } from "../../sprites/spritesheet/spritesheetData/spritesheetMetaData";
+import { type VariantBuildContext } from "../../sprites/spritesheet/VariantBuildContext";
 import {
   createCurrentRoomSpritesheetVariant,
   destroyCurrentRoomSpritesheetVariant,
@@ -22,6 +20,7 @@ import {
   createUncolourisedSpritesheet,
   destroyUncolourisedSpritesheet,
 } from "../../sprites/spritesheet/variants/uncolourisedSpritesheetVariant";
+import { type SpriteOption } from "../../store/slices/userSettings/userSettingsSlice";
 
 const rebuildVariants = (context: VariantBuildContext): void => {
   createCurrentRoomSpritesheetVariant(context);

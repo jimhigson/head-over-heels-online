@@ -1,18 +1,17 @@
-import type { ValueOf } from "type-fest";
+import { type ValueOf } from "type-fest";
 
-import type {
-  CharacterName,
-  IndividualCharacterName,
+import {
+  type CharacterName,
+  type IndividualCharacterName,
 } from "../../../../../../model/modelTypes";
-import type { CharacterRooms } from "../../../../../gameState/GameState";
-import type { PlayableItem } from "../../../../../physics/itemPredicates";
-import type { MapData } from "./MapData";
-
 import { getRoomItem } from "../../../../../../model/RoomState";
 import { emptyObject } from "../../../../../../utils/empty";
+import { type CharacterRooms } from "../../../../../gameState/GameState";
+import { type PlayableItem } from "../../../../../physics/itemPredicates";
 import { findSubRoomForItem } from "./itemIsInSubRoom";
 import { MapBackground } from "./MapBackground";
 import { mapSvgMarginX, mapSvgMarginY } from "./mapConstants";
+import { type MapData } from "./MapData";
 import { RoomSvg } from "./Room.svg";
 import { roomWorldPosition } from "./roomWorldPosition";
 import { ScrollIntoView } from "./ScrollIntoView";

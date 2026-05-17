@@ -1,9 +1,10 @@
 import { expect, it } from "vitest";
 
-import type { PartialInputAssignment } from "./combineInputAssignments";
-import type { InputAssignment } from "./InputAssignment";
-
-import { combineInputAssignments } from "./combineInputAssignments";
+import {
+  combineInputAssignments,
+  type PartialInputAssignment,
+} from "./combineInputAssignments";
+import { type InputAssignment } from "./InputAssignment";
 
 it("combines two partial input assignments without duplicates", () => {
   const assignment1: PartialInputAssignment = {

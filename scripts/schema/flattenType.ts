@@ -1,10 +1,8 @@
 #!/usr/bin/env -S pnpm tsx
 
-import type { JSDoc, Type, TypeChecker } from "ts-morph";
-
 import { Command } from "commander";
 import * as path from "path";
-import { Project } from "ts-morph";
+import { type JSDoc, Project, type Type, type TypeChecker } from "ts-morph";
 import { fileURLToPath } from "url";
 
 import { freeItemTypes } from "../../src/game/physics/itemPredicates.js";

@@ -1,8 +1,7 @@
-import type { SceneryName, Wall } from "../../sprites/planets";
-import type { AppSpritesheetData } from "../../sprites/spritesheet/loadedSpriteSheet";
-import type { TextureId } from "../../sprites/spritesheet/spritesheetData/makeSpritesheetData";
-
 import { isTextureId } from "../../sprites/assertIsTextureId";
+import { type SceneryName, type Wall } from "../../sprites/planets";
+import { type AppSpritesheetData } from "../../sprites/spritesheet/loadedSpriteSheet";
+import { type TextureId } from "../../sprites/spritesheet/spritesheetData/makeSpritesheetData";
 
 export const wallTextureId = <P extends SceneryName, TDark extends boolean>(
   planet: P,

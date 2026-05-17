@@ -1,8 +1,8 @@
 import chalk from "chalk";
 import { readdir, readFile } from "node:fs/promises";
 
-import type { Campaign } from "../../src/model/modelTypes";
-import type { AnyRoomJson } from "../../src/model/RoomJson";
+import { type Campaign } from "../../src/model/modelTypes";
+import { type AnyRoomJson } from "../../src/model/RoomJson";
 
 const newRoomsDir = "src/_generated/originalCampaign/new-rooms";
 

@@ -1,8 +1,8 @@
 /* eslint-disable @typescript-eslint/no-explicit-any */
-import type { Container } from "pixi.js";
+import { type Container } from "pixi.js";
 
-import type { ItemInPlayType } from "../../../model/ItemInPlay";
-import type { ItemAppearance } from "./ItemAppearance";
+import { type ItemInPlayType } from "../../../model/ItemInPlay";
+import { type ItemAppearance } from "./ItemAppearance";
 
 export type ItemAppearanceOutsideView<T extends ItemInPlayType> =
   ItemAppearance<T, any, Container>;

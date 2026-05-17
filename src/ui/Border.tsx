@@ -1,6 +1,6 @@
 "use client";
 
-import type { MouseEvent } from "react";
+import { type MouseEvent } from "react";
 
 import { useIsLoading } from "../store/hooks/loadingHooks";
 import { LoadingBorder } from "./LoadingBorder";

@@ -3,8 +3,8 @@
  * lost all lives (no current room)
  */
 
-import type { RoomState } from "../../../model/RoomState";
-import type { GameState } from "../GameState";
+import { type RoomState } from "../../../model/RoomState";
+import { type GameState } from "../GameState";
 
 export const selectCurrentRoomState = <
   RoomId extends string,

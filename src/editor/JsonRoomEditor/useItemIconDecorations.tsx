@@ -1,20 +1,22 @@
 import type * as Monaco from "monaco-editor";
-import type { editor } from "monaco-editor";
 
 import { findNodeAtLocation } from "jsonc-parser";
+import { type editor } from "monaco-editor";
 import { useEffect, useRef } from "preact/hooks";
 
-import type { SceneryName } from "../../sprites/planets";
-import type {
-  AnimatedTextureTailwindClass,
-  TextureTailwindClass,
-} from "../../sprites/spritesheet/spritesheetData/TextureTailwindClass";
-import type { EditorJsonItemUnion, EditorRoomJsonItems } from "../editorTypes";
-
 import { playableTailwindSpriteClassname } from "../../game/components/tailwindSprites/playableTailwindSpriteClassname";
+import { type SceneryName } from "../../sprites/planets";
+import {
+  type AnimatedTextureTailwindClass,
+  type TextureTailwindClass,
+} from "../../sprites/spritesheet/spritesheetData/TextureTailwindClass";
 import { useEditorAppSelector } from "../../store/store";
 import { keys } from "../../utils/entries";
 import { twClass } from "../../utils/twClass";
+import {
+  type EditorJsonItemUnion,
+  type EditorRoomJsonItems,
+} from "../editorTypes";
 import { selectCurrentEditingRoomJson } from "../slice/levelEditorSlice";
 import { getParsedJsonFromEditor } from "./getParsedJsonFromEditor";
 import { useLoadMonaco } from "./useLoadMonaco";

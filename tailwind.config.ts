@@ -1,6 +1,5 @@
-import type { Config } from "tailwindcss";
-
 import scrollbar from "tailwind-scrollbar";
+import { type Config } from "tailwindcss";
 
 import { resolutions } from "./src/originalGame";
 import { fallbackColourVariables } from "./src/tailwind/plugins/fallbackColourVariables";

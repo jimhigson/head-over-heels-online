@@ -1,6 +1,6 @@
 #!/usr/bin/env -S pnpm tsx
 
-import type { JsonArray, JsonObject, JsonValue } from "type-fest";
+import { type JsonArray, type JsonObject, type JsonValue } from "type-fest";
 
 import { wallTiles } from "../../src/sprites/planets.js";
 

@@ -1,10 +1,17 @@
-import type { Color, FilterSystem, RenderTexture, Texture } from "pixi.js";
+import {
+  type Color,
+  defaultFilterVert,
+  Filter,
+  type FilterSystem,
+  GlProgram,
+  type RenderTexture,
+  type Texture,
+} from "pixi.js";
 
-import { defaultFilterVert, Filter, GlProgram } from "pixi.js";
-
-import type { BlockstackPaletteColourName } from "../../../sprites/palette/spritesheetPalette";
-
-import { paletteBlockstack } from "../../../sprites/palette/spritesheetPalette";
+import {
+  type BlockstackPaletteColourName,
+  paletteBlockstack,
+} from "../../../sprites/palette/spritesheetPalette";
 import { selectGameEngineUpscale } from "../../../store/slices/upscale/upscaleSlice";
 import { store } from "../../../store/store";
 import { transformObject } from "../../../utils/transformObject";

@@ -1,7 +1,6 @@
-import type { Xyz } from "../../utils/vectors/vectors";
-import type { LookDirectionsXy4 } from "./actions";
-
 import { unitVectors } from "../../utils/vectors/unitVectors";
+import { type Xyz } from "../../utils/vectors/vectors";
+import { type LookDirectionsXy4 } from "./actions";
 
 /**
  * maps look directions to the xy part of the xyz vector

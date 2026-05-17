@@ -1,7 +1,8 @@
-import type { DeathMenuParam } from "../../../../../../store/slices/gameMenus/gameMenusSlice";
-
 import { pokeableToNumber } from "../../../../../../model/ItemStateMap";
-import { backToParentMenu } from "../../../../../../store/slices/gameMenus/gameMenusSlice";
+import {
+  backToParentMenu,
+  type DeathMenuParam,
+} from "../../../../../../store/slices/gameMenus/gameMenusSlice";
 import { useDispatchActionCallback } from "../../../../../../store/useDispatchActionCallback";
 import { Dialog } from "../../../../../../ui/Dialog";
 import { DialogPortal } from "../../../../../../ui/DialogPortal";

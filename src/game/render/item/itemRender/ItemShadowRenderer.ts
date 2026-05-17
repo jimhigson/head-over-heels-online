@@ -1,31 +1,33 @@
-import type { SetRequired, WritableDeep } from "type-fest";
-
 import { AlphaFilter, Container, Sprite } from "pixi.js";
+import { type SetRequired, type WritableDeep } from "type-fest";
 
-import type {
-  ItemInPlayType,
-  UnionOfAllItemInPlayTypes,
+import {
+  type ItemInPlayType,
+  type UnionOfAllItemInPlayTypes,
 } from "../../../../model/ItemInPlay";
-import type { ConsolidatableConfig } from "../../../../model/json/utilityJsonConfigTypes";
-import type { CollideableItem } from "../../../collision/aabbCollision";
-import type { SpecifiedTextureCreateSpriteOptions } from "../../createSprite";
-import type { ItemShadowAppearanceOutsideView } from "../../itemAppearances/shadowMaskAppearances/itemShadowMaskAppearanceForItem";
-import type {
-  ItemRenderContext,
-  ItemTickContext,
-} from "../../ItemRenderContexts";
-import type { ItemPixiRenderer } from "./ItemPixiRenderer";
-
+import { type ConsolidatableConfig } from "../../../../model/json/utilityJsonConfigTypes";
 import { roomSpatialIndexKey } from "../../../../model/RoomState";
 import { store } from "../../../../store/store";
 import { maybeRenderContainerToSprite } from "../../../../utils/pixi/renderContainerToSprite";
 import { renderMultipliedXy } from "../../../../utils/pixi/renderMultipliedXy";
 import { addXy, originXy, subXy } from "../../../../utils/vectors/vectors";
-import { collisionItemWithIndex } from "../../../collision/aabbCollision";
+import {
+  type CollideableItem,
+  collisionItemWithIndex,
+} from "../../../collision/aabbCollision";
 import { veryHighZ } from "../../../physics/mechanicsConstants";
-import { itemShadowMaskAppearanceForItem } from "../../itemAppearances/shadowMaskAppearances/itemShadowMaskAppearanceForItem";
+import { type SpecifiedTextureCreateSpriteOptions } from "../../createSprite";
+import {
+  type ItemShadowAppearanceOutsideView,
+  itemShadowMaskAppearanceForItem,
+} from "../../itemAppearances/shadowMaskAppearances/itemShadowMaskAppearanceForItem";
+import {
+  type ItemRenderContext,
+  type ItemTickContext,
+} from "../../ItemRenderContexts";
 import { projectWorldXyzToScreenXy } from "../../projections";
 import { ItemAppearancePixiRenderer } from "./ItemAppearancePixiRenderer";
+import { type ItemPixiRenderer } from "./ItemPixiRenderer";
 
 const shadowAlpha = 0.66;
 

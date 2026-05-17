@@ -1,7 +1,3 @@
-import type { Plane } from "../../../utils/vectors/vectors";
-import type { EditorUnionOfAllItemInPlayTypes } from "../../editorTypes";
-import type { Tool } from "../interactivity/Tool";
-
 import {
   projectBottomCentre,
   projectC010,
@@ -11,7 +7,9 @@ import {
   projectTopRight,
 } from "../../../game/render/sortZ/projectAabbCorners";
 import { nonZero } from "../../../utils/epsilon";
-import { type Xy, type Xyz } from "../../../utils/vectors/vectors";
+import { type Plane, type Xy, type Xyz } from "../../../utils/vectors/vectors";
+import { type EditorUnionOfAllItemInPlayTypes } from "../../editorTypes";
+import { type Tool } from "../interactivity/Tool";
 
 const edgeTolerancePx = 3;
 const edgeToleranceBetweenFacesPx = 1.5;

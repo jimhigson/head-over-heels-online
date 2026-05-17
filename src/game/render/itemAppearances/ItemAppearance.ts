@@ -1,22 +1,24 @@
-import type { Container } from "pixi.js";
-import type { EmptyObject } from "type-fest";
+import { type Container } from "pixi.js";
+import { type EmptyObject } from "type-fest";
 
-import type { ItemInPlayType } from "../../../model/ItemInPlay";
-import type { TextureId } from "../../../sprites/spritesheet/spritesheetData/makeSpritesheetData";
-import type {
-  AppearanceOptions,
-  AppearanceReturn,
-} from "../appearance/Appearance";
-import type {
-  AnimatedCreateSpriteOptions,
-  SpecifiedTextureCreateSpriteOptions,
-} from "../createSprite";
-import type { ItemRenderContext, ItemTickContext } from "../ItemRenderContexts";
-
+import { type ItemInPlayType } from "../../../model/ItemInPlay";
 import { itemInPlayTimes } from "../../../model/times";
+import { type TextureId } from "../../../sprites/spritesheet/spritesheetData/makeSpritesheetData";
 import { emptyObject } from "../../../utils/empty";
 import { isMultipliedItem } from "../../physics/itemPredicates";
-import { createSprite } from "../createSprite";
+import {
+  type AppearanceOptions,
+  type AppearanceReturn,
+} from "../appearance/Appearance";
+import {
+  type AnimatedCreateSpriteOptions,
+  createSprite,
+  type SpecifiedTextureCreateSpriteOptions,
+} from "../createSprite";
+import {
+  type ItemRenderContext,
+  type ItemTickContext,
+} from "../ItemRenderContexts";
 
 export type ItemAppearanceOptions<
   T extends ItemInPlayType,

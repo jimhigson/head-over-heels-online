@@ -1,7 +1,5 @@
 import { useMemo } from "preact/hooks";
 
-import type { MapData } from "./MapData";
-
 import {
   useCurrentCampaign,
   useRoomsExplored,
@@ -11,6 +9,7 @@ import { findStartingRoomsInCampaign } from "../../../../../gameState/loadGameSt
 import { useGameApi } from "../../../../GameApiContext";
 import { findMapBounds } from "./findMapBounds";
 import { findSubRoomForItem } from "./itemIsInSubRoom";
+import { type MapData } from "./MapData";
 import { roomGridPositions } from "./roomGridPositions";
 import { sortRoomGridPositions } from "./sortRoomGridPositions";
 import { useTickingCurrentCharacterName } from "./useTickingCurrentCharacterName";

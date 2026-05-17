@@ -1,6 +1,6 @@
-import type { SpritesheetFrameData } from "pixi.js";
+import { type SpritesheetFrameData } from "pixi.js";
 
-import type { FramesWithSpeed } from "./makeSpritesheetData";
+import { type FramesWithSpeed } from "./makeSpritesheetData";
 
 /**
  * Add some extra type safety to pixi's spritesheets by forcing animation

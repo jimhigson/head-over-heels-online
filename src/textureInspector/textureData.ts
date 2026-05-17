@@ -1,4 +1,4 @@
-import type { TEXTURE_FORMATS, TextureSource } from "pixi.js";
+import { type TEXTURE_FORMATS, type TextureSource } from "pixi.js";
 
 import { initOriginalSpritesheet } from "../sprites/spritesheet/loadedSpriteSheet";
 

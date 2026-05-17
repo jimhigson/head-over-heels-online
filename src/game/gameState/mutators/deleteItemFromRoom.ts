@@ -1,9 +1,8 @@
-import type { UnionOfAllItemInPlayTypes } from "../../../model/ItemInPlay";
-import type { UnindexedRoomState } from "../saving/SavedGameState";
-
+import { type UnionOfAllItemInPlayTypes } from "../../../model/ItemInPlay";
 import { roomSpatialIndexKey, type RoomState } from "../../../model/RoomState";
 import { iterateStoodOnByItems } from "../../../model/stoodOnItemsLookup";
 import { isFreeItem, isSpatial } from "../../physics/itemPredicates";
+import { type UnindexedRoomState } from "../saving/SavedGameState";
 import { removeStandingOn } from "./standingOn/removeStandingOn";
 
 export const deleteItemFromRoom = <

@@ -1,14 +1,12 @@
 import { useEffect, useRef, useState } from "preact/hooks";
 
-import type {
-  FramesWithSpeed,
-  TextureId,
-} from "../../sprites/spritesheet/spritesheetData/makeSpritesheetData";
-import type { Xy } from "../../utils/vectors/vectors";
-
 import { BlockyMarkdown } from "../../game/components/BlockyMarkdown";
 import { BitmapText } from "../../game/components/tailwindSprites/BitmapText";
 import { sanitiseForClassName } from "../../game/components/tailwindSprites/SanitiseForClassName";
+import {
+  type FramesWithSpeed,
+  type TextureId,
+} from "../../sprites/spritesheet/spritesheetData/makeSpritesheetData";
 import {
   useCurrentSpritesheetData,
   useSpritesOption,
@@ -20,6 +18,7 @@ import {
 } from "../../tailwind/plugins/spriteCss";
 import { Tooltip } from "../../ui/Tooltip";
 import { entries } from "../../utils/entries";
+import { type Xy } from "../../utils/vectors/vectors";
 import { keyframesToCss } from "./keyframesToCss";
 
 const xRelative = (value: number) =>

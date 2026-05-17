@@ -1,14 +1,13 @@
-import type { SceneryName } from "../../../sprites/planets";
-import type { Xy } from "../../../utils/vectors/vectors";
-import type { EditorRoomId, EditorRoomJson } from "../../editorTypes";
-import type { LevelEditorState } from "../levelEditorSlice";
-
 import { createNewRoom } from "../../../model/inPlaceMutators/createNewRoom";
 import {
   type ZxSpectrumRoomColour,
   zxSpectrumRoomHue,
 } from "../../../originalGame";
+import { type SceneryName } from "../../../sprites/planets";
 import { randomFromArray } from "../../../utils/random/randomFromArray";
+import { type Xy } from "../../../utils/vectors/vectors";
+import { type EditorRoomId, type EditorRoomJson } from "../../editorTypes";
+import { type LevelEditorState } from "../levelEditorSlice";
 
 const defaultRoomSize: Xy = { x: 8, y: 8 };
 

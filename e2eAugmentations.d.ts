@@ -1,7 +1,7 @@
-import type { Application } from "pixi.js";
+import { type Application } from "pixi.js";
 
-import type { GameApi } from "./src/game/gameMain";
-import type { AppStore } from "./src/store/store";
+import { type GameApi } from "./src/game/gameMain";
+import { type AppStore } from "./src/store/store";
 
 declare global {
   interface Window {

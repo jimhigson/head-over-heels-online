@@ -1,10 +1,9 @@
-import type { PartialDeep } from "type-fest";
-
-import type { InputAssignment } from "./InputAssignment";
-import type { Key } from "./keys";
+import { type PartialDeep } from "type-fest";
 
 import { allActions } from "./actions";
 import { emptyInputAssignment } from "./emptyInputAssignment";
+import { type InputAssignment } from "./InputAssignment";
+import { type Key } from "./keys";
 
 const combineWithoutDuplicates = <T,>(
   a: T[] | undefined,

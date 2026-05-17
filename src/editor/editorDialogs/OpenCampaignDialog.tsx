@@ -1,8 +1,7 @@
 import { useEffect, useRef } from "preact/hooks";
 
-import type { CampaignLocator } from "../../model/modelTypes";
-
 import { BitmapText } from "../../game/components/tailwindSprites/BitmapText";
+import { type CampaignLocator } from "../../model/modelTypes";
 import { useGetAllUsersLatestCampaignsQuery } from "../../store/slices/campaigns/campaignsApiSlice";
 import { Border } from "../../ui/Border";
 import { Button } from "../../ui/Button";

@@ -1,6 +1,3 @@
-import type { EditorUnionOfAllItemInPlayTypes } from "../../editorTypes";
-import type { Tool } from "../interactivity/Tool";
-
 import {
   projectBottomCentre,
   projectTopLeft,
@@ -12,6 +9,8 @@ import {
   type Xy,
   type Xyz,
 } from "../../../utils/vectors/vectors";
+import { type EditorUnionOfAllItemInPlayTypes } from "../../editorTypes";
+import { type Tool } from "../interactivity/Tool";
 
 const itemVisibleBounds = (
   item: EditorUnionOfAllItemInPlayTypes,

@@ -1,5 +1,5 @@
-import type { ItemInPlay } from "../../../model/ItemInPlay";
-import type { ItemTouchEventByItemType } from "./ItemTouchEvent";
+import { type ItemInPlay } from "../../../model/ItemInPlay";
+import { type ItemTouchEventByItemType } from "./ItemTouchEvent";
 
 export function handleFiredDoughnutTouchingMonster<
   RoomId extends string,

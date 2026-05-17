@@ -1,13 +1,16 @@
-import type { PropsWithChildren, ReactNode, Ref } from "react";
-import type { ButtonHTMLAttributes, MouseEvent } from "react";
-import type { Simplify } from "type-fest";
-
-import type { ShortcutKeys } from "./useKeyboardShortcut";
+import {
+  type ButtonHTMLAttributes,
+  type MouseEvent,
+  type PropsWithChildren,
+  type ReactNode,
+  type Ref,
+} from "react";
+import { type Simplify } from "type-fest";
 
 import { cn } from "./cn";
 import { enhanceTooltipWithHotkeys } from "./enhanceTooltipWithHotkeys";
 import { Tooltip } from "./Tooltip";
-import { useKeyboardShortcut } from "./useKeyboardShortcut";
+import { type ShortcutKeys, useKeyboardShortcut } from "./useKeyboardShortcut";
 
 export type ButtonProps = Simplify<
   Pick<
