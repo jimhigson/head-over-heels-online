@@ -21,19 +21,13 @@ export const useEditorMapData = (): MapData<EditorRoomId> | MapDataError => {
   const campaign = useEditorAppSelector(
     (state) => state.levelEditor.campaignInProgress,
   );
-  const curRoomSubroom = useEditorAppSelector((state) => {
-    const roomJson = selectCurrentEditingRoomJson(state);
-    const subRooms = roomJson.meta?.subRooms;
-    // find any sub-room for the current room:
-    return (subRooms && Object.keys(subRooms)[0]) ?? "*";
-  });
+
   const curRoomScenery = useEditorAppSelector((state) => {
     const roomJson = selectCurrentEditingRoomJson(state);
     return roomJson.planet;
   });
-  const curRoomEditingRoomId = useEditorAppSelector(
-    (state) => state.levelEditor.currentlyEditingRoomId,
-  );
+  const { roomId: curRoomEditingRoomId, subRoomId: curRoomSubroom } =
+    useEditorAppSelector((state) => state.levelEditor.currentlyEditing);
 
   return useMemo(() => {
     try {
@@ -49,6 +43,7 @@ export const useEditorMapData = (): MapData<EditorRoomId> | MapDataError => {
       return {
         mapBounds: findMapBounds(positions),
         curRoomId: curRoomEditingRoomId,
+        curSubRoomId: curRoomSubroom,
         gridPositions: sortedObjectOfPositions,
         // TODO: not sure if this applies for the editor, maybe should be optional
         currentCharacterName: "head",

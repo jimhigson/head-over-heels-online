@@ -96,7 +96,7 @@ export const useRoomEditorInteractivity = (
       const storeState = editorStore.getState();
       const roomState = selectEditorRoomState(storeState);
 
-      if (roomState.id !== storeState.levelEditor.currentlyEditingRoomId) {
+      if (roomState.id !== storeState.levelEditor.currentlyEditing.roomId) {
         return;
       }
 

@@ -9,29 +9,37 @@ import { useElementSize } from "../../../../../../utils/react/useElementSize";
 import { swopPlayables } from "../../../../../gameState/mutators/swopPlayables";
 import { useGameApi } from "../../../../GameApiContext";
 import { useScrollingFromInput } from "../useScrollingFromInput";
-import { MapSvg, type OnRoomClick } from "./Map.svg";
+import { createClickableRoomDecorator } from "./createClickableRoomDecorator";
+import { LazyMapRoomTooltipDecorator } from "./LazyMapRoomTooltipDecorator";
+import { MapSvg } from "./Map.svg";
 import { getMapColoursClass } from "./mapColours";
 import { useMapDataForCurrentGame } from "./useMapDataForCurrentGame";
 import { useAllowCharacterSwopping } from "./useTickingCurrentCharacterName";
+
+const useGameMapClickableAreaDecorators = <RoomId extends string>() => {
+  const cheatsOn = useCheatsOn();
+  const gameApi = useGameApi<RoomId>();
+
+  return useMemo(() => {
+    if (!cheatsOn) {
+      return undefined;
+    }
+
+    const clickableDecorator = createClickableRoomDecorator((roomId) => {
+      gameApi.changeRoom(roomId as RoomId);
+    });
+
+    return [LazyMapRoomTooltipDecorator, clickableDecorator];
+  }, [cheatsOn, gameApi]);
+};
 
 const MapDialog = <RoomId extends string>() => {
   const { ref: mapContainerRef, width: mapContainerWidth } =
     useElementSize<HTMLDialogElement>();
   const scrollingContentRef = useScrollingFromInput();
 
-  const cheatsOn = useCheatsOn();
-
   const gameApi = useGameApi<RoomId>();
 
-  const handleRoomClick = useMemo<OnRoomClick<RoomId> | undefined>(() => {
-    if (cheatsOn) {
-      return (roomId: RoomId) => {
-        gameApi.changeRoom(roomId);
-      };
-    }
-  }, [cheatsOn, gameApi]);
-
-  // the user can switch characters while looking at the map:
   useAllowCharacterSwopping();
 
   const mapData = useMapDataForCurrentGame<RoomId>();
@@ -41,7 +49,7 @@ const MapDialog = <RoomId extends string>() => {
     <MapSvg<RoomId>
       onPlayableClick={(name) => swopPlayables(gameApi.gameState, name)}
       containerWidth={mapContainerWidth}
-      onRoomClick={handleRoomClick}
+      clickableAreaDecorators={useGameMapClickableAreaDecorators<RoomId>()}
       {...mapData}
     />
   );

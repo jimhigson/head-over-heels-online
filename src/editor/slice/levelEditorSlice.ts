@@ -50,7 +50,10 @@ export type LevelEditorState = {
   campaignInProgress: EditorCampaign;
   /** the campaign in the db (as far as we know) - can be used to check if we have edits since the last save */
   remoteCampaign: EditorCampaign | undefined;
-  currentlyEditingRoomId: EditorRoomId;
+  currentlyEditing: {
+    roomId: EditorRoomId;
+    subRoomId: string;
+  };
   editingRoomIdHistory: {
     back: EditorRoomId[];
     forward: EditorRoomId[];
@@ -153,6 +156,7 @@ export const {
   clearRoom,
   commitCurrentPreviewedEdits,
   deleteSelected,
+  insertRoom,
   loadCampaign,
   moveOrResizeItemAsPreview,
   newCampaign,

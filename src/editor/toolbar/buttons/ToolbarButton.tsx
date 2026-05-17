@@ -1,7 +1,8 @@
-import { type PropsWithChildren, type ReactNode } from "react";
+import type { PropsWithChildren, ReactNode, Ref } from "react";
+
+import type { ShortcutKeys } from "../../../ui/useKeyboardShortcut";
 
 import { Button } from "../../../ui/Button";
-import { type ShortcutKeys } from "../../../ui/useKeyboardShortcut";
 import {
   buttonSizeClassNames,
   buttonSmallSizeClassNames,
@@ -15,6 +16,7 @@ export type ToolbarButtonProps = {
   shortcutKeys?: ShortcutKeys;
   small?: boolean;
   tooltipContent?: ReactNode;
+  ref?: Ref<HTMLButtonElement>;
 };
 
 export const ToolbarButton = ({
@@ -26,9 +28,11 @@ export const ToolbarButton = ({
   shortcutKeys,
   small = false,
   tooltipContent,
+  ref,
 }: PropsWithChildren<ToolbarButtonProps>) => {
   return (
     <Button
+      ref={ref}
       disabled={disabled}
       selected={isCurrentTool}
       className={`

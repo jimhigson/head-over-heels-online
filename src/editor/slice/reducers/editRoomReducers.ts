@@ -22,6 +22,7 @@ import {
 } from "../../editorTypes";
 import { addReturnDoorInPlace } from "../inPlaceMutators/addDoorInPlace";
 import { addNewRoomInPlace } from "../inPlaceMutators/addNewRoomInPlace";
+import { changeCurrentRoomInPlace } from "../inPlaceMutators/changeCurrentRoomInPlace";
 import { changeIdOfCurrentRoomInPlace } from "../inPlaceMutators/changeIdOfCurrentRoomInPlace";
 import { consolidateCurrentRoomInPlace } from "../inPlaceMutators/consolidateCurrentRoomInPlace";
 import { deleteItemInPlace } from "../inPlaceMutators/deleteItemInPlace";
@@ -76,7 +77,7 @@ export const editRoomReducers = {
     const state = _state as LevelEditorState;
 
     const target =
-      state.campaignInProgress.rooms[state.currentlyEditingRoomId].color;
+      state.campaignInProgress.rooms[state.currentlyEditing.roomId].color;
 
     pushUndoInPlace(state);
     Object.assign(target, colour);
@@ -109,8 +110,8 @@ export const editRoomReducers = {
     const state = _state as LevelEditorState;
     pushUndoInPlace(state);
     const { rooms } = state.campaignInProgress;
-    const prevRoomJson = rooms[state.currentlyEditingRoomId];
-    rooms[state.currentlyEditingRoomId] = newRoomJson;
+    const prevRoomJson = rooms[state.currentlyEditing.roomId];
+    rooms[state.currentlyEditing.roomId] = newRoomJson;
 
     // selected items may no longer exist in the room after reloading - remove these selections:
     const selectedJsonItemIdsThatStillExist = state.selectedJsonItemIds.filter(
@@ -126,7 +127,7 @@ export const editRoomReducers = {
       state.selectedJsonItemIds = selectedJsonItemIdsThatStillExist;
     }
 
-    if (newRoomJson.id !== state.currentlyEditingRoomId) {
+    if (newRoomJson.id !== state.currentlyEditing.roomId) {
       changeIdOfCurrentRoomInPlace(state, newRoomJson.id);
     }
 
@@ -213,7 +214,7 @@ export const editRoomReducers = {
       const prevNcrRoom = rooms[prevOutboundNCR.with.room];
       if (
         prevNcrRoom.meta?.nonContiguousRelationship?.with.room ===
-        state.currentlyEditingRoomId
+        state.currentlyEditing.roomId
       ) {
         delete prevNcrRoom.meta.nonContiguousRelationship;
       }
@@ -293,13 +294,6 @@ export const editRoomReducers = {
       currentRoomJson[forwardDirection] &&
       selectRoomFromLevelEditorState(state, currentRoomJson[forwardDirection]);
 
-    // break the link the other way, if one exists:
-    if (
-      previouslyLinkedRoom?.[reverseProperty] === state.currentlyEditingRoomId
-    ) {
-      previouslyLinkedRoom[reverseProperty] = undefined;
-    }
-
     currentRoomJson[forwardDirection] = newLinkedToRoomId;
 
     const newlyLinkedToRoom =
@@ -307,24 +301,38 @@ export const editRoomReducers = {
       selectRoomFromLevelEditorState(state, newLinkedToRoomId);
 
     if (newlyLinkedToRoom !== undefined) {
-      // add the link back down, if there is a room to add it to:
       newlyLinkedToRoom[reverseProperty] = currentRoomJson.id;
+
+      if (payload.createNew && previouslyLinkedRoom) {
+        newlyLinkedToRoom[forwardDirection] = previouslyLinkedRoom.id;
+        previouslyLinkedRoom[reverseProperty] = newlyLinkedToRoom.id;
+      }
     }
 
-    // if creating a link, remove some floors:
+    if (!payload.createNew && previouslyLinkedRoom) {
+      if (
+        previouslyLinkedRoom[reverseProperty] === state.currentlyEditing.roomId
+      ) {
+        previouslyLinkedRoom[reverseProperty] = undefined;
+      }
+    }
+
     if (newlyLinkedToRoom) {
       changeFloorTypeInPlace(
         forwardDirection === "roomBelow" ? currentRoomJson : newlyLinkedToRoom,
         "none",
       );
     } else {
-      // broke a link - put floor back:
       changeFloorTypeInPlace(
         forwardDirection === "roomBelow" ? currentRoomJson : (
           previouslyLinkedRoom!
         ),
         "standable",
       );
+    }
+
+    if (payload.createNew && newLinkedToRoomId) {
+      changeCurrentRoomInPlace(state, newLinkedToRoomId as EditorRoomId);
     }
   },
 } satisfies SliceCaseReducers<LevelEditorState>;

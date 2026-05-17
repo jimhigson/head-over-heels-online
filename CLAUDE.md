@@ -109,6 +109,7 @@ Prefer `roomJsonItemsIterable` when you only need items without ids. Use `iterat
 ## Style & Tooling:
  * do not make barrel files inside a package. Within a package, import directly from the file that declares the property you want. The single exception: each package's top-level `src/index.ts` serves as the package's public API and must re-export every symbol the package exposes externally, so the barrel doubles as an explicit list of the package's public surface. Cross-package imports always go through the barrel (eg `import { RoomJson } from "@blockstacking/hoh-common"`, never via deep paths).
  * inline calls to hooks so long as they don't cause conditional calling or otherwise break the rules of hooks
+ * extract a custom hook for any nameable piece of logic that groups multiple base hooks together (eg a `useMemo` + `useSelector` that computes a derived value). The hook name documents the intent.
  * instead of `<Fragment>`, write the shorthand `<>` instead where possible
  * do not use bare `PropsWithChildren` — its default type param is `unknown`, which silently widens props. If a component takes no props beyond `children`, write `PropsWithChildren<EmptyObject>` (importing `EmptyObject` from `type-fest`). Otherwise pass the actual props type as the generic.
  * extract a named props type for components rather than writing the shape inline at the destructure site. Name it `<ComponentName>Props` and export it. Eg `type FooProps = { ... }; export const Foo = ({ x }: FooProps) => ...` — not `export const Foo = ({ x }: { x: number }) => ...`.
@@ -159,6 +160,14 @@ Prefer `roomJsonItemsIterable` when you only need items without ids. Use `iterat
  * do not use very generic variable names such as `data`
  * Do not use `any` unless completely necessary. Cast to a type that better describes what we know about the data - it is very rare to have a variable that can genuinely have any value.
  * write typescript type assertions to narrow down types where useful and necessary
+ * for `key in obj` narrowing, extract a type predicate function rather than casting after the check:
+ ```ts
+ const isFoo = (key: string): key is FooKey => key in fooMap;
+ ```
+ * use `as const satisfies` for lookup objects to get both narrow literal types and compile-time key validation:
+ ```ts
+ const map = { ArrowLeft: "left", ArrowRight: "right" } as const satisfies { [K in Key]?: Direction };
+ ```
  * never write comments that say something like `/* this now does foo */` because this assumes the reader has familiarity with previous versions of the code, which are invisible to them unless they look in git history. All descriptions should be of the current version, as it is now, not in reference to previous versions.
 
 * use iterator helper methods, and don't turn iterators into arrays using `[...iter]` unless really necessary; for example, use the helper methods to call `.map` or `.filter` directly on the iter. Only write to an array if we need to pass to an api that requires one, or we need to refer to the collection more than once. In this case, use `.toArray()` to convert it.

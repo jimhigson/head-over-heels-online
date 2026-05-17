@@ -18,6 +18,7 @@ import {
   deleteSelected,
   type LevelEditorState,
   roomJsonEdited,
+  setRoomAboveOrBelow,
   setSelectedItemsInRoom,
   setTool,
 } from "../levelEditorSlice";
@@ -425,7 +426,7 @@ describe('editing a door\'s "toRoom" config provides convenience methods to main
 
     const state: LevelEditorState = {
       ...editorStateWithOneRoomWithNoItems,
-      currentlyEditingRoomId: roomA,
+      currentlyEditing: { roomId: roomA, subRoomId: "*" },
       campaignInProgress: {
         ...editorStateWithOneRoomWithNoItems.campaignInProgress,
         rooms: {
@@ -519,5 +520,77 @@ describe('editing a door\'s "toRoom" config provides convenience methods to main
     // C's right door should not have been modified:
     expect(cRightDoor.config.toRoom).toBe(roomB);
     expect(cRightDoor.config.direction).toBe("right");
+  });
+});
+
+describe("setRoomAboveOrBelow", () => {
+  test("createNew with no existing room above creates and links bidirectionally", () => {
+    const result = reduceLevelEditorActions(
+      editorStateWithOneRoomWithNoItems,
+      setRoomAboveOrBelow({ direction: "above", createNew: true }),
+    );
+
+    const originalRoom = result.campaignInProgress.rooms[testRoomId];
+    const newRoomId = originalRoom.roomAbove!;
+    const newRoom = result.campaignInProgress.rooms[newRoomId];
+
+    expect(newRoom).toBeDefined();
+    expect(newRoom.roomBelow).toBe(testRoomId);
+  });
+
+  test("createNew navigates to the newly created room", () => {
+    const result = reduceLevelEditorActions(
+      editorStateWithOneRoomWithNoItems,
+      setRoomAboveOrBelow({ direction: "above", createNew: true }),
+    );
+
+    expect(result.currentlyEditing.roomId).not.toBe(testRoomId);
+    const originalRoom = result.campaignInProgress.rooms[testRoomId];
+    expect(result.currentlyEditing.roomId).toBe(originalRoom.roomAbove);
+  });
+
+  test("createNew splices between existing rooms", () => {
+    const roomB = "roomB" as EditorRoomId;
+    const stateWithRoomAbove: LevelEditorState = produce(
+      editorStateWithOneRoomWithNoItems,
+      (draft) => {
+        draft.campaignInProgress.rooms[roomB] = {
+          id: roomB,
+          planet: "blacktooth",
+          color: { hue: "cyan", shade: "basic" },
+          items: {},
+          roomBelow: testRoomId,
+        };
+        draft.campaignInProgress.rooms[testRoomId].roomAbove = roomB;
+      },
+    );
+
+    const result = reduceLevelEditorActions(
+      stateWithRoomAbove,
+      setRoomAboveOrBelow({ direction: "above", createNew: true }),
+    );
+
+    const originalRoom = result.campaignInProgress.rooms[testRoomId];
+    const newRoomId = originalRoom.roomAbove!;
+    const newRoom = result.campaignInProgress.rooms[newRoomId];
+    const roomBResult = result.campaignInProgress.rooms[roomB];
+
+    expect(newRoom.roomBelow).toBe(testRoomId);
+    expect(newRoom.roomAbove).toBe(roomB);
+    expect(roomBResult.roomBelow).toBe(newRoomId);
+  });
+
+  test("createNew gives the new sandwiched room a 'none' floor", () => {
+    const result = reduceLevelEditorActions(
+      editorStateWithOneRoomWithNoItems,
+      setRoomAboveOrBelow({ direction: "below", createNew: true }),
+    );
+
+    const originalRoom = result.campaignInProgress.rooms[testRoomId];
+    const floors = [...roomJsonItemsIterable(originalRoom)].filter(
+      (item) => item.type === "floor",
+    );
+
+    expect(floors.every((f) => f.config.floorType === "none")).toBe(true);
   });
 });

@@ -15,7 +15,7 @@ export const campaignManagementReducers = {
         initialLevelEditorSliceState,
         ...levelEditorSliceNonPersistedFields,
         "campaignInProgress",
-        "currentlyEditingRoomId",
+        "currentlyEditing",
         "remoteCampaign",
         "history",
         "editingRoomIdHistory",

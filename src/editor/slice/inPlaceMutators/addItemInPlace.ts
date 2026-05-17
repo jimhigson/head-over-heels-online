@@ -67,7 +67,7 @@ export const addItemInPlace = <T extends JsonItemType = JsonItemType>(
 export const roomEditTarget = (
   state: LevelEditorState,
   isPreview: boolean,
-  roomId: EditorRoomId = state.currentlyEditingRoomId,
+  roomId: EditorRoomId = state.currentlyEditing.roomId,
 ): EditorRoomJsonItems | PreviewedRoomItemEdits => {
   return isPreview ?
       state.previewedEdits

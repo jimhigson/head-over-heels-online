@@ -2,12 +2,13 @@ import { findSubRoomForItem } from "../../../game/components/dialogs/menuDialog/
 import { roomGridPositions } from "../../../game/components/dialogs/menuDialog/dialogs/map/roomGridPositions";
 import { nextItemId } from "../../../model/inPlaceMutators/nextItemId";
 import { typePrefix } from "../../../model/json/typePrefix";
-import { iterateRoomJsonItemsWithIds } from "../../../model/RoomJson";
 import { keys } from "../../../utils/entries";
 import { unitVectors } from "../../../utils/vectors/unitVectors";
 import {
   type DirectionXy4,
   oppositeDirection,
+  originXy,
+  type Xy,
   type Xyz,
   xyzEqual,
 } from "../../../utils/vectors/vectors";
@@ -19,6 +20,12 @@ import {
 import { type ItemTool } from "../../RoomEditingArea/interactivity/Tool";
 import { selectCurrentRoomFromLevelEditorState } from "../levelEditorSelectors";
 import { type LevelEditorState } from "../levelEditorSlice";
+import {
+  roomFloorMaxX,
+  roomFloorMaxY,
+  roomFloorMinX,
+  roomFloorMinY,
+} from "../roomJsonSelectors";
 import { addItemInPlace } from "./addItemInPlace";
 import { addNewRoomInPlace } from "./addNewRoomInPlace";
 import { cutHoleInWallsForDoorsInPlace } from "./cutHoleInWallsForDoorsInPlace";
@@ -68,49 +75,19 @@ const getDestinationRoom = ({
     : undefined;
 };
 
-const roomFloorMinY = (roomJson: EditorRoomJson): number =>
-  iterateRoomJsonItemsWithIds(roomJson.items, "floor").reduce(
-    (min, [, item]) => {
-      const itemTop = item.position.y;
-      return Math.min(min, itemTop);
-    },
-    Number.POSITIVE_INFINITY,
-  );
-const roomFloorMaxY = (roomJson: EditorRoomJson): number =>
-  iterateRoomJsonItemsWithIds(roomJson.items, "floor").reduce(
-    (max, [, item]) => {
-      const itemBottom = item.position.y + item.config.times.y;
-      return Math.max(max, itemBottom);
-    },
-    Number.NEGATIVE_INFINITY,
-  );
-const roomFloorMinX = (roomJson: EditorRoomJson): number =>
-  iterateRoomJsonItemsWithIds(roomJson.items, "floor").reduce(
-    (min, [, item]) => {
-      const itemTop = item.position.x;
-      return Math.min(min, itemTop);
-    },
-    Number.POSITIVE_INFINITY,
-  );
-const roomFloorMaxX = (roomJson: EditorRoomJson): number =>
-  iterateRoomJsonItemsWithIds(roomJson.items, "floor").reduce(
-    (max, [, item]) => {
-      const itemBottom = item.position.x + item.config.times.x;
-      return Math.max(max, itemBottom);
-    },
-    Number.NEGATIVE_INFINITY,
-  );
-
 export const addReturnDoorInPlace = ({
   state,
   fromRoomJson,
   toRoomJson,
   outgoingDoorEntry: [outgoingDoorId, outgoingDoor],
+  outgoingDoorRelativeTo = originXy,
 }: {
   state: LevelEditorState;
   fromRoomJson: EditorRoomJson;
   toRoomJson: EditorRoomJson;
   outgoingDoorEntry: [EditorRoomItemId, EditorJsonItem<"door">];
+  /** origin to subtract from the outgoing door's position for the return door's non-directional axis */
+  outgoingDoorRelativeTo?: Xy;
 }) => {
   const outgoingDirection = outgoingDoor.config.direction;
   const outgoingPosition = outgoingDoor.position;
@@ -128,13 +105,11 @@ export const addReturnDoorInPlace = ({
     x:
       outgoingDirection === "left" ? roomFloorMinX(toRoomJson)
       : outgoingDirection === "right" ? roomFloorMaxX(toRoomJson)
-        // line up to match the door we just added (this assumes the room going to is big enough)
-      : outgoingPosition.x,
+      : outgoingPosition.x - outgoingDoorRelativeTo.x,
     y:
       outgoingDirection === "away" ? roomFloorMinY(toRoomJson)
       : outgoingDirection === "towards" ? roomFloorMaxY(toRoomJson)
-        // line up to match the door we just added (this assumes the room going to is big enough)
-      : outgoingPosition.y,
+      : outgoingPosition.y - outgoingDoorRelativeTo.y,
     z: outgoingPosition.z,
   };
 

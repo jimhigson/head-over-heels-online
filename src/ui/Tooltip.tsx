@@ -3,6 +3,7 @@ import {
   flip,
   FloatingPortal,
   offset,
+  type Placement,
   shift,
   useDismiss,
   useFloating,
@@ -25,17 +26,24 @@ import { CssVariables } from "../game/components/CssVariables";
 export type TooltipProps = {
   triggerContent: ReactNode;
   tooltipContent?: ReactNode;
+  tooltipOffset?: number;
+  tooltipPlacement?: Placement;
 };
 
-export const Tooltip = ({ triggerContent, tooltipContent }: TooltipProps) => {
+export const Tooltip = ({
+  triggerContent,
+  tooltipContent,
+  tooltipOffset = 0,
+  tooltipPlacement = "bottom-end",
+}: TooltipProps) => {
   const [isOpen, setIsOpen] = useState(false);
 
   const { refs, floatingStyles, context } = useFloating({
     open: isOpen,
     onOpenChange: setIsOpen,
-    placement: "bottom-end",
+    placement: tooltipPlacement,
     whileElementsMounted: autoUpdate,
-    middleware: [offset(0), flip(), shift()],
+    middleware: [offset(tooltipOffset), flip(), shift()],
   });
 
   const { getReferenceProps, getFloatingProps } = useInteractions([

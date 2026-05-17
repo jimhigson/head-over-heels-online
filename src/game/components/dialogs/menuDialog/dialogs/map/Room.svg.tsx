@@ -1,19 +1,21 @@
-import { type ReactNode, Suspense } from "react";
+import type { FunctionComponent, ReactElement } from "react";
 
-import {
-  type CharacterName,
-  type IndividualCharacterName,
+import type {
+  CharacterName,
+  IndividualCharacterName,
 } from "../../../../../../model/modelTypes";
-import { type RoomJson } from "../../../../../../model/RoomJson";
+import type { RoomJson } from "../../../../../../model/RoomJson";
+import type { RoomPickupsCollected } from "../../../../../gameState/GameState";
+import type { PlayableItem } from "../../../../../physics/itemPredicates";
+import type { Boundaries, RoomGridPositionSpec } from "./roomGridPositions";
+
 import { hudLowercaseCharTextureSize } from "../../../../../../sprites/spritesheet/spritesheetData/textureSizes";
-import { LazyTooltip } from "../../../../../../ui/LazyTooltip";
 import { valuesIter } from "../../../../../../utils/entries";
 import { range } from "../../../../../../utils/iterators/range";
 import { addXy, lengthXy } from "../../../../../../utils/vectors/vectors";
-import { type RoomPickupsCollected } from "../../../../../gameState/GameState";
-import { type PlayableItem } from "../../../../../physics/itemPredicates";
 import { projectWorldXyzToScreenXy } from "../../../../../render/projections";
 import { BitmapText } from "../../../../tailwindSprites/BitmapText";
+import { floorFillPathD } from "./floorFillPathD";
 import {
   InPlayItemsInRoomLayout,
   NotableJsonItemsInRoomLayout,
@@ -27,42 +29,10 @@ import {
   roomGridSizeZ,
 } from "./mapConstants";
 import { PlayableItemInRoom } from "./NotableItem";
-import {
-  type Boundaries,
-  type RoomGridPositionSpec,
-} from "./roomGridPositions";
 import { roomWorldPosition } from "./roomWorldPosition";
 import { project, roundForSvg, translateXyz } from "./svgHelpers";
 import { useNotableItems } from "./useNotableItems";
 import { VisitedFootprint } from "./VisitedFootprint";
-
-const FloorInteractiveArea = <RoomId extends string>({
-  onRoomClick,
-  roomId,
-  tooltipContent,
-}: {
-  onRoomClick: (roomId: RoomId) => void;
-  roomId: RoomId;
-  tooltipContent: ReactNode;
-}) => {
-  const clickablePath = (
-    <path
-      className="fill-transparent cursor-pointer"
-      d={floorFillPathD}
-      onClick={() => {
-        onRoomClick(roomId);
-      }}
-    />
-  );
-  return (
-    <Suspense fallback={clickablePath}>
-      <LazyTooltip
-        triggerContent={clickablePath}
-        tooltipContent={tooltipContent}
-      />
-    </Suspense>
-  );
-};
 
 const strokeWidth = 3;
 
@@ -75,13 +45,6 @@ const boundaryDashArrays = {
   open: "0,999",
   doorway: `${roundForSvg(boundaryLineLength * ((1 - doorwayGap) / 2) - strokeWidth / 2)}, ${roundForSvg(boundaryLineLength * doorwayGap + strokeWidth)}, 999`,
 };
-
-const floorFillPathD = `
-M ${project({})}
-L ${project({ y: roomGridSizeXY })}
-L ${project({ x: roomGridSizeXY, y: roomGridSizeXY })}
-L ${project({ x: roomGridSizeXY })}
-z`;
 
 const floorPathFillPathD = (
   boundaries: Boundaries,
@@ -179,9 +142,11 @@ type RoomSvgProps<RoomId extends string> = {
   headOverHeelsItemInRoom?: PlayableItem<"headOverHeels", RoomId>;
   roomPickupsCollected: RoomPickupsCollected;
   onPlayableClick?: (name: IndividualCharacterName) => void;
-  onRoomClick?: (roomId: RoomId) => void;
   currentCharacterName: CharacterName;
   isCurrentRoom: boolean;
+  ClickableAreaWrapper?: FunctionComponent<{
+    children: ReactElement;
+  }>;
 };
 
 export const RoomSvg = <RoomId extends string>({
@@ -194,12 +159,11 @@ export const RoomSvg = <RoomId extends string>({
   headOverHeelsItemInRoom,
   currentCharacterName,
   onPlayableClick,
-  onRoomClick,
   isCurrentRoom,
+  ClickableAreaWrapper,
 }: RoomSvgProps<RoomId>) => {
   const { id, roomAbove, color, items } = roomJson;
   const label = roomJson.meta?.label;
-  const highlightOnHover = onRoomClick !== undefined;
 
   // find some notable items:
   const notableItems = useNotableItems(
@@ -221,18 +185,16 @@ export const RoomSvg = <RoomId extends string>({
       data-room-id={id}
       strokeWidth={strokeWidth}
       className={`
-        ${roomAccentColourClass(color)} 
+        ${roomAccentColourClass(color)}
         ${
           isCurrentRoom ?
-            // make the current room look visually distinct by changing the floor colour:
             `[--floorColor:theme(colors.shadow)] zx:[--floorColor:theme(colors.zxBlack)] toppy:[--floorColor:theme(colors.toppyGrey3)]`
           : `[--floorColor:theme(colors.white)]`
-        } 
+        }
         ${
-          highlightOnHover ?
-            `
-            group/room
-            hover:[--roomHintColor:theme(colors.midRed)] 
+          ClickableAreaWrapper ?
+            `group/room
+            hover:[--roomHintColor:theme(colors.midRed)]
             zx:hover:[--roomHintColor:theme(colors.zxRed)]
             toppy:hover:[--roomHintColor:theme(colors.toppyPink2)]`
           : ""
@@ -262,9 +224,8 @@ export const RoomSvg = <RoomId extends string>({
           <path
             className={`fill-[var(--floorColor)]
               ${
-                highlightOnHover && !isCurrentRoom ?
-                  `
-                  group-hover/room:fill-pastelBlue
+                !isCurrentRoom ?
+                  `group-hover/room:fill-pastelBlue
                   zx:group-hover/room:fill-zxCyan
                   toppy:group-hover/room:fill-toppyCool1`
                 : ""
@@ -464,15 +425,15 @@ z
           </foreignObject>
         </g>
       )}
-      {onRoomClick ?
-        // add a transparent area over the whole floor if we need to handle clicks.
-        // otherwise, the rendering above is too complex to handle this
-        <FloorInteractiveArea
-          onRoomClick={onRoomClick}
-          roomId={id}
-          tooltipContent={<BitmapText>{roomJson.id}</BitmapText>}
-        />
-      : null}
+      {ClickableAreaWrapper && (
+        <ClickableAreaWrapper>
+          <path
+            className="fill-transparent cursor-pointer outline-none"
+            d={floorFillPathD}
+            tabIndex={-1}
+          />
+        </ClickableAreaWrapper>
+      )}
     </g>
   );
 };

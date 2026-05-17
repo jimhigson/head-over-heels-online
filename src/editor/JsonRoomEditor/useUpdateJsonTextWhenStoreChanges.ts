@@ -22,7 +22,9 @@ const updateTextNow = (
   }
 
   const roomJson = selectCurrentEditingRoomJson(state);
-  const { currentlyEditingRoomId } = state.levelEditor;
+  const {
+    currentlyEditing: { roomId: currentlyEditingRoomId },
+  } = state.levelEditor;
 
   if (roomJson === undefined || !currentlyEditingRoomId) {
     return;
@@ -109,7 +111,7 @@ const useUpdateTextWhenJsonChangesInSameRoom = (
 ) => {
   const currentRoomJson = useEditorAppSelector(selectCurrentEditingRoomJson);
   const currentlyEditingRoomId = useEditorAppSelector(
-    (state) => state.levelEditor.currentlyEditingRoomId,
+    (state) => state.levelEditor.currentlyEditing.roomId,
   );
   const previousRoomIdRef = useRef<string | undefined>(undefined);
 
@@ -146,7 +148,7 @@ const useCreateDocumentsInMonacoWhenCurrentRoomChanges = (
   monaco: null | typeof Monaco,
 ) => {
   const currentlyEditingRoomId = useEditorAppSelector(
-    (state) => state.levelEditor.currentlyEditingRoomId,
+    (state) => state.levelEditor.currentlyEditing.roomId,
   );
 
   useEffect(() => {

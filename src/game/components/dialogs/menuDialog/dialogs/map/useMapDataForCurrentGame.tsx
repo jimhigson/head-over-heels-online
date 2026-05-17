@@ -71,6 +71,7 @@ export const useMapDataForCurrentGame = <
       return {
         mapBounds: findMapBounds(positions),
         curRoomId: curRoom?.roomJson.id,
+        curSubRoomId: undefined,
         gridPositions: sortedObjectOfPositions,
         currentCharacterName,
         pickupsCollected: gameState.pickupsCollected,

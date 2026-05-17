@@ -27,7 +27,7 @@ const addRooms = (draft: LevelEditorState) => {
     color: { hue: "cyan", shade: "basic" },
     items: {},
   };
-  draft.currentlyEditingRoomId = roomA;
+  draft.currentlyEditing.roomId = roomA;
 };
 
 test("removeRoom filters the deleted room from editingRoomIdHistory", () => {

@@ -34,7 +34,7 @@ export const PlayTestButton = () => {
               searchParams.set("playAsHeels", "1");
             }
             if (!fromStart) {
-              url.hash = state.levelEditor.currentlyEditingRoomId;
+              url.hash = state.levelEditor.currentlyEditing.roomId;
             }
             window.open(url.toString(), "playtest");
           }}

@@ -445,7 +445,7 @@ describe("applying tools", () => {
 
   const currentRoom = (state: LevelEditorState) =>
     state.campaignInProgress.rooms[
-      state.currentlyEditingRoomId!
+      state.currentlyEditing.roomId!
     ] as EditorRoomJson;
 
   const findFloor = (state: LevelEditorState) => {

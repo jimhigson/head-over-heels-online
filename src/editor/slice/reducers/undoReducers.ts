@@ -33,7 +33,7 @@ export const undoReducers = {
     const {
       campaignInProgress,
       history: { undo, redo },
-      currentlyEditingRoomId,
+      currentlyEditing: { roomId: currentlyEditingRoomId },
     } = state;
 
     if (undo.length === 0) {
@@ -61,7 +61,7 @@ export const undoReducers = {
     const {
       campaignInProgress,
       history: { redo, undo },
-      currentlyEditingRoomId,
+      currentlyEditing: { roomId: currentlyEditingRoomId },
     } = state;
 
     if (redo.length === 0) {

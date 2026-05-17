@@ -21,7 +21,7 @@ const RoomsAboveOrBelowSelectOrCreate = ({
     ({ levelEditor }) => levelEditor.campaignInProgress,
   );
   const currentlyEditingRoomId = useEditorAppSelector(
-    ({ levelEditor }) => levelEditor.currentlyEditingRoomId,
+    ({ levelEditor }) => levelEditor.currentlyEditing.roomId,
   );
   const dispatch = useAppDispatch();
 

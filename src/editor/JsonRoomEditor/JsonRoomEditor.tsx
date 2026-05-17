@@ -16,7 +16,7 @@ const JsonRoomEditor = () => {
     null,
   );
   const currentlyEditingRoomId = useEditorAppSelector(
-    (state) => state.levelEditor.currentlyEditingRoomId,
+    (state) => state.levelEditor.currentlyEditing.roomId,
   );
 
   const monacoLoaded = !!useLoadMonaco();
