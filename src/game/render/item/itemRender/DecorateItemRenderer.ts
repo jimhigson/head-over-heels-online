@@ -1,6 +1,6 @@
-import type { ItemInPlayType } from "../../../../model/ItemInPlay";
-import type { ItemRenderContext } from "../../ItemRenderContexts";
-import type { ItemPixiRenderer } from "./ItemPixiRenderer";
+import { type ItemInPlayType } from "../../../../model/ItemInPlay";
+import { type ItemRenderContext } from "../../ItemRenderContexts";
+import { type ItemPixiRenderer } from "./ItemPixiRenderer";
 
 /**
  * Creates a decorator/wrapper around a child item renderer, adding some additional

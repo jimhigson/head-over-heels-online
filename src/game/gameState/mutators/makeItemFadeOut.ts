@@ -1,7 +1,5 @@
-import type { UnionOfAllItemInPlayTypes } from "../../../model/ItemInPlay";
-import type { RoomState } from "../../../model/RoomState";
-import type { GameState } from "../GameState";
-
+import { type UnionOfAllItemInPlayTypes } from "../../../model/ItemInPlay";
+import { type RoomState } from "../../../model/RoomState";
 import { getItemInPlayTimes } from "../../../model/times";
 import { hashStringToNumber0to1 } from "../../../utils/maths/hashStringToNumber0to1";
 import {
@@ -13,6 +11,7 @@ import {
 import { boundingBoxForItem } from "../../collision/boundingBoxes";
 import { blockSizePx } from "../../physics/mechanicsConstants";
 import { fadeInOrOutDuration } from "../../render/animationTimings";
+import { type GameState } from "../GameState";
 import { addItemFromJsonToRoom } from "./addItemToRoom";
 import { deleteItemFromRoom } from "./deleteItemFromRoom";
 import { updateItemPosition } from "./updateItemPosition";

@@ -1,13 +1,6 @@
 import { Container } from "pixi.js";
 
-import type { ItemInPlayType } from "../../../../model/ItemInPlay";
-import type {
-  ItemRenderContext,
-  ItemTickContext,
-} from "../../ItemRenderContexts";
-import type { DecorateItemRenderer } from "./DecorateItemRenderer";
-import type { ItemPixiRenderer } from "./ItemPixiRenderer";
-
+import { type ItemInPlayType } from "../../../../model/ItemInPlay";
 import { zxSpectrumColor } from "../../../../originalGame";
 import { effectColour } from "../../../../sprites/palette/spritesheetPalette";
 import {
@@ -15,6 +8,12 @@ import {
   type PortableItemType,
 } from "../../../physics/itemPredicates";
 import { OutlineFilter } from "../../filters/OutlineFilter";
+import {
+  type ItemRenderContext,
+  type ItemTickContext,
+} from "../../ItemRenderContexts";
+import { type DecorateItemRenderer } from "./DecorateItemRenderer";
+import { type ItemPixiRenderer } from "./ItemPixiRenderer";
 
 class PortableItemPickUpNextHighlightRenderer
   implements ItemPixiRenderer<PortableItemType>

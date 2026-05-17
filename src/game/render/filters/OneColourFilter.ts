@@ -1,7 +1,4 @@
-import type { Color } from "pixi.js";
-
-import { defaultFilterVert } from "pixi.js";
-import { Filter, GlProgram } from "pixi.js";
+import { type Color, defaultFilterVert, Filter, GlProgram } from "pixi.js";
 
 import fragment from "./oneColour.frag";
 

@@ -12,8 +12,10 @@ import {
   type Xyz,
 } from "../../../utils/vectors/vectors";
 import { itemMoveOrResizeWouldCollide } from "../../RoomEditingArea/cursor/editWouldCollide";
-import { selectEditorRoomState } from "../../slice/levelEditorSelectors";
-import { selectCurrentRoomFromLevelEditorState } from "../../slice/levelEditorSelectors";
+import {
+  selectCurrentRoomFromLevelEditorState,
+  selectEditorRoomState,
+} from "../../slice/levelEditorSelectors";
 import {
   commitCurrentPreviewedEdits,
   moveOrResizeItemAsPreview,

@@ -1,16 +1,17 @@
-import { AnimatedSprite } from "pixi.js";
-import { Container } from "pixi.js";
-
-import type { SpritesheetVariant } from "../../../sprites/spritesheet/variants/SpritesheetVariant";
-import type { DirectionXy4, Xy } from "../../../utils/vectors/vectors";
-import type { ItemAppearance } from "./ItemAppearance";
+import { AnimatedSprite, Container } from "pixi.js";
 
 import { isStoodOn } from "../../../model/StoodOnBy";
 import { getSpriteSheetVariant } from "../../../sprites/spritesheet/variants/getSpriteSheetVariant";
+import { type SpritesheetVariant } from "../../../sprites/spritesheet/variants/SpritesheetVariant";
 import { neverTime } from "../../../utils/neverTime";
 import { maybeRenderContainerToAnimatedSprite } from "../../../utils/pixi/renderContainerToSprite";
-import { tangentAxis } from "../../../utils/vectors/vectors";
+import {
+  type DirectionXy4,
+  tangentAxis,
+  type Xy,
+} from "../../../utils/vectors/vectors";
 import { createSprite } from "../createSprite";
+import { type ItemAppearance } from "./ItemAppearance";
 import { itemAppearanceOutsideView } from "./itemAppearanceOutsideView";
 
 const slowdownTimeMs = 250;

@@ -1,8 +1,9 @@
-import type { PlanetName } from "../../sprites/planets";
-import type { RoomJson } from "../RoomJson";
-
-import { planets, type SceneryName } from "../../sprites/planets";
-import { roomJsonItemsIterable } from "../RoomJson";
+import {
+  type PlanetName,
+  planets,
+  type SceneryName,
+} from "../../sprites/planets";
+import { type RoomJson, roomJsonItemsIterable } from "../RoomJson";
 import { rotatingSceneryTiles } from "./rotatingSceneryTiles";
 
 export const changeRoomSceneryInPlace = <

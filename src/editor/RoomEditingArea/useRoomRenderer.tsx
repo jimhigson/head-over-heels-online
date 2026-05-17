@@ -1,18 +1,16 @@
-import type { Renderer } from "pixi.js";
-
+import { type Renderer } from "pixi.js";
 import { useEffect, useState } from "preact/hooks";
 
-import type { GeneralRenderContext } from "../../game/render/room/RoomRenderContexts";
-import type {
-  EditorRoomId,
-  EditorRoomRenderer,
-  EditorRoomState,
-} from "../editorTypes";
-
+import { type GeneralRenderContext } from "../../game/render/room/RoomRenderContexts";
 import { RoomRenderer } from "../../game/render/room/RoomRenderer";
 import { spritesheetMetas } from "../../sprites/spritesheet/spritesheetData/spritesheetMetaData";
 import { selectUpscale } from "../../store/slices/upscale/upscaleSlice";
 import { store } from "../../store/store";
+import {
+  type EditorRoomId,
+  type EditorRoomRenderer,
+  type EditorRoomState,
+} from "../editorTypes";
 import { useEditorRoomStateWithPreviews } from "../slice/levelEditorSelectors";
 import { useProvidedPixiApplication } from "./PixiApplicationProvider";
 

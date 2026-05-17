@@ -1,22 +1,23 @@
-import type { PartialNamedColours } from "../../../utils/palette/palette";
-import type {
-  AppSpritesheet,
-  LoadableSpriteOption,
-} from "../loadedSpriteSheet";
-import type { SpritesheetMetadata } from "../spritesheetData/spritesheetMetaData";
-import type { SpritesheetTextureSwops } from "../spritesheetPaletteSwop";
-import type { VariantBuildContext } from "../VariantBuildContext";
-
-import { resolveSwops } from "../../../utils/palette/palette";
-import { resolveNamedColourSwops } from "../../../utils/palette/palette";
+import {
+  type PartialNamedColours,
+  resolveNamedColourSwops,
+  resolveSwops,
+} from "../../../utils/palette/palette";
 import { omitArray } from "../../../utils/pick";
+import {
+  type AppSpritesheet,
+  type LoadableSpriteOption,
+} from "../loadedSpriteSheet";
 import { blockstackAmbienceSwops } from "../roomSpritesheetTextureSwops";
+import { type SpritesheetMetadata } from "../spritesheetData/spritesheetMetaData";
 import {
   ambientDimSwops,
   createSpritesheetVariant,
   noopSpritesheetTextureSwops,
   replaceSpritesheetWithSwopped,
+  type SpritesheetTextureSwops,
 } from "../spritesheetPaletteSwop";
+import { type VariantBuildContext } from "../VariantBuildContext";
 
 let swopped: AppSpritesheet | undefined = undefined;
 

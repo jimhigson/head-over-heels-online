@@ -1,7 +1,5 @@
-import type { JsonItemUnion } from "../../../model/json/JsonItem";
-import type { Xyz } from "../../../utils/vectors/vectors";
-
-import { addXyz } from "../../../utils/vectors/vectors";
+import { type JsonItemUnion } from "../../../model/json/JsonItem";
+import { addXyz, type Xyz } from "../../../utils/vectors/vectors";
 import { boundingBoxForItem } from "../../collision/boundingBoxes";
 import { blockSizePx } from "../../physics/mechanicsConstants";
 import { blockXyzToFineXyz } from "../../render/projections";

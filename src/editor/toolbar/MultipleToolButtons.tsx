@@ -1,12 +1,9 @@
-import type { ReactElement } from "react";
-
 import { useRef, useState } from "preact/hooks";
-import { cloneElement } from "react";
-
-import type { ToolbarButtonProps } from "./buttons/ToolbarButton";
+import { cloneElement, type ReactElement } from "react";
 
 import { useMouseWheelOptions } from "../../ui/useMouseWheel";
 import { MenuButton } from "./buttons/MenuButton";
+import { type ToolbarButtonProps } from "./buttons/ToolbarButton";
 
 export interface MultipleToolButtonsProps {
   children: ReactElement<ToolbarButtonProps>[];

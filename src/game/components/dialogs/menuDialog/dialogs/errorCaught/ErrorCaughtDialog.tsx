@@ -1,13 +1,12 @@
 import { useState } from "preact/hooks";
 
-import type { SerialisableError } from "../../../../../../utils/redux/createSerialisableErrors";
-
 import { useAppDispatch, useAppSelector } from "../../../../../../store/hooks";
 import { clearAllData } from "../../../../../../store/slices/clearAllData";
 import { reincarnationAccepted } from "../../../../../../store/slices/gameInPlay/gameInPlaySlice";
 import { errorDismissed } from "../../../../../../store/slices/gameMenus/gameMenusSlice";
 import { useDispatchActionCallback } from "../../../../../../store/useDispatchActionCallback";
 import { ErrorDialog } from "../../../../../../ui/ErrorDialog";
+import { type SerialisableError } from "../../../../../../utils/redux/createSerialisableErrors";
 import { BlockyMarkdown } from "../../../../BlockyMarkdown";
 import { BitmapText } from "../../../../tailwindSprites/BitmapText";
 import { MenuItem } from "../../MenuItem";

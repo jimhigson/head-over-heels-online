@@ -1,5 +1,5 @@
-import type { BooleanAction } from "../../../../input/actions";
-import type { InputStateTrackerInterface } from "../../../../input/InputStateTracker";
+import { type BooleanAction } from "../../../../input/actions";
+import { type InputStateTrackerInterface } from "../../../../input/InputStateTracker";
 
 export const buttonActionsPressed = (
   actions: BooleanAction[],

@@ -1,5 +1,5 @@
-import type { SceneryName, Wall } from "../../sprites/planets";
-import type { DirectionXy4, Xy } from "../../utils/vectors/vectors";
+import { type SceneryName, type Wall } from "../../sprites/planets";
+import { type DirectionXy4, type Xy } from "../../utils/vectors/vectors";
 
 export type AwayWallConfig<ScN extends SceneryName> = {
   /** this wall would normally be found/rendered on the away side of the room */

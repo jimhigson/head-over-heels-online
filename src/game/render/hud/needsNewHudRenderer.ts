@@ -1,9 +1,9 @@
-import type { Upscale } from "../../../store/slices/upscale/Upscale";
-import type {
-  InputDirectionMode,
-  SpriteOption,
+import { type Upscale } from "../../../store/slices/upscale/Upscale";
+import {
+  type InputDirectionMode,
+  type SpriteOption,
 } from "../../../store/slices/userSettings/userSettingsSlice";
-import type { HudRenderer } from "./HudRenderer";
+import { type HudRenderer } from "./HudRenderer";
 
 export const needsNewHudRenderer = <
   RoomId extends string,

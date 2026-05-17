@@ -1,10 +1,9 @@
 import { useState } from "preact/hooks";
 
-import type { CampaignLocator } from "../../../model/modelTypes";
-import type { TextureTailwindClass } from "../../../sprites/spritesheet/spritesheetData/TextureTailwindClass";
-
 import { importSupabaseDb } from "../../../db/supabaseDb.import";
 import { BitmapText } from "../../../game/components/tailwindSprites/BitmapText";
+import { type CampaignLocator } from "../../../model/modelTypes";
+import { type TextureTailwindClass } from "../../../sprites/spritesheet/spritesheetData/TextureTailwindClass";
 import {
   loadCampaignFromApi,
   saveCampaignViaApi,

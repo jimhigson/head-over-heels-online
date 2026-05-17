@@ -1,4 +1,4 @@
-import type { Subset } from "../utils/Subset";
+import { type Subset } from "../utils/Subset";
 
 export const wallTiles = {
   jail: ["bars"],

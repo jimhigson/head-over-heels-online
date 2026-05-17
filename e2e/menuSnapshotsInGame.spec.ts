@@ -1,9 +1,8 @@
 import { test } from "@playwright/test";
 import chalk from "chalk";
 
-import type { goToSubmenu } from "../src/store/slices/gameMenus/gameMenusSlice";
-import type { ScreenshotTestOptions } from "./ScreenshotTestOptions";
-
+import { type goToSubmenu } from "../src/store/slices/gameMenus/gameMenusSlice";
+import { type ScreenshotTestOptions } from "./ScreenshotTestOptions";
 import { dispatchKeyPress } from "./testUtils/gameInteractions";
 import { dispatchToStore } from "./testUtils/gameStateQueries";
 import { osSlowness, retryWithRecovery } from "./testUtils/infrastructure";

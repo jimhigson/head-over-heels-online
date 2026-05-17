@@ -1,12 +1,6 @@
 import { expect, vi } from "vitest";
 
-import type { ItemTypeUnion } from "../_generated/types/ItemInPlayUnion";
-import type { StartingRooms } from "../game/gameState/loadGameState";
-import type { PortableItemType } from "../game/physics/itemPredicates";
-import type { ItemInPlay } from "../model/ItemInPlay";
-import type { PlayableActionState } from "../model/ItemStateMap";
-import type { RoomState } from "../model/RoomState";
-
+import { type ItemTypeUnion } from "../_generated/types/ItemInPlayUnion";
 import {
   selectCurrentPlayableItem,
   selectHeelsAbilities,
@@ -15,6 +9,7 @@ import {
 import {
   findStartingRoomsInCampaign,
   loadGameState,
+  type StartingRooms,
 } from "../game/gameState/loadGameState";
 import { loadItemFromJson } from "../game/gameState/loadRoom/loadItemFromJson";
 import { changeCharacterRoom } from "../game/gameState/mutators/changeCharacterRoom";
@@ -24,13 +19,17 @@ import { removeStandingOn } from "../game/gameState/mutators/standingOn/removeSt
 import { setStandingOnWithoutRemovingOldFirst } from "../game/gameState/mutators/standingOn/setStandingOnWithoutRemovingOldFirst";
 import { swopPlayables } from "../game/gameState/mutators/swopPlayables";
 import { updateItemPosition } from "../game/gameState/mutators/updateItemPosition";
+import { type PortableItemType } from "../game/physics/itemPredicates";
 import { blockSizePx } from "../game/physics/mechanicsConstants";
+import { type ItemInPlay } from "../model/ItemInPlay";
+import { type PlayableActionState } from "../model/ItemStateMap";
 import {
   type Campaign,
   type CharacterName,
   type IndividualCharacterName,
   otherIndividualCharacterName,
 } from "../model/modelTypes";
+import { type RoomState } from "../model/RoomState";
 import { startAppListening } from "../store/listenerMiddleware";
 import { gameOver } from "../store/slices/gameInPlay/gameInPlaySlice";
 import { valuesIter } from "../utils/entries";

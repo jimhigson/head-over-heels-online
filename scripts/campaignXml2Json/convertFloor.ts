@@ -1,8 +1,7 @@
-import type { JsonItem } from "../../src/model/json/JsonItem";
-import type { Xy } from "../../src/utils/vectors/vectors";
-import type { XmlFloorKind, XmlScenery } from "./readToJson";
-
+import { type JsonItem } from "../../src/model/json/JsonItem";
+import { type Xy } from "../../src/utils/vectors/vectors";
 import { convertSceneryName } from "./convertPlanetName";
+import { type XmlFloorKind, type XmlScenery } from "./readToJson";
 
 function* convertFloor(
   roomDimensions: Xy,

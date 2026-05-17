@@ -1,15 +1,14 @@
-import type { ReactElement } from "react";
-
 import { useMemo } from "preact/hooks";
-
-import type { JsonItemUnion } from "../../../../../../model/json/JsonItem";
-import type { ConsolidatableConfig } from "../../../../../../model/json/utilityJsonConfigTypes";
-import type { IndividualCharacterName } from "../../../../../../model/modelTypes";
-import type { RoomJson } from "../../../../../../model/RoomJson";
-import type { PlayableItem } from "../../../../../physics/itemPredicates";
+import { type ReactElement } from "react";
 
 import { itemInPlayCentre } from "../../../../../../model/itemInPlayCentre";
-import { timesNotMultiplied } from "../../../../../../model/json/utilityJsonConfigTypes";
+import { type JsonItemUnion } from "../../../../../../model/json/JsonItem";
+import {
+  type ConsolidatableConfig,
+  timesNotMultiplied,
+} from "../../../../../../model/json/utilityJsonConfigTypes";
+import { type IndividualCharacterName } from "../../../../../../model/modelTypes";
+import { type RoomJson } from "../../../../../../model/RoomJson";
 import { emptyObject } from "../../../../../../utils/empty";
 import { entries } from "../../../../../../utils/entries";
 import { normalise } from "../../../../../../utils/maths/normalise";
@@ -20,6 +19,7 @@ import {
   scaleXyz,
   type Xy,
 } from "../../../../../../utils/vectors/vectors";
+import { type PlayableItem } from "../../../../../physics/itemPredicates";
 import { blockSizePx } from "../../../../../physics/mechanicsConstants";
 import { roomJsonFloorsExtent } from "../../../../../render/room/floorsExtent";
 import { roomGridSizeXY } from "./mapConstants";

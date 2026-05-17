@@ -1,8 +1,7 @@
 import { Ticker } from "pixi.js";
 import { useEffect, useState } from "preact/hooks";
 
-import type { CharacterName } from "../../../../../../model/modelTypes";
-
+import { type CharacterName } from "../../../../../../model/modelTypes";
 import { swopPlayablesIfInput } from "../../../../../mainLoop/swopPlayablesIfInput";
 import { useGameApi } from "../../../../GameApiContext";
 

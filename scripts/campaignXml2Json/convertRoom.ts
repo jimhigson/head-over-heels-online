@@ -1,7 +1,6 @@
-import type { AnyRoomJson } from "../../src/model/RoomJson";
-
 import { consolidateItemsMap } from "../../src/consolidateItems/consolidateItems";
 import { makeToasterConsolidationPredicate } from "../../src/consolidateItems/toasterConsolidationPredicate";
+import { type AnyRoomJson } from "../../src/model/RoomJson";
 import { keyItems } from "../../src/utils/keyItems";
 import { convertRoomColour, map } from "./convertCampaign";
 import { convertFloor } from "./convertFloor";

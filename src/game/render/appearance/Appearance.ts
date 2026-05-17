@@ -1,4 +1,4 @@
-import type { Container } from "pixi.js";
+import { type Container } from "pixi.js";
 
 export type AppearanceRendering<
   RenderProps extends object,

@@ -1,18 +1,16 @@
-import type { PayloadAction } from "@reduxjs/toolkit";
-import type { ValueOf } from "type-fest";
-
-import { createSlice } from "@reduxjs/toolkit";
-
-import type {
-  EditorCampaign,
-  EditorRoomJson,
-  EditorRoomJsonItems,
-} from "../editorTypes";
-import type { PointingAtOnItem } from "../RoomEditingArea/cursor/PointingAt";
-import type { Tool } from "../RoomEditingArea/interactivity/Tool";
+import { createSlice, type PayloadAction } from "@reduxjs/toolkit";
+import { type ValueOf } from "type-fest";
 
 import { clearAllData } from "../../store/slices/clearAllData";
-import { type EditorRoomId, type EditorRoomItemId } from "../editorTypes";
+import {
+  type EditorCampaign,
+  type EditorRoomId,
+  type EditorRoomItemId,
+  type EditorRoomJson,
+  type EditorRoomJsonItems,
+} from "../editorTypes";
+import { type PointingAtOnItem } from "../RoomEditingArea/cursor/PointingAt";
+import { type Tool } from "../RoomEditingArea/interactivity/Tool";
 import { initialLevelEditorSliceState } from "./initialLevelEditorSliceState";
 import {
   selectCurrentRoomFromLevelEditorState,

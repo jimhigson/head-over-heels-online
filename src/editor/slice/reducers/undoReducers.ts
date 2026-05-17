@@ -1,11 +1,12 @@
-import type { SliceSelectors } from "@reduxjs/toolkit";
+import {
+  current,
+  type SliceCaseReducers,
+  type SliceSelectors,
+} from "@reduxjs/toolkit";
 
-import { current, type SliceCaseReducers } from "@reduxjs/toolkit";
-
-import type { EditorRoomJson } from "../../editorTypes";
-import type { LevelEditorState } from "../levelEditorSlice";
-
+import { type EditorRoomJson } from "../../editorTypes";
 import { selectCurrentRoomFromLevelEditorState } from "../levelEditorSelectors";
+import { type LevelEditorState } from "../levelEditorSlice";
 import { removeNonExistingItemsFromSelection } from "./selectionsReducers";
 
 // to be called from other reducers when they are ready to do something

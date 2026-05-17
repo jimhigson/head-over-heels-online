@@ -1,8 +1,6 @@
 import { capitalize } from "string-transform";
 
-import type { SceneryName } from "../../../sprites/planets";
-
-import { sceneryNames } from "../../../sprites/planets";
+import { type SceneryName, sceneryNames } from "../../../sprites/planets";
 import { useAppDispatch } from "../../../store/hooks";
 import { useEditorAppSelector } from "../../../store/store";
 import { Select } from "../../../ui/Select";

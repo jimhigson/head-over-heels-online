@@ -1,10 +1,7 @@
-import type { PersistConfig } from "redux-persist/es/types";
-
 import { createMigrate } from "redux-persist";
 import persistReducer from "redux-persist/es/persistReducer";
+import { type PersistConfig } from "redux-persist/es/types";
 import storage from "redux-persist/lib/storage";
-
-import type { PokesEnabled } from "../slices/userSettings/userSettingsSlice";
 
 import {
   savedGamesPersistKey,
@@ -13,6 +10,7 @@ import {
 } from "../slices/savedGames/savedGamesSlice";
 import { spritesheetOverrideSlice } from "../slices/spritesheetOverrideSlice";
 import {
+  type PokesEnabled,
   userSettingsSlice,
   type UserSettingsState,
 } from "../slices/userSettings/userSettingsSlice";

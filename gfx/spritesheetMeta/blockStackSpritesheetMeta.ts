@@ -1,10 +1,9 @@
-import type { SpritesheetMetadata } from "../../src/sprites/spritesheet/spritesheetData/spritesheetMetaData";
-
 import {
   type BlockstackPaletteColourName,
   paletteBlockstack,
   paletteBlockstackDim,
 } from "../../src/sprites/palette/spritesheetPalette";
+import { type SpritesheetMetadata } from "../../src/sprites/spritesheet/spritesheetData/spritesheetMetaData";
 
 export const blockStackSpritesheetMeta: SpritesheetMetadata<
   BlockstackPaletteColourName,

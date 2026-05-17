@@ -1,19 +1,7 @@
-import type { SetRequired } from "type-fest";
-
 import { Container, Graphics } from "pixi.js";
+import { type SetRequired } from "type-fest";
 
-import type { RoomState } from "../../../model/RoomState";
-import type { Xy, Xyz } from "../../../utils/vectors/vectors";
-import type { SoundAndGraphicsOutput } from "../SoundAndGraphicsOutput";
-import type {
-  RoomRenderContextInGame,
-  RoomTickContext,
-} from "./RoomRenderContexts";
-import type {
-  RoomRendererType,
-  RoomRendererTypeInGameOnly,
-} from "./RoomRendererType";
-
+import { type RoomState } from "../../../model/RoomState";
 import { defaultUserSettings } from "../../../store/slices/userSettings/defaultUserSettings";
 import { epsilon } from "../../../utils/epsilon";
 import { neverTime } from "../../../utils/neverTime";
@@ -26,10 +14,21 @@ import {
   scaleXyz,
   subXy,
   subXyz,
+  type Xy,
+  type Xyz,
 } from "../../../utils/vectors/vectors";
 import { selectCurrentPlayableItem } from "../../gameState/gameStateSelectors/selectPlayableItem";
 import { projectWorldXyzToScreenXy } from "../projections";
+import { type SoundAndGraphicsOutput } from "../SoundAndGraphicsOutput";
 import { floorsRenderExtent } from "./floorsExtent";
+import {
+  type RoomRenderContextInGame,
+  type RoomTickContext,
+} from "./RoomRenderContexts";
+import {
+  type RoomRendererType,
+  type RoomRendererTypeInGameOnly,
+} from "./RoomRendererType";
 
 // how close over towards the edge of the screen do you have to be for scrolling to occur?
 // a higher value means more scrolling will occur.

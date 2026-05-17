@@ -1,9 +1,10 @@
-import type { Color } from "pixi.js";
+import { type Color } from "pixi.js";
 
-import type { ZxSpectrumPaletteColour } from "../../../../../originalGame";
-import type { SpritesheetMetadata } from "../../../../../sprites/spritesheet/spritesheetData/spritesheetMetaData";
-
-import { zxSpectrumPaletteColours } from "../../../../../originalGame";
+import {
+  type ZxSpectrumPaletteColour,
+  zxSpectrumPaletteColours,
+} from "../../../../../originalGame";
+import { type SpritesheetMetadata } from "../../../../../sprites/spritesheet/spritesheetData/spritesheetMetaData";
 import { objectEntriesIter } from "../../../../../utils/entries";
 import { resolveSwops } from "../../../../../utils/palette/palette";
 

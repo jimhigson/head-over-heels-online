@@ -1,8 +1,7 @@
 import { test } from "@playwright/test";
 
-import type { ScreenshotTestOptions } from "./ScreenshotTestOptions";
-
 import { deploymentTypes } from "../src/utils/detectEnv/detectDeploymentType";
+import { type ScreenshotTestOptions } from "./ScreenshotTestOptions";
 import { osSlowness, retryWithRecovery } from "./testUtils/infrastructure";
 import {
   elapsed,

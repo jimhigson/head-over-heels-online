@@ -1,4 +1,4 @@
-import type { ItemInPlayType } from "./ItemInPlay";
+import { type ItemInPlayType } from "./ItemInPlay";
 
 export type Disappear = {
   on: "stand" | "touch";

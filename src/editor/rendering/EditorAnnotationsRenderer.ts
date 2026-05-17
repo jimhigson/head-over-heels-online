@@ -1,38 +1,35 @@
-import type { UnknownAction } from "@reduxjs/toolkit";
-import type { Color } from "pixi.js";
-import type { AllUnionFields } from "type-fest";
-
-import { Container } from "pixi.js";
-
-import type { DecorateItemMaybeRenderer } from "../../game/render/item/itemRender/DecorateItemRenderer";
-import type { ItemPixiRenderer } from "../../game/render/item/itemRender/ItemPixiRenderer";
-import type {
-  ItemRenderContext,
-  ItemTickContext,
-} from "../../game/render/ItemRenderContexts";
-import type {
-  ItemInPlay,
-  ItemInPlayType,
-  UnionOfAllItemInPlayTypes,
-} from "../../model/ItemInPlay";
-import type { SwitchItemModificationUnion } from "../../model/json/SwitchConfig";
-import type { JsonMovement } from "../../model/json/utilityJsonConfigTypes";
-import type { DirectionXy4 } from "../../utils/vectors/vectors";
-import type {
-  EditorItemInPlayUnion,
-  EditorRoomId,
-  EditorRoomItemId,
-  EditorUnionOfAllItemInPlayTypes,
-} from "../editorTypes";
+import { type UnknownAction } from "@reduxjs/toolkit";
+import { type Color, Container } from "pixi.js";
+import { type AllUnionFields } from "type-fest";
 
 import { outlineFilters } from "../../game/render/filters/OutlineFilter";
 import { RevertColouriseFilter } from "../../game/render/filters/RevertColouriseFilter";
 import { noFilters } from "../../game/render/filters/standardFilters";
+import { type DecorateItemMaybeRenderer } from "../../game/render/item/itemRender/DecorateItemRenderer";
+import { type ItemPixiRenderer } from "../../game/render/item/itemRender/ItemPixiRenderer";
+import {
+  type ItemRenderContext,
+  type ItemTickContext,
+} from "../../game/render/ItemRenderContexts";
 import { TextContainer } from "../../game/render/text/TextContainer";
+import {
+  type ItemInPlay,
+  type ItemInPlayType,
+  type UnionOfAllItemInPlayTypes,
+} from "../../model/ItemInPlay";
 import { exitGameRoomId } from "../../model/json/ItemConfigMap";
+import { type SwitchItemModificationUnion } from "../../model/json/SwitchConfig";
+import { type JsonMovement } from "../../model/json/utilityJsonConfigTypes";
 import { roomItemsIterable } from "../../model/RoomState";
 import { paletteBlockstack } from "../../sprites/palette/spritesheetPalette";
 import { editorStore, store } from "../../store/store";
+import { type DirectionXy4 } from "../../utils/vectors/vectors";
+import {
+  type EditorItemInPlayUnion,
+  type EditorRoomId,
+  type EditorRoomItemId,
+  type EditorUnionOfAllItemInPlayTypes,
+} from "../editorTypes";
 import {
   changeToRoom,
   selectHoveredItem,

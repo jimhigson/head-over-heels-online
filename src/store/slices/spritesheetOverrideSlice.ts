@@ -1,9 +1,6 @@
-import type { PayloadAction } from "@reduxjs/toolkit";
+import { createSlice, type PayloadAction } from "@reduxjs/toolkit";
 
-import { createSlice } from "@reduxjs/toolkit";
-
-import type { LoadableSpriteOption } from "../../sprites/spritesheet/loadedSpriteSheet";
-
+import { type LoadableSpriteOption } from "../../sprites/spritesheet/loadedSpriteSheet";
 import { clearAllData } from "./clearAllData";
 
 type SpritesheetOverrideState = {

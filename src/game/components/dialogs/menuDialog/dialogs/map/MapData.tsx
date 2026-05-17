@@ -1,14 +1,14 @@
-import type {
-  CharacterName,
-  OptionallyNamedCampaign,
+import {
+  type CharacterName,
+  type OptionallyNamedCampaign,
 } from "../../../../../../model/modelTypes";
-import type { SceneryName } from "../../../../../../sprites/planets";
-import type {
-  CharacterRooms,
-  PickupsCollected,
+import { type SceneryName } from "../../../../../../sprites/planets";
+import {
+  type CharacterRooms,
+  type PickupsCollected,
 } from "../../../../../gameState/GameState";
-import type { Bounds } from "./Map.svg";
-import type { SortedObjectOfRoomGridPositionSpecs } from "./sortRoomGridPositions";
+import { type Bounds } from "./Map.svg";
+import { type SortedObjectOfRoomGridPositionSpecs } from "./sortRoomGridPositions";
 
 /**
  * everything needed to load the map -

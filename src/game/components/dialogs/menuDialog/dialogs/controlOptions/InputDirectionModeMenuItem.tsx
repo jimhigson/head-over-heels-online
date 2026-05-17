@@ -1,5 +1,4 @@
-import type { TextureTailwindClass } from "../../../../../../sprites/spritesheet/spritesheetData/TextureTailwindClass";
-
+import { type TextureTailwindClass } from "../../../../../../sprites/spritesheet/spritesheetData/TextureTailwindClass";
 import { useInputDirectionMode } from "../../../../../../store/slices/gameMenus/gameMenusSelectors";
 import {
   inputDirectionModes,

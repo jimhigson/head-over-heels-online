@@ -1,6 +1,6 @@
-import type { ItemState } from "../../model/ItemState";
-import type { CharacterName } from "../../model/modelTypes";
-import type { PlayableItem } from "../physics/itemPredicates";
+import { type ItemState } from "../../model/ItemState";
+import { type CharacterName } from "../../model/modelTypes";
+import { type PlayableItem } from "../physics/itemPredicates";
 
 /**
  * if a player loses a life and comes into a room again, the part of their state that

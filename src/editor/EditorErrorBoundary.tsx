@@ -1,11 +1,10 @@
-import type { ErrorInfo, PropsWithChildren } from "react";
-import type { EmptyObject } from "type-fest";
+import { Component, type ErrorInfo, type PropsWithChildren } from "react";
+import { type EmptyObject } from "type-fest";
 
-import { Component } from "react";
-
-import type { SerialisableError } from "../utils/redux/createSerialisableErrors";
-
-import { createSerialisableErrors } from "../utils/redux/createSerialisableErrors";
+import {
+  createSerialisableErrors,
+  type SerialisableError,
+} from "../utils/redux/createSerialisableErrors";
 import { EditorErrorDialog } from "./editorDialogs/EditorErrorDialog";
 
 type EditorErrorBoundaryState = {

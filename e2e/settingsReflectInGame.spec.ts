@@ -1,15 +1,12 @@
-import type { Page } from "@playwright/test";
-
-import { expect, test } from "@playwright/test";
+import { expect, type Page, test } from "@playwright/test";
 import chalk from "chalk";
 
-import type {
-  SpriteOption,
-  toggleUserSetting,
-} from "../src/store/slices/userSettings/userSettingsSlice";
-import type { ScreenshotTestOptions } from "./ScreenshotTestOptions";
-
 import { spriteOptionEquals } from "../src/store/slices/userSettings/spriteOptionEquals";
+import {
+  type SpriteOption,
+  type toggleUserSetting,
+} from "../src/store/slices/userSettings/userSettingsSlice";
+import { type ScreenshotTestOptions } from "./ScreenshotTestOptions";
 import { dispatchKeyPress } from "./testUtils/gameInteractions";
 import {
   dispatchToStore,

@@ -1,12 +1,10 @@
-import type { RoomState } from "../../../model/RoomState";
-import type { GameState } from "../../gameState/GameState";
-import type { Mechanic, MechanicResult } from "../MechanicResult";
-
 import { type ItemInPlay } from "../../../model/ItemInPlay";
+import { type RoomState } from "../../../model/RoomState";
 import { veryClose } from "../../../utils/epsilon";
 import { originXyz } from "../../../utils/vectors/vectors";
-import { blockSizePx } from "../mechanicsConstants";
-import { maxLiftAcc, maxLiftSpeed } from "../mechanicsConstants";
+import { type GameState } from "../../gameState/GameState";
+import { type Mechanic, type MechanicResult } from "../MechanicResult";
+import { blockSizePx, maxLiftAcc, maxLiftSpeed } from "../mechanicsConstants";
 
 const blockHeight = blockSizePx.z;
 

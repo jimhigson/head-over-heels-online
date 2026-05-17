@@ -1,6 +1,4 @@
-import type { DestroyOptions } from "pixi.js";
-
-import { AnimatedSprite, RenderTexture } from "pixi.js";
+import { AnimatedSprite, type DestroyOptions, RenderTexture } from "pixi.js";
 
 /**
  * An AnimatedSprite subclass that automatically destroys its textures when the sprite is destroyed.

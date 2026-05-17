@@ -1,4 +1,4 @@
-import type { Node } from "jsonc-parser";
+import { type Node } from "jsonc-parser";
 
 export const getNodePropertyValue = (
   node: Node,

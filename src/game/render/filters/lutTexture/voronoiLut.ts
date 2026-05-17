@@ -1,8 +1,6 @@
 //# allFunctionsCalledOnLoad
 
-import type { Color } from "pixi.js";
-
-import { Texture } from "pixi.js";
+import { type Color, Texture } from "pixi.js";
 
 import { blockEncodeRgbBitDepth } from "./blockEncode";
 import { lutSize, lutW } from "./lutSize";

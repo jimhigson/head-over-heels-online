@@ -1,7 +1,6 @@
-import type { EmptyObject } from "type-fest";
-
 import { isAnyOf } from "@reduxjs/toolkit";
 import { useCallback, useEffect, useState } from "preact/hooks";
+import { type EmptyObject } from "type-fest";
 
 import { useAppDispatch, useAppSelector } from "../../../../../../store/hooks";
 import { startAppListening } from "../../../../../../store/listenerMiddleware";

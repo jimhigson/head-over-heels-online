@@ -1,13 +1,12 @@
 import { useEffect, useRef } from "preact/hooks";
 
-import type { AppSpritesheetData } from "../../sprites/spritesheet/loadedSpriteSheet";
-import type {
-  FramesWithSpeed,
-  TextureId,
-} from "../../sprites/spritesheet/spritesheetData/makeSpritesheetData";
-
 import { BitmapText } from "../../game/components/tailwindSprites/BitmapText";
 import { sanitiseForClassName } from "../../game/components/tailwindSprites/SanitiseForClassName";
+import { type AppSpritesheetData } from "../../sprites/spritesheet/loadedSpriteSheet";
+import {
+  type FramesWithSpeed,
+  type TextureId,
+} from "../../sprites/spritesheet/spritesheetData/makeSpritesheetData";
 import { useSpritesOption } from "../../store/slices/gameMenus/gameMenusSelectors";
 import {
   animatedSpriteSpecificCssVars,

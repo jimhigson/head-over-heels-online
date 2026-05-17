@@ -7,6 +7,6 @@ declare module "monaco-editor/esm/vs/editor/edcore.main" {
 }
 
 declare module "monaco-editor/esm/vs/language/json/monaco.contribution" {
-  import type { languages } from "monaco-editor";
+  import { type languages } from "monaco-editor";
   export const jsonDefaults: languages.json.LanguageServiceDefaults;
 }

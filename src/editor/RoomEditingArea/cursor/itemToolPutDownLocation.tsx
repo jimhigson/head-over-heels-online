@@ -1,8 +1,3 @@
-import type { Xy } from "../../../utils/vectors/vectors";
-import type { EditorRoomState } from "../../editorTypes";
-import type { ItemTool } from "../interactivity/Tool";
-import type { PointingAtItem } from "./PointingAt";
-
 import {
   doorOverallWidthPx,
   doorPostHeightPx,
@@ -14,8 +9,12 @@ import {
   addXyz,
   perpendicularAxisXy,
   tangentAxis,
+  type Xy,
   type Xyz,
 } from "../../../utils/vectors/vectors";
+import { type EditorRoomState } from "../../editorTypes";
+import { type ItemTool } from "../interactivity/Tool";
+import { type PointingAtItem } from "./PointingAt";
 
 export const itemToolPutDownLocation = (
   pointingAt: PointingAtItem,

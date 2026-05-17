@@ -1,29 +1,26 @@
-import type { PropsWithChildren } from "react";
-import type { EmptyObject } from "type-fest";
-
 import { useState } from "preact/hooks";
+import { type PropsWithChildren } from "react";
+import { type EmptyObject } from "type-fest";
 
-import type { ItemInPlay } from "../../../model/ItemInPlay";
-import type {
-  JsonItemConfig,
-  JsonItemType,
-} from "../../../model/json/JsonItem";
-import type { IndividualCharacterName } from "../../../model/modelTypes";
-import type {
-  AnimatedTextureTailwindClass,
-  TextureTailwindClass,
-} from "../../../sprites/spritesheet/spritesheetData/TextureTailwindClass";
-import type { SelectableGameSpeeds } from "../../../store/slices/userSettings/selectableGameSpeeds";
-import type { GameApi } from "../../GameApi";
-
+import { type ItemInPlay } from "../../../model/ItemInPlay";
 import { addPokeableNumbers } from "../../../model/ItemStateMap";
 import {
+  type JsonItemConfig,
+  type JsonItemType,
+} from "../../../model/json/JsonItem";
+import {
   type CharacterName,
+  type IndividualCharacterName,
   otherIndividualCharacterName,
 } from "../../../model/modelTypes";
 import { getRoomItem, roomSpatialIndexKey } from "../../../model/RoomState";
+import {
+  type AnimatedTextureTailwindClass,
+  type TextureTailwindClass,
+} from "../../../sprites/spritesheet/spritesheetData/TextureTailwindClass";
 import { useAppDispatch, useAppSelector } from "../../../store/hooks";
 import { useShowShadowMasks } from "../../../store/slices/gameMenus/gameMenusSelectors";
+import { type SelectableGameSpeeds } from "../../../store/slices/userSettings/selectableGameSpeeds";
 import {
   setGameSpeed,
   setShowShadowMasks,
@@ -31,6 +28,7 @@ import {
 import { Button } from "../../../ui/Button";
 import { Switch } from "../../../ui/Switch";
 import { ShowBoundingBoxSelect } from "../../debug/ShowBoundingBoxSelect";
+import { type GameApi } from "../../GameApi";
 import { selectCurrentRoomState } from "../../gameState/gameStateSelectors/selectCurrentRoomState";
 import {
   selectCurrentPlayableItem,

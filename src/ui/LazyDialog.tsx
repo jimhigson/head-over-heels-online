@@ -1,6 +1,4 @@
-import type { FC, ReactNode } from "react";
-
-import { Suspense } from "react";
+import { type FC, type ReactNode, Suspense } from "react";
 
 import { GameAssetLoading } from "../store/slices/gameAssetsLoading/GameAssetLoading";
 import { backToParentMenu } from "../store/slices/gameMenus/gameMenusSlice";

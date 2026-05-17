@@ -1,5 +1,4 @@
-import type { CharacterName } from "../../../model/modelTypes";
-
+import { type CharacterName } from "../../../model/modelTypes";
 import { isItemType, type PlayableItem } from "../itemPredicates";
 import { handlePlayerTouchingDeadly } from "./handlePlayerTouchingDeadly";
 import { handlePlayerTouchingPickup } from "./handlePlayerTouchingPickup";

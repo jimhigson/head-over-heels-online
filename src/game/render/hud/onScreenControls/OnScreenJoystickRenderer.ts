@@ -1,17 +1,9 @@
-import type { FederatedPointerEvent } from "pixi.js";
+import { Container, type FederatedPointerEvent, Graphics } from "pixi.js";
 
-import { Container, Graphics } from "pixi.js";
-
-import type { RoomState } from "../../../../model/RoomState";
-import type { InputDirectionMode } from "../../../../store/slices/userSettings/userSettingsSlice";
-import type { Xy } from "../../../../utils/vectors/vectors";
-import type { Renderer } from "../../Renderer";
-import type { GeneralRenderContext } from "../../room/RoomRenderContexts";
-import type { HudRendererTickContextWithRoom } from "../hudRendererContexts";
-import type { OnScreenLookRenderer } from "./look/OnScreenLookRenderer";
-
+import { type RoomState } from "../../../../model/RoomState";
 import { getSpriteSheetVariantTexture } from "../../../../sprites/spritesheet/variants/getSpriteSheetVariant";
 import { selectTotalUpscale } from "../../../../store/slices/upscale/upscaleSlice";
+import { type InputDirectionMode } from "../../../../store/slices/userSettings/userSettingsSlice";
 import { store } from "../../../../store/store";
 import { objectEntriesIter } from "../../../../utils/entries";
 import {
@@ -20,6 +12,7 @@ import {
   originXyz,
   scaleXyz,
   vectorClosestDirectionXy8,
+  type Xy,
 } from "../../../../utils/vectors/vectors";
 import { charHeight } from "../../../components/dialogs/menuDialog/dialogs/useScrollingFromInput";
 import {
@@ -31,8 +24,12 @@ import {
   type InputStateTrackerInterface,
 } from "../../../input/InputStateTracker";
 import { createSprite } from "../../createSprite";
+import { type Renderer } from "../../Renderer";
+import { type GeneralRenderContext } from "../../room/RoomRenderContexts";
 import { TextContainer } from "../../text/TextContainer";
+import { type HudRendererTickContextWithRoom } from "../hudRendererContexts";
 import { tintForHud } from "../spritesheetVariantForHud";
+import { type OnScreenLookRenderer } from "./look/OnScreenLookRenderer";
 import { setPointerXyMaybeRotated } from "./look/setPointerXyMaybeRotated";
 
 const joystickArrowOffset = 14;

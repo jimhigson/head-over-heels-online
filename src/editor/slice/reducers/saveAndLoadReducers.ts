@@ -1,13 +1,10 @@
-import type { PayloadAction } from "@reduxjs/toolkit";
-
-import { type SliceCaseReducers } from "@reduxjs/toolkit";
-
-import type { EditorCampaign } from "../../editorTypes";
+import { type PayloadAction, type SliceCaseReducers } from "@reduxjs/toolkit";
 
 import { roomJsonItemsIterable } from "../../../model/RoomJson";
 import { keysIter, valuesIter } from "../../../utils/entries";
 import { first } from "../../../utils/iterators/first";
 import { pick } from "../../../utils/pick";
+import { type EditorCampaign } from "../../editorTypes";
 import { initialLevelEditorSliceState } from "../initialLevelEditorSliceState";
 import { type LevelEditorState } from "../levelEditorSlice";
 import { levelEditorSliceNonPersistedFields } from "../levelEditorSliceTransientFields";

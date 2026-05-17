@@ -1,15 +1,15 @@
-import type { PartialDeep } from "type-fest";
-
+import { type PartialDeep } from "type-fest";
 import { describe, expect, it } from "vitest";
 
-import type { ItemInPlay } from "../../../model/ItemInPlay";
-import type { LatentMovementFrame } from "../../../model/ItemStateMap";
-import type { RoomState } from "../../../model/RoomState";
-import type { GameState } from "../../gameState/GameState";
-import type { FreeItemTypes } from "../itemPredicates";
-import type { ApplicableLatentMovement } from "./latentMovement";
-
-import { latentMovement } from "./latentMovement";
+import { type ItemInPlay } from "../../../model/ItemInPlay";
+import { type LatentMovementFrame } from "../../../model/ItemStateMap";
+import { type RoomState } from "../../../model/RoomState";
+import { type GameState } from "../../gameState/GameState";
+import { type FreeItemTypes } from "../itemPredicates";
+import {
+  type ApplicableLatentMovement,
+  latentMovement,
+} from "./latentMovement";
 
 type TestItem = ItemInPlay<FreeItemTypes, string, string>;
 type TestRoomState = RoomState<string, string>;

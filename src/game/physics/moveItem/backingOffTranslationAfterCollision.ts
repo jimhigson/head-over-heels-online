@@ -1,5 +1,4 @@
-import type { UnionOfAllItemInPlayTypes } from "../../../model/ItemInPlay";
-
+import { type UnionOfAllItemInPlayTypes } from "../../../model/ItemInPlay";
 import {
   dotProductXyz,
   lengthXyzSquared,

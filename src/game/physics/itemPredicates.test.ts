@@ -1,9 +1,8 @@
 import { describe, expect, test } from "vitest";
 
-import type { UnionOfAllItemInPlayTypes } from "../../model/ItemInPlay";
-
 import { basicEmptyRoom } from "../../_testUtils/basicRoom";
 import { defaultItemProperties } from "../../model/defaultItemProperties";
+import { type UnionOfAllItemInPlayTypes } from "../../model/ItemInPlay";
 import { unitVectors } from "../../utils/vectors/unitVectors";
 import { originXyz } from "../../utils/vectors/vectors";
 import { emptyRoomJsonDirectionalIndex } from "../gameState/loadRoom/buildRoomJsonDirectionalIndex";

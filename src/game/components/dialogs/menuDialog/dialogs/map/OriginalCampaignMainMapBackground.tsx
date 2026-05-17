@@ -1,13 +1,12 @@
-import type { OriginalCampaignRoomId } from "../../../../../../_generated/originalCampaign/OriginalCampaignRoomId";
-import type { MapBackgroundProps } from "./MapBackground";
-import type { SortedObjectOfRoomGridPositionSpecs } from "./sortRoomGridPositions";
-
+import { type OriginalCampaignRoomId } from "../../../../../../_generated/originalCampaign/OriginalCampaignRoomId";
 import { projectWorldXyzToScreenXy } from "../../../../../render/projections";
+import { type MapBackgroundProps } from "./MapBackground";
 import { MapBackgroundSection } from "./MapBackgroundSection";
 import { mapClasses } from "./mapColours";
 import { mapSvgMarginY } from "./mapConstants";
 import { MarketSpecialBackground } from "./MarketSpecialBackground";
 import { roomWorldPosition } from "./roomWorldPosition";
+import { type SortedObjectOfRoomGridPositionSpecs } from "./sortRoomGridPositions";
 
 /**
  * the central map of the original campaign is (messily) being treated as a

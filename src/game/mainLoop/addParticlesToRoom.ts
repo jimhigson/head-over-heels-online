@@ -1,9 +1,6 @@
-import type { ItemTypeUnion } from "../../_generated/types/ItemInPlayUnion";
-import type { ItemInPlay, ItemInPlayConfig } from "../../model/ItemInPlay";
-import type { Xyz } from "../../utils/vectors/vectors";
-import type { PlayableItem } from "../physics/itemPredicates";
-
+import { type ItemTypeUnion } from "../../_generated/types/ItemInPlayUnion";
 import { defaultItemProperties } from "../../model/defaultItemProperties";
+import { type ItemInPlay, type ItemInPlayConfig } from "../../model/ItemInPlay";
 import { itemInPlayCentre } from "../../model/itemInPlayCentre";
 import { playablesInRoom, type RoomState } from "../../model/RoomState";
 import { epsilon } from "../../utils/epsilon";
@@ -13,10 +10,12 @@ import {
   axesXyz,
   lengthXyz,
   originXyz,
+  type Xyz,
 } from "../../utils/vectors/vectors";
 import { fastStepsRemaining } from "../gameState/gameStateSelectors/selectPickupAbilities";
 import { defaultBaseState } from "../gameState/loadRoom/itemDefaultStates";
 import { addItemToRoom } from "../gameState/mutators/addItemToRoom";
+import { type PlayableItem } from "../physics/itemPredicates";
 import { blockSizePx } from "../physics/mechanicsConstants";
 
 const particleLifetimeMs = 300;

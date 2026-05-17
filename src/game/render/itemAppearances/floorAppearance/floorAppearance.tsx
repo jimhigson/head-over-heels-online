@@ -1,20 +1,17 @@
 import { Container, Graphics, type Sprite, TilingSprite } from "pixi.js";
 
-import type { ItemInPlay } from "../../../../model/ItemInPlay";
-import type { SpriteOption } from "../../../../store/slices/userSettings/userSettingsSlice";
-import type { Subset } from "../../../../utils/Subset";
-import type { Xy, Xyz } from "../../../../utils/vectors/vectors";
-import type { ItemAppearance } from "../ItemAppearance";
-
+import { type ItemInPlay } from "../../../../model/ItemInPlay";
 import { roomItemsIterable, type RoomState } from "../../../../model/RoomState";
 import { zxSpectrumColors } from "../../../../originalGame";
 import { assertIsTextureId } from "../../../../sprites/assertIsTextureId";
 import { originalSpriteSheet } from "../../../../sprites/spritesheet/loadedSpriteSheet";
 import { getSpriteSheetVariant } from "../../../../sprites/spritesheet/variants/getSpriteSheetVariant";
+import { type SpriteOption } from "../../../../store/slices/userSettings/userSettingsSlice";
 import { frac } from "../../../../utils/maths/maths";
 import { rangesOverlap } from "../../../../utils/maths/numberPairs";
 import { getAmbientSwoppedColour } from "../../../../utils/palette/palette";
 import { renderContainerToSprite } from "../../../../utils/pixi/renderContainerToSprite";
+import { type Subset } from "../../../../utils/Subset";
 import {
   addXy,
   addXyz,
@@ -23,6 +20,8 @@ import {
   perpendicularAxisXy,
   subXy,
   tangentAxis,
+  type Xy,
+  type Xyz,
 } from "../../../../utils/vectors/vectors";
 import { isWallOrDoorFrame } from "../../../physics/itemPredicates";
 import { blockSizePx } from "../../../physics/mechanicsConstants";
@@ -37,7 +36,10 @@ import {
   projectWorldXyzToScreenXy,
 } from "../../projections";
 import { nonRenderingItemFixedZIndex } from "../../sortZ/fixedZIndexes";
-import { itemAppearanceRenderOnce } from "../ItemAppearance";
+import {
+  type ItemAppearance,
+  itemAppearanceRenderOnce,
+} from "../ItemAppearance";
 import { renderFloorOverdraws } from "./renderFloorOverdraws";
 
 /**

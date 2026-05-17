@@ -1,10 +1,9 @@
 //# allFunctionsCalledOnLoad
 
-import type { GridSpatialIndex } from "../../physics/gridSpace/GridSpatialIndex";
-import type { DrawOrderComparable } from "./DrawOrderComparable";
-
 import { veryClose } from "../../../utils/epsilon";
 import { addXyz } from "../../../utils/vectors/vectors";
+import { type GridSpatialIndex } from "../../physics/gridSpace/GridSpatialIndex";
+import { type DrawOrderComparable } from "./DrawOrderComparable";
 import {
   ADJACENT_X,
   ADJACENT_Y,

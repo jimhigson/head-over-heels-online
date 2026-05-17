@@ -1,6 +1,8 @@
-import type { EditorJsonItem, EditorRoomId } from "../../../editor/editorTypes";
-import type { LevelEditorState } from "../../../editor/slice/levelEditorSlice";
-
+import {
+  type EditorJsonItem,
+  type EditorRoomId,
+} from "../../../editor/editorTypes";
+import { type LevelEditorState } from "../../../editor/slice/levelEditorSlice";
 import { roomJsonItemsIterable } from "../../../model/RoomJson";
 import { valuesIter } from "../../../utils/entries";
 import { initialLevelEditorSliceState } from "../initialLevelEditorSliceState";

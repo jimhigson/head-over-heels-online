@@ -1,10 +1,9 @@
-import type { SpritesheetVariant } from "../../../sprites/spritesheet/variants/SpritesheetVariant";
-import type { ItemAppearance } from "./ItemAppearance";
-
 import { iterateStoodOnByItems } from "../../../model/stoodOnItemsLookup";
+import { type SpritesheetVariant } from "../../../sprites/spritesheet/variants/SpritesheetVariant";
 import { isPlayableItem } from "../../physics/itemPredicates";
 import { teleporterIsActive } from "../../physics/mechanics/teleporting";
 import { createSprite } from "../createSprite";
+import { type ItemAppearance } from "./ItemAppearance";
 
 type TeleporterRenderProps = {
   flashing: boolean;

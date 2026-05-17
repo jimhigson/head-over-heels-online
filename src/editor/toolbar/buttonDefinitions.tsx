@@ -1,22 +1,23 @@
-import type { JsonItemType } from "../../model/json/JsonItem";
-import type {
-  AnimatedTextureTailwindClass,
-  TextureTailwindClass,
-} from "../../sprites/spritesheet/spritesheetData/TextureTailwindClass";
-import type { LevelEditorState } from "../slice/levelEditorSlice";
-import type { ItemToolButtonProps } from "./ItemToolButton";
-
 import { playableTailwindSpriteClassname } from "../../game/components/tailwindSprites/playableTailwindSpriteClassname";
 import { rotatingSceneryTiles } from "../../model/inPlaceMutators/rotatingSceneryTiles";
+import { type JsonItemType } from "../../model/json/JsonItem";
+import {
+  type AnimatedTextureTailwindClass,
+  type TextureTailwindClass,
+} from "../../sprites/spritesheet/spritesheetData/TextureTailwindClass";
 import { emptyArray, emptyObject } from "../../utils/empty";
 import { twClass } from "../../utils/twClass";
-import { selectCurrentEditingRoomJson } from "../slice/levelEditorSlice";
+import {
+  type LevelEditorState,
+  selectCurrentEditingRoomJson,
+} from "../slice/levelEditorSlice";
 import {
   DissapearingItemToolbarIcon,
   LabelledToolbarIcon,
   StackedToolbarIcons,
 } from "./buttons/ToolbarButtonContentPatterns";
 import { buttonSpriteRevertColourClasses } from "./buttonSizeClassNames";
+import { type ItemToolButtonProps } from "./ItemToolButton";
 
 export const buttonDefinitions = {
   "block.organic": {

@@ -1,6 +1,4 @@
-import type { Provider } from "@supabase/supabase-js";
-
-import type { Subset } from "../../../utils/Subset";
+import { type Provider } from "@supabase/supabase-js";
 
 import { importSupabaseDb } from "../../../db/supabaseDb.import";
 import { BitmapText } from "../../../game/components/tailwindSprites/BitmapText";
@@ -10,6 +8,7 @@ import {
 } from "../../../sprites/spritesheet/spritesheetData/hudSritesheetData";
 import { Button } from "../../../ui/Button";
 import { cn } from "../../../ui/cn";
+import { type Subset } from "../../../utils/Subset";
 import { useSupabaseUser } from "../useSupabaseUser";
 
 type SupportedProvider = Subset<Provider, "discord" | "github">;

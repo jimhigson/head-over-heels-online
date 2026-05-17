@@ -1,6 +1,5 @@
-import type { BracketedSegmentOptions } from "./createBracketedSound";
-
 import { audioCtx } from "../audioCtx";
+import { type BracketedSegmentOptions } from "./createBracketedSound";
 import { soundsFadeDurationSec } from "./stopWithFade";
 
 /**

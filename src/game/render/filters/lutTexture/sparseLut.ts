@@ -1,6 +1,4 @@
-import type { Color } from "pixi.js";
-
-import { Texture } from "pixi.js";
+import { type Color, Texture } from "pixi.js";
 
 import { standardBrightnessLevels } from "../../../../utils/colour/halfbrite";
 import { getBlockNeighborhood } from "./blockEncode";

@@ -1,22 +1,29 @@
-import type { Renderer } from "pixi.js";
-
-import { RenderTexture, Sprite, Spritesheet, Texture } from "pixi.js";
-
-import type { PaletteSwopSpec } from "../../game/render/filters/PaletteSwapFilter";
-import type { SpriteOption } from "../../store/slices/userSettings/userSettingsSlice";
-import type { TextureId } from "./spritesheetData/makeSpritesheetData";
-import type { SpritesheetMetadata } from "./spritesheetData/spritesheetMetaData";
+import {
+  type Renderer,
+  RenderTexture,
+  Sprite,
+  Spritesheet,
+  Texture,
+} from "pixi.js";
 
 import blockStackSpritesheetUrl from "../../../gfx/sprites.webp";
 import toppySpritesheetUrl from "../../../gfx/spritesToppy.webp";
+import { type PaletteSwopSpec } from "../../game/render/filters/PaletteSwapFilter";
 import { ShadowPreprocessFilter } from "../../game/render/filters/shadows/ShadowPreprocessFilter";
 import { selectSpritesheetOverrideBlobUrl } from "../../store/slices/spritesheetOverrideSlice";
+import { type SpriteOption } from "../../store/slices/userSettings/userSettingsSlice";
 import { store } from "../../store/store";
 import { detectDeviceType } from "../../utils/detectEnv/detectDeviceType";
 import { stripIccProfileWebp } from "../../utils/image/stripIccProfileWebp";
 import { black, renderMaskTexture, white } from "./renderMaskTexture";
-import { makeSpritesheetData } from "./spritesheetData/makeSpritesheetData";
-import { spritesheetMetas } from "./spritesheetData/spritesheetMetaData";
+import {
+  makeSpritesheetData,
+  type TextureId,
+} from "./spritesheetData/makeSpritesheetData";
+import {
+  type SpritesheetMetadata,
+  spritesheetMetas,
+} from "./spritesheetData/spritesheetMetaData";
 
 export type AppSpritesheetData = ReturnType<typeof makeSpritesheetData>;
 export type AppSpritesheet = Spritesheet<AppSpritesheetData> & {

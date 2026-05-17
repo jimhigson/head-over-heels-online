@@ -1,7 +1,8 @@
-import type { CreateAudioNodeOptionsObject } from "./createAudioNode";
-
 import { connectWithGain } from "./connectWithGain";
-import { createAudioNode } from "./createAudioNode";
+import {
+  createAudioNode,
+  type CreateAudioNodeOptionsObject,
+} from "./createAudioNode";
 import { stopWithFade } from "./stopWithFade";
 
 export type BracketedSound<Value = boolean> = ReturnType<

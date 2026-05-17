@@ -1,15 +1,13 @@
-import type { IndividualCharacterName } from "../../../model/modelTypes";
-import type { SpritesheetVariant } from "../../../sprites/spritesheet/variants/SpritesheetVariant";
-import type { SpriteOption } from "../../../store/slices/userSettings/userSettingsSlice";
-import type { DirectionXy8 } from "../../../utils/vectors/vectors";
-import type { CreateSpriteOptions } from "../createSprite";
-import type { ItemAppearance } from "./ItemAppearance";
-
+import { type IndividualCharacterName } from "../../../model/modelTypes";
 import { isAnimationId } from "../../../sprites/assertIsTextureId";
 import { getSpriteSheetVariant } from "../../../sprites/spritesheet/variants/getSpriteSheetVariant";
+import { type SpritesheetVariant } from "../../../sprites/spritesheet/variants/SpritesheetVariant";
+import { type SpriteOption } from "../../../store/slices/userSettings/userSettingsSlice";
 import { emptyObject } from "../../../utils/empty";
-import { createSprite } from "../createSprite";
+import { type DirectionXy8 } from "../../../utils/vectors/vectors";
+import { createSprite, type CreateSpriteOptions } from "../createSprite";
 import { createStackedSprites } from "./createStackedSprites";
+import { type ItemAppearance } from "./ItemAppearance";
 
 const spriteOptions = (
   name: IndividualCharacterName,

@@ -1,10 +1,11 @@
 import { describe, expect, test } from "vitest";
 
-import type { ItemInPlayType } from "../../model/ItemInPlay";
-import type { SortableObstacle } from "./collisionsOrder";
-
+import { type ItemInPlayType } from "../../model/ItemInPlay";
 import { unitVectors } from "../../utils/vectors/unitVectors";
-import { sortObstaclesAboutPriorityAndVector } from "./collisionsOrder";
+import {
+  type SortableObstacle,
+  sortObstaclesAboutPriorityAndVector,
+} from "./collisionsOrder";
 
 const lowBlock = {
   type: "block" as ItemInPlayType,

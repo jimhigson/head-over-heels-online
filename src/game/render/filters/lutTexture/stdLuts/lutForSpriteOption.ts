@@ -1,9 +1,10 @@
-import type { Texture } from "pixi.js";
+import { type Texture } from "pixi.js";
 
-import type { SpritesheetMetadata } from "../../../../../sprites/spritesheet/spritesheetData/spritesheetMetaData";
-import type { SpriteOption } from "../../../../../store/slices/userSettings/userSettingsSlice";
-
-import { spritesheetMetaForOption } from "../../../../../sprites/spritesheet/spritesheetData/spritesheetMetaData";
+import {
+  type SpritesheetMetadata,
+  spritesheetMetaForOption,
+} from "../../../../../sprites/spritesheet/spritesheetData/spritesheetMetaData";
+import { type SpriteOption } from "../../../../../store/slices/userSettings/userSettingsSlice";
 import { voronoiLut } from "../voronoiLut";
 import { blockstackToSpectrumLut } from "./blockstackToSpectrumLut";
 import { resolveZxSpectrumMapping } from "./resolveZxSpectrumMapping";

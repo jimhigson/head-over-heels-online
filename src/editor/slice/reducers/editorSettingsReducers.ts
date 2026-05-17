@@ -1,8 +1,9 @@
-import type { PayloadAction } from "@reduxjs/toolkit";
+import { type PayloadAction, type SliceCaseReducers } from "@reduxjs/toolkit";
 
-import { type SliceCaseReducers } from "@reduxjs/toolkit";
-
-import type { GridResolution, LevelEditorState } from "../levelEditorSlice";
+import {
+  type GridResolution,
+  type LevelEditorState,
+} from "../levelEditorSlice";
 
 export const editorSettingsReducers = {
   changeGridResolution(state, { payload: res }: PayloadAction<GridResolution>) {

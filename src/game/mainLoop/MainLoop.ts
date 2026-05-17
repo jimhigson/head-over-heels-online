@@ -1,12 +1,4 @@
-import type { Application, Ticker } from "pixi.js";
-
-import { Container, Rectangle } from "pixi.js";
-
-import type { Upscale } from "../../store/slices/upscale/Upscale";
-import type { SpriteOption } from "../../store/slices/userSettings/userSettingsSlice";
-import type { GameState } from "../gameState/GameState";
-import type { RoomRenderContextInGame } from "../render/room/RoomRenderContexts";
-import type { RoomRendererType } from "../render/room/RoomRendererType";
+import { type Application, Container, Rectangle, type Ticker } from "pixi.js";
 
 import { audioCtx } from "../../sound/audioCtx";
 import { spritesheetMetaForOption } from "../../sprites/spritesheet/spritesheetData/spritesheetMetaData";
@@ -21,19 +13,24 @@ import {
   errorCaught,
   selectHasError,
 } from "../../store/slices/gameMenus/gameMenusSlice";
+import { type Upscale } from "../../store/slices/upscale/Upscale";
 import { selectGameEngineUpscale } from "../../store/slices/upscale/upscaleSlice";
 import { spriteOptionEquals } from "../../store/slices/userSettings/spriteOptionEquals";
+import { type SpriteOption } from "../../store/slices/userSettings/userSettingsSlice";
 import { store } from "../../store/store";
 import { emptySet } from "../../utils/empty";
 import { validateSceneGraph } from "../../utils/pixi/validateSceneGraph";
 import { createSerialisableErrors } from "../../utils/redux/createSerialisableErrors";
+import { type GameState } from "../gameState/GameState";
 import { selectCurrentRoomState } from "../gameState/gameStateSelectors/selectCurrentRoomState";
 import { maxFps, maxSubTickDeltaMs } from "../physics/mechanicsConstants";
 import { ColourClashCircleEffectRenderer } from "../render/ColourClashCircleEffectRenderer";
 import { HudRenderer } from "../render/hud/HudRenderer";
 import { needsNewHudRenderer } from "../render/hud/needsNewHudRenderer";
 import { needsNewRoomRenderer } from "../render/room/needsNewRoomRenderer";
+import { type RoomRenderContextInGame } from "../render/room/RoomRenderContexts";
 import { RoomRenderer } from "../render/room/RoomRenderer";
+import { type RoomRendererType } from "../render/room/RoomRendererType";
 import { RoomScrollRenderer } from "../render/room/RoomScrollRenderer";
 import { frameTimingStats } from "./frameTiming/FrameTimingStats";
 import { textInterfaceToShowDetailedFrameTiming } from "./frameTiming/textInterfaceToShowDetailedFrameTiming";

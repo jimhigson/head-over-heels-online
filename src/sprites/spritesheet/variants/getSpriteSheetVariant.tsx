@@ -1,11 +1,10 @@
-import type { TextureId } from "../spritesheetData/makeSpritesheetData";
-import type { SpritesheetVariant } from "./SpritesheetVariant";
-
 import { type AppSpritesheet, originalSpriteSheet } from "../loadedSpriteSheet";
+import { type TextureId } from "../spritesheetData/makeSpritesheetData";
 import { currentRoomSpritesheetVariant } from "./currentRoomSpritesheetVariant";
 import { deactivatedSpritesheetVariant } from "./deactivatedSpritesheetVariant";
 import { doughnuttedSpritesheetVariant } from "./doughnuttedSpritesheetVariant";
 import { sceneryPlayerSpritesheetVariant } from "./sceneryPlayerSpritesheetVariant";
+import { type SpritesheetVariant } from "./SpritesheetVariant";
 import { uncolourisedSpritesheetVariant } from "./uncolourisedSpritesheetVariant";
 
 export const getSpriteSheetVariant = (

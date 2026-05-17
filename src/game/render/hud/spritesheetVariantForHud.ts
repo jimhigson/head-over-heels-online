@@ -1,11 +1,12 @@
 import { Color } from "pixi.js";
 
-import type { ZxSpectrumRoomColour } from "../../../originalGame";
-import type { SpritesheetMetadata } from "../../../sprites/spritesheet/spritesheetData/spritesheetMetaData";
-import type { SpritesheetVariant } from "../../../sprites/spritesheet/variants/SpritesheetVariant";
-import type { SpriteOption } from "../../../store/slices/userSettings/userSettingsSlice";
-
-import { zxSpectrumColor } from "../../../originalGame";
+import {
+  zxSpectrumColor,
+  type ZxSpectrumRoomColour,
+} from "../../../originalGame";
+import { type SpritesheetMetadata } from "../../../sprites/spritesheet/spritesheetData/spritesheetMetaData";
+import { type SpritesheetVariant } from "../../../sprites/spritesheet/variants/SpritesheetVariant";
+import { type SpriteOption } from "../../../store/slices/userSettings/userSettingsSlice";
 import { getRoomColorScheme } from "../gameColours/colourScheme";
 import {
   replacementColour,

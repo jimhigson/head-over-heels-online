@@ -1,8 +1,6 @@
 import { beforeEach, expect, test } from "vitest";
 
-import type { TestRoomId } from "../../../_testUtils/basicRoom";
-
-import { setUpBasicGame } from "../../../_testUtils/basicRoom";
+import { setUpBasicGame, type TestRoomId } from "../../../_testUtils/basicRoom";
 import {
   headOverHeelsState,
   headState,

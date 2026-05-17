@@ -1,20 +1,9 @@
-import type { WebGLRenderer } from "pixi.js";
+import { Application, TextureStyle, type WebGLRenderer } from "pixi.js";
 
-import { Application } from "pixi.js";
-import { TextureStyle } from "pixi.js";
-
-import type { CampaignLocator } from "../model/modelTypes";
-import type { Xy } from "../utils/vectors/vectors";
-import type { GameApi } from "./GameApi";
-import type { SavedGame } from "./gameState/saving/SavedGameState";
-import type { InputStateTrackerInterface } from "./input/InputStateTracker";
-
+import { type CampaignLocator } from "../model/modelTypes";
 import { initOriginalSpritesheet } from "../sprites/spritesheet/loadedSpriteSheet";
 import { createUncolourisedSpritesheet } from "../sprites/spritesheet/variants/uncolourisedSpritesheetVariant";
 import { loadCampaignFromApi } from "../store/slices/campaigns/campaignApiHelpers";
-
-import "pixi.js/advanced-blend-modes";
-
 import {
   gameRestoreFromSave,
   roomExplored,
@@ -22,11 +11,18 @@ import {
 import { selectSaveForCampaign } from "../store/slices/savedGames/savedGamesSlice";
 import { store } from "../store/store";
 import { trackTextures } from "../textureInspector/trackTextures";
+
+import "pixi.js/advanced-blend-modes";
+
 import { stopAppAutoRendering } from "../utils/pixi/stopAppAutoRendering";
+import { type Xy } from "../utils/vectors/vectors";
+import { type GameApi } from "./GameApi";
 import { selectCurrentRoomState } from "./gameState/gameStateSelectors/selectCurrentRoomState";
 import { selectCurrentPlayableItem } from "./gameState/gameStateSelectors/selectPlayableItem";
 import { loadGameState } from "./gameState/loadGameState";
 import { changeCharacterRoom } from "./gameState/mutators/changeCharacterRoom";
+import { type SavedGame } from "./gameState/saving/SavedGameState";
+import { type InputStateTrackerInterface } from "./input/InputStateTracker";
 import { MainLoop } from "./mainLoop/MainLoop";
 
 TextureStyle.defaultOptions.scaleMode = "nearest";

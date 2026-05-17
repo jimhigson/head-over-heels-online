@@ -1,8 +1,8 @@
-import type { Campaign } from "../model/modelTypes";
-import type { RoomState } from "../model/RoomState";
-import type { Xy } from "../utils/vectors/vectors";
-import type { GameState } from "./gameState/GameState";
-import type { SavedGame } from "./gameState/saving/SavedGameState";
+import { type Campaign } from "../model/modelTypes";
+import { type RoomState } from "../model/RoomState";
+import { type Xy } from "../utils/vectors/vectors";
+import { type GameState } from "./gameState/GameState";
+import { type SavedGame } from "./gameState/saving/SavedGameState";
 
 export type GameApi<RoomId extends string = string> = {
   campaign: Campaign<RoomId>;

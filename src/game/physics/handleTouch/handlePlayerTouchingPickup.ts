@@ -1,11 +1,8 @@
-import type { ItemInPlay } from "../../../model/ItemInPlay";
-import type { CharacterName } from "../../../model/modelTypes";
-import type { PlayableItem } from "../itemPredicates";
-import type { ItemTouchEvent } from "./ItemTouchEvent";
-
 import { defaultItemProperties } from "../../../model/defaultItemProperties";
+import { type ItemInPlay } from "../../../model/ItemInPlay";
 import { itemInPlayCentre } from "../../../model/itemInPlayCentre";
 import { addPokeableNumbers } from "../../../model/ItemStateMap";
+import { type CharacterName } from "../../../model/modelTypes";
 import {
   crownCollected,
   reincarnationFishEaten,
@@ -22,7 +19,9 @@ import { addItemToRoom } from "../../gameState/mutators/addItemToRoom";
 import { createSavedGame } from "../../gameState/saving/createSavedGame";
 import { saveGameThunk } from "../../gameState/saving/saveGameThunk";
 import { floatingTextFixedZIndex } from "../../render/sortZ/fixedZIndexes";
+import { type PlayableItem } from "../itemPredicates";
 import { blockSizePx } from "../mechanicsConstants";
+import { type ItemTouchEvent } from "./ItemTouchEvent";
 
 /**
  * how long to keep the floating text item in the room?

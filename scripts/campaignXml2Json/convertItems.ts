@@ -1,22 +1,18 @@
 import chalk from "chalk";
 
-import type { ItemConfigMap } from "../../src/model/json/ItemConfigMap";
-import type {
-  JsonItemType,
-  JsonItemUnion,
+import { type ItemConfigMap } from "../../src/model/json/ItemConfigMap";
+import {
+  type JsonItemType,
+  type JsonItemUnion,
 } from "../../src/model/json/JsonItem";
-import type { JsonMovement } from "../../src/model/json/utilityJsonConfigTypes";
-import type { LooseDoorMap } from "./convertCampaign";
-import type { MapXml2Json, Xml2JsonRoom } from "./readToJson";
-import type { Xml2JsonItem, XmlItemMonsterBehaviour } from "./Xml2JsonItem";
-
+import { type JsonMovement } from "../../src/model/json/utilityJsonConfigTypes";
 import {
   addXyz,
   type DirectionXy4,
   scaleXy,
   subXy,
 } from "../../src/utils/vectors/vectors";
-import { convertXYZ } from "./convertCampaign";
+import { convertXYZ, type LooseDoorMap } from "./convertCampaign";
 import { convertDirection } from "./convertDirection";
 import { convertDoor } from "./convertDoor";
 import { convertPlanetName, convertSceneryName } from "./convertPlanetName";
@@ -27,8 +23,16 @@ import {
   isWallName,
   parseXmlWallName,
 } from "./convertWallName";
-import { readRoomToXmlJson } from "./readToJson";
+import {
+  type MapXml2Json,
+  readRoomToXmlJson,
+  type Xml2JsonRoom,
+} from "./readToJson";
 import { roomNameFromXmlFilename } from "./roomNameFromXmlFilename";
+import {
+  type Xml2JsonItem,
+  type XmlItemMonsterBehaviour,
+} from "./Xml2JsonItem";
 import { xmlRoomSidesWithDoors } from "./xmlRoomSidesWithDoors";
 
 const monsterBehaviourConversions = {

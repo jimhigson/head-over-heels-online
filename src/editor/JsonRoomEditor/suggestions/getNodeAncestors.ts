@@ -1,4 +1,4 @@
-import type { Node } from "jsonc-parser";
+import { type Node } from "jsonc-parser";
 
 /**
  * Build an array of nodes from the given node up to the root

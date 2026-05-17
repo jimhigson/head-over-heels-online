@@ -1,5 +1,4 @@
-import type { TextureTailwindClass } from "../../../sprites/spritesheet/spritesheetData/TextureTailwindClass";
-
+import { type TextureTailwindClass } from "../../../sprites/spritesheet/spritesheetData/TextureTailwindClass";
 import { store, useEditorAppSelector } from "../../../store/store";
 import { deleteSelected } from "../../slice/levelEditorSlice";
 import { ToolbarButton } from "./ToolbarButton";

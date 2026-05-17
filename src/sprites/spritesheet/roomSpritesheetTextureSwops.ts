@@ -1,32 +1,33 @@
-import type { PaletteSwopSpec } from "../../game/render/filters/PaletteSwapFilter";
-import type {
-  ZxSpectrumRoomColour,
-  ZxSpectrumRoomHue,
-} from "../../originalGame";
-import type { PartialNamedColours } from "../../utils/palette/palette";
-import type { DirectionXy4 } from "../../utils/vectors/vectors";
-import type { BlockstackPaletteColourName } from "../palette/spritesheetPalette";
-import type { SceneryName } from "../planets";
-import type { LoadableSpriteOption } from "./loadedSpriteSheet";
-import type { TextureId } from "./spritesheetData/makeSpritesheetData";
-import type {
-  SpritesheetTextureSwops,
-  TextureSpecificPaletteSwops,
-} from "./spritesheetPaletteSwop";
-
+import { type PaletteSwopSpec } from "../../game/render/filters/PaletteSwapFilter";
 import { colorScheme } from "../../game/render/gameColours/colourScheme";
 import {
   gameColour,
   replacementColours,
 } from "../../game/render/gameColours/gameColours";
+import {
+  type ZxSpectrumRoomColour,
+  type ZxSpectrumRoomHue,
+} from "../../originalGame";
 import { halfbrite } from "../../utils/colour/halfbrite";
 import { emptyArray, emptyObject } from "../../utils/empty";
-import { resolveSwops } from "../../utils/palette/palette";
 import {
+  type PartialNamedColours,
+  resolveSwops,
+} from "../../utils/palette/palette";
+import { type DirectionXy4 } from "../../utils/vectors/vectors";
+import {
+  type BlockstackPaletteColourName,
   paletteBlockstack,
   paletteBlockstackDim,
   paletteToppy,
 } from "../palette/spritesheetPalette";
+import { type SceneryName } from "../planets";
+import { type LoadableSpriteOption } from "./loadedSpriteSheet";
+import { type TextureId } from "./spritesheetData/makeSpritesheetData";
+import {
+  type SpritesheetTextureSwops,
+  type TextureSpecificPaletteSwops,
+} from "./spritesheetPaletteSwop";
 const isDoorTexture = (tid: TextureId) => tid.startsWith("door.");
 
 /** NOTE: - does not match deadly floors */

@@ -1,10 +1,8 @@
 import { produce } from "immer";
 import { expect, test } from "vitest";
 
-import type { EditorRoomId, EditorRoomItemId } from "../../editorTypes";
-import type { LevelEditorState } from "../levelEditorSlice";
-
-import { removeRoom } from "../levelEditorSlice";
+import { type EditorRoomId, type EditorRoomItemId } from "../../editorTypes";
+import { type LevelEditorState, removeRoom } from "../levelEditorSlice";
 import {
   editorStateWithOneRoomWithNoItems,
   reduceLevelEditorActions,

@@ -1,12 +1,11 @@
-import type { UnindexedRoomState } from "../game/gameState/saving/SavedGameState";
-import type { FreeItem } from "../game/physics/itemPredicates";
-import type { UnionOfAllItemInPlayTypes } from "./ItemInPlay";
-import type { PlayableState } from "./ItemStateMap";
-import type { RoomState } from "./RoomState";
-import type { StoodOnBy } from "./StoodOnBy";
-
+import { type UnindexedRoomState } from "../game/gameState/saving/SavedGameState";
+import { type FreeItem } from "../game/physics/itemPredicates";
 import { coyoteTime } from "../game/physics/mechanicsConstants";
 import { keysIter } from "../utils/entries";
+import { type UnionOfAllItemInPlayTypes } from "./ItemInPlay";
+import { type PlayableState } from "./ItemStateMap";
+import { type RoomState } from "./RoomState";
+import { type StoodOnBy } from "./StoodOnBy";
 
 /**
  * iterate stood on by, while giving the item objects, not the item ids that are stored on the

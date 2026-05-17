@@ -1,13 +1,12 @@
-import type { PropsWithChildren } from "react";
-
 import { useEffect, useState } from "preact/hooks";
-import { createContext, useContext } from "react";
-
-import type { InputStateTrackerInterface } from "./InputStateTracker";
-import type { InputTicker } from "./InputStateTracker";
+import { createContext, type PropsWithChildren, useContext } from "react";
 
 import { createEmptyHudInputState } from "./hudInputState";
-import { InputStateTracker } from "./InputStateTracker";
+import {
+  InputStateTracker,
+  type InputStateTrackerInterface,
+  type InputTicker,
+} from "./InputStateTracker";
 import {
   createEmptyKeyboardState,
   type KeyboardStateMap,

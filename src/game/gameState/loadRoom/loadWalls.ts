@@ -1,10 +1,7 @@
-import type { ItemTypeUnion } from "../../../_generated/types/ItemInPlayUnion";
-import type { StoodOnBy } from "../../../model/StoodOnBy";
-import type { Xyz } from "../../../utils/vectors/vectors";
-import type { SpecifiedTextureCreateSpriteOptions } from "../../render/createSprite";
-
+import { type ItemTypeUnion } from "../../../_generated/types/ItemInPlayUnion";
 import { type JsonItem } from "../../../model/json/JsonItem";
 import { isWallHidden } from "../../../model/json/WallJsonConfig";
+import { type StoodOnBy } from "../../../model/StoodOnBy";
 import { wallTimes } from "../../../model/times";
 import { emptyObject } from "../../../utils/empty";
 import {
@@ -12,10 +9,15 @@ import {
   doorAlongAxis,
   originXyz,
   perpendicularAxisXy,
+  type Xyz,
 } from "../../../utils/vectors/vectors";
 import { multiplyBoundingBox } from "../../collision/multiplyBoundingBox";
-import { blockSizePx } from "../../physics/mechanicsConstants";
-import { veryHighZ, wallRenderHeight } from "../../physics/mechanicsConstants";
+import {
+  blockSizePx,
+  veryHighZ,
+  wallRenderHeight,
+} from "../../physics/mechanicsConstants";
+import { type SpecifiedTextureCreateSpriteOptions } from "../../render/createSprite";
 import { blockXyzToFineXyz } from "../../render/projections";
 import { nonRenderingItemFixedZIndex } from "../../render/sortZ/fixedZIndexes";
 import { defaultBaseState } from "./itemDefaultStates";

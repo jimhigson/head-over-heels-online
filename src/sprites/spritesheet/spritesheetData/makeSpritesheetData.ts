@@ -1,15 +1,14 @@
-import type { SpritesheetData } from "pixi.js";
-
-import type { AnimationsOfFrames } from "./AnimationsOfFrames";
-import type { SpritesheetMetadata } from "./spritesheetMetaData";
+import { type SpritesheetData } from "pixi.js";
 
 import { objectEntriesIter } from "../../../utils/entries";
+import { type AnimationsOfFrames } from "./AnimationsOfFrames";
 import { doorSpritesheetData } from "./doorSpritesheetData";
 import { editorSpritesheetData } from "./editorSpritesheetData";
 import { hudSpritesheetData } from "./hudSritesheetData";
 import { itemsSpritesheetData } from "./itemsSpritesheetData";
 import { playableSpritesheetData } from "./playableSpritesheetData";
 import { scenerySpritesheetData } from "./scenerySpritesheetData";
+import { type SpritesheetMetadata } from "./spritesheetMetaData";
 
 export type TextureId =
   | keyof ReturnType<typeof playableSpritesheetData>["frames"]

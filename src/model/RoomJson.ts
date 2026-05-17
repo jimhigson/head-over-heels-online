@@ -1,10 +1,9 @@
-import type { ZxSpectrumRoomColour } from "../originalGame";
-import type { SceneryName } from "../sprites/planets";
-import type { NonEmptyRecord } from "../utils/types/NonEmptyRecord";
-import type { Xy, Xyz } from "../utils/vectors/vectors";
-import type { JsonItemType, JsonItemUnion } from "./json/JsonItem";
-
+import { type ZxSpectrumRoomColour } from "../originalGame";
+import { type SceneryName } from "../sprites/planets";
 import { objectEntriesIter, valuesIter } from "../utils/entries";
+import { type NonEmptyRecord } from "../utils/types/NonEmptyRecord";
+import { type Xy, type Xyz } from "../utils/vectors/vectors";
+import { type JsonItemType, type JsonItemUnion } from "./json/JsonItem";
 
 type SubRoom = {
   /**

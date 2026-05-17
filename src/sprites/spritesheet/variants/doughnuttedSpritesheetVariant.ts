@@ -1,15 +1,16 @@
-import type { AppSpritesheet } from "../loadedSpriteSheet";
-import type { SpritesheetTextureSwops } from "../spritesheetPaletteSwop";
-import type { VariantBuildContext } from "../VariantBuildContext";
-
-import { resolveSwops } from "../../../utils/palette/palette";
-import { resolveNamedColourSwops } from "../../../utils/palette/palette";
+import {
+  resolveNamedColourSwops,
+  resolveSwops,
+} from "../../../utils/palette/palette";
+import { type AppSpritesheet } from "../loadedSpriteSheet";
 import {
   ambientDimSwops,
   createSpritesheetVariant,
   noopSpritesheetTextureSwops,
   replaceSpritesheetWithSwopped,
+  type SpritesheetTextureSwops,
 } from "../spritesheetPaletteSwop";
+import { type VariantBuildContext } from "../VariantBuildContext";
 
 let swopped: AppSpritesheet | undefined = undefined;
 

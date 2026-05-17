@@ -1,8 +1,11 @@
-import type { SetOptional } from "type-fest";
+import { type SetOptional } from "type-fest";
 
-import type { roomSpatialIndexKey, RoomState } from "../../../model/RoomState";
-import type { GameInPlayStoreState } from "../../../store/slices/gameInPlay/gameInPlaySlice";
-import type { CharacterRooms, GameState } from "../GameState";
+import {
+  type roomSpatialIndexKey,
+  type RoomState,
+} from "../../../model/RoomState";
+import { type GameInPlayStoreState } from "../../../store/slices/gameInPlay/gameInPlaySlice";
+import { type CharacterRooms, type GameState } from "../GameState";
 
 /**
  * the fields from the game state that are serialised for a saved game

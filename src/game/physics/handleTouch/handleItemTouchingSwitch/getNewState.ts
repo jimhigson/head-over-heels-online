@@ -1,10 +1,9 @@
-import type {
-  SwitchSetting,
-  UnionOfAllItemInPlayTypes,
+import {
+  type SwitchSetting,
+  type UnionOfAllItemInPlayTypes,
 } from "../../../../model/ItemInPlay";
-import type { ItemState } from "../../../../model/ItemState";
-import type { SwitchItemModificationUnion } from "../../../../model/json/SwitchConfig";
-
+import { type ItemState } from "../../../../model/ItemState";
+import { type SwitchItemModificationUnion } from "../../../../model/json/SwitchConfig";
 import { emptyObject } from "../../../../utils/empty";
 import { unitVectors } from "../../../../utils/vectors/unitVectors";
 import { oppositeDirection, scaleXyz } from "../../../../utils/vectors/vectors";

@@ -1,10 +1,9 @@
-import type { GridResolution } from "../../slice/levelEditorSlice";
-
 import { useAppDispatch } from "../../../store/hooks";
 import { useEditorAppSelector } from "../../../store/store";
 import { Switch3 } from "../../../ui/Switch";
 import {
   changeGridResolution,
+  type GridResolution,
   gridResolutions,
 } from "../../slice/levelEditorSlice";
 

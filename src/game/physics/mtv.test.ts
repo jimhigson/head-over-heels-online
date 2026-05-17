@@ -1,11 +1,10 @@
 import { describe, expect, test } from "vitest";
 
-import type { Xyz } from "../../utils/vectors/vectors";
-
 import {
   dotProductXyz,
   lengthXyz,
   unitVector,
+  type Xyz,
 } from "../../utils/vectors/vectors";
 import { mtv, mtvAlongVector } from "./mtv";
 

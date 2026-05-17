@@ -1,7 +1,4 @@
-import type { Color } from "pixi.js";
-
-import type { SpriteOption } from "../../../store/slices/userSettings/userSettingsSlice";
-import type { NamedColours } from "../../../utils/palette/palette";
+import { type Color } from "pixi.js";
 
 import { blockStackSpritesheetMeta } from "../../../../gfx/spritesheetMeta/blockStackSpritesheetMeta";
 import {
@@ -14,6 +11,8 @@ import {
   paletteToppy,
   type ToppyPaletteColourName,
 } from "../../../sprites/palette/spritesheetPalette";
+import { type SpriteOption } from "../../../store/slices/userSettings/userSettingsSlice";
+import { type NamedColours } from "../../../utils/palette/palette";
 
 export const gameColour = (
   colourName: BlockstackPaletteColourName,

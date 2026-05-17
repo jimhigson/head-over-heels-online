@@ -1,15 +1,12 @@
 import { describe, expect, test } from "vitest";
 
-import type {
-  LevelEditorSliceAction,
-  LevelEditorState,
-} from "./levelEditorSlice";
-
 import { iterateRoomJsonItemsWithIds } from "../../model/RoomJson";
 import { initialLevelEditorSliceState } from "./initialLevelEditorSliceState";
 import {
   applyItemTool,
   levelEditorSlice,
+  type LevelEditorSliceAction,
+  type LevelEditorState,
   selectCurrentEditingRoomJson,
   setSelectedItemsInRoom,
   setTool,

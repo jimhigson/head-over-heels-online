@@ -1,12 +1,11 @@
-import type { BlockStyle } from "../../../model/json/utilityJsonConfigTypes";
-import type { SceneryName } from "../../../sprites/planets";
-import type { TextureId } from "../../../sprites/spritesheet/spritesheetData/makeSpritesheetData";
-import type { ItemAppearance } from "./ItemAppearance";
-
+import { type BlockStyle } from "../../../model/json/utilityJsonConfigTypes";
 import { isTextureId } from "../../../sprites/assertIsTextureId";
+import { type SceneryName } from "../../../sprites/planets";
 import { originalSpriteSheet } from "../../../sprites/spritesheet/loadedSpriteSheet";
+import { type TextureId } from "../../../sprites/spritesheet/spritesheetData/makeSpritesheetData";
 import { maybeRenderContainerToSprite } from "../../../utils/pixi/renderContainerToSprite";
 import { createSprite } from "../createSprite";
+import { type ItemAppearance } from "./ItemAppearance";
 
 type BlockRenderProps = {
   // flatten disappear down to a single value, since all we care about is if it is on or not

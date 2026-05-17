@@ -1,29 +1,25 @@
-import type { PayloadAction } from "@reduxjs/toolkit";
-
-import { type SliceCaseReducers } from "@reduxjs/toolkit";
-
-import type { JsonItemConfig } from "../../../model/json/JsonItem";
-import type { ZxSpectrumRoomColour } from "../../../originalGame";
-import type { SceneryName } from "../../../sprites/planets";
-import type {
-  EditorJsonItem,
-  EditorRoomId,
-  EditorRoomItemId,
-  EditorRoomJson,
-} from "../../editorTypes";
-import type { LevelEditorState } from "../levelEditorSlice";
+import { type PayloadAction, type SliceCaseReducers } from "@reduxjs/toolkit";
 
 import { changeRoomSceneryInPlace } from "../../../model/inPlaceMutators/changeRoomSceneryInPlace";
 import {
   exitGameRoomId,
   type FloorType,
 } from "../../../model/json/ItemConfigMap";
+import { type JsonItemConfig } from "../../../model/json/JsonItem";
 import {
   iterateRoomJsonItemsWithIds,
   roomJsonItemsIterable,
 } from "../../../model/RoomJson";
+import { type ZxSpectrumRoomColour } from "../../../originalGame";
+import { type SceneryName } from "../../../sprites/planets";
 import { keysIter } from "../../../utils/entries";
 import { oppositeDirection, scaleXyz } from "../../../utils/vectors/vectors";
+import {
+  type EditorJsonItem,
+  type EditorRoomId,
+  type EditorRoomItemId,
+  type EditorRoomJson,
+} from "../../editorTypes";
 import { addReturnDoorInPlace } from "../inPlaceMutators/addDoorInPlace";
 import { addNewRoomInPlace } from "../inPlaceMutators/addNewRoomInPlace";
 import { changeIdOfCurrentRoomInPlace } from "../inPlaceMutators/changeIdOfCurrentRoomInPlace";
@@ -33,6 +29,7 @@ import {
   selectCurrentRoomFromLevelEditorState,
   selectRoomFromLevelEditorState,
 } from "../levelEditorSelectors";
+import { type LevelEditorState } from "../levelEditorSlice";
 import { pushUndoInPlace } from "./undoReducers";
 
 export type SetRoomAboveOrBelowPayload =

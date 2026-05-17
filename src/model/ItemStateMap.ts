@@ -1,16 +1,16 @@
-import type { EmptyObject, Simplify } from "type-fest";
+import { type EmptyObject, type Simplify } from "type-fest";
 
-import type { PortableItem } from "../game/physics/itemPredicates";
-import type { SceneryName } from "../sprites/planets";
-import type {
-  DirectionXy4,
-  DirectionXyz4,
-  Xy,
-  Xyz,
+import { type PortableItem } from "../game/physics/itemPredicates";
+import { type SceneryName } from "../sprites/planets";
+import {
+  type DirectionXy4,
+  type DirectionXyz4,
+  type Xy,
+  type Xyz,
 } from "../utils/vectors/vectors";
-import type { SwitchSetting } from "./ItemInPlay";
-import type { ItemConfigMap } from "./json/ItemConfigMap";
-import type { TimedRelationWithOtherItem } from "./TimedRelationWithOtherItem";
+import { type SwitchSetting } from "./ItemInPlay";
+import { type ItemConfigMap } from "./json/ItemConfigMap";
+import { type TimedRelationWithOtherItem } from "./TimedRelationWithOtherItem";
 
 export type PlayableActionState =
   | "falling"

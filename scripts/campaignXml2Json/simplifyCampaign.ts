@@ -1,10 +1,8 @@
-import type { AllUnionFields } from "type-fest";
-
 import chalk from "chalk";
+import { type AllUnionFields } from "type-fest";
 
-import type { JsonItemUnion } from "../../src/model/json/JsonItem";
-import type { Campaign } from "../../src/model/modelTypes";
-
+import { type JsonItemUnion } from "../../src/model/json/JsonItem";
+import { type Campaign } from "../../src/model/modelTypes";
 import {
   iterateRoomJsonItemsWithIds,
   type RoomJson,

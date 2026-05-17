@@ -1,6 +1,6 @@
 import { Ticker, UPDATE_PRIORITY } from "pixi.js";
 
-import type { InputTicker } from "./InputStateTracker";
+import { type InputTicker } from "./InputStateTracker";
 
 export const pixiInputTicker: InputTicker = {
   start(fn) {

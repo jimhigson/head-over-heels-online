@@ -1,9 +1,8 @@
-import type { Xy } from "../../../utils/vectors/vectors";
-import type { DisplaySettings } from "../userSettings/userSettingsSlice";
-import type { CalculateUpscaleOptions } from "./calculateUpscale";
-
 import { type ResolutionName, resolutions } from "../../../originalGame";
 import { detectDeviceType } from "../../../utils/detectEnv/detectDeviceType";
+import { type Xy } from "../../../utils/vectors/vectors";
+import { type DisplaySettings } from "../userSettings/userSettingsSlice";
+import { type CalculateUpscaleOptions } from "./calculateUpscale";
 
 const gameRenderAreaSize = (targetElement?: HTMLElement): Xy => {
   const deviceType = detectDeviceType();

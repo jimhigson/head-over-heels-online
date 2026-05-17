@@ -1,6 +1,4 @@
-import type { PropsWithChildren } from "react";
-
-import "react";
+import { type PropsWithChildren } from "react";
 
 import { useTotalUpscale } from "../../store/slices/upscale/upscaleSelectors";
 

@@ -1,12 +1,10 @@
 import { beforeEach, describe, expect, test } from "vitest";
 
-import type { TestRoomId } from "../../../_testUtils/basicRoom";
-import type { SwitchConfig } from "../../../model/json/SwitchConfig";
-
-import { setUpBasicGame } from "../../../_testUtils/basicRoom";
+import { setUpBasicGame, type TestRoomId } from "../../../_testUtils/basicRoom";
 import { heelsState, itemState } from "../../../_testUtils/characterState";
 import { resetStore } from "../../../_testUtils/initStoreForTests";
 import { playGameThrough } from "../../../_testUtils/playGameThrough";
+import { type SwitchConfig } from "../../../model/json/SwitchConfig";
 import { unitVectors } from "../../../utils/vectors/unitVectors";
 import { oppositeDirection, tangentAxis } from "../../../utils/vectors/vectors";
 

@@ -1,12 +1,8 @@
-import type { AnimatedSprite } from "pixi.js";
+import { type AnimatedSprite, Container, type Renderer } from "pixi.js";
 
-import { Container, type Renderer } from "pixi.js";
-
-import type { RoomState } from "../../../../../model/RoomState";
-import type { SpriteOption } from "../../../../../store/slices/userSettings/userSettingsSlice";
-import type { ButtonAppearance } from "../../HudButtonRenderer";
-
+import { type RoomState } from "../../../../../model/RoomState";
 import { getSpriteSheetVariant } from "../../../../../sprites/spritesheet/variants/getSpriteSheetVariant";
+import { type SpriteOption } from "../../../../../store/slices/userSettings/userSettingsSlice";
 import { teleporterIsActive } from "../../../../physics/mechanics/teleporting";
 import {
   createSprite,
@@ -14,7 +10,10 @@ import {
 } from "../../../createSprite";
 import { getWhite } from "../../../gameColours/gameColours";
 import { TextContainer } from "../../../text/TextContainer";
-import { textYForButtonCentre } from "../../HudButtonRenderer";
+import {
+  type ButtonAppearance,
+  textYForButtonCentre,
+} from "../../HudButtonRenderer";
 import { spritesheetVariantForHud } from "../../spritesheetVariantForHud";
 import { ArcadeStyleButtonContainer } from "../ArcadeStyleButtonContainer";
 import { buttonActionsPressed } from "./buttonActionsPressed";

@@ -1,24 +1,23 @@
 import { produce } from "immer";
 import { describe, expect, test } from "vitest";
 
-import type { AnyWallJsonConfig } from "../../../../model/json/WallJsonConfig";
-import type { Xyz } from "../../../../utils/vectors/vectors";
-import type {
-  EditorJsonItem,
-  EditorRoomId,
-  EditorRoomItemId,
-  EditorRoomJson,
-} from "../../../editorTypes";
-import type { LevelEditorState } from "../../levelEditorSlice";
-
 import {
   editorStateWithOneRoomWithNoItems,
   reduceLevelEditorActions,
   testRoomId,
 } from "../__test__/storeStates";
+import { type AnyWallJsonConfig } from "../../../../model/json/WallJsonConfig";
 import { wallTimes } from "../../../../model/times";
+import { type Xyz } from "../../../../utils/vectors/vectors";
+import {
+  type EditorJsonItem,
+  type EditorRoomId,
+  type EditorRoomItemId,
+  type EditorRoomJson,
+} from "../../../editorTypes";
 import {
   commitCurrentPreviewedEdits,
+  type LevelEditorState,
   moveOrResizeItemAsPreview,
 } from "../../levelEditorSlice";
 

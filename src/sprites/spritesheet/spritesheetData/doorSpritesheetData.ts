@@ -1,10 +1,8 @@
-import type { SpritesheetData, SpritesheetFrameData } from "pixi.js";
-
-import type { AxisXy, Xy } from "../../../utils/vectors/vectors";
+import { type SpritesheetData, type SpritesheetFrameData } from "pixi.js";
 
 import { fromAllEntries } from "../../../utils/entries";
 import { concat } from "../../../utils/iterators/concat";
-import { addXy } from "../../../utils/vectors/vectors";
+import { addXy, type AxisXy, type Xy } from "../../../utils/vectors/vectors";
 
 // which sceneries have their own door styles?
 export const sceneryWithOwnDoors = [

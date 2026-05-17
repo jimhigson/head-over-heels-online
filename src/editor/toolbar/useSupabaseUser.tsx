@@ -1,5 +1,4 @@
-import type { User } from "@supabase/supabase-js";
-
+import { type User } from "@supabase/supabase-js";
 import { useEffect, useState } from "preact/hooks";
 
 import { importSupabaseDb } from "../../db/supabaseDb.import";

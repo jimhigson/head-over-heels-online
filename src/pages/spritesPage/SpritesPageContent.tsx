@@ -1,12 +1,11 @@
-import type {
-  FramesWithSpeed,
-  TextureId,
-} from "../../sprites/spritesheet/spritesheetData/makeSpritesheetData";
-import type { Xy } from "../../utils/vectors/vectors";
-
 import { BitmapText } from "../../game/components/tailwindSprites/BitmapText";
+import {
+  type FramesWithSpeed,
+  type TextureId,
+} from "../../sprites/spritesheet/spritesheetData/makeSpritesheetData";
 import { useCurrentSpritesheetData } from "../../store/slices/gameMenus/gameMenusSelectors";
 import { entries } from "../../utils/entries";
+import { type Xy } from "../../utils/vectors/vectors";
 import { AnimationTile } from "./AnimationTile";
 import { PaletteSwatch } from "./PaletteSwatch";
 import { SpritesheetImage } from "./SpritesheetImage";

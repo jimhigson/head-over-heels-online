@@ -1,8 +1,7 @@
 import { findNodeAtOffset, getLocation, parseTree } from "jsonc-parser";
 import { describe, expect, it } from "vitest";
 
-import type { AnyRoomJson } from "../../../model/RoomJson";
-
+import { type AnyRoomJson } from "../../../model/RoomJson";
 import { getNodeAncestors } from "./getNodeAncestors";
 import { matchesPattern } from "./suggestionsPatternMatching";
 

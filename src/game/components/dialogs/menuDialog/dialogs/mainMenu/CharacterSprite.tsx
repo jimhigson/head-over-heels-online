@@ -1,9 +1,8 @@
 import { useEffect, useRef, useState } from "preact/hooks";
 
-import type { IndividualCharacterName } from "../../../../../../model/modelTypes";
-import type { TextureTailwindClass } from "../../../../../../sprites/spritesheet/spritesheetData/TextureTailwindClass";
-
+import { type IndividualCharacterName } from "../../../../../../model/modelTypes";
 import { soundUrls } from "../../../../../../sound/soundUrls";
+import { type TextureTailwindClass } from "../../../../../../sprites/spritesheet/spritesheetData/TextureTailwindClass";
 import {
   type DirectionXy8,
   vectorClosestDirectionXy8,

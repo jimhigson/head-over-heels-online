@@ -1,6 +1,6 @@
-import type { ItemTypeUnion } from "../../_generated/types/ItemInPlayUnion";
-import type { RoomState } from "../../model/RoomState";
-import type { MechanicResult } from "../physics/MechanicResult";
+import { type ItemTypeUnion } from "../../_generated/types/ItemInPlayUnion";
+import { type RoomState } from "../../model/RoomState";
+import { type MechanicResult } from "../physics/MechanicResult";
 
 export const disableToasterOnMonsterActivation = <
   RoomId extends string,

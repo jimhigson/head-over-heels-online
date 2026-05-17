@@ -1,10 +1,12 @@
 import { describe, expect, test } from "vitest";
 
-import type { CollideableItem } from "./aabbCollision";
-
 import { defaultItemProperties } from "../../model/defaultItemProperties";
 import { GridSpatialIndex } from "../physics/gridSpace/GridSpatialIndex";
-import { collision2Items, collisionItemWithIndex } from "./aabbCollision";
+import {
+  type CollideableItem,
+  collision2Items,
+  collisionItemWithIndex,
+} from "./aabbCollision";
 
 describe("collision1to1", () => {
   test("overlapping items in x collide", () => {

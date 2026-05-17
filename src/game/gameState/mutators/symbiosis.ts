@@ -1,7 +1,5 @@
-import type { IndividualCharacterName } from "../../../model/modelTypes";
-import type { PlayableItem } from "../../physics/itemPredicates";
-
 import { defaultItemProperties } from "../../../model/defaultItemProperties";
+import { type IndividualCharacterName } from "../../../model/modelTypes";
 import { emptyObject } from "../../../utils/empty";
 import { neverTime } from "../../../utils/neverTime";
 import { pick } from "../../../utils/pick";
@@ -11,6 +9,7 @@ import {
   headOverHeelsAabbInfo,
   heelsAabbInfo,
 } from "../../collision/boundingBoxes";
+import { type PlayableItem } from "../../physics/itemPredicates";
 import { blockSizePx } from "../../physics/mechanicsConstants";
 import {
   defaultBaseState,

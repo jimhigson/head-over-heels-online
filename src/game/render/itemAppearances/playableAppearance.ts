@@ -1,18 +1,7 @@
-import { Container } from "pixi.js";
-import { AnimatedSprite } from "pixi.js";
+import { AnimatedSprite, Container } from "pixi.js";
 
-import type { ItemTypeUnion } from "../../../_generated/types/ItemInPlayUnion";
-import type { PlayableActionState } from "../../../model/ItemStateMap";
-import type { AppSpritesheet } from "../../../sprites/spritesheet/loadedSpriteSheet";
-import type { SpritesheetMetadata } from "../../../sprites/spritesheet/spritesheetData/spritesheetMetaData";
-import type { SpriteOption } from "../../../store/slices/userSettings/userSettingsSlice";
-import type { DirectionXy8 } from "../../../utils/vectors/vectors";
-import type { GameState } from "../../gameState/GameState";
-import type { PlayableItem } from "../../physics/itemPredicates";
-import type { CreateSpriteOptions } from "../createSprite";
-import type { StackedSpritesContainer } from "./createStackedSprites";
-import type { ItemAppearance } from "./ItemAppearance";
-
+import { type ItemTypeUnion } from "../../../_generated/types/ItemInPlayUnion";
+import { type PlayableActionState } from "../../../model/ItemStateMap";
 import {
   type CharacterName,
   type IndividualCharacterName,
@@ -23,28 +12,36 @@ import {
 } from "../../../originalGame";
 import { isAnimationId, isTextureId } from "../../../sprites/assertIsTextureId";
 import { effectColour } from "../../../sprites/palette/spritesheetPalette";
+import { type AppSpritesheet } from "../../../sprites/spritesheet/loadedSpriteSheet";
 import { playableWalkAnimationSpeed } from "../../../sprites/spritesheet/spritesheetData/playableSpritesheetData";
+import { type SpritesheetMetadata } from "../../../sprites/spritesheet/spritesheetData/spritesheetMetaData";
 import { getSpriteSheetVariant } from "../../../sprites/spritesheet/variants/getSpriteSheetVariant";
+import { type SpriteOption } from "../../../store/slices/userSettings/userSettingsSlice";
 import { isEmptyObject } from "../../../utils/empty";
 import {
+  type DirectionXy8,
   lengthXyz,
   vectorClosestDirectionXy8,
 } from "../../../utils/vectors/vectors";
+import { type GameState } from "../../gameState/GameState";
 import { playerDiedRecently } from "../../gameState/gameStateSelectors/playerDiedRecently";
 import { playableHasShield } from "../../gameState/gameStateSelectors/selectPickupAbilities";
+import { type PlayableItem } from "../../physics/itemPredicates";
 import {
   afterDeathInvulnerabilityFlashPeriod,
   afterDeathInvulnerabilityFlashPhaseDuration,
   switchCharacterHighlightTime,
 } from "../../physics/mechanicsConstants";
-import { createSprite } from "../createSprite";
+import { createSprite, type CreateSpriteOptions } from "../createSprite";
 import { OneColourFilter } from "../filters/OneColourFilter";
 import { OutlineFilter } from "../filters/OutlineFilter";
 import {
   stackedBottomSymbol,
+  type StackedSpritesContainer,
   stackedTopSymbol,
   stackSprites,
 } from "./createStackedSprites";
+import { type ItemAppearance } from "./ItemAppearance";
 import { itemAppearanceOutsideView } from "./itemAppearanceOutsideView";
 
 // playables keep their full set of available filter, they just get enabled

@@ -1,6 +1,5 @@
-import type { PersistConfig } from "redux-persist/es/types";
-
 import persistReducer from "redux-persist/es/persistReducer";
+import { type PersistConfig } from "redux-persist/es/types";
 import storage from "redux-persist/lib/storage";
 
 import {

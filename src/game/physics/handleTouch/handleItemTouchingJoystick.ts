@@ -1,23 +1,21 @@
-import type {
-  ItemInPlayType,
-  UnionOfAllItemInPlayTypes,
+import {
+  type ItemInPlayType,
+  type UnionOfAllItemInPlayTypes,
 } from "../../../model/ItemInPlay";
-import type { Xy } from "../../../utils/vectors/vectors";
-import type { FreeItemTypes } from "../itemPredicates";
-import type { ItemTouchEventByItemType } from "./ItemTouchEvent";
-
 import { roomItemsIterable } from "../../../model/RoomState";
 import {
   scaleXy,
   scaleXyz,
   unitVector,
   vectorClosestDirectionXy4,
+  type Xy,
 } from "../../../utils/vectors/vectors";
 import { assignLatentMovement } from "../../gameState/mutators/assignLatentMovement";
-import { isItemType } from "../itemPredicates";
+import { type FreeItemTypes, isItemType } from "../itemPredicates";
 import { moveSpeedPixPerMs } from "../mechanicsConstants";
 import { mtv } from "../mtv";
 import { recordActedOnBy } from "../recordActedOnBy";
+import { type ItemTouchEventByItemType } from "./ItemTouchEvent";
 
 export const handleItemTouchingJoystick = <
   RoomId extends string,

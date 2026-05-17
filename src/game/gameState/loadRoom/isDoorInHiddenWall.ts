@@ -1,5 +1,5 @@
-import type { JsonItem } from "../../../model/json/JsonItem";
-import type { RoomDirectionalIndex } from "./buildRoomJsonDirectionalIndex";
+import { type JsonItem } from "../../../model/json/JsonItem";
+import { type RoomDirectionalIndex } from "./buildRoomJsonDirectionalIndex";
 
 export const isDoorInHiddenWall = <
   RoomId extends string,

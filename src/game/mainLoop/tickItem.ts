@@ -1,19 +1,18 @@
-import type { ItemTypeUnion } from "../../_generated/types/ItemInPlayUnion";
-import type {
-  ItemInPlayType,
-  UnionOfAllItemInPlayTypes,
+import { type ItemTypeUnion } from "../../_generated/types/ItemInPlayUnion";
+import {
+  type ItemInPlayType,
+  type UnionOfAllItemInPlayTypes,
 } from "../../model/ItemInPlay";
-import type { RoomState } from "../../model/RoomState";
-import type { Xyz } from "../../utils/vectors/vectors";
-import type { GameState } from "../gameState/GameState";
-
+import { type RoomState } from "../../model/RoomState";
 import { stoodOnItem } from "../../model/stoodOnItemsLookup";
 import { valuesIter } from "../../utils/entries";
 import {
   addXyzInPlace,
   originXyz,
   scaleXyzWriteInto,
+  type Xyz,
 } from "../../utils/vectors/vectors";
+import { type GameState } from "../gameState/GameState";
 import { makeItemFadeOut } from "../gameState/mutators/makeItemFadeOut";
 import { handleItemsTouchingItems } from "../physics/handleTouch/handleItemsTouchingItems";
 import { handlePlayerTouchingDeadly } from "../physics/handleTouch/handlePlayerTouchingDeadly";
@@ -26,14 +25,14 @@ import {
   isEmitter,
   isFiredDoughnut,
   isFirer,
+  isFreeItem,
   isLift,
   isMoving,
   isPickup,
+  isPlayableItem,
   isTimer,
   itemIsStandingOnSomething,
 } from "../physics/itemPredicates";
-import { isFreeItem } from "../physics/itemPredicates";
-import { isPlayableItem } from "../physics/itemPredicates";
 import { type MechanicResult } from "../physics/MechanicResult";
 import { tickActivation } from "../physics/mechanics/activation";
 import { buttonPressAndRelease } from "../physics/mechanics/buttonPressAndRelease";

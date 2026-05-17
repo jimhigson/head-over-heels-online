@@ -1,7 +1,6 @@
-import type { ItemAppearance } from "./ItemAppearance";
-
 import { maybeRenderContainerToAnimatedSprite } from "../../../utils/pixi/renderContainerToSprite";
 import { createSprite } from "../createSprite";
+import { type ItemAppearance } from "./ItemAppearance";
 
 type DeadlyBlockRenderProps = {
   disabled: boolean;

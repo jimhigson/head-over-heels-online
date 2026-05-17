@@ -1,26 +1,25 @@
 import nanoEqual from "nano-equal";
 import { useEffect, useRef } from "preact/hooks";
 
-import type { Xyz } from "../../../utils/vectors/vectors";
-import type { MaybePointingAtSomething } from "../cursor/PointingAt";
-import type { Tool } from "./Tool";
-import type { ToolHandler } from "./toolHandlers/ToolHandler";
-
 import { useAppDispatch, useAppSelector } from "../../../store/hooks";
 import { selectUpscale } from "../../../store/slices/upscale/upscaleSlice";
 import { editorStore, store } from "../../../store/store";
 import { catchErrors } from "../../../utils/errors/errors";
+import { type Xyz } from "../../../utils/vectors/vectors";
 import {
   selectEditorRoomRenderDimensions,
   selectEditorRoomState,
 } from "../../slice/levelEditorSelectors";
 import { changeDragInProgress, selectTool } from "../../slice/levelEditorSlice";
 import { findPointerPointingAt } from "../cursor/findPointerPointingAt";
+import { type MaybePointingAtSomething } from "../cursor/PointingAt";
 import { upscaledMousePosition } from "../cursor/upscaledMouse";
 import { useProvidedPixiApplication } from "../PixiApplicationProvider";
+import { type Tool } from "./Tool";
 import { EyeDropperToolHandler } from "./toolHandlers/EyeDropperToolHandler";
 import { ItemToolHandler } from "./toolHandlers/ItemToolHandler";
 import { PointerToolHandler } from "./toolHandlers/PointerToolHandler";
+import { type ToolHandler } from "./toolHandlers/ToolHandler";
 
 const toolHandlers: {
   [T in Tool["type"]]: ToolHandler<Extract<Tool, { type: T }>>;

@@ -1,5 +1,3 @@
-import type { SceneryName } from "../sprites/planets";
-
 import activateSoundUrl from "../../sounds/activate.mp3";
 import ballHitSoundUrl from "../../sounds/ballHit.mp3";
 import drumSoundUrl from "../../sounds/bongo.mp3";
@@ -74,6 +72,7 @@ import toasterPopUpSoundUrl from "../../sounds/toasterPopUp.opus";
 import toasterPushDownSoundUrl from "../../sounds/toasterPushDown.opus";
 import uhOhSoundUrl from "../../sounds/uhOh.opus";
 import woodScrapeSoundUrl from "../../sounds/woodScrape.mp3";
+import { type SceneryName } from "../sprites/planets";
 
 export const soundUrls = {
   activate: activateSoundUrl,

@@ -1,18 +1,17 @@
-import type { UnionOfAllItemInPlayTypes } from "../../../model/ItemInPlay";
-import type { CollideableItem } from "../../collision/aabbCollision";
-import type { GameState } from "../../gameState/GameState";
-import type { GridSpatialIndex } from "../gridSpace/GridSpatialIndex";
-import type { PlayableItem } from "../itemPredicates";
-
+import { type UnionOfAllItemInPlayTypes } from "../../../model/ItemInPlay";
 import { roomSpatialIndexKey, type RoomState } from "../../../model/RoomState";
 import { addXyz } from "../../../utils/vectors/vectors";
-import { collisionItemWithIndex } from "../../collision/aabbCollision";
+import {
+  type CollideableItem,
+  collisionItemWithIndex,
+} from "../../collision/aabbCollision";
+import { type GameState } from "../../gameState/GameState";
 import { addItemToRoom } from "../../gameState/mutators/addItemToRoom";
 import { removeStandingOn } from "../../gameState/mutators/standingOn/removeStandingOn";
 import { setStandingOnWithoutRemovingOldFirst } from "../../gameState/mutators/standingOn/setStandingOnWithoutRemovingOldFirst";
+import { type GridSpatialIndex } from "../gridSpace/GridSpatialIndex";
 import { handleItemsTouchingItems } from "../handleTouch/handleItemsTouchingItems";
-import { isSolid } from "../itemPredicates";
-import { isFreeItem } from "../itemPredicates";
+import { isFreeItem, isSolid, type PlayableItem } from "../itemPredicates";
 import { blockSizePx } from "../mechanicsConstants";
 import { moveItem } from "../moveItem/moveItem";
 

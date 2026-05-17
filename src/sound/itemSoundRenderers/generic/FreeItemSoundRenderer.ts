@@ -1,14 +1,13 @@
-import type { FreeItemTypes } from "../../../game/physics/itemPredicates";
-import type { ItemTickContext } from "../../../game/render/ItemRenderContexts";
-import type { ItemSoundRenderContext } from "../../ItemSoundRenderContext";
-import type { ItemSoundRenderer } from "../../ItemSoundRenderer";
-import type { BracketedSegmentOptions } from "../../soundUtils/createBracketedSound";
-
+import { type FreeItemTypes } from "../../../game/physics/itemPredicates";
+import { type ItemTickContext } from "../../../game/render/ItemRenderContexts";
 import { keysIter } from "../../../utils/entries";
 import { isEmpty } from "../../../utils/iterators/isEmpty";
 import { neverTime } from "../../../utils/neverTime";
 import { audioCtx } from "../../audioCtx";
+import { type ItemSoundRenderContext } from "../../ItemSoundRenderContext";
+import { type ItemSoundRenderer } from "../../ItemSoundRenderer";
 import {
+  type BracketedSegmentOptions,
   type BracketedSound,
   createBracketedSound,
 } from "../../soundUtils/createBracketedSound";

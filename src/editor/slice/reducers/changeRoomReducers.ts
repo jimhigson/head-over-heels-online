@@ -1,11 +1,12 @@
-import type { PayloadAction } from "@reduxjs/toolkit";
+import {
+  type PayloadAction,
+  type SliceCaseReducers,
+  type SliceSelectors,
+} from "@reduxjs/toolkit";
 
-import { type SliceCaseReducers, type SliceSelectors } from "@reduxjs/toolkit";
-
-import type { EditorRoomId } from "../../editorTypes";
-import type { LevelEditorState } from "../levelEditorSlice";
-
+import { type EditorRoomId } from "../../editorTypes";
 import { changeCurrentRoomInPlace } from "../inPlaceMutators/changeCurrentRoomInPlace";
+import { type LevelEditorState } from "../levelEditorSlice";
 
 export const changeRoomReducers = {
   changeToRoom(_state, { payload: roomId }: PayloadAction<EditorRoomId>) {

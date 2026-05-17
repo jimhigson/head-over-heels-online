@@ -1,11 +1,8 @@
-import type { PayloadAction } from "@reduxjs/toolkit";
-
-import { type SliceCaseReducers } from "@reduxjs/toolkit";
-
-import type { LevelEditorState } from "../levelEditorSlice";
+import { type PayloadAction, type SliceCaseReducers } from "@reduxjs/toolkit";
 
 import { pick } from "../../../utils/pick";
 import { initialLevelEditorSliceState } from "../initialLevelEditorSliceState";
+import { type LevelEditorState } from "../levelEditorSlice";
 import { levelEditorSliceNonPersistedFields } from "../levelEditorSliceTransientFields";
 
 export const campaignManagementReducers = {

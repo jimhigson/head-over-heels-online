@@ -1,6 +1,5 @@
-import type { ItemAppearance } from "./ItemAppearance";
-
 import { createSprite } from "../createSprite";
+import { type ItemAppearance } from "./ItemAppearance";
 
 type ButtonRenderProps = {
   pressed: boolean;

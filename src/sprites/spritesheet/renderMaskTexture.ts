@@ -1,13 +1,23 @@
-import type { ContainerChild, Renderer } from "pixi.js";
+import {
+  Color,
+  Container,
+  type ContainerChild,
+  Graphics,
+  type Renderer,
+  RenderTexture,
+  Sprite,
+} from "pixi.js";
 
-import { Color, Container, Graphics, RenderTexture, Sprite } from "pixi.js";
-
-import type { PaletteSwapFilter } from "../../game/render/filters/PaletteSwapFilter";
-import type { AppSpritesheet, AppSpritesheetData } from "./loadedSpriteSheet";
-import type { TextureId } from "./spritesheetData/makeSpritesheetData";
-
+import { type PaletteSwapFilter } from "../../game/render/filters/PaletteSwapFilter";
+import {
+  type AppSpritesheet,
+  type AppSpritesheetData,
+} from "./loadedSpriteSheet";
 import { reifyTextureIds } from "./reifyTextureIds";
-import { spritesheetSize } from "./spritesheetData/makeSpritesheetData";
+import {
+  spritesheetSize,
+  type TextureId,
+} from "./spritesheetData/makeSpritesheetData";
 
 export const black = new Color(0x000000);
 export const white = new Color(0xffffff);

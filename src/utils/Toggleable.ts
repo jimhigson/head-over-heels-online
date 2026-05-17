@@ -1,6 +1,6 @@
 // a bit of type voodoo to get the types that can be toggled on/off - ie, the boolean
 
-import type { ConditionalPickDeep, Paths, Split } from "type-fest";
+import { type ConditionalPickDeep, type Paths, type Split } from "type-fest";
 
 type StringObject = object;
 

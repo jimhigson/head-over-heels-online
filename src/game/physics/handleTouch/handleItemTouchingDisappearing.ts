@@ -1,5 +1,4 @@
-import type { UnionOfAllItemInPlayTypes } from "../../../model/ItemInPlay";
-
+import { type UnionOfAllItemInPlayTypes } from "../../../model/ItemInPlay";
 import { makeItemFadeOut } from "../../gameState/mutators/makeItemFadeOut";
 import { removeStandingOn } from "../../gameState/mutators/standingOn/removeStandingOn";
 import { setStandingOnWithoutRemovingOldFirst } from "../../gameState/mutators/standingOn/setStandingOnWithoutRemovingOldFirst";

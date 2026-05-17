@@ -1,8 +1,5 @@
 import { Container } from "pixi.js";
 
-import type { Xy } from "../../../utils/vectors/vectors";
-import type { CollideableItem } from "../../collision/aabbCollision";
-
 import { roomSpatialIndexKey } from "../../../model/RoomState";
 import { isAnimationId } from "../../../sprites/assertIsTextureId";
 import { wallTileSize } from "../../../sprites/spritesheet/spritesheetData/textureSizes";
@@ -12,8 +9,12 @@ import { renderContainerToSprite } from "../../../utils/pixi/renderContainerToSp
 import {
   perpendicularAxisXy,
   tangentAxis,
+  type Xy,
 } from "../../../utils/vectors/vectors";
-import { collisionItemWithIndex } from "../../collision/aabbCollision";
+import {
+  type CollideableItem,
+  collisionItemWithIndex,
+} from "../../collision/aabbCollision";
 import { isDoorframeOrLegs } from "../../physics/itemPredicates";
 import { veryHighZ } from "../../physics/mechanicsConstants";
 import { createSprite } from "../createSprite";

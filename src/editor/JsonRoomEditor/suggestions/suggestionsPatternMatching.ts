@@ -1,11 +1,10 @@
 import { type Node } from "jsonc-parser";
 
-import type {
-  SuggestionGenerator,
-  SuggestionPatterns,
-} from "./suggestionPatterns";
-
 import { getNodePropertyValue } from "./getNodePropertyValue";
+import {
+  type SuggestionGenerator,
+  type SuggestionPatterns,
+} from "./suggestionPatterns";
 
 const log = 0;
 

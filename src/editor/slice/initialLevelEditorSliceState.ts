@@ -1,11 +1,10 @@
-import type {
-  EditorCampaign,
-  EditorRoomId,
-  EditorRoomItemId,
-} from "../editorTypes";
-import type { LevelEditorState } from "./levelEditorSlice";
-
 import { starterRoom } from "../../model/inPlaceMutators/starterRoom";
+import {
+  type EditorCampaign,
+  type EditorRoomId,
+  type EditorRoomItemId,
+} from "../editorTypes";
+import { type LevelEditorState } from "./levelEditorSlice";
 
 const initialRoomId = "room_0" as EditorRoomId;
 const initialRoom = {

@@ -1,25 +1,19 @@
-import type { PayloadAction } from "@reduxjs/toolkit";
-
-import { current, type SliceCaseReducers } from "@reduxjs/toolkit";
-
-import type { AnyWallJsonConfig } from "../../../../model/json/WallJsonConfig";
-import type { SceneryName } from "../../../../sprites/planets";
-import type {
-  EditorJsonItem,
-  EditorJsonItemUnion,
-  EditorJsonItemWithTimes,
-  EditorRoomItemId,
-  EditorRoomJson,
-} from "../../../editorTypes";
+import {
+  current,
+  type PayloadAction,
+  type SliceCaseReducers,
+} from "@reduxjs/toolkit";
 
 import { getConsolidatableVector } from "../../../../consolidateItems/ConsolidatableJsonItem";
 import { generateHoleInWallsForDoor } from "../../../../model/inPlaceMutators/generateHoleInWallsForDoor";
+import { type AnyWallJsonConfig } from "../../../../model/json/WallJsonConfig";
 import { iterateRoomJsonItemsWithIds } from "../../../../model/RoomJson";
 import {
   getJsonItemTimes,
   optimiseTimesXyz,
   wallTimes,
 } from "../../../../model/times";
+import { type SceneryName } from "../../../../sprites/planets";
 import { keys } from "../../../../utils/entries";
 import { eachAxis } from "../../../../utils/vectors/eachAxis";
 import {
@@ -30,6 +24,13 @@ import {
   lengthXyz,
   type Xyz,
 } from "../../../../utils/vectors/vectors";
+import {
+  type EditorJsonItem,
+  type EditorJsonItemUnion,
+  type EditorJsonItemWithTimes,
+  type EditorRoomItemId,
+  type EditorRoomJson,
+} from "../../../editorTypes";
 import { addOrRemoveWallTilesInPlace } from "../../inPlaceMutators/addOrRemoveWallTilesInPlace";
 import { generateWallHealingInPlaceOfDoor } from "../../inPlaceMutators/generateWallHealingInPlaceOfDoor";
 import {

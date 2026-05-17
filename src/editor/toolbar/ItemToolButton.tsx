@@ -1,10 +1,9 @@
-import type { PropsWithChildren, ReactNode } from "react";
+import { type PropsWithChildren, type ReactNode } from "react";
 
-import type { JsonItemType } from "../../model/json/JsonItem";
-import type { ShortcutKeys } from "../../ui/useKeyboardShortcut";
-import type { ItemTool } from "../RoomEditingArea/interactivity/Tool";
-
+import { type JsonItemType } from "../../model/json/JsonItem";
 import { store } from "../../store/store";
+import { type ShortcutKeys } from "../../ui/useKeyboardShortcut";
+import { type ItemTool } from "../RoomEditingArea/interactivity/Tool";
 import { setTool } from "../slice/levelEditorSlice";
 import { ToolbarButton } from "./buttons/ToolbarButton";
 import { useIsCurrentItemTool } from "./useIsCurrentItemTool";

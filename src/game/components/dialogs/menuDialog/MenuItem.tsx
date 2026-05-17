@@ -1,14 +1,12 @@
-import type { ReactElement } from "react";
-
 import { useCallback } from "preact/hooks";
+import { type ReactElement } from "react";
 import { twMerge } from "tailwind-merge";
-
-import type { DialogId } from "./DialogId";
 
 import { useAppDispatch } from "../../../../store/hooks";
 import { goToSubmenu } from "../../../../store/slices/gameMenus/gameMenusSlice";
 import { openExternal } from "../../../../utils/tauri/openExternalLink";
 import { BitmapText } from "../../tailwindSprites/BitmapText";
+import { type DialogId } from "./DialogId";
 import { MenuItemLeader } from "./dialogs/MenuItemLeader";
 import { useMenuItem } from "./dialogs/menus/useMenuItem";
 import { multilineTextClass } from "./multilineTextClass";

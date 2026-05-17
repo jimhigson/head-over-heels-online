@@ -1,6 +1,6 @@
 import { expectTypeOf, test } from "vitest";
 
-import type { EntriesOf } from "./entries";
+import { type EntriesOf } from "./entries";
 
 test("entries of object with known keys", () => {
   type Actual = EntriesOf<{ a: number; b: string }>;

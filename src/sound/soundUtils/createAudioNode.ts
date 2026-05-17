@@ -1,7 +1,6 @@
-import type { SoundId } from "../soundUrls";
-
 import { audioCtx } from "../audioCtx";
 import { loadedSounds } from "../soundsLoader";
+import { type SoundId } from "../soundUrls";
 
 export type CreateAudioNodeOptionsObject = {
   soundId: SoundId;

@@ -1,5 +1,4 @@
-import type { InputDirectionMode } from "../../store/slices/userSettings/userSettingsSlice";
-
+import { type InputDirectionMode } from "../../store/slices/userSettings/userSettingsSlice";
 import { unitVectors } from "../../utils/vectors/unitVectors";
 import {
   originXyz,

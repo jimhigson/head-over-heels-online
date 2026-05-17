@@ -1,8 +1,7 @@
-import type { ItemTouchEvent } from "./ItemTouchEvent";
-
 import { deleteItemFromRoom } from "../../gameState/mutators/deleteItemFromRoom";
 import { playableResetAfterOutOfBounds } from "../../gameState/mutators/playableLosesLife";
 import { isPlayableItem } from "../itemPredicates";
+import { type ItemTouchEvent } from "./ItemTouchEvent";
 
 /**
  * Handles an item falling into the out-of-bounds catcher below the room.

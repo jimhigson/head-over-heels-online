@@ -1,16 +1,14 @@
-import type { SetRequired } from "type-fest";
-
 import { Container } from "pixi.js";
+import { type SetRequired } from "type-fest";
 
-import type { InputDirectionMode } from "../../../../store/slices/userSettings/userSettingsSlice";
-import type { Xy } from "../../../../utils/vectors/vectors";
-import type { Renderer } from "../../Renderer";
-import type { GeneralRenderContext } from "../../room/RoomRenderContexts";
-import type { HudRendererTickContextWithRoom } from "../hudRendererContexts";
-
+import { type InputDirectionMode } from "../../../../store/slices/userSettings/userSettingsSlice";
 import { valuesIter } from "../../../../utils/entries";
+import { type Xy } from "../../../../utils/vectors/vectors";
 import { selectCurrentPlayableItem } from "../../../gameState/gameStateSelectors/selectPlayableItem";
+import { type Renderer } from "../../Renderer";
+import { type GeneralRenderContext } from "../../room/RoomRenderContexts";
 import { HudButtonRenderer } from "../HudButtonRenderer";
+import { type HudRendererTickContextWithRoom } from "../hudRendererContexts";
 import { carryAndJumpButtonAppearance } from "./buttonAppearances/carryAndJumpButtonAppearance";
 import { carryButtonAppearance } from "./buttonAppearances/carryButtonAppearance";
 import { fireButtonAppearance } from "./buttonAppearances/fireButtonAppearance";

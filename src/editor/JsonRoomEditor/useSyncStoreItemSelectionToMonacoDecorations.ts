@@ -1,13 +1,12 @@
 import type * as Monaco from "monaco-editor";
-import type { editor } from "monaco-editor";
 
 import { findNodeAtLocation, type Node, parseTree } from "jsonc-parser";
+import { type editor } from "monaco-editor";
 import { useEffect, useRef, useState } from "preact/hooks";
-
-import type { EditorRoomItemId } from "../editorTypes";
 
 import { useEditorAppSelector } from "../../store/store";
 import { twClass } from "../../utils/twClass";
+import { type EditorRoomItemId } from "../editorTypes";
 import { useLoadMonaco } from "./useLoadMonaco";
 
 const useMonacoEditorText = (

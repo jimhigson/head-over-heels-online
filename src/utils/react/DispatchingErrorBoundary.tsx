@@ -1,7 +1,5 @@
-import type { ErrorInfo, PropsWithChildren } from "react";
-import type { EmptyObject } from "type-fest";
-
-import { Component } from "react";
+import { Component, type ErrorInfo, type PropsWithChildren } from "react";
+import { type EmptyObject } from "type-fest";
 
 import { errorCaught } from "../../store/slices/gameMenus/gameMenusSlice";
 import { store } from "../../store/store";

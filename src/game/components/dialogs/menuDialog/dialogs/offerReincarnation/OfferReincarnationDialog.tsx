@@ -1,6 +1,4 @@
-import type { AnimatedTextureTailwindClass } from "../../../../../../sprites/spritesheet/spritesheetData/TextureTailwindClass";
-import type { GameApi } from "../../../../../GameApi";
-
+import { type AnimatedTextureTailwindClass } from "../../../../../../sprites/spritesheet/spritesheetData/TextureTailwindClass";
 import {
   gameOver,
   gameRestoreFromSave,
@@ -11,6 +9,7 @@ import { useDispatchActionCallback } from "../../../../../../store/useDispatchAc
 import { Border } from "../../../../../../ui/Border";
 import { Dialog } from "../../../../../../ui/Dialog";
 import { DialogPortal } from "../../../../../../ui/DialogPortal";
+import { type GameApi } from "../../../../../GameApi";
 import { BlockyMarkdown } from "../../../../BlockyMarkdown";
 import { useGameApi } from "../../../../GameApiContext";
 import { BitmapText } from "../../../../tailwindSprites/BitmapText";

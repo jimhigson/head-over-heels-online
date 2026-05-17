@@ -19,8 +19,8 @@ import {
   gameAssetsLoadingFinished,
   gameAssetsLoadingStarted,
 } from "../../store/slices/gameAssetsLoading/gameAssetsLoadingSlice.ts";
-import { selectSpritesOption } from "../../store/slices/gameMenus/gameMenusSelectors.ts";
 import {
+  selectSpritesOption,
   useCheatsOn,
   useIsGameRunning,
 } from "../../store/slices/gameMenus/gameMenusSelectors.ts";

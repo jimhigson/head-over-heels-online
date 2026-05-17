@@ -1,9 +1,6 @@
-import type { WritableDeep } from "type-fest";
+import { type WritableDeep } from "type-fest";
 
-import type { UnionOfAllItemInPlayTypes } from "../../../model/ItemInPlay";
-import type { CollideableItem } from "../../collision/aabbCollision";
-import type { FreeItem } from "../itemPredicates";
-
+import { type UnionOfAllItemInPlayTypes } from "../../../model/ItemInPlay";
 import { roomSpatialIndexKey, type RoomState } from "../../../model/RoomState";
 import { epsilon, veryClose } from "../../../utils/epsilon";
 import {
@@ -13,10 +10,12 @@ import {
   type Xyz,
 } from "../../../utils/vectors/vectors";
 import {
+  type CollideableItem,
   collisionItemWithIndex,
   hasCollisionItemWithIndex,
 } from "../../collision/aabbCollision";
 import {
+  type FreeItem,
   isDeadly,
   isNonHmvItem,
   isPlayableItem,

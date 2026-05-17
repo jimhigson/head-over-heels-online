@@ -1,8 +1,7 @@
-import type { ItemTickContext } from "../../game/render/ItemRenderContexts";
-import type { ItemSoundRenderContext } from "../ItemSoundRenderContext";
-import type { ItemSoundRenderer } from "../ItemSoundRenderer";
-
+import { type ItemTickContext } from "../../game/render/ItemRenderContexts";
 import { audioCtx } from "../audioCtx";
+import { type ItemSoundRenderContext } from "../ItemSoundRenderContext";
+import { type ItemSoundRenderer } from "../ItemSoundRenderer";
 import { connectWithGain } from "../soundUtils/connectWithGain";
 import { createAudioNode } from "../soundUtils/createAudioNode";
 import { stopWithFade } from "../soundUtils/stopWithFade";

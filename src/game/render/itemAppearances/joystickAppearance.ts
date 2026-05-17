@@ -1,17 +1,14 @@
-import type { Sprite } from "pixi.js";
-
-import { Container } from "pixi.js";
-
-import type { SpritesheetVariant } from "../../../sprites/spritesheet/variants/SpritesheetVariant";
-import type { ItemAppearance } from "./ItemAppearance";
+import { Container, type Sprite } from "pixi.js";
 
 import { getSpriteSheetVariant } from "../../../sprites/spritesheet/variants/getSpriteSheetVariant";
+import { type SpritesheetVariant } from "../../../sprites/spritesheet/variants/SpritesheetVariant";
 import {
   type DirectionXy4,
   originXy,
   type Xy,
 } from "../../../utils/vectors/vectors";
 import { createSprite } from "../createSprite";
+import { type ItemAppearance } from "./ItemAppearance";
 
 type PushDirection = DirectionXy4 | undefined;
 type JoystickRenderProps = {

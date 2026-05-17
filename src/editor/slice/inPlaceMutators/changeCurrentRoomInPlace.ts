@@ -1,7 +1,6 @@
-import type { EditorRoomId } from "../../editorTypes";
-import type { LevelEditorState } from "../levelEditorSlice";
-
+import { type EditorRoomId } from "../../editorTypes";
 import { initialLevelEditorSliceState } from "../initialLevelEditorSliceState";
+import { type LevelEditorState } from "../levelEditorSlice";
 
 export const changeCurrentRoomInPlace = (
   state: LevelEditorState,

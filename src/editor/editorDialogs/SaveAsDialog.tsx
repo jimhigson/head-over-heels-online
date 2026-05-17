@@ -1,10 +1,9 @@
 import { useEffect, useRef, useState } from "preact/hooks";
 
-import type { TextureTailwindClass } from "../../sprites/spritesheet/spritesheetData/TextureTailwindClass";
-
 import { BlockyMarkdown } from "../../game/components/BlockyMarkdown";
 import { multilineTextClass } from "../../game/components/dialogs/menuDialog/multilineTextClass";
 import { BitmapText } from "../../game/components/tailwindSprites/BitmapText";
+import { type TextureTailwindClass } from "../../sprites/spritesheet/spritesheetData/TextureTailwindClass";
 import { editorStore, useEditorAppSelector } from "../../store/store";
 import { Border } from "../../ui/Border";
 import { Button } from "../../ui/Button";

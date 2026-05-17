@@ -1,5 +1,3 @@
-import type { ReactElement, ReactNode } from "react";
-
 import {
   autoUpdate,
   flip,
@@ -14,7 +12,12 @@ import {
   useRole,
 } from "@floating-ui/react";
 import { useState } from "preact/hooks";
-import { cloneElement, isValidElement } from "react";
+import {
+  cloneElement,
+  isValidElement,
+  type ReactElement,
+  type ReactNode,
+} from "react";
 
 import { BlockyMarkdown } from "../game/components/BlockyMarkdown";
 import { CssVariables } from "../game/components/CssVariables";

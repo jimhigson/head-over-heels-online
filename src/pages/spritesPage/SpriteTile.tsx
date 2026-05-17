@@ -1,10 +1,9 @@
 import "react";
 
-import type { TextureId } from "../../sprites/spritesheet/spritesheetData/makeSpritesheetData";
-import type { Xy } from "../../utils/vectors/vectors";
-
 import { sanitiseForClassName } from "../../game/components/tailwindSprites/SanitiseForClassName";
+import { type TextureId } from "../../sprites/spritesheet/spritesheetData/makeSpritesheetData";
 import { spriteSpecificCssVars } from "../../tailwind/plugins/spriteCss";
+import { type Xy } from "../../utils/vectors/vectors";
 
 declare module "react" {
   interface CSSProperties {

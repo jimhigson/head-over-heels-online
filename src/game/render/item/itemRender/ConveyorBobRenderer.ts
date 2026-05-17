@@ -1,12 +1,5 @@
 import { Container } from "pixi.js";
 
-import type {
-  ItemRenderContext,
-  ItemTickContext,
-} from "../../ItemRenderContexts";
-import type { DecorateItemRenderer } from "./DecorateItemRenderer";
-import type { ItemPixiRenderer } from "./ItemPixiRenderer";
-
 import { roomItemsIterable } from "../../../../model/RoomState";
 import { renderBobBounce } from "../../../../utils/maths/renderBob";
 import {
@@ -15,6 +8,12 @@ import {
   isConveyor,
   isFreeItem,
 } from "../../../physics/itemPredicates";
+import {
+  type ItemRenderContext,
+  type ItemTickContext,
+} from "../../ItemRenderContexts";
+import { type DecorateItemRenderer } from "./DecorateItemRenderer";
+import { type ItemPixiRenderer } from "./ItemPixiRenderer";
 
 const baseBobPeriod = 50;
 const bobAmplitude = 0.66;

@@ -1,19 +1,18 @@
-import type { Container } from "pixi.js";
+import { type Container } from "pixi.js";
 
-import type { ItemInPlayType } from "../../../../model/ItemInPlay";
-import type { ItemAppearanceOutsideView } from "../../itemAppearances/itemAppearanceOutsideView";
-import type { ItemRenderContext } from "../../ItemRenderContexts";
-import type { DecorateItemMaybeRenderer } from "./DecorateItemRenderer";
-import type { ItemPixiRenderer } from "./ItemPixiRenderer";
-
+import { type ItemInPlayType } from "../../../../model/ItemInPlay";
 import { createSoundRenderer } from "../../../../sound/createSoundRenderer";
 import { SoundPanRenderer } from "../../../../sound/SoundPanRenderer";
 import { defaultUserSettings } from "../../../../store/slices/userSettings/defaultUserSettings";
 import { appearanceForItem } from "../../itemAppearances/appearanceForItem";
+import { type ItemAppearanceOutsideView } from "../../itemAppearances/itemAppearanceOutsideView";
+import { type ItemRenderContext } from "../../ItemRenderContexts";
 import { CompositeItemGraphicsRenderer } from "./CompositeItemGraphicsRenderer";
 import { conveyorBobDecorateItemRenderer } from "./ConveyorBobRenderer";
+import { type DecorateItemMaybeRenderer } from "./DecorateItemRenderer";
 import { ItemAppearancePixiRenderer } from "./ItemAppearancePixiRenderer";
 import { flashOnSwitchedDecorateItemRenderer } from "./ItemFlashOnSwitchedRenderer";
+import { type ItemPixiRenderer } from "./ItemPixiRenderer";
 import { ItemPositionRenderer } from "./ItemPositionRenderer";
 import { maybeCreateItemShadowRenderer } from "./ItemShadowRenderer";
 import { ItemSoundAndGraphicsRenderer } from "./ItemSoundAndGraphicsRenderer";

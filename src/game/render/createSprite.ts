@@ -1,19 +1,26 @@
-import type { Filter, PointData, SpritesheetFrameData } from "pixi.js";
-
-import { Container, Texture, Ticker } from "pixi.js";
-import { AnimatedSprite, Sprite } from "pixi.js";
-
-import type { AppSpritesheet } from "../../sprites/spritesheet/loadedSpriteSheet";
-import type {
-  AnimationId,
-  TextureId,
-} from "../../sprites/spritesheet/spritesheetData/makeSpritesheetData";
-import type { SpritesheetVariant } from "../../sprites/spritesheet/variants/SpritesheetVariant";
+import {
+  AnimatedSprite,
+  Container,
+  type Filter,
+  type PointData,
+  Sprite,
+  type SpritesheetFrameData,
+  Texture,
+  Ticker,
+} from "pixi.js";
 
 import { completeTimesXyz } from "../../model/times";
 import { originalGameFrameDuration } from "../../originalGame";
-import { originalSpriteSheet } from "../../sprites/spritesheet/loadedSpriteSheet";
+import {
+  type AppSpritesheet,
+  originalSpriteSheet,
+} from "../../sprites/spritesheet/loadedSpriteSheet";
+import {
+  type AnimationId,
+  type TextureId,
+} from "../../sprites/spritesheet/spritesheetData/makeSpritesheetData";
 import { getSpriteSheetVariant } from "../../sprites/spritesheet/variants/getSpriteSheetVariant";
+import { type SpritesheetVariant } from "../../sprites/spritesheet/variants/SpritesheetVariant";
 import { hashStringToNumber0to1 } from "../../utils/maths/hashStringToNumber0to1";
 import { lengthXyz, type Xy, type Xyz } from "../../utils/vectors/vectors";
 import { projectBlockXyzToScreenXy } from "./projections";

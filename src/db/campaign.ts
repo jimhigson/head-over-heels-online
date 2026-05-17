@@ -1,8 +1,7 @@
-import type { SetOptional } from "type-fest";
+import { type SetOptional } from "type-fest";
 
-import type { EditorCampaign } from "../editor/editorTypes";
-import type { Campaign, CampaignLocator } from "../model/modelTypes";
-
+import { type EditorCampaign } from "../editor/editorTypes";
+import { type Campaign, type CampaignLocator } from "../model/modelTypes";
 import { compressObject, decompressObject } from "./compressObject";
 import { importSupabaseDb } from "./supabaseDb.import";
 

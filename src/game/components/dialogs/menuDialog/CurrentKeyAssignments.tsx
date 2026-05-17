@@ -1,14 +1,13 @@
 import { twMerge } from "tailwind-merge";
 
-import type { TextureTailwindClass } from "../../../../sprites/spritesheet/spritesheetData/TextureTailwindClass";
-import type { BooleanAction } from "../../../input/actions";
-import type { Key } from "../../../input/keys";
-
+import { type TextureTailwindClass } from "../../../../sprites/spritesheet/spritesheetData/TextureTailwindClass";
 import { useAppSelector } from "../../../../store/hooks";
 import { selectInputAssignment } from "../../../../store/slices/gameMenus/gameMenusSelectors";
 import { emptyArray } from "../../../../utils/empty";
+import { type BooleanAction } from "../../../input/actions";
 import { actionToAxisAndDirection } from "../../../input/actionToAxisAndDirection";
 import { standardControllerButtonNames } from "../../../input/controllers";
+import { type Key } from "../../../input/keys";
 import { MultipleBitmapText } from "../../tailwindSprites/BitmapText";
 
 const specialCharClassName =

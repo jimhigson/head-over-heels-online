@@ -1,10 +1,9 @@
 import { describe, expect, test } from "vitest";
 
-import type { DrawOrderComparable } from "./DrawOrderComparable";
-
 import { valuesIter } from "../../../utils/entries";
 import { collisionItemWithIndex } from "../../collision/aabbCollision";
 import { GridSpatialIndex } from "../../physics/gridSpace/GridSpatialIndex";
+import { type DrawOrderComparable } from "./DrawOrderComparable";
 import { toposort } from "./toposort/toposort";
 import { updateZEdges } from "./updateZEdges";
 

@@ -1,5 +1,4 @@
-import type { Action } from "@reduxjs/toolkit";
-
+import { type Action } from "@reduxjs/toolkit";
 import { REHYDRATE } from "redux-persist";
 
 /**

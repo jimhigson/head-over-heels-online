@@ -1,9 +1,8 @@
-import type { EmptyObject } from "type-fest";
-
-import type { ButtonAppearance } from "../../HudButtonRenderer";
+import { type EmptyObject } from "type-fest";
 
 import { emptyObject } from "../../../../../utils/empty";
 import { TextContainer } from "../../../text/TextContainer";
+import { type ButtonAppearance } from "../../HudButtonRenderer";
 import { tintForHud } from "../../spritesheetVariantForHud";
 
 export type MapButtonRenderProps = EmptyObject;

@@ -1,7 +1,7 @@
-import type { Simplify } from "type-fest";
+import { type Simplify } from "type-fest";
 
-import type { Plane, Xy, Xyz } from "../../../utils/vectors/vectors";
-import type { EditorRoomId, EditorRoomItemId } from "../../editorTypes";
+import { type Plane, type Xy, type Xyz } from "../../../utils/vectors/vectors";
+import { type EditorRoomId, type EditorRoomItemId } from "../../editorTypes";
 
 type BasePointingAt = {
   /** the room that we're pointing at */

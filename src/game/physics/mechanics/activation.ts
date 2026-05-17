@@ -1,15 +1,17 @@
-import type {
-  ItemInPlay,
-  UnionOfAllItemInPlayTypes,
+import {
+  type ItemInPlay,
+  type UnionOfAllItemInPlayTypes,
 } from "../../../model/ItemInPlay";
-import type { GameState } from "../../gameState/GameState";
-import type { Mechanic } from "../MechanicResult";
-
 import { type RoomState } from "../../../model/RoomState";
 import { iterateStoodOnByItems } from "../../../model/stoodOnItemsLookup";
+import { type GameState } from "../../gameState/GameState";
 import { findClosestPlayable } from "../../gameState/gameStateSelectors/findClosestPlayable";
 import { isPlayableItem } from "../itemPredicates";
-import { type MechanicResult, unitMechanicalResult } from "../MechanicResult";
+import {
+  type Mechanic,
+  type MechanicResult,
+  unitMechanicalResult,
+} from "../MechanicResult";
 import { blockSizePx } from "../mechanicsConstants";
 
 type ItemWithActivation<RoomId extends string, RoomItemId extends string> =

@@ -1,4 +1,4 @@
-import type { Page } from "@playwright/test";
+import { type Page } from "@playwright/test";
 
 export const muteAudioInE2e = () => {
   Object.defineProperty(HTMLMediaElement.prototype, "volume", {

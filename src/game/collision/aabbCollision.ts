@@ -1,6 +1,6 @@
-import type { UnionOfAllItemInPlayTypes } from "../../model/ItemInPlay";
-import type { Xyz } from "../../utils/vectors/vectors";
-import type { GridSpatialIndex } from "../physics/gridSpace/GridSpatialIndex";
+import { type UnionOfAllItemInPlayTypes } from "../../model/ItemInPlay";
+import { type Xyz } from "../../utils/vectors/vectors";
+import { type GridSpatialIndex } from "../physics/gridSpace/GridSpatialIndex";
 
 export type CollideableItem = Pick<UnionOfAllItemInPlayTypes, "aabb" | "id"> & {
   state: { position: Xyz };

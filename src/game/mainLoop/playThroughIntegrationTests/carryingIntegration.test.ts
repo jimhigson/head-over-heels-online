@@ -3,15 +3,13 @@ vi.mock("../../sprites/samplePalette", () => ({
   spritesheetPalette: vi.fn().mockReturnValue({}),
 }));
 
-import type { DistributedOmit } from "type-fest";
-
-import type { TestRoomId } from "../../../_testUtils/basicRoom";
-import type { JsonItemUnion } from "../../../model/json/JsonItem";
+import { type DistributedOmit } from "type-fest";
 
 import {
   firstRoomId,
   secondRoomId,
   setUpBasicGame,
+  type TestRoomId,
 } from "../../../_testUtils/basicRoom";
 import {
   heelsState,
@@ -20,6 +18,7 @@ import {
 } from "../../../_testUtils/characterState";
 import { resetStore } from "../../../_testUtils/initStoreForTests";
 import { playGameThrough } from "../../../_testUtils/playGameThrough";
+import { type JsonItemUnion } from "../../../model/json/JsonItem";
 import { selectCurrentRoomState } from "../../gameState/gameStateSelectors/selectCurrentRoomState";
 
 beforeEach(() => {

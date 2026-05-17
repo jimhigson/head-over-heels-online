@@ -1,10 +1,12 @@
-import type { SceneryName } from "../sprites/planets";
-import type { UnionOfAllItemInPlayTypes } from "./ItemInPlay";
-import type { JsonItemUnion } from "./json/JsonItem";
-import type { AnyWallJsonConfig, WallJsonConfig } from "./json/WallJsonConfig";
-
 import { isMultipliedItem } from "../game/physics/itemPredicates";
+import { type SceneryName } from "../sprites/planets";
 import { unitXyz, type Xy, type Xyz } from "../utils/vectors/vectors";
+import { type UnionOfAllItemInPlayTypes } from "./ItemInPlay";
+import { type JsonItemUnion } from "./json/JsonItem";
+import {
+  type AnyWallJsonConfig,
+  type WallJsonConfig,
+} from "./json/WallJsonConfig";
 
 /**
  * imply the wall times from json wall items based on the number of tiles, or the

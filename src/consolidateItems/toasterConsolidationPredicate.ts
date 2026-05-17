@@ -1,5 +1,4 @@
-import type { JsonItemUnion } from "../model/json/JsonItem";
-
+import { type JsonItemUnion } from "../model/json/JsonItem";
 import { getJsonItemTimes } from "../model/times";
 
 export const makeToasterConsolidationPredicate = (

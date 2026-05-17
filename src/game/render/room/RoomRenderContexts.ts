@@ -1,16 +1,16 @@
-import type { Renderer } from "pixi.js";
-import type { SetRequired } from "type-fest";
+import { type Renderer } from "pixi.js";
+import { type SetRequired } from "type-fest";
 
-import type { RoomState } from "../../../model/RoomState";
-import type { SpritesheetMetadata } from "../../../sprites/spritesheet/spritesheetData/spritesheetMetaData";
-import type { Upscale } from "../../../store/slices/upscale/Upscale";
-import type {
-  DisplaySettings,
-  SoundSettings,
-  SpriteOption,
+import { type RoomState } from "../../../model/RoomState";
+import { type SpritesheetMetadata } from "../../../sprites/spritesheet/spritesheetData/spritesheetMetaData";
+import { type Upscale } from "../../../store/slices/upscale/Upscale";
+import {
+  type DisplaySettings,
+  type SoundSettings,
+  type SpriteOption,
 } from "../../../store/slices/userSettings/userSettingsSlice";
-import type { GameState } from "../../gameState/GameState";
-import type { MovedItems } from "../../mainLoop/progressGameState";
+import { type GameState } from "../../gameState/GameState";
+import { type MovedItems } from "../../mainLoop/progressGameState";
 
 /** some context that most renderers need, to be composed into their contexts
  *

@@ -1,7 +1,6 @@
-import type { ItemSoundRenderContext } from "../ItemSoundRenderContext";
-import type { ItemSoundRenderer } from "../ItemSoundRenderer";
-
 import { audioCtx } from "../audioCtx";
+import { type ItemSoundRenderContext } from "../ItemSoundRenderContext";
+import { type ItemSoundRenderer } from "../ItemSoundRenderer";
 import { createAudioNode } from "../soundUtils/createAudioNode";
 
 export class FiredDoughnutSoundRenderer

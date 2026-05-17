@@ -1,8 +1,8 @@
-import type { EmptyObject } from "type-fest";
+import { type EmptyObject } from "type-fest";
 
-import type { SceneryName } from "../../sprites/planets";
-import type { Xyz } from "../../utils/vectors/vectors";
-import type { ItemConfigMap } from "./ItemConfigMap";
+import { type SceneryName } from "../../sprites/planets";
+import { type Xyz } from "../../utils/vectors/vectors";
+import { type ItemConfigMap } from "./ItemConfigMap";
 
 export const jsonItemTypes = [
   "ball",

@@ -1,8 +1,7 @@
 import { expect, test } from "vitest";
 
-import type { OriginalCampaignRoomId } from "../../../_generated/originalCampaign/OriginalCampaignRoomId";
-
 import { campaign } from "../../../_generated/originalCampaign/campaign";
+import { type OriginalCampaignRoomId } from "../../../_generated/originalCampaign/OriginalCampaignRoomId";
 import { roomJsonItemsIterable } from "../../../model/RoomJson";
 import { entries } from "../../../utils/entries";
 import { buildRoomJsonDirectionalIndex } from "./buildRoomJsonDirectionalIndex";

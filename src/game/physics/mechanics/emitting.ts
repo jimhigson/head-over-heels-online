@@ -1,7 +1,5 @@
-import type { ItemInPlay } from "../../../model/ItemInPlay";
-import type { EmittableItemJson } from "../../../model/json/ItemConfigMap";
-import type { GameState } from "../../gameState/GameState";
-
+import { type ItemInPlay } from "../../../model/ItemInPlay";
+import { type EmittableItemJson } from "../../../model/json/ItemConfigMap";
 import { roomJsonItemsIterable } from "../../../model/RoomJson";
 import {
   roomItemsIterable,
@@ -19,6 +17,7 @@ import {
   collision2Items,
   hasCollisionItemWithIndex,
 } from "../../collision/aabbCollision";
+import { type GameState } from "../../gameState/GameState";
 import { buildRoomJsonDirectionalIndex } from "../../gameState/loadRoom/buildRoomJsonDirectionalIndex";
 import { loadItemFromJson } from "../../gameState/loadRoom/loadItemFromJson";
 import { addItemToRoom } from "../../gameState/mutators/addItemToRoom";

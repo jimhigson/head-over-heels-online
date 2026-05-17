@@ -1,13 +1,16 @@
-import type { EmptyObject } from "type-fest";
+import { type EmptyObject } from "type-fest";
 
-import type { ItemTypeUnion } from "../_generated/types/ItemInPlayUnion";
-import type { SpecifiedTextureCreateSpriteOptions } from "../game/render/createSprite";
-import type { BracketedSegmentOptions } from "../sound/soundUtils/createBracketedSound";
-import type { SceneryName } from "../sprites/planets";
-import type { Aabb, DirectionXy4, Xyz } from "../utils/vectors/vectors";
-import type { ItemState } from "./ItemState";
-import type { ExitGameRoomId } from "./json/ItemConfigMap";
-
+import { type ItemTypeUnion } from "../_generated/types/ItemInPlayUnion";
+import { type SpecifiedTextureCreateSpriteOptions } from "../game/render/createSprite";
+import { type BracketedSegmentOptions } from "../sound/soundUtils/createBracketedSound";
+import { type SceneryName } from "../sprites/planets";
+import {
+  type Aabb,
+  type DirectionXy4,
+  type Xyz,
+} from "../utils/vectors/vectors";
+import { type ItemState } from "./ItemState";
+import { type ExitGameRoomId } from "./json/ItemConfigMap";
 import {
   type JsonItemConfig,
   type JsonItemType,

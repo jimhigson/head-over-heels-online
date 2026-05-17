@@ -1,9 +1,8 @@
-import type { SpritesheetMetadata } from "../../src/sprites/spritesheet/spritesheetData/spritesheetMetaData";
-
 import {
   paletteToppy,
   type ToppyPaletteColourName,
 } from "../../src/sprites/palette/spritesheetPalette";
+import { type SpritesheetMetadata } from "../../src/sprites/spritesheet/spritesheetData/spritesheetMetaData";
 
 export const toppySpritesheetMeta: SpritesheetMetadata<
   ToppyPaletteColourName,

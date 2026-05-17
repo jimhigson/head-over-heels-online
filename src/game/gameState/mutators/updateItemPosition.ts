@@ -1,7 +1,6 @@
-import type { UnionOfAllItemInPlayTypes } from "../../../model/ItemInPlay";
-import type { Xyz } from "../../../utils/vectors/vectors";
-
+import { type UnionOfAllItemInPlayTypes } from "../../../model/ItemInPlay";
 import { roomSpatialIndexKey, type RoomState } from "../../../model/RoomState";
+import { type Xyz } from "../../../utils/vectors/vectors";
 
 export const updateItemPosition = <
   RoomId extends string,

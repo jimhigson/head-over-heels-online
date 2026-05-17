@@ -3,12 +3,11 @@ vi.mock("../../sprites/samplePalette", () => ({
   spritesheetPalette: vi.fn().mockReturnValue({}),
 }));
 
-import type { ItemInPlay } from "../../../model/ItemInPlay";
-
 import { setUpBasicGame } from "../../../_testUtils/basicRoom";
 import { heelsState, itemState } from "../../../_testUtils/characterState";
 import { resetStore } from "../../../_testUtils/initStoreForTests";
 import { playGameThrough } from "../../../_testUtils/playGameThrough";
+import { type ItemInPlay } from "../../../model/ItemInPlay";
 import { selectCurrentRoomState } from "../../gameState/gameStateSelectors/selectCurrentRoomState";
 import { blockSizePx } from "../../physics/mechanicsConstants";
 

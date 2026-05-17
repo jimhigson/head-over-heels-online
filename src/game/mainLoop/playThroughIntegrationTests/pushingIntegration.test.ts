@@ -3,9 +3,10 @@ vi.mock("../../sprites/samplePalette", () => ({
   spritesheetPalette: vi.fn().mockReturnValue({}),
 }));
 
-import type { BasicGameStateOptions } from "../../../_testUtils/basicRoom";
-
-import { setUpBasicGame } from "../../../_testUtils/basicRoom";
+import {
+  type BasicGameStateOptions,
+  setUpBasicGame,
+} from "../../../_testUtils/basicRoom";
 import { itemState } from "../../../_testUtils/characterState";
 import { resetStore } from "../../../_testUtils/initStoreForTests";
 import { playGameThrough } from "../../../_testUtils/playGameThrough";

@@ -1,16 +1,9 @@
-import type { DirectionsRelativeToMode } from "../../store/slices/userSettings/directionsRelativeToModes";
-import type { Xyz } from "../../utils/vectors/vectors";
-import type { GamepadState } from "./GamepadState";
-import type { HudInputState } from "./hudInputState";
-import type { AxisAssignableAction, InputPress } from "./InputAssignment";
-import type { KeyboardStateMap } from "./keyboardState";
-import type { Key } from "./keys";
-
 import {
   selectDirectionsRelativeTo,
   selectInputAssignment,
   selectInputDirectionMode,
 } from "../../store/slices/gameMenus/gameMenusSelectors";
+import { type DirectionsRelativeToMode } from "../../store/slices/userSettings/directionsRelativeToModes";
 import { store } from "../../store/store";
 import { emptyArray } from "../../utils/empty";
 import { unitVectors } from "../../utils/vectors/unitVectors";
@@ -22,6 +15,7 @@ import {
   lengthXyz,
   originXyz,
   scaleXyz,
+  type Xyz,
   xyzEqual,
 } from "../../utils/vectors/vectors";
 import { type BooleanAction, lookDirectionsXy4 } from "./actions";
@@ -30,7 +24,11 @@ import {
   rotateInputVector45InPlace,
   snapXyFnMap,
 } from "./analogueControlAdjustments";
-import { extractGamepadsState } from "./GamepadState";
+import { extractGamepadsState, type GamepadState } from "./GamepadState";
+import { type HudInputState } from "./hudInputState";
+import { type AxisAssignableAction, type InputPress } from "./InputAssignment";
+import { type KeyboardStateMap } from "./keyboardState";
+import { type Key } from "./keys";
 import { lookUnitVectors } from "./lookUnitVectors";
 import { radialAxisToXy } from "./radialAxisToXy";
 

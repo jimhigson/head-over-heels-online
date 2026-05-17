@@ -1,6 +1,6 @@
 import { expectTypeOf, test } from "vitest";
 
-import type { ToggleablePaths } from "./Toggleable";
+import { type ToggleablePaths } from "./Toggleable";
 
 test("Toggleable", () => {
   type Test = {

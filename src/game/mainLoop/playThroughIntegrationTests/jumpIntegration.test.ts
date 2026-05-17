@@ -3,9 +3,11 @@ vi.mock("../../sprites/samplePalette", () => ({
   spritesheetPalette: vi.fn().mockReturnValue({}),
 }));
 
-import type { ItemsInTestRoomJson } from "../../../_testUtils/basicRoom";
-
-import { secondRoomId, setUpBasicGame } from "../../../_testUtils/basicRoom";
+import {
+  type ItemsInTestRoomJson,
+  secondRoomId,
+  setUpBasicGame,
+} from "../../../_testUtils/basicRoom";
 import {
   currentPlayableState,
   headState,
@@ -20,8 +22,10 @@ import {
 import { testFrameRates } from "../../../_testUtils/testFrameRates";
 import { individualCharacterNames } from "../../../model/modelTypes";
 import { smallItemAabb } from "../../collision/boundingBoxes";
-import { blockSizePx } from "../../physics/mechanicsConstants";
-import { playerJumpHeightPx } from "../../physics/mechanicsConstants";
+import {
+  blockSizePx,
+  playerJumpHeightPx,
+} from "../../physics/mechanicsConstants";
 
 beforeEach(() => {
   resetStore();

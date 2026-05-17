@@ -1,29 +1,27 @@
 import { produce } from "immer";
 import { describe, expect, test } from "vitest";
 
-import type { AwayWallConfig } from "../../../model/json/WallJsonConfig";
-import type { AnyRoomJson } from "../../../model/RoomJson";
-import type {
-  EditorJsonItemUnion,
-  EditorRoomId,
-  EditorRoomItemId,
-  EditorRoomJson,
-  EditorRoomJsonItems,
-} from "../../editorTypes";
-import type { Tool } from "../../RoomEditingArea/interactivity/Tool";
-import type { LevelEditorState } from "../levelEditorSlice";
-import type { ApplyToolToRoomJsonPayload } from "./applyItemToolReducers";
-
+import { type AwayWallConfig } from "../../../model/json/WallJsonConfig";
 import {
+  type AnyRoomJson,
   iterateRoomJsonItemsWithIds,
   roomJsonItemsIterable,
 } from "../../../model/RoomJson";
 import { zxSpectrumRoomHue, zxSpectrumShades } from "../../../originalGame";
 import { originXyz } from "../../../utils/vectors/vectors";
+import {
+  type EditorJsonItemUnion,
+  type EditorRoomId,
+  type EditorRoomItemId,
+  type EditorRoomJson,
+  type EditorRoomJsonItems,
+} from "../../editorTypes";
+import { type Tool } from "../../RoomEditingArea/interactivity/Tool";
 import { initialLevelEditorSliceState } from "../initialLevelEditorSliceState";
 import {
   applyItemTool,
   deleteSelected,
+  type LevelEditorState,
   setAutoCoalesce,
   setTool,
 } from "../levelEditorSlice";
@@ -36,6 +34,7 @@ import {
   testRoomId,
   wallItemId,
 } from "./__test__/storeStates";
+import { type ApplyToolToRoomJsonPayload } from "./applyItemToolReducers";
 
 describe("applying tools", () => {
   describe("applying items", () => {

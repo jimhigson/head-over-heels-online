@@ -1,7 +1,5 @@
-import type { DirectionXy4, Xy } from "../../../utils/vectors/vectors";
-import type { RoomJson } from "../../RoomJson";
-
-import { roomJsonItemsIterable } from "../../RoomJson";
+import { type DirectionXy4, type Xy } from "../../../utils/vectors/vectors";
+import { type RoomJson, roomJsonItemsIterable } from "../../RoomJson";
 import { wallTimes } from "../../times";
 
 export const roomJsonMatchers = {

@@ -1,13 +1,12 @@
 import { useState } from "preact/hooks";
 
-import type { JsonItemConfig } from "../../../model/json/JsonItem";
-import type { TextureTailwindClass } from "../../../sprites/spritesheet/spritesheetData/TextureTailwindClass";
-import type { EditorRoomId, EditorRoomItemId } from "../../editorTypes";
-import type { ItemTool } from "../../RoomEditingArea/interactivity/Tool";
-
+import { type JsonItemConfig } from "../../../model/json/JsonItem";
+import { type TextureTailwindClass } from "../../../sprites/spritesheet/spritesheetData/TextureTailwindClass";
 import { store, useEditorAppSelector } from "../../../store/store";
 import { Switch } from "../../../ui/Switch";
 import { twClass } from "../../../utils/twClass";
+import { type EditorRoomId, type EditorRoomItemId } from "../../editorTypes";
+import { type ItemTool } from "../../RoomEditingArea/interactivity/Tool";
 import {
   selectCurrentEditingRoomJson,
   setTool,

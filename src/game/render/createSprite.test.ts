@@ -1,7 +1,4 @@
-import { AnimatedSprite } from "pixi.js";
-import { Container } from "pixi.js";
-import { Sprite } from "pixi.js";
-import { Texture } from "pixi.js";
+import { AnimatedSprite, Container, Sprite, Texture } from "pixi.js";
 import { beforeAll, describe, expect, expectTypeOf, test, vi } from "vitest";
 
 const mockTextures = await vi.hoisted(async () => {
@@ -57,12 +54,10 @@ vi.mock("../../sprites/spritesheet/variants/getSpriteSheetVariant", () => ({
   getSpriteSheetVariant: vi.fn(() => mockSpriteSheet),
 }));
 
-import type { TextureId } from "../../sprites/spritesheet/spritesheetData/makeSpritesheetData";
-import type { Xyz } from "../../utils/vectors/vectors";
-import type { CreateSpriteOptions } from "./createSprite";
-
 import { originalSpriteSheet } from "../../sprites/spritesheet/loadedSpriteSheet";
-import { createSprite } from "./createSprite";
+import { type TextureId } from "../../sprites/spritesheet/spritesheetData/makeSpritesheetData";
+import { type Xyz } from "../../utils/vectors/vectors";
+import { createSprite, type CreateSpriteOptions } from "./createSprite";
 
 beforeAll(() => {
   globalThis.requestAnimationFrame = (

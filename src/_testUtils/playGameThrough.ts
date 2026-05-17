@@ -1,13 +1,12 @@
-import type {
-  GameStateWithMockInput,
-  MockInputStateTracker,
-} from "./MockInputStateTracker";
-import type { FrameRateSpec } from "./testFrameRates";
-
 import { progressGameState } from "../game/mainLoop/progressGameState";
 import { progressWithSubTicks } from "../game/mainLoop/progressWithSubTicks";
 import { maxSubTickDeltaMs } from "../game/physics/mechanicsConstants";
 import { cycle } from "../utils/iterators/cycle";
+import {
+  type GameStateWithMockInput,
+  type MockInputStateTracker,
+} from "./MockInputStateTracker";
+import { type FrameRateSpec } from "./testFrameRates";
 
 type FrameCallback = (
   gameState: GameStateWithMockInput,

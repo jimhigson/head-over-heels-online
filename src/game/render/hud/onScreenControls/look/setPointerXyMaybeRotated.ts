@@ -1,6 +1,6 @@
-import type { FederatedPointerEvent } from "pixi.js";
+import { type FederatedPointerEvent } from "pixi.js";
 
-import type { Xy } from "../../../../../utils/vectors/vectors";
+import { type Xy } from "../../../../../utils/vectors/vectors";
 
 export const setPointerXyMaybeRotated = (
   e: FederatedPointerEvent,

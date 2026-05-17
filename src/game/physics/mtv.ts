@@ -1,11 +1,11 @@
-import type { Xy, Xyz } from "../../utils/vectors/vectors";
-
 import {
   axesXyz,
   lengthXyz,
   originXyz,
   scaleXyzWriteInto,
   unitVector,
+  type Xy,
+  type Xyz,
 } from "../../utils/vectors/vectors";
 import { collisionPosAndBb } from "../collision/aabbCollision";
 

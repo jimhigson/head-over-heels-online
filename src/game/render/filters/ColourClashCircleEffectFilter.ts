@@ -1,8 +1,7 @@
 import { defaultFilterVert, Filter, GlProgram } from "pixi.js";
 
-import type { SpritesheetMetadata } from "../../../sprites/spritesheet/spritesheetData/spritesheetMetaData";
-import type { SpriteOption } from "../../../store/slices/userSettings/userSettingsSlice";
-
+import { type SpritesheetMetadata } from "../../../sprites/spritesheet/spritesheetData/spritesheetMetaData";
+import { type SpriteOption } from "../../../store/slices/userSettings/userSettingsSlice";
 import fragment from "./colourClashCircleEffect.frag";
 import {
   deathLutForSpriteOption,

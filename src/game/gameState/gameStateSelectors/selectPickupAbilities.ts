@@ -1,8 +1,6 @@
-import type { HeadAbilities } from "../../../model/ItemStateMap";
-import type { PlayableItem } from "../../physics/itemPredicates";
-
-import { blockSizePx } from "../../physics/mechanicsConstants";
-import { shieldDuration } from "../../physics/mechanicsConstants";
+import { type HeadAbilities } from "../../../model/ItemStateMap";
+import { type PlayableItem } from "../../physics/itemPredicates";
+import { blockSizePx, shieldDuration } from "../../physics/mechanicsConstants";
 
 export const shieldRemainingForAbilities = (abilities?: {
   shieldCollectedAt: number;

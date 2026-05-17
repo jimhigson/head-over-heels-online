@@ -1,15 +1,14 @@
 import { Color } from "pixi.js";
 
-import type { NamedColours } from "../../utils/palette/palette";
-import type {
-  EffectColourName,
-  SpritesheetMetadata,
-} from "../spritesheet/spritesheetData/spritesheetMetaData";
-
 import jsonPalette from "../../_generated/palette/spritesheetPalette.json" with { type: "json" };
 import jsonPaletteDim from "../../_generated/palette/spritesheetPaletteDim.json" with { type: "json" };
 import jsonToppyPalette from "../../_generated/palette/spritesheetToppyPalette.json" with { type: "json" };
+import { type NamedColours } from "../../utils/palette/palette";
 import { transformObject } from "../../utils/transformObject";
+import {
+  type EffectColourName,
+  type SpritesheetMetadata,
+} from "../spritesheet/spritesheetData/spritesheetMetaData";
 
 export const paletteBlockstack = Object.freeze(
   transformObject(jsonPalette, ([key, hexStr]) => [key, new Color(hexStr)]),

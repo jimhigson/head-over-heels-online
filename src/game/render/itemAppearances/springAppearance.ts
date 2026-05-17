@@ -1,11 +1,10 @@
-import type { AnimatedSprite } from "pixi.js";
-
-import type { ItemAppearance } from "./ItemAppearance";
-import type { ItemShadowAppearanceOutsideView } from "./shadowMaskAppearances/itemShadowMaskAppearanceForItem";
+import { type AnimatedSprite } from "pixi.js";
 
 import { isStoodOn } from "../../../model/StoodOnBy";
 import { createSprite } from "../createSprite";
+import { type ItemAppearance } from "./ItemAppearance";
 import { itemAppearanceOutsideView } from "./itemAppearanceOutsideView";
+import { type ItemShadowAppearanceOutsideView } from "./shadowMaskAppearances/itemShadowMaskAppearanceForItem";
 
 type SpringRenderProps = {
   compressed: boolean;

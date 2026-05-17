@@ -1,6 +1,5 @@
-import type { RoomGridPositionSpec } from "./roomGridPositions";
-
 import { fromAllEntries } from "../../../../../../utils/entries";
+import { type RoomGridPositionSpec } from "./roomGridPositions";
 
 export type SortedObjectOfRoomGridPositionSpecs<RoomId extends string> = Record<
   `${RoomId}/${string}`,

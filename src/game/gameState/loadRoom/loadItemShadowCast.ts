@@ -1,7 +1,6 @@
-import type { JsonItemUnion } from "../../../model/json/JsonItem";
-import type { SpecifiedTextureCreateSpriteOptions } from "../../render/createSprite";
-
+import { type JsonItemUnion } from "../../../model/json/JsonItem";
 import { tangentAxis } from "../../../utils/vectors/vectors";
+import { type SpecifiedTextureCreateSpriteOptions } from "../../render/createSprite";
 
 const shadowLift: SpecifiedTextureCreateSpriteOptions = Object.freeze({
   animationId: "shadow.lift",

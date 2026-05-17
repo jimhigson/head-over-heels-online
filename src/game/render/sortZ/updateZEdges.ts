@@ -1,9 +1,8 @@
 //# allFunctionsCalledOnLoad
 
-import type { DrawOrderComparable } from "./DrawOrderComparable";
-
 import { valuesIter } from "../../../utils/entries";
 import { GridSpatialIndex } from "../../physics/gridSpace/GridSpatialIndex";
+import { type DrawOrderComparable } from "./DrawOrderComparable";
 import { addEdge, deleteEdge, type ZGraph } from "./GraphEdges";
 import { zComparator } from "./zComparator";
 

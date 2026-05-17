@@ -1,17 +1,16 @@
-import type { Tool } from "../Tool";
-import type {
-  MouseDownParams,
-  MouseLeaveParams,
-  MouseMoveParams,
-  MouseUpParams,
-  ToolHandler,
-} from "./ToolHandler";
-
 import { store } from "../../../../store/store";
 import { setTool } from "../../../slice/levelEditorSlice";
 import { dispatchHoveredOnChangedIfNeeded } from "../dispatchHoveredOnChangedIfNeeded";
 import { itemsAreLocked } from "../itemsAreLocked";
 import { jsonItemAndIdForInPlayItemId } from "../jsonItemAndIdForInPlayItemId";
+import { type Tool } from "../Tool";
+import {
+  type MouseDownParams,
+  type MouseLeaveParams,
+  type MouseMoveParams,
+  type MouseUpParams,
+  type ToolHandler,
+} from "./ToolHandler";
 
 const { dispatch } = store;
 

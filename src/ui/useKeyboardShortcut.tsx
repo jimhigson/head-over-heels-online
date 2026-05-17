@@ -1,6 +1,6 @@
 import { useEffect } from "preact/hooks";
 
-import type { Key } from "../game/input/keys";
+import { type Key } from "../game/input/keys";
 
 // Valid modifier combinations (no duplicates allowed)
 type ValidModifiers =

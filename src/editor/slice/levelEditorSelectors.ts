@@ -1,24 +1,22 @@
-import type { ValueOf } from "type-fest";
-
 import { createSelector } from "@reduxjs/toolkit";
 import { produce } from "immer";
-
-import type { EditorRootState } from "../../store/store";
-import type {
-  EditorJsonItemUnion,
-  EditorRoomId,
-  EditorRoomItemId,
-  EditorRoomJson,
-  EditorRoomState,
-} from "../editorTypes";
-import type { LevelEditorState } from "./levelEditorSlice";
+import { type ValueOf } from "type-fest";
 
 import { loadRoom } from "../../game/gameState/loadRoom/loadRoom";
 import { floorsRenderExtent } from "../../game/render/room/floorsExtent";
 import { emptyUserSettings } from "../../store/slices/userSettings/emptyUserSettings";
+import { type EditorRootState } from "../../store/store";
 import { emptyObject } from "../../utils/empty";
 import { objectEntriesIter } from "../../utils/entries";
 import { selectorHook } from "../../utils/react/selectorHook";
+import {
+  type EditorJsonItemUnion,
+  type EditorRoomId,
+  type EditorRoomItemId,
+  type EditorRoomJson,
+  type EditorRoomState,
+} from "../editorTypes";
+import { type LevelEditorState } from "./levelEditorSlice";
 
 /**
  * gets the current editing room json with temporary previews applied on

@@ -1,4 +1,4 @@
-import type { Xy, Xyz } from "./vectors";
+import { type Xy, type Xyz } from "./vectors";
 
 /** spread returned generator into the params of console.log to visualise a vector */
 export function* visualiseVectorForLogs(vec: Xy | Xyz) {

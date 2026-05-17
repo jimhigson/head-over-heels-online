@@ -1,7 +1,6 @@
-import type { Campaign } from "../../src/model/modelTypes";
-
 import { reconsolidateItems } from "../../src/consolidateItems/reconsolidateItems";
 import { makeToasterConsolidationPredicate } from "../../src/consolidateItems/toasterConsolidationPredicate";
+import { type Campaign } from "../../src/model/modelTypes";
 import { entries } from "../../src/utils/entries";
 
 export const reconsolidateCampaign = (

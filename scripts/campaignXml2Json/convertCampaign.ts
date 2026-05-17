@@ -1,19 +1,17 @@
 import { readdir } from "node:fs/promises";
 
-import type { Campaign } from "../../src/model/modelTypes";
-import type { AnyRoomJson } from "../../src/model/RoomJson";
-import type {
-  ZxSpectrumRoomHue,
-  ZxSpectrumShade,
-} from "../../src/originalGame";
-import type { DirectionXy4 } from "../../src/utils/vectors/vectors";
-import type { Xml2JsonRoom } from "./readToJson";
-
 import { originalCampaignLocator } from "../../src/gameInfo";
+import { type Campaign } from "../../src/model/modelTypes";
+import { type AnyRoomJson } from "../../src/model/RoomJson";
+import {
+  type ZxSpectrumRoomHue,
+  type ZxSpectrumShade,
+} from "../../src/originalGame";
+import { type DirectionXy4 } from "../../src/utils/vectors/vectors";
 import { convertRoom } from "./convertRoom";
 import { convertRoomId } from "./convertRoomId";
 import { gamedataMapXmlLocation } from "./gamedataMapXmlLocation";
-import { readMapToJson } from "./readToJson";
+import { readMapToJson, type Xml2JsonRoom } from "./readToJson";
 import { roomNameFromXmlFilename } from "./roomNameFromXmlFilename";
 
 export const map = await readMapToJson();

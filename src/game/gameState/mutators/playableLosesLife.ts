@@ -1,23 +1,22 @@
-import type { PokeableNumber } from "../../../model/ItemStateMap";
-import type {
-  CharacterName,
-  IndividualCharacterName,
-} from "../../../model/modelTypes";
-import type { RoomState } from "../../../model/RoomState";
-import type { PlayableItem } from "../../physics/itemPredicates";
-import type { GameState } from "../GameState";
-
 import {
   addPokeableNumbers,
+  type PokeableNumber,
   pokeableToNumber,
 } from "../../../model/ItemStateMap";
-import { otherIndividualCharacterName } from "../../../model/modelTypes";
+import {
+  type CharacterName,
+  type IndividualCharacterName,
+  otherIndividualCharacterName,
+} from "../../../model/modelTypes";
+import { type RoomState } from "../../../model/RoomState";
 import { lostAllLives } from "../../../store/slices/gameInPlay/gameInPlaySlice";
 import { selectCurrentCampaign } from "../../../store/slices/gameMenus/gameMenusSelectors";
 import { store } from "../../../store/store";
 import { emptyObject } from "../../../utils/empty";
 import { neverTime } from "../../../utils/neverTime";
 import { collision2Items } from "../../collision/aabbCollision";
+import { type PlayableItem } from "../../physics/itemPredicates";
+import { type GameState } from "../GameState";
 import {
   selectCurrentPlayableItem,
   selectHeelsAbilities,

@@ -1,12 +1,5 @@
-import type { ItemTickContext } from "../../game/render/ItemRenderContexts";
-import type { MonsterWhich } from "../../model/json/MonsterJsonConfig";
-import type { ItemSoundRenderContext } from "../ItemSoundRenderContext";
-import type { ItemSoundRenderer } from "../ItemSoundRenderer";
-import type {
-  BracketedSound,
-  CreateBracketedEventOptions,
-} from "../soundUtils/createBracketedSound";
-
+import { type ItemTickContext } from "../../game/render/ItemRenderContexts";
+import { type MonsterWhich } from "../../model/json/MonsterJsonConfig";
 import {
   type DirectionXy8,
   originXyz,
@@ -14,8 +7,12 @@ import {
   xyzEqual,
 } from "../../utils/vectors/vectors";
 import { audioCtx } from "../audioCtx";
+import { type ItemSoundRenderContext } from "../ItemSoundRenderContext";
+import { type ItemSoundRenderer } from "../ItemSoundRenderer";
 import {
   type BracketedSegmentOptions,
+  type BracketedSound,
+  type CreateBracketedEventOptions,
   createBracketedSound,
 } from "../soundUtils/createBracketedSound";
 import { activationBracketedSoundOptions } from "./generic/activationBracketedSoundOptions";

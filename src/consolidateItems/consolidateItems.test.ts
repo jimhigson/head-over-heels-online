@@ -1,7 +1,6 @@
 import { describe, expect, test } from "vitest";
 
-import type { JsonItem, JsonItemUnion } from "../model/json/JsonItem";
-
+import { type JsonItem, type JsonItemUnion } from "../model/json/JsonItem";
 import { consolidateItemsMap } from "./consolidateItems";
 
 // Custom matcher for testing consolidation results

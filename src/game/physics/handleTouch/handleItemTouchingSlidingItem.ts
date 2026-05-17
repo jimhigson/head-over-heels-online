@@ -1,6 +1,4 @@
-import type { ItemInPlayType } from "../../../model/ItemInPlay";
-import type { ItemTouchEventByItemType } from "./ItemTouchEvent";
-
+import { type ItemInPlayType } from "../../../model/ItemInPlay";
 import { epsilon } from "../../../utils/epsilon";
 import {
   dotProductXy,
@@ -15,6 +13,7 @@ import { visualiseVectorForLogs } from "../../../utils/vectors/visualiseVectorFo
 import { isSolid, type SlidingItemTypes } from "../itemPredicates";
 import { moveSpeedPixPerMs } from "../mechanicsConstants";
 import { mtv, mtvAlongVector, mtvXy } from "../mtv";
+import { type ItemTouchEventByItemType } from "./ItemTouchEvent";
 
 const log = import.meta.env.VITE_LOG_MOVE_ITEM;
 

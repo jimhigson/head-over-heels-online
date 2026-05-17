@@ -1,14 +1,15 @@
-import type { PayloadAction } from "@reduxjs/toolkit";
-
-import { createAction, createSlice } from "@reduxjs/toolkit";
+import {
+  createAction,
+  createSlice,
+  type PayloadAction,
+} from "@reduxjs/toolkit";
 import { canonicalize } from "json-canonicalize";
 
-import type {
-  SavedGame,
-  SavedStoreGameInPlay,
+import {
+  type SavedGame,
+  type SavedStoreGameInPlay,
 } from "../../../game/gameState/saving/SavedGameState";
-import type { CampaignLocator } from "../../../model/modelTypes";
-
+import { type CampaignLocator } from "../../../model/modelTypes";
 import { pick } from "../../../utils/pick";
 import { clearAllData } from "../clearAllData";
 

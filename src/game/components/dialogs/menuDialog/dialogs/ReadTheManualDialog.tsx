@@ -1,7 +1,9 @@
-import type { ManualPageName } from "../../../../../manual/pages";
-import type { TextureTailwindClass } from "../../../../../sprites/spritesheet/spritesheetData/TextureTailwindClass";
-
-import { manualPages, pageTitle } from "../../../../../manual/pages";
+import {
+  type ManualPageName,
+  manualPages,
+  pageTitle,
+} from "../../../../../manual/pages";
+import { type TextureTailwindClass } from "../../../../../sprites/spritesheet/spritesheetData/TextureTailwindClass";
 import { backToParentMenu } from "../../../../../store/slices/gameMenus/gameMenusSlice";
 import { useDispatchActionCallback } from "../../../../../store/useDispatchActionCallback";
 import { Border } from "../../../../../ui/Border";

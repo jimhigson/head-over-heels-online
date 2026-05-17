@@ -1,11 +1,8 @@
-import type { PayloadAction } from "@reduxjs/toolkit";
+import { type PayloadAction, type SliceCaseReducers } from "@reduxjs/toolkit";
 
-import { type SliceCaseReducers } from "@reduxjs/toolkit";
-
-import type { EditorRoomItemId } from "../../editorTypes";
-import type { HoveredItem, LevelEditorState } from "../levelEditorSlice";
-
+import { type EditorRoomItemId } from "../../editorTypes";
 import { selectCurrentRoomFromLevelEditorState } from "../levelEditorSelectors";
+import { type HoveredItem, type LevelEditorState } from "../levelEditorSlice";
 
 export const removeNonExistingItemsFromSelection = (
   _state: LevelEditorState,

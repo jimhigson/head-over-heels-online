@@ -1,7 +1,6 @@
-import type { Writable } from "type-fest";
+import { type Writable } from "type-fest";
 
-import type { ItemInPlayAAbbInfo } from "../../model/ItemInPlay";
-
+import { type ItemInPlayAAbbInfo } from "../../model/ItemInPlay";
 import { completeTimesXyz } from "../../model/times";
 import {
   addXyz,

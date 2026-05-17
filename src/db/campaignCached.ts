@@ -1,8 +1,11 @@
-import type { Campaign } from "../model/modelTypes";
-import type { CampaignDirectory, CampaignGetLocator } from "./campaign";
-
+import { type Campaign } from "../model/modelTypes";
 import { withLocalStorageCache } from "../utils/io/withLocalStorageCache";
-import { getAllUsersLatestCampaigns, loadCampaignFromDb } from "./campaign";
+import {
+  type CampaignDirectory,
+  type CampaignGetLocator,
+  getAllUsersLatestCampaigns,
+  loadCampaignFromDb,
+} from "./campaign";
 
 export const loadCampaignFromDbCached = withLocalStorageCache<
   CampaignGetLocator,

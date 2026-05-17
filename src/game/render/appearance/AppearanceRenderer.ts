@@ -1,9 +1,8 @@
 import { Container } from "pixi.js";
 
-import type { Renderer } from "../Renderer";
-import type { Appearance, AppearanceRendering } from "./Appearance";
-
 import { destroyRenderTextureDescendants } from "../../../utils/pixi/destroyRenderTextureDescendants";
+import { type Renderer } from "../Renderer";
+import { type Appearance, type AppearanceRendering } from "./Appearance";
 
 /**
  * track changes of a subject over time, updating the rendering as necessary using a pluggable

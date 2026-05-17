@@ -1,6 +1,5 @@
-import type { CSSProperties, FC, ReactNode } from "react";
-
 import { useRef, useState } from "preact/hooks";
+import { type CSSProperties, type FC, type ReactNode } from "react";
 
 import { BitmapText } from "../game/components/tailwindSprites/BitmapText";
 import { emptyObject } from "../utils/empty";

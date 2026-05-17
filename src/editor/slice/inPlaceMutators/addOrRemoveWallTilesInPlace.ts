@@ -1,6 +1,5 @@
-import type { SceneryName, Wall } from "../../../sprites/planets";
-
 import { rotatingSceneryTiles } from "../../../model/inPlaceMutators/rotatingSceneryTiles";
+import { type SceneryName, type Wall } from "../../../sprites/planets";
 
 export const addOrRemoveWallTilesInPlace = <S extends SceneryName>(
   tiles: Array<Wall<S>>,

@@ -1,4 +1,4 @@
-import type { MarkdownPageName } from "../../../../manual/pages";
+import { type MarkdownPageName } from "../../../../manual/pages";
 
 export type DialogId =
   | "about"

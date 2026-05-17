@@ -1,5 +1,5 @@
-import type { SanitisedForClassName } from "../../../game/components/tailwindSprites/SanitiseForClassName";
-import type { AnimationId, TextureId } from "./makeSpritesheetData";
+import { type SanitisedForClassName } from "../../../game/components/tailwindSprites/SanitiseForClassName";
+import { type AnimationId, type TextureId } from "./makeSpritesheetData";
 
 type ExpectedPrefixes =
   | ""

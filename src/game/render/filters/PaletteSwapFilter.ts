@@ -1,6 +1,10 @@
-import type { Color } from "pixi.js";
-
-import { defaultFilterVert, Filter, GlProgram, Texture } from "pixi.js";
+import {
+  type Color,
+  defaultFilterVert,
+  Filter,
+  GlProgram,
+  Texture,
+} from "pixi.js";
 
 import { sparseLut } from "./lutTexture/sparseLut";
 import { voronoiLut } from "./lutTexture/voronoiLut";

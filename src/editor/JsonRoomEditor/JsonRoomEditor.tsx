@@ -1,6 +1,5 @@
-import type { editor } from "monaco-editor";
-
 import { Editor } from "@monaco-editor/react";
+import { type editor } from "monaco-editor";
 import { useState } from "preact/hooks";
 
 import { useEditorAppSelector } from "../../store/store";

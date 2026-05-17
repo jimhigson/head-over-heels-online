@@ -1,4 +1,4 @@
-import type { PropsWithChildren } from "react";
+import { type PropsWithChildren } from "react";
 
 /**
  * wrap some elements in a contents div for the sake of tagging with a classname,

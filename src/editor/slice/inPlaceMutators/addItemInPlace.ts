@@ -1,25 +1,24 @@
-import type {
-  JsonItemConfig,
-  JsonItemType,
-} from "../../../model/json/JsonItem";
-import type { Xyz } from "../../../utils/vectors/vectors";
-import type {
-  EditorJsonItem,
-  EditorJsonItemUnion,
-  EditorRoomId,
-  EditorRoomItemId,
-  EditorRoomJsonItems,
-} from "../../editorTypes";
-import type { ItemTool } from "../../RoomEditingArea/interactivity/Tool";
-import type {
-  LevelEditorState,
-  PreviewedRoomItemEdits,
-} from "../levelEditorSlice";
-
 import { nextItemId } from "../../../model/inPlaceMutators/nextItemId";
+import {
+  type JsonItemConfig,
+  type JsonItemType,
+} from "../../../model/json/JsonItem";
 import { typePrefix } from "../../../model/json/typePrefix";
 import { keys } from "../../../utils/entries";
+import { type Xyz } from "../../../utils/vectors/vectors";
+import {
+  type EditorJsonItem,
+  type EditorJsonItemUnion,
+  type EditorRoomId,
+  type EditorRoomItemId,
+  type EditorRoomJsonItems,
+} from "../../editorTypes";
+import { type ItemTool } from "../../RoomEditingArea/interactivity/Tool";
 import { selectCurrentRoomFromLevelEditorState } from "../levelEditorSelectors";
+import {
+  type LevelEditorState,
+  type PreviewedRoomItemEdits,
+} from "../levelEditorSlice";
 
 export const nextItemIdForItemTool = <T extends JsonItemType = JsonItemType>(
   existingIds: Iterable<EditorRoomItemId>,

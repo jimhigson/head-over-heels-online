@@ -1,9 +1,8 @@
-import type { ItemTypeUnion } from "../../../_generated/types/ItemInPlayUnion";
-import type {
-  ItemInPlayType,
-  UnionOfAllItemInPlayTypes,
+import { type ItemTypeUnion } from "../../../_generated/types/ItemInPlayUnion";
+import {
+  type ItemInPlayType,
+  type UnionOfAllItemInPlayTypes,
 } from "../../../model/ItemInPlay";
-
 import { isMonster } from "../itemPredicates";
 import { moveSpeedPixPerMs } from "../mechanicsConstants";
 
