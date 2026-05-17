@@ -38,7 +38,7 @@ test("emitter respects period and maximum", () => {
       },
       emitter: {
         type: "emitter",
-        position: { x: 0, y: 0, z: 2 },
+        position: { x: 0, y: 0, z: 10 },
         config: {
           emits: {
             type: "portableBlock",
@@ -87,7 +87,7 @@ test("emitter respects period and maximum", () => {
   expect(countEmittedItems(gameState)).toBe(3);
 });
 
-test("emitter with no maximum keeps emitting", () => {
+test("emitter stops emitting when emitted items stack up and block it", () => {
   const gameState = setUpBasicGame({
     firstRoomItems: {
       heels: {
@@ -103,7 +103,51 @@ test("emitter with no maximum keeps emitting", () => {
             type: "portableBlock",
             config: { style: "cube" },
           },
-          period: 200,
+          period: 100,
+          maximum: null,
+        },
+      },
+    },
+  });
+
+  // run long enough that blocks would stack and block the emitter
+  playGameThrough(gameState, {
+    until: 10_000,
+    frameRate: fineFrameRate,
+  });
+
+  const emitted = countEmittedItems(gameState);
+
+  // should have emitted some but not as many as the period would allow unblocked
+  // (10_000 / 100 = 100 potential emissions, but stacking blocks the spawn point)
+  expect(emitted).toBeGreaterThan(0);
+  expect(emitted).toBeLessThan(20);
+
+  // further time produces no more emissions — the emitter is fully blocked
+  playGameThrough(gameState, {
+    until: 15_000,
+    frameRate: fineFrameRate,
+  });
+  expect(countEmittedItems(gameState)).toBe(emitted);
+});
+
+test("emitter with no maximum keeps emitting", () => {
+  const gameState = setUpBasicGame({
+    firstRoomItems: {
+      heels: {
+        type: "player",
+        position: { x: 4, y: 4, z: 0 },
+        config: { which: "heels" },
+      },
+      emitter: {
+        type: "emitter",
+        position: { x: 0, y: 0, z: 10 },
+        config: {
+          emits: {
+            type: "portableBlock",
+            config: { style: "cube" },
+          },
+          period: 1_000,
           maximum: null,
         },
       },
@@ -111,12 +155,12 @@ test("emitter with no maximum keeps emitting", () => {
   });
 
   playGameThrough(gameState, {
-    until: 2_000,
+    until: 6_000,
     frameRate: { fps: [15] },
   });
 
-  // with period 200 and 2 seconds, should have emitted several
-  expect(countEmittedItems(gameState)).toBeGreaterThan(5);
+  // with period 1000 and 6 seconds, should have emitted several
+  expect(countEmittedItems(gameState)).toBeGreaterThan(3);
 });
 
 test("emitter respects maximumAtOnce and replenishes after collection", () => {
@@ -180,14 +224,14 @@ test("emitter with delay does not emit until delay has elapsed", () => {
       },
       emitter: {
         type: "emitter",
-        position: { x: 0, y: 0, z: 2 },
+        position: { x: 0, y: 0, z: 10 },
         config: {
           emits: {
             type: "portableBlock",
             config: { style: "cube" },
           },
-          period: 200,
-          delay: 1_000,
+          period: 1_000,
+          delay: 2_000,
           maximum: null,
         },
       },
@@ -196,28 +240,28 @@ test("emitter with delay does not emit until delay has elapsed", () => {
 
   // before delay, nothing emitted
   playGameThrough(gameState, {
-    until: 950,
+    until: 1_950,
     frameRate: fineFrameRate,
   });
   expect(countEmittedItems(gameState)).toBe(0);
 
   // after delay, first emission
   playGameThrough(gameState, {
-    until: 1_050,
+    until: 2_050,
     frameRate: fineFrameRate,
   });
   expect(countEmittedItems(gameState)).toBe(1);
 
-  // almost second emitting:
+  // not yet second emitting:
   playGameThrough(gameState, {
-    until: 1_350,
+    until: 2_900,
     frameRate: fineFrameRate,
   });
-  expect(countEmittedItems(gameState)).toBe(2);
+  expect(countEmittedItems(gameState)).toBe(1);
 
   // second emission follows after one more period
   playGameThrough(gameState, {
-    until: 1_400,
+    until: 3_050,
     frameRate: fineFrameRate,
   });
   expect(countEmittedItems(gameState)).toBe(2);
@@ -244,7 +288,7 @@ describe("emitted item position with offset", () => {
         },
         emitter: {
           type: "emitter",
-          position: { x: 2, y: 2, z: 2 },
+          position: { x: 2, y: 2, z: 10 },
           config: {
             emits: { type: "portableBlock", config: { style: "cube" } },
             period: 200,
@@ -262,8 +306,8 @@ describe("emitted item position with offset", () => {
     const pos = emittedItemPosition(gameState)!;
     expect(pos.x).toBe(34);
     expect(pos.y).toBe(34);
-    // emitter pixel z (2 * 12 = 24) - half portableBlock aabb z (12 / 2 = 6)
-    expect(pos.z).toBeCloseTo(18);
+    // emitter pixel z (10 * 12 = 120) - half portableBlock aabb z (12 / 2 = 6)
+    expect(pos.z).toBeCloseTo(114);
   });
 
   test("offset with only z set does not shift x or y", () => {
@@ -276,7 +320,7 @@ describe("emitted item position with offset", () => {
         },
         emitter: {
           type: "emitter",
-          position: { x: 2, y: 2, z: 2 },
+          position: { x: 2, y: 2, z: 10 },
           config: {
             emits: { type: "portableBlock", config: { style: "cube" } },
             period: 200,
@@ -295,8 +339,8 @@ describe("emitted item position with offset", () => {
     const pos = emittedItemPosition(gameState)!;
     expect(pos.x).toBe(34);
     expect(pos.y).toBe(34);
-    // no-offset z (18) + offset z (0.5 * 12 = 6)
-    expect(pos.z).toBeCloseTo(24);
+    // no-offset z (114) + offset z (0.5 * 12 = 6)
+    expect(pos.z).toBeCloseTo(120);
   });
 });
 
@@ -325,7 +369,7 @@ describe("whenPlayableInside", () => {
           type: "emitter",
           position: { x: 0, y: 2, z: 0 },
           config: {
-            emits: { type: "portableBlock", config: { style: "cube" } },
+            emits: { type: "floatingText", config: { textLines: ["x"] } },
             period: 500,
             maximum: null,
             whenPlayerInside: true,
@@ -353,7 +397,7 @@ describe("whenPlayableInside", () => {
           type: "emitter",
           position: { x: 0, y: 2, z: 0 },
           config: {
-            emits: { type: "portableBlock", config: { style: "cube" } },
+            emits: { type: "floatingText", config: { textLines: ["x"] } },
             period: 500,
             maximum: null,
             whenPlayerInside: true,
@@ -404,7 +448,7 @@ describe("whenPlayableInside", () => {
           type: "emitter",
           position: { x: 0, y: 2, z: 0 },
           config: {
-            emits: { type: "portableBlock", config: { style: "cube" } },
+            emits: { type: "floatingText", config: { textLines: ["x"] } },
             period: 500,
             delay: 1_000,
             maximum: null,

@@ -3,7 +3,11 @@ import type { EmittableItemJson } from "../../../model/json/ItemConfigMap";
 import type { GameState } from "../../gameState/GameState";
 
 import { roomJsonItemsIterable } from "../../../model/RoomJson";
-import { roomItemsIterable, type RoomState } from "../../../model/RoomState";
+import {
+  roomItemsIterable,
+  roomSpatialIndexKey,
+  type RoomState,
+} from "../../../model/RoomState";
 import {
   addXyz,
   originXyz,
@@ -11,10 +15,14 @@ import {
   scaleXyz,
   subXyz,
 } from "../../../utils/vectors/vectors";
-import { collision2Items } from "../../collision/aabbCollision";
+import {
+  collision2Items,
+  hasCollisionItemWithIndex,
+} from "../../collision/aabbCollision";
 import { buildRoomJsonDirectionalIndex } from "../../gameState/loadRoom/buildRoomJsonDirectionalIndex";
 import { loadItemFromJson } from "../../gameState/loadRoom/loadItemFromJson";
 import { addItemToRoom } from "../../gameState/mutators/addItemToRoom";
+import { isSolid } from "../itemPredicates";
 import { blockSizePx } from "../mechanicsConstants";
 import { periodicItemShouldAct } from "./periodicItemShouldAct";
 
@@ -105,16 +113,20 @@ export const emitting = <RoomId extends string, RoomItemId extends string>(
     if (hasFewerThanInRoom(maximumAtOnce, emitterId, room)) {
       const { emits } = state;
 
+      // we need to structured clone the emits recipe, otherwise we would be mutating
+      // the emitter's config when we set the position for the emitted item, which would
+      // likely fail if we loaded from the db via rtk query since it would be immutable
+      // - we also later need to write appearanceRoomTime onto the config
+      const emitsCloned = structuredClone(emits) as EmittableItemJson;
+      // temporary position, to be overwritten in item-in-play
+      emitsCloned.position = originXyz;
+
       const [newlyEmittedItem] = loadItemFromJson(
         // by using room.roomTime, this emitter can be reset by switch/button
         // and emit another number 1, 2, etc - avoids id clashes so long as no
         // two are emitted at the same millisecond
         `${emitterId}-${quantityEmitted}-${Math.floor(room.roomTime)}`,
-        {
-          ...emits,
-          // temporary position, to be overwritten in item-in-play
-          position: originXyz,
-        } as EmittableItemJson,
+        emitsCloned,
         room.roomJson,
         buildRoomJsonDirectionalIndex(roomJsonItemsIterable(room.roomJson)),
       );
@@ -126,20 +138,34 @@ export const emitting = <RoomId extends string, RoomItemId extends string>(
         newlyEmittedItem.config.appearanceRoomTime = room.roomTime;
         newlyEmittedItem.state.expires = room.roomTime + 3_000;
       }
+
       const emitOffset =
         emitter.config.offset ?
           productXyz({ ...originXyz, ...emitter.config.offset }, blockSizePx)
         : originXyz;
 
-      addItemToRoom({
-        room,
-        item: newlyEmittedItem,
-        atPosition: subXyz(
-          addXyz(position, emitOffset),
-          scaleXyz(newlyEmittedItem.aabb, 0.5),
-        ),
-      });
-      emitter.state.quantityEmitted++;
+      newlyEmittedItem.state.position = subXyz(
+        addXyz(position, emitOffset),
+        scaleXyz(newlyEmittedItem.aabb, 0.5),
+      );
+
+      // check if the emitted item would immediately collide - if so, skip it:
+      if (
+        !(
+          isSolid(newlyEmittedItem) &&
+          hasCollisionItemWithIndex(
+            newlyEmittedItem,
+            room[roomSpatialIndexKey],
+            (item) => isSolid(item, newlyEmittedItem),
+          )
+        )
+      ) {
+        addItemToRoom({
+          room,
+          item: newlyEmittedItem,
+        });
+        emitter.state.quantityEmitted++;
+      }
     }
 
     // lost the chance to emit until the next period, even if already at the
