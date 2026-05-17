@@ -54,75 +54,6 @@ The runtime is Preact 11 (beta), but the codebase retains React import paths and
 ## Rendering:
  *	Layers use Pixi’s RenderLayer, specifically to emulate colour clash of the zx spectrum
 
-## Spritesheet variants
-
-The renderer doesn't draw from a single spritesheet — it draws from up to **six** parallel spritesheets, each derived from the same source PNG with a different palette swap baked in via a Pixi filter. Selecting which one to sample is the renderer's job; building/tearing down the right ones is the main loop's job.
-
-### The variant types
-
-Defined in `src/sprites/spritesheet/variants/SpritesheetVariant.tsx`:
-
-- `original` — the raw loaded PNG, no swaps. The base every other variant is derived from.
-- `for-current-room` — palette-swapped to the current room's `(planet, colour)`. Most rendering uses this one.
-- `deactivated` — the colour palette monsters/platforms render in when their `activated: false` state is showing. Visual cue.
-- `doughnutted` — the palette stunned characters use after a doughnut hit.
-- `sceneryPlayer` — used when a player needs to render in scenery colours (e.g. some teleporter overlays).
-- `uncolourised` — for ZX Spectrum mode (`spriteOption.uncolourised: true`). The sprite art is recoloured to white-on-shadow so the user can see the per-room ZX colour-attribute via the room's tinting layer rather than baked into the sprite.
-
-Each variant lives in its own file under `src/sprites/spritesheet/variants/<name>SpritesheetVariant.ts` with the exact same shape:
-
-```ts
-let swopped: AppSpritesheet | undefined = undefined;
-export const destroyXxxSpritesheet = () => { /* destroy textures + sheet, set undefined */ };
-export const createXxxSpritesheet = (...) => { destroyXxxSpritesheet(); swopped = createSpritesheetVariant(...); };
-export const xxxSpritesheetVariant = (): AppSpritesheet => { if (swopped === undefined) throw ...; return swopped; };
-```
-
-The module-level `swopped` singleton is the variant. The accessor **throws** if it's undefined — variants must be built before any code reads them, never lazily.
-
-### Initialisation flow
-
-1. `gameMain.ts` calls `initOriginalSpritesheet(renderer)` followed by `createUncolourisedSpritesheet(renderer)`. So at game-start, two variants are present: `original` and `uncolourised`. (The latter is built up-front because it's a one-shot — its swap doesn't depend on room data.)
-2. The first main-loop tick calls `tickSpritesheetVariants(renderer, planet, color, spriteOption)` (in `src/game/mainLoop/tickSpritesheetVariants.ts`). This is the **only** path that creates `for-current-room`, `deactivated`, `doughnutted`, and `sceneryPlayer`. They depend on the current room's `(scenery, colour)` so they can't be built until the player has entered a room.
-3. Subsequent ticks call `tickSpritesheetVariants` again only when the room changes OR `spriteOption` changes (`MainLoop.ts:190-211`). Each rebuild destroys the previous variant first, then builds a fresh one — no caching across rooms.
-
-### The colourised vs uncolourised split
-
-`tickSpritesheetVariants` branches on `spriteOption.uncolourised`:
-
-- **`uncolourised: true`** → `initAndBuildUncolourised`: ensures `original` is loaded, destroys `for-current-room`, creates `uncolourised`. Note: `deactivated`/`doughnutted`/`sceneryPlayer` are **not** built — uncolourised mode bypasses those code paths because per-room recolouring is what they exist to do.
-- **`uncolourised: false`** → `initAndBuildColourised`: ensures `original` is loaded, destroys `uncolourised`, builds the four colourised variants.
-
-So at any given moment the set of available variants is **either** `{original, uncolourised}` **or** `{original, for-current-room, deactivated, doughnutted, sceneryPlayer}` — never both. This is the trap: a renderer that picks a variant based on a stale `spriteOption.uncolourised` value can call `xxxSpritesheetVariant()` on a destroyed variant and hit the throw.
-
-### How renderers pick a variant
-
-`src/sprites/spritesheet/variants/getSpriteSheetVariant.tsx` is the single lookup point. Most item-appearance functions in `src/game/render/itemAppearances/*` follow the same pattern:
-
-```ts
-const variant: SpritesheetVariant =
-  spriteOption.uncolourised ? "uncolourised" : "for-current-room";
-const sprite = getSpriteSheetVariant(variant).textures[textureId];
-```
-
-The `spriteOption` here comes from `itemRenderContext.general.spriteOption`, which is captured from the redux store at renderer construction time. **If the captured value drifts from the current store value** between construction and access, the lookup will request a variant that no longer exists and `getSpriteSheetVariant` throws (`could not get spritesheet variant "X"`). This is the failure mode behind mid-game errors that mention `swopped spritesheet undefined`.
-
-### `SpriteOption` shape and where it lives
-
-```ts
-type SpriteOption =
-  | { name: "BlockStack"; uncolourised: false }
-  | { name: "BlockStack"; uncolourised: true }
-  | { name: "Toppy"; uncolourised: false };
-```
-
-Stored at `userSettings.userSettings.displaySettings.sprites`. The `name` selects the asset bundle (`BlockStack` is the default; `Toppy` is the alternate spritesheet). `uncolourised` is only valid for `BlockStack` because Toppy doesn't have a ZX-mode palette spec. Selectors:
-
-- `selectSpritesOption`, `useSpritesOption` — full SpriteOption
-- `selectIsUncolourised`, `useIsUncolourised` — boolean shorthand
-
-Toggling sprites at runtime fires reducers in `userSettingsSlice` (`setSpritesOption`, `nextSpritesOption`, `toggleUserSetting`) — the next main-loop tick then sees the new `spriteOption`, hits the `spriteOptionEquals` change-check at `MainLoop.ts:193-196`, and rebuilds variants.
-
 ## Game engine
 ### Iterating room items
 When iterating over `RoomStateItems` (the `room.items` object), use the typed helpers from `src/model/RoomState.ts` instead of `objectValues()` directly:
@@ -150,18 +81,6 @@ Similarly, when iterating over `RoomJsonItems` (editor/JSON room items), use the
 
 Prefer `roomJsonItemsIterable` when you only need items without ids. Use `iterateRoomJsonItemsWithIds` when you need the id or want built-in type filtering.
 
-### Tracking moved items
-* `progressGameState()` returns a `MovedItems` map (defined in `src/game/mainLoop/MovedItems.ts`) containing items whose position changed during the physics tick
-* The map value is a `MovedAxes` bitmask (`1 | 2 | 3`): bit 1 = XY movement, bit 2 = Z movement
-* Construction: positions are snapshotted before physics, then compared axis-by-axis using `computeMovedAxes()`
-* The map is accumulated across sub-ticks by `progressWithSubTicks()` (ORing the axis bitmasks) and passed to renderers
-* Key consumers:
-  - `assignLatentMovementFromStandingOn()`: propagates delayed horizontal movement to items standing on moved items
-  - `snapInactiveItemsToPixelGrid()`: snaps stationary items to integers (sets XY axis bit)
-  - `updateZEdges()`: incrementally updates the z-sorting graph only for moved items (avoids O(n²) comparisons every frame)
-  - `ItemPositionRenderer.tick()`: only recalculates screen position for items in the map
-* Flow: `progressGameState` → `progressWithSubTicks` → `MainLoop.tick` → `RoomRenderer.tick` → item renderers
-
 ## Editor Features:
  * there is a level editor also built for creating new rooms for the game
  * this is for creating new non-original levels which are specific to the remake
@@ -178,20 +97,6 @@ Prefer `roomJsonItemsIterable` when you only need items without ids. Use `iterat
  * files in `src/_generated/types/` (e.g. `ItemInPlayUnion.ts`) are regenerated via `pnpm gen:types`
  * if you add or change item types in `src/model/ItemInPlay.ts`, run `pnpm gen:types` to regenerate
 
-
-## Moving files between packages
-
-Use `git mv` + manual import rewriting (grep/sed) for all file moves. **Do not use `ts-morph`'s `sourceFile.move()`** — it rewrites all cross-package imports as relative paths instead of converting them to `@blockstacking/*` barrel imports, creating more cleanup than it saves.
-
-Steps per file move:
-
-1. `git mv src/old/path.ts packages/<pkg>/src/path.ts`
-2. `grep -rn` for the old import path across `src/` and `packages/`
-3. Rewrite each hit to import from the `@blockstacking/<pkg>` barrel
-4. Update the moved file's own imports: relative `src/` paths → `@blockstacking/*` barrel imports where the target already lives in a package
-5. **Rewrite any self-imports through the barrel.** If the moved file imported from `@blockstacking/<pkg>` before the move (when it was external to that package), those imports are now self-imports through the barrel and must become direct relative paths (e.g. `@blockstacking/hoh-db` → `./campaign`). Self-imports create circular dependencies caught by `dpdm`. Easy to miss because the import was correct before the move.
-6. Add the newly exposed symbols to the destination package's `src/index.ts` barrel
-7. Run `pnpm fix` to auto-fix import ordering
 
 ## Git
 
@@ -315,35 +220,6 @@ throw new Error(
 
 * all modules with side-effects MUST be listed in package.json, otherwise the bundler will assume they are pure
 
-## Vector Operations and In-Place Mutations:
- * **In-place vector functions** are available in `src/utils/vectors/vectors.ts` with `InPlace` suffix (e.g., `addXyzInPlace`, `scaleXyzInPlace`, `subXyzInPlace`, etc.)
- * **Safety policy for in-place operations**:
-   - ONLY use in-place operations on vectors you just created in the same function/scope
-   - NEVER modify `item.state.position` in-place - always create a new vector
-   - Safe to use in-place on: freshly created temporary vectors, module-level constants at initialization, vectors created and immediately returned
-   - When chaining operations: create with non-in-place function, then modify with in-place functions
-   - In-place functions return the modified object, so they can be used inline: `return subXyzInPlace(productXyz(a, b), c)`
- * **Available in-place vector utilities**:
-   - `addXyInPlace`, `subXyInPlace`, `scaleXyInPlace` - for 2D vectors
-   - `addXyzInPlace`, `subXyzInPlace`, `scaleXyzInPlace` - for 3D vectors  
-   - `productXyzInPlace`, `elementWiseProductXyzInPlace` - element-wise multiplication
-   - `roundXyzInPlace`, `roundXyzToXyHalvesInPlace`, `xyzSnapIfCloseToIntegersInPlace` - rounding operations
-   - `absXyzInPlace`, `perpendicularXyzInPlace`, `unitVectorInPlace` - transformations
-   - `componentInDirectionInPlace` - in `src/utils/vectors/componentInDirection.ts`
- * **Random number utilities** in `src/utils/random/randomFromArray.ts`:
-   - `randomBetween(min, max)` - returns a random number between min and max (inclusive)
-   - `randomFromArray(array)` - returns a random element from an array
-
-## Item Times and Multiplied Items:
- * Items can have a `times` property (Partial<Xyz>) that indicates repetition in 3D space
- * **Type-safe utilities for handling times**:
-   - `getJsonItemTimes(item: JsonItemUnion): Xyz` - gets complete times from JSON items
-   - `getItemInPlayTimes(item: UnionOfAllItemInPlayTypes): Xyz` - gets complete times from in-play items
-   - `completeTimesXyz(times: Partial<Xyz>): Xyz` - fills in missing dimensions with 1
-   - Both `getJsonItemTimes` and `getItemInPlayTimes` use internal type guards to avoid `any` types
- * Walls handle times specially based on their direction and tiles
- * When creating effects (like bubbles) for items with times, create one effect per segment
-
  ## Tests
  When writing unit tests, do not put a top-level `describe` at the top of the file that wraps all tests. This is redundant since the test runner will give the test suite name anyway.
 
@@ -445,146 +321,6 @@ Always create new worktrees under `/Users/jim/dev/hohjs.worktrees/<branch-name>`
 (eg `git worktree add /Users/jim/dev/hohjs.worktrees/my-feature my-feature`).
 That parent directory is in Claude's `additionalDirectories`, so any worktree
 created beneath it is accessible without prompting for permission.
-
-# redux
-
-## slices
-
-The store is split into focused slices, each owning one concern. Wired up in
-`src/store/store.ts` via `combineSlices`:
-
-- `userSettings` — display, sound, input assignments, sprite/skin choice. **Persisted.**
-- `savedGames` — per-campaign saves dict + `lastSavedCampaignLocator`. **Persisted.**
-- `spritesheetOverride` — local override for spritesheet selection. **Persisted.**
-- `gameInPlay` — live in-game state: current campaign locator, characters' rooms-explored, scrolls-read, freeCharacters, reincarnationPoint, gameRunning, cheatsOn. Not persisted directly — survives reload only via the snapshot saved into `savedGames`.
-- `gameMenus` — open menu stack, focussed item, key-assignment-in-progress.
-- `upscale` — derived from displaySettings; recomputed on emulated-resolution and display changes via listeners.
-- `campaignsApi` / `githubApi` — RTK Query slices for fetching campaigns/db data and GitHub data.
-- `gameAssetsLoading` — tracks loading progress for assets.
-
-Slices are deliberately small, single-purpose, and each owns its own
-`reducers` block. Cross-slice writes are forbidden — slices never reach
-into each other's state directly.
-
-## intra-slice composition
-
-Three patterns coordinate behaviour across slices:
-
-1. **`extraReducers` — react to another slice's action with my own state change.**
-   The owning slice declares the action; reacting slices subscribe via
-   `extraReducers(builder)` with `builder.addCase(externalAction, ...)`.
-   The action is a noop in its owner slice if its only purpose is to
-   broadcast — e.g. `savedGameLoadedOnAppLoad` is a noop in `savedGamesSlice`,
-   but `gameInPlaySlice` and `gameMenusSlice` use `extraReducers` to
-   populate their own state from its payload. This is the cleanest
-   mechanism — atomic state update across slices in one dispatch, no
-   listener cascades, no race risk.
-
-2. **Listener middleware — cross-slice reads or cascade dispatches.**
-   When a slice needs to read state from another slice or dispatch a
-   follow-up action conditional on cross-slice state, register a
-   `startAppListening` effect. Lives in `<slice>/<slice>Listeners.ts`.
-   Examples: `lostAllLives` → if a `reincarnationPoint` exists in
-   `gameInPlay`, dispatch `gameEndedMenusOpened({offerReincarnation: true})`,
-   else cascade into `gameOver`. `gameOver` → savedGamesListener removes
-   the campaign's save. Each listener only dispatches actions from its
-   own slice's domain (or from the slice broadcasting a domain event).
-
-3. **Top-level cross-slice actions for full resets** — `clearAllData` is
-   declared at the top level (not owned by a slice) and every slice
-   handles it via `extraReducers` to reset to its initial state. Use
-   sparingly; only for "blat the whole world" operations.
-
-### Intent-revealing reducers in gameMenusSlice
-
-`gameMenusSlice` exposes named reducers that describe the *intent* of a
-menu transition rather than a generic "set the menu stack". Listeners
-from other slices dispatch these by name:
-
-- `crownsMenuShown(crownsMenuParam)` — show the crowns dialog (with optional music).
-- `gameStartedMenusOpened({showCrowns})` — set up menus for a new game start.
-- `gameEndedMenusOpened({offerReincarnation, scoreAlreadyShown?})` — set up score / mainMenu / offerReincarnation post-gameOver.
-- `scrollContentMenuShown(scrollConfig)` — show a markdown scroll dialog.
-- `reincarnationRestartMenuShown()` — show the reincarnated-restart confirmation.
-
-The reducer owns the menu-stack shape; the caller describes the event,
-not the resulting menu list. Devtools then show the actual transition
-(`gameMenus/gameEndedMenusOpened`) instead of a generic blat.
-
-## persist
-
-Per-slice persistors, with their own keys.
-Version numbers of the persist match the version number of the game.
-
-## listener api use
-
-When writing a listener with `startAppListening`, always destructure the
-needed methods (`dispatch`, `getState`, etc.)
-
-```ts
-// good
-startAppListening({
-  actionCreator: someAction,
-  effect(action, { dispatch, getState }) {
-    const { foo } = getState();
-    dispatch(otherAction(foo));
-  },
-});
-
-// avoid
-startAppListening({
-  actionCreator: someAction,
-  effect(action, api) {
-    const { foo } = api.getState();
-    api.dispatch(otherAction(foo));
-  },
-});
-```
-
-## redux hooks: app-typed vs slice-typed
-
-There are three layers of redux hook in this codebase. Pick the right one for where the calling code lives.
-
-| Hook | Source | State binding |
-|---|---|---|
-| `useSelector` / `useDispatch` (base) | `react-redux` | generic — caller declares the type |
-| `useAppSelector` / `useAppDispatch` (app-typed) | `src/store/hooks` | bound to the full app `RootState` / `AppDispatch` |
-| `use<Slice>SliceSelector` / `use<Slice>SliceDispatch` (slice-typed) | the slice file | bound to that slice's narrow `StateWith<X>` only |
-
-**Rule:**
-- Files inside `src/` (the app) → use the **app-typed** wrappers from `src/store/hooks`. They have access to the full RootState anyway.
-- Files inside any `packages/<x>` → use the **slice-typed** wrappers exported from the slice file. A package can't depend on the app's RootState, and shouldn't claim to read the whole store when it only touches one slice.
-- The base `react-redux` hooks shouldn't normally be called directly — use one of the typed wrappers instead.
-
-### Slice-typed hook pattern
-
-Each slice file in a package exports a triple of narrow types and pre-typed hooks:
-
-```ts
-// packages/hoh-foo/src/fooSlice.ts
-import { createSlice, type ThunkAction, type ThunkDispatch, type UnknownAction } from "@reduxjs/toolkit";
-import { useDispatch, useSelector } from "react-redux";
-
-export const fooSlice = createSlice({ name: "foo", /* ... */ });
-
-export type StateWithFoo = { [fooSlice.reducerPath]: FooState };
-
-export type FooSliceThunk<R = void> = ThunkAction<
-  R,
-  StateWithFoo,
-  unknown,
-  UnknownAction
->;
-
-export const useFooSliceSelector = useSelector.withTypes<StateWithFoo>();
-export const useFooSliceDispatch = useDispatch.withTypes<
-  ThunkDispatch<StateWithFoo, unknown, UnknownAction>
->();
-```
-
-The narrow state shape says "I require a store with this slice mounted at its reducerPath" — and nothing more. Any RootState that includes the slice satisfies the constraint structurally.
-
-A `FooSliceThunk` can `getState()` and see `StateWithFoo` only — so reading another slice's state through `getState()` fails typecheck. **If a thunk needs data from another slice, take it as a parameter.** The hook calling the thunk subscribes to that other slice's data via its own typed hook and passes it in. This keeps slice-to-slice coupling explicit at call sites instead of buried inside `getState()`.
 
 # Agents
 
