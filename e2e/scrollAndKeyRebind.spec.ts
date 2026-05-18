@@ -41,9 +41,13 @@ const holdKey = async (
 const getTowardsKeys = (page: Page) =>
   page.evaluate(() => {
     const store = window._e2e_store;
-    if (!store) throw new Error("E2E store not available");
+    if (!store) {
+      throw new Error("E2E store not available");
+    }
     const { inputAssignment } = store.getState().userSettings.userSettings;
-    if (!inputAssignment) throw new Error("inputAssignment not yet populated");
+    if (!inputAssignment) {
+      throw new Error("inputAssignment not yet populated");
+    }
     return inputAssignment.presses.towards.keys;
   });
 
@@ -77,7 +81,7 @@ const walkOntoStartingScroll = async (
   // give the game a beat to start running before dispatching keys
   await page.waitForTimeout(500 * osSlowness);
 
-  await holdKey(page, towardsKey, towardsCode, 4_000 * osSlowness);
+  await holdKey(page, towardsKey, towardsCode, 4000 * osSlowness);
 
   await waitForDialog(page, "markdown/cuddlyStuffedWhiteRabbits", {
     timeout: 10_000 * osSlowness,
@@ -87,7 +91,7 @@ const walkOntoStartingScroll = async (
   await dispatchKeyPress(page, "Escape", "Escape");
   await waitForDialog(page, "markdown/cuddlyStuffedWhiteRabbits", {
     state: "detached",
-    timeout: 5_000 * osSlowness,
+    timeout: 5000 * osSlowness,
   });
 };
 

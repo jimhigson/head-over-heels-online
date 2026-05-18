@@ -12,7 +12,9 @@ import { setupE2ePage } from "./testUtils/pageSetup";
 const readUpscale = (page: Page) =>
   page.evaluate(() => {
     const store = window._e2e_store;
-    if (!store) throw new Error("E2E store not available");
+    if (!store) {
+      throw new Error("E2E store not available");
+    }
     const { upscale } = store.getState().upscale;
     return {
       cssUpscale: upscale.cssUpscale,
@@ -28,7 +30,9 @@ const dispatchToStore = (
   page.evaluate(
     ({ action }) => {
       const store = window._e2e_store;
-      if (!store) throw new Error("E2E store not available");
+      if (!store) {
+        throw new Error("E2E store not available");
+      }
       store.dispatch(action);
     },
     { action },

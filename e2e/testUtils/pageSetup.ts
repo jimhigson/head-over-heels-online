@@ -20,7 +20,9 @@ export const muteAudioInE2e = () => {
   Object.defineProperty(BaseAudioContext.prototype, "destination", {
     get() {
       const existing = sinks.get(this);
-      if (existing) return existing as unknown as AudioDestinationNode;
+      if (existing) {
+        return existing as unknown as AudioDestinationNode;
+      }
 
       const sink = this.createGain();
       sinks.set(this, sink);

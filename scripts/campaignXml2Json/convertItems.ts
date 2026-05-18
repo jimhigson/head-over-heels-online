@@ -430,29 +430,28 @@ const convertItem = async ({
           config: {},
           position,
         };
-      } else {
-        return {
-          type,
-          config: {
-            movement:
-              (
-                xml2JsonItem.behavior === "behavior of flying there and back" ||
-                xml2JsonItem.behavior === "behavior of there and back"
-              ) ?
-                "back-forth"
-              : "clockwise",
-            startDirection: convertDirection(
-              // blacktooth 78 xml has a back and forth without a direction
-              xml2JsonItem.orientation || "south",
-            ),
-            // I don't know where in the xml this is stored - think it might not be
-            // at all - this needs to be changed in a patch to "onStand" or "on"
-            // on a room-by-room basis
-            activated: "off",
-          },
-          position,
-        };
       }
+      return {
+        type,
+        config: {
+          movement:
+            (
+              xml2JsonItem.behavior === "behavior of flying there and back" ||
+              xml2JsonItem.behavior === "behavior of there and back"
+            ) ?
+              "back-forth"
+            : "clockwise",
+          startDirection: convertDirection(
+            // blacktooth 78 xml has a back and forth without a direction
+            xml2JsonItem.orientation || "south",
+          ),
+          // I don't know where in the xml this is stored - think it might not be
+          // at all - this needs to be changed in a patch to "onStand" or "on"
+          // on a room-by-room basis
+          activated: "off",
+        },
+        position,
+      };
     }
 
     case "book":

@@ -308,7 +308,9 @@ export class InputStateTracker {
     directionVectors: Record<D, Xyz>,
   ): Generator<Xyz> {
     for (const d of directions) {
-      if (isActionPressed(input, d, false)) yield directionVectors[d];
+      if (isActionPressed(input, d, false)) {
+        yield directionVectors[d];
+      }
     }
   }
 
@@ -339,17 +341,23 @@ export class InputStateTracker {
         y = 0;
 
       for (const a of axesX) {
-        if (gp.axes.length <= a) continue;
+        if (gp.axes.length <= a) {
+          continue;
+        }
         x += gp.axes[a] * xDirection;
       }
       for (const a of axesY) {
-        if (gp.axes.length <= a) continue;
+        if (gp.axes.length <= a) {
+          continue;
+        }
         y += gp.axes[a] * yDirection;
       }
 
       const v: Xyz = { x, y, z: 0 };
 
-      if (lengthXyz(v) > analogueDeadzone) yield v;
+      if (lengthXyz(v) > analogueDeadzone) {
+        yield v;
+      }
     }
   }
 
@@ -582,11 +590,10 @@ export class InputStateTracker {
         //   console.log(action, "was pressed last frame and this one");
 
         return "hold";
-      } else {
-        // if (action === "towards")
-        //   console.log(action, "was pressed this frame and NOT the last one");
-        return "tap";
       }
+      // if (action === "towards")
+      //   console.log(action, "was pressed this frame and NOT the last one");
+      return "tap";
     }
 
     return "released";

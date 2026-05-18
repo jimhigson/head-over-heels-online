@@ -46,13 +46,13 @@ test.describe("persistence across reload", () => {
   }, testInfo) => {
     await startCampaignViaMenu(page, testInfo.project.name, "originalGame");
 
-    await page.waitForTimeout(1_000 * osSlowness);
+    await page.waitForTimeout(1000 * osSlowness);
     await dispatchKeyPress(page, "Enter", "Enter");
     await page.waitForTimeout(500 * osSlowness);
     expect(await getCurrentCharacter(page)).toBe("heels");
 
     await clickCheat(page, "cheats-goto-room-egyptus1");
-    await page.waitForTimeout(1_000 * osSlowness);
+    await page.waitForTimeout(1000 * osSlowness);
     expect(await getCurrentRoomId(page)).toBe("egyptus1");
 
     await page.reload();
@@ -66,7 +66,7 @@ test.describe("persistence across reload", () => {
   }, testInfo) => {
     await startCampaignViaMenu(page, testInfo.project.name, "remake");
 
-    await page.waitForTimeout(1_000 * osSlowness);
+    await page.waitForTimeout(1000 * osSlowness);
     const startCharacter = await getCurrentCharacter(page);
     await dispatchKeyPress(page, "Enter", "Enter");
     await page.waitForTimeout(500 * osSlowness);
@@ -74,7 +74,7 @@ test.describe("persistence across reload", () => {
     expect(otherCharacter).not.toBe(startCharacter);
 
     await clickCheat(page, "cheats-goto-room-finalroom");
-    await page.waitForTimeout(1_000 * osSlowness);
+    await page.waitForTimeout(1000 * osSlowness);
     const roomBeforeReload = await getCurrentRoomId(page);
 
     await page.reload();
@@ -102,13 +102,15 @@ test.describe("persistence across reload", () => {
       .locator('[data-dialog-id="crowns"]')
       .waitFor({ state: "detached" });
 
-    await page.waitForTimeout(1_000 * osSlowness);
+    await page.waitForTimeout(1000 * osSlowness);
     await page.reload();
     await waitForGameState(page);
 
     const skinName = await page.evaluate(() => {
       const store = window._e2e_store;
-      if (!store) return undefined;
+      if (!store) {
+        return undefined;
+      }
       return store.getState().userSettings.userSettings.displaySettings.sprites
         ?.name;
     });
@@ -121,7 +123,7 @@ test.describe("persistence across reload", () => {
     const formattedName = formatProjectName(testInfo.project.name);
 
     await startCampaignViaMenu(page, testInfo.project.name, "originalGame");
-    await page.waitForTimeout(1_000 * osSlowness);
+    await page.waitForTimeout(1000 * osSlowness);
     await clickCheat(page, "cheats-summon-crown-egyptus");
     await waitForDialog(page, "crowns");
     await expect(
@@ -271,21 +273,21 @@ test.describe("persistence across reload", () => {
 
     await test.step("Move to a second room before eating the fish", async () => {
       await clickCheat(page, "cheats-goto-room-egyptus1");
-      await page.waitForTimeout(1_000 * osSlowness);
+      await page.waitForTimeout(1000 * osSlowness);
       expect(await getCurrentRoomId(page)).toBe("egyptus1");
     });
 
     let fishRoom: string | undefined;
     await test.step("Eat a reincarnation fish; saveGameThunk fires on pickup", async () => {
       await clickCheat(page, "cheats-summon-reincarnation");
-      await page.waitForTimeout(2_000 * osSlowness);
+      await page.waitForTimeout(2000 * osSlowness);
       fishRoom = await getCurrentRoomId(page);
       expect(fishRoom).toBe("egyptus1");
     });
 
     await test.step("Jump to a different planet (Penitentiary)", async () => {
       await clickCheat(page, "cheats-goto-room-penitentiary1");
-      await page.waitForTimeout(1_000 * osSlowness);
+      await page.waitForTimeout(1000 * osSlowness);
       expect(await getCurrentRoomId(page)).toBe("penitentiary1");
     });
 

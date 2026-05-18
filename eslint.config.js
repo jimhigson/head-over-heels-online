@@ -7,6 +7,7 @@ import tseslint from "typescript-eslint";
 import unusedImports from "eslint-plugin-unused-imports";
 import importPlugin from "eslint-plugin-import";
 import perfectionist from "eslint-plugin-perfectionist";
+import unicorn from "eslint-plugin-unicorn";
 
 export default tseslint.config(
   {
@@ -34,11 +35,21 @@ export default tseslint.config(
       "unused-imports": unusedImports,
       import: importPlugin,
       perfectionist,
+      unicorn,
     },
     rules: {
       //    "no-shadow": "error",
       "no-console": ["warn", { allow: ["warn", "error"] }],
       "no-useless-rename": "error",
+      curly: ["error", "all"],
+      eqeqeq: ["error", "always", { null: "ignore" }],
+      "no-var": "error",
+      "prefer-const": "error",
+      "no-else-return": "error",
+      "prefer-arrow-callback": "error",
+      "no-eval": "error",
+      "@typescript-eslint/no-explicit-any": "error",
+      "unicorn/numeric-separators-style": "error",
       ...reactHooks.configs.recommended.rules,
       "react-refresh/only-export-components": [
         "warn",

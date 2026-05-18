@@ -58,11 +58,11 @@ export const loadCampaignFromDb = async (
 
   const data = await decompressObject<Campaign<string>>(res.data.data);
 
-  Object.values(data.rooms).forEach((room) => {
+  for (const room of Object.values(data.rooms)) {
     // migrate rooms to newer format - this can be removed when .size is gone from all campaigns likely to be loaded
     // eslint-disable-next-line @typescript-eslint/no-explicit-any -- need any since this is explicitly not a type we have any more since .size was removed
     delete (room as any).size;
-  });
+  }
 
   // upgrade/fill in data from before this locator was added:
   // this can be removed after all old campaigns have been updated in the db

@@ -44,7 +44,9 @@ export const startGame = async (
       console.log(
         `${formattedName} ${elapsed()}: goto took ${formatDuration(performance.now() - stepStart)}`,
       );
-      if (cancelled) return;
+      if (cancelled) {
+        return;
+      }
 
       console.log(`${formattedName} ${elapsed()}: clicking Play The Game...`);
       stepStart = performance.now();
@@ -52,14 +54,18 @@ export const startGame = async (
       console.log(
         `${formattedName} ${elapsed()}: logSelectorExistence (playGame) took ${formatDuration(performance.now() - stepStart)}`,
       );
-      if (cancelled) return;
+      if (cancelled) {
+        return;
+      }
 
       stepStart = performance.now();
       await page.click(playGameMenuItemSelector);
       console.log(
         `${formattedName} ${elapsed()}: click (playGame) took ${formatDuration(performance.now() - stepStart)}`,
       );
-      if (cancelled) return;
+      if (cancelled) {
+        return;
+      }
 
       console.log(`${formattedName} ${elapsed()}: choosing campaign...`);
       stepStart = performance.now();
@@ -67,7 +73,9 @@ export const startGame = async (
       console.log(
         `${formattedName} ${elapsed()}: logSelectorExistence (campaign) took ${formatDuration(performance.now() - stepStart)}`,
       );
-      if (cancelled) return;
+      if (cancelled) {
+        return;
+      }
 
       stepStart = performance.now();
       await page.click(campaignSelector);
@@ -124,7 +132,9 @@ export const setSkinViaMenus = async (
 
   const skinItem = page.locator('[data-menuitem_id="spritesOption"]');
   for (let i = 0; i < 4; i++) {
-    if ((await skinItem.textContent())?.includes(targetLabel)) return;
+    if ((await skinItem.textContent())?.includes(targetLabel)) {
+      return;
+    }
     await skinItem.click();
   }
   expect((await skinItem.textContent()) ?? "").toContain(targetLabel);
@@ -254,14 +264,18 @@ export const exitCrownsDialog = async (page: Page, logHeader: string) => {
               console.log(
                 `${logHeader} ${elapsed()}: screenshot (before-check) took ${formatDuration(performance.now() - stepStart)}`,
               );
-              if (cancelled) return;
+              if (cancelled) {
+                return;
+              }
             }
 
             const crownsDialogVisible = await page
               .locator(crownsDialogSelector)
               .isVisible()
               .catch(() => false);
-            if (cancelled) return;
+            if (cancelled) {
+              return;
+            }
 
             if (crownsDialogVisible) {
               console.log(
@@ -279,7 +293,9 @@ export const exitCrownsDialog = async (page: Page, logHeader: string) => {
                 console.log(
                   `${logHeader} ${elapsed()}: screenshot (before-click) took ${formatDuration(performance.now() - stepStart)}`,
                 );
-                if (cancelled) return;
+                if (cancelled) {
+                  return;
+                }
 
                 await logSelectorExistence(
                   page,
@@ -302,7 +318,9 @@ export const exitCrownsDialog = async (page: Page, logHeader: string) => {
                 console.log(
                   `${logHeader} ${elapsed()}: screenshot (already-closed) took ${formatDuration(performance.now() - stepStart)}`,
                 );
-                if (cancelled) return;
+                if (cancelled) {
+                  return;
+                }
               }
 
               console.log(
@@ -342,7 +360,7 @@ export const openInGameMainMenu = async (page: Page, logHeader: string) => {
 
         const inGameMainMenuSelector = "[data-dialog-id=mainMenu]";
         await page.waitForSelector(inGameMainMenuSelector, {
-          timeout: 5_000 * osSlowness,
+          timeout: 5000 * osSlowness,
         });
         await logSelectorExistence(page, inGameMainMenuSelector, logHeader);
       },

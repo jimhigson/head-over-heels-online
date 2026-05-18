@@ -125,11 +125,10 @@ const mtvAlongVectorWriteInto = (
   } else if (tMin < 0) {
     // Move backward to exit
     return scaleXyzWriteInto(writeInto, direction, tMin);
-  } else {
-    // Already separated or touching
-    Object.assign(writeInto, originXyz);
-    return writeInto as Xyz;
   }
+  // Already separated or touching
+  Object.assign(writeInto, originXyz);
+  return writeInto as Xyz;
 };
 
 /**
@@ -207,13 +206,12 @@ const mtvWriteInto = (
     writeInto.y = mtvY;
     writeInto.z = 0;
     return writeInto as Xyz; // Slide along y-axis
-  } else {
-    // z is the smallest
-    writeInto.x = 0;
-    writeInto.y = 0;
-    writeInto.z = mtvZ;
-    return writeInto as Xyz; // Slide along z-axis
   }
+  // z is the smallest
+  writeInto.x = 0;
+  writeInto.y = 0;
+  writeInto.z = mtvZ;
+  return writeInto as Xyz; // Slide along z-axis
 };
 
 /**

@@ -15,7 +15,9 @@ const parseAttributeSelector = (
   selector: string,
 ): { property: string; value: string } | null => {
   const match = selector.match(/^\[(?<property>\w+)=(?<value>\w+)\]$/);
-  if (!match?.groups) return null;
+  if (!match?.groups) {
+    return null;
+  }
   return { property: match.groups.property, value: match.groups.value };
 };
 
@@ -76,11 +78,15 @@ export const findMatchingPattern = (
 ): null | SuggestionGenerator => {
   for (const pattern of Object.keys(suggestionPatterns)) {
     if (matchesPattern(pattern, path, nodeAncestors)) {
-      if (log) console.log(`✅ `, path, nodeAncestors, "matched", pattern);
+      if (log) {
+        console.log(`✅ `, path, nodeAncestors, "matched", pattern);
+      }
       return suggestionPatterns[pattern];
     }
 
-    if (log) console.log(`❌ `, path, nodeAncestors, "did not match", pattern);
+    if (log) {
+      console.log(`❌ `, path, nodeAncestors, "did not match", pattern);
+    }
   }
   return null;
 };

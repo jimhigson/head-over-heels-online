@@ -22,7 +22,9 @@ export const planetSpecificIfExists = (
 ): TextureId => {
   if (isDark) {
     const darkTextureId = `${sceneryName}.dark.${suffix}`;
-    if (isTextureId(darkTextureId, spritesheetData)) return darkTextureId;
+    if (isTextureId(darkTextureId, spritesheetData)) {
+      return darkTextureId;
+    }
   }
   const planetSpecific = `${sceneryName}.${suffix}`;
   return isTextureId(planetSpecific, spritesheetData) ? planetSpecific : (

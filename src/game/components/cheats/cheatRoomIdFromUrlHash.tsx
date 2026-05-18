@@ -9,7 +9,11 @@ export const cheatRoomIdFromUrlHash = <RoomId extends string>(
 ): RoomId | undefined => {
   const u = new URL(url);
   const maybeRoomId = u.hash.substring(1);
-  if (maybeRoomId === "") return undefined;
-  if (campaign.rooms[maybeRoomId as RoomId] === undefined) return undefined;
+  if (maybeRoomId === "") {
+    return undefined;
+  }
+  if (campaign.rooms[maybeRoomId as RoomId] === undefined) {
+    return undefined;
+  }
   return u.hash.substring(1) as RoomId;
 };

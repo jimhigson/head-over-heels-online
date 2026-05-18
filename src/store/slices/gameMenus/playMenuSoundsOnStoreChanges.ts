@@ -25,9 +25,13 @@ export const playMenuSoundsOnStoreChanges = () => {
   const minIntervalMs = 200;
 
   const play = (buffer: AudioBuffer | undefined, volume: number) => {
-    if (buffer === undefined) return;
+    if (buffer === undefined) {
+      return;
+    }
     const now = performance.now();
-    if (now - lastPlayTime < minIntervalMs) return;
+    if (now - lastPlayTime < minIntervalMs) {
+      return;
+    }
     lastPlayTime = now;
 
     const gain = audioCtx.createGain();
@@ -49,7 +53,9 @@ export const playMenuSoundsOnStoreChanges = () => {
       const currentMenus = getState().gameMenus.openMenus;
       const previousMenus = getOriginalState().gameMenus.openMenus;
 
-      if (selectIsSoundMuted(getState())) return;
+      if (selectIsSoundMuted(getState())) {
+        return;
+      }
 
       if (currentMenus.length !== previousMenus.length) {
         const isScrollOpen =
@@ -60,11 +66,18 @@ export const playMenuSoundsOnStoreChanges = () => {
       }
 
       // same stack length — check for selection change within the top menu
-      if (currentMenus.length === 0) return;
-      if (currentMenus[0].menuId !== previousMenus[0].menuId) return;
-      if (previousMenus[0].focussedItemId === undefined) return;
-      if (currentMenus[0].focussedItemId === previousMenus[0].focussedItemId)
+      if (currentMenus.length === 0) {
         return;
+      }
+      if (currentMenus[0].menuId !== previousMenus[0].menuId) {
+        return;
+      }
+      if (previousMenus[0].focussedItemId === undefined) {
+        return;
+      }
+      if (currentMenus[0].focussedItemId === previousMenus[0].focussedItemId) {
+        return;
+      }
 
       play(menuBuffer, scrollVolume);
     },

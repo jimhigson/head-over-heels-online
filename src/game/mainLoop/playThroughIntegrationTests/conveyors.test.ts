@@ -45,7 +45,7 @@ describe("conveyors", () => {
     });
 
     playGameThrough(gameState, {
-      until: 4_000,
+      until: 4000,
     });
     const {
       items: { portableBlock },
@@ -150,7 +150,7 @@ describe("conveyors", () => {
     });
 
     playGameThrough(gameState, {
-      until: 3_000,
+      until: 3000,
     });
 
     expect(heelsState(gameState).position).toMatchInlineSnapshot(`

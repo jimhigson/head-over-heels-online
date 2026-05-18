@@ -28,10 +28,14 @@ type LegacySavedGamesBlob = {
 };
 
 export const migrateLegacySavedGames = () => {
-  if (typeof window === "undefined" || !window.localStorage) return;
+  if (typeof window === "undefined" || !window.localStorage) {
+    return;
+  }
 
   const legacyRaw = window.localStorage.getItem(LEGACY_KEY);
-  if (legacyRaw === null) return;
+  if (legacyRaw === null) {
+    return;
+  }
 
   try {
     const legacyOuter = JSON.parse(legacyRaw) as Record<string, string>;

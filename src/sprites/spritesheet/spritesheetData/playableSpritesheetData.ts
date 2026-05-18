@@ -50,7 +50,7 @@ type WalkingAnimationId<
 export const playableWalkAnimationSpeed = 0.5;
 
 // head blinks every 5s in the original game
-const headBlinkPeriod = 5_000;
+const headBlinkPeriod = 5000;
 const heelsBlinkPeriod = headBlinkPeriod * 2;
 
 const standingTextureId = <P extends CharacterName>(

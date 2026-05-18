@@ -139,7 +139,7 @@ for (const spriteOption of enabledSpriteModes) {
 
             // Wait for main menu to appear (it opens automatically)
             await waitForDialog(page, "mainMenu", {
-              timeout: 5_000 * osSlowness,
+              timeout: 5000 * osSlowness,
             });
             await logSelectorExistence(
               page,

@@ -14,7 +14,9 @@ import { setupE2ePage } from "./testUtils/pageSetup";
 const getSavedGames = (page: Page) =>
   page.evaluate(() => {
     const store = window._e2e_store;
-    if (!store) throw new Error("E2E store not available");
+    if (!store) {
+      throw new Error("E2E store not available");
+    }
     const { savedGames } = store.getState();
     return {
       saveKeys: Object.keys(savedGames.saves),

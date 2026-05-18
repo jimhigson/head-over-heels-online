@@ -104,10 +104,12 @@ export const gameMain = async <RoomId extends string>(
     store.dispatch(gameRestoreFromSave(savedGameInPlay));
   } else {
     // starting a new game - the player has at least explored the rooms they start in:
-    if (gameState.characterRooms.head)
+    if (gameState.characterRooms.head) {
       store.dispatch(roomExplored(gameState.characterRooms.head.id));
-    if (gameState.characterRooms.heels)
+    }
+    if (gameState.characterRooms.heels) {
       store.dispatch(roomExplored(gameState.characterRooms.heels.id));
+    }
   }
 
   const loop = new MainLoop(app, gameState).start();

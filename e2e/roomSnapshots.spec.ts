@@ -133,7 +133,9 @@ const startOriginalGame = async (page: Page, projectName: string) => {
       console.log(
         `${formattedName} ${elapsed()}: goto took ${formatDuration(performance.now() - stepStart)}`,
       );
-      if (cancelled) return;
+      if (cancelled) {
+        return;
+      }
 
       // start a game:
       console.log(`${formattedName} ${elapsed()}: clicking Play The Game...`);
@@ -143,14 +145,18 @@ const startOriginalGame = async (page: Page, projectName: string) => {
       console.log(
         `${formattedName} ${elapsed()}: logSelectorExistence (playGame) took ${formatDuration(performance.now() - stepStart)}`,
       );
-      if (cancelled) return;
+      if (cancelled) {
+        return;
+      }
 
       stepStart = performance.now();
       await page.click(playGameMenuItemSelector);
       console.log(
         `${formattedName} ${elapsed()}: click (playGame) took ${formatDuration(performance.now() - stepStart)}`,
       );
-      if (cancelled) return;
+      if (cancelled) {
+        return;
+      }
 
       // select original campaign:
       console.log(
@@ -161,7 +167,9 @@ const startOriginalGame = async (page: Page, projectName: string) => {
       console.log(
         `${formattedName} ${elapsed()}: logSelectorExistence (originalGame) took ${formatDuration(performance.now() - stepStart)}`,
       );
-      if (cancelled) return;
+      if (cancelled) {
+        return;
+      }
 
       stepStart = performance.now();
       await page.click(originalGameSelector);
@@ -224,7 +232,7 @@ const gameRunsAtZeroSpeed = async (page: Page, projectName: string) => {
     },
     async recovery() {
       // Wait a bit for the game to initialize
-      await page.waitForTimeout(2_000);
+      await page.waitForTimeout(2000);
     },
     logHeader: formattedName,
     actionDescription: "set game speed to zero",

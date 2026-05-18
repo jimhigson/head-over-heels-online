@@ -146,7 +146,7 @@ export const maximumSpeedCoefficient = 1.5;
 
 // n px per frame in original game;
 const pxPerFrameSpeed = (pxPerFrame: number = 1) =>
-  (pxPerFrame * zxSpectrumFrameRate) / 1_000;
+  (pxPerFrame * zxSpectrumFrameRate) / 1000;
 
 export const conveyorSpeedPixPerMs = pxPerFrameSpeed();
 
@@ -185,7 +185,7 @@ export const switchCharacterHighlightTime = 750;
  * just long enough to not allow a skip in #blacktooth80 in the original
  * campaign
  */
-export const afterDeathInvulnerabilityTime = 1_500;
+export const afterDeathInvulnerabilityTime = 1500;
 /** how quickly to flash after dying? */
 export const afterDeathInvulnerabilityFlashPeriod = 200;
 /** how long to flash for, as a fraction of the flash period */

@@ -49,14 +49,14 @@ test.describe("Sprites page", () => {
   });
 
   test("Individual sprite snapshots", async ({ page }, testInfo) => {
-    test.setTimeout(5 * 60 * 1_000); // Long timeout for many snapshots
+    test.setTimeout(5 * 60 * 1000); // Long timeout for many snapshots
 
     // loading at a larger size (8x) makes the diffs easier to view in the playwright report,
     // since it doesn't scale up small images
     await page.goto("/sprites?scale=1&track=0");
 
     // Wait for the e2e-snapshot-target container first
-    await page.waitForSelector(".e2e-snapshot-target", { timeout: 5_000 });
+    await page.waitForSelector(".e2e-snapshot-target", { timeout: 5000 });
 
     // Get all sprite elements with data-texture-id attribute
     const textureIds = (await page

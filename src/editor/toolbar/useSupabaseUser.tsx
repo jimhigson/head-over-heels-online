@@ -15,14 +15,18 @@ export const useSupabaseUser = () => {
 
     const init = async () => {
       const { supabaseDb } = await importSupabaseDb();
-      if (cancelled) return;
+      if (cancelled) {
+        return;
+      }
 
       // Get initial user
       const {
         data: { user },
       } = await supabaseDb.auth.getUser();
 
-      if (cancelled) return;
+      if (cancelled) {
+        return;
+      }
 
       setUser(user);
 

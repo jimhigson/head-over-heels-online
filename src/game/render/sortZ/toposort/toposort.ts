@@ -48,7 +48,9 @@ export const toposort = <N>(graph: ZGraph<N>): N[] => {
   const nodeIndexLookup = makeNodeIndexLookup(nodes);
 
   while (i--) {
-    if (!visited[i]) visit(nodes[i], i, new Set(), null);
+    if (!visited[i]) {
+      visit(nodes[i], i, new Set(), null);
+    }
   }
 
   return sorted;
@@ -92,7 +94,9 @@ export const toposort = <N>(graph: ZGraph<N>): N[] => {
       return; // Skip this node since we're breaking the edge
     }
 
-    if (visited[i]) return;
+    if (visited[i]) {
+      return;
+    }
     visited[i] = true;
 
     const sourceMap = graph.get(node);

@@ -8,7 +8,9 @@ export function* cycle<T>(iterable: Iterable<T>): Generator<T> {
     items.push(item);
     yield item;
   }
-  if (items.length === 0) return;
+  if (items.length === 0) {
+    return;
+  }
   for (;;) {
     yield* items;
   }

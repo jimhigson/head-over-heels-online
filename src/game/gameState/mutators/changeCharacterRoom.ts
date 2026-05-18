@@ -591,8 +591,9 @@ export function changeCharacterRoom<
         playableItem.state.facing = playableItem.state.visualFacingVector =
           scaleXyz(portalDirection, -1);
 
-        if (playableItem.state.action === "idle")
+        if (playableItem.state.action === "idle") {
           playableItem.state.action = "moving";
+        }
 
         backOffAndPushBack(playableItem, portalDirection, gameState, toRoom);
 

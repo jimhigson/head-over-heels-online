@@ -82,14 +82,13 @@ const selectSubRoomStartAndEnd = (
     }
 
     return floorsExtent;
-  } else {
-    if (!roomJson.meta?.subRooms) {
-      throw new Error(
-        `no subrooms in ${roomJson.id} when trying to get start and end for subroom ${subRoomId}`,
-      );
-    }
-    return roomJson.meta.subRooms[subRoomId].physicalPosition;
   }
+  if (!roomJson.meta?.subRooms) {
+    throw new Error(
+      `no subrooms in ${roomJson.id} when trying to get start and end for subroom ${subRoomId}`,
+    );
+  }
+  return roomJson.meta.subRooms[subRoomId].physicalPosition;
 };
 
 /** for showing notable items in non-loaded rooms on the map */

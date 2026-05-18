@@ -14,7 +14,9 @@ export const useElementSize = <T extends Element>() => {
 
   useEffect(() => {
     const el = ref.current;
-    if (el === null) return;
+    if (el === null) {
+      return;
+    }
     const ro = new ResizeObserver(([entry]) => {
       const { width, height } = entry.contentRect;
       setSize({ width, height });

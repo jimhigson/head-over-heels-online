@@ -55,7 +55,9 @@ export const MenuButton = ({
                         key={index}
                         className="leading-none"
                         onClick={() => {
-                          if (closeOnSelect) setOpen(false);
+                          if (closeOnSelect) {
+                            setOpen(false);
+                          }
                         }}
                       >
                         {child}

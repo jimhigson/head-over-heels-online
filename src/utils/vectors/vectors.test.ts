@@ -125,8 +125,8 @@ describe("vectorClosestDirectionXy4", () => {
 
     [{ x: 0, y: 0 }, undefined],
     // eg: floating point errors:
-    [{ x: 0.0000001, y: 0.0000001 }, undefined],
-    [{ x: -0.0000001, y: -0.0000001 }, undefined],
+    [{ x: 0.000_000_1, y: 0.000_000_1 }, undefined],
+    [{ x: -0.000_000_1, y: -0.000_000_1 }, undefined],
   ] satisfies Array<
     [
       Parameters<typeof vectorClosestDirectionXy4>[0],
@@ -139,15 +139,15 @@ describe("vectorClosestDirectionXy4", () => {
 
 describe("xyzSnapIfCloseToIntegers", () => {
   test("does not snap if not very close", () => {
-    const input = { x: 0, y: 59.835000000000036, z: 0 };
+    const input = { x: 0, y: 59.835_000_000_000_036, z: 0 };
     const result = xyzSnapIfCloseToIntegers(input);
     expect(result).toEqual(input);
   });
 
   test("can snap one ordinal and not the others", () => {
-    const input = { x: 0.000001, y: 59.835000000000036, z: 0 };
+    const input = { x: 0.000_001, y: 59.835_000_000_000_036, z: 0 };
     const result = xyzSnapIfCloseToIntegers(input);
-    expect(result).toEqual({ x: 0, y: 59.835000000000036, z: 0 });
+    expect(result).toEqual({ x: 0, y: 59.835_000_000_000_036, z: 0 });
   });
 });
 

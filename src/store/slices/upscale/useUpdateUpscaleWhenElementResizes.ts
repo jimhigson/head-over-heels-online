@@ -32,10 +32,9 @@ export const useUpdateUpscaleWhenElementResizes = (
       const resizeObserver = new ResizeObserver(handler);
       resizeObserver.observe(targetElement);
       return () => resizeObserver.disconnect();
-    } else {
-      // on every resize, update the store with the correct size:
-      window.addEventListener("resize", handler);
-      return () => window.removeEventListener("resize", handler);
     }
+    // on every resize, update the store with the correct size:
+    window.addEventListener("resize", handler);
+    return () => window.removeEventListener("resize", handler);
   }, [dispatch, targetElement, fixedEmulatedResolution]);
 };

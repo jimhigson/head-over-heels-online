@@ -20,8 +20,12 @@ const getDestroyedIssue = (container: Container): string | undefined => {
   }
   if (container instanceof Sprite) {
     const { texture } = container;
-    if (texture.destroyed) return "texture destroyed";
-    if (texture.source?.destroyed) return "texture source destroyed";
+    if (texture.destroyed) {
+      return "texture destroyed";
+    }
+    if (texture.source?.destroyed) {
+      return "texture source destroyed";
+    }
   }
   return undefined;
 };
@@ -32,7 +36,9 @@ const describeDestroyedNode = (
   context: string,
 ): string | undefined => {
   const issue = getDestroyedIssue(container);
-  if (issue === undefined) return undefined;
+  if (issue === undefined) {
+    return undefined;
+  }
   return `${context} (${issue}):\n  ${getAncestryPath(container, root)}`;
 };
 
@@ -41,11 +47,15 @@ const describeDestroyedFilters = (
   root: Container,
 ): string[] => {
   const { filters } = container;
-  if (filters === null || filters === undefined) return [];
+  if (filters === null || filters === undefined) {
+    return [];
+  }
 
   const issues: string[] = [];
   for (const filter of filters) {
-    if (!filter.enabled) continue;
+    if (!filter.enabled) {
+      continue;
+    }
     if (filter._destroyed) {
       issues.push(
         `Destroyed filter found:\n  ${getAncestryPath(container, root)}`,
@@ -83,7 +93,9 @@ const collectIssues = (
   issues.push(...describeDestroyedFilters(container, root));
 
   for (const child of container.children) {
-    if (!child.visible) continue;
+    if (!child.visible) {
+      continue;
+    }
     collectIssues(child as Container, root, issues);
   }
 };

@@ -58,7 +58,9 @@ export const lightlySnapXy4 = (
 ): Xyz => {
   const { x, y } = vector;
   const magnitude = Math.sqrt(x * x + y * y);
-  if (magnitude === 0) return originXyz; // Handle zero vector case
+  if (magnitude === 0) {
+    return originXyz;
+  } // Handle zero vector case
 
   // Normalize vector
   const normX = x / magnitude;

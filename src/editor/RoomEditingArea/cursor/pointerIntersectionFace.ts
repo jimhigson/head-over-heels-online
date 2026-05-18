@@ -69,9 +69,8 @@ export const pointerIntersectionFace = (
     const aboveYLine = y < topRight.y - (x - topRight.x) / 2;
 
     return aboveYLine ? up : right;
-  } else {
-    const leftOfZLine = x < bottomCentre.x;
-
-    return leftOfZLine ? towards : right;
   }
+  const leftOfZLine = x < bottomCentre.x;
+
+  return leftOfZLine ? towards : right;
 };

@@ -13,7 +13,7 @@ import {
   toppyReplacementColour,
 } from "../gameColours/gameColours";
 
-const noTint = new Color(0xffffff);
+const noTint = new Color(0xff_ff_ff);
 
 export const spritesheetVariantForHud = (
   spriteOption: SpriteOption,

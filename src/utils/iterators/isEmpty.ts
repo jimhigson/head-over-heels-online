@@ -5,7 +5,11 @@
 export const isEmpty = (
   iterable: Iterable<unknown> | null | undefined,
 ): boolean => {
-  if (iterable == null) return true;
-  for (const _ of iterable) return false;
+  if (iterable == null) {
+    return true;
+  }
+  for (const _ of iterable) {
+    return false;
+  }
   return true;
 };

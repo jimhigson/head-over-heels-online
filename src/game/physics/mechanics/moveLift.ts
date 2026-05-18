@@ -48,32 +48,26 @@ const calculateVelocity = ({
     if (currentVelocity < maxLiftSpeed) {
       // Accelerate
       return Math.min(maxLiftSpeed, currentVelocity + maxLiftAcc * deltaMS);
-    } else {
-      // Cruise
-      return maxLiftSpeed;
     }
-  } else {
-    // Target is the bottom
-    const distanceToTarget = z - lowestZ;
-
-    // Close to target - deceleration phase (based on distance only)
-    if (distanceToTarget <= dAccel) {
-      const dRemaining = Math.max(0, distanceToTarget);
-      return Math.min(
-        -epsilonVelocity,
-        -Math.sqrt(2 * maxLiftAcc * dRemaining),
-      );
-    }
-
-    // Not close to target - acceleration/cruising based on current velocity
-    if (currentVelocity > -maxLiftSpeed) {
-      // Accelerate (in negative direction)
-      return Math.max(-maxLiftSpeed, currentVelocity - maxLiftAcc * deltaMS);
-    } else {
-      // Cruise
-      return -maxLiftSpeed;
-    }
+    // Cruise
+    return maxLiftSpeed;
   }
+  // Target is the bottom
+  const distanceToTarget = z - lowestZ;
+
+  // Close to target - deceleration phase (based on distance only)
+  if (distanceToTarget <= dAccel) {
+    const dRemaining = Math.max(0, distanceToTarget);
+    return Math.min(-epsilonVelocity, -Math.sqrt(2 * maxLiftAcc * dRemaining));
+  }
+
+  // Not close to target - acceleration/cruising based on current velocity
+  if (currentVelocity > -maxLiftSpeed) {
+    // Accelerate (in negative direction)
+    return Math.max(-maxLiftSpeed, currentVelocity - maxLiftAcc * deltaMS);
+  }
+  // Cruise
+  return -maxLiftSpeed;
 };
 
 /**
@@ -115,7 +109,9 @@ export const moveLift: Mechanic<"lift"> = <
     deltaMS,
   });
 
-  if (Number.isNaN(velocity)) throw new Error("velocity is NaN");
+  if (Number.isNaN(velocity)) {
+    throw new Error("velocity is NaN");
+  }
 
   const mewDirection: "down" | "up" =
     z <= lowestZ ? "up"

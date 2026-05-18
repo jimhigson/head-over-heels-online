@@ -83,7 +83,9 @@ export const Switch = ({
           key={`${value}`}
           autoPlay
           ref={(el) => {
-            if (el) el.volume = uiSoundVolume;
+            if (el) {
+              el.volume = uiSoundVolume;
+            }
           }}
         />
       )}
@@ -201,7 +203,9 @@ export const SwitchN = <TValue extends number | string>({
           key={`${value}`}
           autoPlay
           ref={(el) => {
-            if (el) el.volume = uiSoundVolume;
+            if (el) {
+              el.volume = uiSoundVolume;
+            }
           }}
         />
       )}

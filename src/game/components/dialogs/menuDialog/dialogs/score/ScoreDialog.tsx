@@ -43,7 +43,7 @@ type ScoreThreshold = {
 
 // Thresholds from original game as proportions of the original game's max score
 const scoreThresholds: ScoreThreshold[] = [
-  { upToProportion: 8_000 / ORIGINAL_GAME_MAX_SCORE, label: "beginner" }, // ~0.085
+  { upToProportion: 8000 / ORIGINAL_GAME_MAX_SCORE, label: "beginner" }, // ~0.085
   { upToProportion: 20_000 / ORIGINAL_GAME_MAX_SCORE, label: "novice" }, // ~0.213
   { upToProportion: 30_000 / ORIGINAL_GAME_MAX_SCORE, label: "spy" }, // ~0.319
   { upToProportion: 55_000 / ORIGINAL_GAME_MAX_SCORE, label: "master-spy" }, // ~0.585
@@ -56,7 +56,9 @@ const getScoreLabel = (score: number, maxScore: number): string => {
   const proportion = score / maxScore;
 
   for (const { upToProportion, label } of scoreThresholds) {
-    if (proportion < upToProportion) return label;
+    if (proportion < upToProportion) {
+      return label;
+    }
   }
   // This should never be reached due to Infinity threshold
   return "completionist";

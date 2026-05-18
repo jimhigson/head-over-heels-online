@@ -43,7 +43,7 @@ const printableString = (input: PokeableNumber | string): string => {
   );
 };
 
-const white: Color = new Color(0xffffff);
+const white: Color = new Color(0xff_ff_ff);
 const flashDurationMs = 100;
 
 export type TextContainerOptions = {

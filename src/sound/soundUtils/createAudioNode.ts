@@ -43,7 +43,7 @@ export const createAudioNode = (
 
   const startTime =
     randomDelayMaxMs > 0 ?
-      audioCtx.currentTime + (Math.random() * randomDelayMaxMs) / 1_000
+      audioCtx.currentTime + (Math.random() * randomDelayMaxMs) / 1000
     : 0;
 
   if (loop && randomiseStartPoint) {
@@ -54,6 +54,8 @@ export const createAudioNode = (
     node.start(startTime);
   }
 
-  if (connectTo !== undefined) node.connect(connectTo);
+  if (connectTo !== undefined) {
+    node.connect(connectTo);
+  }
   return node;
 };

@@ -93,7 +93,9 @@ export const getCurrentRoomId = async (
 ): Promise<string | undefined> =>
   page.evaluate(() => {
     const state = window._e2e_gamePageGameAi?.gameState;
-    if (!state) return undefined;
+    if (!state) {
+      return undefined;
+    }
     return state.characterRooms[state.currentCharacterName]?.id;
   });
 

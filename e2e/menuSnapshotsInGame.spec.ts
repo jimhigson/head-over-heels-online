@@ -62,7 +62,7 @@ for (const spriteOption of enabledSpriteModes) {
 
             // Wait for main menu to appear
             await waitForDialog(page, "mainMenu", {
-              timeout: 5_000 * osSlowness,
+              timeout: 5000 * osSlowness,
             });
 
             await page.waitForTimeout(500);
@@ -96,7 +96,7 @@ for (const spriteOption of enabledSpriteModes) {
               `${formattedName} ${elapsed()}: Waiting for crowns dialog`,
             );
             await waitForDialog(page, "crowns", {
-              timeout: 5_000 * osSlowness,
+              timeout: 5000 * osSlowness,
             });
             await logSelectorExistence(
               page,
@@ -142,7 +142,7 @@ for (const spriteOption of enabledSpriteModes) {
             await dispatchKeyPress(page, "m", "KeyM");
             await page.waitForTimeout(500);
 
-            await waitForDialog(page, "map", { timeout: 5_000 * osSlowness });
+            await waitForDialog(page, "map", { timeout: 5000 * osSlowness });
             await logSelectorExistence(
               page,
               '[data-dialog-id="map"]',
@@ -188,7 +188,7 @@ for (const spriteOption of enabledSpriteModes) {
             // Wait for the map dialog to disappear
             await waitForDialog(page, "map", {
               state: "detached",
-              timeout: 5_000 * osSlowness,
+              timeout: 5000 * osSlowness,
             });
             await page.waitForTimeout(500);
           },
@@ -214,7 +214,7 @@ for (const spriteOption of enabledSpriteModes) {
             await dispatchKeyPress(page, "p", "KeyP");
             await page.waitForTimeout(500);
 
-            await waitForDialog(page, "hold", { timeout: 5_000 * osSlowness });
+            await waitForDialog(page, "hold", { timeout: 5000 * osSlowness });
             await logSelectorExistence(
               page,
               '[data-dialog-id="hold"]',
@@ -259,7 +259,7 @@ for (const spriteOption of enabledSpriteModes) {
 
             await waitForDialog(page, "hold", {
               state: "detached",
-              timeout: 5_000 * osSlowness,
+              timeout: 5000 * osSlowness,
             });
             await page.waitForTimeout(500);
           },
@@ -305,7 +305,7 @@ for (const spriteOption of enabledSpriteModes) {
             await page.waitForTimeout(500);
 
             await waitForDialog(page, "score", {
-              timeout: 5_000 * osSlowness,
+              timeout: 5000 * osSlowness,
             });
             await logSelectorExistence(
               page,

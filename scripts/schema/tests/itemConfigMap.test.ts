@@ -153,13 +153,13 @@ describe("ItemConfigMap Pattern", { timeout }, () => {
       expect(unionTypes.length).toBe(3); // door, wall, conveyor
 
       // Each union member should have type, position, and config
-      unionTypes.forEach((memberType) => {
+      for (const memberType of unionTypes) {
         const props = memberType.getProperties();
         const propNames = props.map((p) => p.getName());
         expect(propNames).toContain("type");
         expect(propNames).toContain("position");
         expect(propNames).toContain("config");
-      });
+      }
     }
   });
 

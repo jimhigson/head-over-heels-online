@@ -44,7 +44,9 @@ const JsonRoomEditor = () => {
   // which of the possibly multiple models in monaco are we currently using?
   const path = `${currentlyEditingRoomId}.json`;
 
-  if (!monacoLoaded) return null;
+  if (!monacoLoaded) {
+    return null;
+  }
 
   return (
     <Editor

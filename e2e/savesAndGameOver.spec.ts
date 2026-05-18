@@ -16,14 +16,18 @@ import { setupE2ePage } from "./testUtils/pageSetup";
 const getSaveKeys = (page: Page) =>
   page.evaluate(() => {
     const store = window._e2e_store;
-    if (!store) throw new Error("E2E store not available");
+    if (!store) {
+      throw new Error("E2E store not available");
+    }
     return Object.keys(store.getState().savedGames.saves);
   });
 
 const getLastSavedCampaignName = (page: Page) =>
   page.evaluate(() => {
     const store = window._e2e_store;
-    if (!store) throw new Error("E2E store not available");
+    if (!store) {
+      throw new Error("E2E store not available");
+    }
     return store.getState().savedGames.lastSavedCampaignLocator?.campaignName;
   });
 
@@ -41,7 +45,7 @@ test.describe("save lifecycle around game over", () => {
       await startCampaignViaMenu(page, testInfo.project.name, "originalGame");
       // changing room dispatches a save, ensuring one exists before game-over
       await clickCheat(page, "cheats-goto-room-egyptus1");
-      await page.waitForTimeout(1_000 * osSlowness);
+      await page.waitForTimeout(1000 * osSlowness);
     });
 
     await test.step("Confirm a save was written for the original campaign", async () => {

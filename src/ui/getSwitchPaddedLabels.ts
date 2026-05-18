@@ -32,13 +32,10 @@ export const getSwitchPaddedLabels = (labels: readonly string[]): string[] => {
       // Last label is always right-aligned
       const spacesBeforeLabel = width - label.length;
       return " ".repeat(spacesBeforeLabel) + label;
-    } else {
-      // Each non-last label starts one character further right than the previous
-      const spacesBeforeLabel = index;
-      const spacesAfterLabel = width - label.length - spacesBeforeLabel;
-      return (
-        " ".repeat(spacesBeforeLabel) + label + " ".repeat(spacesAfterLabel)
-      );
     }
+    // Each non-last label starts one character further right than the previous
+    const spacesBeforeLabel = index;
+    const spacesAfterLabel = width - label.length - spacesBeforeLabel;
+    return " ".repeat(spacesBeforeLabel) + label + " ".repeat(spacesAfterLabel);
   });
 };

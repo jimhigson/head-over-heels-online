@@ -5,9 +5,13 @@
 export const size = (
   iterable: Iterable<unknown> | null | undefined,
 ): number => {
-  if (iterable == null) return 0;
+  if (iterable == null) {
+    return 0;
+  }
   let count = 0;
   // eslint-disable-next-line @typescript-eslint/no-unused-vars -- deliberately unused, just counting
-  for (const _unused of iterable) count++;
+  for (const _unused of iterable) {
+    count++;
+  }
   return count;
 };

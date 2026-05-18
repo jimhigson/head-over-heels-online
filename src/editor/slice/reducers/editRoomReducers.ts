@@ -230,9 +230,9 @@ export const editRoomReducers = {
 
     pushUndoInPlace(state);
 
-    state.selectedJsonItemIds.forEach((id) => {
+    for (const id of state.selectedJsonItemIds) {
       deleteItemInPlace(roomJson, id);
-    });
+    }
 
     state.selectedJsonItemIds = [];
 

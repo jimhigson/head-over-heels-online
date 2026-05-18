@@ -22,7 +22,9 @@ export const normalise = (
   if (min === max) {
     // When min equals max, the value is either at that exact point (return 0.5 as a reasonable choice)
     // or outside it (return +/- infinity based on which side)
-    if (x === min) return 0.5;
+    if (x === min) {
+      return 0.5;
+    }
     return x > min ? Number.POSITIVE_INFINITY : Number.NEGATIVE_INFINITY;
   }
 

@@ -329,12 +329,11 @@ export class GridSpatialIndex<
       // write into the existing object to avoid malloc
       projectAabbAxes(existing, pos, bb);
       return existing;
-    } else {
-      // don't already have in the cache so will have to create a new object
-      const allAxesProjections = projectAabbAxes({}, pos, bb);
-      this.#itemToProjectionAxesMap.set(i, allAxesProjections);
-      return allAxesProjections;
     }
+    // don't already have in the cache so will have to create a new object
+    const allAxesProjections = projectAabbAxes({}, pos, bb);
+    this.#itemToProjectionAxesMap.set(i, allAxesProjections);
+    return allAxesProjections;
   }
 
   /**

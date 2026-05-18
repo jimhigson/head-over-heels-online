@@ -39,7 +39,9 @@ const shortcutKeyRegex = /^(?<modifiers>[⇧⌘^⌥]*)(?<key>.+)$/;
 const hasDuplicateModifiers = (modifiers: string): boolean => {
   const seen = new Set<string>();
   for (const char of modifiers) {
-    if (seen.has(char)) return true;
+    if (seen.has(char)) {
+      return true;
+    }
     seen.add(char);
   }
   return false;
@@ -61,7 +63,9 @@ export const useKeyboardShortcut = (
   const shortcutKeysString = shortcutKeys?.join(" ");
 
   useEffect(() => {
-    if (!shortcutKeys || shortcutKeys.length === 0) return;
+    if (!shortcutKeys || shortcutKeys.length === 0) {
+      return;
+    }
 
     if (element === null) {
       return;
@@ -85,7 +89,9 @@ export const useKeyboardShortcut = (
 
       for (const shortcut of shortcutKeys) {
         const match = shortcut.match(shortcutKeyRegex);
-        if (!match || !match.groups) continue;
+        if (!match || !match.groups) {
+          continue;
+        }
 
         const { modifiers, key } = match.groups;
 

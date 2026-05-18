@@ -18,7 +18,7 @@ export type ZxSpectrumRoomColour = {
   shade: ZxSpectrumShade;
 };
 export const zxSpectrumFrameRate = 25; // machine did 50.08 or 50.02 :-) interlaced frames, hoh was at 25fps
-export const originalGameFrameDuration = 1_000 / zxSpectrumFrameRate;
+export const originalGameFrameDuration = 1000 / zxSpectrumFrameRate;
 
 export const resolutions = {
   // Amiga hires: in game, too many pixels, game doesn't fill enough of the screen

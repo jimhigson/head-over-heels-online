@@ -107,7 +107,7 @@ test.each(testFrameRates)(
     });
 
     playGameThrough(gameState, {
-      until: 1_500,
+      until: 1500,
       frameRate,
       setupInitialInput(mockInputStateTracker) {
         mockInputStateTracker.mockDirectionPressed = "towards";
@@ -155,7 +155,7 @@ test.each(testFrameRates)(
 
     playGameThrough(gameState, {
       // plenty of time to reach the floor:
-      until: 3_000,
+      until: 3000,
       frameRate,
       setupInitialInput(mockInputStateTracker) {
         mockInputStateTracker.mockDirectionPressed = "towards";
@@ -198,7 +198,7 @@ describe.each(testFrameRates)("max jump heights (%j)", (frameRate) => {
         let maxFoundHeight = Number.NEGATIVE_INFINITY;
         playGameThrough(gameState, {
           frameRate,
-          until: 3_000,
+          until: 3000,
           setupInitialInput(mockInputStateTracker) {
             mockInputStateTracker.mockDirectionPressed = "right";
             mockInputStateTracker.mockPressing("jump");
@@ -349,7 +349,7 @@ describe("springs", () => {
 
       playGameThrough(gameState, {
         frameRate,
-        until: 3_000,
+        until: 3000,
         setupInitialInput(mockInputStateTracker) {
           mockInputStateTracker.mockDirectionPressed = "right";
           mockInputStateTracker.mockPressing("jump");
@@ -392,7 +392,7 @@ describe("springs", () => {
 
       playGameThrough(gameState, {
         frameRate,
-        until: 3_000,
+        until: 3000,
         setupInitialInput(mockInputStateTracker) {
           mockInputStateTracker.mockDirectionPressed = "right";
           mockInputStateTracker.mockPressing("jump");
@@ -499,7 +499,7 @@ test.each(testFrameRates)(
     let highestItemZ = Number.NEGATIVE_INFINITY;
 
     playGameThrough(gameState, {
-      until: 3_000,
+      until: 3000,
       frameRate,
       setupInitialInput(mockInputStateTracker) {
         mockInputStateTracker.mockPressing("jump");
@@ -795,7 +795,7 @@ describe("jump grace", () => {
         mockInputStateTracker.mockPressing("jump");
         mockInputStateTracker.mockDirectionPressed = "towards";
       },
-      until: 5_000,
+      until: 5000,
     });
 
     expect(headState(gameState).lives).toBeLessThan(startLives as number);
@@ -847,7 +847,7 @@ test("heels can't refresh-jump off a door's portal or stopAutowalk", () => {
 
   playGameThrough(gameState, {
     frameRate,
-    until: 1_000,
+    until: 1000,
     setupInitialInput(mockInputStateTracker) {
       mockInputStateTracker.mockPressing("jump");
     },

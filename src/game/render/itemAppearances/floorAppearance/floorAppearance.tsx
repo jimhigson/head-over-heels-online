@@ -367,7 +367,7 @@ export const floorAppearance: ItemAppearance<"floor"> =
           // left
           .lineTo(tilesLeft.x, tilesLeft.y + 3)
           .lineTo(tilesLeft.x, tilesLeft.y)
-          .fill({ color: 0xff0000, alpha: 1 });
+          .fill({ color: 0xff_00_00, alpha: 1 });
 
         // firefox is fussy about using graphics as sprites, so pre-render to a sprite+texture
         // first:
@@ -411,7 +411,7 @@ export const floorAppearance: ItemAppearance<"floor"> =
 
             // bottom
             .lineTo(tilesBottom.x, tilesBottom.y + 10)
-            .fill(0x000000);
+            .fill(0x00_00_00);
           const overDrawFallenItemsGraphicSprite = renderContainerToSprite(
             pixiRenderer,
             overDrawFallenItemsGraphic,

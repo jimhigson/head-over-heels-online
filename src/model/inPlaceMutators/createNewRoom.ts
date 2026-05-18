@@ -50,8 +50,12 @@ export const createNewRoom = <RoomId extends string, RoomItemId extends string>(
       const coordStr = `${boundaryX},${roomOrigin.y + gridPos.y * roomSize.y}`;
       const leftWall = wallsIndex[coordStr]?.left;
       const rightWall = wallsIndex[coordStr]?.right;
-      if (leftWall) allItems.delete(leftWall);
-      if (rightWall) allItems.delete(rightWall);
+      if (leftWall) {
+        allItems.delete(leftWall);
+      }
+      if (rightWall) {
+        allItems.delete(rightWall);
+      }
     }
 
     if (hasBehindNeighbor) {
@@ -59,8 +63,12 @@ export const createNewRoom = <RoomId extends string, RoomItemId extends string>(
       const coordStr = `${roomOrigin.x + gridPos.x * roomSize.x},${boundaryY}`;
       const awayWall = wallsIndex[coordStr]?.away;
       const towardsWall = wallsIndex[coordStr]?.towards;
-      if (awayWall) allItems.delete(awayWall);
-      if (towardsWall) allItems.delete(towardsWall);
+      if (awayWall) {
+        allItems.delete(awayWall);
+      }
+      if (towardsWall) {
+        allItems.delete(towardsWall);
+      }
     }
   }
 

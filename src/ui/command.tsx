@@ -15,7 +15,9 @@ const Command = ({
       className,
     )}
     onKeyDown={(e) => {
-      if (e.key === "Escape") onClose?.();
+      if (e.key === "Escape") {
+        onClose?.();
+      }
     }}
     {...props}
   />

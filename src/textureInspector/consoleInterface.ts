@@ -13,13 +13,17 @@ import { getTextureMemory, getTrackedTextures } from "./textureData";
  * Format duration in "5m 2s 234ms" format
  */
 const formatDuration = (ms: number): string => {
-  const minutes = Math.floor(ms / 60000);
-  const seconds = Math.floor((ms % 60000) / 1000);
+  const minutes = Math.floor(ms / 60_000);
+  const seconds = Math.floor((ms % 60_000) / 1000);
   const milliseconds = ms % 1000;
 
   const parts: string[] = [];
-  if (minutes > 0) parts.push(`${minutes}m`);
-  if (seconds > 0) parts.push(`${seconds}s`);
+  if (minutes > 0) {
+    parts.push(`${minutes}m`);
+  }
+  if (seconds > 0) {
+    parts.push(`${seconds}s`);
+  }
   parts.push(`${milliseconds}ms`);
 
   return parts.join(" ");

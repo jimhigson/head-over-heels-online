@@ -31,9 +31,9 @@ export const createUncolourisedSpritesheet = (pixiRenderer: Renderer): void => {
         {
           lutType: "voronoi",
           swops: resolveSwops(paletteBlockstack, {
-            pureBlack: new Color(0x000000),
-            shadow: new Color(0xffffff),
-            redShadow: new Color(0xffffff),
+            pureBlack: new Color(0x00_00_00),
+            shadow: new Color(0xff_ff_ff),
+            redShadow: new Color(0xff_ff_ff),
           }),
         },
       ],

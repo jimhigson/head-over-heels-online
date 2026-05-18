@@ -50,7 +50,7 @@ test("player pushes a block until reaching an obstruction", () => {
     setupInitialInput(mockInputStateTracker) {
       mockInputStateTracker.mockDirectionPressed = "away";
     },
-    until: 2_000,
+    until: 2000,
   });
 
   expect(itemState(gameState, "somethingToPush")?.position.y).toBe(
@@ -119,7 +119,7 @@ test("can push multiple blocks in a row", () => {
     setupInitialInput(mockInputStateTracker) {
       mockInputStateTracker.mockDirectionPressed = "away";
     },
-    until: 2_000,
+    until: 2000,
   });
 
   expect(itemState(gameState, "somethingToPush2")?.position.y).toBe(
@@ -180,7 +180,7 @@ test("can not push a charging cyberman", () => {
     setupInitialInput(mockInputStateTracker) {
       mockInputStateTracker.mockDirectionPressed = "left";
     },
-    until: 2_000,
+    until: 2000,
   });
 
   expect(itemState(gameState, "cyberman")?.position.x).toBe(

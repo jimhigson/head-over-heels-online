@@ -326,7 +326,9 @@ const consolidateItemsSinglePass = (
         }
       }
 
-      if (foundBlockingItem) return false;
+      if (foundBlockingItem) {
+        return false;
+      }
 
       // Check if we found any new items beyond what we already have
       let hasNewItems = false;
@@ -338,7 +340,9 @@ const consolidateItemsSinglePass = (
       }
 
       // Can only expand if we found new items to consolidate
-      if (!hasNewItems) return false;
+      if (!hasNewItems) {
+        return false;
+      }
 
       // For each unique item in the region, verify we have all its cells
       for (const regionItem of itemsInNewRegion) {
@@ -510,21 +514,29 @@ const consolidateItemsSinglePass = (
             // these walls have size defined by tile count - no need to set times
             break;
           case "towards":
-            if (xTimes !== 1)
+            if (xTimes !== 1) {
               (newConfig as TowardsWallConfig).times = { x: xTimes };
+            }
             break;
           case "right":
-            if (yTimes !== 1)
+            if (yTimes !== 1) {
               (newConfig as RightWallConfig).times = { y: yTimes };
+            }
             break;
         }
       } else {
         const newTimes = {
           ...optimiseTimesXyz(getJsonItemTimes(originalItem)),
         } as Xyz;
-        if (xTimes !== 1) newTimes.x = xTimes;
-        if (yTimes !== 1) newTimes.y = yTimes;
-        if (zTimes !== 1) newTimes.z = zTimes;
+        if (xTimes !== 1) {
+          newTimes.x = xTimes;
+        }
+        if (yTimes !== 1) {
+          newTimes.y = yTimes;
+        }
+        if (zTimes !== 1) {
+          newTimes.z = zTimes;
+        }
         (newConfig as { times: Xyz }).times = newTimes;
       }
 

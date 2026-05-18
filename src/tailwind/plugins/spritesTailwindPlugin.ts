@@ -447,10 +447,14 @@ export const spritesTailwindPlugin = plugin(
           [bsFrames, perSheetData.BlockStack] as const,
           [toppyFrames, perSheetData.Toppy] as const,
         ]) {
-          if (!frames || !sheetData) continue;
+          if (!frames || !sheetData) {
+            continue;
+          }
           for (const id of frames) {
             const frame = sheetData.frames[id];
-            if (frame) variantFrameXYs.push(frame.frame);
+            if (frame) {
+              variantFrameXYs.push(frame.frame);
+            }
           }
         }
         const [firstVariantFrame] = variantFrameXYs;
@@ -464,7 +468,9 @@ export const spritesTailwindPlugin = plugin(
           sheetData: ReturnType<typeof makeSpritesheetData>,
           sheetPrefix: string,
         ): Record<string, unknown> => {
-          if (frames === undefined) return {};
+          if (frames === undefined) {
+            return {};
+          }
 
           assignKeyframesToUtility(
             frames,

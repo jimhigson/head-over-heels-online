@@ -28,9 +28,8 @@ const spriteOptions = (
       paused,
       spritesheet,
     };
-  } else {
-    return { textureId: `${name}.walking.${direction}.2`, spritesheet };
   }
+  return { textureId: `${name}.walking.${direction}.2`, spritesheet };
 };
 
 export const sceneryPlayerAppearance: ItemAppearance<"sceneryPlayer"> = ({

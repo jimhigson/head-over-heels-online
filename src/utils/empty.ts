@@ -24,6 +24,8 @@ emptyMap.delete = () => {
 export const emptyObject = Object.freeze({});
 
 export const isEmptyObject = (obj: object): boolean => {
-  for (const _ in obj) return false;
+  for (const _ in obj) {
+    return false;
+  }
   return true;
 };

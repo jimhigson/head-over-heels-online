@@ -147,7 +147,9 @@ export const GamePage = () => {
 
   usePageAsAnApp();
   useEffect(() => {
-    if (renderArea === null || gameApi === undefined) return;
+    if (renderArea === null || gameApi === undefined) {
+      return;
+    }
 
     gameApi.renderIn(renderArea);
 

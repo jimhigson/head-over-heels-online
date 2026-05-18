@@ -43,7 +43,9 @@ export const pickingUp = <RoomId extends string, RoomItemId extends string>(
   for (const portableItem of portableRoomItemsIter) {
     portableItem.state.wouldPickUpNext = false;
   }
-  if (itemToPickup !== undefined) itemToPickup.state.wouldPickUpNext = true;
+  if (itemToPickup !== undefined) {
+    itemToPickup.state.wouldPickUpNext = true;
+  }
 
   const currentCarryPress = inputStateTracker.currentActionPress("carry");
   const hasCarryInput = currentCarryPress !== "released";

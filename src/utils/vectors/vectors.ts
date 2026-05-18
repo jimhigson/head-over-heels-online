@@ -293,9 +293,8 @@ export const xyzSnapIfCloseToIntegers = (input: Xyz): Xyz => {
       y: yNeedsCorrect ? yNearest : y,
       z: zNeedsCorrect ? zNearest : z,
     };
-  } else {
-    return input;
   }
+  return input;
 };
 
 export const isExactIntegerXyz = ({ x = 0, y = 0, z = 0 }: Partial<Xyz>) =>
@@ -356,16 +355,13 @@ export const vectorClosestDirectionXy4 = ({
   if (y > x) {
     if (y > -x) {
       return "away";
-    } else {
-      return "right";
     }
-  } else {
-    if (y > -x) {
-      return "left";
-    } else {
-      return "towards";
-    }
+    return "right";
   }
+  if (y > -x) {
+    return "left";
+  }
+  return "towards";
 };
 
 const directionsXy8Octants: DirectionXy8[] = [
@@ -428,7 +424,9 @@ export const areInSameDirection = (
   const dot = v1.x * v2.x + v1.y * v2.y + v1.z * v2.z;
 
   // Early exit if dot product is negative or zero
-  if (dot <= 0) return false;
+  if (dot <= 0) {
+    return false;
+  }
 
   // Check if parallel: |v1 · v2| = |v1| * |v2|
   const mag1Sq = v1.x * v1.x + v1.y * v1.y + v1.z * v1.z;

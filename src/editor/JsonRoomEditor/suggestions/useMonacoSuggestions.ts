@@ -96,9 +96,8 @@ export const useMonacoSuggestions = () => {
               };
             }),
           };
-        } else {
-          return { suggestions: [] };
         }
+        return { suggestions: [] };
       },
     });
   }, [monaco]);

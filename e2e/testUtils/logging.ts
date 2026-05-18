@@ -5,10 +5,10 @@ export const formatDuration = (ms: number): string => {
   if (ms < 1000) {
     return `${ms.toFixed(0)}ms`;
   }
-  if (ms < 60000) {
+  if (ms < 60_000) {
     return `${(ms / 1000).toFixed(2)}s`;
   }
-  return `${(ms / 60000).toFixed(1)}min`;
+  return `${(ms / 60_000).toFixed(1)}min`;
 };
 
 export const logSelectorExistence = async (
@@ -246,10 +246,10 @@ const testStartTime = performance.now();
 
 export const elapsed = (): string => {
   const ms = performance.now() - testStartTime;
-  const totalSeconds = Math.floor(ms / 1_000);
+  const totalSeconds = Math.floor(ms / 1000);
   const minutes = Math.floor(totalSeconds / 60);
   const seconds = totalSeconds % 60;
-  const millis = Math.floor(ms % 1_000);
+  const millis = Math.floor(ms % 1000);
   return chalk.gray(
     `${String(minutes).padStart(2, "0")}:${String(seconds).padStart(2, "0")}.${String(millis).padStart(3, "0")}`,
   );

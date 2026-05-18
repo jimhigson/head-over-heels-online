@@ -36,18 +36,17 @@ export const convertRoomDimensions = (
       );
 
     return { x: xMax - xMin + 1, y: yMax - yMin + 1 };
-  } else {
-    const y =
-      parseInt(yTiles) -
-      // the xml gives the room an extra tiles for the doors to fit on:
-      (sidesWithDoors.towards ? 1 : 0) -
-      (sidesWithDoors.away ? 1 : 0);
-    const x =
-      parseInt(xTiles) -
-      // the xml gives the room an extra tiles for the doors to fit on:
-      (sidesWithDoors.left ? 1 : 0) -
-      (sidesWithDoors.right ? 1 : 0);
-
-    return { x, y };
   }
+  const y =
+    parseInt(yTiles) -
+    // the xml gives the room an extra tiles for the doors to fit on:
+    (sidesWithDoors.towards ? 1 : 0) -
+    (sidesWithDoors.away ? 1 : 0);
+  const x =
+    parseInt(xTiles) -
+    // the xml gives the room an extra tiles for the doors to fit on:
+    (sidesWithDoors.left ? 1 : 0) -
+    (sidesWithDoors.right ? 1 : 0);
+
+  return { x, y };
 };

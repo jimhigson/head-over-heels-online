@@ -47,7 +47,9 @@ export const getAmbientSwoppedColour = <ColourName extends string>(
 ): Color => {
   const keyColour = palette[colourName];
 
-  if (ambient === undefined) return keyColour;
+  if (ambient === undefined) {
+    return keyColour;
+  }
 
   for (const swop of ambient) {
     const swoppedColor = swop.swops.get(keyColour);

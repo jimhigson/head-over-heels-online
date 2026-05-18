@@ -58,7 +58,9 @@ const blobUrlCache = new Map<string, string>();
 
 const dataUrlToBlobUrl = (dataUrl: string): string => {
   const cached = blobUrlCache.get(dataUrl);
-  if (cached) return cached;
+  if (cached) {
+    return cached;
+  }
   const [header, base64] = dataUrl.split(",");
   const type = header.slice(header.indexOf(":") + 1, header.indexOf(";"));
   const binary = atob(base64);

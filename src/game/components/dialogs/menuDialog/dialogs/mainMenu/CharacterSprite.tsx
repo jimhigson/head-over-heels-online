@@ -113,7 +113,9 @@ export const CharacterSprite = ({
           autoPlay
           loop
           ref={(el) => {
-            if (el) el.volume = walkGain;
+            if (el) {
+              el.volume = walkGain;
+            }
           }}
         />
       )}

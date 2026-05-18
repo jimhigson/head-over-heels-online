@@ -31,8 +31,12 @@ const hasAdjacency = (indices: number[]): boolean =>
   );
 
 const combinations = <T>(arr: T[], k: number): T[][] => {
-  if (k === 0) return [[]];
-  if (arr.length < k) return [];
+  if (k === 0) {
+    return [[]];
+  }
+  if (arr.length < k) {
+    return [];
+  }
   const [head, ...tail] = arr;
   return [
     ...combinations(tail, k),
@@ -41,7 +45,9 @@ const combinations = <T>(arr: T[], k: number): T[][] => {
 };
 
 const permutations = <T>(arr: T[]): T[][] => {
-  if (arr.length <= 1) return [arr];
+  if (arr.length <= 1) {
+    return [arr];
+  }
   return arr.flatMap((v, i) =>
     permutations([...arr.slice(0, i), ...arr.slice(i + 1)]).map((p) => [
       v,

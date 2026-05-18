@@ -618,7 +618,7 @@ edit the json to choose:
       type: "emitter",
       config: {
         emits: { type: "firedDoughnut", config: { direction: "left" } },
-        period: 4_000,
+        period: 4000,
         maximum: 10,
       },
     },
@@ -633,7 +633,7 @@ edit the json to choose:
     itemTool: {
       type: "timer",
       config: {
-        period: 2_000,
+        period: 2000,
         initialSetting: "left",
         modifies: [],
       },

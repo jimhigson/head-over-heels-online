@@ -66,18 +66,20 @@ test.describe("life and death flows", () => {
     );
     await roomItem.scrollIntoViewIfNeeded();
     await roomItem.click();
-    await page.waitForTimeout(1_000 * osSlowness);
+    await page.waitForTimeout(1000 * osSlowness);
     await openButton.click();
     await cheatsMenu.waitFor({ state: "hidden" });
-    await page.waitForTimeout(1_000 * osSlowness);
+    await page.waitForTimeout(1000 * osSlowness);
 
     await clickCheat(page, "cheats-summon-character-head");
-    await page.waitForTimeout(1_000 * osSlowness);
+    await page.waitForTimeout(1000 * osSlowness);
 
     await page.waitForFunction(
       () => {
         const state = window._e2e_gamePageGameAi?.gameState;
-        if (!state) return false;
+        if (!state) {
+          return false;
+        }
         const room = state.characterRooms[state.currentCharacterName];
         const head = room?.items.head;
         return head?.state.standingOnItemId === "heels";
@@ -86,7 +88,7 @@ test.describe("life and death flows", () => {
       { timeout: 15_000 * osSlowness },
     );
 
-    await page.waitForTimeout(3_000);
+    await page.waitForTimeout(3000);
 
     // switch to symbiosis:
     await dispatchKeyPress(page, "Enter", "Enter");
@@ -95,13 +97,13 @@ test.describe("life and death flows", () => {
         window._e2e_gamePageGameAi?.gameState.currentCharacterName ===
         "headOverHeels",
       undefined,
-      { timeout: 5_000 * osSlowness },
+      { timeout: 5000 * osSlowness },
     );
 
     await holdKeysForDuration(
       page,
       ["ArrowDown", "ArrowLeft"],
-      1_000 * osSlowness,
+      1000 * osSlowness,
     );
     await page.waitForTimeout(10_000 * osSlowness);
 
@@ -132,7 +134,7 @@ test.describe("life and death flows", () => {
   }, testInfo) => {
     await startCampaignViaMenu(page, testInfo.project.name, "originalGame");
     await clickCheat(page, "cheats-summon-reincarnation");
-    await page.waitForTimeout(2_000 * osSlowness);
+    await page.waitForTimeout(2000 * osSlowness);
 
     await loseAllLives(page);
     await waitForDialog(page, "score");
@@ -148,9 +150,9 @@ test.describe("life and death flows", () => {
   }, testInfo) => {
     await startCampaignViaMenu(page, testInfo.project.name, "originalGame");
     await clickCheat(page, "cheats-goto-room-egyptus1");
-    await page.waitForTimeout(1_000 * osSlowness);
+    await page.waitForTimeout(1000 * osSlowness);
     await clickCheat(page, "cheats-summon-reincarnation");
-    await page.waitForTimeout(2_000 * osSlowness);
+    await page.waitForTimeout(2000 * osSlowness);
 
     await loseAllLives(page);
     await waitForDialog(page, "score");
@@ -172,7 +174,7 @@ test.describe("life and death flows", () => {
   }, testInfo) => {
     await startCampaignViaMenu(page, testInfo.project.name, "remake");
     await clickCheat(page, "cheats-summon-reincarnation");
-    await page.waitForTimeout(2_000 * osSlowness);
+    await page.waitForTimeout(2000 * osSlowness);
 
     await loseAllLives(page);
     await waitForDialog(page, "score");

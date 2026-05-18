@@ -15,9 +15,8 @@ const AssetLoadGateHoc = (load: () => Promise<unknown>) => {
 
     if (loaded) {
       return children;
-    } else {
-      return null;
     }
+    return null;
   };
   return LoadGate;
 };

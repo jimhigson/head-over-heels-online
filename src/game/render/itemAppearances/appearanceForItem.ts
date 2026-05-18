@@ -292,9 +292,8 @@ export const appearanceForItem = <T extends ItemInPlayType>(
     const { direction } = item.config;
     if (direction === "right" || direction === "towards") {
       return undefined;
-    } else {
-      return farWallAppearance as ItemAppearanceOutsideView<T>;
     }
+    return farWallAppearance as ItemAppearanceOutsideView<T>;
   }
 
   return itemAppearancesMap[item.type as T];

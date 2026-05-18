@@ -51,8 +51,12 @@ expect.extend({
     }> = [];
 
     for (const [id, item] of Object.entries(received.items)) {
-      if (item.type !== "wall" && item.type !== "door") continue;
-      if (item.position.z !== floor.position.z) continue;
+      if (item.type !== "wall" && item.type !== "door") {
+        continue;
+      }
+      if (item.position.z !== floor.position.z) {
+        continue;
+      }
 
       const { config } = item;
       let edge: "away" | "left" | "right" | "towards" | null = null;
@@ -136,7 +140,9 @@ expect.extend({
         .filter((e) => e.edge === edge)
         .sort((a, b) => a.start - b.start);
 
-      if (itemsOnEdge.length === 0) continue;
+      if (itemsOnEdge.length === 0) {
+        continue;
+      }
 
       const edgeStart =
         edge === "towards" || edge === "away" ? floorStart.x : floorStart.y;

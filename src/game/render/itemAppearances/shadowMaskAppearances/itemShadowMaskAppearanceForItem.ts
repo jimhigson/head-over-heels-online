@@ -56,14 +56,12 @@ const shadowMaskStaticAppearance = <T extends ItemInPlayType>(
           pixiRenderer,
           renderMultipliedXy(options, itemInPlayTimes(subject)),
         );
-      } else {
-        const container = createSprite(options);
-        if (container instanceof Sprite) {
-          return container;
-        } else {
-          return renderContainerToSprite(pixiRenderer, container);
-        }
       }
+      const container = createSprite(options);
+      if (container instanceof Sprite) {
+        return container;
+      }
+      return renderContainerToSprite(pixiRenderer, container);
     },
   );
 
@@ -118,9 +116,8 @@ const shadowMaskFromConfigAppearance =
       }
 
       return appearanceReturn;
-    } else {
-      return "no-update";
     }
+    return "no-update";
   };
 
 export type ItemShadowAppearanceOutsideView<T extends ItemInPlayType> =
