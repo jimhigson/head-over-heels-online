@@ -1,2 +1,5 @@
 # enforce inline type imports and ban duplicate import statements
 85096d3d51be530ecd64ebcd9b1274c09bc468ba
+
+# add and autofix curly, eqeqeq, no-var, prefer-const, no-else-return, prefer-arrow-callback, no-eval, no-explicit-any, numeric-separators-style
+89e2152d1e17097ee6aeac4984b4a870821aa0d3
