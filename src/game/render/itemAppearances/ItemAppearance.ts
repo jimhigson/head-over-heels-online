@@ -63,15 +63,14 @@ export const itemStaticAppearance = <T extends ItemInPlayType>(
           spritesheetVariant:
             spriteOption.uncolourised ? "uncolourised" : "for-current-room",
         });
-      } else {
-        return createSprite({
-          ...(typeof createSpriteOptions === "string" ?
-            { textureId: createSpriteOptions }
-          : createSpriteOptions),
-          spritesheetVariant:
-            spriteOption.uncolourised ? "uncolourised" : "for-current-room",
-        });
       }
+      return createSprite({
+        ...(typeof createSpriteOptions === "string" ?
+          { textureId: createSpriteOptions }
+        : createSpriteOptions),
+        spritesheetVariant:
+          spriteOption.uncolourised ? "uncolourised" : "for-current-room",
+      });
     },
   );
 
@@ -96,14 +95,13 @@ export const itemStaticAnimatedAppearance = <T extends ItemInPlayType>(
           spritesheetVariant:
             spriteOption.uncolourised ? "uncolourised" : "for-current-room",
         });
-      } else {
-        return createSprite({
-          ...createSpriteOptions,
-          paused,
-          spritesheetVariant:
-            spriteOption.uncolourised ? "uncolourised" : "for-current-room",
-        });
       }
+      return createSprite({
+        ...createSpriteOptions,
+        paused,
+        spritesheetVariant:
+          spriteOption.uncolourised ? "uncolourised" : "for-current-room",
+      });
     },
   );
 
@@ -141,7 +139,6 @@ export const itemAppearanceRenderOnce =
         }),
         renderProps: emptyObject,
       };
-    } else {
-      return "no-update";
     }
+    return "no-update";
   };

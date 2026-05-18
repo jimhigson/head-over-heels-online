@@ -21,7 +21,9 @@ import { createSavedGame } from "./createSavedGame";
 export const saveGameThunk =
   (gameState: GameState): AppThunk =>
   (dispatch, getState) => {
-    if (isInPlaytestMode()) return;
+    if (isInPlaytestMode()) {
+      return;
+    }
 
     const storeState = getState();
     const { campaignLocator } = storeState.gameInPlay.gameInPlay;

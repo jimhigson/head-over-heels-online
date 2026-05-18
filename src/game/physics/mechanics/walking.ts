@@ -197,43 +197,41 @@ const walkingImpl = <RoomId extends string, RoomItemId extends string>(
               : "jumping",
           },
         };
-      } else {
-        // heels walked off something, should always fall vertically (zero motion here)
-        return {
-          movementType: "vel",
-          vels: {
-            walking: originXyz,
-          },
-          stateDelta: {
-            action: "falling",
-          },
-        };
       }
-    } else {
-      if (jumpInput !== "released") {
-        // standing on something and jumping - mandatory forwards motion
-        const jumpDirectionXy = unitVector(
-          xyEqual(walkVector, originXy) ? facing : walkVector,
-        );
-        const isStandingOnSpring = isSpring(
-          stoodOnItem(effectivelyStandingOnItemId, room),
-        );
+      // heels walked off something, should always fall vertically (zero motion here)
+      return {
+        movementType: "vel",
+        vels: {
+          walking: originXyz,
+        },
+        stateDelta: {
+          action: "falling",
+        },
+      };
+    }
+    if (jumpInput !== "released") {
+      // standing on something and jumping - mandatory forwards motion
+      const jumpDirectionXy = unitVector(
+        xyEqual(walkVector, originXy) ? facing : walkVector,
+      );
+      const isStandingOnSpring = isSpring(
+        stoodOnItem(effectivelyStandingOnItemId, room),
+      );
 
-        // what fraction of maximum walking speed to apply forwards
-        // while making this jump:
-        const walkJumpFraction =
-          isStandingOnSpring ? 1 : heelsJumpForwardSpeedFraction;
-        return {
-          movementType: "vel",
-          vels: {
-            walking: scaleXyz(
-              { ...jumpDirectionXy, z: 0 },
-              maxWalkSpeed * walkJumpFraction,
-            ),
-          },
-          stateDelta: { facing: jumpDirectionXy },
-        };
-      }
+      // what fraction of maximum walking speed to apply forwards
+      // while making this jump:
+      const walkJumpFraction =
+        isStandingOnSpring ? 1 : heelsJumpForwardSpeedFraction;
+      return {
+        movementType: "vel",
+        vels: {
+          walking: scaleXyz(
+            { ...jumpDirectionXy, z: 0 },
+            maxWalkSpeed * walkJumpFraction,
+          ),
+        },
+        stateDelta: { facing: jumpDirectionXy },
+      };
     }
   }
 
@@ -253,43 +251,24 @@ const walkingImpl = <RoomId extends string, RoomItemId extends string>(
           action: "falling",
         },
       };
-    } else {
-      // normal walking on the ground:
+    }
+    // normal walking on the ground:
 
-      if (
-        // starting walking from stopped:
-        lengthXy(previousWalkingVel) < epsilon &&
-        // previously stopped walking recently:
-        (stoppedWalkingAtGameTime ?? neverTime) + walkResumeGraceTime >
-          gameTime &&
-        (stoppedWalkingSpeed ?? 0) > epsilon
-      ) {
-        console.log("keep speed grace");
-        //resuming walking after a very short stop - this means we can resume at the old speed:
-        return {
-          movementType: "vel",
-          vels: {
-            // assuming walkVector is a unit vector here
-            walking: scaleXyz(walkVector, stoppedWalkingSpeed!),
-          },
-          stateDelta: {
-            facing: walkVector,
-            action: "moving",
-          },
-        };
-      }
-
+    if (
+      // starting walking from stopped:
+      lengthXy(previousWalkingVel) < epsilon &&
+      // previously stopped walking recently:
+      (stoppedWalkingAtGameTime ?? neverTime) + walkResumeGraceTime >
+        gameTime &&
+      (stoppedWalkingSpeed ?? 0) > epsilon
+    ) {
+      console.log("keep speed grace");
+      //resuming walking after a very short stop - this means we can resume at the old speed:
       return {
         movementType: "vel",
         vels: {
-          walking: accelerateToSpeed2({
-            vel: previousWalkingVel,
-            acc: playerWalkAcceldPixPerMsSq[useSpeedOfCharacter],
-            deltaMS,
-            maxSpeed: maxWalkSpeed,
-            unitD: walkVector,
-            minSpeed: 0,
-          }),
+          // assuming walkVector is a unit vector here
+          walking: scaleXyz(walkVector, stoppedWalkingSpeed!),
         },
         stateDelta: {
           facing: walkVector,
@@ -297,6 +276,24 @@ const walkingImpl = <RoomId extends string, RoomItemId extends string>(
         },
       };
     }
+
+    return {
+      movementType: "vel",
+      vels: {
+        walking: accelerateToSpeed2({
+          vel: previousWalkingVel,
+          acc: playerWalkAcceldPixPerMsSq[useSpeedOfCharacter],
+          deltaMS,
+          maxSpeed: maxWalkSpeed,
+          unitD: walkVector,
+          minSpeed: 0,
+        }),
+      },
+      stateDelta: {
+        facing: walkVector,
+        action: "moving",
+      },
+    };
   }
 
   if (walkDistance > 0 && walkDistance < 1) {

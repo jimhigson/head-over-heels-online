@@ -166,7 +166,7 @@ test("character stand on pickup by walking off adjacent block", () => {
 
   // walk left for one second at 60fps:
   playGameThrough(gameState, {
-    until: 3_000,
+    until: 3000,
     setupInitialInput(inputState) {
       inputState.mockDirectionPressed = "left";
     },
@@ -402,7 +402,7 @@ test.for([1, 2] as const)(
 
     // protect against double pickup:
     playGameThrough(gameState, {
-      until: 1_000,
+      until: 1000,
       frameCallbacks(gameState) {
         const doughnutCount = headState(gameState).doughnuts as number;
         if (doughnutCount > 6) {

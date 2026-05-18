@@ -102,8 +102,12 @@ export async function flattenFixture(
       }
 
       if (!inString) {
-        if (char === "{" || char === "[" || char === "(") depth++;
-        if (char === "}" || char === "]" || char === ")") depth--;
+        if (char === "{" || char === "[" || char === "(") {
+          depth++;
+        }
+        if (char === "}" || char === "]" || char === ")") {
+          depth--;
+        }
 
         // Found the end
         if (depth === 0 && char === ";") {

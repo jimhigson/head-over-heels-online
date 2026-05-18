@@ -52,12 +52,16 @@ export const LoggedInStatus = ({ className }: { className?: string }) => {
         redirectTo,
       },
     });
-    if (error) console.error("Login error:", error);
+    if (error) {
+      console.error("Login error:", error);
+    }
   };
   const handleLogout = async () => {
     const { supabaseDb } = await importSupabaseDb();
     const { error } = await supabaseDb.auth.signOut();
-    if (error) console.error("Logout error:", error);
+    if (error) {
+      console.error("Logout error:", error);
+    }
   };
 
   return (

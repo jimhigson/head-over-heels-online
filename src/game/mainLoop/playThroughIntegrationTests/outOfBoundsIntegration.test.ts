@@ -69,7 +69,7 @@ test("portable item is deleted from the room after falling out of bounds", () =>
   deleteItemFromRoom({ room, item: "floor" });
 
   playGameThrough(gameState, {
-    until: 4_000,
+    until: 4000,
   });
 
   const roomAfter = selectCurrentRoomState(gameState)!;

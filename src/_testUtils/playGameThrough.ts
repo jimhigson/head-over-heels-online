@@ -48,7 +48,7 @@ export const playGameThrough = (
     typeof until === "number" ? gameState.gameTime < until : !until(gameState)
   ) {
     const fpsThisFrame = frameRateIter.next().value;
-    const deltaMS = 1_000 / fpsThisFrame;
+    const deltaMS = 1000 / fpsThisFrame;
 
     ticker(gameState, deltaMS);
     gameState.inputStateTracker.mockTick();

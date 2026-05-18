@@ -82,7 +82,9 @@ const rushTowardPlayerXy4 = <RoomId extends string, RoomItemId extends string>(
   }
 
   for (const player of valuesIter(playablesInRoom(room.items))) {
-    if (player === undefined) continue;
+    if (player === undefined) {
+      continue;
+    }
 
     const vectorXyToPlayer = subXy(player.state.position, position);
 
@@ -426,16 +428,22 @@ const handleMonsterTouchingItemByTurning = <
     aabb,
   } = itemWithMovement;
 
-  if (!activated) return;
+  if (!activated) {
+    return;
+  }
 
   itemWithMovement.state.durationOfTouch += deltaMS;
 
-  if (itemWithMovement.state.durationOfTouch < turnAroundTime) return;
+  if (itemWithMovement.state.durationOfTouch < turnAroundTime) {
+    return;
+  }
 
   const m = mtv(position, aabb, touchedItemPosition, touchedItemAabb);
 
   // purely vertical touches don't change direction:
-  if (m.x === 0 && m.y === 0) return;
+  if (m.x === 0 && m.y === 0) {
+    return;
+  }
 
   const newWalking = turnedVector(walking, m, turnStrategy);
   itemWithMovement.state.vels.walking = newWalking;
@@ -496,8 +504,9 @@ export const tickMovement: Mechanic<"monster" | "movingPlatform"> = <
     !itemWithMovement.state.activated === true ||
     (isMonster(itemWithMovement) &&
       itemWithMovement.state.busyLickingDoughnutsOffFace)
-  )
+  ) {
     return notWalking;
+  }
 
   switch (itemWithMovement.config.movement) {
     case "patrol-randomly-diagonal": {
@@ -588,7 +597,9 @@ export const handleItemWithMovementTouchingItem = <
   const { movingItem: itemWithMovement, touchedItem } = e;
 
   //eg, monsters shouldn't change direction on touching a stopAutowalk item:
-  if (!isSolid(touchedItem, itemWithMovement)) return;
+  if (!isSolid(touchedItem, itemWithMovement)) {
+    return;
+  }
 
   switch (itemWithMovement.config.movement) {
     case "patrol-randomly-xy4":

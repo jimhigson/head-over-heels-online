@@ -23,7 +23,9 @@ export const useScrollingFromInput = () => {
       distance: "all" | "lines" | "pages" = "lines",
     ) => {
       // this component is slow to render, so don't cause any state changes or it would render again!
-      if (contentRef.current === null) return;
+      if (contentRef.current === null) {
+        return;
+      }
 
       const { scrollTop, scrollLeft } = contentRef.current;
 

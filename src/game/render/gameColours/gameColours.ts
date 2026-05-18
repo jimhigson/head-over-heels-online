@@ -67,12 +67,11 @@ export const replacementColours = (
           replaceLight: palette[baseColourKey],
           replaceDark: palette[midKey as BlockstackPaletteColourName],
         };
-      } else {
-        return {
-          replaceLight: palette[midKey as BlockstackPaletteColourName],
-          replaceDark: palette[`${baseColourKey}Dim`],
-        };
       }
+      return {
+        replaceLight: palette[midKey as BlockstackPaletteColourName],
+        replaceDark: palette[`${baseColourKey}Dim`],
+      };
     }
   }
 

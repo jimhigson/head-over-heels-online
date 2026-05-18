@@ -1989,7 +1989,7 @@ test("consolidateItems does not mutate input", () => {
   expect(clonedItems).toEqual(originalItems);
 
   // Specifically check that config objects weren't mutated
-  Object.entries(clonedItems).forEach(([key, clonedItemData]) => {
+  for (const [key, clonedItemData] of Object.entries(clonedItems)) {
     const originalItemData = originalItems[key];
 
     expect(clonedItemData).toEqual(originalItemData);
@@ -1998,7 +1998,7 @@ test("consolidateItems does not mutate input", () => {
     if ("config" in clonedItemData && "config" in originalItemData) {
       expect(clonedItemData.config).not.toBe(originalItemData.config);
     }
-  });
+  }
 });
 
 describe("actual room items", () => {

@@ -100,7 +100,7 @@ test.for([
       setupInitialInput(mockInputStateTracker) {
         mockInputStateTracker.mockDirectionPressed = "right";
       },
-      until: 5_000,
+      until: 5000,
     });
 
     // did not slide in y - still at same ordinal:
@@ -359,7 +359,7 @@ describe("hmv blocked by falling or deadly", () => {
         setupInitialInput(mockInputStateTracker) {
           mockInputStateTracker.mockDirectionPressed = directionPressed;
         },
-        until: 3_000,
+        until: 3000,
       });
 
       expect(headState(gameState).standingOnItemId).toEqual("lowerStair");
@@ -414,7 +414,7 @@ describe("hmv blocked by falling or deadly", () => {
         setupInitialInput(mockInputStateTracker) {
           mockInputStateTracker.mockDirectionPressed = directionPressed;
         },
-        until: 3_000,
+        until: 3000,
       });
 
       expect(headState(gameState).standingOnItemId).toEqual("lowerStair");
@@ -481,7 +481,7 @@ describe("hmv blocked by falling or deadly", () => {
         setupInitialInput(mockInputStateTracker) {
           mockInputStateTracker.mockDirectionPressed = "left";
         },
-        until: 1_000,
+        until: 1000,
       });
 
       expect(headState(gameState).standingOnItemId).toEqual(

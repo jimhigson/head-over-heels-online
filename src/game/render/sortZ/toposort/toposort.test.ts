@@ -165,7 +165,7 @@ test("medium graphs should sort quickly", () => {
   expect(result).toHaveLength(nodeCount + 1); // Ensure all nodes are sorted
 
   console.log(`⏱️ toposort sorted ${nodeCount} in ${elapsedMs.toFixed(1)}ms`);
-  expect(elapsedMs).toBeLessThan(1_000);
+  expect(elapsedMs).toBeLessThan(1000);
 });
 test("giant graphs should sort quickly", () => {
   const graph = new Map<number, Map<number, boolean>>();
@@ -183,7 +183,7 @@ test("giant graphs should sort quickly", () => {
   expect(result).toHaveLength(nodeCount + 1); // Ensure all nodes are sorted
 
   console.log(`⏱️ toposort sorted ${nodeCount} in ${elapsedMs.toFixed(1)}ms`);
-  expect(elapsedMs).toBeLessThan(1_000);
+  expect(elapsedMs).toBeLessThan(1000);
 });
 
 test("object keys should handle object nodes (not only strings)", () => {

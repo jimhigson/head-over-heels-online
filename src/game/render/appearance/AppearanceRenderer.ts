@@ -74,8 +74,9 @@ export class AppearanceRenderer<
           });
         }
 
-        if (rendering.output !== undefined)
+        if (rendering.output !== undefined) {
           this.output.addChild(rendering.output);
+        }
       }
 
       this.#currentRendering = rendering;

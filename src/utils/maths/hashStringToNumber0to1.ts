@@ -15,12 +15,12 @@
  * @returns A number between 0 and 1
  */
 export const hashStringToNumber0to1 = (str: string): number => {
-  let h = 0x811c9dc5; // FNV-1a initial seed
+  let h = 0x81_1c_9d_c5; // FNV-1a initial seed
   const len = str.length;
   for (let i = Math.max(0, len - 9); i < len; i++) {
     h ^= str.charCodeAt(i);
-    h = Math.imul(h, 0x5bd1e995); // FNV-1a multiplier
+    h = Math.imul(h, 0x5b_d1_e9_95); // FNV-1a multiplier
     h ^= h >>> 15;
   }
-  return (h >>> 0) / 0xffffffff; // Convert to 0-1 range
+  return (h >>> 0) / 0xff_ff_ff_ff; // Convert to 0-1 range
 };

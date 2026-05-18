@@ -148,7 +148,9 @@ const moveFocus = (
       let closestDistance = Infinity;
 
       for (let i = 0; i < menuItemsDom.length; i++) {
-        if (i === curFocusIndex) continue;
+        if (i === curFocusIndex) {
+          continue;
+        }
         const element = menuItemsDom[i];
         if (
           element.getAttribute(menuItemDataAttributeHidden) === "true" ||
@@ -229,7 +231,9 @@ const useMenuNavigationInput = (
   useActionTap({
     action: "away",
     handler: useCallback(() => {
-      if (containerRef.current === null) return;
+      if (containerRef.current === null) {
+        return;
+      }
 
       return moveFocus(-1, "single");
     }, [containerRef]),
@@ -239,7 +243,9 @@ const useMenuNavigationInput = (
   useActionTap({
     action: "towards",
     handler: useCallback(() => {
-      if (containerRef.current === null) return;
+      if (containerRef.current === null) {
+        return;
+      }
 
       return moveFocus(1, "single");
     }, [containerRef]),
@@ -249,7 +255,9 @@ const useMenuNavigationInput = (
   useActionTap({
     action: "pageUp",
     handler: useCallback(() => {
-      if (containerRef.current === null) return;
+      if (containerRef.current === null) {
+        return;
+      }
 
       return moveFocus(-1, "page");
     }, [containerRef]),
@@ -259,7 +267,9 @@ const useMenuNavigationInput = (
   useActionTap({
     action: "pageDown",
     handler: useCallback(() => {
-      if (containerRef.current === null) return;
+      if (containerRef.current === null) {
+        return;
+      }
 
       return moveFocus(1, "page");
     }, [containerRef]),
@@ -269,7 +279,9 @@ const useMenuNavigationInput = (
   useActionTap({
     action: "home",
     handler: useCallback(() => {
-      if (containerRef.current === null) return;
+      if (containerRef.current === null) {
+        return;
+      }
 
       return moveFocus(-1, "all");
     }, [containerRef]),
@@ -279,7 +291,9 @@ const useMenuNavigationInput = (
   useActionTap({
     action: "end",
     handler: useCallback(() => {
-      if (containerRef.current === null) return;
+      if (containerRef.current === null) {
+        return;
+      }
 
       return moveFocus(1, "all");
     }, [containerRef]),

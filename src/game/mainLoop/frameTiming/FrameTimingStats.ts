@@ -63,7 +63,7 @@ class FrameTimingStats {
 
   #reportIntervalMs: number;
 
-  private constructor(reportIntervalMs: number = 2_000) {
+  private constructor(reportIntervalMs: number = 2000) {
     this.#reportIntervalMs = reportIntervalMs;
   }
 
@@ -192,7 +192,7 @@ class FrameTimingStats {
 
     this.#eventBuffer.frameCount = frameCount;
     this.#eventBuffer.elapsedMs = elapsedMs;
-    this.#eventBuffer.fps = (frameCount / elapsedMs) * 1_000;
+    this.#eventBuffer.fps = (frameCount / elapsedMs) * 1000;
     this.#eventBuffer.theoreticalFps = totalAvg > 0 ? 1000 / totalAvg : 0;
     this.#eventBuffer.phases.physics.avgMs = avgPhysics;
     this.#eventBuffer.phases.physics.percentage = (avgPhysics / totalAvg) * 100;

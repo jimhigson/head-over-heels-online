@@ -182,39 +182,37 @@ const combinedPlayableLosesLife = <RoomId extends string>(
     });
     gameState.characterRooms = { headOverHeels: reloadedRoom };
     return; // non-terminal outcome - resume in reloaded room, still in symbiosis*/
-  } else {
-    // case of entering as individuals, joining, and then dying:
-    // try to unjoin and put back into the room:
-    const { head, heels } = uncombinePlayablesFromSymbiosis(headOverHeels);
-
-    resetPlayableToEntryState(gameState, head);
-    resetPlayableToEntryState(gameState, heels);
-
-    if (collision2Items(head, heels)) {
-      // can't put then back as individuals without a collision - it is likely they
-      // entered via the same door. Recombine and continue:
-      const rejoined = combinePlayablesInSymbiosis({ head, heels });
-      // give headOverHeels heels' entry state:
-      resetPlayableToEntryState(gameState, rejoined, "heels");
-      const reloadedRoom = reloadRoomWithCharacterInIt({
-        gameState,
-        playableItems: [rejoined],
-        roomId: room.id,
-      });
-      gameState.characterRooms = { headOverHeels: reloadedRoom };
-      gameState.entryState = { headOverHeels: entryState(rejoined) };
-      return; // non-terminal outcome - reentry in symbiosis
-    } else {
-      // can put back separate and at their own locations - is likely they entered via different doors/teleporters:
-      const reloadedRoom = reloadRoomWithCharacterInIt({
-        gameState,
-        playableItems: [head, heels],
-        roomId: room.id,
-      });
-      gameState.characterRooms = { head: reloadedRoom, heels: reloadedRoom };
-      return; // non-terminal state - reentry in symbiosis
-    }
   }
+  // case of entering as individuals, joining, and then dying:
+  // try to unjoin and put back into the room:
+  const { head, heels } = uncombinePlayablesFromSymbiosis(headOverHeels);
+
+  resetPlayableToEntryState(gameState, head);
+  resetPlayableToEntryState(gameState, heels);
+
+  if (collision2Items(head, heels)) {
+    // can't put then back as individuals without a collision - it is likely they
+    // entered via the same door. Recombine and continue:
+    const rejoined = combinePlayablesInSymbiosis({ head, heels });
+    // give headOverHeels heels' entry state:
+    resetPlayableToEntryState(gameState, rejoined, "heels");
+    const reloadedRoom = reloadRoomWithCharacterInIt({
+      gameState,
+      playableItems: [rejoined],
+      roomId: room.id,
+    });
+    gameState.characterRooms = { headOverHeels: reloadedRoom };
+    gameState.entryState = { headOverHeels: entryState(rejoined) };
+    return; // non-terminal outcome - reentry in symbiosis
+  }
+  // can put back separate and at their own locations - is likely they entered via different doors/teleporters:
+  const reloadedRoom = reloadRoomWithCharacterInIt({
+    gameState,
+    playableItems: [head, heels],
+    roomId: room.id,
+  });
+  gameState.characterRooms = { head: reloadedRoom, heels: reloadedRoom };
+  return; // non-terminal state - reentry in symbiosis
 };
 
 const reloadRoomWithCharacterInIt = <RoomId extends string>({
@@ -326,80 +324,77 @@ const individualPlayableLosesLife = <
     } // else is terminal outcome - game over. gameOver actions should now be dispatched from the caller
 
     return;
-  } else {
-    // character losing the life still has lives left
+  }
+  // character losing the life still has lives left
 
-    resetPlayableToEntryState(gameState, characterLosingLife);
+  resetPlayableToEntryState(gameState, characterLosingLife);
 
-    const roomWithOtherPlayable =
-      otherCharacter === undefined ? undefined : (
-        gameState.characterRooms[otherCharacter.type]
-      );
+  const roomWithOtherPlayable =
+    otherCharacter === undefined ? undefined : (
+      gameState.characterRooms[otherCharacter.type]
+    );
 
-    const bothPlayablesInSameRoom =
-      roomWithCharacterLosingLife === roomWithOtherPlayable;
+  const bothPlayablesInSameRoom =
+    roomWithCharacterLosingLife === roomWithOtherPlayable;
 
-    if (bothPlayablesInSameRoom) {
-      // case where entered as headOverHeels
-      const enteredInSymbiosis =
-        gameState.entryState.headOverHeels !== undefined;
+  if (bothPlayablesInSameRoom) {
+    // case where entered as headOverHeels
+    const enteredInSymbiosis = gameState.entryState.headOverHeels !== undefined;
 
-      if (enteredInSymbiosis) {
-        const headOverHeels = combinePlayablesInSymbiosis({
-          // the playable that lost the life will no longer be in the room:
-          /** TODO: @knownRoomIds - remove casts */
-          head: (characterLosingLife.id === "head" ?
-            characterLosingLife
-          : roomWithCharacterLosingLife.items.head!) as PlayableItem<
-            "head",
-            RoomId,
-            RoomItemId
-          >,
-          /** TODO: @knownRoomIds - remove casts */
-          heels: (characterLosingLife.id === "heels" ?
-            characterLosingLife
-          : roomWithCharacterLosingLife.items.heels!) as PlayableItem<
-            "heels",
-            RoomId,
-            RoomItemId
-          >,
-        });
-
-        resetPlayableToEntryState(gameState, headOverHeels);
-
-        const reloadedRoom = reloadRoomWithCharacterInIt({
-          gameState,
-          playableItems: [headOverHeels],
-          roomId: roomWithCharacterLosingLife.id,
-        });
-
-        gameState.characterRooms = {
-          headOverHeels: reloadedRoom,
-        };
-        gameState.currentCharacterName = "headOverHeels";
-
-        return; // non-terminal outcome - continue playing
-      }
-
-      // don't reload the room:
-      addItemToRoom({
-        room: roomWithCharacterLosingLife,
-        item: characterLosingLife,
+    if (enteredInSymbiosis) {
+      const headOverHeels = combinePlayablesInSymbiosis({
+        // the playable that lost the life will no longer be in the room:
+        /** TODO: @knownRoomIds - remove casts */
+        head: (characterLosingLife.id === "head" ?
+          characterLosingLife
+        : roomWithCharacterLosingLife.items.head!) as PlayableItem<
+          "head",
+          RoomId,
+          RoomItemId
+        >,
+        /** TODO: @knownRoomIds - remove casts */
+        heels: (characterLosingLife.id === "heels" ?
+          characterLosingLife
+        : roomWithCharacterLosingLife.items.heels!) as PlayableItem<
+          "heels",
+          RoomId,
+          RoomItemId
+        >,
       });
-      return; // non-terminal outcome - continue playing
-    } else {
-      // the other player isn't in the same room as us:
+
+      resetPlayableToEntryState(gameState, headOverHeels);
+
       const reloadedRoom = reloadRoomWithCharacterInIt({
         gameState,
-        playableItems: [characterLosingLife],
+        playableItems: [headOverHeels],
         roomId: roomWithCharacterLosingLife.id,
       });
-      /** TODO: @knownRoomIds - remove casts */
-      gameState.characterRooms[characterLosingLife.id as CharacterName] =
-        reloadedRoom;
-      return; // non-terminal outcome - continue playing in the reloaded room
+
+      gameState.characterRooms = {
+        headOverHeels: reloadedRoom,
+      };
+      gameState.currentCharacterName = "headOverHeels";
+
+      return; // non-terminal outcome - continue playing
     }
+
+    // don't reload the room:
+    addItemToRoom({
+      room: roomWithCharacterLosingLife,
+      item: characterLosingLife,
+    });
+    return; // non-terminal outcome - continue playing
   }
+  // the other player isn't in the same room as us:
+  const reloadedRoom = reloadRoomWithCharacterInIt({
+    gameState,
+    playableItems: [characterLosingLife],
+    roomId: roomWithCharacterLosingLife.id,
+  });
+  /** TODO: @knownRoomIds - remove casts */
+  gameState.characterRooms[characterLosingLife.id as CharacterName] =
+    reloadedRoom;
+  return; // non-terminal outcome - continue playing in the reloaded room
 };
 
 /**

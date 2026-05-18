@@ -46,11 +46,17 @@ const counts = new Map<string, { count: number; node: JsonObject }>();
 
 function countNodes(node: JsonValue, isSchemaPos = true): void {
   if (Array.isArray(node)) {
-    for (const child of node as JsonArray) countNodes(child, true);
+    for (const child of node as JsonArray) {
+      countNodes(child, true);
+    }
     return;
   }
-  if (!isJsonObject(node)) return;
-  if (isPureRef(node)) return;
+  if (!isJsonObject(node)) {
+    return;
+  }
+  if (isPureRef(node)) {
+    return;
+  }
 
   const canonical = canonicalize(node);
   if (isSchemaPos && canonical.length >= minSerializedLength) {
@@ -105,8 +111,12 @@ function replaceNodes(node: JsonValue, isSchemaPos = true): JsonValue {
   if (Array.isArray(node)) {
     return (node as JsonArray).map((v) => replaceNodes(v, true));
   }
-  if (!isJsonObject(node)) return node;
-  if (isPureRef(node)) return node;
+  if (!isJsonObject(node)) {
+    return node;
+  }
+  if (isPureRef(node)) {
+    return node;
+  }
 
   const canonical = canonicalize(node);
   if (isSchemaPos && extractionMap.has(canonical)) {

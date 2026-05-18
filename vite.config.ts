@@ -126,7 +126,9 @@ export default defineConfig(({ mode: _mode }) => {
       outDir: mode === "tauri" ? "dist-tauri" : "dist",
       // don't inline mp3s < 4kb since base64 encoding will make them bigger, and http2 is fine to request them separately
       assetsInlineLimit(filePath) {
-        if (filePath.endsWith(".mp3")) return false;
+        if (filePath.endsWith(".mp3")) {
+          return false;
+        }
         return undefined;
       },
       target: "esnext",

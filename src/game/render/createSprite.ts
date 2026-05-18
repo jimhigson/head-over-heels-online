@@ -255,8 +255,12 @@ const createSpriteImpl = (options: CreateSpriteOptions): Container => {
       sprite.anchor = bottomMiddleDefaultAnchor;
     }
   } else {
-    if (anchor !== undefined) sprite.anchor = anchor;
-    if (pivot !== undefined) sprite.pivot = pivot;
+    if (anchor !== undefined) {
+      sprite.anchor = anchor;
+    }
+    if (pivot !== undefined) {
+      sprite.pivot = pivot;
+    }
   }
 
   if (x !== undefined) {

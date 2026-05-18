@@ -23,15 +23,15 @@ test("nonZero returns epsilon when given zero", () => {
 });
 
 test("nonZero returns epsilon with correct sign for very small positive numbers", () => {
-  expect(nonZero(0.00001)).toBe(epsilon);
-  expect(nonZero(0.00005)).toBe(epsilon);
+  expect(nonZero(0.000_01)).toBe(epsilon);
+  expect(nonZero(0.000_05)).toBe(epsilon);
   expect(nonZero(epsilon / 2)).toBe(epsilon);
   expect(nonZero(epsilon * 0.99)).toBe(epsilon);
 });
 
 test("nonZero returns -epsilon with correct sign for very small negative numbers", () => {
-  expect(nonZero(-0.00001)).toBe(-epsilon);
-  expect(nonZero(-0.00005)).toBe(-epsilon);
+  expect(nonZero(-0.000_01)).toBe(-epsilon);
+  expect(nonZero(-0.000_05)).toBe(-epsilon);
   expect(nonZero(-epsilon / 2)).toBe(-epsilon);
   expect(nonZero(-epsilon * 0.99)).toBe(-epsilon);
 });
@@ -46,12 +46,12 @@ test("nonZero works correctly with division", () => {
   // Test that division by nonZero(0) doesn't result in Infinity
   expect(() => 1 / nonZero(0)).not.toThrow();
   expect(1 / nonZero(0)).toBe(1 / epsilon);
-  expect(1 / nonZero(0)).toBe(10000);
+  expect(1 / nonZero(0)).toBe(10_000);
 
   // Test with very small numbers
-  expect(() => 1 / nonZero(0.00001)).not.toThrow();
-  expect(1 / nonZero(0.00001)).toBe(1 / epsilon);
-  expect(1 / nonZero(0.00001)).toBe(10000);
+  expect(() => 1 / nonZero(0.000_01)).not.toThrow();
+  expect(1 / nonZero(0.000_01)).toBe(1 / epsilon);
+  expect(1 / nonZero(0.000_01)).toBe(10_000);
 });
 
 test("nonZero preserves sign correctly", () => {

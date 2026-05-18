@@ -4,7 +4,9 @@ const cache = new Map<string, Promise<AudioBuffer>>();
 
 export const loadAndDecode = (url: string): Promise<AudioBuffer> => {
   const cached = cache.get(url);
-  if (cached) return cached;
+  if (cached) {
+    return cached;
+  }
 
   const promise = fetchAndDecode(url);
   cache.set(url, promise);

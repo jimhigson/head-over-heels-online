@@ -41,22 +41,21 @@ export const roomJsonMatchers = {
         message: () =>
           `Expected exactly one floor at position (${expected.position.x}, ${expected.position.y}, ${expected.position.z}) with times (${expected.times.x}, ${expected.times.y}), but found ${matchingFloors.length} matching floors`,
       };
-    } else {
-      const floorsDescription =
-        floors.length > 0 ?
-          floors
-            .map((f) => {
-              return `  - Position: (${f.position.x}, ${f.position.y}, ${f.position.z}), Times: (${f.config.times?.x ?? 1}, ${f.config.times?.y ?? 1})`;
-            })
-            .join("\n")
-        : "  No floors found in the room";
-
-      return {
-        pass: false,
-        message: () =>
-          `Expected room to have floor at position (${expected.position.x}, ${expected.position.y}, ${expected.position.z}) with times (${expected.times.x}, ${expected.times.y})\n\nFound floors:\n${floorsDescription}`,
-      };
     }
+    const floorsDescription =
+      floors.length > 0 ?
+        floors
+          .map((f) => {
+            return `  - Position: (${f.position.x}, ${f.position.y}, ${f.position.z}), Times: (${f.config.times?.x ?? 1}, ${f.config.times?.y ?? 1})`;
+          })
+          .join("\n")
+      : "  No floors found in the room";
+
+    return {
+      pass: false,
+      message: () =>
+        `Expected room to have floor at position (${expected.position.x}, ${expected.position.y}, ${expected.position.z}) with times (${expected.times.x}, ${expected.times.y})\n\nFound floors:\n${floorsDescription}`,
+    };
   },
 
   toHaveWall<RoomId extends string, RoomItemId extends string>(
@@ -99,23 +98,22 @@ export const roomJsonMatchers = {
         message: () =>
           `Expected exactly one wall with direction "${expected.direction}" at position (${expected.position.x}, ${expected.position.y}, ${expected.position.z}) with times (${expected.times.x}, ${expected.times.y}), but found ${matchingWalls.length} matching walls`,
       };
-    } else {
-      const wallsDescription =
-        walls.length > 0 ?
-          walls
-            .map((w) => {
-              const wallTimesValue = wallTimes(w.config);
-              return `  - Position: (${w.position.x}, ${w.position.y}, ${w.position.z}), Times: (${wallTimesValue.x ?? 0}, ${wallTimesValue.y ?? 0})`;
-            })
-            .join("\n")
-        : "  No walls found with this direction";
-
-      return {
-        pass: false,
-        message: () =>
-          `Expected room to have wall with direction "${expected.direction}" at position (${expected.position.x}, ${expected.position.y}, ${expected.position.z}) with times (${expected.times.x}, ${expected.times.y})\n\nFound ${expected.direction} walls:\n${wallsDescription}`,
-      };
     }
+    const wallsDescription =
+      walls.length > 0 ?
+        walls
+          .map((w) => {
+            const wallTimesValue = wallTimes(w.config);
+            return `  - Position: (${w.position.x}, ${w.position.y}, ${w.position.z}), Times: (${wallTimesValue.x ?? 0}, ${wallTimesValue.y ?? 0})`;
+          })
+          .join("\n")
+      : "  No walls found with this direction";
+
+    return {
+      pass: false,
+      message: () =>
+        `Expected room to have wall with direction "${expected.direction}" at position (${expected.position.x}, ${expected.position.y}, ${expected.position.z}) with times (${expected.times.x}, ${expected.times.y})\n\nFound ${expected.direction} walls:\n${wallsDescription}`,
+    };
   },
 
   toHaveSubroom<RoomId extends string, RoomItemId extends string>(
@@ -166,18 +164,17 @@ export const roomJsonMatchers = {
         message: () =>
           `Expected exactly one subroom with gridPosition (${expected.gridPosition.x}, ${expected.gridPosition.y}) and physicalPosition from (${expected.physicalPosition.from.x}, ${expected.physicalPosition.from.y}) to (${expected.physicalPosition.to.x}, ${expected.physicalPosition.to.y}), but found ${matchingSubrooms.length} matching subrooms`,
       };
-    } else {
-      const subroomsDescription = Object.entries(subRooms)
-        .map(([key, subroom]) => {
-          return `  - "${key}": gridPosition: (${subroom.gridPosition.x}, ${subroom.gridPosition.y}), physicalPosition: from (${subroom.physicalPosition.from.x}, ${subroom.physicalPosition.from.y}) to (${subroom.physicalPosition.to.x}, ${subroom.physicalPosition.to.y})`;
-        })
-        .join("\n");
-
-      return {
-        pass: false,
-        message: () =>
-          `Expected room to have subroom with gridPosition (${expected.gridPosition.x}, ${expected.gridPosition.y}) and physicalPosition from (${expected.physicalPosition.from.x}, ${expected.physicalPosition.from.y}) to (${expected.physicalPosition.to.x}, ${expected.physicalPosition.to.y})\n\nFound subrooms:\n${subroomsDescription}`,
-      };
     }
+    const subroomsDescription = Object.entries(subRooms)
+      .map(([key, subroom]) => {
+        return `  - "${key}": gridPosition: (${subroom.gridPosition.x}, ${subroom.gridPosition.y}), physicalPosition: from (${subroom.physicalPosition.from.x}, ${subroom.physicalPosition.from.y}) to (${subroom.physicalPosition.to.x}, ${subroom.physicalPosition.to.y})`;
+      })
+      .join("\n");
+
+    return {
+      pass: false,
+      message: () =>
+        `Expected room to have subroom with gridPosition (${expected.gridPosition.x}, ${expected.gridPosition.y}) and physicalPosition from (${expected.physicalPosition.from.x}, ${expected.physicalPosition.from.y}) to (${expected.physicalPosition.to.x}, ${expected.physicalPosition.to.y})\n\nFound subrooms:\n${subroomsDescription}`,
+    };
   },
 };

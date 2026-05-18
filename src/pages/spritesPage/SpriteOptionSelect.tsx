@@ -56,7 +56,9 @@ export const SpriteOptionSelect = () => {
           const matched = spriteOptionValues.find(
             (v) => spriteOptionLabel(v) === label,
           );
-          if (matched) dispatch(setSpritesOption(matched));
+          if (matched) {
+            dispatch(setSpritesOption(matched));
+          }
         }}
         disableCommandInput
       />

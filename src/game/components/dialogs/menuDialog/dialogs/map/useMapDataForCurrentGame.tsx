@@ -37,16 +37,19 @@ export const useMapDataForCurrentGame = <
 
       let curSubRoom: string;
 
-      if (!gameState) curSubRoom = "*";
-      else {
+      if (!gameState) {
+        curSubRoom = "*";
+      } else {
         const subRooms = curRoom?.roomJson.meta?.subRooms;
 
-        if (!subRooms) curSubRoom = "*";
-        else {
+        if (!subRooms) {
+          curSubRoom = "*";
+        } else {
           const curCharacterItem = curRoom?.items[currentCharacterName];
 
-          if (!curCharacterItem) curSubRoom = "*";
-          else {
+          if (!curCharacterItem) {
+            curSubRoom = "*";
+          } else {
             curSubRoom = findSubRoomForItem(
               curCharacterItem.state.position,
               "fine",

@@ -198,8 +198,7 @@ export const maybeRenderContainerToSprite = (
   if (container instanceof Sprite) {
     // simple case where we got a sprite:
     return container;
-  } else {
-    // times case where createSprite gave us a container of sprites:
-    return renderContainerToSprite(pixiRenderer, container);
   }
+  // times case where createSprite gave us a container of sprites:
+  return renderContainerToSprite(pixiRenderer, container);
 };

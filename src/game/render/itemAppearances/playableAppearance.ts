@@ -146,8 +146,9 @@ const playableCreateSpriteOptions = ({
   if (action === "falling") {
     const fallingTextureName = `${name}.falling.${facingXy8}`;
 
-    if (isTextureId(fallingTextureName, spritesheet.data))
+    if (isTextureId(fallingTextureName, spritesheet.data)) {
       return { textureId: fallingTextureName, spritesheet };
+    }
   }
 
   if (name === "head" && isStoodOn) {

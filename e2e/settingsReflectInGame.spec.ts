@@ -111,7 +111,7 @@ test.describe("Settings reflect in game", () => {
         async action() {
           await page.goto("/?cheats=1&track=0");
           await waitForDialog(page, "mainMenu", {
-            timeout: 5_000 * osSlowness,
+            timeout: 5000 * osSlowness,
           });
         },
         async recovery() {
@@ -188,7 +188,7 @@ test.describe("Settings reflect in game", () => {
           );
         },
         async recovery() {
-          await page.waitForTimeout(2_000);
+          await page.waitForTimeout(2000);
         },
         logHeader: formattedName,
         actionDescription: "freeze game for screenshots",

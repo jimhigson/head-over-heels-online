@@ -55,7 +55,7 @@ test("timer toggles a movingPlatform's activated state on its period", () => {
   // second fire at ~1000ms applies "left" (activated: true)
   playGameThrough(gameState, {
     until(gameState) {
-      return gameState.gameTime > 1_100;
+      return gameState.gameTime > 1100;
     },
   });
 
@@ -66,7 +66,7 @@ test("timer toggles a movingPlatform's activated state on its period", () => {
   // third fire at ~1500ms applies "right" (activated: false)
   playGameThrough(gameState, {
     until(gameState) {
-      return gameState.gameTime > 1_600;
+      return gameState.gameTime > 1600;
     },
   });
 
@@ -88,7 +88,7 @@ test("timer respects delay before first fire", () => {
         position: { x: 0, y: 0, z: 0 },
         config: {
           period: 200,
-          delay: 1_000,
+          delay: 1000,
           initialSetting: "left",
           modifies: [
             {
@@ -114,7 +114,7 @@ test("timer respects delay before first fire", () => {
   // delay=1000, period=200, lastFired=0: first fire at ~1000 applies "right" (activated: false)
   playGameThrough(gameState, {
     until(gameState) {
-      return gameState.gameTime > 1_100;
+      return gameState.gameTime > 1100;
     },
   });
 
@@ -125,7 +125,7 @@ test("timer respects delay before first fire", () => {
   // second fire at ~1200 applies "left" (activated: true)
   playGameThrough(gameState, {
     until(gameState) {
-      return gameState.gameTime > 1_300;
+      return gameState.gameTime > 1300;
     },
   });
 
@@ -216,7 +216,7 @@ test("timer can be disabled by a switch", () => {
   // run for another second — timer is disabled so platform state should not change
   playGameThrough(gameState, {
     until(gameState) {
-      return gameState.gameTime > 3_000;
+      return gameState.gameTime > 3000;
     },
   });
 

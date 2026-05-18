@@ -154,7 +154,7 @@ test.for<{
         return expectedPortable ?
             heelsState(gameState).carrying?.id === "testItem"
             // if we're not expecting it to be portable, wait a short time before giving up trying to carry it:
-          : gameState.gameTime >= 5_000;
+          : gameState.gameTime >= 5000;
       },
     });
 

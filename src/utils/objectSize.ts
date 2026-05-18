@@ -2,6 +2,8 @@
 export const objectSize = (obj: object): number => {
   let count = 0;
   // eslint-disable-next-line @typescript-eslint/no-unused-vars
-  for (const _ in obj) count++;
+  for (const _ in obj) {
+    count++;
+  }
   return count;
 };

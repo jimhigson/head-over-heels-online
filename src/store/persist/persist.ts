@@ -35,13 +35,17 @@ export const persistVersion = 23;
 const userSettingsMigrations = createMigrate({
   // v23: move poke fields into pokesEnabled and rename
   23(state) {
-    if (!state) return state;
+    if (!state) {
+      return state;
+    }
     const { userSettings, ...otherSliceState } = state as Record<
       string,
       unknown
     >;
     const us = userSettings as Record<string, unknown> | undefined;
-    if (!us) return state;
+    if (!us) {
+      return state;
+    }
     // old names:
     const { infiniteLivesPoke, infiniteDoughnutsPoke, ...usRest } = us;
     return {
@@ -74,17 +78,23 @@ const savedGamesMigrations = createMigrate({
   // v23: lift gameInPlay snapshot to root of each save, migrating the legacy
   // store.gameMenus.gameInPlay / store.gameInPlay.gameInPlay nesting
   23(state) {
-    if (!state) return state;
+    if (!state) {
+      return state;
+    }
     const s = state as Record<string, unknown>;
     const saves = s.saves as
       | Record<string, Record<string, unknown>>
       | undefined;
-    if (!saves) return state;
+    if (!saves) {
+      return state;
+    }
     for (const save of Object.values(saves)) {
       const store = save.store as
         | Record<string, Record<string, unknown>>
         | undefined;
-      if (!store) continue;
+      if (!store) {
+        continue;
+      }
       const legacyInner =
         store.gameInPlay?.gameInPlay ?? store.gameMenus?.gameInPlay;
       if (legacyInner !== undefined) {

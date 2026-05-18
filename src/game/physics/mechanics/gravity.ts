@@ -74,17 +74,16 @@ export const gravity: Mechanic<FreeItemTypes> = <
     }
 
     return notFalling;
-  } else {
-    // not standing on anything - allow free fall up to terminal velocity
-    return {
-      movementType: "vel",
-      vels: {
-        gravity: {
-          x: 0,
-          y: 0,
-          z: Math.max(previousVelZ - fallG * deltaMS, -terminalZ),
-        },
-      },
-    };
   }
+  // not standing on anything - allow free fall up to terminal velocity
+  return {
+    movementType: "vel",
+    vels: {
+      gravity: {
+        x: 0,
+        y: 0,
+        z: Math.max(previousVelZ - fallG * deltaMS, -terminalZ),
+      },
+    },
+  };
 };

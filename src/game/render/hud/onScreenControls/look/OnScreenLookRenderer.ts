@@ -91,7 +91,9 @@ export class OnScreenLookRenderer<
   };
 
   usePointerLocation = (e: FederatedPointerEvent) => {
-    if (e.pointerId !== this.#curPointerId) return;
+    if (e.pointerId !== this.#curPointerId) {
+      return;
+    }
 
     const rot90 = this.renderContext.general.upscale.rotate90;
 

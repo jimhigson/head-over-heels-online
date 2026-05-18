@@ -38,14 +38,16 @@ export const handleItemTouchingSlidingItem = <
     !isSolid(touchingItem) &&
     // fired doughnuts aren't solid but they can start a sliding item moving:
     touchingItem.type !== "firedDoughnut"
-  )
+  ) {
     return;
+  }
 
-  if (log)
+  if (log) {
     console.group(
       `💥🛝 handleItemTouchingSlidingItem: solid item ${touchingItem.id} touching sliding item ${slidingItem.id}`,
       opts,
     );
+  }
 
   const {
     state: { position: slidingItemPosition },
@@ -82,7 +84,7 @@ export const handleItemTouchingSlidingItem = <
   const backingOffProjectedOnMovementVectorMagnitude: number =
     dotProductXy(mtvOverlap, slidingVector) / mtvAvMagnitudeSquared;
 
-  if (log)
+  if (log) {
     console.log(
       "\nmtvOverlap:",
       ...visualiseVectorForLogs(mtvOverlap),
@@ -93,10 +95,13 @@ export const handleItemTouchingSlidingItem = <
       "giving projection of",
       backingOffProjectedOnMovementVectorMagnitude,
     );
+  }
 
   if (backingOffProjectedOnMovementVectorMagnitude < 0.44) {
     // do no sliding
-    if (log) console.groupEnd();
+    if (log) {
+      console.groupEnd();
+    }
     return;
   }
 
@@ -105,15 +110,18 @@ export const handleItemTouchingSlidingItem = <
   unitVectorInPlace(slidingVector);
   scaleXyzInPlace(slidingVector, -moveSpeedPixPerMs.ball);
 
-  if (log)
+  if (log) {
     console.log(
       `giving ${slidingItem.id} state.vels.sliding`,
       ...visualiseVectorForLogs(slidingVector),
     );
+  }
 
   slidingItem.state.vels.sliding = slidingVector;
 
-  if (log) console.groupEnd();
+  if (log) {
+    console.groupEnd();
+  }
 };
 
 export const handleSlidingItemTouchingAnyItem = <
@@ -133,17 +141,22 @@ export const handleSlidingItemTouchingAnyItem = <
     touchedItem,
   } = opts;
 
-  if (!isSolid(touchedItem)) return;
+  if (!isSolid(touchedItem)) {
+    return;
+  }
 
   const slidingVel = slidingItem.state.vels.sliding;
 
-  if (xyzEqual(slidingVel, originXyz)) return;
+  if (xyzEqual(slidingVel, originXyz)) {
+    return;
+  }
 
-  if (log)
+  if (log) {
     console.group(
       `💥🛝 handleSlidingItemTouchingAnyItem: sliding item ${slidingItem.id} touching solid item ${touchedItem.id} while sliding`,
       opts,
     );
+  }
 
   const {
     state: { position: slidingItemPosition },
@@ -164,13 +177,17 @@ export const handleSlidingItemTouchingAnyItem = <
   if (d > 0) {
     // stop sliding
     slidingItem.state.vels.sliding = originXyz;
-    if (log)
+    if (log) {
       console.log(
         `non-zero dot product, stopping ${slidingItem.id} sliding because of touch with ${touchedItem.id}`,
       );
+    }
   } else {
-    if (log)
+    if (log) {
       console.log(`dot product <= 0, not stopping ${slidingItem.id} sliding`);
+    }
   }
-  if (log) console.groupEnd();
+  if (log) {
+    console.groupEnd();
+  }
 };

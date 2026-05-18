@@ -14,11 +14,10 @@ export const maybeSpeedForItem = (
 ): number | undefined => {
   if (isMonster(itemWithMovement)) {
     return moveSpeedPixPerMs[itemWithMovement.config.which];
-  } else {
-    return (moveSpeedPixPerMs as { [i in ItemInPlayType]?: number })[
-      itemWithMovement.type
-    ];
   }
+  return (moveSpeedPixPerMs as { [i in ItemInPlayType]?: number })[
+    itemWithMovement.type
+  ];
 };
 
 /**
@@ -36,7 +35,6 @@ export const speedForItem = (
 ): number => {
   if (isMonster(itemWithMovement)) {
     return moveSpeedPixPerMs[itemWithMovement.config.which];
-  } else {
-    return moveSpeedPixPerMs[itemWithMovement.type];
   }
+  return moveSpeedPixPerMs[itemWithMovement.type];
 };

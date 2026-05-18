@@ -120,7 +120,7 @@ export class TypeFlattener {
 
         // Check if the property is actually optional using symbol flags
         const propFlags = prop.getFlags();
-        const isOptionalProperty = (propFlags & 16777216) !== 0; // ts.SymbolFlags.Optional
+        const isOptionalProperty = (propFlags & 16_777_216) !== 0; // ts.SymbolFlags.Optional
 
         // Check if the type includes undefined (e.g., string | undefined)
         const includesUndefined =
@@ -242,14 +242,30 @@ export class TypeFlattener {
     const typeString = type.getText();
 
     // Handle primitives first
-    if (type.isString()) return "string";
-    if (type.isNumber()) return "number";
-    if (type.isBoolean()) return "boolean";
-    if (type.isUndefined()) return "undefined";
-    if (type.isNull()) return "null";
-    if (type.isNever()) return "never";
-    if (type.isStringLiteral()) return `"${type.getLiteralValue()}"`;
-    if (type.isNumberLiteral()) return String(type.getLiteralValue());
+    if (type.isString()) {
+      return "string";
+    }
+    if (type.isNumber()) {
+      return "number";
+    }
+    if (type.isBoolean()) {
+      return "boolean";
+    }
+    if (type.isUndefined()) {
+      return "undefined";
+    }
+    if (type.isNull()) {
+      return "null";
+    }
+    if (type.isNever()) {
+      return "never";
+    }
+    if (type.isStringLiteral()) {
+      return `"${type.getLiteralValue()}"`;
+    }
+    if (type.isNumberLiteral()) {
+      return String(type.getLiteralValue());
+    }
     if (type.isBooleanLiteral()) {
       // getLiteralValue() returns undefined for boolean literals, use getText() instead
       return type.getText();
@@ -319,15 +335,14 @@ export class TypeFlattener {
           });
 
           return distributedMembers.join(" | ");
-        } else {
-          // Not a union, process normally
-          return this.#processOmitType(
-            sourceType,
-            keysToOmit,
-            typeName,
-            depth + 1,
-          );
         }
+        // Not a union, process normally
+        return this.#processOmitType(
+          sourceType,
+          keysToOmit,
+          typeName,
+          depth + 1,
+        );
       }
     }
 
@@ -418,12 +433,16 @@ export class TypeFlattener {
 
                               for (const prop of props) {
                                 const propName = prop.getName();
-                                if (propName === keysToOmit) continue;
+                                if (propName === keysToOmit) {
+                                  continue;
+                                }
 
                                 const propDeclaration =
                                   prop.getValueDeclaration() ??
                                   prop.getDeclarations()[0];
-                                if (!propDeclaration) continue;
+                                if (!propDeclaration) {
+                                  continue;
+                                }
 
                                 const propType =
                                   this.#typeChecker.getTypeOfSymbolAtLocation(
@@ -599,9 +618,15 @@ export class TypeFlattener {
       if (allLiterals) {
         return unionTypes
           .map((t) => {
-            if (t.isStringLiteral()) return `"${t.getLiteralValue()}"`;
-            if (t.isNumberLiteral()) return String(t.getLiteralValue());
-            if (t.isBooleanLiteral()) return t.getText();
+            if (t.isStringLiteral()) {
+              return `"${t.getLiteralValue()}"`;
+            }
+            if (t.isNumberLiteral()) {
+              return String(t.getLiteralValue());
+            }
+            if (t.isBooleanLiteral()) {
+              return t.getText();
+            }
             return "unknown";
           })
           .join(" | ");
@@ -621,14 +646,13 @@ export class TypeFlattener {
             return "undefined";
           } else if (unionType.isNull()) {
             return "null";
-          } else {
-            return this.processType(
-              unionType,
-              this.#capitalizeTypeName(`${typeName}Union${index}`),
-              depth + 1,
-              stripUndefined,
-            );
           }
+          return this.processType(
+            unionType,
+            this.#capitalizeTypeName(`${typeName}Union${index}`),
+            depth + 1,
+            stripUndefined,
+          );
         });
 
       // Filter out duplicates and join
@@ -951,11 +975,11 @@ export class TypeFlattener {
     const omitKeys = new Set<string>();
     if (keysToOmit.isUnion()) {
       // Multiple keys to omit
-      keysToOmit.getUnionTypes().forEach((keyType) => {
+      for (const keyType of keysToOmit.getUnionTypes()) {
         if (keyType.isStringLiteral()) {
           omitKeys.add(keyType.getLiteralValue() as string);
         }
-      });
+      }
     } else if (keysToOmit.isStringLiteral()) {
       // Single key to omit
       omitKeys.add(keysToOmit.getLiteralValue() as string);
@@ -1008,7 +1032,7 @@ export class TypeFlattener {
 
         // Check if the property is actually optional using symbol flags
         const propFlags = prop.getFlags();
-        const isOptionalProperty = (propFlags & 16777216) !== 0; // ts.SymbolFlags.Optional
+        const isOptionalProperty = (propFlags & 16_777_216) !== 0; // ts.SymbolFlags.Optional
 
         // Check if the type includes undefined (e.g., string | undefined)
         const includesUndefined =

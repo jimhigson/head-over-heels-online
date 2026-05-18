@@ -28,7 +28,7 @@ import { type ItemTouchEvent } from "./ItemTouchEvent";
  * this just has to be long enough that the last line of text
  * is gone
  */
-const floatingTextLife = 3_000;
+const floatingTextLife = 3000;
 
 export const handlePlayerTouchingPickup = <
   RoomId extends string,

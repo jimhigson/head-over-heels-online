@@ -74,11 +74,11 @@ export const takeDialogScreenshot = async (
     await retryWithRecovery({
       async action() {
         await page.waitForSelector(`dialog[data-dialog-id="${dialogId}"]`, {
-          timeout: 5_000 * osSlowness,
+          timeout: 5000 * osSlowness,
         });
         await page
           .getByRole("status")
-          .waitFor({ state: "detached", timeout: 5_000 * osSlowness });
+          .waitFor({ state: "detached", timeout: 5000 * osSlowness });
       },
       logHeader,
       actionDescription: `wait for dialog ${dialogId} without spinner`,
@@ -165,7 +165,9 @@ export const getSubmenuItems = async (page: Page): Promise<string[]> => {
  * In these environments we need a more lenient per-pixel threshold.
  */
 const supportsP3ColourSpace = (projectName: string): boolean => {
-  if (!process.env.CI || process.platform !== "linux") return true;
+  if (!process.env.CI || process.platform !== "linux") {
+    return true;
+  }
 
   const name = projectName.toLowerCase();
   return !name.includes("webkit") && !name.includes("safari");

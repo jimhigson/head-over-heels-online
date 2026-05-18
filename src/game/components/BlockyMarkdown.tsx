@@ -89,7 +89,9 @@ const markdownComponents: CustomComponentsOption = {
     );
   },
   img: function Img({ src }: JSX.IntrinsicElements["img"]) {
-    if (src === undefined) throw new Error("image without src");
+    if (src === undefined) {
+      throw new Error("image without src");
+    }
 
     // the src is actually tailwind classes, usually just giving a single texture, but
     // can also give extra params by writing as a url and using ? an & to encode them

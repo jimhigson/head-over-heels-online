@@ -129,5 +129,6 @@ export const flashOnSwitchedDecorateItemRenderer: DecorateItemRenderer = (
 
   if (isModifiedItem) {
     return new ItemFlashOnSwitchedRenderer(itemRenderContext, childRenderer);
-  } else return childRenderer;
+  }
+  return childRenderer;
 };

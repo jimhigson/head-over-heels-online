@@ -147,7 +147,9 @@ export const SpritesheetImage = ({
 
   const handleMouseMove = (e: React.MouseEvent<HTMLDivElement>) => {
     const el = containerRef.current;
-    if (!el) return;
+    if (!el) {
+      return;
+    }
 
     const rect = el.getBoundingClientRect();
     const style = getComputedStyle(el);

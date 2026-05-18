@@ -458,9 +458,10 @@ export class HudRenderer<RoomId extends string, RoomItemId extends string>
     this.#hudElements.heels.bag.container.y =
       this.#hudElements.head.hooter.container.y = screenSize.y - 8;
 
-    if (this.#fpsRenderer)
+    if (this.#fpsRenderer) {
       this.#fpsRenderer.output.x =
         screenSize.x / 2 - hudCharTextureSize.w * 1.5;
+    }
   }
 
   /** update the carrying element for heel's bag contents */
@@ -820,7 +821,7 @@ export class HudRenderer<RoomId extends string, RoomItemId extends string>
 
     const buttonsVisible =
       !tickContext.paused &&
-      (onScreenControls || Date.now() - this.#lastPointerMoveTime < 2_000);
+      (onScreenControls || Date.now() - this.#lastPointerMoveTime < 2000);
     this.#menuButton.output.visible = buttonsVisible;
     this.#mapButton.output.visible = buttonsVisible;
 

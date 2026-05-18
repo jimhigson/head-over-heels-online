@@ -124,7 +124,7 @@ export const moveItem = <RoomId extends string, RoomItemId extends string>({
     state: { position: originalPosition },
   } = subjectItem;
 
-  if (log)
+  if (log) {
     console.group(
       `[${visited.size === 0 ? `first cause` : `pushed ${visited.size} deep`}]`,
       "on path",
@@ -137,6 +137,7 @@ export const moveItem = <RoomId extends string, RoomItemId extends string>({
       ...visualiseVectorForLogs(posDelta),
       onTouch ? "with touch handling callback" : "skipping touch handling",
     );
+  }
 
   // strategy is to move to the target position, then back off as needed
   updateItemPosition(room, subjectItem, addXyz(originalPosition, posDelta));
@@ -161,7 +162,7 @@ export const moveItem = <RoomId extends string, RoomItemId extends string>({
   if (log) {
     if (sortedCollisions.length === 0) {
       console.log(subjectItem.id, "💥👎 'did not collide with anything");
-    } else
+    } else {
       console.log(
         subjectItem.id,
         "💥 collided with item(s):",
@@ -170,6 +171,7 @@ export const moveItem = <RoomId extends string, RoomItemId extends string>({
         "from room items:",
         room.items,
       );
+    }
   }
 
   for (const collidedWithItem of sortedCollisions) {
@@ -262,13 +264,14 @@ export const moveItem = <RoomId extends string, RoomItemId extends string>({
 
     // check for solidness has to be done after onTouch since touching non-solid items can have side-effects
     if (!isSolid(collidedWithItem, subjectItem) || !isSolid(subjectItem)) {
-      if (log)
+      if (log) {
         console.log(
           `moving ${subjectItem.id}`,
           "either mover or ",
           collidedWithItem.id,
           "is not solid so won't calculate/apply mtv",
         );
+      }
       continue;
     }
 
@@ -305,11 +308,12 @@ export const moveItem = <RoomId extends string, RoomItemId extends string>({
       0,
     );
 
-    if (log)
+    if (log) {
       console.log(
         `${subjectItem.id} collided 💥 with ${collidedWithItem.id} to give backing-off mtv`,
         backingOffMtv,
       );
+    }
 
     // push any pushable items that we intersect:
     if (collidedWithIsPushable) {
@@ -336,13 +340,14 @@ export const moveItem = <RoomId extends string, RoomItemId extends string>({
         ),
       );
 
-      if (log)
+      if (log) {
         console.log(
           `${subjectItem.id} will recursively push ${collidedWithItem.id} by`,
           forwardPushVector,
           "with push coefficient of",
           pushMultiplier,
         );
+      }
 
       if (visited.size < maxPushRecursionDepth) {
         // recursively apply push to pushed item
@@ -393,11 +398,12 @@ export const moveItem = <RoomId extends string, RoomItemId extends string>({
         addXyz(subjectItem.state.position, backingOffMtv),
       );
 
-      if (log)
+      if (log) {
         console.log(
           `${subjectItem.id} can't push ${collidedWithItem.id} so simply backed off to`,
           subjectItem.state.position,
         );
+      }
     }
 
     // check if we landed on the item we collided with to take over the standingOn slot::
@@ -421,12 +427,13 @@ export const moveItem = <RoomId extends string, RoomItemId extends string>({
           stoodOnItem(subjectItem.state.standingOnItemId, room),
         )
       ) {
-        if (log)
+        if (log) {
           console.log(
             `${subjectItem.id} is a free item and collided vertically with ${collidedWithItem.id}`,
             collidedWithItem,
             `so will set ${subjectItem.id} as standing on ${collidedWithItem.id}`,
           );
+        }
 
         // not colliding with the thing we were stood on before - take over the slot:
         removeStandingOn(subjectItem, room);
@@ -444,7 +451,7 @@ export const moveItem = <RoomId extends string, RoomItemId extends string>({
       // however - maybe if we want scraping sounds this could be useful
       !wasAlreadyTouchingCollidedWithItem
     ) {
-      if (log)
+      if (log) {
         console.log(
           `📝 recording to state: collision of ${subjectItem.id} with ${collidedWithItem.id}`,
           "originalPosition:",
@@ -455,6 +462,7 @@ export const moveItem = <RoomId extends string, RoomItemId extends string>({
           "delta",
           subXyz(subjectItem.state.position, originalPosition),
         );
+      }
 
       recordCollision(subjectItem, collidedWithItem, room);
     }
@@ -507,7 +515,9 @@ export const moveItem = <RoomId extends string, RoomItemId extends string>({
     }
   }
 
-  if (log) console.groupEnd();
+  if (log) {
+    console.groupEnd();
+  }
 
   return causedHelpful;
 };

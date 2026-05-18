@@ -31,13 +31,13 @@ export const selectionsReducers = {
     }>,
   ) {
     const roomItems = selectCurrentRoomFromLevelEditorState(state).items;
-    jsonItemIds.forEach((jsonItemId) => {
+    for (const jsonItemId of jsonItemIds) {
       if (!roomItems[jsonItemId]) {
         throw new Error(
           `Item with json item id "${jsonItemId}" is not in the current room`,
         );
       }
-    });
+    }
 
     state.selectedJsonItemIds = jsonItemIds;
   },

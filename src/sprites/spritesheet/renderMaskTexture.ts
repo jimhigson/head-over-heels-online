@@ -19,8 +19,8 @@ import {
   type TextureId,
 } from "./spritesheetData/makeSpritesheetData";
 
-export const black = new Color(0x000000);
-export const white = new Color(0xffffff);
+export const black = new Color(0x00_00_00);
+export const white = new Color(0xff_ff_ff);
 
 type TextureIdsListOrPredicate =
   | ((candidate: TextureId) => boolean)

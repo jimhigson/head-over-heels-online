@@ -28,7 +28,7 @@ test.describe("quit-game flow from in-game main menu", () => {
 
     await test.step("Eat a reincarnation fish to set the reincarnation point", async () => {
       await clickCheat(page, "cheats-summon-reincarnation");
-      await page.waitForTimeout(2_000 * osSlowness);
+      await page.waitForTimeout(2000 * osSlowness);
     });
 
     const fishRoom = await getCurrentRoomId(page);
@@ -36,7 +36,7 @@ test.describe("quit-game flow from in-game main menu", () => {
 
     await test.step("Move to a different room", async () => {
       await clickCheat(page, "cheats-goto-room-egyptus1");
-      await page.waitForTimeout(1_000 * osSlowness);
+      await page.waitForTimeout(1000 * osSlowness);
       expect(await getCurrentRoomId(page)).toBe("egyptus1");
     });
 

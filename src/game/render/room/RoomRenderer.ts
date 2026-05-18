@@ -329,7 +329,7 @@ export class RoomRenderer<RoomId extends string, RoomItemId extends string>
     this.output.graphics.destroy({ children: true });
     const { sound } = this.output;
     if (sound) {
-      const soundsFadeDurationMs = soundsFadeDurationSec * 1_000;
+      const soundsFadeDurationMs = soundsFadeDurationSec * 1000;
       setTimeout(() => {
         sound.disconnect();
       }, soundsFadeDurationMs);

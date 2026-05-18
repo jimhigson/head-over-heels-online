@@ -36,13 +36,12 @@ export const MapBackground = <RoomId extends string>(
 
   if (isMainMapForOriginalCampaign) {
     return <OriginalCampaignMainMapBackground {...props} />;
-  } else {
-    // simple case of a map background representing a single planet:
-    return (
-      <MapBackgroundSection
-        mapTitle={sceneryToMapTitle[campaign.rooms[curRoomId].planet]}
-        className={mapColours.bgClassName}
-      />
-    );
   }
+  // simple case of a map background representing a single planet:
+  return (
+    <MapBackgroundSection
+      mapTitle={sceneryToMapTitle[campaign.rooms[curRoomId].planet]}
+      className={mapColours.bgClassName}
+    />
+  );
 };

@@ -47,9 +47,8 @@ test.each(["head", "heels"] as const)(
         const currentPlayableItem = selectCurrentPlayableItem(gameState);
         if (currentPlayableItem!.type === "headOverHeels") {
           return currentPlayableItem?.state.head.lives === 7;
-        } else {
-          return currentPlayableItem?.state.lives === 7;
         }
+        return currentPlayableItem?.state.lives === 7;
       },
     });
   },
@@ -141,7 +140,7 @@ test("activated:after-player-near", () => {
 
   // no input for a second to start:
   playGameThrough(gameState, {
-    until: 1_000,
+    until: 1000,
   });
 
   // should have stayed in the same place (player didn't go near)
@@ -181,7 +180,7 @@ test("activated:after-player-near", () => {
     setupInitialInput(mockInputStateTracker) {
       mockInputStateTracker.mockDirectionPressed = "right";
     },
-    until: 5_000,
+    until: 5000,
   });
 
   expect(itemState<"monster">(gameState, "monster").activated).toBe(false);

@@ -23,10 +23,10 @@ const readXmlToJson = async (fileName: string) => {
       const keyName = Object.keys(parentObject._parent)[keyNo - 1];
 
       if (parentObject._parent._attributes !== undefined) {
-        Object.entries(parentObject._parent._attributes).forEach(([k, v]) => {
+        for (const [k, v] of Object.entries(parentObject._parent._attributes)) {
           parentObject._parent[k] = v;
           delete (parentObject._parent._attributes as any)[k];
-        });
+        }
       }
 
       parentObject._parent[keyName] = value;
@@ -94,8 +94,12 @@ export const readRoomToXmlJson = async (
     : [roomJson.items.item];
 
   delete roomJson._attributes;
-  roomJson.walls.forEach((w: { _attributes?: object }) => delete w._attributes);
-  roomJson.items.forEach((i: { _attributes?: object }) => delete i._attributes);
+  for (const w of roomJson.walls as { _attributes?: object }[]) {
+    delete w._attributes;
+  }
+  for (const i of roomJson.items as { _attributes?: object }[]) {
+    delete i._attributes;
+  }
 
   return roomJson as Xml2JsonRoom;
 };

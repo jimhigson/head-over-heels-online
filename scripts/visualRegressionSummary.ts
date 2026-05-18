@@ -38,7 +38,9 @@ const limit = Number.parseInt(opts.limit);
 const parallelism = Number.parseInt(opts.parallelism);
 
 const resolveDir = (): string => {
-  if (opts.spec === undefined) return dirArg;
+  if (opts.spec === undefined) {
+    return dirArg;
+  }
 
   const snapshotDirs = readdirSync("e2e", { withFileTypes: true })
     .filter((d) => d.isDirectory() && d.name.endsWith(".spec.ts-snapshots"))
@@ -164,7 +166,7 @@ const getFileAtRevision = async (
   try {
     const { stdout } = await execFileAsync("git", ["show", `${rev}:${file}`], {
       encoding: "buffer",
-      maxBuffer: 10 * 1_024 * 1_024,
+      maxBuffer: 10 * 1024 * 1024,
     });
     return stdout;
   } catch {
@@ -182,7 +184,9 @@ const withPool = async <T>(
   let index = 0;
   const next = async (): Promise<void> => {
     const i = index++;
-    if (i >= items.length) return;
+    if (i >= items.length) {
+      return;
+    }
     await fn(items[i]);
     return next();
   };
@@ -236,7 +240,9 @@ const compareFile = async (
     getFileAtRevision(later, file),
   ]);
 
-  if (baseBuffer === undefined || laterBuffer === undefined) return undefined;
+  if (baseBuffer === undefined || laterBuffer === undefined) {
+    return undefined;
+  }
 
   const img1 = PNG.sync.read(baseBuffer);
   const img2 = PNG.sync.read(laterBuffer);
@@ -260,7 +266,9 @@ const compareFile = async (
 
   const { width, height } = img1;
   const totalPixels = width * height;
-  if (totalPixels === 0) return undefined;
+  if (totalPixels === 0) {
+    return undefined;
+  }
 
   const diffPixels = pixelmatch(
     img1.data,
@@ -340,7 +348,7 @@ const buildRows = (results: CompareResult[]): ListRow[] => {
 
 const formatPixels = (n: number): string =>
   n >= 1_000_000 ? `${(n / 1_000_000).toFixed(1)}M`
-  : n >= 1_000 ? `${(n / 1_000).toFixed(1)}k`
+  : n >= 1000 ? `${(n / 1000).toFixed(1)}k`
   : String(n);
 
 // ── Ink UI ───────────────────────────────────────────────────────────────────

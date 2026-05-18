@@ -43,8 +43,8 @@ import { topLevelFilters } from "./topLevelFilters";
 textInterfaceToShowDetailedFrameTiming();
 
 const quarterTurnClockwise = Math.PI / 2;
-const pausedDimTint = 0x999999;
-const noTint = 0xffffff;
+const pausedDimTint = 0x99_99_99;
+const noTint = 0xff_ff_ff;
 
 export class MainLoop<RoomId extends string> {
   #hudRenderer: HudRenderer<RoomId, string> | undefined;

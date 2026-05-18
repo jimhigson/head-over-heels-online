@@ -203,7 +203,9 @@ export class OnScreenJoystickRenderer
    * ie started on the joystick) and send it to the input tracker
    */
   usePointerLocation = (e: FederatedPointerEvent) => {
-    if (e.pointerId !== this.#curPointerId) return;
+    if (e.pointerId !== this.#curPointerId) {
+      return;
+    }
 
     const {
       rotate90,

@@ -19,7 +19,6 @@ export const ScrollIntoView = ({
 
   if (svg) {
     return <g ref={ref as RefObject<SVGGElement>} />;
-  } else {
-    return <div ref={ref as RefObject<HTMLDivElement>} />;
   }
+  return <div ref={ref as RefObject<HTMLDivElement>} />;
 };

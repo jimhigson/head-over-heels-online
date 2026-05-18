@@ -101,29 +101,28 @@ export const loadPlayer = <RoomId extends string, RoomItemId extends string>(
         stoodOnUntilRoomTime: neverTime,
       },
     };
-  } else {
-    return {
-      // the id will almost always be 'heels' - it can only be different if it is
-      // a preview in the level editor
-      id: jsonItemId as RoomItemId,
-      jsonItemId,
-      type: "heels",
-      ...defaultItemProperties,
-      ...defaultPlayableRootAttributes,
-      ...heelsAabbInfo,
-      state: {
-        ...defaultBaseState<RoomItemId>(),
-        ...defaultFreeItemState(),
-        ...defaultCommonPlayableState(),
-        ...defaultCommonIndividualPlayableState(pokesEnabled),
-        carrying: null,
-        hasBag: false,
-        bigJumps: 0,
-        isBigJump: false,
-        shieldCollectedAt: neverTime,
-        position: positionCentredInBlock(jsonItem),
-        stoodOnUntilRoomTime: neverTime,
-      },
-    };
   }
+  return {
+    // the id will almost always be 'heels' - it can only be different if it is
+    // a preview in the level editor
+    id: jsonItemId as RoomItemId,
+    jsonItemId,
+    type: "heels",
+    ...defaultItemProperties,
+    ...defaultPlayableRootAttributes,
+    ...heelsAabbInfo,
+    state: {
+      ...defaultBaseState<RoomItemId>(),
+      ...defaultFreeItemState(),
+      ...defaultCommonPlayableState(),
+      ...defaultCommonIndividualPlayableState(pokesEnabled),
+      carrying: null,
+      hasBag: false,
+      bigJumps: 0,
+      isBigJump: false,
+      shieldCollectedAt: neverTime,
+      position: positionCentredInBlock(jsonItem),
+      stoodOnUntilRoomTime: neverTime,
+    },
+  };
 };

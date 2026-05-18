@@ -97,22 +97,26 @@ const floorPathFillPathD = (
 
   let shape = `M${project({ x: roomFront, y: roomFront })}`;
 
-  if (rightOpen)
+  if (rightOpen) {
     shape += `L${project({ x: 0, y: roomFront })} L${project({ x: 0, y: roomBack })}`;
+  }
 
   shape += `L${project({ x: roomFront, y: roomBack })}`;
 
-  if (awayOpen)
+  if (awayOpen) {
     shape += `L${project({ x: roomFront, y: roomGridSizeXY })} L${project({ x: roomBack, y: roomGridSizeXY })}`;
+  }
 
   shape += `L${project({ x: roomBack, y: roomBack })}`;
 
-  if (leftOpen)
+  if (leftOpen) {
     shape += `L${project({ x: roomGridSizeXY, y: roomBack })} L${project({ x: roomGridSizeXY, y: roomFront })}`;
+  }
 
   shape += `L${project({ x: roomBack, y: roomFront })}`;
-  if (towardsOpen)
+  if (towardsOpen) {
     shape += `L${project({ x: roomBack, y: 0 })} L${project({ x: roomFront, y: 0 })}`;
+  }
 
   shape += "z";
 

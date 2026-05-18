@@ -173,9 +173,8 @@ export const CurrentKeyAssignments = ({
     }
     if (state.userSettings.assigningInput?.action === action) {
       return state.userSettings.assigningInput.axes;
-    } else {
-      return selectInputAssignment(state).axes[axisForAction.axis];
     }
+    return selectInputAssignment(state).axes[axisForAction.axis];
   });
 
   const filteredKeys =

@@ -55,19 +55,18 @@ export const Dialogs = (_emptyProps: EmptyObject) => {
           dialogId="markdown/inline"
         />
       );
-    } else {
-      // standard manual pages:
-      const pageName = topOpenMenu.menuId.slice(
-        "markdown/".length,
-      ) as MarkdownPageName;
-      return (
-        <LazyMarkdownDialog
-          source="manual"
-          pageName={pageName}
-          dialogId={topOpenMenu.menuId}
-        />
-      );
     }
+    // standard manual pages:
+    const pageName = topOpenMenu.menuId.slice(
+      "markdown/".length,
+    ) as MarkdownPageName;
+    return (
+      <LazyMarkdownDialog
+        source="manual"
+        pageName={pageName}
+        dialogId={topOpenMenu.menuId}
+      />
+    );
   }
 
   switch (topOpenMenu.menuId) {
