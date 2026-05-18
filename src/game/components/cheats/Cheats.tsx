@@ -40,7 +40,9 @@ import { swopFromUncombinedToCombinedPlayables } from "../../gameState/mutators/
 import { blockSizePx } from "../../physics/mechanicsConstants";
 import { boundingBoxDecorateItemRenderer } from "../../render/item/itemRender/boundingBoxDecorateItemRenderer";
 import { debugPointerDecorateItemRenderer } from "../../render/item/itemRender/debugPointerDecorateItemRenderer";
+import { subRoomBoundariesDecorateRoomRenderer } from "../../render/room/subRoomBoundariesDecorateRoomRenderer";
 import { useRegisterDecorateItemRenderers } from "../../render/useRegisterDecorateItemRenderers";
+import { useRegisterDecorateRoomRenderers } from "../../render/useRegisterDecorateRoomRenderers";
 import { CssVariables } from "../CssVariables";
 import { useGameApi } from "../GameApiContext";
 import { BitmapText } from "../tailwindSprites/BitmapText";
@@ -234,8 +236,11 @@ const cheatsDecorators = [
   debugPointerDecorateItemRenderer,
 ];
 
+const cheatsRoomDecorators = [subRoomBoundariesDecorateRoomRenderer];
+
 export const Cheats = <RoomId extends string>(_emptyProps: EmptyObject) => {
   useRegisterDecorateItemRenderers(cheatsDecorators);
+  useRegisterDecorateRoomRenderers(cheatsRoomDecorators);
   const gameApi = useGameApi<RoomId>();
   const spriteClassname = usePlayableTailwindSpriteClassname();
 

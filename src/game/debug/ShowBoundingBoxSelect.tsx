@@ -6,6 +6,7 @@ import { useAppDispatch } from "../../store/hooks";
 import {
   useShowBoundingBoxTypes,
   useShowRoomScrollBounds,
+  useShowSubrooms,
 } from "../../store/slices/gameMenus/gameMenusSelectors";
 import {
   setShowBoundingBoxType,
@@ -63,6 +64,7 @@ export const ShowBoundingBoxSelect = ({
   const selected = useShowBoundingBoxTypes();
   const selectedSet = new Set(selected);
   const showRoomScrollBounds = useShowRoomScrollBounds();
+  const showSubrooms = useShowSubrooms();
   const [open, setOpen] = useState(false);
   const [visibleTypes, setVisibleTypes] = useState<readonly ItemInPlayType[]>(
     sortedItemInPlayTypes,
@@ -129,6 +131,23 @@ export const ShowBoundingBoxSelect = ({
                   className="w-full"
                   value={showRoomScrollBounds}
                   label="scroll bounds"
+                />
+              </CommandItem>
+              <CommandItem
+                value="__sub-rooms__"
+                onSelect={() => {
+                  dispatch(
+                    toggleUserSetting({
+                      path: "displaySettings.showSubrooms",
+                    }),
+                  );
+                }}
+                className="px-1"
+              >
+                <Switch
+                  className="w-full"
+                  value={showSubrooms}
+                  label="sub-rooms"
                 />
               </CommandItem>
             </CommandGroup>

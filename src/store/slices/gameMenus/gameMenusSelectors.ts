@@ -171,6 +171,13 @@ export const useShowShadowMasks = (): boolean => {
   return useAppSelector(selectShowShadowMasks);
 };
 
+export const selectShowSubrooms = selectUserSetting(
+  "displaySettings.showSubrooms",
+);
+export const useShowSubrooms = (): boolean => {
+  return useAppSelector(selectShowSubrooms);
+};
+
 const selectUserPreferenceOnScreenControls =
   selectUserSetting("onScreenControls");
 
