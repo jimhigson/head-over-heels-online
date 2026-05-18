@@ -21,6 +21,7 @@ export const defaultUserSettings: DefaultUserSettings = {
     showBoundingBoxTypes: [],
     showRoomScrollBounds: false,
     showShadowMasks: false,
+    showSubrooms: false,
     // crt filters are distinctive look for the game,
     // but also maybe slow it down on older devices
     crtFilter: false,

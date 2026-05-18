@@ -45,6 +45,7 @@ export type DisplaySettings = {
   showBoundingBoxTypes?: ItemInPlayType[];
   showRoomScrollBounds?: boolean;
   showShadowMasks?: boolean;
+  showSubrooms?: boolean;
   sprites?: SpriteOption;
 };
 

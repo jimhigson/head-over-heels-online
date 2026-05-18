@@ -251,13 +251,20 @@ function* _roomGridPositions<RoomId extends string>({
       with: { room: withRoom, subRoom: withSubRoom },
       gridOffset,
     } = nonContiguousRelationship;
-    yield* roomGridPositions({
-      roomId: withRoom,
-      subRoomId: withSubRoom,
-      campaign,
-      visited,
-      vectorFromPrevious: gridOffset,
-      previousRoomGridPosition: gridPosition,
-    });
+    try {
+      yield* roomGridPositions({
+        roomId: withRoom,
+        subRoomId: withSubRoom,
+        campaign,
+        visited,
+        vectorFromPrevious: gridOffset,
+        previousRoomGridPosition: gridPosition,
+      });
+    } catch (e) {
+      throw new Error(
+        `Error in non-contiguous relationship ${roomId} to ${withRoom}/${withSubRoom ?? "*"}`,
+        { cause: e },
+      );
+    }
   }
 }

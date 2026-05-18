@@ -2,7 +2,9 @@ import { TextureStyle } from "pixi.js";
 import { useState } from "preact/hooks";
 
 import { boundingBoxDecorateItemRenderer } from "../../game/render/item/itemRender/boundingBoxDecorateItemRenderer";
+import { subRoomBoundariesDecorateRoomRenderer } from "../../game/render/room/subRoomBoundariesDecorateRoomRenderer";
 import { useRegisterDecorateItemRenderers } from "../../game/render/useRegisterDecorateItemRenderers";
+import { useRegisterDecorateRoomRenderers } from "../../game/render/useRegisterDecorateRoomRenderers";
 import { type ResolutionName } from "../../originalGame";
 import { useUpdateUpscaleOnDisplaySettingsChange } from "../../store/slices/upscale/useUpdateUpscaleOnDisplaySettingsChange";
 import { useUpdateUpscaleWhenElementResizes } from "../../store/slices/upscale/useUpdateUpscaleWhenElementResizes";
@@ -28,8 +30,11 @@ const editorItemRendererDecorators = [
   boundingBoxDecorateItemRenderer,
 ];
 
+const editorRoomDecorators = [subRoomBoundariesDecorateRoomRenderer];
+
 const RoomEditingAreaInner = () => {
   useRegisterDecorateItemRenderers(editorItemRendererDecorators);
+  useRegisterDecorateRoomRenderers(editorRoomDecorators);
   const roomRenderer = useRoomRenderer();
   const [renderArea, setRenderArea] = useState<HTMLDivElement | null>(null);
   const [renderSizingArea, setRenderSizingArea] =

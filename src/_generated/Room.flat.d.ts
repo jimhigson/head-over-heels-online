@@ -2538,6 +2538,7 @@ export type RoomJsonSchema = {
                 | "displaySettings.crtFilter"
                 | "displaySettings.showRoomScrollBounds"
                 | "displaySettings.showShadowMasks"
+                | "displaySettings.showSubrooms"
                 | "pokesEnabled.infiniteLives"
                 | "pokesEnabled.infiniteDoughnuts"
                 | "soundSettings.mute"

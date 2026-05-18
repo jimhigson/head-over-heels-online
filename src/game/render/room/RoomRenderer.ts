@@ -24,6 +24,7 @@ import { type ZGraph } from "../sortZ/GraphEdges";
 import { toposort } from "../sortZ/toposort/toposort";
 import { updateZEdges } from "../sortZ/updateZEdges";
 import { type SoundAndGraphicsOutput } from "../SoundAndGraphicsOutput";
+import { type DecorateRoomRenderer } from "./DecorateRoomRenderer";
 import {
   type RoomRenderContext,
   type RoomTickContext,
@@ -34,6 +35,7 @@ export class RoomRenderer<RoomId extends string, RoomItemId extends string>
   implements RoomRendererType<RoomId, RoomItemId>
 {
   static itemDecorators: DecorateItemMaybeRenderer[][] = [];
+  static roomDecorators: DecorateRoomRenderer[][] = [];
 
   #destroyed = false;
 
@@ -314,6 +316,18 @@ export class RoomRenderer<RoomId extends string, RoomItemId extends string>
     }
 
     const order = toposort(this.#zEdges);
+
+    if (!this.#everRendered) {
+      // these only get to render once (never tick again)
+      for (const group of RoomRenderer.roomDecorators) {
+        for (const decorator of group) {
+          const container = decorator(this.renderContext);
+          if (container) {
+            this.output.graphics.addChild(container);
+          }
+        }
+      }
+    }
 
     this.#tickItems(tickContext);
 
