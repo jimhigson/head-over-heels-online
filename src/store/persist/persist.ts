@@ -1,7 +1,7 @@
+import type { PersistConfig } from "redux-persist/es/types";
+
 import { createMigrate } from "redux-persist";
 import persistReducer from "redux-persist/es/persistReducer";
-import { type PersistConfig } from "redux-persist/es/types";
-import storage from "redux-persist/lib/storage";
 
 import {
   savedGamesPersistKey,
@@ -14,6 +14,7 @@ import {
   userSettingsSlice,
   type UserSettingsState,
 } from "../slices/userSettings/userSettingsSlice";
+import storage from "./storage";
 
 /**
  * Persist version shared across all per-slice persistConfigs. Tracks the

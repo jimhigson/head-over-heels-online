@@ -1,6 +1,6 @@
+import type { PersistConfig } from "redux-persist/es/types";
+
 import persistReducer from "redux-persist/es/persistReducer";
-import { type PersistConfig } from "redux-persist/es/types";
-import storage from "redux-persist/lib/storage";
 
 import {
   levelEditorSlice,
@@ -8,6 +8,7 @@ import {
 } from "../../editor/slice/levelEditorSlice";
 import { levelEditorSliceNonPersistedFields } from "../../editor/slice/levelEditorSliceTransientFields";
 import { persistVersion } from "./persist";
+import storage from "./storage";
 
 const levelEditorPersistConfig: PersistConfig<LevelEditorState> = {
   key: "hohol/levelEditor",

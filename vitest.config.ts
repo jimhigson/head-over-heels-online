@@ -5,5 +5,6 @@ export default defineConfig({
     // Only include .test.ts and .test.tsx files, exclude .spec.ts (used by Playwright)
     include: ["**/*.test.ts", "**/*.test.tsx"],
     exclude: ["**/*.spec.ts", "node_modules", "dist", "build"],
+    setupFiles: ["src/_testUtils/stubLocalStorage.ts"],
   },
 });
