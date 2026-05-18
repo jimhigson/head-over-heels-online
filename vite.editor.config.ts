@@ -1,37 +1,10 @@
-import { debounce } from "@github/mini-throttle";
 import preact from "@preact/preset-vite";
 import path from "node:path";
 import { visualizer } from "rollup-plugin-visualizer";
 import { defineConfig, type PluginOption } from "vite";
 import glsl from "vite-plugin-glsl";
 
-const nonRuntimeDirPattern =
-  /[/\\](e2e|_testUtils|scripts|db|manual|sounds|zx_savestates|campaignXml2Json)[/\\]/;
-
-function hmrOnlyPreact(): PluginOption {
-  let reload: (() => void) | undefined;
-
-  return {
-    name: "hmr-only-preact",
-    configureServer(server) {
-      reload = debounce(() => {
-        server.ws.send({ type: "full-reload" });
-      }, 500);
-    },
-    handleHotUpdate({ file }) {
-      if (
-        /\.(test|spec)\.[tj]sx?$/.test(file) ||
-        nonRuntimeDirPattern.test(file)
-      ) {
-        return [];
-      }
-      if (!file.endsWith(".tsx")) {
-        reload?.();
-        return [];
-      }
-    },
-  };
-}
+import { hmrOnlyPreact } from "./hmrOnlyPreact";
 
 /**
  * vite config specific to the level editor, which is a separately
@@ -83,17 +56,19 @@ export default defineConfig({
     },
     target: "esnext",
     cssTarget: "esnext", // Don't transpile CSS for modern browsers
-    minify: "terser",
-    terserOptions: {
-      ecma: 2024,
-      module: true,
-      compress: {
-        passes: 2,
-        unsafe_arrows: true,
-        pure_getters: true,
+    minify: true,
+    rolldownOptions: {
+      output: {
+        minify: {
+          compress: {
+            target: "esnext",
+            treeshake: {
+              propertyReadSideEffects: false,
+            },
+          },
+        },
       },
     },
-    // Optional: adjust module preload for better performance
     modulePreload: {
       polyfill: false, // Modern browsers don't need the polyfill
     },
