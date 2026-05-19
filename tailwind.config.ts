@@ -177,6 +177,7 @@ export default {
       // can also be given explicitly to a different width (ie, number of blocks)
       // using a css variables
       menuItems: "var(--leader-col-width, min-content) max-content 1fr",
+      subgrid: "subgrid",
     },
     zIndex: {
       // smallest possible bump-up in render order

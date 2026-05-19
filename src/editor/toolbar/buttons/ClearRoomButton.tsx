@@ -7,7 +7,7 @@ export const ClearRoomButton = () => {
   return (
     <ToolbarButton
       className="bg-midRed"
-      onClick={() => store.dispatch(clearRoom())}
+      onClick={() => store.dispatch(clearRoom({ timestamp: Date.now() }))}
       tooltipContent={`## Clear room
 
 Clears the room out, leaving just walls, floors, and doors`}

@@ -64,12 +64,22 @@ export const addItemInPlace = <T extends JsonItemType = JsonItemType>(
   return [id, itemJson as EditorJsonItem<T>];
 };
 
+/**
+ * get the items object to write edits to for either preview
+ * or permanent edits
+ **/
 export const roomEditTarget = (
   state: LevelEditorState,
   isPreview: boolean,
   roomId: EditorRoomId = state.currentlyEditing.roomId,
 ): EditorRoomJsonItems | PreviewedRoomItemEdits => {
-  return isPreview ?
-      state.previewedEdits
-    : (state.campaignInProgress.rooms[roomId].items as EditorRoomJsonItems);
+  if (isPreview) {
+    if (state.pendingEdits === undefined) {
+      throw new Error(
+        "roomEditTarget called in preview mode without pendingEdits",
+      );
+    }
+    return state.pendingEdits.edits;
+  }
+  return state.campaignInProgress.rooms[roomId].items as EditorRoomJsonItems;
 };

@@ -97,6 +97,7 @@ export class ItemToolHandler
         blockPosition: putDownBlockPosition,
         pointedAtItemJson: jsonItem,
         preview: true,
+        timestamp: Date.now(),
       }),
     );
   }
@@ -144,6 +145,7 @@ export class ItemToolHandler
         blockPosition: putDownBlockPosition,
         pointedAtItemJson: jsonItem,
         preview: false,
+        timestamp: Date.now(),
       }),
     );
   }

@@ -11,7 +11,8 @@ import { addDoorInPlace } from "../inPlaceMutators/addDoorInPlace";
 import { addItemInPlace } from "../inPlaceMutators/addItemInPlace";
 import { consolidateCurrentRoomInPlace } from "../inPlaceMutators/consolidateCurrentRoomInPlace";
 import { type LevelEditorState } from "../levelEditorSlice";
-import { pushUndoInPlace } from "./undoReducers";
+import { type UndoItemEntry } from "./undoDescription";
+import { snapshotRoomForUndo } from "./undoReducers";
 
 const isDoorTool = (itemTool: ItemTool): itemTool is ItemTool<"door"> => {
   return itemTool.type === "door";
@@ -35,13 +36,14 @@ export type ApplyToolToRoomJsonPayload = {
 
   /** if preview, items added are put into the staging area */
   preview: boolean;
+  timestamp: number;
 };
 
 export const applyItemToolReducers = {
   applyItemTool(
     _state,
     {
-      payload: { blockPosition, pointedAtItemJson, preview },
+      payload: { blockPosition, pointedAtItemJson, preview, timestamp },
     }: PayloadAction<ApplyToolToRoomJsonPayload>,
   ) {
     // DO REMOVE CAST - for some reason, a severe typescript performance issue was narrowed
@@ -57,11 +59,20 @@ export const applyItemToolReducers = {
       );
     }
 
+    const roomSnapshot = !preview ? snapshotRoomForUndo(state) : undefined;
+
     if (!preview) {
-      pushUndoInPlace(state);
-      state.previewedEdits = {};
+      state.pendingEdits = undefined;
+    } else {
+      state.pendingEdits = {
+        edits: {},
+        description: { kind: "editRoomJson" },
+        timestamp,
+      };
     }
     state.selectedJsonItemIds = [];
+
+    let addedEntry: UndoItemEntry;
 
     switch (true) {
       case isDoorTool(tool.item): {
@@ -69,7 +80,7 @@ export const applyItemToolReducers = {
           throw new Error("doors can only be added on walls");
         }
 
-        addDoorInPlace(
+        addedEntry = addDoorInPlace(
           state,
           blockPosition,
           pointedAtItemJson.config.direction,
@@ -85,7 +96,7 @@ export const applyItemToolReducers = {
         pointedAtItemJson.config.style === "toaster" &&
         // putting down one block above the toaster:
         pointedAtItemJson.position.z + 1 === blockPosition.z: {
-        addItemInPlace(
+        addedEntry = addItemInPlace(
           state,
           {
             ...tool.item,
@@ -97,14 +108,38 @@ export const applyItemToolReducers = {
           },
           blockPosition,
           preview,
-        );
+        ) as UndoItemEntry;
         break;
       }
 
       default: {
         // add any other item:
-        addItemInPlace(state, tool.item, blockPosition, preview);
+        addedEntry = addItemInPlace(
+          state,
+          tool.item,
+          blockPosition,
+          preview,
+        ) as UndoItemEntry;
       }
+    }
+
+    const [addedId, addedItem] = addedEntry;
+    const description = {
+      kind: "itemAction" as const,
+      verb: "Add",
+      items: [[addedId, addedItem]] as UndoItemEntry[],
+    };
+
+    if (!preview) {
+      const { history } = state;
+      history.redo = [];
+      history.undo.push({ room: roomSnapshot!, description, timestamp });
+    } else {
+      state.pendingEdits = {
+        edits: state.pendingEdits!.edits,
+        description,
+        timestamp,
+      };
     }
 
     if (!preview) {

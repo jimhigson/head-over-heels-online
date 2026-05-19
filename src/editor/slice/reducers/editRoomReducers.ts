@@ -31,6 +31,11 @@ import {
   selectRoomFromLevelEditorState,
 } from "../levelEditorSelectors";
 import { type LevelEditorState } from "../levelEditorSlice";
+import {
+  describeRoomJsonEdit,
+  type UndoDescription,
+  type UndoItemEntry,
+} from "./undoDescription";
 import { pushUndoInPlace } from "./undoReducers";
 
 export type SetRoomAboveOrBelowPayload =
@@ -69,7 +74,12 @@ const changeFloorTypeInPlace = (
 export const editRoomReducers = {
   changeRoomColour(
     _state,
-    { payload: colour }: PayloadAction<Partial<ZxSpectrumRoomColour>>,
+    {
+      payload: { colour, timestamp },
+    }: PayloadAction<{
+      colour: Partial<ZxSpectrumRoomColour>;
+      timestamp: number;
+    }>,
   ) {
     // DO REMOVE CAST - for some reason, a severe typescript performance issue was narrowed
     // down specifically to the WritableDraft<> type here - immer was making ts slow when we assigned to
@@ -79,12 +89,14 @@ export const editRoomReducers = {
     const target =
       state.campaignInProgress.rooms[state.currentlyEditing.roomId].color;
 
-    pushUndoInPlace(state);
+    pushUndoInPlace(state, { kind: "changeColour" }, timestamp);
     Object.assign(target, colour);
   },
   changeRoomScenery(
     _state,
-    { payload: sceneryName }: PayloadAction<SceneryName>,
+    {
+      payload: { sceneryName, timestamp },
+    }: PayloadAction<{ sceneryName: SceneryName; timestamp: number }>,
   ) {
     // DO REMOVE CAST - for some reason, a severe typescript performance issue was narrowed
     // down specifically to the WritableDraft<> type here - immer was making ts slow when we assigned to
@@ -92,7 +104,7 @@ export const editRoomReducers = {
     const state = _state as LevelEditorState;
 
     const roomJson = selectCurrentRoomFromLevelEditorState(state);
-    pushUndoInPlace(state);
+    pushUndoInPlace(state, { kind: "changeScenery", sceneryName }, timestamp);
     changeRoomSceneryInPlace(roomJson, sceneryName);
   },
 
@@ -102,15 +114,30 @@ export const editRoomReducers = {
    */
   roomJsonEdited(
     _state,
-    { payload: newRoomJson }: PayloadAction<EditorRoomJson>,
+    {
+      payload: {
+        roomJson: newRoomJson,
+        description: descriptionOverride,
+        timestamp,
+      },
+    }: PayloadAction<{
+      roomJson: EditorRoomJson;
+      description?: UndoDescription;
+      timestamp: number;
+    }>,
   ) {
     // DO REMOVE CAST - for some reason, a severe typescript performance issue was narrowed
     // down specifically to the WritableDraft<> type here - immer was making ts slow when we assigned to
     // the wrapped type. Since the normal type isn't readonly, this wrapping isn't needed anyway
     const state = _state as LevelEditorState;
-    pushUndoInPlace(state);
     const { rooms } = state.campaignInProgress;
     const prevRoomJson = rooms[state.currentlyEditing.roomId];
+
+    const description =
+      descriptionOverride ??
+      describeRoomJsonEdit(prevRoomJson as EditorRoomJson, newRoomJson);
+
+    pushUndoInPlace(state, description, timestamp);
     rooms[state.currentlyEditing.roomId] = newRoomJson;
 
     // selected items may no longer exist in the room after reloading - remove these selections:
@@ -221,7 +248,10 @@ export const editRoomReducers = {
     }
   },
 
-  deleteSelected(_state) {
+  deleteSelected(
+    _state,
+    { payload: { timestamp } }: PayloadAction<{ timestamp: number }>,
+  ) {
     // DO REMOVE CAST - for some reason, a severe typescript performance issue was narrowed
     // down specifically to the WritableDraft<> type here - immer was making ts slow when we assigned to
     // the wrapped type. Since the normal type isn't readonly, this wrapping isn't needed anyway
@@ -229,7 +259,15 @@ export const editRoomReducers = {
 
     const roomJson = selectCurrentRoomFromLevelEditorState(state);
 
-    pushUndoInPlace(state);
+    const items: UndoItemEntry[] = state.selectedJsonItemIds.map((id) => [
+      id,
+      roomJson.items[id],
+    ]);
+    pushUndoInPlace(
+      state,
+      { kind: "itemAction", verb: "Delete", items },
+      timestamp,
+    );
 
     for (const id of state.selectedJsonItemIds) {
       deleteItemInPlace(roomJson, id);
@@ -241,7 +279,10 @@ export const editRoomReducers = {
       consolidateCurrentRoomInPlace(state);
     }
   },
-  clearRoom(_state) {
+  clearRoom(
+    _state,
+    { payload: { timestamp } }: PayloadAction<{ timestamp: number }>,
+  ) {
     // DO REMOVE CAST - for some reason, a severe typescript performance issue was narrowed
     // down specifically to the WritableDraft<> type here - immer was making ts slow when we assigned to
     // the wrapped type. Since the normal type isn't readonly, this wrapping isn't needed anyway
@@ -249,7 +290,7 @@ export const editRoomReducers = {
 
     const roomJson = selectCurrentRoomFromLevelEditorState(state);
 
-    pushUndoInPlace(state);
+    pushUndoInPlace(state, { kind: "clearRoom" }, timestamp);
 
     for (const k of keysIter(roomJson.items)) {
       const item = roomJson.items[k];

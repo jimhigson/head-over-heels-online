@@ -6,6 +6,7 @@ import { editorStore, useEditorAppSelector } from "../../../store/store";
 import { pick } from "../../../utils/pick";
 import { selectCurrentRoomFromLevelEditorState } from "../../slice/levelEditorSelectors";
 import { roomJsonEdited } from "../../slice/levelEditorSlice";
+import { type UndoDescription } from "../../slice/reducers/undoDescription";
 import { ToolbarButton } from "./ToolbarButton";
 import { IconWithTwoLineHoverText } from "./ToolbarButtonContentPatterns";
 
@@ -62,7 +63,13 @@ export const CopyPasteButtons = () => {
               Object.assign(draft.items, clipboardItems);
             });
 
-            dispatch(roomJsonEdited(updatedRoom));
+            dispatch(
+              roomJsonEdited({
+                roomJson: updatedRoom,
+                description: { kind: "pasteItems" } satisfies UndoDescription,
+                timestamp: Date.now(),
+              }),
+            );
           } catch (_error) {
             // Silently ignore clipboard errors (invalid JSON, permissions, etc)
             // TODO: implement some kind of failure message

@@ -39,7 +39,7 @@ export const initialLevelEditorSliceState: LevelEditorState = {
     back: [],
     forward: [],
   },
-  previewedEdits: {},
+  pendingEdits: undefined,
   tool: { type: "pointer" },
   hoveredItem: undefined,
   clickableAnnotationHovered: false,
@@ -48,6 +48,7 @@ export const initialLevelEditorSliceState: LevelEditorState = {
   autoCoalesce: true,
   wallsFloorsLocked: true,
   dragInProgress: false,
+  hoveredUndoIndex: 0,
   history: {
     undo: [],
     redo: [],

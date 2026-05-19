@@ -6,7 +6,6 @@ import {
   type EditorCampaign,
   type EditorRoomId,
   type EditorRoomItemId,
-  type EditorRoomJson,
   type EditorRoomJsonItems,
 } from "../editorTypes";
 import { type PointingAtOnItem } from "../RoomEditingArea/cursor/PointingAt";
@@ -31,7 +30,12 @@ import { itemPreviewReducers } from "./reducers/itemPreviewReducers";
 import { moveOrResizeItemPreviewReducers } from "./reducers/moveOrResizeItemPreview/moveOrResizeItemPreviewReducers";
 import { saveAndLoadReducers } from "./reducers/saveAndLoadReducers";
 import { selectionsReducers } from "./reducers/selectionsReducers";
-import { undoReducers, undoSelectors } from "./reducers/undoReducers";
+import { type UndoDescription } from "./reducers/undoDescription";
+import {
+  type UndoEntry,
+  undoReducers,
+  undoSelectors,
+} from "./reducers/undoReducers";
 
 export type HoveredItem = {
   jsonItemId: EditorRoomItemId;
@@ -60,11 +64,14 @@ export type LevelEditorState = {
   };
   /**
    * room edits that are for the current cursor's position, which are not yet
-   * committed to the room.
-   *
-   * Can be null, which means the item is deleted in the preview
+   * committed to the room. When present, both the edits and a label describing
+   * the action are required together.
    */
-  previewedEdits: PreviewedRoomItemEdits;
+  pendingEdits?: {
+    edits: PreviewedRoomItemEdits;
+    description: UndoDescription;
+    timestamp: number;
+  };
   tool: Tool;
   hoveredItem?: HoveredItem;
   clickableAnnotationHovered: boolean;
@@ -73,9 +80,14 @@ export type LevelEditorState = {
   autoCoalesce: boolean;
   wallsFloorsLocked: boolean;
   dragInProgress?: boolean;
+  /**
+   * Index into the undo/redo history for hover preview.
+   * Positive = undo stack index (1-based), negative = redo stack index (-1-based), 0 = none.
+   */
+  hoveredUndoIndex: number;
   history: {
-    undo: Array<EditorRoomJson>;
-    redo: Array<EditorRoomJson>;
+    undo: Array<UndoEntry>;
+    redo: Array<UndoEntry>;
   };
 };
 
@@ -172,6 +184,7 @@ export const {
   setCampaignUserId,
   setClickableAnnotationHovered,
   setHoveredItemInRoom,
+  undoHovered,
   setRemoteCampaign,
   setRoomAboveOrBelow,
   setSelectedItemsInRoom,
@@ -181,8 +194,6 @@ export const {
 } = levelEditorSlice.actions;
 export const {
   selectBackRooms,
-  selectCanRedo,
-  selectCanUndo,
   selectCurrentCampaignInProgress,
   selectCurrentEditingRoomColour,
   selectCurrentEditingRoomJson,
@@ -191,6 +202,8 @@ export const {
   selectHoveredItem,
   selectItem,
   selectItemIsSelected,
+  selectRedoHistory,
   selectSelectedJsonItemIds,
   selectTool,
+  selectUndoHistory,
 } = levelEditorSlice.selectors;

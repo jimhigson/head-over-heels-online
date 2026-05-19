@@ -45,6 +45,7 @@ test('deleting a door "heals" the void where the door once stood by extending an
         wallItemId
       ] as EditorJsonItemUnion,
       preview: false,
+      timestamp: 0,
     }),
     // then, delete the door:
     (state) => {
@@ -60,7 +61,7 @@ test('deleting a door "heals" the void where the door once stood by extending an
         jsonItemIds: [doorEntry[0]],
       });
     },
-    deleteSelected(),
+    deleteSelected({ timestamp: 0 }),
   );
 
   const state0RoomItems = Object.values(
@@ -116,7 +117,10 @@ describe("changing the id of the current room updates all references to that roo
 
     const state2 = reduceLevelEditorActions(
       state1,
-      roomJsonEdited({ ...currentRoom, id: newRoomId }),
+      roomJsonEdited({
+        roomJson: { ...currentRoom, id: newRoomId },
+        timestamp: 0,
+      }),
     );
 
     const otherRoom = state2.campaignInProgress.rooms[otherRoomId];
@@ -143,7 +147,10 @@ describe("changing the id of the current room updates all references to that roo
 
     const state2 = reduceLevelEditorActions(
       state1,
-      roomJsonEdited({ ...currentRoom, id: newRoomId }),
+      roomJsonEdited({
+        roomJson: { ...currentRoom, id: newRoomId },
+        timestamp: 0,
+      }),
     );
 
     const otherRoom = state2.campaignInProgress.rooms[otherRoomId];
@@ -174,7 +181,10 @@ describe("changing the id of the current room updates all references to that roo
 
     const state2 = reduceLevelEditorActions(
       state1,
-      roomJsonEdited({ ...currentRoom, id: newRoomId }),
+      roomJsonEdited({
+        roomJson: { ...currentRoom, id: newRoomId },
+        timestamp: 0,
+      }),
     );
 
     const otherRoom = state2.campaignInProgress.rooms[otherRoomId];
@@ -200,7 +210,10 @@ describe("changing the id of the current room updates all references to that roo
 
     const state2 = reduceLevelEditorActions(
       state1,
-      roomJsonEdited({ ...currentRoom, id: newRoomId }),
+      roomJsonEdited({
+        roomJson: { ...currentRoom, id: newRoomId },
+        timestamp: 0,
+      }),
     );
 
     const otherRoom = state2.campaignInProgress.rooms[otherRoomId];
@@ -225,7 +238,10 @@ describe("changing the id of the current room updates all references to that roo
 
     const state2 = reduceLevelEditorActions(
       state1,
-      roomJsonEdited({ ...currentRoom, id: newRoomId }),
+      roomJsonEdited({
+        roomJson: { ...currentRoom, id: newRoomId },
+        timestamp: 0,
+      }),
     );
 
     const otherRoom = state2.campaignInProgress.rooms[otherRoomId];
@@ -281,7 +297,10 @@ describe('editing a door\'s "toRoom" config provides convenience methods to main
 
     const result = reduceLevelEditorActions(
       stateWithTwoRooms,
-      roomJsonEdited(editedRoom),
+      roomJsonEdited({
+        roomJson: editedRoom,
+        timestamp: 0,
+      }),
     );
 
     const otherRoom = result.campaignInProgress.rooms[otherRoomId];
@@ -333,7 +352,10 @@ describe('editing a door\'s "toRoom" config provides convenience methods to main
 
     const result = reduceLevelEditorActions(
       stateWithExistingDoor,
-      roomJsonEdited(editedRoom),
+      roomJsonEdited({
+        roomJson: editedRoom,
+        timestamp: 0,
+      }),
     );
 
     const otherRoom = result.campaignInProgress.rooms[otherRoomId];
@@ -379,7 +401,7 @@ describe('editing a door\'s "toRoom" config provides convenience methods to main
 
     const result = reduceLevelEditorActions(
       stateWithSameDirDoor,
-      roomJsonEdited(editedRoom),
+      roomJsonEdited({ roomJson: editedRoom, timestamp: 0 }),
     );
 
     const otherRoom = result.campaignInProgress.rooms[otherRoomId];
@@ -492,7 +514,10 @@ describe('editing a door\'s "toRoom" config provides convenience methods to main
       ),
     );
 
-    const result = reduceLevelEditorActions(state, roomJsonEdited(editedRoomA));
+    const result = reduceLevelEditorActions(
+      state,
+      roomJsonEdited({ roomJson: editedRoomA, timestamp: 0 }),
+    );
 
     const resultA = result.campaignInProgress.rooms[roomA];
     const aLeftDoor = resultA.items[aLeftDoorId] as EditorJsonItem<"door">;
@@ -592,5 +617,126 @@ describe("setRoomAboveOrBelow", () => {
     );
 
     expect(floors.every((f) => f.config.floorType === "none")).toBe(true);
+  });
+});
+
+describe("undo descriptions for JSON edits", () => {
+  const pickupId = "pi1" as EditorRoomItemId;
+  const monsterId = "m1" as EditorRoomItemId;
+
+  const stateWithItems: LevelEditorState = produce(
+    editorStateWithOneRoomWithNoItems,
+    (draft) => {
+      const room = draft.campaignInProgress.rooms[testRoomId];
+      room.items[pickupId] = {
+        type: "pickup",
+        config: { gives: "bag" },
+        position: { x: 1, y: 1, z: 0 },
+      };
+      room.items[monsterId] = {
+        type: "monster",
+        config: {
+          which: "dalek",
+          movement: "patrol-randomly-diagonal",
+          activated: "on",
+        },
+        position: { x: 3, y: 3, z: 0 },
+      };
+    },
+  );
+
+  test("editing a single item produces editItems with that item", () => {
+    const currentRoom = stateWithItems.campaignInProgress.rooms[
+      testRoomId
+    ] as EditorRoomJson;
+
+    const editedRoom = produce(currentRoom, (draft) => {
+      (draft.items[pickupId] as EditorJsonItem<"pickup">).config.gives =
+        "hooter";
+    });
+
+    const result = reduceLevelEditorActions(
+      stateWithItems,
+      roomJsonEdited({ roomJson: structuredClone(editedRoom), timestamp: 0 }),
+    );
+
+    expect(result.history.undo).toHaveLength(1);
+    const [{ description }] = result.history.undo;
+    expect(description.kind).toBe("editItems");
+    if (description.kind === "editItems") {
+      expect(description.items).toHaveLength(1);
+      const [[editedId, editedItem]] = description.items;
+      expect(editedId).toBe(pickupId);
+      expect(editedItem.type).toBe("pickup");
+    }
+  });
+
+  test("editing multiple items produces editItems with all affected items", () => {
+    const currentRoom = stateWithItems.campaignInProgress.rooms[
+      testRoomId
+    ] as EditorRoomJson;
+
+    const editedRoom = produce(currentRoom, (draft) => {
+      (draft.items[pickupId] as EditorJsonItem<"pickup">).config.gives =
+        "hooter";
+      (draft.items[monsterId] as EditorJsonItem<"monster">).config.which =
+        "elephant";
+    });
+
+    const result = reduceLevelEditorActions(
+      stateWithItems,
+      roomJsonEdited({ roomJson: structuredClone(editedRoom), timestamp: 0 }),
+    );
+
+    const [{ description }] = result.history.undo;
+    expect(description.kind).toBe("editItems");
+    if (description.kind === "editItems") {
+      expect(description.items).toHaveLength(2);
+      const ids = description.items.map(([id]) => id);
+      expect(ids).toContain(pickupId);
+      expect(ids).toContain(monsterId);
+    }
+  });
+
+  test("editing room colour produces editRoomProperty", () => {
+    const currentRoom = stateWithItems.campaignInProgress.rooms[
+      testRoomId
+    ] as EditorRoomJson;
+
+    const editedRoom = {
+      ...currentRoom,
+      color: { hue: "magenta" as const, shade: "basic" as const },
+    };
+
+    const result = reduceLevelEditorActions(
+      stateWithItems,
+      roomJsonEdited({ roomJson: structuredClone(editedRoom), timestamp: 0 }),
+    );
+
+    const [{ description }] = result.history.undo;
+    expect(description).toEqual({
+      kind: "editRoomProperty",
+      property: "color",
+    });
+  });
+
+  test("editing multiple top-level keys produces editRoomJson", () => {
+    const currentRoom = stateWithItems.campaignInProgress.rooms[
+      testRoomId
+    ] as EditorRoomJson;
+
+    const editedRoom = {
+      ...currentRoom,
+      planet: "egyptus" as const,
+      color: { hue: "magenta" as const, shade: "basic" as const },
+    };
+
+    const result = reduceLevelEditorActions(
+      stateWithItems,
+      roomJsonEdited({ roomJson: structuredClone(editedRoom), timestamp: 0 }),
+    );
+
+    const [{ description }] = result.history.undo;
+    expect(description).toEqual({ kind: "editRoomJson" });
   });
 });

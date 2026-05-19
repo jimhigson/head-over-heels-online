@@ -8,6 +8,7 @@ import {
   reduceLevelEditorActions,
   testRoomId,
 } from "./__test__/storeStates";
+import { type UndoDescription } from "./undoDescription";
 
 const roomA = "roomA" as EditorRoomId;
 const roomB = "roomB" as EditorRoomId;
@@ -55,18 +56,26 @@ test("removeRoom clears undo/redo history", () => {
       draft.history = {
         undo: [
           {
-            id: roomA,
-            planet: "blacktooth",
-            color: { hue: "cyan", shade: "basic" },
-            items: {},
+            room: {
+              id: roomA,
+              planet: "blacktooth",
+              color: { hue: "cyan", shade: "basic" },
+              items: {},
+            },
+            description: { kind: "clearRoom" } satisfies UndoDescription,
+            timestamp: 0,
           },
         ],
         redo: [
           {
-            id: roomA,
-            planet: "blacktooth",
-            color: { hue: "cyan", shade: "basic" },
-            items: {},
+            room: {
+              id: roomA,
+              planet: "blacktooth",
+              color: { hue: "cyan", shade: "basic" },
+              items: {},
+            },
+            description: { kind: "clearRoom" } satisfies UndoDescription,
+            timestamp: 0,
           },
         ],
       };

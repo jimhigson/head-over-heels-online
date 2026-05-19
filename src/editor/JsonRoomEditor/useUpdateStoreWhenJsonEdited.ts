@@ -88,7 +88,9 @@ export const useUpdateStoreWhenJsonEdited = (
           }
         }
 
-        store.dispatch(roomJsonEdited(parsedJson as EditorRoomJson));
+        store.dispatch(
+          roomJsonEdited({ roomJson: parsedJson, timestamp: Date.now() }),
+        );
       },
       debounceMs,
     );

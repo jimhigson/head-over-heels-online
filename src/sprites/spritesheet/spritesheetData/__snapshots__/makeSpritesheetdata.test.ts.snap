@@ -3634,6 +3634,14 @@ exports[`for tailwind plugin we must have all possible frames and animations 1`]
       "y": 1014,
     },
   },
+  "hud.char.⎌": {
+    "frame": {
+      "h": 8,
+      "w": 8,
+      "x": 478,
+      "y": 1014,
+    },
+  },
   "hud.char.⏩": {
     "frame": {
       "h": 8,
@@ -3679,6 +3687,14 @@ exports[`for tailwind plugin we must have all possible frames and animations 1`]
       "h": 8,
       "w": 8,
       "x": 172,
+      "y": 1014,
+    },
+  },
+  "hud.char.⟳": {
+    "frame": {
+      "h": 8,
+      "w": 8,
+      "x": 487,
       "y": 1014,
     },
   },
