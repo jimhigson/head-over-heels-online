@@ -133,7 +133,7 @@ export const selectCurrentRoomFromLevelEditorState = (
   state: LevelEditorState,
 ) =>
   state.campaignInProgress.rooms[
-    state.currentlyEditingRoomId
+    state.currentlyEditing.roomId
   ] as EditorRoomJson;
 
 export const selectRoomFromLevelEditorState = (
@@ -147,9 +147,8 @@ export const selectItemInLevelEditorState = (
   /** if not given, uses the room currently being edited */
   roomId?: EditorRoomId,
 ) =>
-  state.campaignInProgress.rooms[roomId ?? state.currentlyEditingRoomId]?.items[
-    itemId
-  ] as EditorJsonItemUnion | undefined;
+  state.campaignInProgress.rooms[roomId ?? state.currentlyEditing.roomId]
+    ?.items[itemId] as EditorJsonItemUnion | undefined;
 
 export const selectItemIsSelectedInLevelEditorState = (
   state: LevelEditorState,

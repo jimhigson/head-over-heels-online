@@ -1,30 +1,48 @@
-import { type EditorRoomId } from "../../editorTypes";
+import type { RoomJson } from "../../../model/RoomJson";
+import type { EditorRoomId } from "../../editorTypes";
+import type { LevelEditorState } from "../levelEditorSlice";
+
 import { initialLevelEditorSliceState } from "../initialLevelEditorSliceState";
-import { type LevelEditorState } from "../levelEditorSlice";
+
+export const firstSubRoomId = (roomJson: RoomJson<string, string>): string => {
+  const subRoomKeys =
+    roomJson.meta?.subRooms && Object.keys(roomJson.meta.subRooms);
+  return subRoomKeys?.[0] ?? "*";
+};
 
 export const changeCurrentRoomInPlace = (
   state: LevelEditorState,
   roomId: EditorRoomId,
+  subRoomId?: string,
   noPushToHistory = false,
 ) => {
-  if (!state.campaignInProgress.rooms[roomId]) {
+  const roomJson = state.campaignInProgress.rooms[roomId];
+  if (!roomJson) {
     console.warn(`can't change to room ${roomId} - it doesn't exist`);
-    // If the room doesn't exist, we can't change to it
     return;
   }
-  if (!noPushToHistory) {
-    // put the old currently editing room to the back history so user
-    // can return to it later:
-    state.editingRoomIdHistory.back.push(state.currentlyEditingRoomId);
+
+  const resolvedSubRoomId = subRoomId ?? firstSubRoomId(roomJson);
+
+  if (subRoomId !== undefined && subRoomId !== "*") {
+    const subRooms = roomJson.meta?.subRooms;
+    if (!subRooms || !(subRoomId in subRooms)) {
+      throw new Error(
+        `subRoom "${subRoomId}" does not exist in room "${roomId}"`,
+      );
+    }
   }
-  state.currentlyEditingRoomId = roomId;
+
+  if (!noPushToHistory) {
+    state.editingRoomIdHistory.back.push(state.currentlyEditing.roomId);
+  }
+  state.currentlyEditing = { roomId, subRoomId: resolvedSubRoomId };
 
   state.clickableAnnotationHovered = false;
   state.hoveredItem = undefined;
   state.selectedJsonItemIds = [];
 
   if (!noPushToHistory) {
-    // clear undo/redo history when changing room:
     state.history = initialLevelEditorSliceState.history;
   }
 };

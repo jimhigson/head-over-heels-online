@@ -26,6 +26,7 @@ export type MapData<RoomId extends string> = {
   characterRooms: CharacterRooms<RoomId>;
   currentCharacterName: CharacterName;
   curRoomId: RoomId | undefined;
+  curSubRoomId: string | undefined;
   gridPositions: SortedObjectOfRoomGridPositionSpecs<RoomId>;
   mapBounds: Bounds;
   pickupsCollected: PickupsCollected<RoomId>;

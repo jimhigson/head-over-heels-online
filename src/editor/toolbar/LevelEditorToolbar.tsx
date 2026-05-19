@@ -42,7 +42,7 @@ export const LevelEditorToolbar = () => {
     (state) => state.levelEditor.campaignInProgress,
   );
   const currentlyEditingRoomId = useEditorAppSelector(
-    (state) => state.levelEditor.currentlyEditingRoomId,
+    (state) => state.levelEditor.currentlyEditing.roomId,
   );
   const dispatch = useAppDispatch();
   const campaignName = useEditorAppSelector(
@@ -59,7 +59,7 @@ export const LevelEditorToolbar = () => {
           <BitmapText className="">Campaign</BitmapText>
           {campaignName ?
             <BitmapText className="text-highlightBeige">
-              {`'${campaignName}'`}
+              {`‘${campaignName}’`}
             </BitmapText>
           : <BitmapText className="text-midRed">{`(untitled)`}</BitmapText>}
         </div>

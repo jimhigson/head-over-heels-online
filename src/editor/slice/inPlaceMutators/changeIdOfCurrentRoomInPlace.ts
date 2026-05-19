@@ -12,7 +12,7 @@ export const changeIdOfCurrentRoomInPlace = (
   state: LevelEditorState,
   newRoomId: EditorRoomId,
 ) => {
-  const prevRoomId = state.currentlyEditingRoomId;
+  const prevRoomId = state.currentlyEditing.roomId;
   const prevRoom = selectCurrentRoomFromLevelEditorState(state);
 
   for (const room of valuesIter(state.campaignInProgress.rooms)) {
@@ -55,7 +55,7 @@ export const changeIdOfCurrentRoomInPlace = (
   };
   delete state.campaignInProgress.rooms[prevRoomId];
 
-  state.currentlyEditingRoomId = newRoomId;
+  state.currentlyEditing.roomId = newRoomId;
 
   state.editingRoomIdHistory.back = state.editingRoomIdHistory.back.map((id) =>
     id === prevRoomId ? newRoomId : id,

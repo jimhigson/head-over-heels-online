@@ -1,10 +1,118 @@
+import type { KeyboardEvent } from "react";
+
+import type { WrapClickableRoomDecoratorComponent } from "../../game/components/dialogs/menuDialog/dialogs/map/RoomDecoratorProps";
+import type { SortedObjectOfRoomGridPositionSpecs } from "../../game/components/dialogs/menuDialog/dialogs/map/sortRoomGridPositions";
+import type { EditorRoomId } from "../editorTypes";
+
+import { createClickableRoomDecorator } from "../../game/components/dialogs/menuDialog/dialogs/map/createClickableRoomDecorator";
+import { LazyMapRoomTooltipDecorator } from "../../game/components/dialogs/menuDialog/dialogs/map/LazyMapRoomTooltipDecorator";
 import { MapSvg } from "../../game/components/dialogs/menuDialog/dialogs/map/Map.svg";
 import { BitmapText } from "../../game/components/tailwindSprites/BitmapText";
+import { type Key } from "../../game/input/keys";
 import { store } from "../../store/store";
+import { valuesIter } from "../../utils/entries";
 import { useElementSize } from "../../utils/react/useElementSize";
-import { type EditorRoomId } from "../editorTypes";
-import { changeToRoom } from "../slice/levelEditorSlice";
+import { unitVectors } from "../../utils/vectors/unitVectors";
+import { addXyz, xyzEqual } from "../../utils/vectors/vectors";
+import {
+  changeToRoom,
+  insertRoom,
+  setRoomAboveOrBelow,
+} from "../slice/levelEditorSlice";
+import { LazyEditorMapInsertButtonDecorator } from "./LazyEditorMapInsertButtonDecorator";
 import { useEditorMapData } from "./useEditorMapData";
+
+const keyToUnitVector = {
+  ArrowLeft: "left",
+  ArrowRight: "right",
+  ArrowUp: "away",
+  ArrowDown: "towards",
+  PageUp: "up",
+  PageDown: "down",
+} as const satisfies { [K in Key]?: keyof typeof unitVectors };
+
+type NavigationKey = keyof typeof keyToUnitVector;
+
+const isNavigationKey = (key: string): key is NavigationKey =>
+  key in keyToUnitVector;
+
+const navigateToAdjacentRoom = (
+  key: NavigationKey,
+  gridPositions: SortedObjectOfRoomGridPositionSpecs<EditorRoomId>,
+) => {
+  const { roomId, subRoomId } = store.getState().levelEditor.currentlyEditing;
+  const direction = keyToUnitVector[key];
+  if (!direction) {
+    return;
+  }
+
+  const currentRoomPosition = valuesIter(gridPositions).find(
+    (spec) => spec.roomId === roomId && spec.subRoomId === subRoomId,
+  )?.gridPosition;
+
+  if (!currentRoomPosition) {
+    return;
+  }
+
+  const targetPosition = addXyz(currentRoomPosition, unitVectors[direction]);
+
+  const targetSpec = valuesIter(gridPositions).find((spec) =>
+    xyzEqual(spec.gridPosition, targetPosition),
+  );
+  if (!targetSpec) {
+    return;
+  }
+
+  store.dispatch(
+    changeToRoom({
+      roomId: targetSpec.roomId,
+      subRoomId: targetSpec.subRoomId,
+    }),
+  );
+
+  requestAnimationFrame(() => {
+    document
+      .querySelector<SVGPathElement>(
+        `[data-room-click="${targetSpec.roomId}/${targetSpec.subRoomId}"]`,
+      )
+      ?.focus();
+  });
+};
+
+const insertInDirection = (key: NavigationKey) => {
+  const direction = keyToUnitVector[key];
+  switch (direction) {
+    case "left":
+    case "right":
+    case "away":
+    case "towards":
+      store.dispatch(insertRoom({ direction }));
+      break;
+    case "up":
+    case "down":
+      store.dispatch(
+        setRoomAboveOrBelow({
+          direction: direction === "up" ? "above" : "below",
+          createNew: true,
+        }),
+      );
+      break;
+  }
+};
+
+const editorClickableRoomDecorator = createClickableRoomDecorator<EditorRoomId>(
+  (roomId, subRoomId) => {
+    store.dispatch(changeToRoom({ roomId, subRoomId }));
+  },
+);
+
+const editorClickableAreaDecorators: WrapClickableRoomDecoratorComponent<EditorRoomId>[] =
+  [
+    LazyMapRoomTooltipDecorator as WrapClickableRoomDecoratorComponent<EditorRoomId>,
+    editorClickableRoomDecorator,
+  ];
+
+const editorPostfixDecorators = [LazyEditorMapInsertButtonDecorator];
 
 export const EditorMap = () => {
   const {
@@ -30,20 +138,29 @@ export const EditorMap = () => {
   }
 
   if (mapContainerHeight === 0) {
-    // probably means the panel the map is on has been minimised - render nothing:
     return null;
   }
 
   return (
     <div
-      className={`h-full overflow-y-auto scale-editor bg-editor-checkerboard scrollbar scrollbar-w-1 scrollbar-track-pureBlack scrollbar-thumb-metallicBlue`}
+      className={`h-full overflow-y-auto scale-editor bg-editor-checkerboard scrollbar scrollbar-w-1 scrollbar-track-pureBlack scrollbar-thumb-metallicBlue outline-none`}
       ref={mapContainerRef}
+      tabIndex={0}
+      onKeyDown={(e: KeyboardEvent) => {
+        if (isNavigationKey(e.key)) {
+          e.preventDefault();
+          if (e.altKey) {
+            insertInDirection(e.key);
+          } else {
+            navigateToAdjacentRoom(e.key, mapData.gridPositions);
+          }
+        }
+      }}
     >
       <MapSvg<EditorRoomId>
         containerWidth={mapContainerWidth}
-        onRoomClick={(roomId) => {
-          store.dispatch(changeToRoom(roomId));
-        }}
+        clickableAreaDecorators={editorClickableAreaDecorators}
+        postfixDecorators={editorPostfixDecorators}
         {...mapData}
       />
     </div>

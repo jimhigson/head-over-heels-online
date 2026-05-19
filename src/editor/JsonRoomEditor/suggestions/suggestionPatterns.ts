@@ -24,7 +24,7 @@ export type SuggestionPatterns = Record<string, SuggestionGenerator>;
  */
 const getOtherRoomIds = (storeState: EditorRootState): string[] =>
   Object.keys(storeState.levelEditor.campaignInProgress.rooms).filter(
-    (roomId) => roomId !== storeState.levelEditor.currentlyEditingRoomId,
+    (roomId) => roomId !== storeState.levelEditor.currentlyEditing.roomId,
   );
 
 /**

@@ -6,6 +6,7 @@ import { first } from "../../../utils/iterators/first";
 import { pick } from "../../../utils/pick";
 import { type EditorCampaign } from "../../editorTypes";
 import { initialLevelEditorSliceState } from "../initialLevelEditorSliceState";
+import { changeCurrentRoomInPlace } from "../inPlaceMutators/changeCurrentRoomInPlace";
 import { type LevelEditorState } from "../levelEditorSlice";
 import { levelEditorSliceNonPersistedFields } from "../levelEditorSliceTransientFields";
 
@@ -51,7 +52,7 @@ export const saveAndLoadReducers = {
     if (startingRoom === undefined) {
       throw new Error("could not find any rooms in this campaign");
     }
-    state.currentlyEditingRoomId = startingRoom;
+    changeCurrentRoomInPlace(state, startingRoom, undefined, true);
   },
 
   setRemoteCampaign(

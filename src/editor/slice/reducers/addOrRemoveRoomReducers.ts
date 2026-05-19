@@ -1,16 +1,18 @@
 import { type PayloadAction, type SliceCaseReducers } from "@reduxjs/toolkit";
 
+import type { DirectionXy4, Xy } from "../../../utils/vectors/vectors";
+import type { EditorRoomId } from "../../editorTypes";
+import type { LevelEditorState } from "../levelEditorSlice";
+
 import { exitGameRoomId } from "../../../model/json/ItemConfigMap";
 import { iterateRoomJsonItemsWithIds } from "../../../model/RoomJson";
 import { keysIter } from "../../../utils/entries";
 import { first } from "../../../utils/iterators/first";
-import { type Xy } from "../../../utils/vectors/vectors";
-import { type EditorRoomId } from "../../editorTypes";
 import { addNewRoomInPlace } from "../inPlaceMutators/addNewRoomInPlace";
 import { changeCurrentRoomInPlace } from "../inPlaceMutators/changeCurrentRoomInPlace";
+import { insertRoomInPlace } from "../inPlaceMutators/insertRoomInPlace";
 import { removeInboundRoomReferencesInPlace } from "../inPlaceMutators/removeInboundRoomReferencesInPlace";
 import { selectCurrentRoomFromLevelEditorState } from "../levelEditorSelectors";
-import { type LevelEditorState } from "../levelEditorSlice";
 
 export const addOrRemoveRoomReducers = {
   addRoom(
@@ -30,9 +32,15 @@ export const addOrRemoveRoomReducers = {
 
     changeCurrentRoomInPlace(state, newRoom.id);
   },
+  insertRoom(
+    state,
+    { payload: { direction } }: PayloadAction<{ direction: DirectionXy4 }>,
+  ) {
+    insertRoomInPlace(state, direction);
+  },
   removeRoom(state) {
     const currentRoom =
-      state.campaignInProgress.rooms[state.currentlyEditingRoomId];
+      state.campaignInProgress.rooms[state.currentlyEditing.roomId];
     // to stay near the deleted room, find another room adjacent to it:
     const doorOrTeleporterEntry =
       first(iterateRoomJsonItemsWithIds(currentRoom.items, "door")) ??
@@ -40,7 +48,7 @@ export const addOrRemoveRoomReducers = {
 
     const nextRoom = (doorOrTeleporterEntry?.[1].config.toRoom ??
       keysIter(state.campaignInProgress.rooms).find(
-        (roomId) => roomId !== state.currentlyEditingRoomId,
+        (roomId) => roomId !== state.currentlyEditing.roomId,
       )) as EditorRoomId | undefined;
 
     if (nextRoom === undefined || nextRoom === exitGameRoomId) {
@@ -48,7 +56,7 @@ export const addOrRemoveRoomReducers = {
       return;
     }
 
-    const deletedRoomId = state.currentlyEditingRoomId;
+    const deletedRoomId = state.currentlyEditing.roomId;
     changeCurrentRoomInPlace(state, nextRoom);
     delete state.campaignInProgress.rooms[deletedRoomId];
     removeInboundRoomReferencesInPlace(state, deletedRoomId);
