@@ -2,8 +2,18 @@ import { createSelector } from "@reduxjs/toolkit";
 import { produce } from "immer";
 import { type ValueOf } from "type-fest";
 
+import { buildRoomJsonDirectionalIndex } from "../../game/gameState/loadRoom/buildRoomJsonDirectionalIndex";
+import { loadItemFromJson } from "../../game/gameState/loadRoom/loadItemFromJson";
 import { loadRoom } from "../../game/gameState/loadRoom/loadRoom";
+import { addItemToRoom } from "../../game/gameState/mutators/addItemToRoom";
+import { deleteItemFromRoom } from "../../game/gameState/mutators/deleteItemFromRoom";
 import { floorsRenderExtent } from "../../game/render/room/floorsExtent";
+import {
+  roomJsonItemsEntriesIterable,
+  roomJsonItemsIterable,
+} from "../../model/RoomJson";
+import { roomItemsIterable } from "../../model/RoomState";
+import { useAppSelector } from "../../store/hooks";
 import { emptyUserSettings } from "../../store/slices/userSettings/emptyUserSettings";
 import { type EditorRootState } from "../../store/store";
 import { emptyObject } from "../../utils/empty";
@@ -15,7 +25,9 @@ import {
   type EditorRoomItemId,
   type EditorRoomJson,
   type EditorRoomState,
+  type EditorUnionOfAllItemInPlayTypes,
 } from "../editorTypes";
+import { useEditorRoomStateRefs } from "../RoomEditingArea/EditorRoomStateProvider";
 import { type LevelEditorState } from "./levelEditorSlice";
 
 /**
@@ -109,22 +121,94 @@ export const selectEditorRoomState = createSelector(
 );
 
 /**
- * Selector that loads the room state with preview edits applied.
- * Memoized so it only recomputes when the room JSON or previews change.
+ * Hook that loads the room state with preview edits applied.
+ * This is a stateful hook rather than a pure selector to allow
+ * future optimisation of in-place item mutations.
  */
-const selectEditorRoomStateWithPreviews = createSelector(
-  [selectCurrentEditingRoomJsonWithPreviews],
-  (roomJsonWithPreviews): EditorRoomState => {
-    return loadRoom({
-      roomJson: roomJsonWithPreviews,
-      roomPickupsCollected: emptyObject,
-      scrollsRead: emptyObject,
-      // display heads and heels in their starting rooms:
-      isNewGame: true,
-      userSettings: emptyUserSettings,
-    });
-  },
-);
+export const useEditorRoomStateWithPreviews = (): EditorRoomState => {
+  const roomJsonWithPreviews = useAppSelector(
+    selectCurrentEditingRoomJsonWithPreviews,
+  );
+
+  const { roomStateRef, prevRoomJsonRef } = useEditorRoomStateRefs();
+
+  if (prevRoomJsonRef.current !== roomJsonWithPreviews) {
+    const prev = prevRoomJsonRef.current;
+    const roomState = roomStateRef.current;
+
+    const roomChanged =
+      prev === undefined ||
+      roomState === undefined ||
+      roomState.id !== roomJsonWithPreviews.id ||
+      prev.planet !== roomJsonWithPreviews.planet ||
+      prev.color !== roomJsonWithPreviews.color;
+
+    if (roomChanged) {
+      // first render or room switch — full load
+      roomStateRef.current = loadRoom({
+        roomJson: roomJsonWithPreviews,
+        roomPickupsCollected: emptyObject,
+        scrollsRead: emptyObject,
+        // display heads and heels in their starting rooms:
+        isNewGame: true,
+        userSettings: emptyUserSettings,
+      });
+    } else {
+      const directionalIndex = buildRoomJsonDirectionalIndex(
+        roomJsonItemsIterable(roomJsonWithPreviews),
+      );
+
+      const deleteInPlayItemsForJsonId = (jsonItemId: EditorRoomItemId) => {
+        for (const existingItem of roomItemsIterable(roomState.items)) {
+          if (existingItem.jsonItemId === jsonItemId) {
+            deleteItemFromRoom({ room: roomState, item: existingItem });
+          }
+        }
+      };
+
+      const addInPlayItemsForJsonItem = (
+        jsonItemId: EditorRoomItemId,
+        jsonItem: EditorJsonItemUnion,
+      ) => {
+        for (const newItem of loadItemFromJson<EditorRoomId, EditorRoomItemId>(
+          jsonItemId,
+          jsonItem,
+          roomJsonWithPreviews,
+          directionalIndex,
+        )) {
+          addItemToRoom({
+            room: roomState,
+            item: newItem as EditorUnionOfAllItemInPlayTypes,
+          });
+        }
+      };
+
+      for (const [id, item] of roomJsonItemsEntriesIterable(
+        roomJsonWithPreviews.items,
+      )) {
+        if (prev.items[id] !== item) {
+          const wasAdded = prev.items[id] === undefined;
+          if (wasAdded) {
+            addInPlayItemsForJsonItem(id, item);
+          } else {
+            deleteInPlayItemsForJsonId(id);
+            addInPlayItemsForJsonItem(id, item);
+          }
+        }
+      }
+      for (const [id] of roomJsonItemsEntriesIterable(prev.items)) {
+        const wasRemoved = roomJsonWithPreviews.items[id] === undefined;
+        if (wasRemoved) {
+          deleteInPlayItemsForJsonId(id);
+        }
+      }
+    }
+
+    prevRoomJsonRef.current = roomJsonWithPreviews;
+  }
+
+  return roomStateRef.current!;
+};
 
 export type RenderedRoomDimensions = {
   l: number;
@@ -159,12 +243,7 @@ export const selectEditorRoomRenderDimensions = createSelector(
  */
 export const useEditorRoomState = selectorHook(selectEditorRoomState);
 
-/**
- * Hook to get the current room state with preview edits applied
- */
-export const useEditorRoomStateWithPreviews = selectorHook(
-  selectEditorRoomStateWithPreviews,
-);
+// useEditorRoomStateWithPreviews is exported directly above as a stateful hook
 
 /**
  * Hook to get the current room state with preview edits applied

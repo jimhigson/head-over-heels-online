@@ -10,6 +10,7 @@ import { useUpdateUpscaleOnDisplaySettingsChange } from "../../store/slices/upsc
 import { useUpdateUpscaleWhenElementResizes } from "../../store/slices/upscale/useUpdateUpscaleWhenElementResizes";
 import { useCanvasTransform } from "../../utils/scaledRendering/useCanvasInlineStyle";
 import { editorAnnotationsDecorateItemRenderer } from "../rendering/EditorAnnotationsRenderer";
+import { EditorRoomStateProvider } from "./EditorRoomStateProvider";
 import { useRoomEditorInteractivity } from "./interactivity/useRoomEditorInteractivity";
 import { PixiApplicationProvider } from "./PixiApplicationProvider";
 import { ResolutionControls } from "./ResolutionControls";
@@ -90,7 +91,9 @@ const RoomEditingAreaInner = () => {
 const RoomEditingArea = () => {
   return (
     <PixiApplicationProvider>
-      <RoomEditingAreaInner />
+      <EditorRoomStateProvider>
+        <RoomEditingAreaInner />
+      </EditorRoomStateProvider>
     </PixiApplicationProvider>
   );
 };
