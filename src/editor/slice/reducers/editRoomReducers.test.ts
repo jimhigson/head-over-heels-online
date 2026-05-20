@@ -250,6 +250,60 @@ describe("changing the id of the current room updates all references to that roo
       newRoomId,
     );
   });
+
+  test("undo history migrates from old room id to new room id", () => {
+    const stateWithHistory: LevelEditorState = produce(
+      stateWithTwoRooms,
+      (draft) => {
+        draft.history[testRoomId] = {
+          undo: [
+            {
+              room: {
+                id: testRoomId,
+                planet: "blacktooth",
+                color: { hue: "cyan", shade: "basic" },
+                items: {},
+              },
+              description: { kind: "changeColour" },
+              timestamp: 0,
+            },
+          ],
+          redo: [
+            {
+              room: {
+                id: testRoomId,
+                planet: "blacktooth",
+                color: { hue: "magenta", shade: "basic" },
+                items: {},
+              },
+              description: { kind: "changeColour" },
+              timestamp: 0,
+            },
+          ],
+        };
+      },
+    );
+
+    const currentRoom = stateWithHistory.campaignInProgress.rooms[
+      testRoomId
+    ] as EditorRoomJson;
+
+    const result = reduceLevelEditorActions(
+      stateWithHistory,
+      roomJsonEdited({
+        roomJson: { ...currentRoom, id: newRoomId },
+        timestamp: 0,
+      }),
+    );
+
+    expect(result.history[testRoomId]).toBeUndefined();
+    expect(result.history[newRoomId]).toBeDefined();
+    expect(result.history[newRoomId]!.undo.length).toBeGreaterThanOrEqual(1);
+    expect(result.history[newRoomId]!.undo[0].description.kind).toBe(
+      "changeColour",
+    );
+    expect(result.history[newRoomId]!.redo).toHaveLength(0);
+  });
 });
 
 describe('editing a door\'s "toRoom" config provides convenience methods to maintain symmetry', () => {
@@ -660,8 +714,8 @@ describe("undo descriptions for JSON edits", () => {
       roomJsonEdited({ roomJson: structuredClone(editedRoom), timestamp: 0 }),
     );
 
-    expect(result.history.undo).toHaveLength(1);
-    const [{ description }] = result.history.undo;
+    expect(result.history[testRoomId]!.undo).toHaveLength(1);
+    const [{ description }] = result.history[testRoomId]!.undo;
     expect(description.kind).toBe("editItems");
     if (description.kind === "editItems") {
       expect(description.items).toHaveLength(1);
@@ -688,7 +742,7 @@ describe("undo descriptions for JSON edits", () => {
       roomJsonEdited({ roomJson: structuredClone(editedRoom), timestamp: 0 }),
     );
 
-    const [{ description }] = result.history.undo;
+    const [{ description }] = result.history[testRoomId]!.undo;
     expect(description.kind).toBe("editItems");
     if (description.kind === "editItems") {
       expect(description.items).toHaveLength(2);
@@ -713,7 +767,7 @@ describe("undo descriptions for JSON edits", () => {
       roomJsonEdited({ roomJson: structuredClone(editedRoom), timestamp: 0 }),
     );
 
-    const [{ description }] = result.history.undo;
+    const [{ description }] = result.history[testRoomId]!.undo;
     expect(description).toEqual({
       kind: "editRoomProperty",
       property: "color",
@@ -736,7 +790,7 @@ describe("undo descriptions for JSON edits", () => {
       roomJsonEdited({ roomJson: structuredClone(editedRoom), timestamp: 0 }),
     );
 
-    const [{ description }] = result.history.undo;
+    const [{ description }] = result.history[testRoomId]!.undo;
     expect(description).toEqual({ kind: "editRoomJson" });
   });
 });

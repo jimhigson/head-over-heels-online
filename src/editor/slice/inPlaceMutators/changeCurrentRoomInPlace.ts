@@ -2,8 +2,6 @@ import type { RoomJson } from "../../../model/RoomJson";
 import type { EditorRoomId } from "../../editorTypes";
 import type { LevelEditorState } from "../levelEditorSlice";
 
-import { initialLevelEditorSliceState } from "../initialLevelEditorSliceState";
-
 export const firstSubRoomId = (roomJson: RoomJson<string, string>): string => {
   const subRoomKeys =
     roomJson.meta?.subRooms && Object.keys(roomJson.meta.subRooms);
@@ -41,8 +39,5 @@ export const changeCurrentRoomInPlace = (
   state.clickableAnnotationHovered = false;
   state.hoveredItem = undefined;
   state.selectedJsonItemIds = [];
-
-  if (!noPushToHistory) {
-    state.history = initialLevelEditorSliceState.history;
-  }
+  state.hoveredUndoIndex = 0;
 };

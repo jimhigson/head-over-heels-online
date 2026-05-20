@@ -66,5 +66,7 @@ export const addOrRemoveRoomReducers = {
       state.editingRoomIdHistory.back.filter(isNotDeleted);
     state.editingRoomIdHistory.forward =
       state.editingRoomIdHistory.forward.filter(isNotDeleted);
+
+    delete state.history[deletedRoomId];
   },
 } satisfies SliceCaseReducers<LevelEditorState>;

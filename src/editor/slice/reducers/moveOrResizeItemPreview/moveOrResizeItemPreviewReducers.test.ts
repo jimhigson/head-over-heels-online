@@ -1293,7 +1293,7 @@ describe("changeWallsForFloorChangeInPlace", () => {
         );
 
       expect(state1.pendingEdits).toBeUndefined();
-      expect(state1.history.undo).toHaveLength(0);
+      expect(state1.history[testRoomId]?.undo ?? []).toHaveLength(0);
     });
 
     test("moving two doors by one block should adapt walls around them", () => {
@@ -2557,8 +2557,8 @@ describe("changeWallsForFloorChangeInPlace", () => {
         commitCurrentPreviewedEdits(),
       );
 
-      expect(result.history.undo).toHaveLength(1);
-      const desc = result.history.undo[0].description;
+      expect(result.history[testRoomId]!.undo).toHaveLength(1);
+      const desc = result.history[testRoomId]!.undo[0].description;
       expect(desc.kind).toBe("itemAction");
       if (desc.kind === "itemAction") {
         expect(desc.verb).toBe("↖ Move");

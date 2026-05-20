@@ -21,6 +21,6 @@ jobs:
         run: |
           for script in $(jq -r '.scripts | keys[] | select(startswith("check:"))' package.json); do
             echo "::group::$script"
-            pnpm run "$script" || { echo "::endgroup::"; exit 1; }
+            pnpm run "$script" || { echo "::endgroup::"; echo "::error::$script failed"; exit 1; }
             echo "::endgroup::"
           done

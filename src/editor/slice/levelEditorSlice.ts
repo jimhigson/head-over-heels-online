@@ -85,10 +85,13 @@ export type LevelEditorState = {
    * Positive = undo stack index (1-based), negative = redo stack index (-1-based), 0 = none.
    */
   hoveredUndoIndex: number;
-  history: {
-    undo: Array<UndoEntry>;
-    redo: Array<UndoEntry>;
-  };
+  history: Record<
+    EditorRoomId,
+    {
+      undo: Array<UndoEntry>;
+      redo: Array<UndoEntry>;
+    }
+  >;
 };
 
 /**
