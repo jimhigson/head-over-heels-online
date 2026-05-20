@@ -140,7 +140,7 @@
     "git-format-staged": "^3.1.1",
     "globals": "^15.15.0",
     "image-size": "^1.2.0",
-    "immer": "^10.1.1",
+    "immer": "^11.1.8",
     "ink": "^7.0.0",
     "ink-scroll-list": "^0.4.1",
     "js-base64": "^3.7.7",
