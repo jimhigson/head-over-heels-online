@@ -7,7 +7,8 @@ import {
 } from "@reduxjs/toolkit";
 
 import { emptyObject } from "../../../utils/empty";
-import { type EditorRoomJson } from "../../editorTypes";
+import { type EditorRoomId, type EditorRoomJson } from "../../editorTypes";
+import { changeIdOfCurrentRoomInPlace } from "../inPlaceMutators/changeIdOfCurrentRoomInPlace";
 import { selectCurrentRoomFromLevelEditorState } from "../levelEditorSelectors";
 import { type LevelEditorState } from "../levelEditorSlice";
 import { removeNonExistingItemsFromSelection } from "./selectionsReducers";
@@ -19,9 +20,20 @@ export type UndoEntry = {
   timestamp: number;
 };
 
+export type RoomUndoHistory = {
+  undo: Array<UndoEntry>;
+  redo: Array<UndoEntry>;
+};
+
 export type UndoRedoPayload = {
   /** how many steps to undo/redo — defaults to 1 if not provided */
   steps?: number;
+};
+
+const roomHistory = (state: LevelEditorState): RoomUndoHistory => {
+  const { roomId } = state.currentlyEditing;
+  state.history[roomId] ??= { undo: [], redo: [] };
+  return state.history[roomId];
 };
 
 export const snapshotRoomForUndo = (state: LevelEditorState): EditorRoomJson =>
@@ -33,25 +45,26 @@ export const pushUndoInPlace = (
   timestamp: number,
 ) => {
   const previousRoom = snapshotRoomForUndo(state);
-  const { history } = state;
+  const { undo, redo } = roomHistory(state);
 
   // remove any 'redo' state that is now invalid since we forked to a new branch
-  history.redo = [];
+  redo.length = 0;
   state.hoveredUndoIndex = 0;
 
-  history.undo.push({ room: previousRoom, description, timestamp });
+  undo.push({ room: previousRoom, description, timestamp });
 };
 
 export const undoReducers = {
   undoHovered(state, { payload: index }: PayloadAction<number>) {
-    if (index > 0 && index > state.history.undo.length) {
+    const { undo, redo } = roomHistory(state);
+    if (index > 0 && index > undo.length) {
       throw new Error(
-        `hoveredUndoIndex ${index} out of bounds for undo stack of length ${state.history.undo.length}`,
+        `hoveredUndoIndex ${index} out of bounds for undo stack of length ${undo.length}`,
       );
     }
-    if (index < 0 && -index > state.history.redo.length) {
+    if (index < 0 && -index > redo.length) {
       throw new Error(
-        `hoveredUndoIndex ${index} out of bounds for redo stack of length ${state.history.redo.length}`,
+        `hoveredUndoIndex ${index} out of bounds for redo stack of length ${redo.length}`,
       );
     }
     state.hoveredUndoIndex = index;
@@ -70,9 +83,9 @@ export const undoReducers = {
 
     const {
       campaignInProgress,
-      history: { undo, redo },
       currentlyEditing: { roomId: currentlyEditingRoomId },
     } = state;
+    const { undo, redo } = roomHistory(state);
 
     for (let i = 0; i < n; i++) {
       if (undo.length === 0) {
@@ -91,6 +104,10 @@ export const undoReducers = {
       });
 
       campaignInProgress.rooms[currentlyEditingRoomId] = entry.room;
+
+      if (entry.room.id !== currentlyEditingRoomId) {
+        changeIdOfCurrentRoomInPlace(state, entry.room.id as EditorRoomId);
+      }
     }
 
     state.hoveredUndoIndex = 0;
@@ -112,9 +129,9 @@ export const undoReducers = {
 
     const {
       campaignInProgress,
-      history: { redo, undo },
       currentlyEditing: { roomId: currentlyEditingRoomId },
     } = state;
+    const { undo, redo } = roomHistory(state);
 
     for (let i = 0; i < n; i++) {
       if (redo.length === 0) {
@@ -132,6 +149,10 @@ export const undoReducers = {
       });
 
       campaignInProgress.rooms[currentlyEditingRoomId] = entry.room;
+
+      if (entry.room.id !== currentlyEditingRoomId) {
+        changeIdOfCurrentRoomInPlace(state, entry.room.id as EditorRoomId);
+      }
     }
 
     state.hoveredUndoIndex = 0;
@@ -146,13 +167,17 @@ export type UndoHistoryItem = Pick<UndoEntry, "description" | "timestamp">;
 const extractHistoryItems = (entries: UndoEntry[]): UndoHistoryItem[] =>
   entries.map(({ description, timestamp }) => ({ description, timestamp }));
 
+const emptyUndoEntries: UndoEntry[] = [];
+
 export const undoSelectors = {
   selectUndoHistory: createSelector(
-    (state: LevelEditorState) => state.history.undo,
+    (state: LevelEditorState) =>
+      state.history[state.currentlyEditing.roomId]?.undo ?? emptyUndoEntries,
     extractHistoryItems,
   ),
   selectRedoHistory: createSelector(
-    (state: LevelEditorState) => state.history.redo,
+    (state: LevelEditorState) =>
+      state.history[state.currentlyEditing.roomId]?.redo ?? emptyUndoEntries,
     extractHistoryItems,
   ),
 } satisfies SliceSelectors<LevelEditorState>;

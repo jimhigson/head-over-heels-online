@@ -49,8 +49,5 @@ export const initialLevelEditorSliceState: LevelEditorState = {
   wallsFloorsLocked: true,
   dragInProgress: false,
   hoveredUndoIndex: 0,
-  history: {
-    undo: [],
-    redo: [],
-  },
+  history: {},
 };

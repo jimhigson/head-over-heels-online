@@ -49,11 +49,11 @@ test("removeRoom filters the deleted room from editingRoomIdHistory", () => {
   expect(result.editingRoomIdHistory.forward).not.toContain(roomA);
 });
 
-test("removeRoom clears undo/redo history", () => {
+test("removeRoom deletes the deleted room's undo/redo history", () => {
   const state: LevelEditorState = structuredClone(
     produce(editorStateWithOneRoomWithNoItems, (draft) => {
       addRooms(draft);
-      draft.history = {
+      draft.history[roomA] = {
         undo: [
           {
             room: {
@@ -66,26 +66,14 @@ test("removeRoom clears undo/redo history", () => {
             timestamp: 0,
           },
         ],
-        redo: [
-          {
-            room: {
-              id: roomA,
-              planet: "blacktooth",
-              color: { hue: "cyan", shade: "basic" },
-              items: {},
-            },
-            description: { kind: "clearRoom" } satisfies UndoDescription,
-            timestamp: 0,
-          },
-        ],
+        redo: [],
       };
     }),
   );
 
   const result = reduceLevelEditorActions(state, removeRoom());
 
-  expect(result.history.undo).toHaveLength(0);
-  expect(result.history.redo).toHaveLength(0);
+  expect(result.history[roomA]).toBeUndefined();
 });
 
 test("removeRoom sets doors referencing deleted room to 'nowhere'", () => {

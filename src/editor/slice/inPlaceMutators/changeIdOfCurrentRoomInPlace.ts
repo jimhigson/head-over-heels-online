@@ -5,7 +5,6 @@ import {
 import { type LevelEditorState } from "../../../editor/slice/levelEditorSlice";
 import { roomJsonItemsIterable } from "../../../model/RoomJson";
 import { valuesIter } from "../../../utils/entries";
-import { initialLevelEditorSliceState } from "../initialLevelEditorSliceState";
 import { selectCurrentRoomFromLevelEditorState } from "../levelEditorSelectors";
 
 export const changeIdOfCurrentRoomInPlace = (
@@ -64,7 +63,8 @@ export const changeIdOfCurrentRoomInPlace = (
     (id) => (id === prevRoomId ? newRoomId : id),
   );
 
-  // undo snapshots include the room id, so they'd restore a state that never
-  // existed under the new name — clear rather than rewrite
-  state.history = initialLevelEditorSliceState.history;
+  if (state.history[prevRoomId]) {
+    state.history[newRoomId] = state.history[prevRoomId];
+    delete state.history[prevRoomId];
+  }
 };

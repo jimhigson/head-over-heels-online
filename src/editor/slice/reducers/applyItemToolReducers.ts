@@ -131,9 +131,11 @@ export const applyItemToolReducers = {
     };
 
     if (!preview) {
-      const { history } = state;
-      history.redo = [];
-      history.undo.push({ room: roomSnapshot!, description, timestamp });
+      const { roomId } = state.currentlyEditing;
+      state.history[roomId] ??= { undo: [], redo: [] };
+      const { undo, redo } = state.history[roomId];
+      redo.length = 0;
+      undo.push({ room: roomSnapshot!, description, timestamp });
     } else {
       state.pendingEdits = {
         edits: state.pendingEdits!.edits,

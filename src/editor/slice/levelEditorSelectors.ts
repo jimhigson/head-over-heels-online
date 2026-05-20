@@ -25,23 +25,33 @@ import { type LevelEditorState } from "./levelEditorSlice";
 const selectHoveredUndoRoom = (
   state: EditorRootState,
 ): EditorRoomJson | undefined => {
-  const { hoveredUndoIndex, history } = state.levelEditor;
+  const {
+    hoveredUndoIndex,
+    history,
+    currentlyEditing: { roomId },
+  } = state.levelEditor;
   if (hoveredUndoIndex === 0) {
     return undefined;
   }
+  const roomHistory = history[roomId];
+  if (roomHistory === undefined) {
+    throw new Error(
+      `hoveredUndoIndex ${hoveredUndoIndex} but no history for room ${roomId}`,
+    );
+  }
   if (hoveredUndoIndex > 0) {
-    const entry = history.undo[hoveredUndoIndex - 1];
+    const entry = roomHistory.undo[hoveredUndoIndex - 1];
     if (entry === undefined) {
       throw new Error(
-        `hoveredUndoIndex ${hoveredUndoIndex} out of bounds for undo stack of length ${history.undo.length}`,
+        `hoveredUndoIndex ${hoveredUndoIndex} out of bounds for undo stack of length ${roomHistory.undo.length}`,
       );
     }
     return entry.room;
   }
-  const entry = history.redo[-hoveredUndoIndex - 1];
+  const entry = roomHistory.redo[-hoveredUndoIndex - 1];
   if (entry === undefined) {
     throw new Error(
-      `hoveredUndoIndex ${hoveredUndoIndex} out of bounds for redo stack of length ${history.redo.length}`,
+      `hoveredUndoIndex ${hoveredUndoIndex} out of bounds for redo stack of length ${roomHistory.redo.length}`,
     );
   }
   return entry.room;
