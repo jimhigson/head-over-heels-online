@@ -19,8 +19,7 @@ import {
   type ItemRenderPipeline,
 } from "../item/itemRender/createItemRenderer";
 import { type DecorateItemMaybeRenderer } from "../item/itemRender/DecorateItemRenderer";
-import { type ItemTickContext } from "../ItemRenderContexts";
-import { type ZGraph } from "../sortZ/GraphEdges";
+import { type ItemTickContext, type ItemZGraph } from "../ItemRenderContexts";
 import { toposort } from "../sortZ/toposort/toposort";
 import { updateZEdges } from "../sortZ/updateZEdges";
 import { type SoundAndGraphicsOutput } from "../SoundAndGraphicsOutput";
@@ -71,10 +70,12 @@ export class RoomRenderer<RoomId extends string, RoomItemId extends string>
   /**
    * store the edges of the behind/front graph between frames so we can incrementally update it
    */
-  #zEdges: ZGraph<RoomItemId> = new Map();
+  #zEdges: ItemZGraph<RoomId, RoomItemId> = new Map();
 
-  #itemRenderers: Map<RoomItemId, ItemRenderPipeline<ItemInPlayType>> =
-    new Map();
+  #itemRenderers: Map<
+    UnionOfAllItemInPlayTypes<RoomId, RoomItemId>,
+    ItemRenderPipeline<ItemInPlayType>
+  > = new Map();
 
   readonly renderContext: RoomRenderContext<RoomId, RoomItemId>;
 
@@ -112,15 +113,17 @@ export class RoomRenderer<RoomId extends string, RoomItemId extends string>
     }
   }
 
-  #getItemRenderPipeline = (itemId: string) => {
-    return this.#itemRenderers.get(itemId as RoomItemId);
+  #getItemRenderPipeline = (item: UnionOfAllItemInPlayTypes) => {
+    return this.#itemRenderers.get(
+      item as UnionOfAllItemInPlayTypes<RoomId, RoomItemId>,
+    );
   };
 
   #tickItem(
     itemTickContext: ItemTickContext,
     item: UnionOfAllItemInPlayTypes<RoomId, RoomItemId>,
   ) {
-    let itemRenderer = this.#itemRenderers.get(item.id as RoomItemId);
+    let itemRenderer = this.#itemRenderers.get(item);
 
     if (itemRenderer === undefined) {
       // have never ticked this item before - either first tick in the room or item was introduced to the
@@ -137,7 +140,7 @@ export class RoomRenderer<RoomId extends string, RoomItemId extends string>
         RoomRenderer.itemDecorators,
       );
 
-      this.#itemRenderers.set(item.id as RoomItemId, itemRenderer);
+      this.#itemRenderers.set(item, itemRenderer);
 
       const { graphics, sound } = itemRenderer.top.output;
 
@@ -178,7 +181,9 @@ export class RoomRenderer<RoomId extends string, RoomItemId extends string>
       lastRenderRoomTime: this.#lastRenderRoomTime,
     };
 
-    const tickedItemIds = new Set<RoomItemId>();
+    type Item = UnionOfAllItemInPlayTypes<RoomId, RoomItemId>;
+
+    const tickedItems = new Set<Item>();
 
     /*
      * for broken links, the front items
@@ -186,12 +191,12 @@ export class RoomRenderer<RoomId extends string, RoomItemId extends string>
      * a mask, so if they're done second they may capture the front item's
      * container to a texture before it updates
      */
-    const tickItemWithGuard = (itemId: RoomItemId) => {
-      if (tickedItemIds.has(itemId)) {
+    const tickItemWithGuard = (item: Item) => {
+      if (tickedItems.has(item)) {
         // already ticked, nothing to do
         return;
       }
-      const edges = this.#zEdges.get(itemId);
+      const edges = this.#zEdges.get(item);
       if (edges) {
         for (const [front, broken] of edges.entries()) {
           if (broken) {
@@ -200,20 +205,21 @@ export class RoomRenderer<RoomId extends string, RoomItemId extends string>
           }
         }
       }
-      this.#tickItem(itemTickContext, room.items[itemId]);
-      tickedItemIds.add(itemId);
+      this.#tickItem(itemTickContext, item);
+      tickedItems.add(item);
     };
 
-    for (const itemId in room.items) {
-      tickItemWithGuard(itemId);
+    for (const item of roomItemsIterable(room.items)) {
+      tickItemWithGuard(item);
     }
 
     // remove any renderers for items that no longer exist in the room:
     let destroyedItemRenderers = false;
-    for (const [itemId, itemRenderer] of this.#itemRenderers.entries()) {
-      if (room.items[itemId] === undefined) {
+    for (const [item, itemRenderer] of this.#itemRenderers.entries()) {
+      if (room.items[item.id] !== item) {
+        // item no longer in the room
         itemRenderer.top.destroy();
-        this.#itemRenderers.delete(itemId as RoomItemId);
+        this.#itemRenderers.delete(item);
         destroyedItemRenderers = true;
       }
     }
@@ -248,19 +254,20 @@ export class RoomRenderer<RoomId extends string, RoomItemId extends string>
     }
   }
 
-  #tickItemsZIndex(order: RoomItemId[]) {
+  #tickItemsZIndex(order: UnionOfAllItemInPlayTypes<RoomId, RoomItemId>[]) {
     for (let i = 0; i < order.length; i++) {
-      const itemRenderer = this.#itemRenderers.get(order[i] as RoomItemId);
+      const item = order[i];
+      const itemRenderer = this.#itemRenderers.get(item);
       if (itemRenderer === undefined) {
         throw new Error(
-          `Item id=${order[i]} does not have a renderer - cannot assign a z-index`,
+          `Item id=${item.id} does not have a renderer - cannot assign a z-index`,
         );
       }
 
       const graphicsOutput = itemRenderer.top.output.graphics;
       if (!graphicsOutput) {
         throw new Error(
-          `order ${order[i]} was given a z-order by sorting, but item has no graphics`,
+          `order ${item.id} was given a z-order by sorting, but item has no graphics`,
         );
       }
 
@@ -292,12 +299,14 @@ export class RoomRenderer<RoomId extends string, RoomItemId extends string>
       renderContext: { room },
     } = this;
 
+    const itemsSet = new Set(roomItemsIterable(room.items).filter(isSpatial));
+
     try {
       // it it important that we sort before rendering. This is because sorting updates
       // this.#brokenLinks, which will be used in this.#tickItems to update the rendering,
       // which can be influenced by the broken links (by showing masking)
-      updateZEdges<UnionOfAllItemInPlayTypes<RoomId, RoomItemId>, RoomItemId>(
-        room.items,
+      updateZEdges(
+        itemsSet,
         room[roomSpatialIndexKey],
         tickContext.movedItems,
         // this.#incrementalZEdges will be updated in-place by the zEdges function to match

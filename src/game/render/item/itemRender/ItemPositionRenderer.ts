@@ -1,6 +1,9 @@
 import { Container, type Filter } from "pixi.js";
 
-import { type ItemInPlayType } from "../../../../model/ItemInPlay";
+import {
+  type ItemInPlayType,
+  type UnionOfAllItemInPlayTypes,
+} from "../../../../model/ItemInPlay";
 import { emptySet } from "../../../../utils/empty";
 import { assignRoundedXy } from "../../../../utils/pixi/assignRoundedXy";
 import { pixiContainerToString } from "../../../../utils/pixi/pixiContainerToString";
@@ -29,8 +32,9 @@ export class ItemPositionRenderer<T extends ItemInPlayType>
   implements ItemPixiRenderer<T>
 {
   output: Container;
-  // store our hierarchy of making containers by the item id they are using to mask:
-  #maskingContainers: Map<string, MaskingContainer> = new Map();
+  // store our hierarchy of masking containers by the front item they are using to mask:
+  #maskingContainers: Map<UnionOfAllItemInPlayTypes, MaskingContainer> =
+    new Map();
 
   readonly renderContext: ItemRenderContext<T>;
   #wrappedRenderer: ItemPixiRenderer<T>;
@@ -79,32 +83,33 @@ export class ItemPositionRenderer<T extends ItemInPlayType>
   }
 
   // get all the broken edges in front of this item
-  #brokenEdges(): Set<string> {
-    const itemId = this.renderContext.item.id;
-    const inFrontOfItemEdges = this.renderContext.zEdges.get(itemId);
+  #brokenEdges(): Set<UnionOfAllItemInPlayTypes> {
+    const inFrontOfItemEdges = this.renderContext.zEdges.get(
+      this.renderContext.item,
+    );
 
     if (!inFrontOfItemEdges) {
-      return emptySet as Set<string>;
+      return emptySet as Set<UnionOfAllItemInPlayTypes>;
     }
 
-    let brokenEdges: Set<string> | undefined;
-    for (const [frontItemId, isBroken] of inFrontOfItemEdges) {
+    let brokenEdges: Set<UnionOfAllItemInPlayTypes> | undefined;
+    for (const [frontItem, isBroken] of inFrontOfItemEdges) {
       if (isBroken) {
         if (!brokenEdges) {
-          brokenEdges = new Set<string>();
+          brokenEdges = new Set<UnionOfAllItemInPlayTypes>();
         }
-        brokenEdges.add(frontItemId);
+        brokenEdges.add(frontItem);
       }
     }
-    return brokenEdges ?? (emptySet as Set<string>);
+    return brokenEdges ?? (emptySet as Set<UnionOfAllItemInPlayTypes>);
   }
 
   #addMaskingContainer(
-    frontItemId: string,
+    frontItem: UnionOfAllItemInPlayTypes,
     maskingSprite: UniqueTextureSprite,
   ) {
     const maskingContainer = new Container({
-      label: `maskWith: ${frontItemId}`,
+      label: `maskWith: ${frontItem.id}`,
       // push the current child-of-root one down in the hierarchy:
       children: [maskingSprite, this.output.children[0]],
     }) as MaskingContainer;
@@ -115,13 +120,13 @@ export class ItemPositionRenderer<T extends ItemInPlayType>
     maskingContainer.setMask({ mask: maskingSprite, inverse: true });
 
     // record our masking container:
-    this.#maskingContainers.set(frontItemId, maskingContainer);
+    this.#maskingContainers.set(frontItem, maskingContainer);
 
     return maskingContainer;
   }
 
   #destroyMaskingContainer(
-    frontItemId: string,
+    frontItem: UnionOfAllItemInPlayTypes,
     maskingContainer: MaskingContainer,
   ) {
     const [maskingSprite, contents] = maskingContainer.children;
@@ -135,7 +140,7 @@ export class ItemPositionRenderer<T extends ItemInPlayType>
     maskingContainer.mask = null;
     maskingSprite.destroy();
     maskingContainer.destroy();
-    this.#maskingContainers.delete(frontItemId);
+    this.#maskingContainers.delete(frontItem);
   }
 
   #tickMasks() {
@@ -154,7 +159,7 @@ export class ItemPositionRenderer<T extends ItemInPlayType>
           if (logCyclicRendering) {
             console.info(
               "no longer masking:",
-              previousFront,
+              previousFront.id,
               "from:",
               this.renderContext.item.id,
             );
@@ -164,7 +169,7 @@ export class ItemPositionRenderer<T extends ItemInPlayType>
             this.#destroyMaskingContainer(previousFront, maskingContainer);
           } catch (e) {
             throw new Error(
-              `error while destroying masking container ${pixiContainerToString(maskingContainer)} 
+              `error while destroying masking container ${pixiContainerToString(maskingContainer)}
               for our rendering: ${pixiContainerToString(this.output)}`,
               { cause: e },
             );
@@ -173,14 +178,14 @@ export class ItemPositionRenderer<T extends ItemInPlayType>
       }
     }
 
-    for (const frontItemId of brokenEdges) {
+    for (const frontItem of brokenEdges) {
       const preExistingMaskingContainer =
-        this.#maskingContainers.get(frontItemId);
+        this.#maskingContainers.get(frontItem);
 
       const preExistingMaskingSprite = preExistingMaskingContainer?.children[0];
 
       const frontRenderingForMask =
-        this.renderContext.getItemRenderPipeline(frontItemId)
+        this.renderContext.getItemRenderPipeline(frontItem)
           ?.itemAppearanceRenderer?.output;
 
       if (frontRenderingForMask === undefined) {
@@ -198,7 +203,7 @@ export class ItemPositionRenderer<T extends ItemInPlayType>
         // NOTE: renderContainerToSprite will handle destroying the renderTexture
         // of this sprite if it can't be reused
         preExistingMaskingSprite,
-        `red mask: ${frontItemId}`,
+        `red mask: ${frontItem.id}`,
       );
 
       // pixi's .filter property is readonly when read, and mutable when set, so we
@@ -210,18 +215,16 @@ export class ItemPositionRenderer<T extends ItemInPlayType>
         if (logCyclicRendering) {
           console.warn(
             "adding masking for item in front:",
-            frontItemId,
+            frontItem.id,
             "from:",
             this.renderContext.item.id,
           );
         }
-        this.#addMaskingContainer(frontItemId, curMaskingSprite);
+        this.#addMaskingContainer(frontItem, curMaskingSprite);
       }
 
-      const otherItem = this.renderContext.room.items[frontItemId];
-
       const renderedPositionDiff = subXy(
-        projectWorldXyzToScreenXy(otherItem.state.position),
+        projectWorldXyzToScreenXy(frontItem.state.position),
         projectWorldXyzToScreenXy(this.renderContext.item.state.position),
       );
 

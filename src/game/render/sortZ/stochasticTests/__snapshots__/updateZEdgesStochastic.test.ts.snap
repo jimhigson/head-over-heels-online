@@ -2,130 +2,2355 @@
 
 exports[`updateZEdges correctness 1`] = `
 Map {
-  "item-22" => Map {
-    "item-11" => false,
+  {
+    "aabb": {
+      "x": 1,
+      "y": 1,
+      "z": 1,
+    },
+    "fixedZIndex": undefined,
+    "id": "item-22",
+    "renderAabb": {
+      "x": 1,
+      "y": 1,
+      "z": 1,
+    },
+    "renderAabbOffset": {
+      "x": 0,
+      "y": 0,
+      "z": 0,
+    },
+    "state": {
+      "position": {
+        "x": 4,
+        "y": 4,
+        "z": 0,
+      },
+    },
+  } => Map {
+    {
+      "aabb": {
+        "x": 1,
+        "y": 1,
+        "z": 1,
+      },
+      "fixedZIndex": undefined,
+      "id": "item-11",
+      "renderAabb": {
+        "x": 1,
+        "y": 1,
+        "z": 1,
+      },
+      "renderAabbOffset": {
+        "x": 0,
+        "y": 0,
+        "z": 0,
+      },
+      "state": {
+        "position": {
+          "x": 2,
+          "y": 2,
+          "z": 1,
+        },
+      },
+    } => false,
   },
-  "item-12" => Map {
-    "item-1" => false,
+  {
+    "aabb": {
+      "x": 1,
+      "y": 1,
+      "z": 1,
+    },
+    "fixedZIndex": undefined,
+    "id": "item-12",
+    "renderAabb": {
+      "x": 1,
+      "y": 1,
+      "z": 1,
+    },
+    "renderAabbOffset": {
+      "x": 0,
+      "y": 0,
+      "z": 0,
+    },
+    "state": {
+      "position": {
+        "x": 4,
+        "y": 2,
+        "z": 2,
+      },
+    },
+  } => Map {
+    {
+      "aabb": {
+        "x": 1,
+        "y": 1,
+        "z": 1,
+      },
+      "fixedZIndex": undefined,
+      "id": "item-1",
+      "renderAabb": {
+        "x": 1,
+        "y": 1,
+        "z": 1,
+      },
+      "renderAabbOffset": {
+        "x": 0,
+        "y": 0,
+        "z": 0,
+      },
+      "state": {
+        "position": {
+          "x": 2,
+          "y": 0,
+          "z": 4,
+        },
+      },
+    } => false,
   },
-  "item-23" => Map {
-    "item-1" => false,
-    "item-12" => false,
+  {
+    "aabb": {
+      "x": 1,
+      "y": 1,
+      "z": 1,
+    },
+    "fixedZIndex": undefined,
+    "id": "item-23",
+    "renderAabb": {
+      "x": 1,
+      "y": 1,
+      "z": 1,
+    },
+    "renderAabbOffset": {
+      "x": 0,
+      "y": 0,
+      "z": 0,
+    },
+    "state": {
+      "position": {
+        "x": 6,
+        "y": 4,
+        "z": 0,
+      },
+    },
+  } => Map {
+    {
+      "aabb": {
+        "x": 1,
+        "y": 1,
+        "z": 1,
+      },
+      "fixedZIndex": undefined,
+      "id": "item-1",
+      "renderAabb": {
+        "x": 1,
+        "y": 1,
+        "z": 1,
+      },
+      "renderAabbOffset": {
+        "x": 0,
+        "y": 0,
+        "z": 0,
+      },
+      "state": {
+        "position": {
+          "x": 2,
+          "y": 0,
+          "z": 4,
+        },
+      },
+    } => false,
+    {
+      "aabb": {
+        "x": 1,
+        "y": 1,
+        "z": 1,
+      },
+      "fixedZIndex": undefined,
+      "id": "item-12",
+      "renderAabb": {
+        "x": 1,
+        "y": 1,
+        "z": 1,
+      },
+      "renderAabbOffset": {
+        "x": 0,
+        "y": 0,
+        "z": 0,
+      },
+      "state": {
+        "position": {
+          "x": 4,
+          "y": 2,
+          "z": 2,
+        },
+      },
+    } => false,
   },
-  "item-13" => Map {
-    "item-2" => false,
+  {
+    "aabb": {
+      "x": 1,
+      "y": 1,
+      "z": 1,
+    },
+    "fixedZIndex": undefined,
+    "id": "item-13",
+    "renderAabb": {
+      "x": 1,
+      "y": 1,
+      "z": 1,
+    },
+    "renderAabbOffset": {
+      "x": 0,
+      "y": 0,
+      "z": 0,
+    },
+    "state": {
+      "position": {
+        "x": 6,
+        "y": 2,
+        "z": 3,
+      },
+    },
+  } => Map {
+    {
+      "aabb": {
+        "x": 1,
+        "y": 1,
+        "z": 1,
+      },
+      "fixedZIndex": undefined,
+      "id": "item-2",
+      "renderAabb": {
+        "x": 1,
+        "y": 1,
+        "z": 1,
+      },
+      "renderAabbOffset": {
+        "x": 0,
+        "y": 0,
+        "z": 0,
+      },
+      "state": {
+        "position": {
+          "x": 4,
+          "y": 0,
+          "z": 5,
+        },
+      },
+    } => false,
   },
-  "item-24" => Map {
-    "item-2" => false,
-    "item-13" => false,
+  {
+    "aabb": {
+      "x": 1,
+      "y": 1,
+      "z": 1,
+    },
+    "fixedZIndex": undefined,
+    "id": "item-24",
+    "renderAabb": {
+      "x": 1,
+      "y": 1,
+      "z": 1,
+    },
+    "renderAabbOffset": {
+      "x": 0,
+      "y": 0,
+      "z": 0,
+    },
+    "state": {
+      "position": {
+        "x": 8,
+        "y": 4,
+        "z": 1,
+      },
+    },
+  } => Map {
+    {
+      "aabb": {
+        "x": 1,
+        "y": 1,
+        "z": 1,
+      },
+      "fixedZIndex": undefined,
+      "id": "item-2",
+      "renderAabb": {
+        "x": 1,
+        "y": 1,
+        "z": 1,
+      },
+      "renderAabbOffset": {
+        "x": 0,
+        "y": 0,
+        "z": 0,
+      },
+      "state": {
+        "position": {
+          "x": 4,
+          "y": 0,
+          "z": 5,
+        },
+      },
+    } => false,
+    {
+      "aabb": {
+        "x": 1,
+        "y": 1,
+        "z": 1,
+      },
+      "fixedZIndex": undefined,
+      "id": "item-13",
+      "renderAabb": {
+        "x": 1,
+        "y": 1,
+        "z": 1,
+      },
+      "renderAabbOffset": {
+        "x": 0,
+        "y": 0,
+        "z": 0,
+      },
+      "state": {
+        "position": {
+          "x": 6,
+          "y": 2,
+          "z": 3,
+        },
+      },
+    } => false,
   },
-  "item-14" => Map {
-    "item-3" => false,
+  {
+    "aabb": {
+      "x": 1,
+      "y": 1,
+      "z": 1,
+    },
+    "fixedZIndex": undefined,
+    "id": "item-14",
+    "renderAabb": {
+      "x": 1,
+      "y": 1,
+      "z": 1,
+    },
+    "renderAabbOffset": {
+      "x": 0,
+      "y": 0,
+      "z": 0,
+    },
+    "state": {
+      "position": {
+        "x": 8,
+        "y": 2,
+        "z": 4,
+      },
+    },
+  } => Map {
+    {
+      "aabb": {
+        "x": 1,
+        "y": 1,
+        "z": 1,
+      },
+      "fixedZIndex": undefined,
+      "id": "item-3",
+      "renderAabb": {
+        "x": 1,
+        "y": 1,
+        "z": 1,
+      },
+      "renderAabbOffset": {
+        "x": 0,
+        "y": 0,
+        "z": 0,
+      },
+      "state": {
+        "position": {
+          "x": 6,
+          "y": 0,
+          "z": 5,
+        },
+      },
+    } => false,
   },
-  "item-36" => Map {
-    "item-14" => false,
+  {
+    "aabb": {
+      "x": 1,
+      "y": 1,
+      "z": 1,
+    },
+    "fixedZIndex": undefined,
+    "id": "item-36",
+    "renderAabb": {
+      "x": 1,
+      "y": 1,
+      "z": 1,
+    },
+    "renderAabbOffset": {
+      "x": 0,
+      "y": 0,
+      "z": 0,
+    },
+    "state": {
+      "position": {
+        "x": 12,
+        "y": 6,
+        "z": 1,
+      },
+    },
+  } => Map {
+    {
+      "aabb": {
+        "x": 1,
+        "y": 1,
+        "z": 1,
+      },
+      "fixedZIndex": undefined,
+      "id": "item-14",
+      "renderAabb": {
+        "x": 1,
+        "y": 1,
+        "z": 1,
+      },
+      "renderAabbOffset": {
+        "x": 0,
+        "y": 0,
+        "z": 0,
+      },
+      "state": {
+        "position": {
+          "x": 8,
+          "y": 2,
+          "z": 4,
+        },
+      },
+    } => false,
   },
-  "item-37" => Map {
-    "item-26" => false,
-    "item-15" => false,
+  {
+    "aabb": {
+      "x": 1,
+      "y": 1,
+      "z": 1,
+    },
+    "fixedZIndex": undefined,
+    "id": "item-37",
+    "renderAabb": {
+      "x": 1,
+      "y": 1,
+      "z": 1,
+    },
+    "renderAabbOffset": {
+      "x": 0,
+      "y": 0,
+      "z": 0,
+    },
+    "state": {
+      "position": {
+        "x": 14,
+        "y": 6,
+        "z": 2,
+      },
+    },
+  } => Map {
+    {
+      "aabb": {
+        "x": 1,
+        "y": 1,
+        "z": 1,
+      },
+      "fixedZIndex": undefined,
+      "id": "item-26",
+      "renderAabb": {
+        "x": 1,
+        "y": 1,
+        "z": 1,
+      },
+      "renderAabbOffset": {
+        "x": 0,
+        "y": 0,
+        "z": 0,
+      },
+      "state": {
+        "position": {
+          "x": 12,
+          "y": 4,
+          "z": 4,
+        },
+      },
+    } => false,
+    {
+      "aabb": {
+        "x": 1,
+        "y": 1,
+        "z": 1,
+      },
+      "fixedZIndex": undefined,
+      "id": "item-15",
+      "renderAabb": {
+        "x": 1,
+        "y": 1,
+        "z": 1,
+      },
+      "renderAabbOffset": {
+        "x": 0,
+        "y": 0,
+        "z": 0,
+      },
+      "state": {
+        "position": {
+          "x": 10,
+          "y": 2,
+          "z": 5,
+        },
+      },
+    } => false,
   },
-  "item-48" => Map {
-    "item-26" => false,
-    "item-37" => false,
-    "item-15" => false,
+  {
+    "aabb": {
+      "x": 1,
+      "y": 1,
+      "z": 1,
+    },
+    "fixedZIndex": undefined,
+    "id": "item-48",
+    "renderAabb": {
+      "x": 1,
+      "y": 1,
+      "z": 1,
+    },
+    "renderAabbOffset": {
+      "x": 0,
+      "y": 0,
+      "z": 0,
+    },
+    "state": {
+      "position": {
+        "x": 16,
+        "y": 8,
+        "z": 0,
+      },
+    },
+  } => Map {
+    {
+      "aabb": {
+        "x": 1,
+        "y": 1,
+        "z": 1,
+      },
+      "fixedZIndex": undefined,
+      "id": "item-26",
+      "renderAabb": {
+        "x": 1,
+        "y": 1,
+        "z": 1,
+      },
+      "renderAabbOffset": {
+        "x": 0,
+        "y": 0,
+        "z": 0,
+      },
+      "state": {
+        "position": {
+          "x": 12,
+          "y": 4,
+          "z": 4,
+        },
+      },
+    } => false,
+    {
+      "aabb": {
+        "x": 1,
+        "y": 1,
+        "z": 1,
+      },
+      "fixedZIndex": undefined,
+      "id": "item-37",
+      "renderAabb": {
+        "x": 1,
+        "y": 1,
+        "z": 1,
+      },
+      "renderAabbOffset": {
+        "x": 0,
+        "y": 0,
+        "z": 0,
+      },
+      "state": {
+        "position": {
+          "x": 14,
+          "y": 6,
+          "z": 2,
+        },
+      },
+    } => false,
+    {
+      "aabb": {
+        "x": 1,
+        "y": 1,
+        "z": 1,
+      },
+      "fixedZIndex": undefined,
+      "id": "item-15",
+      "renderAabb": {
+        "x": 1,
+        "y": 1,
+        "z": 1,
+      },
+      "renderAabbOffset": {
+        "x": 0,
+        "y": 0,
+        "z": 0,
+      },
+      "state": {
+        "position": {
+          "x": 10,
+          "y": 2,
+          "z": 5,
+        },
+      },
+    } => false,
   },
-  "item-38" => Map {
-    "item-27" => false,
+  {
+    "aabb": {
+      "x": 1,
+      "y": 1,
+      "z": 1,
+    },
+    "fixedZIndex": undefined,
+    "id": "item-38",
+    "renderAabb": {
+      "x": 1,
+      "y": 1,
+      "z": 1,
+    },
+    "renderAabbOffset": {
+      "x": 0,
+      "y": 0,
+      "z": 0,
+    },
+    "state": {
+      "position": {
+        "x": 16,
+        "y": 6,
+        "z": 3,
+      },
+    },
+  } => Map {
+    {
+      "aabb": {
+        "x": 1,
+        "y": 1,
+        "z": 1,
+      },
+      "fixedZIndex": undefined,
+      "id": "item-27",
+      "renderAabb": {
+        "x": 1,
+        "y": 1,
+        "z": 1,
+      },
+      "renderAabbOffset": {
+        "x": 0,
+        "y": 0,
+        "z": 0,
+      },
+      "state": {
+        "position": {
+          "x": 14,
+          "y": 4,
+          "z": 5,
+        },
+      },
+    } => false,
   },
-  "item-49" => Map {
-    "item-27" => false,
-    "item-38" => false,
+  {
+    "aabb": {
+      "x": 1,
+      "y": 1,
+      "z": 1,
+    },
+    "fixedZIndex": undefined,
+    "id": "item-49",
+    "renderAabb": {
+      "x": 1,
+      "y": 1,
+      "z": 1,
+    },
+    "renderAabbOffset": {
+      "x": 0,
+      "y": 0,
+      "z": 0,
+    },
+    "state": {
+      "position": {
+        "x": 18,
+        "y": 8,
+        "z": 1,
+      },
+    },
+  } => Map {
+    {
+      "aabb": {
+        "x": 1,
+        "y": 1,
+        "z": 1,
+      },
+      "fixedZIndex": undefined,
+      "id": "item-27",
+      "renderAabb": {
+        "x": 1,
+        "y": 1,
+        "z": 1,
+      },
+      "renderAabbOffset": {
+        "x": 0,
+        "y": 0,
+        "z": 0,
+      },
+      "state": {
+        "position": {
+          "x": 14,
+          "y": 4,
+          "z": 5,
+        },
+      },
+    } => false,
+    {
+      "aabb": {
+        "x": 1,
+        "y": 1,
+        "z": 1,
+      },
+      "fixedZIndex": undefined,
+      "id": "item-38",
+      "renderAabb": {
+        "x": 1,
+        "y": 1,
+        "z": 1,
+      },
+      "renderAabbOffset": {
+        "x": 0,
+        "y": 0,
+        "z": 0,
+      },
+      "state": {
+        "position": {
+          "x": 16,
+          "y": 6,
+          "z": 3,
+        },
+      },
+    } => false,
   },
-  "item-39" => Map {
-    "item-28" => false,
+  {
+    "aabb": {
+      "x": 1,
+      "y": 1,
+      "z": 1,
+    },
+    "fixedZIndex": undefined,
+    "id": "item-39",
+    "renderAabb": {
+      "x": 1,
+      "y": 1,
+      "z": 1,
+    },
+    "renderAabbOffset": {
+      "x": 0,
+      "y": 0,
+      "z": 0,
+    },
+    "state": {
+      "position": {
+        "x": 18,
+        "y": 6,
+        "z": 4,
+      },
+    },
+  } => Map {
+    {
+      "aabb": {
+        "x": 1,
+        "y": 1,
+        "z": 1,
+      },
+      "fixedZIndex": undefined,
+      "id": "item-28",
+      "renderAabb": {
+        "x": 1,
+        "y": 1,
+        "z": 1,
+      },
+      "renderAabbOffset": {
+        "x": 0,
+        "y": 0,
+        "z": 0,
+      },
+      "state": {
+        "position": {
+          "x": 16,
+          "y": 4,
+          "z": 5,
+        },
+      },
+    } => false,
   },
-  "item-47" => Map {
-    "item-36" => false,
+  {
+    "aabb": {
+      "x": 1,
+      "y": 1,
+      "z": 1,
+    },
+    "fixedZIndex": undefined,
+    "id": "item-47",
+    "renderAabb": {
+      "x": 1,
+      "y": 1,
+      "z": 1,
+    },
+    "renderAabbOffset": {
+      "x": 0,
+      "y": 0,
+      "z": 0,
+    },
+    "state": {
+      "position": {
+        "x": 14,
+        "y": 8,
+        "z": 0,
+      },
+    },
+  } => Map {
+    {
+      "aabb": {
+        "x": 1,
+        "y": 1,
+        "z": 1,
+      },
+      "fixedZIndex": undefined,
+      "id": "item-36",
+      "renderAabb": {
+        "x": 1,
+        "y": 1,
+        "z": 1,
+      },
+      "renderAabbOffset": {
+        "x": 0,
+        "y": 0,
+        "z": 0,
+      },
+      "state": {
+        "position": {
+          "x": 12,
+          "y": 6,
+          "z": 1,
+        },
+      },
+    } => false,
   },
-  "item-62" => Map {
-    "item-51" => false,
-    "item-40" => false,
+  {
+    "aabb": {
+      "x": 1,
+      "y": 1,
+      "z": 1,
+    },
+    "fixedZIndex": undefined,
+    "id": "item-62",
+    "renderAabb": {
+      "x": 1,
+      "y": 1,
+      "z": 1,
+    },
+    "renderAabbOffset": {
+      "x": 0,
+      "y": 0,
+      "z": 0,
+    },
+    "state": {
+      "position": {
+        "x": 4,
+        "y": 12,
+        "z": 1,
+      },
+    },
+  } => Map {
+    {
+      "aabb": {
+        "x": 1,
+        "y": 1,
+        "z": 1,
+      },
+      "fixedZIndex": undefined,
+      "id": "item-51",
+      "renderAabb": {
+        "x": 1,
+        "y": 1,
+        "z": 1,
+      },
+      "renderAabbOffset": {
+        "x": 0,
+        "y": 0,
+        "z": 0,
+      },
+      "state": {
+        "position": {
+          "x": 2,
+          "y": 10,
+          "z": 3,
+        },
+      },
+    } => false,
+    {
+      "aabb": {
+        "x": 1,
+        "y": 1,
+        "z": 1,
+      },
+      "fixedZIndex": undefined,
+      "id": "item-40",
+      "renderAabb": {
+        "x": 1,
+        "y": 1,
+        "z": 1,
+      },
+      "renderAabbOffset": {
+        "x": 0,
+        "y": 0,
+        "z": 0,
+      },
+      "state": {
+        "position": {
+          "x": 0,
+          "y": 8,
+          "z": 5,
+        },
+      },
+    } => false,
   },
-  "item-73" => Map {
-    "item-51" => false,
-    "item-62" => false,
-    "item-40" => false,
+  {
+    "aabb": {
+      "x": 1,
+      "y": 1,
+      "z": 1,
+    },
+    "fixedZIndex": undefined,
+    "id": "item-73",
+    "renderAabb": {
+      "x": 1,
+      "y": 1,
+      "z": 1,
+    },
+    "renderAabbOffset": {
+      "x": 0,
+      "y": 0,
+      "z": 0,
+    },
+    "state": {
+      "position": {
+        "x": 6,
+        "y": 14,
+        "z": 0,
+      },
+    },
+  } => Map {
+    {
+      "aabb": {
+        "x": 1,
+        "y": 1,
+        "z": 1,
+      },
+      "fixedZIndex": undefined,
+      "id": "item-51",
+      "renderAabb": {
+        "x": 1,
+        "y": 1,
+        "z": 1,
+      },
+      "renderAabbOffset": {
+        "x": 0,
+        "y": 0,
+        "z": 0,
+      },
+      "state": {
+        "position": {
+          "x": 2,
+          "y": 10,
+          "z": 3,
+        },
+      },
+    } => false,
+    {
+      "aabb": {
+        "x": 1,
+        "y": 1,
+        "z": 1,
+      },
+      "fixedZIndex": undefined,
+      "id": "item-62",
+      "renderAabb": {
+        "x": 1,
+        "y": 1,
+        "z": 1,
+      },
+      "renderAabbOffset": {
+        "x": 0,
+        "y": 0,
+        "z": 0,
+      },
+      "state": {
+        "position": {
+          "x": 4,
+          "y": 12,
+          "z": 1,
+        },
+      },
+    } => false,
+    {
+      "aabb": {
+        "x": 1,
+        "y": 1,
+        "z": 1,
+      },
+      "fixedZIndex": undefined,
+      "id": "item-40",
+      "renderAabb": {
+        "x": 1,
+        "y": 1,
+        "z": 1,
+      },
+      "renderAabbOffset": {
+        "x": 0,
+        "y": 0,
+        "z": 0,
+      },
+      "state": {
+        "position": {
+          "x": 0,
+          "y": 8,
+          "z": 5,
+        },
+      },
+    } => false,
   },
-  "item-52" => Map {
-    "item-41" => false,
+  {
+    "aabb": {
+      "x": 1,
+      "y": 1,
+      "z": 1,
+    },
+    "fixedZIndex": undefined,
+    "id": "item-52",
+    "renderAabb": {
+      "x": 1,
+      "y": 1,
+      "z": 1,
+    },
+    "renderAabbOffset": {
+      "x": 0,
+      "y": 0,
+      "z": 0,
+    },
+    "state": {
+      "position": {
+        "x": 4,
+        "y": 10,
+        "z": 4,
+      },
+    },
+  } => Map {
+    {
+      "aabb": {
+        "x": 1,
+        "y": 1,
+        "z": 1,
+      },
+      "fixedZIndex": undefined,
+      "id": "item-41",
+      "renderAabb": {
+        "x": 1,
+        "y": 1,
+        "z": 1,
+      },
+      "renderAabbOffset": {
+        "x": 0,
+        "y": 0,
+        "z": 0,
+      },
+      "state": {
+        "position": {
+          "x": 2,
+          "y": 8,
+          "z": 5,
+        },
+      },
+    } => false,
   },
-  "item-63" => Map {
-    "item-52" => false,
+  {
+    "aabb": {
+      "x": 1,
+      "y": 1,
+      "z": 1,
+    },
+    "fixedZIndex": undefined,
+    "id": "item-63",
+    "renderAabb": {
+      "x": 1,
+      "y": 1,
+      "z": 1,
+    },
+    "renderAabbOffset": {
+      "x": 0,
+      "y": 0,
+      "z": 0,
+    },
+    "state": {
+      "position": {
+        "x": 6,
+        "y": 12,
+        "z": 3,
+      },
+    },
+  } => Map {
+    {
+      "aabb": {
+        "x": 1,
+        "y": 1,
+        "z": 1,
+      },
+      "fixedZIndex": undefined,
+      "id": "item-52",
+      "renderAabb": {
+        "x": 1,
+        "y": 1,
+        "z": 1,
+      },
+      "renderAabbOffset": {
+        "x": 0,
+        "y": 0,
+        "z": 0,
+      },
+      "state": {
+        "position": {
+          "x": 4,
+          "y": 10,
+          "z": 4,
+        },
+      },
+    } => false,
   },
-  "item-74" => Map {
-    "item-52" => false,
-    "item-63" => false,
+  {
+    "aabb": {
+      "x": 1,
+      "y": 1,
+      "z": 1,
+    },
+    "fixedZIndex": undefined,
+    "id": "item-74",
+    "renderAabb": {
+      "x": 1,
+      "y": 1,
+      "z": 1,
+    },
+    "renderAabbOffset": {
+      "x": 0,
+      "y": 0,
+      "z": 0,
+    },
+    "state": {
+      "position": {
+        "x": 8,
+        "y": 14,
+        "z": 1,
+      },
+    },
+  } => Map {
+    {
+      "aabb": {
+        "x": 1,
+        "y": 1,
+        "z": 1,
+      },
+      "fixedZIndex": undefined,
+      "id": "item-52",
+      "renderAabb": {
+        "x": 1,
+        "y": 1,
+        "z": 1,
+      },
+      "renderAabbOffset": {
+        "x": 0,
+        "y": 0,
+        "z": 0,
+      },
+      "state": {
+        "position": {
+          "x": 4,
+          "y": 10,
+          "z": 4,
+        },
+      },
+    } => false,
+    {
+      "aabb": {
+        "x": 1,
+        "y": 1,
+        "z": 1,
+      },
+      "fixedZIndex": undefined,
+      "id": "item-63",
+      "renderAabb": {
+        "x": 1,
+        "y": 1,
+        "z": 1,
+      },
+      "renderAabbOffset": {
+        "x": 0,
+        "y": 0,
+        "z": 0,
+      },
+      "state": {
+        "position": {
+          "x": 6,
+          "y": 12,
+          "z": 3,
+        },
+      },
+    } => false,
   },
-  "item-64" => Map {
-    "item-53" => false,
+  {
+    "aabb": {
+      "x": 1,
+      "y": 1,
+      "z": 1,
+    },
+    "fixedZIndex": undefined,
+    "id": "item-64",
+    "renderAabb": {
+      "x": 1,
+      "y": 1,
+      "z": 1,
+    },
+    "renderAabbOffset": {
+      "x": 0,
+      "y": 0,
+      "z": 0,
+    },
+    "state": {
+      "position": {
+        "x": 8,
+        "y": 12,
+        "z": 4,
+      },
+    },
+  } => Map {
+    {
+      "aabb": {
+        "x": 1,
+        "y": 1,
+        "z": 1,
+      },
+      "fixedZIndex": undefined,
+      "id": "item-53",
+      "renderAabb": {
+        "x": 1,
+        "y": 1,
+        "z": 1,
+      },
+      "renderAabbOffset": {
+        "x": 0,
+        "y": 0,
+        "z": 0,
+      },
+      "state": {
+        "position": {
+          "x": 6,
+          "y": 10,
+          "z": 5,
+        },
+      },
+    } => false,
   },
-  "item-86" => Map {
-    "item-53" => false,
-    "item-64" => false,
+  {
+    "aabb": {
+      "x": 1,
+      "y": 1,
+      "z": 1,
+    },
+    "fixedZIndex": undefined,
+    "id": "item-86",
+    "renderAabb": {
+      "x": 1,
+      "y": 1,
+      "z": 1,
+    },
+    "renderAabbOffset": {
+      "x": 0,
+      "y": 0,
+      "z": 0,
+    },
+    "state": {
+      "position": {
+        "x": 12,
+        "y": 16,
+        "z": 0,
+      },
+    },
+  } => Map {
+    {
+      "aabb": {
+        "x": 1,
+        "y": 1,
+        "z": 1,
+      },
+      "fixedZIndex": undefined,
+      "id": "item-53",
+      "renderAabb": {
+        "x": 1,
+        "y": 1,
+        "z": 1,
+      },
+      "renderAabbOffset": {
+        "x": 0,
+        "y": 0,
+        "z": 0,
+      },
+      "state": {
+        "position": {
+          "x": 6,
+          "y": 10,
+          "z": 5,
+        },
+      },
+    } => false,
+    {
+      "aabb": {
+        "x": 1,
+        "y": 1,
+        "z": 1,
+      },
+      "fixedZIndex": undefined,
+      "id": "item-64",
+      "renderAabb": {
+        "x": 1,
+        "y": 1,
+        "z": 1,
+      },
+      "renderAabbOffset": {
+        "x": 0,
+        "y": 0,
+        "z": 0,
+      },
+      "state": {
+        "position": {
+          "x": 8,
+          "y": 12,
+          "z": 4,
+        },
+      },
+    } => false,
   },
-  "item-72" => Map {
-    "item-61" => false,
+  {
+    "aabb": {
+      "x": 1,
+      "y": 1,
+      "z": 1,
+    },
+    "fixedZIndex": undefined,
+    "id": "item-72",
+    "renderAabb": {
+      "x": 1,
+      "y": 1,
+      "z": 1,
+    },
+    "renderAabbOffset": {
+      "x": 0,
+      "y": 0,
+      "z": 0,
+    },
+    "state": {
+      "position": {
+        "x": 4,
+        "y": 14,
+        "z": 0,
+      },
+    },
+  } => Map {
+    {
+      "aabb": {
+        "x": 1,
+        "y": 1,
+        "z": 1,
+      },
+      "fixedZIndex": undefined,
+      "id": "item-61",
+      "renderAabb": {
+        "x": 1,
+        "y": 1,
+        "z": 1,
+      },
+      "renderAabbOffset": {
+        "x": 0,
+        "y": 0,
+        "z": 0,
+      },
+      "state": {
+        "position": {
+          "x": 2,
+          "y": 12,
+          "z": 1,
+        },
+      },
+    } => false,
   },
-  "item-87" => Map {
-    "item-76" => false,
-    "item-65" => false,
+  {
+    "aabb": {
+      "x": 1,
+      "y": 1,
+      "z": 1,
+    },
+    "fixedZIndex": undefined,
+    "id": "item-87",
+    "renderAabb": {
+      "x": 1,
+      "y": 1,
+      "z": 1,
+    },
+    "renderAabbOffset": {
+      "x": 0,
+      "y": 0,
+      "z": 0,
+    },
+    "state": {
+      "position": {
+        "x": 14,
+        "y": 16,
+        "z": 1,
+      },
+    },
+  } => Map {
+    {
+      "aabb": {
+        "x": 1,
+        "y": 1,
+        "z": 1,
+      },
+      "fixedZIndex": undefined,
+      "id": "item-76",
+      "renderAabb": {
+        "x": 1,
+        "y": 1,
+        "z": 1,
+      },
+      "renderAabbOffset": {
+        "x": 0,
+        "y": 0,
+        "z": 0,
+      },
+      "state": {
+        "position": {
+          "x": 12,
+          "y": 14,
+          "z": 3,
+        },
+      },
+    } => false,
+    {
+      "aabb": {
+        "x": 1,
+        "y": 1,
+        "z": 1,
+      },
+      "fixedZIndex": undefined,
+      "id": "item-65",
+      "renderAabb": {
+        "x": 1,
+        "y": 1,
+        "z": 1,
+      },
+      "renderAabbOffset": {
+        "x": 0,
+        "y": 0,
+        "z": 0,
+      },
+      "state": {
+        "position": {
+          "x": 10,
+          "y": 12,
+          "z": 5,
+        },
+      },
+    } => false,
   },
-  "item-98" => Map {
-    "item-76" => false,
-    "item-87" => false,
-    "item-65" => false,
+  {
+    "aabb": {
+      "x": 1,
+      "y": 1,
+      "z": 1,
+    },
+    "fixedZIndex": undefined,
+    "id": "item-98",
+    "renderAabb": {
+      "x": 1,
+      "y": 1,
+      "z": 1,
+    },
+    "renderAabbOffset": {
+      "x": 0,
+      "y": 0,
+      "z": 0,
+    },
+    "state": {
+      "position": {
+        "x": 16,
+        "y": 18,
+        "z": 0,
+      },
+    },
+  } => Map {
+    {
+      "aabb": {
+        "x": 1,
+        "y": 1,
+        "z": 1,
+      },
+      "fixedZIndex": undefined,
+      "id": "item-76",
+      "renderAabb": {
+        "x": 1,
+        "y": 1,
+        "z": 1,
+      },
+      "renderAabbOffset": {
+        "x": 0,
+        "y": 0,
+        "z": 0,
+      },
+      "state": {
+        "position": {
+          "x": 12,
+          "y": 14,
+          "z": 3,
+        },
+      },
+    } => false,
+    {
+      "aabb": {
+        "x": 1,
+        "y": 1,
+        "z": 1,
+      },
+      "fixedZIndex": undefined,
+      "id": "item-87",
+      "renderAabb": {
+        "x": 1,
+        "y": 1,
+        "z": 1,
+      },
+      "renderAabbOffset": {
+        "x": 0,
+        "y": 0,
+        "z": 0,
+      },
+      "state": {
+        "position": {
+          "x": 14,
+          "y": 16,
+          "z": 1,
+        },
+      },
+    } => false,
+    {
+      "aabb": {
+        "x": 1,
+        "y": 1,
+        "z": 1,
+      },
+      "fixedZIndex": undefined,
+      "id": "item-65",
+      "renderAabb": {
+        "x": 1,
+        "y": 1,
+        "z": 1,
+      },
+      "renderAabbOffset": {
+        "x": 0,
+        "y": 0,
+        "z": 0,
+      },
+      "state": {
+        "position": {
+          "x": 10,
+          "y": 12,
+          "z": 5,
+        },
+      },
+    } => false,
   },
-  "item-77" => Map {
-    "item-66" => false,
+  {
+    "aabb": {
+      "x": 1,
+      "y": 1,
+      "z": 1,
+    },
+    "fixedZIndex": undefined,
+    "id": "item-77",
+    "renderAabb": {
+      "x": 1,
+      "y": 1,
+      "z": 1,
+    },
+    "renderAabbOffset": {
+      "x": 0,
+      "y": 0,
+      "z": 0,
+    },
+    "state": {
+      "position": {
+        "x": 14,
+        "y": 14,
+        "z": 4,
+      },
+    },
+  } => Map {
+    {
+      "aabb": {
+        "x": 1,
+        "y": 1,
+        "z": 1,
+      },
+      "fixedZIndex": undefined,
+      "id": "item-66",
+      "renderAabb": {
+        "x": 1,
+        "y": 1,
+        "z": 1,
+      },
+      "renderAabbOffset": {
+        "x": 0,
+        "y": 0,
+        "z": 0,
+      },
+      "state": {
+        "position": {
+          "x": 12,
+          "y": 12,
+          "z": 5,
+        },
+      },
+    } => false,
   },
-  "item-88" => Map {
-    "item-77" => false,
+  {
+    "aabb": {
+      "x": 1,
+      "y": 1,
+      "z": 1,
+    },
+    "fixedZIndex": undefined,
+    "id": "item-88",
+    "renderAabb": {
+      "x": 1,
+      "y": 1,
+      "z": 1,
+    },
+    "renderAabbOffset": {
+      "x": 0,
+      "y": 0,
+      "z": 0,
+    },
+    "state": {
+      "position": {
+        "x": 16,
+        "y": 16,
+        "z": 3,
+      },
+    },
+  } => Map {
+    {
+      "aabb": {
+        "x": 1,
+        "y": 1,
+        "z": 1,
+      },
+      "fixedZIndex": undefined,
+      "id": "item-77",
+      "renderAabb": {
+        "x": 1,
+        "y": 1,
+        "z": 1,
+      },
+      "renderAabbOffset": {
+        "x": 0,
+        "y": 0,
+        "z": 0,
+      },
+      "state": {
+        "position": {
+          "x": 14,
+          "y": 14,
+          "z": 4,
+        },
+      },
+    } => false,
   },
-  "item-99" => Map {
-    "item-77" => false,
-    "item-88" => false,
+  {
+    "aabb": {
+      "x": 1,
+      "y": 1,
+      "z": 1,
+    },
+    "fixedZIndex": undefined,
+    "id": "item-99",
+    "renderAabb": {
+      "x": 1,
+      "y": 1,
+      "z": 1,
+    },
+    "renderAabbOffset": {
+      "x": 0,
+      "y": 0,
+      "z": 0,
+    },
+    "state": {
+      "position": {
+        "x": 18,
+        "y": 18,
+        "z": 1,
+      },
+    },
+  } => Map {
+    {
+      "aabb": {
+        "x": 1,
+        "y": 1,
+        "z": 1,
+      },
+      "fixedZIndex": undefined,
+      "id": "item-77",
+      "renderAabb": {
+        "x": 1,
+        "y": 1,
+        "z": 1,
+      },
+      "renderAabbOffset": {
+        "x": 0,
+        "y": 0,
+        "z": 0,
+      },
+      "state": {
+        "position": {
+          "x": 14,
+          "y": 14,
+          "z": 4,
+        },
+      },
+    } => false,
+    {
+      "aabb": {
+        "x": 1,
+        "y": 1,
+        "z": 1,
+      },
+      "fixedZIndex": undefined,
+      "id": "item-88",
+      "renderAabb": {
+        "x": 1,
+        "y": 1,
+        "z": 1,
+      },
+      "renderAabbOffset": {
+        "x": 0,
+        "y": 0,
+        "z": 0,
+      },
+      "state": {
+        "position": {
+          "x": 16,
+          "y": 16,
+          "z": 3,
+        },
+      },
+    } => false,
   },
-  "item-89" => Map {
-    "item-78" => false,
+  {
+    "aabb": {
+      "x": 1,
+      "y": 1,
+      "z": 1,
+    },
+    "fixedZIndex": undefined,
+    "id": "item-89",
+    "renderAabb": {
+      "x": 1,
+      "y": 1,
+      "z": 1,
+    },
+    "renderAabbOffset": {
+      "x": 0,
+      "y": 0,
+      "z": 0,
+    },
+    "state": {
+      "position": {
+        "x": 18,
+        "y": 16,
+        "z": 4,
+      },
+    },
+  } => Map {
+    {
+      "aabb": {
+        "x": 1,
+        "y": 1,
+        "z": 1,
+      },
+      "fixedZIndex": undefined,
+      "id": "item-78",
+      "renderAabb": {
+        "x": 1,
+        "y": 1,
+        "z": 1,
+      },
+      "renderAabbOffset": {
+        "x": 0,
+        "y": 0,
+        "z": 0,
+      },
+      "state": {
+        "position": {
+          "x": 16,
+          "y": 14,
+          "z": 5,
+        },
+      },
+    } => false,
   },
-  "item-25" => Map {
-    "item-3" => false,
-    "item-14" => false,
+  {
+    "aabb": {
+      "x": 1,
+      "y": 1,
+      "z": 1,
+    },
+    "fixedZIndex": undefined,
+    "id": "item-25",
+    "renderAabb": {
+      "x": 1,
+      "y": 1,
+      "z": 1,
+    },
+    "renderAabbOffset": {
+      "x": 0,
+      "y": 0,
+      "z": 0,
+    },
+    "state": {
+      "position": {
+        "x": 10,
+        "y": 4,
+        "z": 1,
+      },
+    },
+  } => Map {
+    {
+      "aabb": {
+        "x": 1,
+        "y": 1,
+        "z": 1,
+      },
+      "fixedZIndex": undefined,
+      "id": "item-3",
+      "renderAabb": {
+        "x": 1,
+        "y": 1,
+        "z": 1,
+      },
+      "renderAabbOffset": {
+        "x": 0,
+        "y": 0,
+        "z": 0,
+      },
+      "state": {
+        "position": {
+          "x": 6,
+          "y": 0,
+          "z": 5,
+        },
+      },
+    } => false,
+    {
+      "aabb": {
+        "x": 1,
+        "y": 1,
+        "z": 1,
+      },
+      "fixedZIndex": undefined,
+      "id": "item-14",
+      "renderAabb": {
+        "x": 1,
+        "y": 1,
+        "z": 1,
+      },
+      "renderAabbOffset": {
+        "x": 0,
+        "y": 0,
+        "z": 0,
+      },
+      "state": {
+        "position": {
+          "x": 8,
+          "y": 2,
+          "z": 4,
+        },
+      },
+    } => false,
   },
-  "item-75" => Map {
-    "item-53" => false,
-    "item-42" => false,
+  {
+    "aabb": {
+      "x": 1,
+      "y": 1,
+      "z": 1,
+    },
+    "fixedZIndex": undefined,
+    "id": "item-75",
+    "renderAabb": {
+      "x": 1,
+      "y": 1,
+      "z": 1,
+    },
+    "renderAabbOffset": {
+      "x": 0,
+      "y": 0,
+      "z": 0,
+    },
+    "state": {
+      "position": {
+        "x": 10,
+        "y": 14,
+        "z": 0,
+      },
+    },
+  } => Map {
+    {
+      "aabb": {
+        "x": 1,
+        "y": 1,
+        "z": 1,
+      },
+      "fixedZIndex": undefined,
+      "id": "item-53",
+      "renderAabb": {
+        "x": 1,
+        "y": 1,
+        "z": 1,
+      },
+      "renderAabbOffset": {
+        "x": 0,
+        "y": 0,
+        "z": 0,
+      },
+      "state": {
+        "position": {
+          "x": 6,
+          "y": 10,
+          "z": 5,
+        },
+      },
+    } => false,
+    {
+      "aabb": {
+        "x": 1,
+        "y": 1,
+        "z": 1,
+      },
+      "fixedZIndex": undefined,
+      "id": "item-42",
+      "renderAabb": {
+        "x": 1,
+        "y": 1,
+        "z": 1,
+      },
+      "renderAabbOffset": {
+        "x": 0,
+        "y": 0,
+        "z": 0,
+      },
+      "state": {
+        "position": {
+          "x": 4,
+          "y": 8,
+          "z": 5,
+        },
+      },
+    } => false,
   },
-  "item-51" => Map {
-    "item-40" => false,
+  {
+    "aabb": {
+      "x": 1,
+      "y": 1,
+      "z": 1,
+    },
+    "fixedZIndex": undefined,
+    "id": "item-51",
+    "renderAabb": {
+      "x": 1,
+      "y": 1,
+      "z": 1,
+    },
+    "renderAabbOffset": {
+      "x": 0,
+      "y": 0,
+      "z": 0,
+    },
+    "state": {
+      "position": {
+        "x": 2,
+        "y": 10,
+        "z": 3,
+      },
+    },
+  } => Map {
+    {
+      "aabb": {
+        "x": 1,
+        "y": 1,
+        "z": 1,
+      },
+      "fixedZIndex": undefined,
+      "id": "item-40",
+      "renderAabb": {
+        "x": 1,
+        "y": 1,
+        "z": 1,
+      },
+      "renderAabbOffset": {
+        "x": 0,
+        "y": 0,
+        "z": 0,
+      },
+      "state": {
+        "position": {
+          "x": 0,
+          "y": 8,
+          "z": 5,
+        },
+      },
+    } => false,
   },
-  "item-26" => Map {
-    "item-15" => false,
+  {
+    "aabb": {
+      "x": 1,
+      "y": 1,
+      "z": 1,
+    },
+    "fixedZIndex": undefined,
+    "id": "item-26",
+    "renderAabb": {
+      "x": 1,
+      "y": 1,
+      "z": 1,
+    },
+    "renderAabbOffset": {
+      "x": 0,
+      "y": 0,
+      "z": 0,
+    },
+    "state": {
+      "position": {
+        "x": 12,
+        "y": 4,
+        "z": 4,
+      },
+    },
+  } => Map {
+    {
+      "aabb": {
+        "x": 1,
+        "y": 1,
+        "z": 1,
+      },
+      "fixedZIndex": undefined,
+      "id": "item-15",
+      "renderAabb": {
+        "x": 1,
+        "y": 1,
+        "z": 1,
+      },
+      "renderAabbOffset": {
+        "x": 0,
+        "y": 0,
+        "z": 0,
+      },
+      "state": {
+        "position": {
+          "x": 10,
+          "y": 2,
+          "z": 5,
+        },
+      },
+    } => false,
   },
-  "item-76" => Map {
-    "item-65" => false,
+  {
+    "aabb": {
+      "x": 1,
+      "y": 1,
+      "z": 1,
+    },
+    "fixedZIndex": undefined,
+    "id": "item-76",
+    "renderAabb": {
+      "x": 1,
+      "y": 1,
+      "z": 1,
+    },
+    "renderAabbOffset": {
+      "x": 0,
+      "y": 0,
+      "z": 0,
+    },
+    "state": {
+      "position": {
+        "x": 12,
+        "y": 14,
+        "z": 3,
+      },
+    },
+  } => Map {
+    {
+      "aabb": {
+        "x": 1,
+        "y": 1,
+        "z": 1,
+      },
+      "fixedZIndex": undefined,
+      "id": "item-65",
+      "renderAabb": {
+        "x": 1,
+        "y": 1,
+        "z": 1,
+      },
+      "renderAabbOffset": {
+        "x": 0,
+        "y": 0,
+        "z": 0,
+      },
+      "state": {
+        "position": {
+          "x": 10,
+          "y": 12,
+          "z": 5,
+        },
+      },
+    } => false,
   },
-  "item-21" => Map {
-    "item-10" => false,
+  {
+    "aabb": {
+      "x": 1,
+      "y": 1,
+      "z": 1,
+    },
+    "fixedZIndex": undefined,
+    "id": "item-21",
+    "renderAabb": {
+      "x": 1,
+      "y": 1,
+      "z": 1,
+    },
+    "renderAabbOffset": {
+      "x": 0,
+      "y": 0,
+      "z": 0,
+    },
+    "state": {
+      "position": {
+        "x": 2,
+        "y": 4,
+        "z": 0,
+      },
+    },
+  } => Map {
+    {
+      "aabb": {
+        "x": 1,
+        "y": 1,
+        "z": 1,
+      },
+      "fixedZIndex": undefined,
+      "id": "item-10",
+      "renderAabb": {
+        "x": 1,
+        "y": 1,
+        "z": 1,
+      },
+      "renderAabbOffset": {
+        "x": 0,
+        "y": 0,
+        "z": 0,
+      },
+      "state": {
+        "position": {
+          "x": 0,
+          "y": 2,
+          "z": 3,
+        },
+      },
+    } => false,
   },
-  "item-46" => Map {
-    "item-35" => false,
+  {
+    "aabb": {
+      "x": 1,
+      "y": 1,
+      "z": 1,
+    },
+    "fixedZIndex": undefined,
+    "id": "item-46",
+    "renderAabb": {
+      "x": 1,
+      "y": 1,
+      "z": 1,
+    },
+    "renderAabbOffset": {
+      "x": 0,
+      "y": 0,
+      "z": 0,
+    },
+    "state": {
+      "position": {
+        "x": 12,
+        "y": 8,
+        "z": 0,
+      },
+    },
+  } => Map {
+    {
+      "aabb": {
+        "x": 1,
+        "y": 1,
+        "z": 1,
+      },
+      "fixedZIndex": undefined,
+      "id": "item-35",
+      "renderAabb": {
+        "x": 1,
+        "y": 1,
+        "z": 1,
+      },
+      "renderAabbOffset": {
+        "x": 0,
+        "y": 0,
+        "z": 0,
+      },
+      "state": {
+        "position": {
+          "x": 10,
+          "y": 6,
+          "z": 3,
+        },
+      },
+    } => false,
   },
-  "item-55" => Map {
-    "item-44" => false,
+  {
+    "aabb": {
+      "x": 1,
+      "y": 1,
+      "z": 1,
+    },
+    "fixedZIndex": undefined,
+    "id": "item-55",
+    "renderAabb": {
+      "x": 1,
+      "y": 1,
+      "z": 1,
+    },
+    "renderAabbOffset": {
+      "x": 0,
+      "y": 0,
+      "z": 0,
+    },
+    "state": {
+      "position": {
+        "x": 10,
+        "y": 10,
+        "z": 1,
+      },
+    },
+  } => Map {
+    {
+      "aabb": {
+        "x": 1,
+        "y": 1,
+        "z": 1,
+      },
+      "fixedZIndex": undefined,
+      "id": "item-44",
+      "renderAabb": {
+        "x": 1,
+        "y": 1,
+        "z": 1,
+      },
+      "renderAabbOffset": {
+        "x": 0,
+        "y": 0,
+        "z": 0,
+      },
+      "state": {
+        "position": {
+          "x": 8,
+          "y": 8,
+          "z": 2,
+        },
+      },
+    } => false,
   },
-  "item-96" => Map {
-    "item-85" => false,
+  {
+    "aabb": {
+      "x": 1,
+      "y": 1,
+      "z": 1,
+    },
+    "fixedZIndex": undefined,
+    "id": "item-96",
+    "renderAabb": {
+      "x": 1,
+      "y": 1,
+      "z": 1,
+    },
+    "renderAabbOffset": {
+      "x": 0,
+      "y": 0,
+      "z": 0,
+    },
+    "state": {
+      "position": {
+        "x": 12,
+        "y": 18,
+        "z": 1,
+      },
+    },
+  } => Map {
+    {
+      "aabb": {
+        "x": 1,
+        "y": 1,
+        "z": 1,
+      },
+      "fixedZIndex": undefined,
+      "id": "item-85",
+      "renderAabb": {
+        "x": 1,
+        "y": 1,
+        "z": 1,
+      },
+      "renderAabbOffset": {
+        "x": 0,
+        "y": 0,
+        "z": 0,
+      },
+      "state": {
+        "position": {
+          "x": 10,
+          "y": 16,
+          "z": 4,
+        },
+      },
+    } => false,
   },
 }
 `;

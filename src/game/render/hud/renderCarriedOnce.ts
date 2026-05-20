@@ -5,8 +5,8 @@ import { emptyMap, emptySet } from "../../../utils/empty";
 import { neverTime } from "../../../utils/neverTime";
 import { type PortableItem } from "../../physics/itemPredicates";
 import { appearanceForItem } from "../itemAppearances/appearanceForItem";
+import { type ItemZGraph } from "../ItemRenderContexts";
 import { type GeneralRenderContext } from "../room/RoomRenderContexts";
-import { type ZGraph } from "../sortZ/GraphEdges";
 
 type RenderContextSubset<RoomId extends string> = {
   general: GeneralRenderContext<RoomId>;
@@ -30,7 +30,7 @@ export const renderCarriedOnce = <
       // nothing that can be carried ever renders to the uncolourised layer so cheat the types to provide this:
       colourClashLayer: undefined as unknown as RenderLayer,
       frontLayer: undefined as unknown as RenderLayer,
-      zEdges: emptyMap as unknown as ZGraph<RoomItemId>,
+      zEdges: emptyMap as ItemZGraph<RoomId, RoomItemId>,
       getItemRenderPipeline() {
         throw new Error(
           "getOtherItemContainer not supported in carried sprite",

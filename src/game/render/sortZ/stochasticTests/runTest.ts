@@ -8,11 +8,12 @@ export const movePercentage = 0.2;
 export const frameCount = 100; // round number means divide answer by 100 to get time per frame
 
 type TestItem = DrawOrderComparable & { id: string };
+
 /**
  * generates test items in a grid pattern for benchmarking
  */
-const generateItems = (count: number): Record<string, TestItem> => {
-  const items: Record<string, TestItem> = {};
+const generateItems = (count: number): Set<TestItem> => {
+  const items = new Set<TestItem>();
   const gridSize = Math.ceil(Math.sqrt(count));
 
   for (let i = 0; i < count; i++) {
@@ -22,9 +23,8 @@ const generateItems = (count: number): Record<string, TestItem> => {
     // (all integers)
     const z = Math.round(Math.sin(i * 0.5) * 2.5 + 2.5);
 
-    const id = `item-${i}`;
-    items[id] = {
-      id,
+    items.add({
+      id: `item-${i}`,
       state: {
         position: { x, y, z },
       },
@@ -32,7 +32,7 @@ const generateItems = (count: number): Record<string, TestItem> => {
       renderAabb: { x: 1, y: 1, z: 1 },
       renderAabbOffset: { x: 0, y: 0, z: 0 },
       fixedZIndex: undefined,
-    };
+    });
   }
 
   return items;
@@ -42,23 +42,25 @@ export const runTest = () => {
   const items = generateItems(itemCount);
 
   // first call with all items to build initial graph
-  const itemArray = Object.values(items);
-  const spatialIndex = new GridSpatialIndex(itemArray);
-  const zEdgesGraph: ZGraph<string> = updateZEdges(items, spatialIndex);
+  const spatialIndex = new GridSpatialIndex(items.values());
+  const zEdgesGraph: ZGraph<TestItem> = updateZEdges(items, spatialIndex);
 
   // simulate frames:
+  const stepSize = Math.round(1 / movePercentage);
   for (let f = 0; f < frameCount; f++) {
     // select items to move
     const movedItems = new Set<TestItem>();
 
     // deterministically select items to move based on movePercentage
-    const stepSize = Math.round(1 / movePercentage);
-    for (let i = 0; i < itemArray.length; i += stepSize) {
-      const item = itemArray[i];
-      // move the item up
-      const z = Math.round(Math.sin(i + f * 0.5) * 2.5 + 2.5);
-      item.state.position.z = z;
-      movedItems.add(item);
+    let i = 0;
+    for (const item of items) {
+      if (i % stepSize === 0) {
+        // move the item up
+        const z = Math.round(Math.sin(i + f * 0.5) * 2.5 + 2.5);
+        item.state.position.z = z;
+        movedItems.add(item);
+      }
+      i++;
     }
 
     // benchmark the incremental update

@@ -1,6 +1,5 @@
 //# allFunctionsCalledOnLoad
 
-import { valuesIter } from "../../../utils/entries";
 import { GridSpatialIndex } from "../../physics/gridSpace/GridSpatialIndex";
 import { type DrawOrderComparable } from "./DrawOrderComparable";
 import { addEdge, deleteEdge, type ZGraph } from "./GraphEdges";
@@ -13,42 +12,39 @@ import { zComparator } from "./zComparator";
  * 'do' something - it needs to mask itself with the front if there's a cycle found
  *
  * ```ts
- *    Map{ 'idOfItemBehind' => Set{ 'idOfItemInFront' } }
+ *    Map{ itemBehind => Map{ itemInFront => broken } }
  * ```
  */
-export const updateZEdges = <
-  TItem extends DrawOrderComparable & { id: Tid },
-  Tid extends string,
->(
-  items: Record<Tid, TItem>,
+export const updateZEdges = <TItem extends DrawOrderComparable>(
+  items: Set<TItem>,
   // if no spatial index is given, make one for the items we are concerned with.
   // this should not be done in-game, since the index can be kept between frames
   // and minimally updated
-  spatialIndex: GridSpatialIndex<string, Tid, TItem> = new GridSpatialIndex(
-    valuesIter(items),
+  spatialIndex: GridSpatialIndex<string, string, TItem> = new GridSpatialIndex(
+    items.values(),
   ),
   /**
    * the nodes that have moved - nodes that did not move are not considered
    *  - if not given, will consider all.
    * Must be re-iterable since it is iterated twice, hence Array or Set (not iterable type)
    */
-  moved: Array<TItem> | Set<TItem> = Object.values(items),
+  moved: Array<TItem> | Set<TItem> = items,
   /**
    * if given, will create an incremental update starting from the previous edges
    */
-  zEdges: ZGraph<Tid> = new Map(),
-): ZGraph<Tid> => {
+  zEdges: ZGraph<TItem> = new Map(),
+): ZGraph<TItem> => {
   // track items that have already been compared to cut out duplicate comparisons:
   const comparisonsDone: Map<TItem, Set<TItem>> = new Map();
 
   // sanitise the given zEdges for nodes that no longer exist - this
   // is important for incremental updates:
   for (const [behind, fronts] of zEdges) {
-    if (!items[behind]) {
+    if (!items.has(behind)) {
       zEdges.delete(behind);
     } else {
       for (const [f] of fronts) {
-        if (!items[f]) {
+        if (!items.has(f)) {
           deleteEdge(zEdges, behind, f);
         }
       }
@@ -74,15 +70,15 @@ export const updateZEdges = <
     {
       // remove all edges (either way) with items not in this items
       // projectionNeighbourhood:
-      const outgoing = zEdges.get(itemI.id);
+      const outgoing = zEdges.get(itemI);
       outgoing?.forEach((_edgeData, front) => {
-        if (!projectionNeighbourhood.has(items[front])) {
+        if (!projectionNeighbourhood.has(front)) {
           outgoing.delete(front);
         }
       });
-      zEdges.forEach((fronts, behind) => {
-        if (!projectionNeighbourhood.has(items[behind])) {
-          deleteEdge(zEdges, behind, itemI.id);
+      zEdges.forEach((_fronts, behind) => {
+        if (!projectionNeighbourhood.has(behind)) {
+          deleteEdge(zEdges, behind, itemI);
         }
       });
     }
@@ -91,14 +87,7 @@ export const updateZEdges = <
     // - only unmoved/unmoved pairs can be skipped since they
     // are known not to have changed
     // ie - every moved node is compared again against every other node
-    // console.log(
-    //   itemI.id,
-    //   "'s projection neighbourhood size is",
-    //   projectionNeighbourhood.size,
-    // );
     for (const itemJ of projectionNeighbourhood) {
-      //console.log(itemI.id, "'s projection neighbourhood includes", itemJ.id);
-
       if (
         itemJ.fixedZIndex !== undefined ||
         // already compared the other way:
@@ -115,13 +104,13 @@ export const updateZEdges = <
       comparisonsDone.get(itemI)!.add(itemJ);
 
       if (comparison === 0) {
-        deleteEdge(zEdges, itemI.id, itemJ.id);
-        deleteEdge(zEdges, itemJ.id, itemI.id);
+        deleteEdge(zEdges, itemI, itemJ);
+        deleteEdge(zEdges, itemJ, itemI);
         continue;
       }
 
-      const front = comparison > 0 ? itemI.id : itemJ.id;
-      const back = comparison > 0 ? itemJ.id : itemI.id;
+      const front = comparison > 0 ? itemI : itemJ;
+      const back = comparison > 0 ? itemJ : itemI;
 
       // edges are initially added as not broken - the sorting algo later might
       // find a cycle though and mark this as broken in order to defeat the cycle
@@ -132,6 +121,5 @@ export const updateZEdges = <
     }
   }
 
-  //console.log(comparisonCount);
   return zEdges;
 };

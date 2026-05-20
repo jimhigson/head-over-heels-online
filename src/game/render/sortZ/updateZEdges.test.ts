@@ -1,47 +1,61 @@
 import { describe, expect, test } from "vitest";
 
-import { valuesIter } from "../../../utils/entries";
 import { collisionItemWithIndex } from "../../collision/aabbCollision";
 import { GridSpatialIndex } from "../../physics/gridSpace/GridSpatialIndex";
 import { type DrawOrderComparable } from "./DrawOrderComparable";
 import { toposort } from "./toposort/toposort";
 import { updateZEdges } from "./updateZEdges";
 
-type TestItems = Record<string, DrawOrderComparable>;
+const makeItems = <T extends Record<string, DrawOrderComparable>>(
+  itemDefs: T,
+): { set: Set<DrawOrderComparable>; items: T } => ({
+  set: new Set(Object.values(itemDefs)),
+  items: itemDefs,
+});
+
+const edgeIds = (
+  edges: Map<DrawOrderComparable, Map<DrawOrderComparable, boolean>>,
+) => {
+  const result = new Map<string, Map<string, boolean>>();
+  for (const [behind, fronts] of edges) {
+    const frontMap = new Map<string, boolean>();
+    for (const [front, broken] of fronts) {
+      frontMap.set(front.id, broken);
+    }
+    result.set(behind.id, frontMap);
+  }
+  return result;
+};
 
 test("detects behind in x", () => {
-  const items: TestItems = {
+  const { set } = makeItems({
     1: {
       id: "1",
       aabb: { x: 10, y: 10, z: 10 },
-
       state: { position: { x: 0, y: 0, z: 0 } },
     },
     2: {
       id: "2",
       aabb: { x: 10, y: 10, z: 10 },
-
       state: { position: { x: 10, y: 0, z: 0 } },
     },
     3: {
       id: "3",
       aabb: { x: 10, y: 10, z: 10 },
-
       state: { position: { x: 20, y: 0, z: 0 } },
     },
     4: {
       id: "4",
       aabb: { x: 10, y: 10, z: 10 },
-
       state: { position: { x: 30, y: 0, z: 0 } },
     },
-  };
+  });
 
-  const spatialIndex = new GridSpatialIndex(valuesIter(items));
+  const spatialIndex = new GridSpatialIndex(set.values());
 
-  const edges = updateZEdges(items, spatialIndex);
+  const edges = updateZEdges(set, spatialIndex);
   // front => behind
-  expect(edges).toMatchInlineSnapshot(`
+  expect(edgeIds(edges)).toMatchInlineSnapshot(`
     Map {
       "2" => Map {
         "1" => false,
@@ -59,38 +73,34 @@ test("detects behind in x", () => {
 });
 
 test("detects behind in y", () => {
-  const items: TestItems = {
+  const { set } = makeItems({
     1: {
       id: "1",
       aabb: { x: 10, y: 10, z: 10 },
-
       state: { position: { x: 0, y: 0, z: 0 } },
     },
     2: {
       id: "2",
       aabb: { x: 10, y: 10, z: 10 },
-
       state: { position: { x: 0, y: 10, z: 0 } },
     },
     3: {
       id: "3",
       aabb: { x: 10, y: 10, z: 10 },
-
       state: { position: { x: 0, y: 20, z: 0 } },
     },
     4: {
       id: "4",
       aabb: { x: 10, y: 10, z: 10 },
-
       state: { position: { x: 0, y: 30, z: 0 } },
     },
-  };
+  });
 
-  const spatialIndex = new GridSpatialIndex(valuesIter(items));
+  const spatialIndex = new GridSpatialIndex(set.values());
 
-  const relations = updateZEdges(items, spatialIndex);
+  const relations = updateZEdges(set, spatialIndex);
   // front => behind
-  expect(relations).toMatchInlineSnapshot(`
+  expect(edgeIds(relations)).toMatchInlineSnapshot(`
     Map {
       "2" => Map {
         "1" => false,
@@ -108,38 +118,34 @@ test("detects behind in y", () => {
 });
 
 test("detects behind in z (inverted from x and y - higher is in front)", () => {
-  const items: TestItems = {
+  const { set } = makeItems({
     1: {
       id: "1",
       aabb: { x: 10, y: 10, z: 10 },
-
       state: { position: { x: 0, y: 0, z: 0 } },
     },
     2: {
       id: "2",
       aabb: { x: 10, y: 10, z: 10 },
-
       state: { position: { x: 0, y: 0, z: 10 } },
     },
     3: {
       id: "3",
       aabb: { x: 10, y: 10, z: 10 },
-
       state: { position: { x: 0, y: 0, z: 20 } },
     },
     4: {
       id: "4",
       aabb: { x: 10, y: 10, z: 10 },
-
       state: { position: { x: 0, y: 0, z: 30 } },
     },
-  };
+  });
 
-  const spatialIndex = new GridSpatialIndex(valuesIter(items));
+  const spatialIndex = new GridSpatialIndex(set.values());
 
-  const relations = updateZEdges(items, spatialIndex);
+  const relations = updateZEdges(set, spatialIndex);
   // front => behind
-  expect(relations).toMatchInlineSnapshot(`
+  expect(edgeIds(relations)).toMatchInlineSnapshot(`
     Map {
       "1" => Map {
         "2" => false,
@@ -158,26 +164,24 @@ test("detects behind in z (inverted from x and y - higher is in front)", () => {
 });
 
 test("detects as in front if on top and set back while overlapping", () => {
-  const items: TestItems = {
+  const { set } = makeItems({
     bottom: {
       id: "bottom",
       aabb: { x: 10, y: 10, z: 10 },
-
       state: { position: { x: 0, y: 0, z: 0 } },
     },
     top: {
       id: "top",
       aabb: { x: 10, y: 10, z: 10 },
-
       state: { position: { x: 9, y: 9, z: 10 } },
     },
-  };
+  });
 
-  const spatialIndex = new GridSpatialIndex(valuesIter(items));
+  const spatialIndex = new GridSpatialIndex(set.values());
 
-  const relations = updateZEdges(items, spatialIndex);
+  const relations = updateZEdges(set, spatialIndex);
   // front => behind - top in front of bottom:
-  expect(relations).toMatchInlineSnapshot(`
+  expect(edgeIds(relations)).toMatchInlineSnapshot(`
     Map {
       "bottom" => Map {
         "top" => false,
@@ -189,38 +193,34 @@ test("detects as in front if on top and set back while overlapping", () => {
 });
 
 test("detects a tall item is front of two smaller items", () => {
-  const items: TestItems = {
+  const { set } = makeItems({
     tallThinFront: {
       id: "tallThinFront",
       aabb: { x: 1, y: 0, z: 10 },
-
       state: { position: { x: 0, y: 0, z: 0 } },
     },
     smallerTop: {
       id: "smallerTop",
       aabb: { x: 1, y: 1, z: 1 },
-
       state: { position: { x: 0, y: 0, z: 9 } },
     },
     smallerBottom: {
       id: "smallerBottom",
       aabb: { x: 1, y: 1, z: 1 },
-
       state: { position: { x: 0, y: 0, z: 0 } },
     },
     // should be ignored for the results:
     unrelatedFarAway: {
       id: "unrelatedFarAway",
       aabb: { x: 1, y: 1, z: 1 },
-
       state: { position: { x: 20, y: 0, z: 0 } },
     },
-  };
+  });
 
-  const spatialIndex = new GridSpatialIndex(valuesIter(items));
+  const spatialIndex = new GridSpatialIndex(set.values());
 
-  const relations = updateZEdges(items, spatialIndex);
-  expect(relations).toMatchInlineSnapshot(`
+  const relations = updateZEdges(set, spatialIndex);
+  expect(edgeIds(relations)).toMatchInlineSnapshot(`
     Map {
       "smallerTop" => Map {
         "tallThinFront" => false,
@@ -239,37 +239,33 @@ test.todo("uses renderaabb if there is one", () => {
 });
 
 test("incremental updates requiring both removal and addition of edges", () => {
-  const items: TestItems = {
+  const { set, items } = makeItems({
     1: {
       id: "1",
       aabb: { x: 10, y: 10, z: 10 },
-
       state: { position: { x: 0, y: 0, z: 0 } },
     },
     2: {
       id: "2",
       aabb: { x: 10, y: 10, z: 10 },
-
       state: { position: { x: 10, y: 0, z: 0 } },
     },
     3: {
       id: "3",
       aabb: { x: 10, y: 10, z: 10 },
-
       state: { position: { x: 20, y: 0, z: 0 } },
     },
     4: {
       id: "4",
       aabb: { x: 10, y: 10, z: 10 },
-
       state: { position: { x: 30, y: 0, z: 0 } },
     },
-  };
-  const spatialIndex = new GridSpatialIndex(valuesIter(items));
+  });
+  const spatialIndex = new GridSpatialIndex(set.values());
 
-  const edges = updateZEdges(items, spatialIndex);
+  const edges = updateZEdges(set, spatialIndex);
   // front => behind
-  expect(edges).toMatchInlineSnapshot(`
+  expect(edgeIds(edges)).toMatchInlineSnapshot(`
     Map {
       "2" => Map {
         "1" => false,
@@ -288,9 +284,9 @@ test("incremental updates requiring both removal and addition of edges", () => {
   // move item 2 far away in the sky - it is now not behind/in front of anything:
   items[2].state.position.z = 100;
 
-  updateZEdges(items, spatialIndex, new Set([items[1], items[2]]), edges);
+  updateZEdges(set, spatialIndex, new Set([items[1], items[2]]), edges);
 
-  expect(edges).toMatchInlineSnapshot(`
+  expect(edgeIds(edges)).toMatchInlineSnapshot(`
     Map {
       "4" => Map {
         "3" => false,
@@ -306,31 +302,28 @@ test("incremental updates requiring removal of outbound and inbound edges", () =
   // set up three in a line visually away from us
   // so:       a -behind-> b -behind-> c
   // and:      a -behind-> c
-  const items: TestItems = {
+  const { set, items } = makeItems({
     c: {
       id: "c",
       aabb: { x: 10, y: 10, z: 10 },
-
       state: { position: { x: 0, y: 0, z: 20 } },
     },
     b: {
       id: "b",
       aabb: { x: 10, y: 10, z: 10 },
-
       state: { position: { x: 10, y: 10, z: 10 } },
     },
     a: {
       id: "a",
       aabb: { x: 10, y: 10, z: 10 },
-
       state: { position: { x: 20, y: 20, z: 0 } },
     },
-  };
-  const spatialIndex = new GridSpatialIndex(valuesIter(items));
+  });
+  const spatialIndex = new GridSpatialIndex(set.values());
 
-  const edges = updateZEdges(items, spatialIndex);
+  const edges = updateZEdges(set, spatialIndex);
   // front => behind
-  expect(edges).toMatchInlineSnapshot(`
+  expect(edgeIds(edges)).toMatchInlineSnapshot(`
     Map {
       "b" => Map {
         "c" => false,
@@ -347,10 +340,10 @@ test("incremental updates requiring removal of outbound and inbound edges", () =
   items.b.state.position.z = 200;
   // move item 2 far away in the sky - it is now not behind/in front of anything:
 
-  updateZEdges(items, spatialIndex, new Set([items.b]), edges);
+  updateZEdges(set, spatialIndex, new Set([items.b]), edges);
 
   // b is gone - only a =behind-> c remains
-  expect(edges).toMatchInlineSnapshot(`
+  expect(edgeIds(edges)).toMatchInlineSnapshot(`
     Map {
       "a" => Map {
         "c" => false,
@@ -362,31 +355,28 @@ test("incremental updates requiring removal of outbound and inbound edges", () =
 test("incremental updates can completely empty the graph", () => {
   // set up three in a line visually away from us
   // so:       a -behind-> b -behind-> c
-  const items: TestItems = {
+  const { set, items } = makeItems({
     c: {
       id: "c",
       aabb: { x: 10, y: 10, z: 10 },
-
       state: { position: { x: 0, y: 0, z: 0 } },
     },
     b: {
       id: "b",
       aabb: { x: 10, y: 10, z: 10 },
-
       state: { position: { x: 10, y: 10, z: 0 } },
     },
     a: {
       id: "a",
       aabb: { x: 10, y: 10, z: 10 },
-
       state: { position: { x: 20, y: 20, z: 0 } },
     },
-  };
-  const spatialIndex = new GridSpatialIndex(valuesIter(items));
+  });
+  const spatialIndex = new GridSpatialIndex(set.values());
 
-  const edges = updateZEdges(items, spatialIndex);
+  const edges = updateZEdges(set, spatialIndex);
   // front => behind
-  expect(edges).toMatchInlineSnapshot(`
+  expect(edgeIds(edges)).toMatchInlineSnapshot(`
     Map {
       "b" => Map {
         "c" => false,
@@ -402,10 +392,10 @@ test("incremental updates can completely empty the graph", () => {
   items.b.state.position.z = 200;
   // move item 2 far away in the sky - it is now not behind/in front of anything:
 
-  updateZEdges(items, spatialIndex, new Set([items.b]), edges);
+  updateZEdges(set, spatialIndex, new Set([items.b]), edges);
 
   // b is gone - only a =behind-> c remains
-  expect(edges).toMatchInlineSnapshot(`Map {}`);
+  expect(edgeIds(edges)).toMatchInlineSnapshot(`Map {}`);
 });
 
 describe("cyclic dependencies", () => {
@@ -413,11 +403,11 @@ describe("cyclic dependencies", () => {
     /*
    circular reference:
    from sortByZPairs stack trace:
-      cube 
-        -behind-> conveyor 
-            -behind-> heels 
+      cube
+        -behind-> conveyor
+            -behind-> heels
                 -behind-> cube
-  
+
     extracted from logs:
 	conveyor (@ {"x":0,"y":80,"z":0} # {"x":16,"y":16,"z":12}) is behind heels (@ {"x":12,"y":95.48399999999998,"z":12} # {"x":12,"y":12,"z":12})
 	cube (@ {"x":0,"y":96,"z":0} # {"x":12,"y":12,"z":12}) is behind conveyor (@ {"x":0,"y":80,"z":0} # {"x":16,"y":16,"z":12})
@@ -427,7 +417,7 @@ describe("cyclic dependencies", () => {
     // simplified:
     // note - heels should not be behind cube, but is if we take simple rectangular projection bounding areas on screen
     // to be used for detecting overlap between items
-    const items: TestItems = {
+    const { set } = makeItems({
       heels: {
         id: "heels",
         state: { position: { x: 5, y: 8, z: 10 } },
@@ -443,16 +433,16 @@ describe("cyclic dependencies", () => {
         state: { position: { x: 0, y: 0, z: 0 } },
         aabb: { x: 10, y: 10, z: 10 },
       },
-    };
+    });
 
-    const spatialIndex = new GridSpatialIndex(valuesIter(items));
+    const spatialIndex = new GridSpatialIndex(set.values());
 
-    const relations = updateZEdges(items, spatialIndex);
+    const relations = updateZEdges(set, spatialIndex);
     expect(() => toposort(relations)).not.toThrow();
   });
 
   test("found situation 2 - genuine cyclic dependency - not possible to render without splitting sprites up!", () => {
-    const items: TestItems = {
+    const { set, items } = makeItems({
       pushableBlock: {
         id: "pushableBlock",
         state: {
@@ -498,30 +488,30 @@ describe("cyclic dependencies", () => {
           z: 12,
         },
       },
-    } as const;
+    });
 
     // verify that the items aren't illegally colliding (which would make this test maybe invalid)
-    for (const i of valuesIter(items)) {
-      const index = new GridSpatialIndex(valuesIter(items));
+    for (const i of set) {
+      const index = new GridSpatialIndex(set.values());
       expect(collisionItemWithIndex(i, index).toArray()).toEqual([]);
     }
 
-    const spatialIndex = new GridSpatialIndex(valuesIter(items));
+    const spatialIndex = new GridSpatialIndex(set.values());
 
-    const relations = updateZEdges(items, spatialIndex);
+    const relations = updateZEdges(set, spatialIndex);
 
     // end result should should express:
     //  pushableBlock -behind-> pickup
     //  pickup -behind-> monster
     //  monster -behind-> pushableBlock
-    expect(relations.get("pushableBlock")?.entries().toArray()).toEqual([
-      ["pickup", false],
+    expect(relations.get(items.pushableBlock)?.entries().toArray()).toEqual([
+      [items.pickup, false],
     ]);
-    expect(relations.get("pickup")?.entries().toArray()).toEqual([
-      ["monster", false],
+    expect(relations.get(items.pickup)?.entries().toArray()).toEqual([
+      [items.monster, false],
     ]);
-    expect(relations.get("monster")?.entries().toArray()).toEqual([
-      ["pushableBlock", false],
+    expect(relations.get(items.monster)?.entries().toArray()).toEqual([
+      [items.pushableBlock, false],
     ]);
 
     expect(() => toposort(relations)).not.toThrow();
