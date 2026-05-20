@@ -117,6 +117,7 @@
     "Tauri",
     "teleporter",
     "texel",
+    "Timeago",
     "timebeing",
     "Toggleable",
     "toposort",
@@ -184,5 +185,6 @@
     "titleBar.inactiveBackground": "#ea684f99",
     "titleBar.inactiveForeground": "#15202b99",
   },
-  "peacock.color": "CA7463"
+  "peacock.color": "CA7463",
+  "typescript.native-preview.tsdk": "/Users/jim/dev/hohjs.worktrees/whole-campaign-undo/node_modules/@typescript/native-preview"
 }

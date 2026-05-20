@@ -404,6 +404,14 @@ export const manhattanDistanceXy = (
   return Math.abs(x2 - x1) + Math.abs(y2 - y1);
 };
 
+export const manhattanDistanceXyz = (
+  { x: x1, y: y1, z: z1 }: Xyz,
+  { x: x2, y: y2, z: z2 }: Xyz,
+) => Math.abs(x2 - x1) + Math.abs(y2 - y1) + Math.abs(z2 - z1);
+
+export const manhattanLengthXyz = ({ x, y, z }: Xyz) =>
+  Math.abs(x) + Math.abs(y) + Math.abs(z);
+
 export type Plane = {
   /** vector of a normal to all points on the plane */
   normal: Xyz;

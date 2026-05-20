@@ -4,9 +4,12 @@ import { iterateRoomJsonItemsWithIds } from "../../model/RoomJson";
 import { initialLevelEditorSliceState } from "./initialLevelEditorSliceState";
 import {
   applyItemTool,
+  changeRoomColour,
+  deleteSelected,
   levelEditorSlice,
   type LevelEditorSliceAction,
   type LevelEditorState,
+  redo,
   selectCurrentEditingRoomJson,
   setSelectedItemsInRoom,
   setTool,
@@ -48,6 +51,7 @@ describe(// concerns of the slice that don't fit into any particular *Reducers.t
         },
       },
       preview: false,
+      timestamp: 0,
     });
 
     const state2 = reduce(state1, a1);
@@ -80,5 +84,141 @@ describe(// concerns of the slice that don't fit into any particular *Reducers.t
     expect(state4HasBlock).toBe(false);
 
     expect(state4.selectedJsonItemIds).toEqual([]);
+  });
+
+  test("undo entry has a label describing the action", () => {
+    const state0 = initialLevelEditorSliceState;
+
+    const state1 = reduce(
+      state0,
+      setTool({
+        type: "item",
+        item: { type: "block", config: { style: "organic" } },
+      }),
+    );
+
+    const state2 = reduce(
+      state1,
+      applyItemTool({
+        blockPosition: { x: 4, y: 4, z: 4 },
+        pointedAtItemJson: {
+          type: "floor",
+          position: { x: 0, y: 0, z: 0 },
+          config: {
+            floorType: "standable",
+            scenery: "blacktooth",
+            times: { x: 8, y: 8 },
+          },
+        },
+        preview: false,
+        timestamp: 0,
+      }),
+    );
+
+    expect(state2.history.undo).toHaveLength(1);
+    const [{ description }] = state2.history.undo;
+    expect(description.kind).toBe("itemAction");
+    if (description.kind === "itemAction") {
+      expect(description.verb).toBe("Add");
+      expect(description.items).toHaveLength(1);
+      const [[, addedItem]] = description.items;
+      expect(addedItem.type).toBe("block");
+    }
+  });
+
+  test("multi-step undo pops multiple entries", () => {
+    const state0 = initialLevelEditorSliceState;
+
+    const state1 = reduce(
+      state0,
+      changeRoomColour({ colour: { hue: "magenta" }, timestamp: 0 }),
+    );
+    const state2 = reduce(
+      state1,
+      changeRoomColour({ colour: { hue: "cyan" }, timestamp: 0 }),
+    );
+    const state3 = reduce(
+      state2,
+      changeRoomColour({ colour: { shade: "dimmed" }, timestamp: 0 }),
+    );
+
+    expect(state3.history.undo).toHaveLength(3);
+
+    const state4 = reduce(state3, undo({ steps: 2 }));
+
+    expect(state4.history.undo).toHaveLength(1);
+    expect(state4.history.redo).toHaveLength(2);
+  });
+
+  test("multi-step redo pops multiple entries", () => {
+    const state0 = initialLevelEditorSliceState;
+
+    const state1 = reduce(
+      state0,
+      changeRoomColour({ colour: { hue: "magenta" }, timestamp: 0 }),
+    );
+    const state2 = reduce(
+      state1,
+      changeRoomColour({ colour: { hue: "cyan" }, timestamp: 0 }),
+    );
+    const state3 = reduce(state2, undo({ steps: 2 }));
+
+    expect(state3.history.redo).toHaveLength(2);
+
+    const state4 = reduce(state3, redo({ steps: 2 }));
+
+    expect(state4.history.undo).toHaveLength(2);
+    expect(state4.history.redo).toHaveLength(0);
+  });
+
+  test("delete generates label with item type and id", () => {
+    const state0 = initialLevelEditorSliceState;
+
+    const state1 = reduce(
+      state0,
+      setTool({
+        type: "item",
+        item: { type: "block", config: { style: "organic" } },
+      }),
+    );
+
+    const state2 = reduce(
+      state1,
+      applyItemTool({
+        blockPosition: { x: 4, y: 4, z: 4 },
+        pointedAtItemJson: {
+          type: "floor",
+          position: { x: 0, y: 0, z: 0 },
+          config: {
+            floorType: "standable",
+            scenery: "blacktooth",
+            times: { x: 8, y: 8 },
+          },
+        },
+        preview: false,
+        timestamp: 0,
+      }),
+    );
+
+    const [addedBlockId] = iterateRoomJsonItemsWithIds(
+      selectCurrentEditingRoomJson({ levelEditor: state2 }).items,
+    ).find(([, item]) => item.type === "block")!;
+
+    const state3 = reduce(
+      state2,
+      setSelectedItemsInRoom({ jsonItemIds: [addedBlockId] }),
+    );
+    const state4 = reduce(state3, deleteSelected({ timestamp: 0 }));
+
+    expect(state4.history.undo).toHaveLength(2);
+    const desc = state4.history.undo[1].description;
+    expect(desc.kind).toBe("itemAction");
+    if (desc.kind === "itemAction") {
+      expect(desc.verb).toBe("Delete");
+      expect(desc.items).toHaveLength(1);
+      const [[deletedId, deletedItem]] = desc.items;
+      expect(deletedId).toBe(addedBlockId);
+      expect(deletedItem.type).toBe("block");
+    }
   });
 });

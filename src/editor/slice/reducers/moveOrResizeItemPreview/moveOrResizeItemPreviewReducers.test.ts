@@ -19,6 +19,7 @@ import {
   commitCurrentPreviewedEdits,
   type LevelEditorState,
   moveOrResizeItemAsPreview,
+  resetPreviewedEdits,
 } from "../../levelEditorSlice";
 
 // Custom assertion to check walls and doors are contiguous around floor
@@ -191,6 +192,7 @@ const testWallMovement = (
       jsonItemIds: [wallId],
       positionDelta,
       timesDelta,
+      timestamp: 0,
     }),
   );
 
@@ -279,6 +281,7 @@ describe("changeWallsForFloorChangeInPlace", () => {
           jsonItemIds: [floorId],
           positionDelta: { x: 0, y: 0, z: 0 },
           timesDelta: { x: 0, y: 2, z: 0 },
+          timestamp: 0,
         }),
         commitCurrentPreviewedEdits(),
       );
@@ -439,6 +442,7 @@ describe("changeWallsForFloorChangeInPlace", () => {
           jsonItemIds: [floorId],
           positionDelta: { x: 0, y: 0, z: 0 },
           timesDelta: { x: 0, y: -3, z: 0 },
+          timestamp: 0,
         }),
         commitCurrentPreviewedEdits(),
       );
@@ -598,6 +602,7 @@ describe("changeWallsForFloorChangeInPlace", () => {
           jsonItemIds: [floorId],
           positionDelta: { x: 0, y: 0, z: 0 },
           timesDelta: { x: 4, y: 0, z: 0 },
+          timestamp: 0,
         }),
         commitCurrentPreviewedEdits(),
       );
@@ -757,6 +762,7 @@ describe("changeWallsForFloorChangeInPlace", () => {
         moveOrResizeItemAsPreview({
           jsonItemIds: [floorId],
           positionDelta: { x: 1, y: 1, z: 0 },
+          timestamp: 0,
         }),
         commitCurrentPreviewedEdits(),
       );
@@ -818,6 +824,7 @@ describe("changeWallsForFloorChangeInPlace", () => {
           jsonItemIds: [floorId],
           positionDelta: { x: 0, y: 0, z: 0 },
           timesDelta: { x: 2, y: 1, z: 0 },
+          timestamp: 0,
         }),
         commitCurrentPreviewedEdits(),
       );
@@ -872,6 +879,7 @@ describe("changeWallsForFloorChangeInPlace", () => {
         moveOrResizeItemAsPreview({
           jsonItemIds: [floorId],
           positionDelta: { x: 2, y: 1, z: 0 },
+          timestamp: 0,
         }),
         commitCurrentPreviewedEdits(),
       );
@@ -938,6 +946,7 @@ describe("changeWallsForFloorChangeInPlace", () => {
           jsonItemIds: [floorId],
           positionDelta: { x: 0, y: 0, z: 0 },
           timesDelta: { x: -2, y: 0, z: 0 },
+          timestamp: 0,
         }),
         commitCurrentPreviewedEdits(),
       );
@@ -1007,6 +1016,7 @@ describe("changeWallsForFloorChangeInPlace", () => {
           jsonItemIds: [floorId],
           positionDelta: { x: 0, y: 0, z: 0 },
           timesDelta: { x: 2, y: 2, z: 0 },
+          timestamp: 0,
         }),
         commitCurrentPreviewedEdits(),
       );
@@ -1095,6 +1105,7 @@ describe("changeWallsForFloorChangeInPlace", () => {
           jsonItemIds: [floorId],
           positionDelta: { x: 0, y: 0, z: 0 },
           timesDelta: { x: 0, y: -3, z: 0 },
+          timestamp: 0,
         }),
         commitCurrentPreviewedEdits(),
       );
@@ -1175,6 +1186,7 @@ describe("changeWallsForFloorChangeInPlace", () => {
           jsonItemIds: [floorId],
           positionDelta: { x: 1, y: 2, z: 0 },
           timesDelta: { x: 2, y: 0, z: 0 },
+          timestamp: 0,
         }),
         commitCurrentPreviewedEdits(),
       );
@@ -1235,11 +1247,13 @@ describe("changeWallsForFloorChangeInPlace", () => {
         moveOrResizeItemAsPreview({
           jsonItemIds: [doorId],
           positionDelta: { x: 0, y: 1, z: 0 },
+          timestamp: 0,
         }),
         moveOrResizeItemAsPreview({
           jsonItemIds: [doorId],
           // back to where it started (position delta zero)
           positionDelta: { x: 0, y: 0, z: 0 },
+          timestamp: 0,
         }),
         commitCurrentPreviewedEdits(),
       );
@@ -1277,6 +1291,9 @@ describe("changeWallsForFloorChangeInPlace", () => {
             awayWallAfterDoorId
           ],
         );
+
+      expect(state1.pendingEdits).toBeUndefined();
+      expect(state1.history.undo).toHaveLength(0);
     });
 
     test("moving two doors by one block should adapt walls around them", () => {
@@ -1341,6 +1358,7 @@ describe("changeWallsForFloorChangeInPlace", () => {
         moveOrResizeItemAsPreview({
           jsonItemIds: [door1Id, door2Id],
           positionDelta: { x: 0, y: 1, z: 0 },
+          timestamp: 0,
         }),
         commitCurrentPreviewedEdits(),
       );
@@ -1415,6 +1433,7 @@ describe("changeWallsForFloorChangeInPlace", () => {
           jsonItemIds: [floorId],
           positionDelta: { x: 0, y: 0, z: 0 },
           timesDelta: { x: -1, y: -1, z: 0 },
+          timestamp: 0,
         }),
         commitCurrentPreviewedEdits(),
       );
@@ -1466,6 +1485,7 @@ describe("changeWallsForFloorChangeInPlace", () => {
         moveOrResizeItemAsPreview({
           jsonItemIds: [floorId],
           positionDelta: { x: 1, y: 1, z: 0 },
+          timestamp: 0,
         }),
         commitCurrentPreviewedEdits(),
       );
@@ -1520,6 +1540,7 @@ describe("changeWallsForFloorChangeInPlace", () => {
         moveOrResizeItemAsPreview({
           jsonItemIds: [floorId],
           positionDelta: { x: 1, y: 1, z: 0 },
+          timestamp: 0,
         }),
         commitCurrentPreviewedEdits(),
       );
@@ -2297,6 +2318,7 @@ describe("changeWallsForFloorChangeInPlace", () => {
           jsonItemIds: [floorId],
           positionDelta: { x: -2, y: 0, z: 0 },
           timesDelta: { x: 2, y: 0, z: 0 },
+          timestamp: 0,
         }),
         commitCurrentPreviewedEdits(),
       );
@@ -2397,6 +2419,7 @@ describe("changeWallsForFloorChangeInPlace", () => {
           jsonItemIds: [floorId],
           positionDelta: { x: 0, y: 0, z: 0 },
           timesDelta: { x: 2, y: 0, z: 0 },
+          timestamp: 0,
         }),
         commitCurrentPreviewedEdits(),
       );
@@ -2445,6 +2468,118 @@ describe("changeWallsForFloorChangeInPlace", () => {
           times: { x: 4 },
         },
       });
+    });
+  });
+
+  describe("pendingEdits lifecycle", () => {
+    const blockId = "b1" as EditorRoomItemId;
+    const stateWithBlock: LevelEditorState = produce(
+      editorStateWithOneRoomWithNoItems,
+      (draft) => {
+        draft.campaignInProgress.rooms[testRoomId].items[blockId] = {
+          type: "block",
+          config: { style: "organic" },
+          position: { x: 2, y: 2, z: 0 },
+        };
+      },
+    );
+
+    test("moveOrResizeItemAsPreview sets pendingEdits description for a move", () => {
+      const result = reduceLevelEditorActions(
+        stateWithBlock,
+        moveOrResizeItemAsPreview({
+          jsonItemIds: [blockId],
+          positionDelta: { x: 1, y: 0, z: 0 },
+          timestamp: 0,
+        }),
+      );
+
+      const desc = result.pendingEdits?.description;
+      expect(desc?.kind).toBe("itemAction");
+      if (desc?.kind === "itemAction") {
+        expect(desc.verb).toBe("↖ Move");
+        expect(desc.items).toHaveLength(1);
+        const [[movedId, movedItem]] = desc.items;
+        expect(movedId).toBe(blockId);
+        expect(movedItem.type).toBe("block");
+      }
+    });
+
+    test("moveOrResizeItemAsPreview sets pendingEdits description for a resize", () => {
+      const result = reduceLevelEditorActions(
+        stateWithBlock,
+        moveOrResizeItemAsPreview({
+          jsonItemIds: [blockId],
+          positionDelta: { x: 0, y: 0, z: 0 },
+          timesDelta: { x: 1, y: 0, z: 0 },
+          timestamp: 0,
+        }),
+      );
+
+      const desc = result.pendingEdits?.description;
+      expect(desc?.kind).toBe("itemAction");
+      if (desc?.kind === "itemAction") {
+        expect(desc.verb).toBe("Resize");
+        expect(desc.items).toHaveLength(1);
+        const [[resizedId]] = desc.items;
+        expect(resizedId).toBe(blockId);
+      }
+    });
+
+    test("zero timesDelta produces a move verb, not resize", () => {
+      const result = reduceLevelEditorActions(
+        stateWithBlock,
+        moveOrResizeItemAsPreview({
+          jsonItemIds: [blockId],
+          positionDelta: { x: 0, y: -1, z: 0 },
+          timesDelta: { x: 0, y: 0, z: 0 },
+          timestamp: 0,
+        }),
+      );
+
+      const desc = result.pendingEdits?.description;
+      expect(desc?.kind).toBe("itemAction");
+      if (desc?.kind === "itemAction") {
+        expect(desc.verb).toBe("↙ Move");
+        const [[movedId]] = desc.items;
+        expect(movedId).toBe(blockId);
+      }
+    });
+
+    test("commitCurrentPreviewedEdits consumes pendingEdits", () => {
+      const result = reduceLevelEditorActions(
+        stateWithBlock,
+        moveOrResizeItemAsPreview({
+          jsonItemIds: [blockId],
+          positionDelta: { x: 1, y: 0, z: 0 },
+          timestamp: 0,
+        }),
+        commitCurrentPreviewedEdits(),
+      );
+
+      expect(result.history.undo).toHaveLength(1);
+      const desc = result.history.undo[0].description;
+      expect(desc.kind).toBe("itemAction");
+      if (desc.kind === "itemAction") {
+        expect(desc.verb).toBe("↖ Move");
+        const [[movedId]] = desc.items;
+        expect(movedId).toBe(blockId);
+      }
+      expect(result.pendingEdits).toBeUndefined();
+    });
+
+    test("resetPreviewedEdits clears pendingEdits", () => {
+      const result = reduceLevelEditorActions(
+        stateWithBlock,
+        moveOrResizeItemAsPreview({
+          jsonItemIds: [blockId],
+          positionDelta: { x: 1, y: 0, z: 0 },
+          timestamp: 0,
+        }),
+        resetPreviewedEdits(),
+      );
+
+      expect(result.pendingEdits).toBeUndefined();
     });
   });
 });

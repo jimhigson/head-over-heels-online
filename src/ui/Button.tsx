@@ -7,8 +7,12 @@ import {
 } from "react";
 import { type Simplify } from "type-fest";
 
+import { BlockyMarkdown } from "../game/components/BlockyMarkdown";
 import { cn } from "./cn";
-import { enhanceTooltipWithHotkeys } from "./enhanceTooltipWithHotkeys";
+import {
+  enhanceTooltipWithHotkeys,
+  formatShortcutKeysAsMarkdown,
+} from "./enhanceTooltipWithHotkeys";
 import { Tooltip } from "./Tooltip";
 import { type ShortcutKeys, useKeyboardShortcut } from "./useKeyboardShortcut";
 
@@ -16,7 +20,12 @@ export type ButtonProps = Simplify<
   Pick<
     // support selected html attributes
     ButtonHTMLAttributes<HTMLButtonElement>,
-    "className" | "disabled" | "role" | "style"
+    | "className"
+    | "disabled"
+    | "onMouseEnter"
+    | "onMouseLeave"
+    | "role"
+    | "style"
   > &
     PropsWithChildren<{
       selected?: boolean;
@@ -70,10 +79,16 @@ export const Button = ({
   );
 
   const finalTooltipContent =
-    enhanceTooltipWithHotkeys(
-      typeof tooltipContent === "string" ? tooltipContent : undefined,
-      shortcutKeys,
-    ) ?? tooltipContent;
+    typeof tooltipContent === "string" ?
+      enhanceTooltipWithHotkeys(tooltipContent, shortcutKeys)
+    : tooltipContent !== undefined && shortcutKeys ?
+      <>
+        {tooltipContent}
+        <BlockyMarkdown>
+          {formatShortcutKeysAsMarkdown(shortcutKeys)}
+        </BlockyMarkdown>
+      </>
+    : tooltipContent;
 
   return (
     <Tooltip triggerContent={button} tooltipContent={finalTooltipContent} />

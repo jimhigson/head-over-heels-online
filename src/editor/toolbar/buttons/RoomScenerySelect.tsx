@@ -18,8 +18,10 @@ export function RoomScenerySelect() {
   return (
     <Select<SceneryName>
       value={currentRoomScenery}
-      onSelect={(currentValue) => {
-        dispatch(changeRoomScenery(currentValue as SceneryName));
+      onSelect={(newValue) => {
+        dispatch(
+          changeRoomScenery({ sceneryName: newValue, timestamp: Date.now() }),
+        );
       }}
       values={sceneryNames.toSorted()}
       placeholder="scenery"

@@ -21,7 +21,7 @@ import {
   type AxisXy,
   elementWiseProductXyz,
   isExactIntegerXyz,
-  lengthXyz,
+  manhattanLengthXyz,
   type Xyz,
 } from "../../../../utils/vectors/vectors";
 import {
@@ -37,7 +37,11 @@ import {
   selectCurrentRoomFromLevelEditorState,
   selectItemInLevelEditorState,
 } from "../../levelEditorSelectors";
-import { type LevelEditorState } from "../../levelEditorSlice";
+import {
+  type LevelEditorState,
+  type PreviewedRoomItemEdits,
+} from "../../levelEditorSlice";
+import { moveVerb, type UndoItemEntry } from "../undoDescription";
 
 // Helper type for wall edge information
 type WallEdgeInfo = {
@@ -490,11 +494,12 @@ export const moveOrResizeItemPreviewReducers = {
   moveOrResizeItemAsPreview(
     _state,
     {
-      payload: { jsonItemIds, timesDelta, positionDelta },
+      payload: { jsonItemIds, timesDelta, positionDelta, timestamp },
     }: PayloadAction<{
       jsonItemIds: EditorRoomItemId[];
       timesDelta?: Xyz;
       positionDelta: Xyz;
+      timestamp: number;
     }>,
   ) {
     const state = _state as LevelEditorState;
@@ -502,7 +507,30 @@ export const moveOrResizeItemPreviewReducers = {
     // each preview must be recomputed from the base room state, not layered on
     // top of a previous preview's edits (which may have modified surrounding
     // walls, doors, etc.)
-    state.previewedEdits = {};
+    const isResize =
+      timesDelta !== undefined && manhattanLengthXyz(timesDelta) > 0;
+    const isMove = manhattanLengthXyz(positionDelta) > 0;
+
+    if (!isResize && !isMove) {
+      // ie, drag-and-return to the original position - clear the pending edits
+      // since nothing was done:
+      state.pendingEdits = undefined;
+      return;
+    }
+
+    const verb = isResize ? "Resize" : moveVerb(positionDelta);
+    const items: UndoItemEntry[] = jsonItemIds.map((id) => {
+      const item = selectItemInLevelEditorState(state, id);
+      if (item === undefined) {
+        throw new Error(
+          `no item found for id ${id} when generating undo description`,
+        );
+      }
+      return [id, item];
+    });
+
+    const edits: PreviewedRoomItemEdits = {};
+
     const room = selectCurrentRoomFromLevelEditorState(state);
     const isIntegerPosDelta = isExactIntegerXyz(positionDelta);
 
@@ -528,7 +556,7 @@ export const moveOrResizeItemPreviewReducers = {
           timesDelta,
         )) {
           // Apply the modified wall item to the preview state
-          state.previewedEdits[id] = modifiedItem;
+          edits[id] = modifiedItem;
         }
         continue;
       }
@@ -549,7 +577,7 @@ export const moveOrResizeItemPreviewReducers = {
           timesDelta,
         )) {
           // Apply the modified floor item to the preview state
-          state.previewedEdits[id] = modifiedItem;
+          edits[id] = modifiedItem;
         }
       }
 
@@ -564,9 +592,9 @@ export const moveOrResizeItemPreviewReducers = {
           healedWallItem,
         ] of generateWallHealingInPlaceOfDoor(jsonItem, room.planet, [
           ...keys(room.items),
-          ...keys(state.previewedEdits),
+          ...keys(edits),
         ])) {
-          state.previewedEdits[healedWallItemId] = healedWallItem;
+          edits[healedWallItemId] = healedWallItem;
         }
       }
 
@@ -578,7 +606,7 @@ export const moveOrResizeItemPreviewReducers = {
         },
       };
 
-      state.previewedEdits[jsonItemId] = previewedCopy as EditorJsonItemUnion;
+      edits[jsonItemId] = previewedCopy as EditorJsonItemUnion;
 
       addTimesDeltaToJsonItemInPlace(
         previewedCopy as EditorJsonItemWithTimes,
@@ -588,15 +616,20 @@ export const moveOrResizeItemPreviewReducers = {
       if (jsonItem.type === "door") {
         // now, we cut any wall under the door:
         for (const [cutItemId, cutItem] of generateHoleInWallsForDoor(
-          { ...current(room.items), ...state.previewedEdits },
+          { ...current(room.items), ...edits },
           (previewedCopy as EditorJsonItem<"door">).config.direction,
           previewedCopy.position,
         )) {
-          state.previewedEdits[cutItemId] = cutItem;
+          edits[cutItemId] = cutItem;
         }
       }
     }
 
+    state.pendingEdits = {
+      edits,
+      description: { kind: "itemAction", verb, items },
+      timestamp,
+    };
     state.dragInProgress = true;
   },
 } satisfies SliceCaseReducers<LevelEditorState>;
@@ -619,7 +652,7 @@ export const addTimesDeltaToJsonItemInPlace = (
       timesDelta,
       consolidatableVector,
     );
-    if (lengthXyz(timesDeltaOnConsolidatableAxes) > 0) {
+    if (manhattanLengthXyz(timesDeltaOnConsolidatableAxes) > 0) {
       const finalTimes = optimiseTimesXyz(
         eachAxis(
           (original, consolidatableTimesDelta) =>

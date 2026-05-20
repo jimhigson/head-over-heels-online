@@ -22,21 +22,54 @@ import { type LevelEditorState } from "./levelEditorSlice";
  * gets the current editing room json with temporary previews applied on
  * top of it
  */
+const selectHoveredUndoRoom = (
+  state: EditorRootState,
+): EditorRoomJson | undefined => {
+  const { hoveredUndoIndex, history } = state.levelEditor;
+  if (hoveredUndoIndex === 0) {
+    return undefined;
+  }
+  if (hoveredUndoIndex > 0) {
+    const entry = history.undo[hoveredUndoIndex - 1];
+    if (entry === undefined) {
+      throw new Error(
+        `hoveredUndoIndex ${hoveredUndoIndex} out of bounds for undo stack of length ${history.undo.length}`,
+      );
+    }
+    return entry.room;
+  }
+  const entry = history.redo[-hoveredUndoIndex - 1];
+  if (entry === undefined) {
+    throw new Error(
+      `hoveredUndoIndex ${hoveredUndoIndex} out of bounds for redo stack of length ${history.redo.length}`,
+    );
+  }
+  return entry.room;
+};
+
 const selectCurrentEditingRoomJsonWithPreviews = createSelector(
   [
     (state) => selectCurrentRoomFromLevelEditorState(state.levelEditor),
-    (state: EditorRootState) => state.levelEditor.previewedEdits,
+    (state: EditorRootState) => state.levelEditor.pendingEdits?.edits,
+    selectHoveredUndoRoom,
   ],
-  (roomJson, previewedEdits): EditorRoomJson => {
-    // apply previews on top of the current room:
+  (roomJson, pendingEdits, hoveredUndoRoom): EditorRoomJson => {
+    if (hoveredUndoRoom !== undefined) {
+      return hoveredUndoRoom;
+    }
+
+    if (pendingEdits === undefined) {
+      return roomJson;
+    }
+
     return produce(roomJson, (draftRoomJson) => {
-      const previewedEditsEntryIter = objectEntriesIter(
-        previewedEdits as Partial<
-          Record<EditorRoomItemId, ValueOf<typeof previewedEdits>>
+      const pendingEditsEntryIter = objectEntriesIter(
+        pendingEdits as Partial<
+          Record<EditorRoomItemId, ValueOf<typeof pendingEdits>>
         >,
       );
 
-      for (const [itemId, itemPreview] of previewedEditsEntryIter) {
+      for (const [itemId, itemPreview] of pendingEditsEntryIter) {
         if (itemPreview === null) {
           delete draftRoomJson.items[itemId];
         } else {

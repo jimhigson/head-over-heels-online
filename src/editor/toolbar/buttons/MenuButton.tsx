@@ -1,12 +1,8 @@
 import { useState } from "preact/hooks";
-import {
-  type PropsWithChildren,
-  type ReactElement,
-  type ReactNode,
-} from "react";
+import { type PropsWithChildren, type ReactElement } from "react";
 
 import { BitmapText } from "../../../game/components/tailwindSprites/BitmapText";
-import { Button } from "../../../ui/Button";
+import { Button, type ButtonProps } from "../../../ui/Button";
 import { cn } from "../../../ui/cn";
 import { Popover } from "../../../ui/Popover";
 import { buttonSizeClassNames } from "../buttonSizeClassNames";
@@ -14,14 +10,14 @@ import { buttonSizeClassNames } from "../buttonSizeClassNames";
 export interface MenuButtonProps {
   main: ReactElement;
   children: (null | ReactElement<PropsWithChildren>)[];
-  closeOnSelect?: boolean;
+  contentsClassName?: string;
   ref?: React.RefObject<HTMLDivElement | null>;
 }
 
 export const MenuButton = ({
   main,
   children,
-  closeOnSelect,
+  contentsClassName,
   ref,
 }: MenuButtonProps) => {
   const [open, setOpen] = useState(false);
@@ -48,22 +44,15 @@ export const MenuButton = ({
               </Button>
             }
             contents={
-              <div className="flex flex-col gap-oneScaledPix py-oneScaledPix bg-metallicBlueHalfbrite max-h-20 overflow-y-auto scrollbar scrollbar-w-1 scrollbar-thumb-highlightBeige">
-                {children.map((child, index) => {
-                  return child === null ? null : (
-                      <div
-                        key={index}
-                        className="leading-none"
-                        onClick={() => {
-                          if (closeOnSelect) {
-                            setOpen(false);
-                          }
-                        }}
-                      >
-                        {child}
-                      </div>
-                    );
-                })}
+              <div
+                className={cn(
+                  "flex flex-col gap-oneScaledPix py-oneScaledPix",
+                  "bg-metallicBlueHalfbrite text-white max-h-20 overflow-y-auto",
+                  "scrollbar scrollbar-w-1 scrollbar-thumb-highlightBeige",
+                  contentsClassName,
+                )}
+              >
+                {children}
               </div>
             }
           />
@@ -78,18 +67,13 @@ export const MenuButton = ({
  * child of MenuButton
  */
 export const MenuItemButton = ({
-  onClick,
   children,
-  style,
-}: {
-  onClick: () => void;
-  children: ReactNode;
-  style?: React.CSSProperties;
-}) => (
+  className,
+  ...rest
+}: ButtonProps) => (
   <Button
-    className="px-1 py-half w-full justify-between"
-    onClick={onClick}
-    style={style}
+    className={`px-1 py-half w-full justify-between ${className ?? ""}`}
+    {...rest}
   >
     {typeof children === "string" ?
       <BitmapText>{children}</BitmapText>

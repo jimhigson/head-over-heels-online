@@ -55,7 +55,8 @@ export const RoomColourSelect = () => {
         onSelect={(currentValue) => {
           dispatch(
             changeRoomColour({
-              hue: currentValue as ZxSpectrumRoomHue,
+              colour: { hue: currentValue as ZxSpectrumRoomHue },
+              timestamp: Date.now(),
             }),
           );
         }}
@@ -83,7 +84,8 @@ export const RoomColourSelect = () => {
         onChange={(value) => {
           dispatch(
             changeRoomColour({
-              shade: value ? "basic" : "dimmed",
+              colour: { shade: value ? "basic" : "dimmed" },
+              timestamp: Date.now(),
             }),
           );
         }}

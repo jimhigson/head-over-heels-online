@@ -53,6 +53,7 @@ describe("applying tools", () => {
           position: originXyz,
         },
         preview: false,
+        timestamp: 0,
       };
 
       const next = reduceLevelEditorActions(
@@ -119,6 +120,7 @@ describe("applying tools", () => {
               position: deadlyBlockPosition,
             },
             preview: false,
+            timestamp: 0,
           };
 
           const addCybermanTool: Tool = {
@@ -173,6 +175,7 @@ describe("applying tools", () => {
             wallItemId
           ] as EditorJsonItemUnion,
           preview: false,
+          timestamp: 0,
         };
 
         const next = reduceLevelEditorActions(
@@ -228,6 +231,7 @@ describe("applying tools", () => {
             wallItemId
           ] as EditorJsonItemUnion,
           preview: false,
+          timestamp: 0,
         };
 
         const next = reduceLevelEditorActions(
@@ -279,6 +283,7 @@ describe("applying tools", () => {
             wallItemId
           ] as EditorJsonItemUnion,
           preview: false,
+          timestamp: 0,
         };
 
         const next = reduceLevelEditorActions(
@@ -340,6 +345,7 @@ describe("applying tools", () => {
             wallItemId
           ] as EditorJsonItemUnion,
           preview: false,
+          timestamp: 0,
         };
 
         const next = reduceLevelEditorActions(
@@ -377,6 +383,7 @@ describe("applying tools", () => {
             wallItemId
           ] as EditorJsonItemUnion,
           preview: false,
+          timestamp: 0,
         };
 
         const next = reduceLevelEditorActions(
@@ -427,6 +434,7 @@ describe("applying tools", () => {
             wallItemId
           ] as EditorJsonItemUnion,
           preview: false,
+          timestamp: 0,
         };
 
         const next = reduceLevelEditorActions(
@@ -472,6 +480,7 @@ describe("applying tools", () => {
             blockPosition: { x: 0, y: 0, z: 0 },
             pointedAtItemJson: findFloor(state),
             preview: false,
+            timestamp: 0,
           });
         },
         (state) => {
@@ -479,6 +488,7 @@ describe("applying tools", () => {
             blockPosition: { x: 1, y: 0, z: 0 },
             pointedAtItemJson: findFloor(state),
             preview: false,
+            timestamp: 0,
           });
         },
       );
@@ -512,6 +522,7 @@ describe("applying tools", () => {
           blockPosition: { x: 0, y: 0, z: 1 },
           pointedAtItemJson: toasters[0] as EditorJsonItemUnion,
           preview: false,
+          timestamp: 0,
         }),
       );
 
@@ -533,7 +544,7 @@ describe("applying tools", () => {
           ...stateWithCyberman,
           selectedJsonItemIds: [cybermanId],
         },
-        deleteSelected(),
+        deleteSelected({ timestamp: 0 }),
       );
 
       const toastersAfterRemoval = roomJsonItemsIterable(
@@ -563,6 +574,7 @@ describe("applying tools", () => {
           blockPosition: { x: 0, y: 0, z: 0 },
           pointedAtItemJson: floor,
           preview: false,
+          timestamp: 0,
         });
       },
       (state) => {
@@ -571,6 +583,7 @@ describe("applying tools", () => {
           blockPosition: { x: 1, y: 0, z: 0 },
           pointedAtItemJson: floor,
           preview: false,
+          timestamp: 0,
         });
       },
     );

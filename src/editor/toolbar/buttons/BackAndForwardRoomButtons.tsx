@@ -38,7 +38,6 @@ export const BackAndForwardRoomButtons = () => {
   return (
     <>
       <MenuButton
-        closeOnSelect
         main={
           <ToolbarButton
             className="bg-highlightBeige"
@@ -75,7 +74,6 @@ export const BackAndForwardRoomButtons = () => {
           ))}
       </MenuButton>
       <MenuButton
-        closeOnSelect
         main={
           <ToolbarButton
             className="bg-highlightBeige"

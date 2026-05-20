@@ -112,6 +112,7 @@ export const NudgeButtons = () => {
           jsonItemIds,
           positionDelta,
           timesDelta: { ...originXyz, ...timesDelta },
+          timestamp: Date.now(),
         }),
       );
       dispatch(commitCurrentPreviewedEdits());

@@ -24,7 +24,7 @@ export const MultipleToolButtons = ({ children }: MultipleToolButtonsProps) => {
   const selectedChild = children[buttonIndex];
 
   return (
-    <MenuButton main={selectedChild} closeOnSelect ref={wheelElementRef}>
+    <MenuButton main={selectedChild} ref={wheelElementRef}>
       {children.map((child, index) => {
         if (index === buttonIndex) {
           return null; // Skip the currently selected button

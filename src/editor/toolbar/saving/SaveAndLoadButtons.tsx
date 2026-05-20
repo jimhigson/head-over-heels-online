@@ -102,7 +102,6 @@ export const SaveAndLoadButtons = () => {
           <BitmapText className="relative leading-none">OK!</BitmapText>
         </ToolbarButton>
       : <MenuButton
-          closeOnSelect
           main={
             <ToolbarButton
               disabled={user === null || savedIsInSync}
@@ -153,7 +152,6 @@ export const SaveAndLoadButtons = () => {
       }
 
       <MenuButton
-        closeOnSelect
         main={
           <ToolbarButton
             onClick={() => setOpenDialogOpen(true)}

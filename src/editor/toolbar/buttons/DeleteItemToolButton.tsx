@@ -12,7 +12,7 @@ export const DeleteItemToolButton = () => {
     <ToolbarButton
       className="bg-midRed"
       disabled={!somethingSelected}
-      onClick={() => store.dispatch(deleteSelected())}
+      onClick={() => store.dispatch(deleteSelected({ timestamp: Date.now() }))}
       shortcutKeys={["Delete", "Backspace"]}
       tooltipContent={`## Delete items
 delete selected item(s)`}

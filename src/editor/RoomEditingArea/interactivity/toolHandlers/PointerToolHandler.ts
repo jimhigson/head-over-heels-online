@@ -369,6 +369,7 @@ export class PointerToolHandler
         jsonItemIds,
         positionDelta,
         timesDelta,
+        timestamp: Date.now(),
       }),
     );
   }

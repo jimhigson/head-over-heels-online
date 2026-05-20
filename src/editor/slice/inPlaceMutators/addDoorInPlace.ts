@@ -150,7 +150,7 @@ export const addDoorInPlace = (
   wallDirection: DirectionXy4,
   toolItem: ItemTool<"door">,
   isPreview: boolean,
-) => {
+): [EditorRoomItemId, EditorJsonItem<"door">] => {
   const fromRoomJson = selectCurrentRoomFromLevelEditorState(state);
 
   const doorDirection = wallDirection;
@@ -206,4 +206,6 @@ export const addDoorInPlace = (
       outgoingDoorEntry: [doorId, doorJsonItem],
     });
   }
+
+  return [doorId, doorJsonItem] as const;
 };

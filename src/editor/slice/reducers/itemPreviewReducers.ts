@@ -11,18 +11,28 @@ export const itemPreviewReducers = {
     _state.autoCoalesce = action.payload;
   },
   resetPreviewedEdits(state) {
-    state.previewedEdits = {};
+    state.pendingEdits = undefined;
   },
+  /**
+   * overwrite the permanent state of the current room by committing the previewed edits
+   */
   commitCurrentPreviewedEdits(state) {
-    pushUndoInPlace(state);
+    if (state.pendingEdits === undefined) {
+      return;
+    }
+    pushUndoInPlace(
+      state,
+      state.pendingEdits.description,
+      state.pendingEdits.timestamp,
+    );
     applyPreviewedEditsInPlace(
       selectCurrentRoomFromLevelEditorState(state),
-      state.previewedEdits,
+      state.pendingEdits.edits,
     );
     if (state.autoCoalesce) {
       consolidateCurrentRoomInPlace(state);
     }
 
-    state.previewedEdits = {};
+    state.pendingEdits = undefined;
   },
 } satisfies SliceCaseReducers<LevelEditorState>;
