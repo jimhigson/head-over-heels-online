@@ -1,12 +1,20 @@
 import { type RenderLayer } from "pixi.js";
 
 import { type ItemTypeUnion } from "../../_generated/types/ItemInPlayUnion";
-import { type ItemInPlayType } from "../../model/ItemInPlay";
+import {
+  type ItemInPlayType,
+  type UnionOfAllItemInPlayTypes,
+} from "../../model/ItemInPlay";
 import { type RoomState } from "../../model/RoomState";
 import { type MovedItems } from "../mainLoop/progressGameState";
 import { type ItemRenderPipeline } from "./item/itemRender/createItemRenderer";
 import { type GeneralRenderContext } from "./room/RoomRenderContexts";
 import { type ZGraph } from "./sortZ/GraphEdges";
+
+export type ItemZGraph<
+  RoomId extends string = string,
+  RoomItemId extends string = string,
+> = ZGraph<UnionOfAllItemInPlayTypes<RoomId, RoomItemId>>;
 
 export type ItemRenderContext<T extends ItemInPlayType> = {
   item: ItemTypeUnion<T, string, string>;
@@ -23,16 +31,15 @@ export type ItemRenderContext<T extends ItemInPlayType> = {
   /**
    * the (mutated in place) record of which items is in front of which,
    * including what can't be applied due to cyclic dependencies
-   * - updated by the time the
-   * item renders
+   * - updated by the time the item renders
    */
-  zEdges: ZGraph<string>;
+  zEdges: ItemZGraph;
   /**
    * allows any item's renderers to get access to another item's current
    * render pipeline (ie, for masking against other items's renderings)
    */
   getItemRenderPipeline: (
-    itemid: string,
+    item: UnionOfAllItemInPlayTypes,
   ) => ItemRenderPipeline<ItemInPlayType> | undefined;
 };
 

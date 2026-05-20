@@ -19,6 +19,11 @@ with indexing (10/9/2025):
  changing the index to be only x,y (not z) gives ~25Hz (11/9/2025) but the game overall is slightly faster,
  because in the real engine, the items aren't as densely packed as in this artificial benchmark. This is still
  ~8x faster than unindexed
+
+ switching ZGraph from string-keyed to item-object-keyed (20/5/2026):
+ src/game/render/sortZ/stochasticTests/updateZEdgesStochastic.bench.ts 1442ms
+   name                                         hz      min      max     mean      p75      p99     p995     p999     rme  samples
+ · 20% items moved (100 items) 100 frames  26.0379  36.7890  48.7942  38.4056  38.1655  48.7942  48.7942  48.7942  ±2.35%       30
 */
 bench(
   `${movePercentage * 100}% items moved (${itemCount} items) ${frameCount} frames`,

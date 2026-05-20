@@ -2,10 +2,7 @@ import { type SetRequired } from "type-fest";
 
 import { toposort } from "../../../game/render/sortZ/toposort/toposort";
 import { updateZEdges } from "../../../game/render/sortZ/updateZEdges";
-import {
-  type EditorRoomItemId,
-  type EditorUnionOfAllItemInPlayTypes,
-} from "../../editorTypes";
+import { type EditorUnionOfAllItemInPlayTypes } from "../../editorTypes";
 import { type PointerItemIntersection } from "./pointIntersectsItemAABB";
 
 const isFixedZIndexItem = (
@@ -52,12 +49,8 @@ export const frontItemFromPointerIntersections = (
     return topographicallySortableItems[0];
   }
 
-  const topographicallySortableItemsMap = Object.fromEntries(
-    topographicallySortableItems.map((i) => [i.id, i]),
-  ) as Record<EditorRoomItemId, EditorUnionOfAllItemInPlayTypes>;
-
-  const order = toposort(updateZEdges(topographicallySortableItemsMap));
+  const order = toposort(updateZEdges(new Set(topographicallySortableItems)));
 
   // items are sorted back-to-front, so we need the last one:
-  return topographicallySortableItemsMap[order.at(-1)!];
+  return order.at(-1);
 };
