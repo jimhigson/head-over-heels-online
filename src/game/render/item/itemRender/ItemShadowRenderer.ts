@@ -7,6 +7,7 @@ import {
 } from "../../../../model/ItemInPlay";
 import { type ConsolidatableConfig } from "../../../../model/json/utilityJsonConfigTypes";
 import { roomSpatialIndexKey } from "../../../../model/RoomState";
+import { getSpriteSheetVariant } from "../../../../sprites/spritesheet/variants/getSpriteSheetVariant";
 import { store } from "../../../../store/store";
 import { maybeRenderContainerToSprite } from "../../../../utils/pixi/renderContainerToSprite";
 import { renderMultipliedXy } from "../../../../utils/pixi/renderMultipliedXy";
@@ -255,15 +256,16 @@ class ItemShadowRenderer<T extends ItemInPlayType>
         const { times } = caster.config as ConsolidatableConfig;
 
         const { shadowCastTexture } = caster;
+        const { general } = this.renderContext;
+        const shadowSpritesheet = getSpriteSheetVariant(
+          general.spriteOption.uncolourised ? "uncolourised" : "original",
+        );
 
         const castTextureMultiplied = renderMultipliedXy(
           {
             ...shadowCastTexture,
-            paused: this.renderContext.general.paused,
-            spritesheetVariant:
-              this.renderContext.general.spriteOption.uncolourised ?
-                "uncolourised"
-              : "original",
+            paused: general.paused,
+            spritesheet: shadowSpritesheet,
           } as SpecifiedTextureCreateSpriteOptions,
           times,
         );

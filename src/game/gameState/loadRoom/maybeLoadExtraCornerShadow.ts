@@ -65,7 +65,6 @@ export function* maybeLoadExtraCornerShadow<
       },
       shadowCastTexture: {
         textureId: "shadow.wallCorner",
-        spritesheetVariant: "original",
       },
       castsShadowWhileStoodOn: true,
       config: emptyObject,

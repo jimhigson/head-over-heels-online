@@ -1,7 +1,9 @@
-import { type ItemTypeUnion } from "../../../_generated/types/ItemInPlayUnion";
+import type { ItemTypeUnion } from "../../../_generated/types/ItemInPlayUnion";
+import type { StoodOnBy } from "../../../model/StoodOnBy";
+import type { ShadowCastSpriteOptions } from "../../render/ShadowCastSpriteOptions";
+
 import { type JsonItem } from "../../../model/json/JsonItem";
 import { isWallHidden } from "../../../model/json/WallJsonConfig";
-import { type StoodOnBy } from "../../../model/StoodOnBy";
 import { wallTimes } from "../../../model/times";
 import { emptyObject } from "../../../utils/empty";
 import {
@@ -17,20 +19,17 @@ import {
   veryHighZ,
   wallRenderHeight,
 } from "../../physics/mechanicsConstants";
-import { type SpecifiedTextureCreateSpriteOptions } from "../../render/createSprite";
 import { blockXyzToFineXyz } from "../../render/projections";
 import { nonRenderingItemFixedZIndex } from "../../render/sortZ/fixedZIndexes";
 import { defaultBaseState } from "./itemDefaultStates";
 
-const shadowWallY: SpecifiedTextureCreateSpriteOptions = Object.freeze({
+const shadowWallY: ShadowCastSpriteOptions = Object.freeze({
   textureId: "shadow.wall.y",
-  spritesheetVariant: "original",
 });
 
-const shadowWallX: SpecifiedTextureCreateSpriteOptions = Object.freeze({
+const shadowWallX: ShadowCastSpriteOptions = Object.freeze({
   textureId: "shadow.wall.y",
   flipX: true,
-  spritesheetVariant: "original",
 });
 
 // can't take room height blocks times block height, or it is still possible to

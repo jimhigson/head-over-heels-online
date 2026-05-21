@@ -1,7 +1,10 @@
-import { type ItemTypeUnion } from "../../../_generated/types/ItemInPlayUnion";
+import type { ItemTypeUnion } from "../../../_generated/types/ItemInPlayUnion";
+import type { StoodOnBy } from "../../../model/StoodOnBy";
+import type { ShadowCastSpriteOptions } from "../../render/ShadowCastSpriteOptions";
+import type { RoomDirectionalIndex } from "./buildRoomJsonDirectionalIndex";
+
 import { defaultItemProperties } from "../../../model/defaultItemProperties";
 import { type JsonItem } from "../../../model/json/JsonItem";
-import { type StoodOnBy } from "../../../model/StoodOnBy";
 import { emptyObject } from "../../../utils/empty";
 import { pick } from "../../../utils/pick";
 import { unitVectors } from "../../../utils/vectors/unitVectors";
@@ -15,39 +18,31 @@ import {
   type Xyz,
 } from "../../../utils/vectors/vectors";
 import { blockSizePx, veryHighZ } from "../../physics/mechanicsConstants";
-import { type SpecifiedTextureCreateSpriteOptions } from "../../render/createSprite";
 import { blockXyzToFineXyz } from "../../render/projections";
 import { nonRenderingItemFixedZIndex } from "../../render/sortZ/fixedZIndexes";
-import { type RoomDirectionalIndex } from "./buildRoomJsonDirectionalIndex";
 import { floorZAtPosition } from "./floorZAtPosition";
 import { isDoorInHiddenWall } from "./isDoorInHiddenWall";
 import { defaultBaseState } from "./itemDefaultStates";
 
-const shadowDoorFloatingThresholdY: SpecifiedTextureCreateSpriteOptions =
-  Object.freeze({
-    textureId: "shadow.door.floatingThreshold.double.y",
-    spritesheetVariant: "original",
-  });
-
-const shadowDoorFrameTopY: SpecifiedTextureCreateSpriteOptions = Object.freeze({
-  textureId: "shadow.doorFrame.top.y",
-  spritesheetVariant: "original",
+const shadowDoorFloatingThresholdY: ShadowCastSpriteOptions = Object.freeze({
+  textureId: "shadow.door.floatingThreshold.double.y",
 });
 
-const shadowDoorFrameTopX: SpecifiedTextureCreateSpriteOptions = Object.freeze({
+const shadowDoorFrameTopY: ShadowCastSpriteOptions = Object.freeze({
+  textureId: "shadow.doorFrame.top.y",
+});
+
+const shadowDoorFrameTopX: ShadowCastSpriteOptions = Object.freeze({
   textureId: "shadow.doorFrame.top.y",
   flipX: true,
-  spritesheetVariant: "original",
 });
 
 const doorFrameTopNoCastShadowOn = ["doorLegs" as const];
 
-const shadowDoorFloatingThresholdX: SpecifiedTextureCreateSpriteOptions =
-  Object.freeze({
-    textureId: "shadow.door.floatingThreshold.double.y",
-    flipX: true,
-    spritesheetVariant: "original",
-  });
+const shadowDoorFloatingThresholdX: ShadowCastSpriteOptions = Object.freeze({
+  textureId: "shadow.door.floatingThreshold.double.y",
+  flipX: true,
+});
 
 /**
  * this looks low when the bounding boxes are rendered, but visually

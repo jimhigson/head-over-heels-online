@@ -35,7 +35,6 @@ exports[`playing through a complex, deterministic room ("laboratory") should alw
         "z": 0,
       },
       "shadowCastTexture": {
-        "spritesheetVariant": "original",
         "textureId": "shadow.smallRound",
       },
       "state": {
@@ -115,7 +114,6 @@ exports[`playing through a complex, deterministic room ("laboratory") should alw
         "z": 0,
       },
       "shadowCastTexture": {
-        "spritesheetVariant": "original",
         "textureId": "shadow.smallRound",
       },
       "state": {
@@ -191,7 +189,6 @@ exports[`playing through a complex, deterministic room ("laboratory") should alw
         "z": 0,
       },
       "shadowCastTexture": {
-        "spritesheetVariant": "original",
         "textureId": "shadow.smallRound",
       },
       "state": {
@@ -271,7 +268,6 @@ exports[`playing through a complex, deterministic room ("laboratory") should alw
         "z": 0,
       },
       "shadowCastTexture": {
-        "spritesheetVariant": "original",
         "textureId": "shadow.smallRound",
       },
       "state": {
@@ -344,7 +340,6 @@ exports[`playing through a complex, deterministic room ("laboratory") should alw
       },
       "shadowCastTexture": {
         "flipX": true,
-        "spritesheetVariant": "original",
         "textureId": "shadow.barrier.y",
       },
       "state": {
@@ -390,7 +385,6 @@ exports[`playing through a complex, deterministic room ("laboratory") should alw
       },
       "shadowCastTexture": {
         "flipX": true,
-        "spritesheetVariant": "original",
         "textureId": "shadow.barrier.y",
       },
       "state": {
@@ -435,7 +429,6 @@ exports[`playing through a complex, deterministic room ("laboratory") should alw
       },
       "shadowCastTexture": {
         "flipX": true,
-        "spritesheetVariant": "original",
         "textureId": "shadow.barrier.y",
       },
       "state": {
@@ -481,7 +474,6 @@ exports[`playing through a complex, deterministic room ("laboratory") should alw
       },
       "shadowCastTexture": {
         "flipX": true,
-        "spritesheetVariant": "original",
         "textureId": "shadow.barrier.y",
       },
       "state": {
@@ -528,7 +520,6 @@ exports[`playing through a complex, deterministic room ("laboratory") should alw
         "z": 3,
       },
       "shadowCastTexture": {
-        "spritesheetVariant": "original",
         "textureId": "shadow.fullBlock",
       },
       "state": {
@@ -575,7 +566,6 @@ exports[`playing through a complex, deterministic room ("laboratory") should alw
         "z": 2,
       },
       "shadowCastTexture": {
-        "spritesheetVariant": "original",
         "textureId": "shadow.fullBlock",
       },
       "state": {
@@ -625,7 +615,6 @@ exports[`playing through a complex, deterministic room ("laboratory") should alw
         "z": 24,
       },
       "shadowCastTexture": {
-        "spritesheetVariant": "original",
         "textureId": "shadow.smallRound",
       },
       "state": {
@@ -672,7 +661,6 @@ exports[`playing through a complex, deterministic room ("laboratory") should alw
         "z": 12,
       },
       "shadowCastTexture": {
-        "spritesheetVariant": "original",
         "textureId": "shadow.smallRound",
       },
       "state": {
@@ -722,7 +710,6 @@ exports[`playing through a complex, deterministic room ("laboratory") should alw
         "z": 24,
       },
       "shadowCastTexture": {
-        "spritesheetVariant": "original",
         "textureId": "shadow.smallRound",
       },
       "state": {
@@ -766,7 +753,6 @@ exports[`playing through a complex, deterministic room ("laboratory") should alw
         "z": 0,
       },
       "shadowCastTexture": {
-        "spritesheetVariant": "original",
         "textureId": "shadow.fullBlock",
       },
       "state": {
@@ -810,7 +796,6 @@ exports[`playing through a complex, deterministic room ("laboratory") should alw
         "z": 1,
       },
       "shadowCastTexture": {
-        "spritesheetVariant": "original",
         "textureId": "shadow.fullBlock",
       },
       "state": {
@@ -852,7 +837,6 @@ exports[`playing through a complex, deterministic room ("laboratory") should alw
         "z": 8,
       },
       "shadowCastTexture": {
-        "spritesheetVariant": "original",
         "textureId": "shadow.fullBlock",
       },
       "state": {
@@ -894,7 +878,6 @@ exports[`playing through a complex, deterministic room ("laboratory") should alw
         "z": 8,
       },
       "shadowCastTexture": {
-        "spritesheetVariant": "original",
         "textureId": "shadow.fullBlock",
       },
       "state": {
@@ -938,7 +921,6 @@ exports[`playing through a complex, deterministic room ("laboratory") should alw
         "z": 0,
       },
       "shadowCastTexture": {
-        "spritesheetVariant": "original",
         "textureId": "shadow.fullBlock",
       },
       "state": {
@@ -982,7 +964,6 @@ exports[`playing through a complex, deterministic room ("laboratory") should alw
         "z": 0,
       },
       "shadowCastTexture": {
-        "spritesheetVariant": "original",
         "textureId": "shadow.fullBlock",
       },
       "state": {
@@ -1024,7 +1005,6 @@ exports[`playing through a complex, deterministic room ("laboratory") should alw
         "z": 2,
       },
       "shadowCastTexture": {
-        "spritesheetVariant": "original",
         "textureId": "shadow.fullBlock",
       },
       "state": {
@@ -1068,7 +1048,6 @@ exports[`playing through a complex, deterministic room ("laboratory") should alw
         "z": 0,
       },
       "shadowCastTexture": {
-        "spritesheetVariant": "original",
         "textureId": "shadow.fullBlock",
       },
       "state": {
@@ -1122,7 +1101,6 @@ exports[`playing through a complex, deterministic room ("laboratory") should alw
         "z": 0,
       },
       "shadowCastTexture": {
-        "spritesheetVariant": "original",
         "textureId": "shadow.fullBlock",
       },
       "state": {
@@ -1174,7 +1152,6 @@ exports[`playing through a complex, deterministic room ("laboratory") should alw
         "z": 0,
       },
       "shadowCastTexture": {
-        "spritesheetVariant": "original",
         "textureId": "shadow.fullBlock",
       },
       "state": {
@@ -1223,7 +1200,6 @@ exports[`playing through a complex, deterministic room ("laboratory") should alw
         "z": 1,
       },
       "shadowCastTexture": {
-        "spritesheetVariant": "original",
         "textureId": "shadow.fullBlock",
       },
       "state": {
@@ -1270,7 +1246,6 @@ exports[`playing through a complex, deterministic room ("laboratory") should alw
         "z": 3,
       },
       "shadowCastTexture": {
-        "spritesheetVariant": "original",
         "textureId": "shadow.fullBlock",
       },
       "state": {
@@ -1322,7 +1297,6 @@ exports[`playing through a complex, deterministic room ("laboratory") should alw
         "z": 0,
       },
       "shadowCastTexture": {
-        "spritesheetVariant": "original",
         "textureId": "shadow.smallRound",
       },
       "state": {
@@ -1425,7 +1399,6 @@ exports[`playing through a complex, deterministic room ("laboratory") should alw
         "z": 0,
       },
       "shadowCastTexture": {
-        "spritesheetVariant": "original",
         "textureId": "shadow.smallRound",
       },
       "state": {
@@ -1509,7 +1482,6 @@ exports[`playing through a complex, deterministic room ("laboratory") should alw
         "z": 0,
       },
       "shadowCastTexture": {
-        "spritesheetVariant": "original",
         "textureId": "shadow.fullBlock",
       },
       "state": {
@@ -1570,7 +1542,6 @@ exports[`playing through a complex, deterministic room ("laboratory") should alw
         "z": 0,
       },
       "shadowCastTexture": {
-        "spritesheetVariant": "original",
         "textureId": "shadow.fullBlock",
       },
       "state": {
@@ -1634,7 +1605,6 @@ exports[`playing through a complex, deterministic room ("laboratory") should alw
       },
       "shadowCastTexture": {
         "flipX": true,
-        "spritesheetVariant": "original",
         "textureId": "shadow.fullBlock",
       },
       "state": {
@@ -1696,7 +1666,6 @@ exports[`playing through a complex, deterministic room ("laboratory") should alw
       },
       "shadowCastTexture": {
         "flipX": true,
-        "spritesheetVariant": "original",
         "textureId": "shadow.fullBlock",
       },
       "state": {
@@ -1755,7 +1724,6 @@ exports[`playing through a complex, deterministic room ("laboratory") should alw
       },
       "shadowCastTexture": {
         "flipX": true,
-        "spritesheetVariant": "original",
         "textureId": "shadow.fullBlock",
       },
       "state": {
@@ -1813,7 +1781,6 @@ exports[`playing through a complex, deterministic room ("laboratory") should alw
         "z": 0,
       },
       "shadowCastTexture": {
-        "spritesheetVariant": "original",
         "textureId": "shadow.fullBlock",
       },
       "state": {
@@ -1876,7 +1843,6 @@ exports[`playing through a complex, deterministic room ("laboratory") should alw
         "z": 0,
       },
       "shadowCastTexture": {
-        "spritesheetVariant": "original",
         "textureId": "shadow.fullBlock",
       },
       "state": {
@@ -1932,7 +1898,6 @@ exports[`playing through a complex, deterministic room ("laboratory") should alw
         "z": 0,
       },
       "shadowCastTexture": {
-        "spritesheetVariant": "original",
         "textureId": "shadow.fullBlock",
       },
       "state": {
@@ -1988,7 +1953,6 @@ exports[`playing through a complex, deterministic room ("laboratory") should alw
         "z": 0,
       },
       "shadowCastTexture": {
-        "spritesheetVariant": "original",
         "textureId": "shadow.fullBlock",
       },
       "state": {
@@ -2041,7 +2005,6 @@ exports[`playing through a complex, deterministic room ("laboratory") should alw
         "z": 0,
       },
       "shadowCastTexture": {
-        "spritesheetVariant": "original",
         "textureId": "shadow.fullBlock",
       },
       "state": {
@@ -2294,7 +2257,6 @@ exports[`playing through a complex, deterministic room ("laboratory") should alw
       "renders": true,
       "shadowCastTexture": {
         "flipX": true,
-        "spritesheetVariant": "original",
         "textureId": "shadow.door.floatingThreshold.double.y",
       },
       "shadowOffset": {
@@ -2567,7 +2529,6 @@ exports[`playing through a complex, deterministic room ("laboratory") should alw
       "renderAabbOffset": undefined,
       "shadowCastTexture": {
         "flipX": true,
-        "spritesheetVariant": "original",
         "textureId": "shadow.doorFrame.top.y",
       },
       "state": {
@@ -2817,7 +2778,6 @@ exports[`playing through a complex, deterministic room ("laboratory") should alw
         "z": -3,
       },
       "shadowCastTexture": {
-        "spritesheetVariant": "original",
         "textureId": "shadow.smallRound",
       },
       "state": {
@@ -2912,7 +2872,6 @@ exports[`playing through a complex, deterministic room ("laboratory") should alw
         "z": -3,
       },
       "shadowCastTexture": {
-        "spritesheetVariant": "original",
         "textureId": "shadow.smallRound",
       },
       "state": {
@@ -3008,7 +2967,6 @@ exports[`playing through a complex, deterministic room ("laboratory") should alw
         "z": -3,
       },
       "shadowCastTexture": {
-        "spritesheetVariant": "original",
         "textureId": "shadow.smallRound",
       },
       "state": {
@@ -3104,7 +3062,6 @@ exports[`playing through a complex, deterministic room ("laboratory") should alw
         "z": -3,
       },
       "shadowCastTexture": {
-        "spritesheetVariant": "original",
         "textureId": "shadow.smallRound",
       },
       "state": {
@@ -3197,7 +3154,6 @@ exports[`playing through a complex, deterministic room ("laboratory") should alw
         "z": -3,
       },
       "shadowCastTexture": {
-        "spritesheetVariant": "original",
         "textureId": "shadow.smallRound",
       },
       "state": {
@@ -3300,7 +3256,6 @@ exports[`playing through a complex, deterministic room ("laboratory") should alw
         "z": 26,
       },
       "shadowCastTexture": {
-        "spritesheetVariant": "original",
         "textureId": "shadow.fullBlock",
       },
       "state": {
@@ -3386,7 +3341,6 @@ exports[`playing through a complex, deterministic room ("laboratory") should alw
         "z": 0,
       },
       "shadowCastTexture": {
-        "spritesheetVariant": "original",
         "textureId": "shadow.playable",
       },
       "state": {
@@ -3590,7 +3544,6 @@ exports[`playing through a complex, deterministic room ("laboratory") should alw
       },
       "shadowCastTexture": {
         "animationId": "shadow.lift",
-        "spritesheetVariant": "original",
       },
       "state": {
         "actedOnAt": {
@@ -3655,7 +3608,6 @@ exports[`playing through a complex, deterministic room ("laboratory") should alw
       },
       "shadowCastTexture": {
         "animationId": "shadow.lift",
-        "spritesheetVariant": "original",
       },
       "state": {
         "actedOnAt": {
@@ -3720,7 +3672,6 @@ exports[`playing through a complex, deterministic room ("laboratory") should alw
       },
       "shadowCastTexture": {
         "animationId": "shadow.lift",
-        "spritesheetVariant": "original",
       },
       "state": {
         "actedOnAt": {
@@ -3783,7 +3734,6 @@ exports[`playing through a complex, deterministic room ("laboratory") should alw
       },
       "shadowCastTexture": {
         "animationId": "shadow.lift",
-        "spritesheetVariant": "original",
       },
       "state": {
         "actedOnAt": {
@@ -3846,7 +3796,6 @@ exports[`playing through a complex, deterministic room ("laboratory") should alw
       },
       "shadowCastTexture": {
         "animationId": "shadow.lift",
-        "spritesheetVariant": "original",
       },
       "state": {
         "actedOnAt": {
@@ -3901,7 +3850,6 @@ exports[`playing through a complex, deterministic room ("laboratory") should alw
         "z": 1,
       },
       "shadowCastTexture": {
-        "spritesheetVariant": "original",
         "textureId": "shadow.smallRound",
       },
       "state": {
@@ -3985,7 +3933,6 @@ exports[`playing through a complex, deterministic room ("laboratory") should alw
         "z": 0,
       },
       "shadowCastTexture": {
-        "spritesheetVariant": "original",
         "textureId": "shadow.smallRound",
       },
       "state": {
@@ -4069,7 +4016,6 @@ exports[`playing through a complex, deterministic room ("laboratory") should alw
         "z": 0,
       },
       "shadowCastTexture": {
-        "spritesheetVariant": "original",
         "textureId": "shadow.smallRound",
       },
       "state": {
@@ -4153,7 +4099,6 @@ exports[`playing through a complex, deterministic room ("laboratory") should alw
         "z": 0,
       },
       "shadowCastTexture": {
-        "spritesheetVariant": "original",
         "textureId": "shadow.smallRound",
       },
       "state": {
@@ -4237,7 +4182,6 @@ exports[`playing through a complex, deterministic room ("laboratory") should alw
         "z": 0,
       },
       "shadowCastTexture": {
-        "spritesheetVariant": "original",
         "textureId": "shadow.smallRound",
       },
       "state": {
@@ -4321,7 +4265,6 @@ exports[`playing through a complex, deterministic room ("laboratory") should alw
         "z": 0,
       },
       "shadowCastTexture": {
-        "spritesheetVariant": "original",
         "textureId": "shadow.smallRound",
       },
       "state": {
@@ -4412,7 +4355,6 @@ exports[`playing through a complex, deterministic room ("laboratory") should alw
         "z": -3,
       },
       "shadowCastTexture": {
-        "spritesheetVariant": "original",
         "textureId": "shadow.smallRound",
       },
       "state": {
@@ -4521,7 +4463,6 @@ exports[`playing through a complex, deterministic room ("laboratory") should alw
         "z": 9,
       },
       "shadowCastTexture": {
-        "spritesheetVariant": "original",
         "textureId": "shadow.smallRound",
       },
       "state": {
@@ -4605,7 +4546,6 @@ exports[`playing through a complex, deterministic room ("laboratory") should alw
         "z": 0,
       },
       "shadowCastTexture": {
-        "spritesheetVariant": "original",
         "textureId": "shadow.smallRound",
       },
       "state": {
@@ -4679,7 +4619,6 @@ exports[`playing through a complex, deterministic room ("laboratory") should alw
         "z": 0,
       },
       "shadowCastTexture": {
-        "spritesheetVariant": "original",
         "textureId": "shadow.smallRound",
       },
       "state": {
@@ -4758,7 +4697,6 @@ exports[`playing through a complex, deterministic room ("laboratory") should alw
         "z": 13,
       },
       "shadowCastTexture": {
-        "spritesheetVariant": "original",
         "textureId": "shadow.smallRound",
       },
       "state": {
@@ -4834,7 +4772,6 @@ exports[`playing through a complex, deterministic room ("laboratory") should alw
         "z": 13,
       },
       "shadowCastTexture": {
-        "spritesheetVariant": "original",
         "textureId": "shadow.smallRound",
       },
       "state": {
@@ -4912,7 +4849,6 @@ exports[`playing through a complex, deterministic room ("laboratory") should alw
         "z": 13,
       },
       "shadowCastTexture": {
-        "spritesheetVariant": "original",
         "textureId": "shadow.smallRound",
       },
       "state": {
@@ -4988,7 +4924,6 @@ exports[`playing through a complex, deterministic room ("laboratory") should alw
         "z": 13,
       },
       "shadowCastTexture": {
-        "spritesheetVariant": "original",
         "textureId": "shadow.smallRound",
       },
       "state": {
@@ -5066,7 +5001,6 @@ exports[`playing through a complex, deterministic room ("laboratory") should alw
         "z": 13,
       },
       "shadowCastTexture": {
-        "spritesheetVariant": "original",
         "textureId": "shadow.smallRound",
       },
       "state": {
@@ -5144,7 +5078,6 @@ exports[`playing through a complex, deterministic room ("laboratory") should alw
         "z": 13,
       },
       "shadowCastTexture": {
-        "spritesheetVariant": "original",
         "textureId": "shadow.smallRound",
       },
       "state": {
@@ -5220,7 +5153,6 @@ exports[`playing through a complex, deterministic room ("laboratory") should alw
         "z": 16,
       },
       "shadowCastTexture": {
-        "spritesheetVariant": "original",
         "textureId": "shadow.smallRound",
       },
       "state": {
@@ -5296,7 +5228,6 @@ exports[`playing through a complex, deterministic room ("laboratory") should alw
         "z": 16,
       },
       "shadowCastTexture": {
-        "spritesheetVariant": "original",
         "textureId": "shadow.smallRound",
       },
       "state": {
@@ -5371,7 +5302,6 @@ exports[`playing through a complex, deterministic room ("laboratory") should alw
         "z": 10,
       },
       "shadowCastTexture": {
-        "spritesheetVariant": "original",
         "textureId": "shadow.smallRound",
       },
       "state": {
@@ -5450,7 +5380,6 @@ exports[`playing through a complex, deterministic room ("laboratory") should alw
         "z": 16,
       },
       "shadowCastTexture": {
-        "spritesheetVariant": "original",
         "textureId": "shadow.smallRound",
       },
       "state": {
@@ -5530,7 +5459,6 @@ exports[`playing through a complex, deterministic room ("laboratory") should alw
         "z": 13,
       },
       "shadowCastTexture": {
-        "spritesheetVariant": "original",
         "textureId": "shadow.smallRound",
       },
       "state": {
@@ -5607,7 +5535,6 @@ exports[`playing through a complex, deterministic room ("laboratory") should alw
         "z": 2,
       },
       "shadowCastTexture": {
-        "spritesheetVariant": "original",
         "textureId": "shadow.smallBlock",
       },
       "state": {
@@ -5678,7 +5605,6 @@ exports[`playing through a complex, deterministic room ("laboratory") should alw
         "z": 7,
       },
       "shadowCastTexture": {
-        "spritesheetVariant": "original",
         "textureId": "shadow.smallBlock",
       },
       "state": {
@@ -5746,7 +5672,6 @@ exports[`playing through a complex, deterministic room ("laboratory") should alw
         "z": 0,
       },
       "shadowCastTexture": {
-        "spritesheetVariant": "original",
         "textureId": "shadow.smallBlock",
       },
       "state": {
@@ -5812,7 +5737,6 @@ exports[`playing through a complex, deterministic room ("laboratory") should alw
         "z": 1,
       },
       "shadowCastTexture": {
-        "spritesheetVariant": "original",
         "textureId": "shadow.smallBlock",
       },
       "state": {
@@ -5878,7 +5802,6 @@ exports[`playing through a complex, deterministic room ("laboratory") should alw
         "z": 2,
       },
       "shadowCastTexture": {
-        "spritesheetVariant": "original",
         "textureId": "shadow.smallBlock",
       },
       "state": {
@@ -5942,7 +5865,6 @@ exports[`playing through a complex, deterministic room ("laboratory") should alw
         "z": 0,
       },
       "shadowCastTexture": {
-        "spritesheetVariant": "original",
         "textureId": "shadow.smallBlock",
       },
       "state": {
@@ -6006,7 +5928,6 @@ exports[`playing through a complex, deterministic room ("laboratory") should alw
         "z": 0,
       },
       "shadowCastTexture": {
-        "spritesheetVariant": "original",
         "textureId": "shadow.smallRound",
       },
       "state": {
@@ -6070,7 +5991,6 @@ exports[`playing through a complex, deterministic room ("laboratory") should alw
         "z": 4,
       },
       "shadowCastTexture": {
-        "spritesheetVariant": "original",
         "textureId": "shadow.smallBlock",
       },
       "state": {
@@ -6134,7 +6054,6 @@ exports[`playing through a complex, deterministic room ("laboratory") should alw
         "z": 0,
       },
       "shadowCastTexture": {
-        "spritesheetVariant": "original",
         "textureId": "shadow.smallBlock",
       },
       "state": {
@@ -6202,7 +6121,6 @@ exports[`playing through a complex, deterministic room ("laboratory") should alw
         "z": 2,
       },
       "shadowCastTexture": {
-        "spritesheetVariant": "original",
         "textureId": "shadow.smallRound",
       },
       "state": {
@@ -6266,7 +6184,6 @@ exports[`playing through a complex, deterministic room ("laboratory") should alw
         "z": 0,
       },
       "shadowCastTexture": {
-        "spritesheetVariant": "original",
         "textureId": "shadow.smallBlock",
       },
       "state": {
@@ -6330,7 +6247,6 @@ exports[`playing through a complex, deterministic room ("laboratory") should alw
         "z": 0,
       },
       "shadowCastTexture": {
-        "spritesheetVariant": "original",
         "textureId": "shadow.smallBlock",
       },
       "state": {
@@ -6394,7 +6310,6 @@ exports[`playing through a complex, deterministic room ("laboratory") should alw
         "z": 2,
       },
       "shadowCastTexture": {
-        "spritesheetVariant": "original",
         "textureId": "shadow.smallRound",
       },
       "state": {
@@ -6462,7 +6377,6 @@ exports[`playing through a complex, deterministic room ("laboratory") should alw
         "z": 0,
       },
       "shadowCastTexture": {
-        "spritesheetVariant": "original",
         "textureId": "shadow.smallBlock",
       },
       "state": {
@@ -6528,7 +6442,6 @@ exports[`playing through a complex, deterministic room ("laboratory") should alw
         "z": 10,
       },
       "shadowCastTexture": {
-        "spritesheetVariant": "original",
         "textureId": "shadow.smallBlock",
       },
       "state": {
@@ -6604,7 +6517,6 @@ exports[`playing through a complex, deterministic room ("laboratory") should alw
         "z": 0,
       },
       "shadowCastTexture": {
-        "spritesheetVariant": "original",
         "textureId": "shadow.fullBlock",
       },
       "state": {
@@ -6681,7 +6593,6 @@ exports[`playing through a complex, deterministic room ("laboratory") should alw
         "z": 0,
       },
       "shadowCastTexture": {
-        "spritesheetVariant": "original",
         "textureId": "shadow.fullBlock",
       },
       "state": {
@@ -6758,7 +6669,6 @@ exports[`playing through a complex, deterministic room ("laboratory") should alw
         "z": 0,
       },
       "shadowCastTexture": {
-        "spritesheetVariant": "original",
         "textureId": "shadow.fullBlock",
       },
       "state": {
@@ -6833,7 +6743,6 @@ exports[`playing through a complex, deterministic room ("laboratory") should alw
         "z": 0,
       },
       "shadowCastTexture": {
-        "spritesheetVariant": "original",
         "textureId": "shadow.fullBlock",
       },
       "state": {
@@ -6906,7 +6815,6 @@ exports[`playing through a complex, deterministic room ("laboratory") should alw
         "z": 0,
       },
       "shadowCastTexture": {
-        "spritesheetVariant": "original",
         "textureId": "shadow.fullBlock",
       },
       "state": {
@@ -6979,7 +6887,6 @@ exports[`playing through a complex, deterministic room ("laboratory") should alw
         "z": 0,
       },
       "shadowCastTexture": {
-        "spritesheetVariant": "original",
         "textureId": "shadow.fullBlock",
       },
       "state": {
@@ -7052,7 +6959,6 @@ exports[`playing through a complex, deterministic room ("laboratory") should alw
         "z": 0,
       },
       "shadowCastTexture": {
-        "spritesheetVariant": "original",
         "textureId": "shadow.fullBlock",
       },
       "state": {
@@ -7125,7 +7031,6 @@ exports[`playing through a complex, deterministic room ("laboratory") should alw
         "z": 0,
       },
       "shadowCastTexture": {
-        "spritesheetVariant": "original",
         "textureId": "shadow.fullBlock",
       },
       "state": {
@@ -7198,7 +7103,6 @@ exports[`playing through a complex, deterministic room ("laboratory") should alw
         "z": 0,
       },
       "shadowCastTexture": {
-        "spritesheetVariant": "original",
         "textureId": "shadow.fullBlock",
       },
       "state": {
@@ -7269,7 +7173,6 @@ exports[`playing through a complex, deterministic room ("laboratory") should alw
         "z": 0,
       },
       "shadowCastTexture": {
-        "spritesheetVariant": "original",
         "textureId": "shadow.fullBlock",
       },
       "state": {
@@ -7346,7 +7249,6 @@ exports[`playing through a complex, deterministic room ("laboratory") should alw
         "z": 0,
       },
       "shadowCastTexture": {
-        "spritesheetVariant": "original",
         "textureId": "shadow.fullBlock",
       },
       "state": {
@@ -7423,7 +7325,6 @@ exports[`playing through a complex, deterministic room ("laboratory") should alw
         "z": 0,
       },
       "shadowCastTexture": {
-        "spritesheetVariant": "original",
         "textureId": "shadow.fullBlock",
       },
       "state": {
@@ -7498,7 +7399,6 @@ exports[`playing through a complex, deterministic room ("laboratory") should alw
         "z": 0,
       },
       "shadowCastTexture": {
-        "spritesheetVariant": "original",
         "textureId": "shadow.fullBlock",
       },
       "state": {
@@ -7570,7 +7470,6 @@ exports[`playing through a complex, deterministic room ("laboratory") should alw
         "z": 14,
       },
       "shadowCastTexture": {
-        "spritesheetVariant": "original",
         "textureId": "shadow.smallRound",
       },
       "state": {
@@ -7641,7 +7540,6 @@ exports[`playing through a complex, deterministic room ("laboratory") should alw
         "z": 14,
       },
       "shadowCastTexture": {
-        "spritesheetVariant": "original",
         "textureId": "shadow.smallRound",
       },
       "state": {
@@ -7730,7 +7628,6 @@ exports[`playing through a complex, deterministic room ("laboratory") should alw
         "z": 15,
       },
       "shadowCastTexture": {
-        "spritesheetVariant": "original",
         "textureId": "shadow.smallBlock",
       },
       "state": {
@@ -7789,7 +7686,6 @@ exports[`playing through a complex, deterministic room ("laboratory") should alw
         "z": -2,
       },
       "shadowCastTexture": {
-        "spritesheetVariant": "original",
         "textureId": "shadow.smallRound",
       },
       "state": {
@@ -7883,7 +7779,6 @@ exports[`playing through a complex, deterministic room ("laboratory") should alw
         "z": -2,
       },
       "shadowCastTexture": {
-        "spritesheetVariant": "original",
         "textureId": "shadow.smallRound",
       },
       "state": {
@@ -7978,7 +7873,6 @@ exports[`playing through a complex, deterministic room ("laboratory") should alw
         "z": 0,
       },
       "shadowCastTexture": {
-        "spritesheetVariant": "original",
         "textureId": "shadow.fullBlock",
       },
       "state": {
@@ -8100,7 +7994,6 @@ exports[`playing through a complex, deterministic room ("laboratory") should alw
       "id": "wall(right)@0,0,0",
       "jsonItemId": "wall(right)@0,0,0",
       "shadowCastTexture": {
-        "spritesheetVariant": "original",
         "textureId": "shadow.wall.y",
       },
       "state": {
@@ -8143,7 +8036,6 @@ exports[`playing through a complex, deterministic room ("laboratory") should alw
       "jsonItemId": "wall(towards)@0,0,0",
       "shadowCastTexture": {
         "flipX": true,
-        "spritesheetVariant": "original",
         "textureId": "shadow.wall.y",
       },
       "state": {
@@ -8195,7 +8087,6 @@ exports[`playing through a complex, deterministic room ("laboratory") should alw
       },
       "shadowCastTexture": {
         "flipX": true,
-        "spritesheetVariant": "original",
         "textureId": "shadow.wall.y",
       },
       "state": {
@@ -8255,7 +8146,6 @@ exports[`playing through a complex, deterministic room ("laboratory") should alw
         "z": 50,
       },
       "shadowCastTexture": {
-        "spritesheetVariant": "original",
         "textureId": "shadow.wall.y",
       },
       "state": {
@@ -8298,7 +8188,6 @@ exports[`playing through a complex, deterministic room ("laboratory") should alw
       "jsonItemId": "wall@7,0,0",
       "shadowCastTexture": {
         "flipX": true,
-        "spritesheetVariant": "original",
         "textureId": "shadow.wall.y",
       },
       "state": {
@@ -8354,7 +8243,6 @@ exports[`playing through a complex, deterministic room ("laboratory") should alw
       },
       "shadowCastTexture": {
         "flipX": true,
-        "spritesheetVariant": "original",
         "textureId": "shadow.wall.y",
       },
       "state": {

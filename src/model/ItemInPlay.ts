@@ -1,16 +1,13 @@
-import { type EmptyObject } from "type-fest";
+import type { EmptyObject } from "type-fest";
 
-import { type ItemTypeUnion } from "../_generated/types/ItemInPlayUnion";
-import { type SpecifiedTextureCreateSpriteOptions } from "../game/render/createSprite";
-import { type BracketedSegmentOptions } from "../sound/soundUtils/createBracketedSound";
-import { type SceneryName } from "../sprites/planets";
-import {
-  type Aabb,
-  type DirectionXy4,
-  type Xyz,
-} from "../utils/vectors/vectors";
-import { type ItemState } from "./ItemState";
-import { type ExitGameRoomId } from "./json/ItemConfigMap";
+import type { ItemTypeUnion } from "../_generated/types/ItemInPlayUnion";
+import type { ShadowCastSpriteOptions } from "../game/render/ShadowCastSpriteOptions";
+import type { BracketedSegmentOptions } from "../sound/soundUtils/createBracketedSound";
+import type { SceneryName } from "../sprites/planets";
+import type { Aabb, DirectionXy4, Xyz } from "../utils/vectors/vectors";
+import type { ItemState } from "./ItemState";
+import type { ExitGameRoomId } from "./json/ItemConfigMap";
+
 import {
   type JsonItemConfig,
   type JsonItemType,
@@ -157,7 +154,7 @@ export type ItemInPlay<
   state: ItemState<T, RoomId, RoomItemId>;
 
   /** the shadow this item casts on other items */
-  shadowCastTexture?: SpecifiedTextureCreateSpriteOptions;
+  shadowCastTexture?: ShadowCastSpriteOptions;
 
   /** items this item will cast no shadows on */
   noShadowCastOn?: Array<ItemInPlayType>;

@@ -1,5 +1,7 @@
+import type { ItemInPlay } from "../../../model/ItemInPlay";
+import type { ShadowCastSpriteOptions } from "../../render/ShadowCastSpriteOptions";
+
 import { defaultItemProperties } from "../../../model/defaultItemProperties";
-import { type ItemInPlay } from "../../../model/ItemInPlay";
 import { type JsonItem } from "../../../model/json/JsonItem";
 import { type RoomJson, roomJsonItemsIterable } from "../../../model/RoomJson";
 import {
@@ -9,7 +11,6 @@ import {
 } from "../../../utils/vectors/vectors";
 import { fullBlockAabb } from "../../collision/boundingBoxes";
 import { multiplyBoundingBox } from "../../collision/multiplyBoundingBox";
-import { type SpecifiedTextureCreateSpriteOptions } from "../../render/createSprite";
 import { blockXyzToFineXyz } from "../../render/projections";
 import { defaultBaseState } from "./itemDefaultStates";
 
@@ -33,9 +34,8 @@ const floorEdgeRenderThicknessPx = 10;
 const extraFloorAmountForDoorsFar = 0.52;
 const extraFloorAmountForDoorsNear = 0.5;
 
-const shadowFullBlock: SpecifiedTextureCreateSpriteOptions = Object.freeze({
+const shadowFullBlock: ShadowCastSpriteOptions = Object.freeze({
   textureId: "shadow.fullBlock",
-  spritesheetVariant: "original",
 });
 
 export const loadFloor = <RoomId extends string, RoomItemId extends string>(
