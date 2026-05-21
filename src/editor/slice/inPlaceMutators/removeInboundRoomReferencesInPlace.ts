@@ -1,26 +1,37 @@
-import { roomJsonItemsIterable } from "../../../model/RoomJson";
+import { iterateRoomJsonItemsWithIds } from "../../../model/RoomJson";
 import { keys, valuesIter } from "../../../utils/entries";
-import { type EditorRoomId } from "../../editorTypes";
+import {
+  type EditorRoomId,
+  type EditorRoomItemId,
+  type EditorRoomJson,
+} from "../../editorTypes";
 import { type LevelEditorState } from "../levelEditorSlice";
+import { deleteItemInPlace } from "./deleteItemInPlace";
 
 export const removeInboundRoomReferencesInPlace = (
   state: LevelEditorState,
   deletedRoomId: EditorRoomId,
 ) => {
   for (const room of valuesIter(state.campaignInProgress.rooms)) {
-    for (const item of roomJsonItemsIterable(
-      room,
+    const doorIdsToDelete: EditorRoomItemId[] = [];
+
+    for (const [id, item] of iterateRoomJsonItemsWithIds(
+      room.items,
       "door",
       "teleporter",
       "portableTeleporter",
     )) {
       if (item.config.toRoom === deletedRoomId) {
         if (item.type === "door") {
-          item.config.toRoom = "nowhere" as EditorRoomId;
+          doorIdsToDelete.push(id as EditorRoomItemId);
         } else {
           delete item.config.toRoom;
         }
       }
+    }
+
+    for (const doorId of doorIdsToDelete) {
+      deleteItemInPlace(room as EditorRoomJson, doorId);
     }
 
     if (room.roomAbove === deletedRoomId) {

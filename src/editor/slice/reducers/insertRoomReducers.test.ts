@@ -15,6 +15,7 @@ import {
   changeToRoom,
   insertRoom,
   type LevelEditorState,
+  removeRoom,
   setTool,
 } from "../levelEditorSlice";
 import {
@@ -878,5 +879,42 @@ describe("placing a door tool in a non-origin subroom of a multi-chunk room", ()
 
     expect(returnDoor.position.x).toBeGreaterThanOrEqual(0);
     expect(returnDoor.position.x).toBeLessThan(8);
+  });
+});
+
+describe("removeRoom cleans up doors and heals walls", () => {
+  const roomWithWallsId = "room_0" as EditorRoomId;
+
+  const stateWithWalledRoom = reduceLevelEditorActions(
+    editorStateWithOneRoomWithNoItems,
+    addRoom({ roomSize: { x: 8, y: 8 } }),
+  );
+
+  test("inserting then removing a room restores the original room to its prior state", () => {
+    const originalRoom =
+      stateWithWalledRoom.campaignInProgress.rooms[roomWithWallsId];
+
+    const afterRemove = reduceLevelEditorActions(
+      stateWithWalledRoom,
+      insertRoom({ direction: "left" }),
+      removeRoom(),
+    );
+
+    const restoredRoom = afterRemove.campaignInProgress.rooms[roomWithWallsId];
+
+    const doors = Object.values(restoredRoom.items).filter(
+      (item) => item.type === "door",
+    );
+    expect(doors).toHaveLength(0);
+
+    const originalWalls = Object.values(originalRoom.items)
+      .filter((item) => item.type === "wall")
+      .map(({ type, config, position }) => ({ type, config, position }));
+    const restoredWalls = Object.values(restoredRoom.items)
+      .filter((item) => item.type === "wall")
+      .map(({ type, config, position }) => ({ type, config, position }));
+
+    expect(restoredWalls).toEqual(expect.arrayContaining(originalWalls));
+    expect(restoredWalls).toHaveLength(originalWalls.length);
   });
 });
