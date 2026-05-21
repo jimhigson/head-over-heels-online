@@ -34,7 +34,7 @@ export const initialLevelEditorSliceState: LevelEditorState = {
   campaignInProgress: initialCampaign,
   // showing a 'new campaign' placeholder that has never been saved:
   remoteCampaign: undefined,
-  currentlyEditing: { roomId: initialRoomId, subRoomId: "*" },
+  selectedRooms: [{ roomId: initialRoomId, subRoomId: "*" }],
   editingRoomIdHistory: {
     back: [],
     forward: [],

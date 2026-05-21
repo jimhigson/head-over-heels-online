@@ -9,15 +9,18 @@ import { LazyMapRoomTooltipDecorator } from "../../game/components/dialogs/menuD
 import { MapSvg } from "../../game/components/dialogs/menuDialog/dialogs/map/Map.svg";
 import { BitmapText } from "../../game/components/tailwindSprites/BitmapText";
 import { type Key } from "../../game/input/keys";
-import { store } from "../../store/store";
+import { store, useEditorAppSelector } from "../../store/store";
 import { valuesIter } from "../../utils/entries";
 import { useElementSize } from "../../utils/react/useElementSize";
 import { unitVectors } from "../../utils/vectors/unitVectors";
 import { addXyz, xyzEqual } from "../../utils/vectors/vectors";
+import { selectCursorRoom } from "../slice/levelEditorSelectors";
 import {
+  addRoomToSelection,
   changeToRoom,
   insertRoom,
   setRoomAboveOrBelow,
+  toggleRoomInSelection,
 } from "../slice/levelEditorSlice";
 import { confirmDeleteRoomThunk } from "../toolbar/confirmThunk";
 import { LazyEditorMapInsertButtonDecorator } from "./LazyEditorMapInsertButtonDecorator";
@@ -41,7 +44,7 @@ const navigateToAdjacentRoom = (
   key: NavigationKey,
   gridPositions: SortedObjectOfRoomGridPositionSpecs<EditorRoomId>,
 ) => {
-  const { roomId, subRoomId } = store.getState().levelEditor.currentlyEditing;
+  const { roomId, subRoomId } = selectCursorRoom(store.getState().levelEditor);
   const direction = keyToUnitVector[key];
   if (!direction) {
     return;
@@ -80,6 +83,38 @@ const navigateToAdjacentRoom = (
   });
 };
 
+const extendSelectionInDirection = (
+  key: NavigationKey,
+  gridPositions: SortedObjectOfRoomGridPositionSpecs<EditorRoomId>,
+) => {
+  const { roomId, subRoomId } = selectCursorRoom(store.getState().levelEditor);
+  const direction = keyToUnitVector[key];
+
+  const currentRoomPosition = valuesIter(gridPositions).find(
+    (spec) => spec.roomId === roomId && spec.subRoomId === subRoomId,
+  )?.gridPosition;
+
+  if (!currentRoomPosition) {
+    return;
+  }
+
+  const targetPosition = addXyz(currentRoomPosition, unitVectors[direction]);
+
+  const targetSpec = valuesIter(gridPositions).find((spec) =>
+    xyzEqual(spec.gridPosition, targetPosition),
+  );
+  if (!targetSpec) {
+    return;
+  }
+
+  store.dispatch(
+    addRoomToSelection({
+      roomId: targetSpec.roomId,
+      subRoomId: targetSpec.subRoomId,
+    }),
+  );
+};
+
 const insertInDirection = (key: NavigationKey) => {
   const direction = keyToUnitVector[key];
   switch (direction) {
@@ -102,8 +137,12 @@ const insertInDirection = (key: NavigationKey) => {
 };
 
 const editorClickableRoomDecorator = createClickableRoomDecorator<EditorRoomId>(
-  (roomId, subRoomId) => {
-    store.dispatch(changeToRoom({ roomId, subRoomId }));
+  (roomId, subRoomId, { metaKey, ctrlKey }) => {
+    if (metaKey || ctrlKey) {
+      store.dispatch(toggleRoomInSelection({ roomId, subRoomId }));
+    } else {
+      store.dispatch(changeToRoom({ roomId, subRoomId }));
+    }
   },
 );
 
@@ -122,7 +161,9 @@ export const EditorMap = () => {
     height: mapContainerHeight,
   } = useElementSize<HTMLDivElement>();
   const mapData = useEditorMapData();
-
+  const selectedRooms = useEditorAppSelector(
+    (state) => state.levelEditor.selectedRooms,
+  );
   if (mapData.isError) {
     return (
       <div className="p-1 h-full flex flex-col gap-y-1 w-full scale-editor bg-shadow text-white overflow-scroll">
@@ -152,6 +193,8 @@ export const EditorMap = () => {
           e.preventDefault();
           if (e.altKey) {
             insertInDirection(e.key);
+          } else if (e.shiftKey) {
+            extendSelectionInDirection(e.key, mapData.gridPositions);
           } else {
             navigateToAdjacentRoom(e.key, mapData.gridPositions);
           }
@@ -165,6 +208,7 @@ export const EditorMap = () => {
         containerWidth={mapContainerWidth}
         clickableAreaDecorators={editorClickableAreaDecorators}
         postfixDecorators={editorPostfixDecorators}
+        selectedRoomIds={selectedRooms.map((r) => r.roomId)}
         {...mapData}
       />
     </div>

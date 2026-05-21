@@ -12,7 +12,10 @@ import {
   type EditorRoomItemId,
   type EditorRoomJson,
 } from "../../editorTypes";
-import { selectCurrentRoomFromLevelEditorState } from "../levelEditorSelectors";
+import {
+  selectCurrentRoomFromLevelEditorState,
+  selectCursorRoomId,
+} from "../levelEditorSelectors";
 import {
   applyItemTool,
   deleteSelected,
@@ -502,7 +505,7 @@ describe('editing a door\'s "toRoom" config provides convenience methods to main
 
     const state: LevelEditorState = {
       ...editorStateWithOneRoomWithNoItems,
-      currentlyEditing: { roomId: roomA, subRoomId: "*" },
+      selectedRooms: [{ roomId: roomA, subRoomId: "*" }],
       campaignInProgress: {
         ...editorStateWithOneRoomWithNoItems.campaignInProgress,
         rooms: {
@@ -623,9 +626,9 @@ describe("setRoomAboveOrBelow", () => {
       setRoomAboveOrBelow({ direction: "above", createNew: true }),
     );
 
-    expect(result.currentlyEditing.roomId).not.toBe(testRoomId);
+    expect(selectCursorRoomId(result)).not.toBe(testRoomId);
     const originalRoom = result.campaignInProgress.rooms[testRoomId];
-    expect(result.currentlyEditing.roomId).toBe(originalRoom.roomAbove);
+    expect(selectCursorRoomId(result)).toBe(originalRoom.roomAbove);
   });
 
   test("createNew splices between existing rooms", () => {

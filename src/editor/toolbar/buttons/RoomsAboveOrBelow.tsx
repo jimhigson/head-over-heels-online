@@ -3,7 +3,10 @@ import { useAppDispatch } from "../../../store/hooks";
 import { useEditorAppSelector } from "../../../store/store";
 import { RoomSelect } from "../../../ui/RoomSelect";
 import { type EditorRoomId } from "../../editorTypes";
-import { selectCurrentRoomFromLevelEditorState } from "../../slice/levelEditorSelectors";
+import {
+  selectCurrentRoomFromLevelEditorState,
+  selectCursorRoomId,
+} from "../../slice/levelEditorSelectors";
 import {
   changeToRoom,
   setRoomAboveOrBelow,
@@ -20,8 +23,8 @@ const RoomsAboveOrBelowSelectOrCreate = ({
   const campaign = useEditorAppSelector(
     ({ levelEditor }) => levelEditor.campaignInProgress,
   );
-  const currentlyEditingRoomId = useEditorAppSelector(
-    ({ levelEditor }) => levelEditor.currentlyEditing.roomId,
+  const currentlyEditingRoomId = useEditorAppSelector(({ levelEditor }) =>
+    selectCursorRoomId(levelEditor),
   );
   const dispatch = useAppDispatch();
 

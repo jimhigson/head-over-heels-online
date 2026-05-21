@@ -20,7 +20,10 @@ import {
   type Xyz,
   xyzEqual,
 } from "../../../utils/vectors/vectors";
-import { selectCurrentRoomFromLevelEditorState } from "../levelEditorSelectors";
+import {
+  selectCurrentRoomFromLevelEditorState,
+  selectCursorSubRoomId,
+} from "../levelEditorSelectors";
 import {
   roomFloorMaxX,
   roomFloorMaxY,
@@ -98,7 +101,8 @@ export const insertRoomInPlace = (
   const currentRoom = selectCurrentRoomFromLevelEditorState(state);
   const oppositeDir = oppositeDirection(direction);
 
-  const { subRoomId } = state.currentlyEditing;
+  const subRoomId = selectCursorSubRoomId(state);
+  const currentRoomBounds = getRoomFloorBounds(currentRoom);
   const currentSubRoomBounds = getSubRoomFloorBounds(currentRoom, subRoomId);
 
   const currentRoomDoorsInDirection = iterateRoomJsonItemsWithIds(
@@ -143,7 +147,7 @@ export const insertRoomInPlace = (
   const gridPositionSpecs = roomGridPositions({
     campaign: state.campaignInProgress,
     roomId: currentRoom.id,
-    subRoomId: state.currentlyEditing.subRoomId,
+    subRoomId: selectCursorSubRoomId(state),
   });
   const targetSpec = gridPositionSpecs.find(({ gridPosition }) =>
     xyzEqual(gridPosition, unitVectors[direction]),

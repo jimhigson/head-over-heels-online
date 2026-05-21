@@ -30,7 +30,7 @@ export const wallItemId = "testWall" as EditorRoomItemId;
 
 export const editorStateWithOneRoomWithNoItems: LevelEditorState = {
   ...initialLevelEditorSliceState,
-  currentlyEditing: { roomId: testRoomId, subRoomId: "*" },
+  selectedRooms: [{ roomId: testRoomId, subRoomId: "*" }],
   campaignInProgress: {
     locator: {
       campaignName: "testCampaign",

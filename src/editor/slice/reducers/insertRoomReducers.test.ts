@@ -9,6 +9,7 @@ import type {
 
 import { roomGridPositions } from "../../../game/components/dialogs/menuDialog/dialogs/map/roomGridPositions";
 import { exitGameRoomId } from "../../../model/json/ItemConfigMap";
+import { selectCursorRoomId } from "../levelEditorSelectors";
 import {
   addRoom,
   applyItemTool,
@@ -184,9 +185,9 @@ describe("insertRoom with no existing doors", () => {
       insertRoom({ direction: "away" }),
     );
 
-    expect(result.currentlyEditing.roomId).not.toBe(testRoomId);
+    expect(selectCursorRoomId(result)).not.toBe(testRoomId);
     expect(
-      result.campaignInProgress.rooms[result.currentlyEditing.roomId],
+      result.campaignInProgress.rooms[selectCursorRoomId(result)],
     ).toBeDefined();
   });
 });
@@ -469,7 +470,7 @@ describe("insertRoom when unconnected room already exists at target grid positio
       insertRoom({ direction: "away" }),
     );
 
-    expect(result.currentlyEditing.roomId).toBe(roomD);
+    expect(selectCursorRoomId(result)).toBe(roomD);
   });
 });
 
@@ -508,7 +509,7 @@ describe("insertRoom from a subroom of a multi-chunk room", () => {
           },
         },
       };
-      draft.currentlyEditing = { roomId: testRoomId, subRoomId: "0" };
+      draft.selectedRooms = [{ roomId: testRoomId, subRoomId: "0" }];
     },
   );
 
@@ -529,7 +530,7 @@ describe("insertRoom from a subroom of a multi-chunk room", () => {
 
   test("inserting from subroom 1 centres the door on subroom 1", () => {
     const stateOnSubRoom1 = produce(stateWithTwoChunkRoom, (draft) => {
-      draft.currentlyEditing = { roomId: testRoomId, subRoomId: "1" };
+      draft.selectedRooms = [{ roomId: testRoomId, subRoomId: "1" }];
     });
 
     const result = reduceLevelEditorActions(
@@ -585,7 +586,7 @@ describe("insertRoom from a subroom where floor extends beyond subroom bounds", 
           },
         },
       };
-      draft.currentlyEditing = { roomId: testRoomId, subRoomId: "left" };
+      draft.selectedRooms = [{ roomId: testRoomId, subRoomId: "left" }];
     },
   );
 

@@ -30,6 +30,7 @@ export type MapSvgProps<RoomId extends string> = MapData<RoomId> & {
   /** outermost first — the last decorator in the array wraps the clickable path directly */
   clickableAreaDecorators?: WrapClickableRoomDecoratorComponent<RoomId>[];
   postfixDecorators?: PostfixRoomDecoratorComponent<RoomId>[];
+  selectedRoomIds?: ReadonlyArray<RoomId>;
 };
 
 export type Bounds = {
@@ -82,6 +83,7 @@ export const MapSvg = <RoomId extends string>(props: MapSvgProps<RoomId>) => {
     curSubRoomId,
     clickableAreaDecorators,
     postfixDecorators,
+    selectedRoomIds,
   } = props;
 
   if (containerWidth === undefined) {
@@ -123,6 +125,7 @@ export const MapSvg = <RoomId extends string>(props: MapSvgProps<RoomId>) => {
           const roomRenderingId = `${roomId}/${subRoomId}`;
           const isCurrentRoom = curRoomId === roomId;
           const isCurrentSubRoom = isCurrentRoom && curSubRoomId === subRoomId;
+          const isSelected = selectedRoomIds?.includes(roomId) ?? false;
 
           return (
             <g
@@ -135,6 +138,7 @@ export const MapSvg = <RoomId extends string>(props: MapSvgProps<RoomId>) => {
                 roomPickupsCollected={pickupsCollected[roomId] ?? emptyObject}
                 roomJson={campaign.rooms[roomId]}
                 isCurrentRoom={isCurrentRoom}
+                isSelected={isSelected}
                 headItemInRoom={selectPlayableItemInRoomAndSubroom(
                   characterRooms,
                   "head",
@@ -167,6 +171,7 @@ export const MapSvg = <RoomId extends string>(props: MapSvgProps<RoomId>) => {
                               subRoomId={subRoomId}
                               boundaries={gridPositionSpec.boundaries}
                               isCurrentRoom={isCurrentRoom}
+                              isSelected={isSelected}
                               isCurrentSubRoom={isCurrentSubRoom}
                               allGridPositions={gridPositions}
                             >
@@ -195,6 +200,8 @@ export const MapSvg = <RoomId extends string>(props: MapSvgProps<RoomId>) => {
             const { roomId, subRoomId, gridPosition, boundaries } =
               gridPositionSpec;
 
+            const isSelected = selectedRoomIds?.includes(roomId) ?? false;
+
             return (
               <g
                 key={`${roomId}/${subRoomId}`}
@@ -209,6 +216,7 @@ export const MapSvg = <RoomId extends string>(props: MapSvgProps<RoomId>) => {
                     isCurrentSubRoom={
                       curRoomId === roomId && curSubRoomId === subRoomId
                     }
+                    isSelected={isSelected}
                     allGridPositions={gridPositions}
                   />
                 </Suspense>

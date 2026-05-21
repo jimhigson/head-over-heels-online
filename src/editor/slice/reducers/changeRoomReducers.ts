@@ -6,6 +6,7 @@ import {
 
 import { type EditorRoomId } from "../../editorTypes";
 import { changeCurrentRoomInPlace } from "../inPlaceMutators/changeCurrentRoomInPlace";
+import { selectCursorRoomId } from "../levelEditorSelectors";
 import { type LevelEditorState } from "../levelEditorSlice";
 
 export const changeRoomReducers = {
@@ -39,7 +40,7 @@ export const changeRoomReducers = {
       return;
     }
 
-    editingRoomIdHistory.forward.push(state.currentlyEditing.roomId);
+    editingRoomIdHistory.forward.push(selectCursorRoomId(state));
     for (let i = 0; i < n - 1; i++) {
       editingRoomIdHistory.forward.push(
         editingRoomIdHistory.back.pop() as EditorRoomId,
@@ -60,7 +61,7 @@ export const changeRoomReducers = {
       return;
     }
 
-    editingRoomIdHistory.back.push(state.currentlyEditing.roomId);
+    editingRoomIdHistory.back.push(selectCursorRoomId(state));
     for (let i = 0; i < n - 1; i++) {
       editingRoomIdHistory.back.push(
         editingRoomIdHistory.forward.pop() as EditorRoomId,

@@ -28,6 +28,7 @@ import { consolidateCurrentRoomInPlace } from "../inPlaceMutators/consolidateCur
 import { deleteItemInPlace } from "../inPlaceMutators/deleteItemInPlace";
 import {
   selectCurrentRoomFromLevelEditorState,
+  selectCursorRoomId,
   selectRoomFromLevelEditorState,
 } from "../levelEditorSelectors";
 import { type LevelEditorState } from "../levelEditorSlice";
@@ -86,11 +87,13 @@ export const editRoomReducers = {
     // the wrapped type. Since the normal type isn't readonly, this wrapping isn't needed anyway
     const state = _state as LevelEditorState;
 
-    const target =
-      state.campaignInProgress.rooms[state.currentlyEditing.roomId].color;
-
     pushUndoInPlace(state, { kind: "changeColour" }, timestamp);
-    Object.assign(target, colour);
+    for (const { roomId } of state.selectedRooms) {
+      const target = state.campaignInProgress.rooms[roomId]?.color;
+      if (target) {
+        Object.assign(target, colour);
+      }
+    }
   },
   changeRoomScenery(
     _state,
@@ -103,9 +106,13 @@ export const editRoomReducers = {
     // the wrapped type. Since the normal type isn't readonly, this wrapping isn't needed anyway
     const state = _state as LevelEditorState;
 
-    const roomJson = selectCurrentRoomFromLevelEditorState(state);
     pushUndoInPlace(state, { kind: "changeScenery", sceneryName }, timestamp);
-    changeRoomSceneryInPlace(roomJson, sceneryName);
+    for (const { roomId } of state.selectedRooms) {
+      const roomJson = state.campaignInProgress.rooms[roomId];
+      if (roomJson) {
+        changeRoomSceneryInPlace(roomJson, sceneryName);
+      }
+    }
   },
 
   /**
@@ -131,14 +138,15 @@ export const editRoomReducers = {
     // the wrapped type. Since the normal type isn't readonly, this wrapping isn't needed anyway
     const state = _state as LevelEditorState;
     const { rooms } = state.campaignInProgress;
-    const prevRoomJson = rooms[state.currentlyEditing.roomId];
+    const cursorRoomId = selectCursorRoomId(state);
+    const prevRoomJson = rooms[cursorRoomId];
 
     const description =
       descriptionOverride ??
       describeRoomJsonEdit(prevRoomJson as EditorRoomJson, newRoomJson);
 
     pushUndoInPlace(state, description, timestamp);
-    rooms[state.currentlyEditing.roomId] = newRoomJson;
+    rooms[cursorRoomId] = newRoomJson;
 
     // selected items may no longer exist in the room after reloading - remove these selections:
     const selectedJsonItemIdsThatStillExist = state.selectedJsonItemIds.filter(
@@ -154,7 +162,7 @@ export const editRoomReducers = {
       state.selectedJsonItemIds = selectedJsonItemIdsThatStillExist;
     }
 
-    if (newRoomJson.id !== state.currentlyEditing.roomId) {
+    if (newRoomJson.id !== selectCursorRoomId(state)) {
       changeIdOfCurrentRoomInPlace(state, newRoomJson.id);
     }
 
@@ -241,7 +249,7 @@ export const editRoomReducers = {
       const prevNcrRoom = rooms[prevOutboundNCR.with.room];
       if (
         prevNcrRoom.meta?.nonContiguousRelationship?.with.room ===
-        state.currentlyEditing.roomId
+        selectCursorRoomId(state)
       ) {
         delete prevNcrRoom.meta.nonContiguousRelationship;
       }
@@ -351,9 +359,7 @@ export const editRoomReducers = {
     }
 
     if (!payload.createNew && previouslyLinkedRoom) {
-      if (
-        previouslyLinkedRoom[reverseProperty] === state.currentlyEditing.roomId
-      ) {
+      if (previouslyLinkedRoom[reverseProperty] === selectCursorRoomId(state)) {
         previouslyLinkedRoom[reverseProperty] = undefined;
       }
     }

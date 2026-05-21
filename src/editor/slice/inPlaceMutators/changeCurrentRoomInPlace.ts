@@ -2,6 +2,8 @@ import type { RoomJson } from "../../../model/RoomJson";
 import type { EditorRoomId } from "../../editorTypes";
 import type { LevelEditorState } from "../levelEditorSlice";
 
+import { selectCursorRoomId } from "../levelEditorSelectors";
+
 export const firstSubRoomId = (roomJson: RoomJson<string, string>): string => {
   const subRoomKeys =
     roomJson.meta?.subRooms && Object.keys(roomJson.meta.subRooms);
@@ -32,9 +34,9 @@ export const changeCurrentRoomInPlace = (
   }
 
   if (!noPushToHistory) {
-    state.editingRoomIdHistory.back.push(state.currentlyEditing.roomId);
+    state.editingRoomIdHistory.back.push(selectCursorRoomId(state));
   }
-  state.currentlyEditing = { roomId, subRoomId: resolvedSubRoomId };
+  state.selectedRooms = [{ roomId, subRoomId: resolvedSubRoomId }];
 
   state.clickableAnnotationHovered = false;
   state.hoveredItem = undefined;

@@ -1,4 +1,4 @@
-import { cloneElement, type ReactElement } from "react";
+import { cloneElement, type MouseEvent, type ReactElement } from "react";
 
 import type {
   RoomDecoratorProps,
@@ -6,7 +6,7 @@ import type {
 } from "./RoomDecoratorProps";
 
 export const createClickableRoomDecorator = <RoomId extends string>(
-  onClick: (roomId: RoomId, subRoomId: string) => void,
+  onClick: (roomId: RoomId, subRoomId: string, e: MouseEvent) => void,
 ): WrapClickableRoomDecoratorComponent<RoomId> => {
   const ClickableRoomDecorator = ({
     roomId,
@@ -15,7 +15,7 @@ export const createClickableRoomDecorator = <RoomId extends string>(
   }: RoomDecoratorProps<RoomId> & { children: ReactElement }) =>
     cloneElement(children as ReactElement<Record<string, unknown>>, {
       "data-room-click": `${roomId}/${subRoomId}`,
-      onClick: () => onClick(roomId, subRoomId),
+      onClick: (e: MouseEvent) => onClick(roomId, subRoomId, e),
     });
 
   return ClickableRoomDecorator;

@@ -5,13 +5,16 @@ import {
 import { type LevelEditorState } from "../../../editor/slice/levelEditorSlice";
 import { roomJsonItemsIterable } from "../../../model/RoomJson";
 import { valuesIter } from "../../../utils/entries";
-import { selectCurrentRoomFromLevelEditorState } from "../levelEditorSelectors";
+import {
+  selectCurrentRoomFromLevelEditorState,
+  selectCursorRoomId,
+} from "../levelEditorSelectors";
 
 export const changeIdOfCurrentRoomInPlace = (
   state: LevelEditorState,
   newRoomId: EditorRoomId,
 ) => {
-  const prevRoomId = state.currentlyEditing.roomId;
+  const prevRoomId = selectCursorRoomId(state);
   const prevRoom = selectCurrentRoomFromLevelEditorState(state);
 
   for (const room of valuesIter(state.campaignInProgress.rooms)) {
@@ -54,7 +57,12 @@ export const changeIdOfCurrentRoomInPlace = (
   };
   delete state.campaignInProgress.rooms[prevRoomId];
 
-  state.currentlyEditing.roomId = newRoomId;
+  // the last selected room is always the cursor room
+  const cursor = state.selectedRooms.at(-1);
+  if (!cursor) {
+    throw new Error("no room selected");
+  }
+  cursor.roomId = newRoomId;
 
   state.editingRoomIdHistory.back = state.editingRoomIdHistory.back.map((id) =>
     id === prevRoomId ? newRoomId : id,

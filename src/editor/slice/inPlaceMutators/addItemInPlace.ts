@@ -14,7 +14,10 @@ import {
   type EditorRoomJsonItems,
 } from "../../editorTypes";
 import { type ItemTool } from "../../RoomEditingArea/interactivity/Tool";
-import { selectCurrentRoomFromLevelEditorState } from "../levelEditorSelectors";
+import {
+  selectCurrentRoomFromLevelEditorState,
+  selectCursorRoomId,
+} from "../levelEditorSelectors";
 import {
   type LevelEditorState,
   type PreviewedRoomItemEdits,
@@ -71,7 +74,7 @@ export const addItemInPlace = <T extends JsonItemType = JsonItemType>(
 export const roomEditTarget = (
   state: LevelEditorState,
   isPreview: boolean,
-  roomId: EditorRoomId = state.currentlyEditing.roomId,
+  roomId: EditorRoomId = selectCursorRoomId(state),
 ): EditorRoomJsonItems | PreviewedRoomItemEdits => {
   if (isPreview) {
     if (state.pendingEdits === undefined) {

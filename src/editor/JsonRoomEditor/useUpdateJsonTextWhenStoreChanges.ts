@@ -9,6 +9,7 @@ import {
   editorStore,
   useEditorAppSelector,
 } from "../../store/store";
+import { selectCursorRoomId } from "../slice/levelEditorSelectors";
 import { selectCurrentEditingRoomJson } from "../slice/levelEditorSlice";
 import { useLoadMonaco } from "./useLoadMonaco";
 
@@ -22,9 +23,7 @@ const updateTextNow = (
   }
 
   const roomJson = selectCurrentEditingRoomJson(state);
-  const {
-    currentlyEditing: { roomId: currentlyEditingRoomId },
-  } = state.levelEditor;
+  const currentlyEditingRoomId = selectCursorRoomId(state.levelEditor);
 
   if (roomJson === undefined || !currentlyEditingRoomId) {
     return;
@@ -110,8 +109,8 @@ const useUpdateTextWhenJsonChangesInSameRoom = (
   monaco: null | typeof Monaco,
 ) => {
   const currentRoomJson = useEditorAppSelector(selectCurrentEditingRoomJson);
-  const currentlyEditingRoomId = useEditorAppSelector(
-    (state) => state.levelEditor.currentlyEditing.roomId,
+  const currentlyEditingRoomId = useEditorAppSelector((state) =>
+    selectCursorRoomId(state.levelEditor),
   );
   const previousRoomIdRef = useRef<string | undefined>(undefined);
 
@@ -147,8 +146,8 @@ const useUpdateTextWhenJsonChangesInSameRoom = (
 const useCreateDocumentsInMonacoWhenCurrentRoomChanges = (
   monaco: null | typeof Monaco,
 ) => {
-  const currentlyEditingRoomId = useEditorAppSelector(
-    (state) => state.levelEditor.currentlyEditing.roomId,
+  const currentlyEditingRoomId = useEditorAppSelector((state) =>
+    selectCursorRoomId(state.levelEditor),
   );
 
   useEffect(() => {

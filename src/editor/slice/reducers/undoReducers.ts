@@ -9,7 +9,10 @@ import {
 import { emptyObject } from "../../../utils/empty";
 import { type EditorRoomId, type EditorRoomJson } from "../../editorTypes";
 import { changeIdOfCurrentRoomInPlace } from "../inPlaceMutators/changeIdOfCurrentRoomInPlace";
-import { selectCurrentRoomFromLevelEditorState } from "../levelEditorSelectors";
+import {
+  selectCurrentRoomFromLevelEditorState,
+  selectCursorRoomId,
+} from "../levelEditorSelectors";
 import { type LevelEditorState } from "../levelEditorSlice";
 import { removeNonExistingItemsFromSelection } from "./selectionsReducers";
 import { type UndoDescription } from "./undoDescription";
@@ -31,7 +34,7 @@ export type UndoRedoPayload = {
 };
 
 const roomHistory = (state: LevelEditorState): RoomUndoHistory => {
-  const { roomId } = state.currentlyEditing;
+  const roomId = selectCursorRoomId(state);
   state.history[roomId] ??= { undo: [], redo: [] };
   return state.history[roomId];
 };
@@ -81,10 +84,8 @@ export const undoReducers = {
     // the wrapped type. Since the normal type isn't readonly, this wrapping isn't needed anyway
     const state = _state as LevelEditorState;
 
-    const {
-      campaignInProgress,
-      currentlyEditing: { roomId: currentlyEditingRoomId },
-    } = state;
+    const { campaignInProgress } = state;
+    const currentlyEditingRoomId = selectCursorRoomId(state);
     const { undo, redo } = roomHistory(state);
 
     for (let i = 0; i < n; i++) {
@@ -127,10 +128,8 @@ export const undoReducers = {
     // the wrapped type. Since the normal type isn't readonly, this wrapping isn't needed anyway
     const state = _state as LevelEditorState;
 
-    const {
-      campaignInProgress,
-      currentlyEditing: { roomId: currentlyEditingRoomId },
-    } = state;
+    const { campaignInProgress } = state;
+    const currentlyEditingRoomId = selectCursorRoomId(state);
     const { undo, redo } = roomHistory(state);
 
     for (let i = 0; i < n; i++) {
@@ -172,12 +171,12 @@ const emptyUndoEntries: UndoEntry[] = [];
 export const undoSelectors = {
   selectUndoHistory: createSelector(
     (state: LevelEditorState) =>
-      state.history[state.currentlyEditing.roomId]?.undo ?? emptyUndoEntries,
+      state.history[selectCursorRoomId(state)]?.undo ?? emptyUndoEntries,
     extractHistoryItems,
   ),
   selectRedoHistory: createSelector(
     (state: LevelEditorState) =>
-      state.history[state.currentlyEditing.roomId]?.redo ?? emptyUndoEntries,
+      state.history[selectCursorRoomId(state)]?.redo ?? emptyUndoEntries,
     extractHistoryItems,
   ),
 } satisfies SliceSelectors<LevelEditorState>;

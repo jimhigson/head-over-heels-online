@@ -15,6 +15,7 @@ import { useEditorAppSelector } from "../../store/store";
 import { emptyObject } from "../../utils/empty";
 import { createSerialisableErrors } from "../../utils/redux/createSerialisableErrors";
 import { type EditorRoomId } from "../editorTypes";
+import { selectCursorRoom } from "../slice/levelEditorSelectors";
 import { selectCurrentEditingRoomJson } from "../slice/levelEditorSlice";
 
 export const useEditorMapData = (): MapData<EditorRoomId> | MapDataError => {
@@ -27,7 +28,7 @@ export const useEditorMapData = (): MapData<EditorRoomId> | MapDataError => {
     return roomJson.planet;
   });
   const { roomId: curRoomEditingRoomId, subRoomId: curRoomSubroom } =
-    useEditorAppSelector((state) => state.levelEditor.currentlyEditing);
+    useEditorAppSelector((state) => selectCursorRoom(state.levelEditor));
 
   return useMemo(() => {
     try {
