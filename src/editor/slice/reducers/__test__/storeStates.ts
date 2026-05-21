@@ -14,14 +14,14 @@ export const doorItemToolWithAutoAddRooms: Tool = {
   type: "item",
   item: {
     type: "door",
-    config: { toRoom: "+" as EditorRoomId, direction: "towards" },
+    config: { toRoom: "+", direction: "towards" },
   },
 };
 export const doorItemToolWithoutAutoAddRooms: Tool = {
   type: "item",
   item: {
     type: "door",
-    config: { toRoom: "nowhere" as EditorRoomId, direction: "towards" },
+    config: { toRoom: "nowhere", direction: "towards" },
   },
 };
 

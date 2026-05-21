@@ -32,11 +32,8 @@ const blockXyIsInSubRoom = <RoomId extends string>(
   return (
     blockXy.x >= subRoom.physicalPosition.from.x &&
     blockXy.y >= subRoom.physicalPosition.from.y &&
-    // having equals on both sides is bad since it means
-    // if something is on the boundary it could be claimed
-    // by multiple subrooms, but doors are on the boundaries!
-    blockXy.x <= subRoom.physicalPosition.to.x &&
-    blockXy.y <= subRoom.physicalPosition.to.y
+    blockXy.x < subRoom.physicalPosition.to.x &&
+    blockXy.y < subRoom.physicalPosition.to.y
   );
 };
 
@@ -64,8 +61,8 @@ const inPlayItemDistanceToSubRoom = (
   if (
     position.x >= from.x &&
     position.y >= from.y &&
-    position.x <= to.x &&
-    position.y <= to.y
+    position.x < to.x &&
+    position.y < to.y
   ) {
     return 0;
   }
@@ -76,14 +73,14 @@ const inPlayItemDistanceToSubRoom = (
 
   if (position.x < from.x) {
     xDistance = from.x - position.x;
-  } else if (position.x > to.x) {
-    xDistance = position.x - to.x;
+  } else if (position.x >= to.x) {
+    xDistance = position.x - to.x + 1;
   }
 
   if (position.y < from.y) {
     yDistance = from.y - position.y;
-  } else if (position.y > to.y) {
-    yDistance = position.y - to.y;
+  } else if (position.y >= to.y) {
+    yDistance = position.y - to.y + 1;
   }
 
   return xDistance + yDistance;

@@ -89,14 +89,14 @@ describe("createNewRoom", () => {
       gridPosition: { x: 0, y: 0 },
       physicalPosition: {
         from: { x: 0, y: 0 },
-        to: { x: 7, y: 7 },
+        to: { x: 8, y: 8 },
       },
     });
     expect(room).toHaveSubroom({
       gridPosition: { x: 0, y: 1 },
       physicalPosition: {
         from: { x: 0, y: 8 },
-        to: { x: 7, y: 15 },
+        to: { x: 8, y: 16 },
       },
     });
 
@@ -169,28 +169,28 @@ describe("createNewRoom", () => {
       gridPosition: { x: 0, y: 0 },
       physicalPosition: {
         from: { x: 0, y: 0 },
-        to: { x: 7, y: 7 },
+        to: { x: 8, y: 8 },
       },
     });
     expect(room).toHaveSubroom({
       gridPosition: { x: 0, y: 1 },
       physicalPosition: {
         from: { x: 0, y: 8 },
-        to: { x: 7, y: 15 },
+        to: { x: 8, y: 16 },
       },
     });
     expect(room).toHaveSubroom({
       gridPosition: { x: 1, y: 1 },
       physicalPosition: {
         from: { x: 8, y: 8 },
-        to: { x: 15, y: 15 },
+        to: { x: 16, y: 16 },
       },
     });
     expect(room).toHaveSubroom({
       gridPosition: { x: 1, y: 2 },
       physicalPosition: {
         from: { x: 8, y: 16 },
-        to: { x: 15, y: 23 },
+        to: { x: 16, y: 24 },
       },
     });
 
@@ -287,35 +287,35 @@ describe("createNewRoom", () => {
       gridPosition: { x: 1, y: 1 },
       physicalPosition: {
         from: { x: 8, y: 8 },
-        to: { x: 15, y: 15 },
+        to: { x: 16, y: 16 },
       },
     });
     expect(room).toHaveSubroom({
       gridPosition: { x: 1, y: 0 },
       physicalPosition: {
         from: { x: 8, y: 0 },
-        to: { x: 15, y: 7 },
+        to: { x: 16, y: 8 },
       },
     });
     expect(room).toHaveSubroom({
       gridPosition: { x: 1, y: 2 },
       physicalPosition: {
         from: { x: 8, y: 16 },
-        to: { x: 15, y: 23 },
+        to: { x: 16, y: 24 },
       },
     });
     expect(room).toHaveSubroom({
       gridPosition: { x: 0, y: 1 },
       physicalPosition: {
         from: { x: 0, y: 8 },
-        to: { x: 7, y: 15 },
+        to: { x: 8, y: 16 },
       },
     });
     expect(room).toHaveSubroom({
       gridPosition: { x: 2, y: 1 },
       physicalPosition: {
         from: { x: 16, y: 8 },
-        to: { x: 23, y: 15 },
+        to: { x: 24, y: 16 },
       },
     });
 
@@ -434,14 +434,14 @@ describe("createNewRoom", () => {
       gridPosition: { x: 0, y: 0 },
       physicalPosition: {
         from: { x: 0, y: 0 },
-        to: { x: 7, y: 7 },
+        to: { x: 8, y: 8 },
       },
     });
     expect(room).toHaveSubroom({
       gridPosition: { x: 1, y: 0 },
       physicalPosition: {
         from: { x: 8, y: 0 },
-        to: { x: 15, y: 7 },
+        to: { x: 16, y: 8 },
       },
     });
 

@@ -5,8 +5,11 @@ import { type TextureTailwindClass } from "../../../sprites/spritesheet/spritesh
 import { store, useEditorAppSelector } from "../../../store/store";
 import { Switch } from "../../../ui/Switch";
 import { twClass } from "../../../utils/twClass";
-import { type EditorRoomId, type EditorRoomItemId } from "../../editorTypes";
-import { type ItemTool } from "../../RoomEditingArea/interactivity/Tool";
+import { type EditorRoomItemId } from "../../editorTypes";
+import {
+  type EditorToolRoomId,
+  type ItemTool,
+} from "../../RoomEditingArea/interactivity/Tool";
 import {
   selectCurrentEditingRoomJson,
   setTool,
@@ -22,8 +25,8 @@ function doorItemTool(autoAddRoom: boolean): ItemTool {
     type: "door",
     config: {
       direction: "away", // arbitrary, to be corrected on placement
-      toRoom: (autoAddRoom ? "+" : "nowhere") as EditorRoomId, // arbitrary, to be corrected on placement
-    } satisfies JsonItemConfig<"door", EditorRoomId, EditorRoomItemId>,
+      toRoom: autoAddRoom ? "+" : "nowhere",
+    } satisfies JsonItemConfig<"door", EditorToolRoomId, EditorRoomItemId>,
   };
 }
 
