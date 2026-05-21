@@ -96,8 +96,8 @@ export const createNewRoom = <RoomId extends string, RoomItemId extends string>(
                 y: gridPos.y * roomSize.y,
               },
               to: {
-                x: (gridPos.x + 1) * roomSize.x - 1,
-                y: (gridPos.y + 1) * roomSize.y - 1,
+                x: (gridPos.x + 1) * roomSize.x,
+                y: (gridPos.y + 1) * roomSize.y,
               },
             },
           },

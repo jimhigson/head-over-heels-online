@@ -57,9 +57,9 @@ const getSubRoomFloorBounds = (
     if (subRoom) {
       return {
         minX: Math.max(subRoom.physicalPosition.from.x, roomBounds.minX),
-        maxX: Math.min(subRoom.physicalPosition.to.x + 1, roomBounds.maxX),
+        maxX: Math.min(subRoom.physicalPosition.to.x, roomBounds.maxX),
         minY: Math.max(subRoom.physicalPosition.from.y, roomBounds.minY),
-        maxY: Math.min(subRoom.physicalPosition.to.y + 1, roomBounds.maxY),
+        maxY: Math.min(subRoom.physicalPosition.to.y, roomBounds.maxY),
       };
     }
   }
@@ -68,18 +68,17 @@ const getSubRoomFloorBounds = (
 };
 
 const doorPositionOnWall = (
-  /** room-wide bounds for the wall edge position */
-  roomBounds: FloorBounds,
+  bounds: FloorBounds,
   doorDirection: DirectionXy4,
   matchPosition: Xyz,
 ): Xyz => ({
   x:
-    doorDirection === "left" ? roomBounds.maxX
-    : doorDirection === "right" ? roomBounds.minX
+    doorDirection === "left" ? bounds.maxX
+    : doorDirection === "right" ? bounds.minX
     : matchPosition.x,
   y:
-    doorDirection === "away" ? roomBounds.maxY
-    : doorDirection === "towards" ? roomBounds.minY
+    doorDirection === "away" ? bounds.maxY
+    : doorDirection === "towards" ? bounds.minY
     : matchPosition.y,
   z: matchPosition.z,
 });
@@ -100,7 +99,6 @@ export const insertRoomInPlace = (
   const oppositeDir = oppositeDirection(direction);
 
   const { subRoomId } = state.currentlyEditing;
-  const currentRoomBounds = getRoomFloorBounds(currentRoom);
   const currentSubRoomBounds = getSubRoomFloorBounds(currentRoom, subRoomId);
 
   const currentRoomDoorsInDirection = iterateRoomJsonItemsWithIds(
@@ -163,7 +161,7 @@ export const insertRoomInPlace = (
 
   if (!hasDoors && existingRoomAtTarget) {
     const centrePosition = doorPositionOnWall(
-      currentRoomBounds,
+      currentSubRoomBounds,
       direction,
       wallCentreMidpoint(currentSubRoomBounds),
     );
@@ -172,9 +170,15 @@ export const insertRoomInPlace = (
       keys(currentRoom.items),
       typePrefix.door,
     ) as EditorRoomItemId;
+    const targetSubRoomId = targetSpec!.subRoomId;
     const outDoor: EditorJsonItem<"door"> = {
       type: "door",
-      config: { toRoom: existingRoomAtTarget.id, direction },
+      config: {
+        toRoom: existingRoomAtTarget.id,
+        direction,
+        meta:
+          targetSubRoomId === "*" ? undefined : { toSubRoom: targetSubRoomId },
+      },
       position: centrePosition,
     };
     currentRoom.items[outDoorId] = outDoor;
@@ -271,7 +275,7 @@ export const insertRoomInPlace = (
     }
   } else {
     const centrePosition = doorPositionOnWall(
-      currentRoomBounds,
+      currentSubRoomBounds,
       direction,
       wallCentreMidpoint(currentSubRoomBounds),
     );

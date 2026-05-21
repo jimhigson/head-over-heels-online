@@ -7,8 +7,16 @@ import type {
   EditorRoomItemId,
 } from "../../editorTypes";
 
+import { roomGridPositions } from "../../../game/components/dialogs/menuDialog/dialogs/map/roomGridPositions";
 import { exitGameRoomId } from "../../../model/json/ItemConfigMap";
-import { insertRoom, type LevelEditorState } from "../levelEditorSlice";
+import {
+  addRoom,
+  applyItemTool,
+  changeToRoom,
+  insertRoom,
+  type LevelEditorState,
+  setTool,
+} from "../levelEditorSlice";
 import {
   editorStateWithOneRoomWithNoItems,
   reduceLevelEditorActions,
@@ -487,13 +495,13 @@ describe("insertRoom from a subroom of a multi-chunk room", () => {
           subRooms: {
             "0": {
               gridPosition: { x: 0, y: 0 },
-              physicalPosition: { from: { x: 0, y: 0 }, to: { x: 7, y: 7 } },
+              physicalPosition: { from: { x: 0, y: 0 }, to: { x: 8, y: 8 } },
             },
             "1": {
               gridPosition: { x: 1, y: 0 },
               physicalPosition: {
                 from: { x: 8, y: 0 },
-                to: { x: 15, y: 7 },
+                to: { x: 16, y: 8 },
               },
             },
           },
@@ -628,5 +636,247 @@ describe("insertRoom from a subroom where floor extends beyond subroom bounds", 
     expect(returnDoors).toHaveLength(1);
     expect(returnDoors[0].config.toRoom).toBe(testRoomId);
     expect(returnDoors[0].position.x).toBe(2);
+  });
+});
+
+describe("insertRoom from a subroom that does not touch the room outer wall", () => {
+  const stateWithFourChunks: LevelEditorState = produce(
+    editorStateWithOneRoomWithNoItems,
+    (draft) => {
+      draft.campaignInProgress.rooms[testRoomId] = {
+        id: testRoomId,
+        planet: "blacktooth",
+        color: { hue: "cyan", shade: "basic" },
+        items: {
+          ["floor" as EditorRoomItemId]: {
+            type: "floor",
+            config: {
+              floorType: "standable",
+              scenery: "blacktooth",
+              times: { x: 17, y: 8 },
+            },
+            position: { x: 0, y: 4, z: 0 },
+          },
+          ["floor3" as EditorRoomItemId]: {
+            type: "floor",
+            config: {
+              floorType: "standable",
+              scenery: "blacktooth",
+              times: { x: 12, y: 4 },
+            },
+            position: { x: 10, y: 0, z: 0 },
+          },
+        },
+        meta: {
+          subRooms: {
+            "3": {
+              gridPosition: { x: 1, y: -1 },
+              physicalPosition: {
+                from: { x: 10, y: 0 },
+                to: { x: 17, y: 4 },
+              },
+            },
+            "4": {
+              gridPosition: { x: 2, y: -1 },
+              physicalPosition: {
+                from: { x: 17, y: 0 },
+                to: { x: 22, y: 4 },
+              },
+            },
+            left: {
+              gridPosition: { x: 1, y: 0 },
+              physicalPosition: {
+                from: { x: 10, y: 4 },
+                to: { x: 17, y: 12 },
+              },
+            },
+            right: {
+              gridPosition: { x: 0, y: 0 },
+              physicalPosition: {
+                from: { x: 0, y: 4 },
+                to: { x: 10, y: 12 },
+              },
+            },
+          },
+        },
+      };
+      draft.currentlyEditing = { roomId: testRoomId, subRoomId: "3" };
+    },
+  );
+
+  test("door is placed at the subroom boundary, not the room outer wall", () => {
+    const result = reduceLevelEditorActions(
+      stateWithFourChunks,
+      insertRoom({ direction: "right" }),
+    );
+
+    const doors = Object.values(
+      result.campaignInProgress.rooms[testRoomId].items,
+    ).filter((item): item is EditorJsonItem<"door"> => item.type === "door");
+
+    expect(doors).toHaveLength(1);
+    expect(doors[0].position.x).toBe(10);
+  });
+
+  test("door from subroom 'left' going left is at subroom boundary, not room outer wall", () => {
+    const stateOnLeft = produce(stateWithFourChunks, (draft) => {
+      draft.currentlyEditing = { roomId: testRoomId, subRoomId: "left" };
+    });
+
+    const result = reduceLevelEditorActions(
+      stateOnLeft,
+      insertRoom({ direction: "left" }),
+    );
+
+    const doors = Object.values(
+      result.campaignInProgress.rooms[testRoomId].items,
+    ).filter((item): item is EditorJsonItem<"door"> => item.type === "door");
+
+    expect(doors).toHaveLength(1);
+    expect(doors[0].position.x).toBe(17);
+  });
+
+  test("door from subroom 'right' going towards is at subroom boundary, not room outer wall", () => {
+    const stateOnRight = produce(stateWithFourChunks, (draft) => {
+      draft.currentlyEditing = { roomId: testRoomId, subRoomId: "right" };
+    });
+
+    const result = reduceLevelEditorActions(
+      stateOnRight,
+      insertRoom({ direction: "towards" }),
+    );
+
+    const doors = Object.values(
+      result.campaignInProgress.rooms[testRoomId].items,
+    ).filter((item): item is EditorJsonItem<"door"> => item.type === "door");
+
+    expect(doors).toHaveLength(1);
+    expect(doors[0].position.y).toBe(4);
+  });
+});
+
+describe("adding a door from a single-chunk room back to a multi-chunk room", () => {
+  const multiChunkRoomId = "room_0" as EditorRoomId;
+
+  /* create a setup like:
+   *
+   *           /\
+   *          / 1\
+   *         /    \  <- big triple room
+   *        /0 /\ 2\
+   *        \ d  d /
+   *         \/  \/
+   *          \  /   <- small single room
+   *           \/
+   */
+  const buildState = () =>
+    reduceLevelEditorActions(
+      editorStateWithOneRoomWithNoItems,
+      addRoom({
+        roomSize: { x: 8, y: 8 },
+        gridPositions: [
+          { x: 0, y: 0 },
+          { x: 0, y: 1 },
+          { x: -1, y: 1 },
+        ],
+      }),
+      changeToRoom({ roomId: multiChunkRoomId, subRoomId: "0" }),
+      insertRoom({ direction: "right" }),
+      insertRoom({ direction: "away" }),
+    );
+
+  test("does not crash when roomGridPositions traverses the result", () => {
+    const result = buildState();
+    const { roomId, subRoomId } = result.currentlyEditing;
+
+    const positions = [
+      ...roomGridPositions({
+        campaign: result.campaignInProgress,
+        roomId,
+        subRoomId,
+      }),
+    ];
+
+    expect(positions.length).toBeGreaterThan(0);
+  });
+
+  test("return door in the multi-chunk room is within the target subroom bounds", () => {
+    const result = buildState();
+    const multiChunkRoom = result.campaignInProgress.rooms[multiChunkRoomId];
+
+    const subRoom2 = multiChunkRoom.meta!.subRooms!["2"];
+
+    const returnDoors = Object.values(multiChunkRoom.items).filter(
+      (item): item is EditorJsonItem<"door"> =>
+        item.type === "door" && item.config.direction === "towards",
+    );
+
+    expect(returnDoors).toHaveLength(1);
+    const [returnDoor] = returnDoors;
+
+    expect(returnDoor.position.x).toBeGreaterThanOrEqual(
+      subRoom2.physicalPosition.from.x,
+    );
+    expect(returnDoor.position.x).toBeLessThan(subRoom2.physicalPosition.to.x);
+    expect(returnDoor.position.y).toBeGreaterThanOrEqual(
+      subRoom2.physicalPosition.from.y,
+    );
+    expect(returnDoor.position.y).toBeLessThan(subRoom2.physicalPosition.to.y);
+  });
+});
+
+describe("placing a door tool in a non-origin subroom of a multi-chunk room", () => {
+  const multiChunkRoomId = "room_0" as EditorRoomId;
+
+  const buildState = () =>
+    reduceLevelEditorActions(
+      editorStateWithOneRoomWithNoItems,
+      addRoom({
+        roomSize: { x: 8, y: 8 },
+        gridPositions: [
+          { x: 0, y: 0 },
+          { x: 1, y: 0 },
+        ],
+      }),
+      changeToRoom({ roomId: multiChunkRoomId, subRoomId: "1" }),
+      setTool({
+        type: "item",
+        item: {
+          type: "door",
+          config: { direction: "away", toRoom: "+" },
+        },
+      }),
+      applyItemTool({
+        blockPosition: { x: 11, y: 0, z: 1 },
+        pointedAtItemJson: {
+          type: "wall",
+          config: {
+            direction: "towards",
+            times: { x: 16 },
+          },
+          position: { x: 0, y: 0, z: 0 },
+        },
+        preview: false,
+        timestamp: 0,
+      }),
+    );
+
+  test("return door in the new room has x within [0, 8)", () => {
+    const result = buildState();
+
+    const newRoomId = Object.keys(result.campaignInProgress.rooms).find(
+      (id) => id !== testRoomId && id !== multiChunkRoomId,
+    ) as EditorRoomId;
+    const newRoom = result.campaignInProgress.rooms[newRoomId];
+
+    const returnDoors = Object.values(newRoom.items).filter(
+      (item): item is EditorJsonItem<"door"> => item.type === "door",
+    );
+
+    expect(returnDoors).toHaveLength(1);
+    const [returnDoor] = returnDoors;
+
+    expect(returnDoor.position.x).toBeGreaterThanOrEqual(0);
+    expect(returnDoor.position.x).toBeLessThan(8);
   });
 });
