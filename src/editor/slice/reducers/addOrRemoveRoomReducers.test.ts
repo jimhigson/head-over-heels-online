@@ -76,7 +76,7 @@ test("removeRoom deletes the deleted room's undo/redo history", () => {
   expect(result.history[roomA]).toBeUndefined();
 });
 
-test("removeRoom sets doors referencing deleted room to 'nowhere'", () => {
+test("removeRoom deletes doors referencing deleted room", () => {
   const state: LevelEditorState = structuredClone(
     produce(editorStateWithOneRoomWithNoItems, (draft) => {
       addRooms(draft);
@@ -90,8 +90,7 @@ test("removeRoom sets doors referencing deleted room to 'nowhere'", () => {
 
   const result = reduceLevelEditorActions(state, removeRoom());
 
-  const door = result.campaignInProgress.rooms[roomB].items[door1];
-  expect(door.config).toHaveProperty("toRoom", "nowhere");
+  expect(result.campaignInProgress.rooms[roomB].items[door1]).toBeUndefined();
 });
 
 test("removeRoom removes toRoom from teleporters referencing deleted room", () => {

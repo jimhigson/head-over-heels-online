@@ -19,6 +19,7 @@ import {
   insertRoom,
   setRoomAboveOrBelow,
 } from "../slice/levelEditorSlice";
+import { confirmDeleteRoomThunk } from "../toolbar/confirmThunk";
 import { LazyEditorMapInsertButtonDecorator } from "./LazyEditorMapInsertButtonDecorator";
 import { useEditorMapData } from "./useEditorMapData";
 
@@ -154,6 +155,9 @@ export const EditorMap = () => {
           } else {
             navigateToAdjacentRoom(e.key, mapData.gridPositions);
           }
+        } else if (e.key === "Delete" || e.key === "Backspace") {
+          e.preventDefault();
+          store.dispatch(confirmDeleteRoomThunk);
         }
       }}
     >

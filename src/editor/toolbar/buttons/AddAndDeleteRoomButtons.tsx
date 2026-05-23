@@ -1,10 +1,12 @@
 import { BitmapText } from "../../../game/components/tailwindSprites/BitmapText";
 import { type TextureTailwindClass } from "../../../sprites/spritesheet/spritesheetData/TextureTailwindClass";
+import { useAppDispatch } from "../../../store/hooks";
 import { useEditorAppSelector } from "../../../store/store";
 import { useDispatchActionCallback } from "../../../store/useDispatchActionCallback";
 import { twClass } from "../../../utils/twClass";
 import { type Xy } from "../../../utils/vectors/vectors";
-import { addRoom, removeRoom } from "../../slice/levelEditorSlice";
+import { addRoom } from "../../slice/levelEditorSlice";
+import { confirmDeleteRoomThunk } from "../confirmThunk";
 import { MenuButton, MenuItemButton } from "./MenuButton";
 import { ToolbarButton } from "./ToolbarButton";
 
@@ -48,6 +50,7 @@ Delete this room
 `;
 
 export const AddAndDeleteRoomButtons = () => {
+  const dispatch = useAppDispatch();
   const hasOtherRooms = useEditorAppSelector(
     (state) =>
       Object.keys(state.levelEditor.campaignInProgress.rooms).length > 1,
@@ -448,7 +451,7 @@ export const AddAndDeleteRoomButtons = () => {
       </MenuButton>
       <ToolbarButton
         className="bg-midRed"
-        onClick={useDispatchActionCallback(removeRoom)}
+        onClick={() => dispatch(confirmDeleteRoomThunk)}
         disabled={!hasOtherRooms}
         tooltipContent={deleteTooltipMarkdown}
       >

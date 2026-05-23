@@ -1,13 +1,13 @@
 import { BitmapText } from "../../../game/components/tailwindSprites/BitmapText";
 import { store } from "../../../store/store";
-import { clearRoom } from "../../slice/levelEditorSlice";
+import { confirmClearRoomThunk } from "../confirmThunk";
 import { ToolbarButton } from "./ToolbarButton";
 
 export const ClearRoomButton = () => {
   return (
     <ToolbarButton
       className="bg-midRed"
-      onClick={() => store.dispatch(clearRoom({ timestamp: Date.now() }))}
+      onClick={() => store.dispatch(confirmClearRoomThunk)}
       tooltipContent={`## Clear room
 
 Clears the room out, leaving just walls, floors, and doors`}
