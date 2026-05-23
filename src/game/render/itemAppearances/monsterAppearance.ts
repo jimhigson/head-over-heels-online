@@ -4,15 +4,10 @@ import { type ItemInPlay } from "../../../model/ItemInPlay";
 import { type RoomState } from "../../../model/RoomState";
 import { isAnimationId, isTextureId } from "../../../sprites/assertIsTextureId";
 import {
-  type AppSpritesheet,
-  originalSpriteSheet,
-} from "../../../sprites/spritesheet/loadedSpriteSheet";
-import {
   type AnimationId,
   type TextureId,
 } from "../../../sprites/spritesheet/spritesheetData/makeSpritesheetData";
-import { getSpriteSheetVariant } from "../../../sprites/spritesheet/variants/getSpriteSheetVariant";
-import { type SpritesheetVariant } from "../../../sprites/spritesheet/variants/SpritesheetVariant";
+import { type AppSpritesheet } from "../../../sprites/spritesheet/variants/SpritesheetVariants";
 import { renderBobSine } from "../../../utils/maths/renderBob";
 import {
   type DirectionXy4,
@@ -112,7 +107,7 @@ export const monsterAppearance: ItemAppearance<
   renderContext: {
     item,
     room,
-    general: { paused, spriteOption },
+    general: { paused, spritesheetVariants },
   },
   currentRendering,
 }) => {
@@ -121,12 +116,10 @@ export const monsterAppearance: ItemAppearance<
 
   const { activated, busyLickingDoughnutsOffFace } = state;
 
-  const spritesheetVariant: SpritesheetVariant =
-    spriteOption.uncolourised ? "uncolourised"
-    : busyLickingDoughnutsOffFace ? "doughnutted"
-    : !activated ? "deactivated"
-    : "for-current-room";
-  const spritesheet = getSpriteSheetVariant(spritesheetVariant);
+  const spritesheet = spritesheetVariants.currentMainSpritesheet(
+    activated,
+    busyLickingDoughnutsOffFace,
+  );
 
   switch (config.which) {
     case "skiHead":
@@ -162,7 +155,7 @@ export const monsterAppearance: ItemAppearance<
         case "skiHead": {
           // directional, style, no anim — fall back to first style if this one is missing
           const preferredId = `${config.which}.${config.style}.${facingXy4}`;
-          const spritesheetData = originalSpriteSheet().data;
+          const spritesheetData = spritesheetVariants.originalSpritesheet.data;
           return {
             output: createSprite({
               textureId:

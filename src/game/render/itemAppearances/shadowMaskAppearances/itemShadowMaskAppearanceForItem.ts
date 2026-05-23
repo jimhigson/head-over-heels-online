@@ -8,6 +8,10 @@ import {
 } from "../../../../model/ItemInPlay";
 import { type MonsterJsonConfig } from "../../../../model/json/MonsterJsonConfig";
 import { itemInPlayTimes } from "../../../../model/times";
+import {
+  type AnimationId,
+  type TextureId,
+} from "../../../../sprites/spritesheet/spritesheetData/makeSpritesheetData";
 import { emptyObject } from "../../../../utils/empty";
 import {
   maybeRenderContainerToSprite,
@@ -34,21 +38,26 @@ import {
 } from "./directionalShadowMaskAppearance";
 import { teleporterShadowMaskAppearance } from "./teleporterShadowMaskAppearance";
 
+type ShadowMaskSpriteOptions = {
+  textureId?: TextureId;
+  animationId?: AnimationId;
+  flipX?: boolean;
+  y?: number;
+};
+
 const shadowMaskStaticAppearance = <T extends ItemInPlayType>(
-  createSpriteOptions: SpecifiedTextureCreateSpriteOptions,
+  createSpriteOptions: ShadowMaskSpriteOptions,
 ): ItemAppearance<T, EmptyObject, Sprite> =>
   itemAppearanceRenderOnce(
     ({
       renderContext: {
         item: subject,
-        general: { pixiRenderer, spriteOption },
+        general: { pixiRenderer, spritesheetVariants },
       },
     }) => {
       const options = {
         ...createSpriteOptions,
-        ...(spriteOption.uncolourised && {
-          spritesheetVariant: "uncolourised" as "uncolourised",
-        }),
+        spritesheet: spritesheetVariants.shadowSpritesheet,
       } as SpecifiedTextureCreateSpriteOptions;
 
       if (isMultipliedItem(subject)) {
@@ -79,13 +88,13 @@ const shadowMaskFromConfigAppearance =
   <T extends ItemInPlayType>(
     spriteOptionsFromConfig: (
       config: ItemInPlayConfig<T, string, string>,
-    ) => SpecifiedTextureCreateSpriteOptions,
+    ) => ShadowMaskSpriteOptions,
   ): ((
     options: ItemAppearanceOptions<T, EmptyObject, Sprite>,
   ) => AppearanceReturn<EmptyObject, Sprite>) =>
   ({
     renderContext: {
-      general: { pixiRenderer, spriteOption },
+      general: { pixiRenderer, spritesheetVariants },
       item,
     },
     currentRendering,
@@ -97,9 +106,7 @@ const shadowMaskFromConfigAppearance =
       );
       const options = {
         ...baseOptions,
-        ...(spriteOption.uncolourised && {
-          spritesheetVariant: "uncolourised" as "uncolourised",
-        }),
+        spritesheet: spritesheetVariants.shadowSpritesheet,
       } as SpecifiedTextureCreateSpriteOptions;
 
       const appearanceReturn = {
@@ -140,12 +147,10 @@ const itemShadowMaskAppearances: {
 } = {
   lift: shadowMaskStaticAppearance({
     textureId: "shadowMask.smallBlock",
-    spritesheetVariant: "original",
   }),
   conveyor: shadowMaskFromConfigAppearance(({ direction }) => ({
     textureId: "shadowMask.conveyor",
     flipX: tangentAxis(direction) === "x",
-    spritesheetVariant: "original",
   })),
 
   doorLegs: shadowMaskFromConfigAppearance(({ direction }) => {
@@ -157,7 +162,6 @@ const itemShadowMaskAppearances: {
           "shadowMask.door.floatingThreshold.double.y"
         : "shadowMask.door.legs.threshold.double.y",
       flipX: tangentAxis(direction) === "y",
-      spritesheetVariant: "original",
     };
   }),
 
@@ -172,69 +176,56 @@ const itemShadowMaskAppearances: {
     flipX: axis === "x",
     // needs this to line up with the sprite - not sure why
     y: -1,
-    spritesheetVariant: "original",
   })),
 
   spring: springShadowMaskAppearance,
 
   block: shadowMaskFromConfigAppearance(({ style }) => ({
     textureId: `shadowMask.${style}`,
-    spritesheetVariant: "original",
   })),
   pushableBlock: shadowMaskStaticAppearance({
     textureId: "shadowMask.stepStool",
-    spritesheetVariant: "original",
   }),
   movingPlatform: shadowMaskStaticAppearance({
     textureId: "shadowMask.sandwich",
-    spritesheetVariant: "original",
   }),
   hushPuppy: shadowMaskStaticAppearance({
     textureId: "shadowMask.hushPuppy",
-    spritesheetVariant: "original",
   }),
 
   portableBlock: shadowMaskFromConfigAppearance(({ style }) => ({
     textureId: style === "drum" ? "shadowMask.drum" : "shadowMask.smallBlock",
-    spritesheetVariant: "original",
   })),
   slidingBlock: shadowMaskFromConfigAppearance(({ style }) =>
     style === "book" ?
       {
         textureId: "shadowMask.book",
         flipX: true,
-        spritesheetVariant: "original",
       }
-    : { textureId: "shadowMask.smallRound", spritesheetVariant: "original" },
+    : { textureId: "shadowMask.smallRound" },
   ),
   deadlyBlock: shadowMaskFromConfigAppearance(({ style }) => ({
     textureId:
       style === "volcano" ? "shadowMask.volcano" : "shadowMask.toaster",
-    spritesheetVariant: "original",
   })),
   spikes: shadowMaskStaticAppearance({
     textureId: "shadowMask.spikes",
-    spritesheetVariant: "original",
   }),
   switch: shadowMaskStaticAppearance({
     textureId: "shadowMask.switch",
-    spritesheetVariant: "original",
   }),
   button: shadowMaskStaticAppearance({
     textureId: "shadowMask.buttonInGame",
-    spritesheetVariant: "original",
   }),
   pickup: shadowMaskFromConfigAppearance(({ gives }) => {
     switch (gives) {
       case "scroll":
         return {
           textureId: "shadowMask.scroll",
-          spritesheetVariant: "original",
         };
       case "doughnuts":
         return {
           textureId: "shadowMask.doughnuts",
-          spritesheetVariant: "original",
         };
       case "fast":
       case "extra-life":
@@ -242,36 +233,30 @@ const itemShadowMaskAppearances: {
       case "shield":
         return {
           textureId: "shadowMask.whiteRabbit",
-          spritesheetVariant: "original",
         };
       default:
         // cheaply have no shadows cast on them
-        return { textureId: "blank", spritesheetVariant: "original" };
+        return { textureId: "blank" };
     }
   }),
   slidingDeadly: shadowMaskStaticAppearance({
     textureId: "shadowMask.smallRound",
-    spritesheetVariant: "original",
   }),
   ball: shadowMaskStaticAppearance({
     textureId: "shadowMask.ball",
-    spritesheetVariant: "original",
   }),
 
   "monster.dalek": shadowMaskStaticAppearance({
     textureId: "shadowMask.dalek",
-    spritesheetVariant: "original",
   }),
   "monster.turtle": directionalShadowMaskAppearanceXy4("turtle"),
   "monster.skiHead": directionalShadowMaskAppearanceXy4("skiHead"),
   "monster.homingBot": shadowMaskStaticAppearance({
     textureId: "shadowMask.smallRound",
-    spritesheetVariant: "original",
   }),
 
   joystick: shadowMaskStaticAppearance({
     textureId: "shadowMask.joystick",
-    spritesheetVariant: "original",
   }),
 
   charles: directionalShadowMaskAppearanceXy4("charles", 2),

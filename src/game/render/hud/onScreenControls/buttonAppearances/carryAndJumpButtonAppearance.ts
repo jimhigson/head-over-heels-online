@@ -24,7 +24,12 @@ export const carryAndJumpButtonAppearance: ButtonAppearance<
   renderContext: {
     button,
     inputStateTracker,
-    general: { spriteOption, spritesheetMeta, pixiRenderer },
+    general: {
+      spriteOption,
+      spritesheetVariants,
+      spritesheetMeta,
+      pixiRenderer,
+    },
   },
   currentRendering,
   tickContext: { currentPlayable, room },
@@ -51,14 +56,17 @@ export const carryAndJumpButtonAppearance: ButtonAppearance<
     return "no-update";
   }
 
+  const { originalSpritesheet } = spritesheetVariants;
   const container: ArcadeStyleButtonContainer<TextContainer> =
     previousRendering === undefined ?
       new ArcadeStyleButtonContainer(
         spritesheetMeta,
         button.which,
         pixiRenderer,
+        originalSpritesheet,
         new TextContainer({
           pixiRenderer,
+          spritesheet: originalSpritesheet,
           text: "C+J",
           y: textYForButtonCentre,
         }),

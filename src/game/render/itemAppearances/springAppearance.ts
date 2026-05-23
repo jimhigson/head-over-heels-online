@@ -30,7 +30,7 @@ const springAppearanceImpl: (
       item: {
         state: { stoodOnBy, stoodOnUntilRoomTime },
       },
-      general: { paused, spriteOption },
+      general: { paused, spritesheetVariants },
     },
     tickContext: { lastRenderRoomTime },
     currentRendering,
@@ -46,8 +46,7 @@ const springAppearanceImpl: (
         animationId:
           isShadowMask ? "shadowMask.spring.bounce" : "spring.bounce",
         paused,
-        spritesheetVariant:
-          spriteOption.uncolourised ? "uncolourised" : "for-current-room",
+        spritesheet: spritesheetVariants.currentMainSpritesheet(),
       });
       rendering.loop = false;
       rendering.gotoAndStop(rendering.totalFrames - 1);

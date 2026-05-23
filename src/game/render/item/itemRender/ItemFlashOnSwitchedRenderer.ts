@@ -4,7 +4,6 @@ import { type ItemInPlayType } from "../../../../model/ItemInPlay";
 import { roomItemsIterable } from "../../../../model/RoomState";
 import { zxSpectrumColor, zxSpectrumColors } from "../../../../originalGame";
 import { effectColour } from "../../../../sprites/palette/spritesheetPalette";
-import { getSpriteSheetVariant } from "../../../../sprites/spritesheet/variants/getSpriteSheetVariant";
 import { getAmbientSwoppedColour } from "../../../../utils/palette/palette";
 import { isModifier } from "../../../physics/itemPredicates";
 import { OneColourFilter } from "../../filters/OneColourFilter";
@@ -40,7 +39,8 @@ class ItemFlashOnSwitchedRenderer<T extends ItemInPlayType>
     this.#childRenderer = childRenderer;
     this.output.addChild(childRenderer.output);
 
-    const { spriteOption, spritesheetMeta } = renderContext.general;
+    const { spriteOption, spritesheetVariants, spritesheetMeta } =
+      renderContext.general;
     const { color: roomColor } = renderContext.room;
 
     const useDim = roomColor.shade === "dimmed";
@@ -66,7 +66,7 @@ class ItemFlashOnSwitchedRenderer<T extends ItemInPlayType>
         : getAmbientSwoppedColour(
             spritesheetMeta.palette,
             spritesheetMeta.effectColours.outline,
-            getSpriteSheetVariant("for-current-room").ambient,
+            spritesheetVariants.spritesheetForCurrentRoom.ambient,
           ),
     });
 

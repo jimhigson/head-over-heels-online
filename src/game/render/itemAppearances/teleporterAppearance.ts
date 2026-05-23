@@ -1,5 +1,4 @@
 import { iterateStoodOnByItems } from "../../../model/stoodOnItemsLookup";
-import { type SpritesheetVariant } from "../../../sprites/spritesheet/variants/SpritesheetVariant";
 import { isPlayableItem } from "../../physics/itemPredicates";
 import { teleporterIsActive } from "../../physics/mechanics/teleporting";
 import { createSprite } from "../createSprite";
@@ -17,7 +16,7 @@ export const teleporterAppearance: ItemAppearance<
   renderContext: {
     item,
     room,
-    general: { paused, spriteOption },
+    general: { paused, spritesheetVariants },
   },
   currentRendering,
 }) => {
@@ -43,8 +42,7 @@ export const teleporterAppearance: ItemAppearance<
     return "no-update";
   }
 
-  const spritesheetVariant: SpritesheetVariant =
-    spriteOption.uncolourised ? "uncolourised" : "for-current-room";
+  const spritesheet = spritesheetVariants.currentMainSpritesheet();
 
   return {
     output:
@@ -53,12 +51,12 @@ export const teleporterAppearance: ItemAppearance<
           animationId: `${type}.flashing`,
           times,
           paused,
-          spritesheetVariant,
+          spritesheet,
         })
       : createSprite({
           textureId: activated ? type : "block.artificial",
           times,
-          spritesheetVariant,
+          spritesheet,
         }),
     renderProps: { flashing, activated },
   };

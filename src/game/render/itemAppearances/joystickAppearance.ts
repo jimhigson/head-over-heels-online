@@ -1,7 +1,6 @@
 import { Container, type Sprite } from "pixi.js";
 
-import { getSpriteSheetVariant } from "../../../sprites/spritesheet/variants/getSpriteSheetVariant";
-import { type SpritesheetVariant } from "../../../sprites/spritesheet/variants/SpritesheetVariant";
+import { type AppSpritesheet } from "../../../sprites/spritesheet/variants/SpritesheetVariants";
 import {
   type DirectionXy4,
   originXy,
@@ -15,15 +14,13 @@ type JoystickRenderProps = {
   pushDirection: PushDirection;
 };
 
-const createContainerAndSprites = (spritesheetVariant: SpritesheetVariant) => {
+const createContainerAndSprites = (spritesheet: AppSpritesheet) => {
   const container = new Container({ label: "joystick" });
 
   container.addChild(
-    createSprite({ textureId: "joystick.stick", spritesheetVariant }),
+    createSprite({ textureId: "joystick.stick", spritesheet }),
   );
-  container.addChild(
-    createSprite({ textureId: "joystick.ball", spritesheetVariant }),
-  );
+  container.addChild(createSprite({ textureId: "joystick.ball", spritesheet }));
   return container;
 };
 
@@ -44,7 +41,7 @@ export const joystickAppearance: ItemAppearance<
       state: { actedOnAt, lastPushDirection },
     },
     room: { roomTime },
-    general: { spriteOption },
+    general: { spritesheetVariants },
   },
   currentRendering,
 }) => {
@@ -62,15 +59,14 @@ export const joystickAppearance: ItemAppearance<
     return "no-update";
   }
 
-  const spritesheetVariant =
-    spriteOption.uncolourised ? "uncolourised" : "for-current-room";
+  const spritesheet = spritesheetVariants.currentMainSpritesheet();
 
   const output =
-    currentRendering?.output ?? createContainerAndSprites(spritesheetVariant);
+    currentRendering?.output ?? createContainerAndSprites(spritesheet);
 
   const ballSprite = output.getChildAt(1) as Sprite;
   ballSprite.texture =
-    getSpriteSheetVariant(spritesheetVariant).textures[
+    spritesheet.textures[
       pushDirection === undefined ? "joystick.ball" : `joystick.ball.active`
     ];
   const ballSpriteXy = ballRenderPushOffsets.get(pushDirection);

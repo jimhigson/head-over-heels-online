@@ -1,8 +1,7 @@
 import { AnimatedSprite, Container } from "pixi.js";
 
 import { isStoodOn } from "../../../model/StoodOnBy";
-import { getSpriteSheetVariant } from "../../../sprites/spritesheet/variants/getSpriteSheetVariant";
-import { type SpritesheetVariant } from "../../../sprites/spritesheet/variants/SpritesheetVariant";
+import { type AppSpritesheet } from "../../../sprites/spritesheet/variants/SpritesheetVariants";
 import { neverTime } from "../../../utils/neverTime";
 import { maybeRenderContainerToAnimatedSprite } from "../../../utils/pixi/renderContainerToSprite";
 import {
@@ -47,7 +46,7 @@ const staggerAnimation = (
 const createRendering = (
   direction: DirectionXy4,
   times: Partial<Xy> | undefined,
-  spritesheetVariant: SpritesheetVariant,
+  spritesheet: AppSpritesheet,
   frameCount: number,
 ): Container<AnimatedSprite> => {
   const axis = tangentAxis(direction);
@@ -55,8 +54,7 @@ const createRendering = (
     animationId: `conveyor.${axis}`,
     reverse: direction === "towards" || direction === "right",
     times,
-    // TODO: should be able to take the spritesheet instead of the variant!
-    spritesheetVariant,
+    spritesheet,
   });
   // createSprite will return a single AnimatedSprite for a single conveyor,
   // which is generally fine to avoid creating unnecessary containers. However,
@@ -88,7 +86,7 @@ const conveyorAppearanceImpl: ItemAppearance<
       state: { stoodOnBy, direction, disabled },
     },
     room: { roomTime },
-    general: { spriteOption, pixiRenderer, paused },
+    general: { spritesheetVariants, pixiRenderer, paused },
   },
   currentRendering,
 }) => {
@@ -114,12 +112,9 @@ const conveyorAppearanceImpl: ItemAppearance<
     !currentOutput ||
     direction !== currentlyRenderedProps?.direction ||
     disabledChanged;
-  const spritesheetVariant: SpritesheetVariant =
-    spriteOption.uncolourised ? "uncolourised"
-    : disabled ? "deactivated"
-    : "for-current-room";
 
-  const spritesheet = getSpriteSheetVariant(spritesheetVariant);
+  const spritesheet = spritesheetVariants.currentMainSpritesheet(!disabled);
+
   const conveyorAnimationSpeed: number =
     spritesheet.data.animations["conveyor.x"].animationSpeed;
   const frameCount = spritesheet.data.animations["conveyor.x"].length;
@@ -128,8 +123,9 @@ const conveyorAppearanceImpl: ItemAppearance<
     rerender ?
       maybeRenderContainerToAnimatedSprite(
         pixiRenderer,
-        createRendering(direction, times, spritesheetVariant, frameCount),
+        createRendering(direction, times, spritesheet, frameCount),
         "conveyor.x",
+        spritesheet,
       )
     : currentOutput;
 

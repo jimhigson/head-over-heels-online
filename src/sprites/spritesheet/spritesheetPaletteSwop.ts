@@ -16,12 +16,6 @@ import { emptyArray } from "../../utils/empty";
 import { entries } from "../../utils/entries";
 import { concat } from "../../utils/iterators/concat";
 import { type NamedColours, resolveSwops } from "../../utils/palette/palette";
-import {
-  type AppSpritesheet,
-  type AppSpritesheetData,
-  baseSpritesheetTexture,
-  originalSpriteSheet,
-} from "./loadedSpriteSheet";
 import { reifyTextureIds } from "./reifyTextureIds";
 import { black, renderMaskTexture, white } from "./renderMaskTexture";
 import {
@@ -33,6 +27,10 @@ import {
   spritesheetMetas,
 } from "./spritesheetData/spritesheetMetaData";
 import { type VariantBuildContext } from "./VariantBuildContext";
+import {
+  type AppSpritesheet,
+  type AppSpritesheetData,
+} from "./variants/SpritesheetVariants";
 
 export type TextureSpecificPaletteSwops = {
   textureIds: TextureIdsListOrPredicate;
@@ -97,8 +95,9 @@ const spritesheetPaletteSwop = (
     noReplacePlaceholderTextures,
     hardenAlphaTextureIds,
   }: SpritesheetTextureSwops,
-  baseTexture: Texture = baseSpritesheetTexture(),
+  baseTexture: Texture,
   spritesheetData: AppSpritesheetData,
+  originalSpritesheet: AppSpritesheet,
 ): Texture => {
   const { pixiRenderer, spritesheetMetaData } = context;
   const filters: Filter[] = [];
@@ -162,7 +161,7 @@ const spritesheetPaletteSwop = (
           placeholder: black,
           others: white,
           filter: placeholderMaskFilter,
-          originalSpritesheet: originalSpriteSheet(),
+          originalSpritesheet,
         }
       : undefined,
   });
@@ -226,7 +225,8 @@ export const createSpritesheetVariant = (
     "pixiRenderer" | "spriteOption" | "spritesheetMetaData"
   >,
   spritesheetTextureSwops: SpritesheetTextureSwops,
-  baseTexture?: Texture,
+  baseTexture: Texture,
+  originalSpritesheet: AppSpritesheet,
 ) => {
   const { spriteOption } = context;
   const spritesheetData = makeSpritesheetData(spritesheetMetas[spriteOption]);
@@ -235,6 +235,7 @@ export const createSpritesheetVariant = (
     spritesheetTextureSwops,
     baseTexture,
     spritesheetData,
+    originalSpritesheet,
   );
   const swoppedSpritesheet = new Spritesheet(
     swoppedTexture.source,
@@ -284,12 +285,14 @@ export const replaceSpritesheetWithSwopped = (
   >,
   baseSpritesheet: AppSpritesheet,
   swops: SpritesheetTextureSwops,
+  originalSpritesheet: AppSpritesheet,
 ): AppSpritesheet => {
   const baseTexture = Texture.from(baseSpritesheet.textureSource);
   const swoppedSpritesheet = createSpritesheetVariant(
     context,
     swops,
     baseTexture,
+    originalSpritesheet,
   );
   baseTexture.destroy();
   baseSpritesheet.textureSource.destroy();

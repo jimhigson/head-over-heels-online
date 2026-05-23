@@ -1,8 +1,8 @@
 import { type BlockStyle } from "../../../model/json/utilityJsonConfigTypes";
 import { isTextureId } from "../../../sprites/assertIsTextureId";
 import { type SceneryName } from "../../../sprites/planets";
-import { originalSpriteSheet } from "../../../sprites/spritesheet/loadedSpriteSheet";
 import { type TextureId } from "../../../sprites/spritesheet/spritesheetData/makeSpritesheetData";
+import { type AppSpritesheetData } from "../../../sprites/spritesheet/variants/SpritesheetVariants";
 import { maybeRenderContainerToSprite } from "../../../utils/pixi/renderContainerToSprite";
 import { createSprite } from "../createSprite";
 import { type ItemAppearance } from "./ItemAppearance";
@@ -18,9 +18,8 @@ const blockTextureId = (
   style: BlockStyle,
   isDissapearing: boolean,
   scenery: SceneryName,
+  spritesheetData: AppSpritesheetData,
 ): TextureId => {
-  const spritesheetData = originalSpriteSheet().data;
-
   if (style === "tower") {
     const sceneryTower = `tower.${scenery}`;
     return isTextureId(sceneryTower, spritesheetData) ?
@@ -43,7 +42,7 @@ const blockTextureId = (
 
 export const blockAppearance: ItemAppearance<"block", BlockRenderProps> = ({
   renderContext: {
-    general: { pixiRenderer, spriteOption },
+    general: { pixiRenderer, spritesheetVariants },
     item: {
       config: { style, times },
       state: { disappearing: disappear },
@@ -71,10 +70,10 @@ export const blockAppearance: ItemAppearance<"block", BlockRenderProps> = ({
           style,
           isDissapearing,
           room.planet,
+          spritesheetVariants.originalSpritesheet.data,
         ),
         times,
-        spritesheetVariant:
-          spriteOption.uncolourised ? "uncolourised" : "for-current-room",
+        spritesheet: spritesheetVariants.currentMainSpritesheet(),
       }),
     ),
     renderProps: { isDissapearing },

@@ -13,14 +13,14 @@ import { type GameApi } from "../../game/GameApi.tsx";
 import { importGameMain } from "../../game/gameMain.import.ts";
 import { useInputStateTracker } from "../../game/input/InputStateProvider.tsx";
 import { loadSounds } from "../../sound/soundsLoader.ts";
-import { loadSpritesheetAssets } from "../../sprites/spritesheet/loadedSpriteSheet.ts";
+import { type SpritesheetVariants } from "../../sprites/spritesheet/variants/SpritesheetVariants";
+import { useSpritesheetVariants } from "../../sprites/spritesheet/variants/useSpritesheetVariants";
 import { useAppSelector } from "../../store/hooks.ts";
 import {
   gameAssetsLoadingFinished,
   gameAssetsLoadingStarted,
 } from "../../store/slices/gameAssetsLoading/gameAssetsLoadingSlice.ts";
 import {
-  selectSpritesOption,
   useCheatsOn,
   useIsGameRunning,
 } from "../../store/slices/gameMenus/gameMenusSelectors.ts";
@@ -42,16 +42,17 @@ import { usePageAsAnApp } from "./usePageAsAnApp.tsx";
 
 const LazyCheats = lazy(importCheats) as typeof Cheats;
 
-const loadGameAssets = importOnce(() => {
-  const spriteOption = selectSpritesOption(store.getState());
-  return Promise.all([
+const loadGameAssets = importOnce(async () => {
+  const [{ default: gameMain }] = await Promise.all([
     importGameMain(),
-    loadSpritesheetAssets(spriteOption.name),
     loadSounds(),
   ]);
+  return { gameMain };
 });
 
-const useCreateGameApi = (): GameApi<string> | undefined => {
+const useCreateGameApi = (
+  spritesheetVariants: SpritesheetVariants,
+): GameApi<string> | undefined => {
   const [gameApi, setGameApi] = useState<GameApi<string> | undefined>();
   const isGameRunning = useIsGameRunning();
   // shallowEqual: don't re-run the effect on equivalent campaign locator objects
@@ -86,13 +87,14 @@ const useCreateGameApi = (): GameApi<string> | undefined => {
 
         startedLoading = true;
         store.dispatch(gameAssetsLoadingStarted());
-        const [{ default: gameMain }] = await loadGameAssets();
+        const { gameMain } = await loadGameAssets();
         store.dispatch(gameAssetsLoadingFinished());
 
         if (!thisEffectCancelled) {
           thisEffectGameApi = await gameMain(
             currentCampaignLocator,
             inputState,
+            spritesheetVariants,
           );
           if (thisEffectCancelled) {
             // creating the game api is async, so while we were creating it is possible
@@ -127,7 +129,7 @@ const useCreateGameApi = (): GameApi<string> | undefined => {
       thisEffectGameApi?.stop();
       thisEffectCancelled = true;
     };
-  }, [isGameRunning, inputState, currentCampaignLocator]);
+  }, [isGameRunning, inputState, currentCampaignLocator, spritesheetVariants]);
 
   return gameApi;
 };
@@ -138,8 +140,9 @@ const useCreateGameApi = (): GameApi<string> | undefined => {
 export const GamePage = () => {
   const [renderArea, setRenderArea] = useState<HTMLDivElement | null>(null);
 
+  const spritesheetVariants = useSpritesheetVariants();
   const cheatsOn = useCheatsOn();
-  const gameApi = useCreateGameApi();
+  const gameApi = useCreateGameApi(spritesheetVariants);
   const canvasSize = useAppSelector(selectCanvasSize);
   const rot90 = useAppSelector(selectRot90);
 

@@ -17,20 +17,18 @@ import {
   veryHighZ,
   wallRenderHeight,
 } from "../../physics/mechanicsConstants";
-import { type SpecifiedTextureCreateSpriteOptions } from "../../render/createSprite";
 import { blockXyzToFineXyz } from "../../render/projections";
+import { type ShadowCastSpriteOptions } from "../../render/ShadowCastSpriteOptions";
 import { nonRenderingItemFixedZIndex } from "../../render/sortZ/fixedZIndexes";
 import { defaultBaseState } from "./itemDefaultStates";
 
-const shadowWallY: SpecifiedTextureCreateSpriteOptions = Object.freeze({
+const shadowWallY: ShadowCastSpriteOptions = Object.freeze({
   textureId: "shadow.wall.y",
-  spritesheetVariant: "original",
 });
 
-const shadowWallX: SpecifiedTextureCreateSpriteOptions = Object.freeze({
+const shadowWallX: ShadowCastSpriteOptions = Object.freeze({
   textureId: "shadow.wall.y",
   flipX: true,
-  spritesheetVariant: "original",
 });
 
 // can't take room height blocks times block height, or it is still possible to

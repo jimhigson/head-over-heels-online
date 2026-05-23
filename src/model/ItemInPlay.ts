@@ -1,7 +1,7 @@
 import { type EmptyObject } from "type-fest";
 
 import { type ItemTypeUnion } from "../_generated/types/ItemInPlayUnion";
-import { type SpecifiedTextureCreateSpriteOptions } from "../game/render/createSprite";
+import { type ShadowCastSpriteOptions } from "../game/render/ShadowCastSpriteOptions";
 import { type BracketedSegmentOptions } from "../sound/soundUtils/createBracketedSound";
 import { type SceneryName } from "../sprites/planets";
 import {
@@ -157,7 +157,7 @@ export type ItemInPlay<
   state: ItemState<T, RoomId, RoomItemId>;
 
   /** the shadow this item casts on other items */
-  shadowCastTexture?: SpecifiedTextureCreateSpriteOptions;
+  shadowCastTexture?: ShadowCastSpriteOptions;
 
   /** items this item will cast no shadows on */
   noShadowCastOn?: Array<ItemInPlayType>;

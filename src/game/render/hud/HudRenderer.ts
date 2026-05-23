@@ -15,7 +15,6 @@ import {
   type ZxSpectrumRoomColour,
 } from "../../../originalGame";
 import { effectColour } from "../../../sprites/palette/spritesheetPalette";
-import { originalSpriteSheet } from "../../../sprites/spritesheet/loadedSpriteSheet";
 import { type TextureId } from "../../../sprites/spritesheet/spritesheetData/makeSpritesheetData";
 import {
   type SpritesheetMetadata,
@@ -25,7 +24,6 @@ import {
   hudCharTextureSize,
   smallItemTextureSize,
 } from "../../../sprites/spritesheet/spritesheetData/textureSizes";
-import { getSpriteSheetVariantTexture } from "../../../sprites/spritesheet/variants/getSpriteSheetVariant";
 import { startAppListening } from "../../../store/listenerMiddleware";
 import { selectShowFps } from "../../../store/slices/gameMenus/gameMenusSelectors";
 import { type SpriteOption } from "../../../store/slices/userSettings/userSettingsSlice";
@@ -57,7 +55,6 @@ import { menuButtonAppearance } from "./onScreenControls/buttonAppearances/menuB
 import { OnScreenControls } from "./onScreenControls/OnScreenControls";
 import { renderCarriedOnce } from "./renderCarriedOnce";
 import {
-  spritesheetVariantForHud,
   tintForHud,
   tintForHudIfUncolourised,
   tintForIcon,
@@ -162,6 +159,7 @@ export class HudRenderer<RoomId extends string, RoomItemId extends string>
   constructor(renderContext: HudRenderContext<RoomId>) {
     this.renderContext = renderContext;
     const { general } = renderContext;
+    const originalSS = general.spritesheetVariants.originalSpritesheet;
 
     this.#characterTextureIds = {
       head: this.#resolveCharacterTextureId("head"),
@@ -173,6 +171,7 @@ export class HudRenderer<RoomId extends string, RoomItemId extends string>
         sprite: this.#createCharacterSprite("head"),
         livesText: new TextContainer({
           pixiRenderer: general.pixiRenderer,
+          spritesheet: originalSS,
           label: "headLives",
           doubleHeight: true,
           outline: true,
@@ -204,6 +203,7 @@ export class HudRenderer<RoomId extends string, RoomItemId extends string>
         sprite: this.#createCharacterSprite("heels"),
         livesText: new TextContainer({
           pixiRenderer: general.pixiRenderer,
+          spritesheet: originalSS,
           label: "heelsLives",
           doubleHeight: true,
           outline: true,
@@ -380,7 +380,9 @@ export class HudRenderer<RoomId extends string, RoomItemId extends string>
     container.pivot = { x: 4, y: 16 };
 
     const icon = new Sprite({
-      texture: originalSpriteSheet().textures[textureId],
+      texture:
+        this.renderContext.general.spritesheetVariants.originalSpritesheet
+          .textures[textureId],
       anchor: textOnTop ? { x: 0.5, y: 0 } : { x: 0.5, y: 1 },
       y: textOnTop ? 0 : 8,
     });
@@ -389,6 +391,8 @@ export class HudRenderer<RoomId extends string, RoomItemId extends string>
     const x = hudCharTextureSize.w / 2;
     const text = new TextContainer({
       pixiRenderer: this.renderContext.general.pixiRenderer,
+      spritesheet:
+        this.renderContext.general.spritesheetVariants.originalSpritesheet,
       outline: outline === "text-only",
       y: textOnTop ? 0 : 16,
       x,
@@ -431,7 +435,9 @@ export class HudRenderer<RoomId extends string, RoomItemId extends string>
 
   #createCharacterSprite(characterName: IndividualCharacterName): Sprite {
     const characterSprite = new Sprite(
-      originalSpriteSheet().textures[this.#characterTextureIds[characterName]],
+      this.renderContext.general.spritesheetVariants.originalSpritesheet.textures[
+        this.#characterTextureIds[characterName]
+      ],
     );
 
     characterSprite.anchor = { x: 0.5, y: 0 };
@@ -514,10 +520,10 @@ export class HudRenderer<RoomId extends string, RoomItemId extends string>
 
     const bagSprite = this.#hudElements.heels.bag.icon;
     const hasBag = heelsAbilities?.hasBag;
-    bagSprite.texture = getSpriteSheetVariantTexture(
-      spritesheetVariantForHud(spriteOption, hasBag ?? false),
-      "bag",
-    );
+    bagSprite.texture =
+      this.renderContext.general.spritesheetVariants.currentMainSpritesheet(
+        hasBag ?? false,
+      ).textures["bag"];
 
     bagSprite.tint = tintForHudIfUncolourised(
       spriteOption,
@@ -546,14 +552,14 @@ export class HudRenderer<RoomId extends string, RoomItemId extends string>
 
     // TODO: colourise will never change in the lifetime of the renderer, this doesn't need to be done each tick
 
-    hooterSprite.texture = getSpriteSheetVariantTexture(
-      spritesheetVariantForHud(spriteOption, hasHooter ?? false),
-      "hooter",
-    );
-    doughnutsSprite.texture = getSpriteSheetVariantTexture(
-      spritesheetVariantForHud(spriteOption, hasDoughnuts),
-      "doughnuts",
-    );
+    hooterSprite.texture =
+      this.renderContext.general.spritesheetVariants.currentMainSpritesheet(
+        hasHooter ?? false,
+      ).textures["hooter"];
+    doughnutsSprite.texture =
+      this.renderContext.general.spritesheetVariants.currentMainSpritesheet(
+        hasDoughnuts,
+      ).textures["doughnuts"];
 
     this.#hudElements.head.doughnuts.textContainer.text =
       doughnutCount === "infinite" ? "∞" : doughnutCount;
@@ -692,18 +698,16 @@ export class HudRenderer<RoomId extends string, RoomItemId extends string>
     let characterTexture: Texture;
     const isActive = this.#characterIsActive(gameState, characterName);
 
-    const spritesheetVariant = spritesheetVariantForHud(spriteOption, isActive);
     try {
-      characterTexture = getSpriteSheetVariantTexture(
-        spritesheetVariant,
-        this.#characterTextureIds[characterName],
-      );
+      characterTexture =
+        this.renderContext.general.spritesheetVariants.currentMainSpritesheet(
+          isActive,
+        ).textures[this.#characterTextureIds[characterName]];
     } catch (e) {
       console.error(this.renderContext);
-      throw new Error(
-        `error getting texture for variant ${spritesheetVariant}`,
-        { cause: e },
-      );
+      throw new Error(`error getting character texture for ${characterName}`, {
+        cause: e,
+      });
     }
 
     characterSprite.texture = characterTexture;

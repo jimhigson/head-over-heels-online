@@ -1,55 +1,44 @@
 import { type JsonItemUnion } from "../../../model/json/JsonItem";
 import { tangentAxis } from "../../../utils/vectors/vectors";
-import { type SpecifiedTextureCreateSpriteOptions } from "../../render/createSprite";
+import { type ShadowCastSpriteOptions } from "../../render/ShadowCastSpriteOptions";
 
-const shadowLift: SpecifiedTextureCreateSpriteOptions = Object.freeze({
+const shadowLift: ShadowCastSpriteOptions = Object.freeze({
   animationId: "shadow.lift",
-  spritesheetVariant: "original",
 });
 
-const shadowSmallBlock: SpecifiedTextureCreateSpriteOptions = Object.freeze({
+const shadowSmallBlock: ShadowCastSpriteOptions = Object.freeze({
   textureId: "shadow.smallBlock",
-  spritesheetVariant: "original",
 });
 
-export const shadowSmallRound: SpecifiedTextureCreateSpriteOptions =
-  Object.freeze({
-    textureId: "shadow.smallRound",
-    spritesheetVariant: "original",
-  });
+export const shadowSmallRound: ShadowCastSpriteOptions = Object.freeze({
+  textureId: "shadow.smallRound",
+});
 
-const shadowFullBlock: SpecifiedTextureCreateSpriteOptions = Object.freeze({
+const shadowFullBlock: ShadowCastSpriteOptions = Object.freeze({
   textureId: "shadow.fullBlock",
-  spritesheetVariant: "original",
 });
 
-const shadowFullBlockFlipX: SpecifiedTextureCreateSpriteOptions = Object.freeze(
-  {
-    textureId: "shadow.fullBlock",
-    flipX: true,
-    spritesheetVariant: "original",
-  },
-);
+const shadowFullBlockFlipX: ShadowCastSpriteOptions = Object.freeze({
+  textureId: "shadow.fullBlock",
+  flipX: true,
+});
 
-const shadowBarrier: SpecifiedTextureCreateSpriteOptions = Object.freeze({
+const shadowBarrier: ShadowCastSpriteOptions = Object.freeze({
   textureId: "shadow.barrier.y",
-  spritesheetVariant: "original",
 });
 
-const shadowBarrierFlipX: SpecifiedTextureCreateSpriteOptions = Object.freeze({
+const shadowBarrierFlipX: ShadowCastSpriteOptions = Object.freeze({
   textureId: "shadow.barrier.y",
   flipX: true,
-  spritesheetVariant: "original",
 });
 
-const shadowScroll: SpecifiedTextureCreateSpriteOptions = Object.freeze({
+const shadowScroll: ShadowCastSpriteOptions = Object.freeze({
   textureId: "shadow.scroll",
-  spritesheetVariant: "original",
 });
 
 export const loadItemShadowCast = (
   jsonItem: JsonItemUnion,
-): SpecifiedTextureCreateSpriteOptions | undefined => {
+): ShadowCastSpriteOptions | undefined => {
   switch (jsonItem.type) {
     case "lift":
       return shadowLift;

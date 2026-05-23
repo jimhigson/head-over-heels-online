@@ -1,13 +1,11 @@
+import { type Texture } from "pixi.js";
+
 import {
   type PartialNamedColours,
   resolveNamedColourSwops,
   resolveSwops,
 } from "../../../utils/palette/palette";
 import { omitArray } from "../../../utils/pick";
-import {
-  type AppSpritesheet,
-  type LoadableSpriteOption,
-} from "../loadedSpriteSheet";
 import { blockstackAmbienceSwops } from "../roomSpritesheetTextureSwops";
 import { type SpritesheetMetadata } from "../spritesheetData/spritesheetMetaData";
 import {
@@ -18,8 +16,10 @@ import {
   type SpritesheetTextureSwops,
 } from "../spritesheetPaletteSwop";
 import { type VariantBuildContext } from "../VariantBuildContext";
-
-let swopped: AppSpritesheet | undefined = undefined;
+import {
+  type AppSpritesheet,
+  type LoadableSpriteOption,
+} from "./SpritesheetVariants";
 
 const buildDeactivatedSwops = <
   PaletteColourName extends string,
@@ -64,51 +64,41 @@ const buildDeactivatedSwops = <
   };
 };
 
-const destroyDeactivatedSpritesheetVariant = () => {
-  if (swopped !== undefined) {
-    swopped.textureSource.destroy();
-    swopped.destroy(true);
-    swopped = undefined;
-  }
-};
-
-export const createDeactivatedSpritesheetVariant = (
+export const buildDeactivatedSpritesheet = (
   context: VariantBuildContext,
-): void => {
+  baseTexture: Texture,
+  originalSpritesheet: AppSpritesheet,
+): AppSpritesheet => {
   const { roomScenery, roomColor, spritesheetMetaData } = context;
-  destroyDeactivatedSpritesheetVariant();
 
   let result = createSpritesheetVariant(
     context,
     buildDeactivatedSwops(spritesheetMetaData),
+    baseTexture,
+    originalSpritesheet,
   );
 
   if (roomColor.shade === "dimmed") {
     const dimSwops = ambientDimSwops(spritesheetMetaData);
     if (dimSwops !== undefined) {
-      result = replaceSpritesheetWithSwopped(context, result, dimSwops);
+      result = replaceSpritesheetWithSwopped(
+        context,
+        result,
+        dimSwops,
+        originalSpritesheet,
+      );
     }
   } else {
     // TODO: incorrectly applying blockstack ambience here it seems (to deactivated)
-    result = replaceSpritesheetWithSwopped(context, result, {
-      ambient: [blockstackAmbienceSwops(roomScenery, roomColor)],
-    });
-  }
-
-  swopped = result;
-};
-
-/**
- * NOTE: this is only safe to call after the spritesheet has had load() called
- * and it resolved! - this is a sync export since we need to get the spritesheet
- * inside the update/render loop synchronously many times
- */
-export const deactivatedSpritesheetVariant = (): AppSpritesheet => {
-  if (swopped === undefined) {
-    throw new Error(
-      `swopped spritesheet undefined - should only be called when we know for sure it is available`,
+    result = replaceSpritesheetWithSwopped(
+      context,
+      result,
+      {
+        ambient: [blockstackAmbienceSwops(roomScenery, roomColor)],
+      },
+      originalSpritesheet,
     );
   }
 
-  return swopped;
+  return result;
 };

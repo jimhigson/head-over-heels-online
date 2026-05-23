@@ -9,8 +9,8 @@ import {
 } from "../../../utils/vectors/vectors";
 import { fullBlockAabb } from "../../collision/boundingBoxes";
 import { multiplyBoundingBox } from "../../collision/multiplyBoundingBox";
-import { type SpecifiedTextureCreateSpriteOptions } from "../../render/createSprite";
 import { blockXyzToFineXyz } from "../../render/projections";
+import { type ShadowCastSpriteOptions } from "../../render/ShadowCastSpriteOptions";
 import { defaultBaseState } from "./itemDefaultStates";
 
 // a value of 3 makes items less likely to get pushed through the floor if
@@ -33,9 +33,8 @@ const floorEdgeRenderThicknessPx = 10;
 const extraFloorAmountForDoorsFar = 0.52;
 const extraFloorAmountForDoorsNear = 0.5;
 
-const shadowFullBlock: SpecifiedTextureCreateSpriteOptions = Object.freeze({
+const shadowFullBlock: ShadowCastSpriteOptions = Object.freeze({
   textureId: "shadow.fullBlock",
-  spritesheetVariant: "original",
 });
 
 export const loadFloor = <RoomId extends string, RoomItemId extends string>(

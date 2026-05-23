@@ -9,9 +9,9 @@ import {
 } from "../../../game/input/keyAssignmentPresets";
 import { type ItemInPlayType } from "../../../model/ItemInPlay";
 import { type Campaign } from "../../../model/modelTypes";
-import { type AppSpritesheetData } from "../../../sprites/spritesheet/loadedSpriteSheet";
 import { makeSpritesheetData } from "../../../sprites/spritesheet/spritesheetData/makeSpritesheetData";
 import { spritesheetMetas } from "../../../sprites/spritesheet/spritesheetData/spritesheetMetaData";
+import { type AppSpritesheetData } from "../../../sprites/spritesheet/variants/SpritesheetVariants";
 import { objectEntriesIter, valuesIter } from "../../../utils/entries";
 import { getAtPath } from "../../../utils/getAtPath";
 import { size } from "../../../utils/iterators/size";

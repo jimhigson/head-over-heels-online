@@ -51,25 +51,24 @@ export const itemStaticAppearance = <T extends ItemInPlayType>(
     ({
       renderContext: {
         item: subject,
-        general: { spriteOption },
+        general: { spritesheetVariants },
       },
     }) => {
+      const spritesheet = spritesheetVariants.currentMainSpritesheet();
       if (isMultipliedItem(subject)) {
         return createSprite({
           ...(typeof createSpriteOptions === "string" ?
             { textureId: createSpriteOptions }
           : createSpriteOptions),
           times: itemInPlayTimes(subject),
-          spritesheetVariant:
-            spriteOption.uncolourised ? "uncolourised" : "for-current-room",
+          spritesheet,
         });
       }
       return createSprite({
         ...(typeof createSpriteOptions === "string" ?
           { textureId: createSpriteOptions }
         : createSpriteOptions),
-        spritesheetVariant:
-          spriteOption.uncolourised ? "uncolourised" : "for-current-room",
+        spritesheet,
       });
     },
   );
@@ -77,30 +76,29 @@ export const itemStaticAppearance = <T extends ItemInPlayType>(
 export const itemStaticAnimatedAppearance = <T extends ItemInPlayType>(
   createSpriteOptions: Omit<
     AnimatedCreateSpriteOptions,
-    "gameSpeed" | "paused" | "spritesheetVariant"
+    "gameSpeed" | "paused" | "spritesheet"
   >,
 ): ItemAppearance<T> =>
   itemAppearanceRenderOnce(
     ({
       renderContext: {
         item: subject,
-        general: { paused, spriteOption },
+        general: { paused, spritesheetVariants },
       },
     }) => {
+      const spritesheet = spritesheetVariants.currentMainSpritesheet();
       if (isMultipliedItem(subject)) {
         return createSprite({
           ...createSpriteOptions,
           times: itemInPlayTimes(subject),
           paused,
-          spritesheetVariant:
-            spriteOption.uncolourised ? "uncolourised" : "for-current-room",
+          spritesheet,
         });
       }
       return createSprite({
         ...createSpriteOptions,
         paused,
-        spritesheetVariant:
-          spriteOption.uncolourised ? "uncolourised" : "for-current-room",
+        spritesheet,
       });
     },
   );

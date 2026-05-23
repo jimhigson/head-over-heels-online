@@ -1,7 +1,7 @@
 import { Container, type Sprite } from "pixi.js";
 
 import { type RoomState } from "../../../../../model/RoomState";
-import { getSpriteSheetVariant } from "../../../../../sprites/spritesheet/variants/getSpriteSheetVariant";
+import { type AppSpritesheet } from "../../../../../sprites/spritesheet/variants/SpritesheetVariants";
 import { selectHeelsAbilities } from "../../../../gameState/gameStateSelectors/selectPlayableItem";
 import {
   type PlayableItem,
@@ -16,7 +16,9 @@ import { buttonActionsPressed } from "./buttonActionsPressed";
 
 type SurfaceContentChildren = [carried: Container, bag: Sprite];
 
-const createSurface = (): Container<Container | Sprite> => {
+const createSurface = (
+  originalSpritesheet: AppSpritesheet,
+): Container<Container | Sprite> => {
   const carried = createSprite({
     label: "carriedItem",
   });
@@ -25,7 +27,7 @@ const createSurface = (): Container<Container | Sprite> => {
     label: "bag",
     textureId: "bag",
     y: -2,
-    spritesheetVariant: "original",
+    spritesheet: originalSpritesheet,
   });
 
   return new Container<Container | Sprite>({
@@ -51,7 +53,7 @@ export const carryButtonAppearance: ButtonAppearance<
   const {
     button,
     inputStateTracker,
-    general: { spriteOption, spritesheetMeta, pixiRenderer },
+    general: { spritesheetVariants, spritesheetMeta, pixiRenderer },
   } = renderContext;
   const { currentPlayable, room } = tickContext;
   const previouslyRenderedProps = currentRendering?.renderProps;
@@ -73,13 +75,15 @@ export const carryButtonAppearance: ButtonAppearance<
 
   const disabled = hasBag && !willPickUp && carrying === null;
 
+  const { originalSpritesheet } = spritesheetVariants;
   const container =
     previousRendering ??
     new ArcadeStyleButtonContainer<Container>(
       spritesheetMeta,
       button.which,
       pixiRenderer,
-      createSurface(),
+      originalSpritesheet,
+      createSurface(originalSpritesheet),
     );
 
   // (or is first render)
@@ -96,11 +100,7 @@ export const carryButtonAppearance: ButtonAppearance<
     .children as SurfaceContentChildren;
 
   if (disabled !== previouslyRenderedProps?.disabled || roomChanged) {
-    const spritesheet = getSpriteSheetVariant(
-      spriteOption.uncolourised ? "uncolourised"
-      : disabled ? "deactivated"
-      : "for-current-room",
-    );
+    const spritesheet = spritesheetVariants.currentMainSpritesheet(!disabled);
     bag.texture = spritesheet.textures["bag"];
   }
 

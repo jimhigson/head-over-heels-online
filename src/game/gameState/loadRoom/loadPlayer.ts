@@ -16,13 +16,12 @@ import { originXyz } from "../../../utils/vectors/vectors";
 import { headAabbInfo, heelsAabbInfo } from "../../collision/boundingBoxes";
 import { type PlayableItem } from "../../physics/itemPredicates";
 import { originalGameStartingLives } from "../../physics/mechanicsConstants";
-import { type SpecifiedTextureCreateSpriteOptions } from "../../render/createSprite";
+import { type ShadowCastSpriteOptions } from "../../render/ShadowCastSpriteOptions";
 import { defaultBaseState, defaultFreeItemState } from "./itemDefaultStates";
 import { positionCentredInBlock } from "./positionCentredInBlock";
 
-const shadowPlayable: SpecifiedTextureCreateSpriteOptions = Object.freeze({
+const shadowPlayable: ShadowCastSpriteOptions = Object.freeze({
   textureId: "shadow.playable",
-  spritesheetVariant: "original",
 });
 
 export const defaultPlayableRootAttributes = {

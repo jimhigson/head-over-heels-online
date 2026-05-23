@@ -1,8 +1,6 @@
 import { type IndividualCharacterName } from "../../../model/modelTypes";
 import { isAnimationId } from "../../../sprites/assertIsTextureId";
-import { getSpriteSheetVariant } from "../../../sprites/spritesheet/variants/getSpriteSheetVariant";
-import { type SpritesheetVariant } from "../../../sprites/spritesheet/variants/SpritesheetVariant";
-import { type SpriteOption } from "../../../store/slices/userSettings/userSettingsSlice";
+import { type AppSpritesheet } from "../../../sprites/spritesheet/variants/SpritesheetVariants";
 import { emptyObject } from "../../../utils/empty";
 import { type DirectionXy8 } from "../../../utils/vectors/vectors";
 import { createSprite, type CreateSpriteOptions } from "../createSprite";
@@ -14,12 +12,9 @@ const spriteOptions = (
   direction: DirectionXy8,
   id: string,
   paused: boolean,
-  spriteOption: SpriteOption,
+  spritesheet: AppSpritesheet,
 ): Exclude<CreateSpriteOptions, string> => {
   const possibleAnimationId = `${name}.idle.${direction}`;
-  const spritesheetVariant: SpritesheetVariant =
-    spriteOption.uncolourised ? "uncolourised" : "sceneryPlayer";
-  const spritesheet = getSpriteSheetVariant(spritesheetVariant);
 
   if (isAnimationId(possibleAnimationId, spritesheet.data)) {
     return {
@@ -38,7 +33,7 @@ export const sceneryPlayerAppearance: ItemAppearance<"sceneryPlayer"> = ({
       id,
       config: { which, startDirection },
     },
-    general: { paused, spriteOption },
+    general: { paused, spritesheetVariants },
   },
   currentRendering,
 }) => {
@@ -50,21 +45,23 @@ export const sceneryPlayerAppearance: ItemAppearance<"sceneryPlayer"> = ({
     return "no-update";
   }
 
+  const spritesheet = spritesheetVariants.sceneryPlayerSpritesheet;
+
   return {
     output:
       which === "headOverHeels" ?
         createStackedSprites({
-          top: spriteOptions("head", startDirection, id, paused, spriteOption),
+          top: spriteOptions("head", startDirection, id, paused, spritesheet),
           bottom: spriteOptions(
             "heels",
             startDirection,
             id,
             paused,
-            spriteOption,
+            spritesheet,
           ),
         })
       : createSprite(
-          spriteOptions(which, startDirection, id, paused, spriteOption),
+          spriteOptions(which, startDirection, id, paused, spritesheet),
         ),
     renderProps: emptyObject,
   };

@@ -4,7 +4,7 @@ import { type ItemTypeUnion } from "../../../../_generated/types/ItemInPlayUnion
 import { type ItemInPlay } from "../../../../model/ItemInPlay";
 import { roomItemsIterable, type RoomState } from "../../../../model/RoomState";
 import { wallTimes } from "../../../../model/times";
-import { type SpriteOption } from "../../../../store/slices/userSettings/userSettingsSlice";
+import { type AppSpritesheet } from "../../../../sprites/spritesheet/variants/SpritesheetVariants";
 import { iterateToContainer } from "../../../../utils/pixi/iterateToContainer";
 import {
   perpendicularAxisXy,
@@ -20,7 +20,7 @@ import { projectWorldXyzToScreenXy } from "../../projections";
 export const renderFloorOverdraws = (
   { state: { position: floorPosition } }: ItemInPlay<"floor", string, string>,
   roomState: RoomState<string, string>,
-  spriteOption: SpriteOption,
+  spritesheet: AppSpritesheet,
 ): Container => {
   const isOnFarSide = (
     item: ItemTypeUnion<"doorFrame" | "wall", string, string>,
@@ -63,8 +63,7 @@ export const renderFloorOverdraws = (
             : { [perpendicularAxisXy(tangentAxis(direction))]: 2 },
           anchor: { x: 0, y: 1 },
           flipX: direction === "away",
-          spritesheetVariant:
-            spriteOption.uncolourised ? "uncolourised" : "for-current-room",
+          spritesheet,
         });
       }),
     new Container({ label: "floorOverdraws" }),

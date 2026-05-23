@@ -255,15 +255,14 @@ class ItemShadowRenderer<T extends ItemInPlayType>
         const { times } = caster.config as ConsolidatableConfig;
 
         const { shadowCastTexture } = caster;
+        const { general } = this.renderContext;
+        const { shadowSpritesheet } = general.spritesheetVariants;
 
         const castTextureMultiplied = renderMultipliedXy(
           {
             ...shadowCastTexture,
-            paused: this.renderContext.general.paused,
-            spritesheetVariant:
-              this.renderContext.general.spriteOption.uncolourised ?
-                "uncolourised"
-              : "original",
+            paused: general.paused,
+            spritesheet: shadowSpritesheet,
           } as SpecifiedTextureCreateSpriteOptions,
           times,
         );

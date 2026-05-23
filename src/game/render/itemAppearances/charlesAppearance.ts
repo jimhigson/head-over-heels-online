@@ -1,4 +1,3 @@
-import { type SpritesheetVariant } from "../../../sprites/spritesheet/variants/SpritesheetVariant";
 import { keysIter } from "../../../utils/entries";
 import {
   type DirectionXy4,
@@ -27,7 +26,7 @@ export const charlesAppearance: ItemAppearance<
       },
     },
     room: { roomTime, items },
-    general: { spriteOption },
+    general: { spritesheetVariants },
   },
   currentRendering,
 }) => {
@@ -48,17 +47,14 @@ export const charlesAppearance: ItemAppearance<
     return "no-update";
   }
 
-  const spritesheetVariant: SpritesheetVariant =
-    spriteOption.uncolourised ? "uncolourised"
-    : activated ? "for-current-room"
-    : "deactivated";
+  const spritesheet = spritesheetVariants.currentMainSpritesheet(activated);
 
   return {
     output: createStackedSprites({
-      top: { textureId: `charles.${facingXy4}`, spritesheetVariant },
+      top: { textureId: `charles.${facingXy4}`, spritesheet },
       bottom: {
         textureId: controlledByJoystick ? "headlessBase.all" : "headlessBase",
-        spritesheetVariant,
+        spritesheet,
       },
     }),
     renderProps: { facingXy4, controlledByJoystick, activated },
