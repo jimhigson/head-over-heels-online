@@ -88,7 +88,7 @@ export const editRoomReducers = {
     const state = _state as LevelEditorState;
 
     pushUndoInPlace(state, { kind: "changeColour" }, timestamp);
-    for (const { roomId } of state.selectedRooms) {
+    for (const roomId of state.selectedRoomIds) {
       const target = state.campaignInProgress.rooms[roomId]?.color;
       if (target) {
         Object.assign(target, colour);
@@ -107,7 +107,7 @@ export const editRoomReducers = {
     const state = _state as LevelEditorState;
 
     pushUndoInPlace(state, { kind: "changeScenery", sceneryName }, timestamp);
-    for (const { roomId } of state.selectedRooms) {
+    for (const roomId of state.selectedRoomIds) {
       const roomJson = state.campaignInProgress.rooms[roomId];
       if (roomJson) {
         changeRoomSceneryInPlace(roomJson, sceneryName);

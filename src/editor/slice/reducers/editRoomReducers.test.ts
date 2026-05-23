@@ -51,18 +51,20 @@ test('deleting a door "heals" the void where the door once stood by extending an
       timestamp: 0,
     }),
     // then, delete the door:
-    (state) => {
+    (dispatch, getState) => {
       const doorEntry = iterateRoomJsonItemsWithIds(
-        selectCurrentRoomFromLevelEditorState(state).items,
+        selectCurrentRoomFromLevelEditorState(getState().levelEditor).items,
       ).find(([_id, i]) => i.type === "door");
 
       if (doorEntry === undefined) {
         expect.fail("no door in room");
       }
 
-      return setSelectedItemsInRoom({
-        jsonItemIds: [doorEntry[0]],
-      });
+      dispatch(
+        setSelectedItemsInRoom({
+          jsonItemIds: [doorEntry[0]],
+        }),
+      );
     },
     deleteSelected({ timestamp: 0 }),
   );
@@ -505,7 +507,8 @@ describe('editing a door\'s "toRoom" config provides convenience methods to main
 
     const state: LevelEditorState = {
       ...editorStateWithOneRoomWithNoItems,
-      selectedRooms: [{ roomId: roomA, subRoomId: "*" }],
+      selectedRoomIds: [roomA],
+      cursorRoom: { roomId: roomA, subRoomId: "*" },
       campaignInProgress: {
         ...editorStateWithOneRoomWithNoItems.campaignInProgress,
         rooms: {

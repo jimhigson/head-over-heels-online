@@ -476,21 +476,25 @@ describe("applying tools", () => {
           type: "item",
           item: { type: "deadlyBlock", config: { style: "toaster" } },
         }),
-        (state) => {
-          return applyItemTool({
-            blockPosition: { x: 0, y: 0, z: 0 },
-            pointedAtItemJson: findFloor(state),
-            preview: false,
-            timestamp: 0,
-          });
+        (dispatch, getState) => {
+          dispatch(
+            applyItemTool({
+              blockPosition: { x: 0, y: 0, z: 0 },
+              pointedAtItemJson: findFloor(getState().levelEditor),
+              preview: false,
+              timestamp: 0,
+            }),
+          );
         },
-        (state) => {
-          return applyItemTool({
-            blockPosition: { x: 1, y: 0, z: 0 },
-            pointedAtItemJson: findFloor(state),
-            preview: false,
-            timestamp: 0,
-          });
+        (dispatch, getState) => {
+          dispatch(
+            applyItemTool({
+              blockPosition: { x: 1, y: 0, z: 0 },
+              pointedAtItemJson: findFloor(getState().levelEditor),
+              preview: false,
+              timestamp: 0,
+            }),
+          );
         },
       );
 
@@ -569,23 +573,25 @@ describe("applying tools", () => {
         item: { type: "block", config: { style: "organic" } },
       }),
       setAutoCoalesce(false),
-      (state) => {
-        const floor = findFloor(state);
-        return applyItemTool({
-          blockPosition: { x: 0, y: 0, z: 0 },
-          pointedAtItemJson: floor,
-          preview: false,
-          timestamp: 0,
-        });
+      (dispatch, getState) => {
+        dispatch(
+          applyItemTool({
+            blockPosition: { x: 0, y: 0, z: 0 },
+            pointedAtItemJson: findFloor(getState().levelEditor),
+            preview: false,
+            timestamp: 0,
+          }),
+        );
       },
-      (state) => {
-        const floor = findFloor(state);
-        return applyItemTool({
-          blockPosition: { x: 1, y: 0, z: 0 },
-          pointedAtItemJson: floor,
-          preview: false,
-          timestamp: 0,
-        });
+      (dispatch, getState) => {
+        dispatch(
+          applyItemTool({
+            blockPosition: { x: 1, y: 0, z: 0 },
+            pointedAtItemJson: findFloor(getState().levelEditor),
+            preview: false,
+            timestamp: 0,
+          }),
+        );
       },
     );
 

@@ -37,12 +37,14 @@ export const addOrRemoveRoomReducers = {
   },
   insertRoom(
     state,
-    { payload: { direction } }: PayloadAction<{ direction: DirectionXy4 }>,
+    {
+      payload: { direction, roomSize },
+    }: PayloadAction<{ direction: DirectionXy4; roomSize?: Xy }>,
   ) {
-    insertRoomInPlace(state, direction);
+    insertRoomInPlace(state, direction, roomSize);
   },
   removeRoom(state) {
-    const roomIdsToDelete = new Set(state.selectedRooms.map((r) => r.roomId));
+    const roomIdsToDelete = new Set(state.selectedRoomIds);
 
     // to stay near the deleted room, find another room adjacent to it:
     const cursorRoom =

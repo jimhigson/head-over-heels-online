@@ -57,12 +57,10 @@ export const changeIdOfCurrentRoomInPlace = (
   };
   delete state.campaignInProgress.rooms[prevRoomId];
 
-  // the last selected room is always the cursor room
-  const cursor = state.selectedRooms.at(-1);
-  if (!cursor) {
-    throw new Error("no room selected");
-  }
-  cursor.roomId = newRoomId;
+  state.cursorRoom = { ...state.cursorRoom, roomId: newRoomId };
+  state.selectedRoomIds = state.selectedRoomIds.map((id) =>
+    id === prevRoomId ? newRoomId : id,
+  );
 
   state.editingRoomIdHistory.back = state.editingRoomIdHistory.back.map((id) =>
     id === prevRoomId ? newRoomId : id,

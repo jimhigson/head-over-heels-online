@@ -134,6 +134,13 @@ export type AppThunk<ReturnType = void> = ThunkAction<
   UnknownAction
 >;
 
+export type EditorThunk<ReturnType = void> = ThunkAction<
+  ReturnType,
+  EditorRootState,
+  unknown,
+  LevelEditorSliceAction
+>;
+
 export const editorStore = store as EnhancedStore<
   EditorRootState,
   LevelEditorSliceAction | StoreActionOf<typeof store>,

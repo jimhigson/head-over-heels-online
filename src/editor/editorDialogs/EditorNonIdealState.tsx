@@ -5,32 +5,40 @@ import { BitmapText } from "../../game/components/tailwindSprites/BitmapText";
 import { useAppDispatch } from "../../store/hooks";
 import { clearAllData } from "../../store/slices/clearAllData";
 import { Button } from "../../ui/Button";
-import { ErrorDialog } from "../../ui/ErrorDialog";
+import { ErrorDialog, ErrorDialogReport } from "../../ui/ErrorDialog";
 import { type SerialisableError } from "../../utils/redux/createSerialisableErrors";
 
-const markdownIntro = `## Uh-oh! The level editor crashed!
+const markdownIntro = (
+  whatCrashed: string,
+) => `## Uh-oh! The ${whatCrashed} crashed!
 You could:
 
 * Open an [issue on GitHub](https://github.com/jimhigson/head-over-heels-online/issues)
 * Email [jim@blockstack.ing](mailto:jim@blockstack.ing)
 * Rant on the [Discord server](https://discord.gg/XmV9QNWY)`;
 
-export type EditorErrorDialogProps = {
+export type EditorNonIdealStateProps = {
   errors: SerialisableError[];
   onDismiss: () => void;
+  asDialog?: boolean;
+  componentName: string;
 };
 
-export const EditorErrorDialog = ({
+export const EditorNonIdealState = ({
   errors,
   onDismiss,
-}: EditorErrorDialogProps) => {
+  asDialog = false,
+  componentName,
+}: EditorNonIdealStateProps) => {
   const dispatch = useAppDispatch();
   const [copied, setCopied] = useState(false);
 
+  const WrapperComponent = asDialog ? ErrorDialog : ErrorDialogReport;
+
   return (
-    <ErrorDialog
+    <WrapperComponent
       errors={errors}
-      intro={<BlockyMarkdown markdown={markdownIntro} />}
+      intro={<BlockyMarkdown markdown={markdownIntro(componentName)} />}
     >
       {(errorsReportText) => (
         <div className="flex gap-1 flex-wrap mt-1">
@@ -59,6 +67,6 @@ export const EditorErrorDialog = ({
           </Button>
         </div>
       )}
-    </ErrorDialog>
+    </WrapperComponent>
   );
 };

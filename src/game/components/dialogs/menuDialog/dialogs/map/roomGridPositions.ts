@@ -93,6 +93,17 @@ function* _roomGridPositions<RoomId extends string>({
     return;
   }
 
+  const room = campaign.rooms[roomId];
+
+  if (room === undefined) {
+    throw new Error(`no room in the campaign with id="${roomId}"`);
+  }
+
+  const subRooms = room.meta?.subRooms;
+  if (!subRooms) {
+    subRoomId = "*";
+  }
+
   if (visited[roomId]?.[subRoomId]) {
     // already visited this room
     return;
@@ -103,12 +114,6 @@ function* _roomGridPositions<RoomId extends string>({
   }
 
   visited[roomId][subRoomId] = true;
-
-  const room = campaign.rooms[roomId];
-
-  if (room === undefined) {
-    throw new Error(`no room in the campaign with id="${roomId}"`);
-  }
 
   const doors = [
     ...valuesIter(room.items)
@@ -124,8 +129,6 @@ function* _roomGridPositions<RoomId extends string>({
     previousRoomGridPosition,
     vectorFromPrevious === undefined ? originXy : vectorFromPrevious,
   );
-
-  const subRooms = room.meta?.subRooms;
   if (subRooms) {
     if (subRoomId === "*") {
       throw new Error(

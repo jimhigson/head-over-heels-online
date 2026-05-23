@@ -1,6 +1,38 @@
-import { type DirectionXy4, type Xy } from "../../../utils/vectors/vectors";
+import {
+  type DirectionXy4,
+  perpendicularAxisXy,
+  tangentAxis,
+  type Xy,
+} from "../../../utils/vectors/vectors";
 import { type RoomJson, roomJsonItemsIterable } from "../../RoomJson";
 import { wallTimes } from "../../times";
+
+const doorWidth = 2;
+
+const coversPosition = (
+  item: {
+    type: string;
+    position: { x: number; y: number };
+    config: { direction: DirectionXy4; times?: Partial<Xy> };
+  },
+  direction: DirectionXy4,
+  coord: Xy,
+): boolean => {
+  if (item.config.direction !== direction) {
+    return false;
+  }
+  const dirAxis = tangentAxis(direction);
+  const alongAxis = perpendicularAxisXy(dirAxis);
+
+  if (item.position[dirAxis] !== coord[dirAxis]) {
+    return false;
+  }
+
+  const length =
+    item.type === "door" ? doorWidth : (wallTimes(item.config)[alongAxis] ?? 1);
+  const start = item.position[alongAxis];
+  return coord[alongAxis] >= start && coord[alongAxis] < start + length;
+};
 
 export const roomJsonMatchers = {
   toHaveFloor<RoomId extends string, RoomItemId extends string>(
@@ -175,6 +207,87 @@ export const roomJsonMatchers = {
       pass: false,
       message: () =>
         `Expected room to have subroom with gridPosition (${expected.gridPosition.x}, ${expected.gridPosition.y}) and physicalPosition from (${expected.physicalPosition.from.x}, ${expected.physicalPosition.from.y}) to (${expected.physicalPosition.to.x}, ${expected.physicalPosition.to.y})\n\nFound subrooms:\n${subroomsDescription}`,
+    };
+  },
+
+  toHaveCompletePerimeter<RoomId extends string, RoomItemId extends string>(
+    received: RoomJson<RoomId, RoomItemId>,
+  ) {
+    const items = Array.from(roomJsonItemsIterable(received));
+    const floors = items.filter((i) => i.type === "floor");
+    const wallsAndDoors = items.filter(
+      (i) => i.type === "wall" || i.type === "door",
+    );
+
+    const floorSet = new Set<string>();
+    for (const floor of floors) {
+      const timesX = floor.config.times?.x ?? 1;
+      const timesY = floor.config.times?.y ?? 1;
+      for (let dx = 0; dx < timesX; dx++) {
+        for (let dy = 0; dy < timesY; dy++) {
+          floorSet.add(`${floor.position.x + dx},${floor.position.y + dy}`);
+        }
+      }
+    }
+
+    const uncovered: Array<{ x: number; y: number; direction: DirectionXy4 }> =
+      [];
+
+    for (const key of floorSet) {
+      const [x, y] = key.split(",").map(Number);
+
+      const edges: Array<{ direction: DirectionXy4; nx: number; ny: number }> =
+        [
+          { direction: "towards", nx: x, ny: y - 1 },
+          { direction: "away", nx: x, ny: y + 1 },
+          { direction: "right", nx: x - 1, ny: y },
+          { direction: "left", nx: x + 1, ny: y },
+        ];
+
+      for (const { direction, nx, ny } of edges) {
+        if (floorSet.has(`${nx},${ny}`)) {
+          continue;
+        }
+
+        const wallCoord: Xy =
+          direction === "towards" ? { x, y }
+          : direction === "away" ? { x, y: y + 1 }
+          : direction === "right" ? { x, y }
+          : { x: x + 1, y };
+
+        const isCovered = wallsAndDoors.some((item) =>
+          coversPosition(
+            item as {
+              type: string;
+              position: { x: number; y: number };
+              config: { direction: DirectionXy4; times?: Partial<Xy> };
+            },
+            direction,
+            wallCoord,
+          ),
+        );
+
+        if (!isCovered) {
+          uncovered.push({ x, y, direction });
+        }
+      }
+    }
+
+    if (uncovered.length === 0) {
+      return {
+        pass: true,
+        message: () => "Expected room not to have a complete perimeter",
+      };
+    }
+
+    const uncoveredDescription = uncovered
+      .map((u) => `  - (${u.x}, ${u.y}) ${u.direction} edge`)
+      .join("\n");
+
+    return {
+      pass: false,
+      message: () =>
+        `Expected room to have a complete perimeter, but ${uncovered.length} edges are uncovered:\n${uncoveredDescription}`,
     };
   },
 };

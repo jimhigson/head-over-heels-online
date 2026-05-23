@@ -6,7 +6,7 @@ import { usePageAsAnApp } from "../pages/gamePage/usePageAsAnApp";
 import { SpinnerHead, SpinnerHeels } from "../ui/Spinner";
 import { LoadingCampaignDialog } from "./editorDialogs/LoadingCampaignDialog";
 import { EditorErrorBoundary } from "./EditorErrorBoundary";
-import { EditorMap } from "./EditorMap/EditorMap";
+import { EditorMapWithErrorBoundary } from "./EditorMap/EditorMap";
 import { LazyJsonRoomEditor } from "./JsonRoomEditor/JsonRoomEditor.lazy";
 import { LazyRoomEditingArea } from "./RoomEditingArea/RoomEditingArea.lazy";
 import { LevelEditorToolbar } from "./toolbar/LevelEditorToolbar";
@@ -15,7 +15,7 @@ const LevelEditor = () => {
   usePageAsAnApp();
 
   return (
-    <EditorErrorBoundary>
+    <EditorErrorBoundary asDialog>
       <LoadingCampaignDialog />
       <CssVariables>
         <PanelGroup direction="horizontal" className="w-full h-full">
@@ -28,7 +28,7 @@ const LevelEditor = () => {
           <Panel id="centre">
             <PanelGroup direction="vertical">
               <Panel id="map" collapsible minSize={10} defaultSize={25}>
-                <EditorMap />
+                <EditorMapWithErrorBoundary />
               </Panel>
               <PanelResizeHandle className="scale-editor h-1 bg-metallicBlueHalfbrite  hover:border-moss hover:bg-moss border-b-[calc(1px*var(--scale))] border-metallicBlue" />
               <Panel id="editingArea">

@@ -23,6 +23,7 @@ import {
   changeRoomReducers,
   changeRoomSelectors,
 } from "./reducers/changeRoomReducers";
+import { coalesceRoomsReducers } from "./reducers/coalesceRoomsReducers";
 import { dragToMoveReducers } from "./reducers/dragToMoveReducers";
 import { editorSettingsReducers } from "./reducers/editorSettingsReducers";
 import { editRoomReducers } from "./reducers/editRoomReducers";
@@ -55,11 +56,8 @@ export type LevelEditorState = {
   campaignInProgress: EditorCampaign;
   /** the campaign in the db (as far as we know) - can be used to check if we have edits since the last save */
   remoteCampaign: EditorCampaign | undefined;
-  /** must never be empty — the last element is the cursor room */
-  selectedRooms: Array<{
-    roomId: EditorRoomId;
-    subRoomId: string;
-  }>;
+  selectedRoomIds: EditorRoomId[];
+  cursorRoom: { roomId: EditorRoomId; subRoomId: string };
   editingRoomIdHistory: {
     back: EditorRoomId[];
     forward: EditorRoomId[];
@@ -134,6 +132,7 @@ export const levelEditorSlice = createSlice({
     ...addOrRemoveRoomReducers,
     ...changeRoomReducers,
     ...roomSelectionReducers,
+    ...coalesceRoomsReducers,
     ...campaignManagementReducers,
   },
   extraReducers(builder) {
@@ -165,6 +164,7 @@ export type LevelEditorSliceAction = ReturnType<
 export const {
   addRoom,
   applyItemTool,
+  coalesceSelectedRooms,
   changeDragInProgress,
   changeGridResolution,
   changeRoomColour,
@@ -180,6 +180,7 @@ export const {
   newCampaign,
   redo,
   addRoomToSelection,
+  selectAllRooms,
   removeRoom,
   resetPreviewedEdits,
   roomBack,

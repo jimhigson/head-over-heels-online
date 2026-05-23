@@ -248,13 +248,7 @@ export const useEditorRoomState = selectorHook(selectEditorRoomState);
 export const useEditorRoomRenderDimensions = selectorHook(
   selectEditorRoomRenderDimensions,
 );
-export const selectCursorRoom = (state: LevelEditorState) => {
-  const cursor = state.selectedRooms.at(-1);
-  if (!cursor) {
-    throw new Error("no room selected");
-  }
-  return cursor;
-};
+export const selectCursorRoom = (state: LevelEditorState) => state.cursorRoom;
 
 export const selectCursorRoomId = (state: LevelEditorState) =>
   selectCursorRoom(state).roomId;

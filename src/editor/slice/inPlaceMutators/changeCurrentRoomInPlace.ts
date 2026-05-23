@@ -36,7 +36,8 @@ export const changeCurrentRoomInPlace = (
   if (!noPushToHistory) {
     state.editingRoomIdHistory.back.push(selectCursorRoomId(state));
   }
-  state.selectedRooms = [{ roomId, subRoomId: resolvedSubRoomId }];
+  state.selectedRoomIds = [roomId];
+  state.cursorRoom = { roomId, subRoomId: resolvedSubRoomId };
 
   state.clickableAnnotationHovered = false;
   state.hoveredItem = undefined;
