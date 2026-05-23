@@ -151,10 +151,10 @@
     "xyzs",
     "zeroable"
   ],
-  "typescript.tsdk": "node_modules/typescript/lib",
+  "js/ts.tsdk.path": "node_modules/typescript/lib",
   "cSpell.language": "en-GB,en-US",
   "window.commandCenter": false,
-  "javascript.preferences.importModuleSpecifier": "relative",
+  "js/ts.preferences.importModuleSpecifier": "relative",
   "workbench.colorCustomizations": {
     "activityBar.activeBackground": "#AD9E00",
     "activityBar.background": "#31413B",
@@ -185,6 +185,5 @@
     "titleBar.inactiveBackground": "#ea684f99",
     "titleBar.inactiveForeground": "#15202b99",
   },
-  "peacock.color": "CA7463",
-  "typescript.native-preview.tsdk": "/Users/jim/dev/hohjs.worktrees/whole-campaign-undo/node_modules/@typescript/native-preview"
+  "peacock.color": "CA7463"
 }
