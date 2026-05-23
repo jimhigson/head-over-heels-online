@@ -5,7 +5,6 @@ import {
   type ZxSpectrumRoomColour,
 } from "../../../originalGame";
 import { type SpritesheetMetadata } from "../../../sprites/spritesheet/spritesheetData/spritesheetMetaData";
-import { type SpritesheetVariant } from "../../../sprites/spritesheet/variants/SpritesheetVariant";
 import { type SpriteOption } from "../../../store/slices/userSettings/userSettingsSlice";
 import { getRoomColorScheme } from "../gameColours/colourScheme";
 import {
@@ -14,14 +13,6 @@ import {
 } from "../gameColours/gameColours";
 
 const noTint = new Color(0xff_ff_ff);
-
-export const spritesheetVariantForHud = (
-  spriteOption: SpriteOption,
-  active: boolean = true,
-): SpritesheetVariant =>
-  spriteOption.uncolourised ? "uncolourised"
-  : active ? "for-current-room"
-  : "deactivated";
 
 export const tintForHudIfUncolourised = (
   spriteOption: SpriteOption,

@@ -6,6 +6,7 @@ import { subRoomBoundariesDecorateRoomRenderer } from "../../game/render/room/su
 import { useRegisterDecorateItemRenderers } from "../../game/render/useRegisterDecorateItemRenderers";
 import { useRegisterDecorateRoomRenderers } from "../../game/render/useRegisterDecorateRoomRenderers";
 import { type ResolutionName } from "../../originalGame";
+import { useFixedSpritesheetVariants } from "../../sprites/spritesheet/variants/useSpritesheetVariants";
 import { useUpdateUpscaleOnDisplaySettingsChange } from "../../store/slices/upscale/useUpdateUpscaleOnDisplaySettingsChange";
 import { useUpdateUpscaleWhenElementResizes } from "../../store/slices/upscale/useUpdateUpscaleWhenElementResizes";
 import { useCanvasTransform } from "../../utils/scaledRendering/useCanvasInlineStyle";
@@ -15,15 +16,12 @@ import { useRoomEditorInteractivity } from "./interactivity/useRoomEditorInterac
 import { PixiApplicationProvider } from "./PixiApplicationProvider";
 import { ResolutionControls } from "./ResolutionControls";
 import { useAddApplicationCanvasToDom } from "./useAddApplicationCanvasToDom";
-import { useAddRoomRendererOutputToApplicationStage } from "./useAddRoomRendererOutputToApplicationStage";
 import { useCenterScrollOnLoad } from "./useCenterScrollOnLoad";
+import { useEditorMainLoop } from "./useEditorMainLoop";
 import { usePutUpscaleOnAppStage } from "./usePutUpscaleOnAppStage";
 import { useRemoveCursorPreviewsWhenToolChanges } from "./useRemoveCursorPreviewsWhenToolChanges";
 import { useResizePixiApplicationToMatchCanvasSize } from "./useResizePixiApplicationToMatchCanvasSize";
 import { useRoomEditingAreaCursorClassName } from "./useRoomEditingAreaCursorClassName";
-import { useRoomRenderer } from "./useRoomRenderer";
-import { useTickRoomRenderer } from "./useTickRoomRenderer";
-import { useTickSpritesheetVariants } from "./useTickSpritesheetVariants";
 TextureStyle.defaultOptions.scaleMode = "nearest";
 
 const editorItemRendererDecorators = [
@@ -34,9 +32,12 @@ const editorItemRendererDecorators = [
 const editorRoomDecorators = [subRoomBoundariesDecorateRoomRenderer];
 
 const RoomEditingAreaInner = () => {
+  const spritesheetVariants = useFixedSpritesheetVariants("BlockStack");
+
   useRegisterDecorateItemRenderers(editorItemRendererDecorators);
   useRegisterDecorateRoomRenderers(editorRoomDecorators);
-  const roomRenderer = useRoomRenderer();
+  useEditorMainLoop(spritesheetVariants);
+
   const [renderArea, setRenderArea] = useState<HTMLDivElement | null>(null);
   const [renderSizingArea, setRenderSizingArea] =
     useState<HTMLDivElement | null>(null);
@@ -54,9 +55,6 @@ const RoomEditingAreaInner = () => {
     renderSizingArea ?? undefined,
   );
   useResizePixiApplicationToMatchCanvasSize();
-  useAddRoomRendererOutputToApplicationStage(roomRenderer);
-  useTickSpritesheetVariants();
-  useTickRoomRenderer(roomRenderer);
   useRoomEditorInteractivity(renderArea);
   useAddApplicationCanvasToDom(renderArea);
   usePutUpscaleOnAppStage();

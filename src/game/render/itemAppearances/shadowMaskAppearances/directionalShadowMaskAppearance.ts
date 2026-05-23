@@ -5,12 +5,8 @@ import {
   type IndividualCharacterName,
 } from "../../../../model/modelTypes";
 import { isTextureId } from "../../../../sprites/assertIsTextureId";
-import {
-  type AppSpritesheet,
-  originalSpriteSheet,
-} from "../../../../sprites/spritesheet/loadedSpriteSheet";
 import { type TextureId } from "../../../../sprites/spritesheet/spritesheetData/makeSpritesheetData";
-import { getSpriteSheetVariant } from "../../../../sprites/spritesheet/variants/getSpriteSheetVariant";
+import { type AppSpritesheet } from "../../../../sprites/spritesheet/variants/SpritesheetVariants";
 import {
   type DirectionXy4,
   type DirectionXy8,
@@ -32,7 +28,7 @@ export const directionalShadowMaskAppearanceXy4 =
   ): ItemAppearance<"charles" | "monster", RenderPropsXy4, Sprite> =>
   ({
     renderContext: {
-      general: { spriteOption },
+      general: { spritesheetVariants },
       item: {
         state: { facing },
       },
@@ -54,8 +50,7 @@ export const directionalShadowMaskAppearanceXy4 =
         facingXy4 === "left" || facingXy4 === "away" ?
           `shadowMask.${shadowMaskBaseShadowId}.away`
         : `shadowMask.${shadowMaskBaseShadowId}.right`,
-      spritesheetVariant:
-        spriteOption.uncolourised ? "uncolourised" : "original",
+      spritesheet: spritesheetVariants.shadowSpritesheet,
     });
 
     sprite.y = -(blockSizePx.z * (heightBlocks - 1));
@@ -108,7 +103,7 @@ export const playableShadowMaskAppearanceXy8 =
   > =>
   ({
     renderContext: {
-      general: { spriteOption },
+      general: { spritesheetVariants },
       item,
     },
     currentRendering,
@@ -137,10 +132,7 @@ export const playableShadowMaskAppearanceXy8 =
     const flippedDirection = flipXy8[facingXy8];
     const shadowMaskDirection = flippedDirection ?? facingXy8;
 
-    const spritesheet =
-      spriteOption.uncolourised ?
-        getSpriteSheetVariant("uncolourised")
-      : originalSpriteSheet();
+    const spritesheet = spritesheetVariants.shadowSpritesheet;
 
     const textureId = getPlayableShadowMaskTextureId(
       shadowMaskBaseShadowTextureId,

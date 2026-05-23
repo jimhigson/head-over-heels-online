@@ -1,6 +1,6 @@
-import type {
-  AnimationId,
-  TextureId,
+import {
+  type AnimationId,
+  type TextureId,
 } from "../../sprites/spritesheet/spritesheetData/makeSpritesheetData";
 
 export type ShadowCastSpriteOptions =

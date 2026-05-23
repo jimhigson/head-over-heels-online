@@ -10,7 +10,7 @@ export const buttonAppearance: ItemAppearance<"button", ButtonRenderProps> = ({
     item: {
       state: { pressed },
     },
-    general: { spriteOption },
+    general: { spritesheetVariants },
   },
   currentRendering,
 }) => {
@@ -27,8 +27,7 @@ export const buttonAppearance: ItemAppearance<"button", ButtonRenderProps> = ({
   return {
     output: createSprite({
       textureId: pressed ? `buttonInGame.pressed` : "buttonInGame",
-      spritesheetVariant:
-        spriteOption.uncolourised ? "uncolourised" : "for-current-room",
+      spritesheet: spritesheetVariants.currentMainSpritesheet(),
     }),
     renderProps: { pressed },
   };

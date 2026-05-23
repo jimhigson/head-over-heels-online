@@ -32,7 +32,7 @@ export const switchAppearance: ItemAppearance<"switch", SwitchRenderProps> = ({
       state: { setting: stateSetting },
       config: switchConfig,
     },
-    general: { spriteOption },
+    general: { spritesheetVariants },
   },
   currentRendering,
 }) => {
@@ -55,8 +55,7 @@ export const switchAppearance: ItemAppearance<"switch", SwitchRenderProps> = ({
   return {
     output: createSprite({
       textureId: `switch.${setting}`,
-      spritesheetVariant:
-        spriteOption.uncolourised ? "uncolourised" : "for-current-room",
+      spritesheet: spritesheetVariants.currentMainSpritesheet(),
     }),
     renderProps: { setting },
   };

@@ -12,10 +12,9 @@ import {
 } from "../../../originalGame";
 import { isAnimationId, isTextureId } from "../../../sprites/assertIsTextureId";
 import { effectColour } from "../../../sprites/palette/spritesheetPalette";
-import { type AppSpritesheet } from "../../../sprites/spritesheet/loadedSpriteSheet";
 import { playableWalkAnimationSpeed } from "../../../sprites/spritesheet/spritesheetData/playableSpritesheetData";
 import { type SpritesheetMetadata } from "../../../sprites/spritesheet/spritesheetData/spritesheetMetaData";
-import { getSpriteSheetVariant } from "../../../sprites/spritesheet/variants/getSpriteSheetVariant";
+import { type AppSpritesheet } from "../../../sprites/spritesheet/variants/SpritesheetVariants";
 import { type SpriteOption } from "../../../store/slices/userSettings/userSettingsSlice";
 import { isEmptyObject } from "../../../utils/empty";
 import {
@@ -210,6 +209,7 @@ const createOutputContainer = <PaletteColourName extends string>(
   spriteOption: SpriteOption,
   spritesheetMeta: SpritesheetMetadata<PaletteColourName>,
   roomColour: ZxSpectrumRoomColour,
+  shineSpritesheet: AppSpritesheet,
 ): IndividualPlayableRenderingContainer => {
   const isDim = roomColour.shade === "dimmed";
   const accentColour =
@@ -226,8 +226,7 @@ const createOutputContainer = <PaletteColourName extends string>(
     animationId: inSymbio ? `shine.${name}InSymbio` : `shine.${name}`,
     paused,
     flipX: name === "heels",
-    spritesheetVariant:
-      spriteOption.uncolourised ? "uncolourised" : "for-current-room",
+    spritesheet: shineSpritesheet,
   }) as AnimatedSprite;
 
   container.addChild(shineSprite);
@@ -377,7 +376,13 @@ const playableAppearanceImpl: ItemAppearance<
 > = ({
   renderContext: {
     item: subject,
-    general: { gameState, paused, spriteOption, spritesheetMeta },
+    general: {
+      gameState,
+      paused,
+      spriteOption,
+      spritesheetVariants,
+      spritesheetMeta,
+    },
     room: { roomTime, color: roomColor },
   },
   currentRendering,
@@ -441,9 +446,7 @@ const playableAppearanceImpl: ItemAppearance<
 
   let outputContainer: PlayableRenderOutput;
 
-  const spritesheetVariant =
-    spriteOption.uncolourised ? "uncolourised" : "for-current-room";
-  const spritesheet = getSpriteSheetVariant(spritesheetVariant);
+  const spritesheet = spritesheetVariants.currentMainSpritesheet();
 
   if (type === "headOverHeels") {
     outputContainer =
@@ -456,6 +459,7 @@ const playableAppearanceImpl: ItemAppearance<
           spriteOption,
           spritesheetMeta,
           roomColor,
+          spritesheet,
         ),
         bottom: createOutputContainer(
           "heels",
@@ -464,6 +468,7 @@ const playableAppearanceImpl: ItemAppearance<
           spriteOption,
           spritesheetMeta,
           roomColor,
+          spritesheet,
         ),
       });
 
@@ -498,6 +503,7 @@ const playableAppearanceImpl: ItemAppearance<
         spriteOption,
         spritesheetMeta,
         roomColor,
+        spritesheet,
       );
 
     updateIndividualsRendering(

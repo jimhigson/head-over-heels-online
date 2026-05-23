@@ -12,48 +12,22 @@ import {
 import { completeTimesXyz } from "../../model/times";
 import { originalGameFrameDuration } from "../../originalGame";
 import {
-  type AppSpritesheet,
-  originalSpriteSheet,
-} from "../../sprites/spritesheet/loadedSpriteSheet";
-import {
   type AnimationId,
   type TextureId,
 } from "../../sprites/spritesheet/spritesheetData/makeSpritesheetData";
-import { getSpriteSheetVariant } from "../../sprites/spritesheet/variants/getSpriteSheetVariant";
-import { type SpritesheetVariant } from "../../sprites/spritesheet/variants/SpritesheetVariant";
+import { type AppSpritesheet } from "../../sprites/spritesheet/variants/SpritesheetVariants";
 import { hashStringToNumber0to1 } from "../../utils/maths/hashStringToNumber0to1";
 import { lengthXyz, type Xy, type Xyz } from "../../utils/vectors/vectors";
 import { projectBlockXyzToScreenXy } from "./projections";
 
-/**
- * allow spritesheet to be specified either by variant or by the whole spritesheet
- */
 type CreateSpriteSpritesheetSpecifier =
   | {
       spritesheet: AppSpritesheet;
     }
   | {
-      spritesheetVariant: SpritesheetVariant;
-    }
-  | {
       textureId?: undefined;
-      // spritesheet variant can be undefined in the case where we have no textureId, since then we're getting
-      // the Texture.EMPTY texture
-      spritesheetVariant?: undefined;
+      spritesheet?: undefined;
     };
-
-const spriteSheetForCreateSprite = (
-  options: CreateSpriteSpritesheetSpecifier,
-): AppSpritesheet | undefined => {
-  if ("spritesheet" in options) {
-    return options.spritesheet;
-  } else if (options.spritesheetVariant !== undefined) {
-    return getSpriteSheetVariant(options.spritesheetVariant);
-  }
-  // no spritesheet specified - we should have textureId: undefined, so we use Texture.EMPTY
-  // so we don't need a spritesheet
-  return undefined;
-};
 
 export type AnimatedCreateSpriteOptions = CreateSpriteSpritesheetSpecifier & {
   // animated
@@ -212,7 +186,7 @@ const createSpriteImpl = (options: CreateSpriteOptions): Container => {
     sprite = createAnimatedSprite(options);
   } else {
     const { textureId } = options;
-    const spritesheet = spriteSheetForCreateSprite(options);
+    const { spritesheet } = options;
     sprite = new Sprite(
       textureId !== undefined ?
         spritesheet!.textures[textureId]
@@ -225,7 +199,7 @@ const createSpriteImpl = (options: CreateSpriteOptions): Container => {
       const { textureId } = options;
       const spritesheetFrameData: SpritesheetFrameData | undefined =
         textureId !== undefined ?
-          spriteSheetForCreateSprite(options)!.data.frames[textureId]
+          options.spritesheet!.data.frames[textureId]
         : undefined;
 
       if (
@@ -286,6 +260,7 @@ const createSpriteImpl = (options: CreateSpriteOptions): Container => {
 /** the animation speed, as should be passed to AnimatedSprite.animationSpeed */
 export const animationSpeed = (
   animationId: AnimationId,
+  spritesheet: AppSpritesheet,
   paused: boolean = false,
 ) => {
   const tickerSpeed = Ticker.shared.speed;
@@ -305,11 +280,11 @@ export const animationSpeed = (
       //    tickerSpeed = 1.2: Math.sqrt(1.2) / 1.2 = 1.095 / 1.2 = 0.913 → effective speed = 0.913 × 1.2 = 1.096x ✓
     : Math.sqrt(tickerSpeed) / tickerSpeed;
 
-  const animation = originalSpriteSheet().data.animations[animationId];
+  const animation = spritesheet.data.animations[animationId];
 
   if (animation === undefined) {
     throw new Error(
-      `no animation with id "${animationId}" in the current original spritesheet`,
+      `no animation with id "${animationId}" in the current spritesheet`,
     );
   }
 
@@ -329,8 +304,7 @@ function createAnimatedSprite(
   const { animationId, reverse, playOnce, paused, randomiseStartFrame } =
     options;
 
-  const animationTextures =
-    spriteSheetForCreateSprite(options)!.animations[animationId];
+  const animationTextures = options.spritesheet!.animations[animationId];
 
   const animatedSpriteFrames = framesWithOriginalGameTimings(animationTextures);
 
@@ -340,7 +314,11 @@ function createAnimatedSprite(
 
   const animatedSprite = new AnimatedSprite(animatedSpriteFrames);
 
-  animatedSprite.animationSpeed = animationSpeed(animationId, paused);
+  animatedSprite.animationSpeed = animationSpeed(
+    animationId,
+    options.spritesheet!,
+    paused,
+  );
 
   animatedSprite.gotoAndPlay(
     randomiseStartFrame !== undefined ?
@@ -370,7 +348,12 @@ const createSpriteImplAndCatch = (options: CreateSpriteOptions): Container => {
     return createSpriteImpl(options);
   } catch (error) {
     throw new Error(
-      `error in createSprite with options ${JSON.stringify(options, null, 2)}`,
+      `error in createSprite with options ${JSON.stringify(
+        options,
+        // prevent the non-serialisable spritesheet from being written to json:
+        (key, value) => (key === "spritesheet" ? "(pixiSpritesheet)" : value),
+        2,
+      )}`,
       { cause: error },
     );
   }

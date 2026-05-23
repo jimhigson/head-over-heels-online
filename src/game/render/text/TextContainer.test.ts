@@ -10,11 +10,6 @@ vi.mock("../createSprite", () => ({
   createSprite: vi.fn(),
 }));
 
-// Mock the sprite sheet module
-vi.mock("../../../sprites/spritesheet/loadedSpriteSheet", () => ({
-  originalSpriteSheet: vi.fn(),
-}));
-
 // Mock assertIsTextureId to allow our test texture IDs
 vi.mock("../../../sprites/assertIsTextureId", () => ({
   assertIsTextureId: vi.fn((textureId: string) => {
@@ -36,12 +31,13 @@ vi.mock("../../../utils/pixi/renderContainerToSprite", () => ({
   renderContainerToTexture: vi.fn(() => Texture.EMPTY),
 }));
 
-import { originalSpriteSheet } from "../../../sprites/spritesheet/loadedSpriteSheet";
 import { type TextureId } from "../../../sprites/spritesheet/spritesheetData/makeSpritesheetData";
+import { type AppSpritesheet } from "../../../sprites/spritesheet/variants/SpritesheetVariants";
 // Import the mocked functions
 import { createSprite } from "../createSprite";
 
-// Mock window object for test environment
+let mockSpritesheet: AppSpritesheet;
+
 beforeEach(() => {
   // Create a mock window object for tests
   globalThis.window = {} as Window & typeof globalThis;
@@ -72,9 +68,9 @@ beforeEach(() => {
   ) as Record<TextureId, Texture>;
 
   // Set up the mocked spriteSheet to return our proxy
-  vi.mocked(originalSpriteSheet).mockReturnValue({
+  mockSpritesheet = {
     textures: mockTextures,
-  } as ReturnType<typeof originalSpriteSheet>);
+  } as AppSpritesheet;
 
   // Set up createSprite mock to use the mockTextures
   vi.mocked(createSprite).mockImplementation((options) => {
@@ -92,6 +88,7 @@ afterEach(() => {
 test("creates sprites for text", () => {
   const container = new TextContainer({
     pixiRenderer: mockPixiRenderer,
+    spritesheet: mockSpritesheet,
   });
   container.text = "hi";
 
@@ -116,6 +113,7 @@ test("creates sprites for text", () => {
 test("changes from a longer string to a shorter one", () => {
   const container = new TextContainer({
     pixiRenderer: mockPixiRenderer,
+    spritesheet: mockSpritesheet,
   });
 
   // First set a longer string
@@ -141,6 +139,7 @@ test("changes from a longer string to a shorter one", () => {
 test("changes from a shorter string to a longer one", () => {
   const container = new TextContainer({
     pixiRenderer: mockPixiRenderer,
+    spritesheet: mockSpritesheet,
   });
 
   // First set a shorter string
@@ -169,6 +168,7 @@ test("changes from a shorter string to a longer one", () => {
 test("changes text but keeps the same length", () => {
   const container = new TextContainer({
     pixiRenderer: mockPixiRenderer,
+    spritesheet: mockSpritesheet,
   });
 
   // First set initial string
@@ -197,6 +197,7 @@ test("changes text but keeps the same length", () => {
 test("displays numbers correctly", () => {
   const container = new TextContainer({
     pixiRenderer: mockPixiRenderer,
+    spritesheet: mockSpritesheet,
   });
 
   // Test integer
@@ -215,6 +216,7 @@ test("displays numbers correctly", () => {
 test("handles special 'infinite' string by showing nothing", () => {
   const container = new TextContainer({
     pixiRenderer: mockPixiRenderer,
+    spritesheet: mockSpritesheet,
   });
 
   container.text = "infinite";
@@ -224,6 +226,7 @@ test("handles special 'infinite' string by showing nothing", () => {
 test("throws error for non-existing texture", () => {
   const container = new TextContainer({
     pixiRenderer: mockPixiRenderer,
+    spritesheet: mockSpritesheet,
   });
 
   // Use a string with an emoji character that won't have a texture
@@ -238,6 +241,7 @@ test("TextContainer creates container with correct options", () => {
   // Test default options
   const defaultContainer = new TextContainer({
     pixiRenderer: mockPixiRenderer,
+    spritesheet: mockSpritesheet,
   });
   expect(defaultContainer).toBeInstanceOf(Container);
   expect(defaultContainer.label).toBe("text");
@@ -245,6 +249,7 @@ test("TextContainer creates container with correct options", () => {
   // Test custom label
   const customLabelContainer = new TextContainer({
     pixiRenderer: mockPixiRenderer,
+    spritesheet: mockSpritesheet,
     label: "score",
   });
   expect(customLabelContainer.label).toBe("score");
@@ -253,6 +258,7 @@ test("TextContainer creates container with correct options", () => {
 test("reuses existing sprites when updating text", () => {
   const container = new TextContainer({
     pixiRenderer: mockPixiRenderer,
+    spritesheet: mockSpritesheet,
   });
 
   // Set initial text
@@ -288,6 +294,7 @@ test("reuses existing sprites when updating text", () => {
 test("double-height text container scales character sprites", () => {
   const container = new TextContainer({
     pixiRenderer: mockPixiRenderer,
+    spritesheet: mockSpritesheet,
     doubleHeight: true,
   });
 
@@ -297,6 +304,7 @@ test("double-height text container scales character sprites", () => {
 test("can set text in constructor", () => {
   const container = new TextContainer({
     pixiRenderer: mockPixiRenderer,
+    spritesheet: mockSpritesheet,
     text: "hello",
   });
 

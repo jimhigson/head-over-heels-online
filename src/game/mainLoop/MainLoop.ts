@@ -2,6 +2,7 @@ import { type Application, Container, Rectangle, type Ticker } from "pixi.js";
 
 import { audioCtx } from "../../sound/audioCtx";
 import { spritesheetMetaForOption } from "../../sprites/spritesheet/spritesheetData/spritesheetMetaData";
+import { type SpritesheetVariants } from "../../sprites/spritesheet/variants/SpritesheetVariants";
 import {
   selectInputDirectionMode,
   selectIsPaused,
@@ -37,7 +38,6 @@ import { textInterfaceToShowDetailedFrameTiming } from "./frameTiming/textInterf
 import { progressGameState } from "./progressGameState";
 import { progressWithSubTicks } from "./progressWithSubTicks";
 import { tickGameSpeed } from "./tickGameSpeed";
-import { tickSpritesheetVariants } from "./tickSpritesheetVariants";
 import { topLevelFilters } from "./topLevelFilters";
 
 textInterfaceToShowDetailedFrameTiming();
@@ -72,10 +72,16 @@ export class MainLoop<RoomId extends string> {
 
   #app: Application;
   #gameState: GameState<RoomId>;
+  #spritesheetVariants: SpritesheetVariants;
 
-  constructor(app: Application, gameState: GameState<RoomId>) {
+  constructor(
+    app: Application,
+    gameState: GameState<RoomId>,
+    spritesheetVariants: SpritesheetVariants,
+  ) {
     this.#app = app;
     this.#gameState = gameState;
+    this.#spritesheetVariants = spritesheetVariants;
     try {
       const storeState = store.getState();
 
@@ -215,16 +221,19 @@ export class MainLoop<RoomId extends string> {
       tickEndRoom !== undefined &&
       this.#spritesheetLoadPromise === undefined
     ) {
-      const loadResult = tickSpritesheetVariants(
-        this.#app.renderer,
-        tickEndRoom.planet,
-        tickEndRoom.color,
-        tickSpriteOption,
-      );
-      if (loadResult !== undefined) {
-        this.#spritesheetLoadPromise = loadResult.then(() => {
-          this.#spritesheetLoadPromise = undefined;
-        });
+      if (!this.#spritesheetVariants.isTextureLoaded(tickSpriteOption.name)) {
+        this.#spritesheetLoadPromise = this.#spritesheetVariants
+          .loadImage(tickSpriteOption.name)
+          .then(() => {
+            this.#spritesheetLoadPromise = undefined;
+          });
+      } else {
+        this.#spritesheetVariants.rebuild(
+          this.#app.renderer,
+          tickEndRoom.planet,
+          tickEndRoom.color,
+          tickSpriteOption,
+        );
       }
     }
 
@@ -260,6 +269,7 @@ export class MainLoop<RoomId extends string> {
           upscale: tickUpscale,
           onScreenControls: tickOnScreenControls,
           speedCoefficient: this.#app.ticker.speed,
+          spritesheetVariants: this.#spritesheetVariants,
         },
 
         inputDirectionMode: tickInputDirectionMode,
@@ -305,6 +315,7 @@ export class MainLoop<RoomId extends string> {
             upscale: tickUpscale,
             onScreenControls: tickOnScreenControls,
             speedCoefficient: this.#app.ticker.speed,
+            spritesheetVariants: this.#spritesheetVariants,
           },
           room: tickEndRoom,
         };

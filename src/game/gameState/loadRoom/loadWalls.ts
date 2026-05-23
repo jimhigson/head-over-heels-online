@@ -1,9 +1,7 @@
-import type { ItemTypeUnion } from "../../../_generated/types/ItemInPlayUnion";
-import type { StoodOnBy } from "../../../model/StoodOnBy";
-import type { ShadowCastSpriteOptions } from "../../render/ShadowCastSpriteOptions";
-
+import { type ItemTypeUnion } from "../../../_generated/types/ItemInPlayUnion";
 import { type JsonItem } from "../../../model/json/JsonItem";
 import { isWallHidden } from "../../../model/json/WallJsonConfig";
+import { type StoodOnBy } from "../../../model/StoodOnBy";
 import { wallTimes } from "../../../model/times";
 import { emptyObject } from "../../../utils/empty";
 import {
@@ -20,6 +18,7 @@ import {
   wallRenderHeight,
 } from "../../physics/mechanicsConstants";
 import { blockXyzToFineXyz } from "../../render/projections";
+import { type ShadowCastSpriteOptions } from "../../render/ShadowCastSpriteOptions";
 import { nonRenderingItemFixedZIndex } from "../../render/sortZ/fixedZIndexes";
 import { defaultBaseState } from "./itemDefaultStates";
 

@@ -1,26 +1,18 @@
-import { Color, type Renderer } from "pixi.js";
+import { Color, type Renderer, type Texture } from "pixi.js";
 
 import { resolveSwops } from "../../../utils/palette/palette";
 import { paletteBlockstack } from "../../palette/spritesheetPalette";
-import { type AppSpritesheet } from "../loadedSpriteSheet";
 import { type TextureId } from "../spritesheetData/makeSpritesheetData";
 import { spritesheetMetas } from "../spritesheetData/spritesheetMetaData";
 import { createSpritesheetVariant } from "../spritesheetPaletteSwop";
+import { type AppSpritesheet } from "./SpritesheetVariants";
 
-let swopped: AppSpritesheet | undefined = undefined;
-
-export const destroyUncolourisedSpritesheet = (): void => {
-  if (swopped !== undefined) {
-    swopped.textureSource.destroy();
-    swopped.destroy(true);
-    swopped = undefined;
-  }
-};
-
-export const createUncolourisedSpritesheet = (pixiRenderer: Renderer): void => {
-  destroyUncolourisedSpritesheet();
-
-  swopped = createSpritesheetVariant(
+export const buildUncolourisedSpritesheet = (
+  pixiRenderer: Renderer,
+  baseTexture: Texture,
+  originalSpritesheet: AppSpritesheet,
+): AppSpritesheet =>
+  createSpritesheetVariant(
     {
       pixiRenderer,
       spriteOption: "BlockStack",
@@ -40,15 +32,6 @@ export const createUncolourisedSpritesheet = (pixiRenderer: Renderer): void => {
       hardenAlphaTextureIds: (id: TextureId) =>
         id.startsWith("shadow.") || id.startsWith("shadowMask."),
     },
+    baseTexture,
+    originalSpritesheet,
   );
-};
-
-export const uncolourisedSpritesheetVariant = (): AppSpritesheet => {
-  if (swopped === undefined) {
-    throw new Error(
-      `swopped spritesheet undefined - should only be called when we know for sure it is available`,
-    );
-  }
-
-  return swopped;
-};

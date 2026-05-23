@@ -1,7 +1,5 @@
 import { type TEXTURE_FORMATS, type TextureSource } from "pixi.js";
 
-import { initOriginalSpritesheet } from "../sprites/spritesheet/loadedSpriteSheet";
-
 export interface TrackedTextureSource {
   textureSource: TextureSource;
   createdAt: number;
@@ -49,7 +47,7 @@ const detectType = (stack: string): TrackedTextureSource["type"] => {
   if (stack.includes("createSpritesheetVariant")) {
     return "spritesheet(variant)";
   }
-  if (stack.includes(initOriginalSpritesheet.name)) {
+  if (stack.includes("buildOriginal")) {
     return "spritesheet(original)";
   }
   return undefined;

@@ -18,7 +18,7 @@ export const teleporterShadowMaskAppearance: ItemAppearance<
   Sprite
 > = ({
   renderContext: {
-    general: { pixiRenderer, spriteOption },
+    general: { pixiRenderer, spritesheetVariants },
     item,
     room,
   },
@@ -56,8 +56,7 @@ export const teleporterShadowMaskAppearance: ItemAppearance<
             flashing ? `shadowMask.${type}.flashing`
             : activated ? `shadowMask.${type}`
             : "shadowMask.artificial",
-          spritesheetVariant:
-            spriteOption.uncolourised ? "uncolourised" : "original",
+          spritesheet: spritesheetVariants.shadowSpritesheet,
         },
         times,
       ),

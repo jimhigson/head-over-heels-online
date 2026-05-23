@@ -12,6 +12,7 @@ import {
   framesWithOriginalGameTimings,
 } from "../../game/render/createSprite";
 import { type AnimationId } from "../../sprites/spritesheet/spritesheetData/makeSpritesheetData";
+import { type AppSpritesheet } from "../../sprites/spritesheet/variants/SpritesheetVariants";
 import { range } from "../iterators/range";
 import { pixiContainerToString } from "./pixiContainerToString";
 import { UniqueTextureAnimatedSprite } from "./UniqueTextureAnimatedSprite";
@@ -135,9 +136,10 @@ export const maybeRenderContainerToAnimatedSprite = <
 >(
   pixiRenderer: Renderer,
   container: C | Container<C>,
-  // an animation id - used only to get the correct animation speed - multiple animations
+  // used only to get the correct animation speed — multiple animations
   // running at different speeds are not supported
   animationId: AnimationId,
+  spritesheet: AppSpritesheet,
   label?: string,
 ): C => {
   if (container instanceof AnimatedSprite || container instanceof Sprite) {
@@ -170,7 +172,10 @@ export const maybeRenderContainerToAnimatedSprite = <
   const outputAnimatedSprite = new UniqueTextureAnimatedSprite(
     framesWithOriginalGameTimings(textures),
   );
-  outputAnimatedSprite.animationSpeed = animationSpeed(animationId, false);
+  outputAnimatedSprite.animationSpeed = animationSpeed(
+    animationId,
+    spritesheet,
+  );
   outputAnimatedSprite.gotoAndPlay(0);
 
   outputAnimatedSprite.label =

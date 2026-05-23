@@ -1,7 +1,6 @@
-import type { JsonItemUnion } from "../../../model/json/JsonItem";
-import type { ShadowCastSpriteOptions } from "../../render/ShadowCastSpriteOptions";
-
+import { type JsonItemUnion } from "../../../model/json/JsonItem";
 import { tangentAxis } from "../../../utils/vectors/vectors";
+import { type ShadowCastSpriteOptions } from "../../render/ShadowCastSpriteOptions";
 
 const shadowLift: ShadowCastSpriteOptions = Object.freeze({
   animationId: "shadow.lift",

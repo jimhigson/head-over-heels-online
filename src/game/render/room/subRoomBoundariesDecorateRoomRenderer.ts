@@ -30,7 +30,7 @@ export const subRoomBoundariesDecorateRoomRenderer: DecorateRoomRenderer = (
   }
 
   const container = new Container({ label: "subRoomBoundaries" });
-  const { pixiRenderer } = renderContext.general;
+  const { pixiRenderer, spritesheetVariants } = renderContext.general;
 
   let colourIndex = 0;
   for (const [name, subRoom] of objectEntriesIter(subRooms)) {
@@ -55,6 +55,7 @@ export const subRoomBoundariesDecorateRoomRenderer: DecorateRoomRenderer = (
 
     const label = new TextContainer({
       pixiRenderer,
+      spritesheet: spritesheetVariants.originalSpritesheet,
       text: `${name} (${subRoom.gridPosition.x},${subRoom.gridPosition.y})`,
       colour: color,
       outline: true,

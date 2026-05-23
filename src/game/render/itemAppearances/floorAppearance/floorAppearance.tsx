@@ -4,9 +4,7 @@ import { type ItemInPlay } from "../../../../model/ItemInPlay";
 import { roomItemsIterable, type RoomState } from "../../../../model/RoomState";
 import { zxSpectrumColors } from "../../../../originalGame";
 import { assertIsTextureId } from "../../../../sprites/assertIsTextureId";
-import { originalSpriteSheet } from "../../../../sprites/spritesheet/loadedSpriteSheet";
-import { getSpriteSheetVariant } from "../../../../sprites/spritesheet/variants/getSpriteSheetVariant";
-import { type SpriteOption } from "../../../../store/slices/userSettings/userSettingsSlice";
+import { type AppSpritesheet } from "../../../../sprites/spritesheet/variants/SpritesheetVariants";
 import { frac } from "../../../../utils/maths/maths";
 import { rangesOverlap } from "../../../../utils/maths/numberPairs";
 import { getAmbientSwoppedColour } from "../../../../utils/palette/palette";
@@ -167,20 +165,19 @@ const edgeSprites = ({
   direction,
   times,
   position,
-  spriteOption,
+  spritesheet,
 }: {
   direction: Subset<DirectionXy4, "right" | "towards">;
   times: Partial<Xy> | undefined;
   position: Partial<Xyz>;
-  spriteOption: SpriteOption;
+  spritesheet: AppSpritesheet;
 }): Container<Sprite> => {
   return createSprite({
     label: `floorEdge(${direction})`,
     textureId: `floorEdge.${direction}`,
     times,
     ...projectWorldXyzToScreenXy(position),
-    spritesheetVariant:
-      spriteOption.uncolourised ? "uncolourised" : "for-current-room",
+    spritesheet,
   }) as Container<Sprite>;
 };
 
@@ -237,7 +234,12 @@ export const floorAppearance: ItemAppearance<"floor"> =
       renderContext: {
         room,
         item: floorItem,
-        general: { spriteOption, spritesheetMeta, pixiRenderer },
+        general: {
+          spriteOption,
+          spritesheetVariants,
+          spritesheetMeta,
+          pixiRenderer,
+        },
         colourClashLayer,
         frontLayer,
       },
@@ -262,9 +264,7 @@ export const floorAppearance: ItemAppearance<"floor"> =
       const tilesRight = projectWorldXyzToScreenXy({ ...aabb, x: 0 });
       const tilesTop = projectWorldXyzToScreenXy(aabb);
 
-      const spritesheetVariant =
-        spriteOption.uncolourised ? "uncolourised" : "for-current-room";
-      const spritesheet = getSpriteSheetVariant(spritesheetVariant);
+      const spritesheet = spritesheetVariants.currentMainSpritesheet();
 
       const outlineFilter = new OutlineFilter({
         color:
@@ -293,7 +293,7 @@ export const floorAppearance: ItemAppearance<"floor"> =
 
         if (import.meta.env.DEV) {
           try {
-            assertIsTextureId(floorTileTextureId, originalSpriteSheet().data);
+            assertIsTextureId(floorTileTextureId, spritesheet.data);
           } catch (e) {
             throw new Error(
               `no floor textureId for floorType: ${floorType}, shade: ${shade}`,
@@ -352,7 +352,7 @@ export const floorAppearance: ItemAppearance<"floor"> =
 
         if (spritesheetMeta.showFloorOverDraw) {
           tilesContainer.addChild(
-            renderFloorOverdraws(floorItem, room, spriteOption),
+            renderFloorOverdraws(floorItem, room, spritesheet),
           );
         }
 
@@ -430,7 +430,7 @@ export const floorAppearance: ItemAppearance<"floor"> =
             direction: "right",
             times: { y: edgeTilesY },
             position: { z: aabb.z },
-            spriteOption,
+            spritesheet,
           }),
         );
         const edgeTilesX = Math.ceil(aabb.x / blockSizePx.x);
@@ -439,7 +439,7 @@ export const floorAppearance: ItemAppearance<"floor"> =
             direction: "towards",
             times: { x: edgeTilesX },
             position: { z: aabb.z },
-            spriteOption,
+            spritesheet,
           }),
         );
 

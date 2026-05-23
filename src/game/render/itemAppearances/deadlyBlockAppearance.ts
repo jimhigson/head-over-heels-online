@@ -16,7 +16,7 @@ export const deadlyBlockAppearance: ItemAppearance<
       config: { times, style },
       state: { disabled },
     },
-    general: { pixiRenderer, paused, spriteOption },
+    general: { pixiRenderer, paused, spritesheetVariants },
   },
   currentRendering,
 }) => {
@@ -27,22 +27,26 @@ export const deadlyBlockAppearance: ItemAppearance<
     return "no-update";
   }
 
-  const spritesheetVariant =
-    spriteOption.uncolourised ? "uncolourised" : "for-current-room";
+  const spritesheet = spritesheetVariants.currentMainSpritesheet();
 
-  const rendering = createSprite({
-    times,
-    randomiseStartFrame: id,
-    paused,
-    spritesheetVariant,
-    ...(disabled ? { textureId: `${style}.disabled` } : { animationId: style }),
-  });
+  const rendering = createSprite(
+    disabled ?
+      { textureId: `${style}.disabled`, times, spritesheet }
+    : {
+        animationId: style,
+        times,
+        randomiseStartFrame: id,
+        paused,
+        spritesheet,
+      },
+  );
 
   return {
     output: maybeRenderContainerToAnimatedSprite(
       pixiRenderer,
       rendering,
       style,
+      spritesheet,
     ),
     renderProps: { disabled: !!disabled },
   };

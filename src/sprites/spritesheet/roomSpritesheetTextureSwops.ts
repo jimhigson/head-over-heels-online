@@ -22,12 +22,12 @@ import {
   paletteToppy,
 } from "../palette/spritesheetPalette";
 import { type SceneryName } from "../planets";
-import { type LoadableSpriteOption } from "./loadedSpriteSheet";
 import { type TextureId } from "./spritesheetData/makeSpritesheetData";
 import {
   type SpritesheetTextureSwops,
   type TextureSpecificPaletteSwops,
 } from "./spritesheetPaletteSwop";
+import { type LoadableSpriteOption } from "./variants/SpritesheetVariants";
 const isDoorTexture = (tid: TextureId) => tid.startsWith("door.");
 
 /** NOTE: - does not match deadly floors */

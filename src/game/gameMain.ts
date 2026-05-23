@@ -1,8 +1,7 @@
 import { Application, TextureStyle, type WebGLRenderer } from "pixi.js";
 
 import { type CampaignLocator } from "../model/modelTypes";
-import { initOriginalSpritesheet } from "../sprites/spritesheet/loadedSpriteSheet";
-import { createUncolourisedSpritesheet } from "../sprites/spritesheet/variants/uncolourisedSpritesheetVariant";
+import { type SpritesheetVariants } from "../sprites/spritesheet/variants/SpritesheetVariants";
 import { loadCampaignFromApi } from "../store/slices/campaigns/campaignApiHelpers";
 import {
   gameRestoreFromSave,
@@ -34,6 +33,7 @@ TextureStyle.defaultOptions.scaleMode = "nearest";
 export const gameMain = async <RoomId extends string>(
   campaignLocator: CampaignLocator,
   inputStateTracker: InputStateTrackerInterface,
+  spritesheetVariants: SpritesheetVariants,
 ): Promise<GameApi<RoomId>> => {
   const app = new Application<WebGLRenderer>();
 
@@ -77,9 +77,6 @@ export const gameMain = async <RoomId extends string>(
   if (import.meta.env.DEV) {
     trackTextures(app);
   }
-  initOriginalSpritesheet(app.renderer);
-  createUncolourisedSpritesheet(app.renderer);
-
   stopAppAutoRendering(app);
 
   // only put on window after initialised and maxFPS set - this ensures it can also be
@@ -112,7 +109,7 @@ export const gameMain = async <RoomId extends string>(
     }
   }
 
-  const loop = new MainLoop(app, gameState).start();
+  const loop = new MainLoop(app, gameState, spritesheetVariants).start();
 
   return {
     campaign,

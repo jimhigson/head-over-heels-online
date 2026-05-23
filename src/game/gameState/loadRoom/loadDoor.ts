@@ -1,10 +1,7 @@
-import type { ItemTypeUnion } from "../../../_generated/types/ItemInPlayUnion";
-import type { StoodOnBy } from "../../../model/StoodOnBy";
-import type { ShadowCastSpriteOptions } from "../../render/ShadowCastSpriteOptions";
-import type { RoomDirectionalIndex } from "./buildRoomJsonDirectionalIndex";
-
+import { type ItemTypeUnion } from "../../../_generated/types/ItemInPlayUnion";
 import { defaultItemProperties } from "../../../model/defaultItemProperties";
 import { type JsonItem } from "../../../model/json/JsonItem";
+import { type StoodOnBy } from "../../../model/StoodOnBy";
 import { emptyObject } from "../../../utils/empty";
 import { pick } from "../../../utils/pick";
 import { unitVectors } from "../../../utils/vectors/unitVectors";
@@ -19,7 +16,9 @@ import {
 } from "../../../utils/vectors/vectors";
 import { blockSizePx, veryHighZ } from "../../physics/mechanicsConstants";
 import { blockXyzToFineXyz } from "../../render/projections";
+import { type ShadowCastSpriteOptions } from "../../render/ShadowCastSpriteOptions";
 import { nonRenderingItemFixedZIndex } from "../../render/sortZ/fixedZIndexes";
+import { type RoomDirectionalIndex } from "./buildRoomJsonDirectionalIndex";
 import { floorZAtPosition } from "./floorZAtPosition";
 import { isDoorInHiddenWall } from "./isDoorInHiddenWall";
 import { defaultBaseState } from "./itemDefaultStates";

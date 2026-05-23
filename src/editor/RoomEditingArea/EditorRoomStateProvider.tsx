@@ -26,4 +26,12 @@ export const EditorRoomStateProvider = ({
   );
 };
 
-export const useEditorRoomStateRefs = () => useContext(EditorRoomStateContext);
+export const useEditorRoomStateRefs = () => {
+  const refs = useContext(EditorRoomStateContext);
+  if (refs === null) {
+    throw new Error(
+      "useEditorRoomStateRefs must be used inside EditorRoomStateProvider",
+    );
+  }
+  return refs;
+};

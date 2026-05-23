@@ -48,7 +48,7 @@ const itemAppearancesMap: {
         item: {
           config: { axis, times, disappearing },
         },
-        general: { spriteOption, pixiRenderer },
+        general: { spritesheetVariants, pixiRenderer },
       },
     }) => {
       return maybeRenderContainerToSprite(
@@ -56,8 +56,7 @@ const itemAppearancesMap: {
         createSprite({
           textureId: `barrier.${axis}${disappearing ? ".disappearing" : ""}`,
           times,
-          spritesheetVariant:
-            spriteOption.uncolourised ? "uncolourised" : "for-current-room",
+          spritesheet: spritesheetVariants.currentMainSpritesheet(),
         }),
       );
     },
@@ -74,15 +73,14 @@ const itemAppearancesMap: {
         item: {
           config: { style },
         },
-        general: { spriteOption },
+        general: { spritesheetVariants },
       },
     }) => {
-      const spritesheetVariant =
-        spriteOption.uncolourised ? "uncolourised" : "for-current-room";
+      const spritesheet = spritesheetVariants.currentMainSpritesheet();
       return createSprite(
         style === "book" ?
-          { textureId: "book.y", spritesheetVariant }
-        : { textureId: style, spritesheetVariant },
+          { textureId: "book.y", spritesheet }
+        : { textureId: style, spritesheet },
       );
     },
   ),
@@ -97,12 +95,11 @@ const itemAppearancesMap: {
   lift: itemAppearanceRenderOnce(
     ({
       renderContext: {
-        general: { paused, spriteOption },
+        general: { paused, spritesheetVariants },
       },
     }) => {
       const rendering = new Container();
-      const spritesheetVariant =
-        spriteOption.uncolourised ? "uncolourised" : "for-current-room";
+      const spritesheet = spritesheetVariants.currentMainSpritesheet();
 
       const pivot = {
         x: smallItemTextureSize.w / 2,
@@ -113,12 +110,12 @@ const itemAppearancesMap: {
           animationId: "lift",
           pivot,
           paused,
-          spritesheetVariant,
+          spritesheet,
         }),
       );
 
       rendering.addChild(
-        createSprite({ textureId: "lift.static", pivot, spritesheetVariant }),
+        createSprite({ textureId: "lift.static", pivot, spritesheet }),
       );
 
       return rendering;
@@ -134,13 +131,12 @@ const itemAppearancesMap: {
         item: {
           config: { planet },
         },
-        general: { spriteOption },
+        general: { spritesheetVariants },
       },
     }) => {
       return createSprite({
         textureId: `crown.${planet}`,
-        spritesheetVariant:
-          spriteOption.uncolourised ? "uncolourised" : "for-current-room",
+        spritesheet: spritesheetVariants.currentMainSpritesheet(),
       });
     },
   ),
@@ -149,16 +145,15 @@ const itemAppearancesMap: {
     ({
       renderContext: {
         item: { config },
-        general: { paused, spriteOption },
+        general: { paused, spritesheetVariants },
       },
     }) => {
-      const spritesheetVariant =
-        spriteOption.uncolourised ? "uncolourised" : "for-current-room";
+      const spritesheet = spritesheetVariants.currentMainSpritesheet();
 
       if (config.gives === "crown") {
         return createSprite({
           textureId: `crown.${config.planet}`,
-          spritesheetVariant,
+          spritesheet,
         });
       }
 
@@ -168,28 +163,28 @@ const itemAppearancesMap: {
       > = {
         shield: {
           textureId: "whiteRabbit.shield",
-          spritesheetVariant,
+          spritesheet,
         },
         jumps: {
           textureId: "whiteRabbit.jumps",
-          spritesheetVariant,
+          spritesheet,
         },
         fast: {
           textureId: "whiteRabbit.fast",
-          spritesheetVariant,
+          spritesheet,
         },
         "extra-life": {
           textureId: "whiteRabbit.extra-life",
-          spritesheetVariant,
+          spritesheet,
         },
-        bag: { textureId: "bag", spritesheetVariant },
-        doughnuts: { textureId: "doughnuts", spritesheetVariant },
-        hooter: { textureId: "hooter", spritesheetVariant },
-        scroll: { textureId: "scroll", spritesheetVariant },
+        bag: { textureId: "bag", spritesheet },
+        doughnuts: { textureId: "doughnuts", spritesheet },
+        hooter: { textureId: "hooter", spritesheet },
+        scroll: { textureId: "scroll", spritesheet },
         reincarnation: {
           animationId: "fish",
           paused,
-          spritesheetVariant,
+          spritesheet,
         },
       };
       const createSpriteOptions = pickupSpriteOptions[config.gives];
@@ -214,13 +209,12 @@ const itemAppearancesMap: {
         item: {
           config: { style },
         },
-        general: { spriteOption },
+        general: { spritesheetVariants },
       },
     }) =>
       createSprite({
         textureId: style,
-        spritesheetVariant:
-          spriteOption.uncolourised ? "uncolourised" : "for-current-room",
+        spritesheet: spritesheetVariants.currentMainSpritesheet(),
       }),
   ),
 
@@ -237,15 +231,14 @@ const itemAppearancesMap: {
           id,
           config: { style },
         },
-        general: { paused, spriteOption },
+        general: { paused, spritesheetVariants },
       },
     }) => {
       return createSprite({
         animationId: `bubbles.bounce.${style}`,
         paused,
         randomiseStartFrame: id,
-        spritesheetVariant:
-          spriteOption.uncolourised ? "uncolourised" : "for-current-room",
+        spritesheet: spritesheetVariants.currentMainSpritesheet(),
       });
     },
   ),
@@ -263,7 +256,7 @@ const itemAppearancesMap: {
         item: {
           config: { forCharacter },
         },
-        general: { paused, spriteOption },
+        general: { paused, spritesheetVariants },
       },
     }) => {
       const characterEquivalent = forCharacter === "head" ? "head" : "heels";
@@ -272,8 +265,7 @@ const itemAppearancesMap: {
         animationId: `particle.${characterEquivalent}.fade`,
         anchor: { x: 0.5, y: 0.5 },
         paused,
-        spritesheetVariant:
-          spriteOption.uncolourised ? "uncolourised" : "for-current-room",
+        spritesheet: spritesheetVariants.currentMainSpritesheet(),
       });
     },
   ),

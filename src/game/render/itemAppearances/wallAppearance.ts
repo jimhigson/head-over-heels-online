@@ -3,7 +3,6 @@ import { Container } from "pixi.js";
 import { roomSpatialIndexKey } from "../../../model/RoomState";
 import { isAnimationId } from "../../../sprites/assertIsTextureId";
 import { wallTileSize } from "../../../sprites/spritesheet/spritesheetData/textureSizes";
-import { getSpriteSheetVariant } from "../../../sprites/spritesheet/variants/getSpriteSheetVariant";
 import { isEmpty } from "../../../utils/iterators/isEmpty";
 import { renderContainerToSprite } from "../../../utils/pixi/renderContainerToSprite";
 import {
@@ -31,7 +30,7 @@ const sampleBuffer: CollideableItem = {
 export const farWallAppearance = itemAppearanceRenderOnce<"wall">(
   ({
     renderContext: {
-      general: { pixiRenderer, spriteOption },
+      general: { pixiRenderer, spritesheetVariants },
       item,
       room,
     },
@@ -61,9 +60,7 @@ export const farWallAppearance = itemAppearanceRenderOnce<"wall">(
           }
         : { x: 0, y: wallTileSize.h };
 
-      const spritesheetVariant =
-        spriteOption.uncolourised ? "uncolourised" : "for-current-room";
-      const spritesheet = getSpriteSheetVariant(spritesheetVariant);
+      const spritesheet = spritesheetVariants.currentMainSpritesheet();
 
       const wallTileSprite = createSprite({
         textureId: wallTextureId(
@@ -118,17 +115,14 @@ export const farWallAppearance = itemAppearanceRenderOnce<"wall">(
                 textureId: `moonbase.wallDoorTransition.${direction}${isDarkStr}`,
                 ...tileRenderPosition,
                 pivot: tileRenderPivot,
-                spritesheetVariant:
-                  spriteOption.uncolourised ? "uncolourised" : (
-                    "for-current-room"
-                  ),
+                spritesheet: spritesheetVariants.currentMainSpritesheet(),
               }),
             );
             const maskSprite = createSprite({
               textureId: `moonbase.wallDoorTransition.${direction}.mask`,
               ...tileRenderPosition,
               pivot: tileRenderPivot,
-              spritesheetVariant: "original",
+              spritesheet: spritesheetVariants.originalSpritesheet,
             });
             wallTilesContainer.addChild(maskSprite);
             wallTileSprite.setMask({ mask: maskSprite, inverse: true });

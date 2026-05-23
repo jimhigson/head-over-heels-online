@@ -1,7 +1,7 @@
 import { type Color, Container } from "pixi.js";
 
 import { type SpritesheetMetadata } from "../../../sprites/spritesheet/spritesheetData/spritesheetMetaData";
-import { getSpriteSheetVariant } from "../../../sprites/spritesheet/variants/getSpriteSheetVariant";
+import { type AppSpritesheet } from "../../../sprites/spritesheet/variants/SpritesheetVariants";
 import { getAmbientSwoppedColour } from "../../../utils/palette/palette";
 import {
   blockSizePx,
@@ -18,11 +18,9 @@ const maxLineHeight = blockSizePx.z * 3;
 
 const buildFadeOrder = <PaletteColourName extends string>(
   spritesheetMeta: SpritesheetMetadata<PaletteColourName>,
-  uncolourised: boolean,
+  spritesheet: AppSpritesheet,
 ): Color[] => {
-  const variant = getSpriteSheetVariant(
-    uncolourised ? "uncolourised" : "for-current-room",
-  );
+  const variant = spritesheet;
   const lightening = spritesheetMeta.floatingTextGradient.map((name) =>
     getAmbientSwoppedColour(spritesheetMeta.palette, name, variant.ambient),
   );
@@ -47,7 +45,7 @@ export const floatingTextAppearance: ItemAppearance<
       config: { textLines, appearanceRoomTime = 0, sway },
     },
     room: { roomTime },
-    general: { spriteOption, spritesheetMeta, pixiRenderer },
+    general: { spritesheetVariants, spritesheetMeta, pixiRenderer },
     frontLayer,
   },
   currentRendering,
@@ -58,7 +56,10 @@ export const floatingTextAppearance: ItemAppearance<
   const fadeOrder =
     currentRendering ?
       currentRendering.renderProps.fadeOrder
-    : buildFadeOrder(spritesheetMeta, spriteOption.uncolourised);
+    : buildFadeOrder(
+        spritesheetMeta,
+        spritesheetVariants.currentMainSpritesheet(),
+      );
   const previousRendering = currentRendering?.output;
   let mainContainer: Container<TextContainer>;
 
@@ -75,6 +76,7 @@ export const floatingTextAppearance: ItemAppearance<
       const textLine = textLines[i];
       const lineContainer = new TextContainer({
         pixiRenderer,
+        spritesheet: spritesheetVariants.originalSpritesheet,
         y: i * lineHeightPx,
         outline: true,
         text: textLine,

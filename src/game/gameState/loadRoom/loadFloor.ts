@@ -1,7 +1,5 @@
-import type { ItemInPlay } from "../../../model/ItemInPlay";
-import type { ShadowCastSpriteOptions } from "../../render/ShadowCastSpriteOptions";
-
 import { defaultItemProperties } from "../../../model/defaultItemProperties";
+import { type ItemInPlay } from "../../../model/ItemInPlay";
 import { type JsonItem } from "../../../model/json/JsonItem";
 import { type RoomJson, roomJsonItemsIterable } from "../../../model/RoomJson";
 import {
@@ -12,6 +10,7 @@ import {
 import { fullBlockAabb } from "../../collision/boundingBoxes";
 import { multiplyBoundingBox } from "../../collision/multiplyBoundingBox";
 import { blockXyzToFineXyz } from "../../render/projections";
+import { type ShadowCastSpriteOptions } from "../../render/ShadowCastSpriteOptions";
 import { defaultBaseState } from "./itemDefaultStates";
 
 // a value of 3 makes items less likely to get pushed through the floor if

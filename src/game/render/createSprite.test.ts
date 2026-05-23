@@ -1,63 +1,47 @@
 import { AnimatedSprite, Container, Sprite, Texture } from "pixi.js";
-import { beforeAll, describe, expect, expectTypeOf, test, vi } from "vitest";
+import { beforeAll, describe, expect, expectTypeOf, test } from "vitest";
 
-const mockTextures = await vi.hoisted(async () => {
-  const { Texture } = await import("pixi.js");
-  return {
-    bag: new Texture(),
-    "block.artificial": new Texture({ label: "block.artificial" }),
-    "block.organic": new Texture({ label: "block.organic" }),
-    "dalek.1": new Texture({ label: "dalek.1" }),
-    "dalek.2": new Texture({ label: "dalek.2" }),
-    "conveyor.x.1": new Texture({ label: "conveyor.x.1" }),
-    "conveyor.x.2": new Texture({ label: "conveyor.x.2" }),
-  } satisfies Partial<Record<TextureId, Texture>>;
-});
-
-const mockSpriteSheet = await vi.hoisted(async () => {
-  const mockFrame = { frame: { x: 0, y: 0, w: 24, h: 24 } };
-  return {
-    textures: {
-      bag: mockTextures.bag,
-      "block.artificial": mockTextures["block.artificial"],
-      "block.organic": mockTextures["block.organic"],
-    },
-    animations: {
-      dalek: [mockTextures["dalek.1"], mockTextures["dalek.2"]],
-      "conveyor.x": [
-        mockTextures["conveyor.x.1"],
-        mockTextures["conveyor.x.2"],
-      ],
-    },
-    data: {
-      frames: {
-        bag: mockFrame,
-        "block.artificial": mockFrame,
-        "block.organic": mockFrame,
-      },
-      animations: {
-        dalek: Object.assign(["dalek.1", "dalek.2"], { animationSpeed: 1 }),
-        "conveyor.x": Object.assign(["conveyor.x.1", "conveyor.x.2"], {
-          animationSpeed: 1,
-        }),
-      },
-    },
-  };
-});
-
-vi.mock("../../sprites/spritesheet/loadedSpriteSheet", () => ({
-  loadSpritesheetAssets: vi.fn(),
-  originalSpriteSheet: () => mockSpriteSheet,
-}));
-
-vi.mock("../../sprites/spritesheet/variants/getSpriteSheetVariant", () => ({
-  getSpriteSheetVariant: vi.fn(() => mockSpriteSheet),
-}));
-
-import { originalSpriteSheet } from "../../sprites/spritesheet/loadedSpriteSheet";
 import { type TextureId } from "../../sprites/spritesheet/spritesheetData/makeSpritesheetData";
+import { type AppSpritesheet } from "../../sprites/spritesheet/variants/SpritesheetVariants";
 import { type Xyz } from "../../utils/vectors/vectors";
 import { createSprite, type CreateSpriteOptions } from "./createSprite";
+
+const mockTextures = {
+  bag: new Texture(),
+  "block.artificial": new Texture({ label: "block.artificial" }),
+  "block.organic": new Texture({ label: "block.organic" }),
+  "dalek.1": new Texture({ label: "dalek.1" }),
+  "dalek.2": new Texture({ label: "dalek.2" }),
+  "conveyor.x.1": new Texture({ label: "conveyor.x.1" }),
+  "conveyor.x.2": new Texture({ label: "conveyor.x.2" }),
+} satisfies Partial<Record<TextureId, Texture>>;
+
+const mockFrame = { frame: { x: 0, y: 0, w: 24, h: 24 } };
+
+const spritesheet = {
+  textures: {
+    bag: mockTextures.bag,
+    "block.artificial": mockTextures["block.artificial"],
+    "block.organic": mockTextures["block.organic"],
+  },
+  animations: {
+    dalek: [mockTextures["dalek.1"], mockTextures["dalek.2"]],
+    "conveyor.x": [mockTextures["conveyor.x.1"], mockTextures["conveyor.x.2"]],
+  },
+  data: {
+    frames: {
+      bag: mockFrame,
+      "block.artificial": mockFrame,
+      "block.organic": mockFrame,
+    },
+    animations: {
+      dalek: Object.assign(["dalek.1", "dalek.2"], { animationSpeed: 1 }),
+      "conveyor.x": Object.assign(["conveyor.x.1", "conveyor.x.2"], {
+        animationSpeed: 1,
+      }),
+    },
+  },
+} as unknown as AppSpritesheet;
 
 beforeAll(() => {
   globalThis.requestAnimationFrame = (
@@ -70,7 +54,7 @@ beforeAll(() => {
 test("creating sprite with {textureId}", () => {
   const sprite = createSprite({
     textureId: "bag",
-    spritesheetVariant: "original",
+    spritesheet,
   });
   // run-time type:
   expect(sprite).toBeInstanceOf(Sprite);
@@ -81,7 +65,7 @@ test("creating sprite with {textureId}", () => {
 test("creating sprite with {textureId: undefined}", () => {
   const sprite = createSprite({
     textureId: undefined,
-    spritesheetVariant: "original",
+    spritesheet,
   });
   // run-time type:
   expect(sprite).toBeInstanceOf(Sprite);
@@ -93,15 +77,15 @@ test("creating sprite with {textureId, times:{x:2}} gives a container of sprites
   const containerSprite = createSprite({
     textureId: "block.artificial",
     times: { x: 2 },
-    spritesheetVariant: "original",
+    spritesheet,
   });
   expect(containerSprite).toBeInstanceOf(Container);
   expect(containerSprite.children.at(0)).toBeInstanceOf(Sprite);
   expect((containerSprite.children.at(0) as Sprite).texture).toBe(
-    originalSpriteSheet().textures["block.artificial"],
+    spritesheet.textures["block.artificial"],
   );
   expect((containerSprite.children.at(1) as Sprite).texture).toBe(
-    originalSpriteSheet().textures["block.artificial"],
+    spritesheet.textures["block.artificial"],
   );
   expect(containerSprite.children.length).toBe(2);
   expectTypeOf(containerSprite).toExtend<Container<Sprite> | Sprite>();
@@ -113,17 +97,17 @@ describe("subSpriteVariations", () => {
         return { textureId: x === 0 ? "block.artificial" : "block.organic" };
       },
       times: { x: 2 },
-      spritesheetVariant: "original",
+      spritesheet,
     });
     expect(containerSprite).toBeInstanceOf(Container);
     expect(containerSprite.children.at(0)).toBeInstanceOf(Sprite);
     expect(containerSprite.children.at(1)).toBeInstanceOf(Sprite);
     // note order is reversed because renders back-to-front for painter's algorithm
     expect((containerSprite.children.at(0) as Sprite).texture).toBe(
-      originalSpriteSheet().textures["block.organic"],
+      spritesheet.textures["block.organic"],
     );
     expect((containerSprite.children.at(1) as Sprite).texture).toBe(
-      originalSpriteSheet().textures["block.artificial"],
+      spritesheet.textures["block.artificial"],
     );
     expectTypeOf(containerSprite).toExtend<Container<Sprite> | Sprite>();
   });
@@ -134,12 +118,12 @@ describe("subSpriteVariations", () => {
         return { textureId: "block.artificial" };
       },
       times: { x: 1 },
-      spritesheetVariant: "original",
+      spritesheet,
     });
     expect(containerSprite).toBeInstanceOf(Container);
     expect(containerSprite).toBeInstanceOf(Sprite);
     expect((containerSprite as Sprite).texture).toEqual(
-      originalSpriteSheet().textures["block.artificial"],
+      spritesheet.textures["block.artificial"],
     );
     expectTypeOf(containerSprite).toExtend<Container<Sprite> | Sprite>();
   });
@@ -152,7 +136,7 @@ describe("subSpriteVariations", () => {
           : { textureId: "block.artificial" };
       },
       times: { x: 2 },
-      spritesheetVariant: "original",
+      spritesheet,
     });
     expect(containerSprite).toBeInstanceOf(Container);
     expect(containerSprite.children.length).toBe(2);
@@ -178,7 +162,7 @@ describe("subSpriteVariations", () => {
       subSpriteVariations() {
         return { animationId: "dalek" };
       },
-      spritesheetVariant: "original",
+      spritesheet,
     });
     expect(containerSprite).toBeInstanceOf(AnimatedSprite);
     expect(
@@ -197,7 +181,7 @@ describe("subSpriteVariations", () => {
         return { animationId: "dalek" };
       },
       times: { x: 1, y: 1, z: 1 },
-      spritesheetVariant: "original",
+      spritesheet,
     });
     expect(containerSprite).toBeInstanceOf(AnimatedSprite);
     expect(
@@ -215,7 +199,7 @@ test("creating sprite with {textureId, times:{x:1,y:1,z:1}} gives a single Sprit
   const containerSprite = createSprite({
     textureId: "block.artificial",
     times: { x: 1, y: 1, z: 1 },
-    spritesheetVariant: "original",
+    spritesheet,
   });
   expect(containerSprite).toBeInstanceOf(Sprite);
   expectTypeOf(containerSprite).toExtend<Container<Sprite> | Sprite>();
@@ -224,7 +208,7 @@ test("creating sprite with {textureId, times: undefined} gives a Sprite", () => 
   const containerSprite = createSprite({
     textureId: "block.artificial",
     times: undefined,
-    spritesheetVariant: "original",
+    spritesheet,
   });
   expect(containerSprite).toBeInstanceOf(Sprite);
   expectTypeOf(containerSprite).toExtend<Container<Sprite> | Sprite>();
@@ -233,7 +217,7 @@ test("creating sprite with {textureId, times: undefined} gives a Sprite", () => 
 test("creating sprite with {animationId}", () => {
   const animatedSprite = createSprite({
     animationId: "dalek",
-    spritesheetVariant: "original",
+    spritesheet,
   });
   expect(animatedSprite).toBeInstanceOf(AnimatedSprite);
   expectTypeOf(animatedSprite).toExtend<AnimatedSprite>();
@@ -242,7 +226,7 @@ test("creating sprite with {animationId, times: {x:2}}", () => {
   const containerAnimatedSprite = createSprite({
     animationId: "conveyor.x",
     times: { x: 2 },
-    spritesheetVariant: "original",
+    spritesheet,
   });
 
   expect(containerAnimatedSprite).toBeInstanceOf(Container);
@@ -255,7 +239,7 @@ test("creating sprite with {animationId, times: {x:1, y:1, z:1}}", () => {
   const containerAnimatedSprite = createSprite({
     animationId: "conveyor.x",
     times: { x: 1, y: 1, z: 1 },
-    spritesheetVariant: "original",
+    spritesheet,
   });
 
   expect(containerAnimatedSprite).toBeInstanceOf(AnimatedSprite);
@@ -267,7 +251,7 @@ test("creating sprite with {animationId, times: undefined}", () => {
   const containerAnimatedSprite = createSprite({
     animationId: "conveyor.x",
     times: undefined,
-    spritesheetVariant: "original",
+    spritesheet,
   });
 
   expect(containerAnimatedSprite).toBeInstanceOf(AnimatedSprite);
@@ -288,7 +272,7 @@ test("spreading CreateSpriteOptions union and adding times: Partial<Xyz> | undef
   // use `as` to prevent TypeScript narrowing the type - simulates a function parameter
   const baseOptions = {
     textureId: "bag",
-    spritesheetVariant: "original",
+    spritesheet,
   } satisfies SpecifiedTextureCreateSpriteOptions as SpecifiedTextureCreateSpriteOptions;
 
   const times: Partial<Xyz> | undefined = { x: 2 };

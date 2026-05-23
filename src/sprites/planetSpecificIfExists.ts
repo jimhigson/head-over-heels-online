@@ -1,7 +1,7 @@
 import { isTextureId } from "./assertIsTextureId";
 import { type SceneryName } from "./planets";
-import { type AppSpritesheetData } from "./spritesheet/loadedSpriteSheet";
 import { type TextureId } from "./spritesheet/spritesheetData/makeSpritesheetData";
+import { type AppSpritesheetData } from "./spritesheet/variants/SpritesheetVariants";
 
 type ExtractGenericSuffix<T> = T extends `generic.${infer Rest}` ? Rest : never;
 type GenericTextureSuffix = ExtractGenericSuffix<TextureId>;

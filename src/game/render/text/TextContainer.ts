@@ -4,12 +4,12 @@ import { type PokeableNumber } from "../../../model/ItemStateMap";
 import { assertIsTextureId } from "../../../sprites/assertIsTextureId";
 import { escapeCharForTailwind } from "../../../sprites/escapeCharForTailwind";
 import { paletteBlockstack } from "../../../sprites/palette/spritesheetPalette";
-import {
-  type AppSpritesheetData,
-  originalSpriteSheet,
-} from "../../../sprites/spritesheet/loadedSpriteSheet";
 import { type TextureId } from "../../../sprites/spritesheet/spritesheetData/makeSpritesheetData";
 import { hudCharTextureSize } from "../../../sprites/spritesheet/spritesheetData/textureSizes";
+import {
+  type AppSpritesheet,
+  type AppSpritesheetData,
+} from "../../../sprites/spritesheet/variants/SpritesheetVariants";
 import { size } from "../../../utils/iterators/size";
 import { renderContainerToTexture } from "../../../utils/pixi/renderContainerToSprite";
 import { OutlineFilter } from "../filters/OutlineFilter";
@@ -48,6 +48,7 @@ const flashDurationMs = 100;
 
 export type TextContainerOptions = {
   pixiRenderer: Renderer;
+  spritesheet: AppSpritesheet;
   doubleHeight?: boolean;
   doubleWidth?: boolean;
   outline?: boolean;
@@ -61,6 +62,7 @@ export type TextContainerOptions = {
 
 export class TextContainer extends Container {
   #pixiRenderer: Renderer;
+  #spritesheet: AppSpritesheet;
   #currentText = "";
   #renderCacheSprite: Sprite;
   #characterSpriteContainer: Container<Sprite>;
@@ -73,6 +75,7 @@ export class TextContainer extends Container {
 
   constructor({
     pixiRenderer,
+    spritesheet,
     doubleHeight = false,
     doubleWidth = false,
     outline = false,
@@ -89,6 +92,7 @@ export class TextContainer extends Container {
     this.#flashColour = flashColour;
 
     this.#pixiRenderer = pixiRenderer;
+    this.#spritesheet = spritesheet;
     this.#heightMult = doubleHeight ? 2 : 1;
     this.#widthMult = doubleWidth ? 2 : 1;
 
@@ -203,7 +207,7 @@ export class TextContainer extends Container {
     const lengthChanged = strLength !== oldLength;
 
     try {
-      const spritesheet = originalSpriteSheet();
+      const spritesheet = this.#spritesheet;
       const spritesheetTextures = spritesheet.textures;
 
       let i = 0;

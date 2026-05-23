@@ -9,15 +9,15 @@ import {
 } from "pixi.js";
 
 import { type PaletteSwapFilter } from "../../game/render/filters/PaletteSwapFilter";
-import {
-  type AppSpritesheet,
-  type AppSpritesheetData,
-} from "./loadedSpriteSheet";
 import { reifyTextureIds } from "./reifyTextureIds";
 import {
   spritesheetSize,
   type TextureId,
 } from "./spritesheetData/makeSpritesheetData";
+import {
+  type AppSpritesheet,
+  type AppSpritesheetData,
+} from "./variants/SpritesheetVariants";
 
 export const black = new Color(0x00_00_00);
 export const white = new Color(0xff_ff_ff);

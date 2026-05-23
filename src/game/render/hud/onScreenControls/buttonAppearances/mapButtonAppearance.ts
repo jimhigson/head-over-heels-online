@@ -25,6 +25,7 @@ export const mapButtonAppearance: ButtonAppearance<
 
   const output = new TextContainer({
     pixiRenderer: general.pixiRenderer,
+    spritesheet: general.spritesheetVariants.originalSpritesheet,
     label: "mapText",
     outline: true,
     text: "MAP",

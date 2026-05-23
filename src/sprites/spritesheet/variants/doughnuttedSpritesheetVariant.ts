@@ -1,8 +1,9 @@
+import { type Texture } from "pixi.js";
+
 import {
   resolveNamedColourSwops,
   resolveSwops,
 } from "../../../utils/palette/palette";
-import { type AppSpritesheet } from "../loadedSpriteSheet";
 import {
   ambientDimSwops,
   createSpritesheetVariant,
@@ -11,22 +12,14 @@ import {
   type SpritesheetTextureSwops,
 } from "../spritesheetPaletteSwop";
 import { type VariantBuildContext } from "../VariantBuildContext";
+import { type AppSpritesheet } from "./SpritesheetVariants";
 
-let swopped: AppSpritesheet | undefined = undefined;
-
-const destroyDoughnuttedSpritesheetVariant = () => {
-  if (swopped !== undefined) {
-    swopped.textureSource.destroy();
-    swopped.destroy(true);
-    swopped = undefined;
-  }
-};
-
-export const createDoughnuttedSpritesheetVariant = (
+export const buildDoughnuttedSpritesheet = (
   context: VariantBuildContext,
-): void => {
+  baseTexture: Texture,
+  originalSpritesheet: AppSpritesheet,
+): AppSpritesheet => {
   const { roomColor, spritesheetMetaData } = context;
-  destroyDoughnuttedSpritesheetVariant();
 
   const { palette } = spritesheetMetaData;
   const doughnuttedSwops = spritesheetMetaData.swops?.doughnutted;
@@ -46,24 +39,24 @@ export const createDoughnuttedSpritesheetVariant = (
         ],
       };
 
-  let result = createSpritesheetVariant(context, swops);
+  let result = createSpritesheetVariant(
+    context,
+    swops,
+    baseTexture,
+    originalSpritesheet,
+  );
 
   if (roomColor.shade === "dimmed") {
     const dimSwops = ambientDimSwops(spritesheetMetaData);
     if (dimSwops !== undefined) {
-      result = replaceSpritesheetWithSwopped(context, result, dimSwops);
+      result = replaceSpritesheetWithSwopped(
+        context,
+        result,
+        dimSwops,
+        originalSpritesheet,
+      );
     }
   }
 
-  swopped = result;
-};
-
-export const doughnuttedSpritesheetVariant = (): AppSpritesheet => {
-  if (swopped === undefined) {
-    throw new Error(
-      `swopped spritesheet undefined - should only be called when we know for sure it is available`,
-    );
-  }
-
-  return swopped;
+  return result;
 };

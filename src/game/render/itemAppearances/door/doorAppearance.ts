@@ -5,8 +5,7 @@ import { type Campaign } from "../../../../model/modelTypes";
 import { paletteBlockstack } from "../../../../sprites/palette/spritesheetPalette";
 import { type SceneryName } from "../../../../sprites/planets";
 import { planetSpecificIfExists } from "../../../../sprites/planetSpecificIfExists";
-import { type AppSpritesheet } from "../../../../sprites/spritesheet/loadedSpriteSheet";
-import { getSpriteSheetVariant } from "../../../../sprites/spritesheet/variants/getSpriteSheetVariant";
+import { type AppSpritesheet } from "../../../../sprites/spritesheet/variants/SpritesheetVariants";
 import { selectMaybeCurrentCampaign } from "../../../../store/slices/gameMenus/gameMenusSelectors";
 import { store } from "../../../../store/store";
 import { resolveSwops } from "../../../../utils/palette/palette";
@@ -130,16 +129,14 @@ export const doorLegsAppearance: ItemAppearance<"doorLegs"> =
     ({
       renderContext: {
         item,
-        general: { pixiRenderer, spriteOption },
+        general: { pixiRenderer, spritesheetVariants },
         room: {
           planet,
           color: { shade },
         },
       },
     }) => {
-      const spritesheetVariant =
-        spriteOption.uncolourised ? "uncolourised" : "for-current-room";
-      const spritesheet = getSpriteSheetVariant(spritesheetVariant);
+      const spritesheet = spritesheetVariants.currentMainSpritesheet();
       const doorLegsContainer = iterateToContainer(
         doorLegsGenerator(item, spritesheet, planet, shade === "dimmed"),
       );
@@ -168,7 +165,7 @@ export const doorFrameAppearance: ItemAppearance<"doorFrame"> =
           aabb,
         },
         room,
-        general: { pixiRenderer, spriteOption, spritesheetMeta },
+        general: { pixiRenderer, spritesheetVariants, spritesheetMeta },
       },
     }) => {
       const campaign =
@@ -204,12 +201,16 @@ export const doorFrameAppearance: ItemAppearance<"doorFrame"> =
       const { x, y } = xyToTranslateToInsideOfRoom(direction, aabb);
 
       const doorFrameSprite = createSprite({
-        textureId: doorTexture(room, axis, part),
+        textureId: doorTexture(
+          room,
+          axis,
+          part,
+          spritesheetVariants.originalSpritesheet,
+        ),
         // needs a special filter since this may not be going to the same room:
         x,
         y,
-        spritesheetVariant:
-          spriteOption.uncolourised ? "uncolourised" : "for-current-room",
+        spritesheet: spritesheetVariants.currentMainSpritesheet(),
       });
       doorFrameSprite.filters = filter;
 

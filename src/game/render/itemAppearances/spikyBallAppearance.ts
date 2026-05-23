@@ -1,7 +1,6 @@
 import { type Sprite } from "pixi.js";
 
 import { wallTileSize } from "../../../sprites/spritesheet/spritesheetData/textureSizes";
-import { getSpriteSheetVariant } from "../../../sprites/spritesheet/variants/getSpriteSheetVariant";
 import { lengthXy } from "../../../utils/vectors/vectors";
 import { createSprite } from "../createSprite";
 import { type ItemAppearance } from "./ItemAppearance";
@@ -23,7 +22,7 @@ const spikyBallAppearanceImpl: ItemAppearance<
       },
       config: { startingPhase },
     },
-    general: { paused, spriteOption },
+    general: { paused, spritesheetVariants },
   },
   tickContext: { deltaMS },
   currentRendering,
@@ -36,19 +35,17 @@ const spikyBallAppearanceImpl: ItemAppearance<
 
   const previousRendering = currentRendering?.output;
 
-  const variant =
-    spriteOption.uncolourised ? "uncolourised" : "for-current-room";
+  const spritesheet = spritesheetVariants.currentMainSpritesheet();
   const rendering =
     previousRendering ??
     createSprite({
       textureId: "spikyBall.1",
-      spritesheetVariant: variant,
+      spritesheet,
     });
 
   const stepsTravelled = Math.floor((distanceTravelled * 2) / wallTileSize.w);
   const phase = (((stepsTravelled + startingPhase) % 2) + 1) as 1 | 2;
-  rendering.texture =
-    getSpriteSheetVariant(variant).textures[`spikyBall.${phase}`];
+  rendering.texture = spritesheet.textures[`spikyBall.${phase}`];
 
   return {
     output: rendering,

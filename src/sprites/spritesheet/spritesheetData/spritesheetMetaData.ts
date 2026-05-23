@@ -12,7 +12,7 @@ import {
   type NamedSwops,
 } from "../../../utils/palette/palette";
 import { type DirectionXy8 } from "../../../utils/vectors/vectors";
-import { type LoadableSpriteOption } from "../loadedSpriteSheet";
+import { type LoadableSpriteOption } from "../variants/SpritesheetVariants";
 import { type TextureId } from "./makeSpritesheetData";
 
 type SpriteOverrides = Partial<

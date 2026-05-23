@@ -5,7 +5,7 @@ import {
   pokeableToNumber,
 } from "../../../../../model/ItemStateMap";
 import { type RoomState } from "../../../../../model/RoomState";
-import { getSpriteSheetVariant } from "../../../../../sprites/spritesheet/variants/getSpriteSheetVariant";
+import { type AppSpritesheet } from "../../../../../sprites/spritesheet/variants/SpritesheetVariants";
 import { selectHeadAbilities } from "../../../../gameState/gameStateSelectors/selectPlayableItem";
 import { createSprite } from "../../../createSprite";
 import { getWhite } from "../../../gameColours/gameColours";
@@ -27,21 +27,23 @@ type SurfaceContentChildren = [
 
 const createSurface = (
   pixiRenderer: Renderer,
+  originalSpritesheet: AppSpritesheet,
 ): Container<Sprite | TextContainer> => {
   const hooter = createSprite({
     textureId: "hooter",
     y: -3,
-    spritesheetVariant: "original",
+    spritesheet: originalSpritesheet,
   });
 
   const doughnuts = createSprite({
     textureId: "doughnuts",
     y: -2,
-    spritesheetVariant: "original",
+    spritesheet: originalSpritesheet,
   });
 
   const text = new TextContainer({
     pixiRenderer,
+    spritesheet: originalSpritesheet,
     outline: true,
     y: textYForButtonCentre,
   });
@@ -69,7 +71,12 @@ export const fireButtonAppearance: ButtonAppearance<
   renderContext: {
     button,
     inputStateTracker,
-    general: { spriteOption, spritesheetMeta, pixiRenderer },
+    general: {
+      spriteOption,
+      spritesheetVariants,
+      spritesheetMeta,
+      pixiRenderer,
+    },
   },
   currentRendering,
   tickContext: { currentPlayable, room },
@@ -108,13 +115,15 @@ export const fireButtonAppearance: ButtonAppearance<
     return "no-update";
   }
 
+  const { originalSpritesheet } = spritesheetVariants;
   const container =
     currentRendering?.output ??
     new ArcadeStyleButtonContainer<Container<Sprite | TextContainer>>(
       spritesheetMeta,
       button.which,
       pixiRenderer,
-      createSurface(pixiRenderer),
+      originalSpritesheet,
+      createSurface(pixiRenderer, originalSpritesheet),
     );
 
   if (roomChanged) {
@@ -138,11 +147,7 @@ export const fireButtonAppearance: ButtonAppearance<
   }
 
   if (disabledChanged || roomChanged) {
-    const spritesheet = getSpriteSheetVariant(
-      spriteOption.uncolourised ? "uncolourised"
-      : disabled ? "deactivated"
-      : "for-current-room",
-    );
+    const spritesheet = spritesheetVariants.currentMainSpritesheet(!disabled);
 
     hooter.texture = spritesheet.textures["hooter"];
     doughnuts.texture = spritesheet.textures["doughnuts"];
