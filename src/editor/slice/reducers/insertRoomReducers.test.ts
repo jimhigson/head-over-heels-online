@@ -9,6 +9,7 @@ import type {
 
 import { roomGridPositions } from "../../../game/components/dialogs/menuDialog/dialogs/map/roomGridPositions";
 import { exitGameRoomId } from "../../../model/json/ItemConfigMap";
+import { selectCursorRoom, selectCursorRoomId } from "../levelEditorSelectors";
 import {
   addRoom,
   applyItemTool,
@@ -184,9 +185,9 @@ describe("insertRoom with no existing doors", () => {
       insertRoom({ direction: "away" }),
     );
 
-    expect(result.currentlyEditing.roomId).not.toBe(testRoomId);
+    expect(selectCursorRoomId(result)).not.toBe(testRoomId);
     expect(
-      result.campaignInProgress.rooms[result.currentlyEditing.roomId],
+      result.campaignInProgress.rooms[selectCursorRoomId(result)],
     ).toBeDefined();
   });
 });
@@ -469,7 +470,7 @@ describe("insertRoom when unconnected room already exists at target grid positio
       insertRoom({ direction: "away" }),
     );
 
-    expect(result.currentlyEditing.roomId).toBe(roomD);
+    expect(selectCursorRoomId(result)).toBe(roomD);
   });
 });
 
@@ -508,7 +509,8 @@ describe("insertRoom from a subroom of a multi-chunk room", () => {
           },
         },
       };
-      draft.currentlyEditing = { roomId: testRoomId, subRoomId: "0" };
+      draft.selectedRoomIds = [testRoomId];
+      draft.cursorRoom = { roomId: testRoomId, subRoomId: "0" };
     },
   );
 
@@ -529,7 +531,8 @@ describe("insertRoom from a subroom of a multi-chunk room", () => {
 
   test("inserting from subroom 1 centres the door on subroom 1", () => {
     const stateOnSubRoom1 = produce(stateWithTwoChunkRoom, (draft) => {
-      draft.currentlyEditing = { roomId: testRoomId, subRoomId: "1" };
+      draft.selectedRoomIds = [testRoomId];
+      draft.cursorRoom = { roomId: testRoomId, subRoomId: "1" };
     });
 
     const result = reduceLevelEditorActions(
@@ -585,7 +588,8 @@ describe("insertRoom from a subroom where floor extends beyond subroom bounds", 
           },
         },
       };
-      draft.currentlyEditing = { roomId: testRoomId, subRoomId: "left" };
+      draft.selectedRoomIds = [testRoomId];
+      draft.cursorRoom = { roomId: testRoomId, subRoomId: "left" };
     },
   );
 
@@ -701,7 +705,8 @@ describe("insertRoom from a subroom that does not touch the room outer wall", ()
           },
         },
       };
-      draft.currentlyEditing = { roomId: testRoomId, subRoomId: "3" };
+      draft.selectedRoomIds = [testRoomId];
+      draft.cursorRoom = { roomId: testRoomId, subRoomId: "3" };
     },
   );
 
@@ -721,7 +726,8 @@ describe("insertRoom from a subroom that does not touch the room outer wall", ()
 
   test("door from subroom 'left' going left is at subroom boundary, not room outer wall", () => {
     const stateOnLeft = produce(stateWithFourChunks, (draft) => {
-      draft.currentlyEditing = { roomId: testRoomId, subRoomId: "left" };
+      draft.selectedRoomIds = [testRoomId];
+      draft.cursorRoom = { roomId: testRoomId, subRoomId: "left" };
     });
 
     const result = reduceLevelEditorActions(
@@ -739,7 +745,8 @@ describe("insertRoom from a subroom that does not touch the room outer wall", ()
 
   test("door from subroom 'right' going towards is at subroom boundary, not room outer wall", () => {
     const stateOnRight = produce(stateWithFourChunks, (draft) => {
-      draft.currentlyEditing = { roomId: testRoomId, subRoomId: "right" };
+      draft.selectedRoomIds = [testRoomId];
+      draft.cursorRoom = { roomId: testRoomId, subRoomId: "right" };
     });
 
     const result = reduceLevelEditorActions(
@@ -788,7 +795,7 @@ describe("adding a door from a single-chunk room back to a multi-chunk room", ()
 
   test("does not crash when roomGridPositions traverses the result", () => {
     const result = buildState();
-    const { roomId, subRoomId } = result.currentlyEditing;
+    const { roomId, subRoomId } = selectCursorRoom(result);
 
     const positions = [
       ...roomGridPositions({

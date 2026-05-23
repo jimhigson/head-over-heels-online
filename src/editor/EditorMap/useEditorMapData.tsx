@@ -1,4 +1,4 @@
-import { useMemo } from "preact/hooks";
+import { createSelector } from "@reduxjs/toolkit";
 
 import { findMapBounds } from "../../game/components/dialogs/menuDialog/dialogs/map/findMapBounds";
 import {
@@ -11,39 +11,38 @@ import {
   type CharacterRooms,
   type PickupsCollected,
 } from "../../game/gameState/GameState";
-import { useEditorAppSelector } from "../../store/store";
+import { type EditorRootState, useEditorAppSelector } from "../../store/store";
 import { emptyObject } from "../../utils/empty";
 import { createSerialisableErrors } from "../../utils/redux/createSerialisableErrors";
 import { type EditorRoomId } from "../editorTypes";
+import { selectCursorRoom } from "../slice/levelEditorSelectors";
 import { selectCurrentEditingRoomJson } from "../slice/levelEditorSlice";
 
-export const useEditorMapData = (): MapData<EditorRoomId> | MapDataError => {
-  const campaign = useEditorAppSelector(
-    (state) => state.levelEditor.campaignInProgress,
-  );
-
-  const curRoomScenery = useEditorAppSelector((state) => {
-    const roomJson = selectCurrentEditingRoomJson(state);
-    return roomJson.planet;
-  });
-  const { roomId: curRoomEditingRoomId, subRoomId: curRoomSubroom } =
-    useEditorAppSelector((state) => state.levelEditor.currentlyEditing);
-
-  return useMemo(() => {
+export const selectEditorMapData = createSelector(
+  [
+    (state: EditorRootState) => state.levelEditor.campaignInProgress,
+    (state: EditorRootState) => selectCursorRoom(state.levelEditor),
+    (state: EditorRootState) => selectCurrentEditingRoomJson(state).planet,
+  ],
+  (
+    campaign,
+    { roomId, subRoomId },
+    curRoomScenery,
+  ): MapData<EditorRoomId> | MapDataError => {
     try {
       const positions = [
         ...roomGridPositions({
           campaign,
-          roomId: curRoomEditingRoomId,
-          subRoomId: curRoomSubroom,
+          roomId,
+          subRoomId,
         }),
       ];
       const sortedObjectOfPositions = sortRoomGridPositions(positions);
 
       return {
         mapBounds: findMapBounds(positions),
-        curRoomId: curRoomEditingRoomId,
-        curSubRoomId: curRoomSubroom,
+        curRoomId: roomId,
+        curSubRoomId: subRoomId,
         gridPositions: sortedObjectOfPositions,
         // TODO: not sure if this applies for the editor, maybe should be optional
         currentCharacterName: "head",
@@ -61,5 +60,8 @@ export const useEditorMapData = (): MapData<EditorRoomId> | MapDataError => {
         .reverse();
       return { isError: true, errors };
     }
-  }, [campaign, curRoomEditingRoomId, curRoomScenery, curRoomSubroom]);
-};
+  },
+);
+
+export const useEditorMapData = (): MapData<EditorRoomId> | MapDataError =>
+  useEditorAppSelector(selectEditorMapData);

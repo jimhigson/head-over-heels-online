@@ -7,6 +7,7 @@ import { editorStore, store } from "../../../store/store";
 import { catchErrors } from "../../../utils/errors/errors";
 import { type Xyz } from "../../../utils/vectors/vectors";
 import {
+  selectCursorRoomId,
   selectEditorRoomRenderDimensions,
   selectEditorRoomState,
 } from "../../slice/levelEditorSelectors";
@@ -96,7 +97,7 @@ export const useRoomEditorInteractivity = (
       const storeState = editorStore.getState();
       const roomState = selectEditorRoomState(storeState);
 
-      if (roomState.id !== storeState.levelEditor.currentlyEditing.roomId) {
+      if (roomState.id !== selectCursorRoomId(storeState.levelEditor)) {
         return;
       }
 

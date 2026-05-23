@@ -28,7 +28,8 @@ const addRooms = (draft: LevelEditorState) => {
     color: { hue: "cyan", shade: "basic" },
     items: {},
   };
-  draft.currentlyEditing.roomId = roomA;
+  draft.selectedRoomIds = [roomA];
+  draft.cursorRoom = { roomId: roomA, subRoomId: "*" };
 };
 
 test("removeRoom filters the deleted room from editingRoomIdHistory", () => {

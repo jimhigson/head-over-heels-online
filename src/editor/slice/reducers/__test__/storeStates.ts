@@ -1,6 +1,7 @@
 import { produce } from "immer";
 
 import { rotatingSceneryTiles } from "../../../../model/inPlaceMutators/rotatingSceneryTiles";
+import { type EditorThunk } from "../../../../store/store";
 import { type EditorRoomId, type EditorRoomItemId } from "../../../editorTypes";
 import { type Tool } from "../../../RoomEditingArea/interactivity/Tool";
 import { initialLevelEditorSliceState } from "../../initialLevelEditorSliceState";
@@ -30,7 +31,8 @@ export const wallItemId = "testWall" as EditorRoomItemId;
 
 export const editorStateWithOneRoomWithNoItems: LevelEditorState = {
   ...initialLevelEditorSliceState,
-  currentlyEditing: { roomId: testRoomId, subRoomId: "*" },
+  selectedRoomIds: [testRoomId],
+  cursorRoom: { roomId: testRoomId, subRoomId: "*" },
   campaignInProgress: {
     locator: {
       campaignName: "testCampaign",
@@ -63,15 +65,30 @@ export const editorStateWithOneRoomWithOneAwayWall: LevelEditorState = produce(
   },
 );
 
-/** convenience to apply any number of actions in sequence */
+export type ReducibleAction = EditorThunk | LevelEditorSliceAction;
+
+/** convenience to apply any number of actions or thunks in sequence */
 export const reduceLevelEditorActions = (
   state: LevelEditorState,
-  ...actions: /* functional version allows creating a pipelining that bases the action off the
-   * current state, ie finding items in the current room to use in the next action */
-  (((s: LevelEditorState) => LevelEditorSliceAction) | LevelEditorSliceAction)[]
+  ...actions: ReducibleAction[]
 ): LevelEditorState => {
   return actions.reduce((state, action) => {
-    const a = typeof action === "function" ? action(state) : action;
-    return levelEditorSlice.reducer(state, a);
+    if (typeof action !== "function") {
+      return levelEditorSlice.reducer(state, action);
+    }
+
+    let current = state;
+    (
+      action as (
+        dispatch: (a: LevelEditorSliceAction) => void,
+        getState: () => { levelEditor: LevelEditorState },
+      ) => void
+    )(
+      (a) => {
+        current = levelEditorSlice.reducer(current, a);
+      },
+      () => ({ levelEditor: current }),
+    );
+    return current;
   }, state);
 };

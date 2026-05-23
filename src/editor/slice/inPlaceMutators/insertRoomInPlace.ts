@@ -17,10 +17,14 @@ import { unitVectors } from "../../../utils/vectors/unitVectors";
 import {
   type DirectionXy4,
   oppositeDirection,
+  type Xy,
   type Xyz,
   xyzEqual,
 } from "../../../utils/vectors/vectors";
-import { selectCurrentRoomFromLevelEditorState } from "../levelEditorSelectors";
+import {
+  selectCurrentRoomFromLevelEditorState,
+  selectCursorSubRoomId,
+} from "../levelEditorSelectors";
 import {
   roomFloorMaxX,
   roomFloorMaxY,
@@ -94,11 +98,12 @@ const wallCentreMidpoint = (bounds: FloorBounds): Xyz => ({
 export const insertRoomInPlace = (
   state: LevelEditorState,
   direction: DirectionXy4,
+  roomSize?: Xy,
 ): void => {
   const currentRoom = selectCurrentRoomFromLevelEditorState(state);
   const oppositeDir = oppositeDirection(direction);
 
-  const { subRoomId } = state.currentlyEditing;
+  const subRoomId = selectCursorSubRoomId(state);
   const currentSubRoomBounds = getSubRoomFloorBounds(currentRoom, subRoomId);
 
   const currentRoomDoorsInDirection = iterateRoomJsonItemsWithIds(
@@ -140,12 +145,14 @@ export const insertRoomInPlace = (
     }
   }
 
-  const gridPositionSpecs = roomGridPositions({
-    campaign: state.campaignInProgress,
-    roomId: currentRoom.id,
-    subRoomId: state.currentlyEditing.subRoomId,
-  });
-  const targetSpec = gridPositionSpecs.find(({ gridPosition }) =>
+  const gridPositions = [
+    ...roomGridPositions({
+      campaign: state.campaignInProgress,
+      roomId: currentRoom.id,
+      subRoomId: selectCursorSubRoomId(state),
+    }),
+  ];
+  const targetSpec = gridPositions.find(({ gridPosition }) =>
     xyzEqual(gridPosition, unitVectors[direction]),
   );
   const existingRoomAtTarget =
@@ -159,54 +166,133 @@ export const insertRoomInPlace = (
     currentRoomDoorsInDirection.length > 0 ||
     inboundDoorsFromOppositeDirection.length > 0;
 
-  if (!hasDoors && existingRoomAtTarget) {
-    const centrePosition = doorPositionOnWall(
-      currentSubRoomBounds,
-      direction,
-      wallCentreMidpoint(currentSubRoomBounds),
-    );
+  if (existingRoomAtTarget) {
+    if (existingRoomAtTarget.id === currentRoom.id) {
+      return;
+    }
 
-    const outDoorId = nextItemId(
-      keys(currentRoom.items),
-      typePrefix.door,
-    ) as EditorRoomItemId;
-    const targetSubRoomId = targetSpec!.subRoomId;
-    const outDoor: EditorJsonItem<"door"> = {
-      type: "door",
-      config: {
-        toRoom: existingRoomAtTarget.id,
+    if (hasDoors) {
+      const targetSubtree = new Set<string>([existingRoomAtTarget.id]);
+      const queue: string[] = [];
+      let formsACycle = false;
+
+      const enqueueNeighbours = (
+        room: EditorRoomJson,
+        skipIntercepted: boolean,
+      ) => {
+        for (const item of valuesIter(room.items)) {
+          if (item.type !== "door") {
+            continue;
+          }
+          if (
+            skipIntercepted &&
+            item.config.toRoom === currentRoom.id &&
+            item.config.direction === oppositeDir
+          ) {
+            continue;
+          }
+          const nextId = item.config.toRoom as EditorRoomId;
+          if (nextId === currentRoom.id) {
+            formsACycle = true;
+            return;
+          }
+          if (
+            !targetSubtree.has(nextId) &&
+            state.campaignInProgress.rooms[nextId]
+          ) {
+            targetSubtree.add(nextId);
+            queue.push(nextId);
+          }
+        }
+      };
+
+      enqueueNeighbours(existingRoomAtTarget, true);
+
+      while (!formsACycle && queue.length > 0) {
+        const id = queue.shift()!;
+        const room = state.campaignInProgress.rooms[id as EditorRoomId];
+        if (room) {
+          enqueueNeighbours(room as EditorRoomJson, false);
+        }
+      }
+
+      if (formsACycle) {
+        return;
+      }
+
+      const dirVec = unitVectors[direction];
+      const wouldCollide = gridPositions.some(
+        (spec) =>
+          targetSubtree.has(spec.roomId) &&
+          gridPositions.some(
+            (other) =>
+              !targetSubtree.has(other.roomId) &&
+              other.gridPosition.x === spec.gridPosition.x + dirVec.x &&
+              other.gridPosition.y === spec.gridPosition.y + dirVec.y &&
+              other.gridPosition.z === spec.gridPosition.z + dirVec.z,
+          ),
+      );
+
+      if (wouldCollide) {
+        return;
+      }
+    }
+
+    if (!hasDoors) {
+      const centrePosition = doorPositionOnWall(
+        currentSubRoomBounds,
         direction,
-        meta:
-          targetSubRoomId === "*" ? undefined : { toSubRoom: targetSubRoomId },
-      },
-      position: centrePosition,
-    };
-    currentRoom.items[outDoorId] = outDoor;
+        wallCentreMidpoint(currentSubRoomBounds),
+      );
 
-    cutHoleInWallsForDoorsInPlace(
-      state,
-      currentRoom.id,
-      direction,
-      centrePosition,
-      false,
-    );
+      const outDoorId = nextItemId(
+        keys(currentRoom.items),
+        typePrefix.door,
+      ) as EditorRoomItemId;
+      const targetSubRoomId = targetSpec!.subRoomId;
+      const outDoor: EditorJsonItem<"door"> = {
+        type: "door",
+        config: {
+          toRoom: existingRoomAtTarget.id,
+          direction,
+          meta:
+            targetSubRoomId === "*" ? undefined : (
+              { toSubRoom: targetSubRoomId }
+            ),
+        },
+        position: centrePosition,
+      };
+      currentRoom.items[outDoorId] = outDoor;
 
-    addReturnDoorInPlace({
-      state,
-      fromRoomJson: currentRoom,
-      toRoomJson: existingRoomAtTarget,
-      outgoingDoorEntry: [outDoorId, outDoor],
-      outgoingDoorRelativeTo: {
-        x: currentSubRoomBounds.minX,
-        y: currentSubRoomBounds.minY,
-      },
-    });
+      cutHoleInWallsForDoorsInPlace(
+        state,
+        currentRoom.id,
+        direction,
+        centrePosition,
+        false,
+      );
 
-    changeCurrentRoomInPlace(state, existingRoomAtTarget.id as EditorRoomId);
-    return;
+      addReturnDoorInPlace({
+        state,
+        fromRoomJson: currentRoom,
+        toRoomJson: existingRoomAtTarget,
+        outgoingDoorEntry: [outDoorId, outDoor],
+        outgoingDoorRelativeTo: {
+          x: currentSubRoomBounds.minX,
+          y: currentSubRoomBounds.minY,
+        },
+      });
+
+      changeCurrentRoomInPlace(state, existingRoomAtTarget.id as EditorRoomId);
+      return;
+    }
   }
 
-  const newRoom = addNewRoomInPlace({ state, scenery: currentRoom.planet });
+  const newRoom = addNewRoomInPlace({
+    state,
+    scenery: currentRoom.planet,
+    roomSize,
+  });
 
   if (hasDoors) {
     for (const [outDoorId, outDoor] of currentRoomDoorsInDirection) {
@@ -227,6 +313,7 @@ export const insertRoomInPlace = (
       });
 
       outDoor.config.toRoom = newRoom.id;
+      delete outDoor.config.meta;
 
       if (
         oldToRoom === exitGameRoomId ||
@@ -272,6 +359,7 @@ export const insertRoomInPlace = (
       });
 
       inDoor.config.toRoom = newRoom.id;
+      delete inDoor.config.meta;
     }
   } else {
     const centrePosition = doorPositionOnWall(

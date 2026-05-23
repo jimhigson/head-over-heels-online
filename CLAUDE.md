@@ -159,6 +159,7 @@ Prefer `roomJsonItemsIterable` when you only need items without ids. Use `iterat
  class called `Grid` should be called `Grid.ts`. Or a component called `MyComponent` would be in `MyComponent.tsx`. A function called `foo` would be in `foo.ts`.
  * do not use very generic variable names such as `data`
  * Do not use `any` unless completely necessary. Cast to a type that better describes what we know about the data - it is very rare to have a variable that can genuinely have any value.
+ * when writing generic types with defaults, avoid `= string` as a default — prefer forcing call sites to be explicit about the type parameter so tagged/branded types aren't accidentally widened
  * write typescript type assertions to narrow down types where useful and necessary
  * for `key in obj` narrowing, extract a type predicate function rather than casting after the check:
  ```ts
@@ -190,6 +191,7 @@ Prefer `roomJsonItemsIterable` when you only need items without ids. Use `iterat
  // Bad - returns string[]
  const validKeys = Object.keys(myRecord); // need to cast to MyKeyType[]
  ```
+ Similarly, prefer `valuesIter()` over `Object.values()` — it returns an iterator that short-circuits with `.find()` or `.some()` without allocating an intermediate array.
 
 * this is a project based in the uk. Use British English only, even if variables are named differently to library functions
 with names in US English.

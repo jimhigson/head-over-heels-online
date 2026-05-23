@@ -12,7 +12,10 @@ import { addNewRoomInPlace } from "../inPlaceMutators/addNewRoomInPlace";
 import { changeCurrentRoomInPlace } from "../inPlaceMutators/changeCurrentRoomInPlace";
 import { insertRoomInPlace } from "../inPlaceMutators/insertRoomInPlace";
 import { removeInboundRoomReferencesInPlace } from "../inPlaceMutators/removeInboundRoomReferencesInPlace";
-import { selectCurrentRoomFromLevelEditorState } from "../levelEditorSelectors";
+import {
+  selectCurrentRoomFromLevelEditorState,
+  selectCursorRoomId,
+} from "../levelEditorSelectors";
 
 export const addOrRemoveRoomReducers = {
   addRoom(
@@ -34,39 +37,54 @@ export const addOrRemoveRoomReducers = {
   },
   insertRoom(
     state,
-    { payload: { direction } }: PayloadAction<{ direction: DirectionXy4 }>,
+    {
+      payload: { direction, roomSize },
+    }: PayloadAction<{ direction: DirectionXy4; roomSize?: Xy }>,
   ) {
-    insertRoomInPlace(state, direction);
+    insertRoomInPlace(state, direction, roomSize);
   },
   removeRoom(state) {
-    const currentRoom =
-      state.campaignInProgress.rooms[state.currentlyEditing.roomId];
+    const roomIdsToDelete = new Set(state.selectedRoomIds);
+
     // to stay near the deleted room, find another room adjacent to it:
+    const cursorRoom =
+      state.campaignInProgress.rooms[selectCursorRoomId(state)];
     const doorOrTeleporterEntry =
-      first(iterateRoomJsonItemsWithIds(currentRoom.items, "door")) ??
-      first(iterateRoomJsonItemsWithIds(currentRoom.items, "teleporter"));
+      first(iterateRoomJsonItemsWithIds(cursorRoom.items, "door")) ??
+      first(iterateRoomJsonItemsWithIds(cursorRoom.items, "teleporter"));
 
-    const nextRoom = (doorOrTeleporterEntry?.[1].config.toRoom ??
-      keysIter(state.campaignInProgress.rooms).find(
-        (roomId) => roomId !== state.currentlyEditing.roomId,
-      )) as EditorRoomId | undefined;
+    const adjacentRoom = doorOrTeleporterEntry?.[1].config.toRoom as
+      | EditorRoomId
+      | undefined;
 
-    if (nextRoom === undefined || nextRoom === exitGameRoomId) {
+    const nextRoom = (
+      (
+        adjacentRoom &&
+        !roomIdsToDelete.has(adjacentRoom) &&
+        adjacentRoom !== exitGameRoomId
+      ) ?
+        adjacentRoom
+      : keysIter(state.campaignInProgress.rooms).find(
+          (roomId) => !roomIdsToDelete.has(roomId) && roomId !== exitGameRoomId,
+        )) as EditorRoomId | undefined;
+
+    if (nextRoom === undefined) {
       // refuse to delete the last room (why?)
       return;
     }
 
-    const deletedRoomId = state.currentlyEditing.roomId;
     changeCurrentRoomInPlace(state, nextRoom);
-    delete state.campaignInProgress.rooms[deletedRoomId];
-    removeInboundRoomReferencesInPlace(state, deletedRoomId);
 
-    const isNotDeleted = (id: EditorRoomId) => id !== deletedRoomId;
+    for (const deletedRoomId of roomIdsToDelete) {
+      delete state.campaignInProgress.rooms[deletedRoomId];
+      removeInboundRoomReferencesInPlace(state, deletedRoomId);
+      delete state.history[deletedRoomId];
+    }
+
+    const isNotDeleted = (id: EditorRoomId) => !roomIdsToDelete.has(id);
     state.editingRoomIdHistory.back =
       state.editingRoomIdHistory.back.filter(isNotDeleted);
     state.editingRoomIdHistory.forward =
       state.editingRoomIdHistory.forward.filter(isNotDeleted);
-
-    delete state.history[deletedRoomId];
   },
 } satisfies SliceCaseReducers<LevelEditorState>;

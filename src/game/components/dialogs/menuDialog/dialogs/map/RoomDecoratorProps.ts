@@ -9,6 +9,7 @@ export type RoomDecoratorProps<RoomId extends string> = {
   boundaries: Boundaries;
   isCurrentRoom: boolean;
   isCurrentSubRoom: boolean;
+  isSelected: boolean;
   allGridPositions: SortedObjectOfRoomGridPositionSpecs<RoomId>;
 };
 

@@ -49,10 +49,10 @@ const parseErrorForDisplay = (
   return { message, sanitizedStack };
 };
 
-const writeErrorReport = (
-  errors: SerialisableError[],
-  recentActions?: UnknownAction[],
-) => {
+const writeErrorReport = (errors: SerialisableError[]) => {
+  const recentActions: undefined | UnknownAction[] =
+    import.meta.env.DEV ? getRecentActions() : undefined;
+
   const errorsPart = errors.toReversed().map((error) => {
     const { message, sanitizedStack } = parseErrorForDisplay(error);
     return `
@@ -68,7 +68,7 @@ ${sanitizedStack}
 
 `);
 
-  if (import.meta.env.DEV && recentActions && recentActions.length > 0) {
+  if (recentActions && recentActions.length > 0) {
     const formatLine = (a: UnknownAction, i: number) =>
       `${i}: ${JSON.stringify(a)}`;
 
@@ -83,56 +83,58 @@ ${recentActions.map((a, i) => formatLine(a, i)).join("\n")}
   return errorsPart;
 };
 
-export type ErrorDialogProps = {
+export type ErrorDialogReportProps = {
   errors: SerialisableError[];
   /** intro content shown before the error actions */
   intro: ReactNode;
-  /** render prop receiving the error report text for actions like copy-to-clipboard */
   children: (errorsReportText: string) => ReactNode;
 };
 
-export const ErrorDialog = ({ errors, intro, children }: ErrorDialogProps) => {
-  const errorsReportText = writeErrorReport(
-    errors,
-    import.meta.env.DEV ? getRecentActions() : undefined,
-  );
+export const ErrorDialogReport = ({
+  errors,
+  intro,
+  children,
+}: ErrorDialogReportProps) => {
+  const errorsReportText = writeErrorReport(errors);
 
   useEffect(() => {
-    console.error("ErrorDialog: Showing Report:", errorsReportText);
+    console.error("ErrorDialogReport: Showing Report:", errorsReportText);
   }, [errorsReportText]);
 
   return (
-    <DialogPortal>
-      <Border className="loading-border zx:zx-loading-border toppy:toppy-loading-border" />
-      <Dialog
-        className="bg-white zx:bg-zxRed toppy:bg-toppyWarm1 gap-y-0 text-redShadow zx:text-zxBlack toppy:text-toppyCool4 px-1"
-        tall
-        wide
-        dialogId="errorCaught"
+    <div
+      className={
+        "bg-white zx:bg-zxRed toppy:bg-toppyWarm1 gap-y-0 text-redShadow zx:text-zxBlack toppy:text-toppyCool4 px-1 " +
+        "overflow-y-scroll h-full w-full " +
+        "scrollbar scrollbar-w-1 pl-1 " +
+        "scrollbar-thumb-midRed scrollbar-track-highlightBeige " +
+        "zx:scrollbar-thumb-zxCyanDimmed zx:scrollbar-track-zxCyan " +
+        "toppy:scrollbar-thumb-toppyCool3 toppy:scrollbar-track-toppyCool1"
+      }
+    >
+      {intro}
+      <hr className="bg-pastelBlue zx:bg-zxWhite toppy:bg-toppyCool2 h-1 my-1 border-none" />
+      {children(errorsReportText)}
+      <hr className="bg-pastelBlue zx:bg-zxWhite toppy:bg-toppyCool2 h-1 my-1 border-none" />
+      <BitmapText className="block sprites-double-height my-1 text-midRed zx:text-zxWhite toppy:text-toppyPink2">
+        Error message for nerds:
+      </BitmapText>
+      <pre
+        className={`bg-shadow zx:bg-zxBlack toppy:bg-toppyGrey3 text-white zx:text-zxWhite toppy:text-toppyWarm1 leading-[1em] [&_a]:text-pastelBlue px-1 w-max min-w-full`}
       >
-        <div
-          className={
-            "overflow-y-scroll h-full " +
-            "scrollbar scrollbar-w-1 pl-1 " +
-            "scrollbar-thumb-midRed scrollbar-track-highlightBeige " +
-            "zx:scrollbar-thumb-zxCyanDimmed zx:scrollbar-track-zxCyan " +
-            "toppy:scrollbar-thumb-toppyCool3 toppy:scrollbar-track-toppyCool1"
-          }
-        >
-          {intro}
-          <hr className="bg-pastelBlue zx:bg-zxWhite toppy:bg-toppyCool2 h-1 my-1 border-none" />
-          {children(errorsReportText)}
-          <hr className="bg-pastelBlue zx:bg-zxWhite toppy:bg-toppyCool2 h-1 my-1 border-none" />
-          <BitmapText className="block sprites-double-height my-1 text-midRed zx:text-zxWhite toppy:text-toppyPink2">
-            Error message for nerds:
-          </BitmapText>
-          <pre
-            className={`bg-shadow zx:bg-zxBlack toppy:bg-toppyGrey3 text-white zx:text-zxWhite toppy:text-toppyWarm1 leading-[1em] [&_a]:text-pastelBlue px-1 w-max min-w-full`}
-          >
-            <StackTracesWithLinks>{errorsReportText}</StackTracesWithLinks>
-          </pre>
-        </div>
-      </Dialog>
-    </DialogPortal>
+        <StackTracesWithLinks>{errorsReportText}</StackTracesWithLinks>
+      </pre>
+    </div>
   );
 };
+
+export type ErrorDialogProps = ErrorDialogReportProps;
+
+export const ErrorDialog = (props: ErrorDialogProps) => (
+  <DialogPortal>
+    <Border className="loading-border zx:zx-loading-border toppy:toppy-loading-border" />
+    <Dialog className="" tall wide dialogId="errorCaught">
+      <ErrorDialogReport {...props} />
+    </Dialog>
+  </DialogPortal>
+);

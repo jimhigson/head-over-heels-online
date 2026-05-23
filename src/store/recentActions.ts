@@ -1,6 +1,6 @@
 import { type Middleware, type UnknownAction } from "@reduxjs/toolkit";
 
-const maxRecentActions = 20;
+const maxRecentActions = 50;
 const recentActions: UnknownAction[] = [];
 
 /** for debugging, capture the most recent actions to show in the ErrorDialog */

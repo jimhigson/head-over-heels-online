@@ -12,7 +12,10 @@ import {
   type EditorRoomItemId,
   type EditorRoomJson,
 } from "../../editorTypes";
-import { selectCurrentRoomFromLevelEditorState } from "../levelEditorSelectors";
+import {
+  selectCurrentRoomFromLevelEditorState,
+  selectCursorRoomId,
+} from "../levelEditorSelectors";
 import {
   applyItemTool,
   deleteSelected,
@@ -48,18 +51,20 @@ test('deleting a door "heals" the void where the door once stood by extending an
       timestamp: 0,
     }),
     // then, delete the door:
-    (state) => {
+    (dispatch, getState) => {
       const doorEntry = iterateRoomJsonItemsWithIds(
-        selectCurrentRoomFromLevelEditorState(state).items,
+        selectCurrentRoomFromLevelEditorState(getState().levelEditor).items,
       ).find(([_id, i]) => i.type === "door");
 
       if (doorEntry === undefined) {
         expect.fail("no door in room");
       }
 
-      return setSelectedItemsInRoom({
-        jsonItemIds: [doorEntry[0]],
-      });
+      dispatch(
+        setSelectedItemsInRoom({
+          jsonItemIds: [doorEntry[0]],
+        }),
+      );
     },
     deleteSelected({ timestamp: 0 }),
   );
@@ -502,7 +507,8 @@ describe('editing a door\'s "toRoom" config provides convenience methods to main
 
     const state: LevelEditorState = {
       ...editorStateWithOneRoomWithNoItems,
-      currentlyEditing: { roomId: roomA, subRoomId: "*" },
+      selectedRoomIds: [roomA],
+      cursorRoom: { roomId: roomA, subRoomId: "*" },
       campaignInProgress: {
         ...editorStateWithOneRoomWithNoItems.campaignInProgress,
         rooms: {
@@ -623,9 +629,9 @@ describe("setRoomAboveOrBelow", () => {
       setRoomAboveOrBelow({ direction: "above", createNew: true }),
     );
 
-    expect(result.currentlyEditing.roomId).not.toBe(testRoomId);
+    expect(selectCursorRoomId(result)).not.toBe(testRoomId);
     const originalRoom = result.campaignInProgress.rooms[testRoomId];
-    expect(result.currentlyEditing.roomId).toBe(originalRoom.roomAbove);
+    expect(selectCursorRoomId(result)).toBe(originalRoom.roomAbove);
   });
 
   test("createNew splices between existing rooms", () => {

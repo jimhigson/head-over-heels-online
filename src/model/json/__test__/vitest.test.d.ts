@@ -14,6 +14,7 @@ interface CustomMatchers<R = unknown> {
       to: Xy;
     };
   }) => R;
+  toHaveCompletePerimeter: () => R;
 }
 
 declare module "vitest" {

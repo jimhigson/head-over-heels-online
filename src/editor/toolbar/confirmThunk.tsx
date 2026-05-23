@@ -18,8 +18,8 @@ export const confirmDeleteRoomThunk: AppThunk<Promise<void>> = async (
   dispatch,
   getState,
 ) => {
-  const { currentlyEditing } = getState().levelEditor;
-  const { roomId } = currentlyEditing;
+  const { cursorRoom } = getState().levelEditor;
+  const { roomId } = cursorRoom;
   if (
     await confirm({
       heading: "Delete room?",
@@ -40,8 +40,8 @@ export const confirmClearRoomThunk: AppThunk<Promise<void>> = async (
   dispatch,
   getState,
 ) => {
-  const { currentlyEditing } = getState().levelEditor;
-  const { roomId } = currentlyEditing;
+  const { cursorRoom } = getState().levelEditor;
+  const { roomId } = cursorRoom;
   if (
     await confirm({
       heading: "Clear room?",

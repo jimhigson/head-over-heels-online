@@ -2,6 +2,7 @@ import { BitmapText } from "../../game/components/tailwindSprites/BitmapText";
 import { useAppDispatch } from "../../store/hooks";
 import { useEditorAppSelector } from "../../store/store";
 import { RoomSelect } from "../../ui/RoomSelect";
+import { selectCursorRoomId } from "../slice/levelEditorSelectors";
 import { changeToRoom } from "../slice/levelEditorSlice";
 import { buttonDefinitions } from "./buttonDefinitions";
 import { AddAndDeleteRoomButtons } from "./buttons/AddAndDeleteRoomButtons";
@@ -41,8 +42,8 @@ export const LevelEditorToolbar = () => {
   const campaign = useEditorAppSelector(
     (state) => state.levelEditor.campaignInProgress,
   );
-  const currentlyEditingRoomId = useEditorAppSelector(
-    (state) => state.levelEditor.currentlyEditing.roomId,
+  const currentlyEditingRoomId = useEditorAppSelector((state) =>
+    selectCursorRoomId(state.levelEditor),
   );
   const dispatch = useAppDispatch();
   const campaignName = useEditorAppSelector(

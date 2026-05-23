@@ -37,11 +37,8 @@ import { type LevelEditorState } from "./levelEditorSlice";
 const selectHoveredUndoRoom = (
   state: EditorRootState,
 ): EditorRoomJson | undefined => {
-  const {
-    hoveredUndoIndex,
-    history,
-    currentlyEditing: { roomId },
-  } = state.levelEditor;
+  const { hoveredUndoIndex, history } = state.levelEditor;
+  const roomId = selectCursorRoomId(state.levelEditor);
   if (hoveredUndoIndex === 0) {
     return undefined;
   }
@@ -251,12 +248,18 @@ export const useEditorRoomState = selectorHook(selectEditorRoomState);
 export const useEditorRoomRenderDimensions = selectorHook(
   selectEditorRoomRenderDimensions,
 );
+export const selectCursorRoom = (state: LevelEditorState) => state.cursorRoom;
+
+export const selectCursorRoomId = (state: LevelEditorState) =>
+  selectCursorRoom(state).roomId;
+
+export const selectCursorSubRoomId = (state: LevelEditorState) =>
+  selectCursorRoom(state).subRoomId;
+
 export const selectCurrentRoomFromLevelEditorState = (
   state: LevelEditorState,
 ) =>
-  state.campaignInProgress.rooms[
-    state.currentlyEditing.roomId
-  ] as EditorRoomJson;
+  state.campaignInProgress.rooms[selectCursorRoomId(state)] as EditorRoomJson;
 
 export const selectRoomFromLevelEditorState = (
   state: LevelEditorState,
@@ -266,11 +269,12 @@ export const selectRoomFromLevelEditorState = (
 export const selectItemInLevelEditorState = (
   state: LevelEditorState,
   itemId: EditorRoomItemId,
-  /** if not given, uses the room currently being edited */
+  /** if not given, uses the cursor room */
   roomId?: EditorRoomId,
 ) =>
-  state.campaignInProgress.rooms[roomId ?? state.currentlyEditing.roomId]
-    ?.items[itemId] as EditorJsonItemUnion | undefined;
+  state.campaignInProgress.rooms[roomId ?? selectCursorRoomId(state)]?.items[
+    itemId
+  ] as EditorJsonItemUnion | undefined;
 
 export const selectItemIsSelectedInLevelEditorState = (
   state: LevelEditorState,

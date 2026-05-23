@@ -144,6 +144,7 @@ type RoomSvgProps<RoomId extends string> = {
   onPlayableClick?: (name: IndividualCharacterName) => void;
   currentCharacterName: CharacterName;
   isCurrentRoom: boolean;
+  isSelected: boolean;
   ClickableAreaWrapper?: FunctionComponent<{
     children: ReactElement;
   }>;
@@ -160,6 +161,7 @@ export const RoomSvg = <RoomId extends string>({
   currentCharacterName,
   onPlayableClick,
   isCurrentRoom,
+  isSelected,
   ClickableAreaWrapper,
 }: RoomSvgProps<RoomId>) => {
   const { id, roomAbove, color, items } = roomJson;
@@ -189,6 +191,8 @@ export const RoomSvg = <RoomId extends string>({
         ${
           isCurrentRoom ?
             `[--floorColor:theme(colors.shadow)] zx:[--floorColor:theme(colors.zxBlack)] toppy:[--floorColor:theme(colors.toppyGrey3)]`
+          : isSelected ?
+            `[--floorColor:theme(colors.midGrey)] zx:[--floorColor:theme(colors.zxBlueDimmed)] toppy:[--floorColor:theme(colors.toppyCool3)]`
           : `[--floorColor:theme(colors.white)]`
         }
         ${

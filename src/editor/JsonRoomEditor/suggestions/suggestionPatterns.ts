@@ -9,6 +9,7 @@ import {
   oppositeDirection,
 } from "../../../utils/vectors/vectors";
 import { type EditorRoomId, type EditorRoomJson } from "../../editorTypes";
+import { selectCursorRoomId } from "../../slice/levelEditorSelectors";
 import { getNodePropertyValue } from "./getNodePropertyValue";
 
 export type SuggestionGenerator = (
@@ -24,7 +25,7 @@ export type SuggestionPatterns = Record<string, SuggestionGenerator>;
  */
 const getOtherRoomIds = (storeState: EditorRootState): string[] =>
   Object.keys(storeState.levelEditor.campaignInProgress.rooms).filter(
-    (roomId) => roomId !== storeState.levelEditor.currentlyEditing.roomId,
+    (roomId) => roomId !== selectCursorRoomId(storeState.levelEditor),
   );
 
 /**

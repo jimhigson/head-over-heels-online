@@ -5,6 +5,7 @@ import { type TypedURLSearchParams } from "../../../options/queryParams";
 import { type TextureTailwindClass } from "../../../sprites/spritesheet/spritesheetData/TextureTailwindClass";
 import { editorStore } from "../../../store/store";
 import { Switch } from "../../../ui/Switch";
+import { selectCursorRoomId } from "../../slice/levelEditorSelectors";
 import { selectCurrentCampaignInProgress } from "../../slice/levelEditorSlice";
 import { MenuButton } from "./MenuButton";
 import { ToolbarButton } from "./ToolbarButton";
@@ -34,7 +35,7 @@ export const PlayTestButton = () => {
               searchParams.set("playAsHeels", "1");
             }
             if (!fromStart) {
-              url.hash = state.levelEditor.currentlyEditing.roomId;
+              url.hash = selectCursorRoomId(state.levelEditor);
             }
             window.open(url.toString(), "playtest");
           }}

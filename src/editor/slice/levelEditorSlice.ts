@@ -23,11 +23,13 @@ import {
   changeRoomReducers,
   changeRoomSelectors,
 } from "./reducers/changeRoomReducers";
+import { coalesceRoomsReducers } from "./reducers/coalesceRoomsReducers";
 import { dragToMoveReducers } from "./reducers/dragToMoveReducers";
 import { editorSettingsReducers } from "./reducers/editorSettingsReducers";
 import { editRoomReducers } from "./reducers/editRoomReducers";
 import { itemPreviewReducers } from "./reducers/itemPreviewReducers";
 import { moveOrResizeItemPreviewReducers } from "./reducers/moveOrResizeItemPreview/moveOrResizeItemPreviewReducers";
+import { roomSelectionReducers } from "./reducers/roomSelectionReducers";
 import { saveAndLoadReducers } from "./reducers/saveAndLoadReducers";
 import { selectionsReducers } from "./reducers/selectionsReducers";
 import { type UndoDescription } from "./reducers/undoDescription";
@@ -54,10 +56,8 @@ export type LevelEditorState = {
   campaignInProgress: EditorCampaign;
   /** the campaign in the db (as far as we know) - can be used to check if we have edits since the last save */
   remoteCampaign: EditorCampaign | undefined;
-  currentlyEditing: {
-    roomId: EditorRoomId;
-    subRoomId: string;
-  };
+  selectedRoomIds: EditorRoomId[];
+  cursorRoom: { roomId: EditorRoomId; subRoomId: string };
   editingRoomIdHistory: {
     back: EditorRoomId[];
     forward: EditorRoomId[];
@@ -131,6 +131,8 @@ export const levelEditorSlice = createSlice({
     ...saveAndLoadReducers,
     ...addOrRemoveRoomReducers,
     ...changeRoomReducers,
+    ...roomSelectionReducers,
+    ...coalesceRoomsReducers,
     ...campaignManagementReducers,
   },
   extraReducers(builder) {
@@ -162,6 +164,7 @@ export type LevelEditorSliceAction = ReturnType<
 export const {
   addRoom,
   applyItemTool,
+  coalesceSelectedRooms,
   changeDragInProgress,
   changeGridResolution,
   changeRoomColour,
@@ -176,6 +179,8 @@ export const {
   moveOrResizeItemAsPreview,
   newCampaign,
   redo,
+  addRoomToSelection,
+  selectAllRooms,
   removeRoom,
   resetPreviewedEdits,
   roomBack,
@@ -192,6 +197,7 @@ export const {
   setRoomAboveOrBelow,
   setSelectedItemsInRoom,
   setTool,
+  toggleRoomInSelection,
   toggleSelectedItemInRoom,
   undo,
 } = levelEditorSlice.actions;
