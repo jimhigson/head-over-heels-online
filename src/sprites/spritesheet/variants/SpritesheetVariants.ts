@@ -18,6 +18,7 @@ import { ShadowPreprocessFilter } from "../../../game/render/filters/shadows/Sha
 import { selectSpritesheetOverrideBlobUrl } from "../../../store/slices/spritesheetOverrideSlice";
 import { store } from "../../../store/store";
 import { detectDeviceType } from "../../../utils/detectEnv/detectDeviceType";
+import { stripIccProfilePng } from "../../../utils/image/stripIccProfilePng";
 import { stripIccProfileWebp } from "../../../utils/image/stripIccProfileWebp";
 import { black, renderMaskTexture, white } from "../renderMaskTexture";
 import {
@@ -217,8 +218,13 @@ export class SpritesheetVariants {
         throw new Error(`HTTP ${response.status} - ${response.statusText}`);
       }
       const buffer = await response.arrayBuffer();
-      const strippedBuffer = stripIccProfileWebp(buffer);
-      const blob = new Blob([strippedBuffer], { type: "image/webp" });
+      const contentType = response.headers.get("content-type")!;
+      const isPng = contentType.includes("png");
+      const strippedBuffer =
+        isPng ? stripIccProfilePng(buffer) : stripIccProfileWebp(buffer);
+      const blob = new Blob([strippedBuffer], {
+        type: isPng ? "image/png" : "image/webp",
+      });
 
       strippedImageObjectUrl = URL.createObjectURL(blob);
       const img = new Image();

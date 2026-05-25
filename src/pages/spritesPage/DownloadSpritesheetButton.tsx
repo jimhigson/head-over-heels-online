@@ -5,7 +5,7 @@ import { Button } from "../../ui/Button";
 import { spritesheetUrlFromCssVar } from "./spritesheetUrlFromCssVar";
 
 export const DownloadSpritesheetButton = () => {
-  const ref = useRef<HTMLButtonElement>(null);
+  const ref = useRef<HTMLSpanElement>(null);
 
   const handleClick = useCallback(() => {
     const rawUrl = spritesheetUrlFromCssVar(ref.current!);
@@ -21,13 +21,15 @@ export const DownloadSpritesheetButton = () => {
   }, []);
 
   return (
-    <Button
-      className="px-1 bg-moss zx:bg-zxGreen zx:text-zxBlack toppy:bg-toppyCool2 toppy:text-toppyBlack"
-      ref={ref}
-      onClick={handleClick}
-      tooltipContent={<BitmapText>Download spritesheet image</BitmapText>}
-    >
-      <BitmapText>⬇ Download</BitmapText>
-    </Button>
+    <>
+      <span ref={ref} className="hidden" />
+      <Button
+        className="px-1 bg-moss zx:bg-zxGreen zx:text-zxBlack toppy:bg-toppyCool2 toppy:text-toppyBlack"
+        onClick={handleClick}
+        tooltipContent={<BitmapText>Download spritesheet image</BitmapText>}
+      >
+        <BitmapText>⬇ Download</BitmapText>
+      </Button>
+    </>
   );
 };
