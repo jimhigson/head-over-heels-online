@@ -48,14 +48,14 @@ export const SpritesheetOverrideButtons = () => {
         <input
           ref={inputRef}
           type="file"
-          accept=".webp"
+          accept=".webp,.png"
           className="hidden"
           onChange={handleFileChange}
         />
         <Button
           className="px-1 bg-pink zx:bg-zxMagenta toppy:bg-toppyPink1"
           onClick={() => inputRef.current?.click()}
-          tooltipContent="Upload a local PNG to temporarily override the spritesheet image. The override persists across page reloads but is stored in your browser only."
+          tooltipContent="Upload a local WebP/PNG to temporarily override the spritesheet image. The override persists across page reloads but is stored in your browser only."
         >
           <BitmapText>⬆ Override</BitmapText>
         </Button>
