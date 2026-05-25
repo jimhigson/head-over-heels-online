@@ -1,8 +1,7 @@
 import { lazy } from "react";
 
-import type { WrapClickableRoomDecoratorComponent } from "./RoomDecoratorProps";
-
 import { importOnce } from "../../../../../../utils/importOnce";
+import { type WrapClickableRoomDecoratorComponent } from "./RoomDecoratorProps";
 
 const importMapRoomTooltipDecorator = importOnce(
   () => import("./MapRoomTooltipDecorator"),

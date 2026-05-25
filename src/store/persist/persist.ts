@@ -1,7 +1,6 @@
-import type { PersistConfig } from "redux-persist/es/types";
-
 import { createMigrate } from "redux-persist";
 import persistReducer from "redux-persist/es/persistReducer";
+import { type PersistConfig } from "redux-persist/es/types";
 
 import {
   savedGamesPersistKey,

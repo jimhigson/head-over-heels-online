@@ -1,9 +1,8 @@
 import { lazy } from "react";
 
-import type { PostfixRoomDecoratorComponent } from "../../game/components/dialogs/menuDialog/dialogs/map/RoomDecoratorProps";
-import type { EditorRoomId } from "../editorTypes";
-
+import { type PostfixRoomDecoratorComponent } from "../../game/components/dialogs/menuDialog/dialogs/map/RoomDecoratorProps";
 import { importOnce } from "../../utils/importOnce";
+import { type EditorRoomId } from "../editorTypes";
 
 const importEditorMapInsertButtonDecorator = importOnce(
   () => import("./EditorMapInsertButtonDecorator"),

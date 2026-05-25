@@ -1,11 +1,3 @@
-import type {
-  EditorJsonItemUnion,
-  EditorRoomId,
-  EditorRoomItemId,
-  EditorRoomJson,
-} from "../../editorTypes";
-import type { LevelEditorState } from "../levelEditorSlice";
-
 import { consolidateItemsMap } from "../../../consolidateItems/consolidateItems";
 import { roomGridPositions } from "../../../game/components/dialogs/menuDialog/dialogs/map/roomGridPositions";
 import { nextItemIdSet } from "../../../model/inPlaceMutators/nextItemId";
@@ -23,7 +15,14 @@ import {
   tangentAxis,
   type Xy,
 } from "../../../utils/vectors/vectors";
+import {
+  type EditorJsonItemUnion,
+  type EditorRoomId,
+  type EditorRoomItemId,
+  type EditorRoomJson,
+} from "../../editorTypes";
 import { selectCursorRoom } from "../levelEditorSelectors";
+import { type LevelEditorState } from "../levelEditorSlice";
 import {
   roomFloorMaxX,
   roomFloorMaxY,

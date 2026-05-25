@@ -1,25 +1,23 @@
-import type { ValueOf } from "type-fest";
-
 import { Suspense } from "react";
+import { type ValueOf } from "type-fest";
 
-import type {
-  CharacterName,
-  IndividualCharacterName,
+import {
+  type CharacterName,
+  type IndividualCharacterName,
 } from "../../../../../../model/modelTypes";
-import type { CharacterRooms } from "../../../../../gameState/GameState";
-import type { PlayableItem } from "../../../../../physics/itemPredicates";
-import type { MapData } from "./MapData";
-import type {
-  PostfixRoomDecoratorComponent,
-  WrapClickableRoomDecoratorComponent,
-} from "./RoomDecoratorProps";
-
 import { getRoomItem } from "../../../../../../model/RoomState";
 import { emptyObject } from "../../../../../../utils/empty";
+import { type CharacterRooms } from "../../../../../gameState/GameState";
+import { type PlayableItem } from "../../../../../physics/itemPredicates";
 import { findSubRoomForItem } from "./itemIsInSubRoom";
 import { MapBackground } from "./MapBackground";
 import { mapSvgMarginX, mapSvgMarginY } from "./mapConstants";
+import { type MapData } from "./MapData";
 import { RoomSvg } from "./Room.svg";
+import {
+  type PostfixRoomDecoratorComponent,
+  type WrapClickableRoomDecoratorComponent,
+} from "./RoomDecoratorProps";
 import { roomWorldPosition } from "./roomWorldPosition";
 import { ScrollIntoView } from "./ScrollIntoView";
 import { translateXyz } from "./svgHelpers";

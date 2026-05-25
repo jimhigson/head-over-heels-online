@@ -1,8 +1,7 @@
-import type { RoomJson } from "../../../model/RoomJson";
-import type { EditorRoomId } from "../../editorTypes";
-import type { LevelEditorState } from "../levelEditorSlice";
-
+import { type RoomJson } from "../../../model/RoomJson";
+import { type EditorRoomId } from "../../editorTypes";
 import { selectCursorRoomId } from "../levelEditorSelectors";
+import { type LevelEditorState } from "../levelEditorSlice";
 
 export const firstSubRoomId = (roomJson: RoomJson<string, string>): string => {
   const subRoomKeys =

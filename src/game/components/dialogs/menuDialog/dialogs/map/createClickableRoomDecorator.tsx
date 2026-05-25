@@ -1,8 +1,8 @@
 import { cloneElement, type MouseEvent, type ReactElement } from "react";
 
-import type {
-  RoomDecoratorProps,
-  WrapClickableRoomDecoratorComponent,
+import {
+  type RoomDecoratorProps,
+  type WrapClickableRoomDecoratorComponent,
 } from "./RoomDecoratorProps";
 
 export const createClickableRoomDecorator = <RoomId extends string>(

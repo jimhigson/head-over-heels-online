@@ -81,6 +81,7 @@ export default tseslint.config(
         },
       ],
       "import/no-duplicates": ["error", { "prefer-inline": true }],
+      "import/consistent-type-specifier-style": ["error", "prefer-inline"],
       "prettier/prettier": ["error", { experimentalTernaries: true }],
       "no-restricted-syntax": [
         "error",

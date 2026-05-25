@@ -6,20 +6,18 @@ import {
   Texture,
 } from "pixi.js";
 
-import type { ZxSpectrumRoomColour } from "../../../originalGame";
-import type { SpriteOption } from "../../../store/slices/userSettings/userSettingsSlice";
-import type { SceneryName } from "../../planets";
-import type { VariantBuildContext } from "../VariantBuildContext";
-
 import blockStackSpritesheetUrl from "../../../../gfx/sprites.webp";
 import toppySpritesheetUrl from "../../../../gfx/spritesToppy.webp";
 import { type PaletteSwopSpec } from "../../../game/render/filters/PaletteSwapFilter";
 import { ShadowPreprocessFilter } from "../../../game/render/filters/shadows/ShadowPreprocessFilter";
+import { type ZxSpectrumRoomColour } from "../../../originalGame";
 import { selectSpritesheetOverrideBlobUrl } from "../../../store/slices/spritesheetOverrideSlice";
+import { type SpriteOption } from "../../../store/slices/userSettings/userSettingsSlice";
 import { store } from "../../../store/store";
 import { detectDeviceType } from "../../../utils/detectEnv/detectDeviceType";
 import { stripIccProfilePng } from "../../../utils/image/stripIccProfilePng";
 import { stripIccProfileWebp } from "../../../utils/image/stripIccProfileWebp";
+import { type SceneryName } from "../../planets";
 import { black, renderMaskTexture, white } from "../renderMaskTexture";
 import {
   makeSpritesheetData,
@@ -30,6 +28,7 @@ import {
   spritesheetMetaForOption,
   spritesheetMetas,
 } from "../spritesheetData/spritesheetMetaData";
+import { type VariantBuildContext } from "../VariantBuildContext";
 import { buildCurrentRoomSpritesheet } from "./currentRoomSpritesheetVariant";
 import { buildDeactivatedSpritesheet } from "./deactivatedSpritesheetVariant";
 import { buildDoughnuttedSpritesheet } from "./doughnuttedSpritesheetVariant";

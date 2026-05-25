@@ -1,8 +1,7 @@
-import type { UnknownAction } from "@reduxjs/toolkit";
-
-import type { AppThunk } from "../../store/store";
+import { type UnknownAction } from "@reduxjs/toolkit";
 
 import { BlockyMarkdown } from "../../game/components/BlockyMarkdown";
+import { type AppThunk } from "../../store/store";
 import { clearRoom, removeRoom } from "../slice/levelEditorSlice";
 import { confirm, type ConfirmOptions } from "./confirm";
 
