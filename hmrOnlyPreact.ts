@@ -1,6 +1,9 @@
-import type { HotUpdateOptions, PluginOption, ViteDevServer } from "vite";
-
 import { debounce } from "@github/mini-throttle";
+import {
+  type HotUpdateOptions,
+  type PluginOption,
+  type ViteDevServer,
+} from "vite";
 
 const testFilePattern = /\.(test|spec)\.[tj]sx?$/;
 const nonRuntimeDirPattern =

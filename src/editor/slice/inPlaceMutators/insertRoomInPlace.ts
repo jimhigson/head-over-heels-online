@@ -1,11 +1,3 @@
-import type {
-  EditorJsonItem,
-  EditorRoomId,
-  EditorRoomItemId,
-  EditorRoomJson,
-} from "../../editorTypes";
-import type { LevelEditorState } from "../levelEditorSlice";
-
 import { findSubRoomForItem } from "../../../game/components/dialogs/menuDialog/dialogs/map/itemIsInSubRoom";
 import { roomGridPositions } from "../../../game/components/dialogs/menuDialog/dialogs/map/roomGridPositions";
 import { nextItemId } from "../../../model/inPlaceMutators/nextItemId";
@@ -22,9 +14,16 @@ import {
   xyzEqual,
 } from "../../../utils/vectors/vectors";
 import {
+  type EditorJsonItem,
+  type EditorRoomId,
+  type EditorRoomItemId,
+  type EditorRoomJson,
+} from "../../editorTypes";
+import {
   selectCurrentRoomFromLevelEditorState,
   selectCursorSubRoomId,
 } from "../levelEditorSelectors";
+import { type LevelEditorState } from "../levelEditorSlice";
 import {
   roomFloorMaxX,
   roomFloorMaxY,

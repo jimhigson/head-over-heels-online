@@ -1,14 +1,13 @@
 import { produce } from "immer";
 import { describe, expect, test } from "vitest";
 
-import type {
-  EditorJsonItem,
-  EditorRoomId,
-  EditorRoomItemId,
-} from "../../editorTypes";
-
 import { roomGridPositions } from "../../../game/components/dialogs/menuDialog/dialogs/map/roomGridPositions";
 import { exitGameRoomId } from "../../../model/json/ItemConfigMap";
+import {
+  type EditorJsonItem,
+  type EditorRoomId,
+  type EditorRoomItemId,
+} from "../../editorTypes";
 import { selectCursorRoom, selectCursorRoomId } from "../levelEditorSelectors";
 import {
   addRoom,

@@ -1,7 +1,7 @@
-import type { FunctionComponent, ReactElement } from "react";
+import { type FunctionComponent, type ReactElement } from "react";
 
-import type { Boundaries } from "./roomGridPositions";
-import type { SortedObjectOfRoomGridPositionSpecs } from "./sortRoomGridPositions";
+import { type Boundaries } from "./roomGridPositions";
+import { type SortedObjectOfRoomGridPositionSpecs } from "./sortRoomGridPositions";
 
 export type RoomDecoratorProps<RoomId extends string> = {
   roomId: RoomId;

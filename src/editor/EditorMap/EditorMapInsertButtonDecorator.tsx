@@ -1,11 +1,9 @@
-import type { PropsWithChildren, Ref } from "react";
-
-import type { RoomDecoratorProps } from "../../game/components/dialogs/menuDialog/dialogs/map/RoomDecoratorProps";
-import type { Boundaries } from "../../game/components/dialogs/menuDialog/dialogs/map/roomGridPositions";
-import type { SortedObjectOfRoomGridPositionSpecs } from "../../game/components/dialogs/menuDialog/dialogs/map/sortRoomGridPositions";
-import type { EditorRoomId } from "../editorTypes";
+import { type PropsWithChildren, type Ref } from "react";
 
 import { roomGridSizeXY } from "../../game/components/dialogs/menuDialog/dialogs/map/mapConstants";
+import { type RoomDecoratorProps } from "../../game/components/dialogs/menuDialog/dialogs/map/RoomDecoratorProps";
+import { type Boundaries } from "../../game/components/dialogs/menuDialog/dialogs/map/roomGridPositions";
+import { type SortedObjectOfRoomGridPositionSpecs } from "../../game/components/dialogs/menuDialog/dialogs/map/sortRoomGridPositions";
 import { BitmapText } from "../../game/components/tailwindSprites/BitmapText";
 import { projectWorldXyzToScreenXy } from "../../game/render/projections";
 import { editorStore, useEditorAppSelector } from "../../store/store";
@@ -17,6 +15,7 @@ import {
   type Direction8Xyz,
   xyzEqual,
 } from "../../utils/vectors/vectors";
+import { type EditorRoomId } from "../editorTypes";
 import { selectCurrentRoomFromLevelEditorState } from "../slice/levelEditorSelectors";
 import { insertRoom, setRoomAboveOrBelow } from "../slice/levelEditorSlice";
 import { ToolbarButton } from "../toolbar/buttons/ToolbarButton";

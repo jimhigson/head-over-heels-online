@@ -1,12 +1,10 @@
-import type { KeyboardEvent } from "react";
-
-import type { WrapClickableRoomDecoratorComponent } from "../../game/components/dialogs/menuDialog/dialogs/map/RoomDecoratorProps";
-import type { SortedObjectOfRoomGridPositionSpecs } from "../../game/components/dialogs/menuDialog/dialogs/map/sortRoomGridPositions";
-import type { EditorRoomId } from "../editorTypes";
+import { type KeyboardEvent } from "react";
 
 import { createClickableRoomDecorator } from "../../game/components/dialogs/menuDialog/dialogs/map/createClickableRoomDecorator";
 import { LazyMapRoomTooltipDecorator } from "../../game/components/dialogs/menuDialog/dialogs/map/LazyMapRoomTooltipDecorator";
 import { MapSvg } from "../../game/components/dialogs/menuDialog/dialogs/map/Map.svg";
+import { type WrapClickableRoomDecoratorComponent } from "../../game/components/dialogs/menuDialog/dialogs/map/RoomDecoratorProps";
+import { type SortedObjectOfRoomGridPositionSpecs } from "../../game/components/dialogs/menuDialog/dialogs/map/sortRoomGridPositions";
 import { type Key } from "../../game/input/keys";
 import { startAppListening } from "../../store/listenerMiddleware";
 import { store, useEditorAppSelector } from "../../store/store";
@@ -15,6 +13,7 @@ import { useElementSize } from "../../utils/react/useElementSize";
 import { unitVectors } from "../../utils/vectors/unitVectors";
 import { addXyz, xyzEqual } from "../../utils/vectors/vectors";
 import { EditorErrorBoundary } from "../EditorErrorBoundary";
+import { type EditorRoomId } from "../editorTypes";
 import { selectCursorRoom } from "../slice/levelEditorSelectors";
 import {
   addRoomToSelection,

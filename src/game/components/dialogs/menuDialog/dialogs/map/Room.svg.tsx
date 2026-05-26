@@ -1,18 +1,16 @@
-import type { FunctionComponent, ReactElement } from "react";
+import { type FunctionComponent, type ReactElement } from "react";
 
-import type {
-  CharacterName,
-  IndividualCharacterName,
+import {
+  type CharacterName,
+  type IndividualCharacterName,
 } from "../../../../../../model/modelTypes";
-import type { RoomJson } from "../../../../../../model/RoomJson";
-import type { RoomPickupsCollected } from "../../../../../gameState/GameState";
-import type { PlayableItem } from "../../../../../physics/itemPredicates";
-import type { Boundaries, RoomGridPositionSpec } from "./roomGridPositions";
-
+import { type RoomJson } from "../../../../../../model/RoomJson";
 import { hudLowercaseCharTextureSize } from "../../../../../../sprites/spritesheet/spritesheetData/textureSizes";
 import { valuesIter } from "../../../../../../utils/entries";
 import { range } from "../../../../../../utils/iterators/range";
 import { addXy, lengthXy } from "../../../../../../utils/vectors/vectors";
+import { type RoomPickupsCollected } from "../../../../../gameState/GameState";
+import { type PlayableItem } from "../../../../../physics/itemPredicates";
 import { projectWorldXyzToScreenXy } from "../../../../../render/projections";
 import { BitmapText } from "../../../../tailwindSprites/BitmapText";
 import { floorFillPathD } from "./floorFillPathD";
@@ -29,6 +27,10 @@ import {
   roomGridSizeZ,
 } from "./mapConstants";
 import { PlayableItemInRoom } from "./NotableItem";
+import {
+  type Boundaries,
+  type RoomGridPositionSpec,
+} from "./roomGridPositions";
 import { roomWorldPosition } from "./roomWorldPosition";
 import { project, roundForSvg, translateXyz } from "./svgHelpers";
 import { useNotableItems } from "./useNotableItems";

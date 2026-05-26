@@ -1,6 +1,5 @@
-import type { SortedObjectOfRoomGridPositionSpecs } from "../../game/components/dialogs/menuDialog/dialogs/map/sortRoomGridPositions";
-
 import { type RoomGridPositionSpec } from "../../game/components/dialogs/menuDialog/dialogs/map/roomGridPositions";
+import { type SortedObjectOfRoomGridPositionSpecs } from "../../game/components/dialogs/menuDialog/dialogs/map/sortRoomGridPositions";
 import { valuesIter } from "../../utils/entries";
 import { type Xy } from "../../utils/vectors/vectors";
 import { type EditorRoomId } from "../editorTypes";

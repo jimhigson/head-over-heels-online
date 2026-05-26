@@ -1,6 +1,5 @@
-import type { EditorRoomJson } from "../editorTypes";
-
 import { iterateRoomJsonItemsWithIds } from "../../model/RoomJson";
+import { type EditorRoomJson } from "../editorTypes";
 
 export const roomFloorMinY = (roomJson: EditorRoomJson): number =>
   iterateRoomJsonItemsWithIds(roomJson.items, "floor").reduce(
