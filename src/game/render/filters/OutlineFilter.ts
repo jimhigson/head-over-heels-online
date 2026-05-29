@@ -20,6 +20,12 @@ import fragment from "./outline.frag";
 export type OutlineFilterOptions = {
   color: Color;
   width?: number;
+  /**
+   * pass false when the filtered container is baked off-screen (eg into a text
+   * cache texture) so the filter is not clipped to the screen viewport. Defaults
+   * to pixi's default (true), which is correct for filters applied on-screen.
+   */
+  clipToViewport?: boolean;
 };
 
 /** Current global upscale value for all outline filters */
@@ -33,7 +39,7 @@ store.subscribe(() => {
 export class OutlineFilter extends Filter {
   #outlineWidth?: number;
 
-  constructor({ color, width }: OutlineFilterOptions) {
+  constructor({ color, width, clipToViewport = true }: OutlineFilterOptions) {
     const upscale = width ?? currentUpscale;
 
     super({
@@ -43,6 +49,7 @@ export class OutlineFilter extends Filter {
         name: "outline-filter",
       }),
       padding: upscale,
+      clipToViewport,
       resources: {
         colorReplaceUniforms: {
           uOutline: {

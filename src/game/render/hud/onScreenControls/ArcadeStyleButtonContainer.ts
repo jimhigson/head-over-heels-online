@@ -116,14 +116,20 @@ export class ArcadeStyleButtonContainer<
     const colourDim = halfbrite(colour, 0.66);
     const colourBlack = palette[meta.effectColours.outline];
 
-    const filter = new PaletteSwapFilter({
-      lutType: "sparse",
-      swops: resolveSwops(paletteBlockstack, {
-        replaceLight: colour,
-        replaceDark: colourDim,
-        pureBlack: colourBlack,
-      }),
-    });
+    const filter = new PaletteSwapFilter(
+      {
+        lutType: "sparse",
+        swops: resolveSwops(paletteBlockstack, {
+          replaceLight: colour,
+          replaceDark: colourDim,
+          pureBlack: colourBlack,
+        }),
+      },
+      // the button textures are baked off-screen via renderContainerToTexture,
+      // so the filter must not be clipped to the screen viewport:
+      Texture.WHITE,
+      false,
+    );
     spriteTemplate.filters = filter;
 
     const buttonTexture = renderContainerToTexture(

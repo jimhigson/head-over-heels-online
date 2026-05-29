@@ -1,4 +1,4 @@
-import { Container } from "pixi.js";
+import { Container, Texture } from "pixi.js";
 
 import { type ItemInPlay } from "../../../../model/ItemInPlay";
 import { type Campaign } from "../../../../model/modelTypes";
@@ -182,21 +182,27 @@ export const doorFrameAppearance: ItemAppearance<"doorFrame"> =
         // so just colour using the current room's colours:
         room;
 
-      const filter = new PaletteSwapFilter({
-        swops: resolveSwops(
-          paletteBlockstack,
-          replacementColours(
-            useColoursFromRoom.color.hue,
-            spritesheetMeta.paletteDim !== undefined &&
-              room.color.shade === "dimmed",
-            room.planet === "moonbase" ?
-              // moonbase doors are illuminated:
-              "light-mid"
-            : "light-dark",
+      const filter = new PaletteSwapFilter(
+        {
+          swops: resolveSwops(
+            paletteBlockstack,
+            replacementColours(
+              useColoursFromRoom.color.hue,
+              spritesheetMeta.paletteDim !== undefined &&
+                room.color.shade === "dimmed",
+              room.planet === "moonbase" ?
+                // moonbase doors are illuminated:
+                "light-mid"
+              : "light-dark",
+            ),
           ),
-        ),
-        lutType: "sparse",
-      });
+          lutType: "sparse",
+        },
+        // the door frame is baked off-screen via renderContainerToSprite, so the
+        // filter must not be clipped to the screen viewport:
+        Texture.WHITE,
+        false,
+      );
 
       const { x, y } = xyToTranslateToInsideOfRoom(direction, aabb);
 

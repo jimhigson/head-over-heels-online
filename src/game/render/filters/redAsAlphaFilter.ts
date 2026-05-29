@@ -16,3 +16,8 @@ redAsAlphaFilter.matrix = [
   // A (unused for masking) = copy unchanged but make partially transparent so if shown for debugging can see item below
   0, 0, 0, 1, 0,
 ];
+
+// this filter is only used to bake a mask off-screen via renderContainerToSprite,
+// so it must not be clipped to the screen viewport (which would crop the mask to
+// the canvas size):
+redAsAlphaFilter.clipToViewport = false;
