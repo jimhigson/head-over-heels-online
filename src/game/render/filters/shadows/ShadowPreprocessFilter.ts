@@ -33,6 +33,12 @@ export class ShadowPreprocessFilter extends Filter {
       resources: {
         uMask: mask.source,
       },
+      // this filter is only ever used to bake spritesheet textures off-screen,
+      // never on the screen render target. clipping the filter to the screen
+      // viewport would crop the spritesheet to whatever size the canvas happens
+      // to be (eg before it has been sized), blanking the parts of the sheet
+      // outside it — which is what stops text and shadows rendering on first load
+      clipToViewport: false,
     });
 
     this.#mask = mask;

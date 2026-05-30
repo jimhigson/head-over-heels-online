@@ -37,6 +37,12 @@ export class PaletteSwapFilter extends Filter {
      * default to all white to apply everywhere
      */
     mask: Texture = Texture.WHITE,
+    /**
+     * pass false when this filter is used to bake a spritesheet off-screen, so
+     * it is not clipped to the screen viewport (which would crop the sheet to
+     * the canvas size). defaults to pixi's default (true), correct on-screen.
+     */
+    clipToViewport: boolean = true,
   ) {
     const lutTexture =
       lutType === "voronoi" ? voronoiLut(swops) : sparseLut(swops);
@@ -47,6 +53,7 @@ export class PaletteSwapFilter extends Filter {
         fragment,
         name: "palette-swop-filter1",
       }),
+      clipToViewport,
       resources: {
         colorReplaceUniforms: {},
         uLut: lutTexture.source,

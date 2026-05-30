@@ -79,7 +79,11 @@ const createPlaceholderMaskFilter = (
       : otherColoursReplacedWith,
     );
   }
-  return new PaletteSwapFilter({ swops, lutType: "sparse" });
+  return new PaletteSwapFilter(
+    { swops, lutType: "sparse" },
+    Texture.WHITE,
+    false,
+  );
 };
 
 const spritesheetPaletteSwop = (
@@ -117,6 +121,7 @@ const spritesheetPaletteSwop = (
     const textureFilter = new PaletteSwapFilter(
       { swops, lutType: "sparse" },
       specificMaskTexture,
+      false,
     );
 
     filters.push(textureFilter);
@@ -175,6 +180,7 @@ const spritesheetPaletteSwop = (
     const paletteSwopFilter = new PaletteSwapFilter(
       globalSpec,
       doNotFilterTexture,
+      false,
     );
     filters.push(paletteSwopFilter);
   }

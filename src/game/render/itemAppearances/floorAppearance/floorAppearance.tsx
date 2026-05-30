@@ -276,6 +276,9 @@ export const floorAppearance: ItemAppearance<"floor"> =
               spritesheet.ambient,
             ),
         width: 1,
+        // floor tiles are baked off-screen via renderContainerToSprite, so the
+        // outline must not be clipped to the screen viewport:
+        clipToViewport: false,
       });
 
       if (floorType !== "none") {

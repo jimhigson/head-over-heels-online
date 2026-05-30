@@ -116,6 +116,9 @@ export class TextContainer extends Container {
       this.#characterSpriteContainer.filters = new OutlineFilter({
         color: paletteBlockstack.pureBlack,
         width: 1,
+        // text is baked off-screen into a cache texture, so the outline must not
+        // be clipped to the screen viewport:
+        clipToViewport: false,
       });
     }
 
