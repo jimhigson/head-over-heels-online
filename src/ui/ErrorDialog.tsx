@@ -3,6 +3,7 @@ import { type ReactNode, useEffect } from "react";
 
 import { BitmapText } from "../game/components/tailwindSprites/BitmapText";
 import { getRecentActions } from "../store/recentActions";
+import { describeRuntimeEnvironment } from "../utils/detectEnv/describeRuntimeEnvironment";
 import { type SerialisableError } from "../utils/redux/createSerialisableErrors";
 import { Border } from "./Border";
 import { Dialog } from "./Dialog";
@@ -53,6 +54,8 @@ const writeErrorReport = (errors: SerialisableError[]) => {
   const recentActions: undefined | UnknownAction[] =
     import.meta.env.DEV ? getRecentActions() : undefined;
 
+  const environmentPart = describeRuntimeEnvironment();
+
   const errorsPart = errors.toReversed().map((error) => {
     const { message, sanitizedStack } = parseErrorForDisplay(error);
     return `
@@ -72,7 +75,8 @@ ${sanitizedStack}
     const formatLine = (a: UnknownAction, i: number) =>
       `${i}: ${JSON.stringify(a)}`;
 
-    return `${errorsPart}
+    return `${environmentPart}
+${errorsPart}
 
 Last ${recentActions.length} redux actions (oldest to newest):
 
@@ -80,7 +84,8 @@ ${recentActions.map((a, i) => formatLine(a, i)).join("\n")}
 `;
   }
 
-  return errorsPart;
+  return `${environmentPart}
+${errorsPart}`;
 };
 
 export type ErrorDialogReportProps = {
