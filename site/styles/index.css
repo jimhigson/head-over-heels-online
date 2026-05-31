@@ -1,0 +1,23 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+@layer base {
+  :root {
+    /* The game's JS layout engine sets these at runtime to drive the
+       retro upscaled look. The static site has no running game, so we fix
+       them here to keep the block-based scale and sizing stable. */
+    --scale: 3;
+    --block: calc(var(--scale) * 8px);
+  }
+
+  body {
+    @apply bg-pureBlack text-lightBeige;
+  }
+}
+
+@layer components {
+  .site-link {
+    @apply text-metallicBlue underline-offset-2 hover:text-pink hover:underline;
+  }
+}

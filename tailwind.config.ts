@@ -84,7 +84,11 @@ export default {
 
   darkMode: ["class"],
   content: {
-    files: ["./index.html", "./src/**/*.{js,ts,jsx,tsx,md}"],
+    files: [
+      "./index.html",
+      "./src/**/*.{js,ts,jsx,tsx,md}",
+      "./site/**/*.{njk,md,html}",
+    ],
     extract: {
       md(content) {
         // allow classes in markdown to be encoded as urls like class1?class2&class3

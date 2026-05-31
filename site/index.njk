@@ -1,0 +1,34 @@
+---
+layout: base.njk
+title: Home
+---
+
+<section class="mb-5">
+  <p class="mb-2">
+    Lorem ipsum dolor sit amet, consectetur adipiscing elit. Sed do eiusmod
+    tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim
+    veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea
+    commodo consequat.
+  </p>
+  <p>
+    Duis aute irure dolor in reprehenderit in voluptate velit esse cillum
+    dolore eu fugiat nulla pariatur. Excepteur sint occaecat cupidatat non
+    proident, sunt in culpa qui officia deserunt mollit anim id est laborum.
+  </p>
+</section>
+
+<section>
+  <h2 class="mb-3 text-pastelBlue">Articles</h2>
+  <ul class="flex flex-col gap-3">
+    {%- for article in collections.article | reverse %}
+      <li>
+        <a href="{{ article.url }}" class="site-link text-pastelBlue text-lg no-underline">
+          {{ article.data.title }}
+        </a>
+        <p class="text-midGrey">
+          {{ article.date | date }} &mdash; {{ article.data.summary }}
+        </p>
+      </li>
+    {%- endfor %}
+  </ul>
+</section>

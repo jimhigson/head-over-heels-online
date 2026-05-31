@@ -28,6 +28,10 @@ test-results/
 
 build-stats*.html
 
+# 11ty static site build output
+site/_site
+site/_built
+
 src-tauri/gen
 src-tauri/target
 .gitnexus

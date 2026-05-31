@@ -1,0 +1,25 @@
+<!doctype html>
+<html lang="en-GB">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <title>{{ title }} &middot; Head over Heels</title>
+    <link rel="stylesheet" href="/styles/index.css" />
+  </head>
+  <body class="font-mono">
+    <div class="mx-auto max-w-widestDialog px-2 py-3">
+      <header class="mb-4 border-b-oneScaledPix border-metallicBlue pb-2">
+        <a href="/" class="site-link text-pastelBlue no-underline">
+          <h1 class="text-pastelBlue">Head over Heels</h1>
+        </a>
+        <p class="text-midGrey">a remake, in the open</p>
+      </header>
+
+      <main>{{ content | safe }}</main>
+
+      <footer class="mt-6 border-t-oneScaledPix border-metallicBlue pt-2 text-midGrey">
+        <p>built with 11ty &amp; the block-stacking palette</p>
+      </footer>
+    </div>
+  </body>
+</html>

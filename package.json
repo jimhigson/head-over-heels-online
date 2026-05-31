@@ -29,6 +29,12 @@
     "build:editor": "vite build --config vite.editor.config.ts --emptyOutDir",
     "clean": "rm -rf dist",
     "build": "pnpm run \"/^build:.*/\"",
+    "site:build:css": "tailwindcss -c tailwind.config.ts -i site/styles/index.css -o site/_built/index.css --minify",
+    "site:build:html": "eleventy --config=site/eleventy.config.js",
+    "site:build": "pnpm site:build:css && pnpm site:build:html",
+    "site:dev:css": "tailwindcss -c tailwind.config.ts -i site/styles/index.css -o site/_built/index.css --watch",
+    "site:dev:serve": "eleventy --config=site/eleventy.config.js --serve",
+    "site:dev": "pnpm site:build:css && pnpm run \"/^site:dev:.*/\"",
     "//check:build": "I don't know any way to check the build will pass other than running it:",
     "check:build:game": "pnpm build:game",
     "check:build:editor": "pnpm build:editor",
@@ -104,6 +110,7 @@
     "wouter": "^3.9.0"
   },
   "devDependencies": {
+    "@11ty/eleventy": "^3.1.5",
     "@byteland/ink-scroll-bar": "^1.0.0",
     "@commander-js/extra-typings": "^14.0.0",
     "@eslint/js": "^9.22.0",
