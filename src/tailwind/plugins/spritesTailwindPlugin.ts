@@ -62,6 +62,15 @@ export const spritesTailwindPlugin = plugin(
 
     const base: CSSRuleObject = {};
 
+    // the HUD font, its native 8px-cell size, and single-line leading apply
+    // everywhere by default; --block / --scale fallbacks keep this valid even
+    // before those vars cascade in. Multi-line text opts in via .text-multi-line
+    base["body"] = {
+      fontFamily: '"HeadOverHeels", monospace',
+      fontSize: "var(--block, 8px)",
+      lineHeight: "calc(10px * var(--scale, 1))",
+    };
+
     const spriteStyles = (type: "background" | "mask") => ({
       [`${type}Image`]: `var(--spritesheetUrl)`,
       [`${type}Position`]: `calc(-1 * var(--x) * var(--totalScale) * 1px) calc(-1 * var(--y) * var(--totalScale) * var(--doubleHeight, 1) * 1px)`,
@@ -145,6 +154,12 @@ export const spritesTailwindPlugin = plugin(
       },
       ".pixelated": {
         imageRendering: "pixelated",
+      },
+      ".text-single-line": {
+        lineHeight: "calc(10px * var(--scale, 1))",
+      },
+      ".text-multi-line": {
+        lineHeight: "calc(11px * var(--scale, 1))",
       },
 
       // sets the css vars for the editor buttons/toolbars etc

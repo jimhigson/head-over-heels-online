@@ -38,3 +38,7 @@ jobs:
       - run: pnpm gen:rooms
       - name: Check gen:rooms is up-to-date
         run: git diff --exit-code -- src/_generated || (echo "Run 'pnpm gen:rooms' locally and commit the changes." && exit 1)
+
+      - run: pnpm gen:font
+      - name: Check gen:font is up-to-date
+        run: git diff --exit-code -- src/_generated || (echo "Run 'pnpm gen:font' locally and commit the changes." && exit 1)
