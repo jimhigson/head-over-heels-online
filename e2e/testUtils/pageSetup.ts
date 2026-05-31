@@ -49,22 +49,35 @@ const silentWav = Buffer.from(
   "hex",
 );
 
-/** Per-page e2e setup: mute audio and fail on ErrorCaughtDialog. Call in beforeEach. */
-export const setupE2ePage = async (page: Page) => {
+export type SetupE2ePageOptions = {
+  /**
+   * when true (the default), the test fails the moment the errorCaught dialog
+   * appears. Tests that deliberately provoke the error dialog should pass false.
+   */
+  failOnErrorDialog?: boolean;
+};
+
+/** Per-page e2e setup: mute audio and (by default) fail on ErrorCaughtDialog. Call in beforeEach. */
+export const setupE2ePage = async (
+  page: Page,
+  { failOnErrorDialog = true }: SetupE2ePageOptions = {},
+) => {
   await page.addInitScript(muteAudioInE2e);
   await page.route("**/*.mp3", (route) =>
     route.fulfill({ contentType: "audio/wav", body: silentWav }),
   );
-  await page.addLocatorHandler(
-    page.locator('[data-dialog-id="errorCaught"]'),
-    async () => {
-      const stackTrace = await page
-        .locator('[data-dialog-id="errorCaught"] pre')
-        .textContent()
-        .catch(() => "(could not read stack trace)");
-      throw new Error(
-        `ErrorCaughtDialog appeared unexpectedly:\n${stackTrace}`,
-      );
-    },
-  );
+  if (failOnErrorDialog) {
+    await page.addLocatorHandler(
+      page.locator('[data-dialog-id="errorCaught"]'),
+      async () => {
+        const stackTrace = await page
+          .locator('[data-dialog-id="errorCaught"] pre')
+          .textContent()
+          .catch(() => "(could not read stack trace)");
+        throw new Error(
+          `ErrorCaughtDialog appeared unexpectedly:\n${stackTrace}`,
+        );
+      },
+    );
+  }
 };
