@@ -107,16 +107,28 @@ export default defineConfig(({ mode: _mode }) => {
 
       minify: mode !== "visual-regression",
       rolldownOptions: {
-        output: {
-          minify: {
-            compress: {
-              target: "esnext",
-              treeshake: {
-                propertyReadSideEffects: false,
+        output:
+          mode === "visual-regression" ?
+            {
+              // visual-regression snapshots render the error dialog's stack
+              // trace, so keep the output readable and stable: unhashed asset
+              // names (content edits don't change filenames) and no
+              // minification (frames show real source function names, which are
+              // consistent across builds rather than reshuffled mangled names)
+              entryFileNames: "assets/[name].js",
+              chunkFileNames: "assets/[name].js",
+              assetFileNames: "assets/[name][extname]",
+            }
+          : {
+              minify: {
+                compress: {
+                  target: "esnext",
+                  treeshake: {
+                    propertyReadSideEffects: false,
+                  },
+                },
               },
             },
-          },
-        },
       },
       modulePreload: {
         polyfill: false, // Modern browsers don't need the polyfill

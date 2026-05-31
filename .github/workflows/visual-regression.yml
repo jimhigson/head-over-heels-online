@@ -128,7 +128,7 @@ jobs:
           - { os: windows-latest, suite: lutSnapshot, projectOption: --project chromium-desktop }
 
           # MENU SNAPSHOTS - one agent per spec file per OS
-          - { os: ubuntu-24.04-arm, suite: menuSnapshotsDialogs, projectOption: "--project chromium-desktop --project webkit-desktop --project mobile-chrome --project mobile-safari" }
+          - { os: ubuntu-24.04-arm, suite: "menuSnapshotsDialogs errorDialogSnapshot", projectOption: "--project chromium-desktop --project webkit-desktop --project mobile-chrome --project mobile-safari" }
           - { os: ubuntu-24.04-arm, suite: menuSnapshotsInGame, projectOption: "--project chromium-desktop --project webkit-desktop --project mobile-chrome --project mobile-safari" }
           - { os: ubuntu-24.04-arm, suite: menuSnapshotsMainMenu, projectOption: "--project chromium-desktop --project webkit-desktop --project mobile-chrome --project mobile-safari" }
           # skip uncolourised and toppy on windows to speed it up since it is the slowest:
@@ -148,7 +148,7 @@ jobs:
     name: >-
       ${{
         matrix.suite == 'lutSnapshot' && format('Lut {0}', contains(matrix.os, 'windows') && 'Windows' || 'Linux')
-        || matrix.suite == 'menuSnapshotsDialogs' && format('MnuDlg {0}', contains(matrix.os, 'windows') && 'Win' || 'Lnx')
+        || startsWith(matrix.suite, 'menuSnapshotsDialogs') && format('MnuDlg {0}', contains(matrix.os, 'windows') && 'Win' || 'Lnx')
         || matrix.suite == 'menuSnapshotsInGame' && format('MnuGame {0}', contains(matrix.os, 'windows') && 'Win' || 'Lnx')
         || matrix.suite == 'menuSnapshotsMainMenu' && format('MnuMain {0}', contains(matrix.os, 'windows') && 'Win' || 'Lnx')
         || matrix.suite == 'settingsReflectInGame' && 'Settings'
