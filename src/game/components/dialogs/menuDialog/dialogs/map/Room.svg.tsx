@@ -1,4 +1,5 @@
-import { type FunctionComponent, type ReactElement } from "react";
+import { useRef } from "preact/hooks";
+import { Suspense } from "react";
 
 import {
   type CharacterName,
@@ -27,6 +28,7 @@ import {
   roomGridSizeZ,
 } from "./mapConstants";
 import { PlayableItemInRoom } from "./NotableItem";
+import { type RoomBehaviourComponent } from "./RoomDecoratorProps";
 import {
   type Boundaries,
   type RoomGridPositionSpec,
@@ -147,9 +149,7 @@ type RoomSvgProps<RoomId extends string> = {
   currentCharacterName: CharacterName;
   isCurrentRoom: boolean;
   isSelected: boolean;
-  ClickableAreaWrapper?: FunctionComponent<{
-    children: ReactElement;
-  }>;
+  behaviours?: RoomBehaviourComponent<RoomId>[];
 };
 
 export const RoomSvg = <RoomId extends string>({
@@ -164,10 +164,12 @@ export const RoomSvg = <RoomId extends string>({
   onPlayableClick,
   isCurrentRoom,
   isSelected,
-  ClickableAreaWrapper,
+  behaviours,
 }: RoomSvgProps<RoomId>) => {
   const { id, roomAbove, color, items } = roomJson;
   const label = roomJson.meta?.label;
+  const interactiveAreaRef = useRef<null | SVGPathElement>(null);
+  const hasBehaviours = behaviours !== undefined && behaviours.length > 0;
 
   // find some notable items:
   const notableItems = useNotableItems(
@@ -198,7 +200,7 @@ export const RoomSvg = <RoomId extends string>({
           : `[--floorColor:theme(colors.white)]`
         }
         ${
-          ClickableAreaWrapper ?
+          hasBehaviours ?
             `group/room
             hover:[--roomHintColor:theme(colors.midRed)]
             zx:hover:[--roomHintColor:theme(colors.zxRed)]
@@ -431,14 +433,25 @@ z
           </foreignObject>
         </g>
       )}
-      {ClickableAreaWrapper && (
-        <ClickableAreaWrapper>
+      {hasBehaviours && (
+        <>
           <path
+            ref={interactiveAreaRef}
             className="fill-transparent cursor-pointer outline-none"
             d={floorFillPathD}
             tabIndex={-1}
           />
-        </ClickableAreaWrapper>
+          {behaviours.map((Behaviour, i) => (
+            <Suspense key={i} fallback={null}>
+              <Behaviour
+                interactiveAreaRef={interactiveAreaRef}
+                roomId={id}
+                subRoomId={subRoomId}
+                isCurrentRoom={isCurrentRoom}
+              />
+            </Suspense>
+          ))}
+        </>
       )}
     </g>
   );

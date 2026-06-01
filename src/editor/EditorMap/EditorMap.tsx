@@ -1,9 +1,9 @@
 import { type KeyboardEvent } from "react";
 
-import { createClickableRoomDecorator } from "../../game/components/dialogs/menuDialog/dialogs/map/createClickableRoomDecorator";
-import { LazyMapRoomTooltipDecorator } from "../../game/components/dialogs/menuDialog/dialogs/map/LazyMapRoomTooltipDecorator";
+import { createClickableRoomBehaviour } from "../../game/components/dialogs/menuDialog/dialogs/map/createClickableRoomBehaviour";
+import { LazyMapRoomTooltipBehaviour } from "../../game/components/dialogs/menuDialog/dialogs/map/LazyMapRoomTooltipBehaviour";
 import { MapSvg } from "../../game/components/dialogs/menuDialog/dialogs/map/Map.svg";
-import { type WrapClickableRoomDecoratorComponent } from "../../game/components/dialogs/menuDialog/dialogs/map/RoomDecoratorProps";
+import { type RoomBehaviourComponent } from "../../game/components/dialogs/menuDialog/dialogs/map/RoomDecoratorProps";
 import { type SortedObjectOfRoomGridPositionSpecs } from "../../game/components/dialogs/menuDialog/dialogs/map/sortRoomGridPositions";
 import { type Key } from "../../game/input/keys";
 import { startAppListening } from "../../store/listenerMiddleware";
@@ -138,7 +138,7 @@ const insertInDirection = (key: NavigationKey) => {
   }
 };
 
-const editorClickableRoomDecorator = createClickableRoomDecorator<EditorRoomId>(
+const editorClickableRoomBehaviour = createClickableRoomBehaviour<EditorRoomId>(
   (roomId, subRoomId, { metaKey, ctrlKey }) => {
     if (metaKey || ctrlKey) {
       store.dispatch(toggleRoomInSelection({ roomId, subRoomId }));
@@ -148,11 +148,10 @@ const editorClickableRoomDecorator = createClickableRoomDecorator<EditorRoomId>(
   },
 );
 
-const editorClickableAreaDecorators: WrapClickableRoomDecoratorComponent<EditorRoomId>[] =
-  [
-    LazyMapRoomTooltipDecorator as WrapClickableRoomDecoratorComponent<EditorRoomId>,
-    editorClickableRoomDecorator,
-  ];
+const editorBehaviours: RoomBehaviourComponent<EditorRoomId>[] = [
+  LazyMapRoomTooltipBehaviour as RoomBehaviourComponent<EditorRoomId>,
+  editorClickableRoomBehaviour,
+];
 
 const editorPostfixDecorators = [LazyEditorMapInsertButtonDecorator];
 
@@ -223,7 +222,7 @@ const EditorMap = () => {
       >
         <MapSvg<EditorRoomId>
           containerWidth={mapContainerWidth}
-          clickableAreaDecorators={editorClickableAreaDecorators}
+          behaviours={editorBehaviours}
           postfixDecorators={editorPostfixDecorators}
           selectedRoomIds={selectedRoomIds}
           {...mapData}

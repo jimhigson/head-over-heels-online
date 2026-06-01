@@ -16,7 +16,7 @@ import { type MapData } from "./MapData";
 import { RoomSvg } from "./Room.svg";
 import {
   type PostfixRoomDecoratorComponent,
-  type WrapClickableRoomDecoratorComponent,
+  type RoomBehaviourComponent,
 } from "./RoomDecoratorProps";
 import { roomWorldPosition } from "./roomWorldPosition";
 import { ScrollIntoView } from "./ScrollIntoView";
@@ -25,8 +25,7 @@ import { translateXyz } from "./svgHelpers";
 export type MapSvgProps<RoomId extends string> = MapData<RoomId> & {
   containerWidth?: number;
   onPlayableClick?: (name: IndividualCharacterName) => void;
-  /** outermost first — the last decorator in the array wraps the clickable path directly */
-  clickableAreaDecorators?: WrapClickableRoomDecoratorComponent<RoomId>[];
+  behaviours?: RoomBehaviourComponent<RoomId>[];
   postfixDecorators?: PostfixRoomDecoratorComponent<RoomId>[];
   selectedRoomIds?: ReadonlyArray<RoomId>;
 };
@@ -79,7 +78,7 @@ export const MapSvg = <RoomId extends string>(props: MapSvgProps<RoomId>) => {
     onPlayableClick,
     curRoomId,
     curSubRoomId,
-    clickableAreaDecorators,
+    behaviours,
     postfixDecorators,
     selectedRoomIds,
   } = props;
@@ -122,7 +121,6 @@ export const MapSvg = <RoomId extends string>(props: MapSvgProps<RoomId>) => {
           const { roomId, subRoomId, gridPosition } = gridPositionSpec;
           const roomRenderingId = `${roomId}/${subRoomId}`;
           const isCurrentRoom = curRoomId === roomId;
-          const isCurrentSubRoom = isCurrentRoom && curSubRoomId === subRoomId;
           const isSelected = selectedRoomIds?.includes(roomId) ?? false;
 
           return (
@@ -158,29 +156,7 @@ export const MapSvg = <RoomId extends string>(props: MapSvgProps<RoomId>) => {
                 currentCharacterName={currentCharacterName}
                 roomVisited={roomsExplored[roomId] ?? false}
                 onPlayableClick={onPlayableClick}
-                ClickableAreaWrapper={
-                  clickableAreaDecorators?.length ?
-                    ({ children }) =>
-                      clickableAreaDecorators.reduceRight(
-                        (wrapped, ClickableAreaDecorator) => (
-                          <Suspense fallback={null}>
-                            <ClickableAreaDecorator
-                              roomId={roomId}
-                              subRoomId={subRoomId}
-                              boundaries={gridPositionSpec.boundaries}
-                              isCurrentRoom={isCurrentRoom}
-                              isSelected={isSelected}
-                              isCurrentSubRoom={isCurrentSubRoom}
-                              allGridPositions={gridPositions}
-                            >
-                              {wrapped}
-                            </ClickableAreaDecorator>
-                          </Suspense>
-                        ),
-                        children,
-                      )
-                  : undefined
-                }
+                behaviours={behaviours}
               />
               {isCurrentRoom ?
                 <ScrollIntoView svg smooth />

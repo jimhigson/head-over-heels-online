@@ -8,7 +8,7 @@ import { twClass } from "../utils/twClass";
 import { cn } from "./cn";
 import { enhanceTooltipWithHotkeys } from "./enhanceTooltipWithHotkeys";
 import { getSwitchPaddedLabels } from "./getSwitchPaddedLabels";
-import { Tooltip } from "./Tooltip";
+import { Tooltip } from "./tooltip/Tooltip";
 import { type ShortcutKeys, useKeyboardShortcut } from "./useKeyboardShortcut";
 
 const uiSoundVolume = 0.3;

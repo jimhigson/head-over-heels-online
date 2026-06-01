@@ -12,7 +12,7 @@ import {
   animatedSpriteSpecificCssVars,
   keyframesForAnimatedSprite,
 } from "../../tailwind/plugins/spriteCss";
-import { Tooltip } from "../../ui/Tooltip";
+import { Tooltip } from "../../ui/tooltip/Tooltip";
 import { keyframesToCss } from "./keyframesToCss";
 import { SpriteName } from "./SpriteName";
 

@@ -3,7 +3,7 @@ import jsonToppyPalette from "../../_generated/palette/spritesheetToppyPalette.j
 import { BitmapText } from "../../game/components/tailwindSprites/BitmapText";
 import { zxSpectrumColors } from "../../originalGame";
 import { useSpritesOption } from "../../store/slices/gameMenus/gameMenusSelectors";
-import { Tooltip } from "../../ui/Tooltip";
+import { Tooltip } from "../../ui/tooltip/Tooltip";
 import { srgbHexToP3 } from "../../utils/colour/srgbHexToP3";
 import { objectEntriesIter } from "../../utils/entries";
 

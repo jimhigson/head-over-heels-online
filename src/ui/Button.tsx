@@ -13,7 +13,7 @@ import {
   enhanceTooltipWithHotkeys,
   formatShortcutKeysAsMarkdown,
 } from "./enhanceTooltipWithHotkeys";
-import { Tooltip } from "./Tooltip";
+import { Tooltip } from "./tooltip/Tooltip";
 import { type ShortcutKeys, useKeyboardShortcut } from "./useKeyboardShortcut";
 
 export type ButtonProps = Simplify<
