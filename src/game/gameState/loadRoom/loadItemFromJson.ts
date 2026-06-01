@@ -88,7 +88,7 @@ export function* loadItemFromJson<
     }
 
     case jsonItem.type === "floor": {
-      yield loadFloor(jsonItemId, jsonItem, roomJson);
+      yield loadFloor(jsonItemId, jsonItem, directionalIndex);
       return;
     }
 
