@@ -1,8 +1,12 @@
 import { type ItemInPlay } from "../../../model/ItemInPlay";
 import { type RoomJson, roomJsonItemsIterable } from "../../../model/RoomJson";
 import { isSoundId, type SoundId } from "../../../sound/soundUrls";
+import { type SceneryName } from "../../../sprites/planets";
 import { defaultUserSettings } from "../../../store/slices/userSettings/defaultUserSettings";
-import { type UserSettings } from "../../../store/slices/userSettings/userSettingsSlice";
+import {
+  type RoomEntryTunesSetting,
+  type UserSettings,
+} from "../../../store/slices/userSettings/userSettingsSlice";
 import { originXyz, type Xyz } from "../../../utils/vectors/vectors";
 import { blockXyzToFineXyz } from "../../render/projections";
 import { nonRenderingItemFixedZIndex } from "../../render/sortZ/fixedZIndexes";
@@ -15,7 +19,8 @@ const roomEntryPlaybackRate = 1.2;
 const resolveSoundId = (
   roomJson: RoomJson<string, string>,
   isNewGame: boolean,
-  noRoomEntryTunesSetting: boolean,
+  roomEntryTunesSetting: RoomEntryTunesSetting,
+  previousRoomPlanet: SceneryName | undefined,
 ): SoundId | undefined => {
   if (
     isNewGame &&
@@ -29,7 +34,21 @@ const resolveSoundId = (
     return "fanfare";
   }
 
-  if (noRoomEntryTunesSetting) {
+  if (roomEntryTunesSetting === "never") {
+    return undefined;
+  }
+
+  // with no previous room (the first room of a fresh load, or respawning in the
+  // same room after losing a life) there is no scenery change to announce, so
+  // the tune does not play in any mode:
+  if (previousRoomPlanet === undefined) {
+    return undefined;
+  }
+
+  if (
+    roomEntryTunesSetting === "sparse" &&
+    previousRoomPlanet === roomJson.planet
+  ) {
     return undefined;
   }
 
@@ -44,6 +63,7 @@ export const loadRoomEntrySound = <
   roomJson: RoomJson<string, string>,
   userSettings: UserSettings,
   isNewGame: boolean,
+  previousRoomPlanet?: SceneryName,
 ): ItemInPlay<"soundEffect", RoomId, RoomItemId> | undefined => {
   const isMute =
     userSettings.soundSettings.mute ?? defaultUserSettings.soundSettings.mute;
@@ -52,11 +72,16 @@ export const loadRoomEntrySound = <
     return undefined;
   }
 
-  const noRoomEntryTunesSetting =
-    userSettings.soundSettings.noRoomEntryTunes ??
-    defaultUserSettings.soundSettings.noRoomEntryTunes;
+  const roomEntryTunesSetting =
+    userSettings.soundSettings.roomEntryTunes ??
+    defaultUserSettings.soundSettings.roomEntryTunes;
 
-  const soundId = resolveSoundId(roomJson, isNewGame, noRoomEntryTunesSetting);
+  const soundId = resolveSoundId(
+    roomJson,
+    isNewGame,
+    roomEntryTunesSetting,
+    previousRoomPlanet,
+  );
 
   if (!soundId) {
     return undefined;

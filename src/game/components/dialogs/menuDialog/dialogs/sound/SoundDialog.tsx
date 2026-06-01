@@ -1,15 +1,22 @@
 import { useAppSelector } from "../../../../../../store/hooks";
 import {
   selectIsNoFootstepSounds,
-  selectIsNoRoomEntryTunes,
   selectIsSoundMuted,
+  selectRoomEntryTunes,
 } from "../../../../../../store/slices/gameMenus/gameMenusSelectors";
-import { toggleUserSetting } from "../../../../../../store/slices/userSettings/userSettingsSlice";
+import {
+  nextRoomEntryTunes,
+  type RoomEntryTunesSetting,
+  roomEntryTunesSettings,
+  toggleUserSetting,
+} from "../../../../../../store/slices/userSettings/userSettingsSlice";
 import { useDispatchActionCallback } from "../../../../../../store/useDispatchActionCallback";
 import { Dialog } from "../../../../../../ui/Dialog";
-import { Switch } from "../../../../../../ui/Switch";
+import { Switch, SwitchN } from "../../../../../../ui/Switch";
+import { BlockyMarkdown } from "../../../../BlockyMarkdown";
 import {
   optionsDialogClasses,
+  optionsHintMarkdownClassname,
   optionsMenuScrollClasses,
   titleBarClasses,
 } from "../../../dialogClasses";
@@ -18,10 +25,18 @@ import { MenuItems } from "../../MenuItems";
 import { MenuItemSeparator } from "../../MenuItemSeparator";
 import { DialogTitleBar } from "../DialogTitleBar";
 
+const roomEntryTunesDescription = (
+  roomEntryTunes: RoomEntryTunesSetting,
+): string =>
+  roomEntryTunes === "always" ?
+    `Like the original, plays the jingle in *every* room`
+  : roomEntryTunes === "sparse" ? `Just plays when the scenery changes`
+  : `Nope, off`;
+
 export const SoundDialog = () => {
   const isMuted = useAppSelector(selectIsSoundMuted);
   const isNoFootstepSounds = useAppSelector(selectIsNoFootstepSounds);
-  const isNoRoomEntryTunes = useAppSelector(selectIsNoRoomEntryTunes);
+  const roomEntryTunes = useAppSelector(selectRoomEntryTunes);
   return (
     <Dialog fullScreen className={optionsDialogClasses} dialogId="sound">
       <DialogTitleBar
@@ -34,7 +49,7 @@ export const SoundDialog = () => {
             className="sprites-double-height"
             id="mute"
             label="Mute"
-            valueElement={<Switch value={isMuted} />}
+            valueElement={<Switch className="ml-auto" value={isMuted} />}
             verticalAlignItemsCentre
             onSelect={useDispatchActionCallback(toggleUserSetting, {
               path: "soundSettings.mute",
@@ -43,19 +58,34 @@ export const SoundDialog = () => {
           <MenuItem
             className="sprites-double-height"
             id="roomEntry"
-            label="Room entry tunes"
-            valueElement={<Switch value={!isMuted && !isNoRoomEntryTunes} />}
+            label="Room entry jingles"
+            valueElement={
+              <SwitchN
+                className="ml-auto"
+                values={roomEntryTunesSettings}
+                value={roomEntryTunes}
+              />
+            }
             verticalAlignItemsCentre
-            onSelect={useDispatchActionCallback(toggleUserSetting, {
-              path: "soundSettings.noRoomEntryTunes",
-            })}
+            onSelect={useDispatchActionCallback(nextRoomEntryTunes)}
             disabled={isMuted}
+            hint={
+              <BlockyMarkdown
+                className={optionsHintMarkdownClassname}
+                markdown={roomEntryTunesDescription(roomEntryTunes)}
+              />
+            }
           />
           <MenuItem
             className="sprites-double-height"
             id="footsteps"
-            label="Footstep sounds"
-            valueElement={<Switch value={!isMuted && !isNoFootstepSounds} />}
+            label="Footsteps"
+            valueElement={
+              <Switch
+                className="ml-auto"
+                value={!isMuted && !isNoFootstepSounds}
+              />
+            }
             verticalAlignItemsCentre
             onSelect={useDispatchActionCallback(toggleUserSetting, {
               path: "soundSettings.noFootsteps",

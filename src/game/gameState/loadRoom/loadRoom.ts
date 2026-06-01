@@ -6,7 +6,7 @@ import {
   type RoomState,
   type RoomStateItems,
 } from "../../../model/RoomState";
-import { type PlanetName } from "../../../sprites/planets";
+import { type PlanetName, type SceneryName } from "../../../sprites/planets";
 import { type ScrollsRead } from "../../../store/slices/gameInPlay/gameInPlaySlice";
 import {
   type PokesEnabled,
@@ -83,6 +83,13 @@ export type LoadRoomOptions<
    */
   isNewGame?: boolean;
   userSettings: UserSettings;
+  /**
+   * the planet of the room being left, used to decide whether to play the
+   * room-entry tune when the room-entry-tunes setting is "sparse" (only play on
+   * a change of planet). undefined when there is no previous room, eg on initial
+   * game load
+   */
+  previousRoomPlanet?: SceneryName;
 };
 
 /**
@@ -95,6 +102,7 @@ export const loadRoom = <RoomId extends string, RoomItemId extends string>({
   planetsLiberated,
   isNewGame = false,
   userSettings,
+  previousRoomPlanet,
 }: LoadRoomOptions<RoomId, RoomItemId>): RoomState<RoomId, RoomItemId> => {
   const directionalIndex = buildRoomJsonDirectionalIndex(
     roomJsonItemsIterable(roomJson),
@@ -110,7 +118,12 @@ export const loadRoom = <RoomId extends string, RoomItemId extends string>({
       isNewGame,
     ),
   );
-  const roomEntrySound = loadRoomEntrySound(roomJson, userSettings, isNewGame);
+  const roomEntrySound = loadRoomEntrySound(
+    roomJson,
+    userSettings,
+    isNewGame,
+    previousRoomPlanet,
+  );
   const outOfBoundsItem = loadOutOfBoundsItem<RoomId, RoomItemId>();
   const items: RoomStateItems<RoomId, RoomItemId> = {
     ...itemsInItemObjectMap(loadPortalsAboveAndBelow(roomJson, roomItems)),

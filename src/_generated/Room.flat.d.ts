@@ -2542,7 +2542,6 @@ export type RoomJsonSchema = {
                 | "pokesEnabled.infiniteLives"
                 | "pokesEnabled.infiniteDoughnuts"
                 | "soundSettings.mute"
-                | "soundSettings.noRoomEntryTunes"
                 | "soundSettings.noFootsteps";
             }
           | {
