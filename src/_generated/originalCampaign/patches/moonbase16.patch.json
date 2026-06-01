@@ -65,7 +65,7 @@
   {
     "op": "replace",
     "path": "/items/m/position/y",
-    "value": 6
+    "value": 5
   },
   {
     "op": "add",

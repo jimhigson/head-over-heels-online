@@ -1,7 +1,7 @@
 import { defaultItemProperties } from "../../../model/defaultItemProperties";
 import { type ItemInPlay } from "../../../model/ItemInPlay";
 import { type JsonItem } from "../../../model/json/JsonItem";
-import { type RoomJson, roomJsonItemsIterable } from "../../../model/RoomJson";
+import { valuesIter } from "../../../utils/entries";
 import {
   addXyz,
   type DirectionXy4,
@@ -11,6 +11,7 @@ import { fullBlockAabb } from "../../collision/boundingBoxes";
 import { multiplyBoundingBox } from "../../collision/multiplyBoundingBox";
 import { blockXyzToFineXyz } from "../../render/projections";
 import { type ShadowCastSpriteOptions } from "../../render/ShadowCastSpriteOptions";
+import { type RoomDirectionalIndex } from "./buildRoomJsonDirectionalIndex";
 import { defaultBaseState } from "./itemDefaultStates";
 
 // a value of 3 makes items less likely to get pushed through the floor if
@@ -40,7 +41,7 @@ const shadowFullBlock: ShadowCastSpriteOptions = Object.freeze({
 export const loadFloor = <RoomId extends string, RoomItemId extends string>(
   itemId: RoomItemId,
   floorJson: JsonItem<"floor", RoomId, RoomItemId>,
-  roomJson: RoomJson<RoomId, RoomItemId>,
+  directionalIndex: RoomDirectionalIndex<RoomId, RoomItemId>,
 ): ItemInPlay<"floor", RoomId, RoomItemId> => {
   const {
     config: { times },
@@ -57,10 +58,44 @@ export const loadFloor = <RoomId extends string, RoomItemId extends string>(
   let adjustedPositionBlocks = naturalPositionBlocks;
   let adjustedSizeBlocks = naturalAabbBlocks;
 
-  const doorsIter = roomJsonItemsIterable(roomJson).filter(
-    (jsonItem): jsonItem is JsonItem<"door", RoomId, RoomItemId> =>
-      jsonItem.type === "door",
+  const doorsIter = valuesIter(directionalIndex.doors).flatMap(
+    (doorsAtLocation) => valuesIter(doorsAtLocation),
   );
+
+  const thisFloorMaxX = naturalPositionBlocks.x + times.x;
+  const thisFloorMaxY = naturalPositionBlocks.y + times.y;
+
+  /**
+   * is there another floor at the same level lying flush against the given edge of
+   * this floor? if so, expanding through a door on that edge would push this floor
+   * into the neighbour - and the neighbour already provides the floor seen through
+   * the doorway, so the expansion is both redundant and the cause of a collision
+   */
+  const hasAdjacentFloorTo = (direction: DirectionXy4): boolean =>
+    directionalIndex.floors.some((other) => {
+      if (other === floorJson || other.position.z !== floorBlockPosition.z) {
+        return false;
+      }
+      const otherMaxX = other.position.x + other.config.times.x;
+      const otherMaxY = other.position.y + other.config.times.y;
+      const overlapsOnX =
+        other.position.x < thisFloorMaxX && naturalPositionBlocks.x < otherMaxX;
+      const overlapsOnY =
+        other.position.y < thisFloorMaxY && naturalPositionBlocks.y < otherMaxY;
+
+      switch (direction) {
+        case "towards":
+          return otherMaxY === naturalPositionBlocks.y && overlapsOnX;
+        case "away":
+          return other.position.y === thisFloorMaxY && overlapsOnX;
+        case "right":
+          return otherMaxX === naturalPositionBlocks.x && overlapsOnY;
+        case "left":
+          return other.position.x === thisFloorMaxX && overlapsOnY;
+        default:
+          return direction satisfies never;
+      }
+    });
 
   // not possible in the original game where floors are always at height 0,
   // but in the remake, don't extend floors that are not at ground level
@@ -86,7 +121,9 @@ export const loadFloor = <RoomId extends string, RoomItemId extends string>(
             doorJsonPosition.y === naturalPositionBlocks.y &&
             // in the range of the floor on the axis the door is sitting on:
             doorJsonPosition.x >= naturalPositionBlocks.x &&
-            doorJsonPosition.x <= naturalPositionBlocks.x + times.x - 2
+            doorJsonPosition.x <= naturalPositionBlocks.x + times.x - 2 &&
+            // unless another floor already lies against this edge (would collide):
+            !hasAdjacentFloorTo(direction)
           ) {
             adjustedSizeBlocks = addXyz(adjustedSizeBlocks, {
               y: extraFloorAmountForDoorsNear,
@@ -104,7 +141,9 @@ export const loadFloor = <RoomId extends string, RoomItemId extends string>(
             doorJsonPosition.y === naturalPositionBlocks.y + times.y &&
             // in the range of the floor on the axis the door is sitting on:
             doorJsonPosition.x >= naturalPositionBlocks.x &&
-            doorJsonPosition.x <= naturalPositionBlocks.x + times.x - 2
+            doorJsonPosition.x <= naturalPositionBlocks.x + times.x - 2 &&
+            // unless another floor already lies against this edge (would collide):
+            !hasAdjacentFloorTo(direction)
           ) {
             adjustedSizeBlocks = addXyz(adjustedSizeBlocks, {
               y: extraFloorAmountForDoorsFar,
@@ -119,7 +158,9 @@ export const loadFloor = <RoomId extends string, RoomItemId extends string>(
             doorJsonPosition.x === naturalPositionBlocks.x &&
             // in the range of the floor on the axis the door is sitting on:
             doorJsonPosition.y >= naturalPositionBlocks.y &&
-            doorJsonPosition.y <= naturalPositionBlocks.y + times.y - 2
+            doorJsonPosition.y <= naturalPositionBlocks.y + times.y - 2 &&
+            // unless another floor already lies against this edge (would collide):
+            !hasAdjacentFloorTo(direction)
           ) {
             adjustedSizeBlocks = addXyz(adjustedSizeBlocks, {
               x: extraFloorAmountForDoorsNear,
@@ -137,7 +178,9 @@ export const loadFloor = <RoomId extends string, RoomItemId extends string>(
             doorJsonPosition.x === naturalPositionBlocks.x + times.x &&
             // in the range of the floor on the axis the door is sitting on:
             doorJsonPosition.y >= naturalPositionBlocks.y &&
-            doorJsonPosition.y <= naturalPositionBlocks.y + times.y - 2
+            doorJsonPosition.y <= naturalPositionBlocks.y + times.y - 2 &&
+            // unless another floor already lies against this edge (would collide):
+            !hasAdjacentFloorTo(direction)
           ) {
             adjustedSizeBlocks = addXyz(adjustedSizeBlocks, {
               x: extraFloorAmountForDoorsFar,

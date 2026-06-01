@@ -41,7 +41,7 @@ export const room = inferRoomJson({
         movement: "towards-on-shortest-axis-xy4",
         which: "computerBot",
       },
-      position: { x: 11, y: 6, z: 1 },
+      position: { x: 11, y: 5, z: 1 },
       type: "monster",
     },
     pi: {

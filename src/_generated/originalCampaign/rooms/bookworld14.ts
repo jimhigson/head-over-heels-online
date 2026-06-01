@@ -8,12 +8,12 @@ export const room = inferRoomJson({
   items: {
     br: {
       config: { axis: "y", times: { y: 4, z: 3 } },
-      position: { x: 6.4, y: 2.8, z: 0 },
+      position: { x: 6.375, y: 2.8125, z: 0 },
       type: "barrier",
     },
     br1: {
       config: { axis: "x", times: { z: 3 } },
-      position: { x: 7, y: 2.4, z: 0 },
+      position: { x: 7, y: 2.375, z: 0 },
       type: "barrier",
     },
     d: {

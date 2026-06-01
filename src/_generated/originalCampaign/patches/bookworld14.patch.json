@@ -90,16 +90,16 @@
   {
     "op": "replace",
     "path": "/items/br1/position/y",
-    "value": 2.4
+    "value": 2.375
   },
   {
     "op": "replace",
     "path": "/items/br/position/y",
-    "value": 2.8
+    "value": 2.8125
   },
   {
     "op": "replace",
     "path": "/items/br/position/x",
-    "value": 6.4
+    "value": 6.375
   }
 ]

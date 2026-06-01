@@ -14,10 +14,9 @@ import {
 } from "../../../store/slices/userSettings/userSettingsSlice";
 import { emptyObject } from "../../../utils/empty";
 import { entries } from "../../../utils/entries";
-import { collisionItemWithIndex } from "../../collision/aabbCollision";
 import { findStandingOnWithHighestPriorityAndMostOverlap } from "../../collision/checkStandingOn";
 import { GridSpatialIndex } from "../../physics/gridSpace/GridSpatialIndex";
-import { isFreeItem, isSolid, isSpatial } from "../../physics/itemPredicates";
+import { isFreeItem, isSpatial } from "../../physics/itemPredicates";
 import { type RoomPickupsCollected } from "../GameState";
 import { setStandingOnWithoutRemovingOldFirst } from "../mutators/standingOn/setStandingOnWithoutRemovingOldFirst";
 import {
@@ -124,25 +123,6 @@ export const loadRoom = <RoomId extends string, RoomItemId extends string>({
   const spatialIndex = new GridSpatialIndex(
     roomItemsIterable(items).filter(isSpatial),
   );
-
-  // warn if anything is overlapping in the room
-  for (const i of roomItemsIterable(items)) {
-    const collisions = collisionItemWithIndex(i, spatialIndex);
-    const solidCol = collisions.find(
-      (col) =>
-        isSolid(i) &&
-        isSolid(col) &&
-        // walls are allowed to collide with other walls, since they have thickness
-        // - this is only really possible in large rooms with extra walls
-        !(i.type === "wall" && col.type === "wall"),
-    );
-
-    if (solidCol !== undefined) {
-      console.error(
-        `in room ${roomJson.id} item ${i.id} @${JSON.stringify(i.state.position)} #${JSON.stringify(i.aabb)} is colliding with (solid item) ${solidCol.id} @${JSON.stringify(solidCol.state.position)} #${JSON.stringify(solidCol.aabb)} on loading room ${roomJson.id}`,
-      );
-    }
-  }
 
   // check for items that are standing on other items:
   for (const i of roomItemsIterable(items).filter(isFreeItem)) {
