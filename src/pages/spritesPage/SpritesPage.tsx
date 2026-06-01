@@ -1,10 +1,14 @@
 import { useState } from "preact/hooks";
 
-import "./spritesPage.css";
 import { CssVariables } from "../../game/components/CssVariables";
 import { typedURLSearchParams } from "../../options/queryParams";
+import { loadHeadOverHeelsFont } from "../../sprites/loadHeadOverHeelsFont";
 import { SpritesPageContent } from "./SpritesPageContent";
 import { SpritesPageToolbar } from "./SpritesPageToolbar";
+
+// the game only renders HeadOverHeels text on the sprites page, so register the
+// webfont once when this page's code loads
+loadHeadOverHeelsFont();
 
 const defaultScale = 2;
 

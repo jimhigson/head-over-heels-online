@@ -12,3 +12,5 @@ hohjs.code-workspace
 .claude
 e2e/*-snapshots
 src-tauri/target
+# generated font manifest - reformatting it would defeat genFont's change detection
+src/_generated/font/manifest.json

@@ -79,6 +79,18 @@ test.describe("Sprites page", () => {
       "texture-ids-list.json",
     );
 
+    // Snapshot the generated-font specimen. Wait for the font to load first so
+    // the snapshot never captures the monospace fallback:
+    await page.evaluate(async () => {
+      await document.fonts.load("16px HeadOverHeels");
+      await document.fonts.ready;
+    });
+    await expect(page.locator("[data-font-specimen]")).toHaveScreenshot(
+      "font-specimen.png",
+      // this one depends on font rendering so needs a non-zero maxDiffPixels
+      { threshold: 0.02, maxDiffPixelRatio: 0.03, scale: "css", timeout: 5000 },
+    );
+
     // Pre-compute filenames with hash suffix for uniqueness, eg on case-insensitive FS
     // it wouldn't tell the difference between "hud.char.c" and "hud.char.C"
     const safeFilenameMap = new Map<TextureId, string>();

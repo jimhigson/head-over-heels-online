@@ -31,6 +31,10 @@ export const CssUpscaleVariables = ({
       style={{
         "--scale": scaleFactor,
         "--block": `${scaleFactor * 8}px`,
+        // same rules as the body default, but resolved here where --block /
+        // --scale are in scope, so text inside scales with the upscale factor
+        fontSize: "var(--block, 8px)",
+        lineHeight: "calc(10px * var(--scale, 1))",
       }}
     >
       {children}

@@ -7,7 +7,10 @@ import {
   type EscapedForTailwind,
   uppercaseCharReplacement,
 } from "../../escapeCharForTailwind";
-import { hudCharTextureSize } from "./textureSizes";
+import {
+  hudCharTextureSize,
+  hudLowercaseCharTextureSize,
+} from "./textureSizes";
 
 // this source really needs a nerd font to read it:
 // https://www.nerdfonts.com/cheat-sheet
@@ -187,6 +190,36 @@ const row3 = [
 export type CharSpriteTextureId<C extends string> =
   `hud.char.${EscapedForTailwind<C>}`;
 
+/**
+ * A single HUD glyph as the font generator and the spritesheet both see it:
+ * the raw character (before escapeCharForTailwind), its advance width, and the
+ * frame rectangle on the spritesheet.
+ */
+export type HudGlyph<C extends string> = {
+  char: C;
+  advanceWidth: number;
+  frame: { x: number; y: number; w: number; h: number };
+};
+
+function* rowGlyphs<C extends string>(
+  ar: CharRow<C>,
+  startPosition: Xy,
+  height: number,
+): Generator<HudGlyph<C>> {
+  let { x } = startPosition;
+  for (const ari of ar) {
+    const char = typeof ari === "string" ? ari : ari.char;
+    const advanceWidth =
+      (typeof ari === "string" ? undefined : ari.width) ?? hudCharTextureSize.w;
+    yield {
+      char,
+      advanceWidth,
+      frame: { x, y: startPosition.y, w: advanceWidth, h: height },
+    };
+    x += Math.max(advanceWidth, hudCharTextureSize.w) + 1;
+  }
+}
+
 const charFrames = <C extends string>(
   ar: CharRow<C>,
   startPosition: Xy,
@@ -200,34 +233,28 @@ const charFrames = <C extends string>(
   function* charFramesGenerator(): Generator<
     [CharSpriteTextureId<C>, SpritesheetFrameData]
   > {
-    let { x } = startPosition;
-    for (let i = 0; i < ar.length; i++) {
-      const ari = ar[i];
-      const char = typeof ari === "string" ? ari : ari.char;
-      const width = typeof ari === "string" ? undefined : ari.width;
-      const w = width ?? hudCharTextureSize.w;
-      yield [
-        `hud.char.${escapeCharForTailwind(char)}`,
-        {
-          frame: {
-            x,
-            y: startPosition.y,
-            ...hudCharTextureSize,
-            w,
-            h: height,
-          },
-        },
-      ];
-      x += Math.max(w, hudCharTextureSize.w) + 1;
+    for (const { char, frame } of rowGlyphs(ar, startPosition, height)) {
+      yield [`hud.char.${escapeCharForTailwind(char)}`, { frame }];
     }
   }
 
   return fromAllEntries(charFramesGenerator());
 };
 
+/**
+ * Every HUD glyph in spritesheet order, sharing the same per-row walk that
+ * produces the spritesheet frames. The font generator consumes this so the
+ * generated font and the in-game sprites are derived from one source of truth.
+ */
+export const hudGlyphs: readonly HudGlyph<string>[] = [
+  ...rowGlyphs(row1, { x: 1, y: 994 }, hudLowercaseCharTextureSize.h),
+  ...rowGlyphs(row2, { x: 1, y: 1005 }, hudCharTextureSize.h),
+  ...rowGlyphs(row3, { x: 1, y: 1014 }, hudCharTextureSize.h),
+];
+
 export const hudSpritesheetData = {
   frames: {
-    ...charFrames(row1, { x: 1, y: 994 }, 10),
+    ...charFrames(row1, { x: 1, y: 994 }, hudLowercaseCharTextureSize.h),
     ...charFrames(row2, { x: 1, y: 1005 }),
     ...charFrames(row3, { x: 1, y: 1014 }),
   },

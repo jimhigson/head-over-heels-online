@@ -4,8 +4,11 @@ import "./index.css";
 
 import { Provider } from "react-redux";
 
+import { loadHeadOverHeelsFont } from "../sprites/loadHeadOverHeelsFont";
 import { store } from "../store/store";
 import { LevelEditorLoader } from "./LevelEditorLoader";
+
+loadHeadOverHeelsFont();
 
 render(
   <Provider store={store}>

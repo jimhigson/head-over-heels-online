@@ -81,7 +81,7 @@ export const SaveAsDialog = ({
             type="text"
             value={campaignName}
             onChange={(e) => setCampaignName(e.target.value)}
-            className="font-head-over-heels bg-metallicBlueHalfbrite text-white placeholder-lightGrey border border-white px-1 py-1 caret-midRed caretsh"
+            className="bg-metallicBlueHalfbrite text-white placeholder-lightGrey border border-white px-1 py-1 caret-midRed caretsh"
             placeholder="Enter a Campaign name"
           />
           <div className="pt-1">

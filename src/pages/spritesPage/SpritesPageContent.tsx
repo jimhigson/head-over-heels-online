@@ -7,6 +7,7 @@ import { useCurrentSpritesheetData } from "../../store/slices/gameMenus/gameMenu
 import { entries } from "../../utils/entries";
 import { type Xy } from "../../utils/vectors/vectors";
 import { AnimationTile } from "./AnimationTile";
+import { FontSpecimen } from "./FontSpecimen";
 import { PaletteSwatch } from "./PaletteSwatch";
 import { SpritesheetImage } from "./SpritesheetImage";
 import { SpriteTile } from "./SpriteTile";
@@ -32,6 +33,7 @@ export const SpritesPageContent = ({
   return (
     <div className="e2e-snapshot-target">
       <PaletteSwatch />
+      <FontSpecimen />
       <SpritesheetImage spriteFilter={spriteFilter} />
       <BitmapText
         id="animations"
