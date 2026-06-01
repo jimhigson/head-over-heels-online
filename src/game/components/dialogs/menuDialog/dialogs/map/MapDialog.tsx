@@ -9,14 +9,14 @@ import { useElementSize } from "../../../../../../utils/react/useElementSize";
 import { swopPlayables } from "../../../../../gameState/mutators/swopPlayables";
 import { useGameApi } from "../../../../GameApiContext";
 import { useScrollingFromInput } from "../useScrollingFromInput";
-import { createClickableRoomDecorator } from "./createClickableRoomDecorator";
-import { LazyMapRoomTooltipDecorator } from "./LazyMapRoomTooltipDecorator";
+import { createClickableRoomBehaviour } from "./createClickableRoomBehaviour";
+import { LazyMapRoomTooltipBehaviour } from "./LazyMapRoomTooltipBehaviour";
 import { MapSvg } from "./Map.svg";
 import { getMapColoursClass } from "./mapColours";
 import { useMapDataForCurrentGame } from "./useMapDataForCurrentGame";
 import { useAllowCharacterSwopping } from "./useTickingCurrentCharacterName";
 
-const useGameMapClickableAreaDecorators = <RoomId extends string>() => {
+const useGameMapBehaviours = <RoomId extends string>() => {
   const cheatsOn = useCheatsOn();
   const gameApi = useGameApi<RoomId>();
 
@@ -25,11 +25,11 @@ const useGameMapClickableAreaDecorators = <RoomId extends string>() => {
       return undefined;
     }
 
-    const clickableDecorator = createClickableRoomDecorator((roomId) => {
+    const clickableBehaviour = createClickableRoomBehaviour((roomId) => {
       gameApi.changeRoom(roomId as RoomId);
     });
 
-    return [LazyMapRoomTooltipDecorator, clickableDecorator];
+    return [LazyMapRoomTooltipBehaviour, clickableBehaviour];
   }, [cheatsOn, gameApi]);
 };
 
@@ -49,7 +49,7 @@ const MapDialog = <RoomId extends string>() => {
     <MapSvg<RoomId>
       onPlayableClick={(name) => swopPlayables(gameApi.gameState, name)}
       containerWidth={mapContainerWidth}
-      clickableAreaDecorators={useGameMapClickableAreaDecorators<RoomId>()}
+      behaviours={useGameMapBehaviours<RoomId>()}
       {...mapData}
     />
   );

@@ -16,7 +16,7 @@ import {
   keyframesForAnimatedSprite,
   spriteSpecificCssVars,
 } from "../../tailwind/plugins/spriteCss";
-import { Tooltip } from "../../ui/Tooltip";
+import { Tooltip } from "../../ui/tooltip/Tooltip";
 import { entries } from "../../utils/entries";
 import { type Xy } from "../../utils/vectors/vectors";
 import { keyframesToCss } from "./keyframesToCss";

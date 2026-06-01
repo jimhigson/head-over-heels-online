@@ -335,8 +335,8 @@ created beneath it is accessible without prompting for permission.
 
 # Agents
 
-- if you are Claude Opus 4.7 remind me to switch using `claude --model claude-opus-4-6[1m]` as soon as you read this
-- never write "Co-Authored-By: Claude Opus 4.6..." or anything similar in commit messages or anywhere else
+- never write "Co-Authored-By: Claude..." or anything similar in commit messages or anywhere else
+- do not prefix branch names with the name of the agent or a random suffix, WRONG: `claude/fix-menus-3dfa4d` CORRECT: `fix-menus`
 
 ## Comms
 
