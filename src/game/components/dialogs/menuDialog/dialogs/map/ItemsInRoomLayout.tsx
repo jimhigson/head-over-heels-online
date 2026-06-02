@@ -91,49 +91,57 @@ const selectSubRoomStartAndEnd = (
   return roomJson.meta.subRooms[subRoomId].physicalPosition;
 };
 
+/**
+ * the 0..1 slot position of each notable json item in a (sub-)room - pure, so
+ * it can be computed once in the map-data stage and shared with the renderer
+ */
+export const notableItemSlotPositions = <
+  RoomId extends string,
+  RoomItemId extends string,
+>(
+  items: Record<RoomItemId, NotableItem<RoomId>>,
+  roomJson: RoomJson<RoomId, RoomItemId>,
+  subRoomId: string,
+): Record<RoomItemId, Xy> => {
+  const jsonItemNormalisedPosition = (item: JsonItemUnion): Xy => {
+    const times = {
+      ...((item.config as ConsolidatableConfig).times ?? emptyObject),
+      ...timesNotMultiplied,
+    };
+    const itemCentreXy = addXy(item.position, scaleXyz(times, 0.5));
+    const subRoomStartAndEnd = selectSubRoomStartAndEnd(subRoomId, roomJson);
+    return {
+      x:
+        (itemCentreXy.x - subRoomStartAndEnd.from.x) /
+        (subRoomStartAndEnd.to.x - subRoomStartAndEnd.from.x),
+      y:
+        (itemCentreXy.y - subRoomStartAndEnd.from.y) /
+        (subRoomStartAndEnd.to.y - subRoomStartAndEnd.from.y),
+    };
+  };
+  return roomItemPositions({
+    items,
+    itemNormalisedPosition: jsonItemNormalisedPosition,
+  });
+};
+
 /** for showing notable items in non-loaded rooms on the map */
 export const NotableJsonItemsInRoomLayout = <
   RoomId extends string,
   RoomItemId extends string,
 >({
   items,
-  roomJson,
-  subRoomId,
+  positions,
 }: {
   items: Record<RoomItemId, NotableItem<RoomId>>;
-  roomJson: RoomJson<RoomId, RoomItemId>;
-  subRoomId: string;
-}) => {
-  const positions = useMemo(() => {
-    const jsonItemNormalisedPosition = (item: JsonItemUnion): Xy => {
-      const times = {
-        ...((item.config as ConsolidatableConfig).times ?? emptyObject),
-        ...timesNotMultiplied,
-      };
-      const itemCentreXy = addXy(item.position, scaleXyz(times, 0.5));
-      const subRoomStartAndEnd = selectSubRoomStartAndEnd(subRoomId, roomJson);
-      return {
-        x:
-          (itemCentreXy.x - subRoomStartAndEnd.from.x) /
-          (subRoomStartAndEnd.to.x - subRoomStartAndEnd.from.x),
-        y:
-          (itemCentreXy.y - subRoomStartAndEnd.from.y) /
-          (subRoomStartAndEnd.to.y - subRoomStartAndEnd.from.y),
-      };
-    };
-    return roomItemPositions({
-      items,
-      itemNormalisedPosition: jsonItemNormalisedPosition,
-    });
-  }, [items, roomJson, subRoomId]);
-  return (
-    <ItemsInRoomLayout
-      ItemComponent={NotableItemSvg}
-      items={items}
-      positions={positions}
-    />
-  );
-};
+  positions: Record<RoomItemId, Xy>;
+}) => (
+  <ItemsInRoomLayout
+    ItemComponent={NotableItemSvg}
+    items={items}
+    positions={positions}
+  />
+);
 
 /**
  * for showing 'live'/loaded items in in-play rooms on the map. Currently,

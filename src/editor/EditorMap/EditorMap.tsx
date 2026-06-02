@@ -26,6 +26,7 @@ import {
 import { confirmDeleteRoomThunk } from "../toolbar/confirmThunk";
 import { CoalesceButton } from "./CoalesceButton";
 import { LazyEditorMapInsertButtonDecorator } from "./LazyEditorMapInsertButtonDecorator";
+import { LazyEditorMapTeleporterLinkDecorator } from "./LazyEditorMapTeleporterLinkDecorator";
 import { useEditorMapData } from "./useEditorMapData";
 
 const keyToUnitVector = {
@@ -153,7 +154,10 @@ const editorBehaviours: RoomBehaviourComponent<EditorRoomId>[] = [
   editorClickableRoomBehaviour,
 ];
 
-const editorPostfixDecorators = [LazyEditorMapInsertButtonDecorator];
+const editorPostfixDecorators = [
+  LazyEditorMapTeleporterLinkDecorator,
+  LazyEditorMapInsertButtonDecorator,
+];
 
 const roomsChanged = (
   _action: unknown,

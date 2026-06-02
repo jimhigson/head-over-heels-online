@@ -10,6 +10,7 @@ import { useGameApi } from "../../../../GameApiContext";
 import { findMapBounds } from "./findMapBounds";
 import { findSubRoomForItem } from "./itemIsInSubRoom";
 import { type MapData } from "./MapData";
+import { computeNotableItemsByCell } from "./notableItemsByCell";
 import { roomGridPositions } from "./roomGridPositions";
 import { sortRoomGridPositions } from "./sortRoomGridPositions";
 import { useTickingCurrentCharacterName } from "./useTickingCurrentCharacterName";
@@ -73,6 +74,11 @@ export const useMapDataForCurrentGame = <
         curRoomId: curRoom?.roomJson.id,
         curSubRoomId: undefined,
         gridPositions: sortedObjectOfPositions,
+        notableItemsByCell: computeNotableItemsByCell(
+          sortedObjectOfPositions,
+          campaign,
+          gameState.pickupsCollected,
+        ),
         currentCharacterName,
         pickupsCollected: gameState.pickupsCollected,
         characterRooms: gameState.characterRooms,

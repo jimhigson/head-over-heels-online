@@ -226,6 +226,10 @@ export class MainLoop<RoomId extends string> {
           .loadImage(tickSpriteOption.name)
           .then(() => {
             this.#spritesheetLoadPromise = undefined;
+          })
+          .catch((e) => {
+            this.#spritesheetLoadPromise = undefined;
+            this.#handleError(e);
           });
       } else {
         this.#spritesheetVariants.rebuild(

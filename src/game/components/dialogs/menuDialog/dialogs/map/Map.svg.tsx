@@ -6,7 +6,6 @@ import {
   type IndividualCharacterName,
 } from "../../../../../../model/modelTypes";
 import { getRoomItem } from "../../../../../../model/RoomState";
-import { emptyObject } from "../../../../../../utils/empty";
 import { type CharacterRooms } from "../../../../../gameState/GameState";
 import { type PlayableItem } from "../../../../../physics/itemPredicates";
 import { findSubRoomForItem } from "./itemIsInSubRoom";
@@ -68,7 +67,7 @@ const selectPlayableItemInRoomAndSubroom = <
 export const MapSvg = <RoomId extends string>(props: MapSvgProps<RoomId>) => {
   const {
     campaign,
-    pickupsCollected,
+    notableItemsByCell,
     gridPositions,
     currentCharacterName,
     characterRooms,
@@ -115,11 +114,11 @@ export const MapSvg = <RoomId extends string>(props: MapSvgProps<RoomId>) => {
         />
       )}
       <g
-        transform={`translate(${-mapBounds.l + mapSvgMarginX + (containerWidth - contentW) / 2},${-mapBounds.t + +mapSvgMarginY})`}
+        transform={`translate(${-mapBounds.l + mapSvgMarginX + (containerWidth - contentW) / 2},${-mapBounds.t + mapSvgMarginY})`}
       >
         {orderedPositions.map((gridPositionSpec) => {
           const { roomId, subRoomId, gridPosition } = gridPositionSpec;
-          const roomRenderingId = `${roomId}/${subRoomId}`;
+          const roomRenderingId: `${RoomId}/${string}` = `${roomId}/${subRoomId}`;
           const isCurrentRoom = curRoomId === roomId;
           const isSelected = selectedRoomIds?.includes(roomId) ?? false;
 
@@ -131,7 +130,7 @@ export const MapSvg = <RoomId extends string>(props: MapSvgProps<RoomId>) => {
             >
               <RoomSvg
                 roomGridPositionSpec={gridPositionSpec}
-                roomPickupsCollected={pickupsCollected[roomId] ?? emptyObject}
+                notableItemsInCell={notableItemsByCell?.[roomRenderingId]}
                 roomJson={campaign.rooms[roomId]}
                 isCurrentRoom={isCurrentRoom}
                 isSelected={isSelected}
@@ -168,33 +167,28 @@ export const MapSvg = <RoomId extends string>(props: MapSvgProps<RoomId>) => {
       {postfixDecorators?.map((PostFixDecorator, decoratorIndex) => (
         <g
           key={decoratorIndex}
-          transform={`translate(${-mapBounds.l + mapSvgMarginX + (containerWidth - contentW) / 2},${-mapBounds.t + +mapSvgMarginY})`}
+          transform={`translate(${-mapBounds.l + mapSvgMarginX + (containerWidth - contentW) / 2},${-mapBounds.t + mapSvgMarginY})`}
         >
           {orderedPositions.map((gridPositionSpec) => {
-            const { roomId, subRoomId, gridPosition, boundaries } =
-              gridPositionSpec;
+            const { roomId, subRoomId, boundaries } = gridPositionSpec;
 
             const isSelected = selectedRoomIds?.includes(roomId) ?? false;
 
             return (
-              <g
-                key={`${roomId}/${subRoomId}`}
-                transform={translateXyz(roomWorldPosition(gridPosition))}
-              >
-                <Suspense fallback={null}>
-                  <PostFixDecorator
-                    roomId={roomId}
-                    subRoomId={subRoomId}
-                    boundaries={boundaries}
-                    isCurrentRoom={curRoomId === roomId}
-                    isCurrentSubRoom={
-                      curRoomId === roomId && curSubRoomId === subRoomId
-                    }
-                    isSelected={isSelected}
-                    allGridPositions={gridPositions}
-                  />
-                </Suspense>
-              </g>
+              <Suspense key={`${roomId}/${subRoomId}`} fallback={null}>
+                <PostFixDecorator
+                  roomId={roomId}
+                  subRoomId={subRoomId}
+                  boundaries={boundaries}
+                  isCurrentRoom={curRoomId === roomId}
+                  isCurrentSubRoom={
+                    curRoomId === roomId && curSubRoomId === subRoomId
+                  }
+                  isSelected={isSelected}
+                  allGridPositions={gridPositions}
+                  mapData={props}
+                />
+              </Suspense>
             );
           })}
         </g>

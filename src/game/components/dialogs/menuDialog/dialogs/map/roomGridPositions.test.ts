@@ -1,8 +1,11 @@
 import { expect, test } from "vitest";
 
 import { campaign } from "../../../../../../_generated/originalCampaign/campaign";
+import { exitGameRoomId } from "../../../../../../model/json/ItemConfigMap";
+import { type AnyRoomJson } from "../../../../../../model/RoomJson";
 import { roomGridPositions } from "./roomGridPositions";
 import { sortRoomGridPositions } from "./sortRoomGridPositions";
+import { type TeleporterLink } from "./teleporterLinks";
 
 test("traversing original campaign from the start room", () => {
   expect(
@@ -4140,4 +4143,215 @@ test("traversing original campaign from the final room", () => {
       },
     }
   `);
+});
+
+const testRoom = (id: string, items: AnyRoomJson["items"]): AnyRoomJson => ({
+  id,
+  planet: "blacktooth",
+  color: { hue: "white", shade: "basic" },
+  items,
+});
+
+/** traverse from `fromRoomId` and return the teleporter links gathered en route */
+const collectTeleporterLinks = (
+  rooms: Record<string, AnyRoomJson>,
+  fromRoomId: string,
+): TeleporterLink<string>[] => {
+  const teleporterLinks: TeleporterLink<string>[] = [];
+  // draining the generator is what fills the teleporterLinks accumulator
+  Array.from(
+    roomGridPositions({
+      campaign: { rooms },
+      roomId: fromRoomId,
+      teleporterLinksOut: teleporterLinks,
+    }),
+  );
+  return teleporterLinks;
+};
+
+test("teleporter with toPosition resolves the destination sub-room (no item id)", () => {
+  expect(
+    collectTeleporterLinks(
+      {
+        a: testRoom("a", {
+          tp_a: {
+            type: "teleporter",
+            position: { x: 0, y: 0, z: 0 },
+            config: { toRoom: "b", toPosition: { x: 1, y: 1, z: 0 } },
+          },
+        }),
+        b: testRoom("b", {}),
+      },
+      "a",
+    ),
+  ).toEqual<TeleporterLink<string>[]>([
+    {
+      from: { roomId: "a", subRoomId: "*", itemId: "tp_a" },
+      to: { roomId: "b", subRoomId: "*" },
+    },
+  ]);
+});
+
+test("teleporter with toItemId resolves to that item", () => {
+  expect(
+    collectTeleporterLinks(
+      {
+        a: testRoom("a", {
+          tp_a: {
+            type: "teleporter",
+            position: { x: 0, y: 0, z: 0 },
+            config: { toRoom: "b", toItemId: "tp_b" },
+          },
+        }),
+        b: testRoom("b", {
+          tp_b: {
+            type: "teleporter",
+            position: { x: 2, y: 2, z: 0 },
+            config: {},
+          },
+        }),
+      },
+      "a",
+    ),
+  ).toEqual<TeleporterLink<string>[]>([
+    {
+      from: { roomId: "a", subRoomId: "*", itemId: "tp_a" },
+      to: { roomId: "b", subRoomId: "*", itemId: "tp_b" },
+    },
+  ]);
+});
+
+test("teleporter with only toRoom resolves to the single teleporter in the destination", () => {
+  expect(
+    collectTeleporterLinks(
+      {
+        a: testRoom("a", {
+          tp_a: {
+            type: "teleporter",
+            position: { x: 0, y: 0, z: 0 },
+            config: { toRoom: "b" },
+          },
+        }),
+        b: testRoom("b", {
+          only_tp: {
+            type: "teleporter",
+            position: { x: 3, y: 1, z: 0 },
+            config: {},
+          },
+        }),
+      },
+      "a",
+    ),
+  ).toEqual<TeleporterLink<string>[]>([
+    {
+      from: { roomId: "a", subRoomId: "*", itemId: "tp_a" },
+      to: { roomId: "b", subRoomId: "*", itemId: "only_tp" },
+    },
+  ]);
+});
+
+test("teleporter to a room with multiple teleporters and no explicit target is dropped", () => {
+  expect(
+    collectTeleporterLinks(
+      {
+        a: testRoom("a", {
+          tp_a: {
+            type: "teleporter",
+            position: { x: 0, y: 0, z: 0 },
+            config: { toRoom: "b" },
+          },
+        }),
+        b: testRoom("b", {
+          tp_b1: {
+            type: "teleporter",
+            position: { x: 1, y: 1, z: 0 },
+            config: {},
+          },
+          tp_b2: {
+            type: "teleporter",
+            position: { x: 2, y: 2, z: 0 },
+            config: {},
+          },
+        }),
+      },
+      "a",
+    ),
+  ).toEqual<TeleporterLink<string>[]>([]);
+});
+
+test("teleporter to the exit-game room is ignored", () => {
+  expect(
+    collectTeleporterLinks(
+      {
+        a: testRoom("a", {
+          tp_a: {
+            type: "teleporter",
+            position: { x: 0, y: 0, z: 0 },
+            config: { toRoom: exitGameRoomId },
+          },
+        }),
+      },
+      "a",
+    ),
+  ).toEqual<TeleporterLink<string>[]>([]);
+});
+
+test("a same-room teleporter is recorded while gathering (it is filtered only at render)", () => {
+  expect(
+    collectTeleporterLinks(
+      {
+        a: testRoom("a", {
+          tp_a: {
+            type: "teleporter",
+            position: { x: 0, y: 0, z: 0 },
+            config: {},
+          },
+        }),
+      },
+      "a",
+    ),
+  ).toEqual<TeleporterLink<string>[]>([
+    {
+      from: { roomId: "a", subRoomId: "*", itemId: "tp_a" },
+      to: { roomId: "a", subRoomId: "*", itemId: "tp_a" },
+    },
+  ]);
+});
+
+test("a mutual teleporter pair yields a link in each direction", () => {
+  expect(
+    collectTeleporterLinks(
+      {
+        a: testRoom("a", {
+          door_ab: {
+            type: "door",
+            position: { x: 0, y: 0, z: 0 },
+            config: { toRoom: "b", direction: "right" },
+          },
+          tp_a: {
+            type: "teleporter",
+            position: { x: 1, y: 1, z: 0 },
+            config: { toRoom: "b" },
+          },
+        }),
+        b: testRoom("b", {
+          tp_b: {
+            type: "teleporter",
+            position: { x: 1, y: 1, z: 0 },
+            config: { toRoom: "a" },
+          },
+        }),
+      },
+      "a",
+    ),
+  ).toEqual<TeleporterLink<string>[]>([
+    {
+      from: { roomId: "a", subRoomId: "*", itemId: "tp_a" },
+      to: { roomId: "b", subRoomId: "*", itemId: "tp_b" },
+    },
+    {
+      from: { roomId: "b", subRoomId: "*", itemId: "tp_b" },
+      to: { roomId: "a", subRoomId: "*", itemId: "tp_a" },
+    },
+  ]);
 });

@@ -1,0 +1,51 @@
+import {
+  type RoomJson,
+  roomJsonItemsEntriesIterable,
+} from "../../../../../../model/RoomJson";
+import { fromAllEntries } from "../../../../../../utils/entries";
+import { type RoomPickupsCollected } from "../../../../../gameState/GameState";
+import { jsonItemIsNotable } from "./jsonItemIsNotable";
+import { type NotableItem } from "./NotableItem";
+import { restrictItemsToShowInRoomCount } from "./restrictItemsToShowInRoomCount";
+import { maximumItemsForRoomLayoutOnMap } from "./roomItemPositions";
+
+/** the items in one (sub-)room that should be drawn as icons on the map */
+export const selectNotableItems = <
+  RoomId extends string,
+  RoomItemId extends string,
+>(
+  roomJson: RoomJson<RoomId, RoomItemId>,
+  roomPickupsCollected: RoomPickupsCollected,
+  subRoomId: string,
+): Record<RoomItemId, NotableItem<RoomId>> => {
+  let foundHushPuppy = false;
+  let foundCrown = false;
+
+  const notableIter = roomJsonItemsEntriesIterable(roomJson.items)
+    .filter(([itemId, _item]) => !roomPickupsCollected[itemId])
+    .filter(([_itemId, item]) => {
+      // only allow one hush puppy/teleporter to be found - the map doesn't
+      // need to show multiple of them in a room
+      if (item.type === "hushPuppy") {
+        if (foundHushPuppy) {
+          return false;
+        }
+        foundHushPuppy = true;
+      }
+      if (item.type === "pickup" && item.config.gives === "crown") {
+        if (foundCrown) {
+          return false;
+        }
+        foundCrown = true;
+      }
+      return true;
+    })
+    .filter((entry): entry is [RoomItemId, NotableItem<RoomId>] =>
+      jsonItemIsNotable(entry[1], subRoomId, roomJson),
+    );
+
+  return restrictItemsToShowInRoomCount(
+    fromAllEntries(notableIter),
+    maximumItemsForRoomLayoutOnMap,
+  );
+};
