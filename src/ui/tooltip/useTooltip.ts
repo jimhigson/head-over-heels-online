@@ -16,11 +16,13 @@ import { useState } from "preact/hooks";
 export type UseTooltipOptions = {
   tooltipOffset?: number;
   tooltipPlacement?: Placement;
+  hoverDelay?: number;
 };
 
 export const useTooltip = ({
   tooltipOffset = 0,
   tooltipPlacement = "bottom-end",
+  hoverDelay = 450,
 }: UseTooltipOptions = {}) => {
   const [isOpen, setIsOpen] = useState(false);
 
@@ -33,7 +35,7 @@ export const useTooltip = ({
   });
 
   const { getReferenceProps, getFloatingProps } = useInteractions([
-    useHover(context, { delay: { open: 450, close: 0 } }),
+    useHover(context, { delay: { open: hoverDelay, close: 0 } }),
     useFocus(context),
     useDismiss(context),
     useRole(context, { role: "tooltip" }),

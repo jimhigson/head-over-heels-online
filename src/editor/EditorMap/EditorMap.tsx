@@ -1,7 +1,6 @@
 import { type KeyboardEvent } from "react";
 
 import { createClickableRoomBehaviour } from "../../game/components/dialogs/menuDialog/dialogs/map/createClickableRoomBehaviour";
-import { LazyMapRoomTooltipBehaviour } from "../../game/components/dialogs/menuDialog/dialogs/map/LazyMapRoomTooltipBehaviour";
 import { MapSvg } from "../../game/components/dialogs/menuDialog/dialogs/map/Map.svg";
 import { type RoomBehaviourComponent } from "../../game/components/dialogs/menuDialog/dialogs/map/RoomDecoratorProps";
 import { type SortedObjectOfRoomGridPositionSpecs } from "../../game/components/dialogs/menuDialog/dialogs/map/sortRoomGridPositions";
@@ -14,6 +13,7 @@ import { unitVectors } from "../../utils/vectors/unitVectors";
 import { addXyz, xyzEqual } from "../../utils/vectors/vectors";
 import { EditorErrorBoundary } from "../EditorErrorBoundary";
 import { type EditorRoomId } from "../editorTypes";
+import { LazyEditorMapRoomTooltipBehaviour } from "../roomPreview/LazyEditorMapRoomTooltipBehaviour";
 import { selectCursorRoom } from "../slice/levelEditorSelectors";
 import {
   addRoomToSelection,
@@ -149,7 +149,7 @@ const editorClickableRoomBehaviour = createClickableRoomBehaviour<EditorRoomId>(
 );
 
 const editorBehaviours: RoomBehaviourComponent<EditorRoomId>[] = [
-  LazyMapRoomTooltipBehaviour as RoomBehaviourComponent<EditorRoomId>,
+  LazyEditorMapRoomTooltipBehaviour,
   editorClickableRoomBehaviour,
 ];
 

@@ -18,6 +18,10 @@ import {
 import { type EmptyObject } from "type-fest";
 
 import {
+  editorRoomPreviewSlice,
+  type RoomPreviewSliceState,
+} from "../editor/roomPreview/editorRoomPreviewSlice";
+import {
   type LevelEditorSliceAction,
   type LevelEditorState,
 } from "../editor/slice/levelEditorSlice";
@@ -70,7 +74,10 @@ const appReducer = combineSlices({
   [spritesheetOverrideSlice.reducerPath]: spritesheetOverridePersistedReducer,
   [debugSlice.reducerPath]: debugSlice.reducer,
   ...(import.meta.env.VITE_APP === "editor" ?
-    { levelEditor: levelEditorPersistedReducer }
+    {
+      levelEditor: levelEditorPersistedReducer,
+      [editorRoomPreviewSlice.reducerPath]: editorRoomPreviewSlice.reducer,
+    }
   : (emptyObject as EmptyObject)),
 });
 
@@ -117,6 +124,7 @@ export type RootState = Omit<ReturnType<typeof store.getState>, "_persist">;
 
 export type EditorRootState = RootState & {
   levelEditor: LevelEditorState;
+  editorRoomPreview: RoomPreviewSliceState;
 };
 
 export type AppDispatch = typeof store.dispatch;
