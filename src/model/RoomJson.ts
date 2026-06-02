@@ -2,7 +2,7 @@ import { type ZxSpectrumRoomColour } from "../originalGame";
 import { type SceneryName } from "../sprites/planets";
 import { objectEntriesIter, valuesIter } from "../utils/entries";
 import { type NonEmptyRecord } from "../utils/types/NonEmptyRecord";
-import { type Xy, type Xyz } from "../utils/vectors/vectors";
+import { type DirectionXy4, type Xy, type Xyz } from "../utils/vectors/vectors";
 import { type JsonItemType, type JsonItemUnion } from "./json/JsonItem";
 
 type SubRoom = {
@@ -21,6 +21,11 @@ type SubRoom = {
 };
 
 export type SubRooms = NonEmptyRecord<SubRoom>;
+
+/**
+ * some rooms get special extra rendering on the map
+ */
+export type RoomDecoration = "arrowLeft" | "crossover" | "divideAlongY";
 
 export type RoomJsonItems<
   RoomItemId extends string,
@@ -89,10 +94,14 @@ export type RoomJson<
     };
 
     label?: {
-      gridOffset: Xy;
+      direction: DirectionXy4;
       text: string;
-      align: "left" | "right";
     };
+
+    /**
+     * a decorative set piece to draw into this room on the map
+     */
+    roomDecoration?: RoomDecoration;
   };
 };
 export type AnyRoomJson = RoomJson<string, string, SceneryName>;

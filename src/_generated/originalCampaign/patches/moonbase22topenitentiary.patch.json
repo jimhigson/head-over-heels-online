@@ -88,11 +88,7 @@
     "path": "/meta",
     "value": {
       "label": {
-        "align": "right",
-        "gridOffset": {
-          "x": 0,
-          "y": -0.75
-        },
+        "direction": "towards",
         "text": "Penitentiary"
       }
     }

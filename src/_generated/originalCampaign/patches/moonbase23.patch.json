@@ -201,5 +201,12 @@
     "op": "replace",
     "path": "/color/hue",
     "value": "magenta"
+  },
+  {
+    "op": "add",
+    "path": "/meta",
+    "value": {
+      "roomDecoration": "arrowLeft"
+    }
   }
 ]

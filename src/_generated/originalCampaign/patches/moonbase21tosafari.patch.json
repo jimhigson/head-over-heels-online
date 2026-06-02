@@ -88,11 +88,7 @@
     "path": "/meta",
     "value": {
       "label": {
-        "align": "left",
-        "gridOffset": {
-          "x": 0,
-          "y": 0.75
-        },
+        "direction": "away",
         "text": "Safari"
       }
     }

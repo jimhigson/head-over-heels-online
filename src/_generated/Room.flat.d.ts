@@ -5053,12 +5053,12 @@ export type RoomJsonSchema = {
       };
     };
     label?: {
-      gridOffset: {
-        x: number;
-        y: number;
-      };
+      direction: "right" | "towards" | "away" | "left";
       text: string;
-      align: "right" | "left";
     };
+    /**
+     * a decorative set piece to draw into this room on the map
+     */
+    roomDecoration?: "arrowLeft" | "crossover" | "divideAlongY";
   };
 };

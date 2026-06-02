@@ -5,3 +5,4 @@ export const roomFront = roomGridSizeXY * ((1 - doorwayGap) / 2);
 export const roomBack = roomGridSizeXY - roomFront;
 export const mapSvgMarginX = 8;
 export const mapSvgMarginY = 128;
+export const strokeWidth = 3;

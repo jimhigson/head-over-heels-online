@@ -223,5 +223,12 @@
     "op": "replace",
     "path": "/color/hue",
     "value": "cyan"
+  },
+  {
+    "op": "add",
+    "path": "/meta",
+    "value": {
+      "roomDecoration": "arrowLeft"
+    }
   }
 ]

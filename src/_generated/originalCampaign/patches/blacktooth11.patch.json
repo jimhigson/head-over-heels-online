@@ -125,5 +125,12 @@
     "value": {
       "toSubRoom": "left"
     }
+  },
+  {
+    "op": "add",
+    "path": "/meta",
+    "value": {
+      "roomDecoration": "crossover"
+    }
   }
 ]
