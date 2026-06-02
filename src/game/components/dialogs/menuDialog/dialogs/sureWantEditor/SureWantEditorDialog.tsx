@@ -9,13 +9,13 @@ import { MenuItem } from "../../MenuItem";
 import { MenuItems } from "../../MenuItems";
 import { DialogTitleBar } from "../DialogTitleBar";
 
-const blurbMarkdown = `I built an *editor* so I could make the **sequel levels**
+const blurbMarkdown = `The Blockstacking Head over Heels level editor
 
-![](${`${"texture-headlessBase" satisfies TextureTailwindClass}?float-left`})**Make puzzles**!
+![](${`${"texture-headlessBase" satisfies TextureTailwindClass}?float-left`})**Design puzzles**!
 
-*Challenge* others to **solve them**!
+**Create adventures**!
 
-**In beta**`;
+*Challenge* others to **solve them**!`;
 
 const editorUrl = import.meta.env.VITE_EDITOR_URL;
 
@@ -43,7 +43,7 @@ export const SureWantEditorDialog = () => {
             <MenuItem
               className="sprites-double-height"
               id="yes"
-              label="Ok, take me to the editor"
+              label="Take me to the editor"
               href={editorUrl}
             />
           </MenuItems>
