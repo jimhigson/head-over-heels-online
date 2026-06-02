@@ -140,7 +140,7 @@ test("removeRoom deletes NCR referencing deleted room, keeping other meta fields
           with: { room: roomA },
           gridOffset: { x: 1, y: 0, z: 0 },
         },
-        label: { gridOffset: { x: 0, y: 0 }, text: "test", align: "left" },
+        label: { direction: "away", text: "test" },
       };
     }),
   );

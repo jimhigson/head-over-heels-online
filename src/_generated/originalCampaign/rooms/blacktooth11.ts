@@ -99,5 +99,6 @@ export const room = inferRoomJson({
       type: "wall",
     },
   },
+  meta: { roomDecoration: "crossover" },
   planet: "jail",
 }) satisfies RoomJson<OriginalCampaignRoomId, string, "jail">;

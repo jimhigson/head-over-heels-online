@@ -136,8 +136,6 @@ export const room = inferRoomJson({
       type: "wall",
     },
   },
-  meta: {
-    label: { align: "left", gridOffset: { x: 0, y: 0.75 }, text: "Safari" },
-  },
+  meta: { label: { direction: "away", text: "Safari" } },
   planet: "moonbase",
 }) satisfies RoomJson<OriginalCampaignRoomId, string, "moonbase">;

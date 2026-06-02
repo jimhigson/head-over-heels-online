@@ -9,7 +9,12 @@ import { type RoomJson } from "../../../../../../model/RoomJson";
 import { hudLowercaseCharTextureSize } from "../../../../../../sprites/spritesheet/spritesheetData/textureSizes";
 import { valuesIter } from "../../../../../../utils/entries";
 import { range } from "../../../../../../utils/iterators/range";
-import { addXy, lengthXy } from "../../../../../../utils/vectors/vectors";
+import {
+  addXy,
+  type DirectionXy4,
+  lengthXy,
+  type Xy,
+} from "../../../../../../utils/vectors/vectors";
 import { type RoomPickupsCollected } from "../../../../../gameState/GameState";
 import { type PlayableItem } from "../../../../../physics/itemPredicates";
 import { projectWorldXyzToScreenXy } from "../../../../../render/projections";
@@ -26,8 +31,10 @@ import {
   roomFront,
   roomGridSizeXY,
   roomGridSizeZ,
+  strokeWidth,
 } from "./mapConstants";
 import { PlayableItemInRoom } from "./NotableItem";
+import { RoomDecoration } from "./RoomDecoration";
 import { type RoomBehaviourComponent } from "./RoomDecoratorProps";
 import {
   type Boundaries,
@@ -37,8 +44,6 @@ import { roomWorldPosition } from "./roomWorldPosition";
 import { project, roundForSvg, translateXyz } from "./svgHelpers";
 import { useNotableItems } from "./useNotableItems";
 import { VisitedFootprint } from "./VisitedFootprint";
-
-const strokeWidth = 3;
 
 const boundaryLineLength = lengthXy(
   projectWorldXyzToScreenXy({ x: roomGridSizeXY, y: 0 }),
@@ -132,10 +137,19 @@ L${project({ x: roomGridSizeXY, y: 0 })}
 M${project({ x: 0, y: roomGridSizeXY, z: roomGridSizeZ })}            
 L${project({ x: 0, y: roomGridSizeXY })}            
 `;
-const highRoomFrontVerticalLinesPathD = `            
-M${project({ x: 0, y: 0, z: roomGridSizeZ })}            
-L0, 0            
+const highRoomFrontVerticalLinesPathD = `
+M${project({ x: 0, y: 0, z: roomGridSizeZ })}
+L0, 0
 `;
+
+const labelLayoutByDirection = {
+  away: { gridOffset: { x: 0, y: 0.75 }, align: "left" },
+  towards: { gridOffset: { x: 0, y: -0.75 }, align: "right" },
+  left: { gridOffset: { x: 0.75, y: 0 }, align: "left" },
+  right: { gridOffset: { x: -0.75, y: 0 }, align: "right" },
+} as const satisfies {
+  [D in DirectionXy4]: { gridOffset: Xy; align: "left" | "right" };
+};
 
 type RoomSvgProps<RoomId extends string> = {
   roomGridPositionSpec: RoomGridPositionSpec<RoomId>;
@@ -168,6 +182,7 @@ export const RoomSvg = <RoomId extends string>({
 }: RoomSvgProps<RoomId>) => {
   const { id, roomAbove, color, items } = roomJson;
   const label = roomJson.meta?.label;
+  const labelLayout = label && labelLayoutByDirection[label.direction];
   const interactiveAreaRef = useRef<null | SVGPathElement>(null);
   const hasBehaviours = behaviours !== undefined && behaviours.length > 0;
 
@@ -251,51 +266,9 @@ export const RoomSvg = <RoomId extends string>({
         </>
       }
 
-      {roomJson.id === "blacktooth11" ?
-        // everyone loves this room, so a set piece to keep the map interesting:
-        <path
-          className="fill-[var(--roomHintColor)]"
-          d={`
-M${project({ x: roomFront, y: roomFront })}
-L${project({ x: roomBack, y: roomFront })}
-L${project({ x: roomBack, y: roomFront - strokeWidth * 2 })}
-L${project({ x: roomFront, y: roomFront - strokeWidth * 2 })}
-z
-M${project({ x: roomFront, y: roomBack })}
-L${project({ x: roomBack, y: roomBack })}
-L${project({ x: roomBack, y: roomBack + strokeWidth * 2 })}
-L${project({ x: roomFront, y: roomBack + strokeWidth * 2 })}
-z
-`}
-        />
-      : roomJson.id === "moonbase20" || roomJson.id === "moonbase23" ?
-        <path
-          className={"stroke-[var(--roomHintColor)]"}
-          strokeWidth={strokeWidth * 2}
-          d={`
-M${project({ x: roomFront, y: roomGridSizeXY / 2 })}
-L${project({ x: roomBack, y: roomGridSizeXY / 2 })}
-
-M${project({ x: roomGridSizeXY / 2, y: roomFront })}
-L${project({ x: roomBack, y: roomGridSizeXY / 2 })}
-
-M${project({ x: roomGridSizeXY / 2, y: roomBack })}
-L${project({ x: roomBack, y: roomGridSizeXY / 2 })}
-`}
-        />
-      : roomJson.id === "blacktooth77" || roomJson.id === "safari26" ?
-        <path
-          className={"fill-[var(--roomHintColor)]"}
-          strokeWidth={1}
-          d={`
-M${project({ x: roomGridSizeXY / 2 - strokeWidth, y: 0 })}
-L${project({ x: roomGridSizeXY / 2 + strokeWidth, y: 0 })}
-L${project({ x: roomGridSizeXY / 2 + strokeWidth, y: roomGridSizeXY })}
-L${project({ x: roomGridSizeXY / 2 - strokeWidth, y: roomGridSizeXY })}
-z
-`}
-        />
-      : null}
+      {roomJson.meta?.roomDecoration && (
+        <RoomDecoration decoration={roomJson.meta.roomDecoration} />
+      )}
       {roomAbove && (
         // walls
         <>
@@ -412,18 +385,20 @@ z
           d={highRoomFrontVerticalLinesPathD}
         />
       )}
-      {label && (
+      {label && labelLayout && (
         <g
           transform={translateXyz(
             // + 0.5, 0.5 to make relative to the centre of the current room
-            roomWorldPosition(addXy(label.gridOffset, { x: 0.5, y: 0.5 })),
+            roomWorldPosition(
+              addXy(labelLayout.gridOffset, { x: 0.5, y: 0.5 }),
+            ),
           )}
         >
           <foreignObject
             width={label.text.length * 16}
             height={hudLowercaseCharTextureSize.h * 2}
             y={-8}
-            x={label.align === "left" ? 0 : label.text.length * -16}
+            x={labelLayout.align === "left" ? 0 : label.text.length * -16}
           >
             {/* css variables because Safari doesn't propagate correctly into
                 foreign objects */}

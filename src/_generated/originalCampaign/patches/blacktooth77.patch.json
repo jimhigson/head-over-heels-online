@@ -125,5 +125,12 @@
     "value": {
       "on": "touch"
     }
+  },
+  {
+    "op": "add",
+    "path": "/meta",
+    "value": {
+      "roomDecoration": "divideAlongY"
+    }
   }
 ]

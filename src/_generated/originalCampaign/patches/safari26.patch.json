@@ -130,6 +130,7 @@
     "op": "add",
     "path": "/meta",
     "value": {
+      "roomDecoration": "divideAlongY",
       "subRooms": {
         "left": {
           "gridPosition": {

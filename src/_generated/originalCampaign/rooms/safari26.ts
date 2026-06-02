@@ -117,6 +117,7 @@ export const room = inferRoomJson({
     },
   },
   meta: {
+    roomDecoration: "divideAlongY",
     subRooms: {
       left: {
         gridPosition: { x: 0, y: 0 },
