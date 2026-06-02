@@ -444,6 +444,7 @@ export function changeCharacterRoom<
         scrollsRead: storeState.gameInPlay.gameInPlay.scrollsRead,
         planetsLiberated: storeState.gameInPlay.gameInPlay.planetsLiberated,
         userSettings: storeState.userSettings.userSettings,
+        previousRoomPlanet: leavingRoom.planet,
       }) as RoomState<RoomId, RoomItemId>);
 
   // heels can't carry items to different rooms:

@@ -52,9 +52,12 @@ export type DisplaySettings = {
 export const inputDirectionModes = ["4-way", "8-way", "analogue"] as const;
 export type InputDirectionMode = (typeof inputDirectionModes)[number];
 
+export const roomEntryTunesSettings = ["always", "sparse", "never"] as const;
+export type RoomEntryTunesSetting = (typeof roomEntryTunesSettings)[number];
+
 export type SoundSettings = {
   mute?: boolean;
-  noRoomEntryTunes?: boolean;
+  roomEntryTunes?: RoomEntryTunesSetting;
   noFootsteps?: boolean;
 };
 
@@ -144,6 +147,15 @@ export const userSettingsSlice = createSlice({
         defaultUserSettings.inputDirectionMode;
       state.userSettings.inputDirectionMode = nextInCycle(
         inputDirectionModes,
+        current,
+      );
+    },
+    nextRoomEntryTunes(state) {
+      const current =
+        state.userSettings.soundSettings.roomEntryTunes ??
+        defaultUserSettings.soundSettings.roomEntryTunes;
+      state.userSettings.soundSettings.roomEntryTunes = nextInCycle(
+        roomEntryTunesSettings,
         current,
       );
     },
@@ -300,6 +312,7 @@ export const {
   keyAssignmentPresetApplied,
   nextDirectionRelativeTo,
   nextInputDirectionMode,
+  nextRoomEntryTunes,
   nextSpritesOption,
   setEmulatedResolution,
   setGameSpeed,

@@ -39,7 +39,7 @@ export const defaultUserSettings: DefaultUserSettings = {
 
   soundSettings: {
     mute: false,
-    noRoomEntryTunes: true,
+    roomEntryTunes: "sparse",
     noFootsteps: false,
   },
 };
