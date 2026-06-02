@@ -8,7 +8,9 @@ import {
   type PickupsCollected,
 } from "../../../../../gameState/GameState";
 import { type Bounds } from "./Map.svg";
+import { type NotableItemsByCell } from "./notableItemsByCell";
 import { type SortedObjectOfRoomGridPositionSpecs } from "./sortRoomGridPositions";
+import { type TeleporterLink } from "./teleporterLinks";
 
 /**
  * everything needed to load the map -
@@ -32,4 +34,14 @@ export type MapData<RoomId extends string> = {
   pickupsCollected: PickupsCollected<RoomId>;
   roomsExplored: Record<RoomId, true>;
   curRoomScenery?: SceneryName;
+  /**
+   * teleporter links between rooms on the map, scraped while resolving geometry.
+   * optional since only the editor populates it
+   */
+  teleporterLinks?: TeleporterLink<RoomId>[];
+  /**
+   * the notable items (and their icon positions) per map cell, computed once so
+   * the room renderer and behaviours draw to the same positions
+   */
+  notableItemsByCell?: NotableItemsByCell<RoomId>;
 };

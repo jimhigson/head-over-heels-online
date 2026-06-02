@@ -3,7 +3,9 @@ import { type PropsWithChildren, type Ref } from "react";
 import { roomGridSizeXY } from "../../game/components/dialogs/menuDialog/dialogs/map/mapConstants";
 import { type RoomDecoratorProps } from "../../game/components/dialogs/menuDialog/dialogs/map/RoomDecoratorProps";
 import { type Boundaries } from "../../game/components/dialogs/menuDialog/dialogs/map/roomGridPositions";
+import { roomWorldPosition } from "../../game/components/dialogs/menuDialog/dialogs/map/roomWorldPosition";
 import { type SortedObjectOfRoomGridPositionSpecs } from "../../game/components/dialogs/menuDialog/dialogs/map/sortRoomGridPositions";
+import { translateXyz } from "../../game/components/dialogs/menuDialog/dialogs/map/svgHelpers";
 import { BitmapText } from "../../game/components/tailwindSprites/BitmapText";
 import { projectWorldXyzToScreenXy } from "../../game/render/projections";
 import { editorStore, useEditorAppSelector } from "../../store/store";
@@ -235,6 +237,12 @@ const EditorMapInsertButtonDecorator = ({
     return null;
   }
 
+  const gridPositionKey: `${EditorRoomId}/${string}` = `${roomId}/${subRoomId}`;
+  const currentGridPosition = allGridPositions[gridPositionKey]?.gridPosition;
+  if (currentGridPosition === undefined) {
+    return null;
+  }
+
   const w = buttonW ?? 0;
   const h = buttonH ?? 0;
 
@@ -284,7 +292,7 @@ const EditorMapInsertButtonDecorator = ({
   });
 
   return (
-    <>
+    <g transform={translateXyz(roomWorldPosition(currentGridPosition))}>
       {visibleDirections.map((direction, i) => {
         const { x, y } = screenPositions[direction];
         const mode = getModeForDirection(direction);
@@ -311,7 +319,7 @@ const EditorMapInsertButtonDecorator = ({
           </ButtonAtPosition>
         );
       })}
-    </>
+    </g>
   );
 };
 

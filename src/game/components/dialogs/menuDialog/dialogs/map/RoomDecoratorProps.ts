@@ -1,5 +1,6 @@
 import { type FunctionComponent, type RefObject } from "react";
 
+import { type MapData } from "./MapData";
 import { type Boundaries } from "./roomGridPositions";
 import { type SortedObjectOfRoomGridPositionSpecs } from "./sortRoomGridPositions";
 
@@ -11,6 +12,8 @@ export type RoomDecoratorProps<RoomId extends string> = {
   isCurrentSubRoom: boolean;
   isSelected: boolean;
   allGridPositions: SortedObjectOfRoomGridPositionSpecs<RoomId>;
+  /** the whole map data, so decorators can read any geometry/linking they need */
+  mapData: MapData<RoomId>;
 };
 
 export type RoomBehaviourProps<RoomId extends string> = {

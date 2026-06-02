@@ -5,8 +5,10 @@ import {
   type MapData,
   type MapDataError,
 } from "../../game/components/dialogs/menuDialog/dialogs/map/MapData";
+import { computeNotableItemsByCell } from "../../game/components/dialogs/menuDialog/dialogs/map/notableItemsByCell";
 import { roomGridPositions } from "../../game/components/dialogs/menuDialog/dialogs/map/roomGridPositions";
 import { sortRoomGridPositions } from "../../game/components/dialogs/menuDialog/dialogs/map/sortRoomGridPositions";
+import { type TeleporterLink } from "../../game/components/dialogs/menuDialog/dialogs/map/teleporterLinks";
 import {
   type CharacterRooms,
   type PickupsCollected,
@@ -30,11 +32,13 @@ export const selectEditorMapData = createSelector(
     curRoomScenery,
   ): MapData<EditorRoomId> | MapDataError => {
     try {
+      const teleporterLinks: TeleporterLink<EditorRoomId>[] = [];
       const positions = [
         ...roomGridPositions({
           campaign,
           roomId,
           subRoomId,
+          teleporterLinksOut: teleporterLinks,
         }),
       ];
       const sortedObjectOfPositions = sortRoomGridPositions(positions);
@@ -44,6 +48,12 @@ export const selectEditorMapData = createSelector(
         curRoomId: roomId,
         curSubRoomId: subRoomId,
         gridPositions: sortedObjectOfPositions,
+        teleporterLinks,
+        notableItemsByCell: computeNotableItemsByCell(
+          sortedObjectOfPositions,
+          campaign,
+          emptyObject as PickupsCollected<EditorRoomId>,
+        ),
         // TODO: not sure if this applies for the editor, maybe should be optional
         currentCharacterName: "head",
         pickupsCollected: emptyObject as PickupsCollected<EditorRoomId>,

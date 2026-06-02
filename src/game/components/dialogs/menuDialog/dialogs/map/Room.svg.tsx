@@ -15,7 +15,6 @@ import {
   lengthXy,
   type Xy,
 } from "../../../../../../utils/vectors/vectors";
-import { type RoomPickupsCollected } from "../../../../../gameState/GameState";
 import { type PlayableItem } from "../../../../../physics/itemPredicates";
 import { projectWorldXyzToScreenXy } from "../../../../../render/projections";
 import { BitmapText } from "../../../../tailwindSprites/BitmapText";
@@ -34,6 +33,7 @@ import {
   strokeWidth,
 } from "./mapConstants";
 import { PlayableItemInRoom } from "./NotableItem";
+import { type NotableItemsInCell } from "./notableItemsByCell";
 import { RoomDecoration } from "./RoomDecoration";
 import { type RoomBehaviourComponent } from "./RoomDecoratorProps";
 import {
@@ -42,7 +42,6 @@ import {
 } from "./roomGridPositions";
 import { roomWorldPosition } from "./roomWorldPosition";
 import { project, roundForSvg, translateXyz } from "./svgHelpers";
-import { useNotableItems } from "./useNotableItems";
 import { VisitedFootprint } from "./VisitedFootprint";
 
 const boundaryLineLength = lengthXy(
@@ -158,7 +157,7 @@ type RoomSvgProps<RoomId extends string> = {
   headItemInRoom?: PlayableItem<"head", RoomId>;
   heelsItemInRoom?: PlayableItem<"heels", RoomId>;
   headOverHeelsItemInRoom?: PlayableItem<"headOverHeels", RoomId>;
-  roomPickupsCollected: RoomPickupsCollected;
+  notableItemsInCell?: NotableItemsInCell<RoomId>;
   onPlayableClick?: (name: IndividualCharacterName) => void;
   currentCharacterName: CharacterName;
   isCurrentRoom: boolean;
@@ -168,7 +167,7 @@ type RoomSvgProps<RoomId extends string> = {
 
 export const RoomSvg = <RoomId extends string>({
   roomGridPositionSpec: { boundaries, subRoomId },
-  roomPickupsCollected,
+  notableItemsInCell,
   roomJson,
   roomVisited,
   headItemInRoom,
@@ -185,13 +184,6 @@ export const RoomSvg = <RoomId extends string>({
   const labelLayout = label && labelLayoutByDirection[label.direction];
   const interactiveAreaRef = useRef<null | SVGPathElement>(null);
   const hasBehaviours = behaviours !== undefined && behaviours.length > 0;
-
-  // find some notable items:
-  const notableItems = useNotableItems(
-    roomJson,
-    roomPickupsCollected,
-    subRoomId,
-  );
 
   const floors = valuesIter(items)
     .filter((item) => item.type === "floor")
@@ -372,12 +364,12 @@ export const RoomSvg = <RoomId extends string>({
             yAdjust={-36}
           />
         </>
-      : <NotableJsonItemsInRoomLayout
-          roomJson={roomJson}
-          subRoomId={subRoomId}
-          items={notableItems}
+      : notableItemsInCell ?
+        <NotableJsonItemsInRoomLayout
+          items={notableItemsInCell.items}
+          positions={notableItemsInCell.positions}
         />
-      }
+      : null}
       {roomAbove && (
         // vertical lines
         <path
