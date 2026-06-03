@@ -42,6 +42,7 @@ export const initialLevelEditorSliceState: LevelEditorState = {
   },
   pendingEdits: undefined,
   tool: { type: "pointer" },
+  cmdKSearch: "",
   hoveredItem: undefined,
   clickableAnnotationHovered: false,
   selectedJsonItemIds: [],

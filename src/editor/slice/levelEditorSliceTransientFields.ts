@@ -8,4 +8,5 @@ export const levelEditorSliceNonPersistedFields: (keyof LevelEditorState)[] = [
   "dragInProgress",
   "editingRoomIdHistory",
   "selectedJsonItemIds",
+  "cmdKSearch",
 ];

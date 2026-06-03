@@ -120,8 +120,13 @@ export const persistor = persistStore(store);
 
 export type AppStore = typeof store;
 
-export type RootState = Omit<ReturnType<typeof store.getState>, "_persist">;
+/** game (not editor) state */
+export type RootState = Omit<
+  ReturnType<typeof store.getState>,
+  "_persist" | "editorRoomPreview" | "levelEditor"
+>;
 
+/** editor state */
 export type EditorRootState = RootState & {
   levelEditor: LevelEditorState;
   editorRoomPreview: RoomPreviewSliceState;

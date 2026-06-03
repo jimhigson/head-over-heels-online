@@ -1,19 +1,24 @@
-import { type UnknownAction } from "@reduxjs/toolkit";
-
 import { BlockyMarkdown } from "../../game/components/BlockyMarkdown";
-import { type AppThunk } from "../../store/store";
-import { clearRoom, removeRoom } from "../slice/levelEditorSlice";
+import { type EditorThunk } from "../../store/store";
+import {
+  clearRoom,
+  type LevelEditorSliceAction,
+  removeRoom,
+} from "../slice/levelEditorSlice";
 import { confirm, type ConfirmOptions } from "./confirm";
 
 export const confirmThenDispatch =
-  (options: ConfirmOptions, action: UnknownAction): AppThunk<Promise<void>> =>
+  (
+    options: ConfirmOptions,
+    action: LevelEditorSliceAction,
+  ): EditorThunk<Promise<void>> =>
   async (dispatch) => {
     if (await confirm(options)) {
       dispatch(action);
     }
   };
 
-export const confirmDeleteRoomThunk: AppThunk<Promise<void>> = async (
+export const confirmDeleteRoomThunk: EditorThunk<Promise<void>> = async (
   dispatch,
   getState,
 ) => {
@@ -35,7 +40,7 @@ export const confirmDeleteRoomThunk: AppThunk<Promise<void>> = async (
   }
 };
 
-export const confirmClearRoomThunk: AppThunk<Promise<void>> = async (
+export const confirmClearRoomThunk: EditorThunk<Promise<void>> = async (
   dispatch,
   getState,
 ) => {
