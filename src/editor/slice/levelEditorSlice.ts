@@ -73,6 +73,8 @@ export type LevelEditorState = {
     timestamp: number;
   };
   tool: Tool;
+  /** the text currently typed into the cmd-k menu's search input, retained while the menu is closed */
+  cmdKSearch: string;
   hoveredItem?: HoveredItem;
   clickableAnnotationHovered: boolean;
   selectedJsonItemIds: Array<EditorRoomItemId>;
@@ -120,6 +122,13 @@ export const levelEditorSlice = createSlice({
       state.tool = tool;
     },
 
+    /**
+     * set the text typed into the cmd-k menu's search input
+     */
+    setCmdKSearch(state, { payload: search }: PayloadAction<string>) {
+      state.cmdKSearch = search;
+    },
+
     ...editorSettingsReducers,
     ...undoReducers,
     ...applyItemToolReducers,
@@ -149,6 +158,7 @@ export const levelEditorSlice = createSlice({
     selectCurrentEditingRoomScenery: (state) =>
       selectCurrentRoomFromLevelEditorState(state).planet,
     selectTool: (state) => state.tool,
+    selectCmdKSearch: (state) => state.cmdKSearch,
     selectSelectedJsonItemIds: (state) => state.selectedJsonItemIds,
     selectHoveredItem: (state) => state.hoveredItem,
     selectItemIsSelected: selectItemIsSelectedInLevelEditorState,
@@ -191,6 +201,7 @@ export const {
   setCampaignPublished,
   setCampaignUserId,
   setClickableAnnotationHovered,
+  setCmdKSearch,
   setHoveredItemInRoom,
   undoHovered,
   setRemoteCampaign,
@@ -203,6 +214,7 @@ export const {
 } = levelEditorSlice.actions;
 export const {
   selectBackRooms,
+  selectCmdKSearch,
   selectCurrentCampaignInProgress,
   selectCurrentEditingRoomColour,
   selectCurrentEditingRoomJson,

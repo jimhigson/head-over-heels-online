@@ -1,7 +1,7 @@
 import { useState } from "preact/hooks";
 
 import { BitmapText } from "../../../game/components/tailwindSprites/BitmapText";
-import { store } from "../../../store/store";
+import { store, useEditorAppSelector } from "../../../store/store";
 import { Border } from "../../../ui/Border";
 import {
   Command,
@@ -14,7 +14,11 @@ import {
 import { Dialog } from "../../../ui/Dialog";
 import { DialogPortal } from "../../../ui/DialogPortal";
 import { keys } from "../../../utils/entries";
-import { setTool } from "../../slice/levelEditorSlice";
+import {
+  selectCmdKSearch,
+  setCmdKSearch,
+  setTool,
+} from "../../slice/levelEditorSlice";
 import { buttonDefinitions } from "../buttonDefinitions";
 import { buttonSizeClassNames } from "../buttonSizeClassNames";
 import { ToolbarButton } from "./ToolbarButton";
@@ -28,9 +32,15 @@ const CmdKDialogContents = ({
   onSelect: () => void;
   onClose: () => void;
 }) => {
+  const search = useEditorAppSelector(selectCmdKSearch);
   return (
     <Command className="h-full text-white" onClose={onClose}>
-      <CommandInput autoFocus placeholder="Search items..." />
+      <CommandInput
+        autoFocus
+        placeholder="Search items..."
+        value={search}
+        onValueChange={(value) => store.dispatch(setCmdKSearch(value))}
+      />
       <CommandList className="max-h-none scrollbar scrollbar-w-1 scrollbar-thumb-lightGrey">
         <CommandEmpty>
           <BitmapText>Nothing found</BitmapText>

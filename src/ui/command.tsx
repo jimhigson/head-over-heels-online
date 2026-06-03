@@ -3,6 +3,7 @@ import { type ComponentProps } from "react";
 
 import { type TextureTailwindClass } from "../sprites/spritesheet/spritesheetData/TextureTailwindClass";
 import { cn } from "./cn";
+import { useAutoFocus } from "./useAutoFocus";
 
 const Command = ({
   className,
@@ -25,21 +26,26 @@ const Command = ({
 
 const CommandInput = ({
   className,
+  autoFocus = false,
   ...props
-}: ComponentProps<typeof CommandPrimitive.Input>) => (
-  <div className="flex items-center border-b px-1 pb-1" cmdk-input-wrapper="">
-    <span
-      className={`sprite mr-1 ${"texture-hud_char_gt" satisfies TextureTailwindClass}`}
-    />
-    <CommandPrimitive.Input
-      className={cn(
-        "flex h-1 w-full bg-pastelBlue zx:bg-zxCyan toppy:bg-toppyCool1 py-1 outline-none placeholder:text-shadow zx:placeholder:text-zxBlack toppy:placeholder:text-toppyGrey4 disabled:cursor-not-allowed",
-        className,
-      )}
-      {...props}
-    />
-  </div>
-);
+}: ComponentProps<typeof CommandPrimitive.Input>) => {
+  const ref = useAutoFocus<HTMLInputElement>(autoFocus);
+  return (
+    <div className="flex items-center border-b px-1 pb-1" cmdk-input-wrapper="">
+      <span
+        className={`sprite mr-1 ${"texture-hud_char_gt" satisfies TextureTailwindClass}`}
+      />
+      <CommandPrimitive.Input
+        ref={ref}
+        className={cn(
+          "flex h-1 w-full bg-pastelBlue zx:bg-zxCyan toppy:bg-toppyCool1 py-1 outline-none placeholder:text-shadow zx:placeholder:text-zxBlack toppy:placeholder:text-toppyGrey4 disabled:cursor-not-allowed",
+          className,
+        )}
+        {...props}
+      />
+    </div>
+  );
+};
 
 const CommandList = ({
   className,
