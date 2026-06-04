@@ -26,6 +26,9 @@ supabase/.temp
 playwright-report/
 test-results/
 
+# transient dir used by the oxlint pre-commit lint-fix wrapper
+.oxlint-fix-tmp.*
+
 build-stats*.html
 
 src-tauri/gen

@@ -10,9 +10,10 @@
 // implementations; every such value at runtime comes from a native iterator
 // that does inherit from `Iterator.prototype` and has the helpers.
 declare global {
-  // eslint-disable-next-line @typescript-eslint/no-empty-object-type
+  /* eslint-disable @typescript-eslint/no-empty-object-type */
   interface IterableIterator<T, TReturn = undefined, TNext = unknown>
     extends IteratorObject<T, TReturn, TNext> {}
+  /* eslint-enable @typescript-eslint/no-empty-object-type */
 }
 
 export {};
