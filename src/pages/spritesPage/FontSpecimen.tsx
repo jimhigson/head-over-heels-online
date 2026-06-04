@@ -1,11 +1,15 @@
 import { CssVariables } from "../../game/components/CssVariables";
+import { multilineTextClass } from "../../game/components/dialogs/menuDialog/multilineTextClass";
+import { BitmapText } from "../../game/components/tailwindSprites/BitmapText";
 import { twClass } from "../../utils/twClass";
 
 const specimenText = `pack my box with five dozen liquor jugs
 PACK MY BOX WITH FIVE DOZEN LIQUOR JUGS 0123456789
 ?!.,;:/\\'\`‘’-+_%#@*^&<>()[]§©∞☰•★⚡⬅➡⬆⬇↖↗↘↙⏩⁌⁍⇧⌥⌘⎌⟳🛡♨🕹\uf1ff\ue709\uea78\uf50e\u{f10a9}\uf457`;
 
-const scaleFactors = [1, 2, 4] as const;
+const specimenLines = specimenText.split("\n");
+
+const scaleFactors = [1, 2] as const;
 
 const colourClasses = [
   twClass("text-highlightBeige zx:text-zxYellow toppy:text-toppyWarm2"),
@@ -19,12 +23,21 @@ export const FontSpecimen = () => (
     className="bg-pureBlack text-white p-1 w-full overflow-x-clip"
     data-font-specimen
   >
-    {scaleFactors.map((scaleFactor, i) => (
+    {scaleFactors.map((scaleFactor, scaleIndex) => (
       <CssVariables scaleFactor={scaleFactor} key={scaleFactor}>
         <div
-          className={`text-multi-line whitespace-pre ${colourClasses[i % colourClasses.length]}`}
+          className={`text-multi-line whitespace-pre ${colourClasses[(scaleIndex * 2) % colourClasses.length]}`}
         >
           {specimenText}
+        </div>
+        <div
+          className={`${multilineTextClass} ${colourClasses[(scaleIndex * 2 + 1) % colourClasses.length]}`}
+        >
+          {specimenLines.map((line, lineIndex) => (
+            <BitmapText key={lineIndex} className="block">
+              {line}
+            </BitmapText>
+          ))}
         </div>
       </CssVariables>
     ))}
