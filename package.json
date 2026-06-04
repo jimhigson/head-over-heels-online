@@ -157,7 +157,7 @@
     "ts-json-schema-generator": "^2.4.0",
     "ts-morph": "^25.0.1",
     "tsx": "^4.19.3",
-    "type-fest": "^4.37.0",
+    "type-fest": "^5.7.0",
     "typescript": "^6.0.2",
     "vite": "^8.0.13",
     "vite-plugin-glsl": "^1.6.0",

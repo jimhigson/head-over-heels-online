@@ -225,7 +225,7 @@ type SwitchConfigForUserSettings = {
   /** this switch targets the redux store */
   type: "in-store";
   // special case for switches that read from and dispatch to the store:
-  path: UserSettingsBooleanPaths;
+  path: Subset<UserSettingsBooleanPaths, "displaySettings.crtFilter">;
 };
 
 export type SwitchConfig<
