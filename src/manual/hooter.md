@@ -1,6 +1,6 @@
 ## Hooter
 
-![](texture-hooter)![](texture-doughnuts?clear-left)The *hooter* may be used by Head to fire *doughnuts* at attacking monsters.
+![]( texture-hooter )![]( texture-doughnuts clear-left )The *hooter* may be used by Head to fire *doughnuts* at attacking monsters.
 
 This will freeze them in place as they lick the doughnut off their faces.
 

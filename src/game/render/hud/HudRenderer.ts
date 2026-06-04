@@ -14,6 +14,7 @@ import {
   zxSpectrumColor,
   type ZxSpectrumRoomColour,
 } from "../../../originalGame";
+import { escapeCharForTailwind } from "../../../sprites/escapeCharForTailwind";
 import { effectColour } from "../../../sprites/palette/spritesheetPalette";
 import { type TextureId } from "../../../sprites/spritesheet/spritesheetData/makeSpritesheetData";
 import {
@@ -178,12 +179,12 @@ export class HudRenderer<RoomId extends string, RoomItemId extends string>
         }),
         shield: this.#iconWithNumber({
           label: "headShield",
-          textureId: "hud.char.🛡",
+          textureId: `hud.char.${escapeCharForTailwind("🛡")}`,
           outline: true,
         }),
         extraSkill: this.#iconWithNumber({
           label: "headFastSteps",
-          textureId: "hud.char.⚡",
+          textureId: `hud.char.${escapeCharForTailwind("⚡")}`,
           outline: true,
         }),
         doughnuts: this.#iconWithNumber({
@@ -210,12 +211,12 @@ export class HudRenderer<RoomId extends string, RoomItemId extends string>
         }),
         shield: this.#iconWithNumber({
           label: "heelsShield",
-          textureId: "hud.char.🛡",
+          textureId: `hud.char.${escapeCharForTailwind("🛡")}`,
           outline: true,
         }),
         extraSkill: this.#iconWithNumber({
           label: "heelsBigJumps",
-          textureId: "hud.char.♨",
+          textureId: `hud.char.${escapeCharForTailwind("♨")}`,
           outline: true,
         }),
         bag: this.#iconWithNumber({

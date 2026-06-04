@@ -103,7 +103,7 @@ export const Select = <Value extends string>(props: SelectProps<Value>) => {
         </Button>
       }
       contents={
-        <Command value={value} className="w-[--popover-anchor-width]">
+        <Command value={value} className="w-(--popover-anchor-width)">
           {props.disableCommandInput === true ? null : (
             <CommandInput placeholder={props.placeholder} />
           )}

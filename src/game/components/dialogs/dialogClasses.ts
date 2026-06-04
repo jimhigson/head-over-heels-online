@@ -7,7 +7,7 @@ export const optionsDialogClasses =
   "selectedMenuItem:text-metallicBlue zx:selectedMenuItem:text-zxGreen toppy:selectedMenuItem:text-toppyCool4 " +
   // make all leaders on options dialogs 3 blocks wide - so it doesn't change when
   // switching between dialogs with larger custom leaders and those without
-  "[--leader-col-width:theme(width.3)] ";
+  "[--leader-col-width:--spacing(3)] ";
 
 export const optionsMenuScrollClasses =
   "flex flex-col gap-1 p-1 " +

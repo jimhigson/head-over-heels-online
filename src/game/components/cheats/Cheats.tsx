@@ -14,6 +14,7 @@ import {
   otherIndividualCharacterName,
 } from "../../../model/modelTypes";
 import { getRoomItem, roomSpatialIndexKey } from "../../../model/RoomState";
+import { escapeCharForTailwind } from "../../../sprites/escapeCharForTailwind";
 import {
   type AnimatedTextureTailwindClass,
   type TextureTailwindClass,
@@ -595,7 +596,7 @@ export const Cheats = <RoomId extends string>(_emptyProps: EmptyObject) => {
                   className={`sprite ${"texture-whiteRabbit_extra-life" satisfies TextureTailwindClass}`}
                 />
                 <span
-                  className={`sprite ${"texture-hud_char_2" satisfies TextureTailwindClass} left-m2 relative`}
+                  className={`sprite ${"texture-hud_char_2" satisfies TextureTailwindClass} -left-2 relative`}
                 />
               </Button>
               <Button
@@ -610,7 +611,7 @@ export const Cheats = <RoomId extends string>(_emptyProps: EmptyObject) => {
                   className={`sprite ${"texture-whiteRabbit_shield" satisfies TextureTailwindClass}`}
                 />
                 <span
-                  className={`sprite ${"texture-hud_char_🛡" satisfies TextureTailwindClass} left-m2 relative`}
+                  className={`sprite texture-hud_char_${escapeCharForTailwind("🛡")} -left-2 relative`}
                 />
               </Button>
               <Button
@@ -625,7 +626,7 @@ export const Cheats = <RoomId extends string>(_emptyProps: EmptyObject) => {
                   className={`sprite ${"texture-whiteRabbit_fast" satisfies TextureTailwindClass}`}
                 />
                 <span
-                  className={`sprite ${"texture-hud_char_⚡" satisfies TextureTailwindClass} left-m2 relative`}
+                  className={`sprite texture-hud_char_${escapeCharForTailwind("⚡")} -left-2 relative`}
                 />
               </Button>
               <Button
@@ -640,7 +641,7 @@ export const Cheats = <RoomId extends string>(_emptyProps: EmptyObject) => {
                   className={`sprite ${"texture-whiteRabbit_jumps" satisfies TextureTailwindClass}`}
                 />
                 <span
-                  className={`sprite ${"texture-hud_char_♨" satisfies TextureTailwindClass} left-m2 relative`}
+                  className={`sprite texture-hud_char_${escapeCharForTailwind("♨")} -left-2 relative`}
                 />
               </Button>
               <Button

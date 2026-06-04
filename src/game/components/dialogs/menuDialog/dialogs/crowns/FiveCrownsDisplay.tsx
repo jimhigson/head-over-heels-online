@@ -11,17 +11,17 @@ export const FiveCrownsDisplay = () => {
         <TitledCrown
           planet="egyptus"
           label="Egyptus"
-          className="w-12 absolute left-m10 top-1 resHandheld:left-m8 resHandheld:top-m1 translate-x-[-50%]"
+          className="w-12 absolute -left-10 top-1 resHandheld:-left-8 resHandheld:-top-1 translate-x-[-50%]"
         />
         <TitledCrown
           planet="penitentiary"
           label="Penitentiary"
-          className="w-12 absolute left-10 top-1 resHandheld:left-8 resHandheld:top-m1 translate-x-[-50%]"
+          className="w-12 absolute left-10 top-1 resHandheld:left-8 resHandheld:-top-1 translate-x-[-50%]"
         />
         <TitledCrown
           planet="safari"
           label="Safari"
-          className="w-12 left-m10 top-14 absolute resHandheld:left-m8 resHandheld:top-8 translate-x-[-50%]"
+          className="w-12 -left-10 top-14 absolute resHandheld:-left-8 resHandheld:top-8 translate-x-[-50%]"
         />
         <TitledCrown
           planet="bookworld"

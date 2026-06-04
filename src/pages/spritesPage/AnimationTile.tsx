@@ -56,7 +56,7 @@ export const AnimationTile = ({
           missingFrame: {missingFrameIds[0]}
         </div>
       : <div
-          className={`sprite bg-pureBlack zx:bg-zxBlack toppy:bg-toppyBlack hover:bg-moss zx:hover:bg-zxYellow toppy:hover:bg-toppyWarm3 border-shadow zx:border-zxRedDimmed toppy:border-toppyGrey2 box-content w-min
+          className={`sprite bg-pureBlack zx:bg-zxBlack toppy:bg-toppyBlack hover:bg-moss zx:hover:bg-zxYellow toppy:hover:bg-toppyWarm3 border-shadow zx:border-zxRedDimmed toppy:border-toppyGrey2 box-content
           ${spriteOption.uncolourised ? "sprite-revert-to-two-tone" : ""}`}
           style={animatedSpriteSpecificCssVars(
             animationName,

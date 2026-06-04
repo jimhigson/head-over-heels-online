@@ -1,6 +1,6 @@
 ## Notice to All Minions
 
-![](texture-blacktooth_wall_shield_away?bg-pureBlack)![](texture-animated-bubbles_cold?float-right)By Imperial Decree, this chamber has been fitted with an Appearance Modulation Device.
+![]( texture-blacktooth_wall_shield_away bg-pureBlack )![]( texture-animated-bubbles_cold float-right )By Imperial Decree, this chamber has been fitted with an Appearance Modulation Device.
 
 *Step on the button to cycle the castle's visual rendering*. The Emperor grew tired of the monochrome decor after thirty-eight years and commissioned a colourised renovation from some enthusiast on the internet, who for reasons best known to himself spent the last year painstakingly remaking our castle.
 

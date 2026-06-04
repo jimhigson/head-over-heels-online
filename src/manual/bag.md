@@ -1,6 +1,6 @@
 ## Bag
 
-![](texture-bag ?float-left&clear-left)![](texture-cube ?float-left&clear-left)![](texture-drum ?float-left&clear-left)![](texture-spring_compressed ?float-left&clear-left)![](texture-sticks ?float-left&clear-left)The *bag* may be used to carry small objects around a room.
+![]( texture-bag  float-left clear-left )![]( texture-cube  float-left clear-left )![]( texture-drum  float-left clear-left )![]( texture-spring_compressed  float-left clear-left )![]( texture-sticks  float-left clear-left )The *bag* may be used to carry small objects around a room.
 
 It is essential for Heels to find and get the bag as it is impossible to get far without it.
 

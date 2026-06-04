@@ -31,7 +31,7 @@ export const reincarnateSelected = (gameApi: GameApi<string>) => {
   store.dispatch(reincarnationAccepted());
 };
 
-const markdown = `![](?sprite&${"texture-animated-fish" satisfies AnimatedTextureTailwindClass}&float-left)Ah, But you ate a Reincarnation Fish! Reincarnate?`;
+const markdown = `![]( sprite ${"texture-animated-fish" satisfies AnimatedTextureTailwindClass} float-left )Ah, But you ate a Reincarnation Fish! Reincarnate?`;
 
 export const OfferReincarnationDialog = () => {
   const gameApi = useGameApi();

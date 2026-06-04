@@ -10,16 +10,24 @@ vi.mock("../createSprite", () => ({
   createSprite: vi.fn(),
 }));
 
-// Mock assertIsTextureId to allow our test texture IDs
-vi.mock("../../../sprites/assertIsTextureId", () => ({
-  assertIsTextureId: vi.fn((textureId: string) => {
-    // Only throw for the emoji character (which won't have a texture)
-    if (textureId === "hud.char.💀") {
-      throw new Error(`Texture ID '${textureId}' is not a valid texture ID`);
-    }
-    // For all other texture IDs, don't throw (they're valid)
-  }),
-}));
+// Mock assertIsTextureId to allow our test texture IDs. Compute the missing-glyph
+// id the same way the real code does (escapeCharForTailwind), via a dynamic import
+// since vi.mock factories are hoisted above the file's imports.
+vi.mock("../../../sprites/assertIsTextureId", async () => {
+  const { escapeCharForTailwind } = await import(
+    "../../../sprites/escapeCharForTailwind"
+  );
+  const missingId = `hud.char.${escapeCharForTailwind("💀")}`;
+  return {
+    assertIsTextureId: vi.fn((textureId: string) => {
+      // the emoji character won't have a texture
+      if (textureId === missingId) {
+        throw new Error(`Texture ID '${textureId}' is not a valid texture ID`);
+      }
+      // For all other texture IDs, don't throw (they're valid)
+    }),
+  };
+});
 
 // Mock the OutlineFilter to avoid shader import issues in tests
 vi.mock("../filters/OutlineFilter", () => ({
