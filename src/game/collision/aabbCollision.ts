@@ -56,6 +56,9 @@ export function* collision1toManyIter<C extends CollideableItem>(
 }
 
 const alwaysUseForCollision = <C extends CollideableItem, G extends C = C>(
+  // oxlint's no-unused-vars does not count usage inside the `item is G` type
+  // predicate below, unlike typescript-eslint, so it is flagged without this
+  // eslint-disable-next-line no-unused-vars
   item: C,
 ): item is G => true;
 
