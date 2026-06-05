@@ -28,6 +28,17 @@ const px = unitsPerEm / hudCharTextureSize.h;
 const baselineFromTop = hudCharTextureSize.h;
 const inkAlphaThreshold = 128;
 
+const spaceCodePoint = 0x20;
+const emSpaceCodePoint = 0x20_03;
+// the spritesheet space frame is a full block wide, but that's too wide for
+// font-rendered text (BitmapText doesn't render a space sprite at all, spacing
+// words with a margin instead). narrow it to 5/8 of a block here. this is applied
+// only here, not in hudSritesheetData, so the in-game space sprite (which is drawn
+// directly in a few places) keeps its on-sheet width.
+const spaceAdvanceWidth = hudCharTextureSize.w * 0.625;
+// an explicit wider space, one full block - has no equivalent in the sprite path
+const emSpaceAdvanceWidth = hudCharTextureSize.w;
+
 type DecodedImage = { width: number; height: number; data: Uint8ClampedArray };
 
 type Rect = { col: number; row: number; w: number; h: number };
@@ -130,15 +141,28 @@ for (const hudGlyph of hudGlyphs) {
     continue;
   }
   const codePoint = hudGlyph.char.codePointAt(0)!;
+  const advanceWidth =
+    codePoint === spaceCodePoint ? spaceAdvanceWidth : hudGlyph.advanceWidth;
   glyphs.push(
     new opentype.Glyph({
       name: glyphName(codePoint),
       unicode: codePoint,
-      advanceWidth: hudGlyph.advanceWidth * px,
+      advanceWidth: advanceWidth * px,
       path: glyphPath(image, hudGlyph),
     }),
   );
 }
+
+// em space exists only in the font (not the spritesheet), as an empty glyph with
+// a full-block advance
+glyphs.push(
+  new opentype.Glyph({
+    name: glyphName(emSpaceCodePoint),
+    unicode: emSpaceCodePoint,
+    advanceWidth: emSpaceAdvanceWidth * px,
+    path: new opentype.Path(),
+  }),
+);
 
 const ascender = baselineFromTop * px;
 const descender = -(hudLowercaseCharTextureSize.h - baselineFromTop) * px;
