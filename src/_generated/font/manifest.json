@@ -10236,7 +10236,7 @@
     },
     {
       "unicode": 32,
-      "advanceWidth": 512,
+      "advanceWidth": 320,
       "path": []
     },
     {
@@ -16676,6 +16676,11 @@
           "type": "Z"
         }
       ]
+    },
+    {
+      "unicode": 8195,
+      "advanceWidth": 512,
+      "path": []
     }
   ]
 }

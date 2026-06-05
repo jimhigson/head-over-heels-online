@@ -3,8 +3,10 @@ import { multilineTextClass } from "../../game/components/dialogs/menuDialog/mul
 import { BitmapText } from "../../game/components/tailwindSprites/BitmapText";
 import { twClass } from "../../utils/twClass";
 
+const emSpace = "\u2003";
+
 const specimenText = `pack my box with five dozen liquor jugs
-PACK MY BOX WITH FIVE DOZEN LIQUOR JUGS 0123456789
+PACK${emSpace}MY${emSpace}BOX${emSpace}WITH${emSpace}FIVE${emSpace}DOZEN${emSpace}LIQUOR${emSpace}JUGS${emSpace}0123456789
 ?!.,;:/\\'\`‘’-+_%#@*^&<>()[]§©∞☰•★⚡⬅➡⬆⬇↖↗↘↙⏩⁌⁍⇧⌥⌘⎌⟳🛡♨🕹\uf1ff\ue709\uea78\uf50e\u{f10a9}\uf457`;
 
 const specimenLines = specimenText.split("\n");
