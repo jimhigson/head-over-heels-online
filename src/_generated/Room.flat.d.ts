@@ -723,43 +723,11 @@ export type RoomJsonSchema = {
                                 z?: number;
                               };
                               activatedOnStoreValue?:
-                                | "planetsLiberated"
-                                | "scrollsRead"
-                                | "freeCharacters"
                                 | "planetsLiberated.blacktooth"
                                 | "planetsLiberated.bookworld"
                                 | "planetsLiberated.egyptus"
                                 | "planetsLiberated.penitentiary"
-                                | "planetsLiberated.safari"
-                                | "scrollsRead.blacktooth"
-                                | "scrollsRead.egyptus"
-                                | "scrollsRead.penitentiary"
-                                | "scrollsRead.safari"
-                                | "scrollsRead.bag"
-                                | "scrollsRead.doughnuts"
-                                | "scrollsRead.hooter"
-                                | "scrollsRead.head"
-                                | "scrollsRead.heels"
-                                | "scrollsRead.teleportBack"
-                                | "scrollsRead.historyOfTheBlacktoothEmpire"
-                                | "scrollsRead.theGame"
-                                | "scrollsRead.bookWorld"
-                                | "scrollsRead.reincarnationFish"
-                                | "scrollsRead.cuddlyStuffedWhiteRabbits"
-                                | "scrollsRead.crowns"
-                                | "scrollsRead.teleports"
-                                | "scrollsRead.springs"
-                                | "scrollsRead.switches"
-                                | "scrollsRead.conveyorBelts"
-                                | "scrollsRead.hushPuppies"
-                                | "scrollsRead.theEmperorsGuardian"
-                                | "scrollsRead.swopKey"
-                                | "scrollsRead.hintsAndTips"
-                                | "scrollsRead.credits"
-                                | "scrollsRead.installPwa"
-                                | "scrollsRead.installNative"
-                                | "freeCharacters.head"
-                                | "freeCharacters.heels";
+                                | "planetsLiberated.safari";
                               /**
                                * an item in the destination room this teleporter should go to - the
                                * player will be moved to atop this item
@@ -783,43 +751,11 @@ export type RoomJsonSchema = {
                                 z?: number;
                               };
                               activatedOnStoreValue?:
-                                | "planetsLiberated"
-                                | "scrollsRead"
-                                | "freeCharacters"
                                 | "planetsLiberated.blacktooth"
                                 | "planetsLiberated.bookworld"
                                 | "planetsLiberated.egyptus"
                                 | "planetsLiberated.penitentiary"
-                                | "planetsLiberated.safari"
-                                | "scrollsRead.blacktooth"
-                                | "scrollsRead.egyptus"
-                                | "scrollsRead.penitentiary"
-                                | "scrollsRead.safari"
-                                | "scrollsRead.bag"
-                                | "scrollsRead.doughnuts"
-                                | "scrollsRead.hooter"
-                                | "scrollsRead.head"
-                                | "scrollsRead.heels"
-                                | "scrollsRead.teleportBack"
-                                | "scrollsRead.historyOfTheBlacktoothEmpire"
-                                | "scrollsRead.theGame"
-                                | "scrollsRead.bookWorld"
-                                | "scrollsRead.reincarnationFish"
-                                | "scrollsRead.cuddlyStuffedWhiteRabbits"
-                                | "scrollsRead.crowns"
-                                | "scrollsRead.teleports"
-                                | "scrollsRead.springs"
-                                | "scrollsRead.switches"
-                                | "scrollsRead.conveyorBelts"
-                                | "scrollsRead.hushPuppies"
-                                | "scrollsRead.theEmperorsGuardian"
-                                | "scrollsRead.swopKey"
-                                | "scrollsRead.hintsAndTips"
-                                | "scrollsRead.credits"
-                                | "scrollsRead.installPwa"
-                                | "scrollsRead.installNative"
-                                | "freeCharacters.head"
-                                | "freeCharacters.heels";
+                                | "planetsLiberated.safari";
                               /**
                                * where in the destination room this teleporter should go - usually
                                * to atop another teleporter, but could be anywhere.
@@ -1127,43 +1063,11 @@ export type RoomJsonSchema = {
                                 z?: number;
                               };
                               activatedOnStoreValue?:
-                                | "planetsLiberated"
-                                | "scrollsRead"
-                                | "freeCharacters"
                                 | "planetsLiberated.blacktooth"
                                 | "planetsLiberated.bookworld"
                                 | "planetsLiberated.egyptus"
                                 | "planetsLiberated.penitentiary"
-                                | "planetsLiberated.safari"
-                                | "scrollsRead.blacktooth"
-                                | "scrollsRead.egyptus"
-                                | "scrollsRead.penitentiary"
-                                | "scrollsRead.safari"
-                                | "scrollsRead.bag"
-                                | "scrollsRead.doughnuts"
-                                | "scrollsRead.hooter"
-                                | "scrollsRead.head"
-                                | "scrollsRead.heels"
-                                | "scrollsRead.teleportBack"
-                                | "scrollsRead.historyOfTheBlacktoothEmpire"
-                                | "scrollsRead.theGame"
-                                | "scrollsRead.bookWorld"
-                                | "scrollsRead.reincarnationFish"
-                                | "scrollsRead.cuddlyStuffedWhiteRabbits"
-                                | "scrollsRead.crowns"
-                                | "scrollsRead.teleports"
-                                | "scrollsRead.springs"
-                                | "scrollsRead.switches"
-                                | "scrollsRead.conveyorBelts"
-                                | "scrollsRead.hushPuppies"
-                                | "scrollsRead.theEmperorsGuardian"
-                                | "scrollsRead.swopKey"
-                                | "scrollsRead.hintsAndTips"
-                                | "scrollsRead.credits"
-                                | "scrollsRead.installPwa"
-                                | "scrollsRead.installNative"
-                                | "freeCharacters.head"
-                                | "freeCharacters.heels";
+                                | "planetsLiberated.safari";
                               /**
                                * an item in the destination room this teleporter should go to - the
                                * player will be moved to atop this item
@@ -1187,43 +1091,11 @@ export type RoomJsonSchema = {
                                 z?: number;
                               };
                               activatedOnStoreValue?:
-                                | "planetsLiberated"
-                                | "scrollsRead"
-                                | "freeCharacters"
                                 | "planetsLiberated.blacktooth"
                                 | "planetsLiberated.bookworld"
                                 | "planetsLiberated.egyptus"
                                 | "planetsLiberated.penitentiary"
-                                | "planetsLiberated.safari"
-                                | "scrollsRead.blacktooth"
-                                | "scrollsRead.egyptus"
-                                | "scrollsRead.penitentiary"
-                                | "scrollsRead.safari"
-                                | "scrollsRead.bag"
-                                | "scrollsRead.doughnuts"
-                                | "scrollsRead.hooter"
-                                | "scrollsRead.head"
-                                | "scrollsRead.heels"
-                                | "scrollsRead.teleportBack"
-                                | "scrollsRead.historyOfTheBlacktoothEmpire"
-                                | "scrollsRead.theGame"
-                                | "scrollsRead.bookWorld"
-                                | "scrollsRead.reincarnationFish"
-                                | "scrollsRead.cuddlyStuffedWhiteRabbits"
-                                | "scrollsRead.crowns"
-                                | "scrollsRead.teleports"
-                                | "scrollsRead.springs"
-                                | "scrollsRead.switches"
-                                | "scrollsRead.conveyorBelts"
-                                | "scrollsRead.hushPuppies"
-                                | "scrollsRead.theEmperorsGuardian"
-                                | "scrollsRead.swopKey"
-                                | "scrollsRead.hintsAndTips"
-                                | "scrollsRead.credits"
-                                | "scrollsRead.installPwa"
-                                | "scrollsRead.installNative"
-                                | "freeCharacters.head"
-                                | "freeCharacters.heels";
+                                | "planetsLiberated.safari";
                               /**
                                * where in the destination room this teleporter should go - usually
                                * to atop another teleporter, but could be anywhere.
@@ -1709,43 +1581,11 @@ export type RoomJsonSchema = {
                         z?: number;
                       };
                       activatedOnStoreValue?:
-                        | "planetsLiberated"
-                        | "scrollsRead"
-                        | "freeCharacters"
                         | "planetsLiberated.blacktooth"
                         | "planetsLiberated.bookworld"
                         | "planetsLiberated.egyptus"
                         | "planetsLiberated.penitentiary"
-                        | "planetsLiberated.safari"
-                        | "scrollsRead.blacktooth"
-                        | "scrollsRead.egyptus"
-                        | "scrollsRead.penitentiary"
-                        | "scrollsRead.safari"
-                        | "scrollsRead.bag"
-                        | "scrollsRead.doughnuts"
-                        | "scrollsRead.hooter"
-                        | "scrollsRead.head"
-                        | "scrollsRead.heels"
-                        | "scrollsRead.teleportBack"
-                        | "scrollsRead.historyOfTheBlacktoothEmpire"
-                        | "scrollsRead.theGame"
-                        | "scrollsRead.bookWorld"
-                        | "scrollsRead.reincarnationFish"
-                        | "scrollsRead.cuddlyStuffedWhiteRabbits"
-                        | "scrollsRead.crowns"
-                        | "scrollsRead.teleports"
-                        | "scrollsRead.springs"
-                        | "scrollsRead.switches"
-                        | "scrollsRead.conveyorBelts"
-                        | "scrollsRead.hushPuppies"
-                        | "scrollsRead.theEmperorsGuardian"
-                        | "scrollsRead.swopKey"
-                        | "scrollsRead.hintsAndTips"
-                        | "scrollsRead.credits"
-                        | "scrollsRead.installPwa"
-                        | "scrollsRead.installNative"
-                        | "freeCharacters.head"
-                        | "freeCharacters.heels";
+                        | "planetsLiberated.safari";
                       /**
                        * an item in the destination room this teleporter should go to - the
                        * player will be moved to atop this item
@@ -1769,43 +1609,11 @@ export type RoomJsonSchema = {
                         z?: number;
                       };
                       activatedOnStoreValue?:
-                        | "planetsLiberated"
-                        | "scrollsRead"
-                        | "freeCharacters"
                         | "planetsLiberated.blacktooth"
                         | "planetsLiberated.bookworld"
                         | "planetsLiberated.egyptus"
                         | "planetsLiberated.penitentiary"
-                        | "planetsLiberated.safari"
-                        | "scrollsRead.blacktooth"
-                        | "scrollsRead.egyptus"
-                        | "scrollsRead.penitentiary"
-                        | "scrollsRead.safari"
-                        | "scrollsRead.bag"
-                        | "scrollsRead.doughnuts"
-                        | "scrollsRead.hooter"
-                        | "scrollsRead.head"
-                        | "scrollsRead.heels"
-                        | "scrollsRead.teleportBack"
-                        | "scrollsRead.historyOfTheBlacktoothEmpire"
-                        | "scrollsRead.theGame"
-                        | "scrollsRead.bookWorld"
-                        | "scrollsRead.reincarnationFish"
-                        | "scrollsRead.cuddlyStuffedWhiteRabbits"
-                        | "scrollsRead.crowns"
-                        | "scrollsRead.teleports"
-                        | "scrollsRead.springs"
-                        | "scrollsRead.switches"
-                        | "scrollsRead.conveyorBelts"
-                        | "scrollsRead.hushPuppies"
-                        | "scrollsRead.theEmperorsGuardian"
-                        | "scrollsRead.swopKey"
-                        | "scrollsRead.hintsAndTips"
-                        | "scrollsRead.credits"
-                        | "scrollsRead.installPwa"
-                        | "scrollsRead.installNative"
-                        | "freeCharacters.head"
-                        | "freeCharacters.heels";
+                        | "planetsLiberated.safari";
                       /**
                        * where in the destination room this teleporter should go - usually
                        * to atop another teleporter, but could be anywhere.
@@ -2307,43 +2115,11 @@ export type RoomJsonSchema = {
                 z?: number;
               };
               activatedOnStoreValue?:
-                | "planetsLiberated"
-                | "scrollsRead"
-                | "freeCharacters"
                 | "planetsLiberated.blacktooth"
                 | "planetsLiberated.bookworld"
                 | "planetsLiberated.egyptus"
                 | "planetsLiberated.penitentiary"
-                | "planetsLiberated.safari"
-                | "scrollsRead.blacktooth"
-                | "scrollsRead.egyptus"
-                | "scrollsRead.penitentiary"
-                | "scrollsRead.safari"
-                | "scrollsRead.bag"
-                | "scrollsRead.doughnuts"
-                | "scrollsRead.hooter"
-                | "scrollsRead.head"
-                | "scrollsRead.heels"
-                | "scrollsRead.teleportBack"
-                | "scrollsRead.historyOfTheBlacktoothEmpire"
-                | "scrollsRead.theGame"
-                | "scrollsRead.bookWorld"
-                | "scrollsRead.reincarnationFish"
-                | "scrollsRead.cuddlyStuffedWhiteRabbits"
-                | "scrollsRead.crowns"
-                | "scrollsRead.teleports"
-                | "scrollsRead.springs"
-                | "scrollsRead.switches"
-                | "scrollsRead.conveyorBelts"
-                | "scrollsRead.hushPuppies"
-                | "scrollsRead.theEmperorsGuardian"
-                | "scrollsRead.swopKey"
-                | "scrollsRead.hintsAndTips"
-                | "scrollsRead.credits"
-                | "scrollsRead.installPwa"
-                | "scrollsRead.installNative"
-                | "freeCharacters.head"
-                | "freeCharacters.heels";
+                | "planetsLiberated.safari";
               /**
                * an item in the destination room this teleporter should go to - the
                * player will be moved to atop this item
@@ -2367,43 +2143,11 @@ export type RoomJsonSchema = {
                 z?: number;
               };
               activatedOnStoreValue?:
-                | "planetsLiberated"
-                | "scrollsRead"
-                | "freeCharacters"
                 | "planetsLiberated.blacktooth"
                 | "planetsLiberated.bookworld"
                 | "planetsLiberated.egyptus"
                 | "planetsLiberated.penitentiary"
-                | "planetsLiberated.safari"
-                | "scrollsRead.blacktooth"
-                | "scrollsRead.egyptus"
-                | "scrollsRead.penitentiary"
-                | "scrollsRead.safari"
-                | "scrollsRead.bag"
-                | "scrollsRead.doughnuts"
-                | "scrollsRead.hooter"
-                | "scrollsRead.head"
-                | "scrollsRead.heels"
-                | "scrollsRead.teleportBack"
-                | "scrollsRead.historyOfTheBlacktoothEmpire"
-                | "scrollsRead.theGame"
-                | "scrollsRead.bookWorld"
-                | "scrollsRead.reincarnationFish"
-                | "scrollsRead.cuddlyStuffedWhiteRabbits"
-                | "scrollsRead.crowns"
-                | "scrollsRead.teleports"
-                | "scrollsRead.springs"
-                | "scrollsRead.switches"
-                | "scrollsRead.conveyorBelts"
-                | "scrollsRead.hushPuppies"
-                | "scrollsRead.theEmperorsGuardian"
-                | "scrollsRead.swopKey"
-                | "scrollsRead.hintsAndTips"
-                | "scrollsRead.credits"
-                | "scrollsRead.installPwa"
-                | "scrollsRead.installNative"
-                | "freeCharacters.head"
-                | "freeCharacters.heels";
+                | "planetsLiberated.safari";
               /**
                * where in the destination room this teleporter should go - usually
                * to atop another teleporter, but could be anywhere.
@@ -2529,20 +2273,7 @@ export type RoomJsonSchema = {
                * this switch targets the redux store
                */
               type: "in-store";
-              path:
-                | "displaySettings"
-                | "showFps"
-                | "pokesEnabled"
-                | "onScreenControls"
-                | "soundSettings"
-                | "displaySettings.crtFilter"
-                | "displaySettings.showRoomScrollBounds"
-                | "displaySettings.showShadowMasks"
-                | "displaySettings.showSubrooms"
-                | "pokesEnabled.infiniteLives"
-                | "pokesEnabled.infiniteDoughnuts"
-                | "soundSettings.mute"
-                | "soundSettings.noFootsteps";
+              path: "displaySettings.crtFilter";
             }
           | {
               initialSetting: "right" | "left";
@@ -3072,43 +2803,11 @@ export type RoomJsonSchema = {
                                 z?: number;
                               };
                               activatedOnStoreValue?:
-                                | "planetsLiberated"
-                                | "scrollsRead"
-                                | "freeCharacters"
                                 | "planetsLiberated.blacktooth"
                                 | "planetsLiberated.bookworld"
                                 | "planetsLiberated.egyptus"
                                 | "planetsLiberated.penitentiary"
-                                | "planetsLiberated.safari"
-                                | "scrollsRead.blacktooth"
-                                | "scrollsRead.egyptus"
-                                | "scrollsRead.penitentiary"
-                                | "scrollsRead.safari"
-                                | "scrollsRead.bag"
-                                | "scrollsRead.doughnuts"
-                                | "scrollsRead.hooter"
-                                | "scrollsRead.head"
-                                | "scrollsRead.heels"
-                                | "scrollsRead.teleportBack"
-                                | "scrollsRead.historyOfTheBlacktoothEmpire"
-                                | "scrollsRead.theGame"
-                                | "scrollsRead.bookWorld"
-                                | "scrollsRead.reincarnationFish"
-                                | "scrollsRead.cuddlyStuffedWhiteRabbits"
-                                | "scrollsRead.crowns"
-                                | "scrollsRead.teleports"
-                                | "scrollsRead.springs"
-                                | "scrollsRead.switches"
-                                | "scrollsRead.conveyorBelts"
-                                | "scrollsRead.hushPuppies"
-                                | "scrollsRead.theEmperorsGuardian"
-                                | "scrollsRead.swopKey"
-                                | "scrollsRead.hintsAndTips"
-                                | "scrollsRead.credits"
-                                | "scrollsRead.installPwa"
-                                | "scrollsRead.installNative"
-                                | "freeCharacters.head"
-                                | "freeCharacters.heels";
+                                | "planetsLiberated.safari";
                               /**
                                * an item in the destination room this teleporter should go to - the
                                * player will be moved to atop this item
@@ -3132,43 +2831,11 @@ export type RoomJsonSchema = {
                                 z?: number;
                               };
                               activatedOnStoreValue?:
-                                | "planetsLiberated"
-                                | "scrollsRead"
-                                | "freeCharacters"
                                 | "planetsLiberated.blacktooth"
                                 | "planetsLiberated.bookworld"
                                 | "planetsLiberated.egyptus"
                                 | "planetsLiberated.penitentiary"
-                                | "planetsLiberated.safari"
-                                | "scrollsRead.blacktooth"
-                                | "scrollsRead.egyptus"
-                                | "scrollsRead.penitentiary"
-                                | "scrollsRead.safari"
-                                | "scrollsRead.bag"
-                                | "scrollsRead.doughnuts"
-                                | "scrollsRead.hooter"
-                                | "scrollsRead.head"
-                                | "scrollsRead.heels"
-                                | "scrollsRead.teleportBack"
-                                | "scrollsRead.historyOfTheBlacktoothEmpire"
-                                | "scrollsRead.theGame"
-                                | "scrollsRead.bookWorld"
-                                | "scrollsRead.reincarnationFish"
-                                | "scrollsRead.cuddlyStuffedWhiteRabbits"
-                                | "scrollsRead.crowns"
-                                | "scrollsRead.teleports"
-                                | "scrollsRead.springs"
-                                | "scrollsRead.switches"
-                                | "scrollsRead.conveyorBelts"
-                                | "scrollsRead.hushPuppies"
-                                | "scrollsRead.theEmperorsGuardian"
-                                | "scrollsRead.swopKey"
-                                | "scrollsRead.hintsAndTips"
-                                | "scrollsRead.credits"
-                                | "scrollsRead.installPwa"
-                                | "scrollsRead.installNative"
-                                | "freeCharacters.head"
-                                | "freeCharacters.heels";
+                                | "planetsLiberated.safari";
                               /**
                                * where in the destination room this teleporter should go - usually
                                * to atop another teleporter, but could be anywhere.
@@ -3476,43 +3143,11 @@ export type RoomJsonSchema = {
                                 z?: number;
                               };
                               activatedOnStoreValue?:
-                                | "planetsLiberated"
-                                | "scrollsRead"
-                                | "freeCharacters"
                                 | "planetsLiberated.blacktooth"
                                 | "planetsLiberated.bookworld"
                                 | "planetsLiberated.egyptus"
                                 | "planetsLiberated.penitentiary"
-                                | "planetsLiberated.safari"
-                                | "scrollsRead.blacktooth"
-                                | "scrollsRead.egyptus"
-                                | "scrollsRead.penitentiary"
-                                | "scrollsRead.safari"
-                                | "scrollsRead.bag"
-                                | "scrollsRead.doughnuts"
-                                | "scrollsRead.hooter"
-                                | "scrollsRead.head"
-                                | "scrollsRead.heels"
-                                | "scrollsRead.teleportBack"
-                                | "scrollsRead.historyOfTheBlacktoothEmpire"
-                                | "scrollsRead.theGame"
-                                | "scrollsRead.bookWorld"
-                                | "scrollsRead.reincarnationFish"
-                                | "scrollsRead.cuddlyStuffedWhiteRabbits"
-                                | "scrollsRead.crowns"
-                                | "scrollsRead.teleports"
-                                | "scrollsRead.springs"
-                                | "scrollsRead.switches"
-                                | "scrollsRead.conveyorBelts"
-                                | "scrollsRead.hushPuppies"
-                                | "scrollsRead.theEmperorsGuardian"
-                                | "scrollsRead.swopKey"
-                                | "scrollsRead.hintsAndTips"
-                                | "scrollsRead.credits"
-                                | "scrollsRead.installPwa"
-                                | "scrollsRead.installNative"
-                                | "freeCharacters.head"
-                                | "freeCharacters.heels";
+                                | "planetsLiberated.safari";
                               /**
                                * an item in the destination room this teleporter should go to - the
                                * player will be moved to atop this item
@@ -3536,43 +3171,11 @@ export type RoomJsonSchema = {
                                 z?: number;
                               };
                               activatedOnStoreValue?:
-                                | "planetsLiberated"
-                                | "scrollsRead"
-                                | "freeCharacters"
                                 | "planetsLiberated.blacktooth"
                                 | "planetsLiberated.bookworld"
                                 | "planetsLiberated.egyptus"
                                 | "planetsLiberated.penitentiary"
-                                | "planetsLiberated.safari"
-                                | "scrollsRead.blacktooth"
-                                | "scrollsRead.egyptus"
-                                | "scrollsRead.penitentiary"
-                                | "scrollsRead.safari"
-                                | "scrollsRead.bag"
-                                | "scrollsRead.doughnuts"
-                                | "scrollsRead.hooter"
-                                | "scrollsRead.head"
-                                | "scrollsRead.heels"
-                                | "scrollsRead.teleportBack"
-                                | "scrollsRead.historyOfTheBlacktoothEmpire"
-                                | "scrollsRead.theGame"
-                                | "scrollsRead.bookWorld"
-                                | "scrollsRead.reincarnationFish"
-                                | "scrollsRead.cuddlyStuffedWhiteRabbits"
-                                | "scrollsRead.crowns"
-                                | "scrollsRead.teleports"
-                                | "scrollsRead.springs"
-                                | "scrollsRead.switches"
-                                | "scrollsRead.conveyorBelts"
-                                | "scrollsRead.hushPuppies"
-                                | "scrollsRead.theEmperorsGuardian"
-                                | "scrollsRead.swopKey"
-                                | "scrollsRead.hintsAndTips"
-                                | "scrollsRead.credits"
-                                | "scrollsRead.installPwa"
-                                | "scrollsRead.installNative"
-                                | "freeCharacters.head"
-                                | "freeCharacters.heels";
+                                | "planetsLiberated.safari";
                               /**
                                * where in the destination room this teleporter should go - usually
                                * to atop another teleporter, but could be anywhere.
@@ -3740,43 +3343,11 @@ export type RoomJsonSchema = {
                 z?: number;
               };
               activatedOnStoreValue?:
-                | "planetsLiberated"
-                | "scrollsRead"
-                | "freeCharacters"
                 | "planetsLiberated.blacktooth"
                 | "planetsLiberated.bookworld"
                 | "planetsLiberated.egyptus"
                 | "planetsLiberated.penitentiary"
-                | "planetsLiberated.safari"
-                | "scrollsRead.blacktooth"
-                | "scrollsRead.egyptus"
-                | "scrollsRead.penitentiary"
-                | "scrollsRead.safari"
-                | "scrollsRead.bag"
-                | "scrollsRead.doughnuts"
-                | "scrollsRead.hooter"
-                | "scrollsRead.head"
-                | "scrollsRead.heels"
-                | "scrollsRead.teleportBack"
-                | "scrollsRead.historyOfTheBlacktoothEmpire"
-                | "scrollsRead.theGame"
-                | "scrollsRead.bookWorld"
-                | "scrollsRead.reincarnationFish"
-                | "scrollsRead.cuddlyStuffedWhiteRabbits"
-                | "scrollsRead.crowns"
-                | "scrollsRead.teleports"
-                | "scrollsRead.springs"
-                | "scrollsRead.switches"
-                | "scrollsRead.conveyorBelts"
-                | "scrollsRead.hushPuppies"
-                | "scrollsRead.theEmperorsGuardian"
-                | "scrollsRead.swopKey"
-                | "scrollsRead.hintsAndTips"
-                | "scrollsRead.credits"
-                | "scrollsRead.installPwa"
-                | "scrollsRead.installNative"
-                | "freeCharacters.head"
-                | "freeCharacters.heels";
+                | "planetsLiberated.safari";
               /**
                * an item in the destination room this teleporter should go to - the
                * player will be moved to atop this item
@@ -3800,43 +3371,11 @@ export type RoomJsonSchema = {
                 z?: number;
               };
               activatedOnStoreValue?:
-                | "planetsLiberated"
-                | "scrollsRead"
-                | "freeCharacters"
                 | "planetsLiberated.blacktooth"
                 | "planetsLiberated.bookworld"
                 | "planetsLiberated.egyptus"
                 | "planetsLiberated.penitentiary"
-                | "planetsLiberated.safari"
-                | "scrollsRead.blacktooth"
-                | "scrollsRead.egyptus"
-                | "scrollsRead.penitentiary"
-                | "scrollsRead.safari"
-                | "scrollsRead.bag"
-                | "scrollsRead.doughnuts"
-                | "scrollsRead.hooter"
-                | "scrollsRead.head"
-                | "scrollsRead.heels"
-                | "scrollsRead.teleportBack"
-                | "scrollsRead.historyOfTheBlacktoothEmpire"
-                | "scrollsRead.theGame"
-                | "scrollsRead.bookWorld"
-                | "scrollsRead.reincarnationFish"
-                | "scrollsRead.cuddlyStuffedWhiteRabbits"
-                | "scrollsRead.crowns"
-                | "scrollsRead.teleports"
-                | "scrollsRead.springs"
-                | "scrollsRead.switches"
-                | "scrollsRead.conveyorBelts"
-                | "scrollsRead.hushPuppies"
-                | "scrollsRead.theEmperorsGuardian"
-                | "scrollsRead.swopKey"
-                | "scrollsRead.hintsAndTips"
-                | "scrollsRead.credits"
-                | "scrollsRead.installPwa"
-                | "scrollsRead.installNative"
-                | "freeCharacters.head"
-                | "freeCharacters.heels";
+                | "planetsLiberated.safari";
               /**
                * where in the destination room this teleporter should go - usually
                * to atop another teleporter, but could be anywhere.
@@ -4368,43 +3907,11 @@ export type RoomJsonSchema = {
                             z?: number;
                           };
                           activatedOnStoreValue?:
-                            | "planetsLiberated"
-                            | "scrollsRead"
-                            | "freeCharacters"
                             | "planetsLiberated.blacktooth"
                             | "planetsLiberated.bookworld"
                             | "planetsLiberated.egyptus"
                             | "planetsLiberated.penitentiary"
-                            | "planetsLiberated.safari"
-                            | "scrollsRead.blacktooth"
-                            | "scrollsRead.egyptus"
-                            | "scrollsRead.penitentiary"
-                            | "scrollsRead.safari"
-                            | "scrollsRead.bag"
-                            | "scrollsRead.doughnuts"
-                            | "scrollsRead.hooter"
-                            | "scrollsRead.head"
-                            | "scrollsRead.heels"
-                            | "scrollsRead.teleportBack"
-                            | "scrollsRead.historyOfTheBlacktoothEmpire"
-                            | "scrollsRead.theGame"
-                            | "scrollsRead.bookWorld"
-                            | "scrollsRead.reincarnationFish"
-                            | "scrollsRead.cuddlyStuffedWhiteRabbits"
-                            | "scrollsRead.crowns"
-                            | "scrollsRead.teleports"
-                            | "scrollsRead.springs"
-                            | "scrollsRead.switches"
-                            | "scrollsRead.conveyorBelts"
-                            | "scrollsRead.hushPuppies"
-                            | "scrollsRead.theEmperorsGuardian"
-                            | "scrollsRead.swopKey"
-                            | "scrollsRead.hintsAndTips"
-                            | "scrollsRead.credits"
-                            | "scrollsRead.installPwa"
-                            | "scrollsRead.installNative"
-                            | "freeCharacters.head"
-                            | "freeCharacters.heels";
+                            | "planetsLiberated.safari";
                           /**
                            * an item in the destination room this teleporter should go to - the
                            * player will be moved to atop this item
@@ -4428,43 +3935,11 @@ export type RoomJsonSchema = {
                             z?: number;
                           };
                           activatedOnStoreValue?:
-                            | "planetsLiberated"
-                            | "scrollsRead"
-                            | "freeCharacters"
                             | "planetsLiberated.blacktooth"
                             | "planetsLiberated.bookworld"
                             | "planetsLiberated.egyptus"
                             | "planetsLiberated.penitentiary"
-                            | "planetsLiberated.safari"
-                            | "scrollsRead.blacktooth"
-                            | "scrollsRead.egyptus"
-                            | "scrollsRead.penitentiary"
-                            | "scrollsRead.safari"
-                            | "scrollsRead.bag"
-                            | "scrollsRead.doughnuts"
-                            | "scrollsRead.hooter"
-                            | "scrollsRead.head"
-                            | "scrollsRead.heels"
-                            | "scrollsRead.teleportBack"
-                            | "scrollsRead.historyOfTheBlacktoothEmpire"
-                            | "scrollsRead.theGame"
-                            | "scrollsRead.bookWorld"
-                            | "scrollsRead.reincarnationFish"
-                            | "scrollsRead.cuddlyStuffedWhiteRabbits"
-                            | "scrollsRead.crowns"
-                            | "scrollsRead.teleports"
-                            | "scrollsRead.springs"
-                            | "scrollsRead.switches"
-                            | "scrollsRead.conveyorBelts"
-                            | "scrollsRead.hushPuppies"
-                            | "scrollsRead.theEmperorsGuardian"
-                            | "scrollsRead.swopKey"
-                            | "scrollsRead.hintsAndTips"
-                            | "scrollsRead.credits"
-                            | "scrollsRead.installPwa"
-                            | "scrollsRead.installNative"
-                            | "freeCharacters.head"
-                            | "freeCharacters.heels";
+                            | "planetsLiberated.safari";
                           /**
                            * where in the destination room this teleporter should go - usually
                            * to atop another teleporter, but could be anywhere.
@@ -4752,43 +4227,11 @@ export type RoomJsonSchema = {
                             z?: number;
                           };
                           activatedOnStoreValue?:
-                            | "planetsLiberated"
-                            | "scrollsRead"
-                            | "freeCharacters"
                             | "planetsLiberated.blacktooth"
                             | "planetsLiberated.bookworld"
                             | "planetsLiberated.egyptus"
                             | "planetsLiberated.penitentiary"
-                            | "planetsLiberated.safari"
-                            | "scrollsRead.blacktooth"
-                            | "scrollsRead.egyptus"
-                            | "scrollsRead.penitentiary"
-                            | "scrollsRead.safari"
-                            | "scrollsRead.bag"
-                            | "scrollsRead.doughnuts"
-                            | "scrollsRead.hooter"
-                            | "scrollsRead.head"
-                            | "scrollsRead.heels"
-                            | "scrollsRead.teleportBack"
-                            | "scrollsRead.historyOfTheBlacktoothEmpire"
-                            | "scrollsRead.theGame"
-                            | "scrollsRead.bookWorld"
-                            | "scrollsRead.reincarnationFish"
-                            | "scrollsRead.cuddlyStuffedWhiteRabbits"
-                            | "scrollsRead.crowns"
-                            | "scrollsRead.teleports"
-                            | "scrollsRead.springs"
-                            | "scrollsRead.switches"
-                            | "scrollsRead.conveyorBelts"
-                            | "scrollsRead.hushPuppies"
-                            | "scrollsRead.theEmperorsGuardian"
-                            | "scrollsRead.swopKey"
-                            | "scrollsRead.hintsAndTips"
-                            | "scrollsRead.credits"
-                            | "scrollsRead.installPwa"
-                            | "scrollsRead.installNative"
-                            | "freeCharacters.head"
-                            | "freeCharacters.heels";
+                            | "planetsLiberated.safari";
                           /**
                            * an item in the destination room this teleporter should go to - the
                            * player will be moved to atop this item
@@ -4812,43 +4255,11 @@ export type RoomJsonSchema = {
                             z?: number;
                           };
                           activatedOnStoreValue?:
-                            | "planetsLiberated"
-                            | "scrollsRead"
-                            | "freeCharacters"
                             | "planetsLiberated.blacktooth"
                             | "planetsLiberated.bookworld"
                             | "planetsLiberated.egyptus"
                             | "planetsLiberated.penitentiary"
-                            | "planetsLiberated.safari"
-                            | "scrollsRead.blacktooth"
-                            | "scrollsRead.egyptus"
-                            | "scrollsRead.penitentiary"
-                            | "scrollsRead.safari"
-                            | "scrollsRead.bag"
-                            | "scrollsRead.doughnuts"
-                            | "scrollsRead.hooter"
-                            | "scrollsRead.head"
-                            | "scrollsRead.heels"
-                            | "scrollsRead.teleportBack"
-                            | "scrollsRead.historyOfTheBlacktoothEmpire"
-                            | "scrollsRead.theGame"
-                            | "scrollsRead.bookWorld"
-                            | "scrollsRead.reincarnationFish"
-                            | "scrollsRead.cuddlyStuffedWhiteRabbits"
-                            | "scrollsRead.crowns"
-                            | "scrollsRead.teleports"
-                            | "scrollsRead.springs"
-                            | "scrollsRead.switches"
-                            | "scrollsRead.conveyorBelts"
-                            | "scrollsRead.hushPuppies"
-                            | "scrollsRead.theEmperorsGuardian"
-                            | "scrollsRead.swopKey"
-                            | "scrollsRead.hintsAndTips"
-                            | "scrollsRead.credits"
-                            | "scrollsRead.installPwa"
-                            | "scrollsRead.installNative"
-                            | "freeCharacters.head"
-                            | "freeCharacters.heels";
+                            | "planetsLiberated.safari";
                           /**
                            * where in the destination room this teleporter should go - usually
                            * to atop another teleporter, but could be anywhere.

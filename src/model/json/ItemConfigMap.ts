@@ -94,7 +94,13 @@ export type DoorConfig<RoomId extends string> = {
 };
 
 type TeleporterConfig<RoomId extends string> = ConsolidatableConfig & {
-  activatedOnStoreValue?: GameInPlayBooleanPaths;
+  // narrowed to the crown (planet-liberated) paths actually used in room json;
+  // `Subset` enforces each is a real toggleable boolean leaf, keeping the
+  // generated schema tiny rather than listing every store boolean path
+  activatedOnStoreValue?: Subset<
+    GameInPlayBooleanPaths,
+    `planetsLiberated.${PlanetName}`
+  >;
 } & (
     | {
         /**
