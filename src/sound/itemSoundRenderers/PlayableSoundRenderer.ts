@@ -15,9 +15,10 @@ import {
 } from "../soundUtils/createBracketedSound";
 import { FreeItemSoundRenderer } from "./generic/FreeItemSoundRenderer";
 
-const walkGain = 0.8;
+const walkGain = 0.1;
+const fallGain = 0.3;
 const carryGain = 1.2;
-const jumpGain = 0.8;
+const jumpGain = 0.3;
 
 export class PlayableSoundRenderer implements ItemSoundRenderer<CharacterName> {
   public readonly output: GainNode = audioCtx.createGain();
@@ -71,6 +72,7 @@ export class PlayableSoundRenderer implements ItemSoundRenderer<CharacterName> {
           loop: {
             soundId: `${name === "headOverHeels" ? "heels" : name}Walk`,
           },
+          loopAlwaysFadesIn: true,
         },
         this.#walkChannel,
       );
@@ -95,8 +97,13 @@ export class PlayableSoundRenderer implements ItemSoundRenderer<CharacterName> {
     this.#jumpBracketedSound = createBracketedSound(
       {
         start: {
-          soundId: `${name === "headOverHeels" ? "head" : name}Jump`,
+          soundId: `${name === "headOverHeels" ? "head" : name}JumpStart`,
         },
+        loop: {
+          soundId: `${name === "headOverHeels" ? "head" : name}Jumping`,
+        },
+        startAndLoopTogether: true,
+        loopAlwaysFadesIn: true,
       },
       this.#jumpChannel,
     );
@@ -109,7 +116,7 @@ export class PlayableSoundRenderer implements ItemSoundRenderer<CharacterName> {
     this.#freeItemSoundRenderer = new FreeItemSoundRenderer(renderContext, {
       fall:
         name === "headOverHeels" || name === "head" ?
-          { soundId: "headFall" }
+          { soundId: "glide", gain: fallGain }
         : undefined,
       standingOn: { soundId: "softBump" },
       collision: { soundId: "softBump", gain: 0.5 },

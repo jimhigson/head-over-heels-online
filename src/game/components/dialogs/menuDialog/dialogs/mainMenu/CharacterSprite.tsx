@@ -1,7 +1,7 @@
 import { useEffect, useRef, useState } from "preact/hooks";
 
+import { exportedSfxUrls } from "../../../../../../_generated/sfxdex/sfx";
 import { type IndividualCharacterName } from "../../../../../../model/modelTypes";
-import { soundUrls } from "../../../../../../sound/soundUrls";
 import { type TextureTailwindClass } from "../../../../../../sprites/spritesheet/spritesheetData/TextureTailwindClass";
 import {
   type DirectionXy8,
@@ -98,7 +98,7 @@ export const CharacterSprite = ({
     action,
   });
 
-  const walkSoundUrl = soundUrls[`${character}Walk`];
+  const walkSoundUrl = exportedSfxUrls[`${character}Walk`];
 
   return (
     <div

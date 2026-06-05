@@ -28,9 +28,10 @@ export type FreeItemSoundRendererConstructorOptions = {
 
 const defaultFallSoundOptions: BracketedSegmentOptions = {
   soundId: "fall",
+  gain: 0.3,
 };
 const defaultPushedSoundOptions: BracketedSegmentOptions = {
-  soundId: "woodScrape",
+  soundId: "scrape",
   gain: 0.8,
   randomiseStartPoint: true,
   playbackRate: 0.8,

@@ -18,10 +18,10 @@ export type RoomJsonSchema = {
    * TODO: rename to scenery
    */
   planet:
-    | "jail"
     | "blacktooth"
     | "bookworld"
     | "egyptus"
+    | "jail"
     | "market"
     | "moonbase"
     | "penitentiary"
@@ -31,7 +31,7 @@ export type RoomJsonSchema = {
    * colours in each room
    */
   color: {
-    hue: "yellow" | "cyan" | "green" | "magenta" | "white";
+    hue: "cyan" | "green" | "magenta" | "white" | "yellow";
     shade: "basic" | "dimmed";
   };
   roomAbove?: string;
@@ -53,50 +53,6 @@ export type RoomJsonSchema = {
    */
   items: Record<
     string,
-    | {
-        type: "wall";
-        position: {
-          x: number;
-          y: number;
-          z: number;
-        };
-        config:
-          | {
-              direction: "right";
-              times?: {
-                y: number;
-              };
-            }
-          | {
-              /**
-               * this wall would normally be found on the (invisible) towards side of the room
-               */
-              direction: "towards";
-              times?: {
-                x: number;
-              };
-            }
-          | {
-              /**
-               * this wall would normally be found/rendered on the away side of the room
-               */
-              direction: "away";
-              /**
-               * the tiles to show - the length of this array also determines the size of the wall
-               */
-              tiles: any[];
-            }
-          | {
-              /**
-               * this wall would normally be found/rendered on the left side of the room
-               */
-              direction: "left";
-              /**
-               * the tiles to show - the length of this array also determines the size of the wall
-               */
-              tiles: any[];
-            };
-      }
     | {
         type: "ball";
         position: {
@@ -1694,22 +1650,24 @@ export type RoomJsonSchema = {
            */
           sound?:
             | null
+            | "blacktooth"
+            | "bookworld"
+            | "egyptus"
+            | "market"
+            | "moonbase"
+            | "penitentiary"
+            | "loop"
+            | "safari"
             | "door"
             | "hooter"
-            | "roomEntry.blacktooth"
-            | "roomEntry.bookworld"
-            | "roomEntry.egyptus"
-            | "roomEntry.market"
-            | "roomEntry.moonbase"
-            | "roomEntry.penitentiary"
-            | "roomEntry.safari"
             | "activate"
             | "ballHit"
-            | "bonus"
             | "bubbleRobotLoop"
             | "buttonOff"
             | "buttonOn"
             | "carry"
+            | "collectedItem"
+            | "collectedRabbit"
             | "conveyorEnd"
             | "conveyorLoop"
             | "conveyorStart"
@@ -1724,32 +1682,35 @@ export type RoomJsonSchema = {
             | "fall"
             | "fanfare"
             | "glassClink"
+            | "glide"
+            | "glitchRobot"
             | "headAccent"
-            | "headFall"
-            | "headJump"
+            | "headJumping"
+            | "headJumpStart"
             | "headOverHeelsAccent"
             | "headWalk"
-            | "heavyMetalScraping"
+            | "heavyScrape"
             | "heelsAccent"
-            | "heelsJump"
+            | "heelsJumping"
+            | "heelsJumpStart"
             | "heelsWalk"
             | "helicopter"
             | "hushPuppyVanish"
-            | "iceScrape"
+            | "iceSlide"
+            | "intro"
             | "jetpackLoop"
             | "jetpackTurnaround"
-            | "landing"
             | "lowerSmallMotorLoop"
             | "lowHum"
             | "menuSofter"
-            | "metalHit"
+            | "metalClang"
             | "mojoLoop"
             | "mojoTurn"
             | "monkeyTurn"
             | "moonbaseDoor"
-            | "robotBeepingLoop"
             | "robotWhirLoop"
             | "rollingBallLoop"
+            | "scrape"
             | "scrollOpen"
             | "servoLoop"
             | "servoStart"
@@ -1766,8 +1727,7 @@ export type RoomJsonSchema = {
             | "teleportWarningSiren"
             | "toasterPopUp"
             | "toasterPushDown"
-            | "uhOh"
-            | "woodScrape";
+            | "uhOh";
         };
       }
     | {
@@ -4412,6 +4372,50 @@ export type RoomJsonSchema = {
           )[];
         };
       }
+    | {
+        type: "wall";
+        position: {
+          x: number;
+          y: number;
+          z: number;
+        };
+        config:
+          | {
+              direction: "right";
+              times?: {
+                y: number;
+              };
+            }
+          | {
+              /**
+               * this wall would normally be found on the (invisible) towards side of the room
+               */
+              direction: "towards";
+              times?: {
+                x: number;
+              };
+            }
+          | {
+              /**
+               * this wall would normally be found/rendered on the away side of the room
+               */
+              direction: "away";
+              /**
+               * the tiles to show - the length of this array also determines the size of the wall
+               */
+              tiles: any[];
+            }
+          | {
+              /**
+               * this wall would normally be found/rendered on the left side of the room
+               */
+              direction: "left";
+              /**
+               * the tiles to show - the length of this array also determines the size of the wall
+               */
+              tiles: any[];
+            };
+      }
   >;
   meta?: {
     /**
@@ -4463,7 +4467,7 @@ export type RoomJsonSchema = {
       };
     };
     label?: {
-      direction: "right" | "towards" | "away" | "left";
+      direction: "away" | "left" | "right" | "towards";
       text: string;
     };
     /**

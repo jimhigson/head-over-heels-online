@@ -16,8 +16,8 @@ export class PushableBlockSoundRenderer
   constructor(renderContext: ItemSoundRenderContext<"pushableBlock">) {
     this.renderContext = renderContext;
     this.#freeItemSoundRenderer = new FreeItemSoundRenderer(renderContext, {
-      standingOn: { soundId: "metalHit" },
-      pushed: { soundId: "heavyMetalScraping", gain: 0.4 },
+      standingOn: { soundId: "metalClang" },
+      pushed: { soundId: "heavyScrape", gain: 0.4 },
     });
     this.#freeItemSoundRenderer.output.connect(this.output);
   }

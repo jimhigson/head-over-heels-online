@@ -71,7 +71,7 @@ export const setupE2ePage = async (
       page.locator('[data-dialog-id="errorCaught"]'),
       async () => {
         const stackTrace = await page
-          .locator('[data-dialog-id="errorCaught"] pre')
+          .locator('[data-test-id="error-report"]')
           .textContent()
           .catch(() => "(could not read stack trace)");
         throw new Error(

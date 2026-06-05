@@ -20,11 +20,38 @@ export class BubblesSoundRenderer implements ItemSoundRenderer<"bubbles"> {
       case "pickup": {
         // for fish needs to be: "seaShanty"
 
-        if (was.gives !== "scroll") {
-          createAudioNode({
-            soundId: "bonus",
-            connectTo: this.output,
-          });
+        switch (was.gives) {
+          // which sound we choose matches the choices in the original game
+          // except scrolls since they didn't exist:
+          case "scroll":
+            // sound handled by the dialog it opens
+            break;
+          case "reincarnation":
+          case "bag":
+          case "hooter":
+          case "doughnuts":
+            createAudioNode({
+              soundId: "collectedItem",
+              connectTo: this.output,
+            });
+            break;
+          case "extra-life":
+          case "fast":
+          case "jumps":
+          case "shield":
+            createAudioNode({
+              soundId: "collectedRabbit",
+              connectTo: this.output,
+            });
+            break;
+          case "crown":
+            createAudioNode({
+              soundId: "fanfare",
+              connectTo: this.output,
+            });
+            break;
+          default:
+            was.gives satisfies never;
         }
         break;
       }

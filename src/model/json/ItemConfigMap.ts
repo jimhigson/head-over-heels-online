@@ -1,6 +1,6 @@
+import { type ExportedSoundId } from "../../_generated/sfxdex/sfx";
 import { type FreeItemTypes } from "../../game/physics/itemPredicates";
 import { type MarkdownPageName } from "../../manual/pages";
-import { type SoundId } from "../../sound/soundUrls";
 import { type PlanetName, type SceneryName } from "../../sprites/planets";
 import { type GameInPlayBooleanPaths } from "../../store/slices/gameInPlay/gameInPlaySlice";
 import { type Subset } from "../../utils/Subset";
@@ -265,7 +265,7 @@ export type ItemConfigMap<
     offset?: Partial<Xyz>;
 
     /** The sound to play on emit, undefined to use the default sound, or null for no sound */
-    sound?: null | SoundId;
+    sound?: ExportedSoundId | null;
   };
   firedDoughnut: {
     // if the doughnut is given via json, can be used to give its direction

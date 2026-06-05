@@ -1,6 +1,6 @@
+import { exportedSfxUrls } from "../../../_generated/sfxdex/sfx";
 import { audioCtx } from "../../../sound/audioCtx";
 import { loadAndDecode } from "../../../sound/loadAndDecode";
-import { soundUrls } from "../../../sound/soundUrls";
 import { detectDeviceType } from "../../../utils/detectEnv/detectDeviceType";
 import { startAppListening } from "../../listenerMiddleware";
 import { selectIsSoundMuted } from "./gameMenusSelectors";
@@ -18,8 +18,8 @@ export const playMenuSoundsOnStoreChanges = () => {
   let menuBuffer: AudioBuffer | undefined;
   let scrollOpenBuffer: AudioBuffer | undefined;
 
-  loadAndDecode(soundUrls.menuSofter).then((b) => (menuBuffer = b));
-  loadAndDecode(soundUrls.scrollOpen).then((b) => (scrollOpenBuffer = b));
+  loadAndDecode(exportedSfxUrls.menuSofter).then((b) => (menuBuffer = b));
+  loadAndDecode(exportedSfxUrls.scrollOpen).then((b) => (scrollOpenBuffer = b));
 
   let lastPlayTime = 0;
   const minIntervalMs = 200;

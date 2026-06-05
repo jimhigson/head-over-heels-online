@@ -111,6 +111,9 @@ export default defineConfig(({ mode: _mode }) => {
       cssTarget: "esnext", // Don't transpile CSS for modern browsers
 
       minify: mode !== "visual-regression",
+      // source maps in visual-regression builds so error-dialog stack traces
+      // map back to the original source files rather than the bundled output
+      sourcemap: mode === "visual-regression",
       rolldownOptions: {
         output:
           mode === "visual-regression" ?

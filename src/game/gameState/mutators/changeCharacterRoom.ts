@@ -1,5 +1,6 @@
 import { type AllUnionFields } from "type-fest";
 
+import { isSoundId } from "../../../_generated/sfxdex/sfx";
 import {
   type ItemInPlay,
   type UnionOfAllItemInPlayTypes,
@@ -15,7 +16,6 @@ import {
   roomSpatialIndexKey,
   type RoomState,
 } from "../../../model/RoomState";
-import { isSoundId } from "../../../sound/soundUrls";
 import {
   characterRoomChange,
   roomExplored,

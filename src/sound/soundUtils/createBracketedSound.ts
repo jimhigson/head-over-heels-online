@@ -36,6 +36,7 @@ export const createBracketedSound = <Value = boolean>(
     change,
     loop,
     stop,
+    loopAlwaysFadesIn = false,
     startAndLoopTogether = false,
     noStartOnFirstFrame = true,
   }: CreateBracketedEventOptions,
@@ -68,7 +69,12 @@ export const createBracketedSound = <Value = boolean>(
               // play the loop while the start is already playing, without stopping the start:
 
               currentSound = createAudioNode({ ...loop, loop: true });
-              currentGain = connectWithGain(currentSound, loop, connectTo);
+              currentGain = connectWithGain(
+                currentSound,
+                loop,
+                connectTo,
+                loopAlwaysFadesIn,
+              );
             } else {
               // once the start sound finishes, start the 'loop' sound:
               currentSound.onended = () => {
@@ -88,14 +94,24 @@ export const createBracketedSound = <Value = boolean>(
                   ...loop,
                   loop: true,
                 });
-                currentGain = connectWithGain(currentSound, loop, connectTo);
+                currentGain = connectWithGain(
+                  currentSound,
+                  loop,
+                  connectTo,
+                  loopAlwaysFadesIn,
+                );
               };
             }
           }
         } else if (loop !== undefined) {
           // no start but we have a loop - play the loop on activation
           currentSound = createAudioNode({ ...loop, loop: true });
-          currentGain = connectWithGain(currentSound, loop, connectTo);
+          currentGain = connectWithGain(
+            currentSound,
+            loop,
+            connectTo,
+            loopAlwaysFadesIn,
+          );
         }
       } else {
         // stopping

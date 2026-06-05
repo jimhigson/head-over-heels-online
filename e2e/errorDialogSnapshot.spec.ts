@@ -59,7 +59,7 @@ test.beforeAll(async () => {
 });
 
 const errorDialogSelector = 'dialog[data-dialog-id="errorCaught"]';
-const stackTraceSelector = `${errorDialogSelector} pre`;
+const stackTraceSelector = '[data-test-id="error-report"]';
 
 const blockStackColourised: SpriteOption = {
   name: "BlockStack",

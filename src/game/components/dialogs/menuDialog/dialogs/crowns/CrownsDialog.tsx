@@ -1,4 +1,4 @@
-import rockMusicUrl from "../../../../../../../sounds/music/rock.mp3";
+import { introSoundUrl } from "../../../../../../_generated/sfxdex/sfx";
 import { useAppSelector } from "../../../../../../store/hooks";
 import { useIsGameLoading } from "../../../../../../store/hooks/loadingHooks";
 import { selectIsSoundMuted } from "../../../../../../store/slices/gameMenus/gameMenusSelectors";
@@ -35,7 +35,7 @@ export const CrownsDialog = ({
         onClick={isLoading ? undefined : closeDialog}
         dialogId="crowns"
       >
-        {shouldPlayMusic && <audio src={rockMusicUrl} autoPlay loop />}
+        {shouldPlayMusic && <audio src={introSoundUrl} autoPlay loop />}
         <FiveCrownsDisplay />
         {isLoading && (
           <div>

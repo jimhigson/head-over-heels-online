@@ -1,6 +1,9 @@
+import {
+  type ExportedSoundId,
+  isSoundId,
+} from "../../../_generated/sfxdex/sfx";
 import { type ItemInPlay } from "../../../model/ItemInPlay";
 import { type RoomJson, roomJsonItemsIterable } from "../../../model/RoomJson";
-import { isSoundId, type SoundId } from "../../../sound/soundUrls";
 import { type SceneryName } from "../../../sprites/planets";
 import { defaultUserSettings } from "../../../store/slices/userSettings/defaultUserSettings";
 import {
@@ -13,7 +16,7 @@ import { nonRenderingItemFixedZIndex } from "../../render/sortZ/fixedZIndexes";
 import { defaultBaseState } from "./itemDefaultStates";
 
 const roomEntrySoundPos: Xyz = blockXyzToFineXyz({ x: -2, y: -2, z: -2 });
-const roomEntryGain = 0.3;
+const roomEntryGain = 1;
 const roomEntryPlaybackRate = 1.2;
 
 const resolveSoundId = (
@@ -21,7 +24,7 @@ const resolveSoundId = (
   isNewGame: boolean,
   roomEntryTunesSetting: RoomEntryTunesSetting,
   previousRoomPlanet: SceneryName | undefined,
-): SoundId | undefined => {
+): ExportedSoundId | undefined => {
   if (
     isNewGame &&
     roomJsonItemsIterable(roomJson).some(
@@ -52,7 +55,7 @@ const resolveSoundId = (
     return undefined;
   }
 
-  const roomEntrySoundId = `roomEntry.${roomJson.planet}`;
+  const roomEntrySoundId = roomJson.planet;
   return isSoundId(roomEntrySoundId) ? roomEntrySoundId : undefined;
 };
 
@@ -105,7 +108,7 @@ export const createRoomEntrySound = <
   playbackRate = 1,
   id = "roomEntrySound" as RoomItemId,
 }: {
-  soundId: SoundId;
+  soundId: ExportedSoundId;
   noSoundPan?: boolean;
   gain?: number;
   playbackRate?: number;
