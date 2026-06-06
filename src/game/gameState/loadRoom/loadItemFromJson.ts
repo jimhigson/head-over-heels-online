@@ -159,6 +159,8 @@ export function* loadItemFromJson<
         );
       }
 
+      const shadowCastTexture = loadItemShadowCast(jsonItem);
+
       yield {
         ...jsonItem,
         ...defaultItemProperties,
@@ -170,7 +172,10 @@ export function* loadItemFromJson<
             nonRenderingItemFixedZIndex
           : jsonItem.type === "floatingText" ? floatingTextFixedZIndex
           : undefined,
-        shadowCastTexture: loadItemShadowCast(jsonItem),
+        shadowCastTexture,
+        // solid full-block casters darken whatever falls entirely beneath them as a
+        // single tint rather than a shaped shadow:
+        castsWholeShadows: shadowCastTexture?.textureId === "shadow.fullBlock",
         // items that have true here are items that let a little bit of the floor below them
         // be seen while they are standing on it
         castsShadowWhileStoodOn:

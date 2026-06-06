@@ -8,6 +8,7 @@ import {
 import { type ConsolidatableConfig } from "../../../../model/json/utilityJsonConfigTypes";
 import { roomSpatialIndexKey } from "../../../../model/RoomState";
 import { store } from "../../../../store/store";
+import { epsilon } from "../../../../utils/epsilon";
 import { maybeRenderContainerToSprite } from "../../../../utils/pixi/renderContainerToSprite";
 import { renderMultipliedXy } from "../../../../utils/pixi/renderMultipliedXy";
 import { addXy, originXy, subXy } from "../../../../utils/vectors/vectors";
@@ -30,6 +31,13 @@ import { ItemAppearancePixiRenderer } from "./ItemAppearancePixiRenderer";
 import { type ItemPixiRenderer } from "./ItemPixiRenderer";
 
 const shadowAlpha = 0.66;
+
+/**
+ * grey tint applied over a wholly-shadowed item, on top of its shaped shadows. Half the
+ * darkness of the shadowAlpha black overlay: 1 - 0.66/2 = 0.67 brightness ≈ 0xab
+ */
+const wholeShadowTint = 0xab_ab_ab;
+const noTint = 0xff_ff_ff;
 
 /**
  *
@@ -56,6 +64,64 @@ const itemCastsShadow = (
   caster: UnionOfAllItemInPlayTypes<string, string>,
 ): caster is SetRequired<typeof caster, "shadowCastTexture"> =>
   caster.shadowCastTexture !== undefined;
+
+type ShadowCaster = SetRequired<
+  UnionOfAllItemInPlayTypes<string, string>,
+  "shadowCastTexture"
+>;
+
+/**
+ * true iff the receiver's xy footprint is contained within the caster's (edges may
+ * coincide) and is genuinely inset on at least two sides - so an identical footprint, or
+ * one flush on three sides, does not count. The caster's footprint is shifted by the xy
+ * part of its shadowOffset (where its shadow falls). Each aabb is already times-multiplied
+ * at load, so is used directly.
+ */
+const casterContainsReceiverXy = (
+  caster: ShadowCaster,
+  receiver: CollideableItem,
+) => {
+  const casterX = caster.state.position.x + (caster.shadowOffset?.x ?? 0);
+  const casterY = caster.state.position.y + (caster.shadowOffset?.y ?? 0);
+  const { position } = receiver.state;
+
+  // how far the caster's edge extends beyond the receiver's on each side
+  // (negative means the receiver pokes out past the caster there):
+  const overlaps = [
+    position.x - casterX,
+    casterX + caster.aabb.x - (position.x + receiver.aabb.x),
+    position.y - casterY,
+    casterY + caster.aabb.y - (position.y + receiver.aabb.y),
+  ];
+
+  // single pass (hot path - called per receiver, per caster, per frame): bail as soon as
+  // any side pokes out, and count the sides the receiver is genuinely inset on
+  let insetSides = 0;
+  for (const overlap of overlaps) {
+    if (overlap <= -epsilon) {
+      // receiver pokes out past the caster on this side - not contained
+      return false;
+    }
+    if (overlap > epsilon) {
+      insetSides++;
+    }
+  }
+  return insetSides >= 2;
+};
+
+/**
+ * true iff this caster casts a *shaped* shadow on the receiver's top surface. A caster
+ * resting directly on the surface (rather than floating above it) hides its own shadow
+ * underneath itself, so is skipped as an optimisation unless it castsShadowWhileStoodOn.
+ * This optimisation does not apply to whole-item tinting, which darkens the whole receiver
+ * rather than just the footprint hidden under the caster.
+ */
+const castsShapedShadowOnTop = (
+  caster: ShadowCaster,
+  receiver: CollideableItem,
+) =>
+  caster.castsShadowWhileStoodOn ||
+  caster.state.position.z > receiver.state.position.z + receiver.aabb.z;
 
 // Buffer to avoid allocating memory for the pseudo-item used to find shadow casters
 const spaceAboveSurfaceBuffer: WritableDeep<CollideableItem> = {
@@ -97,12 +163,21 @@ class ItemShadowRenderer<T extends ItemInPlayType>
   readonly renderContext: ItemRenderContext<T>;
   #appearance: "no-mask" | ItemShadowAppearanceOutsideView<T>;
 
+  /**
+   * the container darkened with a single tint when this item is wholly in shadow. Today
+   * this is the item's graphics (composite) container; the renderer treats it only as
+   * "the thing to tint" and does not depend on it being the parent.
+   */
+  #wholeShadowTintContainer: Container;
+
   constructor(
     renderContext: ItemRenderContext<T>,
     appearance: "no-mask" | ItemShadowAppearanceOutsideView<T>,
+    wholeShadowTintContainer: Container,
   ) {
     this.renderContext = renderContext;
     this.#appearance = appearance;
+    this.#wholeShadowTintContainer = wholeShadowTintContainer;
     this.#output.addChild(this.#shadowsContainer);
     if (
       !this.#showShadowMasks &&
@@ -225,18 +300,41 @@ class ItemShadowRenderer<T extends ItemInPlayType>
         > =>
           maybeCaster !== item &&
           itemCastsShadow(maybeCaster) &&
-          // ignore items above that are standing on and don't cast a shadow while they are:
-          (maybeCaster.castsShadowWhileStoodOn ||
-            maybeCaster.state.position.z >
-              item.state.position.z + item.aabb.z) &&
           !maybeCaster.noShadowCastOn?.includes(item.type),
       ),
+    );
+
+    // if a whole-shadow caster fully covers this item, darken the whole item with a single
+    // tint rather than rendering shaped shadows. Colourised only - uncolourised cast
+    // shadows are hard black, so a whole-item tint would erase the item into its silhouette
+    const wholeShadowed =
+      !this.renderContext.general.spriteOption.uncolourised &&
+      castersAbove
+        .values()
+        .some(
+          (caster) =>
+            caster.castsWholeShadows === true &&
+            casterContainsReceiverXy(caster, item),
+        );
+
+    // tint the whole item when wholly shadowed, on top of (not instead of) its shaped
+    // shadows, which keep rendering below:
+    this.#wholeShadowTintContainer.tint =
+      wholeShadowed ? wholeShadowTint : noTint;
+
+    // casters that cast a shaped shadow on this item's surface - excludes ones resting
+    // directly on top, whose shadow would be hidden under themselves (the stood-on
+    // optimisation, which does not apply to the whole-item tint handled above)
+    const shapedCasters = new Set(
+      castersAbove
+        .values()
+        .filter((caster) => castsShapedShadowOnTop(caster, item)),
     );
 
     let hasAnyShadows = false;
 
     for (const [previousCaster, shadowSprite] of this.#shadowSprites) {
-      if (!castersAbove.has(previousCaster)) {
+      if (!shapedCasters.has(previousCaster)) {
         // no longer casting a shadow on this item - remove the shadow sprite:
         this.#shadowsContainer.removeChild(shadowSprite);
         shadowSprite.destroy();
@@ -244,7 +342,7 @@ class ItemShadowRenderer<T extends ItemInPlayType>
       }
     }
 
-    for (const caster of castersAbove) {
+    for (const caster of shapedCasters) {
       hasAnyShadows = true;
 
       let shadowSprite = this.#shadowSprites.get(caster);
@@ -323,10 +421,15 @@ class ItemShadowRenderer<T extends ItemInPlayType>
 
 export const maybeCreateItemShadowRenderer = <T extends ItemInPlayType>(
   renderContext: ItemRenderContext<T>,
+  wholeShadowTintContainer: Container,
 ): ItemShadowRenderer<T> | undefined => {
   const appearance = itemShadowMaskAppearanceForItem(renderContext.item);
 
   return appearance === undefined ? undefined : (
-      new ItemShadowRenderer(renderContext, appearance)
+      new ItemShadowRenderer(
+        renderContext,
+        appearance,
+        wholeShadowTintContainer,
+      )
     );
 };

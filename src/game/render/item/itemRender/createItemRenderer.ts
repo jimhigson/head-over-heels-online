@@ -1,4 +1,4 @@
-import { type Container } from "pixi.js";
+import { Container } from "pixi.js";
 
 import { type ItemInPlayType } from "../../../../model/ItemInPlay";
 import { createSoundRenderer } from "../../../../sound/createSoundRenderer";
@@ -95,10 +95,19 @@ export const createItemRenderer = <T extends ItemInPlayType>(
     siblingPixiRenderers.push(mainRenderChain);
   }
 
-  // non-colourised rendering doesn't have shadows since it prevents
-  // the colour revert shader from properly identifying black/non-black pixels
-  const maybeItemShadowRenderer =
-    maybeCreateItemShadowRenderer(itemRenderContext);
+  // the container holding the item's graphics siblings (appearance + shadows). It is the
+  // tint target for whole-item shadows, so it is created here and injected into both the
+  // shadow renderer (which tints it) and the composite (which uses it as its container)
+  const graphicsContainer = new Container({
+    label: `itemGraphics ${item.id}`,
+  });
+
+  // whole-item shadow tinting is colourised-only: in uncolourised mode cast shadows are
+  // hard black, so darkening a whole item toward black would erase it into its silhouette
+  const maybeItemShadowRenderer = maybeCreateItemShadowRenderer(
+    itemRenderContext,
+    graphicsContainer,
+  );
   if (maybeItemShadowRenderer !== undefined) {
     siblingPixiRenderers.push(maybeItemShadowRenderer);
   }
@@ -113,6 +122,7 @@ export const createItemRenderer = <T extends ItemInPlayType>(
       : new CompositeItemGraphicsRenderer(
           siblingPixiRenderers,
           itemRenderContext,
+          graphicsContainer,
         );
 
     graphics = new ItemPositionRenderer(itemRenderContext, compositeRenderer);
