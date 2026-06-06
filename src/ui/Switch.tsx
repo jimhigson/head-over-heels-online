@@ -2,8 +2,8 @@ import clsx from "clsx";
 import { useCallback, useEffect, useId, useRef, useState } from "preact/hooks";
 import { type MouseEvent, type ReactNode } from "react";
 
+import { exportedSfxUrls } from "../_generated/sfxdex/sfx";
 import { BitmapText } from "../game/components/tailwindSprites/BitmapText";
-import { soundUrls } from "../sound/soundUrls";
 import { twClass } from "../utils/twClass";
 import { cn } from "./cn";
 import { enhanceTooltipWithHotkeys } from "./enhanceTooltipWithHotkeys";
@@ -79,7 +79,7 @@ export const Switch = ({
     >
       {hasChanged && (
         <audio
-          src={value ? soundUrls.setting1 : soundUrls.setting0}
+          src={value ? exportedSfxUrls.setting1 : exportedSfxUrls.setting0}
           key={`${value}`}
           autoPlay
           ref={(el) => {
@@ -139,10 +139,10 @@ const switchNErrorColours = twClass(
 );
 
 const settingSounds = [
-  soundUrls.setting0,
-  soundUrls.setting1,
-  soundUrls.setting2,
-  soundUrls.setting3,
+  exportedSfxUrls.setting0,
+  exportedSfxUrls.setting1,
+  exportedSfxUrls.setting2,
+  exportedSfxUrls.setting3,
 ] as const;
 
 export const SwitchN = <TValue extends number | string>({

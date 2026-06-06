@@ -10,7 +10,7 @@ import {
 const glassyOptions: FreeItemSoundRendererConstructorOptions = {
   collision: { soundId: "glassClink", varyPlaybackRate: true, gain: 0.8 },
   pushed: {
-    soundId: "iceScrape",
+    soundId: "iceSlide",
     varyPlaybackRate: true,
     randomiseStartPoint: true,
   },

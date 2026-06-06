@@ -28,9 +28,9 @@ type PerMonsterBracketedSoundOptions = {
 const collisionSounds: PerMonsterSounds = {
   skiHead: { soundId: "softBump" },
   turtle: { soundId: "softBump" },
-  dalek: { soundId: "metalHit", gain: 0.1 }, // <- these collide a lot so tone it down
-  homingBot: { soundId: "metalHit", gain: 0.2 },
-  computerBot: { soundId: "metalHit", gain: 0.2 },
+  dalek: { soundId: "metalClang", gain: 0.1 }, // <- these collide a lot so tone it down
+  homingBot: { soundId: "metalClang", gain: 0.2 },
+  computerBot: { soundId: "metalClang", gain: 0.2 },
 };
 const turnaroundSounds: PerMonsterSounds = {
   cyberman: { soundId: "jetpackTurnaround", gain: 1.2 },
@@ -41,7 +41,7 @@ const turnaroundSounds: PerMonsterSounds = {
 const ambientSounds: PerMonsterSounds = {
   cyberman: { soundId: "jetpackLoop", gain: 0.7 },
   emperorsGuardian: { soundId: "jetpackLoop" },
-  dalek: { soundId: "mojoLoop", gain: 0.2 },
+  dalek: { soundId: "mojoLoop", gain: 1 },
   bubbleRobot: { soundId: "bubbleRobotLoop" },
   helicopterBug: { soundId: "helicopter" },
   homingBot: { soundId: "lowHum", randomiseStartPoint: true },
@@ -54,7 +54,7 @@ const movingSounds: PerMonsterBracketedSoundOptions = {
   },
   computerBot: {
     loop: {
-      soundId: "robotBeepingLoop",
+      soundId: "glitchRobot",
       randomiseStartPoint: true,
       varyPlaybackRate: true,
     },

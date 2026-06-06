@@ -22,9 +22,9 @@ export class CharlesSoundRenderer implements ItemSoundRenderer<"charles"> {
 
   #servoBracketed = createBracketedSound(
     {
-      start: { soundId: "servoStart", playbackRate: 0.5 },
-      loop: { soundId: "servoLoop", playbackRate: 0.5 },
-      stop: { soundId: "servoStop", playbackRate: 0.5 },
+      start: { soundId: "servoStart", playbackRate: 1 },
+      loop: { soundId: "servoLoop", playbackRate: 1 },
+      stop: { soundId: "servoStop", playbackRate: 1 },
     },
     this.#servoChannel,
   );
@@ -44,8 +44,8 @@ export class CharlesSoundRenderer implements ItemSoundRenderer<"charles"> {
       this.output,
     );
     this.#freeItemSoundRenderer = new FreeItemSoundRenderer(renderContext, {
-      collision: { soundId: "metalHit", gain: 0.3 },
-      pushed: { soundId: "heavyMetalScraping", gain: 0.4 },
+      collision: { soundId: "metalClang", gain: 0.3 },
+      pushed: { soundId: "heavyScrape", gain: 0.4 },
     });
     this.#freeItemSoundRenderer.output.connect(this.output);
   }

@@ -1,9 +1,15 @@
+import { type ExportedSoundId } from "../../_generated/sfxdex/sfx";
 import { audioCtx } from "../audioCtx";
 import { loadedSounds } from "../soundsLoader";
-import { type SoundId } from "../soundUrls";
+
+/**
+ * when looping, the lead-in and lead-out at each end of the buffer that is
+ * excluded from the looped region, in seconds
+ */
+const loopLeadInOutSec = 0.02;
 
 export type CreateAudioNodeOptionsObject = {
-  soundId: SoundId;
+  soundId: ExportedSoundId;
   playbackRate?: number;
   varyPlaybackRate?: boolean;
   randomiseStartPoint?: boolean;
@@ -15,13 +21,13 @@ export type CreateAudioNodeOptionsObject = {
 
 export type CreateAudioNodeOptions =
   //| CreateAudioNodeWithGainOptionsObject
-  CreateAudioNodeOptionsObject | SoundId;
+  CreateAudioNodeOptionsObject | ExportedSoundId;
 
 export const createAudioNode = (
   param: CreateAudioNodeOptions,
 ): AudioBufferSourceNode => {
   const resolvedParam: CreateAudioNodeOptionsObject =
-    typeof param === "string" ? { soundId: param as SoundId } : param;
+    typeof param === "string" ? { soundId: param as ExportedSoundId } : param;
 
   const {
     playbackRate = 1,
@@ -36,7 +42,19 @@ export const createAudioNode = (
   const node = audioCtx.createBufferSource();
   const buffer = loadedSounds()[soundId];
   node.buffer = buffer;
-  node.loop = loop;
+
+  const loopLead =
+    buffer.duration > 2 * loopLeadInOutSec ?
+      loopLeadInOutSec
+      // when the buffer is too short to trim a lead-in/out from both ends, don't trim
+    : 0;
+
+  if (loop) {
+    node.loop = true;
+    // loop the inner region of the buffer, excluding the lead-in/out at each end
+    node.loopStart = loopLead;
+    node.loopEnd = buffer.duration - loopLead;
+  }
 
   node.playbackRate.value =
     varyPlaybackRate ? playbackRate - 0.05 + Math.random() * 0.1 : playbackRate;
@@ -47,9 +65,15 @@ export const createAudioNode = (
     : 0;
 
   if (loop && randomiseStartPoint) {
-    // randomise the start time - otherwise if there are multiple playing at the same time
-    // it will sound like one effect
-    node.start(startTime, buffer.duration * Math.random());
+    // randomise the start point within the looped region - otherwise if there are
+    // multiple playing at the same time it will sound like one effect
+    node.start(
+      startTime,
+      loopLead + Math.random() * (buffer.duration - 2 * loopLead),
+    );
+  } else if (loop) {
+    // skip the lead-in so the first pass matches the looped region
+    node.start(startTime, loopLead);
   } else {
     node.start(startTime);
   }

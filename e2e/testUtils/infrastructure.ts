@@ -82,8 +82,14 @@ export const retryWithRecovery = async <T>({
           await recovery(attempt);
         }
       } else {
+        const errorDialogText = await page
+          .locator('[data-test-id="error-report"]')
+          .textContent()
+          .catch(() => undefined);
         throw new Error(
-          `Failed ${actionDescription} after ${maxAttempts} attempts: ${error}`,
+          `Failed ${actionDescription} after ${maxAttempts} attempts: ${error}${
+            errorDialogText ? `\nin-game error dialog:\n${errorDialogText}` : ""
+          }`,
         );
       }
     }

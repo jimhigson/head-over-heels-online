@@ -320,7 +320,7 @@ export const gameMenusSlice = createSlice({
             {
               menuId: "crowns",
               scrollableSelection: false,
-              menuParam: { playMusic: false },
+              menuParam: { playMusic: true },
             },
           ]
         : [];

@@ -15,11 +15,16 @@ export const connectWithGain = (
   sound: AudioBufferSourceNode,
   { gain, randomiseStartPoint }: BracketedSegmentOptions,
   connectTo: AudioNode,
+  /**
+   * fade the gain in from zero, in addition to the fade-in that
+   * randomiseStartPoint already implies
+   */
+  fadeIn = false,
 ) => {
   const gainNode = audioCtx.createGain();
   const targetGain = gain ?? gainNode.gain.defaultValue;
 
-  if (randomiseStartPoint) {
+  if (randomiseStartPoint || fadeIn) {
     gainNode.gain.setValueAtTime(0, audioCtx.currentTime);
     gainNode.gain.linearRampToValueAtTime(
       targetGain,

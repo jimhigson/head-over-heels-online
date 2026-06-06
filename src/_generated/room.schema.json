@@ -27,7 +27,7 @@
           "description": "the color the room was shown in in the zx spectrum original game. This is used to provide highlight colours in each room",
           "properties": {
             "hue": {
-              "enum": ["yellow", "cyan", "green", "magenta", "white"],
+              "enum": ["cyan", "green", "magenta", "white", "yellow"],
               "type": "string"
             },
             "shade": {
@@ -48,107 +48,6 @@
         "items": {
           "additionalProperties": {
             "anyOf": [
-              {
-                "additionalProperties": false,
-                "properties": {
-                  "config": {
-                    "anyOf": [
-                      {
-                        "additionalProperties": false,
-                        "properties": {
-                          "direction": {
-                            "const": "right",
-                            "type": "string"
-                          },
-                          "times": {
-                            "additionalProperties": false,
-                            "properties": {
-                              "y": {
-                                "type": "number",
-                                "multipleOf": 1,
-                                "minimum": 1,
-                                "maximum": 99
-                              }
-                            },
-                            "required": ["y"],
-                            "type": "object"
-                          }
-                        },
-                        "required": ["direction"],
-                        "type": "object"
-                      },
-                      {
-                        "additionalProperties": false,
-                        "properties": {
-                          "direction": {
-                            "const": "towards",
-                            "description": "this wall would normally be found on the (invisible) towards side of the room",
-                            "type": "string"
-                          },
-                          "times": {
-                            "additionalProperties": false,
-                            "properties": {
-                              "x": {
-                                "type": "number",
-                                "multipleOf": 1,
-                                "minimum": 1,
-                                "maximum": 99
-                              }
-                            },
-                            "required": ["x"],
-                            "type": "object"
-                          }
-                        },
-                        "required": ["direction"],
-                        "type": "object"
-                      },
-                      {
-                        "additionalProperties": false,
-                        "properties": {
-                          "direction": {
-                            "const": "away",
-                            "description": "this wall would normally be found/rendered on the away side of the room",
-                            "type": "string"
-                          },
-                          "tiles": {
-                            "description": "the tiles to show - the length of this array also determines the size of the wall",
-                            "items": {},
-                            "type": "array"
-                          }
-                        },
-                        "required": ["direction", "tiles"],
-                        "type": "object"
-                      },
-                      {
-                        "additionalProperties": false,
-                        "properties": {
-                          "direction": {
-                            "const": "left",
-                            "description": "this wall would normally be found/rendered on the left side of the room",
-                            "type": "string"
-                          },
-                          "tiles": {
-                            "description": "the tiles to show - the length of this array also determines the size of the wall",
-                            "items": {},
-                            "type": "array"
-                          }
-                        },
-                        "required": ["direction", "tiles"],
-                        "type": "object"
-                      }
-                    ]
-                  },
-                  "position": {
-                    "$ref": "#/definitions/r47"
-                  },
-                  "type": {
-                    "const": "wall",
-                    "type": "string"
-                  }
-                },
-                "required": ["type", "position", "config"],
-                "type": "object"
-              },
               {
                 "additionalProperties": false,
                 "properties": {
@@ -854,22 +753,24 @@
                         "description": "The sound to play on emit, undefined to use the default sound, or null for no sound",
                         "enum": [
                           null,
+                          "blacktooth",
+                          "bookworld",
+                          "egyptus",
+                          "market",
+                          "moonbase",
+                          "penitentiary",
+                          "loop",
+                          "safari",
                           "door",
                           "hooter",
-                          "roomEntry.blacktooth",
-                          "roomEntry.bookworld",
-                          "roomEntry.egyptus",
-                          "roomEntry.market",
-                          "roomEntry.moonbase",
-                          "roomEntry.penitentiary",
-                          "roomEntry.safari",
                           "activate",
                           "ballHit",
-                          "bonus",
                           "bubbleRobotLoop",
                           "buttonOff",
                           "buttonOn",
                           "carry",
+                          "collectedItem",
+                          "collectedRabbit",
                           "conveyorEnd",
                           "conveyorLoop",
                           "conveyorStart",
@@ -884,32 +785,35 @@
                           "fall",
                           "fanfare",
                           "glassClink",
+                          "glide",
+                          "glitchRobot",
                           "headAccent",
-                          "headFall",
-                          "headJump",
+                          "headJumping",
+                          "headJumpStart",
                           "headOverHeelsAccent",
                           "headWalk",
-                          "heavyMetalScraping",
+                          "heavyScrape",
                           "heelsAccent",
-                          "heelsJump",
+                          "heelsJumping",
+                          "heelsJumpStart",
                           "heelsWalk",
                           "helicopter",
                           "hushPuppyVanish",
-                          "iceScrape",
+                          "iceSlide",
+                          "intro",
                           "jetpackLoop",
                           "jetpackTurnaround",
-                          "landing",
                           "lowerSmallMotorLoop",
                           "lowHum",
                           "menuSofter",
-                          "metalHit",
+                          "metalClang",
                           "mojoLoop",
                           "mojoTurn",
                           "monkeyTurn",
                           "moonbaseDoor",
-                          "robotBeepingLoop",
                           "robotWhirLoop",
                           "rollingBallLoop",
+                          "scrape",
                           "scrollOpen",
                           "servoLoop",
                           "servoStart",
@@ -926,8 +830,7 @@
                           "teleportWarningSiren",
                           "toasterPopUp",
                           "toasterPushDown",
-                          "uhOh",
-                          "woodScrape"
+                          "uhOh"
                         ],
                         "type": ["null", "string"]
                       },
@@ -1565,6 +1468,107 @@
                 },
                 "required": ["type", "position", "config"],
                 "type": "object"
+              },
+              {
+                "additionalProperties": false,
+                "properties": {
+                  "config": {
+                    "anyOf": [
+                      {
+                        "additionalProperties": false,
+                        "properties": {
+                          "direction": {
+                            "const": "right",
+                            "type": "string"
+                          },
+                          "times": {
+                            "additionalProperties": false,
+                            "properties": {
+                              "y": {
+                                "type": "number",
+                                "multipleOf": 1,
+                                "minimum": 1,
+                                "maximum": 99
+                              }
+                            },
+                            "required": ["y"],
+                            "type": "object"
+                          }
+                        },
+                        "required": ["direction"],
+                        "type": "object"
+                      },
+                      {
+                        "additionalProperties": false,
+                        "properties": {
+                          "direction": {
+                            "const": "towards",
+                            "description": "this wall would normally be found on the (invisible) towards side of the room",
+                            "type": "string"
+                          },
+                          "times": {
+                            "additionalProperties": false,
+                            "properties": {
+                              "x": {
+                                "type": "number",
+                                "multipleOf": 1,
+                                "minimum": 1,
+                                "maximum": 99
+                              }
+                            },
+                            "required": ["x"],
+                            "type": "object"
+                          }
+                        },
+                        "required": ["direction"],
+                        "type": "object"
+                      },
+                      {
+                        "additionalProperties": false,
+                        "properties": {
+                          "direction": {
+                            "const": "away",
+                            "description": "this wall would normally be found/rendered on the away side of the room",
+                            "type": "string"
+                          },
+                          "tiles": {
+                            "description": "the tiles to show - the length of this array also determines the size of the wall",
+                            "items": {},
+                            "type": "array"
+                          }
+                        },
+                        "required": ["direction", "tiles"],
+                        "type": "object"
+                      },
+                      {
+                        "additionalProperties": false,
+                        "properties": {
+                          "direction": {
+                            "const": "left",
+                            "description": "this wall would normally be found/rendered on the left side of the room",
+                            "type": "string"
+                          },
+                          "tiles": {
+                            "description": "the tiles to show - the length of this array also determines the size of the wall",
+                            "items": {},
+                            "type": "array"
+                          }
+                        },
+                        "required": ["direction", "tiles"],
+                        "type": "object"
+                      }
+                    ]
+                  },
+                  "position": {
+                    "$ref": "#/definitions/r47"
+                  },
+                  "type": {
+                    "const": "wall",
+                    "type": "string"
+                  }
+                },
+                "required": ["type", "position", "config"],
+                "type": "object"
               }
             ]
           },
@@ -1578,7 +1582,8 @@
               "additionalProperties": false,
               "properties": {
                 "direction": {
-                  "$ref": "#/definitions/r95"
+                  "enum": ["away", "left", "right", "towards"],
+                  "type": "string"
                 },
                 "text": {
                   "type": "string"
@@ -1696,10 +1701,10 @@
         "planet": {
           "description": "TODO: rename to scenery",
           "enum": [
-            "jail",
             "blacktooth",
             "bookworld",
             "egyptus",
+            "jail",
             "market",
             "moonbase",
             "penitentiary",

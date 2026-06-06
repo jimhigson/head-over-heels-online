@@ -24,6 +24,20 @@ const springBounce = [
   "moreCompressed",
   "compressed",
   "released",
+  "compressed",
+  "moreCompressed",
+  "compressed",
+  "released",
+  "compressed",
+  "moreCompressed",
+  "compressed",
+  "released",
+  "compressed",
+  "released",
+  "compressed",
+  "released",
+  "compressed",
+  "released",
 ] as const;
 type SpringBounceFrame = (typeof springBounce)[number];
 

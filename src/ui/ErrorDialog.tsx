@@ -125,6 +125,7 @@ export const ErrorDialogReport = ({
         Error message for nerds:
       </BitmapText>
       <pre
+        data-test-id="error-report"
         className={`bg-shadow zx:bg-zxBlack toppy:bg-toppyGrey3 text-white zx:text-zxWhite toppy:text-toppyWarm1 leading-[1em] [&_a]:text-pastelBlue px-1 w-max min-w-full`}
       >
         <StackTracesWithLinks>{errorsReportText}</StackTracesWithLinks>
