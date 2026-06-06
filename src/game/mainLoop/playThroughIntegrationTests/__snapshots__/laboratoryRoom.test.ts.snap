@@ -15,6 +15,7 @@ exports[`playing through a complex, deterministic room ("laboratory") should alw
         "z": 12,
       },
       "castsShadowWhileStoodOn": true,
+      "castsWholeShadows": false,
       "config": {},
       "fixedZIndex": undefined,
       "id": "ball@10,4,0",
@@ -94,6 +95,7 @@ exports[`playing through a complex, deterministic room ("laboratory") should alw
         "z": 12,
       },
       "castsShadowWhileStoodOn": true,
+      "castsWholeShadows": false,
       "config": {},
       "fixedZIndex": undefined,
       "id": "ball@7,2,0",
@@ -169,6 +171,7 @@ exports[`playing through a complex, deterministic room ("laboratory") should alw
         "z": 12,
       },
       "castsShadowWhileStoodOn": true,
+      "castsWholeShadows": false,
       "config": {},
       "fixedZIndex": undefined,
       "id": "ball@7,4,0",
@@ -248,6 +251,7 @@ exports[`playing through a complex, deterministic room ("laboratory") should alw
         "z": 12,
       },
       "castsShadowWhileStoodOn": true,
+      "castsWholeShadows": false,
       "config": {},
       "fixedZIndex": undefined,
       "id": "ball@9,4,0",
@@ -327,6 +331,7 @@ exports[`playing through a complex, deterministic room ("laboratory") should alw
         "z": 12,
       },
       "castsShadowWhileStoodOn": false,
+      "castsWholeShadows": false,
       "config": {
         "axis": "x",
       },
@@ -369,6 +374,7 @@ exports[`playing through a complex, deterministic room ("laboratory") should alw
         "z": 12,
       },
       "castsShadowWhileStoodOn": false,
+      "castsWholeShadows": false,
       "config": {
         "axis": "x",
         "disappearing": {
@@ -416,6 +422,7 @@ exports[`playing through a complex, deterministic room ("laboratory") should alw
         "z": 12,
       },
       "castsShadowWhileStoodOn": false,
+      "castsWholeShadows": false,
       "config": {
         "axis": "x",
       },
@@ -458,6 +465,7 @@ exports[`playing through a complex, deterministic room ("laboratory") should alw
         "z": 12,
       },
       "castsShadowWhileStoodOn": false,
+      "castsWholeShadows": false,
       "config": {
         "axis": "x",
         "disappearing": {
@@ -505,6 +513,7 @@ exports[`playing through a complex, deterministic room ("laboratory") should alw
         "z": 12,
       },
       "castsShadowWhileStoodOn": false,
+      "castsWholeShadows": true,
       "config": {
         "style": "organic",
         "times": {
@@ -551,6 +560,7 @@ exports[`playing through a complex, deterministic room ("laboratory") should alw
         "z": 12,
       },
       "castsShadowWhileStoodOn": false,
+      "castsWholeShadows": true,
       "config": {
         "style": "organic",
         "times": {
@@ -595,6 +605,7 @@ exports[`playing through a complex, deterministic room ("laboratory") should alw
         "z": 24,
       },
       "castsShadowWhileStoodOn": false,
+      "castsWholeShadows": false,
       "config": {
         "style": "tower",
         "times": {
@@ -644,6 +655,7 @@ exports[`playing through a complex, deterministic room ("laboratory") should alw
         "z": 12,
       },
       "castsShadowWhileStoodOn": false,
+      "castsWholeShadows": false,
       "config": {
         "style": "tower",
       },
@@ -690,6 +702,7 @@ exports[`playing through a complex, deterministic room ("laboratory") should alw
         "z": 24,
       },
       "castsShadowWhileStoodOn": false,
+      "castsWholeShadows": false,
       "config": {
         "style": "tower",
         "times": {
@@ -741,6 +754,7 @@ exports[`playing through a complex, deterministic room ("laboratory") should alw
         "z": 12,
       },
       "castsShadowWhileStoodOn": false,
+      "castsWholeShadows": true,
       "config": {
         "style": "artificial",
       },
@@ -784,6 +798,7 @@ exports[`playing through a complex, deterministic room ("laboratory") should alw
         "z": 12,
       },
       "castsShadowWhileStoodOn": false,
+      "castsWholeShadows": true,
       "config": {
         "style": "artificial",
       },
@@ -825,6 +840,7 @@ exports[`playing through a complex, deterministic room ("laboratory") should alw
         "z": 12,
       },
       "castsShadowWhileStoodOn": false,
+      "castsWholeShadows": true,
       "config": {
         "style": "organic",
       },
@@ -866,6 +882,7 @@ exports[`playing through a complex, deterministic room ("laboratory") should alw
         "z": 12,
       },
       "castsShadowWhileStoodOn": false,
+      "castsWholeShadows": true,
       "config": {
         "style": "organic",
       },
@@ -909,6 +926,7 @@ exports[`playing through a complex, deterministic room ("laboratory") should alw
         "z": 12,
       },
       "castsShadowWhileStoodOn": false,
+      "castsWholeShadows": true,
       "config": {
         "style": "artificial",
       },
@@ -952,6 +970,7 @@ exports[`playing through a complex, deterministic room ("laboratory") should alw
         "z": 12,
       },
       "castsShadowWhileStoodOn": false,
+      "castsWholeShadows": true,
       "config": {
         "style": "organic",
       },
@@ -993,6 +1012,7 @@ exports[`playing through a complex, deterministic room ("laboratory") should alw
         "z": 12,
       },
       "castsShadowWhileStoodOn": false,
+      "castsWholeShadows": true,
       "config": {
         "style": "organic",
       },
@@ -1036,6 +1056,7 @@ exports[`playing through a complex, deterministic room ("laboratory") should alw
         "z": 12,
       },
       "castsShadowWhileStoodOn": false,
+      "castsWholeShadows": true,
       "config": {
         "style": "organic",
       },
@@ -1081,6 +1102,7 @@ exports[`playing through a complex, deterministic room ("laboratory") should alw
         "z": 12,
       },
       "castsShadowWhileStoodOn": false,
+      "castsWholeShadows": true,
       "config": {
         "disappearing": {
           "on": "stand",
@@ -1132,6 +1154,7 @@ exports[`playing through a complex, deterministic room ("laboratory") should alw
         "z": 12,
       },
       "castsShadowWhileStoodOn": false,
+      "castsWholeShadows": true,
       "config": {
         "disappearing": {
           "on": "stand",
@@ -1185,6 +1208,7 @@ exports[`playing through a complex, deterministic room ("laboratory") should alw
         "z": 12,
       },
       "castsShadowWhileStoodOn": false,
+      "castsWholeShadows": true,
       "config": {
         "disappearing": {
           "on": "stand",
@@ -1231,6 +1255,7 @@ exports[`playing through a complex, deterministic room ("laboratory") should alw
         "z": 12,
       },
       "castsShadowWhileStoodOn": false,
+      "castsWholeShadows": true,
       "config": {
         "disappearing": {
           "on": "stand",
@@ -1277,6 +1302,7 @@ exports[`playing through a complex, deterministic room ("laboratory") should alw
         "z": 24,
       },
       "castsShadowWhileStoodOn": false,
+      "castsWholeShadows": false,
       "config": {},
       "fixedZIndex": undefined,
       "id": "ch1",
@@ -1379,6 +1405,7 @@ exports[`playing through a complex, deterministic room ("laboratory") should alw
         "z": 24,
       },
       "castsShadowWhileStoodOn": false,
+      "castsWholeShadows": false,
       "config": {},
       "fixedZIndex": undefined,
       "id": "ch2",
@@ -1457,6 +1484,7 @@ exports[`playing through a complex, deterministic room ("laboratory") should alw
         "z": 12,
       },
       "castsShadowWhileStoodOn": false,
+      "castsWholeShadows": true,
       "config": {
         "direction": "away",
         "times": {
@@ -1517,6 +1545,7 @@ exports[`playing through a complex, deterministic room ("laboratory") should alw
         "z": 12,
       },
       "castsShadowWhileStoodOn": false,
+      "castsWholeShadows": true,
       "config": {
         "direction": "away",
         "times": {
@@ -1579,6 +1608,7 @@ exports[`playing through a complex, deterministic room ("laboratory") should alw
         "z": 12,
       },
       "castsShadowWhileStoodOn": false,
+      "castsWholeShadows": true,
       "config": {
         "direction": "left",
         "times": {
@@ -1640,6 +1670,7 @@ exports[`playing through a complex, deterministic room ("laboratory") should alw
         "z": 12,
       },
       "castsShadowWhileStoodOn": false,
+      "castsWholeShadows": true,
       "config": {
         "direction": "right",
         "times": {
@@ -1701,6 +1732,7 @@ exports[`playing through a complex, deterministic room ("laboratory") should alw
         "z": 12,
       },
       "castsShadowWhileStoodOn": false,
+      "castsWholeShadows": true,
       "config": {
         "direction": "right",
       },
@@ -1756,6 +1788,7 @@ exports[`playing through a complex, deterministic room ("laboratory") should alw
         "z": 12,
       },
       "castsShadowWhileStoodOn": false,
+      "castsWholeShadows": true,
       "config": {
         "direction": "towards",
         "times": {
@@ -1818,6 +1851,7 @@ exports[`playing through a complex, deterministic room ("laboratory") should alw
         "z": 12,
       },
       "castsShadowWhileStoodOn": false,
+      "castsWholeShadows": true,
       "config": {
         "style": "volcano",
         "times": {
@@ -1873,6 +1907,7 @@ exports[`playing through a complex, deterministic room ("laboratory") should alw
         "z": 12,
       },
       "castsShadowWhileStoodOn": false,
+      "castsWholeShadows": true,
       "config": {
         "style": "volcano",
         "times": {
@@ -1928,6 +1963,7 @@ exports[`playing through a complex, deterministic room ("laboratory") should alw
         "z": 12,
       },
       "castsShadowWhileStoodOn": false,
+      "castsWholeShadows": true,
       "config": {
         "style": "volcano",
         "times": {
@@ -1983,6 +2019,7 @@ exports[`playing through a complex, deterministic room ("laboratory") should alw
         "z": 12,
       },
       "castsShadowWhileStoodOn": false,
+      "castsWholeShadows": true,
       "config": {
         "style": "volcano",
       },
@@ -2689,6 +2726,7 @@ exports[`playing through a complex, deterministic room ("laboratory") should alw
         "z": 0,
       },
       "castsShadowWhileStoodOn": false,
+      "castsWholeShadows": false,
       "config": {
         "emits": {
           "config": {
@@ -2753,6 +2791,7 @@ exports[`playing through a complex, deterministic room ("laboratory") should alw
         "z": 24,
       },
       "castsShadowWhileStoodOn": true,
+      "castsWholeShadows": false,
       "config": {
         "activated": "on",
         "movement": "towards-on-shortest-axis-xy4",
@@ -2847,6 +2886,7 @@ exports[`playing through a complex, deterministic room ("laboratory") should alw
         "z": 24,
       },
       "castsShadowWhileStoodOn": true,
+      "castsWholeShadows": false,
       "config": {
         "activated": "on",
         "movement": "towards-on-shortest-axis-xy4",
@@ -2942,6 +2982,7 @@ exports[`playing through a complex, deterministic room ("laboratory") should alw
         "z": 24,
       },
       "castsShadowWhileStoodOn": true,
+      "castsWholeShadows": false,
       "config": {
         "activated": "on",
         "movement": "towards-on-shortest-axis-xy4",
@@ -3037,6 +3078,7 @@ exports[`playing through a complex, deterministic room ("laboratory") should alw
         "z": 24,
       },
       "castsShadowWhileStoodOn": true,
+      "castsWholeShadows": false,
       "config": {
         "activated": "on",
         "movement": "towards-on-shortest-axis-xy4",
@@ -3129,6 +3171,7 @@ exports[`playing through a complex, deterministic room ("laboratory") should alw
         "z": 24,
       },
       "castsShadowWhileStoodOn": true,
+      "castsWholeShadows": false,
       "config": {
         "activated": "on",
         "movement": "towards-on-shortest-axis-xy4",
@@ -3428,6 +3471,7 @@ exports[`playing through a complex, deterministic room ("laboratory") should alw
         "z": 12,
       },
       "castsShadowWhileStoodOn": false,
+      "castsWholeShadows": false,
       "config": {
         "controls": [
           "ch1",
@@ -3476,6 +3520,7 @@ exports[`playing through a complex, deterministic room ("laboratory") should alw
         "z": 12,
       },
       "castsShadowWhileStoodOn": false,
+      "castsWholeShadows": false,
       "config": {
         "controls": [
           "ch2",
@@ -3520,6 +3565,7 @@ exports[`playing through a complex, deterministic room ("laboratory") should alw
         "z": 12,
       },
       "castsShadowWhileStoodOn": true,
+      "castsWholeShadows": false,
       "config": {
         "bottom": 0,
         "top": 11,
@@ -3584,6 +3630,7 @@ exports[`playing through a complex, deterministic room ("laboratory") should alw
         "z": 12,
       },
       "castsShadowWhileStoodOn": true,
+      "castsWholeShadows": false,
       "config": {
         "bottom": 0,
         "top": 11,
@@ -3648,6 +3695,7 @@ exports[`playing through a complex, deterministic room ("laboratory") should alw
         "z": 12,
       },
       "castsShadowWhileStoodOn": true,
+      "castsWholeShadows": false,
       "config": {
         "bottom": 1,
         "top": 2,
@@ -3710,6 +3758,7 @@ exports[`playing through a complex, deterministic room ("laboratory") should alw
         "z": 12,
       },
       "castsShadowWhileStoodOn": true,
+      "castsWholeShadows": false,
       "config": {
         "bottom": 0,
         "top": 11,
@@ -3772,6 +3821,7 @@ exports[`playing through a complex, deterministic room ("laboratory") should alw
         "z": 12,
       },
       "castsShadowWhileStoodOn": true,
+      "castsWholeShadows": false,
       "config": {
         "bottom": 0,
         "top": 11,
@@ -3834,6 +3884,7 @@ exports[`playing through a complex, deterministic room ("laboratory") should alw
         "z": 21,
       },
       "castsShadowWhileStoodOn": false,
+      "castsWholeShadows": false,
       "config": {
         "activated": "on",
         "movement": "back-forth",
@@ -3917,6 +3968,7 @@ exports[`playing through a complex, deterministic room ("laboratory") should alw
         "z": 21,
       },
       "castsShadowWhileStoodOn": false,
+      "castsWholeShadows": false,
       "config": {
         "activated": "on",
         "movement": "back-forth",
@@ -4000,6 +4052,7 @@ exports[`playing through a complex, deterministic room ("laboratory") should alw
         "z": 21,
       },
       "castsShadowWhileStoodOn": false,
+      "castsWholeShadows": false,
       "config": {
         "activated": "on",
         "movement": "back-forth",
@@ -4083,6 +4136,7 @@ exports[`playing through a complex, deterministic room ("laboratory") should alw
         "z": 21,
       },
       "castsShadowWhileStoodOn": false,
+      "castsWholeShadows": false,
       "config": {
         "activated": "on",
         "movement": "back-forth",
@@ -4166,6 +4220,7 @@ exports[`playing through a complex, deterministic room ("laboratory") should alw
         "z": 21,
       },
       "castsShadowWhileStoodOn": false,
+      "castsWholeShadows": false,
       "config": {
         "activated": "on",
         "movement": "back-forth",
@@ -4249,6 +4304,7 @@ exports[`playing through a complex, deterministic room ("laboratory") should alw
         "z": 21,
       },
       "castsShadowWhileStoodOn": false,
+      "castsWholeShadows": false,
       "config": {
         "activated": "on",
         "movement": "back-forth",
@@ -4330,6 +4386,7 @@ exports[`playing through a complex, deterministic room ("laboratory") should alw
         "z": 24,
       },
       "castsShadowWhileStoodOn": true,
+      "castsWholeShadows": false,
       "config": {
         "activated": "on",
         "movement": "towards-on-shortest-axis-xy4",
@@ -4451,6 +4508,7 @@ exports[`playing through a complex, deterministic room ("laboratory") should alw
         "z": 12,
       },
       "castsShadowWhileStoodOn": true,
+      "castsWholeShadows": false,
       "config": {
         "gives": "doughnuts",
       },
@@ -4524,6 +4582,7 @@ exports[`playing through a complex, deterministic room ("laboratory") should alw
         "z": 12,
       },
       "castsShadowWhileStoodOn": true,
+      "castsWholeShadows": false,
       "config": {
         "gives": "hooter",
       },
@@ -4607,6 +4666,7 @@ exports[`playing through a complex, deterministic room ("laboratory") should alw
         "z": 12,
       },
       "castsShadowWhileStoodOn": true,
+      "castsWholeShadows": false,
       "config": {
         "gives": "bag",
       },
@@ -4680,6 +4740,7 @@ exports[`playing through a complex, deterministic room ("laboratory") should alw
         "z": 12,
       },
       "castsShadowWhileStoodOn": true,
+      "castsWholeShadows": false,
       "config": {
         "gives": "shield",
       },
@@ -4755,6 +4816,7 @@ exports[`playing through a complex, deterministic room ("laboratory") should alw
         "z": 12,
       },
       "castsShadowWhileStoodOn": true,
+      "castsWholeShadows": false,
       "config": {
         "gives": "shield",
       },
@@ -4832,6 +4894,7 @@ exports[`playing through a complex, deterministic room ("laboratory") should alw
         "z": 12,
       },
       "castsShadowWhileStoodOn": true,
+      "castsWholeShadows": false,
       "config": {
         "gives": "shield",
       },
@@ -4907,6 +4970,7 @@ exports[`playing through a complex, deterministic room ("laboratory") should alw
         "z": 12,
       },
       "castsShadowWhileStoodOn": true,
+      "castsWholeShadows": false,
       "config": {
         "gives": "shield",
       },
@@ -4984,6 +5048,7 @@ exports[`playing through a complex, deterministic room ("laboratory") should alw
         "z": 12,
       },
       "castsShadowWhileStoodOn": true,
+      "castsWholeShadows": false,
       "config": {
         "gives": "shield",
       },
@@ -5061,6 +5126,7 @@ exports[`playing through a complex, deterministic room ("laboratory") should alw
         "z": 12,
       },
       "castsShadowWhileStoodOn": true,
+      "castsWholeShadows": false,
       "config": {
         "gives": "shield",
       },
@@ -5136,6 +5202,7 @@ exports[`playing through a complex, deterministic room ("laboratory") should alw
         "z": 12,
       },
       "castsShadowWhileStoodOn": true,
+      "castsWholeShadows": false,
       "config": {
         "gives": "reincarnation",
       },
@@ -5211,6 +5278,7 @@ exports[`playing through a complex, deterministic room ("laboratory") should alw
         "z": 12,
       },
       "castsShadowWhileStoodOn": true,
+      "castsWholeShadows": false,
       "config": {
         "gives": "reincarnation",
       },
@@ -5290,6 +5358,7 @@ exports[`playing through a complex, deterministic room ("laboratory") should alw
         "z": 12,
       },
       "castsShadowWhileStoodOn": true,
+      "castsWholeShadows": false,
       "config": {
         "gives": "bag",
       },
@@ -5363,6 +5432,7 @@ exports[`playing through a complex, deterministic room ("laboratory") should alw
         "z": 12,
       },
       "castsShadowWhileStoodOn": true,
+      "castsWholeShadows": false,
       "config": {
         "gives": "reincarnation",
       },
@@ -5442,6 +5512,7 @@ exports[`playing through a complex, deterministic room ("laboratory") should alw
         "z": 12,
       },
       "castsShadowWhileStoodOn": true,
+      "castsWholeShadows": false,
       "config": {
         "gives": "extra-life",
       },
@@ -5523,6 +5594,7 @@ exports[`playing through a complex, deterministic room ("laboratory") should alw
         "z": 12,
       },
       "castsShadowWhileStoodOn": false,
+      "castsWholeShadows": false,
       "config": {
         "style": "cube",
       },
@@ -5593,6 +5665,7 @@ exports[`playing through a complex, deterministic room ("laboratory") should alw
         "z": 12,
       },
       "castsShadowWhileStoodOn": false,
+      "castsWholeShadows": false,
       "config": {
         "style": "cube",
       },
@@ -5660,6 +5733,7 @@ exports[`playing through a complex, deterministic room ("laboratory") should alw
         "z": 12,
       },
       "castsShadowWhileStoodOn": false,
+      "castsWholeShadows": false,
       "config": {
         "style": "cube",
       },
@@ -5725,6 +5799,7 @@ exports[`playing through a complex, deterministic room ("laboratory") should alw
         "z": 12,
       },
       "castsShadowWhileStoodOn": false,
+      "castsWholeShadows": false,
       "config": {
         "style": "cube",
       },
@@ -5790,6 +5865,7 @@ exports[`playing through a complex, deterministic room ("laboratory") should alw
         "z": 12,
       },
       "castsShadowWhileStoodOn": false,
+      "castsWholeShadows": false,
       "config": {
         "style": "cube",
       },
@@ -5853,6 +5929,7 @@ exports[`playing through a complex, deterministic room ("laboratory") should alw
         "z": 12,
       },
       "castsShadowWhileStoodOn": false,
+      "castsWholeShadows": false,
       "config": {
         "style": "sticks",
       },
@@ -5916,6 +5993,7 @@ exports[`playing through a complex, deterministic room ("laboratory") should alw
         "z": 12,
       },
       "castsShadowWhileStoodOn": false,
+      "castsWholeShadows": false,
       "config": {
         "style": "drum",
       },
@@ -5979,6 +6057,7 @@ exports[`playing through a complex, deterministic room ("laboratory") should alw
         "z": 12,
       },
       "castsShadowWhileStoodOn": false,
+      "castsWholeShadows": false,
       "config": {
         "style": "cube",
       },
@@ -6042,6 +6121,7 @@ exports[`playing through a complex, deterministic room ("laboratory") should alw
         "z": 12,
       },
       "castsShadowWhileStoodOn": false,
+      "castsWholeShadows": false,
       "config": {
         "style": "cube",
       },
@@ -6109,6 +6189,7 @@ exports[`playing through a complex, deterministic room ("laboratory") should alw
         "z": 12,
       },
       "castsShadowWhileStoodOn": false,
+      "castsWholeShadows": false,
       "config": {
         "style": "drum",
       },
@@ -6172,6 +6253,7 @@ exports[`playing through a complex, deterministic room ("laboratory") should alw
         "z": 12,
       },
       "castsShadowWhileStoodOn": false,
+      "castsWholeShadows": false,
       "config": {
         "style": "cube",
       },
@@ -6235,6 +6317,7 @@ exports[`playing through a complex, deterministic room ("laboratory") should alw
         "z": 12,
       },
       "castsShadowWhileStoodOn": false,
+      "castsWholeShadows": false,
       "config": {
         "style": "cube",
       },
@@ -6298,6 +6381,7 @@ exports[`playing through a complex, deterministic room ("laboratory") should alw
         "z": 12,
       },
       "castsShadowWhileStoodOn": false,
+      "castsWholeShadows": false,
       "config": {
         "style": "drum",
       },
@@ -6365,6 +6449,7 @@ exports[`playing through a complex, deterministic room ("laboratory") should alw
         "z": 12,
       },
       "castsShadowWhileStoodOn": false,
+      "castsWholeShadows": false,
       "config": {
         "style": "cube",
       },
@@ -6430,6 +6515,7 @@ exports[`playing through a complex, deterministic room ("laboratory") should alw
         "z": 12,
       },
       "castsShadowWhileStoodOn": false,
+      "castsWholeShadows": false,
       "config": {
         "style": "cube",
       },
@@ -6497,6 +6583,7 @@ exports[`playing through a complex, deterministic room ("laboratory") should alw
         "z": 12,
       },
       "castsShadowWhileStoodOn": true,
+      "castsWholeShadows": true,
       "config": {},
       "fixedZIndex": undefined,
       "id": "pushableBlock@1,6,0",
@@ -6573,6 +6660,7 @@ exports[`playing through a complex, deterministic room ("laboratory") should alw
         "z": 12,
       },
       "castsShadowWhileStoodOn": true,
+      "castsWholeShadows": true,
       "config": {},
       "fixedZIndex": undefined,
       "id": "pushableBlock@1,6,1",
@@ -6649,6 +6737,7 @@ exports[`playing through a complex, deterministic room ("laboratory") should alw
         "z": 12,
       },
       "castsShadowWhileStoodOn": true,
+      "castsWholeShadows": true,
       "config": {},
       "fixedZIndex": undefined,
       "id": "pushableBlock@1,6,2",
@@ -6723,6 +6812,7 @@ exports[`playing through a complex, deterministic room ("laboratory") should alw
         "z": 12,
       },
       "castsShadowWhileStoodOn": true,
+      "castsWholeShadows": true,
       "config": {},
       "fixedZIndex": undefined,
       "id": "pushableBlock@10,7,0",
@@ -6795,6 +6885,7 @@ exports[`playing through a complex, deterministic room ("laboratory") should alw
         "z": 12,
       },
       "castsShadowWhileStoodOn": true,
+      "castsWholeShadows": true,
       "config": {},
       "fixedZIndex": undefined,
       "id": "pushableBlock@10,7,1",
@@ -6867,6 +6958,7 @@ exports[`playing through a complex, deterministic room ("laboratory") should alw
         "z": 12,
       },
       "castsShadowWhileStoodOn": true,
+      "castsWholeShadows": true,
       "config": {},
       "fixedZIndex": undefined,
       "id": "pushableBlock@10,7,2",
@@ -6939,6 +7031,7 @@ exports[`playing through a complex, deterministic room ("laboratory") should alw
         "z": 12,
       },
       "castsShadowWhileStoodOn": true,
+      "castsWholeShadows": true,
       "config": {},
       "fixedZIndex": undefined,
       "id": "pushableBlock@10,7,3",
@@ -7011,6 +7104,7 @@ exports[`playing through a complex, deterministic room ("laboratory") should alw
         "z": 12,
       },
       "castsShadowWhileStoodOn": true,
+      "castsWholeShadows": true,
       "config": {},
       "fixedZIndex": undefined,
       "id": "pushableBlock@10,7,4",
@@ -7083,6 +7177,7 @@ exports[`playing through a complex, deterministic room ("laboratory") should alw
         "z": 12,
       },
       "castsShadowWhileStoodOn": true,
+      "castsWholeShadows": true,
       "config": {},
       "fixedZIndex": undefined,
       "id": "pushableBlock@10,7,5",
@@ -7153,6 +7248,7 @@ exports[`playing through a complex, deterministic room ("laboratory") should alw
         "z": 12,
       },
       "castsShadowWhileStoodOn": true,
+      "castsWholeShadows": true,
       "config": {},
       "fixedZIndex": undefined,
       "id": "pushableBlock@2,6,0",
@@ -7229,6 +7325,7 @@ exports[`playing through a complex, deterministic room ("laboratory") should alw
         "z": 12,
       },
       "castsShadowWhileStoodOn": true,
+      "castsWholeShadows": true,
       "config": {},
       "fixedZIndex": undefined,
       "id": "pushableBlock@2,6,1",
@@ -7305,6 +7402,7 @@ exports[`playing through a complex, deterministic room ("laboratory") should alw
         "z": 12,
       },
       "castsShadowWhileStoodOn": true,
+      "castsWholeShadows": true,
       "config": {},
       "fixedZIndex": undefined,
       "id": "pushableBlock@2,6,2",
@@ -7379,6 +7477,7 @@ exports[`playing through a complex, deterministic room ("laboratory") should alw
         "z": 12,
       },
       "castsShadowWhileStoodOn": true,
+      "castsWholeShadows": true,
       "config": {},
       "fixedZIndex": undefined,
       "id": "pushableBlock@2,9,0",
@@ -7455,6 +7554,7 @@ exports[`playing through a complex, deterministic room ("laboratory") should alw
         "z": 12,
       },
       "castsShadowWhileStoodOn": true,
+      "castsWholeShadows": false,
       "config": {},
       "fixedZIndex": undefined,
       "id": "spring@13,0,0",
@@ -7525,6 +7625,7 @@ exports[`playing through a complex, deterministic room ("laboratory") should alw
         "z": 12,
       },
       "castsShadowWhileStoodOn": true,
+      "castsWholeShadows": false,
       "config": {},
       "fixedZIndex": undefined,
       "id": "spring@14,0,0",
@@ -7595,6 +7696,7 @@ exports[`playing through a complex, deterministic room ("laboratory") should alw
         "z": 12,
       },
       "castsShadowWhileStoodOn": false,
+      "castsWholeShadows": false,
       "config": {
         "initialSetting": "left",
         "modifies": [
@@ -7661,6 +7763,7 @@ exports[`playing through a complex, deterministic room ("laboratory") should alw
         "z": 12,
       },
       "castsShadowWhileStoodOn": true,
+      "castsWholeShadows": false,
       "config": {
         "activated": "on",
         "movement": "clockwise",
@@ -7754,6 +7857,7 @@ exports[`playing through a complex, deterministic room ("laboratory") should alw
         "z": 12,
       },
       "castsShadowWhileStoodOn": true,
+      "castsWholeShadows": false,
       "config": {
         "activated": "on",
         "movement": "clockwise",
@@ -7846,6 +7950,7 @@ exports[`playing through a complex, deterministic room ("laboratory") should alw
         "z": 12,
       },
       "castsShadowWhileStoodOn": false,
+      "castsWholeShadows": true,
       "config": {
         "toPosition": {
           "x": 1,
@@ -7908,6 +8013,7 @@ exports[`playing through a complex, deterministic room ("laboratory") should alw
         "z": 1.2000000000000002,
       },
       "castsShadowWhileStoodOn": false,
+      "castsWholeShadows": false,
       "config": {
         "delay": 2000,
         "emits": {

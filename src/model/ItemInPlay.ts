@@ -169,6 +169,13 @@ export type ItemInPlay<
   castsShadowWhileStoodOn: boolean;
 
   /**
+   * if true, an item whose footprint is entirely within this one's is darkened wholesale
+   * (a tint over its whole appearance) rather than receiving a shaped cast shadow.
+   * Cheaper than the mask + shadow-sprite path. Colourised mode only.
+   */
+  castsWholeShadows?: boolean;
+
+  /**
    * Where this item's shadow mask is considered to be relative to its origin.
    *
    * For shadow masks (this item being cast on), the full xyz is considered to move the shadow mask
