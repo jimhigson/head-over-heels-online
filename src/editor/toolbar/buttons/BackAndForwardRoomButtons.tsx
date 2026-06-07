@@ -11,7 +11,7 @@ import {
   selectForwardRooms,
 } from "../../slice/levelEditorSlice";
 import { MenuButton, MenuItemButton } from "./MenuButton";
-import { itemColourCss } from "./RoomColourSelect";
+import { cssForRoomColour } from "./RoomColourSelect";
 import { ToolbarButton } from "./ToolbarButton";
 
 const backTooltipMarkdown = `
@@ -64,7 +64,8 @@ export const BackAndForwardRoomButtons = () => {
             <MenuItemButton
               key={`${roomId}-${index}`}
               onClick={() => dispatch(roomBack(index + 1))}
-              style={itemColourCss(
+              className="command-colours"
+              style={cssForRoomColour(
                 campaign.rooms[roomId].color.hue,
                 uncolourised,
               )}
@@ -97,7 +98,8 @@ export const BackAndForwardRoomButtons = () => {
             <MenuItemButton
               key={`${roomId}-${index}`}
               onClick={() => dispatch(roomForward(index + 1))}
-              style={itemColourCss(
+              className="command-colours"
+              style={cssForRoomColour(
                 campaign.rooms[roomId].color.hue,
                 uncolourised,
               )}

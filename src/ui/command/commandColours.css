@@ -1,0 +1,38 @@
+/*
+ * Coloured command items. --command-secondary is the base background; it
+ * defaults to the per-variant menu colour here, and consumers can override it
+ * inline (e.g. cssForRoomColour) to colour a row by room hue. --command-primary
+ * is derived as the contrasting black or white. Foreground/background reverse
+ * for the focused row (`[data-selected="true"]`) and for matched text
+ * (`.matched-text`), and the two reversals cancel — matched text inside the
+ * focused row lands back on the base look (an XOR via selector specificity).
+ *
+ * The defaults live in this stylesheet (not Tailwind arbitrary-property classes)
+ * so they don't depend on the utility being generated in each app's build.
+ *
+ * Imported from the command JS so it loads in both the game and editor apps
+ * (which have separate entry stylesheets).
+ */
+.command-colours {
+  --command-secondary: var(--colour-metallicBlue);
+  --command-primary: oklch(
+    from var(--command-secondary) clamp(0, (0.65 - l) * 1000, 1) 0 0
+  );
+  background-color: var(--command-secondary);
+  color: var(--command-primary);
+}
+.zx .command-colours {
+  --command-secondary: var(--colour-zxBlue);
+}
+.toppy-spritesheet .command-colours {
+  --command-secondary: var(--colour-toppyCool3);
+}
+.command-colours[data-selected="true"],
+.matched-text {
+  background-color: var(--command-primary);
+  color: var(--command-secondary);
+}
+[data-selected="true"] .matched-text {
+  background-color: var(--command-secondary);
+  color: var(--command-primary);
+}

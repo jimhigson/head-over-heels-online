@@ -3,14 +3,13 @@ import { useState } from "preact/hooks";
 import { BitmapText } from "../../../game/components/tailwindSprites/BitmapText";
 import { store, useEditorAppSelector } from "../../../store/store";
 import { Border } from "../../../ui/Border";
-import {
-  Command,
-  CommandEmpty,
-  CommandGroup,
-  CommandInput,
-  CommandItem,
-  CommandList,
-} from "../../../ui/command";
+import { Command } from "../../../ui/command/Command";
+import { CommandEmpty } from "../../../ui/command/CommandEmpty";
+import { CommandGroup } from "../../../ui/command/CommandGroup";
+import { CommandInput } from "../../../ui/command/CommandInput";
+import { CommandItem } from "../../../ui/command/CommandItem";
+import { CommandList } from "../../../ui/command/CommandList";
+import { CommandMatch } from "../../../ui/command/CommandMatch";
 import { Dialog } from "../../../ui/Dialog";
 import { DialogPortal } from "../../../ui/DialogPortal";
 import { keys } from "../../../utils/entries";
@@ -34,13 +33,13 @@ const CmdKDialogContents = ({
 }) => {
   const search = useEditorAppSelector(selectCmdKSearch);
   return (
-    <Command className="h-full text-white" onClose={onClose}>
-      <CommandInput
-        autoFocus
-        placeholder="Search items..."
-        value={search}
-        onValueChange={(value) => store.dispatch(setCmdKSearch(value))}
-      />
+    <Command
+      className="h-full text-white"
+      onClose={onClose}
+      search={search}
+      onSearchChange={(value) => store.dispatch(setCmdKSearch(value))}
+    >
+      <CommandInput autoFocus placeholder="Search items..." />
       <CommandList className="max-h-none scrollbar scrollbar-w-1 scrollbar-thumb-lightGrey">
         <CommandEmpty>
           <BitmapText>Nothing found</BitmapText>
@@ -70,7 +69,7 @@ const CmdKDialogContents = ({
                 >
                   {props.children}
                 </div>
-                <BitmapText className="ml-1">{key}</BitmapText>
+                <CommandMatch className="ml-1" text={key} />
               </CommandItem>
             );
           })}

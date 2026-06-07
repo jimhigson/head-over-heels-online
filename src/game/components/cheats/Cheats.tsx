@@ -14,6 +14,7 @@ import {
   otherIndividualCharacterName,
 } from "../../../model/modelTypes";
 import { getRoomItem, roomSpatialIndexKey } from "../../../model/RoomState";
+import { loadHeadOverHeelsFont } from "../../../sprites/loadHeadOverHeelsFont";
 import {
   type AnimatedTextureTailwindClass,
   type TextureTailwindClass,
@@ -49,6 +50,7 @@ import { BitmapText } from "../tailwindSprites/BitmapText";
 import { usePlayableTailwindSpriteClassname } from "../tailwindSprites/playableTailwindSpriteClassname";
 import { GameApiConnectedRoomSelect } from "./GameApiConnectedRoomSelect";
 import { useLevelSelectByUrlHash } from "./useLevelSelectByUrlHash";
+loadHeadOverHeelsFont();
 
 interface SpeedButtonProps {
   speed: number;
@@ -342,7 +344,6 @@ export const Cheats = <RoomId extends string>(_emptyProps: EmptyObject) => {
               >
                 Penitentiary
               </GoToRoomButton>
-              ~
             </div>
             <Heading>debug rendering:</Heading>
             <div className="flex flex-row items-center gap-x-1 justify-center pb-1 pt-1 bg-shadow text-white">

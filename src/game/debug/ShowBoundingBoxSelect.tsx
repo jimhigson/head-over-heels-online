@@ -14,13 +14,12 @@ import {
 } from "../../store/slices/userSettings/userSettingsSlice";
 import { Button } from "../../ui/Button";
 import { cn } from "../../ui/cn";
-import {
-  Command,
-  CommandGroup,
-  CommandInput,
-  CommandItem,
-  CommandList,
-} from "../../ui/command";
+import { Command } from "../../ui/command/Command";
+import { CommandGroup } from "../../ui/command/CommandGroup";
+import { CommandInput } from "../../ui/command/CommandInput";
+import { CommandItem } from "../../ui/command/CommandItem";
+import { CommandList } from "../../ui/command/CommandList";
+import { CommandMatch } from "../../ui/command/CommandMatch";
 import { Popover } from "../../ui/Popover";
 import { Switch, SwitchN } from "../../ui/Switch";
 import { BitmapText } from "../components/tailwindSprites/BitmapText";
@@ -113,7 +112,7 @@ export const ShowBoundingBoxSelect = ({
       }
       contents={
         <Command className="w-24">
-          <CommandInput placeholder="filter types..." />
+          <CommandInput autoFocus placeholder="filter types..." />
           <CommandList>
             <CommandGroup>
               <CommandItem
@@ -193,7 +192,7 @@ export const ShowBoundingBoxSelect = ({
                   <Switch
                     className="w-full"
                     value={selectedSet.has(itemType)}
-                    label={itemType}
+                    label={<CommandMatch text={itemType} />}
                   />
                 </CommandItem>
               ))}
@@ -227,7 +226,7 @@ export const ShowBoundingBoxSelect = ({
                     <Switch
                       className="w-full"
                       value={selectedSet.has(itemType)}
-                      label={itemType}
+                      label={<CommandMatch text={itemType} />}
                     />
                   </CommandItem>
                 ))}
