@@ -22,10 +22,7 @@ const NeedRefreshDialog = () => {
         small
       >
         <DialogHeader>Update required</DialogHeader>
-        <BlockyMarkdown className="text-lightGrey">{`I put out a new version of the game since 
-you were last here
-
-To see what’s new, go to *Options* ➡ *Changelog* after updating`}</BlockyMarkdown>
+        <BlockyMarkdown className="text-lightGrey">{`To see what’s new, go to *About* ➡ *Changelog* after updating`}</BlockyMarkdown>
         <MenuItems className="text-lightGrey zx:text-zxWhite toppy:text-toppyGrey1 mt-1 selectedMenuItem:text-white">
           <MenuItem
             id="no"
