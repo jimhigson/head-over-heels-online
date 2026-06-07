@@ -8,7 +8,6 @@ import {
 import { type ConsolidatableConfig } from "../../../../model/json/utilityJsonConfigTypes";
 import { roomSpatialIndexKey } from "../../../../model/RoomState";
 import { store } from "../../../../store/store";
-import { epsilon } from "../../../../utils/epsilon";
 import { maybeRenderContainerToSprite } from "../../../../utils/pixi/renderContainerToSprite";
 import { renderMultipliedXy } from "../../../../utils/pixi/renderMultipliedXy";
 import { addXy, originXy, subXy } from "../../../../utils/vectors/vectors";
@@ -29,6 +28,7 @@ import {
 import { projectWorldXyzToScreenXy } from "../../projections";
 import { ItemAppearancePixiRenderer } from "./ItemAppearancePixiRenderer";
 import { type ItemPixiRenderer } from "./ItemPixiRenderer";
+import { wholeShadowCastersCoverReceiver } from "./wholeShadowCastersCoverReceiver";
 
 const shadowAlpha = 0.66;
 
@@ -69,45 +69,6 @@ type ShadowCaster = SetRequired<
   UnionOfAllItemInPlayTypes<string, string>,
   "shadowCastTexture"
 >;
-
-/**
- * true iff the receiver's xy footprint is contained within the caster's (edges may
- * coincide) and is genuinely inset on at least two sides - so an identical footprint, or
- * one flush on three sides, does not count. The caster's footprint is shifted by the xy
- * part of its shadowOffset (where its shadow falls). Each aabb is already times-multiplied
- * at load, so is used directly.
- */
-const casterContainsReceiverXy = (
-  caster: ShadowCaster,
-  receiver: CollideableItem,
-) => {
-  const casterX = caster.state.position.x + (caster.shadowOffset?.x ?? 0);
-  const casterY = caster.state.position.y + (caster.shadowOffset?.y ?? 0);
-  const { position } = receiver.state;
-
-  // how far the caster's edge extends beyond the receiver's on each side
-  // (negative means the receiver pokes out past the caster there):
-  const overlaps = [
-    position.x - casterX,
-    casterX + caster.aabb.x - (position.x + receiver.aabb.x),
-    position.y - casterY,
-    casterY + caster.aabb.y - (position.y + receiver.aabb.y),
-  ];
-
-  // single pass (hot path - called per receiver, per caster, per frame): bail as soon as
-  // any side pokes out, and count the sides the receiver is genuinely inset on
-  let insetSides = 0;
-  for (const overlap of overlaps) {
-    if (overlap <= -epsilon) {
-      // receiver pokes out past the caster on this side - not contained
-      return false;
-    }
-    if (overlap > epsilon) {
-      insetSides++;
-    }
-  }
-  return insetSides >= 2;
-};
 
 /**
  * true iff this caster casts a *shaped* shadow on the receiver's top surface. A caster
@@ -304,18 +265,12 @@ class ItemShadowRenderer<T extends ItemInPlayType>
       ),
     );
 
-    // if a whole-shadow caster fully covers this item, darken the whole item with a single
-    // tint rather than rendering shaped shadows. Colourised only - uncolourised cast
+    // if the whole-shadow casters above this item together cover it, darken the whole item
+    // with a single tint on top of its shaped shadows. Colourised only - uncolourised cast
     // shadows are hard black, so a whole-item tint would erase the item into its silhouette
     const wholeShadowed =
       !this.renderContext.general.spriteOption.uncolourised &&
-      castersAbove
-        .values()
-        .some(
-          (caster) =>
-            caster.castsWholeShadows === true &&
-            casterContainsReceiverXy(caster, item),
-        );
+      wholeShadowCastersCoverReceiver(castersAbove, item);
 
     // tint the whole item when wholly shadowed, on top of (not instead of) its shaped
     // shadows, which keep rendering below:
