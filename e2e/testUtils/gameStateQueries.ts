@@ -99,6 +99,37 @@ export const getCurrentRoomId = async (
     return state.characterRooms[state.currentCharacterName]?.id;
   });
 
+export const getPlayableZ = (page: Page): Promise<number | undefined> =>
+  page.evaluate(() => {
+    const gameState = window._e2e_gamePageGameAi?.gameState;
+    if (!gameState) {
+      return undefined;
+    }
+    const character = gameState.currentCharacterName;
+    const playerItem = gameState.characterRooms[character]?.items[character];
+    return (playerItem as { state: { position: { z: number } } } | undefined)
+      ?.state.position.z;
+  });
+
+/** wait until the current playable is resting on something (ie, not falling or mid-jump) */
+export const waitForPlayableGrounded = (page: Page) =>
+  page.waitForFunction(
+    () => {
+      const gameState = window._e2e_gamePageGameAi?.gameState;
+      if (!gameState) {
+        return false;
+      }
+      const character = gameState.currentCharacterName;
+      const playerItem = gameState.characterRooms[character]?.items[character];
+      const state = (
+        playerItem as { state: { standingOnItemId: null | string } } | undefined
+      )?.state;
+      return state !== undefined && state.standingOnItemId !== null;
+    },
+    undefined,
+    { timeout: longTimeout },
+  );
+
 export const setZeroGameSpeed = async (page: Page): Promise<boolean> => {
   await page.evaluate(() => {
     window._e2e_pixiApplication!.ticker.speed = 0;

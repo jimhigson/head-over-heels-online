@@ -154,6 +154,7 @@ export class OnScreenControls<RoomId extends string, RoomItemId extends string>
         },
       } = buttonRenderer;
 
+      buttonRenderer.output.eventMode = "static";
       buttonRenderer.output.on("pointerdown", () => {
         for (const action of actions) {
           inputStateTracker.hudInputState[action] = true;
