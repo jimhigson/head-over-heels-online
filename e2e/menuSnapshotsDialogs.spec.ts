@@ -1,8 +1,10 @@
 import { type Page, test } from "@playwright/test";
 import chalk from "chalk";
 
+import { needRefreshMenuShown } from "../src/store/slices/gameMenus/gameMenusSlice";
 import { type SpriteOption } from "../src/store/slices/userSettings/userSettingsSlice";
 import { type ScreenshotTestOptions } from "./ScreenshotTestOptions";
+import { dispatchToStore } from "./testUtils/gameStateQueries";
 import { osSlowness, retryWithRecovery } from "./testUtils/infrastructure";
 import {
   elapsed,
@@ -192,6 +194,48 @@ for (const spriteOption of enabledSpriteModes) {
 
       console.log(
         `${formattedName} ${elapsed()}: ✓ Visited ${visited.size} dialogs: [${Array.from(visited).join(", ")}]`,
+      );
+    });
+
+    test(`Snapshot needRefresh dialog ${JSON.stringify(spriteOption)}`, async ({
+      page,
+    }, testInfo) => {
+      const { mainMenuOnly, noUncolourised } = testInfo.project
+        .use as ScreenshotTestOptions;
+      if (mainMenuOnly || (spriteOption.uncolourised && noUncolourised)) {
+        test.skip();
+        return;
+      }
+      test.setTimeout(testTimeout);
+
+      const formattedName = formatProjectName(testInfo.project.name);
+      forwardBrowserConsoleToNodeConsole(page, formattedName);
+
+      await page.goto("/?track=0");
+      await waitForDialog(page, "mainMenu", { timeout: 5000 * osSlowness });
+
+      await setSpriteOption(page, formattedName, spriteOption);
+
+      // the "update required" dialog is shown reactively when the service
+      // worker finds a new build, so it can't be reached by menu navigation —
+      // dispatch the same action the update flow dispatches
+      await dispatchToStore(page, needRefreshMenuShown());
+
+      // the striped LoadingBorder backdrop is shown while the lazy dialog chunk
+      // and the selected sprite option's spritesheet load; wait for it to leave
+      // the DOM so the dialog's backdrop is deterministic rather than a snapshot
+      // of mid-load
+      await page
+        .locator(".loading-border")
+        .waitFor({ state: "detached", timeout: testTimeout });
+
+      await takeDialogScreenshot(
+        page,
+        "needRefresh",
+        formattedName,
+        spriteOptionSuffix(spriteOption),
+        spriteOption,
+        testInfo.project.name,
       );
     });
   });
