@@ -1,7 +1,10 @@
-@tailwind base;
-/* TODO - maybe can remove components? */
-@tailwind components;
-@tailwind utilities;
+@import "tailwindcss";
+@import "./_generated/tailwindSafelist.css";
+@import "./tailwind/lengthScale.css";
+@config "../tailwind.config.ts";
+/* markdown manual/scroll pages aren't auto-scanned by v4; their per-image
+   classes (float-right etc., space-separated in image srcs) live only here */
+@source "./**/*.md";
 
 @layer base {
   body {
@@ -17,10 +20,8 @@
   }
 }
 
-@layer components {
-  .bitmap-text-link {
-    @apply text-white zx:text-zxWhite bg-metallicBlue hover:bg-white hover:text-metallicBlue zx:bg-zxBlue zx:hover:bg-zxWhite zx:hover:text-zxBlue inline-block pl-oneScaledPix pt-oneScaledPix;
-  }
+@utility bitmap-text-link {
+  @apply text-white zx:text-zxWhite bg-metallicBlue hover:bg-white hover:text-metallicBlue zx:bg-zxBlue zx:hover:bg-zxWhite zx:hover:text-zxBlue inline-block pl-oneScaledPix pt-oneScaledPix;
 }
 
 canvas {

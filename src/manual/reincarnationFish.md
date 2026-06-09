@@ -1,6 +1,6 @@
 ## Reincarnation Fish
 
-![](texture-animated-fish)The strangest animal in the known universe! This fish likes to be eaten! There
+![]( texture-animated-fish )The strangest animal in the known universe! This fish likes to be eaten! There
 have been cases of it jumping onto plates!
 
 But there is more: when you eat one,
@@ -12,7 +12,7 @@ How a fish
 can remember anything when it's been eaten has never been successfully
 explained.
 
-![](texture-fish_1)You must be very careful to check that the fish is
+![]( texture-fish_1 )You must be very careful to check that the fish is
 alive and wriggling as **dead fish decompose very quickly and it rapidly
 turns so poisonous that a single lick can kill.**
 

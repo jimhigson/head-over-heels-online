@@ -1,4 +1,4 @@
-import tailwindcss from "tailwindcss";
+import tailwindcss from "@tailwindcss/postcss";
 
 import pruneUnused from "./postcss-prune-unused.js";
 

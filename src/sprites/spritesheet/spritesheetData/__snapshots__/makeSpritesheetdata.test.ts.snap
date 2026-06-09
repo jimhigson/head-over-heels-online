@@ -2682,62 +2682,6 @@ exports[`for tailwind plugin we must have all possible frames and animations 1`]
       "y": 127,
     },
   },
-  "hud.char.#": {
-    "frame": {
-      "h": 8,
-      "w": 8,
-      "x": 334,
-      "y": 1005,
-    },
-  },
-  "hud.char.%": {
-    "frame": {
-      "h": 8,
-      "w": 8,
-      "x": 154,
-      "y": 1014,
-    },
-  },
-  "hud.char.&": {
-    "frame": {
-      "h": 8,
-      "w": 8,
-      "x": 469,
-      "y": 1014,
-    },
-  },
-  "hud.char.(": {
-    "frame": {
-      "h": 8,
-      "w": 8,
-      "x": 235,
-      "y": 1014,
-    },
-  },
-  "hud.char.)": {
-    "frame": {
-      "h": 8,
-      "w": 8,
-      "x": 244,
-      "y": 1014,
-    },
-  },
-  "hud.char.*": {
-    "frame": {
-      "h": 8,
-      "w": 8,
-      "x": 343,
-      "y": 1014,
-    },
-  },
-  "hud.char.+": {
-    "frame": {
-      "h": 8,
-      "w": 8,
-      "x": 145,
-      "y": 1014,
-    },
-  },
   "hud.char.0": {
     "frame": {
       "h": 8,
@@ -2816,14 +2760,6 @@ exports[`for tailwind plugin we must have all possible frames and animations 1`]
       "w": 8,
       "x": 316,
       "y": 1005,
-    },
-  },
-  "hud.char.@": {
-    "frame": {
-      "h": 8,
-      "w": 8,
-      "x": 352,
-      "y": 1014,
     },
   },
   "hud.char.A": {
@@ -3162,30 +3098,6 @@ exports[`for tailwind plugin we must have all possible frames and animations 1`]
       "y": 1005,
     },
   },
-  "hud.char.[": {
-    "frame": {
-      "h": 8,
-      "w": 8,
-      "x": 253,
-      "y": 1014,
-    },
-  },
-  "hud.char.]": {
-    "frame": {
-      "h": 8,
-      "w": 8,
-      "x": 262,
-      "y": 1014,
-    },
-  },
-  "hud.char.^": {
-    "frame": {
-      "h": 8,
-      "w": 8,
-      "x": 424,
-      "y": 1014,
-    },
-  },
   "hud.char._": {
     "frame": {
       "h": 8,
@@ -3200,6 +3112,22 @@ exports[`for tailwind plugin we must have all possible frames and animations 1`]
       "w": 8,
       "x": 1,
       "y": 994,
+    },
+  },
+  "hud.char.amp": {
+    "frame": {
+      "h": 8,
+      "w": 8,
+      "x": 469,
+      "y": 1014,
+    },
+  },
+  "hud.char.at": {
+    "frame": {
+      "h": 8,
+      "w": 8,
+      "x": 352,
+      "y": 1014,
     },
   },
   "hud.char.b": {
@@ -3232,6 +3160,14 @@ exports[`for tailwind plugin we must have all possible frames and animations 1`]
       "w": 7,
       "x": 19,
       "y": 994,
+    },
+  },
+  "hud.char.caret": {
+    "frame": {
+      "h": 8,
+      "w": 8,
+      "x": 424,
+      "y": 1014,
     },
   },
   "hud.char.colon": {
@@ -3314,6 +3250,14 @@ exports[`for tailwind plugin we must have all possible frames and animations 1`]
       "y": 994,
     },
   },
+  "hud.char.hash": {
+    "frame": {
+      "h": 8,
+      "w": 8,
+      "x": 334,
+      "y": 1005,
+    },
+  },
   "hud.char.hyph": {
     "frame": {
       "h": 10,
@@ -3352,6 +3296,22 @@ exports[`for tailwind plugin we must have all possible frames and animations 1`]
       "w": 5,
       "x": 100,
       "y": 994,
+    },
+  },
+  "hud.char.lBracket": {
+    "frame": {
+      "h": 8,
+      "w": 8,
+      "x": 253,
+      "y": 1014,
+    },
+  },
+  "hud.char.lParen": {
+    "frame": {
+      "h": 8,
+      "w": 8,
+      "x": 235,
+      "y": 1014,
     },
   },
   "hud.char.lQuote": {
@@ -3402,6 +3362,22 @@ exports[`for tailwind plugin we must have all possible frames and animations 1`]
       "y": 994,
     },
   },
+  "hud.char.pct": {
+    "frame": {
+      "h": 8,
+      "w": 8,
+      "x": 154,
+      "y": 1014,
+    },
+  },
+  "hud.char.plus": {
+    "frame": {
+      "h": 8,
+      "w": 8,
+      "x": 145,
+      "y": 1014,
+    },
+  },
   "hud.char.q": {
     "frame": {
       "h": 10,
@@ -3424,6 +3400,22 @@ exports[`for tailwind plugin we must have all possible frames and animations 1`]
       "w": 5,
       "x": 155,
       "y": 994,
+    },
+  },
+  "hud.char.rBracket": {
+    "frame": {
+      "h": 8,
+      "w": 8,
+      "x": 262,
+      "y": 1014,
+    },
+  },
+  "hud.char.rParen": {
+    "frame": {
+      "h": 8,
+      "w": 8,
+      "x": 244,
+      "y": 1014,
     },
   },
   "hud.char.rQuote": {
@@ -3474,6 +3466,14 @@ exports[`for tailwind plugin we must have all possible frames and animations 1`]
       "y": 1014,
     },
   },
+  "hud.char.star": {
+    "frame": {
+      "h": 8,
+      "w": 8,
+      "x": 343,
+      "y": 1014,
+    },
+  },
   "hud.char.t": {
     "frame": {
       "h": 10,
@@ -3488,6 +3488,262 @@ exports[`for tailwind plugin we must have all possible frames and animations 1`]
       "w": 8,
       "x": 182,
       "y": 994,
+    },
+  },
+  "hud.char.u1f579": {
+    "frame": {
+      "h": 8,
+      "w": 8,
+      "x": 370,
+      "y": 1005,
+    },
+  },
+  "hud.char.u1f6e1": {
+    "frame": {
+      "h": 8,
+      "w": 8,
+      "x": 352,
+      "y": 1005,
+    },
+  },
+  "hud.char.u2022": {
+    "frame": {
+      "h": 8,
+      "w": 8,
+      "x": 406,
+      "y": 1014,
+    },
+  },
+  "hud.char.u204c": {
+    "frame": {
+      "h": 8,
+      "w": 8,
+      "x": 298,
+      "y": 1014,
+    },
+  },
+  "hud.char.u204d": {
+    "frame": {
+      "h": 8,
+      "w": 8,
+      "x": 307,
+      "y": 1014,
+    },
+  },
+  "hud.char.u2196": {
+    "frame": {
+      "h": 8,
+      "w": 8,
+      "x": 199,
+      "y": 1014,
+    },
+  },
+  "hud.char.u2197": {
+    "frame": {
+      "h": 8,
+      "w": 8,
+      "x": 217,
+      "y": 1014,
+    },
+  },
+  "hud.char.u2198": {
+    "frame": {
+      "h": 8,
+      "w": 8,
+      "x": 208,
+      "y": 1014,
+    },
+  },
+  "hud.char.u2199": {
+    "frame": {
+      "h": 8,
+      "w": 8,
+      "x": 226,
+      "y": 1014,
+    },
+  },
+  "hud.char.u21e7": {
+    "frame": {
+      "h": 8,
+      "w": 8,
+      "x": 415,
+      "y": 1014,
+    },
+  },
+  "hud.char.u221e": {
+    "frame": {
+      "h": 8,
+      "w": 16,
+      "x": 379,
+      "y": 1005,
+    },
+  },
+  "hud.char.u2318": {
+    "frame": {
+      "h": 8,
+      "w": 8,
+      "x": 442,
+      "y": 1014,
+    },
+  },
+  "hud.char.u2325": {
+    "frame": {
+      "h": 8,
+      "w": 8,
+      "x": 433,
+      "y": 1014,
+    },
+  },
+  "hud.char.u238c": {
+    "frame": {
+      "h": 8,
+      "w": 8,
+      "x": 478,
+      "y": 1014,
+    },
+  },
+  "hud.char.u23e9": {
+    "frame": {
+      "h": 8,
+      "w": 8,
+      "x": 289,
+      "y": 1014,
+    },
+  },
+  "hud.char.u2605": {
+    "frame": {
+      "h": 8,
+      "w": 8,
+      "x": 451,
+      "y": 1014,
+    },
+  },
+  "hud.char.u2630": {
+    "frame": {
+      "h": 8,
+      "w": 8,
+      "x": 334,
+      "y": 1014,
+    },
+  },
+  "hud.char.u2668": {
+    "frame": {
+      "h": 8,
+      "w": 8,
+      "x": 361,
+      "y": 1005,
+    },
+  },
+  "hud.char.u26a1": {
+    "frame": {
+      "h": 8,
+      "w": 8,
+      "x": 343,
+      "y": 1005,
+    },
+  },
+  "hud.char.u27a1": {
+    "frame": {
+      "h": 8,
+      "w": 8,
+      "x": 172,
+      "y": 1014,
+    },
+  },
+  "hud.char.u27f3": {
+    "frame": {
+      "h": 8,
+      "w": 8,
+      "x": 487,
+      "y": 1014,
+    },
+  },
+  "hud.char.u2b05": {
+    "frame": {
+      "h": 8,
+      "w": 8,
+      "x": 163,
+      "y": 1014,
+    },
+  },
+  "hud.char.u2b06": {
+    "frame": {
+      "h": 8,
+      "w": 8,
+      "x": 181,
+      "y": 1014,
+    },
+  },
+  "hud.char.u2b07": {
+    "frame": {
+      "h": 8,
+      "w": 8,
+      "x": 190,
+      "y": 1014,
+    },
+  },
+  "hud.char.ua7": {
+    "frame": {
+      "h": 8,
+      "w": 8,
+      "x": 460,
+      "y": 1014,
+    },
+  },
+  "hud.char.ua9": {
+    "frame": {
+      "h": 8,
+      "w": 8,
+      "x": 361,
+      "y": 1014,
+    },
+  },
+  "hud.char.ue709": {
+    "frame": {
+      "h": 8,
+      "w": 16,
+      "x": 413,
+      "y": 1005,
+    },
+  },
+  "hud.char.uea78": {
+    "frame": {
+      "h": 8,
+      "w": 8,
+      "x": 370,
+      "y": 1014,
+    },
+  },
+  "hud.char.uf10a9": {
+    "frame": {
+      "h": 8,
+      "w": 8,
+      "x": 388,
+      "y": 1014,
+    },
+  },
+  "hud.char.uf1ff": {
+    "frame": {
+      "h": 8,
+      "w": 16,
+      "x": 396,
+      "y": 1005,
+    },
+  },
+  "hud.char.uf457": {
+    "frame": {
+      "h": 8,
+      "w": 8,
+      "x": 397,
+      "y": 1014,
+    },
+  },
+  "hud.char.uf50e": {
+    "frame": {
+      "h": 8,
+      "w": 8,
+      "x": 379,
+      "y": 1014,
     },
   },
   "hud.char.v": {
@@ -3528,262 +3784,6 @@ exports[`for tailwind plugin we must have all possible frames and animations 1`]
       "w": 6,
       "x": 228,
       "y": 994,
-    },
-  },
-  "hud.char.§": {
-    "frame": {
-      "h": 8,
-      "w": 8,
-      "x": 460,
-      "y": 1014,
-    },
-  },
-  "hud.char.©": {
-    "frame": {
-      "h": 8,
-      "w": 8,
-      "x": 361,
-      "y": 1014,
-    },
-  },
-  "hud.char.•": {
-    "frame": {
-      "h": 8,
-      "w": 8,
-      "x": 406,
-      "y": 1014,
-    },
-  },
-  "hud.char.⁌": {
-    "frame": {
-      "h": 8,
-      "w": 8,
-      "x": 298,
-      "y": 1014,
-    },
-  },
-  "hud.char.⁍": {
-    "frame": {
-      "h": 8,
-      "w": 8,
-      "x": 307,
-      "y": 1014,
-    },
-  },
-  "hud.char.↖": {
-    "frame": {
-      "h": 8,
-      "w": 8,
-      "x": 199,
-      "y": 1014,
-    },
-  },
-  "hud.char.↗": {
-    "frame": {
-      "h": 8,
-      "w": 8,
-      "x": 217,
-      "y": 1014,
-    },
-  },
-  "hud.char.↘": {
-    "frame": {
-      "h": 8,
-      "w": 8,
-      "x": 208,
-      "y": 1014,
-    },
-  },
-  "hud.char.↙": {
-    "frame": {
-      "h": 8,
-      "w": 8,
-      "x": 226,
-      "y": 1014,
-    },
-  },
-  "hud.char.⇧": {
-    "frame": {
-      "h": 8,
-      "w": 8,
-      "x": 415,
-      "y": 1014,
-    },
-  },
-  "hud.char.∞": {
-    "frame": {
-      "h": 8,
-      "w": 16,
-      "x": 379,
-      "y": 1005,
-    },
-  },
-  "hud.char.⌘": {
-    "frame": {
-      "h": 8,
-      "w": 8,
-      "x": 442,
-      "y": 1014,
-    },
-  },
-  "hud.char.⌥": {
-    "frame": {
-      "h": 8,
-      "w": 8,
-      "x": 433,
-      "y": 1014,
-    },
-  },
-  "hud.char.⎌": {
-    "frame": {
-      "h": 8,
-      "w": 8,
-      "x": 478,
-      "y": 1014,
-    },
-  },
-  "hud.char.⏩": {
-    "frame": {
-      "h": 8,
-      "w": 8,
-      "x": 289,
-      "y": 1014,
-    },
-  },
-  "hud.char.★": {
-    "frame": {
-      "h": 8,
-      "w": 8,
-      "x": 451,
-      "y": 1014,
-    },
-  },
-  "hud.char.☰": {
-    "frame": {
-      "h": 8,
-      "w": 8,
-      "x": 334,
-      "y": 1014,
-    },
-  },
-  "hud.char.♨": {
-    "frame": {
-      "h": 8,
-      "w": 8,
-      "x": 361,
-      "y": 1005,
-    },
-  },
-  "hud.char.⚡": {
-    "frame": {
-      "h": 8,
-      "w": 8,
-      "x": 343,
-      "y": 1005,
-    },
-  },
-  "hud.char.➡": {
-    "frame": {
-      "h": 8,
-      "w": 8,
-      "x": 172,
-      "y": 1014,
-    },
-  },
-  "hud.char.⟳": {
-    "frame": {
-      "h": 8,
-      "w": 8,
-      "x": 487,
-      "y": 1014,
-    },
-  },
-  "hud.char.⬅": {
-    "frame": {
-      "h": 8,
-      "w": 8,
-      "x": 163,
-      "y": 1014,
-    },
-  },
-  "hud.char.⬆": {
-    "frame": {
-      "h": 8,
-      "w": 8,
-      "x": 181,
-      "y": 1014,
-    },
-  },
-  "hud.char.⬇": {
-    "frame": {
-      "h": 8,
-      "w": 8,
-      "x": 190,
-      "y": 1014,
-    },
-  },
-  "hud.char.🕹": {
-    "frame": {
-      "h": 8,
-      "w": 8,
-      "x": 370,
-      "y": 1005,
-    },
-  },
-  "hud.char.🛡": {
-    "frame": {
-      "h": 8,
-      "w": 8,
-      "x": 352,
-      "y": 1005,
-    },
-  },
-  "hud.char.󱂩": {
-    "frame": {
-      "h": 8,
-      "w": 8,
-      "x": 388,
-      "y": 1014,
-    },
-  },
-  "hud.char.": {
-    "frame": {
-      "h": 8,
-      "w": 16,
-      "x": 413,
-      "y": 1005,
-    },
-  },
-  "hud.char.": {
-    "frame": {
-      "h": 8,
-      "w": 8,
-      "x": 370,
-      "y": 1014,
-    },
-  },
-  "hud.char.": {
-    "frame": {
-      "h": 8,
-      "w": 16,
-      "x": 396,
-      "y": 1005,
-    },
-  },
-  "hud.char.": {
-    "frame": {
-      "h": 8,
-      "w": 8,
-      "x": 397,
-      "y": 1014,
-    },
-  },
-  "hud.char.": {
-    "frame": {
-      "h": 8,
-      "w": 8,
-      "x": 379,
-      "y": 1014,
     },
   },
   "hushPuppy": {

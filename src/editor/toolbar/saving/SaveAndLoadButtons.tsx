@@ -3,6 +3,7 @@ import { useState } from "preact/hooks";
 import { importSupabaseDb } from "../../../db/supabaseDb.import";
 import { BitmapText } from "../../../game/components/tailwindSprites/BitmapText";
 import { type CampaignLocator } from "../../../model/modelTypes";
+import { escapeCharForTailwind } from "../../../sprites/escapeCharForTailwind";
 import { type TextureTailwindClass } from "../../../sprites/spritesheet/spritesheetData/TextureTailwindClass";
 import {
   loadCampaignFromApi,
@@ -122,7 +123,7 @@ export const SaveAndLoadButtons = () => {
               <div className="flex flex-row items-center">
                 <span
                   className={cn(
-                    `sprite sprite-tinted text-highlightBeige ${"texture-hud_char_➡" satisfies TextureTailwindClass} relative`,
+                    `sprite sprite-tinted text-highlightBeige texture-hud_char_${escapeCharForTailwind("➡")} relative`,
                     { "text-lightGrey": user === null },
                   )}
                 />
@@ -166,7 +167,7 @@ export const SaveAndLoadButtons = () => {
               />
               <span
                 className={cn(
-                  `sprite sprite-tinted text-highlightBeige ${"texture-hud_char_➡" satisfies TextureTailwindClass} relative`,
+                  `sprite sprite-tinted text-highlightBeige texture-hud_char_${escapeCharForTailwind("➡")} relative`,
                 )}
               />
             </div>

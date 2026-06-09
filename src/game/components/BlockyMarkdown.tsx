@@ -93,9 +93,13 @@ const markdownComponents: CustomComponentsOption = {
       throw new Error("image without src");
     }
 
-    // the src is actually tailwind classes, usually just giving a single texture, but
-    // can also give extra params by writing as a url and using ? an & to encode them
-    const classes = src.split(/\?|&/);
+    // the src is actually tailwind classes, usually just giving a single texture,
+    // but can also give extra classes after it separated by spaces. The classes are
+    // written space-padded inside the parens (`![]( a b c )`) so tailwind v4's
+    // scanner sees whitespace on both sides of every token - it treats `(` and `)`
+    // as arbitrary-value delimiters, so a token touching either paren is otherwise
+    // swallowed and never extracted. The padding leaves empty entries here to drop.
+    const classes = src.split(/\s+/).filter(Boolean);
 
     return (
       <span

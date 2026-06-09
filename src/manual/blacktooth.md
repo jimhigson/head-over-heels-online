@@ -1,6 +1,6 @@
 ## Planet Blacktooth
 
-![](texture-blacktooth_wall_armour_left?bg-pureBlack)![](texture-blacktooth_wall_shield_away?bg-pureBlack&float-right)This planet has a large moon with three lunar space stations on it, the larger
+![]( texture-blacktooth_wall_armour_left bg-pureBlack )![]( texture-blacktooth_wall_shield_away bg-pureBlack float-right )This planet has a large moon with three lunar space stations on it, the larger
 of these, *Moon Station HQ*, is the main teleport center for the empire, with a
 direct teleport to all the slave planets.
 
@@ -11,7 +11,7 @@ crew found the people had changed: instead of pyramids they used castles,
 instead of wrapping corpses up in cloth, they wrapped living men in metal and
 then tried to turn them into corpses with sharp metal sticks.
 
-![](texture-teleporter)The Emperor, not to be outdone by his ancestor, built a castle on Blacktooth and
+![]( texture-teleporter )The Emperor, not to be outdone by his ancestor, built a castle on Blacktooth and
 used it as his headquarters. The castle is surrounded by a small market, and
 then a range of impassable mountains. The only way to leave is via teleport to
 one of the three lunar space stations.

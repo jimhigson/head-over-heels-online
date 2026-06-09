@@ -37,7 +37,7 @@ export const SpriteTile = ({ textureId, frame, scale }: SpriteTileProps) => {
       <div
         className={`
         sprite bg-pureBlack zx:bg-zxBlack toppy:bg-toppyBlack hover:bg-moss zx:hover:bg-zxYellow toppy:hover:bg-toppyWarm3 border-shadow zx:border-zxRedDimmed toppy:border-toppyGrey2
-        box-content w-min
+        box-content
         ${spriteOption.uncolourised ? "sprite-revert-to-two-tone" : ""}`}
         // most of these textures won't have classes loaded by tailwind due to ,
         // so inline the relevant info - including how tailwind would inflate

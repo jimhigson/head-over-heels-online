@@ -26,7 +26,7 @@ const spritesOptionExampleSprites = [
   "texture-animated-switch" satisfies AnimatedTextureTailwindClass,
 ];
 const spritesOptionExampleSpritesMarkdown = spritesOptionExampleSprites
-  .map((t) => `![](${t})`)
+  .map((t) => `![]( ${t} )`)
   .join("");
 
 const spritesOptionLabel = (spriteOption: SpriteOption): string =>

@@ -36,7 +36,7 @@ export const CommunityGamesDialog = (_emptyProps: EmptyObject) => {
             "toppy:scrollbar-thumb-toppyGrey1 toppy:scrollbar-track-toppyCool4 " +
             // bring away from any 'notch' on mobile devices:
             "mobile:px-3 " +
-            "[--leader-col-width:theme(width.3)] "
+            "[--leader-col-width:--spacing(3)] "
           }
         >
           {error !== undefined ?

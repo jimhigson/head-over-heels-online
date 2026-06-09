@@ -59,7 +59,7 @@ const AnimationPreview = ({
         style={{ "--scale": 4 }}
       >
         <div
-          className={`sprite box-content w-min
+          className={`sprite box-content
             ${spriteOption.uncolourised ? "sprite-revert-to-two-tone" : ""}`}
           style={animatedSpriteSpecificCssVars(
             animationName,
@@ -92,7 +92,7 @@ const SpriteOverlayTooltip = ({ textureId }: { textureId: TextureId }) => {
         style={{ "--scale": 4 }}
       >
         <div
-          className={`sprite box-content w-min
+          className={`sprite box-content
             ${spriteOption.uncolourised ? "sprite-revert-to-two-tone" : ""}`}
           style={spriteSpecificCssVars(frame.w, frame.h, frame.x, frame.y)}
         />

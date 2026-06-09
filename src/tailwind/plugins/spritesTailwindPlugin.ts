@@ -1,6 +1,5 @@
 import { imageSize } from "image-size";
 import plugin from "tailwindcss/plugin";
-import { type CSSRuleObject } from "tailwindcss/types/config";
 
 import spritesheetPalette from "../../_generated/palette/spritesheetPalette.json" with { type: "json" };
 import toppyPalette from "../../_generated/palette/spritesheetToppyPalette.json" with { type: "json" };
@@ -20,6 +19,7 @@ import {
   fromAllEntries,
   objectEntriesIter,
 } from "../../utils/entries";
+import { escapeClassName } from "../escapeClassName";
 import {
   animatedSpriteIndirectCssVars,
   animatedSpriteSpecificCssVars,
@@ -28,11 +28,19 @@ import {
   spriteSpecificCssVars,
 } from "./spriteCss";
 
+/**
+ * tailwind v4's CSS-in-JS object type (`CssInJs`, what `addBase`/`addUtilities`
+ * accept) isn't exported from the package, so mirror its recursive shape here.
+ */
+type CSSRuleObject = {
+  [key: string]: CSSRuleObject | CSSRuleObject[] | string | string[];
+};
+
 const spritesheetSize = imageSize("gfx/sprites.webp");
 
 // https://tailwindcss.com/docs/plugins
 export const spritesTailwindPlugin = plugin(
-  ({ addUtilities, addBase, addVariant, e }) => {
+  ({ addUtilities, addBase, addVariant }) => {
     /**
      * A full version of the spritesheet data with every possible sprite loaded. So tailwind thinks every possible
      * textureId exists. postcss can cut them down from there to what's actually used
@@ -58,7 +66,8 @@ export const spritesTailwindPlugin = plugin(
       a.animationSpeed === b.animationSpeed &&
       a.every((frame, i) => frame === b[i]);
 
-    const sanitiseId = (id: string) => e(sanitiseForClassName(id));
+    const sanitiseId = (id: string) =>
+      escapeClassName(sanitiseForClassName(id));
 
     const base: CSSRuleObject = {};
 
@@ -80,7 +89,7 @@ export const spritesTailwindPlugin = plugin(
     const bugFrame =
       fullSpritesheetData.frames["thisIsABug" as TextureId].frame;
 
-    const utilities: CSSRuleObject = {
+    const utilities: Record<string, CSSRuleObject> = {
       ".sprite": {
         "--totalScale": `calc(var(--scale, 1) * var(--sprite-scale, 1))`,
         "--x": `${bugFrame.x}`,
@@ -192,10 +201,6 @@ export const spritesTailwindPlugin = plugin(
           clamp(0px, calc(18px - var(--h) * var(--scale) * 1px), calc(18px - var(--h) * var(--scale) * 1px))  
           0                                                         
         )`,
-      },
-
-      "sprites-uppercase": {
-        // blank - left in for suggestions
       },
     };
 
@@ -344,8 +349,17 @@ export const spritesTailwindPlugin = plugin(
             const {
               frame: { h: hUpper, w: wUpper, x: xUpper, y: yUpper },
             } = upperCaseFrame;
-            // this is a char and there is also an upper-case version available:
-            base[`.sprites-uppercase .texture-${sanitiseId(textureId)}`] = {
+            // this is a char and there is also an upper-case version available.
+            // Nested inside the texture utility (rather than addBase) so it lands
+            // in the same cascade layer as the base `.texture-*` utility: in v4
+            // the utilities layer always beats the base layer regardless of
+            // specificity, so an addBase descendant rule would lose to it.
+            (
+              utilities[`.texture-${sanitiseId(textureId)}`] as Record<
+                string,
+                unknown
+              >
+            )[".sprites-uppercase &"] = {
               "--w": `${wUpper}`,
               "--h": `${hUpper}`,
               "--x": `${xUpper}`,
@@ -412,17 +426,17 @@ export const spritesTailwindPlugin = plugin(
           );
       };
 
-      const assignKeyframesToUtility = (
+      const assignKeyframesToBase = (
         frames: FramesWithSpeed<TextureId[]>,
         spritesheetData: ReturnType<typeof makeSpritesheetData>,
         keyframePrefix = "",
         elideOverride?: { x?: boolean; y?: boolean },
       ) => {
-        const normalUtility = utilities[
-          `.texture-animated-${sanitiseId(animationName)}`
-        ] as object;
+        // Tailwind v4's addUtilities drops a utility that contains a nested
+        // @keyframes (v3 hoisted them). Emit the keyframes as base CSS instead;
+        // @keyframes are global, so the utility's `animation` still resolves.
         Object.assign(
-          normalUtility,
+          base,
           keyframesForAnimatedSprite(
             animationName,
             sanitiseId,
@@ -437,7 +451,7 @@ export const spritesTailwindPlugin = plugin(
       if (shared) {
         // identical in both spritesheets — direct animation shorthand, no CSS vars
         emitUtilities(bsFrames, animatedSpriteSpecificCssVars);
-        assignKeyframesToUtility(bsFrames, fullSpritesheetData);
+        assignKeyframesToBase(bsFrames, fullSpritesheetData);
       } else {
         // differing or exclusive — use CSS variable indirection
         const referenceFrames = bsFrames ?? toppyFrames;
@@ -487,7 +501,7 @@ export const spritesTailwindPlugin = plugin(
             return {};
           }
 
-          assignKeyframesToUtility(
+          assignKeyframesToBase(
             frames,
             sheetData,
             sheetPrefix,

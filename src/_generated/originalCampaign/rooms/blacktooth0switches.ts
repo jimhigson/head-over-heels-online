@@ -34,9 +34,9 @@ export const room = inferRoomJson({
       config: {
         gives: "scroll",
         markdown: [
-          "## ![](texture-animated-bubbles_cold?sprites-normal-height) Notice to All Minions",
+          "## ![]( texture-animated-bubbles_cold sprites-normal-height ) Notice to All Minions",
           "",
-          "![](texture-blacktooth_wall_shield_away?float-right)*By Imperial Decree*, this chamber has been fitted with an Appearance Modulation Device.",
+          "![]( texture-blacktooth_wall_shield_away float-right )*By Imperial Decree*, this chamber has been fitted with an Appearance Modulation Device.",
           "",
           "Rest assured the effects are entirely harmless. Most subjects adapt to the loss of black outlines within a week or two.",
           "",

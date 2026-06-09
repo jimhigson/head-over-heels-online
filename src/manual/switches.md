@@ -1,6 +1,6 @@
 ## Switches
 
-![](texture-animated-switch)Simply push the switch to switch things off and on!
+![]( texture-animated-switch )Simply push the switch to switch things off and on!
 
 Switching a deadly monster off will make them no longer deadly to touch. Push them or jump on them to reach new areas!
 

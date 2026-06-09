@@ -1,6 +1,10 @@
-@tailwind base;
-@tailwind components;
-@tailwind utilities;
+@import "tailwindcss";
+@import "../_generated/tailwindSafelist.css";
+@import "../tailwind/lengthScale.css";
+@config "../../tailwind.config.ts";
+/* markdown manual/scroll pages aren't auto-scanned by v4; their per-image
+   classes (float-right etc., space-separated in image srcs) live only here */
+@source "../**/*.md";
 
 body {
   /* Prevent touch actions like scroll and pinch-to-zoom: */

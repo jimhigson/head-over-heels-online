@@ -1,0 +1,39 @@
+/* Length-unit theme for tailwind v4.
+
+   v4 derives every spacing-based utility (margin, padding, gap, inset, width,
+   height, min/max sizes, scroll-margin, size) from the single `--spacing`
+   variable as `calc(var(--spacing) * n)`, so any integer multiple works on
+   demand - `mt-23`, `w-40`, `-left-10` - without listing each step. Pointing
+   `--spacing` at the runtime `--block` reproduces the old `calc(var(--block) * n)`
+   scale while dropping the hand-written 0..32 (and negative) tables.
+
+   `inline` substitutes these values straight into the utilities (rather than
+   emitting `:root` custom properties the utilities then reference), so the output
+   matches the old hand-rolled `calc(var(--block) * n)` form with no extra weight -
+   runtime theming still works because `--block`/`--scale` stay runtime vars. */
+@theme inline {
+  --spacing: var(--block);
+
+  /* fractional / specialist steps that aren't whole --block multiples */
+  --spacing-quarter: calc(var(--block) / 4);
+  --spacing-half: calc(var(--block) / 2);
+  --spacing-threeQuarters: calc(var(--block) * 0.75);
+  --spacing-oneScaledPix: calc(var(--scale) * 1px);
+  /* how far to pull-up the bottom sprite when rendering stacked sprites */
+  --spacing-bottomStackPullup: calc(var(--scale) * 20px);
+  /* in markdown, centre a smaller stacked item over a larger one */
+  --spacing-centreSmallBlockOnLarge: calc(var(--scale) * 4px);
+
+  /* named widths/heights for the zx play area and dialogs (cross-axis names
+     like width/fullScrH are for transverse views) */
+  --width-zx: calc(var(--scale) * 256px);
+  --width-wideDialog: calc(100dvw - 2 * var(--block));
+  --width-tallDialog: calc(100dvh - 2 * var(--block));
+  --width-fullScrH: 100dvh;
+  --height-zx: calc(var(--scale) * 192px);
+  --height-tallDialog: calc(100dvh - 2 * var(--block));
+  --height-wideDialog: calc(100dvw - 2 * var(--block));
+  --height-fullScrW: 100dvw;
+  /* widest dialog is 40% wider than the zx screen */
+  --max-width-widestDialog: calc(var(--scale) * 358.4px);
+}

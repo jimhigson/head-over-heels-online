@@ -10,5 +10,16 @@ export const sanitiseForClassName = <S extends string>(s: S) =>
   // regex with negative lookahead to avoid replacing a dot that is preceded by another dot
   // eg - dots are separators, but can also be in the data. This:
   //    texture._  => texture__
-  //    texture..  => texture_.       <- means this can never be used in a monaco decoration, but it is the only texture that can't
-  s.replaceAll(/(?<!\.)\./g, "_") as SanitisedForClassName<S>;
+  //    texture..  => texture_.
+  //
+  // Tailwind v4's addUtilities only accepts plain [a-zA-Z0-9_-] class names
+  // (v3 tolerated CSS-escaped specials), so after the dot handling any
+  // remaining unsafe char is encoded by codepoint. Applied here, the single
+  // source for both the plugin's generated selectors and the runtime class
+  // names, so the two always agree.
+  s
+    .replaceAll(/(?<!\.)\./g, "_")
+    .replaceAll(
+      /[^a-zA-Z0-9_-]/g,
+      (ch) => `u${ch.codePointAt(0)!.toString(16)}`,
+    ) as SanitisedForClassName<S>;

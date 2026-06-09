@@ -66,7 +66,7 @@ export const AddAndDeleteRoomButtons = () => {
             tooltipContent={addTooltipMarkdown}
           >
             <span
-              className={`sprite ${"texture-hud_char_+" satisfies TextureTailwindClass} relative`}
+              className={`sprite ${"texture-hud_char_plus" satisfies TextureTailwindClass} relative`}
             />
           </ToolbarButton>
         }

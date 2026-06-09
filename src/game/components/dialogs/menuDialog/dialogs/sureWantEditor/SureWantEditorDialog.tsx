@@ -11,7 +11,7 @@ import { DialogTitleBar } from "../DialogTitleBar";
 
 const blurbMarkdown = `The Blockstacking Head over Heels level editor
 
-![](${`${"texture-headlessBase" satisfies TextureTailwindClass}?float-left`})**Design puzzles**!
+![]( ${`${"texture-headlessBase" satisfies TextureTailwindClass} float-left`} )**Design puzzles**!
 
 **Create adventures**!
 
