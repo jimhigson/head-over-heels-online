@@ -32,6 +32,7 @@ import {
   selectRoomFromLevelEditorState,
 } from "../levelEditorSelectors";
 import { type LevelEditorState } from "../levelEditorSlice";
+import { clearContextMenuXyInPlace } from "./contextMenuReducers";
 import {
   describeRoomJsonEdit,
   type UndoDescription,
@@ -162,6 +163,8 @@ export const editRoomReducers = {
       state.selectedJsonItemIds = selectedJsonItemIdsThatStillExist;
     }
 
+    clearContextMenuXyInPlace(state);
+
     if (newRoomJson.id !== selectCursorRoomId(state)) {
       changeIdOfCurrentRoomInPlace(state, newRoomJson.id);
     }
@@ -282,6 +285,7 @@ export const editRoomReducers = {
     }
 
     state.selectedJsonItemIds = [];
+    clearContextMenuXyInPlace(state);
 
     if (state.autoCoalesce) {
       consolidateCurrentRoomInPlace(state);
@@ -314,6 +318,8 @@ export const editRoomReducers = {
         );
       }
     }
+
+    clearContextMenuXyInPlace(state);
   },
 
   /** add or remove the room above the current room */

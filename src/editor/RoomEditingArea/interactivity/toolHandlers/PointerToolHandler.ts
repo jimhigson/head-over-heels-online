@@ -36,6 +36,7 @@ import {
 import {
   commitCurrentPreviewedEdits,
   moveOrResizeItemAsPreview,
+  openItemContextMenu,
   selectItem,
   selectItemIsSelected,
   setHoveredItemInRoom,
@@ -401,15 +402,29 @@ export class PointerToolHandler
         return;
       }
 
+      const isRightClick = mouseEvent.button === 2;
+
       dispatch(
         mouseEvent.ctrlKey || mouseEvent.metaKey ?
           toggleSelectedItemInRoom({
             jsonItemId: clickedOnItem.jsonItemId,
+            onlySelect: isRightClick,
           })
         : setSelectedItemsInRoom({
             jsonItemIds: [clickedOnItem.jsonItemId],
           }),
       );
+
+      if (isRightClick) {
+        // a right-click selects the item the same way a left-click does (above),
+        // then additionally opens the context menu for the resulting selection
+        if (
+          clickedOnItem?.jsonItemId !== undefined &&
+          !itemsAreLocked(storeState, clickedOnItem)
+        ) {
+          dispatch(openItemContextMenu({ scrXy: pointingAt.scrXy }));
+        }
+      }
     } else if (isDragEnd) {
       dispatch(commitCurrentPreviewedEdits());
     }

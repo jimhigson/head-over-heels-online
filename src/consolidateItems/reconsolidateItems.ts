@@ -16,7 +16,7 @@ const hasTimesGreaterThanOne = (item: AnyJsonItemUnion): boolean => {
   return times.x > 1 || times.y > 1 || times.z > 1;
 };
 
-const explodeItem = <RoomItemId extends string, RoomId extends string>(
+export const explodeItem = <RoomItemId extends string, RoomId extends string>(
   id: RoomItemId,
   item: JsonItemUnion<RoomId, RoomItemId>,
   /**
@@ -29,14 +29,30 @@ const explodeItem = <RoomItemId extends string, RoomId extends string>(
   const times = getJsonItemTimes(item);
   const fragments = {} as Record<RoomItemId, JsonItemUnion<RoomId, RoomItemId>>;
 
+  // tile-based walls (away/left) hold their length in a tiles array rather than a
+  // times config, so each exploded part keeps a single tile from that array:
+  const wallTiles =
+    (
+      item.type === "wall" &&
+      (item.config.direction === "away" || item.config.direction === "left")
+    ) ?
+      item.config.tiles
+    : undefined;
+
   for (let dz = 0; dz < times.z; dz++) {
     for (let dy = 0; dy < times.y; dy++) {
       for (let dx = 0; dx < times.x; dx++) {
         const fragmentId = nextItemIdSet(reserved, id);
         reserved.add(fragmentId);
+        const config =
+          wallTiles === undefined ?
+            omit(item.config as Record<string, unknown>, "times")
+            // away runs along x and left along y, so only one of dx/dy is ever
+            // non-zero - their sum is the tile index along the wall:
+          : { ...item.config, tiles: [wallTiles[dx + dy]] };
         fragments[fragmentId] = {
           ...item,
-          config: omit(item.config as Record<string, unknown>, "times"),
+          config,
           position: {
             x: item.position.x + dx,
             y: item.position.y + dy,

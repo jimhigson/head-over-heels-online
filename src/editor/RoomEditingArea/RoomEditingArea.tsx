@@ -11,6 +11,7 @@ import { useUpdateUpscaleOnDisplaySettingsChange } from "../../store/slices/upsc
 import { useUpdateUpscaleWhenElementResizes } from "../../store/slices/upscale/useUpdateUpscaleWhenElementResizes";
 import { useCanvasTransform } from "../../utils/scaledRendering/useCanvasInlineStyle";
 import { editorAnnotationsDecorateItemRenderer } from "../rendering/EditorAnnotationsRenderer";
+import { ItemContextMenu } from "./contextMenu/ItemContextMenu";
 import { EditorRoomStateProvider } from "./EditorRoomStateProvider";
 import { useRoomEditorInteractivity } from "./interactivity/useRoomEditorInteractivity";
 import { PixiApplicationProvider } from "./PixiApplicationProvider";
@@ -82,6 +83,7 @@ const RoomEditingAreaInner = () => {
           className="focus-visible:outline-none"
         />
       </div>
+      <ItemContextMenu renderArea={renderArea} />
     </div>
   );
 };

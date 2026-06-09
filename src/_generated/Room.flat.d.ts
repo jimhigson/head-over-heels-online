@@ -515,12 +515,9 @@ export type RoomJsonSchema = {
                             }
                           | {
                               which: "helicopterBug";
-                              movement: "patrol-randomly-xy8";
-                              activated: "off" | "on";
-                            }
-                          | {
-                              which: "helicopterBug";
-                              movement: "towards-analogue";
+                              movement:
+                                | "patrol-randomly-xy8"
+                                | "towards-analogue";
                               activated: "off" | "on";
                             }
                           | {
@@ -855,12 +852,9 @@ export type RoomJsonSchema = {
                             }
                           | {
                               which: "helicopterBug";
-                              movement: "patrol-randomly-xy8";
-                              activated: "off" | "on";
-                            }
-                          | {
-                              which: "helicopterBug";
-                              movement: "towards-analogue";
+                              movement:
+                                | "patrol-randomly-xy8"
+                                | "towards-analogue";
                               activated: "off" | "on";
                             }
                           | {
@@ -1376,12 +1370,7 @@ export type RoomJsonSchema = {
                     }
                   | {
                       which: "helicopterBug";
-                      movement: "patrol-randomly-xy8";
-                      activated: "off" | "on";
-                    }
-                  | {
-                      which: "helicopterBug";
-                      movement: "towards-analogue";
+                      movement: "patrol-randomly-xy8" | "towards-analogue";
                       activated: "off" | "on";
                     }
                   | {
@@ -1913,12 +1902,7 @@ export type RoomJsonSchema = {
             }
           | {
               which: "helicopterBug";
-              movement: "patrol-randomly-xy8";
-              activated: "off" | "on";
-            }
-          | {
-              which: "helicopterBug";
-              movement: "towards-analogue";
+              movement: "patrol-randomly-xy8" | "towards-analogue";
               activated: "off" | "on";
             }
           | {
@@ -2595,12 +2579,9 @@ export type RoomJsonSchema = {
                             }
                           | {
                               which: "helicopterBug";
-                              movement: "patrol-randomly-xy8";
-                              activated: "off" | "on";
-                            }
-                          | {
-                              which: "helicopterBug";
-                              movement: "towards-analogue";
+                              movement:
+                                | "patrol-randomly-xy8"
+                                | "towards-analogue";
                               activated: "off" | "on";
                             }
                           | {
@@ -2935,12 +2916,9 @@ export type RoomJsonSchema = {
                             }
                           | {
                               which: "helicopterBug";
-                              movement: "patrol-randomly-xy8";
-                              activated: "off" | "on";
-                            }
-                          | {
-                              which: "helicopterBug";
-                              movement: "towards-analogue";
+                              movement:
+                                | "patrol-randomly-xy8"
+                                | "towards-analogue";
                               activated: "off" | "on";
                             }
                           | {
@@ -3715,12 +3693,7 @@ export type RoomJsonSchema = {
                         }
                       | {
                           which: "helicopterBug";
-                          movement: "patrol-randomly-xy8";
-                          activated: "off" | "on";
-                        }
-                      | {
-                          which: "helicopterBug";
-                          movement: "towards-analogue";
+                          movement: "patrol-randomly-xy8" | "towards-analogue";
                           activated: "off" | "on";
                         }
                       | {
@@ -4035,12 +4008,7 @@ export type RoomJsonSchema = {
                         }
                       | {
                           which: "helicopterBug";
-                          movement: "patrol-randomly-xy8";
-                          activated: "off" | "on";
-                        }
-                      | {
-                          which: "helicopterBug";
-                          movement: "towards-analogue";
+                          movement: "patrol-randomly-xy8" | "towards-analogue";
                           activated: "off" | "on";
                         }
                       | {

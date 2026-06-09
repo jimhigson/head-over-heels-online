@@ -208,18 +208,26 @@ export const useRoomEditorInteractivity = (
       });
     };
 
+    // suppress the native browser context menu - right-clicks are handled via
+    // the mouse up/down handlers above (which open our own item context menu)
+    const handleContextMenu = (mouseEvent: MouseEvent) => {
+      mouseEvent.preventDefault();
+    };
+
     const handleMouseMoveCatch = catchErrors(handleMouseMove);
 
     renderArea.addEventListener("mousemove", handleMouseMoveCatch);
     renderArea.addEventListener("mouseup", handleMouseUp);
     renderArea.addEventListener("mousedown", handleMouseDown);
     renderArea.addEventListener("mouseleave", handleMouseLeave);
+    renderArea.addEventListener("contextmenu", handleContextMenu);
 
     return () => {
       renderArea.removeEventListener("mousemove", handleMouseMoveCatch);
       renderArea.removeEventListener("mouseup", handleMouseUp);
       renderArea.removeEventListener("mousedown", handleMouseDown);
       renderArea.removeEventListener("mouseleave", handleMouseLeave);
+      renderArea.removeEventListener("contextmenu", handleContextMenu);
     };
   }, [application.stage, upscale, renderArea, dispatch]);
 };
