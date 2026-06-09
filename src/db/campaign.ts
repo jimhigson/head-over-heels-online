@@ -2,8 +2,8 @@ import { type SetOptional } from "type-fest";
 
 import { type EditorCampaign } from "../editor/editorTypes";
 import { type Campaign, type CampaignLocator } from "../model/modelTypes";
+import { type CampaignDbClient } from "./CampaignDbClient";
 import { compressObject, decompressObject } from "./compressObject";
-import { importSupabaseDb } from "./supabaseDb.import";
 
 export type CampaignGetLocator = SetOptional<
   CampaignLocator,
@@ -17,13 +17,19 @@ export type CampaignGetLocator = SetOptional<
   | "version"
 >;
 
-export const saveCampaignToDb = async (campaign: EditorCampaign) => {
+export const saveCampaignToDb = async (
+  /**
+   * client for the rpc call - saving requires a logged-in user, so this
+   * should be the authed (editor) client
+   */
+  db: CampaignDbClient,
+  campaign: EditorCampaign,
+) => {
   if (campaign.locator.campaignName === undefined) {
     throw new Error("can not save a campaign without a name");
   }
 
-  const { supabaseDb } = await importSupabaseDb();
-  const res = await supabaseDb.rpc("save_campaign_version", {
+  const res = await db.rpc("save_campaign_version", {
     p_name: campaign.locator.campaignName,
     p_data: await compressObject(campaign),
     p_published: campaign.meta?.published ?? false,
@@ -42,10 +48,11 @@ export const saveCampaignToDb = async (campaign: EditorCampaign) => {
 };
 
 export const loadCampaignFromDb = async (
+  /** client for the rpc call */
+  db: CampaignDbClient,
   options: CampaignGetLocator,
 ): Promise<Campaign<string>> => {
-  const { supabaseDb } = await importSupabaseDb();
-  const res = await supabaseDb.rpc("get_latest_campaign", {
+  const res = await db.rpc("get_latest_campaign", {
     p_campaign_name: options.campaignName,
     p_user_id: options.userId,
     // the db doesn't recognise -1 - needs undefined
@@ -98,13 +105,16 @@ export type CampaignDirectory = {
   };
 };
 
-export const getAllUsersLatestCampaigns = async ({
-  publishedOnly,
-}: {
-  publishedOnly: boolean;
-}): Promise<CampaignDirectory> => {
-  const { supabaseDb } = await importSupabaseDb();
-  const res = await supabaseDb.rpc("get_all_users_latest_campaigns", {
+export const getAllUsersLatestCampaigns = async (
+  /** client for the rpc call */
+  db: CampaignDbClient,
+  {
+    publishedOnly,
+  }: {
+    publishedOnly: boolean;
+  },
+): Promise<CampaignDirectory> => {
+  const res = await db.rpc("get_all_users_latest_campaigns", {
     p_published_only: publishedOnly,
   });
 

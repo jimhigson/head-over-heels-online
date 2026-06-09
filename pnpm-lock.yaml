@@ -123,6 +123,9 @@ importers:
       '@playwright/test':
         specifier: ^1.57.0
         version: 1.57.0
+      '@supabase/postgrest-js':
+        specifier: 2.93.1
+        version: 2.93.1
       '@supabase/supabase-js':
         specifier: ^2.93.1
         version: 2.93.1

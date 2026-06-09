@@ -10,6 +10,7 @@ import {
   getAllUsersLatestCampaignsCached,
   loadCampaignFromDbCached,
 } from "../../../db/campaignCached";
+import { importCampaignDbClient } from "../../../db/campaignDbClient.import";
 import { decompressObject } from "../../../db/compressObject";
 import { type EditorCampaign } from "../../../editor/editorTypes";
 import { type Campaign, type CampaignLocator } from "../../../model/modelTypes";
@@ -42,7 +43,12 @@ export const campaignsApiSlice = createApi({
           }
 
           // load via the database:
-          return { data: await loadCampaignFromDbCached(campaignLocator) };
+          return {
+            data: await loadCampaignFromDbCached(
+              await importCampaignDbClient(),
+              campaignLocator,
+            ),
+          };
         } catch (e) {
           return {
             error: createSerialisableErrors(
@@ -61,9 +67,10 @@ export const campaignsApiSlice = createApi({
     >({
       async queryFn({ publishedOnly }) {
         try {
-          const campaigns = await getAllUsersLatestCampaignsCached({
-            publishedOnly,
-          });
+          const campaigns = await getAllUsersLatestCampaignsCached(
+            await importCampaignDbClient(),
+            { publishedOnly },
+          );
           return { data: campaigns };
         } catch (e) {
           return {
@@ -77,7 +84,10 @@ export const campaignsApiSlice = createApi({
     saveCampaign: builder.mutation<number, EditorCampaign>({
       async queryFn(campaign) {
         try {
-          const version = await saveCampaignToDb(campaign);
+          const version = await saveCampaignToDb(
+            await importCampaignDbClient(),
+            campaign,
+          );
           return { data: version };
         } catch (e) {
           return {

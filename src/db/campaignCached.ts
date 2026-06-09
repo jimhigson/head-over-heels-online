@@ -1,25 +1,19 @@
-import { type Campaign } from "../model/modelTypes";
 import { withLocalStorageCache } from "../utils/io/withLocalStorageCache";
 import {
-  type CampaignDirectory,
   type CampaignGetLocator,
   getAllUsersLatestCampaigns,
   loadCampaignFromDb,
 } from "./campaign";
+import { type CampaignDbClient } from "./CampaignDbClient";
 
-export const loadCampaignFromDbCached = withLocalStorageCache<
-  CampaignGetLocator,
-  Campaign<string>
->(
-  (options) =>
+export const loadCampaignFromDbCached = withLocalStorageCache(
+  (_db: CampaignDbClient, options: CampaignGetLocator) =>
     `campaign/${options.userId ?? "$$noUserId"}/${options.campaignName}/${options.version ?? "$$noVersion"}`,
   loadCampaignFromDb,
 );
 
-export const getAllUsersLatestCampaignsCached = withLocalStorageCache<
-  { publishedOnly: boolean },
-  CampaignDirectory
->(
-  (options) => `campaignDirectory/${options.publishedOnly}`,
+export const getAllUsersLatestCampaignsCached = withLocalStorageCache(
+  (_db: CampaignDbClient, options: { publishedOnly: boolean }) =>
+    `campaignDirectory/${options.publishedOnly}`,
   getAllUsersLatestCampaigns,
 );
