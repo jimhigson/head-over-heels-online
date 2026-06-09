@@ -1,9 +1,11 @@
+import { nextItemIdSet } from "../model/inPlaceMutators/nextItemId";
 import { type JsonItemUnion } from "../model/json/JsonItem";
 import {
   type RoomJsonItems,
   roomJsonItemsEntriesIterable,
 } from "../model/RoomJson";
 import { getJsonItemTimes } from "../model/times";
+import { keys } from "../utils/entries";
 import { omit } from "../utils/pick";
 import { consolidateItemsMap } from "./consolidateItems";
 
@@ -15,17 +17,23 @@ const hasTimesGreaterThanOne = (item: AnyJsonItemUnion): boolean => {
 };
 
 const explodeItem = <RoomItemId extends string, RoomId extends string>(
-  id: string,
+  id: RoomItemId,
   item: JsonItemUnion<RoomId, RoomItemId>,
-): Record<string, JsonItemUnion<RoomId, RoomItemId>> => {
+  /**
+   * ids already taken in the room — every fragment id is minted unique against
+   * this set and added to it, so fragments never collide with sibling items or
+   * with fragments from other exploded blocks
+   */
+  reserved: Set<RoomItemId>,
+): Record<RoomItemId, JsonItemUnion<RoomId, RoomItemId>> => {
   const times = getJsonItemTimes(item);
-  const fragments: Record<string, JsonItemUnion<RoomId, RoomItemId>> = {};
-  let suffix = 0;
+  const fragments = {} as Record<RoomItemId, JsonItemUnion<RoomId, RoomItemId>>;
 
   for (let dz = 0; dz < times.z; dz++) {
     for (let dy = 0; dy < times.y; dy++) {
       for (let dx = 0; dx < times.x; dx++) {
-        const fragmentId = suffix === 0 ? id : `${id}_${suffix}`;
+        const fragmentId = nextItemIdSet(reserved, id);
+        reserved.add(fragmentId);
         fragments[fragmentId] = {
           ...item,
           config: omit(item.config as Record<string, unknown>, "times"),
@@ -35,7 +43,6 @@ const explodeItem = <RoomItemId extends string, RoomId extends string>(
             z: item.position.z + dz,
           },
         } as JsonItemUnion<RoomId, RoomItemId>;
-        suffix++;
       }
     }
   }
@@ -63,11 +70,14 @@ export const reconsolidateItems = <
   }
 
   const result = { ...items };
+  const reserved = new Set<RoomItemId>(keys(result));
 
   for (const [id, item] of itemsToExplode) {
     delete result[id];
+    // drop the original id so the first fragment reclaims it:
+    reserved.delete(id);
 
-    const fragments = explodeItem(id, item);
+    const fragments = explodeItem(id, item, reserved);
     const reconsolidated = consolidateItemsMap(fragments, shouldConsolidate);
 
     Object.assign(result, reconsolidated);
