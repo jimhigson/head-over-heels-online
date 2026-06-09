@@ -8,7 +8,10 @@ import {
   timesNotMultiplied,
 } from "../../../../../../model/json/utilityJsonConfigTypes";
 import { type IndividualCharacterName } from "../../../../../../model/modelTypes";
-import { type RoomJson } from "../../../../../../model/RoomJson";
+import {
+  isWholeRoomSubRooms,
+  type RoomJson,
+} from "../../../../../../model/RoomJson";
 import { emptyObject } from "../../../../../../utils/empty";
 import { entries } from "../../../../../../utils/entries";
 import { normalise } from "../../../../../../utils/maths/normalise";
@@ -83,12 +86,13 @@ const selectSubRoomStartAndEnd = (
 
     return floorsExtent;
   }
-  if (!roomJson.meta?.subRooms) {
+  const subRooms = roomJson.meta?.subRooms;
+  if (subRooms === undefined || isWholeRoomSubRooms(subRooms)) {
     throw new Error(
       `no subrooms in ${roomJson.id} when trying to get start and end for subroom ${subRoomId}`,
     );
   }
-  return roomJson.meta.subRooms[subRoomId].physicalPosition;
+  return subRooms[subRoomId].physicalPosition;
 };
 
 /**

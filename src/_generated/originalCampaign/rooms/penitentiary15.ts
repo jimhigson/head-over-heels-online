@@ -142,7 +142,13 @@ export const room = inferRoomJson({
       type: "wall",
     },
   },
+  meta: {
+    subRooms: {
+      "*": {
+        above: { room: "penitentiary16" },
+        below: { room: "penitentiary14" },
+      },
+    },
+  },
   planet: "penitentiary",
-  roomAbove: "penitentiary16",
-  roomBelow: "penitentiary14",
 }) satisfies RoomJson<OriginalCampaignRoomId, string, "penitentiary">;

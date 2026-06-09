@@ -3,7 +3,10 @@ import { roomGridPositions } from "../../../game/components/dialogs/menuDialog/d
 import { nextItemId } from "../../../model/inPlaceMutators/nextItemId";
 import { exitGameRoomId } from "../../../model/json/ItemConfigMap";
 import { typePrefix } from "../../../model/json/typePrefix";
-import { iterateRoomJsonItemsWithIds } from "../../../model/RoomJson";
+import {
+  iterateRoomJsonItemsWithIds,
+  subRoomById,
+} from "../../../model/RoomJson";
 import { keys, valuesIter } from "../../../utils/entries";
 import { unitVectors } from "../../../utils/vectors/unitVectors";
 import {
@@ -56,7 +59,7 @@ const getSubRoomFloorBounds = (
   const roomBounds = getRoomFloorBounds(room);
 
   if (subRoomId !== "*") {
-    const subRoom = room.meta?.subRooms?.[subRoomId];
+    const subRoom = subRoomById(room, subRoomId);
     if (subRoom) {
       return {
         minX: Math.max(subRoom.physicalPosition.from.x, roomBounds.minX),

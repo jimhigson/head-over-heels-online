@@ -2,6 +2,7 @@ import { findSubRoomForItem } from "../../../game/components/dialogs/menuDialog/
 import { roomGridPositions } from "../../../game/components/dialogs/menuDialog/dialogs/map/roomGridPositions";
 import { nextItemId } from "../../../model/inPlaceMutators/nextItemId";
 import { typePrefix } from "../../../model/json/typePrefix";
+import { subRoomById } from "../../../model/RoomJson";
 import { keys } from "../../../utils/entries";
 import { unitVectors } from "../../../utils/vectors/unitVectors";
 import {
@@ -102,7 +103,10 @@ export const addReturnDoorInPlace = ({
   const returnDoorId = nextItemId(keys(toRoomJson.items), typePrefix.door);
 
   const toSubRoomId = outgoingDoor.config.meta?.toSubRoom;
-  const toSubRoom = toSubRoomId && toRoomJson.meta?.subRooms?.[toSubRoomId];
+  const toSubRoom =
+    toSubRoomId === undefined ? undefined : (
+      subRoomById(toRoomJson, toSubRoomId)
+    );
 
   const wallMinX =
     toSubRoom ? toSubRoom.physicalPosition.from.x : roomFloorMinX(toRoomJson);
@@ -211,10 +215,7 @@ export const addDoorInPlace = (
   );
 
   if (!isPreview && toRoomJson) {
-    const fromSubRoom =
-      fromDoorSubroom !== "*" ?
-        fromRoomJson.meta?.subRooms?.[fromDoorSubroom]
-      : undefined;
+    const fromSubRoom = subRoomById(fromRoomJson, fromDoorSubroom);
 
     addReturnDoorInPlace({
       state,

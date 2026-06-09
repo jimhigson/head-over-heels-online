@@ -7,6 +7,7 @@ import {
 } from "../../../../../../model/json/JsonItem";
 import { type Campaign } from "../../../../../../model/modelTypes";
 import {
+  isWholeRoomSubRooms,
   iterateRoomJsonItemsWithIds,
   type RoomJson,
   type SubRooms,
@@ -170,12 +171,12 @@ function* roomTeleporterLinks<RoomId extends string>(
 const getBoundary = (
   direction: DirectionXy4,
   doors: Array<JsonItem<"door">>,
-  subRooms: SubRooms | undefined,
+  subRooms: SubRooms<string> | undefined,
   currentSubRoomPosition: undefined | Xy,
 ) => {
   return (
     doors.some((d) => d.config.direction === direction) ? "doorway"
-    : subRooms === undefined ? "wall"
+    : subRooms === undefined || isWholeRoomSubRooms(subRooms) ? "wall"
     : (
       Object.values(subRooms).some(({ gridPosition }) =>
         xyEqual(
@@ -231,8 +232,18 @@ function* _roomGridPositions<RoomId extends string>({
   }
 
   const subRooms = room.meta?.subRooms;
-  if (!subRooms) {
+  const dividedSubRooms =
+    subRooms !== undefined && !isWholeRoomSubRooms(subRooms) ?
+      subRooms
+    : undefined;
+
+  if (dividedSubRooms === undefined) {
+    // a plain room, or the whole-room ('*') form: only the whole room exists
     subRoomId = "*";
+  } else if (subRoomId === "*" || !(subRoomId in dividedSubRooms)) {
+    // a divided room entered without a specific sub-room (eg via a door with no
+    // toSubRoom): start from the first sub-room
+    [subRoomId] = Object.keys(dividedSubRooms);
   }
 
   if (visited[roomId]?.[subRoomId]) {
@@ -260,19 +271,16 @@ function* _roomGridPositions<RoomId extends string>({
     previousRoomGridPosition,
     vectorFromPrevious === undefined ? originXy : vectorFromPrevious,
   );
-  if (subRooms) {
-    if (subRoomId === "*") {
-      throw new Error(
-        `subRoomId '*' means 'all' and is not allowed for big rooms. Must be one of the sub-rooms in ${roomId}: ${Object.keys(subRooms)}`,
-      );
-    }
-    if (!subRooms[subRoomId]) {
-      throw new Error(
-        `Sub-room ${subRoomId} not found in room ${roomId}. Available sub-rooms: ${Object.keys(subRooms)}`,
-      );
-    }
-  }
-  const currentSubRoomGridPosition = subRooms?.[subRoomId].gridPosition;
+
+  const currentSubRoom =
+    subRooms === undefined ? undefined
+    : isWholeRoomSubRooms(subRooms) ? subRooms["*"]
+    : subRooms[subRoomId];
+
+  const currentSubRoomGridPosition =
+    dividedSubRooms === undefined ? undefined : (
+      dividedSubRooms[subRoomId].gridPosition
+    );
 
   const boundaries: Boundaries = {
     left: getBoundary("left", doors, subRooms, currentSubRoomGridPosition),
@@ -300,18 +308,11 @@ function* _roomGridPositions<RoomId extends string>({
   }
 
   // branch to other sub-rooms:
-  if (subRooms !== undefined) {
-    if (currentSubRoomGridPosition === undefined) {
-      throw new Error(
-        `Sub-room ${subRoomId} not found in room ${roomId}. Available sub-rooms: ${Object.keys(
-          subRooms,
-        )}`,
-      );
-    }
+  if (dividedSubRooms !== undefined) {
     for (const [
       nextSubRoomId,
       { gridPosition: nextSubroomGridPosition },
-    ] of objectEntriesIter(subRooms)) {
+    ] of objectEntriesIter(dividedSubRooms)) {
       if (nextSubRoomId === subRoomId) {
         continue;
       }
@@ -322,7 +323,7 @@ function* _roomGridPositions<RoomId extends string>({
         visited,
         vectorFromPrevious: subXyz(
           { ...nextSubroomGridPosition, z: 0 },
-          currentSubRoomGridPosition,
+          currentSubRoomGridPosition!,
         ),
         previousRoomGridPosition: gridPosition,
         teleporterLinksOut,
@@ -331,12 +332,11 @@ function* _roomGridPositions<RoomId extends string>({
   }
 
   // branch above:
-  if (room.roomAbove !== undefined) {
-    const { roomAbove, subRoomAbove } = room;
-
+  const above = currentSubRoom?.above;
+  if (above !== undefined) {
     yield* roomGridPositions({
-      roomId: roomAbove,
-      subRoomId: subRoomAbove,
+      roomId: above.room,
+      subRoomId: above.subRoom,
       campaign,
       visited,
       vectorFromPrevious: unitVectors.up,
@@ -346,11 +346,11 @@ function* _roomGridPositions<RoomId extends string>({
   }
 
   // branch below:
-  if (room.roomBelow !== undefined) {
-    const { roomBelow, subRoomBelow } = room;
+  const below = currentSubRoom?.below;
+  if (below !== undefined) {
     yield* roomGridPositions({
-      roomId: roomBelow,
-      subRoomId: subRoomBelow,
+      roomId: below.room,
+      subRoomId: below.subRoom,
       campaign,
       visited,
       vectorFromPrevious: unitVectors.down,

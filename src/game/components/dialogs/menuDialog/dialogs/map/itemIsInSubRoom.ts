@@ -1,5 +1,9 @@
 import { type JsonItemUnion } from "../../../../../../model/json/JsonItem";
-import { type RoomJson } from "../../../../../../model/RoomJson";
+import {
+  isWholeRoomSubRooms,
+  type RoomJson,
+  type SubRooms,
+} from "../../../../../../model/RoomJson";
 import { keysIter } from "../../../../../../utils/entries";
 import { type Xy } from "../../../../../../utils/vectors/vectors";
 import { blockSizePx } from "../../../../../physics/mechanicsConstants";
@@ -7,15 +11,7 @@ import { blockSizePx } from "../../../../../physics/mechanicsConstants";
 export type MaybeDividedRoom = {
   id: string;
   meta?: {
-    subRooms?: Record<
-      string,
-      {
-        physicalPosition: {
-          from: Xy;
-          to: Xy;
-        };
-      }
-    >;
+    subRooms?: SubRooms<string>;
   };
 };
 
@@ -24,10 +20,15 @@ const blockXyIsInSubRoom = <RoomId extends string>(
   subRoomId: string,
   room: RoomJson<RoomId, string>,
 ) => {
-  if (subRoomId === "*") {
+  const subRooms = room.meta?.subRooms;
+  if (
+    subRoomId === "*" ||
+    subRooms === undefined ||
+    isWholeRoomSubRooms(subRooms)
+  ) {
     return true;
   }
-  const subRoom = room.meta!.subRooms![subRoomId];
+  const subRoom = subRooms[subRoomId];
 
   return (
     blockXy.x >= subRoom.physicalPosition.from.x &&
@@ -50,11 +51,16 @@ const inPlayItemDistanceToSubRoom = (
   subRoomId: string,
   room: MaybeDividedRoom,
 ): number => {
-  if (subRoomId === "*") {
+  const subRooms = room.meta?.subRooms;
+  if (
+    subRoomId === "*" ||
+    subRooms === undefined ||
+    isWholeRoomSubRooms(subRooms)
+  ) {
     return 0;
   }
 
-  const subRoom = room.meta!.subRooms![subRoomId];
+  const subRoom = subRooms[subRoomId];
   const { from, to } = subRoom.physicalPosition;
 
   // If inside the subroom, return 0
@@ -96,7 +102,7 @@ export const findSubRoomForItem = (
 ): string => {
   const subRooms = room.meta?.subRooms;
 
-  if (subRooms === undefined) {
+  if (subRooms === undefined || isWholeRoomSubRooms(subRooms)) {
     return "*";
   }
 

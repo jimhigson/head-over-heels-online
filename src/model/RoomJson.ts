@@ -1,11 +1,20 @@
 import { type ZxSpectrumRoomColour } from "../originalGame";
 import { type SceneryName } from "../sprites/planets";
 import { objectEntriesIter, valuesIter } from "../utils/entries";
-import { type NonEmptyRecord } from "../utils/types/NonEmptyRecord";
 import { type DirectionXy4, type Xy, type Xyz } from "../utils/vectors/vectors";
 import { type JsonItemType, type JsonItemUnion } from "./json/JsonItem";
 
-type SubRoom = {
+/**
+ * when a sub-room is key'd by '*' it actually represents
+ * the whole room - @see SubRoom for a 'real' sub-room
+ */
+export type AllRoomSubRoom<RoomId extends string> = {
+  above?: { room: RoomId; subRoom?: string };
+  below?: { room: RoomId; subRoom?: string };
+};
+export type SubRoom<RoomId extends string> = {
+  above?: { room: RoomId; subRoom?: string };
+  below?: { room: RoomId; subRoom?: string };
   /**
    * the grid position (on the map) of this sub-room
    */
@@ -20,7 +29,78 @@ type SubRoom = {
   };
 };
 
-export type SubRooms = NonEmptyRecord<SubRoom>;
+export type SubRooms<RoomId extends string> =
+  | { "*": AllRoomSubRoom<RoomId> }
+  | Record<string, SubRoom<RoomId>>;
+
+/**
+ * a room's `subRooms` is either the whole-room form (a single `'*'` entry, used
+ * for an undivided room that has a vertical link) or the divided form (real
+ * sub-room cells, each with positions). The `string` index signature on the
+ * divided form means a bare `"*" in subRooms` does not narrow the union, so use
+ * this predicate to discriminate.
+ */
+export const isWholeRoomSubRooms = <RoomId extends string>(
+  subRooms: SubRooms<RoomId>,
+): subRooms is { "*": AllRoomSubRoom<RoomId> } => "*" in subRooms;
+
+/**
+ * look up a real (positioned) sub-room cell by its id - returns undefined for
+ * the whole-room (`'*'`) form, the `'*'` key, or a plain/missing room
+ */
+export const subRoomById = <RoomId extends string>(
+  room: { meta?: { subRooms?: SubRooms<RoomId> } },
+  subRoomId: string,
+): SubRoom<RoomId> | undefined => {
+  const subRooms = room.meta?.subRooms;
+  if (
+    subRooms === undefined ||
+    isWholeRoomSubRooms(subRooms) ||
+    subRoomId === "*"
+  ) {
+    return undefined;
+  }
+  return subRooms[subRoomId];
+};
+
+/**
+ * the sub-room entries of a room that can hold vertical (above/below) links -
+ * the single whole-room (`'*'`) entry for an undivided room, or every real cell
+ * of a divided room. Returned objects are live references, so callers can mutate
+ * the links on them.
+ */
+export const roomVerticalLinkHolders = <RoomId extends string>(room: {
+  meta?: { subRooms?: SubRooms<RoomId> };
+}): Array<AllRoomSubRoom<RoomId> | SubRoom<RoomId>> => {
+  const subRooms = room.meta?.subRooms;
+  if (subRooms === undefined) {
+    return [];
+  }
+  return isWholeRoomSubRooms(subRooms) ?
+      [subRooms["*"]]
+    : Object.values(subRooms);
+};
+
+/**
+ * the vertical (above/below) link of one sub-room of a room, if any. When
+ * `subRoomId` is omitted the link of the room's primary cell is read - the
+ * whole-room (`'*'`) entry for an undivided room, or its first cell.
+ */
+export const roomVerticalLink = <RoomId extends string>(
+  room: { meta?: { subRooms?: SubRooms<RoomId> } },
+  direction: "above" | "below",
+  subRoomId?: string,
+): { room: RoomId; subRoom?: string } | undefined => {
+  const subRooms = room.meta?.subRooms;
+  if (subRooms === undefined) {
+    return undefined;
+  }
+  const holder =
+    isWholeRoomSubRooms(subRooms) ? subRooms["*"]
+    : subRoomId === undefined ? Object.values(subRooms)[0]
+    : subRooms[subRoomId];
+  return holder?.[direction];
+};
 
 /**
  * some rooms get special extra rendering on the map
@@ -57,16 +137,12 @@ export type RoomJson<
    * colours in each room
    */
   color: ZxSpectrumRoomColour;
-  roomAbove?: RoomId;
-  subRoomAbove?: string;
   /**
    * usually, the ceiling portal's relative point is the centre of the room. However, in cases
    * where multi-rooms are stitched together into a single room, this relationship is broken.
    * Ie, bookworld28/ bookworld29. In this case, this point is used instead
    */
   ceilingRelativePoint?: Xy;
-  roomBelow?: RoomId;
-  subRoomBelow?: string;
 
   /**
    * by keying each item with an id, it makes the diffing easier since the array is no longer
@@ -77,9 +153,10 @@ export type RoomJson<
   meta?: {
     /**
      * subRooms are used for the map for rooms which were modelled as multiple rooms
-     * in the original game
+     * in the original game, or for the whole room in some cases to preserve same-shame between
+     * big and small rooms
      */
-    subRooms?: SubRooms;
+    subRooms?: SubRooms<RoomId>;
 
     /**
      * for rooms that are shown on the same map even though they don't

@@ -4,8 +4,8 @@ import { useEditorAppSelector } from "../../../store/store";
 import { RoomSelect } from "../../../ui/RoomSelect";
 import { type EditorRoomId } from "../../editorTypes";
 import {
-  selectCurrentRoomFromLevelEditorState,
   selectCursorRoomId,
+  selectCursorSubRoomVerticalLink,
 } from "../../slice/levelEditorSelectors";
 import {
   changeToRoom,
@@ -114,7 +114,7 @@ const RoomsAboveOrBelowSelectOrCreate = ({
 
 export const RoomAboveSelectOrCreate = () => {
   const roomAboveId = useEditorAppSelector(({ levelEditor }) => {
-    return selectCurrentRoomFromLevelEditorState(levelEditor).roomAbove;
+    return selectCursorSubRoomVerticalLink(levelEditor, "above")?.room;
   });
 
   return (
@@ -129,7 +129,7 @@ export const RoomAboveSelectOrCreate = () => {
 
 export const RoomBelowSelectOrCreate = () => {
   const roomBelowId = useEditorAppSelector(({ levelEditor }) => {
-    return selectCurrentRoomFromLevelEditorState(levelEditor).roomBelow;
+    return selectCursorSubRoomVerticalLink(levelEditor, "below")?.room;
   });
 
   return (

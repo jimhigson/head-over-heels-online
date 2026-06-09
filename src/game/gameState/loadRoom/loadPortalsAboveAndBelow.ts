@@ -1,10 +1,11 @@
 import { defaultItemProperties } from "../../../model/defaultItemProperties";
 import { type ItemInPlay } from "../../../model/ItemInPlay";
-import { type RoomJson } from "../../../model/RoomJson";
+import { isWholeRoomSubRooms, type RoomJson } from "../../../model/RoomJson";
 import {
   roomItemsIterable,
   type RoomStateItems,
 } from "../../../model/RoomState";
+import { objectEntriesIter } from "../../../utils/entries";
 import { unitVectors } from "../../../utils/vectors/unitVectors";
 import { addXyz } from "../../../utils/vectors/vectors";
 import { isFloor } from "../../physics/itemPredicates";
@@ -19,6 +20,13 @@ import { defaultBaseState } from "./itemDefaultStates";
 const portalThickness = blockSizePx.z;
 /* the z of the top of the portal to below */
 const portalToRoomBelowTop = -blockSizePx.z;
+
+type FloorFootprint = {
+  minX: number;
+  maxX: number;
+  minY: number;
+  maxY: number;
+};
 
 /**
  * combine all the floors of the room into one big, rectangular footprint to
@@ -84,17 +92,39 @@ export function* loadPortalsAboveAndBelow<
     return;
   }
 
-  const { minX, maxX, minY, maxY } = floorFootprint;
-  if (roomJson.roomBelow !== undefined) {
-    // yield a portal for going to the room below:
-    yield {
+  const subRooms = roomJson.meta?.subRooms;
+  if (subRooms === undefined) {
+    return;
+  }
+
+  // the fine-coordinate footprint that sizes a portal: the whole-room floor
+  // footprint for the undivided ('*') form, or the sub-room's cell otherwise
+  const footprintForSubRoom = (subRoomId: string): FloorFootprint => {
+    if (subRoomId === "*" || isWholeRoomSubRooms(subRooms)) {
+      return floorFootprint;
+    }
+    const { from, to } = subRooms[subRoomId].physicalPosition;
+    return {
+      minX: from.x * blockSizePx.x,
+      maxX: to.x * blockSizePx.x,
+      minY: from.y * blockSizePx.y,
+      maxY: to.y * blockSizePx.y,
+    };
+  };
+
+  const belowPortal = (
+    subRoomId: string,
+    { minX, maxX, minY, maxY }: FloorFootprint,
+    toRoom: RoomId,
+  ) =>
+    ({
       ...defaultItemProperties,
       ...{
         type: "portal",
-        id: `portal/toRoomBelow` as RoomItemId,
+        id: `portal/toRoomBelow/${subRoomId}` as RoomItemId,
         fixedZIndex: nonRenderingItemFixedZIndex,
         config: {
-          toRoom: roomJson.roomBelow,
+          toRoom,
           // floor and ceiling relative points are the middle of the portal, this fixes
           // falling into dissimilar-sized rooms, ie penitentiary21 falling into penitentiary20
           relativePoint: {
@@ -107,12 +137,7 @@ export function* loadPortalsAboveAndBelow<
           },
           direction: unitVectors["down"],
         },
-
-        aabb: {
-          x: maxX - minX,
-          y: maxY - minY,
-          z: portalThickness,
-        },
+        aabb: { x: maxX - minX, y: maxY - minY, z: portalThickness },
         state: {
           ...defaultBaseState(),
           position: {
@@ -123,22 +148,25 @@ export function* loadPortalsAboveAndBelow<
         },
         renders: false,
       },
-    } satisfies ItemInPlay<"portal", RoomId, RoomItemId>;
-  }
+    }) satisfies ItemInPlay<"portal", RoomId, RoomItemId>;
 
-  if (roomJson.roomAbove !== undefined) {
-    yield {
+  const abovePortal = (
+    subRoomId: string,
+    { minX, maxX, minY, maxY }: FloorFootprint,
+    toRoom: RoomId,
+  ) =>
+    ({
       ...defaultItemProperties,
       ...{
         type: "portal",
-        id: `portal/toRoomAbove` as RoomItemId,
+        id: `portal/toRoomAbove/${subRoomId}` as RoomItemId,
         fixedZIndex: nonRenderingItemFixedZIndex,
         config: {
-          toRoom: roomJson.roomAbove,
-          // floor and ceiling relative points are the middle of the portal, this fixes
-          // falling into dissimilar-sized rooms, ie penitentiary21 falling into penitentiary20
+          toRoom,
           relativePoint: {
-            ...(roomJson.ceilingRelativePoint !== undefined ?
+            ...((
+              subRoomId === "*" && roomJson.ceilingRelativePoint !== undefined
+            ) ?
               blockXyzToFineXyz(roomJson.ceilingRelativePoint)
             : {
                 x: (minX + maxX) / 2,
@@ -148,25 +176,31 @@ export function* loadPortalsAboveAndBelow<
           },
           direction: unitVectors["up"],
         },
-
-        aabb: {
-          x: maxX - minX,
-          y: maxY - minY,
-          z: portalThickness,
-        },
+        aabb: { x: maxX - minX, y: maxY - minY, z: portalThickness },
         state: {
           ...defaultBaseState(),
           position: addXyz(
-            {
-              x: minX,
-              y: minY,
-            },
-            {
-              z: blockSizePx.z * (roomJson.height ?? defaultRoomHeightBlocks),
-            },
+            { x: minX, y: minY },
+            { z: blockSizePx.z * (roomJson.height ?? defaultRoomHeightBlocks) },
           ),
         },
       },
-    } satisfies ItemInPlay<"portal", RoomId, RoomItemId>;
+    }) satisfies ItemInPlay<"portal", RoomId, RoomItemId>;
+
+  const linkHolders: Array<
+    [string, { above?: { room: RoomId }; below?: { room: RoomId } }]
+  > =
+    isWholeRoomSubRooms(subRooms) ?
+      [["*", subRooms["*"]]]
+    : [...objectEntriesIter(subRooms)];
+
+  for (const [subRoomId, { above, below }] of linkHolders) {
+    const footprint = footprintForSubRoom(subRoomId);
+    if (below !== undefined) {
+      yield belowPortal(subRoomId, footprint, below.room);
+    }
+    if (above !== undefined) {
+      yield abovePortal(subRoomId, footprint, above.room);
+    }
   }
 }

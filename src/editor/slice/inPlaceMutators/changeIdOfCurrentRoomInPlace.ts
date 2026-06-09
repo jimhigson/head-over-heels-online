@@ -3,7 +3,10 @@ import {
   type EditorRoomId,
 } from "../../../editor/editorTypes";
 import { type LevelEditorState } from "../../../editor/slice/levelEditorSlice";
-import { roomJsonItemsIterable } from "../../../model/RoomJson";
+import {
+  roomJsonItemsIterable,
+  roomVerticalLinkHolders,
+} from "../../../model/RoomJson";
 import { valuesIter } from "../../../utils/entries";
 import {
   selectCurrentRoomFromLevelEditorState,
@@ -43,11 +46,13 @@ export const changeIdOfCurrentRoomInPlace = (
     }
 
     // update above/below room references
-    if (room.roomAbove === prevRoomId) {
-      room.roomAbove = newRoomId;
-    }
-    if (room.roomBelow === prevRoomId) {
-      room.roomBelow = newRoomId;
+    for (const holder of roomVerticalLinkHolders(room)) {
+      if (holder.above?.room === prevRoomId) {
+        holder.above.room = newRoomId;
+      }
+      if (holder.below?.room === prevRoomId) {
+        holder.below.room = newRoomId;
+      }
     }
   }
 

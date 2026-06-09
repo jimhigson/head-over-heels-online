@@ -4,7 +4,11 @@ import {
   tangentAxis,
   type Xy,
 } from "../../../utils/vectors/vectors";
-import { type RoomJson, roomJsonItemsIterable } from "../../RoomJson";
+import {
+  isWholeRoomSubRooms,
+  type RoomJson,
+  roomJsonItemsIterable,
+} from "../../RoomJson";
 import { wallTimes } from "../../times";
 
 const doorWidth = 2;
@@ -161,11 +165,11 @@ export const roomJsonMatchers = {
     // Check if room has subRooms metadata
     const subRooms = received.meta?.subRooms;
 
-    if (!subRooms) {
+    if (!subRooms || isWholeRoomSubRooms(subRooms)) {
       return {
         pass: false,
         message: () =>
-          `Expected room to have subRooms metadata, but meta.subRooms is undefined`,
+          `Expected room to have divided subRooms metadata, but it is undefined or the whole-room form`,
       };
     }
 

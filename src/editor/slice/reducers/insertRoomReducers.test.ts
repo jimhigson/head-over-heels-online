@@ -3,6 +3,7 @@ import { describe, expect, test } from "vitest";
 
 import { roomGridPositions } from "../../../game/components/dialogs/menuDialog/dialogs/map/roomGridPositions";
 import { exitGameRoomId } from "../../../model/json/ItemConfigMap";
+import { subRoomById } from "../../../model/RoomJson";
 import {
   type EditorJsonItem,
   type EditorRoomId,
@@ -811,7 +812,7 @@ describe("adding a door from a single-chunk room back to a multi-chunk room", ()
     const result = buildState();
     const multiChunkRoom = result.campaignInProgress.rooms[multiChunkRoomId];
 
-    const subRoom2 = multiChunkRoom.meta!.subRooms!["2"];
+    const subRoom2 = subRoomById(multiChunkRoom, "2")!;
 
     const returnDoors = Object.values(multiChunkRoom.items).filter(
       (item): item is EditorJsonItem<"door"> =>

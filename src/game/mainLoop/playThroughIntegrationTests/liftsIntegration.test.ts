@@ -162,7 +162,7 @@ describe("lifts", () => {
         },
       },
       firstRoomProps: {
-        roomAbove: "secondRoom",
+        meta: { subRooms: { "*": { above: { room: "secondRoom" } } } },
       },
       secondRoomItems: {
         // a block to stand on when getting to the new room:
@@ -173,7 +173,7 @@ describe("lifts", () => {
         },
       },
       secondRoomProps: {
-        roomBelow: "firstRoom",
+        meta: { subRooms: { "*": { below: { room: "firstRoom" } } } },
         // 2nd room should have no floor?
       },
     });

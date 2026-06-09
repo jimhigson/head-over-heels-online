@@ -13,12 +13,14 @@ const createMockRoom = (): MaybeDividedRoom => ({
   meta: {
     subRooms: {
       subRoom1: {
+        gridPosition: { x: 0, y: 0 },
         physicalPosition: {
           from: { x: 0, y: 0 },
           to: { x: 5, y: 5 },
         },
       },
       subRoom2: {
+        gridPosition: { x: 1, y: 1 },
         physicalPosition: {
           from: { x: 10, y: 10 },
           to: { x: 15, y: 15 },
@@ -91,12 +93,14 @@ describe("fine mode", () => {
       meta: {
         subRooms: {
           subRoom1: {
+            gridPosition: { x: 0, y: 0 },
             physicalPosition: {
               from: { x: 0, y: 0 },
               to: { x: 5, y: 5 },
             },
           },
           subRoom2: {
+            gridPosition: { x: 1, y: 0 },
             physicalPosition: {
               from: { x: 10, y: 0 },
               to: { x: 15, y: 5 },
@@ -205,24 +209,28 @@ test("case that seems wrong in editor", () => {
     meta: {
       subRooms: {
         "3": {
+          gridPosition: { x: 1, y: -1 },
           physicalPosition: {
             from: { x: -99, y: -99 },
             to: { x: 17, y: 4 },
           },
         },
         "4": {
+          gridPosition: { x: 2, y: -1 },
           physicalPosition: {
             from: { x: 17, y: -99 },
             to: { x: 99, y: 4 },
           },
         },
         left: {
+          gridPosition: { x: 1, y: 0 },
           physicalPosition: {
             from: { x: 6, y: 0 },
             to: { x: 17, y: 8 },
           },
         },
         right: {
+          gridPosition: { x: 0, y: 0 },
           physicalPosition: {
             from: { x: 0, y: 0 },
             to: { x: 8, y: 8 },
