@@ -58,7 +58,7 @@
     "iff2png": "./scripts/iff2png.sh",
     "watch:iff2png": "pnpm run iff2png && chokidar gfx/sprites.iff -c \"pnpm run iff2png\"",
     "check:circDep": "dpdm -T --exit-code circular:1 src/main.tsx",
-    "gen:types": "./scripts/itemTypesFromTs.ts src/model/ItemInPlay.ts ItemInPlayType > src/_generated/types/ItemInPlayUnion.ts && prettier src/_generated/types/ --write",
+    "gen:types": "./scripts/itemTypesFromTs.ts src/model/ItemInPlay.ts ItemInPlayType | sh scripts/oxlintFixStdin.sh src/_generated/types/ItemInPlayUnion.ts | prettier --parser typescript > src/_generated/types/ItemInPlayUnion.ts",
     "gen:roomSchema:ts": "./scripts/schema/flattenType.ts --file src/model/RoomJson.ts --type AnyRoomJson --output-type RoomJsonSchema | sh scripts/oxlintFixStdin.sh src/_generated/Room.flat.d.ts | prettier --parser typescript > src/_generated/Room.flat.d.ts",
     "gen:roomSchema:json": "ts-json-schema-generator --path src/_generated/Room.flat.d.ts --type RoomJsonSchema | scripts/schema/postProcessSchema.ts | prettier --parser json > src/_generated/room.schema.json",
     "gen:roomSchema:dedup": "scripts/schema/deduplicateSchema.ts src/_generated/room.schema.json src/_generated/room.schema.json",

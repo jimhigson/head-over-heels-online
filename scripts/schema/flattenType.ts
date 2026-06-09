@@ -1297,8 +1297,12 @@ export async function flattenTypes(
 
   // No longer output separate type definitions since everything is inlined
 
-  // Output the main type with the new name (this will be the only export)
-  return `// Auto-generated flattened types
+  // Output the main type with the new name (this will be the only export).
+  // The flattened type intentionally contains `any` (it is only consumed by the
+  // json-schema generator), so disable that rule for the generated file - it is
+  // otherwise linted (eg to keep union member order deterministic).
+  return `/* oxlint-disable no-explicit-any */
+// Auto-generated flattened types
 // Generated from ${typeName}
 
 // Type aliases for generic parameters that appear in the output
