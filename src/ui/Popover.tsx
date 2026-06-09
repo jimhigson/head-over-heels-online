@@ -84,10 +84,19 @@ export const Popover = ({
                 "z-popups drop-shadow-oneBlock p-0 border-shadow outline-none",
                 className,
               )}
-              onKeyDown={(e) => {
-                e.stopPropagation();
-              }}
-              {...getFloatingProps()}
+              // compose the stop-propagation through getFloatingProps so it
+              // isn't overridden by useDismiss's own onKeyDown. Stops keystrokes
+              // bubbling to window-level listeners (in-game controls in
+              // keyboardState, menu shortcuts in useKeyboardShortcut) while
+              // typing in the popover's filter input.
+              {...getFloatingProps({
+                onKeyDown(e) {
+                  e.stopPropagation();
+                },
+                onKeyUp(e) {
+                  e.stopPropagation();
+                },
+              })}
             >
               {contents}
             </div>

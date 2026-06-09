@@ -5,19 +5,19 @@ import { BitmapText } from "../game/components/tailwindSprites/BitmapText";
 import { emptyObject } from "../utils/empty";
 import { Button } from "./Button";
 import { cn } from "./cn";
-import {
-  Command,
-  CommandEmpty,
-  CommandGroup,
-  CommandInput,
-  CommandItem,
-  CommandList,
-} from "./command";
+import { Command } from "./command/Command";
+import { CommandEmpty } from "./command/CommandEmpty";
+import { CommandGroup } from "./command/CommandGroup";
+import { CommandInput } from "./command/CommandInput";
+import { CommandItem } from "./command/CommandItem";
+import { CommandList } from "./command/CommandList";
+import { CommandMatch } from "./command/CommandMatch";
 import { Popover } from "./Popover";
 import { useMouseWheelOptions } from "./useMouseWheel";
 
 type OptionCommandItemComponent<Value extends string> = FC<{
-  value: Value;
+  itemValue: Value;
+  currentValue: undefined | Value;
   onSelect: (value: string) => void;
   valueDisplayFormat?: (value: Value) => string;
 }>;
@@ -44,13 +44,13 @@ export type SelectProps<Value extends string> = {
 );
 
 const DefaultOptionCommandItem: OptionCommandItemComponent<string> = ({
-  value,
+  itemValue: value,
   onSelect,
   valueDisplayFormat = (value) => value,
 }) => {
   return (
     <CommandItem value={value} onSelect={onSelect} className="px-1">
-      <BitmapText>{valueDisplayFormat(value)}</BitmapText>
+      <CommandMatch text={valueDisplayFormat(value)} />
     </CommandItem>
   );
 };
@@ -103,19 +103,20 @@ export const Select = <Value extends string>(props: SelectProps<Value>) => {
         </Button>
       }
       contents={
-        <Command value={value} className="w-[--popover-anchor-width]">
+        <Command defaultValue={value} className="w-[--popover-anchor-width]">
           {props.disableCommandInput === true ? null : (
-            <CommandInput placeholder={props.placeholder} />
+            <CommandInput autoFocus placeholder={props.placeholder} />
           )}
           <CommandList>
             <CommandEmpty>
               <BitmapText>Nothing found</BitmapText>
             </CommandEmpty>
             <CommandGroup>
-              {values.map((value) => (
+              {values.map((itemValue) => (
                 <OptionCommandItem
-                  key={value}
-                  value={value}
+                  key={itemValue}
+                  itemValue={itemValue}
+                  currentValue={value}
                   onSelect={(newValue) => {
                     setOpen(false);
                     onSelect(newValue as Value);

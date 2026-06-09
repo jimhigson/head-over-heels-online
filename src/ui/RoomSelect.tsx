@@ -1,12 +1,13 @@
 import naturalCompare from "natural-compare-lite";
 import { type ReactNode } from "react";
 
-import { itemColourCss } from "../editor/toolbar/buttons/RoomColourSelect";
-import { BitmapText } from "../game/components/tailwindSprites/BitmapText";
+import { cssForRoomColour } from "../editor/toolbar/buttons/RoomColourSelect";
+import { CssVariables } from "../game/components/CssVariables";
 import { usePlayableTailwindSpriteClassname } from "../game/components/tailwindSprites/playableTailwindSpriteClassname";
 import { type Campaign } from "../model/modelTypes";
 import { useIsUncolourised } from "../store/slices/gameMenus/gameMenusSelectors";
-import { CommandItem } from "./command";
+import { CommandItem } from "./command/CommandItem";
+import { CommandMatch } from "./command/CommandMatch";
 import { Select } from "./Select";
 
 export type RoomSelectProps<RoomId extends string> = {
@@ -47,26 +48,33 @@ export function RoomSelect<RoomId extends string>({
       tooltipContent={tooltipContent}
       disableCommandInput={false}
       triggerButtonLabel={value ?? "none"}
-      OptionCommandItem={({ value, onSelect }) => {
+      OptionCommandItem={({ itemValue, onSelect }) => {
         return (
           <CommandItem
-            value={value}
+            value={itemValue}
             onSelect={onSelect}
             className="px-1"
-            data-test-id={`room-select-${value}`}
-            style={itemColourCss(campaign.rooms[value].color.hue, uncolourised)}
+            data-test-id={`room-select-${itemValue}`}
+            style={cssForRoomColour(
+              campaign.rooms[itemValue].color.hue,
+              uncolourised,
+            )}
           >
-            {headRoomId === value && (
-              <span
-                className={`sprite mr-1 my-1 ${spriteClassname({ character: "head", action: "idle", facingXy8: "towards" })}`}
-              />
+            {headRoomId === itemValue && (
+              <CssVariables scaleFactor={1}>
+                <span
+                  className={`sprite mr-1 my-1 ${spriteClassname({ character: "head", action: "idle", facingXy8: "towards" })}`}
+                />
+              </CssVariables>
             )}
-            {heelsRoomId === value && (
-              <span
-                className={`sprite mr-1 my-1 ${spriteClassname({ character: "heels", action: "idle", facingXy8: "towards" })}`}
-              />
+            {heelsRoomId === itemValue && (
+              <CssVariables scaleFactor={1}>
+                <span
+                  className={`sprite mr-1 my-1 ${spriteClassname({ character: "heels", action: "idle", facingXy8: "towards" })}`}
+                />
+              </CssVariables>
             )}
-            <BitmapText>{value}</BitmapText>
+            <CommandMatch text={itemValue} />
           </CommandItem>
         );
       }}

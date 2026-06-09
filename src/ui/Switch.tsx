@@ -17,18 +17,21 @@ const SwitchLabel = ({
   label,
   htmlFor,
 }: {
-  label: string;
+  label: ReactNode;
   htmlFor: string;
-}) => (
-  <BitmapText
-    TagName="label"
-    htmlFor={htmlFor}
-    className="inline-block mr-1 text-lightGrey py-half"
-    noSlitWords
-  >
-    {label}
-  </BitmapText>
-);
+}) =>
+  typeof label === "string" ?
+    <BitmapText
+      TagName="label"
+      htmlFor={htmlFor}
+      className="inline-block mr-1 text-lightGrey py-half"
+      noSlitWords
+    >
+      {label}
+    </BitmapText>
+  : <label htmlFor={htmlFor} className="inline-block mr-1 py-half">
+      {label}
+    </label>;
 
 type OnSwitchChange = (newValue: boolean, e?: MouseEvent) => void;
 
@@ -38,7 +41,7 @@ export type SwitchProps = {
   onChange?: OnSwitchChange;
   trueLabel?: string;
   falseLabel?: string;
-  label?: string;
+  label?: ReactNode;
   shortcutKeys?: ShortcutKeys | undefined;
   tooltipContent?: ReactNode;
 };
@@ -123,7 +126,7 @@ export type SwitchNProps<TValue extends number | string> = {
   onChange?: (newValue: TValue, e?: MouseEvent) => void;
   values: readonly TValue[];
   valueLabels?: readonly string[];
-  label?: string;
+  label?: ReactNode;
   shortcutKeys?: ShortcutKeys | undefined;
   tooltipContent?: ReactNode;
 };
