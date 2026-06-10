@@ -3,6 +3,7 @@ build
 coverage
 package.json
 pnpm-lock.yaml
+pnpm-workspace.yaml
 build-stats.html
 build-stats-editor.html
 *.frag

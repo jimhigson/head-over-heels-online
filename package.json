@@ -69,7 +69,7 @@
     "prepare": "husky"
   },
   "dependencies": {
-    "@blockstacking/jims-shaders": "^0.4.3",
+    "@blockstacking/jims-shaders": "^0.4.5",
     "@floating-ui/react": "^0.27.19",
     "@github/mini-throttle": "^2.1.1",
     "@monaco-editor/react": "^4.7.0",
