@@ -52,7 +52,7 @@
                 "additionalProperties": false,
                 "properties": {
                   "config": {
-                    "$ref": "#/definitions/r100"
+                    "$ref": "#/definitions/r101"
                   },
                   "position": {
                     "$ref": "#/definitions/r47"
@@ -111,7 +111,7 @@
                     "additionalProperties": false,
                     "properties": {
                       "disappearing": {
-                        "$ref": "#/definitions/r78"
+                        "$ref": "#/definitions/r79"
                       },
                       "style": {
                         "enum": ["artificial", "book", "organic", "tower"],
@@ -276,7 +276,7 @@
                 "additionalProperties": false,
                 "properties": {
                   "config": {
-                    "$ref": "#/definitions/r79"
+                    "$ref": "#/definitions/r80"
                   },
                   "position": {
                     "$ref": "#/definitions/r47"
@@ -296,14 +296,14 @@
                     "additionalProperties": false,
                     "properties": {
                       "direction": {
-                        "$ref": "#/definitions/r95"
+                        "$ref": "#/definitions/r96"
                       },
                       "disabled": {
                         "enum": [false, true],
                         "type": "boolean"
                       },
                       "disappearing": {
-                        "$ref": "#/definitions/r78"
+                        "$ref": "#/definitions/r79"
                       },
                       "speed": {
                         "description": "speed multiplier — undefined is treated as 1 (original game speed)",
@@ -366,7 +366,7 @@
                     "additionalProperties": false,
                     "properties": {
                       "direction": {
-                        "$ref": "#/definitions/r95"
+                        "$ref": "#/definitions/r96"
                       },
                       "meta": {
                         "additionalProperties": false,
@@ -415,7 +415,7 @@
                             "additionalProperties": false,
                             "properties": {
                               "config": {
-                                "$ref": "#/definitions/r100"
+                                "$ref": "#/definitions/r101"
                               },
                               "type": {
                                 "const": "ball",
@@ -429,7 +429,7 @@
                             "additionalProperties": false,
                             "properties": {
                               "config": {
-                                "$ref": "#/definitions/r79"
+                                "$ref": "#/definitions/r80"
                               },
                               "type": {
                                 "const": "charles",
@@ -457,7 +457,7 @@
                             "additionalProperties": false,
                             "properties": {
                               "config": {
-                                "$ref": "#/definitions/r100"
+                                "$ref": "#/definitions/r101"
                               },
                               "type": {
                                 "const": "head",
@@ -471,7 +471,7 @@
                             "additionalProperties": false,
                             "properties": {
                               "config": {
-                                "$ref": "#/definitions/r100"
+                                "$ref": "#/definitions/r101"
                               },
                               "type": {
                                 "const": "headOverHeels",
@@ -485,7 +485,7 @@
                             "additionalProperties": false,
                             "properties": {
                               "config": {
-                                "$ref": "#/definitions/r100"
+                                "$ref": "#/definitions/r101"
                               },
                               "type": {
                                 "const": "heels",
@@ -553,7 +553,7 @@
                             "additionalProperties": false,
                             "properties": {
                               "config": {
-                                "$ref": "#/definitions/r76"
+                                "$ref": "#/definitions/r77"
                               },
                               "type": {
                                 "const": "moveableDeadly",
@@ -636,7 +636,7 @@
                             "additionalProperties": false,
                             "properties": {
                               "config": {
-                                "$ref": "#/definitions/r100"
+                                "$ref": "#/definitions/r101"
                               },
                               "type": {
                                 "const": "pushableBlock",
@@ -678,7 +678,7 @@
                             "additionalProperties": false,
                             "properties": {
                               "config": {
-                                "$ref": "#/definitions/r75"
+                                "$ref": "#/definitions/r76"
                               },
                               "type": {
                                 "const": "slidingBlock",
@@ -706,7 +706,7 @@
                             "additionalProperties": false,
                             "properties": {
                               "config": {
-                                "$ref": "#/definitions/r100"
+                                "$ref": "#/definitions/r101"
                               },
                               "type": {
                                 "const": "spring",
@@ -720,7 +720,7 @@
                         "description": "what does this emitter emit? Could be (potentially) any free item"
                       },
                       "maximum": {
-                        "$ref": "#/definitions/r84"
+                        "$ref": "#/definitions/r85"
                       },
                       "maximumAtOnce": {
                         "description": "How many items emitted from this emitter can be in the room at once? If undefined, no limit. If already this many items in the room, the items will have to be removed from the room before more can be emitted (for example, collecting an emitted pickup)",
@@ -1112,7 +1112,7 @@
                 "additionalProperties": false,
                 "properties": {
                   "config": {
-                    "$ref": "#/definitions/r76"
+                    "$ref": "#/definitions/r77"
                   },
                   "position": {
                     "$ref": "#/definitions/r47"
@@ -1179,7 +1179,7 @@
                     "additionalProperties": false,
                     "properties": {
                       "which": {
-                        "$ref": "#/definitions/r97"
+                        "$ref": "#/definitions/r98"
                       }
                     },
                     "required": ["which"],
@@ -1234,7 +1234,7 @@
                 "additionalProperties": false,
                 "properties": {
                   "config": {
-                    "$ref": "#/definitions/r100"
+                    "$ref": "#/definitions/r101"
                   },
                   "position": {
                     "$ref": "#/definitions/r47"
@@ -1285,7 +1285,7 @@
                 "additionalProperties": false,
                 "properties": {
                   "config": {
-                    "$ref": "#/definitions/r75"
+                    "$ref": "#/definitions/r76"
                   },
                   "position": {
                     "$ref": "#/definitions/r47"
@@ -1342,7 +1342,7 @@
                 "additionalProperties": false,
                 "properties": {
                   "config": {
-                    "$ref": "#/definitions/r100"
+                    "$ref": "#/definitions/r101"
                   },
                   "position": {
                     "$ref": "#/definitions/r47"
@@ -1576,7 +1576,7 @@
               "additionalProperties": false,
               "properties": {
                 "direction": {
-                  "$ref": "#/definitions/r95"
+                  "$ref": "#/definitions/r96"
                 },
                 "text": {
                   "type": "string"
@@ -1607,17 +1607,7 @@
                   "type": "object"
                 },
                 "with": {
-                  "additionalProperties": false,
-                  "properties": {
-                    "room": {
-                      "type": "string"
-                    },
-                    "subRoom": {
-                      "type": "string"
-                    }
-                  },
-                  "required": ["room"],
-                  "type": "object"
+                  "$ref": "#/definitions/r75"
                 }
               },
               "required": ["with", "gridOffset"],
@@ -1629,63 +1619,76 @@
               "type": "string"
             },
             "subRooms": {
-              "additionalProperties": {
-                "additionalProperties": false,
-                "properties": {
-                  "gridPosition": {
+              "anyOf": [
+                {
+                  "additionalProperties": {
                     "additionalProperties": false,
-                    "description": "the grid position (on the map) of this sub-room",
                     "properties": {
-                      "x": {
-                        "type": "number"
+                      "above": {
+                        "$ref": "#/definitions/r75"
                       },
-                      "y": {
-                        "type": "number"
+                      "below": {
+                        "$ref": "#/definitions/r75"
+                      },
+                      "gridPosition": {
+                        "additionalProperties": false,
+                        "description": "the grid position (on the map) of this sub-room",
+                        "properties": {
+                          "x": {
+                            "type": "number"
+                          },
+                          "y": {
+                            "type": "number"
+                          }
+                        },
+                        "required": ["x", "y"],
+                        "type": "object"
+                      },
+                      "physicalPosition": {
+                        "additionalProperties": false,
+                        "description": "where the sub-room actually starts and ends once loaded (so we can work out which sub-room items are in while the game is in-play)",
+                        "properties": {
+                          "from": {
+                            "additionalProperties": false,
+                            "properties": {
+                              "x": {
+                                "type": "number"
+                              },
+                              "y": {
+                                "type": "number"
+                              }
+                            },
+                            "required": ["x", "y"],
+                            "type": "object"
+                          },
+                          "to": {
+                            "additionalProperties": false,
+                            "properties": {
+                              "x": {
+                                "type": "number"
+                              },
+                              "y": {
+                                "type": "number"
+                              }
+                            },
+                            "required": ["x", "y"],
+                            "type": "object"
+                          }
+                        },
+                        "required": ["from", "to"],
+                        "type": "object"
                       }
                     },
-                    "required": ["x", "y"],
+                    "required": ["gridPosition", "physicalPosition"],
                     "type": "object"
                   },
-                  "physicalPosition": {
-                    "additionalProperties": false,
-                    "description": "where the sub-room actually starts and ends once loaded (so we can work out which sub-room items are in while the game is in-play)",
-                    "properties": {
-                      "from": {
-                        "additionalProperties": false,
-                        "properties": {
-                          "x": {
-                            "type": "number"
-                          },
-                          "y": {
-                            "type": "number"
-                          }
-                        },
-                        "required": ["x", "y"],
-                        "type": "object"
-                      },
-                      "to": {
-                        "additionalProperties": false,
-                        "properties": {
-                          "x": {
-                            "type": "number"
-                          },
-                          "y": {
-                            "type": "number"
-                          }
-                        },
-                        "required": ["x", "y"],
-                        "type": "object"
-                      }
-                    },
-                    "required": ["from", "to"],
-                    "type": "object"
-                  }
+                  "type": "object"
                 },
-                "required": ["gridPosition", "physicalPosition"],
-                "type": "object"
-              },
-              "description": "subRooms are used for the map for rooms which were modelled as multiple rooms in the original game",
-              "type": "object",
+                {
+                  "type": "object"
+                }
+              ],
+              "description": "subRooms are used for the map for rooms which were modelled as multiple rooms in the original game, or for the whole room in some cases to preserve same-shame between big and small rooms",
               "minProperties": 1
             }
           },
@@ -1703,18 +1706,6 @@
             "penitentiary",
             "safari"
           ],
-          "type": "string"
-        },
-        "roomAbove": {
-          "type": "string"
-        },
-        "roomBelow": {
-          "type": "string"
-        },
-        "subRoomAbove": {
-          "type": "string"
-        },
-        "subRoomBelow": {
           "type": "string"
         }
       },
@@ -1734,7 +1725,7 @@
             "type": "object",
             "additionalProperties": {
               "if": {
-                "$ref": "#/definitions/r98"
+                "$ref": "#/definitions/r99"
               },
               "then": {
                 "type": "object",
@@ -1771,7 +1762,7 @@
               "type": "object",
               "additionalProperties": {
                 "if": {
-                  "$ref": "#/definitions/r98"
+                  "$ref": "#/definitions/r99"
                 },
                 "then": {
                   "type": "object",
@@ -1808,7 +1799,7 @@
                 "type": "object",
                 "additionalProperties": {
                   "if": {
-                    "$ref": "#/definitions/r98"
+                    "$ref": "#/definitions/r99"
                   },
                   "then": {
                     "type": "object",
@@ -1845,7 +1836,7 @@
                   "type": "object",
                   "additionalProperties": {
                     "if": {
-                      "$ref": "#/definitions/r98"
+                      "$ref": "#/definitions/r99"
                     },
                     "then": {
                       "type": "object",
@@ -1882,7 +1873,7 @@
                     "type": "object",
                     "additionalProperties": {
                       "if": {
-                        "$ref": "#/definitions/r98"
+                        "$ref": "#/definitions/r99"
                       },
                       "then": {
                         "type": "object",
@@ -1919,7 +1910,7 @@
                       "type": "object",
                       "additionalProperties": {
                         "if": {
-                          "$ref": "#/definitions/r98"
+                          "$ref": "#/definitions/r99"
                         },
                         "then": {
                           "type": "object",
@@ -1962,7 +1953,7 @@
                         "type": "object",
                         "additionalProperties": {
                           "if": {
-                            "$ref": "#/definitions/r98"
+                            "$ref": "#/definitions/r99"
                           },
                           "then": {
                             "type": "object",
@@ -1999,7 +1990,7 @@
                           "type": "object",
                           "additionalProperties": {
                             "if": {
-                              "$ref": "#/definitions/r98"
+                              "$ref": "#/definitions/r99"
                             },
                             "then": {
                               "type": "object",
@@ -2112,7 +2103,7 @@
           "type": "number"
         },
         "maximum": {
-          "$ref": "#/definitions/r84"
+          "$ref": "#/definitions/r85"
         },
         "maximumAtOnce": {
           "description": "How many items emitted from this emitter can be in the room at once? If undefined, no limit. If already this many items in the room, the items will have to be removed from the room before more can be emitted (for example, collecting an emitted pickup)",
@@ -2151,7 +2142,7 @@
           "$ref": "#/definitions/r22"
         },
         {
-          "$ref": "#/definitions/r79"
+          "$ref": "#/definitions/r80"
         },
         {
           "$ref": "#/definitions/r68"
@@ -2175,13 +2166,13 @@
           "$ref": "#/definitions/r69"
         },
         {
-          "$ref": "#/definitions/r75"
+          "$ref": "#/definitions/r76"
         },
         {
           "$ref": "#/definitions/r74"
         },
         {
-          "$ref": "#/definitions/r76"
+          "$ref": "#/definitions/r77"
         },
         {
           "$ref": "#/definitions/r67"
@@ -2246,7 +2237,7 @@
           "$ref": "#/definitions/r32"
         },
         "expectType": {
-          "$ref": "#/definitions/r99"
+          "$ref": "#/definitions/r100"
         },
         "leftState": {
           "$ref": "#/definitions/r8"
@@ -2479,10 +2470,10 @@
           "type": "string"
         },
         "leftState": {
-          "$ref": "#/definitions/r79"
+          "$ref": "#/definitions/r80"
         },
         "rightState": {
-          "$ref": "#/definitions/r79"
+          "$ref": "#/definitions/r80"
         },
         "targets": {
           "items": {
@@ -2505,10 +2496,10 @@
           "type": "string"
         },
         "leftState": {
-          "$ref": "#/definitions/r80"
+          "$ref": "#/definitions/r81"
         },
         "rightState": {
-          "$ref": "#/definitions/r80"
+          "$ref": "#/definitions/r81"
         },
         "targets": {
           "items": {
@@ -2546,10 +2537,10 @@
           "type": "number"
         },
         "sway": {
-          "$ref": "#/definitions/r83"
+          "$ref": "#/definitions/r84"
         },
         "textLines": {
-          "$ref": "#/definitions/r77"
+          "$ref": "#/definitions/r78"
         }
       },
       "required": ["textLines"],
@@ -2614,7 +2605,7 @@
           "$ref": "#/definitions/r66"
         },
         "rightState": {
-          "$ref": "#/definitions/r85"
+          "$ref": "#/definitions/r86"
         },
         "targets": {
           "items": {
@@ -2638,10 +2629,10 @@
           "type": "string"
         },
         "leftState": {
-          "$ref": "#/definitions/r79"
+          "$ref": "#/definitions/r80"
         },
         "rightState": {
-          "$ref": "#/definitions/r79"
+          "$ref": "#/definitions/r80"
         },
         "targets": {
           "items": {
@@ -2661,13 +2652,13 @@
           "type": "string"
         },
         "movement": {
-          "$ref": "#/definitions/r93"
+          "$ref": "#/definitions/r94"
         },
         "startDirection": {
-          "$ref": "#/definitions/r95"
+          "$ref": "#/definitions/r96"
         },
         "style": {
-          "$ref": "#/definitions/r94"
+          "$ref": "#/definitions/r95"
         },
         "which": {
           "const": "skiHead",
@@ -2753,14 +2744,14 @@
       "additionalProperties": false,
       "properties": {
         "activated": {
-          "$ref": "#/definitions/r96"
+          "$ref": "#/definitions/r97"
         },
         "movement": {
           "const": "towards-on-shortest-axis-xy4",
           "type": "string"
         },
         "startDirection": {
-          "$ref": "#/definitions/r95"
+          "$ref": "#/definitions/r96"
         },
         "which": {
           "const": "cyberman",
@@ -2778,10 +2769,10 @@
           "type": "string"
         },
         "movement": {
-          "$ref": "#/definitions/r89"
+          "$ref": "#/definitions/r90"
         },
         "startDirection": {
-          "$ref": "#/definitions/r95"
+          "$ref": "#/definitions/r96"
         },
         "which": {
           "const": "turtle",
@@ -2829,7 +2820,7 @@
           "type": "string"
         },
         "startDirection": {
-          "$ref": "#/definitions/r95"
+          "$ref": "#/definitions/r96"
         },
         "which": {
           "const": "elephantHead",
@@ -2843,7 +2834,7 @@
       "additionalProperties": false,
       "properties": {
         "direction": {
-          "$ref": "#/definitions/r95"
+          "$ref": "#/definitions/r96"
         },
         "disabled": {
           "enum": [false, true],
@@ -2863,10 +2854,10 @@
           "type": "string"
         },
         "movement": {
-          "$ref": "#/definitions/r91"
+          "$ref": "#/definitions/r92"
         },
         "startDirection": {
-          "$ref": "#/definitions/r95"
+          "$ref": "#/definitions/r96"
         }
       },
       "required": ["movement", "activated", "startDirection"],
@@ -2916,7 +2907,7 @@
           "type": "string"
         },
         "movement": {
-          "$ref": "#/definitions/r86"
+          "$ref": "#/definitions/r87"
         },
         "which": {
           "const": "computerBot",
@@ -2940,10 +2931,10 @@
       "additionalProperties": false,
       "properties": {
         "startDirection": {
-          "$ref": "#/definitions/r81"
+          "$ref": "#/definitions/r82"
         },
         "which": {
-          "$ref": "#/definitions/r97"
+          "$ref": "#/definitions/r98"
         }
       },
       "required": ["which", "startDirection"],
@@ -2957,7 +2948,7 @@
           "type": "string"
         },
         "movement": {
-          "$ref": "#/definitions/r88"
+          "$ref": "#/definitions/r89"
         },
         "which": {
           "const": "monkey",
@@ -3032,7 +3023,7 @@
           "type": "string"
         },
         "movement": {
-          "$ref": "#/definitions/r92"
+          "$ref": "#/definitions/r93"
         },
         "which": {
           "const": "helicopterBug",
@@ -3050,7 +3041,7 @@
           "type": "string"
         },
         "markdown": {
-          "$ref": "#/definitions/r90"
+          "$ref": "#/definitions/r91"
         },
         "source": {
           "const": "inline",
@@ -3230,7 +3221,7 @@
           "type": "string"
         },
         "planet": {
-          "$ref": "#/definitions/r87"
+          "$ref": "#/definitions/r88"
         }
       },
       "required": ["gives", "planet"],
@@ -3264,7 +3255,7 @@
       "additionalProperties": false,
       "properties": {
         "gives": {
-          "$ref": "#/definitions/r82"
+          "$ref": "#/definitions/r83"
         }
       },
       "required": ["gives"],
@@ -3279,7 +3270,7 @@
       "additionalProperties": false,
       "properties": {
         "disappearing": {
-          "$ref": "#/definitions/r78"
+          "$ref": "#/definitions/r79"
         }
       },
       "type": "object"
@@ -3303,7 +3294,7 @@
       "additionalProperties": false,
       "properties": {
         "direction": {
-          "$ref": "#/definitions/r81"
+          "$ref": "#/definitions/r82"
         }
       },
       "type": "object"
@@ -3312,7 +3303,7 @@
       "additionalProperties": false,
       "properties": {
         "planet": {
-          "$ref": "#/definitions/r87"
+          "$ref": "#/definitions/r88"
         }
       },
       "required": ["planet"],
@@ -3352,7 +3343,7 @@
     "r73": {
       "anyOf": [
         {
-          "$ref": "#/definitions/r78"
+          "$ref": "#/definitions/r79"
         },
         {
           "type": "null"
@@ -3373,6 +3364,19 @@
     "r75": {
       "additionalProperties": false,
       "properties": {
+        "room": {
+          "type": "string"
+        },
+        "subRoom": {
+          "type": "string"
+        }
+      },
+      "required": ["room"],
+      "type": "object"
+    },
+    "r76": {
+      "additionalProperties": false,
+      "properties": {
         "style": {
           "enum": ["book", "puck"],
           "type": "string"
@@ -3381,7 +3385,7 @@
       "required": ["style"],
       "type": "object"
     },
-    "r76": {
+    "r77": {
       "additionalProperties": false,
       "properties": {
         "style": {
@@ -3392,14 +3396,14 @@
       "required": ["style"],
       "type": "object"
     },
-    "r77": {
+    "r78": {
       "description": "the lines of text to display, each rendered as a separate row",
       "items": {
         "type": "string"
       },
       "type": "array"
     },
-    "r78": {
+    "r79": {
       "additionalProperties": false,
       "properties": {
         "on": {
@@ -3410,7 +3414,7 @@
       "required": ["on"],
       "type": "object"
     },
-    "r79": {
+    "r80": {
       "additionalProperties": false,
       "properties": {
         "activated": {
@@ -3420,7 +3424,7 @@
       },
       "type": "object"
     },
-    "r80": {
+    "r81": {
       "additionalProperties": false,
       "properties": {
         "disabled": {
@@ -3430,7 +3434,7 @@
       },
       "type": "object"
     },
-    "r81": {
+    "r82": {
       "enum": [
         "away",
         "awayLeft",
@@ -3443,7 +3447,7 @@
       ],
       "type": "string"
     },
-    "r82": {
+    "r83": {
       "enum": [
         "bag",
         "doughnuts",
@@ -3456,16 +3460,16 @@
       ],
       "type": "string"
     },
-    "r83": {
+    "r84": {
       "description": "if true, lines oscillate horizontally as they rise",
       "enum": [false, true],
       "type": "boolean"
     },
-    "r84": {
+    "r85": {
       "description": "how many total should this emitter emit? Null for no limit",
       "type": ["null", "number"]
     },
-    "r85": {
+    "r86": {
       "additionalProperties": false,
       "properties": {
         "disappearing": {
@@ -3474,26 +3478,26 @@
       },
       "type": "object"
     },
-    "r86": {
+    "r87": {
       "enum": [
         "patrol-randomly-xy4-and-reverse",
         "towards-on-shortest-axis-xy4"
       ],
       "type": "string"
     },
-    "r87": {
+    "r88": {
       "enum": ["blacktooth", "bookworld", "egyptus", "penitentiary", "safari"],
       "type": "string"
     },
-    "r88": {
+    "r89": {
       "enum": ["patrol-randomly-xy4", "towards-on-shortest-axis-xy4"],
       "type": "string"
     },
-    "r89": {
+    "r90": {
       "enum": ["anticlockwise", "back-forth", "clockwise", "forwards"],
       "type": "string"
     },
-    "r90": {
+    "r91": {
       "anyOf": [
         {
           "type": "string"
@@ -3506,35 +3510,35 @@
         }
       ]
     },
-    "r91": {
+    "r92": {
       "enum": ["back-forth", "clockwise", "towards-analogue"],
       "type": "string"
     },
-    "r92": {
+    "r93": {
       "enum": ["patrol-randomly-xy8", "towards-analogue"],
       "type": "string"
     },
-    "r93": {
+    "r94": {
       "enum": ["back-forth", "clockwise", "forwards"],
       "type": "string"
     },
-    "r94": {
+    "r95": {
       "enum": ["greenAndPink", "starsAndStripes"],
       "type": "string"
     },
-    "r95": {
+    "r96": {
       "enum": ["away", "left", "right", "towards"],
       "type": "string"
     },
-    "r96": {
+    "r97": {
       "enum": ["after-player-near", "off", "on"],
       "type": "string"
     },
-    "r97": {
+    "r98": {
       "enum": ["head", "headOverHeels", "heels"],
       "type": "string"
     },
-    "r98": {
+    "r99": {
       "type": "object",
       "properties": {
         "type": {
@@ -3542,11 +3546,11 @@
         }
       }
     },
-    "r99": {
+    "r100": {
       "enum": ["monster", "movingPlatform"],
       "type": "string"
     },
-    "r100": {
+    "r101": {
       "additionalProperties": {
         "not": {}
       },

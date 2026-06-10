@@ -3,9 +3,11 @@ import { roomGridPositions } from "../../../game/components/dialogs/menuDialog/d
 import { nextItemIdSet } from "../../../model/inPlaceMutators/nextItemId";
 import { type AnyWallJsonConfig } from "../../../model/json/WallJsonConfig";
 import {
+  isWholeRoomSubRooms,
   roomJsonItemsEntriesIterable,
   roomJsonItemsIterable,
-  type SubRooms,
+  roomVerticalLinkHolders,
+  type SubRoom,
 } from "../../../model/RoomJson";
 import { wallTimes } from "../../../model/times";
 import { keys, objectEntriesIter, valuesIter } from "../../../utils/entries";
@@ -44,6 +46,19 @@ const getRoomFloorBounds = (room: EditorRoomJson): FloorBounds => ({
   minY: roomFloorMinY(room),
   maxY: roomFloorMaxY(room),
 });
+
+/**
+ * the real sub-room cells of a room (the divided form), or undefined when the
+ * room is undivided - ie has no sub-rooms or only the whole-room ('*') form
+ */
+const dividedSubRoomsOf = (
+  room: EditorRoomJson,
+): Record<string, SubRoom<EditorRoomId>> | undefined => {
+  const subRooms = room.meta?.subRooms;
+  return subRooms !== undefined && !isWholeRoomSubRooms(subRooms) ?
+      subRooms
+    : undefined;
+};
 
 type RoomLayoutEntry = {
   roomId: EditorRoomId;
@@ -99,7 +114,7 @@ const computeOffsets = (
     (e) => e.gridPosition.x === 0 && e.gridPosition.y === 0,
   )!;
 
-  const subRooms = cursorRoom.meta?.subRooms;
+  const subRooms = dividedSubRoomsOf(cursorRoom);
   const originCell =
     subRooms ?
       valuesIter(subRooms).find(
@@ -125,9 +140,10 @@ const computeOffsets = (
       continue;
     }
 
+    const entryDividedSubRooms = dividedSubRoomsOf(entry.room);
     const entryOriginSubRoom =
-      entry.room.meta?.subRooms ?
-        valuesIter(entry.room.meta.subRooms).find(
+      entryDividedSubRooms ?
+        valuesIter(entryDividedSubRooms).find(
           (sr) => sr.gridPosition.x === 0 && sr.gridPosition.y === 0,
         )
       : undefined;
@@ -290,7 +306,7 @@ const expandToGridCells = (layout: RoomLayoutEntry[]): PhysicalGridCell[] => {
 
   for (const entry of layout) {
     const isCursor = entry.gridPosition.x === 0 && entry.gridPosition.y === 0;
-    const existingSubRooms = entry.room.meta?.subRooms;
+    const existingSubRooms = dividedSubRoomsOf(entry.room);
 
     if (existingSubRooms) {
       for (const subRoom of valuesIter(existingSubRooms)) {
@@ -454,11 +470,10 @@ const removeInternalWalls = (
   }
 };
 
-const generateSubRooms = (cells: PhysicalGridCell[]): SubRooms => {
-  const subRooms: Record<
-    string,
-    { gridPosition: Xy; physicalPosition: { from: Xy; to: Xy } }
-  > = {};
+const generateSubRooms = (
+  cells: PhysicalGridCell[],
+): Record<string, SubRoom<EditorRoomId>> => {
+  const subRooms: Record<string, SubRoom<EditorRoomId>> = {};
 
   for (const [index, cell] of cells.entries()) {
     subRooms[index.toString()] = {
@@ -470,25 +485,49 @@ const generateSubRooms = (cells: PhysicalGridCell[]): SubRooms => {
     };
   }
 
-  return subRooms as SubRooms;
+  return subRooms;
 };
 
-const transferVerticalLinks = (
-  cursorRoom: EditorRoomJson,
+type VerticalLink = {
+  above?: { room: EditorRoomId; subRoom?: string };
+  below?: { room: EditorRoomId; subRoom?: string };
+};
+
+/**
+ * read each merged sub-room's incoming vertical links from the rooms being
+ * coalesced, keyed by the merged sub-room index they will live on. Must be
+ * called before the cursor room's `subRooms` is rebuilt.
+ */
+const collectVerticalLinks = (
   layout: RoomLayoutEntry[],
-): void => {
+  roomIdToSubRoom: ReadonlyMap<EditorRoomId, string>,
+): Map<string, VerticalLink> => {
+  const collected = new Map<string, VerticalLink>();
+
   for (const entry of layout) {
-    if (entry.gridPosition.x === 0 && entry.gridPosition.y === 0) {
+    const base = Number(roomIdToSubRoom.get(entry.roomId));
+    const subRooms = entry.room.meta?.subRooms;
+    if (subRooms === undefined) {
       continue;
     }
 
-    if (entry.room.roomAbove && !cursorRoom.roomAbove) {
-      cursorRoom.roomAbove = entry.room.roomAbove;
-    }
-    if (entry.room.roomBelow && !cursorRoom.roomBelow) {
-      cursorRoom.roomBelow = entry.room.roomBelow;
+    if (isWholeRoomSubRooms(subRooms)) {
+      const { above, below } = subRooms["*"];
+      if (above ?? below) {
+        collected.set(base.toString(), { above, below });
+      }
+    } else {
+      let offset = 0;
+      for (const { above, below } of valuesIter(subRooms)) {
+        if (above ?? below) {
+          collected.set((base + offset).toString(), { above, below });
+        }
+        offset++;
+      }
     }
   }
+
+  return collected;
 };
 
 const transferMeta = (
@@ -517,7 +556,7 @@ const transferMeta = (
 };
 
 const findOriginSubRoomId = (room: EditorRoomJson): string | undefined => {
-  const subRooms = room.meta?.subRooms;
+  const subRooms = dividedSubRoomsOf(room);
   if (!subRooms) {
     return undefined;
   }
@@ -603,9 +642,13 @@ export const coalesceRoomsInPlace = (state: LevelEditorState): void => {
   let subRoomIndex = 0;
   for (const entry of layout) {
     roomIdToSubRoom.set(entry.roomId, subRoomIndex.toString());
-    const existingSubRooms = entry.room.meta?.subRooms;
+    const existingSubRooms = dividedSubRoomsOf(entry.room);
     subRoomIndex += existingSubRooms ? Object.keys(existingSubRooms).length : 1;
   }
+
+  // capture the vertical links from each merging room before the cursor room's
+  // subRooms get rebuilt below
+  const verticalLinks = collectVerticalLinks(layout, roomIdToSubRoom);
 
   removeInternalDoorsAndUpdateExternal(
     cursorRoom,
@@ -618,28 +661,52 @@ export const coalesceRoomsInPlace = (state: LevelEditorState): void => {
   const internal = buildInternalPositions(cells);
   removeInternalWalls(cursorRoom, internal);
 
+  const mergedSubRooms = generateSubRooms(cells);
+  for (const [subRoomId, { above, below }] of verticalLinks) {
+    const cell = mergedSubRooms[subRoomId];
+    if (cell === undefined) {
+      continue;
+    }
+    if (above !== undefined) {
+      cell.above = above;
+    }
+    if (below !== undefined) {
+      cell.below = below;
+    }
+  }
   cursorRoom.meta ??= {};
-  cursorRoom.meta.subRooms = generateSubRooms(cells);
+  cursorRoom.meta.subRooms = mergedSubRooms;
 
-  transferVerticalLinks(cursorRoom, layout);
   transferMeta(cursorRoom, layout);
 
   for (const deletedRoomId of mergedRoomIds) {
     delete state.campaignInProgress.rooms[deletedRoomId];
     delete state.history[deletedRoomId];
+  }
 
-    for (const room of valuesIter(state.campaignInProgress.rooms)) {
-      if (room.roomAbove === deletedRoomId) {
-        room.roomAbove = cursorRoomId;
-      }
-      if (room.roomBelow === deletedRoomId) {
-        room.roomBelow = cursorRoomId;
-      }
+  // repoint any room whose vertical link or non-contiguous relationship pointed
+  // at a merged room (or at the survivor) onto the survivor's specific sub-room
+  for (const room of valuesIter(state.campaignInProgress.rooms)) {
+    if (room.id === cursorRoomId) {
+      continue;
+    }
 
-      const ncr = room.meta?.nonContiguousRelationship;
-      if (ncr?.with.room === deletedRoomId) {
-        ncr.with.room = cursorRoomId;
+    for (const holder of roomVerticalLinkHolders(room as EditorRoomJson)) {
+      for (const link of [holder.above, holder.below]) {
+        if (link === undefined) {
+          continue;
+        }
+        const cell = roomIdToSubRoom.get(link.room);
+        if (cell !== undefined) {
+          link.room = cursorRoomId;
+          link.subRoom = cell;
+        }
       }
+    }
+
+    const ncr = room.meta?.nonContiguousRelationship;
+    if (ncr !== undefined && mergedRoomIds.has(ncr.with.room)) {
+      ncr.with.room = cursorRoomId;
     }
   }
 

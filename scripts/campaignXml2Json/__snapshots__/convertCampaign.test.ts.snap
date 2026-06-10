@@ -195,8 +195,6 @@ exports[`covert campaign handbrake to protect against accidental changes > black
     },
   },
   "planet": "jail",
-  "roomAbove": undefined,
-  "roomBelow": undefined,
 }
 `;
 
@@ -336,8 +334,6 @@ exports[`covert campaign handbrake to protect against accidental changes > black
     },
   },
   "planet": "blacktooth",
-  "roomAbove": undefined,
-  "roomBelow": undefined,
 }
 `;
 
@@ -471,9 +467,16 @@ exports[`covert campaign handbrake to protect against accidental changes > black
       "type": "wall",
     },
   },
+  "meta": {
+    "subRooms": {
+      "*": {
+        "below": {
+          "room": "blacktooth4",
+        },
+      },
+    },
+  },
   "planet": "jail",
-  "roomAbove": undefined,
-  "roomBelow": "blacktooth4",
 }
 `;
 
@@ -608,9 +611,16 @@ exports[`covert campaign handbrake to protect against accidental changes > black
       "type": "wall",
     },
   },
+  "meta": {
+    "subRooms": {
+      "*": {
+        "above": {
+          "room": "blacktooth3",
+        },
+      },
+    },
+  },
   "planet": "blacktooth",
-  "roomAbove": "blacktooth3",
-  "roomBelow": undefined,
 }
 `;
 
@@ -736,8 +746,6 @@ exports[`covert campaign handbrake to protect against accidental changes > black
     },
   },
   "planet": "blacktooth",
-  "roomAbove": undefined,
-  "roomBelow": undefined,
 }
 `;
 
@@ -990,8 +998,6 @@ exports[`covert campaign handbrake to protect against accidental changes > black
     },
   },
   "planet": "blacktooth",
-  "roomAbove": undefined,
-  "roomBelow": undefined,
 }
 `;
 
@@ -1103,8 +1109,6 @@ exports[`covert campaign handbrake to protect against accidental changes > black
     },
   },
   "planet": "blacktooth",
-  "roomAbove": undefined,
-  "roomBelow": undefined,
 }
 `;
 
@@ -1296,8 +1300,6 @@ exports[`covert campaign handbrake to protect against accidental changes > black
     },
   },
   "planet": "blacktooth",
-  "roomAbove": undefined,
-  "roomBelow": undefined,
 }
 `;
 
@@ -1509,8 +1511,6 @@ exports[`covert campaign handbrake to protect against accidental changes > black
     },
   },
   "planet": "blacktooth",
-  "roomAbove": undefined,
-  "roomBelow": undefined,
 }
 `;
 
@@ -1689,8 +1689,6 @@ exports[`covert campaign handbrake to protect against accidental changes > black
     },
   },
   "planet": "blacktooth",
-  "roomAbove": undefined,
-  "roomBelow": undefined,
 }
 `;
 
@@ -1936,8 +1934,6 @@ exports[`covert campaign handbrake to protect against accidental changes > black
     },
   },
   "planet": "jail",
-  "roomAbove": undefined,
-  "roomBelow": undefined,
 }
 `;
 
@@ -2072,8 +2068,6 @@ exports[`covert campaign handbrake to protect against accidental changes > black
     },
   },
   "planet": "blacktooth",
-  "roomAbove": undefined,
-  "roomBelow": undefined,
 }
 `;
 
@@ -2329,8 +2323,6 @@ exports[`covert campaign handbrake to protect against accidental changes > black
     },
   },
   "planet": "blacktooth",
-  "roomAbove": undefined,
-  "roomBelow": undefined,
 }
 `;
 
@@ -2563,8 +2555,6 @@ exports[`covert campaign handbrake to protect against accidental changes > black
     },
   },
   "planet": "blacktooth",
-  "roomAbove": undefined,
-  "roomBelow": undefined,
 }
 `;
 
@@ -2653,8 +2643,6 @@ exports[`covert campaign handbrake to protect against accidental changes > black
     },
   },
   "planet": "blacktooth",
-  "roomAbove": undefined,
-  "roomBelow": undefined,
 }
 `;
 
@@ -2866,8 +2854,6 @@ exports[`covert campaign handbrake to protect against accidental changes > black
     },
   },
   "planet": "blacktooth",
-  "roomAbove": undefined,
-  "roomBelow": undefined,
 }
 `;
 
@@ -3265,8 +3251,6 @@ exports[`covert campaign handbrake to protect against accidental changes > black
     },
   },
   "planet": "blacktooth",
-  "roomAbove": undefined,
-  "roomBelow": undefined,
 }
 `;
 
@@ -3454,8 +3438,6 @@ exports[`covert campaign handbrake to protect against accidental changes > black
     },
   },
   "planet": "blacktooth",
-  "roomAbove": undefined,
-  "roomBelow": undefined,
 }
 `;
 
@@ -3698,8 +3680,6 @@ exports[`covert campaign handbrake to protect against accidental changes > black
     },
   },
   "planet": "blacktooth",
-  "roomAbove": undefined,
-  "roomBelow": undefined,
 }
 `;
 
@@ -3870,8 +3850,6 @@ exports[`covert campaign handbrake to protect against accidental changes > black
     },
   },
   "planet": "blacktooth",
-  "roomAbove": undefined,
-  "roomBelow": undefined,
 }
 `;
 
@@ -4115,8 +4093,6 @@ exports[`covert campaign handbrake to protect against accidental changes > black
     },
   },
   "planet": "blacktooth",
-  "roomAbove": undefined,
-  "roomBelow": undefined,
 }
 `;
 
@@ -4251,9 +4227,16 @@ exports[`covert campaign handbrake to protect against accidental changes > black
       "type": "wall",
     },
   },
+  "meta": {
+    "subRooms": {
+      "*": {
+        "below": {
+          "room": "blacktooth44market",
+        },
+      },
+    },
+  },
   "planet": "jail",
-  "roomAbove": undefined,
-  "roomBelow": "blacktooth44market",
 }
 `;
 
@@ -4468,8 +4451,6 @@ exports[`covert campaign handbrake to protect against accidental changes > black
     },
   },
   "planet": "jail",
-  "roomAbove": undefined,
-  "roomBelow": undefined,
 }
 `;
 
@@ -4617,8 +4598,6 @@ exports[`covert campaign handbrake to protect against accidental changes > black
     },
   },
   "planet": "blacktooth",
-  "roomAbove": undefined,
-  "roomBelow": undefined,
 }
 `;
 
@@ -4774,9 +4753,16 @@ exports[`covert campaign handbrake to protect against accidental changes > black
       "type": "wall",
     },
   },
+  "meta": {
+    "subRooms": {
+      "*": {
+        "above": {
+          "room": "blacktooth26",
+        },
+      },
+    },
+  },
   "planet": "blacktooth",
-  "roomAbove": "blacktooth26",
-  "roomBelow": undefined,
 }
 `;
 
@@ -4935,9 +4921,16 @@ exports[`covert campaign handbrake to protect against accidental changes > black
       "type": "wall",
     },
   },
+  "meta": {
+    "subRooms": {
+      "*": {
+        "below": {
+          "room": "blacktooth25",
+        },
+      },
+    },
+  },
   "planet": "jail",
-  "roomAbove": undefined,
-  "roomBelow": "blacktooth25",
 }
 `;
 
@@ -5133,8 +5126,6 @@ exports[`covert campaign handbrake to protect against accidental changes > black
     },
   },
   "planet": "blacktooth",
-  "roomAbove": undefined,
-  "roomBelow": undefined,
 }
 `;
 
@@ -5342,8 +5333,6 @@ exports[`covert campaign handbrake to protect against accidental changes > black
     },
   },
   "planet": "blacktooth",
-  "roomAbove": undefined,
-  "roomBelow": undefined,
 }
 `;
 
@@ -5492,9 +5481,16 @@ exports[`covert campaign handbrake to protect against accidental changes > black
       "type": "wall",
     },
   },
+  "meta": {
+    "subRooms": {
+      "*": {
+        "above": {
+          "room": "blacktooth30",
+        },
+      },
+    },
+  },
   "planet": "blacktooth",
-  "roomAbove": "blacktooth30",
-  "roomBelow": undefined,
 }
 `;
 
@@ -5631,9 +5627,16 @@ exports[`covert campaign handbrake to protect against accidental changes > black
       "type": "wall",
     },
   },
+  "meta": {
+    "subRooms": {
+      "*": {
+        "below": {
+          "room": "blacktooth29",
+        },
+      },
+    },
+  },
   "planet": "jail",
-  "roomAbove": undefined,
-  "roomBelow": "blacktooth29",
 }
 `;
 
@@ -5990,8 +5993,6 @@ exports[`covert campaign handbrake to protect against accidental changes > black
     },
   },
   "planet": "blacktooth",
-  "roomAbove": undefined,
-  "roomBelow": undefined,
 }
 `;
 
@@ -6080,8 +6081,6 @@ exports[`covert campaign handbrake to protect against accidental changes > black
     },
   },
   "planet": "blacktooth",
-  "roomAbove": undefined,
-  "roomBelow": undefined,
 }
 `;
 
@@ -6256,9 +6255,16 @@ exports[`covert campaign handbrake to protect against accidental changes > black
       "type": "wall",
     },
   },
+  "meta": {
+    "subRooms": {
+      "*": {
+        "above": {
+          "room": "blacktooth34",
+        },
+      },
+    },
+  },
   "planet": "blacktooth",
-  "roomAbove": "blacktooth34",
-  "roomBelow": undefined,
 }
 `;
 
@@ -6417,9 +6423,16 @@ exports[`covert campaign handbrake to protect against accidental changes > black
       "type": "wall",
     },
   },
+  "meta": {
+    "subRooms": {
+      "*": {
+        "below": {
+          "room": "blacktooth33",
+        },
+      },
+    },
+  },
   "planet": "jail",
-  "roomAbove": undefined,
-  "roomBelow": "blacktooth33",
 }
 `;
 
@@ -6671,8 +6684,6 @@ exports[`covert campaign handbrake to protect against accidental changes > black
     },
   },
   "planet": "blacktooth",
-  "roomAbove": undefined,
-  "roomBelow": undefined,
 }
 `;
 
@@ -6817,8 +6828,6 @@ exports[`covert campaign handbrake to protect against accidental changes > black
     },
   },
   "planet": "blacktooth",
-  "roomAbove": undefined,
-  "roomBelow": undefined,
 }
 `;
 
@@ -7024,8 +7033,6 @@ exports[`covert campaign handbrake to protect against accidental changes > black
     },
   },
   "planet": "blacktooth",
-  "roomAbove": undefined,
-  "roomBelow": undefined,
 }
 `;
 
@@ -7160,9 +7167,16 @@ exports[`covert campaign handbrake to protect against accidental changes > black
       "type": "wall",
     },
   },
+  "meta": {
+    "subRooms": {
+      "*": {
+        "below": {
+          "room": "blacktooth39",
+        },
+      },
+    },
+  },
   "planet": "jail",
-  "roomAbove": undefined,
-  "roomBelow": "blacktooth39",
 }
 `;
 
@@ -7372,9 +7386,16 @@ exports[`covert campaign handbrake to protect against accidental changes > black
       "type": "wall",
     },
   },
+  "meta": {
+    "subRooms": {
+      "*": {
+        "above": {
+          "room": "blacktooth38",
+        },
+      },
+    },
+  },
   "planet": "blacktooth",
-  "roomAbove": "blacktooth38",
-  "roomBelow": undefined,
 }
 `;
 
@@ -7706,8 +7727,6 @@ exports[`covert campaign handbrake to protect against accidental changes > black
     },
   },
   "planet": "blacktooth",
-  "roomAbove": undefined,
-  "roomBelow": undefined,
 }
 `;
 
@@ -7796,8 +7815,6 @@ exports[`covert campaign handbrake to protect against accidental changes > black
     },
   },
   "planet": "blacktooth",
-  "roomAbove": undefined,
-  "roomBelow": undefined,
 }
 `;
 
@@ -7910,8 +7927,6 @@ exports[`covert campaign handbrake to protect against accidental changes > black
     },
   },
   "planet": "blacktooth",
-  "roomAbove": undefined,
-  "roomBelow": undefined,
 }
 `;
 
@@ -8046,9 +8061,16 @@ exports[`covert campaign handbrake to protect against accidental changes > black
       "type": "wall",
     },
   },
+  "meta": {
+    "subRooms": {
+      "*": {
+        "below": {
+          "room": "blacktooth46market",
+        },
+      },
+    },
+  },
   "planet": "jail",
-  "roomAbove": undefined,
-  "roomBelow": "blacktooth46market",
 }
 `;
 
@@ -8169,9 +8191,16 @@ exports[`covert campaign handbrake to protect against accidental changes > black
       "type": "wall",
     },
   },
+  "meta": {
+    "subRooms": {
+      "*": {
+        "above": {
+          "room": "blacktooth22",
+        },
+      },
+    },
+  },
   "planet": "market",
-  "roomAbove": "blacktooth22",
-  "roomBelow": undefined,
 }
 `;
 
@@ -8415,8 +8444,6 @@ exports[`covert campaign handbrake to protect against accidental changes > black
     },
   },
   "planet": "market",
-  "roomAbove": undefined,
-  "roomBelow": undefined,
 }
 `;
 
@@ -8571,9 +8598,16 @@ exports[`covert campaign handbrake to protect against accidental changes > black
       "type": "wall",
     },
   },
+  "meta": {
+    "subRooms": {
+      "*": {
+        "above": {
+          "room": "blacktooth43",
+        },
+      },
+    },
+  },
   "planet": "market",
-  "roomAbove": "blacktooth43",
-  "roomBelow": undefined,
 }
 `;
 
@@ -8886,8 +8920,6 @@ exports[`covert campaign handbrake to protect against accidental changes > black
     },
   },
   "planet": "market",
-  "roomAbove": undefined,
-  "roomBelow": undefined,
 }
 `;
 
@@ -9002,8 +9034,6 @@ exports[`covert campaign handbrake to protect against accidental changes > black
     },
   },
   "planet": "market",
-  "roomAbove": undefined,
-  "roomBelow": undefined,
 }
 `;
 
@@ -9121,8 +9151,6 @@ exports[`covert campaign handbrake to protect against accidental changes > black
     },
   },
   "planet": "market",
-  "roomAbove": undefined,
-  "roomBelow": undefined,
 }
 `;
 
@@ -9337,8 +9365,6 @@ exports[`covert campaign handbrake to protect against accidental changes > black
     },
   },
   "planet": "market",
-  "roomAbove": undefined,
-  "roomBelow": undefined,
 }
 `;
 
@@ -9479,8 +9505,6 @@ exports[`covert campaign handbrake to protect against accidental changes > black
     },
   },
   "planet": "jail",
-  "roomAbove": undefined,
-  "roomBelow": undefined,
 }
 `;
 
@@ -9725,8 +9749,6 @@ exports[`covert campaign handbrake to protect against accidental changes > black
     },
   },
   "planet": "market",
-  "roomAbove": undefined,
-  "roomBelow": undefined,
 }
 `;
 
@@ -9917,8 +9939,6 @@ exports[`covert campaign handbrake to protect against accidental changes > black
     },
   },
   "planet": "market",
-  "roomAbove": undefined,
-  "roomBelow": undefined,
 }
 `;
 
@@ -10055,9 +10075,16 @@ exports[`covert campaign handbrake to protect against accidental changes > black
       "type": "wall",
     },
   },
+  "meta": {
+    "subRooms": {
+      "*": {
+        "below": {
+          "room": "blacktooth55",
+        },
+      },
+    },
+  },
   "planet": "jail",
-  "roomAbove": undefined,
-  "roomBelow": "blacktooth55",
 }
 `;
 
@@ -10215,9 +10242,16 @@ exports[`covert campaign handbrake to protect against accidental changes > black
       "type": "wall",
     },
   },
+  "meta": {
+    "subRooms": {
+      "*": {
+        "above": {
+          "room": "blacktooth54",
+        },
+      },
+    },
+  },
   "planet": "jail",
-  "roomAbove": "blacktooth54",
-  "roomBelow": undefined,
 }
 `;
 
@@ -10362,8 +10396,6 @@ exports[`covert campaign handbrake to protect against accidental changes > black
     },
   },
   "planet": "jail",
-  "roomAbove": undefined,
-  "roomBelow": undefined,
 }
 `;
 
@@ -10529,8 +10561,6 @@ exports[`covert campaign handbrake to protect against accidental changes > black
     },
   },
   "planet": "blacktooth",
-  "roomAbove": undefined,
-  "roomBelow": undefined,
 }
 `;
 
@@ -10928,8 +10958,6 @@ exports[`covert campaign handbrake to protect against accidental changes > black
     },
   },
   "planet": "jail",
-  "roomAbove": undefined,
-  "roomBelow": undefined,
 }
 `;
 
@@ -11223,8 +11251,6 @@ exports[`covert campaign handbrake to protect against accidental changes > black
     },
   },
   "planet": "jail",
-  "roomAbove": undefined,
-  "roomBelow": undefined,
 }
 `;
 
@@ -11433,8 +11459,6 @@ exports[`covert campaign handbrake to protect against accidental changes > black
     },
   },
   "planet": "blacktooth",
-  "roomAbove": undefined,
-  "roomBelow": undefined,
 }
 `;
 
@@ -11632,8 +11656,6 @@ exports[`covert campaign handbrake to protect against accidental changes > black
     },
   },
   "planet": "jail",
-  "roomAbove": undefined,
-  "roomBelow": undefined,
 }
 `;
 
@@ -11934,8 +11956,6 @@ exports[`covert campaign handbrake to protect against accidental changes > black
     },
   },
   "planet": "jail",
-  "roomAbove": undefined,
-  "roomBelow": undefined,
 }
 `;
 
@@ -12119,8 +12139,6 @@ exports[`covert campaign handbrake to protect against accidental changes > black
     },
   },
   "planet": "jail",
-  "roomAbove": undefined,
-  "roomBelow": undefined,
 }
 `;
 
@@ -12259,8 +12277,6 @@ exports[`covert campaign handbrake to protect against accidental changes > black
     },
   },
   "planet": "blacktooth",
-  "roomAbove": undefined,
-  "roomBelow": undefined,
 }
 `;
 
@@ -12363,8 +12379,6 @@ exports[`covert campaign handbrake to protect against accidental changes > black
     },
   },
   "planet": "blacktooth",
-  "roomAbove": undefined,
-  "roomBelow": undefined,
 }
 `;
 
@@ -12537,8 +12551,6 @@ exports[`covert campaign handbrake to protect against accidental changes > black
     },
   },
   "planet": "blacktooth",
-  "roomAbove": undefined,
-  "roomBelow": undefined,
 }
 `;
 
@@ -12788,8 +12800,6 @@ exports[`covert campaign handbrake to protect against accidental changes > black
     },
   },
   "planet": "blacktooth",
-  "roomAbove": undefined,
-  "roomBelow": undefined,
 }
 `;
 
@@ -13032,8 +13042,6 @@ exports[`covert campaign handbrake to protect against accidental changes > black
     },
   },
   "planet": "blacktooth",
-  "roomAbove": undefined,
-  "roomBelow": undefined,
 }
 `;
 
@@ -13172,8 +13180,6 @@ exports[`covert campaign handbrake to protect against accidental changes > black
     },
   },
   "planet": "blacktooth",
-  "roomAbove": undefined,
-  "roomBelow": undefined,
 }
 `;
 
@@ -13322,8 +13328,6 @@ exports[`covert campaign handbrake to protect against accidental changes > black
     },
   },
   "planet": "blacktooth",
-  "roomAbove": undefined,
-  "roomBelow": undefined,
 }
 `;
 
@@ -13577,8 +13581,6 @@ exports[`covert campaign handbrake to protect against accidental changes > black
     },
   },
   "planet": "blacktooth",
-  "roomAbove": undefined,
-  "roomBelow": undefined,
 }
 `;
 
@@ -13813,8 +13815,6 @@ exports[`covert campaign handbrake to protect against accidental changes > black
     },
   },
   "planet": "blacktooth",
-  "roomAbove": undefined,
-  "roomBelow": undefined,
 }
 `;
 
@@ -14102,8 +14102,6 @@ exports[`covert campaign handbrake to protect against accidental changes > black
     },
   },
   "planet": "blacktooth",
-  "roomAbove": undefined,
-  "roomBelow": undefined,
 }
 `;
 
@@ -14338,8 +14336,6 @@ exports[`covert campaign handbrake to protect against accidental changes > black
     },
   },
   "planet": "blacktooth",
-  "roomAbove": undefined,
-  "roomBelow": undefined,
 }
 `;
 
@@ -14579,8 +14575,6 @@ exports[`covert campaign handbrake to protect against accidental changes > black
     },
   },
   "planet": "blacktooth",
-  "roomAbove": undefined,
-  "roomBelow": undefined,
 }
 `;
 
@@ -14885,8 +14879,6 @@ exports[`covert campaign handbrake to protect against accidental changes > black
     },
   },
   "planet": "blacktooth",
-  "roomAbove": undefined,
-  "roomBelow": undefined,
 }
 `;
 
@@ -15146,8 +15138,6 @@ exports[`covert campaign handbrake to protect against accidental changes > black
     },
   },
   "planet": "blacktooth",
-  "roomAbove": undefined,
-  "roomBelow": undefined,
 }
 `;
 
@@ -15432,9 +15422,16 @@ exports[`covert campaign handbrake to protect against accidental changes > black
       "type": "wall",
     },
   },
+  "meta": {
+    "subRooms": {
+      "*": {
+        "above": {
+          "room": "blacktooth79fish",
+        },
+      },
+    },
+  },
   "planet": "blacktooth",
-  "roomAbove": "blacktooth79fish",
-  "roomBelow": undefined,
 }
 `;
 
@@ -15584,9 +15581,16 @@ exports[`covert campaign handbrake to protect against accidental changes > black
       "type": "wall",
     },
   },
+  "meta": {
+    "subRooms": {
+      "*": {
+        "below": {
+          "room": "blacktooth78",
+        },
+      },
+    },
+  },
   "planet": "blacktooth",
-  "roomAbove": undefined,
-  "roomBelow": "blacktooth78",
 }
 `;
 
@@ -15796,8 +15800,6 @@ exports[`covert campaign handbrake to protect against accidental changes > black
     },
   },
   "planet": "blacktooth",
-  "roomAbove": undefined,
-  "roomBelow": undefined,
 }
 `;
 
@@ -16044,8 +16046,6 @@ exports[`covert campaign handbrake to protect against accidental changes > black
     },
   },
   "planet": "blacktooth",
-  "roomAbove": undefined,
-  "roomBelow": undefined,
 }
 `;
 
@@ -16322,8 +16322,6 @@ exports[`covert campaign handbrake to protect against accidental changes > black
     },
   },
   "planet": "blacktooth",
-  "roomAbove": undefined,
-  "roomBelow": undefined,
 }
 `;
 
@@ -16628,8 +16626,6 @@ exports[`covert campaign handbrake to protect against accidental changes > black
     },
   },
   "planet": "blacktooth",
-  "roomAbove": undefined,
-  "roomBelow": undefined,
 }
 `;
 
@@ -16861,8 +16857,6 @@ exports[`covert campaign handbrake to protect against accidental changes > black
     },
   },
   "planet": "blacktooth",
-  "roomAbove": undefined,
-  "roomBelow": undefined,
 }
 `;
 
@@ -17102,8 +17096,6 @@ exports[`covert campaign handbrake to protect against accidental changes > black
     },
   },
   "planet": "blacktooth",
-  "roomAbove": undefined,
-  "roomBelow": undefined,
 }
 `;
 
@@ -17255,8 +17247,6 @@ exports[`covert campaign handbrake to protect against accidental changes > black
     },
   },
   "planet": "blacktooth",
-  "roomAbove": undefined,
-  "roomBelow": undefined,
 }
 `;
 
@@ -17498,8 +17488,6 @@ exports[`covert campaign handbrake to protect against accidental changes > black
     },
   },
   "planet": "blacktooth",
-  "roomAbove": undefined,
-  "roomBelow": undefined,
 }
 `;
 
@@ -17698,8 +17686,6 @@ exports[`covert campaign handbrake to protect against accidental changes > bookw
     },
   },
   "planet": "bookworld",
-  "roomAbove": undefined,
-  "roomBelow": undefined,
 }
 `;
 
@@ -18058,8 +18044,6 @@ exports[`covert campaign handbrake to protect against accidental changes > bookw
     },
   },
   "planet": "bookworld",
-  "roomAbove": undefined,
-  "roomBelow": undefined,
 }
 `;
 
@@ -18232,8 +18216,6 @@ exports[`covert campaign handbrake to protect against accidental changes > bookw
     },
   },
   "planet": "bookworld",
-  "roomAbove": undefined,
-  "roomBelow": undefined,
 }
 `;
 
@@ -18360,8 +18342,6 @@ exports[`covert campaign handbrake to protect against accidental changes > bookw
     },
   },
   "planet": "bookworld",
-  "roomAbove": undefined,
-  "roomBelow": undefined,
 }
 `;
 
@@ -18526,8 +18506,6 @@ exports[`covert campaign handbrake to protect against accidental changes > bookw
     },
   },
   "planet": "bookworld",
-  "roomAbove": undefined,
-  "roomBelow": undefined,
 }
 `;
 
@@ -18733,8 +18711,6 @@ exports[`covert campaign handbrake to protect against accidental changes > bookw
     },
   },
   "planet": "bookworld",
-  "roomAbove": undefined,
-  "roomBelow": undefined,
 }
 `;
 
@@ -18900,8 +18876,6 @@ exports[`covert campaign handbrake to protect against accidental changes > bookw
     },
   },
   "planet": "bookworld",
-  "roomAbove": undefined,
-  "roomBelow": undefined,
 }
 `;
 
@@ -19111,8 +19085,6 @@ exports[`covert campaign handbrake to protect against accidental changes > bookw
     },
   },
   "planet": "bookworld",
-  "roomAbove": undefined,
-  "roomBelow": undefined,
 }
 `;
 
@@ -19288,8 +19260,6 @@ exports[`covert campaign handbrake to protect against accidental changes > bookw
     },
   },
   "planet": "bookworld",
-  "roomAbove": undefined,
-  "roomBelow": undefined,
 }
 `;
 
@@ -19449,8 +19419,6 @@ exports[`covert campaign handbrake to protect against accidental changes > bookw
     },
   },
   "planet": "bookworld",
-  "roomAbove": undefined,
-  "roomBelow": undefined,
 }
 `;
 
@@ -19566,8 +19534,6 @@ exports[`covert campaign handbrake to protect against accidental changes > bookw
     },
   },
   "planet": "bookworld",
-  "roomAbove": undefined,
-  "roomBelow": undefined,
 }
 `;
 
@@ -19763,8 +19729,6 @@ exports[`covert campaign handbrake to protect against accidental changes > bookw
     },
   },
   "planet": "bookworld",
-  "roomAbove": undefined,
-  "roomBelow": undefined,
 }
 `;
 
@@ -19853,8 +19817,6 @@ exports[`covert campaign handbrake to protect against accidental changes > bookw
     },
   },
   "planet": "bookworld",
-  "roomAbove": undefined,
-  "roomBelow": undefined,
 }
 `;
 
@@ -20082,8 +20044,6 @@ exports[`covert campaign handbrake to protect against accidental changes > bookw
     },
   },
   "planet": "bookworld",
-  "roomAbove": undefined,
-  "roomBelow": undefined,
 }
 `;
 
@@ -20297,8 +20257,6 @@ exports[`covert campaign handbrake to protect against accidental changes > bookw
     },
   },
   "planet": "bookworld",
-  "roomAbove": undefined,
-  "roomBelow": undefined,
 }
 `;
 
@@ -20463,8 +20421,6 @@ exports[`covert campaign handbrake to protect against accidental changes > bookw
     },
   },
   "planet": "bookworld",
-  "roomAbove": undefined,
-  "roomBelow": undefined,
 }
 `;
 
@@ -20620,8 +20576,6 @@ exports[`covert campaign handbrake to protect against accidental changes > bookw
     },
   },
   "planet": "bookworld",
-  "roomAbove": undefined,
-  "roomBelow": undefined,
 }
 `;
 
@@ -20825,8 +20779,6 @@ exports[`covert campaign handbrake to protect against accidental changes > bookw
     },
   },
   "planet": "bookworld",
-  "roomAbove": undefined,
-  "roomBelow": undefined,
 }
 `;
 
@@ -20958,8 +20910,6 @@ exports[`covert campaign handbrake to protect against accidental changes > bookw
     },
   },
   "planet": "bookworld",
-  "roomAbove": undefined,
-  "roomBelow": undefined,
 }
 `;
 
@@ -21154,8 +21104,6 @@ exports[`covert campaign handbrake to protect against accidental changes > bookw
     },
   },
   "planet": "bookworld",
-  "roomAbove": undefined,
-  "roomBelow": undefined,
 }
 `;
 
@@ -21368,8 +21316,6 @@ exports[`covert campaign handbrake to protect against accidental changes > bookw
     },
   },
   "planet": "bookworld",
-  "roomAbove": undefined,
-  "roomBelow": undefined,
 }
 `;
 
@@ -21573,8 +21519,6 @@ exports[`covert campaign handbrake to protect against accidental changes > bookw
     },
   },
   "planet": "bookworld",
-  "roomAbove": undefined,
-  "roomBelow": undefined,
 }
 `;
 
@@ -21745,8 +21689,6 @@ exports[`covert campaign handbrake to protect against accidental changes > bookw
     },
   },
   "planet": "bookworld",
-  "roomAbove": undefined,
-  "roomBelow": undefined,
 }
 `;
 
@@ -21984,8 +21926,6 @@ exports[`covert campaign handbrake to protect against accidental changes > bookw
     },
   },
   "planet": "bookworld",
-  "roomAbove": undefined,
-  "roomBelow": undefined,
 }
 `;
 
@@ -22074,8 +22014,6 @@ exports[`covert campaign handbrake to protect against accidental changes > bookw
     },
   },
   "planet": "bookworld",
-  "roomAbove": undefined,
-  "roomBelow": undefined,
 }
 `;
 
@@ -22271,8 +22209,6 @@ exports[`covert campaign handbrake to protect against accidental changes > bookw
     },
   },
   "planet": "bookworld",
-  "roomAbove": undefined,
-  "roomBelow": undefined,
 }
 `;
 
@@ -22388,8 +22324,6 @@ exports[`covert campaign handbrake to protect against accidental changes > bookw
     },
   },
   "planet": "bookworld",
-  "roomAbove": undefined,
-  "roomBelow": undefined,
 }
 `;
 
@@ -22661,9 +22595,16 @@ exports[`covert campaign handbrake to protect against accidental changes > bookw
       "type": "wall",
     },
   },
+  "meta": {
+    "subRooms": {
+      "*": {
+        "above": {
+          "room": "bookworld29",
+        },
+      },
+    },
+  },
   "planet": "bookworld",
-  "roomAbove": "bookworld29",
-  "roomBelow": undefined,
 }
 `;
 
@@ -22859,9 +22800,16 @@ exports[`covert campaign handbrake to protect against accidental changes > bookw
       "type": "wall",
     },
   },
+  "meta": {
+    "subRooms": {
+      "*": {
+        "below": {
+          "room": "bookworld28",
+        },
+      },
+    },
+  },
   "planet": "bookworld",
-  "roomAbove": undefined,
-  "roomBelow": "bookworld28",
 }
 `;
 
@@ -23026,8 +22974,6 @@ exports[`covert campaign handbrake to protect against accidental changes > bookw
     },
   },
   "planet": "bookworld",
-  "roomAbove": undefined,
-  "roomBelow": undefined,
 }
 `;
 
@@ -23250,8 +23196,6 @@ exports[`covert campaign handbrake to protect against accidental changes > bookw
     },
   },
   "planet": "bookworld",
-  "roomAbove": undefined,
-  "roomBelow": undefined,
 }
 `;
 
@@ -23372,9 +23316,16 @@ exports[`covert campaign handbrake to protect against accidental changes > bookw
       "type": "wall",
     },
   },
+  "meta": {
+    "subRooms": {
+      "*": {
+        "below": {
+          "room": "bookworld33",
+        },
+      },
+    },
+  },
   "planet": "bookworld",
-  "roomAbove": undefined,
-  "roomBelow": "bookworld33",
 }
 `;
 
@@ -23549,9 +23500,16 @@ exports[`covert campaign handbrake to protect against accidental changes > bookw
       "type": "wall",
     },
   },
+  "meta": {
+    "subRooms": {
+      "*": {
+        "above": {
+          "room": "bookworld32",
+        },
+      },
+    },
+  },
   "planet": "bookworld",
-  "roomAbove": "bookworld32",
-  "roomBelow": undefined,
 }
 `;
 
@@ -23828,8 +23786,6 @@ exports[`covert campaign handbrake to protect against accidental changes > bookw
     },
   },
   "planet": "bookworld",
-  "roomAbove": undefined,
-  "roomBelow": undefined,
 }
 `;
 
@@ -24098,8 +24054,6 @@ exports[`covert campaign handbrake to protect against accidental changes > bookw
     },
   },
   "planet": "bookworld",
-  "roomAbove": undefined,
-  "roomBelow": undefined,
 }
 `;
 
@@ -24304,8 +24258,6 @@ exports[`covert campaign handbrake to protect against accidental changes > bookw
     },
   },
   "planet": "bookworld",
-  "roomAbove": undefined,
-  "roomBelow": undefined,
 }
 `;
 
@@ -24409,8 +24361,6 @@ exports[`covert campaign handbrake to protect against accidental changes > bookw
     },
   },
   "planet": "bookworld",
-  "roomAbove": undefined,
-  "roomBelow": undefined,
 }
 `;
 
@@ -24534,9 +24484,16 @@ exports[`covert campaign handbrake to protect against accidental changes > bookw
       "type": "wall",
     },
   },
+  "meta": {
+    "subRooms": {
+      "*": {
+        "below": {
+          "room": "bookworld39",
+        },
+      },
+    },
+  },
   "planet": "bookworld",
-  "roomAbove": undefined,
-  "roomBelow": "bookworld39",
 }
 `;
 
@@ -24683,9 +24640,19 @@ exports[`covert campaign handbrake to protect against accidental changes > bookw
       "type": "wall",
     },
   },
+  "meta": {
+    "subRooms": {
+      "*": {
+        "above": {
+          "room": "bookworld38",
+        },
+        "below": {
+          "room": "bookworld40",
+        },
+      },
+    },
+  },
   "planet": "bookworld",
-  "roomAbove": "bookworld38",
-  "roomBelow": "bookworld40",
 }
 `;
 
@@ -24819,9 +24786,16 @@ exports[`covert campaign handbrake to protect against accidental changes > bookw
       "type": "wall",
     },
   },
+  "meta": {
+    "subRooms": {
+      "*": {
+        "above": {
+          "room": "bookworld39",
+        },
+      },
+    },
+  },
   "planet": "bookworld",
-  "roomAbove": "bookworld39",
-  "roomBelow": undefined,
 }
 `;
 
@@ -25043,8 +25017,6 @@ exports[`covert campaign handbrake to protect against accidental changes > bookw
     },
   },
   "planet": "bookworld",
-  "roomAbove": undefined,
-  "roomBelow": undefined,
 }
 `;
 
@@ -25187,8 +25159,6 @@ exports[`covert campaign handbrake to protect against accidental changes > egypt
     },
   },
   "planet": "egyptus",
-  "roomAbove": undefined,
-  "roomBelow": undefined,
 }
 `;
 
@@ -25430,8 +25400,6 @@ exports[`covert campaign handbrake to protect against accidental changes > egypt
     },
   },
   "planet": "egyptus",
-  "roomAbove": undefined,
-  "roomBelow": undefined,
 }
 `;
 
@@ -25529,8 +25497,6 @@ exports[`covert campaign handbrake to protect against accidental changes > egypt
     },
   },
   "planet": "egyptus",
-  "roomAbove": undefined,
-  "roomBelow": undefined,
 }
 `;
 
@@ -25787,8 +25753,6 @@ exports[`covert campaign handbrake to protect against accidental changes > egypt
     },
   },
   "planet": "egyptus",
-  "roomAbove": undefined,
-  "roomBelow": undefined,
 }
 `;
 
@@ -26044,8 +26008,6 @@ exports[`covert campaign handbrake to protect against accidental changes > egypt
     },
   },
   "planet": "egyptus",
-  "roomAbove": undefined,
-  "roomBelow": undefined,
 }
 `;
 
@@ -26235,8 +26197,6 @@ exports[`covert campaign handbrake to protect against accidental changes > egypt
     },
   },
   "planet": "egyptus",
-  "roomAbove": undefined,
-  "roomBelow": undefined,
 }
 `;
 
@@ -26474,8 +26434,6 @@ exports[`covert campaign handbrake to protect against accidental changes > egypt
     },
   },
   "planet": "egyptus",
-  "roomAbove": undefined,
-  "roomBelow": undefined,
 }
 `;
 
@@ -26768,8 +26726,6 @@ exports[`covert campaign handbrake to protect against accidental changes > egypt
     },
   },
   "planet": "egyptus",
-  "roomAbove": undefined,
-  "roomBelow": undefined,
 }
 `;
 
@@ -26976,8 +26932,6 @@ exports[`covert campaign handbrake to protect against accidental changes > egypt
     },
   },
   "planet": "egyptus",
-  "roomAbove": undefined,
-  "roomBelow": undefined,
 }
 `;
 
@@ -27215,8 +27169,6 @@ exports[`covert campaign handbrake to protect against accidental changes > egypt
     },
   },
   "planet": "egyptus",
-  "roomAbove": undefined,
-  "roomBelow": undefined,
 }
 `;
 
@@ -27305,8 +27257,6 @@ exports[`covert campaign handbrake to protect against accidental changes > egypt
     },
   },
   "planet": "egyptus",
-  "roomAbove": undefined,
-  "roomBelow": undefined,
 }
 `;
 
@@ -27616,8 +27566,6 @@ exports[`covert campaign handbrake to protect against accidental changes > egypt
     },
   },
   "planet": "egyptus",
-  "roomAbove": undefined,
-  "roomBelow": undefined,
 }
 `;
 
@@ -27815,9 +27763,16 @@ exports[`covert campaign handbrake to protect against accidental changes > egypt
       "type": "wall",
     },
   },
+  "meta": {
+    "subRooms": {
+      "*": {
+        "above": {
+          "room": "egyptus14",
+        },
+      },
+    },
+  },
   "planet": "egyptus",
-  "roomAbove": "egyptus14",
-  "roomBelow": undefined,
 }
 `;
 
@@ -28025,9 +27980,19 @@ exports[`covert campaign handbrake to protect against accidental changes > egypt
       "type": "wall",
     },
   },
+  "meta": {
+    "subRooms": {
+      "*": {
+        "above": {
+          "room": "egyptus19",
+        },
+        "below": {
+          "room": "egyptus13",
+        },
+      },
+    },
+  },
   "planet": "egyptus",
-  "roomAbove": "egyptus19",
-  "roomBelow": "egyptus13",
 }
 `;
 
@@ -28266,9 +28231,16 @@ exports[`covert campaign handbrake to protect against accidental changes > egypt
       "type": "wall",
     },
   },
+  "meta": {
+    "subRooms": {
+      "*": {
+        "above": {
+          "room": "egyptus16",
+        },
+      },
+    },
+  },
   "planet": "egyptus",
-  "roomAbove": "egyptus16",
-  "roomBelow": undefined,
 }
 `;
 
@@ -28400,9 +28372,16 @@ exports[`covert campaign handbrake to protect against accidental changes > egypt
       "type": "wall",
     },
   },
+  "meta": {
+    "subRooms": {
+      "*": {
+        "below": {
+          "room": "egyptus15",
+        },
+      },
+    },
+  },
   "planet": "egyptus",
-  "roomAbove": undefined,
-  "roomBelow": "egyptus15",
 }
 `;
 
@@ -28631,8 +28610,6 @@ exports[`covert campaign handbrake to protect against accidental changes > egypt
     },
   },
   "planet": "egyptus",
-  "roomAbove": undefined,
-  "roomBelow": undefined,
 }
 `;
 
@@ -28780,8 +28757,6 @@ exports[`covert campaign handbrake to protect against accidental changes > egypt
     },
   },
   "planet": "egyptus",
-  "roomAbove": undefined,
-  "roomBelow": undefined,
 }
 `;
 
@@ -28987,9 +28962,19 @@ exports[`covert campaign handbrake to protect against accidental changes > egypt
       "type": "wall",
     },
   },
+  "meta": {
+    "subRooms": {
+      "*": {
+        "above": {
+          "room": "egyptus20",
+        },
+        "below": {
+          "room": "egyptus14",
+        },
+      },
+    },
+  },
   "planet": "egyptus",
-  "roomAbove": "egyptus20",
-  "roomBelow": "egyptus14",
 }
 `;
 
@@ -29161,9 +29146,16 @@ exports[`covert campaign handbrake to protect against accidental changes > egypt
       "type": "wall",
     },
   },
+  "meta": {
+    "subRooms": {
+      "*": {
+        "below": {
+          "room": "egyptus19",
+        },
+      },
+    },
+  },
   "planet": "egyptus",
-  "roomAbove": undefined,
-  "roomBelow": "egyptus19",
 }
 `;
 
@@ -29252,8 +29244,6 @@ exports[`covert campaign handbrake to protect against accidental changes > egypt
     },
   },
   "planet": "egyptus",
-  "roomAbove": undefined,
-  "roomBelow": undefined,
 }
 `;
 
@@ -29442,8 +29432,6 @@ exports[`covert campaign handbrake to protect against accidental changes > egypt
     },
   },
   "planet": "egyptus",
-  "roomAbove": undefined,
-  "roomBelow": undefined,
 }
 `;
 
@@ -29719,8 +29707,6 @@ exports[`covert campaign handbrake to protect against accidental changes > egypt
     },
   },
   "planet": "egyptus",
-  "roomAbove": undefined,
-  "roomBelow": undefined,
 }
 `;
 
@@ -29956,8 +29942,6 @@ exports[`covert campaign handbrake to protect against accidental changes > egypt
     },
   },
   "planet": "egyptus",
-  "roomAbove": undefined,
-  "roomBelow": undefined,
 }
 `;
 
@@ -30119,8 +30103,6 @@ exports[`covert campaign handbrake to protect against accidental changes > egypt
     },
   },
   "planet": "egyptus",
-  "roomAbove": undefined,
-  "roomBelow": undefined,
 }
 `;
 
@@ -30309,8 +30291,6 @@ exports[`covert campaign handbrake to protect against accidental changes > egypt
     },
   },
   "planet": "egyptus",
-  "roomAbove": undefined,
-  "roomBelow": undefined,
 }
 `;
 
@@ -30496,8 +30476,6 @@ exports[`covert campaign handbrake to protect against accidental changes > egypt
     },
   },
   "planet": "egyptus",
-  "roomAbove": undefined,
-  "roomBelow": undefined,
 }
 `;
 
@@ -30681,8 +30659,6 @@ exports[`covert campaign handbrake to protect against accidental changes > egypt
     },
   },
   "planet": "egyptus",
-  "roomAbove": undefined,
-  "roomBelow": undefined,
 }
 `;
 
@@ -30828,9 +30804,16 @@ exports[`covert campaign handbrake to protect against accidental changes > egypt
       "type": "wall",
     },
   },
+  "meta": {
+    "subRooms": {
+      "*": {
+        "below": {
+          "room": "egyptus30",
+        },
+      },
+    },
+  },
   "planet": "egyptus",
-  "roomAbove": undefined,
-  "roomBelow": "egyptus30",
 }
 `;
 
@@ -30938,9 +30921,19 @@ exports[`covert campaign handbrake to protect against accidental changes > egypt
       "type": "wall",
     },
   },
+  "meta": {
+    "subRooms": {
+      "*": {
+        "above": {
+          "room": "egyptus29",
+        },
+        "below": {
+          "room": "egyptus31",
+        },
+      },
+    },
+  },
   "planet": "egyptus",
-  "roomAbove": "egyptus29",
-  "roomBelow": "egyptus31",
 }
 `;
 
@@ -31088,9 +31081,16 @@ exports[`covert campaign handbrake to protect against accidental changes > egypt
       "type": "wall",
     },
   },
+  "meta": {
+    "subRooms": {
+      "*": {
+        "above": {
+          "room": "egyptus30",
+        },
+      },
+    },
+  },
   "planet": "egyptus",
-  "roomAbove": "egyptus30",
-  "roomBelow": undefined,
 }
 `;
 
@@ -31194,9 +31194,16 @@ exports[`covert campaign handbrake to protect against accidental changes > egypt
       "type": "wall",
     },
   },
+  "meta": {
+    "subRooms": {
+      "*": {
+        "below": {
+          "room": "egyptus33",
+        },
+      },
+    },
+  },
   "planet": "egyptus",
-  "roomAbove": undefined,
-  "roomBelow": "egyptus33",
 }
 `;
 
@@ -31312,9 +31319,16 @@ exports[`covert campaign handbrake to protect against accidental changes > egypt
       "type": "wall",
     },
   },
+  "meta": {
+    "subRooms": {
+      "*": {
+        "above": {
+          "room": "egyptus32",
+        },
+      },
+    },
+  },
   "planet": "egyptus",
-  "roomAbove": "egyptus32",
-  "roomBelow": undefined,
 }
 `;
 
@@ -31539,8 +31553,6 @@ exports[`covert campaign handbrake to protect against accidental changes > egypt
     },
   },
   "planet": "egyptus",
-  "roomAbove": undefined,
-  "roomBelow": undefined,
 }
 `;
 
@@ -31758,9 +31770,16 @@ exports[`covert campaign handbrake to protect against accidental changes > egypt
       "type": "wall",
     },
   },
+  "meta": {
+    "subRooms": {
+      "*": {
+        "above": {
+          "room": "egyptus36",
+        },
+      },
+    },
+  },
   "planet": "egyptus",
-  "roomAbove": "egyptus36",
-  "roomBelow": undefined,
 }
 `;
 
@@ -31879,9 +31898,19 @@ exports[`covert campaign handbrake to protect against accidental changes > egypt
       "type": "wall",
     },
   },
+  "meta": {
+    "subRooms": {
+      "*": {
+        "above": {
+          "room": "egyptus37",
+        },
+        "below": {
+          "room": "egyptus35",
+        },
+      },
+    },
+  },
   "planet": "egyptus",
-  "roomAbove": "egyptus37",
-  "roomBelow": "egyptus35",
 }
 `;
 
@@ -32027,9 +32056,16 @@ exports[`covert campaign handbrake to protect against accidental changes > egypt
       "type": "wall",
     },
   },
+  "meta": {
+    "subRooms": {
+      "*": {
+        "below": {
+          "room": "egyptus36",
+        },
+      },
+    },
+  },
   "planet": "egyptus",
-  "roomAbove": undefined,
-  "roomBelow": "egyptus36",
 }
 `;
 
@@ -32290,8 +32326,6 @@ exports[`covert campaign handbrake to protect against accidental changes > egypt
     },
   },
   "planet": "egyptus",
-  "roomAbove": undefined,
-  "roomBelow": undefined,
 }
 `;
 
@@ -32497,8 +32531,6 @@ exports[`covert campaign handbrake to protect against accidental changes > egypt
     },
   },
   "planet": "egyptus",
-  "roomAbove": undefined,
-  "roomBelow": undefined,
 }
 `;
 
@@ -32968,8 +33000,6 @@ exports[`covert campaign handbrake to protect against accidental changes > final
     },
   },
   "planet": "jail",
-  "roomAbove": undefined,
-  "roomBelow": undefined,
 }
 `;
 
@@ -33362,8 +33392,6 @@ exports[`covert campaign handbrake to protect against accidental changes > moonb
     },
   },
   "planet": "moonbase",
-  "roomAbove": undefined,
-  "roomBelow": undefined,
 }
 `;
 
@@ -33620,8 +33648,6 @@ exports[`covert campaign handbrake to protect against accidental changes > moonb
     },
   },
   "planet": "moonbase",
-  "roomAbove": undefined,
-  "roomBelow": undefined,
 }
 `;
 
@@ -33921,8 +33947,6 @@ exports[`covert campaign handbrake to protect against accidental changes > moonb
     },
   },
   "planet": "moonbase",
-  "roomAbove": undefined,
-  "roomBelow": undefined,
 }
 `;
 
@@ -34272,8 +34296,6 @@ exports[`covert campaign handbrake to protect against accidental changes > moonb
     },
   },
   "planet": "moonbase",
-  "roomAbove": undefined,
-  "roomBelow": undefined,
 }
 `;
 
@@ -34451,8 +34473,6 @@ exports[`covert campaign handbrake to protect against accidental changes > moonb
     },
   },
   "planet": "moonbase",
-  "roomAbove": undefined,
-  "roomBelow": undefined,
 }
 `;
 
@@ -34724,8 +34744,6 @@ exports[`covert campaign handbrake to protect against accidental changes > moonb
     },
   },
   "planet": "moonbase",
-  "roomAbove": undefined,
-  "roomBelow": undefined,
 }
 `;
 
@@ -35042,8 +35060,6 @@ exports[`covert campaign handbrake to protect against accidental changes > moonb
     },
   },
   "planet": "moonbase",
-  "roomAbove": undefined,
-  "roomBelow": undefined,
 }
 `;
 
@@ -35318,8 +35334,6 @@ exports[`covert campaign handbrake to protect against accidental changes > moonb
     },
   },
   "planet": "moonbase",
-  "roomAbove": undefined,
-  "roomBelow": undefined,
 }
 `;
 
@@ -35458,8 +35472,6 @@ exports[`covert campaign handbrake to protect against accidental changes > moonb
     },
   },
   "planet": "moonbase",
-  "roomAbove": undefined,
-  "roomBelow": undefined,
 }
 `;
 
@@ -35666,8 +35678,6 @@ exports[`covert campaign handbrake to protect against accidental changes > moonb
     },
   },
   "planet": "moonbase",
-  "roomAbove": undefined,
-  "roomBelow": undefined,
 }
 `;
 
@@ -35779,8 +35789,6 @@ exports[`covert campaign handbrake to protect against accidental changes > moonb
     },
   },
   "planet": "moonbase",
-  "roomAbove": undefined,
-  "roomBelow": undefined,
 }
 `;
 
@@ -35989,8 +35997,6 @@ exports[`covert campaign handbrake to protect against accidental changes > moonb
     },
   },
   "planet": "moonbase",
-  "roomAbove": undefined,
-  "roomBelow": undefined,
 }
 `;
 
@@ -36222,8 +36228,6 @@ exports[`covert campaign handbrake to protect against accidental changes > moonb
     },
   },
   "planet": "moonbase",
-  "roomAbove": undefined,
-  "roomBelow": undefined,
 }
 `;
 
@@ -36456,8 +36460,6 @@ exports[`covert campaign handbrake to protect against accidental changes > moonb
     },
   },
   "planet": "moonbase",
-  "roomAbove": undefined,
-  "roomBelow": undefined,
 }
 `;
 
@@ -36585,8 +36587,6 @@ exports[`covert campaign handbrake to protect against accidental changes > moonb
     },
   },
   "planet": "moonbase",
-  "roomAbove": undefined,
-  "roomBelow": undefined,
 }
 `;
 
@@ -36823,8 +36823,6 @@ exports[`covert campaign handbrake to protect against accidental changes > moonb
     },
   },
   "planet": "moonbase",
-  "roomAbove": undefined,
-  "roomBelow": undefined,
 }
 `;
 
@@ -36963,8 +36961,6 @@ exports[`covert campaign handbrake to protect against accidental changes > moonb
     },
   },
   "planet": "moonbase",
-  "roomAbove": undefined,
-  "roomBelow": undefined,
 }
 `;
 
@@ -37103,8 +37099,6 @@ exports[`covert campaign handbrake to protect against accidental changes > moonb
     },
   },
   "planet": "moonbase",
-  "roomAbove": undefined,
-  "roomBelow": undefined,
 }
 `;
 
@@ -37249,8 +37243,6 @@ exports[`covert campaign handbrake to protect against accidental changes > moonb
     },
   },
   "planet": "moonbase",
-  "roomAbove": undefined,
-  "roomBelow": undefined,
 }
 `;
 
@@ -37558,8 +37550,6 @@ exports[`covert campaign handbrake to protect against accidental changes > moonb
     },
   },
   "planet": "moonbase",
-  "roomAbove": undefined,
-  "roomBelow": undefined,
 }
 `;
 
@@ -37801,8 +37791,6 @@ exports[`covert campaign handbrake to protect against accidental changes > moonb
     },
   },
   "planet": "moonbase",
-  "roomAbove": undefined,
-  "roomBelow": undefined,
 }
 `;
 
@@ -38041,8 +38029,6 @@ exports[`covert campaign handbrake to protect against accidental changes > moonb
     },
   },
   "planet": "moonbase",
-  "roomAbove": undefined,
-  "roomBelow": undefined,
 }
 `;
 
@@ -38350,8 +38336,6 @@ exports[`covert campaign handbrake to protect against accidental changes > moonb
     },
   },
   "planet": "moonbase",
-  "roomAbove": undefined,
-  "roomBelow": undefined,
 }
 `;
 
@@ -38721,8 +38705,6 @@ exports[`covert campaign handbrake to protect against accidental changes > moonb
     },
   },
   "planet": "moonbase",
-  "roomAbove": undefined,
-  "roomBelow": undefined,
 }
 `;
 
@@ -39089,8 +39071,6 @@ exports[`covert campaign handbrake to protect against accidental changes > moonb
     },
   },
   "planet": "moonbase",
-  "roomAbove": undefined,
-  "roomBelow": undefined,
 }
 `;
 
@@ -39235,8 +39215,6 @@ exports[`covert campaign handbrake to protect against accidental changes > moonb
     },
   },
   "planet": "moonbase",
-  "roomAbove": undefined,
-  "roomBelow": undefined,
 }
 `;
 
@@ -39351,8 +39329,6 @@ exports[`covert campaign handbrake to protect against accidental changes > moonb
     },
   },
   "planet": "moonbase",
-  "roomAbove": undefined,
-  "roomBelow": undefined,
 }
 `;
 
@@ -39538,8 +39514,6 @@ exports[`covert campaign handbrake to protect against accidental changes > moonb
     },
   },
   "planet": "moonbase",
-  "roomAbove": undefined,
-  "roomBelow": undefined,
 }
 `;
 
@@ -39909,8 +39883,6 @@ exports[`covert campaign handbrake to protect against accidental changes > moonb
     },
   },
   "planet": "moonbase",
-  "roomAbove": undefined,
-  "roomBelow": undefined,
 }
 `;
 
@@ -40052,8 +40024,6 @@ exports[`covert campaign handbrake to protect against accidental changes > moonb
     },
   },
   "planet": "moonbase",
-  "roomAbove": undefined,
-  "roomBelow": undefined,
 }
 `;
 
@@ -40195,8 +40165,6 @@ exports[`covert campaign handbrake to protect against accidental changes > moonb
     },
   },
   "planet": "moonbase",
-  "roomAbove": undefined,
-  "roomBelow": undefined,
 }
 `;
 
@@ -40563,8 +40531,6 @@ exports[`covert campaign handbrake to protect against accidental changes > moonb
     },
   },
   "planet": "moonbase",
-  "roomAbove": undefined,
-  "roomBelow": undefined,
 }
 `;
 
@@ -41188,8 +41154,6 @@ exports[`covert campaign handbrake to protect against accidental changes > moonb
     },
   },
   "planet": "moonbase",
-  "roomAbove": undefined,
-  "roomBelow": undefined,
 }
 `;
 
@@ -41398,8 +41362,6 @@ exports[`covert campaign handbrake to protect against accidental changes > moonb
     },
   },
   "planet": "moonbase",
-  "roomAbove": undefined,
-  "roomBelow": undefined,
 }
 `;
 
@@ -41681,8 +41643,6 @@ exports[`covert campaign handbrake to protect against accidental changes > moonb
     },
   },
   "planet": "moonbase",
-  "roomAbove": undefined,
-  "roomBelow": undefined,
 }
 `;
 
@@ -41964,8 +41924,6 @@ exports[`covert campaign handbrake to protect against accidental changes > moonb
     },
   },
   "planet": "moonbase",
-  "roomAbove": undefined,
-  "roomBelow": undefined,
 }
 `;
 
@@ -42106,8 +42064,6 @@ exports[`covert campaign handbrake to protect against accidental changes > penit
     },
   },
   "planet": "penitentiary",
-  "roomAbove": undefined,
-  "roomBelow": undefined,
 }
 `;
 
@@ -42389,8 +42345,6 @@ exports[`covert campaign handbrake to protect against accidental changes > penit
     },
   },
   "planet": "penitentiary",
-  "roomAbove": undefined,
-  "roomBelow": undefined,
 }
 `;
 
@@ -42633,8 +42587,6 @@ exports[`covert campaign handbrake to protect against accidental changes > penit
     },
   },
   "planet": "penitentiary",
-  "roomAbove": undefined,
-  "roomBelow": undefined,
 }
 `;
 
@@ -42840,9 +42792,16 @@ exports[`covert campaign handbrake to protect against accidental changes > penit
       "type": "wall",
     },
   },
+  "meta": {
+    "subRooms": {
+      "*": {
+        "above": {
+          "room": "penitentiary5",
+        },
+      },
+    },
+  },
   "planet": "penitentiary",
-  "roomAbove": "penitentiary5",
-  "roomBelow": undefined,
 }
 `;
 
@@ -43010,9 +42969,19 @@ exports[`covert campaign handbrake to protect against accidental changes > penit
       "type": "wall",
     },
   },
+  "meta": {
+    "subRooms": {
+      "*": {
+        "above": {
+          "room": "penitentiary6",
+        },
+        "below": {
+          "room": "penitentiary4",
+        },
+      },
+    },
+  },
   "planet": "penitentiary",
-  "roomAbove": "penitentiary6",
-  "roomBelow": "penitentiary4",
 }
 `;
 
@@ -43168,9 +43137,16 @@ exports[`covert campaign handbrake to protect against accidental changes > penit
       "type": "wall",
     },
   },
+  "meta": {
+    "subRooms": {
+      "*": {
+        "below": {
+          "room": "penitentiary5",
+        },
+      },
+    },
+  },
   "planet": "penitentiary",
-  "roomAbove": undefined,
-  "roomBelow": "penitentiary5",
 }
 `;
 
@@ -43370,8 +43346,6 @@ exports[`covert campaign handbrake to protect against accidental changes > penit
     },
   },
   "planet": "penitentiary",
-  "roomAbove": undefined,
-  "roomBelow": undefined,
 }
 `;
 
@@ -43546,9 +43520,16 @@ exports[`covert campaign handbrake to protect against accidental changes > penit
       "type": "wall",
     },
   },
+  "meta": {
+    "subRooms": {
+      "*": {
+        "above": {
+          "room": "penitentiary9",
+        },
+      },
+    },
+  },
   "planet": "penitentiary",
-  "roomAbove": "penitentiary9",
-  "roomBelow": undefined,
 }
 `;
 
@@ -43652,9 +43633,19 @@ exports[`covert campaign handbrake to protect against accidental changes > penit
       "type": "wall",
     },
   },
+  "meta": {
+    "subRooms": {
+      "*": {
+        "above": {
+          "room": "penitentiary10",
+        },
+        "below": {
+          "room": "penitentiary8",
+        },
+      },
+    },
+  },
   "planet": "penitentiary",
-  "roomAbove": "penitentiary10",
-  "roomBelow": "penitentiary8",
 }
 `;
 
@@ -43770,9 +43761,16 @@ exports[`covert campaign handbrake to protect against accidental changes > penit
       "type": "wall",
     },
   },
+  "meta": {
+    "subRooms": {
+      "*": {
+        "below": {
+          "room": "penitentiary9",
+        },
+      },
+    },
+  },
   "planet": "penitentiary",
-  "roomAbove": undefined,
-  "roomBelow": "penitentiary9",
 }
 `;
 
@@ -43946,8 +43944,6 @@ exports[`covert campaign handbrake to protect against accidental changes > penit
     },
   },
   "planet": "penitentiary",
-  "roomAbove": undefined,
-  "roomBelow": undefined,
 }
 `;
 
@@ -44196,8 +44192,6 @@ exports[`covert campaign handbrake to protect against accidental changes > penit
     },
   },
   "planet": "penitentiary",
-  "roomAbove": undefined,
-  "roomBelow": undefined,
 }
 `;
 
@@ -44455,9 +44449,16 @@ exports[`covert campaign handbrake to protect against accidental changes > penit
       "type": "wall",
     },
   },
+  "meta": {
+    "subRooms": {
+      "*": {
+        "above": {
+          "room": "penitentiary14",
+        },
+      },
+    },
+  },
   "planet": "penitentiary",
-  "roomAbove": "penitentiary14",
-  "roomBelow": undefined,
 }
 `;
 
@@ -44629,9 +44630,19 @@ exports[`covert campaign handbrake to protect against accidental changes > penit
       "type": "wall",
     },
   },
+  "meta": {
+    "subRooms": {
+      "*": {
+        "above": {
+          "room": "penitentiary15",
+        },
+        "below": {
+          "room": "penitentiary13",
+        },
+      },
+    },
+  },
   "planet": "penitentiary",
-  "roomAbove": "penitentiary15",
-  "roomBelow": "penitentiary13",
 }
 `;
 
@@ -44917,9 +44928,19 @@ exports[`covert campaign handbrake to protect against accidental changes > penit
       "type": "wall",
     },
   },
+  "meta": {
+    "subRooms": {
+      "*": {
+        "above": {
+          "room": "penitentiary16",
+        },
+        "below": {
+          "room": "penitentiary14",
+        },
+      },
+    },
+  },
   "planet": "penitentiary",
-  "roomAbove": "penitentiary16",
-  "roomBelow": "penitentiary14",
 }
 `;
 
@@ -45077,9 +45098,19 @@ exports[`covert campaign handbrake to protect against accidental changes > penit
       "type": "wall",
     },
   },
+  "meta": {
+    "subRooms": {
+      "*": {
+        "above": {
+          "room": "penitentiary17",
+        },
+        "below": {
+          "room": "penitentiary15",
+        },
+      },
+    },
+  },
   "planet": "penitentiary",
-  "roomAbove": "penitentiary17",
-  "roomBelow": "penitentiary15",
 }
 `;
 
@@ -45216,9 +45247,16 @@ exports[`covert campaign handbrake to protect against accidental changes > penit
       "type": "wall",
     },
   },
+  "meta": {
+    "subRooms": {
+      "*": {
+        "below": {
+          "room": "penitentiary16",
+        },
+      },
+    },
+  },
   "planet": "penitentiary",
-  "roomAbove": undefined,
-  "roomBelow": "penitentiary16",
 }
 `;
 
@@ -45497,8 +45535,6 @@ exports[`covert campaign handbrake to protect against accidental changes > penit
     },
   },
   "planet": "penitentiary",
-  "roomAbove": undefined,
-  "roomBelow": undefined,
 }
 `;
 
@@ -45674,8 +45710,6 @@ exports[`covert campaign handbrake to protect against accidental changes > penit
     },
   },
   "planet": "penitentiary",
-  "roomAbove": undefined,
-  "roomBelow": undefined,
 }
 `;
 
@@ -45869,9 +45903,16 @@ exports[`covert campaign handbrake to protect against accidental changes > penit
       "type": "wall",
     },
   },
+  "meta": {
+    "subRooms": {
+      "*": {
+        "above": {
+          "room": "penitentiary21",
+        },
+      },
+    },
+  },
   "planet": "penitentiary",
-  "roomAbove": "penitentiary21",
-  "roomBelow": undefined,
 }
 `;
 
@@ -46163,9 +46204,19 @@ exports[`covert campaign handbrake to protect against accidental changes > penit
       "type": "wall",
     },
   },
+  "meta": {
+    "subRooms": {
+      "*": {
+        "above": {
+          "room": "penitentiary22",
+        },
+        "below": {
+          "room": "penitentiary20",
+        },
+      },
+    },
+  },
   "planet": "penitentiary",
-  "roomAbove": "penitentiary22",
-  "roomBelow": "penitentiary20",
 }
 `;
 
@@ -46431,9 +46482,19 @@ exports[`covert campaign handbrake to protect against accidental changes > penit
       "type": "wall",
     },
   },
+  "meta": {
+    "subRooms": {
+      "*": {
+        "above": {
+          "room": "penitentiary23",
+        },
+        "below": {
+          "room": "penitentiary21",
+        },
+      },
+    },
+  },
   "planet": "penitentiary",
-  "roomAbove": "penitentiary23",
-  "roomBelow": "penitentiary21",
 }
 `;
 
@@ -46620,9 +46681,19 @@ exports[`covert campaign handbrake to protect against accidental changes > penit
       "type": "wall",
     },
   },
+  "meta": {
+    "subRooms": {
+      "*": {
+        "above": {
+          "room": "penitentiary24",
+        },
+        "below": {
+          "room": "penitentiary22",
+        },
+      },
+    },
+  },
   "planet": "penitentiary",
-  "roomAbove": "penitentiary24",
-  "roomBelow": "penitentiary22",
 }
 `;
 
@@ -46755,9 +46826,16 @@ exports[`covert campaign handbrake to protect against accidental changes > penit
       "type": "wall",
     },
   },
+  "meta": {
+    "subRooms": {
+      "*": {
+        "below": {
+          "room": "penitentiary23",
+        },
+      },
+    },
+  },
   "planet": "penitentiary",
-  "roomAbove": undefined,
-  "roomBelow": "penitentiary23",
 }
 `;
 
@@ -46846,8 +46924,6 @@ exports[`covert campaign handbrake to protect against accidental changes > penit
     },
   },
   "planet": "penitentiary",
-  "roomAbove": undefined,
-  "roomBelow": undefined,
 }
 `;
 
@@ -47060,8 +47136,6 @@ exports[`covert campaign handbrake to protect against accidental changes > penit
     },
   },
   "planet": "penitentiary",
-  "roomAbove": undefined,
-  "roomBelow": undefined,
 }
 `;
 
@@ -47211,8 +47285,6 @@ exports[`covert campaign handbrake to protect against accidental changes > penit
     },
   },
   "planet": "penitentiary",
-  "roomAbove": undefined,
-  "roomBelow": undefined,
 }
 `;
 
@@ -47441,8 +47513,6 @@ exports[`covert campaign handbrake to protect against accidental changes > penit
     },
   },
   "planet": "penitentiary",
-  "roomAbove": undefined,
-  "roomBelow": undefined,
 }
 `;
 
@@ -47571,9 +47641,16 @@ exports[`covert campaign handbrake to protect against accidental changes > penit
       "type": "wall",
     },
   },
+  "meta": {
+    "subRooms": {
+      "*": {
+        "below": {
+          "room": "penitentiary31",
+        },
+      },
+    },
+  },
   "planet": "penitentiary",
-  "roomAbove": undefined,
-  "roomBelow": "penitentiary31",
 }
 `;
 
@@ -47756,8 +47833,6 @@ exports[`covert campaign handbrake to protect against accidental changes > penit
     },
   },
   "planet": "penitentiary",
-  "roomAbove": undefined,
-  "roomBelow": undefined,
 }
 `;
 
@@ -47924,9 +47999,19 @@ exports[`covert campaign handbrake to protect against accidental changes > penit
       "type": "wall",
     },
   },
+  "meta": {
+    "subRooms": {
+      "*": {
+        "above": {
+          "room": "penitentiary29",
+        },
+        "below": {
+          "room": "penitentiary32",
+        },
+      },
+    },
+  },
   "planet": "penitentiary",
-  "roomAbove": "penitentiary29",
-  "roomBelow": "penitentiary32",
 }
 `;
 
@@ -48098,9 +48183,16 @@ exports[`covert campaign handbrake to protect against accidental changes > penit
       "type": "wall",
     },
   },
+  "meta": {
+    "subRooms": {
+      "*": {
+        "above": {
+          "room": "penitentiary31",
+        },
+      },
+    },
+  },
   "planet": "penitentiary",
-  "roomAbove": "penitentiary31",
-  "roomBelow": undefined,
 }
 `;
 
@@ -48361,8 +48453,6 @@ exports[`covert campaign handbrake to protect against accidental changes > penit
     },
   },
   "planet": "penitentiary",
-  "roomAbove": undefined,
-  "roomBelow": undefined,
 }
 `;
 
@@ -48590,8 +48680,6 @@ exports[`covert campaign handbrake to protect against accidental changes > penit
     },
   },
   "planet": "penitentiary",
-  "roomAbove": undefined,
-  "roomBelow": undefined,
 }
 `;
 
@@ -48732,8 +48820,6 @@ exports[`covert campaign handbrake to protect against accidental changes > safar
     },
   },
   "planet": "safari",
-  "roomAbove": undefined,
-  "roomBelow": undefined,
 }
 `;
 
@@ -49019,8 +49105,6 @@ exports[`covert campaign handbrake to protect against accidental changes > safar
     },
   },
   "planet": "safari",
-  "roomAbove": undefined,
-  "roomBelow": undefined,
 }
 `;
 
@@ -49200,8 +49284,6 @@ exports[`covert campaign handbrake to protect against accidental changes > safar
     },
   },
   "planet": "safari",
-  "roomAbove": undefined,
-  "roomBelow": undefined,
 }
 `;
 
@@ -49443,8 +49525,6 @@ exports[`covert campaign handbrake to protect against accidental changes > safar
     },
   },
   "planet": "safari",
-  "roomAbove": undefined,
-  "roomBelow": undefined,
 }
 `;
 
@@ -49622,8 +49702,6 @@ exports[`covert campaign handbrake to protect against accidental changes > safar
     },
   },
   "planet": "safari",
-  "roomAbove": undefined,
-  "roomBelow": undefined,
 }
 `;
 
@@ -50081,8 +50159,6 @@ exports[`covert campaign handbrake to protect against accidental changes > safar
     },
   },
   "planet": "safari",
-  "roomAbove": undefined,
-  "roomBelow": undefined,
 }
 `;
 
@@ -50305,8 +50381,6 @@ exports[`covert campaign handbrake to protect against accidental changes > safar
     },
   },
   "planet": "safari",
-  "roomAbove": undefined,
-  "roomBelow": undefined,
 }
 `;
 
@@ -50395,8 +50469,6 @@ exports[`covert campaign handbrake to protect against accidental changes > safar
     },
   },
   "planet": "safari",
-  "roomAbove": undefined,
-  "roomBelow": undefined,
 }
 `;
 
@@ -50592,9 +50664,16 @@ exports[`covert campaign handbrake to protect against accidental changes > safar
       "type": "wall",
     },
   },
+  "meta": {
+    "subRooms": {
+      "*": {
+        "below": {
+          "room": "safari10",
+        },
+      },
+    },
+  },
   "planet": "safari",
-  "roomAbove": undefined,
-  "roomBelow": "safari10",
 }
 `;
 
@@ -50739,9 +50818,16 @@ exports[`covert campaign handbrake to protect against accidental changes > safar
       "type": "wall",
     },
   },
+  "meta": {
+    "subRooms": {
+      "*": {
+        "above": {
+          "room": "safari9",
+        },
+      },
+    },
+  },
   "planet": "safari",
-  "roomAbove": "safari9",
-  "roomBelow": undefined,
 }
 `;
 
@@ -50941,8 +51027,6 @@ exports[`covert campaign handbrake to protect against accidental changes > safar
     },
   },
   "planet": "safari",
-  "roomAbove": undefined,
-  "roomBelow": undefined,
 }
 `;
 
@@ -51158,9 +51242,16 @@ exports[`covert campaign handbrake to protect against accidental changes > safar
       "type": "wall",
     },
   },
+  "meta": {
+    "subRooms": {
+      "*": {
+        "above": {
+          "room": "safari13",
+        },
+      },
+    },
+  },
   "planet": "safari",
-  "roomAbove": "safari13",
-  "roomBelow": undefined,
 }
 `;
 
@@ -51381,9 +51472,16 @@ exports[`covert campaign handbrake to protect against accidental changes > safar
       "type": "wall",
     },
   },
+  "meta": {
+    "subRooms": {
+      "*": {
+        "below": {
+          "room": "safari12",
+        },
+      },
+    },
+  },
   "planet": "safari",
-  "roomAbove": undefined,
-  "roomBelow": "safari12",
 }
 `;
 
@@ -51605,8 +51703,6 @@ exports[`covert campaign handbrake to protect against accidental changes > safar
     },
   },
   "planet": "safari",
-  "roomAbove": undefined,
-  "roomBelow": undefined,
 }
 `;
 
@@ -51907,8 +52003,6 @@ exports[`covert campaign handbrake to protect against accidental changes > safar
     },
   },
   "planet": "safari",
-  "roomAbove": undefined,
-  "roomBelow": undefined,
 }
 `;
 
@@ -52115,8 +52209,6 @@ exports[`covert campaign handbrake to protect against accidental changes > safar
     },
   },
   "planet": "safari",
-  "roomAbove": undefined,
-  "roomBelow": undefined,
 }
 `;
 
@@ -52342,8 +52434,6 @@ exports[`covert campaign handbrake to protect against accidental changes > safar
     },
   },
   "planet": "safari",
-  "roomAbove": undefined,
-  "roomBelow": undefined,
 }
 `;
 
@@ -52524,8 +52614,6 @@ exports[`covert campaign handbrake to protect against accidental changes > safar
     },
   },
   "planet": "safari",
-  "roomAbove": undefined,
-  "roomBelow": undefined,
 }
 `;
 
@@ -52844,8 +52932,6 @@ exports[`covert campaign handbrake to protect against accidental changes > safar
     },
   },
   "planet": "safari",
-  "roomAbove": undefined,
-  "roomBelow": undefined,
 }
 `;
 
@@ -53013,8 +53099,6 @@ exports[`covert campaign handbrake to protect against accidental changes > safar
     },
   },
   "planet": "safari",
-  "roomAbove": undefined,
-  "roomBelow": undefined,
 }
 `;
 
@@ -53253,8 +53337,6 @@ exports[`covert campaign handbrake to protect against accidental changes > safar
     },
   },
   "planet": "safari",
-  "roomAbove": undefined,
-  "roomBelow": undefined,
 }
 `;
 
@@ -53370,8 +53452,6 @@ exports[`covert campaign handbrake to protect against accidental changes > safar
     },
   },
   "planet": "safari",
-  "roomAbove": undefined,
-  "roomBelow": undefined,
 }
 `;
 
@@ -53642,8 +53722,6 @@ exports[`covert campaign handbrake to protect against accidental changes > safar
     },
   },
   "planet": "safari",
-  "roomAbove": undefined,
-  "roomBelow": undefined,
 }
 `;
 
@@ -53876,8 +53954,6 @@ exports[`covert campaign handbrake to protect against accidental changes > safar
     },
   },
   "planet": "safari",
-  "roomAbove": undefined,
-  "roomBelow": undefined,
 }
 `;
 
@@ -54063,8 +54139,6 @@ exports[`covert campaign handbrake to protect against accidental changes > safar
     },
   },
   "planet": "safari",
-  "roomAbove": undefined,
-  "roomBelow": undefined,
 }
 `;
 
@@ -54318,8 +54392,6 @@ exports[`covert campaign handbrake to protect against accidental changes > safar
     },
   },
   "planet": "safari",
-  "roomAbove": undefined,
-  "roomBelow": undefined,
 }
 `;
 
@@ -54514,8 +54586,6 @@ exports[`covert campaign handbrake to protect against accidental changes > safar
     },
   },
   "planet": "safari",
-  "roomAbove": undefined,
-  "roomBelow": undefined,
 }
 `;
 
@@ -54686,8 +54756,6 @@ exports[`covert campaign handbrake to protect against accidental changes > safar
     },
   },
   "planet": "safari",
-  "roomAbove": undefined,
-  "roomBelow": undefined,
 }
 `;
 
@@ -54875,8 +54943,6 @@ exports[`covert campaign handbrake to protect against accidental changes > safar
     },
   },
   "planet": "safari",
-  "roomAbove": undefined,
-  "roomBelow": undefined,
 }
 `;
 
@@ -54994,8 +55060,6 @@ exports[`covert campaign handbrake to protect against accidental changes > safar
     },
   },
   "planet": "safari",
-  "roomAbove": undefined,
-  "roomBelow": undefined,
 }
 `;
 
@@ -55284,8 +55348,6 @@ exports[`covert campaign handbrake to protect against accidental changes > safar
     },
   },
   "planet": "safari",
-  "roomAbove": undefined,
-  "roomBelow": undefined,
 }
 `;
 
@@ -55374,8 +55436,6 @@ exports[`covert campaign handbrake to protect against accidental changes > safar
     },
   },
   "planet": "safari",
-  "roomAbove": undefined,
-  "roomBelow": undefined,
 }
 `;
 
@@ -55583,9 +55643,16 @@ exports[`covert campaign handbrake to protect against accidental changes > safar
       "type": "wall",
     },
   },
+  "meta": {
+    "subRooms": {
+      "*": {
+        "above": {
+          "room": "safari36",
+        },
+      },
+    },
+  },
   "planet": "safari",
-  "roomAbove": "safari36",
-  "roomBelow": undefined,
 }
 `;
 
@@ -55781,9 +55848,16 @@ exports[`covert campaign handbrake to protect against accidental changes > safar
       "type": "wall",
     },
   },
+  "meta": {
+    "subRooms": {
+      "*": {
+        "above": {
+          "room": "safari35",
+        },
+      },
+    },
+  },
   "planet": "safari",
-  "roomAbove": "safari35",
-  "roomBelow": undefined,
 }
 `;
 
@@ -55958,9 +56032,16 @@ exports[`covert campaign handbrake to protect against accidental changes > safar
       "type": "wall",
     },
   },
+  "meta": {
+    "subRooms": {
+      "*": {
+        "below": {
+          "room": "safari34",
+        },
+      },
+    },
+  },
   "planet": "safari",
-  "roomAbove": undefined,
-  "roomBelow": "safari34",
 }
 `;
 
@@ -56163,9 +56244,16 @@ exports[`covert campaign handbrake to protect against accidental changes > safar
       "type": "wall",
     },
   },
+  "meta": {
+    "subRooms": {
+      "*": {
+        "below": {
+          "room": "safari33",
+        },
+      },
+    },
+  },
   "planet": "safari",
-  "roomAbove": undefined,
-  "roomBelow": "safari33",
 }
 `;
 
@@ -56444,7 +56532,5 @@ exports[`covert campaign handbrake to protect against accidental changes > safar
     },
   },
   "planet": "safari",
-  "roomAbove": undefined,
-  "roomBelow": undefined,
 }
 `;

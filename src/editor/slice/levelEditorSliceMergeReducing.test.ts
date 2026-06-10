@@ -2,7 +2,10 @@ import { expect, test } from "vitest";
 
 import { roomGridPositions } from "../../game/components/dialogs/menuDialog/dialogs/map/roomGridPositions";
 import { roomJsonMatchers } from "../../model/json/__test__/roomJsonMatchers";
-import { iterateRoomJsonItemsWithIds } from "../../model/RoomJson";
+import {
+  isWholeRoomSubRooms,
+  iterateRoomJsonItemsWithIds,
+} from "../../model/RoomJson";
 import { keys } from "../../utils/entries";
 import { type EditorRoomJson } from "../editorTypes";
 import { initialLevelEditorSliceState } from "./initialLevelEditorSliceState";
@@ -16,6 +19,7 @@ import {
   coalesceSelectedRooms,
   insertRoom,
   selectAllRooms,
+  setRoomAboveOrBelow,
   toggleRoomInSelection,
 } from "./levelEditorSlice";
 import {
@@ -226,4 +230,96 @@ test.for<{
       }),
     ])
     .not.toThrow();
+});
+
+test("coalescing rooms below a room that has a room above does not break map geometry", () => {
+  const result = reduceLevelEditorActions(
+    initialLevelEditorSliceState,
+    // two rooms going away from the start room, on the ground floor
+    insertRoom({ direction: "away" }),
+    insertRoom({ direction: "away" }),
+    // drop down a floor, creating a room below at z=-1 (cursor follows it)
+    setRoomAboveOrBelow({ direction: "below", createNew: true }),
+    // two more rooms towards the viewer, all on the z=-1 floor
+    insertRoom({ direction: "towards" }),
+    insertRoom({ direction: "towards" }),
+    // add a room above the last z=-1 room, back up at z=0
+    setRoomAboveOrBelow({ direction: "above", createNew: true }),
+    // select the three rooms at z=-1 and coalesce them into one big room
+    changeToRoom({ roomId: "room_3" as never, subRoomId: "*" }),
+    toggleRoomInSelection({ roomId: "room_4" as never, subRoomId: "*" }),
+    toggleRoomInSelection({ roomId: "room_5" as never, subRoomId: "*" }),
+    expectCoalesceable,
+    coalesceSelectedRooms(),
+  );
+
+  const { roomId, subRoomId } = selectCursorRoom(result);
+
+  const specs = [
+    ...roomGridPositions({
+      campaign: result.campaignInProgress,
+      roomId,
+      subRoomId,
+    }),
+  ];
+
+  // the rooms form a closed loop (away, away, down, towards, towards, up), so on
+  // the map they should be a single ring of six cells: no two cells sharing a
+  // grid position, and each cell connected (by a door/open boundary or an
+  // above/below link) to exactly two others
+  const distinctPositions = new Set(
+    specs.map(({ gridPosition: { x, y, z } }) => `${x},${y},${z}`),
+  );
+
+  expect
+    .soft(distinctPositions.size, "no two cells share a grid position")
+    .toBe(specs.length);
+  expect.soft(specs.length, "six cells in the map").toBe(6);
+
+  for (const spec of specs) {
+    const subRooms =
+      result.campaignInProgress.rooms[spec.roomId]?.meta?.subRooms;
+    const holder =
+      subRooms === undefined ? undefined
+      : isWholeRoomSubRooms(subRooms) ? subRooms["*"]
+      : subRooms[spec.subRoomId];
+    const verticalLinks = (holder?.above ? 1 : 0) + (holder?.below ? 1 : 0);
+    const horizontalLinks = (
+      ["left", "right", "away", "towards"] as const
+    ).filter(
+      (boundaryDirection) => spec.boundaries[boundaryDirection] !== "wall",
+    ).length;
+
+    expect
+      .soft(
+        verticalLinks + horizontalLinks,
+        `cell ${spec.roomId}/${spec.subRoomId} should connect to two others`,
+      )
+      .toBe(2);
+  }
+});
+
+test("merging two rooms below a room that is above one of them does not break map geometry", () => {
+  const result = reduceLevelEditorActions(
+    initialLevelEditorSliceState,
+    // one room going away from the start room
+    insertRoom({ direction: "away" }),
+    // a room above it, back up at z=0 + 1
+    setRoomAboveOrBelow({ direction: "above", createNew: true }),
+    // select the two ground-floor rooms and coalesce them into one big room
+    changeToRoom({ roomId: "room_0" as never, subRoomId: "*" }),
+    toggleRoomInSelection({ roomId: "room_1" as never, subRoomId: "*" }),
+    expectCoalesceable,
+    coalesceSelectedRooms(),
+  );
+
+  const { roomId, subRoomId } = selectCursorRoom(result);
+
+  expect(() => [
+    ...roomGridPositions({
+      campaign: result.campaignInProgress,
+      roomId,
+      subRoomId,
+    }),
+  ]).not.toThrow();
 });

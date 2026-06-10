@@ -1,6 +1,7 @@
 import { produce } from "immer";
 import { expect, test } from "vitest";
 
+import { roomVerticalLinkHolders } from "../../../model/RoomJson";
 import { type EditorRoomId, type EditorRoomItemId } from "../../editorTypes";
 import { type LevelEditorState, removeRoom } from "../levelEditorSlice";
 import {
@@ -116,19 +117,20 @@ test("removeRoom clears roomAbove/roomBelow referencing deleted room", () => {
   const state: LevelEditorState = structuredClone(
     produce(editorStateWithOneRoomWithNoItems, (draft) => {
       addRooms(draft);
-      draft.campaignInProgress.rooms[roomB].roomAbove = roomA;
-      draft.campaignInProgress.rooms[roomB].roomBelow = roomA;
+      draft.campaignInProgress.rooms[roomB].meta = {
+        subRooms: {
+          "*": { above: { room: roomA }, below: { room: roomA } },
+        },
+      };
     }),
   );
 
   const result = reduceLevelEditorActions(state, removeRoom());
 
-  expect(result.campaignInProgress.rooms[roomB]).not.toHaveProperty(
-    "roomAbove",
-  );
-  expect(result.campaignInProgress.rooms[roomB]).not.toHaveProperty(
-    "roomBelow",
-  );
+  const remainingLinks = roomVerticalLinkHolders(
+    result.campaignInProgress.rooms[roomB],
+  ).some((holder) => holder.above !== undefined || holder.below !== undefined);
+  expect(remainingLinks).toBe(false);
 });
 
 test("removeRoom deletes NCR referencing deleted room, keeping other meta fields", () => {

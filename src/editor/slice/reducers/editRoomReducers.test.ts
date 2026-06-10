@@ -4,6 +4,8 @@ import { describe, expect, test } from "vitest";
 import {
   iterateRoomJsonItemsWithIds,
   roomJsonItemsIterable,
+  roomVerticalLink,
+  type SubRooms,
 } from "../../../model/RoomJson";
 import {
   type EditorJsonItem,
@@ -12,6 +14,14 @@ import {
   type EditorRoomItemId,
   type EditorRoomJson,
 } from "../../editorTypes";
+
+/** the room id linked above/below a room's primary sub-room */
+const roomAboveOf = <RoomId extends string>(room: {
+  meta?: { subRooms?: SubRooms<RoomId> };
+}): RoomId | undefined => roomVerticalLink(room, "above")?.room;
+const roomBelowOf = <RoomId extends string>(room: {
+  meta?: { subRooms?: SubRooms<RoomId> };
+}): RoomId | undefined => roomVerticalLink(room, "below")?.room;
 import {
   selectCurrentRoomFromLevelEditorState,
   selectCursorRoomId,
@@ -205,8 +215,11 @@ describe("changing the id of the current room updates all references to that roo
 
   test("above/below room references that reference the old room id", () => {
     const state1 = produce(stateWithTwoRooms, (draft) => {
-      draft.campaignInProgress.rooms[otherRoomId].roomAbove = testRoomId;
-      draft.campaignInProgress.rooms[otherRoomId].roomBelow = testRoomId;
+      draft.campaignInProgress.rooms[otherRoomId].meta = {
+        subRooms: {
+          "*": { above: { room: testRoomId }, below: { room: testRoomId } },
+        },
+      };
     });
 
     const currentRoom = state1.campaignInProgress.rooms[
@@ -223,8 +236,8 @@ describe("changing the id of the current room updates all references to that roo
 
     const otherRoom = state2.campaignInProgress.rooms[otherRoomId];
 
-    expect(otherRoom.roomAbove).toBe(newRoomId);
-    expect(otherRoom.roomBelow).toBe(newRoomId);
+    expect.soft(roomAboveOf(otherRoom)).toBe(newRoomId);
+    expect.soft(roomBelowOf(otherRoom)).toBe(newRoomId);
   });
 
   test("non-contiguous relationships that reference the old room id", () => {
@@ -616,11 +629,11 @@ describe("setRoomAboveOrBelow", () => {
     );
 
     const originalRoom = result.campaignInProgress.rooms[testRoomId];
-    const newRoomId = originalRoom.roomAbove!;
+    const newRoomId = roomAboveOf(originalRoom)!;
     const newRoom = result.campaignInProgress.rooms[newRoomId];
 
     expect(newRoom).toBeDefined();
-    expect(newRoom.roomBelow).toBe(testRoomId);
+    expect(roomBelowOf(newRoom)).toBe(testRoomId);
   });
 
   test("createNew navigates to the newly created room", () => {
@@ -631,7 +644,7 @@ describe("setRoomAboveOrBelow", () => {
 
     expect(selectCursorRoomId(result)).not.toBe(testRoomId);
     const originalRoom = result.campaignInProgress.rooms[testRoomId];
-    expect(selectCursorRoomId(result)).toBe(originalRoom.roomAbove);
+    expect(selectCursorRoomId(result)).toBe(roomAboveOf(originalRoom));
   });
 
   test("createNew splices between existing rooms", () => {
@@ -644,9 +657,11 @@ describe("setRoomAboveOrBelow", () => {
           planet: "blacktooth",
           color: { hue: "cyan", shade: "basic" },
           items: {},
-          roomBelow: testRoomId,
+          meta: { subRooms: { "*": { below: { room: testRoomId } } } },
         };
-        draft.campaignInProgress.rooms[testRoomId].roomAbove = roomB;
+        draft.campaignInProgress.rooms[testRoomId].meta = {
+          subRooms: { "*": { above: { room: roomB } } },
+        };
       },
     );
 
@@ -656,13 +671,13 @@ describe("setRoomAboveOrBelow", () => {
     );
 
     const originalRoom = result.campaignInProgress.rooms[testRoomId];
-    const newRoomId = originalRoom.roomAbove!;
+    const newRoomId = roomAboveOf(originalRoom)!;
     const newRoom = result.campaignInProgress.rooms[newRoomId];
     const roomBResult = result.campaignInProgress.rooms[roomB];
 
-    expect(newRoom.roomBelow).toBe(testRoomId);
-    expect(newRoom.roomAbove).toBe(roomB);
-    expect(roomBResult.roomBelow).toBe(newRoomId);
+    expect.soft(roomBelowOf(newRoom)).toBe(testRoomId);
+    expect.soft(roomAboveOf(newRoom)).toBe(roomB);
+    expect.soft(roomBelowOf(roomBResult)).toBe(newRoomId);
   });
 
   test("createNew gives the new sandwiched room a 'none' floor", () => {

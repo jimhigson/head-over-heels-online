@@ -18,7 +18,7 @@ import {
   xyzEqual,
 } from "../../utils/vectors/vectors";
 import { type EditorRoomId } from "../editorTypes";
-import { selectCurrentRoomFromLevelEditorState } from "../slice/levelEditorSelectors";
+import { selectCursorSubRoomVerticalLink } from "../slice/levelEditorSelectors";
 import { insertRoom, setRoomAboveOrBelow } from "../slice/levelEditorSlice";
 import { ToolbarButton } from "../toolbar/buttons/ToolbarButton";
 
@@ -224,13 +224,11 @@ const EditorMapInsertButtonDecorator = ({
 
   const hasRoomAbove = useEditorAppSelector(
     (state) =>
-      selectCurrentRoomFromLevelEditorState(state.levelEditor).roomAbove !==
-      undefined,
+      selectCursorSubRoomVerticalLink(state.levelEditor, "above") !== undefined,
   );
   const hasRoomBelow = useEditorAppSelector(
     (state) =>
-      selectCurrentRoomFromLevelEditorState(state.levelEditor).roomBelow !==
-      undefined,
+      selectCursorSubRoomVerticalLink(state.levelEditor, "below") !== undefined,
   );
 
   if (!isCurrentSubRoom) {

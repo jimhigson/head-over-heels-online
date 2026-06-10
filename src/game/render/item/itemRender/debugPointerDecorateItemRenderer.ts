@@ -1,7 +1,9 @@
 import { Container } from "pixi.js";
 
 import { exitGameRoomId } from "../../../../model/json/ItemConfigMap";
+import { isWholeRoomSubRooms } from "../../../../model/RoomJson";
 import { pixiContainerToString } from "../../../../utils/pixi/pixiContainerToString";
+import { findSubRoomForItem } from "../../../components/dialogs/menuDialog/dialogs/map/itemIsInSubRoom";
 import { type GameState } from "../../../gameState/GameState";
 import { changeCharacterRoom } from "../../../gameState/mutators/changeCharacterRoom";
 import { isFreeItem, isItemType } from "../../../physics/itemPredicates";
@@ -35,12 +37,26 @@ export const debugPointerDecorateItemRenderer: DecorateItemMaybeRenderer = (
         });
       }
     }
-    if (gameState && item.type === "lift" && room.roomAbove) {
-      changeCharacterRoom({
-        gameState,
-        toRoomId: room.roomAbove,
-        changeType: "level-select",
-      });
+    if (gameState && item.type === "lift") {
+      const { roomJson } = room;
+      const subRoomId = findSubRoomForItem(
+        item.state.position,
+        "fine",
+        roomJson,
+      );
+      const subRooms = roomJson.meta?.subRooms;
+      const holder =
+        subRooms === undefined ? undefined
+        : isWholeRoomSubRooms(subRooms) ? subRooms["*"]
+        : subRooms[subRoomId];
+      const roomAbove = holder?.above?.room;
+      if (roomAbove !== undefined) {
+        changeCharacterRoom({
+          gameState,
+          toRoomId: roomAbove,
+          changeType: "level-select",
+        });
+      }
     }
 
     console.groupCollapsed(item.id);

@@ -5,7 +5,10 @@ import {
   type CharacterName,
   type IndividualCharacterName,
 } from "../../../../../../model/modelTypes";
-import { type RoomJson } from "../../../../../../model/RoomJson";
+import {
+  type RoomJson,
+  roomVerticalLinkHolders,
+} from "../../../../../../model/RoomJson";
 import { hudLowercaseCharTextureSize } from "../../../../../../sprites/spritesheet/spritesheetData/textureSizes";
 import { valuesIter } from "../../../../../../utils/entries";
 import { range } from "../../../../../../utils/iterators/range";
@@ -179,7 +182,10 @@ export const RoomSvg = <RoomId extends string>({
   isSelected,
   behaviours,
 }: RoomSvgProps<RoomId>) => {
-  const { id, roomAbove, color, items } = roomJson;
+  const { id, color, items } = roomJson;
+  const roomAbove = roomVerticalLinkHolders(roomJson).some(
+    (holder) => holder.above !== undefined,
+  );
   const label = roomJson.meta?.label;
   const labelLayout = label && labelLayoutByDirection[label.direction];
   const interactiveAreaRef = useRef<null | SVGPathElement>(null);

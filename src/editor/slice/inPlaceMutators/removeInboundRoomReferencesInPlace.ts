@@ -1,4 +1,7 @@
-import { iterateRoomJsonItemsWithIds } from "../../../model/RoomJson";
+import {
+  iterateRoomJsonItemsWithIds,
+  roomVerticalLinkHolders,
+} from "../../../model/RoomJson";
 import { keys, valuesIter } from "../../../utils/entries";
 import {
   type EditorRoomId,
@@ -34,11 +37,13 @@ export const removeInboundRoomReferencesInPlace = (
       deleteItemInPlace(room as EditorRoomJson, doorId);
     }
 
-    if (room.roomAbove === deletedRoomId) {
-      delete room.roomAbove;
-    }
-    if (room.roomBelow === deletedRoomId) {
-      delete room.roomBelow;
+    for (const holder of roomVerticalLinkHolders(room)) {
+      if (holder.above?.room === deletedRoomId) {
+        delete holder.above;
+      }
+      if (holder.below?.room === deletedRoomId) {
+        delete holder.below;
+      }
     }
 
     const ncr = room.meta?.nonContiguousRelationship;

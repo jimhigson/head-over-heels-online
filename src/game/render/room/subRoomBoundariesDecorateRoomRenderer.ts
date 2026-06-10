@@ -1,5 +1,6 @@
 import { Container, Graphics } from "pixi.js";
 
+import { isWholeRoomSubRooms } from "../../../model/RoomJson";
 import { paletteBlockstack } from "../../../sprites/palette/spritesheetPalette";
 import { selectShowSubrooms } from "../../../store/slices/gameMenus/gameMenusSelectors";
 import { store } from "../../../store/store";
@@ -25,7 +26,7 @@ export const subRoomBoundariesDecorateRoomRenderer: DecorateRoomRenderer = (
   }
 
   const subRooms = renderContext.room.roomJson.meta?.subRooms;
-  if (!subRooms) {
+  if (!subRooms || isWholeRoomSubRooms(subRooms)) {
     return undefined;
   }
 

@@ -35,8 +35,6 @@ export type RoomJsonSchema = {
     hue: "cyan" | "green" | "magenta" | "white" | "yellow";
     shade: "basic" | "dimmed";
   };
-  roomAbove?: string;
-  subRoomAbove?: string;
   /**
    * usually, the ceiling portal's relative point is the centre of the room. However, in cases
    * where multi-rooms are stitched together into a single room, this relationship is broken.
@@ -46,8 +44,6 @@ export type RoomJsonSchema = {
     x: number;
     y: number;
   };
-  roomBelow?: string;
-  subRoomBelow?: string;
   /**
    * by keying each item with an id, it makes the diffing easier since the array is no longer
    * position-dependent
@@ -4389,34 +4385,45 @@ export type RoomJsonSchema = {
   meta?: {
     /**
      * subRooms are used for the map for rooms which were modelled as multiple rooms
-     * in the original game
+     * in the original game, or for the whole room in some cases to preserve same-shame between
+     * big and small rooms
      */
-    subRooms?: Record<
-      string,
-      {
-        /**
-         * the grid position (on the map) of this sub-room
-         */
-        gridPosition: {
-          x: number;
-          y: number;
-        };
-        /**
-         * where the sub-room actually starts and ends once loaded (so we
-         * can work out which sub-room items are in while the game is in-play)
-         */
-        physicalPosition: {
-          from: {
-            x: number;
-            y: number;
-          };
-          to: {
-            x: number;
-            y: number;
-          };
-        };
-      }
-    >;
+    subRooms?:
+      | Record<
+          string,
+          {
+            above?: {
+              room: string;
+              subRoom?: string;
+            };
+            below?: {
+              room: string;
+              subRoom?: string;
+            };
+            /**
+             * the grid position (on the map) of this sub-room
+             */
+            gridPosition: {
+              x: number;
+              y: number;
+            };
+            /**
+             * where the sub-room actually starts and ends once loaded (so we
+             * can work out which sub-room items are in while the game is in-play)
+             */
+            physicalPosition: {
+              from: {
+                x: number;
+                y: number;
+              };
+              to: {
+                x: number;
+                y: number;
+              };
+            };
+          }
+        >
+      | Record<string, any>;
     /**
      * for rooms that are shown on the same map even though they don't
      * have any physical connection

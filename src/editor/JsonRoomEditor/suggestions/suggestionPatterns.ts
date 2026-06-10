@@ -99,8 +99,8 @@ export const suggestionPatterns: SuggestionPatterns = {
   ["[type=teleporter].config.toRoom"]: getRoomIds,
   ["[type=portableTeleporter].config.toRoom"]: getRoomIds,
   toRoom: getOtherRoomIds,
-  roomAbove: getOtherRoomIds,
-  roomBelow: getOtherRoomIds,
+  "meta.subRooms.*.above.room": getOtherRoomIds,
+  "meta.subRooms.*.below.room": getOtherRoomIds,
   "meta.nonContiguousRelationship.with.room": getOtherRoomIds,
   // joysticks:
   ["config.controls.*"]: getJoystickControllableItemIds,

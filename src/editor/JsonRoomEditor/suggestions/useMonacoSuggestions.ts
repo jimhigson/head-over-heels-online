@@ -9,7 +9,7 @@ import { suggestionPatterns } from "./suggestionPatterns";
 import { findMatchingPattern } from "./suggestionsPatternMatching";
 
 /**
- * suggest room ids when editing toRoom, roomAbove, or roomBelow properties
+ * suggest room ids when editing toRoom or sub-room above/below room properties
  */
 export const useMonacoSuggestions = () => {
   const monaco = useLoadMonaco();

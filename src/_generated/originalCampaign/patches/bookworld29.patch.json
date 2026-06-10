@@ -1,5 +1,10 @@
 [
   {
+    "op": "add",
+    "path": "/meta/subRooms/*/below/subRoom",
+    "value": "left"
+  },
+  {
     "op": "remove",
     "path": "/items/w1/config/times/y"
   },
@@ -67,10 +72,5 @@
       },
       "type": "monster"
     }
-  },
-  {
-    "op": "add",
-    "path": "/subRoomBelow",
-    "value": "left"
   }
 ]

@@ -1,5 +1,6 @@
 import { type PayloadAction, type SliceCaseReducers } from "@reduxjs/toolkit";
 
+import { roomGridPositions } from "../../../game/components/dialogs/menuDialog/dialogs/map/roomGridPositions";
 import { changeRoomSceneryInPlace } from "../../../model/inPlaceMutators/changeRoomSceneryInPlace";
 import {
   exitGameRoomId,
@@ -7,13 +8,20 @@ import {
 } from "../../../model/json/ItemConfigMap";
 import { type JsonItemConfig } from "../../../model/json/JsonItem";
 import {
+  isWholeRoomSubRooms,
   iterateRoomJsonItemsWithIds,
   roomJsonItemsIterable,
+  roomVerticalLink,
 } from "../../../model/RoomJson";
 import { type ZxSpectrumRoomColour } from "../../../originalGame";
 import { type SceneryName } from "../../../sprites/planets";
 import { keysIter } from "../../../utils/entries";
-import { oppositeDirection, scaleXyz } from "../../../utils/vectors/vectors";
+import { unitVectors } from "../../../utils/vectors/unitVectors";
+import {
+  oppositeDirection,
+  scaleXyz,
+  xyzEqual,
+} from "../../../utils/vectors/vectors";
 import {
   type EditorJsonItem,
   type EditorRoomId,
@@ -29,6 +37,7 @@ import { deleteItemInPlace } from "../inPlaceMutators/deleteItemInPlace";
 import {
   selectCurrentRoomFromLevelEditorState,
   selectCursorRoomId,
+  selectCursorSubRoomId,
   selectRoomFromLevelEditorState,
 } from "../levelEditorSelectors";
 import { type LevelEditorState } from "../levelEditorSlice";
@@ -71,6 +80,74 @@ const changeFloorTypeInPlace = (
         ...{ scenery: floorType === "standable" ? roomJson.planet : undefined },
       } as JsonItemConfig<"floor", EditorRoomId, EditorRoomItemId>;
     });
+};
+
+type VerticalLinkDirection = "above" | "below";
+type VerticalLinkTarget = { room: EditorRoomId; subRoom?: string };
+
+/** the sub-room id under which an undivided room holds its links (`'*'`), or the
+ * first cell of a divided room */
+const primarySubRoomId = (room: EditorRoomJson): string => {
+  const subRooms = room.meta?.subRooms;
+  if (subRooms === undefined || isWholeRoomSubRooms(subRooms)) {
+    return "*";
+  }
+  const [first] = Object.keys(subRooms);
+  return first;
+};
+
+const writeVerticalLink = (
+  room: EditorRoomJson,
+  subRoomId: string,
+  direction: VerticalLinkDirection,
+  target: undefined | VerticalLinkTarget,
+): void => {
+  room.meta ??= {};
+  if (room.meta.subRooms === undefined) {
+    room.meta.subRooms = { "*": {} };
+  }
+  const { subRooms } = room.meta;
+  const holder =
+    isWholeRoomSubRooms(subRooms) ? subRooms["*"] : subRooms[subRoomId];
+  if (holder === undefined) {
+    return;
+  }
+  if (target === undefined) {
+    delete holder[direction];
+  } else {
+    holder[direction] = target;
+  }
+};
+
+/**
+ * the room (and its sub-room) occupying the map cell directly above/below the
+ * given sub-room, if any - used to connect to an existing room rather than
+ * create a duplicate one overlapping it
+ */
+const roomAtVerticalNeighbour = (
+  state: LevelEditorState,
+  room: EditorRoomJson,
+  subRoomId: string,
+  direction: VerticalLinkDirection,
+): { roomId: EditorRoomId; subRoomId: string } | undefined => {
+  const neighbourVector =
+    direction === "above" ? unitVectors.up : unitVectors.down;
+  const targetSpec = [
+    ...roomGridPositions({
+      campaign: state.campaignInProgress,
+      roomId: room.id,
+      subRoomId,
+    }),
+  ].find(({ gridPosition }) => xyzEqual(gridPosition, neighbourVector));
+
+  if (
+    targetSpec === undefined ||
+    targetSpec.roomId === room.id ||
+    targetSpec.roomId === exitGameRoomId
+  ) {
+    return undefined;
+  }
+  return { roomId: targetSpec.roomId, subRoomId: targetSpec.subRoomId };
 };
 
 export const editRoomReducers = {
@@ -329,63 +406,129 @@ export const editRoomReducers = {
   ) {
     const state = _state as LevelEditorState;
 
-    const forwardDirection =
-      payload.direction === "above" ? "roomAbove" : "roomBelow";
-    const reverseProperty =
-      forwardDirection === "roomAbove" ? "roomBelow" : "roomAbove";
+    const { direction } = payload;
+    const reverseDirection: VerticalLinkDirection =
+      direction === "above" ? "below" : "above";
 
     const currentRoomJson = selectCurrentRoomFromLevelEditorState(state);
+    const currentSubRoomId = selectCursorSubRoomId(state);
 
-    const newLinkedToRoomId =
-      payload.createNew ?
-        addNewRoomInPlace({
+    const previouslyLinkedRoomId = roomVerticalLink(
+      currentRoomJson,
+      direction,
+      currentSubRoomId,
+    )?.room;
+    const previouslyLinkedRoom =
+      previouslyLinkedRoomId === undefined ? undefined : (
+        selectRoomFromLevelEditorState(state, previouslyLinkedRoomId)
+      );
+
+    // when asked to create a new room but the map cell in that direction is
+    // already occupied by another room (eg closing a loop), link to that
+    // existing room instead of creating a duplicate overlapping it
+    const existingAtTarget =
+      payload.createNew && previouslyLinkedRoom === undefined ?
+        roomAtVerticalNeighbour(
+          state,
+          currentRoomJson,
+          currentSubRoomId,
+          direction,
+        )
+      : undefined;
+
+    let createdNewRoom = false;
+    let newLinkedToRoomId: EditorRoomId | undefined;
+    let linkedSubRoomId: string | undefined;
+    if (payload.createNew) {
+      if (existingAtTarget !== undefined) {
+        newLinkedToRoomId = existingAtTarget.roomId;
+        linkedSubRoomId = existingAtTarget.subRoomId;
+      } else {
+        newLinkedToRoomId = addNewRoomInPlace({
           state,
           scenery: currentRoomJson.planet,
           maybeColour: currentRoomJson.color,
-        }).id
-      : payload.roomId;
-
-    const previouslyLinkedRoom =
-      currentRoomJson[forwardDirection] &&
-      selectRoomFromLevelEditorState(state, currentRoomJson[forwardDirection]);
-
-    currentRoomJson[forwardDirection] = newLinkedToRoomId;
+        }).id;
+        createdNewRoom = true;
+      }
+    } else {
+      newLinkedToRoomId = payload.roomId;
+    }
 
     const newlyLinkedToRoom =
-      newLinkedToRoomId &&
-      selectRoomFromLevelEditorState(state, newLinkedToRoomId);
+      newLinkedToRoomId === undefined ? undefined : (
+        selectRoomFromLevelEditorState(state, newLinkedToRoomId)
+      );
+
+    // which sub-room of the linked room the link attaches to
+    const targetSubRoomId =
+      newlyLinkedToRoom === undefined ? undefined : (
+        (linkedSubRoomId ?? primarySubRoomId(newlyLinkedToRoom))
+      );
+
+    // forward link: current room (at its cursor sub-room) -> the linked room
+    writeVerticalLink(
+      currentRoomJson,
+      currentSubRoomId,
+      direction,
+      newLinkedToRoomId === undefined ? undefined : (
+        {
+          room: newLinkedToRoomId,
+          subRoom: targetSubRoomId === "*" ? undefined : targetSubRoomId,
+        }
+      ),
+    );
 
     if (newlyLinkedToRoom !== undefined) {
-      newlyLinkedToRoom[reverseProperty] = currentRoomJson.id;
+      // reverse link: linked room -> current room's cursor sub-room
+      writeVerticalLink(newlyLinkedToRoom, targetSubRoomId!, reverseDirection, {
+        room: currentRoomJson.id,
+        subRoom: currentSubRoomId === "*" ? undefined : currentSubRoomId,
+      });
 
-      if (payload.createNew && previouslyLinkedRoom) {
-        newlyLinkedToRoom[forwardDirection] = previouslyLinkedRoom.id;
-        previouslyLinkedRoom[reverseProperty] = newlyLinkedToRoom.id;
+      if (createdNewRoom && previouslyLinkedRoom) {
+        // splice the new room in between the current and previously-linked rooms
+        writeVerticalLink(
+          newlyLinkedToRoom,
+          primarySubRoomId(newlyLinkedToRoom),
+          direction,
+          { room: previouslyLinkedRoom.id },
+        );
+        writeVerticalLink(
+          previouslyLinkedRoom,
+          primarySubRoomId(previouslyLinkedRoom),
+          reverseDirection,
+          { room: newlyLinkedToRoom.id },
+        );
       }
     }
 
     if (!payload.createNew && previouslyLinkedRoom) {
-      if (previouslyLinkedRoom[reverseProperty] === selectCursorRoomId(state)) {
-        previouslyLinkedRoom[reverseProperty] = undefined;
+      const back = roomVerticalLink(previouslyLinkedRoom, reverseDirection);
+      if (back?.room === selectCursorRoomId(state)) {
+        writeVerticalLink(
+          previouslyLinkedRoom,
+          primarySubRoomId(previouslyLinkedRoom),
+          reverseDirection,
+          undefined,
+        );
       }
     }
 
     if (newlyLinkedToRoom) {
       changeFloorTypeInPlace(
-        forwardDirection === "roomBelow" ? currentRoomJson : newlyLinkedToRoom,
+        direction === "below" ? currentRoomJson : newlyLinkedToRoom,
         "none",
       );
     } else {
       changeFloorTypeInPlace(
-        forwardDirection === "roomBelow" ? currentRoomJson : (
-          previouslyLinkedRoom!
-        ),
+        direction === "below" ? currentRoomJson : previouslyLinkedRoom!,
         "standable",
       );
     }
 
     if (payload.createNew && newLinkedToRoomId) {
-      changeCurrentRoomInPlace(state, newLinkedToRoomId as EditorRoomId);
+      changeCurrentRoomInPlace(state, newLinkedToRoomId);
     }
   },
 } satisfies SliceCaseReducers<LevelEditorState>;

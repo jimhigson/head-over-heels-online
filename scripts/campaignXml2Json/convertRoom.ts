@@ -61,16 +61,31 @@ export const convertRoom = async (
 
   const roomId = convertRoomId(xmlRoomName);
 
+  const below =
+    roomOnMap["below"] ?
+      convertRoomId(roomNameFromXmlFilename(roomOnMap["below"]))
+    : undefined;
+  const above =
+    roomOnMap["above"] ?
+      convertRoomId(roomNameFromXmlFilename(roomOnMap["above"]))
+    : undefined;
+
   return {
     id: roomId,
     planet,
-    roomBelow:
-      roomOnMap["below"] &&
-      convertRoomId(roomNameFromXmlFilename(roomOnMap["below"])),
-    roomAbove:
-      roomOnMap["above"] &&
-      convertRoomId(roomNameFromXmlFilename(roomOnMap["above"])),
     items,
     color: convertRoomColour(color),
+    // converted rooms are undivided, so any vertical links live on the
+    // whole-room ('*') sub-room
+    ...((above ?? below) !== undefined && {
+      meta: {
+        subRooms: {
+          "*": {
+            ...(above !== undefined && { above: { room: above } }),
+            ...(below !== undefined && { below: { room: below } }),
+          },
+        },
+      },
+    }),
   };
 };

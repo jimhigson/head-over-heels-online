@@ -11,6 +11,7 @@ import { floorsRenderExtent } from "../../game/render/room/floorsExtent";
 import {
   roomJsonItemsEntriesIterable,
   roomJsonItemsIterable,
+  roomVerticalLink,
 } from "../../model/RoomJson";
 import { roomItemsIterable } from "../../model/RoomState";
 import { useAppSelector } from "../../store/hooks";
@@ -260,6 +261,17 @@ export const selectCurrentRoomFromLevelEditorState = (
   state: LevelEditorState,
 ) =>
   state.campaignInProgress.rooms[selectCursorRoomId(state)] as EditorRoomJson;
+
+/** the vertical (above/below) link of the current cursor sub-room, if any */
+export const selectCursorSubRoomVerticalLink = (
+  state: LevelEditorState,
+  direction: "above" | "below",
+): { room: EditorRoomId; subRoom?: string } | undefined =>
+  roomVerticalLink(
+    selectCurrentRoomFromLevelEditorState(state),
+    direction,
+    selectCursorSubRoomId(state),
+  );
 
 export const selectRoomFromLevelEditorState = (
   state: LevelEditorState,

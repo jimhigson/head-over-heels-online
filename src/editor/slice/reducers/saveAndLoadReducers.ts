@@ -7,6 +7,7 @@ import { pick } from "../../../utils/pick";
 import { type EditorCampaign } from "../../editorTypes";
 import { initialLevelEditorSliceState } from "../initialLevelEditorSliceState";
 import { changeCurrentRoomInPlace } from "../inPlaceMutators/changeCurrentRoomInPlace";
+import { migrateRoomVerticalLinks } from "../inPlaceMutators/migrateRoomVerticalLinks";
 import { type LevelEditorState } from "../levelEditorSlice";
 import { levelEditorSliceNonPersistedFields } from "../levelEditorSliceTransientFields";
 
@@ -20,8 +21,12 @@ export const saveAndLoadReducers = {
     // the wrapped type. Since the normal type isn't readonly, this wrapping isn't needed anyway
     const state = _state as LevelEditorState;
 
-    state.remoteCampaign = campaign;
-    state.campaignInProgress = campaign;
+    // convert old-format campaigns (top-level roomAbove/roomBelow) to the
+    // current per-sub-room form, in memory only
+    const migratedCampaign = migrateRoomVerticalLinks(campaign);
+
+    state.remoteCampaign = migratedCampaign;
+    state.campaignInProgress = migratedCampaign;
 
     // clear transient editor state - this shouldn't be kept between campaigns:
     Object.assign(
@@ -36,18 +41,18 @@ export const saveAndLoadReducers = {
     // choose which room to start the editor in.
     const startingRoom =
       // First look for head's room as the traditional starting room:
-      valuesIter(campaign.rooms).find((room) => {
+      valuesIter(migratedCampaign.rooms).find((room) => {
         return roomJsonItemsIterable(room).some(
           (item) => item.type === "player" && item.config.which === "head",
         );
       })?.id ??
-      valuesIter(campaign.rooms).find((room) => {
+      valuesIter(migratedCampaign.rooms).find((room) => {
         return roomJsonItemsIterable(room).some(
           (item) => item.type === "player" && item.config.which === "heels",
         );
       })?.id ??
       // if not that, just find any room
-      first(keysIter(campaign.rooms));
+      first(keysIter(migratedCampaign.rooms));
 
     if (startingRoom === undefined) {
       throw new Error("could not find any rooms in this campaign");
@@ -64,6 +69,6 @@ export const saveAndLoadReducers = {
     // the wrapped type. Since the normal type isn't readonly, this wrapping isn't needed anyway
     const state = _state as LevelEditorState;
 
-    state.remoteCampaign = campaign;
+    state.remoteCampaign = migrateRoomVerticalLinks(campaign);
   },
 } satisfies SliceCaseReducers<LevelEditorState>;
