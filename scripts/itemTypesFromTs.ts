@@ -52,8 +52,10 @@ import { SceneryName } from "../../sprites/planets";
 type GeneratedTypeUnion = ${union.map((e) => `"${e}"`).join("|")};
 type Check1<T extends GeneratedTypeUnion> = {anything: T};
 type Check2<T extends ItemInPlayType> = {anything: T};
+/* oxlint-disable no-unused-vars */
 type Test1 = Check1<ItemInPlayType>;
 type Test2 = Check2<GeneratedTypeUnion>;
+/* oxlint-enable no-unused-vars */
 
 export type ItemTypeUnion<
   T extends ItemInPlayType,

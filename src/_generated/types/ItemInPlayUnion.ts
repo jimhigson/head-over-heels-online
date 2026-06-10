@@ -1,5 +1,5 @@
-import { ItemInPlay, ItemInPlayType } from "../../model/ItemInPlay";
-import { SceneryName } from "../../sprites/planets";
+import { type ItemInPlay, type ItemInPlayType } from "../../model/ItemInPlay";
+import { type SceneryName } from "../../sprites/planets";
 
 /** this union is only here to check that it is equal to the 'live' one in the codebase */
 type GeneratedTypeUnion =
@@ -48,8 +48,10 @@ type GeneratedTypeUnion =
   | "wall";
 type Check1<T extends GeneratedTypeUnion> = { anything: T };
 type Check2<T extends ItemInPlayType> = { anything: T };
+/* oxlint-disable no-unused-vars */
 type Test1 = Check1<ItemInPlayType>;
 type Test2 = Check2<GeneratedTypeUnion>;
+/* oxlint-enable no-unused-vars */
 
 export type ItemTypeUnion<
   T extends ItemInPlayType,
