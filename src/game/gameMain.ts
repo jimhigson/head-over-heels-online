@@ -73,6 +73,16 @@ export const gameMain = async <RoomId extends string>(
 
   if (import.meta.env.DEV) {
     trackTextures(app);
+
+    // a lost context blanks every runtime-baked RenderTexture (they have no
+    // cpu-side resource to restore from). The MainLoop rebuilds them when the
+    // context is restored - log here so occurrences are visible in dev:
+    app.canvas.addEventListener("webglcontextlost", () => {
+      console.error("WebGL context lost");
+    });
+    app.canvas.addEventListener("webglcontextrestored", () => {
+      console.error("WebGL context restored");
+    });
   }
   stopAppAutoRendering(app);
 
