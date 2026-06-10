@@ -28,20 +28,12 @@ if (import.meta.env.TAURI_ENV_PLATFORM) {
   );
 }
 
-const loadApp = importOnceForReactSuspense(async () => {
-  const polyfillNeeded =
-    !globalThis.Iterator ||
-    typeof globalThis.Iterator.prototype.map !== "function";
-  if (polyfillNeeded) {
-    console.info("loading iterator helper polyfill (needed on this browser)");
-    await import("es-iterator-helpers/auto");
-    console.info("iterator helper polyfill loaded");
-  } else {
-    // iterator helper polyfill not needed on this browser"
-  }
-
-  return (await importAppOnce()).App;
-});
+const loadApp = importOnceForReactSuspense(
+  async () =>
+    // no polyfills: iterator helpers (the newest js feature used) are native
+    // since safari 18.4, which is also the floor for opus audio decoding
+    (await importAppOnce()).App,
+);
 
 const AppLoader = () => {
   const App = loadApp();

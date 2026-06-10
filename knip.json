@@ -7,7 +7,6 @@
     "**/*.test-d.*",
     "**/*.test.d.ts",
     "src/editor/monaco-env.d.ts",
-    "src/es-iterator-helpers.d.ts",
     "src/iterableIterator-augmentation.d.ts"
   ],
   "project": ["src/**/*.ts", "src/**/*.tsx", "scripts/**/*.ts"],
