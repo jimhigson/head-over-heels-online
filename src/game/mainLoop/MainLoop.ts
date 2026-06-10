@@ -74,6 +74,23 @@ export class MainLoop<RoomId extends string> {
   #gameState: GameState<RoomId>;
   #spritesheetVariants: SpritesheetVariants;
 
+  /**
+   * set when the WebGL context has been restored after being lost. Every
+   * render texture's contents died with the old context, so the next tick
+   * must rebuild everything baked at runtime: the spritesheets, the room
+   * renderer, and the hud (including its baked text)
+   */
+  #contextRestored = false;
+
+  /**
+   * called by pixi's contextChange runner. The initial context creation
+   * happens during app.init(), before this MainLoop is constructed, so any
+   * call here is a restore after a lost context.
+   */
+  contextChange() {
+    this.#contextRestored = true;
+  }
+
   constructor(
     app: Application,
     gameState: GameState<RoomId>,
@@ -82,6 +99,7 @@ export class MainLoop<RoomId extends string> {
     this.#app = app;
     this.#gameState = gameState;
     this.#spritesheetVariants = spritesheetVariants;
+    app.renderer.runners.contextChange.add(this);
     try {
       const storeState = store.getState();
 
@@ -208,6 +226,16 @@ export class MainLoop<RoomId extends string> {
       // the game is over - there's no need to do any more in this loop, and the loop should
       // soon terminate:
       return;
+    }
+
+    if (this.#contextRestored) {
+      this.#contextRestored = false;
+      // destroy before invalidating the sheets the renderers reference:
+      this.#hudRenderer?.destroy();
+      this.#hudRenderer = undefined;
+      this.#roomRenderer?.destroy();
+      this.#roomRenderer = undefined;
+      this.#spritesheetVariants.invalidate();
     }
 
     const roomChanged = this.#roomRenderer?.renderContext.room !== tickEndRoom;
@@ -412,6 +440,7 @@ export class MainLoop<RoomId extends string> {
     this.#worldSound.disconnect();
     this.#roomRenderer?.destroy();
     this.#hudRenderer?.destroy();
+    this.#app.renderer.runners.contextChange.remove(this);
     this.#app.ticker.remove(this.#tickAndCatch);
   }
 }
