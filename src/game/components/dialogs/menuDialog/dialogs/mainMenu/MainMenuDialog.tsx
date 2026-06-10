@@ -152,8 +152,12 @@ const ExitAppMenuItem = () => {
             dispatch(saveGameThunk(gameApi!.gameState));
             await persistor.flush();
           }
-          const { exit } = await importTauriProcess();
-          exit();
+          // the build-time constant keeps the tauri api out of web builds;
+          // this item is only shown when running in tauri anyway
+          if (import.meta.env.TAURI_ENV_PLATFORM) {
+            const { exit } = await importTauriProcess();
+            exit();
+          }
         }
       }}
       doubleHeightWhenFocussed
@@ -191,13 +195,11 @@ export const MainMenuDialog = (_emptyProps: EmptyObject) => {
     deploymentType === "browser" &&
     (!isGameRunning || deviceType === "desktop");
 
-  const showExitApp =
-    // browsers don't show an exit option - the user can just close the tab
-    // whereas PWAs and Tauri are basically native (ish) apps and they get it:
-    deploymentType !== "browser" &&
-    // however, it isn't the done thing to have close app options on mobile,
-    // the user just swipes away with a gesture
-    deviceType !== "mobile";
+  // only the tauri (native) app can reliably exit itself. In browsers the
+  // user can just close the tab, and pwas have no dependable programmatic
+  // close: chrome refuses window.close() on os-launched pwa windows (safari
+  // allows it, but there's no clean way to tell them apart)
+  const showExitApp = deploymentType === "tauri";
 
   return (
     <DialogPortal>
