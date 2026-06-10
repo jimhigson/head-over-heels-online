@@ -84,7 +84,18 @@ export default {
 
   darkMode: ["class"],
   content: {
-    files: ["./index.html", "./src/**/*.{js,ts,jsx,tsx,md}"],
+    // the game's vite config sets TAILWIND_APP so the game's css doesn't
+    // include classes only used by the editor; everything else (editor build,
+    // cli tooling) scans the whole of src. The two-pattern game form is needed
+    // because `src/!(editor)/**` alone misses files directly in src/
+    files:
+      process.env.TAILWIND_APP === "game" ?
+        [
+          "./index.html",
+          "./src/*.{js,ts,jsx,tsx,md}",
+          "./src/!(editor)/**/*.{js,ts,jsx,tsx,md}",
+        ]
+      : ["./index.html", "./src/**/*.{js,ts,jsx,tsx,md}"],
     extract: {
       md(content) {
         // allow classes in markdown to be encoded as urls like class1?class2&class3

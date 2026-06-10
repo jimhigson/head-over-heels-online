@@ -7,6 +7,10 @@ import { VitePWA } from "vite-plugin-pwa";
 
 import { hmrOnlyPreact } from "./hmrOnlyPreact";
 
+// read by tailwind.config.ts (which runs in this same process) to exclude
+// editor-only sources from the game's css
+process.env.TAILWIND_APP = "game";
+
 const oneWeekInSeconds = 60 * 60 * 24 * 7;
 
 type Mode = "development" | "production" | "tauri" | "visual-regression";
