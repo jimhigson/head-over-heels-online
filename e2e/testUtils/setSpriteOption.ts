@@ -4,7 +4,10 @@ import {
   type setSpritesOption,
   type SpriteOption,
 } from "../../src/store/slices/userSettings/userSettingsSlice";
-import { dispatchToStore } from "./gameStateQueries";
+import {
+  dispatchToStore,
+  waitForSpriteOptionRenderEvent,
+} from "./gameStateQueries";
 import { osSlowness, retryWithRecovery } from "./infrastructure";
 import { elapsed } from "./logging";
 
@@ -31,8 +34,19 @@ export const setSpriteOption = async (
         );
       }
 
-      // let render one more frame with the new setting:
-      await page.waitForTimeout(100 * osSlowness);
+      // spriteOptionRendered is only emitted by the game's main loop, so it
+      // only fires when a game is running. In-game, wait until a rendered frame
+      // actually reflects the new option (covers the async spritesheet load when
+      // switching to/from Toppy). With no running loop (eg at the main menu or a
+      // standalone dialog) the event never comes, so just let a frame pass:
+      const gameLoopRunning = await page.evaluate(
+        () => window._e2e_gamePageGameAi !== undefined,
+      );
+      if (gameLoopRunning) {
+        await waitForSpriteOptionRenderEvent(page, spriteOption, formattedName);
+      } else {
+        await page.waitForTimeout(100 * osSlowness);
+      }
     },
     async recovery() {
       console.log(

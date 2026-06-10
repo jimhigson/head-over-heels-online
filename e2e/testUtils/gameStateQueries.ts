@@ -1,9 +1,11 @@
 import { type Page } from "@playwright/test";
+import chalk from "chalk";
 
 import { type CharacterName } from "../../src/model/modelTypes";
+import { type SpriteOption } from "../../src/store/slices/userSettings/userSettingsSlice";
 import { type AppDispatch } from "../../src/store/store";
 import { osSlowness } from "./infrastructure";
-import { formatDuration } from "./logging";
+import { elapsed, formatDuration } from "./logging";
 
 const longTimeout = 30_000 * osSlowness;
 
@@ -19,36 +21,95 @@ export const waitForGameState = (page: Page) =>
 export const waitForRoomRenderEvent = async (
   page: Page,
   expectedRoomId: string,
+  logHeader?: string,
 ): Promise<void> => {
-  const foundRoomId = await Promise.race([
-    page.evaluate(
-      () =>
-        new Promise<string>((resolve) => {
-          window.addEventListener(
-            "firstRenderOfRoom",
-            (event) => {
-              const { roomId } = (event as CustomEvent).detail;
-              resolve(roomId);
-            },
-            { once: true },
-          );
-        }),
-    ),
-    new Promise<never>((_, reject) =>
-      setTimeout(
-        () =>
-          reject(
-            new Error(
-              `Timeout waiting for firstRenderOfRoom event ${expectedRoomId} after ${formatDuration(maximumWaitForStep)}`,
-            ),
-          ),
-        maximumWaitForStep,
-      ),
-    ),
-  ]);
+  // the timeout lives inside the browser so the listener is always removed,
+  // whether the event arrives or we time out (null):
+  const foundRoomId = await page.evaluate(
+    (timeoutMs) =>
+      new Promise<null | string>((resolve) => {
+        const handler = (event: Event) => {
+          const { roomId } = (event as CustomEvent).detail;
+          window.removeEventListener("firstRenderOfRoom", handler);
+          resolve(roomId);
+        };
+        window.addEventListener("firstRenderOfRoom", handler);
+        // on timeout, remove the listener and resolve null; if the event
+        // already fired this resolve is an ignored no-op:
+        setTimeout(() => {
+          window.removeEventListener("firstRenderOfRoom", handler);
+          resolve(null);
+        }, timeoutMs);
+      }),
+    maximumWaitForStep,
+  );
+
+  if (foundRoomId === null) {
+    throw new Error(
+      `Timeout waiting for firstRenderOfRoom event ${expectedRoomId} after ${formatDuration(maximumWaitForStep)}`,
+    );
+  }
 
   if (foundRoomId !== expectedRoomId) {
     throw new Error(`Expected roomId ${expectedRoomId} but got ${foundRoomId}`);
+  }
+
+  if (logHeader !== undefined) {
+    console.log(
+      `${logHeader} ${elapsed()} received firstRenderOfRoom for ${chalk.cyan(expectedRoomId)}`,
+    );
+  }
+};
+
+/**
+ * wait until a rendered frame actually reflects the given sprite option, rather
+ * than guessing with a fixed delay after dispatching the option change. The
+ * engine fires `spriteOptionRendered` every frame (in visual-regression mode)
+ * carrying the option that frame was rendered with.
+ */
+export const waitForSpriteOptionRenderEvent = async (
+  page: Page,
+  spriteOption: SpriteOption,
+  logHeader?: string,
+): Promise<void> => {
+  // the timeout lives inside the browser so the per-frame listener is always
+  // removed, whether the matching frame is rendered (true) or we time out (false):
+  const matched = await page.evaluate(
+    ({ expected, timeoutMs }) =>
+      new Promise<boolean>((resolve) => {
+        const handler = (event: Event) => {
+          const { spriteOption } = (event as CustomEvent).detail as {
+            spriteOption: { name: string; uncolourised: boolean };
+          };
+          if (
+            spriteOption.name === expected.name &&
+            spriteOption.uncolourised === expected.uncolourised
+          ) {
+            window.removeEventListener("spriteOptionRendered", handler);
+            resolve(true);
+          }
+        };
+        window.addEventListener("spriteOptionRendered", handler);
+        // on timeout, remove the per-frame listener and resolve false; if a
+        // matching frame already resolved true this is an ignored no-op:
+        setTimeout(() => {
+          window.removeEventListener("spriteOptionRendered", handler);
+          resolve(false);
+        }, timeoutMs);
+      }),
+    { expected: spriteOption, timeoutMs: maximumWaitForStep },
+  );
+
+  if (!matched) {
+    throw new Error(
+      `Timeout waiting for spriteOptionRendered event (${spriteOption.name}, uncolourised: ${spriteOption.uncolourised}) after ${formatDuration(maximumWaitForStep)}`,
+    );
+  }
+
+  if (logHeader !== undefined) {
+    console.log(
+      `${logHeader} ${elapsed()} received spriteOptionRendered for ${chalk.cyan(spriteOption.name)} (uncolourised: ${spriteOption.uncolourised})`,
+    );
   }
 };
 

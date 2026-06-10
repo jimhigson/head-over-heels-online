@@ -376,12 +376,22 @@ export class MainLoop<RoomId extends string> {
       timingRecord?.startPixiRender();
       this.#app.render();
       timingRecord?.endPixiRender();
-      if (createNewRoomRenderer && tickEndRoom) {
-        const event = new CustomEvent("firstRenderOfRoom", {
-          detail: { roomId: tickEndRoom.id },
-        });
-        // for playwright:
-        window.dispatchEvent(event);
+      if (import.meta.env.MODE === "visual-regression") {
+        if (createNewRoomRenderer && tickEndRoom) {
+          window.dispatchEvent(
+            new CustomEvent("firstRenderOfRoom", {
+              detail: { roomId: tickEndRoom.id },
+            }),
+          );
+        }
+        // the sprite option that this rendered frame actually reflects - lets
+        // playwright wait for a sprite option change to land in the output rather
+        // than guessing with a fixed delay:
+        window.dispatchEvent(
+          new CustomEvent("spriteOptionRendered", {
+            detail: { spriteOption: tickSpriteOption },
+          }),
+        );
       }
     } catch (e) {
       throw new Error("Error in Pixi.js app.render()", { cause: e });

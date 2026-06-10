@@ -66,7 +66,9 @@ const useCreateGameApi = (
   useEffect(() => {
     if (!isGameRunning) {
       setGameApi(undefined);
-      window._e2e_gamePageGameAi = undefined;
+      if (import.meta.env.MODE === "visual-regression") {
+        window._e2e_gamePageGameAi = undefined;
+      }
       // the game isn't running, but we will pre-load the assets.
       // they can't load twice so this is safe to call any time
       loadGameAssets();
@@ -103,7 +105,9 @@ const useCreateGameApi = (
             return;
           }
           setGameApi(thisEffectGameApi);
-          window._e2e_gamePageGameAi = thisEffectGameApi;
+          if (import.meta.env.MODE === "visual-regression") {
+            window._e2e_gamePageGameAi = thisEffectGameApi;
+          }
         }
       } catch (thrown) {
         if (startedLoading) {
