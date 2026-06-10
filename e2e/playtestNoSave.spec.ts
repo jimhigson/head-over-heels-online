@@ -2,6 +2,7 @@ import { expect, type Page, test } from "@playwright/test";
 
 import { loadCampaignFromDb } from "../src/db/campaign";
 import { compressObject } from "../src/db/compressObject";
+import { postgrestDb } from "../src/db/postgrestDb";
 import { jimAtBlockstackingUserId } from "../src/gameInfo";
 import { dispatchKeyPress } from "./testUtils/gameInteractions";
 import {
@@ -34,7 +35,7 @@ const getSavedGames = (page: Page) =>
  * test campaign is used instead.
  */
 const buildPlaytestUrl = async (): Promise<string> => {
-  const campaign = await loadCampaignFromDb({
+  const campaign = await loadCampaignFromDb(postgrestDb, {
     campaignName: "swops_test",
     userId: jimAtBlockstackingUserId,
   });

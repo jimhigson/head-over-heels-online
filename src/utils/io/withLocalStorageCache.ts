@@ -4,15 +4,15 @@
  * on failure (e.g. offline), falls back to the cached value.
  */
 export const withLocalStorageCache =
-  <O, T>(
+  <Args extends unknown[], T>(
     /** prefix of the key to cache under */
-    keyFn: (options: O) => string,
+    keyFn: (...args: Args) => string,
     /** the async function to wrap */
-    fn: (options: O) => Promise<T>,
+    fn: (...args: Args) => Promise<T>,
   ) =>
-  (options: O) => {
-    const key = keyFn(options);
-    return fn(options)
+  (...args: Args) => {
+    const key = keyFn(...args);
+    return fn(...args)
       .then((result) => {
         localStorage.setItem(key, JSON.stringify(result));
         return result;
