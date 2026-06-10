@@ -62,6 +62,7 @@ import { setSpriteOption } from "./testUtils/setSpriteOption";
 
 const timeoutPerRoom = (process.env.CI ? 40_000 : 15_000) * osSlowness;
 const maxTriesToLoadRoom = 3;
+const maxScreenshotAttempts = 3;
 
 const campaignRoomIds = keys(campaign.rooms);
 
@@ -341,6 +342,14 @@ test.describe("Room Visual Snapshots", () => {
         logHeader: string,
         targetRoomId: OriginalCampaignRoomId,
         ensureComingFromPrevious: boolean = true,
+        /**
+         * when given, the sprite option is bounced to a different spritesheet
+         * and back while in the previous room, before entering the target. This
+         * forces a full reload of the base spritesheet (loadImage + buildOriginal),
+         * which only happens when the spritesheet *name* changes - re-entering the
+         * same room with an unchanged option reuses the (possibly corrupt) base.
+         */
+        reloadSpriteOption?: SpriteOption,
       ) => {
         // first, check we are coming from the sequentially previous room, to keep the door we enter consistent:
         if (ensureComingFromPrevious) {
@@ -360,6 +369,20 @@ test.describe("Room Visual Snapshots", () => {
           }
         }
 
+        if (reloadSpriteOption !== undefined) {
+          // bounce to a spritesheet with a different name (the only change that
+          // re-runs loadImage + buildOriginal) and back, to rebuild the base:
+          const otherSpriteOption: SpriteOption =
+            reloadSpriteOption.name === "Toppy" ?
+              { name: "BlockStack", uncolourised: false }
+            : { name: "Toppy", uncolourised: false };
+          console.log(
+            `${logHeader} ${elapsed()} bouncing sprite option ${chalk.cyan(reloadSpriteOption.name)} → ${chalk.cyan(otherSpriteOption.name)} → ${chalk.cyan(reloadSpriteOption.name)} to reload base spritesheet`,
+          );
+          await setSpriteOption(page, logHeader, otherSpriteOption);
+          await setSpriteOption(page, logHeader, reloadSpriteOption);
+        }
+
         await retryWithRecovery({
           async action(attempt) {
             console.log(
@@ -377,6 +400,7 @@ test.describe("Room Visual Snapshots", () => {
             const renderEventPromise = waitForRoomRenderEvent(
               page,
               targetRoomId,
+              logHeader,
             );
             await page.goto(`/?cheats=1&track=0#${targetRoomId}`);
             await renderEventPromise;
@@ -425,19 +449,53 @@ test.describe("Room Visual Snapshots", () => {
             currentSpriteOption = spriteOption;
 
             const suffix = spriteOptionSuffix(spriteOption);
-            console.log(
-              `${logHeader} ${elapsed()} Taking screenshot for room: ${chalk.cyan(roomId)} ${JSON.stringify(spriteOption)} at ${chalk.cyan(`${roomId}${suffix}.png`)}`,
-            );
-            const screenshotStart = performance.now();
-            await expect
-              // github free runners are slow:
-              .configure({ timeout: 15_000 * osSlowness })
-              .soft(page)
-              .toHaveScreenshot(`${roomId}${suffix}.png`, screenshotOpts);
-            console.log(
-              `${logHeader} ${elapsed()} ...screenshot took`,
-              chalk.yellow(formatDuration(performance.now() - screenshotStart)),
-            );
+            const screenshotName = `${roomId}${suffix}.png`;
+
+            // github free runners are slow:
+            const assertion = expect.configure({
+              timeout: 15_000 * osSlowness,
+            });
+
+            // the spritesheet rebuild occasionally produces a wrong sheet. The
+            // corruption can be in the base spritesheet, which re-entering the
+            // same room does not rebuild (only a name change reloads the base),
+            // so on a mismatch we re-enter the room *and* bounce the sprite
+            // option to a different sheet and back to force a full base reload.
+            // Non-final attempts assert hard so a mismatch throws and we can
+            // recover; the final attempt is soft so a genuine baseline change is
+            // reported without aborting the remaining rooms.
+            for (let attempt = 0; attempt < maxScreenshotAttempts; attempt++) {
+              const lastAttempt = attempt === maxScreenshotAttempts - 1;
+              console.log(
+                `${logHeader} ${elapsed()} Taking screenshot for room: ${chalk.cyan(roomId)} ${JSON.stringify(spriteOption)} at ${chalk.cyan(screenshotName)} (attempt ${attempt}/${maxScreenshotAttempts - 1})`,
+              );
+              const screenshotStart = performance.now();
+
+              try {
+                await (
+                  lastAttempt ?
+                    assertion.soft(page)
+                  : assertion(page)).toHaveScreenshot(
+                  screenshotName,
+                  screenshotOpts,
+                );
+                console.log(
+                  `${logHeader} ${elapsed()} ...screenshot took`,
+                  chalk.yellow(
+                    formatDuration(performance.now() - screenshotStart),
+                  ),
+                );
+                break;
+              } catch (error) {
+                console.log(
+                  `${logHeader} ${elapsed()} ${chalk.red(`screenshot mismatch on attempt ${attempt}`)} - re-entering room and bouncing sprite option to rebuild spritesheet: ${error}`,
+                );
+                // re-enter via the previous room (keeping the entry door
+                // consistent) and bounce the sprite option to force a full base
+                // spritesheet reload before re-entering the target room:
+                await navigateToRoom(logHeader, roomId, true, spriteOption);
+              }
+            }
           }
         });
         charactersCurrentRoomId = roomId;

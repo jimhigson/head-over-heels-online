@@ -107,7 +107,10 @@ export const store = configureStore({
       .concat(import.meta.env.DEV ? [recentActionsMiddleware] : []),
 });
 
-if (typeof window !== "undefined") {
+if (
+  import.meta.env.MODE === "visual-regression" &&
+  typeof window !== "undefined"
+) {
   window._e2e_store = store;
 }
 
