@@ -10,9 +10,6 @@ import {
 import { selectSaveForCampaign } from "../store/slices/savedGames/savedGamesSlice";
 import { store } from "../store/store";
 import { trackTextures } from "../textureInspector/trackTextures";
-
-import "pixi.js/advanced-blend-modes";
-
 import { stopAppAutoRendering } from "../utils/pixi/stopAppAutoRendering";
 import { type Xy } from "../utils/vectors/vectors";
 import { type GameApi } from "./GameApi";
