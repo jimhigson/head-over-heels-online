@@ -2,6 +2,7 @@ import { createSlice, type PayloadAction } from "@reduxjs/toolkit";
 import { type ValueOf } from "type-fest";
 
 import { clearAllData } from "../../store/slices/clearAllData";
+import { type Xy } from "../../utils/vectors/vectors";
 import {
   type EditorCampaign,
   type EditorRoomId,
@@ -23,15 +24,24 @@ import {
   changeRoomReducers,
   changeRoomSelectors,
 } from "./reducers/changeRoomReducers";
+import { coalesceItemsReducers } from "./reducers/coalesceItemsReducers";
 import { coalesceRoomsReducers } from "./reducers/coalesceRoomsReducers";
+import {
+  clearContextMenuXyInPlace,
+  contextMenuReducers,
+} from "./reducers/contextMenuReducers";
 import { dragToMoveReducers } from "./reducers/dragToMoveReducers";
 import { editorSettingsReducers } from "./reducers/editorSettingsReducers";
 import { editRoomReducers } from "./reducers/editRoomReducers";
+import { explodeItemsReducers } from "./reducers/explodeItemsReducers";
+import { itemActivationReducers } from "./reducers/itemActivationReducers";
 import { itemPreviewReducers } from "./reducers/itemPreviewReducers";
+import { monsterMovementReducers } from "./reducers/monsterMovementReducers";
 import { moveOrResizeItemPreviewReducers } from "./reducers/moveOrResizeItemPreview/moveOrResizeItemPreviewReducers";
 import { roomSelectionReducers } from "./reducers/roomSelectionReducers";
 import { saveAndLoadReducers } from "./reducers/saveAndLoadReducers";
 import { selectionsReducers } from "./reducers/selectionsReducers";
+import { startDirectionReducers } from "./reducers/startDirectionReducers";
 import { type UndoDescription } from "./reducers/undoDescription";
 import {
   type UndoEntry,
@@ -75,6 +85,11 @@ export type LevelEditorState = {
   tool: Tool;
   /** the text currently typed into the cmd-k menu's search input, retained while the menu is closed */
   cmdKSearch: string;
+  /**
+   * when set, the item context menu is shown at this position (scaled pixels, in
+   * the room's projected screen space). Undefined when no menu is open.
+   */
+  contextMenuXy?: Xy;
   hoveredItem?: HoveredItem;
   clickableAnnotationHovered: boolean;
   selectedJsonItemIds: Array<EditorRoomItemId>;
@@ -117,6 +132,7 @@ export const levelEditorSlice = createSlice({
       if (tool.type === "item") {
         state.selectedJsonItemIds = [];
         state.hoveredItem = undefined;
+        clearContextMenuXyInPlace(state);
       }
 
       state.tool = tool;
@@ -142,7 +158,13 @@ export const levelEditorSlice = createSlice({
     ...changeRoomReducers,
     ...roomSelectionReducers,
     ...coalesceRoomsReducers,
+    ...coalesceItemsReducers,
+    ...explodeItemsReducers,
+    ...itemActivationReducers,
+    ...monsterMovementReducers,
+    ...startDirectionReducers,
     ...campaignManagementReducers,
+    ...contextMenuReducers,
   },
   extraReducers(builder) {
     builder.addCase(clearAllData, () =>
@@ -159,6 +181,7 @@ export const levelEditorSlice = createSlice({
       selectCurrentRoomFromLevelEditorState(state).planet,
     selectTool: (state) => state.tool,
     selectCmdKSearch: (state) => state.cmdKSearch,
+    selectContextMenuXy: (state) => state.contextMenuXy,
     selectSelectedJsonItemIds: (state) => state.selectedJsonItemIds,
     selectHoveredItem: (state) => state.hoveredItem,
     selectItemIsSelected: selectItemIsSelectedInLevelEditorState,
@@ -174,6 +197,7 @@ export type LevelEditorSliceAction = ReturnType<
 export const {
   addRoom,
   applyItemTool,
+  coalesceSelectedItems,
   coalesceSelectedRooms,
   changeDragInProgress,
   changeGridResolution,
@@ -182,12 +206,15 @@ export const {
   changeToRoom,
   changeWallsFloorsLocked,
   clearRoom,
+  closeItemContextMenu,
   commitCurrentPreviewedEdits,
   deleteSelected,
+  explodeSelectedItems,
   insertRoom,
   loadCampaign,
   moveOrResizeItemAsPreview,
   newCampaign,
+  openItemContextMenu,
   redo,
   addRoomToSelection,
   selectAllRooms,
@@ -206,7 +233,10 @@ export const {
   undoHovered,
   setRemoteCampaign,
   setRoomAboveOrBelow,
+  setSelectedItemsActivation,
   setSelectedItemsInRoom,
+  setSelectedItemsStartDirection,
+  setSelectedMonstersMovement,
   setTool,
   toggleRoomInSelection,
   toggleSelectedItemInRoom,
@@ -215,6 +245,7 @@ export const {
 export const {
   selectBackRooms,
   selectCmdKSearch,
+  selectContextMenuXy,
   selectCurrentCampaignInProgress,
   selectCurrentEditingRoomColour,
   selectCurrentEditingRoomJson,

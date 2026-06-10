@@ -1,0 +1,65 @@
+import { produce } from "immer";
+import { expect, test } from "vitest";
+
+import { type EditorRoomItemId } from "../../editorTypes";
+import { selectCurrentRoomFromLevelEditorState } from "../levelEditorSelectors";
+import {
+  setSelectedItemsInRoom,
+  setSelectedMonstersMovement,
+} from "../levelEditorSlice";
+import {
+  editorStateWithOneRoomWithNoItems,
+  reduceLevelEditorActions,
+  testRoomId,
+} from "./__test__/storeStates";
+
+const monsterAndBlock = produce(editorStateWithOneRoomWithNoItems, (draft) => {
+  const { items } = draft.campaignInProgress.rooms[testRoomId];
+  items["monkey" as EditorRoomItemId] = {
+    type: "monster",
+    config: {
+      which: "monkey",
+      movement: "patrol-randomly-xy4",
+      activated: "on",
+    },
+    position: { x: 0, y: 0, z: 0 },
+  };
+  items["block" as EditorRoomItemId] = {
+    type: "block",
+    config: { style: "artificial" },
+    position: { x: 1, y: 0, z: 0 },
+  };
+});
+
+const setMovement = selectCurrentRoomFromLevelEditorState(
+  reduceLevelEditorActions(
+    monsterAndBlock,
+    setSelectedItemsInRoom({
+      jsonItemIds: ["monkey", "block"] as EditorRoomItemId[],
+    }),
+    setSelectedMonstersMovement({
+      movement: "towards-on-shortest-axis-xy4",
+      timestamp: 0,
+    }),
+  ),
+).items;
+
+test("sets the movement on a selected monster", () => {
+  expect(setMovement["monkey" as EditorRoomItemId]).toEqual({
+    type: "monster",
+    config: {
+      which: "monkey",
+      movement: "towards-on-shortest-axis-xy4",
+      activated: "on",
+    },
+    position: { x: 0, y: 0, z: 0 },
+  });
+});
+
+test("leaves non-monster items in the selection untouched", () => {
+  expect(setMovement["block" as EditorRoomItemId]).toEqual({
+    type: "block",
+    config: { style: "artificial" },
+    position: { x: 1, y: 0, z: 0 },
+  });
+});

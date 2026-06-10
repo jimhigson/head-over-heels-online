@@ -4,6 +4,7 @@ import { makeToasterConsolidationPredicate } from "../../../consolidateItems/toa
 import { type EditorJsonItemUnion } from "../../editorTypes";
 import { selectCurrentRoomFromLevelEditorState } from "../levelEditorSelectors";
 import { type LevelEditorState } from "../levelEditorSlice";
+import { clearContextMenuXyInPlace } from "../reducers/contextMenuReducers";
 
 export const consolidateCurrentRoomInPlace = (
   levelEditorSliceState: LevelEditorState,
@@ -33,4 +34,6 @@ export const consolidateCurrentRoomInPlace = (
   if (filtered.length !== levelEditorSliceState.selectedJsonItemIds.length) {
     levelEditorSliceState.selectedJsonItemIds = filtered;
   }
+
+  clearContextMenuXyInPlace(levelEditorSliceState);
 };

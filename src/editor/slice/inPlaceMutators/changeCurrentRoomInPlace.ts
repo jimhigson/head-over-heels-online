@@ -2,6 +2,7 @@ import { type RoomJson } from "../../../model/RoomJson";
 import { type EditorRoomId } from "../../editorTypes";
 import { selectCursorRoomId } from "../levelEditorSelectors";
 import { type LevelEditorState } from "../levelEditorSlice";
+import { clearContextMenuXyInPlace } from "../reducers/contextMenuReducers";
 
 export const firstSubRoomId = (roomJson: RoomJson<string, string>): string => {
   const subRoomKeys =
@@ -42,4 +43,5 @@ export const changeCurrentRoomInPlace = (
   state.hoveredItem = undefined;
   state.selectedJsonItemIds = [];
   state.hoveredUndoIndex = 0;
+  clearContextMenuXyInPlace(state);
 };
