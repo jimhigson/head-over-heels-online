@@ -46,6 +46,10 @@ export default defineConfig(({ mode: _mode }) => {
           registerType: "prompt",
           workbox: {
             globPatterns: ["**/*.{js,css,html,png,webp,opus,woff2}"],
+            // pixi's autoDetectRenderer lazy-imports these but webgl is first
+            // in renderPriority and always wins on supported browsers, so
+            // these chunks can never execute - don't precache them
+            globIgnores: ["**/WebGPURenderer-*.js", "**/CanvasRenderer-*.js"],
             // visual-regression builds are unminified so assets are larger
             ...(mode === "visual-regression" && {
               maximumFileSizeToCacheInBytes: 5 * 1024 * 1024,
