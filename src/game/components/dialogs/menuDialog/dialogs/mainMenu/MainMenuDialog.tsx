@@ -178,7 +178,7 @@ export const MainMenuDialog = (_emptyProps: EmptyObject) => {
   useGetAllUsersLatestCampaignsQuery({ publishedOnly: true });
 
   useEffect(() => {
-    // readiness signal for network-cost measurement (real-site-size)
+    // readiness signal for network-cost measurement (true-site-size)
     performance.mark("menu-ready");
   }, []);
 

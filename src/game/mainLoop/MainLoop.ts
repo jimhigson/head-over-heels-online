@@ -408,7 +408,7 @@ export class MainLoop<RoomId extends string> {
       timingRecord?.endPixiRender();
       if (!this.#firstFrameMarked) {
         this.#firstFrameMarked = true;
-        // readiness signal for network-cost measurement (real-site-size)
+        // readiness signal for network-cost measurement (true-site-size)
         performance.mark("first-gameplay");
       }
       if (import.meta.env.MODE === "visual-regression") {

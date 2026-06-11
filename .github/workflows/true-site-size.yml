@@ -18,7 +18,7 @@ jobs:
         with:
           node-version: 25.x
           cache: pnpm
-      - uses: jimhigson/real-site-size@main
+      - uses: jimhigson/true-site-size@main
         with:
           install-command: pnpm install --frozen-lockfile
           build-command: pnpm build:game
@@ -27,7 +27,7 @@ jobs:
           # temporarily comparing against the marks-only baseline branch so
           # this demo PR can show a delta (main has no performance marks yet);
           # remove base-ref once marks are merged to main
-          base-ref: real-site-size-baseline
+          base-ref: true-site-size-baseline
           scenarios: |
             [
               { "name": "main menu", "url": "/?track=0", "mark": "menu-ready" },

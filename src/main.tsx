@@ -9,7 +9,7 @@ import { Dialog } from "./ui/Dialog";
 import { LoadingBorder } from "./ui/LoadingBorder";
 import { importOnceForReactSuspense } from "./utils/importOnce";
 
-// deliberate junk to prove the real-site-size action reports startup weight -
+// deliberate junk to prove the true-site-size action reports startup weight -
 // remove before merging
 void fetch(junkAssetUrl);
 
