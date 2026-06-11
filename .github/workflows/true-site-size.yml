@@ -18,8 +18,10 @@ jobs:
         with:
           node-version: 25.x
           cache: pnpm
-      - uses: jimhigson/true-site-size@main
+      - name: game size
+        uses: jimhigson/true-site-size@main
         with:
+          comment-key: game
           install-command: pnpm install --frozen-lockfile
           build-command: pnpm build:game
           serve-dir: dist
@@ -39,4 +41,19 @@ jobs:
               { "click": "[data-menuitem_id=\"playGame\"]" },
               { "click": "[data-menuitem_id=\"originalGame\"]" },
               { "row": "start original campaign", "mark": "first-gameplay" }
+            ]
+      - name: editor size
+        uses: jimhigson/true-site-size@main
+        with:
+          comment-key: editor
+          install-command: pnpm install --frozen-lockfile
+          build-command: pnpm build:editor
+          # the editor builds into dist/editor and serves from /editor/
+          serve-dir: dist
+          compression: gzip
+          base-ref: ${{ startsWith(github.head_ref, 'release-please--') && 'production' || '' }}
+          journey: |
+            [
+              { "goto": "/editor/" },
+              { "row": "editor", "mark": "editor-ready" }
             ]
