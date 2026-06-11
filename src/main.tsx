@@ -4,9 +4,14 @@ import "./index.css";
 import { Suspense } from "react";
 
 import { importAppOnce } from "./game/components/App.import";
+import junkAssetUrl from "./junkAsset.png";
 import { Dialog } from "./ui/Dialog";
 import { LoadingBorder } from "./ui/LoadingBorder";
 import { importOnceForReactSuspense } from "./utils/importOnce";
+
+// deliberate junk to prove the real-site-size action reports startup weight -
+// remove before merging
+void fetch(junkAssetUrl);
 
 if (!import.meta.env.TAURI_ENV_PLATFORM) {
   import("./registerAppSW");
