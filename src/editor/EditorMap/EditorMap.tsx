@@ -1,3 +1,4 @@
+import { useEffect } from "preact/hooks";
 import { type KeyboardEvent } from "react";
 
 import { createClickableRoomBehaviour } from "../../game/components/dialogs/menuDialog/dialogs/map/createClickableRoomBehaviour";
@@ -189,6 +190,15 @@ const EditorMap = () => {
   const selectedRoomIds = useEditorAppSelector(
     (state) => state.levelEditor.selectedRoomIds,
   );
+
+  const mapRendering = mapContainerHeight !== 0 && !mapData.isError;
+  useEffect(() => {
+    if (mapRendering) {
+      // readiness signal for network-cost measurement (true-site-size)
+      performance.mark("editor-map-ready");
+    }
+  }, [mapRendering]);
+
   if (mapData.isError) {
     throw new Error(
       `Could not solve map geometry:\n${mapData.errors.join("\n")}`,

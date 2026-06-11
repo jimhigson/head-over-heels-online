@@ -30,6 +30,8 @@ const JsonRoomEditor = () => {
 
   const handleEditorMount = (mountedEditor: editor.IStandaloneCodeEditor) => {
     setEditor(mountedEditor);
+    // readiness signal for network-cost measurement (true-site-size)
+    performance.mark("editor-monaco-ready");
     // onLanguage("json") fires when the editor first attaches a JSON model and
     // sets up the token provider asynchronously via getMode().then(setupMode).
     // Monaco re-tokenizes lazily — visible lines aren't tokenized until the
