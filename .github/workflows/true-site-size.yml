@@ -8,9 +8,36 @@ permissions:
   contents: read
   pull-requests: write
 
+concurrency:
+  group: true-site-size-${{ github.ref }}
+  cancel-in-progress: true
+
 jobs:
   measure:
     runs-on: ubuntu-latest
+    strategy:
+      fail-fast: false
+      matrix:
+        include:
+          - target: game
+            build-command: pnpm build:game
+            journey: |
+              [
+                { "goto": "/?track=0" },
+                { "row": "main menu", "mark": "menu-ready" },
+                { "click": "[data-menuitem_id=\"playGame\"]" },
+                { "click": "[data-menuitem_id=\"originalGame\"]" },
+                { "row": "start original campaign", "mark": "first-gameplay" }
+              ]
+          - target: editor
+            build-command: pnpm build:editor
+            # the editor builds into dist/editor and serves from /editor/
+            journey: |
+              [
+                { "goto": "/editor/" },
+                { "row": "editor", "mark": "editor-ready" }
+              ]
+    name: ${{ matrix.target }} size
     steps:
       - uses: actions/checkout@v6
       - uses: pnpm/action-setup@v5
@@ -18,12 +45,11 @@ jobs:
         with:
           node-version: 25.x
           cache: pnpm
-      - name: game size
-        uses: jimhigson/true-site-size@main
+      - uses: jimhigson/true-site-size@main
         with:
-          comment-key: game
+          comment-key: ${{ matrix.target }}
           install-command: pnpm install --frozen-lockfile
-          build-command: pnpm build:game
+          build-command: ${{ matrix.build-command }}
           serve-dir: dist
           compression: gzip
           # the campaigns db read on menu load returns live data whose size
@@ -34,26 +60,4 @@ jobs:
           # (= previous release) to show the cumulative change across the
           # whole release rather than the empty diff of a version bump.
           base-ref: ${{ startsWith(github.head_ref, 'release-please--') && 'production' || '' }}
-          journey: |
-            [
-              { "goto": "/?track=0" },
-              { "row": "main menu", "mark": "menu-ready" },
-              { "click": "[data-menuitem_id=\"playGame\"]" },
-              { "click": "[data-menuitem_id=\"originalGame\"]" },
-              { "row": "start original campaign", "mark": "first-gameplay" }
-            ]
-      - name: editor size
-        uses: jimhigson/true-site-size@main
-        with:
-          comment-key: editor
-          install-command: pnpm install --frozen-lockfile
-          build-command: pnpm build:editor
-          # the editor builds into dist/editor and serves from /editor/
-          serve-dir: dist
-          compression: gzip
-          base-ref: ${{ startsWith(github.head_ref, 'release-please--') && 'production' || '' }}
-          journey: |
-            [
-              { "goto": "/editor/" },
-              { "row": "editor", "mark": "editor-ready" }
-            ]
+          journey: ${{ matrix.journey }}
