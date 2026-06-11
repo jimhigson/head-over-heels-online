@@ -27,7 +27,7 @@ jobs:
                 { "row": "main menu", "mark": "menu-ready" },
                 { "click": "[data-menuitem_id=\"playGame\"]" },
                 { "click": "[data-menuitem_id=\"originalGame\"]" },
-                { "row": "start original campaign", "mark": "first-gameplay" }
+                { "row": "play game", "mark": "first-gameplay" }
               ]
           - target: editor
             build-command: pnpm build:editor
@@ -56,6 +56,8 @@ jobs:
           # varies over time - exclude it from byte counts (it still appears,
           # tagged, in the run-log breakdown)
           ignore-url-patterns: '["supabase\\.co"]'
+          # same threshold as compressed-size.yml
+          minimum-change-threshold: 50
           # For release-please PRs, compare against the production branch
           # (= previous release) to show the cumulative change across the
           # whole release rather than the empty diff of a version bump.
