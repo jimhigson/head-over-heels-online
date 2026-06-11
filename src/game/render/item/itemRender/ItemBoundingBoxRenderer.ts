@@ -1,4 +1,4 @@
-import { type ColorSource, Container, Graphics, Text } from "pixi.js";
+import { Color, type ColorSource, Container, Graphics } from "pixi.js";
 
 import { type ItemInPlayType } from "../../../../model/ItemInPlay";
 import { selectShowBoundingBoxTypesSet } from "../../../../store/slices/gameMenus/gameMenusSelectors";
@@ -7,6 +7,7 @@ import { type Aabb } from "../../../../utils/vectors/vectors";
 import { isItemType } from "../../../physics/itemPredicates";
 import { type ItemRenderContext } from "../../ItemRenderContexts";
 import { projectWorldXyzToScreenXy } from "../../projections";
+import { TextContainer } from "../../text/TextContainer";
 import { type ItemPixiRenderer } from "./ItemPixiRenderer";
 
 const addCuboidPaths = (cuboid: Aabb, graphics: Graphics) => {
@@ -200,25 +201,33 @@ export class ItemBoundingBoxRenderer<T extends ItemInPlayType>
     }
 
     this.#container.eventMode = "static";
-    let textNode: Text | undefined;
+    // the game's own sprite-font (TextContainer), not pixi's Text: this is
+    // the only Text usage in the game/editor, so avoiding it lets the
+    // bundler tree-shake all of pixi's text rendering away
+    let textNode: Container | undefined;
     this.#container.on("pointerenter", () => {
       if (textNode !== undefined) {
         return;
       }
-      const text = `${item.id} ${item.type}
-@(${item.state.position.x}, ${item.state.position.y}, ${item.state.position.z})}
-#(${item.aabb.x}, ${item.aabb.y}, ${item.aabb.z})}`;
-      this.#container.addChild(
-        (textNode = new Text({
-          text,
-          style: {
-            fill: color,
-            fontSize: 6,
-            fontFamily: "Menlo",
-          },
-        })),
-      );
-      textNode.resolution = 4;
+      const { pixiRenderer, spritesheetVariants } = this.renderContext.general;
+      const lines = [
+        `${item.id} ${item.type}`,
+        `at (${item.state.position.x}, ${item.state.position.y}, ${item.state.position.z})`,
+        `aabb (${item.aabb.x}, ${item.aabb.y}, ${item.aabb.z})`,
+      ];
+      textNode = new Container({ label: "bbHoverInfo" });
+      for (const [i, line] of lines.entries()) {
+        textNode.addChild(
+          new TextContainer({
+            pixiRenderer,
+            spritesheet: spritesheetVariants.originalSpritesheet,
+            text: line,
+            colour: new Color(color),
+            y: i * 10,
+          }),
+        );
+      }
+      this.#container.addChild(textNode);
     });
     this.#container.on("pointerleave", () => {
       if (textNode === undefined) {
