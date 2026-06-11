@@ -1,3 +1,4 @@
+import { useEffect } from "preact/hooks";
 import { type KeyboardEvent } from "react";
 
 import { createClickableRoomBehaviour } from "../../game/components/dialogs/menuDialog/dialogs/map/createClickableRoomBehaviour";
@@ -12,6 +13,7 @@ import { useElementSize } from "../../utils/react/useElementSize";
 import { unitVectors } from "../../utils/vectors/unitVectors";
 import { addXyz, xyzEqual } from "../../utils/vectors/vectors";
 import { EditorErrorBoundary } from "../EditorErrorBoundary";
+import { editorPartReady } from "../editorReadyMark";
 import { type EditorRoomId } from "../editorTypes";
 import { LazyEditorMapRoomTooltipBehaviour } from "../roomPreview/LazyEditorMapRoomTooltipBehaviour";
 import { selectCursorRoom } from "../slice/levelEditorSelectors";
@@ -189,6 +191,14 @@ const EditorMap = () => {
   const selectedRoomIds = useEditorAppSelector(
     (state) => state.levelEditor.selectedRoomIds,
   );
+
+  const mapRendering = mapContainerHeight !== 0 && !mapData.isError;
+  useEffect(() => {
+    if (mapRendering) {
+      editorPartReady("map");
+    }
+  }, [mapRendering]);
+
   if (mapData.isError) {
     throw new Error(
       `Could not solve map geometry:\n${mapData.errors.join("\n")}`,

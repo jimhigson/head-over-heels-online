@@ -1,4 +1,3 @@
-import { useEffect } from "preact/hooks";
 import { Suspense } from "react";
 import { Panel, PanelGroup, PanelResizeHandle } from "react-resizable-panels";
 
@@ -14,11 +13,6 @@ import { LevelEditorToolbar } from "./toolbar/LevelEditorToolbar";
 
 const LevelEditor = () => {
   usePageAsAnApp();
-
-  useEffect(() => {
-    // readiness signal for network-cost measurement (true-site-size)
-    performance.mark("editor-ready");
-  }, []);
 
   return (
     <EditorErrorBoundary asDialog>
