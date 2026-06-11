@@ -137,6 +137,8 @@ export class MainLoop<RoomId extends string> {
     this.#app.stage.filters = topLevelFilters(displaySettings, upscale);
   }
 
+  #firstFrameMarked = false;
+
   #tickAndCatch = (ticker: Ticker): void => {
     try {
       this.#tick(ticker);
@@ -404,6 +406,11 @@ export class MainLoop<RoomId extends string> {
       timingRecord?.startPixiRender();
       this.#app.render();
       timingRecord?.endPixiRender();
+      if (!this.#firstFrameMarked) {
+        this.#firstFrameMarked = true;
+        // readiness signal for network-cost measurement (real-site-size)
+        performance.mark("first-gameplay");
+      }
       if (import.meta.env.MODE === "visual-regression") {
         if (createNewRoomRenderer && tickEndRoom) {
           window.dispatchEvent(

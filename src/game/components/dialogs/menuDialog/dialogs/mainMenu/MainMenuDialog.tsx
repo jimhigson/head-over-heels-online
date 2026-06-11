@@ -177,6 +177,11 @@ export const MainMenuDialog = (_emptyProps: EmptyObject) => {
    */
   useGetAllUsersLatestCampaignsQuery({ publishedOnly: true });
 
+  useEffect(() => {
+    // readiness signal for network-cost measurement (real-site-size)
+    performance.mark("menu-ready");
+  }, []);
+
   const isGameRunning = useIsGameRunning();
 
   const showCrowns = useDispatchActionCallback(goToSubmenu, "crowns");

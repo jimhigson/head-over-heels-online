@@ -1,0 +1,35 @@
+name: real site size
+
+on:
+  pull_request:
+    branches: [main]
+
+permissions:
+  contents: read
+  pull-requests: write
+
+jobs:
+  measure:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v6
+      - uses: pnpm/action-setup@v5
+      - uses: actions/setup-node@v6
+        with:
+          node-version: 25.x
+          cache: pnpm
+      - uses: jimhigson/real-site-size@main
+        with:
+          install-command: pnpm install --frozen-lockfile
+          build-command: pnpm build:game
+          serve-dir: dist
+          compression: gzip
+          # temporarily comparing against the marks-only baseline branch so
+          # this demo PR can show a delta (main has no performance marks yet);
+          # remove base-ref once marks are merged to main
+          base-ref: real-site-size-baseline
+          scenarios: |
+            [
+              { "name": "main menu", "url": "/?track=0", "mark": "menu-ready" },
+              { "name": "first gameplay", "url": "/?campaignName=data%3AH4sIAAAAAAAAE7VYXY_qNhD9K9TPicTXssBbV5V6-1JV7ZX6UFWriT1JLBzbsp1l0xX_vXKSBScQCC3LC_kYnzkzczy280EKdEC2H0SXieA2R0a2KQiLh4gIRcEp499SKDTwTP4KBZItsXul7atD60hESovmF0a2ZL6ZL-lmNY83m3QWLxmbx5tkQ-MU0_VizuhmM0tIRN7QWK4k2U4PETFKFdZ78BevU3_FPVZ7GxEtQKIjW5IIoDunlMtJRKgSDbG89HxoBZJExObA_G0CllNyiAh32KCnQjX2rtLeorn3ODLl2dHie_PWOpAMEoEek6JEU_UJOF5gjfxOtuuIVGS7PhwiopXlrg6ufjOt30wj8o-P9hARp_ZgmP0ThAjY7P1tSIZxg7TB-RzS9znGm-FZ7u7xVQ8IPY2NiyEwUb0IRXeBr_Bp6NK6SmAdGliHphfafIxD2EN1T2TevvYjvJ-_vKy4bORV_4MpVGlqDXEULLw4vuqO-XuI5frEMvGhv84DkslgMpTJQHJKIsK4Ba0RDJe1RR1ArUmv6bA2ywupmtcklicSAtO7RODtvzxV635B7Z47mgcc2wchSy654yD-QOfq1BypNiO4jH3bIBEpFOMpr-l_EHzXSF07tQslW8kBdfwNnDdypsTDYD2fA5mDwFDgJ7QTyX3OfRytrefyhgVK38I0OKNEbEAyVYgqZhwyJUEEbHzvU5Kcc3nuc6FVgqYAOZLO0fzMV4di221iJWObK-NbfAzv3Mbv1dJX2oFxP13oTkOEV0GFd_wbAhvJ99M6Ok6QzCDKHyX7jcvdjSgSoLs4VaZu1XdzfjpxzlFwqrRD81JmI5l3x1wn2lfEe7UepBVMaVca53Myik9rfJ0I9X1pzy3el7BFn1muCi6zF-XGJutoP06XznCtkXl9HmU5lLB5MFlUoUtfkdHEwhH31nAZg2SxQb_TwUF6s2CdKJNE4O8qGU0vHPEIia36_bhQcofVSDat8d15GiQS9DkUqHOQYxNzNH8Emaegh81CMnc0ss6QGyIvjYydirWAqka7Yyau-q0LC42ms-m9yrK1HjcLQYJQWXlJ26uzjtBN1TG2S40T2AXEWX8h0ZzuSh1iNg9CzIy_-ZWd5Er5kK-jLk-onc3aFVymyiyXpbtUihD6KYBePBZ6FUAvHwv9HEA_PRZ6HUCvHgu9CaCfHws9O98NdJTyqP3AiAk273fqduran0swjI_eEJ4Nu49ZXEqB1sbN-TymRu3lpSwu-2vd50Z0dP6Gdq5p-lVb1_C0OQtEtR4nqvY4dENRs04yFv8vGZA6NO26EUsE81WpmfVTkyMKO7a_e9OhdJ81-NfNuHQnkN0AbY_JxvlvOv2PFN3nl07mzJTFYCqCla6D1F1I_quP6XUfi8fFsRjysXxcHIuzEs-mI6cUNar-ZGFVaWhz2Bdc-tNKAWbH1N7L9huffFdaV9GktDhxObcTDRlOnJrQHOlu4r-sJALZBCSbfPZ-h2xiteEO7Q83SjA71L9_AZmjZFo2FQAA&campaignAuthorUserId=editorUser&cheats=1&track=0", "mark": "first-gameplay" }
+            ]
