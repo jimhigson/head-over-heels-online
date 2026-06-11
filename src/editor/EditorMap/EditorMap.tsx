@@ -13,7 +13,6 @@ import { useElementSize } from "../../utils/react/useElementSize";
 import { unitVectors } from "../../utils/vectors/unitVectors";
 import { addXyz, xyzEqual } from "../../utils/vectors/vectors";
 import { EditorErrorBoundary } from "../EditorErrorBoundary";
-import { editorPartReady } from "../editorReadyMark";
 import { type EditorRoomId } from "../editorTypes";
 import { LazyEditorMapRoomTooltipBehaviour } from "../roomPreview/LazyEditorMapRoomTooltipBehaviour";
 import { selectCursorRoom } from "../slice/levelEditorSelectors";
@@ -195,7 +194,8 @@ const EditorMap = () => {
   const mapRendering = mapContainerHeight !== 0 && !mapData.isError;
   useEffect(() => {
     if (mapRendering) {
-      editorPartReady("map");
+      // readiness signal for network-cost measurement (true-site-size)
+      performance.mark("editor-map-ready");
     }
   }, [mapRendering]);
 

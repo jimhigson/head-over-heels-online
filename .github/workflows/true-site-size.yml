@@ -35,7 +35,7 @@ jobs:
             journey: |
               [
                 { "goto": "/editor/" },
-                { "row": "editor", "mark": "editor-ready" }
+                { "row": "editor", "marks": ["editor-monaco-ready", "editor-map-ready"] }
               ]
     name: ${{ matrix.target }} size
     steps:

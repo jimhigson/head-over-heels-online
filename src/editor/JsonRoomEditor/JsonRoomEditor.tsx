@@ -3,7 +3,6 @@ import { type editor } from "monaco-editor";
 import { useState } from "preact/hooks";
 
 import { useEditorAppSelector } from "../../store/store";
-import { editorPartReady } from "../editorReadyMark";
 import { selectCursorRoomId } from "../slice/levelEditorSelectors";
 import { useMonacoSuggestions } from "./suggestions/useMonacoSuggestions";
 import { useItemIconDecorations } from "./useItemIconDecorations";
@@ -31,7 +30,8 @@ const JsonRoomEditor = () => {
 
   const handleEditorMount = (mountedEditor: editor.IStandaloneCodeEditor) => {
     setEditor(mountedEditor);
-    editorPartReady("monaco");
+    // readiness signal for network-cost measurement (true-site-size)
+    performance.mark("editor-monaco-ready");
     // onLanguage("json") fires when the editor first attaches a JSON model and
     // sets up the token provider asynchronously via getMode().then(setupMode).
     // Monaco re-tokenizes lazily — visible lines aren't tokenized until the
