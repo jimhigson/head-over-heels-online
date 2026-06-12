@@ -4,3 +4,5 @@ allowBuilds:
   supabase: true
 minimumReleaseAgeExclude:
   - '@blockstacking/jims-shaders@0.4.5'
+patchedDependencies:
+  pixi.js: patches/pixi.js.patch

@@ -1,0 +1,300 @@
+diff --git a/lib/environment-browser/browserAll.mjs b/lib/environment-browser/browserAll.mjs
+index b8f3fef4d30fa42012d7d8a0093b645ce950259c..6070bc8e8ebba9286c1d91c6f4b5568e616a8f26 100644
+--- a/lib/environment-browser/browserAll.mjs
++++ b/lib/environment-browser/browserAll.mjs
+@@ -1,4 +1,4 @@
+-import '../accessibility/init.mjs';
++// patched: accessibility system removed - the game does not use it
+ import '../events/init.mjs';
+ import '../spritesheet/init.mjs';
+ import '../rendering/init.mjs';
+diff --git a/lib/rendering/batcher/shared/DefaultShader.mjs b/lib/rendering/batcher/shared/DefaultShader.mjs
+index 43a692c8104743427c5748ad69443765ee268307..90eb50ff8795124ab4ecfcf20b01c1bd5a7e5c9f 100644
+--- a/lib/rendering/batcher/shared/DefaultShader.mjs
++++ b/lib/rendering/batcher/shared/DefaultShader.mjs
+@@ -1,11 +1,13 @@
+-import { compileHighShaderGlProgram, compileHighShaderGpuProgram } from '../../high-shader/compileHighShaderToProgram.mjs';
+-import { colorBitGl, colorBit } from '../../high-shader/shader-bits/colorBit.mjs';
+-import { generateTextureBatchBitGl, generateTextureBatchBit } from '../../high-shader/shader-bits/generateTextureBatchBit.mjs';
+-import { roundPixelsBitGl, roundPixelsBit } from '../../high-shader/shader-bits/roundPixelsBit.mjs';
++import { compileHighShaderGlProgram } from '../../high-shader/compileHighShaderToProgram.mjs';
++import { colorBitGl } from '../../high-shader/shader-bits/colorBit.mjs';
++import { generateTextureBatchBitGl } from '../../high-shader/shader-bits/generateTextureBatchBit.mjs';
++import { roundPixelsBitGl } from '../../high-shader/shader-bits/roundPixelsBit.mjs';
+ import { getBatchSamplersUniformGroup } from '../../renderers/gl/shader/getBatchSamplersUniformGroup.mjs';
+ import { Shader } from '../../renderers/shared/shader/Shader.mjs';
+ 
+ "use strict";
++// patched: webgpu program construction removed - this build is webgl-only,
++// so the wgsl shader sources and GpuProgram machinery can be tree-shaken
+ class DefaultShader extends Shader {
+   constructor(maxTextures) {
+     const glProgram = compileHighShaderGlProgram({
+@@ -16,17 +18,8 @@ class DefaultShader extends Shader {
+         roundPixelsBitGl
+       ]
+     });
+-    const gpuProgram = compileHighShaderGpuProgram({
+-      name: "batch",
+-      bits: [
+-        colorBit,
+-        generateTextureBatchBit(maxTextures),
+-        roundPixelsBit
+-      ]
+-    });
+     super({
+       glProgram,
+-      gpuProgram,
+       resources: {
+         batchSamplers: getBatchSamplersUniformGroup(maxTextures)
+       }
+diff --git a/lib/rendering/renderers/autoDetectRenderer.mjs b/lib/rendering/renderers/autoDetectRenderer.mjs
+index 300cfe066ea20316e21657a7551f0f54f285fc8c..ad3dfe99024f55e31a91ff6691ba50c4f917b261 100644
+--- a/lib/rendering/renderers/autoDetectRenderer.mjs
++++ b/lib/rendering/renderers/autoDetectRenderer.mjs
+@@ -1,54 +1,28 @@
+ import { isWebGLSupported } from '../../utils/browser/isWebGLSupported.mjs';
+-import { isWebGPUSupported } from '../../utils/browser/isWebGPUSupported.mjs';
+ import { AbstractRenderer } from './shared/system/AbstractRenderer.mjs';
++import { WebGLRenderer } from './gl/WebGLRenderer.mjs';
+ 
+ "use strict";
+-const renderPriority = ["webgl", "webgpu", "canvas"];
++// patched (see patches/ in the consuming repo): always uses the webgl
++// renderer, importing it statically. The upstream version dynamically
++// imports whichever of webgpu/webgl/canvas it detects; this build only ever
++// renders with webgl, so the static import lets the bundler tree-shake the
++// webgpu and canvas renderers away entirely (and avoids a rolldown chunking
++// bug that placed shared modules like Graphics inside the never-loaded
++// renderer chunks, forcing them to download eagerly).
+ async function autoDetectRenderer(options) {
+-  let preferredOrder = [];
+-  if (options.preference) {
+-    preferredOrder.push(options.preference);
+-    renderPriority.forEach((item) => {
+-      if (item !== options.preference) {
+-        preferredOrder.push(item);
+-      }
+-    });
+-  } else {
+-    preferredOrder = renderPriority.slice();
+-  }
+-  let RendererClass;
+-  let finalOptions = {};
+-  for (let i = 0; i < preferredOrder.length; i++) {
+-    const rendererType = preferredOrder[i];
+-    if (rendererType === "webgpu" && await isWebGPUSupported()) {
+-      const { WebGPURenderer } = await import('./gpu/WebGPURenderer.mjs');
+-      RendererClass = WebGPURenderer;
+-      finalOptions = { ...options, ...options.webgpu };
+-      break;
+-    } else if (rendererType === "webgl" && isWebGLSupported(
+-      options.failIfMajorPerformanceCaveat ?? AbstractRenderer.defaultOptions.failIfMajorPerformanceCaveat
+-    )) {
+-      const { WebGLRenderer } = await import('./gl/WebGLRenderer.mjs');
+-      RendererClass = WebGLRenderer;
+-      finalOptions = { ...options, ...options.webgl };
+-      break;
+-    } else if (rendererType === "canvas") {
+-      const { CanvasRenderer } = await import('./canvas/CanvasRenderer.mjs');
+-      RendererClass = CanvasRenderer;
+-      finalOptions = { ...options, ...options.canvasOptions };
+-      break;
+-    }
++  if (!isWebGLSupported(
++    options.failIfMajorPerformanceCaveat ?? AbstractRenderer.defaultOptions.failIfMajorPerformanceCaveat
++  )) {
++    throw new Error("webgl is not supported - this is a webgl-only build of pixi.js");
+   }
++  const finalOptions = { ...options, ...options.webgl };
+   delete finalOptions.webgpu;
+   delete finalOptions.webgl;
+   delete finalOptions.canvasOptions;
+-  if (!RendererClass) {
+-    throw new Error("No available renderer for the current environment");
+-  }
+-  const renderer = new RendererClass();
++  const renderer = new WebGLRenderer();
+   await renderer.init(finalOptions);
+   return renderer;
+ }
+ 
+ export { autoDetectRenderer };
+-//# sourceMappingURL=autoDetectRenderer.mjs.map
+diff --git a/lib/scene/graphics/init.mjs b/lib/scene/graphics/init.mjs
+index 084ce3493a08b04ad7ab876b255c08c64fa2fa5f..49ddf2cfb1ea3c162ebcda2066c1e43e9267f39c 100644
+--- a/lib/scene/graphics/init.mjs
++++ b/lib/scene/graphics/init.mjs
+@@ -1,12 +1,9 @@
+ import { extensions } from '../../extensions/Extensions.mjs';
+-import { CanvasGraphicsContextSystem } from './canvas/CanvasGraphicsContextSystem.mjs';
+-import { CanvasGraphicsPipe } from './canvas/CanvasGraphicsPipe.mjs';
+ import { GraphicsContextSystem } from './shared/GraphicsContextSystem.mjs';
+ import { GraphicsPipe } from './shared/GraphicsPipe.mjs';
+ 
+ "use strict";
+-extensions.add(CanvasGraphicsPipe);
++// patched: canvas-renderer pipes removed - this build is webgl-only
+ extensions.add(GraphicsPipe);
+-extensions.add(CanvasGraphicsContextSystem);
+ extensions.add(GraphicsContextSystem);
+ //# sourceMappingURL=init.mjs.map
+diff --git a/lib/scene/sprite-nine-slice/init.mjs b/lib/scene/sprite-nine-slice/init.mjs
+index 7b430fc37f5ec364e18c86a4085a23ab03fcc623..4ae272fcdb526cd75963a890c0d2627a2cd7fd1a 100644
+--- a/lib/scene/sprite-nine-slice/init.mjs
++++ b/lib/scene/sprite-nine-slice/init.mjs
+@@ -1,8 +1,7 @@
+ import { extensions } from '../../extensions/Extensions.mjs';
+-import { CanvasNineSliceSpritePipe } from './canvas/CanvasNineSliceSpritePipe.mjs';
+ import { NineSliceSpritePipe } from './NineSliceSpritePipe.mjs';
+ 
+ "use strict";
+-extensions.add(CanvasNineSliceSpritePipe);
++// patched: canvas-renderer pipe removed - this build is webgl-only
+ extensions.add(NineSliceSpritePipe);
+ //# sourceMappingURL=init.mjs.map
+diff --git a/lib/scene/sprite-tiling/init.mjs b/lib/scene/sprite-tiling/init.mjs
+index 813afdb6a99415a33523e273c6efd1e7bf0f5fcc..cab74d038d6cc11cb198a36b8ad1521eaf603057 100644
+--- a/lib/scene/sprite-tiling/init.mjs
++++ b/lib/scene/sprite-tiling/init.mjs
+@@ -1,8 +1,7 @@
+ import { extensions } from '../../extensions/Extensions.mjs';
+-import { CanvasTilingSpritePipe } from './canvas/CanvasTilingSpritePipe.mjs';
+ import { TilingSpritePipe } from './TilingSpritePipe.mjs';
+ 
+ "use strict";
+-extensions.add(CanvasTilingSpritePipe);
++// patched: canvas-renderer pipe removed - this build is webgl-only
+ extensions.add(TilingSpritePipe);
+ //# sourceMappingURL=init.mjs.map
+diff --git a/lib/scene/sprite-tiling/shader/TilingSpriteShader.mjs b/lib/scene/sprite-tiling/shader/TilingSpriteShader.mjs
+index 29c9cddfe7fee35bf74d2f264150039d6a6bdecf..21425bdc3e41f6425b6d0adcf92422424bb0e733 100644
+--- a/lib/scene/sprite-tiling/shader/TilingSpriteShader.mjs
++++ b/lib/scene/sprite-tiling/shader/TilingSpriteShader.mjs
+@@ -1,25 +1,18 @@
+ import { Matrix } from '../../../maths/matrix/Matrix.mjs';
+-import { compileHighShaderGpuProgram, compileHighShaderGlProgram } from '../../../rendering/high-shader/compileHighShaderToProgram.mjs';
+-import { localUniformBit, localUniformBitGl } from '../../../rendering/high-shader/shader-bits/localUniformBit.mjs';
+-import { roundPixelsBit, roundPixelsBitGl } from '../../../rendering/high-shader/shader-bits/roundPixelsBit.mjs';
++import { compileHighShaderGlProgram } from '../../../rendering/high-shader/compileHighShaderToProgram.mjs';
++import { localUniformBitGl } from '../../../rendering/high-shader/shader-bits/localUniformBit.mjs';
++import { roundPixelsBitGl } from '../../../rendering/high-shader/shader-bits/roundPixelsBit.mjs';
+ import { Shader } from '../../../rendering/renderers/shared/shader/Shader.mjs';
+ import { UniformGroup } from '../../../rendering/renderers/shared/shader/UniformGroup.mjs';
+ import { Texture } from '../../../rendering/renderers/shared/texture/Texture.mjs';
+-import { tilingBit, tilingBitGl } from './tilingBit.mjs';
++import { tilingBitGl } from './tilingBit.mjs';
+ 
+ "use strict";
+-let gpuProgram;
++// patched: webgpu program construction removed - this build is webgl-only,
++// so the wgsl shader sources and GpuProgram machinery can be tree-shaken
+ let glProgram;
+ class TilingSpriteShader extends Shader {
+   constructor() {
+-    gpuProgram ?? (gpuProgram = compileHighShaderGpuProgram({
+-      name: "tiling-sprite-shader",
+-      bits: [
+-        localUniformBit,
+-        tilingBit,
+-        roundPixelsBit
+-      ]
+-    }));
+     glProgram ?? (glProgram = compileHighShaderGlProgram({
+       name: "tiling-sprite-shader",
+       bits: [
+@@ -37,7 +30,6 @@ class TilingSpriteShader extends Shader {
+     });
+     super({
+       glProgram,
+-      gpuProgram,
+       resources: {
+         localUniforms: new UniformGroup({
+           uTransformMatrix: { value: new Matrix(), type: "mat3x3<f32>" },
+diff --git a/lib/scene/text/init.mjs b/lib/scene/text/init.mjs
+index 55903b0b11be1b19a5dbe3502af84f6ef78a24e4..16bd17eb42a9a2f452d3c253c20d7ed7d7abff92 100644
+--- a/lib/scene/text/init.mjs
++++ b/lib/scene/text/init.mjs
+@@ -1,10 +1,12 @@
+ import { extensions } from '../../extensions/Extensions.mjs';
+ import { CanvasTextPipe } from './canvas/CanvasTextPipe.mjs';
+-import { CanvasRendererTextSystem } from './canvas/CanvasTextSystem.mjs';
+ import { CanvasTextSystem } from './shared/GpuTextSystem.mjs';
+ 
+ "use strict";
+-extensions.add(CanvasRendererTextSystem);
++// patched: the canvas-renderer-only text system is removed - this build is
++// webgl-only. Despite the names, CanvasTextPipe and CanvasTextSystem are
++// kept: they implement the Text class (rasterised via canvas2d) for the
++// webgl renderer too
+ extensions.add(CanvasTextSystem);
+ extensions.add(CanvasTextPipe);
+ //# sourceMappingURL=init.mjs.map
+diff --git a/lib/scene/text/sdfShader/SdfShader.mjs b/lib/scene/text/sdfShader/SdfShader.mjs
+index b4975479641a4bf2ea09ebef8464560bf5201590..bb1d72991445b8a08c1a895f9e822a93c4780e5e 100644
+--- a/lib/scene/text/sdfShader/SdfShader.mjs
++++ b/lib/scene/text/sdfShader/SdfShader.mjs
+@@ -1,16 +1,17 @@
+ import { Matrix } from '../../../maths/matrix/Matrix.mjs';
+-import { compileHighShaderGpuProgram, compileHighShaderGlProgram } from '../../../rendering/high-shader/compileHighShaderToProgram.mjs';
+-import { colorBit, colorBitGl } from '../../../rendering/high-shader/shader-bits/colorBit.mjs';
+-import { generateTextureBatchBit, generateTextureBatchBitGl } from '../../../rendering/high-shader/shader-bits/generateTextureBatchBit.mjs';
+-import { roundPixelsBit, roundPixelsBitGl } from '../../../rendering/high-shader/shader-bits/roundPixelsBit.mjs';
++import { compileHighShaderGlProgram } from '../../../rendering/high-shader/compileHighShaderToProgram.mjs';
++import { colorBitGl } from '../../../rendering/high-shader/shader-bits/colorBit.mjs';
++import { generateTextureBatchBitGl } from '../../../rendering/high-shader/shader-bits/generateTextureBatchBit.mjs';
++import { roundPixelsBitGl } from '../../../rendering/high-shader/shader-bits/roundPixelsBit.mjs';
+ import { getBatchSamplersUniformGroup } from '../../../rendering/renderers/gl/shader/getBatchSamplersUniformGroup.mjs';
+ import { Shader } from '../../../rendering/renderers/shared/shader/Shader.mjs';
+ import { UniformGroup } from '../../../rendering/renderers/shared/shader/UniformGroup.mjs';
+-import { localUniformMSDFBit, localUniformMSDFBitGl } from './shader-bits/localUniformMSDFBit.mjs';
+-import { mSDFBit, mSDFBitGl } from './shader-bits/mSDFBit.mjs';
++import { localUniformMSDFBitGl } from './shader-bits/localUniformMSDFBit.mjs';
++import { mSDFBitGl } from './shader-bits/mSDFBit.mjs';
+ 
+ "use strict";
+-let gpuProgram;
++// patched: webgpu program construction removed - this build is webgl-only,
++// so the wgsl shader sources and GpuProgram machinery can be tree-shaken
+ let glProgram;
+ class SdfShader extends Shader {
+   constructor(maxTextures) {
+@@ -20,16 +21,6 @@ class SdfShader extends Shader {
+       uDistance: { value: 4, type: "f32" },
+       uRound: { value: 0, type: "f32" }
+     });
+-    gpuProgram ?? (gpuProgram = compileHighShaderGpuProgram({
+-      name: "sdf-shader",
+-      bits: [
+-        colorBit,
+-        generateTextureBatchBit(maxTextures),
+-        localUniformMSDFBit,
+-        mSDFBit,
+-        roundPixelsBit
+-      ]
+-    }));
+     glProgram ?? (glProgram = compileHighShaderGlProgram({
+       name: "sdf-shader",
+       bits: [
+@@ -42,7 +33,6 @@ class SdfShader extends Shader {
+     }));
+     super({
+       glProgram,
+-      gpuProgram,
+       resources: {
+         localUniforms: uniforms,
+         batchSamplers: getBatchSamplersUniformGroup(maxTextures)
+diff --git a/lib/scene/text-bitmap/init.mjs b/lib/scene/text-bitmap/init.mjs
+index 87ff6ec1c700da598c9fbbc46806e139e9977f4a..c5757168396ce314a1698ecf74eb259b585c8468 100644
+--- a/lib/scene/text-bitmap/init.mjs
++++ b/lib/scene/text-bitmap/init.mjs
+@@ -1,8 +1,7 @@
+ import { extensions } from '../../extensions/Extensions.mjs';
+-import { CanvasBitmapTextPipe } from './CanvasBitmapTextPipe.mjs';
+ import { BitmapTextPipe } from './GpuBitmapTextPipe.mjs';
+ 
+ "use strict";
+-extensions.add(CanvasBitmapTextPipe);
++// patched: canvas-renderer pipe removed - this build is webgl-only
+ extensions.add(BitmapTextPipe);
+ //# sourceMappingURL=init.mjs.map

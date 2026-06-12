@@ -4,13 +4,16 @@ settings:
   autoInstallPeers: true
   excludeLinksFromLockfile: false
 
+patchedDependencies:
+  pixi.js: 6c958ee45355bbad8e7a66d319664117e21f41e7bfdd5d9eea03dfbaa0af190a
+
 importers:
 
   .:
     dependencies:
       '@blockstacking/jims-shaders':
         specifier: ^0.4.5
-        version: 0.4.5(pixi.js@8.16.0)
+        version: 0.4.5(pixi.js@8.16.0(patch_hash=6c958ee45355bbad8e7a66d319664117e21f41e7bfdd5d9eea03dfbaa0af190a))
       '@floating-ui/react':
         specifier: ^0.27.19
         version: 0.27.19(react-dom@19.2.3(react@19.2.3))(react@19.2.3)
@@ -70,7 +73,7 @@ importers:
         version: 5.0.0
       pixi.js:
         specifier: 8.16.0
-        version: 8.16.0
+        version: 8.16.0(patch_hash=6c958ee45355bbad8e7a66d319664117e21f41e7bfdd5d9eea03dfbaa0af190a)
       preact:
         specifier: 11.0.0-beta.1
         version: 11.0.0-beta.1
@@ -6044,9 +6047,9 @@ snapshots:
       '@babel/helper-string-parser': 7.29.7
       '@babel/helper-validator-identifier': 7.29.7
 
-  '@blockstacking/jims-shaders@0.4.5(pixi.js@8.16.0)':
+  '@blockstacking/jims-shaders@0.4.5(pixi.js@8.16.0(patch_hash=6c958ee45355bbad8e7a66d319664117e21f41e7bfdd5d9eea03dfbaa0af190a))':
     dependencies:
-      pixi.js: 8.16.0
+      pixi.js: 8.16.0(patch_hash=6c958ee45355bbad8e7a66d319664117e21f41e7bfdd5d9eea03dfbaa0af190a)
 
   '@byteland/ink-scroll-bar@1.0.0(ink@7.0.0(@types/react@19.0.10)(react@19.2.3))(react@19.2.3)':
     dependencies:
@@ -9021,7 +9024,7 @@ snapshots:
     dependencies:
       pngjs: 7.0.0
 
-  pixi.js@8.16.0:
+  pixi.js@8.16.0(patch_hash=6c958ee45355bbad8e7a66d319664117e21f41e7bfdd5d9eea03dfbaa0af190a):
     dependencies:
       '@pixi/colord': 2.9.6
       '@types/earcut': 3.0.0
