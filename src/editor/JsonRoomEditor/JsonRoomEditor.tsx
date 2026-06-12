@@ -30,8 +30,24 @@ const JsonRoomEditor = () => {
 
   const handleEditorMount = (mountedEditor: editor.IStandaloneCodeEditor) => {
     setEditor(mountedEditor);
-    // readiness signal for network-cost measurement (true-site-size)
-    performance.mark("editor-monaco-ready");
+
+    // readiness signal for network-cost measurement (true-site-size): mark
+    // when monaco is rendering, not merely constructed - content size is
+    // known once the document has been measured and laid out, and the
+    // following animation frame is the first that paints it
+    const markOnNextFrame = () => {
+      requestAnimationFrame(() => {
+        performance.mark("editor-monaco-ready");
+      });
+    };
+    if (mountedEditor.getContentHeight() > 0) {
+      markOnNextFrame();
+    } else {
+      const contentSizeListener = mountedEditor.onDidContentSizeChange(() => {
+        contentSizeListener.dispose();
+        markOnNextFrame();
+      });
+    }
     // onLanguage("json") fires when the editor first attaches a JSON model and
     // sets up the token provider asynchronously via getMode().then(setupMode).
     // Monaco re-tokenizes lazily — visible lines aren't tokenized until the

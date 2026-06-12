@@ -6,12 +6,14 @@ import { Provider } from "react-redux";
 
 import { loadHeadOverHeelsFont } from "../sprites/loadHeadOverHeelsFont";
 import { store } from "../store/store";
+import { loadCodiconFont } from "./JsonRoomEditor/loadCodiconFont";
 import { LevelEditorLoader } from "./LevelEditorLoader";
 import { registerRoomPreviewListeners } from "./roomPreview/roomPreviewListeners";
 
 registerRoomPreviewListeners();
 
 loadHeadOverHeelsFont();
+loadCodiconFont();
 
 render(
   <Provider store={store}>
