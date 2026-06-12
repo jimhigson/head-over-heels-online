@@ -1,6 +1,7 @@
 import { type Application, Container, Rectangle, type Ticker } from "pixi.js";
 
 import { audioCtx } from "../../sound/audioCtx";
+import { ensureRoomSoundsLoaded } from "../../sound/ensureRoomSoundsLoaded";
 import { spritesheetMetaForOption } from "../../sprites/spritesheet/spritesheetData/spritesheetMetaData";
 import { type SpritesheetVariants } from "../../sprites/spritesheet/variants/SpritesheetVariants";
 import {
@@ -64,6 +65,13 @@ export class MainLoop<RoomId extends string> {
    * resumes on the next tick
    */
   #spritesheetLoadPromise: Promise<void> | undefined;
+
+  /**
+   * like {@link MainLoop.#spritesheetLoadPromise}, but for the new room's
+   * entry tune, which is loaded on first entry rather than with the initial
+   * sounds
+   */
+  #roomSoundsLoadPromise: Promise<void> | undefined;
 
   #mainContainer = new Container({
     label: "MainLoop/mainContainer",
@@ -271,8 +279,32 @@ export class MainLoop<RoomId extends string> {
       }
     }
 
-    if (this.#spritesheetLoadPromise !== undefined) {
-      // still loading a spritesheet — skip rendering
+    if (
+      roomChanged &&
+      tickEndRoom !== undefined &&
+      this.#roomSoundsLoadPromise === undefined
+    ) {
+      // the room entry tunes are excluded from the initial sound load - if
+      // this room names one that isn't loaded yet, hold off rendering until
+      // it is, like a spritesheet variant load
+      const roomSoundsPromise = ensureRoomSoundsLoaded(tickEndRoom);
+      if (roomSoundsPromise !== undefined) {
+        this.#roomSoundsLoadPromise = roomSoundsPromise
+          .then(() => {
+            this.#roomSoundsLoadPromise = undefined;
+          })
+          .catch((e) => {
+            this.#roomSoundsLoadPromise = undefined;
+            this.#handleError(e);
+          });
+      }
+    }
+
+    if (
+      this.#spritesheetLoadPromise !== undefined ||
+      this.#roomSoundsLoadPromise !== undefined
+    ) {
+      // still loading a spritesheet or the room's sounds — skip rendering
       return;
     }
 

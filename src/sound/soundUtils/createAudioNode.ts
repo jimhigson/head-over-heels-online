@@ -46,6 +46,11 @@ export const createAudioNode = (
     return node;
   }
   const buffer = loadedSounds()[soundId];
+  if (buffer === undefined) {
+    throw new Error(
+      `sound "${soundId}" is not loaded - room entry tunes must go through ensureSoundsLoaded before they can play`,
+    );
+  }
   node.buffer = buffer;
 
   const loopLead =
