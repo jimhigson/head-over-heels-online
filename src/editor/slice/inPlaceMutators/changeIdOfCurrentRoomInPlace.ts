@@ -39,19 +39,16 @@ export const changeIdOfCurrentRoomInPlace = (
         item.config.toRoom = newRoomId;
       });
 
-    // update any non-contiguous relationships with the old room id
-    const ncrWith = room.meta?.nonContiguousRelationship?.with;
-    if (ncrWith?.room === prevRoomId) {
-      ncrWith.room = newRoomId;
-    }
-
-    // update above/below room references
+    // update above/below and non-contiguous-relationship room references
     for (const holder of roomVerticalLinkHolders(room)) {
       if (holder.above?.room === prevRoomId) {
         holder.above.room = newRoomId;
       }
       if (holder.below?.room === prevRoomId) {
         holder.below.room = newRoomId;
+      }
+      if (holder.nonContiguousRelationship?.with.room === prevRoomId) {
+        holder.nonContiguousRelationship.with.room = newRoomId;
       }
     }
   }

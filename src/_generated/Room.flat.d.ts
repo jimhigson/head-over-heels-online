@@ -4400,6 +4400,17 @@ export type RoomJsonSchema = {
               room: string;
               subRoom?: string;
             };
+            nonContiguousRelationship?: {
+              with: {
+                room: string;
+                subRoom?: string;
+              };
+              gridOffset: {
+                x: number;
+                y: number;
+                z: number;
+              };
+            };
             /**
              * the grid position (on the map) of this sub-room
              */
@@ -4424,24 +4435,6 @@ export type RoomJsonSchema = {
           }
         >
       | Record<string, any>;
-    /**
-     * for rooms that are shown on the same map even though they don't
-     * have any physical connection
-     */
-    nonContiguousRelationship?: {
-      with: {
-        room: string;
-        subRoom?: string;
-      };
-      /**
-       * the other room needs to have the opposite (* -1) of this
-       */
-      gridOffset: {
-        x: number;
-        y: number;
-        z: number;
-      };
-    };
     label?: {
       direction: "away" | "left" | "right" | "towards";
       text: string;

@@ -141,14 +141,18 @@
     "op": "add",
     "path": "/meta",
     "value": {
-      "nonContiguousRelationship": {
-        "gridOffset": {
-          "x": -7,
-          "y": -7,
-          "z": 0
-        },
-        "with": {
-          "room": "blacktooth60"
+      "subRooms": {
+        "*": {
+          "nonContiguousRelationship": {
+            "gridOffset": {
+              "x": -7,
+              "y": -7,
+              "z": 0
+            },
+            "with": {
+              "room": "blacktooth60"
+            }
+          }
         }
       }
     }

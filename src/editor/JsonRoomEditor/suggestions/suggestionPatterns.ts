@@ -101,7 +101,7 @@ export const suggestionPatterns: SuggestionPatterns = {
   toRoom: getOtherRoomIds,
   "meta.subRooms.*.above.room": getOtherRoomIds,
   "meta.subRooms.*.below.room": getOtherRoomIds,
-  "meta.nonContiguousRelationship.with.room": getOtherRoomIds,
+  "meta.subRooms.*.nonContiguousRelationship.with.room": getOtherRoomIds,
   // joysticks:
   ["config.controls.*"]: getJoystickControllableItemIds,
   // switches changing what joysticks control:

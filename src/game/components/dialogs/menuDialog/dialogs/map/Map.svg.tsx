@@ -1,4 +1,4 @@
-import { Suspense } from "react";
+import { type FunctionComponent, Suspense } from "react";
 import { type ValueOf } from "type-fest";
 
 import {
@@ -15,7 +15,9 @@ import { type MapData } from "./MapData";
 import { RoomSvg } from "./Room.svg";
 import {
   type PostfixRoomDecoratorComponent,
+  type PrefixRoomDecoratorComponent,
   type RoomBehaviourComponent,
+  type RoomDecoratorProps,
 } from "./RoomDecoratorProps";
 import { roomWorldPosition } from "./roomWorldPosition";
 import { ScrollIntoView } from "./ScrollIntoView";
@@ -25,6 +27,7 @@ export type MapSvgProps<RoomId extends string> = MapData<RoomId> & {
   containerWidth?: number;
   onPlayableClick?: (name: IndividualCharacterName) => void;
   behaviours?: RoomBehaviourComponent<RoomId>[];
+  prefixDecorators?: PrefixRoomDecoratorComponent<RoomId>[];
   postfixDecorators?: PostfixRoomDecoratorComponent<RoomId>[];
   selectedRoomIds?: ReadonlyArray<RoomId>;
 };
@@ -64,6 +67,57 @@ const selectPlayableItemInRoomAndSubroom = <
     : undefined;
 };
 
+type MapDecoratorLayerProps<RoomId extends string> = {
+  decorators: FunctionComponent<RoomDecoratorProps<RoomId>>[];
+  transform: string;
+  orderedPositions: ValueOf<MapSvgProps<RoomId>["gridPositions"]>[];
+  mapData: MapSvgProps<RoomId>;
+};
+
+/**
+ * renders one `<g>` per decorator, each invoking the decorator once for every
+ * placed room. used both under the rooms (prefix) and over them (postfix)
+ */
+const MapDecoratorLayer = <RoomId extends string>({
+  decorators,
+  transform,
+  orderedPositions,
+  mapData,
+}: MapDecoratorLayerProps<RoomId>) => {
+  const { gridPositions, curRoomId, curSubRoomId, selectedRoomIds } = mapData;
+
+  return (
+    <>
+      {decorators.map((Decorator, decoratorIndex) => (
+        <g key={decoratorIndex} transform={transform}>
+          {orderedPositions.map((gridPositionSpec) => {
+            const { roomId, subRoomId, boundaries } = gridPositionSpec;
+
+            const isSelected = selectedRoomIds?.includes(roomId) ?? false;
+
+            return (
+              <Suspense key={`${roomId}/${subRoomId}`} fallback={null}>
+                <Decorator
+                  roomId={roomId}
+                  subRoomId={subRoomId}
+                  boundaries={boundaries}
+                  isCurrentRoom={curRoomId === roomId}
+                  isCurrentSubRoom={
+                    curRoomId === roomId && curSubRoomId === subRoomId
+                  }
+                  isSelected={isSelected}
+                  allGridPositions={gridPositions}
+                  mapData={mapData}
+                />
+              </Suspense>
+            );
+          })}
+        </g>
+      ))}
+    </>
+  );
+};
+
 export const MapSvg = <RoomId extends string>(props: MapSvgProps<RoomId>) => {
   const {
     campaign,
@@ -76,8 +130,8 @@ export const MapSvg = <RoomId extends string>(props: MapSvgProps<RoomId>) => {
     roomsExplored,
     onPlayableClick,
     curRoomId,
-    curSubRoomId,
     behaviours,
+    prefixDecorators,
     postfixDecorators,
     selectedRoomIds,
   } = props;
@@ -96,6 +150,8 @@ export const MapSvg = <RoomId extends string>(props: MapSvgProps<RoomId>) => {
     typeof gridPositions
   >[];
 
+  const gridTransform = `translate(${-mapBounds.l + mapSvgMarginX + (containerWidth - contentW) / 2},${-mapBounds.t + mapSvgMarginY})`;
+
   return (
     <svg
       className={"w-full"}
@@ -113,9 +169,15 @@ export const MapSvg = <RoomId extends string>(props: MapSvgProps<RoomId>) => {
           containerWidth={containerWidth}
         />
       )}
-      <g
-        transform={`translate(${-mapBounds.l + mapSvgMarginX + (containerWidth - contentW) / 2},${-mapBounds.t + mapSvgMarginY})`}
-      >
+      {prefixDecorators !== undefined && (
+        <MapDecoratorLayer
+          decorators={prefixDecorators}
+          transform={gridTransform}
+          orderedPositions={orderedPositions}
+          mapData={props}
+        />
+      )}
+      <g transform={gridTransform}>
         {orderedPositions.map((gridPositionSpec) => {
           const { roomId, subRoomId, gridPosition } = gridPositionSpec;
           const roomRenderingId: `${RoomId}/${string}` = `${roomId}/${subRoomId}`;
@@ -164,35 +226,14 @@ export const MapSvg = <RoomId extends string>(props: MapSvgProps<RoomId>) => {
           );
         })}
       </g>
-      {postfixDecorators?.map((PostFixDecorator, decoratorIndex) => (
-        <g
-          key={decoratorIndex}
-          transform={`translate(${-mapBounds.l + mapSvgMarginX + (containerWidth - contentW) / 2},${-mapBounds.t + mapSvgMarginY})`}
-        >
-          {orderedPositions.map((gridPositionSpec) => {
-            const { roomId, subRoomId, boundaries } = gridPositionSpec;
-
-            const isSelected = selectedRoomIds?.includes(roomId) ?? false;
-
-            return (
-              <Suspense key={`${roomId}/${subRoomId}`} fallback={null}>
-                <PostFixDecorator
-                  roomId={roomId}
-                  subRoomId={subRoomId}
-                  boundaries={boundaries}
-                  isCurrentRoom={curRoomId === roomId}
-                  isCurrentSubRoom={
-                    curRoomId === roomId && curSubRoomId === subRoomId
-                  }
-                  isSelected={isSelected}
-                  allGridPositions={gridPositions}
-                  mapData={props}
-                />
-              </Suspense>
-            );
-          })}
-        </g>
-      ))}
+      {postfixDecorators !== undefined && (
+        <MapDecoratorLayer
+          decorators={postfixDecorators}
+          transform={gridTransform}
+          orderedPositions={orderedPositions}
+          mapData={props}
+        />
+      )}
     </svg>
   );
 };

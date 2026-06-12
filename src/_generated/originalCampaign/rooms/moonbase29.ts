@@ -215,9 +215,13 @@ export const room = inferRoomJson({
     },
   },
   meta: {
-    nonContiguousRelationship: {
-      gridOffset: { x: 0, y: 2, z: 0 },
-      with: { room: "moonbase32" },
+    subRooms: {
+      "*": {
+        nonContiguousRelationship: {
+          gridOffset: { x: 0, y: 2, z: 0 },
+          with: { room: "moonbase32" },
+        },
+      },
     },
   },
   planet: "moonbase",

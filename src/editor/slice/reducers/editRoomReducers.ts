@@ -11,7 +11,9 @@ import {
   isWholeRoomSubRooms,
   iterateRoomJsonItemsWithIds,
   roomJsonItemsIterable,
+  roomNonContiguousRelationship,
   roomVerticalLink,
+  writeRoomNonContiguousRelationship,
 } from "../../../model/RoomJson";
 import { type ZxSpectrumRoomColour } from "../../../originalGame";
 import { type SceneryName } from "../../../sprites/planets";
@@ -306,18 +308,14 @@ export const editRoomReducers = {
         }
       });
 
-    const prevOutboundNCR = prevRoomJson.meta?.nonContiguousRelationship;
-    const nextOutboundNCR = newRoomJson.meta?.nonContiguousRelationship;
+    const prevOutboundNCR = roomNonContiguousRelationship(prevRoomJson);
+    const nextOutboundNCR = roomNonContiguousRelationship(newRoomJson);
     if (nextOutboundNCR !== undefined) {
       // add a link back from the new NCR room:
-      const otherRoom = rooms[nextOutboundNCR.with.room];
-      otherRoom.meta = {
-        ...otherRoom.meta,
-        nonContiguousRelationship: {
-          with: { room: newRoomJson.id },
-          gridOffset: scaleXyz(nextOutboundNCR.gridOffset, -1),
-        },
-      };
+      writeRoomNonContiguousRelationship(rooms[nextOutboundNCR.with.room], {
+        with: { room: newRoomJson.id },
+        gridOffset: scaleXyz(nextOutboundNCR.gridOffset, -1),
+      });
     }
 
     if (
@@ -328,10 +326,10 @@ export const editRoomReducers = {
       // break the inbound link:
       const prevNcrRoom = rooms[prevOutboundNCR.with.room];
       if (
-        prevNcrRoom.meta?.nonContiguousRelationship?.with.room ===
+        roomNonContiguousRelationship(prevNcrRoom)?.with.room ===
         selectCursorRoomId(state)
       ) {
-        delete prevNcrRoom.meta.nonContiguousRelationship;
+        writeRoomNonContiguousRelationship(prevNcrRoom, undefined);
       }
     }
   },

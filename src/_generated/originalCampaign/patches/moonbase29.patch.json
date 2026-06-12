@@ -160,14 +160,18 @@
     "op": "add",
     "path": "/meta",
     "value": {
-      "nonContiguousRelationship": {
-        "gridOffset": {
-          "x": 0,
-          "y": 2,
-          "z": 0
-        },
-        "with": {
-          "room": "moonbase32"
+      "subRooms": {
+        "*": {
+          "nonContiguousRelationship": {
+            "gridOffset": {
+              "x": 0,
+              "y": 2,
+              "z": 0
+            },
+            "with": {
+              "room": "moonbase32"
+            }
+          }
         }
       }
     }

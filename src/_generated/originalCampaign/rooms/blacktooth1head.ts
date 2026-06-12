@@ -108,9 +108,13 @@ export const room = inferRoomJson({
     },
   },
   meta: {
-    nonContiguousRelationship: {
-      gridOffset: { x: 4, y: 7, z: 0 },
-      with: { room: "blacktooth9" },
+    subRooms: {
+      "*": {
+        nonContiguousRelationship: {
+          gridOffset: { x: 4, y: 7, z: 0 },
+          with: { room: "blacktooth9" },
+        },
+      },
     },
   },
   planet: "jail",

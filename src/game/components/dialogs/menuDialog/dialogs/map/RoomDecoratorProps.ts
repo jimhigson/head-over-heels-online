@@ -31,3 +31,7 @@ export type RoomBehaviourComponent<RoomId extends string> = FunctionComponent<
 /** special component put at the end of a map's svg to add additional behaviour */
 export type PostfixRoomDecoratorComponent<RoomId extends string> =
   FunctionComponent<RoomDecoratorProps<RoomId>>;
+
+/** special component put before the rooms of a map's svg, so it draws under them */
+export type PrefixRoomDecoratorComponent<RoomId extends string> =
+  FunctionComponent<RoomDecoratorProps<RoomId>>;

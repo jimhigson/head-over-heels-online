@@ -8,13 +8,26 @@ import { type JsonItemType, type JsonItemUnion } from "./json/JsonItem";
  * when a sub-room is key'd by '*' it actually represents
  * the whole room - @see SubRoom for a 'real' sub-room
  */
+/**
+ * a non-contiguous relationship from one sub-room to another - the rooms are
+ * shown on the same map even though they have no physical connection.
+ * `gridOffset` is the other cell's map position relative to this one; the other
+ * end should carry the opposite (* -1) offset
+ */
+export type NonContiguousRelationship<RoomId extends string> = {
+  with: { room: RoomId; subRoom?: string };
+  gridOffset: Xyz;
+};
+
 export type AllRoomSubRoom<RoomId extends string> = {
   above?: { room: RoomId; subRoom?: string };
   below?: { room: RoomId; subRoom?: string };
+  nonContiguousRelationship?: NonContiguousRelationship<RoomId>;
 };
 export type SubRoom<RoomId extends string> = {
   above?: { room: RoomId; subRoom?: string };
   below?: { room: RoomId; subRoom?: string };
+  nonContiguousRelationship?: NonContiguousRelationship<RoomId>;
   /**
    * the grid position (on the map) of this sub-room
    */
@@ -103,6 +116,54 @@ export const roomVerticalLink = <RoomId extends string>(
 };
 
 /**
+ * the non-contiguous relationship held by one sub-room of a room, if any. When
+ * `subRoomId` is omitted the relationship of the room's primary cell is read -
+ * the whole-room (`'*'`) entry for an undivided room, or its first cell.
+ */
+export const roomNonContiguousRelationship = <RoomId extends string>(
+  room: { meta?: { subRooms?: SubRooms<RoomId> } },
+  subRoomId?: string,
+): NonContiguousRelationship<RoomId> | undefined => {
+  const subRooms = room.meta?.subRooms;
+  if (subRooms === undefined) {
+    return undefined;
+  }
+  const holder =
+    isWholeRoomSubRooms(subRooms) ? subRooms["*"]
+    : subRoomId === undefined ? Object.values(subRooms)[0]
+    : subRooms[subRoomId];
+  return holder?.nonContiguousRelationship;
+};
+
+/**
+ * write (or, when `relationship` is undefined, remove) a sub-room's
+ * non-contiguous relationship. Mirrors `writeVerticalLink`: the undivided
+ * room's whole-room (`'*'`) holder is created on demand. When `subRoomId` is
+ * omitted the room's primary cell is used.
+ */
+export const writeRoomNonContiguousRelationship = <RoomId extends string>(
+  room: { meta?: { subRooms?: SubRooms<RoomId> } },
+  relationship: NonContiguousRelationship<RoomId> | undefined,
+  subRoomId?: string,
+): void => {
+  room.meta ??= {};
+  room.meta.subRooms ??= { "*": {} };
+  const { subRooms } = room.meta;
+  const holder =
+    isWholeRoomSubRooms(subRooms) ? subRooms["*"]
+    : subRoomId === undefined ? Object.values(subRooms)[0]
+    : subRooms[subRoomId];
+  if (holder === undefined) {
+    return;
+  }
+  if (relationship === undefined) {
+    delete holder.nonContiguousRelationship;
+  } else {
+    holder.nonContiguousRelationship = relationship;
+  }
+};
+
+/**
  * some rooms get special extra rendering on the map
  */
 export type RoomDecoration = "arrowLeft" | "crossover" | "divideAlongY";
@@ -157,18 +218,6 @@ export type RoomJson<
      * big and small rooms
      */
     subRooms?: SubRooms<RoomId>;
-
-    /**
-     * for rooms that are shown on the same map even though they don't
-     * have any physical connection
-     */
-    nonContiguousRelationship?: {
-      with: { room: RoomId; subRoom?: string };
-      /**
-       * the other room needs to have the opposite (* -1) of this
-       */
-      gridOffset: Xyz;
-    };
 
     label?: {
       direction: DirectionXy4;
