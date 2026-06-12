@@ -3850,6 +3850,70 @@ exports[`for tailwind plugin we must have all possible frames and animations 1`]
       "y": 27,
     },
   },
+  "lamp.off.away": {
+    "frame": {
+      "h": 28,
+      "w": 32,
+      "x": 661,
+      "y": 479,
+    },
+  },
+  "lamp.off.left": {
+    "frame": {
+      "h": 28,
+      "w": 32,
+      "x": 628,
+      "y": 479,
+    },
+  },
+  "lamp.off.right": {
+    "frame": {
+      "h": 28,
+      "w": 32,
+      "x": 661,
+      "y": 508,
+    },
+  },
+  "lamp.off.towards": {
+    "frame": {
+      "h": 28,
+      "w": 32,
+      "x": 628,
+      "y": 508,
+    },
+  },
+  "lamp.on.away": {
+    "frame": {
+      "h": 28,
+      "w": 32,
+      "x": 595,
+      "y": 479,
+    },
+  },
+  "lamp.on.left": {
+    "frame": {
+      "h": 28,
+      "w": 32,
+      "x": 562,
+      "y": 479,
+    },
+  },
+  "lamp.on.right": {
+    "frame": {
+      "h": 28,
+      "w": 32,
+      "x": 595,
+      "y": 508,
+    },
+  },
+  "lamp.on.towards": {
+    "frame": {
+      "h": 28,
+      "w": 32,
+      "x": 562,
+      "y": 508,
+    },
+  },
   "lift.1": {
     "frame": {
       "h": 24,
@@ -3888,6 +3952,166 @@ exports[`for tailwind plugin we must have all possible frames and animations 1`]
       "w": 24,
       "x": 526,
       "y": 402,
+    },
+  },
+  "lightBeam.corner.awayToLeft.1": {
+    "frame": {
+      "h": 28,
+      "w": 32,
+      "x": 463,
+      "y": 566,
+    },
+  },
+  "lightBeam.corner.awayToLeft.2": {
+    "frame": {
+      "h": 28,
+      "w": 32,
+      "x": 496,
+      "y": 566,
+    },
+  },
+  "lightBeam.corner.awayToLeft.3": {
+    "frame": {
+      "h": 28,
+      "w": 32,
+      "x": 529,
+      "y": 566,
+    },
+  },
+  "lightBeam.corner.leftToAway.1": {
+    "frame": {
+      "h": 28,
+      "w": 32,
+      "x": 364,
+      "y": 566,
+    },
+  },
+  "lightBeam.corner.leftToAway.2": {
+    "frame": {
+      "h": 28,
+      "w": 32,
+      "x": 397,
+      "y": 566,
+    },
+  },
+  "lightBeam.corner.leftToAway.3": {
+    "frame": {
+      "h": 28,
+      "w": 32,
+      "x": 430,
+      "y": 566,
+    },
+  },
+  "lightBeam.corner.leftToTowards.1": {
+    "frame": {
+      "h": 28,
+      "w": 32,
+      "x": 562,
+      "y": 566,
+    },
+  },
+  "lightBeam.corner.leftToTowards.2": {
+    "frame": {
+      "h": 28,
+      "w": 32,
+      "x": 595,
+      "y": 566,
+    },
+  },
+  "lightBeam.corner.leftToTowards.3": {
+    "frame": {
+      "h": 28,
+      "w": 32,
+      "x": 628,
+      "y": 566,
+    },
+  },
+  "lightBeam.corner.towardsToLeft.1": {
+    "frame": {
+      "h": 28,
+      "w": 32,
+      "x": 661,
+      "y": 566,
+    },
+  },
+  "lightBeam.corner.towardsToLeft.2": {
+    "frame": {
+      "h": 28,
+      "w": 32,
+      "x": 694,
+      "y": 566,
+    },
+  },
+  "lightBeam.corner.towardsToLeft.3": {
+    "frame": {
+      "h": 28,
+      "w": 32,
+      "x": 727,
+      "y": 566,
+    },
+  },
+  "lightBeam.terminus.x": {
+    "frame": {
+      "h": 24,
+      "w": 16,
+      "x": 496,
+      "y": 508,
+    },
+  },
+  "lightBeam.terminus.y": {
+    "frame": {
+      "h": 24,
+      "w": 16,
+      "x": 529,
+      "y": 508,
+    },
+  },
+  "lightBeam.x.1": {
+    "frame": {
+      "h": 16,
+      "w": 16,
+      "x": 562,
+      "y": 537,
+    },
+  },
+  "lightBeam.x.2": {
+    "frame": {
+      "h": 16,
+      "w": 16,
+      "x": 595,
+      "y": 537,
+    },
+  },
+  "lightBeam.x.3": {
+    "frame": {
+      "h": 16,
+      "w": 16,
+      "x": 628,
+      "y": 537,
+    },
+  },
+  "lightBeam.y.1": {
+    "frame": {
+      "h": 16,
+      "w": 16,
+      "x": 661,
+      "y": 537,
+    },
+  },
+  "lightBeam.y.2": {
+    "frame": {
+      "h": 16,
+      "w": 16,
+      "x": 694,
+      "y": 537,
+    },
+  },
+  "lightBeam.y.3": {
+    "frame": {
+      "h": 16,
+      "w": 16,
+      "x": 727,
+      "y": 537,
     },
   },
   "market.floor": {
@@ -3944,6 +4168,46 @@ exports[`for tailwind plugin we must have all possible frames and animations 1`]
       "w": 16,
       "x": 786,
       "y": 735,
+    },
+  },
+  "mirror.awayLeft": {
+    "frame": {
+      "h": 28,
+      "w": 32,
+      "x": 694,
+      "y": 479,
+    },
+  },
+  "mirror.awayRight": {
+    "frame": {
+      "h": 28,
+      "w": 32,
+      "x": 727,
+      "y": 479,
+    },
+  },
+  "mirror.awayRight.front": {
+    "frame": {
+      "h": 28,
+      "w": 32,
+      "x": 694,
+      "y": 508,
+    },
+  },
+  "mirror.flipping.x": {
+    "frame": {
+      "h": 28,
+      "w": 32,
+      "x": 496,
+      "y": 479,
+    },
+  },
+  "mirror.flipping.y": {
+    "frame": {
+      "h": 28,
+      "w": 32,
+      "x": 529,
+      "y": 479,
     },
   },
   "monkey.away": {
@@ -6070,6 +6334,36 @@ exports[`for tailwind plugin we must have all possible frames and animations 2`]
     "lift.2",
     "lift.3",
     "lift.4",
+  ],
+  "lightBeam.corner.awayToLeft": [
+    "lightBeam.corner.awayToLeft.1",
+    "lightBeam.corner.awayToLeft.2",
+    "lightBeam.corner.awayToLeft.3",
+  ],
+  "lightBeam.corner.leftToAway": [
+    "lightBeam.corner.leftToAway.1",
+    "lightBeam.corner.leftToAway.2",
+    "lightBeam.corner.leftToAway.3",
+  ],
+  "lightBeam.corner.leftToTowards": [
+    "lightBeam.corner.leftToTowards.1",
+    "lightBeam.corner.leftToTowards.2",
+    "lightBeam.corner.leftToTowards.3",
+  ],
+  "lightBeam.corner.towardsToLeft": [
+    "lightBeam.corner.towardsToLeft.1",
+    "lightBeam.corner.towardsToLeft.2",
+    "lightBeam.corner.towardsToLeft.3",
+  ],
+  "lightBeam.x": [
+    "lightBeam.x.1",
+    "lightBeam.x.2",
+    "lightBeam.x.3",
+  ],
+  "lightBeam.y": [
+    "lightBeam.y.1",
+    "lightBeam.y.2",
+    "lightBeam.y.3",
   ],
   "moonbase.wall.screen.window1.away": [
     "moonbase.wall.screen.window1.away.1",

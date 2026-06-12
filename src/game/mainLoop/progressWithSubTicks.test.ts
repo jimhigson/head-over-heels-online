@@ -6,7 +6,10 @@ import { resetStore } from "../../_testUtils/initStoreForTests";
 import { type ItemInPlay } from "../../model/ItemInPlay";
 import { type RoomStateItems } from "../../model/RoomState";
 import { type GameState } from "../gameState/GameState";
-import { type MovedItems, type ProgressGameState } from "./progressGameState";
+import {
+  type MovedOrResizedItems,
+  type ProgressGameState,
+} from "./progressGameState";
 import { progressWithSubTicks } from "./progressWithSubTicks";
 
 const createGameState = ({
@@ -35,27 +38,30 @@ const createGameState = ({
   }),
 });
 
-const mockMovedItemsSet = (movedItemIds: string[]) => {
-  const movedItems = new Set() as MovedItems<TestRoomId, string>;
+const mockMovedOrResizedItemsSet = (movedItemIds: string[]) => {
+  const movedOrResizedItems = new Set() as MovedOrResizedItems<
+    TestRoomId,
+    string
+  >;
   for (const id of movedItemIds) {
-    movedItems.add({ id, type: "spring" } as ItemInPlay<
+    movedOrResizedItems.add({ id, type: "spring" } as ItemInPlay<
       "spring",
       TestRoomId,
       string
     >);
   }
-  return movedItems;
+  return movedOrResizedItems;
 };
 const mockItemsInRoom = (movedItemIds: string[]) => {
-  const movedItems = {} as RoomStateItems<TestRoomId, string>;
+  const movedOrResizedItems = {} as RoomStateItems<TestRoomId, string>;
   for (const id of movedItemIds) {
-    movedItems[id] = { id, type: "spring" } as ItemInPlay<
+    movedOrResizedItems[id] = { id, type: "spring" } as ItemInPlay<
       "spring",
       TestRoomId,
       string
     >;
   }
-  return movedItems;
+  return movedOrResizedItems;
 };
 
 beforeEach(() => {
@@ -71,7 +77,7 @@ test("calls progress only once if below maxStepDeltaMs", () => {
 
   const mockProgress = vi
     .fn<ProgressGameState<TestRoomId, string>>()
-    .mockReturnValue(mockMovedItemsSet(["a"]));
+    .mockReturnValue(mockMovedOrResizedItemsSet(["a"]));
   const gameState = createGameState({ itemIds: ["a"] });
 
   const progressAt50fps = progressWithSubTicks(mockProgress, 1000 / 50);
@@ -87,8 +93,8 @@ test("splits into multiple steps and combines moved items", () => {
 
   const mockProgress = vi
     .fn<ProgressGameState<TestRoomId, string>>()
-    .mockReturnValueOnce(mockMovedItemsSet(["a"]))
-    .mockReturnValueOnce(mockMovedItemsSet(["b"]));
+    .mockReturnValueOnce(mockMovedOrResizedItemsSet(["a"]))
+    .mockReturnValueOnce(mockMovedOrResizedItemsSet(["b"]));
 
   const gameState = createGameState({ itemIds: ["a", "b"] });
 
@@ -106,8 +112,8 @@ test("filters out items that are removed by the end of substeps", () => {
 
   const mockProgress = vi
     .fn<ProgressGameState<TestRoomId, string>>()
-    .mockReturnValueOnce(mockMovedItemsSet(["a"]))
-    .mockReturnValueOnce(mockMovedItemsSet(["b"]));
+    .mockReturnValueOnce(mockMovedOrResizedItemsSet(["a"]))
+    .mockReturnValueOnce(mockMovedOrResizedItemsSet(["b"]));
 
   const gameState = createGameState({ itemIds: ["a"] });
   gameState.characterRooms.head!.items = mockItemsInRoom(["a"]);
@@ -123,7 +129,7 @@ test("handles fractional steps correctly", () => {
 
   const mockProgress = vi
     .fn<ProgressGameState<TestRoomId, string>>()
-    .mockReturnValue(mockMovedItemsSet(["a"]));
+    .mockReturnValue(mockMovedOrResizedItemsSet(["a"]));
   const gameState = createGameState({ itemIds: ["a"] });
 
   const progressAt160fps = progressWithSubTicks(mockProgress, 1000 / 160);

@@ -522,6 +522,42 @@ deadly to touch`,
       />
     ),
   },
+  lamp: {
+    itemTool: {
+      type: "lamp",
+      config: { direction: "towards", activated: true },
+    },
+    tooltipContent: `## Lamp
+
+shines a beam of light along an axis
+
+monsters will not walk into the light
+
+can be turned on/off by switches and buttons`,
+    children: (
+      <span
+        className={`sprite ${"texture-lamp_on_towards" satisfies TextureTailwindClass} ${buttonSpriteRevertColourClasses}`}
+      />
+    ),
+  },
+  mirror: {
+    itemTool: {
+      type: "mirror",
+      config: { orientation: "awayLeft" },
+    },
+    tooltipContent: `## Mirror
+
+sits diagonally to the axes and reflects light beams
+
+reflective on both sides
+
+rotates to the other diagonal when collided with`,
+    children: (
+      <span
+        className={`sprite ${"texture-mirror_awayLeft" satisfies TextureTailwindClass} ${buttonSpriteRevertColourClasses}`}
+      />
+    ),
+  },
   spikes: {
     itemTool: { type: "spikes", config: emptyObject },
     tooltipContent: `## spikes

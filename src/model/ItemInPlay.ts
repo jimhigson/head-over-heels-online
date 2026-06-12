@@ -32,6 +32,12 @@ export const itemInPlayTypes = [
   "stopAutowalk",
   /** a non-rendering, invisible, general-purpose, collideable blocker */
   "blocker",
+  /**
+   * a beam of light emitted from a lamp - exists only in-play, never in the
+   * json. Beams are (re)cast by their lamp every tick: emitted from the lamp,
+   * reflected by mirrors, and stopped by solid items
+   */
+  "lightBeam",
   /** jumping or running fast, with a power-up, crown shine effect */
   "particle",
   /** a sound that plays from a point in a room */
@@ -80,6 +86,17 @@ type ItemInPlayConfigMap<RoomId extends string, RoomItemId extends string> = {
      * the direction this portal has to be hit (with a dot product in) to be walked through
      */
     direction: Xyz;
+  };
+  lightBeam: {
+    /** the direction this (straight segment of a) beam travels in */
+    direction: DirectionXy4;
+    /** the id of the lamp item this beam was emitted from */
+    sourceItemId: RoomItemId;
+    /**
+     * how many block-rows tall this segment is - beams from stacked (tall)
+     * lamps are one 8px-tall strip per block of the lamp's height
+     */
+    times?: { z: number };
   };
   particle: {
     forCharacter: "crown" | IndividualCharacterName;

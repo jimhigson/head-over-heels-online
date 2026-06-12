@@ -1,7 +1,7 @@
 import { Container, type Renderer, Ticker } from "pixi.js";
 import { useEffect } from "preact/hooks";
 
-import { type MovedItems } from "../../game/mainLoop/progressGameState";
+import { type MovedOrResizedItems } from "../../game/mainLoop/progressGameState";
 import { isSpatial } from "../../game/physics/itemPredicates";
 import { type GeneralRenderContext } from "../../game/render/room/RoomRenderContexts";
 import { RoomRenderer } from "../../game/render/room/RoomRenderer";
@@ -118,7 +118,7 @@ export const useEditorMainLoop = (
         console.warn("room renderer does not have the current room");
       }
 
-      const considerAllItemsHaveMoved: MovedItems<
+      const considerAllItemsHaveMoved: MovedOrResizedItems<
         EditorRoomId,
         EditorRoomItemId
       > = new Set(
@@ -138,7 +138,7 @@ export const useEditorMainLoop = (
         // TODO: probably needs this to be the real set of moved items, like a 'proper' main loop,
         // or this might be fast enough given the level editor doesn't need to run as smoothly
         // as the actual game
-        movedItems: considerAllItemsHaveMoved,
+        movedOrResizedItems: considerAllItemsHaveMoved,
       });
       pixiApp.render();
     };

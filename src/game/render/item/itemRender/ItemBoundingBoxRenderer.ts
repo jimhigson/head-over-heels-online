@@ -122,6 +122,11 @@ const bbColors: Record<ItemInPlayType, string> = {
   joystick: "#DDEE22",
   timer: "#EEDD00",
 
+  // lamps, mirrors and light:
+  lamp: "#FFF080",
+  mirror: "#C0E8FF",
+  lightBeam: "#FFFFC0",
+
   // emitters & projectiles
   emitter: "#00FFFF",
   firedDoughnut: "#00DDAA",

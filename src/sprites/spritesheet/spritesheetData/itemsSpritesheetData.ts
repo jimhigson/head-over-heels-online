@@ -934,6 +934,143 @@ const frames = {
     },
   },
 
+  // lamps - LED banks that shine a light beam in one direction:
+  ...fourDirections(
+    "lamp.on",
+    largeItemGridLocation({ x: 17, y: -7 }),
+    largeItemTextureSize,
+  ),
+  ...fourDirections(
+    "lamp.off",
+    largeItemGridLocation({ x: 19, y: -7 }),
+    largeItemTextureSize,
+  ),
+
+  // mirrors - at 45° to the orthogonal axes, in either diagonal orientation:
+  "mirror.awayLeft": {
+    frame: {
+      ...largeItemGridLocation({ x: 21, y: -7 }),
+      ...largeItemTextureSize,
+    },
+  },
+  "mirror.awayRight": {
+    frame: {
+      ...largeItemGridLocation({ x: 22, y: -7 }),
+      ...largeItemTextureSize,
+    },
+  },
+  // brief transition frames shown as a mirror rotates 90° between its two
+  // diagonal orientations - the pane axis-aligned, halfway through the turn:
+  "mirror.flipping.x": {
+    frame: {
+      ...largeItemGridLocation({ x: 15, y: -7 }),
+      ...largeItemTextureSize,
+    },
+  },
+  "mirror.flipping.y": {
+    frame: {
+      ...largeItemGridLocation({ x: 16, y: -7 }),
+      ...largeItemTextureSize,
+    },
+  },
+  // the glassy glint streaks, drawn over the reflections in the mirror:
+  "mirror.awayRight.front": {
+    frame: {
+      ...largeItemGridLocation({ x: 21, y: -6 }),
+      ...largeItemTextureSize,
+    },
+  },
+
+  // light beam segments - tiled along the beam, half a block per tile,
+  // with three frames so the light animates along its direction of travel:
+  "lightBeam.x.1": {
+    frame: {
+      ...largeItemGridLocation({ x: 17, y: -5 }),
+      w: 16,
+      h: 16,
+    },
+  },
+  "lightBeam.x.2": {
+    frame: {
+      ...largeItemGridLocation({ x: 18, y: -5 }),
+      w: 16,
+      h: 16,
+    },
+  },
+  "lightBeam.x.3": {
+    frame: {
+      ...largeItemGridLocation({ x: 19, y: -5 }),
+      w: 16,
+      h: 16,
+    },
+  },
+  "lightBeam.y.1": {
+    frame: {
+      ...largeItemGridLocation({ x: 20, y: -5 }),
+      w: 16,
+      h: 16,
+    },
+  },
+  "lightBeam.y.2": {
+    frame: {
+      ...largeItemGridLocation({ x: 21, y: -5 }),
+      w: 16,
+      h: 16,
+    },
+  },
+  "lightBeam.y.3": {
+    frame: {
+      ...largeItemGridLocation({ x: 22, y: -5 }),
+      w: 16,
+      h: 16,
+    },
+  },
+
+  // the glow where a beam terminates: a disc on the plane normal to the
+  // beam's direction, where the light's energy dissipates:
+  "lightBeam.terminus.x": {
+    frame: {
+      ...largeItemGridLocation({ x: 15, y: -6 }),
+      w: 16,
+      h: 24,
+    },
+  },
+  "lightBeam.terminus.y": {
+    frame: {
+      ...largeItemGridLocation({ x: 16, y: -6 }),
+      w: 16,
+      h: 24,
+    },
+  },
+
+  // the bend where a beam reflects at a mirror: drawn in the reflecting
+  // mirror's whole block cell, one shape per pair of directions connected.
+  // Each shape also serves the opposite flow, played in reverse:
+  ...seriesOfNumberedTextures(
+    "lightBeam.corner.leftToAway",
+    3,
+    largeItemGridLocation({ x: 11, y: -4 }),
+    largeItemTextureSize,
+  ),
+  ...seriesOfNumberedTextures(
+    "lightBeam.corner.awayToLeft",
+    3,
+    largeItemGridLocation({ x: 14, y: -4 }),
+    largeItemTextureSize,
+  ),
+  ...seriesOfNumberedTextures(
+    "lightBeam.corner.leftToTowards",
+    3,
+    largeItemGridLocation({ x: 17, y: -4 }),
+    largeItemTextureSize,
+  ),
+  ...seriesOfNumberedTextures(
+    "lightBeam.corner.towardsToLeft",
+    3,
+    largeItemGridLocation({ x: 20, y: -4 }),
+    largeItemTextureSize,
+  ),
+
   ...seriesOfNumberedTextures(
     "particle.head",
     4,
@@ -1034,6 +1171,30 @@ export const itemsSpritesheetData = {
     "conveyor.y": withSpeed(
       seriesOfAnimationFrameTextureIds("conveyor.y", 7),
       0.5,
+    ),
+    "lightBeam.x": withSpeed(
+      seriesOfAnimationFrameTextureIds("lightBeam.x", 3),
+      0.25,
+    ),
+    "lightBeam.y": withSpeed(
+      seriesOfAnimationFrameTextureIds("lightBeam.y", 3),
+      0.25,
+    ),
+    "lightBeam.corner.leftToAway": withSpeed(
+      seriesOfAnimationFrameTextureIds("lightBeam.corner.leftToAway", 3),
+      0.25,
+    ),
+    "lightBeam.corner.awayToLeft": withSpeed(
+      seriesOfAnimationFrameTextureIds("lightBeam.corner.awayToLeft", 3),
+      0.25,
+    ),
+    "lightBeam.corner.leftToTowards": withSpeed(
+      seriesOfAnimationFrameTextureIds("lightBeam.corner.leftToTowards", 3),
+      0.25,
+    ),
+    "lightBeam.corner.towardsToLeft": withSpeed(
+      seriesOfAnimationFrameTextureIds("lightBeam.corner.towardsToLeft", 3),
+      0.25,
     ),
     volcano: withSpeed(seriesOfAnimationFrameTextureIds("volcano", 2), 3 / 16),
     toaster: withSpeed(seriesOfAnimationFrameTextureIds("toaster", 2), 3 / 16),

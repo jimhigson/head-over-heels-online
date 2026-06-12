@@ -49,7 +49,7 @@ export const runTest = () => {
   const stepSize = Math.round(1 / movePercentage);
   for (let f = 0; f < frameCount; f++) {
     // select items to move
-    const movedItems = new Set<TestItem>();
+    const movedOrResizedItems = new Set<TestItem>();
 
     // deterministically select items to move based on movePercentage
     let i = 0;
@@ -58,13 +58,13 @@ export const runTest = () => {
         // move the item up
         const z = Math.round(Math.sin(i + f * 0.5) * 2.5 + 2.5);
         item.state.position.z = z;
-        movedItems.add(item);
+        movedOrResizedItems.add(item);
       }
       i++;
     }
 
     // benchmark the incremental update
-    updateZEdges(items, spatialIndex, movedItems, zEdgesGraph);
+    updateZEdges(items, spatialIndex, movedOrResizedItems, zEdgesGraph);
   }
   return zEdgesGraph;
 };

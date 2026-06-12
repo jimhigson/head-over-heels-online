@@ -183,6 +183,13 @@ const itemShadowMaskAppearances: {
   block: shadowMaskFromConfigAppearance(({ style }) => ({
     textureId: `shadowMask.${style}`,
   })),
+  // lamps and mirrors are full blocks, so reuse the full-block top mask:
+  lamp: shadowMaskStaticAppearance({
+    textureId: "shadowMask.artificial",
+  }),
+  mirror: shadowMaskStaticAppearance({
+    textureId: "shadowMask.artificial",
+  }),
   pushableBlock: shadowMaskStaticAppearance({
     textureId: "shadowMask.stepStool",
   }),

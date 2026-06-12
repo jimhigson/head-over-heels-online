@@ -294,6 +294,10 @@ export const boundingBoxForItem = (
     case "conveyor":
     case "hushPuppy":
       return fullBlockWithSlightOverdrawAabbInfo;
+
+    case "lamp":
+    case "mirror":
+      return fullBlockWithoutOverdrawAabbInfo;
     case "teleporter": {
       return fullBlockWithSlightOverdrawAabbInfo;
     }

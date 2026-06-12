@@ -20,6 +20,9 @@ import {
 } from "./ItemAppearance";
 import { type ItemAppearanceOutsideView } from "./itemAppearanceOutsideView";
 import { joystickAppearance } from "./joystickAppearance";
+import { lampAppearance } from "./lampAppearance";
+import { lightBeamAppearance } from "./lightBeamAppearance";
+import { makeMirrorAppearance } from "./mirrorAppearance";
 import { monsterAppearance } from "./monsterAppearance";
 import { playableAppearance } from "./playableAppearance";
 import { sceneryPlayerAppearance } from "./sceneryPlayerAppearance";
@@ -124,6 +127,12 @@ const itemAppearancesMap: {
 
   teleporter: teleporterAppearance,
   portableTeleporter: teleporterAppearance,
+
+  lamp: lampAppearance,
+  // the mirror renders other items' reflections, so gets the lookup
+  // injected (a direct import would be a circular dependency):
+  mirror: makeMirrorAppearance((item) => appearanceForItem(item)),
+  lightBeam: lightBeamAppearance,
 
   sceneryCrown: itemAppearanceRenderOnce(
     ({

@@ -39,7 +39,7 @@ export const renderCarriedOnce = <
     },
     tickContext: {
       lastRenderRoomTime: neverTime,
-      movedItems: emptySet,
+      movedOrResizedItems: emptySet,
       deltaMS: 1,
     },
   });

@@ -289,7 +289,7 @@ export class RoomRenderer<RoomId extends string, RoomItemId extends string>
         {
           ...givenTickContext,
           // if we have never rendered before, consider that all items have moved:
-          movedItems: new Set(
+          movedOrResizedItems: new Set(
             roomItemsIterable(this.renderContext.room.items).filter(isSpatial),
           ),
         }
@@ -308,14 +308,14 @@ export class RoomRenderer<RoomId extends string, RoomItemId extends string>
       updateZEdges(
         itemsSet,
         room[roomSpatialIndexKey],
-        tickContext.movedItems,
+        tickContext.movedOrResizedItems,
         // this.#incrementalZEdges will be updated in-place by the zEdges function to match
         // the current ordering state of the room, starting from the previous ordering state
         this.#zEdges,
       );
     } catch (e) {
       throw new Error(
-        `error updating Z edges for moved items: ${tickContext.movedItems
+        `error updating Z edges for moved/resized items: ${tickContext.movedOrResizedItems
           .values()
           .map((item) => item.id)
           .toArray()
@@ -340,7 +340,7 @@ export class RoomRenderer<RoomId extends string, RoomItemId extends string>
 
     this.#tickItems(tickContext);
 
-    if (!this.#everRendered || tickContext.movedItems.size > 0) {
+    if (!this.#everRendered || tickContext.movedOrResizedItems.size > 0) {
       this.#tickItemsZIndex(order);
     }
 

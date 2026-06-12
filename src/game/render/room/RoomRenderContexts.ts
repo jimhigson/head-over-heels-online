@@ -11,7 +11,7 @@ import {
   type SpriteOption,
 } from "../../../store/slices/userSettings/userSettingsSlice";
 import { type GameState } from "../../gameState/GameState";
-import { type MovedItems } from "../../mainLoop/progressGameState";
+import { type MovedOrResizedItems } from "../../mainLoop/progressGameState";
 
 /**
  * some context that most renderers need, to be composed into their contexts
@@ -67,6 +67,6 @@ export type RoomTickContext<
   RoomId extends string,
   RoomItemId extends string,
 > = {
-  movedItems: MovedItems<RoomId, RoomItemId>;
+  movedOrResizedItems: MovedOrResizedItems<RoomId, RoomItemId>;
   deltaMS: number;
 };

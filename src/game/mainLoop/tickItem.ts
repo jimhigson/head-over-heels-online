@@ -26,6 +26,7 @@ import {
   isFiredDoughnut,
   isFirer,
   isFreeItem,
+  isLamp,
   isLift,
   isMoving,
   isPickup,
@@ -41,6 +42,7 @@ import { firing } from "../physics/mechanics/firing";
 import { gravity } from "../physics/mechanics/gravity";
 import { jumping } from "../physics/mechanics/jumping";
 import { latentMovement } from "../physics/mechanics/latentMovement";
+import { tickLampLightBeams } from "../physics/mechanics/lightBeams";
 import { moveLift } from "../physics/mechanics/moveLift";
 import { tickMovement } from "../physics/mechanics/movement";
 import { onConveyor } from "../physics/mechanics/onConveyor";
@@ -152,6 +154,8 @@ function* itemMechanicResultGen<
     >;
   } else if (isEmitter(item)) {
     emitting(item, room, gameState, deltaMS);
+  } else if (isLamp(item)) {
+    tickLampLightBeams(item, room);
   } else if (isTimer(item)) {
     timerToggle(item, room, gameState, deltaMS);
   } else if (isButton(item)) {

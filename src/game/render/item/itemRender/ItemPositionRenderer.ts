@@ -74,7 +74,7 @@ export class ItemPositionRenderer<T extends ItemInPlayType>
   tick(tickContext: ItemTickContext) {
     this.#wrappedRenderer?.tick(tickContext);
 
-    if (tickContext.movedItems.has(this.renderContext.item)) {
+    if (tickContext.movedOrResizedItems.has(this.renderContext.item)) {
       // item has moved - update its position:
       this.#updatePosition();
     }

@@ -9,7 +9,7 @@ import {
   xyEqual,
   type Xyz,
 } from "../../../utils/vectors/vectors";
-import { type MovedItems } from "../../mainLoop/progressGameState";
+import { type MovedOrResizedItems } from "../../mainLoop/progressGameState";
 import { type FreeItem } from "../../physics/itemPredicates";
 import { originalFramePeriod } from "../../render/animationTimings";
 
@@ -50,7 +50,7 @@ export const assignLatentMovementFromStandingOn = <
   RoomId extends string,
   RoomItemId extends string,
 >(
-  movedItems: MovedItems<RoomId, RoomItemId>,
+  movedOrResizedItems: MovedOrResizedItems<RoomId, RoomItemId>,
   room: RoomState<RoomId, RoomItemId>,
   startingPositions: Record<string, Xyz>,
   deltaMS: number,
@@ -60,7 +60,7 @@ export const assignLatentMovementFromStandingOn = <
    * if the check is done inside the lift's tick, the player is then not on the lift and has no
    * ability to walk (the walk mechanic will return a null result) while the lift descends
    */
-  for (const moverItem of movedItems) {
+  for (const moverItem of movedOrResizedItems) {
     const previousPosition: undefined | Xyz = startingPositions[moverItem.id];
 
     if (previousPosition === undefined) {

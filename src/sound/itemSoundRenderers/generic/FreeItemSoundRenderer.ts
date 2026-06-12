@@ -115,7 +115,7 @@ export class FreeItemSoundRenderer implements ItemSoundRenderer<FreeItemTypes> {
   }
 
   tick(
-    { lastRenderRoomTime, movedItems }: ItemTickContext,
+    { lastRenderRoomTime, movedOrResizedItems }: ItemTickContext,
     /**
      * if given, the pushed sound will not play - this is because we can't distinguish between being
      * pushed and the item propelling itself, so if it is moving itself (and doing so makes a sound)
@@ -181,7 +181,7 @@ export class FreeItemSoundRenderer implements ItemSoundRenderer<FreeItemTypes> {
         standingOnItemId !== null &&
         playSoundStandingOnCheck(actedOnBy, standingOnItemId) &&
         // must be moving(!)
-        movedItems.has(item);
+        movedOrResizedItems.has(item);
 
       this.#pushedBracketedSound(beingPushed);
     }

@@ -78,6 +78,14 @@ test.for([
       },
     },
   },
+  {
+    label: "mirror",
+    item: {
+      type: "mirror" as const,
+      position: { x: 2, y: 3.5, z: 0 },
+      config: { orientation: "awayLeft" as const },
+    },
+  },
 ])(
   "player doesn't slide on $label since we want to keep pushing these",
   ({ item }) => {

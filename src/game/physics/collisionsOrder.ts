@@ -87,6 +87,8 @@ const typeOrderPreference: Record<ItemInPlayType, number> = {
   // the game plays better when switches are easier to touch than the blocks they control (eg, pen3)
   switch: 10,
   button: 10,
+  // mirrors flip on touch like switches, so are preferentially touched over plain blocks:
+  mirror: 10,
 
   // putting doorframe earlier than wall would make doorways easier to walk into
   // (since hitting both a doorframe and wall simultaneously would preferentially
@@ -101,6 +103,9 @@ const typeOrderPreference: Record<ItemInPlayType, number> = {
 
   block: 20,
   barrier: 20,
+  lamp: 20,
+  // only monsters can touch light beams:
+  lightBeam: 20,
   floor: 20,
   hushPuppy: 20,
   teleporter: 20,
