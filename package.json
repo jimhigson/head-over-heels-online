@@ -49,7 +49,7 @@
     "bench": "pnpm vitest bench",
     "build-and-playwright": "pnpm build:game && playwright test",
     "visual-regression-summary": "./scripts/visualRegressionSummary.ts",
-    "gen:rooms": "tsx scripts/campaignXml2Json/scripts/genRooms.ts && prettier src/_generated/originalCampaign --write",
+    "gen:rooms": "tsx scripts/campaignXml2Json/scripts/genRooms.ts && (oxlint --fix --no-ignore src/_generated/originalCampaign || true) && prettier src/_generated/originalCampaign --write && oxlint --no-ignore src/_generated/originalCampaign",
     "gen:roomsPatch": "tsx scripts/campaignXml2Json/scripts/genRoomsPatch.ts && prettier src/_generated/originalCampaign/patches/*.json --write",
     "predeploy": "pnpm run check && pnpm run build && echo blockstack.ing > dist/CNAME && cp dist/index.html dist/404.html",
     "deploy": "gh-pages -d dist",
