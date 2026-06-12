@@ -934,6 +934,113 @@ const frames = {
     },
   },
 
+  // lamps - LED banks that shine a light beam in one direction:
+  ...fourDirections(
+    "lamp.on",
+    largeItemGridLocation({ x: 6, y: 5 }),
+    largeItemTextureSize,
+  ),
+  ...fourDirections(
+    "lamp.off",
+    largeItemGridLocation({ x: 8, y: 5 }),
+    largeItemTextureSize,
+  ),
+  "shadowMask.lamp": {
+    frame: {
+      ...largeItemGridLocation({ x: 10, y: 6 }),
+      ...largeItemTextureSize,
+    },
+  },
+
+  // mirrors - at 45° to the orthogonal axes, in either diagonal orientation:
+  "mirror.awayLeft": {
+    frame: {
+      ...largeItemGridLocation({ x: 10, y: 5 }),
+      ...largeItemTextureSize,
+    },
+  },
+  "mirror.awayRight": {
+    frame: {
+      ...largeItemGridLocation({ x: 11, y: 5 }),
+      ...largeItemTextureSize,
+    },
+  },
+
+  "mirror.top": {
+    frame: {
+      ...largeItemGridLocation({ x: 12, y: 5 }),
+      ...largeItemTextureSize,
+    },
+  },
+  "mirror.bottom": {
+    frame: {
+      ...largeItemGridLocation({ x: 13, y: 5 }),
+      ...largeItemTextureSize,
+    },
+  },
+  // the sprite in front of the reflections in the mirror:
+  "mirror.awayRight.front": {
+    frame: {
+      ...largeItemGridLocation({ x: 11, y: 6 }),
+      ...largeItemTextureSize,
+    },
+  },
+
+  // brief transition frames shown as a mirror rotates 90° between its two
+  // diagonal orientations - the pane axis-aligned, halfway through the turn:
+  "mirror.flipping.x": {
+    frame: {
+      ...largeItemGridLocation({ x: 12, y: 6 }),
+      ...largeItemTextureSize,
+    },
+  },
+  "mirror.flipping.y": {
+    frame: {
+      ...largeItemGridLocation({ x: 13, y: 6 }),
+      ...largeItemTextureSize,
+    },
+  },
+
+  // light beam segments - tiled along the beam, half a block per tile,
+  // with three frames so the light animates along its direction of travel:
+  ...seriesOfNumberedTextures(
+    "lightBeam",
+    3,
+    { x: 148, y: 868 },
+    { w: 16, h: 16 },
+  ),
+
+  // the glow where a beam terminates: a disc on the plane normal to the
+  // beam's direction, where the light's energy dissipates:
+  ...seriesOfNumberedTextures(
+    "lightBeam.terminus",
+    2,
+    { x: 114, y: 868 },
+    { w: 16, h: 16 },
+  ),
+
+  // the bend where a beam reflects at a mirror: drawn in the reflecting
+  // mirror's whole block cell, one shape per pair of directions connected.
+  // Each shape also serves the opposite flow, played in reverse:
+  // ...seriesOfNumberedTextures(
+  //   "lightBeam.corner.leftToAway",
+  //   3,
+  //   largeItemGridLocation({ x: 11, y: -4 }),
+  //   largeItemTextureSize,
+  // ),
+  // ...seriesOfNumberedTextures(
+  //   "lightBeam.corner.leftToTowards",
+  //   3,
+  //   largeItemGridLocation({ x: 17, y: -4 }),
+  //   largeItemTextureSize,
+  // ),
+  // ...seriesOfNumberedTextures(
+  //   "lightBeam.corner.towardsToLeft",
+  //   3,
+  //   largeItemGridLocation({ x: 20, y: -4 }),
+  //   largeItemTextureSize,
+  // ),
+
   ...seriesOfNumberedTextures(
     "particle.head",
     4,
@@ -1035,6 +1142,26 @@ export const itemsSpritesheetData = {
       seriesOfAnimationFrameTextureIds("conveyor.y", 7),
       0.5,
     ),
+    "lightBeam.x": withSpeed(
+      seriesOfAnimationFrameTextureIds("lightBeam", 3),
+      0.5,
+    ),
+    "lightBeam.terminus": withSpeed(
+      seriesOfAnimationFrameTextureIds("lightBeam.terminus", 2),
+      0.5,
+    ),
+    // "lightBeam.corner.leftToAway": withSpeed(
+    //   seriesOfAnimationFrameTextureIds("lightBeam.corner.leftToAway", 3),
+    //   0.25,
+    // ),
+    // "lightBeam.corner.leftToTowards": withSpeed(
+    //   seriesOfAnimationFrameTextureIds("lightBeam.corner.leftToTowards", 3),
+    //   0.25,
+    // ),
+    // "lightBeam.corner.towardsToLeft": withSpeed(
+    //   seriesOfAnimationFrameTextureIds("lightBeam.corner.towardsToLeft", 3),
+    //   0.25,
+    // ),
     volcano: withSpeed(seriesOfAnimationFrameTextureIds("volcano", 2), 3 / 16),
     toaster: withSpeed(seriesOfAnimationFrameTextureIds("toaster", 2), 3 / 16),
     "spring.bounce": withSpeed(

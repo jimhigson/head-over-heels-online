@@ -41,6 +41,7 @@ export const floatingTextAppearance: ItemAppearance<
   FloatingTextRenderProps
 > = ({
   renderContext: {
+    isReflection,
     item: {
       config: { textLines, appearanceRoomTime = 0, sway },
     },
@@ -58,7 +59,7 @@ export const floatingTextAppearance: ItemAppearance<
       currentRendering.renderProps.fadeOrder
     : buildFadeOrder(
         spritesheetMeta,
-        spritesheetVariants.currentMainSpritesheet(),
+        spritesheetVariants.currentMainSpritesheet(false, false, isReflection),
       );
   const previousRendering = currentRendering?.output;
   let mainContainer: Container<TextContainer>;

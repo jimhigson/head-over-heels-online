@@ -2,7 +2,7 @@ import { produce } from "immer";
 import { expect, test } from "vitest";
 
 import { type EditorRoomItemId } from "../../editorTypes";
-import { selectCurrentRoomFromLevelEditorState } from "../levelEditorSelectors";
+import { selectCurrentRoomJsonFromLevelEditorState } from "../levelEditorSelectors";
 import {
   coalesceSelectedItems,
   type LevelEditorState,
@@ -40,7 +40,8 @@ const coalesceBothBlocks = (): LevelEditorState =>
   );
 
 test("coalesces two adjacent matching blocks into a single multiplied item", () => {
-  const { items } = selectCurrentRoomFromLevelEditorState(coalesceBothBlocks());
+  const { items } =
+    selectCurrentRoomJsonFromLevelEditorState(coalesceBothBlocks());
 
   expect(Object.values(items)).toEqual([
     {
@@ -58,7 +59,7 @@ test("selects the resulting coalesced item", () => {
 test("coalescing is undoable", () => {
   const undone = reduceLevelEditorActions(coalesceBothBlocks(), undo());
 
-  expect(selectCurrentRoomFromLevelEditorState(undone).items).toEqual(
-    selectCurrentRoomFromLevelEditorState(twoAdjacentBlocks).items,
+  expect(selectCurrentRoomJsonFromLevelEditorState(undone).items).toEqual(
+    selectCurrentRoomJsonFromLevelEditorState(twoAdjacentBlocks).items,
   );
 });

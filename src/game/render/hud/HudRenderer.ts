@@ -522,7 +522,9 @@ export class HudRenderer<RoomId extends string, RoomItemId extends string>
     const hasBag = heelsAbilities?.hasBag;
     bagSprite.texture =
       this.renderContext.general.spritesheetVariants.currentMainSpritesheet(
-        hasBag ?? false,
+        !(hasBag ?? false),
+        false,
+        false,
       ).textures["bag"];
 
     bagSprite.tint = tintForHudIfUncolourised(
@@ -554,11 +556,15 @@ export class HudRenderer<RoomId extends string, RoomItemId extends string>
 
     hooterSprite.texture =
       this.renderContext.general.spritesheetVariants.currentMainSpritesheet(
-        hasHooter ?? false,
+        !(hasHooter ?? false),
+        false,
+        false,
       ).textures["hooter"];
     doughnutsSprite.texture =
       this.renderContext.general.spritesheetVariants.currentMainSpritesheet(
-        hasDoughnuts,
+        !hasDoughnuts,
+        false,
+        false,
       ).textures["doughnuts"];
 
     this.#hudElements.head.doughnuts.textContainer.text =
@@ -701,7 +707,9 @@ export class HudRenderer<RoomId extends string, RoomItemId extends string>
     try {
       characterTexture =
         this.renderContext.general.spritesheetVariants.currentMainSpritesheet(
-          isActive,
+          !isActive,
+          false,
+          false,
         ).textures[this.#characterTextureIds[characterName]];
     } catch (e) {
       console.error(this.renderContext);

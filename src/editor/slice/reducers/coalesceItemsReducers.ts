@@ -3,7 +3,7 @@ import { type PayloadAction, type SliceCaseReducers } from "@reduxjs/toolkit";
 import { consolidateItemsMap } from "../../../consolidateItems/consolidateItems";
 import { keys } from "../../../utils/entries";
 import { type EditorRoomJsonItems } from "../../editorTypes";
-import { selectCurrentRoomFromLevelEditorState } from "../levelEditorSelectors";
+import { selectCurrentRoomJsonFromLevelEditorState } from "../levelEditorSelectors";
 import { type LevelEditorState } from "../levelEditorSlice";
 import { clearContextMenuXyInPlace } from "./contextMenuReducers";
 import { type UndoItemEntry } from "./undoDescription";
@@ -24,7 +24,7 @@ export const coalesceItemsReducers = {
     // the wrapped type. Since the normal type isn't readonly, this wrapping isn't needed anyway
     const state = _state as LevelEditorState;
 
-    const roomJson = selectCurrentRoomFromLevelEditorState(state);
+    const roomJson = selectCurrentRoomJsonFromLevelEditorState(state);
 
     const selectedById = Object.fromEntries(
       state.selectedJsonItemIds

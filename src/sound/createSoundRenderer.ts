@@ -13,6 +13,7 @@ import { DrumSoundRenderer } from "./itemSoundRenderers/DrumSoundRenderer";
 import { EmitterSoundRenderer } from "./itemSoundRenderers/EmitterSoundRenderer";
 import { FiredDoughnutSoundRenderer } from "./itemSoundRenderers/FiredDoughnutSoundRenderer";
 import { FreeItemSoundRenderer } from "./itemSoundRenderers/generic/FreeItemSoundRenderer";
+import { LampSoundRenderer } from "./itemSoundRenderers/LampSoundRenderer";
 import { LiftSoundRenderer } from "./itemSoundRenderers/LiftSoundRenderer";
 import { MonsterSoundRenderer } from "./itemSoundRenderers/MonsterSoundRenderer";
 import { MovingPlatformSoundRenderer } from "./itemSoundRenderers/MovingPlatformSoundRenderer";
@@ -40,6 +41,7 @@ const rendererClasses: {
   head: PlayableSoundRenderer,
   headOverHeels: PlayableSoundRenderer,
   heels: PlayableSoundRenderer,
+  lamp: LampSoundRenderer,
   lift: LiftSoundRenderer,
   monster: MonsterSoundRenderer,
   moveableDeadly: FreeItemSoundRenderer,

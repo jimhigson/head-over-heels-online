@@ -25,6 +25,7 @@ import {
   RoomBelowSelectOrCreate,
 } from "./buttons/RoomsAboveOrBelow";
 import { RoomScenerySelect } from "./buttons/RoomScenerySelect";
+import { RotateButtons } from "./buttons/RotateButtons";
 import { ShareCampaignButton } from "./buttons/ShareCampaignButton";
 import { ShowCmdKButton } from "./buttons/ShowCmdKButton";
 import { UndoRedoButtons } from "./buttons/UndoRedoButtons";
@@ -106,6 +107,7 @@ export const LevelEditorToolbar = () => {
         <HorizontalGap />
         <DeleteItemToolButton />
         <NudgeButtons />
+        <RotateButtons />
         <div className="h-1 w-full" />
         <div className="flex flex-row justify-between flex-wrap gap-x-2">
           <HalfGridResolutionSwitch />
@@ -179,6 +181,8 @@ export const LevelEditorToolbar = () => {
         <ItemToolButton {...buttonDefinitions["button"]} />
         <ItemToolButton {...buttonDefinitions["emitter"]} />
         <ItemToolButton {...buttonDefinitions["timer"]} />
+        <ItemToolButton {...buttonDefinitions["lamp"]} />
+        <ItemToolButton {...buttonDefinitions["mirror"]} />
       </div>
       <div className={buttonGroupClassname}>
         <BitmapText className="w-full">Movable</BitmapText>

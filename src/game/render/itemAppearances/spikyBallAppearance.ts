@@ -16,6 +16,7 @@ const spikyBallAppearanceImpl: ItemAppearance<
   Sprite
 > = ({
   renderContext: {
+    isReflection,
     item: {
       state: {
         vels: { sliding },
@@ -35,7 +36,11 @@ const spikyBallAppearanceImpl: ItemAppearance<
 
   const previousRendering = currentRendering?.output;
 
-  const spritesheet = spritesheetVariants.currentMainSpritesheet();
+  const spritesheet = spritesheetVariants.currentMainSpritesheet(
+    false,
+    false,
+    isReflection,
+  );
   const rendering =
     previousRendering ??
     createSprite({

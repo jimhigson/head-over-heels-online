@@ -2,7 +2,7 @@ import { type PayloadAction, type SliceCaseReducers } from "@reduxjs/toolkit";
 
 import { applyPreviewedEditsInPlace } from "../applyPreviewedEditsInPlace";
 import { consolidateCurrentRoomInPlace } from "../inPlaceMutators/consolidateCurrentRoomInPlace";
-import { selectCurrentRoomFromLevelEditorState } from "../levelEditorSelectors";
+import { selectCurrentRoomJsonFromLevelEditorState } from "../levelEditorSelectors";
 import { type LevelEditorState } from "../levelEditorSlice";
 import { pushUndoInPlace } from "./undoReducers";
 
@@ -26,7 +26,7 @@ export const itemPreviewReducers = {
       state.pendingEdits.timestamp,
     );
     applyPreviewedEditsInPlace(
-      selectCurrentRoomFromLevelEditorState(state),
+      selectCurrentRoomJsonFromLevelEditorState(state),
       state.pendingEdits.edits,
     );
     if (state.autoCoalesce) {

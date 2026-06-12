@@ -20,6 +20,9 @@ import {
 } from "./ItemAppearance";
 import { type ItemAppearanceOutsideView } from "./itemAppearanceOutsideView";
 import { joystickAppearance } from "./joystickAppearance";
+import { lampAppearance } from "./lampAppearance";
+import { lightBeamAppearance } from "./lightBeamAppearance";
+import { makeMirrorAppearance } from "./mirror/mirrorAppearance";
 import { monsterAppearance } from "./monsterAppearance";
 import { playableAppearance } from "./playableAppearance";
 import { sceneryPlayerAppearance } from "./sceneryPlayerAppearance";
@@ -45,6 +48,7 @@ const itemAppearancesMap: {
   barrier: itemAppearanceRenderOnce(
     ({
       renderContext: {
+        isReflection,
         item: {
           config: { axis, times, disappearing },
         },
@@ -56,7 +60,11 @@ const itemAppearancesMap: {
         createSprite({
           textureId: `barrier.${axis}${disappearing ? ".disappearing" : ""}`,
           times,
-          spritesheet: spritesheetVariants.currentMainSpritesheet(),
+          spritesheet: spritesheetVariants.currentMainSpritesheet(
+            false,
+            false,
+            isReflection,
+          ),
         }),
       );
     },
@@ -70,13 +78,18 @@ const itemAppearancesMap: {
   slidingBlock: itemAppearanceRenderOnce(
     ({
       renderContext: {
+        isReflection,
         item: {
           config: { style },
         },
         general: { spritesheetVariants },
       },
     }) => {
-      const spritesheet = spritesheetVariants.currentMainSpritesheet();
+      const spritesheet = spritesheetVariants.currentMainSpritesheet(
+        false,
+        false,
+        isReflection,
+      );
       return createSprite(
         style === "book" ?
           { textureId: "book.y", spritesheet }
@@ -95,11 +108,16 @@ const itemAppearancesMap: {
   lift: itemAppearanceRenderOnce(
     ({
       renderContext: {
+        isReflection,
         general: { paused, spritesheetVariants },
       },
     }) => {
       const rendering = new Container();
-      const spritesheet = spritesheetVariants.currentMainSpritesheet();
+      const spritesheet = spritesheetVariants.currentMainSpritesheet(
+        false,
+        false,
+        isReflection,
+      );
 
       const pivot = {
         x: smallItemTextureSize.w / 2,
@@ -125,9 +143,16 @@ const itemAppearancesMap: {
   teleporter: teleporterAppearance,
   portableTeleporter: teleporterAppearance,
 
+  lamp: lampAppearance,
+  // the mirror renders other items' reflections, so gets the lookup
+  // injected (a direct import would be a circular dependency):
+  mirror: makeMirrorAppearance((item) => appearanceForItem(item)),
+  lightBeam: lightBeamAppearance,
+
   sceneryCrown: itemAppearanceRenderOnce(
     ({
       renderContext: {
+        isReflection,
         item: {
           config: { planet },
         },
@@ -136,7 +161,11 @@ const itemAppearancesMap: {
     }) => {
       return createSprite({
         textureId: `crown.${planet}`,
-        spritesheet: spritesheetVariants.currentMainSpritesheet(),
+        spritesheet: spritesheetVariants.currentMainSpritesheet(
+          false,
+          false,
+          isReflection,
+        ),
       });
     },
   ),
@@ -144,11 +173,16 @@ const itemAppearancesMap: {
   pickup: itemAppearanceRenderOnce(
     ({
       renderContext: {
+        isReflection,
         item: { config },
         general: { paused, spritesheetVariants },
       },
     }) => {
-      const spritesheet = spritesheetVariants.currentMainSpritesheet();
+      const spritesheet = spritesheetVariants.currentMainSpritesheet(
+        false,
+        false,
+        isReflection,
+      );
 
       if (config.gives === "crown") {
         return createSprite({
@@ -206,6 +240,7 @@ const itemAppearancesMap: {
   portableBlock: itemAppearanceRenderOnce(
     ({
       renderContext: {
+        isReflection,
         item: {
           config: { style },
         },
@@ -214,7 +249,11 @@ const itemAppearancesMap: {
     }) =>
       createSprite({
         textureId: style,
-        spritesheet: spritesheetVariants.currentMainSpritesheet(),
+        spritesheet: spritesheetVariants.currentMainSpritesheet(
+          false,
+          false,
+          isReflection,
+        ),
       }),
   ),
 
@@ -227,6 +266,7 @@ const itemAppearancesMap: {
   bubbles: itemAppearanceRenderOnce(
     ({
       renderContext: {
+        isReflection,
         item: {
           id,
           config: { style },
@@ -238,7 +278,11 @@ const itemAppearancesMap: {
         animationId: `bubbles.bounce.${style}`,
         paused,
         randomiseStartFrame: id,
-        spritesheet: spritesheetVariants.currentMainSpritesheet(),
+        spritesheet: spritesheetVariants.currentMainSpritesheet(
+          false,
+          false,
+          isReflection,
+        ),
       });
     },
   ),
@@ -253,6 +297,7 @@ const itemAppearancesMap: {
   particle: itemAppearanceRenderOnce(
     ({
       renderContext: {
+        isReflection,
         item: {
           config: { forCharacter },
         },
@@ -265,7 +310,11 @@ const itemAppearancesMap: {
         animationId: `particle.${characterEquivalent}.fade`,
         anchor: { x: 0.5, y: 0.5 },
         paused,
-        spritesheet: spritesheetVariants.currentMainSpritesheet(),
+        spritesheet: spritesheetVariants.currentMainSpritesheet(
+          false,
+          false,
+          isReflection,
+        ),
       });
     },
   ),

@@ -40,7 +40,7 @@ Walls handle times specially based on their direction and tiles. When creating e
 
 ## Tracking moved items
 
-* `progressGameState()` returns a `MovedItems` map (defined in `src/game/mainLoop/MovedItems.ts`) containing items whose position changed during the physics tick
+* `progressGameState()` returns a `MovedOrResizedItems` set containing items whose position or aabb changed during the physics tick
 * The map value is a `MovedAxes` bitmask (`1 | 2 | 3`): bit 1 = XY movement, bit 2 = Z movement
 * Construction: positions are snapshotted before physics, then compared axis-by-axis using `computeMovedAxes()`
 * The map is accumulated across sub-ticks by `progressWithSubTicks()` (ORing the axis bitmasks) and passed to renderers

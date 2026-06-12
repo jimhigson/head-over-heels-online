@@ -14,6 +14,7 @@ export const teleporterAppearance: ItemAppearance<
   TeleporterRenderProps
 > = ({
   renderContext: {
+    isReflection,
     item,
     room,
     general: { paused, spritesheetVariants },
@@ -42,7 +43,11 @@ export const teleporterAppearance: ItemAppearance<
     return "no-update";
   }
 
-  const spritesheet = spritesheetVariants.currentMainSpritesheet();
+  const spritesheet = spritesheetVariants.currentMainSpritesheet(
+    false,
+    false,
+    isReflection,
+  );
 
   return {
     output:

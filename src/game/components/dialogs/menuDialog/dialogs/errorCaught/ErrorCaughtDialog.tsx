@@ -29,7 +29,7 @@ export const ErrorCaughtDialog = ({
   const hasReincarnationPoint = useAppSelector(
     (state) => state.gameInPlay.gameInPlay.reincarnationPoint !== undefined,
   );
-  const [copied, setCopied] = useState<boolean>(false);
+  const [showCopied, setShowCopied] = useState<boolean>(false);
   const reincarnateCallback = useDispatchActionCallback(reincarnationAccepted);
   const dispatch = useAppDispatch();
 
@@ -62,7 +62,7 @@ export const ErrorCaughtDialog = ({
             label="Clear all data, reboot game"
             onSelect={() => dispatch(clearAllData())}
           />
-          {copied ?
+          {showCopied ?
             <BitmapText className="text-metallicBlue col-span-2 sprites-double-height ml-3">
               Error report copied
             </BitmapText>
@@ -71,9 +71,10 @@ export const ErrorCaughtDialog = ({
               id="copyClipboard"
               label="Copy error to clipboard"
               onSelect={() =>
-                navigator.clipboard
-                  .writeText(errorsReportText)
-                  .then(() => setCopied(true))
+                navigator.clipboard.writeText(errorsReportText).then(() => {
+                  setShowCopied(true);
+                  window.setTimeout(() => setShowCopied(false), 2000);
+                })
               }
             />
           }

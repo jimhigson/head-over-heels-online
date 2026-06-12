@@ -34,7 +34,7 @@ import {
 import { addOrRemoveWallTilesInPlace } from "../../inPlaceMutators/addOrRemoveWallTilesInPlace";
 import { generateWallHealingInPlaceOfDoor } from "../../inPlaceMutators/generateWallHealingInPlaceOfDoor";
 import {
-  selectCurrentRoomFromLevelEditorState,
+  selectCurrentRoomJsonFromLevelEditorState,
   selectItemInLevelEditorState,
 } from "../../levelEditorSelectors";
 import {
@@ -531,7 +531,7 @@ export const moveOrResizeItemPreviewReducers = {
 
     const edits: PreviewedRoomItemEdits = {};
 
-    const room = selectCurrentRoomFromLevelEditorState(state);
+    const room = selectCurrentRoomJsonFromLevelEditorState(state);
     const isIntegerPosDelta = isExactIntegerXyz(positionDelta);
 
     for (const jsonItemId of jsonItemIds) {

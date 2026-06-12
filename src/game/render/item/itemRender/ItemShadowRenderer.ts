@@ -231,7 +231,7 @@ class ItemShadowRenderer<T extends ItemInPlayType>
    * @returns true iff the item needs z-order resorting for the room
    */
   tick(itemTickContext: ItemTickContext) {
-    const { movedItems } = itemTickContext;
+    const { movedOrResizedItems } = itemTickContext;
 
     const {
       item,
@@ -243,7 +243,7 @@ class ItemShadowRenderer<T extends ItemInPlayType>
       room,
     } = this.renderContext;
 
-    const surfaceMoved = movedItems.has(item);
+    const surfaceMoved = movedOrResizedItems.has(item);
     const itemTop = item.state.position.z + item.aabb.z;
 
     // Values are copied into the buffer to avoid malloc/gc:
@@ -336,7 +336,7 @@ class ItemShadowRenderer<T extends ItemInPlayType>
         isNew = true;
       }
 
-      if (isNew || surfaceMoved || movedItems.has(caster)) {
+      if (isNew || surfaceMoved || movedOrResizedItems.has(caster)) {
         // shadow needs (re) positioning
         const screenXy = projectWorldXyzToScreenXy({
           ...addXy(

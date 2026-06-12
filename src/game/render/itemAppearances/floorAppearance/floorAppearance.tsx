@@ -232,6 +232,7 @@ export const floorAppearance: ItemAppearance<"floor"> =
   itemAppearanceRenderOnce(
     ({
       renderContext: {
+        isReflection,
         room,
         item: floorItem,
         general: {
@@ -264,7 +265,11 @@ export const floorAppearance: ItemAppearance<"floor"> =
       const tilesRight = projectWorldXyzToScreenXy({ ...aabb, x: 0 });
       const tilesTop = projectWorldXyzToScreenXy(aabb);
 
-      const spritesheet = spritesheetVariants.currentMainSpritesheet();
+      const spritesheet = spritesheetVariants.currentMainSpritesheet(
+        false,
+        false,
+        isReflection,
+      );
 
       const outlineFilter = new OutlineFilter({
         color:

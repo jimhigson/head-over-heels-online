@@ -32,6 +32,7 @@ import { type VariantBuildContext } from "../VariantBuildContext";
 import { buildCurrentRoomSpritesheet } from "./currentRoomSpritesheetVariant";
 import { buildDeactivatedSpritesheet } from "./deactivatedSpritesheetVariant";
 import { buildDoughnuttedSpritesheet } from "./doughnuttedSpritesheetVariant";
+import { buildMirrorReflectionSpritesheet } from "./mirrorReflectionSpritesheetVariant";
 import { buildSceneryPlayerSpritesheet } from "./sceneryPlayerSpritesheetVariant";
 import { buildUncolourisedSpritesheet } from "./uncolourisedSpritesheetVariant";
 
@@ -59,6 +60,9 @@ export class SpritesheetVariants {
   #forCurrentRoomSpritesheet: AppSpritesheet | undefined;
   #deactivatedSpritesheet: AppSpritesheet | undefined;
   #doughnuttedSpritesheet: AppSpritesheet | undefined;
+  // built alongside the other variants but not yet consumed; undefined for
+  // spritesheets with no `mirrorReflection` swops (eg speccy):
+  #mirrorReflectionSpritesheet: AppSpritesheet | undefined;
   #sceneryPlayerSpritesheet: AppSpritesheet | undefined;
   #uncolourisedSpritesheet: AppSpritesheet | undefined;
 
@@ -128,6 +132,11 @@ export class SpritesheetVariants {
         bt,
         orig,
       );
+      this.#mirrorReflectionSpritesheet = buildMirrorReflectionSpritesheet(
+        context,
+        bt,
+        orig,
+      );
       this.#sceneryPlayerSpritesheet = buildSceneryPlayerSpritesheet(
         context,
         bt,
@@ -146,16 +155,18 @@ export class SpritesheetVariants {
   }
 
   currentMainSpritesheet(
-    activated: boolean = true,
-    doughnutted: boolean = false,
+    deactivated: boolean,
+    doughnutted: boolean,
+    reflection: boolean,
   ): AppSpritesheet {
     if (this.#uncolourisedSpritesheet !== undefined) {
       return this.#uncolourisedSpritesheet;
     }
     const sheet =
-      doughnutted ? this.#doughnuttedSpritesheet
-      : activated ? this.#forCurrentRoomSpritesheet
-      : this.#deactivatedSpritesheet;
+      reflection ? this.#mirrorReflectionSpritesheet
+      : doughnutted ? this.#doughnuttedSpritesheet
+      : deactivated ? this.#deactivatedSpritesheet
+      : this.#forCurrentRoomSpritesheet;
     if (sheet === undefined) {
       throw new Error(
         "currentMainSpritesheet not available — rebuild() not yet called",
@@ -333,10 +344,12 @@ export class SpritesheetVariants {
     destroySpritesheet(this.#forCurrentRoomSpritesheet);
     destroySpritesheet(this.#deactivatedSpritesheet);
     destroySpritesheet(this.#doughnuttedSpritesheet);
+    destroySpritesheet(this.#mirrorReflectionSpritesheet);
     destroySpritesheet(this.#sceneryPlayerSpritesheet);
     this.#forCurrentRoomSpritesheet = undefined;
     this.#deactivatedSpritesheet = undefined;
     this.#doughnuttedSpritesheet = undefined;
+    this.#mirrorReflectionSpritesheet = undefined;
     this.#sceneryPlayerSpritesheet = undefined;
   }
 

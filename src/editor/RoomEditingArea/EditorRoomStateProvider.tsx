@@ -5,8 +5,10 @@ import { type EmptyObject } from "type-fest";
 import { type EditorRoomJson, type EditorRoomState } from "../editorTypes";
 
 type EditorRoomStateRefs = {
-  roomStateRef: { current: EditorRoomState | undefined };
-  prevRoomJsonRef: { current: EditorRoomJson | undefined };
+  /** the current room state, in the same in-play format used during gameplay */
+  loadedRoomStateRef: { current: EditorRoomState | undefined };
+  /** the last json room state that @see {loadedRoomStateRef} matches */
+  prevRoomJsonWithPreviewsRef: { current: EditorRoomJson | undefined };
 };
 
 const EditorRoomStateContext = createContext<EditorRoomStateRefs>(
@@ -20,7 +22,12 @@ export const EditorRoomStateProvider = ({
   const prevRoomJsonRef = useRef<EditorRoomJson | undefined>(undefined);
 
   return (
-    <EditorRoomStateContext.Provider value={{ roomStateRef, prevRoomJsonRef }}>
+    <EditorRoomStateContext.Provider
+      value={{
+        loadedRoomStateRef: roomStateRef,
+        prevRoomJsonWithPreviewsRef: prevRoomJsonRef,
+      }}
+    >
       {children}
     </EditorRoomStateContext.Provider>
   );

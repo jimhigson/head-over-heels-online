@@ -351,6 +351,46 @@ export const textureForItem = (
       return twClass("texture-hud_char_T");
     case "button":
       return twClass("texture-buttonInGame");
+    case "lamp":
+      switch (item.config.direction) {
+        case "left":
+          return twClass(
+            (item.config.activated ?? true) ?
+              "texture-lamp_on_left"
+            : "texture-lamp_off_left",
+          );
+        case "away":
+          return twClass(
+            (item.config.activated ?? true) ?
+              "texture-lamp_on_away"
+            : "texture-lamp_off_away",
+          );
+        case "towards":
+          return twClass(
+            (item.config.activated ?? true) ?
+              "texture-lamp_on_towards"
+            : "texture-lamp_off_towards",
+          );
+        case "right":
+          return twClass(
+            (item.config.activated ?? true) ?
+              "texture-lamp_on_right"
+            : "texture-lamp_off_right",
+          );
+        default:
+          item.config.direction satisfies never;
+      }
+      break;
+    case "mirror":
+      switch (item.config.orientation) {
+        case "awayLeft":
+          return twClass("texture-mirror_awayLeft");
+        case "awayRight":
+          return twClass("texture-mirror_awayRight");
+        default:
+          item.config.orientation satisfies never;
+      }
+      break;
     case "floatingText":
       return twClass("texture-hud_char_t");
     default:

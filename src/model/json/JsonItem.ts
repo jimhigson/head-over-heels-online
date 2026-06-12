@@ -20,7 +20,11 @@ export const jsonItemTypes = [
   "floor",
   "hushPuppy",
   "joystick",
+  // emits a beam of light along an axis when activated
+  "lamp",
   "lift",
+  // reflects light beams; sits at 45° to the orthogonal axes
+  "mirror",
   "monster",
   "moveableDeadly",
   "movingPlatform",

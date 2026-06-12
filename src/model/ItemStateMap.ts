@@ -10,7 +10,21 @@ import {
 } from "../utils/vectors/vectors";
 import { type SwitchSetting } from "./ItemInPlay";
 import { type ItemConfigMap } from "./json/ItemConfigMap";
+import { type MirrorOrientation } from "./MirrorOrientation";
 import { type TimedRelationWithOtherItem } from "./TimedRelationWithOtherItem";
+
+/**
+ * how a light beam segment ends:
+ *  - "terminus": hits something solid, where its energy dissipates with a glow
+ *  - "reflect-left"/"reflect-right": bends at a mirror, turning to the given
+ *    side relative to its direction of travel
+ *  - "none": runs off an open room edge, ending without any end-cap rendering
+ */
+export type LightBeamEnd =
+  | "none"
+  | "reflect-left"
+  | "reflect-right"
+  | "terminus";
 
 export type PlayableActionState =
   | "falling"
@@ -313,6 +327,48 @@ export type ItemStateMap<RoomId extends string, RoomItemId extends string> = {
   slidingDeadly: SlidingItemState<RoomItemId>;
   slidingBlock: PortableItemState & SlidingItemState<RoomItemId>;
   ball: SlidingItemState<RoomItemId>;
+
+  lamp: {
+    /** if true, the lamp is shining (emitting its light beam) */
+    activated: boolean;
+    /**
+     * the first segment of the beam this lamp is currently emitting - the head
+     * of a linked list chained through each segment's `next`. Undefined when the
+     * lamp isn't shining. Transient (recast every tick)
+     */
+    firstBeam?: RoomItemId;
+  };
+  lightBeam: {
+    /** how this (straight segment of a) beam ends */
+    end: LightBeamEnd;
+    /**
+     * the next segment along this beam's path (after a reflection, or the next
+     * row up), or undefined at the beam's end - so a lamp's segments form a
+     * linked list that can be walked to reuse or tidy up without id bookkeeping
+     */
+    next?: RoomItemId;
+  };
+  mirror: {
+    /** the current orientation of the mirror's plane */
+    orientation: MirrorOrientation;
+    /**
+     * which way (in screen terms) the mirror last turned - decided by which
+     * side of the pane's centre it was pushed on. The flip transition frame
+     * renders the pane mid-turn in this direction
+     */
+    flipDirection?: "anticlockwise" | "clockwise";
+    /**
+     * the room time the mirror was last touched - stays fresh while being
+     * pushed against, to debounce flipping (like switches)
+     */
+    lastFlippedAtRoomTime?: number;
+    /**
+     * the room time the mirror last actually rotated to its other
+     * orientation - used to briefly render the axis-aligned transition
+     * frame so the eye can track the 90° rotation
+     */
+    flippedAtRoomTime?: number;
+  };
 
   monster: MonsterState<RoomItemId>;
   pickup: FreeItemState<RoomItemId> & PortableItemState;

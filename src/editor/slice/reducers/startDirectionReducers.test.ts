@@ -2,7 +2,7 @@ import { produce } from "immer";
 import { expect, test } from "vitest";
 
 import { type EditorRoomItemId } from "../../editorTypes";
-import { selectCurrentRoomFromLevelEditorState } from "../levelEditorSelectors";
+import { selectCurrentRoomJsonFromLevelEditorState } from "../levelEditorSelectors";
 import {
   setSelectedItemsInRoom,
   setSelectedItemsStartDirection,
@@ -39,7 +39,7 @@ const platformPlayerAndBlock = produce(
   },
 );
 
-const setDirection = selectCurrentRoomFromLevelEditorState(
+const setDirection = selectCurrentRoomJsonFromLevelEditorState(
   reduceLevelEditorActions(
     platformPlayerAndBlock,
     setSelectedItemsInRoom({
@@ -70,5 +70,29 @@ test("leaves items without a start direction untouched", () => {
     type: "block",
     config: { style: "artificial" },
     position: { x: 2, y: 0, z: 0 },
+  });
+});
+
+const lampSetDirection = selectCurrentRoomJsonFromLevelEditorState(
+  reduceLevelEditorActions(
+    produce(editorStateWithOneRoomWithNoItems, (draft) => {
+      draft.campaignInProgress.rooms[testRoomId].items[
+        "lamp" as EditorRoomItemId
+      ] = {
+        type: "lamp",
+        config: { direction: "towards", activated: true },
+        position: { x: 0, y: 0, z: 0 },
+      };
+    }),
+    setSelectedItemsInRoom({ jsonItemIds: ["lamp"] as EditorRoomItemId[] }),
+    setSelectedItemsStartDirection({ startDirection: "left", timestamp: 0 }),
+  ),
+).items;
+
+test("sets a lamp's beam direction (its `direction` field, not startDirection)", () => {
+  expect(lampSetDirection["lamp" as EditorRoomItemId]).toEqual({
+    type: "lamp",
+    config: { direction: "left", activated: true },
+    position: { x: 0, y: 0, z: 0 },
   });
 });

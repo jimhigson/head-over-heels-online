@@ -13,7 +13,7 @@ import { type PointingAtOnItem } from "../RoomEditingArea/cursor/PointingAt";
 import { type Tool } from "../RoomEditingArea/interactivity/Tool";
 import { initialLevelEditorSliceState } from "./initialLevelEditorSliceState";
 import {
-  selectCurrentRoomFromLevelEditorState,
+  selectCurrentRoomJsonFromLevelEditorState,
   selectItemInLevelEditorState,
   selectItemIsSelectedInLevelEditorState,
 } from "./levelEditorSelectors";
@@ -30,15 +30,18 @@ import {
   clearContextMenuXyInPlace,
   contextMenuReducers,
 } from "./reducers/contextMenuReducers";
+import { disappearingReducers } from "./reducers/disappearingReducers";
 import { dragToMoveReducers } from "./reducers/dragToMoveReducers";
 import { editorSettingsReducers } from "./reducers/editorSettingsReducers";
 import { editRoomReducers } from "./reducers/editRoomReducers";
 import { explodeItemsReducers } from "./reducers/explodeItemsReducers";
 import { itemActivationReducers } from "./reducers/itemActivationReducers";
 import { itemPreviewReducers } from "./reducers/itemPreviewReducers";
+import { mirrorOrientationReducers } from "./reducers/mirrorOrientationReducers";
 import { monsterMovementReducers } from "./reducers/monsterMovementReducers";
 import { moveOrResizeItemPreviewReducers } from "./reducers/moveOrResizeItemPreview/moveOrResizeItemPreviewReducers";
 import { roomSelectionReducers } from "./reducers/roomSelectionReducers";
+import { rotateItemReducers } from "./reducers/rotateItemReducers";
 import { saveAndLoadReducers } from "./reducers/saveAndLoadReducers";
 import { selectionsReducers } from "./reducers/selectionsReducers";
 import { startDirectionReducers } from "./reducers/startDirectionReducers";
@@ -161,8 +164,11 @@ export const levelEditorSlice = createSlice({
     ...coalesceItemsReducers,
     ...explodeItemsReducers,
     ...itemActivationReducers,
+    ...disappearingReducers,
     ...monsterMovementReducers,
     ...startDirectionReducers,
+    ...mirrorOrientationReducers,
+    ...rotateItemReducers,
     ...campaignManagementReducers,
     ...contextMenuReducers,
   },
@@ -173,12 +179,12 @@ export const levelEditorSlice = createSlice({
   },
   selectors: {
     selectCurrentCampaignInProgress: (state) => state.campaignInProgress,
-    selectCurrentEditingRoomJson: selectCurrentRoomFromLevelEditorState,
+    selectCurrentEditingRoomJson: selectCurrentRoomJsonFromLevelEditorState,
     selectItem: selectItemInLevelEditorState,
     selectCurrentEditingRoomColour: (state) =>
-      selectCurrentRoomFromLevelEditorState(state).color,
+      selectCurrentRoomJsonFromLevelEditorState(state).color,
     selectCurrentEditingRoomScenery: (state) =>
-      selectCurrentRoomFromLevelEditorState(state).planet,
+      selectCurrentRoomJsonFromLevelEditorState(state).planet,
     selectTool: (state) => state.tool,
     selectCmdKSearch: (state) => state.cmdKSearch,
     selectContextMenuXy: (state) => state.contextMenuXy,
@@ -223,6 +229,8 @@ export const {
   roomBack,
   roomForward,
   roomJsonEdited,
+  rotateCurrentToolItem,
+  rotateSelectedItems,
   setAutoCoalesce,
   setCampaignName,
   setCampaignPublished,
@@ -234,7 +242,9 @@ export const {
   setRemoteCampaign,
   setRoomAboveOrBelow,
   setSelectedItemsActivation,
+  setSelectedItemsDisappearing,
   setSelectedItemsInRoom,
+  setSelectedItemsMirrorOrientation,
   setSelectedItemsStartDirection,
   setSelectedMonstersMovement,
   setTool,

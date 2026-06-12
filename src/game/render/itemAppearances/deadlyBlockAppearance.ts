@@ -11,6 +11,7 @@ export const deadlyBlockAppearance: ItemAppearance<
   DeadlyBlockRenderProps
 > = ({
   renderContext: {
+    isReflection,
     item: {
       id,
       config: { times, style },
@@ -27,7 +28,11 @@ export const deadlyBlockAppearance: ItemAppearance<
     return "no-update";
   }
 
-  const spritesheet = spritesheetVariants.currentMainSpritesheet();
+  const spritesheet = spritesheetVariants.currentMainSpritesheet(
+    false,
+    false,
+    isReflection,
+  );
 
   const rendering = createSprite(
     disabled ?

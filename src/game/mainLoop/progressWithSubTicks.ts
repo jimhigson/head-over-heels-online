@@ -7,7 +7,10 @@ import { valuesIter } from "../../utils/entries";
 import { type GameState } from "../gameState/GameState";
 import { selectCurrentRoomState } from "../gameState/gameStateSelectors/selectCurrentRoomState";
 import { type PlayableItem } from "../physics/itemPredicates";
-import { type MovedItems, type ProgressGameState } from "./progressGameState";
+import {
+  type MovedOrResizedItems,
+  type ProgressGameState,
+} from "./progressGameState";
 import { swopPlayablesIfInput } from "./swopPlayablesIfInput";
 
 const noItems = emptyObject as RoomStateItems<string, string>;
@@ -20,13 +23,16 @@ export const progressWithSubTicks =
   (
     gameState: GameState<RoomId>,
     deltaMS: number,
-  ): MovedItems<RoomId, RoomItemId> => {
+  ): MovedOrResizedItems<RoomId, RoomItemId> => {
     /*
       swopping needs to be done outside of the sub-ticks - since it isn't
       possible to change the input between sub-steps, the most it can be
       done is once per tick
     */
-    const movedItems = new Set() as MovedItems<RoomId, RoomItemId>;
+    const movedOrResizedItems = new Set() as MovedOrResizedItems<
+      RoomId,
+      RoomItemId
+    >;
 
     const swapped = swopPlayablesIfInput(gameState);
 
@@ -44,7 +50,7 @@ export const progressWithSubTicks =
         ).filter((p) => p !== undefined);
 
         for (const playable of playablesIter) {
-          movedItems.add(
+          movedOrResizedItems.add(
             playable as PlayableItem<CharacterName, RoomId, RoomItemId>,
           );
         }
@@ -64,20 +70,20 @@ export const progressWithSubTicks =
       const subtickMoves = progress(gameState, stepDeltaMs);
 
       for (const item of subtickMoves) {
-        movedItems.add(item);
+        movedOrResizedItems.add(item);
       }
     }
 
-    // remove from movedItems any items that no longer exist in the room
+    // remove from movedOrResizedItems any items that no longer exist in the room
     // (as of the last sub-tick):
     const itemsAfterLastSubtick =
       selectCurrentRoomState(gameState)?.items ?? noItems;
 
-    for (const m of movedItems) {
+    for (const m of movedOrResizedItems) {
       if (itemsAfterLastSubtick[m.id] === undefined) {
-        movedItems.delete(m);
+        movedOrResizedItems.delete(m);
       }
     }
 
-    return movedItems;
+    return movedOrResizedItems;
   };

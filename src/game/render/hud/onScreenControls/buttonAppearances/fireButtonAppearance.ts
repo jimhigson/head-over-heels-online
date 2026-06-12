@@ -147,7 +147,11 @@ export const fireButtonAppearance: ButtonAppearance<
   }
 
   if (disabledChanged || roomChanged) {
-    const spritesheet = spritesheetVariants.currentMainSpritesheet(!disabled);
+    const spritesheet = spritesheetVariants.currentMainSpritesheet(
+      disabled,
+      false,
+      false,
+    );
 
     hooter.texture = spritesheet.textures["hooter"];
     doughnuts.texture = spritesheet.textures["doughnuts"];

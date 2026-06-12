@@ -6,7 +6,7 @@ import {
   type UnionOfAllItemInPlayTypes,
 } from "../../model/ItemInPlay";
 import { type RoomState } from "../../model/RoomState";
-import { type MovedItems } from "../mainLoop/progressGameState";
+import { type MovedOrResizedItems } from "../mainLoop/progressGameState";
 import { type ItemRenderPipeline } from "./item/itemRender/createItemRenderer";
 import { type GeneralRenderContext } from "./room/RoomRenderContexts";
 import { type ZGraph } from "./sortZ/GraphEdges";
@@ -41,6 +41,8 @@ export type ItemRenderContext<T extends ItemInPlayType> = {
   getItemRenderPipeline: (
     item: UnionOfAllItemInPlayTypes,
   ) => ItemRenderPipeline<ItemInPlayType> | undefined;
+
+  isReflection: boolean;
 };
 
 export type ItemTickContext = {
@@ -52,5 +54,5 @@ export type ItemTickContext = {
    */
   lastRenderRoomTime: number | undefined;
   deltaMS: number;
-  movedItems: MovedItems<string, string>;
+  movedOrResizedItems: MovedOrResizedItems<string, string>;
 };

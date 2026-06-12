@@ -390,6 +390,46 @@ export const vectorClosestDirectionXy8 = ({
   return directionsXy8Octants[octant];
 };
 
+/**
+ * rotate a facing by `octants` eighth-turns around the clockwise octant ring
+ * (one octant = 45°). Two octants (90°) preserves parity, so a cardinal facing
+ * stays cardinal; one octant (45°) steps through all eight directions.
+ */
+export const rotateDirectionXy8 = (
+  direction: DirectionXy8,
+  sense: "anticlockwise" | "clockwise",
+  octants: number,
+): DirectionXy8 => {
+  const i = directionsXy8Octants.indexOf(direction);
+  // clockwise advances around the ring; anticlockwise is the complement:
+  const step = sense === "clockwise" ? octants : 8 - octants;
+  return directionsXy8Octants[(i + step) % 8];
+};
+
+// the cardinal directions in clockwise order (the even members of
+// directionsXy8Octants), so a quarter-turn is ±1 step:
+const directionsXy4Clockwise: DirectionXy4[] = [
+  "right",
+  "towards",
+  "left",
+  "away",
+];
+
+/**
+ * rotate a 4-way (cardinal) facing by a quarter-turn (90°), staying cardinal -
+ * the type-preserving counterpart of {@link rotateDirectionXy8} for items whose
+ * direction is a {@link DirectionXy4}.
+ */
+export const rotateDirectionXy4 = (
+  direction: DirectionXy4,
+  sense: "anticlockwise" | "clockwise",
+): DirectionXy4 => {
+  const i = directionsXy4Clockwise.indexOf(direction);
+  // +1 = 90° clockwise; +3 ≡ −1 (mod 4) = 90° anticlockwise:
+  const step = sense === "clockwise" ? 1 : 3;
+  return directionsXy4Clockwise[(i + step) % 4];
+};
+
 export const distanceSquaredXy = (
   { x: x1, y: y1 }: Xyz,
   { x: x2, y: y2 }: Xyz,

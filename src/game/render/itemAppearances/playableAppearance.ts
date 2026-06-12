@@ -2,6 +2,7 @@ import { AnimatedSprite, Container } from "pixi.js";
 
 import { type ItemTypeUnion } from "../../../_generated/types/ItemInPlayUnion";
 import { type PlayableActionState } from "../../../model/ItemStateMap";
+import { maybeReflectedVector } from "../../../model/MirrorOrientation";
 import {
   type CharacterName,
   type IndividualCharacterName,
@@ -375,6 +376,7 @@ const playableAppearanceImpl: ItemAppearance<
   PlayableRenderOutput
 > = ({
   renderContext: {
+    isReflection,
     item: subject,
     general: {
       gameState,
@@ -403,7 +405,9 @@ const playableAppearanceImpl: ItemAppearance<
   const previousRendering = currentRendering?.output;
 
   const facingXy8 =
-    vectorClosestDirectionXy8(visualFacingVector ?? facing) ?? "towards";
+    vectorClosestDirectionXy8(
+      maybeReflectedVector(visualFacingVector ?? facing, isReflection),
+    ) ?? "towards";
 
   /**
    * show the outline highlight from when the player has just switched to the character?
@@ -446,7 +450,11 @@ const playableAppearanceImpl: ItemAppearance<
 
   let outputContainer: PlayableRenderOutput;
 
-  const spritesheet = spritesheetVariants.currentMainSpritesheet();
+  const spritesheet = spritesheetVariants.currentMainSpritesheet(
+    false,
+    false,
+    isReflection,
+  );
 
   if (type === "headOverHeels") {
     outputContainer =

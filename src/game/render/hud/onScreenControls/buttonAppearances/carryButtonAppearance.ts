@@ -100,7 +100,11 @@ export const carryButtonAppearance: ButtonAppearance<
     .children as SurfaceContentChildren;
 
   if (disabled !== previouslyRenderedProps?.disabled || roomChanged) {
-    const spritesheet = spritesheetVariants.currentMainSpritesheet(!disabled);
+    const spritesheet = spritesheetVariants.currentMainSpritesheet(
+      disabled,
+      false,
+      false,
+    );
     bag.texture = spritesheet.textures["bag"];
   }
 

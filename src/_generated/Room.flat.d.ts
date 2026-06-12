@@ -937,6 +937,29 @@ export type RoomJsonSchema = {
                     };
                   }
                 | {
+                    expectType: "lamp";
+                    targets?: string[];
+                    /**
+                     * true is a shorthand for lamps that start activated (shining):
+                     *   {leftState: {activated: true}, rightState: {activated: false}},
+                     * false is shorthand for lamps that start deactivated:
+                     *   {leftState: {activated: false}, rightState: {activated: true}},
+                     */
+                    activates?: false | true;
+                    leftState?: {
+                      /**
+                       * if true, the lamp is shining (emitting its light beam)
+                       */
+                      activated?: false | true;
+                    };
+                    rightState?: {
+                      /**
+                       * if true, the lamp is shining (emitting its light beam)
+                       */
+                      activated?: false | true;
+                    };
+                  }
+                | {
                     expectType: "lift";
                     targets?: string[];
                     leftState: {
@@ -1013,7 +1036,10 @@ export type RoomJsonSchema = {
                           | "heels"
                           | "hushPuppy"
                           | "joystick"
+                          | "lamp"
                           | "lift"
+                          | "lightBeam"
+                          | "mirror"
                           | "monster"
                           | "moveableDeadly"
                           | "movingPlatform"
@@ -1098,7 +1124,10 @@ export type RoomJsonSchema = {
                           | "heels"
                           | "hushPuppy"
                           | "joystick"
+                          | "lamp"
                           | "lift"
+                          | "lightBeam"
+                          | "mirror"
                           | "monster"
                           | "moveableDeadly"
                           | "movingPlatform"
@@ -1833,6 +1862,32 @@ export type RoomJsonSchema = {
         };
       }
     | {
+        type: "lamp";
+        position: {
+          x: number;
+          y: number;
+          z: number;
+        };
+        config: {
+          /**
+           * the direction the lamp shines its light beam in, when activated
+           */
+          direction: "away" | "left" | "right" | "towards";
+          /**
+           * if the lamp starts activated (shining) when the room loads.
+           * undefined is treated as true
+           */
+          activated?: false | true;
+          /**
+           * lamps can be stacked to double/triple height - a beam is then emitted
+           * from every block of the stack
+           */
+          times?: {
+            z: number;
+          };
+        };
+      }
+    | {
         type: "lift";
         position: {
           x: number;
@@ -1842,6 +1897,27 @@ export type RoomJsonSchema = {
         config: {
           top: number;
           bottom: number;
+        };
+      }
+    | {
+        type: "mirror";
+        position: {
+          x: number;
+          y: number;
+          z: number;
+        };
+        config: {
+          /**
+           * the initial orientation of the mirror's plane
+           */
+          orientation: "awayLeft" | "awayRight";
+          /**
+           * mirrors can be stacked to double/triple height - the whole stack is
+           * one pane that flips together
+           */
+          times?: {
+            z: number;
+          };
         };
       }
     | {
@@ -3001,6 +3077,29 @@ export type RoomJsonSchema = {
                     };
                   }
                 | {
+                    expectType: "lamp";
+                    targets?: string[];
+                    /**
+                     * true is a shorthand for lamps that start activated (shining):
+                     *   {leftState: {activated: true}, rightState: {activated: false}},
+                     * false is shorthand for lamps that start deactivated:
+                     *   {leftState: {activated: false}, rightState: {activated: true}},
+                     */
+                    activates?: false | true;
+                    leftState?: {
+                      /**
+                       * if true, the lamp is shining (emitting its light beam)
+                       */
+                      activated?: false | true;
+                    };
+                    rightState?: {
+                      /**
+                       * if true, the lamp is shining (emitting its light beam)
+                       */
+                      activated?: false | true;
+                    };
+                  }
+                | {
                     expectType: "lift";
                     targets?: string[];
                     leftState: {
@@ -3077,7 +3176,10 @@ export type RoomJsonSchema = {
                           | "heels"
                           | "hushPuppy"
                           | "joystick"
+                          | "lamp"
                           | "lift"
+                          | "lightBeam"
+                          | "mirror"
                           | "monster"
                           | "moveableDeadly"
                           | "movingPlatform"
@@ -3162,7 +3264,10 @@ export type RoomJsonSchema = {
                           | "heels"
                           | "hushPuppy"
                           | "joystick"
+                          | "lamp"
                           | "lift"
+                          | "lightBeam"
+                          | "mirror"
                           | "monster"
                           | "moveableDeadly"
                           | "movingPlatform"
@@ -4083,6 +4188,29 @@ export type RoomJsonSchema = {
                 };
               }
             | {
+                expectType: "lamp";
+                targets?: string[];
+                /**
+                 * true is a shorthand for lamps that start activated (shining):
+                 *   {leftState: {activated: true}, rightState: {activated: false}},
+                 * false is shorthand for lamps that start deactivated:
+                 *   {leftState: {activated: false}, rightState: {activated: true}},
+                 */
+                activates?: false | true;
+                leftState?: {
+                  /**
+                   * if true, the lamp is shining (emitting its light beam)
+                   */
+                  activated?: false | true;
+                };
+                rightState?: {
+                  /**
+                   * if true, the lamp is shining (emitting its light beam)
+                   */
+                  activated?: false | true;
+                };
+              }
+            | {
                 expectType: "lift";
                 targets?: string[];
                 leftState: {
@@ -4159,7 +4287,10 @@ export type RoomJsonSchema = {
                       | "heels"
                       | "hushPuppy"
                       | "joystick"
+                      | "lamp"
                       | "lift"
+                      | "lightBeam"
+                      | "mirror"
                       | "monster"
                       | "moveableDeadly"
                       | "movingPlatform"
@@ -4244,7 +4375,10 @@ export type RoomJsonSchema = {
                       | "heels"
                       | "hushPuppy"
                       | "joystick"
+                      | "lamp"
                       | "lift"
+                      | "lightBeam"
+                      | "mirror"
                       | "monster"
                       | "moveableDeadly"
                       | "movingPlatform"

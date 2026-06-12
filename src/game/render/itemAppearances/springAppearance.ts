@@ -27,6 +27,7 @@ const springAppearanceImpl: (
   (isShadowMask: boolean) =>
   ({
     renderContext: {
+      isReflection,
       item: {
         state: { stoodOnBy, stoodOnUntilRoomTime },
       },
@@ -46,7 +47,11 @@ const springAppearanceImpl: (
         animationId:
           isShadowMask ? "shadowMask.spring.bounce" : "spring.bounce",
         paused,
-        spritesheet: spritesheetVariants.currentMainSpritesheet(),
+        spritesheet: spritesheetVariants.currentMainSpritesheet(
+          false,
+          false,
+          isReflection,
+        ),
       });
       rendering.loop = false;
       rendering.gotoAndStop(rendering.totalFrames - 1);

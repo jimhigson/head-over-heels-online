@@ -16,7 +16,8 @@ import { emptyObject } from "../../../utils/empty";
 import { entries } from "../../../utils/entries";
 import { findStandingOnWithHighestPriorityAndMostOverlap } from "../../collision/checkStandingOn";
 import { GridSpatialIndex } from "../../physics/gridSpace/GridSpatialIndex";
-import { isFreeItem, isSpatial } from "../../physics/itemPredicates";
+import { isFreeItem, isLamp, isSpatial } from "../../physics/itemPredicates";
+import { tickLampLightBeams } from "../../physics/mechanics/lightBeams";
 import { type RoomPickupsCollected } from "../GameState";
 import { setStandingOnWithoutRemovingOldFirst } from "../mutators/standingOn/setStandingOnWithoutRemovingOldFirst";
 import {
@@ -155,6 +156,13 @@ export const loadRoom = <RoomId extends string, RoomItemId extends string>({
     roomTime: 0,
     [roomSpatialIndexKey]: spatialIndex,
   };
+
+  // cast lamps' light beams immediately so they exist at roomTime=0 - the
+  // editor renders rooms without ever ticking them, as do screenshot tests
+  // running with gameSpeed=0:
+  for (const lamp of roomItemsIterable(items).filter(isLamp)) {
+    tickLampLightBeams(lamp, roomState);
+  }
 
   return roomState;
 };

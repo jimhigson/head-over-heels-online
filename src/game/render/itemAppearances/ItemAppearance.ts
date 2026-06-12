@@ -50,11 +50,16 @@ export const itemStaticAppearance = <T extends ItemInPlayType>(
   itemAppearanceRenderOnce(
     ({
       renderContext: {
+        isReflection,
         item: subject,
         general: { spritesheetVariants },
       },
     }) => {
-      const spritesheet = spritesheetVariants.currentMainSpritesheet();
+      const spritesheet = spritesheetVariants.currentMainSpritesheet(
+        false,
+        false,
+        isReflection,
+      );
       if (isMultipliedItem(subject)) {
         return createSprite({
           ...(typeof createSpriteOptions === "string" ?
@@ -82,11 +87,16 @@ export const itemStaticAnimatedAppearance = <T extends ItemInPlayType>(
   itemAppearanceRenderOnce(
     ({
       renderContext: {
+        isReflection,
         item: subject,
         general: { paused, spritesheetVariants },
       },
     }) => {
-      const spritesheet = spritesheetVariants.currentMainSpritesheet();
+      const spritesheet = spritesheetVariants.currentMainSpritesheet(
+        false,
+        false,
+        isReflection,
+      );
       if (isMultipliedItem(subject)) {
         return createSprite({
           ...createSpriteOptions,

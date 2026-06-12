@@ -294,11 +294,25 @@ class EditorAnnotationsRenderer<T extends ItemInPlayType>
         {
           const {
             config: { direction },
+            state: { disappearing },
           } = item;
 
-          const arrow = directionArrows[direction];
+          // a disappearing conveyor shows the disappear marker in place of its
+          // direction arrow:
+          this.#addTextAnnotation({
+            annotationText:
+              disappearing !== null ? "*" : directionArrows[direction],
+            yAdj: -12,
+          });
+        }
+        break;
 
-          this.#addTextAnnotation({ annotationText: arrow, yAdj: -12 });
+      case "block":
+      case "barrier":
+        // disappearing blocks/barriers look identical to permanent ones in the
+        // editor, so mark them:
+        if (item.state.disappearing !== null) {
+          this.#addTextAnnotation({ annotationText: "*", yAdj: -12 });
         }
         break;
 

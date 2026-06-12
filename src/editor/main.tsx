@@ -8,9 +8,9 @@ import { loadHeadOverHeelsFont } from "../sprites/loadHeadOverHeelsFont";
 import { store } from "../store/store";
 import { loadCodiconFont } from "./JsonRoomEditor/loadCodiconFont";
 import { LevelEditorLoader } from "./LevelEditorLoader";
-import { registerRoomPreviewListeners } from "./roomPreview/roomPreviewListeners";
+import { registerRoomPreviewSnapshotListeners } from "./roomPreview/roomPreviewListeners";
 
-registerRoomPreviewListeners();
+registerRoomPreviewSnapshotListeners();
 
 loadHeadOverHeelsFont();
 loadCodiconFont();

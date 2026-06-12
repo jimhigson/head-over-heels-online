@@ -23,7 +23,10 @@ type GeneratedTypeUnion =
   | "heels"
   | "hushPuppy"
   | "joystick"
+  | "lamp"
   | "lift"
+  | "lightBeam"
+  | "mirror"
   | "monster"
   | "moveableDeadly"
   | "movingPlatform"
@@ -117,7 +120,15 @@ export type ItemTypeUnion<
   | (T extends "joystick" ?
       ItemInPlay<"joystick", RoomId, RoomItemId, RoomItemId, ScN>
     : never)
+  | (T extends "lamp" ? ItemInPlay<"lamp", RoomId, RoomItemId, RoomItemId, ScN>
+    : never)
   | (T extends "lift" ? ItemInPlay<"lift", RoomId, RoomItemId, RoomItemId, ScN>
+    : never)
+  | (T extends "lightBeam" ?
+      ItemInPlay<"lightBeam", RoomId, RoomItemId, RoomItemId, ScN>
+    : never)
+  | (T extends "mirror" ?
+      ItemInPlay<"mirror", RoomId, RoomItemId, RoomItemId, ScN>
     : never)
   | (T extends "monster" ?
       ItemInPlay<"monster", RoomId, RoomItemId, RoomItemId, ScN>

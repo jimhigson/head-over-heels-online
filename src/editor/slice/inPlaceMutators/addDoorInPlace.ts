@@ -19,7 +19,7 @@ import {
   type EditorRoomJson,
 } from "../../editorTypes";
 import { type ItemTool } from "../../RoomEditingArea/interactivity/Tool";
-import { selectCurrentRoomFromLevelEditorState } from "../levelEditorSelectors";
+import { selectCurrentRoomJsonFromLevelEditorState } from "../levelEditorSelectors";
 import { type LevelEditorState } from "../levelEditorSlice";
 import {
   roomFloorMaxX,
@@ -167,7 +167,7 @@ export const addDoorInPlace = (
   toolItem: ItemTool<"door">,
   isPreview: boolean,
 ): [EditorRoomItemId, EditorJsonItem<"door">] => {
-  const fromRoomJson = selectCurrentRoomFromLevelEditorState(state);
+  const fromRoomJson = selectCurrentRoomJsonFromLevelEditorState(state);
 
   const doorDirection = wallDirection;
   // for doors, trim walls around where the door was placed:

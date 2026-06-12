@@ -1,5 +1,5 @@
 import { type EditorJsonItemUnion } from "../../editorTypes";
-import { selectCurrentRoomFromLevelEditorState } from "../levelEditorSelectors";
+import { selectCurrentRoomJsonFromLevelEditorState } from "../levelEditorSelectors";
 import { type LevelEditorState } from "../levelEditorSlice";
 import { clearContextMenuXyInPlace } from "./contextMenuReducers";
 import { type UndoItemEntry } from "./undoDescription";
@@ -15,7 +15,7 @@ export const mutateSelectedItemsInPlace = (
   { verb, timestamp }: { verb: string; timestamp: number },
   mutate: (item: EditorJsonItemUnion) => void,
 ) => {
-  const roomJson = selectCurrentRoomFromLevelEditorState(state);
+  const roomJson = selectCurrentRoomJsonFromLevelEditorState(state);
 
   const items: UndoItemEntry[] = state.selectedJsonItemIds.map((id) => [
     id,

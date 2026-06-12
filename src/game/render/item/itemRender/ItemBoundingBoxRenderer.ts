@@ -123,6 +123,11 @@ const bbColors: Record<ItemInPlayType, string> = {
   joystick: "#DDEE22",
   timer: "#EEDD00",
 
+  // lamps, mirrors and light:
+  lamp: "#FFF080",
+  mirror: "#C0E8FF",
+  lightBeam: "#FFFFC0",
+
   // emitters & projectiles
   emitter: "#00FFFF",
   firedDoughnut: "#00DDAA",
@@ -152,6 +157,12 @@ export class ItemBoundingBoxRenderer<T extends ItemInPlayType>
 {
   #container: Container;
   #shown = false;
+  /**
+   * the aabb reference last drawn, so the overlay can be redrawn when an
+   * item's bounding box changes. Items replace their aabb by reference when
+   * it changes (eg light beams), so reference inequality is a sound signal
+   */
+  #lastRenderedAabb: Aabb | undefined;
 
   readonly renderContext: ItemRenderContext<T>;
 
@@ -162,7 +173,11 @@ export class ItemBoundingBoxRenderer<T extends ItemInPlayType>
     });
   }
 
-  #render() {
+  /** (re)build the overlay graphics for the item's current bounding box */
+  #draw() {
+    this.#container.removeChildren();
+    this.#container.removeAllListeners();
+
     const { item } = this.renderContext;
     const color = bbColors[item.type];
 
@@ -238,6 +253,11 @@ export class ItemBoundingBoxRenderer<T extends ItemInPlayType>
       textNode = undefined;
     });
 
+    this.#lastRenderedAabb = item.aabb;
+  }
+
+  #show() {
+    this.#draw();
     this.renderContext.frontLayer.attach(this.#container);
     this.#shown = true;
   }
@@ -254,14 +274,18 @@ export class ItemBoundingBoxRenderer<T extends ItemInPlayType>
       this.renderContext.item.type,
     );
 
-    if (shouldShow === this.#shown) {
+    if (shouldShow !== this.#shown) {
+      if (shouldShow) {
+        this.#show();
+      } else {
+        this.#clear();
+      }
       return;
     }
 
-    if (shouldShow) {
-      this.#render();
-    } else {
-      this.#clear();
+    // already showing: redraw if the bounding box changed (new aabb reference)
+    if (shouldShow && this.renderContext.item.aabb !== this.#lastRenderedAabb) {
+      this.#draw();
     }
   }
 

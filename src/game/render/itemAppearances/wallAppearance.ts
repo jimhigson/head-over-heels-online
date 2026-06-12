@@ -30,6 +30,7 @@ const sampleBuffer: CollideableItem = {
 export const farWallAppearance = itemAppearanceRenderOnce<"wall">(
   ({
     renderContext: {
+      isReflection,
       general: { pixiRenderer, spritesheetVariants },
       item,
       room,
@@ -60,7 +61,11 @@ export const farWallAppearance = itemAppearanceRenderOnce<"wall">(
           }
         : { x: 0, y: wallTileSize.h };
 
-      const spritesheet = spritesheetVariants.currentMainSpritesheet();
+      const spritesheet = spritesheetVariants.currentMainSpritesheet(
+        false,
+        false,
+        isReflection,
+      );
 
       const wallTileSprite = createSprite({
         textureId: wallTextureId(
@@ -115,7 +120,11 @@ export const farWallAppearance = itemAppearanceRenderOnce<"wall">(
                 textureId: `moonbase.wallDoorTransition.${direction}${isDarkStr}`,
                 ...tileRenderPosition,
                 pivot: tileRenderPivot,
-                spritesheet: spritesheetVariants.currentMainSpritesheet(),
+                spritesheet: spritesheetVariants.currentMainSpritesheet(
+                  false,
+                  false,
+                  isReflection,
+                ),
               }),
             );
             const maskSprite = createSprite({

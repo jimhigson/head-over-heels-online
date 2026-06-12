@@ -1,0 +1,96 @@
+// Vitest Snapshot v1, https://vitest.dev/guide/snapshot.html
+
+exports[`bench scenario casts a stable set of beam items 1`] = `
+[
+  {
+    "aabb": {
+      "x": 8,
+      "y": 144,
+      "z": 8,
+    },
+    "direction": "away",
+    "end": "reflect-left",
+    "id": "lb",
+    "position": {
+      "x": 116,
+      "y": 48,
+      "z": 2,
+    },
+  },
+  {
+    "aabb": {
+      "x": 64,
+      "y": 8,
+      "z": 8,
+    },
+    "direction": "right",
+    "end": "reflect-left",
+    "id": "lb1",
+    "position": {
+      "x": 48,
+      "y": 196,
+      "z": 2,
+    },
+  },
+  {
+    "aabb": {
+      "x": 8,
+      "y": 112,
+      "z": 8,
+    },
+    "direction": "towards",
+    "end": "reflect-left",
+    "id": "lb2",
+    "position": {
+      "x": 36,
+      "y": 80,
+      "z": 2,
+    },
+  },
+  {
+    "aabb": {
+      "x": 208,
+      "y": 8,
+      "z": 8,
+    },
+    "direction": "left",
+    "end": "terminus",
+    "id": "lb3",
+    "position": {
+      "x": 48,
+      "y": 68,
+      "z": 2,
+    },
+  },
+  {
+    "aabb": {
+      "x": 8,
+      "y": 144,
+      "z": 8,
+    },
+    "direction": "away",
+    "end": "reflect-left",
+    "id": "lb4",
+    "position": {
+      "x": 116,
+      "y": 48,
+      "z": 14,
+    },
+  },
+  {
+    "aabb": {
+      "x": 112,
+      "y": 8,
+      "z": 8,
+    },
+    "direction": "right",
+    "end": "terminus",
+    "id": "lb5",
+    "position": {
+      "x": 0,
+      "y": 196,
+      "z": 14,
+    },
+  },
+]
+`;

@@ -3,6 +3,7 @@ import { handleItemWithMovementTouchingItem } from "../mechanics/movement";
 import { handleFiredDoughnutTouchingMonster } from "./handleFiredDoughnutTouchingMonster";
 import { handleItemTouchingDissapearing } from "./handleItemTouchingDisappearing";
 import { handleItemTouchingJoystick } from "./handleItemTouchingJoystick";
+import { handleItemTouchingMirror } from "./handleItemTouchingMirror";
 import { handleItemTouchingOutOfBounds } from "./handleItemTouchingOutOfBounds";
 import {
   handleItemTouchingSlidingItem,
@@ -62,6 +63,10 @@ export const handleItemsTouchingItems = <
 
   if (touchedItemIsType(e, "switch")) {
     handleItemTouchingSwitch(e);
+  }
+
+  if (touchedItemIsType(e, "mirror")) {
+    handleItemTouchingMirror(e);
   }
 
   if (touchedItemIsType(e, "joystick")) {

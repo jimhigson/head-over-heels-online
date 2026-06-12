@@ -66,6 +66,12 @@ export const activationForItem = (
         supported: ["enabled", "disabled"],
         current: item.config.activated === false ? "disabled" : "enabled",
       };
+    case "lamp":
+      return {
+        supported: ["enabled", "disabled"],
+        // activated is undefined-means-on, so only an explicit false is disabled:
+        current: item.config.activated === false ? "disabled" : "enabled",
+      };
     default:
       return undefined;
   }
@@ -112,6 +118,10 @@ export const setItemActivationInPlace = (
       } else {
         delete item.config.activated;
       }
+      return;
+    case "lamp":
+      // lamps are placed activated; set the boolean explicitly either way:
+      item.config.activated = activation !== "disabled";
       return;
   }
 };

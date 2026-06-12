@@ -122,6 +122,25 @@ export const blockStackSpritesheetMeta: SpritesheetMetadata<
         replaceLight: "lightBeige",
       },
     },
+    // a two-tone blue reflection: darker palette colours become metallicBlue,
+    // lighter ones pastelBlue (metallicBlue/pastelBlue map to themselves):
+    mirrorReflection: {
+      colours: {
+        pureBlack: "metallicBlue",
+        shadow: "pastelBlue",
+        redShadow: "pastelBlue",
+        midGrey: "pastelBlue",
+        replaceDark: "pastelBlue",
+        midRed: "pastelBlue",
+        moss: "pastelBlue",
+        replaceLight: "pastelBlue",
+        pink: "pastelBlue",
+        lightGrey: "pastelBlue",
+        lightBeige: "pastelBlue",
+        highlightBeige: "pastelBlue",
+        white: "pastelBlue",
+      },
+    },
   },
   effectColours: {
     head: "pastelBlue",

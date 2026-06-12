@@ -14,6 +14,7 @@ import { IconWithTwoLineHoverText } from "./ToolbarButtonContentPatterns";
 export const PlayTestButton = () => {
   const [fromStart, setFromStart] = useState(false);
   const [playAsHeels, setPlayAsHeels] = useState(false);
+  const [baseUrl, setBaseUrl] = useState(import.meta.env.VITE_GAME_URL);
 
   return (
     <MenuButton
@@ -24,10 +25,7 @@ export const PlayTestButton = () => {
             const campaign = selectCurrentCampaignInProgress(state);
             const encodedCampaign = await compressObject(campaign);
 
-            const url = new URL(
-              import.meta.env.VITE_GAME_URL,
-              window.location.href,
-            );
+            const url = new URL(baseUrl, window.location.href);
             const searchParams = url.searchParams as TypedURLSearchParams;
             searchParams.set("campaignName", `data:${encodedCampaign}`);
             searchParams.set("cheats", "1");
@@ -55,12 +53,21 @@ export const PlayTestButton = () => {
       }
     >
       {[
+        <div className="pl-1 pr-1 pt-1">
+          <label className="mr-1 text-lightGrey">Base URL:</label>
+          <input
+            key="baseurl"
+            className="bg-shadow text-highlightBeige"
+            value={baseUrl}
+            onChange={(e) => setBaseUrl(e.target.value)}
+          />
+        </div>,
         <Switch
           key="fromStart"
           className="w-full px-1 py-half"
           value={fromStart}
-          label="from"
-          falseLabel="room"
+          label="Start from:"
+          falseLabel="this room"
           trueLabel="start"
           onChange={(value) => setFromStart(value)}
         />,
@@ -68,7 +75,7 @@ export const PlayTestButton = () => {
           key="playAsHeels"
           className="w-full px-1 py-half"
           value={playAsHeels}
-          label="as"
+          label="Play as:"
           falseLabel="head"
           trueLabel="heels"
           onChange={(value) => setPlayAsHeels(value)}

@@ -94,6 +94,7 @@
     "recognise",
     "Recolourised",
     "reentrancy",
+    "reflectable",
     "Renderable",
     "Retrospec",
     "RGBA",
@@ -187,6 +188,7 @@
     "titleBar.inactiveForeground": "#15202b99",
   },
   "peacock.color": "CA7463",
+  
   "editor.formatOnSave": true,
   "editor.defaultFormatter": "esbenp.prettier-vscode",
   "editor.codeActionsOnSave": {

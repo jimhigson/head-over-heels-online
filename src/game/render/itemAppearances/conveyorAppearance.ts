@@ -81,6 +81,7 @@ const conveyorAppearanceImpl: ItemAppearance<
   AnimatedSprite
 > = ({
   renderContext: {
+    isReflection,
     item: {
       config: { times },
       state: { stoodOnBy, direction, disabled },
@@ -113,7 +114,11 @@ const conveyorAppearanceImpl: ItemAppearance<
     direction !== currentlyRenderedProps?.direction ||
     disabledChanged;
 
-  const spritesheet = spritesheetVariants.currentMainSpritesheet(!disabled);
+  const spritesheet = spritesheetVariants.currentMainSpritesheet(
+    !!disabled,
+    false,
+    isReflection,
+  );
 
   const conveyorAnimationSpeed: number =
     spritesheet.data.animations["conveyor.x"].animationSpeed;

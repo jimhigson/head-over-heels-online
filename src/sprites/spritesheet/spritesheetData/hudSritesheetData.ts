@@ -111,6 +111,7 @@ const row2 = [
   "8",
   "9",
   "_",
+  "|",
   "#",
   "⚡",
   "🛡",
@@ -185,6 +186,8 @@ const row3 = [
   "&",
   "⎌", // undo
   "⟳", // redo
+  "↻", // rotate clockwise
+  "↺", // rotate anti-clockwise
 ] as const satisfies CharRow;
 
 export type CharSpriteTextureId<C extends string> =
