@@ -6,16 +6,27 @@ import { entries, fromAllEntries } from "../utils/entries";
 import { importOnce } from "../utils/importOnce";
 import { loadAndDecode } from "./loadAndDecode";
 
-type AppSounds = { [K in ExportedSoundId]: AudioBuffer };
+/**
+ * the intro music is only ever played by the crowns dialog, streaming the
+ * url directly through an <audio> element - decoding it into the map too
+ * would download the file a second time
+ */
+export type MappedSoundId = Exclude<ExportedSoundId, "intro">;
+
+export const isMappedSoundId = (id: ExportedSoundId): id is MappedSoundId =>
+  id !== "intro";
+
+type AppSounds = { [K in MappedSoundId]: AudioBuffer };
 
 let loaded: AppSounds | undefined = undefined;
 
 const importSoundsOnce = importOnce(async (): Promise<AppSounds> => {
-  const loadedEntries: [ExportedSoundId, AudioBuffer][] = await Promise.all(
-    entries(exportedSfxUrls).map(async ([id, url]) => [
-      id,
-      await loadAndDecode(url),
-    ]),
+  const loadedEntries: [MappedSoundId, AudioBuffer][] = await Promise.all(
+    entries(exportedSfxUrls)
+      .filter((entry): entry is [MappedSoundId, string] =>
+        isMappedSoundId(entry[0]),
+      )
+      .map(async ([id, url]) => [id, await loadAndDecode(url)] as const),
   );
   return fromAllEntries(loadedEntries);
 });

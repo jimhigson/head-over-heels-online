@@ -69,9 +69,12 @@ const useCreateGameApi = (
       if (import.meta.env.MODE === "visual-regression") {
         window._e2e_gamePageGameAi = undefined;
       }
-      // the game isn't running, but we will pre-load the assets.
-      // they can't load twice so this is safe to call any time
-      loadGameAssets();
+      // deliberately no asset pre-loading here: game assets (the engine
+      // chunk and all game sounds) load behind the loading screen when the
+      // game starts. The menu doesn't need them - its own few sounds load
+      // separately - and the service worker precaches everything in the
+      // background anyway, so on all but a cold first visit the game-start
+      // loads are local cache hits
       return;
     }
 

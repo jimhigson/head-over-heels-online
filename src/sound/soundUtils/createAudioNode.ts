@@ -1,6 +1,6 @@
 import { type ExportedSoundId } from "../../_generated/sfxdex/sfx";
 import { audioCtx } from "../audioCtx";
-import { loadedSounds } from "../soundsLoader";
+import { isMappedSoundId, loadedSounds } from "../soundsLoader";
 
 /**
  * when looping, the lead-in and lead-out at each end of the buffer that is
@@ -40,6 +40,11 @@ export const createAudioNode = (
   } = resolvedParam;
 
   const node = audioCtx.createBufferSource();
+  if (!isMappedSoundId(soundId)) {
+    // ids not decoded into the map (eg "intro", which is streamed by the
+    // crowns dialog via an <audio> element) give a silent, unstarted node
+    return node;
+  }
   const buffer = loadedSounds()[soundId];
   node.buffer = buffer;
 
