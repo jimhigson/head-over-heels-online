@@ -63,6 +63,14 @@ export type GameInPlayStoreState = {
 
   /** which characters have exited the game and found freedom? */
   freeCharacters: FreeCharacters;
+
+  /**
+   * ms of wall-clock (real) time the game had been actively played for when
+   * the most recent character reached freedom - shown on the score screen for
+   * won games. Not scaled by the game speed setting, and time in menus/paused
+   * is not counted. Undefined if no character has reached freedom
+   */
+  timeTakenToFreedom?: number;
 };
 
 type GameInPlaySliceState = {
@@ -176,10 +184,15 @@ export const gameInPlaySlice = createSlice({
     characterReachesFreedom(
       state,
       {
-        payload: individualCharacterName,
-      }: PayloadAction<IndividualCharacterName>,
+        payload: { characterName, wallClockTime },
+      }: PayloadAction<{
+        characterName: IndividualCharacterName;
+        /** the gameState's wallClockTime when this character reached freedom */
+        wallClockTime: number;
+      }>,
     ) {
-      state.gameInPlay.freeCharacters[individualCharacterName] = true;
+      state.gameInPlay.freeCharacters[characterName] = true;
+      state.gameInPlay.timeTakenToFreedom = wallClockTime;
     },
     gameStarted(
       state,

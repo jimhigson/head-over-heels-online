@@ -168,6 +168,9 @@ const _loadGameState = <RoomId extends string>({
       ...badJsonClone(savedGame.gameState),
     });
 
+    // saves from before wallClockTime was tracked won't have it:
+    writeInto.wallClockTime ??= 0;
+
     writeInto.characterRooms =
       addIndexToIndexSavedCharacterRooms(loadedCharacterRooms);
 
@@ -234,6 +237,7 @@ const _loadGameState = <RoomId extends string>({
     // new game - nothing picked up:
     pickupsCollected: {} as PickupsCollected<RoomId>,
     gameTime: 0,
+    wallClockTime: 0,
     freeCharacters: {},
 
     characterRooms: {

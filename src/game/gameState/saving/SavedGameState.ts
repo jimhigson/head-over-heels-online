@@ -18,6 +18,7 @@ export const savedGameStateFields = [
   "gameTime",
   "pickupsCollected",
   "previousPlayable",
+  "wallClockTime",
 ] as const satisfies readonly (keyof GameState<string>)[];
 
 /** when RoomState is serialised, it does not have an index */
@@ -37,9 +38,11 @@ export type SavedCharacterRooms<RoomId extends string> = {
 
 type SavedGameStateFields = (typeof savedGameStateFields)[number];
 
-type SavedGameState<RoomId extends string> = Pick<
-  GameState<RoomId>,
-  Exclude<SavedGameStateFields, "characterRooms">
+type SavedGameState<RoomId extends string> = SetOptional<
+  Pick<GameState<RoomId>, Exclude<SavedGameStateFields, "characterRooms">>,
+  // wallClockTime marked as optional since it won't be in games saved before
+  // it was added (mid 2026)
+  "wallClockTime"
 > & {
   characterRooms: SavedCharacterRooms<RoomId>;
 };

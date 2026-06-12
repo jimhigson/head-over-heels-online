@@ -19,6 +19,7 @@ import { MenuItems } from "../../MenuItems";
 import { multilineTextClass } from "../../multilineTextClass";
 import { mainMenuCycle } from "../mainMenu/mainMenuCycle";
 import { MainMenuHeading } from "../mainMenu/MainMenuHeading";
+import { formatTimeTaken } from "./formatTimeTaken";
 
 const ORIGINAL_GAME_MAX_SCORE = 94_000;
 
@@ -112,6 +113,13 @@ export const ScoreDialog = () => {
   );
 
   const freeCharacters = useAppSelector(selectFreeCharacters);
+  const timeTakenToFreedom = useAppSelector(
+    ({
+      gameInPlay: {
+        gameInPlay: { timeTakenToFreedom },
+      },
+    }) => timeTakenToFreedom,
+  );
 
   const score = calculateScore(
     roomsExploredCount,
@@ -148,6 +156,14 @@ export const ScoreDialog = () => {
               <FreeCharacterText key={fc} freeCharacterName={fc} />
             ))}
           </div>
+          {timeTakenToFreedom !== undefined && (
+            <BitmapText
+              data-test-id="time-taken"
+              className="mt-1 block text-center mx-auto text-highlightBeige zx:text-zxYellow toppy:text-toppyWarm3"
+            >
+              Time taken {formatTimeTaken(timeTakenToFreedom)}
+            </BitmapText>
+          )}
           <span
             data-test-id="rooms-explored-summary"
             data-rooms-explored={roomsExploredCount}

@@ -193,10 +193,19 @@ export class MainLoop<RoomId extends string> {
       upscale: { upscale: tickUpscale },
     } = tickState;
 
+    // tickerDeltaMS was scaled by the speed the ticker had during the previous
+    // tick - capture that speed before tickGameSpeed changes it:
+    const speedAppliedToDeltaMS = this.#app.ticker.speed;
     tickGameSpeed(this.#app.ticker, tickState, this.#gameState);
     // tickGameSpeed can only set for the next frame - is the current frame's speed should be zero
     // but isn't, make sure one frame's worth of physics movement doesn't happen here:
     const deltaMS = this.#app.ticker.speed === 0 ? 0 : tickerDeltaMS;
+
+    if (deltaMS !== 0) {
+      // gameTime advances by the speed-scaled deltaMS inside the physics
+      // ticker; wallClockTime tracks real elapsed time so unscale:
+      this.#gameState.wallClockTime += deltaMS / speedAppliedToDeltaMS;
+    }
 
     const isPaused = selectIsPaused(tickState);
 

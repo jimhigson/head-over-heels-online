@@ -55,9 +55,19 @@ export type GameState<RoomId extends string = string> = {
 
   /**
    * How many ms has this game been played for? For most purposes the room time
-   * or player time is more useful
+   * or player time is more useful.
+   *
+   * This is scaled by the game speed setting - at 1.2x speed it advances 1.2x
+   * faster than real time
    */
   gameTime: number;
+
+  /**
+   * how many ms of real (wall-clock) time has this game been actively played
+   * for? Unlike gameTime, this is not scaled by the game speed setting. Time
+   * while paused or in menus is not counted
+   */
+  wallClockTime: number;
 };
 
 // if you don't care about the RoomId generic, you can't emit events (since they are callbacks)

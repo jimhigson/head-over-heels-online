@@ -59,13 +59,24 @@ export const handlePlayerTouchingPortal = <
     delete gameState.characterRooms[playableItem.type];
     deleteItemFromRoom({ room, item: playableItem });
 
+    const { wallClockTime } = gameState;
+
     if (playableItem.type === "headOverHeels") {
-      store.dispatch(characterReachesFreedom("head"));
-      store.dispatch(characterReachesFreedom("heels"));
+      store.dispatch(
+        characterReachesFreedom({ characterName: "head", wallClockTime }),
+      );
+      store.dispatch(
+        characterReachesFreedom({ characterName: "heels", wallClockTime }),
+      );
       // exited the game
       store.dispatch(gameOver({ reincarnationDeclined: false }));
     } else {
-      store.dispatch(characterReachesFreedom(playableItem.type));
+      store.dispatch(
+        characterReachesFreedom({
+          characterName: playableItem.type,
+          wallClockTime,
+        }),
+      );
 
       const otherCharacterPlaying =
         otherIndividualCharacterName(playableItem.type) in
