@@ -6,8 +6,10 @@ import {
   isWholeRoomSubRooms,
   roomJsonItemsEntriesIterable,
   roomJsonItemsIterable,
+  roomNonContiguousRelationship,
   roomVerticalLinkHolders,
   type SubRoom,
+  writeRoomNonContiguousRelationship,
 } from "../../../model/RoomJson";
 import { wallTimes } from "../../../model/times";
 import { keys, objectEntriesIter, valuesIter } from "../../../utils/entries";
@@ -544,13 +546,12 @@ const transferMeta = (
       cursorRoom.meta.label = entry.room.meta.label;
     }
 
+    const entryNcr = roomNonContiguousRelationship(entry.room);
     if (
-      entry.room.meta?.nonContiguousRelationship &&
-      !cursorRoom.meta?.nonContiguousRelationship
+      entryNcr !== undefined &&
+      roomNonContiguousRelationship(cursorRoom) === undefined
     ) {
-      cursorRoom.meta ??= {};
-      cursorRoom.meta.nonContiguousRelationship =
-        entry.room.meta.nonContiguousRelationship;
+      writeRoomNonContiguousRelationship(cursorRoom, entryNcr);
     }
   }
 };
@@ -702,11 +703,11 @@ export const coalesceRoomsInPlace = (state: LevelEditorState): void => {
           link.subRoom = cell;
         }
       }
-    }
 
-    const ncr = room.meta?.nonContiguousRelationship;
-    if (ncr !== undefined && mergedRoomIds.has(ncr.with.room)) {
-      ncr.with.room = cursorRoomId;
+      const ncr = holder.nonContiguousRelationship;
+      if (ncr !== undefined && mergedRoomIds.has(ncr.with.room)) {
+        ncr.with.room = cursorRoomId;
+      }
     }
   }
 

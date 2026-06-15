@@ -1,7 +1,10 @@
 import { produce } from "immer";
 import { expect, test } from "vitest";
 
-import { roomVerticalLinkHolders } from "../../../model/RoomJson";
+import {
+  roomNonContiguousRelationship,
+  roomVerticalLinkHolders,
+} from "../../../model/RoomJson";
 import { type EditorRoomId, type EditorRoomItemId } from "../../editorTypes";
 import { type LevelEditorState, removeRoom } from "../levelEditorSlice";
 import {
@@ -138,9 +141,13 @@ test("removeRoom deletes NCR referencing deleted room, keeping other meta fields
     produce(editorStateWithOneRoomWithNoItems, (draft) => {
       addRooms(draft);
       draft.campaignInProgress.rooms[roomB].meta = {
-        nonContiguousRelationship: {
-          with: { room: roomA },
-          gridOffset: { x: 1, y: 0, z: 0 },
+        subRooms: {
+          "*": {
+            nonContiguousRelationship: {
+              with: { room: roomA },
+              gridOffset: { x: 1, y: 0, z: 0 },
+            },
+          },
         },
         label: { direction: "away", text: "test" },
       };
@@ -149,21 +156,24 @@ test("removeRoom deletes NCR referencing deleted room, keeping other meta fields
 
   const result = reduceLevelEditorActions(state, removeRoom());
 
-  expect(result.campaignInProgress.rooms[roomB].meta).toBeDefined();
-  expect(result.campaignInProgress.rooms[roomB].meta).not.toHaveProperty(
-    "nonContiguousRelationship",
-  );
+  expect(
+    roomNonContiguousRelationship(result.campaignInProgress.rooms[roomB]),
+  ).toBeUndefined();
   expect(result.campaignInProgress.rooms[roomB].meta).toHaveProperty("label");
 });
 
-test("removeRoom deletes meta entirely when NCR was the only field", () => {
+test("removeRoom removes the NCR referencing the deleted room", () => {
   const state: LevelEditorState = structuredClone(
     produce(editorStateWithOneRoomWithNoItems, (draft) => {
       addRooms(draft);
       draft.campaignInProgress.rooms[roomB].meta = {
-        nonContiguousRelationship: {
-          with: { room: roomA },
-          gridOffset: { x: 1, y: 0, z: 0 },
+        subRooms: {
+          "*": {
+            nonContiguousRelationship: {
+              with: { room: roomA },
+              gridOffset: { x: 1, y: 0, z: 0 },
+            },
+          },
         },
       };
     }),
@@ -171,5 +181,7 @@ test("removeRoom deletes meta entirely when NCR was the only field", () => {
 
   const result = reduceLevelEditorActions(state, removeRoom());
 
-  expect(result.campaignInProgress.rooms[roomB]).not.toHaveProperty("meta");
+  expect(
+    roomNonContiguousRelationship(result.campaignInProgress.rooms[roomB]),
+  ).toBeUndefined();
 });

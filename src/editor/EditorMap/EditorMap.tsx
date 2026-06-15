@@ -27,6 +27,7 @@ import {
 import { confirmDeleteRoomThunk } from "../toolbar/confirmThunk";
 import { CoalesceButton } from "./CoalesceButton";
 import { LazyEditorMapInsertButtonDecorator } from "./LazyEditorMapInsertButtonDecorator";
+import { LazyEditorMapNonContiguousRelationshipDecorator } from "./LazyEditorMapNonContiguousRelationshipDecorator";
 import { LazyEditorMapTeleporterLinkDecorator } from "./LazyEditorMapTeleporterLinkDecorator";
 import { useEditorMapData } from "./useEditorMapData";
 
@@ -155,6 +156,10 @@ const editorBehaviours: RoomBehaviourComponent<EditorRoomId>[] = [
   editorClickableRoomBehaviour,
 ];
 
+const editorPrefixDecorators = [
+  LazyEditorMapNonContiguousRelationshipDecorator,
+];
+
 const editorPostfixDecorators = [
   LazyEditorMapTeleporterLinkDecorator,
   LazyEditorMapInsertButtonDecorator,
@@ -237,6 +242,7 @@ const EditorMap = () => {
         <MapSvg<EditorRoomId>
           containerWidth={mapContainerWidth}
           behaviours={editorBehaviours}
+          prefixDecorators={editorPrefixDecorators}
           postfixDecorators={editorPostfixDecorators}
           selectedRoomIds={selectedRoomIds}
           {...mapData}

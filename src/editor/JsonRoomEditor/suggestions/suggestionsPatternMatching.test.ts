@@ -46,9 +46,13 @@ describe("matchesPattern", () => {
   it("matches nested exact path patterns", () => {
     const jsonContent = {
       meta: {
-        nonContiguousRelationship: {
-          with: {
-            room: "room123",
+        subRooms: {
+          "*": {
+            nonContiguousRelationship: {
+              with: {
+                room: "room123",
+              },
+            },
           },
         },
       },
@@ -68,7 +72,7 @@ describe("matchesPattern", () => {
 
     expect(
       matchesPattern(
-        "meta.nonContiguousRelationship.with.room",
+        "meta.subRooms.*.nonContiguousRelationship.with.room",
         reversedPath,
         nodeAncestors,
       ),

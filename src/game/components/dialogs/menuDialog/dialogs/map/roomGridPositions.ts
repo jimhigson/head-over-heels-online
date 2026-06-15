@@ -389,7 +389,7 @@ function* _roomGridPositions<RoomId extends string>({
 
   // branch via non-contiguous relationshps (rooms that aren't joined but are
   // mapped together):
-  const nonContiguousRelationship = room.meta?.nonContiguousRelationship;
+  const nonContiguousRelationship = currentSubRoom?.nonContiguousRelationship;
   if (nonContiguousRelationship !== undefined) {
     const {
       with: { room: withRoom, subRoom: withSubRoom },

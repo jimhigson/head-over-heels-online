@@ -4,6 +4,7 @@ import { describe, expect, test } from "vitest";
 import {
   iterateRoomJsonItemsWithIds,
   roomJsonItemsIterable,
+  roomNonContiguousRelationship,
   roomVerticalLink,
   type SubRooms,
 } from "../../../model/RoomJson";
@@ -243,9 +244,13 @@ describe("changing the id of the current room updates all references to that roo
   test("non-contiguous relationships that reference the old room id", () => {
     const state1 = produce(stateWithTwoRooms, (draft) => {
       draft.campaignInProgress.rooms[otherRoomId].meta = {
-        nonContiguousRelationship: {
-          with: { room: testRoomId },
-          gridOffset: { x: 1, y: 0, z: 0 },
+        subRooms: {
+          "*": {
+            nonContiguousRelationship: {
+              with: { room: testRoomId },
+              gridOffset: { x: 1, y: 0, z: 0 },
+            },
+          },
         },
       };
     });
@@ -264,9 +269,7 @@ describe("changing the id of the current room updates all references to that roo
 
     const otherRoom = state2.campaignInProgress.rooms[otherRoomId];
 
-    expect(otherRoom.meta?.nonContiguousRelationship?.with.room).toBe(
-      newRoomId,
-    );
+    expect(roomNonContiguousRelationship(otherRoom)?.with.room).toBe(newRoomId);
   });
 
   test("undo history migrates from old room id to new room id", () => {

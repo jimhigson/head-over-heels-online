@@ -21,9 +21,62 @@ The URL will be `http://localhost:<port>/editor/`.
 
 Use `mcp__chrome-devtools__new_page` with the editor URL. The editor loads directly — no menu navigation needed.
 
+## Driving via bridged Chromium + Playwright (no chrome-devtools MCP)
+
+In Claude Code on the web (and any sandbox without the `chrome-devtools` MCP
+server connected), drive the editor with Playwright against the bridged browser
+binary instead. The mechanics are the same — navigate, `page.evaluate` to read
+`window._e2e_store`, dispatch actions — just scripted rather than via MCP tools.
+
+Two environment gotchas, both required for `window._e2e_store` to exist:
+
+- It is only exposed when `import.meta.env.MODE === "visual-regression"`
+  (`src/store/store.ts`), so the editor must run in that mode — not the
+  `development` mode that `pnpm dev:editor` uses.
+- The `levelEditor` reducer is only included when `VITE_APP === "editor"`
+  (`src/store/store.ts`). The editor's env files set this for `development`/
+  `production` modes only, so when forcing `visual-regression` mode you must
+  pass `VITE_APP=editor` explicitly or the editor crashes (`undefined` reading
+  `campaignInProgress`).
+
+Start the server (separate port to avoid clashing with a running dev server):
+
+```sh
+VITE_APP=editor node node_modules/vite/bin/vite.js \
+  --config vite.editor.config.ts --mode visual-regression --port 5301 --strictPort
+```
+
+Bridge the browser binary if the Playwright CDN is blocked — see the `run-e2e`
+skill's "Sandboxed environment" section. Import `chromium` from
+`@playwright/test` (not `playwright`, which isn't symlinked at the top level),
+and run the script from the project dir so the package resolves.
+
+Load the bundled original campaign offline by importing it through the dev
+server (Vite serves files outside the root under `<base>/@fs/<abs path>`, and
+the editor base is `/editor/`), then dispatch `levelEditor/loadCampaign`:
+
+```js
+await page.evaluate(async () => {
+  const mod = await import(
+    "/editor/@fs/" + "<repo abs path>/src/_generated/originalCampaign/campaign.ts"
+  );
+  window._e2e_store.dispatch({
+    type: "levelEditor/loadCampaign",
+    payload: { campaign: mod.campaign },
+  });
+});
+```
+
+The map panel is the `div.overflow-y-auto.bg-editor-checkerboard` element (a
+short scrollable window onto a tall SVG of every room). To screenshot a region
+without the overflow clip, set the container's `style.height`/`overflow` large
+via `page.evaluate`, then `page.screenshot({ clip })` around the area you want.
+
 ## Redux store access
 
-The store is exposed at `window._e2e_store`. All editor state is under `state.levelEditor`.
+The store is exposed at `window._e2e_store` (only in `visual-regression` mode —
+see the bridged-Chromium section above). All editor state is under
+`state.levelEditor`.
 
 ```js
 const state = window._e2e_store.getState();

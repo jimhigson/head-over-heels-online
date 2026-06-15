@@ -1585,34 +1585,6 @@
               "required": ["direction", "text"],
               "type": "object"
             },
-            "nonContiguousRelationship": {
-              "additionalProperties": false,
-              "description": "for rooms that are shown on the same map even though they don't have any physical connection",
-              "properties": {
-                "gridOffset": {
-                  "additionalProperties": false,
-                  "description": "the other room needs to have the opposite (* -1) of this",
-                  "properties": {
-                    "x": {
-                      "type": "number"
-                    },
-                    "y": {
-                      "type": "number"
-                    },
-                    "z": {
-                      "type": "number"
-                    }
-                  },
-                  "required": ["x", "y", "z"],
-                  "type": "object"
-                },
-                "with": {
-                  "$ref": "#/definitions/r75"
-                }
-              },
-              "required": ["with", "gridOffset"],
-              "type": "object"
-            },
             "roomDecoration": {
               "description": "a decorative set piece to draw into this room on the map",
               "enum": ["arrowLeft", "crossover", "divideAlongY"],
@@ -1642,6 +1614,19 @@
                           }
                         },
                         "required": ["x", "y"],
+                        "type": "object"
+                      },
+                      "nonContiguousRelationship": {
+                        "additionalProperties": false,
+                        "properties": {
+                          "gridOffset": {
+                            "$ref": "#/definitions/r72"
+                          },
+                          "with": {
+                            "$ref": "#/definitions/r75"
+                          }
+                        },
+                        "required": ["with", "gridOffset"],
                         "type": "object"
                       },
                       "physicalPosition": {
