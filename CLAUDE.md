@@ -81,6 +81,11 @@ Similarly, when iterating over `RoomJsonItems` (editor/JSON room items), use the
 
 Prefer `roomJsonItemsIterable` when you only need items without ids. Use `iterateRoomJsonItemsWithIds` when you need the id or want built-in type filtering.
 
+## Loading
+
+As a matter of policy, all assets are loaded as late as can reliably work. No pre-loading is done if it can be avoided, there is a service worker and a manifest
+and we trust that to pre-load in the service worker for us, so the actual game engine can load into the main runtime only as needed
+
 ## Editor Features:
  * there is a level editor also built for creating new rooms for the game
  * this is for creating new non-original levels which are specific to the remake

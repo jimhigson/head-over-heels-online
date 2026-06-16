@@ -1,6 +1,6 @@
 import { originalCampaignLocator } from "../../gameInfo";
+import { selectAssetsLoadingCount } from "../slices/assetsLoading/assetsLoadingSlice";
 import { campaignsApiSlice } from "../slices/campaigns/campaignsApiSlice";
-import { selectGameAssetsLoadingCount } from "../slices/gameAssetsLoading/gameAssetsLoadingSlice";
 import { type RootState } from "../store";
 
 /**
@@ -21,9 +21,9 @@ export const selectIsLoading = (state: RootState): boolean => {
   );
 
   // Check if game assets are loading
-  const hasGameAssetsLoading = selectGameAssetsLoadingCount(state) > 0;
+  const hasAssetsLoading = selectAssetsLoadingCount(state) > 0;
 
-  return hasLoadingQueries || hasLoadingMutations || hasGameAssetsLoading;
+  return hasLoadingQueries || hasLoadingMutations || hasAssetsLoading;
 };
 
 const selectCampaignQueryStatus =
@@ -36,8 +36,8 @@ const selectCampaignQueryStatus =
  */
 export const selectIsGameLoading = (state: RootState): boolean => {
   // Check if game assets are loading
-  const hasGameAssetsLoading = selectGameAssetsLoadingCount(state) > 0;
-  if (hasGameAssetsLoading) {
+  const hasAssetsLoading = selectAssetsLoadingCount(state) > 0;
+  if (hasAssetsLoading) {
     return true;
   }
 

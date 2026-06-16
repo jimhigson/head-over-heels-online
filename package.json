@@ -142,6 +142,8 @@
     "jsonc-parser": "^3.3.1",
     "kill-port": "^2.0.1",
     "knip": "^6.14.1",
+    "marked": "^18.0.5",
+    "marked-terminal": "^7.3.0",
     "normalize-wheel-es": "^1.2.0",
     "opentype.js": "^2.0.0",
     "oxlint": "^1.68.0",

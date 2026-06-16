@@ -1,6 +1,7 @@
 import { Application, TextureStyle, type WebGLRenderer } from "pixi.js";
 
 import { type CampaignLocator } from "../model/modelTypes";
+import { loadSoundCategory } from "../sound/soundsLoader";
 import { type SpritesheetVariants } from "../sprites/spritesheet/variants/SpritesheetVariants";
 import { loadCampaignFromApi } from "../store/slices/campaigns/campaignApiHelpers";
 import {
@@ -36,6 +37,7 @@ export const gameMain = async <RoomId extends string>(
 
   const [campaignResult] = await Promise.all([
     loadCampaignFromApi<RoomId>(campaignLocator),
+    loadSoundCategory("requiredForGameplay"),
     app.init({
       background: "#000000",
       // run on the shared ticker to keep in sync with the input state tracker

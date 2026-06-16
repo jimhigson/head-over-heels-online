@@ -45,6 +45,35 @@ jobs:
         with:
           node-version: 25.x
           cache: pnpm
+      # GitHub's hosted ubuntu-latest runner ships with Google Chrome
+      # preinstalled, so this step is a no-op in CI. It exists only so the
+      # workflow can also be run locally with `act` whose runner images
+      # don't contain a browser
+      - name: Ensure Chrome is installed (for local `act` runs)
+        shell: bash
+        run: |
+          if command -v google-chrome >/dev/null 2>&1 \
+            || command -v google-chrome-stable >/dev/null 2>&1 \
+            || command -v chromium >/dev/null 2>&1 \
+            || command -v chromium-browser >/dev/null 2>&1; then
+            echo "Chrome/Chromium already present - nothing to install"
+          else
+            echo "No browser on PATH - installing Google Chrome for the size journey"
+            deb="$(mktemp --suffix=.deb)"
+            curl -fsSL -o "$deb" https://dl.google.com/linux/direct/google-chrome-stable_current_amd64.deb
+            sudo apt-get update
+            sudo apt-get install -y "$deb"
+            rm -f "$deb"
+            # `act` runs steps as root, and Chrome refuses to run as root with
+            # its sandbox enabled ("Running as root without --no-sandbox is not
+            # supported"). Point CHROME_PATH at a wrapper that adds --no-sandbox
+            # so the journey can launch. This is only set in this act-only
+            # branch, so CI keeps using sandboxed Chrome as the non-root runner.
+            wrapper=/usr/local/bin/chrome-no-sandbox
+            printf '#!/usr/bin/env bash\nexec /usr/bin/google-chrome-stable --no-sandbox "$@"\n' | sudo tee "$wrapper" >/dev/null
+            sudo chmod +x "$wrapper"
+            echo "CHROME_PATH=$wrapper" >> "$GITHUB_ENV"
+          fi
       - uses: jimhigson/true-site-size@main
         with:
           comment-key: ${{ matrix.target }}

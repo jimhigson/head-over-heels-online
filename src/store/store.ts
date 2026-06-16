@@ -43,10 +43,10 @@ import {
   userSettingsPersistedReducer,
 } from "./persist/persist";
 import { recentActionsMiddleware } from "./recentActions";
+import { assetsLoadingSlice } from "./slices/assetsLoading/assetsLoadingSlice";
 import { campaignsApiSlice } from "./slices/campaigns/campaignsApiSlice";
 import { registerClearAllDataListeners } from "./slices/clearAllDataListeners";
 import { debugSlice } from "./slices/debug/debugSlice";
-import { gameAssetsLoadingSlice } from "./slices/gameAssetsLoading/gameAssetsLoadingSlice";
 import { gameInPlaySlice } from "./slices/gameInPlay/gameInPlaySlice";
 import { registerGameMenusListeners } from "./slices/gameMenus/gameMenusListeners";
 import { gameMenusSlice } from "./slices/gameMenus/gameMenusSlice";
@@ -70,7 +70,7 @@ const appReducer = combineSlices({
   [upscaleSlice.reducerPath]: upscaleSlice.reducer,
   [campaignsApiSlice.reducerPath]: campaignsApiSlice.reducer,
   [githubApiSlice.reducerPath]: githubApiSlice.reducer,
-  [gameAssetsLoadingSlice.reducerPath]: gameAssetsLoadingSlice.reducer,
+  [assetsLoadingSlice.reducerPath]: assetsLoadingSlice.reducer,
   [spritesheetOverrideSlice.reducerPath]: spritesheetOverridePersistedReducer,
   [debugSlice.reducerPath]: debugSlice.reducer,
   ...(import.meta.env.VITE_APP === "editor" ?

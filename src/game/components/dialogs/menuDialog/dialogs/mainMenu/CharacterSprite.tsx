@@ -1,8 +1,8 @@
 import { useEffect, useRef, useState } from "preact/hooks";
 
-import { exportedSfxUrls } from "../../../../../../_generated/sfxdex/sfx";
 import { type IndividualCharacterName } from "../../../../../../model/modelTypes";
 import { type TextureTailwindClass } from "../../../../../../sprites/spritesheet/spritesheetData/TextureTailwindClass";
+import { PlayAudio } from "../../../../../../utils/sound/PlayAudio";
 import {
   type DirectionXy8,
   vectorClosestDirectionXy8,
@@ -98,8 +98,6 @@ export const CharacterSprite = ({
     action,
   });
 
-  const walkSoundUrl = exportedSfxUrls[`${character}Walk`];
-
   return (
     <div
       ref={spriteRef}
@@ -108,16 +106,7 @@ export const CharacterSprite = ({
       onMouseLeave={handleMouseLeaveSprite}
     >
       {action === "walking" && (
-        <audio
-          src={walkSoundUrl}
-          autoPlay
-          loop
-          ref={(el) => {
-            if (el) {
-              el.volume = walkGain;
-            }
-          }}
-        />
+        <PlayAudio soundId={`${character}Walk`} loop volume={walkGain} />
       )}
       <span
         className={`sprite zx:sprite-revert-to-white ${spriteClassName} relative z-topSprite`}

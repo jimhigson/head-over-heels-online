@@ -377,6 +377,7 @@ export type ItemStateMap<RoomId extends string, RoomItemId extends string> = {
   };
 
   soundEffect: {
+    /** if the sound was already played, don't play it again on room being rendered a second time */
     played: boolean;
   };
 };

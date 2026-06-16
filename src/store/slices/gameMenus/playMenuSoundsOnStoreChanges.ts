@@ -1,6 +1,7 @@
-import { exportedSfxUrls } from "../../../_generated/sfxdex/sfx";
+import { type ExportedSoundId } from "../../../_generated/sfxdex/sfx";
 import { audioCtx } from "../../../sound/audioCtx";
-import { loadAndDecode } from "../../../sound/loadAndDecode";
+import { connectWithGain } from "../../../sound/soundUtils/connectWithGain";
+import { createAudioNode } from "../../../sound/soundUtils/createAudioNode";
 import { detectDeviceType } from "../../../utils/detectEnv/detectDeviceType";
 import { startAppListening } from "../../listenerMiddleware";
 import { selectIsSoundMuted } from "./gameMenusSelectors";
@@ -15,32 +16,20 @@ export const playMenuSoundsOnStoreChanges = () => {
     return;
   }
 
-  let menuBuffer: AudioBuffer | undefined;
-  let scrollOpenBuffer: AudioBuffer | undefined;
-
-  loadAndDecode(exportedSfxUrls.menuSofter).then((b) => (menuBuffer = b));
-  loadAndDecode(exportedSfxUrls.scrollOpen).then((b) => (scrollOpenBuffer = b));
-
   let lastPlayTime = 0;
   const minIntervalMs = 200;
 
-  const play = (buffer: AudioBuffer | undefined, volume: number) => {
-    if (buffer === undefined) {
-      return;
-    }
+  const play = (soundId: ExportedSoundId, volume: number) => {
     const now = performance.now();
     if (now - lastPlayTime < minIntervalMs) {
       return;
     }
     lastPlayTime = now;
 
-    const gain = audioCtx.createGain();
-    gain.gain.value = volume;
-    gain.connect(audioCtx.destination);
-    const source = audioCtx.createBufferSource();
-    source.buffer = buffer;
-    source.connect(gain);
-    source.start();
+    // assumes the sound is loaded - loadedSound (inside createAudioNode) throws
+    // if it isn't yet
+    const source = createAudioNode(soundId);
+    connectWithGain(source, { soundId, gain: volume }, audioCtx.destination);
   };
 
   startAppListening({
@@ -61,7 +50,7 @@ export const playMenuSoundsOnStoreChanges = () => {
         const isScrollOpen =
           currentMenus.length === 1 &&
           currentMenus[0].menuId.startsWith("markdown/");
-        play(isScrollOpen ? scrollOpenBuffer : menuBuffer, enterExitVolume);
+        play(isScrollOpen ? "scrollOpen" : "menuSofter", enterExitVolume);
         return;
       }
 
@@ -79,7 +68,7 @@ export const playMenuSoundsOnStoreChanges = () => {
         return;
       }
 
-      play(menuBuffer, scrollVolume);
+      play("menuSofter", scrollVolume);
     },
   });
 };

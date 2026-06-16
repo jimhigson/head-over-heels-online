@@ -1,7 +1,10 @@
+import { useEffect, useState } from "preact/hooks";
 import { type EmptyObject } from "type-fest";
 
 import { type MarkdownPageName } from "../../../../manual/pages";
+import { loadSoundCategory } from "../../../../sound/soundsLoader";
 import { useAppSelector } from "../../../../store/hooks";
+import { AssetLoading } from "../../../../store/slices/assetsLoading/AssetLoading";
 import { Dialog } from "../../../../ui/Dialog";
 import { BitmapText } from "../../tailwindSprites/BitmapText";
 import { type DialogId } from "./DialogId";
@@ -39,9 +42,25 @@ export const Dialogs = (_emptyProps: EmptyObject) => {
   const topOpenMenu = useAppSelector((state) =>
     state.gameMenus.openMenus.at(0),
   );
+  const [areSoundsLoaded, setAreSoundsLoaded] = useState<boolean>(false);
+
+  useEffect(() => {
+    const maybePromise = loadSoundCategory("loadForMenus");
+
+    if (maybePromise === undefined) {
+      setAreSoundsLoaded(true);
+    } else {
+      maybePromise.then(() => setAreSoundsLoaded(true));
+    }
+  }, []);
 
   if (topOpenMenu === undefined) {
+    // no dialog to load
     return null;
+  }
+  if (!areSoundsLoaded) {
+    // is a dialog to load but we are still loading the sounds
+    return <AssetLoading />;
   }
 
   if (isMarkdownPage(topOpenMenu.menuId)) {

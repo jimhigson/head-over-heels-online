@@ -2,8 +2,9 @@ import clsx from "clsx";
 import { useCallback, useEffect, useId, useRef, useState } from "preact/hooks";
 import { type MouseEvent, type ReactNode } from "react";
 
-import { exportedSfxUrls } from "../_generated/sfxdex/sfx";
+import { type ExportedSoundId } from "../_generated/sfxdex/sfx";
 import { BitmapText } from "../game/components/tailwindSprites/BitmapText";
+import { PlayAudio } from "../utils/sound/PlayAudio";
 import { twClass } from "../utils/twClass";
 import { cn } from "./cn";
 import { enhanceTooltipWithHotkeys } from "./enhanceTooltipWithHotkeys";
@@ -81,15 +82,10 @@ export const Switch = ({
       className={cn("inline-flex justify-between leading-none", className)}
     >
       {hasChanged && (
-        <audio
-          src={value ? exportedSfxUrls.setting1 : exportedSfxUrls.setting0}
+        <PlayAudio
+          soundId={value ? "setting1" : "setting0"}
+          volume={uiSoundVolume}
           key={`${value}`}
-          autoPlay
-          ref={(el) => {
-            if (el) {
-              el.volume = uiSoundVolume;
-            }
-          }}
         />
       )}
       {label && <SwitchLabel label={label} htmlFor={switchId} />}
@@ -141,12 +137,12 @@ const switchNErrorColours = twClass(
   "bg-white text-midRed zx:bg-zxWhite zx:text-zxRed toppy:bg-toppyGrey1 toppy:text-toppyPink2",
 );
 
-const settingSounds = [
-  exportedSfxUrls.setting0,
-  exportedSfxUrls.setting1,
-  exportedSfxUrls.setting2,
-  exportedSfxUrls.setting3,
-] as const;
+const settingSoundIds = [
+  "setting0",
+  "setting1",
+  "setting2",
+  "setting3",
+] as const satisfies readonly ExportedSoundId[];
 
 export const SwitchN = <TValue extends number | string>({
   className,
@@ -201,15 +197,10 @@ export const SwitchN = <TValue extends number | string>({
       className={cn("inline-flex justify-between leading-none", className)}
     >
       {hasChanged && !notFound && (
-        <audio
-          src={settingSounds[valueIndex % settingSounds.length]}
+        <PlayAudio
+          soundId={settingSoundIds[valueIndex % settingSoundIds.length]}
+          volume={uiSoundVolume}
           key={`${value}`}
-          autoPlay
-          ref={(el) => {
-            if (el) {
-              el.volume = uiSoundVolume;
-            }
-          }}
         />
       )}
       {label && <SwitchLabel label={label} htmlFor={switchId} />}

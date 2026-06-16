@@ -21,7 +21,7 @@ test.describe("crowns dialog correctness", () => {
     await setupE2ePage(page);
   });
 
-  test("crown dialog plays music (has <audio>) when not muted", async ({
+  test("crown dialog plays intro music when not muted", async ({
     page,
   }, testInfo) => {
     await startCampaignViaMenu(page, testInfo.project.name, "originalGame");
@@ -29,12 +29,14 @@ test.describe("crowns dialog correctness", () => {
     await clickCheat(page, "cheats-summon-crown-blacktooth");
 
     await waitForDialog(page, "crowns");
-    await expect(page.locator('[data-dialog-id="crowns"] audio')).toHaveCount(
-      1,
-    );
+    await expect(
+      page.locator(
+        '[data-dialog-id="crowns"] [data-test-playing-sound="intro"]',
+      ),
+    ).toHaveCount(1);
   });
 
-  test("crown dialog has no <audio> when muted via menus first", async ({
+  test("crown dialog plays no intro music when muted via menus first", async ({
     page,
   }, testInfo) => {
     const formattedName = formatProjectName(testInfo.project.name);
@@ -53,10 +55,12 @@ test.describe("crowns dialog correctness", () => {
     await clickPlayTheGame(page, formattedName);
     await clickOriginalCampaign(page, formattedName);
     await page.locator('[data-dialog-id="crowns"]').waitFor();
-    // intro crowns dialog: has no <audio> because we're muted
-    await expect(page.locator('[data-dialog-id="crowns"] audio')).toHaveCount(
-      0,
-    );
+    // intro crowns dialog: plays no intro music because we're muted
+    await expect(
+      page.locator(
+        '[data-dialog-id="crowns"] [data-test-playing-sound="intro"]',
+      ),
+    ).toHaveCount(0);
     await exitCrownsDialog(page, formattedName);
     await page
       .locator('[data-dialog-id="crowns"]')
@@ -65,9 +69,11 @@ test.describe("crowns dialog correctness", () => {
     await page.waitForTimeout(1000 * osSlowness);
     await clickCheat(page, "cheats-summon-crown-blacktooth");
     await waitForDialog(page, "crowns");
-    await expect(page.locator('[data-dialog-id="crowns"] audio')).toHaveCount(
-      0,
-    );
+    await expect(
+      page.locator(
+        '[data-dialog-id="crowns"] [data-test-playing-sound="intro"]',
+      ),
+    ).toHaveCount(0);
   });
 
   test("collect all 5 crowns -> proclaimEmperor, dismiss -> crowns all lit", async ({
