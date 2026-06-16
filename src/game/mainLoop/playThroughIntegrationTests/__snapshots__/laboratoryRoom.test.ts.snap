@@ -2209,7 +2209,7 @@ exports[`playing through a complex, deterministic room ("laboratory") should alw
     },
     "door@5,0,2/frameTop": {
       "aabb": {
-        "x": 15,
+        "x": 16,
         "y": 24,
         "z": 24,
       },
@@ -2234,11 +2234,15 @@ exports[`playing through a complex, deterministic room ("laboratory") should alw
         "z": 24,
       },
       "renderAabbOffset": {
-        "x": 0,
+        "x": 1,
         "y": 16,
         "z": 0,
       },
       "shadowCastTexture": undefined,
+      "shadowOffset": {
+        "x": -1,
+        "y": 1,
+      },
       "state": {
         "actedOnAt": {
           "actedInXY": false,
@@ -2249,7 +2253,7 @@ exports[`playing through a complex, deterministic room ("laboratory") should alw
         "disappearing": null,
         "expires": null,
         "position": {
-          "x": 89,
+          "x": 88,
           "y": -24,
           "z": 48,
         },
@@ -2537,7 +2541,7 @@ exports[`playing through a complex, deterministic room ("laboratory") should alw
     },
     "door@5,14,2/frameTop": {
       "aabb": {
-        "x": 15,
+        "x": 16,
         "y": 24,
         "z": 24,
       },
@@ -2563,10 +2567,18 @@ exports[`playing through a complex, deterministic room ("laboratory") should alw
         "y": 8,
         "z": 24,
       },
-      "renderAabbOffset": undefined,
+      "renderAabbOffset": {
+        "x": 1,
+        "y": 0,
+        "z": 0,
+      },
       "shadowCastTexture": {
         "flipX": true,
         "textureId": "shadow.doorFrame.top.y",
+      },
+      "shadowOffset": {
+        "x": -1,
+        "y": 1,
       },
       "state": {
         "actedOnAt": {
@@ -2578,7 +2590,7 @@ exports[`playing through a complex, deterministic room ("laboratory") should alw
         "disappearing": null,
         "expires": null,
         "position": {
-          "x": 89,
+          "x": 88,
           "y": 224,
           "z": 48,
         },

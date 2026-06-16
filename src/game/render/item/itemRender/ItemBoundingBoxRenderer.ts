@@ -224,6 +224,7 @@ export class ItemBoundingBoxRenderer<T extends ItemInPlayType>
             text: line,
             colour: new Color(color),
             y: i * 10,
+            outline: true,
           }),
         );
       }

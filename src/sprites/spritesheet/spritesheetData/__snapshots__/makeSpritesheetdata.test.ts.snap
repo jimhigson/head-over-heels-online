@@ -4698,8 +4698,8 @@ exports[`for tailwind plugin we must have all possible frames and animations 1`]
     "frame": {
       "h": 32,
       "pivot": {
-        "x": 18,
-        "y": 31.5,
+        "x": 17,
+        "y": 31,
       },
       "w": 36,
       "x": 255,

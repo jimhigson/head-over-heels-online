@@ -6,9 +6,11 @@ export const renderBobSine = (
   amplitude: number,
   /** used to give each item a unique phase offset so they don't bob in sync */
   itemId: string,
+  integerOnly: boolean,
 ) => {
   const phaseOffset = hashStringToNumber0to1(itemId) * 20_000;
-  return Math.sin((roomTime + phaseOffset) / period) * amplitude;
+  const value = Math.sin((roomTime + phaseOffset) / period) * amplitude;
+  return integerOnly ? Math.round(value) : value;
 };
 
 export const renderBobBounce = (
@@ -17,8 +19,10 @@ export const renderBobBounce = (
   amplitude: number,
   /** used to give each item a unique phase offset so they don't bob in sync */
   itemId: string,
+  integerOnly: boolean,
 ) => {
   const phaseOffset = hashStringToNumber0to1(itemId) * 20_000;
   const bounce = Math.abs(Math.sin((roomTime + phaseOffset) / (period * 2)));
-  return (bounce * 2 - 1) * amplitude;
+  const value = (bounce * 2 - 1) * amplitude;
+  return integerOnly ? Math.round(value) : value;
 };

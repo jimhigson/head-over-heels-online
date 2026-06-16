@@ -212,19 +212,25 @@ export function* loadDoor<RoomId extends string, RoomItemId extends string>(
               addXyz(position, invisibleWallSetBackBlocks, tunnelSetbackBlocks),
             ),
             {
-              [alongWallAxis]: nearPostWidthInAxis,
+              [alongWallAxis]: nearPostWidthInAxis - 1,
               z: doorPortalHeight,
             },
           ),
           stoodOnBy: emptyObject as StoodOnBy<RoomItemId>,
         },
-        aabb: addXyz(renderAabb, doorTunnelAabbPx),
+        aabb: addXyz(renderAabb, doorTunnelAabbPx, { [alongWallAxis]: 1 }),
         renderAabb,
-        renderAabbOffset: inHidden ? doorTunnelAabbPx : undefined,
+        renderAabbOffset: addXyz(inHidden ? doorTunnelAabbPx : originXyz, {
+          [alongWallAxis]: 1,
+        }),
         shadowCastTexture:
           inHidden ? undefined
           : alongWallAxis === "x" ? shadowDoorFrameTopX
           : shadowDoorFrameTopY,
+        shadowOffset: {
+          [alongWallAxis]: -1,
+          [throughDoorAxis]: 1,
+        },
         // ie, if character jumps while stood in a doorway, the top of the doorframe is now 'standing' on them:
         castsShadowWhileStoodOn: true,
         noShadowCastOn: inHidden ? undefined : doorFrameTopNoCastShadowOn,

@@ -229,10 +229,10 @@ export const doorFrameAppearance: ItemAppearance<"doorFrame"> =
       filter.destroy({ destroyLutTexture: true, destroyMask: true });
 
       if (part === "top") {
-        // the .5 is because the doortop happens to be positioned relative to the door near and
-        // far at a position that means it renders vertically on the half-pixel, so this brings it
-        // back to lining up with the pixels from the other door parts
-        rendered.y = 0.5;
+        // since the near post is 9px (odd)
+        // we fudge the door top to render on a even world-pixel on its along axis,
+        // so that the y is predictable (not on a half and subject to rounding errors)
+        rendered.x = axis === "x" ? -1 : 1;
       }
 
       return rendered;

@@ -56,6 +56,7 @@ export class ItemPositionRenderer<T extends ItemInPlayType>
     const {
       general: {
         upscale: { gameEngineUpscale },
+        spriteOption: { uncolourised },
       },
     } = this.renderContext;
 
@@ -67,7 +68,7 @@ export class ItemPositionRenderer<T extends ItemInPlayType>
       this.output,
       projectionXy.x,
       projectionXy.y,
-      gameEngineUpscale,
+      uncolourised ? 1 : gameEngineUpscale,
     );
   }
 
