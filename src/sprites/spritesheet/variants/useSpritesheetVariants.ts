@@ -1,6 +1,8 @@
 import { useEffect, useState } from "preact/hooks";
 
+import { useAppDispatch } from "../../../store/hooks";
 import { startAppListening } from "../../../store/listenerMiddleware";
+import { withLoadingCaptured } from "../../../store/slices/assetsLoading/assetsLoadingSlice";
 import { selectSpritesOption } from "../../../store/slices/gameMenus/gameMenusSelectors";
 import { nextSpritesOption } from "../../../store/slices/userSettings/userSettingsSlice";
 import { store } from "../../../store/store";
@@ -20,6 +22,8 @@ export const useSpritesheetVariants = (): SpritesheetVariants => {
     return createdSsv;
   });
 
+  const dispatch = useAppDispatch();
+
   useEffect(() => {
     const unsub = startAppListening({
       actionCreator: nextSpritesOption,
@@ -28,7 +32,11 @@ export const useSpritesheetVariants = (): SpritesheetVariants => {
         const originalSpriteOption =
           selectSpritesOption(getOriginalState()).name;
         try {
-          await spritesheetVariants.loadImage(spriteOption);
+          await dispatch(
+            withLoadingCaptured(() =>
+              spritesheetVariants.loadImage(spriteOption),
+            ),
+          );
         } catch (error) {
           console.error(
             new Error(
@@ -45,7 +53,7 @@ export const useSpritesheetVariants = (): SpritesheetVariants => {
       unsub();
       spritesheetVariants.destroy();
     };
-  }, [spritesheetVariants]);
+  }, [spritesheetVariants, dispatch]);
 
   return spritesheetVariants;
 };

@@ -1,6 +1,6 @@
 import { type ExportedSoundId } from "../../_generated/sfxdex/sfx";
 import { audioCtx } from "../audioCtx";
-import { loadedSounds } from "../soundsLoader";
+import { loadedSound } from "../soundsLoader";
 
 /**
  * when looping, the lead-in and lead-out at each end of the buffer that is
@@ -40,7 +40,9 @@ export const createAudioNode = (
   } = resolvedParam;
 
   const node = audioCtx.createBufferSource();
-  const buffer = loadedSounds()[soundId];
+
+  const buffer = loadedSound(soundId);
+
   node.buffer = buffer;
 
   const loopLead =

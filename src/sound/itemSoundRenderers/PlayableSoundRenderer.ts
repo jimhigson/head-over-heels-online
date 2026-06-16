@@ -8,7 +8,7 @@ import { lengthXy } from "../../utils/vectors/vectors";
 import { audioCtx } from "../audioCtx";
 import { type ItemSoundRenderContext } from "../ItemSoundRenderContext";
 import { type ItemSoundRenderer } from "../ItemSoundRenderer";
-import { loadedSounds } from "../soundsLoader";
+import { createAudioNode } from "../soundUtils/createAudioNode";
 import {
   type BracketedSound,
   createBracketedSound,
@@ -184,17 +184,15 @@ export class PlayableSoundRenderer implements ItemSoundRenderer<CharacterName> {
       teleportingPhase !== this.#currentTeleportingPhase
     ) {
       if (teleportingPhase === "in") {
-        const sound = loadedSounds().teleportIn;
-        const source = audioCtx.createBufferSource();
-        source.buffer = sound;
-        source.connect(this.output);
-        source.start();
+        createAudioNode({
+          soundId: "teleportIn",
+          connectTo: this.output,
+        });
       } else {
-        const sound = loadedSounds().teleportOut;
-        const source = audioCtx.createBufferSource();
-        source.buffer = sound;
-        source.connect(this.output);
-        source.start();
+        createAudioNode({
+          soundId: "teleportOut",
+          connectTo: this.output,
+        });
       }
     }
 

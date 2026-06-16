@@ -30,7 +30,7 @@ const roomEntryTunesDescription = (
 ): string =>
   roomEntryTunes === "always" ?
     `Like the original, plays the jingle in *every* room`
-  : roomEntryTunes === "sparse" ? `Just plays when the scenery changes`
+  : roomEntryTunes === "sparse" ? `Play jingles when the scenery changes`
   : `Nope, off`;
 
 export const SoundDialog = () => {

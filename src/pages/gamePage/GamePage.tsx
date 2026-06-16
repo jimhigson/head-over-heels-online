@@ -10,16 +10,12 @@ import { Dialogs } from "../../game/components/dialogs/menuDialog/Dialogs.tsx";
 // setting TextureStyle this helps containers with cacheAsTexture turned on to not go blurry when rendered:
 import { GameApiProvider } from "../../game/components/GameApiContext.tsx";
 import { type GameApi } from "../../game/GameApi.tsx";
-import { importGameMain } from "../../game/gameMain.import.ts";
+import { importGameMainOnce } from "../../game/gameMain.import.ts";
 import { useInputStateTracker } from "../../game/input/InputStateProvider.tsx";
-import { loadSounds } from "../../sound/soundsLoader.ts";
 import { type SpritesheetVariants } from "../../sprites/spritesheet/variants/SpritesheetVariants";
 import { useSpritesheetVariants } from "../../sprites/spritesheet/variants/useSpritesheetVariants";
 import { useAppSelector } from "../../store/hooks.ts";
-import {
-  gameAssetsLoadingFinished,
-  gameAssetsLoadingStarted,
-} from "../../store/slices/gameAssetsLoading/gameAssetsLoadingSlice.ts";
+import { withLoadingCaptured } from "../../store/slices/assetsLoading/assetsLoadingSlice.ts";
 import {
   useCheatsOn,
   useIsGameRunning,
@@ -31,7 +27,6 @@ import {
 } from "../../store/slices/upscale/upscaleSlice.ts";
 import { store } from "../../store/store.ts";
 import { ConnectInputToStore } from "../../store/storeFlow/ConnectInputToStore.tsx";
-import { importOnce } from "../../utils/importOnce.ts";
 import { DispatchingErrorBoundary } from "../../utils/react/DispatchingErrorBoundary.tsx";
 import { createSerialisableErrors } from "../../utils/redux/createSerialisableErrors.ts";
 import {
@@ -41,14 +36,6 @@ import {
 import { usePageAsAnApp } from "./usePageAsAnApp.tsx";
 
 const LazyCheats = lazy(importCheats) as typeof Cheats;
-
-const loadGameAssets = importOnce(async () => {
-  const [{ default: gameMain }] = await Promise.all([
-    importGameMain(),
-    loadSounds(),
-  ]);
-  return { gameMain };
-});
 
 const useCreateGameApi = (
   spritesheetVariants: SpritesheetVariants,
@@ -65,13 +52,12 @@ const useCreateGameApi = (
 
   useEffect(() => {
     if (!isGameRunning) {
+      // no game running - the side effect removes the gameapi
       setGameApi(undefined);
       if (import.meta.env.MODE === "visual-regression") {
         window._e2e_gamePageGameAi = undefined;
       }
-      // the game isn't running, but we will pre-load the assets.
-      // they can't load twice so this is safe to call any time
-      loadGameAssets();
+      // no asset pre-loading here, we're trusting the sw and the manifest to have these ready when we need them late
       return;
     }
 
@@ -79,7 +65,6 @@ const useCreateGameApi = (
     let thisEffectGameApi: GameApi<string> | undefined;
 
     const go = async () => {
-      let startedLoading = false;
       try {
         if (currentCampaignLocator === undefined) {
           throw new Error(
@@ -87,32 +72,31 @@ const useCreateGameApi = (
           );
         }
 
-        startedLoading = true;
-        store.dispatch(gameAssetsLoadingStarted());
-        const { gameMain } = await loadGameAssets();
-        store.dispatch(gameAssetsLoadingFinished());
+        // withLoadingCaptured shows the loading indicator for the whole load
+        // (game code + campaign + sounds + pixi) and re-throws into the catch
+        // below on failure
+        thisEffectGameApi = await store.dispatch(
+          withLoadingCaptured(async () => {
+            const gameMain = (await importGameMainOnce()).default;
+            return gameMain(
+              currentCampaignLocator,
+              inputState,
+              spritesheetVariants,
+            );
+          }),
+        );
 
-        if (!thisEffectCancelled) {
-          thisEffectGameApi = await gameMain(
-            currentCampaignLocator,
-            inputState,
-            spritesheetVariants,
-          );
-          if (thisEffectCancelled) {
-            // creating the game api is async, so while we were creating it is possible
-            // it has already been cleaned up, ie if the effect is mounting/unmounting often.
-            thisEffectGameApi.stop();
-            return;
-          }
-          setGameApi(thisEffectGameApi);
-          if (import.meta.env.MODE === "visual-regression") {
-            window._e2e_gamePageGameAi = thisEffectGameApi;
-          }
+        if (thisEffectCancelled) {
+          // creating the game api is async, so while we were creating it is possible
+          // it has already been cleaned up, ie if the effect is mounting/unmounting often.
+          thisEffectGameApi.stop();
+          return;
+        }
+        setGameApi(thisEffectGameApi);
+        if (import.meta.env.MODE === "visual-regression") {
+          window._e2e_gamePageGameAi = thisEffectGameApi;
         }
       } catch (thrown) {
-        if (startedLoading) {
-          store.dispatch(gameAssetsLoadingFinished());
-        }
         // also put on console - sometimes stack trace is easier to read there
         console.error(thrown);
         store.dispatch(

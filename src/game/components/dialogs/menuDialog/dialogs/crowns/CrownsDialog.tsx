@@ -1,4 +1,3 @@
-import { introSoundUrl } from "../../../../../../_generated/sfxdex/sfx";
 import { useAppSelector } from "../../../../../../store/hooks";
 import { useIsGameLoading } from "../../../../../../store/hooks/loadingHooks";
 import { selectIsSoundMuted } from "../../../../../../store/slices/gameMenus/gameMenusSelectors";
@@ -8,14 +7,14 @@ import { Border } from "../../../../../../ui/Border";
 import { Dialog } from "../../../../../../ui/Dialog";
 import { DialogPortal } from "../../../../../../ui/DialogPortal";
 import { LoadingBanner } from "../../../../../../ui/LoadingBanner";
+import { PlayAudio } from "../../../../../../utils/sound/PlayAudio";
 import { BackMenuItem } from "../../BackMenuItem";
 import { MenuItems } from "../../MenuItems";
 import { FiveCrownsDisplay } from "./FiveCrownsDisplay";
 
 export const CrownsDialog = ({
   /**
-   * Should we play music? (if user has sound muted will not play regardless
-   * of this value)
+   * Should we play intro music? (if sound muted ignores this value and never plays)
    */
   playMusic = false,
 }: {
@@ -35,7 +34,7 @@ export const CrownsDialog = ({
         onClick={isLoading ? undefined : closeDialog}
         dialogId="crowns"
       >
-        {shouldPlayMusic && <audio src={introSoundUrl} autoPlay loop />}
+        {shouldPlayMusic && <PlayAudio soundId="intro" loop />}
         <FiveCrownsDisplay />
         {isLoading && (
           <div>

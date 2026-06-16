@@ -3,9 +3,9 @@ import { useEffect } from "preact/hooks";
 import { HookComponent } from "../../../utils/react/HookComponent";
 import { useAppDispatch } from "../../hooks";
 import {
-  gameAssetsLoadingFinished,
-  gameAssetsLoadingStarted,
-} from "./gameAssetsLoadingSlice";
+  assetsLoadingFinished,
+  assetsLoadingStarted,
+} from "./assetsLoadingSlice";
 
 /**
  * Render this when loading, to mark as loading happening in the store.
@@ -14,12 +14,12 @@ import {
  *
  * Use, eg, inside Suspense fallbacks
  */
-export const GameAssetLoading = HookComponent(() => {
+export const AssetLoading = HookComponent(() => {
   const dispatch = useAppDispatch();
   useEffect(() => {
-    dispatch(gameAssetsLoadingStarted());
+    dispatch(assetsLoadingStarted());
     return () => {
-      dispatch(gameAssetsLoadingFinished());
+      dispatch(assetsLoadingFinished());
     };
   }, [dispatch]);
 });
