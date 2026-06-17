@@ -80,7 +80,7 @@ jobs:
           install-command: pnpm install --frozen-lockfile
           build-command: ${{ matrix.build-command }}
           serve-dir: dist
-          compression: gzip
+          compression: zstd # matches Cloudflare -> current Chrome negotiation as of Jun '26
           # the campaigns db read on menu load returns live data whose size
           # varies over time - exclude it from byte counts (it still appears,
           # tagged, in the run-log breakdown)

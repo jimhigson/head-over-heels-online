@@ -1,0 +1,12 @@
+{
+  // Static-asset Worker for head-over-heels-online.
+  // No "main" field: with only an "assets" block, this is a pure
+  // static-asset Worker (no server-side script)
+  "name": "head-over-heels-online",
+  "compatibility_date": "2026-06-01",
+  "assets": {
+    "directory": "./dist",
+    // unmatched paths return the root index.html (200)
+    "not_found_handling": "single-page-application",
+  },
+}

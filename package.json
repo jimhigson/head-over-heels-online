@@ -167,6 +167,7 @@
     "vitest": "^4.1.6",
     "wawoff2": "^2.0.1",
     "workbox-window": "^7.4.1",
+    "wrangler": "^4.100.0",
     "xml-js": "^1.6.11"
   },
   "engines": {
