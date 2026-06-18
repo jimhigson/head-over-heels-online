@@ -209,7 +209,7 @@ const frames = {
     frame: { x: 255, y: 552, w: 36, h: 16 },
   },
   "shadow.doorFrame.top.y": {
-    frame: { x: 255, y: 519, w: 36, h: 32, pivot: { x: 18, y: 31.5 } },
+    frame: { x: 255, y: 519, w: 36, h: 32, pivot: { x: 17, y: 31 } },
   },
   "generic.floor.deadly": {
     frame: { x: 785, y: 462, ...floorTileSize },

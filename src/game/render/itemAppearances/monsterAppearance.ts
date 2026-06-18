@@ -66,6 +66,7 @@ const maybeAddBob = (
   { id, config: { which }, state }: ItemInPlay<"monster">,
   room: RoomState<string, string>,
   currentOutput: Container,
+  uncolourised: boolean,
 ): Container => {
   const isStacked =
     which === "cyberman" ||
@@ -82,18 +83,18 @@ const maybeAddBob = (
     const bobAmplitude =
       nervousStyle ? bobAmplitudeNervous : bobAmplitudeRelaxed;
 
+    const bobY = renderBobSine(
+      room.roomTime,
+      bobPeriod,
+      bobAmplitude,
+      id,
+      uncolourised,
+    );
     if (isStacked) {
       const outputTyped = currentOutput as StackedSpritesContainer<Sprite>;
-      outputTyped[stackedTopSymbol].y =
-        -blockSizePx.z +
-        renderBobSine(room.roomTime, bobPeriod, bobAmplitude, id);
+      outputTyped[stackedTopSymbol].y = -blockSizePx.z + bobY;
     } else {
-      currentOutput.y = renderBobSine(
-        room.roomTime,
-        bobPeriod,
-        bobAmplitude,
-        id,
-      );
+      currentOutput.y = bobY;
     }
   }
 
@@ -107,7 +108,11 @@ export const monsterAppearance: ItemAppearance<
   renderContext: {
     item,
     room,
-    general: { paused, spritesheetVariants },
+    general: {
+      paused,
+      spritesheetVariants,
+      spriteOption: { uncolourised },
+    },
   },
   currentRendering,
 }) => {
@@ -141,7 +146,7 @@ export const monsterAppearance: ItemAppearance<
         facingXy4 !== currentlyRenderedProps.facingXy4;
 
       if (!render) {
-        maybeAddBob(item, room, currentRendering!.output!);
+        maybeAddBob(item, room, currentRendering!.output!, uncolourised);
 
         return "no-update";
       }
@@ -214,6 +219,7 @@ export const monsterAppearance: ItemAppearance<
                       spritesheet,
                     },
                   }),
+                  uncolourised,
                 )
                 // charging on a toaster
               : createSprite({
@@ -244,6 +250,7 @@ export const monsterAppearance: ItemAppearance<
                   spritesheet,
                 },
               }),
+              uncolourised,
             ),
             renderProps,
           };
@@ -303,7 +310,7 @@ export const monsterAppearance: ItemAppearance<
         activated !== currentlyRenderedProps.activated;
 
       if (!render) {
-        maybeAddBob(item, room, currentRendering!.output!);
+        maybeAddBob(item, room, currentRendering!.output!, uncolourised);
 
         return "no-update";
       }
@@ -336,6 +343,7 @@ export const monsterAppearance: ItemAppearance<
                   } satisfies AnimatedCreateSpriteOptions)
                 : { textureId: `${config.which}.1`, spritesheet },
               ),
+              uncolourised,
             ),
             renderProps,
           };
@@ -362,8 +370,10 @@ export const monsterAppearance: ItemAppearance<
                   spritesheet,
                 },
               }),
+              uncolourised,
             ),
             renderProps,
+            uncolourised,
           };
 
         case "emperorsGuardian":
@@ -382,6 +392,7 @@ export const monsterAppearance: ItemAppearance<
                     { animationId: "bubbles.cold", spritesheet, paused }
                   : { textureId: "bubbles.cold.1", spritesheet },
               }),
+              uncolourised,
             ),
             renderProps,
           };

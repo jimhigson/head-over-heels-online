@@ -57,6 +57,7 @@ class ConveyorBobRenderer<T extends FreeItemTypes>
           baseBobPeriod / speedMultiplier,
           bobAmplitude,
           this.renderContext.item.id,
+          this.renderContext.general.spriteOption.uncolourised,
         );
       } else {
         this.output.y = 0;

@@ -8,6 +8,7 @@ import {
 import { type ConsolidatableConfig } from "../../../../model/json/utilityJsonConfigTypes";
 import { roomSpatialIndexKey } from "../../../../model/RoomState";
 import { store } from "../../../../store/store";
+import { assignRoundedXy } from "../../../../utils/pixi/assignRoundedXy";
 import { maybeRenderContainerToSprite } from "../../../../utils/pixi/renderContainerToSprite";
 import { renderMultipliedXy } from "../../../../utils/pixi/renderMultipliedXy";
 import { addXy, originXy, subXy } from "../../../../utils/vectors/vectors";
@@ -234,7 +235,11 @@ class ItemShadowRenderer<T extends ItemInPlayType>
 
     const {
       item,
-      general: { pixiRenderer },
+      general: {
+        pixiRenderer,
+        upscale: { gameEngineUpscale },
+        spriteOption: { uncolourised },
+      },
       room,
     } = this.renderContext;
 
@@ -342,13 +347,25 @@ class ItemShadowRenderer<T extends ItemInPlayType>
           // on the top of the item:
           z: item.aabb.z,
         });
+
+        console.log(caster.id, screenXy);
+
+        assignRoundedXy(
+          shadowSprite,
+          screenXy.x,
+          screenXy.y,
+          uncolourised ? 1 : gameEngineUpscale,
+        );
+
+        console.log(shadowSprite.x, shadowSprite.y);
+
         //const zToCaster = casterItem.state.position.z - itemTop;
         //shadowSprite.alpha = 1 - zToCaster / (blockSizePx.h * 8);
         // (shadowSprite.filters as [BlurFilter])[0].strength =
         //   zToCaster * blurPerZToCaster;
         // this fails for composite sprites, since they get their x,y set in the sprite they are rendered to
-        shadowSprite.x = screenXy.x;
-        shadowSprite.y = screenXy.y;
+        // shadowSprite.x = screenXy.x;
+        // shadowSprite.y = screenXy.y;
       }
     }
 

@@ -52,11 +52,18 @@ test.for(roomCases)(
               isSolid(col) &&
               // walls are allowed to collide with other walls, since they have
               // thickness - only really possible in large rooms with extra walls
-              !(i.type === "wall" && col.type === "wall"),
+              !(i.type === "wall" && col.type === "wall") &&
+              // doorframes are allowed to collide with other doorframe items, so
+              // long as they came from the same json door
+              !(
+                i.type === "doorFrame" &&
+                col.type === "doorFrame" &&
+                i.jsonItemId === col.jsonItemId
+              ),
           )
           .map(
             (col) =>
-              `${i.id} @${JSON.stringify(i.state.position)} #${JSON.stringify(i.aabb)} collides with ${col.id} @${JSON.stringify(col.state.position)} #${JSON.stringify(col.aabb)}`,
+              `${i.type} ${i.id} @${JSON.stringify(i.state.position)} #${JSON.stringify(i.aabb)} collides with ${col.type} ${col.id} @${JSON.stringify(col.state.position)} #${JSON.stringify(col.aabb)}`,
           ),
       )
       .toArray();
