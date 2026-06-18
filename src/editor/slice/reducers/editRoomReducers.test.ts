@@ -24,7 +24,7 @@ const roomBelowOf = <RoomId extends string>(room: {
   meta?: { subRooms?: SubRooms<RoomId> };
 }): RoomId | undefined => roomVerticalLink(room, "below")?.room;
 import {
-  selectCurrentRoomFromLevelEditorState,
+  selectCurrentRoomJsonFromLevelEditorState,
   selectCursorRoomId,
 } from "../levelEditorSelectors";
 import {
@@ -64,7 +64,7 @@ test('deleting a door "heals" the void where the door once stood by extending an
     // then, delete the door:
     (dispatch, getState) => {
       const doorEntry = iterateRoomJsonItemsWithIds(
-        selectCurrentRoomFromLevelEditorState(getState().levelEditor).items,
+        selectCurrentRoomJsonFromLevelEditorState(getState().levelEditor).items,
       ).find(([_id, i]) => i.type === "door");
 
       if (doorEntry === undefined) {

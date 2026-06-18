@@ -60,17 +60,28 @@ const shadowMaskStaticAppearance = <T extends ItemInPlayType>(
         spritesheet: spritesheetVariants.shadowSpritesheet,
       } as SpecifiedTextureCreateSpriteOptions;
 
-      if (isMultipliedItem(subject)) {
-        return maybeRenderContainerToSprite(
-          pixiRenderer,
-          renderMultipliedXy(options, itemInPlayTimes(subject)),
-        );
+      const times = itemInPlayTimes(subject);
+
+      const createMaskSprite = (): Sprite => {
+        if (isMultipliedItem(subject)) {
+          return maybeRenderContainerToSprite(
+            pixiRenderer,
+            renderMultipliedXy(options, times),
+          );
+        }
+        const container = createSprite(options);
+        if (container instanceof Sprite) {
+          return container;
+        }
+        return renderContainerToSprite(pixiRenderer, container);
+      };
+
+      const sprite = createMaskSprite();
+      // move the shadow mask up to the item's top face if multiplied in z:
+      if (times) {
+        sprite.y -= ((times.z ?? 1) - 1) * blockSizePx.z;
       }
-      const container = createSprite(options);
-      if (container instanceof Sprite) {
-        return container;
-      }
-      return renderContainerToSprite(pixiRenderer, container);
+      return sprite;
     },
   );
 
@@ -183,6 +194,13 @@ const itemShadowMaskAppearances: {
   block: shadowMaskFromConfigAppearance(({ style }) => ({
     textureId: `shadowMask.${style}`,
   })),
+  lamp: shadowMaskStaticAppearance({
+    textureId: "shadowMask.lamp",
+  }),
+  // mirrors are full blocks, so reuse the full-block top mask:
+  mirror: shadowMaskStaticAppearance({
+    textureId: "shadowMask.artificial",
+  }),
   pushableBlock: shadowMaskStaticAppearance({
     textureId: "shadowMask.stepStool",
   }),

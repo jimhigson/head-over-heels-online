@@ -1,3 +1,4 @@
+import { maybeReflectedVector } from "../../../model/MirrorOrientation";
 import { keysIter } from "../../../utils/entries";
 import {
   type DirectionXy4,
@@ -18,6 +19,7 @@ export const charlesAppearance: ItemAppearance<
   CharlesRenderProps
 > = ({
   renderContext: {
+    isReflection,
     item: {
       state: {
         facing,
@@ -31,7 +33,9 @@ export const charlesAppearance: ItemAppearance<
   currentRendering,
 }) => {
   const currentlyRenderedProps = currentRendering?.renderProps;
-  const facingXy4 = vectorClosestDirectionXy4(facing) ?? "towards";
+  const facingXy4 =
+    vectorClosestDirectionXy4(maybeReflectedVector(facing, isReflection)) ??
+    "towards";
 
   const controlledByJoystick =
     roomTime === roomTimeActedOn &&
@@ -47,7 +51,11 @@ export const charlesAppearance: ItemAppearance<
     return "no-update";
   }
 
-  const spritesheet = spritesheetVariants.currentMainSpritesheet(activated);
+  const spritesheet = spritesheetVariants.currentMainSpritesheet(
+    !activated,
+    false,
+    isReflection,
+  );
 
   return {
     output: createStackedSprites({

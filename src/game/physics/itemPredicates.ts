@@ -59,6 +59,12 @@ const isUnsolid = (
   return (
     isNeverSolidItemType(item) ||
     /*
+     * light beams are solid only to monsters - monsters will not walk into
+     * light. Everything else (players included) passes straight through,
+     * blocking the beam with their body as they do
+     */
+    (isLightBeam(item) && (toucher === undefined || !isMonster(toucher))) ||
+    /*
      * portals are usually solid, so baddies and other items don't fall out of the
      * world via room doorways, but
      */
@@ -94,7 +100,9 @@ export const isStandable = (item: UnionOfAllItemInPlayTypes) => {
     (
       isNeverSolidItemType(item) ||
       // protals are sometimes solid, but are never standable:
-      item.type === "portal"
+      item.type === "portal" ||
+      // light beams are solid to monsters, but nothing can stand on light:
+      item.type === "lightBeam"
     )
   );
 };
@@ -286,6 +294,9 @@ export const isCarrier = isItemType("heels", "headOverHeels");
 export const isFirer = isItemType("head", "headOverHeels");
 export const isLift = isItemType("lift");
 export const isButton = isItemType("button");
+export const isLamp = isItemType("lamp");
+export const isMirror = isItemType("mirror");
+export const isLightBeam = isItemType("lightBeam");
 export const isEmitter = isItemType("emitter");
 export const isMonster = isItemType("monster");
 export const isFloor = isItemType("floor");
@@ -320,7 +331,7 @@ export const isCrown = <RoomId extends string, RoomItemId extends string>(
 export const isSpring = isItemType("spring");
 export const isJoystick = isItemType("joystick");
 /** items that should not trigger helpful movement vectors — player should snag on these to keep pushing */
-export const isNonHmvItem = isItemType("joystick", "switch");
+export const isNonHmvItem = isItemType("joystick", "switch", "mirror");
 export const isConveyor = isItemType("conveyor");
 export const isHushPuppy = isItemType("hushPuppy");
 export const isFiredDoughnut = isItemType("firedDoughnut");

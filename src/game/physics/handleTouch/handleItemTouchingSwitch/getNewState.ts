@@ -114,6 +114,18 @@ export const getNewState = <RoomId extends string, RoomItemId extends string>(
         }) satisfies Partial<ItemState<"charles", RoomId, RoomItemId>>;
   }
 
+  if (modifiesItem.expectType === "lamp" && "activates" in modifiesItem) {
+    const { activates } = modifiesItem;
+    return (
+      setting === (activates ? "left" : "right") ?
+        {
+          activated: true,
+        }
+      : {
+          activated: false,
+        }) satisfies Partial<ItemState<"lamp", RoomId, RoomItemId>>;
+  }
+
   if (modifiesItem.expectType === "timer" && "activates" in modifiesItem) {
     const { activates } = modifiesItem;
     return (

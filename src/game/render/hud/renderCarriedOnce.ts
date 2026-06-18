@@ -36,10 +36,11 @@ export const renderCarriedOnce = <
           "getOtherItemContainer not supported in carried sprite",
         );
       },
+      isReflection: false,
     },
     tickContext: {
       lastRenderRoomTime: neverTime,
-      movedItems: emptySet,
+      movedOrResizedItems: emptySet,
       deltaMS: 1,
     },
   });

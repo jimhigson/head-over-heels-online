@@ -128,6 +128,7 @@ export const doorLegsAppearance: ItemAppearance<"doorLegs"> =
   itemAppearanceRenderOnce(
     ({
       renderContext: {
+        isReflection,
         item,
         general: { pixiRenderer, spritesheetVariants },
         room: {
@@ -136,7 +137,11 @@ export const doorLegsAppearance: ItemAppearance<"doorLegs"> =
         },
       },
     }) => {
-      const spritesheet = spritesheetVariants.currentMainSpritesheet();
+      const spritesheet = spritesheetVariants.currentMainSpritesheet(
+        false,
+        false,
+        isReflection,
+      );
       const doorLegsContainer = iterateToContainer(
         doorLegsGenerator(item, spritesheet, planet, shade === "dimmed"),
       );
@@ -160,6 +165,7 @@ export const doorFrameAppearance: ItemAppearance<"doorFrame"> =
   itemAppearanceRenderOnce(
     ({
       renderContext: {
+        isReflection,
         item: {
           config: { direction, part, toRoom },
           aabb,
@@ -216,7 +222,11 @@ export const doorFrameAppearance: ItemAppearance<"doorFrame"> =
         // needs a special filter since this may not be going to the same room:
         x,
         y,
-        spritesheet: spritesheetVariants.currentMainSpritesheet(),
+        spritesheet: spritesheetVariants.currentMainSpritesheet(
+          false,
+          false,
+          isReflection,
+        ),
       });
       doorFrameSprite.filters = filter;
 

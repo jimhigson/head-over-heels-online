@@ -6,7 +6,7 @@ import {
   type EditorRoomItemId,
 } from "../../editorTypes";
 import { type ActivationState } from "../../itemActivation";
-import { selectCurrentRoomFromLevelEditorState } from "../levelEditorSelectors";
+import { selectCurrentRoomJsonFromLevelEditorState } from "../levelEditorSelectors";
 import {
   type LevelEditorState,
   setSelectedItemsActivation,
@@ -28,7 +28,7 @@ const setActivation = (
   item: EditorJsonItemUnion,
   activation: ActivationState,
 ): EditorJsonItemUnion =>
-  selectCurrentRoomFromLevelEditorState(
+  selectCurrentRoomJsonFromLevelEditorState(
     reduceLevelEditorActions(
       stateWithItem(item),
       setSelectedItemsInRoom({ jsonItemIds: ["i" as EditorRoomItemId] }),
@@ -119,6 +119,40 @@ test("enabling a charles removes the activated key (the default)", () => {
   ).toEqual({
     type: "charles",
     config: {},
+    position: { x: 0, y: 0, z: 0 },
+  });
+});
+
+test("disabling a lamp sets activated false", () => {
+  expect(
+    setActivation(
+      {
+        type: "lamp",
+        config: { direction: "towards", activated: true },
+        position: { x: 0, y: 0, z: 0 },
+      },
+      "disabled",
+    ),
+  ).toEqual({
+    type: "lamp",
+    config: { direction: "towards", activated: false },
+    position: { x: 0, y: 0, z: 0 },
+  });
+});
+
+test("enabling a lamp sets activated true", () => {
+  expect(
+    setActivation(
+      {
+        type: "lamp",
+        config: { direction: "towards", activated: false },
+        position: { x: 0, y: 0, z: 0 },
+      },
+      "enabled",
+    ),
+  ).toEqual({
+    type: "lamp",
+    config: { direction: "towards", activated: true },
     position: { x: 0, y: 0, z: 0 },
   });
 });

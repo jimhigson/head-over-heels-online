@@ -13,6 +13,7 @@ import {
 } from "../../utils/vectors/vectors";
 import { type Disappear } from "../Disappear";
 import { type SwitchSetting } from "../ItemInPlay";
+import { type MirrorOrientation } from "../MirrorOrientation";
 import { type CharacterName } from "../modelTypes";
 import { type JsonItemUnion } from "./JsonItem";
 import { type MonsterJsonConfig } from "./MonsterJsonConfig";
@@ -290,6 +291,29 @@ export type ItemConfigMap<
       | { type: "firedDoughnut" }
       | { type: "hushPuppy" }
       | { type: "pickup"; gives: PickupConfig["gives"] };
+  };
+  lamp: {
+    /** the direction the lamp shines its light beam in, when activated */
+    direction: DirectionXy4;
+    /**
+     * if the lamp starts activated (shining) when the room loads.
+     * undefined is treated as true
+     */
+    activated?: boolean;
+    /**
+     * lamps can be stacked to double/triple height - a beam is then emitted
+     * from every block of the stack
+     */
+    times?: { z: number };
+  };
+  mirror: {
+    /** the initial orientation of the mirror's plane */
+    orientation: MirrorOrientation;
+    /**
+     * mirrors can be stacked to double/triple height - the whole stack is
+     * one pane that flips together
+     */
+    times?: { z: number };
   };
   monster: MonsterJsonConfig;
   portableBlock: {

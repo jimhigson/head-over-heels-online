@@ -2686,7 +2686,7 @@ exports[`for tailwind plugin we must have all possible frames and animations 1`]
     "frame": {
       "h": 8,
       "w": 8,
-      "x": 334,
+      "x": 343,
       "y": 1005,
     },
   },
@@ -3530,6 +3530,14 @@ exports[`for tailwind plugin we must have all possible frames and animations 1`]
       "y": 994,
     },
   },
+  "hud.char.|": {
+    "frame": {
+      "h": 8,
+      "w": 8,
+      "x": 334,
+      "y": 1005,
+    },
+  },
   "hud.char.§": {
     "frame": {
       "h": 8,
@@ -3602,6 +3610,22 @@ exports[`for tailwind plugin we must have all possible frames and animations 1`]
       "y": 1014,
     },
   },
+  "hud.char.↺": {
+    "frame": {
+      "h": 8,
+      "w": 8,
+      "x": 505,
+      "y": 1014,
+    },
+  },
+  "hud.char.↻": {
+    "frame": {
+      "h": 8,
+      "w": 8,
+      "x": 496,
+      "y": 1014,
+    },
+  },
   "hud.char.⇧": {
     "frame": {
       "h": 8,
@@ -3614,7 +3638,7 @@ exports[`for tailwind plugin we must have all possible frames and animations 1`]
     "frame": {
       "h": 8,
       "w": 16,
-      "x": 379,
+      "x": 388,
       "y": 1005,
     },
   },
@@ -3670,7 +3694,7 @@ exports[`for tailwind plugin we must have all possible frames and animations 1`]
     "frame": {
       "h": 8,
       "w": 8,
-      "x": 361,
+      "x": 370,
       "y": 1005,
     },
   },
@@ -3678,7 +3702,7 @@ exports[`for tailwind plugin we must have all possible frames and animations 1`]
     "frame": {
       "h": 8,
       "w": 8,
-      "x": 343,
+      "x": 352,
       "y": 1005,
     },
   },
@@ -3726,7 +3750,7 @@ exports[`for tailwind plugin we must have all possible frames and animations 1`]
     "frame": {
       "h": 8,
       "w": 8,
-      "x": 370,
+      "x": 379,
       "y": 1005,
     },
   },
@@ -3734,7 +3758,7 @@ exports[`for tailwind plugin we must have all possible frames and animations 1`]
     "frame": {
       "h": 8,
       "w": 8,
-      "x": 352,
+      "x": 361,
       "y": 1005,
     },
   },
@@ -3750,7 +3774,7 @@ exports[`for tailwind plugin we must have all possible frames and animations 1`]
     "frame": {
       "h": 8,
       "w": 16,
-      "x": 413,
+      "x": 422,
       "y": 1005,
     },
   },
@@ -3766,7 +3790,7 @@ exports[`for tailwind plugin we must have all possible frames and animations 1`]
     "frame": {
       "h": 8,
       "w": 16,
-      "x": 396,
+      "x": 405,
       "y": 1005,
     },
   },
@@ -3850,6 +3874,70 @@ exports[`for tailwind plugin we must have all possible frames and animations 1`]
       "y": 27,
     },
   },
+  "lamp.off.away": {
+    "frame": {
+      "h": 28,
+      "w": 32,
+      "x": 298,
+      "y": 827,
+    },
+  },
+  "lamp.off.left": {
+    "frame": {
+      "h": 28,
+      "w": 32,
+      "x": 265,
+      "y": 827,
+    },
+  },
+  "lamp.off.right": {
+    "frame": {
+      "h": 28,
+      "w": 32,
+      "x": 298,
+      "y": 856,
+    },
+  },
+  "lamp.off.towards": {
+    "frame": {
+      "h": 28,
+      "w": 32,
+      "x": 265,
+      "y": 856,
+    },
+  },
+  "lamp.on.away": {
+    "frame": {
+      "h": 28,
+      "w": 32,
+      "x": 232,
+      "y": 827,
+    },
+  },
+  "lamp.on.left": {
+    "frame": {
+      "h": 28,
+      "w": 32,
+      "x": 199,
+      "y": 827,
+    },
+  },
+  "lamp.on.right": {
+    "frame": {
+      "h": 28,
+      "w": 32,
+      "x": 232,
+      "y": 856,
+    },
+  },
+  "lamp.on.towards": {
+    "frame": {
+      "h": 28,
+      "w": 32,
+      "x": 199,
+      "y": 856,
+    },
+  },
   "lift.1": {
     "frame": {
       "h": 24,
@@ -3888,6 +3976,46 @@ exports[`for tailwind plugin we must have all possible frames and animations 1`]
       "w": 24,
       "x": 526,
       "y": 402,
+    },
+  },
+  "lightBeam.1": {
+    "frame": {
+      "h": 16,
+      "w": 16,
+      "x": 148,
+      "y": 868,
+    },
+  },
+  "lightBeam.2": {
+    "frame": {
+      "h": 16,
+      "w": 16,
+      "x": 165,
+      "y": 868,
+    },
+  },
+  "lightBeam.3": {
+    "frame": {
+      "h": 16,
+      "w": 16,
+      "x": 182,
+      "y": 868,
+    },
+  },
+  "lightBeam.terminus.1": {
+    "frame": {
+      "h": 16,
+      "w": 16,
+      "x": 114,
+      "y": 868,
+    },
+  },
+  "lightBeam.terminus.2": {
+    "frame": {
+      "h": 16,
+      "w": 16,
+      "x": 131,
+      "y": 868,
     },
   },
   "market.floor": {
@@ -3944,6 +4072,62 @@ exports[`for tailwind plugin we must have all possible frames and animations 1`]
       "w": 16,
       "x": 786,
       "y": 735,
+    },
+  },
+  "mirror.awayLeft": {
+    "frame": {
+      "h": 28,
+      "w": 32,
+      "x": 331,
+      "y": 827,
+    },
+  },
+  "mirror.awayRight": {
+    "frame": {
+      "h": 28,
+      "w": 32,
+      "x": 364,
+      "y": 827,
+    },
+  },
+  "mirror.awayRight.front": {
+    "frame": {
+      "h": 28,
+      "w": 32,
+      "x": 364,
+      "y": 856,
+    },
+  },
+  "mirror.bottom": {
+    "frame": {
+      "h": 28,
+      "w": 32,
+      "x": 430,
+      "y": 827,
+    },
+  },
+  "mirror.flipping.x": {
+    "frame": {
+      "h": 28,
+      "w": 32,
+      "x": 397,
+      "y": 856,
+    },
+  },
+  "mirror.flipping.y": {
+    "frame": {
+      "h": 28,
+      "w": 32,
+      "x": 430,
+      "y": 856,
+    },
+  },
+  "mirror.top": {
+    "frame": {
+      "h": 28,
+      "w": 32,
+      "x": 397,
+      "y": 827,
     },
   },
   "monkey.away": {
@@ -5194,6 +5378,14 @@ exports[`for tailwind plugin we must have all possible frames and animations 1`]
       "y": 27,
     },
   },
+  "shadowMask.lamp": {
+    "frame": {
+      "h": 28,
+      "w": 32,
+      "x": 331,
+      "y": 856,
+    },
+  },
   "shadowMask.organic": {
     "frame": {
       "h": 28,
@@ -6070,6 +6262,15 @@ exports[`for tailwind plugin we must have all possible frames and animations 2`]
     "lift.2",
     "lift.3",
     "lift.4",
+  ],
+  "lightBeam.terminus": [
+    "lightBeam.terminus.1",
+    "lightBeam.terminus.2",
+  ],
+  "lightBeam.x": [
+    "lightBeam.1",
+    "lightBeam.2",
+    "lightBeam.3",
   ],
   "moonbase.wall.screen.window1.away": [
     "moonbase.wall.screen.window1.away.1",

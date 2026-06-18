@@ -149,7 +149,7 @@ and we trust that to pre-load in the service worker for us, so the actual game e
  *	Code avoids legacy constructs and uses satisfies never for exhaustive switches.
  *  when writing a ts source, either as a script or in the game or editor, run it through eslint and prettier to fix linting and formatting issues. Use the --fix or --write options as appropriate so that these tools can fix the source
  * do not use `import *` - instead, import the individual parts of the package that you need.
- * for private methods of classes, use this.#foo, not `private foo` as per modern js. However, if it is a constructor param, using `(private foo)` is preferable as it removes the need for a separate assignment statement
+ * for private methods of classes, use this.#foo, not `private foo` as per modern js. Erasable syntax only.
  * if making a switch/case that is intended to be exaustive, use `default: xxx satisfies never` so that ts confirms this.
  * write jsdoc, but instead of @param, put `/** */` comments before the parameters themselves, like this:
  ```ts
@@ -200,6 +200,9 @@ and we trust that to pre-load in the service worker for us, so the actual game e
 
 * this is a project based in the uk. Use British English only, even if variables are named differently to library functions
 with names in US English.
+
+* avoid type casts wherever possible; never add them speculatively in case they are needed, only if they are needed
+and there is no sensible alternative
 
 * if a value's typescript type is not nullable, do not add checks for it being null/undefined, even explicit checks like using `?.`
 if unsure if the type is nullable, assume that it is not nullable (or undefinable) and let the typecheck inform you later
@@ -263,6 +266,7 @@ throw new Error(
 ## Vite
 * There are two vite configs - for the editor and the game.
 * the editor vite starts in a different dir, as given by the package.json file
+* whenever starting a server (`dev`/`preview`), check which port it actually started on (read its stdout) before trying to connect - if the default port is already in use, vite silently falls through to the next free port, so don't assume the port
 
 ## Running
 
@@ -273,6 +277,12 @@ Maintain familiarity with the scripts in package.json. Call these with `pnpm` wh
 Use `pnpm fix` to auto-fix linting and formatting errors (runs both eslint --fix and prettier --write).
 
 No not use `npx`, use `pnpm`. Do not call `pnpm vitest` directly, call `pnpm check:test` instead, and similar commands for typechecking and other commands that need to be called - if a script exists in package.json to do the test at hand, prefer that unless it comes with major drawbacks.
+
+### Driving the running game / capturing screenshots
+* the redux store is only put on `window._e2e_store` (and the game api on `window._e2e_gamePageGameAi`, pixi app on `window.__PIXI_APP__`) when built in **visual-regression mode** - eg `pnpm exec vite build --mode visual-regression` then `pnpm exec vite preview` (a normal `pnpm build:game` / dev server does NOT expose them). See `import.meta.env.MODE === "visual-regression"` in `store.ts`/`gameMain.ts`.
+* to set game/debug state from automation, dispatch plain actions to `window._e2e_store` (eg `userSettings/setShowBoundingBoxType` with `{ itemType, value: true }`).
+* the bounding-box (and pointer-debug) item-renderer decorators are only registered while the **Cheats panel is mounted** (`useRegisterDecorateItemRenderers` lives inside the `Cheats` component, rendered when `debug.cheatsOn` is true, ie via `?cheats=1`). Setting `showBoundingBoxTypes` alone does nothing if the panel never mounted. `LazyCheats` mounts async, and the decorator only wraps item renderers created *after* it registers - so wait for the panel to mount, then dispatch, then allow time for items to be (re)created (light-beam renderers recast frequently, so they pick up the decorator on their own).
+* prefer the `hohjs-browser-mcp` skill for browser automation patterns and known MCP quirks.
 
 ## Visual Regression Testing
 
@@ -286,6 +296,8 @@ No not use `npx`, use `pnpm`. Do not call `pnpm vitest` directly, call `pnpm che
 * use tsgo `as pnpm tsgo`
 
 ## Attitude
+
+* shorter answers are always preferable. One sentence is great, two are ok, three is acceptable but a bit much. If I ask a one sentence question, I'm not looking for several paragraphs in reply unless I'm asking to be detailed.
 
 * If I make mistakes, or I suggest something that sounds incorrect, for example, I give a reason for something
 failing that seems unlikely, please point this out frankly rather than trying to be too agreeable.
@@ -308,7 +320,7 @@ failing that seems unlikely, please point this out frankly rather than trying to
 
 * Do NOT treat statements of fact from the use as requests to do something unless they are unambiguously asking for work to be done
 
-* When suggesting new code, give files and line numbers, ie don't say "call the new function x", say "call new function x at (callsite)"
+* When suggesting new code, give files and line numbers, ie don't say "call the new function x", say "call new function x at (file:lineNumber)"
 
 * Do not remove comments in code you refactor, unless the comment is no longer applicable
 

@@ -85,7 +85,11 @@ export class OnScreenJoystickRenderer
       textureId: "joystick.whole",
       anchor: { x: 0.5, y: 0.5 },
       y: 1,
-      spritesheet: spritesheetVariants.currentMainSpritesheet(),
+      spritesheet: spritesheetVariants.currentMainSpritesheet(
+        false,
+        false,
+        false,
+      ),
     });
 
     this.#arrowSprites = {
@@ -265,8 +269,11 @@ export class OnScreenJoystickRenderer
     } = this;
 
     if (this.#roomRenderedIn !== room) {
-      this.#joystickSprite.texture =
-        spritesheetVariants.currentMainSpritesheet().textures["joystick.whole"];
+      this.#joystickSprite.texture = spritesheetVariants.currentMainSpritesheet(
+        false,
+        false,
+        false,
+      ).textures["joystick.whole"];
       this.#roomRenderedIn = room;
     }
 

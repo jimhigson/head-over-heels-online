@@ -8,6 +8,7 @@ import {
   unitXyz_xz,
   unitXyz_y,
   unitXyz_yz,
+  unitXyz_z,
   type Xyz,
 } from "../utils/vectors/vectors";
 
@@ -18,6 +19,8 @@ export type ConsolidatableJsonItemType =
   | "deadlyBlock"
   | "floor"
   | "hushPuppy"
+  | "lamp"
+  | "mirror"
   | "spikes"
   | "teleporter"
   | "wall";
@@ -60,6 +63,12 @@ export const getConsolidatableVector = (jsonItem: JsonItemUnion): Xyz => {
 
     case "hushPuppy":
       return unitXyz;
+
+    case "lamp":
+    case "mirror":
+      // stack vertically only - same-direction lamps / same-orientation mirrors
+      // merge in z (their config, sans times, must be equal to share a hash):
+      return unitXyz_z;
 
     case "teleporter":
       return unitXyz_xy;

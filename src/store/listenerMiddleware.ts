@@ -1,12 +1,24 @@
 import { createListenerMiddleware } from "@reduxjs/toolkit";
 
-import { type AppDispatch, type RootState } from "./store";
+import {
+  type AppDispatch,
+  type EditorRootState,
+  type RootState,
+} from "./store";
 
 export const listenerMiddleware = createListenerMiddleware();
 
 /* static listeners (in theory, no reason can't be dynamic) */
 export const startAppListening = listenerMiddleware.startListening.withTypes<
   RootState,
+  AppDispatch
+>();
+
+/**
+ * the same listener middleware, typed for the editor app store
+ */
+export const startEditorListening = listenerMiddleware.startListening.withTypes<
+  EditorRootState,
   AppDispatch
 >();
 

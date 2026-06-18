@@ -28,6 +28,7 @@ while store has: ${JSON.stringify(userSettings, null, 2)}`,
 
 export const switchAppearance: ItemAppearance<"switch", SwitchRenderProps> = ({
   renderContext: {
+    isReflection,
     item: {
       state: { setting: stateSetting },
       config: switchConfig,
@@ -55,7 +56,11 @@ export const switchAppearance: ItemAppearance<"switch", SwitchRenderProps> = ({
   return {
     output: createSprite({
       textureId: `switch.${setting}`,
-      spritesheet: spritesheetVariants.currentMainSpritesheet(),
+      spritesheet: spritesheetVariants.currentMainSpritesheet(
+        false,
+        false,
+        isReflection,
+      ),
     }),
     renderProps: { setting },
   };

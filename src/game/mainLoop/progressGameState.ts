@@ -37,7 +37,7 @@ type SpatialItem<
   RoomItemId extends string,
 > = ItemTypeUnion<Exclude<ItemInPlayType, "timer">, RoomId, RoomItemId>;
 
-export type MovedItems<
+export type MovedOrResizedItems<
   RoomId extends string,
   RoomItemId extends string,
 > = OverrideProperties<
@@ -45,23 +45,36 @@ export type MovedItems<
   { has(item: UnionOfAllItemInPlayTypes<RoomId, RoomItemId>): boolean }
 >;
 
-const calculateMovedItems = <RoomId extends string, RoomItemId extends string>(
+const calculateMovedOrResizedItems = <
+  RoomId extends string,
+  RoomItemId extends string,
+>(
   roomItems: RoomStateItems<RoomId, RoomItemId>,
   startingPositions: Record<string, Xyz>,
-): MovedItems<RoomId, RoomItemId> => {
-  const movedItems = new Set() as MovedItems<RoomId, RoomItemId>;
+  startingAabbs: Record<string, Xyz>,
+): MovedOrResizedItems<RoomId, RoomItemId> => {
+  const movedOrResizedItems = new Set() as MovedOrResizedItems<
+    RoomId,
+    RoomItemId
+  >;
 
   for (const item of roomItemsIterable(roomItems)) {
     const prev = startingPositions[item.id];
+    const prevAabb = startingAabbs[item.id];
     if (
-      (prev === undefined || !xyzEqual(prev, item.state.position)) &&
+      (prev === undefined ||
+        !xyzEqual(prev, item.state.position) ||
+        // items with variable aabbs (light beams) can change extent without
+        // their min corner moving - that counts as movement for everything
+        // downstream (z-sorting etc):
+        !xyzEqual(prevAabb, item.aabb)) &&
       isSpatial(item)
     ) {
-      movedItems.add(item);
+      movedOrResizedItems.add(item);
     }
   }
 
-  return movedItems;
+  return movedOrResizedItems;
 };
 
 export type ProgressGameState<
@@ -70,7 +83,7 @@ export type ProgressGameState<
 > = (
   gameState: GameState<RoomId>,
   deltaMS: number,
-) => MovedItems<RoomId, RoomItemId>;
+) => MovedOrResizedItems<RoomId, RoomItemId>;
 
 export const progressGameState = <
   RoomId extends string,
@@ -78,12 +91,12 @@ export const progressGameState = <
 >(
   gameState: GameState<RoomId>,
   deltaMS: number,
-): MovedItems<RoomId, RoomItemId> => {
+): MovedOrResizedItems<RoomId, RoomItemId> => {
   const room = selectCurrentRoomState<RoomId, RoomItemId>(gameState);
 
   if (room === undefined) {
     // no current room - probably this is because game over
-    return emptySet as MovedItems<RoomId, RoomItemId>;
+    return emptySet as MovedOrResizedItems<RoomId, RoomItemId>;
   }
 
   // advance time before applying the mechanics of the game
@@ -99,6 +112,9 @@ export const progressGameState = <
       id,
       item.state.position,
     ]),
+  );
+  const startingAabbs = Object.fromEntries(
+    iterateRoomItemEntries(room.items).map(([id, item]) => [id, item.aabb]),
   );
 
   for (const item of roomItemsIterable(room.items)) {
@@ -144,21 +160,22 @@ export const progressGameState = <
   }
   updateStandingOn(room);
 
-  // floating point correction must be done before looking for moved items:
+  // floating point correction must be done before looking for moved/resized items:
   correctFloatingPointErrorsInRoom(room);
 
-  const movedItems = calculateMovedItems<RoomId, RoomItemId>(
+  const movedOrResizedItems = calculateMovedOrResizedItems<RoomId, RoomItemId>(
     room.items,
     startingPositions,
+    startingAabbs,
   );
 
   assignLatentMovementFromStandingOn(
-    movedItems,
+    movedOrResizedItems,
     room,
     startingPositions,
     deltaMS,
   );
-  snapInactiveItemsToPixelGrid(room, movedItems);
+  snapInactiveItemsToPixelGrid(room, movedOrResizedItems);
 
-  return movedItems;
+  return movedOrResizedItems;
 };

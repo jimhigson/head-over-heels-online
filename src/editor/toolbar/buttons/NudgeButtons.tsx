@@ -13,7 +13,7 @@ import {
 } from "../../../utils/vectors/vectors";
 import { itemMoveOrResizeWouldCollide } from "../../RoomEditingArea/cursor/editWouldCollide";
 import {
-  selectCurrentRoomFromLevelEditorState,
+  selectCurrentRoomJsonFromLevelEditorState,
   selectEditorRoomState,
 } from "../../slice/levelEditorSelectors";
 import {
@@ -37,7 +37,7 @@ export const NudgeButtons = () => {
   const selectedJsonItems = useEditorAppSelector((state) =>
     state.levelEditor.selectedJsonItemIds.map(
       (jsonItemId) =>
-        selectCurrentRoomFromLevelEditorState(state.levelEditor).items[
+        selectCurrentRoomJsonFromLevelEditorState(state.levelEditor).items[
           jsonItemId
         ],
     ),

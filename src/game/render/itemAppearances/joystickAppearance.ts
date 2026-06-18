@@ -37,6 +37,7 @@ export const joystickAppearance: ItemAppearance<
   JoystickRenderProps
 > = ({
   renderContext: {
+    isReflection,
     item: {
       state: { actedOnAt, lastPushDirection },
     },
@@ -59,7 +60,11 @@ export const joystickAppearance: ItemAppearance<
     return "no-update";
   }
 
-  const spritesheet = spritesheetVariants.currentMainSpritesheet();
+  const spritesheet = spritesheetVariants.currentMainSpritesheet(
+    false,
+    false,
+    isReflection,
+  );
 
   const output =
     currentRendering?.output ?? createContainerAndSprites(spritesheet);

@@ -1,6 +1,7 @@
 import { type Container, type Sprite } from "pixi.js";
 
 import { type ItemInPlay } from "../../../model/ItemInPlay";
+import { maybeReflectedVector } from "../../../model/MirrorOrientation";
 import { type RoomState } from "../../../model/RoomState";
 import { isAnimationId, isTextureId } from "../../../sprites/assertIsTextureId";
 import {
@@ -106,6 +107,7 @@ export const monsterAppearance: ItemAppearance<
   MonsterRenderProps
 > = ({
   renderContext: {
+    isReflection,
     item,
     room,
     general: {
@@ -122,8 +124,9 @@ export const monsterAppearance: ItemAppearance<
   const { activated, busyLickingDoughnutsOffFace } = state;
 
   const spritesheet = spritesheetVariants.currentMainSpritesheet(
-    activated,
+    !activated,
     busyLickingDoughnutsOffFace,
+    isReflection,
   );
 
   switch (config.which) {
@@ -136,7 +139,10 @@ export const monsterAppearance: ItemAppearance<
     case "monkey": {
       // rendering is directional (xy4)
 
-      const facingXy4 = vectorClosestDirectionXy4(state.facing) ?? "towards";
+      const facingXy4 =
+        vectorClosestDirectionXy4(
+          maybeReflectedVector(state.facing, isReflection),
+        ) ?? "towards";
 
       const render =
         currentlyRenderedProps === undefined ||

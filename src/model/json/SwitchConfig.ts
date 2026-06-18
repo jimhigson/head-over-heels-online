@@ -172,6 +172,23 @@ export type SwitchItemModificationUnion<
       >;
     }
   | {
+      expectType: "lamp";
+      targets?: RoomItemId[];
+      /**
+       * true is a shorthand for lamps that start activated (shining):
+       *   {leftState: {activated: true}, rightState: {activated: false}},
+       * false is shorthand for lamps that start deactivated:
+       *   {leftState: {activated: false}, rightState: {activated: true}},
+       */
+      activates?: boolean;
+      leftState?: Partial<
+        Pick<ItemStateMap<RoomId, RoomItemId>["lamp"], "activated">
+      >;
+      rightState?: Partial<
+        Pick<ItemStateMap<RoomId, RoomItemId>["lamp"], "activated">
+      >;
+    }
+  | {
       expectType: "lift";
       targets?: RoomItemId[];
       leftState: Partial<ItemStateMap<RoomId, RoomItemId>["lift"]>;

@@ -66,9 +66,19 @@ export const gameMain = async <RoomId extends string>(
   app.renderer.gl.drawingBufferColorSpace = "display-p3";
 
   if (campaignResult.error) {
+    // rebuild the error array (flattened to be serialisable for the redux store)
+    // back into a linked cause chain of Errors:
+    const cause = campaignResult.error.reduceRight<Error | undefined>(
+      (innerCause, { message, stack }) => {
+        const error = new Error(message, { cause: innerCause });
+        error.stack = stack;
+        return error;
+      },
+      undefined,
+    );
     throw new Error(
       `could not load campaign ${JSON.stringify(campaignLocator)}`,
-      { cause: campaignResult.error },
+      { cause },
     );
   }
   const campaign = campaignResult.data;

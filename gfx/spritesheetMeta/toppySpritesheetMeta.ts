@@ -124,6 +124,33 @@ export const toppySpritesheetMeta: SpritesheetMetadata<
         black: "warm6",
       },
     },
+    // a blue reflection across the full range of cool tones: the source palette
+    // is split into brightness quartiles (dark -> light) mapped to cool4, cool3,
+    // cool2, cool1 in turn, so the reflection keeps its tonal variation:
+    mirrorReflection: {
+      colours: {
+        // darkest quarter -> cool4:
+        black: "cool4",
+        warm6: "cool4",
+        grey3: "cool4",
+        warm5: "cool4",
+        // -> cool3:
+        cool3: "cool3",
+        pink2: "cool3",
+        grey2: "cool3",
+        replaceDark: "cool3",
+        // -> cool2:
+        warm4: "cool2",
+        pink1: "cool2",
+        grey1: "cool2",
+        replaceLight: "cool2",
+        // lightest quarter -> cool1:
+        cool1: "cool1",
+        warm3: "cool1",
+        warm2: "cool1",
+        warm1: "cool1",
+      },
+    },
   },
   effectColours: {
     head: "cool2",

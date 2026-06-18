@@ -25,7 +25,8 @@ const cellWidth = blockSizePx.x * 2;
 const projCellDepth = blockSizePx.x * 2;
 const projCellWidth = blockSizePx.x * 2;
 
-type XyCellKey = `${number},${number}`;
+// two cell coords packed into one 32-bit int (16 bits each) - see #makeCellKey
+type XyCellKey = number;
 
 export type Indexable = {
   id: string;
@@ -91,6 +92,19 @@ export class GridSpatialIndex<
    * axes (x,y,z)(min,max)
    */
   #itemToProjectionAxesMap = new Map<Item, ProjectionOnAxes>();
+
+  /**
+   * cached occupied-cell extent of the CUBOID index (x/y cells only - the
+   * index has no z partition), with a dirty flag set on every cuboid mutation.
+   * Recomputed lazily on read by one pass over the cell keys: cheaper than
+   * maintaining min/max incrementally, which would need a full scan on
+   * removal-of-an-extreme anyway. Used to bound the light-beam cell-march so it
+   * cannot walk forever in a room with an open (wall-less) edge.
+   */
+  #cuboidCellExtent:
+    | { minCellX: number; maxCellX: number; minCellY: number; maxCellY: number }
+    | undefined = undefined;
+  #cuboidCellExtentDirty = true;
 
   constructor(
     /** Optional iterable of items to initially populate the grid */
@@ -235,6 +249,7 @@ export class GridSpatialIndex<
       this.#itemToCellKeys,
       (cellKey) => this.#ensureCell(cellKey),
     );
+    this.#cuboidCellExtentDirty = true;
 
     // Add to projected cell index
     this.#upsertAxesProjections(item);
@@ -263,10 +278,18 @@ export class GridSpatialIndex<
   }
 
   /**
-   * Create a string key from cell coordinates
+   * Pack cell coordinates into a single integer key
    */
   #makeCellKey(x: number, y: number): XyCellKey {
-    return `${x},${y}`;
+    // 16 bits per axis, masked so a negative coord doesn't bleed into the other
+    // half - rooms are far smaller than the ±32767-cell range this allows:
+    return ((x & 0xff_ff) << 16) | (y & 0xff_ff);
+  }
+
+  /** the (x, y) cell coordinates packed into a key by #makeCellKey */
+  #decodeCellKey(key: XyCellKey): { x: number; y: number } {
+    // sign-extend each 16-bit half back to a signed coordinate:
+    return { x: key >> 16, y: (key << 16) >> 16 };
   }
 
   /**
@@ -402,6 +425,7 @@ export class GridSpatialIndex<
 
     // Remove from cuboid index
     this.#removeFromIndex(item, this.#spatialCells, this.#itemToCellKeys);
+    this.#cuboidCellExtentDirty = true;
 
     // Remove from projected cell index
     this.#removeFromIndex(
@@ -482,6 +506,7 @@ export class GridSpatialIndex<
       this.#itemToCellKeys,
       (cellKey) => this.#ensureCell(cellKey),
     );
+    this.#cuboidCellExtentDirty = true;
 
     if (DEBUG_SPATIAL_INDEX && DEBUG_ITEM_IDS.includes(item.id)) {
       const newCells = Array.from(this.#itemToCellKeys.get(item) || []);
@@ -527,6 +552,58 @@ export class GridSpatialIndex<
           `  Now in projected cells: [${newCells.join(", ")}]`,
       );
     }
+  }
+
+  /** world x → cuboid cell x (same flooring as #iterateCuboidCellKeys) */
+  worldXToCellX(worldX: number): number {
+    return Math.floor(worldX / cellWidth);
+  }
+  /** world y → cuboid cell y (same flooring as #iterateCuboidCellKeys) */
+  worldYToCellY(worldY: number): number {
+    return Math.floor(worldY / cellDepth);
+  }
+
+  /**
+   * The live Set of items occupying one cuboid cell, by integer cell coords.
+   * Returns the stored Bin itself (no copy) — the caller must NOT mutate it,
+   * and should not retain it across index mutations. undefined when the cell is
+   * empty (empty cells aren't stored). Cheaper than getCuboidNeighbourhood,
+   * which allocates a fresh Set; intended for hot per-cell walks.
+   */
+  getCellByCellCoords(
+    cellX: number,
+    cellY: number,
+  ): ReadonlySet<Item> | undefined {
+    return this.#spatialCells.get(this.#makeCellKey(cellX, cellY));
+  }
+
+  /**
+   * Min/max occupied cuboid cell in x and y (the index has no z partition, so
+   * no z extent). undefined when the index is empty. Recomputed lazily on read
+   * when dirty by one pass over the cell keys.
+   */
+  getOccupiedCuboidCellExtent():
+    | { minCellX: number; maxCellX: number; minCellY: number; maxCellY: number }
+    | undefined {
+    if (this.#cuboidCellExtentDirty) {
+      let minCellX = Infinity;
+      let maxCellX = -Infinity;
+      let minCellY = Infinity;
+      let maxCellY = -Infinity;
+      for (const key of this.#spatialCells.keys()) {
+        const { x: cx, y: cy } = this.#decodeCellKey(key);
+        minCellX = Math.min(minCellX, cx);
+        maxCellX = Math.max(maxCellX, cx);
+        minCellY = Math.min(minCellY, cy);
+        maxCellY = Math.max(maxCellY, cy);
+      }
+      this.#cuboidCellExtent =
+        maxCellX === -Infinity ? undefined : (
+          { minCellX, maxCellX, minCellY, maxCellY }
+        );
+      this.#cuboidCellExtentDirty = false;
+    }
+    return this.#cuboidCellExtent;
   }
 
   /**
@@ -625,23 +702,27 @@ export class GridSpatialIndex<
    */
   debugToString(): string {
     // Sort cell keys for consistent output
-    const sortedCellKeys = Array.from(this.#spatialCells.keys()).sort();
+    const sortedCellKeys = Array.from(this.#spatialCells.keys()).sort(
+      (a, b) => a - b,
+    );
 
     const cellEntries = sortedCellKeys.map((cellKey) => {
       const cell = this.#spatialCells.get(cellKey)!;
       const itemIds = Array.from(cell).map((item) => item.id);
-      return `  (${cellKey}) => [${itemIds.join(", ")}]`;
+      const { x, y } = this.#decodeCellKey(cellKey);
+      return `  (${x},${y}) [raw ${cellKey}] => [${itemIds.join(", ")}]`;
     });
 
     // Sort projected cell keys for consistent output
     const sortedProjectedCellKeys = Array.from(
       this.#projectedCells.keys(),
-    ).sort();
+    ).sort((a, b) => a - b);
 
     const projectedCellEntries = sortedProjectedCellKeys.map((cellKey) => {
       const cell = this.#projectedCells.get(cellKey)!;
       const itemIds = Array.from(cell).map((item) => item.id);
-      return `  (${cellKey}) => [${itemIds.join(", ")}]`;
+      const { x, y } = this.#decodeCellKey(cellKey);
+      return `  (${x},${y}) [raw ${cellKey}] => [${itemIds.join(", ")}]`;
     });
 
     return `GridSpatialIndex (${this.#spatialCells.size} 2D cells, ${this.#projectedCells.size} projected cells, ${this.#itemToCellKeys.size} items) {

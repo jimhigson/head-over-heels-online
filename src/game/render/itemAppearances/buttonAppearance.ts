@@ -7,6 +7,7 @@ type ButtonRenderProps = {
 
 export const buttonAppearance: ItemAppearance<"button", ButtonRenderProps> = ({
   renderContext: {
+    isReflection,
     item: {
       state: { pressed },
     },
@@ -27,7 +28,11 @@ export const buttonAppearance: ItemAppearance<"button", ButtonRenderProps> = ({
   return {
     output: createSprite({
       textureId: pressed ? `buttonInGame.pressed` : "buttonInGame",
-      spritesheet: spritesheetVariants.currentMainSpritesheet(),
+      spritesheet: spritesheetVariants.currentMainSpritesheet(
+        false,
+        false,
+        isReflection,
+      ),
     }),
     renderProps: { pressed },
   };

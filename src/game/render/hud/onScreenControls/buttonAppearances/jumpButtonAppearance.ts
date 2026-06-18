@@ -32,7 +32,11 @@ const createSurface = (
     // this should include paused, but it isn't on the renderContext yet
     animationId: "teleporter.flashing",
     y: 5,
-    spritesheet: spritesheetVariants.currentMainSpritesheet(),
+    spritesheet: spritesheetVariants.currentMainSpritesheet(
+      false,
+      false,
+      false,
+    ),
   });
   const text = new TextContainer({
     pixiRenderer,
@@ -145,7 +149,11 @@ export const jumpButtonAppearance: ButtonAppearance<
 
   if (roomChangedSinceLastRendered) {
     // update teleporter textures for room's spritesheet
-    const variantSpritesheet = spritesheetVariants.currentMainSpritesheet();
+    const variantSpritesheet = spritesheetVariants.currentMainSpritesheet(
+      false,
+      false,
+      false,
+    );
     teleporter.textures = framesWithOriginalGameTimings(
       variantSpritesheet.animations["teleporter.flashing"],
     );

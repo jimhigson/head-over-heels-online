@@ -221,7 +221,7 @@ export class MainLoop<RoomId extends string> {
     // note that progressing the game state can change/reload the room,
     // so we need to tick physics considering recreating the room renderer
     timingRecord?.startPhysics();
-    const movedItems =
+    const movedOrResizedItems =
       deltaMS === 0 ? emptySet : this.#physicsTicker(this.#gameState, deltaMS);
     timingRecord?.endPhysics();
 
@@ -422,7 +422,7 @@ export class MainLoop<RoomId extends string> {
     }
 
     this.#roomRenderer?.tick({
-      movedItems,
+      movedOrResizedItems,
       deltaMS,
     });
 

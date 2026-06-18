@@ -896,6 +896,119 @@ describe("teleporters", () => {
   });
 });
 
+describe("lamps and mirrors", () => {
+  test("stacks two same-direction lamps into one tall lamp", () => {
+    const items: Record<string, JsonItem<"lamp">> = {
+      lamp1: {
+        type: "lamp",
+        config: { direction: "towards" },
+        position: { x: 0, y: 0, z: 0 },
+      },
+      lamp2: {
+        type: "lamp",
+        config: { direction: "towards" },
+        position: { x: 0, y: 0, z: 1 },
+      },
+    };
+
+    const result = consolidateItemsMap(items);
+    const resultValues = Object.values(result);
+
+    expect(resultValues).toHaveLength(1);
+    expect(resultValues).toContainConsolidatedItems<JsonItem<"lamp">>([
+      {
+        type: "lamp",
+        config: { direction: "towards", times: { z: 2 } },
+        position: { x: 0, y: 0, z: 0 },
+      },
+    ]);
+  });
+
+  test("does not stack lamps shining in different directions", () => {
+    const items: Record<string, JsonItem<"lamp">> = {
+      lamp1: {
+        type: "lamp",
+        config: { direction: "towards" },
+        position: { x: 0, y: 0, z: 0 },
+      },
+      lamp2: {
+        type: "lamp",
+        config: { direction: "away" },
+        position: { x: 0, y: 0, z: 1 },
+      },
+    };
+
+    const result = consolidateItemsMap(items);
+
+    expect(Object.values(result)).toHaveLength(2);
+  });
+
+  test("does not stack lamps side by side (consolidatable in z only)", () => {
+    const items: Record<string, JsonItem<"lamp">> = {
+      lamp1: {
+        type: "lamp",
+        config: { direction: "towards" },
+        position: { x: 0, y: 0, z: 0 },
+      },
+      lamp2: {
+        type: "lamp",
+        config: { direction: "towards" },
+        position: { x: 1, y: 0, z: 0 },
+      },
+    };
+
+    const result = consolidateItemsMap(items);
+
+    expect(Object.values(result)).toHaveLength(2);
+  });
+
+  test("stacks two same-orientation mirrors into one tall mirror", () => {
+    const items: Record<string, JsonItem<"mirror">> = {
+      mirror1: {
+        type: "mirror",
+        config: { orientation: "awayLeft" },
+        position: { x: 0, y: 0, z: 0 },
+      },
+      mirror2: {
+        type: "mirror",
+        config: { orientation: "awayLeft" },
+        position: { x: 0, y: 0, z: 1 },
+      },
+    };
+
+    const result = consolidateItemsMap(items);
+    const resultValues = Object.values(result);
+
+    expect(resultValues).toHaveLength(1);
+    expect(resultValues).toContainConsolidatedItems<JsonItem<"mirror">>([
+      {
+        type: "mirror",
+        config: { orientation: "awayLeft", times: { z: 2 } },
+        position: { x: 0, y: 0, z: 0 },
+      },
+    ]);
+  });
+
+  test("does not stack mirrors of different orientation", () => {
+    const items: Record<string, JsonItem<"mirror">> = {
+      mirror1: {
+        type: "mirror",
+        config: { orientation: "awayLeft" },
+        position: { x: 0, y: 0, z: 0 },
+      },
+      mirror2: {
+        type: "mirror",
+        config: { orientation: "awayRight" },
+        position: { x: 0, y: 0, z: 1 },
+      },
+    };
+
+    const result = consolidateItemsMap(items);
+
+    expect(Object.values(result)).toHaveLength(2);
+  });
+});
+
 test("consolidates disappearing blocks", () => {
   // these load into the in-game state as two blocks, but should be consolidated into one
   // for the json:

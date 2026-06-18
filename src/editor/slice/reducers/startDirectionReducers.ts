@@ -1,11 +1,15 @@
 import { type PayloadAction, type SliceCaseReducers } from "@reduxjs/toolkit";
 
 import { type DirectionXy8 } from "../../../utils/vectors/vectors";
+import { setItemDirectionInPlace } from "../../itemDirection";
 import { type LevelEditorState } from "../levelEditorSlice";
 import { mutateSelectedItemsInPlace } from "./mutateSelectedItemsInPlace";
 
 export const startDirectionReducers = {
-  /** set the start direction of every selected item that has one */
+  /**
+   * set the facing direction of every selected item that has one - writing the
+   * monster's `startDirection` or the lamp's beam `direction` as appropriate
+   */
   setSelectedItemsStartDirection(
     state,
     {
@@ -15,14 +19,7 @@ export const startDirectionReducers = {
     mutateSelectedItemsInPlace(
       state,
       { verb: "Direction", timestamp },
-      (item) => {
-        if ("startDirection" in item.config) {
-          // the menu only offers directions valid for every selected item, so the
-          // cast past the per-item direction type is safe:
-          (item.config as { startDirection: DirectionXy8 }).startDirection =
-            startDirection;
-        }
-      },
+      (item) => setItemDirectionInPlace(item, startDirection),
     );
   },
 } satisfies SliceCaseReducers<LevelEditorState>;

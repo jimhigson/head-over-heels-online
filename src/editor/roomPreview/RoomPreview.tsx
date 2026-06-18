@@ -1,7 +1,7 @@
 import { SpinnerHead } from "../../ui/Spinner";
 import { type EditorRoomId } from "../editorTypes";
 import { previewHeightPx, previewWidthPx } from "./renderRoomPreviewImage";
-import { useRoomPreview } from "./useRoomPreview";
+import { useRoomPreviewSnapshot } from "./useRoomPreviewSnapshot";
 
 export type RoomPreviewProps = {
   roomId: EditorRoomId;
@@ -13,7 +13,7 @@ const previewBoxStyle = {
 };
 
 export const RoomPreview = ({ roomId }: RoomPreviewProps) => {
-  const preview = useRoomPreview(roomId);
+  const preview = useRoomPreviewSnapshot(roomId);
 
   if (preview?.status === "ready") {
     return (

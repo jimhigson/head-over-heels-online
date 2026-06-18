@@ -1,7 +1,7 @@
 import { type PayloadAction, type SliceCaseReducers } from "@reduxjs/toolkit";
 
 import { type EditorRoomItemId } from "../../editorTypes";
-import { selectCurrentRoomFromLevelEditorState } from "../levelEditorSelectors";
+import { selectCurrentRoomJsonFromLevelEditorState } from "../levelEditorSelectors";
 import { type HoveredItem, type LevelEditorState } from "../levelEditorSlice";
 import { clearContextMenuXyInPlace } from "./contextMenuReducers";
 
@@ -13,7 +13,7 @@ export const removeNonExistingItemsFromSelection = (
   // the wrapped type. Since the normal type isn't readonly, this wrapping isn't needed anyway
   const state = _state as LevelEditorState;
 
-  const roomItems = selectCurrentRoomFromLevelEditorState(state).items;
+  const roomItems = selectCurrentRoomJsonFromLevelEditorState(state).items;
 
   state.selectedJsonItemIds = state.selectedJsonItemIds.filter(
     (jsonItemId) => jsonItemId in roomItems,
@@ -31,7 +31,7 @@ export const selectionsReducers = {
       jsonItemIds: EditorRoomItemId[];
     }>,
   ) {
-    const roomItems = selectCurrentRoomFromLevelEditorState(state).items;
+    const roomItems = selectCurrentRoomJsonFromLevelEditorState(state).items;
     for (const jsonItemId of jsonItemIds) {
       if (!roomItems[jsonItemId]) {
         throw new Error(

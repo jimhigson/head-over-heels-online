@@ -64,6 +64,8 @@ export const loadItemShadowCast = (
     case "deadlyBlock":
     case "teleporter":
     case "spikes":
+    case "lamp":
+    case "mirror":
       return shadowFullBlock;
     case "portableBlock":
       return jsonItem.config.style === "drum" ?

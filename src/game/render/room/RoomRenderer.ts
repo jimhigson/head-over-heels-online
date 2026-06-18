@@ -73,6 +73,9 @@ export class RoomRenderer<RoomId extends string, RoomItemId extends string>
   #zEdges: ItemZGraph<RoomId, RoomItemId> = new Map();
 
   #itemRenderers: Map<
+    // keying by the item, not the item's id because ids are only guaranteed to be unique at a given
+    // time, but a new item with the same id could be added on the frame after one was removed,
+    // and they should not be treated as the same
     UnionOfAllItemInPlayTypes<RoomId, RoomItemId>,
     ItemRenderPipeline<ItemInPlayType>
   > = new Map();
@@ -136,6 +139,7 @@ export class RoomRenderer<RoomId extends string, RoomItemId extends string>
           item,
           zEdges: this.#zEdges,
           getItemRenderPipeline: this.#getItemRenderPipeline,
+          isReflection: false,
         },
         RoomRenderer.itemDecorators,
       );
@@ -289,7 +293,7 @@ export class RoomRenderer<RoomId extends string, RoomItemId extends string>
         {
           ...givenTickContext,
           // if we have never rendered before, consider that all items have moved:
-          movedItems: new Set(
+          movedOrResizedItems: new Set(
             roomItemsIterable(this.renderContext.room.items).filter(isSpatial),
           ),
         }
@@ -308,14 +312,14 @@ export class RoomRenderer<RoomId extends string, RoomItemId extends string>
       updateZEdges(
         itemsSet,
         room[roomSpatialIndexKey],
-        tickContext.movedItems,
+        tickContext.movedOrResizedItems,
         // this.#incrementalZEdges will be updated in-place by the zEdges function to match
         // the current ordering state of the room, starting from the previous ordering state
         this.#zEdges,
       );
     } catch (e) {
       throw new Error(
-        `error updating Z edges for moved items: ${tickContext.movedItems
+        `error updating Z edges for moved/resized items: ${tickContext.movedOrResizedItems
           .values()
           .map((item) => item.id)
           .toArray()
@@ -340,7 +344,7 @@ export class RoomRenderer<RoomId extends string, RoomItemId extends string>
 
     this.#tickItems(tickContext);
 
-    if (!this.#everRendered || tickContext.movedItems.size > 0) {
+    if (!this.#everRendered || tickContext.movedOrResizedItems.size > 0) {
       this.#tickItemsZIndex(order);
     }
 

@@ -1,5 +1,5 @@
 import { ShowBoundingBoxSelect } from "../../game/debug/ShowBoundingBoxSelect";
-import { useEditorRoomState } from "../slice/levelEditorSelectors";
+import { useEditorRoomState } from "../slice/levelEditorSelectorHooks";
 
 export const EditorShowBoundingBoxSelect = () => {
   const roomState = useEditorRoomState();

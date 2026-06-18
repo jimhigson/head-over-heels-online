@@ -65,6 +65,14 @@ export type SpritesheetMetadata<
     doughnutted?: {
       colours: NamedSwops<PaletteColourName>;
     };
+    /**
+     * how each palette colour appears in a mirror's reflection. Optional: a
+     * spritesheet without this (eg speccy) uses its normal variant for
+     * reflections instead of a dedicated reflection sheet.
+     */
+    mirrorReflection?: {
+      colours: NamedSwops<PaletteColourName>;
+    };
   };
   effectColours: EffectColours<PaletteColourName>;
   /**

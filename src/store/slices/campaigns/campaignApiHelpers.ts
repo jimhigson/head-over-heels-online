@@ -4,6 +4,7 @@ import { type CampaignGetLocator } from "../../../db/campaign";
 import { type EditorCampaign } from "../../../editor/editorTypes";
 import { type Campaign } from "../../../model/modelTypes";
 import { emptyObject } from "../../../utils/empty";
+import { type SerialisableError } from "../../../utils/redux/createSerialisableErrors";
 import { store } from "../../store";
 import { campaignsApiSlice } from "./campaignsApiSlice";
 
@@ -21,7 +22,7 @@ export const loadCampaignFromApi = async <RoomId extends string>(
     }),
   );
 
-  return result as QueryReturnValue<Campaign<RoomId>, Error>;
+  return result as QueryReturnValue<Campaign<RoomId>, SerialisableError[]>;
 };
 
 /**

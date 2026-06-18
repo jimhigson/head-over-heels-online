@@ -24,7 +24,7 @@ const firstRequestedRoomId = (
   return undefined;
 };
 
-export const registerRoomPreviewListeners = () => {
+export const registerRoomPreviewSnapshotListeners = () => {
   /**
    * only one room renders at a time - the off-screen renderer and its
    * SpritesheetVariants can only hold one (planet, colour) at once. This flag

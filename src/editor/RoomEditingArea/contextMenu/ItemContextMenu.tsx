@@ -6,7 +6,7 @@ import { selectUpscale } from "../../../store/slices/upscale/upscaleSlice";
 import { useEditorAppSelector } from "../../../store/store";
 import { ContextMenu } from "../../../ui/command/ContextMenu";
 import { type Xy } from "../../../utils/vectors/vectors";
-import { useEditorRoomRenderDimensions } from "../../slice/levelEditorSelectors";
+import { useEditorRoomRenderDimensions } from "../../slice/levelEditorSelectorHooks";
 import {
   closeItemContextMenu,
   selectContextMenuXy,
@@ -17,8 +17,10 @@ import { roomEditingAreaMarginPx } from "../roomEditingAreaMarginPx";
 import { ActivationMenuItems } from "./ActivationMenuItems";
 import { CoalesceMenuItem } from "./CoalesceMenuItem";
 import { DeleteMenuItem } from "./DeleteMenuItem";
+import { DisappearingMenuItems } from "./DisappearingMenuItems";
 import { DuplicateMenuItem } from "./DuplicateMenuItem";
 import { ExplodeMenuItem } from "./ExplodeMenuItem";
+import { MirrorOrientationMenuItems } from "./MirrorOrientationMenuItems";
 import { MonsterMovementMenuItems } from "./MonsterMovementMenuItems";
 import { StartDirectionMenuItems } from "./StartDirectionMenuItems";
 
@@ -90,8 +92,10 @@ export const ItemContextMenu = ({ renderArea }: ItemContextMenuProps) => {
       <ExplodeMenuItem />
       <CoalesceMenuItem />
       <ActivationMenuItems />
+      <DisappearingMenuItems />
       <MonsterMovementMenuItems />
       <StartDirectionMenuItems />
+      <MirrorOrientationMenuItems />
     </ContextMenu>
   );
 };

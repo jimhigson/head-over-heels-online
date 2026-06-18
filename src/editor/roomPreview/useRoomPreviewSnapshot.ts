@@ -5,8 +5,8 @@ import { useEditorAppSelector } from "../../store/store";
 import { type EditorRoomId } from "../editorTypes";
 import { selectRoomFromLevelEditorState } from "../slice/levelEditorSelectors";
 import {
-  type RoomPreview,
   roomPreviewRequested,
+  type RoomPreviewSnapshot,
 } from "./editorRoomPreviewSlice";
 
 /**
@@ -15,9 +15,9 @@ import {
  * changes so an open tooltip re-renders after an edit. Deliberately does not
  * invalidate on unmount - the cached preview survives the tooltip closing.
  */
-export const useRoomPreview = (
+export const useRoomPreviewSnapshot = (
   roomId: EditorRoomId,
-): RoomPreview | undefined => {
+): RoomPreviewSnapshot | undefined => {
   const dispatch = useAppDispatch();
 
   const roomJson = useEditorAppSelector((state) =>

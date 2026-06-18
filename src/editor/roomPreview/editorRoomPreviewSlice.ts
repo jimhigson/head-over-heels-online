@@ -2,14 +2,14 @@ import { createSlice, type PayloadAction } from "@reduxjs/toolkit";
 
 import { type EditorRoomId } from "../editorTypes";
 
-export type RoomPreview =
+export type RoomPreviewSnapshot =
   | { readonly status: "error" }
   | { readonly status: "ready"; readonly dataUrl: string }
   | { readonly status: "rendering" }
   | { readonly status: "requested" };
 
 export type RoomPreviewSliceState = {
-  byRoomId: Partial<Record<EditorRoomId, RoomPreview>>;
+  byRoomId: Partial<Record<EditorRoomId, RoomPreviewSnapshot>>;
 };
 
 const initialState: RoomPreviewSliceState = { byRoomId: {} };

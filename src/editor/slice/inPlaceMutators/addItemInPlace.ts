@@ -15,7 +15,7 @@ import {
 } from "../../editorTypes";
 import { type ItemTool } from "../../RoomEditingArea/interactivity/Tool";
 import {
-  selectCurrentRoomFromLevelEditorState,
+  selectCurrentRoomJsonFromLevelEditorState,
   selectCursorRoomId,
 } from "../levelEditorSelectors";
 import {
@@ -51,7 +51,7 @@ export const addItemInPlace = <T extends JsonItemType = JsonItemType>(
   blockPosition: Xyz,
   isPreview: boolean,
 ): [EditorRoomItemId, EditorJsonItem<T>] => {
-  const room = selectCurrentRoomFromLevelEditorState(state);
+  const room = selectCurrentRoomJsonFromLevelEditorState(state);
   const id = nextItemIdForItemTool(keys(room.items), itemTool, isPreview);
 
   const target = roomEditTarget(state, isPreview);

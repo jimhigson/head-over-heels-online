@@ -114,7 +114,9 @@ export const roomSpritesheetTextureSwops = (
               isFloorTexture(t) ||
               isWallTexture(t) ||
               isDoorLegsPillarTexture(t) ||
-              isMoonbaseScreen(t),
+              isMoonbaseScreen(t) ||
+              // the mirror's surface is drawn in placeholder colours:
+              t.startsWith("mirror."),
           },
           ...floorEdgeSwops(roomColor),
         ],

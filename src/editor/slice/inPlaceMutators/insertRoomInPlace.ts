@@ -23,7 +23,7 @@ import {
   type EditorRoomJson,
 } from "../../editorTypes";
 import {
-  selectCurrentRoomFromLevelEditorState,
+  selectCurrentRoomJsonFromLevelEditorState,
   selectCursorSubRoomId,
 } from "../levelEditorSelectors";
 import { type LevelEditorState } from "../levelEditorSlice";
@@ -102,7 +102,7 @@ export const insertRoomInPlace = (
   direction: DirectionXy4,
   roomSize?: Xy,
 ): void => {
-  const currentRoom = selectCurrentRoomFromLevelEditorState(state);
+  const currentRoom = selectCurrentRoomJsonFromLevelEditorState(state);
   const oppositeDir = oppositeDirection(direction);
 
   const subRoomId = selectCursorSubRoomId(state);

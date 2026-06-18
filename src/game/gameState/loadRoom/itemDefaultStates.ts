@@ -183,6 +183,17 @@ export const initialState = (jsonItem: JsonItemUnion) => {
         typeof jsonItem.type
       >)
     : emptyObject),
+    ...(jsonItem.type === "lamp" ?
+      ({
+        activated: jsonItem.config.activated ?? true,
+      } satisfies StateFragment<typeof jsonItem.type>)
+    : emptyObject),
+    ...(jsonItem.type === "mirror" ?
+      ({
+        orientation: jsonItem.config.orientation,
+        lastFlippedAtRoomTime: neverTime,
+      } satisfies StateFragment<typeof jsonItem.type>)
+    : emptyObject),
     ...(jsonItem.type === "charles" ?
       ({
         facing: unitVectors.towards,
