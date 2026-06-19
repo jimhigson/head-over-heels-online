@@ -348,16 +348,12 @@ class ItemShadowRenderer<T extends ItemInPlayType>
           z: item.aabb.z,
         });
 
-        console.log(caster.id, screenXy);
-
         assignRoundedXy(
           shadowSprite,
           screenXy.x,
           screenXy.y,
           uncolourised ? 1 : gameEngineUpscale,
         );
-
-        console.log(shadowSprite.x, shadowSprite.y);
 
         //const zToCaster = casterItem.state.position.z - itemTop;
         //shadowSprite.alpha = 1 - zToCaster / (blockSizePx.h * 8);
