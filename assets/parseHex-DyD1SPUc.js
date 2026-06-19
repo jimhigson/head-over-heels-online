@@ -1,0 +1,1 @@
+var e=e=>{let t=e.match(/^#?(?<r>[0-9a-f]{2})(?<g>[0-9a-f]{2})(?<b>[0-9a-f]{2})$/i);if(!t?.groups)return;let{r:n,g:r,b:i}=t.groups;return{r:parseInt(n,16),g:parseInt(r,16),b:parseInt(i,16)}};export{e as t};

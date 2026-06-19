@@ -1,0 +1,1 @@
+var e=async e=>{window.open(e,`_blank`)},t=async e=>{};export{e as n,t};

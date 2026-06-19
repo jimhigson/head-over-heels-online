@@ -1,0 +1,1 @@
+import{r as e}from"./index-5XcMkXEs.js";var t=t=>e(`div`,{className:`col-span-3 h-1 ${t}`});export{t};
