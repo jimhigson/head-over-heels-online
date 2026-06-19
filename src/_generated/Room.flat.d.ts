@@ -36,15 +36,6 @@ export type RoomJsonSchema = {
     shade: "basic" | "dimmed";
   };
   /**
-   * usually, the ceiling portal's relative point is the centre of the room. However, in cases
-   * where multi-rooms are stitched together into a single room, this relationship is broken.
-   * Ie, bookworld28/ bookworld29. In this case, this point is used instead
-   */
-  ceilingRelativePoint?: {
-    x: number;
-    y: number;
-  };
-  /**
    * by keying each item with an id, it makes the diffing easier since the array is no longer
    * position-dependent
    */

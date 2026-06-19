@@ -386,13 +386,5 @@
       },
       "type": "monster"
     }
-  },
-  {
-    "op": "add",
-    "path": "/ceilingRelativePoint",
-    "value": {
-      "x": 4,
-      "y": 4
-    }
   }
 ]

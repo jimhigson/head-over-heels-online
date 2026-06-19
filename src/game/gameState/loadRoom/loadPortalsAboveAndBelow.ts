@@ -13,7 +13,6 @@ import {
   blockSizePx,
   defaultRoomHeightBlocks,
 } from "../../physics/mechanicsConstants";
-import { blockXyzToFineXyz } from "../../render/projections";
 import { nonRenderingItemFixedZIndex } from "../../render/sortZ/fixedZIndexes";
 import { defaultBaseState } from "./itemDefaultStates";
 
@@ -128,8 +127,8 @@ export function* loadPortalsAboveAndBelow<
           // floor and ceiling relative points are the middle of the portal, this fixes
           // falling into dissimilar-sized rooms, ie penitentiary21 falling into penitentiary20
           relativePoint: {
-            x: (minX + maxX) / 2,
-            y: (minY + maxY) / 2,
+            x: (maxX - minX) / 2,
+            y: (maxY - minY) / 2,
             // relative point one block high - this makes the player spawn on top of blocks when
             // transitioning to the room above, since a lot of rooms need you to appear *on* something,
             // and given these rooms usually have 'none' floors it probably isn't the floor
@@ -164,14 +163,8 @@ export function* loadPortalsAboveAndBelow<
         config: {
           toRoom,
           relativePoint: {
-            ...((
-              subRoomId === "*" && roomJson.ceilingRelativePoint !== undefined
-            ) ?
-              blockXyzToFineXyz(roomJson.ceilingRelativePoint)
-            : {
-                x: (minX + maxX) / 2,
-                y: (minY + maxY) / 2,
-              }),
+            x: (maxX - minX) / 2,
+            y: (maxY - minY) / 2,
             z: -blockSizePx.z,
           },
           direction: unitVectors["up"],

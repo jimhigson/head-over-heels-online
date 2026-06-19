@@ -2,7 +2,6 @@ import { inferRoomJson, type RoomJson } from "../../../model/RoomJson.ts";
 import { type OriginalCampaignRoomId } from "../OriginalCampaignRoomId.ts";
 
 export const room = inferRoomJson({
-  ceilingRelativePoint: { x: 4, y: 4 },
   color: { hue: "white", shade: "basic" },
   id: "bookworld28",
   items: {
