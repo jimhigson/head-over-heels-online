@@ -6,7 +6,7 @@ import { subRoomBoundariesDecorateRoomRenderer } from "../../game/render/room/su
 import { useRegisterDecorateItemRenderers } from "../../game/render/useRegisterDecorateItemRenderers";
 import { useRegisterDecorateRoomRenderers } from "../../game/render/useRegisterDecorateRoomRenderers";
 import { type ResolutionName } from "../../originalGame";
-import { useFixedSpritesheetVariants } from "../../sprites/spritesheet/variants/useSpritesheetVariants";
+import { useFixedSpritesheetVariants } from "../../sprites/spritesheet/variants/useFixedSpritesheetVariants";
 import { useUpdateUpscaleOnDisplaySettingsChange } from "../../store/slices/upscale/useUpdateUpscaleOnDisplaySettingsChange";
 import { useUpdateUpscaleWhenElementResizes } from "../../store/slices/upscale/useUpdateUpscaleWhenElementResizes";
 import { useCanvasTransform } from "../../utils/scaledRendering/useCanvasInlineStyle";

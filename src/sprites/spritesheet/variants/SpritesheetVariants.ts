@@ -83,6 +83,9 @@ export class SpritesheetVariants {
     roomColor: ZxSpectrumRoomColour,
     spriteOption: SpriteOption,
   ): void {
+    // the colourised/uncolourised variants below are rebuilt on every call, but
+    // the original sheet only depends on the sprite option, so is rebuilt only
+    // when that changes:
     if (this.#originalSpritesheet?.spriteOption !== spriteOption.name) {
       destroySpritesheet(this.#originalSpritesheet);
       this.#originalSpritesheet = this.#buildOriginal(

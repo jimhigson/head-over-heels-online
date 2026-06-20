@@ -770,19 +770,6 @@ export const Cheats = <RoomId extends string>(_emptyProps: EmptyObject) => {
                 lives--
               </Button>
             </div>
-            <Heading>webgl context:</Heading>
-            <div className="flex flex-row items-center flex-wrap">
-              <Button
-                data-test-id="cheats-lose-gl-context"
-                className="flex-grow h-3"
-                onClick={(e) => {
-                  gameApi.loseGlContext();
-                  (e?.currentTarget as HTMLElement | undefined)?.blur();
-                }}
-              >
-                lose gl context
-              </Button>
-            </div>
             <Heading>write to console:</Heading>
             <div className="flex flex-row items-center flex-wrap">
               <Button
