@@ -172,7 +172,7 @@ export const GamePage = () => {
           <AddAnalyticsToStore />
           <ConnectInputToStore />
 
-          {/* 
+          {/*
           dialogs are html and therefore rotated using css, as opposed
           to the game engine which can be rotated using opengl transforms
           */}
