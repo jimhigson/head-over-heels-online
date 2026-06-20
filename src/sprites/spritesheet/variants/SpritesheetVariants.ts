@@ -325,21 +325,6 @@ export class SpritesheetVariants {
     return spriteSheet;
   }
 
-  /**
-   * destroys all baked sheets so that the next rebuild() reconstructs them
-   * from the loaded base image. Needed after a WebGL context restore: the
-   * sheets are render textures, whose contents do not survive a lost context
-   * (unlike image-backed textures, they have no cpu-side resource to restore
-   * from)
-   */
-  invalidate(): void {
-    destroySpritesheet(this.#originalSpritesheet);
-    this.#originalSpritesheet = undefined;
-    this.#destroyColourisedVariants();
-    destroySpritesheet(this.#uncolourisedSpritesheet);
-    this.#uncolourisedSpritesheet = undefined;
-  }
-
   #destroyColourisedVariants() {
     destroySpritesheet(this.#forCurrentRoomSpritesheet);
     destroySpritesheet(this.#deactivatedSpritesheet);

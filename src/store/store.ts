@@ -52,6 +52,7 @@ import { registerGameMenusListeners } from "./slices/gameMenus/gameMenusListener
 import { gameMenusSlice } from "./slices/gameMenus/gameMenusSlice";
 import { playMenuSoundsOnStoreChanges } from "./slices/gameMenus/playMenuSoundsOnStoreChanges";
 import { githubApiSlice } from "./slices/githubApiSlice";
+import { glContextSlice } from "./slices/glContext/glContextSlice";
 import { registerSavedGamesListeners } from "./slices/savedGames/savedGamesListeners";
 import { savedGamesSlice } from "./slices/savedGames/savedGamesSlice";
 import { spritesheetOverrideSlice } from "./slices/spritesheetOverrideSlice";
@@ -73,6 +74,7 @@ const appReducer = combineSlices({
   [assetsLoadingSlice.reducerPath]: assetsLoadingSlice.reducer,
   [spritesheetOverrideSlice.reducerPath]: spritesheetOverridePersistedReducer,
   [debugSlice.reducerPath]: debugSlice.reducer,
+  [glContextSlice.reducerPath]: glContextSlice.reducer,
   ...(import.meta.env.VITE_APP === "editor" ?
     {
       levelEditor: levelEditorPersistedReducer,

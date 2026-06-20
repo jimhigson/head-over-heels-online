@@ -18,4 +18,9 @@ export type GameApi<RoomId extends string = string> = {
   gameState: GameState<RoomId>;
   stop: () => void;
   reincarnateFrom: (gameState: SavedGame<RoomId>) => void;
+  /**
+   * Force a WebGL context loss, for exercising the context-loss recovery path
+   * (the game saves and remounts on a fresh canvas). Used by the cheats panel.
+   */
+  loseGlContext: () => void;
 };

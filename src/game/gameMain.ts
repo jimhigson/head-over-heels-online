@@ -8,6 +8,7 @@ import {
   gameRestoreFromSave,
   roomExplored,
 } from "../store/slices/gameInPlay/gameInPlaySlice";
+import { glContextLost } from "../store/slices/glContext/glContextSlice";
 import { selectSaveForCampaign } from "../store/slices/savedGames/savedGamesSlice";
 import { store } from "../store/store";
 import { trackTextures } from "../textureInspector/trackTextures";
@@ -19,6 +20,7 @@ import { selectCurrentPlayableItem } from "./gameState/gameStateSelectors/select
 import { loadGameState } from "./gameState/loadGameState";
 import { changeCharacterRoom } from "./gameState/mutators/changeCharacterRoom";
 import { type SavedGame } from "./gameState/saving/SavedGameState";
+import { saveGameThunk } from "./gameState/saving/saveGameThunk";
 import { type InputStateTrackerInterface } from "./input/InputStateTracker";
 import { MainLoop } from "./mainLoop/MainLoop";
 
@@ -85,17 +87,8 @@ export const gameMain = async <RoomId extends string>(
 
   if (import.meta.env.DEV) {
     trackTextures(app);
-
-    // a lost context blanks every runtime-baked RenderTexture (they have no
-    // cpu-side resource to restore from). The MainLoop rebuilds them when the
-    // context is restored - log here so occurrences are visible in dev:
-    app.canvas.addEventListener("webglcontextlost", () => {
-      console.error("WebGL context lost");
-    });
-    app.canvas.addEventListener("webglcontextrestored", () => {
-      console.error("WebGL context restored");
-    });
   }
+
   stopAppAutoRendering(app);
 
   // only put on window after initialised and maxFPS set - this ensures it can also be
@@ -129,6 +122,23 @@ export const gameMain = async <RoomId extends string>(
       store.dispatch(roomExplored(gameState.characterRooms.heels.id));
     }
   }
+
+  // a lost context blanks every runtime-baked RenderTexture (they have no
+  // cpu-side resource to restore from), and the same canvas may never get its
+  // context back. Rather than rebuild in place, save the game so no progress is
+  // lost, then dispatch glContextLost so the React layer remounts the whole
+  // game area on a fresh canvas, reconstructing every texture from scratch.
+  // once: true since this app instance is about to be torn down and replaced:
+  const onContextLost = () => {
+    if (import.meta.env.DEV) {
+      console.error("WebGL context lost");
+    }
+    store.dispatch(saveGameThunk(gameState));
+    store.dispatch(glContextLost());
+  };
+  app.canvas.addEventListener("webglcontextlost", onContextLost, {
+    once: true,
+  });
 
   const loop = new MainLoop(app, gameState, spritesheetVariants).start();
 
@@ -175,8 +185,12 @@ export const gameMain = async <RoomId extends string>(
         writeInto: gameState,
       });
     },
+    loseGlContext() {
+      app.renderer.gl.getExtension("WEBGL_lose_context")?.loseContext();
+    },
     stop() {
       console.warn("tearing down game");
+      app.canvas.removeEventListener("webglcontextlost", onContextLost);
       app.canvas.parentNode?.removeChild(app.canvas);
       loop.stop();
       app.destroy();
