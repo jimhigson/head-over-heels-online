@@ -104,8 +104,13 @@ export class TextContainer extends Container {
     );
     this.addChild(this.#renderCacheSprite);
 
+    // deliberately NOT added to this container / the scene graph: it exists
+    // only to be render-to-textured into #renderCacheSprite. Keeping it detached
+    // means the bake renders a container with no parentRenderGroup - rendering a
+    // container that is already part of a render group (the HUD is one) to a
+    // texture corrupts the render-group state and bakes blank/broken text that
+    // never recovers. The visible output is the separate #renderCacheSprite:
     this.#renderToCacheContainer = new Container<Container<Sprite>>();
-    this.addChild(this.#renderToCacheContainer);
 
     this.#characterSpriteContainer = new Container<Sprite>();
     this.#characterSpriteContainer.scale = {
@@ -262,6 +267,10 @@ export class TextContainer extends Container {
     clearTimeout(this.#flashTimeout);
     // always destroy the cached texture/source when the text container is destroyed:
     this.#renderCacheSprite.destroy({ texture: true, textureSource: true });
+    // #renderToCacheContainer is detached from the scene graph, so super.destroy
+    // won't reach it - destroy it explicitly. Its sprites' textures belong to the
+    // shared spritesheet, so are not destroyed here:
+    this.#renderToCacheContainer.destroy({ children: true });
     super.destroy(options);
   }
 
