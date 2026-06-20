@@ -10,7 +10,7 @@ import {
 } from "../store/slices/gameInPlay/gameInPlaySlice";
 import { glContextLost } from "../store/slices/glContext/glContextSlice";
 import { selectSaveForCampaign } from "../store/slices/savedGames/savedGamesSlice";
-import { store } from "../store/store";
+import { persistor, store } from "../store/store";
 import { trackTextures } from "../textureInspector/trackTextures";
 import { stopAppAutoRendering } from "../utils/pixi/stopAppAutoRendering";
 import { type Xy } from "../utils/vectors/vectors";
@@ -63,14 +63,19 @@ export const gameMain = async <RoomId extends string>(
     if (import.meta.env.DEV) {
       console.error("WebGL context lost");
     }
-    // give the gpu a moment to settle before tearing down and recreating on a
-    // fresh canvas - recreating the context immediately, while the gpu is still
-    // recovering, can leave the new context broken too:
+    // give the gpu a moment to settle before recovering:
     setTimeout(() => {
       if (contextLossState.gameState !== undefined) {
         store.dispatch(saveGameThunk(contextLossState.gameState));
       }
+      // old in-place recovery (remount on a fresh canvas) - kept for now, but
+      // it did not reliably restore a working context:
       store.dispatch(glContextLost());
+      // full page reload as the recovery: reboot the whole page once the save
+      // has been flushed to storage, so the game restores from that save:
+      void persistor.flush().then(() => {
+        window.location.reload();
+      });
     }, contextLossRecoveryDelayMs);
   };
   canvas.addEventListener("webglcontextlost", onContextLost, { once: true });
