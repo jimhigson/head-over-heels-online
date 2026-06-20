@@ -15,6 +15,7 @@ import { trackTextures } from "../textureInspector/trackTextures";
 import { stopAppAutoRendering } from "../utils/pixi/stopAppAutoRendering";
 import { type Xy } from "../utils/vectors/vectors";
 import { type GameApi } from "./GameApi";
+import { type GameState } from "./gameState/GameState";
 import { selectCurrentRoomState } from "./gameState/gameStateSelectors/selectCurrentRoomState";
 import { selectCurrentPlayableItem } from "./gameState/gameStateSelectors/selectPlayableItem";
 import { loadGameState } from "./gameState/loadGameState";
@@ -27,6 +28,12 @@ import { MainLoop } from "./mainLoop/MainLoop";
 TextureStyle.defaultOptions.scaleMode = "nearest";
 
 /**
+ * how long to wait after a WebGL context loss before remounting on a fresh
+ * canvas, to let the gpu recover so the new context is not also dead-on-arrival
+ */
+const contextLossRecoveryDelayMs = 500;
+
+/**
  * If you came from GamePage, we are now outside of React-land
  * - pure pixi/openGl game engine!
  */
@@ -37,10 +44,42 @@ export const gameMain = async <RoomId extends string>(
 ): Promise<GameApi<RoomId>> => {
   const app = new Application<WebGLRenderer>();
 
+  // own the canvas so the context-loss listener can be attached at the earliest
+  // possible moment - before the gl context is even created. A loss during
+  // renderer init (or any time after) then still triggers recovery. The handler
+  // saves the game so no progress is lost, then dispatches glContextLost so the
+  // React layer remounts the whole game area on a fresh canvas, reconstructing
+  // every runtime-baked RenderTexture from scratch (they have no cpu-side
+  // resource to restore from, and the same canvas may never get its context
+  // back). once: true since this app instance is about to be torn down:
+  const canvas = document.createElement("canvas");
+  // holds the game state once it exists, for the listener to save on a loss. A
+  // loss before the state is built still remounts, and the fresh game restores
+  // from the last save on disk:
+  const contextLossState: { gameState: GameState<RoomId> | undefined } = {
+    gameState: undefined,
+  };
+  const onContextLost = () => {
+    if (import.meta.env.DEV) {
+      console.error("WebGL context lost");
+    }
+    // give the gpu a moment to settle before tearing down and recreating on a
+    // fresh canvas - recreating the context immediately, while the gpu is still
+    // recovering, can leave the new context broken too:
+    setTimeout(() => {
+      if (contextLossState.gameState !== undefined) {
+        store.dispatch(saveGameThunk(contextLossState.gameState));
+      }
+      store.dispatch(glContextLost());
+    }, contextLossRecoveryDelayMs);
+  };
+  canvas.addEventListener("webglcontextlost", onContextLost, { once: true });
+
   const [campaignResult] = await Promise.all([
     loadCampaignFromApi<RoomId>(campaignLocator),
     loadSoundCategory("requiredForGameplay"),
     app.init({
+      canvas,
       background: "#000000",
       // run on the shared ticker to keep in sync with the input state tracker
       sharedTicker: true,
@@ -110,6 +149,7 @@ export const gameMain = async <RoomId extends string>(
     inputStateTracker,
     savedGame: savedGameToContinueFrom,
   });
+  contextLossState.gameState = gameState;
   if (savedGameToContinueFrom !== undefined) {
     const savedGameInPlay = savedGameToContinueFrom.gameInPlay;
     store.dispatch(gameRestoreFromSave(savedGameInPlay));
@@ -122,23 +162,6 @@ export const gameMain = async <RoomId extends string>(
       store.dispatch(roomExplored(gameState.characterRooms.heels.id));
     }
   }
-
-  // a lost context blanks every runtime-baked RenderTexture (they have no
-  // cpu-side resource to restore from), and the same canvas may never get its
-  // context back. Rather than rebuild in place, save the game so no progress is
-  // lost, then dispatch glContextLost so the React layer remounts the whole
-  // game area on a fresh canvas, reconstructing every texture from scratch.
-  // once: true since this app instance is about to be torn down and replaced:
-  const onContextLost = () => {
-    if (import.meta.env.DEV) {
-      console.error("WebGL context lost");
-    }
-    store.dispatch(saveGameThunk(gameState));
-    store.dispatch(glContextLost());
-  };
-  app.canvas.addEventListener("webglcontextlost", onContextLost, {
-    once: true,
-  });
 
   const loop = new MainLoop(app, gameState, spritesheetVariants).start();
 
@@ -190,7 +213,7 @@ export const gameMain = async <RoomId extends string>(
     },
     stop() {
       console.warn("tearing down game");
-      app.canvas.removeEventListener("webglcontextlost", onContextLost);
+      canvas.removeEventListener("webglcontextlost", onContextLost);
       app.canvas.parentNode?.removeChild(app.canvas);
       loop.stop();
       app.destroy();
