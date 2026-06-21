@@ -1,0 +1,1 @@
+import{Pr as e,li as t,n}from"./store-z3qYdI0j.js";import{t as r}from"./continueWithRefresh-B6pA2Crg.js";var i=i=>{n.dispatch(e()),t({actionCreator:r,effect(){i(!0)}})};export{i as onNeedRefresh};
