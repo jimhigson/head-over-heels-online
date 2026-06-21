@@ -1,5 +1,13 @@
 # Changelog
 
+## [24.0.0](https://github.com/jimhigson/head-over-heels-online/compare/v23.0.0...v24.0.0) (2026-06-21)
+
+
+### Bug Fixes
+
+* recover from WebGL context loss by saving and remounting the game on a fresh canvas ([#946](https://github.com/jimhigson/head-over-heels-online/issues/946)) ([1242d06](https://github.com/jimhigson/head-over-heels-online/commit/1242d066b9c1ead22d63b61743b6bdb4f57fe99e))
+* structural fix for missing texture bug, moving ownership of spritesheet variants out of the game page component, which is never unmounted, and into the management of the running game, which is torn down when the game ends ([#950](https://github.com/jimhigson/head-over-heels-online/issues/950)) ([67e6bad](https://github.com/jimhigson/head-over-heels-online/commit/67e6badeb537135c19d12005a61422ad721b69ed))
+
 ## [23.0.0](https://github.com/jimhigson/head-over-heels-online/compare/v22.0.0...v23.0.0) (2026-06-19)
 
 
