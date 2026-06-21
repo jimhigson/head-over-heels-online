@@ -2,13 +2,12 @@ import { Application, TextureStyle, type WebGLRenderer } from "pixi.js";
 
 import { type CampaignLocator } from "../model/modelTypes";
 import { loadSoundCategory } from "../sound/soundsLoader";
-import { type SpritesheetVariants } from "../sprites/spritesheet/variants/SpritesheetVariants";
+import { SpritesheetVariants } from "../sprites/spritesheet/variants/SpritesheetVariants";
 import { loadCampaignFromApi } from "../store/slices/campaigns/campaignApiHelpers";
 import {
   gameRestoreFromSave,
   roomExplored,
 } from "../store/slices/gameInPlay/gameInPlaySlice";
-import { glContextLost } from "../store/slices/glContext/glContextSlice";
 import { selectSaveForCampaign } from "../store/slices/savedGames/savedGamesSlice";
 import { store } from "../store/store";
 import { trackTextures } from "../textureInspector/trackTextures";
@@ -20,7 +19,6 @@ import { selectCurrentPlayableItem } from "./gameState/gameStateSelectors/select
 import { loadGameState } from "./gameState/loadGameState";
 import { changeCharacterRoom } from "./gameState/mutators/changeCharacterRoom";
 import { type SavedGame } from "./gameState/saving/SavedGameState";
-import { saveGameThunk } from "./gameState/saving/saveGameThunk";
 import { type InputStateTrackerInterface } from "./input/InputStateTracker";
 import { MainLoop } from "./mainLoop/MainLoop";
 
@@ -33,9 +31,13 @@ TextureStyle.defaultOptions.scaleMode = "nearest";
 export const gameMain = async <RoomId extends string>(
   campaignLocator: CampaignLocator,
   inputStateTracker: InputStateTrackerInterface,
-  spritesheetVariants: SpritesheetVariants,
 ): Promise<GameApi<RoomId>> => {
   const app = new Application<WebGLRenderer>();
+  // the spritesheet variants are owned by game main, when the game is torn down they are
+  // destroyed along with the Pixi Application that they belong to. This prevents the reuse of
+  // assets used in one application in another, which can mean reclaimed resources trying to
+  // be reused and cause missing textures in-game
+  const spritesheetVariants = new SpritesheetVariants();
 
   const [campaignResult] = await Promise.all([
     loadCampaignFromApi<RoomId>(campaignLocator),
@@ -123,23 +125,6 @@ export const gameMain = async <RoomId extends string>(
     }
   }
 
-  // a lost context blanks every runtime-baked RenderTexture (they have no
-  // cpu-side resource to restore from), and the same canvas may never get its
-  // context back. Rather than rebuild in place, save the game so no progress is
-  // lost, then dispatch glContextLost so the React layer remounts the whole
-  // game area on a fresh canvas, reconstructing every texture from scratch.
-  // once: true since this app instance is about to be torn down and replaced:
-  const onContextLost = () => {
-    if (import.meta.env.DEV) {
-      console.error("WebGL context lost");
-    }
-    store.dispatch(saveGameThunk(gameState));
-    store.dispatch(glContextLost());
-  };
-  app.canvas.addEventListener("webglcontextlost", onContextLost, {
-    once: true,
-  });
-
   const loop = new MainLoop(app, gameState, spritesheetVariants).start();
 
   return {
@@ -185,14 +170,13 @@ export const gameMain = async <RoomId extends string>(
         writeInto: gameState,
       });
     },
-    loseGlContext() {
-      app.renderer.gl.getExtension("WEBGL_lose_context")?.loseContext();
-    },
     stop() {
       console.warn("tearing down game");
-      app.canvas.removeEventListener("webglcontextlost", onContextLost);
       app.canvas.parentNode?.removeChild(app.canvas);
       loop.stop();
+      // destroy the baked spritesheet RenderTextures while the renderer is still
+      // alive, before it goes with the app:
+      spritesheetVariants.destroy();
       app.destroy();
     },
   };

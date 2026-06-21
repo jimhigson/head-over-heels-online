@@ -12,8 +12,6 @@ import { GameApiProvider } from "../../game/components/GameApiContext.tsx";
 import { type GameApi } from "../../game/GameApi.tsx";
 import { importGameMainOnce } from "../../game/gameMain.import.ts";
 import { useInputStateTracker } from "../../game/input/InputStateProvider.tsx";
-import { type SpritesheetVariants } from "../../sprites/spritesheet/variants/SpritesheetVariants";
-import { useSpritesheetVariants } from "../../sprites/spritesheet/variants/useSpritesheetVariants";
 import { useAppSelector } from "../../store/hooks.ts";
 import { withLoadingCaptured } from "../../store/slices/assetsLoading/assetsLoadingSlice.ts";
 import {
@@ -37,9 +35,7 @@ import { usePageAsAnApp } from "./usePageAsAnApp.tsx";
 
 const LazyCheats = lazy(importCheats) as typeof Cheats;
 
-const useCreateGameApi = (
-  spritesheetVariants: SpritesheetVariants,
-): GameApi<string> | undefined => {
+const useCreateGameApi = (): GameApi<string> | undefined => {
   const [gameApi, setGameApi] = useState<GameApi<string> | undefined>();
   const isGameRunning = useIsGameRunning();
   // shallowEqual: don't re-run the effect on equivalent campaign locator objects
@@ -78,11 +74,7 @@ const useCreateGameApi = (
         thisEffectGameApi = await store.dispatch(
           withLoadingCaptured(async () => {
             const gameMain = (await importGameMainOnce()).default;
-            return gameMain(
-              currentCampaignLocator,
-              inputState,
-              spritesheetVariants,
-            );
+            return gameMain(currentCampaignLocator, inputState);
           }),
         );
 
@@ -117,7 +109,7 @@ const useCreateGameApi = (
       thisEffectGameApi?.stop();
       thisEffectCancelled = true;
     };
-  }, [isGameRunning, inputState, currentCampaignLocator, spritesheetVariants]);
+  }, [isGameRunning, inputState, currentCampaignLocator]);
 
   return gameApi;
 };
@@ -128,9 +120,8 @@ const useCreateGameApi = (
 export const GamePage = () => {
   const [renderArea, setRenderArea] = useState<HTMLDivElement | null>(null);
 
-  const spritesheetVariants = useSpritesheetVariants();
   const cheatsOn = useCheatsOn();
-  const gameApi = useCreateGameApi(spritesheetVariants);
+  const gameApi = useCreateGameApi();
   const canvasSize = useAppSelector(selectCanvasSize);
   const rot90 = useAppSelector(selectRot90);
 

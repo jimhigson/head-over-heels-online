@@ -6,9 +6,7 @@ import { Route, Switch } from "wouter";
 import { GamePage } from "../../pages/gamePage/GamePage.tsx";
 import { importLutPage } from "../../pages/LutPage.import.ts";
 import { importSpritesPage } from "../../pages/spritesPage/SpritesPage.import.ts";
-import { useAppSelector } from "../../store/hooks.ts";
 import { useSpritesOption } from "../../store/slices/gameMenus/gameMenusSelectors.ts";
-import { selectGlContextGeneration } from "../../store/slices/glContext/glContextSlice.ts";
 import { store } from "../../store/store.ts";
 import { SpinnerHead } from "../../ui/Spinner.tsx";
 import { handleGameBoot } from "../handleGameBoot.ts";
@@ -31,18 +29,13 @@ const AppInner = () => {
     document.body.classList.toggle("colourised", !spritesOption.uncolourised);
   }, [spritesOption]);
 
-  // remount the whole game page when the WebGL context is lost: every
-  // gpu-resident resource died with the old context, so the cleanest recovery
-  // is to rebuild from a fresh canvas rather than patch the lost textures
-  const glContextGeneration = useAppSelector(selectGlContextGeneration);
-
   return (
     // css variables needs the store so has to be in AppInner, not App
     <Switch>
       <Route path="/">
         <CssVariables>
           <InputStateProvider ticker={pixiInputTicker}>
-            <GamePage key={glContextGeneration} />
+            <GamePage />
           </InputStateProvider>
         </CssVariables>
       </Route>

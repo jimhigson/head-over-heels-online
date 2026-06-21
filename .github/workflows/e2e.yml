@@ -71,7 +71,7 @@ jobs:
           - suite: persistence
             pattern: "persistOnReload offlineCampaignCache"
           - suite: endgame
-            pattern: "lifeAndDeath savesAndGameOver quitGameFlow gameComplete reincarnationStack"
+            pattern: "lifeAndDeath savesAndGameOver quitGameFlow gameComplete reincarnationStack gameRendersAfterRestart"
           - suite: gameplayAndMenus
             pattern: "crownsDialogs scrollAndKeyRebind mainMenuClosability playtestNoSave migrations"
     name: E2E ${{ matrix.suite }}
