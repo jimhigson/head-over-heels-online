@@ -78,14 +78,12 @@ jobs:
         with:
           comment-key: ${{ matrix.target }}
           install-command: pnpm install --frozen-lockfile
+          clean-command: pnpm clean:ci
           build-command: ${{ matrix.build-command }}
           serve-dir: dist
-          compression: gzip
-          # the campaigns db read on menu load returns live data whose size
-          # varies over time - exclude it from byte counts (it still appears,
-          # tagged, in the run-log breakdown)
+          compression: br
+          compression-level: 11
           ignore-url-patterns: '["supabase\\.co"]'
-          # same threshold as compressed-size.yml
           minimum-change-threshold: 50
           # For release-please PRs, compare against the production branch
           # (= previous release) to show the cumulative change across the

@@ -1,0 +1,60 @@
+name: Deploy to R2
+
+# builds game + editor (--mode r2-<env>) and mirrors them into the hoh-*-<env>
+# buckets. <env> is the branch name: main -> blockstack.dev (staging),
+# production -> blockstack.ing. production is intentionally NOT in the push
+# trigger yet, so it never auto-deploys until the blockstack.ing cutover — add
+# "production" to `branches` then. Either env can also be run on demand via the
+# "Run workflow" button (e.g. to populate the -production buckets for testing
+# before the cutover).
+
+on:
+  push:
+    branches: ["main"] # add "production" at the blockstack.ing cutover
+  workflow_dispatch:
+    inputs:
+      environment:
+        description: "R2 environment to deploy"
+        type: choice
+        options: ["main", "production"]
+        default: "main"
+
+concurrency:
+  group: deploy-r2-${{ github.event.inputs.environment || github.ref_name }}
+  cancel-in-progress: true
+
+jobs:
+  deploy:
+    runs-on: ubuntu-24.04-arm
+
+    # the build mode (r2-<env>) carries the per-env domains from
+    # .env.r2-<env> / src/editor/.env.r2-<env>; only the R2 credentials come from
+    # secrets (the token must cover whichever buckets the chosen env writes to).
+    env:
+      R2_ACCOUNT_ID: ${{ secrets.R2_ACCOUNT_ID }}
+      R2_ACCESS_KEY_ID: ${{ secrets.R2_ACCESS_KEY_ID }}
+      R2_SECRET_ACCESS_KEY: ${{ secrets.R2_SECRET_ACCESS_KEY }}
+      # the deploy environment — branch name on a push, the chosen input on a
+      # manual run. The same token is reused below as both the build-mode suffix
+      # (r2-<env>) and the bucket suffix (hoh-<app>-<env>), so one value selects
+      # everything. This works only because they all share the token:
+      # branch == environment == mode suffix == bucket suffix
+      # (main -> blockstack.dev, production -> blockstack.ing).
+      DEPLOY_ENV: ${{ github.event.inputs.environment || github.ref_name }}
+
+    steps:
+      - uses: actions/checkout@v6
+      - name: Install pnpm
+        uses: pnpm/action-setup@v5
+      - name: Use Node.js
+        uses: actions/setup-node@v6
+        with:
+          node-version: 25.x
+          cache: "pnpm"
+      - run: pnpm install --frozen-lockfile
+      - run: pnpm build:game --mode "r2-$DEPLOY_ENV"
+      - run: pnpm build:editor --mode "r2-$DEPLOY_ENV"
+      - name: Upload game to R2
+        run: pnpm deploy:r2 game "$DEPLOY_ENV"
+      - name: Upload editor to R2
+        run: pnpm deploy:r2 editor "$DEPLOY_ENV"

@@ -13,7 +13,16 @@ process.env.TAILWIND_APP = "game";
 
 const oneWeekInSeconds = 60 * 60 * 24 * 7;
 
-type Mode = "development" | "production" | "tauri" | "visual-regression";
+type Mode =
+  | "development"
+  | "production"
+  | "tauri"
+  | "visual-regression"
+  // R2 hosting builds: the editor is its own origin and assets are served
+  // precompressed. One mode per deploy environment so each loads its own
+  // .env.<mode> (domains differ; build settings are production-like)
+  | "r2-main"
+  | "r2-production";
 
 // https://vitejs.dev/config/
 export default defineConfig(({ mode: _mode }) => {

@@ -28,8 +28,8 @@
     "preview:editor": "vite --config vite.editor.config.ts preview",
     "build:game": "vite build",
     "build:editor": "vite build --config vite.editor.config.ts --emptyOutDir",
-    "clean": "rm -rf dist",
-    "build": "pnpm run \"/^build:.*/\"",
+    "clean:ci": "rm -rf dist node_modules",
+    "build": "pnpm run \"/^build:(game|editor)$/\"",
     "//check:build": "I don't know any way to check the build will pass other than running it:",
     "check:build:game": "pnpm build:game",
     "check:build:editor": "pnpm build:editor",
@@ -53,6 +53,7 @@
     "gen:roomsPatch": "tsx scripts/campaignXml2Json/scripts/genRoomsPatch.ts && prettier src/_generated/originalCampaign/patches/*.json --write",
     "predeploy": "pnpm run check && pnpm run build && echo blockstack.ing > dist/CNAME && cp dist/index.html dist/404.html",
     "deploy": "gh-pages -d dist",
+    "deploy:r2": "tsx scripts/deployToR2.ts",
     "toppySpritesheet": "tsx scripts/toppySpritesheet.ts",
     "gen:font": "tsx scripts/genFont.ts",
     "iff2png": "./scripts/iff2png.sh",
@@ -104,6 +105,7 @@
     "wouter": "^3.9.0"
   },
   "devDependencies": {
+    "@aws-sdk/client-s3": "^3.1073.0",
     "@byteland/ink-scroll-bar": "^1.0.0",
     "@commander-js/extra-typings": "^14.0.0",
     "@cwasm/webp": "^0.1.5",
@@ -167,6 +169,7 @@
     "vitest": "^4.1.6",
     "wawoff2": "^2.0.1",
     "workbox-window": "^7.4.1",
+    "wrangler": "^4.100.0",
     "xml-js": "^1.6.11"
   },
   "engines": {

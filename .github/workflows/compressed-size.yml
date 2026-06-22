@@ -19,7 +19,7 @@ jobs:
         uses: jimhigson/compressed-size-action@base-ref-with-build # until merged: https://github.com/preactjs/compressed-size-action/pull/146
         with:
           build-script: "build:game"
-          clean-script: "clean"
+          clean-script: "clean:ci"
           # {*,assets/*} covers the dist root (sw.js, workbox-*.js, icons) and
           # assets/, but not dist/editor/* — so the game size excludes editor output
           pattern: "./dist/{*,assets/*}.{js,css,html,mp3,png,webp,opus,woff2}"
@@ -41,7 +41,7 @@ jobs:
         uses: jimhigson/compressed-size-action@base-ref-with-build # until merged: https://github.com/preactjs/compressed-size-action/pull/146
         with:
           build-script: "build:editor"
-          clean-script: "clean"
+          clean-script: "clean:ci"
           pattern: "./dist/editor/{*,assets/*}.{js,css,html,mp3,png,webp,opus,woff2}"
           strip-hash: "(-[a-zA-Z0-9_-]{8})\\."
           compression: "gzip"

@@ -79,6 +79,27 @@ rustup default stable - to set rust up with default target
 pnpm tauri ios dev # launch in dev mode
 ```
 
+# Releasees
+
+`release-please` manages
+
+# Hosting
+
+## https://blockstack.dev
+
+Hosts latest deploys from main branch
+
+* Cloudflare r2 is the web host (not just object storage) - this allows storing highly compressed pre-built brotli assets
+* Cloudflare's is also the CDN in front of R2
+
+See: scripts/deployToR2.ts, .github/workflows/deploy-to-r2.yml
+
+## https://blockstack.ing
+
+Hosts production/released deploys from `production` branch
+
+* currently on github pages, to be moved to r2 plus cf proxy once the pattern is proven
+
 # Troubleshooting
 
 For more info on developing, pls ask in [the Discord server](https://discord.gg/Se5Jznc2jm)
