@@ -9,6 +9,7 @@ lerna-debug.log*
 
 node_modules
 dist
+dist-editor
 dist-tauri
 dist-ssr
 *.local
@@ -19,6 +20,9 @@ dist-ssr
 dev-dist
 
 .vite
+
+# local miniflare state from wrangler r2/dev
+.wrangler
 
 supabase/.temp
 
