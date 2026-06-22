@@ -1,3 +1,4 @@
+import { NonIdealState } from "../../ui/NonIdealState";
 import { SpinnerHead } from "../../ui/Spinner";
 import { type EditorRoomId } from "../editorTypes";
 import { previewHeightPx, previewWidthPx } from "./renderRoomPreviewImage";
@@ -29,7 +30,13 @@ export const RoomPreview = ({ roomId }: RoomPreviewProps) => {
   }
 
   if (preview?.status === "error") {
-    return <div style={previewBoxStyle} />;
+    return (
+      <NonIdealState
+        text="Preview failed to load"
+        className="bg-midRed text-white"
+        style={previewBoxStyle}
+      />
+    );
   }
 
   return (

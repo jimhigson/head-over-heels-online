@@ -1,7 +1,9 @@
 import { type UnknownAction } from "@reduxjs/toolkit";
 import { type ReactNode, useEffect } from "react";
 
+import { useMaybeGameApi } from "../game/components/GameApiContext";
 import { BitmapText } from "../game/components/tailwindSprites/BitmapText";
+import { type GameApi } from "../game/GameApi";
 import { getRecentActions } from "../store/recentActions";
 import { describeRuntimeEnvironment } from "../utils/detectEnv/describeRuntimeEnvironment";
 import { type SerialisableError } from "../utils/redux/createSerialisableErrors";
@@ -50,11 +52,19 @@ const parseErrorForDisplay = (
   return { message, sanitizedStack };
 };
 
-const writeErrorReport = (errors: SerialisableError[]) => {
+const writeErrorReport = (
+  errors: SerialisableError[],
+  maybeGameApi: GameApi | undefined,
+) => {
   const recentActions: undefined | UnknownAction[] =
     import.meta.env.DEV ? getRecentActions() : undefined;
 
   const environmentPart = describeRuntimeEnvironment();
+
+  const gameApiPart =
+    maybeGameApi ?
+      `Campaign Locator: ${JSON.stringify(maybeGameApi.campaign.locator)}`
+    : "No game api loaded";
 
   const errorsPart = errors.toReversed().map((error) => {
     const { message, sanitizedStack } = parseErrorForDisplay(error);
@@ -69,23 +79,21 @@ ${sanitizedStack}
 ⬆ ERROR        CAUGHT, WRAPPED, & RETHROWN ⬇
 ⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯
 
-`);
+  `);
 
-  if (recentActions && recentActions.length > 0) {
-    const formatLine = (a: UnknownAction, i: number) =>
-      `${i}: ${JSON.stringify(a)}`;
+  const recentActionsPart =
+    recentActions && recentActions.length > 0 ?
+      `Last ${recentActions.length} redux actions (oldest to newest):
 
-    return `${environmentPart}
+      ${recentActions.map((a, i) => `${i}: ${JSON.stringify(a)}`).join("\n")}`
+    : "No captured redux action";
+
+  return `
+${environmentPart}
+${gameApiPart}    
+${recentActionsPart}
 ${errorsPart}
-
-Last ${recentActions.length} redux actions (oldest to newest):
-
-${recentActions.map((a, i) => formatLine(a, i)).join("\n")}
-`;
-  }
-
-  return `${environmentPart}
-${errorsPart}`;
+  `;
 };
 
 export type ErrorDialogReportProps = {
@@ -100,7 +108,7 @@ export const ErrorDialogReport = ({
   intro,
   children,
 }: ErrorDialogReportProps) => {
-  const errorsReportText = writeErrorReport(errors);
+  const errorsReportText = writeErrorReport(errors, useMaybeGameApi());
 
   useEffect(() => {
     console.error("ErrorDialogReport: Showing Report:", errorsReportText);

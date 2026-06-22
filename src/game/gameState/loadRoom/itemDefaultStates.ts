@@ -114,6 +114,8 @@ export const initialState = (jsonItem: JsonItemUnion) => {
           jsonItem.config.which === "skiHead" ||
           jsonItem.config.which === "turtle" ||
           jsonItem.config.which === "elephantHead" ||
+          jsonItem.config.which === "computerBot" ||
+          jsonItem.config.which === "monkey" ||
           jsonItem.config.which === "cyberman"
         ) ?
           {

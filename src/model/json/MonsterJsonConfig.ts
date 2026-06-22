@@ -78,6 +78,7 @@ export type MonsterJsonConfig =
   | {
       which: "computerBot";
       movement: MonsterMovement<"computerBot">;
+      startDirection: DirectionXy4;
       activated: ActivatedWhenSubset<"off" | "on">;
     }
   | {
@@ -120,6 +121,7 @@ export type MonsterJsonConfig =
   | {
       which: "monkey";
       movement: MonsterMovement<"monkey">;
+      startDirection: DirectionXy4;
       activated: ActivatedWhenSubset<"off" | "on">;
     }
   | {

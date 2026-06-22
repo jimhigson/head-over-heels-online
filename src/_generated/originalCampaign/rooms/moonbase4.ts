@@ -98,6 +98,7 @@ export const room = inferRoomJson({
       config: {
         activated: "on",
         movement: "patrol-randomly-xy4-and-reverse",
+        startDirection: "towards",
         which: "computerBot",
       },
       position: { x: 2, y: 5, z: 0 },
@@ -107,6 +108,7 @@ export const room = inferRoomJson({
       config: {
         activated: "on",
         movement: "patrol-randomly-xy4-and-reverse",
+        startDirection: "towards",
         which: "computerBot",
       },
       position: { x: 5, y: 2, z: 0 },

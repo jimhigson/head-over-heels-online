@@ -1,6 +1,9 @@
 import { expect, test } from "@playwright/test";
 
-import { jimAtBlockstackingUserId } from "../src/gameInfo";
+import {
+  jimAtBlockstackingUserId,
+  sequelCampaignLocator,
+} from "../src/gameInfo";
 import {
   clickCheat,
   dismissHoldAfterReload,
@@ -162,7 +165,7 @@ test.describe("persistence across reload", () => {
     page,
   }, testInfo) => {
     const formattedName = formatProjectName(testInfo.project.name);
-    const url = `/?cheats=1&track=0&campaignName=sequel&campaignAuthorUserId=${jimAtBlockstackingUserId}`;
+    const url = `/?cheats=1&track=0&campaignName=${sequelCampaignLocator.campaignName}&campaignAuthorUserId=${jimAtBlockstackingUserId}`;
     await page.goto(url);
     await waitForGameState(page);
     // first visit to a named URL with no save shows the crowns intro
@@ -185,14 +188,14 @@ test.describe("persistence across reload", () => {
         window._e2e_store?.getState().gameInPlay.gameInPlay.campaignLocator
           ?.campaignName,
     );
-    expect(campaignName).toBe("sequel");
+    expect(campaignName).toBe(sequelCampaignLocator.campaignName);
   });
 
   test("campaign URL dropped on reload - state still restored", async ({
     page,
   }, testInfo) => {
     const formattedName = formatProjectName(testInfo.project.name);
-    const url = `/?cheats=1&track=0&campaignName=sequel&campaignAuthorUserId=${jimAtBlockstackingUserId}`;
+    const url = `/?cheats=1&track=0&campaignName=${sequelCampaignLocator.campaignName}&campaignAuthorUserId=${jimAtBlockstackingUserId}`;
     await page.goto(url);
     await waitForGameState(page);
     // first visit to a named URL with no save shows the crowns intro
@@ -216,7 +219,7 @@ test.describe("persistence across reload", () => {
         window._e2e_store?.getState().gameInPlay.gameInPlay.campaignLocator
           ?.campaignName,
     );
-    expect(campaignName).toBe("sequel");
+    expect(campaignName).toBe(sequelCampaignLocator.campaignName);
   });
 
   test("community URL - first visit shows crowns; save survives reload at same URL and at /", async ({

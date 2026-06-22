@@ -257,6 +257,7 @@ detects a player in a straight line on an axis and rushes towards them`,
       config: {
         which: "computerBot",
         activated: "on",
+        startDirection: "towards",
         movement: "patrol-randomly-xy4-and-reverse",
       },
     },
@@ -298,6 +299,7 @@ fast and dangerous`,
       config: {
         which: "monkey",
         activated: "on",
+        startDirection: "towards",
         movement: "patrol-randomly-xy4",
       },
     },
@@ -536,14 +538,14 @@ monsters will not walk into the light
 can be turned on/off by switches and buttons`,
     children: (
       <span
-        className={`sprite ${"texture-lamp_on_towards" satisfies TextureTailwindClass} ${buttonSpriteRevertColourClasses}`}
+        className={`sprite ${"texture-lamp_on_towards" satisfies TextureTailwindClass} ${"activated:texture-lamp_on_right" satisfies TextureTailwindClass} ${buttonSpriteRevertColourClasses}`}
       />
     ),
   },
   mirror: {
     itemTool: {
       type: "mirror",
-      config: { orientation: "awayLeft" },
+      config: { orientation: "awayRight" },
     },
     tooltipContent: `## Mirror
 
@@ -554,7 +556,7 @@ reflective on both sides
 rotates to the other diagonal when collided with`,
     children: (
       <span
-        className={`sprite ${"texture-mirror_awayLeft" satisfies TextureTailwindClass} ${buttonSpriteRevertColourClasses}`}
+        className={`sprite ${"texture-mirror_awayRight" satisfies TextureTailwindClass} ${buttonSpriteRevertColourClasses}`}
       />
     ),
   },
@@ -581,7 +583,7 @@ dead fish decompose very quickly and it rapidly
 turns so poisonous that a single lick can kill`,
     children: (
       <span
-        className={`sprite ${"texture-fish_1" satisfies TextureTailwindClass} ${buttonSpriteRevertColourClasses}`}
+        className={`sprite ${"texture-fish_dead" satisfies TextureTailwindClass} ${buttonSpriteRevertColourClasses}`}
       />
     ),
   },
@@ -817,7 +819,7 @@ Why are the books slippery?`,
     },
     children: (
       <span
-        className={`sprite ${"texture-teleporter" satisfies TextureTailwindClass} ${buttonSpriteRevertColourClasses}`}
+        className={`sprite ${"texture-teleporter" satisfies TextureTailwindClass} ${"activated:texture-animated-teleporter_flashing" satisfies AnimatedTextureTailwindClass} ${buttonSpriteRevertColourClasses}`}
       />
     ),
   },
@@ -828,7 +830,7 @@ Why are the books slippery?`,
     },
     children: (
       <span
-        className={`sprite ${"texture-portableTeleporter" satisfies TextureTailwindClass} ${buttonSpriteRevertColourClasses}`}
+        className={`sprite ${"texture-portableTeleporter" satisfies TextureTailwindClass} ${"activated:texture-animated-portableTeleporter_flashing" satisfies AnimatedTextureTailwindClass} ${buttonSpriteRevertColourClasses}`}
       />
     ),
   },
@@ -922,7 +924,7 @@ Citizens of Freedom
 stand around not doing much`,
     children: (
       <span
-        className={`sprite ${playableTailwindSpriteClassname({ spritesheetName: "BlockStack" as "BlockStack", character: "head", action: "idle", facingXy8: "towards" })} activated:${playableTailwindSpriteClassname({ spritesheetName: "BlockStack" as "BlockStack", character: "head", action: "walking", facingXy8: "right" })} ${buttonSpriteRevertColourClasses}`}
+        className={`sprite ${playableTailwindSpriteClassname({ spritesheetName: "BlockStack" as "BlockStack", character: "head", action: "idle", facingXy8: "towards" })} activated:${playableTailwindSpriteClassname({ spritesheetName: "BlockStack" as "BlockStack", character: "head", action: "idle", facingXy8: "right" })} ${buttonSpriteRevertColourClasses}`}
       />
     ),
   },
@@ -937,7 +939,7 @@ Citizens of Freedom
 stand around not doing much`,
     children: (
       <span
-        className={`sprite ${playableTailwindSpriteClassname({ spritesheetName: "BlockStack" as "BlockStack", character: "heels", action: "idle", facingXy8: "towards" })} activated:${playableTailwindSpriteClassname({ spritesheetName: "BlockStack" as "BlockStack", character: "heels", action: "walking", facingXy8: "right" })} ${buttonSpriteRevertColourClasses}`}
+        className={`sprite ${playableTailwindSpriteClassname({ spritesheetName: "BlockStack" as "BlockStack", character: "heels", action: "idle", facingXy8: "towards" })} activated:${playableTailwindSpriteClassname({ spritesheetName: "BlockStack" as "BlockStack", character: "heels", action: "idle", facingXy8: "right" })} ${buttonSpriteRevertColourClasses}`}
       />
     ),
   },
@@ -952,8 +954,8 @@ Citizens of Freedom
 stand around not doing much`,
     children: (
       <StackedToolbarIcons
-        topClasses={`${playableTailwindSpriteClassname({ spritesheetName: "BlockStack" as "BlockStack", character: "head", action: "idle", facingXy8: "towards" })} activated:${playableTailwindSpriteClassname({ spritesheetName: "BlockStack" as "BlockStack", character: "head", action: "walking", facingXy8: "right" })}`}
-        bottomClasses={`${playableTailwindSpriteClassname({ spritesheetName: "BlockStack" as "BlockStack", character: "heels", action: "idle", facingXy8: "towards" })} activated:${playableTailwindSpriteClassname({ spritesheetName: "BlockStack" as "BlockStack", character: "heels", action: "walking", facingXy8: "right" })}`}
+        topClasses={`${playableTailwindSpriteClassname({ spritesheetName: "BlockStack" as "BlockStack", character: "head", action: "idle", facingXy8: "towards" })} activated:${playableTailwindSpriteClassname({ spritesheetName: "BlockStack" as "BlockStack", character: "head", action: "idle", facingXy8: "right" })}`}
+        bottomClasses={`${playableTailwindSpriteClassname({ spritesheetName: "BlockStack" as "BlockStack", character: "heels", action: "idle", facingXy8: "towards" })} activated:${playableTailwindSpriteClassname({ spritesheetName: "BlockStack" as "BlockStack", character: "heels", action: "idle", facingXy8: "right" })}`}
       />
     ),
   },

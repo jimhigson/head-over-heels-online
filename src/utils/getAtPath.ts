@@ -3,9 +3,11 @@ import { type Get, type Paths } from "type-fest";
 export const getAtPath = <O extends object, P extends Paths<O> & string>(
   obj: O,
   path: P,
+  /** separator between path segments; pass "/" for JSON Pointer-style paths */
+  delimiter = ".",
 ): Get<O, P> =>
   path
-    .split(".")
+    .split(delimiter)
     .reduce(
       (acc: object, key) => (acc as Record<string, object>)[key],
       obj,
@@ -15,8 +17,10 @@ export const setAtPath = <O extends object, P extends Paths<O> & string>(
   obj: O,
   path: P,
   value: Get<O, P>,
+  /** separator between path segments; pass "/" for JSON Pointer-style paths */
+  delimiter = ".",
 ): void => {
-  const pathNodes = path.split(".");
+  const pathNodes = path.split(delimiter);
 
   // eslint-disable-next-line @typescript-eslint/no-explicit-any
   let current: any = obj;

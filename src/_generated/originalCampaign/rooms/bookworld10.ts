@@ -28,6 +28,7 @@ export const room = inferRoomJson({
       config: {
         activated: "on",
         movement: "towards-on-shortest-axis-xy4",
+        startDirection: "towards",
         which: "monkey",
       },
       position: { x: 2, y: 4, z: 0 },

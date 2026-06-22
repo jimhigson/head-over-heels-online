@@ -1,6 +1,7 @@
 import { produce } from "immer";
 import { expect, test } from "vitest";
 
+import { type JsonItem } from "../../../model/json/JsonItem";
 import { type EditorRoomItemId } from "../../editorTypes";
 import { selectCurrentRoomJsonFromLevelEditorState } from "../levelEditorSelectors";
 import {
@@ -20,6 +21,7 @@ const monsterAndBlock = produce(editorStateWithOneRoomWithNoItems, (draft) => {
     config: {
       which: "monkey",
       movement: "patrol-randomly-xy4",
+      startDirection: "towards",
       activated: "on",
     },
     position: { x: 0, y: 0, z: 0 },
@@ -45,11 +47,14 @@ const setMovement = selectCurrentRoomJsonFromLevelEditorState(
 ).items;
 
 test("sets the movement on a selected monster", () => {
-  expect(setMovement["monkey" as EditorRoomItemId]).toEqual({
+  expect(setMovement["monkey" as EditorRoomItemId]).toEqual<
+    JsonItem<"monster">
+  >({
     type: "monster",
     config: {
       which: "monkey",
       movement: "towards-on-shortest-axis-xy4",
+      startDirection: "towards",
       activated: "on",
     },
     position: { x: 0, y: 0, z: 0 },
@@ -57,7 +62,7 @@ test("sets the movement on a selected monster", () => {
 });
 
 test("leaves non-monster items in the selection untouched", () => {
-  expect(setMovement["block" as EditorRoomItemId]).toEqual({
+  expect(setMovement["block" as EditorRoomItemId]).toEqual<JsonItem<"block">>({
     type: "block",
     config: { style: "artificial" },
     position: { x: 1, y: 0, z: 0 },
