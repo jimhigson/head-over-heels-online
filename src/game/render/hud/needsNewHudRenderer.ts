@@ -14,8 +14,15 @@ export const needsNewHudRenderer = <
   onScreenControls: boolean,
   inputDirectionMode: InputDirectionMode,
   tickUpscale: Upscale,
+  /**
+   * the WebGL context was lost and restored - the renderer's glyph sprites still
+   * reference originalSpritesheet textures that died with the old WebGL context,
+   * so it must be rebuilt to pick up the re-baked ones
+   */
+  webGlContextRestored: boolean,
 ): boolean =>
   renderer === undefined ||
+  webGlContextRestored ||
   renderer.renderContext.general.spriteOption !== spriteOption ||
   renderer.renderContext.general.onScreenControls !== onScreenControls ||
   renderer.renderContext.inputDirectionMode !== inputDirectionMode ||

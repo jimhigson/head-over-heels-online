@@ -18,4 +18,11 @@ export type GameApi<RoomId extends string = string> = {
   gameState: GameState<RoomId>;
   stop: () => void;
   reincarnateFrom: (gameState: SavedGame<RoomId>) => void;
+  /**
+   * Simulate a transient WebGL context loss: drop the gpu context, then restore
+   * it 500ms later via the WEBGL_lose_context extension, mimicking a real driver
+   * reset or tab reclaim the browser recovers from. Used by the cheats panel to
+   * observe how the game copes with losing and regaining the WebGL context.
+   */
+  loseWebGlContext: () => void;
 };

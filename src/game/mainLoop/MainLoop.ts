@@ -127,6 +127,14 @@ export class MainLoop<RoomId extends string> {
 
   #firstFrameMarked = false;
 
+  // set when the canvas regains its WebGL context after a loss; the next tick
+  // re-bakes the spritesheet variants, whose RenderTextures died with the old
+  // WebGL context:
+  #webGlContextRestored = false;
+  #onWebGlContextRestored = () => {
+    this.#webGlContextRestored = true;
+  };
+
   #tickAndCatch = (ticker: Ticker): void => {
     try {
       this.#tick(ticker);
@@ -219,16 +227,19 @@ export class MainLoop<RoomId extends string> {
     }
 
     const roomChanged = this.#roomRenderer?.renderContext.room !== tickEndRoom;
-    if (
+
+    const spritesheetVariantsStale =
       (roomChanged ||
+        this.#webGlContextRestored ||
         (this.#roomRenderer !== undefined &&
           !spriteOptionEquals(
             tickSpriteOption,
             this.#roomRenderer.renderContext.general.spriteOption,
           ))) &&
       tickEndRoom !== undefined &&
-      this.#spritesheetLoadPromise === undefined
-    ) {
+      this.#spritesheetLoadPromise === undefined;
+
+    if (spritesheetVariantsStale) {
       if (!this.#spritesheetVariants.isTextureLoaded(tickSpriteOption.name)) {
         this.#spritesheetLoadPromise = this.#spritesheetVariants
           .loadImage(tickSpriteOption.name)
@@ -240,6 +251,11 @@ export class MainLoop<RoomId extends string> {
             this.#handleError(e);
           });
       } else {
+        if (this.#webGlContextRestored) {
+          // the WebGL context came back after a loss - the variants' baked
+          // RenderTextures died with the old WebGL context and must be re-baked.
+          this.#spritesheetVariants.invalidateBakedTextures();
+        }
         this.#spritesheetVariants.rebuild(
           this.#app.renderer,
           tickEndRoom.planet,
@@ -289,6 +305,7 @@ export class MainLoop<RoomId extends string> {
       tickOnScreenControls,
       tickInputDirectionMode,
       tickUpscale,
+      this.#webGlContextRestored,
     );
 
     if (createNewHudRenderer) {
@@ -330,6 +347,7 @@ export class MainLoop<RoomId extends string> {
       tickDisplaySettings,
       tickSoundSettings,
       isPaused,
+      this.#webGlContextRestored,
     );
     if (
       // for several things that change infrequently, we don't bother to try to adjust the room scene
@@ -386,6 +404,11 @@ export class MainLoop<RoomId extends string> {
       );
     }
 
+    // WebGL-context-loss recovery for this tick is done: the variants are
+    // re-baked and the hud/room renderers recreated, so they no longer reference
+    // the dead textures - clear the flag:
+    this.#webGlContextRestored = false;
+
     // the room renderer runs even while paused - it is its responsibility to
     // exit quickly when nothing has changed
     if (this.#roomRenderer) {
@@ -441,10 +464,18 @@ export class MainLoop<RoomId extends string> {
   };
 
   start() {
+    this.#app.canvas.addEventListener(
+      "webglcontextrestored",
+      this.#onWebGlContextRestored,
+    );
     this.#app.ticker.add(this.#tickAndCatch);
     return this;
   }
   stop() {
+    this.#app.canvas.removeEventListener(
+      "webglcontextrestored",
+      this.#onWebGlContextRestored,
+    );
     this.#app.stage.removeChild(this.#mainContainer);
     this.#worldSound.disconnect();
     this.#roomRenderer?.destroy();

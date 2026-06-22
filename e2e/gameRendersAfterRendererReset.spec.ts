@@ -1,5 +1,6 @@
 import { expect, test } from "@playwright/test";
 
+import { clickCheat } from "./testUtils/gameInteractions";
 import {
   setZeroGameSpeed,
   waitForGameState,
@@ -66,6 +67,47 @@ test("game renders correctly after quitting and starting another game", async ({
   // compare the bottom HUD strip - it holds the baked text/number glyphs and
   // excludes the animated player in the centre of the screen:
   await expect(page).toHaveScreenshot("game-renders-after-restart.png", {
+    scale: "css",
+    threshold: 0.1,
+    maxDiffPixelRatio: 0.01,
+  });
+});
+
+/**
+ * The same blank-render bug can be triggered without restarting: losing the
+ * WebGL context destroys every baked RenderTexture, and the restored context has
+ * no backing for them. The main loop must re-bake the variants and recreate the
+ * room/hud renderers when the context comes back. The cheats "lose & restore
+ * WebGL context" button loses the context and restores it 100ms later.
+ *
+ * Not browser-specific, so it runs on a single browser to avoid per-browser
+ * baselines.
+ */
+test("game renders correctly after losing and restoring the WebGL context", async ({
+  page,
+}, testInfo) => {
+  test.skip(
+    testInfo.project.name !== "chromium-desktop",
+    "single-browser regression test",
+  );
+
+  await setupE2ePage(page);
+
+  await startCampaignViaMenu(page, testInfo.project.name, "originalGame");
+
+  // freeze the game so the frame is deterministic across the context cycle:
+  await setZeroGameSpeed(page);
+  await page.waitForTimeout(1000 * osSlowness);
+
+  // lose the WebGL context (the button restores it 100ms later) - this kills
+  // every baked RenderTexture, which the main loop must re-bake and rewire into
+  // freshly recreated room/hud renderers:
+  await clickCheat(page, "cheats-lose-gl-context");
+
+  // allow the restore + re-bake + renderer recreation to settle:
+  await page.waitForTimeout(1000 * osSlowness);
+
+  await expect(page).toHaveScreenshot("game-renders-after-context-loss.png", {
     scale: "css",
     threshold: 0.1,
     maxDiffPixelRatio: 0.01,
