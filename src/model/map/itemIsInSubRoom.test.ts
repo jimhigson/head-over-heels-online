@@ -1,6 +1,6 @@
 import { describe, expect, test } from "vitest";
 
-import { blockSizePx } from "../../../../../physics/mechanicsConstants";
+import { blockSizePx } from "../blockSizePx";
 import { findSubRoomForItem, type MaybeDividedRoom } from "./itemIsInSubRoom";
 
 const createFinePosition = (x: number, y: number) => ({

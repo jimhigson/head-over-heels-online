@@ -4,8 +4,8 @@ import { type KeyboardEvent } from "react";
 import { createClickableRoomBehaviour } from "../../game/components/dialogs/menuDialog/dialogs/map/createClickableRoomBehaviour";
 import { MapSvg } from "../../game/components/dialogs/menuDialog/dialogs/map/Map.svg";
 import { type RoomBehaviourComponent } from "../../game/components/dialogs/menuDialog/dialogs/map/RoomDecoratorProps";
-import { type SortedObjectOfRoomGridPositionSpecs } from "../../game/components/dialogs/menuDialog/dialogs/map/sortRoomGridPositions";
 import { type Key } from "../../game/input/keys";
+import { type SortedObjectOfRoomGridPositionSpecs } from "../../model/map/sortRoomGridPositions";
 import { startAppListening } from "../../store/listenerMiddleware";
 import { store, useEditorAppSelector } from "../../store/store";
 import { valuesIter } from "../../utils/entries";
@@ -235,7 +235,7 @@ const EditorMap = () => {
             }
           } else if (e.key === "Delete" || e.key === "Backspace") {
             e.preventDefault();
-            store.dispatch(confirmDeleteRoomThunk);
+            store.dispatch(confirmDeleteRoomThunk());
           }
         }}
       >

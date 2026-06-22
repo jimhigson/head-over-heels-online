@@ -451,7 +451,7 @@ export const AddAndDeleteRoomButtons = () => {
       </MenuButton>
       <ToolbarButton
         className="bg-midRed"
-        onClick={() => dispatch(confirmDeleteRoomThunk)}
+        onClick={() => dispatch(confirmDeleteRoomThunk())}
         disabled={!hasOtherRooms}
         tooltipContent={deleteTooltipMarkdown}
       >

@@ -1,6 +1,6 @@
 import { type JsonItemUnion } from "../../../../../../model/json/JsonItem";
+import { jsonItemIsInSubRoom } from "../../../../../../model/map/itemIsInSubRoom";
 import { type RoomJson } from "../../../../../../model/RoomJson";
-import { jsonItemIsInSubRoom } from "./itemIsInSubRoom";
 import { type NotableItem } from "./NotableItem";
 
 /** should the item be rendered on the map? */

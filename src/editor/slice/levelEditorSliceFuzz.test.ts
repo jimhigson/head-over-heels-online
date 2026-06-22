@@ -1,9 +1,9 @@
 import seedrandom from "seedrandom";
 import { expect, test } from "vitest";
 
-import { roomGridPositions } from "../../game/components/dialogs/menuDialog/dialogs/map/roomGridPositions";
-import { sortRoomGridPositions } from "../../game/components/dialogs/menuDialog/dialogs/map/sortRoomGridPositions";
 import { roomJsonMatchers } from "../../model/json/__test__/roomJsonMatchers";
+import { roomGridPositions } from "../../model/map/roomGridPositions";
+import { sortRoomGridPositions } from "../../model/map/sortRoomGridPositions";
 import { roomJsonItemsIterable } from "../../model/RoomJson";
 import { keys } from "../../utils/entries";
 import { type DirectionXy4 } from "../../utils/vectors/vectors";
@@ -33,7 +33,7 @@ const solveMapGeometry = (state: typeof initialLevelEditorSliceState) => {
       campaign: state.campaignInProgress,
       roomId,
       subRoomId,
-    }),
+    }).keys(),
   ];
   return sortRoomGridPositions(positions);
 };

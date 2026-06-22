@@ -1,12 +1,12 @@
 import { type RoomDecoratorProps } from "../../game/components/dialogs/menuDialog/dialogs/map/RoomDecoratorProps";
 import { roomWorldPosition } from "../../game/components/dialogs/menuDialog/dialogs/map/roomWorldPosition";
 import { translateXyz } from "../../game/components/dialogs/menuDialog/dialogs/map/svgHelpers";
+import { blockSizePx } from "../../game/physics/mechanicsConstants";
+import { projectWorldXyzToScreenXy } from "../../game/render/projections";
 import {
   type TeleporterCell,
   type TeleporterLink,
-} from "../../game/components/dialogs/menuDialog/dialogs/map/teleporterLinks";
-import { blockSizePx } from "../../game/physics/mechanicsConstants";
-import { projectWorldXyzToScreenXy } from "../../game/render/projections";
+} from "../../model/map/teleporterLinks";
 import {
   addXy,
   lengthXy,

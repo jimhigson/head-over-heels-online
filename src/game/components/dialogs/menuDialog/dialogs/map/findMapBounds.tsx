@@ -1,6 +1,6 @@
+import { type RoomNode } from "../../../../../../model/map/roomGridPositions";
 import { projectWorldXyzToScreenXy } from "../../../../../render/projections";
 import { type Bounds } from "./Map.svg";
-import { type RoomGridPositionSpec } from "./roomGridPositions";
 import { roomWorldPosition } from "./roomWorldPosition";
 
 /**
@@ -19,7 +19,7 @@ const roomRight = projectWorldXyzToScreenXy(
 ).x;
 
 export const findMapBounds = <RoomId extends string>(
-  roomGridPositionSpecs: Array<RoomGridPositionSpec<RoomId>>,
+  roomGridPositionSpecs: Array<RoomNode<RoomId>>,
 ): Bounds => {
   return roomGridPositionSpecs.reduce<Bounds>(
     (ac, { gridPosition }) => {

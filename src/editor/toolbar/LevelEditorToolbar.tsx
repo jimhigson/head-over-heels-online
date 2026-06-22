@@ -29,6 +29,7 @@ import { RotateButtons } from "./buttons/RotateButtons";
 import { ShareCampaignButton } from "./buttons/ShareCampaignButton";
 import { ShowCmdKButton } from "./buttons/ShowCmdKButton";
 import { UndoRedoButtons } from "./buttons/UndoRedoButtons";
+import { VerifyCampaignButton } from "./buttons/VerifyCampaignButton";
 import { WallsFloorsLockedSwitch } from "./buttons/WallsFloorsLockedSwitch";
 import { WallToolButton } from "./buttons/WallToolButton";
 import { buttonGroupClassname } from "./buttonSizeClassNames";
@@ -65,6 +66,7 @@ export const LevelEditorToolbar = () => {
             </BitmapText>
           : <BitmapText className="text-midRed">{`(untitled)`}</BitmapText>}
         </div>
+        <VerifyCampaignButton />
         <NewCampaignButton />
         <HorizontalGap />
         <SaveAndLoadButtons />

@@ -1,9 +1,9 @@
 import { Container } from "pixi.js";
 
 import { exitGameRoomId } from "../../../../model/json/ItemConfigMap";
+import { findSubRoomForItem } from "../../../../model/map/itemIsInSubRoom";
 import { isWholeRoomSubRooms } from "../../../../model/RoomJson";
 import { pixiContainerToString } from "../../../../utils/pixi/pixiContainerToString";
-import { findSubRoomForItem } from "../../../components/dialogs/menuDialog/dialogs/map/itemIsInSubRoom";
 import { type GameState } from "../../../gameState/GameState";
 import { changeCharacterRoom } from "../../../gameState/mutators/changeCharacterRoom";
 import { isFreeItem, isItemType } from "../../../physics/itemPredicates";

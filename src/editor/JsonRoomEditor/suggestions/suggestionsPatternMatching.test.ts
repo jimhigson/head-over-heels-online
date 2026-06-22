@@ -43,7 +43,7 @@ describe("matchesPattern", () => {
     );
   });
 
-  it("matches nested exact path patterns", () => {
+  it("matches nested exact path patterns, including the whole-room (*) NCR with.room and with.subRoom", () => {
     const jsonContent = {
       meta: {
         subRooms: {
@@ -51,6 +51,7 @@ describe("matchesPattern", () => {
             nonContiguousRelationship: {
               with: {
                 room: "room123",
+                subRoom: "subRoom1",
               },
             },
           },
@@ -61,30 +62,140 @@ describe("matchesPattern", () => {
     const jsonString = JSON.stringify(jsonContent);
     const tree = parseTree(jsonString);
 
-    // Find offset of "room123" value
-    const offset = jsonString.indexOf('"room123"') + 1;
-    const roomValueNode = findNodeAtOffset(tree!, offset);
-    const nodeAncestors = getNodeAncestors(roomValueNode);
-
-    // Get the actual path like the hook does
-    const { path } = getLocation(jsonString, offset);
-    const reversedPath = path.toReversed();
+    // cursor at the with.room value:
+    const roomOffset = jsonString.indexOf('"room123"') + 1;
+    const roomAncestors = getNodeAncestors(findNodeAtOffset(tree!, roomOffset));
+    const roomPath = getLocation(jsonString, roomOffset).path.toReversed();
 
     expect(
       matchesPattern(
         "meta.subRooms.*.nonContiguousRelationship.with.room",
-        reversedPath,
-        nodeAncestors,
+        roomPath,
+        roomAncestors,
+      ),
+    ).toBe(true);
+    // Should match partial patterns at the leaf
+    expect(matchesPattern("with.room", roomPath, roomAncestors)).toBe(true);
+    // Should not match if pattern is in wrong order
+    expect(matchesPattern("room.with", roomPath, roomAncestors)).toBe(false);
+    // the room cursor is not the subRoom, so the subRoom pattern must not match
+    expect(
+      matchesPattern(
+        "meta.subRooms.*.nonContiguousRelationship.with.subRoom",
+        roomPath,
+        roomAncestors,
+      ),
+    ).toBe(false);
+
+    // cursor at the with.subRoom value:
+    const subRoomOffset = jsonString.indexOf('"subRoom1"') + 1;
+    const subRoomAncestors = getNodeAncestors(
+      findNodeAtOffset(tree!, subRoomOffset),
+    );
+    const subRoomPath = getLocation(
+      jsonString,
+      subRoomOffset,
+    ).path.toReversed();
+
+    expect(
+      matchesPattern(
+        "meta.subRooms.*.nonContiguousRelationship.with.subRoom",
+        subRoomPath,
+        subRoomAncestors,
+      ),
+    ).toBe(true);
+    // Should match partial patterns at the leaf
+    expect(matchesPattern("with.subRoom", subRoomPath, subRoomAncestors)).toBe(
+      true,
+    );
+  });
+
+  it("matches the above.subRoom and below.subRoom patterns of a sub-room", () => {
+    const jsonContent = {
+      meta: {
+        subRooms: {
+          "*": {
+            above: { room: "upRoom", subRoom: "upSub" },
+            below: { room: "downRoom", subRoom: "downSub" },
+          },
+        },
+      },
+    };
+
+    const jsonString = JSON.stringify(jsonContent);
+    const tree = parseTree(jsonString);
+
+    const aboveOffset = jsonString.indexOf('"upSub"') + 1;
+    const aboveAncestors = getNodeAncestors(
+      findNodeAtOffset(tree!, aboveOffset),
+    );
+    const abovePath = getLocation(jsonString, aboveOffset).path.toReversed();
+    expect(
+      matchesPattern(
+        "meta.subRooms.*.above.subRoom",
+        abovePath,
+        aboveAncestors,
       ),
     ).toBe(true);
 
-    // Should match partial patterns at the leaf
-    expect(matchesPattern("with.room", reversedPath, nodeAncestors)).toBe(true);
-
-    // Should not match if pattern is in wrong order
-    expect(matchesPattern("room.with", reversedPath, nodeAncestors)).toBe(
-      false,
+    const belowOffset = jsonString.indexOf('"downSub"') + 1;
+    const belowAncestors = getNodeAncestors(
+      findNodeAtOffset(tree!, belowOffset),
     );
+    const belowPath = getLocation(jsonString, belowOffset).path.toReversed();
+    expect(
+      matchesPattern(
+        "meta.subRooms.*.below.subRoom",
+        belowPath,
+        belowAncestors,
+      ),
+    ).toBe(true);
+  });
+
+  it("matches sub-room link patterns on a named (divided) cell, not only the literal '*'", () => {
+    // a divided room keys its sub-rooms by name (here "0"), not "*". The `*` in
+    // the pattern is a wildcard, so this must still match - it would fail if `*`
+    // were ever treated as a literal key, which is the case the other (always-
+    // "*") sub-room tests can't distinguish.
+    const jsonContent = {
+      meta: {
+        subRooms: {
+          "0": {
+            above: { room: "upRoom", subRoom: "upSub" },
+            nonContiguousRelationship: {
+              with: { room: "ncrRoom", subRoom: "ncrSub" },
+            },
+          },
+        },
+      },
+    };
+
+    const jsonString = JSON.stringify(jsonContent);
+    const tree = parseTree(jsonString);
+
+    const aboveOffset = jsonString.indexOf('"upSub"') + 1;
+    const aboveAncestors = getNodeAncestors(
+      findNodeAtOffset(tree!, aboveOffset),
+    );
+    const abovePath = getLocation(jsonString, aboveOffset).path.toReversed();
+    expect(
+      matchesPattern(
+        "meta.subRooms.*.above.subRoom",
+        abovePath,
+        aboveAncestors,
+      ),
+    ).toBe(true);
+
+    const ncrOffset = jsonString.indexOf('"ncrSub"') + 1;
+    const ncrAncestors = getNodeAncestors(findNodeAtOffset(tree!, ncrOffset));
+    const ncrPath = getLocation(jsonString, ncrOffset).path.toReversed();
+    expect(
+      matchesPattern(
+        "meta.subRooms.*.nonContiguousRelationship.with.subRoom",
+        ncrPath,
+        ncrAncestors,
+      ),
+    ).toBe(true);
   });
 
   it("matches patterns with wildcards", () => {

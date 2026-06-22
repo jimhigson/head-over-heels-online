@@ -1,3 +1,5 @@
+import { blockSizePx } from "../../model/blockSizePx";
+import { defaultRoomHeightBlocks } from "../../model/defaultRoomHeightBlocks";
 import { type ItemInPlayType } from "../../model/ItemInPlay";
 import { type JsonItemConfig } from "../../model/json/JsonItem";
 import { type CharacterName } from "../../model/modelTypes";
@@ -5,7 +7,7 @@ import { zxSpectrumFrameRate } from "../../originalGame";
 import { wallTileSize } from "../../sprites/spritesheet/spritesheetData/textureSizes";
 import { transformObject } from "../../utils/transformObject";
 
-export const blockSizePx = { x: 16, y: 16, z: 12 };
+export { blockSizePx, defaultRoomHeightBlocks };
 
 const onePxPerFrameInOriginalGamePxPerMs = zxSpectrumFrameRate / 1000;
 
@@ -171,8 +173,6 @@ export const playerJumpHeightPx = {
   // including at high frame rates:
   heels: blockSizePx.z + 1 + jumpFudge,
 };
-
-export const defaultRoomHeightBlocks = 10;
 
 /** how long (in ms) a shield bunny lasts for */
 export const shieldDuration = 60_000;

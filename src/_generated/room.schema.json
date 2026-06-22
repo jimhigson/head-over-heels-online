@@ -852,7 +852,29 @@
                     "type": "object"
                   },
                   "position": {
-                    "$ref": "#/definitions/r49"
+                    "additionalProperties": false,
+                    "properties": {
+                      "x": {
+                        "type": "number",
+                        "multipleOf": 0.125,
+                        "minimum": -30,
+                        "maximum": 30
+                      },
+                      "y": {
+                        "type": "number",
+                        "multipleOf": 0.125,
+                        "minimum": -30,
+                        "maximum": 30
+                      },
+                      "z": {
+                        "type": "number",
+                        "multipleOf": 0.5,
+                        "minimum": -30,
+                        "maximum": 30
+                      }
+                    },
+                    "required": ["x", "y", "z"],
+                    "type": "object"
                   },
                   "type": {
                     "const": "emitter",
@@ -1664,6 +1686,38 @@
             "subRooms": {
               "anyOf": [
                 {
+                  "additionalProperties": false,
+                  "properties": {
+                    "*": {
+                      "additionalProperties": false,
+                      "properties": {
+                        "above": {
+                          "$ref": "#/definitions/r78"
+                        },
+                        "below": {
+                          "$ref": "#/definitions/r78"
+                        },
+                        "nonContiguousRelationship": {
+                          "additionalProperties": false,
+                          "properties": {
+                            "gridOffset": {
+                              "$ref": "#/definitions/r75"
+                            },
+                            "with": {
+                              "$ref": "#/definitions/r78"
+                            }
+                          },
+                          "required": ["with", "gridOffset"],
+                          "type": "object"
+                        }
+                      },
+                      "type": "object"
+                    }
+                  },
+                  "required": ["*"],
+                  "type": "object"
+                },
+                {
                   "additionalProperties": {
                     "additionalProperties": false,
                     "properties": {
@@ -1738,9 +1792,6 @@
                     "required": ["gridPosition", "physicalPosition"],
                     "type": "object"
                   },
-                  "type": "object"
-                },
-                {
                   "type": "object"
                 }
               ],

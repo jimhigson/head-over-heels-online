@@ -42,12 +42,21 @@ export const addOrRemoveRoomReducers = {
   ) {
     insertRoomInPlace(state, direction, roomSize);
   },
-  removeRoom(state) {
-    const roomIdsToDelete = new Set(state.selectedRoomIds);
+  removeRoom(
+    state,
+    {
+      payload: { roomId } = {},
+    }: PayloadAction<{ roomId?: EditorRoomId } | undefined>,
+  ) {
+    // delete the named room when given one, otherwise the current selection
+    const roomIdsToDelete = new Set(
+      roomId !== undefined ? [roomId] : state.selectedRoomIds,
+    );
+
+    const cursorRoomId = selectCursorRoomId(state);
 
     // to stay near the deleted room, find another room adjacent to it:
-    const cursorRoom =
-      state.campaignInProgress.rooms[selectCursorRoomId(state)];
+    const cursorRoom = state.campaignInProgress.rooms[cursorRoomId];
     const doorOrTeleporterEntry =
       first(iterateRoomJsonItemsWithIds(cursorRoom.items, "door")) ??
       first(iterateRoomJsonItemsWithIds(cursorRoom.items, "teleporter"));
@@ -64,7 +73,7 @@ export const addOrRemoveRoomReducers = {
       ) ?
         adjacentRoom
       : keysIter(state.campaignInProgress.rooms).find(
-          (roomId) => !roomIdsToDelete.has(roomId) && roomId !== exitGameRoomId,
+          (id) => !roomIdsToDelete.has(id) && id !== exitGameRoomId,
         )) as EditorRoomId | undefined;
 
     if (nextRoom === undefined) {
@@ -72,7 +81,11 @@ export const addOrRemoveRoomReducers = {
       return;
     }
 
-    changeCurrentRoomInPlace(state, nextRoom);
+    // only move the editor's cursor when the room it is on is being deleted -
+    // deleting some other room (eg from the problems dialog) shouldn't navigate
+    if (roomIdsToDelete.has(cursorRoomId)) {
+      changeCurrentRoomInPlace(state, nextRoom);
+    }
 
     for (const deletedRoomId of roomIdsToDelete) {
       delete state.campaignInProgress.rooms[deletedRoomId];

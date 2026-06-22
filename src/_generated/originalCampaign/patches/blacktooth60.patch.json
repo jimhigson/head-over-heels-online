@@ -53,12 +53,12 @@
   {
     "op": "replace",
     "path": "/items/br1/position/x",
-    "value": 2.6
+    "value": 2.625
   },
   {
     "op": "replace",
     "path": "/items/br/position/y",
-    "value": 3.4
+    "value": 3.375
   },
   {
     "op": "add",

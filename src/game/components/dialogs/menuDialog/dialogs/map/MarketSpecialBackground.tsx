@@ -1,4 +1,5 @@
 import { type OriginalCampaignRoomId } from "../../../../../../_generated/originalCampaign/OriginalCampaignRoomId";
+import { type SortedObjectOfRoomGridPositionSpecs } from "../../../../../../model/map/sortRoomGridPositions";
 import { useTotalUpscale } from "../../../../../../store/slices/upscale/upscaleSelectors";
 import {
   addXy,
@@ -12,7 +13,6 @@ import { MapBackgroundSection } from "./MapBackgroundSection";
 import { mapClasses } from "./mapColours";
 import { mapSvgMarginX, mapSvgMarginY } from "./mapConstants";
 import { roomWorldPosition } from "./roomWorldPosition";
-import { type SortedObjectOfRoomGridPositionSpecs } from "./sortRoomGridPositions";
 import { pathXy } from "./svgHelpers";
 
 /**

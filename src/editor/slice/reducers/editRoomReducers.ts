@@ -1,12 +1,13 @@
 import { type PayloadAction, type SliceCaseReducers } from "@reduxjs/toolkit";
 
-import { roomGridPositions } from "../../../game/components/dialogs/menuDialog/dialogs/map/roomGridPositions";
 import { changeRoomSceneryInPlace } from "../../../model/inPlaceMutators/changeRoomSceneryInPlace";
+import { doorLinkNeedsToDoor } from "../../../model/json/candidatePartnerDoors";
 import {
   exitGameRoomId,
   type FloorType,
 } from "../../../model/json/ItemConfigMap";
 import { type JsonItemConfig } from "../../../model/json/JsonItem";
+import { roomGridPositions } from "../../../model/map/roomGridPositions";
 import {
   isWholeRoomSubRooms,
   iterateRoomJsonItemsWithIds,
@@ -139,7 +140,7 @@ const roomAtVerticalNeighbour = (
       campaign: state.campaignInProgress,
       roomId: room.id,
       subRoomId,
-    }),
+    }).keys(),
   ].find(({ gridPosition }) => xyzEqual(gridPosition, neighbourVector));
 
   if (
@@ -299,7 +300,21 @@ export const editRoomReducers = {
             // Exactly one matching door found; update it to point back to us:
             const [[, doorToChange]] = matchingDoors;
             doorToChange.config.toRoom = newRoomJson.id;
-            doorToChange.config.toDoor = doorItemId;
+            // only keep a toDoor when the link back is ambiguous (more than one
+            // door leads here). When it's the only one, the toDoor is redundant,
+            // so drop it rather than fight the verifier that would strip it.
+            if (
+              doorLinkNeedsToDoor(
+                rooms,
+                otherRoom.id,
+                newRoomJson.id,
+                doorToChange.config.direction,
+              )
+            ) {
+              doorToChange.config.toDoor = doorItemId;
+            } else {
+              delete doorToChange.config.toDoor;
+            }
             break;
           }
           default:
@@ -311,8 +326,14 @@ export const editRoomReducers = {
     const prevOutboundNCR = roomNonContiguousRelationship(prevRoomJson);
     const nextOutboundNCR = roomNonContiguousRelationship(newRoomJson);
     if (nextOutboundNCR !== undefined) {
+      const outboundRoom = rooms[nextOutboundNCR.with.room];
+      if (outboundRoom === undefined) {
+        throw new Error(
+          `room ${newRoomJson.id} has a non-contiguous link to non-existing room ${nextOutboundNCR.with.room}`,
+        );
+      }
       // add a link back from the new NCR room:
-      writeRoomNonContiguousRelationship(rooms[nextOutboundNCR.with.room], {
+      writeRoomNonContiguousRelationship(outboundRoom, {
         with: { room: newRoomJson.id },
         gridOffset: scaleXyz(nextOutboundNCR.gridOffset, -1),
       });
@@ -325,6 +346,11 @@ export const editRoomReducers = {
       // we were linking to a room, but are not linking to that room anymore -
       // break the inbound link:
       const prevNcrRoom = rooms[prevOutboundNCR.with.room];
+      if (prevNcrRoom === undefined) {
+        throw new Error(
+          `room ${newRoomJson.id} has a non-contiguous link to non-existing room ${prevOutboundNCR.with.room}`,
+        );
+      }
       if (
         roomNonContiguousRelationship(prevNcrRoom)?.with.room ===
         selectCursorRoomId(state)

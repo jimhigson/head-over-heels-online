@@ -7,7 +7,7 @@ export const room = inferRoomJson({
   items: {
     br: {
       config: { axis: "y", times: { y: 4, z: 3 } },
-      position: { x: 6.375, y: 2.8125, z: 0 },
+      position: { x: 6.375, y: 2.875, z: 0 },
       type: "barrier",
     },
     br1: {

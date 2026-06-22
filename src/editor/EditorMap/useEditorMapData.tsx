@@ -6,13 +6,13 @@ import {
   type MapDataError,
 } from "../../game/components/dialogs/menuDialog/dialogs/map/MapData";
 import { computeNotableItemsByCell } from "../../game/components/dialogs/menuDialog/dialogs/map/notableItemsByCell";
-import { roomGridPositions } from "../../game/components/dialogs/menuDialog/dialogs/map/roomGridPositions";
-import { sortRoomGridPositions } from "../../game/components/dialogs/menuDialog/dialogs/map/sortRoomGridPositions";
-import { type TeleporterLink } from "../../game/components/dialogs/menuDialog/dialogs/map/teleporterLinks";
 import {
   type CharacterRooms,
   type PickupsCollected,
 } from "../../game/gameState/GameState";
+import { roomGridPositions } from "../../model/map/roomGridPositions";
+import { sortRoomGridPositions } from "../../model/map/sortRoomGridPositions";
+import { type TeleporterLink } from "../../model/map/teleporterLinks";
 import { type EditorRootState, useEditorAppSelector } from "../../store/store";
 import { emptyObject } from "../../utils/empty";
 import { createSerialisableErrors } from "../../utils/redux/createSerialisableErrors";
@@ -32,15 +32,29 @@ export const selectEditorMapData = createSelector(
     curRoomScenery,
   ): MapData<EditorRoomId> | MapDataError => {
     try {
+      const graph = roomGridPositions({ campaign, roomId, subRoomId });
+      const positions = [...graph.keys()];
+
       const teleporterLinks: TeleporterLink<EditorRoomId>[] = [];
-      const positions = [
-        ...roomGridPositions({
-          campaign,
-          roomId,
-          subRoomId,
-          teleporterLinksOut: teleporterLinks,
-        }),
-      ];
+      for (const [from, edges] of graph) {
+        for (const [to, edge] of edges) {
+          if (edge.kind === "teleporter") {
+            teleporterLinks.push({
+              from: {
+                roomId: from.roomId,
+                subRoomId: from.subRoomId,
+                itemId: edge.viaItemId,
+              },
+              to: {
+                roomId: to.roomId,
+                subRoomId: to.subRoomId,
+                itemId: edge.toItemId,
+              },
+            });
+          }
+        }
+      }
+
       const sortedObjectOfPositions = sortRoomGridPositions(positions);
 
       return {

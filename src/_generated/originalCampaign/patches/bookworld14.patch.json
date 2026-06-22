@@ -95,7 +95,7 @@
   {
     "op": "replace",
     "path": "/items/br/position/y",
-    "value": 2.8125
+    "value": 2.875
   },
   {
     "op": "replace",

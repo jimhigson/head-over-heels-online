@@ -389,6 +389,57 @@ describe('editing a door\'s "toRoom" config provides convenience methods to main
     expect(returnDoors).toHaveLength(1);
     const [returnDoor] = returnDoors;
     expect(returnDoor.config.direction).toBe("away");
+    // only one door links the two rooms, so neither end needs a toDoor (it
+    // would be redundant and the verifier would just strip it)
+    expect(returnDoor.config.toDoor).toBeUndefined();
+    const outgoingDoor = result.campaignInProgress.rooms[testRoomId].items[
+      "door1" as EditorRoomItemId
+    ] as EditorJsonItem<"door">;
+    expect(outgoingDoor.config.toDoor).toBeUndefined();
+  });
+
+  test("adds a toDoor to disambiguate when more than one door links the two rooms", () => {
+    const twoDoorState: LevelEditorState = produce(
+      stateWithTwoRooms,
+      (draft) => {
+        const room = draft.campaignInProgress.rooms[testRoomId];
+        // two doors from this room both lead to the other room, so a return
+        // link can't be resolved by direction alone:
+        room.items["door1" as EditorRoomItemId] = {
+          type: "door",
+          position: { x: 0, y: 0, z: 0 },
+          config: { direction: "towards", toRoom: otherRoomId },
+        };
+        room.items["door2" as EditorRoomItemId] = {
+          type: "door",
+          position: { x: 3, y: 0, z: 0 },
+          config: { direction: "towards", toRoom: otherRoomId },
+        };
+      },
+    );
+
+    const currentRoom = twoDoorState.campaignInProgress.rooms[
+      testRoomId
+    ] as EditorRoomJson;
+
+    const result = reduceLevelEditorActions(
+      twoDoorState,
+      roomJsonEdited({ roomJson: structuredClone(currentRoom), timestamp: 0 }),
+    );
+
+    const otherRoom = result.campaignInProgress.rooms[otherRoomId];
+    const returnDoors = roomJsonItemsIterable(otherRoom)
+      .filter(
+        (item): item is EditorJsonItem<"door"> =>
+          item.type === "door" && item.config.toRoom === testRoomId,
+      )
+      .toArray();
+
+    // the link is ambiguous, so a toDoor is needed and gets set
+    expect(returnDoors.length).toBeGreaterThanOrEqual(1);
+    expect(returnDoors.some((door) => door.config.toDoor !== undefined)).toBe(
+      true,
+    );
   });
 
   test("changing toRoom repurposes an existing opposite-direction door in the target room", () => {
@@ -440,6 +491,8 @@ describe('editing a door\'s "toRoom" config provides convenience methods to main
 
     expect(returnDoor.config.toRoom).toBe(testRoomId);
     expect(returnDoor.position).toEqual({ x: 3, y: 0, z: 0 });
+    // only one door links the two rooms, so the repurposed door needs no toDoor
+    expect(returnDoor.config.toDoor).toBeUndefined();
   });
 
   test("does not repurpose a door that is not in the opposite direction", () => {
@@ -609,9 +662,11 @@ describe('editing a door\'s "toRoom" config provides convenience methods to main
     expect(aLeftDoor.config.toRoom).toBe(roomB);
     expect(aLeftDoor.config.direction).toBe("left");
 
-    // B's right door should not have been modified — it already pointed to A:
+    // B's right door still points to A (it was not repurposed to the wrong
+    // room), but its toDoor is now redundant - only one door links A and B - so
+    // it's cleaned up, matching what the verifier would do, instead of fought:
     expect(bRightDoor.config.toRoom).toBe(roomA);
-    expect(bRightDoor.config.toDoor).toBe(aLeftDoorId);
+    expect(bRightDoor.config.toDoor).toBeUndefined();
     expect(bRightDoor.config.direction).toBe("right");
 
     // B's left door should not have been modified:

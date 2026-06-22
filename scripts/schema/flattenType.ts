@@ -84,20 +84,25 @@ export class TypeFlattener {
     for (const prop of properties) {
       const propName = prop.getName();
 
-      // Skip symbol properties and invalid names
-      if (
-        propName.startsWith("__") ||
-        !propName.match(/^[a-zA-Z_$][a-zA-Z0-9_$]*$/)
-      ) {
+      // Skip only TS-internal symbol properties (eg __@iterator). Real string
+      // keys that aren't valid identifiers - such as the whole-room subRooms
+      // key "*" - are kept and emitted as quoted keys below.
+      if (propName.startsWith("__")) {
         continue;
       }
+
+      const isIdentifierName = /^[a-zA-Z_$][a-zA-Z0-9_$]*$/.test(propName);
+      // a non-identifier key (eg "*") must be quoted where used as a property,
+      // and sanitised before being spliced into a generated type-alias name
+      const propKey = isIdentifierName ? propName : JSON.stringify(propName);
+      const nameForType = propName.replace(/[^a-zA-Z0-9_$]/g, "_");
 
       try {
         // Use better property type resolution
         const propDeclaration =
           prop.getValueDeclaration() ?? prop.getDeclarations()[0];
         if (!propDeclaration) {
-          propertyDefinitions.push(`  ${propName}: any;`);
+          propertyDefinitions.push(`  ${propKey}: any;`);
           continue;
         }
 
@@ -176,7 +181,7 @@ export class TypeFlattener {
           propTypeName = this.processType(
             typeToProcess,
             this.#capitalizeTypeName(
-              `${typeName}${propName.charAt(0).toUpperCase() + propName.slice(1)}`,
+              `${typeName}${nameForType.charAt(0).toUpperCase() + nameForType.slice(1)}`,
             ),
             depth + 1,
             isOptional && includesUndefined, // Pass flag to strip undefined
@@ -207,14 +212,14 @@ export class TypeFlattener {
         }
 
         propertyDefinitions.push(
-          `${jsDocComment}\n  ${propName}${isOptional ? "?" : ""}: ${propTypeName};`,
+          `${jsDocComment}\n  ${propKey}${isOptional ? "?" : ""}: ${propTypeName};`,
         );
       } catch (error) {
         // If we can't process a property, skip it or use any
         if (process.env.DEBUG) {
           console.error(`Error processing property ${propName}:`, error);
         }
-        propertyDefinitions.push(`  ${propName}: any;`);
+        propertyDefinitions.push(`  ${propKey}: any;`);
       }
     }
 
@@ -996,20 +1001,22 @@ export class TypeFlattener {
         continue;
       }
 
-      // Skip symbol properties and invalid names
-      if (
-        propName.startsWith("__") ||
-        !propName.match(/^[a-zA-Z_$][a-zA-Z0-9_$]*$/)
-      ) {
+      // Skip only TS-internal symbol properties (eg __@iterator); non-identifier
+      // string keys (eg "*") are kept and emitted as quoted keys below.
+      if (propName.startsWith("__")) {
         continue;
       }
+
+      const isIdentifierName = /^[a-zA-Z_$][a-zA-Z0-9_$]*$/.test(propName);
+      const propKey = isIdentifierName ? propName : JSON.stringify(propName);
+      const nameForType = propName.replace(/[^a-zA-Z0-9_$]/g, "_");
 
       try {
         // Use better property type resolution
         const propDeclaration =
           prop.getValueDeclaration() ?? prop.getDeclarations()[0];
         if (!propDeclaration) {
-          propertyDefinitions.push(`  ${propName}: any;`);
+          propertyDefinitions.push(`  ${propKey}: any;`);
           continue;
         }
 
@@ -1046,7 +1053,7 @@ export class TypeFlattener {
         const propTypeName = this.processType(
           propType,
           this.#capitalizeTypeName(
-            `${typeName}${propName.charAt(0).toUpperCase() + propName.slice(1)}`,
+            `${typeName}${nameForType.charAt(0).toUpperCase() + nameForType.slice(1)}`,
           ),
           depth + 1,
           isOptional && includesUndefined, // Pass flag to strip undefined
@@ -1076,14 +1083,14 @@ export class TypeFlattener {
         }
 
         propertyDefinitions.push(
-          `${jsDocComment}\n  ${propName}${isOptional ? "?" : ""}: ${propTypeName};`,
+          `${jsDocComment}\n  ${propKey}${isOptional ? "?" : ""}: ${propTypeName};`,
         );
       } catch (error) {
         // If we can't process a property, skip it or use any
         if (process.env.DEBUG) {
           console.error(`Error processing property ${propName}:`, error);
         }
-        propertyDefinitions.push(`  ${propName}: any;`);
+        propertyDefinitions.push(`  ${propKey}: any;`);
       }
     }
 

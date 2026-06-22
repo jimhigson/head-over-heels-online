@@ -1,5 +1,5 @@
-import { type RoomGridPositionSpec } from "../../game/components/dialogs/menuDialog/dialogs/map/roomGridPositions";
-import { type SortedObjectOfRoomGridPositionSpecs } from "../../game/components/dialogs/menuDialog/dialogs/map/sortRoomGridPositions";
+import { type RoomNode } from "../../model/map/roomGridPositions";
+import { type SortedObjectOfRoomGridPositionSpecs } from "../../model/map/sortRoomGridPositions";
 import { valuesIter } from "../../utils/entries";
 import { type Xy } from "../../utils/vectors/vectors";
 import { type EditorRoomId } from "../editorTypes";
@@ -17,9 +17,7 @@ export const areRoomsCoalesceable = (
   const selectedSet = new Set(selectedRoomIds);
 
   const cellsByRoom = new Map<EditorRoomId, Xy[]>();
-  for (const spec of valuesIter<RoomGridPositionSpec<EditorRoomId>>(
-    gridPositions,
-  )) {
+  for (const spec of valuesIter<RoomNode<EditorRoomId>>(gridPositions)) {
     const roomId = spec.roomId as EditorRoomId;
     if (!selectedSet.has(roomId)) {
       continue;

@@ -1,5 +1,8 @@
 import { useMemo } from "preact/hooks";
 
+import { findSubRoomForItem } from "../../../../../../model/map/itemIsInSubRoom";
+import { roomGridPositions } from "../../../../../../model/map/roomGridPositions";
+import { sortRoomGridPositions } from "../../../../../../model/map/sortRoomGridPositions";
 import {
   useCurrentCampaign,
   useRoomsExplored,
@@ -8,11 +11,8 @@ import { selectCurrentRoomState } from "../../../../../gameState/gameStateSelect
 import { findStartingRoomsInCampaign } from "../../../../../gameState/loadGameState";
 import { useGameApi } from "../../../../GameApiContext";
 import { findMapBounds } from "./findMapBounds";
-import { findSubRoomForItem } from "./itemIsInSubRoom";
 import { type MapData } from "./MapData";
 import { computeNotableItemsByCell } from "./notableItemsByCell";
-import { roomGridPositions } from "./roomGridPositions";
-import { sortRoomGridPositions } from "./sortRoomGridPositions";
 import { useTickingCurrentCharacterName } from "./useTickingCurrentCharacterName";
 
 /**
@@ -65,7 +65,7 @@ export const useMapDataForCurrentGame = <
           campaign,
           roomId: centreRoomId,
           subRoomId: curSubRoom,
-        }),
+        }).keys(),
       ];
       const sortedObjectOfPositions = sortRoomGridPositions(positions);
 

@@ -1,3 +1,5 @@
+import { type SortedObjectOfRoomGridPositionSpecs } from "../../../../../../model/map/sortRoomGridPositions";
+import { type TeleporterLink } from "../../../../../../model/map/teleporterLinks";
 import {
   type CharacterName,
   type OptionallyNamedCampaign,
@@ -9,8 +11,6 @@ import {
 } from "../../../../../gameState/GameState";
 import { type Bounds } from "./Map.svg";
 import { type NotableItemsByCell } from "./notableItemsByCell";
-import { type SortedObjectOfRoomGridPositionSpecs } from "./sortRoomGridPositions";
-import { type TeleporterLink } from "./teleporterLinks";
 
 /**
  * everything needed to load the map -

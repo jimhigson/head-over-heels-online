@@ -203,6 +203,7 @@ export type LevelEditorSliceAction = ReturnType<
 export const {
   addRoom,
   applyItemTool,
+  campaignJsonAutoFixed,
   coalesceSelectedItems,
   coalesceSelectedRooms,
   changeDragInProgress,
