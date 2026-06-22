@@ -341,6 +341,21 @@ export class SpritesheetVariants {
     this.#sceneryPlayerSpritesheet = undefined;
   }
 
+  /**
+   * Throw away every baked RenderTexture (the original, the colourised variants
+   * and the uncolourised sheet), keeping the loaded base image. Used after a
+   * WebGL context loss: the restored WebGL context has no backing for the old
+   * RenderTextures, so the next rebuild() re-bakes them all - the original
+   * included, since it is left undefined here.
+   */
+  invalidateBakedTextures() {
+    destroySpritesheet(this.#originalSpritesheet);
+    this.#originalSpritesheet = undefined;
+    this.#destroyColourisedVariants();
+    destroySpritesheet(this.#uncolourisedSpritesheet);
+    this.#uncolourisedSpritesheet = undefined;
+  }
+
   destroy() {
     this.#loadImageAbortController?.abort();
     this.#loadImageAbortController = undefined;

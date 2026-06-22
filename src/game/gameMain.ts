@@ -170,6 +170,19 @@ export const gameMain = async <RoomId extends string>(
         writeInto: gameState,
       });
     },
+    loseWebGlContext() {
+      // the raw extension (not pixi's forceContextLoss) keeps this on pixi's
+      // involuntary-loss path, so pixi won't self-restore - mimicking a real
+      // driver reset. Restore after a perceptible gap to simulate a transient
+      // loss the browser recovers from, firing webglcontextrestored ->
+      // contextChange:
+      const loseContextExtension =
+        app.renderer.gl.getExtension("WEBGL_lose_context");
+      loseContextExtension?.loseContext();
+      setTimeout(() => {
+        loseContextExtension?.restoreContext();
+      }, 50);
+    },
     stop() {
       console.warn("tearing down game");
       app.canvas.parentNode?.removeChild(app.canvas);
