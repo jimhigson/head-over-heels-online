@@ -1,5 +1,6 @@
 import { BlockyMarkdown } from "../../game/components/BlockyMarkdown";
 import { type EditorThunk } from "../../store/store";
+import { type EditorRoomId } from "../editorTypes";
 import {
   clearRoom,
   type LevelEditorSliceAction,
@@ -18,27 +19,28 @@ export const confirmThenDispatch =
     }
   };
 
-export const confirmDeleteRoomThunk: EditorThunk<Promise<void>> = async (
-  dispatch,
-  getState,
-) => {
-  const { cursorRoom } = getState().levelEditor;
-  const { roomId } = cursorRoom;
-  if (
-    await confirm({
-      heading: "Delete room?",
-      body: (
-        <BlockyMarkdown>{`**This can't be undone!**
+export const confirmDeleteRoomThunk =
+  (
+    /** the room to delete; defaults to the room the editor is currently on */
+    roomId?: EditorRoomId,
+  ): EditorThunk<Promise<void>> =>
+  async (dispatch, getState) => {
+    const targetRoomId = roomId ?? getState().levelEditor.cursorRoom.roomId;
+    if (
+      await confirm({
+        heading: "Delete room?",
+        body: (
+          <BlockyMarkdown>{`**This can't be undone!**
 
-* ${roomId}`}</BlockyMarkdown>
-      ),
-      cancelText: "Nope",
-      okText: "Delete",
-    })
-  ) {
-    dispatch(removeRoom());
-  }
-};
+* ${targetRoomId}`}</BlockyMarkdown>
+        ),
+        cancelText: "Nope",
+        okText: "Delete",
+      })
+    ) {
+      dispatch(removeRoom(roomId !== undefined ? { roomId } : undefined));
+    }
+  };
 
 export const confirmClearRoomThunk: EditorThunk<Promise<void>> = async (
   dispatch,

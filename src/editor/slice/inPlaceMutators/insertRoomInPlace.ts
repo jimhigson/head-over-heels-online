@@ -1,8 +1,8 @@
-import { findSubRoomForItem } from "../../../game/components/dialogs/menuDialog/dialogs/map/itemIsInSubRoom";
-import { roomGridPositions } from "../../../game/components/dialogs/menuDialog/dialogs/map/roomGridPositions";
 import { nextItemId } from "../../../model/inPlaceMutators/nextItemId";
 import { exitGameRoomId } from "../../../model/json/ItemConfigMap";
 import { typePrefix } from "../../../model/json/typePrefix";
+import { findSubRoomForItem } from "../../../model/map/itemIsInSubRoom";
+import { roomGridPositions } from "../../../model/map/roomGridPositions";
 import {
   iterateRoomJsonItemsWithIds,
   subRoomById,
@@ -152,7 +152,7 @@ export const insertRoomInPlace = (
       campaign: state.campaignInProgress,
       roomId: currentRoom.id,
       subRoomId: selectCursorSubRoomId(state),
-    }),
+    }).keys(),
   ];
   const targetSpec = gridPositions.find(({ gridPosition }) =>
     xyzEqual(gridPosition, unitVectors[direction]),

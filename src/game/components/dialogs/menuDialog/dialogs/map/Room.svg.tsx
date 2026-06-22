@@ -2,6 +2,10 @@ import { useRef } from "preact/hooks";
 import { Suspense } from "react";
 
 import {
+  type Boundaries,
+  type RoomNode,
+} from "../../../../../../model/map/roomGridPositions";
+import {
   type CharacterName,
   type IndividualCharacterName,
 } from "../../../../../../model/modelTypes";
@@ -39,10 +43,6 @@ import { PlayableItemInRoom } from "./NotableItem";
 import { type NotableItemsInCell } from "./notableItemsByCell";
 import { RoomDecoration } from "./RoomDecoration";
 import { type RoomBehaviourComponent } from "./RoomDecoratorProps";
-import {
-  type Boundaries,
-  type RoomGridPositionSpec,
-} from "./roomGridPositions";
 import { roomWorldPosition } from "./roomWorldPosition";
 import { project, roundForSvg, translateXyz } from "./svgHelpers";
 import { VisitedFootprint } from "./VisitedFootprint";
@@ -154,7 +154,7 @@ const labelLayoutByDirection = {
 };
 
 type RoomSvgProps<RoomId extends string> = {
-  roomGridPositionSpec: RoomGridPositionSpec<RoomId>;
+  roomGridPositionSpec: RoomNode<RoomId>;
   roomJson: RoomJson<RoomId, string>;
   roomVisited: boolean;
   headItemInRoom?: PlayableItem<"head", RoomId>;

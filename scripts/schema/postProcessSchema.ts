@@ -33,31 +33,40 @@ process.stdin.on("end", () => {
       node: JsonArray | JsonObject,
       path: string[] = [],
     ): void => {
-      // Check if we're at a position object with x, y, z properties
       if (isJsonObject(node)) {
         const currentPath = path.join(".");
-        if (currentPath.endsWith("properties.position")) {
-          assertIsJsonObject(node.properties);
 
-          // Add multipleOf to x and y (0.5)
-          if (node.properties.x) {
-            assertIsJsonObject(node.properties.x);
-            node.properties.x.multipleOf = 0.125;
-            node.properties.x.minimum = -30;
-            node.properties.x.maximum = 30;
+        // an item schema: its `properties` carries both a `type` discriminator and
+        // a `position`. We constrain the position to the grid here, where the item
+        // type is visible, so emitters can be allowed a finer z than everything else.
+        if (
+          isJsonObject(node.properties) &&
+          isJsonObject(node.properties.position) &&
+          isJsonObject(node.properties.position.properties)
+        ) {
+          const itemType =
+            isJsonObject(node.properties.type) ?
+              node.properties.type.const
+            : undefined;
+          const positionProperties = node.properties.position.properties;
+
+          // x and y are on the 1/8-block grid
+          for (const axis of ["x", "y"] as const) {
+            const axisSchema = positionProperties[axis];
+            if (axisSchema) {
+              assertIsJsonObject(axisSchema);
+              axisSchema.multipleOf = 0.125;
+              axisSchema.minimum = -30;
+              axisSchema.maximum = 30;
+            }
           }
-          if (node.properties.y) {
-            assertIsJsonObject(node.properties.y);
-            node.properties.y.multipleOf = 0.125;
-            node.properties.y.minimum = -30;
-            node.properties.y.maximum = 30;
-          }
-          // Add multipleOf to z (1)
-          if (node.properties.z) {
-            assertIsJsonObject(node.properties.z);
-            node.properties.z.multipleOf = 1;
-            node.properties.z.minimum = -30;
-            node.properties.z.maximum = 30;
+          // z is whole blocks for everything except emitters, which legitimately
+          // sit on a half-block
+          if (positionProperties.z) {
+            assertIsJsonObject(positionProperties.z);
+            positionProperties.z.multipleOf = itemType === "emitter" ? 0.5 : 1;
+            positionProperties.z.minimum = -30;
+            positionProperties.z.maximum = 30;
           }
         }
 

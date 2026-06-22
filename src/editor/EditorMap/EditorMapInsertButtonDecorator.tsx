@@ -2,12 +2,12 @@ import { type PropsWithChildren, type Ref } from "react";
 
 import { roomGridSizeXY } from "../../game/components/dialogs/menuDialog/dialogs/map/mapConstants";
 import { type RoomDecoratorProps } from "../../game/components/dialogs/menuDialog/dialogs/map/RoomDecoratorProps";
-import { type Boundaries } from "../../game/components/dialogs/menuDialog/dialogs/map/roomGridPositions";
 import { roomWorldPosition } from "../../game/components/dialogs/menuDialog/dialogs/map/roomWorldPosition";
-import { type SortedObjectOfRoomGridPositionSpecs } from "../../game/components/dialogs/menuDialog/dialogs/map/sortRoomGridPositions";
 import { translateXyz } from "../../game/components/dialogs/menuDialog/dialogs/map/svgHelpers";
 import { BitmapText } from "../../game/components/tailwindSprites/BitmapText";
 import { projectWorldXyzToScreenXy } from "../../game/render/projections";
+import { type Boundaries } from "../../model/map/roomGridPositions";
+import { type SortedObjectOfRoomGridPositionSpecs } from "../../model/map/sortRoomGridPositions";
 import { editorStore, useEditorAppSelector } from "../../store/store";
 import { valuesIter } from "../../utils/entries";
 import { useElementSize } from "../../utils/react/useElementSize";

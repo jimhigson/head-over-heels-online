@@ -1,8 +1,9 @@
 //# allFunctionsCalledOnLoad
 
+import { addEdge, deleteEdge } from "../../../utils/graph/Graph";
 import { GridSpatialIndex } from "../../physics/gridSpace/GridSpatialIndex";
 import { type DrawOrderComparable } from "./DrawOrderComparable";
-import { addEdge, deleteEdge, type ZGraph } from "./GraphEdges";
+import { type ZGraph } from "./GraphEdges";
 import { zComparator } from "./zComparator";
 
 /**

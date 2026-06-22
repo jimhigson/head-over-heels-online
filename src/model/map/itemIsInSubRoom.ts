@@ -1,12 +1,8 @@
-import { type JsonItemUnion } from "../../../../../../model/json/JsonItem";
-import {
-  isWholeRoomSubRooms,
-  type RoomJson,
-  type SubRooms,
-} from "../../../../../../model/RoomJson";
-import { keysIter } from "../../../../../../utils/entries";
-import { type Xy } from "../../../../../../utils/vectors/vectors";
-import { blockSizePx } from "../../../../../physics/mechanicsConstants";
+import { keysIter } from "../../utils/entries";
+import { type Xy } from "../../utils/vectors/vectors";
+import { blockSizePx } from "../blockSizePx";
+import { type JsonItemUnion } from "../json/JsonItem";
+import { isWholeRoomSubRooms, type RoomJson, type SubRooms } from "../RoomJson";
 
 export type MaybeDividedRoom = {
   id: string;

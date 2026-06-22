@@ -1,8 +1,8 @@
 import { type FunctionComponent, type RefObject } from "react";
 
+import { type Boundaries } from "../../../../../../model/map/roomGridPositions";
+import { type SortedObjectOfRoomGridPositionSpecs } from "../../../../../../model/map/sortRoomGridPositions";
 import { type MapData } from "./MapData";
-import { type Boundaries } from "./roomGridPositions";
-import { type SortedObjectOfRoomGridPositionSpecs } from "./sortRoomGridPositions";
 
 export type RoomDecoratorProps<RoomId extends string> = {
   roomId: RoomId;

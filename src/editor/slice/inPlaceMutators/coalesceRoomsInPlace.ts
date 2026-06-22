@@ -1,7 +1,7 @@
 import { consolidateItemsMap } from "../../../consolidateItems/consolidateItems";
-import { roomGridPositions } from "../../../game/components/dialogs/menuDialog/dialogs/map/roomGridPositions";
 import { nextItemIdSet } from "../../../model/inPlaceMutators/nextItemId";
 import { type AnyWallJsonConfig } from "../../../model/json/WallJsonConfig";
+import { roomGridPositions } from "../../../model/map/roomGridPositions";
 import {
   isWholeRoomSubRooms,
   roomJsonItemsEntriesIterable,
@@ -578,7 +578,7 @@ const computeGridPositionLookup = (
     campaign: state.campaignInProgress,
     roomId,
     subRoomId,
-  });
+  }).keys();
 
   const selectedSet = new Set(state.selectedRoomIds);
 

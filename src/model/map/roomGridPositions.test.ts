@@ -1,8 +1,8 @@
 import { expect, test } from "vitest";
 
-import { campaign } from "../../../../../../_generated/originalCampaign/campaign";
-import { exitGameRoomId } from "../../../../../../model/json/ItemConfigMap";
-import { type AnyRoomJson } from "../../../../../../model/RoomJson";
+import { campaign } from "../../_generated/originalCampaign/campaign";
+import { exitGameRoomId } from "../json/ItemConfigMap";
+import { type AnyRoomJson } from "../RoomJson";
 import { roomGridPositions } from "./roomGridPositions";
 import { sortRoomGridPositions } from "./sortRoomGridPositions";
 import { type TeleporterLink } from "./teleporterLinks";
@@ -13,7 +13,7 @@ test("traversing original campaign from the start room", () => {
       roomGridPositions({
         campaign,
         roomId: "blacktooth1head",
-      }),
+      }).keys(),
     ),
   ).toMatchInlineSnapshot(`
     {
@@ -31,6 +31,7 @@ test("traversing original campaign from the start room", () => {
         },
         "roomId": "blacktooth0switches",
         "subRoomId": "*",
+        "subgraph": 0,
       },
       "blacktooth10/left": {
         "boundaries": {
@@ -46,6 +47,7 @@ test("traversing original campaign from the start room", () => {
         },
         "roomId": "blacktooth10",
         "subRoomId": "left",
+        "subgraph": 0,
       },
       "blacktooth10/right": {
         "boundaries": {
@@ -61,6 +63,7 @@ test("traversing original campaign from the start room", () => {
         },
         "roomId": "blacktooth10",
         "subRoomId": "right",
+        "subgraph": 0,
       },
       "blacktooth11/*": {
         "boundaries": {
@@ -76,6 +79,7 @@ test("traversing original campaign from the start room", () => {
         },
         "roomId": "blacktooth11",
         "subRoomId": "*",
+        "subgraph": 0,
       },
       "blacktooth12/*": {
         "boundaries": {
@@ -91,6 +95,7 @@ test("traversing original campaign from the start room", () => {
         },
         "roomId": "blacktooth12",
         "subRoomId": "*",
+        "subgraph": 0,
       },
       "blacktooth13/*": {
         "boundaries": {
@@ -106,6 +111,7 @@ test("traversing original campaign from the start room", () => {
         },
         "roomId": "blacktooth13",
         "subRoomId": "*",
+        "subgraph": 0,
       },
       "blacktooth14/*": {
         "boundaries": {
@@ -121,6 +127,7 @@ test("traversing original campaign from the start room", () => {
         },
         "roomId": "blacktooth14",
         "subRoomId": "*",
+        "subgraph": 0,
       },
       "blacktooth15/*": {
         "boundaries": {
@@ -136,6 +143,7 @@ test("traversing original campaign from the start room", () => {
         },
         "roomId": "blacktooth15",
         "subRoomId": "*",
+        "subgraph": 0,
       },
       "blacktooth16/*": {
         "boundaries": {
@@ -151,6 +159,7 @@ test("traversing original campaign from the start room", () => {
         },
         "roomId": "blacktooth16",
         "subRoomId": "*",
+        "subgraph": 0,
       },
       "blacktooth17triple/left": {
         "boundaries": {
@@ -166,6 +175,7 @@ test("traversing original campaign from the start room", () => {
         },
         "roomId": "blacktooth17triple",
         "subRoomId": "left",
+        "subgraph": 0,
       },
       "blacktooth17triple/middle": {
         "boundaries": {
@@ -181,6 +191,7 @@ test("traversing original campaign from the start room", () => {
         },
         "roomId": "blacktooth17triple",
         "subRoomId": "middle",
+        "subgraph": 0,
       },
       "blacktooth17triple/right": {
         "boundaries": {
@@ -196,6 +207,7 @@ test("traversing original campaign from the start room", () => {
         },
         "roomId": "blacktooth17triple",
         "subRoomId": "right",
+        "subgraph": 0,
       },
       "blacktooth18/*": {
         "boundaries": {
@@ -211,6 +223,7 @@ test("traversing original campaign from the start room", () => {
         },
         "roomId": "blacktooth18",
         "subRoomId": "*",
+        "subgraph": 0,
       },
       "blacktooth19/*": {
         "boundaries": {
@@ -226,6 +239,7 @@ test("traversing original campaign from the start room", () => {
         },
         "roomId": "blacktooth19",
         "subRoomId": "*",
+        "subgraph": 0,
       },
       "blacktooth1head/*": {
         "boundaries": {
@@ -241,6 +255,7 @@ test("traversing original campaign from the start room", () => {
         },
         "roomId": "blacktooth1head",
         "subRoomId": "*",
+        "subgraph": 0,
       },
       "blacktooth2/*": {
         "boundaries": {
@@ -256,6 +271,7 @@ test("traversing original campaign from the start room", () => {
         },
         "roomId": "blacktooth2",
         "subRoomId": "*",
+        "subgraph": 0,
       },
       "blacktooth20/*": {
         "boundaries": {
@@ -271,6 +287,7 @@ test("traversing original campaign from the start room", () => {
         },
         "roomId": "blacktooth20",
         "subRoomId": "*",
+        "subgraph": 0,
       },
       "blacktooth21fish/*": {
         "boundaries": {
@@ -286,6 +303,7 @@ test("traversing original campaign from the start room", () => {
         },
         "roomId": "blacktooth21fish",
         "subRoomId": "*",
+        "subgraph": 0,
       },
       "blacktooth22/*": {
         "boundaries": {
@@ -301,6 +319,7 @@ test("traversing original campaign from the start room", () => {
         },
         "roomId": "blacktooth22",
         "subRoomId": "*",
+        "subgraph": 0,
       },
       "blacktooth23heels/*": {
         "boundaries": {
@@ -316,6 +335,7 @@ test("traversing original campaign from the start room", () => {
         },
         "roomId": "blacktooth23heels",
         "subRoomId": "*",
+        "subgraph": 0,
       },
       "blacktooth24/*": {
         "boundaries": {
@@ -331,6 +351,7 @@ test("traversing original campaign from the start room", () => {
         },
         "roomId": "blacktooth24",
         "subRoomId": "*",
+        "subgraph": 0,
       },
       "blacktooth25/*": {
         "boundaries": {
@@ -346,6 +367,7 @@ test("traversing original campaign from the start room", () => {
         },
         "roomId": "blacktooth25",
         "subRoomId": "*",
+        "subgraph": 0,
       },
       "blacktooth26/*": {
         "boundaries": {
@@ -361,6 +383,7 @@ test("traversing original campaign from the start room", () => {
         },
         "roomId": "blacktooth26",
         "subRoomId": "*",
+        "subgraph": 0,
       },
       "blacktooth27fish/*": {
         "boundaries": {
@@ -376,6 +399,7 @@ test("traversing original campaign from the start room", () => {
         },
         "roomId": "blacktooth27fish",
         "subRoomId": "*",
+        "subgraph": 0,
       },
       "blacktooth28/*": {
         "boundaries": {
@@ -391,6 +415,7 @@ test("traversing original campaign from the start room", () => {
         },
         "roomId": "blacktooth28",
         "subRoomId": "*",
+        "subgraph": 0,
       },
       "blacktooth29/*": {
         "boundaries": {
@@ -406,6 +431,7 @@ test("traversing original campaign from the start room", () => {
         },
         "roomId": "blacktooth29",
         "subRoomId": "*",
+        "subgraph": 0,
       },
       "blacktooth3/*": {
         "boundaries": {
@@ -421,6 +447,7 @@ test("traversing original campaign from the start room", () => {
         },
         "roomId": "blacktooth3",
         "subRoomId": "*",
+        "subgraph": 0,
       },
       "blacktooth30/*": {
         "boundaries": {
@@ -436,6 +463,7 @@ test("traversing original campaign from the start room", () => {
         },
         "roomId": "blacktooth30",
         "subRoomId": "*",
+        "subgraph": 0,
       },
       "blacktooth31/left": {
         "boundaries": {
@@ -451,6 +479,7 @@ test("traversing original campaign from the start room", () => {
         },
         "roomId": "blacktooth31",
         "subRoomId": "left",
+        "subgraph": 0,
       },
       "blacktooth31/right": {
         "boundaries": {
@@ -466,6 +495,7 @@ test("traversing original campaign from the start room", () => {
         },
         "roomId": "blacktooth31",
         "subRoomId": "right",
+        "subgraph": 0,
       },
       "blacktooth32/*": {
         "boundaries": {
@@ -481,6 +511,7 @@ test("traversing original campaign from the start room", () => {
         },
         "roomId": "blacktooth32",
         "subRoomId": "*",
+        "subgraph": 0,
       },
       "blacktooth33/*": {
         "boundaries": {
@@ -496,6 +527,7 @@ test("traversing original campaign from the start room", () => {
         },
         "roomId": "blacktooth33",
         "subRoomId": "*",
+        "subgraph": 0,
       },
       "blacktooth34/*": {
         "boundaries": {
@@ -511,6 +543,7 @@ test("traversing original campaign from the start room", () => {
         },
         "roomId": "blacktooth34",
         "subRoomId": "*",
+        "subgraph": 0,
       },
       "blacktooth35/left": {
         "boundaries": {
@@ -526,6 +559,7 @@ test("traversing original campaign from the start room", () => {
         },
         "roomId": "blacktooth35",
         "subRoomId": "left",
+        "subgraph": 0,
       },
       "blacktooth35/right": {
         "boundaries": {
@@ -541,6 +575,7 @@ test("traversing original campaign from the start room", () => {
         },
         "roomId": "blacktooth35",
         "subRoomId": "right",
+        "subgraph": 0,
       },
       "blacktooth36/*": {
         "boundaries": {
@@ -556,6 +591,7 @@ test("traversing original campaign from the start room", () => {
         },
         "roomId": "blacktooth36",
         "subRoomId": "*",
+        "subgraph": 0,
       },
       "blacktooth37/*": {
         "boundaries": {
@@ -571,6 +607,7 @@ test("traversing original campaign from the start room", () => {
         },
         "roomId": "blacktooth37",
         "subRoomId": "*",
+        "subgraph": 0,
       },
       "blacktooth38/*": {
         "boundaries": {
@@ -586,6 +623,7 @@ test("traversing original campaign from the start room", () => {
         },
         "roomId": "blacktooth38",
         "subRoomId": "*",
+        "subgraph": 0,
       },
       "blacktooth39/*": {
         "boundaries": {
@@ -601,6 +639,7 @@ test("traversing original campaign from the start room", () => {
         },
         "roomId": "blacktooth39",
         "subRoomId": "*",
+        "subgraph": 0,
       },
       "blacktooth4/*": {
         "boundaries": {
@@ -616,6 +655,7 @@ test("traversing original campaign from the start room", () => {
         },
         "roomId": "blacktooth4",
         "subRoomId": "*",
+        "subgraph": 0,
       },
       "blacktooth40fish/left": {
         "boundaries": {
@@ -631,6 +671,7 @@ test("traversing original campaign from the start room", () => {
         },
         "roomId": "blacktooth40fish",
         "subRoomId": "left",
+        "subgraph": 0,
       },
       "blacktooth40fish/right": {
         "boundaries": {
@@ -646,6 +687,7 @@ test("traversing original campaign from the start room", () => {
         },
         "roomId": "blacktooth40fish",
         "subRoomId": "right",
+        "subgraph": 0,
       },
       "blacktooth41/*": {
         "boundaries": {
@@ -661,6 +703,7 @@ test("traversing original campaign from the start room", () => {
         },
         "roomId": "blacktooth41",
         "subRoomId": "*",
+        "subgraph": 0,
       },
       "blacktooth42/*": {
         "boundaries": {
@@ -676,6 +719,7 @@ test("traversing original campaign from the start room", () => {
         },
         "roomId": "blacktooth42",
         "subRoomId": "*",
+        "subgraph": 0,
       },
       "blacktooth43/*": {
         "boundaries": {
@@ -691,6 +735,7 @@ test("traversing original campaign from the start room", () => {
         },
         "roomId": "blacktooth43",
         "subRoomId": "*",
+        "subgraph": 0,
       },
       "blacktooth44market/*": {
         "boundaries": {
@@ -706,6 +751,7 @@ test("traversing original campaign from the start room", () => {
         },
         "roomId": "blacktooth44market",
         "subRoomId": "*",
+        "subgraph": 0,
       },
       "blacktooth45market/*": {
         "boundaries": {
@@ -721,6 +767,7 @@ test("traversing original campaign from the start room", () => {
         },
         "roomId": "blacktooth45market",
         "subRoomId": "*",
+        "subgraph": 0,
       },
       "blacktooth46market/*": {
         "boundaries": {
@@ -736,6 +783,7 @@ test("traversing original campaign from the start room", () => {
         },
         "roomId": "blacktooth46market",
         "subRoomId": "*",
+        "subgraph": 0,
       },
       "blacktooth47market/*": {
         "boundaries": {
@@ -751,6 +799,7 @@ test("traversing original campaign from the start room", () => {
         },
         "roomId": "blacktooth47market",
         "subRoomId": "*",
+        "subgraph": 0,
       },
       "blacktooth48market/*": {
         "boundaries": {
@@ -766,6 +815,7 @@ test("traversing original campaign from the start room", () => {
         },
         "roomId": "blacktooth48market",
         "subRoomId": "*",
+        "subgraph": 0,
       },
       "blacktooth49market/*": {
         "boundaries": {
@@ -781,6 +831,7 @@ test("traversing original campaign from the start room", () => {
         },
         "roomId": "blacktooth49market",
         "subRoomId": "*",
+        "subgraph": 0,
       },
       "blacktooth5/*": {
         "boundaries": {
@@ -796,6 +847,7 @@ test("traversing original campaign from the start room", () => {
         },
         "roomId": "blacktooth5",
         "subRoomId": "*",
+        "subgraph": 0,
       },
       "blacktooth50market/*": {
         "boundaries": {
@@ -811,6 +863,7 @@ test("traversing original campaign from the start room", () => {
         },
         "roomId": "blacktooth50market",
         "subRoomId": "*",
+        "subgraph": 0,
       },
       "blacktooth51/*": {
         "boundaries": {
@@ -826,6 +879,7 @@ test("traversing original campaign from the start room", () => {
         },
         "roomId": "blacktooth51",
         "subRoomId": "*",
+        "subgraph": 0,
       },
       "blacktooth52market/*": {
         "boundaries": {
@@ -841,6 +895,7 @@ test("traversing original campaign from the start room", () => {
         },
         "roomId": "blacktooth52market",
         "subRoomId": "*",
+        "subgraph": 0,
       },
       "blacktooth53market/*": {
         "boundaries": {
@@ -856,6 +911,7 @@ test("traversing original campaign from the start room", () => {
         },
         "roomId": "blacktooth53market",
         "subRoomId": "*",
+        "subgraph": 0,
       },
       "blacktooth54/*": {
         "boundaries": {
@@ -871,6 +927,7 @@ test("traversing original campaign from the start room", () => {
         },
         "roomId": "blacktooth54",
         "subRoomId": "*",
+        "subgraph": 0,
       },
       "blacktooth55/*": {
         "boundaries": {
@@ -886,6 +943,7 @@ test("traversing original campaign from the start room", () => {
         },
         "roomId": "blacktooth55",
         "subRoomId": "*",
+        "subgraph": 0,
       },
       "blacktooth56/*": {
         "boundaries": {
@@ -901,6 +959,7 @@ test("traversing original campaign from the start room", () => {
         },
         "roomId": "blacktooth56",
         "subRoomId": "*",
+        "subgraph": 0,
       },
       "blacktooth57/*": {
         "boundaries": {
@@ -916,6 +975,7 @@ test("traversing original campaign from the start room", () => {
         },
         "roomId": "blacktooth57",
         "subRoomId": "*",
+        "subgraph": 0,
       },
       "blacktooth58triple/left": {
         "boundaries": {
@@ -931,6 +991,7 @@ test("traversing original campaign from the start room", () => {
         },
         "roomId": "blacktooth58triple",
         "subRoomId": "left",
+        "subgraph": 0,
       },
       "blacktooth58triple/middle": {
         "boundaries": {
@@ -946,6 +1007,7 @@ test("traversing original campaign from the start room", () => {
         },
         "roomId": "blacktooth58triple",
         "subRoomId": "middle",
+        "subgraph": 0,
       },
       "blacktooth58triple/right": {
         "boundaries": {
@@ -961,6 +1023,7 @@ test("traversing original campaign from the start room", () => {
         },
         "roomId": "blacktooth58triple",
         "subRoomId": "right",
+        "subgraph": 0,
       },
       "blacktooth59/*": {
         "boundaries": {
@@ -976,6 +1039,7 @@ test("traversing original campaign from the start room", () => {
         },
         "roomId": "blacktooth59",
         "subRoomId": "*",
+        "subgraph": 0,
       },
       "blacktooth6/*": {
         "boundaries": {
@@ -991,6 +1055,7 @@ test("traversing original campaign from the start room", () => {
         },
         "roomId": "blacktooth6",
         "subRoomId": "*",
+        "subgraph": 0,
       },
       "blacktooth60/*": {
         "boundaries": {
@@ -1006,6 +1071,7 @@ test("traversing original campaign from the start room", () => {
         },
         "roomId": "blacktooth60",
         "subRoomId": "*",
+        "subgraph": 0,
       },
       "blacktooth61/*": {
         "boundaries": {
@@ -1021,6 +1087,7 @@ test("traversing original campaign from the start room", () => {
         },
         "roomId": "blacktooth61",
         "subRoomId": "*",
+        "subgraph": 0,
       },
       "blacktooth62fish/left": {
         "boundaries": {
@@ -1036,6 +1103,7 @@ test("traversing original campaign from the start room", () => {
         },
         "roomId": "blacktooth62fish",
         "subRoomId": "left",
+        "subgraph": 0,
       },
       "blacktooth62fish/right": {
         "boundaries": {
@@ -1051,6 +1119,7 @@ test("traversing original campaign from the start room", () => {
         },
         "roomId": "blacktooth62fish",
         "subRoomId": "right",
+        "subgraph": 0,
       },
       "blacktooth63/*": {
         "boundaries": {
@@ -1066,6 +1135,7 @@ test("traversing original campaign from the start room", () => {
         },
         "roomId": "blacktooth63",
         "subRoomId": "*",
+        "subgraph": 0,
       },
       "blacktooth64/*": {
         "boundaries": {
@@ -1081,6 +1151,7 @@ test("traversing original campaign from the start room", () => {
         },
         "roomId": "blacktooth64",
         "subRoomId": "*",
+        "subgraph": 0,
       },
       "blacktooth65/*": {
         "boundaries": {
@@ -1096,6 +1167,7 @@ test("traversing original campaign from the start room", () => {
         },
         "roomId": "blacktooth65",
         "subRoomId": "*",
+        "subgraph": 0,
       },
       "blacktooth66/*": {
         "boundaries": {
@@ -1111,6 +1183,7 @@ test("traversing original campaign from the start room", () => {
         },
         "roomId": "blacktooth66",
         "subRoomId": "*",
+        "subgraph": 0,
       },
       "blacktooth67/*": {
         "boundaries": {
@@ -1126,6 +1199,7 @@ test("traversing original campaign from the start room", () => {
         },
         "roomId": "blacktooth67",
         "subRoomId": "*",
+        "subgraph": 0,
       },
       "blacktooth68/*": {
         "boundaries": {
@@ -1141,6 +1215,7 @@ test("traversing original campaign from the start room", () => {
         },
         "roomId": "blacktooth68",
         "subRoomId": "*",
+        "subgraph": 0,
       },
       "blacktooth69/*": {
         "boundaries": {
@@ -1156,6 +1231,7 @@ test("traversing original campaign from the start room", () => {
         },
         "roomId": "blacktooth69",
         "subRoomId": "*",
+        "subgraph": 0,
       },
       "blacktooth7/*": {
         "boundaries": {
@@ -1171,6 +1247,7 @@ test("traversing original campaign from the start room", () => {
         },
         "roomId": "blacktooth7",
         "subRoomId": "*",
+        "subgraph": 0,
       },
       "blacktooth70/*": {
         "boundaries": {
@@ -1186,6 +1263,7 @@ test("traversing original campaign from the start room", () => {
         },
         "roomId": "blacktooth70",
         "subRoomId": "*",
+        "subgraph": 0,
       },
       "blacktooth71/*": {
         "boundaries": {
@@ -1201,6 +1279,7 @@ test("traversing original campaign from the start room", () => {
         },
         "roomId": "blacktooth71",
         "subRoomId": "*",
+        "subgraph": 0,
       },
       "blacktooth72/*": {
         "boundaries": {
@@ -1216,6 +1295,7 @@ test("traversing original campaign from the start room", () => {
         },
         "roomId": "blacktooth72",
         "subRoomId": "*",
+        "subgraph": 0,
       },
       "blacktooth73/*": {
         "boundaries": {
@@ -1231,6 +1311,7 @@ test("traversing original campaign from the start room", () => {
         },
         "roomId": "blacktooth73",
         "subRoomId": "*",
+        "subgraph": 0,
       },
       "blacktooth74/*": {
         "boundaries": {
@@ -1246,6 +1327,7 @@ test("traversing original campaign from the start room", () => {
         },
         "roomId": "blacktooth74",
         "subRoomId": "*",
+        "subgraph": 0,
       },
       "blacktooth75/*": {
         "boundaries": {
@@ -1261,6 +1343,7 @@ test("traversing original campaign from the start room", () => {
         },
         "roomId": "blacktooth75",
         "subRoomId": "*",
+        "subgraph": 0,
       },
       "blacktooth76/*": {
         "boundaries": {
@@ -1276,6 +1359,7 @@ test("traversing original campaign from the start room", () => {
         },
         "roomId": "blacktooth76",
         "subRoomId": "*",
+        "subgraph": 0,
       },
       "blacktooth77/*": {
         "boundaries": {
@@ -1291,6 +1375,7 @@ test("traversing original campaign from the start room", () => {
         },
         "roomId": "blacktooth77",
         "subRoomId": "*",
+        "subgraph": 0,
       },
       "blacktooth78/*": {
         "boundaries": {
@@ -1306,6 +1391,7 @@ test("traversing original campaign from the start room", () => {
         },
         "roomId": "blacktooth78",
         "subRoomId": "*",
+        "subgraph": 0,
       },
       "blacktooth79fish/*": {
         "boundaries": {
@@ -1321,6 +1407,7 @@ test("traversing original campaign from the start room", () => {
         },
         "roomId": "blacktooth79fish",
         "subRoomId": "*",
+        "subgraph": 0,
       },
       "blacktooth80/*": {
         "boundaries": {
@@ -1336,6 +1423,7 @@ test("traversing original campaign from the start room", () => {
         },
         "roomId": "blacktooth80",
         "subRoomId": "*",
+        "subgraph": 0,
       },
       "blacktooth81/*": {
         "boundaries": {
@@ -1351,6 +1439,7 @@ test("traversing original campaign from the start room", () => {
         },
         "roomId": "blacktooth81",
         "subRoomId": "*",
+        "subgraph": 0,
       },
       "blacktooth82/*": {
         "boundaries": {
@@ -1366,6 +1455,7 @@ test("traversing original campaign from the start room", () => {
         },
         "roomId": "blacktooth82",
         "subRoomId": "*",
+        "subgraph": 0,
       },
       "blacktooth83tofreedom/*": {
         "boundaries": {
@@ -1381,6 +1471,7 @@ test("traversing original campaign from the start room", () => {
         },
         "roomId": "blacktooth83tofreedom",
         "subRoomId": "*",
+        "subgraph": 0,
       },
       "blacktooth84/*": {
         "boundaries": {
@@ -1396,6 +1487,7 @@ test("traversing original campaign from the start room", () => {
         },
         "roomId": "blacktooth84",
         "subRoomId": "*",
+        "subgraph": 0,
       },
       "blacktooth85/*": {
         "boundaries": {
@@ -1411,6 +1503,7 @@ test("traversing original campaign from the start room", () => {
         },
         "roomId": "blacktooth85",
         "subRoomId": "*",
+        "subgraph": 0,
       },
       "blacktooth86/*": {
         "boundaries": {
@@ -1426,6 +1519,7 @@ test("traversing original campaign from the start room", () => {
         },
         "roomId": "blacktooth86",
         "subRoomId": "*",
+        "subgraph": 0,
       },
       "blacktooth87crown/*": {
         "boundaries": {
@@ -1441,6 +1535,7 @@ test("traversing original campaign from the start room", () => {
         },
         "roomId": "blacktooth87crown",
         "subRoomId": "*",
+        "subgraph": 0,
       },
       "blacktooth8fish/*": {
         "boundaries": {
@@ -1456,6 +1551,7 @@ test("traversing original campaign from the start room", () => {
         },
         "roomId": "blacktooth8fish",
         "subRoomId": "*",
+        "subgraph": 0,
       },
       "blacktooth9/*": {
         "boundaries": {
@@ -1471,6 +1567,7 @@ test("traversing original campaign from the start room", () => {
         },
         "roomId": "blacktooth9",
         "subRoomId": "*",
+        "subgraph": 0,
       },
       "finalroom/*": {
         "boundaries": {
@@ -1486,6 +1583,7 @@ test("traversing original campaign from the start room", () => {
         },
         "roomId": "finalroom",
         "subRoomId": "*",
+        "subgraph": 0,
       },
       "moonbase1/*": {
         "boundaries": {
@@ -1501,6 +1599,7 @@ test("traversing original campaign from the start room", () => {
         },
         "roomId": "moonbase1",
         "subRoomId": "*",
+        "subgraph": 0,
       },
       "moonbase10/*": {
         "boundaries": {
@@ -1516,6 +1615,7 @@ test("traversing original campaign from the start room", () => {
         },
         "roomId": "moonbase10",
         "subRoomId": "*",
+        "subgraph": 0,
       },
       "moonbase11/*": {
         "boundaries": {
@@ -1531,6 +1631,7 @@ test("traversing original campaign from the start room", () => {
         },
         "roomId": "moonbase11",
         "subRoomId": "*",
+        "subgraph": 0,
       },
       "moonbase12/*": {
         "boundaries": {
@@ -1546,6 +1647,7 @@ test("traversing original campaign from the start room", () => {
         },
         "roomId": "moonbase12",
         "subRoomId": "*",
+        "subgraph": 0,
       },
       "moonbase13/*": {
         "boundaries": {
@@ -1561,6 +1663,7 @@ test("traversing original campaign from the start room", () => {
         },
         "roomId": "moonbase13",
         "subRoomId": "*",
+        "subgraph": 0,
       },
       "moonbase14/*": {
         "boundaries": {
@@ -1576,6 +1679,7 @@ test("traversing original campaign from the start room", () => {
         },
         "roomId": "moonbase14",
         "subRoomId": "*",
+        "subgraph": 0,
       },
       "moonbase15/*": {
         "boundaries": {
@@ -1591,6 +1695,7 @@ test("traversing original campaign from the start room", () => {
         },
         "roomId": "moonbase15",
         "subRoomId": "*",
+        "subgraph": 0,
       },
       "moonbase16/left": {
         "boundaries": {
@@ -1606,6 +1711,7 @@ test("traversing original campaign from the start room", () => {
         },
         "roomId": "moonbase16",
         "subRoomId": "left",
+        "subgraph": 0,
       },
       "moonbase16/right": {
         "boundaries": {
@@ -1621,6 +1727,7 @@ test("traversing original campaign from the start room", () => {
         },
         "roomId": "moonbase16",
         "subRoomId": "right",
+        "subgraph": 0,
       },
       "moonbase17/*": {
         "boundaries": {
@@ -1636,6 +1743,7 @@ test("traversing original campaign from the start room", () => {
         },
         "roomId": "moonbase17",
         "subRoomId": "*",
+        "subgraph": 0,
       },
       "moonbase18/*": {
         "boundaries": {
@@ -1651,6 +1759,7 @@ test("traversing original campaign from the start room", () => {
         },
         "roomId": "moonbase18",
         "subRoomId": "*",
+        "subgraph": 0,
       },
       "moonbase19/*": {
         "boundaries": {
@@ -1666,6 +1775,7 @@ test("traversing original campaign from the start room", () => {
         },
         "roomId": "moonbase19",
         "subRoomId": "*",
+        "subgraph": 0,
       },
       "moonbase2/*": {
         "boundaries": {
@@ -1681,6 +1791,7 @@ test("traversing original campaign from the start room", () => {
         },
         "roomId": "moonbase2",
         "subRoomId": "*",
+        "subgraph": 0,
       },
       "moonbase20/*": {
         "boundaries": {
@@ -1696,6 +1807,7 @@ test("traversing original campaign from the start room", () => {
         },
         "roomId": "moonbase20",
         "subRoomId": "*",
+        "subgraph": 0,
       },
       "moonbase21tosafari/*": {
         "boundaries": {
@@ -1711,6 +1823,7 @@ test("traversing original campaign from the start room", () => {
         },
         "roomId": "moonbase21tosafari",
         "subRoomId": "*",
+        "subgraph": 0,
       },
       "moonbase22topenitentiary/*": {
         "boundaries": {
@@ -1726,6 +1839,7 @@ test("traversing original campaign from the start room", () => {
         },
         "roomId": "moonbase22topenitentiary",
         "subRoomId": "*",
+        "subgraph": 0,
       },
       "moonbase23/*": {
         "boundaries": {
@@ -1741,6 +1855,7 @@ test("traversing original campaign from the start room", () => {
         },
         "roomId": "moonbase23",
         "subRoomId": "*",
+        "subgraph": 0,
       },
       "moonbase24toegyptus/*": {
         "boundaries": {
@@ -1756,6 +1871,7 @@ test("traversing original campaign from the start room", () => {
         },
         "roomId": "moonbase24toegyptus",
         "subRoomId": "*",
+        "subgraph": 0,
       },
       "moonbase25tobookworld/*": {
         "boundaries": {
@@ -1771,6 +1887,7 @@ test("traversing original campaign from the start room", () => {
         },
         "roomId": "moonbase25tobookworld",
         "subRoomId": "*",
+        "subgraph": 0,
       },
       "moonbase26/*": {
         "boundaries": {
@@ -1786,6 +1903,7 @@ test("traversing original campaign from the start room", () => {
         },
         "roomId": "moonbase26",
         "subRoomId": "*",
+        "subgraph": 0,
       },
       "moonbase27/*": {
         "boundaries": {
@@ -1801,6 +1919,7 @@ test("traversing original campaign from the start room", () => {
         },
         "roomId": "moonbase27",
         "subRoomId": "*",
+        "subgraph": 0,
       },
       "moonbase28/*": {
         "boundaries": {
@@ -1816,6 +1935,7 @@ test("traversing original campaign from the start room", () => {
         },
         "roomId": "moonbase28",
         "subRoomId": "*",
+        "subgraph": 0,
       },
       "moonbase29/*": {
         "boundaries": {
@@ -1831,6 +1951,7 @@ test("traversing original campaign from the start room", () => {
         },
         "roomId": "moonbase29",
         "subRoomId": "*",
+        "subgraph": 0,
       },
       "moonbase3/*": {
         "boundaries": {
@@ -1846,6 +1967,7 @@ test("traversing original campaign from the start room", () => {
         },
         "roomId": "moonbase3",
         "subRoomId": "*",
+        "subgraph": 0,
       },
       "moonbase30/*": {
         "boundaries": {
@@ -1861,6 +1983,7 @@ test("traversing original campaign from the start room", () => {
         },
         "roomId": "moonbase30",
         "subRoomId": "*",
+        "subgraph": 0,
       },
       "moonbase31/*": {
         "boundaries": {
@@ -1876,6 +1999,7 @@ test("traversing original campaign from the start room", () => {
         },
         "roomId": "moonbase31",
         "subRoomId": "*",
+        "subgraph": 0,
       },
       "moonbase32/*": {
         "boundaries": {
@@ -1891,6 +2015,7 @@ test("traversing original campaign from the start room", () => {
         },
         "roomId": "moonbase32",
         "subRoomId": "*",
+        "subgraph": 0,
       },
       "moonbase33triple/left": {
         "boundaries": {
@@ -1906,6 +2031,7 @@ test("traversing original campaign from the start room", () => {
         },
         "roomId": "moonbase33triple",
         "subRoomId": "left",
+        "subgraph": 0,
       },
       "moonbase33triple/middle": {
         "boundaries": {
@@ -1921,6 +2047,7 @@ test("traversing original campaign from the start room", () => {
         },
         "roomId": "moonbase33triple",
         "subRoomId": "middle",
+        "subgraph": 0,
       },
       "moonbase33triple/right": {
         "boundaries": {
@@ -1936,6 +2063,7 @@ test("traversing original campaign from the start room", () => {
         },
         "roomId": "moonbase33triple",
         "subRoomId": "right",
+        "subgraph": 0,
       },
       "moonbase34/*": {
         "boundaries": {
@@ -1951,6 +2079,7 @@ test("traversing original campaign from the start room", () => {
         },
         "roomId": "moonbase34",
         "subRoomId": "*",
+        "subgraph": 0,
       },
       "moonbase35/*": {
         "boundaries": {
@@ -1966,6 +2095,7 @@ test("traversing original campaign from the start room", () => {
         },
         "roomId": "moonbase35",
         "subRoomId": "*",
+        "subgraph": 0,
       },
       "moonbase36/*": {
         "boundaries": {
@@ -1981,6 +2111,7 @@ test("traversing original campaign from the start room", () => {
         },
         "roomId": "moonbase36",
         "subRoomId": "*",
+        "subgraph": 0,
       },
       "moonbase4/*": {
         "boundaries": {
@@ -1996,6 +2127,7 @@ test("traversing original campaign from the start room", () => {
         },
         "roomId": "moonbase4",
         "subRoomId": "*",
+        "subgraph": 0,
       },
       "moonbase5/*": {
         "boundaries": {
@@ -2011,6 +2143,7 @@ test("traversing original campaign from the start room", () => {
         },
         "roomId": "moonbase5",
         "subRoomId": "*",
+        "subgraph": 0,
       },
       "moonbase6/*": {
         "boundaries": {
@@ -2026,6 +2159,7 @@ test("traversing original campaign from the start room", () => {
         },
         "roomId": "moonbase6",
         "subRoomId": "*",
+        "subgraph": 0,
       },
       "moonbase7/*": {
         "boundaries": {
@@ -2041,6 +2175,7 @@ test("traversing original campaign from the start room", () => {
         },
         "roomId": "moonbase7",
         "subRoomId": "*",
+        "subgraph": 0,
       },
       "moonbase8/*": {
         "boundaries": {
@@ -2056,6 +2191,7 @@ test("traversing original campaign from the start room", () => {
         },
         "roomId": "moonbase8",
         "subRoomId": "*",
+        "subgraph": 0,
       },
       "moonbase9/*": {
         "boundaries": {
@@ -2071,6 +2207,7 @@ test("traversing original campaign from the start room", () => {
         },
         "roomId": "moonbase9",
         "subRoomId": "*",
+        "subgraph": 0,
       },
     }
   `);
@@ -2082,7 +2219,7 @@ test("traversing original campaign from the final room", () => {
       roomGridPositions({
         campaign,
         roomId: "finalroom",
-      }),
+      }).keys(),
     ),
   ).toMatchInlineSnapshot(`
     {
@@ -2100,6 +2237,7 @@ test("traversing original campaign from the final room", () => {
         },
         "roomId": "blacktooth0switches",
         "subRoomId": "*",
+        "subgraph": 0,
       },
       "blacktooth10/left": {
         "boundaries": {
@@ -2115,6 +2253,7 @@ test("traversing original campaign from the final room", () => {
         },
         "roomId": "blacktooth10",
         "subRoomId": "left",
+        "subgraph": 0,
       },
       "blacktooth10/right": {
         "boundaries": {
@@ -2130,6 +2269,7 @@ test("traversing original campaign from the final room", () => {
         },
         "roomId": "blacktooth10",
         "subRoomId": "right",
+        "subgraph": 0,
       },
       "blacktooth11/*": {
         "boundaries": {
@@ -2145,6 +2285,7 @@ test("traversing original campaign from the final room", () => {
         },
         "roomId": "blacktooth11",
         "subRoomId": "*",
+        "subgraph": 0,
       },
       "blacktooth12/*": {
         "boundaries": {
@@ -2160,6 +2301,7 @@ test("traversing original campaign from the final room", () => {
         },
         "roomId": "blacktooth12",
         "subRoomId": "*",
+        "subgraph": 0,
       },
       "blacktooth13/*": {
         "boundaries": {
@@ -2175,6 +2317,7 @@ test("traversing original campaign from the final room", () => {
         },
         "roomId": "blacktooth13",
         "subRoomId": "*",
+        "subgraph": 0,
       },
       "blacktooth14/*": {
         "boundaries": {
@@ -2190,6 +2333,7 @@ test("traversing original campaign from the final room", () => {
         },
         "roomId": "blacktooth14",
         "subRoomId": "*",
+        "subgraph": 0,
       },
       "blacktooth15/*": {
         "boundaries": {
@@ -2205,6 +2349,7 @@ test("traversing original campaign from the final room", () => {
         },
         "roomId": "blacktooth15",
         "subRoomId": "*",
+        "subgraph": 0,
       },
       "blacktooth16/*": {
         "boundaries": {
@@ -2220,6 +2365,7 @@ test("traversing original campaign from the final room", () => {
         },
         "roomId": "blacktooth16",
         "subRoomId": "*",
+        "subgraph": 0,
       },
       "blacktooth17triple/left": {
         "boundaries": {
@@ -2235,6 +2381,7 @@ test("traversing original campaign from the final room", () => {
         },
         "roomId": "blacktooth17triple",
         "subRoomId": "left",
+        "subgraph": 0,
       },
       "blacktooth17triple/middle": {
         "boundaries": {
@@ -2250,6 +2397,7 @@ test("traversing original campaign from the final room", () => {
         },
         "roomId": "blacktooth17triple",
         "subRoomId": "middle",
+        "subgraph": 0,
       },
       "blacktooth17triple/right": {
         "boundaries": {
@@ -2265,6 +2413,7 @@ test("traversing original campaign from the final room", () => {
         },
         "roomId": "blacktooth17triple",
         "subRoomId": "right",
+        "subgraph": 0,
       },
       "blacktooth18/*": {
         "boundaries": {
@@ -2280,6 +2429,7 @@ test("traversing original campaign from the final room", () => {
         },
         "roomId": "blacktooth18",
         "subRoomId": "*",
+        "subgraph": 0,
       },
       "blacktooth19/*": {
         "boundaries": {
@@ -2295,6 +2445,7 @@ test("traversing original campaign from the final room", () => {
         },
         "roomId": "blacktooth19",
         "subRoomId": "*",
+        "subgraph": 0,
       },
       "blacktooth1head/*": {
         "boundaries": {
@@ -2310,6 +2461,7 @@ test("traversing original campaign from the final room", () => {
         },
         "roomId": "blacktooth1head",
         "subRoomId": "*",
+        "subgraph": 0,
       },
       "blacktooth2/*": {
         "boundaries": {
@@ -2325,6 +2477,7 @@ test("traversing original campaign from the final room", () => {
         },
         "roomId": "blacktooth2",
         "subRoomId": "*",
+        "subgraph": 0,
       },
       "blacktooth20/*": {
         "boundaries": {
@@ -2340,6 +2493,7 @@ test("traversing original campaign from the final room", () => {
         },
         "roomId": "blacktooth20",
         "subRoomId": "*",
+        "subgraph": 0,
       },
       "blacktooth21fish/*": {
         "boundaries": {
@@ -2355,6 +2509,7 @@ test("traversing original campaign from the final room", () => {
         },
         "roomId": "blacktooth21fish",
         "subRoomId": "*",
+        "subgraph": 0,
       },
       "blacktooth22/*": {
         "boundaries": {
@@ -2370,6 +2525,7 @@ test("traversing original campaign from the final room", () => {
         },
         "roomId": "blacktooth22",
         "subRoomId": "*",
+        "subgraph": 0,
       },
       "blacktooth23heels/*": {
         "boundaries": {
@@ -2385,6 +2541,7 @@ test("traversing original campaign from the final room", () => {
         },
         "roomId": "blacktooth23heels",
         "subRoomId": "*",
+        "subgraph": 0,
       },
       "blacktooth24/*": {
         "boundaries": {
@@ -2400,6 +2557,7 @@ test("traversing original campaign from the final room", () => {
         },
         "roomId": "blacktooth24",
         "subRoomId": "*",
+        "subgraph": 0,
       },
       "blacktooth25/*": {
         "boundaries": {
@@ -2415,6 +2573,7 @@ test("traversing original campaign from the final room", () => {
         },
         "roomId": "blacktooth25",
         "subRoomId": "*",
+        "subgraph": 0,
       },
       "blacktooth26/*": {
         "boundaries": {
@@ -2430,6 +2589,7 @@ test("traversing original campaign from the final room", () => {
         },
         "roomId": "blacktooth26",
         "subRoomId": "*",
+        "subgraph": 0,
       },
       "blacktooth27fish/*": {
         "boundaries": {
@@ -2445,6 +2605,7 @@ test("traversing original campaign from the final room", () => {
         },
         "roomId": "blacktooth27fish",
         "subRoomId": "*",
+        "subgraph": 0,
       },
       "blacktooth28/*": {
         "boundaries": {
@@ -2460,6 +2621,7 @@ test("traversing original campaign from the final room", () => {
         },
         "roomId": "blacktooth28",
         "subRoomId": "*",
+        "subgraph": 0,
       },
       "blacktooth29/*": {
         "boundaries": {
@@ -2475,6 +2637,7 @@ test("traversing original campaign from the final room", () => {
         },
         "roomId": "blacktooth29",
         "subRoomId": "*",
+        "subgraph": 0,
       },
       "blacktooth3/*": {
         "boundaries": {
@@ -2490,6 +2653,7 @@ test("traversing original campaign from the final room", () => {
         },
         "roomId": "blacktooth3",
         "subRoomId": "*",
+        "subgraph": 0,
       },
       "blacktooth30/*": {
         "boundaries": {
@@ -2505,6 +2669,7 @@ test("traversing original campaign from the final room", () => {
         },
         "roomId": "blacktooth30",
         "subRoomId": "*",
+        "subgraph": 0,
       },
       "blacktooth31/left": {
         "boundaries": {
@@ -2520,6 +2685,7 @@ test("traversing original campaign from the final room", () => {
         },
         "roomId": "blacktooth31",
         "subRoomId": "left",
+        "subgraph": 0,
       },
       "blacktooth31/right": {
         "boundaries": {
@@ -2535,6 +2701,7 @@ test("traversing original campaign from the final room", () => {
         },
         "roomId": "blacktooth31",
         "subRoomId": "right",
+        "subgraph": 0,
       },
       "blacktooth32/*": {
         "boundaries": {
@@ -2550,6 +2717,7 @@ test("traversing original campaign from the final room", () => {
         },
         "roomId": "blacktooth32",
         "subRoomId": "*",
+        "subgraph": 0,
       },
       "blacktooth33/*": {
         "boundaries": {
@@ -2565,6 +2733,7 @@ test("traversing original campaign from the final room", () => {
         },
         "roomId": "blacktooth33",
         "subRoomId": "*",
+        "subgraph": 0,
       },
       "blacktooth34/*": {
         "boundaries": {
@@ -2580,6 +2749,7 @@ test("traversing original campaign from the final room", () => {
         },
         "roomId": "blacktooth34",
         "subRoomId": "*",
+        "subgraph": 0,
       },
       "blacktooth35/left": {
         "boundaries": {
@@ -2595,6 +2765,7 @@ test("traversing original campaign from the final room", () => {
         },
         "roomId": "blacktooth35",
         "subRoomId": "left",
+        "subgraph": 0,
       },
       "blacktooth35/right": {
         "boundaries": {
@@ -2610,6 +2781,7 @@ test("traversing original campaign from the final room", () => {
         },
         "roomId": "blacktooth35",
         "subRoomId": "right",
+        "subgraph": 0,
       },
       "blacktooth36/*": {
         "boundaries": {
@@ -2625,6 +2797,7 @@ test("traversing original campaign from the final room", () => {
         },
         "roomId": "blacktooth36",
         "subRoomId": "*",
+        "subgraph": 0,
       },
       "blacktooth37/*": {
         "boundaries": {
@@ -2640,6 +2813,7 @@ test("traversing original campaign from the final room", () => {
         },
         "roomId": "blacktooth37",
         "subRoomId": "*",
+        "subgraph": 0,
       },
       "blacktooth38/*": {
         "boundaries": {
@@ -2655,6 +2829,7 @@ test("traversing original campaign from the final room", () => {
         },
         "roomId": "blacktooth38",
         "subRoomId": "*",
+        "subgraph": 0,
       },
       "blacktooth39/*": {
         "boundaries": {
@@ -2670,6 +2845,7 @@ test("traversing original campaign from the final room", () => {
         },
         "roomId": "blacktooth39",
         "subRoomId": "*",
+        "subgraph": 0,
       },
       "blacktooth4/*": {
         "boundaries": {
@@ -2685,6 +2861,7 @@ test("traversing original campaign from the final room", () => {
         },
         "roomId": "blacktooth4",
         "subRoomId": "*",
+        "subgraph": 0,
       },
       "blacktooth40fish/left": {
         "boundaries": {
@@ -2700,6 +2877,7 @@ test("traversing original campaign from the final room", () => {
         },
         "roomId": "blacktooth40fish",
         "subRoomId": "left",
+        "subgraph": 0,
       },
       "blacktooth40fish/right": {
         "boundaries": {
@@ -2715,6 +2893,7 @@ test("traversing original campaign from the final room", () => {
         },
         "roomId": "blacktooth40fish",
         "subRoomId": "right",
+        "subgraph": 0,
       },
       "blacktooth41/*": {
         "boundaries": {
@@ -2730,6 +2909,7 @@ test("traversing original campaign from the final room", () => {
         },
         "roomId": "blacktooth41",
         "subRoomId": "*",
+        "subgraph": 0,
       },
       "blacktooth42/*": {
         "boundaries": {
@@ -2745,6 +2925,7 @@ test("traversing original campaign from the final room", () => {
         },
         "roomId": "blacktooth42",
         "subRoomId": "*",
+        "subgraph": 0,
       },
       "blacktooth43/*": {
         "boundaries": {
@@ -2760,6 +2941,7 @@ test("traversing original campaign from the final room", () => {
         },
         "roomId": "blacktooth43",
         "subRoomId": "*",
+        "subgraph": 0,
       },
       "blacktooth44market/*": {
         "boundaries": {
@@ -2775,6 +2957,7 @@ test("traversing original campaign from the final room", () => {
         },
         "roomId": "blacktooth44market",
         "subRoomId": "*",
+        "subgraph": 0,
       },
       "blacktooth45market/*": {
         "boundaries": {
@@ -2790,6 +2973,7 @@ test("traversing original campaign from the final room", () => {
         },
         "roomId": "blacktooth45market",
         "subRoomId": "*",
+        "subgraph": 0,
       },
       "blacktooth46market/*": {
         "boundaries": {
@@ -2805,6 +2989,7 @@ test("traversing original campaign from the final room", () => {
         },
         "roomId": "blacktooth46market",
         "subRoomId": "*",
+        "subgraph": 0,
       },
       "blacktooth47market/*": {
         "boundaries": {
@@ -2820,6 +3005,7 @@ test("traversing original campaign from the final room", () => {
         },
         "roomId": "blacktooth47market",
         "subRoomId": "*",
+        "subgraph": 0,
       },
       "blacktooth48market/*": {
         "boundaries": {
@@ -2835,6 +3021,7 @@ test("traversing original campaign from the final room", () => {
         },
         "roomId": "blacktooth48market",
         "subRoomId": "*",
+        "subgraph": 0,
       },
       "blacktooth49market/*": {
         "boundaries": {
@@ -2850,6 +3037,7 @@ test("traversing original campaign from the final room", () => {
         },
         "roomId": "blacktooth49market",
         "subRoomId": "*",
+        "subgraph": 0,
       },
       "blacktooth5/*": {
         "boundaries": {
@@ -2865,6 +3053,7 @@ test("traversing original campaign from the final room", () => {
         },
         "roomId": "blacktooth5",
         "subRoomId": "*",
+        "subgraph": 0,
       },
       "blacktooth50market/*": {
         "boundaries": {
@@ -2880,6 +3069,7 @@ test("traversing original campaign from the final room", () => {
         },
         "roomId": "blacktooth50market",
         "subRoomId": "*",
+        "subgraph": 0,
       },
       "blacktooth51/*": {
         "boundaries": {
@@ -2895,6 +3085,7 @@ test("traversing original campaign from the final room", () => {
         },
         "roomId": "blacktooth51",
         "subRoomId": "*",
+        "subgraph": 0,
       },
       "blacktooth52market/*": {
         "boundaries": {
@@ -2910,6 +3101,7 @@ test("traversing original campaign from the final room", () => {
         },
         "roomId": "blacktooth52market",
         "subRoomId": "*",
+        "subgraph": 0,
       },
       "blacktooth53market/*": {
         "boundaries": {
@@ -2925,6 +3117,7 @@ test("traversing original campaign from the final room", () => {
         },
         "roomId": "blacktooth53market",
         "subRoomId": "*",
+        "subgraph": 0,
       },
       "blacktooth54/*": {
         "boundaries": {
@@ -2940,6 +3133,7 @@ test("traversing original campaign from the final room", () => {
         },
         "roomId": "blacktooth54",
         "subRoomId": "*",
+        "subgraph": 0,
       },
       "blacktooth55/*": {
         "boundaries": {
@@ -2955,6 +3149,7 @@ test("traversing original campaign from the final room", () => {
         },
         "roomId": "blacktooth55",
         "subRoomId": "*",
+        "subgraph": 0,
       },
       "blacktooth56/*": {
         "boundaries": {
@@ -2970,6 +3165,7 @@ test("traversing original campaign from the final room", () => {
         },
         "roomId": "blacktooth56",
         "subRoomId": "*",
+        "subgraph": 0,
       },
       "blacktooth57/*": {
         "boundaries": {
@@ -2985,6 +3181,7 @@ test("traversing original campaign from the final room", () => {
         },
         "roomId": "blacktooth57",
         "subRoomId": "*",
+        "subgraph": 0,
       },
       "blacktooth58triple/left": {
         "boundaries": {
@@ -3000,6 +3197,7 @@ test("traversing original campaign from the final room", () => {
         },
         "roomId": "blacktooth58triple",
         "subRoomId": "left",
+        "subgraph": 0,
       },
       "blacktooth58triple/middle": {
         "boundaries": {
@@ -3015,6 +3213,7 @@ test("traversing original campaign from the final room", () => {
         },
         "roomId": "blacktooth58triple",
         "subRoomId": "middle",
+        "subgraph": 0,
       },
       "blacktooth58triple/right": {
         "boundaries": {
@@ -3030,6 +3229,7 @@ test("traversing original campaign from the final room", () => {
         },
         "roomId": "blacktooth58triple",
         "subRoomId": "right",
+        "subgraph": 0,
       },
       "blacktooth59/*": {
         "boundaries": {
@@ -3045,6 +3245,7 @@ test("traversing original campaign from the final room", () => {
         },
         "roomId": "blacktooth59",
         "subRoomId": "*",
+        "subgraph": 0,
       },
       "blacktooth6/*": {
         "boundaries": {
@@ -3060,6 +3261,7 @@ test("traversing original campaign from the final room", () => {
         },
         "roomId": "blacktooth6",
         "subRoomId": "*",
+        "subgraph": 0,
       },
       "blacktooth60/*": {
         "boundaries": {
@@ -3075,6 +3277,7 @@ test("traversing original campaign from the final room", () => {
         },
         "roomId": "blacktooth60",
         "subRoomId": "*",
+        "subgraph": 0,
       },
       "blacktooth61/*": {
         "boundaries": {
@@ -3090,6 +3293,7 @@ test("traversing original campaign from the final room", () => {
         },
         "roomId": "blacktooth61",
         "subRoomId": "*",
+        "subgraph": 0,
       },
       "blacktooth62fish/left": {
         "boundaries": {
@@ -3105,6 +3309,7 @@ test("traversing original campaign from the final room", () => {
         },
         "roomId": "blacktooth62fish",
         "subRoomId": "left",
+        "subgraph": 0,
       },
       "blacktooth62fish/right": {
         "boundaries": {
@@ -3120,6 +3325,7 @@ test("traversing original campaign from the final room", () => {
         },
         "roomId": "blacktooth62fish",
         "subRoomId": "right",
+        "subgraph": 0,
       },
       "blacktooth63/*": {
         "boundaries": {
@@ -3135,6 +3341,7 @@ test("traversing original campaign from the final room", () => {
         },
         "roomId": "blacktooth63",
         "subRoomId": "*",
+        "subgraph": 0,
       },
       "blacktooth64/*": {
         "boundaries": {
@@ -3150,6 +3357,7 @@ test("traversing original campaign from the final room", () => {
         },
         "roomId": "blacktooth64",
         "subRoomId": "*",
+        "subgraph": 0,
       },
       "blacktooth65/*": {
         "boundaries": {
@@ -3165,6 +3373,7 @@ test("traversing original campaign from the final room", () => {
         },
         "roomId": "blacktooth65",
         "subRoomId": "*",
+        "subgraph": 0,
       },
       "blacktooth66/*": {
         "boundaries": {
@@ -3180,6 +3389,7 @@ test("traversing original campaign from the final room", () => {
         },
         "roomId": "blacktooth66",
         "subRoomId": "*",
+        "subgraph": 0,
       },
       "blacktooth67/*": {
         "boundaries": {
@@ -3195,6 +3405,7 @@ test("traversing original campaign from the final room", () => {
         },
         "roomId": "blacktooth67",
         "subRoomId": "*",
+        "subgraph": 0,
       },
       "blacktooth68/*": {
         "boundaries": {
@@ -3210,6 +3421,7 @@ test("traversing original campaign from the final room", () => {
         },
         "roomId": "blacktooth68",
         "subRoomId": "*",
+        "subgraph": 0,
       },
       "blacktooth69/*": {
         "boundaries": {
@@ -3225,6 +3437,7 @@ test("traversing original campaign from the final room", () => {
         },
         "roomId": "blacktooth69",
         "subRoomId": "*",
+        "subgraph": 0,
       },
       "blacktooth7/*": {
         "boundaries": {
@@ -3240,6 +3453,7 @@ test("traversing original campaign from the final room", () => {
         },
         "roomId": "blacktooth7",
         "subRoomId": "*",
+        "subgraph": 0,
       },
       "blacktooth70/*": {
         "boundaries": {
@@ -3255,6 +3469,7 @@ test("traversing original campaign from the final room", () => {
         },
         "roomId": "blacktooth70",
         "subRoomId": "*",
+        "subgraph": 0,
       },
       "blacktooth71/*": {
         "boundaries": {
@@ -3270,6 +3485,7 @@ test("traversing original campaign from the final room", () => {
         },
         "roomId": "blacktooth71",
         "subRoomId": "*",
+        "subgraph": 0,
       },
       "blacktooth72/*": {
         "boundaries": {
@@ -3285,6 +3501,7 @@ test("traversing original campaign from the final room", () => {
         },
         "roomId": "blacktooth72",
         "subRoomId": "*",
+        "subgraph": 0,
       },
       "blacktooth73/*": {
         "boundaries": {
@@ -3300,6 +3517,7 @@ test("traversing original campaign from the final room", () => {
         },
         "roomId": "blacktooth73",
         "subRoomId": "*",
+        "subgraph": 0,
       },
       "blacktooth74/*": {
         "boundaries": {
@@ -3315,6 +3533,7 @@ test("traversing original campaign from the final room", () => {
         },
         "roomId": "blacktooth74",
         "subRoomId": "*",
+        "subgraph": 0,
       },
       "blacktooth75/*": {
         "boundaries": {
@@ -3330,6 +3549,7 @@ test("traversing original campaign from the final room", () => {
         },
         "roomId": "blacktooth75",
         "subRoomId": "*",
+        "subgraph": 0,
       },
       "blacktooth76/*": {
         "boundaries": {
@@ -3345,6 +3565,7 @@ test("traversing original campaign from the final room", () => {
         },
         "roomId": "blacktooth76",
         "subRoomId": "*",
+        "subgraph": 0,
       },
       "blacktooth77/*": {
         "boundaries": {
@@ -3360,6 +3581,7 @@ test("traversing original campaign from the final room", () => {
         },
         "roomId": "blacktooth77",
         "subRoomId": "*",
+        "subgraph": 0,
       },
       "blacktooth78/*": {
         "boundaries": {
@@ -3375,6 +3597,7 @@ test("traversing original campaign from the final room", () => {
         },
         "roomId": "blacktooth78",
         "subRoomId": "*",
+        "subgraph": 0,
       },
       "blacktooth79fish/*": {
         "boundaries": {
@@ -3390,6 +3613,7 @@ test("traversing original campaign from the final room", () => {
         },
         "roomId": "blacktooth79fish",
         "subRoomId": "*",
+        "subgraph": 0,
       },
       "blacktooth80/*": {
         "boundaries": {
@@ -3405,6 +3629,7 @@ test("traversing original campaign from the final room", () => {
         },
         "roomId": "blacktooth80",
         "subRoomId": "*",
+        "subgraph": 0,
       },
       "blacktooth81/*": {
         "boundaries": {
@@ -3420,6 +3645,7 @@ test("traversing original campaign from the final room", () => {
         },
         "roomId": "blacktooth81",
         "subRoomId": "*",
+        "subgraph": 0,
       },
       "blacktooth82/*": {
         "boundaries": {
@@ -3435,6 +3661,7 @@ test("traversing original campaign from the final room", () => {
         },
         "roomId": "blacktooth82",
         "subRoomId": "*",
+        "subgraph": 0,
       },
       "blacktooth83tofreedom/*": {
         "boundaries": {
@@ -3450,6 +3677,7 @@ test("traversing original campaign from the final room", () => {
         },
         "roomId": "blacktooth83tofreedom",
         "subRoomId": "*",
+        "subgraph": 0,
       },
       "blacktooth84/*": {
         "boundaries": {
@@ -3465,6 +3693,7 @@ test("traversing original campaign from the final room", () => {
         },
         "roomId": "blacktooth84",
         "subRoomId": "*",
+        "subgraph": 0,
       },
       "blacktooth85/*": {
         "boundaries": {
@@ -3480,6 +3709,7 @@ test("traversing original campaign from the final room", () => {
         },
         "roomId": "blacktooth85",
         "subRoomId": "*",
+        "subgraph": 0,
       },
       "blacktooth86/*": {
         "boundaries": {
@@ -3495,6 +3725,7 @@ test("traversing original campaign from the final room", () => {
         },
         "roomId": "blacktooth86",
         "subRoomId": "*",
+        "subgraph": 0,
       },
       "blacktooth87crown/*": {
         "boundaries": {
@@ -3510,6 +3741,7 @@ test("traversing original campaign from the final room", () => {
         },
         "roomId": "blacktooth87crown",
         "subRoomId": "*",
+        "subgraph": 0,
       },
       "blacktooth8fish/*": {
         "boundaries": {
@@ -3525,6 +3757,7 @@ test("traversing original campaign from the final room", () => {
         },
         "roomId": "blacktooth8fish",
         "subRoomId": "*",
+        "subgraph": 0,
       },
       "blacktooth9/*": {
         "boundaries": {
@@ -3540,6 +3773,7 @@ test("traversing original campaign from the final room", () => {
         },
         "roomId": "blacktooth9",
         "subRoomId": "*",
+        "subgraph": 0,
       },
       "finalroom/*": {
         "boundaries": {
@@ -3555,6 +3789,7 @@ test("traversing original campaign from the final room", () => {
         },
         "roomId": "finalroom",
         "subRoomId": "*",
+        "subgraph": 0,
       },
       "moonbase1/*": {
         "boundaries": {
@@ -3570,6 +3805,7 @@ test("traversing original campaign from the final room", () => {
         },
         "roomId": "moonbase1",
         "subRoomId": "*",
+        "subgraph": 0,
       },
       "moonbase10/*": {
         "boundaries": {
@@ -3585,6 +3821,7 @@ test("traversing original campaign from the final room", () => {
         },
         "roomId": "moonbase10",
         "subRoomId": "*",
+        "subgraph": 0,
       },
       "moonbase11/*": {
         "boundaries": {
@@ -3600,6 +3837,7 @@ test("traversing original campaign from the final room", () => {
         },
         "roomId": "moonbase11",
         "subRoomId": "*",
+        "subgraph": 0,
       },
       "moonbase12/*": {
         "boundaries": {
@@ -3615,6 +3853,7 @@ test("traversing original campaign from the final room", () => {
         },
         "roomId": "moonbase12",
         "subRoomId": "*",
+        "subgraph": 0,
       },
       "moonbase13/*": {
         "boundaries": {
@@ -3630,6 +3869,7 @@ test("traversing original campaign from the final room", () => {
         },
         "roomId": "moonbase13",
         "subRoomId": "*",
+        "subgraph": 0,
       },
       "moonbase14/*": {
         "boundaries": {
@@ -3645,6 +3885,7 @@ test("traversing original campaign from the final room", () => {
         },
         "roomId": "moonbase14",
         "subRoomId": "*",
+        "subgraph": 0,
       },
       "moonbase15/*": {
         "boundaries": {
@@ -3660,6 +3901,7 @@ test("traversing original campaign from the final room", () => {
         },
         "roomId": "moonbase15",
         "subRoomId": "*",
+        "subgraph": 0,
       },
       "moonbase16/left": {
         "boundaries": {
@@ -3675,6 +3917,7 @@ test("traversing original campaign from the final room", () => {
         },
         "roomId": "moonbase16",
         "subRoomId": "left",
+        "subgraph": 0,
       },
       "moonbase16/right": {
         "boundaries": {
@@ -3690,6 +3933,7 @@ test("traversing original campaign from the final room", () => {
         },
         "roomId": "moonbase16",
         "subRoomId": "right",
+        "subgraph": 0,
       },
       "moonbase17/*": {
         "boundaries": {
@@ -3705,6 +3949,7 @@ test("traversing original campaign from the final room", () => {
         },
         "roomId": "moonbase17",
         "subRoomId": "*",
+        "subgraph": 0,
       },
       "moonbase18/*": {
         "boundaries": {
@@ -3720,6 +3965,7 @@ test("traversing original campaign from the final room", () => {
         },
         "roomId": "moonbase18",
         "subRoomId": "*",
+        "subgraph": 0,
       },
       "moonbase19/*": {
         "boundaries": {
@@ -3735,6 +3981,7 @@ test("traversing original campaign from the final room", () => {
         },
         "roomId": "moonbase19",
         "subRoomId": "*",
+        "subgraph": 0,
       },
       "moonbase2/*": {
         "boundaries": {
@@ -3750,6 +3997,7 @@ test("traversing original campaign from the final room", () => {
         },
         "roomId": "moonbase2",
         "subRoomId": "*",
+        "subgraph": 0,
       },
       "moonbase20/*": {
         "boundaries": {
@@ -3765,6 +4013,7 @@ test("traversing original campaign from the final room", () => {
         },
         "roomId": "moonbase20",
         "subRoomId": "*",
+        "subgraph": 0,
       },
       "moonbase21tosafari/*": {
         "boundaries": {
@@ -3780,6 +4029,7 @@ test("traversing original campaign from the final room", () => {
         },
         "roomId": "moonbase21tosafari",
         "subRoomId": "*",
+        "subgraph": 0,
       },
       "moonbase22topenitentiary/*": {
         "boundaries": {
@@ -3795,6 +4045,7 @@ test("traversing original campaign from the final room", () => {
         },
         "roomId": "moonbase22topenitentiary",
         "subRoomId": "*",
+        "subgraph": 0,
       },
       "moonbase23/*": {
         "boundaries": {
@@ -3810,6 +4061,7 @@ test("traversing original campaign from the final room", () => {
         },
         "roomId": "moonbase23",
         "subRoomId": "*",
+        "subgraph": 0,
       },
       "moonbase24toegyptus/*": {
         "boundaries": {
@@ -3825,6 +4077,7 @@ test("traversing original campaign from the final room", () => {
         },
         "roomId": "moonbase24toegyptus",
         "subRoomId": "*",
+        "subgraph": 0,
       },
       "moonbase25tobookworld/*": {
         "boundaries": {
@@ -3840,6 +4093,7 @@ test("traversing original campaign from the final room", () => {
         },
         "roomId": "moonbase25tobookworld",
         "subRoomId": "*",
+        "subgraph": 0,
       },
       "moonbase26/*": {
         "boundaries": {
@@ -3855,6 +4109,7 @@ test("traversing original campaign from the final room", () => {
         },
         "roomId": "moonbase26",
         "subRoomId": "*",
+        "subgraph": 0,
       },
       "moonbase27/*": {
         "boundaries": {
@@ -3870,6 +4125,7 @@ test("traversing original campaign from the final room", () => {
         },
         "roomId": "moonbase27",
         "subRoomId": "*",
+        "subgraph": 0,
       },
       "moonbase28/*": {
         "boundaries": {
@@ -3885,6 +4141,7 @@ test("traversing original campaign from the final room", () => {
         },
         "roomId": "moonbase28",
         "subRoomId": "*",
+        "subgraph": 0,
       },
       "moonbase29/*": {
         "boundaries": {
@@ -3900,6 +4157,7 @@ test("traversing original campaign from the final room", () => {
         },
         "roomId": "moonbase29",
         "subRoomId": "*",
+        "subgraph": 0,
       },
       "moonbase3/*": {
         "boundaries": {
@@ -3915,6 +4173,7 @@ test("traversing original campaign from the final room", () => {
         },
         "roomId": "moonbase3",
         "subRoomId": "*",
+        "subgraph": 0,
       },
       "moonbase30/*": {
         "boundaries": {
@@ -3930,6 +4189,7 @@ test("traversing original campaign from the final room", () => {
         },
         "roomId": "moonbase30",
         "subRoomId": "*",
+        "subgraph": 0,
       },
       "moonbase31/*": {
         "boundaries": {
@@ -3945,6 +4205,7 @@ test("traversing original campaign from the final room", () => {
         },
         "roomId": "moonbase31",
         "subRoomId": "*",
+        "subgraph": 0,
       },
       "moonbase32/*": {
         "boundaries": {
@@ -3960,6 +4221,7 @@ test("traversing original campaign from the final room", () => {
         },
         "roomId": "moonbase32",
         "subRoomId": "*",
+        "subgraph": 0,
       },
       "moonbase33triple/left": {
         "boundaries": {
@@ -3975,6 +4237,7 @@ test("traversing original campaign from the final room", () => {
         },
         "roomId": "moonbase33triple",
         "subRoomId": "left",
+        "subgraph": 0,
       },
       "moonbase33triple/middle": {
         "boundaries": {
@@ -3990,6 +4253,7 @@ test("traversing original campaign from the final room", () => {
         },
         "roomId": "moonbase33triple",
         "subRoomId": "middle",
+        "subgraph": 0,
       },
       "moonbase33triple/right": {
         "boundaries": {
@@ -4005,6 +4269,7 @@ test("traversing original campaign from the final room", () => {
         },
         "roomId": "moonbase33triple",
         "subRoomId": "right",
+        "subgraph": 0,
       },
       "moonbase34/*": {
         "boundaries": {
@@ -4020,6 +4285,7 @@ test("traversing original campaign from the final room", () => {
         },
         "roomId": "moonbase34",
         "subRoomId": "*",
+        "subgraph": 0,
       },
       "moonbase35/*": {
         "boundaries": {
@@ -4035,6 +4301,7 @@ test("traversing original campaign from the final room", () => {
         },
         "roomId": "moonbase35",
         "subRoomId": "*",
+        "subgraph": 0,
       },
       "moonbase36/*": {
         "boundaries": {
@@ -4050,6 +4317,7 @@ test("traversing original campaign from the final room", () => {
         },
         "roomId": "moonbase36",
         "subRoomId": "*",
+        "subgraph": 0,
       },
       "moonbase4/*": {
         "boundaries": {
@@ -4065,6 +4333,7 @@ test("traversing original campaign from the final room", () => {
         },
         "roomId": "moonbase4",
         "subRoomId": "*",
+        "subgraph": 0,
       },
       "moonbase5/*": {
         "boundaries": {
@@ -4080,6 +4349,7 @@ test("traversing original campaign from the final room", () => {
         },
         "roomId": "moonbase5",
         "subRoomId": "*",
+        "subgraph": 0,
       },
       "moonbase6/*": {
         "boundaries": {
@@ -4095,6 +4365,7 @@ test("traversing original campaign from the final room", () => {
         },
         "roomId": "moonbase6",
         "subRoomId": "*",
+        "subgraph": 0,
       },
       "moonbase7/*": {
         "boundaries": {
@@ -4110,6 +4381,7 @@ test("traversing original campaign from the final room", () => {
         },
         "roomId": "moonbase7",
         "subRoomId": "*",
+        "subgraph": 0,
       },
       "moonbase8/*": {
         "boundaries": {
@@ -4125,6 +4397,7 @@ test("traversing original campaign from the final room", () => {
         },
         "roomId": "moonbase8",
         "subRoomId": "*",
+        "subgraph": 0,
       },
       "moonbase9/*": {
         "boundaries": {
@@ -4140,6 +4413,7 @@ test("traversing original campaign from the final room", () => {
         },
         "roomId": "moonbase9",
         "subRoomId": "*",
+        "subgraph": 0,
       },
     }
   `);
@@ -4152,20 +4426,35 @@ const testRoom = (id: string, items: AnyRoomJson["items"]): AnyRoomJson => ({
   items,
 });
 
-/** traverse from `fromRoomId` and return the teleporter links gathered en route */
+/** the teleporter links in the campaign, reconstructed from the graph's edges */
 const collectTeleporterLinks = (
   rooms: Record<string, AnyRoomJson>,
   fromRoomId: string,
 ): TeleporterLink<string>[] => {
+  const graph = roomGridPositions({
+    campaign: { rooms },
+    roomId: fromRoomId,
+    totalGraph: true,
+  });
   const teleporterLinks: TeleporterLink<string>[] = [];
-  // draining the generator is what fills the teleporterLinks accumulator
-  Array.from(
-    roomGridPositions({
-      campaign: { rooms },
-      roomId: fromRoomId,
-      teleporterLinksOut: teleporterLinks,
-    }),
-  );
+  for (const [from, edges] of graph) {
+    for (const [to, edge] of edges) {
+      if (edge.kind === "teleporter") {
+        teleporterLinks.push({
+          from: {
+            roomId: from.roomId,
+            subRoomId: from.subRoomId,
+            itemId: edge.viaItemId,
+          },
+          to: {
+            roomId: to.roomId,
+            subRoomId: to.subRoomId,
+            itemId: edge.toItemId,
+          },
+        });
+      }
+    }
+  }
   return teleporterLinks;
 };
 
@@ -4218,6 +4507,11 @@ test("teleporter with toItemId resolves to that item", () => {
       from: { roomId: "a", subRoomId: "*", itemId: "tp_a" },
       to: { roomId: "b", subRoomId: "*", itemId: "tp_b" },
     },
+    // tp_b has no target, so it resolves to the only teleporter in its room (itself)
+    {
+      from: { roomId: "b", subRoomId: "*", itemId: "tp_b" },
+      to: { roomId: "b", subRoomId: "*", itemId: "tp_b" },
+    },
   ]);
 });
 
@@ -4245,6 +4539,11 @@ test("teleporter with only toRoom resolves to the single teleporter in the desti
   ).toEqual<TeleporterLink<string>[]>([
     {
       from: { roomId: "a", subRoomId: "*", itemId: "tp_a" },
+      to: { roomId: "b", subRoomId: "*", itemId: "only_tp" },
+    },
+    // only_tp has no target, so it resolves to the only teleporter in its room (itself)
+    {
+      from: { roomId: "b", subRoomId: "*", itemId: "only_tp" },
       to: { roomId: "b", subRoomId: "*", itemId: "only_tp" },
     },
   ]);

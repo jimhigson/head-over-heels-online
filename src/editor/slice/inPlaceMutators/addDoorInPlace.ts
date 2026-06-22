@@ -1,7 +1,8 @@
-import { findSubRoomForItem } from "../../../game/components/dialogs/menuDialog/dialogs/map/itemIsInSubRoom";
-import { roomGridPositions } from "../../../game/components/dialogs/menuDialog/dialogs/map/roomGridPositions";
 import { nextItemId } from "../../../model/inPlaceMutators/nextItemId";
+import { doorLinkNeedsToDoor } from "../../../model/json/candidatePartnerDoors";
 import { typePrefix } from "../../../model/json/typePrefix";
+import { findSubRoomForItem } from "../../../model/map/itemIsInSubRoom";
+import { roomGridPositions } from "../../../model/map/roomGridPositions";
 import { subRoomById } from "../../../model/RoomJson";
 import { keys } from "../../../utils/entries";
 import { unitVectors } from "../../../utils/vectors/unitVectors";
@@ -48,11 +49,13 @@ const getDestinationRoom = ({
   autoAddRooms: boolean;
 }): EditorRoomJson | undefined => {
   const campaign = state.campaignInProgress;
-  const gridPositions = roomGridPositions({
-    campaign,
-    roomId: fromRoomJson.id,
-    subRoomId,
-  });
+  const gridPositions = [
+    ...roomGridPositions({
+      campaign,
+      roomId: fromRoomJson.id,
+      subRoomId,
+    }).keys(),
+  ];
 
   const existingRoomGridPositionSpec = gridPositions.find(({ gridPosition }) =>
     xyzEqual(gridPosition, unitVectors[direction]),
@@ -148,8 +151,33 @@ export const addReturnDoorInPlace = ({
 
   toRoomJson.items[returnDoorId] = returnDoorItemJson;
 
-  returnDoorItemJson.config.toDoor = outgoingDoorId;
-  outgoingDoor.config.toDoor = returnDoorId;
+  // only name a partner with `toDoor` where the link would otherwise be
+  // ambiguous (more than one door comes back)
+  const { rooms } = state.campaignInProgress;
+  if (
+    doorLinkNeedsToDoor(
+      rooms,
+      toRoomJson.id,
+      fromRoomJson.id,
+      returnDoorDirection,
+    )
+  ) {
+    returnDoorItemJson.config.toDoor = outgoingDoorId;
+  } else {
+    delete returnDoorItemJson.config.toDoor;
+  }
+  if (
+    doorLinkNeedsToDoor(
+      rooms,
+      fromRoomJson.id,
+      toRoomJson.id,
+      outgoingDirection,
+    )
+  ) {
+    outgoingDoor.config.toDoor = returnDoorId;
+  } else {
+    delete outgoingDoor.config.toDoor;
+  }
 
   cutHoleInWallsForDoorsInPlace(
     state,

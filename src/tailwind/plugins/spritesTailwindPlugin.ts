@@ -166,10 +166,14 @@ export const spritesTailwindPlugin = plugin(
       ".scale-editor": {
         "--scale": "2",
         "--block": `16px`,
+        fontSize: "16px",
+        lineHeight: "20px",
       },
       ".unscaled": {
         "--scale": "1",
         "--block": `8px`,
+        fontSize: "8px",
+        lineHeight: "10px",
       },
       ".bg-editor-checkerboard": {
         background: `repeating-conic-gradient(${spritesheetPalette.pureBlack} 0 25%, ${halfbriteHex(spritesheetPalette.shadow)} 0 50%) 50% / calc(4*var(--block)) calc(4*var(--block))`,

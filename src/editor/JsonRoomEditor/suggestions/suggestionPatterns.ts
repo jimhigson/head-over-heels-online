@@ -34,6 +34,39 @@ const getOtherRoomIds = (storeState: EditorRootState): string[] =>
 const getRoomIds = (storeState: EditorRootState): string[] =>
   Object.keys(storeState.levelEditor.campaignInProgress.rooms);
 
+/**
+ * the sub-room ids of another room, for suggesting a value that names a sub-room
+ * of it (a door's `toSubRoom`, or an NCR/above/below `with.subRoom`)
+ */
+const subRoomIdsOfRoom = (
+  storeState: EditorRootState,
+  otherRoomId: EditorRoomId | undefined,
+): string[] => {
+  if (otherRoomId === undefined) {
+    return emptyArray;
+  }
+  const otherRoom =
+    storeState.levelEditor.campaignInProgress.rooms[otherRoomId];
+  const subRooms = otherRoom?.meta?.subRooms;
+  return subRooms ? Object.keys(subRooms) : emptyArray;
+};
+
+/**
+ * suggest the sub-rooms of the room named by the sibling `room` property. Shared
+ * by the `subRoom` of a sub-room's above / below / non-contiguous link, which
+ * all sit next to a `room` in the same object.
+ */
+const subRoomIdsOfSiblingRoom: SuggestionGenerator = (
+  storeState,
+  _currentRoomJson,
+  _subRoomStringNode,
+  linkObjectNode,
+) =>
+  subRoomIdsOfRoom(
+    storeState,
+    getNodePropertyValue(linkObjectNode, "room") as EditorRoomId | undefined,
+  );
+
 const getJoystickControllableItemIds = (
   storeState: EditorRootState,
   currentRoomJson: EditorRoomJson,
@@ -102,6 +135,11 @@ export const suggestionPatterns: SuggestionPatterns = {
   "meta.subRooms.*.above.room": getOtherRoomIds,
   "meta.subRooms.*.below.room": getOtherRoomIds,
   "meta.subRooms.*.nonContiguousRelationship.with.room": getOtherRoomIds,
+  // ...and the sub-room of whichever room each of those links points at:
+  "meta.subRooms.*.above.subRoom": subRoomIdsOfSiblingRoom,
+  "meta.subRooms.*.below.subRoom": subRoomIdsOfSiblingRoom,
+  "meta.subRooms.*.nonContiguousRelationship.with.subRoom":
+    subRoomIdsOfSiblingRoom,
   // joysticks:
   ["config.controls.*"]: getJoystickControllableItemIds,
   // switches changing what joysticks control:
@@ -180,23 +218,9 @@ export const suggestionPatterns: SuggestionPatterns = {
     _meta,
     config,
   ) {
-    const otherRoomId = getNodePropertyValue(config, "toRoom") as
-      | EditorRoomId
-      | undefined;
-
-    if (otherRoomId === undefined) {
-      return emptyArray;
-    }
-
-    const otherRoom =
-      storeState.levelEditor.campaignInProgress.rooms[otherRoomId];
-
-    if (otherRoom === undefined) {
-      return emptyArray;
-    }
-
-    const subRooms = otherRoom.meta?.subRooms;
-
-    return subRooms ? Object.keys(subRooms) : emptyArray;
+    return subRoomIdsOfRoom(
+      storeState,
+      getNodePropertyValue(config, "toRoom") as EditorRoomId | undefined,
+    );
   },
 };

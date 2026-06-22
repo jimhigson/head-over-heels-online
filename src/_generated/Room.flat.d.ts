@@ -4514,6 +4514,29 @@ export type RoomJsonSchema = {
      * big and small rooms
      */
     subRooms?:
+      | {
+          "*": {
+            above?: {
+              room: string;
+              subRoom?: string;
+            };
+            below?: {
+              room: string;
+              subRoom?: string;
+            };
+            nonContiguousRelationship?: {
+              with: {
+                room: string;
+                subRoom?: string;
+              };
+              gridOffset: {
+                x: number;
+                y: number;
+                z: number;
+              };
+            };
+          };
+        }
       | Record<
           string,
           {
@@ -4558,8 +4581,7 @@ export type RoomJsonSchema = {
               };
             };
           }
-        >
-      | Record<string, any>;
+        >;
     label?: {
       direction: "away" | "left" | "right" | "towards";
       text: string;

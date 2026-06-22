@@ -1,7 +1,7 @@
 import { expect, test } from "vitest";
 
-import { roomGridPositions } from "../../game/components/dialogs/menuDialog/dialogs/map/roomGridPositions";
 import { roomJsonMatchers } from "../../model/json/__test__/roomJsonMatchers";
+import { roomGridPositions } from "../../model/map/roomGridPositions";
 import {
   isWholeRoomSubRooms,
   iterateRoomJsonItemsWithIds,
@@ -227,7 +227,7 @@ test.for<{
         campaign: result.campaignInProgress,
         roomId: cursorRoomId,
         subRoomId: cursorSubRoomId,
-      }),
+      }).keys(),
     ])
     .not.toThrow();
 });
@@ -260,7 +260,7 @@ test("coalescing rooms below a room that has a room above does not break map geo
       campaign: result.campaignInProgress,
       roomId,
       subRoomId,
-    }),
+    }).keys(),
   ];
 
   // the rooms form a closed loop (away, away, down, towards, towards, up), so on
@@ -320,6 +320,6 @@ test("merging two rooms below a room that is above one of them does not break ma
       campaign: result.campaignInProgress,
       roomId,
       subRoomId,
-    }),
+    }).keys(),
   ]).not.toThrow();
 });

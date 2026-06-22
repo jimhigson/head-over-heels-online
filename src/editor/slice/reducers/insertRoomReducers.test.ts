@@ -1,8 +1,8 @@
 import { produce } from "immer";
 import { describe, expect, test } from "vitest";
 
-import { roomGridPositions } from "../../../game/components/dialogs/menuDialog/dialogs/map/roomGridPositions";
 import { exitGameRoomId } from "../../../model/json/ItemConfigMap";
+import { roomGridPositions } from "../../../model/map/roomGridPositions";
 import { subRoomById } from "../../../model/RoomJson";
 import {
   type EditorJsonItem,
@@ -140,27 +140,30 @@ describe("insertRoom with no existing doors", () => {
     expect(returnDoors[0].config.toRoom).toBe(testRoomId);
   });
 
-  test("doors are cross-linked with toDoor", () => {
+  test("a single door link is made without a redundant toDoor", () => {
     const result = reduceLevelEditorActions(
       stateWithFloor,
       insertRoom({ direction: "left" }),
     );
 
     const currentRoom = result.campaignInProgress.rooms[testRoomId];
-    const currentRoomDoorEntries = Object.entries(currentRoom.items).filter(
+    const [[, outDoorRaw]] = Object.entries(currentRoom.items).filter(
       ([, item]) => item.type === "door",
     );
-    const [[outDoorId, outDoorRaw]] = currentRoomDoorEntries;
     const outDoor = outDoorRaw as DoorItem;
 
     const newRoomId = outDoor.config.toRoom as EditorRoomId;
     const newRoom = result.campaignInProgress.rooms[newRoomId];
-    const returnDoor = newRoom.items[
-      outDoor.config.toDoor! as EditorRoomItemId
-    ] as DoorItem;
+    const [returnDoor] = Object.values(newRoom.items).filter(
+      (item): item is DoorItem =>
+        item.type === "door" && item.config.toRoom === testRoomId,
+    );
 
-    expect(returnDoor).toBeDefined();
-    expect(returnDoor.config.toDoor).toBe(outDoorId);
+    // only one door links the two rooms, so the link resolves by direction
+    // alone and neither end carries a (redundant) toDoor
+    expect(returnDoor.config.toRoom).toBe(testRoomId);
+    expect(outDoor.config.toDoor).toBeUndefined();
+    expect(returnDoor.config.toDoor).toBeUndefined();
   });
 
   test("centres the door on an 8-unit wall with 3 units on each side", () => {
@@ -270,7 +273,7 @@ describe("insertRoom with existing door in that direction", () => {
     expect(forwardDoor).toBeDefined();
   });
 
-  test("toDoor cross-links are maintained through the new room", () => {
+  test("splicing into a chain links by toRoom and clears now-redundant toDoors", () => {
     const result = reduceLevelEditorActions(
       stateWithDoorToB,
       insertRoom({ direction: "left" }),
@@ -281,17 +284,24 @@ describe("insertRoom with existing door in that direction", () => {
     ] as DoorItem;
     const newRoomId = currentDoor.config.toRoom as EditorRoomId;
     const newRoom = result.campaignInProgress.rooms[newRoomId];
-
-    const returnDoorId = currentDoor.config.toDoor! as EditorRoomItemId;
-    const returnDoor = newRoom.items[returnDoorId] as DoorItem;
-    expect(returnDoor.config.toDoor).toBe(door1);
-
     const roomBDoor = result.campaignInProgress.rooms[roomB].items[
       door2
     ] as DoorItem;
-    const forwardDoorId = roomBDoor.config.toDoor! as EditorRoomItemId;
-    const forwardDoor = newRoom.items[forwardDoorId] as DoorItem;
-    expect(forwardDoor.config.toDoor).toBe(door2);
+
+    // every segment of the spliced chain is a single link, so the doors' stale
+    // toDoors (from when they linked directly) are cleared and no redundant new
+    // ones are added:
+    expect(currentDoor.config.toDoor).toBeUndefined();
+    expect(roomBDoor.config.toDoor).toBeUndefined();
+    expect(
+      Object.values(newRoom.items)
+        .filter((item): item is DoorItem => item.type === "door")
+        .every((door) => door.config.toDoor === undefined),
+    ).toBe(true);
+
+    // ...but the chain is still correctly connected through the new room:
+    expect(currentDoor.config.toRoom).toBe(newRoomId);
+    expect(roomBDoor.config.toRoom).toBe(newRoomId);
   });
 });
 
@@ -802,7 +812,7 @@ describe("adding a door from a single-chunk room back to a multi-chunk room", ()
         campaign: result.campaignInProgress,
         roomId,
         subRoomId,
-      }),
+      }).keys(),
     ];
 
     expect(positions.length).toBeGreaterThan(0);

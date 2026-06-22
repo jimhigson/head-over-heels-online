@@ -137,8 +137,13 @@ export const itemMoveOrResizeWouldCollide = ({
       loadedItem,
       loadedModifiedItemTuples.map(([, , otherLoaded]) => otherLoaded),
     )) {
-      console.warn(loadedItem.id, "colliding with other mutating item", c.id);
-      return true;
+      // allow a json item to collide with other partsof itself in the case of it making multiple in-play items
+      // (eg, a door with overlapping frame parts for the sake of keeping the rendering on even numbers so y doesn't
+      // end up on a half-pixel)
+      if (c.jsonItemId !== loadedItem.jsonItemId) {
+        console.warn(loadedItem.id, "colliding with other mutating item", c.id);
+        return true;
+      }
     }
 
     // we also need to check for collisions with the other items being moved/resized.

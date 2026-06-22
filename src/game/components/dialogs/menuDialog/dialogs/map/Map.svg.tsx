@@ -1,6 +1,7 @@
 import { type FunctionComponent, Suspense } from "react";
 import { type ValueOf } from "type-fest";
 
+import { findSubRoomForItem } from "../../../../../../model/map/itemIsInSubRoom";
 import {
   type CharacterName,
   type IndividualCharacterName,
@@ -8,7 +9,6 @@ import {
 import { getRoomItem } from "../../../../../../model/RoomState";
 import { type CharacterRooms } from "../../../../../gameState/GameState";
 import { type PlayableItem } from "../../../../../physics/itemPredicates";
-import { findSubRoomForItem } from "./itemIsInSubRoom";
 import { MapBackground } from "./MapBackground";
 import { mapSvgMarginX, mapSvgMarginY } from "./mapConstants";
 import { type MapData } from "./MapData";

@@ -1,3 +1,4 @@
+import { type SortedObjectOfRoomGridPositionSpecs } from "../../../../../../model/map/sortRoomGridPositions";
 import { type Campaign } from "../../../../../../model/modelTypes";
 import { emptyObject } from "../../../../../../utils/empty";
 import { entries } from "../../../../../../utils/entries";
@@ -6,7 +7,6 @@ import { type PickupsCollected } from "../../../../../gameState/GameState";
 import { notableItemSlotPositions } from "./ItemsInRoomLayout";
 import { type NotableItem } from "./NotableItem";
 import { selectNotableItems } from "./selectNotableItems";
-import { type SortedObjectOfRoomGridPositionSpecs } from "./sortRoomGridPositions";
 
 /** the notable items shown in one map cell, and their 0..1 slot positions */
 export type NotableItemsInCell<RoomId extends string> = {
