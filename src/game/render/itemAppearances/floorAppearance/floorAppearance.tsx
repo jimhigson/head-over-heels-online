@@ -242,7 +242,6 @@ export const floorAppearance: ItemAppearance<"floor"> =
           pixiRenderer,
         },
         colourClashLayer,
-        frontLayer,
       },
     }) => {
       const {
@@ -404,33 +403,35 @@ export const floorAppearance: ItemAppearance<"floor"> =
           label: `edges`,
         });
 
-        if (floorType === "none") {
-          const overDrawFallenItemsGraphic = new Graphics()
-            // right
-            .moveTo(tilesRight.x, tilesRight.y + 10)
-            // right below:
-            .lineTo(tilesRight.x, tilesRight.y + 100)
+        // removing this - it looks fine without and it hurts rooms with multiple different kinds of floors
+        // in 'big' rooms
+        // if (floorType === "none") {
+        //   const overDrawFallenItemsGraphic = new Graphics()
+        //     // right
+        //     .moveTo(tilesRight.x, tilesRight.y + 10)
+        //     // right below:
+        //     .lineTo(tilesRight.x, tilesRight.y + 100)
 
-            // left below
-            .lineTo(tilesLeft.x, tilesLeft.y + 100)
+        //     // left below
+        //     .lineTo(tilesLeft.x, tilesLeft.y + 100)
 
-            // left
-            .lineTo(tilesLeft.x, tilesLeft.y + 10)
+        //     // left
+        //     .lineTo(tilesLeft.x, tilesLeft.y + 10)
 
-            // bottom
-            .lineTo(tilesBottom.x, tilesBottom.y + 10)
-            .fill(0x00_00_00);
-          const overDrawFallenItemsGraphicSprite = renderContainerToSprite(
-            pixiRenderer,
-            overDrawFallenItemsGraphic,
-          );
-          // cover up anything that falls below the floor (ie, monsters, blocks that get pushed or walk out)
-          // but put this on the front layer so it doesn't get the room palette swap filter, which would change
-          // it from pure black, whereas it needs to appear as if it were in the black background
-          container.addChild(overDrawFallenItemsGraphicSprite);
-          frontLayer.attach(overDrawFallenItemsGraphicSprite);
-          overDrawFallenItemsGraphic.destroy();
-        }
+        //     // bottom
+        //     .lineTo(tilesBottom.x, tilesBottom.y + 10)
+        //     .fill(0x00_00_00);
+        //   const overDrawFallenItemsGraphicSprite = renderContainerToSprite(
+        //     pixiRenderer,
+        //     overDrawFallenItemsGraphic,
+        //   );
+        //   // cover up anything that falls below the floor (ie, monsters, blocks that get pushed or walk out)
+        //   // but put this on the front layer so it doesn't get the room palette swap filter, which would change
+        //   // it from pure black, whereas it needs to appear as if it were in the black background
+        //   container.addChild(overDrawFallenItemsGraphicSprite);
+        //   frontLayer.attach(overDrawFallenItemsGraphicSprite);
+        //   overDrawFallenItemsGraphic.destroy();
+        // }
 
         const edgeTilesY = Math.ceil(aabb.y / blockSizePx.x);
         floorEdgeContainer.addChild(
