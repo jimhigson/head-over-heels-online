@@ -5,10 +5,7 @@ import {
   type ItemInPlayType,
   type UnionOfAllItemInPlayTypes,
 } from "../../../model/ItemInPlay";
-import {
-  roomItemsIterable,
-  roomSpatialIndexKey,
-} from "../../../model/RoomState";
+import { roomItemsIterable } from "../../../model/RoomState";
 import { zxSpectrumColor } from "../../../originalGame";
 import { audioCtx } from "../../../sound/audioCtx";
 import { soundsFadeDurationSec } from "../../../sound/soundUtils/stopWithFade";
@@ -22,6 +19,7 @@ import { type DecorateItemMaybeRenderer } from "../item/itemRender/DecorateItemR
 import { type ItemTickContext, type ItemZGraph } from "../ItemRenderContexts";
 import { toposort } from "../sortZ/toposort/toposort";
 import { updateZEdges } from "../sortZ/updateZEdges";
+import { VisualIndex } from "../sortZ/VisualIndex";
 import { type SoundAndGraphicsOutput } from "../SoundAndGraphicsOutput";
 import { type DecorateRoomRenderer } from "./DecorateRoomRenderer";
 import {
@@ -79,6 +77,11 @@ export class RoomRenderer<RoomId extends string, RoomItemId extends string>
     UnionOfAllItemInPlayTypes<RoomId, RoomItemId>,
     ItemRenderPipeline<ItemInPlayType>
   > = new Map();
+
+  /** items indexed by their draw position on screen, used for draw-order edge finding */
+  #visualIndex = new VisualIndex<
+    UnionOfAllItemInPlayTypes<RoomId, RoomItemId>
+  >();
 
   readonly renderContext: RoomRenderContext<RoomId, RoomItemId>;
 
@@ -283,6 +286,35 @@ export class RoomRenderer<RoomId extends string, RoomItemId extends string>
     return this.#lastRenderRoomTime !== undefined;
   }
 
+  /**
+   * Keep the visual index's membership in step with the room's current spatial
+   * items - add any that have appeared, remove any that have gone. Done before the
+   * z-edges are computed (and before #tickItems creates the item renderers), since
+   * updateZEdges requires every moved item to already be present in the index.
+   */
+  #reconcileVisualIndexMembership(
+    itemsSet: Set<UnionOfAllItemInPlayTypes<RoomId, RoomItemId>>,
+  ) {
+    for (const item of itemsSet) {
+      if (!this.#visualIndex.has(item)) {
+        this.#visualIndex.addItem(item);
+      }
+    }
+    let departed:
+      | Array<UnionOfAllItemInPlayTypes<RoomId, RoomItemId>>
+      | undefined;
+    for (const item of this.#visualIndex.items()) {
+      if (!itemsSet.has(item)) {
+        (departed ??= []).push(item);
+      }
+    }
+    if (departed) {
+      for (const item of departed) {
+        this.#visualIndex.removeItem(item);
+      }
+    }
+  }
+
   tick(givenTickContext: RoomTickContext<RoomId, RoomItemId>) {
     /*
      * the given tick context, except override to consider everything to
@@ -303,7 +335,13 @@ export class RoomRenderer<RoomId extends string, RoomItemId extends string>
       renderContext: { room },
     } = this;
 
-    const itemsSet = new Set(roomItemsIterable(room.items).filter(isSpatial));
+    const itemsSet = new Set<UnionOfAllItemInPlayTypes<RoomId, RoomItemId>>(
+      roomItemsIterable(room.items).filter(isSpatial),
+    );
+
+    // keep our render-position index's membership in step with the room before
+    // computing z-edges from it:
+    this.#reconcileVisualIndexMembership(itemsSet);
 
     try {
       // it it important that we sort before rendering. This is because sorting updates
@@ -311,7 +349,7 @@ export class RoomRenderer<RoomId extends string, RoomItemId extends string>
       // which can be influenced by the broken links (by showing masking)
       updateZEdges(
         itemsSet,
-        room[roomSpatialIndexKey],
+        this.#visualIndex,
         tickContext.movedOrResizedItems,
         // this.#incrementalZEdges will be updated in-place by the zEdges function to match
         // the current ordering state of the room, starting from the previous ordering state

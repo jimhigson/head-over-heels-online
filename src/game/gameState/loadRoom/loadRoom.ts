@@ -15,7 +15,7 @@ import {
 import { emptyObject } from "../../../utils/empty";
 import { entries } from "../../../utils/entries";
 import { findStandingOnWithHighestPriorityAndMostOverlap } from "../../collision/checkStandingOn";
-import { GridSpatialIndex } from "../../physics/gridSpace/GridSpatialIndex";
+import { SpatialIndex } from "../../physics/gridSpace/SpatialIndex";
 import { isFreeItem, isLamp, isSpatial } from "../../physics/itemPredicates";
 import { tickLampLightBeams } from "../../physics/mechanics/lightBeams";
 import { type RoomPickupsCollected } from "../GameState";
@@ -134,7 +134,7 @@ export const loadRoom = <RoomId extends string, RoomItemId extends string>({
     [outOfBoundsItem.id]: outOfBoundsItem,
   };
 
-  const spatialIndex = new GridSpatialIndex(
+  const spatialIndex = new SpatialIndex(
     roomItemsIterable(items).filter(isSpatial),
   );
 

@@ -1,8 +1,8 @@
 import { describe, expect, test } from "vitest";
 
 import { type ItemInPlayAAbbInfo } from "../../../model/ItemInPlay";
-import { GridSpatialIndex } from "../../physics/gridSpace/GridSpatialIndex";
 import { type DrawOrderComparable } from "./DrawOrderComparable";
+import { VisualIndex } from "./VisualIndex";
 import { zComparator } from "./zComparator";
 const unitCube = { x: 1, y: 1, z: 1 };
 
@@ -16,7 +16,7 @@ function describeOrder(order: number) {
 
 expect.extend({
   toBeInFrontOf(received: DrawOrderComparable, reference: DrawOrderComparable) {
-    const spatialIndex = new GridSpatialIndex([received, reference]);
+    const spatialIndex = new VisualIndex([received, reference]);
     const { isNot, utils } = this;
     const order = zComparator(received, reference, spatialIndex);
     return {
@@ -27,7 +27,7 @@ expect.extend({
     };
   },
   toBeBehind(received: DrawOrderComparable, reference: DrawOrderComparable) {
-    const spatialIndex = new GridSpatialIndex([received, reference]);
+    const spatialIndex = new VisualIndex([received, reference]);
     const { isNot, utils } = this;
     const order = zComparator(received, reference, spatialIndex);
     return {
@@ -41,7 +41,7 @@ expect.extend({
     received: DrawOrderComparable,
     reference: DrawOrderComparable,
   ) {
-    const spatialIndex = new GridSpatialIndex([received, reference]);
+    const spatialIndex = new VisualIndex([received, reference]);
     const { isNot, utils } = this;
     const order = zComparator(received, reference, spatialIndex);
     return {

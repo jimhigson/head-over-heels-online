@@ -1,10 +1,11 @@
 import { describe, expect, test } from "vitest";
 
 import { collisionItemWithIndex } from "../../collision/aabbCollision";
-import { GridSpatialIndex } from "../../physics/gridSpace/GridSpatialIndex";
+import { SpatialIndex } from "../../physics/gridSpace/SpatialIndex";
 import { type DrawOrderComparable } from "./DrawOrderComparable";
 import { toposort } from "./toposort/toposort";
 import { updateZEdges } from "./updateZEdges";
+import { VisualIndex } from "./VisualIndex";
 
 const makeItems = <T extends Record<string, DrawOrderComparable>>(
   itemDefs: T,
@@ -51,7 +52,7 @@ test("detects behind in x", () => {
     },
   });
 
-  const spatialIndex = new GridSpatialIndex(set.values());
+  const spatialIndex = new VisualIndex(set.values());
 
   const edges = updateZEdges(set, spatialIndex);
   // front => behind
@@ -96,7 +97,7 @@ test("detects behind in y", () => {
     },
   });
 
-  const spatialIndex = new GridSpatialIndex(set.values());
+  const spatialIndex = new VisualIndex(set.values());
 
   const relations = updateZEdges(set, spatialIndex);
   // front => behind
@@ -141,7 +142,7 @@ test("detects behind in z (inverted from x and y - higher is in front)", () => {
     },
   });
 
-  const spatialIndex = new GridSpatialIndex(set.values());
+  const spatialIndex = new VisualIndex(set.values());
 
   const relations = updateZEdges(set, spatialIndex);
   // front => behind
@@ -177,7 +178,7 @@ test("detects as in front if on top and set back while overlapping", () => {
     },
   });
 
-  const spatialIndex = new GridSpatialIndex(set.values());
+  const spatialIndex = new VisualIndex(set.values());
 
   const relations = updateZEdges(set, spatialIndex);
   // front => behind - top in front of bottom:
@@ -217,7 +218,7 @@ test("detects a tall item is front of two smaller items", () => {
     },
   });
 
-  const spatialIndex = new GridSpatialIndex(set.values());
+  const spatialIndex = new VisualIndex(set.values());
 
   const relations = updateZEdges(set, spatialIndex);
   expect(edgeIds(relations)).toMatchInlineSnapshot(`
@@ -261,7 +262,7 @@ test("incremental updates requiring both removal and addition of edges", () => {
       state: { position: { x: 30, y: 0, z: 0 } },
     },
   });
-  const spatialIndex = new GridSpatialIndex(set.values());
+  const spatialIndex = new VisualIndex(set.values());
 
   const edges = updateZEdges(set, spatialIndex);
   // front => behind
@@ -319,7 +320,7 @@ test("incremental updates requiring removal of outbound and inbound edges", () =
       state: { position: { x: 20, y: 20, z: 0 } },
     },
   });
-  const spatialIndex = new GridSpatialIndex(set.values());
+  const spatialIndex = new VisualIndex(set.values());
 
   const edges = updateZEdges(set, spatialIndex);
   // front => behind
@@ -372,7 +373,7 @@ test("incremental updates can completely empty the graph", () => {
       state: { position: { x: 20, y: 20, z: 0 } },
     },
   });
-  const spatialIndex = new GridSpatialIndex(set.values());
+  const spatialIndex = new VisualIndex(set.values());
 
   const edges = updateZEdges(set, spatialIndex);
   // front => behind
@@ -435,7 +436,7 @@ describe("cyclic dependencies", () => {
       },
     });
 
-    const spatialIndex = new GridSpatialIndex(set.values());
+    const spatialIndex = new VisualIndex(set.values());
 
     const relations = updateZEdges(set, spatialIndex);
     expect(() => toposort(relations)).not.toThrow();
@@ -492,11 +493,11 @@ describe("cyclic dependencies", () => {
 
     // verify that the items aren't illegally colliding (which would make this test maybe invalid)
     for (const i of set) {
-      const index = new GridSpatialIndex(set.values());
+      const index = new SpatialIndex(set.values());
       expect(collisionItemWithIndex(i, index).toArray()).toEqual([]);
     }
 
-    const spatialIndex = new GridSpatialIndex(set.values());
+    const spatialIndex = new VisualIndex(set.values());
 
     const relations = updateZEdges(set, spatialIndex);
 

@@ -132,7 +132,7 @@ const castBeamRowSegments = <RoomId extends string, RoomItemId extends string>(
     const index = room[roomSpatialIndexKey];
     const extent = index.getOccupiedCuboidCellExtent();
     if (extent !== undefined) {
-      const cellSize = blockSizePx.x * 2; // GridSpatialIndex cell width/depth
+      const cellSize = blockSizePx.x * 2; // SpatialIndex cell width/depth
       const toAlongCell = (world: number) =>
         axis === "x" ? index.worldXToCellX(world) : index.worldYToCellY(world);
       const toPerpCell = (world: number) =>

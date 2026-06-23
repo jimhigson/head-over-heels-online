@@ -2,8 +2,8 @@
 
 import { veryClose } from "../../../utils/epsilon";
 import { addXyz } from "../../../utils/vectors/vectors";
-import { type GridSpatialIndex } from "../../physics/gridSpace/GridSpatialIndex";
 import { type DrawOrderComparable } from "./DrawOrderComparable";
+import { type VisualIndex } from "./VisualIndex";
 import {
   ADJACENT_X,
   ADJACENT_Y,
@@ -28,7 +28,7 @@ import {
 export const zComparator = (
   a: DrawOrderComparable,
   b: DrawOrderComparable,
-  spatialIndex: GridSpatialIndex<string, string, DrawOrderComparable>,
+  visualIndex: VisualIndex<DrawOrderComparable>,
 ): number => {
   if (
     // zero-volume (render) bb items don't participate in z-ordering - this is THE one way
@@ -50,8 +50,8 @@ export const zComparator = (
   const bBbVisual = b.renderAabb || b.aabb;
 
   const visualOverlap = visuallyOverlaps(
-    spatialIndex.getItemAxesProjections(a)!,
-    spatialIndex.getItemAxesProjections(b)!,
+    visualIndex.getItemAxesProjections(a)!,
+    visualIndex.getItemAxesProjections(b)!,
   );
 
   switch (visualOverlap) {

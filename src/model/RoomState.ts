@@ -1,6 +1,6 @@
 import { type Simplify, type ValueOf } from "type-fest";
 
-import { type GridSpatialIndex } from "../game/physics/gridSpace/GridSpatialIndex";
+import { type SpatialIndex } from "../game/physics/gridSpace/SpatialIndex";
 import { type SceneryName } from "../sprites/planets";
 import { objectEntriesIter, valuesIter } from "../utils/entries";
 import { type ItemInPlay, type UnionOfAllItemInPlayTypes } from "./ItemInPlay";
@@ -142,7 +142,7 @@ export type RoomState<
      * since this is stored under a symbol, it will not be written to JSON when the room
      * state is saved
      */
-    [roomSpatialIndexKey]: GridSpatialIndex<RoomId, RoomItemId>;
+    [roomSpatialIndexKey]: SpatialIndex<RoomId, RoomItemId>;
   }
 >;
 export type UnknownRoomState = RoomState<string, string, SceneryName>;
