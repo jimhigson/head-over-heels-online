@@ -32,9 +32,9 @@ export const missingCrownVerifier: CampaignVerifier<MissingCrown> = {
       }
       yield {
         severity: "warning",
-        msg: `There's no ${planet} crown anywhere in the campaign`,
+        msg: `No ${planet} crown`,
         fixable: false,
-        fixText: `Add a crown pickup for ${planet} to one of the rooms`,
+        fixText: `Add ${planet} crown somewhere`,
         issueData: { planet },
         verifier: missingCrownVerifier,
       };

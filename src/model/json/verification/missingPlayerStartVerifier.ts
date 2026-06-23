@@ -36,7 +36,7 @@ export const missingPlayerStartVerifier: CampaignVerifier<MissingPlayerStart> =
           severity: "error",
           msg: `There's no starting room for ${character} - the campaign can't begin without it`,
           fixable: false,
-          fixText: `Add a ${character} player item to one of the rooms`,
+          fixText: `Add ${character} somewhere`,
           issueData: { character },
           verifier: missingPlayerStartVerifier,
         };

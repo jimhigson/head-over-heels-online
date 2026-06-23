@@ -33,7 +33,7 @@ import { confirmDeleteRoomThunk } from "../confirmThunk";
 import { ToolbarButton } from "./ToolbarButton";
 
 /** heading for issues that aren't tied to one room (eg a missing player start) */
-const wholeCampaignHeading = "Whole campaign";
+const wholeCampaignHeading = "";
 
 /** item types that are just room structure, not gameplay content */
 const structuralItemTypes = new Set<JsonItemType>(["wall", "floor", "door"]);
@@ -132,7 +132,7 @@ const VerifyIssuesDialog = ({ issues, onClose }: VerifyIssuesDialogProps) => {
       />
       {/* stop window-level shortcuts catching our keypresses that match their shortcuts */}
       <div className="contents no-keyboard-shortcuts">
-        <Dialog ref={dialogRef} wide tall className="scale-editor p-1 ">
+        <Dialog ref={dialogRef} wide tall className="scale-editor p-1">
           <DialogHeader>{issues.length} Issues</DialogHeader>
           <div className="flex flex-col pt-1 flex-grow text-multi-line overflow-y-auto scrollbar scrollbar-w1 scrollbar-thumb-lightGrey pr-1 gap-2">
             {entries(issuesByRoom)
@@ -149,9 +149,11 @@ const VerifyIssuesDialog = ({ issues, onClose }: VerifyIssuesDialogProps) => {
                   room !== undefined && isEmptyLeftoverRoom(room);
                 return (
                   <div key={roomHeading} className="flex flex-col gap-1">
-                    <BitmapText className="text-metallicBlue" doubleHeight>
-                      {roomHeading}
-                    </BitmapText>
+                    {roomHeading && (
+                      <BitmapText className="text-metallicBlue" doubleHeight>
+                        {roomHeading}
+                      </BitmapText>
+                    )}
                     {roomId !== undefined && (
                       <RoomPreview roomId={roomId as EditorRoomId} />
                     )}
@@ -164,7 +166,7 @@ const VerifyIssuesDialog = ({ issues, onClose }: VerifyIssuesDialogProps) => {
                         <div className="flex justify-end">
                           <Button
                             onClick={() => deleteRoom(roomId)}
-                            className="bg-midRed px-1 py-half text-white"
+                            className="bg-midRed px-1 py-half text-white h-3"
                           >
                             Delete room
                           </Button>
@@ -185,21 +187,21 @@ const VerifyIssuesDialog = ({ issues, onClose }: VerifyIssuesDialogProps) => {
                             {issue.verifier.name}
                           </div>
                           <div className="text-midGrey">{issue.msg}</div>
-                          <div className="flex justify-end items-center gap-1">
+                          <div className="flex gap-1">
                             <span className="text-lightGrey">
                               {issue.fixText}
                             </span>
                             {issue.fixable && (
                               <Button
                                 onClick={() => applyFix(issue)}
-                                className="bg-moss px-1 py-half text-white"
+                                className="bg-moss px-1 py-half text-white h-3"
                               >
                                 Fix
                               </Button>
                             )}
                             {roomId !== undefined && (
                               <Button
-                                className="bg-pastelBlue px-1 py-half text-white shrink-0 hover:bg-highlightBeige"
+                                className="bg-pastelBlue px-1 py-half text-white shrink-0 hover:bg-highlightBeige  h-3"
                                 onClick={() => goToRoom(roomId, itemId)}
                               >
                                 Go to
@@ -217,14 +219,14 @@ const VerifyIssuesDialog = ({ issues, onClose }: VerifyIssuesDialogProps) => {
             {fixableIssueCount > 0 && (
               <Button
                 onClick={fixAll}
-                className="px-1 py-half self-stretch bg-moss"
+                className="px-1 py-half self-stretch bg-moss h-3"
               >
                 {`Fix ${fixableIssueCount} auto-fixable issues`}
               </Button>
             )}
             <Button
               onClick={onClose}
-              className="px-1 py-half self-stretch bg-midRed"
+              className="px-1 py-half self-stretch bg-midRed h-3"
             >
               x Exit
             </Button>
