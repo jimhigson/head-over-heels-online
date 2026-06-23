@@ -14,7 +14,6 @@ import {
   otherIndividualCharacterName,
 } from "../../../model/modelTypes";
 import { getRoomItem, roomSpatialIndexKey } from "../../../model/RoomState";
-import { loadHeadOverHeelsFont } from "../../../sprites/loadHeadOverHeelsFont";
 import {
   type AnimatedTextureTailwindClass,
   type TextureTailwindClass,
@@ -50,7 +49,6 @@ import { BitmapText } from "../tailwindSprites/BitmapText";
 import { usePlayableTailwindSpriteClassname } from "../tailwindSprites/playableTailwindSpriteClassname";
 import { GameApiConnectedRoomSelect } from "./GameApiConnectedRoomSelect";
 import { useLevelSelectByUrlHash } from "./useLevelSelectByUrlHash";
-loadHeadOverHeelsFont();
 
 interface SpeedButtonProps {
   speed: number;

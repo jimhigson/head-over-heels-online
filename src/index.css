@@ -3,6 +3,14 @@
 @tailwind components;
 @tailwind utilities;
 
+@font-face {
+  font-family: "HeadOverHeels";
+  src: url("./_generated/font/blockstack-head-over-heels.woff2") format("woff2");
+  font-display: block;
+  font-weight: normal;
+  font-style: normal;
+}
+
 @layer base {
   body {
     /* TODO: revert and use only while loading */
@@ -10,6 +18,13 @@
     /* @apply loading-border text-white; */
     /* Prevent touch actions like scroll and pinch-to-zoom: */
     touch-action: none;
+    /* the pixel font has no italic face; suppress the browser's sheared
+       faux-italic, which breaks the pixel grid */
+    font-synthesis: none;
+    /* disable anti-aliasing so the pixel font keeps hard, blocky edges
+       when upscaled (Chrome/Safari, then Firefox on macOS) */
+    -webkit-font-smoothing: none;
+    -moz-osx-font-smoothing: grayscale;
   }
 
   *:focus {

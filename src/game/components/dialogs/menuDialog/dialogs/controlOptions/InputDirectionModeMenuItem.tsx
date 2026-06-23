@@ -14,9 +14,9 @@ import {
 import { MenuItem } from "../../MenuItem";
 
 const directions4HintMarkdown =
-  "**4-way**: True to the 1987 original - move in x directions only";
+  "**4-way**: True to the 1987 original - move in 4 directions";
 const directions8HintMarkdown =
-  "**8-way**: The original with *4-way* movement, plus *diagonals*";
+  "**8-way**: New for the remake - *diagonal* movement";
 const analogueDirectionsHintMarkdown =
   "**Analogue**: Move in *any* direction with analogue stick";
 export const InputDirectionModeMenuItem = () => {

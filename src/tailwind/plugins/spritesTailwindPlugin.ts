@@ -152,6 +152,15 @@ export const spritesTailwindPlugin = plugin(
       ".sprites-normal-height": {
         "--doubleHeight": "1",
       },
+      // the real-text equivalent of .sprites-double-height: font glyphs have no
+      // background image to stretch, so scale the box vertically instead. The
+      // origin is the font baseline (8px * --scale below the top), so the text
+      // grows upward from the baseline and stays aligned with normal-height text
+      ".text-double-height": {
+        display: "inline-block",
+        transform: "scaleY(2)",
+        transformOrigin: "0 calc(8px * var(--scale, 1))",
+      },
       ".pixelated": {
         imageRendering: "pixelated",
       },
