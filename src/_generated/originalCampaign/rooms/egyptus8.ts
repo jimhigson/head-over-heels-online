@@ -72,17 +72,26 @@ export const room = inferRoomJson({
       type: "monster",
     },
     w: {
-      config: { direction: "right", times: { y: 3 } },
+      config: {
+        direction: "right",
+        tiles: ["hieroglyphics", "hieroglyphics", "hieroglyphics"],
+      },
       position: { x: 0, y: 0, z: 0 },
       type: "wall",
     },
     w1: {
-      config: { direction: "towards", times: { x: 3 } },
+      config: {
+        direction: "towards",
+        tiles: ["hieroglyphics", "hieroglyphics", "hieroglyphics"],
+      },
       position: { x: 0, y: 0, z: 0 },
       type: "wall",
     },
     w2: {
-      config: { direction: "right", times: { y: 3 } },
+      config: {
+        direction: "right",
+        tiles: ["hieroglyphics", "hieroglyphics", "hieroglyphics"],
+      },
       position: { x: 0, y: 5, z: 0 },
       type: "wall",
     },
@@ -95,7 +104,10 @@ export const room = inferRoomJson({
       type: "wall",
     },
     w4: {
-      config: { direction: "towards", times: { x: 3 } },
+      config: {
+        direction: "towards",
+        tiles: ["hieroglyphics", "hieroglyphics", "hieroglyphics"],
+      },
       position: { x: 5, y: 0, z: 0 },
       type: "wall",
     },

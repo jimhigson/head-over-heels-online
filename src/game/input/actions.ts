@@ -21,6 +21,8 @@ export const booleanActions = [
   "toggleCrtFilter",
   "cycleResolution",
   "toggleShowFps",
+  "rotateCameraClockwise",
+  "rotateCameraAnticlockwise",
 
   // non- re-assignable keys to ensure there are always keys assigned to
   // use the menus, no matter what the user selects in their key mappings

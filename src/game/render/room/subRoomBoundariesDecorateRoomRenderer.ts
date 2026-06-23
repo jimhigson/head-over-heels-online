@@ -31,7 +31,8 @@ export const subRoomBoundariesDecorateRoomRenderer: DecorateRoomRenderer = (
   }
 
   const container = new Container({ label: "subRoomBoundaries" });
-  const { pixiRenderer, spritesheetVariants } = renderContext.general;
+  const { pixiRenderer, spritesheetVariants, cameraAngle } =
+    renderContext.general;
 
   let colourIndex = 0;
   for (const [name, subRoom] of objectEntriesIter(subRooms)) {
@@ -41,18 +42,21 @@ export const subRoomBoundariesDecorateRoomRenderer: DecorateRoomRenderer = (
     const graphics = new Graphics();
 
     graphics.poly([
-      projectBlockXyzToScreenXy({ x: from.x, y: from.y }),
-      projectBlockXyzToScreenXy({ x: to.x, y: from.y }),
-      projectBlockXyzToScreenXy({ x: to.x, y: to.y }),
-      projectBlockXyzToScreenXy({ x: from.x, y: to.y }),
+      projectBlockXyzToScreenXy({ x: from.x, y: from.y }, cameraAngle),
+      projectBlockXyzToScreenXy({ x: to.x, y: from.y }, cameraAngle),
+      projectBlockXyzToScreenXy({ x: to.x, y: to.y }, cameraAngle),
+      projectBlockXyzToScreenXy({ x: from.x, y: to.y }, cameraAngle),
     ]);
 
     graphics.stroke({ width: 2, color, alpha: 0.8 });
 
-    const centre = projectBlockXyzToScreenXy({
-      x: (from.x + to.x) / 2,
-      y: (from.y + to.y) / 2,
-    });
+    const centre = projectBlockXyzToScreenXy(
+      {
+        x: (from.x + to.x) / 2,
+        y: (from.y + to.y) / 2,
+      },
+      cameraAngle,
+    );
 
     const label = new TextContainer({
       pixiRenderer,

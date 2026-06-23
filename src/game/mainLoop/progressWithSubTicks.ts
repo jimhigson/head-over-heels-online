@@ -11,6 +11,7 @@ import {
   type MovedOrResizedItems,
   type ProgressGameState,
 } from "./progressGameState";
+import { rotateCameraIfInput } from "./rotateCameraIfInput";
 import { swopPlayablesIfInput } from "./swopPlayablesIfInput";
 
 const noItems = emptyObject as RoomStateItems<string, string>;
@@ -56,6 +57,10 @@ export const progressWithSubTicks =
         }
       }
     }
+
+    // camera rotation, like swopping, is a once-per-tick input read done
+    // outside the sub-ticks (input can't change between sub-steps):
+    rotateCameraIfInput(gameState);
 
     const tickerSpeed = Ticker.shared.speed;
     const numberOfSubTicks =

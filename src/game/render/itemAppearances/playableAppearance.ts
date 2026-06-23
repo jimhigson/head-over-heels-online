@@ -18,6 +18,7 @@ import { type SpritesheetMetadata } from "../../../sprites/spritesheet/spriteshe
 import { type AppSpritesheet } from "../../../sprites/spritesheet/variants/AppSpritesheet";
 import { type SpriteOption } from "../../../store/slices/userSettings/userSettingsSlice";
 import { isEmptyObject } from "../../../utils/empty";
+import { rotateXy } from "../../../utils/vectors/rotateXy";
 import {
   type DirectionXy8,
   lengthXyz,
@@ -384,6 +385,7 @@ const playableAppearanceImpl: ItemAppearance<
       spriteOption,
       spritesheetVariants,
       spritesheetMeta,
+      cameraAngle,
     },
     room: { roomTime, color: roomColor },
   },
@@ -404,9 +406,18 @@ const playableAppearanceImpl: ItemAppearance<
   const currentlyRenderedProps = currentRendering?.renderProps;
   const previousRendering = currentRendering?.output;
 
+  // rotate the facing vector by the camera angle so the directional sprite matches how
+  // the character appears after the camera has turned:
   const facingXy8 =
     vectorClosestDirectionXy8(
-      maybeReflectedVector(visualFacingVector ?? facing, isReflection),
+      rotateXy(
+        maybeReflectedVector(
+          visualFacingVector ?? facing,
+          isReflection,
+          cameraAngle,
+        ),
+        cameraAngle,
+      ),
     ) ?? "towards";
 
   /**

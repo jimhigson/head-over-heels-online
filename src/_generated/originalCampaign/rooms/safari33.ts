@@ -54,17 +54,32 @@ export const room = inferRoomJson({
       type: "teleporter",
     },
     w: {
-      config: { direction: "right", times: { y: 1 } },
+      config: { direction: "right", tiles: ["wall"] },
       position: { x: 0, y: 0, z: 0 },
       type: "wall",
     },
     w1: {
-      config: { direction: "towards", times: { x: 8 } },
+      config: {
+        direction: "towards",
+        tiles: [
+          "wall",
+          "shield",
+          "wall",
+          "window",
+          "window",
+          "wall",
+          "shield",
+          "wall",
+        ],
+      },
       position: { x: 0, y: 0, z: 0 },
       type: "wall",
     },
     w2: {
-      config: { direction: "right", times: { y: 5 } },
+      config: {
+        direction: "right",
+        tiles: ["window", "window", "wall", "shield", "wall"],
+      },
       position: { x: 0, y: 3, z: 0 },
       type: "wall",
     },

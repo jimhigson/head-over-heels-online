@@ -9,7 +9,7 @@ import { type GameState } from "../../gameState/GameState";
 import { addItemToRoom } from "../../gameState/mutators/addItemToRoom";
 import { removeStandingOn } from "../../gameState/mutators/standingOn/removeStandingOn";
 import { setStandingOnWithoutRemovingOldFirst } from "../../gameState/mutators/standingOn/setStandingOnWithoutRemovingOldFirst";
-import { type GridSpatialIndex } from "../gridSpace/GridSpatialIndex";
+import { type SpatialIndex } from "../gridSpace/SpatialIndex";
 import { handleItemsTouchingItems } from "../handleTouch/handleItemsTouchingItems";
 import { isFreeItem, isSolid, type PlayableItem } from "../itemPredicates";
 import { blockSizePx } from "../mechanicsConstants";
@@ -109,7 +109,7 @@ export const checkSpaceAvailableToPutDown = <
   T extends UnionOfAllItemInPlayTypes,
 >(
   item: T,
-  roomSpatialIndex: GridSpatialIndex,
+  roomSpatialIndex: SpatialIndex,
 ) => {
   const proposedNewLocation: CollideableItem = {
     state: {

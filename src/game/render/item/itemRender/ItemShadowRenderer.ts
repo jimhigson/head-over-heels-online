@@ -7,17 +7,24 @@ import {
 } from "../../../../model/ItemInPlay";
 import { type ConsolidatableConfig } from "../../../../model/json/utilityJsonConfigTypes";
 import { roomSpatialIndexKey } from "../../../../model/RoomState";
+import { wallTimes } from "../../../../model/times";
 import { store } from "../../../../store/store";
 import { assignRoundedXy } from "../../../../utils/pixi/assignRoundedXy";
 import { maybeRenderContainerToSprite } from "../../../../utils/pixi/renderContainerToSprite";
 import { renderMultipliedXy } from "../../../../utils/pixi/renderMultipliedXy";
-import { addXy, originXy, subXy } from "../../../../utils/vectors/vectors";
+import {
+  addXy,
+  cameraAngleIsOddQuarterTurn,
+  originXy,
+  subXy,
+} from "../../../../utils/vectors/vectors";
 import {
   type CollideableItem,
   collisionItemWithIndex,
 } from "../../../collision/aabbCollision";
 import { veryHighZ } from "../../../physics/mechanicsConstants";
 import { type SpecifiedTextureCreateSpriteOptions } from "../../createSprite";
+import { nearCornerOffsetWorldXyz } from "../../itemAppearances/adjustNearCornerForCameraAngle";
 import {
   type ItemShadowAppearanceOutsideView,
   itemShadowMaskAppearanceForItem,
@@ -29,6 +36,7 @@ import {
 import { projectWorldXyzToScreenXy } from "../../projections";
 import { ItemAppearancePixiRenderer } from "./ItemAppearancePixiRenderer";
 import { type ItemPixiRenderer } from "./ItemPixiRenderer";
+import { itemTypesExemptFromNearCornerOffset } from "./itemTypesExemptFromNearCornerOffset";
 import { wholeShadowCastersCoverReceiver } from "./wholeShadowCastersCoverReceiver";
 
 const shadowAlpha = 0.66;
@@ -169,7 +177,10 @@ class ItemShadowRenderer<T extends ItemInPlayType>
         const shadowMaskOffset = new Container({
           label: "shadowMaskOffset",
           children: [this.#shadowMaskRenderer.output],
-          ...projectWorldXyzToScreenXy(renderContext.item.shadowOffset),
+          ...projectWorldXyzToScreenXy(
+            renderContext.item.shadowOffset,
+            renderContext.general.cameraAngle,
+          ),
         });
         this.#output.addChild(shadowMaskOffset);
       }
@@ -237,6 +248,7 @@ class ItemShadowRenderer<T extends ItemInPlayType>
       item,
       general: {
         pixiRenderer,
+        cameraAngle,
         upscale: { gameEngineUpscale },
         spriteOption: { uncolourised },
       },
@@ -309,17 +321,35 @@ class ItemShadowRenderer<T extends ItemInPlayType>
       let isNew = false;
 
       if (!shadowSprite) {
-        // wasn't casting a shadow before - create a new one:
-        const { times } = caster.config as ConsolidatableConfig;
+        // wasn't casting a shadow before - create a new one. Walls don't carry
+        // a times config (their length comes from their tiles array), so
+        // derive it - their cast shadow must repeat along the wall's length:
+        const times =
+          caster.type === "wall" ?
+            wallTimes(caster.config)
+          : (caster.config as ConsolidatableConfig).times;
 
-        const { shadowCastTexture } = caster;
+        const { flipsOnOddQuarterCameraTurns, ...shadowCastTexture } =
+          caster.shadowCastTexture;
         const { general } = this.renderContext;
         const { shadowSpritesheet } = general.spritesheetVariants;
+
+        // axis-following shadow art (eg barriers) is drawn for one world axis
+        // and flipped for the other; an odd quarter camera turn swaps which
+        // axis the caster renders along, so the flip swaps with it:
+        const flipX =
+          (shadowCastTexture.flipX ?? false) !==
+          (flipsOnOddQuarterCameraTurns === true &&
+            cameraAngleIsOddQuarterTurn(cameraAngle));
 
         const castTextureMultiplied = renderMultipliedXy(
           {
             ...shadowCastTexture,
+            flipX,
             paused: general.paused,
+            // multiplied casts tile along their world axes, which the
+            // projection rotates on screen:
+            cameraAngle,
             spritesheet: shadowSpritesheet,
           } as SpecifiedTextureCreateSpriteOptions,
           times,
@@ -337,16 +367,40 @@ class ItemShadowRenderer<T extends ItemInPlayType>
       }
 
       if (isNew || surfaceMoved || movedOrResizedItems.has(caster)) {
-        // shadow needs (re) positioning
-        const screenXy = projectWorldXyzToScreenXy({
-          ...addXy(
-            subXy(caster.state.position, item.state.position),
-            // use just the xy part of the shadow offset to position the shadow on the surface:
-            caster.shadowOffset ?? originXy,
-          ),
-          // on the top of the item:
-          z: item.aabb.z,
-        });
+        // shadow needs (re) positioning. The shadow art is footprint-anchored like the
+        // caster's sprite, so it takes the caster's near-corner offset to sit under the
+        // caster's rendered footprint. It renders inside this (receiving) item's
+        // near-corner offset container, which is irrelevant to where the caster is, so
+        // that offset is subtracted back out (it is zero for exempt types, eg floors):
+        const casterNearCornerOffset = nearCornerOffsetWorldXyz(
+          caster,
+          cameraAngle,
+          // the cast art matches the caster's rendered box where that differs
+          // from its physics box (eg door legs, whose physics extends down the
+          // door tunnel but whose hint shadow covers only the threshold):
+          caster.renderAabb ?? caster.aabb,
+        );
+        const receiverNearCornerOffset =
+          itemTypesExemptFromNearCornerOffset.has(item.type) ? originXy : (
+            nearCornerOffsetWorldXyz(item, cameraAngle)
+          );
+        const screenXy = projectWorldXyzToScreenXy(
+          {
+            ...addXy(
+              subXy(
+                caster.state.position,
+                item.state.position,
+                receiverNearCornerOffset,
+              ),
+              // use just the xy part of the shadow offset to position the shadow on the surface:
+              caster.shadowOffset ?? originXy,
+              casterNearCornerOffset,
+            ),
+            // on the top of the item:
+            z: item.aabb.z,
+          },
+          cameraAngle,
+        );
 
         assignRoundedXy(
           shadowSprite,

@@ -3,7 +3,13 @@ import {
   roomJsonItemsIterable,
 } from "../../../model/RoomJson";
 import { roomItemsIterable, type RoomState } from "../../../model/RoomState";
-import { addXyz, originXyz, type Xyz } from "../../../utils/vectors/vectors";
+import { cameraAngleBase } from "../../../utils/vectors/rotateXy";
+import {
+  addXyz,
+  originXyz,
+  type Xy,
+  type Xyz,
+} from "../../../utils/vectors/vectors";
 import { blockSizePx } from "../../physics/mechanicsConstants";
 import { projectWorldXyzToScreenXy } from "../projections";
 import { nonRenderingItemFixedZIndex } from "../sortZ/fixedZIndexes";
@@ -14,6 +20,15 @@ export type ItemsProjectedExtents = {
     edgeRightX: number;
     topEdgeY: number;
     bottomEdgeY: number;
+    /**
+     * the screen x of the camera-near corner of the room's nominal bounds -
+     * the box from the origin to the floors' natural extents (ignoring the
+     * camera-dependent doorway extensions). At the base angle the near corner
+     * of that box is the origin, so this is exactly 0; positioning heuristics
+     * that historically assumed the near corner projects at x=0 use this so
+     * they hold unchanged at the base angle and correctly at every other
+     */
+    nearCornerX: number;
   };
   allItems: {
     topEdgeY: number;
@@ -39,11 +54,14 @@ export const floorsRenderExtent = <
   RoomItemId extends string,
 >(
   roomState: RoomState<RoomId, RoomItemId>,
+  cameraAngle: Xy = cameraAngleBase,
 ): ItemsProjectedExtents => {
   let floorsEdgeLeftX = Number.POSITIVE_INFINITY;
   let floorsEdgeRightX = Number.NEGATIVE_INFINITY;
   let floorsTopEdgeY = Number.POSITIVE_INFINITY;
   let floorsBottomEdgeY = Number.NEGATIVE_INFINITY;
+  let floorsNaturalMaxX = 0;
+  let floorsNaturalMaxY = 0;
   let allItemsTopEdgeY = Number.POSITIVE_INFINITY;
 
   for (const item of roomItemsIterable(roomState.items)) {
@@ -56,38 +74,47 @@ export const floorsRenderExtent = <
         aabb,
       } = item;
 
-      // natural position:
-      const floorEdgeLeftX = projectWorldXyzToScreenXy(
-        addXyz(naturalFootprint.position, {
-          x: naturalFootprint.aabb.x,
-          z: naturalFootprint.aabb.z,
-        }),
-      ).x;
+      floorsNaturalMaxX = Math.max(
+        floorsNaturalMaxX,
+        naturalFootprint.position.x + naturalFootprint.aabb.x,
+      );
+      floorsNaturalMaxY = Math.max(
+        floorsNaturalMaxY,
+        naturalFootprint.position.y + naturalFootprint.aabb.y,
+      );
 
-      // natural position:
-      const floorEdgeRightX = projectWorldXyzToScreenXy(
-        addXyz(naturalFootprint.position, {
-          y: naturalFootprint.aabb.y,
-          z: naturalFootprint.aabb.z,
-        }),
-      ).x;
+      // the floor's horizontal span and its far (top) edge come from the top
+      // corners of its footprint; which corner is leftmost / rightmost / furthest
+      // depends on the camera angle, so project them all:
+      for (const dx of [0, naturalFootprint.aabb.x]) {
+        for (const dy of [0, naturalFootprint.aabb.y]) {
+          const { x, y } = projectWorldXyzToScreenXy(
+            addXyz(naturalFootprint.position, {
+              x: dx,
+              y: dy,
+              z: naturalFootprint.aabb.z,
+            }),
+            cameraAngle,
+          );
+          floorsEdgeLeftX = Math.min(floorsEdgeLeftX, x);
+          floorsEdgeRightX = Math.max(floorsEdgeRightX, x);
+          floorsTopEdgeY = Math.min(floorsTopEdgeY, y);
+        }
+      }
 
-      // natural position:
-      const topEdgeY = projectWorldXyzToScreenXy(
-        addXyz(naturalFootprint.position, naturalFootprint.aabb),
-      ).y;
-
-      // extended position:
-      const frontSide = projectWorldXyzToScreenXy(
-        addXyz(position, renderAabbOffset ?? originXyz, {
-          z: (renderAabb ?? aabb).z,
-        }),
-      ).y;
-
-      floorsEdgeLeftX = Math.min(floorsEdgeLeftX, floorEdgeLeftX);
-      floorsEdgeRightX = Math.max(floorsEdgeRightX, floorEdgeRightX);
-      floorsTopEdgeY = Math.min(floorsTopEdgeY, topEdgeY);
-      floorsBottomEdgeY = Math.max(floorsBottomEdgeY, frontSide);
+      // the near (front/bottom) edge is the lowest of the extended render box's
+      // surface-level corners - which one is lowest also depends on the angle:
+      const extendedPosition = addXyz(position, renderAabbOffset ?? originXyz);
+      const extendedAabb = renderAabb ?? aabb;
+      for (const dx of [0, extendedAabb.x]) {
+        for (const dy of [0, extendedAabb.y]) {
+          const { y } = projectWorldXyzToScreenXy(
+            addXyz(extendedPosition, { x: dx, y: dy, z: extendedAabb.z }),
+            cameraAngle,
+          );
+          floorsBottomEdgeY = Math.max(floorsBottomEdgeY, y);
+        }
+      }
     } else {
       // This should be in place so that non-rendering items don't
       // impact scrolling, but is being left to keep scrolling changes
@@ -97,26 +124,43 @@ export const floorsRenderExtent = <
         continue;
       }
 
-      // any non-floor item
-      // natural position:
-      const itemTopEdgeY = projectWorldXyzToScreenXy(
-        addXyz(
-          item.type === "lift" ?
-            // lifts are a special case - use the top of their travel instead of
-            // their starting position for rendering height estimation
-            {
-              ...item.state.position,
-              z: item.config.top * blockSizePx.z,
-            }
-          : item.state.position,
-          item.renderAabb ?? item.aabb ?? originXyz,
-          item.renderAabbOffset ?? originXyz,
-        ),
-      ).y;
-
-      allItemsTopEdgeY = Math.min(allItemsTopEdgeY, itemTopEdgeY);
+      // any non-floor item: its highest point on screen comes from the top
+      // corners of its render box; which is highest depends on the camera angle:
+      const itemPosition = addXyz(
+        item.type === "lift" ?
+          // lifts are a special case - use the top of their travel instead of
+          // their starting position for rendering height estimation
+          {
+            ...item.state.position,
+            z: item.config.top * blockSizePx.z,
+          }
+        : item.state.position,
+        item.renderAabbOffset ?? originXyz,
+      );
+      const itemAabb = item.renderAabb ?? item.aabb ?? originXyz;
+      for (const dx of [0, itemAabb.x]) {
+        for (const dy of [0, itemAabb.y]) {
+          const { y } = projectWorldXyzToScreenXy(
+            addXyz(itemPosition, { x: dx, y: dy, z: itemAabb.z }),
+            cameraAngle,
+          );
+          allItemsTopEdgeY = Math.min(allItemsTopEdgeY, y);
+        }
+      }
     }
   }
+
+  // the camera-near corner of the nominal room box [origin..naturalMax]: the
+  // origin at the base angle (projecting to exactly 0), the corner on each
+  // camera-reversed axis otherwise:
+  const nearCornerX = projectWorldXyzToScreenXy(
+    {
+      x: cameraAngle.x + cameraAngle.y < 0 ? floorsNaturalMaxX : 0,
+      y: cameraAngle.x - cameraAngle.y < 0 ? floorsNaturalMaxY : 0,
+      z: 0,
+    },
+    cameraAngle,
+  ).x;
 
   return {
     floors: {
@@ -124,6 +168,7 @@ export const floorsRenderExtent = <
       edgeRightX: floorsEdgeRightX,
       topEdgeY: floorsTopEdgeY,
       bottomEdgeY: floorsBottomEdgeY,
+      nearCornerX,
     },
     allItems: {
       topEdgeY: allItemsTopEdgeY,

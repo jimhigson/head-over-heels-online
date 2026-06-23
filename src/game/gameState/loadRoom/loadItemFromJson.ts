@@ -10,10 +10,12 @@ import { type ScrollsRead } from "../../../store/slices/gameInPlay/gameInPlaySli
 import { type PokesEnabled } from "../../../store/slices/userSettings/userSettingsSlice";
 import { emptyObject } from "../../../utils/empty";
 import { hashXyzToNumber0to1 } from "../../../utils/maths/hashXyzToNumber0to1";
+import { cameraAngleBase } from "../../../utils/vectors/rotateXy";
 import {
   addXyz,
   lengthXyz,
   unitXyz,
+  type Xy,
   type Xyz,
 } from "../../../utils/vectors/vectors";
 import { boundingBoxForItem } from "../../collision/boundingBoxes";
@@ -33,6 +35,7 @@ import { loadFloor } from "./loadFloor";
 import { loadItemShadowCast } from "./loadItemShadowCast";
 import { loadPlayer } from "./loadPlayer";
 import { loadWall } from "./loadWalls";
+import { renderAabbOffsetForCameraAngle } from "./renderAabbOffsetForCameraAngle";
 
 type ItemConfigMaybeWithMultiplication = {
   times?: Partial<Xyz> | undefined;
@@ -61,6 +64,8 @@ export function* loadItemFromJson<
   planetsLiberated: Partial<Record<PlanetName, boolean>> = emptyObject,
   pokesEnabled: PokesEnabled = {},
   itemIdSuffix = "",
+  /** the camera rotation that camera-relative structure (walls/floors) is built for */
+  cameraAngle: Xy = cameraAngleBase,
 ): Generator<UnionOfAllItemInPlayTypes<RoomId>, undefined> {
   if (roomPickupsCollected[jsonItemId]) {
     // skip pickups that have already been collected
@@ -82,6 +87,7 @@ export function* loadItemFromJson<
         jsonItem,
         jsonItemId,
         directionalIndex,
+        cameraAngle,
       );
     }
     case jsonItem.type === "player": {
@@ -90,12 +96,12 @@ export function* loadItemFromJson<
     }
 
     case jsonItem.type === "wall": {
-      yield loadWall(jsonItemId, jsonItem);
+      yield loadWall(jsonItemId, jsonItem, cameraAngle);
       return;
     }
 
     case jsonItem.type === "floor": {
-      yield loadFloor(jsonItemId, jsonItem, directionalIndex);
+      yield loadFloor(jsonItemId, jsonItem, directionalIndex, cameraAngle);
       return;
     }
 
@@ -125,6 +131,7 @@ export function* loadItemFromJson<
               planetsLiberated,
               pokesEnabled,
               `${itemIdSuffix}_${x}_${y}_${z}`,
+              cameraAngle,
             );
           }
         }
@@ -173,6 +180,9 @@ export function* loadItemFromJson<
         ...defaultItemProperties,
         ...boundingBoxesMultiplied,
         hash: hashXyzToNumber0to1(state.position),
+        // the render box's near corner sits on the aabb near corner, which depends on
+        // the camera angle this item is being loaded for:
+        ...renderAabbOffsetForCameraAngle(boundingBoxesMultiplied, cameraAngle),
         id: `${jsonItemId}${itemIdSuffix}`,
         jsonItemId,
         fixedZIndex:

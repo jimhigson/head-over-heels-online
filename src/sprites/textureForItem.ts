@@ -329,7 +329,7 @@ export const textureForItem = (
           }
           break;
         default:
-          item.config satisfies never;
+          item.config.direction satisfies never;
       }
       break;
     case "floor":

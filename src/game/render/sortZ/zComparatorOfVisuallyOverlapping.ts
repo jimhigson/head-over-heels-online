@@ -1,4 +1,5 @@
-import { type Xyz } from "../../../utils/vectors/vectors";
+import { rotatedX, rotatedY } from "../../../utils/vectors/rotateXy";
+import { type Xy, type Xyz } from "../../../utils/vectors/vectors";
 
 export const Z_COMPARATOR_OF_VISUALLY_OVERLAPPING_UNDECIDED = 2 as const;
 
@@ -6,42 +7,78 @@ export const Z_COMPARATOR_OF_VISUALLY_OVERLAPPING_UNDECIDED = 2 as const;
  * 1 if A in front
  * -1 if B in front
  * 2 if objects are overlapping
+ *
+ * The camera rotation is folded into the comparison here: the boxes are compared in
+ * camera space (world x,y rotated by `cameraAngle`; z is the rotation axis, so
+ * unchanged), computed inline rather than from a pre-rotated box. In camera space the
+ * fixed-camera ordering rules apply (lower x / lower y in front, higher z in front).
+ * For a 90° turn `rotatedX`/`rotatedY` is a signed axis pick, so the two opposite xy
+ * corners span the extreme.
  */
 export const zComparatorOfVisuallyOverlapping = (
   aPosition: Xyz,
   aBb: Xyz,
   bPosition: Xyz,
   bBb: Xyz,
+  cameraAngle: Xy,
 ): -1 | 1 | typeof Z_COMPARATOR_OF_VISUALLY_OVERLAPPING_UNDECIDED => {
-  const aXMin = aPosition.x;
-  const aXMax = aXMin + aBb.x;
-  const bXMin = bPosition.x;
+  // camera-space x interval of each box:
+  const aRotX0 = rotatedX(aPosition.x, aPosition.y, cameraAngle);
+  const aRotX1 = rotatedX(
+    aPosition.x + aBb.x,
+    aPosition.y + aBb.y,
+    cameraAngle,
+  );
+  const aXMin = Math.min(aRotX0, aRotX1);
+  const aXMax = Math.max(aRotX0, aRotX1);
+  const bRotX0 = rotatedX(bPosition.x, bPosition.y, cameraAngle);
+  const bRotX1 = rotatedX(
+    bPosition.x + bBb.x,
+    bPosition.y + bBb.y,
+    cameraAngle,
+  );
+  const bXMin = Math.min(bRotX0, bRotX1);
 
   // check x: lower x is in front
   if (aXMax <= bXMin) {
     // a is entirely less than b in [x] — a is in front
     return 1;
   }
-  const bXMax = bXMin + bBb.x;
+  const bXMax = Math.max(bRotX0, bRotX1);
   if (aXMin >= bXMax) {
     // b is entirely less than a in [x] — b is in front
     return -1;
   }
 
-  const aYMin = aPosition.y;
-  const aYMax = aYMin + aBb.y;
-  const bYMin = bPosition.y;
+  // camera-space y interval of each box:
+  const aRotY0 = rotatedY(aPosition.x, aPosition.y, cameraAngle);
+  const aRotY1 = rotatedY(
+    aPosition.x + aBb.x,
+    aPosition.y + aBb.y,
+    cameraAngle,
+  );
+  const aYMin = Math.min(aRotY0, aRotY1);
+  const aYMax = Math.max(aRotY0, aRotY1);
+  const bRotY0 = rotatedY(bPosition.x, bPosition.y, cameraAngle);
+  const bRotY1 = rotatedY(
+    bPosition.x + bBb.x,
+    bPosition.y + bBb.y,
+    cameraAngle,
+  );
+  const bYMin = Math.min(bRotY0, bRotY1);
+
   // a and b overlap in x, check y: lower y is in front
   if (aYMax <= bYMin) {
     // a is entirely less than b in [y] — a is in front
     return 1;
   }
-  const bYMax = bPosition.y + bBb.y;
+  const bYMax = Math.max(bRotY0, bRotY1);
   if (aYMin >= bYMax) {
     // b is entirely less than a in [y] — b is in front
     return -1;
   }
 
+  // z is the rotation axis, so unchanged:
   const aZMin = aPosition.z;
   const aZMax = aZMin + aBb.z;
   const bZMin = bPosition.z;
@@ -64,16 +101,43 @@ export const zComparatorOfVisuallyOverlappingByMtv = (
   aBb: Xyz,
   bPosition: Xyz,
   bBb: Xyz,
+  cameraAngle: Xy,
 ): number => {
-  const aXMin = aPosition.x;
-  const aXMax = aXMin + aBb.x;
-  const bXMin = bPosition.x;
-  const bXMax = bXMin + bBb.x;
-  const aYMin = aPosition.y;
-  const aYMax = aYMin + aBb.y;
+  // camera-space x/y intervals (z is the rotation axis, so unchanged):
+  const aRotX0 = rotatedX(aPosition.x, aPosition.y, cameraAngle);
+  const aRotX1 = rotatedX(
+    aPosition.x + aBb.x,
+    aPosition.y + aBb.y,
+    cameraAngle,
+  );
+  const aXMin = Math.min(aRotX0, aRotX1);
+  const aXMax = Math.max(aRotX0, aRotX1);
+  const bRotX0 = rotatedX(bPosition.x, bPosition.y, cameraAngle);
+  const bRotX1 = rotatedX(
+    bPosition.x + bBb.x,
+    bPosition.y + bBb.y,
+    cameraAngle,
+  );
+  const bXMin = Math.min(bRotX0, bRotX1);
+  const bXMax = Math.max(bRotX0, bRotX1);
 
-  const bYMin = bPosition.y;
-  const bYMax = bYMin + bBb.y;
+  const aRotY0 = rotatedY(aPosition.x, aPosition.y, cameraAngle);
+  const aRotY1 = rotatedY(
+    aPosition.x + aBb.x,
+    aPosition.y + aBb.y,
+    cameraAngle,
+  );
+  const aYMin = Math.min(aRotY0, aRotY1);
+  const aYMax = Math.max(aRotY0, aRotY1);
+  const bRotY0 = rotatedY(bPosition.x, bPosition.y, cameraAngle);
+  const bRotY1 = rotatedY(
+    bPosition.x + bBb.x,
+    bPosition.y + bBb.y,
+    cameraAngle,
+  );
+  const bYMin = Math.min(bRotY0, bRotY1);
+  const bYMax = Math.max(bRotY0, bRotY1);
+
   const aZMin = aPosition.z;
   const aZMax = aZMin + aBb.z;
   const bZMin = bPosition.z;

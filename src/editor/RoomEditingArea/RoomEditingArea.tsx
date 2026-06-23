@@ -16,6 +16,7 @@ import { EditorRoomStateProvider } from "./EditorRoomStateProvider";
 import { useRoomEditorInteractivity } from "./interactivity/useRoomEditorInteractivity";
 import { PixiApplicationProvider } from "./PixiApplicationProvider";
 import { ResolutionControls } from "./ResolutionControls";
+import { RotateViewControls } from "./RotateViewControls";
 import { useAddApplicationCanvasToDom } from "./useAddApplicationCanvasToDom";
 import { useCenterScrollOnLoad } from "./useCenterScrollOnLoad";
 import { useEditorMainLoop } from "./useEditorMainLoop";
@@ -67,10 +68,13 @@ const RoomEditingAreaInner = () => {
       class="w-full h-full relative"
       aria-description="Room preview area showing a rendering of the currently selected (cursor) room that is interactive and allows editing by dragging or a right-click context menu"
     >
-      <ResolutionControls
-        selectedResolution={selectedResolution}
-        onResolutionChange={setSelectedResolution}
-      />
+      <div class="absolute scale-editor top-0 right-1 z-slightlyAbove flex gap-1 leading-none text-white">
+        <ResolutionControls
+          selectedResolution={selectedResolution}
+          onResolutionChange={setSelectedResolution}
+        />
+        <RotateViewControls />
+      </div>
       <div
         ref={setRenderSizingArea}
         class={`w-full h-full ${cursorClassname} scale-editor bg-editor-checkerboard overflow-scroll scrollbar scrollbar-w-1 scrollbar-track-pureBlack scrollbar-thumb-metallicBlue`}

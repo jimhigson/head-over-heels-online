@@ -87,12 +87,27 @@ export const room = inferRoomJson({
       type: "monster",
     },
     w: {
-      config: { direction: "right", times: { y: 4 } },
+      config: {
+        direction: "right",
+        tiles: ["plain", "plain", "armour", "shield"],
+      },
       position: { x: 0, y: 0, z: 0 },
       type: "wall",
     },
     w1: {
-      config: { direction: "towards", times: { x: 8 } },
+      config: {
+        direction: "towards",
+        tiles: [
+          "plain",
+          "plain",
+          "armour",
+          "shield",
+          "shield",
+          "armour",
+          "plain",
+          "plain",
+        ],
+      },
       position: { x: 0, y: 0, z: 0 },
       type: "wall",
     },

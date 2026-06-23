@@ -2,6 +2,8 @@ import { type SetRequired } from "type-fest";
 
 import { toposort } from "../../../game/render/sortZ/toposort/toposort";
 import { updateZEdges } from "../../../game/render/sortZ/updateZEdges";
+import { VisualIndex } from "../../../game/render/sortZ/VisualIndex";
+import { type Xy } from "../../../utils/vectors/vectors";
 import { type EditorUnionOfAllItemInPlayTypes } from "../../editorTypes";
 import { type PointerItemIntersection } from "./pointIntersectsItemAABB";
 
@@ -14,6 +16,7 @@ export const frontItemFromPointerIntersections = (
   intersections: Array<
     [EditorUnionOfAllItemInPlayTypes, PointerItemIntersection]
   >,
+  cameraAngle: Xy,
 ): EditorUnionOfAllItemInPlayTypes | undefined => {
   const someIntersectRendered = intersections.some(
     ([, int]) => int === "intersects-rendered",
@@ -49,7 +52,13 @@ export const frontItemFromPointerIntersections = (
     return topographicallySortableItems[0];
   }
 
-  const order = toposort(updateZEdges(new Set(topographicallySortableItems)));
+  const sortableItemsSet = new Set(topographicallySortableItems);
+  const order = toposort(
+    updateZEdges(
+      sortableItemsSet,
+      new VisualIndex(sortableItemsSet.values(), cameraAngle),
+    ),
+  );
 
   // items are sorted back-to-front, so we need the last one:
   return order.at(-1);

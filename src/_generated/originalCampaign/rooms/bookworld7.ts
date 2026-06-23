@@ -28,12 +28,24 @@ export const room = inferRoomJson({
     h1: { config: {}, position: { x: 1, y: 0, z: 1 }, type: "hushPuppy" },
     h2: { config: {}, position: { x: 2, y: 0, z: 2 }, type: "hushPuppy" },
     w: {
-      config: { direction: "right", times: { y: 8 } },
+      config: {
+        direction: "right",
+        tiles: [
+          "book",
+          "book",
+          "cowboy",
+          "book",
+          "book",
+          "cowboy",
+          "book",
+          "book",
+        ],
+      },
       position: { x: 0, y: 0, z: 0 },
       type: "wall",
     },
     w1: {
-      config: { direction: "towards" },
+      config: { direction: "towards", tiles: ["book"] },
       position: { x: 0, y: 0, z: 0 },
       type: "wall",
     },
@@ -43,7 +55,7 @@ export const room = inferRoomJson({
       type: "wall",
     },
     w3: {
-      config: { direction: "towards" },
+      config: { direction: "towards", tiles: ["book"] },
       position: { x: 3, y: 0, z: 0 },
       type: "wall",
     },

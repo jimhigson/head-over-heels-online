@@ -3,6 +3,7 @@ import { type IndividualCharacterName } from "../../../model/modelTypes";
 import { isAnimationId } from "../../../sprites/assertIsTextureId";
 import { type AppSpritesheet } from "../../../sprites/spritesheet/variants/AppSpritesheet";
 import { emptyObject } from "../../../utils/empty";
+import { rotateXy } from "../../../utils/vectors/rotateXy";
 import { unitVectors } from "../../../utils/vectors/unitVectors";
 import {
   type DirectionXy8,
@@ -39,7 +40,7 @@ export const sceneryPlayerAppearance: ItemAppearance<"sceneryPlayer"> = ({
       hash,
       config: { which, startDirection },
     },
-    general: { paused, spritesheetVariants },
+    general: { paused, spritesheetVariants, cameraAngle },
   },
   currentRendering,
 }) => {
@@ -58,10 +59,18 @@ export const sceneryPlayerAppearance: ItemAppearance<"sceneryPlayer"> = ({
       spritesheetVariants.currentMainSpritesheet(false, false, true)
     : spritesheetVariants.sceneryPlayerSpritesheet;
 
-  // and face the reflected way when seen in a mirror:
+  // face the reflected way when seen in a mirror, and rotate the facing by the
+  // camera angle so the sprite matches how the character appears after turning:
   const direction =
     vectorClosestDirectionXy8(
-      maybeReflectedVector(unitVectors[startDirection], isReflection),
+      rotateXy(
+        maybeReflectedVector(
+          unitVectors[startDirection],
+          isReflection,
+          cameraAngle,
+        ),
+        cameraAngle,
+      ),
     ) ?? startDirection;
 
   return {

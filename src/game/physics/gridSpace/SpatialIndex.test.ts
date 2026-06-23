@@ -1,7 +1,7 @@
 import { expect, test } from "vitest";
 
 import { type Xyz } from "../../../utils/vectors/vectors";
-import { GridSpatialIndex, type Indexable } from "./GridSpatialIndex";
+import { type Indexable, SpatialIndex } from "./SpatialIndex";
 
 const makeItem = (
   id: string,
@@ -27,7 +27,7 @@ const itemInCell = (id: string, cx: number, cy: number): Indexable =>
   );
 
 test("add and remove item with id=head", () => {
-  const spatialIndex = new GridSpatialIndex<string, string, Indexable>();
+  const spatialIndex = new SpatialIndex<string, string, Indexable>();
 
   const headItem = makeItem("head", { x: 41, y: 41, z: 0 } as Xyz);
 
@@ -42,7 +42,7 @@ test("add and remove item with id=head", () => {
 
 // cells are blockSizePx.x*2 = 32 world px wide/deep
 test("worldXToCellX / worldYToCellY floor by cell size", () => {
-  const idx = new GridSpatialIndex<string, string, Indexable>();
+  const idx = new SpatialIndex<string, string, Indexable>();
   expect(idx.worldXToCellX(0)).toBe(0);
   expect(idx.worldXToCellX(31)).toBe(0);
   expect(idx.worldXToCellX(32)).toBe(1);
@@ -50,7 +50,7 @@ test("worldXToCellX / worldYToCellY floor by cell size", () => {
 });
 
 test("getCellByCellCoords returns the live bin for an occupied cell, undefined otherwise", () => {
-  const idx = new GridSpatialIndex<string, string, Indexable>();
+  const idx = new SpatialIndex<string, string, Indexable>();
   const item = makeItem("a", { x: 41, y: 41, z: 0 } as Xyz); // cell (1,1)
   const cx = idx.worldXToCellX(41);
   const cy = idx.worldYToCellY(41);
@@ -64,7 +64,7 @@ test("getCellByCellCoords returns the live bin for an occupied cell, undefined o
 });
 
 test("a multi-cell item appears in every straddled cell", () => {
-  const idx = new GridSpatialIndex<string, string, Indexable>();
+  const idx = new SpatialIndex<string, string, Indexable>();
   // x 10..90 spans cells 0,1,2 on x; y stays in cell 0
   const wide = makeItem(
     "wide",
@@ -83,7 +83,7 @@ test("a multi-cell item appears in every straddled cell", () => {
 });
 
 test("getOccupiedCuboidCellExtent reflects adds, removal of an extreme, and moves", () => {
-  const idx = new GridSpatialIndex<string, string, Indexable>();
+  const idx = new SpatialIndex<string, string, Indexable>();
   expect(idx.getOccupiedCuboidCellExtent()).toBeUndefined();
 
   const a = makeItem("a", { x: 10, y: 10, z: 0 } as Xyz); // cell (0,0)
@@ -118,7 +118,7 @@ test("getOccupiedCuboidCellExtent reflects adds, removal of an extreme, and move
 });
 
 test("indexes an item at a negative position into a negative cell", () => {
-  const idx = new GridSpatialIndex<string, string, Indexable>();
+  const idx = new SpatialIndex<string, string, Indexable>();
   const item = itemInCell("neg", -2, -3);
 
   idx.addItem(item);
@@ -129,7 +129,7 @@ test("indexes an item at a negative position into a negative cell", () => {
 });
 
 test("packs distinct cell keys across negative and large (<=512) coords", () => {
-  const idx = new GridSpatialIndex<string, string, Indexable>();
+  const idx = new SpatialIndex<string, string, Indexable>();
   // (0,-1), (-1,0) and (-1,-1) would alias under a naive (x<<16)|y without the
   // low-half mask; the far-apart large cells exercise the ~512-wide range:
   const cells = [
@@ -153,7 +153,7 @@ test("packs distinct cell keys across negative and large (<=512) coords", () => 
 });
 
 test("getOccupiedCuboidCellExtent spans negative and large cells", () => {
-  const idx = new GridSpatialIndex<string, string, Indexable>();
+  const idx = new SpatialIndex<string, string, Indexable>();
   idx.addItem(itemInCell("a", -300, -7));
   idx.addItem(itemInCell("b", 512, 511));
 

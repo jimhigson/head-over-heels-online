@@ -69,17 +69,23 @@ export const room = inferRoomJson({
     sg1: { config: {}, position: { x: 4, y: 15, z: 0 }, type: "spring" },
     sg2: { config: {}, position: { x: 5, y: 12, z: 0 }, type: "spring" },
     w: {
-      config: { direction: "right", times: { y: 7 } },
+      config: {
+        direction: "right",
+        tiles: ["bars", "bars", "bars", "bars", "bars", "bars", "bars"],
+      },
       position: { x: 0, y: 0, z: 0 },
       type: "wall",
     },
     w1: {
-      config: { direction: "towards" },
+      config: { direction: "towards", tiles: ["bars"] },
       position: { x: 0, y: 0, z: 0 },
       type: "wall",
     },
     w2: {
-      config: { direction: "right", times: { y: 7 } },
+      config: {
+        direction: "right",
+        tiles: ["bars", "bars", "bars", "bars", "bars", "bars", "bars"],
+      },
       position: { x: 0, y: 9, z: 0 },
       type: "wall",
     },
@@ -92,7 +98,7 @@ export const room = inferRoomJson({
       type: "wall",
     },
     w4: {
-      config: { direction: "towards", times: { x: 3 } },
+      config: { direction: "towards", tiles: ["bars", "bars", "bars"] },
       position: { x: 3, y: 0, z: 0 },
       type: "wall",
     },

@@ -12,6 +12,7 @@ import { type CharacterRooms, type GameState } from "../GameState";
  */
 export const savedGameStateFields = [
   // TODO: this means the room json also goes in the save - hmmmm.
+  "cameraAngle",
   "characterRooms",
   "currentCharacterName",
   "entryState",

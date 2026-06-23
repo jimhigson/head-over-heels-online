@@ -35,17 +35,20 @@ export const room = inferRoomJson({
       type: "monster",
     },
     w: {
-      config: { direction: "right", times: { y: 3 } },
+      config: { direction: "right", tiles: ["book", "book", "cowboy"] },
       position: { x: 0, y: 0, z: 0 },
       type: "wall",
     },
     w1: {
-      config: { direction: "towards", times: { x: 6 } },
+      config: {
+        direction: "towards",
+        tiles: ["book", "book", "cowboy", "book", "book", "cowboy"],
+      },
       position: { x: 0, y: 0, z: 0 },
       type: "wall",
     },
     w2: {
-      config: { direction: "right", times: { y: 3 } },
+      config: { direction: "right", tiles: ["cowboy", "book", "book"] },
       position: { x: 0, y: 5, z: 0 },
       type: "wall",
     },

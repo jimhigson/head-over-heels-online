@@ -44,17 +44,29 @@ export const room = inferRoomJson({
       type: "hushPuppy",
     },
     w: {
-      config: { direction: "right" },
+      config: { direction: "right", tiles: ["wall"] },
       position: { x: 0, y: 0, z: 0 },
       type: "wall",
     },
     w1: {
-      config: { direction: "towards", times: { x: 8 } },
+      config: {
+        direction: "towards",
+        tiles: [
+          "wall",
+          "shield",
+          "wall",
+          "window",
+          "window",
+          "wall",
+          "shield",
+          "wall",
+        ],
+      },
       position: { x: 0, y: 0, z: 0 },
       type: "wall",
     },
     w2: {
-      config: { direction: "right" },
+      config: { direction: "right", tiles: ["window"] },
       position: { x: 0, y: 3, z: 0 },
       type: "wall",
     },

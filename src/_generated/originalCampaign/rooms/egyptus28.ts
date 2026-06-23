@@ -35,17 +35,20 @@ export const room = inferRoomJson({
       type: "moveableDeadly",
     },
     w: {
-      config: { direction: "right", times: { y: 2 } },
+      config: { direction: "right", tiles: ["hieroglyphics", "hieroglyphics"] },
       position: { x: 0, y: 0, z: 0 },
       type: "wall",
     },
     w1: {
-      config: { direction: "towards", times: { x: 3 } },
+      config: {
+        direction: "towards",
+        tiles: ["hieroglyphics", "hieroglyphics", "hieroglyphics"],
+      },
       position: { x: 0, y: 0, z: 0 },
       type: "wall",
     },
     w2: {
-      config: { direction: "right", times: { y: 2 } },
+      config: { direction: "right", tiles: ["sarcophagus", "hieroglyphics"] },
       position: { x: 0, y: 4, z: 0 },
       type: "wall",
     },
@@ -67,7 +70,10 @@ export const room = inferRoomJson({
       type: "wall",
     },
     w4: {
-      config: { direction: "towards", times: { x: 3 } },
+      config: {
+        direction: "towards",
+        tiles: ["hieroglyphics", "hieroglyphics", "hieroglyphics"],
+      },
       position: { x: 5, y: 0, z: 0 },
       type: "wall",
     },

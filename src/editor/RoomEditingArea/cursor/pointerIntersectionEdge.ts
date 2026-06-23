@@ -1,12 +1,16 @@
 import {
-  projectBottomCentre,
-  projectC010,
-  projectC100,
-  projectC111,
-  projectTopLeft,
-  projectTopRight,
+  projectApparentBottomCentre,
+  projectApparentLeftBase,
+  projectApparentRightBase,
+  projectApparentTop,
+  projectApparentTopLeft,
+  projectApparentTopRight,
 } from "../../../game/render/sortZ/projectAabbCorners";
 import { nonZero } from "../../../utils/epsilon";
+import {
+  rotateXyz,
+  rotateXyzByInverseCameraAngle,
+} from "../../../utils/vectors/rotateXy";
 import { type Plane, type Xy, type Xyz } from "../../../utils/vectors/vectors";
 import { type EditorUnionOfAllItemInPlayTypes } from "../../editorTypes";
 import { type Tool } from "../interactivity/Tool";
@@ -78,17 +82,29 @@ export const betweenRightAndDown: Plane = {
 };
 
 /**
- * get the edge of the item being pointed at
+ * get the edge of the item being pointed at, as a physical (world-space) plane
  */
 export const pointerIntersectionEdge = (
   item: EditorUnionOfAllItemInPlayTypes,
   pointerXy: Xy,
+  /** the physical (world-space) face the pointer is over */
   face: Xyz,
   _tool: Tool,
+  cameraAngle: Xy,
 ): Plane | undefined => {
   const { position } = item.state;
   // using aabb, not renderAabb, so doors can be placed on walls above where they render
   const { aabb } = item;
+
+  // the screen geometry (which lines the silhouette edges lie along) is fixed
+  // relative to the camera, so classify using the apparent face, then map the
+  // found edge back to its physical plane at the end:
+  const apparentFace = rotateXyz(face, cameraAngle);
+
+  const physicalPlane = (apparentPlane: Plane): Plane => ({
+    point: rotateXyzByInverseCameraAngle(apparentPlane.point, cameraAngle),
+    normal: rotateXyzByInverseCameraAngle(apparentPlane.normal, cameraAngle),
+  });
 
   /*
    * find any of 7 visible (edges)
@@ -112,26 +128,30 @@ export const pointerIntersectionEdge = (
    *           [bc]
    */
 
-  const isRight = face.x < 0;
-  const isTowards = face.y < 0;
-  const isUp = face.z > 0;
+  const isRight = apparentFace.x < 0;
+  const isTowards = apparentFace.y < 0;
+  const isUp = apparentFace.z > 0;
 
   if (isRight || isTowards) {
     // edge (1)
     // faces that share a vertical edge:
-    const d = distancePointToLine2D(pointerXy, projectBottomCentre(position), {
-      x: 0,
-      y: -1,
-    });
+    const d = distancePointToLine2D(
+      pointerXy,
+      projectApparentBottomCentre(position, aabb, cameraAngle),
+      {
+        x: 0,
+        y: -1,
+      },
+    );
     if (d < edgeToleranceBetweenFacesPx) {
-      return betweenRightAndTowards;
+      return physicalPlane(betweenRightAndTowards);
     }
   }
   if (isRight || isUp) {
     // edge (2)
     const d = distancePointToLine2D(
       pointerXy,
-      projectTopRight(position, aabb),
+      projectApparentTopRight(position, aabb, cameraAngle),
       {
         x: 2,
         y: -1,
@@ -140,31 +160,35 @@ export const pointerIntersectionEdge = (
 
     // faces that share an edge:
     if (d < edgeToleranceBetweenFacesPx) {
-      return betweenRightAndUp;
+      return physicalPlane(betweenRightAndUp);
     }
   }
   if (isTowards || isUp) {
     // edge (3)
     // faces that share an edge:
-    const d = distancePointToLine2D(pointerXy, projectTopLeft(position, aabb), {
-      x: 2,
-      y: 1,
-    });
+    const d = distancePointToLine2D(
+      pointerXy,
+      projectApparentTopLeft(position, aabb, cameraAngle),
+      {
+        x: 2,
+        y: 1,
+      },
+    );
     if (d < edgeToleranceBetweenFacesPx) {
-      return betweenTowardsAndUp;
+      return physicalPlane(betweenTowardsAndUp);
     }
   }
 
   switch (true) {
     case isUp: {
-      const corner = projectC111(position, aabb);
+      const corner = projectApparentTop(position, aabb, cameraAngle);
       // edge (4)
       const d1 = distancePointToLine2D(pointerXy, corner, {
         x: 2,
         y: 1,
       });
       if (d1 < edgeTolerancePx) {
-        return betweenUpAndAway;
+        return physicalPlane(betweenUpAndAway);
       }
       // edge (5)
       const d2 = distancePointToLine2D(pointerXy, corner, {
@@ -172,20 +196,20 @@ export const pointerIntersectionEdge = (
         y: 1,
       });
       if (d2 < edgeTolerancePx) {
-        return betweenUpAndLeft;
+        return physicalPlane(betweenUpAndLeft);
       }
       break;
     }
 
     case isTowards: {
-      const corner = projectC100(position, aabb);
+      const corner = projectApparentLeftBase(position, aabb, cameraAngle);
       // edge (6)
       const d1 = distancePointToLine2D(pointerXy, corner, {
         x: 0,
         y: -1,
       });
       if (d1 < edgeTolerancePx) {
-        return betweenLeftAndTowards;
+        return physicalPlane(betweenLeftAndTowards);
       }
       // edge (7)
       const d2 = distancePointToLine2D(pointerXy, corner, {
@@ -193,20 +217,20 @@ export const pointerIntersectionEdge = (
         y: 1,
       });
       if (d2 < edgeTolerancePx) {
-        return betweenTowardsAndDown;
+        return physicalPlane(betweenTowardsAndDown);
       }
       break;
     }
 
     case isRight: {
-      const corner = projectC010(position, aabb);
+      const corner = projectApparentRightBase(position, aabb, cameraAngle);
       // edge (8)
       const d1 = distancePointToLine2D(pointerXy, corner, {
         x: 0,
         y: -1,
       });
       if (d1 < edgeTolerancePx) {
-        return betweenRightAndAway;
+        return physicalPlane(betweenRightAndAway);
       }
       // edge (9)
       const d2 = distancePointToLine2D(pointerXy, corner, {
@@ -214,7 +238,7 @@ export const pointerIntersectionEdge = (
         y: 1,
       });
       if (d2 < edgeTolerancePx) {
-        return betweenRightAndDown;
+        return physicalPlane(betweenRightAndDown);
       }
       break;
     }

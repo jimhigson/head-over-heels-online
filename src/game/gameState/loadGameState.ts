@@ -20,7 +20,7 @@ import {
   cheatsOn,
 } from "../components/cheats/cheatRoomIdFromUrlHash";
 import { type InputStateTrackerInterface } from "../input/InputStateTracker";
-import { GridSpatialIndex } from "../physics/gridSpace/GridSpatialIndex";
+import { SpatialIndex } from "../physics/gridSpace/SpatialIndex";
 import {
   type CharacterRooms,
   type GameState,
@@ -137,7 +137,7 @@ const addIndexToIndexSavedCharacterRooms = <RoomId extends string>(
       continue;
     }
 
-    asIndexed[roomSpatialIndexKey] = new GridSpatialIndex(
+    asIndexed[roomSpatialIndexKey] = new SpatialIndex(
       roomItemsIterable(loadedRoomState.items),
     );
   }

@@ -1,6 +1,6 @@
 import { type UnionOfAllItemInPlayTypes } from "../../model/ItemInPlay";
 import { type Xyz } from "../../utils/vectors/vectors";
-import { type GridSpatialIndex } from "../physics/gridSpace/GridSpatialIndex";
+import { type SpatialIndex } from "../physics/gridSpace/SpatialIndex";
 
 export type CollideableItem = Pick<UnionOfAllItemInPlayTypes, "aabb" | "id"> & {
   state: { position: Xyz };
@@ -68,19 +68,19 @@ const alwaysUseForCollision = <C extends CollideableItem, G extends C = C>(
  */
 export function collisionItemWithIndex<C extends CollideableItem>(
   subject: CollideableItem,
-  index: GridSpatialIndex<string, string, C>,
+  index: SpatialIndex<string, string, C>,
 ): Generator<C>;
 export function collisionItemWithIndex<
   C extends CollideableItem,
   GuardedType extends C,
 >(
   subject: CollideableItem,
-  index: GridSpatialIndex<string, string, C>,
+  index: SpatialIndex<string, string, C>,
   considerItem: (item: C) => item is GuardedType,
 ): Generator<GuardedType>;
 export function collisionItemWithIndex<C extends CollideableItem>(
   subject: CollideableItem,
-  index: GridSpatialIndex<string, string, C>,
+  index: SpatialIndex<string, string, C>,
   considerItem: (item: C) => boolean,
 ): Generator<C>;
 export function* collisionItemWithIndex<
@@ -88,7 +88,7 @@ export function* collisionItemWithIndex<
   GuardedType extends C = C,
 >(
   subject: CollideableItem,
-  index: GridSpatialIndex<string, string, C>,
+  index: SpatialIndex<string, string, C>,
   considerItem: (item: C) => boolean = alwaysUseForCollision,
 ): Generator<C | GuardedType> {
   const neighbours = index.getItemCuboidNeighbourhood(subject);
@@ -118,7 +118,7 @@ export function* collisionItemWithIndex<
  */
 export const hasCollisionItemWithIndex = <C extends CollideableItem>(
   subject: CollideableItem,
-  index: GridSpatialIndex<string, string, C>,
+  index: SpatialIndex<string, string, C>,
   considerItem: (item: C) => boolean = alwaysUseForCollision,
 ): boolean => {
   const neighbours = index.getItemCuboidNeighbourhood(subject);

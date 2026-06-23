@@ -43,8 +43,23 @@
   },
   {
     "op": "replace",
-    "path": "/items/w3/config/times/x",
-    "value": 5
+    "path": "/items/w3/config/tiles/1",
+    "value": "window"
+  },
+  {
+    "op": "replace",
+    "path": "/items/w3/config/tiles/0",
+    "value": "window"
+  },
+  {
+    "op": "add",
+    "path": "/items/w3/config/tiles/3",
+    "value": "shield"
+  },
+  {
+    "op": "add",
+    "path": "/items/w3/config/tiles/4",
+    "value": "wall"
   },
   {
     "op": "replace",
@@ -63,12 +78,31 @@
   },
   {
     "op": "remove",
-    "path": "/items/w1/config/times/y"
+    "path": "/items/w1/config/tiles/7"
   },
   {
-    "op": "add",
-    "path": "/items/w1/config/times/x",
-    "value": 1
+    "op": "remove",
+    "path": "/items/w1/config/tiles/6"
+  },
+  {
+    "op": "remove",
+    "path": "/items/w1/config/tiles/5"
+  },
+  {
+    "op": "remove",
+    "path": "/items/w1/config/tiles/4"
+  },
+  {
+    "op": "remove",
+    "path": "/items/w1/config/tiles/3"
+  },
+  {
+    "op": "remove",
+    "path": "/items/w1/config/tiles/2"
+  },
+  {
+    "op": "remove",
+    "path": "/items/w1/config/tiles/1"
   },
   {
     "op": "replace",
@@ -76,13 +110,29 @@
     "value": "towards"
   },
   {
-    "op": "remove",
-    "path": "/items/w/config/times/x"
+    "op": "add",
+    "path": "/items/w/config/tiles/3",
+    "value": "window"
   },
   {
     "op": "add",
-    "path": "/items/w/config/times/y",
-    "value": 8
+    "path": "/items/w/config/tiles/4",
+    "value": "window"
+  },
+  {
+    "op": "add",
+    "path": "/items/w/config/tiles/5",
+    "value": "wall"
+  },
+  {
+    "op": "add",
+    "path": "/items/w/config/tiles/6",
+    "value": "shield"
+  },
+  {
+    "op": "add",
+    "path": "/items/w/config/tiles/7",
+    "value": "wall"
   },
   {
     "op": "replace",

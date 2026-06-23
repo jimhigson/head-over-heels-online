@@ -14,20 +14,24 @@
     "value": 0
   },
   {
-    "op": "remove",
-    "path": "/items/w4/config/tiles"
+    "op": "replace",
+    "path": "/items/w4/config/tiles/0",
+    "value": "armour"
+  },
+  {
+    "op": "add",
+    "path": "/items/w4/config/tiles/2",
+    "value": "shield"
+  },
+  {
+    "op": "add",
+    "path": "/items/w4/config/tiles/3",
+    "value": "armour"
   },
   {
     "op": "replace",
     "path": "/items/w4/config/direction",
     "value": "right"
-  },
-  {
-    "op": "add",
-    "path": "/items/w4/config/times",
-    "value": {
-      "y": 4
-    }
   },
   {
     "op": "replace",
@@ -89,8 +93,14 @@
     "value": 8
   },
   {
-    "op": "remove",
-    "path": "/items/w2/config/times"
+    "op": "replace",
+    "path": "/items/w2/config/tiles/1",
+    "value": "shield"
+  },
+  {
+    "op": "replace",
+    "path": "/items/w2/config/tiles/0",
+    "value": "plain"
   },
   {
     "op": "replace",
@@ -98,37 +108,49 @@
     "value": "left"
   },
   {
-    "op": "add",
-    "path": "/items/w2/config/tiles",
-    "value": ["plain", "shield"]
-  },
-  {
     "op": "replace",
     "path": "/items/w1/position/y",
     "value": 6
   },
   {
-    "op": "remove",
-    "path": "/items/w1/config/times"
+    "op": "replace",
+    "path": "/items/w1/config/tiles/1",
+    "value": "armour"
+  },
+  {
+    "op": "add",
+    "path": "/items/w1/config/tiles/2",
+    "value": "plain"
+  },
+  {
+    "op": "add",
+    "path": "/items/w1/config/tiles/3",
+    "value": "shield"
+  },
+  {
+    "op": "add",
+    "path": "/items/w1/config/tiles/4",
+    "value": "shield"
+  },
+  {
+    "op": "add",
+    "path": "/items/w1/config/tiles/5",
+    "value": "plain"
+  },
+  {
+    "op": "add",
+    "path": "/items/w1/config/tiles/6",
+    "value": "armour"
+  },
+  {
+    "op": "add",
+    "path": "/items/w1/config/tiles/7",
+    "value": "plain"
   },
   {
     "op": "replace",
     "path": "/items/w1/config/direction",
     "value": "away"
-  },
-  {
-    "op": "add",
-    "path": "/items/w1/config/tiles",
-    "value": [
-      "plain",
-      "armour",
-      "plain",
-      "shield",
-      "shield",
-      "plain",
-      "armour",
-      "plain"
-    ]
   },
   {
     "op": "remove",

@@ -1,9 +1,9 @@
 //# allFunctionsCalledOnLoad
 
 import { addEdge, deleteEdge } from "../../../utils/graph/Graph";
-import { GridSpatialIndex } from "../../physics/gridSpace/GridSpatialIndex";
 import { type DrawOrderComparable } from "./DrawOrderComparable";
 import { type ZGraph } from "./GraphEdges";
+import { VisualIndex } from "./VisualIndex";
 import { zComparator } from "./zComparator";
 
 /**
@@ -18,12 +18,10 @@ import { zComparator } from "./zComparator";
  */
 export const updateZEdges = <TItem extends DrawOrderComparable>(
   items: Set<TItem>,
-  // if no spatial index is given, make one for the items we are concerned with.
+  // if no visual index is given, make one for the items we are concerned with.
   // this should not be done in-game, since the index can be kept between frames
   // and minimally updated
-  spatialIndex: GridSpatialIndex<string, string, TItem> = new GridSpatialIndex(
-    items.values(),
-  ),
+  visualIndex: VisualIndex<TItem> = new VisualIndex(items.values()),
   /**
    * the nodes that have moved - nodes that did not move are not considered
    *  - if not given, will consider all.
@@ -57,7 +55,7 @@ export const updateZEdges = <TItem extends DrawOrderComparable>(
   // for the moved items. this way, multiple physics sub-ticks can run, each moving
   // the items multiple times, but we wil just do this once per rendering
   for (const item of moved) {
-    spatialIndex.updateItemProjectedIndex(item);
+    visualIndex.updateItemProjectedIndex(item);
   }
 
   for (const itemI of moved) {
@@ -66,7 +64,7 @@ export const updateZEdges = <TItem extends DrawOrderComparable>(
     }
 
     const projectionNeighbourhood =
-      spatialIndex.getItemProjectedNeighbourhood(itemI);
+      visualIndex.getItemProjectedNeighbourhood(itemI);
 
     {
       // remove all edges (either way) with items not in this items
@@ -97,7 +95,7 @@ export const updateZEdges = <TItem extends DrawOrderComparable>(
         continue;
       }
 
-      const comparison = zComparator(itemI, itemJ, spatialIndex);
+      const comparison = zComparator(itemI, itemJ, visualIndex);
 
       if (!comparisonsDone.has(itemI)) {
         comparisonsDone.set(itemI, new Set());

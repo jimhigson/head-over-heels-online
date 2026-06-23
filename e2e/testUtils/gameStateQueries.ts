@@ -11,12 +11,32 @@ const longTimeout = 30_000 * osSlowness;
 
 export const maximumWaitForStep = 15_000 * osSlowness;
 
-export const waitForGameState = (page: Page) =>
-  page.waitForFunction(
-    () => window._e2e_gamePageGameAi?.gameState !== undefined,
+/**
+ * wait for the game state to appear on the page. Also watches for the
+ * error-caught dialog: `page.addLocatorHandler` (which setupE2ePage uses to
+ * fail on the dialog) only fires during actionability-checked operations, and
+ * `waitForFunction` performs none - so without watching for it here, a load
+ * error would sit unreported behind this wait until it times out
+ */
+export const waitForGameState = async (page: Page) => {
+  await page.waitForFunction(
+    () =>
+      window._e2e_gamePageGameAi?.gameState !== undefined ||
+      document.querySelector('[data-dialog-id="errorCaught"]') !== null,
     undefined,
     { timeout: longTimeout },
   );
+
+  if ((await page.locator('[data-dialog-id="errorCaught"]').count()) > 0) {
+    const errorReport = await page
+      .locator('[data-test-id="error-report"]')
+      .textContent()
+      .catch(() => "(could not read the error report)");
+    throw new Error(
+      `error dialog shown while waiting for game state:\n${errorReport}`,
+    );
+  }
+};
 
 export const waitForRoomRenderEvent = async (
   page: Page,

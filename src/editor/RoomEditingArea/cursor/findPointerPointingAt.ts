@@ -84,6 +84,7 @@ const worldPositionOnFaceForScreenPosition = (
   gameEngineXy: Xy,
   tool: Tool,
   gridResolution: GridResolution,
+  cameraAngle: Xy,
 ): Xyz => {
   const pointOnPlane = {
     x: position.x + (plane.x < 0 ? 0 : aabb.x),
@@ -95,6 +96,7 @@ const worldPositionOnFaceForScreenPosition = (
     pointOnPlane,
     plane,
     gameEngineXy,
+    cameraAngle,
   );
 
   // apply rounding: don't let the rounding take the xyz point
@@ -127,12 +129,13 @@ export const findPointerPointingAt = (
   room: EditorRoomState,
   tool: Tool,
   gridResolution: GridResolution,
+  cameraAngle: Xy,
 ): MaybePointingAtSomething => {
   const intersections = roomItemsIterable(room.items)
     .filter(isPointableItemForTool(tool))
     .map((item): [typeof item, PointerItemMaybeIntersection] => [
       item,
-      pointIntersectsItemAABB(scrXy, tool, item),
+      pointIntersectsItemAABB(scrXy, tool, item, cameraAngle),
     ])
     .filter(
       (tup): tup is [(typeof tup)[0], PointerItemIntersection] =>
@@ -142,12 +145,20 @@ export const findPointerPointingAt = (
   const intersectionsArray = Array.from(intersections);
 
   // find the item(s) that the mouse is over:
-  const itemPointingTo = frontItemFromPointerIntersections(intersectionsArray);
+  const itemPointingTo = frontItemFromPointerIntersections(
+    intersectionsArray,
+    cameraAngle,
+  );
 
   const roomId = room.id;
 
   if (itemPointingTo) {
-    const face = pointerIntersectionFace(itemPointingTo, scrXy, tool);
+    const face = pointerIntersectionFace(
+      itemPointingTo,
+      scrXy,
+      tool,
+      cameraAngle,
+    );
 
     // special case - some items get an immutable empty object for their stoodOnBy
     // because they are impossible to stand on in-game. Detect this and skip them.
@@ -163,8 +174,19 @@ export const findPointerPointingAt = (
           itemId: itemPointingTo.id,
           onItem: {
             face,
-            corner: pointerIntersectionCorner(itemPointingTo, scrXy, tool),
-            edge: pointerIntersectionEdge(itemPointingTo, scrXy, face, tool),
+            corner: pointerIntersectionCorner(
+              itemPointingTo,
+              scrXy,
+              tool,
+              cameraAngle,
+            ),
+            edge: pointerIntersectionEdge(
+              itemPointingTo,
+              scrXy,
+              face,
+              tool,
+              cameraAngle,
+            ),
           },
           position: worldPositionOnFaceForScreenPosition(
             itemPointingTo,
@@ -172,6 +194,7 @@ export const findPointerPointingAt = (
             scrXy,
             tool,
             gridResolution,
+            cameraAngle,
           ),
         },
       };

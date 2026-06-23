@@ -12,6 +12,7 @@ import {
 } from "../../../db/campaignCached";
 import { importCampaignDbClient } from "../../../db/campaignDbClient.import";
 import { decompressCampaignObject } from "../../../db/compressCampaignObject";
+import { migrateCampaignInPlace } from "../../../model/inPlaceMutators/migrateCampaignInPlace";
 import { type Campaign, type CampaignLocator } from "../../../model/modelTypes";
 import { createSerialisableErrors } from "../../../utils/redux/createSerialisableErrors";
 import { type GameRootState } from "../../store";
@@ -40,11 +41,13 @@ export const gameCampaignEndpoints = (
         // data url type locator - mostly for the level editor so it
         // can load rooms to playtest without saving to the db first
         if (campaignLocator.campaignName.startsWith("data:")) {
-          return {
-            data: await decompressCampaignObject<Campaign<string>>(
-              campaignLocator.campaignName.substring("data:".length),
-            ),
-          };
+          const campaign = await decompressCampaignObject<Campaign<string>>(
+            campaignLocator.campaignName.substring("data:".length),
+          );
+          // the encoded campaign could have been authored under an older
+          // format (eg walls without tiles):
+          migrateCampaignInPlace(campaign);
+          return { data: campaign };
         }
 
         // load via the database:

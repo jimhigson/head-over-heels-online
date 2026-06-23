@@ -43,7 +43,7 @@ const blockTextureId = (
 export const blockAppearance: ItemAppearance<"block", BlockRenderProps> = ({
   renderContext: {
     isReflection,
-    general: { pixiRenderer, spritesheetVariants },
+    general: { pixiRenderer, spritesheetVariants, cameraAngle },
     item: {
       config: { style, times },
       state: { disappearing: disappear },
@@ -74,6 +74,7 @@ export const blockAppearance: ItemAppearance<"block", BlockRenderProps> = ({
           spritesheetVariants.originalSpritesheet.data,
         ),
         times,
+        cameraAngle,
         spritesheet: spritesheetVariants.currentMainSpritesheet(
           false,
           false,

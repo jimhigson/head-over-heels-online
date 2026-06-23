@@ -21,6 +21,7 @@ import {
   useEditorRoomRenderDimensions,
   useEditorRoomStateWithPreviews,
 } from "../slice/levelEditorSelectorHooks";
+import { selectEditorCameraAngle } from "../slice/levelEditorSlice";
 import { useProvidedPixiApplication } from "./PixiApplicationProvider";
 import { roomEditingAreaMarginPx } from "./roomEditingAreaMarginPx";
 
@@ -42,6 +43,7 @@ const editorGeneralRenderContext = (
   spriteOption: { name: "BlockStack", uncolourised: false as const },
   spritesheetMeta: spritesheetMetas.BlockStack,
   upscale: selectUpscale(store.getState()),
+  cameraAngle: selectEditorCameraAngle(store.getState()),
   onScreenControls: false,
   speedCoefficient: 1,
   spritesheetVariants,

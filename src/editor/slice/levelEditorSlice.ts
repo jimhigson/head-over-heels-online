@@ -2,6 +2,11 @@ import { createSlice, type PayloadAction } from "@reduxjs/toolkit";
 import { type ValueOf } from "type-fest";
 
 import { clearAllData } from "../../store/slices/clearAllData";
+import {
+  quarterTurnAnticlockwise,
+  quarterTurnClockwise,
+  rotateXy,
+} from "../../utils/vectors/rotateXy";
 import { type Xy } from "../../utils/vectors/vectors";
 import {
   type EditorCampaign,
@@ -97,6 +102,8 @@ export type LevelEditorState = {
   clickableAnnotationHovered: boolean;
   selectedJsonItemIds: Array<EditorRoomItemId>;
   gridResolution: GridResolution;
+  /** the 90°-increment camera rotation the editor is viewing the room from */
+  cameraAngle: Xy;
   autoCoalesce: boolean;
   wallsFloorsLocked: boolean;
   dragInProgress?: boolean;
@@ -148,6 +155,15 @@ export const levelEditorSlice = createSlice({
       state.cmdKSearch = search;
     },
 
+    /** rotate the editor's view of the room a quarter-turn clockwise */
+    rotateViewClockwise(state) {
+      state.cameraAngle = rotateXy(state.cameraAngle, quarterTurnClockwise);
+    },
+    /** rotate the editor's view of the room a quarter-turn anticlockwise */
+    rotateViewAnticlockwise(state) {
+      state.cameraAngle = rotateXy(state.cameraAngle, quarterTurnAnticlockwise);
+    },
+
     ...editorSettingsReducers,
     ...undoReducers,
     ...applyItemToolReducers,
@@ -189,6 +205,7 @@ export const levelEditorSlice = createSlice({
       selectCurrentRoomJsonFromLevelEditorState(state).planet,
     selectTool: (state) => state.tool,
     selectCmdKSearch: (state) => state.cmdKSearch,
+    selectEditorCameraAngle: (state) => state.cameraAngle,
     selectContextMenuXy: (state) => state.contextMenuXy,
     selectSelectedJsonItemIds: (state) => state.selectedJsonItemIds,
     selectHoveredItem: (state) => state.hoveredItem,
@@ -234,6 +251,8 @@ export const {
   roomJsonEdited,
   rotateCurrentToolItem,
   rotateSelectedItems,
+  rotateViewAnticlockwise,
+  rotateViewClockwise,
   setAutoCoalesce,
   setCampaignName,
   setCampaignPublished,
@@ -266,6 +285,7 @@ export const {
   selectCurrentEditingRoomColour,
   selectCurrentEditingRoomJson,
   selectCurrentEditingRoomScenery,
+  selectEditorCameraAngle,
   selectForwardRooms,
   selectHoveredItem,
   selectItem,

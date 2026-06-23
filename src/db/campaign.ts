@@ -2,6 +2,7 @@ import { type SetOptional } from "type-fest";
 
 import { type Tables } from "../_generated/db";
 import { type EditorCampaign } from "../editor/editorTypes";
+import { migrateCampaignInPlace } from "../model/inPlaceMutators/migrateCampaignInPlace";
 import {
   type Campaign,
   type CampaignLocator,
@@ -163,11 +164,8 @@ export const loadCampaignFromDb = async (
     res.data.data,
   );
 
-  for (const room of Object.values(dbCampaign.rooms)) {
-    // migrate rooms to newer format - can be removed when .size is gone from all campaigns likely to be loaded
-    // eslint-disable-next-line @typescript-eslint/no-explicit-any -- need any since .size is no longer part of the type
-    delete (room as any).size;
-  }
+  // db campaigns can predate format changes (eg walls without tiles):
+  migrateCampaignInPlace(dbCampaign);
 
   // rebuild from the row's columns (the source of truth); stale locator/meta/name
   // baked into old blobs is dropped - only rooms is read from the blob

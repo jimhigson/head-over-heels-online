@@ -7,6 +7,7 @@ import {
   type UnionOfAllItemInPlayTypes,
 } from "../../../../model/ItemInPlay";
 import { roomSpatialIndexKey } from "../../../../model/RoomState";
+import { rotateXy } from "../../../../utils/vectors/rotateXy";
 import { type Xy } from "../../../../utils/vectors/vectors";
 import {
   type CollideableItem,
@@ -19,7 +20,11 @@ import {
   type ItemRenderContext,
   type ItemTickContext,
 } from "../../ItemRenderContexts";
-import { projectWorldXyzToScreenX } from "../../projections";
+import {
+  projectFootprintScreenXExtent,
+  projectWorldXyzToScreenXy,
+} from "../../projections";
+import { nearCornerOffsetWorldXyz } from "../adjustNearCornerForCameraAngle";
 import { type ItemAppearanceOutsideView } from "../itemAppearanceOutsideView";
 
 /**
@@ -28,14 +33,13 @@ import { type ItemAppearanceOutsideView } from "../itemAppearanceOutsideView";
  */
 export type AppearanceLookup = (
   item: UnionOfAllItemInPlayTypes<string, string>,
+  cameraAngle: Xy,
 ) => ItemAppearanceOutsideView<ItemInPlayType> | undefined;
 
 /**
- * the x/y footprint searched (via the room's spatial index) for items that
- * might reflect, before the precise per-item filtering. Its far (xmax/ymax)
- * corner is aligned to the mirror's back corner, so it reaches towards the
- * camera where reflections appear; its z spans the mirror's full height. Tune
- * freely.
+ * the x/y reach searched around the mirror (via the room's spatial index) for
+ * items that might reflect, before the precise per-item filtering; the search
+ * z spans the mirror's full height. Tune freely.
  */
 const reflectionSearchSize: Xy = {
   x: 2 * blockSizePx.x,
@@ -164,37 +168,42 @@ export class ReflectionRenderers {
       state: { position: mirrorPosition },
       config: { times },
     } = mirror;
+    const { cameraAngle } = this.#renderContext.general;
 
     const timesZ = times?.z ?? 1;
     // search further for taller mirrors
     const searchSizeX = reflectionSearchSize.x * timesZ;
     const searchSizeY = reflectionSearchSize.y * timesZ;
 
-    // search only items overlapping a box in front of the mirror, via the
-    // spatial index, rather than scanning every item in the room. The box's far
-    // (xmax, ymax) corner is the mirror's own back corner, so it reaches towards
-    // the camera, and it spans the mirror's full height - collisionItemWithIndex
-    // does the precise x/y/z overlap:
-    reflectionSearchBuffer.state.position.x =
-      mirrorPosition.x + mirror.aabb.x - searchSizeX;
-    reflectionSearchBuffer.state.position.y =
-      mirrorPosition.y + mirror.aabb.y - searchSizeY;
+    // search only items overlapping a box around the mirror, via the spatial
+    // index, rather than scanning every item in the room. Which world side of
+    // the mirror faces the camera depends on the camera angle, so the box
+    // covers both sides (the in-front test below drops the behind items); it
+    // spans the mirror's full height - collisionItemWithIndex does the precise
+    // x/y/z overlap:
+    reflectionSearchBuffer.state.position.x = mirrorPosition.x - searchSizeX;
+    reflectionSearchBuffer.state.position.y = mirrorPosition.y - searchSizeY;
     reflectionSearchBuffer.state.position.z = mirrorPosition.z;
-    reflectionSearchBuffer.aabb.x = searchSizeX;
-    reflectionSearchBuffer.aabb.y = searchSizeY;
+    reflectionSearchBuffer.aabb.x = mirror.aabb.x + 2 * searchSizeX;
+    reflectionSearchBuffer.aabb.y = mirror.aabb.y + 2 * searchSizeY;
     reflectionSearchBuffer.aabb.z = mirror.aabb.z;
 
-    // the mirror's own extent on screen-x (iso screen-x = y - x), used to skip
-    // items whose projection has no screen-x overlap with it - their reflection
-    // would fall entirely off the glass:
-    const mirrorScreenXMin = projectWorldXyzToScreenX({
-      x: mirrorPosition.x + mirror.aabb.x,
-      y: mirrorPosition.y,
-    });
-    const mirrorScreenXMax = projectWorldXyzToScreenX({
-      x: mirrorPosition.x,
-      y: mirrorPosition.y + mirror.aabb.y,
-    });
+    // the mirror's own extent on screen-x, used to skip items whose projection
+    // has no screen-x overlap with it - their reflection would fall entirely
+    // off the glass:
+    const { left: mirrorScreenXMin, right: mirrorScreenXMax } =
+      projectFootprintScreenXExtent(mirrorPosition, mirror.aabb, cameraAngle);
+
+    // the mirror's camera-near corner - the reflecting plane passes through it
+    // (as it does at the base angle, where it is the mirror's origin), and the
+    // mirror's near-corner container offset (which wraps this reflections
+    // container) is subtracted back out of the placements below:
+    const mirrorNearCornerWorld = nearCornerOffsetWorldXyz(mirror, cameraAngle);
+    const mirrorNearCornerCam = rotateXy(mirrorNearCornerWorld, cameraAngle);
+    const mirrorNearCornerOffset = projectWorldXyzToScreenXy(
+      mirrorNearCornerWorld,
+      cameraAngle,
+    );
 
     // stamp every entry seen this tick with this count, so the sweep below can
     // drop entries not seen this tick (mark-and-sweep, no parallel set):
@@ -207,15 +216,31 @@ export class ReflectionRenderers {
     )) {
       const itemPosition = item.state.position;
 
+      // the reflection maths below is written for the camera-facing (screen
+      // face-on) pane; in camera-frame coordinates that pane is always the
+      // awayRight diagonal, whichever world orientation it is:
+      const relativeToMirrorCam = rotateXy(
+        {
+          x: itemPosition.x - mirrorPosition.x,
+          y: itemPosition.y - mirrorPosition.y,
+        },
+        cameraAngle,
+      );
+
+      // how far in front of the reflecting plane (through the mirror's
+      // camera-near corner) the item is, on a normal to the plane (√ of this
+      // would be the true distance). Items behind the glass don't reflect:
+      const manhattanDistanceNormalToMirrorPos =
+        reflectingPlaneInNormal +
+        (mirrorNearCornerCam.x + mirrorNearCornerCam.y) -
+        (relativeToMirrorCam.x + relativeToMirrorCam.y);
+      if (manhattanDistanceNormalToMirrorPos < 0) {
+        continue;
+      }
+
       // skip items that project entirely to one side of the mirror on screen-x:
-      const itemScreenXMin = projectWorldXyzToScreenX({
-        x: itemPosition.x + item.aabb.x,
-        y: itemPosition.y,
-      });
-      const itemScreenXMax = projectWorldXyzToScreenX({
-        x: itemPosition.x,
-        y: itemPosition.y + item.aabb.y,
-      });
+      const { left: itemScreenXMin, right: itemScreenXMax } =
+        projectFootprintScreenXExtent(itemPosition, item.aabb, cameraAngle);
       if (
         itemScreenXMax <= mirrorScreenXMin ||
         itemScreenXMin >= mirrorScreenXMax
@@ -226,7 +251,10 @@ export class ReflectionRenderers {
       let entry = this.#reflectedItemRenderers.get(item);
       if (entry === undefined) {
         // create a new renderer for the reflection:
-        const appearance = this.#appearanceLookup(item);
+        const appearance = this.#appearanceLookup(
+          item,
+          this.#renderContext.general.cameraAngle,
+        );
         if (appearance === undefined) {
           throw new Error(`no appearance for reflected item "${item.id}"`);
         }
@@ -256,25 +284,34 @@ export class ReflectionRenderers {
        * place the reflection by projecting the item as its mirror image behind
        * the mirror's reflecting plane
        */
-      const posRelativeToMirrorX = itemPosition.x - mirrorPosition.x;
-      const posRelativeToMirrorY = itemPosition.y - mirrorPosition.y;
       const posRelativeToMirrorZ = itemPosition.z - mirrorPosition.z;
-
-      // how far in front of the mirror we are on a normal to the plane, √ of this would be the true distance
-      const manhattanDistanceNormalToMirrorPos =
-        reflectingPlaneInNormal - (posRelativeToMirrorX + posRelativeToMirrorY);
 
       const manhattanDistanceNormalToReflectingPlane =
         reflectingPlaneInNormal +
         reflectionDepthCondense * manhattanDistanceNormalToMirrorPos;
 
+      // the real item's art gets the near-corner offset from its position
+      // renderer; the reflection renders the appearance without one, so takes
+      // the same offset here to keep the reflected art directly above the
+      // original:
+      const itemNearCornerOffset = projectWorldXyzToScreenXy(
+        nearCornerOffsetWorldXyz(item, cameraAngle),
+        cameraAngle,
+      );
+
       const { output } = renderer;
-      output.x = projectWorldXyzToScreenX({
-        x: posRelativeToMirrorX,
-        y: posRelativeToMirrorY,
-      });
+      // base projection of the camera-frame offset = the camera-aware
+      // projection of the world offset:
+      output.x =
+        relativeToMirrorCam.y -
+        relativeToMirrorCam.x +
+        itemNearCornerOffset.x -
+        mirrorNearCornerOffset.x;
       output.y =
-        -manhattanDistanceNormalToReflectingPlane / 2 - posRelativeToMirrorZ;
+        -manhattanDistanceNormalToReflectingPlane / 2 -
+        posRelativeToMirrorZ +
+        itemNearCornerOffset.y -
+        mirrorNearCornerOffset.y;
       // simpler version of the 'in front of' relationshipo
       output.zIndex = -manhattanDistanceNormalToReflectingPlane;
     }

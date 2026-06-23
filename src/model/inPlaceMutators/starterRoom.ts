@@ -28,7 +28,7 @@ const starterRoomWallItems = <RoomId extends string, RoomItemId extends string>(
       type: "wall",
       config: {
         direction: "towards",
-        times: { x: size.x },
+        tiles: Array.from(rotatingSceneryTiles("blacktooth", size.x)),
       },
       position: { ...roomOrigin },
     } satisfies JsonItem<"wall", RoomId, RoomItemId, "blacktooth">,
@@ -36,7 +36,7 @@ const starterRoomWallItems = <RoomId extends string, RoomItemId extends string>(
       type: "wall",
       config: {
         direction: "right",
-        times: { y: size.y },
+        tiles: Array.from(rotatingSceneryTiles("blacktooth", size.y)),
       },
       position: { ...roomOrigin },
     } satisfies JsonItem<"wall", RoomId, RoomItemId, "blacktooth">,

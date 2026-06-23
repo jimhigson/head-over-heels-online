@@ -6,8 +6,9 @@ import {
   reduceLevelEditorActions,
   testRoomId,
 } from "../__test__/storeStates";
-import { type AnyWallJsonConfig } from "../../../../model/json/WallJsonConfig";
+import { type WallJsonConfig } from "../../../../model/json/WallJsonConfig";
 import { wallTimes } from "../../../../model/times";
+import { type SceneryName } from "../../../../sprites/planets";
 import { type Xyz } from "../../../../utils/vectors/vectors";
 import {
   type EditorJsonItem,
@@ -77,7 +78,7 @@ expect.extend({
             end =
               start +
               (item.type === "wall" ?
-                (wallTimes(config as AnyWallJsonConfig).x ?? 1)
+                (wallTimes(config as WallJsonConfig<SceneryName>).x ?? 1)
               : 2);
           }
           break;
@@ -92,7 +93,7 @@ expect.extend({
             end =
               start +
               (item.type === "wall" ?
-                (wallTimes(config as AnyWallJsonConfig).x ?? 1)
+                (wallTimes(config as WallJsonConfig<SceneryName>).x ?? 1)
               : 2);
           }
           break;
@@ -105,7 +106,10 @@ expect.extend({
             edge = "right";
             start = item.position.y;
             end =
-              start + (item.type === "wall" ? (wallTimes(config).y ?? 1) : 2);
+              start +
+              (item.type === "wall" ?
+                (wallTimes(config as WallJsonConfig<SceneryName>).y ?? 1)
+              : 2);
           }
           break;
         case "left":
@@ -117,7 +121,10 @@ expect.extend({
             edge = "left";
             start = item.position.y;
             end =
-              start + (item.type === "wall" ? (wallTimes(config).y ?? 1) : 2);
+              start +
+              (item.type === "wall" ?
+                (wallTimes(config as WallJsonConfig<SceneryName>).y ?? 1)
+              : 2);
           }
           break;
       }
@@ -241,7 +248,7 @@ describe("changeWallsForFloorChangeInPlace", () => {
             position: { x: 0, y: 0, z: 0 },
             config: {
               direction: "towards",
-              times: { x: 8 },
+              tiles: Array(8).fill("plain"),
             },
           };
 
@@ -250,7 +257,7 @@ describe("changeWallsForFloorChangeInPlace", () => {
             position: { x: 0, y: 0, z: 0 },
             config: {
               direction: "right",
-              times: { y: 8 },
+              tiles: Array(8).fill("plain"),
             },
           };
 
@@ -331,7 +338,7 @@ describe("changeWallsForFloorChangeInPlace", () => {
         position: { x: 0, y: 0, z: 0 },
         config: {
           direction: "right",
-          times: { y: 10 },
+          tiles: Array(10).fill(expect.any(String)),
         },
       });
 
@@ -365,7 +372,7 @@ describe("changeWallsForFloorChangeInPlace", () => {
         position: { x: 0, y: 0, z: 0 },
         config: {
           direction: "towards",
-          times: { x: 8 },
+          tiles: Array(8).fill(expect.any(String)),
         },
       });
 
@@ -402,7 +409,7 @@ describe("changeWallsForFloorChangeInPlace", () => {
             position: { x: 0, y: 0, z: 0 },
             config: {
               direction: "towards",
-              times: { x: 10 },
+              tiles: Array(10).fill("plain"),
             },
           };
 
@@ -411,7 +418,7 @@ describe("changeWallsForFloorChangeInPlace", () => {
             position: { x: 0, y: 0, z: 0 },
             config: {
               direction: "right",
-              times: { y: 10 },
+              tiles: Array(10).fill("plain"),
             },
           };
 
@@ -489,7 +496,7 @@ describe("changeWallsForFloorChangeInPlace", () => {
         position: { x: 0, y: 0, z: 0 },
         config: {
           direction: "right",
-          times: { y: 7 },
+          tiles: Array(7).fill(expect.any(String)),
         },
       });
 
@@ -525,7 +532,7 @@ describe("changeWallsForFloorChangeInPlace", () => {
         position: { x: 0, y: 0, z: 0 },
         config: {
           direction: "towards",
-          times: { x: 10 },
+          tiles: Array(10).fill(expect.any(String)),
         },
       });
 
@@ -562,7 +569,7 @@ describe("changeWallsForFloorChangeInPlace", () => {
             position: { x: 0, y: 0, z: 0 },
             config: {
               direction: "towards",
-              times: { x: 6 },
+              tiles: Array(6).fill("plain"),
             },
           };
 
@@ -571,7 +578,7 @@ describe("changeWallsForFloorChangeInPlace", () => {
             position: { x: 0, y: 0, z: 0 },
             config: {
               direction: "right",
-              times: { y: 6 },
+              tiles: Array(6).fill("plain"),
             },
           };
 
@@ -626,7 +633,7 @@ describe("changeWallsForFloorChangeInPlace", () => {
         position: { x: 0, y: 0, z: 0 },
         config: {
           direction: "towards",
-          times: { x: 10 },
+          tiles: Array(10).fill(expect.any(String)),
         },
       });
 
@@ -684,7 +691,7 @@ describe("changeWallsForFloorChangeInPlace", () => {
         position: { x: 0, y: 0, z: 0 },
         config: {
           direction: "right",
-          times: { y: 6 },
+          tiles: Array(6).fill(expect.any(String)),
         },
       });
 
@@ -723,7 +730,7 @@ describe("changeWallsForFloorChangeInPlace", () => {
             position: { x: 2, y: 2, z: 0 },
             config: {
               direction: "towards",
-              times: { x: 3 },
+              tiles: Array(3).fill("plain"),
             },
           };
 
@@ -732,7 +739,7 @@ describe("changeWallsForFloorChangeInPlace", () => {
             position: { x: 2, y: 2, z: 0 },
             config: {
               direction: "right",
-              times: { y: 3 },
+              tiles: Array(3).fill("plain"),
             },
           };
 
@@ -775,7 +782,7 @@ describe("changeWallsForFloorChangeInPlace", () => {
         position: { x: 3, y: 3, z: 0 },
         config: {
           direction: "towards",
-          times: { x: 3 },
+          tiles: Array(3).fill(expect.any(String)),
         },
       });
 
@@ -811,7 +818,7 @@ describe("changeWallsForFloorChangeInPlace", () => {
             position: { x: 1, y: 1, z: 0 },
             config: {
               direction: "towards",
-              times: { x: 2 },
+              tiles: Array(2).fill("plain"),
             },
           };
         },
@@ -836,7 +843,7 @@ describe("changeWallsForFloorChangeInPlace", () => {
         position: { x: 1, y: 1, z: 0 },
         config: {
           direction: "towards",
-          times: { x: 4 },
+          tiles: Array(4).fill(expect.any(String)),
         },
       });
     });
@@ -867,7 +874,7 @@ describe("changeWallsForFloorChangeInPlace", () => {
             position: { x: 1, y: 0, z: 0 },
             config: {
               direction: "towards",
-              times: { x: 3 },
+              tiles: Array(3).fill("plain"),
             },
           };
         },
@@ -891,7 +898,7 @@ describe("changeWallsForFloorChangeInPlace", () => {
         position: { x: 3, y: 1, z: 0 },
         config: {
           direction: "towards",
-          times: { x: 3 },
+          tiles: Array(3).fill(expect.any(String)),
         },
       });
     });
@@ -923,7 +930,7 @@ describe("changeWallsForFloorChangeInPlace", () => {
             position: { x: 3, y: 0, z: 0 },
             config: {
               direction: "towards",
-              times: { x: 2 }, // extends from x:3 to x:5
+              tiles: Array(2).fill("plain"), // extends from x:3 to x:5
             },
           };
 
@@ -933,7 +940,7 @@ describe("changeWallsForFloorChangeInPlace", () => {
             position: { x: 0, y: 0, z: 0 },
             config: {
               direction: "towards",
-              times: { x: 2 }, // extends from x:0 to x:2
+              tiles: Array(2).fill("plain"), // extends from x:0 to x:2
             },
           };
         },
@@ -961,7 +968,7 @@ describe("changeWallsForFloorChangeInPlace", () => {
         position: { x: 0, y: 0, z: 0 },
         config: {
           direction: "towards",
-          times: { x: 2 },
+          tiles: Array(2).fill(expect.any(String)),
         },
       });
     });
@@ -993,7 +1000,7 @@ describe("changeWallsForFloorChangeInPlace", () => {
             position: { x: 0, y: 1, z: 0 },
             config: {
               direction: "right",
-              times: { y: 2 }, // extends from y:1 to y:3
+              tiles: Array(2).fill("plain"), // extends from y:1 to y:3
             },
           };
 
@@ -1028,7 +1035,7 @@ describe("changeWallsForFloorChangeInPlace", () => {
         position: { x: 0, y: 1, z: 0 },
         config: {
           direction: "right",
-          times: { y: 4 }, // extended from 2 to 4
+          tiles: Array(4).fill(expect.any(String)), // extended from 2 to 4
         },
       });
 
@@ -1420,7 +1427,7 @@ describe("changeWallsForFloorChangeInPlace", () => {
             position: { x: 2, y: 0, z: 0 },
             config: {
               direction: "towards",
-              times: { x: 1 },
+              tiles: Array(1).fill("plain"),
             },
           };
         },
@@ -1473,7 +1480,7 @@ describe("changeWallsForFloorChangeInPlace", () => {
             position: { x: 10, y: 10, z: 0 },
             config: {
               direction: "towards",
-              times: { x: 3 },
+              tiles: Array(3).fill("plain"),
             },
           };
         },
@@ -1497,7 +1504,7 @@ describe("changeWallsForFloorChangeInPlace", () => {
         position: { x: 10, y: 10, z: 0 },
         config: {
           direction: "towards",
-          times: { x: 3 },
+          tiles: Array(3).fill(expect.any(String)),
         },
       });
     });
@@ -1528,7 +1535,7 @@ describe("changeWallsForFloorChangeInPlace", () => {
             position: { x: 0, y: 0, z: 1 },
             config: {
               direction: "towards",
-              times: { x: 3 },
+              tiles: Array(3).fill("plain"),
             },
           };
         },
@@ -1552,7 +1559,7 @@ describe("changeWallsForFloorChangeInPlace", () => {
         position: { x: 0, y: 0, z: 1 },
         config: {
           direction: "towards",
-          times: { x: 3 },
+          tiles: Array(3).fill(expect.any(String)),
         },
       });
     });
@@ -1586,7 +1593,7 @@ describe("changeWallsForFloorChangeInPlace", () => {
               position: { x: 0, y: 0, z: 0 },
               config: {
                 direction: "towards",
-                times: { x: 10 },
+                tiles: Array(10).fill("plain"),
               },
             };
           },
@@ -1602,7 +1609,7 @@ describe("changeWallsForFloorChangeInPlace", () => {
           position: { x: 2, y: 0, z: 0 },
           config: {
             direction: "towards",
-            times: { x: 8 },
+            tiles: Array(8).fill(expect.any(String)),
           },
         });
 
@@ -1644,7 +1651,7 @@ describe("changeWallsForFloorChangeInPlace", () => {
               position: { x: 5, y: 5, z: 0 },
               config: {
                 direction: "towards",
-                times: { x: 10 },
+                tiles: Array(10).fill("plain"),
               },
             };
           },
@@ -1660,7 +1667,7 @@ describe("changeWallsForFloorChangeInPlace", () => {
           position: { x: 2, y: 5, z: 0 },
           config: {
             direction: "towards",
-            times: { x: 13 },
+            tiles: Array(13).fill(expect.any(String)),
           },
         });
 
@@ -1702,7 +1709,7 @@ describe("changeWallsForFloorChangeInPlace", () => {
               position: { x: 0, y: 0, z: 0 },
               config: {
                 direction: "towards",
-                times: { x: 10 },
+                tiles: Array(10).fill("plain"),
               },
             };
           },
@@ -1718,7 +1725,7 @@ describe("changeWallsForFloorChangeInPlace", () => {
           position: { x: 0, y: 2, z: 0 },
           config: {
             direction: "towards",
-            times: { x: 10 },
+            tiles: Array(10).fill(expect.any(String)),
           },
         });
 
@@ -1818,7 +1825,7 @@ describe("changeWallsForFloorChangeInPlace", () => {
               position: { x: 0, y: 0, z: 0 },
               config: {
                 direction: "right",
-                times: { y: 10 },
+                tiles: Array(10).fill("plain"),
               },
             };
           },
@@ -1834,7 +1841,7 @@ describe("changeWallsForFloorChangeInPlace", () => {
           position: { x: 2, y: 0, z: 0 },
           config: {
             direction: "right",
-            times: { y: 10 },
+            tiles: Array(10).fill(expect.any(String)),
           },
         });
 
@@ -1936,7 +1943,7 @@ describe("changeWallsForFloorChangeInPlace", () => {
               position: { x: 0, y: 0, z: 0 },
               config: {
                 direction: "towards",
-                times: { x: 4 },
+                tiles: Array(4).fill("plain"),
               },
             };
           },
@@ -1952,7 +1959,7 @@ describe("changeWallsForFloorChangeInPlace", () => {
           position: { x: 2, y: 0, z: 0 },
           config: {
             direction: "towards",
-            times: { x: 4 },
+            tiles: Array(4).fill(expect.any(String)),
           },
         });
 
@@ -1994,7 +2001,7 @@ describe("changeWallsForFloorChangeInPlace", () => {
               position: { x: 0, y: 0, z: 0 },
               config: {
                 direction: "towards",
-                times: { x: 4 },
+                tiles: Array(4).fill("plain"),
               },
             };
           },
@@ -2010,7 +2017,7 @@ describe("changeWallsForFloorChangeInPlace", () => {
           position: { x: 0, y: 2, z: 0 },
           config: {
             direction: "towards",
-            times: { x: 4 },
+            tiles: Array(4).fill(expect.any(String)),
           },
         });
 
@@ -2054,7 +2061,7 @@ describe("changeWallsForFloorChangeInPlace", () => {
               position: { x: 6, y: 0, z: 0 },
               config: {
                 direction: "towards",
-                times: { x: 4 },
+                tiles: Array(4).fill("plain"),
               },
             };
           },
@@ -2070,7 +2077,7 @@ describe("changeWallsForFloorChangeInPlace", () => {
           position: { x: 6, y: 0, z: 0 },
           config: {
             direction: "towards",
-            times: { x: 6 },
+            tiles: Array(6).fill(expect.any(String)),
           },
         });
 
@@ -2112,7 +2119,7 @@ describe("changeWallsForFloorChangeInPlace", () => {
               position: { x: 6, y: 0, z: 0 },
               config: {
                 direction: "towards",
-                times: { x: 4 },
+                tiles: Array(4).fill("plain"),
               },
             };
           },
@@ -2128,7 +2135,7 @@ describe("changeWallsForFloorChangeInPlace", () => {
           position: { x: 6, y: 2, z: 0 },
           config: {
             direction: "towards",
-            times: { x: 4 },
+            tiles: Array(4).fill(expect.any(String)),
           },
         });
 
@@ -2172,7 +2179,7 @@ describe("changeWallsForFloorChangeInPlace", () => {
               position: { x: 3, y: 0, z: 0 },
               config: {
                 direction: "towards",
-                times: { x: 4 },
+                tiles: Array(4).fill("plain"),
               },
             };
           },
@@ -2188,7 +2195,7 @@ describe("changeWallsForFloorChangeInPlace", () => {
           position: { x: 3, y: 0, z: 0 },
           config: {
             direction: "towards",
-            times: { x: 4 },
+            tiles: Array(4).fill(expect.any(String)),
           },
         });
 
@@ -2230,7 +2237,7 @@ describe("changeWallsForFloorChangeInPlace", () => {
               position: { x: 3, y: 0, z: 0 },
               config: {
                 direction: "towards",
-                times: { x: 4 },
+                tiles: Array(4).fill("plain"),
               },
             };
           },
@@ -2246,7 +2253,7 @@ describe("changeWallsForFloorChangeInPlace", () => {
           position: { x: 3, y: 2, z: 0 },
           config: {
             direction: "towards",
-            times: { x: 4 },
+            tiles: Array(4).fill(expect.any(String)),
           },
         });
 
@@ -2305,7 +2312,7 @@ describe("changeWallsForFloorChangeInPlace", () => {
             position: { x: 6, y: 0, z: 0 },
             config: {
               direction: "towards",
-              times: { x: 2 },
+              tiles: Array(2).fill("plain"),
             },
           };
         },
@@ -2364,7 +2371,7 @@ describe("changeWallsForFloorChangeInPlace", () => {
         position: { x: 4, y: 0, z: 0 },
         config: {
           direction: "towards",
-          times: { x: 4 },
+          tiles: Array(4).fill(expect.any(String)),
         },
       });
     });
@@ -2406,7 +2413,7 @@ describe("changeWallsForFloorChangeInPlace", () => {
             position: { x: 6, y: 0, z: 0 },
             config: {
               direction: "towards",
-              times: { x: 2 },
+              tiles: Array(2).fill("plain"),
             },
           };
         },
@@ -2465,7 +2472,7 @@ describe("changeWallsForFloorChangeInPlace", () => {
         position: { x: 6, y: 0, z: 0 },
         config: {
           direction: "towards",
-          times: { x: 4 },
+          tiles: Array(4).fill(expect.any(String)),
         },
       });
     });

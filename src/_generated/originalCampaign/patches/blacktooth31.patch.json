@@ -1,12 +1,27 @@
 [
   {
     "op": "remove",
-    "path": "/items/w1/config/times/y"
+    "path": "/items/w1/config/tiles/11"
   },
   {
-    "op": "add",
-    "path": "/items/w1/config/times/x",
-    "value": 6
+    "op": "remove",
+    "path": "/items/w1/config/tiles/10"
+  },
+  {
+    "op": "remove",
+    "path": "/items/w1/config/tiles/9"
+  },
+  {
+    "op": "remove",
+    "path": "/items/w1/config/tiles/8"
+  },
+  {
+    "op": "remove",
+    "path": "/items/w1/config/tiles/7"
+  },
+  {
+    "op": "remove",
+    "path": "/items/w1/config/tiles/6"
   },
   {
     "op": "replace",
@@ -14,13 +29,34 @@
     "value": "towards"
   },
   {
-    "op": "remove",
-    "path": "/items/w/config/times/x"
+    "op": "add",
+    "path": "/items/w/config/tiles/6",
+    "value": "plain"
   },
   {
     "op": "add",
-    "path": "/items/w/config/times/y",
-    "value": 12
+    "path": "/items/w/config/tiles/7",
+    "value": "plain"
+  },
+  {
+    "op": "add",
+    "path": "/items/w/config/tiles/8",
+    "value": "armour"
+  },
+  {
+    "op": "add",
+    "path": "/items/w/config/tiles/9",
+    "value": "shield"
+  },
+  {
+    "op": "add",
+    "path": "/items/w/config/tiles/10",
+    "value": "shield"
+  },
+  {
+    "op": "add",
+    "path": "/items/w/config/tiles/11",
+    "value": "armour"
   },
   {
     "op": "replace",

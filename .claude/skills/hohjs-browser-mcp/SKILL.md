@@ -14,6 +14,22 @@ For URL-driven scenarios:
 - `?campaignAuthorUserId=<userId>&campaignName=<name>` — community/named campaign URL.
 - `?device=mobile` — force mobile device-detection (useful for testing touch UI on a desktop browser).
 
+## Starting a game from the main menu
+
+A fresh page load lands on the **main menu** even with a `#roomId` hash — the hash does **not** auto-start a game, and `window._e2e_gamePageGameAi` stays `undefined` until a game is actually running. To get into a room:
+
+1. Click **Play the game** (`[data-menuitem_id="playGame"]`).
+2. On the "Select which game" submenu, click the campaign you want — e.g. **Original Remastered** (the burnt-in original campaign, the one playable offline).
+3. An intro **crowns dialog** appears and blocks the room from rendering. **Click anywhere on the dialog to dismiss it** and enter the room:
+
+   ```js
+   document.querySelector('[data-dialog-id="crowns"]').click();
+   ```
+
+   The whole dialog is the click target — don't hunt for a button. This is exactly what the `exitCrownsDialog` e2e helper does (`page.click('[data-dialog-id="crowns"]')`).
+
+Only after the crowns dialog detaches does `window._e2e_gamePageGameAi.gameState` populate and the room render. To jump straight to a specific room once a game is running, use the cheats goto-room buttons (`[data-test-id="cheats-goto-room-<roomId>"]`), not the URL hash.
+
 ## Clicking menu items: do NOT use MCP click directly
 
 Menu items are `<li role="menuitem">` styled with `display: contents`. The element has zero bounding rect, so coordinate-based clicking (Playwright actionability check) **fails with a timeout** ("did not become interactive within 5000ms").

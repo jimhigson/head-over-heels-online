@@ -1,21 +1,8 @@
-import nanoEqual from "nano-equal";
-
 import { isConsolidatable } from "../../consolidateItems/ConsolidatableJsonItem";
 import { type EditorRootState, useEditorAppSelector } from "../../store/store";
 import { twClass } from "../../utils/twClass";
-import { xyzEqual } from "../../utils/vectors/vectors";
 import { selectItemInLevelEditorState } from "../slice/levelEditorSelectors";
-import {
-  betweenLeftAndTowards,
-  betweenRightAndAway,
-  betweenRightAndDown,
-  betweenRightAndTowards,
-  betweenRightAndUp,
-  betweenTowardsAndDown,
-  betweenTowardsAndUp,
-  betweenUpAndAway,
-  betweenUpAndLeft,
-} from "./cursor/pointerIntersectionEdge";
+import { resizeCursorForPointingAt } from "./cursor/resizeCursorForPointingAt";
 
 const selectCursor = ({ levelEditor }: EditorRootState): `cursor-${string}` => {
   const {
@@ -23,6 +10,7 @@ const selectCursor = ({ levelEditor }: EditorRootState): `cursor-${string}` => {
     clickableAnnotationHovered,
     hoveredItem,
     selectedJsonItemIds,
+    cameraAngle,
   } = levelEditor;
 
   if (dragInProgress) {
@@ -40,44 +28,12 @@ const selectCursor = ({ levelEditor }: EditorRootState): `cursor-${string}` => {
     );
 
     if (hoveredItemJson !== undefined && isConsolidatable(hoveredItemJson)) {
-      if (hoveredItem.pointingAtOnItem.corner) {
-        if (
-          xyzEqual(hoveredItem.pointingAtOnItem.corner, { x: 1, y: 1, z: 1 })
-        ) {
-          return twClass("cursor-n-resize");
-        }
-      } else {
-        const { edge } = hoveredItem.pointingAtOnItem;
-        if (edge) {
-          // TODO: this could be done more efficiently than deep-equals checking arbitrary objects
-          if (nanoEqual(edge, betweenRightAndAway)) {
-            return twClass("cursor-e-resize");
-          }
-          if (nanoEqual(edge, betweenRightAndTowards)) {
-            return twClass("cursor-s-resize");
-          }
-          if (nanoEqual(edge, betweenLeftAndTowards)) {
-            return twClass("cursor-w-resize");
-          }
-          if (
-            nanoEqual(edge, betweenRightAndUp) ||
-            nanoEqual(edge, betweenUpAndAway)
-          ) {
-            return twClass("cursor-ne-resize");
-          }
-          if (
-            nanoEqual(edge, betweenTowardsAndUp) ||
-            nanoEqual(edge, betweenUpAndLeft)
-          ) {
-            return twClass("cursor-nw-resize");
-          }
-          if (nanoEqual(edge, betweenRightAndDown)) {
-            return twClass("cursor-se-resize");
-          }
-          if (nanoEqual(edge, betweenTowardsAndDown)) {
-            return twClass("cursor-sw-resize");
-          }
-        }
+      const resizeCursor = resizeCursorForPointingAt(
+        hoveredItem.pointingAtOnItem,
+        cameraAngle,
+      );
+      if (resizeCursor !== undefined) {
+        return resizeCursor;
       }
     }
 

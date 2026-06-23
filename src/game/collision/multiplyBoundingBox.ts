@@ -12,7 +12,7 @@ import {
 import { blockSizePx } from "../physics/mechanicsConstants";
 
 export const multiplyBoundingBox = ({
-  singleItemBBInfo: { aabb: singleItemBB, renderAabbOffset, renderAabb },
+  singleItemBBInfo: { aabb: singleItemBB, baseRenderAabbOffset, renderAabb },
   times: timesConfig = {},
 }: {
   singleItemBBInfo: ItemInPlayAAbbInfo;
@@ -37,8 +37,8 @@ export const multiplyBoundingBox = ({
   if (renderAabb !== undefined) {
     result.renderAabb = multipliedRenderAabb;
   }
-  if (renderAabbOffset !== undefined) {
-    result.renderAabbOffset = renderAabbOffset;
+  if (baseRenderAabbOffset !== undefined) {
+    result.baseRenderAabbOffset = baseRenderAabbOffset;
   }
 
   return result;

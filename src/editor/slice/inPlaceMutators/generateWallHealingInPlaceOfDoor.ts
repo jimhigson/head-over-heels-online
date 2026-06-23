@@ -1,9 +1,7 @@
 import { rotatingSceneryTiles } from "../../../model/inPlaceMutators/rotatingSceneryTiles";
-import {
-  isWallHidden,
-  type WallJsonConfig,
-} from "../../../model/json/WallJsonConfig";
+import { type WallJsonConfig } from "../../../model/json/WallJsonConfig";
 import { type SceneryName } from "../../../sprites/planets";
+import { doorAlongAxis } from "../../../utils/vectors/vectors";
 import { type EditorJsonItem, type EditorRoomItemId } from "../../editorTypes";
 import { nextItemIdForItemTool } from "./addItemInPlace";
 
@@ -14,27 +12,16 @@ export function* generateWallHealingInPlaceOfDoor(
 ): Generator<[EditorRoomItemId, EditorJsonItem<"wall">]> {
   const replacementWall: EditorJsonItem<"wall"> = {
     type: "wall" as const,
-    config:
-      isWallHidden(item.config.direction) ?
-        item.config.direction === "towards" ?
-          ({
-            direction: item.config.direction,
-            times: { x: 2 },
-          } satisfies WallJsonConfig)
-        : ({
-            direction: item.config.direction,
-            times: { y: 2 },
-          } satisfies WallJsonConfig)
-      : ({
-          direction: item.config.direction,
-          tiles: [
-            ...rotatingSceneryTiles(
-              planet,
-              2,
-              item.position[item.config.direction === "away" ? "x" : "y"],
-            ),
-          ],
-        } satisfies WallJsonConfig),
+    config: {
+      direction: item.config.direction,
+      tiles: [
+        ...rotatingSceneryTiles(
+          planet,
+          2,
+          item.position[doorAlongAxis(item.config.direction)],
+        ),
+      ],
+    } satisfies WallJsonConfig,
     position: { ...item.position, z: 0 },
   } satisfies EditorJsonItem<"wall">;
 

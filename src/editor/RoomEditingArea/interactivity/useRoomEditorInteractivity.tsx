@@ -67,6 +67,7 @@ export const useRoomEditorInteractivity = (
         roomState,
         tool,
         storeState.levelEditor.gridResolution,
+        storeState.levelEditor.cameraAngle,
       );
 
       // we don't care if just the xy of the mouse changed (if it didn't point at anything new),
@@ -118,6 +119,7 @@ export const useRoomEditorInteractivity = (
         roomState,
         tool,
         storeState.levelEditor.gridResolution,
+        storeState.levelEditor.cameraAngle,
       );
 
       const isDragEnd = dragAccVec.current !== undefined;
@@ -193,6 +195,7 @@ export const useRoomEditorInteractivity = (
         roomState,
         tool,
         storeState.levelEditor.gridResolution,
+        storeState.levelEditor.cameraAngle,
       );
       console.log("setting mouseDownPointingAtRef to", pointingAt);
       mouseDownPointingAtRef.current = pointingAt;

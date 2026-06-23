@@ -22,9 +22,17 @@ import {
   moveOrResizeItemAsPreview,
   rotateCurrentToolItem,
   rotateSelectedItems,
+  selectEditorCameraAngle,
   selectTool,
 } from "../../slice/levelEditorSlice";
 import { getMovableVector } from "../../slice/reducers/moveOrResizeItemPreview/getMovableVector";
+import {
+  apparentGrowArgs,
+  apparentMoveVector,
+  apparentNudgeAxis,
+  apparentShrinkArgs,
+  type NudgeArgs,
+} from "./nudgeDirections";
 import { ToolbarButton } from "./ToolbarButton";
 
 const lineContainerClassName = twClass(
@@ -73,6 +81,12 @@ export const NudgeButtons = () => {
   const anythingSelected = selectedJsonItems.length > 0;
 
   const { rotatable, rotate } = useRotate(selectedJsonItems);
+
+  // the buttons/arrow keys are labelled with screen directions; which physical
+  // axis each acts on follows the camera angle:
+  const cameraAngle = useEditorAppSelector(selectEditorCameraAngle);
+  const leftRightAxis = apparentNudgeAxis("left", cameraAngle);
+  const awayTowardsAxis = apparentNudgeAxis("away", cameraAngle);
 
   // minimum set of consolidatable axes for all selected items - dictates axes
   // can be resized along
@@ -148,6 +162,9 @@ export const NudgeButtons = () => {
       dispatch(commitCurrentPreviewedEdits());
     };
 
+  const nudgeByArgs = ({ posVector, timesDelta }: NudgeArgs) =>
+    nudgeBy(posVector, timesDelta);
+
   return (
     <div class={lineContainerClassName}>
       <span class={lineTitleHeaderClassName}>{"Move:"}</span>
@@ -156,8 +173,8 @@ export const NudgeButtons = () => {
         <ToolbarButton
           small
           ariaLabel="Move left"
-          disabled={movableAxes.x === 0}
-          onClick={nudgeBy(unitVectors.left)}
+          disabled={movableAxes[leftRightAxis] === 0}
+          onClick={nudgeBy(apparentMoveVector("left", cameraAngle))}
           shortcutKeys={["ArrowLeft"]}
         >
           <span class="relative text-single-line">↖</span>
@@ -165,8 +182,8 @@ export const NudgeButtons = () => {
         <ToolbarButton
           small
           ariaLabel="Move right"
-          disabled={movableAxes.x === 0}
-          onClick={nudgeBy(unitVectors.right)}
+          disabled={movableAxes[leftRightAxis] === 0}
+          onClick={nudgeBy(apparentMoveVector("right", cameraAngle))}
           shortcutKeys={["ArrowRight"]}
         >
           <span class="relative text-single-line">↘</span>
@@ -174,8 +191,8 @@ export const NudgeButtons = () => {
         <ToolbarButton
           small
           ariaLabel="Move away"
-          disabled={movableAxes.y === 0}
-          onClick={nudgeBy(unitVectors.away)}
+          disabled={movableAxes[awayTowardsAxis] === 0}
+          onClick={nudgeBy(apparentMoveVector("away", cameraAngle))}
           shortcutKeys={["ArrowUp"]}
         >
           <span class="relative text-single-line">↗</span>
@@ -183,8 +200,8 @@ export const NudgeButtons = () => {
         <ToolbarButton
           small
           ariaLabel="Move towards"
-          disabled={movableAxes.y === 0}
-          onClick={nudgeBy(unitVectors.towards)}
+          disabled={movableAxes[awayTowardsAxis] === 0}
+          onClick={nudgeBy(apparentMoveVector("towards", cameraAngle))}
           shortcutKeys={["ArrowDown"]}
         >
           <span class="relative text-single-line">↙</span>
@@ -195,7 +212,7 @@ export const NudgeButtons = () => {
           disabled={movableAxes.z === 0}
           onClick={nudgeBy(unitVectors.up)}
           shortcutKeys={
-            movableAxes.y === 0 ?
+            movableAxes[awayTowardsAxis] === 0 ?
               ["PageUp", "⇧ArrowUp", "ArrowUp"]
             : ["PageUp", "⇧ArrowUp"]
           }
@@ -208,7 +225,7 @@ export const NudgeButtons = () => {
           disabled={movableAxes.z === 0}
           onClick={nudgeBy(unitVectors.down)}
           shortcutKeys={
-            movableAxes.y === 0 ?
+            movableAxes[awayTowardsAxis] === 0 ?
               ["PageDown", "⇧ArrowDown", "ArrowDown"]
             : ["PageDown", "⇧ArrowDown"]
           }
@@ -224,8 +241,8 @@ export const NudgeButtons = () => {
           <ToolbarButton
             small
             ariaLabel="Grow left"
-            disabled={consolidatableAxes.x === 0}
-            onClick={nudgeBy(undefined, { x: 1 })}
+            disabled={consolidatableAxes[leftRightAxis] === 0}
+            onClick={nudgeByArgs(apparentGrowArgs("left", cameraAngle))}
             shortcutKeys={["⌥ArrowLeft"]}
           >
             <span class="relative text-single-line">↖</span>
@@ -233,8 +250,8 @@ export const NudgeButtons = () => {
           <ToolbarButton
             small
             ariaLabel="Grow right"
-            disabled={consolidatableAxes.x === 0}
-            onClick={nudgeBy({ x: -1, y: 0, z: 0 }, { x: 1 })}
+            disabled={consolidatableAxes[leftRightAxis] === 0}
+            onClick={nudgeByArgs(apparentGrowArgs("right", cameraAngle))}
             shortcutKeys={["⌥ArrowRight"]}
           >
             <span class="relative text-single-line">↘</span>
@@ -242,8 +259,8 @@ export const NudgeButtons = () => {
           <ToolbarButton
             small
             ariaLabel="Grow away"
-            disabled={consolidatableAxes.y === 0}
-            onClick={nudgeBy(undefined, { y: 1 })}
+            disabled={consolidatableAxes[awayTowardsAxis] === 0}
+            onClick={nudgeByArgs(apparentGrowArgs("away", cameraAngle))}
             shortcutKeys={["⌥ArrowUp"]}
           >
             <span class="relative text-single-line">↗</span>
@@ -251,8 +268,8 @@ export const NudgeButtons = () => {
           <ToolbarButton
             small
             ariaLabel="Grow towards"
-            disabled={consolidatableAxes.y === 0}
-            onClick={nudgeBy({ x: 0, y: -1, z: 0 }, { y: 1 })}
+            disabled={consolidatableAxes[awayTowardsAxis] === 0}
+            onClick={nudgeByArgs(apparentGrowArgs("towards", cameraAngle))}
             shortcutKeys={["⌥ArrowDown"]}
           >
             <span class="relative text-single-line">↙</span>
@@ -285,8 +302,8 @@ export const NudgeButtons = () => {
           <ToolbarButton
             small
             ariaLabel="Shrink right"
-            disabled={largestSize.x <= 1}
-            onClick={nudgeBy(undefined, { x: -1 })}
+            disabled={largestSize[leftRightAxis] <= 1}
+            onClick={nudgeByArgs(apparentShrinkArgs("right", cameraAngle))}
             shortcutKeys={["⌥⇧ArrowRight"]}
           >
             <span class="relative text-single-line">↘</span>
@@ -294,8 +311,8 @@ export const NudgeButtons = () => {
           <ToolbarButton
             small
             ariaLabel="Shrink left"
-            disabled={largestSize.x <= 1}
-            onClick={nudgeBy({ x: 1, y: 0, z: 0 }, { x: -1 })}
+            disabled={largestSize[leftRightAxis] <= 1}
+            onClick={nudgeByArgs(apparentShrinkArgs("left", cameraAngle))}
             shortcutKeys={["⌥⇧ArrowLeft"]}
           >
             <span class="relative text-single-line">↖</span>
@@ -303,8 +320,8 @@ export const NudgeButtons = () => {
           <ToolbarButton
             small
             ariaLabel="Shrink towards"
-            disabled={largestSize.y <= 1}
-            onClick={nudgeBy(undefined, { y: -1 })}
+            disabled={largestSize[awayTowardsAxis] <= 1}
+            onClick={nudgeByArgs(apparentShrinkArgs("towards", cameraAngle))}
             shortcutKeys={["⌥⇧ArrowDown"]}
           >
             <span class="relative text-single-line">↙</span>
@@ -312,8 +329,8 @@ export const NudgeButtons = () => {
           <ToolbarButton
             small
             ariaLabel="Shrink away"
-            disabled={largestSize.y <= 1}
-            onClick={nudgeBy({ x: 0, y: 1, z: 0 }, { y: -1 })}
+            disabled={largestSize[awayTowardsAxis] <= 1}
+            onClick={nudgeByArgs(apparentShrinkArgs("away", cameraAngle))}
             shortcutKeys={["⌥⇧ArrowUp"]}
           >
             <span class="relative text-single-line">↗</span>

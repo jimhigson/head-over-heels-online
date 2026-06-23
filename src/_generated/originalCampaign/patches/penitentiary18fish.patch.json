@@ -10,20 +10,59 @@
     "value": 5
   },
   {
-    "op": "remove",
-    "path": "/items/w5/config/tiles"
+    "op": "replace",
+    "path": "/items/w5/config/tiles/0",
+    "value": "skeleton"
+  },
+  {
+    "op": "add",
+    "path": "/items/w5/config/tiles/2",
+    "value": "loop"
+  },
+  {
+    "op": "add",
+    "path": "/items/w5/config/tiles/3",
+    "value": "skeleton"
+  },
+  {
+    "op": "add",
+    "path": "/items/w5/config/tiles/4",
+    "value": "loop"
+  },
+  {
+    "op": "add",
+    "path": "/items/w5/config/tiles/5",
+    "value": "loop"
+  },
+  {
+    "op": "add",
+    "path": "/items/w5/config/tiles/6",
+    "value": "skeleton"
+  },
+  {
+    "op": "add",
+    "path": "/items/w5/config/tiles/7",
+    "value": "loop"
+  },
+  {
+    "op": "add",
+    "path": "/items/w5/config/tiles/8",
+    "value": "loop"
+  },
+  {
+    "op": "add",
+    "path": "/items/w5/config/tiles/9",
+    "value": "skeleton"
+  },
+  {
+    "op": "add",
+    "path": "/items/w5/config/tiles/10",
+    "value": "loop"
   },
   {
     "op": "replace",
     "path": "/items/w5/config/direction",
     "value": "towards"
-  },
-  {
-    "op": "add",
-    "path": "/items/w5/config/times",
-    "value": {
-      "x": 11
-    }
   },
   {
     "op": "replace",
@@ -37,7 +76,44 @@
   },
   {
     "op": "remove",
-    "path": "/items/w3/config/times"
+    "path": "/items/w3/config/tiles/10"
+  },
+  {
+    "op": "remove",
+    "path": "/items/w3/config/tiles/9"
+  },
+  {
+    "op": "remove",
+    "path": "/items/w3/config/tiles/8"
+  },
+  {
+    "op": "remove",
+    "path": "/items/w3/config/tiles/7"
+  },
+  {
+    "op": "remove",
+    "path": "/items/w3/config/tiles/6"
+  },
+  {
+    "op": "remove",
+    "path": "/items/w3/config/tiles/5"
+  },
+  {
+    "op": "remove",
+    "path": "/items/w3/config/tiles/4"
+  },
+  {
+    "op": "remove",
+    "path": "/items/w3/config/tiles/3"
+  },
+  {
+    "op": "remove",
+    "path": "/items/w3/config/tiles/2"
+  },
+  {
+    "op": "replace",
+    "path": "/items/w3/config/tiles/0",
+    "value": "loop"
   },
   {
     "op": "replace",
@@ -45,18 +121,16 @@
     "value": "left"
   },
   {
-    "op": "add",
-    "path": "/items/w3/config/tiles",
-    "value": ["loop", "loop"]
+    "op": "remove",
+    "path": "/items/w1/config/tiles/5"
   },
   {
     "op": "remove",
-    "path": "/items/w1/config/times/y"
+    "path": "/items/w1/config/tiles/4"
   },
   {
-    "op": "add",
-    "path": "/items/w1/config/times/x",
-    "value": 3
+    "op": "remove",
+    "path": "/items/w1/config/tiles/3"
   },
   {
     "op": "replace",
@@ -64,13 +138,19 @@
     "value": "towards"
   },
   {
-    "op": "remove",
-    "path": "/items/w/config/times/x"
+    "op": "add",
+    "path": "/items/w/config/tiles/3",
+    "value": "loop"
   },
   {
     "op": "add",
-    "path": "/items/w/config/times/y",
-    "value": 6
+    "path": "/items/w/config/tiles/4",
+    "value": "loop"
+  },
+  {
+    "op": "add",
+    "path": "/items/w/config/tiles/5",
+    "value": "skeleton"
   },
   {
     "op": "replace",

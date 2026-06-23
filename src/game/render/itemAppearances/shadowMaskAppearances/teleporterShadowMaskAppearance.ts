@@ -18,7 +18,7 @@ export const teleporterShadowMaskAppearance: ItemAppearance<
   Sprite
 > = ({
   renderContext: {
-    general: { pixiRenderer, spritesheetVariants },
+    general: { pixiRenderer, spritesheetVariants, cameraAngle },
     item,
     room,
   },
@@ -56,6 +56,9 @@ export const teleporterShadowMaskAppearance: ItemAppearance<
             flashing ? `shadowMask.${type}.flashing`
             : activated ? `shadowMask.${type}`
             : "shadowMask.artificial",
+          // multiplied masks tile along their world axes, which the projection
+          // rotates on screen:
+          cameraAngle,
           spritesheet: spritesheetVariants.shadowSpritesheet,
         },
         times,

@@ -1,6 +1,5 @@
 import { consolidateItemsMap } from "../../../consolidateItems/consolidateItems";
 import { nextItemIdSet } from "../../../model/inPlaceMutators/nextItemId";
-import { type AnyWallJsonConfig } from "../../../model/json/WallJsonConfig";
 import { roomGridPositions } from "../../../model/map/roomGridPositions";
 import {
   isWholeRoomSubRooms,
@@ -443,10 +442,8 @@ const removeInternalWalls = (
         continue;
       }
 
-      const config = item.config as AnyWallJsonConfig;
-
-      // away/left walls cycle through a tiles array of sprite references — pick the one for this unit
-      const tileIndex = config.tiles ? i % config.tiles.length : -1;
+      // walls cycle through a tiles array of sprite references — pick the one for this unit
+      const tileIndex = i % item.config.tiles.length;
 
       const newId = nextItemIdSet(existingIds, "wall") as EditorRoomItemId;
       existingIds.add(newId);
@@ -454,13 +451,10 @@ const removeInternalWalls = (
       const newWall: EditorJsonItemUnion = {
         type: "wall",
         position: { x: pos.x, y: pos.y, z: item.position.z },
-        config:
-          direction === "towards" || direction === "right" ?
-            { direction, times: { [alongAxis]: 1 } as Partial<Xy> }
-          : {
-              direction,
-              tiles: tileIndex >= 0 ? [item.config.tiles![tileIndex]] : [],
-            },
+        config: {
+          direction,
+          tiles: [item.config.tiles[tileIndex]],
+        },
       } as EditorJsonItemUnion;
 
       cursorRoom.items[newId] = newWall;

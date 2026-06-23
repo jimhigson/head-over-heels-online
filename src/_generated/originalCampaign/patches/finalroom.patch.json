@@ -8,13 +8,24 @@
     "path": "/items/w2/config/tiles/10"
   },
   {
-    "op": "remove",
-    "path": "/items/w1/config/times/y"
+    "op": "add",
+    "path": "/items/w1/config/tiles/8",
+    "value": "bars"
   },
   {
     "op": "add",
-    "path": "/items/w1/config/times/x",
-    "value": 12
+    "path": "/items/w1/config/tiles/9",
+    "value": "bars"
+  },
+  {
+    "op": "add",
+    "path": "/items/w1/config/tiles/10",
+    "value": "bars"
+  },
+  {
+    "op": "add",
+    "path": "/items/w1/config/tiles/11",
+    "value": "bars"
   },
   {
     "op": "replace",
@@ -23,12 +34,19 @@
   },
   {
     "op": "remove",
-    "path": "/items/w/config/times/x"
+    "path": "/items/w/config/tiles/11"
   },
   {
-    "op": "add",
-    "path": "/items/w/config/times/y",
-    "value": 8
+    "op": "remove",
+    "path": "/items/w/config/tiles/10"
+  },
+  {
+    "op": "remove",
+    "path": "/items/w/config/tiles/9"
+  },
+  {
+    "op": "remove",
+    "path": "/items/w/config/tiles/8"
   },
   {
     "op": "replace",

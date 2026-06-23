@@ -6,8 +6,11 @@ import { wallTileSize } from "../../../sprites/spritesheet/spritesheetData/textu
 import { isEmpty } from "../../../utils/iterators/isEmpty";
 import { phaseForSubItem } from "../../../utils/maths/hashXyzToNumber0to1";
 import { renderContainerToSprite } from "../../../utils/pixi/renderContainerToSprite";
+import { axisProjectsReversed } from "../../../utils/vectors/rotateXy";
 import {
+  originXy,
   perpendicularAxisXy,
+  rotateDirectionXy4ByCameraAngle,
   tangentAxis,
   type Xy,
 } from "../../../utils/vectors/vectors";
@@ -18,7 +21,10 @@ import {
 import { isDoorframeOrLegs } from "../../physics/itemPredicates";
 import { veryHighZ } from "../../physics/mechanicsConstants";
 import { createSprite } from "../createSprite";
-import { projectBlockXyzToScreenXy } from "../projections";
+import {
+  projectBlockXyzToScreenXy,
+  projectWorldXyzToScreenXy,
+} from "../projections";
 import { wallTextureId } from "../wallTextureId";
 import { itemAppearanceRenderOnce } from "./ItemAppearance";
 
@@ -32,30 +38,42 @@ export const farWallAppearance = itemAppearanceRenderOnce<"wall">(
   ({
     renderContext: {
       isReflection,
-      general: { pixiRenderer, spritesheetVariants },
+      general: { pixiRenderer, spritesheetVariants, cameraAngle },
       item,
       room,
     },
   }) => {
     const { id, config } = item;
 
-    if (config.direction === "right" || config.direction === "towards") {
-      throw new Error(`wall is near: ${id}`);
-    }
-
     const { direction, tiles } = config;
 
+    // which sprite a wall shows, and whether it shows at all, depends on its
+    // facing after the camera rotation:
+    const renderedDirection = rotateDirectionXy4ByCameraAngle(
+      direction,
+      cameraAngle,
+    );
+
+    if (renderedDirection === "right" || renderedDirection === "towards") {
+      throw new Error(`wall is near after rotation: ${id}`);
+    }
+
+    // the tiles still repeat along the wall's physical axis (the projection
+    // rotates them onto the screen):
     const alongAxis = perpendicularAxisXy(tangentAxis(direction));
 
     const wallTilesContainer = new Container({ label: "wallTiles" });
     const wallAnimationsContainer = new Container({ label: "wallAnimations" });
     for (let i = 0; i < config.tiles.length; i++) {
-      const tileRenderPosition: Xy = projectBlockXyzToScreenXy({
-        [alongAxis]: i,
-      });
+      const tileRenderPosition: Xy = projectBlockXyzToScreenXy(
+        {
+          [alongAxis]: i,
+        },
+        cameraAngle,
+      );
 
       const tileRenderPivot =
-        direction === "away" ?
+        renderedDirection === "away" ?
           {
             x: wallTileSize.w,
             y: wallTileSize.h,
@@ -72,7 +90,7 @@ export const farWallAppearance = itemAppearanceRenderOnce<"wall">(
         textureId: wallTextureId(
           room.planet,
           tiles[i],
-          direction,
+          renderedDirection,
           room.color.shade === "dimmed",
           spritesheet.data,
         ),
@@ -91,8 +109,8 @@ export const farWallAppearance = itemAppearanceRenderOnce<"wall">(
             createSprite({
               animationId,
               startFramePhase: phaseForSubItem(item.hash, i),
-              flipX: direction === "left",
-              x: tileRenderPosition.x + (direction === "away" ? -8 : 8),
+              flipX: renderedDirection === "left",
+              x: tileRenderPosition.x + (renderedDirection === "away" ? -8 : 8),
               y: tileRenderPosition.y - 23,
               spritesheet,
             }),
@@ -118,7 +136,7 @@ export const farWallAppearance = itemAppearanceRenderOnce<"wall">(
 
             wallTilesContainer.addChild(
               createSprite({
-                textureId: `moonbase.wallDoorTransition.${direction}${isDarkStr}`,
+                textureId: `moonbase.wallDoorTransition.${renderedDirection}${isDarkStr}`,
                 ...tileRenderPosition,
                 pivot: tileRenderPivot,
                 spritesheet: spritesheetVariants.currentMainSpritesheet(
@@ -129,7 +147,7 @@ export const farWallAppearance = itemAppearanceRenderOnce<"wall">(
               }),
             );
             const maskSprite = createSprite({
-              textureId: `moonbase.wallDoorTransition.${direction}.mask`,
+              textureId: `moonbase.wallDoorTransition.${renderedDirection}.mask`,
               ...tileRenderPosition,
               pivot: tileRenderPivot,
               spritesheet: spritesheetVariants.originalSpritesheet,
@@ -152,6 +170,30 @@ export const farWallAppearance = itemAppearanceRenderOnce<"wall">(
       // only add animations if there are any:
       mainContainer.addChild(wallAnimationsContainer);
     }
+
+    // the wall draws on its room-side face: for away/left walls that is the item's
+    // position (min corner); towards/right walls' boxes extend negative (out of the
+    // room), so their room face is a wall-thickness away from the position:
+    const roomFaceXy =
+      direction === "towards" || direction === "right" ?
+        projectWorldXyzToScreenXy(
+          { [tangentAxis(direction)]: item.aabb[tangentAxis(direction)] },
+          cameraAngle,
+        )
+      : originXy;
+
+    // each tile's art extends over its block in the direction the wall runs at
+    // the base angle; when the along-wall axis projects reversed on screen the
+    // art would hang over the block on the wrong side of its anchor corner, so
+    // shift the whole wall one block along its axis to compensate:
+    const alongReversed = axisProjectsReversed(alongAxis, cameraAngle);
+    const alongShiftXy =
+      alongReversed ?
+        projectBlockXyzToScreenXy({ [alongAxis]: 1 }, cameraAngle)
+      : originXy;
+
+    mainContainer.x = roomFaceXy.x + alongShiftXy.x;
+    mainContainer.y = roomFaceXy.y + alongShiftXy.y;
 
     return mainContainer;
   },

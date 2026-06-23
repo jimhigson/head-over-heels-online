@@ -1,19 +1,26 @@
 [
   {
+    "op": "add",
+    "path": "/items/w1/config/tiles/1",
+    "value": "book"
+  },
+  {
+    "op": "add",
+    "path": "/items/w1/config/tiles/2",
+    "value": "cowboy"
+  },
+  {
     "op": "replace",
     "path": "/items/w1/config/direction",
     "value": "towards"
   },
   {
-    "op": "add",
-    "path": "/items/w1/config/times",
-    "value": {
-      "x": 3
-    }
+    "op": "remove",
+    "path": "/items/w/config/tiles/2"
   },
   {
     "op": "remove",
-    "path": "/items/w/config/times"
+    "path": "/items/w/config/tiles/1"
   },
   {
     "op": "replace",

@@ -376,7 +376,8 @@
   "wall(towards)@0,0,0": {
     "type": "wall",
     "config": {
-      "direction": "towards"
+      "direction": "towards",
+      "tiles": ["wall"]
     },
     "position": {
       "x": 0,
@@ -387,7 +388,8 @@
   "wall@1,0,0": {
     "type": "wall",
     "config": {
-      "direction": "towards"
+      "direction": "towards",
+      "tiles": ["shield"]
     },
     "position": {
       "x": 1,
@@ -398,7 +400,8 @@
   "wall@2,0,0": {
     "type": "wall",
     "config": {
-      "direction": "towards"
+      "direction": "towards",
+      "tiles": ["wall"]
     },
     "position": {
       "x": 2,
@@ -409,7 +412,8 @@
   "wall@5,0,0": {
     "type": "wall",
     "config": {
-      "direction": "towards"
+      "direction": "towards",
+      "tiles": ["wall"]
     },
     "position": {
       "x": 5,
@@ -420,7 +424,8 @@
   "wall@6,0,0": {
     "type": "wall",
     "config": {
-      "direction": "towards"
+      "direction": "towards",
+      "tiles": ["shield"]
     },
     "position": {
       "x": 6,
@@ -431,7 +436,8 @@
   "wall@7,0,0": {
     "type": "wall",
     "config": {
-      "direction": "towards"
+      "direction": "towards",
+      "tiles": ["wall"]
     },
     "position": {
       "x": 7,
@@ -442,7 +448,8 @@
   "wall(right)@0,0,0": {
     "type": "wall",
     "config": {
-      "direction": "right"
+      "direction": "right",
+      "tiles": ["wall"]
     },
     "position": {
       "x": 0,
@@ -453,7 +460,8 @@
   "wall@0,1,0": {
     "type": "wall",
     "config": {
-      "direction": "right"
+      "direction": "right",
+      "tiles": ["shield"]
     },
     "position": {
       "x": 0,
@@ -464,7 +472,8 @@
   "wall@0,2,0": {
     "type": "wall",
     "config": {
-      "direction": "right"
+      "direction": "right",
+      "tiles": ["wall"]
     },
     "position": {
       "x": 0,
@@ -475,7 +484,8 @@
   "wall@0,3,0": {
     "type": "wall",
     "config": {
-      "direction": "right"
+      "direction": "right",
+      "tiles": ["window"]
     },
     "position": {
       "x": 0,
@@ -486,7 +496,8 @@
   "wall@0,4,0": {
     "type": "wall",
     "config": {
-      "direction": "right"
+      "direction": "right",
+      "tiles": ["window"]
     },
     "position": {
       "x": 0,
@@ -497,7 +508,8 @@
   "wall@0,5,0": {
     "type": "wall",
     "config": {
-      "direction": "right"
+      "direction": "right",
+      "tiles": ["wall"]
     },
     "position": {
       "x": 0,
@@ -508,7 +520,8 @@
   "wall@0,6,0": {
     "type": "wall",
     "config": {
-      "direction": "right"
+      "direction": "right",
+      "tiles": ["shield"]
     },
     "position": {
       "x": 0,
@@ -519,7 +532,8 @@
   "wall@0,7,0": {
     "type": "wall",
     "config": {
-      "direction": "right"
+      "direction": "right",
+      "tiles": ["wall"]
     },
     "position": {
       "x": 0,

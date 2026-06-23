@@ -1,6 +1,7 @@
 import { produce } from "immer";
 
 import { starterRoom } from "../../model/inPlaceMutators/starterRoom";
+import { cameraAngleBase } from "../../utils/vectors/rotateXy";
 import {
   type EditorCampaign,
   type EditorRoomId,
@@ -62,6 +63,7 @@ export const initialLevelEditorSliceState: LevelEditorState = {
   clickableAnnotationHovered: false,
   selectedJsonItemIds: [],
   gridResolution: 1,
+  cameraAngle: cameraAngleBase,
   autoCoalesce: true,
   wallsFloorsLocked: true,
   dragInProgress: false,

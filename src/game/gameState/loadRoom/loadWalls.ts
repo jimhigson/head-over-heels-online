@@ -5,12 +5,16 @@ import { type StoodOnBy } from "../../../model/StoodOnBy";
 import { wallTimes } from "../../../model/times";
 import { emptyObject } from "../../../utils/empty";
 import { hashXyzToNumber0to1 } from "../../../utils/maths/hashXyzToNumber0to1";
+import { unitVectors } from "../../../utils/vectors/unitVectors";
 import {
   addXyz,
   doorAlongAxis,
   originXyz,
-  perpendicularAxisXy,
-  type Xyz,
+  rotateAxisXyByCameraAngle,
+  rotateDirectionXy4ByCameraAngle,
+  scaleXyz,
+  tangentAxis,
+  type Xy,
 } from "../../../utils/vectors/vectors";
 import { multiplyBoundingBox } from "../../collision/multiplyBoundingBox";
 import {
@@ -63,6 +67,7 @@ const yAxisWallRenderAabb = {
 export const loadWall = <RoomId extends string, RoomItemId extends string>(
   jsonItemId: RoomItemId,
   jsonWall: JsonItem<"wall", RoomId, RoomItemId>,
+  cameraAngle: Xy,
 ): ItemTypeUnion<"wall", RoomId, RoomItemId> => {
   const {
     config: { direction },
@@ -72,14 +77,24 @@ export const loadWall = <RoomId extends string, RoomItemId extends string>(
   const times = wallTimes(jsonWall.config);
 
   const wallTangentAxis = doorAlongAxis(direction);
-  const wallNormalAxis = perpendicularAxisXy(wallTangentAxis);
 
-  const isHidden = isWallHidden(direction);
+  // a wall is hidden when, under the current camera, it is one of the two walls
+  // facing the viewer - rotate the wall's absolute direction into camera space to
+  // decide:
+  const isHidden = isWallHidden(
+    rotateDirectionXy4ByCameraAngle(direction, cameraAngle),
+  );
 
-  const invisibleWallSetBackBlocks: Xyz = {
-    ...originXyz,
-    [wallNormalAxis]: isHidden ? -wallThicknessBlocks : 0,
-  };
+  // a wall's box protrudes out of the room, and boxes extend positive from their
+  // position: away/left walls' json positions already lie beyond the room, but
+  // towards/right walls sit on the room's first row, so shift them out by the
+  // wall thickness along their outward normal. This is world geometry, fixed
+  // regardless of the camera angle:
+  const outIsNegative = direction === "towards" || direction === "right";
+  const outOfRoomShiftBlocks = scaleXyz(
+    unitVectors[direction],
+    outIsNegative ? wallThicknessBlocks : 0,
+  );
 
   const aabbInfo = multiplyBoundingBox({
     singleItemBBInfo: {
@@ -93,8 +108,23 @@ export const loadWall = <RoomId extends string, RoomItemId extends string>(
   });
 
   const wallPosition = blockXyzToFineXyz(
-    addXyz(position, invisibleWallSetBackBlocks),
+    addXyz(position, outOfRoomShiftBlocks),
   );
+
+  // the wall is drawn on its room-side face. for away/left walls that is the
+  // position (min corner) side; for towards/right walls (whose boxes extend
+  // negative, out of the room) it is the max side, so the render box offsets by
+  // the wall's thickness to sit on the drawn plane:
+  const wallThicknessAxis = tangentAxis(direction);
+  const renderAabbOffset =
+    !isHidden && outIsNegative ?
+      {
+        ...originXyz,
+        [wallThicknessAxis]:
+          wallThicknessBlocks *
+          (wallThicknessAxis === "x" ? blockSizePx.x : blockSizePx.y),
+      }
+    : undefined;
 
   return {
     type: "wall",
@@ -103,6 +133,7 @@ export const loadWall = <RoomId extends string, RoomItemId extends string>(
     jsonItemId,
     config: jsonWall.config,
     ...aabbInfo,
+    renderAabbOffset,
     fixedZIndex: isHidden ? nonRenderingItemFixedZIndex : undefined,
     state: {
       ...defaultBaseState(),
@@ -110,7 +141,12 @@ export const loadWall = <RoomId extends string, RoomItemId extends string>(
       // walls can never be stood on:
       stoodOnBy: emptyObject as StoodOnBy<RoomItemId>,
     },
-    shadowCastTexture: wallTangentAxis !== "y" ? shadowWallX : shadowWallY,
+    // the cast texture follows the wall's apparent axis after rotation (this is
+    // re-derived per angle since walls reload on rotation):
+    shadowCastTexture:
+      rotateAxisXyByCameraAngle(wallTangentAxis, cameraAngle) !== "y" ?
+        shadowWallX
+      : shadowWallY,
 
     //hidden walls cast shadows to give a hint of the unreachable areas on the floor
     castsShadowWhileStoodOn: isHidden,

@@ -179,9 +179,16 @@ exports[`actual room items > safari2 1`] = `
   "wall(right)@0,0,0": {
     "config": {
       "direction": "right",
-      "times": {
-        "y": 8,
-      },
+      "tiles": [
+        "wall",
+        "shield",
+        "wall",
+        "window",
+        "window",
+        "wall",
+        "shield",
+        "wall",
+      ],
     },
     "position": {
       "x": 0,
@@ -193,9 +200,11 @@ exports[`actual room items > safari2 1`] = `
   "wall(towards)@0,0,0": {
     "config": {
       "direction": "towards",
-      "times": {
-        "x": 3,
-      },
+      "tiles": [
+        "wall",
+        "shield",
+        "wall",
+      ],
     },
     "position": {
       "x": 0,
@@ -223,9 +232,11 @@ exports[`actual room items > safari2 1`] = `
   "wall@5,0,0": {
     "config": {
       "direction": "towards",
-      "times": {
-        "x": 3,
-      },
+      "tiles": [
+        "wall",
+        "shield",
+        "wall",
+      ],
     },
     "position": {
       "x": 5,

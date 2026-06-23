@@ -23,8 +23,12 @@ import { store } from "../../store/store";
 import { emptySet } from "../../utils/empty";
 import { validateSceneGraph } from "../../utils/pixi/validateSceneGraph";
 import { createSerialisableErrors } from "../../utils/redux/createSerialisableErrors";
+import { cameraAngleBase } from "../../utils/vectors/rotateXy";
+import { type Xy } from "../../utils/vectors/vectors";
 import { type GameState } from "../gameState/GameState";
 import { selectCurrentRoomState } from "../gameState/gameStateSelectors/selectCurrentRoomState";
+import { applyRenderAabbCameraShift } from "../gameState/loadRoom/applyRenderAabbCameraShift";
+import { reloadStructureForCamera } from "../gameState/loadRoom/reloadStructureForCamera";
 import { maxFps, maxSubTickDeltaMs } from "../physics/mechanicsConstants";
 import { ColourClashCircleEffectRenderer } from "../render/ColourClashCircleEffectRenderer";
 import { HudRenderer } from "../render/hud/HudRenderer";
@@ -127,6 +131,10 @@ export class MainLoop<RoomId extends string> {
 
   #firstFrameMarked = false;
 
+  // the camera angle the current room's structure was last (re)built for, so a
+  // change can be detected and the camera-relative structure re-derived:
+  #previousCameraAngle: Xy = cameraAngleBase;
+
   // set when the canvas regains its WebGL context after a loss; the next tick
   // re-bakes the spritesheet variants, whose RenderTextures died with the old
   // WebGL context:
@@ -215,6 +223,10 @@ export class MainLoop<RoomId extends string> {
       deltaMS === 0 ? emptySet : this.#physicsTicker(this.#gameState, deltaMS);
     timingRecord?.endPhysics();
 
+    // read after the physics tick so a rotation input this frame takes effect
+    // immediately - the physics ticker is where the camera-rotate tap is applied:
+    const tickCameraAngle = this.#gameState.cameraAngle ?? cameraAngleBase;
+
     timingRecord?.startUpdateSceneGraph();
     // the tick could end on a different room than it started on, eg if ticking
     // the physics caused the player to go through a door:
@@ -227,6 +239,24 @@ export class MainLoop<RoomId extends string> {
     }
 
     const roomChanged = this.#roomRenderer?.renderContext.room !== tickEndRoom;
+
+    // re-derive the camera-relative structure (walls/floors/doors + derived items)
+    // before the renderer rebuilds, so it reads the reloaded items at the new angle.
+    // also needed when entering a new room while already rotated, since rooms always
+    // load at the base angle:
+    const cameraAngleChanged =
+      this.#previousCameraAngle.x !== tickCameraAngle.x ||
+      this.#previousCameraAngle.y !== tickCameraAngle.y;
+    if (
+      cameraAngleChanged ||
+      (roomChanged &&
+        (tickCameraAngle.x !== cameraAngleBase.x ||
+          tickCameraAngle.y !== cameraAngleBase.y))
+    ) {
+      reloadStructureForCamera(tickEndRoom, tickCameraAngle);
+      applyRenderAabbCameraShift(tickEndRoom, tickCameraAngle);
+    }
+    this.#previousCameraAngle = tickCameraAngle;
 
     const spritesheetVariantsStale =
       (roomChanged ||
@@ -320,6 +350,7 @@ export class MainLoop<RoomId extends string> {
           spriteOption: tickSpriteOption,
           spritesheetMeta: spritesheetMetaForOption(tickSpriteOption),
           upscale: tickUpscale,
+          cameraAngle: tickCameraAngle,
           onScreenControls: tickOnScreenControls,
           speedCoefficient: this.#app.ticker.speed,
           spritesheetVariants: this.#spritesheetVariants,
@@ -347,6 +378,7 @@ export class MainLoop<RoomId extends string> {
       tickDisplaySettings,
       tickSoundSettings,
       isPaused,
+      tickCameraAngle,
       this.#webGlContextRestored,
     );
     if (
@@ -367,6 +399,7 @@ export class MainLoop<RoomId extends string> {
             spriteOption: tickSpriteOption,
             spritesheetMeta: spritesheetMetaForOption(tickSpriteOption),
             upscale: tickUpscale,
+            cameraAngle: tickCameraAngle,
             onScreenControls: tickOnScreenControls,
             speedCoefficient: this.#app.ticker.speed,
             spritesheetVariants: this.#spritesheetVariants,

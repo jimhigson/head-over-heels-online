@@ -1,3 +1,4 @@
+import { rotatingSceneryTiles } from "../../../model/inPlaceMutators/rotatingSceneryTiles";
 import { inferRoomJson } from "../../../model/RoomJson";
 
 export const complexRoom = inferRoomJson({
@@ -42,9 +43,7 @@ export const complexRoom = inferRoomJson({
       type: "wall",
       config: {
         direction: "towards",
-        times: {
-          x: 5,
-        },
+        tiles: Array.from(rotatingSceneryTiles("egyptus", 5)),
       },
       position: {
         x: 0,
@@ -56,9 +55,7 @@ export const complexRoom = inferRoomJson({
       type: "wall",
       config: {
         direction: "right",
-        times: {
-          y: 14,
-        },
+        tiles: Array.from(rotatingSceneryTiles("egyptus", 14)),
       },
       position: {
         x: 0,
@@ -240,9 +237,7 @@ export const complexRoom = inferRoomJson({
       type: "wall",
       config: {
         direction: "towards",
-        times: {
-          x: 11,
-        },
+        tiles: Array.from(rotatingSceneryTiles("egyptus", 11)),
       },
       position: {
         x: 7,

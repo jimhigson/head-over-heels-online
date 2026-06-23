@@ -82,7 +82,19 @@ export const room = inferRoomJson({
     },
     sg: { config: {}, position: { x: 1, y: 2, z: 5 }, type: "spring" },
     w: {
-      config: { direction: "right", times: { y: 8 } },
+      config: {
+        direction: "right",
+        tiles: [
+          "hieroglyphics",
+          "hieroglyphics",
+          "hieroglyphics",
+          "sarcophagus",
+          "sarcophagus",
+          "hieroglyphics",
+          "hieroglyphics",
+          "hieroglyphics",
+        ],
+      },
       position: { x: 0, y: 0, z: 0 },
       type: "wall",
     },

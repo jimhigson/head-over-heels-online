@@ -46,17 +46,17 @@ export const room = inferRoomJson({
     },
     pu: { config: {}, position: { x: 2, y: 3.5, z: 0 }, type: "pushableBlock" },
     w: {
-      config: { direction: "right", times: { y: 3 } },
+      config: { direction: "right", tiles: ["plain", "plain", "armour"] },
       position: { x: 0, y: 0, z: 0 },
       type: "wall",
     },
     w1: {
-      config: { direction: "towards" },
+      config: { direction: "towards", tiles: ["plain"] },
       position: { x: 0, y: 0, z: 0 },
       type: "wall",
     },
     w2: {
-      config: { direction: "right", times: { y: 3 } },
+      config: { direction: "right", tiles: ["armour", "plain", "plain"] },
       position: { x: 0, y: 5, z: 0 },
       type: "wall",
     },
@@ -66,7 +66,7 @@ export const room = inferRoomJson({
       type: "wall",
     },
     w4: {
-      config: { direction: "towards" },
+      config: { direction: "towards", tiles: ["shield"] },
       position: { x: 3, y: 0, z: 0 },
       type: "wall",
     },

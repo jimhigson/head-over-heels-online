@@ -106,7 +106,7 @@ export const getConsolidatableVector = (jsonItem: JsonItemUnion): Xyz => {
         case "towards":
           return unitXyz_xz;
         default:
-          jsonItem.config satisfies never;
+          jsonItem.config.direction satisfies never;
           throw new Error();
       }
 

@@ -55,17 +55,21 @@
   },
   {
     "op": "remove",
-    "path": "/items/w4/config/times"
+    "path": "/items/w4/config/tiles/2"
+  },
+  {
+    "op": "remove",
+    "path": "/items/w4/config/tiles/1"
+  },
+  {
+    "op": "replace",
+    "path": "/items/w4/config/tiles/0",
+    "value": "plain"
   },
   {
     "op": "replace",
     "path": "/items/w4/config/direction",
     "value": "away"
-  },
-  {
-    "op": "add",
-    "path": "/items/w4/config/tiles",
-    "value": ["plain"]
   },
   {
     "op": "replace",
@@ -78,8 +82,14 @@
     "value": 5
   },
   {
-    "op": "remove",
-    "path": "/items/w3/config/tiles"
+    "op": "replace",
+    "path": "/items/w3/config/tiles/1",
+    "value": "plain"
+  },
+  {
+    "op": "replace",
+    "path": "/items/w3/config/tiles/0",
+    "value": "armour"
   },
   {
     "op": "replace",
@@ -87,20 +97,34 @@
     "value": "towards"
   },
   {
-    "op": "add",
-    "path": "/items/w3/config/times",
-    "value": {
-      "x": 3
-    }
-  },
-  {
     "op": "replace",
     "path": "/items/w2/position/y",
     "value": 6
   },
   {
-    "op": "remove",
-    "path": "/items/w2/config/times"
+    "op": "replace",
+    "path": "/items/w2/config/tiles/1",
+    "value": "shield"
+  },
+  {
+    "op": "replace",
+    "path": "/items/w2/config/tiles/0",
+    "value": "plain"
+  },
+  {
+    "op": "add",
+    "path": "/items/w2/config/tiles/2",
+    "value": "plain"
+  },
+  {
+    "op": "add",
+    "path": "/items/w2/config/tiles/3",
+    "value": "shield"
+  },
+  {
+    "op": "add",
+    "path": "/items/w2/config/tiles/4",
+    "value": "plain"
   },
   {
     "op": "replace",
@@ -109,17 +133,8 @@
   },
   {
     "op": "add",
-    "path": "/items/w2/config/tiles",
-    "value": ["plain", "shield", "plain", "shield", "plain"]
-  },
-  {
-    "op": "remove",
-    "path": "/items/w1/config/times/y"
-  },
-  {
-    "op": "add",
-    "path": "/items/w1/config/times/x",
-    "value": 3
+    "path": "/items/w1/config/tiles/2",
+    "value": "armour"
   },
   {
     "op": "replace",
@@ -127,13 +142,9 @@
     "value": "towards"
   },
   {
-    "op": "remove",
-    "path": "/items/w/config/times/x"
-  },
-  {
     "op": "add",
-    "path": "/items/w/config/times/y",
-    "value": 4
+    "path": "/items/w/config/tiles/3",
+    "value": "shield"
   },
   {
     "op": "replace",

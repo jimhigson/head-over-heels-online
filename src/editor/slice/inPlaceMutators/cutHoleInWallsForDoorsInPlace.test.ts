@@ -1,11 +1,6 @@
 import { describe, expect, test } from "vitest";
 
 import { generateHoleInWallsForDoor } from "../../../model/inPlaceMutators/generateHoleInWallsForDoor";
-import {
-  type AwayWallConfig,
-  type TowardsWallConfig,
-} from "../../../model/json/WallJsonConfig";
-import { type SceneryName } from "../../../sprites/planets";
 import { type EditorJsonItem, type EditorRoomItemId } from "../../editorTypes";
 import { type PreviewedRoomItemEdits } from "../levelEditorSlice";
 
@@ -22,11 +17,7 @@ describe("generateHoleInWallsForDoor", () => {
       position,
       config: {
         direction,
-        ...(direction === "towards" || direction === "right" ?
-          { times: { [direction === "towards" ? "x" : "y"]: length } }
-        : {
-            tiles: Array(length).fill("plain"),
-          }),
+        tiles: Array(length).fill("plain"),
       },
     } as EditorJsonItem<"wall">;
     return [id as EditorRoomItemId, wall];
@@ -93,7 +84,7 @@ describe("generateHoleInWallsForDoor", () => {
       expect.fail();
     }
     expect(beforeWall.position).toEqual({ x: 0, y: 0, z: 0 });
-    expect((beforeWall.config as TowardsWallConfig).times).toEqual({ x: 3 });
+    expect(beforeWall.config.tiles).toHaveLength(3);
 
     // Wall after door
     const [afterId, afterWall] = after;
@@ -102,7 +93,7 @@ describe("generateHoleInWallsForDoor", () => {
       expect.fail();
     }
     expect(afterWall.position).toEqual({ x: 5, y: 0, z: 0 });
-    expect((afterWall.config as TowardsWallConfig).times).toEqual({ x: 3 });
+    expect(afterWall.config.tiles).toHaveLength(3);
 
     // Original wall removed
     const [removedId, removedWall] = removal;
@@ -132,7 +123,7 @@ describe("generateHoleInWallsForDoor", () => {
       expect.fail();
     }
     expect(wall.position).toEqual({ x: 2, y: 0, z: 0 });
-    expect((wall.config as TowardsWallConfig).times).toEqual({ x: 6 });
+    expect(wall.config.tiles).toHaveLength(6);
   });
 
   test("door overlapping the start of the wall (cuts off 1)", () => {
@@ -157,7 +148,7 @@ describe("generateHoleInWallsForDoor", () => {
       expect.fail();
     }
     expect(wall.position).toEqual({ x: 1, y: 0, z: 0 });
-    expect((wall.config as TowardsWallConfig).times).toEqual({ x: 7 });
+    expect(wall.config.tiles).toHaveLength(7);
   });
 
   test("door at the end of the wall (cuts off 2 at the end)", () => {
@@ -182,7 +173,7 @@ describe("generateHoleInWallsForDoor", () => {
       expect.fail();
     }
     expect(wall.position).toEqual({ x: 0, y: 0, z: 0 });
-    expect((wall.config as TowardsWallConfig).times).toEqual({ x: 6 });
+    expect(wall.config.tiles).toHaveLength(6);
   });
 
   test("door overlapping the end of the wall (cuts off 1)", () => {
@@ -207,7 +198,7 @@ describe("generateHoleInWallsForDoor", () => {
       expect.fail();
     }
     expect(wall.position).toEqual({ x: 0, y: 0, z: 0 });
-    expect((wall.config as TowardsWallConfig).times).toEqual({ x: 7 });
+    expect(wall.config.tiles).toHaveLength(7);
   });
 
   test("door before the start of the wall", () => {
@@ -290,9 +281,7 @@ describe("generateHoleInWallsForDoor", () => {
       expect.fail();
     }
     expect(beforeWall.position).toEqual({ x: 0, y: 5, z: 0 });
-    expect(
-      (beforeWall.config as AwayWallConfig<SceneryName>).tiles,
-    ).toHaveLength(3);
+    expect(beforeWall.config.tiles).toHaveLength(3);
 
     // Wall after door
     const [afterId, afterWall] = after;
@@ -301,9 +290,7 @@ describe("generateHoleInWallsForDoor", () => {
       expect.fail();
     }
     expect(afterWall.position).toEqual({ x: 5, y: 5, z: 0 });
-    expect(
-      (afterWall.config as AwayWallConfig<SceneryName>).tiles,
-    ).toHaveLength(3);
+    expect(afterWall.config.tiles).toHaveLength(3);
 
     // Original wall removed
     const [removedId, removedWall] = removal;
@@ -334,7 +321,7 @@ describe("generateHoleInWallsForDoor", () => {
     }
     // Wall should be cut down to 1 tile at position 4
     expect(wall.position).toEqual({ x: 4, y: 8, z: 0 });
-    expect((wall.config as AwayWallConfig<SceneryName>).tiles).toHaveLength(1);
+    expect(wall.config.tiles).toHaveLength(1);
   });
 
   test("away wall with door overlapping end - cuts off 1 tile", () => {
@@ -360,6 +347,6 @@ describe("generateHoleInWallsForDoor", () => {
     }
     // Wall should be cut down to 1 tile at position 3
     expect(wall.position).toEqual({ x: 3, y: 8, z: 0 });
-    expect((wall.config as AwayWallConfig<SceneryName>).tiles).toHaveLength(1);
+    expect(wall.config.tiles).toHaveLength(1);
   });
 });

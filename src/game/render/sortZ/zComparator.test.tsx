@@ -1,9 +1,12 @@
 import { describe, expect, test } from "vitest";
 
 import { type ItemInPlayAAbbInfo } from "../../../model/ItemInPlay";
-import { GridSpatialIndex } from "../../physics/gridSpace/GridSpatialIndex";
+import { addXyz, originXyz, type Xy } from "../../../utils/vectors/vectors";
+import { worldBoxToCameraSpace } from "./__test__/worldBoxToCameraSpace";
 import { type DrawOrderComparable } from "./DrawOrderComparable";
+import { VisualIndex } from "./VisualIndex";
 import { zComparator } from "./zComparator";
+
 const unitCube = { x: 1, y: 1, z: 1 };
 
 function describeOrder(order: number) {
@@ -14,41 +17,108 @@ function describeOrder(order: number) {
   );
 }
 
+// every test below asserts a draw-order relationship, and that relationship is
+// preserved when the scene and the camera rotate together. So each assertion is
+// checked at all four camera angles: rotate the scene by the inverse of the angle and
+// view at the angle, which puts the items back where they were on screen - so the
+// asserted (base) order must still hold. A wrong sign at any angle fails the test.
+const cameraAngles: Xy[] = [
+  { x: 1, y: 0 }, // no rotation
+  { x: 0, y: 1 }, // quarter turn
+  { x: -1, y: 0 }, // half turn
+  { x: 0, y: -1 }, // three-quarter turn
+];
+
+const inverseAngle = ({ x, y }: Xy): Xy => ({ x, y: -y });
+
+const describeAngle = ({ x, y }: Xy) => `camera (${x},${y})`;
+
+/** rotate a comparable's physical and render boxes about the vertical (z) axis */
+const rotateComparable = (
+  item: DrawOrderComparable,
+  angle: Xy,
+): DrawOrderComparable => {
+  const physical = worldBoxToCameraSpace(item.state.position, item.aabb, angle);
+  const rotated: DrawOrderComparable = {
+    ...item,
+    state: { position: physical.position },
+    aabb: physical.aabb,
+  };
+  if (item.renderAabb === undefined && item.renderAabbOffset === undefined) {
+    return rotated;
+  }
+  const renderBox = worldBoxToCameraSpace(
+    addXyz(item.state.position, item.renderAabbOffset ?? originXyz),
+    item.renderAabb ?? item.aabb,
+    angle,
+  );
+  return {
+    ...rotated,
+    renderAabb: renderBox.aabb,
+    renderAabbOffset: {
+      x: renderBox.position.x - physical.position.x,
+      y: renderBox.position.y - physical.position.y,
+      z: renderBox.position.z - physical.position.z,
+    },
+  };
+};
+
+/** the zComparator order at each camera angle, scene rotated to keep the base relationship */
+const ordersAtEveryCameraAngle = (
+  received: DrawOrderComparable,
+  reference: DrawOrderComparable,
+): ReadonlyArray<{ angle: Xy; order: number }> =>
+  cameraAngles.map((angle) => {
+    const inverse = inverseAngle(angle);
+    const a = rotateComparable(received, inverse);
+    const b = rotateComparable(reference, inverse);
+    return { angle, order: zComparator(a, b, new VisualIndex([a, b], angle)) };
+  });
+
 expect.extend({
   toBeInFrontOf(received: DrawOrderComparable, reference: DrawOrderComparable) {
-    const spatialIndex = new GridSpatialIndex([received, reference]);
-    const { isNot, utils } = this;
-    const order = zComparator(received, reference, spatialIndex);
+    const { utils } = this;
+    const failure = ordersAtEveryCameraAngle(received, reference).find(
+      ({ order }) => !(order > 0),
+    );
     return {
       // do not alter your "pass" based on isNot. Vitest does it for you
-      pass: order > 0,
+      pass: failure === undefined,
       message: () =>
-        `expected ${utils.printExpected(received.id)} to be ${isNot ? "not " : ""}in front of ${utils.printExpected(reference.id)} but ${utils.printReceived(describeOrder(order))}`,
+        failure === undefined ?
+          `expected ${utils.printExpected(received.id)} not to be in front of ${utils.printExpected(reference.id)} at every camera angle`
+        : `expected ${utils.printExpected(received.id)} to be in front of ${utils.printExpected(reference.id)} at ${describeAngle(failure.angle)} but it ${utils.printReceived(describeOrder(failure.order))}`,
     };
   },
   toBeBehind(received: DrawOrderComparable, reference: DrawOrderComparable) {
-    const spatialIndex = new GridSpatialIndex([received, reference]);
-    const { isNot, utils } = this;
-    const order = zComparator(received, reference, spatialIndex);
+    const { utils } = this;
+    const failure = ordersAtEveryCameraAngle(received, reference).find(
+      ({ order }) => !(order < 0),
+    );
     return {
       // do not alter your "pass" based on isNot. Vitest does it for you
-      pass: order < 0,
+      pass: failure === undefined,
       message: () =>
-        `expected ${utils.printExpected(received.id)} to be ${isNot ? "not " : ""}behind ${utils.printExpected(reference.id)} but ${utils.printReceived(describeOrder(order))}`,
+        failure === undefined ?
+          `expected ${utils.printExpected(received.id)} not to be behind ${utils.printExpected(reference.id)} at every camera angle`
+        : `expected ${utils.printExpected(received.id)} to be behind ${utils.printExpected(reference.id)} at ${describeAngle(failure.angle)} but it ${utils.printReceived(describeOrder(failure.order))}`,
     };
   },
   toHaveNoOrderPreferenceWith(
     received: DrawOrderComparable,
     reference: DrawOrderComparable,
   ) {
-    const spatialIndex = new GridSpatialIndex([received, reference]);
-    const { isNot, utils } = this;
-    const order = zComparator(received, reference, spatialIndex);
+    const { utils } = this;
+    const failure = ordersAtEveryCameraAngle(received, reference).find(
+      ({ order }) => order !== 0,
+    );
     return {
       // do not alter your "pass" based on isNot. Vitest does it for you
-      pass: order === 0,
+      pass: failure === undefined,
       message: () =>
-        `expected ${utils.printExpected(received.id)} to have ${isNot ? "no " : ""}order preference with ${utils.printExpected(reference.id)} but ${utils.printReceived(describeOrder(order))}`,
+        failure === undefined ?
+          `expected ${utils.printExpected(received.id)} to have an order preference with ${utils.printExpected(reference.id)} at some camera angle`
+        : `expected ${utils.printExpected(received.id)} to have no order preference with ${utils.printExpected(reference.id)} at ${describeAngle(failure.angle)} but it ${utils.printReceived(describeOrder(failure.order))}`,
     };
   },
 });
@@ -199,7 +269,7 @@ test("zComparator gives a preference for non-visually-overlapping  but adjacent 
   };
 
   expect(wall).toBeInFrontOf(floor);
-  //expect(floor).toBeBehind(wall);
+  expect(floor).toBeBehind(wall);
 });
 
 test("zComparator gives no preference for not-quite-adjacent in x,z when the gap is bigger", () => {

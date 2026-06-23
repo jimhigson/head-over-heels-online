@@ -18,7 +18,7 @@ import {
 } from "../../sprites/spritesheet/spritesheetData/makeSpritesheetData";
 import { type AppSpritesheet } from "../../sprites/spritesheet/variants/AppSpritesheet";
 import { phaseForSubItem } from "../../utils/maths/hashXyzToNumber0to1";
-import { lengthXyz, type Xyz } from "../../utils/vectors/vectors";
+import { lengthXyz, type Xy, type Xyz } from "../../utils/vectors/vectors";
 import { projectBlockXyzToScreenXy } from "./projections";
 
 type CreateSpriteSpritesheetSpecifier =
@@ -57,6 +57,8 @@ export type AnimatedCreateSpriteOptions = CreateSpriteSpritesheetSpecifier & {
    */
   playOnce?: "and-destroy" | "and-stop";
   times?: Partial<Xyz>;
+  /** the camera rotation, so a tiled (times) sprite tiles in the rotated direction */
+  cameraAngle?: Xy;
   label?: string;
 
   /** if the game is paused, nothing should animate - this will automatically create just
@@ -72,6 +74,8 @@ type BaseCreateSpriteOptions = CreateSpriteSpritesheetSpecifier & {
   x?: number;
   y?: number;
   filter?: Filter | Filter[];
+  /** the camera rotation, so a tiled (times) sprite tiles in the rotated direction */
+  cameraAngle?: Xy;
   label?: string;
 };
 
@@ -126,7 +130,7 @@ const isAnimatedOptions = (
 
 /** utility for creating a sprite while setting several properties on it */
 const createSpriteImpl = (options: CreateSpriteOptions): Container => {
-  const { anchor, flipX, pivot, x, y, times, label } = options;
+  const { anchor, flipX, pivot, x, y, times, label, cameraAngle } = options;
 
   // `times: undefined` or `times: {x:1}` should NOT cause the sprite to be wrapped in a container
   // even if this means the the types change between two otherwise identical calls
@@ -140,8 +144,19 @@ const createSpriteImpl = (options: CreateSpriteOptions): Container => {
 
     if (needsMultipliedRendering) {
       const container = new Container({ label: label ?? "timesXyz" });
-      for (let { x } = completeTimes; x >= 1; x--) {
-        for (let { y } = completeTimes; y >= 1; y--) {
+      // paint the sub-sprites back-to-front: step each horizontal axis from its
+      // camera-far end to its near end, so nearer sub-sprites are added (and so
+      // drawn) last. which end is nearer depends on the camera angle. z is not
+      // affected by the horizontal camera rotation, so always goes low-to-high
+      // (taller sub-sprites draw on top):
+      const xDelta =
+        projectBlockXyzToScreenXy({ x: 1 }, cameraAngle).y > 0 ? 1 : -1;
+      const yDelta =
+        projectBlockXyzToScreenXy({ y: 1 }, cameraAngle).y > 0 ? 1 : -1;
+      const xStart = xDelta === 1 ? 1 : completeTimes.x;
+      const yStart = yDelta === 1 ? 1 : completeTimes.y;
+      for (let x = xStart; x >= 1 && x <= completeTimes.x; x += xDelta) {
+        for (let y = yStart; y >= 1 && y <= completeTimes.y; y += yDelta) {
           for (let z = 1; z <= completeTimes.z; z++) {
             const subSpriteOptions = {
               ...options,
@@ -170,11 +185,14 @@ const createSpriteImpl = (options: CreateSpriteOptions): Container => {
             const component = createSpriteImpl(
               subSpriteOptions as CreateSpriteOptions,
             );
-            const displaceXy = projectBlockXyzToScreenXy({
-              x: x - 1,
-              y: y - 1,
-              z: z - 1,
-            });
+            const displaceXy = projectBlockXyzToScreenXy(
+              {
+                x: x - 1,
+                y: y - 1,
+                z: z - 1,
+              },
+              cameraAngle,
+            );
             component.x += displaceXy.x;
             component.y += +displaceXy.y;
 

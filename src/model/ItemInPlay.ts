@@ -132,13 +132,25 @@ export type ItemInPlayAAbbInfo = {
    * are no non-collideable items
    */
   aabb: Aabb;
-  /** an optional second bb which is used only for determining render order - not for collisions */
+  /**
+   * Optional second bb which is used only for determining render order - not for collisions.
+   * Together with @see {renderAabbOffset}, defines a cuboid for the area the sprites render into.
+   *
+   * The extent does not change with the camera angle (the sprite doesn't rotate), so unlike
+   * renderAabbOffset this is set once when the item is built.
+   */
   readonly renderAabb?: Aabb;
   /**
    * the offset of the render aabb from the item position. like renderAabb, has no role in collisions,
-   * only determining the render order
+   * only determining the render order.
+   * Together with @see {renderAabb}, defines a cuboid for the area the sprites render into
+   *
+   * Rewritten per camera rotation (renderAabbOffsetForCameraAngle): the sprite is anchored at its
+   * near corner, so the render box follows it by the near-corner offset. Not readonly.
    */
-  readonly renderAabbOffset?: Aabb;
+  renderAabbOffset?: Aabb;
+  /** the base-angle renderAabbOffset, which renderAabbOffset at each camera angle is derived from */
+  readonly baseRenderAabbOffset?: Aabb;
 };
 
 export type ItemInPlay<

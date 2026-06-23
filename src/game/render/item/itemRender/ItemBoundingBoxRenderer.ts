@@ -3,91 +3,25 @@ import { Color, type ColorSource, Container, Graphics } from "pixi.js";
 import { type ItemInPlayType } from "../../../../model/ItemInPlay";
 import { selectShowBoundingBoxTypesSet } from "../../../../store/slices/gameMenus/gameMenusSelectors";
 import { store } from "../../../../store/store";
-import { type Aabb } from "../../../../utils/vectors/vectors";
+import { type Aabb, type Xy } from "../../../../utils/vectors/vectors";
 import { isItemType } from "../../../physics/itemPredicates";
 import { type ItemRenderContext } from "../../ItemRenderContexts";
 import { projectWorldXyzToScreenXy } from "../../projections";
 import { TextContainer } from "../../text/TextContainer";
 import { type ItemPixiRenderer } from "./ItemPixiRenderer";
 
-const addCuboidPaths = (cuboid: Aabb, graphics: Graphics) => {
-  graphics
-    // bottom:
-    .poly([
-      projectWorldXyzToScreenXy({}),
-      projectWorldXyzToScreenXy({ x: cuboid.x }),
-      projectWorldXyzToScreenXy({ x: cuboid.x, y: cuboid.y }),
-      projectWorldXyzToScreenXy({ y: cuboid.y }),
-    ])
-    // right:
-    .poly([
-      projectWorldXyzToScreenXy({}),
-      projectWorldXyzToScreenXy({ z: cuboid.z }),
-      projectWorldXyzToScreenXy({ y: cuboid.y, z: cuboid.z }),
-      projectWorldXyzToScreenXy({ y: cuboid.y }),
-    ])
-    // left:
-    .poly([
-      projectWorldXyzToScreenXy({ x: cuboid.x }),
-      projectWorldXyzToScreenXy({ x: cuboid.x, z: cuboid.z }),
-      projectWorldXyzToScreenXy(cuboid),
-      projectWorldXyzToScreenXy({ x: cuboid.x, y: cuboid.y }),
-    ])
-    // top:
-    .poly([
-      projectWorldXyzToScreenXy({ z: cuboid.z }),
-      projectWorldXyzToScreenXy({ x: cuboid.x, z: cuboid.z }),
-      projectWorldXyzToScreenXy({
-        x: cuboid.x,
-        y: cuboid.y,
-        z: cuboid.z,
-      }),
-      projectWorldXyzToScreenXy({ y: cuboid.y, z: cuboid.z }),
-    ]);
-};
-
-const bbLineWidth = 0.66;
-
-const renderBB = (aabb: Aabb, color: ColorSource, lineWidth = bbLineWidth) => {
-  const graphics = new Graphics();
-  addCuboidPaths(aabb, graphics);
-
-  graphics.stroke({
-    width: lineWidth,
-    color,
-    alpha: 1,
-  });
-
-  graphics.eventMode = "static";
-  graphics.on("pointerenter", () => {
-    graphics.fill({ color, alpha: 0.5 });
-  });
-  graphics.on("pointerleave", () => {
-    graphics.clear();
-    addCuboidPaths(aabb, graphics);
-
-    graphics.stroke({
-      width: lineWidth,
-      color,
-      alpha: 1,
-    });
-  });
-
-  return graphics;
-};
-
 const bbColors: Record<ItemInPlayType, string> = {
   // players
-  head: "#FFB800",
-  heels: "#FFB800",
+  head: "#0091FF",
+  heels: "#F200FF",
   headOverHeels: "#FFB800",
 
   // structural / static geometry
-  wall: "#80C800",
-  floor: "#4A7A2E",
-  block: "#8B6914",
+  wall: "#9B9B9B",
+  floor: "#EFB06D",
+  block: "#FFFFFF",
   doorFrame: "#FF8000",
-  doorLegs: "#CC6600",
+  doorLegs: "#004ECC",
 
   // deadly / hazardous
   deadlyBlock: "#FF2040",
@@ -107,7 +41,7 @@ const bbColors: Record<ItemInPlayType, string> = {
 
   // transport / movement
   portal: "#FF00FF",
-  teleporter: "#CC44FF",
+  teleporter: "#CAEFFE",
   portableTeleporter: "#AA66FF",
   lift: "#4488FF",
   conveyor: "#2266DD",
@@ -138,7 +72,7 @@ const bbColors: Record<ItemInPlayType, string> = {
 
   // barriers & blockers
   barrier: "#A0A0C0",
-  blocker: "#808080",
+  blocker: "#973BFF",
   outOfBounds: "#606060",
   stopAutowalk: "#FF8080",
 
@@ -152,6 +86,97 @@ const bbColors: Record<ItemInPlayType, string> = {
   ball: "#FF9944",
 };
 
+/** which single face of the box to faintly shade in, if any */
+type ShadeFace = "bottom" | "none" | "top";
+
+const addCuboidPathsToGraphics = (
+  cuboid: Aabb,
+  graphics: Graphics,
+  cameraAngle: Xy,
+  shadeFace: ShadeFace = "none",
+  color?: ColorSource,
+) => {
+  const bottomFace = [
+    projectWorldXyzToScreenXy({}, cameraAngle),
+    projectWorldXyzToScreenXy({ x: cuboid.x }, cameraAngle),
+    projectWorldXyzToScreenXy({ x: cuboid.x, y: cuboid.y }, cameraAngle),
+    projectWorldXyzToScreenXy({ y: cuboid.y }, cameraAngle),
+  ];
+  const topFace = [
+    projectWorldXyzToScreenXy({ z: cuboid.z }, cameraAngle),
+    projectWorldXyzToScreenXy({ x: cuboid.x, z: cuboid.z }, cameraAngle),
+    projectWorldXyzToScreenXy(
+      { x: cuboid.x, y: cuboid.y, z: cuboid.z },
+      cameraAngle,
+    ),
+    projectWorldXyzToScreenXy({ y: cuboid.y, z: cuboid.z }, cameraAngle),
+  ];
+
+  // faintly shade one face - the footprint (bottom) or the top - in the box's
+  // own colour:
+  if (shadeFace !== "none" && color !== undefined) {
+    graphics
+      .poly(shadeFace === "top" ? topFace : bottomFace)
+      .fill({ color, alpha: 0.5 });
+  }
+
+  graphics
+    // bottom:
+    .poly(bottomFace)
+    // right:
+    .poly([
+      projectWorldXyzToScreenXy({}, cameraAngle),
+      projectWorldXyzToScreenXy({ z: cuboid.z }, cameraAngle),
+      projectWorldXyzToScreenXy({ y: cuboid.y, z: cuboid.z }, cameraAngle),
+      projectWorldXyzToScreenXy({ y: cuboid.y }, cameraAngle),
+    ])
+    // left:
+    .poly([
+      projectWorldXyzToScreenXy({ x: cuboid.x }, cameraAngle),
+      projectWorldXyzToScreenXy({ x: cuboid.x, z: cuboid.z }, cameraAngle),
+      projectWorldXyzToScreenXy(cuboid, cameraAngle),
+      projectWorldXyzToScreenXy({ x: cuboid.x, y: cuboid.y }, cameraAngle),
+    ])
+    // top:
+    .poly(topFace);
+};
+
+const bbLineWidth = 0.66;
+
+const renderBB = (
+  aabb: Aabb,
+  color: ColorSource,
+  cameraAngle: Xy,
+  lineWidth = bbLineWidth,
+  shadeFace: ShadeFace = "none",
+) => {
+  const graphics = new Graphics();
+  addCuboidPathsToGraphics(aabb, graphics, cameraAngle, shadeFace, color);
+
+  graphics.stroke({
+    width: lineWidth,
+    color,
+    alpha: 1,
+  });
+
+  graphics.eventMode = "static";
+  graphics.on("pointerenter", () => {
+    graphics.fill({ color, alpha: 0.5 });
+  });
+  graphics.on("pointerleave", () => {
+    graphics.clear();
+    addCuboidPathsToGraphics(aabb, graphics, cameraAngle, "none", color);
+
+    graphics.stroke({
+      width: lineWidth,
+      color,
+      alpha: 1,
+    });
+  });
+
+  return graphics;
+};
+
 export class ItemBoundingBoxRenderer<T extends ItemInPlayType>
   implements ItemPixiRenderer<T>
 {
@@ -163,6 +188,12 @@ export class ItemBoundingBoxRenderer<T extends ItemInPlayType>
    * it changes (eg light beams), so reference inequality is a sound signal
    */
   #lastRenderedAabb: Aabb | undefined;
+  /**
+   * the camera angle last drawn, so the overlay redraws on rotation: the box shape and the
+   * renderAabb's offset are both projected with the angle, and renderAabbOffset is re-derived
+   * per angle too - none of which changes the item's aabb reference
+   */
+  #lastRenderedCameraAngle: undefined | Xy;
 
   readonly renderContext: ItemRenderContext<T>;
 
@@ -179,11 +210,18 @@ export class ItemBoundingBoxRenderer<T extends ItemInPlayType>
     this.#container.removeAllListeners();
 
     const { item } = this.renderContext;
+    const { cameraAngle } = this.renderContext.general;
     const color = bbColors[item.type];
+
+    // the box draws every corner at its true projected position (project(worldCorner)
+    // via the inherited container transform), so boxes stay consistent with each
+    // other at all angles - and coincide with sprites, which are anchored at their
+    // footprint's near corner (see footprintNearCornerXY):
 
     if (isItemType("portal")(item)) {
       const relativePointScreenXy = projectWorldXyzToScreenXy(
         item.config.relativePoint,
+        cameraAngle,
       );
       this.#container.addChild(
         new Graphics()
@@ -200,15 +238,27 @@ export class ItemBoundingBoxRenderer<T extends ItemInPlayType>
     this.#container.addChild(
       new Graphics({ label: "objectOrigin" }).circle(0, 0, 2).fill(color),
     );
-    this.#container.addChild(renderBB(item.aabb, color));
+    this.#container.addChild(
+      renderBB(
+        item.aabb,
+        color,
+        cameraAngle,
+        undefined,
+        item.type === "floor" ? "top" : "bottom",
+      ),
+    );
     if (item.renderAabb) {
       const renderAabbGraphics = renderBB(
         item.renderAabb,
         color,
+        cameraAngle,
         bbLineWidth / 2,
       );
       if (item.renderAabbOffset) {
-        const offset = projectWorldXyzToScreenXy(item.renderAabbOffset);
+        const offset = projectWorldXyzToScreenXy(
+          item.renderAabbOffset,
+          cameraAngle,
+        );
         renderAabbGraphics.position.set(offset.x, offset.y);
         renderAabbGraphics.circle(0, 0, 2).fill(color);
       }
@@ -254,10 +304,15 @@ export class ItemBoundingBoxRenderer<T extends ItemInPlayType>
     });
 
     this.#lastRenderedAabb = item.aabb;
+    this.#lastRenderedCameraAngle = cameraAngle;
   }
 
   #show() {
     this.#draw();
+    // the box draws its corners at the item's true projected origin, so it must not inherit
+    // the near-corner offset applied to the item's sprites: parent it to the item position
+    // container (outside the offset) rather than leaving it nested in the offset container:
+    this.renderContext.itemPositionContainer?.addChild(this.#container);
     this.renderContext.frontLayer.attach(this.#container);
     this.#shown = true;
   }
@@ -283,8 +338,15 @@ export class ItemBoundingBoxRenderer<T extends ItemInPlayType>
       return;
     }
 
-    // already showing: redraw if the bounding box changed (new aabb reference)
-    if (shouldShow && this.renderContext.item.aabb !== this.#lastRenderedAabb) {
+    // already showing: redraw if the bounding box changed (new aabb reference) or the
+    // camera rotated (the box shape and the renderAabb offset are camera-dependent)
+    const { cameraAngle } = this.renderContext.general;
+    if (
+      shouldShow &&
+      (this.renderContext.item.aabb !== this.#lastRenderedAabb ||
+        cameraAngle.x !== this.#lastRenderedCameraAngle?.x ||
+        cameraAngle.y !== this.#lastRenderedCameraAngle?.y)
+    ) {
       this.#draw();
     }
   }

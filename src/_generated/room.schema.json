@@ -1560,91 +1560,19 @@
                 "additionalProperties": false,
                 "properties": {
                   "config": {
-                    "anyOf": [
-                      {
-                        "additionalProperties": false,
-                        "properties": {
-                          "direction": {
-                            "const": "away",
-                            "description": "this wall would normally be found/rendered on the away side of the room",
-                            "type": "string"
-                          },
-                          "tiles": {
-                            "description": "the tiles to show - the length of this array also determines the size of the wall",
-                            "items": {},
-                            "type": "array"
-                          }
-                        },
-                        "required": ["direction", "tiles"],
-                        "type": "object"
+                    "additionalProperties": false,
+                    "properties": {
+                      "direction": {
+                        "$ref": "#/definitions/r100"
                       },
-                      {
-                        "additionalProperties": false,
-                        "properties": {
-                          "direction": {
-                            "const": "left",
-                            "description": "this wall would normally be found/rendered on the left side of the room",
-                            "type": "string"
-                          },
-                          "tiles": {
-                            "description": "the tiles to show - the length of this array also determines the size of the wall",
-                            "items": {},
-                            "type": "array"
-                          }
-                        },
-                        "required": ["direction", "tiles"],
-                        "type": "object"
-                      },
-                      {
-                        "additionalProperties": false,
-                        "properties": {
-                          "direction": {
-                            "const": "towards",
-                            "description": "this wall would normally be found on the (invisible) towards side of the room",
-                            "type": "string"
-                          },
-                          "times": {
-                            "additionalProperties": false,
-                            "properties": {
-                              "x": {
-                                "type": "number",
-                                "multipleOf": 1,
-                                "minimum": 1,
-                                "maximum": 99
-                              }
-                            },
-                            "required": ["x"],
-                            "type": "object"
-                          }
-                        },
-                        "required": ["direction"],
-                        "type": "object"
-                      },
-                      {
-                        "additionalProperties": false,
-                        "properties": {
-                          "direction": {
-                            "const": "right",
-                            "type": "string"
-                          },
-                          "times": {
-                            "additionalProperties": false,
-                            "properties": {
-                              "y": {
-                                "type": "number",
-                                "multipleOf": 1,
-                                "minimum": 1,
-                                "maximum": 99
-                              }
-                            },
-                            "required": ["y"],
-                            "type": "object"
-                          }
-                        },
-                        "required": ["direction"],
-                        "type": "object"
+                      "tiles": {
+                        "description": "the tiles to show - the length of this array also determines the size of the wall",
+                        "items": {},
+                        "type": "array"
                       }
-                    ]
+                    },
+                    "required": ["direction", "tiles"],
+                    "type": "object"
                   },
                   "position": {
                     "$ref": "#/definitions/r49"

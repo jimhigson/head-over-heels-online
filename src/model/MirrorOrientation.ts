@@ -1,4 +1,9 @@
-import { type DirectionXy4, type Xy, type Xyz } from "../utils/vectors/vectors";
+import {
+  cameraAngleIsOddQuarterTurn,
+  type DirectionXy4,
+  type Xy,
+  type Xyz,
+} from "../utils/vectors/vectors";
 
 /**
  * mirrors sit at 45° to the orthogonal axes - the orientation is the
@@ -68,11 +73,19 @@ const reflectedFacingVector = (
 
 /**
  * a facing vector, reflected if it is being rendered as a mirror reflection,
- * otherwise returned unchanged. Reflections are only ever shown in the face-on
- * (awayRight) pane, so the orientation is fixed - item renderers call this to
+ * otherwise returned unchanged. Reflections are only ever shown in the pane
+ * rendered face-on: world awayRight normally, or awayLeft when an odd quarter
+ * camera turn shows the orientations swapped - item renderers call this to
  * flip themselves, without each call site needing its own `isReflection` check.
  */
-export const maybeReflectedVector = (facing: Xy, isReflection: boolean): Xy =>
+export const maybeReflectedVector = (
+  facing: Xy,
+  isReflection: boolean,
+  cameraAngle: Xy,
+): Xy =>
   isReflection ?
-    reflectedFacingVector("awayRight", { ...facing, z: 0 })
+    reflectedFacingVector(
+      cameraAngleIsOddQuarterTurn(cameraAngle) ? "awayLeft" : "awayRight",
+      { ...facing, z: 0 },
+    )
   : facing;
