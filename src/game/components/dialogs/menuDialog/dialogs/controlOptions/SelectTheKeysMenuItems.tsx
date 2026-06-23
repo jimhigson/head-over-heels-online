@@ -280,6 +280,58 @@ export const SelectTheKeysMenuItems = () => {
           TagName="h2"
           className={`text-midRed zx:text-zxBlue toppy:text-toppyPink2 ${multilineTextClass} pt-1 sprites-double-height pb-1`}
         >
+          Camera
+        </BitmapText>
+        <BlockyMarkdown
+          markdown={`Rotate the camera to understand the room better.`}
+          className={optionsHintMarkdownClassname}
+        />
+      </div>
+      <MenuItem
+        id="rotateCameraClockwise"
+        label={
+          <BitmapText className={`inline-block w-6 ${multilineTextClass}`}>
+            Rotate clockwise
+          </BitmapText>
+        }
+        valueElement={
+          <SelectKeysMenuAssignmentValue action="rotateCameraClockwise" />
+        }
+        onSelect={useDispatchActionCallback(
+          assignInputStart,
+          "rotateCameraClockwise",
+        )}
+        leader={
+          <span
+            className={`${spriteLeaderClasses} ${"texture-hud_char_↻" satisfies TextureTailwindClass}`}
+          />
+        }
+      />
+      <MenuItem
+        id="rotateCameraAnticlockwise"
+        label={
+          <BitmapText className={`inline-block w-6 ${multilineTextClass}`}>
+            Rotate anticlockwise
+          </BitmapText>
+        }
+        valueElement={
+          <SelectKeysMenuAssignmentValue action="rotateCameraAnticlockwise" />
+        }
+        onSelect={useDispatchActionCallback(
+          assignInputStart,
+          "rotateCameraAnticlockwise",
+        )}
+        leader={
+          <span
+            className={`${spriteLeaderClasses} ${"texture-hud_char_↺" satisfies TextureTailwindClass}`}
+          />
+        }
+      />
+      <div className="col-span-3">
+        <BitmapText
+          TagName="h2"
+          className={`text-midRed zx:text-zxBlue toppy:text-toppyPink2 ${multilineTextClass} pt-1 sprites-double-height pb-1`}
+        >
           Look controls
         </BitmapText>
         <BlockyMarkdown

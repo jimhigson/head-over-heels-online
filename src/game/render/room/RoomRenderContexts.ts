@@ -10,6 +10,7 @@ import {
   type SoundSettings,
   type SpriteOption,
 } from "../../../store/slices/userSettings/userSettingsSlice";
+import { type Xy } from "../../../utils/vectors/vectors";
 import { type GameState } from "../../gameState/GameState";
 import { type MovedOrResizedItems } from "../../mainLoop/progressGameState";
 
@@ -36,6 +37,8 @@ export type GeneralRenderContext<RoomId extends string> = {
   spriteOption: SpriteOption;
   spritesheetMeta: SpritesheetMetadata;
   upscale: Upscale;
+  /** the 90°-increment camera rotation as a (cos,sin) unit vector */
+  cameraAngle: Xy;
 
   onScreenControls: boolean;
   /** game speed multiplier for the current frame — 0 when paused, <1 during slow-motion (e.g. death animation) */

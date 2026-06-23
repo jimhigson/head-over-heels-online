@@ -10,6 +10,7 @@ import { type SpritesheetVariants } from "../../sprites/spritesheet/variants/Spr
 import { selectUpscale } from "../../store/slices/upscale/upscaleSlice";
 import { store } from "../../store/store";
 import { valuesIter } from "../../utils/entries";
+import { cameraAngleBase } from "../../utils/vectors/rotateXy";
 import {
   type EditorRoomId,
   type EditorRoomItemId,
@@ -42,6 +43,7 @@ const editorGeneralRenderContext = (
   spriteOption: { name: "BlockStack", uncolourised: false as const },
   spritesheetMeta: spritesheetMetas.BlockStack,
   upscale: selectUpscale(store.getState()),
+  cameraAngle: cameraAngleBase,
   onScreenControls: false,
   speedCoefficient: 1,
   spritesheetVariants,

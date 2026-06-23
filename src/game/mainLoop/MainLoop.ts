@@ -23,6 +23,7 @@ import { store } from "../../store/store";
 import { emptySet } from "../../utils/empty";
 import { validateSceneGraph } from "../../utils/pixi/validateSceneGraph";
 import { createSerialisableErrors } from "../../utils/redux/createSerialisableErrors";
+import { cameraAngleBase } from "../../utils/vectors/rotateXy";
 import { type GameState } from "../gameState/GameState";
 import { selectCurrentRoomState } from "../gameState/gameStateSelectors/selectCurrentRoomState";
 import { maxFps, maxSubTickDeltaMs } from "../physics/mechanicsConstants";
@@ -215,6 +216,10 @@ export class MainLoop<RoomId extends string> {
       deltaMS === 0 ? emptySet : this.#physicsTicker(this.#gameState, deltaMS);
     timingRecord?.endPhysics();
 
+    // read after the physics tick so a rotation input this frame takes effect
+    // immediately - the physics ticker is where the camera-rotate tap is applied:
+    const tickCameraAngle = this.#gameState.cameraAngle ?? cameraAngleBase;
+
     timingRecord?.startUpdateSceneGraph();
     // the tick could end on a different room than it started on, eg if ticking
     // the physics caused the player to go through a door:
@@ -320,6 +325,7 @@ export class MainLoop<RoomId extends string> {
           spriteOption: tickSpriteOption,
           spritesheetMeta: spritesheetMetaForOption(tickSpriteOption),
           upscale: tickUpscale,
+          cameraAngle: tickCameraAngle,
           onScreenControls: tickOnScreenControls,
           speedCoefficient: this.#app.ticker.speed,
           spritesheetVariants: this.#spritesheetVariants,
@@ -347,6 +353,7 @@ export class MainLoop<RoomId extends string> {
       tickDisplaySettings,
       tickSoundSettings,
       isPaused,
+      tickCameraAngle,
       this.#webGlContextRestored,
     );
     if (
@@ -367,6 +374,7 @@ export class MainLoop<RoomId extends string> {
             spriteOption: tickSpriteOption,
             spritesheetMeta: spritesheetMetaForOption(tickSpriteOption),
             upscale: tickUpscale,
+            cameraAngle: tickCameraAngle,
             onScreenControls: tickOnScreenControls,
             speedCoefficient: this.#app.ticker.speed,
             spritesheetVariants: this.#spritesheetVariants,
