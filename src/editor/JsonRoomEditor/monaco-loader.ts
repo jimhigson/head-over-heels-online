@@ -89,6 +89,17 @@ const monacoLoader = async (): Promise<typeof Monaco> => {
       "editorIndentGuide.activeBackground1": paletteJson.midRed,
       "editor.lineHighlightBackground": halfbriteHex(paletteJson.redShadow),
       "editor.lineHighlightBorder": "#00000000", // transparent
+      "editor.foldPlaceholderForeground": paletteJson.pink,
+      // suggest (autocomplete) widget, matched to the app's Command/ContextMenu
+      // dropdown: metallicBlue body, white text, selected row inverts to white
+      "editorSuggestWidget.background": paletteJson.metallicBlue,
+      "editorSuggestWidget.border": paletteJson.shadow,
+      "editorSuggestWidget.foreground": paletteJson.white,
+      "editorSuggestWidget.selectedBackground": paletteJson.white,
+      "editorSuggestWidget.selectedForeground": paletteJson.metallicBlue,
+      "editorSuggestWidget.selectedIconForeground": paletteJson.metallicBlue,
+      "editorSuggestWidget.highlightForeground": paletteJson.highlightBeige,
+      "editorSuggestWidget.focusHighlightForeground": paletteJson.midRed,
     },
   });
 

@@ -186,15 +186,18 @@ export const spritesTailwindPlugin = plugin(
         backgroundAttachment: "fixed",
       },
       ".sprite-in-glyph-margin": {
-        "--scale": "0.75",
-        // since monaco is hard-coded to 18px for glyph margin icons, we can't set the width/height
-        // of the element. Instead of relying on the element's size to clip the spritesheet, a clip-path
-        // does the same:
+        "--scale": "1",
+        // monaco sizes glyph-margin icons inline (≈18px square); force the element
+        // to 24px (needs !important to beat monaco's inline width/height) so the
+        // sprite renders at full size. The clip-path then trims any part of the
+        // spritesheet that falls outside the 24px box.
+        width: "24px !important",
+        height: "24px !important",
         "clip-path": `inset(
-          0                                                         
-          clamp(0px, calc(18px - var(--w) * var(--scale) * 1px), calc(18px - var(--w) * var(--scale) * 1px))
-          clamp(0px, calc(18px - var(--h) * var(--scale) * 1px), calc(18px - var(--h) * var(--scale) * 1px))  
-          0                                                         
+          0
+          clamp(0px, calc(24px - var(--w) * var(--scale) * 1px), calc(24px - var(--w) * var(--scale) * 1px))
+          clamp(0px, calc(24px - var(--h) * var(--scale) * 1px), calc(24px - var(--h) * var(--scale) * 1px))
+          0
         )`,
       },
 

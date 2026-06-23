@@ -82,6 +82,9 @@ const JsonRoomEditor = () => {
           // hidden, tell it to move its tooltips up to the top of the window's DOM:
           fixedOverflowWidgets: true,
           fontSize: 12,
+          // taller suggest rows - the widget is a virtualised list, so its row
+          // height comes from this option, not CSS padding
+          suggestLineHeight: 24,
           lineNumbers: "off",
           wordWrap: "on",
           glyphMargin: true,
@@ -94,6 +97,9 @@ const JsonRoomEditor = () => {
             comments: false,
           },
           quickSuggestionsDelay: 100,
+          // no word-based completions - JSON suggestions come from the schema
+          // and our room-id provider, not from words already in the document
+          wordBasedSuggestions: "off",
           inlineSuggest: {
             enabled: true,
           },

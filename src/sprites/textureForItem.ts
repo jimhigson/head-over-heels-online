@@ -237,7 +237,6 @@ export const textureForItem = (
       }
       break;
     case "player":
-    case "sceneryPlayer":
       switch (item.config.which) {
         case "head":
         case "headOverHeels":
@@ -253,6 +252,27 @@ export const textureForItem = (
             character: "heels",
             action: "idle",
             facingXy8: "towards",
+          });
+        default:
+          item.config.which satisfies never;
+      }
+      break;
+    case "sceneryPlayer":
+      switch (item.config.which) {
+        case "head":
+        case "headOverHeels":
+          return playableTailwindSpriteClassname({
+            spritesheetName: "BlockStack" as "BlockStack",
+            character: "head",
+            action: "idle",
+            facingXy8: item.config.startDirection ?? "towards",
+          });
+        case "heels":
+          return playableTailwindSpriteClassname({
+            spritesheetName: "BlockStack" as "BlockStack",
+            character: "heels",
+            action: "idle",
+            facingXy8: item.config.startDirection ?? "towards",
           });
         default:
           item.config.which satisfies never;

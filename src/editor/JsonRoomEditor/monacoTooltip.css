@@ -1,0 +1,68 @@
+/*
+ * Editor popup styling (hovers + suggest widget). The button-label tooltips
+ * (workbench-hover) and the rich content/error hovers both render the
+ * .monaco-hover box. They
+ * mount near document.body, so the palette --colour-* vars (set on :root by
+ * fallbackColourVariables.ts) and the HUD font (set on body) reach them, but
+ * --block resolves to its 8px fallback unless a scaled ancestor sets it.
+ */
+.monaco-hover,
+.workbench-hover {
+  background-color: var(--colour-lightBeige) !important;
+  color: var(--colour-white) !important;
+  padding: calc(var(--block, 8px) * 0.5) !important;
+  border-radius: 0 !important;
+}
+
+/*
+ * The shortcut is only a targetable element where monaco renders a structured
+ * keybinding (context menu, command palette). In the plain button tooltips it
+ * is part of the label text node and cannot be isolated, so it stays white.
+ */
+.monaco-keybinding-key {
+  color: var(--colour-midRed) !important;
+}
+
+/*
+ * Suggest (autocomplete) widget. Colours live in the monaco theme
+ * (monaco-loader.ts); row *height* comes from the suggestLineHeight editor
+ * option. Here: square corners to match the app's ContextMenu dropdown, plus
+ * horizontal breathing room for the cramped rows.
+ */
+.suggest-widget,
+.suggest-details {
+  border-radius: 0 !important;
+}
+.suggest-widget .monaco-list-row {
+  padding-left: calc(var(--block, 8px) * 0.5) !important;
+  padding-right: calc(var(--block, 8px) * 0.5) !important;
+}
+
+/*
+ * Monaco always focuses a suggestion, so with a single result the inverted
+ * white selected row fills the whole popup. When it's the only row, keep it
+ * blue like an unfocused row instead.
+ */
+.suggest-widget .monaco-list .monaco-list-row.focused:only-child {
+  background-color: var(--colour-metallicBlue) !important;
+  color: var(--colour-white) !important;
+}
+.suggest-widget
+  .monaco-list
+  .monaco-list-row.focused:only-child
+  > .contents
+  > .main
+  .monaco-highlighted-label
+  .highlight {
+  color: var(--colour-highlightBeige) !important;
+}
+
+/*
+ * The "No suggestions." / "Loading…" message inherits a larger font than the
+ * rows (it doesn't get suggestFontSize); shrink it to match. Line-height left
+ * untouched so the message box keeps its current height.
+ */
+.suggest-widget > .message {
+  font-size: 12px !important;
+  color: var(--colour-white) !important;
+}
