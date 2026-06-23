@@ -1,21 +1,27 @@
 import { orthoPlaneForNormal } from "../../utils/vectors/orthoPlane";
+import { cameraAngleBase, rotateXy } from "../../utils/vectors/rotateXy";
 import { addXyz, subXy, type Xy, type Xyz } from "../../utils/vectors/vectors";
 import { blockSizePx } from "../physics/mechanicsConstants";
 
 /* position on 2d screen for a given xyz in game-space 3d pixels */
-export const projectWorldXyzToScreenX = ({
-  x: xw = 0,
-  y: yw = 0,
-}: Partial<Xyz>): number => yw - xw;
+export const projectWorldXyzToScreenX = (
+  { x: xw = 0, y: yw = 0 }: Partial<Xyz>,
+  cameraAngle: Xy = cameraAngleBase,
+): number => {
+  const { x, y } = rotateXy({ x: xw, y: yw }, cameraAngle);
+  return y - x;
+};
 
-export const projectWorldXyzToScreenXy = ({
-  x: xw = 0,
-  y: yw = 0,
-  z: zw = 0,
-}: Partial<Xyz>): Xy => {
+export const projectWorldXyzToScreenXy = (
+  { x: xw = 0, y: yw = 0, z: zw = 0 }: Partial<Xyz>,
+  cameraAngle: Xy = cameraAngleBase,
+): Xy => {
+  // rotate the world x,y about the vertical (z) axis for the camera angle, then
+  // apply the fixed 2:1 isometric projection (z still projects straight up):
+  const { x, y } = rotateXy({ x: xw, y: yw }, cameraAngle);
   return {
-    x: yw - xw,
-    y: -(xw + yw) / 2 - zw,
+    x: y - x,
+    y: -(x + y) / 2 - zw,
   };
 };
 
@@ -120,6 +126,39 @@ export const fineXyzToBlockXyz = ({
 };
 
 /* position on 2d screen for a given xyz in game-space block position */
-export const projectBlockXyzToScreenXy = (blockXyz: Partial<Xyz>): Xy => {
-  return projectWorldXyzToScreenXy(blockXyzToFineXyz(blockXyz));
+export const projectBlockXyzToScreenXy = (
+  blockXyz: Partial<Xyz>,
+  cameraAngle: Xy = cameraAngleBase,
+): Xy => projectWorldXyzToScreenXy(blockXyzToFineXyz(blockXyz), cameraAngle);
+
+/**
+ * rotate an axis-aligned world box (min-corner `position` + `aabb` extents) about
+ * the vertical (z) axis by `cameraAngle` into the camera-rotated frame, returning
+ * the equivalent axis-aligned box. A 90° turn keeps the box axis-aligned but moves
+ * its min corner and (for odd quarter-turns) swaps the x/y extents. Working in this
+ * "camera space" lets the screen projection and the depth sort reuse the fixed-camera
+ * maths unchanged - every angle reduces to the base case.
+ */
+export const worldBoxToCameraSpace = (
+  position: Xyz,
+  aabb: Xyz,
+  cameraAngle: Xy = cameraAngleBase,
+): { position: Xyz; aabb: Xyz } => {
+  const corner0 = rotateXy(position, cameraAngle);
+  const corner1 = rotateXy(
+    { x: position.x + aabb.x, y: position.y + aabb.y },
+    cameraAngle,
+  );
+  return {
+    position: {
+      x: Math.min(corner0.x, corner1.x),
+      y: Math.min(corner0.y, corner1.y),
+      z: position.z,
+    },
+    aabb: {
+      x: Math.abs(corner1.x - corner0.x),
+      y: Math.abs(corner1.y - corner0.y),
+      z: aabb.z,
+    },
+  };
 };

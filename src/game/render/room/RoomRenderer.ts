@@ -79,14 +79,17 @@ export class RoomRenderer<RoomId extends string, RoomItemId extends string>
   > = new Map();
 
   /** items indexed by their draw position on screen, used for draw-order edge finding */
-  #visualIndex = new VisualIndex<
-    UnionOfAllItemInPlayTypes<RoomId, RoomItemId>
-  >();
+  #visualIndex: VisualIndex<UnionOfAllItemInPlayTypes<RoomId, RoomItemId>>;
 
   readonly renderContext: RoomRenderContext<RoomId, RoomItemId>;
 
   constructor(renderContext: RoomRenderContext<RoomId, RoomItemId>) {
     this.renderContext = renderContext;
+    // the visual index projects with the camera angle; the renderer is rebuilt when
+    // the angle changes, so the angle is fixed for this index's lifetime:
+    this.#visualIndex = new VisualIndex<
+      UnionOfAllItemInPlayTypes<RoomId, RoomItemId>
+    >(undefined, renderContext.general.cameraAngle);
     const {
       general: { spriteOption, soundSettings },
       room,

@@ -2,6 +2,7 @@
 
 import { veryClose } from "../../../utils/epsilon";
 import { addXyz } from "../../../utils/vectors/vectors";
+import { worldBoxToCameraSpace } from "../projections";
 import { type DrawOrderComparable } from "./DrawOrderComparable";
 import { type VisualIndex } from "./VisualIndex";
 import {
@@ -39,15 +40,43 @@ export const zComparator = (
     return 0;
   }
 
-  const aPos = a.state.position;
+  const { cameraAngle } = visualIndex;
 
-  const aPosVisual =
-    a.renderAabbOffset ? addXyz(aPos, a.renderAabbOffset) : aPos;
-  const aBbVisual = a.renderAabb || a.aabb;
-  const bPos = b.state.position;
-  const bPosVisual =
-    b.renderAabbOffset ? addXyz(bPos, b.renderAabbOffset) : bPos;
-  const bBbVisual = b.renderAabb || b.aabb;
+  // compare in camera space so the fixed-camera draw-order rule below stays correct
+  // for the current rotation (a 90° turn changes which item is in front):
+  const aPhysical = worldBoxToCameraSpace(
+    a.state.position,
+    a.aabb,
+    cameraAngle,
+  );
+  const aPos = aPhysical.position;
+  const aAabb = aPhysical.aabb;
+  const aVisual = worldBoxToCameraSpace(
+    a.renderAabbOffset ?
+      addXyz(a.state.position, a.renderAabbOffset)
+    : a.state.position,
+    a.renderAabb || a.aabb,
+    cameraAngle,
+  );
+  const aPosVisual = aVisual.position;
+  const aBbVisual = aVisual.aabb;
+
+  const bPhysical = worldBoxToCameraSpace(
+    b.state.position,
+    b.aabb,
+    cameraAngle,
+  );
+  const bPos = bPhysical.position;
+  const bAabb = bPhysical.aabb;
+  const bVisual = worldBoxToCameraSpace(
+    b.renderAabbOffset ?
+      addXyz(b.state.position, b.renderAabbOffset)
+    : b.state.position,
+    b.renderAabb || b.aabb,
+    cameraAngle,
+  );
+  const bPosVisual = bVisual.position;
+  const bBbVisual = bVisual.aabb;
 
   const visualOverlap = visuallyOverlaps(
     visualIndex.getItemAxesProjections(a)!,
@@ -73,9 +102,9 @@ export const zComparator = (
           // if the render bbs are undecided, move onto the physical bbs:
           renderBBsOrder = zComparatorOfVisuallyOverlapping(
             aPos,
-            a.aabb,
+            aAabb,
             bPos,
-            b.aabb,
+            bAabb,
           );
         }
       }

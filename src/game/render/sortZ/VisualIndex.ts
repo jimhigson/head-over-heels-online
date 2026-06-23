@@ -1,5 +1,6 @@
 import { type UnionOfAllItemInPlayTypes } from "../../../model/ItemInPlay";
-import { addXyz } from "../../../utils/vectors/vectors";
+import { cameraAngleBase } from "../../../utils/vectors/rotateXy";
+import { addXyz, type Xy } from "../../../utils/vectors/vectors";
 import {
   CellIndex,
   type Indexable,
@@ -7,6 +8,7 @@ import {
   type XyCellKey,
 } from "../../physics/gridSpace/CellIndex";
 import { blockSizePx } from "../../physics/mechanicsConstants";
+import { worldBoxToCameraSpace } from "../projections";
 import { projectAabbAxes, type ProjectionOnAxes } from "./projectAabbCorners";
 
 // like the cuboid index, the multipliers are a balance between each item being in
@@ -31,10 +33,15 @@ export class VisualIndex<Item extends Indexable = UnionOfAllItemInPlayTypes> {
   /** cache of where each item projects to on the on-screen axes (x,y,z)(min,max) */
   #itemToProjectionAxesMap = new Map<Item, ProjectionOnAxes>();
 
+  /** the camera rotation the projections are computed for; fixed for the index's life */
+  readonly cameraAngle: Xy;
+
   constructor(
     /** Optional iterable of items to initially populate the index */
     items?: Iterable<Item>,
+    cameraAngle: Xy = cameraAngleBase,
   ) {
+    this.cameraAngle = cameraAngle;
     if (items) {
       for (const item of items) {
         this.addItem(item);
@@ -49,15 +56,23 @@ export class VisualIndex<Item extends Indexable = UnionOfAllItemInPlayTypes> {
       : i.state.position;
     const bb = i.renderAabb || i.aabb;
 
+    // rotate the box into camera space so projectAabbAxes (fixed-camera maths) is
+    // correct for the current rotation:
+    const { position: cameraPos, aabb: cameraBb } = worldBoxToCameraSpace(
+      pos,
+      bb,
+      this.cameraAngle,
+    );
+
     const existing = this.#itemToProjectionAxesMap.get(i);
 
     if (existing !== undefined) {
       // write into the existing object to avoid malloc
-      projectAabbAxes(existing, pos, bb);
+      projectAabbAxes(existing, cameraPos, cameraBb);
       return existing;
     }
     // don't already have in the cache so will have to create a new object
-    const allAxesProjections = projectAabbAxes({}, pos, bb);
+    const allAxesProjections = projectAabbAxes({}, cameraPos, cameraBb);
     this.#itemToProjectionAxesMap.set(i, allAxesProjections);
     return allAxesProjections;
   }
