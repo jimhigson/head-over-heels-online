@@ -6,24 +6,24 @@ description: Fetch a campaign from the Supabase DB and save as local JSON. Use w
 ## Usage
 
 ```sh
-eval "$(fnm env)" && fnm use && npx tsx scripts/fetchCampaign.ts <campaignName> [userId]
+eval "$(fnm env)" && fnm use && pnpm --silent exec tsx scripts/fetchCampaign.ts <campaignName> [userId]
 ```
 
 The default user ID is `2924c962-99f1-4dd2-9b9c-fef832dc991b` (Jim's account). Pass a different user ID as the second argument if needed.
 
-Output is written to stdout. Redirect to a file if needed.
+Output is pure JSON on stdout — redirect to a file or pipe to `jq`. The `--silent` is required: without it, pnpm's cold-start reporter prints a banner to stdout that corrupts the JSON. It must come before `exec` (`pnpm exec --silent` is parsed as a command and fails).
 
 ## Examples
 
 ```sh
 # fetch Jim's campaign to a file
-npx tsx scripts/fetchCampaign.ts sequel_23 > /tmp/sequel_23.json
+pnpm --silent exec tsx scripts/fetchCampaign.ts sequel_23 > /tmp/sequel_23.json
 
 # fetch another user's campaign
-npx tsx scripts/fetchCampaign.ts my_campaign abc123-def456 > /tmp/my_campaign.json
+pnpm --silent exec tsx scripts/fetchCampaign.ts my_campaign abc123-def456 > /tmp/my_campaign.json
 
 # pipe to jq to inspect a specific room
-npx tsx scripts/fetchCampaign.ts sequel_23 | jq '.rooms["head_homers_jump"].meta.subRooms'
+pnpm --silent exec tsx scripts/fetchCampaign.ts sequel_23 | jq '.rooms["head_homers_jump"].meta.subRooms'
 ```
 
 ## How it works
