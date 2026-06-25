@@ -2,15 +2,12 @@ name: Deploy to R2
 
 # builds game + editor (--mode r2-<env>) and mirrors them into the hoh-*-<env>
 # buckets. <env> is the branch name: main -> blockstack.dev (staging),
-# production -> blockstack.ing. production is intentionally NOT in the push
-# trigger yet, so it never auto-deploys until the blockstack.ing cutover — add
-# "production" to `branches` then. Either env can also be run on demand via the
-# "Run workflow" button (e.g. to populate the -production buckets for testing
-# before the cutover).
+# production -> blockstack.ing. Either env can also be run on demand via the
+# "Run workflow" button.
 
 on:
   push:
-    branches: ["main"] # add "production" at the blockstack.ing cutover
+    branches: ["main", "production"] # main -> blockstack.dev, production -> blockstack.ing
   workflow_dispatch:
     inputs:
       environment:
