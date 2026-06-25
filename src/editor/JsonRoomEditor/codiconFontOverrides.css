@@ -1,0 +1,201 @@
+/*
+ * Substitutes the Head over Heels HUD webfont for monaco's bundled codicon icon
+ * font, for every codicon our single-pane JSON editor (with folding) renders.
+ *
+ * Each glyph is remapped by overriding the `content` of `.codicon-<name>::before`
+ * to a codepoint present in our font (see hudSritesheetData.ts). `!important` is
+ * required throughout: monaco's base rule `.codicon[class*='codicon-']` is more
+ * specific than a single class, and its per-icon `content` rules are injected
+ * into a runtime <style> element after this sheet loads (monaco-editor's
+ * iconsStyleSheet.ts), so it would otherwise win on both specificity and order.
+ *
+ * The `--colour-*` custom properties come from the tailwind base layer
+ * (fallbackColourVariables.ts), loaded via index.css before this sheet.
+ */
+
+:root {
+  /* glyph height; the HUD font is an 8px-em pixel font, so 16px renders at 2x */
+  --hoh-codicon-size: 16px;
+}
+
+/*
+ * Render EVERY codicon in our font, so monaco never resolves font-family
+ * "codicon" and codicon.ttf is never fetched. Icons not remapped below fall
+ * back to their codicon codepoint in our font - which has no glyph there, so
+ * they render .notdef. Accepted deliberately, to drop the ~119KB font load.
+ */
+.codicon[class*="codicon-"]::before {
+  font-family: "HeadOverHeels" !important;
+}
+
+.codicon-folding-expanded::before,
+.codicon-folding-collapsed::before,
+.codicon-folding-manual-expanded::before,
+.codicon-folding-manual-collapsed::before,
+.codicon-find-expanded::before,
+.codicon-find-collapsed::before,
+.codicon-find-previous-match::before,
+.codicon-find-next-match::before,
+.codicon-suggest-more-info::before,
+.codicon-marker-navigation-previous::before,
+.codicon-marker-navigation-next::before,
+.codicon-loading::before,
+.codicon-widget-close::before,
+.codicon-case-sensitive::before,
+.codicon-regex::before,
+.codicon-whole-word::before,
+.codicon-preserve-case::before,
+.codicon-find-replace::before,
+.codicon-find-replace-all::before,
+.codicon-find-selection::before,
+.codicon-error::before,
+.codicon-warning::before,
+.codicon-info::before,
+.codicon-symbol-property::before,
+.codicon-symbol-value::before,
+.codicon-symbol-module::before,
+.codicon-symbol-snippet::before {
+  font-size: var(--hoh-codicon-size) !important;
+}
+
+/* arrows / chevrons */
+.codicon-find-expanded::before,
+.codicon-find-next-match::before,
+.codicon-marker-navigation-next::before {
+  content: "\2b07" !important; /* ⬇ */
+}
+.codicon-find-collapsed::before,
+.codicon-suggest-more-info::before {
+  content: "\27a1" !important; /* ➡ */
+}
+
+/* folding gutter: the arrow shows what a click does */
+.codicon-folding-expanded::before,
+.codicon-folding-manual-expanded::before {
+  content: "\2b06" !important; /* ⬆ (expanded → click to collapse) */
+  color: var(--colour-midGrey) !important;
+}
+.codicon-folding-collapsed::before,
+.codicon-folding-manual-collapsed::before {
+  content: "\2b07" !important; /* ⬇ (collapsed → click to reveal) */
+  color: var(--colour-pink) !important;
+}
+.codicon-find-previous-match::before,
+.codicon-marker-navigation-previous::before {
+  content: "\2b06" !important; /* ⬆ */
+}
+.codicon-loading::before {
+  content: "\27f3" !important; /* ⟳ (the codicon-modifier-spin keyframes still apply) */
+}
+.codicon-widget-close::before {
+  content: "\78" !important; /* x */
+}
+
+/* find toggles, as multi-glyph text */
+.codicon-case-sensitive::before {
+  content: "\41\61" !important; /* Aa */
+}
+.codicon-regex::before {
+  content: "\2e\2a" !important; /* .* */
+}
+.codicon-whole-word::before {
+  content: "\77" !important; /* w */
+}
+.codicon-preserve-case::before {
+  content: "\41\62" !important; /* Ab */
+}
+
+/* find actions, distinguished by colour */
+.codicon-find-replace::before {
+  content: "\3f" !important; /* ? */
+}
+.codicon-find-replace-all::before {
+  content: "\72\2a" !important; /* r* */
+}
+.codicon-find-selection::before {
+  content: "\3f" !important; /* ? */
+}
+
+/* validation severities: same "!" glyph, distinguished by colour */
+.codicon-error::before {
+  content: "\21" !important; /* ! */
+  color: var(--colour-midRed) !important;
+}
+.codicon-warning::before {
+  content: "\21" !important; /* ! */
+  color: var(--colour-highlightBeige) !important;
+}
+.codicon-info::before {
+  content: "\69" !important; /* i */
+  color: var(--colour-pastelBlue) !important;
+}
+
+/* suggest-widget completion kinds: same "*" glyph, distinguished by colour */
+.codicon-symbol-property::before {
+  content: "\2a" !important; /* * */
+  color: var(--colour-highlightBeige) !important;
+}
+.codicon-symbol-value::before {
+  content: "\2a" !important; /* * */
+  color: var(--colour-lightBeige) !important;
+}
+.codicon-symbol-module::before {
+  content: "\2a" !important; /* * */
+  color: var(--colour-moss) !important;
+}
+.codicon-symbol-snippet::before {
+  content: "\2a" !important; /* * */
+  color: var(--colour-pink) !important;
+}
+
+/*
+ * find-widget icon colours: tell the toggles and replace actions apart at a
+ * glance. The replace family (replace / replace-all) shares the "↻" glyph, so
+ * colour is what distinguishes them at rest.
+ */
+.codicon-case-sensitive::before {
+  color: var(--colour-pastelBlue) !important;
+}
+.codicon-whole-word::before {
+  color: var(--colour-moss) !important;
+}
+.codicon-regex::before {
+  color: var(--colour-pink) !important;
+}
+.codicon-find-selection::before {
+  color: var(--colour-lightBeige) !important;
+}
+.codicon-preserve-case::before {
+  color: var(--colour-metallicBlue) !important;
+}
+.codicon-find-replace::before {
+  color: var(--colour-midRed) !important;
+}
+.codicon-find-replace-all::before {
+  color: var(--colour-highlightBeige) !important;
+}
+.codicon-widget-close::before {
+  color: var(--colour-redShadow) !important;
+}
+
+/*
+ * widen the multi-glyph find-widget boxes so two/three chars fit: monaco sizes
+ * these to a single ~16-20px glyph with overflow:hidden, which clips them.
+ * Compound selectors out-specify monaco's own rules, so no !important needed.
+ */
+.monaco-editor .find-widget .monaco-custom-toggle.codicon-case-sensitive,
+.monaco-editor .find-widget .monaco-custom-toggle.codicon-regex,
+.monaco-editor .find-widget .monaco-custom-toggle.codicon-preserve-case {
+  width: auto;
+  min-width: 20px;
+  padding-left: 3px;
+  padding-right: 3px;
+  overflow: visible;
+}
+
+.monaco-editor .find-widget .button.codicon-find-replace-all {
+  width: auto;
+  min-width: 16px;
+  padding-left: 3px;
+  padding-right: 3px;
+}
