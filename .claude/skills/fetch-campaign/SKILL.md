@@ -13,17 +13,20 @@ The default user ID is `2924c962-99f1-4dd2-9b9c-fef832dc991b` (Jim's account). P
 
 Output is written to stdout. Redirect to a file if needed.
 
+Sequel campaigns are named `sequel_XX` where `XX` is the release number. To know the number, read src/gameInfo.ts or see where it is loaded from in the
+select which game menu to start a new game on the sequel campaign.
+
 ## Examples
 
 ```sh
-# fetch Jim's campaign to a file
-npx tsx scripts/fetchCampaign.ts sequel_23 > /tmp/sequel_23.json
+# fetch Jim's campaign to a file (replace XX with the next release)
+npx tsx scripts/fetchCampaign.ts sequel_XX > /tmp/sequel_XX.json
 
 # fetch another user's campaign
 npx tsx scripts/fetchCampaign.ts my_campaign abc123-def456 > /tmp/my_campaign.json
 
-# pipe to jq to inspect a specific room
-npx tsx scripts/fetchCampaign.ts sequel_23 | jq '.rooms["head_homers_jump"].meta.subRooms'
+# pipe to jq to inspect a specific room (replace XX with the next release)
+npx tsx scripts/fetchCampaign.ts sequel_XX | jq '.rooms["head_homers_jump"].meta.subRooms'
 ```
 
 ## How it works

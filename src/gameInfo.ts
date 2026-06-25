@@ -27,6 +27,6 @@ export const originalCampaignLocator: CampaignLocator = {
  */
 export const sequelCampaignLocator: CampaignLocator = {
   userId: jimAtBlockstackingUserId,
-  campaignName: "sequel_23",
+  campaignName: "sequel_25",
   version: -1,
 };
