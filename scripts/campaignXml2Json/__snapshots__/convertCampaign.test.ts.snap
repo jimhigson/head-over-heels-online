@@ -14187,6 +14187,7 @@ exports[`covert campaign handbrake to protect against accidental changes > black
       "config": {
         "activated": "on",
         "movement": "patrol-randomly-xy4",
+        "startDirection": "towards",
         "which": "monkey",
       },
       "position": {
@@ -16968,6 +16969,7 @@ exports[`covert campaign handbrake to protect against accidental changes > black
       "config": {
         "activated": "on",
         "movement": "patrol-randomly-xy4",
+        "startDirection": "towards",
         "which": "monkey",
       },
       "position": {
@@ -18099,6 +18101,7 @@ exports[`covert campaign handbrake to protect against accidental changes > bookw
       "config": {
         "activated": "on",
         "movement": "patrol-randomly-xy4",
+        "startDirection": "towards",
         "which": "monkey",
       },
       "position": {
@@ -18112,6 +18115,7 @@ exports[`covert campaign handbrake to protect against accidental changes > bookw
       "config": {
         "activated": "on",
         "movement": "patrol-randomly-xy4",
+        "startDirection": "towards",
         "which": "monkey",
       },
       "position": {
@@ -19315,6 +19319,7 @@ exports[`covert campaign handbrake to protect against accidental changes > bookw
       "config": {
         "activated": "on",
         "movement": "towards-on-shortest-axis-xy4",
+        "startDirection": "towards",
         "which": "monkey",
       },
       "position": {
@@ -34180,6 +34185,7 @@ exports[`covert campaign handbrake to protect against accidental changes > moonb
       "config": {
         "activated": "on",
         "movement": "patrol-randomly-xy4-and-reverse",
+        "startDirection": "towards",
         "which": "computerBot",
       },
       "position": {
@@ -34193,6 +34199,7 @@ exports[`covert campaign handbrake to protect against accidental changes > moonb
       "config": {
         "activated": "on",
         "movement": "patrol-randomly-xy4-and-reverse",
+        "startDirection": "towards",
         "which": "computerBot",
       },
       "position": {
@@ -36657,6 +36664,7 @@ exports[`covert campaign handbrake to protect against accidental changes > moonb
       "config": {
         "activated": "on",
         "movement": "towards-on-shortest-axis-xy4",
+        "startDirection": "towards",
         "which": "computerBot",
       },
       "position": {

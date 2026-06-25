@@ -32,6 +32,7 @@ export const room = inferRoomJson({
       config: {
         activated: "on",
         movement: "patrol-randomly-xy4",
+        startDirection: "towards",
         which: "monkey",
       },
       position: { x: 3, y: 5, z: 0 },
@@ -41,6 +42,7 @@ export const room = inferRoomJson({
       config: {
         activated: "on",
         movement: "patrol-randomly-xy4",
+        startDirection: "towards",
         which: "monkey",
       },
       position: { x: 4, y: 0, z: 0 },

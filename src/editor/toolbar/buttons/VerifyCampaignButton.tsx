@@ -188,9 +188,10 @@ const VerifyIssuesDialog = ({ issues, onClose }: VerifyIssuesDialogProps) => {
                           </div>
                           <div className="text-midGrey">{issue.msg}</div>
                           <div className="flex gap-1">
-                            <span className="text-lightGrey">
+                            <div className="text-lightGrey">
                               {issue.fixText}
-                            </span>
+                            </div>
+                            <div className="flex-grow" />
                             {issue.fixable && (
                               <Button
                                 onClick={() => applyFix(issue)}
@@ -219,14 +220,14 @@ const VerifyIssuesDialog = ({ issues, onClose }: VerifyIssuesDialogProps) => {
             {fixableIssueCount > 0 && (
               <Button
                 onClick={fixAll}
-                className="px-1 py-half self-stretch bg-moss h-3"
+                className="px-1 py-half self-stretch bg-moss h-3 text-white"
               >
                 {`Fix ${fixableIssueCount} auto-fixable issues`}
               </Button>
             )}
             <Button
               onClick={onClose}
-              className="px-1 py-half self-stretch bg-midRed h-3"
+              className="px-1 py-half self-stretch bg-midRed h-3 text-white"
             >
               x Exit
             </Button>

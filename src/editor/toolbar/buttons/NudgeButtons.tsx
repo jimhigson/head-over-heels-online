@@ -11,6 +11,8 @@ import {
   unitXyz,
   type Xyz,
 } from "../../../utils/vectors/vectors";
+import { type EditorJsonItemUnion } from "../../editorTypes";
+import { isRotatable, type RotationSense } from "../../itemRotation";
 import { itemMoveOrResizeWouldCollide } from "../../RoomEditingArea/cursor/editWouldCollide";
 import {
   selectCurrentRoomJsonFromLevelEditorState,
@@ -19,6 +21,9 @@ import {
 import {
   commitCurrentPreviewedEdits,
   moveOrResizeItemAsPreview,
+  rotateCurrentToolItem,
+  rotateSelectedItems,
+  selectTool,
 } from "../../slice/levelEditorSlice";
 import { getMovableVector } from "../../slice/reducers/moveOrResizeItemPreview/getMovableVector";
 import { ToolbarButton } from "./ToolbarButton";
@@ -30,6 +35,30 @@ const lineContainerClassName = twClass(
 const lineTitleHeaderClassName = twClass(
   "inline-block mr-1 text-lightGrey leading-none pr-oneScaledPix min-w-6",
 );
+
+const useRotate = (selectedItems: EditorJsonItemUnion[]) => {
+  const dispatch = useAppDispatch();
+  const tool = useEditorAppSelector(selectTool);
+
+  const selectionRotatable =
+    selectedItems.length > 0 && selectedItems.every(isRotatable);
+  // ItemTool is {type, config}; EditorJsonItemUnion is assignable to it, so the
+  // cast just gives isRotatable the discriminated view it expects:
+  const toolItemRotatable =
+    tool.type === "item" && isRotatable(tool.item as EditorJsonItemUnion);
+
+  const rotatable = !(selectionRotatable || toolItemRotatable);
+
+  const rotate = (sense: RotationSense) => {
+    if (selectionRotatable) {
+      dispatch(rotateSelectedItems({ sense, timestamp: Date.now() }));
+    } else {
+      dispatch(rotateCurrentToolItem({ sense }));
+    }
+  };
+
+  return { rotatable, rotate };
+};
 
 export const NudgeButtons = () => {
   const dispatch = useAppDispatch();
@@ -43,6 +72,8 @@ export const NudgeButtons = () => {
     ),
   );
   const anythingSelected = selectedJsonItems.length > 0;
+
+  const { rotatable, rotate } = useRotate(selectedJsonItems);
 
   // minimum set of consolidatable axes for all selected items - dictates axes
   // can be resized along
@@ -293,6 +324,33 @@ export const NudgeButtons = () => {
             shortcutKeys={["⌥⇧PageUp"]}
           >
             <BitmapText className="relative leading-none">⬆</BitmapText>
+          </ToolbarButton>
+        </div>
+      </div>
+
+      <div className={lineContainerClassName}>
+        <BitmapText className={lineTitleHeaderClassName} noSlitWords>
+          Rotate:
+        </BitmapText>
+        <div className="flex-grow" />
+        <div className="flex flex-row flex-wrap gap-oneScaledPix items-center">
+          <ToolbarButton
+            small
+            disabled={rotatable}
+            onClick={() => rotate("anticlockwise")}
+            shortcutKeys={["["]}
+            tooltipContent={`##Rotate anti-clockwise\n\nTurn the selected item(s) - or the item the current tool will place - a quarter-turn anti-clockwise`}
+          >
+            <BitmapText className="relative leading-none">↺</BitmapText>
+          </ToolbarButton>
+          <ToolbarButton
+            small
+            disabled={rotatable}
+            onClick={() => rotate("clockwise")}
+            shortcutKeys={["]"]}
+            tooltipContent={`##Rotate clockwise\n\nTurn the selected item(s) - or the item the current tool will place - a quarter-turn clockwise`}
+          >
+            <BitmapText className="relative leading-none">↻</BitmapText>
           </ToolbarButton>
         </div>
       </div>

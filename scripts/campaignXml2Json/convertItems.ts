@@ -564,6 +564,7 @@ const convertItem = async ({
         config: {
           which: monsterConversions[xml2JsonItem.kind],
           activated: "on",
+          startDirection: "towards",
           movement: monsterBehaviourConversions[xml2JsonItem.behavior],
         },
         position,
@@ -582,6 +583,7 @@ const convertItem = async ({
         config: {
           which: monsterConversions[xml2JsonItem.kind],
           activated: "on",
+          startDirection: "towards",
           movement: movementAdjusted,
         },
         position,
