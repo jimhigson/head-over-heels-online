@@ -18,6 +18,7 @@ export const HalfGridResolutionSwitch = ({
     <Switch3
       className={className}
       label="Snap"
+      ariaLabel="Grid snap resolution"
       values={gridResolutions}
       value={useEditorAppSelector((state) => state.levelEditor.gridResolution)}
       onChange={(value: GridResolution) => {

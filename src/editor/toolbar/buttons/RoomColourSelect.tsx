@@ -92,6 +92,7 @@ export const RoomColourSelect = () => {
       <Switch
         className=""
         label="Shade"
+        ariaLabel="Room shade"
         value={currentRoomColour.shade === "basic"}
         onChange={(value) => {
           dispatch(

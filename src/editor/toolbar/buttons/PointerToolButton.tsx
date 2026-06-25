@@ -10,6 +10,7 @@ export const PointerToolButton = () => {
 
   return (
     <ToolbarButton
+      ariaLabel="Pointer / select tool"
       onClick={() => store.dispatch(setTool({ type: "pointer" }))}
       isCurrentTool={isCurrentTool}
       shortcutKeys={[

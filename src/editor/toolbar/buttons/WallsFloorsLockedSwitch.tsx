@@ -14,6 +14,7 @@ export const WallsFloorsLockedSwitch = ({
     <Switch
       className={className}
       label="Scenery"
+      ariaLabel="Lock walls and floors"
       value={useEditorAppSelector(
         (state) => state.levelEditor.wallsFloorsLocked,
       )}

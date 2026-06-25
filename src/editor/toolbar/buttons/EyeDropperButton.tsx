@@ -10,6 +10,7 @@ export const EyeDropperButton = () => {
 
   return (
     <ToolbarButton
+      ariaLabel="Eye-dropper"
       shortcutKeys={[
         // i copies photoshop, gimp, Krita, etc
         "I",

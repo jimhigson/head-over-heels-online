@@ -1,7 +1,7 @@
 import { PostgrestClient } from "@supabase/postgrest-js";
 
 import { type Database } from "../_generated/db";
-import { supabaseAnonKey, supabaseUrl } from "./supabaseConnection";
+import { supabaseAnonKey, supabaseUrl } from "./supabaseEnvironmentVariables";
 
 /**
  * anonymous-access client for the game build: typed the same as the full

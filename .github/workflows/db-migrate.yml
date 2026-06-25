@@ -1,0 +1,38 @@
+name: Apply DB migrations
+
+# Applies supabase/migrations to the hosted database with `supabase db push`, on
+# the SAME trigger as the production deploy: a push to the `production` branch
+# (which happens on each release - release published -> tag copied to production ->
+# deploy-production-branch-to-gh-pages.yml). Schema ships in lockstep with prod.
+#
+# Single shared db: staging (blockstack.dev, from main) uses the same database, so
+# between a change merging to main and the next prod release it runs against the
+# not-yet-applied schema. Keep migrations backwards-compatible (see DEVELOPING.md).
+#
+# PREREQUISITE (one-off cutover): the baseline migration must be registered as
+# already-applied on the remote, or the first `db push` tries to recreate the
+# existing schema and fails:
+#   supabase migration repair --status applied 20260624072125
+
+on:
+  push:
+    branches: ["production"]
+    paths: ["supabase/migrations/**"]
+  workflow_dispatch:
+
+jobs:
+  migrate:
+    runs-on: ubuntu-24.04-arm
+    env:
+      SUPABASE_ACCESS_TOKEN: ${{ secrets.SUPABASE_ACCESS_TOKEN }}
+      SUPABASE_DB_PASSWORD: ${{ secrets.SUPABASE_DB_PASSWORD }}
+      SUPABASE_PROJECT_ID: pkswdnpftrundnewgnya
+    steps:
+      - uses: actions/checkout@v7
+        with:
+          ref: production
+      - uses: supabase/setup-cli@v2
+        with:
+          version: latest
+      - run: supabase link --project-ref "$SUPABASE_PROJECT_ID"
+      - run: supabase db push

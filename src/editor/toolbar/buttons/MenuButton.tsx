@@ -37,7 +37,10 @@ export const MenuButton = ({
             open={open}
             onOpenChange={setOpen}
             trigger={
-              <Button className="absolute right-0 bottom-0 bg-metallicBlueHalfbrite invisible group-hover:visible">
+              <Button
+                aria-label={open ? "Close menu" : "More actions"}
+                className="absolute right-0 bottom-0 bg-metallicBlueHalfbrite invisible group-hover:visible"
+              >
                 <BitmapText className="pl-oneScaledPix leading-none py-oneScaledPix">
                   {open ? "X" : "⬇"}
                 </BitmapText>

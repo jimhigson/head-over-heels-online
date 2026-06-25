@@ -28,9 +28,16 @@ export const loadCampaignFromApi = async <RoomId extends string>(
 /**
  * Save a campaign using the RTKQuery api slice mutation
  */
-export const saveCampaignViaApi = async (campaign: EditorCampaign) => {
+export const saveCampaignViaApi = async (
+  campaign: EditorCampaign,
+  { baseVersion, force }: { baseVersion: null | number; force: boolean },
+) => {
   const result = await store.dispatch(
-    campaignsApiSlice.endpoints.saveCampaign.initiate(campaign),
+    campaignsApiSlice.endpoints.saveCampaign.initiate({
+      campaign,
+      baseVersion,
+      force,
+    }),
   );
 
   return result;

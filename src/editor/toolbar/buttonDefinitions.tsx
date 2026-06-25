@@ -21,6 +21,7 @@ import { type ItemToolButtonProps } from "./ItemToolButton";
 
 export const buttonDefinitions = {
   "block.organic": {
+    ariaLabel: "Organic block",
     itemTool: {
       type: "block",
       config: { style: "organic" },
@@ -35,6 +36,7 @@ The basic block`,
     ),
   },
   "block.organic.disappearing": {
+    ariaLabel: "Disappearing organic block",
     itemTool: {
       type: "block",
       config: { style: "organic", disappearing: { on: "stand" } },
@@ -51,6 +53,7 @@ Disappearing basic block`,
     ),
   },
   "block.artificial": {
+    ariaLabel: "Artificial block",
     itemTool: { type: "block", config: { style: "artificial" } },
     shortcutKeys: ["⌥B"],
     tooltipContent: `## Block
@@ -62,6 +65,7 @@ Basic block with a metallic look`,
     ),
   },
   "block.artificial.disappearing": {
+    ariaLabel: "Disappearing artificial block",
     itemTool: {
       type: "block",
       config: { style: "artificial", disappearing: { on: "stand" } },
@@ -78,6 +82,7 @@ Disappearing metallic look block`,
     ),
   },
   "block.tower": {
+    ariaLabel: "Tower",
     itemTool: { type: "block", config: { style: "tower" } },
     shortcutKeys: ["T"],
     tooltipContent: `## Tower
@@ -89,6 +94,7 @@ Very high block`,
     ),
   },
   "block.book": {
+    ariaLabel: "Book block",
     itemTool: { type: "block", config: { style: "book" } },
     children: (
       <span
@@ -97,6 +103,7 @@ Very high block`,
     ),
   },
   "barrier.x": {
+    ariaLabel: "Barrier on x axis",
     itemTool: { type: "barrier", config: { axis: "x" } },
     children: (
       <span
@@ -105,6 +112,7 @@ Very high block`,
     ),
   },
   "barrier.y": {
+    ariaLabel: "Barrier on y axis",
     itemTool: { type: "barrier", config: { axis: "y" } },
     children: (
       <span
@@ -113,6 +121,7 @@ Very high block`,
     ),
   },
   "barrier.x.disappearing": {
+    ariaLabel: "Disappearing barrier on x axis",
     itemTool: {
       type: "barrier",
       config: { axis: "x", disappearing: { on: "touch" } },
@@ -126,6 +135,7 @@ Very high block`,
     ),
   },
   "barrier.y.disappearing": {
+    ariaLabel: "Disappearing barrier on y axis",
     itemTool: {
       type: "barrier",
       config: { axis: "y", disappearing: { on: "touch" } },
@@ -139,6 +149,7 @@ Very high block`,
     ),
   },
   "monster.dalek": {
+    ariaLabel: "Mojo (dalek)",
     itemTool: {
       type: "monster",
       config: {
@@ -158,6 +169,7 @@ patrols randomly in a diagonal pattern`,
     ),
   },
   "monster.cyberman": {
+    ariaLabel: "Guard (cyberman)",
     itemTool: {
       type: "monster",
       config: {
@@ -181,6 +193,7 @@ place on a toaster to make a charging guard`,
     ),
   },
   "monster.skiHead": {
+    ariaLabel: "Ski-head monster",
     itemTool: {
       type: "monster",
       config: {
@@ -202,6 +215,7 @@ or can be set to *patrol clockwise*`,
     ),
   },
   "monster.helicopterBug": {
+    ariaLabel: "Helicopter bug",
     itemTool: {
       type: "monster",
       config: {
@@ -217,6 +231,7 @@ or can be set to *patrol clockwise*`,
     ),
   },
   "monster.turtle": {
+    ariaLabel: "Turtle",
     itemTool: {
       type: "monster",
       config: {
@@ -235,6 +250,7 @@ plods along in a clockwise pattern`,
     ),
   },
   "monster.homingBot": {
+    ariaLabel: "Homing bot",
     itemTool: {
       type: "monster",
       config: {
@@ -252,6 +268,7 @@ detects a player in a straight line on an axis and rushes towards them`,
     ),
   },
   "monster.computerBot": {
+    ariaLabel: "Computer bot",
     itemTool: {
       type: "monster",
       config: {
@@ -270,6 +287,7 @@ usually patrols randomly, but can be programmed to move towards the player`,
     ),
   },
   "monster.bubbleRobot": {
+    ariaLabel: "Bubble bot",
     itemTool: {
       type: "monster",
       config: {
@@ -294,6 +312,7 @@ fast and dangerous`,
     ),
   },
   "monster.monkey": {
+    ariaLabel: "Monkey",
     itemTool: {
       type: "monster",
       config: {
@@ -310,6 +329,7 @@ fast and dangerous`,
     ),
   },
   "monster.elephant": {
+    ariaLabel: "Elephant",
     itemTool: {
       type: "monster",
       config: {
@@ -325,6 +345,7 @@ fast and dangerous`,
     ),
   },
   "monster.elephantHead": {
+    ariaLabel: "Elephant head",
     itemTool: {
       type: "monster",
       config: {
@@ -345,6 +366,7 @@ Stationary, but deadly`,
     ),
   },
   "monster.emperorsGuardian": {
+    ariaLabel: "Emperor's guardian",
     itemTool: {
       type: "monster",
       config: {
@@ -370,6 +392,7 @@ does not *like doughnuts*
     ),
   },
   "monster.emperor": {
+    ariaLabel: "Emperor",
     itemTool: {
       type: "monster",
       config: {
@@ -387,6 +410,7 @@ The end boss, usually found guarding his Blacktooth crown`,
     ),
   },
   "pickup.extraLife": {
+    ariaLabel: "Extra life pickup",
     itemTool: { type: "pickup", config: { gives: "extra-life" } },
     children: (
       <LabelledToolbarIcon
@@ -398,6 +422,7 @@ The end boss, usually found guarding his Blacktooth crown`,
     ),
   },
   "pickup.shield": {
+    ariaLabel: "Shield pickup",
     itemTool: { type: "pickup", config: { gives: "shield" } },
     children: (
       <LabelledToolbarIcon
@@ -409,6 +434,7 @@ The end boss, usually found guarding his Blacktooth crown`,
     ),
   },
   "pickup.jumps": {
+    ariaLabel: "Extra jumps pickup",
     itemTool: { type: "pickup", config: { gives: "jumps" } },
     children: (
       <LabelledToolbarIcon
@@ -418,6 +444,7 @@ The end boss, usually found guarding his Blacktooth crown`,
     ),
   },
   "pickup.fast": {
+    ariaLabel: "Speed pickup",
     itemTool: { type: "pickup", config: { gives: "fast" } },
     children: (
       <LabelledToolbarIcon
@@ -427,6 +454,7 @@ The end boss, usually found guarding his Blacktooth crown`,
     ),
   },
   "pickup.bag": {
+    ariaLabel: "Bag pickup",
     itemTool: { type: "pickup", config: { gives: "bag" } },
     children: (
       <span
@@ -435,6 +463,7 @@ The end boss, usually found guarding his Blacktooth crown`,
     ),
   },
   "pickup.hooter": {
+    ariaLabel: "Hooter pickup",
     itemTool: {
       type: "pickup",
       config: { gives: "hooter" },
@@ -449,6 +478,7 @@ head's doughnut firing hooter`,
     ),
   },
   "pickup.doughnuts": {
+    ariaLabel: "Doughnuts pickup",
     itemTool: { type: "pickup", config: { gives: "doughnuts" } },
     children: (
       <span
@@ -457,6 +487,7 @@ head's doughnut firing hooter`,
     ),
   },
   "pickup.reincarnation": {
+    ariaLabel: "Reincarnation pickup",
     itemTool: { type: "pickup", config: { gives: "reincarnation" } },
     children: (
       <span
@@ -465,6 +496,7 @@ head's doughnut firing hooter`,
     ),
   },
   "pickup.crown": {
+    ariaLabel: "Crown pickup",
     itemTool: {
       type: "pickup",
       config: { gives: "crown", planet: "blacktooth" },
@@ -476,6 +508,7 @@ head's doughnut firing hooter`,
     ),
   },
   "pickup.scroll": {
+    ariaLabel: "Scroll",
     itemTool: {
       type: "pickup",
       config: {
@@ -491,6 +524,7 @@ head's doughnut firing hooter`,
     ),
   },
   "deadlyBlock.volcano": {
+    ariaLabel: "Volcano",
     itemTool: { type: "deadlyBlock", config: { style: "volcano" } },
     tooltipContent: `## Volcano`,
     shortcutKeys: ["V"],
@@ -501,6 +535,7 @@ head's doughnut firing hooter`,
     ),
   },
   "deadlyBlock.toaster": {
+    ariaLabel: "Toaster",
     itemTool: { type: "deadlyBlock", config: { style: "toaster" } },
     tooltipContent: `## Toaster\n\ncharging stations for the Emperor's Guardians`,
     children: (
@@ -510,6 +545,7 @@ head's doughnut firing hooter`,
     ),
   },
   "slidingDeadly.spikyBall": {
+    ariaLabel: "Spiky ball",
     itemTool: {
       type: "slidingDeadly",
       config: { style: "spikyBall", startingPhase: 1 },
@@ -525,6 +561,7 @@ deadly to touch`,
     ),
   },
   lamp: {
+    ariaLabel: "Lamp",
     itemTool: {
       type: "lamp",
       config: { direction: "towards", activated: true },
@@ -543,6 +580,7 @@ can be turned on/off by switches and buttons`,
     ),
   },
   mirror: {
+    ariaLabel: "Mirror",
     itemTool: {
       type: "mirror",
       config: { orientation: "awayRight" },
@@ -561,6 +599,7 @@ rotates to the other diagonal when collided with`,
     ),
   },
   spikes: {
+    ariaLabel: "Spikes",
     itemTool: { type: "spikes", config: emptyObject },
     tooltipContent: `## spikes
 
@@ -574,6 +613,7 @@ safe to run into the sides`,
     ),
   },
   "moveableDeadly.deadFish": {
+    ariaLabel: "Dead fish",
     itemTool: { type: "moveableDeadly", config: { style: "deadFish" } },
     tooltipContent: `## dead fish
 
@@ -588,6 +628,7 @@ turns so poisonous that a single lick can kill`,
     ),
   },
   charles: {
+    ariaLabel: "Charles bot",
     itemTool: { type: "charles", config: emptyObject },
     children: (
       <StackedToolbarIcons
@@ -596,6 +637,7 @@ turns so poisonous that a single lick can kill`,
     ),
   },
   joystick: {
+    ariaLabel: "Joystick",
     itemTool: {
       type: "joystick",
       config: {
@@ -613,6 +655,7 @@ Change *which* Charles in the json`,
     ),
   },
   switch: {
+    ariaLabel: "Switch",
     itemTool: {
       type: "switch",
       config: {
@@ -638,6 +681,7 @@ edit the json to choose:
     ),
   },
   button: {
+    ariaLabel: "Button",
     itemTool: {
       type: "button",
       config: {
@@ -652,6 +696,7 @@ edit the json to choose:
     ),
   },
   emitter: {
+    ariaLabel: "Emitter",
     itemTool: {
       type: "emitter",
       config: {
@@ -668,6 +713,7 @@ edit the json to choose:
     ),
   },
   timer: {
+    ariaLabel: "Timer",
     itemTool: {
       type: "timer",
       config: {
@@ -684,6 +730,7 @@ edit the json to choose:
     ),
   },
   spring: {
+    ariaLabel: "Spring",
     itemTool: {
       type: "spring",
       config: {},
@@ -695,6 +742,7 @@ edit the json to choose:
     ),
   },
   "portableBlock.cube": {
+    ariaLabel: "Portable cube",
     itemTool: { type: "portableBlock", config: { style: "cube" } },
     children: (
       <span
@@ -703,6 +751,7 @@ edit the json to choose:
     ),
   },
   "portableBlock.drum": {
+    ariaLabel: "Portable drum",
     itemTool: { type: "portableBlock", config: { style: "drum" } },
     children: (
       <span
@@ -711,6 +760,7 @@ edit the json to choose:
     ),
   },
   "portableBlock.sticks": {
+    ariaLabel: "Portable sticks",
     itemTool: { type: "portableBlock", config: { style: "sticks" } },
     children: (
       <span
@@ -719,6 +769,7 @@ edit the json to choose:
     ),
   },
   pushableBlock: {
+    ariaLabel: "Pushable step stool",
     itemTool: { type: "pushableBlock", config: {} },
     children: (
       <span
@@ -727,6 +778,7 @@ edit the json to choose:
     ),
   },
   ball: {
+    ariaLabel: "Ball",
     itemTool: { type: "ball", config: emptyObject },
     children: (
       <span
@@ -735,6 +787,7 @@ edit the json to choose:
     ),
   },
   "slidingBlock.puck": {
+    ariaLabel: "Sliding puck",
     itemTool: {
       type: "slidingBlock",
       config: { style: "puck" },
@@ -749,6 +802,7 @@ Small item that can be stood on and slides when touched`,
     ),
   },
   "slidingBlock.book": {
+    ariaLabel: "Sliding book",
     itemTool: {
       type: "slidingBlock",
       config: { style: "book" },
@@ -763,6 +817,7 @@ Why are the books slippery?`,
     ),
   },
   lift: {
+    ariaLabel: "Lift",
     itemTool: { type: "lift", config: { top: 11, bottom: 0 } },
     className: "inline relative",
     children: (
@@ -777,6 +832,7 @@ Why are the books slippery?`,
     ),
   },
   "conveyor.away": {
+    ariaLabel: "Conveyor moving away",
     itemTool: { type: "conveyor", config: { direction: "away" } },
     children: (
       <LabelledToolbarIcon
@@ -786,6 +842,7 @@ Why are the books slippery?`,
     ),
   },
   "conveyor.towards": {
+    ariaLabel: "Conveyor moving towards",
     itemTool: { type: "conveyor", config: { direction: "towards" } },
     children: (
       <LabelledToolbarIcon
@@ -795,6 +852,7 @@ Why are the books slippery?`,
     ),
   },
   "conveyor.left": {
+    ariaLabel: "Conveyor moving left",
     itemTool: { type: "conveyor", config: { direction: "left" } },
     children: (
       <LabelledToolbarIcon
@@ -804,6 +862,7 @@ Why are the books slippery?`,
     ),
   },
   "conveyor.right": {
+    ariaLabel: "Conveyor moving right",
     itemTool: { type: "conveyor", config: { direction: "right" } },
     children: (
       <LabelledToolbarIcon
@@ -813,6 +872,7 @@ Why are the books slippery?`,
     ),
   },
   teleporter: {
+    ariaLabel: "Teleporter",
     itemTool: {
       type: "teleporter",
       config: {},
@@ -824,6 +884,7 @@ Why are the books slippery?`,
     ),
   },
   portableTeleporter: {
+    ariaLabel: "Portable teleporter",
     itemTool: {
       type: "portableTeleporter",
       config: {},
@@ -835,6 +896,7 @@ Why are the books slippery?`,
     ),
   },
   movingPlatform: {
+    ariaLabel: "Moving platform",
     itemTool: {
       type: "movingPlatform",
       config: {
@@ -856,6 +918,7 @@ Why a sandwich?`,
     ),
   },
   hushPuppy: {
+    ariaLabel: "Hush puppy",
     itemTool: {
       type: "hushPuppy",
       config: {},
@@ -867,6 +930,7 @@ Why a sandwich?`,
     ),
   },
   floor: {
+    ariaLabel: "Floor",
     itemTool: {
       type: "floor",
       config: {
@@ -882,6 +946,7 @@ Why a sandwich?`,
     ),
   },
   "player.head": {
+    ariaLabel: "Head start position",
     itemTool: {
       type: "player",
       config: { which: "head" },
@@ -898,6 +963,7 @@ This is where head will start the game`,
     ),
   },
   "player.heels": {
+    ariaLabel: "Heels start position",
     itemTool: {
       type: "player",
       config: { which: "heels" },
@@ -914,6 +980,7 @@ This is where head will start the game`,
     ),
   },
   "sceneryPlayer.head": {
+    ariaLabel: "NPC head",
     itemTool: {
       type: "sceneryPlayer",
       config: { which: "head", startDirection: "towards" },
@@ -929,6 +996,7 @@ stand around not doing much`,
     ),
   },
   "sceneryPlayer.heels": {
+    ariaLabel: "NPC heels",
     itemTool: {
       type: "sceneryPlayer",
       config: { which: "heels", startDirection: "towards" },
@@ -944,6 +1012,7 @@ stand around not doing much`,
     ),
   },
   "sceneryPlayer.headOverHeels": {
+    ariaLabel: "NPC head over heels",
     itemTool: {
       type: "sceneryPlayer",
       config: { which: "headOverHeels", startDirection: "towards" },
@@ -981,6 +1050,7 @@ stand around not doing much`,
     );
 
     return {
+      ariaLabel: "Wall",
       itemTool: {
         type: "wall" as "wall",
         config: {

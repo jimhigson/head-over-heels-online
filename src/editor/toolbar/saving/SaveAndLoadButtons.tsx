@@ -1,31 +1,30 @@
 import { useState } from "preact/hooks";
 
-import { importSupabaseDb } from "../../../db/supabaseDb.import";
+import { type SaveFailure } from "../../../db/campaign";
 import { BitmapText } from "../../../game/components/tailwindSprites/BitmapText";
-import { type CampaignLocator } from "../../../model/modelTypes";
 import { type TextureTailwindClass } from "../../../sprites/spritesheet/spritesheetData/TextureTailwindClass";
-import {
-  loadCampaignFromApi,
-  saveCampaignViaApi,
-} from "../../../store/slices/campaigns/campaignApiHelpers";
-import { editorStore, store, useEditorAppSelector } from "../../../store/store";
+import { useAppDispatch } from "../../../store/hooks";
+import { editorStore, useEditorAppSelector } from "../../../store/store";
 import { cn } from "../../../ui/cn";
 import { emptyArray } from "../../../utils/empty";
 import { OpenCampaignDialog } from "../../editorDialogs/OpenCampaignDialog";
 import { SaveAsDialog } from "../../editorDialogs/SaveAsDialog";
-import { campaignIsNamed, type EditorCampaign } from "../../editorTypes";
+import { campaignIsNamed } from "../../editorTypes";
 import {
-  loadCampaign,
   selectCurrentCampaignInProgress,
+  selectCurrentCampaignVersion,
   setCampaignName,
   setCampaignPublished,
-  setCampaignUserId,
-  setRemoteCampaign,
 } from "../../slice/levelEditorSlice";
+import {
+  loadCampaignIntoEditor,
+  saveCampaign,
+} from "../../slice/saveAndLoadThunks";
 import { MenuButton, MenuItemButton } from "../buttons/MenuButton";
 import { ToolbarButton } from "../buttons/ToolbarButton";
 import { useShortTimeDisplay } from "../useShortTimeDisplay";
 import { useSupabaseUser } from "../useSupabaseUser";
+import { SaveFailedDialog } from "./SaveFailedDialog";
 import { useRemoteIsInSync } from "./useRemoteIsInSync";
 
 export const showOkAfterSaveDuration = 2000;
@@ -43,48 +42,6 @@ const loadTooltipMarkdown = `
 Load your saved campaign, or anyone else's for editing
 `;
 
-const save = async () => {
-  const state = editorStore.getState();
-  const campaign = selectCurrentCampaignInProgress(state);
-  if (!campaignIsNamed(campaign)) {
-    throw new Error("Campaign is not named, can't save");
-  }
-
-  const { supabaseDb } = await importSupabaseDb();
-  const { data, error } = await supabaseDb.auth.getUser();
-  if (error) {
-    throw new Error("Failed to get user:", error);
-  }
-  const userId = data.user.id;
-  if (userId !== campaign.locator.userId) {
-    // if this is someone else's campaign, change the name:
-    store.dispatch(setCampaignUserId(userId));
-  }
-
-  console.info("saving...", campaign);
-  const result = await saveCampaignViaApi(campaign);
-  if (result.data !== undefined) {
-    console.info(`...saved as v${result.data}`);
-    store.dispatch(setRemoteCampaign({ campaign }));
-  } else if (result.error) {
-    console.error("Failed to save:", result.error);
-  }
-};
-
-const load = async (campaignLocator: CampaignLocator) => {
-  const result = await loadCampaignFromApi(campaignLocator, {
-    forceRefetch: true,
-  });
-
-  if (result.data) {
-    const campaign = result.data as EditorCampaign;
-    console.info("loaded", campaign);
-    store.dispatch(loadCampaign({ campaign }));
-  } else if (result.error) {
-    console.error("Failed to load:", result.error);
-  }
-};
-
 export const SaveAndLoadButtons = () => {
   const user = useSupabaseUser();
   const savedIsInSync = useRemoteIsInSync();
@@ -94,16 +51,38 @@ export const SaveAndLoadButtons = () => {
   const haveNamedCampaign: boolean = useEditorAppSelector((state) =>
     campaignIsNamed(selectCurrentCampaignInProgress(state)),
   );
+  const savedVersion = useEditorAppSelector(selectCurrentCampaignVersion);
+  const dispatch = useAppDispatch();
+  const [saveFailure, setSaveFailure] = useState<null | SaveFailure>(null);
+
+  // save, surfacing any failure as the SaveFailedDialog; `force` overrides a
+  // stale-version conflict
+  const trySave = async (force: boolean) => {
+    const result = await dispatch(saveCampaign({ force }));
+    if (result.ok) {
+      setSaveFailure(null);
+      doneNow();
+    } else {
+      setSaveFailure(result.failure);
+    }
+  };
 
   return (
     <>
       {justDone > 0 ?
-        <ToolbarButton disabled className="!bg-moss !text-white">
-          <BitmapText className="relative leading-none">OK!</BitmapText>
+        <ToolbarButton
+          ariaLabel={`Saved as version ${savedVersion}`}
+          disabled
+          className="!bg-moss !text-white"
+        >
+          <BitmapText className="relative leading-none">
+            {`v${savedVersion}`}
+          </BitmapText>
         </ToolbarButton>
       : <MenuButton
           main={
             <ToolbarButton
+              ariaLabel="Save campaign"
               disabled={user === null || savedIsInSync}
               onClick={async () => {
                 const state = editorStore.getState();
@@ -112,8 +91,7 @@ export const SaveAndLoadButtons = () => {
                 if (!campaignIsNamed(campaign)) {
                   setSaveAsDialogOpen(true);
                 } else {
-                  await save();
-                  doneNow();
+                  await trySave(false);
                 }
               }}
               shortcutKeys={["^S", "⌘S"]}
@@ -154,6 +132,7 @@ export const SaveAndLoadButtons = () => {
       <MenuButton
         main={
           <ToolbarButton
+            ariaLabel="Open campaign"
             onClick={() => setOpenDialogOpen(true)}
             tooltipContent={loadTooltipMarkdown}
             shortcutKeys={["^O", "⌘O"]}
@@ -187,7 +166,7 @@ export const SaveAndLoadButtons = () => {
                   );
                 }
                 const { locator } = campaign;
-                load(locator);
+                dispatch(loadCampaignIntoEditor(locator));
               }}
             >
               Revert
@@ -202,9 +181,9 @@ export const SaveAndLoadButtons = () => {
             setSaveAsDialogOpen(false);
           }}
           onDone={({ campaignName, publish }) => {
-            store.dispatch(setCampaignName(campaignName));
-            store.dispatch(setCampaignPublished(publish));
-            save();
+            dispatch(setCampaignName(campaignName));
+            dispatch(setCampaignPublished(publish));
+            trySave(false);
             setSaveAsDialogOpen(false);
           }}
         />
@@ -216,9 +195,29 @@ export const SaveAndLoadButtons = () => {
             setOpenDialogOpen(false);
           }}
           onDone={({ campaignLocator }) => {
-            load(campaignLocator);
+            dispatch(loadCampaignIntoEditor(campaignLocator));
             setOpenDialogOpen(false);
           }}
+        />
+      )}
+
+      {saveFailure && (
+        <SaveFailedDialog
+          failure={saveFailure}
+          onForceSave={() => trySave(true)}
+          onRetry={() => trySave(false)}
+          onLoadLatest={() => {
+            const campaign = selectCurrentCampaignInProgress(
+              editorStore.getState(),
+            );
+            if (campaignIsNamed(campaign)) {
+              dispatch(
+                loadCampaignIntoEditor({ ...campaign.locator, version: -1 }),
+              );
+            }
+            setSaveFailure(null);
+          }}
+          onClose={() => setSaveFailure(null)}
         />
       )}
     </>

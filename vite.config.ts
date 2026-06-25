@@ -22,7 +22,9 @@ type Mode =
   // precompressed. One mode per deploy environment so each loads its own
   // .env.<mode> (domains differ; build settings are production-like)
   | "r2-main"
-  | "r2-production";
+  | "r2-production"
+  // points the game at the local Supabase stack (`supabase start`); see DEVELOPING.md
+  | "local-db";
 
 // https://vitejs.dev/config/
 export default defineConfig(({ mode: _mode }) => {

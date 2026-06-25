@@ -20,6 +20,7 @@ export type ButtonProps = Simplify<
   Pick<
     // support selected html attributes
     ButtonHTMLAttributes<HTMLButtonElement>,
+    | "aria-label"
     | "autoFocus"
     | "className"
     | "disabled"

@@ -1,0 +1,32 @@
+name: DB tests (pgTAP)
+
+# Runs the pgTAP stored-procedure tests in supabase/tests/ against a throwaway
+# local Supabase stack. Kept separate from `check` because, unlike the hermetic
+# JS checks, it needs Docker + a booted Postgres. Path-filtered so it only runs
+# when the schema, migrations or tests actually change.
+
+on:
+  push:
+    branches: ["main"]
+    paths:
+      - "supabase/**"
+      - ".github/workflows/db-test.yml"
+  pull_request:
+    paths:
+      - "supabase/**"
+      - ".github/workflows/db-test.yml"
+
+jobs:
+  pgtap:
+    runs-on: ubuntu-24.04-arm
+    steps:
+      - uses: actions/checkout@v7
+      - uses: supabase/setup-cli@v2
+        with:
+          version: latest
+      # boots the local stack in Docker and applies supabase/migrations (no
+      # seed.sql in CI - the pgTAP tests seed their own data in a rolled-back txn)
+      - name: Start local Supabase
+        run: supabase start
+      - name: Run pgTAP tests
+        run: supabase test db

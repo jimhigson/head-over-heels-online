@@ -49,7 +49,13 @@ export const OpenCampaignDialog = ({
       <Border className="scale-editor bg-checkerboard-stifled-alphas" />
       {/* stop window-level shortcuts catching our keypresses that match their shortcuts */}
       <div className="contents no-keyboard-shortcuts">
-        <Dialog ref={dialogRef} tall wide className="scale-editor p-1">
+        <Dialog
+          ref={dialogRef}
+          tall
+          wide
+          ariaLabel="Open campaign"
+          className="scale-editor p-1"
+        >
           <BitmapText className="text-white sprites-double-height bg-midRed text-center py-half">
             Open Campaign
           </BitmapText>
@@ -76,7 +82,11 @@ export const OpenCampaignDialog = ({
           }
 
           <div className="flex gap-1 justify-end text-white">
-            <Button onClick={onClose} className="px-1 py-half bg-moss">
+            <Button
+              onClick={onClose}
+              aria-label="Create new campaign"
+              className="px-1 py-half bg-moss"
+            >
               <BitmapText>Create New</BitmapText>
             </Button>
             <Button

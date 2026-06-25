@@ -49,13 +49,18 @@ export const ConfirmDialog = ({
           </div>
           <div className="flex gap-1 justify-end text-white items-center mt-1">
             <Button
+              aria-label={cancelText}
               onClick={onCancel}
               className="px-1 py-half self-stretch"
               autoFocus
             >
               <BitmapText>{cancelText}</BitmapText>
             </Button>
-            <Button onClick={onOk} className="bg-midRed px-1 py-half">
+            <Button
+              aria-label={okText}
+              onClick={onOk}
+              className="bg-midRed px-1 py-half"
+            >
               <BitmapText>{okText}</BitmapText>
             </Button>
           </div>

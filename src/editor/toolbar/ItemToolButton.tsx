@@ -13,6 +13,8 @@ export type ItemToolButtonProps<T extends JsonItemType> = PropsWithChildren<{
   className?: string;
   shortcutKeys?: ShortcutKeys;
   tooltipContent?: ReactNode;
+  /** accessible name for the icon-only button */
+  ariaLabel: string;
 }>;
 
 export const ItemToolButton = <T extends JsonItemType>({
@@ -21,6 +23,7 @@ export const ItemToolButton = <T extends JsonItemType>({
   className,
   shortcutKeys,
   tooltipContent,
+  ariaLabel,
 }: ItemToolButtonProps<T>) => {
   const isCurrentTool = useIsCurrentItemTool(itemTool);
 
@@ -28,6 +31,7 @@ export const ItemToolButton = <T extends JsonItemType>({
     <ToolbarButton
       isCurrentTool={isCurrentTool}
       className={className}
+      ariaLabel={ariaLabel}
       onClick={() => store.dispatch(setTool({ type: "item", item: itemTool }))}
       shortcutKeys={shortcutKeys}
       tooltipContent={tooltipContent}

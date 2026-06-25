@@ -16,6 +16,10 @@ import {
 // https://www.nerdfonts.com/cheat-sheet
 export const nerdFontDiscordChar = "\uf1ff";
 export const nerdFontGithubChar = "\ue709";
+export const nerdFontTwitchChar = "\uf1e8";
+export const nerdFontAppleChar = "\ue711";
+export const nerdFontGoogleChar = "\ue7f0";
+
 const chromePwaInstall = ""; // \uea78
 const iosMacShare = ""; // \uf50e;
 const iosMacAddToDock = "󱂩"; // \uf10a9;
@@ -121,6 +125,9 @@ const row2 = [
   { char: "∞", width: 16 },
   { char: nerdFontDiscordChar, width: 16 },
   { char: nerdFontGithubChar, width: 16 },
+  { char: nerdFontTwitchChar, width: 16 },
+  { char: nerdFontAppleChar, width: 16 },
+  { char: nerdFontGoogleChar, width: 16 },
 ] as const satisfies CharRow;
 
 const row3 = [

@@ -4,7 +4,9 @@ import { importOriginalCampaign } from "../../../_generated/originalCampaign/cam
 import {
   type CampaignDirectory,
   type CampaignGetLocator,
+  getLatestCampaignVersion,
   saveCampaignToDb,
+  type SaveResult,
 } from "../../../db/campaign";
 import {
   getAllUsersLatestCampaignsCached,
@@ -12,6 +14,7 @@ import {
 } from "../../../db/campaignCached";
 import { importCampaignDbClient } from "../../../db/campaignDbClient.import";
 import { decompressObject } from "../../../db/compressObject";
+import { getUsername } from "../../../db/getUsername";
 import { type EditorCampaign } from "../../../editor/editorTypes";
 import { type Campaign, type CampaignLocator } from "../../../model/modelTypes";
 import { createSerialisableErrors } from "../../../utils/redux/createSerialisableErrors";
@@ -81,20 +84,65 @@ export const campaignsApiSlice = createApi({
         }
       },
     }),
-    saveCampaign: builder.mutation<number, EditorCampaign>({
-      async queryFn(campaign) {
+    saveCampaign: builder.mutation<
+      SaveResult,
+      { baseVersion: null | number; campaign: EditorCampaign; force: boolean }
+    >({
+      async queryFn({ baseVersion, campaign, force }) {
         try {
-          const version = await saveCampaignToDb(
-            await importCampaignDbClient(),
-            campaign,
-          );
-          return { data: version };
+          return {
+            data: await saveCampaignToDb(
+              await importCampaignDbClient(),
+              campaign,
+              { baseVersion, force },
+            ),
+          };
+        } catch (e) {
+          return {
+            error: createSerialisableErrors(
+              new Error(`saveCampaign queryFn failed`, { cause: e }),
+            ),
+          };
+        }
+      },
+    }),
+    // fresh (uncached) latest-version lookup for the staleness check
+    getLatestCampaignVersion: builder.query<
+      number,
+      Pick<CampaignLocator, "campaignName" | "userId">
+    >({
+      async queryFn(locator) {
+        try {
+          return {
+            data: await getLatestCampaignVersion(
+              await importCampaignDbClient(),
+              locator,
+            ),
+          };
         } catch (e) {
           return {
             error: createSerialisableErrors(
               new Error(
-                `saveCampaign queryFn( ${JSON.stringify(campaign)} ) failed: ${e}`,
+                `getLatestCampaignVersion queryFn( ${JSON.stringify(locator)} ) failed`,
+                { cause: e },
               ),
+            ),
+          };
+        }
+      },
+    }),
+    getUsername: builder.query<null | string, string>({
+      async queryFn(userId) {
+        try {
+          return {
+            data: await getUsername(await importCampaignDbClient(), userId),
+          };
+        } catch (e) {
+          return {
+            error: createSerialisableErrors(
+              new Error(`getUsername queryFn( ${userId} ) failed`, {
+                cause: e,
+              }),
             ),
           };
         }
@@ -103,7 +151,11 @@ export const campaignsApiSlice = createApi({
   }),
 });
 
-export const { useGetAllUsersLatestCampaignsQuery } = campaignsApiSlice;
+export const {
+  useGetAllUsersLatestCampaignsQuery,
+  useGetLatestCampaignVersionQuery,
+  useGetUsernameQuery,
+} = campaignsApiSlice;
 
 const selectCampaignRaw = campaignsApiSlice.endpoints.getCampaign.select;
 

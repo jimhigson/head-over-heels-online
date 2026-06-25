@@ -158,6 +158,7 @@ export const NudgeButtons = () => {
       <div className="flex flex-row flex-wrap gap-oneScaledPix items-center">
         <ToolbarButton
           small
+          ariaLabel="Move left"
           disabled={movableAxes.x === 0}
           onClick={nudgeBy(unitVectors.left)}
           shortcutKeys={["ArrowLeft"]}
@@ -166,6 +167,7 @@ export const NudgeButtons = () => {
         </ToolbarButton>
         <ToolbarButton
           small
+          ariaLabel="Move right"
           disabled={movableAxes.x === 0}
           onClick={nudgeBy(unitVectors.right)}
           shortcutKeys={["ArrowRight"]}
@@ -174,6 +176,7 @@ export const NudgeButtons = () => {
         </ToolbarButton>
         <ToolbarButton
           small
+          ariaLabel="Move away"
           disabled={movableAxes.y === 0}
           onClick={nudgeBy(unitVectors.away)}
           shortcutKeys={["ArrowUp"]}
@@ -182,6 +185,7 @@ export const NudgeButtons = () => {
         </ToolbarButton>
         <ToolbarButton
           small
+          ariaLabel="Move towards"
           disabled={movableAxes.y === 0}
           onClick={nudgeBy(unitVectors.towards)}
           shortcutKeys={["ArrowDown"]}
@@ -190,6 +194,7 @@ export const NudgeButtons = () => {
         </ToolbarButton>
         <ToolbarButton
           small
+          ariaLabel="Move up"
           disabled={movableAxes.z === 0}
           onClick={nudgeBy(unitVectors.up)}
           shortcutKeys={
@@ -202,6 +207,7 @@ export const NudgeButtons = () => {
         </ToolbarButton>
         <ToolbarButton
           small
+          ariaLabel="Move down"
           disabled={movableAxes.z === 0}
           onClick={nudgeBy(unitVectors.down)}
           shortcutKeys={
@@ -222,6 +228,7 @@ export const NudgeButtons = () => {
         <div className="flex flex-row flex-wrap gap-oneScaledPix items-center">
           <ToolbarButton
             small
+            ariaLabel="Grow left"
             disabled={consolidatableAxes.x === 0}
             onClick={nudgeBy(undefined, { x: 1 })}
             shortcutKeys={["⌥ArrowLeft"]}
@@ -230,6 +237,7 @@ export const NudgeButtons = () => {
           </ToolbarButton>
           <ToolbarButton
             small
+            ariaLabel="Grow right"
             disabled={consolidatableAxes.x === 0}
             onClick={nudgeBy({ x: -1, y: 0, z: 0 }, { x: 1 })}
             shortcutKeys={["⌥ArrowRight"]}
@@ -238,6 +246,7 @@ export const NudgeButtons = () => {
           </ToolbarButton>
           <ToolbarButton
             small
+            ariaLabel="Grow away"
             disabled={consolidatableAxes.y === 0}
             onClick={nudgeBy(undefined, { y: 1 })}
             shortcutKeys={["⌥ArrowUp"]}
@@ -246,6 +255,7 @@ export const NudgeButtons = () => {
           </ToolbarButton>
           <ToolbarButton
             small
+            ariaLabel="Grow towards"
             disabled={consolidatableAxes.y === 0}
             onClick={nudgeBy({ x: 0, y: -1, z: 0 }, { y: 1 })}
             shortcutKeys={["⌥ArrowDown"]}
@@ -254,6 +264,7 @@ export const NudgeButtons = () => {
           </ToolbarButton>
           <ToolbarButton
             small
+            ariaLabel="Grow up"
             disabled={consolidatableAxes.z === 0}
             onClick={nudgeBy(undefined, { z: 1 })}
             shortcutKeys={["⌥PageUp"]}
@@ -262,6 +273,7 @@ export const NudgeButtons = () => {
           </ToolbarButton>
           <ToolbarButton
             small
+            ariaLabel="Grow down"
             disabled={consolidatableAxes.z === 0}
             onClick={nudgeBy({ x: 0, y: 0, z: -1 }, { z: 1 })}
             shortcutKeys={["⌥PageDown"]}
@@ -279,6 +291,7 @@ export const NudgeButtons = () => {
         <div className="flex flex-row flex-wrap gap-oneScaledPix items-center">
           <ToolbarButton
             small
+            ariaLabel="Shrink right"
             disabled={largestSize.x <= 1}
             onClick={nudgeBy(undefined, { x: -1 })}
             shortcutKeys={["⌥⇧ArrowRight"]}
@@ -287,6 +300,7 @@ export const NudgeButtons = () => {
           </ToolbarButton>
           <ToolbarButton
             small
+            ariaLabel="Shrink left"
             disabled={largestSize.x <= 1}
             onClick={nudgeBy({ x: 1, y: 0, z: 0 }, { x: -1 })}
             shortcutKeys={["⌥⇧ArrowLeft"]}
@@ -295,6 +309,7 @@ export const NudgeButtons = () => {
           </ToolbarButton>
           <ToolbarButton
             small
+            ariaLabel="Shrink towards"
             disabled={largestSize.y <= 1}
             onClick={nudgeBy(undefined, { y: -1 })}
             shortcutKeys={["⌥⇧ArrowDown"]}
@@ -303,6 +318,7 @@ export const NudgeButtons = () => {
           </ToolbarButton>
           <ToolbarButton
             small
+            ariaLabel="Shrink away"
             disabled={largestSize.y <= 1}
             onClick={nudgeBy({ x: 0, y: 1, z: 0 }, { y: -1 })}
             shortcutKeys={["⌥⇧ArrowUp"]}
@@ -311,6 +327,7 @@ export const NudgeButtons = () => {
           </ToolbarButton>
           <ToolbarButton
             small
+            ariaLabel="Shrink down"
             disabled={largestSize.z <= 1}
             onClick={nudgeBy(undefined, { z: -1 })}
             shortcutKeys={["⌥⇧PageDown"]}
@@ -319,6 +336,7 @@ export const NudgeButtons = () => {
           </ToolbarButton>
           <ToolbarButton
             small
+            ariaLabel="Shrink up"
             disabled={largestSize.z <= 1}
             onClick={nudgeBy({ x: 0, y: 0, z: 1 }, { z: -1 })}
             shortcutKeys={["⌥⇧PageUp"]}
@@ -336,6 +354,7 @@ export const NudgeButtons = () => {
         <div className="flex flex-row flex-wrap gap-oneScaledPix items-center">
           <ToolbarButton
             small
+            ariaLabel="Rotate anti-clockwise"
             disabled={rotatable}
             onClick={() => rotate("anticlockwise")}
             shortcutKeys={["["]}
@@ -345,6 +364,7 @@ export const NudgeButtons = () => {
           </ToolbarButton>
           <ToolbarButton
             small
+            ariaLabel="Rotate clockwise"
             disabled={rotatable}
             onClick={() => rotate("clockwise")}
             shortcutKeys={["]"]}

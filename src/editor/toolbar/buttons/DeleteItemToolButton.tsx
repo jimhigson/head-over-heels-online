@@ -10,6 +10,7 @@ export const DeleteItemToolButton = () => {
 
   return (
     <ToolbarButton
+      ariaLabel="Delete selected item(s)"
       className="bg-midRed"
       disabled={!somethingSelected}
       onClick={() => store.dispatch(deleteSelected({ timestamp: Date.now() }))}

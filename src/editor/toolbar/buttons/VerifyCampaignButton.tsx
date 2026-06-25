@@ -264,6 +264,7 @@ export const VerifyCampaignButton = () => {
   return (
     <>
       <ToolbarButton
+        ariaLabel="Verify and fix campaign"
         className={`${errorCount > 0 ? "bg-midRed" : "bg-shadow"} w-full h-2`}
         onClick={() => setDialogOpen(true)}
         tooltipContent={verifyTooltipMarkdown}

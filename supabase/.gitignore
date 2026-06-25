@@ -1,0 +1,11 @@
+# Supabase
+.branches
+.temp
+
+# generated local dev data (run `pnpm gen:seed` to regenerate)
+seed.sql
+
+# dotenvx
+.env.keys
+.env.local
+.env.*.local

@@ -35,6 +35,7 @@ export const ResolutionControls = ({
       )}
       <ToolbarButton
         small
+        ariaLabel="Zoom out"
         disabled={!canGoBigger}
         tooltipContent={`##zoom ⬇\n\nmakes things look *smaller* by *increasing* emulated resolution`}
         onClick={() => {
@@ -49,6 +50,7 @@ export const ResolutionControls = ({
       </ToolbarButton>
       <ToolbarButton
         small
+        ariaLabel="Zoom in"
         disabled={!canGoSmaller}
         tooltipContent={`##zoom ⬆\n\nmakes things look *bigger* by *decreasing* emulated resolution`}
         onClick={() => {

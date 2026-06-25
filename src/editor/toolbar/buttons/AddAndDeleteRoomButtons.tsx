@@ -61,6 +61,7 @@ export const AddAndDeleteRoomButtons = () => {
       <MenuButton
         main={
           <ToolbarButton
+            ariaLabel="Add room"
             className="bg-moss"
             onClick={useDispatchActionCallback(addRoom, {})}
             tooltipContent={addTooltipMarkdown}
@@ -450,6 +451,7 @@ export const AddAndDeleteRoomButtons = () => {
         ]}
       </MenuButton>
       <ToolbarButton
+        ariaLabel="Delete room"
         className="bg-midRed"
         onClick={() => dispatch(confirmDeleteRoomThunk())}
         disabled={!hasOtherRooms}

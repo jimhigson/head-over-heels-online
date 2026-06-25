@@ -20,6 +20,7 @@ export const PlayTestButton = () => {
     <MenuButton
       main={
         <ToolbarButton
+          ariaLabel="Play test"
           onClick={async () => {
             const state = editorStore.getState();
             const campaign = selectCurrentCampaignInProgress(state);
@@ -67,6 +68,7 @@ export const PlayTestButton = () => {
           className="w-full px-1 py-half"
           value={fromStart}
           label="Start from:"
+          ariaLabel="Play test start point"
           falseLabel="this room"
           trueLabel="start"
           onChange={(value) => setFromStart(value)}
@@ -76,6 +78,7 @@ export const PlayTestButton = () => {
           className="w-full px-1 py-half"
           value={playAsHeels}
           label="Play as:"
+          ariaLabel="Play test character"
           falseLabel="head"
           trueLabel="heels"
           onChange={(value) => setPlayAsHeels(value)}

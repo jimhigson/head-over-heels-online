@@ -11,6 +11,7 @@ export const NewCampaignButton = () => {
 
   return (
     <ToolbarButton
+      ariaLabel="New campaign"
       onClick={() => {
         if (savedIsInSync) {
           dispatch(newCampaign());

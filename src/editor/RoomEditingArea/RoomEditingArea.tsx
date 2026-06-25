@@ -63,7 +63,10 @@ const RoomEditingAreaInner = () => {
   useCenterScrollOnLoad(renderSizingArea, renderArea);
 
   return (
-    <div className="w-full h-full relative">
+    <div
+      className="w-full h-full relative"
+      aria-description="Room preview area showing a rendering of the currently selected (cursor) room that is interactive and allows editing by dragging or a right-click context menu"
+    >
       <ResolutionControls
         selectedResolution={selectedResolution}
         onResolutionChange={setSelectedResolution}

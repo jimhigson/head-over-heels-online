@@ -1,24 +1,37 @@
+import { skipToken } from "@reduxjs/toolkit/query/react";
 import { type Provider } from "@supabase/supabase-js";
 
 import { importSupabaseDb } from "../../../db/supabaseDb.import";
 import { BitmapText } from "../../../game/components/tailwindSprites/BitmapText";
 import {
+  type SupportedAuthProvider,
+  supportedAuthProviders,
+} from "../../../gameInfo";
+import {
+  nerdFontAppleChar,
   nerdFontDiscordChar,
   nerdFontGithubChar,
+  nerdFontGoogleChar,
+  nerdFontTwitchChar,
 } from "../../../sprites/spritesheet/spritesheetData/hudSritesheetData";
+import { useGetUsernameQuery } from "../../../store/slices/campaigns/campaignsApiSlice";
 import { Button } from "../../../ui/Button";
 import { cn } from "../../../ui/cn";
-import { type Subset } from "../../../utils/Subset";
+import { Tooltip } from "../../../ui/tooltip/Tooltip";
 import { useSupabaseUser } from "../useSupabaseUser";
 
-type SupportedProvider = Subset<Provider, "discord" | "github">;
-
-const providerIcon = (provider: SupportedProvider): string => {
+const providerIcon = (provider: SupportedAuthProvider): string => {
   switch (provider) {
     case "github":
       return nerdFontGithubChar;
     case "discord":
       return nerdFontDiscordChar;
+    case "apple":
+      return nerdFontAppleChar;
+    case "google":
+      return nerdFontGoogleChar;
+    case "twitch":
+      return nerdFontTwitchChar;
     // case "email":
     //   return "@";
     default:
@@ -29,6 +42,8 @@ const providerIcon = (provider: SupportedProvider): string => {
 
 export const LoggedInStatus = ({ className }: { className?: string }) => {
   const user = useSupabaseUser();
+  // the session only carries the email; look up the display name to show instead
+  const { data: username } = useGetUsernameQuery(user ? user.id : skipToken);
 
   if (user === undefined) {
     // no data yet - don't know if logged in. Render a space-holder to stop the
@@ -68,12 +83,25 @@ export const LoggedInStatus = ({ className }: { className?: string }) => {
     <div className={cn(className)}>
       {user !== null ?
         <div className="bg-moss overflow-hidden text-center">
-          <BitmapText
-            noSlitWords
-            className="overflow-hidden"
-          >{`${providerIcon(user.app_metadata.provider as SupportedProvider)}${user.email}`}</BitmapText>
-          <Button className="px-1 w-full" onClick={handleLogout}>
-            <BitmapText className="sprites-uppercase">Logout</BitmapText>
+          <Tooltip
+            tooltipContent={user.email}
+            triggerContent={
+              <div className="overflow-hidden">
+                <span className="text-highlightBeige">
+                  {providerIcon(
+                    user.app_metadata.provider as SupportedAuthProvider,
+                  )}
+                </span>{" "}
+                <span>{username ?? user.email}</span>
+              </div>
+            }
+          />
+          <Button
+            aria-label="Log out"
+            className="px-1 w-full"
+            onClick={handleLogout}
+          >
+            <span className="text-single-line">LOGOUT</span>
           </Button>
         </div>
       : <div className="px-1 bg-midRed">
@@ -85,20 +113,19 @@ export const LoggedInStatus = ({ className }: { className?: string }) => {
           </BitmapText>
           <div className="pt-1 flex flex-col gap-half">
             <BitmapText>Log in with:</BitmapText>
-            <Button
-              className="px-1 w-full max-w-16 flex-row justify-between bg-redShadow"
-              onClick={handleLogin("github")}
-            >
-              <BitmapText>{nerdFontGithubChar}</BitmapText>
-              <BitmapText>GitHub</BitmapText>
-            </Button>
-            <Button
-              className="px-1 w-full max-w-16 flex-row justify-between bg-redShadow"
-              onClick={handleLogin("discord")}
-            >
-              <BitmapText>{nerdFontDiscordChar}</BitmapText>
-              <BitmapText>Discord</BitmapText>
-            </Button>
+            {supportedAuthProviders.map((authProvider) => {
+              return (
+                <Button
+                  className="px-1 w-full max-w-16 flex-row justify-between bg-redShadow"
+                  onClick={handleLogin(authProvider)}
+                >
+                  <span className="text-lightBeige">
+                    {providerIcon(authProvider)}
+                  </span>{" "}
+                  <span>{authProvider}</span>
+                </Button>
+              );
+            })}
           </div>
         </div>
       }

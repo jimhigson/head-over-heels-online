@@ -1,4 +1,8 @@
-import { type PayloadAction, type SliceCaseReducers } from "@reduxjs/toolkit";
+import {
+  current,
+  type PayloadAction,
+  type SliceCaseReducers,
+} from "@reduxjs/toolkit";
 
 import { roomJsonItemsIterable } from "../../../model/RoomJson";
 import { keysIter, valuesIter } from "../../../utils/entries";
@@ -76,5 +80,25 @@ export const saveAndLoadReducers = {
     state.remoteCampaign = migrateRoomNonContiguousRelationships(
       migrateRoomVerticalLinks(campaign),
     );
+  },
+
+  /**
+   * After a successful save, the db has assigned a new version number. It becomes
+   * the authoritative version for both the synced remote baseline and the working
+   * copy, so that the persisted version reflects our own saves (and the next save's
+   * force-with-lease check, and the rehydrate check, compare against the truth).
+   */
+  saveSuccessful(
+    _state,
+    { payload: { version } }: PayloadAction<{ version: number }>,
+  ) {
+    // cast avoids the immer WritableDraft<> ts-perf issue - see loadCampaign above
+    const state = _state as LevelEditorState;
+
+    // the db assigned this version; it is now authoritative for the working copy
+    state.campaignInProgress.locator.version = version;
+    // the synced baseline now matches the saved working copy exactly; current()
+    // detaches a snapshot so later edits to campaignInProgress don't mutate it
+    state.remoteCampaign = current(state.campaignInProgress);
   },
 } satisfies SliceCaseReducers<LevelEditorState>;
