@@ -8,7 +8,7 @@ import { type EmptyObject } from "type-fest";
 
 import { linkOpenExternalClickHandler } from "../../utils/tauri/openExternalLink";
 import { multilineTextClass } from "./dialogs/menuDialog/multilineTextClass";
-import { BitmapText, MultipleBitmapText } from "./tailwindSprites/BitmapText";
+import { MultipleBitmapText } from "./tailwindSprites/BitmapText";
 
 const markdownComponents: CustomComponentsOption = {
   h2: function H2({ children }: PropsWithChildren<EmptyObject>) {
@@ -35,18 +35,14 @@ const markdownComponents: CustomComponentsOption = {
   }: PropsWithChildren<EmptyObject>) {
     return (
       <blockquote
-        className={`${multilineTextClass} mt-1 mb-1 text-moss zx:text-zxBlue toppy:text-toppyCool2 clear-both`}
+        className={`${multilineTextClass} mt-1 mb-1 text-moss zx:text-zxBlue toppy:text-toppyCool2 clear-both text-multi-line`}
       >
-        <MultipleBitmapText>&gt; {children}</MultipleBitmapText>
+        &gt; {children}
       </blockquote>
     );
   },
   p: function P({ children }: PropsWithChildren<EmptyObject>) {
-    return (
-      <div className={`mb-1 last:mb-0 ${multilineTextClass}`}>
-        <MultipleBitmapText>{children}</MultipleBitmapText>
-      </div>
-    );
+    return <div className={`mb-1 last:mb-0 text-multi-line`}>{children}</div>;
   },
   a: function A({ children, href }: PropsWithChildren<{ href: string }>) {
     return (
@@ -57,35 +53,33 @@ const markdownComponents: CustomComponentsOption = {
         target="_blank"
         rel="noopener noreferrer"
       >
-        <MultipleBitmapText>{children}</MultipleBitmapText>
+        {children}
       </a>
     );
   },
   li: function Li({ children }: PropsWithChildren<EmptyObject>) {
     return (
       // clear left allows to go below other lis that have images in them:
-      <div className={`mb-1 clear-both ${multilineTextClass}`}>
-        <MultipleBitmapText>
-          <BitmapText className="text-metallicBlue zx:text-zxYellow toppy:text-toppyWarm3">
-            •
-          </BitmapText>
-          {children}
-        </MultipleBitmapText>
+      <div className={`mb-1 clear-both text-multi-line`}>
+        <span className="text-metallicBlue zx:text-zxYellow toppy:text-toppyWarm3 text-multi-line">
+          •
+        </span>
+        {children}
       </div>
     );
   },
   strong: function Strong({ children }: PropsWithChildren<EmptyObject>) {
     return (
-      <MultipleBitmapText className="strong text-midRed zx:text-zxRed toppy:text-toppyPink2">
+      <strong className="strong text-midRed zx:text-zxRed toppy:text-toppyPink2">
         {children}
-      </MultipleBitmapText>
+      </strong>
     );
   },
   em: function Em({ children }: PropsWithChildren<EmptyObject>) {
     return (
-      <MultipleBitmapText className="em text-moss zx:text-zxBlue toppy:text-toppyCool2">
+      <em className="em text-moss zx:text-zxBlue toppy:text-toppyCool2">
         {children}
-      </MultipleBitmapText>
+      </em>
     );
   },
   img: function Img({ src }: JSX.IntrinsicElements["img"]) {
@@ -114,11 +108,11 @@ const markdownComponents: CustomComponentsOption = {
   pre: function Pre({ children }: PropsWithChildren<EmptyObject>) {
     return (
       <div className="bg-shadow zx:bg-zxBlack toppy:bg-toppyGrey3 p-1 my-1 mr-1">
-        <MultipleBitmapText
-          className={`text-white zx:text-zxWhite toppy:text-toppyWarm1 leading-[1em] px-1 w-max min-w-full ${multilineTextClass}`}
+        <div
+          className={`text-white zx:text-zxWhite toppy:text-toppyWarm1 px-1 w-max min-w-full text-multi-line`}
         >
           {children}
-        </MultipleBitmapText>
+        </div>
       </div>
     );
   },

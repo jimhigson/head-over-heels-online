@@ -6,7 +6,6 @@
     "*.css",
     "src/main.tsx",
     "src/editor/main.tsx",
-    "src/pages/spritesPage/SpritesPage.tsx",
     "src/game/gameMain.ts",
     "src/game/components/App.tsx",
     "src/store/store.ts",

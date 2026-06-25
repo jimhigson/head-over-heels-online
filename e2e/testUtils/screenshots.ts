@@ -203,10 +203,14 @@ export const menuScreenshotOptions = (
   scale: "css",
   animations: "disabled",
   threshold: supportsP3ColourSpace(projectName) ? 0.1 : 0.2,
-  // non-integer scaling can sometimes cause different snapping of scaled
+  // the dialogs here use real fonts, with different anti-aliasing, even
+  // after making a best attempt to disable anti-aliasing, especially Linux
+  // CI runners still show a bit of blurriness at the edges
+  // also, non-integer scaling can sometimes cause different snapping of scaled
   // nearest-neighbour graphics:
-  // results tend to be about 5M pixels, so 0.0001 is ~1,000 pixels difference allowed
-  maxDiffPixelRatio: 0.0002,
+  // results tend to be about 512*384=~200k pixels, so 0.02 is
+  // ~4000 pixels, although most text render differences are < 1k
+  maxDiffPixelRatio: 0.02,
   timeout: 10_000 * osSlowness,
   mask: [page.locator(".screenshot-mask")],
   maskColor: spriteOption.uncolourised ? "#ff00ff" : spritesheetColours.pink,
