@@ -1,7 +1,7 @@
 {
   "name": "hohjs",
   "private": true,
-  "version": "24.0.0",
+  "version": "25.0.0",
   "sideEffects": [
     "*.css",
     "src/main.tsx",
