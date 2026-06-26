@@ -3,7 +3,7 @@ import { useEffect, useRef } from "preact/hooks";
 import { type CampaignDirectory } from "../../db/campaign";
 import { BitmapText } from "../../game/components/tailwindSprites/BitmapText";
 import { type CampaignLocator } from "../../model/modelTypes";
-import { useGetAllUsersLatestCampaignsQuery } from "../../store/slices/campaigns/campaignsApiSlice";
+import { useGetAllUsersLatestCampaignsQuery } from "../../store/slices/campaigns/editorCampaignsApiSlice";
 import { Border } from "../../ui/Border";
 import { Button } from "../../ui/Button";
 import { Dialog } from "../../ui/Dialog";

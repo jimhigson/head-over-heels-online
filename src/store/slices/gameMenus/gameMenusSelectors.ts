@@ -17,8 +17,8 @@ import { getAtPath } from "../../../utils/getAtPath";
 import { size } from "../../../utils/iterators/size";
 import { selectorHook } from "../../../utils/react/selectorHook";
 import { useAppSelector } from "../../hooks";
-import { type RootState } from "../../store";
-import { selectMaybeLoadedCampaignData } from "../campaigns/campaignsApiSlice";
+import { type GameRootState } from "../../store";
+import { selectMaybeLoadedCampaignData } from "../campaigns/gameCampaignsApiSlice";
 import { defaultUserSettings } from "../userSettings/defaultUserSettings";
 import {
   type InputDirectionMode,
@@ -29,7 +29,7 @@ import {
 
 const selectUserSetting =
   <Path extends Paths<UserSettings>>(path: Path) =>
-  (state: RootState): NonNullable<Get<UserSettings, Path>> => {
+  (state: GameRootState): NonNullable<Get<UserSettings, Path>> => {
     try {
       return (
         getAtPath(state.userSettings.userSettings, path) ??
@@ -45,7 +45,7 @@ const selectUserSetting =
 
 export const selectInputAssignment = selectUserSetting("inputAssignment");
 
-export const selectIsPaused = (state: RootState) => {
+export const selectIsPaused = (state: GameRootState) => {
   const [topMenu] = state.gameMenus.openMenus;
   if (topMenu === undefined) {
     return false;
@@ -58,7 +58,7 @@ export const selectIsPaused = (state: RootState) => {
 export const useCheatsOn = (): boolean =>
   useAppSelector((state) => state.debug.cheatsOn);
 
-export const selectIsAssigningKeys = (state: RootState): boolean =>
+export const selectIsAssigningKeys = (state: GameRootState): boolean =>
   state.userSettings.assigningInput !== undefined;
 
 export const useIsAssigningKeys = (): boolean =>
@@ -68,7 +68,7 @@ export const useIsAssigningKeys = (): boolean =>
  * selects the name of the current key assignment preset (if any is being used)
  */
 export const selectCurrentInputPreset = (
-  state: RootState,
+  state: GameRootState,
 ): KeyAssignmentPresetName | undefined => {
   if (state.userSettings.userSettings.inputAssignment === undefined) {
     // having no settings is the same as having the default preset:
@@ -91,7 +91,9 @@ export const selectCurrentInputPreset = (
 };
 
 export const useIsGameRunning = () =>
-  useAppSelector((state: RootState): boolean => state.gameInPlay.gameRunning);
+  useAppSelector(
+    (state: GameRootState): boolean => state.gameInPlay.gameRunning,
+  );
 
 export const selectShowFps = selectUserSetting("showFps");
 export const selectEmulatedResolutionName = selectUserSetting(
@@ -101,7 +103,7 @@ export const selectGameSpeed = selectUserSetting("gameSpeed");
 export const useEmulatedResolutionName = () =>
   useAppSelector(selectEmulatedResolutionName);
 
-const selectIsUncolourised = (state: RootState): boolean =>
+const selectIsUncolourised = (state: GameRootState): boolean =>
   selectSpritesOption(state).uncolourised;
 
 export const useSpritesOption = () => useAppSelector(selectSpritesOption);
@@ -115,7 +117,7 @@ export const selectIsInfiniteDoughnutsPoke = selectUserSetting(
   "pokesEnabled.infiniteDoughnuts",
 );
 
-export const selectHasAllPlanetCrowns = (state: RootState) => {
+export const selectHasAllPlanetCrowns = (state: GameRootState) => {
   return (
     state.gameInPlay.gameInPlay.planetsLiberated.egyptus &&
     state.gameInPlay.gameInPlay.planetsLiberated.bookworld &&
@@ -136,7 +138,7 @@ export const selectInputDirectionMode = selectUserSetting("inputDirectionMode");
 export const useInputDirectionMode = (): InputDirectionMode =>
   useAppSelector(selectInputDirectionMode);
 
-export const selectPlanetsLiberatedCount = (state: RootState) =>
+export const selectPlanetsLiberatedCount = (state: GameRootState) =>
   size(
     valuesIter(state.gameInPlay.gameInPlay.planetsLiberated).filter(Boolean),
   );
@@ -191,7 +193,7 @@ export const selectRoomEntryTunes = selectUserSetting(
 
 export const selectShouldRenderOnScreenControls = ({
   userSettings,
-}: RootState): boolean =>
+}: GameRootState): boolean =>
   userSettings.userSettings.onScreenControls ??
   defaultUserSettings.onScreenControls;
 
@@ -218,7 +220,7 @@ export const useRoomsExplored = <RoomId extends string>() => {
 };
 
 export const selectCurrentCampaign = <RoomId extends string = string>(
-  state: RootState,
+  state: GameRootState,
 ): Campaign<RoomId> => {
   const maybeCampaign = selectMaybeCurrentCampaign<RoomId>(state);
   if (!maybeCampaign) {
@@ -234,7 +236,7 @@ export const useCurrentCampaign = selectorHook(selectCurrentCampaign) as <
 >() => Campaign<T>;
 
 export const selectMaybeCurrentCampaign = <RoomId extends string = string>(
-  state: RootState,
+  state: GameRootState,
 ): Campaign<RoomId> | undefined => {
   const currentCampaignLocator = state.gameInPlay.gameInPlay.campaignLocator;
   return currentCampaignLocator === undefined ? undefined : (

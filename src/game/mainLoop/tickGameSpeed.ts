@@ -2,7 +2,7 @@ import { type Ticker } from "pixi.js";
 
 import { characterNames } from "../../model/modelTypes";
 import { selectGameSpeed } from "../../store/slices/gameMenus/gameMenusSelectors";
-import { type RootState } from "../../store/store";
+import { type GameRootState } from "../../store/store";
 import { type GameState } from "../gameState/GameState";
 import { selectCurrentRoomState } from "../gameState/gameStateSelectors/selectCurrentRoomState";
 import { type PlayableItem } from "../physics/itemPredicates";
@@ -33,7 +33,7 @@ const findDyingPlayable = (gameState: GameState) => {
 
 export const tickGameSpeed = (
   ticker: Ticker,
-  reduxState: RootState,
+  reduxState: GameRootState,
   gameState: GameState,
 ): void => {
   const [topMenu] = reduxState.gameMenus.openMenus;

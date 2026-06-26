@@ -4,7 +4,7 @@ import { type EmptyObject } from "type-fest";
 
 import { useAppDispatch, useAppSelector } from "../../../../../../store/hooks";
 import { startAppListening } from "../../../../../../store/listenerMiddleware";
-import { useGetAllUsersLatestCampaignsQuery } from "../../../../../../store/slices/campaigns/campaignsApiSlice";
+import { useGetAllUsersLatestCampaignsQuery } from "../../../../../../store/slices/campaigns/gameCampaignsApiSlice";
 import {
   useEmulatedResolutionName,
   useIsGameRunning,

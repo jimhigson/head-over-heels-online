@@ -1,4 +1,4 @@
-import { useGetUsernameQuery } from "../../store/slices/campaigns/campaignsApiSlice";
+import { useGetUsernameQuery } from "../../store/slices/campaigns/editorCampaignsApiSlice";
 
 export type CampaignOwnerNameProps = {
   /** the campaign owner's user id */

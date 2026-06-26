@@ -5,8 +5,9 @@ import { type EditorCampaign } from "../../../editor/editorTypes";
 import { type Campaign } from "../../../model/modelTypes";
 import { emptyObject } from "../../../utils/empty";
 import { type SerialisableError } from "../../../utils/redux/createSerialisableErrors";
-import { store } from "../../store";
+import { editorStore, store } from "../../store";
 import { campaignsApiSlice } from "./campaignsApiSlice";
+import { editorCampaignsApiSlice } from "./editorCampaignsApiSlice";
 
 /**
  * a simple loader function using the RTKQuery api slice,
@@ -32,8 +33,8 @@ export const saveCampaignViaApi = async (
   campaign: EditorCampaign,
   { baseVersion, force }: { baseVersion: null | number; force: boolean },
 ) => {
-  const result = await store.dispatch(
-    campaignsApiSlice.endpoints.saveCampaign.initiate({
+  const result = await editorStore.dispatch(
+    editorCampaignsApiSlice.endpoints.saveCampaign.initiate({
       campaign,
       baseVersion,
       force,

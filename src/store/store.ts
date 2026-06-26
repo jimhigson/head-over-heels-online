@@ -15,7 +15,6 @@ import {
   REGISTER,
   REHYDRATE,
 } from "redux-persist";
-import { type EmptyObject } from "type-fest";
 
 import {
   editorRoomPreviewSlice,
@@ -25,7 +24,6 @@ import {
   type LevelEditorSliceAction,
   type LevelEditorState,
 } from "../editor/slice/levelEditorSlice";
-import { emptyObject } from "../utils/empty";
 import {
   type StoreActionOf,
   type StoreEnhancersOf,
@@ -44,14 +42,15 @@ import {
 } from "./persist/persist";
 import { recentActionsMiddleware } from "./recentActions";
 import { assetsLoadingSlice } from "./slices/assetsLoading/assetsLoadingSlice";
-import { campaignsApiSlice } from "./slices/campaigns/campaignsApiSlice";
-import { registerClearAllDataListeners } from "./slices/clearAllDataListeners";
+import { editorCampaignsApiSlice } from "./slices/campaigns/editorCampaignsApiSlice";
+import { gameCampaignsApiSlice } from "./slices/campaigns/gameCampaignsApiSlice";
 import { debugSlice } from "./slices/debug/debugSlice";
 import { gameInPlaySlice } from "./slices/gameInPlay/gameInPlaySlice";
 import { registerGameMenusListeners } from "./slices/gameMenus/gameMenusListeners";
 import { gameMenusSlice } from "./slices/gameMenus/gameMenusSlice";
 import { playMenuSoundsOnStoreChanges } from "./slices/gameMenus/playMenuSoundsOnStoreChanges";
 import { githubApiSlice } from "./slices/githubApiSlice";
+import { registerRtkQueryClearAllDataListeners } from "./slices/registerRtkQueryClearAllDataListeners";
 import { registerSavedGamesListeners } from "./slices/savedGames/savedGamesListeners";
 import { savedGamesSlice } from "./slices/savedGames/savedGamesSlice";
 import { spritesheetOverrideSlice } from "./slices/spritesheetOverrideSlice";
@@ -63,22 +62,30 @@ import { userSettingsSlice } from "./slices/userSettings/userSettingsSlice";
 migrateLegacySavedGames();
 
 const appReducer = combineSlices({
-  [gameMenusSlice.reducerPath]: gameMenusSlice.reducer,
   [userSettingsSlice.reducerPath]: userSettingsPersistedReducer,
-  [gameInPlaySlice.reducerPath]: gameInPlaySlice.reducer,
-  [savedGamesSlice.reducerPath]: savedGamesPersistedReducer,
+
   [upscaleSlice.reducerPath]: upscaleSlice.reducer,
-  [campaignsApiSlice.reducerPath]: campaignsApiSlice.reducer,
-  [githubApiSlice.reducerPath]: githubApiSlice.reducer,
+
   [assetsLoadingSlice.reducerPath]: assetsLoadingSlice.reducer,
-  [spritesheetOverrideSlice.reducerPath]: spritesheetOverridePersistedReducer,
-  [debugSlice.reducerPath]: debugSlice.reducer,
+
   ...(import.meta.env.VITE_APP === "editor" ?
     {
+      // editor-specific, not loaded into the game:
       levelEditor: levelEditorPersistedReducer,
       [editorRoomPreviewSlice.reducerPath]: editorRoomPreviewSlice.reducer,
+      [editorCampaignsApiSlice.reducerPath]: editorCampaignsApiSlice.reducer,
     }
-  : (emptyObject as EmptyObject)),
+  : {
+      // game-specific, not loaded into the editors:
+      [githubApiSlice.reducerPath]: githubApiSlice.reducer,
+      [spritesheetOverrideSlice.reducerPath]:
+        spritesheetOverridePersistedReducer,
+      [gameInPlaySlice.reducerPath]: gameInPlaySlice.reducer,
+      [savedGamesSlice.reducerPath]: savedGamesPersistedReducer,
+      [gameMenusSlice.reducerPath]: gameMenusSlice.reducer,
+      [gameCampaignsApiSlice.reducerPath]: gameCampaignsApiSlice.reducer,
+      [debugSlice.reducerPath]: debugSlice.reducer,
+    }),
 });
 
 const rootReducer = (
@@ -102,7 +109,11 @@ export const store = configureStore({
       },
     })
       .prepend(listenerMiddleware.middleware)
-      .concat(campaignsApiSlice.middleware)
+      .concat(
+        import.meta.env.VITE_APP === "editor" ?
+          editorCampaignsApiSlice.middleware
+        : gameCampaignsApiSlice.middleware,
+      )
       .concat(githubApiSlice.middleware)
       .concat(import.meta.env.DEV ? [recentActionsMiddleware] : []),
 });
@@ -114,23 +125,25 @@ if (
   window._e2e_store = store;
 }
 
-playMenuSoundsOnStoreChanges();
-registerSavedGamesListeners();
-registerGameMenusListeners();
-registerClearAllDataListeners();
+if (import.meta.env.VITE_APP !== "editor") {
+  playMenuSoundsOnStoreChanges();
+  registerSavedGamesListeners();
+  registerGameMenusListeners();
+}
+registerRtkQueryClearAllDataListeners();
 
 export const persistor = persistStore(store);
 
 export type AppStore = typeof store;
 
 /** game (not editor) state */
-export type RootState = Omit<
+export type GameRootState = Omit<
   ReturnType<typeof store.getState>,
   "_persist" | "editorRoomPreview" | "levelEditor"
 >;
 
 /** editor state */
-export type EditorRootState = RootState & {
+export type EditorRootState = GameRootState & {
   levelEditor: LevelEditorState;
   editorRoomPreview: RoomPreviewSliceState;
 };
@@ -145,7 +158,7 @@ export type AppDispatch = typeof store.dispatch;
  */
 export type AppThunk<ReturnType = void> = ThunkAction<
   ReturnType,
-  RootState,
+  GameRootState,
   unknown,
   UnknownAction
 >;

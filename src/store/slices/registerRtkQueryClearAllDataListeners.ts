@@ -10,7 +10,7 @@ import { githubApiSlice } from "./githubApiSlice";
  * listener so cached responses (campaigns, GitHub releases) are wiped
  * alongside the rest of the store.
  */
-export const registerClearAllDataListeners = () => {
+export const registerRtkQueryClearAllDataListeners = () => {
   startAppListening({
     actionCreator: clearAllData,
     effect(_action, { dispatch }) {

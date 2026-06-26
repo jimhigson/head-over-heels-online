@@ -1,7 +1,7 @@
 import { useEffect } from "preact/hooks";
 import { type EmptyObject } from "type-fest";
 
-import { useGetAllUsersLatestCampaignsQuery } from "../../../../../../store/slices/campaigns/campaignsApiSlice";
+import { useGetAllUsersLatestCampaignsQuery } from "../../../../../../store/slices/campaigns/gameCampaignsApiSlice";
 import { Dialog } from "../../../../../../ui/Dialog";
 import { DialogPortal } from "../../../../../../ui/DialogPortal";
 import { NonIdealState } from "../../../../../../ui/NonIdealState";

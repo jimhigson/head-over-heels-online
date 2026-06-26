@@ -14,7 +14,7 @@ import {
   nerdFontGoogleChar,
   nerdFontTwitchChar,
 } from "../../../sprites/spritesheet/spritesheetData/hudSritesheetData";
-import { useGetUsernameQuery } from "../../../store/slices/campaigns/campaignsApiSlice";
+import { useGetUsernameQuery } from "../../../store/slices/campaigns/editorCampaignsApiSlice";
 import { Button } from "../../../ui/Button";
 import { cn } from "../../../ui/cn";
 import { Tooltip } from "../../../ui/tooltip/Tooltip";

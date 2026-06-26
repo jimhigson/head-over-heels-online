@@ -1,7 +1,7 @@
 import { skipToken } from "@reduxjs/toolkit/query/react";
 
 import { originalUserId } from "../../../gameInfo";
-import { useGetLatestCampaignVersionQuery } from "../../../store/slices/campaigns/campaignsApiSlice";
+import { useGetLatestCampaignVersionQuery } from "../../../store/slices/campaigns/editorCampaignsApiSlice";
 import { useEditorAppSelector } from "../../../store/store";
 import { campaignIsNamed } from "../../editorTypes";
 import {

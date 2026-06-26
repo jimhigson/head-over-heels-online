@@ -1,12 +1,12 @@
 import { originalCampaignLocator } from "../../gameInfo";
 import { selectAssetsLoadingCount } from "../slices/assetsLoading/assetsLoadingSlice";
 import { campaignsApiSlice } from "../slices/campaigns/campaignsApiSlice";
-import { type RootState } from "../store";
+import { type GameRootState } from "../store";
 
 /**
  * Check if any RTK Query queries or game assets loading operations are currently in progress
  */
-export const selectIsLoading = (state: RootState): boolean => {
+export const selectIsLoading = (state: GameRootState): boolean => {
   const { queries } = state[campaignsApiSlice.reducerPath];
   const { mutations } = state[campaignsApiSlice.reducerPath];
 
@@ -34,7 +34,7 @@ const selectCampaignQueryStatus =
  * Unlike selectIsLoading, this excludes background preloads
  * like the community campaigns list.
  */
-export const selectIsGameLoading = (state: RootState): boolean => {
+export const selectIsGameLoading = (state: GameRootState): boolean => {
   // Check if game assets are loading
   const hasAssetsLoading = selectAssetsLoadingCount(state) > 0;
   if (hasAssetsLoading) {
