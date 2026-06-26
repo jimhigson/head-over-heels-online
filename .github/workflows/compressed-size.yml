@@ -22,7 +22,8 @@ jobs:
           clean-script: "clean:ci"
           # {*,assets/*} covers the dist root (sw.js, workbox-*.js, icons) and
           # assets/, but not dist/editor/* — so the game size excludes editor output
-          pattern: "./dist/{*,assets/*}.{js,css,html,mp3,png,webp,opus,woff2}"
+          # json is included to track the columnar original-campaign blob
+          pattern: "./dist/{*,assets/*}.{js,css,html,mp3,json,png,webp,opus,woff2}"
           # strip content hashes from filenames (e.g. App-DK0reEgR.js → App.js)
           # so the action can match chunks across the base and PR branches
           strip-hash: "(-[a-zA-Z0-9_-]{8})\\."
@@ -42,7 +43,7 @@ jobs:
         with:
           build-script: "build:editor"
           clean-script: "clean:ci"
-          pattern: "./dist/editor/{*,assets/*}.{js,css,html,mp3,png,webp,opus,woff2}"
+          pattern: "./dist/editor/{*,assets/*}.{js,css,html,mp3,json,png,webp,opus,woff2}"
           strip-hash: "(-[a-zA-Z0-9_-]{8})\\."
           compression: "gzip"
           minimum-change-threshold: 50

@@ -1,0 +1,40 @@
+{
+  "locator": { "userId": "test", "campaignName": "adversarial", "version": -1 },
+  "meta": { "published": false },
+  "rooms": {
+    "r1": {
+      "id": "r1",
+      "planet": "blacktooth",
+      "color": { "hue": "white", "shade": "basic" },
+      "meta": { "subRooms": { "*": { "below": { "room": "r2" } } } },
+      "items": {
+        "a": {
+          "type": "floor",
+          "position": { "x": 0, "y": 0, "z": 0 },
+          "config": { "floorType": "standable", "scenery": "blacktooth" }
+        },
+        "b": {
+          "type": "floor",
+          "position": { "x": 1.375, "y": -2, "z": 0 },
+          "config": {}
+        },
+        "c": {
+          "type": "pickup",
+          "position": { "x": 2, "y": 2, "z": 0 },
+          "config": { "gives": "!@" }
+        },
+        "d": {
+          "type": "pickup",
+          "position": { "x": 3, "y": 3, "z": 0 },
+          "config": { "gives": "bag", "label": null }
+        }
+      }
+    },
+    "r2": {
+      "id": "r2",
+      "planet": "blacktooth",
+      "color": { "hue": "white", "shade": "basic" },
+      "items": {}
+    }
+  }
+}

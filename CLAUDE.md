@@ -40,6 +40,12 @@ a community-contributed campagin made using the level editor
 * therefore, only the original campaign is playable offline
 * the original campagin is converted from xml using the script at src/campaignXml2Json/scripts/xml2json.ts
 
+### Columnar campaign encoding
+* campaigns are columnar-encoded (`src/columnar/`) before storage: items are grouped by type and each field becomes one array, which compresses far better than row json. `compressCampaignObject`/`decompressCampaignObject` wrap this + gzip+base64 for the db; legacy non-columnar db rows (no `_enc` marker) still load
+* the original campaign blob is `gen:rooms` output (`campaign.columnar.json`); `loadOriginalCampaign` loads the plain ts in dev and the blob+decoder in prod
+* the encoder must stay editor/build-only (never in the game bundle); decoder is shared
+* serving: static assets come from cloudflare r2, pre-compressed at brotli-11 at rest (`Content-Encoding: br`), not compressed on the fly — so stored size == wire size
+
 ## Preact / React
 
 The runtime is Preact 11 (beta), but the codebase retains React import paths and type definitions:

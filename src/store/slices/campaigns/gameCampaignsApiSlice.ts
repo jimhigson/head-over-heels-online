@@ -1,7 +1,7 @@
 import { type BaseQueryFn, type EndpointBuilder } from "@reduxjs/toolkit/query";
 import { createApi, fakeBaseQuery } from "@reduxjs/toolkit/query/react";
 
-import { importOriginalCampaign } from "../../../_generated/originalCampaign/campaign.import";
+import { loadOriginalCampaign } from "../../../_generated/originalCampaign/loadOriginalCampaign";
 import {
   type CampaignDirectory,
   type CampaignGetLocator,
@@ -11,7 +11,7 @@ import {
   loadCampaignFromDbCached,
 } from "../../../db/campaignCached";
 import { importCampaignDbClient } from "../../../db/campaignDbClient.import";
-import { decompressObject } from "../../../db/compressObject";
+import { decompressCampaignObject } from "../../../db/compressCampaignObject";
 import { type Campaign, type CampaignLocator } from "../../../model/modelTypes";
 import { createSerialisableErrors } from "../../../utils/redux/createSerialisableErrors";
 import { type GameRootState } from "../../store";
@@ -32,15 +32,16 @@ export const gameCampaignEndpoints = (
           campaignLocator.userId === "@@original" &&
           campaignLocator.campaignName === "original"
         ) {
-          // original campaign is deployed with the game - import via es6 import
-          return { data: (await importOriginalCampaign()).campaign };
+          // original campaign is deployed with the game - loaded via import
+          // (plain ts in dev, columnar blob + decoder in prod)
+          return { data: await loadOriginalCampaign() };
         }
 
         // data url type locator - mostly for the level editor so it
         // can load rooms to playtest without saving to the db first
         if (campaignLocator.campaignName.startsWith("data:")) {
           return {
-            data: await decompressObject<Campaign<string>>(
+            data: await decompressCampaignObject<Campaign<string>>(
               campaignLocator.campaignName.substring("data:".length),
             ),
           };
