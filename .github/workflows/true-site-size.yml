@@ -24,10 +24,10 @@ jobs:
             journey: |
               [
                 { "goto": "/?track=0" },
-                { "row": "main menu", "mark": "menu-ready" },
+                { "row": "to menu", "mark": "menu-ready" },
                 { "click": "[data-menuitem_id=\"playGame\"]" },
                 { "click": "[data-menuitem_id=\"originalGame\"]" },
-                { "row": "play game", "mark": "first-gameplay" }
+                { "row": "to game", "mark": "first-gameplay" }
               ]
           - target: editor
             build-command: pnpm build:editor
@@ -85,8 +85,7 @@ jobs:
           compression-level: 11
           ignore-url-patterns: '["supabase\\.co"]'
           minimum-change-threshold: 50
-          # For release-please PRs, compare against the production branch
-          # (= previous release) to show the cumulative change across the
-          # whole release rather than the empty diff of a version bump.
-          base-ref: ${{ startsWith(github.head_ref, 'release-please--') && 'production' || '' }}
+          # compare every PR against both main (its merge target) and
+          # production (= the last release), each as its own column
+          base-refs: '["main", "production"]'
           journey: ${{ matrix.journey }}
