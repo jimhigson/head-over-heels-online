@@ -49,6 +49,7 @@ const [pushableBlock] = loadItemFromJson(
 const horizontalPortal: UnionOfAllItemInPlayTypes = {
   ...defaultItemProperties,
   type: "portal",
+  hash: 0,
   id: "portal",
   aabb: originXyz,
   config: {
@@ -62,6 +63,7 @@ const horizontalPortal: UnionOfAllItemInPlayTypes = {
 const portalToBelow: UnionOfAllItemInPlayTypes = {
   ...defaultItemProperties,
   type: "portal",
+  hash: 0,
   id: "portal",
   aabb: originXyz,
   config: {
@@ -74,6 +76,7 @@ const portalToBelow: UnionOfAllItemInPlayTypes = {
 const portalToAbove: UnionOfAllItemInPlayTypes = {
   ...defaultItemProperties,
   type: "portal",
+  hash: 0,
   id: "portal",
   aabb: originXyz,
   config: {

@@ -8,7 +8,10 @@ import {
   type DbCampaign,
 } from "../model/modelTypes";
 import { type CampaignDbClient } from "./CampaignDbClient";
-import { compressObject, decompressObject } from "./compressObject";
+import {
+  compressCampaignObject,
+  decompressCampaignObject,
+} from "./compressCampaignObject";
 
 /** strip the column-backed fields, leaving only what belongs in the db blob */
 export const campaignToDbCampaign = <RoomId extends string>(
@@ -117,7 +120,7 @@ export const saveCampaignToDb = async (
   try {
     const res = await db.rpc("save_campaign_version", {
       p_name: campaign.locator.campaignName,
-      p_data: await compressObject(campaignToDbCampaign(campaign)),
+      p_data: await compressCampaignObject(campaignToDbCampaign(campaign)),
       p_published: campaign.meta?.published ?? false,
       // undefined omits the arg, so the proc uses its NULL default (skip the lease)
       p_base_version: baseVersion ?? undefined,
@@ -156,7 +159,9 @@ export const loadCampaignFromDb = async (
     throw new Error("could not get campaign", { cause: res.error });
   }
 
-  const dbCampaign = await decompressObject<DbCampaign<string>>(res.data.data);
+  const dbCampaign = await decompressCampaignObject<DbCampaign<string>>(
+    res.data.data,
+  );
 
   for (const room of Object.values(dbCampaign.rooms)) {
     // migrate rooms to newer format - can be removed when .size is gone from all campaigns likely to be loaded

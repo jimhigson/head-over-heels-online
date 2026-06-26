@@ -116,6 +116,8 @@ export const createRoomEntrySound = <
 }): ItemInPlay<"soundEffect", RoomId, RoomItemId> => ({
   id,
   type: "soundEffect",
+  // never animates, so the hash (only used to de-synchronise animations) is irrelevant:
+  hash: 0,
   fixedZIndex: nonRenderingItemFixedZIndex,
   config: {
     soundOptions: {

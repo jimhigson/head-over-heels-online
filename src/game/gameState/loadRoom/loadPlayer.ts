@@ -83,6 +83,8 @@ export const loadPlayer = <RoomId extends string, RoomItemId extends string>(
       id: jsonItemId as RoomItemId,
       jsonItemId,
       type: "head",
+      // playables never use the hash (only used to de-synchronise animations):
+      hash: 0,
       ...defaultItemProperties,
       ...defaultPlayableRootAttributes,
       ...headAabbInfo,
@@ -107,6 +109,7 @@ export const loadPlayer = <RoomId extends string, RoomItemId extends string>(
     id: jsonItemId as RoomItemId,
     jsonItemId,
     type: "heels",
+    hash: 0,
     ...defaultItemProperties,
     ...defaultPlayableRootAttributes,
     ...heelsAabbInfo,

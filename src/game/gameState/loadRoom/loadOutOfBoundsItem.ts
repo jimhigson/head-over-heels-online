@@ -18,6 +18,8 @@ export const loadOutOfBoundsItem = <
 >(): ItemInPlay<"outOfBounds", RoomId, RoomItemId> => ({
   ...defaultItemProperties,
   type: "outOfBounds",
+  // never animates, so the hash (only used to de-synchronise animations) is irrelevant:
+  hash: 0,
   id: "outOfBounds" as RoomItemId,
   fixedZIndex: nonRenderingItemFixedZIndex,
   config: {},

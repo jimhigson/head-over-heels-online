@@ -54,6 +54,9 @@ export const firing = <RoomId extends string, RoomItemId extends string>(
     const firedDoughnut: ItemInPlay<"firedDoughnut", RoomId, RoomItemId> = {
       type: "firedDoughnut",
       ...defaultItemProperties,
+      // fired doughnuts share one synced animation, so the hash (only used to
+      // de-synchronise animations) is irrelevant:
+      hash: 0,
       config: emptyObject,
       id: `firedDoughnut/${firer.id}/${room.roomTime}` as RoomItemId,
       shadowCastTexture: shadowSmallRound,

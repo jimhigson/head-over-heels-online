@@ -1,7 +1,7 @@
 import { expect, type Page, test } from "@playwright/test";
 
 import { loadCampaignFromDb } from "../src/db/campaign";
-import { compressObject } from "../src/db/compressObject";
+import { compressCampaignObject } from "../src/db/compressCampaignObject";
 import { postgrestDb } from "../src/db/postgrestDb";
 import { jimAtBlockstackingUserId } from "../src/gameInfo";
 import { dispatchKeyPress } from "./testUtils/gameInteractions";
@@ -29,7 +29,7 @@ const getSavedGames = (page: Page) =>
  * Pull the small "swops test" campaign out of supabase and re-package it as
  * the editor's PlayTest URL: `?campaignName=data:<gzip+url-safe-base64>`.
  *
- * Reuses {@link compressObject} from src so the test exercises the actual
+ * Reuses {@link compressCampaignObject} from src so the test exercises the actual
  * encoding the app understands. The full original campaign is too large to
  * fit in a query string the local preview server will accept, so a small
  * test campaign is used instead.
@@ -39,7 +39,7 @@ const buildPlaytestUrl = async (): Promise<string> => {
     campaignName: "swops_test",
     userId: jimAtBlockstackingUserId,
   });
-  const encoded = await compressObject(campaign);
+  const encoded = await compressCampaignObject(campaign);
   const params = new URLSearchParams({
     campaignName: `data:${encoded}`,
     campaignAuthorUserId: "editorUser",

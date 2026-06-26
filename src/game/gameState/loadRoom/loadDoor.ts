@@ -125,6 +125,8 @@ export function* loadDoor<RoomId extends string, RoomItemId extends string>(
       ...defaultItemProperties,
       ...{
         type: "doorFrame",
+        // doorframes never animate, so the hash (only used to de-synchronise animations) is irrelevant:
+        hash: 0,
         id: `${jsonItemId}/frameFar` as RoomItemId,
         jsonItemId,
         config: {
@@ -162,6 +164,7 @@ export function* loadDoor<RoomId extends string, RoomItemId extends string>(
       ...defaultItemProperties,
       ...{
         type: "doorFrame",
+        hash: 0,
         id: `${jsonItemId}/frameNear` as RoomItemId,
         jsonItemId,
         config: {
@@ -198,6 +201,7 @@ export function* loadDoor<RoomId extends string, RoomItemId extends string>(
       ...defaultItemProperties,
       ...{
         type: "doorFrame",
+        hash: 0,
         id: `${jsonItemId}/frameTop` as RoomItemId,
         jsonItemId,
         config: {
@@ -244,6 +248,7 @@ export function* loadDoor<RoomId extends string, RoomItemId extends string>(
     ...defaultItemProperties,
     ...{
       type: "blocker",
+      hash: 0,
       id: `${jsonItemId}/blockerAbove` as RoomItemId,
       jsonItemId,
       config: {},
@@ -279,6 +284,7 @@ export function* loadDoor<RoomId extends string, RoomItemId extends string>(
     ...defaultItemProperties,
     ...{
       type: "portal",
+      hash: 0,
       id: `${jsonItemId}/portal` as RoomItemId,
       jsonItemId,
       config: {
@@ -329,6 +335,7 @@ export function* loadDoor<RoomId extends string, RoomItemId extends string>(
       ...defaultItemProperties,
       ...{
         type: "doorLegs",
+        hash: 0,
         id: `${jsonItemId}/legs` as RoomItemId,
         jsonItemId,
         config: {
@@ -402,6 +409,7 @@ export function* loadDoor<RoomId extends string, RoomItemId extends string>(
   yield {
     ...defaultItemProperties,
     type: "stopAutowalk",
+    hash: 0,
     id: `${jsonItemId}/stopAutowalk` as RoomItemId,
     jsonItemId,
     aabb: blockXyzToFineXyz({

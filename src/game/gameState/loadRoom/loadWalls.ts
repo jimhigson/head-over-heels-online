@@ -4,6 +4,7 @@ import { isWallHidden } from "../../../model/json/WallJsonConfig";
 import { type StoodOnBy } from "../../../model/StoodOnBy";
 import { wallTimes } from "../../../model/times";
 import { emptyObject } from "../../../utils/empty";
+import { hashXyzToNumber0to1 } from "../../../utils/maths/hashXyzToNumber0to1";
 import {
   addXyz,
   doorAlongAxis,
@@ -91,8 +92,13 @@ export const loadWall = <RoomId extends string, RoomItemId extends string>(
     times,
   });
 
+  const wallPosition = blockXyzToFineXyz(
+    addXyz(position, invisibleWallSetBackBlocks),
+  );
+
   return {
     type: "wall",
+    hash: hashXyzToNumber0to1(wallPosition),
     id: jsonItemId,
     jsonItemId,
     config: jsonWall.config,
@@ -100,7 +106,7 @@ export const loadWall = <RoomId extends string, RoomItemId extends string>(
     fixedZIndex: isHidden ? nonRenderingItemFixedZIndex : undefined,
     state: {
       ...defaultBaseState(),
-      position: blockXyzToFineXyz(addXyz(position, invisibleWallSetBackBlocks)),
+      position: wallPosition,
       // walls can never be stood on:
       stoodOnBy: emptyObject as StoodOnBy<RoomItemId>,
     },

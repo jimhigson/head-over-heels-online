@@ -41,8 +41,11 @@ gitdir="$(git rev-parse --path-format=absolute --git-common-dir)"
 
 # a pull_request event so the action's compareRef is origin/main, and a dir the
 # action writes the comment markdown into (bind-mounted so it lands on the host)
-event="$(mktemp -t true-site-size-event).json"
-outdir="$(mktemp -d -t true-site-size-out)"
+# (explicit XXXXXX templates work on both macOS/BSD and Linux/GNU mktemp; the
+# `-t prefix` shorthand is interpreted differently between the two)
+tmp="${TMPDIR:-/tmp}"
+event="$(mktemp "${tmp}/true-site-size-event.XXXXXX").json"
+outdir="$(mktemp -d "${tmp}/true-site-size-out.XXXXXX")"
 trap 'rm -f "$event"; rm -rf "$outdir"' EXIT
 printf '{"pull_request":{"base":{"ref":"main"}}}' >"$event"
 comment="${outdir}/comment.md"
@@ -51,7 +54,7 @@ target="${1:-game}"
 
 # act is very chatty (docker setup, install, build, per-request breakdown), so
 # capture it all to a log and only surface the rendered comment on success.
-log="$(mktemp -t true-site-size).log"
+log="$(mktemp "${tmp}/true-site-size.XXXXXX").log"
 
 echo "running act for target ${target} (full log: $log) - this may take a while..." >&2
 
