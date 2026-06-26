@@ -24,10 +24,10 @@ jobs:
             journey: |
               [
                 { "goto": "/?track=0" },
-                { "row": "main menu", "mark": "menu-ready" },
+                { "row": "to menu", "mark": "menu-ready" },
                 { "click": "[data-menuitem_id=\"playGame\"]" },
                 { "click": "[data-menuitem_id=\"originalGame\"]" },
-                { "row": "play game", "mark": "first-gameplay" }
+                { "row": "to game", "mark": "first-gameplay" }
               ]
           - target: editor
             build-command: pnpm build:editor
