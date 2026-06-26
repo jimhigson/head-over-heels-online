@@ -66,7 +66,7 @@
     "gen:dbTypes": "supabase gen types typescript --project-id pkswdnpftrundnewgnya | sh scripts/oxlintFixStdin.sh src/_generated/db.d.ts | prettier --parser typescript > src/_generated/db.d.ts",
     "dumpDb:schema": "pg_dump-17 -h aws-0-eu-west-2.pooler.supabase.com -p 6543 -d postgres -U postgres.pkswdnpftrundnewgnya --schema-only --schema=public --no-owner --no-privileges > db/schema.sql",
     "dumpDb:data": "pg_dump-17 -h aws-0-eu-west-2.pooler.supabase.com -p 6543 -d postgres -U postgres.pkswdnpftrundnewgnya --data-only --schema=public --no-owner --no-privileges > db/data.sql",
-    "gen:seed": "tsx scripts/genSeed.ts",
+    "gen:seed": "tsx scripts/fakeDb/genSeed.ts",
     "test:db": "supabase test db",
     "prepare": "husky"
   },

@@ -4,46 +4,47 @@ import { type Provider } from "@supabase/supabase-js";
 import { importSupabaseDb } from "../../../db/supabaseDb.import";
 import { BitmapText } from "../../../game/components/tailwindSprites/BitmapText";
 import {
-  type SupportedAuthProvider,
-  supportedAuthProviders,
-} from "../../../gameInfo";
-import {
   nerdFontAppleChar,
   nerdFontDiscordChar,
   nerdFontGithubChar,
   nerdFontGoogleChar,
   nerdFontTwitchChar,
 } from "../../../sprites/spritesheet/spritesheetData/hudSritesheetData";
-import { useGetUsernameQuery } from "../../../store/slices/campaigns/editorCampaignsApiSlice";
+import {
+  useGetAuthProvidersQuery,
+  useGetUsernameQuery,
+} from "../../../store/slices/campaigns/editorCampaignsApiSlice";
 import { Button } from "../../../ui/Button";
 import { cn } from "../../../ui/cn";
 import { Tooltip } from "../../../ui/tooltip/Tooltip";
 import { useSupabaseUser } from "../useSupabaseUser";
 
-const providerIcon = (provider: SupportedAuthProvider): string => {
-  switch (provider) {
-    case "github":
-      return nerdFontGithubChar;
-    case "discord":
-      return nerdFontDiscordChar;
-    case "apple":
-      return nerdFontAppleChar;
-    case "google":
-      return nerdFontGoogleChar;
-    case "twitch":
-      return nerdFontTwitchChar;
-    // case "email":
-    //   return "@";
-    default:
-      provider satisfies never;
-      throw new Error();
+const providerIcons: Partial<Record<Provider, string>> = {
+  apple: nerdFontAppleChar,
+  discord: nerdFontDiscordChar,
+  github: nerdFontGithubChar,
+  google: nerdFontGoogleChar,
+  twitch: nerdFontTwitchChar,
+};
+
+export type ProviderIconProps = {
+  provider: Provider;
+  className?: string;
+};
+
+const ProviderIcon = ({ provider, className }: ProviderIconProps) => {
+  const icon = providerIcons[provider];
+  if (icon === undefined) {
+    return <span className="w-1" />;
   }
+  return <span className={className}>{icon}</span>;
 };
 
 export const LoggedInStatus = ({ className }: { className?: string }) => {
   const user = useSupabaseUser();
   // the session only carries the email; look up the display name to show instead
   const { data: username } = useGetUsernameQuery(user ? user.id : skipToken);
+  const { data: authProviders = [] } = useGetAuthProvidersQuery();
 
   if (user === undefined) {
     // no data yet - don't know if logged in. Render a space-holder to stop the
@@ -87,11 +88,10 @@ export const LoggedInStatus = ({ className }: { className?: string }) => {
             tooltipContent={user.email}
             triggerContent={
               <div className="overflow-hidden">
-                <span className="text-highlightBeige">
-                  {providerIcon(
-                    user.app_metadata.provider as SupportedAuthProvider,
-                  )}
-                </span>{" "}
+                <ProviderIcon
+                  provider={user.app_metadata.provider as Provider}
+                  className="text-highlightBeige"
+                />{" "}
                 <span>{username ?? user.email}</span>
               </div>
             }
@@ -113,15 +113,17 @@ export const LoggedInStatus = ({ className }: { className?: string }) => {
           </BitmapText>
           <div className="pt-1 flex flex-col gap-half">
             <BitmapText>Log in with:</BitmapText>
-            {supportedAuthProviders.map((authProvider) => {
+            {authProviders.map((authProvider) => {
               return (
                 <Button
+                  key={authProvider}
                   className="px-1 w-full max-w-16 flex-row justify-between bg-redShadow"
                   onClick={handleLogin(authProvider)}
                 >
-                  <span className="text-lightBeige">
-                    {providerIcon(authProvider)}
-                  </span>{" "}
+                  <ProviderIcon
+                    provider={authProvider}
+                    className="text-lightBeige"
+                  />{" "}
                   <span>{authProvider}</span>
                 </Button>
               );

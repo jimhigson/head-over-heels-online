@@ -4,8 +4,8 @@ import { visualizer } from "rollup-plugin-visualizer";
 import { defineConfig, loadEnv, type PluginOption } from "vite";
 import glsl from "vite-plugin-glsl";
 
-import { devFakeAuthPlugin } from "./devFakeAuthPlugin";
 import { hmrOnlyPreact } from "./hmrOnlyPreact";
+import { devFakeAuthPlugin } from "./scripts/fakeDb/devFakeAuthPlugin";
 
 /**
  * vite config specific to the level editor, which is a separately

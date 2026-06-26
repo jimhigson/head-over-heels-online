@@ -1,5 +1,3 @@
-import { type Provider } from "@supabase/supabase-js";
-
 import { type CampaignLocator } from "./model/modelTypes";
 
 export const discordInviteUrl = "https://discord.gg/Se5Jznc2jm";
@@ -32,13 +30,3 @@ export const sequelCampaignLocator: CampaignLocator = {
   campaignName: "sequel_25",
   version: -1,
 };
-
-export const supportedAuthProviders = [
-  "apple",
-  "discord",
-  "github",
-  "google",
-  "twitch",
-] as const satisfies Array<Provider>;
-
-export type SupportedAuthProvider = (typeof supportedAuthProviders)[number];

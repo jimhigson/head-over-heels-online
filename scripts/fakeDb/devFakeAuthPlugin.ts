@@ -1,7 +1,7 @@
 import { type ServerResponse } from "node:http";
 import { type Plugin } from "vite";
 
-import { supportedAuthProviders } from "./src/gameInfo";
+import { devAuthProviders } from "./devAuthProviders";
 
 type DevFakeAuthOptions = {
   /** the real supabase stack the password-grant + proxy target point at */
@@ -14,7 +14,7 @@ const devUserPassword = "password";
 const devUserEmail = (provider: string) => `${provider}@blockstack.ing`;
 
 const isSupportedProvider = (provider: string): boolean =>
-  supportedAuthProviders.some((p) => p === provider);
+  devAuthProviders.some((p) => p === provider);
 
 /**
  * Dev-only fake oauth for the local supabase stack, which has no real oauth
@@ -76,6 +76,20 @@ export const devFakeAuthPlugin = ({
       res.setHeader("location", back.toString());
       res.end();
     };
+
+    // the local supabase stack has no external oauth providers configured, so
+    // its real settings endpoint reports none; report the faked ones instead so
+    // the editor's getEnabledAuthProviders renders their login buttons
+    server.middlewares.use("/auth/v1/settings", (_req, res) => {
+      res.setHeader("content-type", "application/json");
+      res.end(
+        JSON.stringify({
+          external: Object.fromEntries(
+            devAuthProviders.map((provider) => [provider, true]),
+          ),
+        }),
+      );
+    });
 
     server.middlewares.use("/auth/v1/authorize", (req, res) => {
       const url = new URL(req.url ?? "", "http://localhost");
