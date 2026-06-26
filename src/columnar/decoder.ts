@@ -62,6 +62,58 @@ const deltaDecode = (deltas: number[]): number[] => {
   });
 };
 
+/**
+ * natural sort (so `room10` follows `room2`, not `room1`). Matches the
+ * `natural-orderby` ordering the original campaign's `campaign.ts` is generated
+ * with, so decoded room order is the same whether the game loads the plain ts
+ * (dev) or this blob (prod) - room iteration order is observable (eg it decides
+ * which door a character enters a room by), so the two must agree.
+ */
+const naturalCompare = (a: string, b: string): number =>
+  a.localeCompare(b, undefined, { numeric: true, sensitivity: "base" });
+
+/**
+ * A small, fast, non-cryptographic hash of an item's (starting) position to a
+ * short base-36 token. Positions sit on a 1/8 grid, so they're scaled to
+ * integers before mixing; the FNV-1a-style multiply+shift spreads even small
+ * coordinates across the 32-bit range (a plain xor would leave them clustered).
+ */
+const positionToken = (x: number, y: number, z: number): string => {
+  let h = 0x81_1c_9d_c5;
+  for (const n of [x, y, z]) {
+    h ^= Math.round(n * 8);
+    h = Math.imul(h, 0x01_00_01_93);
+    h ^= h >>> 15;
+  }
+  return (h >>> 0).toString(36);
+};
+
+/**
+ * an id for an item whose own id was dropped (because nothing references it).
+ * Derived from the item's starting position so it is stable across re-encodes
+ * (unlike a column-index): the renderer hashes item ids to pick animation
+ * start-frames / bob phases, and keying that off intrinsic position keeps those
+ * stable when ids are synthesised. Collisions (same type at one position) get a
+ * short suffix so every id stays unique within its room.
+ */
+const synthesiseId = (
+  type: string,
+  x: number,
+  y: number,
+  z: number,
+  existing: Record<string, unknown>,
+): string => {
+  const base = `${type}@${positionToken(x, y, z)}`;
+  if (!(base in existing)) {
+    return base;
+  }
+  let n = 1;
+  while (`${base}~${n}` in existing) {
+    n++;
+  }
+  return `${base}~${n}`;
+};
+
 export const columnarDecode = <RoomId extends string>(
   encoded: ColumnarEncoded,
 ): Campaign<RoomId> => {
@@ -101,24 +153,27 @@ export const columnarDecode = <RoomId extends string>(
         string,
         unknown
       >;
-      // a dropped (unreferenced) id is the absent marker; synthesise a unique
-      // replacement from type + column index. `type/index` can't collide with a
-      // kept id (those never contain "/") nor with another synthesised id (each
-      // index is distinct), so every id stays unique within its room.
+      const x = Number(xCol[i]);
+      const y = Number(yCol[i]);
+      const z = Number(zCol[i]);
+      // a dropped (unreferenced) id is the absent marker; synthesise a stable,
+      // position-derived replacement. A kept id never contains "@", so the two
+      // can't collide.
       const rawId = idCol[i];
-      const id = rawId === _absent ? `${type}/${i}` : rawId;
+      const id = rawId === _absent ? synthesiseId(type, x, y, z, items) : rawId;
       items[id] = {
         config,
-        position: { x: xCol[i], y: yCol[i], z: zCol[i] },
+        position: { x, y, z },
         type,
       };
     }
   }
 
-  // the rooms map keeps roomIndex order; everything inside each room is
+  // rooms come out in natural-sorted order (matching the generated `campaign.ts`,
+  // since iteration order is observable); everything inside each room is
   // key-sorted so the decoded form matches the canonical (alphabetical) json
   const rooms: Record<string, unknown> = {};
-  for (const roomId of roomIndex) {
+  for (const roomId of [...roomIndex].sort(naturalCompare)) {
     rooms[roomId] = sortKeysDeep(builtRooms[roomId]);
   }
 
