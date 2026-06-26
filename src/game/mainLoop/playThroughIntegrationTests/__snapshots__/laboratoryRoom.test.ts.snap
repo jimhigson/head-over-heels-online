@@ -18,6 +18,7 @@ exports[`playing through a complex, deterministic room ("laboratory") should alw
       "castsWholeShadows": false,
       "config": {},
       "fixedZIndex": undefined,
+      "hash": 0.32787712989374995,
       "id": "ball@10,4,0",
       "jsonItemId": "ball@10,4,0",
       "position": {
@@ -98,6 +99,7 @@ exports[`playing through a complex, deterministic room ("laboratory") should alw
       "castsWholeShadows": false,
       "config": {},
       "fixedZIndex": undefined,
+      "hash": 0.25805394258350134,
       "id": "ball@7,2,0",
       "jsonItemId": "ball@7,2,0",
       "position": {
@@ -174,6 +176,7 @@ exports[`playing through a complex, deterministic room ("laboratory") should alw
       "castsWholeShadows": false,
       "config": {},
       "fixedZIndex": undefined,
+      "hash": 0.25461299205198884,
       "id": "ball@7,4,0",
       "jsonItemId": "ball@7,4,0",
       "position": {
@@ -254,6 +257,7 @@ exports[`playing through a complex, deterministic room ("laboratory") should alw
       "castsWholeShadows": false,
       "config": {},
       "fixedZIndex": undefined,
+      "hash": 0.23360748146660626,
       "id": "ball@9,4,0",
       "jsonItemId": "ball@9,4,0",
       "position": {
@@ -336,6 +340,7 @@ exports[`playing through a complex, deterministic room ("laboratory") should alw
         "axis": "x",
       },
       "fixedZIndex": undefined,
+      "hash": 0.9252075797412544,
       "id": "barrier@10,6,0",
       "jsonItemId": "barrier@10,6,0",
       "position": {
@@ -382,6 +387,7 @@ exports[`playing through a complex, deterministic room ("laboratory") should alw
         },
       },
       "fixedZIndex": undefined,
+      "hash": 0.5502051133662462,
       "id": "barrier@10,6,1",
       "jsonItemId": "barrier@10,6,1",
       "position": {
@@ -427,6 +433,7 @@ exports[`playing through a complex, deterministic room ("laboratory") should alw
         "axis": "x",
       },
       "fixedZIndex": undefined,
+      "hash": 0.05319086811505258,
       "id": "barrier@10,8,0",
       "jsonItemId": "barrier@10,8,0",
       "position": {
@@ -473,6 +480,7 @@ exports[`playing through a complex, deterministic room ("laboratory") should alw
         },
       },
       "fixedZIndex": undefined,
+      "hash": 0.42819711775518954,
       "id": "barrier@10,8,1",
       "jsonItemId": "barrier@10,8,1",
       "position": {
@@ -521,6 +529,7 @@ exports[`playing through a complex, deterministic room ("laboratory") should alw
         },
       },
       "fixedZIndex": undefined,
+      "hash": 0.6174617556389421,
       "id": "block@13,3,3",
       "jsonItemId": "block@13,3,3",
       "position": {
@@ -568,6 +577,7 @@ exports[`playing through a complex, deterministic room ("laboratory") should alw
         },
       },
       "fixedZIndex": undefined,
+      "hash": 0.2332875228021294,
       "id": "block@13,4,2",
       "jsonItemId": "block@13,4,2",
       "position": {
@@ -613,6 +623,7 @@ exports[`playing through a complex, deterministic room ("laboratory") should alw
         },
       },
       "fixedZIndex": undefined,
+      "hash": 0.5766018726862967,
       "id": "block@13,5,0",
       "jsonItemId": "block@13,5,0",
       "position": {
@@ -660,6 +671,7 @@ exports[`playing through a complex, deterministic room ("laboratory") should alw
         "style": "tower",
       },
       "fixedZIndex": undefined,
+      "hash": 0.6190358337480575,
       "id": "block@13,7,0",
       "jsonItemId": "block@13,7,0",
       "position": {
@@ -710,6 +722,7 @@ exports[`playing through a complex, deterministic room ("laboratory") should alw
         },
       },
       "fixedZIndex": undefined,
+      "hash": 0.4441108477767557,
       "id": "block@14,3,0",
       "jsonItemId": "block@14,3,0",
       "position": {
@@ -759,6 +772,7 @@ exports[`playing through a complex, deterministic room ("laboratory") should alw
         "style": "artificial",
       },
       "fixedZIndex": undefined,
+      "hash": 0.6006694303359836,
       "id": "block@15.5,8,0",
       "jsonItemId": "block@15.5,8,0",
       "position": {
@@ -803,6 +817,7 @@ exports[`playing through a complex, deterministic room ("laboratory") should alw
         "style": "artificial",
       },
       "fixedZIndex": undefined,
+      "hash": 0.20217636227607727,
       "id": "block@16,8.5,1",
       "jsonItemId": "block@16,8.5,1",
       "position": {
@@ -845,6 +860,7 @@ exports[`playing through a complex, deterministic room ("laboratory") should alw
         "style": "organic",
       },
       "fixedZIndex": undefined,
+      "hash": 0.8172186552546918,
       "id": "block@3,3,8",
       "jsonItemId": "block@3,3,8",
       "position": {
@@ -887,6 +903,7 @@ exports[`playing through a complex, deterministic room ("laboratory") should alw
         "style": "organic",
       },
       "fixedZIndex": undefined,
+      "hash": 0.11708829831331968,
       "id": "block@3,5,8",
       "jsonItemId": "block@3,5,8",
       "position": {
@@ -931,6 +948,7 @@ exports[`playing through a complex, deterministic room ("laboratory") should alw
         "style": "artificial",
       },
       "fixedZIndex": undefined,
+      "hash": 0.44192298664711416,
       "id": "block@4,3,0",
       "jsonItemId": "block@4,3,0",
       "position": {
@@ -975,6 +993,7 @@ exports[`playing through a complex, deterministic room ("laboratory") should alw
         "style": "organic",
       },
       "fixedZIndex": undefined,
+      "hash": 0.8872380359098315,
       "id": "block@5,0,0",
       "jsonItemId": "block@5,0,0",
       "position": {
@@ -1017,6 +1036,7 @@ exports[`playing through a complex, deterministic room ("laboratory") should alw
         "style": "organic",
       },
       "fixedZIndex": undefined,
+      "hash": 0.41925560659728944,
       "id": "block@6,6,2",
       "jsonItemId": "block@6,6,2",
       "position": {
@@ -1061,6 +1081,7 @@ exports[`playing through a complex, deterministic room ("laboratory") should alw
         "style": "organic",
       },
       "fixedZIndex": undefined,
+      "hash": 0.9093668411951512,
       "id": "block@8,0,0",
       "jsonItemId": "block@8,0,0",
       "position": {
@@ -1115,6 +1136,7 @@ exports[`playing through a complex, deterministic room ("laboratory") should alw
         },
       },
       "fixedZIndex": undefined,
+      "hash": 0.7952170139178634,
       "id": "block@9,0,0_0_0_0",
       "jsonItemId": "block@9,0,0",
       "position": {
@@ -1167,6 +1189,7 @@ exports[`playing through a complex, deterministic room ("laboratory") should alw
         },
       },
       "fixedZIndex": undefined,
+      "hash": 0.4846860005054623,
       "id": "block@9,0,0_1_0_0",
       "jsonItemId": "block@9,0,0",
       "position": {
@@ -1216,6 +1239,7 @@ exports[`playing through a complex, deterministic room ("laboratory") should alw
         "style": "organic",
       },
       "fixedZIndex": undefined,
+      "hash": 0.17021185136400163,
       "id": "block@9,0,1",
       "jsonItemId": "block@9,0,1",
       "position": {
@@ -1263,6 +1287,7 @@ exports[`playing through a complex, deterministic room ("laboratory") should alw
         "style": "organic",
       },
       "fixedZIndex": undefined,
+      "hash": 0.9202471487224102,
       "id": "block@9,0,3",
       "jsonItemId": "block@9,0,3",
       "position": {
@@ -1305,6 +1330,7 @@ exports[`playing through a complex, deterministic room ("laboratory") should alw
       "castsWholeShadows": false,
       "config": {},
       "fixedZIndex": undefined,
+      "hash": 0.12881403043866158,
       "id": "ch1",
       "jsonItemId": "ch1",
       "position": {
@@ -1408,6 +1434,7 @@ exports[`playing through a complex, deterministic room ("laboratory") should alw
       "castsWholeShadows": false,
       "config": {},
       "fixedZIndex": undefined,
+      "hash": 0.21787650347687304,
       "id": "ch2",
       "jsonItemId": "ch2",
       "position": {
@@ -1492,6 +1519,7 @@ exports[`playing through a complex, deterministic room ("laboratory") should alw
         },
       },
       "fixedZIndex": undefined,
+      "hash": 0.5215357562992722,
       "id": "conveyor@0,0,0",
       "jsonItemId": "conveyor@0,0,0",
       "position": {
@@ -1553,6 +1581,7 @@ exports[`playing through a complex, deterministic room ("laboratory") should alw
         },
       },
       "fixedZIndex": undefined,
+      "hash": 0.7976109758019447,
       "id": "conveyor@3,6,0",
       "jsonItemId": "conveyor@3,6,0",
       "position": {
@@ -1616,6 +1645,7 @@ exports[`playing through a complex, deterministic room ("laboratory") should alw
         },
       },
       "fixedZIndex": undefined,
+      "hash": 0.8890813875477761,
       "id": "conveyor@3,9,0",
       "jsonItemId": "conveyor@3,9,0",
       "position": {
@@ -1678,6 +1708,7 @@ exports[`playing through a complex, deterministic room ("laboratory") should alw
         },
       },
       "fixedZIndex": undefined,
+      "hash": 0.49067835486494005,
       "id": "conveyor@4,6,0",
       "jsonItemId": "conveyor@4,6,0",
       "position": {
@@ -1737,6 +1768,7 @@ exports[`playing through a complex, deterministic room ("laboratory") should alw
         "direction": "right",
       },
       "fixedZIndex": undefined,
+      "hash": 0.6157101895660162,
       "id": "conveyor@4,6,5",
       "jsonItemId": "conveyor@4,6,5",
       "position": {
@@ -1796,6 +1828,7 @@ exports[`playing through a complex, deterministic room ("laboratory") should alw
         },
       },
       "fixedZIndex": undefined,
+      "hash": 0.6749787845183164,
       "id": "conveyor@6,7,0",
       "jsonItemId": "conveyor@6,7,0",
       "position": {
@@ -1859,6 +1892,7 @@ exports[`playing through a complex, deterministic room ("laboratory") should alw
         },
       },
       "fixedZIndex": undefined,
+      "hash": 0.3284658545162529,
       "id": "deadlyBlock@17,2,0",
       "jsonItemId": "deadlyBlock@17,2,0",
       "position": {
@@ -1915,6 +1949,7 @@ exports[`playing through a complex, deterministic room ("laboratory") should alw
         },
       },
       "fixedZIndex": undefined,
+      "hash": 0.6999698013532907,
       "id": "deadlyBlock@17,3,1",
       "jsonItemId": "deadlyBlock@17,3,1",
       "position": {
@@ -1971,6 +2006,7 @@ exports[`playing through a complex, deterministic room ("laboratory") should alw
         },
       },
       "fixedZIndex": undefined,
+      "hash": 0.9512561149895191,
       "id": "deadlyBlock@17,4,2",
       "jsonItemId": "deadlyBlock@17,4,2",
       "position": {
@@ -2024,6 +2060,7 @@ exports[`playing through a complex, deterministic room ("laboratory") should alw
         "style": "volcano",
       },
       "fixedZIndex": undefined,
+      "hash": 0.3918890147469938,
       "id": "deadlyBlock@17,5,3",
       "jsonItemId": "deadlyBlock@17,5,3",
       "position": {
@@ -2074,6 +2111,7 @@ exports[`playing through a complex, deterministic room ("laboratory") should alw
       "castsShadowWhileStoodOn": false,
       "config": {},
       "fixedZIndex": -2,
+      "hash": 0.6514256335794926,
       "id": "door@5,0,2/blockerAbove",
       "jsonItemId": "door@5,0,2",
       "position": {
@@ -2120,6 +2158,7 @@ exports[`playing through a complex, deterministic room ("laboratory") should alw
         "part": "far",
         "toRoom": "nowhere",
       },
+      "hash": 0.47961044521071017,
       "id": "door@5,0,2/frameFar",
       "jsonItemId": "door@5,0,2",
       "position": {
@@ -2170,6 +2209,7 @@ exports[`playing through a complex, deterministic room ("laboratory") should alw
         "part": "near",
         "toRoom": "nowhere",
       },
+      "hash": 0.15135031379759312,
       "id": "door@5,0,2/frameNear",
       "jsonItemId": "door@5,0,2",
       "position": {
@@ -2220,6 +2260,7 @@ exports[`playing through a complex, deterministic room ("laboratory") should alw
         "part": "top",
         "toRoom": "nowhere",
       },
+      "hash": 0.6510969689115882,
       "id": "door@5,0,2/frameTop",
       "jsonItemId": "door@5,0,2",
       "noShadowCastOn": undefined,
@@ -2278,6 +2319,7 @@ exports[`playing through a complex, deterministic room ("laboratory") should alw
         "style": "none",
         "toRoom": "nowhere",
       },
+      "hash": 0.9013382592238486,
       "id": "door@5,0,2/legs",
       "jsonItemId": "door@5,0,2",
       "position": {
@@ -2347,6 +2389,7 @@ exports[`playing through a complex, deterministic room ("laboratory") should alw
         "toRoom": "nowhere",
       },
       "fixedZIndex": -2,
+      "hash": 0.6017856656108052,
       "id": "door@5,0,2/portal",
       "jsonItemId": "door@5,0,2",
       "position": {
@@ -2383,6 +2426,7 @@ exports[`playing through a complex, deterministic room ("laboratory") should alw
       "castsShadowWhileStoodOn": false,
       "config": {},
       "fixedZIndex": -2,
+      "hash": 0.6429774847347289,
       "id": "door@5,0,2/stopAutowalk",
       "jsonItemId": "door@5,0,2",
       "state": {
@@ -2414,6 +2458,7 @@ exports[`playing through a complex, deterministic room ("laboratory") should alw
       "castsShadowWhileStoodOn": false,
       "config": {},
       "fixedZIndex": -2,
+      "hash": 0.6953105928841978,
       "id": "door@5,14,2/blockerAbove",
       "jsonItemId": "door@5,14,2",
       "position": {
@@ -2460,6 +2505,7 @@ exports[`playing through a complex, deterministic room ("laboratory") should alw
         "part": "far",
         "toRoom": "nowhere",
       },
+      "hash": 0.7321367815602571,
       "id": "door@5,14,2/frameFar",
       "jsonItemId": "door@5,14,2",
       "position": {
@@ -2506,6 +2552,7 @@ exports[`playing through a complex, deterministic room ("laboratory") should alw
         "part": "near",
         "toRoom": "nowhere",
       },
+      "hash": 0.1953203969169408,
       "id": "door@5,14,2/frameNear",
       "jsonItemId": "door@5,14,2",
       "position": {
@@ -2552,6 +2599,7 @@ exports[`playing through a complex, deterministic room ("laboratory") should alw
         "part": "top",
         "toRoom": "nowhere",
       },
+      "hash": 0.7910641834605485,
       "id": "door@5,14,2/frameTop",
       "jsonItemId": "door@5,14,2",
       "noShadowCastOn": [
@@ -2615,6 +2663,7 @@ exports[`playing through a complex, deterministic room ("laboratory") should alw
         "style": "none",
         "toRoom": "nowhere",
       },
+      "hash": 0.9453722666949034,
       "id": "door@5,14,2/legs",
       "jsonItemId": "door@5,14,2",
       "position": {
@@ -2673,6 +2722,7 @@ exports[`playing through a complex, deterministic room ("laboratory") should alw
         "toRoom": "nowhere",
       },
       "fixedZIndex": -2,
+      "hash": 0.7623497557360679,
       "id": "door@5,14,2/portal",
       "jsonItemId": "door@5,14,2",
       "position": {
@@ -2709,6 +2759,7 @@ exports[`playing through a complex, deterministic room ("laboratory") should alw
       "castsShadowWhileStoodOn": false,
       "config": {},
       "fixedZIndex": -2,
+      "hash": 0.6378235290758312,
       "id": "door@5,14,2/stopAutowalk",
       "jsonItemId": "door@5,14,2",
       "state": {
@@ -2753,6 +2804,7 @@ exports[`playing through a complex, deterministic room ("laboratory") should alw
         "period": 1000,
       },
       "fixedZIndex": -2,
+      "hash": 0.8542767576873302,
       "id": "emitter@17,0,7",
       "jsonItemId": "emitter@17,0,7",
       "position": {
@@ -2811,6 +2863,7 @@ exports[`playing through a complex, deterministic room ("laboratory") should alw
         "which": "cyberman",
       },
       "fixedZIndex": undefined,
+      "hash": 0.19952266523614526,
       "id": "emitter@17,0,7-0-1000",
       "jsonItemId": "emitter@17,0,7-0-1000",
       "position": {
@@ -2906,6 +2959,7 @@ exports[`playing through a complex, deterministic room ("laboratory") should alw
         "which": "cyberman",
       },
       "fixedZIndex": undefined,
+      "hash": 0.19952266523614526,
       "id": "emitter@17,0,7-1-2008",
       "jsonItemId": "emitter@17,0,7-1-2008",
       "position": {
@@ -3002,6 +3056,7 @@ exports[`playing through a complex, deterministic room ("laboratory") should alw
         "which": "cyberman",
       },
       "fixedZIndex": undefined,
+      "hash": 0.19952266523614526,
       "id": "emitter@17,0,7-2-3008",
       "jsonItemId": "emitter@17,0,7-2-3008",
       "position": {
@@ -3098,6 +3153,7 @@ exports[`playing through a complex, deterministic room ("laboratory") should alw
         "which": "cyberman",
       },
       "fixedZIndex": undefined,
+      "hash": 0.19952266523614526,
       "id": "emitter@17,0,7-3-4008",
       "jsonItemId": "emitter@17,0,7-3-4008",
       "position": {
@@ -3191,6 +3247,7 @@ exports[`playing through a complex, deterministic room ("laboratory") should alw
         "which": "cyberman",
       },
       "fixedZIndex": undefined,
+      "hash": 0.19952266523614526,
       "id": "emitter@17,0,7-4-5016",
       "jsonItemId": "emitter@17,0,7-4-5016",
       "position": {
@@ -3298,6 +3355,7 @@ exports[`playing through a complex, deterministic room ("laboratory") should alw
           "y": 14,
         },
       },
+      "hash": 0.8610746480990201,
       "id": "floor@0,0,0",
       "jsonItemId": "floor@0,0,0",
       "renderAabb": {
@@ -3383,6 +3441,7 @@ exports[`playing through a complex, deterministic room ("laboratory") should alw
       },
       "castsShadowWhileStoodOn": true,
       "config": {},
+      "hash": 0.14491023076698184,
       "id": "heels",
       "jsonItemId": "heels",
       "renderAabb": {
@@ -3490,6 +3549,7 @@ exports[`playing through a complex, deterministic room ("laboratory") should alw
         ],
       },
       "fixedZIndex": undefined,
+      "hash": 0.7496657024603337,
       "id": "joystick@4,1,0",
       "jsonItemId": "joystick@4,1,0",
       "position": {
@@ -3539,6 +3599,7 @@ exports[`playing through a complex, deterministic room ("laboratory") should alw
         ],
       },
       "fixedZIndex": undefined,
+      "hash": 0.12199204275384545,
       "id": "joystick@5,3,0",
       "jsonItemId": "joystick@5,3,0",
       "position": {
@@ -3583,6 +3644,7 @@ exports[`playing through a complex, deterministic room ("laboratory") should alw
         "top": 11,
       },
       "fixedZIndex": undefined,
+      "hash": 0.11738318717107177,
       "id": "lift@0,4,3",
       "jsonItemId": "lift@0,4,3",
       "position": {
@@ -3648,6 +3710,7 @@ exports[`playing through a complex, deterministic room ("laboratory") should alw
         "top": 11,
       },
       "fixedZIndex": undefined,
+      "hash": 0.052145883440971375,
       "id": "lift@1,4,2",
       "jsonItemId": "lift@1,4,2",
       "position": {
@@ -3713,6 +3776,7 @@ exports[`playing through a complex, deterministic room ("laboratory") should alw
         "top": 2,
       },
       "fixedZIndex": undefined,
+      "hash": 0.735681080725044,
       "id": "lift@13,6,1",
       "jsonItemId": "lift@13,6,1",
       "position": {
@@ -3776,6 +3840,7 @@ exports[`playing through a complex, deterministic room ("laboratory") should alw
         "top": 11,
       },
       "fixedZIndex": undefined,
+      "hash": 0.7428775797598064,
       "id": "lift@2,4,1",
       "jsonItemId": "lift@2,4,1",
       "position": {
@@ -3839,6 +3904,7 @@ exports[`playing through a complex, deterministic room ("laboratory") should alw
         "top": 11,
       },
       "fixedZIndex": undefined,
+      "hash": 0.10710457968525589,
       "id": "lift@3,4,0",
       "jsonItemId": "lift@3,4,0",
       "position": {
@@ -3905,6 +3971,7 @@ exports[`playing through a complex, deterministic room ("laboratory") should alw
         "which": "skiHead",
       },
       "fixedZIndex": undefined,
+      "hash": 0.36740653635933995,
       "id": "monster@0,4,1",
       "jsonItemId": "monster@0,4,1",
       "position": {
@@ -3989,6 +4056,7 @@ exports[`playing through a complex, deterministic room ("laboratory") should alw
         "which": "skiHead",
       },
       "fixedZIndex": undefined,
+      "hash": 0.7958171188365668,
       "id": "monster@1,7,0",
       "jsonItemId": "monster@1,7,0",
       "position": {
@@ -4073,6 +4141,7 @@ exports[`playing through a complex, deterministic room ("laboratory") should alw
         "which": "skiHead",
       },
       "fixedZIndex": undefined,
+      "hash": 0.8090494212228805,
       "id": "monster@1,8,0",
       "jsonItemId": "monster@1,8,0",
       "position": {
@@ -4157,6 +4226,7 @@ exports[`playing through a complex, deterministic room ("laboratory") should alw
         "which": "skiHead",
       },
       "fixedZIndex": undefined,
+      "hash": 0.3638540799729526,
       "id": "monster@2,8,0",
       "jsonItemId": "monster@2,8,0",
       "position": {
@@ -4241,6 +4311,7 @@ exports[`playing through a complex, deterministic room ("laboratory") should alw
         "which": "skiHead",
       },
       "fixedZIndex": undefined,
+      "hash": 0.01029481366276741,
       "id": "monster@4,0,0",
       "jsonItemId": "monster@4,0,0",
       "position": {
@@ -4325,6 +4396,7 @@ exports[`playing through a complex, deterministic room ("laboratory") should alw
         "which": "skiHead",
       },
       "fixedZIndex": undefined,
+      "hash": 0.037700027925893664,
       "id": "monster@4,2,0",
       "jsonItemId": "monster@4,2,0",
       "position": {
@@ -4406,6 +4478,7 @@ exports[`playing through a complex, deterministic room ("laboratory") should alw
         "which": "cyberman",
       },
       "fixedZIndex": undefined,
+      "hash": 0.5525308228097856,
       "id": "monster@4,8,5",
       "jsonItemId": "monster@4,8,5",
       "position": {
@@ -4525,6 +4598,7 @@ exports[`playing through a complex, deterministic room ("laboratory") should alw
         "gives": "doughnuts",
       },
       "fixedZIndex": undefined,
+      "hash": 0.3673487815540284,
       "id": "pickup@0,4,9",
       "jsonItemId": "pickup@0,4,9",
       "position": {
@@ -4599,6 +4673,7 @@ exports[`playing through a complex, deterministic room ("laboratory") should alw
         "gives": "hooter",
       },
       "fixedZIndex": undefined,
+      "hash": 0.6772056766785681,
       "id": "pickup@1,4,9",
       "jsonItemId": "pickup@1,4,9",
       "position": {
@@ -4683,6 +4758,7 @@ exports[`playing through a complex, deterministic room ("laboratory") should alw
         "gives": "bag",
       },
       "fixedZIndex": undefined,
+      "hash": 0.18925608834251761,
       "id": "pickup@12,0,0",
       "jsonItemId": "pickup@12,0,0",
       "position": {
@@ -4757,6 +4833,7 @@ exports[`playing through a complex, deterministic room ("laboratory") should alw
         "gives": "shield",
       },
       "fixedZIndex": undefined,
+      "hash": 0.27304304693825543,
       "id": "pickup@15,1,0",
       "jsonItemId": "pickup@15,1,0",
       "position": {
@@ -4833,6 +4910,7 @@ exports[`playing through a complex, deterministic room ("laboratory") should alw
         "gives": "shield",
       },
       "fixedZIndex": undefined,
+      "hash": 0.419993088580668,
       "id": "pickup@16,1,0",
       "jsonItemId": "pickup@16,1,0",
       "position": {
@@ -4911,6 +4989,7 @@ exports[`playing through a complex, deterministic room ("laboratory") should alw
         "gives": "shield",
       },
       "fixedZIndex": undefined,
+      "hash": 0.7949907719157636,
       "id": "pickup@16,1,1",
       "jsonItemId": "pickup@16,1,1",
       "position": {
@@ -4987,6 +5066,7 @@ exports[`playing through a complex, deterministic room ("laboratory") should alw
         "gives": "shield",
       },
       "fixedZIndex": undefined,
+      "hash": 0.22444839519448578,
       "id": "pickup@17,1,0",
       "jsonItemId": "pickup@17,1,0",
       "position": {
@@ -5065,6 +5145,7 @@ exports[`playing through a complex, deterministic room ("laboratory") should alw
         "gives": "shield",
       },
       "fixedZIndex": undefined,
+      "hash": 0.5994364069774747,
       "id": "pickup@17,1,1",
       "jsonItemId": "pickup@17,1,1",
       "position": {
@@ -5143,6 +5224,7 @@ exports[`playing through a complex, deterministic room ("laboratory") should alw
         "gives": "shield",
       },
       "fixedZIndex": undefined,
+      "hash": 0.9744836657773703,
       "id": "pickup@17,1,2",
       "jsonItemId": "pickup@17,1,2",
       "position": {
@@ -5219,6 +5301,7 @@ exports[`playing through a complex, deterministic room ("laboratory") should alw
         "gives": "reincarnation",
       },
       "fixedZIndex": undefined,
+      "hash": 0.9677810312714428,
       "id": "pickup@3,5,11",
       "jsonItemId": "pickup@3,5,11",
       "position": {
@@ -5295,6 +5378,7 @@ exports[`playing through a complex, deterministic room ("laboratory") should alw
         "gives": "reincarnation",
       },
       "fixedZIndex": undefined,
+      "hash": 0.1201913480181247,
       "id": "pickup@4,6,1",
       "jsonItemId": "pickup@4,6,1",
       "position": {
@@ -5375,6 +5459,7 @@ exports[`playing through a complex, deterministic room ("laboratory") should alw
         "gives": "bag",
       },
       "fixedZIndex": undefined,
+      "hash": 0.7452467712573707,
       "id": "pickup@4,6,10",
       "jsonItemId": "pickup@4,6,10",
       "position": {
@@ -5449,6 +5534,7 @@ exports[`playing through a complex, deterministic room ("laboratory") should alw
         "gives": "reincarnation",
       },
       "fixedZIndex": undefined,
+      "hash": 0.6200705335941166,
       "id": "pickup@4,6,13",
       "jsonItemId": "pickup@4,6,13",
       "position": {
@@ -5529,6 +5615,7 @@ exports[`playing through a complex, deterministic room ("laboratory") should alw
         "gives": "extra-life",
       },
       "fixedZIndex": undefined,
+      "hash": 0.12026448152028024,
       "id": "pickup@4,6,9",
       "jsonItemId": "pickup@4,6,9",
       "position": {
@@ -5611,6 +5698,7 @@ exports[`playing through a complex, deterministic room ("laboratory") should alw
         "style": "cube",
       },
       "fixedZIndex": undefined,
+      "hash": 0.9495447324588895,
       "id": "portableBlock@0,0,2",
       "jsonItemId": "portableBlock@0,0,2",
       "position": {
@@ -5682,6 +5770,7 @@ exports[`playing through a complex, deterministic room ("laboratory") should alw
         "style": "cube",
       },
       "fixedZIndex": undefined,
+      "hash": 0.5745608925353736,
       "id": "portableBlock@0,0,7",
       "jsonItemId": "portableBlock@0,0,7",
       "position": {
@@ -5750,6 +5839,7 @@ exports[`playing through a complex, deterministic room ("laboratory") should alw
         "style": "cube",
       },
       "fixedZIndex": undefined,
+      "hash": 0.6261824076063931,
       "id": "portableBlock@13,1,0",
       "jsonItemId": "portableBlock@13,1,0",
       "position": {
@@ -5816,6 +5906,7 @@ exports[`playing through a complex, deterministic room ("laboratory") should alw
         "style": "cube",
       },
       "fixedZIndex": undefined,
+      "hash": 0.7511892248876393,
       "id": "portableBlock@13,1,1",
       "jsonItemId": "portableBlock@13,1,1",
       "position": {
@@ -5882,6 +5973,7 @@ exports[`playing through a complex, deterministic room ("laboratory") should alw
         "style": "cube",
       },
       "fixedZIndex": undefined,
+      "hash": 0.37614588742144406,
       "id": "portableBlock@13,1,2",
       "jsonItemId": "portableBlock@13,1,2",
       "position": {
@@ -5946,6 +6038,7 @@ exports[`playing through a complex, deterministic room ("laboratory") should alw
         "style": "sticks",
       },
       "fixedZIndex": undefined,
+      "hash": 0.585401710588485,
       "id": "portableBlock@13,2,0",
       "jsonItemId": "portableBlock@13,2,0",
       "position": {
@@ -6010,6 +6103,7 @@ exports[`playing through a complex, deterministic room ("laboratory") should alw
         "style": "drum",
       },
       "fixedZIndex": undefined,
+      "hash": 0.610785260098055,
       "id": "portableBlock@13,3,0",
       "jsonItemId": "portableBlock@13,3,0",
       "position": {
@@ -6074,6 +6168,7 @@ exports[`playing through a complex, deterministic room ("laboratory") should alw
         "style": "cube",
       },
       "fixedZIndex": undefined,
+      "hash": 0.11075977655127645,
       "id": "portableBlock@13,3,4",
       "jsonItemId": "portableBlock@13,3,4",
       "position": {
@@ -6138,6 +6233,7 @@ exports[`playing through a complex, deterministic room ("laboratory") should alw
         "style": "cube",
       },
       "fixedZIndex": undefined,
+      "hash": 0.6137188209686428,
       "id": "portableBlock@13,4,0",
       "jsonItemId": "portableBlock@13,4,0",
       "position": {
@@ -6206,6 +6302,7 @@ exports[`playing through a complex, deterministic room ("laboratory") should alw
         "style": "drum",
       },
       "fixedZIndex": undefined,
+      "hash": 0.3666796553879976,
       "id": "portableBlock@13.5,3,2",
       "jsonItemId": "portableBlock@13.5,3,2",
       "position": {
@@ -6270,6 +6367,7 @@ exports[`playing through a complex, deterministic room ("laboratory") should alw
         "style": "cube",
       },
       "fixedZIndex": undefined,
+      "hash": 0.3010079013183713,
       "id": "portableBlock@3,13,0",
       "jsonItemId": "portableBlock@3,13,0",
       "position": {
@@ -6334,6 +6432,7 @@ exports[`playing through a complex, deterministic room ("laboratory") should alw
         "style": "cube",
       },
       "fixedZIndex": undefined,
+      "hash": 0.8933157736901194,
       "id": "portableBlock@4,13,0",
       "jsonItemId": "portableBlock@4,13,0",
       "position": {
@@ -6398,6 +6497,7 @@ exports[`playing through a complex, deterministic room ("laboratory") should alw
         "style": "drum",
       },
       "fixedZIndex": undefined,
+      "hash": 0.745196764357388,
       "id": "portableBlock@4,6,2",
       "jsonItemId": "portableBlock@4,6,2",
       "position": {
@@ -6466,6 +6566,7 @@ exports[`playing through a complex, deterministic room ("laboratory") should alw
         "style": "cube",
       },
       "fixedZIndex": undefined,
+      "hash": 0.37572423624806106,
       "id": "portableBlock@5,13,0",
       "jsonItemId": "portableBlock@5,13,0",
       "position": {
@@ -6532,6 +6633,7 @@ exports[`playing through a complex, deterministic room ("laboratory") should alw
         "style": "cube",
       },
       "fixedZIndex": undefined,
+      "hash": 0.07565269782207906,
       "id": "portableBlock@5,6,10",
       "jsonItemId": "portableBlock@5,6,10",
       "position": {
@@ -6598,6 +6700,7 @@ exports[`playing through a complex, deterministic room ("laboratory") should alw
       "castsWholeShadows": true,
       "config": {},
       "fixedZIndex": undefined,
+      "hash": 0.39497728389687836,
       "id": "pushableBlock@1,6,0",
       "jsonItemId": "pushableBlock@1,6,0",
       "position": {
@@ -6675,6 +6778,7 @@ exports[`playing through a complex, deterministic room ("laboratory") should alw
       "castsWholeShadows": true,
       "config": {},
       "fixedZIndex": undefined,
+      "hash": 0.019978751428425312,
       "id": "pushableBlock@1,6,1",
       "jsonItemId": "pushableBlock@1,6,1",
       "position": {
@@ -6752,6 +6856,7 @@ exports[`playing through a complex, deterministic room ("laboratory") should alw
       "castsWholeShadows": true,
       "config": {},
       "fixedZIndex": undefined,
+      "hash": 0.6450061765499413,
       "id": "pushableBlock@1,6,2",
       "jsonItemId": "pushableBlock@1,6,2",
       "position": {
@@ -6827,6 +6932,7 @@ exports[`playing through a complex, deterministic room ("laboratory") should alw
       "castsWholeShadows": true,
       "config": {},
       "fixedZIndex": undefined,
+      "hash": 0.47549967700615525,
       "id": "pushableBlock@10,7,0",
       "jsonItemId": "pushableBlock@10,7,0",
       "position": {
@@ -6900,6 +7006,7 @@ exports[`playing through a complex, deterministic room ("laboratory") should alw
       "castsWholeShadows": true,
       "config": {},
       "fixedZIndex": undefined,
+      "hash": 0.6005237945355475,
       "id": "pushableBlock@10,7,1",
       "jsonItemId": "pushableBlock@10,7,1",
       "position": {
@@ -6973,6 +7080,7 @@ exports[`playing through a complex, deterministic room ("laboratory") should alw
       "castsWholeShadows": true,
       "config": {},
       "fixedZIndex": undefined,
+      "hash": 0.22549757617525756,
       "id": "pushableBlock@10,7,2",
       "jsonItemId": "pushableBlock@10,7,2",
       "position": {
@@ -7046,6 +7154,7 @@ exports[`playing through a complex, deterministic room ("laboratory") should alw
       "castsWholeShadows": true,
       "config": {},
       "fixedZIndex": undefined,
+      "hash": 0.3505362959112972,
       "id": "pushableBlock@10,7,3",
       "jsonItemId": "pushableBlock@10,7,3",
       "position": {
@@ -7119,6 +7228,7 @@ exports[`playing through a complex, deterministic room ("laboratory") should alw
       "castsWholeShadows": true,
       "config": {},
       "fixedZIndex": undefined,
+      "hash": 0.9755023887846619,
       "id": "pushableBlock@10,7,4",
       "jsonItemId": "pushableBlock@10,7,4",
       "position": {
@@ -7192,6 +7302,7 @@ exports[`playing through a complex, deterministic room ("laboratory") should alw
       "castsWholeShadows": true,
       "config": {},
       "fixedZIndex": undefined,
+      "hash": 0.10051851905882359,
       "id": "pushableBlock@10,7,5",
       "jsonItemId": "pushableBlock@10,7,5",
       "position": {
@@ -7263,6 +7374,7 @@ exports[`playing through a complex, deterministic room ("laboratory") should alw
       "castsWholeShadows": true,
       "config": {},
       "fixedZIndex": undefined,
+      "hash": 0.821687065763399,
       "id": "pushableBlock@2,6,0",
       "jsonItemId": "pushableBlock@2,6,0",
       "position": {
@@ -7340,6 +7452,7 @@ exports[`playing through a complex, deterministic room ("laboratory") should alw
       "castsWholeShadows": true,
       "config": {},
       "fixedZIndex": undefined,
+      "hash": 0.6966874455101788,
       "id": "pushableBlock@2,6,1",
       "jsonItemId": "pushableBlock@2,6,1",
       "position": {
@@ -7417,6 +7530,7 @@ exports[`playing through a complex, deterministic room ("laboratory") should alw
       "castsWholeShadows": true,
       "config": {},
       "fixedZIndex": undefined,
+      "hash": 0.07171929907053709,
       "id": "pushableBlock@2,6,2",
       "jsonItemId": "pushableBlock@2,6,2",
       "position": {
@@ -7492,6 +7606,7 @@ exports[`playing through a complex, deterministic room ("laboratory") should alw
       "castsWholeShadows": true,
       "config": {},
       "fixedZIndex": undefined,
+      "hash": 0.8221408659592271,
       "id": "pushableBlock@2,9,0",
       "jsonItemId": "pushableBlock@2,9,0",
       "position": {
@@ -7569,6 +7684,7 @@ exports[`playing through a complex, deterministic room ("laboratory") should alw
       "castsWholeShadows": false,
       "config": {},
       "fixedZIndex": undefined,
+      "hash": 0.617827543290332,
       "id": "spring@13,0,0",
       "jsonItemId": "spring@13,0,0",
       "position": {
@@ -7640,6 +7756,7 @@ exports[`playing through a complex, deterministic room ("laboratory") should alw
       "castsWholeShadows": false,
       "config": {},
       "fixedZIndex": undefined,
+      "hash": 0.4529438193421811,
       "id": "spring@14,0,0",
       "jsonItemId": "spring@14,0,0",
       "position": {
@@ -7729,6 +7846,7 @@ exports[`playing through a complex, deterministic room ("laboratory") should alw
         "type": "in-room",
       },
       "fixedZIndex": undefined,
+      "hash": 0.28706859704107046,
       "id": "switch@17,12,0",
       "jsonItemId": "switch@17,12,0",
       "position": {
@@ -7783,6 +7901,7 @@ exports[`playing through a complex, deterministic room ("laboratory") should alw
         "which": "turtle",
       },
       "fixedZIndex": undefined,
+      "hash": 0.6619484375696629,
       "id": "t1",
       "jsonItemId": "t1",
       "position": {
@@ -7877,6 +7996,7 @@ exports[`playing through a complex, deterministic room ("laboratory") should alw
         "which": "turtle",
       },
       "fixedZIndex": undefined,
+      "hash": 0.24768296210095286,
       "id": "t2",
       "jsonItemId": "t2",
       "position": {
@@ -7972,6 +8092,7 @@ exports[`playing through a complex, deterministic room ("laboratory") should alw
         "toRoom": "nowhere",
       },
       "fixedZIndex": undefined,
+      "hash": 0.18161327973939478,
       "id": "teleporter@1,0,0",
       "jsonItemId": "teleporter@1,0,0",
       "position": {
@@ -8052,6 +8173,7 @@ exports[`playing through a complex, deterministic room ("laboratory") should alw
         "whenPlayerInside": true,
       },
       "fixedZIndex": -2,
+      "hash": 0.05661270604468882,
       "id": "teleporter@1,0,0-help",
       "jsonItemId": "teleporter@1,0,0-help",
       "position": {
@@ -8109,6 +8231,7 @@ exports[`playing through a complex, deterministic room ("laboratory") should alw
         },
       },
       "fixedZIndex": -2,
+      "hash": 0.089895851444453,
       "id": "wall(right)@0,0,0",
       "jsonItemId": "wall(right)@0,0,0",
       "shadowCastTexture": {
@@ -8150,6 +8273,7 @@ exports[`playing through a complex, deterministic room ("laboratory") should alw
         },
       },
       "fixedZIndex": -2,
+      "hash": 0.5196832646615803,
       "id": "wall(towards)@0,0,0",
       "jsonItemId": "wall(towards)@0,0,0",
       "shadowCastTexture": {
@@ -8196,6 +8320,7 @@ exports[`playing through a complex, deterministic room ("laboratory") should alw
         ],
       },
       "fixedZIndex": undefined,
+      "hash": 0.34447973500937223,
       "id": "wall@0,14,0",
       "jsonItemId": "wall@0,14,0",
       "renderAabb": {
@@ -8256,6 +8381,7 @@ exports[`playing through a complex, deterministic room ("laboratory") should alw
         ],
       },
       "fixedZIndex": undefined,
+      "hash": 0.18779043410904706,
       "id": "wall@18,0,0",
       "jsonItemId": "wall@18,0,0",
       "renderAabb": {
@@ -8302,6 +8428,7 @@ exports[`playing through a complex, deterministic room ("laboratory") should alw
         },
       },
       "fixedZIndex": -2,
+      "hash": 0.5971216307953,
       "id": "wall@7,0,0",
       "jsonItemId": "wall@7,0,0",
       "shadowCastTexture": {
@@ -8352,6 +8479,7 @@ exports[`playing through a complex, deterministic room ("laboratory") should alw
         ],
       },
       "fixedZIndex": undefined,
+      "hash": 0.14143862575292587,
       "id": "wall@7,14,0",
       "jsonItemId": "wall@7,14,0",
       "renderAabb": {

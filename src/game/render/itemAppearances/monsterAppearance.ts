@@ -64,7 +64,7 @@ const bobAmplitudeNervous = 0.25;
 const bobAmplitudeRelaxed = 1;
 
 const maybeAddBob = (
-  { id, config: { which }, state }: ItemInPlay<"monster">,
+  { hash, config: { which }, state }: ItemInPlay<"monster">,
   room: RoomState<string, string>,
   currentOutput: Container,
   uncolourised: boolean,
@@ -88,7 +88,7 @@ const maybeAddBob = (
       room.roomTime,
       bobPeriod,
       bobAmplitude,
-      id,
+      hash,
       uncolourised,
     );
     if (isStacked) {
@@ -118,7 +118,7 @@ export const monsterAppearance: ItemAppearance<
   },
   currentRendering,
 }) => {
-  const { config, state, id } = item;
+  const { config, state, hash } = item;
   const currentlyRenderedProps = currentRendering?.renderProps;
 
   const { activated, busyLickingDoughnutsOffFace } = state;
@@ -197,7 +197,7 @@ export const monsterAppearance: ItemAppearance<
                   animationId: `${config.which}.${facingXy4}`,
                   spritesheet,
                   paused,
-                  randomiseStartFrame: id,
+                  startFramePhase: hash,
                 })
               : createSprite({
                   textureId: `${config.which}.${facingXy4}.1`,
@@ -345,7 +345,7 @@ export const monsterAppearance: ItemAppearance<
                       : "helicopterBug",
                     spritesheet,
                     paused,
-                    randomiseStartFrame: id,
+                    startFramePhase: hash,
                   } satisfies AnimatedCreateSpriteOptions)
                 : { textureId: `${config.which}.1`, spritesheet },
               ),
@@ -366,7 +366,7 @@ export const monsterAppearance: ItemAppearance<
                   activated && !busyLickingDoughnutsOffFace ?
                     {
                       animationId: "bubbles.blueGreen",
-                      randomiseStartFrame: id,
+                      startFramePhase: hash,
                       paused,
                       spritesheet,
                     }

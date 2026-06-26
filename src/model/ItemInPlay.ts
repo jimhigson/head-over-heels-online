@@ -168,6 +168,16 @@ export type ItemInPlay<
   readonly id: ItemId;
   state: ItemState<T, RoomId, RoomItemId>;
 
+  /**
+   * a stable pseudo-random number in `[0, 1)`, derived from the item's initial
+   * position when it is loaded from json (see `hashXyzToNumber0to1`). Used to
+   * de-synchronise animations (start frame, bob phase) so identical items in a
+   * room don't move in lock-step - keyed off position rather than the item id,
+   * so it survives ids being synthesised by the columnar codec. Set once when
+   * the item is loaded from json; absent only on items not built that way.
+   */
+  hash?: number;
+
   /** the shadow this item casts on other items */
   shadowCastTexture?: ShadowCastSpriteOptions;
 

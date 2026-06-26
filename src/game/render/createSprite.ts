@@ -16,7 +16,7 @@ import {
   type TextureId,
 } from "../../sprites/spritesheet/spritesheetData/makeSpritesheetData";
 import { type AppSpritesheet } from "../../sprites/spritesheet/variants/SpritesheetVariants";
-import { hashStringToNumber0to1 } from "../../utils/maths/hashStringToNumber0to1";
+import { phaseForSubItem } from "../../utils/maths/hashXyzToNumber0to1";
 import { lengthXyz, type Xy, type Xyz } from "../../utils/vectors/vectors";
 import { projectBlockXyzToScreenXy } from "./projections";
 
@@ -38,10 +38,11 @@ export type AnimatedCreateSpriteOptions = CreateSpriteSpritesheetSpecifier & {
   subSpriteVariations?: undefined;
   animationId: AnimationId;
   /**
-   * if given, the animation will start at a psuedo-random frame
-   * based off of hashing this string
+   * if given (a number in `[0, 1)`, typically an item's `hash`), the animation
+   * starts at that fraction through its frames, so otherwise-identical
+   * animations don't play in lock-step
    */
-  randomiseStartFrame?: string;
+  startFramePhase?: number;
   /*
    * if true, animation will run backwards
    */
@@ -148,10 +149,21 @@ const createSpriteImpl = (options: CreateSpriteOptions): Container => {
               subSpriteVariations: undefined,
             };
 
-            if ("randomiseStartFrame" in subSpriteOptions) {
-              // if randomising the start frame, we don't want all the sub-sprites to get the same randomisation
-              // so the sub-position of the child sprite onto the randomiseStartFrame string:
-              subSpriteOptions.randomiseStartFrame = `${subSpriteOptions.randomiseStartFrame}${x},${y},${z}`;
+            if (
+              "startFramePhase" in subSpriteOptions &&
+              subSpriteOptions.startFramePhase !== undefined
+            ) {
+              // vary the start frame per sub-cell so the multiplied sprites
+              // don't all animate in lock-step
+              const cellIndex =
+                x -
+                1 +
+                (y - 1) * completeTimes.x +
+                (z - 1) * completeTimes.x * completeTimes.y;
+              subSpriteOptions.startFramePhase = phaseForSubItem(
+                subSpriteOptions.startFramePhase,
+                cellIndex,
+              );
             }
             delete subSpriteOptions.times;
             const component = createSpriteImpl(
@@ -301,8 +313,7 @@ export const framesWithOriginalGameTimings = (animationTextures: Texture[]) => {
 function createAnimatedSprite(
   options: AnimatedCreateSpriteOptions,
 ): AnimatedSprite {
-  const { animationId, reverse, playOnce, paused, randomiseStartFrame } =
-    options;
+  const { animationId, reverse, playOnce, paused, startFramePhase } = options;
 
   const animationTextures = options.spritesheet!.animations[animationId];
 
@@ -321,11 +332,8 @@ function createAnimatedSprite(
   );
 
   animatedSprite.gotoAndPlay(
-    randomiseStartFrame !== undefined ?
-      Math.floor(
-        hashStringToNumber0to1(randomiseStartFrame) *
-          animatedSpriteFrames.length,
-      )
+    startFramePhase !== undefined ?
+      Math.floor(startFramePhase * animatedSpriteFrames.length)
     : 0,
   );
 

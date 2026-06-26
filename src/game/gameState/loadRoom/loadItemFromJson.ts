@@ -9,6 +9,7 @@ import { type PlanetName } from "../../../sprites/planets";
 import { type ScrollsRead } from "../../../store/slices/gameInPlay/gameInPlaySlice";
 import { type PokesEnabled } from "../../../store/slices/userSettings/userSettingsSlice";
 import { emptyObject } from "../../../utils/empty";
+import { hashXyzToNumber0to1 } from "../../../utils/maths/hashXyzToNumber0to1";
 import {
   addXyz,
   lengthXyz,
@@ -37,7 +38,7 @@ type ItemConfigMaybeWithMultiplication = {
   times?: Partial<Xyz> | undefined;
 };
 
-export function* loadItemFromJson<
+function* loadItemFromJsonWithoutHash<
   RoomId extends string,
   RoomItemId extends string,
 >(
@@ -108,7 +109,7 @@ export function* loadItemFromJson<
               };
               draft.config.times = unitXyz;
             });
-            yield* loadItemFromJson(
+            yield* loadItemFromJsonWithoutHash(
               jsonItemId,
               individualBlock,
               roomJson,
@@ -201,7 +202,7 @@ export function* loadItemFromJson<
 
       if (jsonItem.type === "teleporter") {
         const teleporterTimes = getJsonItemTimes(jsonItem);
-        yield* loadItemFromJson(
+        yield* loadItemFromJsonWithoutHash(
           `${jsonItemId}-help` as RoomItemId,
           {
             type: "emitter",
@@ -231,5 +232,24 @@ export function* loadItemFromJson<
         );
       }
     }
+  }
+}
+
+/**
+ * Convert a json item to its in-play item(s). Every in-play item is stamped
+ * with a {@link hashXyzToNumber0to1 hash} of its initial position, used to
+ * de-synchronise animations without depending on the (possibly synthesised)
+ * item id. All json -> in-play conversion goes through here, so every loaded
+ * item carries a hash.
+ */
+export function* loadItemFromJson<
+  RoomId extends string,
+  RoomItemId extends string,
+>(
+  ...args: Parameters<typeof loadItemFromJsonWithoutHash<RoomId, RoomItemId>>
+): Generator<UnionOfAllItemInPlayTypes<RoomId>, undefined> {
+  for (const item of loadItemFromJsonWithoutHash<RoomId, RoomItemId>(...args)) {
+    item.hash = hashXyzToNumber0to1(item.state.position);
+    yield item;
   }
 }
