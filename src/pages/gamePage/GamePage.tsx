@@ -23,6 +23,8 @@ import {
   selectCanvasSize,
   selectRot90,
 } from "../../store/slices/upscale/upscaleSlice.ts";
+import { useUpdateUpscaleOnDisplaySettingsChange } from "../../store/slices/upscale/useUpdateUpscaleOnDisplaySettingsChange.ts";
+import { useUpdateUpscaleWhenElementResizes } from "../../store/slices/upscale/useUpdateUpscaleWhenElementResizes.ts";
 import { store } from "../../store/store.ts";
 import { ConnectInputToStore } from "../../store/storeFlow/ConnectInputToStore.tsx";
 import { DispatchingErrorBoundary } from "../../utils/react/DispatchingErrorBoundary.tsx";
@@ -119,6 +121,12 @@ const useCreateGameApi = (): GameApi<string> | undefined => {
  */
 export const GamePage = () => {
   const [renderArea, setRenderArea] = useState<HTMLDivElement | null>(null);
+  // a CSS-filled element whose size drives the upscale. Measuring this via a
+  // ResizeObserver (rather than reading window.innerWidth/innerHeight on the
+  // window 'resize' event) tracks the real available area more reliably on
+  // iOS, where the standalone web-app viewport settles late after rotation.
+  const [renderSizingArea, setRenderSizingArea] =
+    useState<HTMLDivElement | null>(null);
 
   const cheatsOn = useCheatsOn();
   const gameApi = useCreateGameApi();
@@ -128,6 +136,11 @@ export const GamePage = () => {
   const canvasInlineStyle = useCanvasInlineStyle();
 
   usePageAsAnApp();
+  useUpdateUpscaleWhenElementResizes(undefined, renderSizingArea ?? undefined);
+  useUpdateUpscaleOnDisplaySettingsChange(
+    undefined,
+    renderSizingArea ?? undefined,
+  );
   useEffect(() => {
     if (renderArea === null || gameApi === undefined) {
       return;
@@ -148,16 +161,22 @@ export const GamePage = () => {
   return (
     <>
       {/* 👇👇 where the magic happens - the element the game plays in! 👇👇 */}
-      <div
-        // without tabIndex here, Chrome doesn't allow tab key to be used to open the map
-        // (or anything else) because it moves focus to the address bar
-        tabIndex={0}
-        // without fixed top-0, sometimes on MacOs Safari, after going to the map and back
-        // the game's area is rendered scrolled up the screen
-        className="fixed top-0"
-        style={canvasInlineStyle}
-        ref={setRenderArea}
-      />
+      {/* the sizing area fills the real screen via css (not js-measured pixels),
+          so even if the upscale is computed from a momentarily-wrong viewport
+          the black backdrop still covers the whole screen. Its measured size
+          drives the upscale. */}
+      <div ref={setRenderSizingArea} className="fixed inset-0">
+        <div
+          // without tabIndex here, Chrome doesn't allow tab key to be used to open the map
+          // (or anything else) because it moves focus to the address bar
+          tabIndex={0}
+          // without top-0/left-0, sometimes on MacOs Safari, after going to the map and back
+          // the game's area is rendered scrolled up the screen
+          className="absolute top-0 left-0"
+          style={canvasInlineStyle}
+          ref={setRenderArea}
+        />
+      </div>
       <GameApiProvider gameApi={gameApi}>
         <DispatchingErrorBoundary>
           <AddAnalyticsToStore />

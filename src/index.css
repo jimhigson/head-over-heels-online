@@ -4,6 +4,15 @@
 @tailwind utilities;
 
 @layer base {
+  html,
+  body,
+  #root {
+    /* establish a height chain so the app can fill the viewport. Without this
+       the body collapses to zero height, which on iOS standalone web apps
+       leaves the app sized to a stale/partial viewport rather than the screen */
+    height: 100%;
+  }
+
   body {
     /* TODO: revert and use only while loading */
     background-color: black;
