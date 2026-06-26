@@ -1,0 +1,161 @@
+import { createClient } from "@supabase/supabase-js";
+import { createHash } from "node:crypto";
+import { writeFile } from "node:fs/promises";
+import { loadEnv } from "vite";
+
+import { type Database } from "../src/_generated/db";
+import {
+  jimAtBlockstackingUserId,
+  sequelCampaignLocator,
+  type SupportedAuthProvider,
+  supportedAuthProviders,
+} from "../src/gameInfo";
+
+// genSeed runs in node (not vite), so it can't use the app's supabaseConnection
+// (which reads import.meta.env); read the prod creds from the base .env and make
+// its own throwaway client for the anon read
+const prodEnv = loadEnv("production", process.cwd(), "VITE_");
+const supabaseDb = createClient<Database>(
+  prodEnv.VITE_SUPABASE_URL,
+  prodEnv.VITE_SUPABASE_ANON_KEY,
+);
+
+/**
+ * Plain dev password for every seeded account - the local stack is not exposed.
+ * The dev fake-auth endpoint signs in via these by password grant.
+ */
+const devPassword = "password";
+
+/**
+ * The provider whose dev user owns the copied campaign, so signing in via it lets
+ * you edit sequel_25; the others are separate, empty accounts for multi-user
+ * testing. Its user reuses the real campaign owner's id so the editor (which loads
+ * sequelCampaignLocator) finds the campaign.
+ */
+const campaignOwnerProvider: SupportedAuthProvider = "github";
+
+const seedFilePath = "supabase/seed.sql";
+
+/** escape a value for use inside a single-quoted SQL string literal */
+const sqlString = (value: string) => value.replace(/'/g, "''");
+
+/** a deterministic uuid for a provider's dev user */
+const md5Uuid = (input: string): string => {
+  const hex = createHash("md5").update(input).digest("hex");
+  return `${hex.slice(0, 8)}-${hex.slice(8, 12)}-${hex.slice(12, 16)}-${hex.slice(16, 20)}-${hex.slice(20)}`;
+};
+
+const userIdForProvider = (provider: SupportedAuthProvider) =>
+  provider === campaignOwnerProvider ?
+    jimAtBlockstackingUserId
+  : md5Uuid(provider);
+
+const emailForProvider = (provider: SupportedAuthProvider) =>
+  `${provider}@blockstack.ing`;
+
+/** the auth.users + identity + profile rows that make one provider loginable */
+const userSeedSql = (provider: SupportedAuthProvider) => {
+  const userId = userIdForProvider(provider);
+  const email = emailForProvider(provider);
+  const username = `${provider}-test-user`;
+  return `-- ${provider} dev user (sign in via the editor's ${provider} button).
+-- raw_app_meta_data.provider is set to '${provider}' so the editor renders the
+-- right icon, even though sign-in is by password via the email identity below.
+-- the *_token / *_change columns are seeded as '' not NULL: gotrue scans them into
+-- non-nullable strings, and NULLs make sign-in fail with "Database error querying schema".
+insert into auth.users (
+  instance_id, id, aud, role, email, encrypted_password,
+  email_confirmed_at, created_at, updated_at,
+  raw_app_meta_data, raw_user_meta_data, is_sso_user, is_anonymous,
+  confirmation_token, recovery_token, email_change_token_new, email_change,
+  email_change_token_current, phone_change, phone_change_token, reauthentication_token
+) values (
+  '00000000-0000-0000-0000-000000000000',
+  '${sqlString(userId)}',
+  'authenticated', 'authenticated',
+  '${sqlString(email)}',
+  extensions.crypt('${sqlString(devPassword)}', extensions.gen_salt('bf')),
+  now(), now(), now(),
+  '{"provider":"${provider}","providers":["${provider}"]}', '{}',
+  false, false,
+  '', '', '', '',
+  '', '', '', ''
+) on conflict (id) do nothing;
+
+-- the email identity that lets the account sign in by password
+insert into auth.identities (
+  id, user_id, identity_data, provider, provider_id, created_at, updated_at, last_sign_in_at
+) values (
+  gen_random_uuid(),
+  '${sqlString(userId)}',
+  '{"sub":"${sqlString(userId)}","email":"${sqlString(email)}","email_verified":true,"phone_verified":false}',
+  'email', '${sqlString(userId)}', now(), now(), now()
+) on conflict do nothing;
+
+-- display name (easy to identify in dev)
+insert into user_details (username, "userId")
+values ('${sqlString(username)}', '${sqlString(userId)}') on conflict do nothing;
+`;
+};
+
+const generateSeed = async () => {
+  const { userId, campaignName } = sequelCampaignLocator;
+
+  // latest version of the chosen campaign; RLS lets anyone read campaigns, so the
+  // public anon client is enough and no production data is modified
+  const { data: rows, error } = await supabaseDb
+    .from("campaigns")
+    .select("data, version, published")
+    .eq("created_by", userId)
+    .eq("name", campaignName)
+    .order("version", { ascending: false })
+    .limit(1);
+
+  if (error !== null) {
+    throw new Error(`could not read ${campaignName} from production`, {
+      cause: error,
+    });
+  }
+  const [campaign] = rows ?? [];
+  if (campaign === undefined) {
+    throw new Error(
+      `no campaign named ${campaignName} found for user ${userId} in production`,
+    );
+  }
+
+  const ownerUserId = userIdForProvider(campaignOwnerProvider);
+
+  const seedSql = `-- GENERATED by \`pnpm gen:seed\` - do not edit by hand; local dev data only.
+--
+-- Copies the campaign named by sequelCampaignLocator (src/gameInfo.ts) from
+-- production, and creates one loginable local user per supportedAuthProviders so
+-- the dev fake-auth endpoint can sign in as each. The ${campaignOwnerProvider}
+-- user owns the copied campaign; the others are separate, empty accounts.
+--
+--   local logins (via the editor's provider buttons): <provider>@blockstack.ing / ${devPassword}
+--
+-- Regenerate with \`pnpm gen:seed\`; loaded automatically by \`supabase db reset\`.
+
+${supportedAuthProviders.map(userSeedSql).join("\n")}
+-- the campaign itself, owned by the ${campaignOwnerProvider} user; data is copied
+-- verbatim (url-safe-base64 gzip from prod)
+insert into campaigns (name, data, version, published, created_by)
+values (
+  '${sqlString(campaignName)}',
+  $campaign$${campaign.data}$campaign$,
+  ${campaign.version}, ${campaign.published}, '${sqlString(ownerUserId)}'
+);
+`;
+
+  await writeFile(seedFilePath, seedSql);
+
+  console.info(
+    `wrote ${seedFilePath}: ${campaignName} v${campaign.version}, owned by the ${campaignOwnerProvider} user`,
+  );
+  console.info(
+    `local logins: ${supportedAuthProviders.map(emailForProvider).join(", ")} / ${devPassword}`,
+  );
+};
+
+// oxlint-disable-next-line eslint-js/no-restricted-syntax - we don't care about Safari since this is a script:
+await generateSeed();

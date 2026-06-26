@@ -49,7 +49,11 @@ export const DoorToolButton = () => {
   return (
     <MenuButton
       main={
-        <ItemToolButton itemTool={itemTool} shortcutKeys={["D"]}>
+        <ItemToolButton
+          itemTool={itemTool}
+          shortcutKeys={["D"]}
+          ariaLabel={autoAddRoom ? "Door (adds adjacent room)" : "Door"}
+        >
           <LabelledToolbarIcon
             iconClasses={`sprite top-[calc(-17px*var(--scale))] left-[calc(-2px*var(--scale))] ${textureClassname} ${buttonSpriteRevertColourClasses}`}
             text={autoAddRoom ? "+" : ""}
@@ -63,6 +67,7 @@ export const DoorToolButton = () => {
           className="w-full"
           value={autoAddRoom}
           label="auto + room"
+          ariaLabel="Auto-add room with door"
           onChange={(value) => {
             setAutoAddRoom(value);
             if (isCurrentTool) {

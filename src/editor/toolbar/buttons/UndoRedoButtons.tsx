@@ -36,6 +36,7 @@ export const UndoRedoButtons = () => {
         contentsClassName={undoHistoryGridClassName}
         main={
           <ToolbarButton
+            ariaLabel="Undo"
             disabled={nextUndo === undefined}
             onClick={() => {
               dispatch(undo());
@@ -83,6 +84,7 @@ export const UndoRedoButtons = () => {
         contentsClassName={undoHistoryGridClassName}
         main={
           <ToolbarButton
+            ariaLabel="Redo"
             disabled={nextRedo === undefined}
             onClick={() => {
               dispatch(redo());

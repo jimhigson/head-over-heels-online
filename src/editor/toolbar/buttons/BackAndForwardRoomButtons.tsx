@@ -40,6 +40,7 @@ export const BackAndForwardRoomButtons = () => {
       <MenuButton
         main={
           <ToolbarButton
+            ariaLabel="Previous room"
             className="bg-highlightBeige"
             disabled={backRooms.length === 0}
             onClick={() => {
@@ -77,6 +78,7 @@ export const BackAndForwardRoomButtons = () => {
       <MenuButton
         main={
           <ToolbarButton
+            ariaLabel="Next room"
             className="bg-highlightBeige"
             disabled={forwardRooms.length === 0}
             onClick={() => {

@@ -239,6 +239,8 @@ throw new Error(
 
 * all modules with side-effects MUST be listed in package.json, otherwise the bundler will assume they are pure
 
+* when adding fields to a type for the purpose of discriminable unions, always call this `type`, not `kind` or any other name
+
  ## Tests
  When writing unit tests, do not put a top-level `describe` at the top of the file that wraps all tests. This is redundant since the test runner will give the test suite name anyway.
 
@@ -262,6 +264,7 @@ throw new Error(
  * before running, do `pnpm build:game` or else it'll run against old build, unless sure nothing has been edited since the last run - if unsure, assume edits.
 
  * run playwright using `pnpm playwright test` etc
+
 
 ## Vite
 * There are two vite configs - for the editor and the game.

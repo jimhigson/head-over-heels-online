@@ -10,6 +10,7 @@ export const AutoCoalesceSwitch = ({ className }: { className?: string }) => {
     <Switch
       className={className}
       label="Coalesce"
+      ariaLabel="Coalesce blocks"
       value={useEditorAppSelector((state) => state.levelEditor.autoCoalesce)}
       onChange={(value) => {
         dispatch(setAutoCoalesce(value));

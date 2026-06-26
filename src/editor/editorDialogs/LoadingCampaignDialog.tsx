@@ -3,14 +3,14 @@ import { createSelector } from "@reduxjs/toolkit";
 import { BitmapText } from "../../game/components/tailwindSprites/BitmapText";
 import { useAppSelector } from "../../store/hooks";
 import { campaignsApiSlice } from "../../store/slices/campaigns/campaignsApiSlice";
-import { type RootState } from "../../store/store";
+import { type GameRootState } from "../../store/store";
 import { Dialog } from "../../ui/Dialog";
 import { DialogPortal } from "../../ui/DialogPortal";
 import { LoadingBorder } from "../../ui/LoadingBorder";
 import { SpinnerHead, SpinnerHeels } from "../../ui/Spinner";
 
 const selectIsLoadingCampaign = createSelector(
-  [(state: RootState) => state[campaignsApiSlice.reducerPath].queries],
+  [(state: GameRootState) => state[campaignsApiSlice.reducerPath].queries],
   (queries) =>
     Object.entries(queries ?? {}).some(
       ([key, query]) =>

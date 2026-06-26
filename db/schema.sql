@@ -2,10 +2,10 @@
 -- PostgreSQL database dump
 --
 
-\restrict kBR0W0nnGDWvOtpskc86X2g1ZMaB8MjpQSdL1DTAqk1LpqlXwtMJvedWPZqieTf
+\restrict o3O8XhK7xzkKgNX57t7bth2ROExRX7cWaig6JYTcWYHsJfBH0oxbENAqlR6QWWf
 
 -- Dumped from database version 17.4
--- Dumped by pg_dump version 17.7 (Homebrew)
+-- Dumped by pg_dump version 17.10 (Homebrew)
 
 SET statement_timeout = 0;
 SET lock_timeout = 0;
@@ -409,5 +409,5 @@ ALTER TABLE public.user_details ENABLE ROW LEVEL SECURITY;
 -- PostgreSQL database dump complete
 --
 
-\unrestrict kBR0W0nnGDWvOtpskc86X2g1ZMaB8MjpQSdL1DTAqk1LpqlXwtMJvedWPZqieTf
+\unrestrict o3O8XhK7xzkKgNX57t7bth2ROExRX7cWaig6JYTcWYHsJfBH0oxbENAqlR6QWWf
 

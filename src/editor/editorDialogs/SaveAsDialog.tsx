@@ -65,7 +65,12 @@ export const SaveAsDialog = ({
       <Border className="scale-editor bg-checkerboard-stifled-alphas" />
       {/* stop window-level shortcuts catching our keypresses that match their shortcuts */}
       <div className="contents no-keyboard-shortcuts">
-        <Dialog ref={dialogRef} wide className="scale-editor p-1 !h-min">
+        <Dialog
+          ref={dialogRef}
+          wide
+          ariaLabel="Save campaign as"
+          className="scale-editor p-1 !h-min"
+        >
           <DialogHeader>Save as...</DialogHeader>
           {isSomeoneElses && (
             <BitmapText className={`${multilineTextClass} text-midRed `}>
@@ -81,6 +86,7 @@ export const SaveAsDialog = ({
             type="text"
             value={campaignName}
             onChange={(e) => setCampaignName(e.target.value)}
+            aria-label="Campaign name"
             className="bg-metallicBlueHalfbrite text-white placeholder-lightGrey border border-white px-1 py-1 caret-midRed caretsh"
             placeholder="Enter a Campaign name"
           />
@@ -96,6 +102,8 @@ export const SaveAsDialog = ({
             <Switch
               className="w-min"
               label="Publish"
+              ariaLabel="Publish campaign"
+              ariaDescription="Published campaigns are playable by anybody via the game's menus; non-published campaigns can be loaded into the editor by anybody but are not directly playable"
               falseLabel="unlisted"
               trueLabel="publish"
               value={publish}
@@ -108,6 +116,7 @@ export const SaveAsDialog = ({
             <Button
               disabled={disabled}
               onClick={() => onDone({ campaignName, publish })}
+              aria-label="Save campaign"
               className="bg-midRed px-1 py-half gap-1"
             >
               <BitmapText>Save</BitmapText>

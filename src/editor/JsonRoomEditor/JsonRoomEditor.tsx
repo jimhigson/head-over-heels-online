@@ -77,6 +77,7 @@ const JsonRoomEditor = () => {
       path={path}
       options={
         {
+          ariaLabel: "Room JSON editor",
           minimap: { enabled: false },
           // since we're using monaco inside a resizable container with overflow
           // hidden, tell it to move its tooltips up to the top of the window's DOM:

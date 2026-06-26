@@ -1,16 +1,18 @@
 import { type Campaign } from "../model/modelTypes";
-import { campaignsApiSlice } from "../store/slices/campaigns/campaignsApiSlice";
+import { gameCampaignsApiSlice } from "../store/slices/campaigns/gameCampaignsApiSlice";
 import { gameStarted } from "../store/slices/gameInPlay/gameInPlaySlice";
 import { store } from "../store/store";
 
 export const resetStore = () => {
   store.dispatch({ type: "@@_RESET_FOR_TESTS" });
 };
+
+/** fakes a remote campaign load and game state */
 export const gameStartedWithCampaign = (campaign: Campaign<string>) => {
   // Use upsertQueryEntries for synchronous cache insertion
   // upsertQueryData goes through async flow which creates a pending state first
   store.dispatch(
-    campaignsApiSlice.util.upsertQueryEntries([
+    gameCampaignsApiSlice.util.upsertQueryEntries([
       {
         endpointName: "getCampaign",
         arg: campaign.locator,

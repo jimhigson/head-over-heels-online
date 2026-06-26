@@ -32,12 +32,14 @@ import { VerifyCampaignButton } from "./buttons/VerifyCampaignButton";
 import { WallsFloorsLockedSwitch } from "./buttons/WallsFloorsLockedSwitch";
 import { WallToolButton } from "./buttons/WallToolButton";
 import { buttonGroupClassname } from "./buttonSizeClassNames";
+import { CurrentCampaignInfo } from "./CurrentCampaignInfo";
 import { EditorShowBoundingBoxSelect } from "./EditorShowBoundingBoxSelect";
 import { ItemToolButton } from "./ItemToolButton";
 import { MultipleToolButtons } from "./MultipleToolButtons";
 import { SaveAndLoadButtons } from "./saving/SaveAndLoadButtons";
 
 const HorizontalGap = () => <div className="w-[calc(var(--block)-1px)]" />;
+const VerticalGap = () => <div className="w-full h-half" />;
 
 export const LevelEditorToolbar = () => {
   const campaign = useEditorAppSelector(
@@ -47,25 +49,23 @@ export const LevelEditorToolbar = () => {
     selectCursorRoomId(state.levelEditor),
   );
   const dispatch = useAppDispatch();
-  const campaignName = useEditorAppSelector(
-    (state) => state.levelEditor.campaignInProgress.locator.campaignName,
-  );
 
   return (
-    <div className="scale-editor flex w-full h-full text-white bg-metallicBlueHalfbrite pb-1 gap-1 flex-wrap justify-start overflow-auto">
+    <div
+      className="scale-editor flex w-full h-full text-white bg-metallicBlueHalfbrite pb-1 gap-1 flex-wrap justify-start overflow-auto"
+      aria-label="toolbar"
+      aria-description="toolbar for the editor, exposing most of its editing power such as loading/saving campaigns, selecting tools to edit, resizing items"
+    >
       <div className={buttonGroupClassname}>
         <LoggedInStatus className="w-full mb-1" />
       </div>
       <div className={buttonGroupClassname}>
-        <div className="w-full flex flex-wrap gap-x-1">
-          <BitmapText className="">Campaign</BitmapText>
-          {campaignName ?
-            <BitmapText className="text-highlightBeige">
-              {`‘${campaignName}’`}
-            </BitmapText>
-          : <BitmapText className="text-midRed">{`(untitled)`}</BitmapText>}
+        <div className="w-full">
+          <CurrentCampaignInfo />
         </div>
+        <VerticalGap />
         <VerifyCampaignButton />
+        <VerticalGap />
         <NewCampaignButton />
         <HorizontalGap />
         <SaveAndLoadButtons />

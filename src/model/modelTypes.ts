@@ -31,6 +31,16 @@ export type Campaign<RoomId extends string> = {
 };
 
 /**
+ * The part of a Campaign stored in the db `data` column. Everything else
+ * (userId, campaignName, version, published) lives in other db columns, so taking off
+ * the blob prevents data inconsistency and keeps things OAOO.
+ */
+export type DbCampaign<RoomId extends string> = Omit<
+  Campaign<RoomId>,
+  "locator" | "meta"
+>;
+
+/**
  * Variant of Campaign where the locator's campaignName is optional — used
  * by the editor when a campaign hasn't been named yet.
  */

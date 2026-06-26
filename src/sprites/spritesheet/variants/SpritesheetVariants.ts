@@ -213,10 +213,10 @@ export class SpritesheetVariants {
     this.#loadImageAbortController = abortController;
     const { signal } = abortController;
 
-    const overrideBlobUrl = selectSpritesheetOverrideBlobUrl(
-      store.getState(),
-      spriteOption,
-    );
+    const overrideBlobUrl =
+      import.meta.env.VITE_APP === "editor" ?
+        undefined
+      : selectSpritesheetOverrideBlobUrl(store.getState(), spriteOption);
     const url =
       overrideBlobUrl ??
       (spriteOption === "BlockStack" ?

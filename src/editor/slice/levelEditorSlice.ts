@@ -179,6 +179,8 @@ export const levelEditorSlice = createSlice({
   },
   selectors: {
     selectCurrentCampaignInProgress: (state) => state.campaignInProgress,
+    selectCurrentCampaignVersion: (state) =>
+      state.campaignInProgress.locator.version,
     selectCurrentEditingRoomJson: selectCurrentRoomJsonFromLevelEditorState,
     selectItem: selectItemInLevelEditorState,
     selectCurrentEditingRoomColour: (state) =>
@@ -240,6 +242,7 @@ export const {
   setCmdKSearch,
   setHoveredItemInRoom,
   undoHovered,
+  saveSuccessful,
   setRemoteCampaign,
   setRoomAboveOrBelow,
   setSelectedItemsActivation,
@@ -258,6 +261,7 @@ export const {
   selectCmdKSearch,
   selectContextMenuXy,
   selectCurrentCampaignInProgress,
+  selectCurrentCampaignVersion,
   selectCurrentEditingRoomColour,
   selectCurrentEditingRoomJson,
   selectCurrentEditingRoomScenery,

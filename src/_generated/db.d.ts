@@ -1,16 +1,41 @@
 export type Json =
-  | string
-  | number
-  | boolean
-  | null
   | { [key: string]: Json | undefined }
-  | Json[];
+  | boolean
+  | Json[]
+  | null
+  | number
+  | string;
 
 export type Database = {
   // Allows to automatically instantiate createClient with right options
   // instead of createClient<Database, { PostgrestVersion: 'XX' }>(URL, KEY)
   __InternalSupabase: {
     PostgrestVersion: "12.2.3 (519615d)";
+  };
+  graphql_public: {
+    Tables: {
+      [_ in never]: never;
+    };
+    Views: {
+      [_ in never]: never;
+    };
+    Functions: {
+      graphql: {
+        Args: {
+          extensions?: Json;
+          operationName?: string;
+          query?: string;
+          variables?: Json;
+        };
+        Returns: Json;
+      };
+    };
+    Enums: {
+      [_ in never]: never;
+    };
+    CompositeTypes: {
+      [_ in never]: never;
+    };
   };
   public: {
     Tables: {
@@ -63,22 +88,22 @@ export type Database = {
     Views: {
       latest_campaigns_view: {
         Row: {
-          created_at: string | null;
-          created_by: string | null;
-          data_preview: string | null;
-          id: number | null;
-          name: string | null;
+          created_at: null | string;
+          created_by: null | string;
+          data_preview: null | string;
+          id: null | number;
+          name: null | string;
           published: boolean | null;
-          username: string | null;
-          version: number | null;
+          username: null | string;
+          version: null | number;
         };
         Relationships: [];
       };
     };
     Functions: {
       get_all_users_latest_campaigns:
-        | { Args: never; Returns: Json }
-        | { Args: { p_published_only?: boolean }; Returns: Json };
+        | { Args: { p_published_only?: boolean }; Returns: Json }
+        | { Args: never; Returns: Json };
       get_latest_campaign: {
         Args: {
           p_campaign_name: string;
@@ -101,10 +126,17 @@ export type Database = {
           isSetofReturn: false;
         };
       };
+      get_latest_campaign_version: {
+        Args: { p_campaign_name: string; p_user_id?: string };
+        Returns: number;
+      };
+      get_username: { Args: { p_user_id: string }; Returns: string };
       save_campaign_version: {
         Args: {
+          p_base_version?: number;
           p_created_by?: string;
           p_data: string;
+          p_force?: boolean;
           p_name: string;
           p_published?: boolean;
         };
@@ -129,8 +161,8 @@ type DefaultSchema = DatabaseWithoutInternals[Extract<
 
 export type Tables<
   DefaultSchemaTableNameOrOptions extends
-    | keyof (DefaultSchema["Tables"] & DefaultSchema["Views"])
-    | { schema: keyof DatabaseWithoutInternals },
+    | { schema: keyof DatabaseWithoutInternals }
+    | keyof (DefaultSchema["Tables"] & DefaultSchema["Views"]),
   TableName extends DefaultSchemaTableNameOrOptions extends (
     {
       schema: keyof DatabaseWithoutInternals;
@@ -168,8 +200,8 @@ export type Tables<
 
 export type TablesInsert<
   DefaultSchemaTableNameOrOptions extends
-    | keyof DefaultSchema["Tables"]
-    | { schema: keyof DatabaseWithoutInternals },
+    | { schema: keyof DatabaseWithoutInternals }
+    | keyof DefaultSchema["Tables"],
   TableName extends DefaultSchemaTableNameOrOptions extends (
     {
       schema: keyof DatabaseWithoutInternals;
@@ -202,8 +234,8 @@ export type TablesInsert<
 
 export type TablesUpdate<
   DefaultSchemaTableNameOrOptions extends
-    | keyof DefaultSchema["Tables"]
-    | { schema: keyof DatabaseWithoutInternals },
+    | { schema: keyof DatabaseWithoutInternals }
+    | keyof DefaultSchema["Tables"],
   TableName extends DefaultSchemaTableNameOrOptions extends (
     {
       schema: keyof DatabaseWithoutInternals;
@@ -236,8 +268,8 @@ export type TablesUpdate<
 
 export type Enums<
   DefaultSchemaEnumNameOrOptions extends
-    | keyof DefaultSchema["Enums"]
-    | { schema: keyof DatabaseWithoutInternals },
+    | { schema: keyof DatabaseWithoutInternals }
+    | keyof DefaultSchema["Enums"],
   EnumName extends DefaultSchemaEnumNameOrOptions extends (
     {
       schema: keyof DatabaseWithoutInternals;
@@ -258,8 +290,8 @@ export type Enums<
 
 export type CompositeTypes<
   PublicCompositeTypeNameOrOptions extends
-    | keyof DefaultSchema["CompositeTypes"]
-    | { schema: keyof DatabaseWithoutInternals },
+    | { schema: keyof DatabaseWithoutInternals }
+    | keyof DefaultSchema["CompositeTypes"],
   CompositeTypeName extends PublicCompositeTypeNameOrOptions extends (
     {
       schema: keyof DatabaseWithoutInternals;
@@ -281,6 +313,9 @@ export type CompositeTypes<
   : never;
 
 export const Constants = {
+  graphql_public: {
+    Enums: {},
+  },
   public: {
     Enums: {},
   },

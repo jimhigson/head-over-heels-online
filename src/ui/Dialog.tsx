@@ -23,6 +23,8 @@ export type DialogProps = {
   ref?: Ref<HTMLDialogElement>;
   /** allows visual regression tests to know which dialog is being shown */
   dialogId?: DialogId;
+  /** accessible name for the dialog region (its heading is sprite text) */
+  ariaLabel?: string;
 };
 
 const getDialogClassName = (
@@ -66,10 +68,12 @@ export const Dialog = ({
   small = false,
   ref,
   dialogId,
+  ariaLabel,
 }: DialogProps) => {
   return (
     <dialog
       ref={ref}
+      aria-label={ariaLabel}
       className={getDialogClassName(tall, wide, fullScreen, small, className)}
       onClick={onClick}
       data-dialog-id={dialogId}

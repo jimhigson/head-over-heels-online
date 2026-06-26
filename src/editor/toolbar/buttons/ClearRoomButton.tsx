@@ -6,6 +6,7 @@ import { ToolbarButton } from "./ToolbarButton";
 export const ClearRoomButton = () => {
   return (
     <ToolbarButton
+      ariaLabel="Clear room"
       className="bg-midRed"
       onClick={() => store.dispatch(confirmClearRoomThunk)}
       tooltipContent={`## Clear room

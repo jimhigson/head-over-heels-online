@@ -45,6 +45,14 @@ export type SwitchProps = {
   label?: ReactNode;
   shortcutKeys?: ShortcutKeys | undefined;
   tooltipContent?: ReactNode;
+  /**
+   * stable accessible name describing the switch's purpose; the on/off state is
+   * exposed separately via aria-checked. Without it the name falls back to the
+   * value text (the visible label is not programmatically associated)
+   */
+  ariaLabel?: string;
+  /** fuller description of what the switch is for, via aria-description */
+  ariaDescription?: string;
 };
 
 export const Switch = ({
@@ -56,6 +64,8 @@ export const Switch = ({
   label,
   shortcutKeys,
   tooltipContent,
+  ariaLabel,
+  ariaDescription,
 }: SwitchProps) => {
   const switchId = useId();
   const labelLength = Math.max(trueLabel.length, falseLabel.length) + 1;
@@ -92,6 +102,9 @@ export const Switch = ({
       <BitmapText
         id={switchId}
         role="switch"
+        aria-checked={value}
+        aria-label={ariaLabel}
+        aria-description={ariaDescription}
         className={clsx(
           "inline-block w-min h-min py-half px-half sprites-uppercase",
           value ?
@@ -125,6 +138,9 @@ export type SwitchNProps<TValue extends number | string> = {
   label?: ReactNode;
   shortcutKeys?: ShortcutKeys | undefined;
   tooltipContent?: ReactNode;
+  /** stable accessible name describing the control's purpose; the current value
+   * is appended since this is multi-value (no binary aria-checked applies) */
+  ariaLabel?: string;
 };
 
 const switchNColours = twClass([
@@ -153,6 +169,7 @@ export const SwitchN = <TValue extends number | string>({
   label,
   shortcutKeys,
   tooltipContent,
+  ariaLabel,
 }: SwitchNProps<TValue>) => {
   const switchId = useId();
   const valueIndex = values.indexOf(value);
@@ -207,6 +224,11 @@ export const SwitchN = <TValue extends number | string>({
       <BitmapText
         id={switchId}
         role="switch"
+        aria-label={
+          ariaLabel === undefined ? undefined : (
+            `${ariaLabel}: ${notFound ? value : valueLabels[valueIndex]}`
+          )
+        }
         className={clsx(
           "inline-block w-min h-min py-half px-half sprites-uppercase",
           notFound ? switchNErrorColours : (
@@ -241,6 +263,8 @@ export type Switch3Props<TValue extends number | string> = {
   label?: string;
   shortcutKeys?: ShortcutKeys | undefined;
   tooltipContent?: ReactNode;
+  /** stable accessible name describing the control's purpose */
+  ariaLabel?: string;
 };
 
 export const Switch3 = <TValue extends number | string>(

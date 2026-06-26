@@ -20,6 +20,7 @@ export const CopyPasteButtons = () => {
   return (
     <div className="flex flex-row gap-oneScaledPix bg-metallicBlue">
       <ToolbarButton
+        ariaLabel="Copy"
         disabled={!somethingSelected}
         onClick={async () => {
           const storeState = editorStore.getState().levelEditor;
@@ -49,6 +50,7 @@ export const CopyPasteButtons = () => {
         />
       </ToolbarButton>
       <ToolbarButton
+        ariaLabel="Paste"
         onClick={async () => {
           try {
             // bare minimum implementation for pasting in items from other rooms:

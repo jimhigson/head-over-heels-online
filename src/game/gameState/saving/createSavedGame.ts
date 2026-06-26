@@ -1,5 +1,5 @@
 import { type CharacterName } from "../../../model/modelTypes";
-import { type RootState } from "../../../store/store";
+import { type GameRootState } from "../../../store/store";
 import { badJsonClone } from "../../../utils/badJsonClone";
 import { valuesIter } from "../../../utils/entries";
 import { pick } from "../../../utils/pick";
@@ -9,7 +9,7 @@ import { type SavedGame, savedGameStateFields } from "./SavedGameState";
 
 export const createSavedGame = <RoomId extends string>(
   gameState: GameState<RoomId>,
-  { gameInPlay: { gameInPlay } }: RootState,
+  { gameInPlay: { gameInPlay } }: GameRootState,
   /**
    * if saving due to a pickup (creating a reincarnation point by eating a fish),
    * this is the id of the pickup. It will be removed from the current room of

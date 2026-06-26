@@ -26,10 +26,11 @@ export const ShareCampaignButton = () => {
   const disabled = !remoteIsInSync || campaignName === undefined;
 
   return justDone > 0 ?
-      <ToolbarButton className="bg-moss">
+      <ToolbarButton ariaLabel="Campaign link copied" className="bg-moss">
         <BitmapText className="relative leading-none">OK!</BitmapText>
       </ToolbarButton>
     : <ToolbarButton
+        ariaLabel="Share campaign"
         disabled={disabled}
         onClick={async () => {
           const url = new URL(import.meta.env.VITE_GAME_URL);

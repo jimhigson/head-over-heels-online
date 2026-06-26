@@ -21,9 +21,13 @@ export const CssSpritesVariables = ({
   children,
 }: PropsWithChildren<EmptyObject>) => {
   const spritesOption = useAppSelector(selectSpritesOption);
-  const overrideBlobUrl = useAppSelector((state) =>
-    selectSpritesheetOverrideBlobUrl(state, spritesOption.name),
-  );
+  const overrideBlobUrl =
+    import.meta.env.VITE_APP === "editor" ?
+      undefined
+      // oxlint-disable-next-line react-hooks/rules-of-hooks -- build-time macro, not run-time conditional
+    : useAppSelector((state) =>
+        selectSpritesheetOverrideBlobUrl(state, spritesOption.name),
+      );
 
   return (
     <div

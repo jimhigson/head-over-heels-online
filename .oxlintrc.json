@@ -8,13 +8,13 @@
     "builtin": true
   },
   "ignorePatterns": [
-    "dist",
-    "src/_generated",
+    "dist/**",
+    "src/_generated/**",
     "package.json",
     "vite.config.ts.*",
-    "dev-dist",
-    ".vite",
-    "src-tauri/target"
+    "dev-dist/**",
+    ".vite/**",
+    "src-tauri/target/**"
   ],
   "overrides": [
     {

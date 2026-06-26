@@ -54,7 +54,9 @@ const CmdKDialogContents = ({
             return (
               <CommandItem
                 key={key}
-                value={key}
+                // search both the human label and the dotted key, so category
+                // terms like "monster" still match while the label is what shows
+                value={`${props.ariaLabel} ${key}`}
                 onSelect={() => {
                   store.dispatch(
                     setTool({ type: "item", item: props.itemTool }),
@@ -69,7 +71,7 @@ const CmdKDialogContents = ({
                 >
                   {props.children}
                 </div>
-                <CommandMatch className="ml-1" text={key} />
+                <CommandMatch className="ml-1" text={props.ariaLabel} />
               </CommandItem>
             );
           })}
@@ -85,6 +87,7 @@ export const ShowCmdKButton = () => {
   return (
     <>
       <ToolbarButton
+        ariaLabel="Command menu"
         onClick={() => setOpen(true)}
         shortcutKeys={["^K", "⌘K"]}
         tooltipContent={"## Cmd-K menu\nFast access to most items"}

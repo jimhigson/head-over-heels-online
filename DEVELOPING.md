@@ -100,6 +100,42 @@ Hosts production/released deploys from `production` branch
 
 * currently on github pages, to be moved to r2 plus cf proxy once the pattern is proven
 
+# Database
+
+Campaigns are stored in one hosted Supabase (Postgres) project. The original campaign
+is burnt into the build; everything else goes through Supabase.
+
+## Backwards-compatible changes only
+
+Staging and production share one database and staging runs ahead of production, so old
+and new front-ends hit the same schema at once. Backwards and forwards compat is ideal,
+but breaking PR previews or .dev for a little while is ok if we got to
+
+## Migrations are the source of truth
+
+Schema and stored procedures are SQL in `supabase/migrations/`, applied with
+`supabase db push` on merge to `main` (not at prod release — staging shares the DB and
+needs the schema when its front-end ships). The web UI is inspect-only; edits there are
+untracked. `db/schema.sql` is a `pg_dump` backup (`pnpm dumpDb:schema`).
+
+## Running app against local db
+
+The app's Supabase connection comes from `VITE_SUPABASE_URL` / `VITE_SUPABASE_ANON_KEY`
+(mandatory — no hardcoded fallback). They default to production via the base `.env`;
+the `local-db` mode overrides them with the local stack:
+
+```sh
+supabase start                       # start the local db (needs Docker)
+pnpm gen:seed                        # generate seed sql with a real campaign + a loginable dev user from the real db
+supabase db reset                    # rebuild db from migrations + seed we just generated
+pnpm dev:editor --mode local-db      # editor against local supabase
+pnpm dev:game --mode local-db        # (or the game)
+```
+
+`pnpm gen:seed` copies the campaign named by `sequelCampaignLocator` (`src/gameInfo.ts`)
+from production and creates a local login that owns it — it prints the credentials to
+sign in with.
+
 # Troubleshooting
 
-For more info on developing, pls ask in [the Discord server](https://discord.gg/Se5Jznc2jm)
+Go to [the Discord server](https://discord.gg/Se5Jznc2jm) or raise a github issue.

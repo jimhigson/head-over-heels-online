@@ -39,6 +39,7 @@ const RoomsAboveOrBelowSelectOrCreate = ({
         <div className="flex flex-row gap-oneScaledPix">
           <ToolbarButton
             small
+            ariaLabel={`Switch to room ${direction}`}
             className="bg-highlightBeige w-max px-half"
             tooltipContent={`Switch to the room *${direction}*`}
             disabled={!currentRoomId}
@@ -53,6 +54,7 @@ const RoomsAboveOrBelowSelectOrCreate = ({
           </ToolbarButton>
           <ToolbarButton
             small
+            ariaLabel={`Add new room ${direction}`}
             className=" bg-moss"
             tooltipContent={`Add a new room *${direction}* this one`}
           >
@@ -71,6 +73,7 @@ const RoomsAboveOrBelowSelectOrCreate = ({
           </ToolbarButton>
           <ToolbarButton
             small
+            ariaLabel={`Break link with room ${direction}`}
             className="bg-midRed"
             tooltipContent={`Break the link with the room *${direction}*`}
           >

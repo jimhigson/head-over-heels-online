@@ -175,11 +175,11 @@ export const doorFrameAppearance: ItemAppearance<"doorFrame"> =
       },
     }) => {
       const campaign =
-        selectMaybeCurrentCampaign(store.getState()) ??
-        (store.getState().levelEditor?.campaignInProgress as
-          | Campaign<string>
-          | undefined);
-
+        import.meta.env.VITE_APP === "editor" ?
+          (store.getState().levelEditor?.campaignInProgress as
+            | Campaign<string>
+            | undefined)
+        : selectMaybeCurrentCampaign(store.getState());
       const axis = doorAlongAxis(direction);
 
       const useColoursFromRoom =

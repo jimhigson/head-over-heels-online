@@ -7,7 +7,7 @@ import {
   useCurrentCampaign,
 } from "../../../../../../store/slices/gameMenus/gameMenusSelectors";
 import { backToParentMenu } from "../../../../../../store/slices/gameMenus/gameMenusSlice";
-import { type RootState } from "../../../../../../store/store";
+import { type GameRootState } from "../../../../../../store/store";
 import { useDispatchActionCallback } from "../../../../../../store/useDispatchActionCallback";
 import { Border } from "../../../../../../ui/Border";
 import { Dialog } from "../../../../../../ui/Dialog";
@@ -69,7 +69,7 @@ const selectFreeCharacters = createSelector(
     gameInPlay: {
       gameInPlay: { freeCharacters },
     },
-  }: RootState) => freeCharacters,
+  }: GameRootState) => freeCharacters,
   (freeCharacters) =>
     Object.keys(freeCharacters) as Array<keyof typeof freeCharacters>,
 );

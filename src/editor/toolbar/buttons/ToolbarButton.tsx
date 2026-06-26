@@ -15,6 +15,8 @@ export type ToolbarButtonProps = {
   shortcutKeys?: ShortcutKeys;
   small?: boolean;
   tooltipContent?: ReactNode;
+  /** accessible name for the (usually icon-only) button */
+  ariaLabel?: string;
   ref?: Ref<HTMLButtonElement>;
 };
 
@@ -27,11 +29,13 @@ export const ToolbarButton = ({
   shortcutKeys,
   small = false,
   tooltipContent,
+  ariaLabel,
   ref,
 }: PropsWithChildren<ToolbarButtonProps>) => {
   return (
     <Button
       ref={ref}
+      aria-label={ariaLabel}
       disabled={disabled}
       selected={isCurrentTool}
       className={`
