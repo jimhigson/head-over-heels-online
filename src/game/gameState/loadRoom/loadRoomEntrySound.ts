@@ -4,6 +4,7 @@ import {
 } from "../../../_generated/sfxdex/sfx";
 import { type ItemInPlay } from "../../../model/ItemInPlay";
 import { type RoomJson, roomJsonItemsIterable } from "../../../model/RoomJson";
+import { withPositionHash } from "../../../model/withPositionHash";
 import { type SceneryName } from "../../../sprites/planets";
 import { defaultUserSettings } from "../../../store/slices/userSettings/defaultUserSettings";
 import {
@@ -113,23 +114,24 @@ export const createRoomEntrySound = <
   gain?: number;
   playbackRate?: number;
   id?: RoomItemId;
-}): ItemInPlay<"soundEffect", RoomId, RoomItemId> => ({
-  id,
-  type: "soundEffect",
-  fixedZIndex: nonRenderingItemFixedZIndex,
-  config: {
-    soundOptions: {
-      soundId,
-      gain,
-      playbackRate,
+}): ItemInPlay<"soundEffect", RoomId, RoomItemId> =>
+  withPositionHash({
+    id,
+    type: "soundEffect",
+    fixedZIndex: nonRenderingItemFixedZIndex,
+    config: {
+      soundOptions: {
+        soundId,
+        gain,
+        playbackRate,
+      },
     },
-  },
-  aabb: originXyz,
-  castsShadowWhileStoodOn: false,
-  state: {
-    ...defaultBaseState(),
-    position: roomEntrySoundPos,
-    played: false,
-  },
-  noSoundPan,
-});
+    aabb: originXyz,
+    castsShadowWhileStoodOn: false,
+    state: {
+      ...defaultBaseState(),
+      position: roomEntrySoundPos,
+      played: false,
+    },
+    noSoundPan,
+  });

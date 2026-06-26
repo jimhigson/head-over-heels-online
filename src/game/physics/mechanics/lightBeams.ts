@@ -8,6 +8,7 @@ import { type LightBeamEnd } from "../../../model/ItemStateMap";
 import { typePrefix } from "../../../model/json/typePrefix";
 import { reflectedBeamDirection } from "../../../model/MirrorOrientation";
 import { roomSpatialIndexKey, type RoomState } from "../../../model/RoomState";
+import { withPositionHash } from "../../../model/withPositionHash";
 import { emptyArray } from "../../../utils/empty";
 import { unitVectors } from "../../../utils/vectors/unitVectors";
 import {
@@ -375,7 +376,7 @@ export const tickLampLightBeams = <
       // this tick are already in room.items, so each gets a distinct id:
       cursorId = undefined;
       const id = nextItemIdInItems(room.items, idPrefix);
-      beam = {
+      beam = withPositionHash({
         type: "lightBeam",
         id,
         config: {
@@ -389,7 +390,7 @@ export const tickLampLightBeams = <
           end: segment.end,
         },
         castsShadowWhileStoodOn: false,
-      };
+      });
       addItemToRoom({
         room,
         item: beam as UnionOfAllItemInPlayTypes<RoomId, RoomItemId>,

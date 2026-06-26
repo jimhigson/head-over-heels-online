@@ -3,6 +3,7 @@ import { type ItemInPlay } from "../../../model/ItemInPlay";
 import { itemInPlayCentre } from "../../../model/itemInPlayCentre";
 import { addPokeableNumbers } from "../../../model/ItemStateMap";
 import { type CharacterName } from "../../../model/modelTypes";
+import { withPositionHash } from "../../../model/withPositionHash";
 import {
   crownCollected,
   reincarnationFishEaten,
@@ -77,22 +78,23 @@ export const handlePlayerTouchingPickup = <
 
   const loadFloatingText = (textLines: string[]) => {
     const pickupCentre = itemInPlayCentre(touchedItem);
-    const floatingTextItem: ItemInPlay<"floatingText", RoomId, RoomItemId> = {
-      type: "floatingText",
-      id: `floatingText-${pickupId}` as RoomItemId,
-      ...defaultItemProperties,
-      fixedZIndex: floatingTextFixedZIndex, // high number ensures is always in front
-      aabb: originXyz, // zero-size per aabb
-      state: {
-        ...defaultBaseState(),
-        position: addXyz(pickupCentre, { z: blockSizePx.z / 2 }),
-        expires: roomTime + floatingTextLife,
-      },
-      config: {
-        textLines,
-        appearanceRoomTime: roomTime,
-      },
-    };
+    const floatingTextItem: ItemInPlay<"floatingText", RoomId, RoomItemId> =
+      withPositionHash({
+        type: "floatingText",
+        id: `floatingText-${pickupId}` as RoomItemId,
+        ...defaultItemProperties,
+        fixedZIndex: floatingTextFixedZIndex, // high number ensures is always in front
+        aabb: originXyz, // zero-size per aabb
+        state: {
+          ...defaultBaseState(),
+          position: addXyz(pickupCentre, { z: blockSizePx.z / 2 }),
+          expires: roomTime + floatingTextLife,
+        },
+        config: {
+          textLines,
+          appearanceRoomTime: roomTime,
+        },
+      });
     return floatingTextItem;
   };
 

@@ -1,6 +1,7 @@
 import { type SharedUnionFields } from "type-fest";
 
 import { defaultItemProperties } from "../../../model/defaultItemProperties";
+import { type ItemInPlayBeforeHash } from "../../../model/ItemInPlay";
 import {
   type HeadOverHeelsState,
   type HeadState,
@@ -73,7 +74,7 @@ export const loadPlayer = <RoomId extends string, RoomItemId extends string>(
   jsonItem: JsonItem<"player", RoomId, RoomItemId>,
   jsonItemId: RoomItemId | undefined,
   pokesEnabled: PokesEnabled = emptyObject,
-): PlayableItem<CharacterName, RoomId, RoomItemId> => {
+): ItemInPlayBeforeHash<PlayableItem<CharacterName, RoomId, RoomItemId>> => {
   const { infiniteDoughnuts } = pokesEnabled;
 
   if (jsonItem.config.which === "head") {

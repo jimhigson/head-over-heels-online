@@ -3,6 +3,7 @@ import { expect, test } from "vitest";
 import { campaign } from "../../_generated/originalCampaign/campaign";
 import { type OriginalCampaignRoomId } from "../../_generated/originalCampaign/OriginalCampaignRoomId";
 import { roomSpatialIndexKey } from "../../model/RoomState";
+import { withPositionHash } from "../../model/withPositionHash";
 import { noPlanetsLiberated } from "../../store/slices/gameInPlay/gameInPlaySlice";
 import { badJsonClone } from "../../utils/badJsonClone";
 import { type HudInputState } from "../input/hudInputState";
@@ -16,25 +17,29 @@ test("if there is a saved game with both characters in the same room, only load 
     id: "blacktooth1head",
     roomTime: 0,
     items: {
-      head: loadPlayer(
-        {
-          type: "player",
-          position: { x: 0, y: 0, z: 0 },
-          config: {
-            which: "head",
+      head: withPositionHash(
+        loadPlayer(
+          {
+            type: "player",
+            position: { x: 0, y: 0, z: 0 },
+            config: {
+              which: "head",
+            },
           },
-        },
-        "head",
+          "head",
+        ),
       ),
-      heels: loadPlayer(
-        {
-          type: "player",
-          position: { x: 1, y: 0, z: 0 },
-          config: {
-            which: "heels",
+      heels: withPositionHash(
+        loadPlayer(
+          {
+            type: "player",
+            position: { x: 1, y: 0, z: 0 },
+            config: {
+              which: "heels",
+            },
           },
-        },
-        "heels",
+          "heels",
+        ),
       ),
     },
     planet: "blacktooth",

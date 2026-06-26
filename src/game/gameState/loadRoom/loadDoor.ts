@@ -1,5 +1,6 @@
 import { type ItemTypeUnion } from "../../../_generated/types/ItemInPlayUnion";
 import { defaultItemProperties } from "../../../model/defaultItemProperties";
+import { type ItemInPlayBeforeHash } from "../../../model/ItemInPlay";
 import { type JsonItem } from "../../../model/json/JsonItem";
 import { type StoodOnBy } from "../../../model/StoodOnBy";
 import { emptyObject } from "../../../utils/empty";
@@ -70,10 +71,12 @@ export function* loadDoor<RoomId extends string, RoomItemId extends string>(
   jsonItemId: RoomItemId,
   directionalIndex: RoomDirectionalIndex<RoomId, RoomItemId>,
 ): Generator<
-  ItemTypeUnion<
-    "blocker" | "doorFrame" | "doorLegs" | "portal" | "stopAutowalk" | "wall",
-    RoomId,
-    RoomItemId
+  ItemInPlayBeforeHash<
+    ItemTypeUnion<
+      "blocker" | "doorFrame" | "doorLegs" | "portal" | "stopAutowalk" | "wall",
+      RoomId,
+      RoomItemId
+    >
   >
 > {
   const {

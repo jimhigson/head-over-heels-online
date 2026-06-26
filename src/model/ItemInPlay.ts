@@ -1,4 +1,4 @@
-import { type EmptyObject } from "type-fest";
+import { type DistributedOmit, type EmptyObject } from "type-fest";
 
 import { type ItemTypeUnion } from "../_generated/types/ItemInPlayUnion";
 import { type ShadowCastSpriteOptions } from "../game/render/ShadowCastSpriteOptions";
@@ -173,10 +173,11 @@ export type ItemInPlay<
    * position when it is loaded from json (see `hashXyzToNumber0to1`). Used to
    * de-synchronise animations (start frame, bob phase) so identical items in a
    * room don't move in lock-step - keyed off position rather than the item id,
-   * so it survives ids being synthesised by the columnar codec. Set once when
-   * the item is loaded from json; absent only on items not built that way.
+   * so it survives ids being synthesised by the columnar codec. The individual
+   * loaders return their items as {@link ItemInPlayBeforeHash} (without this);
+   * `loadItemFromJson` stamps it on, so every loaded item has one.
    */
-  hash?: number;
+  hash: number;
 
   /** the shadow this item casts on other items */
   shadowCastTexture?: ShadowCastSpriteOptions;
@@ -228,3 +229,15 @@ export type UnionOfAllItemInPlayTypes<
   RoomItemId extends string = string,
   ScN extends SceneryName = SceneryName,
 > = ItemTypeUnion<ItemInPlayType, RoomId, RoomItemId, ScN>;
+
+/**
+ * an item as returned by an individual loader, before `loadItemFromJson` stamps
+ * its {@link ItemInPlay.hash hash}. A loader can't compute the hash itself (it
+ * needs the item's final initial position), so it omits the field and the
+ * single load entry point adds it - making `hash` mandatory on the loaded item
+ * while letting each loader leave it off.
+ */
+export type ItemInPlayBeforeHash<T extends { hash: number }> = DistributedOmit<
+  T,
+  "hash"
+>;

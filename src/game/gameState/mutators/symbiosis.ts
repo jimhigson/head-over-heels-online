@@ -1,5 +1,7 @@
 import { defaultItemProperties } from "../../../model/defaultItemProperties";
+import { type ItemInPlayBeforeHash } from "../../../model/ItemInPlay";
 import { type IndividualCharacterName } from "../../../model/modelTypes";
+import { withPositionHash } from "../../../model/withPositionHash";
 import { emptyObject } from "../../../utils/empty";
 import { neverTime } from "../../../utils/neverTime";
 import { pick } from "../../../utils/pick";
@@ -26,7 +28,7 @@ export const uncombinePlayablesFromSymbiosis = <
 >(
   headOverHeels: PlayableItem<"headOverHeels", RoomId, RoomItemId>,
 ) => {
-  const head: PlayableItem<"head", RoomId, RoomItemId> = {
+  const head: ItemInPlayBeforeHash<PlayableItem<"head", RoomId, RoomItemId>> = {
     id: "head" as RoomItemId,
     type: "head",
     ...defaultItemProperties,
@@ -52,35 +54,36 @@ export const uncombinePlayablesFromSymbiosis = <
       switchedToAt: neverTime,
     },
   };
-  const heels: PlayableItem<"heels", RoomId, RoomItemId> = {
-    id: "heels" as RoomItemId,
-    type: "heels",
-    ...defaultItemProperties,
-    ...defaultPlayableRootAttributes,
-    ...heelsAabbInfo,
-    state: {
-      ...defaultBaseState<RoomItemId>(),
-      ...defaultFreeItemState<RoomItemId>(),
-      ...defaultCommonPlayableState(),
-      ...headOverHeels.state.heels,
-      ...pick(
-        headOverHeels.state,
-        "facing",
-        "walkStartFacing",
-        "visualFacingVector",
-        "actedOnAt",
-        "collidedWith",
-        "stoodOnUntilRoomTime",
-        "autoWalk",
-        "teleporting",
-      ),
-      position: addXyz(headOverHeels.state.position),
-      switchedToAt: neverTime,
-      isBigJump: false,
-    },
-  };
+  const heels: ItemInPlayBeforeHash<PlayableItem<"heels", RoomId, RoomItemId>> =
+    {
+      id: "heels" as RoomItemId,
+      type: "heels",
+      ...defaultItemProperties,
+      ...defaultPlayableRootAttributes,
+      ...heelsAabbInfo,
+      state: {
+        ...defaultBaseState<RoomItemId>(),
+        ...defaultFreeItemState<RoomItemId>(),
+        ...defaultCommonPlayableState(),
+        ...headOverHeels.state.heels,
+        ...pick(
+          headOverHeels.state,
+          "facing",
+          "walkStartFacing",
+          "visualFacingVector",
+          "actedOnAt",
+          "collidedWith",
+          "stoodOnUntilRoomTime",
+          "autoWalk",
+          "teleporting",
+        ),
+        position: addXyz(headOverHeels.state.position),
+        switchedToAt: neverTime,
+        isBigJump: false,
+      },
+    };
 
-  return { head, heels };
+  return { head: withPositionHash(head), heels: withPositionHash(heels) };
 };
 
 export const combinePlayablesInSymbiosis = <
@@ -102,7 +105,7 @@ export const combinePlayablesInSymbiosis = <
   const previouslySelectedState =
     previousPlayable === "head" ? head.state : heels.state;
 
-  return {
+  return withPositionHash({
     id: "headOverHeels" as RoomItemId,
     type: "headOverHeels",
     ...defaultItemProperties,
@@ -158,5 +161,5 @@ export const combinePlayablesInSymbiosis = <
         switchedToAt: neverTime,
       },
     },
-  };
+  });
 };

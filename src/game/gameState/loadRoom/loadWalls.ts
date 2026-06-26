@@ -1,4 +1,5 @@
 import { type ItemTypeUnion } from "../../../_generated/types/ItemInPlayUnion";
+import { type ItemInPlayBeforeHash } from "../../../model/ItemInPlay";
 import { type JsonItem } from "../../../model/json/JsonItem";
 import { isWallHidden } from "../../../model/json/WallJsonConfig";
 import { type StoodOnBy } from "../../../model/StoodOnBy";
@@ -62,7 +63,7 @@ const yAxisWallRenderAabb = {
 export const loadWall = <RoomId extends string, RoomItemId extends string>(
   jsonItemId: RoomItemId,
   jsonWall: JsonItem<"wall", RoomId, RoomItemId>,
-): ItemTypeUnion<"wall", RoomId, RoomItemId> => {
+): ItemInPlayBeforeHash<ItemTypeUnion<"wall", RoomId, RoomItemId>> => {
   const {
     config: { direction },
     position,

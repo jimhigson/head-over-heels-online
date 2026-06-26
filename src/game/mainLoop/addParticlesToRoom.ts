@@ -3,6 +3,7 @@ import { defaultItemProperties } from "../../model/defaultItemProperties";
 import { type ItemInPlay, type ItemInPlayConfig } from "../../model/ItemInPlay";
 import { itemInPlayCentre } from "../../model/itemInPlayCentre";
 import { playablesInRoom, type RoomState } from "../../model/RoomState";
+import { withPositionHash } from "../../model/withPositionHash";
 import { epsilon } from "../../utils/epsilon";
 import { randomFromArray } from "../../utils/random/randomFromArray";
 import {
@@ -38,20 +39,22 @@ const createParticleItemInPlay = (
   forCharacter: ItemInPlayConfig<"particle">["forCharacter"],
   position: Xyz,
   roomTime: number,
-): ItemInPlay<"particle"> => ({
-  ...defaultItemProperties,
-  id: `particle.${forItemId}.${particlesAdded++}`,
-  type: "particle",
-  aabb: originXyz,
-  config: {
-    forCharacter,
-  },
-  state: {
-    ...defaultBaseState(),
-    expires: roomTime + particleLifetimeMs + Math.random() * particleLifetimeMs,
-    position,
-  },
-});
+): ItemInPlay<"particle"> =>
+  withPositionHash({
+    ...defaultItemProperties,
+    id: `particle.${forItemId}.${particlesAdded++}`,
+    type: "particle",
+    aabb: originXyz,
+    config: {
+      forCharacter,
+    },
+    state: {
+      ...defaultBaseState(),
+      expires:
+        roomTime + particleLifetimeMs + Math.random() * particleLifetimeMs,
+      position,
+    },
+  });
 
 const addParticlesUnderPlayableItem = <
   RoomId extends string,

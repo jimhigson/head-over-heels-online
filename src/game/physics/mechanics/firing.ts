@@ -5,6 +5,7 @@ import {
   pokeableToNumber,
 } from "../../../model/ItemStateMap";
 import { type RoomState } from "../../../model/RoomState";
+import { withPositionHash } from "../../../model/withPositionHash";
 import { emptyObject } from "../../../utils/empty";
 import {
   addXyz,
@@ -51,25 +52,26 @@ export const firing = <RoomId extends string, RoomItemId extends string>(
     hasHooter &&
     pokeableToNumber(doughnuts) > 0
   ) {
-    const firedDoughnut: ItemInPlay<"firedDoughnut", RoomId, RoomItemId> = {
-      type: "firedDoughnut",
-      ...defaultItemProperties,
-      config: emptyObject,
-      id: `firedDoughnut/${firer.id}/${room.roomTime}` as RoomItemId,
-      shadowCastTexture: shadowSmallRound,
-      state: {
-        ...defaultBaseState(),
-        position: addXyz(
-          position,
-          scaleXyz(direction, aheadStart),
-          firer.type === "headOverHeels" ? { z: blockSizePx.z } : originXyz,
-        ),
-        vels: {
-          fired: scaleXyz(direction, moveSpeedPixPerMs.firedDoughnut),
+    const firedDoughnut: ItemInPlay<"firedDoughnut", RoomId, RoomItemId> =
+      withPositionHash({
+        type: "firedDoughnut",
+        ...defaultItemProperties,
+        config: emptyObject,
+        id: `firedDoughnut/${firer.id}/${room.roomTime}` as RoomItemId,
+        shadowCastTexture: shadowSmallRound,
+        state: {
+          ...defaultBaseState(),
+          position: addXyz(
+            position,
+            scaleXyz(direction, aheadStart),
+            firer.type === "headOverHeels" ? { z: blockSizePx.z } : originXyz,
+          ),
+          vels: {
+            fired: scaleXyz(direction, moveSpeedPixPerMs.firedDoughnut),
+          },
+          disappearing: { on: "touch" },
         },
-        disappearing: { on: "touch" },
-      },
-    };
+      });
 
     addItemToRoom({
       room,

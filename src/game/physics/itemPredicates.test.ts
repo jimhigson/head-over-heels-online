@@ -3,6 +3,7 @@ import { describe, expect, test } from "vitest";
 import { basicEmptyRoom } from "../../_testUtils/basicRoom";
 import { defaultItemProperties } from "../../model/defaultItemProperties";
 import { type UnionOfAllItemInPlayTypes } from "../../model/ItemInPlay";
+import { withPositionHash } from "../../model/withPositionHash";
 import { unitVectors } from "../../utils/vectors/unitVectors";
 import { originXyz } from "../../utils/vectors/vectors";
 import { emptyRoomJsonDirectionalIndex } from "../gameState/loadRoom/buildRoomJsonDirectionalIndex";
@@ -11,13 +12,15 @@ import { loadItemFromJson } from "../gameState/loadRoom/loadItemFromJson";
 import { loadPlayer } from "../gameState/loadRoom/loadPlayer";
 import { isSolid } from "./itemPredicates";
 
-const player = loadPlayer(
-  {
-    type: "player",
-    config: { which: "head" },
-    position: originXyz,
-  },
-  undefined,
+const player = withPositionHash(
+  loadPlayer(
+    {
+      type: "player",
+      config: { which: "head" },
+      position: originXyz,
+    },
+    undefined,
+  ),
 );
 
 const [monster] = loadItemFromJson(
@@ -46,7 +49,7 @@ const [pushableBlock] = loadItemFromJson(
   emptyRoomJsonDirectionalIndex,
 );
 
-const horizontalPortal: UnionOfAllItemInPlayTypes = {
+const horizontalPortal: UnionOfAllItemInPlayTypes = withPositionHash({
   ...defaultItemProperties,
   type: "portal",
   id: "portal",
@@ -57,9 +60,9 @@ const horizontalPortal: UnionOfAllItemInPlayTypes = {
     relativePoint: originXyz,
   },
   state: { position: originXyz, ...defaultBaseState() },
-};
+});
 
-const portalToBelow: UnionOfAllItemInPlayTypes = {
+const portalToBelow: UnionOfAllItemInPlayTypes = withPositionHash({
   ...defaultItemProperties,
   type: "portal",
   id: "portal",
@@ -70,8 +73,8 @@ const portalToBelow: UnionOfAllItemInPlayTypes = {
     relativePoint: originXyz,
   },
   state: { position: originXyz, ...defaultBaseState() },
-};
-const portalToAbove: UnionOfAllItemInPlayTypes = {
+});
+const portalToAbove: UnionOfAllItemInPlayTypes = withPositionHash({
   ...defaultItemProperties,
   type: "portal",
   id: "portal",
@@ -82,7 +85,7 @@ const portalToAbove: UnionOfAllItemInPlayTypes = {
     relativePoint: originXyz,
   },
   state: { position: originXyz, ...defaultBaseState() },
-};
+});
 
 describe("isSolid", () => {
   describe("isSolid", () => {

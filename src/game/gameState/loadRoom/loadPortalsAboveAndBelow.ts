@@ -1,10 +1,14 @@
 import { defaultItemProperties } from "../../../model/defaultItemProperties";
-import { type ItemInPlay } from "../../../model/ItemInPlay";
+import {
+  type ItemInPlay,
+  type ItemInPlayBeforeHash,
+} from "../../../model/ItemInPlay";
 import { isWholeRoomSubRooms, type RoomJson } from "../../../model/RoomJson";
 import {
   roomItemsIterable,
   type RoomStateItems,
 } from "../../../model/RoomState";
+import { withPositionHash } from "../../../model/withPositionHash";
 import { objectEntriesIter } from "../../../utils/entries";
 import { unitVectors } from "../../../utils/vectors/unitVectors";
 import { addXyz } from "../../../utils/vectors/vectors";
@@ -147,7 +151,7 @@ export function* loadPortalsAboveAndBelow<
         },
         renders: false,
       },
-    }) satisfies ItemInPlay<"portal", RoomId, RoomItemId>;
+    }) satisfies ItemInPlayBeforeHash<ItemInPlay<"portal", RoomId, RoomItemId>>;
 
   const abovePortal = (
     subRoomId: string,
@@ -178,7 +182,7 @@ export function* loadPortalsAboveAndBelow<
           ),
         },
       },
-    }) satisfies ItemInPlay<"portal", RoomId, RoomItemId>;
+    }) satisfies ItemInPlayBeforeHash<ItemInPlay<"portal", RoomId, RoomItemId>>;
 
   const linkHolders: Array<
     [string, { above?: { room: RoomId }; below?: { room: RoomId } }]
@@ -190,10 +194,10 @@ export function* loadPortalsAboveAndBelow<
   for (const [subRoomId, { above, below }] of linkHolders) {
     const footprint = footprintForSubRoom(subRoomId);
     if (below !== undefined) {
-      yield belowPortal(subRoomId, footprint, below.room);
+      yield withPositionHash(belowPortal(subRoomId, footprint, below.room));
     }
     if (above !== undefined) {
-      yield abovePortal(subRoomId, footprint, above.room);
+      yield withPositionHash(abovePortal(subRoomId, footprint, above.room));
     }
   }
 }

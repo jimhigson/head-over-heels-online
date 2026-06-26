@@ -1,5 +1,8 @@
 import { defaultItemProperties } from "../../../model/defaultItemProperties";
-import { type ItemInPlay } from "../../../model/ItemInPlay";
+import {
+  type ItemInPlay,
+  type ItemInPlayBeforeHash,
+} from "../../../model/ItemInPlay";
 import { type JsonItem } from "../../../model/json/JsonItem";
 import { valuesIter } from "../../../utils/entries";
 import {
@@ -42,7 +45,7 @@ export const loadFloor = <RoomId extends string, RoomItemId extends string>(
   itemId: RoomItemId,
   floorJson: JsonItem<"floor", RoomId, RoomItemId>,
   directionalIndex: RoomDirectionalIndex<RoomId, RoomItemId>,
-): ItemInPlay<"floor", RoomId, RoomItemId> => {
+): ItemInPlayBeforeHash<ItemInPlay<"floor", RoomId, RoomItemId>> => {
   const {
     config: { times },
     position: floorBlockPosition,

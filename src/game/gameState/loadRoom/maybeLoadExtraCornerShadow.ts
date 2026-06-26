@@ -1,5 +1,6 @@
 import { type ItemInPlay } from "../../../model/ItemInPlay";
 import { wallTimes } from "../../../model/times";
+import { withPositionHash } from "../../../model/withPositionHash";
 import { emptyObject } from "../../../utils/empty";
 import { entries } from "../../../utils/entries";
 import { addXyz, type Xy, type Xyz } from "../../../utils/vectors/vectors";
@@ -56,21 +57,22 @@ export function* maybeLoadExtraCornerShadow<
 
     const wallJsonPosition = rightWall.position;
 
-    const cornerCube: ItemInPlay<"blocker", RoomId, RoomItemId> = {
-      id: `extraCornerShadow-${coordStr}` as RoomItemId,
-      type: "blocker",
-      state: {
-        ...defaultBaseState<RoomItemId>(),
-        position: blockXyzToFineXyz(addXyz(wallJsonPosition, setback)),
-      },
-      shadowCastTexture: {
-        textureId: "shadow.wallCorner",
-      },
-      castsShadowWhileStoodOn: true,
-      config: emptyObject,
-      aabb: cubeSize,
-      fixedZIndex: nonRenderingItemFixedZIndex,
-    };
+    const cornerCube: ItemInPlay<"blocker", RoomId, RoomItemId> =
+      withPositionHash({
+        id: `extraCornerShadow-${coordStr}` as RoomItemId,
+        type: "blocker",
+        state: {
+          ...defaultBaseState<RoomItemId>(),
+          position: blockXyzToFineXyz(addXyz(wallJsonPosition, setback)),
+        },
+        shadowCastTexture: {
+          textureId: "shadow.wallCorner",
+        },
+        castsShadowWhileStoodOn: true,
+        config: emptyObject,
+        aabb: cubeSize,
+        fixedZIndex: nonRenderingItemFixedZIndex,
+      });
 
     yield cornerCube;
   }

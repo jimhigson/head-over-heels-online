@@ -4565,6 +4565,7 @@ exports[`playing through a complex, deterministic room ("laboratory") should alw
       "castsShadowWhileStoodOn": false,
       "config": {},
       "fixedZIndex": -2,
+      "hash": 0.7491609347052872,
       "id": "outOfBounds",
       "state": {
         "actedOnAt": {

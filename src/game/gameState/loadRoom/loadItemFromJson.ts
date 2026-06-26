@@ -1,15 +1,18 @@
 import { produce } from "immer";
 
 import { defaultItemProperties } from "../../../model/defaultItemProperties";
-import { type UnionOfAllItemInPlayTypes } from "../../../model/ItemInPlay";
+import {
+  type ItemInPlayBeforeHash,
+  type UnionOfAllItemInPlayTypes,
+} from "../../../model/ItemInPlay";
 import { type JsonItemUnion } from "../../../model/json/JsonItem";
 import { type RoomJson, roomJsonItemsIterable } from "../../../model/RoomJson";
 import { getJsonItemTimes } from "../../../model/times";
+import { withPositionHash } from "../../../model/withPositionHash";
 import { type PlanetName } from "../../../sprites/planets";
 import { type ScrollsRead } from "../../../store/slices/gameInPlay/gameInPlaySlice";
 import { type PokesEnabled } from "../../../store/slices/userSettings/userSettingsSlice";
 import { emptyObject } from "../../../utils/empty";
-import { hashXyzToNumber0to1 } from "../../../utils/maths/hashXyzToNumber0to1";
 import {
   addXyz,
   lengthXyz,
@@ -55,7 +58,10 @@ function* loadItemFromJsonWithoutHash<
   planetsLiberated: Partial<Record<PlanetName, boolean>> = emptyObject,
   pokesEnabled: PokesEnabled = {},
   itemIdSuffix = "",
-): Generator<UnionOfAllItemInPlayTypes<RoomId>, undefined> {
+): Generator<
+  ItemInPlayBeforeHash<UnionOfAllItemInPlayTypes<RoomId>>,
+  undefined
+> {
   if (roomPickupsCollected[jsonItemId]) {
     // skip pickups that have already been collected
     return;
@@ -249,7 +255,6 @@ export function* loadItemFromJson<
   ...args: Parameters<typeof loadItemFromJsonWithoutHash<RoomId, RoomItemId>>
 ): Generator<UnionOfAllItemInPlayTypes<RoomId>, undefined> {
   for (const item of loadItemFromJsonWithoutHash<RoomId, RoomItemId>(...args)) {
-    item.hash = hashXyzToNumber0to1(item.state.position);
-    yield item;
+    yield withPositionHash(item);
   }
 }
