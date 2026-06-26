@@ -1,5 +1,6 @@
 import { type BaseQueryFn, type EndpointBuilder } from "@reduxjs/toolkit/query";
 import { createApi, fakeBaseQuery } from "@reduxjs/toolkit/query/react";
+import { type Provider } from "@supabase/supabase-js";
 
 import {
   getLatestCampaignVersion,
@@ -7,6 +8,7 @@ import {
   type SaveResult,
 } from "../../../db/campaign";
 import { importCampaignDbClient } from "../../../db/campaignDbClient.import";
+import { importGetEnabledAuthProviders } from "../../../db/getEnabledAuthProviders.import";
 import { getUsername } from "../../../db/getUsername";
 import { type EditorCampaign } from "../../../editor/editorTypes";
 import { type Campaign, type CampaignLocator } from "../../../model/modelTypes";
@@ -89,6 +91,21 @@ const editorCampaignEndpoints = (
       }
     },
   }),
+  getAuthProviders: builder.query<Array<Provider>, void>({
+    async queryFn() {
+      try {
+        const { getEnabledAuthProviders } =
+          await importGetEnabledAuthProviders();
+        return { data: await getEnabledAuthProviders() };
+      } catch (e) {
+        return {
+          error: createSerialisableErrors(
+            new Error(`getAuthProviders queryFn failed`, { cause: e }),
+          ),
+        };
+      }
+    },
+  }),
 });
 
 export const editorCampaignsApiSlice = createApi({
@@ -99,6 +116,7 @@ export const editorCampaignsApiSlice = createApi({
 
 export const {
   useGetAllUsersLatestCampaignsQuery,
+  useGetAuthProvidersQuery,
   useGetLatestCampaignVersionQuery,
   useGetUsernameQuery,
 } = editorCampaignsApiSlice;

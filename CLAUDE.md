@@ -361,4 +361,5 @@ created beneath it is accessible without prompting for permission.
 ## Comms
 
 - only edit on messages from me that end in "E". If there is no "E" at the end do zero edits
+- if I message with 'E!' this means you have ongoing permission to edit for the rest of the session, until I send '!E'
 - if implementing a plan, no non-planned edits without discussing first
