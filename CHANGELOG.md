@@ -1,5 +1,26 @@
 # Changelog
 
+## [25.0.0](https://github.com/jimhigson/head-over-heels-online/compare/v24.0.0...v25.0.0) (2026-06-26)
+
+
+### Features
+
+* monaco text editor in hoh editor more customised to look like the rest of the app ([#959](https://github.com/jimhigson/head-over-heels-online/issues/959)) ([711b7cc](https://github.com/jimhigson/head-over-heels-online/commit/711b7cce4dcf6b23efc9857da54de5f3f3df3046))
+
+
+### Bug Fixes
+
+* do not hide items that fall below floors of type none, since this breaks rendering in sequel rooms with mixed floors ([#958](https://github.com/jimhigson/head-over-heels-online/issues/958)) ([e367d14](https://github.com/jimhigson/head-over-heels-online/commit/e367d14ce777f50cf4ead637a1e5625cb94fdac5))
+* handle webgl context correctly - fixes bug where textures are not shown sometimes ([#952](https://github.com/jimhigson/head-over-heels-online/issues/952)) ([5bef439](https://github.com/jimhigson/head-over-heels-online/commit/5bef439869b6b9c0c5f8f62aab2a2089b92fa075))
+
+
+### Level Editor
+
+* auto-fix some json schema violations ([#957](https://github.com/jimhigson/head-over-heels-online/issues/957)) ([c3bb86c](https://github.com/jimhigson/head-over-heels-online/commit/c3bb86cba95197a4dc6dd0ba32de2be977332907))
+* new campaign does not start in error ([#955](https://github.com/jimhigson/head-over-heels-online/issues/955)) ([09d7f5e](https://github.com/jimhigson/head-over-heels-online/commit/09d7f5e2a07f31e1f83cb898822cd2a15e879856))
+* show warnings when not on the latest version of a campaign ([#962](https://github.com/jimhigson/head-over-heels-online/issues/962)) ([950e94e](https://github.com/jimhigson/head-over-heels-online/commit/950e94e79b3d09d30fbf902950b4e9c29192524a))
+* validate and fix campaign json errors ([#953](https://github.com/jimhigson/head-over-heels-online/issues/953)) ([84f4076](https://github.com/jimhigson/head-over-heels-online/commit/84f40766d55841bd159161a67f5b80bde8965cff))
+
 ## [24.0.0](https://github.com/jimhigson/head-over-heels-online/compare/v23.0.0...v24.0.0) (2026-06-21)
 
 
