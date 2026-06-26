@@ -1,0 +1,1 @@
+import{p as e}from"./index-oOxWnlBf.js";import{y as t}from"./Tooltip-C8P_6dpV.js";var n=({text:n,className:r,style:i})=>e(`div`,{className:`flex flex-col h-full items-center justify-center gap-y-1${r?` ${r}`:``}`,style:i,children:[e(`span`,{className:`sprite texture-animated-dalek`}),e(t,{children:n})]});export{n as t};

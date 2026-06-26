@@ -1,0 +1,1 @@
+import{br as e}from"./index-oOxWnlBf.js";var t=.55,n=48*((1-t)/2),r=48-n,i=e=>({x:(e.x??0)*48,y:(e.y??0)*48,z:(e.z??0)*36}),a=e=>Math.round(e*10)/10,o=t=>{let n=e(t);return`translate(${a(n.x)},${a(n.y)})`},s=t=>c(e(t)),c=e=>`${a(e.x)},${a(e.y)}`;export{i as a,n as c,o as i,s as n,t as o,a as r,r as s,c as t};

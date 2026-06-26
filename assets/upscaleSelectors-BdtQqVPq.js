@@ -1,0 +1,1 @@
+import{F as e,yr as t}from"./store-DETbtT0j.js";var n=()=>t(e);export{n as t};
