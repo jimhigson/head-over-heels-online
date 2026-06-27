@@ -18,7 +18,7 @@ jobs:
     steps:
       - name: Post dev preview message to Discord
         env:
-          DISCORD_WEBHOOK: ${{ secrets.DEV_PREVIEW_DISCORD_WEBHOOK }}
+          DISCORD_WEBHOOK: ${{ secrets.RELEASES_DISCORD_WEBHOOK }}
           COMMIT_MESSAGE: ${{ github.event.head_commit.message }}
           COMMIT_URL: ${{ github.event.head_commit.url }}
           COMMIT_TIMESTAMP: ${{ github.event.head_commit.timestamp }}
