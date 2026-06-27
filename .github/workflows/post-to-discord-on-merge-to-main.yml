@@ -1,0 +1,43 @@
+name: Post to Discord on Merge to Main
+
+# A gentle heads-up to the dev-preview Discord channel whenever main is
+# updated (and therefore redeployed to https://blockstack.dev). Unlike the
+# release announcement, this does not ping @everyone — it just lets people
+# know a fresh dev preview is up and invites feedback in the thread.
+
+on:
+  push:
+    branches: ["main"]
+
+permissions:
+  contents: read
+
+jobs:
+  post-dev-preview-to-discord:
+    runs-on: ubuntu-24.04-arm
+    steps:
+      - name: Post dev preview message to Discord
+        env:
+          DISCORD_WEBHOOK: ${{ secrets.DEV_PREVIEW_DISCORD_WEBHOOK }}
+          COMMIT_MESSAGE: ${{ github.event.head_commit.message }}
+          COMMIT_URL: ${{ github.event.head_commit.url }}
+          COMMIT_TIMESTAMP: ${{ github.event.head_commit.timestamp }}
+        run: |
+          summary=$(printf '%s' "$COMMIT_MESSAGE" | head -n1)
+          jq -n \
+            --arg summary "$summary" \
+            --arg commitUrl "$COMMIT_URL" \
+            --arg timestamp "$COMMIT_TIMESTAMP" \
+            '{
+              username: "Dev Preview",
+              avatar_url: "https://blockstack.ing/icon-192.png",
+              embeds: [{
+                title: "🚧 New dev preview deployed",
+                url: "https://blockstack.dev",
+                description: ("This is the **dev preview** — the latest work-in-progress build, now live at <https://blockstack.dev>. Expect rough edges; things may be half-finished or broken here before they reach the live game.\n\nLatest change: [\($summary)](\($commitUrl))\n\nSpotted something off? Just reply in this thread and we'\''ll take a look. 🙏"),
+                color: 3066993,
+                footer: { text: "Dev preview · blockstack.dev" },
+                timestamp: $timestamp
+              }]
+            }' \
+            | curl -fsS -H "Content-Type: application/json" -d @- "$DISCORD_WEBHOOK"
