@@ -1,10 +1,5 @@
 name: Post to Discord on Merge to Main
 
-# A gentle heads-up to the dev-preview Discord channel whenever main is
-# updated (and therefore redeployed to https://blockstack.dev). Unlike the
-# release announcement, this does not ping @everyone — it just lets people
-# know a fresh dev preview is up and invites feedback in the thread.
-
 on:
   push:
     branches: ["main"]
@@ -24,6 +19,11 @@ jobs:
           COMMIT_TIMESTAMP: ${{ github.event.head_commit.timestamp }}
         run: |
           summary=$(printf '%s' "$COMMIT_MESSAGE" | head -n1)
+          conventionalFeatOrFix='^(feat|fix)(\([^)]+\))?!?:'
+          if [[ ! "$summary" =~ $conventionalFeatOrFix ]]; then
+            echo "Not a feat/fix commit — skipping Discord post: $summary"
+            exit 0
+          fi
           jq -n \
             --arg summary "$summary" \
             --arg commitUrl "$COMMIT_URL" \
@@ -32,9 +32,9 @@ jobs:
               username: "Dev Preview",
               avatar_url: "https://blockstack.ing/icon-192.png",
               embeds: [{
-                title: "🚧 New dev preview deployed",
+                title: "🚧 Built something",
                 url: "https://blockstack.dev",
-                description: ("This is the **dev preview** — the latest work-in-progress build, now live at <https://blockstack.dev>. Expect rough edges; things may be half-finished or broken here before they reach the live game.\n\nLatest change: [\($summary)](\($commitUrl))\n\nSpotted something off? Just reply in this thread and we'\''ll take a look. 🙏"),
+                description: ("Pre-release work up at <https://blockstack.dev>. \n[\($summary)](\($commitUrl))"),
                 color: 3066993,
                 footer: { text: "Dev preview · blockstack.dev" },
                 timestamp: $timestamp
