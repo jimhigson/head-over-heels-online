@@ -31,6 +31,30 @@ import { LazyEditorMapNonContiguousRelationshipDecorator } from "./LazyEditorMap
 import { LazyEditorMapTeleporterLinkDecorator } from "./LazyEditorMapTeleporterLinkDecorator";
 import { useEditorMapData } from "./useEditorMapData";
 
+const editorClickableRoomBehaviour = createClickableRoomBehaviour<EditorRoomId>(
+  (roomId, subRoomId, { metaKey, ctrlKey }) => {
+    if (metaKey || ctrlKey) {
+      store.dispatch(toggleRoomInSelection({ roomId, subRoomId }));
+    } else {
+      store.dispatch(changeToRoom({ roomId, subRoomId }));
+    }
+  },
+);
+
+const editorBehaviours: RoomBehaviourComponent<EditorRoomId>[] = [
+  LazyEditorMapRoomTooltipBehaviour,
+  editorClickableRoomBehaviour,
+];
+
+const editorPrefixDecorators = [
+  LazyEditorMapNonContiguousRelationshipDecorator,
+];
+
+const editorPostfixDecorators = [
+  LazyEditorMapTeleporterLinkDecorator,
+  LazyEditorMapInsertButtonDecorator,
+];
+
 const keyToUnitVector = {
   ArrowLeft: "left",
   ArrowRight: "right",
@@ -140,30 +164,6 @@ const insertInDirection = (key: NavigationKey) => {
       break;
   }
 };
-
-const editorClickableRoomBehaviour = createClickableRoomBehaviour<EditorRoomId>(
-  (roomId, subRoomId, { metaKey, ctrlKey }) => {
-    if (metaKey || ctrlKey) {
-      store.dispatch(toggleRoomInSelection({ roomId, subRoomId }));
-    } else {
-      store.dispatch(changeToRoom({ roomId, subRoomId }));
-    }
-  },
-);
-
-const editorBehaviours: RoomBehaviourComponent<EditorRoomId>[] = [
-  LazyEditorMapRoomTooltipBehaviour,
-  editorClickableRoomBehaviour,
-];
-
-const editorPrefixDecorators = [
-  LazyEditorMapNonContiguousRelationshipDecorator,
-];
-
-const editorPostfixDecorators = [
-  LazyEditorMapTeleporterLinkDecorator,
-  LazyEditorMapInsertButtonDecorator,
-];
 
 const roomsChanged = (
   _action: unknown,
