@@ -30,7 +30,7 @@ jobs:
             --arg timestamp "$COMMIT_TIMESTAMP" \
             '{
               username: "Dev Preview",
-              avatar_url: "https://blockstack.ing/icon-192.png",
+              avatar_url: "https://blockstack.ing/icon-192.webp",
               embeds: [{
                 title: "🚧 Built something",
                 url: "https://blockstack.dev",

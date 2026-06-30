@@ -12,28 +12,42 @@ on:
 
 jobs:
   check-iff2png:
-    # not using arm because mfinelli/setup-imagemagick@v7 seems not to have
-    # ARM binaries to download
     runs-on: ubuntu-latest
+    # run inside a Debian 13 (trixie) image, whose apt ships ImageMagick 7 (the
+    # `magick` command iff2png uses); ubuntu-latest's apt is still ImageMagick 6,
+    # which only has the legacy `convert`/`compare` commands. The node:*-trixie
+    # variant (not bare debian:trixie) is used so the JS actions below have a
+    # node interpreter to run on.
+    container: node:24-trixie
 
     strategy:
       matrix:
         node-version: [25.x]
 
+    defaults:
+      run:
+        shell: bash
+
     steps:
+      - name: Install system tools (ImageMagick 7, ffmpeg, etc.)
+        run: |
+          apt-get update
+          apt-get install -y imagemagick pngquant ffmpeg jq xz-utils webp
+          magick --version | head -1
       - uses: actions/checkout@v6
+      # the container runs git as root but the checkout is owned by another uid,
+      # so git rejects it as "dubious ownership" and both husky (during install)
+      # and revert_noop_images (in iff2png) fail with "not inside a git
+      # repository". checkout only sets safe.directory under a temporary HOME, so
+      # set it in the run-step HOME here.
+      - name: Trust the checked-out workspace (container git runs as root)
+        run: git config --global --add safe.directory "$GITHUB_WORKSPACE"
       - uses: pnpm/action-setup@v5
       - uses: actions/setup-node@v6
         with:
           node-version: ${{ matrix.node-version }}
           cache: "pnpm"
       - run: pnpm install
-      - name: Setup ImageMagick 7
-        uses: mfinelli/setup-imagemagick@v7
-      - name: Install image processing tools
-        run: |
-          sudo apt-get update
-          sudo apt-get install -y pngquant ffmpeg jq
       - name: Save original image files before regeneration
         run: |
           IMAGE_FILES=(gfx/sprites.webp gfx/sprites.borders.png)

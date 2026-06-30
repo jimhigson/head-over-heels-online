@@ -1,7 +1,7 @@
 import { AnimatedSprite, Container } from "pixi.js";
 
 import { isStoodOn } from "../../../model/StoodOnBy";
-import { type AppSpritesheet } from "../../../sprites/spritesheet/variants/SpritesheetVariants";
+import { type AppSpritesheet } from "../../../sprites/spritesheet/variants/AppSpritesheet";
 import { neverTime } from "../../../utils/neverTime";
 import { maybeRenderContainerToAnimatedSprite } from "../../../utils/pixi/renderContainerToSprite";
 import {

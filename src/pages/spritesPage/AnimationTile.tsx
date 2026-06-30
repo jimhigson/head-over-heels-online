@@ -6,10 +6,11 @@ import {
   type FramesWithSpeed,
   type TextureId,
 } from "../../sprites/spritesheet/spritesheetData/makeSpritesheetData";
-import { type AppSpritesheetData } from "../../sprites/spritesheet/variants/SpritesheetVariants";
+import { type AppSpritesheetData } from "../../sprites/spritesheet/variants/AppSpritesheet";
 import { useSpritesOption } from "../../store/slices/gameMenus/gameMenusSelectors";
 import {
   animatedSpriteSpecificCssVars,
+  animationIsUniformlyFlipped,
   keyframesForAnimatedSprite,
 } from "../../tailwind/plugins/spriteCss";
 import { Tooltip } from "../../ui/tooltip/Tooltip";
@@ -57,6 +58,7 @@ export const AnimationTile = ({
         </div>
       : <div
           className={`sprite bg-pureBlack zx:bg-zxBlack toppy:bg-toppyBlack hover:bg-moss zx:hover:bg-zxYellow toppy:hover:bg-toppyWarm3 border-shadow zx:border-zxRedDimmed toppy:border-toppyGrey2 box-content w-min
+          ${animationIsUniformlyFlipped(frames, spritesheetData) ? "sprite-flip-x" : ""}
           ${spriteOption.uncolourised ? "sprite-revert-to-two-tone" : ""}`}
           style={animatedSpriteSpecificCssVars(
             animationName,

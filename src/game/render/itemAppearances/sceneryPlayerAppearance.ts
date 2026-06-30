@@ -1,7 +1,7 @@
 import { maybeReflectedVector } from "../../../model/MirrorOrientation";
 import { type IndividualCharacterName } from "../../../model/modelTypes";
 import { isAnimationId } from "../../../sprites/assertIsTextureId";
-import { type AppSpritesheet } from "../../../sprites/spritesheet/variants/SpritesheetVariants";
+import { type AppSpritesheet } from "../../../sprites/spritesheet/variants/AppSpritesheet";
 import { emptyObject } from "../../../utils/empty";
 import { unitVectors } from "../../../utils/vectors/unitVectors";
 import {

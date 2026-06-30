@@ -5,7 +5,7 @@ import { paletteBlockstack } from "../../palette/spritesheetPalette";
 import { type TextureId } from "../spritesheetData/makeSpritesheetData";
 import { spritesheetMetas } from "../spritesheetData/spritesheetMetaData";
 import { createSpritesheetVariant } from "../spritesheetPaletteSwop";
-import { type AppSpritesheet } from "./SpritesheetVariants";
+import { type AppSpritesheet } from "./AppSpritesheet";
 
 export const buildUncolourisedSpritesheet = (
   pixiRenderer: Renderer,

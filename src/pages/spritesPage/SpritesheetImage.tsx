@@ -1,8 +1,9 @@
-import { useEffect, useRef, useState } from "preact/hooks";
+import { useEffect, useMemo, useRef, useState } from "preact/hooks";
 
 import { BlockyMarkdown } from "../../game/components/BlockyMarkdown";
 import { BitmapText } from "../../game/components/tailwindSprites/BitmapText";
 import { sanitiseForClassName } from "../../game/components/tailwindSprites/SanitiseForClassName";
+import { type AppSpriteFrame } from "../../sprites/spritesheet/spritesheetData/AppSpriteFrame";
 import {
   type FramesWithSpeed,
   type TextureId,
@@ -13,6 +14,7 @@ import {
 } from "../../store/slices/gameMenus/gameMenusSelectors";
 import {
   animatedSpriteSpecificCssVars,
+  animationIsUniformlyFlipped,
   keyframesForAnimatedSprite,
   spriteSpecificCssVars,
 } from "../../tailwind/plugins/spriteCss";
@@ -25,6 +27,15 @@ const xRelative = (value: number) =>
   `calc(${value} / var(--spritesheetW) * 100%)`;
 const yRelative = (value: number) =>
   `calc(${value} / var(--spritesheetH) * 100%)`;
+
+/**
+ * A single region of the spritesheet, and every textureId that resolves to it -
+ * the sprite drawn there directly, plus any `copyFrom` copies (which share the
+ * region, some horizontally mirrored).
+ */
+type SpritePosition = { frame: AppSpriteFrame; textureIds: TextureId[] };
+
+const positionKey = ({ x, y, w, h }: AppSpriteFrame) => `${x},${y},${w},${h}`;
 
 const AnimationPreview = ({
   animationName,
@@ -60,6 +71,7 @@ const AnimationPreview = ({
       >
         <div
           className={`sprite box-content w-min
+            ${animationIsUniformlyFlipped(frames, currentSpritesheetData) ? "sprite-flip-x" : ""}
             ${spriteOption.uncolourised ? "sprite-revert-to-two-tone" : ""}`}
           style={animatedSpriteSpecificCssVars(
             animationName,
@@ -73,10 +85,17 @@ const AnimationPreview = ({
   );
 };
 
-const SpriteOverlayTooltip = ({ textureId }: { textureId: TextureId }) => {
+const TextureIdEntry = ({
+  textureId,
+  frame,
+  flipX,
+}: {
+  textureId: TextureId;
+  frame: AppSpriteFrame;
+  flipX: boolean;
+}) => {
   const currentSpritesheetData = useCurrentSpritesheetData();
   const spriteOption = useSpritesOption();
-  const { frame } = currentSpritesheetData.frames[textureId];
 
   const containingAnimations = entries(
     currentSpritesheetData.animations as Record<
@@ -86,22 +105,19 @@ const SpriteOverlayTooltip = ({ textureId }: { textureId: TextureId }) => {
   ).filter(([, frames]) => frames.includes(textureId));
 
   return (
-    <>
+    <div className="mt-1">
       <div
         className="[background:repeating-conic-gradient(#ddd_0_25%,_#ccc_0_50%)_50%_/_10px_10px] w-min"
         style={{ "--scale": 4 }}
       >
         <div
           className={`sprite box-content w-min
+            ${flipX ? "sprite-flip-x" : ""}
             ${spriteOption.uncolourised ? "sprite-revert-to-two-tone" : ""}`}
           style={spriteSpecificCssVars(frame.w, frame.h, frame.x, frame.y)}
         />
       </div>
-      <BlockyMarkdown
-        markdown={`${textureId}
-
-*${frame.w}*x*${frame.h}* @**${frame.x}**,**${frame.y}**`}
-      />
+      <BlockyMarkdown markdown={`${textureId}${flipX ? " *(flipped)*" : ""}`} />
       {containingAnimations.map(([animationName, frames]) => (
         <AnimationPreview
           key={animationName}
@@ -109,18 +125,42 @@ const SpriteOverlayTooltip = ({ textureId }: { textureId: TextureId }) => {
           frames={frames}
         />
       ))}
+    </div>
+  );
+};
+
+const SpriteOverlayTooltip = ({ position }: { position: SpritePosition }) => {
+  const currentSpritesheetData = useCurrentSpritesheetData();
+  const { frame, textureIds } = position;
+
+  return (
+    <>
+      <BlockyMarkdown
+        markdown={`*${frame.w}*x*${frame.h}* @**${frame.x}**,**${frame.y}**`}
+      />
+      {textureIds.map((textureId) => {
+        const idFrame = currentSpritesheetData.frames[textureId]
+          .frame as AppSpriteFrame;
+        return (
+          <TextureIdEntry
+            key={textureId}
+            textureId={textureId}
+            frame={frame}
+            flipX={idFrame.flipX === true}
+          />
+        );
+      })}
     </>
   );
 };
 
-const SpriteOverlay = ({ textureId }: { textureId: TextureId }) => {
-  const currentSpritesheetData = useCurrentSpritesheetData();
-  const { frame } = currentSpritesheetData.frames[textureId];
+const SpriteOverlay = ({ position }: { position: SpritePosition }) => {
+  const { frame, textureIds } = position;
   return (
     <Tooltip
       triggerContent={
         <a
-          href={`#sprite-${sanitiseForClassName(textureId)}`}
+          href={`#sprite-${sanitiseForClassName(textureIds[0])}`}
           className="absolute cursor-pointer block border hover:bg-[rgba(255,255,255,0.25)] z-[1]"
           style={{
             left: xRelative(frame.x),
@@ -130,7 +170,7 @@ const SpriteOverlay = ({ textureId }: { textureId: TextureId }) => {
           }}
         />
       }
-      tooltipContent={<SpriteOverlayTooltip textureId={textureId} />}
+      tooltipContent={<SpriteOverlayTooltip position={position} />}
     />
   );
 };
@@ -164,9 +204,28 @@ export const SpritesheetImage = ({
     }
   };
 
-  const textureIds = Object.keys(
-    currentSpritesheetData.frames,
-  ).sort() as TextureId[];
+  // collate textureIds by the region they resolve to: copyFrom copies share
+  // their source's region, so each unique position lists the sprite drawn there
+  // plus every copy of it
+  const uniquePositions = useMemo<SpritePosition[]>(() => {
+    const byLocation = new Map<string, SpritePosition>();
+    for (const [textureId, { frame }] of entries(
+      currentSpritesheetData.frames,
+    )) {
+      const spriteFrame = frame as AppSpriteFrame;
+      const key = positionKey(spriteFrame);
+      const existing = byLocation.get(key);
+      if (existing === undefined) {
+        byLocation.set(key, {
+          frame: spriteFrame,
+          textureIds: [textureId],
+        });
+      } else {
+        existing.textureIds.push(textureId);
+      }
+    }
+    return [...byLocation.values()];
+  }, [currentSpritesheetData]);
 
   return (
     <div
@@ -190,27 +249,28 @@ export const SpritesheetImage = ({
       {/* dark overlay with white sprite cutouts, blended to darken only non-sprite areas */}
       <div className="absolute inset-0 pointer-events-none mix-blend-multiply">
         <div className="absolute inset-0 bg-[rgba(0,0,0,0.66)]" />
-        {textureIds
-          .filter((id) => !spriteFilter || id.includes(spriteFilter))
-          .map((textureId) => {
-            const { frame } = currentSpritesheetData.frames[textureId];
-            return (
-              <div
-                key={textureId}
-                className="absolute bg-white"
-                style={{
-                  left: xRelative(frame.x),
-                  top: yRelative(frame.y),
-                  width: xRelative(frame.w),
-                  height: yRelative(frame.h),
-                }}
-              />
-            );
-          })}
+        {uniquePositions
+          .filter(
+            (position) =>
+              !spriteFilter ||
+              position.textureIds.some((id) => id.includes(spriteFilter)),
+          )
+          .map(({ frame }) => (
+            <div
+              key={positionKey(frame)}
+              className="absolute bg-white"
+              style={{
+                left: xRelative(frame.x),
+                top: yRelative(frame.y),
+                width: xRelative(frame.w),
+                height: yRelative(frame.h),
+              }}
+            />
+          ))}
       </div>
 
-      {textureIds.map((textureId) => (
-        <SpriteOverlay key={textureId} textureId={textureId} />
+      {uniquePositions.map((position) => (
+        <SpriteOverlay key={positionKey(position.frame)} position={position} />
       ))}
 
       {mousePos && (

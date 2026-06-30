@@ -8,7 +8,6 @@ import {
 
 import blockStackSpritesheetUrl from "../../../../gfx/sprites.webp";
 import toppySpritesheetUrl from "../../../../gfx/spritesToppy.webp";
-import { type PaletteSwopSpec } from "../../../game/render/filters/PaletteSwapFilter";
 import { ShadowPreprocessFilter } from "../../../game/render/filters/shadows/ShadowPreprocessFilter";
 import { type ZxSpectrumRoomColour } from "../../../originalGame";
 import { selectSpritesheetOverrideBlobUrl } from "../../../store/slices/spritesheetOverrideSlice";
@@ -18,6 +17,7 @@ import { detectDeviceType } from "../../../utils/detectEnv/detectDeviceType";
 import { stripIccProfilePng } from "../../../utils/image/stripIccProfilePng";
 import { stripIccProfileWebp } from "../../../utils/image/stripIccProfileWebp";
 import { type SceneryName } from "../../planets";
+import { applySpritesheetFlips } from "../applySpritesheetFlips";
 import { black, renderMaskTexture, white } from "../renderMaskTexture";
 import {
   makeSpritesheetData,
@@ -29,19 +29,13 @@ import {
   spritesheetMetas,
 } from "../spritesheetData/spritesheetMetaData";
 import { type VariantBuildContext } from "../VariantBuildContext";
+import { type AppSpritesheet } from "./AppSpritesheet";
 import { buildCurrentRoomSpritesheet } from "./currentRoomSpritesheetVariant";
 import { buildDeactivatedSpritesheet } from "./deactivatedSpritesheetVariant";
 import { buildDoughnuttedSpritesheet } from "./doughnuttedSpritesheetVariant";
 import { buildMirrorReflectionSpritesheet } from "./mirrorReflectionSpritesheetVariant";
 import { buildSceneryPlayerSpritesheet } from "./sceneryPlayerSpritesheetVariant";
 import { buildUncolourisedSpritesheet } from "./uncolourisedSpritesheetVariant";
-
-export type AppSpritesheetData = ReturnType<typeof makeSpritesheetData>;
-export type AppSpritesheet = Spritesheet<AppSpritesheetData> & {
-  spriteOption: LoadableSpriteOption;
-  ambient?: PaletteSwopSpec[];
-  spritesheetMeta: SpritesheetMetadata;
-};
 
 export type LoadableSpriteOption = SpriteOption["name"];
 
@@ -321,6 +315,7 @@ export class SpritesheetVariants {
     spriteSheet.textureSource.scaleMode = "nearest";
     spriteSheet.spriteOption = spriteOption;
     spriteSheet.spritesheetMeta = spritesheetMeta;
+    applySpritesheetFlips(spriteSheet);
 
     sprite.destroy();
     shadowSpritesMask.destroy(true);

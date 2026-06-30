@@ -15,7 +15,7 @@ import { isAnimationId, isTextureId } from "../../../sprites/assertIsTextureId";
 import { effectColour } from "../../../sprites/palette/spritesheetPalette";
 import { playableWalkAnimationSpeed } from "../../../sprites/spritesheet/spritesheetData/playableSpritesheetData";
 import { type SpritesheetMetadata } from "../../../sprites/spritesheet/spritesheetData/spritesheetMetaData";
-import { type AppSpritesheet } from "../../../sprites/spritesheet/variants/SpritesheetVariants";
+import { type AppSpritesheet } from "../../../sprites/spritesheet/variants/AppSpritesheet";
 import { type SpriteOption } from "../../../store/slices/userSettings/userSettingsSlice";
 import { isEmptyObject } from "../../../utils/empty";
 import {

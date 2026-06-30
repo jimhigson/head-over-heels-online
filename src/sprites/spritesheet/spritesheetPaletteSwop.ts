@@ -16,6 +16,7 @@ import { emptyArray } from "../../utils/empty";
 import { entries } from "../../utils/entries";
 import { concat } from "../../utils/iterators/concat";
 import { type NamedColours, resolveSwops } from "../../utils/palette/palette";
+import { applySpritesheetFlips } from "./applySpritesheetFlips";
 import { reifyTextureIds } from "./reifyTextureIds";
 import { black, renderMaskTexture, white } from "./renderMaskTexture";
 import {
@@ -30,7 +31,7 @@ import { type VariantBuildContext } from "./VariantBuildContext";
 import {
   type AppSpritesheet,
   type AppSpritesheetData,
-} from "./variants/SpritesheetVariants";
+} from "./variants/AppSpritesheet";
 
 export type TextureSpecificPaletteSwops = {
   textureIds: TextureIdsListOrPredicate;
@@ -252,6 +253,7 @@ export const createSpritesheetVariant = (
   swoppedSpritesheet.spriteOption = spriteOption;
   swoppedSpritesheet.ambient = spritesheetTextureSwops.ambient;
   swoppedSpritesheet.spritesheetMeta = spritesheetMetas[spriteOption];
+  applySpritesheetFlips(swoppedSpritesheet);
   return swoppedSpritesheet;
 };
 

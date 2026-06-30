@@ -12,7 +12,7 @@ import {
   paletteBlockstack,
 } from "../../../../sprites/palette/spritesheetPalette";
 import { type SpritesheetMetadata } from "../../../../sprites/spritesheet/spritesheetData/spritesheetMetaData";
-import { type AppSpritesheet } from "../../../../sprites/spritesheet/variants/SpritesheetVariants";
+import { type AppSpritesheet } from "../../../../sprites/spritesheet/variants/AppSpritesheet";
 import { halfbrite } from "../../../../utils/colour/halfbrite";
 import { resolveSwops } from "../../../../utils/palette/palette";
 import { renderContainerToTexture } from "../../../../utils/pixi/renderContainerToSprite";

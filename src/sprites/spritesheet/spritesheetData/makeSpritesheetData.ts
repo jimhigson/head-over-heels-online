@@ -2,6 +2,7 @@ import { type SpritesheetData } from "pixi.js";
 
 import { objectEntriesIter } from "../../../utils/entries";
 import { type AnimationsOfFrames } from "./AnimationsOfFrames";
+import { type AppSpriteFrame } from "./AppSpriteFrame";
 import { doorSpritesheetData } from "./doorSpritesheetData";
 import { editorSpritesheetData } from "./editorSpritesheetData";
 import { hudSpritesheetData } from "./hudSritesheetData";
@@ -57,11 +58,54 @@ export const makeSpritesheetData = (
   }
 
   if (spritesheetMetaData.overrides !== undefined) {
+    // the frame entries are shared (by reference) with the per-type *Data
+    // modules and the layout is identical across sprite options, so each
+    // override replaces its entry with a fresh clone rather than mutating in
+    // place - otherwise one sheet's copyFrom would corrupt another's coords
+    const overridableFrames = frames as unknown as Record<
+      TextureId,
+      { frame: AppSpriteFrame }
+    >;
+
     for (const [tid, override] of objectEntriesIter(
       spritesheetMetaData.overrides,
     )) {
-      if (tid in frames) {
-        Object.assign(frames[tid].frame, override);
+      if (override === undefined || !(tid in frames)) {
+        continue;
+      }
+
+      const { pivot, copyFrom } = override;
+
+      if (copyFrom !== undefined) {
+        // sample the source's region of the sheet instead of having pixels of
+        // its own. A flipped copy mirrors the pivot x; the horizontal mirror of
+        // the pixels themselves is applied to the texture uvs after parsing, in
+        // applySpritesheetFlips
+        const sourceFrame = overridableFrames[copyFrom.textureId].frame;
+        const copiedPivot =
+          copyFrom.flipX === true && sourceFrame.pivot !== undefined ?
+            { x: sourceFrame.w - sourceFrame.pivot.x, y: sourceFrame.pivot.y }
+          : sourceFrame.pivot;
+
+        overridableFrames[tid] = {
+          ...overridableFrames[tid],
+          frame: {
+            ...overridableFrames[tid].frame,
+            x: sourceFrame.x,
+            y: sourceFrame.y,
+            w: sourceFrame.w,
+            h: sourceFrame.h,
+            pivot: copiedPivot,
+            ...(copyFrom.flipX === true && { flipX: true }),
+          },
+        };
+      }
+
+      if (pivot !== undefined) {
+        overridableFrames[tid] = {
+          ...overridableFrames[tid],
+          frame: { ...overridableFrames[tid].frame, pivot },
+        };
       }
     }
   }

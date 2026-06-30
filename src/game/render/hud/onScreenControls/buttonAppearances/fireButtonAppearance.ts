@@ -5,7 +5,7 @@ import {
   pokeableToNumber,
 } from "../../../../../model/ItemStateMap";
 import { type RoomState } from "../../../../../model/RoomState";
-import { type AppSpritesheet } from "../../../../../sprites/spritesheet/variants/SpritesheetVariants";
+import { type AppSpritesheet } from "../../../../../sprites/spritesheet/variants/AppSpritesheet";
 import { selectHeadAbilities } from "../../../../gameState/gameStateSelectors/selectPlayableItem";
 import { createSprite } from "../../../createSprite";
 import { getWhite } from "../../../gameColours/gameColours";

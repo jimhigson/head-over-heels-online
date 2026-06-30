@@ -17,7 +17,7 @@ import {
 import {
   type AppSpritesheet,
   type AppSpritesheetData,
-} from "./variants/SpritesheetVariants";
+} from "./variants/AppSpritesheet";
 
 export const black = new Color(0x00_00_00);
 export const white = new Color(0xff_ff_ff);

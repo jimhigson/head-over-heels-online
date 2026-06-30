@@ -1,11 +1,11 @@
 import { BitmapText } from "../../game/components/tailwindSprites/BitmapText";
+import { type AppSpriteFrame } from "../../sprites/spritesheet/spritesheetData/AppSpriteFrame";
 import {
   type FramesWithSpeed,
   type TextureId,
 } from "../../sprites/spritesheet/spritesheetData/makeSpritesheetData";
 import { useCurrentSpritesheetData } from "../../store/slices/gameMenus/gameMenusSelectors";
 import { entries } from "../../utils/entries";
-import { type Xy } from "../../utils/vectors/vectors";
 import { AnimationTile } from "./AnimationTile";
 import { FontSpecimen } from "./FontSpecimen";
 import { PaletteSwatch } from "./PaletteSwatch";
@@ -62,14 +62,11 @@ export const SpritesPageContent = ({
       <div className="flex flex-wrap p-[8px] bg-pureBlack zx:bg-zxBlack toppy:bg-toppyBlack">
         {textureIds.map((textureId) => {
           const { frame } = currentSpritesheetData.frames[textureId];
-          const frameMaybeWithPivot = frame as typeof frame & {
-            pivot?: Xy;
-          };
           return (
             <SpriteTile
               key={textureId}
               textureId={textureId}
-              frame={frameMaybeWithPivot}
+              frame={frame as AppSpriteFrame}
               scale={scale}
             />
           );

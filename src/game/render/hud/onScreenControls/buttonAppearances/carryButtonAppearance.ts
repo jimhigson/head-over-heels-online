@@ -1,7 +1,7 @@
 import { Container, type Sprite } from "pixi.js";
 
 import { type RoomState } from "../../../../../model/RoomState";
-import { type AppSpritesheet } from "../../../../../sprites/spritesheet/variants/SpritesheetVariants";
+import { type AppSpritesheet } from "../../../../../sprites/spritesheet/variants/AppSpritesheet";
 import { selectHeelsAbilities } from "../../../../gameState/gameStateSelectors/selectPlayableItem";
 import {
   type PlayableItem,

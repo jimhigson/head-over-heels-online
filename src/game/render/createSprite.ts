@@ -11,13 +11,14 @@ import {
 
 import { completeTimesXyz } from "../../model/times";
 import { originalGameFrameDuration } from "../../originalGame";
+import { type AppSpriteFrame } from "../../sprites/spritesheet/spritesheetData/AppSpriteFrame";
 import {
   type AnimationId,
   type TextureId,
 } from "../../sprites/spritesheet/spritesheetData/makeSpritesheetData";
-import { type AppSpritesheet } from "../../sprites/spritesheet/variants/SpritesheetVariants";
+import { type AppSpritesheet } from "../../sprites/spritesheet/variants/AppSpritesheet";
 import { phaseForSubItem } from "../../utils/maths/hashXyzToNumber0to1";
-import { lengthXyz, type Xy, type Xyz } from "../../utils/vectors/vectors";
+import { lengthXyz, type Xyz } from "../../utils/vectors/vectors";
 import { projectBlockXyzToScreenXy } from "./projections";
 
 type CreateSpriteSpritesheetSpecifier =
@@ -223,10 +224,7 @@ const createSpriteImpl = (options: CreateSpriteOptions): Container => {
       }
       if (spritesheetFrameData !== undefined) {
         // There is a non-standard (unknown to Pixi.js) pivot property on the sprites:
-        const spriteDataFrame =
-          spritesheetFrameData.frame as SpritesheetFrameData["frame"] & {
-            pivot: Xy;
-          };
+        const spriteDataFrame = spritesheetFrameData.frame as AppSpriteFrame;
         // what the spritesheet calls a anchor, I actually use as
         // a pivot - not sure if pixi means it to be used that way
         if (spriteDataFrame.pivot !== undefined) {

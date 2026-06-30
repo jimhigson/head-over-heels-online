@@ -210,7 +210,7 @@ with names in US English.
 * avoid type casts wherever possible; never add them speculatively in case they are needed, only if they are needed
 and there is no sensible alternative
 
-* if a value's typescript type is not nullable, do not add checks for it being null/undefined, even explicit checks like using `?.`
+* if a value's typescript type is not nullable, do not add checks for it being null/undefined, even implicit checks like using `?.`
 if unsure if the type is nullable, assume that it is not nullable (or undefinable) and let the typecheck inform you later
 
 * Do not use any in typescript. IF you are copying the parameters of another function, use Parameters<typeof func> 
@@ -291,7 +291,8 @@ No not use `npx`, use `pnpm`. Do not call `pnpm vitest` directly, call `pnpm che
 * the redux store is only put on `window._e2e_store` (and the game api on `window._e2e_gamePageGameAi`, pixi app on `window.__PIXI_APP__`) when built in **visual-regression mode** - eg `pnpm exec vite build --mode visual-regression` then `pnpm exec vite preview` (a normal `pnpm build:game` / dev server does NOT expose them). See `import.meta.env.MODE === "visual-regression"` in `store.ts`/`gameMain.ts`.
 * to set game/debug state from automation, dispatch plain actions to `window._e2e_store` (eg `userSettings/setShowBoundingBoxType` with `{ itemType, value: true }`).
 * the bounding-box (and pointer-debug) item-renderer decorators are only registered while the **Cheats panel is mounted** (`useRegisterDecorateItemRenderers` lives inside the `Cheats` component, rendered when `debug.cheatsOn` is true, ie via `?cheats=1`). Setting `showBoundingBoxTypes` alone does nothing if the panel never mounted. `LazyCheats` mounts async, and the decorator only wraps item renderers created *after* it registers - so wait for the panel to mount, then dispatch, then allow time for items to be (re)created (light-beam renderers recast frequently, so they pick up the decorator on their own).
-* prefer the `hohjs-browser-mcp` skill for browser automation patterns and known MCP quirks.
+* prefer the `run-e2e` skill for browser automation patterns and known MCP quirks - this explains how to run e2e inside a sandbox environment
+* when working on user's own machine, do not use chrome MCP or start browsers without asking first (or being asked to), since this distracts the user's attention. However, running a browser headless is fine if working on a visual feature and needing to get a screenshot or other real-browser use
 
 ## Visual Regression Testing
 
@@ -303,6 +304,7 @@ No not use `npx`, use `pnpm`. Do not call `pnpm vitest` directly, call `pnpm che
 
 ## typechecking
 * use tsgo `as pnpm tsgo`
+* circular dependencies in js are strictly forbidden; circular dependencies in type imports only are fine
 
 ## Attitude
 
