@@ -1,0 +1,43 @@
+name: Post to Discord on Merge to Main
+
+on:
+  push:
+    branches: ["main"]
+
+permissions:
+  contents: read
+
+jobs:
+  post-dev-preview-to-discord:
+    runs-on: ubuntu-24.04-arm
+    steps:
+      - name: Post dev preview message to Discord
+        env:
+          DISCORD_WEBHOOK: ${{ secrets.RELEASES_DISCORD_WEBHOOK }}
+          COMMIT_MESSAGE: ${{ github.event.head_commit.message }}
+          COMMIT_URL: ${{ github.event.head_commit.url }}
+          COMMIT_TIMESTAMP: ${{ github.event.head_commit.timestamp }}
+        run: |
+          summary=$(printf '%s' "$COMMIT_MESSAGE" | head -n1)
+          conventionalFeatOrFix='^(feat|fix)(\([^)]+\))?!?:'
+          if [[ ! "$summary" =~ $conventionalFeatOrFix ]]; then
+            echo "Not a feat/fix commit — skipping Discord post: $summary"
+            exit 0
+          fi
+          jq -n \
+            --arg summary "$summary" \
+            --arg commitUrl "$COMMIT_URL" \
+            --arg timestamp "$COMMIT_TIMESTAMP" \
+            '{
+              username: "Dev Preview",
+              avatar_url: "https://blockstack.ing/icon-192.png",
+              embeds: [{
+                title: "🚧 Built something",
+                url: "https://blockstack.dev",
+                description: ("Pre-release work up at <https://blockstack.dev>. \n[\($summary)](\($commitUrl))"),
+                color: 3066993,
+                footer: { text: "Dev preview · blockstack.dev" },
+                timestamp: $timestamp
+              }]
+            }' \
+            | curl -fsS -H "Content-Type: application/json" -d @- "$DISCORD_WEBHOOK"
