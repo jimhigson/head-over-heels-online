@@ -27,7 +27,11 @@ jobs:
                 { "row": "to menu", "mark": "menu-ready" },
                 { "click": "[data-menuitem_id=\"playGame\"]" },
                 { "click": "[data-menuitem_id=\"originalGame\"]" },
-                { "row": "to game", "mark": "first-gameplay" }
+                { "click": "[data-dialog-id=\"crowns\"]", "afterMark": "first-gameplay" },
+                { "waitForGone": "[data-dialog-id=\"crowns\"]" },
+                { "row": "to game", "mark": "first-gameplay" },
+                { "keys": "M" },
+                { "row": "open map", "mark": "open map" }
               ]
           - target: editor
             build-command: pnpm build:editor

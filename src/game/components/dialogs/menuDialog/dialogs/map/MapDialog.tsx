@@ -1,4 +1,4 @@
-import { useMemo } from "preact/hooks";
+import { useEffect, useMemo } from "preact/hooks";
 
 import { useCheatsOn } from "../../../../../../store/slices/gameMenus/gameMenusSelectors";
 import { backToParentMenu } from "../../../../../../store/slices/gameMenus/gameMenusSlice";
@@ -41,6 +41,11 @@ const MapDialog = <RoomId extends string>() => {
   const gameApi = useGameApi<RoomId>();
 
   useAllowCharacterSwopping();
+
+  useEffect(() => {
+    // readiness signal for network-cost measurement (true-site-size)
+    performance.mark("open map");
+  }, []);
 
   const mapData = useMapDataForCurrentGame<RoomId>();
   const mapColourClasses = getMapColoursClass(mapData.curRoomScenery);
