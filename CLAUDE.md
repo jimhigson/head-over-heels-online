@@ -271,6 +271,22 @@ throw new Error(
 * the editor vite starts in a different dir, as given by the package.json file
 * whenever starting a server (`dev`/`preview`), check which port it actually started on (read its stdout) before trying to connect - if the default port is already in use, vite silently falls through to the next free port, so don't assume the port
 
+## Hosting
+
+Game and editor are served from **Cloudflare R2** via two domains: blockstack.ing for released (production branch), and blockstack.dev for pre-release previews on main branch
+
+For real deploys, all files are pre-compressed brotli at the highest compression level and stored in r2 buckets — workers static assets  were tried and found to double-compress precompressed brotli. `.github/workflows/deploy-to-r2.yml` → `pnpm deploy:r2 <game|editor> <env>` (`scripts/deployToR2.ts`) mirrors a build dir (upload + prune) into the `hoh-<app>-<env>` bucket.
+
+* **Environments are Vite modes.** One token is the branch, env, Vite mode suffix (`r2-<env>`) and bucket suffix (`hoh-<app>-<env>`): `main` → `blockstack.dev` (staging), `production` → `blockstack.ing`. The workflow derives it from the branch (`DEPLOY_ENV`); a push deploys that env, or `workflow_dispatch` targets either.
+* **Per-env config:** committed `.env.r2-<env>` (game) + `src/editor/.env.r2-<env>` (editor) bake in the domains. Default `.env.production` (`base: /editor/`) is the legacy github-pages build, not R2.
+* **Editor is its own origin** (`ed.<domain>`): under `r2-*` modes Vite builds `base: /` into `dist-editor` (`ownOriginModes` in `vite.editor.config.ts`); the two cross-link via `VITE_EDITOR_URL` / `VITE_GAME_URL`.
+* **`deployToR2.ts`:** brotli-11 the text (kept only if smaller), binaries stay plain; uploads each with content-type, `content-encoding: br`, and `Cache-Control` (`/assets/*` immutable 1yr, `index.html`/`sw.js` `no-cache`). Compressed objects also get **`no-transform`**, else Cloudflare recompresses *small* origin-brotli at lower quality (large files pass through).
+* **Cloudflare rules** (one set per zone, only hosts differ): a Cache Rule (cache eligible, edge TTL = respect origin), a URL-Rewrite SPA fallback (non-asset paths → `/index.html`, as R2 has no index doc), and a Redirect (`/editor*` → `ed.<domain>`).
+* **Secrets:** repo secrets `R2_ACCOUNT_ID` / `R2_ACCESS_KEY_ID` / `R2_SECRET_ACCESS_KEY` (one token, all buckets); local deploys read gitignored `.env.r2-<env>.local`.
+* **Checking brotli on macOS:** system `/usr/bin/curl` lacks brotli, so `--compressed` omits `Accept-Encoding: br` and br looks missing when it isn't. Use Homebrew curl (`$(brew --prefix)/opt/curl/bin/curl`) or pass `-H 'Accept-Encoding: br'`.
+* **Keep Cloudflare's HTML-rewriting features off** (Email Obfuscation, Server-Side Excludes, Rocket Loader, "Replace insecure JavaScript libraries", Automatic HTTPS Rewrites): they decode `text/html` to rewrite it, stripping `content-encoding: br` (with `no-transform` you get identity, not recompressed). We serve our own precompressed HTML.
+* **Purge after any Cloudflare setting change:** `no-cache` resources (`index.html`/`sw.js`) keep serving the already-processed cached copy via `cf-cache-status: REVALIDATED` until purged (Caching → Purge Cache). To test the live pipeline without purge access, add a throwaway `?cb=<random>` (new cache key → fresh `MISS`).
+
 ## Running
 
 Before running any commands, ensure you have the correct node version by running `eval "$(fnm env)" && fnm use`.
