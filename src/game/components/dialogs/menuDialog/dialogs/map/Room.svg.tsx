@@ -13,7 +13,7 @@ import {
   type RoomJson,
   roomVerticalLinkHolders,
 } from "../../../../../../model/RoomJson";
-import { hudLowercaseCharTextureSize } from "../../../../../../sprites/spritesheet/spritesheetData/textureSizes";
+import { hudCharTextureSize } from "../../../../../../sprites/spritesheet/spritesheetData/textureSizes";
 import { valuesIter } from "../../../../../../utils/entries";
 import { range } from "../../../../../../utils/iterators/range";
 import {
@@ -24,7 +24,6 @@ import {
 } from "../../../../../../utils/vectors/vectors";
 import { type PlayableItem } from "../../../../../physics/itemPredicates";
 import { projectWorldXyzToScreenXy } from "../../../../../render/projections";
-import { BitmapText } from "../../../../tailwindSprites/BitmapText";
 import { floorFillPathD } from "./floorFillPathD";
 import {
   InPlayItemsInRoomLayout,
@@ -143,6 +142,11 @@ const highRoomFrontVerticalLinesPathD = `
 M${project({ x: 0, y: 0, z: roomGridSizeZ })}
 L0, 0
 `;
+
+// map labels render at a fixed 2x the 8px design grid, independent of the page
+// upscale (the font's em maps to the 8px grid, so font-size is grid * scale)
+const mapLabelScale = 2;
+const mapLabelFontSize = hudCharTextureSize.h * mapLabelScale;
 
 const labelLayoutByDirection = {
   away: { gridOffset: { x: 0, y: 0.75 }, align: "left" },
@@ -392,18 +396,16 @@ export const RoomSvg = <RoomId extends string>({
             ),
           )}
         >
-          <foreignObject
-            width={label.text.length * 16}
-            height={hudLowercaseCharTextureSize.h * 2}
-            y={-8}
-            x={labelLayout.align === "left" ? 0 : label.text.length * -16}
+          <text
+            fill="white"
+            fontFamily="HeadOverHeels"
+            fontSize={mapLabelFontSize}
+            textAnchor={labelLayout.align === "left" ? "start" : "end"}
+            // baseline placed so the cap-height is centred on the label anchor
+            y={mapLabelFontSize / 2}
           >
-            {/* css variables because Safari doesn't propagate correctly into
-                foreign objects */}
-            <BitmapText noTint className="[--scale:2] [--block:16px]">
-              {label.text}
-            </BitmapText>
-          </foreignObject>
+            {label.text}
+          </text>
         </g>
       )}
       {hasBehaviours && (

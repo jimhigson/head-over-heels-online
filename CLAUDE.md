@@ -363,3 +363,7 @@ created beneath it is accessible without prompting for permission.
 - only edit on messages from me that end in "E". If there is no "E" at the end do zero edits
 - if I message with 'E!' this means you have ongoing permission to edit for the rest of the session, until I send '!E'
 - if implementing a plan, no non-planned edits without discussing first
+
+## Text rendering
+- Historically, and currently, but deprecated for now work: to render text in html, BitmapText was used for most of the life of this project to render one css sprite per char
+- This is now replaceable, for new work at least, using a custom generated font at `src/_generated/font/blockstack-head-over-heels.woff2`, generated using `pnpm gen:font`

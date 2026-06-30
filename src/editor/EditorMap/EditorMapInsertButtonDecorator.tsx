@@ -1,16 +1,15 @@
-import { type PropsWithChildren, type Ref } from "react";
+import { type ReactNode } from "react";
 
 import { roomGridSizeXY } from "../../game/components/dialogs/menuDialog/dialogs/map/mapConstants";
 import { type RoomDecoratorProps } from "../../game/components/dialogs/menuDialog/dialogs/map/RoomDecoratorProps";
 import { roomWorldPosition } from "../../game/components/dialogs/menuDialog/dialogs/map/roomWorldPosition";
 import { translateXyz } from "../../game/components/dialogs/menuDialog/dialogs/map/svgHelpers";
-import { BitmapText } from "../../game/components/tailwindSprites/BitmapText";
 import { projectWorldXyzToScreenXy } from "../../game/render/projections";
 import { type Boundaries } from "../../model/map/roomGridPositions";
 import { type SortedObjectOfRoomGridPositionSpecs } from "../../model/map/sortRoomGridPositions";
 import { editorStore, useEditorAppSelector } from "../../store/store";
+import { Tooltip } from "../../ui/tooltip/Tooltip";
 import { valuesIter } from "../../utils/entries";
-import { useElementSize } from "../../utils/react/useElementSize";
 import { unitVectors } from "../../utils/vectors/unitVectors";
 import {
   addXyz,
@@ -20,7 +19,6 @@ import {
 import { type EditorRoomId } from "../editorTypes";
 import { selectCursorSubRoomVerticalLink } from "../slice/levelEditorSelectors";
 import { insertRoom, setRoomAboveOrBelow } from "../slice/levelEditorSlice";
-import { ToolbarButton } from "../toolbar/buttons/ToolbarButton";
 
 const half = roomGridSizeXY / 2;
 const xyOutwardOffset = 52;
@@ -182,31 +180,57 @@ const dispatchForDirection = (direction: InsertDirection) => {
   }
 };
 
-type ButtonAtPositionProps = PropsWithChildren<{
+// matches the small toolbar button (buttonSmallSizeClassNames): two blocks minus
+// one scaled pixel, in the editor map's scale-editor context (--block: 16px,
+// --scale: 2). the glyph is one block tall, as it was when drawn as sprites
+const buttonSize = 2 * 16 - 1 * 2;
+const buttonFontSize = 16;
+
+type InsertButtonProps = {
   x: number;
   y: number;
-  buttonW: number;
-  buttonH: number;
-  foRef?: Ref<SVGForeignObjectElement>;
-}>;
+  label: string;
+  tooltipContent: ReactNode;
+  onClick: () => void;
+};
 
-const ButtonAtPosition = ({
+const InsertButton = ({
   x,
   y,
-  buttonW,
-  buttonH,
-  foRef,
-  children,
-}: ButtonAtPositionProps) => (
-  <foreignObject
-    ref={foRef}
-    x={x - buttonW / 2}
-    y={y - buttonH / 2}
-    width={buttonW}
-    height={buttonH}
-  >
-    {children}
-  </foreignObject>
+  label,
+  tooltipContent,
+  onClick,
+}: InsertButtonProps) => (
+  <Tooltip
+    tooltipContent={tooltipContent}
+    triggerContent={
+      <g className="group cursor-pointer" onClick={onClick}>
+        <rect
+          x={x - buttonSize / 2}
+          y={y - buttonSize / 2}
+          width={buttonSize}
+          height={buttonSize}
+          className="
+            fill-metallicBlue zx:fill-zxBlue toppy:fill-toppyCool3
+            group-hover:fill-pastelBlue
+            zx:group-hover:fill-zxYellow
+            toppy:group-hover:fill-toppyWarm3"
+        />
+        <text
+          x={x}
+          y={y}
+          fill="white"
+          fontFamily="HeadOverHeels"
+          fontSize={buttonFontSize}
+          textAnchor="middle"
+          dominantBaseline="central"
+          className="zx:group-hover:fill-zxBlack toppy:group-hover:fill-toppyBlack translate-x-oneScaledPix group-active:translate-y-oneScaledPix"
+        >
+          {label}
+        </text>
+      </g>
+    }
+  />
 );
 
 const EditorMapInsertButtonDecorator = ({
@@ -216,12 +240,6 @@ const EditorMapInsertButtonDecorator = ({
   isCurrentSubRoom,
   allGridPositions,
 }: RoomDecoratorProps<EditorRoomId>) => {
-  const {
-    ref: measureRef,
-    width: buttonW,
-    height: buttonH,
-  } = useElementSize<SVGForeignObjectElement>({ measureFirstChild: true });
-
   const hasRoomAbove = useEditorAppSelector(
     (state) =>
       selectCursorSubRoomVerticalLink(state.levelEditor, "above") !== undefined,
@@ -240,9 +258,6 @@ const EditorMapInsertButtonDecorator = ({
   if (currentGridPosition === undefined) {
     return null;
   }
-
-  const w = buttonW ?? 0;
-  const h = buttonH ?? 0;
 
   const getModeForDirection = (direction: InsertDirection): ButtonMode => {
     switch (direction) {
@@ -291,30 +306,19 @@ const EditorMapInsertButtonDecorator = ({
 
   return (
     <g transform={translateXyz(roomWorldPosition(currentGridPosition))}>
-      {visibleDirections.map((direction, i) => {
+      {visibleDirections.map((direction) => {
         const { x, y } = screenPositions[direction];
         const mode = getModeForDirection(direction);
 
         return (
-          <ButtonAtPosition
+          <InsertButton
             key={direction}
             x={x}
             y={y}
-            buttonW={w}
-            buttonH={h}
-            foRef={i === 0 ? measureRef : undefined}
-          >
-            <ToolbarButton
-              small
-              className="block"
-              onClick={() => dispatchForDirection(direction)}
-              tooltipContent={tooltipForMode(mode, direction)}
-            >
-              <BitmapText className="relative leading-none text-white">
-                {buttonLabels[mode]}
-              </BitmapText>
-            </ToolbarButton>
-          </ButtonAtPosition>
+            label={buttonLabels[mode]}
+            tooltipContent={tooltipForMode(mode, direction)}
+            onClick={() => dispatchForDirection(direction)}
+          />
         );
       })}
     </g>
