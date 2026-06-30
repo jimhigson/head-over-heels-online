@@ -79,6 +79,9 @@ export const handlePlayerTouchingPickup = <
     const pickupCentre = itemInPlayCentre(touchedItem);
     const floatingTextItem: ItemInPlay<"floatingText", RoomId, RoomItemId> = {
       type: "floatingText",
+      // floating text animates from its appearanceRoomTime, not the hash (only
+      // used to de-synchronise animations), so the hash is irrelevant:
+      hash: 0,
       id: `floatingText-${pickupId}` as RoomItemId,
       ...defaultItemProperties,
       fixedZIndex: floatingTextFixedZIndex, // high number ensures is always in front

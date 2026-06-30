@@ -1,6 +1,7 @@
 import { expect, test } from "@playwright/test";
 
-import { compressObject } from "../src/db/compressObject";
+import { compressCampaignObject } from "../src/db/compressCampaignObject";
+import { type Campaign } from "../src/model/modelTypes";
 import {
   type setEmulatedResolution,
   type SpriteOption,
@@ -19,7 +20,7 @@ import { menuScreenshotOptions } from "./testUtils/screenshots";
  * that helper pulls in the game's module graph (down to .mp3 imports) which the
  * Playwright runner can't resolve.
  */
-const noPlayableCampaign = {
+const noPlayableCampaign: Campaign<string> = {
   locator: {
     campaignName: "noPlayableTestCampaign",
     userId: "anon",
@@ -49,7 +50,7 @@ const noPlayableCampaign = {
 let noPlayableCampaignUrl: string;
 
 test.beforeAll(async () => {
-  const encoded = await compressObject(noPlayableCampaign);
+  const encoded = await compressCampaignObject(noPlayableCampaign);
   noPlayableCampaignUrl = `/?${new URLSearchParams({
     campaignName: `data:${encoded}`,
     campaignAuthorUserId: "editorUser",

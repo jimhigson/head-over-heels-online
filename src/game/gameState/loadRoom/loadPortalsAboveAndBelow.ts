@@ -120,6 +120,8 @@ export function* loadPortalsAboveAndBelow<
       ...defaultItemProperties,
       ...{
         type: "portal",
+        // portals never animate, so the hash (only used to de-synchronise animations) is irrelevant:
+        hash: 0,
         id: `portal/toRoomBelow/${subRoomId}` as RoomItemId,
         fixedZIndex: nonRenderingItemFixedZIndex,
         config: {
@@ -158,6 +160,8 @@ export function* loadPortalsAboveAndBelow<
       ...defaultItemProperties,
       ...{
         type: "portal",
+        // portals never animate, so the hash (only used to de-synchronise animations) is irrelevant:
+        hash: 0,
         id: `portal/toRoomAbove/${subRoomId}` as RoomItemId,
         fixedZIndex: nonRenderingItemFixedZIndex,
         config: {

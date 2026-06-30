@@ -29,6 +29,8 @@ export const uncombinePlayablesFromSymbiosis = <
   const head: PlayableItem<"head", RoomId, RoomItemId> = {
     id: "head" as RoomItemId,
     type: "head",
+    // playables never use the hash (only used to de-synchronise animations):
+    hash: 0,
     ...defaultItemProperties,
     ...defaultPlayableRootAttributes,
     ...headAabbInfo,
@@ -55,6 +57,8 @@ export const uncombinePlayablesFromSymbiosis = <
   const heels: PlayableItem<"heels", RoomId, RoomItemId> = {
     id: "heels" as RoomItemId,
     type: "heels",
+    // playables never use the hash (only used to de-synchronise animations):
+    hash: 0,
     ...defaultItemProperties,
     ...defaultPlayableRootAttributes,
     ...heelsAabbInfo,
@@ -105,6 +109,8 @@ export const combinePlayablesInSymbiosis = <
   return {
     id: "headOverHeels" as RoomItemId,
     type: "headOverHeels",
+    // playables never use the hash (only used to de-synchronise animations):
+    hash: 0,
     ...defaultItemProperties,
     shadowCastTexture: heels.shadowCastTexture,
     castsShadowWhileStoodOn: heels.castsShadowWhileStoodOn,

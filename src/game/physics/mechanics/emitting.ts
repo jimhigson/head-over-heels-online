@@ -6,6 +6,7 @@ import {
   roomSpatialIndexKey,
   type RoomState,
 } from "../../../model/RoomState";
+import { hashXyzToNumber0to1 } from "../../../utils/maths/hashXyzToNumber0to1";
 import {
   addXyz,
   originXyz,
@@ -146,6 +147,14 @@ export const emitting = <RoomId extends string, RoomItemId extends string>(
       newlyEmittedItem.state.position = subXyz(
         addXyz(position, emitOffset),
         scaleXyz(newlyEmittedItem.aabb, 0.5),
+      );
+
+      // recompute the hash from the final position plus roomTime, so items
+      // emitted from one emitter (all sharing a spawn position) don't start
+      // their animations in sync:
+      newlyEmittedItem.hash = hashXyzToNumber0to1(
+        newlyEmittedItem.state.position,
+        room.roomTime,
       );
 
       // check if the emitted item would immediately collide - if so, skip it:

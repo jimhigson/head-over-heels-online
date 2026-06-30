@@ -4,6 +4,7 @@ import { type ItemInPlay, type ItemInPlayConfig } from "../../model/ItemInPlay";
 import { itemInPlayCentre } from "../../model/itemInPlayCentre";
 import { playablesInRoom, type RoomState } from "../../model/RoomState";
 import { epsilon } from "../../utils/epsilon";
+import { hashXyzToNumber0to1 } from "../../utils/maths/hashXyzToNumber0to1";
 import { randomFromArray } from "../../utils/random/randomFromArray";
 import {
   addXyz,
@@ -40,6 +41,9 @@ const createParticleItemInPlay = (
   roomTime: number,
 ): ItemInPlay<"particle"> => ({
   ...defaultItemProperties,
+  // fold roomTime in so particles spawned at the same spot at different
+  // times don't start their fade animation in sync:
+  hash: hashXyzToNumber0to1(position, roomTime),
   id: `particle.${forItemId}.${particlesAdded++}`,
   type: "particle",
   aabb: originXyz,

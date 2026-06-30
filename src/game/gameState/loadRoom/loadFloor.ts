@@ -203,6 +203,8 @@ export const loadFloor = <RoomId extends string, RoomItemId extends string>(
   return {
     ...defaultItemProperties,
     type: "floor",
+    // floors never animate, so the hash (only used to de-synchronise animations) is irrelevant:
+    hash: 0,
     id: itemId,
     jsonItemId: itemId,
     config: {

@@ -4,6 +4,7 @@ import { roomSpatialIndexKey } from "../../../model/RoomState";
 import { isAnimationId } from "../../../sprites/assertIsTextureId";
 import { wallTileSize } from "../../../sprites/spritesheet/spritesheetData/textureSizes";
 import { isEmpty } from "../../../utils/iterators/isEmpty";
+import { phaseForSubItem } from "../../../utils/maths/hashXyzToNumber0to1";
 import { renderContainerToSprite } from "../../../utils/pixi/renderContainerToSprite";
 import {
   perpendicularAxisXy,
@@ -89,7 +90,7 @@ export const farWallAppearance = itemAppearanceRenderOnce<"wall">(
           wallAnimationsContainer.addChild(
             createSprite({
               animationId,
-              randomiseStartFrame: `${id}${i}`,
+              startFramePhase: phaseForSubItem(item.hash, i),
               flipX: direction === "left",
               x: tileRenderPosition.x + (direction === "away" ? -8 : 8),
               y: tileRenderPosition.y - 23,

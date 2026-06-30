@@ -9,6 +9,7 @@ import { type PlanetName } from "../../../sprites/planets";
 import { type ScrollsRead } from "../../../store/slices/gameInPlay/gameInPlaySlice";
 import { type PokesEnabled } from "../../../store/slices/userSettings/userSettingsSlice";
 import { emptyObject } from "../../../utils/empty";
+import { hashXyzToNumber0to1 } from "../../../utils/maths/hashXyzToNumber0to1";
 import {
   addXyz,
   lengthXyz,
@@ -37,6 +38,12 @@ type ItemConfigMaybeWithMultiplication = {
   times?: Partial<Xyz> | undefined;
 };
 
+/**
+ * Convert a json item to its in-play item(s). Every in-play item sets its own
+ * {@link ItemInPlay.hash hash} (a {@link hashXyzToNumber0to1 hash} of its
+ * initial position) inline, used to de-synchronise animations without depending
+ * on the (possibly synthesised) item id.
+ */
 export function* loadItemFromJson<
   RoomId extends string,
   RoomItemId extends string,
@@ -165,6 +172,7 @@ export function* loadItemFromJson<
         ...jsonItem,
         ...defaultItemProperties,
         ...boundingBoxesMultiplied,
+        hash: hashXyzToNumber0to1(state.position),
         id: `${jsonItemId}${itemIdSuffix}`,
         jsonItemId,
         fixedZIndex:

@@ -168,6 +168,16 @@ export type ItemInPlay<
   readonly id: ItemId;
   state: ItemState<T, RoomId, RoomItemId>;
 
+  /**
+   * a stable pseudo-random number in `[0, 1)`, designed to be reasonably unique
+   * between items but not truly random. Used to de-synchronise animations
+   * (start frame, bob phase) so identical items in a room don't move in
+   * lock-step. Must be stable between room loads and must not be derived from
+   * the item id (which can be rewritten); items set it inline at creation,
+   * usually via {@link hashXyzToNumber0to1} of their position.
+   */
+  hash: number;
+
   /** the shadow this item casts on other items */
   shadowCastTexture?: ShadowCastSpriteOptions;
 

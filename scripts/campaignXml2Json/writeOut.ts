@@ -2,9 +2,36 @@ import { canonicalize } from "json-canonicalize";
 import { orderBy } from "natural-orderby";
 import { writeFile } from "node:fs/promises";
 
+import { columnarEncode } from "../../src/columnar/encoder";
 import { type Campaign } from "../../src/model/modelTypes";
 import { type AnyRoomJson } from "../../src/model/RoomJson";
-import { valuesIter } from "../../src/utils/entries";
+import { entries, valuesIter } from "../../src/utils/entries";
+
+/**
+ * the prod build loads the original campaign from the columnar blob + decoder;
+ * dev loads the plain ts so room edits show up without regenerating. The unused
+ * branch is dead-code-eliminated, so prod ships only one of the two.
+ */
+const loadOriginalCampaignTs = `
+import { importOnce } from "../../utils/importOnce.ts";
+import { type Campaign } from "../../model/modelTypes.ts";
+import { columnarDecode } from "../../columnar/decoder.ts";
+import { type OriginalCampaignRoomId } from "./OriginalCampaignRoomId.ts";
+
+export const loadOriginalCampaign = importOnce(
+  async (): Promise<Campaign<OriginalCampaignRoomId>> => {
+    if (import.meta.env.DEV) {
+      return (await import("./campaign.ts")).campaign;
+    }
+    // only the blob is lazy; the decoder is already in the graph (db loads use
+    // it too), so importing it dynamically would not split it into its own chunk
+    const { default: url } = await import("./campaign.columnar.json?url");
+    return columnarDecode<OriginalCampaignRoomId>(
+      await (await fetch(url)).json(),
+    );
+  },
+);
+`;
 
 const roomTs = ({ $schema: _, ...room }: AnyRoomJson): string =>
   `
@@ -58,9 +85,34 @@ export const writeOut = async ({
     } as const satisfies Campaign<OriginalCampaignRoomId> as Campaign<OriginalCampaignRoomId>;`,
   );
 
+  // the columnar blob must hold exactly what the .ts rooms hold, so strip
+  // $schema the same way roomTs does before encoding
+  const roomsForBlob = Object.fromEntries(
+    entries(convertedRoomsAndExtraRooms).map(
+      ([id, { $schema: _, ...room }]) => [id, room],
+    ),
+  );
+  const writeColumnarBlob = writeFile(
+    `${targetDir}/campaign.columnar.json`,
+    JSON.stringify(
+      // the original campaign only ever decodes back for play (its editable
+      // source is the .ts), so drop the ids nothing references to save bytes
+      columnarEncode({ locator, rooms: roomsForBlob } as Campaign<string>, {
+        dropUnreferencedIds: true,
+      }),
+    ),
+  );
+
+  const writeLoadOriginalCampaign = writeFile(
+    `${targetDir}/loadOriginalCampaign.ts`,
+    loadOriginalCampaignTs,
+  );
+
   await Promise.all([
     writeTsBarrell,
     writeOriginalCampaignRoomIdType,
+    writeColumnarBlob,
+    writeLoadOriginalCampaign,
     ...valuesIter(convertedRoomsAndExtraRooms).map(async (room) => {
       try {
         if (room.id === undefined) {

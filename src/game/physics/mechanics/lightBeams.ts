@@ -377,6 +377,8 @@ export const tickLampLightBeams = <
       const id = nextItemIdInItems(room.items, idPrefix);
       beam = {
         type: "lightBeam",
+        // light beams never animate, so the hash (only used to de-synchronise animations) is irrelevant:
+        hash: 0,
         id,
         config: {
           direction: segment.direction,

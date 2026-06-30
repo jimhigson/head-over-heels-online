@@ -13,7 +13,7 @@ export const deadlyBlockAppearance: ItemAppearance<
   renderContext: {
     isReflection,
     item: {
-      id,
+      hash,
       config: { times, style },
       state: { disabled },
     },
@@ -40,7 +40,7 @@ export const deadlyBlockAppearance: ItemAppearance<
     : {
         animationId: style,
         times,
-        randomiseStartFrame: id,
+        startFramePhase: hash,
         paused,
         spritesheet,
       },

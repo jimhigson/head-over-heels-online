@@ -1,6 +1,6 @@
 import { useState } from "preact/hooks";
 
-import { compressObject } from "../../../db/compressObject";
+import { compressCampaignObject } from "../../../db/compressCampaignObject";
 import { type TypedURLSearchParams } from "../../../options/queryParams";
 import { type TextureTailwindClass } from "../../../sprites/spritesheet/spritesheetData/TextureTailwindClass";
 import { editorStore } from "../../../store/store";
@@ -24,7 +24,7 @@ export const PlayTestButton = () => {
           onClick={async () => {
             const state = editorStore.getState();
             const campaign = selectCurrentCampaignInProgress(state);
-            const encodedCampaign = await compressObject(campaign);
+            const encodedCampaign = await compressCampaignObject(campaign);
 
             const url = new URL(baseUrl, window.location.href);
             const searchParams = url.searchParams as TypedURLSearchParams;

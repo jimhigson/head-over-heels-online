@@ -268,7 +268,7 @@ const itemAppearancesMap: {
       renderContext: {
         isReflection,
         item: {
-          id,
+          hash,
           config: { style },
         },
         general: { paused, spritesheetVariants },
@@ -277,7 +277,7 @@ const itemAppearancesMap: {
       return createSprite({
         animationId: `bubbles.bounce.${style}`,
         paused,
-        randomiseStartFrame: id,
+        startFramePhase: hash,
         spritesheet: spritesheetVariants.currentMainSpritesheet(
           false,
           false,

@@ -15,7 +15,7 @@ import { type ItemAppearance } from "./ItemAppearance";
 const spriteOptions = (
   name: IndividualCharacterName,
   direction: DirectionXy8,
-  id: string,
+  hash: number | undefined,
   paused: boolean,
   spritesheet: AppSpritesheet,
 ): Exclude<CreateSpriteOptions, string> => {
@@ -24,7 +24,7 @@ const spriteOptions = (
   if (isAnimationId(possibleAnimationId, spritesheet.data)) {
     return {
       animationId: possibleAnimationId,
-      randomiseStartFrame: id,
+      startFramePhase: hash,
       paused,
       spritesheet,
     };
@@ -36,7 +36,7 @@ export const sceneryPlayerAppearance: ItemAppearance<"sceneryPlayer"> = ({
   renderContext: {
     isReflection,
     item: {
-      id,
+      hash,
       config: { which, startDirection },
     },
     general: { paused, spritesheetVariants },
@@ -68,10 +68,12 @@ export const sceneryPlayerAppearance: ItemAppearance<"sceneryPlayer"> = ({
     output:
       which === "headOverHeels" ?
         createStackedSprites({
-          top: spriteOptions("head", direction, id, paused, spritesheet),
-          bottom: spriteOptions("heels", direction, id, paused, spritesheet),
+          top: spriteOptions("head", direction, hash, paused, spritesheet),
+          bottom: spriteOptions("heels", direction, hash, paused, spritesheet),
         })
-      : createSprite(spriteOptions(which, direction, id, paused, spritesheet)),
+      : createSprite(
+          spriteOptions(which, direction, hash, paused, spritesheet),
+        ),
     renderProps: emptyObject,
   };
 };

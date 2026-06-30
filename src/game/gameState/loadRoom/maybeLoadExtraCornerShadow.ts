@@ -59,6 +59,8 @@ export function* maybeLoadExtraCornerShadow<
     const cornerCube: ItemInPlay<"blocker", RoomId, RoomItemId> = {
       id: `extraCornerShadow-${coordStr}` as RoomItemId,
       type: "blocker",
+      // never animates, so the hash (only used to de-synchronise animations) is irrelevant:
+      hash: 0,
       state: {
         ...defaultBaseState<RoomItemId>(),
         position: blockXyzToFineXyz(addXyz(wallJsonPosition, setback)),
