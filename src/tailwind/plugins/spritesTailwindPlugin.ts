@@ -58,6 +58,19 @@ export const spritesTailwindPlugin = plugin(
       a.animationSpeed === b.animationSpeed &&
       a.every((frame, i) => frame === b[i]);
 
+    // an animation whose frames are copyFrom copies has the same frame ids in
+    // both sheets but different on-sheet coords (the copy is aliased to its
+    // source's region), so it must not take the "shared" path that reads coords
+    // from the override-less fullSpritesheetData
+    const animationUsesCopyFrom = (
+      frames: FramesWithSpeed<TextureId[]> | undefined,
+      sheetName: keyof typeof spritesheetMetas,
+    ) =>
+      frames?.some(
+        (f) =>
+          spritesheetMetas[sheetName].overrides?.[f]?.copyFrom !== undefined,
+      ) ?? false;
+
     const sanitiseId = (id: string) => e(sanitiseForClassName(id));
 
     const base: CSSRuleObject = {};
@@ -91,6 +104,9 @@ export const spritesTailwindPlugin = plugin(
         width: `calc(var(--w) * var(--totalScale) * 1px)`,
         height: `calc(var(--h) * var(--totalScale) * var(--doubleHeight, 1) * 1px)`,
         imageRendering: "pixelated",
+        // horizontally mirrored copies (copyFrom flipX) set --flip: -1; default
+        // 1 is the identity for every other sprite
+        transform: "scaleX(var(--flip, 1))",
         ...spriteStyles("background"),
       },
       ".sprite-tinted": {
@@ -145,6 +161,11 @@ export const spritesTailwindPlugin = plugin(
       },
       ".sprite-scale-2": {
         "--sprite-scale": "2",
+      },
+      // horizontally mirror a sprite (the `.sprite` base reads --flip into its
+      // transform); used for copyFrom flipX copies
+      ".sprite-flip-x": {
+        "--flip": "-1",
       },
       ".sprites-double-height": {
         "--doubleHeight": "2",
@@ -345,6 +366,7 @@ export const spritesTailwindPlugin = plugin(
         h,
         x,
         y,
+        false,
         fullSpritesheetData,
       );
 
@@ -381,7 +403,7 @@ export const spritesTailwindPlugin = plugin(
           const otherCaseTextureId = `hud.char.${otherCase}`;
           if (!isTextureId(otherCaseTextureId, fullSpritesheetData)) {
             utilities[`.texture-${sanitiseId(otherCaseTextureId)}`] =
-              spriteSpecificCssVars(w, h, x, y, fullSpritesheetData);
+              spriteSpecificCssVars(w, h, x, y, false, fullSpritesheetData);
           }
         }
       }
@@ -404,7 +426,11 @@ export const spritesTailwindPlugin = plugin(
       const toppyFrames = toppyAnimations[animationName];
 
       const shared =
-        bsFrames && toppyFrames && animationsAreEqual(bsFrames, toppyFrames);
+        bsFrames &&
+        toppyFrames &&
+        animationsAreEqual(bsFrames, toppyFrames) &&
+        !animationUsesCopyFrom(bsFrames, "BlockStack") &&
+        !animationUsesCopyFrom(toppyFrames, "Toppy");
 
       const emitUtilities = (
         frames: FramesWithSpeed<TextureId[]>,
@@ -556,6 +582,53 @@ export const spritesTailwindPlugin = plugin(
       blockStackVars,
     );
     Object.assign(utilities[".toppy-spritesheet"] as object, toppyVars);
+
+    // copyFrom: a copy has no pixels of its own on the sheet (its own region is
+    // blanked to transparent), so under its sheet's ancestor class redirect the
+    // crop to the source region and mirror it for flipX copies. The override-less
+    // base `.texture-*` class keeps the copy's own coords, used by sheets (eg
+    // BlockStack) that have real art there and don't declare the copy.
+    for (const [sheetName, meta] of entries(spritesheetMetas)) {
+      const { overrides } = meta;
+      if (overrides === undefined) {
+        continue;
+      }
+      const sheetData = perSheetData[sheetName];
+      if (sheetData === undefined) {
+        continue;
+      }
+      const ancestor = utilities[
+        sheetName === "Toppy" ? ".toppy-spritesheet" : ".blockstack-spritesheet"
+      ] as Record<string, CSSRuleObject>;
+
+      for (const [copyId, override] of objectEntriesIter(overrides)) {
+        const copyFrom = override?.copyFrom;
+        if (copyFrom === undefined || sheetData.frames[copyId] === undefined) {
+          continue;
+        }
+        const { frame } = sheetData.frames[copyId];
+        const selector = `& .texture-${sanitiseId(copyId)}`;
+        ancestor[selector] = {
+          ...ancestor[selector],
+          "--x": `${frame.x}`,
+          "--y": `${frame.y}`,
+          ...(copyFrom.flipX === true && { "--flip": "-1" }),
+        };
+      }
+
+      // animations built entirely of flipped copies need the mirror on their
+      // animated element too; the per-frame crop is already redirected via the
+      // per-sheet keyframes forced by animationUsesCopyFrom
+      for (const [animId, frames] of objectEntriesIter(sheetData.animations)) {
+        if (!frames.every((f) => overrides[f]?.copyFrom?.flipX === true)) {
+          continue;
+        }
+        for (const prefix of ["", "reversed-"]) {
+          const selector = `& .texture-animated-${prefix}${sanitiseId(animId)}`;
+          ancestor[selector] = { ...ancestor[selector], "--flip": "-1" };
+        }
+      }
+    }
 
     utilities[".sprite-play-once"] = {
       animationIterationCount: "1",

@@ -11,7 +11,7 @@ import {
   replaceSpritesheetWithSwopped,
 } from "../spritesheetPaletteSwop";
 import { type VariantBuildContext } from "../VariantBuildContext";
-import { type AppSpritesheet } from "./SpritesheetVariants";
+import { type AppSpritesheet } from "./AppSpritesheet";
 
 /** Change the appearance of the citizens of Freedom to distinguish from the player */
 const sceneryPlayerSwaps: PartialNamedColours<keyof typeof paletteBlockstack> =

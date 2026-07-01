@@ -12,7 +12,7 @@ import {
   framesWithOriginalGameTimings,
 } from "../../game/render/createSprite";
 import { type AnimationId } from "../../sprites/spritesheet/spritesheetData/makeSpritesheetData";
-import { type AppSpritesheet } from "../../sprites/spritesheet/variants/SpritesheetVariants";
+import { type AppSpritesheet } from "../../sprites/spritesheet/variants/AppSpritesheet";
 import { range } from "../iterators/range";
 import { pixiContainerToString } from "./pixiContainerToString";
 import { UniqueTextureAnimatedSprite } from "./UniqueTextureAnimatedSprite";

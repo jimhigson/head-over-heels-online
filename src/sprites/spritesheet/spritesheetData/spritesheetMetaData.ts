@@ -23,6 +23,18 @@ type SpriteOverrides = Partial<
         x: number;
         y: number;
       };
+      /**
+       * declares that this texture has no pixels of its own and should instead
+       * sample another texture's region of the spritesheet. Used to deduplicate
+       * sprites that are identical (so artists only maintain one copy) or
+       * identical-when-mirrored (`flipX`). The flip is baked into the texture's
+       * UVs at build time, so it composes transparently with animations and
+       * every draw site.
+       */
+      copyFrom?: {
+        textureId: TextureId;
+        flipX?: boolean;
+      };
     }
   >
 >;

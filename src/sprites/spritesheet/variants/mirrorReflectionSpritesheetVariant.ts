@@ -11,7 +11,7 @@ import {
   type SpritesheetTextureSwops,
 } from "../spritesheetPaletteSwop";
 import { type VariantBuildContext } from "../VariantBuildContext";
-import { type AppSpritesheet } from "./SpritesheetVariants";
+import { type AppSpritesheet } from "./AppSpritesheet";
 
 /**
  * a spritesheet recoloured to how items appear in a mirror's reflection, built

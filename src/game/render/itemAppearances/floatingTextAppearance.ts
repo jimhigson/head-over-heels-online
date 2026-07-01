@@ -1,7 +1,7 @@
 import { type Color, Container } from "pixi.js";
 
 import { type SpritesheetMetadata } from "../../../sprites/spritesheet/spritesheetData/spritesheetMetaData";
-import { type AppSpritesheet } from "../../../sprites/spritesheet/variants/SpritesheetVariants";
+import { type AppSpritesheet } from "../../../sprites/spritesheet/variants/AppSpritesheet";
 import { getAmbientSwoppedColour } from "../../../utils/palette/palette";
 import {
   blockSizePx,

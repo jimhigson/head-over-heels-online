@@ -32,7 +32,7 @@ vi.mock("../../../utils/pixi/renderContainerToSprite", () => ({
 }));
 
 import { type TextureId } from "../../../sprites/spritesheet/spritesheetData/makeSpritesheetData";
-import { type AppSpritesheet } from "../../../sprites/spritesheet/variants/SpritesheetVariants";
+import { type AppSpritesheet } from "../../../sprites/spritesheet/variants/AppSpritesheet";
 // Import the mocked functions
 import { createSprite } from "../createSprite";
 

@@ -5,7 +5,7 @@ import { type Campaign } from "../../../../model/modelTypes";
 import { paletteBlockstack } from "../../../../sprites/palette/spritesheetPalette";
 import { type SceneryName } from "../../../../sprites/planets";
 import { planetSpecificIfExists } from "../../../../sprites/planetSpecificIfExists";
-import { type AppSpritesheet } from "../../../../sprites/spritesheet/variants/SpritesheetVariants";
+import { type AppSpritesheet } from "../../../../sprites/spritesheet/variants/AppSpritesheet";
 import { selectMaybeCurrentCampaign } from "../../../../store/slices/gameMenus/gameMenusSelectors";
 import { store } from "../../../../store/store";
 import { resolveSwops } from "../../../../utils/palette/palette";

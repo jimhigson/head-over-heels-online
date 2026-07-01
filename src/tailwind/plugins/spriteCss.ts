@@ -1,9 +1,10 @@
 import { zxSpectrumFrameRate } from "../../originalGame";
+import { type AppSpriteFrame } from "../../sprites/spritesheet/spritesheetData/AppSpriteFrame";
 import {
   type FramesWithSpeed,
   type TextureId,
 } from "../../sprites/spritesheet/spritesheetData/makeSpritesheetData";
-import { type AppSpritesheetData } from "../../sprites/spritesheet/variants/SpritesheetVariants";
+import { type AppSpritesheetData } from "../../sprites/spritesheet/variants/AppSpritesheet";
 
 type Sanitise = (s: string) => string;
 
@@ -50,6 +51,8 @@ export const spriteSpecificCssVars = (
   h: number,
   x: number,
   y: number,
+  /** when true, horizontally mirrors the sprite (a copyFrom flipX copy) */
+  flipX = false,
   spritesheetData?: AppSpritesheetData,
 ) => {
   const whVars =
@@ -60,6 +63,7 @@ export const spriteSpecificCssVars = (
     ...whVars,
     "--x": `${x}`,
     "--y": `${y}`,
+    ...(flipX && { "--flip": "-1" }),
   };
 };
 
@@ -180,6 +184,22 @@ export const animationCssVarValues = (
   };
 };
 
+/**
+ * True when every frame of the animation is a horizontally flipped copy, so a
+ * single element-level mirror (`.sprite-flip-x`) is enough. Mixed animations
+ * instead carry per-frame `--flip` in their keyframes, and unflipped ones need
+ * nothing.
+ */
+export const animationIsUniformlyFlipped = (
+  frames: FramesWithSpeed<TextureId[]>,
+  spritesheetData: AppSpritesheetData,
+) =>
+  frames.every(
+    (f) =>
+      (spritesheetData.frames[f]?.frame as AppSpriteFrame | undefined)
+        ?.flipX === true,
+  );
+
 export const keyframesForAnimatedSprite = (
   animationName: string,
   sanitise: Sanitise,
@@ -209,15 +229,26 @@ export const keyframesForAnimatedSprite = (
     elideOverride?.y ??
     (isShared && frameXYs.every((f) => f.y === firstFrame.y));
 
-  const step = (x: number, y: number) => ({
+  // an animation that mixes flipped and unflipped copies can't be mirrored with
+  // a single element-level transform, so it emits --flip per frame in its
+  // keyframes. A uniformly flipped (or unflipped) animation emits nothing here -
+  // the element-level --flip covers the uniform case without inflating the css
+  const flips = frames.map(
+    (f) => (spritesheetData.frames[f].frame as AppSpriteFrame).flipX === true,
+  );
+  const perFrameFlip = flips.some(Boolean) && !flips.every(Boolean);
+
+  const step = (x: number, y: number, flip: boolean) => ({
     ...(omitX ? {} : { "--x": `${x}` }),
     ...(omitY ? {} : { "--y": `${y}` }),
+    ...(perFrameFlip ? { "--flip": flip ? "-1" : "1" } : {}),
   });
 
   const entries: [string, ReturnType<typeof step>][] = [];
   const lastI = frames.length - 1;
   let prevX = -1;
   let prevY = -1;
+  let prevFlip = false;
   let prevI = 0;
 
   const pct = (i: number) =>
@@ -231,24 +262,26 @@ export const keyframesForAnimatedSprite = (
       );
     }
     const { x, y } = frame.frame;
+    const flip = flips[i];
 
-    const changed = x !== prevX || y !== prevY;
+    const changed = x !== prevX || y !== prevY || flip !== prevFlip;
     if (changed) {
       // emit the last frame of the previous run (if there was one)
       if (i > 0 && prevI < i - 1) {
-        entries.push([pct(i - 1), step(prevX, prevY)]);
+        entries.push([pct(i - 1), step(prevX, prevY, prevFlip)]);
       }
       // emit the first frame of this new run
-      entries.push([pct(i), step(x, y)]);
+      entries.push([pct(i), step(x, y, flip)]);
       prevX = x;
       prevY = y;
+      prevFlip = flip;
       prevI = i;
     }
   }
 
   // emit the end-of-run stop for the final run
   if (prevI < lastI) {
-    entries.push([pct(lastI), step(prevX, prevY)]);
+    entries.push([pct(lastI), step(prevX, prevY, prevFlip)]);
   }
 
   return {

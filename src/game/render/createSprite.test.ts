@@ -2,7 +2,7 @@ import { AnimatedSprite, Container, Sprite, Texture } from "pixi.js";
 import { beforeAll, describe, expect, expectTypeOf, test } from "vitest";
 
 import { type TextureId } from "../../sprites/spritesheet/spritesheetData/makeSpritesheetData";
-import { type AppSpritesheet } from "../../sprites/spritesheet/variants/SpritesheetVariants";
+import { type AppSpritesheet } from "../../sprites/spritesheet/variants/AppSpritesheet";
 import { type Xyz } from "../../utils/vectors/vectors";
 import { createSprite, type CreateSpriteOptions } from "./createSprite";
 

@@ -16,10 +16,8 @@ import {
   type SpritesheetTextureSwops,
 } from "../spritesheetPaletteSwop";
 import { type VariantBuildContext } from "../VariantBuildContext";
-import {
-  type AppSpritesheet,
-  type LoadableSpriteOption,
-} from "./SpritesheetVariants";
+import { type AppSpritesheet } from "./AppSpritesheet";
+import { type LoadableSpriteOption } from "./SpritesheetVariants";
 
 const buildDeactivatedSwops = <
   PaletteColourName extends string,

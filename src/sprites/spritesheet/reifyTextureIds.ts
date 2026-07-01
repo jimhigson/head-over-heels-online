@@ -1,6 +1,6 @@
 import { keysIter } from "../../utils/entries";
 import { type TextureId } from "./spritesheetData/makeSpritesheetData";
-import { type AppSpritesheetData } from "./variants/SpritesheetVariants";
+import { type AppSpritesheetData } from "./variants/AppSpritesheet";
 
 type TexturesPredicate = (candidate: TextureId) => boolean;
 export type TexturesSpecifier = Iterable<TextureId> | TexturesPredicate;

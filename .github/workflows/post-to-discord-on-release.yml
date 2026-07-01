@@ -19,7 +19,7 @@ jobs:
           webhook_url: ${{ secrets.RELEASES_DISCORD_WEBHOOK }}
           color: "15032132"
           username: "Release Changelog"
-          avatar_url: "https://blockstack.ing/icon-192.png"
+          avatar_url: "https://blockstack.ing/icon-192.webp"
           content: "||@everyone||"
           footer_title: "Changelog"
           footer_timestamp: true

@@ -8,7 +8,7 @@ import {
   type AnimationId,
   type TextureId,
 } from "../../../sprites/spritesheet/spritesheetData/makeSpritesheetData";
-import { type AppSpritesheet } from "../../../sprites/spritesheet/variants/SpritesheetVariants";
+import { type AppSpritesheet } from "../../../sprites/spritesheet/variants/AppSpritesheet";
 import { renderBobSine } from "../../../utils/maths/renderBob";
 import {
   type DirectionXy4,

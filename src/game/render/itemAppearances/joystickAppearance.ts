@@ -1,6 +1,6 @@
 import { Container, type Sprite } from "pixi.js";
 
-import { type AppSpritesheet } from "../../../sprites/spritesheet/variants/SpritesheetVariants";
+import { type AppSpritesheet } from "../../../sprites/spritesheet/variants/AppSpritesheet";
 import {
   type DirectionXy4,
   originXy,

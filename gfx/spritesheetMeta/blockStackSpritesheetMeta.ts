@@ -88,6 +88,20 @@ export const blockStackSpritesheetMeta: SpritesheetMetadata<
     "head.falling.awayRight": { pivot: { x: 11, y: 24 } },
     "head.falling.towardsLeft": { pivot: { x: 13, y: 24 } },
     "head.falling.awayLeft": { pivot: { x: 12, y: 25 } },
+    // sprites that share another's region of the sheet (their own regions can
+    // later be blanked). The whiteRabbit power-ups and planet icons are
+    // placeholders not yet given distinct art, so they render as their canonical
+    // source rather than the placeholder pixels currently in the iff:
+    "whiteRabbit.fast": { copyFrom: { textureId: "whiteRabbit.extra-life" } },
+    "whiteRabbit.shield": { copyFrom: { textureId: "whiteRabbit.extra-life" } },
+    "whiteRabbit.jumps": { copyFrom: { textureId: "whiteRabbit.extra-life" } },
+    "planet.safari": { copyFrom: { textureId: "planet.blacktooth" } },
+    "planet.egyptus": { copyFrom: { textureId: "planet.blacktooth" } },
+    "planet.penitentiary": { copyFrom: { textureId: "planet.blacktooth" } },
+    "planet.bookworld": { copyFrom: { textureId: "planet.blacktooth" } },
+    // exact duplicates:
+    "shadowMask.fullBlock": { copyFrom: { textureId: "shadowMask.book" } },
+    "particle.heels.3": { copyFrom: { textureId: "particle.head.3" } },
   },
   swops: {
     deactivated: {

@@ -9,7 +9,7 @@ import { hudCharTextureSize } from "../../../sprites/spritesheet/spritesheetData
 import {
   type AppSpritesheet,
   type AppSpritesheetData,
-} from "../../../sprites/spritesheet/variants/SpritesheetVariants";
+} from "../../../sprites/spritesheet/variants/AppSpritesheet";
 import { size } from "../../../utils/iterators/size";
 import { renderContainerToTexture } from "../../../utils/pixi/renderContainerToSprite";
 import { OutlineFilter } from "../filters/OutlineFilter";

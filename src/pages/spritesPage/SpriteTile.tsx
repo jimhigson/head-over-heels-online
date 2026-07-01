@@ -1,9 +1,9 @@
 import "react";
 
 import { sanitiseForClassName } from "../../game/components/tailwindSprites/SanitiseForClassName";
+import { type AppSpriteFrame } from "../../sprites/spritesheet/spritesheetData/AppSpriteFrame";
 import { type TextureId } from "../../sprites/spritesheet/spritesheetData/makeSpritesheetData";
 import { spriteSpecificCssVars } from "../../tailwind/plugins/spriteCss";
-import { type Xy } from "../../utils/vectors/vectors";
 
 declare module "react" {
   interface CSSProperties {
@@ -20,7 +20,7 @@ const pivotOutlineSizePx = 10;
 
 export type SpriteTileProps = {
   textureId: TextureId;
-  frame: { x: number; y: number; w: number; h: number; pivot?: Xy };
+  frame: AppSpriteFrame;
   scale: number;
 };
 
@@ -42,7 +42,13 @@ export const SpriteTile = ({ textureId, frame, scale }: SpriteTileProps) => {
         // most of these textures won't have classes loaded by tailwind due to ,
         // so inline the relevant info - including how tailwind would inflate
         // the css in prod
-        style={spriteSpecificCssVars(frame.w, frame.h, frame.x, frame.y)}
+        style={spriteSpecificCssVars(
+          frame.w,
+          frame.h,
+          frame.x,
+          frame.y,
+          frame.flipX,
+        )}
       >
         {frame.pivot ?
           <div

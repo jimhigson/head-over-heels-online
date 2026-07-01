@@ -21,6 +21,11 @@ then
     echo "no jq"
     exit 1
 fi
+if ! command -v cwebp 2>&1 >/dev/null
+then
+    echo "no cwebp"
+    exit 1
+fi
 
 source scripts/revert-noop-pngs.sh
 
@@ -209,8 +214,32 @@ for icon in $TMP_DIR_ICONS/icon-{192,512}.png; do
     echo "  Filesize: $(ls -lh "$icon" | awk '{print $5}')"
 done
 
-echo "🤖 converting sprites to webp (lossless)"
-magick "$TMP_DIR/sprites.png" -define webp:lossless=true -define webp:method=6 "$TMP_DIR/sprites.webp"
+# webp manifest icons for browsers - all modern browsers support webp manifest
+# icons, so no png is shipped to the browser. The png icons are generated only
+# as the cwebp input here, and (icon.png / icon-512.png) as the tauri icon
+# source below; tauri's icon tooling needs png/ico.
+echo "🤖 creating webp icons for browsers"
+for icon in $TMP_DIR_ICONS/icon-192 $TMP_DIR_ICONS/icon-512; do
+    cwebp -quiet -z 9 "$icon.png" -o "$icon.webp"
+    echo "  $(basename "$icon").webp: $(ls -lh "$icon.webp" | awk '{print $5}') (png $(ls -lh "$icon.png" | awk '{print $5}'))"
+done
+
+# blank everything that isn't inside a BlockStack sprite frame (sprites.webp is
+# the BlockStack sheet) - drops the palette-swatch strip, gutters and any stray
+# off-frame art the game never samples. Done after the icon is cut, so the icon
+# is unaffected. sharp drops the icc, so re-tag P3 afterwards.
+echo "🤖 masking non-sprite areas to transparent"
+# strip the icc first: sharp (in the mask script) colour-manages a P3-tagged
+# input and shifts every rgb value off-palette, which breaks palette swapping.
+# Untagged, sharp is an sRGB identity; re-tag P3 after (assign, pixels unchanged).
+magick "$TMP_DIR/sprites.png" -strip "$TMP_DIR/sprites.png"
+node_modules/.bin/tsx scripts/maskNonSpriteAreas.ts "$TMP_DIR/sprites.png"
+magick "$TMP_DIR/sprites.png" -profile gfx/DisplayP3-v2-micro.icc "$TMP_DIR/sprites.png"
+
+echo "🤖 converting sprites to webp (lossless, cwebp -z 9)"
+# cwebp -z 9 (max lossless preset) beats magick's lossless encode by ~4%.
+# -metadata icc keeps the Display-P3 profile embedded above.
+cwebp -quiet -z 9 -metadata icc "$TMP_DIR/sprites.png" -o "$TMP_DIR/sprites.webp"
 magick identify -verbose "$TMP_DIR/sprites.webp" | grep -E "^  (Geometry|Colorspace|Type|Depth|Colors):"
 echo "  Filesize: $(ls -lh "$TMP_DIR/sprites.webp" | awk '{print $5}')"
 
@@ -218,8 +247,11 @@ echo "🤖 moving temp to real"
 cp $TMP_DIR/sprites.borders.png $OUT_DIR
 cp $TMP_DIR/sprites.webp $OUT_DIR
 cp $TMP_DIR/*.json src/_generated/palette
-rm public/icon*.png
-cp $TMP_DIR_ICONS/*.png public
+rm -f public/icon*.png public/icon*.webp
+# only the webp icons and the tauri-source pngs (icon.png, icon-512.png) go to
+# public - icon-192.png is browser-only and we ship webp there instead
+cp "$TMP_DIR_ICONS/icon.png" "$TMP_DIR_ICONS/icon-512.png" public
+cp $TMP_DIR_ICONS/*.webp public
 
 # produce rgba version for tauri:
 echo "🤖 creating RGBA icons for tauri"
@@ -237,7 +269,7 @@ rm -fR $TMP_DIR
 rm -fR $TMP_DIR_ICONS
 
 echo "🤖 reverting noop files"
-revert_noop_images public/icon*.png gfx/sprites.borders.png gfx/sprites.webp src-tauri/icons/*.png
+revert_noop_images public/icon*.png public/icon*.webp gfx/sprites.borders.png gfx/sprites.webp src-tauri/icons/*.png
 
 
 

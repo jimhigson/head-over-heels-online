@@ -4,7 +4,7 @@ import { type ItemInPlay } from "../../../../model/ItemInPlay";
 import { roomItemsIterable, type RoomState } from "../../../../model/RoomState";
 import { zxSpectrumColors } from "../../../../originalGame";
 import { assertIsTextureId } from "../../../../sprites/assertIsTextureId";
-import { type AppSpritesheet } from "../../../../sprites/spritesheet/variants/SpritesheetVariants";
+import { type AppSpritesheet } from "../../../../sprites/spritesheet/variants/AppSpritesheet";
 import { frac } from "../../../../utils/maths/maths";
 import { rangesOverlap } from "../../../../utils/maths/numberPairs";
 import { getAmbientSwoppedColour } from "../../../../utils/palette/palette";

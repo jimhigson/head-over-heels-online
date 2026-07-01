@@ -4,7 +4,7 @@ import { type ItemTypeUnion } from "../../../../_generated/types/ItemInPlayUnion
 import { type ItemInPlay } from "../../../../model/ItemInPlay";
 import { roomItemsIterable, type RoomState } from "../../../../model/RoomState";
 import { wallTimes } from "../../../../model/times";
-import { type AppSpritesheet } from "../../../../sprites/spritesheet/variants/SpritesheetVariants";
+import { type AppSpritesheet } from "../../../../sprites/spritesheet/variants/AppSpritesheet";
 import { iterateToContainer } from "../../../../utils/pixi/iterateToContainer";
 import {
   perpendicularAxisXy,

@@ -2,7 +2,7 @@ import { type BlockStyle } from "../../../model/json/utilityJsonConfigTypes";
 import { isTextureId } from "../../../sprites/assertIsTextureId";
 import { type SceneryName } from "../../../sprites/planets";
 import { type TextureId } from "../../../sprites/spritesheet/spritesheetData/makeSpritesheetData";
-import { type AppSpritesheetData } from "../../../sprites/spritesheet/variants/SpritesheetVariants";
+import { type AppSpritesheetData } from "../../../sprites/spritesheet/variants/AppSpritesheet";
 import { maybeRenderContainerToSprite } from "../../../utils/pixi/renderContainerToSprite";
 import { createSprite } from "../createSprite";
 import { type ItemAppearance } from "./ItemAppearance";
