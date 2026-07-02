@@ -34,7 +34,7 @@ export const GitRepoInfo = () => {
   }, [isOutdated, latestMajor, latestTag]);
 
   return (
-    <div className="flex absolute z-dialog w-full justify-between">
+    <div className="flex absolute top-0 z-dialog w-full justify-between">
       <span>
         <a
           href={`${repository.url}/releases`}
