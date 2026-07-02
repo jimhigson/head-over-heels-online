@@ -42,7 +42,23 @@ export const upscaleSlice = createSlice({
         payload: calculateUpscaleOptions,
       }: PayloadAction<CalculateUpscaleOptions>,
     ) {
-      state.upscale = calculateUpscale(calculateUpscaleOptions);
+      const next = calculateUpscale(calculateUpscaleOptions);
+      const prev = state.upscale;
+      // the upscale is recomputed from many triggers (resize, visual viewport
+      // settling, post-mount re-measures) that often yield an identical result.
+      // keep the same state reference in that case so subscribers don't re-render
+      const unchanged =
+        next.gameEngineUpscale === prev.gameEngineUpscale &&
+        next.cssUpscale === prev.cssUpscale &&
+        next.rotate90 === prev.rotate90 &&
+        next.canvasSize.x === prev.canvasSize.x &&
+        next.canvasSize.y === prev.canvasSize.y &&
+        next.gameEngineScreenSize.x === prev.gameEngineScreenSize.x &&
+        next.gameEngineScreenSize.y === prev.gameEngineScreenSize.y;
+      if (unchanged) {
+        return;
+      }
+      state.upscale = next;
     },
   },
   extraReducers(builder) {

@@ -12,6 +12,17 @@
 }
 
 @layer base {
+  html,
+  body,
+  #root {
+    /* establish a height chain so the app can fill the viewport. Without this
+       the body collapses to zero height. Uses 100vh (not 100% or 100dvh):
+       under viewport-fit=cover on iOS standalone web apps, 100% and 100dvh
+       report a stale/partial viewport on cold start, whereas 100vh is the full
+       screen (there is no browser chrome in standalone to subtract) */
+    height: 100vh;
+  }
+
   body {
     /* TODO: revert and use only while loading */
     background-color: black;

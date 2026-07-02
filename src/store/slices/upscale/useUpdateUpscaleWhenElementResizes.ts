@@ -20,21 +20,19 @@ export const useUpdateUpscaleWhenElementResizes = (
   const dispatch = useAppDispatch();
 
   useLayoutEffect(() => {
-    // on first load, put the correct size in the store:
-    dispatch(updateUpscaleThunk(fixedEmulatedResolution, targetElement));
-  }, [dispatch, fixedEmulatedResolution, targetElement]);
-
-  useLayoutEffect(() => {
-    const handler = () =>
+    const update = () =>
       dispatch(updateUpscaleThunk(fixedEmulatedResolution, targetElement));
-    // if an element is given, use its size instead of the window size:
+
+    // measure once on mount / when the inputs change:
+    update();
+
+    // then re-measure when the tracked size changes:
     if (targetElement) {
-      const resizeObserver = new ResizeObserver(handler);
+      const resizeObserver = new ResizeObserver(update);
       resizeObserver.observe(targetElement);
       return () => resizeObserver.disconnect();
     }
-    // on every resize, update the store with the correct size:
-    window.addEventListener("resize", handler);
-    return () => window.removeEventListener("resize", handler);
-  }, [dispatch, targetElement, fixedEmulatedResolution]);
+    window.addEventListener("resize", update);
+    return () => window.removeEventListener("resize", update);
+  }, [dispatch, fixedEmulatedResolution, targetElement]);
 };
