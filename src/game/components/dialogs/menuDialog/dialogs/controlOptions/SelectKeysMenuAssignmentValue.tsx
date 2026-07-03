@@ -6,10 +6,10 @@ import { CurrentKeyAssignments } from "../../CurrentKeyAssignments";
 import { controlMenuValueClass } from "./controlMenuValueClass";
 
 export const SelectKeysMenuAssignmentValue = ({
-  className,
+  class: className,
   action,
 }: {
-  className?: string;
+  class?: string;
   action: BooleanAction;
 }) => {
   const assigning = useAppSelector(
@@ -18,7 +18,7 @@ export const SelectKeysMenuAssignmentValue = ({
 
   return (
     <CurrentKeyAssignments
-      className={twMerge(
+      class={twMerge(
         "flex flex-wrap gap-y-oneScaledPix gap-x-1 ml-2",
         className,
       )}

@@ -1,4 +1,4 @@
-import { lazy } from "react";
+import { lazy } from "preact/compat";
 
 import { type PrefixRoomDecoratorComponent } from "../../game/components/dialogs/menuDialog/dialogs/map/RoomDecoratorProps";
 import { importOnce } from "../../utils/importOnce";

@@ -32,7 +32,7 @@ export const NewCampaignButton = () => {
         "## New Campaign\nCreate a new campaign, starting from one empty room"
       }
     >
-      <span className="relative text-single-line">NEW</span>
+      <span class="relative text-single-line">NEW</span>
     </ToolbarButton>
   );
 };

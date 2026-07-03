@@ -28,12 +28,12 @@ export const InputDirectionModeMenuItem = () => {
       label="Directions"
       leader={
         <span
-          className={`${spriteLeaderClasses} ${"texture-joystick_whole" satisfies TextureTailwindClass} sprites-normal-height`}
+          class={`${spriteLeaderClasses} ${"texture-joystick_whole" satisfies TextureTailwindClass} sprites-normal-height`}
         />
       }
       valueElement={
         <SwitchN
-          className="ml-auto"
+          class="ml-auto"
           values={inputDirectionModes}
           valueLabels={["4-way", "8-way", "anlg"]}
           value={inputDirectionMode}
@@ -44,7 +44,7 @@ export const InputDirectionModeMenuItem = () => {
       doubleHeight
       hint={
         <BlockyMarkdown
-          className={optionsHintMarkdownClassname}
+          class={optionsHintMarkdownClassname}
           markdown={
             inputDirectionMode === "analogue" ? analogueDirectionsHintMarkdown
             : inputDirectionMode === "8-way" ?

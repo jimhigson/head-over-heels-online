@@ -1,4 +1,4 @@
-import { Fragment } from "react/jsx-runtime";
+import { Fragment } from "preact";
 import { format } from "timeago.js";
 
 import {
@@ -25,9 +25,9 @@ const CampaignItem = ({
   onSelect: (locator: CampaignLocator) => void;
 }) => {
   return (
-    <div className="mt-half flex flex-col">
+    <div class="mt-half flex flex-col">
       <Button
-        className="px-1 py-half text-left ml-2 w-min mb-oneScaledPix"
+        class="px-1 py-half text-left ml-2 w-min mb-oneScaledPix"
         onClick={() =>
           onSelect({
             userId,
@@ -36,9 +36,9 @@ const CampaignItem = ({
           })
         }
       >
-        <span className="text-white text-single-line">{campaign.name}</span>
+        <span class="text-white text-single-line">{campaign.name}</span>
       </Button>
-      <span className="text-lightGrey ml-2 text-single-line">
+      <span class="text-lightGrey ml-2 text-single-line">
         {`v.${campaign.version} updated ${format(campaign.created_at)}`}
       </span>
     </div>
@@ -55,9 +55,9 @@ const UserCampaigns = ({
   const campaignsList = Object.values(userEntry.campaigns);
 
   return (
-    <div className="flex flex-col gap-half">
+    <div class="flex flex-col gap-half">
       <span
-        className={
+        class={
           userEntry.user.isCurrentUser ?
             "text-pastelBlue text-double-height mb-half"
           : "text-metallicBlue text-single-line"
@@ -90,7 +90,7 @@ export const CampaignListForEditor = ({
   let hasShownCommunityHeading = false;
 
   return (
-    <div className="flex flex-col gap-1 overflow-y-auto flex-grow scrollbar scrollbar-w-1 scrollbar-thumb-metallicBlue">
+    <div class="flex flex-col gap-1 overflow-y-auto flex-grow scrollbar scrollbar-w-1 scrollbar-thumb-metallicBlue">
       {userEntries.map((userEntry) => {
         const shouldShowCommunityHeading =
           !userEntry.user.isCurrentUser && !hasShownCommunityHeading;
@@ -102,12 +102,12 @@ export const CampaignListForEditor = ({
           <Fragment key={userEntry.user.id}>
             {shouldShowCommunityHeading && (
               <>
-                <span className="text-midRed mt-2 text-double-height">
+                <span class="text-midRed mt-2 text-double-height">
                   Community Campaigns
                 </span>
                 <div>
                   <BlockyMarkdown
-                    className="text-lightGrey"
+                    class="text-lightGrey"
                     markdown={`You can open any campaign that others have made, but only save under your own login`}
                   ></BlockyMarkdown>
                 </div>
@@ -117,12 +117,12 @@ export const CampaignListForEditor = ({
           </Fragment>
         );
       })}
-      <span className="text-midRed mt-2 text-double-height">
+      <span class="text-midRed mt-2 text-double-height">
         Original Remastered
       </span>
       <div>
         <BlockyMarkdown
-          className="text-lightGrey"
+          class="text-lightGrey"
           markdown={`Open the original game in the editor`}
         ></BlockyMarkdown>
       </div>

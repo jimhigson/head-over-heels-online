@@ -21,15 +21,15 @@ export const DownloadSpritesheetButton = () => {
 
   return (
     <>
-      <span ref={ref} className="hidden" />
+      <span ref={ref} class="hidden" />
       <Button
-        className="px-1 bg-moss zx:bg-zxGreen zx:text-zxBlack toppy:bg-toppyCool2 toppy:text-toppyBlack"
+        class="px-1 bg-moss zx:bg-zxGreen zx:text-zxBlack toppy:bg-toppyCool2 toppy:text-toppyBlack"
         onClick={handleClick}
         tooltipContent={
-          <span className="text-single-line">Download spritesheet image</span>
+          <span class="text-single-line">Download spritesheet image</span>
         }
       >
-        <span className="text-single-line">⬇ Download</span>
+        <span class="text-single-line">⬇ Download</span>
       </Button>
     </>
   );

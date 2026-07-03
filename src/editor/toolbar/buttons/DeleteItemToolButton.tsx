@@ -11,7 +11,7 @@ export const DeleteItemToolButton = () => {
   return (
     <ToolbarButton
       ariaLabel="Delete selected item(s)"
-      className="bg-midRed"
+      class="bg-midRed"
       disabled={!somethingSelected}
       onClick={() => store.dispatch(deleteSelected({ timestamp: Date.now() }))}
       shortcutKeys={["Delete", "Backspace"]}
@@ -19,7 +19,7 @@ export const DeleteItemToolButton = () => {
 delete selected item(s)`}
     >
       <span
-        className={`sprite sprite-tinted ${"texture-hud_char_X" satisfies TextureTailwindClass} relative`}
+        class={`sprite sprite-tinted ${"texture-hud_char_X" satisfies TextureTailwindClass} relative`}
       />
     </ToolbarButton>
   );

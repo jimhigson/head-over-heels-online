@@ -12,17 +12,17 @@ export const WantedEditor404 = () => {
   const spriteClassname = usePlayableTailwindSpriteClassname();
   return (
     <DialogPortal>
-      <Border className="loading-border" />
-      <Dialog className="bg-white zx:bg-zxRed gap-y-0 text-redShadow zx:text-zxBlack px-1 flex-row">
-        <div className="flex flex-col">
+      <Border class="loading-border" />
+      <Dialog class="bg-white zx:bg-zxRed gap-y-0 text-redShadow zx:text-zxBlack px-1 flex-row">
+        <div class="flex flex-col">
           {directionsXy8.map((d) => (
             <span
               key={d}
-              className={`sprite ${spriteClassname({ action: "idle", character: "head", facingXy8: d })}`}
+              class={`sprite ${spriteClassname({ action: "idle", character: "head", facingXy8: d })}`}
             />
           ))}
         </div>
-        <div className="flex flex-col grow text-center justify-center">
+        <div class="flex flex-col grow text-center justify-center">
           <BlockyMarkdown>{`## This is not the editor
 
 If you’re seeing this, you got routed wrong somehow
@@ -34,11 +34,11 @@ Maybe [open an issue on github](${repository.url}/issues)
 The link I have is: [${editorUrl}](${editorUrl})
 `}</BlockyMarkdown>
         </div>
-        <div className="flex flex-col">
+        <div class="flex flex-col">
           {directionsXy8.toReversed().map((d) => (
             <span
               key={d}
-              className={`sprite ${spriteClassname({ action: "idle", character: "heels", facingXy8: d })}`}
+              class={`sprite ${spriteClassname({ action: "idle", character: "heels", facingXy8: d })}`}
             />
           ))}
         </div>

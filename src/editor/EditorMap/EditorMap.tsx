@@ -1,5 +1,4 @@
 import { useEffect } from "preact/hooks";
-import { type KeyboardEvent } from "react";
 
 import { createClickableRoomBehaviour } from "../../game/components/dialogs/menuDialog/dialogs/map/createClickableRoomBehaviour";
 import { MapSvg } from "../../game/components/dialogs/menuDialog/dialogs/map/Map.svg";
@@ -9,7 +8,7 @@ import { type SortedObjectOfRoomGridPositionSpecs } from "../../model/map/sortRo
 import { startAppListening } from "../../store/listenerMiddleware";
 import { store, useEditorAppSelector } from "../../store/store";
 import { valuesIter } from "../../utils/entries";
-import { useElementSize } from "../../utils/react/useElementSize";
+import { useElementSize } from "../../utils/preact/useElementSize";
 import { unitVectors } from "../../utils/vectors/unitVectors";
 import { addXyz, xyzEqual } from "../../utils/vectors/vectors";
 import { EditorErrorBoundary } from "../EditorErrorBoundary";
@@ -215,9 +214,9 @@ const EditorMap = () => {
   }
 
   return (
-    <div className="relative h-full">
+    <div class="relative h-full">
       <div
-        className={`h-full overflow-y-auto scale-editor bg-editor-checkerboard scrollbar scrollbar-w-1 scrollbar-track-pureBlack scrollbar-thumb-metallicBlue outline-none`}
+        class={`h-full overflow-y-auto scale-editor bg-editor-checkerboard scrollbar scrollbar-w-1 scrollbar-track-pureBlack scrollbar-thumb-metallicBlue outline-none`}
         ref={mapContainerRef}
         tabIndex={0}
         onKeyDown={(e: KeyboardEvent) => {

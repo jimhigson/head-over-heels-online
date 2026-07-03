@@ -48,14 +48,26 @@ a community-contributed campagin made using the level editor
 
 ## Preact / React
 
-The runtime is Preact 11 (beta), but the codebase retains React import paths and type definitions:
+The app runs on Preact 11 (beta) and uses Preact's own JSX types and imports throughout:
 
-* `@preact/preset-vite` aliases `react` → `preact/compat` and `react-dom` → `preact/compat` at build time, so `import { useState } from "react"` resolves to Preact at runtime
-* Type-only imports (`import type { ReactNode } from "react"`) use `@types/react` v19 for type-checking — this is intentional, not a migration leftover
-* Hooks should be imported from `preact/hooks` (e.g. `import { useEffect } from "preact/hooks"`), not from `"react"`
+* `tsconfig.app.json` sets `"jsxImportSource": "preact"`, so intrinsic JSX elements are typed by Preact — this is why `class` (not `className`) is the DOM attribute
+* `tsconfig.app.json` also maps `paths` for `react`/`react-dom`/`react/jsx-runtime` → `preact/compat`, so even third-party React libraries' own `.d.ts` files resolve React types to Preact (avoids `ReactNode`/event-type/`CSSProperties` mismatches)
+* `@preact/preset-vite` aliases `react`/`react-dom` → `preact/compat` at build time (runtime)
+* Import Preact-native symbols directly:
+  * hooks from `preact/hooks` (`useEffect`, `useState`, `useContext`…)
+  * core types/APIs from `preact` (`ComponentChildren` — was `ReactNode`; `VNode` — was `ReactElement`; `RefObject`, `ComponentProps`, `createContext`, `cloneElement`, `Fragment`, `ErrorInfo`, `AriaRole`…)
+  * React-compat helpers from `preact/compat` (`PropsWithChildren`, `FC`, `Suspense`, `lazy`, `createPortal`, `CSSProperties`, `memo`, `forwardRef`)
+* Do NOT import from `"react"`/`"react-dom"` in first-party code — the `no-restricted-imports` lint rule forbids it (escape-hatch, with an inline disable, only for genuinely React-only libs such as the `ink`-based dev scripts)
 * Entry points use `import { render } from "preact"` directly
-* Third-party React libraries (`react-redux`, `@floating-ui/react`, `@monaco-editor/react`, etc.) work through the compat layer
+* `react`/`react-dom`/`@types/react` remain in `package.json` only as peer deps of the third-party React libraries (`react-redux`, `@floating-ui/react`, `@monaco-editor/react`, `react-resizable-panels`), which work through the compat layer
 * No Preact-specific APIs like signals are used
+
+### `class`, not `className`
+* DOM elements and first-party components use `class` (Preact renders it natively). Own components declare a `class?: string` prop and destructure it with an alias — `{ class: className }` — because `class` is a reserved word, so the internal variable stays `className`
+* The custom oxlint rule `preact-class/prefer-class-over-classname` (in `oxlint-rules/preactClass.js`, wired via `jsPlugins`) flags and auto-fixes `className` on intrinsic DOM elements, but leaves components alone
+* A few third-party React components genuinely still need `className`: monaco `Editor` (`@monaco-editor/react`) and `PanelGroup`/`PanelResizeHandle` (`react-resizable-panels`) — they type-check with `class` via compat but only apply `className` at runtime, so keep `className` on those
+* Preact 11's JSX types are stricter/a11y-aware: e.g. `<menu>` requires a `role`, `<input>` requires an explicit `type`, and `role` only accepts real ARIA roles (no arbitrary strings)
+* To augment Preact's JSX types (e.g. custom CSS vars), use `declare module "preact" { namespace JSX { interface CSSProperties { … } } }` (see `SpriteTile.tsx`)
 
 ## Rendering:
  *	Layers use Pixi’s RenderLayer, specifically to emulate colour clash of the zx spectrum
@@ -210,7 +222,7 @@ with names in US English.
 * avoid type casts wherever possible; never add them speculatively in case they are needed, only if they are needed
 and there is no sensible alternative
 
-* if a value's typescript type is not nullable, do not add checks for it being null/undefined, even implicit checks like using `?.`
+* if a value's typescript type is not nullable, do not add checks for it being null/undefined, even explicit checks like using `?.`
 if unsure if the type is nullable, assume that it is not nullable (or undefinable) and let the typecheck inform you later
 
 * Do not use any in typescript. IF you are copying the parameters of another function, use Parameters<typeof func> 
@@ -291,8 +303,7 @@ No not use `npx`, use `pnpm`. Do not call `pnpm vitest` directly, call `pnpm che
 * the redux store is only put on `window._e2e_store` (and the game api on `window._e2e_gamePageGameAi`, pixi app on `window.__PIXI_APP__`) when built in **visual-regression mode** - eg `pnpm exec vite build --mode visual-regression` then `pnpm exec vite preview` (a normal `pnpm build:game` / dev server does NOT expose them). See `import.meta.env.MODE === "visual-regression"` in `store.ts`/`gameMain.ts`.
 * to set game/debug state from automation, dispatch plain actions to `window._e2e_store` (eg `userSettings/setShowBoundingBoxType` with `{ itemType, value: true }`).
 * the bounding-box (and pointer-debug) item-renderer decorators are only registered while the **Cheats panel is mounted** (`useRegisterDecorateItemRenderers` lives inside the `Cheats` component, rendered when `debug.cheatsOn` is true, ie via `?cheats=1`). Setting `showBoundingBoxTypes` alone does nothing if the panel never mounted. `LazyCheats` mounts async, and the decorator only wraps item renderers created *after* it registers - so wait for the panel to mount, then dispatch, then allow time for items to be (re)created (light-beam renderers recast frequently, so they pick up the decorator on their own).
-* prefer the `run-e2e` skill for browser automation patterns and known MCP quirks - this explains how to run e2e inside a sandbox environment
-* when working on user's own machine, do not use chrome MCP or start browsers without asking first (or being asked to), since this distracts the user's attention. However, running a browser headless is fine if working on a visual feature and needing to get a screenshot or other real-browser use
+* prefer the `hohjs-browser-mcp` skill for browser automation patterns and known MCP quirks.
 
 ## Visual Regression Testing
 
@@ -304,7 +315,6 @@ No not use `npx`, use `pnpm`. Do not call `pnpm vitest` directly, call `pnpm che
 
 ## typechecking
 * use tsgo `as pnpm tsgo`
-* circular dependencies in js are strictly forbidden; circular dependencies in type imports only are fine
 
 ## Attitude
 

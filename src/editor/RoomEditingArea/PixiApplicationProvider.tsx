@@ -1,6 +1,7 @@
 import { Application } from "pixi.js";
-import { useEffect, useState } from "preact/hooks";
-import { createContext, type PropsWithChildren, useContext } from "react";
+import { createContext } from "preact";
+import { type PropsWithChildren } from "preact/compat";
+import { useContext, useEffect, useState } from "preact/hooks";
 import { type EmptyObject } from "type-fest";
 
 import { paletteBlockstack } from "../../sprites/palette/spritesheetPalette";

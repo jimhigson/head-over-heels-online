@@ -14,14 +14,9 @@ You can turn this off for phones paired with joypads/keyboards`;
     <MenuItem
       doubleHeight
       id="onScreenControls"
-      label={
-        <span className="text-multi-line mobile:w-max">Touch controls</span>
-      }
+      label={<span class="text-multi-line mobile:w-max">Touch controls</span>}
       valueElement={
-        <Switch
-          className="ml-auto"
-          value={useIsUserPreferenceOnScreenControls()}
-        />
+        <Switch class="ml-auto" value={useIsUserPreferenceOnScreenControls()} />
       }
       onSelect={useDispatchActionCallback(toggleUserSetting, {
         path: "onScreenControls",
@@ -29,7 +24,7 @@ You can turn this off for phones paired with joypads/keyboards`;
       verticalAlignItemsCentre
       hint={
         <BlockyMarkdown
-          className={optionsHintMarkdownClassname}
+          class={optionsHintMarkdownClassname}
           markdown={hintMarkdown}
         />
       }

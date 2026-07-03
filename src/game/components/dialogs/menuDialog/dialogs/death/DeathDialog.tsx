@@ -96,40 +96,40 @@ const OutcomeMessage = ({ outcome }: OutcomeMessageProps) => {
     case "donate":
       return (
         <div
-          className="text-multi-line px-1 my-1 bg-zxBlack py-oneScaledPix flex flex-col gap-1"
+          class="text-multi-line px-1 my-1 bg-zxBlack py-oneScaledPix flex flex-col gap-1"
           data-test-id="death-outcome-message"
         >
           <div>
-            <span className={characterColourClass(outcome.donorName)}>
+            <span class={characterColourClass(outcome.donorName)}>
               {outcome.donorName}
             </span>{" "}
             will donate{" "}
-            <span className={highlightClass}>{outcome.livesToDonate}</span>{" "}
+            <span class={highlightClass}>{outcome.livesToDonate}</span>{" "}
             {outcome.livesToDonate === 1 ? "life" : "lives"}
           </div>
           <div>
             so{" "}
-            <span className={characterColourClass(outcome.dyingName)}>
+            <span class={characterColourClass(outcome.dyingName)}>
               {outcome.dyingName}
             </span>{" "}
-            can continue with <span className={highlightClass}>1</span>
+            can continue with <span class={highlightClass}>1</span>
           </div>
         </div>
       );
     case "carryOnAlone":
       return (
         <div
-          className="text-multi-line px-1 my-1 bg-zxBlack py-oneScaledPix"
+          class="text-multi-line px-1 my-1 bg-zxBlack py-oneScaledPix"
           data-test-id="death-outcome-message"
         >
           <div>
-            <span className={characterColourClass(outcome.outOfGameName)}>
+            <span class={characterColourClass(outcome.outOfGameName)}>
               {outcome.outOfGameName}
             </span>{" "}
             out of the game
           </div>
           <div>
-            <span className={characterColourClass(outcome.survivorName)}>
+            <span class={characterColourClass(outcome.survivorName)}>
               {outcome.survivorName}
             </span>{" "}
             will carry on alone
@@ -139,12 +139,10 @@ const OutcomeMessage = ({ outcome }: OutcomeMessageProps) => {
     case "gameOver":
       return (
         <div
-          className="px-1 my-1 bg-zxBlack py-oneScaledPix"
+          class="px-1 my-1 bg-zxBlack py-oneScaledPix"
           data-test-id="death-outcome-message"
         >
-          <span className={`${highlightClass} text-single-line`}>
-            Game over
-          </span>
+          <span class={`${highlightClass} text-single-line`}>Game over</span>
         </div>
       );
     default:
@@ -181,35 +179,35 @@ export const DeathDialog = (props: DeathDialogProps) => {
   return (
     <DialogPortal>
       <Dialog
-        className="!h-min !w-max text-center toppy:text-toppyWarm1 p-0 bg-transparent text-zxYellow"
+        class="!h-min !w-max text-center toppy:text-toppyWarm1 p-0 bg-transparent text-zxYellow"
         onClick={dismiss}
         dialogId="death"
       >
-        <div className="w-min mx-auto px-1 bg-zxBlack py-oneScaledPix uppercase">
-          <span className="text-double-height text-nowrap">Uh-oh!</span>
+        <div class="w-min mx-auto px-1 bg-zxBlack py-oneScaledPix uppercase">
+          <span class="text-double-height text-nowrap">Uh-oh!</span>
         </div>
-        <span className="zx">
+        <span class="zx">
           <OutcomeMessage outcome={outcome} />
           {detectDeviceType() === "desktop" ?
-            <div className="text-multi-line px-1 bg-zxBlack py-oneScaledPix">
-              <div className="text-single-line">
-                Press <span className={highlightClass}>JUMP</span> to{" "}
-                <span className={highlightClass}>{action}</span>:
+            <div class="text-multi-line px-1 bg-zxBlack py-oneScaledPix">
+              <div class="text-single-line">
+                Press <span class={highlightClass}>JUMP</span> to{" "}
+                <span class={highlightClass}>{action}</span>:
               </div>
-              <div className="flex flex-row gap-1 mx-auto">
+              <div class="flex flex-row gap-1 mx-auto">
                 <CurrentKeyAssignments
-                  className="flex flex-row gap-1"
+                  class="flex flex-row gap-1"
                   keyClassName="text-zxRed toppy:text-toppyPink2"
                   action="jump"
                   doNotShowForAction="carry"
                 />
               </div>
             </div>
-          : <div className="px-1 bg-zxBlack py-oneScaledPix">
-              <span className="me-1 text-zxRed toppy:text-toppyPink2 text-single-line">
+          : <div class="px-1 bg-zxBlack py-oneScaledPix">
+              <span class="me-1 text-zxRed toppy:text-toppyPink2 text-single-line">
                 Tap screen
               </span>
-              <span className="text-single-line">to {action}</span>
+              <span class="text-single-line">to {action}</span>
             </div>
           }
         </span>

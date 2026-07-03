@@ -8,27 +8,27 @@ export const NotFound404Page = () => {
   const spriteClassname = usePlayableTailwindSpriteClassname();
   return (
     <DialogPortal>
-      <Border className="loading-border" />
-      <Dialog className="bg-white zx:bg-zxRed gap-y-0 text-redShadow zx:text-zxBlack px-1 flex-row">
-        <div className="flex flex-col">
+      <Border class="loading-border" />
+      <Dialog class="bg-white zx:bg-zxRed gap-y-0 text-redShadow zx:text-zxBlack px-1 flex-row">
+        <div class="flex flex-col">
           {directionsXy8.map((d) => (
             <span
               key={d}
-              className={`sprite zx:sprite-revert-to-white ${spriteClassname({ action: "walking", character: "head", facingXy8: d })}`}
+              class={`sprite zx:sprite-revert-to-white ${spriteClassname({ action: "walking", character: "head", facingXy8: d })}`}
             />
           ))}
         </div>
-        <div className="flex flex-col grow text-center justify-center">
-          <span className="text-double-height">404 Not found</span>
-          <span className="text-multi-line p-1 pt-2 text-metallicBlue zx:text-zxYellow">
+        <div class="flex flex-col grow text-center justify-center">
+          <span class="text-double-height">404 Not found</span>
+          <span class="text-multi-line p-1 pt-2 text-metallicBlue zx:text-zxYellow">
             whatever you’re looking for, it ain’t here
           </span>
         </div>
-        <div className="flex flex-col">
+        <div class="flex flex-col">
           {directionsXy8.toReversed().map((d) => (
             <span
               key={d}
-              className={`sprite zx:sprite-revert-to-white ${spriteClassname({ action: "walking", character: "heels", facingXy8: d })}`}
+              class={`sprite zx:sprite-revert-to-white ${spriteClassname({ action: "walking", character: "heels", facingXy8: d })}`}
             />
           ))}
         </div>

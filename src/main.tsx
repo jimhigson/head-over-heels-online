@@ -1,7 +1,7 @@
 import { render } from "preact";
 
 import "./index.css";
-import { Suspense } from "react";
+import { Suspense } from "preact/compat";
 
 import { importAppOnce } from "./game/components/App.import";
 import { Dialog } from "./ui/Dialog";
@@ -45,7 +45,7 @@ render(
     fallback={
       <>
         <LoadingBorder />
-        <Dialog className="bg-metallicBlueHalfbrite !max-h-[80%] !w-[80%] !h-[unset] aspect-pal" />
+        <Dialog class="bg-metallicBlueHalfbrite !max-h-[80%] !w-[80%] !h-[unset] aspect-pal" />
       </>
     }
   >

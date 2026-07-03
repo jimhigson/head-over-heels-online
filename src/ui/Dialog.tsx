@@ -1,13 +1,13 @@
 "use client";
 
-import { type MouseEvent, type ReactNode, type Ref } from "react";
+import { type ComponentChildren, type Ref } from "preact";
 import { twMerge } from "tailwind-merge";
 
 import { type DialogId } from "../game/components/dialogs/menuDialog/DialogId";
 
 export type DialogProps = {
-  children?: ReactNode;
-  className?: string;
+  children?: ComponentChildren;
+  class?: string;
   closed?: boolean;
   // if true, css classes will be given to make the dialog only
   // a little less tall than the page. Otherwise, it will be the
@@ -62,7 +62,7 @@ const getDialogClassName = (
 
 export const Dialog = ({
   children,
-  className,
+  class: className,
   onClick,
   tall = false,
   wide = false,
@@ -76,7 +76,7 @@ export const Dialog = ({
     <dialog
       ref={ref}
       aria-label={ariaLabel}
-      className={getDialogClassName(tall, wide, fullScreen, small, className)}
+      class={getDialogClassName(tall, wide, fullScreen, small, className)}
       onClick={onClick}
       data-dialog-id={dialogId}
     >

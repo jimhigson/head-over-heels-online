@@ -40,7 +40,7 @@ export const BackAndForwardRoomButtons = () => {
         main={
           <ToolbarButton
             ariaLabel="Previous room"
-            className="bg-highlightBeige"
+            class="bg-highlightBeige"
             disabled={backRooms.length === 0}
             onClick={() => {
               dispatch(roomBack());
@@ -52,7 +52,7 @@ export const BackAndForwardRoomButtons = () => {
             tooltipContent={backTooltipMarkdown}
           >
             <span
-              className={`sprite ${"texture-hud_char_lt" satisfies TextureTailwindClass} relative`}
+              class={`sprite ${"texture-hud_char_lt" satisfies TextureTailwindClass} relative`}
             />
           </ToolbarButton>
         }
@@ -64,13 +64,13 @@ export const BackAndForwardRoomButtons = () => {
             <MenuItemButton
               key={`${roomId}-${index}`}
               onClick={() => dispatch(roomBack(index + 1))}
-              className="command-colours"
+              class="command-colours"
               style={cssForRoomColour(
                 campaign.rooms[roomId].color.hue,
                 uncolourised,
               )}
             >
-              <span className="text-single-line">{roomId}</span>
+              <span class="text-single-line">{roomId}</span>
             </MenuItemButton>
           ))}
       </MenuButton>
@@ -78,7 +78,7 @@ export const BackAndForwardRoomButtons = () => {
         main={
           <ToolbarButton
             ariaLabel="Next room"
-            className="bg-highlightBeige"
+            class="bg-highlightBeige"
             disabled={forwardRooms.length === 0}
             onClick={() => {
               dispatch(roomForward());
@@ -87,7 +87,7 @@ export const BackAndForwardRoomButtons = () => {
             tooltipContent={forwardTooltipMarkdown}
           >
             <span
-              className={`sprite ${"texture-hud_char_gt" satisfies TextureTailwindClass} relative`}
+              class={`sprite ${"texture-hud_char_gt" satisfies TextureTailwindClass} relative`}
             />
           </ToolbarButton>
         }
@@ -99,13 +99,13 @@ export const BackAndForwardRoomButtons = () => {
             <MenuItemButton
               key={`${roomId}-${index}`}
               onClick={() => dispatch(roomForward(index + 1))}
-              className="command-colours"
+              class="command-colours"
               style={cssForRoomColour(
                 campaign.rooms[roomId].color.hue,
                 uncolourised,
               )}
             >
-              <span className="text-single-line">{roomId}</span>
+              <span class="text-single-line">{roomId}</span>
             </MenuItemButton>
           ))}
       </MenuButton>

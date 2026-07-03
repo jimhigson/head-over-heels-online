@@ -38,18 +38,15 @@ export const SoundDialog = () => {
   const isNoFootstepSounds = useAppSelector(selectIsNoFootstepSounds);
   const roomEntryTunes = useAppSelector(selectRoomEntryTunes);
   return (
-    <Dialog fullScreen className={optionsDialogClasses} dialogId="sound">
-      <DialogTitleBar
-        path={["Options", "Sounds"]}
-        className={titleBarClasses}
-      />
-      <div className={optionsMenuScrollClasses}>
+    <Dialog fullScreen class={optionsDialogClasses} dialogId="sound">
+      <DialogTitleBar path={["Options", "Sounds"]} class={titleBarClasses} />
+      <div class={optionsMenuScrollClasses}>
         <MenuItems>
           <MenuItem
             doubleHeight
             id="mute"
             label="Mute"
-            valueElement={<Switch className="ml-auto" value={isMuted} />}
+            valueElement={<Switch class="ml-auto" value={isMuted} />}
             verticalAlignItemsCentre
             onSelect={useDispatchActionCallback(toggleUserSetting, {
               path: "soundSettings.mute",
@@ -61,7 +58,7 @@ export const SoundDialog = () => {
             label="Room entry jingles"
             valueElement={
               <SwitchN
-                className="ml-auto"
+                class="ml-auto"
                 values={roomEntryTunesSettings}
                 value={roomEntryTunes}
               />
@@ -71,7 +68,7 @@ export const SoundDialog = () => {
             disabled={isMuted}
             hint={
               <BlockyMarkdown
-                className={optionsHintMarkdownClassname}
+                class={optionsHintMarkdownClassname}
                 markdown={roomEntryTunesDescription(roomEntryTunes)}
               />
             }
@@ -81,10 +78,7 @@ export const SoundDialog = () => {
             id="footsteps"
             label="Footsteps"
             valueElement={
-              <Switch
-                className="ml-auto"
-                value={!isMuted && !isNoFootstepSounds}
-              />
+              <Switch class="ml-auto" value={!isMuted && !isNoFootstepSounds} />
             }
             verticalAlignItemsCentre
             onSelect={useDispatchActionCallback(toggleUserSetting, {

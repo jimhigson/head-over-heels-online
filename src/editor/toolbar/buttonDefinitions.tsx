@@ -31,7 +31,7 @@ export const buttonDefinitions = {
 The basic block`,
     children: (
       <span
-        className={`sprite ${"texture-block_organic" satisfies TextureTailwindClass} ${buttonSpriteRevertColourClasses}`}
+        class={`sprite ${"texture-block_organic" satisfies TextureTailwindClass} ${buttonSpriteRevertColourClasses}`}
       />
     ),
   },
@@ -60,7 +60,7 @@ Disappearing basic block`,
 Basic block with a metallic look`,
     children: (
       <span
-        className={`sprite ${"texture-block_artificial" satisfies TextureTailwindClass} ${buttonSpriteRevertColourClasses}`}
+        class={`sprite ${"texture-block_artificial" satisfies TextureTailwindClass} ${buttonSpriteRevertColourClasses}`}
       />
     ),
   },
@@ -89,7 +89,7 @@ Disappearing metallic look block`,
 Very high block`,
     children: (
       <span
-        className={`sprite ${"texture-tower" satisfies TextureTailwindClass} ${buttonSpriteRevertColourClasses}`}
+        class={`sprite ${"texture-tower" satisfies TextureTailwindClass} ${buttonSpriteRevertColourClasses}`}
       />
     ),
   },
@@ -98,7 +98,7 @@ Very high block`,
     itemTool: { type: "block", config: { style: "book" } },
     children: (
       <span
-        className={`sprite ${"texture-book_x" satisfies TextureTailwindClass} ${buttonSpriteRevertColourClasses}`}
+        class={`sprite ${"texture-book_x" satisfies TextureTailwindClass} ${buttonSpriteRevertColourClasses}`}
       />
     ),
   },
@@ -107,7 +107,7 @@ Very high block`,
     itemTool: { type: "barrier", config: { axis: "x" } },
     children: (
       <span
-        className={`sprite ${"texture-barrier_x" satisfies TextureTailwindClass} ${buttonSpriteRevertColourClasses}`}
+        class={`sprite ${"texture-barrier_x" satisfies TextureTailwindClass} ${buttonSpriteRevertColourClasses}`}
       />
     ),
   },
@@ -116,7 +116,7 @@ Very high block`,
     itemTool: { type: "barrier", config: { axis: "y" } },
     children: (
       <span
-        className={`sprite ${"texture-barrier_y" satisfies TextureTailwindClass} ${buttonSpriteRevertColourClasses}`}
+        class={`sprite ${"texture-barrier_y" satisfies TextureTailwindClass} ${buttonSpriteRevertColourClasses}`}
       />
     ),
   },
@@ -164,7 +164,7 @@ the emperor's worker bots
 patrols randomly in a diagonal pattern`,
     children: (
       <span
-        className={`sprite ${"texture-dalek_1" satisfies TextureTailwindClass} ${"activated:texture-animated-dalek" satisfies AnimatedTextureTailwindClass} ${buttonSpriteRevertColourClasses}`}
+        class={`sprite ${"texture-dalek_1" satisfies TextureTailwindClass} ${"activated:texture-animated-dalek" satisfies AnimatedTextureTailwindClass} ${buttonSpriteRevertColourClasses}`}
       />
     ),
   },
@@ -210,7 +210,7 @@ moves *back and forth* by default
 or can be set to *patrol clockwise*`,
     children: (
       <span
-        className={`sprite ${"texture-skiHead_greenAndPink_towards" satisfies TextureTailwindClass} ${"activated:texture-skiHead_greenAndPink_right" satisfies TextureTailwindClass} ${buttonSpriteRevertColourClasses}`}
+        class={`sprite ${"texture-skiHead_greenAndPink_towards" satisfies TextureTailwindClass} ${"activated:texture-skiHead_greenAndPink_right" satisfies TextureTailwindClass} ${buttonSpriteRevertColourClasses}`}
       />
     ),
   },
@@ -226,7 +226,7 @@ or can be set to *patrol clockwise*`,
     },
     children: (
       <span
-        className={`sprite ${"texture-helicopterBug_1" satisfies TextureTailwindClass} ${"activated:texture-animated-helicopterBug" satisfies AnimatedTextureTailwindClass} ${buttonSpriteRevertColourClasses}`}
+        class={`sprite ${"texture-helicopterBug_1" satisfies TextureTailwindClass} ${"activated:texture-animated-helicopterBug" satisfies AnimatedTextureTailwindClass} ${buttonSpriteRevertColourClasses}`}
       />
     ),
   },
@@ -245,7 +245,7 @@ or can be set to *patrol clockwise*`,
 plods along in a clockwise pattern`,
     children: (
       <span
-        className={`sprite ${"texture-turtle_towards_1" satisfies TextureTailwindClass} ${"activated:texture-animated-turtle_right" satisfies AnimatedTextureTailwindClass} ${buttonSpriteRevertColourClasses}`}
+        class={`sprite ${"texture-turtle_towards_1" satisfies TextureTailwindClass} ${"activated:texture-animated-turtle_right" satisfies AnimatedTextureTailwindClass} ${buttonSpriteRevertColourClasses}`}
       />
     ),
   },
@@ -263,7 +263,7 @@ plods along in a clockwise pattern`,
 detects a player in a straight line on an axis and rushes towards them`,
     children: (
       <span
-        className={`sprite ${"texture-headlessBase" satisfies TextureTailwindClass} ${"activated:texture-animated-headlessBase_scan" satisfies AnimatedTextureTailwindClass} ${buttonSpriteRevertColourClasses}`}
+        class={`sprite ${"texture-headlessBase" satisfies TextureTailwindClass} ${"activated:texture-animated-headlessBase_scan" satisfies AnimatedTextureTailwindClass} ${buttonSpriteRevertColourClasses}`}
       />
     ),
   },
@@ -361,7 +361,7 @@ Things have gone weird
 Stationary, but deadly`,
     children: (
       <span
-        className={`sprite ${"texture-elephant_towards" satisfies TextureTailwindClass} ${"activated:texture-elephant_right" satisfies TextureTailwindClass} ${buttonSpriteRevertColourClasses}`}
+        class={`sprite ${"texture-elephant_towards" satisfies TextureTailwindClass} ${"activated:texture-elephant_right" satisfies TextureTailwindClass} ${buttonSpriteRevertColourClasses}`}
       />
     ),
   },
@@ -375,7 +375,7 @@ Stationary, but deadly`,
         movement: "towards-analogue-unless-planet-crowns",
       },
     },
-    className: "inline relative",
+    class: "inline relative",
     tooltipContent: `## Emperor's Guardian
 
 very dangerous
@@ -405,7 +405,7 @@ does not *like doughnuts*
 The end boss, usually found guarding his Blacktooth crown`,
     children: (
       <span
-        className={`sprite ${"texture-bubbles_cold_2" satisfies TextureTailwindClass} ${"activated:texture-animated-bubbles_cold" satisfies AnimatedTextureTailwindClass} ${buttonSpriteRevertColourClasses}`}
+        class={`sprite ${"texture-bubbles_cold_2" satisfies TextureTailwindClass} ${"activated:texture-animated-bubbles_cold" satisfies AnimatedTextureTailwindClass} ${buttonSpriteRevertColourClasses}`}
       />
     ),
   },
@@ -458,7 +458,7 @@ The end boss, usually found guarding his Blacktooth crown`,
     itemTool: { type: "pickup", config: { gives: "bag" } },
     children: (
       <span
-        className={`sprite ${"texture-bag" satisfies TextureTailwindClass} ${buttonSpriteRevertColourClasses}`}
+        class={`sprite ${"texture-bag" satisfies TextureTailwindClass} ${buttonSpriteRevertColourClasses}`}
       />
     ),
   },
@@ -473,7 +473,7 @@ The end boss, usually found guarding his Blacktooth crown`,
 head's doughnut firing hooter`,
     children: (
       <span
-        className={`sprite ${"texture-hooter" satisfies TextureTailwindClass} ${buttonSpriteRevertColourClasses}`}
+        class={`sprite ${"texture-hooter" satisfies TextureTailwindClass} ${buttonSpriteRevertColourClasses}`}
       />
     ),
   },
@@ -482,7 +482,7 @@ head's doughnut firing hooter`,
     itemTool: { type: "pickup", config: { gives: "doughnuts" } },
     children: (
       <span
-        className={`sprite ${"texture-doughnuts" satisfies TextureTailwindClass} ${buttonSpriteRevertColourClasses}`}
+        class={`sprite ${"texture-doughnuts" satisfies TextureTailwindClass} ${buttonSpriteRevertColourClasses}`}
       />
     ),
   },
@@ -491,7 +491,7 @@ head's doughnut firing hooter`,
     itemTool: { type: "pickup", config: { gives: "reincarnation" } },
     children: (
       <span
-        className={`sprite ${"texture-fish_1" satisfies TextureTailwindClass} ${"activated:texture-animated-fish" satisfies AnimatedTextureTailwindClass} ${buttonSpriteRevertColourClasses}`}
+        class={`sprite ${"texture-fish_1" satisfies TextureTailwindClass} ${"activated:texture-animated-fish" satisfies AnimatedTextureTailwindClass} ${buttonSpriteRevertColourClasses}`}
       />
     ),
   },
@@ -503,7 +503,7 @@ head's doughnut firing hooter`,
     },
     children: (
       <span
-        className={`sprite ${"texture-crown_blacktooth" satisfies TextureTailwindClass} ${buttonSpriteRevertColourClasses}`}
+        class={`sprite ${"texture-crown_blacktooth" satisfies TextureTailwindClass} ${buttonSpriteRevertColourClasses}`}
       />
     ),
   },
@@ -519,7 +519,7 @@ head's doughnut firing hooter`,
     },
     children: (
       <span
-        className={`sprite ${"texture-scroll" satisfies TextureTailwindClass} ${buttonSpriteRevertColourClasses}`}
+        class={`sprite ${"texture-scroll" satisfies TextureTailwindClass} ${buttonSpriteRevertColourClasses}`}
       />
     ),
   },
@@ -530,7 +530,7 @@ head's doughnut firing hooter`,
     shortcutKeys: ["V"],
     children: (
       <span
-        className={`sprite ${"texture-volcano_1" satisfies TextureTailwindClass} ${"activated:texture-animated-volcano" satisfies AnimatedTextureTailwindClass} ${buttonSpriteRevertColourClasses}`}
+        class={`sprite ${"texture-volcano_1" satisfies TextureTailwindClass} ${"activated:texture-animated-volcano" satisfies AnimatedTextureTailwindClass} ${buttonSpriteRevertColourClasses}`}
       />
     ),
   },
@@ -540,7 +540,7 @@ head's doughnut firing hooter`,
     tooltipContent: `## Toaster\n\ncharging stations for the Emperor's Guardians`,
     children: (
       <span
-        className={`sprite ${"texture-toaster_1" satisfies TextureTailwindClass} ${buttonSpriteRevertColourClasses}`}
+        class={`sprite ${"texture-toaster_1" satisfies TextureTailwindClass} ${buttonSpriteRevertColourClasses}`}
       />
     ),
   },
@@ -556,7 +556,7 @@ rolls fast if pushed
 deadly to touch`,
     children: (
       <span
-        className={`sprite ${"texture-spikyBall_1" satisfies TextureTailwindClass} ${"activated:texture-spikyBall_2" satisfies TextureTailwindClass} ${buttonSpriteRevertColourClasses}`}
+        class={`sprite ${"texture-spikyBall_1" satisfies TextureTailwindClass} ${"activated:texture-spikyBall_2" satisfies TextureTailwindClass} ${buttonSpriteRevertColourClasses}`}
       />
     ),
   },
@@ -575,7 +575,7 @@ monsters will not walk into the light
 can be turned on/off by switches and buttons`,
     children: (
       <span
-        className={`sprite ${"texture-lamp_on_towards" satisfies TextureTailwindClass} ${"activated:texture-lamp_on_right" satisfies TextureTailwindClass} ${buttonSpriteRevertColourClasses}`}
+        class={`sprite ${"texture-lamp_on_towards" satisfies TextureTailwindClass} ${"activated:texture-lamp_on_right" satisfies TextureTailwindClass} ${buttonSpriteRevertColourClasses}`}
       />
     ),
   },
@@ -594,7 +594,7 @@ reflective on both sides
 rotates to the other diagonal when collided with`,
     children: (
       <span
-        className={`sprite ${"texture-mirror_awayRight" satisfies TextureTailwindClass} ${buttonSpriteRevertColourClasses}`}
+        class={`sprite ${"texture-mirror_awayRight" satisfies TextureTailwindClass} ${buttonSpriteRevertColourClasses}`}
       />
     ),
   },
@@ -608,7 +608,7 @@ deadly to touch on top
 safe to run into the sides`,
     children: (
       <span
-        className={`sprite ${"texture-spikes" satisfies TextureTailwindClass} ${buttonSpriteRevertColourClasses}`}
+        class={`sprite ${"texture-spikes" satisfies TextureTailwindClass} ${buttonSpriteRevertColourClasses}`}
       />
     ),
   },
@@ -623,7 +623,7 @@ dead fish decompose very quickly and it rapidly
 turns so poisonous that a single lick can kill`,
     children: (
       <span
-        className={`sprite ${"texture-fish_dead" satisfies TextureTailwindClass} ${buttonSpriteRevertColourClasses}`}
+        class={`sprite ${"texture-fish_dead" satisfies TextureTailwindClass} ${buttonSpriteRevertColourClasses}`}
       />
     ),
   },
@@ -650,7 +650,7 @@ Controls one or more Charles bots
 Change *which* Charles in the json`,
     children: (
       <span
-        className={`sprite ${"texture-joystick_whole" satisfies TextureTailwindClass} ${buttonSpriteRevertColourClasses}`}
+        class={`sprite ${"texture-joystick_whole" satisfies TextureTailwindClass} ${buttonSpriteRevertColourClasses}`}
       />
     ),
   },
@@ -676,7 +676,7 @@ edit the json to choose:
 * ... other things!`,
     children: (
       <span
-        className={`sprite ${"texture-switch_left" satisfies TextureTailwindClass} ${"activated:texture-switch_right" satisfies TextureTailwindClass} ${buttonSpriteRevertColourClasses}`}
+        class={`sprite ${"texture-switch_left" satisfies TextureTailwindClass} ${"activated:texture-switch_right" satisfies TextureTailwindClass} ${buttonSpriteRevertColourClasses}`}
       />
     ),
   },
@@ -691,7 +691,7 @@ edit the json to choose:
     tooltipContent: `## button`,
     children: (
       <span
-        className={`sprite ${"texture-buttonInGame" satisfies TextureTailwindClass} ${"activated:texture-buttonInGame_pressed" satisfies TextureTailwindClass} ${buttonSpriteRevertColourClasses}`}
+        class={`sprite ${"texture-buttonInGame" satisfies TextureTailwindClass} ${"activated:texture-buttonInGame_pressed" satisfies TextureTailwindClass} ${buttonSpriteRevertColourClasses}`}
       />
     ),
   },
@@ -708,7 +708,7 @@ edit the json to choose:
     tooltipContent: `## Emitter\nCreates items at regular intervals\n\nEdit the json to configure what it emits`,
     children: (
       <span
-        className={`sprite ${"texture-hud_char_E" satisfies TextureTailwindClass} ${buttonSpriteRevertColourClasses}`}
+        class={`sprite ${"texture-hud_char_E" satisfies TextureTailwindClass} ${buttonSpriteRevertColourClasses}`}
       />
     ),
   },
@@ -725,7 +725,7 @@ edit the json to choose:
     tooltipContent: `## Timer\nPeriodically toggles switch-style modifications\n\nEdit the json to configure targets`,
     children: (
       <span
-        className={`sprite ${"texture-hud_char_T" satisfies TextureTailwindClass} ${buttonSpriteRevertColourClasses}`}
+        class={`sprite ${"texture-hud_char_T" satisfies TextureTailwindClass} ${buttonSpriteRevertColourClasses}`}
       />
     ),
   },
@@ -737,7 +737,7 @@ edit the json to choose:
     },
     children: (
       <span
-        className={`sprite ${"texture-spring_released" satisfies TextureTailwindClass} ${"activated:texture-spring_compressed" satisfies TextureTailwindClass} ${buttonSpriteRevertColourClasses}`}
+        class={`sprite ${"texture-spring_released" satisfies TextureTailwindClass} ${"activated:texture-spring_compressed" satisfies TextureTailwindClass} ${buttonSpriteRevertColourClasses}`}
       />
     ),
   },
@@ -746,7 +746,7 @@ edit the json to choose:
     itemTool: { type: "portableBlock", config: { style: "cube" } },
     children: (
       <span
-        className={`sprite ${"texture-cube" satisfies TextureTailwindClass} ${buttonSpriteRevertColourClasses}`}
+        class={`sprite ${"texture-cube" satisfies TextureTailwindClass} ${buttonSpriteRevertColourClasses}`}
       />
     ),
   },
@@ -755,7 +755,7 @@ edit the json to choose:
     itemTool: { type: "portableBlock", config: { style: "drum" } },
     children: (
       <span
-        className={`sprite ${"texture-drum" satisfies TextureTailwindClass} ${buttonSpriteRevertColourClasses}`}
+        class={`sprite ${"texture-drum" satisfies TextureTailwindClass} ${buttonSpriteRevertColourClasses}`}
       />
     ),
   },
@@ -764,7 +764,7 @@ edit the json to choose:
     itemTool: { type: "portableBlock", config: { style: "sticks" } },
     children: (
       <span
-        className={`sprite ${"texture-sticks" satisfies TextureTailwindClass} ${buttonSpriteRevertColourClasses}`}
+        class={`sprite ${"texture-sticks" satisfies TextureTailwindClass} ${buttonSpriteRevertColourClasses}`}
       />
     ),
   },
@@ -773,7 +773,7 @@ edit the json to choose:
     itemTool: { type: "pushableBlock", config: {} },
     children: (
       <span
-        className={`sprite ${"texture-stepStool" satisfies TextureTailwindClass} ${buttonSpriteRevertColourClasses}`}
+        class={`sprite ${"texture-stepStool" satisfies TextureTailwindClass} ${buttonSpriteRevertColourClasses}`}
       />
     ),
   },
@@ -782,7 +782,7 @@ edit the json to choose:
     itemTool: { type: "ball", config: emptyObject },
     children: (
       <span
-        className={`sprite ${"texture-ball" satisfies TextureTailwindClass} ${buttonSpriteRevertColourClasses}`}
+        class={`sprite ${"texture-ball" satisfies TextureTailwindClass} ${buttonSpriteRevertColourClasses}`}
       />
     ),
   },
@@ -797,7 +797,7 @@ edit the json to choose:
 Small item that can be stood on and slides when touched`,
     children: (
       <span
-        className={`sprite ${"texture-puck" satisfies TextureTailwindClass} ${buttonSpriteRevertColourClasses}`}
+        class={`sprite ${"texture-puck" satisfies TextureTailwindClass} ${buttonSpriteRevertColourClasses}`}
       />
     ),
   },
@@ -812,21 +812,21 @@ Small item that can be stood on and slides when touched`,
 Why are the books slippery?`,
     children: (
       <span
-        className={`sprite ${"texture-book_y" satisfies TextureTailwindClass} ${buttonSpriteRevertColourClasses}`}
+        class={`sprite ${"texture-book_y" satisfies TextureTailwindClass} ${buttonSpriteRevertColourClasses}`}
       />
     ),
   },
   lift: {
     ariaLabel: "Lift",
     itemTool: { type: "lift", config: { top: 11, bottom: 0 } },
-    className: "inline relative",
+    class: "inline relative",
     children: (
       <>
         <span
-          className={`sprite inline-block absolute top-0 left-0 ${"texture-lift_static" satisfies TextureTailwindClass} ${buttonSpriteRevertColourClasses} [button:active_&]:top-oneScaledPix`}
+          class={`sprite inline-block absolute top-0 left-0 ${"texture-lift_static" satisfies TextureTailwindClass} ${buttonSpriteRevertColourClasses} [button:active_&]:top-oneScaledPix`}
         />
         <span
-          className={`sprite inline-block absolute top-0 left-0 ${"texture-lift_1" satisfies TextureTailwindClass} ${"activated:texture-animated-lift" satisfies AnimatedTextureTailwindClass} ${buttonSpriteRevertColourClasses} [button:active_&]:top-oneScaledPix`}
+          class={`sprite inline-block absolute top-0 left-0 ${"texture-lift_1" satisfies TextureTailwindClass} ${"activated:texture-animated-lift" satisfies AnimatedTextureTailwindClass} ${buttonSpriteRevertColourClasses} [button:active_&]:top-oneScaledPix`}
         />
       </>
     ),
@@ -879,7 +879,7 @@ Why are the books slippery?`,
     },
     children: (
       <span
-        className={`sprite ${"texture-teleporter" satisfies TextureTailwindClass} ${"activated:texture-animated-teleporter_flashing" satisfies AnimatedTextureTailwindClass} ${buttonSpriteRevertColourClasses}`}
+        class={`sprite ${"texture-teleporter" satisfies TextureTailwindClass} ${"activated:texture-animated-teleporter_flashing" satisfies AnimatedTextureTailwindClass} ${buttonSpriteRevertColourClasses}`}
       />
     ),
   },
@@ -891,7 +891,7 @@ Why are the books slippery?`,
     },
     children: (
       <span
-        className={`sprite ${"texture-portableTeleporter" satisfies TextureTailwindClass} ${"activated:texture-animated-portableTeleporter_flashing" satisfies AnimatedTextureTailwindClass} ${buttonSpriteRevertColourClasses}`}
+        class={`sprite ${"texture-portableTeleporter" satisfies TextureTailwindClass} ${"activated:texture-animated-portableTeleporter_flashing" satisfies AnimatedTextureTailwindClass} ${buttonSpriteRevertColourClasses}`}
       />
     ),
   },
@@ -913,7 +913,7 @@ Can be (de)activated by a switch, or touch
 Why a sandwich?`,
     children: (
       <span
-        className={`sprite ${"texture-sandwich" satisfies TextureTailwindClass} ${buttonSpriteRevertColourClasses}`}
+        class={`sprite ${"texture-sandwich" satisfies TextureTailwindClass} ${buttonSpriteRevertColourClasses}`}
       />
     ),
   },
@@ -925,7 +925,7 @@ Why a sandwich?`,
     },
     children: (
       <span
-        className={`sprite ${"texture-hushPuppy" satisfies TextureTailwindClass} ${buttonSpriteRevertColourClasses}`}
+        class={`sprite ${"texture-hushPuppy" satisfies TextureTailwindClass} ${buttonSpriteRevertColourClasses}`}
       />
     ),
   },
@@ -941,7 +941,7 @@ Why a sandwich?`,
     },
     children: (
       <span
-        className={`sprite ${"texture-blacktooth_floor" satisfies TextureTailwindClass} ${buttonSpriteRevertColourClasses}`}
+        class={`sprite ${"texture-blacktooth_floor" satisfies TextureTailwindClass} ${buttonSpriteRevertColourClasses}`}
       />
     ),
   },
@@ -958,7 +958,7 @@ Place on of these into one room
 This is where head will start the game`,
     children: (
       <span
-        className={`sprite ${playableTailwindSpriteClassname({ spritesheetName: "BlockStack" as "BlockStack", character: "head", action: "idle", facingXy8: "towards" })} activated:${playableTailwindSpriteClassname({ spritesheetName: "BlockStack" as "BlockStack", character: "head", action: "walking", facingXy8: "right" })} ${buttonSpriteRevertColourClasses}`}
+        class={`sprite ${playableTailwindSpriteClassname({ spritesheetName: "BlockStack" as "BlockStack", character: "head", action: "idle", facingXy8: "towards" })} activated:${playableTailwindSpriteClassname({ spritesheetName: "BlockStack" as "BlockStack", character: "head", action: "walking", facingXy8: "right" })} ${buttonSpriteRevertColourClasses}`}
       />
     ),
   },
@@ -975,7 +975,7 @@ Place on of these into one room
 This is where head will start the game`,
     children: (
       <span
-        className={`sprite ${playableTailwindSpriteClassname({ spritesheetName: "BlockStack" as "BlockStack", character: "heels", action: "idle", facingXy8: "towards" })} activated:${playableTailwindSpriteClassname({ spritesheetName: "BlockStack" as "BlockStack", character: "heels", action: "walking", facingXy8: "right" })} ${buttonSpriteRevertColourClasses}`}
+        class={`sprite ${playableTailwindSpriteClassname({ spritesheetName: "BlockStack" as "BlockStack", character: "heels", action: "idle", facingXy8: "towards" })} activated:${playableTailwindSpriteClassname({ spritesheetName: "BlockStack" as "BlockStack", character: "heels", action: "walking", facingXy8: "right" })} ${buttonSpriteRevertColourClasses}`}
       />
     ),
   },
@@ -991,7 +991,7 @@ Citizens of Freedom
 stand around not doing much`,
     children: (
       <span
-        className={`sprite ${playableTailwindSpriteClassname({ spritesheetName: "BlockStack" as "BlockStack", character: "head", action: "idle", facingXy8: "towards" })} activated:${playableTailwindSpriteClassname({ spritesheetName: "BlockStack" as "BlockStack", character: "head", action: "idle", facingXy8: "right" })} ${buttonSpriteRevertColourClasses}`}
+        class={`sprite ${playableTailwindSpriteClassname({ spritesheetName: "BlockStack" as "BlockStack", character: "head", action: "idle", facingXy8: "towards" })} activated:${playableTailwindSpriteClassname({ spritesheetName: "BlockStack" as "BlockStack", character: "head", action: "idle", facingXy8: "right" })} ${buttonSpriteRevertColourClasses}`}
       />
     ),
   },
@@ -1007,7 +1007,7 @@ Citizens of Freedom
 stand around not doing much`,
     children: (
       <span
-        className={`sprite ${playableTailwindSpriteClassname({ spritesheetName: "BlockStack" as "BlockStack", character: "heels", action: "idle", facingXy8: "towards" })} activated:${playableTailwindSpriteClassname({ spritesheetName: "BlockStack" as "BlockStack", character: "heels", action: "idle", facingXy8: "right" })} ${buttonSpriteRevertColourClasses}`}
+        class={`sprite ${playableTailwindSpriteClassname({ spritesheetName: "BlockStack" as "BlockStack", character: "heels", action: "idle", facingXy8: "towards" })} activated:${playableTailwindSpriteClassname({ spritesheetName: "BlockStack" as "BlockStack", character: "heels", action: "idle", facingXy8: "right" })} ${buttonSpriteRevertColourClasses}`}
       />
     ),
   },
@@ -1060,7 +1060,7 @@ stand around not doing much`,
       },
       children: (
         <span
-          className={`sprite ${textureClassname} ${buttonSpriteRevertColourClasses}`}
+          class={`sprite ${textureClassname} ${buttonSpriteRevertColourClasses}`}
         />
       ),
     };

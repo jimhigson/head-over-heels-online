@@ -1,4 +1,4 @@
-import { lazy, Suspense } from "react";
+import { lazy, Suspense } from "preact/compat";
 
 import { SpinnerHead } from "../ui/Spinner";
 import { importOnce } from "../utils/importOnce";

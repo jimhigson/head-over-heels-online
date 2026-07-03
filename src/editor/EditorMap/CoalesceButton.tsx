@@ -35,13 +35,13 @@ export const CoalesceButton = () => {
   }
 
   return (
-    <div className="absolute bottom-1 left-1 z-10">
+    <div class="absolute bottom-1 left-1 z-10">
       <Button
-        className="p-1"
+        class="p-1"
         onClick={() => editorStore.dispatch(coalesceSelectedRooms())}
         tooltipContent="Merge selected rooms into one"
       >
-        <span className="text-white text-single-line">{`Merge ${roomCount} rooms`}</span>
+        <span class="text-white text-single-line">{`Merge ${roomCount} rooms`}</span>
       </Button>
     </div>
   );

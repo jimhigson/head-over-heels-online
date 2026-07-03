@@ -47,16 +47,16 @@ export const AnimationTile = ({
 
   return (
     <div
-      className="bg-shadow zx:bg-zxRedDimmed toppy:bg-toppyGrey3 m-[4px] p-[8px] text-left flex flex-col w-8"
+      class="bg-shadow zx:bg-zxRedDimmed toppy:bg-toppyGrey3 m-[4px] p-[8px] text-left flex flex-col w-8"
       data-animation-id={animationName}
     >
       <style ref={styleRef} />
       {missingFrameIds.length > 0 ?
-        <div className="text-midRed zx:text-zxRed toppy:text-toppyPink2">
+        <div class="text-midRed zx:text-zxRed toppy:text-toppyPink2">
           missingFrame: {missingFrameIds[0]}
         </div>
       : <div
-          className={`sprite bg-pureBlack zx:bg-zxBlack toppy:bg-toppyBlack hover:bg-moss zx:hover:bg-zxYellow toppy:hover:bg-toppyWarm3 border-shadow zx:border-zxRedDimmed toppy:border-toppyGrey2 box-content w-min
+          class={`sprite bg-pureBlack zx:bg-zxBlack toppy:bg-toppyBlack hover:bg-moss zx:hover:bg-zxYellow toppy:hover:bg-toppyWarm3 border-shadow zx:border-zxRedDimmed toppy:border-toppyGrey2 box-content w-min
           ${animationIsUniformlyFlipped(frames, spritesheetData) ? "sprite-flip-x" : ""}
           ${spriteOption.uncolourised ? "sprite-revert-to-two-tone" : ""}`}
           style={animatedSpriteSpecificCssVars(
@@ -67,30 +67,30 @@ export const AnimationTile = ({
           )}
         />
       }
-      <div className="flex-grow" />
+      <div class="flex-grow" />
       <SpriteName name={animationName} />
       <Tooltip
         triggerContent={
-          <div className="text-lightGrey zx:text-zxWhiteDimmed toppy:text-toppyGrey1 cursor-help">
+          <div class="text-lightGrey zx:text-zxWhiteDimmed toppy:text-toppyGrey1 cursor-help">
             {frames.length}&nbsp;frames
           </div>
         }
         tooltipContent={
-          <ul className="max-h-16 block overflow-y-auto">
+          <ul class="max-h-16 block overflow-y-auto">
             {frames.map((f, i) => (
               <li key={`${f}/${i}`}>
                 <a
                   href={`#sprite-${sanitiseForClassName(f)}`}
-                  className="bitmap-text-link mt-oneScaledPix"
+                  class="bitmap-text-link mt-oneScaledPix"
                 >
-                  <span className="text-single-line">{f}</span>
+                  <span class="text-single-line">{f}</span>
                 </a>
               </li>
             ))}
           </ul>
         }
       />
-      <div className="text-midGrey zx:text-zxWhiteDimmed toppy:text-toppyGrey2">
+      <div class="text-midGrey zx:text-zxWhiteDimmed toppy:text-toppyGrey2">
         speed:&nbsp;{frames.animationSpeed}
       </div>
     </div>

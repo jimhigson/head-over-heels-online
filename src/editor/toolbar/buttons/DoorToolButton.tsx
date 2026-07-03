@@ -64,7 +64,7 @@ export const DoorToolButton = () => {
       {[
         <Switch
           key="autoAddDoor"
-          className="w-full"
+          class="w-full"
           value={autoAddRoom}
           label="auto + room"
           ariaLabel="Auto-add room with door"

@@ -1,5 +1,5 @@
+import { type VNode } from "preact";
 import { useMemo } from "preact/hooks";
-import { type ReactElement } from "react";
 
 import { itemInPlayCentre } from "../../../../../../model/itemInPlayCentre";
 import { type JsonItemUnion } from "../../../../../../model/json/JsonItem";
@@ -41,7 +41,7 @@ const ItemsInRoomLayout = <ItemId extends string, Item>({
 }: {
   items: Record<ItemId, Item>;
   positions: Record<ItemId, Xy>;
-  ItemComponent: (props: { item: Item }) => ReactElement;
+  ItemComponent: (props: { item: Item }) => VNode;
 }) => {
   return (
     <g data-class="items">

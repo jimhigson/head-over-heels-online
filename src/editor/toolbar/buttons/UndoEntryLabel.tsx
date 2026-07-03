@@ -22,7 +22,7 @@ type ItemIconProps = {
 
 const ItemIcon = ({ item, scenery }: ItemIconProps) => (
   <span
-    className={twClass(
+    class={twClass(
       `sprite ${textureForItem(item, scenery)} inline-block [--scale:1]`,
     )}
   />
@@ -47,8 +47,8 @@ const ItemDescriptions = ({ items }: { items: UndoItemEntry[] }) => {
     const [[id, item]] = items;
     return (
       <span>
-        <span className="text-single-line">{describeItem(item)} </span>
-        <span className={`${idClass} text-single-line`}>{`'${id}'`}</span>
+        <span class="text-single-line">{describeItem(item)} </span>
+        <span class={`${idClass} text-single-line`}>{`'${id}'`}</span>
       </span>
     );
   }
@@ -58,13 +58,13 @@ const ItemDescriptions = ({ items }: { items: UndoItemEntry[] }) => {
   if (types.size === 1) {
     const [type] = types;
     return (
-      <span className="text-single-line">
+      <span class="text-single-line">
         {items.length} {camelToSpaced(type)}s
       </span>
     );
   }
 
-  return <span className="text-single-line">{items.length} items</span>;
+  return <span class="text-single-line">{items.length} items</span>;
 };
 
 export const undoHistoryGridClassName =
@@ -82,14 +82,14 @@ export const UndoEntryLabel = ({
   entry: { description, timestamp },
   scenery,
 }: UndoEntryLabelProps) => {
-  const timeago = <Timeago timestamp={timestamp} className="text-lightGrey" />;
+  const timeago = <Timeago timestamp={timestamp} class="text-lightGrey" />;
 
   switch (description.kind) {
     case "itemAction":
       return (
         <>
           <ItemIcons items={description.items} scenery={scenery} />
-          <span className={`${verbClass} text-single-line`}>
+          <span class={`${verbClass} text-single-line`}>
             {description.verb}{" "}
           </span>
           <ItemDescriptions items={description.items} />
@@ -100,7 +100,7 @@ export const UndoEntryLabel = ({
       return (
         <>
           <ItemIcons items={description.items} scenery={scenery} />
-          <span className={`${verbClass} text-single-line`}>Edit </span>
+          <span class={`${verbClass} text-single-line`}>Edit </span>
           <ItemDescriptions items={description.items} />
           {timeago}
         </>
@@ -109,8 +109,8 @@ export const UndoEntryLabel = ({
       return (
         <>
           <span />
-          <span className="text-single-line">Change </span>
-          <span className="text-single-line">room colour</span>
+          <span class="text-single-line">Change </span>
+          <span class="text-single-line">room colour</span>
           {timeago}
         </>
       );
@@ -118,10 +118,10 @@ export const UndoEntryLabel = ({
       return (
         <>
           <span />
-          <span className="text-single-line">Change </span>
+          <span class="text-single-line">Change </span>
           <span>
-            <span className="text-single-line">scenery to </span>
-            <span className={`${verbClass} text-single-line`}>
+            <span class="text-single-line">scenery to </span>
+            <span class={`${verbClass} text-single-line`}>
               {description.sceneryName}
             </span>
           </span>
@@ -132,8 +132,8 @@ export const UndoEntryLabel = ({
       return (
         <>
           <span />
-          <span className="text-single-line">Clear </span>
-          <span className="text-single-line">room</span>
+          <span class="text-single-line">Clear </span>
+          <span class="text-single-line">room</span>
           {timeago}
         </>
       );
@@ -141,8 +141,8 @@ export const UndoEntryLabel = ({
       return (
         <>
           <span />
-          <span className="text-single-line">Paste </span>
-          <span className="text-single-line">items</span>
+          <span class="text-single-line">Paste </span>
+          <span class="text-single-line">items</span>
           {timeago}
         </>
       );
@@ -150,8 +150,8 @@ export const UndoEntryLabel = ({
       return (
         <>
           <span />
-          <span className="text-single-line">Edit </span>
-          <span className="text-single-line">room {description.property}</span>
+          <span class="text-single-line">Edit </span>
+          <span class="text-single-line">room {description.property}</span>
           {timeago}
         </>
       );
@@ -159,8 +159,8 @@ export const UndoEntryLabel = ({
       return (
         <>
           <span />
-          <span className="text-single-line">Edit </span>
-          <span className="text-single-line">room JSON</span>
+          <span class="text-single-line">Edit </span>
+          <span class="text-single-line">room JSON</span>
           {timeago}
         </>
       );

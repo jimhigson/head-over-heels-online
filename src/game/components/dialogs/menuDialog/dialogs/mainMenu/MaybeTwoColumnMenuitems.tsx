@@ -1,13 +1,14 @@
-import { Children, type Fragment, type ReactElement } from "react";
+import { type VNode } from "preact";
+import { Children } from "preact/compat";
 
 import { MenuItems } from "../../MenuItems";
 import { MenuSeparator } from "./MenuSeparator";
 
 export type MaybeTwoColumnMenuitemsProps = {
-  topContents: ReactElement;
+  topContents: VNode;
   /* fragment containing all the elements to put in 1 or 2 columns */
-  middleContents: ReactElement<{ children: ReactElement[] }, typeof Fragment>;
-  bottomContents: ReactElement;
+  middleContents: VNode<{ children: VNode[] }>;
+  bottomContents: VNode;
   spaceOut?: boolean;
   columnCount: 1 | 2;
 };
@@ -21,7 +22,7 @@ export const MaybeTwoColumnMenuitems = ({
 }: MaybeTwoColumnMenuitemsProps) => {
   if (columnCount === 1) {
     return (
-      <MenuItems className="mx-auto">
+      <MenuItems class="mx-auto">
         {topContents}
         {spaceOut && <MenuSeparator />}
         {middleContents}
@@ -36,12 +37,12 @@ export const MaybeTwoColumnMenuitems = ({
 
   return (
     <div>
-      <MenuItems className="w-24 mx-auto mb-1">{topContents}</MenuItems>
-      <div className="flex flex-row gap-2 w-24 mx-auto">
-        <MenuItems className="w-12">{column1}</MenuItems>
+      <MenuItems class="w-24 mx-auto mb-1">{topContents}</MenuItems>
+      <div class="flex flex-row gap-2 w-24 mx-auto">
+        <MenuItems class="w-12">{column1}</MenuItems>
         <MenuItems>{column2}</MenuItems>
       </div>
-      <MenuItems className="w-24 mx-auto">{bottomContents}</MenuItems>
+      <MenuItems class="w-24 mx-auto">{bottomContents}</MenuItems>
     </div>
   );
 };

@@ -15,8 +15,8 @@ export const CampaignOwnerName = ({ userId }: CampaignOwnerNameProps) => {
 
   return username ?
       <>
-        <span className="text-lightGrey">by</span>{" "}
-        <span className="text-pink">{username}</span>
+        <span class="text-lightGrey">by</span>{" "}
+        <span class="text-pink">{username}</span>
       </>
     : null;
 };

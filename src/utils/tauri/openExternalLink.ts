@@ -1,3 +1,5 @@
+import { type MouseEvent } from "preact/compat";
+
 import { importTauriOpener } from "./dynamicLoad";
 
 /** add to the onclick of an <a> to open in default browser instead from Tauri */
@@ -11,7 +13,7 @@ export const openExternal = async (url: string) => {
 
 /** add to the onclick of an <a> to open in default browser instead from Tauri */
 export const linkOpenExternalClickHandler = async (
-  e: React.MouseEvent<HTMLAnchorElement>,
+  e: MouseEvent<HTMLAnchorElement>,
 ) => {
   if (import.meta.env.TAURI_ENV_PLATFORM) {
     e.preventDefault();

@@ -31,23 +31,23 @@ export const CurrentCampaignInfo = () => {
 
   return (
     <>
-      <span className="">
+      <span class="">
         {isOwnedByCurrentUser ? "Your campaign:" : "Campaign:"}
       </span>{" "}
       {campaignName ?
         <>
-          <span className="text-highlightBeige">{`‘${campaignName}’`}</span>{" "}
-          <span className="text-lightGrey">v{ourVersion}</span>{" "}
+          <span class="text-highlightBeige">{`‘${campaignName}’`}</span>{" "}
+          <span class="text-lightGrey">v{ourVersion}</span>{" "}
           {isOwnedByCurrentUser ? null : (
             <CampaignOwnerName userId={ownerUserId} />
           )}{" "}
           {versionIsStale ?
-            <span className="text-midRed animate-flash">
+            <span class="text-midRed animate-flash">
               v{latestVersion}&nbsp;latest
             </span>
           : null}
         </>
-      : <span className="text-midRed">{`(untitled)`}</span>}
+      : <span class="text-midRed">{`(untitled)`}</span>}
       {versionIsStale &&
         latestVersion !== undefined &&
         dismissedForVersion !== latestVersion &&

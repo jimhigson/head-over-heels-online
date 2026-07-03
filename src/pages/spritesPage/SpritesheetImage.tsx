@@ -1,3 +1,4 @@
+import { type MouseEvent } from "preact/compat";
 import { useEffect, useMemo, useRef, useState } from "preact/hooks";
 
 import { BlockyMarkdown } from "../../game/components/BlockyMarkdown";
@@ -61,15 +62,15 @@ const AnimationPreview = ({
   }, [animationName, frames, currentSpritesheetData]);
 
   return (
-    <div className="mt-1">
+    <div class="mt-1">
       <style ref={styleRef} />
-      <span className="text-single-line">In animation {animationName}</span>
+      <span class="text-single-line">In animation {animationName}</span>
       <div
-        className="[background:repeating-conic-gradient(#ddd_0_25%,_#ccc_0_50%)_50%_/_10px_10px] w-min"
+        class="[background:repeating-conic-gradient(#ddd_0_25%,_#ccc_0_50%)_50%_/_10px_10px] w-min"
         style={{ "--scale": 4 }}
       >
         <div
-          className={`sprite box-content w-min
+          class={`sprite box-content w-min
             ${animationIsUniformlyFlipped(frames, currentSpritesheetData) ? "sprite-flip-x" : ""}
             ${spriteOption.uncolourised ? "sprite-revert-to-two-tone" : ""}`}
           style={animatedSpriteSpecificCssVars(
@@ -104,13 +105,13 @@ const TextureIdEntry = ({
   ).filter(([, frames]) => frames.includes(textureId));
 
   return (
-    <div className="mt-1">
+    <div class="mt-1">
       <div
-        className="[background:repeating-conic-gradient(#ddd_0_25%,_#ccc_0_50%)_50%_/_10px_10px] w-min"
+        class="[background:repeating-conic-gradient(#ddd_0_25%,_#ccc_0_50%)_50%_/_10px_10px] w-min"
         style={{ "--scale": 4 }}
       >
         <div
-          className={`sprite box-content w-min
+          class={`sprite box-content w-min
             ${flipX ? "sprite-flip-x" : ""}
             ${spriteOption.uncolourised ? "sprite-revert-to-two-tone" : ""}`}
           style={spriteSpecificCssVars(frame.w, frame.h, frame.x, frame.y)}
@@ -160,7 +161,7 @@ const SpriteOverlay = ({ position }: { position: SpritePosition }) => {
       triggerContent={
         <a
           href={`#sprite-${sanitiseForClassName(textureIds[0])}`}
-          className="absolute cursor-pointer block border hover:bg-[rgba(255,255,255,0.25)] z-[1]"
+          class="absolute cursor-pointer block border hover:bg-[rgba(255,255,255,0.25)] z-[1]"
           style={{
             left: xRelative(frame.x),
             top: yRelative(frame.y),
@@ -184,7 +185,7 @@ export const SpritesheetImage = ({
   const [mousePos, setMousePos] = useState<null | Xy>(null);
   const containerRef = useRef<HTMLDivElement>(null);
 
-  const handleMouseMove = (e: React.MouseEvent<HTMLDivElement>) => {
+  const handleMouseMove = (e: MouseEvent<HTMLDivElement>) => {
     const el = containerRef.current;
     if (!el) {
       return;
@@ -229,7 +230,7 @@ export const SpritesheetImage = ({
   return (
     <div
       ref={containerRef}
-      className="relative w-full cursor-crosshair [background:repeating-conic-gradient(#ddd_0_25%,_#ccc_0_50%)_50%_/_20px_20px]"
+      class="relative w-full cursor-crosshair [background:repeating-conic-gradient(#ddd_0_25%,_#ccc_0_50%)_50%_/_20px_20px]"
       style={{
         aspectRatio: "var(--spritesheetW) / var(--spritesheetH)",
       }}
@@ -237,7 +238,7 @@ export const SpritesheetImage = ({
       onMouseLeave={() => setMousePos(null)}
     >
       <div
-        className={`absolute inset-0 pixelated bg-no-repeat
+        class={`absolute inset-0 pixelated bg-no-repeat
           ${spriteOption.uncolourised ? "sprite-revert-to-two-tone" : ""}`}
         style={{
           backgroundImage: "var(--spritesheetUrl)",
@@ -246,8 +247,8 @@ export const SpritesheetImage = ({
       />
 
       {/* dark overlay with white sprite cutouts, blended to darken only non-sprite areas */}
-      <div className="absolute inset-0 pointer-events-none mix-blend-multiply">
-        <div className="absolute inset-0 bg-[rgba(0,0,0,0.66)]" />
+      <div class="absolute inset-0 pointer-events-none mix-blend-multiply">
+        <div class="absolute inset-0 bg-[rgba(0,0,0,0.66)]" />
         {uniquePositions
           .filter(
             (position) =>
@@ -257,7 +258,7 @@ export const SpritesheetImage = ({
           .map(({ frame }) => (
             <div
               key={positionKey(frame)}
-              className="absolute bg-white"
+              class="absolute bg-white"
               style={{
                 left: xRelative(frame.x),
                 top: yRelative(frame.y),
@@ -275,7 +276,7 @@ export const SpritesheetImage = ({
       {mousePos && (
         <>
           <div
-            className="absolute pointer-events-none border bg-pink zx:bg-zxMagenta toppy:bg-toppyPink1 outline-2"
+            class="absolute pointer-events-none border bg-pink zx:bg-zxMagenta toppy:bg-toppyPink1 outline-2"
             style={{
               left: xRelative(mousePos.x),
               top: yRelative(mousePos.y),
@@ -284,7 +285,7 @@ export const SpritesheetImage = ({
             }}
           />
           <div
-            className="absolute pointer-events-none bg-black zx:bg-zxBlack toppy:bg-toppyBlack text-white zx:text-zxWhite toppy:text-toppyWarm1 px-1 text-xs font-mono"
+            class="absolute pointer-events-none bg-black zx:bg-zxBlack toppy:bg-toppyBlack text-white zx:text-zxWhite toppy:text-toppyWarm1 px-1 text-xs font-mono"
             style={{
               left: xRelative(mousePos.x),
               top: `calc(${yRelative(mousePos.y)} + 40px)`,

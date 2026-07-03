@@ -1,4 +1,4 @@
-import { type ReactElement } from "react";
+import { type VNode } from "preact";
 
 import {
   type AnimatedTextureTailwindClass,
@@ -11,18 +11,18 @@ import { buttonSpriteRevertColourClasses } from "../buttonSizeClassNames";
 export const LabelledToolbarIcon = ({
   iconClasses,
   text,
-  className = "",
+  class: className = "",
 }: {
   iconClasses: string;
   text: string;
-  className?: string;
+  class?: string;
 }) => {
   return (
-    <div className={`relative w-full h-full ${className}`}>
+    <div class={`relative w-full h-full ${className}`}>
       <span
-        className={`sprite absolute top-0 left-0 ${iconClasses} ${buttonSpriteRevertColourClasses}`}
+        class={`sprite absolute top-0 left-0 ${iconClasses} ${buttonSpriteRevertColourClasses}`}
       />
-      <span className="bg-moss text-pureBlack absolute top-0 left-0 pl-oneScaledPix py-oneScaledPix block text-single-line">
+      <span class="bg-moss text-pureBlack absolute top-0 left-0 pl-oneScaledPix py-oneScaledPix block text-single-line">
         {text}
       </span>
     </div>
@@ -51,12 +51,12 @@ export const StackedToolbarIcons = ({
   bottomClasses?: string;
 }) => {
   return (
-    <div className="relative w-full h-full">
+    <div class="relative w-full h-full">
       <span
-        className={`sprite absolute top-[calc(9px*var(--scale))] left-0 ${bottomClasses} ${buttonSpriteRevertColourClasses}`}
+        class={`sprite absolute top-[calc(9px*var(--scale))] left-0 ${bottomClasses} ${buttonSpriteRevertColourClasses}`}
       />
       <span
-        className={`sprite absolute top-[calc(-3px*var(--scale))] left-0 ${topClasses} ${buttonSpriteRevertColourClasses}`}
+        class={`sprite absolute top-[calc(-3px*var(--scale))] left-0 ${topClasses} ${buttonSpriteRevertColourClasses}`}
       />
     </div>
   );
@@ -71,15 +71,15 @@ export const IconWithTwoLineHoverText = ({
   topText,
   bottomText,
 }: {
-  icon: ReactElement;
+  icon: VNode;
   topText: string;
   bottomText: string;
 }) => {
   return (
-    <span className="w-full h-full flex flex-col items-center justify-center">
-      <span className={iconClassname}>{icon}</span>
-      <span className={`${topTextClassname} text-single-line`}>{topText}</span>
-      <span className={`${bottomTextClassname} text-single-line`}>
+    <span class="w-full h-full flex flex-col items-center justify-center">
+      <span class={iconClassname}>{icon}</span>
+      <span class={`${topTextClassname} text-single-line`}>{topText}</span>
+      <span class={`${bottomTextClassname} text-single-line`}>
         {bottomText}
       </span>
     </span>

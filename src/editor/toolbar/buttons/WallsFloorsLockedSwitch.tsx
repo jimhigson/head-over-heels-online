@@ -4,15 +4,15 @@ import { Switch } from "../../../ui/Switch";
 import { changeWallsFloorsLocked } from "../../slice/levelEditorSlice";
 
 export const WallsFloorsLockedSwitch = ({
-  className,
+  class: className,
 }: {
-  className?: string;
+  class?: string;
 }) => {
   const dispatch = useAppDispatch();
 
   return (
     <Switch
-      className={className}
+      class={className}
       label="Scenery"
       ariaLabel="Lock walls and floors"
       value={useEditorAppSelector(

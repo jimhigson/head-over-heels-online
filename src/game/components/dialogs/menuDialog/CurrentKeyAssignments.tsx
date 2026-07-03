@@ -47,7 +47,7 @@ const friendlyKeyName = (key: Key) => {
   if (match !== null) {
     return (
       <>
-        <span className={specialCharClassName}>{match[1]}</span>
+        <span class={specialCharClassName}>{match[1]}</span>
         {match[2]}
       </>
     );
@@ -59,25 +59,25 @@ const friendlyKeyName = (key: Key) => {
     case "ArrowDown":
       return (
         <>
-          <span className={specialCharClassName}>Cursor</span>⬇
+          <span class={specialCharClassName}>Cursor</span>⬇
         </>
       );
     case "ArrowUp":
       return (
         <>
-          <span className={specialCharClassName}>Cursor</span>⬆
+          <span class={specialCharClassName}>Cursor</span>⬆
         </>
       );
     case "ArrowLeft":
       return (
         <>
-          <span className={specialCharClassName}>Cursor</span>⬅
+          <span class={specialCharClassName}>Cursor</span>⬅
         </>
       );
     case "ArrowRight":
       return (
         <>
-          <span className={specialCharClassName}>Cursor</span>➡
+          <span class={specialCharClassName}>Cursor</span>➡
         </>
       );
     default:
@@ -104,25 +104,25 @@ const friendlyButtonName = (button: number) => {
       return "D-pad➡";
     case "a":
       return (
-        <span className="colourised:text-mossHalfbrite colourised:selectedMenuItem:text-moss zx:text-zxGreen toppy:text-toppyCool2">
+        <span class="colourised:text-mossHalfbrite colourised:selectedMenuItem:text-moss zx:text-zxGreen toppy:text-toppyCool2">
           A
         </span>
       );
     case "b":
       return (
-        <span className="colourised:text-midRedHalfbrite colourised:selectedMenuItem:text-midRed zx:text-zxRed toppy:text-toppyPink2">
+        <span class="colourised:text-midRedHalfbrite colourised:selectedMenuItem:text-midRed zx:text-zxRed toppy:text-toppyPink2">
           B
         </span>
       );
     case "x":
       return (
-        <span className="colourised:text-metallicBlueHalfbrite colourised:selectedMenuItem:text-metallicBlue zx:text-zxBlue toppy:text-toppyCool3">
+        <span class="colourised:text-metallicBlueHalfbrite colourised:selectedMenuItem:text-metallicBlue zx:text-zxBlue toppy:text-toppyCool3">
           X
         </span>
       );
     case "y":
       return (
-        <span className="colourised:text-highlightBeigeHalfbrite colourised:selectedMenuItem:text-highlightBeige zx:text-zxYellow toppy:text-toppyWarm3">
+        <span class="colourised:text-highlightBeigeHalfbrite colourised:selectedMenuItem:text-highlightBeige zx:text-zxYellow toppy:text-toppyWarm3">
           Y
         </span>
       );
@@ -139,7 +139,7 @@ type CurrentKeyAssignmentsProp = {
   action: BooleanAction;
   doNotShowForAction?: BooleanAction;
   keyClassName?: string;
-  className?: string;
+  class?: string;
   flashingCursor?: boolean;
   inline?: boolean;
 };
@@ -148,7 +148,7 @@ export const CurrentKeyAssignments = ({
   action,
   doNotShowForAction,
   keyClassName,
-  className,
+  class: className,
   flashingCursor = false,
   inline = false,
 }: CurrentKeyAssignmentsProp) => {
@@ -193,7 +193,7 @@ export const CurrentKeyAssignments = ({
       {sortKeys(filteredKeys).map((k) => {
         return (
           <span
-            className={twMerge(
+            class={twMerge(
               "text-nowrap h-[calc(10px*var(--scale))] text-single-line",
               keyClassName,
             )}
@@ -205,7 +205,7 @@ export const CurrentKeyAssignments = ({
       })}
       {flashingCursor && (
         <span
-          className={`sprite ${"texture-hud_char_space" satisfies TextureTailwindClass} bg-[currentColor] animate-flash`}
+          class={`sprite ${"texture-hud_char_space" satisfies TextureTailwindClass} bg-[currentColor] animate-flash`}
         />
       )}
     </>
@@ -216,13 +216,13 @@ export const CurrentKeyAssignments = ({
       {axisAssignments.map((gamepadAxis: number) => {
         return (
           <span
-            className={twMerge(
+            class={twMerge(
               "text-nowrap h-[calc(10px*var(--scale))] text-single-line",
               keyClassName,
             )}
             key={`gamePadAxis:${gamepadAxis}`}
           >
-            <span className={specialCharClassName}>🕹</span>
+            <span class={specialCharClassName}>🕹</span>
             {friendlyAxisName(gamepadAxis)}
           </span>
         );
@@ -231,36 +231,36 @@ export const CurrentKeyAssignments = ({
       {filteredGamepadButtons.map((k) => {
         return (
           <span
-            className={twMerge(
+            class={twMerge(
               "text-nowrap h-[calc(10px*var(--scale))] text-single-line",
               keyClassName,
             )}
             key={`gamePadButton:${k}`}
           >
-            <span className={specialCharClassName}>🕹</span>
+            <span class={specialCharClassName}>🕹</span>
             {friendlyButtonName(k)}
           </span>
         );
       })}
       {flashingCursor && (
         <span
-          className={`sprite ${"texture-hud_char_space" satisfies TextureTailwindClass} bg-[currentColor] animate-flash`}
+          class={`sprite ${"texture-hud_char_space" satisfies TextureTailwindClass} bg-[currentColor] animate-flash`}
         />
       )}
     </>
   );
 
   return (
-    <div className={twMerge(className, inline ? "inline" : "w-full")}>
+    <div class={twMerge(className, inline ? "inline" : "w-full")}>
       {inline ?
         keyboardAssignments
-      : <div className="flex flex-col w-[50%] gap-y-oneScaledPix">
+      : <div class="flex flex-col w-[50%] gap-y-oneScaledPix">
           {keyboardAssignments}
         </div>
       }
       {inline ?
         controllerAssignments
-      : <div className="flex flex-col">{controllerAssignments}</div>}
+      : <div class="flex flex-col">{controllerAssignments}</div>}
     </div>
   );
 };

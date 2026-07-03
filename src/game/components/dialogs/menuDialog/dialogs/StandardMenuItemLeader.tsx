@@ -24,7 +24,7 @@ export const StandardMenuItemLeader = ({
     : menuLeaderUnfocussedChar;
   return (
     <span
-      className={
+      class={
         `inline-block col-start-1 ` +
         // min width and mx-auto centers, in case is sharing a menu with wider, custom leaders:
         `w-min ml-auto ` +
@@ -32,7 +32,7 @@ export const StandardMenuItemLeader = ({
       }
     >
       {doubleHeight ?
-        <span className="text-double-height">{glyphs}</span>
+        <span class="text-double-height">{glyphs}</span>
       : glyphs}
     </span>
   );

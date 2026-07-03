@@ -1,5 +1,5 @@
+import { type PropsWithChildren } from "preact/compat";
 import { useState } from "preact/hooks";
-import { type PropsWithChildren } from "react";
 import { type EmptyObject } from "type-fest";
 
 import { type ItemInPlay } from "../../../model/ItemInPlay";
@@ -51,10 +51,10 @@ import { useLevelSelectByUrlHash } from "./useLevelSelectByUrlHash";
 
 interface SpeedButtonProps {
   speed: number;
-  className?: string;
+  class?: string;
 }
 
-const SpeedButton = ({ speed, className = "" }: SpeedButtonProps) => {
+const SpeedButton = ({ speed, class: className = "" }: SpeedButtonProps) => {
   const dispatch = useAppDispatch();
   const currentSpeed = useAppSelector(
     (state) => state.userSettings.userSettings.gameSpeed,
@@ -63,7 +63,7 @@ const SpeedButton = ({ speed, className = "" }: SpeedButtonProps) => {
   return (
     <Button
       data-test-id={"cheats-speed-" + speed}
-      className={`${cheatsButtonClasses} ${className} ${speed === currentSpeed ? "bg-shadow text-white" : ""}`}
+      class={`${cheatsButtonClasses} ${className} ${speed === currentSpeed ? "bg-shadow text-white" : ""}`}
       onClick={(e) => {
         dispatch(
           setGameSpeed(
@@ -96,7 +96,7 @@ const SummonPlayableButton = <RoomId extends string>({
   return (
     <Button
       data-test-id={`cheats-summon-character-${playableName}`}
-      className={cheatsButtonClasses}
+      class={cheatsButtonClasses}
       onClick={(e) => {
         if (gameApi.gameState.currentCharacterName === playableName) {
           return;
@@ -177,22 +177,22 @@ const SummonPlayableButton = <RoomId extends string>({
       {playableName === "headOverHeels" ?
         <>
           <span
-            className={`sprite
+            class={`sprite
               ${spriteClassname({ character: "head", action: "idle", facingXy8: "right" })}`}
           />
           over
           <span
-            className={`sprite
+            class={`sprite
               ${spriteClassname({ character: "heels", action: "idle", facingXy8: "right" })}`}
           />
         </>
       : playableName === "heels" ?
         <span
-          className={`sprite
+          class={`sprite
             ${spriteClassname({ character: "heels", action: "idle", facingXy8: "right" })}`}
         />
       : <span
-          className={`sprite
+          class={`sprite
             ${spriteClassname({ character: "head", action: "idle", facingXy8: "right" })}`}
         />
       }
@@ -213,7 +213,7 @@ export const GoToRoomButton = <RoomId extends string>({
   return (
     <Button
       data-test-id={`cheats-goto-room-${roomId}`}
-      className={cheatsButtonClasses}
+      class={cheatsButtonClasses}
       onClick={(e) => {
         gameApi.changeRoom(roomId);
         (e?.currentTarget as HTMLElement | undefined)?.blur();
@@ -225,7 +225,7 @@ export const GoToRoomButton = <RoomId extends string>({
 };
 
 const Heading = ({ children }: { children: string }) => {
-  return <h4 className="bg-redShadow zx:bg-zxMagenta pl-1">{children}</h4>;
+  return <h4 class="bg-redShadow zx:bg-zxMagenta pl-1">{children}</h4>;
 };
 
 let summonedItemNumber = 0;
@@ -286,26 +286,26 @@ export const Cheats = <RoomId extends string>(_emptyProps: EmptyObject) => {
         data-test-id="cheats-open-button"
         aria-expanded={open}
         aria-controls="cheats-menu"
-        className="absolute bottom-0 right-1 flex flex-col z-cheats text-midRed hover:text-metallicBlue "
+        class="absolute bottom-0 right-1 flex flex-col z-cheats text-midRed hover:text-metallicBlue "
         onClick={(e) => {
           setOpen((o) => !o);
           (e.currentTarget as HTMLElement).blur();
         }}
       >
         <span
-          className={`sprite ${"texture-helicopterBug_1" satisfies TextureTailwindClass} ${"hover:texture-animated-helicopterBug" satisfies AnimatedTextureTailwindClass} zx:sprite-revert-to-two-tone`}
+          class={`sprite ${"texture-helicopterBug_1" satisfies TextureTailwindClass} ${"hover:texture-animated-helicopterBug" satisfies AnimatedTextureTailwindClass} zx:sprite-revert-to-two-tone`}
         />
       </button>
       {open && (
         <div
           id="cheats-menu"
           data-test-id="cheats-menu"
-          className="absolute bottom-3 max-h-[calc(100vh-var(--block)*3)] right-0 flex flex-col w-[500px] zx:[&_.sprite]:sprite-revert-to-white overflow-y-scroll z-cheats text-white"
+          class="absolute bottom-3 max-h-[calc(100vh-var(--block)*3)] right-0 flex flex-col w-[500px] zx:[&_.sprite]:sprite-revert-to-white overflow-y-scroll z-cheats text-white"
         >
           <CssVariables scaleFactor={2}>
             <Heading>room select:</Heading>
             <GameApiConnectedRoomSelect />
-            <div className="flex flex-row items-center">
+            <div class="flex flex-row items-center">
               <GoToRoomButton
                 gameApi={gameApi}
                 roomId={"blacktooth1head" as RoomId}
@@ -316,7 +316,7 @@ export const Cheats = <RoomId extends string>(_emptyProps: EmptyObject) => {
                 Final room
               </GoToRoomButton>
             </div>
-            <div className="flex flex-row items-center">
+            <div class="flex flex-row items-center">
               <GoToRoomButton
                 gameApi={gameApi}
                 roomId={"blacktooth45market" as RoomId}
@@ -343,8 +343,8 @@ export const Cheats = <RoomId extends string>(_emptyProps: EmptyObject) => {
               </GoToRoomButton>
             </div>
             <Heading>debug rendering:</Heading>
-            <div className="flex flex-row items-center gap-x-1 justify-center pb-1 pt-1 bg-shadow text-white">
-              <span className="text-single-line">BB:</span>
+            <div class="flex flex-row items-center gap-x-1 justify-center pb-1 pt-1 bg-shadow text-white">
+              <span class="text-single-line">BB:</span>
               <ShowBoundingBoxSelect
                 getCurrentRoomItems={() =>
                   selectCurrentRoomState(gameApi.gameState)?.items
@@ -361,7 +361,7 @@ export const Cheats = <RoomId extends string>(_emptyProps: EmptyObject) => {
             </div>
 
             <Heading>summon character:</Heading>
-            <div className="flex flex-row items-center">
+            <div class="flex flex-row items-center">
               <SummonPlayableButton gameApi={gameApi} playableName="head" />
               <SummonPlayableButton gameApi={gameApi} playableName="heels" />
               <SummonPlayableButton
@@ -370,46 +370,46 @@ export const Cheats = <RoomId extends string>(_emptyProps: EmptyObject) => {
               />
             </div>
             <Heading>summon item:</Heading>
-            <div className="flex flex-row items-center flex-wrap">
+            <div class="flex flex-row items-center flex-wrap">
               <Button
                 data-test-id="cheats-summon-portableBlock-cube"
-                className={cheatsButtonClasses}
+                class={cheatsButtonClasses}
                 onClick={(e) => {
                   summonItem("portableBlock", { style: "cube" });
                   (e?.currentTarget as HTMLElement | undefined)?.blur();
                 }}
               >
                 <span
-                  className={`sprite ${"texture-cube" satisfies TextureTailwindClass}`}
+                  class={`sprite ${"texture-cube" satisfies TextureTailwindClass}`}
                 />
               </Button>
               <Button
                 data-test-id="cheats-summon-ball"
-                className={cheatsButtonClasses}
+                class={cheatsButtonClasses}
                 onClick={(e) => {
                   summonItem("ball", {});
                   (e?.currentTarget as HTMLElement | undefined)?.blur();
                 }}
               >
                 <span
-                  className={`sprite ${"texture-ball" satisfies TextureTailwindClass}`}
+                  class={`sprite ${"texture-ball" satisfies TextureTailwindClass}`}
                 />
               </Button>
               <Button
                 data-test-id="cheats-summon-spring"
-                className={cheatsButtonClasses}
+                class={cheatsButtonClasses}
                 onClick={(e) => {
                   summonItem("spring", {});
                   (e?.currentTarget as HTMLElement | undefined)?.blur();
                 }}
               >
                 <span
-                  className={`sprite ${"texture-spring_released" satisfies TextureTailwindClass}`}
+                  class={`sprite ${"texture-spring_released" satisfies TextureTailwindClass}`}
                 />
               </Button>
               <Button
                 data-test-id="cheats-summon-monster-dalek"
-                className={cheatsButtonClasses}
+                class={cheatsButtonClasses}
                 onClick={(e) => {
                   summonItem("monster", {
                     which: "dalek",
@@ -420,12 +420,12 @@ export const Cheats = <RoomId extends string>(_emptyProps: EmptyObject) => {
                 }}
               >
                 <span
-                  className={`sprite ${"texture-dalek_1" satisfies TextureTailwindClass} ${"hover:texture-animated-dalek" satisfies AnimatedTextureTailwindClass}`}
+                  class={`sprite ${"texture-dalek_1" satisfies TextureTailwindClass} ${"hover:texture-animated-dalek" satisfies AnimatedTextureTailwindClass}`}
                 />
               </Button>
               <Button
                 data-test-id="cheats-summon-monster-turtle"
-                className={cheatsButtonClasses}
+                class={cheatsButtonClasses}
                 onClick={(e) => {
                   summonItem("monster", {
                     which: "turtle",
@@ -437,12 +437,12 @@ export const Cheats = <RoomId extends string>(_emptyProps: EmptyObject) => {
                 }}
               >
                 <span
-                  className={`sprite ${"texture-turtle_towards_1" satisfies TextureTailwindClass} ${"hover:texture-animated-turtle_towards" satisfies AnimatedTextureTailwindClass}`}
+                  class={`sprite ${"texture-turtle_towards_1" satisfies TextureTailwindClass} ${"hover:texture-animated-turtle_towards" satisfies AnimatedTextureTailwindClass}`}
                 />
               </Button>
               <Button
                 data-test-id="cheats-summon-monster-skiHead"
-                className={cheatsButtonClasses}
+                class={cheatsButtonClasses}
                 onClick={(e) => {
                   summonItem("monster", {
                     which: "skiHead",
@@ -456,12 +456,12 @@ export const Cheats = <RoomId extends string>(_emptyProps: EmptyObject) => {
                 }}
               >
                 <span
-                  className={`sprite ${"texture-skiHead_greenAndPink_towards" satisfies TextureTailwindClass}`}
+                  class={`sprite ${"texture-skiHead_greenAndPink_towards" satisfies TextureTailwindClass}`}
                 />
               </Button>
               <Button
                 data-test-id="cheats-summon-monster-emperorsGuardian"
-                className={cheatsButtonClasses}
+                class={cheatsButtonClasses}
                 onClick={(e) => {
                   summonItem("monster", {
                     which: "emperorsGuardian",
@@ -472,86 +472,86 @@ export const Cheats = <RoomId extends string>(_emptyProps: EmptyObject) => {
                 }}
               >
                 <span
-                  className={`sprite ${"texture-emperorsGuardian_1" satisfies TextureTailwindClass} ${"hover:texture-animated-emperorsGuardian" satisfies AnimatedTextureTailwindClass}`}
+                  class={`sprite ${"texture-emperorsGuardian_1" satisfies TextureTailwindClass} ${"hover:texture-animated-emperorsGuardian" satisfies AnimatedTextureTailwindClass}`}
                 />
               </Button>
             </div>
-            <div className="flex flex-row items-center">
+            <div class="flex flex-row items-center">
               <Button
                 data-test-id="cheats-summon-bag"
-                className={cheatsButtonClasses}
+                class={cheatsButtonClasses}
                 onClick={(e) => {
                   summonItem("pickup", { gives: "bag" });
                   (e?.currentTarget as HTMLElement | undefined)?.blur();
                 }}
               >
                 <span
-                  className={`sprite ${"texture-bag" satisfies TextureTailwindClass}`}
+                  class={`sprite ${"texture-bag" satisfies TextureTailwindClass}`}
                 />
               </Button>
               <Button
                 data-test-id="cheats-summon-hooter"
-                className={cheatsButtonClasses}
+                class={cheatsButtonClasses}
                 onClick={(e) => {
                   summonItem("pickup", { gives: "hooter" });
                   (e?.currentTarget as HTMLElement | undefined)?.blur();
                 }}
               >
                 <span
-                  className={`sprite ${"texture-hooter" satisfies TextureTailwindClass}`}
+                  class={`sprite ${"texture-hooter" satisfies TextureTailwindClass}`}
                 />
               </Button>
               <Button
                 data-test-id="cheats-summon-doughnuts"
-                className={cheatsButtonClasses}
+                class={cheatsButtonClasses}
                 onClick={(e) => {
                   summonItem("pickup", { gives: "doughnuts" });
                   (e?.currentTarget as HTMLElement | undefined)?.blur();
                 }}
               >
                 <span
-                  className={`sprite ${"texture-doughnuts" satisfies TextureTailwindClass}`}
+                  class={`sprite ${"texture-doughnuts" satisfies TextureTailwindClass}`}
                 />
               </Button>
               <Button
                 data-test-id="cheats-summon-crown-bookworld"
-                className={cheatsButtonClasses}
+                class={cheatsButtonClasses}
                 onClick={(e) => {
                   summonItem("pickup", { gives: "crown", planet: "bookworld" });
                   (e?.currentTarget as HTMLElement | undefined)?.blur();
                 }}
               >
                 <span
-                  className={`sprite ${"texture-crown_bookworld" satisfies TextureTailwindClass}`}
+                  class={`sprite ${"texture-crown_bookworld" satisfies TextureTailwindClass}`}
                 />
               </Button>
               <Button
                 data-test-id="cheats-summon-crown-egyptus"
-                className={cheatsButtonClasses}
+                class={cheatsButtonClasses}
                 onClick={(e) => {
                   summonItem("pickup", { gives: "crown", planet: "egyptus" });
                   (e?.currentTarget as HTMLElement | undefined)?.blur();
                 }}
               >
                 <span
-                  className={`sprite ${"texture-crown_egyptus" satisfies TextureTailwindClass}`}
+                  class={`sprite ${"texture-crown_egyptus" satisfies TextureTailwindClass}`}
                 />
               </Button>
               <Button
                 data-test-id="cheats-summon-crown-safari"
-                className={cheatsButtonClasses}
+                class={cheatsButtonClasses}
                 onClick={(e) => {
                   summonItem("pickup", { gives: "crown", planet: "safari" });
                   (e?.currentTarget as HTMLElement | undefined)?.blur();
                 }}
               >
                 <span
-                  className={`sprite ${"texture-crown_safari" satisfies TextureTailwindClass}`}
+                  class={`sprite ${"texture-crown_safari" satisfies TextureTailwindClass}`}
                 />
               </Button>
               <Button
                 data-test-id="cheats-summon-crown-penitentiary"
-                className={cheatsButtonClasses}
+                class={cheatsButtonClasses}
                 onClick={(e) => {
                   summonItem("pickup", {
                     gives: "crown",
@@ -561,12 +561,12 @@ export const Cheats = <RoomId extends string>(_emptyProps: EmptyObject) => {
                 }}
               >
                 <span
-                  className={`sprite ${"texture-crown_penitentiary" satisfies TextureTailwindClass}`}
+                  class={`sprite ${"texture-crown_penitentiary" satisfies TextureTailwindClass}`}
                 />
               </Button>
               <Button
                 data-test-id="cheats-summon-crown-blacktooth"
-                className={cheatsButtonClasses}
+                class={cheatsButtonClasses}
                 onClick={(e) => {
                   summonItem("pickup", {
                     gives: "crown",
@@ -576,135 +576,135 @@ export const Cheats = <RoomId extends string>(_emptyProps: EmptyObject) => {
                 }}
               >
                 <span
-                  className={`sprite ${"texture-crown_blacktooth" satisfies TextureTailwindClass}`}
+                  class={`sprite ${"texture-crown_blacktooth" satisfies TextureTailwindClass}`}
                 />
               </Button>
             </div>
-            <div className="flex flex-row items-center">
+            <div class="flex flex-row items-center">
               <Button
                 data-test-id="cheats-summon-extra-life"
-                className={cheatsButtonClasses}
+                class={cheatsButtonClasses}
                 onClick={(e) => {
                   summonItem("pickup", { gives: "extra-life" });
                   (e?.currentTarget as HTMLElement | undefined)?.blur();
                 }}
               >
                 <span
-                  className={`sprite ${"texture-whiteRabbit_extra-life" satisfies TextureTailwindClass}`}
+                  class={`sprite ${"texture-whiteRabbit_extra-life" satisfies TextureTailwindClass}`}
                 />
                 <span
-                  className={`sprite ${"texture-hud_char_2" satisfies TextureTailwindClass} left-m2 relative`}
+                  class={`sprite ${"texture-hud_char_2" satisfies TextureTailwindClass} left-m2 relative`}
                 />
               </Button>
               <Button
                 data-test-id="cheats-summon-shield"
-                className={cheatsButtonClasses}
+                class={cheatsButtonClasses}
                 onClick={(e) => {
                   summonItem("pickup", { gives: "shield" });
                   (e?.currentTarget as HTMLElement | undefined)?.blur();
                 }}
               >
                 <span
-                  className={`sprite ${"texture-whiteRabbit_shield" satisfies TextureTailwindClass}`}
+                  class={`sprite ${"texture-whiteRabbit_shield" satisfies TextureTailwindClass}`}
                 />
                 <span
-                  className={`sprite ${"texture-hud_char_🛡" satisfies TextureTailwindClass} left-m2 relative`}
+                  class={`sprite ${"texture-hud_char_🛡" satisfies TextureTailwindClass} left-m2 relative`}
                 />
               </Button>
               <Button
                 data-test-id="cheats-summon-fast"
-                className={cheatsButtonClasses}
+                class={cheatsButtonClasses}
                 onClick={(e) => {
                   summonItem("pickup", { gives: "fast" });
                   (e?.currentTarget as HTMLElement | undefined)?.blur();
                 }}
               >
                 <span
-                  className={`sprite ${"texture-whiteRabbit_fast" satisfies TextureTailwindClass}`}
+                  class={`sprite ${"texture-whiteRabbit_fast" satisfies TextureTailwindClass}`}
                 />
                 <span
-                  className={`sprite ${"texture-hud_char_⚡" satisfies TextureTailwindClass} left-m2 relative`}
+                  class={`sprite ${"texture-hud_char_⚡" satisfies TextureTailwindClass} left-m2 relative`}
                 />
               </Button>
               <Button
                 data-test-id="cheats-summon-jumps"
-                className={cheatsButtonClasses}
+                class={cheatsButtonClasses}
                 onClick={(e) => {
                   summonItem("pickup", { gives: "jumps" });
                   (e?.currentTarget as HTMLElement | undefined)?.blur();
                 }}
               >
                 <span
-                  className={`sprite ${"texture-whiteRabbit_jumps" satisfies TextureTailwindClass}`}
+                  class={`sprite ${"texture-whiteRabbit_jumps" satisfies TextureTailwindClass}`}
                 />
                 <span
-                  className={`sprite ${"texture-hud_char_♨" satisfies TextureTailwindClass} left-m2 relative`}
+                  class={`sprite ${"texture-hud_char_♨" satisfies TextureTailwindClass} left-m2 relative`}
                 />
               </Button>
               <Button
                 data-test-id="cheats-summon-reincarnation"
-                className={cheatsButtonClasses}
+                class={cheatsButtonClasses}
                 onClick={(e) => {
                   summonItem("pickup", { gives: "reincarnation" });
                   (e?.currentTarget as HTMLElement | undefined)?.blur();
                 }}
               >
                 <span
-                  className={`sprite ${"texture-fish_1" satisfies TextureTailwindClass} ${"hover:texture-animated-fish" satisfies AnimatedTextureTailwindClass}`}
+                  class={`sprite ${"texture-fish_1" satisfies TextureTailwindClass} ${"hover:texture-animated-fish" satisfies AnimatedTextureTailwindClass}`}
                 />
               </Button>
             </div>
 
             <Heading>game speed:</Heading>
-            <div className="flex flex-row items-center">
+            <div class="flex flex-row items-center">
               <SpeedButton
                 speed={-1}
-                className="bg-midRed text-white zx:bg-zxRed toppy:bg-toppyPink2"
+                class="bg-midRed text-white zx:bg-zxRed toppy:bg-toppyPink2"
               />
               <SpeedButton
                 speed={0}
-                className="bg-midGrey text-white zx:bg-zxBlack toppy:bg-toppyGrey3"
+                class="bg-midGrey text-white zx:bg-zxBlack toppy:bg-toppyGrey3"
               />
               <SpeedButton speed={0.05} />
               <SpeedButton speed={0.2} />
               <SpeedButton speed={0.5} />
               <SpeedButton
                 speed={1}
-                className="bg-pastelBlue text-shadow zx:bg-zxCyan zx:text-zxBlack toppy:bg-toppyCool1 toppy:text-toppyGrey4"
+                class="bg-pastelBlue text-shadow zx:bg-zxCyan zx:text-zxBlack toppy:bg-toppyCool1 toppy:text-toppyGrey4"
               />
               <SpeedButton
                 speed={1.2}
-                className="bg-moss text-shadow zx:bg-zxGreen zx:text-zxBlack toppy:bg-toppyCool2 toppy:text-toppyGrey4"
+                class="bg-moss text-shadow zx:bg-zxGreen zx:text-zxBlack toppy:bg-toppyCool2 toppy:text-toppyGrey4"
               />
               <SpeedButton
                 speed={1.5}
-                className="bg-pastelBlue text-shadow zx:bg-zxCyan zx:text-zxBlack toppy:bg-toppyCool1 toppy:text-toppyGrey4"
+                class="bg-pastelBlue text-shadow zx:bg-zxCyan zx:text-zxBlack toppy:bg-toppyCool1 toppy:text-toppyGrey4"
               />
               <SpeedButton
                 speed={2}
-                className="bg-pastelBlue text-shadow zx:bg-zxCyan zx:text-zxBlack toppy:bg-toppyCool1 toppy:text-toppyGrey4"
+                class="bg-pastelBlue text-shadow zx:bg-zxCyan zx:text-zxBlack toppy:bg-toppyCool1 toppy:text-toppyGrey4"
               />
               <SpeedButton speed={5} />
               <SpeedButton speed={10} />
               <SpeedButton
                 speed={25}
-                className="bg-highlightBeige text-shadow zx:bg-zxYellow zx:text-zxBlack toppy:bg-toppyWarm3 toppy:text-toppyGrey4"
+                class="bg-highlightBeige text-shadow zx:bg-zxYellow zx:text-zxBlack toppy:bg-toppyWarm3 toppy:text-toppyGrey4"
               />
               <SpeedButton
                 speed={100}
-                className="bg-lightBeige text-shadow zx:bg-zxYellowDimmed zx:text-zxBlack toppy:bg-toppyWarm2 toppy:text-toppyGrey4"
+                class="bg-lightBeige text-shadow zx:bg-zxYellowDimmed zx:text-zxBlack toppy:bg-toppyWarm2 toppy:text-toppyGrey4"
               />
               <SpeedButton
                 speed={250}
-                className="bg-midRed text-white zx:bg-zxRed toppy:bg-toppyPink2"
+                class="bg-midRed text-white zx:bg-zxRed toppy:bg-toppyPink2"
               />
             </div>
 
             <Heading>pokes:</Heading>
-            <div className="flex flex-row items-center flex-wrap">
+            <div class="flex flex-row items-center flex-wrap">
               <Button
                 data-test-id="cheats-poke-lives-plus"
-                className="flex-grow h-3"
+                class="flex-grow h-3"
                 onClick={(e) => {
                   if (!gameApi) {
                     return;
@@ -736,7 +736,7 @@ export const Cheats = <RoomId extends string>(_emptyProps: EmptyObject) => {
               </Button>
               <Button
                 data-test-id="cheats-poke-lives-minus"
-                className="flex-grow h-3"
+                class="flex-grow h-3"
                 onClick={(e) => {
                   if (!gameApi) {
                     return;
@@ -768,10 +768,10 @@ export const Cheats = <RoomId extends string>(_emptyProps: EmptyObject) => {
               </Button>
             </div>
             <Heading>WebGL context:</Heading>
-            <div className="flex flex-row items-center flex-wrap">
+            <div class="flex flex-row items-center flex-wrap">
               <Button
                 data-test-id="cheats-lose-gl-context"
-                className="flex-grow h-3"
+                class="flex-grow h-3"
                 onClick={(e) => {
                   gameApi.loseWebGlContext();
                   (e?.currentTarget as HTMLElement | undefined)?.blur();
@@ -781,9 +781,9 @@ export const Cheats = <RoomId extends string>(_emptyProps: EmptyObject) => {
               </Button>
             </div>
             <Heading>write to console:</Heading>
-            <div className="flex flex-row items-center flex-wrap">
+            <div class="flex flex-row items-center flex-wrap">
               <Button
-                className="flex-grow h-3"
+                class="flex-grow h-3"
                 onClick={(e) => {
                   if (gameApi) {
                     console.log(gameApi.gameState);
@@ -797,7 +797,7 @@ export const Cheats = <RoomId extends string>(_emptyProps: EmptyObject) => {
                 gameState
               </Button>
               <Button
-                className="flex-grow h-3"
+                class="flex-grow h-3"
                 onClick={(e) => {
                   if (gameApi) {
                     const roomJson = selectCurrentRoomState(
@@ -814,7 +814,7 @@ export const Cheats = <RoomId extends string>(_emptyProps: EmptyObject) => {
                 Room JSON
               </Button>
               <Button
-                className="flex-grow h-3"
+                class="flex-grow h-3"
                 onClick={(e) => {
                   if (gameApi) {
                     // eslint-disable-next-line @typescript-eslint/no-explicit-any
@@ -836,7 +836,7 @@ export const Cheats = <RoomId extends string>(_emptyProps: EmptyObject) => {
                 Room state
               </Button>
               <Button
-                className="flex-grow"
+                class="flex-grow"
                 onClick={(e) => {
                   if (gameApi) {
                     const playable = selectCurrentPlayableItem(
@@ -871,10 +871,10 @@ export const Cheats = <RoomId extends string>(_emptyProps: EmptyObject) => {
                 }}
               >
                 <span
-                  className={`sprite ${spriteClassname({ character: "head", action: "idle", facingXy8: "right" })}`}
+                  class={`sprite ${spriteClassname({ character: "head", action: "idle", facingXy8: "right" })}`}
                 />
                 <span
-                  className={`sprite ${spriteClassname({ character: "heels", action: "idle", facingXy8: "right" })}`}
+                  class={`sprite ${spriteClassname({ character: "heels", action: "idle", facingXy8: "right" })}`}
                 />
               </Button>
             </div>

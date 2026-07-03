@@ -3,12 +3,16 @@ import { useEditorAppSelector } from "../../../store/store";
 import { Switch } from "../../../ui/Switch";
 import { setAutoCoalesce } from "../../slice/levelEditorSlice";
 
-export const AutoCoalesceSwitch = ({ className }: { className?: string }) => {
+export const AutoCoalesceSwitch = ({
+  class: className,
+}: {
+  class?: string;
+}) => {
   const dispatch = useAppDispatch();
 
   return (
     <Switch
-      className={className}
+      class={className}
       label="Coalesce"
       ariaLabel="Coalesce blocks"
       value={useEditorAppSelector((state) => state.levelEditor.autoCoalesce)}

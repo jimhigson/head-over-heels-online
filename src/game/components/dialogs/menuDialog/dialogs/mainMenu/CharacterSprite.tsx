@@ -39,11 +39,11 @@ const getDirectionFromMousePosition = (
 export const CharacterSprite = ({
   character,
   defaultFacing,
-  className = "",
+  class: className = "",
 }: {
   character: IndividualCharacterName;
   defaultFacing: DirectionXy8;
-  className?: string;
+  class?: string;
 }) => {
   const [facing, setFacing] = useState<DirectionXy8>(defaultFacing);
   const [isHovered, setIsHovered] = useState(false);
@@ -101,7 +101,7 @@ export const CharacterSprite = ({
   return (
     <div
       ref={spriteRef}
-      className={`relative ${className}`}
+      class={`relative ${className}`}
       onMouseEnter={handleMouseEnter}
       onMouseLeave={handleMouseLeaveSprite}
     >
@@ -109,10 +109,10 @@ export const CharacterSprite = ({
         <PlayAudio soundId={`${character}Walk`} loop volume={walkGain} />
       )}
       <span
-        className={`sprite zx:sprite-revert-to-white ${spriteClassName} relative z-topSprite`}
+        class={`sprite zx:sprite-revert-to-white ${spriteClassName} relative z-topSprite`}
       />
       <span
-        className={`sprite zx:hidden ${"texture-shadow_playable" satisfies TextureTailwindClass} sprite-shadow absolute left-0 opacity-halfBrite`}
+        class={`sprite zx:hidden ${"texture-shadow_playable" satisfies TextureTailwindClass} sprite-shadow absolute left-0 opacity-halfBrite`}
       />
     </div>
   );

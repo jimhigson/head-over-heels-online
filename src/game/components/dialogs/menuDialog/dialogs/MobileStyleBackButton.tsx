@@ -9,9 +9,9 @@ import { useMenuItem } from "./menus/useMenuItem";
  * a back button for the top-left of the screen, like in iOS
  */
 export const MobileStyleBackButton = ({
-  className,
+  class: className,
 }: {
-  className?: string;
+  class?: string;
 }) => {
   const onSelect = useDispatchActionCallback(backToParentMenu);
 
@@ -23,7 +23,7 @@ export const MobileStyleBackButton = ({
   return (
     <div
       {...menuItemProps}
-      className={twMerge(
+      class={twMerge(
         "flex flex-row gap-1 cursor-pointer " +
           (focussed ? "selectedMenuItem" : ""),
         className,
@@ -31,8 +31,8 @@ export const MobileStyleBackButton = ({
       data-to-parent-menu={true}
       ref={ref}
     >
-      <span className="text-double-height">{menuLeaderBackChar}</span>
-      <span className="text-double-height">Back</span>
+      <span class="text-double-height">{menuLeaderBackChar}</span>
+      <span class="text-double-height">Back</span>
     </div>
   );
 };

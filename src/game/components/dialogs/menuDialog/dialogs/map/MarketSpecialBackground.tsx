@@ -98,7 +98,7 @@ export const MarketSpecialBackground = ({
   return (
     <>
       <path
-        className={`${mapClasses.market.bgClassName} stroke-metallicBlueHalfbrite zx:stroke-zxCyan toppy:stroke-toppyCool1`}
+        class={`${mapClasses.market.bgClassName} stroke-metallicBlueHalfbrite zx:stroke-zxCyan toppy:stroke-toppyCool1`}
         strokeWidth={12}
         d={`
 M ${pathXy({ x: leftBound, y: xy8.y + titleHeight })}
@@ -118,7 +118,7 @@ z`}
       <MapBackgroundSection
         y={xy8.y}
         mapTitle={title}
-        className={mapClasses.market.bgClassName}
+        class={mapClasses.market.bgClassName}
         textOnly
       />
     </>

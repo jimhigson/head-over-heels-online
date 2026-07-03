@@ -5,7 +5,7 @@ import { backToParentMenu } from "../../../../../../store/slices/gameMenus/gameM
 import { useDispatchActionCallback } from "../../../../../../store/useDispatchActionCallback";
 import { Dialog } from "../../../../../../ui/Dialog";
 import { DialogPortal } from "../../../../../../ui/DialogPortal";
-import { useElementSize } from "../../../../../../utils/react/useElementSize";
+import { useElementSize } from "../../../../../../utils/preact/useElementSize";
 import { swopPlayables } from "../../../../../gameState/mutators/swopPlayables";
 import { useGameApi } from "../../../../GameApiContext";
 import { useScrollingFromInput } from "../useScrollingFromInput";
@@ -64,12 +64,12 @@ const MapDialog = <RoomId extends string>() => {
       <Dialog
         ref={mapContainerRef}
         fullScreen
-        className={`bg-white zx:bg-zxBlack toppy:bg-toppyBlack pr-0 p-0 mobile:pl-0 justify-center ${mapColourClasses.containerClassName}`}
+        class={`bg-white zx:bg-zxBlack toppy:bg-toppyBlack pr-0 p-0 mobile:pl-0 justify-center ${mapColourClasses.containerClassName}`}
         onClick={useDispatchActionCallback(backToParentMenu)}
         dialogId="map"
       >
         <div
-          className="overflow-y-scroll scrollbar scrollbar-w-1 h-min"
+          class="overflow-y-scroll scrollbar scrollbar-w-1 h-min"
           ref={scrollingContentRef}
         >
           {mapSvg}
@@ -79,5 +79,5 @@ const MapDialog = <RoomId extends string>() => {
   );
 };
 
-/** default export for React.lazy */
+/** default export for preact/compat lazy() */
 export default MapDialog;

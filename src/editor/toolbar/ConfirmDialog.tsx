@@ -1,4 +1,5 @@
-import { type ReactNode, useCallback, useState } from "react";
+import { type ComponentChildren } from "preact";
+import { useCallback, useState } from "preact/hooks";
 
 import { Border } from "../../ui/Border";
 import { Button } from "../../ui/Button";
@@ -8,7 +9,7 @@ import { useKeyboardShortcut } from "../../ui/useKeyboardShortcut";
 
 export type ConfirmDialogProps = {
   heading: string;
-  body: ReactNode | string;
+  body: ComponentChildren | string;
   cancelText: string;
   onCancel: () => void;
   okText: string;
@@ -34,32 +35,32 @@ export const ConfirmDialog = ({
 
   return (
     <DialogPortal>
-      <Border className="scale-editor bg-checkerboard-stifled-alphas" />
-      <div className="contents no-keyboard-shortcuts">
-        <Dialog ref={dialogRef} wide className="scale-editor p-1 !h-min">
-          <div className="text-white bg-midRed text-center py-half">
-            <span className="text-double-height">{heading}</span>
+      <Border class="scale-editor bg-checkerboard-stifled-alphas" />
+      <div class="contents no-keyboard-shortcuts">
+        <Dialog ref={dialogRef} wide class="scale-editor p-1 !h-min">
+          <div class="text-white bg-midRed text-center py-half">
+            <span class="text-double-height">{heading}</span>
           </div>
-          <div className="text-lightGrey pt-1">
+          <div class="text-lightGrey pt-1">
             {typeof body === "string" ?
-              <span className="text-multi-line">{body}</span>
+              <span class="text-multi-line">{body}</span>
             : body}
           </div>
-          <div className="flex gap-1 justify-end text-white items-center mt-1">
+          <div class="flex gap-1 justify-end text-white items-center mt-1">
             <Button
               aria-label={cancelText}
               onClick={onCancel}
-              className="px-1 py-half self-stretch"
+              class="px-1 py-half self-stretch"
               autoFocus
             >
-              <span className="text-single-line">{cancelText}</span>
+              <span class="text-single-line">{cancelText}</span>
             </Button>
             <Button
               aria-label={okText}
               onClick={onOk}
-              className="bg-midRed px-1 py-half"
+              class="bg-midRed px-1 py-half"
             >
-              <span className="text-single-line">{okText}</span>
+              <span class="text-single-line">{okText}</span>
             </Button>
           </div>
         </Dialog>

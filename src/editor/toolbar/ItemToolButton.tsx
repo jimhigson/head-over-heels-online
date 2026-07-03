@@ -1,4 +1,5 @@
-import { type PropsWithChildren, type ReactNode } from "react";
+import { type ComponentChildren } from "preact";
+import { type PropsWithChildren } from "preact/compat";
 
 import { type JsonItemType } from "../../model/json/JsonItem";
 import { store } from "../../store/store";
@@ -10,9 +11,9 @@ import { useIsCurrentItemTool } from "./useIsCurrentItemTool";
 
 export type ItemToolButtonProps<T extends JsonItemType> = PropsWithChildren<{
   itemTool: ItemTool<T>;
-  className?: string;
+  class?: string;
   shortcutKeys?: ShortcutKeys;
-  tooltipContent?: ReactNode;
+  tooltipContent?: ComponentChildren;
   /** accessible name for the icon-only button */
   ariaLabel: string;
 }>;
@@ -20,7 +21,7 @@ export type ItemToolButtonProps<T extends JsonItemType> = PropsWithChildren<{
 export const ItemToolButton = <T extends JsonItemType>({
   itemTool,
   children,
-  className,
+  class: className,
   shortcutKeys,
   tooltipContent,
   ariaLabel,
@@ -30,7 +31,7 @@ export const ItemToolButton = <T extends JsonItemType>({
   return (
     <ToolbarButton
       isCurrentTool={isCurrentTool}
-      className={className}
+      class={className}
       ariaLabel={ariaLabel}
       onClick={() => store.dispatch(setTool({ type: "item", item: itemTool }))}
       shortcutKeys={shortcutKeys}

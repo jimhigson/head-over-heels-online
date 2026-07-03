@@ -26,9 +26,9 @@ export const ResolutionControls = ({
   const { justDone, doneNow } = useShortTimeDisplay();
 
   return (
-    <div className="absolute scale-editor top-0 right-1 z-slightlyAbove flex gap-0 leading-none text-white">
+    <div class="absolute scale-editor top-0 right-1 z-slightlyAbove flex gap-0 leading-none text-white">
       {justDone > 0 && (
-        <span className="px-1 bg-moss items-center flex text-single-line">
+        <span class="px-1 bg-moss items-center flex text-single-line">
           {resolutionDisplayNames[selectedResolution]}
         </span>
       )}
@@ -45,7 +45,7 @@ export const ResolutionControls = ({
         }}
         shortcutKeys={["-"]}
       >
-        <span className="text-single-line">-</span>
+        <span class="text-single-line">-</span>
       </ToolbarButton>
       <ToolbarButton
         small
@@ -60,7 +60,7 @@ export const ResolutionControls = ({
         }}
         shortcutKeys={["⇧+", "="]}
       >
-        <span className="text-single-line">+</span>
+        <span class="text-single-line">+</span>
       </ToolbarButton>
     </div>
   );

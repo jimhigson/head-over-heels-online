@@ -60,45 +60,45 @@ export const SaveAsDialog = ({
 
   return (
     <DialogPortal>
-      <Border className="scale-editor bg-checkerboard-stifled-alphas" />
+      <Border class="scale-editor bg-checkerboard-stifled-alphas" />
       {/* stop window-level shortcuts catching our keypresses that match their shortcuts */}
-      <div className="contents no-keyboard-shortcuts">
+      <div class="contents no-keyboard-shortcuts">
         <Dialog
           ref={dialogRef}
           wide
           ariaLabel="Save campaign as"
-          className="scale-editor p-1 !h-min"
+          class="scale-editor p-1 !h-min"
         >
           <DialogHeader>Save as...</DialogHeader>
           {isSomeoneElses && (
-            <span className="text-multi-line text-midRed ">
+            <span class="text-multi-line text-midRed ">
               You are saving a fork of another user's campaign under your own
               account
             </span>
           )}
-          <span className="text-multi-line text-lightGrey pt-1">
+          <span class="text-multi-line text-lightGrey pt-1">
             The community will see your campaign listed under this name
           </span>
           <input
             ref={inputRef}
             type="text"
             value={campaignName}
-            onChange={(e) => setCampaignName(e.target.value)}
+            onChange={(e) => setCampaignName(e.currentTarget.value)}
             aria-label="Campaign name"
-            className="bg-metallicBlueHalfbrite text-white placeholder-lightGrey border border-white px-1 py-1 caret-midRed caretsh"
+            class="bg-metallicBlueHalfbrite text-white placeholder-lightGrey border border-white px-1 py-1 caret-midRed caretsh"
             placeholder="Enter a Campaign name"
           />
-          <div className="pt-1">
+          <div class="pt-1">
             <BlockyMarkdown
-              className="text-lightGrey"
+              class="text-lightGrey"
               markdown={`If you *publish*, your campaign will be listed under ‘community contributed’ on blockstack.ing              
 **Unlisted** campaigns can still be shared privately using the share button`}
             ></BlockyMarkdown>
           </div>
 
-          <div className="flex gap-1 justify-end text-white items-center mt-1">
+          <div class="flex gap-1 justify-end text-white items-center mt-1">
             <Switch
-              className="w-min"
+              class="w-min"
               label="Publish"
               ariaLabel="Publish campaign"
               ariaDescription="Published campaigns are playable by anybody via the game's menus; non-published campaigns can be loaded into the editor by anybody but are not directly playable"
@@ -107,19 +107,19 @@ export const SaveAsDialog = ({
               value={publish}
               onChange={setPublish}
             />
-            <div className="flex-grow" />
-            <Button onClick={onClose} className="px-1 py-half self-stretch">
-              <span className="text-single-line">Cancel</span>
+            <div class="flex-grow" />
+            <Button onClick={onClose} class="px-1 py-half self-stretch">
+              <span class="text-single-line">Cancel</span>
             </Button>
             <Button
               disabled={disabled}
               onClick={() => onDone({ campaignName, publish })}
               aria-label="Save campaign"
-              className="bg-midRed px-1 py-half gap-1"
+              class="bg-midRed px-1 py-half gap-1"
             >
-              <span className="text-single-line">Save</span>
+              <span class="text-single-line">Save</span>
               <span
-                className={cn(
+                class={cn(
                   `sprite ${"texture-editor_tool_save" satisfies TextureTailwindClass} relative`,
                   {
                     "sprite-revert-to-two-tone-dim": disabled,

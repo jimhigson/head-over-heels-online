@@ -81,7 +81,7 @@ const SingleLutDisplay = ({ texture }: SingleLutDisplayProps) => {
 export const LutPage = () => {
   return (
     <>
-      <div className="e2e-snapshot-target">
+      <div class="e2e-snapshot-target">
         {luts.map((texture, index) => (
           <SingleLutDisplay key={index} texture={texture} />
         ))}

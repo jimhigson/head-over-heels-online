@@ -48,13 +48,13 @@ const MarkdownDialog = (
       {isTopLevelMenu || (
         // if a top level menu, let the game show through under:
         <Border
-          className="bg-midGrey zx:bg-zxWhiteDimmed toppy:bg-toppyGrey2"
+          class="bg-midGrey zx:bg-zxWhiteDimmed toppy:bg-toppyGrey2"
           onClick={goBackCallback}
         />
       )}
       <Dialog
         tall={!isTopLevelMenu}
-        className={
+        class={
           "bg-highlightBeige zx:bg-zxCyanDimmed toppy:bg-toppyCool1 " +
           `text-shadow zx:text-zxWhite toppy:text-toppyCool4 !gap-y-0 py-0 ` +
           "selectedMenuItem:text-shadow zx:selectedMenuItem:text-zxBlack toppy:selectedMenuItem:text-toppyBlack"
@@ -62,11 +62,11 @@ const MarkdownDialog = (
         dialogId={props.dialogId}
       >
         <DialogTitleBar
-          className={`pl-1 mobile:px-3 ${isTopLevelMenu ? "hidden" : "pt-1"}`}
+          class={`pl-1 mobile:px-3 ${isTopLevelMenu ? "hidden" : "pt-1"}`}
           path={isSubmenuFromManual ? ["Manual"] : []}
         />
         <div
-          className={twMerge(
+          class={twMerge(
             "overflow-y-scroll h-full " +
               "scrollbar scrollbar-w-1 pl-1 pt-1 " +
               "scrollbar-thumb-midRed scrollbar-track-highlightBeige " +
@@ -85,5 +85,5 @@ const MarkdownDialog = (
   );
 };
 
-/** default export for React.lazy */
+/** default export for preact/compat lazy() */
 export default MarkdownDialog;

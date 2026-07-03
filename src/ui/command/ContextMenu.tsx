@@ -7,8 +7,8 @@ import {
   useFloating,
   useInteractions,
 } from "@floating-ui/react";
+import { type ComponentChildren } from "preact";
 import { useLayoutEffect } from "preact/hooks";
-import { type ReactNode } from "react";
 
 import { CssVariables } from "../../game/components/CssVariables";
 import { type Xy } from "../../utils/vectors/vectors";
@@ -21,8 +21,8 @@ export type ContextMenuProps = {
   /** returns the point to anchor the menu to, in viewport (client) pixels */
   anchor: () => Xy;
   /** optional content shown above the items, separated by a divider */
-  header?: ReactNode;
-  children?: ReactNode;
+  header?: ComponentChildren;
+  children?: ComponentChildren;
 };
 
 /**
@@ -85,12 +85,12 @@ export const ContextMenu = ({
         <div
           ref={refs.setFloating}
           style={floatingStyles}
-          className="z-popups drop-shadow-oneBlock p-0 border-shadow outline-none"
+          class="z-popups drop-shadow-oneBlock p-0 border-shadow outline-none"
           {...getFloatingProps()}
         >
           <Command onClose={onClose}>
             {header !== undefined && (
-              <div className="border-b px-1 pb-1">{header}</div>
+              <div class="border-b px-1 pb-1">{header}</div>
             )}
             <CommandList>{children}</CommandList>
           </Command>

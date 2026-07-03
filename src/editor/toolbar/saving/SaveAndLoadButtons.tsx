@@ -72,9 +72,9 @@ export const SaveAndLoadButtons = () => {
         <ToolbarButton
           ariaLabel={`Saved as version ${savedVersion}`}
           disabled
-          className="!bg-moss !text-white"
+          class="!bg-moss !text-white"
         >
-          <span className="relative leading-none text-single-line">
+          <span class="relative leading-none text-single-line">
             {`v${savedVersion}`}
           </span>
         </ToolbarButton>
@@ -96,15 +96,15 @@ export const SaveAndLoadButtons = () => {
               shortcutKeys={["^S", "⌘S"]}
               tooltipContent={saveTooltipMarkdown}
             >
-              <div className="flex flex-row items-center">
+              <div class="flex flex-row items-center">
                 <span
-                  className={cn(
+                  class={cn(
                     `sprite sprite-tinted text-highlightBeige ${"texture-hud_char_➡" satisfies TextureTailwindClass} relative`,
                     { "text-lightGrey": user === null },
                   )}
                 />
                 <span
-                  className={cn(
+                  class={cn(
                     `sprite ${"texture-editor_tool_save" satisfies TextureTailwindClass} relative`,
                     {
                       "sprite-revert-to-two-tone-dim": user === null,
@@ -136,14 +136,14 @@ export const SaveAndLoadButtons = () => {
             tooltipContent={loadTooltipMarkdown}
             shortcutKeys={["^O", "⌘O"]}
           >
-            <div className="flex flex-row items-center">
+            <div class="flex flex-row items-center">
               <span
-                className={cn(
+                class={cn(
                   `sprite ${"texture-editor_tool_open" satisfies TextureTailwindClass} relative`,
                 )}
               />
               <span
-                className={cn(
+                class={cn(
                   `sprite sprite-tinted text-highlightBeige ${"texture-hud_char_➡" satisfies TextureTailwindClass} relative`,
                 )}
               />

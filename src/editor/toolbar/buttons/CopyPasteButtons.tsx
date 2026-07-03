@@ -17,7 +17,7 @@ export const CopyPasteButtons = () => {
   );
 
   return (
-    <div className="flex flex-row gap-oneScaledPix bg-metallicBlue">
+    <div class="flex flex-row gap-oneScaledPix bg-metallicBlue">
       <ToolbarButton
         ariaLabel="Copy"
         disabled={!somethingSelected}
@@ -43,7 +43,7 @@ export const CopyPasteButtons = () => {
         tooltipContent={`##Copy\n\nCopy the selected item(s) to the clipboard to paste into another room`}
       >
         <IconWithTwoLineHoverText
-          icon={<span className="text-single-line">C</span>}
+          icon={<span class="text-single-line">C</span>}
           topText="co"
           bottomText="py"
         />
@@ -80,7 +80,7 @@ export const CopyPasteButtons = () => {
         tooltipContent={`##Paste\n\nPaste an item into this room copied from another room`}
       >
         <IconWithTwoLineHoverText
-          icon={<span className="text-single-line">P</span>}
+          icon={<span class="text-single-line">P</span>}
           topText="ps"
           bottomText="te"
         />

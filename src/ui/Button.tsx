@@ -1,10 +1,8 @@
+import { type ComponentChildren, type Ref } from "preact";
 import {
   type ButtonHTMLAttributes,
-  type MouseEvent,
   type PropsWithChildren,
-  type ReactNode,
-  type Ref,
-} from "react";
+} from "preact/compat";
 import { type Simplify } from "type-fest";
 
 import { BlockyMarkdown } from "../game/components/BlockyMarkdown";
@@ -22,16 +20,16 @@ export type ButtonProps = Simplify<
     ButtonHTMLAttributes<HTMLButtonElement>,
     | "aria-label"
     | "autoFocus"
-    | "className"
-    | "disabled"
+    | "class"
     | "onMouseEnter"
     | "onMouseLeave"
     | "role"
     | "style"
   > &
     PropsWithChildren<{
+      disabled?: boolean;
       selected?: boolean;
-      tooltipContent?: ReactNode;
+      tooltipContent?: ComponentChildren;
       shortcutKeys?: ShortcutKeys;
       ref?: Ref<HTMLButtonElement>;
       /** make the event optional, in case the button wasn't triggered by clicking */
@@ -40,7 +38,7 @@ export type ButtonProps = Simplify<
 >;
 
 export const Button = ({
-  className,
+  class: className,
   selected,
   disabled = false,
   onClick,
@@ -56,7 +54,7 @@ export const Button = ({
       disabled={disabled}
       onClick={onClick}
       data-selected={selected}
-      className={cn(
+      class={cn(
         `inline-flex items-center justify-center whitespace-nowrap 
           bg-metallicBlue zx:bg-zxBlue toppy:bg-toppyCool3 border-none border-shadow
           gap-2

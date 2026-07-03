@@ -6,7 +6,7 @@ import { useCommandContext } from "./useCommandContext";
 export type CommandMatchProps = {
   /** the text to render, with the part matching the current search highlighted */
   text: string;
-  className?: string;
+  class?: string;
 };
 
 /**
@@ -18,14 +18,14 @@ export type CommandMatchProps = {
  * characters to highlight here and whether the item is visible at all (in
  * `CommandItem`), so the two always agree.
  */
-export const CommandMatch = ({ text, className }: CommandMatchProps) => {
+export const CommandMatch = ({ text, class: className }: CommandMatchProps) => {
   const { search } = useCommandContext();
   const runs = runsOf(text, new Set(fuzzyMatch(text, search) ?? []));
   return (
-    <span className={cn("text-single-line text-nowrap", className)}>
+    <span class={cn("text-single-line text-nowrap", className)}>
       {runs.map((run, i) =>
         run.matched ?
-          <span key={i} className="matched-text inline-block">
+          <span key={i} class="matched-text inline-block">
             {run.text}
           </span>
         : run.text,

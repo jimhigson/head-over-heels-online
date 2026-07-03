@@ -27,18 +27,18 @@ const colourClasses = [
 
 export const FontSpecimen = () => (
   <div
-    className="bg-pureBlack text-white p-1 w-full overflow-x-clip"
+    class="bg-pureBlack text-white p-1 w-full overflow-x-clip"
     data-font-specimen
   >
     {scaleFactors.map((scaleFactor, scaleIndex) => (
       <CssVariables scaleFactor={scaleFactor} key={scaleFactor}>
         <div
-          className={`text-multi-line whitespace-pre ${colourClasses[scaleIndex % colourClasses.length]}`}
+          class={`text-multi-line whitespace-pre ${colourClasses[scaleIndex % colourClasses.length]}`}
         >
           {specimenText}
         </div>
         <div
-          className={`text-double-height whitespace-pre ${colourClasses[(scaleIndex + 2) % colourClasses.length]}`}
+          class={`text-double-height whitespace-pre ${colourClasses[(scaleIndex + 2) % colourClasses.length]}`}
         >
           {specimenText}
         </div>
@@ -47,7 +47,7 @@ export const FontSpecimen = () => (
             spritesTailwindPlugin.ts) - check this sits sharp and pixel-aligned,
             a 1px gap below the baseline, at every scale */}
         <div
-          className={`text-multi-line whitespace-pre text-underline ${colourClasses[scaleIndex % colourClasses.length]}`}
+          class={`text-multi-line whitespace-pre text-underline ${colourClasses[scaleIndex % colourClasses.length]}`}
         >
           The Quick Brown Fox Jumps Over The Lazy Dog
         </div>

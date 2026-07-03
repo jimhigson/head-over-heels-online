@@ -23,7 +23,7 @@ export const RoomPreview = ({ roomId }: RoomPreviewProps) => {
         alt={`preview of room ${roomId}`}
         width={previewWidthPx}
         height={previewHeightPx}
-        className="[image-rendering:pixelated]"
+        class="[image-rendering:pixelated]"
         style={previewBoxStyle}
       />
     );
@@ -33,14 +33,14 @@ export const RoomPreview = ({ roomId }: RoomPreviewProps) => {
     return (
       <NonIdealState
         text="Preview failed to load"
-        className="bg-midRed text-white"
+        class="bg-midRed text-white"
         style={previewBoxStyle}
       />
     );
   }
 
   return (
-    <div style={previewBoxStyle} className="bg-pureBlack">
+    <div style={previewBoxStyle} class="bg-pureBlack">
       <SpinnerHead />
     </div>
   );

@@ -1,4 +1,4 @@
-import { type ReactNode } from "react";
+import { type ComponentChildren } from "preact";
 
 import { roomGridSizeXY } from "../../game/components/dialogs/menuDialog/dialogs/map/mapConstants";
 import { type RoomDecoratorProps } from "../../game/components/dialogs/menuDialog/dialogs/map/RoomDecoratorProps";
@@ -190,7 +190,7 @@ type InsertButtonProps = {
   x: number;
   y: number;
   label: string;
-  tooltipContent: ReactNode;
+  tooltipContent: ComponentChildren;
   onClick: () => void;
 };
 
@@ -204,13 +204,13 @@ const InsertButton = ({
   <Tooltip
     tooltipContent={tooltipContent}
     triggerContent={
-      <g className="group cursor-pointer" onClick={onClick}>
+      <g class="group cursor-pointer" onClick={onClick}>
         <rect
           x={x - buttonSize / 2}
           y={y - buttonSize / 2}
           width={buttonSize}
           height={buttonSize}
-          className="
+          class="
             fill-metallicBlue zx:fill-zxBlue toppy:fill-toppyCool3
             group-hover:fill-pastelBlue
             zx:group-hover:fill-zxYellow
@@ -224,7 +224,7 @@ const InsertButton = ({
           fontSize={buttonFontSize}
           textAnchor="middle"
           dominantBaseline="central"
-          className="zx:group-hover:fill-zxBlack toppy:group-hover:fill-toppyBlack translate-x-oneScaledPix group-active:translate-y-oneScaledPix"
+          class="zx:group-hover:fill-zxBlack toppy:group-hover:fill-toppyBlack translate-x-oneScaledPix group-active:translate-y-oneScaledPix"
         >
           {label}
         </text>

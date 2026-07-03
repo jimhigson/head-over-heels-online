@@ -30,7 +30,7 @@ const ScreenRelativeControlValue = () => {
 
   return (
     <SwitchN
-      className="ml-auto"
+      class="ml-auto"
       values={directionsRelativeToModes}
       value={isScreenRelativeControl}
     />
@@ -57,7 +57,7 @@ export const ScreenRelativeControlMenuItem = () => {
       label="Input axes"
       leader={
         <span
-          className={`${spriteLeaderClasses} ${leaderClass[directionsRelativeTo]}`}
+          class={`${spriteLeaderClasses} ${leaderClass[directionsRelativeTo]}`}
         />
       }
       valueElement={<ScreenRelativeControlValue />}
@@ -66,7 +66,7 @@ export const ScreenRelativeControlMenuItem = () => {
       doubleHeight
       hint={
         <BlockyMarkdown
-          className={optionsHintMarkdownClassname}
+          class={optionsHintMarkdownClassname}
           markdown={markdown[directionsRelativeTo]}
         />
       }

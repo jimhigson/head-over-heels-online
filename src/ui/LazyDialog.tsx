@@ -1,4 +1,5 @@
-import { type FC, type ReactNode, Suspense } from "react";
+import { type ComponentChildren } from "preact";
+import { type FC, Suspense } from "preact/compat";
 
 import { AssetLoading } from "../store/slices/assetsLoading/AssetLoading";
 import { backToParentMenu } from "../store/slices/gameMenus/gameMenusSlice";
@@ -8,13 +9,13 @@ import { Dialog } from "./Dialog";
 import { DialogPortal } from "./DialogPortal";
 import { SpinnerHead } from "./Spinner";
 
-const LazyDialog = ({ children }: { children: ReactNode }) => (
+const LazyDialog = ({ children }: { children: ComponentChildren }) => (
   <Suspense
     fallback={
       <DialogPortal>
         <AssetLoading />
         <Border onClick={useDispatchActionCallback(backToParentMenu)} />
-        <Dialog className="bg-highlightBeige zx:bg-zxWhite toppy:bg-toppyCool1">
+        <Dialog class="bg-highlightBeige zx:bg-zxWhite toppy:bg-toppyCool1">
           <SpinnerHead />
         </Dialog>
       </DialogPortal>

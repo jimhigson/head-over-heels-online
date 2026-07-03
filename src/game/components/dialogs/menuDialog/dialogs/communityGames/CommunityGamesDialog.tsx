@@ -22,12 +22,12 @@ export const CommunityGamesDialog = (_emptyProps: EmptyObject) => {
     <DialogPortal>
       <Dialog
         fullScreen
-        className="bg-metallicBlueHalfbrite text-highlightBeige zx:text-zxCyan toppy:text-toppyWarm3 selectedMenuItem:text-white toppy:selectedMenuItem:text-toppyWarm1 zx:bg-zxRed toppy:bg-toppyCool4 gap-y-2 resHandheld:gap-y-1"
+        class="bg-metallicBlueHalfbrite text-highlightBeige zx:text-zxCyan toppy:text-toppyWarm3 selectedMenuItem:text-white toppy:selectedMenuItem:text-toppyWarm1 zx:bg-zxRed toppy:bg-toppyCool4 gap-y-2 resHandheld:gap-y-1"
         dialogId="communityGames"
       >
-        <DialogTitleBar path={["Play", "Community"]} className="mobile:px-4" />
+        <DialogTitleBar path={["Play", "Community"]} class="mobile:px-4" />
         <div
-          className={
+          class={
             "flex flex-col gap-1 p-1 " +
             //"min-h-full " +
             "overflow-y-scroll scrollbar scrollbar-w-1 " +

@@ -44,7 +44,7 @@ const MapRoomTooltipBehaviour = ({
       floatingStyles={floatingStyles}
       refs={refs}
       getFloatingProps={getFloatingProps}
-      tooltipContent={<span className="text-single-line">{roomId}</span>}
+      tooltipContent={<span class="text-single-line">{roomId}</span>}
     />
   );
 };

@@ -1,18 +1,18 @@
-import { type ComponentProps } from "react";
+import { type ComponentProps } from "preact";
 
 import { cn } from "../cn";
 import { useCommandContext } from "./useCommandContext";
 
-export const CommandList = ({ className, ...props }: ComponentProps<"div">) => {
+export const CommandList = ({
+  class: className,
+  ...props
+}: Omit<ComponentProps<"div">, "className">) => {
   const { listRef } = useCommandContext();
   return (
     <div
       ref={listRef}
       role="listbox"
-      className={cn(
-        "max-h-[300px] overflow-y-auto overflow-x-hidden",
-        className,
-      )}
+      class={cn("max-h-[300px] overflow-y-auto overflow-x-hidden", className)}
       {...props}
     />
   );

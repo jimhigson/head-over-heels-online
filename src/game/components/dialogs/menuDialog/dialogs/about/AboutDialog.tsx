@@ -18,13 +18,13 @@ import { DialogTitleBar } from "../DialogTitleBar";
 export const AboutDialog = (_emptyProps: EmptyObject) => {
   return (
     <DialogPortal>
-      <Border className="bg-metallicBlue zx:bg-zxRed toppy:bg-toppyCool3" />
+      <Border class="bg-metallicBlue zx:bg-zxRed toppy:bg-toppyCool3" />
       <Dialog
-        className="bg-metallicBlueHalfbrite zx:bg-zxRed toppy:bg-toppyCool4 text-highlightBeige zx:text-zxCyan toppy:text-toppyWarm3 selectedMenuItem:text-white toppy:selectedMenuItem:text-toppyWarm1 gap-y-0 justify-center"
+        class="bg-metallicBlueHalfbrite zx:bg-zxRed toppy:bg-toppyCool4 text-highlightBeige zx:text-zxCyan toppy:text-toppyWarm3 selectedMenuItem:text-white toppy:selectedMenuItem:text-toppyWarm1 gap-y-0 justify-center"
         dialogId="about"
       >
-        <DialogTitleBar className="pl-1" />
-        <div className={mainMenuScrollClasses}>
+        <DialogTitleBar class="pl-1" />
+        <div class={mainMenuScrollClasses}>
           <MenuItems>
             <MenuItem
               doubleHeight
@@ -32,7 +32,7 @@ export const AboutDialog = (_emptyProps: EmptyObject) => {
               label="Read the manual"
               subMenuId="readTheManual"
               hint={
-                <span className="text-lightBeige zx:text-zxYellow toppy:text-toppyCool1 text-multi-line">
+                <span class="text-lightBeige zx:text-zxYellow toppy:text-toppyCool1 text-multi-line">
                   The original game manual, readable online
                 </span>
               }
@@ -44,7 +44,7 @@ export const AboutDialog = (_emptyProps: EmptyObject) => {
               label="Discord"
               href={discordInviteUrl}
               hint={
-                <span className="text-lightBeige zx:text-zxYellow toppy:text-toppyCool1 text-multi-line">
+                <span class="text-lightBeige zx:text-zxYellow toppy:text-toppyCool1 text-multi-line">
                   Join the community - the game’s Discord server
                 </span>
               }
@@ -56,7 +56,7 @@ export const AboutDialog = (_emptyProps: EmptyObject) => {
               label="Github"
               href={repository.url}
               hint={
-                <span className="text-lightBeige zx:text-zxYellow toppy:text-toppyCool1 text-multi-line">
+                <span class="text-lightBeige zx:text-zxYellow toppy:text-toppyCool1 text-multi-line">
                   View the source code on GitHub
                 </span>
               }
@@ -68,7 +68,7 @@ export const AboutDialog = (_emptyProps: EmptyObject) => {
               label="Changelog"
               href={`${repository.url}/releases`}
               hint={
-                <span className="text-lightBeige zx:text-zxYellow toppy:text-toppyCool1 text-multi-line">
+                <span class="text-lightBeige zx:text-zxYellow toppy:text-toppyCool1 text-multi-line">
                   What's new?
                 </span>
               }

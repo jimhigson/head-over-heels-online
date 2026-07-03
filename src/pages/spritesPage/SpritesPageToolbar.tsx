@@ -24,10 +24,10 @@ export const SpritesPageToolbar = ({
   const spriteOption = useSpritesOption();
 
   return (
-    <div className="sticky top-0 bg-metallicBlueHalfbrite zx:bg-zxWhiteDimmed toppy:bg-toppyCool4 z-dialog w-max gap-y-oneScaledPix flex flex-col">
+    <div class="sticky top-0 bg-metallicBlueHalfbrite zx:bg-zxWhiteDimmed toppy:bg-toppyCool4 z-dialog w-max gap-y-oneScaledPix flex flex-col">
       <SpriteOptionSelect />
       <ScaleSelect scale={scale} onScaleChange={onScaleChange} />
-      <div className="flex flex-row gap-x-2">
+      <div class="flex flex-row gap-x-2">
         <div>
           <SpritesheetStats />
         </div>
@@ -36,14 +36,14 @@ export const SpritesPageToolbar = ({
           onSpriteFilterChange={onSpriteFilterChange}
         />
       </div>
-      <div className="flex flex-row gap-x-1">
+      <div class="flex flex-row gap-x-1">
         <SpritesheetUrlDisplay />
         <DownloadSpritesheetButton />
         {spriteOption.name === "Toppy" && <SpritesheetOverrideButtons />}
       </div>
 
-      <Button className="px-1" onClick={() => window.scrollTo({ top: 0 })}>
-        <span className="text-single-line">⬆ Top</span>
+      <Button class="px-1" onClick={() => window.scrollTo({ top: 0 })}>
+        <span class="text-single-line">⬆ Top</span>
       </Button>
     </div>
   );

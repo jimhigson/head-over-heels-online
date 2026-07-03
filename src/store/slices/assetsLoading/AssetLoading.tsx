@@ -1,6 +1,6 @@
 import { useEffect } from "preact/hooks";
 
-import { HookComponent } from "../../../utils/react/HookComponent";
+import { HookComponent } from "../../../utils/preact/HookComponent";
 import { useAppDispatch } from "../../hooks";
 import {
   assetsLoadingFinished,

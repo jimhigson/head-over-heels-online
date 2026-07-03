@@ -37,7 +37,7 @@ export const ErrorCaughtDialog = ({
       intro={<BlockyMarkdown markdown={markdownIntro} />}
     >
       {(errorsReportText) => (
-        <MenuItems className="text-lightGrey zx:text-zxWhite toppy:text-toppyGrey1 mt-1 resHandheld:mt-0 selectedMenuItem:text-midRed zx:selectedMenuItem:text-zxYellow toppy:selectedMenuItem:text-toppyPink2 resHandheld:!gap-y-1">
+        <MenuItems class="text-lightGrey zx:text-zxWhite toppy:text-toppyGrey1 mt-1 resHandheld:mt-0 selectedMenuItem:text-midRed zx:selectedMenuItem:text-zxYellow toppy:selectedMenuItem:text-toppyPink2 resHandheld:!gap-y-1">
           <MenuItem
             doubleHeightWhenFocussed
             id="tryContinue"
@@ -59,7 +59,7 @@ export const ErrorCaughtDialog = ({
             onSelect={() => dispatch(clearAllData())}
           />
           {showCopied ?
-            <span className="text-metallicBlue col-span-2 text-double-height ml-3">
+            <span class="text-metallicBlue col-span-2 text-double-height ml-3">
               Error report copied
             </span>
           : <MenuItem

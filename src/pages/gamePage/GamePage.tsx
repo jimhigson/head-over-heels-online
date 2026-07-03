@@ -1,5 +1,5 @@
+import { lazy, Suspense } from "preact/compat";
 import { useEffect, useState } from "preact/hooks";
-import { lazy, Suspense } from "react";
 import { shallowEqual } from "react-redux";
 
 import type Cheats from "../../game/components/cheats/Cheats.tsx";
@@ -27,7 +27,7 @@ import { useUpdateUpscaleOnDisplaySettingsChange } from "../../store/slices/upsc
 import { useUpdateUpscaleWhenElementResizes } from "../../store/slices/upscale/useUpdateUpscaleWhenElementResizes.ts";
 import { store } from "../../store/store.ts";
 import { ConnectInputToStore } from "../../store/storeFlow/ConnectInputToStore.tsx";
-import { DispatchingErrorBoundary } from "../../utils/react/DispatchingErrorBoundary.tsx";
+import { DispatchingErrorBoundary } from "../../utils/preact/DispatchingErrorBoundary.tsx";
 import { createSerialisableErrors } from "../../utils/redux/createSerialisableErrors.ts";
 import {
   useCanvasInlineStyle,
@@ -165,14 +165,14 @@ export const GamePage = () => {
       {/* the sizing area fills the real screen via css; its measured size drives
           the upscale, so the backdrop covers the whole screen even if the
           upscale is briefly computed from a wrong viewport */}
-      <div ref={setRenderSizingArea} className="fixed inset-0">
+      <div ref={setRenderSizingArea} class="fixed inset-0">
         <div
           // without tabIndex here, Chrome doesn't allow tab key to be used to open the map
           // (or anything else) because it moves focus to the address bar
           tabIndex={0}
           // without top-0/left-0, sometimes on MacOs Safari, after going to the map and back
           // the game's area is rendered scrolled up the screen
-          className="absolute top-0 left-0"
+          class="absolute top-0 left-0"
           style={canvasInlineStyle}
           ref={setRenderArea}
         />

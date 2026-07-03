@@ -126,14 +126,14 @@ const VerifyIssuesDialog = ({ issues, onClose }: VerifyIssuesDialogProps) => {
   return (
     <DialogPortal>
       <Border
-        className="scale-editor bg-checkerboard-stifled-alphas"
+        class="scale-editor bg-checkerboard-stifled-alphas"
         onClick={onClose}
       />
       {/* stop window-level shortcuts catching our keypresses that match their shortcuts */}
-      <div className="contents no-keyboard-shortcuts">
-        <Dialog ref={dialogRef} wide tall className="scale-editor p-1">
+      <div class="contents no-keyboard-shortcuts">
+        <Dialog ref={dialogRef} wide tall class="scale-editor p-1">
           <DialogHeader>{issues.length} Issues</DialogHeader>
-          <div className="flex flex-col pt-1 flex-grow text-multi-line overflow-y-auto scrollbar scrollbar-w1 scrollbar-thumb-lightGrey pr-1 gap-2">
+          <div class="flex flex-col pt-1 flex-grow text-multi-line overflow-y-auto scrollbar scrollbar-w1 scrollbar-thumb-lightGrey pr-1 gap-2">
             {entries(issuesByRoom)
               .sort(([a], [b]) =>
                 a === wholeCampaignHeading ? -1
@@ -147,9 +147,9 @@ const VerifyIssuesDialog = ({ issues, onClose }: VerifyIssuesDialogProps) => {
                 const emptyLeftover =
                   room !== undefined && isEmptyLeftoverRoom(room);
                 return (
-                  <div key={roomHeading} className="flex flex-col gap-1">
+                  <div key={roomHeading} class="flex flex-col gap-1">
                     {roomHeading && (
-                      <span className="text-metallicBlue text-double-height">
+                      <span class="text-metallicBlue text-double-height">
                         {roomHeading}
                       </span>
                     )}
@@ -157,15 +157,15 @@ const VerifyIssuesDialog = ({ issues, onClose }: VerifyIssuesDialogProps) => {
                       <RoomPreview roomId={roomId as EditorRoomId} />
                     )}
                     {emptyLeftover && roomId !== undefined && (
-                      <div className="flex flex-col gap-half">
-                        <div className="text-midGrey">
+                      <div class="flex flex-col gap-half">
+                        <div class="text-midGrey">
                           This room has only walls, floors and doors — it may be
                           an empty room left over by mistake.
                         </div>
-                        <div className="flex justify-end">
+                        <div class="flex justify-end">
                           <Button
                             onClick={() => deleteRoom(roomId)}
-                            className="bg-midRed px-1 py-half text-white h-3"
+                            class="bg-midRed px-1 py-half text-white h-3"
                           >
                             Delete room
                           </Button>
@@ -175,9 +175,9 @@ const VerifyIssuesDialog = ({ issues, onClose }: VerifyIssuesDialogProps) => {
                     {roomIssues?.map((issue, i) => {
                       const { roomId, itemId } = issue;
                       return (
-                        <div key={i} className="flex flex-col gap-half">
+                        <div key={i} class="flex flex-col gap-half">
                           <div
-                            className={
+                            class={
                               issue.severity === "error" ?
                                 "text-midRed"
                               : "text-shadow"
@@ -185,23 +185,21 @@ const VerifyIssuesDialog = ({ issues, onClose }: VerifyIssuesDialogProps) => {
                           >
                             {issue.verifier.name}
                           </div>
-                          <div className="text-midGrey">{issue.msg}</div>
-                          <div className="flex gap-1">
-                            <div className="text-lightGrey">
-                              {issue.fixText}
-                            </div>
-                            <div className="flex-grow" />
+                          <div class="text-midGrey">{issue.msg}</div>
+                          <div class="flex gap-1">
+                            <div class="text-lightGrey">{issue.fixText}</div>
+                            <div class="flex-grow" />
                             {issue.fixable && (
                               <Button
                                 onClick={() => applyFix(issue)}
-                                className="bg-moss px-1 py-half text-white h-3"
+                                class="bg-moss px-1 py-half text-white h-3"
                               >
                                 Fix
                               </Button>
                             )}
                             {roomId !== undefined && (
                               <Button
-                                className="bg-pastelBlue px-1 py-half text-white shrink-0 hover:bg-highlightBeige  h-3"
+                                class="bg-pastelBlue px-1 py-half text-white shrink-0 hover:bg-highlightBeige  h-3"
                                 onClick={() => goToRoom(roomId, itemId)}
                               >
                                 Go to
@@ -215,18 +213,18 @@ const VerifyIssuesDialog = ({ issues, onClose }: VerifyIssuesDialogProps) => {
                 );
               })}
           </div>
-          <div className="flex justify-end mt-1 text-single-line gap-1">
+          <div class="flex justify-end mt-1 text-single-line gap-1">
             {fixableIssueCount > 0 && (
               <Button
                 onClick={fixAll}
-                className="px-1 py-half self-stretch bg-moss h-3 text-white"
+                class="px-1 py-half self-stretch bg-moss h-3 text-white"
               >
                 {`Fix ${fixableIssueCount} auto-fixable issues`}
               </Button>
             )}
             <Button
               onClick={onClose}
-              className="px-1 py-half self-stretch bg-midRed h-3 text-white"
+              class="px-1 py-half self-stretch bg-midRed h-3 text-white"
             >
               x Exit
             </Button>
@@ -264,11 +262,11 @@ export const VerifyCampaignButton = () => {
     <>
       <ToolbarButton
         ariaLabel="Verify and fix campaign"
-        className={`${errorCount > 0 ? "bg-midRed" : "bg-shadow"} w-full h-2`}
+        class={`${errorCount > 0 ? "bg-midRed" : "bg-shadow"} w-full h-2`}
         onClick={() => setDialogOpen(true)}
         tooltipContent={verifyTooltipMarkdown}
       >
-        <span className="relative text-single-line">{summary}</span>
+        <span class="relative text-single-line">{summary}</span>
       </ToolbarButton>
 
       {dialogOpen && (

@@ -85,9 +85,7 @@ export const ItemContextMenu = ({ renderArea }: ItemContextMenuProps) => {
       onClose={close}
       anchor={anchor}
       header={
-        <span className="text-single-line">
-          {selectionLabel(selectedTypes)}
-        </span>
+        <span class="text-single-line">{selectionLabel(selectedTypes)}</span>
       }
     >
       <DeleteMenuItem />

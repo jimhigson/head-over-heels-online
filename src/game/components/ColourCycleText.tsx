@@ -1,4 +1,4 @@
-import { type ReactElement } from "react";
+import { type VNode } from "preact";
 
 export type ColourCycleTextProps = {
   children: string;
@@ -7,7 +7,7 @@ export type ColourCycleTextProps = {
    * given the next className in the list, wrapping back to the start
    */
   classnameCycle: string[];
-  className?: string;
+  class?: string;
 };
 
 /**
@@ -18,12 +18,12 @@ export type ColourCycleTextProps = {
 export const ColourCycleText = ({
   children,
   classnameCycle,
-  className,
-}: ColourCycleTextProps): ReactElement => (
-  <span className={className}>
+  class: className,
+}: ColourCycleTextProps): VNode => (
+  <span class={className}>
     {Array.from(children).map((char, charIndex) => (
       <span
-        className={classnameCycle[charIndex % classnameCycle.length]}
+        class={classnameCycle[charIndex % classnameCycle.length]}
         key={charIndex}
       >
         {char}

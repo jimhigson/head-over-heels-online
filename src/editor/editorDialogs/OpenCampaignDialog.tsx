@@ -45,18 +45,18 @@ export const OpenCampaignDialog = ({
 
   return (
     <DialogPortal>
-      <Border className="scale-editor bg-checkerboard-stifled-alphas" />
+      <Border class="scale-editor bg-checkerboard-stifled-alphas" />
       {/* stop window-level shortcuts catching our keypresses that match their shortcuts */}
-      <div className="contents no-keyboard-shortcuts">
+      <div class="contents no-keyboard-shortcuts">
         <Dialog
           ref={dialogRef}
           tall
           wide
           ariaLabel="Open campaign"
-          className="scale-editor p-1"
+          class="scale-editor p-1"
         >
-          <div className="text-white bg-midRed text-center py-half">
-            <span className="text-double-height">Open Campaign</span>
+          <div class="text-white bg-midRed text-center py-half">
+            <span class="text-double-height">Open Campaign</span>
           </div>
 
           {isLoading ?
@@ -66,7 +66,7 @@ export const OpenCampaignDialog = ({
               {error !== undefined ?
                 <NonIdealState
                   text="Could not reach the database"
-                  className="h-6 mt-1"
+                  class="h-6 mt-1"
                 />
               : null}
               {/* the original campaign is bundled with the game, so the list -
@@ -80,20 +80,20 @@ export const OpenCampaignDialog = ({
             </>
           }
 
-          <div className="flex gap-1 justify-end text-white">
+          <div class="flex gap-1 justify-end text-white">
             <Button
               onClick={onClose}
               aria-label="Create new campaign"
-              className="px-1 py-half bg-moss"
+              class="px-1 py-half bg-moss"
             >
-              <span className="text-single-line">Create New</span>
+              <span class="text-single-line">Create New</span>
             </Button>
             <Button
               onClick={onClose}
-              className="px-1 py-half"
+              class="px-1 py-half"
               shortcutKeys={["Escape"]}
             >
-              <span className="text-single-line">Cancel</span>
+              <span class="text-single-line">Cancel</span>
             </Button>
           </div>
         </Dialog>

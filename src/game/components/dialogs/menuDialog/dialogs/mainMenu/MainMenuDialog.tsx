@@ -64,7 +64,7 @@ const DownloadOrInstallMenuItem = () => {
   return (
     <MenuItem
       id="installGuide"
-      className="text-moss zx:text-zxGreen toppy:text-toppyCool2"
+      class="text-moss zx:text-zxGreen toppy:text-toppyCool2"
       label={deviceType === "mobile" ? "Install" : "Download & Install"}
       doubleHeightWhenFocussed
       leader={useCustomTextLeader("⬇")}
@@ -99,7 +99,7 @@ const QuitGameMenuItem = () => {
     <MenuItem
       id="quitGame"
       label={hasReincarnationPoint ? "End game / reincarnate" : "End game"}
-      className="text-midRed zx:text-zxYellow toppy:text-toppyPink2"
+      class="text-midRed zx:text-zxYellow toppy:text-toppyPink2"
       subMenuId="quitGameConfirm"
       doubleHeightWhenFocussed
       hidden={!isGameRunning}
@@ -131,13 +131,13 @@ const ExitAppMenuItem = () => {
     <MenuItem
       id="exit"
       label={selectedOnce ? "Again to exit" : "Exit"}
-      className={
+      class={
         selectedOnce ?
           "selectedMenuItem:text-midRed toppy:selectedMenuItem:text-toppyPink2"
         : ""
       }
       leader={
-        <span className="text-center inline-block text-single-line">
+        <span class="text-center inline-block text-single-line">
           {selectedOnce ? "!" : "X"}
         </span>
       }
@@ -205,16 +205,16 @@ export const MainMenuDialog = (_emptyProps: EmptyObject) => {
 
   return (
     <DialogPortal>
-      <Border className="bg-metallicBlueHalfbrite zx:bg-zxRed toppy:bg-toppyCool4" />
+      <Border class="bg-metallicBlueHalfbrite zx:bg-zxRed toppy:bg-toppyCool4" />
       <Dialog
-        className="bg-metallicBlueHalfbrite zx:bg-zxRed toppy:bg-toppyCool4 gap-y-0 pt-0 pb-oneScaledPix resHandheld:w-30"
+        class="bg-metallicBlueHalfbrite zx:bg-zxRed toppy:bg-toppyCool4 gap-y-0 pt-0 pb-oneScaledPix resHandheld:w-30"
         dialogId="mainMenu"
       >
         <MainMenuHeading
           noSubtitle={isGameRunning}
-          className={`${isGameRunning ? "resHandheld:hidden pt-3" : "pt-2"} resHandheld:pt-half`}
+          class={`${isGameRunning ? "resHandheld:hidden pt-3" : "pt-2"} resHandheld:pt-half`}
         />
-        <div className="flex-grow justify-around text-highlightBeige zx:text-zxCyan toppy:text-toppyWarm3 selectedMenuItem:text-white toppy:selectedMenuItem:text-toppyWarm1 flex flex-col gap-oneScaledPix mobile:gap-[calc(var(--scale)*2px)]">
+        <div class="flex-grow justify-around text-highlightBeige zx:text-zxCyan toppy:text-toppyWarm3 selectedMenuItem:text-white toppy:selectedMenuItem:text-toppyWarm1 flex flex-col gap-oneScaledPix mobile:gap-[calc(var(--scale)*2px)]">
           <MaybeTwoColumnMenuitems
             spaceOut={emulatedResolutionName !== "handheld"}
             columnCount={
@@ -238,7 +238,7 @@ export const MainMenuDialog = (_emptyProps: EmptyObject) => {
                   id="viewCrowns"
                   label={
                     <>
-                      <span className="resHandheld:hidden">Check </span>Progress
+                      <span class="resHandheld:hidden">Check </span>Progress
                     </>
                   }
                   onSelect={showProgress}
@@ -256,7 +256,7 @@ export const MainMenuDialog = (_emptyProps: EmptyObject) => {
                   id="about"
                   label={
                     <>
-                      About<span className="resHandheld:hidden"> & Links</span>
+                      About<span class="resHandheld:hidden"> & Links</span>
                     </>
                   }
                   doubleHeightWhenFocussed

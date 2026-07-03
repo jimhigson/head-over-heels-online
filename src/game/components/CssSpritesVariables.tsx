@@ -1,13 +1,17 @@
-import { type PropsWithChildren } from "react";
+import { type PropsWithChildren } from "preact/compat";
 import { type EmptyObject } from "type-fest";
 
 import { useAppSelector } from "../../store/hooks";
 import { selectSpritesOption } from "../../store/slices/gameMenus/gameMenusSelectors";
 import { selectSpritesheetOverrideBlobUrl } from "../../store/slices/spritesheetOverrideSlice";
 
-declare module "react" {
-  interface CSSProperties {
-    [`--spritesheetUrl`]?: string;
+declare module "preact" {
+  // augmenting preact's JSX.CSSProperties requires a namespace here
+  // eslint-disable-next-line no-namespace
+  namespace JSX {
+    interface CSSProperties {
+      [`--spritesheetUrl`]?: string;
+    }
   }
 }
 
@@ -31,7 +35,7 @@ export const CssSpritesVariables = ({
 
   return (
     <div
-      className={`contents set-spritesheet-vars ${spritesOption.name === "Toppy" ? "toppy-spritesheet" : "blockstack-spritesheet"}`}
+      class={`contents set-spritesheet-vars ${spritesOption.name === "Toppy" ? "toppy-spritesheet" : "blockstack-spritesheet"}`}
       style={
         overrideBlobUrl !== undefined ?
           { "--spritesheetUrl": `url('${overrideBlobUrl}')` }

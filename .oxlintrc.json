@@ -150,6 +150,28 @@
           }
         ],
         "import/consistent-type-specifier-style": ["error", "prefer-inline"],
+        "preact-class/prefer-class-over-classname": "error",
+        "no-restricted-imports": [
+          "error",
+          {
+            "paths": [
+              {
+                "name": "react",
+                "message": "This project runs on Preact — import hooks from \"preact/hooks\", core types/APIs from \"preact\", and React-compat helpers from \"preact/compat\"."
+              },
+              {
+                "name": "react-dom",
+                "message": "This project runs on Preact — import from \"preact/compat\" (e.g. createPortal) instead."
+              }
+            ],
+            "patterns": [
+              {
+                "group": ["react/*"],
+                "message": "This project runs on Preact — import from \"preact\" / \"preact/compat\" instead."
+              }
+            ]
+          }
+        ],
         "perfectionist/sort-imports": [
           "error",
           {
@@ -190,7 +212,8 @@
       "jsPlugins": [
         "eslint-plugin-unused-imports",
         "eslint-plugin-perfectionist",
-        "oxlint-plugin-eslint"
+        "oxlint-plugin-eslint",
+        "./oxlint-rules/preactClass.js"
       ],
       "env": {
         "es2020": true

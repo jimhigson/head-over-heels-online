@@ -16,33 +16,33 @@ const crownClass = `sprite ${"texture-crown_blacktooth" satisfies TextureTailwin
 export const ProclaimEmperorDialog = () => {
   return (
     <DialogPortal>
-      <Border className="bg-pureBlack zx:bg-zxBlack toppy:bg-toppyBlack" />
+      <Border class="bg-pureBlack zx:bg-zxBlack toppy:bg-toppyBlack" />
       <Dialog
-        className="bg-pureBlack w-zx h-full block p-0"
+        class="bg-pureBlack w-zx h-full block p-0"
         onClick={useDispatchActionCallback(backToParentMenu)}
         dialogId="proclaimEmperor"
       >
-        <div className="flex flex-col gap-3 items-center">
-          <div className="flex gap-7">
-            <div className="flex flex-col gap-y-oneScaledPix items-center me-1">
-              <span className={crownClass} />
+        <div class="flex flex-col gap-3 items-center">
+          <div class="flex gap-7">
+            <div class="flex flex-col gap-y-oneScaledPix items-center me-1">
+              <span class={crownClass} />
               <span
-                className={`sprite zx:sprite-revert-zxYellow ${"texture-animated-head_idle_right" satisfies AnimatedTextureTailwindClass} ${"hover:texture-animated-head_walking_right" satisfies AnimatedTextureTailwindClass} relative z-topSprite`}
+                class={`sprite zx:sprite-revert-zxYellow ${"texture-animated-head_idle_right" satisfies AnimatedTextureTailwindClass} ${"hover:texture-animated-head_walking_right" satisfies AnimatedTextureTailwindClass} relative z-topSprite`}
               />
             </div>
-            <div className="flex flex-col items-center me-1">
-              <span className={crownClass} />
+            <div class="flex flex-col items-center me-1">
+              <span class={crownClass} />
               <span
-                className={`sprite zx:sprite-revert-zxYellow ${"texture-animated-heels_idle_towards" satisfies AnimatedTextureTailwindClass} ${"hover:texture-animated-heels_walking_towards" satisfies AnimatedTextureTailwindClass} relative z-topSprite`}
+                class={`sprite zx:sprite-revert-zxYellow ${"texture-animated-heels_idle_towards" satisfies AnimatedTextureTailwindClass} ${"hover:texture-animated-heels_walking_towards" satisfies AnimatedTextureTailwindClass} relative z-topSprite`}
               />
             </div>
           </div>
-          <div className="flex flex-col gap-1 items-center text-lightGrey zx:text-zxCyan toppy:text-toppyCool1 text-single-line">
+          <div class="flex flex-col gap-1 items-center text-lightGrey zx:text-zxCyan toppy:text-toppyCool1 text-single-line">
             <span>The people salute your heroism</span>
             <span>and proclaim you</span>
           </div>
           <ColourCycleText
-            className="text-highlightBeige text-double-height"
+            class="text-highlightBeige text-double-height"
             classnameCycle={[
               "text-pink zx:text-zxMagenta toppy:text-toppyPink1",
               "text-metallicBlue zx:text-zxCyan toppy:text-toppyCool2",
@@ -51,7 +51,7 @@ export const ProclaimEmperorDialog = () => {
           >
             EMPEROR
           </ColourCycleText>
-          <MenuItems className="hidden">
+          <MenuItems class="hidden">
             <BackMenuItem />
           </MenuItems>
         </div>

@@ -27,12 +27,12 @@ export const LoadingCampaignDialog = () => {
   return (
     <DialogPortal>
       <LoadingBorder />
-      <div className="contents no-keyboard-shortcuts">
-        <Dialog wide className="scale-editor p-1 !h-min">
-          <div className="text-white bg-midRed text-center py-half">
-            <span className="text-double-height">Loading campaign...</span>
+      <div class="contents no-keyboard-shortcuts">
+        <Dialog wide class="scale-editor p-1 !h-min">
+          <div class="text-white bg-midRed text-center py-half">
+            <span class="text-double-height">Loading campaign...</span>
           </div>
-          <div className="flex flex-row justify-center gap-1">
+          <div class="flex flex-row justify-center gap-1">
             <SpinnerHead />
             <SpinnerHeels />
           </div>

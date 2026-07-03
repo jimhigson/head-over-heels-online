@@ -25,22 +25,22 @@ export const SpriteFilterInput = ({
   }, []);
 
   return (
-    <div className="flex flex-row">
-      <span className="text-white text-single-line">Filter:</span>
+    <div class="flex flex-row">
+      <span class="text-white text-single-line">Filter:</span>
       <input
         ref={inputRef}
         type="text"
         value={spriteFilter}
-        onChange={(e) => onSpriteFilterChange(e.target.value)}
+        onChange={(e) => onSpriteFilterChange(e.currentTarget.value)}
         placeholder="texture id..."
-        className="bg-pureBlack zx:bg-zxBlack toppy:bg-toppyBlack text-white zx:text-zxWhite toppy:text-toppyWarm1 px-1 caret-midRed w-15"
+        class="bg-pureBlack zx:bg-zxBlack toppy:bg-toppyBlack text-white zx:text-zxWhite toppy:text-toppyWarm1 px-1 caret-midRed w-15"
       />
       {spriteFilter && (
         <Button
-          className="bg-midRed zx:bg-zxRed toppy:bg-toppyPink2"
+          class="bg-midRed zx:bg-zxRed toppy:bg-toppyPink2"
           onClick={() => onSpriteFilterChange("")}
         >
-          <span className="text-single-line">x</span>
+          <span class="text-single-line">x</span>
         </Button>
       )}
     </div>

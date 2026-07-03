@@ -1,10 +1,10 @@
 "use client";
 
-import { type ReactNode } from "react";
-import { createPortal } from "react-dom";
+import { type ComponentChildren } from "preact";
+import { createPortal } from "preact/compat";
 
 import { CssVariables } from "../game/components/CssVariables";
 
-export const DialogPortal = ({ children }: { children: ReactNode }) => {
+export const DialogPortal = ({ children }: { children: ComponentChildren }) => {
   return createPortal(<CssVariables>{children}</CssVariables>, document.body);
 };

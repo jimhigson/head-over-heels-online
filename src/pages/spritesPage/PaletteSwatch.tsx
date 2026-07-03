@@ -52,27 +52,25 @@ export const PaletteSwatch = () => {
         key={name}
         triggerContent={
           <div
-            className="w-3 h-3 border-oneScaledPix border-shadow zx:border-zxWhiteDimmed toppy:border-toppyGrey2"
+            class="w-3 h-3 border-oneScaledPix border-shadow zx:border-zxWhiteDimmed toppy:border-toppyGrey2"
             style={{ backgroundColor: hex }}
           />
         }
         tooltipContent={
-          <div className="text-shadow zx:text-zxBlack toppy:text-toppyGrey3 flex flex-col gap-oneScaledPix">
-            <span className="text-single-line">{name}</span>
-            <span className="text-single-line">{hex}</span>
-            <span className="text-single-line">{srgbHexToP3(hex)}</span>
+          <div class="text-shadow zx:text-zxBlack toppy:text-toppyGrey3 flex flex-col gap-oneScaledPix">
+            <span class="text-single-line">{name}</span>
+            <span class="text-single-line">{hex}</span>
+            <span class="text-single-line">{srgbHexToP3(hex)}</span>
           </div>
         }
       />
     ));
 
   return (
-    <div className="flex flex-col gap-oneScaledPix p-half">
-      <div className="flex flex-wrap gap-oneScaledPix">{renderRow(main)}</div>
+    <div class="flex flex-col gap-oneScaledPix p-half">
+      <div class="flex flex-wrap gap-oneScaledPix">{renderRow(main)}</div>
       {swops.length > 0 && (
-        <div className="flex flex-wrap gap-oneScaledPix">
-          {renderRow(swops)}
-        </div>
+        <div class="flex flex-wrap gap-oneScaledPix">{renderRow(swops)}</div>
       )}
     </div>
   );

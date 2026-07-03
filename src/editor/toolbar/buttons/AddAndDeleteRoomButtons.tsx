@@ -28,8 +28,8 @@ const AddRoomMenuItem = ({
         gridPositions,
       })}
     >
-      <span className="text-single-line">{label}</span>
-      <span className={iconClass} />
+      <span class="text-single-line">{label}</span>
+      <span class={iconClass} />
     </MenuItemButton>
   );
 };
@@ -61,12 +61,12 @@ export const AddAndDeleteRoomButtons = () => {
         main={
           <ToolbarButton
             ariaLabel="Add room"
-            className="bg-moss"
+            class="bg-moss"
             onClick={useDispatchActionCallback(addRoom, {})}
             tooltipContent={addTooltipMarkdown}
           >
             <span
-              className={`sprite ${"texture-hud_char_+" satisfies TextureTailwindClass} relative`}
+              class={`sprite ${"texture-hud_char_+" satisfies TextureTailwindClass} relative`}
             />
           </ToolbarButton>
         }
@@ -451,13 +451,13 @@ export const AddAndDeleteRoomButtons = () => {
       </MenuButton>
       <ToolbarButton
         ariaLabel="Delete room"
-        className="bg-midRed"
+        class="bg-midRed"
         onClick={() => dispatch(confirmDeleteRoomThunk())}
         disabled={!hasOtherRooms}
         tooltipContent={deleteTooltipMarkdown}
       >
         <span
-          className={`sprite ${"texture-hud_char_X" satisfies TextureTailwindClass} relative`}
+          class={`sprite ${"texture-hud_char_X" satisfies TextureTailwindClass} relative`}
         />
       </ToolbarButton>
     </>

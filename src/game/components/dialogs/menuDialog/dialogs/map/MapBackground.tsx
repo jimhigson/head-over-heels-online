@@ -41,7 +41,7 @@ export const MapBackground = <RoomId extends string>(
   return (
     <MapBackgroundSection
       mapTitle={sceneryToMapTitle[campaign.rooms[curRoomId].planet]}
-      className={mapColours.bgClassName}
+      class={mapColours.bgClassName}
     />
   );
 };

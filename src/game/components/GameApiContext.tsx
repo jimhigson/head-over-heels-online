@@ -1,4 +1,6 @@
-import { createContext, type PropsWithChildren, useContext } from "react";
+import { createContext } from "preact";
+import { type PropsWithChildren } from "preact/compat";
+import { useContext } from "preact/hooks";
 
 import { type GameApi } from "../GameApi";
 

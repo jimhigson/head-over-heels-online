@@ -57,12 +57,12 @@ const crownTextureClasses: {
 
 export const TitledCrown = ({
   planet,
-  className,
+  class: className,
   label = planet,
 }: {
   planet: PlanetName;
   label?: string;
-  className?: string;
+  class?: string;
 }) => {
   const collected = useAppSelector(
     (state) => state.gameInPlay.gameInPlay.planetsLiberated[planet],
@@ -73,18 +73,18 @@ export const TitledCrown = ({
 
   return (
     <div
-      className={`flex flex-col ${className}`}
+      class={`flex flex-col ${className}`}
       data-test-id={`crown-${planet}`}
       data-collected={collected ? "true" : "false"}
     >
       <span
-        className={`sprite block mx-auto
+        class={`sprite block mx-auto
           ${uncolourised ? `${"texture-crown_uncolourised" satisfies TextureTailwindClass} sprite-tinted` : crownTextureClasses[planet]}
           ${collected ? `zx:text-zxYellow toppy:text-toppyWarm1` : "colourised:brightness-halfBrite zx:text-zxMagentaDimmed toppy:brightness-halfBrite"}
           `}
       />
       <span
-        className={`sprite block 
+        class={`sprite block 
           ${uncolourised ? ("texture-ball_uncolourised" satisfies TextureTailwindClass) : planetTextureClasses[planet]} 
           zx:sprite-tinted mx-auto 
           ${collected ? `zx:text-zxWhite toppy:text-toppyWarm1` : "zx:text-zxYellowDimmed colourised:brightness-halfBrite toppy:brightness-halfBrite"} 
@@ -92,10 +92,10 @@ export const TitledCrown = ({
           `}
       />
       {uncolourised ?
-        <span className={labelClassName}>{label}</span>
+        <span class={labelClassName}>{label}</span>
       : <ColourCycleText
           classnameCycle={colourCycle[planet]}
-          className={labelClassName}
+          class={labelClassName}
         >
           {label}
         </ColourCycleText>

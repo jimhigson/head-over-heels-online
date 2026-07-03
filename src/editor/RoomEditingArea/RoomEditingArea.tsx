@@ -64,7 +64,7 @@ const RoomEditingAreaInner = () => {
 
   return (
     <div
-      className="w-full h-full relative"
+      class="w-full h-full relative"
       aria-description="Room preview area showing a rendering of the currently selected (cursor) room that is interactive and allows editing by dragging or a right-click context menu"
     >
       <ResolutionControls
@@ -73,7 +73,7 @@ const RoomEditingAreaInner = () => {
       />
       <div
         ref={setRenderSizingArea}
-        className={`w-full h-full ${cursorClassname} scale-editor bg-editor-checkerboard overflow-scroll scrollbar scrollbar-w-1 scrollbar-track-pureBlack scrollbar-thumb-metallicBlue`}
+        class={`w-full h-full ${cursorClassname} scale-editor bg-editor-checkerboard overflow-scroll scrollbar scrollbar-w-1 scrollbar-track-pureBlack scrollbar-thumb-metallicBlue`}
       >
         <div
           style={{
@@ -83,7 +83,7 @@ const RoomEditingAreaInner = () => {
           ref={setRenderArea}
           tabIndex={1}
           // remove outline when has focus:
-          className="focus-visible:outline-none"
+          class="focus-visible:outline-none"
         />
       </div>
       <ItemContextMenu renderArea={renderArea} />

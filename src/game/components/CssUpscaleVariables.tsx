@@ -1,11 +1,15 @@
-import { type PropsWithChildren } from "react";
+import { type PropsWithChildren } from "preact/compat";
 
 import { useTotalUpscale } from "../../store/slices/upscale/upscaleSelectors";
 
-declare module "react" {
-  interface CSSProperties {
-    [`--scale`]?: number | string;
-    [`--block`]?: number | string;
+declare module "preact" {
+  // augmenting preact's JSX.CSSProperties requires a namespace here
+  // eslint-disable-next-line no-namespace
+  namespace JSX {
+    interface CSSProperties {
+      [`--scale`]?: number | string;
+      [`--block`]?: number | string;
+    }
   }
 }
 
@@ -27,7 +31,7 @@ export const CssUpscaleVariables = ({
   const scaleFactor = propsScaleFactor ?? storeScaleFactor;
   return (
     <div
-      className="contents"
+      class="contents"
       style={{
         "--scale": scaleFactor,
         "--block": `${scaleFactor * 8}px`,
