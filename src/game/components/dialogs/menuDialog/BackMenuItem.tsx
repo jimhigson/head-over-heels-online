@@ -7,7 +7,7 @@ export const BackMenuItem = ({ customLabel }: { customLabel?: string }) => {
     <MenuItem
       id="back"
       label={customLabel || "Back"}
-      flipLeader
+      isBack
       doubleHeightWhenFocussed
       onSelect={useDispatchActionCallback(backToParentMenu)}
       toParentMenu={true}

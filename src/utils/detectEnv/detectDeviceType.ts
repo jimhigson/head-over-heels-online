@@ -6,15 +6,23 @@ export const isTouchDevice = () => {
   return detectDeviceType() === "mobile" || detectDeviceType() === "tablet";
 };
 
+let cachedDeviceType: DeviceType | undefined;
+
 export const detectDeviceType = (): DeviceType => {
+  if (cachedDeviceType !== undefined) {
+    return cachedDeviceType;
+  }
+
   if (typeof globalThis.window === "undefined") {
-    return "server"; // probably running some tests
+    cachedDeviceType = "server"; // probably running some tests
+    return cachedDeviceType;
   }
 
   const deviceTypeOverride = typedURLSearchParams().get("device");
 
   if (deviceTypeOverride !== null) {
-    return deviceTypeOverride;
+    cachedDeviceType = deviceTypeOverride;
+    return cachedDeviceType;
   }
 
   const ua = navigator.userAgent;
@@ -22,9 +30,10 @@ export const detectDeviceType = (): DeviceType => {
   const isIpadOS =
     navigator.platform === "MacIntel" && navigator.maxTouchPoints > 1;
 
-  return (
+  cachedDeviceType =
     isIpadOS || /iPad|Tablet|Android(?!.*Mobi)/i.test(ua) ? "tablet"
     : /Mobi|Android|iPhone|iPod/i.test(ua) ? "mobile"
-    : "desktop"
-  );
+    : "desktop";
+
+  return cachedDeviceType;
 };

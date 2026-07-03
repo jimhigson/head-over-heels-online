@@ -1,56 +1,58 @@
-import { BitmapText } from "../../../../tailwindSprites/BitmapText";
+import { ColourCycleText } from "../../../../ColourCycleText";
 import { mainMenuCycle } from "./mainMenuCycle";
 
 export const MainMenuFooter = () => (
-  <footer className="flex justify-center gap-2 resHandheld:gap-1 leading-none h-[calc(26px*var(--scale))]">
+  <footer className="flex justify-center gap-2 resHandheld:gap-1 text-single-line h-[calc(26px*var(--scale))]">
     <div className="flex flex-col items-center">
-      <BitmapText className="text-pastelBlue zx:text-zxBlack toppy:text-toppyCool2 relative left-oneScaledPix">
+      <span className="text-pastelBlue zx:text-zxBlack toppy:text-toppyCool2 relative left-oneScaledPix">
         1987 Original
-      </BitmapText>
+      </span>
       <div className="flex gap-1">
         <address className="flex flex-col items-center relative bottom-oneScaledPix">
-          <BitmapText
+          <ColourCycleText
             className="relative left-[calc(6.5px*var(--scale))]"
             classnameCycle={mainMenuCycle}
           >
             Jon
-          </BitmapText>
-          <BitmapText
+          </ColourCycleText>
+          <ColourCycleText
             className="relative bottom-[calc(3px*var(--scale))]"
             classnameCycle={mainMenuCycle}
           >
             Ritman
-          </BitmapText>
+          </ColourCycleText>
         </address>
         <address className="flex flex-col items-center relative bottom-oneScaledPix">
-          <BitmapText classnameCycle={mainMenuCycle}>Bernie</BitmapText>
-          <BitmapText
+          <ColourCycleText classnameCycle={mainMenuCycle}>
+            Bernie
+          </ColourCycleText>
+          <ColourCycleText
             className="relative bottom-[calc(3px*var(--scale))]"
             classnameCycle={mainMenuCycle}
           >
             Drummand
-          </BitmapText>
+          </ColourCycleText>
         </address>
       </div>
     </div>
     <div className="flex flex-col items-center">
-      <BitmapText className="text-pink zx:text-zxBlack toppy:text-toppyPink1">
-        2025 Remake
-      </BitmapText>
+      <span className="text-pink zx:text-zxBlack toppy:text-toppyPink1">
+        2026 Remake
+      </span>
       <address className="flex relative left-[calc(0.5px*var(--scale))] bottom-oneScaledPix">
         <div className="flex flex-col items-center">
-          <BitmapText
+          <ColourCycleText
             className="relative left-[calc(1.5px*var(--scale))]"
             classnameCycle={mainMenuCycle}
           >
             Jim
-          </BitmapText>
-          <BitmapText
+          </ColourCycleText>
+          <ColourCycleText
             className="relative bottom-[calc(3px*var(--scale))]"
             classnameCycle={mainMenuCycle}
           >
             Higson
-          </BitmapText>
+          </ColourCycleText>
         </div>
       </address>
     </div>

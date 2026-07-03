@@ -1,0 +1,41 @@
+name: Check generated font is up-to-date
+
+# The font is generated from the spritesheet by `pnpm gen:font`, which shells out
+# to Python (fontTools/varLib) to build the variable woff2. Only run when
+# something that feeds the font changes, so most PRs don't pay for the Python
+# setup. gen:font is deterministic given the committed manifest, so a byte diff is
+# a valid freshness check (the pinned deps in scripts/font/requirements.txt keep
+# the bytes reproducible).
+on:
+  pull_request:
+    branches: ["main"]
+    paths:
+      - "gfx/sprites.webp"
+      - "scripts/genFont.ts"
+      - "scripts/font/**"
+      - "src/sprites/spritesheet/spritesheetData/hudSritesheetData.ts"
+      - "src/sprites/spritesheet/spritesheetData/textureSizes.ts"
+      - "src/_generated/font/**"
+  workflow_dispatch:
+
+jobs:
+  checkFontUpToDate:
+    runs-on: ubuntu-latest
+
+    steps:
+      - uses: actions/checkout@v6
+      - uses: pnpm/action-setup@v5
+      - uses: actions/setup-node@v6
+        with:
+          node-version: 25.x
+          cache: "pnpm"
+      - run: pnpm install
+      - uses: actions/setup-python@v5
+        with:
+          python-version: "3.11"
+          cache: "pip"
+          cache-dependency-path: scripts/font/requirements.txt
+      - run: pip install -r scripts/font/requirements.txt
+      - run: pnpm gen:font
+      - name: Check gen:font is up-to-date
+        run: git diff --exit-code -- src/_generated/font || (echo "Run 'pnpm gen:font' locally and commit the changes." && exit 1)

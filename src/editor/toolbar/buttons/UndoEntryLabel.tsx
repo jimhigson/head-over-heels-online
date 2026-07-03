@@ -1,4 +1,3 @@
-import { BitmapText } from "../../../game/components/tailwindSprites/BitmapText";
 import { type SceneryName } from "../../../sprites/planets";
 import { textureForItem } from "../../../sprites/textureForItem";
 import { Timeago } from "../../../ui/Timeago";
@@ -48,8 +47,8 @@ const ItemDescriptions = ({ items }: { items: UndoItemEntry[] }) => {
     const [[id, item]] = items;
     return (
       <span>
-        <BitmapText>{describeItem(item)} </BitmapText>
-        <BitmapText className={idClass}>{`'${id}'`}</BitmapText>
+        <span className="text-single-line">{describeItem(item)} </span>
+        <span className={`${idClass} text-single-line`}>{`'${id}'`}</span>
       </span>
     );
   }
@@ -59,13 +58,13 @@ const ItemDescriptions = ({ items }: { items: UndoItemEntry[] }) => {
   if (types.size === 1) {
     const [type] = types;
     return (
-      <BitmapText>
+      <span className="text-single-line">
         {items.length} {camelToSpaced(type)}s
-      </BitmapText>
+      </span>
     );
   }
 
-  return <BitmapText>{items.length} items</BitmapText>;
+  return <span className="text-single-line">{items.length} items</span>;
 };
 
 export const undoHistoryGridClassName =
@@ -90,7 +89,9 @@ export const UndoEntryLabel = ({
       return (
         <>
           <ItemIcons items={description.items} scenery={scenery} />
-          <BitmapText className={verbClass}>{description.verb} </BitmapText>
+          <span className={`${verbClass} text-single-line`}>
+            {description.verb}{" "}
+          </span>
           <ItemDescriptions items={description.items} />
           {timeago}
         </>
@@ -99,7 +100,7 @@ export const UndoEntryLabel = ({
       return (
         <>
           <ItemIcons items={description.items} scenery={scenery} />
-          <BitmapText className={verbClass}>Edit </BitmapText>
+          <span className={`${verbClass} text-single-line`}>Edit </span>
           <ItemDescriptions items={description.items} />
           {timeago}
         </>
@@ -108,8 +109,8 @@ export const UndoEntryLabel = ({
       return (
         <>
           <span />
-          <BitmapText>Change </BitmapText>
-          <BitmapText>room colour</BitmapText>
+          <span className="text-single-line">Change </span>
+          <span className="text-single-line">room colour</span>
           {timeago}
         </>
       );
@@ -117,12 +118,12 @@ export const UndoEntryLabel = ({
       return (
         <>
           <span />
-          <BitmapText>Change </BitmapText>
+          <span className="text-single-line">Change </span>
           <span>
-            <BitmapText>scenery to </BitmapText>
-            <BitmapText className={verbClass}>
+            <span className="text-single-line">scenery to </span>
+            <span className={`${verbClass} text-single-line`}>
               {description.sceneryName}
-            </BitmapText>
+            </span>
           </span>
           {timeago}
         </>
@@ -131,8 +132,8 @@ export const UndoEntryLabel = ({
       return (
         <>
           <span />
-          <BitmapText>Clear </BitmapText>
-          <BitmapText>room</BitmapText>
+          <span className="text-single-line">Clear </span>
+          <span className="text-single-line">room</span>
           {timeago}
         </>
       );
@@ -140,8 +141,8 @@ export const UndoEntryLabel = ({
       return (
         <>
           <span />
-          <BitmapText>Paste </BitmapText>
-          <BitmapText>items</BitmapText>
+          <span className="text-single-line">Paste </span>
+          <span className="text-single-line">items</span>
           {timeago}
         </>
       );
@@ -149,8 +150,8 @@ export const UndoEntryLabel = ({
       return (
         <>
           <span />
-          <BitmapText>Edit </BitmapText>
-          <BitmapText>room {description.property}</BitmapText>
+          <span className="text-single-line">Edit </span>
+          <span className="text-single-line">room {description.property}</span>
           {timeago}
         </>
       );
@@ -158,8 +159,8 @@ export const UndoEntryLabel = ({
       return (
         <>
           <span />
-          <BitmapText>Edit </BitmapText>
-          <BitmapText>room JSON</BitmapText>
+          <span className="text-single-line">Edit </span>
+          <span className="text-single-line">room JSON</span>
           {timeago}
         </>
       );

@@ -1,4 +1,3 @@
-import { BitmapText } from "../../../game/components/tailwindSprites/BitmapText";
 import { store } from "../../../store/store";
 import { confirmClearRoomThunk } from "../confirmThunk";
 import { ToolbarButton } from "./ToolbarButton";
@@ -13,7 +12,7 @@ export const ClearRoomButton = () => {
 
 Clears the room out, leaving just walls, floors, and doors`}
     >
-      <BitmapText className="relative leading-none">CLR</BitmapText>
+      <span className="relative text-single-line">CLR</span>
     </ToolbarButton>
   );
 };

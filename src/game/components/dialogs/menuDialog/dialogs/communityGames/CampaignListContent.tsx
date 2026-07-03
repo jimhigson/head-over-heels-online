@@ -5,7 +5,6 @@ import { type CampaignDirectory } from "../../../../../../db/campaign";
 import { type CampaignLocator } from "../../../../../../model/modelTypes";
 import { gameStarted } from "../../../../../../store/slices/gameInPlay/gameInPlaySlice";
 import { useDispatchActionCallback } from "../../../../../../store/useDispatchActionCallback";
-import { BitmapText } from "../../../../tailwindSprites/BitmapText";
 import { selectGameHintMarkdownClassName } from "../../../dialogClasses";
 import { MenuItem } from "../../MenuItem";
 import { MenuItems } from "../../MenuItems";
@@ -21,7 +20,7 @@ const CampaignMenuItem = ({
 }) => {
   return (
     <MenuItem
-      className="sprites-double-height"
+      doubleHeight
       id={`campaign-${userId}-${campaignName}`}
       label={`‘${campaignName}’`}
       doubleHeightWhenFocussed
@@ -34,9 +33,9 @@ const CampaignMenuItem = ({
       })}
       hint={
         <div className="screenshot-mask">
-          <BitmapText
-            className={selectGameHintMarkdownClassName}
-          >{`Updated ${format(createdAt)}`}</BitmapText>
+          <span
+            className={`${selectGameHintMarkdownClassName} text-single-line`}
+          >{`Updated ${format(createdAt)}`}</span>
         </div>
       }
     />
@@ -53,9 +52,9 @@ export const CampaignListContent = ({
       <div className="zx:text-zxCyan toppy:text-toppyCool1 resHandheld:mt-half flex flex-col gap-2">
         {Object.values(campaigns).flatMap((userEntry) => (
           <div key={userEntry.user.id} className="flex flex-col gap-half">
-            <BitmapText className="text-metallicBlue zx:text-zxYellow toppy:text-toppyWarm3 pl-4 sprites-double-height">
+            <span className="text-metallicBlue zx:text-zxYellow toppy:text-toppyWarm3 pl-4 text-double-height">
               By {userEntry.user.username}:
-            </BitmapText>
+            </span>
             {Object.values(userEntry.campaigns).map((campaign) => (
               <Fragment key={campaign.name}>
                 <MenuItems>

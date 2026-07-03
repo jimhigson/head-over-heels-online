@@ -36,7 +36,7 @@ export const WhichGameDialog = (_emptyProps: EmptyObject) => {
         <div className={mainMenuScrollClasses}>
           <MenuItems className="gap-y-1">
             <MenuItem
-              className="sprites-double-height"
+              doubleHeight
               id="originalGame"
               label="Original Remastered"
               onSelect={useDispatchActionCallback(gameStarted, {
@@ -61,7 +61,7 @@ export const WhichGameDialog = (_emptyProps: EmptyObject) => {
             <MenuItem
               id="remake"
               label="38 Years Later"
-              className="sprites-double-height"
+              doubleHeight
               onSelect={useDispatchActionCallback(gameStarted, {
                 campaignLocator: sequelCampaignLocator,
               })}
@@ -84,7 +84,7 @@ export const WhichGameDialog = (_emptyProps: EmptyObject) => {
             <MenuItem
               id="community"
               label="Community contributed"
-              className="sprites-double-height"
+              doubleHeight
               subMenuId="communityGames"
               leader={
                 <span

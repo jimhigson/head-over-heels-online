@@ -1,4 +1,3 @@
-import { BitmapText } from "../../game/components/tailwindSprites/BitmapText";
 import { CommandItem } from "./CommandItem";
 
 export type ContextMenuItemProps = {
@@ -13,6 +12,6 @@ export const ContextMenuItem = ({
   children,
 }: ContextMenuItemProps) => (
   <CommandItem value={value} onSelect={onSelect} className="px-1">
-    <BitmapText>{children}</BitmapText>
+    <span className="text-single-line">{children}</span>
   </CommandItem>
 );

@@ -1,7 +1,6 @@
 import { useEffect, useRef } from "preact/hooks";
 
 import { type CampaignDirectory } from "../../db/campaign";
-import { BitmapText } from "../../game/components/tailwindSprites/BitmapText";
 import { type CampaignLocator } from "../../model/modelTypes";
 import { useGetAllUsersLatestCampaignsQuery } from "../../store/slices/campaigns/editorCampaignsApiSlice";
 import { Border } from "../../ui/Border";
@@ -56,9 +55,9 @@ export const OpenCampaignDialog = ({
           ariaLabel="Open campaign"
           className="scale-editor p-1"
         >
-          <BitmapText className="text-white sprites-double-height bg-midRed text-center py-half">
-            Open Campaign
-          </BitmapText>
+          <div className="text-white bg-midRed text-center py-half">
+            <span className="text-double-height">Open Campaign</span>
+          </div>
 
           {isLoading ?
             // while loading, only the spinner shows - no clickable options yet
@@ -87,14 +86,14 @@ export const OpenCampaignDialog = ({
               aria-label="Create new campaign"
               className="px-1 py-half bg-moss"
             >
-              <BitmapText>Create New</BitmapText>
+              <span className="text-single-line">Create New</span>
             </Button>
             <Button
               onClick={onClose}
               className="px-1 py-half"
               shortcutKeys={["Escape"]}
             >
-              <BitmapText>Cancel</BitmapText>
+              <span className="text-single-line">Cancel</span>
             </Button>
           </div>
         </Dialog>

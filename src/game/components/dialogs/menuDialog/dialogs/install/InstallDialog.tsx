@@ -24,16 +24,19 @@ export const InstallDialog = (_emptyProps: EmptyObject) => {
       >
         <DialogTitleBar className="pl-1" path={["Install instructions"]} />
         <div className={mainMenuScrollClasses}>
-          <BlockyMarkdown className={"text-midGrey"} markdown={introMarkdown} />
+          <BlockyMarkdown
+            className={"text-midGrey toppy:text-toppyGrey1 zx:text-zxWhite"}
+            markdown={introMarkdown}
+          />
           <MenuItems>
             <MenuItem
-              className="sprites-double-height"
+              doubleHeight
               id="manual"
               label="P.W.A. install guide"
               subMenuId="markdown/installPwa"
             />
             <MenuItem
-              className="sprites-double-height"
+              doubleHeight
               id="discord"
               label="Native builds (beta)"
               subMenuId="markdown/installNative"

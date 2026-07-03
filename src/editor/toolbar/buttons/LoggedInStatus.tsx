@@ -2,7 +2,6 @@ import { skipToken } from "@reduxjs/toolkit/query/react";
 import { type Provider } from "@supabase/supabase-js";
 
 import { importSupabaseDb } from "../../../db/supabaseDb.import";
-import { BitmapText } from "../../../game/components/tailwindSprites/BitmapText";
 import {
   nerdFontAppleChar,
   nerdFontDiscordChar,
@@ -105,14 +104,14 @@ export const LoggedInStatus = ({ className }: { className?: string }) => {
           </Button>
         </div>
       : <div className="px-1 bg-midRed">
-          <BitmapText className="block w-full sprites-double-height pb-1">
-            Not logged in
-          </BitmapText>
-          <BitmapText className="block w-full text-highlightBeige">
+          <div className="block w-full pb-1">
+            <span className="text-double-height">Not logged in</span>
+          </div>
+          <span className="block w-full text-highlightBeige text-single-line">
             You will not be able to save
-          </BitmapText>
+          </span>
           <div className="pt-1 flex flex-col gap-half">
-            <BitmapText>Log in with:</BitmapText>
+            <span className="text-single-line">Log in with:</span>
             {authProviders.map((authProvider) => {
               return (
                 <Button

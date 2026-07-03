@@ -1,3 +1,6 @@
+// full width space to pad keeps consistent with upper-case text:
+export const paddingChar = "\u2003";
+
 /**
  * Creates padded labels that slide from left to right based on their position
  */
@@ -31,11 +34,15 @@ export const getSwitchPaddedLabels = (labels: readonly string[]): string[] => {
     if (isLast) {
       // Last label is always right-aligned
       const spacesBeforeLabel = width - label.length;
-      return " ".repeat(spacesBeforeLabel) + label;
+      return paddingChar.repeat(spacesBeforeLabel) + label;
     }
     // Each non-last label starts one character further right than the previous
     const spacesBeforeLabel = index;
     const spacesAfterLabel = width - label.length - spacesBeforeLabel;
-    return " ".repeat(spacesBeforeLabel) + label + " ".repeat(spacesAfterLabel);
+    return (
+      paddingChar.repeat(spacesBeforeLabel) +
+      label +
+      paddingChar.repeat(spacesAfterLabel)
+    );
   });
 };

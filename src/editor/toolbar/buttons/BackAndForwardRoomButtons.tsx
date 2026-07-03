@@ -1,4 +1,3 @@
-import { BitmapText } from "../../../game/components/tailwindSprites/BitmapText";
 import { type TextureTailwindClass } from "../../../sprites/spritesheet/spritesheetData/TextureTailwindClass";
 import { useAppDispatch } from "../../../store/hooks";
 import { useIsUncolourised } from "../../../store/slices/gameMenus/gameMenusSelectors";
@@ -71,7 +70,7 @@ export const BackAndForwardRoomButtons = () => {
                 uncolourised,
               )}
             >
-              <BitmapText>{roomId}</BitmapText>
+              <span className="text-single-line">{roomId}</span>
             </MenuItemButton>
           ))}
       </MenuButton>
@@ -106,7 +105,7 @@ export const BackAndForwardRoomButtons = () => {
                 uncolourised,
               )}
             >
-              <BitmapText>{roomId}</BitmapText>
+              <span className="text-single-line">{roomId}</span>
             </MenuItemButton>
           ))}
       </MenuButton>

@@ -2,7 +2,6 @@ import { type UnknownAction } from "@reduxjs/toolkit";
 import { type ReactNode, useEffect } from "react";
 
 import { useMaybeGameApi } from "../game/components/GameApiContext";
-import { BitmapText } from "../game/components/tailwindSprites/BitmapText";
 import { type GameApi } from "../game/GameApi";
 import { getRecentActions } from "../store/recentActions";
 import { describeRuntimeEnvironment } from "../utils/detectEnv/describeRuntimeEnvironment";
@@ -129,9 +128,9 @@ export const ErrorDialogReport = ({
       <hr className="bg-pastelBlue zx:bg-zxWhite toppy:bg-toppyCool2 h-1 my-1 border-none" />
       {children(errorsReportText)}
       <hr className="bg-pastelBlue zx:bg-zxWhite toppy:bg-toppyCool2 h-1 my-1 border-none" />
-      <BitmapText className="block sprites-double-height my-1 text-midRed zx:text-zxWhite toppy:text-toppyPink2">
+      <span className="text-double-height my-1 text-midRed zx:text-zxWhite toppy:text-toppyPink2">
         Error message for nerds:
-      </BitmapText>
+      </span>
       <pre
         data-test-id="error-report"
         className={`bg-shadow zx:bg-zxBlack toppy:bg-toppyGrey3 text-white zx:text-zxWhite toppy:text-toppyWarm1 leading-[1em] [&_a]:text-pastelBlue px-1 w-max min-w-full`}

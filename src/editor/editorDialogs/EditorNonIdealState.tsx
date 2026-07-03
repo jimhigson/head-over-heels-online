@@ -1,7 +1,6 @@
 import { useState } from "react";
 
 import { BlockyMarkdown } from "../../game/components/BlockyMarkdown";
-import { BitmapText } from "../../game/components/tailwindSprites/BitmapText";
 import { useAppDispatch } from "../../store/hooks";
 import { clearAllData } from "../../store/slices/clearAllData";
 import { Button } from "../../ui/Button";
@@ -50,11 +49,13 @@ export const EditorNonIdealState = ({
             }}
             className="px-1 py-half"
           >
-            <BitmapText>{copied ? "Copied" : "Copy error"}</BitmapText>
+            <span className="text-single-line">
+              {copied ? "Copied" : "Copy error"}
+            </span>
           </Button>
           <div className="flex-grow" />
           <Button onClick={onDismiss} className="px-1 py-half">
-            <BitmapText>Dismiss</BitmapText>
+            <span className="text-single-line">Dismiss</span>
           </Button>
           <Button
             onClick={() => {
@@ -63,7 +64,7 @@ export const EditorNonIdealState = ({
             }}
             className="bg-midRed px-1 py-half"
           >
-            <BitmapText>Clear all data</BitmapText>
+            <span className="text-single-line">Clear all data</span>
           </Button>
         </div>
       )}

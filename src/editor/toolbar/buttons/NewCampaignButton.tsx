@@ -1,4 +1,3 @@
-import { BitmapText } from "../../../game/components/tailwindSprites/BitmapText";
 import { useAppDispatch } from "../../../store/hooks";
 import { newCampaign } from "../../slice/levelEditorSlice";
 import { confirmThenDispatch } from "../confirmThunk";
@@ -33,7 +32,7 @@ export const NewCampaignButton = () => {
         "## New Campaign\nCreate a new campaign, starting from one empty room"
       }
     >
-      <BitmapText className="relative leading-none">NEW</BitmapText>
+      <span className="relative text-single-line">NEW</span>
     </ToolbarButton>
   );
 };

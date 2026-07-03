@@ -17,7 +17,6 @@ import { Button } from "../../../../../../ui/Button";
 import { Dialog } from "../../../../../../ui/Dialog";
 import { DialogPortal } from "../../../../../../ui/DialogPortal";
 import { isTouchDevice } from "../../../../../../utils/detectEnv/detectDeviceType";
-import { BitmapText } from "../../../../tailwindSprites/BitmapText";
 import {
   optionsDialogClasses,
   optionsMenuScrollClasses,
@@ -25,7 +24,6 @@ import {
 } from "../../../dialogClasses";
 import { useActionTap, useInputTap } from "../../../useActionTap";
 import { MenuItems } from "../../MenuItems";
-import { multilineTextClass } from "../../multilineTextClass";
 import { DialogTitleBar } from "../DialogTitleBar";
 import { InputDirectionModeMenuItem } from "./InputDirectionModeMenuItem";
 import { OnScreenControlsMenuItem } from "./OnScreenControlsMenuItem";
@@ -67,19 +65,19 @@ const useKeyAssignmentInput = () => {
 const ExpandToShowAll = ({ showAll }: { showAll: () => void }) => {
   return (
     <div className="text-metallicBlueHalfbrite zx:text-zxBlue toppy:text-toppyCool3">
-      <BitmapText className={`block mb-1 ${multilineTextClass}`}>
+      <span className="block mb-1 text-multi-line">
         Detected that you are on a phone or tablet
-      </BitmapText>
-      <BitmapText className={`block mb-1 ${multilineTextClass}`}>
+      </span>
+      <span className="block mb-1 text-multi-line">
         Additional settings for keys and gamepad buttons are designed for
         desktop/laptops, but you can use them on phones/tablets if you have a
         keyboard or gamepad connected
-      </BitmapText>
+      </span>
       <Button
-        className={`block w-full mb-2 text-white p-1 bg-midRed zx:text-zxRed toppy:text-toppyPink2 toppy:bg-toppyWarm5 ${multilineTextClass}`}
+        className="block w-full mb-2 text-white p-1 bg-midRed zx:text-zxRed toppy:text-toppyPink2 toppy:bg-toppyWarm5 text-multi-line"
         onClick={showAll}
       >
-        <BitmapText>Tap here to show all settings</BitmapText>
+        <span className="text-single-line">Tap here to show all settings</span>
       </Button>
     </div>
   );
@@ -124,12 +122,9 @@ export const ControlOptionsDialog = () => {
             {showAll && (
               <>
                 <PresetMenuItem />
-                <BitmapText
-                  TagName="h1"
-                  className="text-midRed zx:text-zxBlue toppy:text-toppyPink2 sprites-double-height mt-1 block col-span-3 text-center sprites-uppercase"
-                >
-                  Select the Keys
-                </BitmapText>
+                <h1 className="text-midRed zx:text-zxBlue toppy:text-toppyPink2 mt-1 block col-span-3 text-center uppercase">
+                  <span className="text-double-height">Select the Keys</span>
+                </h1>
               </>
             )}
           </MenuItems>

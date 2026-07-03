@@ -13,10 +13,9 @@ import { Border } from "../../../../../../ui/Border";
 import { Dialog } from "../../../../../../ui/Dialog";
 import { DialogPortal } from "../../../../../../ui/DialogPortal";
 import { objectSize } from "../../../../../../utils/objectSize";
-import { BitmapText } from "../../../../tailwindSprites/BitmapText";
+import { ColourCycleText } from "../../../../ColourCycleText";
 import { BackMenuItem } from "../../BackMenuItem";
 import { MenuItems } from "../../MenuItems";
-import { multilineTextClass } from "../../multilineTextClass";
 import { mainMenuCycle } from "../mainMenu/mainMenuCycle";
 import { MainMenuHeading } from "../mainMenu/MainMenuHeading";
 
@@ -87,15 +86,15 @@ const FreeCharacterText = ({
     className="block text-center mx-auto text-lightGrey zx:text-zxYellow toppy:text-toppyWarm3"
   >
     {freeCharacterName === "head" ?
-      <BitmapText className="text-metallicBlue zx:text-zxBlue toppy:text-toppyCool2">
+      <span className="text-metallicBlue zx:text-zxBlue toppy:text-toppyCool2">
         Head
-      </BitmapText>
-    : <BitmapText className="text-pink zx:text-zxWhite toppy:text-toppyPink1">
+      </span>
+    : <span className="text-pink zx:text-zxWhite toppy:text-toppyPink1">
         Heels
-      </BitmapText>
+      </span>
     }
-    <BitmapText> is</BitmapText>
-    <BitmapText classnameCycle={mainMenuCycle}> free</BitmapText>
+    <span> is</span>
+    <ColourCycleText classnameCycle={mainMenuCycle}>{" free"}</ColourCycleText>
   </span>
 );
 
@@ -133,16 +132,18 @@ export const ScoreDialog = () => {
         dialogId="score"
       >
         <MainMenuHeading noSubtitle className="resHandheld:hidden" />
-        <div className={`${multilineTextClass} my-auto`}>
-          <BitmapText
-            classnameCycle={mainMenuCycle}
-            className="mt-1 resHandheld:mt-3 block text-center mx-auto sprites-double-height sprites-uppercase"
-          >
-            {scoreLabel}
-          </BitmapText>
-          <BitmapText className="mt-1 block text-center mx-auto text-highlightBeige zx:text-zxYellow toppy:text-toppyWarm3">
+        <div className="text-multi-line my-auto">
+          <div className="mt-1 resHandheld:mt-3 text-center uppercase">
+            <ColourCycleText
+              classnameCycle={mainMenuCycle}
+              className="text-double-height"
+            >
+              {scoreLabel}
+            </ColourCycleText>
+          </div>
+          <span className="mt-1 block text-center mx-auto text-highlightBeige zx:text-zxYellow toppy:text-toppyWarm3">
             Score {score.toLocaleString()}
-          </BitmapText>
+          </span>
           <div className="mt-1">
             {freeCharacters.map((fc) => (
               <FreeCharacterText key={fc} freeCharacterName={fc} />
@@ -153,14 +154,14 @@ export const ScoreDialog = () => {
             data-rooms-explored={roomsExploredCount}
             data-rooms-total={roomCount}
           >
-            <BitmapText className="mt-1 block text-center mx-auto text-pink zx:text-zxCyan toppy:text-toppyPink1">
+            <span className="mt-1 block text-center mx-auto text-pink zx:text-zxCyan toppy:text-toppyPink1">
               Explored {roomsExploredCount} / {roomCount} rooms{" "}
               {`(${asPercentage(roomsExploredCount, roomCount)})`}
-            </BitmapText>
+            </span>
           </span>
-          <BitmapText className="mt-1 block text-center mx-auto text-lightGrey zx:text-zxWhite toppy:text-toppyGrey1">
+          <span className="mt-1 block text-center mx-auto text-lightGrey zx:text-zxWhite toppy:text-toppyGrey1">
             Liberated {planetsLiberatedCount} planets
-          </BitmapText>
+          </span>
           <MenuItems className="hidden">
             <BackMenuItem />
           </MenuItems>

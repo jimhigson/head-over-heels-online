@@ -19,6 +19,7 @@ const directions8HintMarkdown =
   "**8-way**: New for the remake - *diagonal* movement";
 const analogueDirectionsHintMarkdown =
   "**Analogue**: Move in *any* direction with analogue stick";
+
 export const InputDirectionModeMenuItem = () => {
   const inputDirectionMode = useInputDirectionMode();
   return (
@@ -40,7 +41,7 @@ export const InputDirectionModeMenuItem = () => {
       }
       onSelect={useDispatchActionCallback(nextInputDirectionMode)}
       verticalAlignItemsCentre
-      className="sprites-double-height"
+      doubleHeight
       hint={
         <BlockyMarkdown
           className={optionsHintMarkdownClassname}

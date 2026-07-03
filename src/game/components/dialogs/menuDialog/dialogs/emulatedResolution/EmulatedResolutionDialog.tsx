@@ -9,7 +9,6 @@ import { useDispatchActionCallback } from "../../../../../../store/useDispatchAc
 import { Dialog } from "../../../../../../ui/Dialog";
 import { DialogPortal } from "../../../../../../ui/DialogPortal";
 import { keys } from "../../../../../../utils/entries";
-import { BitmapText } from "../../../../tailwindSprites/BitmapText";
 import {
   optionsDialogClasses,
   optionsHintMarkdownClassname,
@@ -34,9 +33,9 @@ const ResolutionMenuItem = ({
       label={`${currentResolutionName === resolutionName ? "* " : ""}${resolution.name}`}
       doubleHeightWhenFocussed
       hint={
-        <BitmapText className={optionsHintMarkdownClassname}>
+        <span className={`${optionsHintMarkdownClassname} text-single-line`}>
           {resolution.size.x} x {resolution.size.y}
-        </BitmapText>
+        </span>
       }
       onSelect={useDispatchActionCallback(
         setEmulatedResolution,

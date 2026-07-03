@@ -3,12 +3,7 @@ import { useDispatchActionCallback } from "../../../../../../store/useDispatchAc
 import { Dialog } from "../../../../../../ui/Dialog";
 import { DialogPortal } from "../../../../../../ui/DialogPortal";
 import { detectDeviceType } from "../../../../../../utils/detectEnv/detectDeviceType";
-import {
-  BitmapText,
-  MultipleBitmapText,
-} from "../../../../tailwindSprites/BitmapText";
 import { CurrentKeyAssignments } from "../../CurrentKeyAssignments";
-import { multilineTextClass } from "../../multilineTextClass";
 
 export const HoldDialog = () => {
   return (
@@ -21,18 +16,16 @@ export const HoldDialog = () => {
         onClick={useDispatchActionCallback(backToParentMenu)}
         dialogId="hold"
       >
-        <BitmapText className="block w-min mx-auto px-1 sprites-double-height bg-zxBlack py-oneScaledPix sprites-uppercase">
-          PAUSED
-        </BitmapText>
+        <div className="w-min mx-auto px-1 bg-zxBlack py-oneScaledPix uppercase">
+          <span className="text-double-height">PAUSED</span>
+        </div>
         <span className="zx">
           {detectDeviceType() === "desktop" ?
             <div className="flex flex-col gap-1">
-              <div
-                className={`${multilineTextClass} px-1 bg-zxBlack py-oneScaledPix`}
-              >
-                <MultipleBitmapText>
-                  Press to <span className="text-zxWhite">continue</span>:
-                </MultipleBitmapText>
+              <div className="text-multi-line px-1 bg-zxBlack py-oneScaledPix">
+                <div className="text-single-line">
+                  To <span className="text-zxWhite">continue</span> press:
+                </div>
                 <div className="flex flex-row gap-1 mx-auto">
                   <CurrentKeyAssignments
                     className="flex flex-row gap-1"
@@ -41,12 +34,10 @@ export const HoldDialog = () => {
                   />
                 </div>
               </div>
-              <div
-                className={`${multilineTextClass} px-1 bg-zxBlack py-oneScaledPix`}
-              >
-                <MultipleBitmapText>
-                  Press for <span className="text-zxWhite">Map</span>:
-                </MultipleBitmapText>
+              <div className="text-multi-line px-1 bg-zxBlack py-oneScaledPix">
+                <div className="text-single-line">
+                  For <span className="text-zxWhite">Map</span> press:
+                </div>
                 <div className="flex flex-row gap-1 mx-auto">
                   <CurrentKeyAssignments
                     className="flex flex-row gap-1"
@@ -56,13 +47,11 @@ export const HoldDialog = () => {
                 </div>
               </div>
             </div>
-          : <div
-              className={`${multilineTextClass} px-1 bg-zxBlack py-oneScaledPix`}
-            >
-              <BitmapText className="me-1 text-zxRed toppy:text-toppyPink2">
+          : <div className="px-1 bg-zxBlack py-oneScaledPix">
+              <span className="me-1 text-zxRed toppy:text-toppyPink2 text-single-line">
                 Tap screen
-              </BitmapText>
-              <BitmapText>to continue</BitmapText>
+              </span>
+              <span className="text-single-line">to continue</span>
             </div>
           }
         </span>

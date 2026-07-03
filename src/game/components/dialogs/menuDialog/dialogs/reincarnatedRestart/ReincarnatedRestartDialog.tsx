@@ -3,10 +3,8 @@ import { backToParentMenu } from "../../../../../../store/slices/gameMenus/gameM
 import { useDispatchActionCallback } from "../../../../../../store/useDispatchActionCallback";
 import { Dialog } from "../../../../../../ui/Dialog";
 import { DialogPortal } from "../../../../../../ui/DialogPortal";
-import { BitmapText } from "../../../../tailwindSprites/BitmapText";
 import { BackMenuItem } from "../../BackMenuItem";
 import { MenuItems } from "../../MenuItems";
-import { multilineTextClass } from "../../multilineTextClass";
 
 export const ReincarnatedRestartDialog = () => {
   return (
@@ -19,26 +17,20 @@ export const ReincarnatedRestartDialog = () => {
         onClick={useDispatchActionCallback(backToParentMenu)}
         dialogId="reincarnatedRestart"
       >
-        <BitmapText
-          className={`${multilineTextClass} text-midRed zx:text-zxRed toppy:text-toppyPink2 block w-24 mx-auto px-1 bg-zxBlack py-oneScaledPix`}
-        >
+        <span className="text-multi-line text-midRed zx:text-zxRed toppy:text-toppyPink2 block w-24 mx-auto px-1 bg-zxBlack py-oneScaledPix">
           You don’t go towards the light
-        </BitmapText>
-        <BitmapText
-          className={`${multilineTextClass} block text-highlightBeige zx:text-zxYellow toppy:text-toppyWarm3 w-24 mx-auto px-1 bg-zxBlack py-oneScaledPix`}
-        >
+        </span>
+        <span className="text-multi-line block text-highlightBeige zx:text-zxYellow toppy:text-toppyWarm3 w-24 mx-auto px-1 bg-zxBlack py-oneScaledPix">
           You have a horrible taste in your mouth
-        </BitmapText>
-        <BitmapText
-          className={`${multilineTextClass} block text-moss zx:text-zxGreen toppy:text-toppyCool2 w-24 mx-auto px-1 sprites-double-height bg-zxBlack py-oneScaledPix`}
-        >
-          You have reincarnated!
-        </BitmapText>
-        <BitmapText
-          className={`${multilineTextClass} block text-pastelBlue zx:text-zxCyan toppy:text-toppyCool1 w-24 mx-auto px-1 bg-zxBlack py-oneScaledPix`}
-        >
+        </span>
+        <div className="text-moss zx:text-zxGreen toppy:text-toppyCool2 w-24 mx-auto px-1 bg-zxBlack py-oneScaledPix leading-[calc(22px*var(--scale,1))]">
+          <span className="text-double-height inline-block max-w-full whitespace-normal">
+            You have reincarnated!
+          </span>
+        </div>
+        <span className="text-multi-line block text-pastelBlue zx:text-zxCyan toppy:text-toppyCool1 w-24 mx-auto px-1 bg-zxBlack py-oneScaledPix">
           Everything is back to how it was when you ate the fish
-        </BitmapText>
+        </span>
         <span
           className={`sprite mx-auto bg-zxBlack ${"texture-animated-fish" satisfies AnimatedTextureTailwindClass} zx:sprite-revert-to-white`}
         />

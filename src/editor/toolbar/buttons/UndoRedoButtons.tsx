@@ -1,4 +1,3 @@
-import { BitmapText } from "../../../game/components/tailwindSprites/BitmapText";
 import { useAppDispatch } from "../../../store/hooks";
 import { useEditorAppSelector } from "../../../store/store";
 import {
@@ -44,9 +43,7 @@ export const UndoRedoButtons = () => {
             tooltipContent={
               nextUndo ?
                 <div className="flex flex-col gap-1">
-                  <BitmapText className="sprites-double-height">
-                    Undo
-                  </BitmapText>
+                  <span className="text-double-height">Undo</span>
                   <div className={undoHistoryGridClassName}>
                     <UndoEntryLabel entry={nextUndo} scenery={scenery} />
                   </div>
@@ -56,7 +53,7 @@ export const UndoRedoButtons = () => {
             shortcutKeys={["⌘Z", "^Z"]}
           >
             <IconWithTwoLineHoverText
-              icon={<BitmapText>⎌</BitmapText>}
+              icon={<span className="text-single-line">⎌</span>}
               topText="un"
               bottomText="do"
             />
@@ -92,9 +89,7 @@ export const UndoRedoButtons = () => {
             tooltipContent={
               nextRedo ?
                 <div className="flex flex-col gap-1">
-                  <BitmapText className="sprites-double-height">
-                    Redo
-                  </BitmapText>
+                  <span className="text-double-height">Redo</span>
                   <div className={undoHistoryGridClassName}>
                     <UndoEntryLabel entry={nextRedo} scenery={scenery} />
                   </div>
@@ -104,7 +99,7 @@ export const UndoRedoButtons = () => {
             shortcutKeys={["⌘⇧Z", "^⇧Z"]}
           >
             <IconWithTwoLineHoverText
-              icon={<BitmapText>⟳</BitmapText>}
+              icon={<span className="text-single-line">⟳</span>}
               topText="re"
               bottomText="do"
             />

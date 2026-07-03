@@ -1,10 +1,7 @@
 #!/usr/bin/env -S pnpm tsx
 import { decode } from "@cwasm/webp";
+import { execFileSync } from "node:child_process";
 import { existsSync, mkdirSync, readFileSync, writeFileSync } from "node:fs";
-import opentype from "opentype.js";
-// wawoff2 ships no types; it exposes compress(buffer): Promise<Uint8Array>
-// @ts-expect-error -- no type declarations
-import { compress as woff2Compress } from "wawoff2";
 
 import {
   type HudGlyph,
@@ -20,6 +17,8 @@ const spritesheetPath = "gfx/sprites.webp";
 const outputDir = "src/_generated/font";
 const outputPath = `${outputDir}/blockstack-head-over-heels.woff2`;
 const manifestPath = `${outputDir}/manifest.json`;
+const builderScript = "scripts/font/buildVariableFont.py";
+const requirementsPath = "scripts/font/requirements.txt";
 
 const unitsPerEm = 512;
 /** font units per design pixel - 512/8 gives clean integer pixel boundaries */
@@ -39,9 +38,38 @@ const spaceAdvanceWidth = hudCharTextureSize.w * 0.625;
 // an explicit wider space, one full block - has no equivalent in the sprite path
 const emSpaceAdvanceWidth = hudCharTextureSize.w;
 
+// most multi-codepoint spritesheet names (eg "QUESTMK") are spritesheet-only and
+// skipped, but these also become font glyphs, at the given codepoints. "DOT" is
+// the original game's 8px fixed-grid full stop: mapping it to U+FF0E FULLWIDTH
+// FULL STOP gives text a full-character-width dot (eg game speed "0．75") while
+// the ordinary "." keeps its narrow proportional glyph
+const namedGlyphCodePoints: { [name: string]: number } = {
+  DOT: 0xff_0e,
+};
+
+// a single custom variation axis: at its peak (1) every glyph is twice as tall
+// at the same width, so "double-height" text is a real font variant selected
+// with font-variation-settings. Custom (non-registered) tags must be uppercase.
+const heightAxis = {
+  tag: "HGHT",
+  min: 0,
+  default: 0,
+  max: 1,
+  name: "Height",
+} as const;
+
 type DecodedImage = { width: number; height: number; data: Uint8ClampedArray };
 
 type Rect = { col: number; row: number; w: number; h: number };
+
+/** a closed contour of on-curve points, in font units with the baseline at y=0 */
+type Contour = Array<[number, number]>;
+
+type GlyphData = {
+  unicode: number;
+  advanceWidth: number;
+  contours: Contour[];
+};
 
 const isInk = (image: DecodedImage, x: number, y: number): boolean => {
   const alpha = image.data[(y * image.width + x) * 4 + 3];
@@ -96,129 +124,134 @@ const mergeInkRects = (
 };
 
 /**
- * Build an opentype path for one glyph from its merged ink rectangles. Contours
- * are wound clockwise in font (y-up) space for opentype.js's non-zero fill.
+ * A glyph's ink rectangles as closed contours in font units (baseline at y=0),
+ * wound clockwise in y-up space. varLib's default (normal) master uses these as
+ * drawn; the double-height master scales every y by 2.
  */
-const glyphPath = (
+const glyphContours = (
   image: DecodedImage,
   hudGlyph: HudGlyph<string>,
-): opentype.Path => {
-  const path = new opentype.Path();
-  for (const { col, row, w, h } of mergeInkRects(image, hudGlyph)) {
+): Contour[] =>
+  mergeInkRects(image, hudGlyph).map(({ col, row, w, h }) => {
     const xLeft = col * px;
     const xRight = (col + w) * px;
     const yTop = (baselineFromTop - row) * px;
     const yBottom = (baselineFromTop - (row + h)) * px;
-    path.moveTo(xLeft, yBottom);
-    path.lineTo(xLeft, yTop);
-    path.lineTo(xRight, yTop);
-    path.lineTo(xRight, yBottom);
-    path.close();
-  }
-  return path;
-};
-
-const glyphName = (codePoint: number): string =>
-  `glyph${codePoint.toString(16)}`;
-
-const notdef = new opentype.Glyph({
-  name: ".notdef",
-  unicode: 0,
-  advanceWidth: hudCharTextureSize.w * px,
-  path: new opentype.Path(),
-});
+    return [
+      [xLeft, yBottom],
+      [xLeft, yTop],
+      [xRight, yTop],
+      [xRight, yBottom],
+    ];
+  });
 
 const image = decode(readFileSync(spritesheetPath)) as DecodedImage;
 
-const glyphs: opentype.Glyph[] = [notdef];
-let skipped = 0;
+const glyphs: GlyphData[] = [];
 for (const hudGlyph of hudGlyphs) {
-  // only single-codepoint chars become font glyphs; this drops the unused
-  // EnterFullscreen/ExitFullscreen pseudo-glyphs and the uppercaseCharReplacement
-  // strings (eg "QUESTMK"), so duplicated punctuation resolves to the row1 variant
+  // only single-codepoint chars become font glyphs (bar namedGlyphCodePoints);
+  // this drops the unused EnterFullscreen/ExitFullscreen pseudo-glyphs and the
+  // uppercaseCharReplacement strings (eg "QUESTMK"), so duplicated punctuation
+  // resolves to the row1 variant
   if (size(hudGlyph.char) !== 1) {
-    skipped++;
+    const namedCodePoint = namedGlyphCodePoints[hudGlyph.char];
+    if (namedCodePoint !== undefined) {
+      glyphs.push({
+        unicode: namedCodePoint,
+        advanceWidth: hudGlyph.advanceWidth * px,
+        contours: glyphContours(image, hudGlyph),
+      });
+    }
     continue;
   }
   const codePoint = hudGlyph.char.codePointAt(0)!;
   const advanceWidth =
     codePoint === spaceCodePoint ? spaceAdvanceWidth : hudGlyph.advanceWidth;
-  glyphs.push(
-    new opentype.Glyph({
-      name: glyphName(codePoint),
-      unicode: codePoint,
-      advanceWidth: advanceWidth * px,
-      path: glyphPath(image, hudGlyph),
-    }),
-  );
+  glyphs.push({
+    unicode: codePoint,
+    advanceWidth: advanceWidth * px,
+    contours: glyphContours(image, hudGlyph),
+  });
 }
 
 // em space exists only in the font (not the spritesheet), as an empty glyph with
 // a full-block advance
-glyphs.push(
-  new opentype.Glyph({
-    name: glyphName(emSpaceCodePoint),
-    unicode: emSpaceCodePoint,
-    advanceWidth: emSpaceAdvanceWidth * px,
-    path: new opentype.Path(),
-  }),
-);
-
-const ascender = baselineFromTop * px;
-const descender = -(hudLowercaseCharTextureSize.h - baselineFromTop) * px;
-
-const font = new opentype.Font({
-  familyName: "HeadOverHeels",
-  styleName: "Regular",
-  unitsPerEm,
-  ascender,
-  descender,
-  glyphs,
+glyphs.push({
+  unicode: emSpaceCodePoint,
+  advanceWidth: emSpaceAdvanceWidth * px,
+  contours: [],
 });
 
-// a manifest of everything that determines the font output: the glyph set, each
-// glyph's outline and advance, and the font metrics - all derived from hudGlyphs
-// and the spritesheet pixels. We only rewrite the woff2 when this changes, so an
-// unchanged font keeps its committed bytes (and accurate timestamp) instead of
-// churning on opentype.js's per-run head-table timestamp.
-const manifestData = {
+// everything about the design that determines the font output - glyph outlines,
+// advances, metrics and the axis. Change-detection compares only this, so an
+// unchanged design skips the rebuild and keeps the committed woff2 bytes.
+const design = {
+  // bump whenever buildVariableFont.py changes what it emits for the same
+  // glyph data, so the rebuild isn't skipped as "unchanged"
+  builderVersion: 3,
   unitsPerEm,
-  ascender,
-  descender,
-  glyphs: glyphs.map((glyph) => ({
-    unicode: glyph.unicode,
-    advanceWidth: glyph.advanceWidth,
-    path: glyph.path.commands,
-  })),
+  ascender: baselineFromTop * px,
+  descender: -(hudLowercaseCharTextureSize.h - baselineFromTop) * px,
+  notdefAdvance: hudCharTextureSize.w * px,
+  // font units per design pixel, so the builder can place pixel-exact features
+  // (eg the underline) without re-deriving this from unitsPerEm
+  unitsPerPixel: px,
+  axis: heightAxis,
+  glyphs,
 };
 
-// compared as parsed JSON so that reformatting the committed manifest (eg
-// prettier, indentation, a trailing newline) doesn't force a needless rebuild
-const manifestUnchanged = (): boolean => {
+// the committed manifest is the design plus a `builtAt` unix timestamp. The
+// builder bakes builtAt into head.modified, so the font's version stamp only
+// advances when the design genuinely changes (and the build is otherwise
+// deterministic - an unchanged design rebuilds to identical bytes)
+const committedDesign = (): unknown => {
   if (!existsSync(manifestPath)) {
-    return false;
+    return undefined;
   }
   try {
-    return (
-      JSON.stringify(JSON.parse(readFileSync(manifestPath, "utf8"))) ===
-      JSON.stringify(manifestData)
-    );
+    const parsed = JSON.parse(readFileSync(manifestPath, "utf8"));
+    delete parsed.builtAt;
+    return parsed;
   } catch {
-    return false;
+    return undefined;
   }
 };
 
-if (manifestUnchanged()) {
+// override with PYTHON=/path/to/python for a venv install (eg on macOS where
+// PEP 668 blocks pip installing into the system python)
+const python = process.env.PYTHON ?? "python3";
+
+// fail with an actionable message rather than a raw ENOENT or Python traceback
+// when the build toolchain isn't installed
+const ensurePythonToolchain = () => {
+  try {
+    execFileSync(python, ["-c", "import fontTools, brotli"], {
+      stdio: "ignore",
+    });
+  } catch (e) {
+    const pythonMissing = (e as { code?: string }).code === "ENOENT";
+    throw new Error(
+      pythonMissing ?
+        `${python} is required to build the font but was not found. Install Python 3, then: pip install -r ${requirementsPath}`
+      : `the font builder's Python dependencies are missing. Install them with: pip install -r ${requirementsPath} (or set PYTHON to a venv python that has them)`,
+      { cause: e },
+    );
+  }
+};
+
+if (JSON.stringify(committedDesign()) === JSON.stringify(design)) {
   console.log(
     `🅵 font unchanged (${glyphs.length} glyphs) - kept existing ${outputPath}`,
   );
 } else {
+  ensurePythonToolchain();
   mkdirSync(outputDir, { recursive: true });
-  const otf = Buffer.from(font.toArrayBuffer());
-  const woff2 = Buffer.from(await woff2Compress(otf));
-  writeFileSync(outputPath, woff2);
-  writeFileSync(manifestPath, JSON.stringify(manifestData, null, 2));
-  console.log(
-    `🅵 wrote ${outputPath}: ${glyphs.length} glyphs (${skipped} non-codepoint entries skipped), ${woff2.length} bytes woff2 (from ${otf.length} bytes otf)`,
-  );
+  const builtAt = Math.floor(Date.now() / 1000);
+  writeFileSync(manifestPath, JSON.stringify({ ...design, builtAt }, null, 2));
+  // opentype.js can neither write glyf outlines nor a working gvar, and a
+  // hand-assembled variable font is silently not animated by Chromium; fontTools
+  // (varLib) builds one that is. See scripts/font/buildVariableFont.py.
+  execFileSync(python, [builderScript, manifestPath, outputPath], {
+    stdio: "inherit",
+  });
 }

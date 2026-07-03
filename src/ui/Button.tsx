@@ -74,9 +74,6 @@ export const Button = ({
       {...props}
     >
       {children}
-      {/* 
-      this might be better but needs testing
-      <MultipleBitmapText>{children}</MultipleBitmapText> */}
     </button>
   );
 

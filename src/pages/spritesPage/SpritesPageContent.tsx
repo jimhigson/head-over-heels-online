@@ -1,4 +1,3 @@
-import { BitmapText } from "../../game/components/tailwindSprites/BitmapText";
 import { type AppSpriteFrame } from "../../sprites/spritesheet/spritesheetData/AppSpriteFrame";
 import {
   type FramesWithSpeed,
@@ -35,13 +34,12 @@ export const SpritesPageContent = ({
       <PaletteSwatch />
       <FontSpecimen />
       <SpritesheetImage spriteFilter={spriteFilter} />
-      <BitmapText
+      <h1
         id="animations"
-        className="sprites-double-height text-metallicBlue zx:text-zxBlue toppy:text-toppyCool3 mt-1"
-        TagName="h1"
+        className="text-double-height text-metallicBlue zx:text-zxBlue toppy:text-toppyCool3 mt-1"
       >
         Animations
-      </BitmapText>
+      </h1>
       <div className="flex flex-wrap p-[8px] bg-pureBlack zx:bg-zxBlack toppy:bg-toppyBlack">
         {animationEntries.map(([animationName, frames]) => (
           <AnimationTile
@@ -52,13 +50,12 @@ export const SpritesPageContent = ({
           />
         ))}
       </div>
-      <BitmapText
+      <h1
         id="sprites"
-        className="sprites-double-height text-metallicBlue zx:text-zxBlue toppy:text-toppyCool3 mt-1"
-        TagName="h1"
+        className="text-double-height text-metallicBlue zx:text-zxBlue toppy:text-toppyCool3 mt-1"
       >
         Sprites
-      </BitmapText>
+      </h1>
       <div className="flex flex-wrap p-[8px] bg-pureBlack zx:bg-zxBlack toppy:bg-toppyBlack">
         {textureIds.map((textureId) => {
           const { frame } = currentSpritesheetData.frames[textureId];

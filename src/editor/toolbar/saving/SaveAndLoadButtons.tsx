@@ -1,7 +1,6 @@
 import { useState } from "preact/hooks";
 
 import { type SaveFailure } from "../../../db/campaign";
-import { BitmapText } from "../../../game/components/tailwindSprites/BitmapText";
 import { type TextureTailwindClass } from "../../../sprites/spritesheet/spritesheetData/TextureTailwindClass";
 import { useAppDispatch } from "../../../store/hooks";
 import { editorStore, useEditorAppSelector } from "../../../store/store";
@@ -75,9 +74,9 @@ export const SaveAndLoadButtons = () => {
           disabled
           className="!bg-moss !text-white"
         >
-          <BitmapText className="relative leading-none">
+          <span className="relative leading-none text-single-line">
             {`v${savedVersion}`}
-          </BitmapText>
+          </span>
         </ToolbarButton>
       : <MenuButton
           main={

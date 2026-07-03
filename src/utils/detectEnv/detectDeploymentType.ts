@@ -15,20 +15,28 @@ export type DeploymentType = (typeof deploymentTypes)[number];
  * esbuild to eliminate dead code branches (e.g., Tauri API imports in non-Tauri builds).
  * Calling this function defeats that dead code elimination.
  */
+let cachedDeploymentType: DeploymentType | undefined;
+
 export const detectDeploymentType = (): DeploymentType => {
+  if (cachedDeploymentType !== undefined) {
+    return cachedDeploymentType;
+  }
+
   const deploymentOverride = typedURLSearchParams().get("deployment");
 
   if (deploymentOverride !== null) {
-    return deploymentOverride;
+    cachedDeploymentType = deploymentOverride;
+    return cachedDeploymentType;
   }
 
-  return (
+  cachedDeploymentType =
     import.meta.env.TAURI_ENV_PLATFORM ? "tauri"
     : (
       window.matchMedia("(display-mode: standalone)").matches ||
       (window.navigator as NonStandardIosNavigator).standalone
     ) ?
       "pwa"
-    : "browser"
-  );
+    : "browser";
+
+  return cachedDeploymentType;
 };

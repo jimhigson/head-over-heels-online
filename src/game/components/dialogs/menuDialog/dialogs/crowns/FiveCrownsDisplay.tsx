@@ -1,12 +1,13 @@
-import { BitmapText } from "../../../../tailwindSprites/BitmapText";
 import { TitledCrown } from "./TitledCrown";
 
 export const FiveCrownsDisplay = () => {
   return (
     <>
-      <BitmapText className="block sprites-double-height text-highlightBeige zx:text-zxYellow toppy:text-toppyWarm3 mx-auto w-max">
-        The Blacktooth Empire
-      </BitmapText>
+      <div className="mx-auto w-max">
+        <span className="text-double-height text-highlightBeige zx:text-zxYellow toppy:text-toppyWarm3">
+          The Blacktooth Empire
+        </span>
+      </div>
       <div className="mx-auto relative w-0 h-1">
         <TitledCrown
           planet="egyptus"

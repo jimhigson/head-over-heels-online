@@ -3,12 +3,11 @@ import { useCallback, useEffect, useId, useRef, useState } from "preact/hooks";
 import { type MouseEvent, type ReactNode } from "react";
 
 import { type ExportedSoundId } from "../_generated/sfxdex/sfx";
-import { BitmapText } from "../game/components/tailwindSprites/BitmapText";
 import { PlayAudio } from "../utils/sound/PlayAudio";
 import { twClass } from "../utils/twClass";
 import { cn } from "./cn";
 import { enhanceTooltipWithHotkeys } from "./enhanceTooltipWithHotkeys";
-import { getSwitchPaddedLabels } from "./getSwitchPaddedLabels";
+import { getSwitchPaddedLabels, paddingChar } from "./getSwitchPaddedLabels";
 import { Tooltip } from "./tooltip/Tooltip";
 import { type ShortcutKeys, useKeyboardShortcut } from "./useKeyboardShortcut";
 
@@ -22,14 +21,12 @@ const SwitchLabel = ({
   htmlFor: string;
 }) =>
   typeof label === "string" ?
-    <BitmapText
-      TagName="label"
+    <label
       htmlFor={htmlFor}
-      className="inline-block mr-1 text-lightGrey py-half"
-      noSlitWords
+      className="inline-block mr-1 text-lightGrey py-half whitespace-nowrap text-single-line"
     >
       {label}
-    </BitmapText>
+    </label>
   : <label htmlFor={htmlFor} className="inline-block mr-1 py-half">
       {label}
     </label>;
@@ -69,8 +66,8 @@ export const Switch = ({
 }: SwitchProps) => {
   const switchId = useId();
   const labelLength = Math.max(trueLabel.length, falseLabel.length) + 1;
-  const trueLabelPadded = trueLabel.padStart(labelLength, " ");
-  const falseLabelPadded = falseLabel.padEnd(labelLength, " ");
+  const trueLabelPadded = trueLabel.padStart(labelLength, paddingChar);
+  const falseLabelPadded = falseLabel.padEnd(labelLength, paddingChar);
 
   const prevValueRef = useRef(value);
   const [hasChanged, setHasChanged] = useState(false);
@@ -99,22 +96,21 @@ export const Switch = ({
         />
       )}
       {label && <SwitchLabel label={label} htmlFor={switchId} />}
-      <BitmapText
+      <span
         id={switchId}
         role="switch"
         aria-checked={value}
         aria-label={ariaLabel}
         aria-description={ariaDescription}
         className={clsx(
-          "inline-block w-min h-min py-half px-half sprites-uppercase",
+          "inline-block w-min h-min py-half px-half uppercase whitespace-pre text-single-line",
           value ?
             "bg-shadowHalfbrite text-moss zx:bg-zxBlack zx:text-zxGreen toppy:bg-toppyGrey3 toppy:text-toppyCool2"
           : "bg-redShadowHalfbrite text-midRed zx:bg-zxBlack zx:text-zxRed toppy:bg-toppyGrey3 toppy:text-toppyPink2",
         )}
-        noSlitWords
       >
         {value ? trueLabelPadded : falseLabelPadded}
-      </BitmapText>
+      </span>
     </span>
   );
 
@@ -221,7 +217,7 @@ export const SwitchN = <TValue extends number | string>({
         />
       )}
       {label && <SwitchLabel label={label} htmlFor={switchId} />}
-      <BitmapText
+      <span
         id={switchId}
         role="switch"
         aria-label={
@@ -230,15 +226,14 @@ export const SwitchN = <TValue extends number | string>({
           )
         }
         className={clsx(
-          "inline-block w-min h-min py-half px-half sprites-uppercase",
+          "inline-block w-min h-min py-half px-half uppercase whitespace-pre text-single-line",
           notFound ? switchNErrorColours : (
             (switchNColours[colorIndex] ?? switchNColours[0])
           ),
         )}
-        noSlitWords
       >
         {notFound ? `${value}` : paddedLabels[valueIndex]}
-      </BitmapText>
+      </span>
     </span>
   );
 

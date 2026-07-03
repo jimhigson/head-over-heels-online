@@ -1,9 +1,5 @@
 import { useEffect } from "preact/hooks";
 
-import {
-  BitmapText,
-  MultipleBitmapText,
-} from "../../game/components/tailwindSprites/BitmapText";
 import { spriteOptionValues } from "../../sprites/spritesheet/spritesheetData/spritesheetMetaData";
 import { useAppDispatch } from "../../store/hooks";
 import { useSpritesOption } from "../../store/slices/gameMenus/gameMenusSelectors";
@@ -40,16 +36,16 @@ export const SpriteOptionSelect = () => {
 
   return (
     <div className="text-white zx:text-zxWhite toppy:text-toppyWarm1 flex-row flex gap-x-1">
-      <MultipleBitmapText>
+      <span className="text-single-line">
         <span className="text-midRed zx:text-zxRed toppy:text-toppyPink2">
           F10
         </span>
         to cycle skins, or choose:
-      </MultipleBitmapText>
+      </span>
       <Select
         value={currentLabel}
         triggerButtonLabel={
-          <BitmapText className="w-16">{currentLabel}</BitmapText>
+          <span className="w-16 text-single-line">{currentLabel}</span>
         }
         values={[...spriteOptionLabels]}
         onSelect={(label) => {

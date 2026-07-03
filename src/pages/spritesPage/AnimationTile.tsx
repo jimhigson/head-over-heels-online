@@ -1,6 +1,5 @@
 import { useEffect, useRef } from "preact/hooks";
 
-import { BitmapText } from "../../game/components/tailwindSprites/BitmapText";
 import { sanitiseForClassName } from "../../game/components/tailwindSprites/SanitiseForClassName";
 import {
   type FramesWithSpeed,
@@ -84,7 +83,7 @@ export const AnimationTile = ({
                   href={`#sprite-${sanitiseForClassName(f)}`}
                   className="bitmap-text-link mt-oneScaledPix"
                 >
-                  <BitmapText>{f}</BitmapText>
+                  <span className="text-single-line">{f}</span>
                 </a>
               </li>
             ))}

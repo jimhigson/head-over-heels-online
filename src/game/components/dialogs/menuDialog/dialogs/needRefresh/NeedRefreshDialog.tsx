@@ -25,15 +25,16 @@ const NeedRefreshDialog = () => {
         <BlockyMarkdown className="text-lightGrey">{`To see what’s new, go to *About* ➡ *Changelog* after updating`}</BlockyMarkdown>
         <MenuItems className="text-lightGrey zx:text-zxWhite toppy:text-toppyGrey1 mt-1 selectedMenuItem:text-white">
           <MenuItem
-            id="no"
-            label="Not now"
-            onSelect={useDispatchActionCallback(backToParentMenu)}
+            id="yes"
+            className="text-moss toppy:text-toppyWarm2 zx:text-zxGreen"
+            label="Upgrade"
+            onSelect={useDispatchActionCallback(continueWithRefresh)}
             doubleHeightWhenFocussed
           />
           <MenuItem
-            id="yes"
-            label="Upgrade"
-            onSelect={useDispatchActionCallback(continueWithRefresh)}
+            id="no"
+            label="Not now"
+            onSelect={useDispatchActionCallback(backToParentMenu)}
             doubleHeightWhenFocussed
           />
         </MenuItems>

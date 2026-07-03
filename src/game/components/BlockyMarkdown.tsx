@@ -7,26 +7,19 @@ import { twMerge } from "tailwind-merge";
 import { type EmptyObject } from "type-fest";
 
 import { linkOpenExternalClickHandler } from "../../utils/tauri/openExternalLink";
-import { multilineTextClass } from "./dialogs/menuDialog/multilineTextClass";
-import { MultipleBitmapText } from "./tailwindSprites/BitmapText";
 
 const markdownComponents: CustomComponentsOption = {
   h2: function H2({ children }: PropsWithChildren<EmptyObject>) {
     return (
-      // <div className="flex flex-row items-start justify-start gap-1">
-      <h2
-        // multiline: "history of the blacktooth empire" is a title that needs two lines
-        className={`mb-1 sprites-double-height text-metallicBlue zx:text-zxBlue toppy:text-toppyCool3 clear-both ${multilineTextClass}`}
-      >
-        <MultipleBitmapText>{children}</MultipleBitmapText>
+      <h2 className="mb-1 text-metallicBlue zx:text-zxBlue toppy:text-toppyCool3 clear-both text-double-height">
+        {children}
       </h2>
-      // </div>
     );
   },
   h3: function H3({ children }: PropsWithChildren<EmptyObject>) {
     return (
-      <h3 className="mt-1 mb-1 text-metallicBlue zx:text-zxBlue toppy:text-toppyCool3 clear-both">
-        <MultipleBitmapText>{children}</MultipleBitmapText>
+      <h3 className="mt-1 mb-1 text-metallicBlue zx:text-zxBlue toppy:text-toppyCool3 clear-both text-multi-line">
+        {children}
       </h3>
     );
   },
@@ -34,9 +27,7 @@ const markdownComponents: CustomComponentsOption = {
     children,
   }: PropsWithChildren<EmptyObject>) {
     return (
-      <blockquote
-        className={`${multilineTextClass} mt-1 mb-1 text-moss zx:text-zxBlue toppy:text-toppyCool2 clear-both text-multi-line`}
-      >
+      <blockquote className="mt-1 mb-1 text-moss zx:text-zxBlue toppy:text-toppyCool2 clear-both text-multi-line">
         &gt; {children}
       </blockquote>
     );

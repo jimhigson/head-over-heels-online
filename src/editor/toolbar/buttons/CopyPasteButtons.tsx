@@ -1,6 +1,5 @@
 import { produce } from "immer";
 
-import { BitmapText } from "../../../game/components/tailwindSprites/BitmapText";
 import { useAppDispatch } from "../../../store/hooks";
 import { editorStore, useEditorAppSelector } from "../../../store/store";
 import { pick } from "../../../utils/pick";
@@ -44,7 +43,7 @@ export const CopyPasteButtons = () => {
         tooltipContent={`##Copy\n\nCopy the selected item(s) to the clipboard to paste into another room`}
       >
         <IconWithTwoLineHoverText
-          icon={<BitmapText>C</BitmapText>}
+          icon={<span className="text-single-line">C</span>}
           topText="co"
           bottomText="py"
         />
@@ -81,7 +80,7 @@ export const CopyPasteButtons = () => {
         tooltipContent={`##Paste\n\nPaste an item into this room copied from another room`}
       >
         <IconWithTwoLineHoverText
-          icon={<BitmapText>P</BitmapText>}
+          icon={<span className="text-single-line">P</span>}
           topText="ps"
           bottomText="te"
         />

@@ -1,6 +1,5 @@
 import { type CSSProperties } from "react";
 
-import { BitmapText } from "../game/components/tailwindSprites/BitmapText";
 import { type AnimatedTextureTailwindClass } from "../sprites/spritesheet/spritesheetData/TextureTailwindClass";
 
 type NonIdealStateProps = {
@@ -21,6 +20,6 @@ export const NonIdealState = ({
     <span
       className={`sprite ${"texture-animated-dalek" satisfies AnimatedTextureTailwindClass}`}
     />
-    <BitmapText>{text}</BitmapText>
+    <span className="text-single-line">{text}</span>
   </div>
 );

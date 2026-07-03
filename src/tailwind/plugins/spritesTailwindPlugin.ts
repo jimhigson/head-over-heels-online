@@ -173,14 +173,55 @@ export const spritesTailwindPlugin = plugin(
       ".sprites-normal-height": {
         "--doubleHeight": "1",
       },
-      // the real-text equivalent of .sprites-double-height: font glyphs have no
-      // background image to stretch, so scale the box vertically instead. The
-      // origin is the font baseline (8px * --scale below the top), so the text
-      // grows upward from the baseline and stays aligned with normal-height text
+      // the real-text equivalent of .sprites-double-height. The HeadOverHeels
+      // font is variable on a custom "HGHT" axis whose peak (1) makes every
+      // glyph genuinely twice as tall at the same width - so unlike a CSS
+      // transform this reserves real line height and wraps, centres and stacks
+      // like any other text.
+      //
+      // the `top` nudge: the font's ascent/descent metrics are fixed at the
+      // single-height values (8px up / 2px down per 8px em) because metrics
+      // can't reliably vary with the axis (there is no MVAR tag for hhea
+      // ascent, and Chrome ignores MVAR for inline-box metrics anyway). The
+      // browser therefore places the baseline by half-leading centring the
+      // 10px content box in this 20px line box: (20 - 10) / 2 + 8 = 13px down.
+      // The doubled ink extends 16px above the baseline, so it overshoots the
+      // top of the line box by 16 - 13 = 3px (and falls the same 3px short of
+      // the bottom). Shifting the ink down by exactly those 3px (scaled) makes
+      // the glyphs fill the line box precisely: grid gaps above and below the
+      // line are then honoured. position:relative moves only the paint - the
+      // reserved layout space is unaffected.
+      //
+      // --textDoubleHeightNudge exists so that text which must share a
+      // baseline with single-height text on the same line can opt out (see
+      // .text-double-height-on-baseline)
       ".text-double-height": {
-        display: "inline-block",
-        transform: "scaleY(2)",
-        transformOrigin: "0 calc(8px * var(--scale, 1))",
+        fontVariationSettings: '"HGHT" 1',
+        lineHeight: "calc(20px * var(--scale, 1))",
+        position: "relative",
+        top: "calc(var(--textDoubleHeightNudge, 3px) * var(--scale, 1))",
+      },
+      // for double-height text mixed inline with single-height text (eg the
+      // main menu's "HEAD over HEELS" heading): keep the font's true shared
+      // baseline instead of the ink nudge. The doubled ink then extends above
+      // the line box, so the surrounding layout must have headroom
+      ".text-double-height-on-baseline": {
+        "--textDoubleHeightNudge": "0px",
+      },
+      // a 1px-gap, 1px-thick pixel-grid underline. The font itself declares
+      // exactly this (post.underlinePosition/underlineThickness, set in
+      // buildVariableFont.py) - but Chromium's default CSS underline ignores a
+      // font's post-table metrics entirely (verified: rendering was pixel-
+      // identical between our font and a copy with wildly different declared
+      // metrics), so the position/thickness must be asserted here instead.
+      // Plain tailwind `underline` only sets text-decoration-line and leaves
+      // Chrome's built-in (non-pixel-aligned) heuristic in charge
+      ".text-underline": {
+        textDecorationLine: "underline",
+        // break around descenders (g/y/j/…) rather than drawing through them
+        textDecorationSkipInk: "auto",
+        textUnderlineOffset: "calc(1px * var(--scale, 1))",
+        textDecorationThickness: "calc(1px * var(--scale, 1))",
       },
       ".pixelated": {
         imageRendering: "pixelated",

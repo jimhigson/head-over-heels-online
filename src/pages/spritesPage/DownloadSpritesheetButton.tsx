@@ -1,6 +1,5 @@
 import { useCallback, useRef } from "preact/hooks";
 
-import { BitmapText } from "../../game/components/tailwindSprites/BitmapText";
 import { Button } from "../../ui/Button";
 import { spritesheetUrlFromCssVar } from "./spritesheetUrlFromCssVar";
 
@@ -26,9 +25,11 @@ export const DownloadSpritesheetButton = () => {
       <Button
         className="px-1 bg-moss zx:bg-zxGreen zx:text-zxBlack toppy:bg-toppyCool2 toppy:text-toppyBlack"
         onClick={handleClick}
-        tooltipContent={<BitmapText>Download spritesheet image</BitmapText>}
+        tooltipContent={
+          <span className="text-single-line">Download spritesheet image</span>
+        }
       >
-        <BitmapText>⬇ Download</BitmapText>
+        <span className="text-single-line">⬇ Download</span>
       </Button>
     </>
   );

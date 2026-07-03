@@ -7,7 +7,7 @@ import { useDispatchActionCallback } from "../../../../../../store/useDispatchAc
 import { Border } from "../../../../../../ui/Border";
 import { Dialog } from "../../../../../../ui/Dialog";
 import { DialogPortal } from "../../../../../../ui/DialogPortal";
-import { BitmapText } from "../../../../tailwindSprites/BitmapText";
+import { ColourCycleText } from "../../../../ColourCycleText";
 import { BackMenuItem } from "../../BackMenuItem";
 import { MenuItems } from "../../MenuItems";
 
@@ -37,12 +37,12 @@ export const ProclaimEmperorDialog = () => {
               />
             </div>
           </div>
-          <div className="flex flex-col gap-1 items-center text-lightGrey zx:text-zxCyan toppy:text-toppyCool1">
-            <BitmapText>The people salute your heroism</BitmapText>
-            <BitmapText>and proclaim you</BitmapText>
+          <div className="flex flex-col gap-1 items-center text-lightGrey zx:text-zxCyan toppy:text-toppyCool1 text-single-line">
+            <span>The people salute your heroism</span>
+            <span>and proclaim you</span>
           </div>
-          <BitmapText
-            className="text-highlightBeige sprites-double-height"
+          <ColourCycleText
+            className="text-highlightBeige text-double-height"
             classnameCycle={[
               "text-pink zx:text-zxMagenta toppy:text-toppyPink1",
               "text-metallicBlue zx:text-zxCyan toppy:text-toppyCool2",
@@ -50,7 +50,7 @@ export const ProclaimEmperorDialog = () => {
             ]}
           >
             EMPEROR
-          </BitmapText>
+          </ColourCycleText>
           <MenuItems className="hidden">
             <BackMenuItem />
           </MenuItems>

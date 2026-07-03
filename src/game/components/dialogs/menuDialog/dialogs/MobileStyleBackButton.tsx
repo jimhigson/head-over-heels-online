@@ -1,8 +1,8 @@
 import { twMerge } from "tailwind-merge";
 
+import { menuLeaderBackChar } from "../../../../../sprites/spritesheet/spritesheetData/hudSritesheetData";
 import { backToParentMenu } from "../../../../../store/slices/gameMenus/gameMenusSlice";
 import { useDispatchActionCallback } from "../../../../../store/useDispatchActionCallback";
-import { BitmapText } from "../../../tailwindSprites/BitmapText";
 import { useMenuItem } from "./menus/useMenuItem";
 
 /**
@@ -24,15 +24,15 @@ export const MobileStyleBackButton = ({
     <div
       {...menuItemProps}
       className={twMerge(
-        "sprites-double-height flex flex-row gap-1 cursor-pointer " +
+        "flex flex-row gap-1 cursor-pointer " +
           (focussed ? "selectedMenuItem" : ""),
         className,
       )}
       data-to-parent-menu={true}
       ref={ref}
     >
-      <BitmapText className="inline-block scale-x-[-1]">{"⏩⏩"}</BitmapText>
-      <BitmapText className="inline-block">{"Back"}</BitmapText>
+      <span className="text-double-height">{menuLeaderBackChar}</span>
+      <span className="text-double-height">Back</span>
     </div>
   );
 };

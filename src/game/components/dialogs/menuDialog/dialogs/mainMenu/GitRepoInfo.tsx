@@ -7,7 +7,6 @@ import {
 import { nerdFontGithubChar } from "../../../../../../sprites/spritesheet/spritesheetData/hudSritesheetData";
 import { useGetLatestReleaseQuery } from "../../../../../../store/slices/githubApiSlice";
 import { linkOpenExternalClickHandler } from "../../../../../../utils/tauri/openExternalLink";
-import { BitmapText } from "../../../../tailwindSprites/BitmapText";
 
 const parseMajorRegex = /v?(?<major>\d+)\./;
 const parseMajor = (version: string): number | undefined => {
@@ -42,16 +41,16 @@ export const GitRepoInfo = () => {
           onClick={linkOpenExternalClickHandler}
           className="bitmap-text-link bg-pastelBlueHalfbrite text-metallicBlueHalfbrite zx:bg-zxBlack toppy:bg-toppyCool3"
         >
-          <BitmapText> v</BitmapText>
-          <BitmapText className="screenshot-mask mr-1 inline-block">
+          <span className="text-single-line"> v</span>
+          <span className="text-single-line screenshot-mask mr-1 inline-block">
             {/* extra space pulls away from rounded corners of phone screens and app windows */}
             {deployedMajor}
-          </BitmapText>
+          </span>
           {isOutdated && (
-            <BitmapText className="animate-flash text-midRed zx:text-zxRed toppy:text-toppyPink2">
+            <span className="text-single-line animate-flash text-midRed zx:text-zxRed toppy:text-toppyPink2">
               {/* extra space pulls away from rounded corners of phone screens and app windows */}
               {"⬆ "}
-            </BitmapText>
+            </span>
           )}
         </a>
       </span>
@@ -61,13 +60,13 @@ export const GitRepoInfo = () => {
         target="_blank"
         className="bitmap-text-link zx:bg-zxBlack toppy:bg-toppyCool3 bg-metallicBlue pl-1"
       >
-        <BitmapText className="text-highlightBeige zx:text-zxYellow toppy:text-toppyWarm1">
+        <span className="text-single-line text-highlightBeige zx:text-zxYellow toppy:text-toppyWarm1">
           ★
-        </BitmapText>
+        </span>
         <span className="text-lightGrey zx:text-whiteHalfbrite toppy:text-toppyGrey1 mr-1">
-          <BitmapText className="resHandheld:hidden"> on</BitmapText>
-          <BitmapText>{nerdFontGithubChar}</BitmapText>
-          <BitmapText className="resHandheld:hidden">Github</BitmapText>
+          <span className="text-single-line resHandheld:hidden"> on</span>
+          <span className="text-single-line">{nerdFontGithubChar}</span>
+          <span className="text-single-line resHandheld:hidden">GitHub</span>
         </span>
       </a>
     </div>

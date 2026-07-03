@@ -45,7 +45,6 @@ import { useRegisterDecorateItemRenderers } from "../../render/useRegisterDecora
 import { useRegisterDecorateRoomRenderers } from "../../render/useRegisterDecorateRoomRenderers";
 import { CssVariables } from "../CssVariables";
 import { useGameApi } from "../GameApiContext";
-import { BitmapText } from "../tailwindSprites/BitmapText";
 import { usePlayableTailwindSpriteClassname } from "../tailwindSprites/playableTailwindSpriteClassname";
 import { GameApiConnectedRoomSelect } from "./GameApiConnectedRoomSelect";
 import { useLevelSelectByUrlHash } from "./useLevelSelectByUrlHash";
@@ -345,7 +344,7 @@ export const Cheats = <RoomId extends string>(_emptyProps: EmptyObject) => {
             </div>
             <Heading>debug rendering:</Heading>
             <div className="flex flex-row items-center gap-x-1 justify-center pb-1 pt-1 bg-shadow text-white">
-              <BitmapText>BB:</BitmapText>
+              <span className="text-single-line">BB:</span>
               <ShowBoundingBoxSelect
                 getCurrentRoomItems={() =>
                   selectCurrentRoomState(gameApi.gameState)?.items

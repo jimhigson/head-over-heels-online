@@ -71,14 +71,6 @@ test.describe("Sprites page", () => {
       throw new Error("No sprites found with [data-texture-id] attribute");
     }
 
-    // Sort texture IDs to ensure consistent ordering
-    const sortedTextureIds = [...textureIds].sort();
-
-    // Snapshot the list of texture IDs to catch deletions/additions etc:
-    expect(JSON.stringify(sortedTextureIds, null, 2)).toMatchSnapshot(
-      "texture-ids-list.json",
-    );
-
     // Snapshot the generated-font specimen. Wait for the font to load first so
     // the snapshot never captures the monospace fallback:
     await page.evaluate(async () => {
@@ -89,6 +81,14 @@ test.describe("Sprites page", () => {
       "font-specimen.png",
       // this one depends on font rendering so needs a non-zero maxDiffPixels
       { threshold: 0.02, maxDiffPixelRatio: 0.03, scale: "css", timeout: 5000 },
+    );
+
+    // Sort texture IDs to ensure consistent ordering
+    const sortedTextureIds = textureIds.toSorted();
+
+    // Snapshot the list of texture IDs to catch deletions/additions etc:
+    expect(JSON.stringify(sortedTextureIds, null, 2)).toMatchSnapshot(
+      "texture-ids-list.json",
     );
 
     // Pre-compute filenames with hash suffix for uniqueness, eg on case-insensitive FS

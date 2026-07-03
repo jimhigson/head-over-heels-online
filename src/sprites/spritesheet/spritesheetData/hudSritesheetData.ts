@@ -20,6 +20,15 @@ export const nerdFontTwitchChar = "\uf1e8";
 export const nerdFontAppleChar = "\ue711";
 export const nerdFontGoogleChar = "\ue7f0";
 
+// double-width (16px) menu-item leader glyphs, in the private-use area. Their
+// spritesheet art is built from an existing 8px glyph \u2014 the focussed one is \u23e9
+// doubled, the unfocussed one is \u204c plus its mirror \u204d \u2014 so each leader renders as
+// a single char instead of two.
+export const menuLeaderFocussedChar = "\ue021";
+export const menuLeaderUnfocussedChar = "\ue020";
+// the focussed leader reversed (\u25c0\u25c0), for back buttons \u2014 so the DOM needn't flip it
+export const menuLeaderBackChar = "\ue022";
+
 const chromePwaInstall = ""; // \uea78
 const iosMacShare = ""; // \uf50e;
 const iosMacAddToDock = "󱂩"; // \uf10a9;
@@ -195,6 +204,11 @@ const row3 = [
   "⟳", // redo
   "↻", // rotate clockwise
   "↺", // rotate anti-clockwise
+  // double-width (16px) menu-item leaders — one glyph each rather than two chars.
+  // order matters: these map to the appended spritesheet cells in this sequence
+  { char: menuLeaderFocussedChar, width: 16 },
+  { char: menuLeaderUnfocussedChar, width: 16 },
+  { char: menuLeaderBackChar, width: 16 },
 ] as const satisfies CharRow;
 
 export type CharSpriteTextureId<C extends string> =

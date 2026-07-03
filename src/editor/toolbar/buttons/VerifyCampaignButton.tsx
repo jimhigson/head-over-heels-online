@@ -1,6 +1,5 @@
 import { useRef, useState } from "preact/hooks";
 
-import { BitmapText } from "../../../game/components/tailwindSprites/BitmapText";
 import { type JsonItemType } from "../../../model/json/JsonItem";
 import { type CampaignVerificationIssue } from "../../../model/json/verification/CampaignVerification";
 import {
@@ -150,9 +149,9 @@ const VerifyIssuesDialog = ({ issues, onClose }: VerifyIssuesDialogProps) => {
                 return (
                   <div key={roomHeading} className="flex flex-col gap-1">
                     {roomHeading && (
-                      <BitmapText className="text-metallicBlue" doubleHeight>
+                      <span className="text-metallicBlue text-double-height">
                         {roomHeading}
-                      </BitmapText>
+                      </span>
                     )}
                     {roomId !== undefined && (
                       <RoomPreview roomId={roomId as EditorRoomId} />
@@ -269,7 +268,7 @@ export const VerifyCampaignButton = () => {
         onClick={() => setDialogOpen(true)}
         tooltipContent={verifyTooltipMarkdown}
       >
-        <BitmapText className="relative leading-none">{summary}</BitmapText>
+        <span className="relative text-single-line">{summary}</span>
       </ToolbarButton>
 
       {dialogOpen && (

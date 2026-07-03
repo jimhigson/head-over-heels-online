@@ -116,8 +116,11 @@ export const loseOneLife = async (page: Page): Promise<string | undefined> => {
     }
     const deathDialog = page.locator('[data-dialog-id="death"]');
     if (await deathDialog.isVisible().catch(() => false)) {
-      const srTexts = await deathDialog.locator(".sr-only").allTextContents();
-      const dialogText = srTexts.join(" ").replace(/\s+/g, " ").trim();
+      const dialogTextContents = await deathDialog.allTextContents();
+      const dialogText = dialogTextContents
+        .join(" ")
+        .replace(/\s+/g, " ")
+        .trim();
       log(`death dialog text: "${dialogText}"`);
       log("dismissing death dialog");
       await dispatchKeyPress(page, " ", "Space");

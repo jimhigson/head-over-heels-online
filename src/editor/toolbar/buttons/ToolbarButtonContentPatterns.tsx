@@ -1,6 +1,5 @@
 import { type ReactElement } from "react";
 
-import { BitmapText } from "../../../game/components/tailwindSprites/BitmapText";
 import {
   type AnimatedTextureTailwindClass,
   type TextureTailwindClass,
@@ -23,9 +22,9 @@ export const LabelledToolbarIcon = ({
       <span
         className={`sprite absolute top-0 left-0 ${iconClasses} ${buttonSpriteRevertColourClasses}`}
       />
-      <BitmapText className="bg-moss text-pureBlack absolute top-0 left-0 pl-oneScaledPix py-oneScaledPix block leading-none">
+      <span className="bg-moss text-pureBlack absolute top-0 left-0 pl-oneScaledPix py-oneScaledPix block text-single-line">
         {text}
-      </BitmapText>
+      </span>
     </div>
   );
 };
@@ -79,8 +78,10 @@ export const IconWithTwoLineHoverText = ({
   return (
     <span className="w-full h-full flex flex-col items-center justify-center">
       <span className={iconClassname}>{icon}</span>
-      <BitmapText className={topTextClassname}>{topText}</BitmapText>
-      <BitmapText className={bottomTextClassname}>{bottomText}</BitmapText>
+      <span className={`${topTextClassname} text-single-line`}>{topText}</span>
+      <span className={`${bottomTextClassname} text-single-line`}>
+        {bottomText}
+      </span>
     </span>
   );
 };

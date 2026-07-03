@@ -10,7 +10,7 @@ export const FullscreenMenuItem = () => {
 
   return (
     <MenuItem
-      className="sprites-double-height"
+      doubleHeight
       id="fullScreen"
       label="Full Screen"
       valueElement={<Switch className="ml-auto" value={isFullscreen} />}

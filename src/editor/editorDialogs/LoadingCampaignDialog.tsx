@@ -1,6 +1,5 @@
 import { createSelector } from "@reduxjs/toolkit";
 
-import { BitmapText } from "../../game/components/tailwindSprites/BitmapText";
 import { useAppSelector } from "../../store/hooks";
 import { campaignsApiSlice } from "../../store/slices/campaigns/campaignsApiSlice";
 import { type GameRootState } from "../../store/store";
@@ -30,9 +29,9 @@ export const LoadingCampaignDialog = () => {
       <LoadingBorder />
       <div className="contents no-keyboard-shortcuts">
         <Dialog wide className="scale-editor p-1 !h-min">
-          <BitmapText className="text-white sprites-double-height bg-midRed text-center py-half">
-            Loading campaign...
-          </BitmapText>
+          <div className="text-white bg-midRed text-center py-half">
+            <span className="text-double-height">Loading campaign...</span>
+          </div>
           <div className="flex flex-row justify-center gap-1">
             <SpinnerHead />
             <SpinnerHeels />

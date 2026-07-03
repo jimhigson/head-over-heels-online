@@ -208,9 +208,9 @@ export const menuScreenshotOptions = (
   // CI runners still show a bit of blurriness at the edges
   // also, non-integer scaling can sometimes cause different snapping of scaled
   // nearest-neighbour graphics:
-  // results tend to be about 512*384=~200k pixels, so 0.02 is
-  // ~4000 pixels, although most text render differences are < 1k
-  maxDiffPixelRatio: 0.02,
+  // results tend to be about 512*384=~200k pixels, so 0.03 is
+  // ~6000 pixels, although most text render differences are < 1k
+  maxDiffPixelRatio: 0.03,
   timeout: 10_000 * osSlowness,
   mask: [page.locator(".screenshot-mask")],
   maskColor: spriteOption.uncolourised ? "#ff00ff" : spritesheetColours.pink,

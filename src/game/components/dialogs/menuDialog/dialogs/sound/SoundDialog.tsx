@@ -46,7 +46,7 @@ export const SoundDialog = () => {
       <div className={optionsMenuScrollClasses}>
         <MenuItems>
           <MenuItem
-            className="sprites-double-height"
+            doubleHeight
             id="mute"
             label="Mute"
             valueElement={<Switch className="ml-auto" value={isMuted} />}
@@ -56,7 +56,7 @@ export const SoundDialog = () => {
             })}
           />
           <MenuItem
-            className="sprites-double-height"
+            doubleHeight
             id="roomEntry"
             label="Room entry jingles"
             valueElement={
@@ -77,7 +77,7 @@ export const SoundDialog = () => {
             }
           />
           <MenuItem
-            className="sprites-double-height"
+            doubleHeight
             id="footsteps"
             label="Footsteps"
             valueElement={
