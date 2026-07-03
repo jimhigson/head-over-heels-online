@@ -1,4 +1,3 @@
-import { BitmapText } from "../../../game/components/tailwindSprites/BitmapText";
 import { useAppDispatch } from "../../../store/hooks";
 import { useEditorAppSelector } from "../../../store/store";
 import { RoomSelect } from "../../../ui/RoomSelect";
@@ -32,9 +31,9 @@ const RoomsAboveOrBelowSelectOrCreate = ({
   return (
     <>
       <div className="flex flex-row gap-oneScaledPix w-full flex-wrap pt-1 items-center">
-        <BitmapText className="text-lightGrey leading-none h-1">
+        <span className="text-lightGrey h-1 text-single-line">
           Room {directionArrow}
-        </BitmapText>
+        </span>
         <div className="flex-grow" />
         <div className="flex flex-row gap-oneScaledPix">
           <ToolbarButton
@@ -44,13 +43,14 @@ const RoomsAboveOrBelowSelectOrCreate = ({
             tooltipContent={`Switch to the room *${direction}*`}
             disabled={!currentRoomId}
           >
-            <BitmapText
+            <span
+              className="text-single-line"
               onClick={() =>
                 currentRoomId && dispatch(changeToRoom(currentRoomId))
               }
             >
               {`Go ${directionArrow}`}
-            </BitmapText>
+            </span>
           </ToolbarButton>
           <ToolbarButton
             small
@@ -58,7 +58,8 @@ const RoomsAboveOrBelowSelectOrCreate = ({
             className=" bg-moss"
             tooltipContent={`Add a new room *${direction}* this one`}
           >
-            <BitmapText
+            <span
+              className="text-single-line"
               onClick={() =>
                 dispatch(
                   setRoomAboveOrBelow({
@@ -69,7 +70,7 @@ const RoomsAboveOrBelowSelectOrCreate = ({
               }
             >
               +
-            </BitmapText>
+            </span>
           </ToolbarButton>
           <ToolbarButton
             small
@@ -77,7 +78,8 @@ const RoomsAboveOrBelowSelectOrCreate = ({
             className="bg-midRed"
             tooltipContent={`Break the link with the room *${direction}*`}
           >
-            <BitmapText
+            <span
+              className="text-single-line"
               onClick={() =>
                 dispatch(
                   setRoomAboveOrBelow({
@@ -89,7 +91,7 @@ const RoomsAboveOrBelowSelectOrCreate = ({
               }
             >
               x
-            </BitmapText>
+            </span>
           </ToolbarButton>
         </div>
       </div>

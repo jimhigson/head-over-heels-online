@@ -1,8 +1,6 @@
 import { useEffect, useReducer } from "preact/hooks";
 import { format } from "timeago.js";
 
-import { BitmapText } from "../game/components/tailwindSprites/BitmapText";
-
 const tickIntervalMs = 5000;
 const toggle = (b: boolean) => !b;
 
@@ -19,5 +17,9 @@ export const Timeago = ({ timestamp, className }: TimeagoProps) => {
     return () => clearInterval(interval);
   }, [tick]);
 
-  return <BitmapText className={className}>{format(timestamp)}</BitmapText>;
+  return (
+    <span className={`text-single-line${className ? ` ${className}` : ""}`}>
+      {format(timestamp)}
+    </span>
+  );
 };

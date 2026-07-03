@@ -4,21 +4,23 @@ import { twMerge } from "tailwind-merge";
 
 import { useAppDispatch } from "../../../../store/hooks";
 import { goToSubmenu } from "../../../../store/slices/gameMenus/gameMenusSlice";
+import { detectDeviceType } from "../../../../utils/detectEnv/detectDeviceType";
 import { openExternal } from "../../../../utils/tauri/openExternalLink";
-import { BitmapText } from "../../tailwindSprites/BitmapText";
 import { type DialogId } from "./DialogId";
-import { MenuItemLeader } from "./dialogs/MenuItemLeader";
 import { useMenuItem } from "./dialogs/menus/useMenuItem";
-import { multilineTextClass } from "./multilineTextClass";
+import { StandardMenuItemLeader } from "./dialogs/StandardMenuItemLeader";
 
+export type CustomLeaderComponent = (props: {
+  doubleHeight: boolean;
+}) => ReactElement;
 type BaseMenuItemProps = {
   id: string;
   label: ReactElement | string;
   valueElement?: ReactElement;
-  flipLeader?: boolean;
+  isBack?: boolean;
   doubleHeight?: boolean;
   doubleHeightWhenFocussed?: boolean;
-  leader?: ReactElement;
+  leader?: CustomLeaderComponent | ReactElement;
   hidden?: boolean;
   disabled?: boolean;
   className?: string;
@@ -62,8 +64,8 @@ export const MenuItem = ({
   id,
   label,
   valueElement,
-  flipLeader = false,
-  doubleHeight = false,
+  isBack = false,
+  doubleHeight = detectDeviceType() === "mobile",
   doubleHeightWhenFocussed,
   onSelect = noop,
   hidden = false,
@@ -96,6 +98,10 @@ export const MenuItem = ({
     onSelect: resolvedOnSelect,
   });
 
+  const doubleHeightNow =
+    doubleHeight || (doubleHeightWhenFocussed && focussed);
+
+  const Leader = leader;
   const menuItem = (
     // contents div puts children into the grid layout:
     <li
@@ -106,22 +112,23 @@ export const MenuItem = ({
       className={twMerge(
         "contents cursor-pointer",
         hidden ? "hidden" : "",
-        doubleHeight || (doubleHeightWhenFocussed && focussed) ?
-          "sprites-double-height"
-        : "",
         focussed ? "selectedMenuItem" : "",
         className,
       )}
     >
       {/* first column content (leader/icon thing)... */}
-      {leader || (
-        <MenuItemLeader
-          verticalAlignItemsCentre={verticalAlignItemsCentre}
-          flip={flipLeader}
-          focussed={focussed}
-        />
-      )}
 
+      {Leader ?
+        typeof Leader === "function" ?
+          <Leader doubleHeight={!!doubleHeightNow} />
+        : Leader
+      : <StandardMenuItemLeader
+          verticalAlignItemsCentre={verticalAlignItemsCentre}
+          isBack={isBack}
+          focussed={focussed}
+          doubleHeight={doubleHeightNow}
+        />
+      }
       {/* second column content (main label)... */}
       <div
         ref={ref}
@@ -138,13 +145,12 @@ export const MenuItem = ({
           // menuItem.className ?? "",
         )}
       >
-        {typeof label === "string" ?
-          <>
-            <BitmapText>{label}</BitmapText>
-          </>
+        {doubleHeightNow ?
+          <span className="text-double-height">{label}</span>
+        : typeof label === "string" ?
+          <span className="text-single-line">{label}</span>
         : label}
       </div>
-
       {/* third column content (values etc) */}
       {valueElement && (
         <div
@@ -162,7 +168,7 @@ export const MenuItem = ({
         {menuItem}
         <div className="col-span-2 col-start-2 mb-1">
           {typeof hint === "string" ?
-            <BitmapText className={multilineTextClass}>{hint}</BitmapText>
+            <span className="text-multi-line">{hint}</span>
           : hint}
         </div>
       </>

@@ -53,7 +53,9 @@ const getDialogClassName = (
       // even without fullscreen, take up full screen width at the lowest res, possibly transverse:
       "resHandheld:h-full portrait-rot:resHandheld:h-fullScrW resHandheld:w-full portrait-rot:resHandheld:w-fullScrH resHandheld:py-0 " +
       "portrait-rot:rotate-90 " +
-      "leading-none flex flex-col gap-y-1 " +
+      // single-line leading is the default for real-font text; multi-line text
+      // opts in via text-multi-line
+      "text-single-line flex flex-col gap-y-1 " +
       className,
   );
 };

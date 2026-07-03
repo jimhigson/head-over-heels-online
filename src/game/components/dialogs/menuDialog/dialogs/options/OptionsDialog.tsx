@@ -62,7 +62,7 @@ export const OptionsDialog = () => {
               id="controlOptions"
               label="Controls"
               verticalAlignItemsCentre
-              className="sprites-double-height"
+              doubleHeight
               subMenuId="controlOptions"
               hint={
                 <BlockyMarkdown
@@ -79,7 +79,7 @@ export const OptionsDialog = () => {
             <MenuItem
               id="sound"
               label="Sounds"
-              className="sprites-double-height"
+              doubleHeight
               verticalAlignItemsCentre
               subMenuId="sound"
               hint={
@@ -92,7 +92,7 @@ export const OptionsDialog = () => {
             <MenuItem
               id="display"
               label="Display"
-              className="sprites-double-height"
+              doubleHeight
               verticalAlignItemsCentre
               subMenuId="displayOptions"
               hint={
@@ -105,12 +105,14 @@ export const OptionsDialog = () => {
             <MenuItem
               id="gameSpeed"
               label="Game Speed"
-              className="sprites-double-height"
+              doubleHeight
               valueElement={
                 <SwitchN
                   className="ml-auto"
                   values={selectableGameSpeeds}
-                  valueLabels={selectableGameSpeeds.map((n) => `${n}`)}
+                  valueLabels={selectableGameSpeeds.map((n) =>
+                    `${n}`.replace(".", "\uff0e"),
+                  )}
                   value={useAppSelector(selectGameSpeed)}
                 />
               }
@@ -131,7 +133,7 @@ export const OptionsDialog = () => {
               />
             </div>
             <MenuItem
-              className="sprites-double-height"
+              doubleHeight
               id="livesModel"
               verticalAlignItemsCentre
               label="∞ Lives Poke"
@@ -164,7 +166,7 @@ export const OptionsDialog = () => {
                   className={`${spriteLeaderClasses} sprite ${"texture-doughnuts" satisfies TextureTailwindClass} sprites-normal-height zx:sprite-revert-to-white`}
                 />
               }
-              className="sprites-double-height"
+              doubleHeight
               verticalAlignItemsCentre
               id="infiniteDoughnutsPoke"
               label="∞ Doughnuts Poke"

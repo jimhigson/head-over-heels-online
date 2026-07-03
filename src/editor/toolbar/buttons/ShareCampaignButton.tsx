@@ -1,4 +1,3 @@
-import { BitmapText } from "../../../game/components/tailwindSprites/BitmapText";
 import { type TypedURLSearchParams } from "../../../options/queryParams";
 import { type TextureTailwindClass } from "../../../sprites/spritesheet/spritesheetData/TextureTailwindClass";
 import { useEditorAppSelector } from "../../../store/store";
@@ -27,7 +26,7 @@ export const ShareCampaignButton = () => {
 
   return justDone > 0 ?
       <ToolbarButton ariaLabel="Campaign link copied" className="bg-moss">
-        <BitmapText className="relative leading-none">OK!</BitmapText>
+        <span className="relative text-single-line">OK!</span>
       </ToolbarButton>
     : <ToolbarButton
         ariaLabel="Share campaign"

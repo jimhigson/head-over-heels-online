@@ -1,7 +1,6 @@
 import { useState } from "preact/hooks";
 import { type PropsWithChildren, type ReactElement } from "react";
 
-import { BitmapText } from "../../../game/components/tailwindSprites/BitmapText";
 import { Button, type ButtonProps } from "../../../ui/Button";
 import { cn } from "../../../ui/cn";
 import { Popover } from "../../../ui/Popover";
@@ -41,9 +40,9 @@ export const MenuButton = ({
                 aria-label={open ? "Close menu" : "More actions"}
                 className="absolute right-0 bottom-0 bg-metallicBlueHalfbrite invisible group-hover:visible"
               >
-                <BitmapText className="pl-oneScaledPix leading-none py-oneScaledPix">
+                <span className="pl-oneScaledPix py-oneScaledPix text-single-line">
                   {open ? "X" : "⬇"}
-                </BitmapText>
+                </span>
               </Button>
             }
             contents={
@@ -79,7 +78,7 @@ export const MenuItemButton = ({
     {...rest}
   >
     {typeof children === "string" ?
-      <BitmapText>{children}</BitmapText>
+      <span className="text-single-line">{children}</span>
     : children}
   </Button>
 );

@@ -1,6 +1,5 @@
 import { useCallback, useRef } from "preact/hooks";
 
-import { BitmapText } from "../../game/components/tailwindSprites/BitmapText";
 import { useAppDispatch, useAppSelector } from "../../store/hooks";
 import { useSpritesOption } from "../../store/slices/gameMenus/gameMenusSelectors";
 import {
@@ -42,7 +41,7 @@ export const SpritesheetOverrideButtons = () => {
         className="px-1 bg-pink zx:bg-zxMagenta toppy:bg-toppyPink1"
         onClick={() => dispatch(clearSpritesheetOverride(spriteOption.name))}
       >
-        <BitmapText>x Clear override</BitmapText>
+        <span className="text-single-line">x Clear override</span>
       </Button>
     : <>
         <input
@@ -57,7 +56,7 @@ export const SpritesheetOverrideButtons = () => {
           onClick={() => inputRef.current?.click()}
           tooltipContent="Upload a local WebP/PNG to temporarily override the spritesheet image. The override persists across page reloads but is stored in your browser only."
         >
-          <BitmapText>⬆ Override</BitmapText>
+          <span className="text-single-line">⬆ Override</span>
         </Button>
       </>;
 };

@@ -1,15 +1,20 @@
 import { CssVariables } from "../../game/components/CssVariables";
-import { multilineTextClass } from "../../game/components/dialogs/menuDialog/multilineTextClass";
-import { BitmapText } from "../../game/components/tailwindSprites/BitmapText";
+import {
+  menuLeaderBackChar,
+  menuLeaderFocussedChar,
+  menuLeaderUnfocussedChar,
+} from "../../sprites/spritesheet/spritesheetData/hudSritesheetData";
 import { twClass } from "../../utils/twClass";
 
 const emSpace = "\u2003";
 
+// the double-width menu-leader glyphs live in the private-use area, so reference
+// them explicitly to exercise them in the specimen
+const menuLeaders = `${menuLeaderUnfocussedChar}${menuLeaderFocussedChar}${menuLeaderBackChar}`;
+
 const specimenText = `pack my box with five dozen liquor jugs
 PACK${emSpace}MY${emSpace}BOX${emSpace}WITH${emSpace}FIVE${emSpace}DOZEN${emSpace}LIQUOR${emSpace}JUGS${emSpace}0123456789
-?!.,;:/\\'\`‘’-+_|%#@*^&<>()[]§©∞☰•★⚡⬅➡⬆⬇↖↗↘↙⏩⁌⁍⇧⌥⌘⎌⟳↻↺🛡♨🕹\uf1ff\ue709\uea78\uf50e\u{f10a9}\uf457`;
-
-const specimenLines = specimenText.split("\n");
+?!.,;:/\\'\`‘’-+_|%#@*^&<>()[]§©∞☰•★⚡⬅➡⬆⬇↖↗↘↙⏩⁌⁍⇧⌥⌘⎌⟳↻↺🛡♨🕹\uf1ff\ue709\uea78\uf50e\u{f10a9}\uf457\u{ff0e}${menuLeaders}`;
 
 const scaleFactors = [1, 2] as const;
 
@@ -28,18 +33,23 @@ export const FontSpecimen = () => (
     {scaleFactors.map((scaleFactor, scaleIndex) => (
       <CssVariables scaleFactor={scaleFactor} key={scaleFactor}>
         <div
-          className={`text-multi-line whitespace-pre ${colourClasses[(scaleIndex * 2) % colourClasses.length]}`}
+          className={`text-multi-line whitespace-pre ${colourClasses[scaleIndex % colourClasses.length]}`}
         >
           {specimenText}
         </div>
         <div
-          className={`${multilineTextClass} ${colourClasses[(scaleIndex * 2 + 1) % colourClasses.length]}`}
+          className={`text-double-height whitespace-pre ${colourClasses[(scaleIndex + 2) % colourClasses.length]}`}
         >
-          {specimenLines.map((line, lineIndex) => (
-            <BitmapText key={lineIndex} className="block">
-              {line}
-            </BitmapText>
-          ))}
+          {specimenText}
+        </div>
+        {/* the .text-underline utility (Chrome ignores the font's own underline
+            metrics for CSS text-decoration - see its definition in
+            spritesTailwindPlugin.ts) - check this sits sharp and pixel-aligned,
+            a 1px gap below the baseline, at every scale */}
+        <div
+          className={`text-multi-line whitespace-pre text-underline ${colourClasses[scaleIndex % colourClasses.length]}`}
+        >
+          The Quick Brown Fox Jumps Over The Lazy Dog
         </div>
       </CssVariables>
     ))}

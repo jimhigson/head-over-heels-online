@@ -22,7 +22,6 @@ import { CommandList } from "../../ui/command/CommandList";
 import { CommandMatch } from "../../ui/command/CommandMatch";
 import { Popover } from "../../ui/Popover";
 import { Switch, SwitchN } from "../../ui/Switch";
-import { BitmapText } from "../components/tailwindSprites/BitmapText";
 
 const sortedItemInPlayTypes = itemInPlayTypes.toSorted();
 
@@ -104,10 +103,10 @@ export const ShowBoundingBoxSelect = ({
             "h-2 px-1 flex flex-row gap-1 justify-start leading-none w-13",
           )}
         >
-          <BitmapText className="grow overflow-hidden text-left">
+          <span className="text-single-line grow overflow-hidden text-left">
             {triggerLabel(selected)}
-          </BitmapText>
-          <BitmapText className="grow-0">{open ? "X" : "⬇"}</BitmapText>
+          </span>
+          <span className="text-single-line grow-0">{open ? "X" : "⬇"}</span>
         </Button>
       }
       contents={
@@ -167,12 +166,9 @@ export const ShowBoundingBoxSelect = ({
             </CommandGroup>
             <CommandGroup
               heading={
-                <BitmapText
-                  doubleHeight
-                  className="pl-1 mt-1 text-moss zx:text-zxGreen toppy:text-toppyCool2 block"
-                >
-                  In room:
-                </BitmapText>
+                <span className="text-moss zx:text-zxGreen toppy:text-toppyCool2 pl-1 mt-1 block">
+                  <span className="text-double-height">In room:</span>
+                </span>
               }
             >
               {visibleTypes.map((itemType) => (
@@ -201,12 +197,9 @@ export const ShowBoundingBoxSelect = ({
             {typesNotInRoom.length > 0 && (
               <CommandGroup
                 heading={
-                  <BitmapText
-                    doubleHeight
-                    className="pl-1 mt-1 text-moss zx:text-zxGreen toppy:text-toppyCool2 block"
-                  >
-                    Others
-                  </BitmapText>
+                  <span className="text-moss zx:text-zxGreen toppy:text-toppyCool2 pl-1 mt-1 block">
+                    <span className="text-double-height">Others</span>
+                  </span>
                 }
               >
                 {typesNotInRoom.map((itemType) => (

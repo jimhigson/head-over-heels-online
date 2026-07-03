@@ -1,6 +1,5 @@
 import { createSelector } from "@reduxjs/toolkit";
 
-import { BitmapText } from "../../game/components/tailwindSprites/BitmapText";
 import {
   type EditorRootState,
   editorStore,
@@ -42,7 +41,7 @@ export const CoalesceButton = () => {
         onClick={() => editorStore.dispatch(coalesceSelectedRooms())}
         tooltipContent="Merge selected rooms into one"
       >
-        <BitmapText className="text-white">{`Merge ${roomCount} rooms`}</BitmapText>
+        <span className="text-white text-single-line">{`Merge ${roomCount} rooms`}</span>
       </Button>
     </div>
   );

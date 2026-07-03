@@ -2,6 +2,8 @@
 @tailwind components;
 @tailwind utilities;
 
+/* a variable font: the custom "HGHT" axis makes glyphs twice as tall at its peak,
+   which the text-double-height utility selects for real double-height text */
 @font-face {
   font-family: "HeadOverHeels";
   src: url("../_generated/font/blockstack-head-over-heels.woff2")

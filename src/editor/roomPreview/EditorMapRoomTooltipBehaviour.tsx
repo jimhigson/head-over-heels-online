@@ -1,7 +1,6 @@
 import { useEffect } from "preact/hooks";
 
 import { type RoomBehaviourProps } from "../../game/components/dialogs/menuDialog/dialogs/map/RoomDecoratorProps";
-import { BitmapText } from "../../game/components/tailwindSprites/BitmapText";
 import { TooltipFloating } from "../../ui/tooltip/Tooltip";
 import { useTooltip } from "../../ui/tooltip/useTooltip";
 import { type EditorRoomId } from "../editorTypes";
@@ -48,7 +47,7 @@ const EditorMapRoomTooltipBehaviour = ({
       getFloatingProps={getFloatingProps}
       tooltipContent={
         <div className="flex flex-col gap-y-1">
-          <BitmapText>{roomId}</BitmapText>
+          <span className="text-single-line">{roomId}</span>
           {!isCurrentRoom && <RoomPreview roomId={roomId} />}
         </div>
       }

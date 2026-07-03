@@ -1,6 +1,5 @@
 import { useState } from "preact/hooks";
 
-import { BitmapText } from "../../../game/components/tailwindSprites/BitmapText";
 import { store, useEditorAppSelector } from "../../../store/store";
 import { Border } from "../../../ui/Border";
 import { Command } from "../../../ui/command/Command";
@@ -42,7 +41,7 @@ const CmdKDialogContents = ({
       <CommandInput autoFocus placeholder="Search items..." />
       <CommandList className="max-h-none scrollbar scrollbar-w-1 scrollbar-thumb-lightGrey">
         <CommandEmpty>
-          <BitmapText>Nothing found</BitmapText>
+          <span className="text-single-line">Nothing found</span>
         </CommandEmpty>
         <CommandGroup>
           {buttonKeys.map((key) => {
@@ -92,7 +91,7 @@ export const ShowCmdKButton = () => {
         shortcutKeys={["^K", "⌘K"]}
         tooltipContent={"## Cmd-K menu\nFast access to most items"}
       >
-        <BitmapText className="relative leading-none">CMD</BitmapText>
+        <span className="relative text-single-line">CMD</span>
       </ToolbarButton>
       {open && (
         <DialogPortal>

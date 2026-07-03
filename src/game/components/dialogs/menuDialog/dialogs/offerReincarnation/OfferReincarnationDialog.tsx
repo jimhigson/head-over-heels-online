@@ -12,7 +12,6 @@ import { DialogPortal } from "../../../../../../ui/DialogPortal";
 import { type GameApi } from "../../../../../GameApi";
 import { BlockyMarkdown } from "../../../../BlockyMarkdown";
 import { useGameApi } from "../../../../GameApiContext";
-import { BitmapText } from "../../../../tailwindSprites/BitmapText";
 import { MenuItem } from "../../MenuItem";
 import { MenuItems } from "../../MenuItems";
 
@@ -43,9 +42,9 @@ export const OfferReincarnationDialog = () => {
         className="bg-white zx:bg-zxRed toppy:bg-toppyWarm6 px-1"
         dialogId="offerReincarnation"
       >
-        <BitmapText className="sprites-double-height mt-1 mb-2 resHandheld:mt-0 text-redShadow zx:text-zxWhite toppy:text-toppyWarm1">
+        <span className="text-double-height mt-1 mb-2 resHandheld:mt-0 text-redShadow zx:text-zxWhite toppy:text-toppyWarm1">
           Uh-oh! No lives left.
-        </BitmapText>
+        </span>
         <BlockyMarkdown
           markdown={markdown}
           className="text-redShadow zx:text-zxWhite toppy:text-toppyWarm3"

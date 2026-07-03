@@ -8,7 +8,6 @@ import { type BooleanAction } from "../../../input/actions";
 import { actionToAxisAndDirection } from "../../../input/actionToAxisAndDirection";
 import { standardControllerButtonNames } from "../../../input/controllers";
 import { type Key } from "../../../input/keys";
-import { MultipleBitmapText } from "../../tailwindSprites/BitmapText";
 
 const specialCharClassName =
   "text-mossHalfbrite zx:text-zxGreen toppy:text-toppyCool2 selectedMenuItem:text-moss zx:selectedMenuItem:text-zxGreen toppy:selectedMenuItem:text-toppyCool2";
@@ -195,12 +194,12 @@ export const CurrentKeyAssignments = ({
         return (
           <span
             className={twMerge(
-              "text-nowrap h-[calc(10px*var(--scale))]",
+              "text-nowrap h-[calc(10px*var(--scale))] text-single-line",
               keyClassName,
             )}
             key={`key:${k}`}
           >
-            <MultipleBitmapText>{friendlyKeyName(k)}</MultipleBitmapText>
+            {friendlyKeyName(k)}
           </span>
         );
       })}
@@ -218,15 +217,13 @@ export const CurrentKeyAssignments = ({
         return (
           <span
             className={twMerge(
-              "text-nowrap h-[calc(10px*var(--scale))]",
+              "text-nowrap h-[calc(10px*var(--scale))] text-single-line",
               keyClassName,
             )}
             key={`gamePadAxis:${gamepadAxis}`}
           >
-            <MultipleBitmapText>
-              <span className={specialCharClassName}>🕹</span>
-              {friendlyAxisName(gamepadAxis)}
-            </MultipleBitmapText>
+            <span className={specialCharClassName}>🕹</span>
+            {friendlyAxisName(gamepadAxis)}
           </span>
         );
       })}
@@ -235,15 +232,13 @@ export const CurrentKeyAssignments = ({
         return (
           <span
             className={twMerge(
-              "text-nowrap h-[calc(10px*var(--scale))]",
+              "text-nowrap h-[calc(10px*var(--scale))] text-single-line",
               keyClassName,
             )}
             key={`gamePadButton:${k}`}
           >
-            <MultipleBitmapText>
-              <span className={specialCharClassName}>🕹</span>
-              {friendlyButtonName(k)}
-            </MultipleBitmapText>
+            <span className={specialCharClassName}>🕹</span>
+            {friendlyButtonName(k)}
           </span>
         );
       })}

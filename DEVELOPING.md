@@ -24,6 +24,35 @@ pnpm iff2png
 
 `iff2png` requires several dependencies to be installed, such as imagemagick and ffmpeg, and will log an error if these are not available
 
+# Font
+
+The in-game text uses a custom font, `HeadOverHeels`, generated from the glyphs on
+the spritesheet. It is a **variable font** with a single custom `HGHT` axis: at the
+axis peak (`font-variation-settings: "HGHT" 1`) every glyph is twice as tall at the
+same width, which the `text-double-height` utility uses for double-height text.
+
+Regenerate it after changing the spritesheet or the HUD glyph set:
+
+```sh
+pnpm gen:font
+```
+
+`gen:font` extracts the glyph outlines in TypeScript and then builds the variable
+woff2 with Python ([fontTools](https://github.com/fonttools/fonttools)/varLib) —
+opentype.js can't write the `glyf`/`gvar`/`MVAR` tables a browser-animatable
+variable font needs. Install the Python tooling once with:
+
+```sh
+pip install -r scripts/font/requirements.txt
+```
+
+The versions there are pinned exactly: the build is deterministic, so the committed
+woff2 only reproduces byte-for-byte (and the "font is up-to-date" CI check only
+passes) when rebuilt with the same `fonttools`/`brotli`. If you bump either, or
+change the design, regenerate and commit the font in the same change. `gen:font`
+is a no-op when the design is unchanged, so the font's version timestamp only
+advances on a real change.
+
 # Tauri
 
 Tauri builds to native executables for these platforms:

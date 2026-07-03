@@ -1,7 +1,6 @@
 import { twMerge } from "tailwind-merge";
 
 import { emptyArray } from "../../../../../utils/empty";
-import { BitmapText } from "../../../tailwindSprites/BitmapText";
 import { MenuItems } from "../MenuItems";
 import { MobileStyleBackButton } from "./MobileStyleBackButton";
 
@@ -29,17 +28,17 @@ export const DialogTitleBar = ({
       <div className="flex flex-row items-center">
         {path.slice(0, -1).map((p, i) => (
           <div className="flex flex-row" key={i}>
-            <BitmapText className="text-midGrey zx:text-pureBlack toppy:text-toppyGrey3">
+            <span className="text-midGrey zx:text-pureBlack toppy:text-toppyGrey3">
               {p}
-            </BitmapText>
-            <BitmapText className="text-midRed zx:text-zxRedDimmed toppy:text-toppyPink2">
+            </span>
+            <span className="text-midRed zx:text-zxRedDimmed toppy:text-toppyPink2">
               ➡
-            </BitmapText>
+            </span>
           </div>
         ))}
         {last && (
-          <div className="flex flex-row sprites-double-height text-midRed zx:text-zxBlue toppy:text-toppyPink2">
-            <BitmapText TagName="h1">{last}</BitmapText>
+          <div className="flex flex-row text-midRed zx:text-zxBlue toppy:text-toppyPink2">
+            <h1 className="text-double-height">{last}</h1>
           </div>
         )}
       </div>

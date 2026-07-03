@@ -1,4 +1,3 @@
-import { BitmapText } from "../../game/components/tailwindSprites/BitmapText";
 import { type ResolutionName, resolutionNames } from "../../originalGame";
 import { ToolbarButton } from "../toolbar/buttons/ToolbarButton";
 import { useShortTimeDisplay } from "../toolbar/useShortTimeDisplay";
@@ -29,9 +28,9 @@ export const ResolutionControls = ({
   return (
     <div className="absolute scale-editor top-0 right-1 z-slightlyAbove flex gap-0 leading-none text-white">
       {justDone > 0 && (
-        <BitmapText className="px-1 bg-moss items-center flex">
+        <span className="px-1 bg-moss items-center flex text-single-line">
           {resolutionDisplayNames[selectedResolution]}
-        </BitmapText>
+        </span>
       )}
       <ToolbarButton
         small
@@ -46,7 +45,7 @@ export const ResolutionControls = ({
         }}
         shortcutKeys={["-"]}
       >
-        <BitmapText>-</BitmapText>
+        <span className="text-single-line">-</span>
       </ToolbarButton>
       <ToolbarButton
         small
@@ -61,7 +60,7 @@ export const ResolutionControls = ({
         }}
         shortcutKeys={["⇧+", "="]}
       >
-        <BitmapText>+</BitmapText>
+        <span className="text-single-line">+</span>
       </ToolbarButton>
     </div>
   );

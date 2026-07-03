@@ -6,7 +6,6 @@ import {
   type CampaignInfoInDirectory,
 } from "../../db/campaign";
 import { BlockyMarkdown } from "../../game/components/BlockyMarkdown";
-import { BitmapText } from "../../game/components/tailwindSprites/BitmapText";
 import {
   originalCampaignLocator,
   originalCampaignName,
@@ -37,11 +36,11 @@ const CampaignItem = ({
           })
         }
       >
-        <BitmapText className="text-white">{campaign.name}</BitmapText>
+        <span className="text-white text-single-line">{campaign.name}</span>
       </Button>
-      <BitmapText className="text-lightGrey ml-2">
+      <span className="text-lightGrey ml-2 text-single-line">
         {`v.${campaign.version} updated ${format(campaign.created_at)}`}
-      </BitmapText>
+      </span>
     </div>
   );
 };
@@ -57,17 +56,17 @@ const UserCampaigns = ({
 
   return (
     <div className="flex flex-col gap-half">
-      <BitmapText
+      <span
         className={
           userEntry.user.isCurrentUser ?
-            "text-pastelBlue sprites-double-height mb-half"
-          : "text-metallicBlue"
+            "text-pastelBlue text-double-height mb-half"
+          : "text-metallicBlue text-single-line"
         }
       >
         {userEntry.user.isCurrentUser ?
           "Your Campaigns"
         : userEntry.user.username}
-      </BitmapText>
+      </span>
       {campaignsList.map((campaign) => (
         <CampaignItem
           key={campaign.name}
@@ -103,9 +102,9 @@ export const CampaignListForEditor = ({
           <Fragment key={userEntry.user.id}>
             {shouldShowCommunityHeading && (
               <>
-                <BitmapText className="text-midRed mt-2 sprites-double-height">
+                <span className="text-midRed mt-2 text-double-height">
                   Community Campaigns
-                </BitmapText>
+                </span>
                 <div>
                   <BlockyMarkdown
                     className="text-lightGrey"
@@ -118,9 +117,9 @@ export const CampaignListForEditor = ({
           </Fragment>
         );
       })}
-      <BitmapText className="text-midRed mt-2 sprites-double-height">
+      <span className="text-midRed mt-2 text-double-height">
         Original Remastered
-      </BitmapText>
+      </span>
       <div>
         <BlockyMarkdown
           className="text-lightGrey"

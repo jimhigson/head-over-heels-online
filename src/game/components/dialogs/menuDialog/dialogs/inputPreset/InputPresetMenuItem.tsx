@@ -7,7 +7,6 @@ import {
   type KeyAssignmentPresetName,
   keyAssignmentPresets,
 } from "../../../../../input/keyAssignmentPresets";
-import { BitmapText } from "../../../../tailwindSprites/BitmapText";
 import { optionsHintMarkdownClassname } from "../../../dialogClasses";
 import { MenuItem } from "../../MenuItem";
 
@@ -32,9 +31,9 @@ export const InputPresetMenuItem = ({
       doubleHeightWhenFocussed
       hint={
         description && (
-          <BitmapText className={optionsHintMarkdownClassname}>
+          <span className={`${optionsHintMarkdownClassname} text-multi-line`}>
             {description}
-          </BitmapText>
+          </span>
         )
       }
       onSelect={onSelect}

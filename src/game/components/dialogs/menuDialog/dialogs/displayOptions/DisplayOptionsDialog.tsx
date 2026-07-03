@@ -8,7 +8,6 @@ import { useDispatchActionCallback } from "../../../../../../store/useDispatchAc
 import { Dialog } from "../../../../../../ui/Dialog";
 import { Switch } from "../../../../../../ui/Switch";
 import { BlockyMarkdown } from "../../../../BlockyMarkdown";
-import { BitmapText } from "../../../../tailwindSprites/BitmapText";
 import {
   optionsDialogClasses,
   optionsHintMarkdownClassname,
@@ -45,24 +44,24 @@ export const DisplayOptionsDialog = () => {
           }
           <SpritesOptionMenuItem />
           <MenuItem
-            className="sprites-double-height"
+            doubleHeight
             id="crtFilter"
             verticalAlignItemsCentre
             label={
-              <span className="align-top">
-                <span className="bg-shadow zx:bg-pureBlack toppy:bg-toppyGrey3 inline-block">
-                  <BitmapText className="text-midRed zx:text-zxRed toppy:text-toppyPink2">
+              <>
+                <span>
+                  <span className="text-midRed zx:text-zxRed toppy:text-toppyPink2">
                     C
-                  </BitmapText>
-                  <BitmapText className="text-moss zx:text-zxGreen toppy:text-toppyCool2">
+                  </span>
+                  <span className="text-moss zx:text-zxGreen toppy:text-toppyCool2">
                     R
-                  </BitmapText>
-                  <BitmapText className="text-pastelBlue zx:text-zxBlue toppy:text-toppyCool3">
+                  </span>
+                  <span className="text-pastelBlue zx:text-zxBlue toppy:text-toppyGrey2">
                     T
-                  </BitmapText>
+                  </span>
                 </span>
-                <BitmapText>{" TV Effect"}</BitmapText>
-              </span>
+                <span>{" TV Effect"}</span>
+              </>
             }
             valueElement={
               <Switch
@@ -81,7 +80,7 @@ export const DisplayOptionsDialog = () => {
             }
           />
           <MenuItem
-            className="sprites-double-height"
+            doubleHeight
             id="emulatedResolution"
             label="Emulated Resolution"
             subMenuId="emulatedResolution"
@@ -94,7 +93,7 @@ export const DisplayOptionsDialog = () => {
             }
           />
           <MenuItem
-            className="sprites-double-height"
+            doubleHeight
             verticalAlignItemsCentre
             id="showFps"
             label="Show FPS"

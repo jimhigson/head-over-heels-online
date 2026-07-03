@@ -2,7 +2,6 @@ import { useEffect } from "preact/hooks";
 
 import { TooltipFloating } from "../../../../../../ui/tooltip/Tooltip";
 import { useTooltip } from "../../../../../../ui/tooltip/useTooltip";
-import { BitmapText } from "../../../../tailwindSprites/BitmapText";
 import { type RoomBehaviourProps } from "./RoomDecoratorProps";
 
 const MapRoomTooltipBehaviour = ({
@@ -45,7 +44,7 @@ const MapRoomTooltipBehaviour = ({
       floatingStyles={floatingStyles}
       refs={refs}
       getFloatingProps={getFloatingProps}
-      tooltipContent={<BitmapText>{roomId}</BitmapText>}
+      tooltipContent={<span className="text-single-line">{roomId}</span>}
     />
   );
 };

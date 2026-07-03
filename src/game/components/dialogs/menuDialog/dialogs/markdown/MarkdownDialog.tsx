@@ -62,7 +62,7 @@ const MarkdownDialog = (
         dialogId={props.dialogId}
       >
         <DialogTitleBar
-          className={`pl-1 pt-1 mobile:px-3 ${isTopLevelMenu ? "hidden" : ""}`}
+          className={`pl-1 mobile:px-3 ${isTopLevelMenu ? "hidden" : "pt-1"}`}
           path={isSubmenuFromManual ? ["Manual"] : []}
         />
         <div

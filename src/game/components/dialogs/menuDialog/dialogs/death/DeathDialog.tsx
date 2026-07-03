@@ -7,13 +7,8 @@ import { useDispatchActionCallback } from "../../../../../../store/useDispatchAc
 import { Dialog } from "../../../../../../ui/Dialog";
 import { DialogPortal } from "../../../../../../ui/DialogPortal";
 import { detectDeviceType } from "../../../../../../utils/detectEnv/detectDeviceType";
-import {
-  BitmapText,
-  MultipleBitmapText,
-} from "../../../../tailwindSprites/BitmapText";
 import { useActionTap } from "../../../useActionTap";
 import { CurrentKeyAssignments } from "../../CurrentKeyAssignments";
-import { multilineTextClass } from "../../multilineTextClass";
 
 const highlightClass = "text-zxWhite";
 
@@ -101,57 +96,55 @@ const OutcomeMessage = ({ outcome }: OutcomeMessageProps) => {
     case "donate":
       return (
         <div
-          className={`${multilineTextClass} px-1 my-1 bg-zxBlack py-oneScaledPix flex flex-col gap-1`}
+          className="text-multi-line px-1 my-1 bg-zxBlack py-oneScaledPix flex flex-col gap-1"
           data-test-id="death-outcome-message"
         >
-          <MultipleBitmapText>
-            <div>
-              <span className={characterColourClass(outcome.donorName)}>
-                {outcome.donorName}
-              </span>{" "}
-              will donate{" "}
-              <span className={highlightClass}>{outcome.livesToDonate}</span>{" "}
-              {outcome.livesToDonate === 1 ? "life" : "lives"}
-            </div>
-            <div>
-              so{" "}
-              <span className={characterColourClass(outcome.dyingName)}>
-                {outcome.dyingName}
-              </span>{" "}
-              can continue with <span className={highlightClass}>1</span>
-            </div>
-          </MultipleBitmapText>
+          <div>
+            <span className={characterColourClass(outcome.donorName)}>
+              {outcome.donorName}
+            </span>{" "}
+            will donate{" "}
+            <span className={highlightClass}>{outcome.livesToDonate}</span>{" "}
+            {outcome.livesToDonate === 1 ? "life" : "lives"}
+          </div>
+          <div>
+            so{" "}
+            <span className={characterColourClass(outcome.dyingName)}>
+              {outcome.dyingName}
+            </span>{" "}
+            can continue with <span className={highlightClass}>1</span>
+          </div>
         </div>
       );
     case "carryOnAlone":
       return (
         <div
-          className={`${multilineTextClass} px-1 my-1 bg-zxBlack py-oneScaledPix`}
+          className="text-multi-line px-1 my-1 bg-zxBlack py-oneScaledPix"
           data-test-id="death-outcome-message"
         >
-          <MultipleBitmapText>
-            <div>
-              <span className={characterColourClass(outcome.outOfGameName)}>
-                {outcome.outOfGameName}
-              </span>{" "}
-              out of the game
-            </div>
-            <div>
-              <span className={characterColourClass(outcome.survivorName)}>
-                {outcome.survivorName}
-              </span>{" "}
-              will carry on alone
-            </div>
-          </MultipleBitmapText>
+          <div>
+            <span className={characterColourClass(outcome.outOfGameName)}>
+              {outcome.outOfGameName}
+            </span>{" "}
+            out of the game
+          </div>
+          <div>
+            <span className={characterColourClass(outcome.survivorName)}>
+              {outcome.survivorName}
+            </span>{" "}
+            will carry on alone
+          </div>
         </div>
       );
     case "gameOver":
       return (
         <div
-          className={`${multilineTextClass} px-1 my-1 bg-zxBlack py-oneScaledPix`}
+          className="px-1 my-1 bg-zxBlack py-oneScaledPix"
           data-test-id="death-outcome-message"
         >
-          <BitmapText className={highlightClass}>Game over</BitmapText>
+          <span className={`${highlightClass} text-single-line`}>
+            Game over
+          </span>
         </div>
       );
     default:
@@ -192,19 +185,17 @@ export const DeathDialog = (props: DeathDialogProps) => {
         onClick={dismiss}
         dialogId="death"
       >
-        <BitmapText className="block w-min mx-auto px-1 sprites-double-height bg-zxBlack py-oneScaledPix sprites-uppercase">
-          Uh-oh!
-        </BitmapText>
+        <div className="w-min mx-auto px-1 bg-zxBlack py-oneScaledPix uppercase">
+          <span className="text-double-height text-nowrap">Uh-oh!</span>
+        </div>
         <span className="zx">
           <OutcomeMessage outcome={outcome} />
           {detectDeviceType() === "desktop" ?
-            <div
-              className={`${multilineTextClass} px-1 bg-zxBlack py-oneScaledPix`}
-            >
-              <MultipleBitmapText>
+            <div className="text-multi-line px-1 bg-zxBlack py-oneScaledPix">
+              <div className="text-single-line">
                 Press <span className={highlightClass}>JUMP</span> to{" "}
                 <span className={highlightClass}>{action}</span>:
-              </MultipleBitmapText>
+              </div>
               <div className="flex flex-row gap-1 mx-auto">
                 <CurrentKeyAssignments
                   className="flex flex-row gap-1"
@@ -214,13 +205,11 @@ export const DeathDialog = (props: DeathDialogProps) => {
                 />
               </div>
             </div>
-          : <div
-              className={`${multilineTextClass} px-1 bg-zxBlack py-oneScaledPix`}
-            >
-              <BitmapText className="me-1 text-zxRed toppy:text-toppyPink2">
+          : <div className="px-1 bg-zxBlack py-oneScaledPix">
+              <span className="me-1 text-zxRed toppy:text-toppyPink2 text-single-line">
                 Tap screen
-              </BitmapText>
-              <BitmapText>to {action}</BitmapText>
+              </span>
+              <span className="text-single-line">to {action}</span>
             </div>
           }
         </span>

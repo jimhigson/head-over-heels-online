@@ -9,11 +9,10 @@ import {
 import { Border } from "../../../../../../ui/Border";
 import { Dialog } from "../../../../../../ui/Dialog";
 import { DialogPortal } from "../../../../../../ui/DialogPortal";
-import { BitmapText } from "../../../../tailwindSprites/BitmapText";
 import { mainMenuScrollClasses } from "../../../dialogClasses";
 import { MenuItem } from "../../MenuItem";
 import { MenuItems } from "../../MenuItems";
-import { multilineTextClass } from "../../multilineTextClass";
+import { useCustomTextLeader } from "../CustomTextLeader";
 import { DialogTitleBar } from "../DialogTitleBar";
 
 export const AboutDialog = (_emptyProps: EmptyObject) => {
@@ -28,58 +27,50 @@ export const AboutDialog = (_emptyProps: EmptyObject) => {
         <div className={mainMenuScrollClasses}>
           <MenuItems>
             <MenuItem
-              className="sprites-double-height"
+              doubleHeight
               id="manual"
               label="Read the manual"
               subMenuId="readTheManual"
               hint={
-                <BitmapText
-                  className={`text-lightBeige zx:text-zxYellow toppy:text-toppyCool1 ${multilineTextClass}`}
-                >
+                <span className="text-lightBeige zx:text-zxYellow toppy:text-toppyCool1 text-multi-line">
                   The original game manual, readable online
-                </BitmapText>
+                </span>
               }
             />
             <MenuItem
-              className="sprites-double-height"
+              doubleHeight
               id="discord"
-              leader={<BitmapText>{nerdFontDiscordChar}</BitmapText>}
+              leader={useCustomTextLeader(nerdFontDiscordChar)}
               label="Discord"
               href={discordInviteUrl}
               hint={
-                <BitmapText
-                  className={`text-lightBeige zx:text-zxYellow toppy:text-toppyCool1 ${multilineTextClass}`}
-                >
+                <span className="text-lightBeige zx:text-zxYellow toppy:text-toppyCool1 text-multi-line">
                   Join the community - the game’s Discord server
-                </BitmapText>
+                </span>
               }
             />
             <MenuItem
-              className="sprites-double-height"
+              doubleHeight
               id="github"
-              leader={<BitmapText>{nerdFontGithubChar}</BitmapText>}
+              leader={useCustomTextLeader(nerdFontGithubChar)}
               label="Github"
               href={repository.url}
               hint={
-                <BitmapText
-                  className={`text-lightBeige zx:text-zxYellow toppy:text-toppyCool1 ${multilineTextClass}`}
-                >
+                <span className="text-lightBeige zx:text-zxYellow toppy:text-toppyCool1 text-multi-line">
                   View the source code on GitHub
-                </BitmapText>
+                </span>
               }
             />
             <MenuItem
-              className="sprites-double-height"
+              doubleHeight
               id="changelog"
-              leader={<BitmapText>{nerdFontGithubChar}</BitmapText>}
+              leader={useCustomTextLeader(nerdFontGithubChar)}
               label="Changelog"
               href={`${repository.url}/releases`}
               hint={
-                <BitmapText
-                  className={`text-lightBeige zx:text-zxYellow toppy:text-toppyCool1 ${multilineTextClass}`}
-                >
+                <span className="text-lightBeige zx:text-zxYellow toppy:text-toppyCool1 text-multi-line">
                   What's new?
-                </BitmapText>
+                </span>
               }
             />
           </MenuItems>

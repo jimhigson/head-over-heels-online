@@ -1,6 +1,5 @@
 import jsonPalette from "../../_generated/palette/spritesheetPalette.json" with { type: "json" };
 import jsonToppyPalette from "../../_generated/palette/spritesheetToppyPalette.json" with { type: "json" };
-import { BitmapText } from "../../game/components/tailwindSprites/BitmapText";
 import { zxSpectrumColors } from "../../originalGame";
 import { useSpritesOption } from "../../store/slices/gameMenus/gameMenusSelectors";
 import { Tooltip } from "../../ui/tooltip/Tooltip";
@@ -59,9 +58,9 @@ export const PaletteSwatch = () => {
         }
         tooltipContent={
           <div className="text-shadow zx:text-zxBlack toppy:text-toppyGrey3 flex flex-col gap-oneScaledPix">
-            <BitmapText>{name}</BitmapText>
-            <BitmapText>{hex}</BitmapText>
-            <BitmapText>{srgbHexToP3(hex)}</BitmapText>
+            <span className="text-single-line">{name}</span>
+            <span className="text-single-line">{hex}</span>
+            <span className="text-single-line">{srgbHexToP3(hex)}</span>
           </div>
         }
       />

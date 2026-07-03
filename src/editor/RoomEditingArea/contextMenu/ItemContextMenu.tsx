@@ -1,6 +1,5 @@
 import { useCallback } from "preact/hooks";
 
-import { BitmapText } from "../../../game/components/tailwindSprites/BitmapText";
 import { useAppDispatch, useAppSelector } from "../../../store/hooks";
 import { selectUpscale } from "../../../store/slices/upscale/upscaleSlice";
 import { useEditorAppSelector } from "../../../store/store";
@@ -85,7 +84,11 @@ export const ItemContextMenu = ({ renderArea }: ItemContextMenuProps) => {
       open={open}
       onClose={close}
       anchor={anchor}
-      header={<BitmapText>{selectionLabel(selectedTypes)}</BitmapText>}
+      header={
+        <span className="text-single-line">
+          {selectionLabel(selectedTypes)}
+        </span>
+      }
     >
       <DeleteMenuItem />
       <DuplicateMenuItem />

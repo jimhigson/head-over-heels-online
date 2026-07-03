@@ -1,8 +1,6 @@
 import { useEffect, useRef, useState } from "preact/hooks";
 
 import { BlockyMarkdown } from "../../game/components/BlockyMarkdown";
-import { multilineTextClass } from "../../game/components/dialogs/menuDialog/multilineTextClass";
-import { BitmapText } from "../../game/components/tailwindSprites/BitmapText";
 import { type TextureTailwindClass } from "../../sprites/spritesheet/spritesheetData/TextureTailwindClass";
 import { editorStore, useEditorAppSelector } from "../../store/store";
 import { Border } from "../../ui/Border";
@@ -73,14 +71,14 @@ export const SaveAsDialog = ({
         >
           <DialogHeader>Save as...</DialogHeader>
           {isSomeoneElses && (
-            <BitmapText className={`${multilineTextClass} text-midRed `}>
+            <span className="text-multi-line text-midRed ">
               You are saving a fork of another user's campaign under your own
               account
-            </BitmapText>
+            </span>
           )}
-          <BitmapText className={`${multilineTextClass} text-lightGrey pt-1`}>
+          <span className="text-multi-line text-lightGrey pt-1">
             The community will see your campaign listed under this name
-          </BitmapText>
+          </span>
           <input
             ref={inputRef}
             type="text"
@@ -111,7 +109,7 @@ export const SaveAsDialog = ({
             />
             <div className="flex-grow" />
             <Button onClick={onClose} className="px-1 py-half self-stretch">
-              <BitmapText>Cancel</BitmapText>
+              <span className="text-single-line">Cancel</span>
             </Button>
             <Button
               disabled={disabled}
@@ -119,7 +117,7 @@ export const SaveAsDialog = ({
               aria-label="Save campaign"
               className="bg-midRed px-1 py-half gap-1"
             >
-              <BitmapText>Save</BitmapText>
+              <span className="text-single-line">Save</span>
               <span
                 className={cn(
                   `sprite ${"texture-editor_tool_save" satisfies TextureTailwindClass} relative`,

@@ -1,0 +1,9 @@
+# Python dependencies for buildVariableFont.py (run by `pnpm gen:font`).
+# Install with:  pip install -r scripts/font/requirements.txt
+#
+# Versions are pinned exactly: the committed woff2 is only reproducible - and so
+# the "font is up-to-date" CI check only passes - when it is rebuilt with these
+# same versions. If you bump either, regenerate and commit the font in the same
+# change (pnpm gen:font).
+fonttools==4.63.0
+brotli==1.2.0

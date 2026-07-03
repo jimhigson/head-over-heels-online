@@ -1,4 +1,3 @@
-import { BitmapText } from "../../game/components/tailwindSprites/BitmapText";
 import { useSpritesOption } from "../../store/slices/gameMenus/gameMenusSelectors";
 import { Button } from "../../ui/Button";
 import { DownloadSpritesheetButton } from "./DownloadSpritesheetButton";
@@ -44,7 +43,7 @@ export const SpritesPageToolbar = ({
       </div>
 
       <Button className="px-1" onClick={() => window.scrollTo({ top: 0 })}>
-        <BitmapText>⬆ Top</BitmapText>
+        <span className="text-single-line">⬆ Top</span>
       </Button>
     </div>
   );

@@ -3,10 +3,8 @@ import { toggleUserSetting } from "../../../../../../store/slices/userSettings/u
 import { useDispatchActionCallback } from "../../../../../../store/useDispatchActionCallback";
 import { Switch } from "../../../../../../ui/Switch";
 import { BlockyMarkdown } from "../../../../BlockyMarkdown";
-import { BitmapText } from "../../../../tailwindSprites/BitmapText";
 import { optionsHintMarkdownClassname } from "../../../dialogClasses";
 import { MenuItem } from "../../MenuItem";
-import { multilineTextClass } from "../../multilineTextClass";
 
 export const OnScreenControlsMenuItem = () => {
   const hintMarkdown = `Enables on-screen controls: for mobile, tablet, or any device with a touch-screen.
@@ -14,12 +12,10 @@ export const OnScreenControlsMenuItem = () => {
 You can turn this off for phones paired with joypads/keyboards`;
   return (
     <MenuItem
-      className="sprites-double-height"
+      doubleHeight
       id="onScreenControls"
       label={
-        <BitmapText className={`${multilineTextClass} mobile:w-max`}>
-          Touch controls
-        </BitmapText>
+        <span className="text-multi-line mobile:w-max">Touch controls</span>
       }
       valueElement={
         <Switch

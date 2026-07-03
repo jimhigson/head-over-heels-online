@@ -1,6 +1,5 @@
 import { useEffect, useRef } from "preact/hooks";
 
-import { BitmapText } from "../../game/components/tailwindSprites/BitmapText";
 import { Button } from "../../ui/Button";
 
 export type SpriteFilterInputProps = {
@@ -27,7 +26,7 @@ export const SpriteFilterInput = ({
 
   return (
     <div className="flex flex-row">
-      <BitmapText className="text-white">Filter:</BitmapText>
+      <span className="text-white text-single-line">Filter:</span>
       <input
         ref={inputRef}
         type="text"
@@ -41,7 +40,7 @@ export const SpriteFilterInput = ({
           className="bg-midRed zx:bg-zxRed toppy:bg-toppyPink2"
           onClick={() => onSpriteFilterChange("")}
         >
-          <BitmapText>x</BitmapText>
+          <span className="text-single-line">x</span>
         </Button>
       )}
     </div>

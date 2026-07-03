@@ -1,6 +1,5 @@
 import { useEffect, useRef, useState } from "preact/hooks";
 
-import { BitmapText } from "../../game/components/tailwindSprites/BitmapText";
 import { useAppSelector } from "../../store/hooks";
 import { useSpritesOption } from "../../store/slices/gameMenus/gameMenusSelectors";
 import { selectIsSpritesheetOverridden } from "../../store/slices/spritesheetOverrideSlice";
@@ -22,9 +21,9 @@ export const SpritesheetUrlDisplay = () => {
 
   return (
     <span ref={ref}>
-      <BitmapText className="text-pastelBlue zx:text-zxCyan toppy:text-toppyCool2">
+      <span className="text-pastelBlue zx:text-zxCyan toppy:text-toppyCool2 text-single-line">
         {overridden ? "(overridden)" : url || " "}
-      </BitmapText>
+      </span>
     </span>
   );
 };

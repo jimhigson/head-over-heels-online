@@ -8,10 +8,8 @@ import { useDispatchActionCallback } from "../../../../../../store/useDispatchAc
 import { ErrorDialog } from "../../../../../../ui/ErrorDialog";
 import { type SerialisableError } from "../../../../../../utils/redux/createSerialisableErrors";
 import { BlockyMarkdown } from "../../../../BlockyMarkdown";
-import { BitmapText } from "../../../../tailwindSprites/BitmapText";
 import { MenuItem } from "../../MenuItem";
 import { MenuItems } from "../../MenuItems";
-import { multilineTextClass } from "../../multilineTextClass";
 
 const markdownIntro = `## Uh-oh! The game crashed!
 You could:
@@ -39,9 +37,7 @@ export const ErrorCaughtDialog = ({
       intro={<BlockyMarkdown markdown={markdownIntro} />}
     >
       {(errorsReportText) => (
-        <MenuItems
-          className={`text-lightGrey zx:text-zxWhite toppy:text-toppyGrey1 mt-1 resHandheld:mt-0 selectedMenuItem:text-midRed zx:selectedMenuItem:text-zxYellow toppy:selectedMenuItem:text-toppyPink2 resHandheld:!gap-y-1 ${multilineTextClass}`}
-        >
+        <MenuItems className="text-lightGrey zx:text-zxWhite toppy:text-toppyGrey1 mt-1 resHandheld:mt-0 selectedMenuItem:text-midRed zx:selectedMenuItem:text-zxYellow toppy:selectedMenuItem:text-toppyPink2 resHandheld:!gap-y-1">
           <MenuItem
             doubleHeightWhenFocussed
             id="tryContinue"
@@ -63,9 +59,9 @@ export const ErrorCaughtDialog = ({
             onSelect={() => dispatch(clearAllData())}
           />
           {showCopied ?
-            <BitmapText className="text-metallicBlue col-span-2 sprites-double-height ml-3">
+            <span className="text-metallicBlue col-span-2 text-double-height ml-3">
               Error report copied
-            </BitmapText>
+            </span>
           : <MenuItem
               doubleHeightWhenFocussed
               id="copyClipboard"

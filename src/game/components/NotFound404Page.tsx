@@ -2,8 +2,6 @@ import { Border } from "../../ui/Border";
 import { Dialog } from "../../ui/Dialog";
 import { DialogPortal } from "../../ui/DialogPortal";
 import { directionsXy8 } from "../../utils/vectors/vectors";
-import { multilineTextClass } from "./dialogs/menuDialog/multilineTextClass";
-import { BitmapText } from "./tailwindSprites/BitmapText";
 import { usePlayableTailwindSpriteClassname } from "./tailwindSprites/playableTailwindSpriteClassname";
 
 export const NotFound404Page = () => {
@@ -21,14 +19,10 @@ export const NotFound404Page = () => {
           ))}
         </div>
         <div className="flex flex-col grow text-center justify-center">
-          <BitmapText className="sprites-double-height">
-            404 Not found
-          </BitmapText>
-          <BitmapText
-            className={`${multilineTextClass} p-1 pt-2 text-metallicBlue zx:text-zxYellow`}
-          >
+          <span className="text-double-height">404 Not found</span>
+          <span className="text-multi-line p-1 pt-2 text-metallicBlue zx:text-zxYellow">
             whatever you’re looking for, it ain’t here
-          </BitmapText>
+          </span>
         </div>
         <div className="flex flex-col">
           {directionsXy8.toReversed().map((d) => (

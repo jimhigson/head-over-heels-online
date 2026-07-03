@@ -27,19 +27,19 @@ test.describe("life and death flows", () => {
     const mobile = testInfo.project.name.includes("mobile");
     const messages = await loseAllLives(page);
     expect(messages).toEqual([
-      `Uh-oh! ${mobile ? "Tap screen to respawn" : "Press JUMP to respawn : Space 🕹 A"}`, //head 7 lives left after respawn, heels 8
-      `Uh-oh! ${mobile ? "Tap screen to respawn" : "Press JUMP to respawn : Space 🕹 A"}`, //head 6 lives left after respawn
-      `Uh-oh! ${mobile ? "Tap screen to respawn" : "Press JUMP to respawn : Space 🕹 A"}`, //head 5 lives left after respawn
-      `Uh-oh! ${mobile ? "Tap screen to respawn" : "Press JUMP to respawn : Space 🕹 A"}`, //head 4 lives left after respawn
-      `Uh-oh! ${mobile ? "Tap screen to respawn" : "Press JUMP to respawn : Space 🕹 A"}`, //head 3 lives left after respawn
-      `Uh-oh! ${mobile ? "Tap screen to respawn" : "Press JUMP to respawn : Space 🕹 A"}`, //head 2 lives left after respawn
-      `Uh-oh! ${mobile ? "Tap screen to respawn" : "Press JUMP to respawn : Space 🕹 A"}`, //head 1 life left after respawn
-      `Uh-oh! Heels will donate 2 lives so Head can continue with 1 ${mobile ? "Tap screen to respawn" : "Press JUMP to respawn : Space 🕹 A"}`, //head 1, heels 8
-      `Uh-oh! Heels will donate 2 lives so Head can continue with 1 ${mobile ? "Tap screen to respawn" : "Press JUMP to respawn : Space 🕹 A"}`, //head 1, heels 6
-      `Uh-oh! Heels will donate 2 lives so Head can continue with 1 ${mobile ? "Tap screen to respawn" : "Press JUMP to respawn : Space 🕹 A"}`, //head 1, heels 4
-      `Uh-oh! Heels will donate 1 life so Head can continue with 1 ${mobile ? "Tap screen to respawn" : "Press JUMP to respawn : Space 🕹 A"}`, //head 1, heels 2
-      `Uh-oh! Head out of the game Heels will carry on alone ${mobile ? "Tap screen to continue as Heels" : "Press JUMP to continue as Heels : Space 🕹 A"}`, //head 1, heels 1
-      `Uh-oh! Game over ${mobile ? "Tap screen to continue" : "Press JUMP to continue : Space 🕹 A"}`, //heels 1, head 0 - game over
+      `Uh-oh!${mobile ? "Tap screento respawn" : "Press JUMP to respawn:Space🕹A"}`, //head 7 lives left after respawn, heels 8
+      `Uh-oh!${mobile ? "Tap screento respawn" : "Press JUMP to respawn:Space🕹A"}`, //head 6 lives left after respawn
+      `Uh-oh!${mobile ? "Tap screento respawn" : "Press JUMP to respawn:Space🕹A"}`, //head 5 lives left after respawn
+      `Uh-oh!${mobile ? "Tap screento respawn" : "Press JUMP to respawn:Space🕹A"}`, //head 4 lives left after respawn
+      `Uh-oh!${mobile ? "Tap screento respawn" : "Press JUMP to respawn:Space🕹A"}`, //head 3 lives left after respawn
+      `Uh-oh!${mobile ? "Tap screento respawn" : "Press JUMP to respawn:Space🕹A"}`, //head 2 lives left after respawn
+      `Uh-oh!${mobile ? "Tap screento respawn" : "Press JUMP to respawn:Space🕹A"}`, //head 1 life left after respawn
+      `Uh-oh!Heels will donate 2 livesso Head can continue with 1${mobile ? "Tap screento respawn" : "Press JUMP to respawn:Space🕹A"}`, //head 1, heels 8
+      `Uh-oh!Heels will donate 2 livesso Head can continue with 1${mobile ? "Tap screento respawn" : "Press JUMP to respawn:Space🕹A"}`, //head 1, heels 6
+      `Uh-oh!Heels will donate 2 livesso Head can continue with 1${mobile ? "Tap screento respawn" : "Press JUMP to respawn:Space🕹A"}`, //head 1, heels 4
+      `Uh-oh!Heels will donate 1 lifeso Head can continue with 1${mobile ? "Tap screento respawn" : "Press JUMP to respawn:Space🕹A"}`, //head 1, heels 2
+      `Uh-oh!Head out of the gameHeels will carry on alone${mobile ? "Tap screento continue as Heels" : "Press JUMP to continue as Heels:Space🕹A"}`, //head 1, heels 1
+      `Uh-oh!Game over${mobile ? "Tap screento continue" : "Press JUMP to continue:Space🕹A"}`, //heels 1, head 0 - game over
     ]);
     await waitForDialog(page, "score");
   });
@@ -110,14 +110,14 @@ test.describe("life and death flows", () => {
     const mobile = testInfo.project.name.includes("mobile");
     const messages = await loseAllLives(page);
     expect(messages).toEqual([
-      `Uh-oh! ${mobile ? "Tap screen to respawn" : "Press JUMP to respawn : Space 🕹 A"}`, //Head 6, Heels 8
-      `Uh-oh! ${mobile ? "Tap screen to respawn" : "Press JUMP to respawn : Space 🕹 A"}`, //Head 5, Heels 7
-      `Uh-oh! ${mobile ? "Tap screen to respawn" : "Press JUMP to respawn : Space 🕹 A"}`, //Head 4, Heels 6
-      `Uh-oh! ${mobile ? "Tap screen to respawn" : "Press JUMP to respawn : Space 🕹 A"}`, //Head 3, Heels 5
-      `Uh-oh! ${mobile ? "Tap screen to respawn" : "Press JUMP to respawn : Space 🕹 A"}`, //Head 2, Heels 4
-      `Uh-oh! Heels will donate 2 lives so Head can continue with 1 ${mobile ? "Tap screen to respawn" : "Press JUMP to respawn : Space 🕹 A"}`, //Head 1, Heels 3
-      `Uh-oh! Heels will donate 1 life so Head can continue with 1 ${mobile ? "Tap screen to respawn" : "Press JUMP to respawn : Space 🕹 A"}`, //Head 1, Heels 2
-      `Uh-oh! Game over ${mobile ? "Tap screen to continue" : "Press JUMP to continue : Space 🕹 A"}`, //Head 1, Heels 1 - game over
+      `Uh-oh!${mobile ? "Tap screento respawn" : "Press JUMP to respawn:Space🕹A"}`, //Head 6, Heels 8
+      `Uh-oh!${mobile ? "Tap screento respawn" : "Press JUMP to respawn:Space🕹A"}`, //Head 5, Heels 7
+      `Uh-oh!${mobile ? "Tap screento respawn" : "Press JUMP to respawn:Space🕹A"}`, //Head 4, Heels 6
+      `Uh-oh!${mobile ? "Tap screento respawn" : "Press JUMP to respawn:Space🕹A"}`, //Head 3, Heels 5
+      `Uh-oh!${mobile ? "Tap screento respawn" : "Press JUMP to respawn:Space🕹A"}`, //Head 2, Heels 4
+      `Uh-oh!Heels will donate 2 livesso Head can continue with 1${mobile ? "Tap screento respawn" : "Press JUMP to respawn:Space🕹A"}`, //Head 1, Heels 3
+      `Uh-oh!Heels will donate 1 lifeso Head can continue with 1${mobile ? "Tap screento respawn" : "Press JUMP to respawn:Space🕹A"}`, //Head 1, Heels 2
+      `Uh-oh!Game over${mobile ? "Tap screento continue" : "Press JUMP to continue:Space🕹A"}`, //Head 1, Heels 1 - game over
     ]);
   });
 

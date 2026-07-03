@@ -1,7 +1,6 @@
 import { useEffect, useMemo, useRef, useState } from "preact/hooks";
 
 import { BlockyMarkdown } from "../../game/components/BlockyMarkdown";
-import { BitmapText } from "../../game/components/tailwindSprites/BitmapText";
 import { sanitiseForClassName } from "../../game/components/tailwindSprites/SanitiseForClassName";
 import { type AppSpriteFrame } from "../../sprites/spritesheet/spritesheetData/AppSpriteFrame";
 import {
@@ -64,7 +63,7 @@ const AnimationPreview = ({
   return (
     <div className="mt-1">
       <style ref={styleRef} />
-      <BitmapText>In animation {animationName}</BitmapText>
+      <span className="text-single-line">In animation {animationName}</span>
       <div
         className="[background:repeating-conic-gradient(#ddd_0_25%,_#ccc_0_50%)_50%_/_10px_10px] w-min"
         style={{ "--scale": 4 }}

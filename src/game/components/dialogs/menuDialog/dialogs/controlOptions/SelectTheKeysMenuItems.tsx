@@ -6,14 +6,12 @@ import { useDirectionsRelativeTo } from "../../../../../../store/slices/gameMenu
 import { assignInputStart } from "../../../../../../store/slices/userSettings/userSettingsSlice";
 import { useDispatchActionCallback } from "../../../../../../store/useDispatchActionCallback";
 import { BlockyMarkdown } from "../../../../BlockyMarkdown";
-import { BitmapText } from "../../../../tailwindSprites/BitmapText";
 import { usePlayableTailwindSpriteClassname } from "../../../../tailwindSprites/playableTailwindSpriteClassname";
 import {
   optionsHintMarkdownClassname,
   spriteLeaderClasses,
 } from "../../../dialogClasses";
 import { MenuItem } from "../../MenuItem";
-import { multilineTextClass } from "../../multilineTextClass";
 import { SelectKeysMenuAssignmentValue } from "./SelectKeysMenuAssignmentValue";
 
 export const SelectTheKeysMenuItems = () => {
@@ -23,12 +21,9 @@ export const SelectTheKeysMenuItems = () => {
   return (
     <>
       <div className="col-span-3">
-        <BitmapText
-          TagName="h2"
-          className={`text-midRed zx:text-zxBlue toppy:text-toppyPink2 ${multilineTextClass} pt-1  sprites-double-height`}
-        >
+        <h2 className="text-midRed zx:text-zxBlue toppy:text-toppyPink2 pt-1 text-double-height">
           Movement
-        </BitmapText>
+        </h2>
       </div>
       <MenuItem
         id="left"
@@ -102,14 +97,11 @@ export const SelectTheKeysMenuItems = () => {
         onSelect={useDispatchActionCallback(assignInputStart, "jump")}
       />
       <div className="col-span-3">
-        <BitmapText
-          TagName="h2"
-          className={`text-midRed zx:text-zxBlue toppy:text-toppyPink2 ${multilineTextClass} pt-1  sprites-double-height`}
-        >
+        <h2 className="text-midRed zx:text-zxBlue toppy:text-toppyPink2 pt-1 text-double-height">
           Character-specific Abilities
-        </BitmapText>
+        </h2>
       </div>
-      <div className={`${multilineTextClass} col-span-3`}>
+      <div className="text-multi-line col-span-3">
         <BlockyMarkdown
           markdown={`**NOTE:** Some puzzles require Heels to jump and pick up/down simultaneously - keep a key assigned to *both jump and carry*`}
           className={optionsHintMarkdownClassname}
@@ -135,9 +127,9 @@ export const SelectTheKeysMenuItems = () => {
       <MenuItem
         id="fire"
         label={
-          <BitmapText className={`inline-block w-6 ${multilineTextClass}`}>
+          <span className="inline-block w-6 text-multi-line">
             Fire dough- nuts
-          </BitmapText>
+          </span>
         }
         leader={
           <span
@@ -154,12 +146,9 @@ export const SelectTheKeysMenuItems = () => {
         onSelect={useDispatchActionCallback(assignInputStart, "fire")}
       />
       <div className="col-span-3">
-        <BitmapText
-          TagName="h2"
-          className={`text-midRed zx:text-zxBlue toppy:text-toppyPink2 ${multilineTextClass} pt-1  sprites-double-height`}
-        >
+        <h2 className="text-midRed zx:text-zxBlue toppy:text-toppyPink2 pt-1 text-double-height">
           Character Swopping
-        </BitmapText>
+        </h2>
       </div>
       <MenuItem
         id="swop"
@@ -173,9 +162,7 @@ export const SelectTheKeysMenuItems = () => {
           />
         }
         leader={
-          <span
-            className={`${spriteLeaderClasses} ${"texture-blank" satisfies TextureTailwindClass} relative overflow-hidden`}
-          >
+          <span className="relative overflow-hidden w-3 h-3">
             <span
               className={`${spriteLeaderClasses} ${spriteClassname({ character: "head", action: "idle", facingXy8: "towardsRight" })} ${"selectedMenuItem:texture-animated-head_walking_towardsRight" satisfies AnimatedTextureTailwindClass} absolute right-[50%]`}
             />
@@ -188,9 +175,7 @@ export const SelectTheKeysMenuItems = () => {
       <MenuItem
         id="swopHead"
         label={
-          <BitmapText className={`inline-block w-6 ${multilineTextClass}`}>
-            Swop to head
-          </BitmapText>
+          <span className="inline-block w-6 text-multi-line">Swop to head</span>
         }
         valueElement={<SelectKeysMenuAssignmentValue action="swop.head" />}
         onSelect={useDispatchActionCallback(assignInputStart, "swop.head")}
@@ -209,13 +194,11 @@ export const SelectTheKeysMenuItems = () => {
       <MenuItem
         id="swopHeels"
         label={
-          <div className={`w-6 ${multilineTextClass}`}>
-            <BitmapText className={`me-1`}>Swop to</BitmapText>
-            <BitmapText
-              className={`text-pinkHalfbrite selectedMenuItem:text-pink`}
-            >
+          <div className="w-6 text-multi-line">
+            <span className="me-1 text-single-line">Swop to</span>
+            <span className="text-pinkHalfbrite selectedMenuItem:text-pink text-single-line">
               heels
-            </BitmapText>
+            </span>
           </div>
         }
         valueElement={<SelectKeysMenuAssignmentValue action="swop.heels" />}
@@ -233,12 +216,9 @@ export const SelectTheKeysMenuItems = () => {
         }
       />
       <div className="col-span-3">
-        <BitmapText
-          TagName="h2"
-          className={`text-midRed zx:text-zxBlue toppy:text-toppyPink2 ${multilineTextClass} pt-1  sprites-double-height`}
-        >
+        <h2 className="text-midRed zx:text-zxBlue toppy:text-toppyPink2 pt-1 text-double-height">
           Stopping the Game
-        </BitmapText>
+        </h2>
       </div>
       <MenuItem
         id="map"
@@ -276,12 +256,9 @@ export const SelectTheKeysMenuItems = () => {
         )}
       />
       <div className="col-span-3">
-        <BitmapText
-          TagName="h2"
-          className={`text-midRed zx:text-zxBlue toppy:text-toppyPink2 ${multilineTextClass} pt-1 sprites-double-height pb-1`}
-        >
+        <h2 className="text-midRed zx:text-zxBlue toppy:text-toppyPink2 pt-1 text-double-height pb-1">
           Look controls
-        </BitmapText>
+        </h2>
         <BlockyMarkdown
           markdown={`Look controls are useful for seeing more of larger rooms that don’t fit on the screen.`}
           className={optionsHintMarkdownClassname}
@@ -324,19 +301,14 @@ export const SelectTheKeysMenuItems = () => {
         onSelect={useDispatchActionCallback(assignInputStart, "lookDown")}
       />
       <div className="col-span-3">
-        <BitmapText
-          TagName="h2"
-          className={`text-midRed zx:text-zxBlue toppy:text-toppyPink2 ${multilineTextClass} pt-1  sprites-double-height`}
-        >
+        <h2 className="text-midRed zx:text-zxBlue toppy:text-toppyPink2 pt-1 text-double-height">
           Remake Option Toggles
-        </BitmapText>
+        </h2>
       </div>
       <MenuItem
         id="cycleSprites"
         label={
-          <BitmapText className={`inline-block w-6 ${multilineTextClass}`}>
-            Next skin
-          </BitmapText>
+          <span className="inline-block w-6 text-multi-line">Next skin</span>
         }
         valueElement={<SelectKeysMenuAssignmentValue action="cycleSprites" />}
         onSelect={useDispatchActionCallback(assignInputStart, "cycleSprites")}
@@ -349,9 +321,9 @@ export const SelectTheKeysMenuItems = () => {
       <MenuItem
         id="cycleRes"
         label={
-          <BitmapText className={`inline-block w-6 ${multilineTextClass}`}>
+          <span className="inline-block w-6 text-multi-line">
             Cycle res- olution
-          </BitmapText>
+          </span>
         }
         valueElement={
           <SelectKeysMenuAssignmentValue action="cycleResolution" />
@@ -369,9 +341,9 @@ export const SelectTheKeysMenuItems = () => {
       <MenuItem
         id="toggleCrt"
         label={
-          <BitmapText className={`inline-block w-6 ${multilineTextClass}`}>
+          <span className="inline-block w-6 text-multi-line">
             Toggle CRT effect
-          </BitmapText>
+          </span>
         }
         valueElement={
           <SelectKeysMenuAssignmentValue action="toggleCrtFilter" />

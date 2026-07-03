@@ -10,7 +10,6 @@ import { Border } from "../../../../../ui/Border";
 import { Dialog } from "../../../../../ui/Dialog";
 import { DialogPortal } from "../../../../../ui/DialogPortal";
 import { detectDeviceType } from "../../../../../utils/detectEnv/detectDeviceType";
-import { BitmapText } from "../../../tailwindSprites/BitmapText";
 import { MenuItem } from "../MenuItem";
 import { MenuItems } from "../MenuItems";
 import { MenuItemSeparator } from "../MenuItemSeparator";
@@ -52,7 +51,7 @@ const ReadTheManualDialog = () => {
         }
         dialogId="readTheManual"
       >
-        <DialogTitleBar className="pl-1 mobile:px-3 " />
+        <DialogTitleBar className="pl-1 mobile:px-3 pt-1" />
         <div
           className={
             // set up scrolling and the scroll bar:
@@ -73,9 +72,7 @@ const ReadTheManualDialog = () => {
             <span
               className={`sprite ${"texture-book_x" satisfies TextureTailwindClass} zx:sprite-revert-to-white sprites-normal-height`}
             />
-            <BitmapText className="sprites-double-height mx-1">
-              Read the manual
-            </BitmapText>
+            <span className="text-double-height mx-1">Read the manual</span>
             <span
               className={`sprite ${"texture-book_y" satisfies TextureTailwindClass} zx:sprite-revert-to-white sprites-normal-height`}
             />

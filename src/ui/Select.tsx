@@ -1,7 +1,6 @@
 import { useRef, useState } from "preact/hooks";
 import { type CSSProperties, type FC, type ReactNode } from "react";
 
-import { BitmapText } from "../game/components/tailwindSprites/BitmapText";
 import { emptyObject } from "../utils/empty";
 import { Button } from "./Button";
 import { cn } from "./cn";
@@ -95,11 +94,11 @@ export const Select = <Value extends string>(props: SelectProps<Value>) => {
           tooltipContent={!open && tooltipContent}
         >
           {typeof triggerButtonLabel === "string" ?
-            <BitmapText className="grow overflow-hidden text-left">
+            <span className="grow overflow-hidden text-left text-single-line">
               {triggerButtonLabel}
-            </BitmapText>
+            </span>
           : triggerButtonLabel}
-          <BitmapText className="grow-0">{open ? "X" : "⬇"}</BitmapText>
+          <span className="grow-0 text-single-line">{open ? "X" : "⬇"}</span>
         </Button>
       }
       contents={
@@ -109,7 +108,7 @@ export const Select = <Value extends string>(props: SelectProps<Value>) => {
           )}
           <CommandList>
             <CommandEmpty>
-              <BitmapText>Nothing found</BitmapText>
+              <span>Nothing found</span>
             </CommandEmpty>
             <CommandGroup>
               {values.map((itemValue) => (

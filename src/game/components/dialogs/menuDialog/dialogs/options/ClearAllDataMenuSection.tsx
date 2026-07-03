@@ -51,7 +51,7 @@ export const ClearAllDataMenuSection = () => {
         />
       </div>
       <MenuItem
-        className="sprites-double-height"
+        doubleHeight
         leader={
           <span
             className={`${spriteLeaderClasses} sprite ${"texture-bubbles_white_1" satisfies TextureTailwindClass} sprites-normal-height selectedMenuItem:texture-animated-bubbles_white zx:sprite-revert-to-white`}
@@ -59,7 +59,9 @@ export const ClearAllDataMenuSection = () => {
         }
         verticalAlignItemsCentre
         id={menuItemId}
-        label={awaitingConfirmation ? "Press again to confirm" : "Reset"}
+        label={
+          awaitingConfirmation ? "Press again to confirm" : "Delete everything"
+        }
         onSelect={handleSelect}
       />
     </>

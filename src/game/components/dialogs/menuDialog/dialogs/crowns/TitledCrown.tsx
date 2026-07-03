@@ -3,7 +3,7 @@ import { type TextureTailwindClass } from "../../../../../../sprites/spritesheet
 import { useAppSelector } from "../../../../../../store/hooks";
 import { useIsUncolourised } from "../../../../../../store/slices/gameMenus/gameMenusSelectors";
 import { twClass } from "../../../../../../utils/twClass";
-import { BitmapText } from "../../../../tailwindSprites/BitmapText";
+import { ColourCycleText } from "../../../../ColourCycleText";
 
 const colourCycle: Record<PlanetName, string[]> = {
   egyptus: [
@@ -69,6 +69,8 @@ export const TitledCrown = ({
   );
   const uncolourised = useIsUncolourised();
 
+  const labelClassName = `block mx-auto text-single-line ${collected ? "zx:text-zxMagenta toppy:text-toppyPink1" : "zx:text-zxMagentaDimmed colourised:brightness-halfBrite toppy:brightness-halfBrite"}`;
+
   return (
     <div
       className={`flex flex-col ${className}`}
@@ -89,12 +91,15 @@ export const TitledCrown = ({
           ${colourCycle[planet][0]}
           `}
       />
-      <BitmapText
-        classnameCycle={uncolourised ? undefined : colourCycle[planet]}
-        className={`block mx-auto ${collected ? "zx:text-zxMagenta toppy:text-toppyPink1" : "zx:text-zxMagentaDimmed colourised:brightness-halfBrite toppy:brightness-halfBrite"}`}
-      >
-        {label}
-      </BitmapText>
+      {uncolourised ?
+        <span className={labelClassName}>{label}</span>
+      : <ColourCycleText
+          classnameCycle={colourCycle[planet]}
+          className={labelClassName}
+        >
+          {label}
+        </ColourCycleText>
+      }
     </div>
   );
 };

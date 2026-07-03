@@ -25,6 +25,7 @@ const blockMultiples = {
   10: "calc(var(--block) * 10)",
   11: "calc(var(--block) * 11)",
   12: "calc(var(--block) * 12)",
+  "12px": "calc(var(--scale) * 12px)",
   13: "calc(var(--block) * 13)",
   14: "calc(var(--block) * 14)",
   15: "calc(var(--block) * 15)",

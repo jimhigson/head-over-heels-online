@@ -25,11 +25,8 @@ import { detectDeviceType } from "../../../../../../utils/detectEnv/detectDevice
 import { importTauriProcess } from "../../../../../../utils/tauri/dynamicLoad";
 import { saveGameThunk } from "../../../../../gameState/saving/saveGameThunk";
 import { useMaybeGameApi } from "../../../../GameApiContext";
-import {
-  BitmapText,
-  MultipleBitmapText,
-} from "../../../../tailwindSprites/BitmapText";
 import { MenuItem } from "../../MenuItem";
+import { useCustomTextLeader } from "../CustomTextLeader";
 import { GitRepoInfo } from "./GitRepoInfo";
 import { MainMenuFooter } from "./MainMenuFooter";
 import { MainMenuHeading } from "./MainMenuHeading";
@@ -44,7 +41,7 @@ const PlayGameMenuItem = () => {
     return (
       <MenuItem
         id="playGame"
-        label={<BitmapText>Back to the game</BitmapText>}
+        label="Back to the game"
         doubleHeightWhenFocussed
         onSelect={resume}
       />
@@ -54,7 +51,7 @@ const PlayGameMenuItem = () => {
   return (
     <MenuItem
       id="playGame"
-      label={<BitmapText>Play the game</BitmapText>}
+      label="Play the game"
       doubleHeightWhenFocussed
       subMenuId="whichGame"
     />
@@ -70,7 +67,7 @@ const DownloadOrInstallMenuItem = () => {
       className="text-moss zx:text-zxGreen toppy:text-toppyCool2"
       label={deviceType === "mobile" ? "Install" : "Download & Install"}
       doubleHeightWhenFocussed
-      leader={<BitmapText className="text-center w-2">⬇</BitmapText>}
+      leader={useCustomTextLeader("⬇")}
       subMenuId={
         deviceType === "mobile" ?
           // currently only have pwa builds on mobile:
@@ -140,9 +137,9 @@ const ExitAppMenuItem = () => {
         : ""
       }
       leader={
-        <BitmapText className="text-center">
+        <span className="text-center inline-block text-single-line">
           {selectedOnce ? "!" : "X"}
-        </BitmapText>
+        </span>
       }
       onSelect={async () => {
         if (!selectedOnce) {
@@ -232,7 +229,7 @@ export const MainMenuDialog = (_emptyProps: EmptyObject) => {
               <>
                 <MenuItem
                   id="map"
-                  label={<MultipleBitmapText>View Map</MultipleBitmapText>}
+                  label="View Map"
                   subMenuId="map"
                   doubleHeightWhenFocussed
                   hidden={!isGameRunning}
@@ -240,9 +237,9 @@ export const MainMenuDialog = (_emptyProps: EmptyObject) => {
                 <MenuItem
                   id="viewCrowns"
                   label={
-                    <MultipleBitmapText>
+                    <>
                       <span className="resHandheld:hidden">Check </span>Progress
-                    </MultipleBitmapText>
+                    </>
                   }
                   onSelect={showProgress}
                   doubleHeightWhenFocussed
@@ -258,9 +255,9 @@ export const MainMenuDialog = (_emptyProps: EmptyObject) => {
                 <MenuItem
                   id="about"
                   label={
-                    <MultipleBitmapText>
+                    <>
                       About<span className="resHandheld:hidden"> & Links</span>
-                    </MultipleBitmapText>
+                    </>
                   }
                   doubleHeightWhenFocussed
                   subMenuId="about"

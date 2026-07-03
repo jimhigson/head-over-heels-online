@@ -6,7 +6,6 @@ import { loadSoundCategory } from "../../../../sound/soundsLoader";
 import { useAppSelector } from "../../../../store/hooks";
 import { AssetLoading } from "../../../../store/slices/assetsLoading/AssetLoading";
 import { Dialog } from "../../../../ui/Dialog";
-import { BitmapText } from "../../tailwindSprites/BitmapText";
 import { type DialogId } from "./DialogId";
 import { AboutDialog } from "./dialogs/about/AboutDialog";
 import { CommunityGamesDialog } from "./dialogs/communityGames/CommunityGamesDialog";
@@ -142,7 +141,7 @@ export const Dialogs = (_emptyProps: EmptyObject) => {
       topOpenMenu.menuId satisfies never;
       return (
         <Dialog>
-          <BitmapText className="pl-1">{`unknown dialog: ‘${topOpenMenu.menuId}’`}</BitmapText>
+          <span className="text-single-line pl-1">{`unknown dialog: ‘${topOpenMenu.menuId}’`}</span>
         </Dialog>
       );
   }

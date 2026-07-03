@@ -63,7 +63,7 @@ export const ScreenRelativeControlMenuItem = () => {
       valueElement={<ScreenRelativeControlValue />}
       onSelect={useDispatchActionCallback(nextDirectionRelativeTo)}
       verticalAlignItemsCentre
-      className="sprites-double-height"
+      doubleHeight
       hint={
         <BlockyMarkdown
           className={optionsHintMarkdownClassname}
