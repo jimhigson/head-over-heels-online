@@ -9,12 +9,12 @@ import { MenuItem } from "../../MenuItem";
 const markdown =
   "This blockstack.ing remake comes with modern default mappings for keyboard and controller. You can also select presets matching the original game or different systems.";
 
-const CurrentPresetValue = ({ className }: { className?: string }) => {
+const CurrentPresetValue = ({ class: className }: { class?: string }) => {
   const currentPresetName = useAppSelector(selectCurrentInputPreset);
 
   return (
     <span
-      className={twMerge(
+      class={twMerge(
         `text-nowrap`,
         "ml-auto",
         "text-pinkHalfbrite zx:text-zxRed toppy:text-toppyPink1 selectedMenuItem:text-pink zx:selectedMenuItem:text-zxRed toppy:selectedMenuItem:text-toppyPink2",
@@ -31,12 +31,12 @@ export const PresetMenuItem = () => (
   <MenuItem
     id="preset"
     doubleHeight
-    label={<span className="text-multi-line">Key/button preset</span>}
+    label={<span class="text-multi-line">Key/button preset</span>}
     valueElement={<CurrentPresetValue />}
     subMenuId="inputPreset"
     hint={
       <BlockyMarkdown
-        className={optionsHintMarkdownClassname}
+        class={optionsHintMarkdownClassname}
         markdown={markdown}
       />
     }

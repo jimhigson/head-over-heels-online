@@ -60,10 +60,10 @@ export const useMenuItem = ({
       }),
       onClick: disabled ? undefined : onSelect,
       tabIndex: 0,
-      role: "menuitem",
+      role: "menuitem" as "menuitem",
     },
 
-    ref(ele: HTMLDivElement) {
+    ref(ele: HTMLDivElement | null) {
       if (focussed && scrollIntoView) {
         ele?.scrollIntoView({
           behavior:

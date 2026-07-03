@@ -1,4 +1,4 @@
-import { Fragment, type ReactNode } from "react";
+import { type ComponentChildren, Fragment } from "preact";
 
 import { linkOpenExternalClickHandler } from "../utils/tauri/openExternalLink";
 
@@ -15,7 +15,7 @@ export const StackTracesWithLinks = ({
   const parts = children.split(urlRegex);
   const matches = [...children.matchAll(urlRegex)];
 
-  const result: ReactNode[] = [];
+  const result: ComponentChildren[] = [];
 
   parts.forEach((part, index) => {
     result.push(part);

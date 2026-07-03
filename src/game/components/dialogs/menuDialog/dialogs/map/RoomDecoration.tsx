@@ -47,13 +47,11 @@ export const RoomDecoration = ({ decoration }: RoomDecorationProps) => {
   switch (decoration) {
     case "crossover":
       // everyone loves blacktooth11, so a set piece to keep the map interesting:
-      return (
-        <path className="fill-[var(--roomHintColor)]" d={crossoverPathD} />
-      );
+      return <path class="fill-[var(--roomHintColor)]" d={crossoverPathD} />;
     case "arrowLeft":
       return (
         <path
-          className="stroke-[var(--roomHintColor)]"
+          class="stroke-[var(--roomHintColor)]"
           strokeWidth={strokeWidth * 2}
           d={arrowLeftPathD}
         />
@@ -61,7 +59,7 @@ export const RoomDecoration = ({ decoration }: RoomDecorationProps) => {
     case "divideAlongY":
       return (
         <path
-          className="fill-[var(--roomHintColor)]"
+          class="fill-[var(--roomHintColor)]"
           strokeWidth={1}
           d={divideAlongYPathD}
         />

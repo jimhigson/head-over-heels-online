@@ -1,1 +1,1 @@
-export const MenuSeparator = () => <div className="h-half col-span-3" />;
+export const MenuSeparator = () => <div class="h-half col-span-3" />;

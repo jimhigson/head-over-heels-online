@@ -1,4 +1,4 @@
-import { type CSSProperties } from "react";
+import { type CSSProperties } from "preact/compat";
 import { capitalize } from "string-transform";
 
 import { gameColour } from "../../../game/render/gameColours/gameColours";
@@ -19,10 +19,14 @@ import {
   selectCurrentEditingRoomColour,
 } from "../../slice/levelEditorSlice";
 
-declare module "react" {
-  interface CSSProperties {
-    /** the room's base background colour; the command components derive the rest */
-    ["--command-secondary"]?: string;
+declare module "preact" {
+  // augmenting preact's JSX.CSSProperties requires a namespace here
+  // eslint-disable-next-line no-namespace
+  namespace JSX {
+    interface CSSProperties {
+      /** the room's base background colour; the command components derive the rest */
+      ["--command-secondary"]?: string;
+    }
   }
 }
 
@@ -74,11 +78,11 @@ export const RoomColourSelect = () => {
         OptionCommandItem={({ itemValue, onSelect }) => (
           <CommandItem
             value={itemValue}
-            className="border-l-3 h-2 w-full p-0"
+            class="border-l-3 h-2 w-full p-0"
             style={cssForRoomColour(itemValue, uncolourised)}
             onSelect={onSelect}
           >
-            <CommandMatch className="ml-1" text={capitalize(itemValue)} />
+            <CommandMatch class="ml-1" text={capitalize(itemValue)} />
           </CommandItem>
         )}
         triggerButtonLabel={`Colour: ${capitalize(currentRoomColour.hue)}`}
@@ -90,7 +94,7 @@ export const RoomColourSelect = () => {
         tooltipContent="Change the colour of this room"
       />
       <Switch
-        className=""
+        class=""
         label="Shade"
         ariaLabel="Room shade"
         value={currentRoomColour.shade === "basic"}

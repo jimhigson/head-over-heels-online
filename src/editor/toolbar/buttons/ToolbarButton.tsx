@@ -1,4 +1,5 @@
-import { type PropsWithChildren, type ReactNode, type Ref } from "react";
+import { type ComponentChildren, type Ref } from "preact";
+import { type PropsWithChildren } from "preact/compat";
 
 import { Button } from "../../../ui/Button";
 import { type ShortcutKeys } from "../../../ui/useKeyboardShortcut";
@@ -9,19 +10,19 @@ import {
 
 export type ToolbarButtonProps = {
   onClick?: () => void;
-  className?: string;
+  class?: string;
   isCurrentTool?: boolean;
   disabled?: boolean;
   shortcutKeys?: ShortcutKeys;
   small?: boolean;
-  tooltipContent?: ReactNode;
+  tooltipContent?: ComponentChildren;
   /** accessible name for the (usually icon-only) button */
   ariaLabel?: string;
   ref?: Ref<HTMLButtonElement>;
 };
 
 export const ToolbarButton = ({
-  className,
+  class: className,
   onClick,
   children,
   disabled = false,
@@ -38,7 +39,7 @@ export const ToolbarButton = ({
       aria-label={ariaLabel}
       disabled={disabled}
       selected={isCurrentTool}
-      className={`
+      class={`
         ${small ? buttonSmallSizeClassNames : buttonSizeClassNames} 
         ${small ? "leading-none" : ""} 
         active:pt-oneScaledPix gap-0 inline-flex overflow-hidden 

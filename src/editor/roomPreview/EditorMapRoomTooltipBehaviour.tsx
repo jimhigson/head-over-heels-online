@@ -46,8 +46,8 @@ const EditorMapRoomTooltipBehaviour = ({
       refs={refs}
       getFloatingProps={getFloatingProps}
       tooltipContent={
-        <div className="flex flex-col gap-y-1">
-          <span className="text-single-line">{roomId}</span>
+        <div class="flex flex-col gap-y-1">
+          <span class="text-single-line">{roomId}</span>
           {!isCurrentRoom && <RoomPreview roomId={roomId} />}
         </div>
       }

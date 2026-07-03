@@ -25,18 +25,18 @@ const spotBgXy = projectWorldXyzToScreenXy(
   }),
 );
 
-export const VisitedFootprint = ({ className }: { className: string }) => {
+export const VisitedFootprint = ({ class: className }: { class: string }) => {
   return (
     <>
       <ellipse
-        className={"fill-white"}
+        class={"fill-white"}
         cx={roomCentreScreenXy.x}
         cy={roomCentreScreenXy.y}
         rx={Math.abs(spotBgXy.x)}
         ry={Math.abs(spotBgXy.y)}
       />
       <ellipse
-        className={className}
+        class={className}
         cx={roomCentreScreenXy.x}
         cy={roomCentreScreenXy.y}
         rx={Math.abs(spotXy.x)}

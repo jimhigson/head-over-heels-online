@@ -26,15 +26,12 @@ export const WhichGameDialog = (_emptyProps: EmptyObject) => {
     <DialogPortal>
       <Dialog
         fullScreen
-        className="bg-metallicBlueHalfbrite zx:text-zxCyan toppy:text-toppyWarm3 text-highlightBeige selectedMenuItem:text-white toppy:selectedMenuItem:text-toppyWarm1 zx:bg-zxRed toppy:bg-toppyCool4 gap-y-2 resHandheld:gap-y-1 py-0 gap-y-0"
+        class="bg-metallicBlueHalfbrite zx:text-zxCyan toppy:text-toppyWarm3 text-highlightBeige selectedMenuItem:text-white toppy:selectedMenuItem:text-toppyWarm1 zx:bg-zxRed toppy:bg-toppyCool4 gap-y-2 resHandheld:gap-y-1 py-0 gap-y-0"
         dialogId="whichGame"
       >
-        <DialogTitleBar
-          path={["Select which game"]}
-          className="mobile:px-4 pt-1"
-        />
-        <div className={mainMenuScrollClasses}>
-          <MenuItems className="gap-y-1">
+        <DialogTitleBar path={["Select which game"]} class="mobile:px-4 pt-1" />
+        <div class={mainMenuScrollClasses}>
+          <MenuItems class="gap-y-1">
             <MenuItem
               doubleHeight
               id="originalGame"
@@ -44,7 +41,7 @@ export const WhichGameDialog = (_emptyProps: EmptyObject) => {
               })}
               leader={
                 <span
-                  className={`${spriteLeaderClasses}
+                  class={`${spriteLeaderClasses}
                     sprite
                     ${spriteClassname({ character: "head", action: "idle", facingXy8: "right" })}
                     selectedMenuItem:${spriteClassname({ character: "head", action: "walking", facingXy8: "right" })}
@@ -53,7 +50,7 @@ export const WhichGameDialog = (_emptyProps: EmptyObject) => {
               }
               hint={
                 <BlockyMarkdown
-                  className={selectGameHintMarkdownClassName}
+                  class={selectGameHintMarkdownClassName}
                   markdown={`*Remaster* of the **300-some** rooms from the original game, lightly updated for modern play`}
                 />
               }
@@ -67,7 +64,7 @@ export const WhichGameDialog = (_emptyProps: EmptyObject) => {
               })}
               leader={
                 <span
-                  className={`${spriteLeaderClasses} 
+                  class={`${spriteLeaderClasses} 
                     sprite 
                     ${spriteClassname({ character: "heels", action: "idle", facingXy8: "right" })}
                     selectedMenuItem:${spriteClassname({ character: "heels", action: "walking", facingXy8: "right" })}
@@ -76,7 +73,7 @@ export const WhichGameDialog = (_emptyProps: EmptyObject) => {
               }
               hint={
                 <BlockyMarkdown
-                  className={selectGameHintMarkdownClassName}
+                  class={selectGameHintMarkdownClassName}
                   markdown={`*Unofficial sequel* - The empire is back! All-new levels designed for the remake. **Work in progress!**`}
                 />
               }
@@ -88,12 +85,12 @@ export const WhichGameDialog = (_emptyProps: EmptyObject) => {
               subMenuId="communityGames"
               leader={
                 <span
-                  className={`${spriteLeaderClasses} sprite ${"texture-charles_right" satisfies TextureTailwindClass} sprites-normal-height zx:sprite-revert-to-white`}
+                  class={`${spriteLeaderClasses} sprite ${"texture-charles_right" satisfies TextureTailwindClass} sprites-normal-height zx:sprite-revert-to-white`}
                 />
               }
               hint={
                 <BlockyMarkdown
-                  className={selectGameHintMarkdownClassName}
+                  class={selectGameHintMarkdownClassName}
                   markdown={`Check out what people have made in the editor`}
                 />
               }

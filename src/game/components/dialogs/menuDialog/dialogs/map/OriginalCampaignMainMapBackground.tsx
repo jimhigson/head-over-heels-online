@@ -61,7 +61,7 @@ export const OriginalCampaignMainMapBackground = <RoomId extends string>({
       <MapBackgroundSection
         y={0}
         mapTitle={"Freedom"}
-        className={mapClasses.freedom.bgClassName}
+        class={mapClasses.freedom.bgClassName}
       />
       <MapBackgroundSection
         y={
@@ -70,7 +70,7 @@ export const OriginalCampaignMainMapBackground = <RoomId extends string>({
           mapSvgMarginY
         }
         mapTitle={"Castle Blacktooth"}
-        className={mapClasses.blacktooth.bgClassName}
+        class={mapClasses.blacktooth.bgClassName}
       />
       <MapBackgroundSection
         y={
@@ -79,7 +79,7 @@ export const OriginalCampaignMainMapBackground = <RoomId extends string>({
           mapSvgMarginY
         }
         mapTitle={"Moonbase"}
-        className={mapClasses.moonbase.bgClassName}
+        class={mapClasses.moonbase.bgClassName}
       />
       <MapBackgroundSection
         y={
@@ -88,7 +88,7 @@ export const OriginalCampaignMainMapBackground = <RoomId extends string>({
           mapSvgMarginY
         }
         mapTitle={"Blacktooth escape"}
-        className={mapClasses.blacktooth.bgClassName}
+        class={mapClasses.blacktooth.bgClassName}
       />
       <MarketSpecialBackground
         mapBounds={mapBounds}
@@ -102,7 +102,7 @@ export const OriginalCampaignMainMapBackground = <RoomId extends string>({
           mapSvgMarginY
         }
         mapTitle={"Jail"}
-        className={mapClasses.jail.bgClassName}
+        class={mapClasses.jail.bgClassName}
       />
     </>
   );

@@ -33,21 +33,21 @@ export const GitRepoInfo = () => {
   }, [isOutdated, latestMajor, latestTag]);
 
   return (
-    <div className="flex absolute top-0 z-dialog w-full justify-between">
+    <div class="flex absolute top-0 z-dialog w-full justify-between">
       <span>
         <a
           href={`${repository.url}/releases`}
           target="_blank"
           onClick={linkOpenExternalClickHandler}
-          className="bitmap-text-link bg-pastelBlueHalfbrite text-metallicBlueHalfbrite zx:bg-zxBlack toppy:bg-toppyCool3"
+          class="bitmap-text-link bg-pastelBlueHalfbrite text-metallicBlueHalfbrite zx:bg-zxBlack toppy:bg-toppyCool3"
         >
-          <span className="text-single-line"> v</span>
-          <span className="text-single-line screenshot-mask mr-1 inline-block">
+          <span class="text-single-line"> v</span>
+          <span class="text-single-line screenshot-mask mr-1 inline-block">
             {/* extra space pulls away from rounded corners of phone screens and app windows */}
             {deployedMajor}
           </span>
           {isOutdated && (
-            <span className="text-single-line animate-flash text-midRed zx:text-zxRed toppy:text-toppyPink2">
+            <span class="text-single-line animate-flash text-midRed zx:text-zxRed toppy:text-toppyPink2">
               {/* extra space pulls away from rounded corners of phone screens and app windows */}
               {"⬆ "}
             </span>
@@ -58,15 +58,15 @@ export const GitRepoInfo = () => {
         href={repository.url}
         onClick={linkOpenExternalClickHandler}
         target="_blank"
-        className="bitmap-text-link zx:bg-zxBlack toppy:bg-toppyCool3 bg-metallicBlue pl-1"
+        class="bitmap-text-link zx:bg-zxBlack toppy:bg-toppyCool3 bg-metallicBlue pl-1"
       >
-        <span className="text-single-line text-highlightBeige zx:text-zxYellow toppy:text-toppyWarm1">
+        <span class="text-single-line text-highlightBeige zx:text-zxYellow toppy:text-toppyWarm1">
           ★
         </span>
-        <span className="text-lightGrey zx:text-whiteHalfbrite toppy:text-toppyGrey1 mr-1">
-          <span className="text-single-line resHandheld:hidden"> on</span>
-          <span className="text-single-line">{nerdFontGithubChar}</span>
-          <span className="text-single-line resHandheld:hidden">GitHub</span>
+        <span class="text-lightGrey zx:text-whiteHalfbrite toppy:text-toppyGrey1 mr-1">
+          <span class="text-single-line resHandheld:hidden"> on</span>
+          <span class="text-single-line">{nerdFontGithubChar}</span>
+          <span class="text-single-line resHandheld:hidden">GitHub</span>
         </span>
       </a>
     </div>

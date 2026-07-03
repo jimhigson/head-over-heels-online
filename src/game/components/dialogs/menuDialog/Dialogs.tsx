@@ -141,7 +141,7 @@ export const Dialogs = (_emptyProps: EmptyObject) => {
       topOpenMenu.menuId satisfies never;
       return (
         <Dialog>
-          <span className="text-single-line pl-1">{`unknown dialog: ‘${topOpenMenu.menuId}’`}</span>
+          <span class="text-single-line pl-1">{`unknown dialog: ‘${topOpenMenu.menuId}’`}</span>
         </Dialog>
       );
   }

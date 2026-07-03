@@ -8,15 +8,15 @@ import {
 } from "../../slice/levelEditorSlice";
 
 export const HalfGridResolutionSwitch = ({
-  className,
+  class: className,
 }: {
-  className?: string;
+  class?: string;
 }) => {
   const dispatch = useAppDispatch();
 
   return (
     <Switch3
-      className={className}
+      class={className}
       label="Snap"
       ariaLabel="Grid snap resolution"
       values={gridResolutions}

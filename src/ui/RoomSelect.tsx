@@ -1,5 +1,5 @@
 import naturalCompare from "natural-compare-lite";
-import { type ReactNode } from "react";
+import { type ComponentChildren } from "preact";
 
 import { cssForRoomColour } from "../editor/toolbar/buttons/RoomColourSelect";
 import { CssVariables } from "../game/components/CssVariables";
@@ -18,7 +18,7 @@ export type RoomSelectProps<RoomId extends string> = {
   triggerButtonClassName?: string;
   onSelect?: (roomId: RoomId) => void;
   excludeRoomIds?: RoomId[];
-  tooltipContent?: ReactNode;
+  tooltipContent?: ComponentChildren;
 };
 
 export function RoomSelect<RoomId extends string>({
@@ -53,7 +53,7 @@ export function RoomSelect<RoomId extends string>({
           <CommandItem
             value={itemValue}
             onSelect={onSelect}
-            className="px-1"
+            class="px-1"
             data-test-id={`room-select-${itemValue}`}
             style={cssForRoomColour(
               campaign.rooms[itemValue].color.hue,
@@ -63,14 +63,14 @@ export function RoomSelect<RoomId extends string>({
             {headRoomId === itemValue && (
               <CssVariables scaleFactor={1}>
                 <span
-                  className={`sprite mr-1 my-1 ${spriteClassname({ character: "head", action: "idle", facingXy8: "towards" })}`}
+                  class={`sprite mr-1 my-1 ${spriteClassname({ character: "head", action: "idle", facingXy8: "towards" })}`}
                 />
               </CssVariables>
             )}
             {heelsRoomId === itemValue && (
               <CssVariables scaleFactor={1}>
                 <span
-                  className={`sprite mr-1 my-1 ${spriteClassname({ character: "heels", action: "idle", facingXy8: "towards" })}`}
+                  class={`sprite mr-1 my-1 ${spriteClassname({ character: "heels", action: "idle", facingXy8: "towards" })}`}
                 />
               </CssVariables>
             )}

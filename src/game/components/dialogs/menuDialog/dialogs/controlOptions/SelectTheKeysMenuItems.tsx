@@ -20,8 +20,8 @@ export const SelectTheKeysMenuItems = () => {
 
   return (
     <>
-      <div className="col-span-3">
-        <h2 className="text-midRed zx:text-zxBlue toppy:text-toppyPink2 pt-1 text-double-height">
+      <div class="col-span-3">
+        <h2 class="text-midRed zx:text-zxBlue toppy:text-toppyPink2 pt-1 text-double-height">
           Movement
         </h2>
       </div>
@@ -30,7 +30,7 @@ export const SelectTheKeysMenuItems = () => {
         label={`Left ${isScreenRelativeControl ? "⬅" : "↖"}`}
         leader={
           <span
-            className={`${spriteLeaderClasses} ${
+            class={`${spriteLeaderClasses} ${
               isScreenRelativeControl ?
                 `${spriteClassname({ character: "head", action: "idle", facingXy8: "towardsLeft" })} selectedMenuItem:${spriteClassname({ character: "head", action: "walking", facingXy8: "towardsLeft" })}`
               : `${spriteClassname({ character: "head", action: "idle", facingXy8: "left" })} selectedMenuItem:${spriteClassname({ character: "head", action: "walking", facingXy8: "left" })}`
@@ -45,7 +45,7 @@ export const SelectTheKeysMenuItems = () => {
         label={`Right ${isScreenRelativeControl ? "➡" : "↘"}`}
         leader={
           <span
-            className={`${spriteLeaderClasses} ${
+            class={`${spriteLeaderClasses} ${
               isScreenRelativeControl ?
                 `${spriteClassname({ character: "head", action: "idle", facingXy8: "awayRight" })} selectedMenuItem:${spriteClassname({ character: "head", action: "walking", facingXy8: "awayRight" })}`
               : `${spriteClassname({ character: "head", action: "idle", facingXy8: "right" })} selectedMenuItem:${spriteClassname({ character: "head", action: "walking", facingXy8: "right" })}`
@@ -60,7 +60,7 @@ export const SelectTheKeysMenuItems = () => {
         label={`Up ${isScreenRelativeControl ? "⬆" : "↗"}`}
         leader={
           <span
-            className={`${spriteLeaderClasses} ${
+            class={`${spriteLeaderClasses} ${
               isScreenRelativeControl ?
                 `${spriteClassname({ character: "head", action: "idle", facingXy8: "awayLeft" })} selectedMenuItem:${spriteClassname({ character: "head", action: "walking", facingXy8: "awayLeft" })}`
               : `${spriteClassname({ character: "head", action: "idle", facingXy8: "away" })} selectedMenuItem:${spriteClassname({ character: "head", action: "walking", facingXy8: "away" })}`
@@ -75,7 +75,7 @@ export const SelectTheKeysMenuItems = () => {
         label={`Down ${isScreenRelativeControl ? "⬇" : "↙"}`}
         leader={
           <span
-            className={`${spriteLeaderClasses} ${
+            class={`${spriteLeaderClasses} ${
               isScreenRelativeControl ?
                 `${spriteClassname({ character: "head", action: "idle", facingXy8: "towardsRight" })} selectedMenuItem:${spriteClassname({ character: "head", action: "walking", facingXy8: "towardsRight" })}`
               : `${spriteClassname({ character: "head", action: "idle", facingXy8: "towards" })} selectedMenuItem:${spriteClassname({ character: "head", action: "walking", facingXy8: "towards" })}`
@@ -90,21 +90,21 @@ export const SelectTheKeysMenuItems = () => {
         label="Jump"
         leader={
           <span
-            className={`${spriteLeaderClasses} ${"texture-spring_released" satisfies TextureTailwindClass} ${"selectedMenuItem:texture-spring_compressed" satisfies TextureTailwindClass}`}
+            class={`${spriteLeaderClasses} ${"texture-spring_released" satisfies TextureTailwindClass} ${"selectedMenuItem:texture-spring_compressed" satisfies TextureTailwindClass}`}
           />
         }
         valueElement={<SelectKeysMenuAssignmentValue action="jump" />}
         onSelect={useDispatchActionCallback(assignInputStart, "jump")}
       />
-      <div className="col-span-3">
-        <h2 className="text-midRed zx:text-zxBlue toppy:text-toppyPink2 pt-1 text-double-height">
+      <div class="col-span-3">
+        <h2 class="text-midRed zx:text-zxBlue toppy:text-toppyPink2 pt-1 text-double-height">
           Character-specific Abilities
         </h2>
       </div>
-      <div className="text-multi-line col-span-3">
+      <div class="text-multi-line col-span-3">
         <BlockyMarkdown
           markdown={`**NOTE:** Some puzzles require Heels to jump and pick up/down simultaneously - keep a key assigned to *both jump and carry*`}
-          className={optionsHintMarkdownClassname}
+          class={optionsHintMarkdownClassname}
         />
       </div>
       <MenuItem
@@ -112,14 +112,14 @@ export const SelectTheKeysMenuItems = () => {
         label="Carry"
         leader={
           <span
-            className={`${spriteLeaderClasses} ${"texture-bag" satisfies TextureTailwindClass}`}
+            class={`${spriteLeaderClasses} ${"texture-bag" satisfies TextureTailwindClass}`}
           />
         }
         valueElement={<SelectKeysMenuAssignmentValue action="carry" />}
         onSelect={useDispatchActionCallback(assignInputStart, "carry")}
         hint={
           <BlockyMarkdown
-            className={optionsHintMarkdownClassname}
+            class={optionsHintMarkdownClassname}
             markdown={`Carrying is **Heels only** and requires the bag`}
           />
         }
@@ -127,26 +127,24 @@ export const SelectTheKeysMenuItems = () => {
       <MenuItem
         id="fire"
         label={
-          <span className="inline-block w-6 text-multi-line">
-            Fire dough- nuts
-          </span>
+          <span class="inline-block w-6 text-multi-line">Fire dough- nuts</span>
         }
         leader={
           <span
-            className={`${spriteLeaderClasses} ${"texture-doughnuts" satisfies TextureTailwindClass}`}
+            class={`${spriteLeaderClasses} ${"texture-doughnuts" satisfies TextureTailwindClass}`}
           />
         }
         hint={
           <BlockyMarkdown
-            className={optionsHintMarkdownClassname}
+            class={optionsHintMarkdownClassname}
             markdown={`Firing doughnuts is **Head only** and requires the hooter`}
           />
         }
         valueElement={<SelectKeysMenuAssignmentValue action="fire" />}
         onSelect={useDispatchActionCallback(assignInputStart, "fire")}
       />
-      <div className="col-span-3">
-        <h2 className="text-midRed zx:text-zxBlue toppy:text-toppyPink2 pt-1 text-double-height">
+      <div class="col-span-3">
+        <h2 class="text-midRed zx:text-zxBlue toppy:text-toppyPink2 pt-1 text-double-height">
           Character Swopping
         </h2>
       </div>
@@ -157,17 +155,17 @@ export const SelectTheKeysMenuItems = () => {
         onSelect={useDispatchActionCallback(assignInputStart, "swop")}
         hint={
           <BlockyMarkdown
-            className={optionsHintMarkdownClassname}
+            class={optionsHintMarkdownClassname}
             markdown={`Works like the original game. *Cycles through* the characters, Moves *in and out of symbiosis* if head is on top of heels`}
           />
         }
         leader={
-          <span className="relative overflow-hidden w-3 h-3">
+          <span class="relative overflow-hidden w-3 h-3">
             <span
-              className={`${spriteLeaderClasses} ${spriteClassname({ character: "head", action: "idle", facingXy8: "towardsRight" })} ${"selectedMenuItem:texture-animated-head_walking_towardsRight" satisfies AnimatedTextureTailwindClass} absolute right-[50%]`}
+              class={`${spriteLeaderClasses} ${spriteClassname({ character: "head", action: "idle", facingXy8: "towardsRight" })} ${"selectedMenuItem:texture-animated-head_walking_towardsRight" satisfies AnimatedTextureTailwindClass} absolute right-[50%]`}
             />
             <span
-              className={`${spriteLeaderClasses} ${spriteClassname({ character: "heels", action: "idle", facingXy8: "towardsRight" })} ${"selectedMenuItem:texture-animated-heels_walking_towardsRight" satisfies AnimatedTextureTailwindClass} absolute left-[50%]`}
+              class={`${spriteLeaderClasses} ${spriteClassname({ character: "heels", action: "idle", facingXy8: "towardsRight" })} ${"selectedMenuItem:texture-animated-heels_walking_towardsRight" satisfies AnimatedTextureTailwindClass} absolute left-[50%]`}
             />
           </span>
         }
@@ -175,28 +173,28 @@ export const SelectTheKeysMenuItems = () => {
       <MenuItem
         id="swopHead"
         label={
-          <span className="inline-block w-6 text-multi-line">Swop to head</span>
+          <span class="inline-block w-6 text-multi-line">Swop to head</span>
         }
         valueElement={<SelectKeysMenuAssignmentValue action="swop.head" />}
         onSelect={useDispatchActionCallback(assignInputStart, "swop.head")}
         hint={
           <BlockyMarkdown
-            className={optionsHintMarkdownClassname}
+            class={optionsHintMarkdownClassname}
             markdown={`Go *directly* to *Head*, avoiding cycling if in symbiosis`}
           />
         }
         leader={
           <span
-            className={`${spriteLeaderClasses} ${spriteClassname({ character: "head", action: "idle", facingXy8: "towardsRight" })} ${"selectedMenuItem:texture-animated-head_walking_towardsRight" satisfies AnimatedTextureTailwindClass}`}
+            class={`${spriteLeaderClasses} ${spriteClassname({ character: "head", action: "idle", facingXy8: "towardsRight" })} ${"selectedMenuItem:texture-animated-head_walking_towardsRight" satisfies AnimatedTextureTailwindClass}`}
           />
         }
       />
       <MenuItem
         id="swopHeels"
         label={
-          <div className="w-6 text-multi-line">
-            <span className="me-1 text-single-line">Swop to</span>
-            <span className="text-pinkHalfbrite selectedMenuItem:text-pink text-single-line">
+          <div class="w-6 text-multi-line">
+            <span class="me-1 text-single-line">Swop to</span>
+            <span class="text-pinkHalfbrite selectedMenuItem:text-pink text-single-line">
               heels
             </span>
           </div>
@@ -205,18 +203,18 @@ export const SelectTheKeysMenuItems = () => {
         onSelect={useDispatchActionCallback(assignInputStart, "swop.heels")}
         hint={
           <BlockyMarkdown
-            className={optionsHintMarkdownClassname}
+            class={optionsHintMarkdownClassname}
             markdown={`Go *directly* to *Heels*, avoiding cycling if in symbiosis`}
           />
         }
         leader={
           <span
-            className={`${spriteLeaderClasses} ${spriteClassname({ character: "heels", action: "idle", facingXy8: "towardsRight" })} ${"selectedMenuItem:texture-animated-heels_walking_towardsRight" satisfies AnimatedTextureTailwindClass}`}
+            class={`${spriteLeaderClasses} ${spriteClassname({ character: "heels", action: "idle", facingXy8: "towardsRight" })} ${"selectedMenuItem:texture-animated-heels_walking_towardsRight" satisfies AnimatedTextureTailwindClass}`}
           />
         }
       />
-      <div className="col-span-3">
-        <h2 className="text-midRed zx:text-zxBlue toppy:text-toppyPink2 pt-1 text-double-height">
+      <div class="col-span-3">
+        <h2 class="text-midRed zx:text-zxBlue toppy:text-toppyPink2 pt-1 text-double-height">
           Stopping the Game
         </h2>
       </div>
@@ -227,7 +225,7 @@ export const SelectTheKeysMenuItems = () => {
         onSelect={useDispatchActionCallback(assignInputStart, "map")}
         leader={
           <span
-            className={`${spriteLeaderClasses} ${"texture-scroll" satisfies TextureTailwindClass}`}
+            class={`${spriteLeaderClasses} ${"texture-scroll" satisfies TextureTailwindClass}`}
           />
         }
       />
@@ -239,7 +237,7 @@ export const SelectTheKeysMenuItems = () => {
         onSelect={useDispatchActionCallback(assignInputStart, "hold")}
         leader={
           <span
-            className={`${spriteLeaderClasses} ${"texture-drum" satisfies TextureTailwindClass}`}
+            class={`${spriteLeaderClasses} ${"texture-drum" satisfies TextureTailwindClass}`}
           />
         }
       />
@@ -255,13 +253,13 @@ export const SelectTheKeysMenuItems = () => {
           "menu_openOrExit",
         )}
       />
-      <div className="col-span-3">
-        <h2 className="text-midRed zx:text-zxBlue toppy:text-toppyPink2 pt-1 text-double-height pb-1">
+      <div class="col-span-3">
+        <h2 class="text-midRed zx:text-zxBlue toppy:text-toppyPink2 pt-1 text-double-height pb-1">
           Look controls
         </h2>
         <BlockyMarkdown
           markdown={`Look controls are useful for seeing more of larger rooms that don’t fit on the screen.`}
-          className={optionsHintMarkdownClassname}
+          class={optionsHintMarkdownClassname}
         />
       </div>
       <MenuItem
@@ -271,7 +269,7 @@ export const SelectTheKeysMenuItems = () => {
         onSelect={useDispatchActionCallback(assignInputStart, "lookShift")}
         hint={
           <BlockyMarkdown
-            className={optionsHintMarkdownClassname}
+            class={optionsHintMarkdownClassname}
             markdown={`Hold the look key and press a direction to look around the room`}
           />
         }
@@ -300,28 +298,26 @@ export const SelectTheKeysMenuItems = () => {
         valueElement={<SelectKeysMenuAssignmentValue action="lookDown" />}
         onSelect={useDispatchActionCallback(assignInputStart, "lookDown")}
       />
-      <div className="col-span-3">
-        <h2 className="text-midRed zx:text-zxBlue toppy:text-toppyPink2 pt-1 text-double-height">
+      <div class="col-span-3">
+        <h2 class="text-midRed zx:text-zxBlue toppy:text-toppyPink2 pt-1 text-double-height">
           Remake Option Toggles
         </h2>
       </div>
       <MenuItem
         id="cycleSprites"
-        label={
-          <span className="inline-block w-6 text-multi-line">Next skin</span>
-        }
+        label={<span class="inline-block w-6 text-multi-line">Next skin</span>}
         valueElement={<SelectKeysMenuAssignmentValue action="cycleSprites" />}
         onSelect={useDispatchActionCallback(assignInputStart, "cycleSprites")}
         leader={
           <span
-            className={`${spriteLeaderClasses} ${"texture-switch_left" satisfies TextureTailwindClass} sprites-normal-height`}
+            class={`${spriteLeaderClasses} ${"texture-switch_left" satisfies TextureTailwindClass} sprites-normal-height`}
           />
         }
       />
       <MenuItem
         id="cycleRes"
         label={
-          <span className="inline-block w-6 text-multi-line">
+          <span class="inline-block w-6 text-multi-line">
             Cycle res- olution
           </span>
         }
@@ -334,14 +330,14 @@ export const SelectTheKeysMenuItems = () => {
         )}
         leader={
           <span
-            className={`${spriteLeaderClasses} ${"texture-switch_left" satisfies TextureTailwindClass} sprites-normal-height`}
+            class={`${spriteLeaderClasses} ${"texture-switch_left" satisfies TextureTailwindClass} sprites-normal-height`}
           />
         }
       />
       <MenuItem
         id="toggleCrt"
         label={
-          <span className="inline-block w-6 text-multi-line">
+          <span class="inline-block w-6 text-multi-line">
             Toggle CRT effect
           </span>
         }
@@ -354,7 +350,7 @@ export const SelectTheKeysMenuItems = () => {
         )}
         leader={
           <span
-            className={`${spriteLeaderClasses} ${"texture-switch_left" satisfies TextureTailwindClass} sprites-normal-height`}
+            class={`${spriteLeaderClasses} ${"texture-switch_left" satisfies TextureTailwindClass} sprites-normal-height`}
           />
         }
       />

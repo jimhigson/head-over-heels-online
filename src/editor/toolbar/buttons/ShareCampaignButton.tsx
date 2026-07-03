@@ -25,8 +25,8 @@ export const ShareCampaignButton = () => {
   const disabled = !remoteIsInSync || campaignName === undefined;
 
   return justDone > 0 ?
-      <ToolbarButton ariaLabel="Campaign link copied" className="bg-moss">
-        <span className="relative text-single-line">OK!</span>
+      <ToolbarButton ariaLabel="Campaign link copied" class="bg-moss">
+        <span class="relative text-single-line">OK!</span>
       </ToolbarButton>
     : <ToolbarButton
         ariaLabel="Share campaign"
@@ -47,7 +47,7 @@ export const ShareCampaignButton = () => {
         tooltipContent={tooltipMarkdown}
       >
         <span
-          className={cn(
+          class={cn(
             `sprite ${"texture-editor_tool_share" satisfies TextureTailwindClass} relative`,
             {
               "sprite-revert-to-two-tone-dim": !remoteIsInSync,

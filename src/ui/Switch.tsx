@@ -1,6 +1,6 @@
 import clsx from "clsx";
+import { type ComponentChildren } from "preact";
 import { useCallback, useEffect, useId, useRef, useState } from "preact/hooks";
-import { type MouseEvent, type ReactNode } from "react";
 
 import { type ExportedSoundId } from "../_generated/sfxdex/sfx";
 import { PlayAudio } from "../utils/sound/PlayAudio";
@@ -17,17 +17,17 @@ const SwitchLabel = ({
   label,
   htmlFor,
 }: {
-  label: ReactNode;
+  label: ComponentChildren;
   htmlFor: string;
 }) =>
   typeof label === "string" ?
     <label
       htmlFor={htmlFor}
-      className="inline-block mr-1 text-lightGrey py-half whitespace-nowrap text-single-line"
+      class="inline-block mr-1 text-lightGrey py-half whitespace-nowrap text-single-line"
     >
       {label}
     </label>
-  : <label htmlFor={htmlFor} className="inline-block mr-1 py-half">
+  : <label htmlFor={htmlFor} class="inline-block mr-1 py-half">
       {label}
     </label>;
 
@@ -35,13 +35,13 @@ type OnSwitchChange = (newValue: boolean, e?: MouseEvent) => void;
 
 export type SwitchProps = {
   value: boolean;
-  className?: string;
+  class?: string;
   onChange?: OnSwitchChange;
   trueLabel?: string;
   falseLabel?: string;
-  label?: ReactNode;
+  label?: ComponentChildren;
   shortcutKeys?: ShortcutKeys | undefined;
-  tooltipContent?: ReactNode;
+  tooltipContent?: ComponentChildren;
   /**
    * stable accessible name describing the switch's purpose; the on/off state is
    * exposed separately via aria-checked. Without it the name falls back to the
@@ -53,7 +53,7 @@ export type SwitchProps = {
 };
 
 export const Switch = ({
-  className,
+  class: className,
   value,
   onChange,
   trueLabel = "ON",
@@ -86,7 +86,7 @@ export const Switch = ({
   const element = (
     <span
       onClick={(e) => onChange?.(!value, e)}
-      className={cn("inline-flex justify-between leading-none", className)}
+      class={cn("inline-flex justify-between leading-none", className)}
     >
       {hasChanged && (
         <PlayAudio
@@ -102,7 +102,7 @@ export const Switch = ({
         aria-checked={value}
         aria-label={ariaLabel}
         aria-description={ariaDescription}
-        className={clsx(
+        class={clsx(
           "inline-block w-min h-min py-half px-half uppercase whitespace-pre text-single-line",
           value ?
             "bg-shadowHalfbrite text-moss zx:bg-zxBlack zx:text-zxGreen toppy:bg-toppyGrey3 toppy:text-toppyCool2"
@@ -127,13 +127,13 @@ export const Switch = ({
 
 export type SwitchNProps<TValue extends number | string> = {
   value: TValue;
-  className?: string;
+  class?: string;
   onChange?: (newValue: TValue, e?: MouseEvent) => void;
   values: readonly TValue[];
   valueLabels?: readonly string[];
-  label?: ReactNode;
+  label?: ComponentChildren;
   shortcutKeys?: ShortcutKeys | undefined;
-  tooltipContent?: ReactNode;
+  tooltipContent?: ComponentChildren;
   /** stable accessible name describing the control's purpose; the current value
    * is appended since this is multi-value (no binary aria-checked applies) */
   ariaLabel?: string;
@@ -157,7 +157,7 @@ const settingSoundIds = [
 ] as const satisfies readonly ExportedSoundId[];
 
 export const SwitchN = <TValue extends number | string>({
-  className,
+  class: className,
   value,
   onChange,
   values,
@@ -207,7 +207,7 @@ export const SwitchN = <TValue extends number | string>({
   const element = (
     <span
       onClick={goToNextValue}
-      className={cn("inline-flex justify-between leading-none", className)}
+      class={cn("inline-flex justify-between leading-none", className)}
     >
       {hasChanged && !notFound && (
         <PlayAudio
@@ -225,7 +225,7 @@ export const SwitchN = <TValue extends number | string>({
             `${ariaLabel}: ${notFound ? value : valueLabels[valueIndex]}`
           )
         }
-        className={clsx(
+        class={clsx(
           "inline-block w-min h-min py-half px-half uppercase whitespace-pre text-single-line",
           notFound ? switchNErrorColours : (
             (switchNColours[colorIndex] ?? switchNColours[0])
@@ -251,13 +251,13 @@ export const SwitchN = <TValue extends number | string>({
 // Backwards compatibility: Switch3 as a wrapper around SwitchN
 export type Switch3Props<TValue extends number | string> = {
   value: TValue;
-  className?: string;
+  class?: string;
   onChange?: (newValue: TValue, e?: MouseEvent) => void;
   values: Readonly<[TValue, TValue, TValue]>;
   valueLabels?: Readonly<[string, string, string]>;
   label?: string;
   shortcutKeys?: ShortcutKeys | undefined;
-  tooltipContent?: ReactNode;
+  tooltipContent?: ComponentChildren;
   /** stable accessible name describing the control's purpose */
   ariaLabel?: string;
 };

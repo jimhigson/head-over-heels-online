@@ -35,17 +35,15 @@ export const SpriteOptionSelect = () => {
   const currentLabel = spriteOptionLabel(spriteOption);
 
   return (
-    <div className="text-white zx:text-zxWhite toppy:text-toppyWarm1 flex-row flex gap-x-1">
-      <span className="text-single-line">
-        <span className="text-midRed zx:text-zxRed toppy:text-toppyPink2">
-          F10
-        </span>
+    <div class="text-white zx:text-zxWhite toppy:text-toppyWarm1 flex-row flex gap-x-1">
+      <span class="text-single-line">
+        <span class="text-midRed zx:text-zxRed toppy:text-toppyPink2">F10</span>
         to cycle skins, or choose:
       </span>
       <Select
         value={currentLabel}
         triggerButtonLabel={
-          <span className="w-16 text-single-line">{currentLabel}</span>
+          <span class="w-16 text-single-line">{currentLabel}</span>
         }
         values={[...spriteOptionLabels]}
         onSelect={(label) => {

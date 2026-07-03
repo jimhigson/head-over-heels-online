@@ -1,4 +1,5 @@
-import { Component, type ErrorInfo, type PropsWithChildren } from "react";
+import { Component, type ErrorInfo } from "preact";
+import { type PropsWithChildren } from "preact/compat";
 import { type EmptyObject } from "type-fest";
 
 import { errorCaught } from "../../store/slices/gameMenus/gameMenusSlice";

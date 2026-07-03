@@ -1,5 +1,6 @@
 import { type UnknownAction } from "@reduxjs/toolkit";
-import { type ReactNode, useEffect } from "react";
+import { type ComponentChildren } from "preact";
+import { useEffect } from "preact/hooks";
 
 import { useMaybeGameApi } from "../game/components/GameApiContext";
 import { type GameApi } from "../game/GameApi";
@@ -98,8 +99,8 @@ ${errorsPart}
 export type ErrorDialogReportProps = {
   errors: SerialisableError[];
   /** intro content shown before the error actions */
-  intro: ReactNode;
-  children: (errorsReportText: string) => ReactNode;
+  intro: ComponentChildren;
+  children: (errorsReportText: string) => ComponentChildren;
 };
 
 export const ErrorDialogReport = ({
@@ -115,7 +116,7 @@ export const ErrorDialogReport = ({
 
   return (
     <div
-      className={
+      class={
         "bg-white zx:bg-zxRed toppy:bg-toppyWarm1 gap-y-0 text-redShadow zx:text-zxBlack toppy:text-toppyCool4 px-1 " +
         "overflow-y-scroll h-full w-full " +
         "scrollbar scrollbar-w-1 pl-1 " +
@@ -125,15 +126,15 @@ export const ErrorDialogReport = ({
       }
     >
       {intro}
-      <hr className="bg-pastelBlue zx:bg-zxWhite toppy:bg-toppyCool2 h-1 my-1 border-none" />
+      <hr class="bg-pastelBlue zx:bg-zxWhite toppy:bg-toppyCool2 h-1 my-1 border-none" />
       {children(errorsReportText)}
-      <hr className="bg-pastelBlue zx:bg-zxWhite toppy:bg-toppyCool2 h-1 my-1 border-none" />
-      <span className="text-double-height my-1 text-midRed zx:text-zxWhite toppy:text-toppyPink2">
+      <hr class="bg-pastelBlue zx:bg-zxWhite toppy:bg-toppyCool2 h-1 my-1 border-none" />
+      <span class="text-double-height my-1 text-midRed zx:text-zxWhite toppy:text-toppyPink2">
         Error message for nerds:
       </span>
       <pre
         data-test-id="error-report"
-        className={`bg-shadow zx:bg-zxBlack toppy:bg-toppyGrey3 text-white zx:text-zxWhite toppy:text-toppyWarm1 leading-[1em] [&_a]:text-pastelBlue px-1 w-max min-w-full`}
+        class={`bg-shadow zx:bg-zxBlack toppy:bg-toppyGrey3 text-white zx:text-zxWhite toppy:text-toppyWarm1 leading-[1em] [&_a]:text-pastelBlue px-1 w-max min-w-full`}
       >
         <StackTracesWithLinks>{errorsReportText}</StackTracesWithLinks>
       </pre>
@@ -145,8 +146,8 @@ export type ErrorDialogProps = ErrorDialogReportProps;
 
 export const ErrorDialog = (props: ErrorDialogProps) => (
   <DialogPortal>
-    <Border className="loading-border zx:zx-loading-border toppy:toppy-loading-border" />
-    <Dialog className="" tall wide dialogId="errorCaught">
+    <Border class="loading-border zx:zx-loading-border toppy:toppy-loading-border" />
+    <Dialog class="" tall wide dialogId="errorCaught">
       <ErrorDialogReport {...props} />
     </Dialog>
   </DialogPortal>

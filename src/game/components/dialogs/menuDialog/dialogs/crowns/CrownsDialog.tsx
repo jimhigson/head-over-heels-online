@@ -27,10 +27,10 @@ export const CrownsDialog = ({
   const closeDialog = useDispatchActionCallback(backToParentMenu);
   return (
     <DialogPortal>
-      <Border className="bg-pureBlack zx:bg-zxBlack toppy:bg-toppyBlack" />
+      <Border class="bg-pureBlack zx:bg-zxBlack toppy:bg-toppyBlack" />
 
       <Dialog
-        className="bg-pureBlack w-zx h-full block p-0"
+        class="bg-pureBlack w-zx h-full block p-0"
         onClick={isLoading ? undefined : closeDialog}
         dialogId="crowns"
       >
@@ -42,7 +42,7 @@ export const CrownsDialog = ({
           </div>
         )}
         {!isLoading && (
-          <MenuItems className="hidden">
+          <MenuItems class="hidden">
             <BackMenuItem />
           </MenuItems>
         )}

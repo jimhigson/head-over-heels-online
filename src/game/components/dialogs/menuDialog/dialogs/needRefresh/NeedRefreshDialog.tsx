@@ -13,20 +13,20 @@ const NeedRefreshDialog = () => {
   return (
     <DialogPortal>
       <Border
-        className="bg-metallicBlue zx:bg-zxBlue toppy:bg-toppyCool3"
+        class="bg-metallicBlue zx:bg-zxBlue toppy:bg-toppyCool3"
         onClick={useDispatchActionCallback(backToParentMenu)}
       />
       <Dialog
-        className="bg-metallicBlueHalfbrite zx:bg-zxBlack toppy:bg-toppyCool4 px-1 py-1 w-max max-w-24"
+        class="bg-metallicBlueHalfbrite zx:bg-zxBlack toppy:bg-toppyCool4 px-1 py-1 w-max max-w-24"
         dialogId="needRefresh"
         small
       >
         <DialogHeader>Update required</DialogHeader>
-        <BlockyMarkdown className="text-lightGrey">{`To see what’s new, go to *About* ➡ *Changelog* after updating`}</BlockyMarkdown>
-        <MenuItems className="text-lightGrey zx:text-zxWhite toppy:text-toppyGrey1 mt-1 selectedMenuItem:text-white">
+        <BlockyMarkdown class="text-lightGrey">{`To see what’s new, go to *About* ➡ *Changelog* after updating`}</BlockyMarkdown>
+        <MenuItems class="text-lightGrey zx:text-zxWhite toppy:text-toppyGrey1 mt-1 selectedMenuItem:text-white">
           <MenuItem
             id="yes"
-            className="text-moss toppy:text-toppyWarm2 zx:text-zxGreen"
+            class="text-moss toppy:text-toppyWarm2 zx:text-zxGreen"
             label="Upgrade"
             onSelect={useDispatchActionCallback(continueWithRefresh)}
             doubleHeightWhenFocussed

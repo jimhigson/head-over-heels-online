@@ -31,7 +31,7 @@ export const InputPresetMenuItem = ({
       doubleHeightWhenFocussed
       hint={
         description && (
-          <span className={`${optionsHintMarkdownClassname} text-multi-line`}>
+          <span class={`${optionsHintMarkdownClassname} text-multi-line`}>
             {description}
           </span>
         )

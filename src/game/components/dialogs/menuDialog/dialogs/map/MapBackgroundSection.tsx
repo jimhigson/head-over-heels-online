@@ -5,12 +5,12 @@ import { mapSvgMarginX } from "./mapConstants";
 export const MapBackgroundSection = ({
   mapTitle,
   y = 0,
-  className,
+  class: className,
   textOnly = false,
 }: {
   mapTitle: string;
   y?: number;
-  className: string;
+  class: string;
   textOnly?: boolean;
 }) => {
   const scale = useTotalUpscale();
@@ -23,7 +23,7 @@ export const MapBackgroundSection = ({
   // phone camera notch
   const x = mapSvgMarginX + 2 * fontSize;
   return (
-    <g className={className}>
+    <g class={className}>
       {textOnly || <rect y={y} width={10_000} height={10_000} />}
       <text
         fill="currentColor"

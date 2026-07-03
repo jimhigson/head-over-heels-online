@@ -1,5 +1,3 @@
-import { type MouseEvent } from "react";
-
 import { type JsonItem } from "../../../../../../model/json/JsonItem";
 import { type IndividualCharacterName } from "../../../../../../model/modelTypes";
 import {
@@ -23,7 +21,7 @@ export type NotableItem<RoomId extends string> =
   | JsonItem<"teleporter", RoomId>;
 
 const SpriteInRoom = ({
-  className,
+  class: className,
   scrollTo = false,
   onClick,
   yAdjust = 0,
@@ -31,7 +29,7 @@ const SpriteInRoom = ({
   /**
    * should have a sprite-* utility class and some way to set the --scale var - for this to actually show a sprite
    */
-  className: string;
+  class: string;
   scrollTo?: boolean;
   onClick?: (e: MouseEvent) => void;
   yAdjust?: number;
@@ -42,14 +40,14 @@ const SpriteInRoom = ({
       y={-100 + yAdjust}
       width={100}
       height={100}
-      className={className}
+      class={className}
       // because of its width and height, this will cover up other rooms behind this one,
       // and will stop clicks on them - eg, in the editor to change room via the map.
       // however, this may come at the cost of switching by clicking on char on the map in-game
       style={{ pointerEvents: "none" }}
     >
       <div
-        className={`sprite zx:sprite-revert-to-two-tone ml-[calc(50px-var(--scale)*var(--w)*1px/2)] mt-[calc(100px-var(--scale)*var(--h)*1px)] ${
+        class={`sprite zx:sprite-revert-to-two-tone ml-[calc(50px-var(--scale)*var(--w)*1px/2)] mt-[calc(100px-var(--scale)*var(--h)*1px)] ${
           className
         }`}
         onClick={onClick}
@@ -81,7 +79,7 @@ export const PlayableItemInRoom = ({
   const spriteClassname = usePlayableTailwindSpriteClassname();
   return (
     <SpriteInRoom
-      className={`${onlyPlayableInRoom ? "[--scale:2.5]" : "[--scale:1.5]"}
+      class={`${onlyPlayableInRoom ? "[--scale:2.5]" : "[--scale:1.5]"}
                 ${spriteClassname({
                   character: characterName,
                   action: isCurrent ? "walking" : "idle",
@@ -106,10 +104,10 @@ export const NotableItemSvg = ({ item }: { item: NotableItem<string> }) => {
     return (
       <>
         <SpriteInRoom
-          className={`${scaleClass} ${"texture-lift_static" satisfies TextureTailwindClass}`}
+          class={`${scaleClass} ${"texture-lift_static" satisfies TextureTailwindClass}`}
         />
         <SpriteInRoom
-          className={`${scaleClass} ${"texture-lift_2" satisfies TextureTailwindClass}`}
+          class={`${scaleClass} ${"texture-lift_2" satisfies TextureTailwindClass}`}
         />
       </>
     );
@@ -149,5 +147,5 @@ export const NotableItemSvg = ({ item }: { item: NotableItem<string> }) => {
       : ("texture-crown_bookworld" satisfies TextureTailwindClass)
     : ("texture-block_organic" satisfies TextureTailwindClass);
 
-  return <SpriteInRoom className={`${scaleClass} ${spriteClassName}`} />;
+  return <SpriteInRoom class={`${scaleClass} ${spriteClassName}`} />;
 };

@@ -25,30 +25,30 @@ export const StaleVersionDialog = ({
 }: StaleVersionDialogProps) => {
   return (
     <DialogPortal>
-      <Border className="scale-editor bg-checkerboard-stifled-alphas" />
-      <div className="contents no-keyboard-shortcuts">
+      <Border class="scale-editor bg-checkerboard-stifled-alphas" />
+      <div class="contents no-keyboard-shortcuts">
         <Dialog
           small
           ariaLabel="A newer version exists in the database"
-          className="scale-editor p-1 !h-min"
+          class="scale-editor p-1 !h-min"
         >
           <DialogHeader>Newer version in the database</DialogHeader>
-          <span className={`text-multi-line text-lightGrey pt-1`}>
+          <span class={`text-multi-line text-lightGrey pt-1`}>
             {`A newer version of this campaign (v${latest}) is in the database — you are editing v${ours}.`}
           </span>
-          <span className={`text-multi-line text-lightGrey pt-1`}>
+          <span class={`text-multi-line text-lightGrey pt-1`}>
             {`Load the latest to get it (your unsaved changes will be lost), or keep editing this version.`}
           </span>
-          <div className="flex gap-1 justify-end text-white mt-1">
+          <div class="flex gap-1 justify-end text-white mt-1">
             <Button
-              className="px-1 py-half bg-midRed"
+              class="px-1 py-half bg-midRed"
               onClick={onDismiss}
               aria-label="Keep editing this version"
             >
               Keep editing
             </Button>
             <Button
-              className="px-1 py-half bg-moss"
+              class="px-1 py-half bg-moss"
               onClick={onLoadLatest}
               aria-label="Load the latest version"
             >

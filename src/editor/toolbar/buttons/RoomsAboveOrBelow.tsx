@@ -30,21 +30,21 @@ const RoomsAboveOrBelowSelectOrCreate = ({
   const directionArrow = direction === "above" ? "⬆" : "⬇";
   return (
     <>
-      <div className="flex flex-row gap-oneScaledPix w-full flex-wrap pt-1 items-center">
-        <span className="text-lightGrey h-1 text-single-line">
+      <div class="flex flex-row gap-oneScaledPix w-full flex-wrap pt-1 items-center">
+        <span class="text-lightGrey h-1 text-single-line">
           Room {directionArrow}
         </span>
-        <div className="flex-grow" />
-        <div className="flex flex-row gap-oneScaledPix">
+        <div class="flex-grow" />
+        <div class="flex flex-row gap-oneScaledPix">
           <ToolbarButton
             small
             ariaLabel={`Switch to room ${direction}`}
-            className="bg-highlightBeige w-max px-half"
+            class="bg-highlightBeige w-max px-half"
             tooltipContent={`Switch to the room *${direction}*`}
             disabled={!currentRoomId}
           >
             <span
-              className="text-single-line"
+              class="text-single-line"
               onClick={() =>
                 currentRoomId && dispatch(changeToRoom(currentRoomId))
               }
@@ -55,11 +55,11 @@ const RoomsAboveOrBelowSelectOrCreate = ({
           <ToolbarButton
             small
             ariaLabel={`Add new room ${direction}`}
-            className=" bg-moss"
+            class=" bg-moss"
             tooltipContent={`Add a new room *${direction}* this one`}
           >
             <span
-              className="text-single-line"
+              class="text-single-line"
               onClick={() =>
                 dispatch(
                   setRoomAboveOrBelow({
@@ -75,11 +75,11 @@ const RoomsAboveOrBelowSelectOrCreate = ({
           <ToolbarButton
             small
             ariaLabel={`Break link with room ${direction}`}
-            className="bg-midRed"
+            class="bg-midRed"
             tooltipContent={`Break the link with the room *${direction}*`}
           >
             <span
-              className="text-single-line"
+              class="text-single-line"
               onClick={() =>
                 dispatch(
                   setRoomAboveOrBelow({
@@ -95,7 +95,7 @@ const RoomsAboveOrBelowSelectOrCreate = ({
           </ToolbarButton>
         </div>
       </div>
-      <div className="flex flex-row gap-oneScaledPix w-full flex-wrap">
+      <div class="flex flex-row gap-oneScaledPix w-full flex-wrap">
         <RoomSelect
           value={currentRoomId}
           campaign={campaign}

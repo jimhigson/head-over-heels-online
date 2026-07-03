@@ -1,5 +1,5 @@
+import { Suspense } from "preact/compat";
 import { useRef } from "preact/hooks";
-import { Suspense } from "react";
 
 import {
   type Boundaries,
@@ -207,7 +207,7 @@ export const RoomSvg = <RoomId extends string>({
     <g
       data-room-id={id}
       strokeWidth={strokeWidth}
-      className={`
+      class={`
         ${roomAccentColourClass(color)}
         ${
           isCurrentRoom ?
@@ -230,13 +230,13 @@ export const RoomSvg = <RoomId extends string>({
         <>
           {/* show a floor outlining the room with a hole: */}
           <path
-            className="fill-[var(--roomHintColor)]"
+            class="fill-[var(--roomHintColor)]"
             fillRule="evenodd"
             // whole tile, then use evenodd to cut out the middle:
             d={`${floorFillPathD} ${floorPathFillPathD(boundaries)}`}
           />
           <path
-            className="fill-[var(--floorColor)]"
+            class="fill-[var(--floorColor)]"
             fillRule="evenodd"
             // whole tile, then use evenodd to cut out the middle:
             d={`${floorPathFillPathD(boundaries)} ${floorPathFillPathD(boundaries, doorwayGap * 0.7)}`}
@@ -244,10 +244,10 @@ export const RoomSvg = <RoomId extends string>({
         </>
       : <>
           {/* whole floor in colour */}
-          <path className="fill-[var(--roomHintColor)]" d={floorFillPathD} />
+          <path class="fill-[var(--roomHintColor)]" d={floorFillPathD} />
           {/* white in the middle w/ to doors */}
           <path
-            className={`fill-[var(--floorColor)]
+            class={`fill-[var(--floorColor)]
               ${
                 !isCurrentRoom ?
                   `group-hover/room:fill-pastelBlue
@@ -260,7 +260,7 @@ export const RoomSvg = <RoomId extends string>({
           />
           {deadlyFloor && (
             <path
-              className="stroke-[var(--roomHintColor)]"
+              class="stroke-[var(--roomHintColor)]"
               strokeDasharray="1, 12.4"
               d={deadlyFloorPathD}
             />
@@ -276,13 +276,13 @@ export const RoomSvg = <RoomId extends string>({
         <>
           {/* away wall: */}
           <path
-            className="fill-[var(--roomHintColorDarker)]"
+            class="fill-[var(--roomHintColorDarker)]"
             fillRule="evenodd"
             d={awayWallFillPathD(boundaries.away === "doorway")}
           />
           {/* left wall is just the away wall flipped: */}
           <path
-            className="fill-[var(--roomHintColor)]"
+            class="fill-[var(--roomHintColor)]"
             fillRule="evenodd"
             transform="scale(-1, 1)"
             d={awayWallFillPathD(boundaries.left === "doorway")}
@@ -290,7 +290,7 @@ export const RoomSvg = <RoomId extends string>({
         </>
       )}
       {/* boundary lines */}
-      <g className="fill-transparent stroke-midGreyHalfbrite">
+      <g class="fill-transparent stroke-midGreyHalfbrite">
         <path // right
           d={`M${project({ x: 0, y: roomGridSizeXY })} L0, 0`}
           data-direction="right"
@@ -316,14 +316,12 @@ export const RoomSvg = <RoomId extends string>({
           strokeDasharray={boundaryDashArrays[boundaries.away]}
         />
       </g>
-      {roomVisited && (
-        <VisitedFootprint className="fill-[var(--roomHintColor)]" />
-      )}
+      {roomVisited && <VisitedFootprint class="fill-[var(--roomHintColor)]" />}
 
       {roomAbove && (
         // vertical lines
         <path
-          className="fill-transparent stroke-midGreyHalfbrite"
+          class="fill-transparent stroke-midGreyHalfbrite"
           d={highRoomBackVerticalLinesPathD}
         />
       )}
@@ -383,7 +381,7 @@ export const RoomSvg = <RoomId extends string>({
       {roomAbove && (
         // vertical lines
         <path
-          className="fill-transparent stroke-midGreyHalfbrite"
+          class="fill-transparent stroke-midGreyHalfbrite"
           d={highRoomFrontVerticalLinesPathD}
         />
       )}
@@ -412,7 +410,7 @@ export const RoomSvg = <RoomId extends string>({
         <>
           <path
             ref={interactiveAreaRef}
-            className="fill-transparent cursor-pointer outline-none"
+            class="fill-transparent cursor-pointer outline-none"
             d={floorFillPathD}
             tabIndex={-1}
           />

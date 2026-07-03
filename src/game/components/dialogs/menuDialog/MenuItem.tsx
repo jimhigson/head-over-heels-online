@@ -1,5 +1,5 @@
+import { type VNode } from "preact";
 import { useCallback } from "preact/hooks";
-import { type ReactElement } from "react";
 import { twMerge } from "tailwind-merge";
 
 import { useAppDispatch } from "../../../../store/hooks";
@@ -10,21 +10,19 @@ import { type DialogId } from "./DialogId";
 import { useMenuItem } from "./dialogs/menus/useMenuItem";
 import { StandardMenuItemLeader } from "./dialogs/StandardMenuItemLeader";
 
-export type CustomLeaderComponent = (props: {
-  doubleHeight: boolean;
-}) => ReactElement;
+export type CustomLeaderComponent = (props: { doubleHeight: boolean }) => VNode;
 type BaseMenuItemProps = {
   id: string;
-  label: ReactElement | string;
-  valueElement?: ReactElement;
+  label: string | VNode;
+  valueElement?: VNode;
   isBack?: boolean;
   doubleHeight?: boolean;
   doubleHeightWhenFocussed?: boolean;
-  leader?: CustomLeaderComponent | ReactElement;
+  leader?: CustomLeaderComponent | VNode;
   hidden?: boolean;
   disabled?: boolean;
-  className?: string;
-  hint?: ReactElement | string;
+  class?: string;
+  hint?: string | VNode;
   verticalAlignItemsCentre?: boolean;
   // explicity state if this menu item opens a sub-menu or not. Usually this can be implied
   opensSubMenu?: boolean;
@@ -70,7 +68,7 @@ export const MenuItem = ({
   onSelect = noop,
   hidden = false,
   disabled = false,
-  className,
+  class: className,
   hint,
   leader,
   verticalAlignItemsCentre = false,
@@ -109,7 +107,7 @@ export const MenuItem = ({
       role="menuitem"
       data-opens-submenu={opensSubMenu}
       data-to-parent-menu={toParentMenu}
-      className={twMerge(
+      class={twMerge(
         "contents cursor-pointer",
         hidden ? "hidden" : "",
         focussed ? "selectedMenuItem" : "",
@@ -133,7 +131,7 @@ export const MenuItem = ({
       <div
         ref={ref}
         role={href ? "link" : undefined}
-        className={twMerge(
+        class={twMerge(
           // if there is no value to show, take up the third column too:
           valueElement === undefined ? "col-span-2" : "",
 
@@ -146,15 +144,15 @@ export const MenuItem = ({
         )}
       >
         {doubleHeightNow ?
-          <span className="text-double-height">{label}</span>
+          <span class="text-double-height">{label}</span>
         : typeof label === "string" ?
-          <span className="text-single-line">{label}</span>
+          <span class="text-single-line">{label}</span>
         : label}
       </div>
       {/* third column content (values etc) */}
       {valueElement && (
         <div
-          className={`flex ${verticalAlignItemsCentre === true ? "items-center" : ""}`}
+          class={`flex ${verticalAlignItemsCentre === true ? "items-center" : ""}`}
         >
           {valueElement}
         </div>
@@ -166,9 +164,9 @@ export const MenuItem = ({
     return (
       <>
         {menuItem}
-        <div className="col-span-2 col-start-2 mb-1">
+        <div class="col-span-2 col-start-2 mb-1">
           {typeof hint === "string" ?
-            <span className="text-multi-line">{hint}</span>
+            <span class="text-multi-line">{hint}</span>
           : hint}
         </div>
       </>

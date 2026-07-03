@@ -21,7 +21,7 @@ import { emptyUserSettings } from "../../store/slices/userSettings/emptyUserSett
 import { type EditorRootState, useEditorAppSelector } from "../../store/store";
 import { emptyObject } from "../../utils/empty";
 import { objectEntriesIter } from "../../utils/entries";
-import { selectorHook } from "../../utils/react/selectorHook";
+import { selectorHook } from "../../utils/preact/selectorHook";
 import {
   type EditorJsonItemUnion,
   type EditorRoomId,

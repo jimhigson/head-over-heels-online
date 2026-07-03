@@ -1,4 +1,4 @@
-import { lazy } from "react";
+import { lazy } from "preact/compat";
 
 import { importJsonRoomEditor } from "./JsonRoomEditor.import";
 

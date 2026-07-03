@@ -1,4 +1,4 @@
-import { Suspense } from "react";
+import { Suspense } from "preact/compat";
 import { Panel, PanelGroup, PanelResizeHandle } from "react-resizable-panels";
 
 import { CssVariables } from "../game/components/CssVariables";

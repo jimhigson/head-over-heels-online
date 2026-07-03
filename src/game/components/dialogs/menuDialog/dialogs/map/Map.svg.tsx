@@ -1,4 +1,5 @@
-import { type FunctionComponent, Suspense } from "react";
+import { type FunctionComponent } from "preact";
+import { Suspense } from "preact/compat";
 import { type ValueOf } from "type-fest";
 
 import { findSubRoomForItem } from "../../../../../../model/map/itemIsInSubRoom";
@@ -154,7 +155,7 @@ export const MapSvg = <RoomId extends string>(props: MapSvgProps<RoomId>) => {
 
   return (
     <svg
-      className={"w-full"}
+      class={"w-full"}
       style={{
         minWidth: `${contentW}px`,
         height: `${contentH}px`,

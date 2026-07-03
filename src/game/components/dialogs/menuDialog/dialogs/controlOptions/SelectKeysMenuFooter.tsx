@@ -14,22 +14,22 @@ export const SelectKeysMenuFooter = () => {
 
   return (
     <div
-      className={`
+      class={`
         bg-metallicBlueHalfbrite text-white
         zx:bg-zxBlueDimmed zx:text-zxCyanDimmed
         toppy:bg-toppyCool4 toppy:text-toppyCool1
 
         text-multi-line inline-block absolute inset-x-0 bottom-0 h-min pt-1 px-1`}
     >
-      <span className="text-single-line">Press: </span>
+      <span class="text-single-line">Press: </span>
       <CurrentKeyAssignments
         inline
-        className={`${highlightTextClass}`}
+        class={`${highlightTextClass}`}
         action="menu_openOrExit"
         keyClassName="me-1"
       />
-      <span className="text-single-line">when done selecting keys for </span>
-      <span className={`${highlightTextClass} text-single-line`}>
+      <span class="text-single-line">when done selecting keys for </span>
+      <span class={`${highlightTextClass} text-single-line`}>
         {actionBeingAssigned}
       </span>
     </div>

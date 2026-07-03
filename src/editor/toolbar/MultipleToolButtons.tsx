@@ -1,12 +1,12 @@
+import { cloneElement, type VNode } from "preact";
 import { useRef, useState } from "preact/hooks";
-import { cloneElement, type ReactElement } from "react";
 
 import { useMouseWheelOptions } from "../../ui/useMouseWheel";
 import { MenuButton } from "./buttons/MenuButton";
 import { type ToolbarButtonProps } from "./buttons/ToolbarButton";
 
 export interface MultipleToolButtonsProps {
-  children: ReactElement<ToolbarButtonProps>[];
+  children: VNode<ToolbarButtonProps>[];
 }
 
 export const MultipleToolButtons = ({ children }: MultipleToolButtonsProps) => {
@@ -32,7 +32,7 @@ export const MultipleToolButtons = ({ children }: MultipleToolButtonsProps) => {
         return (
           <div
             key={index}
-            className="leading-none"
+            class="leading-none"
             onClick={() => {
               setButtonIndex(index);
             }}

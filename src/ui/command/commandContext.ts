@@ -1,4 +1,4 @@
-import { createContext, type RefObject } from "react";
+import { createContext, type RefObject } from "preact";
 
 export type CommandContextValue = {
   /** the current filter text */

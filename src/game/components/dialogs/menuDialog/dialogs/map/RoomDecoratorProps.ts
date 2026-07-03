@@ -1,4 +1,4 @@
-import { type FunctionComponent, type RefObject } from "react";
+import { type FunctionComponent, type RefObject } from "preact";
 
 import { type Boundaries } from "../../../../../../model/map/roomGridPositions";
 import { type SortedObjectOfRoomGridPositionSpecs } from "../../../../../../model/map/sortRoomGridPositions";

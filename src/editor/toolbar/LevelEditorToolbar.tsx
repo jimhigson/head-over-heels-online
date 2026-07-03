@@ -37,8 +37,8 @@ import { ItemToolButton } from "./ItemToolButton";
 import { MultipleToolButtons } from "./MultipleToolButtons";
 import { SaveAndLoadButtons } from "./saving/SaveAndLoadButtons";
 
-const HorizontalGap = () => <div className="w-[calc(var(--block)-1px)]" />;
-const VerticalGap = () => <div className="w-full h-half" />;
+const HorizontalGap = () => <div class="w-[calc(var(--block)-1px)]" />;
+const VerticalGap = () => <div class="w-full h-half" />;
 
 export const LevelEditorToolbar = () => {
   const campaign = useEditorAppSelector(
@@ -51,15 +51,15 @@ export const LevelEditorToolbar = () => {
 
   return (
     <div
-      className="scale-editor flex w-full h-full text-white bg-metallicBlueHalfbrite pb-1 gap-1 flex-wrap justify-start overflow-auto"
+      class="scale-editor flex w-full h-full text-white bg-metallicBlueHalfbrite pb-1 gap-1 flex-wrap justify-start overflow-auto"
       aria-label="toolbar"
       aria-description="toolbar for the editor, exposing most of its editing power such as loading/saving campaigns, selecting tools to edit, resizing items"
     >
-      <div className={buttonGroupClassname}>
-        <LoggedInStatus className="w-full mb-1" />
+      <div class={buttonGroupClassname}>
+        <LoggedInStatus class="w-full mb-1" />
       </div>
-      <div className={buttonGroupClassname}>
-        <div className="w-full">
+      <div class={buttonGroupClassname}>
+        <div class="w-full">
           <CurrentCampaignInfo />
         </div>
         <VerticalGap />
@@ -72,8 +72,8 @@ export const LevelEditorToolbar = () => {
         <ShareCampaignButton />
         <PlayTestButton />
       </div>
-      <div className={buttonGroupClassname}>
-        <span className="w-full pt-1 text-single-line">Room</span>
+      <div class={buttonGroupClassname}>
+        <span class="w-full pt-1 text-single-line">Room</span>
         <BackAndForwardRoomButtons />
         <HorizontalGap />
         <AddAndDeleteRoomButtons />
@@ -88,15 +88,15 @@ export const LevelEditorToolbar = () => {
           triggerButtonClassName="w-full"
           tooltipContent="Choose the room to view/edit"
         />
-        <div className="h-1 w-full" />
+        <div class="h-1 w-full" />
         <RoomScenerySelect />
         <RoomColourSelect />
-        <div className="h-half w-full" />
+        <div class="h-half w-full" />
         <RoomAboveSelectOrCreate />
         <RoomBelowSelectOrCreate />
       </div>
-      <div className={buttonGroupClassname}>
-        <span className="w-full pt-1 text-single-line">Edit</span>
+      <div class={buttonGroupClassname}>
+        <span class="w-full pt-1 text-single-line">Edit</span>
         <ShowCmdKButton />
         <PointerToolButton />
         <EyeDropperButton />
@@ -107,15 +107,15 @@ export const LevelEditorToolbar = () => {
         <HorizontalGap />
         <DeleteItemToolButton />
         <NudgeButtons />
-        <div className="h-1 w-full" />
-        <div className="flex flex-row justify-between flex-wrap gap-x-2">
+        <div class="h-1 w-full" />
+        <div class="flex flex-row justify-between flex-wrap gap-x-2">
           <HalfGridResolutionSwitch />
           <WallsFloorsLockedSwitch />
           <AutoCoalesceSwitch />
         </div>
       </div>
-      <div className={buttonGroupClassname}>
-        <span className="w-full pt-1 text-single-line">Blocks</span>
+      <div class={buttonGroupClassname}>
+        <span class="w-full pt-1 text-single-line">Blocks</span>
         <ItemToolButton {...buttonDefinitions["block.organic"]} />
         <ItemToolButton {...buttonDefinitions["block.organic.disappearing"]} />
         <ItemToolButton {...buttonDefinitions["block.artificial"]} />
@@ -131,8 +131,8 @@ export const LevelEditorToolbar = () => {
           <ItemToolButton {...buttonDefinitions["barrier.y.disappearing"]} />
         </MultipleToolButtons>
       </div>
-      <div className={buttonGroupClassname}>
-        <span className="w-full text-single-line">Monsters</span>
+      <div class={buttonGroupClassname}>
+        <span class="w-full text-single-line">Monsters</span>
         <ItemToolButton {...buttonDefinitions["monster.dalek"]} />
         <ItemToolButton {...buttonDefinitions["monster.cyberman"]} />
         <ItemToolButton {...buttonDefinitions["monster.skiHead"]} />
@@ -147,8 +147,8 @@ export const LevelEditorToolbar = () => {
         <ItemToolButton {...buttonDefinitions["monster.emperorsGuardian"]} />
         <ItemToolButton {...buttonDefinitions["monster.emperor"]} />
       </div>
-      <div className={buttonGroupClassname}>
-        <span className="w-full text-single-line">Pickups</span>
+      <div class={buttonGroupClassname}>
+        <span class="w-full text-single-line">Pickups</span>
         <MultipleToolButtons>
           <ItemToolButton {...buttonDefinitions["pickup.extraLife"]} />
           <ItemToolButton {...buttonDefinitions["pickup.shield"]} />
@@ -162,8 +162,8 @@ export const LevelEditorToolbar = () => {
         <ItemToolButton {...buttonDefinitions["pickup.crown"]} />
         <ItemToolButton {...buttonDefinitions["pickup.scroll"]} />
       </div>
-      <div className={buttonGroupClassname}>
-        <span className="w-full text-single-line">Deadly</span>
+      <div class={buttonGroupClassname}>
+        <span class="w-full text-single-line">Deadly</span>
         <MultipleToolButtons>
           <ItemToolButton {...buttonDefinitions["deadlyBlock.volcano"]} />
           <ItemToolButton {...buttonDefinitions["deadlyBlock.toaster"]} />
@@ -172,8 +172,8 @@ export const LevelEditorToolbar = () => {
         <ItemToolButton {...buttonDefinitions["spikes"]} />
         <ItemToolButton {...buttonDefinitions["moveableDeadly.deadFish"]} />
       </div>
-      <div className={buttonGroupClassname}>
-        <span className="w-full text-single-line">Control</span>
+      <div class={buttonGroupClassname}>
+        <span class="w-full text-single-line">Control</span>
         <ItemToolButton {...buttonDefinitions["charles"]} />
         <ItemToolButton {...buttonDefinitions["joystick"]} />
         <ItemToolButton {...buttonDefinitions["switch"]} />
@@ -183,8 +183,8 @@ export const LevelEditorToolbar = () => {
         <ItemToolButton {...buttonDefinitions["lamp"]} />
         <ItemToolButton {...buttonDefinitions["mirror"]} />
       </div>
-      <div className={buttonGroupClassname}>
-        <span className="w-full text-single-line">Movable</span>
+      <div class={buttonGroupClassname}>
+        <span class="w-full text-single-line">Movable</span>
         <ItemToolButton {...buttonDefinitions["spring"]} />
         <MultipleToolButtons>
           <ItemToolButton {...buttonDefinitions["portableBlock.cube"]} />
@@ -196,8 +196,8 @@ export const LevelEditorToolbar = () => {
         <ItemToolButton {...buttonDefinitions["slidingBlock.puck"]} />
         <ItemToolButton {...buttonDefinitions["slidingBlock.book"]} />
       </div>
-      <div className={buttonGroupClassname}>
-        <span className="w-full text-single-line">Misc.</span>
+      <div class={buttonGroupClassname}>
+        <span class="w-full text-single-line">Misc.</span>
         <ItemToolButton {...buttonDefinitions["lift"]} />
         <MultipleToolButtons>
           <ItemToolButton {...buttonDefinitions["conveyor.away"]} />
@@ -210,25 +210,25 @@ export const LevelEditorToolbar = () => {
         <ItemToolButton {...buttonDefinitions["movingPlatform"]} />
         <ItemToolButton {...buttonDefinitions["hushPuppy"]} />
       </div>
-      <div className={buttonGroupClassname}>
-        <span className="w-full text-single-line">Structure</span>
+      <div class={buttonGroupClassname}>
+        <span class="w-full text-single-line">Structure</span>
         <DoorToolButton />
         <WallToolButton />
         <ItemToolButton {...buttonDefinitions["floor"]} />
       </div>
-      <div className={buttonGroupClassname}>
-        <span className="w-full text-single-line">Player</span>
+      <div class={buttonGroupClassname}>
+        <span class="w-full text-single-line">Player</span>
         <ItemToolButton {...buttonDefinitions["player.head"]} />
         <ItemToolButton {...buttonDefinitions["player.heels"]} />
       </div>
-      <div className={buttonGroupClassname}>
-        <span className="w-full text-single-line">NPC's</span>
+      <div class={buttonGroupClassname}>
+        <span class="w-full text-single-line">NPC's</span>
         <ItemToolButton {...buttonDefinitions["sceneryPlayer.head"]} />
         <ItemToolButton {...buttonDefinitions["sceneryPlayer.heels"]} />
         <ItemToolButton {...buttonDefinitions["sceneryPlayer.headOverHeels"]} />
       </div>
-      <div className={buttonGroupClassname}>
-        <span className="w-full pt-2 text-single-line">Debug</span>
+      <div class={buttonGroupClassname}>
+        <span class="w-full pt-2 text-single-line">Debug</span>
         <EditorShowBoundingBoxSelect />
       </div>
     </div>

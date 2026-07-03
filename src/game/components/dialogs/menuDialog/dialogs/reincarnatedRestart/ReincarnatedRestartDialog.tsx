@@ -11,30 +11,30 @@ export const ReincarnatedRestartDialog = () => {
     <DialogPortal>
       <Dialog
         // the original game is blue, but blue-on-black is poor contrast so using cyan:
-        className="!h-min !w-max text-center p-0 bg-transparent"
+        class="!h-min !w-max text-center p-0 bg-transparent"
         // need to be able to click/tap on the hold dialog to exit, or it
         // isn't possible to leave it on devices with no keyboard/gamepad:
         onClick={useDispatchActionCallback(backToParentMenu)}
         dialogId="reincarnatedRestart"
       >
-        <span className="text-multi-line text-midRed zx:text-zxRed toppy:text-toppyPink2 block w-24 mx-auto px-1 bg-zxBlack py-oneScaledPix">
+        <span class="text-multi-line text-midRed zx:text-zxRed toppy:text-toppyPink2 block w-24 mx-auto px-1 bg-zxBlack py-oneScaledPix">
           You don’t go towards the light
         </span>
-        <span className="text-multi-line block text-highlightBeige zx:text-zxYellow toppy:text-toppyWarm3 w-24 mx-auto px-1 bg-zxBlack py-oneScaledPix">
+        <span class="text-multi-line block text-highlightBeige zx:text-zxYellow toppy:text-toppyWarm3 w-24 mx-auto px-1 bg-zxBlack py-oneScaledPix">
           You have a horrible taste in your mouth
         </span>
-        <div className="text-moss zx:text-zxGreen toppy:text-toppyCool2 w-24 mx-auto px-1 bg-zxBlack py-oneScaledPix leading-[calc(22px*var(--scale,1))]">
-          <span className="text-double-height inline-block max-w-full whitespace-normal">
+        <div class="text-moss zx:text-zxGreen toppy:text-toppyCool2 w-24 mx-auto px-1 bg-zxBlack py-oneScaledPix leading-[calc(22px*var(--scale,1))]">
+          <span class="text-double-height inline-block max-w-full whitespace-normal">
             You have reincarnated!
           </span>
         </div>
-        <span className="text-multi-line block text-pastelBlue zx:text-zxCyan toppy:text-toppyCool1 w-24 mx-auto px-1 bg-zxBlack py-oneScaledPix">
+        <span class="text-multi-line block text-pastelBlue zx:text-zxCyan toppy:text-toppyCool1 w-24 mx-auto px-1 bg-zxBlack py-oneScaledPix">
           Everything is back to how it was when you ate the fish
         </span>
         <span
-          className={`sprite mx-auto bg-zxBlack ${"texture-animated-fish" satisfies AnimatedTextureTailwindClass} zx:sprite-revert-to-white`}
+          class={`sprite mx-auto bg-zxBlack ${"texture-animated-fish" satisfies AnimatedTextureTailwindClass} zx:sprite-revert-to-white`}
         />
-        <MenuItems className="hidden">
+        <MenuItems class="hidden">
           <BackMenuItem />
         </MenuItems>
       </Dialog>

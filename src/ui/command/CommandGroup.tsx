@@ -1,19 +1,22 @@
-import { type ComponentProps, type ReactNode } from "react";
+import { type ComponentChildren, type ComponentProps } from "preact";
 
 import { cn } from "../cn";
 
-export type CommandGroupProps = Omit<ComponentProps<"div">, "title"> & {
+export type CommandGroupProps = Omit<
+  ComponentProps<"div">,
+  "className" | "title"
+> & {
   /** optional heading rendered above the group's items */
-  heading?: ReactNode;
+  heading?: ComponentChildren;
 };
 
 export const CommandGroup = ({
-  className,
+  class: className,
   heading,
   children,
   ...props
 }: CommandGroupProps) => (
-  <div role="group" className={cn("overflow-hidden", className)} {...props}>
+  <div role="group" class={cn("overflow-hidden", className)} {...props}>
     {heading}
     {children}
   </div>

@@ -44,17 +44,17 @@ export const ClearAllDataMenuSection = () => {
 
   return (
     <>
-      <div className="col-span-3 pb-1 mt-3">
+      <div class="col-span-3 pb-1 mt-3">
         <BlockyMarkdown
           markdown={clearAllDataMarkdown}
-          className={optionsHintMarkdownClassname}
+          class={optionsHintMarkdownClassname}
         />
       </div>
       <MenuItem
         doubleHeight
         leader={
           <span
-            className={`${spriteLeaderClasses} sprite ${"texture-bubbles_white_1" satisfies TextureTailwindClass} sprites-normal-height selectedMenuItem:texture-animated-bubbles_white zx:sprite-revert-to-white`}
+            class={`${spriteLeaderClasses} sprite ${"texture-bubbles_white_1" satisfies TextureTailwindClass} sprites-normal-height selectedMenuItem:texture-animated-bubbles_white zx:sprite-revert-to-white`}
           />
         }
         verticalAlignItemsCentre

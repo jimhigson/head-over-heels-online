@@ -1,4 +1,4 @@
-import { selectorHook } from "../../utils/react/selectorHook";
+import { selectorHook } from "../../utils/preact/selectorHook";
 import {
   selectIsGameLoading,
   selectIsLoading,

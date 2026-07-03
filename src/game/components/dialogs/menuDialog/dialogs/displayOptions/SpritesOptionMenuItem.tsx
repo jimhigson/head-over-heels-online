@@ -51,7 +51,7 @@ export const SpritesOptionMenuItem = () => {
       label="Skin"
       valueElement={
         <SwitchN
-          className="ml-auto"
+          class="ml-auto"
           values={spriteOptionLabels}
           value={spriteOptionLabels[spriteOptionIndex(spritesOption)]}
         />
@@ -60,7 +60,7 @@ export const SpritesOptionMenuItem = () => {
       verticalAlignItemsCentre
       hint={
         <BlockyMarkdown
-          className={optionsHintMarkdownClassname}
+          class={optionsHintMarkdownClassname}
           markdown={`${spritesOptionDescription(spritesOption)}
 
 ${spritesOptionExampleSpritesMarkdown}`}

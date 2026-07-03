@@ -1,10 +1,14 @@
+import { type ComponentProps } from "preact";
+import { type KeyboardEvent } from "preact/compat";
 import { useEffect, useLayoutEffect, useRef, useState } from "preact/hooks";
-import { type ComponentProps, type KeyboardEvent } from "react";
 
 import { cn } from "../cn";
 import { CommandContext } from "./commandContext";
 
-export type CommandProps = Omit<ComponentProps<"div">, "onSelect"> & {
+export type CommandProps = Omit<
+  ComponentProps<"div">,
+  "className" | "onSelect"
+> & {
   /** called when Escape is pressed */
   onClose?: () => void;
   /** the item value to highlight when first opened */
@@ -20,7 +24,7 @@ export type CommandProps = Omit<ComponentProps<"div">, "onSelect"> & {
  * The visible items are read from the DOM, so no item registry is needed.
  */
 export const Command = ({
-  className,
+  class: className,
   onClose,
   defaultValue,
   search: controlledSearch,
@@ -127,7 +131,7 @@ export const Command = ({
       }}
     >
       <div
-        className={cn(
+        class={cn(
           "flex h-full w-full flex-col overflow-hidden bg-metallicBlue zx:bg-zxBlue toppy:bg-toppyCool3 text-popover-foreground",
           className,
         )}

@@ -78,6 +78,6 @@ export const PlayAudio = ({
   // <audio> element to find). Only emitted in visual-regression builds, so it is
   // tree-shaken out of production - import.meta.env.MODE is a build-time constant
   return import.meta.env.MODE === "visual-regression" ?
-      <span className="hidden" data-test-playing-sound={soundId} />
+      <span class="hidden" data-test-playing-sound={soundId} />
     : null;
 };

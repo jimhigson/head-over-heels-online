@@ -1,7 +1,5 @@
 "use client";
 
-import { type MouseEvent } from "react";
-
 import { useIsLoading } from "../store/hooks/loadingHooks";
 import { LoadingBorder } from "./LoadingBorder";
 
@@ -11,10 +9,10 @@ import { LoadingBorder } from "./LoadingBorder";
  */
 
 export const Border = ({
-  className,
+  class: className,
   onClick,
 }: {
-  className?: string;
+  class?: string;
   /** click (or tap) handler for anywhere on the div; usually for closing the dialog */
   onClick?: (e: MouseEvent) => void;
 }) => {
@@ -26,7 +24,7 @@ export const Border = ({
 
   return (
     <div
-      className={`fixed inset-0 z-border ${className ?? ""}`}
+      class={`fixed inset-0 z-border ${className ?? ""}`}
       onClick={onClick}
     />
   );

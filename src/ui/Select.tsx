@@ -1,5 +1,6 @@
+import { type ComponentChildren } from "preact";
+import { type CSSProperties, type FC } from "preact/compat";
 import { useRef, useState } from "preact/hooks";
-import { type CSSProperties, type FC, type ReactNode } from "react";
 
 import { emptyObject } from "../utils/empty";
 import { Button } from "./Button";
@@ -28,9 +29,9 @@ export type SelectProps<Value extends string> = {
   OptionCommandItem?: OptionCommandItemComponent<Value>;
   triggerButtonClassName?: string;
   triggerButtonStyle?: CSSProperties;
-  triggerButtonLabel?: ReactNode;
+  triggerButtonLabel?: ComponentChildren;
   onSelect: (value: Value) => void;
-  tooltipContent?: ReactNode;
+  tooltipContent?: ComponentChildren;
   valueDisplayFormat?: (value: Value) => string;
 } & (
   | {
@@ -48,7 +49,7 @@ const DefaultOptionCommandItem: OptionCommandItemComponent<string> = ({
   valueDisplayFormat = (value) => value,
 }) => {
   return (
-    <CommandItem value={value} onSelect={onSelect} className="px-1">
+    <CommandItem value={value} onSelect={onSelect} class="px-1">
       <CommandMatch text={valueDisplayFormat(value)} />
     </CommandItem>
   );
@@ -85,7 +86,7 @@ export const Select = <Value extends string>(props: SelectProps<Value>) => {
       onOpenChange={setOpen}
       trigger={
         <Button
-          className={cn(
+          class={cn(
             `h-2 px-1 flex flex-row gap-1 justify-start leading-none`,
             triggerButtonClassName,
           )}
@@ -94,15 +95,15 @@ export const Select = <Value extends string>(props: SelectProps<Value>) => {
           tooltipContent={!open && tooltipContent}
         >
           {typeof triggerButtonLabel === "string" ?
-            <span className="grow overflow-hidden text-left text-single-line">
+            <span class="grow overflow-hidden text-left text-single-line">
               {triggerButtonLabel}
             </span>
           : triggerButtonLabel}
-          <span className="grow-0 text-single-line">{open ? "X" : "⬇"}</span>
+          <span class="grow-0 text-single-line">{open ? "X" : "⬇"}</span>
         </Button>
       }
       contents={
-        <Command defaultValue={value} className="w-[--popover-anchor-width]">
+        <Command defaultValue={value} class="w-[--popover-anchor-width]">
           {props.disableCommandInput === true ? null : (
             <CommandInput autoFocus placeholder={props.placeholder} />
           )}

@@ -46,7 +46,7 @@ export const PlayTestButton = () => {
             bottomText="ay"
             icon={
               <span
-                className={`sprite ${"texture-joystick_whole" satisfies TextureTailwindClass} mt-half`}
+                class={`sprite ${"texture-joystick_whole" satisfies TextureTailwindClass} mt-half`}
               />
             }
           />
@@ -54,18 +54,18 @@ export const PlayTestButton = () => {
       }
     >
       {[
-        <div className="pl-1 pr-1 pt-1">
-          <label className="mr-1 text-lightGrey">Base URL:</label>
+        <div class="pl-1 pr-1 pt-1">
+          <label class="mr-1 text-lightGrey">Base URL:</label>
           <input
             key="baseurl"
-            className="bg-shadow text-highlightBeige"
+            class="bg-shadow text-highlightBeige"
             value={baseUrl}
-            onChange={(e) => setBaseUrl(e.target.value)}
+            onChange={(e) => setBaseUrl(e.currentTarget.value)}
           />
         </div>,
         <Switch
           key="fromStart"
-          className="w-full px-1 py-half"
+          class="w-full px-1 py-half"
           value={fromStart}
           label="Start from:"
           ariaLabel="Play test start point"
@@ -75,7 +75,7 @@ export const PlayTestButton = () => {
         />,
         <Switch
           key="playAsHeels"
-          className="w-full px-1 py-half"
+          class="w-full px-1 py-half"
           value={playAsHeels}
           label="Play as:"
           ariaLabel="Play test character"

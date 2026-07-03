@@ -83,15 +83,13 @@ const FreeCharacterText = ({
 }) => (
   <span
     data-test-id={`free-${freeCharacterName}`}
-    className="block text-center mx-auto text-lightGrey zx:text-zxYellow toppy:text-toppyWarm3"
+    class="block text-center mx-auto text-lightGrey zx:text-zxYellow toppy:text-toppyWarm3"
   >
     {freeCharacterName === "head" ?
-      <span className="text-metallicBlue zx:text-zxBlue toppy:text-toppyCool2">
+      <span class="text-metallicBlue zx:text-zxBlue toppy:text-toppyCool2">
         Head
       </span>
-    : <span className="text-pink zx:text-zxWhite toppy:text-toppyPink1">
-        Heels
-      </span>
+    : <span class="text-pink zx:text-zxWhite toppy:text-toppyPink1">Heels</span>
     }
     <span> is</span>
     <ColourCycleText classnameCycle={mainMenuCycle}>{" free"}</ColourCycleText>
@@ -125,26 +123,26 @@ export const ScoreDialog = () => {
 
   return (
     <DialogPortal>
-      <Border className="bg-metallicBlue zx:bg-zxCyan toppy:bg-toppyCool3" />
+      <Border class="bg-metallicBlue zx:bg-zxCyan toppy:bg-toppyCool3" />
       <Dialog
-        className="bg-metallicBlueHalfbrite zx:bg-zxRed toppy:bg-toppyCool4 w-zx h-full flex flex-col"
+        class="bg-metallicBlueHalfbrite zx:bg-zxRed toppy:bg-toppyCool4 w-zx h-full flex flex-col"
         onClick={useDispatchActionCallback(backToParentMenu)}
         dialogId="score"
       >
-        <MainMenuHeading noSubtitle className="resHandheld:hidden" />
-        <div className="text-multi-line my-auto">
-          <div className="mt-1 resHandheld:mt-3 text-center uppercase">
+        <MainMenuHeading noSubtitle class="resHandheld:hidden" />
+        <div class="text-multi-line my-auto">
+          <div class="mt-1 resHandheld:mt-3 text-center uppercase">
             <ColourCycleText
               classnameCycle={mainMenuCycle}
-              className="text-double-height"
+              class="text-double-height"
             >
               {scoreLabel}
             </ColourCycleText>
           </div>
-          <span className="mt-1 block text-center mx-auto text-highlightBeige zx:text-zxYellow toppy:text-toppyWarm3">
+          <span class="mt-1 block text-center mx-auto text-highlightBeige zx:text-zxYellow toppy:text-toppyWarm3">
             Score {score.toLocaleString()}
           </span>
-          <div className="mt-1">
+          <div class="mt-1">
             {freeCharacters.map((fc) => (
               <FreeCharacterText key={fc} freeCharacterName={fc} />
             ))}
@@ -154,15 +152,15 @@ export const ScoreDialog = () => {
             data-rooms-explored={roomsExploredCount}
             data-rooms-total={roomCount}
           >
-            <span className="mt-1 block text-center mx-auto text-pink zx:text-zxCyan toppy:text-toppyPink1">
+            <span class="mt-1 block text-center mx-auto text-pink zx:text-zxCyan toppy:text-toppyPink1">
               Explored {roomsExploredCount} / {roomCount} rooms{" "}
               {`(${asPercentage(roomsExploredCount, roomCount)})`}
             </span>
           </span>
-          <span className="mt-1 block text-center mx-auto text-lightGrey zx:text-zxWhite toppy:text-toppyGrey1">
+          <span class="mt-1 block text-center mx-auto text-lightGrey zx:text-zxWhite toppy:text-toppyGrey1">
             Liberated {planetsLiberatedCount} planets
           </span>
-          <MenuItems className="hidden">
+          <MenuItems class="hidden">
             <BackMenuItem />
           </MenuItems>
         </div>

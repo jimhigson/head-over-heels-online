@@ -1,5 +1,6 @@
+import { type RefObject } from "preact";
+import { type PropsWithChildren } from "preact/compat";
 import { useCallback, useEffect, useRef } from "preact/hooks";
-import { type AriaRole, type PropsWithChildren, type RefObject } from "react";
 import { twMerge } from "tailwind-merge";
 
 import { useIsAssigningKeys } from "../../../../store/slices/gameMenus/gameMenusSelectors";
@@ -12,6 +13,9 @@ import {
   menuItemDataAttributeHidden,
   menuItemDataAttributeId,
 } from "./dialogs/menus/menuItemDataAttributes";
+
+/** ARIA roles MenuItems supports on the <menu> element it renders */
+type MenuItemsRole = "list" | "menubar";
 
 /**
  * classnames for the menu item when it is presented as an actual grid-formatted menu
@@ -302,16 +306,17 @@ const useMenuNavigationInput = (
 };
 
 type MenuItemsProps = PropsWithChildren<{
-  className?: string;
+  class?: string;
   inline?: boolean;
-  role?: AriaRole;
+  role?: MenuItemsRole;
 }>;
 
 export const MenuItems = ({
-  className = "",
+  class: className = "",
   children,
   inline = false,
-  role = undefined,
+  // <menu> requires an ARIA role in preact's types; "list" is its implicit HTML role
+  role = "list",
 }: MenuItemsProps) => {
   const ref = useRef<HTMLMenuElement>(null);
 
@@ -364,7 +369,7 @@ export const MenuItems = ({
     <menu
       ref={ref}
       role={role}
-      className={twMerge(inline ? "" : presentationalMenuClasses, className)}
+      class={twMerge(inline ? "" : presentationalMenuClasses, className)}
     >
       {children}
     </menu>

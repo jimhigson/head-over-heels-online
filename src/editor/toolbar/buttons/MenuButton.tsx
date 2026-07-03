@@ -1,5 +1,7 @@
+import { type RefObject, type VNode } from "preact";
+import { type PropsWithChildren } from "preact/compat";
 import { useState } from "preact/hooks";
-import { type PropsWithChildren, type ReactElement } from "react";
+import { type EmptyObject } from "type-fest";
 
 import { Button, type ButtonProps } from "../../../ui/Button";
 import { cn } from "../../../ui/cn";
@@ -7,10 +9,10 @@ import { Popover } from "../../../ui/Popover";
 import { buttonSizeClassNames } from "../buttonSizeClassNames";
 
 export interface MenuButtonProps {
-  main: ReactElement;
-  children: (null | ReactElement<PropsWithChildren>)[];
+  main: VNode;
+  children: (null | VNode<PropsWithChildren<EmptyObject>>)[];
   contentsClassName?: string;
-  ref?: React.RefObject<HTMLDivElement | null>;
+  ref?: RefObject<HTMLDivElement | null>;
 }
 
 export const MenuButton = ({
@@ -24,11 +26,11 @@ export const MenuButton = ({
   return (
     <div
       ref={ref}
-      className={cn(buttonSizeClassNames, "relative group", {
+      class={cn(buttonSizeClassNames, "relative group", {
         "drop-shadow-oneBlock z-popups": open,
       })}
     >
-      <span className="content">
+      <span class="content">
         {main}
 
         {children.length > 0 && (
@@ -38,16 +40,16 @@ export const MenuButton = ({
             trigger={
               <Button
                 aria-label={open ? "Close menu" : "More actions"}
-                className="absolute right-0 bottom-0 bg-metallicBlueHalfbrite invisible group-hover:visible"
+                class="absolute right-0 bottom-0 bg-metallicBlueHalfbrite invisible group-hover:visible"
               >
-                <span className="pl-oneScaledPix py-oneScaledPix text-single-line">
+                <span class="pl-oneScaledPix py-oneScaledPix text-single-line">
                   {open ? "X" : "⬇"}
                 </span>
               </Button>
             }
             contents={
               <div
-                className={cn(
+                class={cn(
                   "flex flex-col gap-oneScaledPix py-oneScaledPix",
                   "bg-metallicBlueHalfbrite text-white max-h-20 overflow-y-auto",
                   "scrollbar scrollbar-w-1 scrollbar-thumb-highlightBeige",
@@ -70,15 +72,15 @@ export const MenuButton = ({
  */
 export const MenuItemButton = ({
   children,
-  className,
+  class: className,
   ...rest
 }: ButtonProps) => (
   <Button
-    className={`px-1 py-half w-full justify-between ${className ?? ""}`}
+    class={`px-1 py-half w-full justify-between ${className ?? ""}`}
     {...rest}
   >
     {typeof children === "string" ?
-      <span className="text-single-line">{children}</span>
+      <span class="text-single-line">{children}</span>
     : children}
   </Button>
 );

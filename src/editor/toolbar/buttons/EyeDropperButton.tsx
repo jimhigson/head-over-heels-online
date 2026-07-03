@@ -24,7 +24,7 @@ export const EyeDropperButton = () => {
 click on an item in the room to copy it and put a copy down somewhere else`}
     >
       <span
-        className={`relative sprite ${"texture-editor_tool_eyedropper" satisfies TextureTailwindClass} leading-none`}
+        class={`relative sprite ${"texture-editor_tool_eyedropper" satisfies TextureTailwindClass} leading-none`}
       />
     </ToolbarButton>
   );

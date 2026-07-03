@@ -6,13 +6,13 @@ export const ClearRoomButton = () => {
   return (
     <ToolbarButton
       ariaLabel="Clear room"
-      className="bg-midRed"
+      class="bg-midRed"
       onClick={() => store.dispatch(confirmClearRoomThunk)}
       tooltipContent={`## Clear room
 
 Clears the room out, leaving just walls, floors, and doors`}
     >
-      <span className="relative text-single-line">CLR</span>
+      <span class="relative text-single-line">CLR</span>
     </ToolbarButton>
   );
 };

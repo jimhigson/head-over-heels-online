@@ -1,4 +1,4 @@
-import { useMemo } from "react";
+import { useMemo } from "preact/hooks";
 
 import { type CustomLeaderComponent } from "../MenuItem";
 
@@ -7,7 +7,7 @@ export const customTextLeader =
   ({ doubleHeight }) => {
     return (
       <span
-        className={`text-center w-2 ${doubleHeight ? "text-double-height" : ""}`}
+        class={`text-center w-2 ${doubleHeight ? "text-double-height" : ""}`}
       >
         {text}
       </span>

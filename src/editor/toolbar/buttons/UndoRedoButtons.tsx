@@ -30,7 +30,7 @@ export const UndoRedoButtons = () => {
   const nextRedo = redoHistory.at(-1);
 
   return (
-    <div className="flex flex-row gap-oneScaledPix bg-metallicBlue">
+    <div class="flex flex-row gap-oneScaledPix bg-metallicBlue">
       <MenuButton
         contentsClassName={undoHistoryGridClassName}
         main={
@@ -42,9 +42,9 @@ export const UndoRedoButtons = () => {
             }}
             tooltipContent={
               nextUndo ?
-                <div className="flex flex-col gap-1">
-                  <span className="text-double-height">Undo</span>
-                  <div className={undoHistoryGridClassName}>
+                <div class="flex flex-col gap-1">
+                  <span class="text-double-height">Undo</span>
+                  <div class={undoHistoryGridClassName}>
                     <UndoEntryLabel entry={nextUndo} scenery={scenery} />
                   </div>
                 </div>
@@ -53,7 +53,7 @@ export const UndoRedoButtons = () => {
             shortcutKeys={["⌘Z", "^Z"]}
           >
             <IconWithTwoLineHoverText
-              icon={<span className="text-single-line">⎌</span>}
+              icon={<span class="text-single-line">⎌</span>}
               topText="un"
               bottomText="do"
             />
@@ -66,7 +66,7 @@ export const UndoRedoButtons = () => {
           .map((entry, index) => (
             <MenuItemButton
               key={index}
-              className={undoHistorySubgridClassName}
+              class={undoHistorySubgridClassName}
               onClick={() => dispatch(undo({ steps: index + 1 }))}
               onMouseEnter={() =>
                 dispatch(undoHovered(undoHistory.length - index))
@@ -88,9 +88,9 @@ export const UndoRedoButtons = () => {
             }}
             tooltipContent={
               nextRedo ?
-                <div className="flex flex-col gap-1">
-                  <span className="text-double-height">Redo</span>
-                  <div className={undoHistoryGridClassName}>
+                <div class="flex flex-col gap-1">
+                  <span class="text-double-height">Redo</span>
+                  <div class={undoHistoryGridClassName}>
                     <UndoEntryLabel entry={nextRedo} scenery={scenery} />
                   </div>
                 </div>
@@ -99,7 +99,7 @@ export const UndoRedoButtons = () => {
             shortcutKeys={["⌘⇧Z", "^⇧Z"]}
           >
             <IconWithTwoLineHoverText
-              icon={<span className="text-single-line">⟳</span>}
+              icon={<span class="text-single-line">⟳</span>}
               topText="re"
               bottomText="do"
             />
@@ -112,7 +112,7 @@ export const UndoRedoButtons = () => {
           .map((entry, index) => (
             <MenuItemButton
               key={index}
-              className={undoHistorySubgridClassName}
+              class={undoHistorySubgridClassName}
               onClick={() => dispatch(redo({ steps: index + 1 }))}
               onMouseEnter={() =>
                 dispatch(undoHovered(-(redoHistory.length - index)))

@@ -99,18 +99,18 @@ export const ShowBoundingBoxSelect = ({
       onOpenChange={handleOpenChange}
       trigger={
         <Button
-          className={cn(
+          class={cn(
             "h-2 px-1 flex flex-row gap-1 justify-start leading-none w-13",
           )}
         >
-          <span className="text-single-line grow overflow-hidden text-left">
+          <span class="text-single-line grow overflow-hidden text-left">
             {triggerLabel(selected)}
           </span>
-          <span className="text-single-line grow-0">{open ? "X" : "⬇"}</span>
+          <span class="text-single-line grow-0">{open ? "X" : "⬇"}</span>
         </Button>
       }
       contents={
-        <Command className="w-24">
+        <Command class="w-24">
           <CommandInput autoFocus placeholder="filter types..." />
           <CommandList>
             <CommandGroup>
@@ -123,10 +123,10 @@ export const ShowBoundingBoxSelect = ({
                     }),
                   );
                 }}
-                className="px-1"
+                class="px-1"
               >
                 <Switch
-                  className="w-full"
+                  class="w-full"
                   value={showRoomScrollBounds}
                   label="scroll bounds"
                 />
@@ -140,19 +140,15 @@ export const ShowBoundingBoxSelect = ({
                     }),
                   );
                 }}
-                className="px-1"
+                class="px-1"
               >
-                <Switch
-                  className="w-full"
-                  value={showSubrooms}
-                  label="sub-rooms"
-                />
+                <Switch class="w-full" value={showSubrooms} label="sub-rooms" />
               </CommandItem>
             </CommandGroup>
             <CommandGroup>
-              <div className="px-1 py-half">
+              <div class="px-1 py-half">
                 <SwitchN
-                  className="w-full"
+                  class="w-full"
                   value={allItemsState(selected.length)}
                   values={allItemsStates}
                   onChange={(newValue) => {
@@ -166,8 +162,8 @@ export const ShowBoundingBoxSelect = ({
             </CommandGroup>
             <CommandGroup
               heading={
-                <span className="text-moss zx:text-zxGreen toppy:text-toppyCool2 pl-1 mt-1 block">
-                  <span className="text-double-height">In room:</span>
+                <span class="text-moss zx:text-zxGreen toppy:text-toppyCool2 pl-1 mt-1 block">
+                  <span class="text-double-height">In room:</span>
                 </span>
               }
             >
@@ -183,10 +179,10 @@ export const ShowBoundingBoxSelect = ({
                       }),
                     );
                   }}
-                  className="px-1"
+                  class="px-1"
                 >
                   <Switch
-                    className="w-full"
+                    class="w-full"
                     value={selectedSet.has(itemType)}
                     label={<CommandMatch text={itemType} />}
                   />
@@ -197,8 +193,8 @@ export const ShowBoundingBoxSelect = ({
             {typesNotInRoom.length > 0 && (
               <CommandGroup
                 heading={
-                  <span className="text-moss zx:text-zxGreen toppy:text-toppyCool2 pl-1 mt-1 block">
-                    <span className="text-double-height">Others</span>
+                  <span class="text-moss zx:text-zxGreen toppy:text-toppyCool2 pl-1 mt-1 block">
+                    <span class="text-double-height">Others</span>
                   </span>
                 }
               >
@@ -214,10 +210,10 @@ export const ShowBoundingBoxSelect = ({
                         }),
                       );
                     }}
-                    className="px-1"
+                    class="px-1"
                   >
                     <Switch
-                      className="w-full"
+                      class="w-full"
                       value={selectedSet.has(itemType)}
                       label={<CommandMatch text={itemType} />}
                     />

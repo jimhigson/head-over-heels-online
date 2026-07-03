@@ -11,7 +11,7 @@ export const ContextMenuItem = ({
   onSelect,
   children,
 }: ContextMenuItemProps) => (
-  <CommandItem value={value} onSelect={onSelect} className="px-1">
-    <span className="text-single-line">{children}</span>
+  <CommandItem value={value} onSelect={onSelect} class="px-1">
+    <span class="text-single-line">{children}</span>
   </CommandItem>
 );

@@ -1,5 +1,6 @@
-import { useRef } from "preact/hooks";
-import { createContext, type PropsWithChildren, useContext } from "react";
+import { createContext } from "preact";
+import { type PropsWithChildren } from "preact/compat";
+import { useContext, useRef } from "preact/hooks";
 import { type EmptyObject } from "type-fest";
 
 import { type EditorRoomJson, type EditorRoomState } from "../editorTypes";

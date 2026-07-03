@@ -1,5 +1,5 @@
+import { lazy, Suspense } from "preact/compat";
 import { useEffect } from "preact/hooks";
-import { lazy, Suspense } from "react";
 import { Provider } from "react-redux";
 import { Route, Switch } from "wouter";
 

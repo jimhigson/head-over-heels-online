@@ -52,12 +52,12 @@ export const OptionsDialog = () => {
     <DialogPortal>
       <Dialog
         fullScreen
-        className={optionsDialogClasses}
+        class={optionsDialogClasses}
         dialogId="modernisationOptions"
       >
-        <DialogTitleBar path={["Options"]} className={titleBarClasses} />
-        <div className={optionsMenuScrollClasses}>
-          <MenuItems className={`gap-y-half`}>
+        <DialogTitleBar path={["Options"]} class={titleBarClasses} />
+        <div class={optionsMenuScrollClasses}>
+          <MenuItems class={`gap-y-half`}>
             <MenuItem
               id="controlOptions"
               label="Controls"
@@ -66,13 +66,13 @@ export const OptionsDialog = () => {
               subMenuId="controlOptions"
               hint={
                 <BlockyMarkdown
-                  className={optionsHintMarkdownClassname}
+                  class={optionsHintMarkdownClassname}
                   markdown={controlOptionsMarkdown}
                 />
               }
               leader={
                 <span
-                  className={`${spriteLeaderClasses} sprite ${"texture-joystick_whole" satisfies TextureTailwindClass} sprites-normal-height zx:sprite-revert-to-white`}
+                  class={`${spriteLeaderClasses} sprite ${"texture-joystick_whole" satisfies TextureTailwindClass} sprites-normal-height zx:sprite-revert-to-white`}
                 />
               }
             />
@@ -84,7 +84,7 @@ export const OptionsDialog = () => {
               subMenuId="sound"
               hint={
                 <BlockyMarkdown
-                  className={optionsHintMarkdownClassname}
+                  class={optionsHintMarkdownClassname}
                   markdown="Footsteps getting annoying?"
                 />
               }
@@ -97,7 +97,7 @@ export const OptionsDialog = () => {
               subMenuId="displayOptions"
               hint={
                 <BlockyMarkdown
-                  className={optionsHintMarkdownClassname}
+                  class={optionsHintMarkdownClassname}
                   markdown="Change how the game looks"
                 />
               }
@@ -108,7 +108,7 @@ export const OptionsDialog = () => {
               doubleHeight
               valueElement={
                 <SwitchN
-                  className="ml-auto"
+                  class="ml-auto"
                   values={selectableGameSpeeds}
                   valueLabels={selectableGameSpeeds.map((n) =>
                     `${n}`.replace(".", "\uff0e"),
@@ -119,17 +119,17 @@ export const OptionsDialog = () => {
               onSelect={useDispatchActionCallback(setGameSpeed, undefined)}
               hint={
                 <BlockyMarkdown
-                  className={optionsHintMarkdownClassname}
+                  class={optionsHintMarkdownClassname}
                   markdown={gameSpeedMarkdown}
                 />
               }
               verticalAlignItemsCentre
             />
 
-            <div className="col-span-3 pb-1 mt-2">
+            <div class="col-span-3 pb-1 mt-2">
               <BlockyMarkdown
                 markdown={pokesMarkdown}
-                className={optionsHintMarkdownClassname}
+                class={optionsHintMarkdownClassname}
               />
             </div>
             <MenuItem
@@ -139,12 +139,12 @@ export const OptionsDialog = () => {
               label="∞ Lives Poke"
               leader={
                 <span
-                  className={`${spriteLeaderClasses} sprite ${"texture-whiteRabbit_extra-life" satisfies TextureTailwindClass} sprites-normal-height zx:sprite-revert-to-white`}
+                  class={`${spriteLeaderClasses} sprite ${"texture-whiteRabbit_extra-life" satisfies TextureTailwindClass} sprites-normal-height zx:sprite-revert-to-white`}
                 />
               }
               hint={
                 <BlockyMarkdown
-                  className={optionsHintMarkdownClassname}
+                  class={optionsHintMarkdownClassname}
                   markdown={
                     infiniteLivesPokeOn ?
                       infiniteLivesOnMarkdown
@@ -153,7 +153,7 @@ export const OptionsDialog = () => {
                 />
               }
               valueElement={
-                <Switch className="ml-auto" value={infiniteLivesPokeOn} />
+                <Switch class="ml-auto" value={infiniteLivesPokeOn} />
               }
               onSelect={useDispatchActionCallback(toggleUserSetting, {
                 path: "pokesEnabled.infiniteLives",
@@ -163,7 +163,7 @@ export const OptionsDialog = () => {
             <MenuItem
               leader={
                 <span
-                  className={`${spriteLeaderClasses} sprite ${"texture-doughnuts" satisfies TextureTailwindClass} sprites-normal-height zx:sprite-revert-to-white`}
+                  class={`${spriteLeaderClasses} sprite ${"texture-doughnuts" satisfies TextureTailwindClass} sprites-normal-height zx:sprite-revert-to-white`}
                 />
               }
               doubleHeight
@@ -172,7 +172,7 @@ export const OptionsDialog = () => {
               label="∞ Doughnuts Poke"
               valueElement={
                 <Switch
-                  className="ml-auto"
+                  class="ml-auto"
                   value={useAppSelector(selectIsInfiniteDoughnutsPoke)}
                 />
               }

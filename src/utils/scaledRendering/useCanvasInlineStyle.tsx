@@ -1,4 +1,4 @@
-import { type CSSProperties } from "react";
+import { type CSSProperties } from "preact/compat";
 
 import { useAppSelector } from "../../store/hooks";
 import { selectUpscale } from "../../store/slices/upscale/upscaleSlice";

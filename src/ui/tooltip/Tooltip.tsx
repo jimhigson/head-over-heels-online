@@ -1,10 +1,11 @@
 import { FloatingPortal, type Placement } from "@floating-ui/react";
 import {
   cloneElement,
+  type ComponentChildren,
   isValidElement,
-  type ReactElement,
-  type ReactNode,
-} from "react";
+  type VNode,
+} from "preact";
+import { type CSSProperties } from "preact/compat";
 
 import { BlockyMarkdown } from "../../game/components/BlockyMarkdown";
 import { CssVariables } from "../../game/components/CssVariables";
@@ -12,10 +13,10 @@ import { useTooltip } from "./useTooltip";
 
 export type TooltipFloatingProps = {
   isOpen: boolean;
-  floatingStyles: React.CSSProperties;
+  floatingStyles: CSSProperties;
   refs: ReturnType<typeof useTooltip>["refs"];
   getFloatingProps: ReturnType<typeof useTooltip>["getFloatingProps"];
-  tooltipContent: ReactNode;
+  tooltipContent: ComponentChildren;
 };
 
 export const TooltipFloating = ({
@@ -32,10 +33,10 @@ export const TooltipFloating = ({
           ref={refs.setFloating}
           style={floatingStyles}
           {...getFloatingProps()}
-          className="bg-lightBeige zx:bg-zxYellowDimmed toppy:bg-toppyWarm2 toppy:text-toppyCool4 text-white p-1 drop-shadow-oneBlock z-popups"
+          class="bg-lightBeige zx:bg-zxYellowDimmed toppy:bg-toppyWarm2 toppy:text-toppyCool4 text-white p-1 drop-shadow-oneBlock z-popups"
         >
           {typeof tooltipContent === "string" ?
-            <div className="max-w-16">
+            <div class="max-w-16">
               <BlockyMarkdown markdown={tooltipContent} />
             </div>
           : tooltipContent}
@@ -45,8 +46,8 @@ export const TooltipFloating = ({
   : null;
 
 export type TooltipProps = {
-  triggerContent: ReactNode;
-  tooltipContent?: ReactNode;
+  triggerContent: ComponentChildren;
+  tooltipContent?: ComponentChildren;
   tooltipOffset?: number;
   tooltipPlacement?: Placement;
 };
@@ -68,7 +69,7 @@ export const Tooltip = ({
 
   const trigger =
     isValidElement(triggerContent) ?
-      cloneElement(triggerContent as ReactElement, referenceProps)
+      cloneElement(triggerContent as VNode, referenceProps)
     : <div {...referenceProps}>{triggerContent}</div>;
 
   return (

@@ -27,16 +27,9 @@ Make your fancy new screen look like it’s 1987 again.`;
 
 export const DisplayOptionsDialog = () => {
   return (
-    <Dialog
-      fullScreen
-      className={optionsDialogClasses}
-      dialogId="displayOptions"
-    >
-      <DialogTitleBar
-        path={["Options", "Display"]}
-        className={titleBarClasses}
-      />
-      <div className={optionsMenuScrollClasses}>
+    <Dialog fullScreen class={optionsDialogClasses} dialogId="displayOptions">
+      <DialogTitleBar path={["Options", "Display"]} class={titleBarClasses} />
+      <div class={optionsMenuScrollClasses}>
         <MenuItems>
           {
             // keep inline (not deploymentType()) to allow tree-shaking
@@ -50,13 +43,13 @@ export const DisplayOptionsDialog = () => {
             label={
               <>
                 <span>
-                  <span className="text-midRed zx:text-zxRed toppy:text-toppyPink2">
+                  <span class="text-midRed zx:text-zxRed toppy:text-toppyPink2">
                     C
                   </span>
-                  <span className="text-moss zx:text-zxGreen toppy:text-toppyCool2">
+                  <span class="text-moss zx:text-zxGreen toppy:text-toppyCool2">
                     R
                   </span>
-                  <span className="text-pastelBlue zx:text-zxBlue toppy:text-toppyGrey2">
+                  <span class="text-pastelBlue zx:text-zxBlue toppy:text-toppyGrey2">
                     T
                   </span>
                 </span>
@@ -65,7 +58,7 @@ export const DisplayOptionsDialog = () => {
             }
             valueElement={
               <Switch
-                className="ml-auto"
+                class="ml-auto"
                 value={useAppSelector(selectIsCrtFilter)}
               />
             }
@@ -74,7 +67,7 @@ export const DisplayOptionsDialog = () => {
             })}
             hint={
               <BlockyMarkdown
-                className={optionsHintMarkdownClassname}
+                class={optionsHintMarkdownClassname}
                 markdown={crtEffectMarkdown}
               />
             }
@@ -87,7 +80,7 @@ export const DisplayOptionsDialog = () => {
             verticalAlignItemsCentre
             hint={
               <BlockyMarkdown
-                className={optionsHintMarkdownClassname}
+                class={optionsHintMarkdownClassname}
                 markdown={`See more of the room by choosing a higher resolution to emulate.`}
               />
             }
@@ -98,17 +91,14 @@ export const DisplayOptionsDialog = () => {
             id="showFps"
             label="Show FPS"
             valueElement={
-              <Switch
-                className="ml-auto"
-                value={useAppSelector(selectShowFps)}
-              />
+              <Switch class="ml-auto" value={useAppSelector(selectShowFps)} />
             }
             onSelect={useDispatchActionCallback(toggleUserSetting, {
               path: "showFps",
             })}
             hint={
               <BlockyMarkdown
-                className={optionsHintMarkdownClassname}
+                class={optionsHintMarkdownClassname}
                 markdown={`Frames per second shown during gameplay.`}
               />
             }

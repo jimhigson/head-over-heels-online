@@ -13,7 +13,7 @@ export const FullscreenMenuItem = () => {
       doubleHeight
       id="fullScreen"
       label="Full Screen"
-      valueElement={<Switch className="ml-auto" value={isFullscreen} />}
+      valueElement={<Switch class="ml-auto" value={isFullscreen} />}
       onSelect={(): void => {
         toggleFullscreen();
       }}

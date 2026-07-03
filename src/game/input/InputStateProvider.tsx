@@ -1,5 +1,6 @@
-import { useEffect, useState } from "preact/hooks";
-import { createContext, type PropsWithChildren, useContext } from "react";
+import { createContext } from "preact";
+import { type PropsWithChildren } from "preact/compat";
+import { useContext, useEffect, useState } from "preact/hooks";
 
 import { createEmptyHudInputState } from "./hudInputState";
 import {

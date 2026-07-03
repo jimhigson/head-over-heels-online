@@ -15,7 +15,7 @@ import { type AppSpritesheetData } from "../../../sprites/spritesheet/variants/A
 import { objectEntriesIter, valuesIter } from "../../../utils/entries";
 import { getAtPath } from "../../../utils/getAtPath";
 import { size } from "../../../utils/iterators/size";
-import { selectorHook } from "../../../utils/react/selectorHook";
+import { selectorHook } from "../../../utils/preact/selectorHook";
 import { useAppSelector } from "../../hooks";
 import { type GameRootState } from "../../store";
 import { selectMaybeLoadedCampaignData } from "../campaigns/gameCampaignsApiSlice";

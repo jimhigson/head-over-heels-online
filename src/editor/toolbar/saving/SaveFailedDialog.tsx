@@ -48,36 +48,28 @@ export const SaveFailedDialog = ({
 
   return (
     <DialogPortal>
-      <Border className="scale-editor bg-checkerboard-stifled-alphas" />
-      <div className="contents no-keyboard-shortcuts">
-        <Dialog
-          small
-          ariaLabel="Save failed"
-          className="scale-editor p-1 !h-min"
-        >
+      <Border class="scale-editor bg-checkerboard-stifled-alphas" />
+      <div class="contents no-keyboard-shortcuts">
+        <Dialog small ariaLabel="Save failed" class="scale-editor p-1 !h-min">
           <DialogHeader>Save failed</DialogHeader>
-          <span className="text-multi-line text-lightGrey pt-1">
+          <span class="text-multi-line text-lightGrey pt-1">
             {bodyText(failure)}
           </span>
-          <div className="flex gap-1 justify-end text-white mt-1">
-            <Button
-              className="px-1 py-half"
-              onClick={onClose}
-              aria-label="Cancel"
-            >
+          <div class="flex gap-1 justify-end text-white mt-1">
+            <Button class="px-1 py-half" onClick={onClose} aria-label="Cancel">
               Cancel
             </Button>
             {failure.type === "conflict" && (
               <>
                 <Button
-                  className="px-1 py-half"
+                  class="px-1 py-half"
                   onClick={onLoadLatest}
                   aria-label="Load the latest version, discarding my changes"
                 >
                   Load latest (discard my changes)
                 </Button>
                 <Button
-                  className="px-1 py-half bg-midRed"
+                  class="px-1 py-half bg-midRed"
                   onClick={() =>
                     confirmingForce ? onForceSave() : setConfirmingForce(true)
                   }
@@ -91,7 +83,7 @@ export const SaveFailedDialog = ({
             )}
             {(failure.type === "network" || failure.type === "other") && (
               <Button
-                className="px-1 py-half bg-midRed text-moss"
+                class="px-1 py-half bg-midRed text-moss"
                 onClick={onRetry}
                 aria-label="Retry the save"
               >

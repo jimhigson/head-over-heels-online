@@ -64,20 +64,20 @@ const useKeyAssignmentInput = () => {
 
 const ExpandToShowAll = ({ showAll }: { showAll: () => void }) => {
   return (
-    <div className="text-metallicBlueHalfbrite zx:text-zxBlue toppy:text-toppyCool3">
-      <span className="block mb-1 text-multi-line">
+    <div class="text-metallicBlueHalfbrite zx:text-zxBlue toppy:text-toppyCool3">
+      <span class="block mb-1 text-multi-line">
         Detected that you are on a phone or tablet
       </span>
-      <span className="block mb-1 text-multi-line">
+      <span class="block mb-1 text-multi-line">
         Additional settings for keys and gamepad buttons are designed for
         desktop/laptops, but you can use them on phones/tablets if you have a
         keyboard or gamepad connected
       </span>
       <Button
-        className="block w-full mb-2 text-white p-1 bg-midRed zx:text-zxRed toppy:text-toppyPink2 toppy:bg-toppyWarm5 text-multi-line"
+        class="block w-full mb-2 text-white p-1 bg-midRed zx:text-zxRed toppy:text-toppyPink2 toppy:bg-toppyWarm5 text-multi-line"
         onClick={showAll}
       >
-        <span className="text-single-line">Tap here to show all settings</span>
+        <span class="text-single-line">Tap here to show all settings</span>
       </Button>
     </div>
   );
@@ -99,20 +99,16 @@ export const ControlOptionsDialog = () => {
   return (
     <DialogPortal>
       <Border
-        className="bg-lightGrey zx:bg-zxRedDimmed toppy:bg-toppyGrey1"
+        class="bg-lightGrey zx:bg-zxRedDimmed toppy:bg-toppyGrey1"
         onClick={useDispatchActionCallback(backToParentMenu)}
       />
-      <Dialog
-        fullScreen
-        className={optionsDialogClasses}
-        dialogId="controlOptions"
-      >
+      <Dialog fullScreen class={optionsDialogClasses} dialogId="controlOptions">
         <DialogTitleBar
           path={["Options", "Controls"]}
-          className={titleBarClasses}
+          class={titleBarClasses}
         />
-        <div className={optionsMenuScrollClasses}>
-          <MenuItems className={`${controlOptionsMenuItemsClass} w-full`}>
+        <div class={optionsMenuScrollClasses}>
+          <MenuItems class={`${controlOptionsMenuItemsClass} w-full`}>
             <InputDirectionModeMenuItem />
             {inputDirectionMode !== "4-way" && showAll && (
               <ScreenRelativeControlMenuItem />
@@ -122,8 +118,8 @@ export const ControlOptionsDialog = () => {
             {showAll && (
               <>
                 <PresetMenuItem />
-                <h1 className="text-midRed zx:text-zxBlue toppy:text-toppyPink2 mt-1 block col-span-3 text-center uppercase">
-                  <span className="text-double-height">Select the Keys</span>
+                <h1 class="text-midRed zx:text-zxBlue toppy:text-toppyPink2 mt-1 block col-span-3 text-center uppercase">
+                  <span class="text-double-height">Select the Keys</span>
                 </h1>
               </>
             )}
@@ -135,7 +131,7 @@ export const ControlOptionsDialog = () => {
                 // normally on mobile, menu items are double-height, but select the keys
                 // is dense and won't be commonly seen on mobile, so to keep it under control
                 // it is forced to single height for now
-                className={`${controlOptionsMenuItemsClass} !sprites-normal-height`}
+                class={`${controlOptionsMenuItemsClass} !sprites-normal-height`}
               >
                 <SelectTheKeysMenuItems />
               </MenuItems>

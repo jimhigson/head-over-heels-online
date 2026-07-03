@@ -1,4 +1,4 @@
-import { useState } from "react";
+import { useState } from "preact/hooks";
 
 import { BlockyMarkdown } from "../../game/components/BlockyMarkdown";
 import { useAppDispatch } from "../../store/hooks";
@@ -40,31 +40,31 @@ export const EditorNonIdealState = ({
       intro={<BlockyMarkdown markdown={markdownIntro(componentName)} />}
     >
       {(errorsReportText) => (
-        <div className="flex gap-1 flex-wrap mt-1">
+        <div class="flex gap-1 flex-wrap mt-1">
           <Button
             onClick={() => {
               navigator.clipboard
                 .writeText(errorsReportText)
                 .then(() => setCopied(true));
             }}
-            className="px-1 py-half"
+            class="px-1 py-half"
           >
-            <span className="text-single-line">
+            <span class="text-single-line">
               {copied ? "Copied" : "Copy error"}
             </span>
           </Button>
-          <div className="flex-grow" />
-          <Button onClick={onDismiss} className="px-1 py-half">
-            <span className="text-single-line">Dismiss</span>
+          <div class="flex-grow" />
+          <Button onClick={onDismiss} class="px-1 py-half">
+            <span class="text-single-line">Dismiss</span>
           </Button>
           <Button
             onClick={() => {
               dispatch(clearAllData());
               onDismiss();
             }}
-            className="bg-midRed px-1 py-half"
+            class="bg-midRed px-1 py-half"
           >
-            <span className="text-single-line">Clear all data</span>
+            <span class="text-single-line">Clear all data</span>
           </Button>
         </div>
       )}

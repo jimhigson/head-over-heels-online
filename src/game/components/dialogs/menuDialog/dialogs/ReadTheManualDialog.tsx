@@ -39,21 +39,21 @@ const ReadTheManualDialog = () => {
   return (
     <DialogPortal>
       <Border
-        className="bg-midGrey zx:bg-zxCyan toppy:bg-toppyCool2"
+        class="bg-midGrey zx:bg-zxCyan toppy:bg-toppyCool2"
         onClick={useDispatchActionCallback(backToParentMenu)}
       />
       <Dialog
         tall
-        className={
+        class={
           "bg-highlightBeige zx:bg-zxCyanDimmed toppy:bg-toppyCool1 max-h-min " +
           `text-redShadow zx:text-zxWhite toppy:text-toppyCool4 !gap-y-0 py-0 ` +
           "selectedMenuItem:text-shadow zx:selectedMenuItem:text-zxBlack toppy:selectedMenuItem:text-toppyBlack "
         }
         dialogId="readTheManual"
       >
-        <DialogTitleBar className="pl-1 mobile:px-3 pt-1" />
+        <DialogTitleBar class="pl-1 mobile:px-3 pt-1" />
         <div
-          className={
+          class={
             // set up scrolling and the scroll bar:
             "overflow-y-scroll scrollbar scrollbar-w-1 pl-1 " +
             "scrollbar-thumb-moss scrollbar-track-highlightBeige " +
@@ -64,17 +64,17 @@ const ReadTheManualDialog = () => {
           }
         >
           <h1
-            className={
+            class={
               "text-moss zx:text-zxBlack toppy:text-toppyCool3 mx-auto flex flex-row justify-center items-center w-full" +
               " mb-1"
             }
           >
             <span
-              className={`sprite ${"texture-book_x" satisfies TextureTailwindClass} zx:sprite-revert-to-white sprites-normal-height`}
+              class={`sprite ${"texture-book_x" satisfies TextureTailwindClass} zx:sprite-revert-to-white sprites-normal-height`}
             />
-            <span className="text-double-height mx-1">Read the manual</span>
+            <span class="text-double-height mx-1">Read the manual</span>
             <span
-              className={`sprite ${"texture-book_y" satisfies TextureTailwindClass} zx:sprite-revert-to-white sprites-normal-height`}
+              class={`sprite ${"texture-book_y" satisfies TextureTailwindClass} zx:sprite-revert-to-white sprites-normal-height`}
             />
           </h1>
           <MenuItems>
@@ -92,5 +92,5 @@ const ReadTheManualDialog = () => {
   );
 };
 
-/** default export for React.lazy */
+/** default export for preact/compat lazy() */
 export default ReadTheManualDialog;

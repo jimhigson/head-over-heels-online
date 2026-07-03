@@ -149,10 +149,10 @@ export const NudgeButtons = () => {
     };
 
   return (
-    <div className={lineContainerClassName}>
-      <span className={lineTitleHeaderClassName}>{"Move:"}</span>
-      <div className="flex-grow" />
-      <div className="flex flex-row flex-wrap gap-oneScaledPix items-center">
+    <div class={lineContainerClassName}>
+      <span class={lineTitleHeaderClassName}>{"Move:"}</span>
+      <div class="flex-grow" />
+      <div class="flex flex-row flex-wrap gap-oneScaledPix items-center">
         <ToolbarButton
           small
           ariaLabel="Move left"
@@ -160,7 +160,7 @@ export const NudgeButtons = () => {
           onClick={nudgeBy(unitVectors.left)}
           shortcutKeys={["ArrowLeft"]}
         >
-          <span className="relative text-single-line">↖</span>
+          <span class="relative text-single-line">↖</span>
         </ToolbarButton>
         <ToolbarButton
           small
@@ -169,7 +169,7 @@ export const NudgeButtons = () => {
           onClick={nudgeBy(unitVectors.right)}
           shortcutKeys={["ArrowRight"]}
         >
-          <span className="relative text-single-line">↘</span>
+          <span class="relative text-single-line">↘</span>
         </ToolbarButton>
         <ToolbarButton
           small
@@ -178,7 +178,7 @@ export const NudgeButtons = () => {
           onClick={nudgeBy(unitVectors.away)}
           shortcutKeys={["ArrowUp"]}
         >
-          <span className="relative text-single-line">↗</span>
+          <span class="relative text-single-line">↗</span>
         </ToolbarButton>
         <ToolbarButton
           small
@@ -187,7 +187,7 @@ export const NudgeButtons = () => {
           onClick={nudgeBy(unitVectors.towards)}
           shortcutKeys={["ArrowDown"]}
         >
-          <span className="relative text-single-line">↙</span>
+          <span class="relative text-single-line">↙</span>
         </ToolbarButton>
         <ToolbarButton
           small
@@ -200,7 +200,7 @@ export const NudgeButtons = () => {
             : ["PageUp", "⇧ArrowUp"]
           }
         >
-          <span className="relative text-single-line">⬆</span>
+          <span class="relative text-single-line">⬆</span>
         </ToolbarButton>
         <ToolbarButton
           small
@@ -213,14 +213,14 @@ export const NudgeButtons = () => {
             : ["PageDown", "⇧ArrowDown"]
           }
         >
-          <span className="relative text-single-line">⬇</span>
+          <span class="relative text-single-line">⬇</span>
         </ToolbarButton>
       </div>
 
-      <div className={lineContainerClassName}>
-        <span className={lineTitleHeaderClassName}>{"Grow:"}</span>
-        <div className="flex-grow" />
-        <div className="flex flex-row flex-wrap gap-oneScaledPix items-center">
+      <div class={lineContainerClassName}>
+        <span class={lineTitleHeaderClassName}>{"Grow:"}</span>
+        <div class="flex-grow" />
+        <div class="flex flex-row flex-wrap gap-oneScaledPix items-center">
           <ToolbarButton
             small
             ariaLabel="Grow left"
@@ -228,7 +228,7 @@ export const NudgeButtons = () => {
             onClick={nudgeBy(undefined, { x: 1 })}
             shortcutKeys={["⌥ArrowLeft"]}
           >
-            <span className="relative text-single-line">↖</span>
+            <span class="relative text-single-line">↖</span>
           </ToolbarButton>
           <ToolbarButton
             small
@@ -237,7 +237,7 @@ export const NudgeButtons = () => {
             onClick={nudgeBy({ x: -1, y: 0, z: 0 }, { x: 1 })}
             shortcutKeys={["⌥ArrowRight"]}
           >
-            <span className="relative text-single-line">↘</span>
+            <span class="relative text-single-line">↘</span>
           </ToolbarButton>
           <ToolbarButton
             small
@@ -246,7 +246,7 @@ export const NudgeButtons = () => {
             onClick={nudgeBy(undefined, { y: 1 })}
             shortcutKeys={["⌥ArrowUp"]}
           >
-            <span className="relative text-single-line">↗</span>
+            <span class="relative text-single-line">↗</span>
           </ToolbarButton>
           <ToolbarButton
             small
@@ -255,7 +255,7 @@ export const NudgeButtons = () => {
             onClick={nudgeBy({ x: 0, y: -1, z: 0 }, { y: 1 })}
             shortcutKeys={["⌥ArrowDown"]}
           >
-            <span className="relative text-single-line">↙</span>
+            <span class="relative text-single-line">↙</span>
           </ToolbarButton>
           <ToolbarButton
             small
@@ -264,7 +264,7 @@ export const NudgeButtons = () => {
             onClick={nudgeBy(undefined, { z: 1 })}
             shortcutKeys={["⌥PageUp"]}
           >
-            <span className="relative text-single-line">⬆</span>
+            <span class="relative text-single-line">⬆</span>
           </ToolbarButton>
           <ToolbarButton
             small
@@ -273,15 +273,15 @@ export const NudgeButtons = () => {
             onClick={nudgeBy({ x: 0, y: 0, z: -1 }, { z: 1 })}
             shortcutKeys={["⌥PageDown"]}
           >
-            <span className="relative text-single-line">⬇</span>
+            <span class="relative text-single-line">⬇</span>
           </ToolbarButton>
         </div>
       </div>
 
-      <div className={lineContainerClassName}>
-        <span className={lineTitleHeaderClassName}>Shrink:</span>
-        <div className="flex-grow" />
-        <div className="flex flex-row flex-wrap gap-oneScaledPix items-center">
+      <div class={lineContainerClassName}>
+        <span class={lineTitleHeaderClassName}>Shrink:</span>
+        <div class="flex-grow" />
+        <div class="flex flex-row flex-wrap gap-oneScaledPix items-center">
           <ToolbarButton
             small
             ariaLabel="Shrink right"
@@ -289,7 +289,7 @@ export const NudgeButtons = () => {
             onClick={nudgeBy(undefined, { x: -1 })}
             shortcutKeys={["⌥⇧ArrowRight"]}
           >
-            <span className="relative text-single-line">↘</span>
+            <span class="relative text-single-line">↘</span>
           </ToolbarButton>
           <ToolbarButton
             small
@@ -298,7 +298,7 @@ export const NudgeButtons = () => {
             onClick={nudgeBy({ x: 1, y: 0, z: 0 }, { x: -1 })}
             shortcutKeys={["⌥⇧ArrowLeft"]}
           >
-            <span className="relative text-single-line">↖</span>
+            <span class="relative text-single-line">↖</span>
           </ToolbarButton>
           <ToolbarButton
             small
@@ -307,7 +307,7 @@ export const NudgeButtons = () => {
             onClick={nudgeBy(undefined, { y: -1 })}
             shortcutKeys={["⌥⇧ArrowDown"]}
           >
-            <span className="relative text-single-line">↙</span>
+            <span class="relative text-single-line">↙</span>
           </ToolbarButton>
           <ToolbarButton
             small
@@ -316,7 +316,7 @@ export const NudgeButtons = () => {
             onClick={nudgeBy({ x: 0, y: 1, z: 0 }, { y: -1 })}
             shortcutKeys={["⌥⇧ArrowUp"]}
           >
-            <span className="relative text-single-line">↗</span>
+            <span class="relative text-single-line">↗</span>
           </ToolbarButton>
           <ToolbarButton
             small
@@ -325,7 +325,7 @@ export const NudgeButtons = () => {
             onClick={nudgeBy(undefined, { z: -1 })}
             shortcutKeys={["⌥⇧PageDown"]}
           >
-            <span className="relative text-single-line">⬇</span>
+            <span class="relative text-single-line">⬇</span>
           </ToolbarButton>
           <ToolbarButton
             small
@@ -334,15 +334,15 @@ export const NudgeButtons = () => {
             onClick={nudgeBy({ x: 0, y: 0, z: 1 }, { z: -1 })}
             shortcutKeys={["⌥⇧PageUp"]}
           >
-            <span className="relative text-single-line">⬆</span>
+            <span class="relative text-single-line">⬆</span>
           </ToolbarButton>
         </div>
       </div>
 
-      <div className={lineContainerClassName}>
-        <span className={lineTitleHeaderClassName}>Rotate:</span>
-        <div className="flex-grow" />
-        <div className="flex flex-row flex-wrap gap-oneScaledPix items-center">
+      <div class={lineContainerClassName}>
+        <span class={lineTitleHeaderClassName}>Rotate:</span>
+        <div class="flex-grow" />
+        <div class="flex flex-row flex-wrap gap-oneScaledPix items-center">
           <ToolbarButton
             small
             ariaLabel="Rotate anti-clockwise"
@@ -351,7 +351,7 @@ export const NudgeButtons = () => {
             shortcutKeys={["["]}
             tooltipContent={`##Rotate anti-clockwise\n\nTurn the selected item(s) - or the item the current tool will place - a quarter-turn anti-clockwise`}
           >
-            <span className="relative text-single-line">↺</span>
+            <span class="relative text-single-line">↺</span>
           </ToolbarButton>
           <ToolbarButton
             small
@@ -361,7 +361,7 @@ export const NudgeButtons = () => {
             shortcutKeys={["]"]}
             tooltipContent={`##Rotate clockwise\n\nTurn the selected item(s) - or the item the current tool will place - a quarter-turn clockwise`}
           >
-            <span className="relative text-single-line">↻</span>
+            <span class="relative text-single-line">↻</span>
           </ToolbarButton>
         </div>
       </div>

@@ -1,4 +1,4 @@
-import { type RefObject } from "react";
+import { type RefObject } from "preact";
 
 import { type Upscale } from "../../../../store/slices/upscale/Upscale";
 import { type EditorRootState } from "../../../../store/store";

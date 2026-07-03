@@ -33,7 +33,7 @@ const ResolutionMenuItem = ({
       label={`${currentResolutionName === resolutionName ? "* " : ""}${resolution.name}`}
       doubleHeightWhenFocussed
       hint={
-        <span className={`${optionsHintMarkdownClassname} text-single-line`}>
+        <span class={`${optionsHintMarkdownClassname} text-single-line`}>
           {resolution.size.x} x {resolution.size.y}
         </span>
       }
@@ -50,14 +50,14 @@ export const EmulatedResolutionDialog = () => {
     <DialogPortal>
       <Dialog
         fullScreen
-        className={optionsDialogClasses}
+        class={optionsDialogClasses}
         dialogId="emulatedResolution"
       >
         <DialogTitleBar
           path={["Options", "Display", "Res."]}
-          className={titleBarClasses}
+          class={titleBarClasses}
         />
-        <div className={optionsMenuScrollClasses}>
+        <div class={optionsMenuScrollClasses}>
           <MenuItems>
             {keys(resolutions).map((resolutionName) => (
               <ResolutionMenuItem

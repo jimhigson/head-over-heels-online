@@ -12,10 +12,10 @@ import {
 } from "@floating-ui/react";
 import {
   cloneElement,
+  type ComponentChildren,
   isValidElement,
-  type ReactElement,
-  type ReactNode,
-} from "react";
+  type VNode,
+} from "preact";
 
 import { CssVariables } from "../game/components/CssVariables";
 import { cn } from "./cn";
@@ -23,9 +23,9 @@ import { cn } from "./cn";
 export type PopoverProps = {
   open: boolean;
   onOpenChange: (open: boolean) => void;
-  trigger: ReactNode;
-  contents: ReactNode;
-  className?: string;
+  trigger: ComponentChildren;
+  contents: ComponentChildren;
+  class?: string;
   contentsScaleFactor?: number;
 };
 
@@ -34,7 +34,7 @@ export const Popover = ({
   onOpenChange,
   trigger,
   contents,
-  className,
+  class: className,
   contentsScaleFactor = 2,
 }: PopoverProps) => {
   const { refs, floatingStyles, context } = useFloating({
@@ -66,7 +66,7 @@ export const Popover = ({
 
   const triggerElement =
     isValidElement(trigger) ?
-      cloneElement(trigger as ReactElement, referenceProps)
+      cloneElement(trigger as VNode, referenceProps)
     : <button type="button" {...referenceProps}>
         {trigger}
       </button>;
@@ -80,7 +80,7 @@ export const Popover = ({
             <div
               ref={refs.setFloating}
               style={floatingStyles}
-              className={cn(
+              class={cn(
                 "z-popups drop-shadow-oneBlock p-0 border-shadow outline-none",
                 className,
               )}

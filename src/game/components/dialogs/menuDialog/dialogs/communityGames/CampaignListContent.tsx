@@ -1,4 +1,4 @@
-import { Fragment } from "react/jsx-runtime";
+import { Fragment } from "preact";
 import { format } from "timeago.js";
 
 import { type CampaignDirectory } from "../../../../../../db/campaign";
@@ -32,9 +32,9 @@ const CampaignMenuItem = ({
         } satisfies CampaignLocator,
       })}
       hint={
-        <div className="screenshot-mask">
+        <div class="screenshot-mask">
           <span
-            className={`${selectGameHintMarkdownClassName} text-single-line`}
+            class={`${selectGameHintMarkdownClassName} text-single-line`}
           >{`Updated ${format(createdAt)}`}</span>
         </div>
       }
@@ -49,10 +49,10 @@ export const CampaignListContent = ({
 }) => {
   return (
     <>
-      <div className="zx:text-zxCyan toppy:text-toppyCool1 resHandheld:mt-half flex flex-col gap-2">
+      <div class="zx:text-zxCyan toppy:text-toppyCool1 resHandheld:mt-half flex flex-col gap-2">
         {Object.values(campaigns).flatMap((userEntry) => (
-          <div key={userEntry.user.id} className="flex flex-col gap-half">
-            <span className="text-metallicBlue zx:text-zxYellow toppy:text-toppyWarm3 pl-4 text-double-height">
+          <div key={userEntry.user.id} class="flex flex-col gap-half">
+            <span class="text-metallicBlue zx:text-zxYellow toppy:text-toppyWarm3 pl-4 text-double-height">
               By {userEntry.user.username}:
             </span>
             {Object.values(userEntry.campaigns).map((campaign) => (

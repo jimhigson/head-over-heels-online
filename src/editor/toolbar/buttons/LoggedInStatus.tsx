@@ -28,18 +28,18 @@ const providerIcons: Partial<Record<Provider, string>> = {
 
 export type ProviderIconProps = {
   provider: Provider;
-  className?: string;
+  class?: string;
 };
 
-const ProviderIcon = ({ provider, className }: ProviderIconProps) => {
+const ProviderIcon = ({ provider, class: className }: ProviderIconProps) => {
   const icon = providerIcons[provider];
   if (icon === undefined) {
-    return <span className="w-1" />;
+    return <span class="w-1" />;
   }
-  return <span className={className}>{icon}</span>;
+  return <span class={className}>{icon}</span>;
 };
 
-export const LoggedInStatus = ({ className }: { className?: string }) => {
+export const LoggedInStatus = ({ class: className }: { class?: string }) => {
   const user = useSupabaseUser();
   // the session only carries the email; look up the display name to show instead
   const { data: username } = useGetUsernameQuery(user ? user.id : skipToken);
@@ -48,7 +48,7 @@ export const LoggedInStatus = ({ className }: { className?: string }) => {
   if (user === undefined) {
     // no data yet - don't know if logged in. Render a space-holder to stop the
     // ui jumping around as much:
-    return <div className="bg-shadow h-4" />;
+    return <div class="bg-shadow h-4" />;
   }
 
   const handleLogin = (provider: Provider) => async () => {
@@ -80,16 +80,16 @@ export const LoggedInStatus = ({ className }: { className?: string }) => {
   };
 
   return (
-    <div className={cn(className)}>
+    <div class={cn(className)}>
       {user !== null ?
-        <div className="bg-moss overflow-hidden text-center">
+        <div class="bg-moss overflow-hidden text-center">
           <Tooltip
             tooltipContent={user.email}
             triggerContent={
-              <div className="overflow-hidden">
+              <div class="overflow-hidden">
                 <ProviderIcon
                   provider={user.app_metadata.provider as Provider}
-                  className="text-highlightBeige"
+                  class="text-highlightBeige"
                 />{" "}
                 <span>{username ?? user.email}</span>
               </div>
@@ -97,31 +97,31 @@ export const LoggedInStatus = ({ className }: { className?: string }) => {
           />
           <Button
             aria-label="Log out"
-            className="px-1 w-full"
+            class="px-1 w-full"
             onClick={handleLogout}
           >
-            <span className="text-single-line">LOGOUT</span>
+            <span class="text-single-line">LOGOUT</span>
           </Button>
         </div>
-      : <div className="px-1 bg-midRed">
-          <div className="block w-full pb-1">
-            <span className="text-double-height">Not logged in</span>
+      : <div class="px-1 bg-midRed">
+          <div class="block w-full pb-1">
+            <span class="text-double-height">Not logged in</span>
           </div>
-          <span className="block w-full text-highlightBeige text-single-line">
+          <span class="block w-full text-highlightBeige text-single-line">
             You will not be able to save
           </span>
-          <div className="pt-1 flex flex-col gap-half">
-            <span className="text-single-line">Log in with:</span>
+          <div class="pt-1 flex flex-col gap-half">
+            <span class="text-single-line">Log in with:</span>
             {authProviders.map((authProvider) => {
               return (
                 <Button
                   key={authProvider}
-                  className="px-1 w-full max-w-16 flex-row justify-between bg-redShadow"
+                  class="px-1 w-full max-w-16 flex-row justify-between bg-redShadow"
                   onClick={handleLogin(authProvider)}
                 >
                   <ProviderIcon
                     provider={authProvider}
-                    className="text-lightBeige"
+                    class="text-lightBeige"
                   />{" "}
                   <span>{authProvider}</span>
                 </Button>

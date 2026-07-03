@@ -17,15 +17,15 @@ or by downloading the app.`;
 export const InstallDialog = (_emptyProps: EmptyObject) => {
   return (
     <DialogPortal>
-      <Border className="bg-metallicBlue zx:bg-zxRed toppy:bg-toppyCool3" />
+      <Border class="bg-metallicBlue zx:bg-zxRed toppy:bg-toppyCool3" />
       <Dialog
-        className="bg-metallicBlueHalfbrite zx:bg-zxRed toppy:bg-toppyCool4 text-highlightBeige zx:text-zxCyan toppy:text-toppyWarm3 selectedMenuItem:text-white toppy:selectedMenuItem:text-toppyWarm1 justify-center"
+        class="bg-metallicBlueHalfbrite zx:bg-zxRed toppy:bg-toppyCool4 text-highlightBeige zx:text-zxCyan toppy:text-toppyWarm3 selectedMenuItem:text-white toppy:selectedMenuItem:text-toppyWarm1 justify-center"
         dialogId="installGuide"
       >
-        <DialogTitleBar className="pl-1" path={["Install instructions"]} />
-        <div className={mainMenuScrollClasses}>
+        <DialogTitleBar class="pl-1" path={["Install instructions"]} />
+        <div class={mainMenuScrollClasses}>
           <BlockyMarkdown
-            className={"text-midGrey toppy:text-toppyGrey1 zx:text-zxWhite"}
+            class={"text-midGrey toppy:text-toppyGrey1 zx:text-zxWhite"}
             markdown={introMarkdown}
           />
           <MenuItems>

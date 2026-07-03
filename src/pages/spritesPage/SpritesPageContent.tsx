@@ -30,17 +30,17 @@ export const SpritesPageContent = ({
     currentSpritesheetData.frames,
   ).sort() as TextureId[];
   return (
-    <div className="e2e-snapshot-target">
+    <div class="e2e-snapshot-target">
       <PaletteSwatch />
       <FontSpecimen />
       <SpritesheetImage spriteFilter={spriteFilter} />
       <h1
         id="animations"
-        className="text-double-height text-metallicBlue zx:text-zxBlue toppy:text-toppyCool3 mt-1"
+        class="text-double-height text-metallicBlue zx:text-zxBlue toppy:text-toppyCool3 mt-1"
       >
         Animations
       </h1>
-      <div className="flex flex-wrap p-[8px] bg-pureBlack zx:bg-zxBlack toppy:bg-toppyBlack">
+      <div class="flex flex-wrap p-[8px] bg-pureBlack zx:bg-zxBlack toppy:bg-toppyBlack">
         {animationEntries.map(([animationName, frames]) => (
           <AnimationTile
             key={animationName}
@@ -52,11 +52,11 @@ export const SpritesPageContent = ({
       </div>
       <h1
         id="sprites"
-        className="text-double-height text-metallicBlue zx:text-zxBlue toppy:text-toppyCool3 mt-1"
+        class="text-double-height text-metallicBlue zx:text-zxBlue toppy:text-toppyCool3 mt-1"
       >
         Sprites
       </h1>
-      <div className="flex flex-wrap p-[8px] bg-pureBlack zx:bg-zxBlack toppy:bg-toppyBlack">
+      <div class="flex flex-wrap p-[8px] bg-pureBlack zx:bg-zxBlack toppy:bg-toppyBlack">
         {textureIds.map((textureId) => {
           const { frame } = currentSpritesheetData.frames[textureId];
           return (

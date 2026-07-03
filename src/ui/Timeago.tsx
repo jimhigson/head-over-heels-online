@@ -6,10 +6,10 @@ const toggle = (b: boolean) => !b;
 
 export type TimeagoProps = {
   timestamp: number;
-  className?: string;
+  class?: string;
 };
 
-export const Timeago = ({ timestamp, className }: TimeagoProps) => {
+export const Timeago = ({ timestamp, class: className }: TimeagoProps) => {
   const [, tick] = useReducer(toggle, false);
 
   useEffect(() => {
@@ -18,7 +18,7 @@ export const Timeago = ({ timestamp, className }: TimeagoProps) => {
   }, [tick]);
 
   return (
-    <span className={`text-single-line${className ? ` ${className}` : ""}`}>
+    <span class={`text-single-line${className ? ` ${className}` : ""}`}>
       {format(timestamp)}
     </span>
   );

@@ -1,3 +1,4 @@
+import { type ChangeEvent } from "preact/compat";
 import { useCallback, useRef } from "preact/hooks";
 
 import { useAppDispatch, useAppSelector } from "../../store/hooks";
@@ -18,8 +19,8 @@ export const SpritesheetOverrideButtons = () => {
   );
 
   const handleFileChange = useCallback(
-    (e: React.ChangeEvent<HTMLInputElement>) => {
-      const [file] = e.target.files ?? [];
+    (e: ChangeEvent<HTMLInputElement>) => {
+      const [file] = e.currentTarget.files ?? [];
       if (file) {
         const reader = new FileReader();
         reader.onload = () => {
@@ -38,25 +39,25 @@ export const SpritesheetOverrideButtons = () => {
 
   return overridden ?
       <Button
-        className="px-1 bg-pink zx:bg-zxMagenta toppy:bg-toppyPink1"
+        class="px-1 bg-pink zx:bg-zxMagenta toppy:bg-toppyPink1"
         onClick={() => dispatch(clearSpritesheetOverride(spriteOption.name))}
       >
-        <span className="text-single-line">x Clear override</span>
+        <span class="text-single-line">x Clear override</span>
       </Button>
     : <>
         <input
           ref={inputRef}
           type="file"
           accept=".webp,.png"
-          className="hidden"
+          class="hidden"
           onChange={handleFileChange}
         />
         <Button
-          className="px-1 bg-pink zx:bg-zxMagenta toppy:bg-toppyPink1"
+          class="px-1 bg-pink zx:bg-zxMagenta toppy:bg-toppyPink1"
           onClick={() => inputRef.current?.click()}
           tooltipContent="Upload a local WebP/PNG to temporarily override the spritesheet image. The override persists across page reloads but is stored in your browser only."
         >
-          <span className="text-single-line">⬆ Override</span>
+          <span class="text-single-line">⬆ Override</span>
         </Button>
       </>;
 };

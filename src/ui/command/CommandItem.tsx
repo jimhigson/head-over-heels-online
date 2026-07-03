@@ -1,11 +1,14 @@
-import { type ComponentProps } from "react";
+import { type ComponentProps } from "preact";
 
 import { cn } from "../cn";
 import "./commandColours.css";
 import { fuzzyMatch } from "./fuzzyMatch";
 import { useCommandContext } from "./useCommandContext";
 
-export type CommandItemProps = Omit<ComponentProps<"div">, "onSelect"> & {
+export type CommandItemProps = Omit<
+  ComponentProps<"div">,
+  "className" | "onSelect"
+> & {
   /** the value used for filtering, keyboard nav and selection */
   value: string;
   onSelect?: (value: string) => void;
@@ -14,7 +17,7 @@ export type CommandItemProps = Omit<ComponentProps<"div">, "onSelect"> & {
 export const CommandItem = ({
   value,
   onSelect,
-  className,
+  class: className,
   children,
   ...props
 }: CommandItemProps) => {
@@ -40,7 +43,7 @@ export const CommandItem = ({
           setActiveValue(value);
         }
       }}
-      className={cn(
+      class={cn(
         "command-colours relative flex cursor-default select-none items-center text-sm outline-none data-[disabled=true]:pointer-events-none data-[disabled=true]:opacity-50",
         className,
       )}
