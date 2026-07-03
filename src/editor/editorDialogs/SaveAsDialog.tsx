@@ -2,6 +2,7 @@ import { useEffect, useRef, useState } from "preact/hooks";
 
 import { BlockyMarkdown } from "../../game/components/BlockyMarkdown";
 import { type TextureTailwindClass } from "../../sprites/spritesheet/spritesheetData/TextureTailwindClass";
+import { useGetAllUsersLatestCampaignsQuery } from "../../store/slices/campaigns/editorCampaignsApiSlice";
 import { editorStore, useEditorAppSelector } from "../../store/store";
 import { Border } from "../../ui/Border";
 import { Button } from "../../ui/Button";
@@ -11,7 +12,34 @@ import { DialogHeader } from "../../ui/DialogHeader";
 import { DialogPortal } from "../../ui/DialogPortal";
 import { Switch } from "../../ui/Switch";
 import { useKeyboardShortcut } from "../../ui/useKeyboardShortcut";
+import { valuesIter } from "../../utils/entries";
 import { useSupabaseUser } from "../toolbar/useSupabaseUser";
+
+/**
+ * the names of the campaigns the current user owns, freshly fetched -
+ * empty while loading or if they have none
+ */
+const useOwnCampaignNames = (): Array<string> => {
+  const { data: campaignDirectory, refetch } =
+    useGetAllUsersLatestCampaignsQuery({ publishedOnly: false });
+
+  // force refetch on mount so a just-saved campaign is listed
+  useEffect(() => {
+    refetch();
+  }, [refetch]);
+
+  if (campaignDirectory === undefined) {
+    return [];
+  }
+  const ownEntry = valuesIter(campaignDirectory).find(
+    (userEntry) => userEntry.user.isCurrentUser,
+  );
+  return ownEntry === undefined ?
+      []
+    : valuesIter(ownEntry.campaigns)
+        .map((campaign) => campaign.name)
+        .toArray();
+};
 
 export const SaveAsDialog = ({
   /**
@@ -34,11 +62,18 @@ export const SaveAsDialog = ({
         .campaignName ?? "",
   );
   const [publish, setPublish] = useState(false);
-  const campaignUserId = useEditorAppSelector(
-    (state) => state.levelEditor.campaignInProgress.locator.userId,
+  const campaignLocator = useEditorAppSelector(
+    (state) => state.levelEditor.campaignInProgress.locator,
   );
   const supabaseUser = useSupabaseUser();
-  const isSomeoneElses = supabaseUser && supabaseUser.id !== campaignUserId;
+  // a never-saved campaign (version 0) can't be a fork of anyone's, whatever
+  // placeholder userId it started with
+  const isSomeoneElses =
+    supabaseUser &&
+    campaignLocator.version > 0 &&
+    supabaseUser.id !== campaignLocator.userId;
+
+  const ownCampaignNames = useOwnCampaignNames();
 
   const disabled = !campaignName.trim();
 
@@ -79,6 +114,26 @@ export const SaveAsDialog = ({
           <span class="text-multi-line text-lightGrey pt-1">
             The community will see your campaign listed under this name
           </span>
+          {ownCampaignNames.length > 0 && (
+            <div class="flex flex-wrap gap-half items-center pt-1 pb-1">
+              {ownCampaignNames.map((name) => (
+                <Button
+                  key={name}
+                  class={cn("px-1 py-half text-white gap-1", {
+                    "bg-midRed": name === campaignName,
+                  })}
+                  onClick={() => {
+                    setCampaignName(name);
+                    inputRef.current?.focus();
+                  }}
+                  aria-label={`Use campaign name ${name}`}
+                >
+                  <span class="text-single-line text-lightGrey">➡</span>
+                  <span class="text-single-line">{name}</span>
+                </Button>
+              ))}
+            </div>
+          )}
           <input
             ref={inputRef}
             type="text"
@@ -108,14 +163,17 @@ export const SaveAsDialog = ({
               onChange={setPublish}
             />
             <div class="flex-grow" />
-            <Button onClick={onClose} class="px-1 py-half self-stretch">
+            <Button
+              onClick={onClose}
+              class="px-1 py-half self-stretch bg-midGrey"
+            >
               <span class="text-single-line">Cancel</span>
             </Button>
             <Button
               disabled={disabled}
               onClick={() => onDone({ campaignName, publish })}
               aria-label="Save campaign"
-              class="bg-midRed px-1 py-half gap-1"
+              class="px-1 py-half gap-1"
             >
               <span class="text-single-line">Save</span>
               <span

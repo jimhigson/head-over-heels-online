@@ -21,6 +21,11 @@ import {
   type RoomPreviewSliceState,
 } from "../editor/roomPreview/editorRoomPreviewSlice";
 import {
+  editorSaveSlice,
+  type EditorSaveSliceAction,
+  type EditorSaveState,
+} from "../editor/slice/editorSaveSlice";
+import {
   type LevelEditorSliceAction,
   type LevelEditorState,
 } from "../editor/slice/levelEditorSlice";
@@ -72,6 +77,7 @@ const appReducer = combineSlices({
     {
       // editor-specific, not loaded into the game:
       levelEditor: levelEditorPersistedReducer,
+      [editorSaveSlice.reducerPath]: editorSaveSlice.reducer,
       [editorRoomPreviewSlice.reducerPath]: editorRoomPreviewSlice.reducer,
       [editorCampaignsApiSlice.reducerPath]: editorCampaignsApiSlice.reducer,
     }
@@ -139,13 +145,14 @@ export type AppStore = typeof store;
 /** game (not editor) state */
 export type GameRootState = Omit<
   ReturnType<typeof store.getState>,
-  "_persist" | "editorRoomPreview" | "levelEditor"
+  "_persist" | "editorRoomPreview" | "editorSave" | "levelEditor"
 >;
 
 /** editor state */
 export type EditorRootState = GameRootState & {
   levelEditor: LevelEditorState;
   editorRoomPreview: RoomPreviewSliceState;
+  editorSave: EditorSaveState;
 };
 
 export type AppDispatch = typeof store.dispatch;
@@ -167,12 +174,12 @@ export type EditorThunk<ReturnType = void> = ThunkAction<
   ReturnType,
   EditorRootState,
   unknown,
-  LevelEditorSliceAction
+  EditorSaveSliceAction | LevelEditorSliceAction
 >;
 
 export const editorStore = store as EnhancedStore<
   EditorRootState,
-  LevelEditorSliceAction | StoreActionOf<typeof store>,
+  EditorSaveSliceAction | LevelEditorSliceAction | StoreActionOf<typeof store>,
   StoreEnhancersOf<typeof store>
 >;
 

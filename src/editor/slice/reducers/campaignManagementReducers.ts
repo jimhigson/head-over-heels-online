@@ -53,6 +53,14 @@ export const campaignManagementReducers = {
     const levelEditorState = state as LevelEditorState;
     levelEditorState.campaignInProgress.locator.campaignName = name;
   },
+  setCampaignVersion(state, { payload: version }: PayloadAction<number>) {
+    // DO REMOVE CAST - for some reason, a severe typescript performance issue was narrowed
+    // down specifically to the WritableDraft<> type here - immer was making ts slow when we
+    // assigned to the wrapped type. Since the normal type isn't readonly, this wrapping isn't needed
+    // anyway
+    const levelEditorState = state as LevelEditorState;
+    levelEditorState.campaignInProgress.locator.version = version;
+  },
   setCampaignUserId(state, { payload: userId }: PayloadAction<string>) {
     // DO REMOVE CAST - for some reason, a severe typescript performance issue was narrowed
     // down specifically to the WritableDraft<> type here - immer was making ts slow when we

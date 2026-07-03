@@ -238,6 +238,7 @@ export const {
   setCampaignName,
   setCampaignPublished,
   setCampaignUserId,
+  setCampaignVersion,
   setClickableAnnotationHovered,
   setCmdKSearch,
   setHoveredItemInRoom,

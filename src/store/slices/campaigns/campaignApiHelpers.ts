@@ -2,7 +2,7 @@ import { type QueryReturnValue } from "@reduxjs/toolkit/query";
 
 import { type CampaignGetLocator } from "../../../db/campaign";
 import { type EditorCampaign } from "../../../editor/editorTypes";
-import { type Campaign } from "../../../model/modelTypes";
+import { type Campaign, type CampaignLocator } from "../../../model/modelTypes";
 import { emptyObject } from "../../../utils/empty";
 import { type SerialisableError } from "../../../utils/redux/createSerialisableErrors";
 import { editorStore, store } from "../../store";
@@ -25,6 +25,20 @@ export const loadCampaignFromApi = async <RoomId extends string>(
 
   return result as QueryReturnValue<Campaign<RoomId>, SerialisableError[]>;
 };
+
+/**
+ * fresh (uncached) lookup of the latest version the db holds for a
+ * (user, campaign) - 0 if it has never been saved
+ */
+export const getLatestCampaignVersionViaApi = async (
+  locator: Pick<CampaignLocator, "campaignName" | "userId">,
+) =>
+  editorStore.dispatch(
+    editorCampaignsApiSlice.endpoints.getLatestCampaignVersion.initiate(
+      locator,
+      { forceRefetch: true },
+    ),
+  );
 
 /**
  * Save a campaign using the RTKQuery api slice mutation

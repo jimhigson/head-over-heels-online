@@ -1,6 +1,6 @@
 import { useState } from "preact/hooks";
 
-import { showOkAfterSaveDuration } from "./saving/SaveAndLoadButtons";
+import { showOkAfterSaveDuration } from "../slice/editorSaveSlice";
 
 export const useShortTimeDisplay = () => {
   const [justDone, setJustDone] = useState<number>(0);
