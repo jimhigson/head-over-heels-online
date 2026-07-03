@@ -21,6 +21,7 @@
   "type": "module",
   "license": "AGPL-3.0-only",
   "scripts": {
+    "dev": "tsx scripts/dev.ts",
     "dev:game": "node --max_http_header_size=128000 node_modules/vite/bin/vite",
     "dev:editor": "vite --config vite.editor.config.ts --mode development",
     "preview:game": "vite preview",

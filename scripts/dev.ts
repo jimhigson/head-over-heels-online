@@ -1,0 +1,127 @@
+/**
+ * Starts the game and editor vite dev servers together, each knowing the
+ * other's url.
+ *
+ * Ports are allocated here (game from 5200, editor from 5210, incrementing
+ * until free) rather than letting vite fall through to another port itself,
+ * because each server's url must be in the other's env
+ * (VITE_GAME_URL/VITE_EDITOR_URL) before it starts. --strictPort makes the
+ * (tiny) allocation race fail loudly instead of drifting silently.
+ *
+ * Inside tmux, the editor opens in a new pane split from the current one and
+ * the game runs in the current pane; outside tmux both run in this terminal
+ * with interleaved output.
+ *
+ * Extra cli args are passed through to both vite instances, eg:
+ *   pnpm dev --open
+ */
+import { execa } from "execa";
+import getPort, { portNumbers } from "get-port";
+
+const extraArgs = process.argv.slice(2);
+
+const gamePort = await getPort({ port: portNumbers(5200, 5209) });
+const editorPort = await getPort({ port: portNumbers(5210, 5219) });
+
+const gameUrl = `http://localhost:${gamePort}/`;
+// in dev mode the editor is served from the /editor/ base path
+const editorUrl = `http://localhost:${editorPort}/editor/`;
+
+const gameNodeArgs = [
+  "--max_http_header_size=128000",
+  "node_modules/vite/bin/vite",
+  "--port",
+  String(gamePort),
+  "--strictPort",
+  ...extraArgs,
+];
+
+const editorViteArgs = [
+  "--config",
+  "vite.editor.config.ts",
+  "--mode",
+  "development",
+  "--port",
+  String(editorPort),
+  "--strictPort",
+  ...extraArgs,
+];
+
+const shellQuote = (arg: string) => `'${arg.replaceAll("'", `'\\''`)}'`;
+
+/**
+ * splits the current tmux window: editor in the new pane, game in this one.
+ * When the game exits, the editor pane is killed too
+ */
+const runSplitInTmux = async () => {
+  // start both panes visually fresh: wipe this pane's screen and scrollback
+  // so it matches the newly-created editor pane
+  process.stdout.write("\x1b[2J\x1b[H");
+  await execa("tmux", ["clear-history"]);
+  process.stdout.write("\x1b[1;32mGAME\x1b[0m\n");
+
+  // the launcher already cleared the panes; without this, vite's own
+  // screen-clear on startup would scroll the GAME/EDITOR labels out of view
+  const noClear = ["--clearScreen", "false"];
+
+  const { stdout: editorPaneId } = await execa("tmux", [
+    "split-window",
+    "-h",
+    // print the new pane's id so we can kill it when the game exits
+    "-P",
+    "-F",
+    "#{pane_id}",
+    "-e",
+    `VITE_GAME_URL=${gameUrl}`,
+    `printf '\\033[1;35mEDITOR\\033[0m\\n'; pnpm exec vite ${[...editorViteArgs, ...noClear].map(shellQuote).join(" ")}`,
+  ]);
+
+  const gameResult = await execa("node", [...gameNodeArgs, ...noClear], {
+    stdio: "inherit",
+    env: { VITE_EDITOR_URL: editorUrl },
+    reject: false,
+  });
+
+  await execa("tmux", ["kill-pane", "-t", editorPaneId], { reject: false });
+
+  process.exitCode = gameResult.exitCode === 0 ? 0 : 1;
+};
+
+/** both servers in this terminal, output interleaved */
+const runInterleaved = async () => {
+  const game = execa("node", gameNodeArgs, {
+    stdio: "inherit",
+    env: { VITE_EDITOR_URL: editorUrl },
+    reject: false,
+  });
+
+  const editor = execa("vite", editorViteArgs, {
+    preferLocal: true,
+    stdio: "inherit",
+    env: { VITE_GAME_URL: gameUrl },
+    reject: false,
+  });
+
+  const children = [game, editor];
+
+  const results = await Promise.all(
+    children.map(async (child) => {
+      const result = await child;
+      // one server stopping (or failing to start) takes the other down too
+      for (const other of children) {
+        if (other !== child && other.exitCode === null) {
+          other.kill();
+        }
+      }
+      return result;
+    }),
+  );
+
+  process.exitCode = results.every(({ exitCode }) => exitCode === 0) ? 0 : 1;
+};
+
+if (process.env.TMUX === undefined) {
+  await runInterleaved();
+} else {
+  await runSplitInTmux();
+}
