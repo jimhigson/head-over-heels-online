@@ -4,6 +4,7 @@ import { type AppSpritesheet } from "../../../sprites/spritesheet/variants/AppSp
 import {
   type DirectionXy4,
   originXy,
+  rotateDirectionXy4ByCameraAngle,
   type Xy,
 } from "../../../utils/vectors/vectors";
 import { createSprite } from "../createSprite";
@@ -42,7 +43,7 @@ export const joystickAppearance: ItemAppearance<
       state: { actedOnAt, lastPushDirection },
     },
     room: { roomTime },
-    general: { spritesheetVariants },
+    general: { spritesheetVariants, cameraAngle },
   },
   currentRendering,
 }) => {
@@ -74,7 +75,13 @@ export const joystickAppearance: ItemAppearance<
     spritesheet.textures[
       pushDirection === undefined ? "joystick.ball" : `joystick.ball.active`
     ];
-  const ballSpriteXy = ballRenderPushOffsets.get(pushDirection);
+  // the offsets nudge the ball the way it was pushed as seen on screen, so rotate
+  // the world push direction into camera space before looking the offset up:
+  const screenPushDirection =
+    pushDirection === undefined ? undefined : (
+      rotateDirectionXy4ByCameraAngle(pushDirection, cameraAngle)
+    );
+  const ballSpriteXy = ballRenderPushOffsets.get(screenPushDirection);
 
   ballSprite.x = ballSpriteXy?.x ?? 0;
   ballSprite.y = ballSpriteXy?.y ?? 0;

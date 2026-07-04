@@ -77,16 +77,8 @@ export function* generateHoleInWallsForDoor<
         });
         const draftConfig = itemDraft.config;
 
-        switch (draftConfig.direction) {
-          case "towards":
-          case "right":
-            (draftConfig.times as Xy)[alongWallAxis] =
-              currentWallTimes[alongWallAxis] - cutWallAtStartNbr;
-            break;
-          default:
-            // remove the first 1 or 2 tiles:
-            draftConfig.tiles = draftConfig.tiles.slice(cutWallAtStartNbr);
-        }
+        // remove the first 1 or 2 tiles:
+        draftConfig.tiles = draftConfig.tiles.slice(cutWallAtStartNbr);
       });
       yield [id, modifiedWall];
       continue;
@@ -101,17 +93,8 @@ export function* generateHoleInWallsForDoor<
       const modifiedWall = produce(item, (itemDraft) => {
         const draftConfig = itemDraft.config;
 
-        switch (draftConfig.direction) {
-          case "towards":
-          case "right":
-            (draftConfig.times as Xy)[alongWallAxis] =
-              currentWallTimes[alongWallAxis] - cutWallAtEndNbr;
-            break;
-
-          default:
-            // remove the last 1 or 2 tiles:
-            draftConfig.tiles = draftConfig.tiles.slice(0, -cutWallAtEndNbr);
-        }
+        // remove the last 1 or 2 tiles:
+        draftConfig.tiles = draftConfig.tiles.slice(0, -cutWallAtEndNbr);
       });
       yield [id, modifiedWall];
       continue;
@@ -120,19 +103,11 @@ export function* generateHoleInWallsForDoor<
     // if not cutting the door at either end, cut into two parts:
     const modifiedWallBefore = produce(item, (itemDraft) => {
       const draftConfig = itemDraft.config;
-      switch (draftConfig.direction) {
-        case "towards":
-        case "right":
-          (draftConfig.times as Xy)[alongWallAxis] =
-            relativePosition[alongWallAxis];
-
-          break;
-        default:
-          draftConfig.tiles = draftConfig.tiles.slice(
-            0,
-            relativePosition[alongWallAxis],
-          );
-      }
+      // keep the tiles before the door:
+      draftConfig.tiles = draftConfig.tiles.slice(
+        0,
+        relativePosition[alongWallAxis],
+      );
     });
     yield [`${id}/beforeDoor` as RoomItemId, modifiedWallBefore];
     const modifiedWallAfter = produce(item, (itemDraft) => {
@@ -142,19 +117,10 @@ export function* generateHoleInWallsForDoor<
       };
 
       const draftConfig = itemDraft.config;
-      switch (draftConfig.direction) {
-        case "towards":
-        case "right":
-          (draftConfig.times as Xy)[alongWallAxis] =
-            currentWallTimes[alongWallAxis] -
-            relativePosition[alongWallAxis] -
-            2;
-          break;
-        default:
-          draftConfig.tiles = draftConfig.tiles.slice(
-            relativePosition[alongWallAxis] + 2,
-          );
-      }
+      // keep the tiles after the door:
+      draftConfig.tiles = draftConfig.tiles.slice(
+        relativePosition[alongWallAxis] + 2,
+      );
     });
     yield [`${id}/afterDoor` as RoomItemId, modifiedWallAfter];
 

@@ -676,7 +676,7 @@ describe("blocks", () => {
       },
       "wall@0,1,0": {
         type: "wall",
-        config: { direction: "right" },
+        config: { direction: "right", tiles: ["plain"] },
         position: { x: 0, y: 1, z: 0 },
       },
     };
@@ -701,7 +701,7 @@ describe("blocks", () => {
       },
       {
         type: "wall",
-        config: { direction: "right" },
+        config: { direction: "right", tiles: ["plain"] },
         position: { x: 0, y: 1, z: 0 },
       },
     ]);
@@ -1627,26 +1627,26 @@ describe("walls", () => {
     ]);
   });
 
-  test("can consolidate right-facing walls using 'times' if they are invisible since they don't have tiles", () => {
+  test("can consolidate right-facing walls by joining their tiles", () => {
     const items: Record<string, JsonItem<"wall">> = {
       rightWall1: {
         type: "wall",
-        config: { direction: "right" },
+        config: { direction: "right", tiles: ["plain"] },
         position: { x: 1, y: 0, z: 0 },
       },
       rightWall2: {
         type: "wall",
-        config: { direction: "right" },
+        config: { direction: "right", tiles: ["plain"] },
         position: { x: 1, y: 1, z: 0 },
       },
       rightWall3: {
         type: "wall",
-        config: { direction: "right" },
+        config: { direction: "right", tiles: ["plain"] },
         position: { x: 1, y: 2, z: 0 },
       },
       rightWall4: {
         type: "wall",
-        config: { direction: "right" },
+        config: { direction: "right", tiles: ["plain"] },
         position: { x: 1, y: 3, z: 0 },
       },
     };
@@ -1660,9 +1660,7 @@ describe("walls", () => {
         type: "wall",
         config: {
           direction: "right",
-          times: {
-            y: 4,
-          },
+          tiles: ["plain", "plain", "plain", "plain"],
         },
         position: {
           x: 1,
@@ -1673,26 +1671,26 @@ describe("walls", () => {
     ]);
   });
 
-  test("can consolidate towards-facing walls using 'times' if they are invisible since they don't have tiles", () => {
+  test("can consolidate towards-facing walls by joining their tiles", () => {
     const items: Record<string, JsonItem<"wall">> = {
       towardsWall1: {
         type: "wall",
-        config: { direction: "towards" },
+        config: { direction: "towards", tiles: ["plain"] },
         position: { x: 0, y: 2, z: 0 },
       },
       towardsWall2: {
         type: "wall",
-        config: { direction: "towards" },
+        config: { direction: "towards", tiles: ["plain"] },
         position: { x: 1, y: 2, z: 0 },
       },
       towardsWall3: {
         type: "wall",
-        config: { direction: "towards" },
+        config: { direction: "towards", tiles: ["plain"] },
         position: { x: 2, y: 2, z: 0 },
       },
       towardsWall4: {
         type: "wall",
-        config: { direction: "towards" },
+        config: { direction: "towards", tiles: ["plain"] },
         position: { x: 3, y: 2, z: 0 },
       },
     };
@@ -1706,9 +1704,7 @@ describe("walls", () => {
         type: "wall",
         config: {
           direction: "towards",
-          times: {
-            x: 4,
-          },
+          tiles: ["plain", "plain", "plain", "plain"],
         },
         position: {
           x: 0,
@@ -1770,23 +1766,23 @@ describe("walls", () => {
       // towards
       towardsWall1: {
         type: "wall",
-        config: { direction: "towards" },
+        config: { direction: "towards", tiles: ["plain"] },
         position: { x: 0, y: 0, z: 0 },
       },
       towardsWall2: {
         type: "wall",
-        config: { direction: "towards" },
+        config: { direction: "towards", tiles: ["plain"] },
         position: { x: 1, y: 0, z: 0 },
       },
       // right
       rightWall1: {
         type: "wall",
-        config: { direction: "right" },
+        config: { direction: "right", tiles: ["plain"] },
         position: { x: 0, y: 0, z: 0 },
       },
       rightWall2: {
         type: "wall",
-        config: { direction: "right" },
+        config: { direction: "right", tiles: ["plain"] },
         position: { x: 0, y: 1, z: 0 },
       },
       // away
@@ -1822,9 +1818,7 @@ describe("walls", () => {
         type: "wall",
         config: {
           direction: "towards",
-          times: {
-            x: 2,
-          },
+          tiles: ["plain", "plain"],
         },
         position: {
           x: 0,
@@ -1836,9 +1830,7 @@ describe("walls", () => {
         type: "wall",
         config: {
           direction: "right",
-          times: {
-            y: 2,
-          },
+          tiles: ["plain", "plain"],
         },
         position: {
           x: 0,
@@ -1907,17 +1899,17 @@ describe("walls", () => {
     ]);
   });
 
-  test("consolidates walls with times that already occupy multiple positions", () => {
+  test("consolidates walls with tiles that already occupy multiple positions in the perpendicular axis", () => {
     const items: Record<string, JsonItem<"wall">> = {
       // right
       rightWall1: {
         type: "wall",
-        config: { direction: "right", times: { y: 2 } },
+        config: { direction: "right", tiles: ["plain", "plain"] },
         position: { x: 1, y: 0, z: 0 },
       },
       rightWall2: {
         type: "wall",
-        config: { direction: "right", times: { y: 2 } },
+        config: { direction: "right", tiles: ["plain", "plain"] },
         position: { x: 1, y: 2, z: 0 },
       },
     };
@@ -1931,9 +1923,7 @@ describe("walls", () => {
         type: "wall",
         config: {
           direction: "right",
-          times: {
-            y: 4,
-          },
+          tiles: ["plain", "plain", "plain", "plain"],
         },
         position: {
           x: 1,
@@ -1969,7 +1959,7 @@ test("handles items with negative positions", () => {
       position: { x: 4, y: 0, z: 0 },
       config: {
         direction: "towards",
-        times: { x: 4 },
+        tiles: ["plain", "plain", "plain", "plain"],
       },
     },
   };
@@ -2069,10 +2059,10 @@ test("consolidateItems does not mutate input", () => {
       config: { direction: "left", tiles: ["sarcophagus", "book"] },
       position: { x: 7, y: 3, z: 0 },
     },
-    // Wall with times property
+    // Wall with multiple tiles
     wall3: {
       type: "wall",
-      config: { direction: "right", times: { y: 2 } },
+      config: { direction: "right", tiles: ["plain", "plain"] },
       position: { x: 6, y: 0, z: 0 },
     },
     // Non-consolidatable item

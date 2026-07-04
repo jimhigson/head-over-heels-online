@@ -155,6 +155,18 @@ test("MAME assignment", () => {
               "ArrowRight",
             ],
           },
+          "rotateCameraAnticlockwise": {
+            "gamepadButtons": [],
+            "keys": [
+              ",",
+            ],
+          },
+          "rotateCameraClockwise": {
+            "gamepadButtons": [],
+            "keys": [
+              ".",
+            ],
+          },
           "swop": {
             "gamepadButtons": [],
             "keys": [
@@ -388,6 +400,18 @@ test("Default assignment", () => {
             ],
             "keys": [
               "ArrowRight",
+            ],
+          },
+          "rotateCameraAnticlockwise": {
+            "gamepadButtons": [],
+            "keys": [
+              ",",
+            ],
+          },
+          "rotateCameraClockwise": {
+            "gamepadButtons": [],
+            "keys": [
+              ".",
             ],
           },
           "swop": {

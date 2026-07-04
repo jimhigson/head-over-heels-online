@@ -9,27 +9,39 @@
     "value": 8
   },
   {
-    "op": "remove",
-    "path": "/items/w3/config/times"
+    "op": "replace",
+    "path": "/items/w3/config/tiles/1",
+    "value": "window"
+  },
+  {
+    "op": "add",
+    "path": "/items/w3/config/tiles/3",
+    "value": "shield"
+  },
+  {
+    "op": "add",
+    "path": "/items/w3/config/tiles/4",
+    "value": "shield"
+  },
+  {
+    "op": "add",
+    "path": "/items/w3/config/tiles/5",
+    "value": "wall"
+  },
+  {
+    "op": "add",
+    "path": "/items/w3/config/tiles/6",
+    "value": "window"
+  },
+  {
+    "op": "add",
+    "path": "/items/w3/config/tiles/7",
+    "value": "wall"
   },
   {
     "op": "replace",
     "path": "/items/w3/config/direction",
     "value": "left"
-  },
-  {
-    "op": "add",
-    "path": "/items/w3/config/tiles",
-    "value": [
-      "wall",
-      "window",
-      "wall",
-      "shield",
-      "shield",
-      "wall",
-      "window",
-      "wall"
-    ]
   },
   {
     "op": "replace",
@@ -38,12 +50,31 @@
   },
   {
     "op": "remove",
-    "path": "/items/w1/config/times/y"
+    "path": "/items/w1/config/tiles/7"
   },
   {
-    "op": "add",
-    "path": "/items/w1/config/times/x",
-    "value": 6
+    "op": "remove",
+    "path": "/items/w1/config/tiles/6"
+  },
+  {
+    "op": "replace",
+    "path": "/items/w1/config/tiles/4",
+    "value": "shield"
+  },
+  {
+    "op": "replace",
+    "path": "/items/w1/config/tiles/3",
+    "value": "wall"
+  },
+  {
+    "op": "replace",
+    "path": "/items/w1/config/tiles/2",
+    "value": "window"
+  },
+  {
+    "op": "replace",
+    "path": "/items/w1/config/tiles/1",
+    "value": "window"
   },
   {
     "op": "replace",
@@ -51,13 +82,29 @@
     "value": "towards"
   },
   {
-    "op": "remove",
-    "path": "/items/w/config/times/x"
+    "op": "add",
+    "path": "/items/w/config/tiles/3",
+    "value": "window"
   },
   {
     "op": "add",
-    "path": "/items/w/config/times/y",
-    "value": 8
+    "path": "/items/w/config/tiles/4",
+    "value": "window"
+  },
+  {
+    "op": "add",
+    "path": "/items/w/config/tiles/5",
+    "value": "wall"
+  },
+  {
+    "op": "add",
+    "path": "/items/w/config/tiles/6",
+    "value": "shield"
+  },
+  {
+    "op": "add",
+    "path": "/items/w/config/tiles/7",
+    "value": "wall"
   },
   {
     "op": "replace",

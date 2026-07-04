@@ -1,3 +1,4 @@
+import { type SceneryName, type Wall } from "../../../sprites/planets";
 import {
   type DirectionXy4,
   perpendicularAxisXy,
@@ -10,6 +11,7 @@ import {
   roomJsonItemsIterable,
 } from "../../RoomJson";
 import { wallTimes } from "../../times";
+import { type WallJsonConfig } from "../WallJsonConfig";
 
 const doorWidth = 2;
 
@@ -17,7 +19,7 @@ const coversPosition = (
   item: {
     type: string;
     position: { x: number; y: number };
-    config: { direction: DirectionXy4; times?: Partial<Xy> };
+    config: { direction: DirectionXy4; tiles?: Array<Wall<SceneryName>> };
   },
   direction: DirectionXy4,
   coord: Xy,
@@ -33,7 +35,9 @@ const coversPosition = (
   }
 
   const length =
-    item.type === "door" ? doorWidth : (wallTimes(item.config)[alongAxis] ?? 1);
+    item.type === "door" ?
+      doorWidth
+    : (wallTimes(item.config as WallJsonConfig<SceneryName>)[alongAxis] ?? 1);
   const start = item.position[alongAxis];
   return coord[alongAxis] >= start && coord[alongAxis] < start + length;
 };
@@ -264,7 +268,10 @@ export const roomJsonMatchers = {
             item as {
               type: string;
               position: { x: number; y: number };
-              config: { direction: DirectionXy4; times?: Partial<Xy> };
+              config: {
+                direction: DirectionXy4;
+                tiles?: Array<Wall<SceneryName>>;
+              };
             },
             direction,
             wallCoord,

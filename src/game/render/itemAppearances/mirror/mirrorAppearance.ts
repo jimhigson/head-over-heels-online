@@ -4,7 +4,14 @@ import {
   type ItemInPlayType,
   type UnionOfAllItemInPlayTypes,
 } from "../../../../model/ItemInPlay";
-import { type MirrorOrientation } from "../../../../model/MirrorOrientation";
+import {
+  flippedMirrorOrientation,
+  type MirrorOrientation,
+} from "../../../../model/MirrorOrientation";
+import {
+  cameraAngleIsOddQuarterTurn,
+  type Xy,
+} from "../../../../utils/vectors/vectors";
 import { blockSizePx } from "../../../physics/mechanicsConstants";
 import { createSprite } from "../../createSprite";
 import { type ItemRenderContext } from "../../ItemRenderContexts";
@@ -18,6 +25,7 @@ import { ReflectionRenderers } from "./ReflectionRenderers";
  */
 export type AppearanceLookup = (
   item: UnionOfAllItemInPlayTypes<string, string>,
+  cameraAngle: Xy,
 ) => ItemAppearanceOutsideView<ItemInPlayType> | undefined;
 
 type MirrorRenderProps = {
@@ -141,10 +149,18 @@ export const makeMirrorAppearance =
     const {
       item,
       room: { roomTime },
-      general: { spritesheetVariants },
+      general: { spritesheetVariants, cameraAngle },
       isReflection,
     } = renderContext;
     const { orientation, flippedAtRoomTime, flipDirection } = item.state;
+
+    // the mirror has only two drawn orientations, and an odd quarter camera
+    // turn shows the other one - the whole rendering (face-on pane with
+    // reflections vs edge-on sliver) follows the orientation as rendered:
+    const renderedOrientation =
+      cameraAngleIsOddQuarterTurn(cameraAngle) ?
+        flippedMirrorOrientation(orientation)
+      : orientation;
 
     const flipping =
       flippedAtRoomTime !== undefined &&
@@ -154,7 +170,7 @@ export const makeMirrorAppearance =
 
     // only the face-on pane has visible surface; the edge-on pane is a sliver
     // that shows no reflection (and neither does the mid-flip frame):
-    if (orientation === "awayRight" && !flipping) {
+    if (renderedOrientation === "awayRight" && !flipping) {
       const existingReflections = prevRenderProps?.reflections;
 
       if (existingReflections) {
@@ -207,7 +223,10 @@ export const makeMirrorAppearance =
      * into awayLeft
      */
     const flippingAxis =
-      (orientation === "awayRight") === (flipDirection !== "anticlockwise") ?
+      (
+        (renderedOrientation === "awayRight") ===
+        (flipDirection !== "anticlockwise")
+      ) ?
         "y"
       : "x";
 
@@ -215,7 +234,9 @@ export const makeMirrorAppearance =
       // mid-flip: the pane axis-aligned halfway through its turn; otherwise
       // the static edge-on (awayLeft) pane:
       textureId:
-        flipping ? `mirror.flipping.${flippingAxis}` : `mirror.${orientation}`,
+        flipping ?
+          `mirror.flipping.${flippingAxis}`
+        : `mirror.${renderedOrientation}`,
       times: item.config.times,
       spritesheet: spritesheetVariants.currentMainSpritesheet(
         false,

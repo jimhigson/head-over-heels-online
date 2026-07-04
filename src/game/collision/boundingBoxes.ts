@@ -1,7 +1,4 @@
-import {
-  type ItemInPlayAAbbInfo,
-  type UnionOfAllItemInPlayTypes,
-} from "../../model/ItemInPlay";
+import { type UnionOfAllItemInPlayTypes } from "../../model/ItemInPlay";
 import { type JsonItemUnion } from "../../model/json/JsonItem";
 import { type Aabb, addXyz, originXyz } from "../../utils/vectors/vectors";
 import { blockSizePx } from "../physics/mechanicsConstants";
@@ -14,79 +11,87 @@ const doubleHeightCharacter: Aabb = {
   z: blockSizePx.z * 2,
 };
 
-const volcanoAabbInfo: ItemInPlayAAbbInfo = {
+type BoundingBoxForItem = {
+  readonly aabb: Aabb;
+  /** the render extent - camera-invariant, since the sprite doesn't rotate */
+  readonly renderAabb?: Aabb;
+  /** the base-angle render offset, which renderAabbOffset at each camera angle is derived from */
+  readonly baseRenderAabbOffset?: Aabb;
+};
+
+const volcanoAabbInfo: BoundingBoxForItem = {
   aabb: fullBlockAabb,
-  renderAabbOffset: { x: -1, y: -1, z: 0 },
+  baseRenderAabbOffset: { x: -1, y: -1, z: 0 },
   renderAabb: addXyz(fullBlockAabb, { x: 2, y: 2 }),
 };
 
-export const headAabbInfo: ItemInPlayAAbbInfo = {
+export const headAabbInfo: BoundingBoxForItem = {
   // head's nose is rendered outside of his bb in the original when facing away/left:
   aabb: smallItemAabb,
-  renderAabbOffset: { x: -0.5, y: -0.5, z: 0 },
+  baseRenderAabbOffset: { x: -0.5, y: -0.5, z: 0 },
   renderAabb: addXyz(smallItemAabb, { x: 3, y: 3, z: 1 }),
 };
-export const heelsAabbInfo: ItemInPlayAAbbInfo = {
+export const heelsAabbInfo: BoundingBoxForItem = {
   // Heels's feet rendered outside of his bb in the original when facing towards/right:
   aabb: smallItemAabb,
-  renderAabbOffset: { x: -1.5, y: -1.5, z: 0 },
+  baseRenderAabbOffset: { x: -1.5, y: -1.5, z: 0 },
   renderAabb: addXyz(smallItemAabb, { x: 2, y: 2, z: 2 }),
 };
-export const headOverHeelsAabbInfo: ItemInPlayAAbbInfo = {
+export const headOverHeelsAabbInfo: BoundingBoxForItem = {
   // Heels's feet rendered outside of his bb in the original when facing towards/right:
   aabb: doubleHeightCharacter,
-  renderAabbOffset: { x: -1, y: -1, z: 0 },
+  baseRenderAabbOffset: { x: -1, y: -1, z: 0 },
   renderAabb: addXyz(doubleHeightCharacter, { x: 4, y: 4 }),
 };
 
-const ballAabbInfo: ItemInPlayAAbbInfo = {
+const ballAabbInfo: BoundingBoxForItem = {
   aabb: smallItemAabb,
-  renderAabbOffset: { x: -1, y: -1, z: 0 },
+  baseRenderAabbOffset: { x: -1, y: -1, z: 0 },
   renderAabb: addXyz(smallItemAabb, { x: 1, y: 1, z: 1 }),
 };
-const slidingPuckAabbInfo: ItemInPlayAAbbInfo = {
+const slidingPuckAabbInfo: BoundingBoxForItem = {
   aabb: smallItemAabb,
-  renderAabbOffset: { x: -1, y: -1, z: 0 },
+  baseRenderAabbOffset: { x: -1, y: -1, z: 0 },
   renderAabb: addXyz(smallItemAabb, { x: 1, y: 1, z: 1 }),
 };
-const springAabbInfo: ItemInPlayAAbbInfo = {
+const springAabbInfo: BoundingBoxForItem = {
   // compressed size:
   aabb: smallItemAabb,
   // uncompressed rendered size:
   renderAabb: addXyz(smallItemAabb, { z: 2 }),
 };
-const liftAabbInfo: ItemInPlayAAbbInfo = {
+const liftAabbInfo: BoundingBoxForItem = {
   aabb: smallItemAabb,
-  renderAabbOffset: { x: 0, y: 0, z: -2 },
+  baseRenderAabbOffset: { x: 0, y: 0, z: -2 },
   renderAabb: addXyz(smallItemAabb, { z: 3 }),
 };
-const charlesOrElephantAabbInfo: ItemInPlayAAbbInfo = {
+const charlesOrElephantAabbInfo: BoundingBoxForItem = {
   aabb: doubleHeightCharacter,
-  renderAabbOffset: { x: -1, y: -1, z: 0 },
+  baseRenderAabbOffset: { x: -1, y: -1, z: 0 },
   // those ears/that trunk!
   renderAabb: addXyz(doubleHeightCharacter, { x: 5, y: 5 }),
 };
-const elephantHeadAabbInfo: ItemInPlayAAbbInfo = {
+const elephantHeadAabbInfo: BoundingBoxForItem = {
   aabb: smallItemAabb,
-  renderAabbOffset: { x: -1, y: -1, z: 0 },
+  baseRenderAabbOffset: { x: -1, y: -1, z: 0 },
   // those ears/that trunk!
   renderAabb: addXyz(smallItemAabb, { x: 5, y: 5 }),
 };
-const bubbleRobotAabbInfo: ItemInPlayAAbbInfo = {
+const bubbleRobotAabbInfo: BoundingBoxForItem = {
   aabb: doubleHeightCharacter,
-  renderAabbOffset: { x: -1, y: -1, z: 0 },
+  baseRenderAabbOffset: { x: -1, y: -1, z: 0 },
   renderAabb: addXyz(doubleHeightCharacter, { x: 2, y: 2 }),
 };
-const computerBotAabbInfo: ItemInPlayAAbbInfo = {
+const computerBotAabbInfo: BoundingBoxForItem = {
   aabb: doubleHeightCharacter,
-  renderAabbOffset: { x: -1, y: -1, z: 0 },
+  baseRenderAabbOffset: { x: -1, y: -1, z: 0 },
   renderAabb: addXyz(doubleHeightCharacter, { x: 4, y: 4 }),
 };
-const switchAabbInfo: ItemInPlayAAbbInfo = {
+const switchAabbInfo: BoundingBoxForItem = {
   aabb: smallItemAabb,
   renderAabb: addXyz(smallItemAabb, { z: 3 }),
 };
-const buttonAabbInfo: ItemInPlayAAbbInfo = {
+const buttonAabbInfo: BoundingBoxForItem = {
   // match the compressed size, since this is when the
   // item will be stood on, which is when the z-size most
   // matters
@@ -96,87 +101,87 @@ const buttonAabbInfo: ItemInPlayAAbbInfo = {
   renderAabb: { x: 15, y: 15, z: 4 },
 };
 const scrollAabb = { x: 16, y: 4, z: 13 };
-const scrollAabbInfo: ItemInPlayAAbbInfo = {
+const scrollAabbInfo: BoundingBoxForItem = {
   aabb: scrollAabb,
-  renderAabbOffset: { x: -1, y: -1, z: 0 },
+  baseRenderAabbOffset: { x: -1, y: -1, z: 0 },
   renderAabb: addXyz(scrollAabb, { x: 2, y: 2 }),
 };
-const bunnyAabbInfo: ItemInPlayAAbbInfo = {
+const bunnyAabbInfo: BoundingBoxForItem = {
   aabb: smallItemAabb,
   // those ears!
   renderAabb: addXyz(smallItemAabb, { y: 1, z: 1 }),
 };
-const fishAabbInfo: ItemInPlayAAbbInfo = {
+const fishAabbInfo: BoundingBoxForItem = {
   aabb: smallItemAabb,
   renderAabb: addXyz(smallItemAabb, { x: 1, y: 1, z: 4 }),
 };
-const crownAabbInfo: ItemInPlayAAbbInfo = {
+const crownAabbInfo: BoundingBoxForItem = {
   aabb: smallItemAabb,
   renderAabb: addXyz(smallItemAabb, { x: 2, z: 1 }),
 };
-const hooterAabbInfo: ItemInPlayAAbbInfo = {
+const hooterAabbInfo: BoundingBoxForItem = {
   aabb: smallItemAabb,
-  renderAabbOffset: { x: -2, y: -1, z: 0 },
+  baseRenderAabbOffset: { x: -2, y: -1, z: 0 },
   renderAabb: addXyz(smallItemAabb, { x: 4, y: -1, z: 1 }),
 };
-const dalekAabbInfo: ItemInPlayAAbbInfo = {
+const dalekAabbInfo: BoundingBoxForItem = {
   aabb: smallItemAabb,
   renderAabb: addXyz(smallItemAabb, { x: 1, y: 1 }),
 };
-const turtleAabbInfo: ItemInPlayAAbbInfo = {
+const turtleAabbInfo: BoundingBoxForItem = {
   aabb: smallItemAabb,
-  renderAabbOffset: {
+  baseRenderAabbOffset: {
     ...originXyz,
     z: -2,
   },
   renderAabb: addXyz(smallItemAabb, { x: 2, y: 2, z: 2 }),
 };
-const helicopterBugAabbInfo: ItemInPlayAAbbInfo = {
+const helicopterBugAabbInfo: BoundingBoxForItem = {
   aabb: smallItemAabb,
-  renderAabbOffset: {
+  baseRenderAabbOffset: {
     ...originXyz,
     z: -2,
   },
   renderAabb: addXyz(smallItemAabb, { z: 3 }),
 };
-const fullBlockWithSlightOverdrawAabbInfo: ItemInPlayAAbbInfo = {
+const fullBlockWithSlightOverdrawAabbInfo: BoundingBoxForItem = {
   aabb: fullBlockAabb,
-  renderAabbOffset: { x: -1, y: -1, z: 0 },
+  baseRenderAabbOffset: { x: -1, y: -1, z: 0 },
   renderAabb: addXyz(fullBlockAabb, { x: 2, y: 2 }),
 };
-const cybermanAabbInfo: ItemInPlayAAbbInfo = {
+const cybermanAabbInfo: BoundingBoxForItem = {
   aabb: doubleHeightCharacter,
-  renderAabbOffset: { ...originXyz, z: -3 },
+  baseRenderAabbOffset: { ...originXyz, z: -3 },
   renderAabb: addXyz(doubleHeightCharacter, { z: 5 }),
 };
 
 const towerAabb = { x: 11, y: 11, z: blockSizePx.z };
-const towerAabbInfo: ItemInPlayAAbbInfo = {
+const towerAabbInfo: BoundingBoxForItem = {
   aabb: towerAabb,
   renderAabb: addXyz(towerAabb, { x: 3, y: 3 }),
 };
-const smallItemWithoutOverdrawAabbInfo: ItemInPlayAAbbInfo = {
+const smallItemWithoutOverdrawAabbInfo: BoundingBoxForItem = {
   aabb: smallItemAabb,
 };
-const fullBlockWithoutOverdrawAabbInfo: ItemInPlayAAbbInfo = {
+const fullBlockWithoutOverdrawAabbInfo: BoundingBoxForItem = {
   aabb: fullBlockAabb,
 };
-const barrierXAabbInfo: ItemInPlayAAbbInfo = {
+const barrierXAabbInfo: BoundingBoxForItem = {
   aabb: { x: 15, y: 4, z: blockSizePx.z },
 };
-const barrierYAabbInfo: ItemInPlayAAbbInfo = {
+const barrierYAabbInfo: BoundingBoxForItem = {
   aabb: { x: 4, y: 15, z: blockSizePx.z },
 };
-const zeroVolumeAabb: ItemInPlayAAbbInfo = {
+const zeroVolumeAabb: BoundingBoxForItem = {
   aabb: originXyz,
 };
-const skiHeadAabbInfo: ItemInPlayAAbbInfo = {
+const skiHeadAabbInfo: BoundingBoxForItem = {
   // not a full two blocks (24px) high - experimental, truer to the rendering:
   aabb: { ...smallItemAabb, z: 21 },
 };
 export const boundingBoxForItem = (
   item: JsonItemUnion | UnionOfAllItemInPlayTypes,
-): ItemInPlayAAbbInfo => {
+): BoundingBoxForItem => {
   switch (item.type) {
     case "spring":
       return springAabbInfo;

@@ -3,6 +3,7 @@ import {
   type IndividualCharacterName,
 } from "../../model/modelTypes";
 import { type RoomState } from "../../model/RoomState";
+import { type Xy } from "../../utils/vectors/vectors";
 import { type InputStateTrackerInterface } from "../input/InputStateTracker";
 import { type PlayableEntryState } from "./PlayableEntryState";
 
@@ -58,6 +59,13 @@ export type GameState<RoomId extends string = string> = {
    * or player time is more useful
    */
   gameTime: number;
+
+  /**
+   * the 90°-increment camera rotation, as a (cos,sin) unit vector. Absent ⇒ the
+   * default view (1,0). Saved with the game, so reloading a save resumes the
+   * same angle.
+   */
+  cameraAngle?: Xy;
 };
 
 // if you don't care about the RoomId generic, you can't emit events (since they are callbacks)

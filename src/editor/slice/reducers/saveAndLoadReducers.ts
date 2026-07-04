@@ -13,6 +13,7 @@ import { initialLevelEditorSliceState } from "../initialLevelEditorSliceState";
 import { changeCurrentRoomInPlace } from "../inPlaceMutators/changeCurrentRoomInPlace";
 import { migrateRoomNonContiguousRelationships } from "../inPlaceMutators/migrateRoomNonContiguousRelationships";
 import { migrateRoomVerticalLinks } from "../inPlaceMutators/migrateRoomVerticalLinks";
+import { migrateRoomWallTiles } from "../inPlaceMutators/migrateRoomWallTiles";
 import { type LevelEditorState } from "../levelEditorSlice";
 import { levelEditorSliceNonPersistedFields } from "../levelEditorSliceTransientFields";
 
@@ -27,10 +28,10 @@ export const saveAndLoadReducers = {
     const state = _state as LevelEditorState;
 
     // convert old-format campaigns (top-level roomAbove/roomBelow and
-    // room-level nonContiguousRelationship) to the current per-sub-room form,
-    // in memory only
-    const migratedCampaign = migrateRoomNonContiguousRelationships(
-      migrateRoomVerticalLinks(campaign),
+    // room-level nonContiguousRelationship to the current per-sub-room form, and
+    // walls without tiles to carry them) in memory only
+    const migratedCampaign = migrateRoomWallTiles(
+      migrateRoomNonContiguousRelationships(migrateRoomVerticalLinks(campaign)),
     );
 
     state.remoteCampaign = migratedCampaign;
@@ -77,8 +78,8 @@ export const saveAndLoadReducers = {
     // the wrapped type. Since the normal type isn't readonly, this wrapping isn't needed anyway
     const state = _state as LevelEditorState;
 
-    state.remoteCampaign = migrateRoomNonContiguousRelationships(
-      migrateRoomVerticalLinks(campaign),
+    state.remoteCampaign = migrateRoomWallTiles(
+      migrateRoomNonContiguousRelationships(migrateRoomVerticalLinks(campaign)),
     );
   },
 

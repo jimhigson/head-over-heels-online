@@ -18,25 +18,34 @@
     "value": 8
   },
   {
-    "op": "remove",
-    "path": "/items/w3/config/times"
+    "op": "replace",
+    "path": "/items/w3/config/tiles/2",
+    "value": "sarcophagus"
+  },
+  {
+    "op": "replace",
+    "path": "/items/w3/config/tiles/1",
+    "value": "sarcophagus"
+  },
+  {
+    "op": "add",
+    "path": "/items/w3/config/tiles/3",
+    "value": "hieroglyphics"
+  },
+  {
+    "op": "add",
+    "path": "/items/w3/config/tiles/4",
+    "value": "sarcophagus"
+  },
+  {
+    "op": "add",
+    "path": "/items/w3/config/tiles/5",
+    "value": "hieroglyphics"
   },
   {
     "op": "replace",
     "path": "/items/w3/config/direction",
     "value": "left"
-  },
-  {
-    "op": "add",
-    "path": "/items/w3/config/tiles",
-    "value": [
-      "hieroglyphics",
-      "sarcophagus",
-      "sarcophagus",
-      "hieroglyphics",
-      "sarcophagus",
-      "hieroglyphics"
-    ]
   },
   {
     "op": "replace",
@@ -50,7 +59,21 @@
   },
   {
     "op": "remove",
-    "path": "/items/w2/config/tiles"
+    "path": "/items/w2/config/tiles/7"
+  },
+  {
+    "op": "remove",
+    "path": "/items/w2/config/tiles/6"
+  },
+  {
+    "op": "replace",
+    "path": "/items/w2/config/tiles/5",
+    "value": "hieroglyphics"
+  },
+  {
+    "op": "replace",
+    "path": "/items/w2/config/tiles/1",
+    "value": "sarcophagus"
   },
   {
     "op": "replace",
@@ -58,20 +81,29 @@
     "value": "towards"
   },
   {
-    "op": "add",
-    "path": "/items/w2/config/times",
-    "value": {
-      "x": 6
-    }
-  },
-  {
     "op": "replace",
     "path": "/items/w1/position/y",
     "value": 8
   },
   {
-    "op": "remove",
-    "path": "/items/w1/config/times"
+    "op": "replace",
+    "path": "/items/w1/config/tiles/5",
+    "value": "sarcophagus"
+  },
+  {
+    "op": "replace",
+    "path": "/items/w1/config/tiles/4",
+    "value": "hieroglyphics"
+  },
+  {
+    "op": "replace",
+    "path": "/items/w1/config/tiles/3",
+    "value": "hieroglyphics"
+  },
+  {
+    "op": "replace",
+    "path": "/items/w1/config/tiles/2",
+    "value": "sarcophagus"
   },
   {
     "op": "replace",
@@ -80,26 +112,28 @@
   },
   {
     "op": "add",
-    "path": "/items/w1/config/tiles",
-    "value": [
-      "hieroglyphics",
-      "hieroglyphics",
-      "sarcophagus",
-      "hieroglyphics",
-      "hieroglyphics",
-      "sarcophagus",
-      "hieroglyphics",
-      "hieroglyphics"
-    ]
-  },
-  {
-    "op": "remove",
-    "path": "/items/w/config/times/x"
+    "path": "/items/w/config/tiles/3",
+    "value": "sarcophagus"
   },
   {
     "op": "add",
-    "path": "/items/w/config/times/y",
-    "value": 8
+    "path": "/items/w/config/tiles/4",
+    "value": "sarcophagus"
+  },
+  {
+    "op": "add",
+    "path": "/items/w/config/tiles/5",
+    "value": "hieroglyphics"
+  },
+  {
+    "op": "add",
+    "path": "/items/w/config/tiles/6",
+    "value": "hieroglyphics"
+  },
+  {
+    "op": "add",
+    "path": "/items/w/config/tiles/7",
+    "value": "hieroglyphics"
   },
   {
     "op": "replace",

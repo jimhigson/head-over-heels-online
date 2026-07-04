@@ -4,6 +4,11 @@ import { type ItemTypeUnion } from "../../../_generated/types/ItemInPlayUnion";
 import { type ItemInPlayType } from "../../../model/ItemInPlay";
 import { smallItemTextureSize } from "../../../sprites/spritesheet/spritesheetData/textureSizes";
 import { maybeRenderContainerToSprite } from "../../../utils/pixi/renderContainerToSprite";
+import {
+  rotateAxisXyByCameraAngle,
+  rotateDirectionXy4ByCameraAngle,
+  type Xy,
+} from "../../../utils/vectors/vectors";
 import { createSprite, type CreateSpriteOptions } from "../createSprite";
 import { blockAppearance } from "./blockAppearance";
 import { buttonAppearance } from "./buttonAppearance";
@@ -52,14 +57,16 @@ const itemAppearancesMap: {
         item: {
           config: { axis, times, disappearing },
         },
-        general: { spritesheetVariants, pixiRenderer },
+        general: { spritesheetVariants, pixiRenderer, cameraAngle },
       },
     }) => {
+      const renderedAxis = rotateAxisXyByCameraAngle(axis, cameraAngle);
       return maybeRenderContainerToSprite(
         pixiRenderer,
         createSprite({
-          textureId: `barrier.${axis}${disappearing ? ".disappearing" : ""}`,
+          textureId: `barrier.${renderedAxis}${disappearing ? ".disappearing" : ""}`,
           times,
+          cameraAngle,
           spritesheet: spritesheetVariants.currentMainSpritesheet(
             false,
             false,
@@ -146,7 +153,9 @@ const itemAppearancesMap: {
   lamp: lampAppearance,
   // the mirror renders other items' reflections, so gets the lookup
   // injected (a direct import would be a circular dependency):
-  mirror: makeMirrorAppearance((item) => appearanceForItem(item)),
+  mirror: makeMirrorAppearance((item, cameraAngle) =>
+    appearanceForItem(item, cameraAngle),
+  ),
   lightBeam: lightBeamAppearance,
 
   sceneryCrown: itemAppearanceRenderOnce(
@@ -326,12 +335,17 @@ const itemAppearancesMap: {
  */
 export const appearanceForItem = <T extends ItemInPlayType>(
   item: ItemTypeUnion<T, string, string>,
+  cameraAngle: Xy,
 ): ItemAppearanceOutsideView<T> | undefined => {
   if (item.type === "wall") {
-    // walls are a case where we only have an appearance in some directions,
-    // otherwise they are invisible
-    const { direction } = item.config;
-    if (direction === "right" || direction === "towards") {
+    // walls only render on the far sides of the room (so we can see in); which
+    // sides count as far depends on the camera angle, so rotate the wall's
+    // direction by it first:
+    const renderedDirection = rotateDirectionXy4ByCameraAngle(
+      item.config.direction,
+      cameraAngle,
+    );
+    if (renderedDirection === "right" || renderedDirection === "towards") {
       return undefined;
     }
     return farWallAppearance as ItemAppearanceOutsideView<T>;

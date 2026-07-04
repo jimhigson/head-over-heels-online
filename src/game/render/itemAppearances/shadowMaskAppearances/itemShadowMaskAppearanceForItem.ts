@@ -18,7 +18,11 @@ import {
   renderContainerToSprite,
 } from "../../../../utils/pixi/renderContainerToSprite";
 import { renderMultipliedXy } from "../../../../utils/pixi/renderMultipliedXy";
-import { tangentAxis } from "../../../../utils/vectors/vectors";
+import {
+  rotateAxisXyByCameraAngle,
+  tangentAxis,
+  type Xy,
+} from "../../../../utils/vectors/vectors";
 import { isMultipliedItem } from "../../../physics/itemPredicates";
 import { blockSizePx } from "../../../physics/mechanicsConstants";
 import { type AppearanceReturn } from "../../appearance/Appearance";
@@ -52,11 +56,14 @@ const shadowMaskStaticAppearance = <T extends ItemInPlayType>(
     ({
       renderContext: {
         item: subject,
-        general: { pixiRenderer, spritesheetVariants },
+        general: { pixiRenderer, spritesheetVariants, cameraAngle },
       },
     }) => {
       const options = {
         ...createSpriteOptions,
+        // multiplied masks tile along their world axes, which the projection
+        // rotates on screen:
+        cameraAngle,
         spritesheet: spritesheetVariants.shadowSpritesheet,
       } as SpecifiedTextureCreateSpriteOptions;
 
@@ -99,13 +106,14 @@ const shadowMaskFromConfigAppearance =
   <T extends ItemInPlayType>(
     spriteOptionsFromConfig: (
       config: ItemInPlayConfig<T, string, string>,
+      cameraAngle: Xy,
     ) => ShadowMaskSpriteOptions,
   ): ((
     options: ItemAppearanceOptions<T, EmptyObject, Sprite>,
   ) => AppearanceReturn<EmptyObject, Sprite>) =>
   ({
     renderContext: {
-      general: { pixiRenderer, spritesheetVariants },
+      general: { pixiRenderer, spritesheetVariants, cameraAngle },
       item,
     },
     currentRendering,
@@ -114,9 +122,13 @@ const shadowMaskFromConfigAppearance =
       const times = itemInPlayTimes(item);
       const baseOptions = spriteOptionsFromConfig(
         item.config as ItemInPlayConfig<T, string, string>,
+        cameraAngle,
       );
       const options = {
         ...baseOptions,
+        // multiplied masks tile along their world axes, which the projection
+        // rotates on screen:
+        cameraAngle,
         spritesheet: spritesheetVariants.shadowSpritesheet,
       } as SpecifiedTextureCreateSpriteOptions;
 
@@ -159,22 +171,28 @@ const itemShadowMaskAppearances: {
   lift: shadowMaskStaticAppearance({
     textureId: "shadowMask.smallBlock",
   }),
-  conveyor: shadowMaskFromConfigAppearance(({ direction }) => ({
+  conveyor: shadowMaskFromConfigAppearance(({ direction }, cameraAngle) => ({
     textureId: "shadowMask.conveyor",
-    flipX: tangentAxis(direction) === "x",
+    flipX:
+      rotateAxisXyByCameraAngle(tangentAxis(direction), cameraAngle) === "x",
   })),
 
-  doorLegs: shadowMaskFromConfigAppearance(({ direction }) => {
-    const floating = direction === "right" || direction === "towards";
-
-    return {
-      textureId:
-        floating ?
-          "shadowMask.door.floatingThreshold.double.y"
-        : "shadowMask.door.legs.threshold.double.y",
-      flipX: tangentAxis(direction) === "y",
-    };
-  }),
+  doorLegs: shadowMaskFromConfigAppearance(
+    ({ direction, inHiddenWall }, cameraAngle) => {
+      return {
+        textureId:
+          // inHiddenWall is camera-relative (re-derived on rotation by
+          // reloadStructureForCamera), matching whether the legs render the
+          // floating threshold or the full legs:
+          inHiddenWall ?
+            "shadowMask.door.floatingThreshold.double.y"
+          : "shadowMask.door.legs.threshold.double.y",
+        flipX:
+          rotateAxisXyByCameraAngle(tangentAxis(direction), cameraAngle) ===
+          "y",
+      };
+    },
+  ),
 
   teleporter: teleporterShadowMaskAppearance,
   portableTeleporter: teleporterShadowMaskAppearance,
@@ -182,9 +200,9 @@ const itemShadowMaskAppearances: {
   // no shadow mast for the floor
   floor: "no-mask",
 
-  barrier: shadowMaskFromConfigAppearance(({ axis }) => ({
+  barrier: shadowMaskFromConfigAppearance(({ axis }, cameraAngle) => ({
     textureId: "shadowMask.barrier.y",
-    flipX: axis === "x",
+    flipX: rotateAxisXyByCameraAngle(axis, cameraAngle) === "x",
     // needs this to line up with the sprite - not sure why
     y: -1,
   })),

@@ -6,6 +6,7 @@ import { type ItemTickContext } from "../game/render/ItemRenderContexts";
 import { projectWorldXyzToScreenX } from "../game/render/projections";
 import { floorsRenderExtent } from "../game/render/room/floorsExtent";
 import { type ItemInPlayType } from "../model/ItemInPlay";
+import { rotateXyz } from "../utils/vectors/rotateXy";
 import { addXyzInPlace, scaleXyzWriteInto } from "../utils/vectors/vectors";
 import { audioCtx } from "./audioCtx";
 import { type ItemSoundRenderContext } from "./ItemSoundRenderContext";
@@ -71,7 +72,10 @@ export class SoundPanRenderer<T extends ItemInPlayType>
     this.output.maxDistance = 5;
     this.output.distanceModel = "exponential";
 
-    const floorRenderExtends = floorsRenderExtent(renderContext.room).floors;
+    const floorRenderExtends = floorsRenderExtent(
+      renderContext.room,
+      renderContext.general.cameraAngle,
+    ).floors;
 
     this.#soundPositionMinX = floorRenderExtends.edgeLeftX;
     this.#soundPositionMaxX = floorRenderExtends.edgeRightX;
@@ -87,8 +91,10 @@ export class SoundPanRenderer<T extends ItemInPlayType>
       itemState.position,
     );
 
+    const { cameraAngle } = this.renderContext.general;
+
     const soundPositionX = numberInRangeToMinus1To1Range(
-      projectWorldXyzToScreenX(itemCentrePosition),
+      projectWorldXyzToScreenX(itemCentrePosition, cameraAngle),
       this.#soundPositionMinX,
       this.#soundPositionMaxX,
     );
@@ -116,9 +122,10 @@ export class SoundPanRenderer<T extends ItemInPlayType>
       );
     }
 
-    // z (depth on screen, x+y in-game)
+    // z (depth on screen, x+y in-game) - also follows the camera angle:
+    const rotatedCentre = rotateXyz(itemCentrePosition, cameraAngle);
     const soundPositionZ = numberInRangeToMinus1To1Range(
-      itemCentrePosition.x + itemCentrePosition.y,
+      rotatedCentre.x + rotatedCentre.y,
       soundPositionMinZ,
       soundPositionMaxZ,
     );

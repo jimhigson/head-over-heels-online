@@ -1,4 +1,4 @@
-import { type RenderLayer } from "pixi.js";
+import { type Container, type RenderLayer } from "pixi.js";
 
 import { type ItemTypeUnion } from "../../_generated/types/ItemInPlayUnion";
 import {
@@ -28,6 +28,14 @@ export type ItemRenderContext<T extends ItemInPlayType> = {
    */
   colourClashLayer?: RenderLayer;
   frontLayer: RenderLayer;
+  /**
+   * the container positioned at this item's projected origin - the
+   * ItemPositionRenderer's output, set once that renderer is constructed. Debug
+   * overlays that draw at the item's true projected positions (eg the bounding box)
+   * parent to this, so they are not shifted by the near-corner offset applied to the
+   * item's sprites.
+   */
+  itemPositionContainer?: Container;
   /**
    * the (mutated in place) record of which items is in front of which,
    * including what can't be applied due to cyclic dependencies

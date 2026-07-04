@@ -1,3 +1,4 @@
+import { rotatingSceneryTiles } from "../../src/model/inPlaceMutators/rotatingSceneryTiles";
 import { type JsonItem } from "../../src/model/json/JsonItem";
 import { type AxisXy, type Xyz } from "../../src/utils/vectors/vectors";
 import { convertX, convertY } from "./convertCampaign";
@@ -58,6 +59,9 @@ export const convertWalls = (
       type: "wall",
       config: {
         direction: "towards",
+        // every wall has tiles, even ones on the invisible near sides, so they
+        // can be rendered once the camera rotates to face them:
+        tiles: Array.from(rotatingSceneryTiles(planet, 1, x)),
       },
       position: { x, y: 0, z: 0 },
     });
@@ -78,6 +82,7 @@ export const convertWalls = (
       type: "wall",
       config: {
         direction: "right",
+        tiles: Array.from(rotatingSceneryTiles(planet, 1, y)),
       },
       position: { x: 0, y, z: 0 },
     });

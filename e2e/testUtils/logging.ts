@@ -54,9 +54,12 @@ export const forwardBrowserConsoleToNodeConsole = (
 
     const colour = colours[type] ?? identity;
 
-    console.log(
-      `${formattedName} ${elapsed()} [${chalk.yellow("Console")} type="${colour(type)}"] ${text}`,
-    );
+    const prefix = `${formattedName} ${elapsed()} [${chalk.yellow("Console")} type="${colour(type)}"]`;
+    // prefix every line: multi-line messages (eg error dialog reports) stay
+    // attributable and greppable in line-based ci logs
+    for (const line of text.split("\n")) {
+      console.log(`${prefix} ${line}`);
+    }
   });
 
   // Capture browser errors

@@ -1,7 +1,7 @@
 import { produce } from "immer";
 import { describe, expect, test } from "vitest";
 
-import { type AwayWallConfig } from "../../../model/json/WallJsonConfig";
+import { type WallJsonConfig } from "../../../model/json/WallJsonConfig";
 import {
   type AnyRoomJson,
   iterateRoomJsonItemsWithIds,
@@ -323,7 +323,7 @@ describe("applying tools", () => {
           (draft) => {
             const wall =
               draft.campaignInProgress.rooms[testRoomId].items[wallItemId];
-            (wall.config as AwayWallConfig<"blacktooth">).tiles = [
+            (wall.config as WallJsonConfig<"blacktooth">).tiles = [
               "armour",
               "armour",
             ];

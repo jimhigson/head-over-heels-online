@@ -3,13 +3,7 @@ import { type AllUnionFields, type ValueOf } from "type-fest";
 
 import { blockSizePx } from "../game/physics/mechanicsConstants";
 import { type JsonItemUnion } from "../model/json/JsonItem";
-import {
-  type RightWallConfig,
-  type TowardsWallConfig,
-  type WallJsonConfigWithTiles,
-} from "../model/json/WallJsonConfig";
 import { getJsonItemTimes, optimiseTimesXyz } from "../model/times";
-import { type SceneryName } from "../sprites/planets";
 import { omit } from "../utils/pick";
 import { type Xyz } from "../utils/vectors/vectors";
 import {
@@ -463,23 +457,12 @@ const consolidateItemsSinglePass = (
       if (target.config.direction !== joiner.config.direction) {
         throw new Error("walls must have the same direction to join");
       }
-      if (
-        target.config.direction === "right" ||
-        target.config.direction === "towards"
-      ) {
-        // these directions do not have the tiles attribute
-        return target;
-      }
       // Create a new wall object with combined tiles
       return {
         ...target,
         config: {
           ...target.config,
-          tiles: [
-            // needs cast here because we know these are right/towards, but ts doesn't
-            ...(target.config as WallJsonConfigWithTiles<SceneryName>).tiles,
-            ...(joiner.config as WallJsonConfigWithTiles<SceneryName>).tiles,
-          ],
+          tiles: [...target.config.tiles, ...joiner.config.tiles],
         },
       };
     }
@@ -507,24 +490,9 @@ const consolidateItemsSinglePass = (
       // Create a new config object to avoid mutation
       const newConfig = { ...originalItem.config };
 
-      if (originalItem.type === "wall") {
-        switch (originalItem.config.direction) {
-          case "away":
-          case "left":
-            // these walls have size defined by tile count - no need to set times
-            break;
-          case "towards":
-            if (xTimes !== 1) {
-              (newConfig as TowardsWallConfig).times = { x: xTimes };
-            }
-            break;
-          case "right":
-            if (yTimes !== 1) {
-              (newConfig as RightWallConfig).times = { y: yTimes };
-            }
-            break;
-        }
-      } else {
+      // walls encode their extent through their tiles array (merged in
+      // combineInto), so unlike other items they never set a times property
+      if (originalItem.type !== "wall") {
         const newTimes = {
           ...optimiseTimesXyz(getJsonItemTimes(originalItem)),
         } as Xyz;

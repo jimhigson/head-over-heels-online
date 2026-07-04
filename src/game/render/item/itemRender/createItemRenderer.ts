@@ -66,7 +66,10 @@ export const createItemRenderer = <T extends ItemInPlayType>(
 
   const siblingPixiRenderers: ItemPixiRenderer<T>[] = [];
 
-  const appearance = appearanceForItem(item) as ItemAppearanceOutsideView<T>;
+  const appearance = appearanceForItem(
+    item,
+    itemRenderContext.general.cameraAngle,
+  ) as ItemAppearanceOutsideView<T>;
   let itemAppearanceRenderer:
     | ItemRenderPipeline<T>["itemAppearanceRenderer"]
     | undefined = undefined;

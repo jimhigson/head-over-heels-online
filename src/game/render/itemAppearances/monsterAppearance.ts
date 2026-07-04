@@ -10,6 +10,7 @@ import {
 } from "../../../sprites/spritesheet/spritesheetData/makeSpritesheetData";
 import { type AppSpritesheet } from "../../../sprites/spritesheet/variants/AppSpritesheet";
 import { renderBobSine } from "../../../utils/maths/renderBob";
+import { rotateXy } from "../../../utils/vectors/rotateXy";
 import {
   type DirectionXy4,
   originXy,
@@ -114,6 +115,7 @@ export const monsterAppearance: ItemAppearance<
       paused,
       spritesheetVariants,
       spriteOption: { uncolourised },
+      cameraAngle,
     },
   },
   currentRendering,
@@ -139,9 +141,14 @@ export const monsterAppearance: ItemAppearance<
     case "monkey": {
       // rendering is directional (xy4)
 
+      // rotate the facing by the camera angle so the directional sprite matches
+      // how the monster appears once the camera has turned:
       const facingXy4 =
         vectorClosestDirectionXy4(
-          maybeReflectedVector(state.facing, isReflection),
+          rotateXy(
+            maybeReflectedVector(state.facing, isReflection, cameraAngle),
+            cameraAngle,
+          ),
         ) ?? "towards";
 
       const render =

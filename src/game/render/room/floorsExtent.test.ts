@@ -17,7 +17,7 @@ test("returns undefined for room with no floors", () => {
         position: { x: 0, y: 0, z: 0 },
         config: {
           direction: "towards",
-          times: { x: 5 },
+          tiles: Array(5).fill("plain"),
         },
       },
       monster1: {
@@ -326,7 +326,7 @@ test("ignores non-floor items when calculating extent", () => {
         position: { x: 0, y: 0, z: 0 },
         config: {
           direction: "towards",
-          times: { x: 20 },
+          tiles: Array(20).fill("plain"),
         },
       },
       block1: {

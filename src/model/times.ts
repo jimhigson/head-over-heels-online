@@ -1,30 +1,24 @@
 import { isMultipliedItem } from "../game/physics/itemPredicates";
 import { type SceneryName } from "../sprites/planets";
-import { unitXyz, type Xy, type Xyz } from "../utils/vectors/vectors";
+import {
+  doorAlongAxis,
+  unitXyz,
+  type Xy,
+  type Xyz,
+} from "../utils/vectors/vectors";
 import { type UnionOfAllItemInPlayTypes } from "./ItemInPlay";
 import { type JsonItemUnion } from "./json/JsonItem";
-import {
-  type AnyWallJsonConfig,
-  type WallJsonConfig,
-} from "./json/WallJsonConfig";
+import { type WallJsonConfig } from "./json/WallJsonConfig";
 
 /**
- * imply the wall times from json wall items based on the number of tiles, or the
- * explicit 'times' number given
+ * the wall times (its length in blocks along each axis) implied by the number of
+ * tiles: a wall is one block deep and tiles.length blocks long along its axis
  */
-
-export const wallTimes = (
-  config: AnyWallJsonConfig | WallJsonConfig<SceneryName>,
-): Partial<Xy> => {
+export const wallTimes = (config: WallJsonConfig<SceneryName>): Partial<Xy> => {
+  const alongAxis = doorAlongAxis(config.direction);
   return {
-    x:
-      config.direction === "away" ? config.tiles!.length
-      : config.direction === "towards" ? (config.times?.x ?? 1)
-      : 1,
-    y:
-      config.direction === "left" ? config.tiles!.length
-      : config.direction === "right" ? (config.times?.y ?? 1)
-      : 1,
+    x: alongAxis === "x" ? config.tiles.length : 1,
+    y: alongAxis === "y" ? config.tiles.length : 1,
   };
 };
 

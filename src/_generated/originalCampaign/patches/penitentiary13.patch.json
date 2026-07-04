@@ -26,12 +26,7 @@
   },
   {
     "op": "remove",
-    "path": "/items/w1/config/times/y"
-  },
-  {
-    "op": "add",
-    "path": "/items/w1/config/times/x",
-    "value": 3
+    "path": "/items/w1/config/tiles/3"
   },
   {
     "op": "replace",
@@ -39,13 +34,9 @@
     "value": "towards"
   },
   {
-    "op": "remove",
-    "path": "/items/w/config/times/x"
-  },
-  {
     "op": "add",
-    "path": "/items/w/config/times/y",
-    "value": 4
+    "path": "/items/w/config/tiles/3",
+    "value": "loop"
   },
   {
     "op": "replace",

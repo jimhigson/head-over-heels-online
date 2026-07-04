@@ -72,12 +72,25 @@ export const room = inferRoomJson({
     sg: { config: {}, position: { x: 0, y: 5, z: 7 }, type: "spring" },
     sk: { config: {}, position: { x: 0, y: 5, z: 0 }, type: "spikes" },
     w: {
-      config: { direction: "right", times: { y: 6 } },
+      config: {
+        direction: "right",
+        tiles: [
+          "hieroglyphics",
+          "hieroglyphics",
+          "hieroglyphics",
+          "sarcophagus",
+          "sarcophagus",
+          "hieroglyphics",
+        ],
+      },
       position: { x: 0, y: 0, z: 0 },
       type: "wall",
     },
     w1: {
-      config: { direction: "towards", times: { x: 2 } },
+      config: {
+        direction: "towards",
+        tiles: ["hieroglyphics", "hieroglyphics"],
+      },
       position: { x: 0, y: 0, z: 0 },
       type: "wall",
     },
@@ -97,7 +110,7 @@ export const room = inferRoomJson({
       type: "wall",
     },
     w3: {
-      config: { direction: "towards", times: { x: 2 } },
+      config: { direction: "towards", tiles: ["sarcophagus", "hieroglyphics"] },
       position: { x: 4, y: 0, z: 0 },
       type: "wall",
     },

@@ -1,7 +1,7 @@
 import {
-  projectBottomCentre,
-  projectTopLeft,
-  projectTopRight,
+  projectApparentBottomCentre,
+  projectApparentTopLeft,
+  projectApparentTopRight,
 } from "../../../game/render/sortZ/projectAabbCorners";
 import {
   addXyz,
@@ -43,10 +43,11 @@ const pointIntersectsAABB = (
   position: Xyz,
   // using aabb, not renderAabb, so doors can be placed on walls above where they render
   aabb: Xyz,
+  cameraAngle: Xy,
 ) => {
-  const bottomCentre = projectBottomCentre(position);
-  const topLeft = projectTopLeft(position, aabb);
-  const topRight = projectTopRight(position, aabb);
+  const bottomCentre = projectApparentBottomCentre(position, aabb, cameraAngle);
+  const topLeft = projectApparentTopLeft(position, aabb, cameraAngle);
+  const topRight = projectApparentTopRight(position, aabb, cameraAngle);
 
   /*
    * check against each of 6 lines based on 3 [corners]:
@@ -100,6 +101,7 @@ export const pointIntersectsItemAABB = (
   pointerXy: Xy,
   tool: Tool,
   item: EditorUnionOfAllItemInPlayTypes,
+  cameraAngle: Xy,
 ): PointerItemMaybeIntersection => {
   const { position: renderPos, aabb: renderAabb } = itemVisibleBounds(
     item,
@@ -107,7 +109,7 @@ export const pointIntersectsItemAABB = (
     false,
   );
 
-  if (pointIntersectsAABB(pointerXy, renderPos, renderAabb)) {
+  if (pointIntersectsAABB(pointerXy, renderPos, renderAabb, cameraAngle)) {
     return "intersects-rendered";
   }
 
@@ -117,7 +119,7 @@ export const pointIntersectsItemAABB = (
 
   if (allowOutsideRender) {
     const { position, aabb } = itemVisibleBounds(item, tool, true);
-    if (pointIntersectsAABB(pointerXy, position, aabb)) {
+    if (pointIntersectsAABB(pointerXy, position, aabb, cameraAngle)) {
       return "intersects-unrendered";
     }
   }

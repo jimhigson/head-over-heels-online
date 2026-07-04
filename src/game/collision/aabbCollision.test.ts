@@ -1,7 +1,7 @@
 import { describe, expect, test } from "vitest";
 
 import { defaultItemProperties } from "../../model/defaultItemProperties";
-import { GridSpatialIndex } from "../physics/gridSpace/GridSpatialIndex";
+import { SpatialIndex } from "../physics/gridSpace/SpatialIndex";
 import {
   type CollideableItem,
   collision2Items,
@@ -98,7 +98,7 @@ describe("collisionItemWithIndex", () => {
     };
 
     // Build a real spatial index for the test
-    const index = new GridSpatialIndex<string, string, CollideableItem>([
+    const index = new SpatialIndex<string, string, CollideableItem>([
       subject,
       colliding1,
       colliding2,
@@ -135,7 +135,7 @@ describe("collisionItemWithIndex", () => {
       aabb: { x: 2, y: 1, z: 1 },
     };
 
-    const index = new GridSpatialIndex<string, string, CollideableItem>([
+    const index = new SpatialIndex<string, string, CollideableItem>([
       subject,
       colliding1,
       colliding2,

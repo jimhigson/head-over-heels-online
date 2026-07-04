@@ -665,6 +665,7 @@ export const Cheats = <RoomId extends string>(_emptyProps: EmptyObject) => {
                 speed={0}
                 class="bg-midGrey text-white zx:bg-zxBlack toppy:bg-toppyGrey3"
               />
+              <SpeedButton speed={0.001} />
               <SpeedButton speed={0.05} />
               <SpeedButton speed={0.2} />
               <SpeedButton speed={0.5} />

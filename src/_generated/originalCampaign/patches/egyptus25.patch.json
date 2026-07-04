@@ -1,19 +1,71 @@
 [
   {
+    "op": "add",
+    "path": "/items/w1/config/tiles/1",
+    "value": "hieroglyphics"
+  },
+  {
+    "op": "add",
+    "path": "/items/w1/config/tiles/2",
+    "value": "hieroglyphics"
+  },
+  {
+    "op": "add",
+    "path": "/items/w1/config/tiles/3",
+    "value": "sarcophagus"
+  },
+  {
+    "op": "add",
+    "path": "/items/w1/config/tiles/4",
+    "value": "sarcophagus"
+  },
+  {
+    "op": "add",
+    "path": "/items/w1/config/tiles/5",
+    "value": "hieroglyphics"
+  },
+  {
+    "op": "add",
+    "path": "/items/w1/config/tiles/6",
+    "value": "hieroglyphics"
+  },
+  {
+    "op": "add",
+    "path": "/items/w1/config/tiles/7",
+    "value": "hieroglyphics"
+  },
+  {
     "op": "replace",
     "path": "/items/w1/config/direction",
     "value": "towards"
   },
   {
-    "op": "add",
-    "path": "/items/w1/config/times",
-    "value": {
-      "x": 8
-    }
+    "op": "remove",
+    "path": "/items/w/config/tiles/7"
   },
   {
     "op": "remove",
-    "path": "/items/w/config/times"
+    "path": "/items/w/config/tiles/6"
+  },
+  {
+    "op": "remove",
+    "path": "/items/w/config/tiles/5"
+  },
+  {
+    "op": "remove",
+    "path": "/items/w/config/tiles/4"
+  },
+  {
+    "op": "remove",
+    "path": "/items/w/config/tiles/3"
+  },
+  {
+    "op": "remove",
+    "path": "/items/w/config/tiles/2"
+  },
+  {
+    "op": "remove",
+    "path": "/items/w/config/tiles/1"
   },
   {
     "op": "replace",

@@ -4,14 +4,17 @@ import { type JsonItem } from "../../../model/json/JsonItem";
 import { type StoodOnBy } from "../../../model/StoodOnBy";
 import { emptyObject } from "../../../utils/empty";
 import { pick } from "../../../utils/pick";
+import { axisProjectsReversed } from "../../../utils/vectors/rotateXy";
 import { unitVectors } from "../../../utils/vectors/unitVectors";
 import {
   addXyz,
   doorAlongAxis,
   originXyz,
   perpendicularAxisXy,
+  rotateAxisXyByCameraAngle,
   scaleXyz,
   subXyz,
+  type Xy,
   type Xyz,
 } from "../../../utils/vectors/vectors";
 import { blockSizePx, veryHighZ } from "../../physics/mechanicsConstants";
@@ -69,6 +72,7 @@ export function* loadDoor<RoomId extends string, RoomItemId extends string>(
   jsonDoor: JsonItem<"door", RoomId, RoomItemId>,
   jsonItemId: RoomItemId,
   directionalIndex: RoomDirectionalIndex<RoomId, RoomItemId>,
+  cameraAngle: Xy,
 ): Generator<
   ItemTypeUnion<
     "blocker" | "doorFrame" | "doorLegs" | "portal" | "stopAutowalk" | "wall",
@@ -84,22 +88,38 @@ export function* loadDoor<RoomId extends string, RoomItemId extends string>(
   const alongWallAxis = doorAlongAxis(direction);
   const throughDoorAxis = perpendicularAxisXy(alongWallAxis);
 
-  const inHidden = isDoorInHiddenWall(jsonDoor, directionalIndex);
+  const inHidden = isDoorInHiddenWall(jsonDoor, directionalIndex, cameraAngle);
   const floorZ = floorZAtPosition(position, directionalIndex) ?? 0;
   const legHeight = position.z - floorZ;
 
-  // doors on the left/towards side are set back half a square to embed them inside the unseen near-side wall:
+  /**
+   * the (world-space) sign of the door's out-of-room direction along
+   * throughDoorAxis - fixed by the door's direction, regardless of camera:
+   * towards/right doors lead out in the negative direction
+   */
+  const outSign = unitVectors[direction][throughDoorAxis];
+  const outIsNegative = outSign < 0;
+
+  // a door part's box must sit with its room-side face exactly on the wall
+  // plane (flush with the walls either side). Boxes extend positive from their
+  // position, so towards/right doors (which protrude out of the room in the
+  // negative direction) need their position pulled out by the frame's depth on
+  // top of the tunnel shift; away/left doors' positions already sit on the wall
+  // plane. This is world geometry, fixed regardless of the camera angle:
   const invisibleWallSetBackBlocks: Xyz = {
     ...originXyz,
-    [throughDoorAxis]: inHidden ? -0.5 : 0,
+    [throughDoorAxis]: outIsNegative ? -0.5 : 0,
   };
 
   // bounding boxes for doors form a long tunnel-like structure longer than the door's rendering
   // that extends out of the room. This helps with collision detection for items entering the room
   // to not have MTVs that snag behind the door
   const doorTunnelLengthBlocks = 1;
+  // aabbs extend positive from their position, so when the tunnel protrudes in
+  // the negative (out-of-room) direction the position shifts out by the tunnel
+  // length, and the rendering is offset back to the room end of the tunnel:
   const tunnelSetbackBlocks = {
-    [throughDoorAxis]: inHidden ? -doorTunnelLengthBlocks : 0,
+    [throughDoorAxis]: outIsNegative ? -doorTunnelLengthBlocks : 0,
   };
   const doorTunnelLengthPx = doorTunnelLengthBlocks * blockSizePx.x;
   // the extra to put onto door frame AABBs to make them longer for the tunnel
@@ -108,10 +128,13 @@ export function* loadDoor<RoomId extends string, RoomItemId extends string>(
     [throughDoorAxis]: doorTunnelLengthPx,
   };
 
-  /* the graphics for the near post are 9x8 = don't ask me why but 8x8 doesn't match
-     the bb very well */
-  const nearPostWidthInAxis = 9;
-  const farPostWidthInAxis = 8;
+  /* the graphics draw the camera-nearer post 9px wide along the wall and the
+     farther post 8px - an artwork quirk that can't be changed, so the geometry
+     deliberately follows it. Which of the two posts is camera-nearer swaps
+     when the along-wall axis projects reversed on screen: */
+  const alongReversed = axisProjectsReversed(alongWallAxis, cameraAngle);
+  const nearPostWidthInAxis = alongReversed ? 8 : 9;
+  const farPostWidthInAxis = alongReversed ? 9 : 8;
   const postWidthInThroughDoorAxis = 8;
 
   {
@@ -136,19 +159,19 @@ export function* loadDoor<RoomId extends string, RoomItemId extends string>(
         },
         state: {
           ...defaultBaseState(),
-          position: blockXyzToFineXyz(
-            addXyz(
-              position,
-              { [alongWallAxis]: 1.5 },
-              invisibleWallSetBackBlocks,
-              tunnelSetbackBlocks,
+          // the far post ends flush with the door's overall (2-block) span,
+          // so its position follows from its own (camera-dependent) width:
+          position: addXyz(
+            blockXyzToFineXyz(
+              addXyz(position, invisibleWallSetBackBlocks, tunnelSetbackBlocks),
             ),
+            { [alongWallAxis]: doorOverallWidthPx - farPostWidthInAxis },
           ),
           stoodOnBy: emptyObject as StoodOnBy<RoomItemId>,
         },
         aabb: addXyz(renderAabb, doorTunnelAabbPx),
         renderAabb,
-        renderAabbOffset: inHidden ? doorTunnelAabbPx : undefined,
+        renderAabbOffset: outIsNegative ? doorTunnelAabbPx : undefined,
       },
     };
   }
@@ -182,7 +205,7 @@ export function* loadDoor<RoomId extends string, RoomItemId extends string>(
 
         aabb: addXyz(renderAabb, doorTunnelAabbPx),
         renderAabb,
-        renderAabbOffset: inHidden ? doorTunnelAabbPx : undefined,
+        renderAabbOffset: outIsNegative ? doorTunnelAabbPx : undefined,
       },
     };
   }
@@ -216,7 +239,11 @@ export function* loadDoor<RoomId extends string, RoomItemId extends string>(
               addXyz(position, invisibleWallSetBackBlocks, tunnelSetbackBlocks),
             ),
             {
-              [alongWallAxis]: nearPostWidthInAxis - 1,
+              // the top's art lines up with the camera-nearer (9px) post's
+              // art, so it keeps the same vector from that post's origin as
+              // at the base angle - flipped along the wall when the near
+              // post is at the door's far end:
+              [alongWallAxis]: nearPostWidthInAxis + (alongReversed ? 1 : -1),
               z: doorPortalHeight,
             },
           ),
@@ -224,12 +251,15 @@ export function* loadDoor<RoomId extends string, RoomItemId extends string>(
         },
         aabb: addXyz(renderAabb, doorTunnelAabbPx, { [alongWallAxis]: 1 }),
         renderAabb,
-        renderAabbOffset: addXyz(inHidden ? doorTunnelAabbPx : originXyz, {
-          [alongWallAxis]: 1,
+        // the drawn box is the gap between the posts, which sits on the other
+        // side of the position's 1px overlap with the near post:
+        renderAabbOffset: addXyz(outIsNegative ? doorTunnelAabbPx : originXyz, {
+          [alongWallAxis]: alongReversed ? -1 : 1,
         }),
         shadowCastTexture:
           inHidden ? undefined
-          : alongWallAxis === "x" ? shadowDoorFrameTopX
+          : rotateAxisXyByCameraAngle(alongWallAxis, cameraAngle) === "x" ?
+            shadowDoorFrameTopX
           : shadowDoorFrameTopY,
         shadowOffset: {
           [alongWallAxis]: -1,
@@ -293,7 +323,8 @@ export function* loadDoor<RoomId extends string, RoomItemId extends string>(
         relativePoint: blockXyzToFineXyz({
           ...originXyz,
           // the relative point gets put halfway through the doorframe
-          [throughDoorAxis]: inHidden ? doorTunnelLengthBlocks + 0.25 : -0.25,
+          [throughDoorAxis]:
+            outIsNegative ? doorTunnelLengthBlocks + 0.25 : -0.25,
         }),
         direction: unitVectors[direction],
       },
@@ -305,8 +336,12 @@ export function* loadDoor<RoomId extends string, RoomItemId extends string>(
             addXyz(position, {
               // set the portal back to the 'back' side of the door (looking from
               // inside the room) so the character has to walk all the way to the
-              // other side of the frame to touch it
-              [throughDoorAxis]: inHidden ? -0.5 - doorTunnelLengthBlocks : 0.5,
+              // other side of the frame to touch it. The tunnel term is fixed by
+              // the door's world direction; the embed term follows the
+              // (camera-relative) hidden wall:
+              [throughDoorAxis]:
+                (outIsNegative ? -doorTunnelLengthBlocks : 0.5) +
+                invisibleWallSetBackBlocks[throughDoorAxis],
             }),
           ),
           { [alongWallAxis]: nearPostWidthInAxis },
@@ -348,7 +383,7 @@ export function* loadDoor<RoomId extends string, RoomItemId extends string>(
         renders: true,
         shadowCastTexture:
           inHidden ?
-            alongWallAxis === "x" ?
+            rotateAxisXyByCameraAngle(alongWallAxis, cameraAngle) === "x" ?
               shadowDoorFloatingThresholdX
             : shadowDoorFloatingThresholdY
           : undefined,
@@ -392,16 +427,18 @@ export function* loadDoor<RoomId extends string, RoomItemId extends string>(
                 [throughDoorAxis]: 0,
                 z: (legHeight - 0.5) * blockSizePx.z,
               } as Xyz,
-              {
-                [throughDoorAxis]: doorTunnelAabbPx[throughDoorAxis],
-              },
+              outIsNegative ?
+                {
+                  [throughDoorAxis]: doorTunnelAabbPx[throughDoorAxis],
+                }
+              : originXyz,
             )
           : undefined,
         shadowOffset: {
           // bring shadows up to the top of the legs:
           z: legHeight * blockSizePx.z,
           [throughDoorAxis]:
-            inHidden ? doorTunnelAabbPx[throughDoorAxis] : undefined,
+            outIsNegative ? doorTunnelAabbPx[throughDoorAxis] : undefined,
         },
       },
     };
@@ -426,8 +463,10 @@ export function* loadDoor<RoomId extends string, RoomItemId extends string>(
           subXyz(
             position,
             scaleXyz(unitVectors[direction], autoWalkDistanceBlocks),
-            // a bit extra if in a hidden wall:
-            inHidden ? originXyz : (
+            // positions are min-corners, so when walking into the room means
+            // travelling in the negative direction (away/left doors) the zone's
+            // position needs pulling back by its own depth:
+            outIsNegative ? originXyz : (
               { [throughDoorAxis]: stopAutoWalkDepthBlocks }
             ),
           ),

@@ -1,5 +1,6 @@
 import { maybeReflectedVector } from "../../../model/MirrorOrientation";
 import { keysIter } from "../../../utils/entries";
+import { rotateXy } from "../../../utils/vectors/rotateXy";
 import {
   type DirectionXy4,
   vectorClosestDirectionXy4,
@@ -28,14 +29,20 @@ export const charlesAppearance: ItemAppearance<
       },
     },
     room: { roomTime, items },
-    general: { spritesheetVariants },
+    general: { spritesheetVariants, cameraAngle },
   },
   currentRendering,
 }) => {
   const currentlyRenderedProps = currentRendering?.renderProps;
+  // rotate the facing by the camera angle so the directional sprite matches how
+  // charles appears once the camera has turned:
   const facingXy4 =
-    vectorClosestDirectionXy4(maybeReflectedVector(facing, isReflection)) ??
-    "towards";
+    vectorClosestDirectionXy4(
+      rotateXy(
+        maybeReflectedVector(facing, isReflection, cameraAngle),
+        cameraAngle,
+      ),
+    ) ?? "towards";
 
   const controlledByJoystick =
     roomTime === roomTimeActedOn &&

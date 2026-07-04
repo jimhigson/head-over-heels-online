@@ -17,7 +17,7 @@ export const deadlyBlockAppearance: ItemAppearance<
       config: { times, style },
       state: { disabled },
     },
-    general: { pixiRenderer, paused, spritesheetVariants },
+    general: { pixiRenderer, paused, spritesheetVariants, cameraAngle },
   },
   currentRendering,
 }) => {
@@ -36,10 +36,11 @@ export const deadlyBlockAppearance: ItemAppearance<
 
   const rendering = createSprite(
     disabled ?
-      { textureId: `${style}.disabled`, times, spritesheet }
+      { textureId: `${style}.disabled`, times, cameraAngle, spritesheet }
     : {
         animationId: style,
         times,
+        cameraAngle,
         startFramePhase: hash,
         paused,
         spritesheet,

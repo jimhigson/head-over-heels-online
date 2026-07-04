@@ -13,6 +13,7 @@ import { emptyUserSettings } from "../../store/slices/userSettings/emptyUserSett
 import { type SpriteOption } from "../../store/slices/userSettings/userSettingsSlice";
 import { store } from "../../store/store";
 import { emptyObject } from "../../utils/empty";
+import { cameraAngleBase } from "../../utils/vectors/rotateXy";
 import {
   type EditorRoomId,
   type EditorRoomItemId,
@@ -88,6 +89,7 @@ export const renderRoomPreviewImage = async (
     spriteOption: blockStackSpriteOption,
     spritesheetMeta: spritesheetMetas.BlockStack,
     upscale: selectUpscale(store.getState()),
+    cameraAngle: cameraAngleBase,
     onScreenControls: false,
     speedCoefficient: 1,
     spritesheetVariants: ssv,

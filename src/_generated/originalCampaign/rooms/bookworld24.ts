@@ -65,17 +65,29 @@ export const room = inferRoomJson({
       type: "movingPlatform",
     },
     w: {
-      config: { direction: "right", times: { y: 2 } },
+      config: { direction: "right", tiles: ["book", "book"] },
       position: { x: 0, y: 0, z: 0 },
       type: "wall",
     },
     w1: {
-      config: { direction: "towards", times: { x: 8 } },
+      config: {
+        direction: "towards",
+        tiles: [
+          "book",
+          "book",
+          "cowboy",
+          "book",
+          "book",
+          "cowboy",
+          "book",
+          "book",
+        ],
+      },
       position: { x: 0, y: 0, z: 0 },
       type: "wall",
     },
     w2: {
-      config: { direction: "right", times: { y: 2 } },
+      config: { direction: "right", tiles: ["book", "cowboy"] },
       position: { x: 0, y: 4, z: 0 },
       type: "wall",
     },

@@ -6,6 +6,7 @@ import { neverTime } from "../../../utils/neverTime";
 import { maybeRenderContainerToAnimatedSprite } from "../../../utils/pixi/renderContainerToSprite";
 import {
   type DirectionXy4,
+  rotateDirectionXy4ByCameraAngle,
   tangentAxis,
   type Xy,
 } from "../../../utils/vectors/vectors";
@@ -48,12 +49,22 @@ const createRendering = (
   times: Partial<Xy> | undefined,
   spritesheet: AppSpritesheet,
   frameCount: number,
+  cameraAngle: Xy,
 ): Container<AnimatedSprite> => {
-  const axis = tangentAxis(direction);
+  // pick the directional sprite + animation sense for how the conveyor appears
+  // once the camera has rotated:
+  const renderedDirection = rotateDirectionXy4ByCameraAngle(
+    direction,
+    cameraAngle,
+  );
+  const axis = tangentAxis(renderedDirection);
+  const reverse =
+    renderedDirection === "towards" || renderedDirection === "right";
   const sprites = createSprite({
     animationId: `conveyor.${axis}`,
-    reverse: direction === "towards" || direction === "right",
+    reverse,
     times,
+    cameraAngle,
     spritesheet,
   });
   // createSprite will return a single AnimatedSprite for a single conveyor,
@@ -68,7 +79,7 @@ const createRendering = (
   staggerAnimation(
     // createSprite given times, so will actually generate a container of AnimatedSprites
     animatedSpritesContainer,
-    direction === "towards" || direction === "right",
+    reverse,
     frameCount,
   );
 
@@ -87,7 +98,7 @@ const conveyorAppearanceImpl: ItemAppearance<
       state: { stoodOnBy, direction, disabled },
     },
     room: { roomTime },
-    general: { spritesheetVariants, pixiRenderer, paused },
+    general: { spritesheetVariants, pixiRenderer, paused, cameraAngle },
   },
   currentRendering,
 }) => {
@@ -128,7 +139,7 @@ const conveyorAppearanceImpl: ItemAppearance<
     rerender ?
       maybeRenderContainerToAnimatedSprite(
         pixiRenderer,
-        createRendering(direction, times, spritesheet, frameCount),
+        createRendering(direction, times, spritesheet, frameCount, cameraAngle),
         "conveyor.x",
         spritesheet,
       )

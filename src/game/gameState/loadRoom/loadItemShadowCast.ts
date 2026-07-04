@@ -23,13 +23,18 @@ const shadowFullBlockFlipX: ShadowCastSpriteOptions = Object.freeze({
   flipX: true,
 });
 
+// the barrier shadow art is drawn for a y-axis barrier; the x-axis variant is
+// the same art flipped. Which axis the barrier renders along swaps on odd
+// quarter camera turns, so the flip must swap with it:
 const shadowBarrier: ShadowCastSpriteOptions = Object.freeze({
   textureId: "shadow.barrier.y",
+  flipsOnOddQuarterCameraTurns: true,
 });
 
 const shadowBarrierFlipX: ShadowCastSpriteOptions = Object.freeze({
   textureId: "shadow.barrier.y",
   flipX: true,
+  flipsOnOddQuarterCameraTurns: true,
 });
 
 const shadowScroll: ShadowCastSpriteOptions = Object.freeze({

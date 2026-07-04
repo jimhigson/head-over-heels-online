@@ -1,5 +1,6 @@
 import chalk from "chalk";
 
+import { rotatingSceneryTiles } from "../../src/model/inPlaceMutators/rotatingSceneryTiles";
 import { type ItemConfigMap } from "../../src/model/json/ItemConfigMap";
 import {
   type JsonItemType,
@@ -133,6 +134,15 @@ const convertItem = async ({
         parsedWallName.isInvisible ?
           {
             direction: parsedWallName.axis === "x" ? "towards" : "right",
+            // every wall has tiles, even invisible near-side ones, so they can
+            // be rendered once the camera rotates to face them:
+            tiles: Array.from(
+              rotatingSceneryTiles(
+                planetName,
+                1,
+                position[parsedWallName.axis],
+              ),
+            ),
           }
         : {
             direction: parsedWallName.axis === "x" ? "away" : "left",

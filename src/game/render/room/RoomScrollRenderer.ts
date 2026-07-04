@@ -116,6 +116,7 @@ export class RoomScrollRenderer<
       general: {
         upscale: { gameEngineScreenSize: effectiveScreenSize },
         displaySettings,
+        cameraAngle,
       },
     } = renderContext;
 
@@ -128,14 +129,20 @@ export class RoomScrollRenderer<
         edgeLeftX: floorsEdgeLeftX,
         edgeRightX: floorsEdgeRightX,
         bottomEdgeY: floorsBottomEdgeY,
+        nearCornerX: floorsNearCornerX,
       },
       allItems: { topEdgeY: allItemsTopEdgeY },
-    } = floorsRenderExtent(room);
+    } = floorsRenderExtent(room, cameraAngle);
     // take into account the that floor isn't always rendered at 0,0:
     this.#edgeLeftXTranslated = floorsEdgeLeftX;
     this.#edgeRightXTranslated = floorsEdgeRightX;
 
-    let renderingMedianX = (floorsEdgeRightX + floorsEdgeLeftX) / 2;
+    // how horizontally lopsided the room is about its camera-near corner. At the
+    // base angle the near corner projects at exactly x=0 so this is just the
+    // extent's median (the historic behaviour); rotated, the extent carries the
+    // near corner's own projection offset, which must not read as lopsidedness:
+    let asymmetryX =
+      (floorsEdgeRightX + floorsEdgeLeftX) / 2 - floorsNearCornerX;
 
     const roomRenderingWidth = floorsEdgeRightX - floorsEdgeLeftX;
     const roomRenderingHeight = floorsBottomEdgeY - allItemsTopEdgeY;
@@ -144,11 +151,13 @@ export class RoomScrollRenderer<
     const roomFitsOnScreen = fitsInY && fitsInX;
 
     if (fitsInX && !onScreenControls) {
-      // if we have space, reduce renderingMedianX towards zero to make the room
+      // if we have space, reduce the lopsidedness correction to make the room
       // more centred in the ui, which also brings it lower in the ui, allowing more
       // of the higher parts to be seen
-      renderingMedianX /= 2;
+      asymmetryX /= 2;
     }
+
+    const renderingMedianX = floorsNearCornerX + asymmetryX;
 
     // how much to move the room up (at home position) to bring off the hud
     const bottomMargin =
@@ -175,11 +184,11 @@ export class RoomScrollRenderer<
           (roomFitsOnScreen && !onScreenControls ?
             /* similar to the original's (non-scrolling) room  positioning on screen: moving up by half
              the x offset creates movement in the 2:1 isometric projection along the x/y in-game axes;
-             also avoids the hud elements since they are set up at about 2:1 ratio 
-             
+             also avoids the hud elements since they are set up at about 2:1 ratio
+
              test on (eg #egyptus33 or #egyptus35)
              */
-            Math.abs(renderingMedianX / 2)
+            Math.abs(asymmetryX / 2)
             // ignore this adjustment on mobile since we are free to let the room render all the way down
             // to the bottom of the screen
             // ignore this adjustment if the room is wider than the screen - it tends to force a
@@ -218,7 +227,9 @@ export class RoomScrollRenderer<
       defaultUserSettings.displaySettings.showRoomScrollBounds;
 
     if (showScrollBounds) {
-      output.graphics.addChild(showRoomScrollBounds(renderContext.room));
+      output.graphics.addChild(
+        showRoomScrollBounds(renderContext.room, cameraAngle),
+      );
     }
     this.output = output;
   }
@@ -228,11 +239,14 @@ export class RoomScrollRenderer<
       general: {
         upscale: { gameEngineScreenSize: effectiveScreenSize },
         onScreenControls,
+        cameraAngle,
       },
     } = this.renderContext;
 
-    const characterProjectionInRoom =
-      projectWorldXyzToScreenXy(playablePosition);
+    const characterProjectionInRoom = projectWorldXyzToScreenXy(
+      playablePosition,
+      cameraAngle,
+    );
 
     let x: number;
     let y: number;
@@ -434,6 +448,7 @@ export class RoomScrollRenderer<
  */
 const showRoomScrollBounds = <RoomId extends string, RoomItemId extends string>(
   roomState: RoomState<RoomId, RoomItemId>,
+  cameraAngle: Xy,
 ) => {
   const {
     floors: {
@@ -443,7 +458,7 @@ const showRoomScrollBounds = <RoomId extends string, RoomItemId extends string>(
       topEdgeY: floorTopEdgeY,
     },
     allItems: { topEdgeY: allItemsTopEdgeY },
-  } = floorsRenderExtent(roomState);
+  } = floorsRenderExtent(roomState, cameraAngle);
 
   const graphics = new Graphics()
     .rect(

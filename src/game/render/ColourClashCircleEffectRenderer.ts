@@ -118,12 +118,16 @@ export class ColourClashCircleEffectRenderer<
     const {
       renderContext: {
         general: {
+          cameraAngle,
           upscale: { rotate90 },
         },
       },
     } = this;
 
-    const { x: xPx, y: yPx } = projectWorldXyzToScreenXy(playableMidXyz);
+    const { x: xPx, y: yPx } = projectWorldXyzToScreenXy(
+      playableMidXyz,
+      cameraAngle,
+    );
 
     const containerLocalBounds = this.output.graphics.getLocalBounds();
 

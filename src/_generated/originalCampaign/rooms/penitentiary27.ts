@@ -50,7 +50,19 @@ export const room = inferRoomJson({
       type: "movingPlatform",
     },
     w: {
-      config: { direction: "towards", times: { x: 8 } },
+      config: {
+        direction: "towards",
+        tiles: [
+          "loop",
+          "loop",
+          "skeleton",
+          "loop",
+          "loop",
+          "skeleton",
+          "loop",
+          "loop",
+        ],
+      },
       position: { x: 0, y: 0, z: 0 },
       type: "wall",
     },

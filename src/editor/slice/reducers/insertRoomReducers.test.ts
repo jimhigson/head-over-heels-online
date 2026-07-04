@@ -870,7 +870,7 @@ describe("placing a door tool in a non-origin subroom of a multi-chunk room", ()
           type: "wall",
           config: {
             direction: "towards",
-            times: { x: 16 },
+            tiles: Array(16).fill("plain"),
           },
           position: { x: 0, y: 0, z: 0 },
         },

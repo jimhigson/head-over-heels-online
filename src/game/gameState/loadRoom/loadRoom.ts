@@ -8,54 +8,21 @@ import {
 } from "../../../model/RoomState";
 import { type PlanetName, type SceneryName } from "../../../sprites/planets";
 import { type ScrollsRead } from "../../../store/slices/gameInPlay/gameInPlaySlice";
-import {
-  type PokesEnabled,
-  type UserSettings,
-} from "../../../store/slices/userSettings/userSettingsSlice";
+import { type UserSettings } from "../../../store/slices/userSettings/userSettingsSlice";
 import { emptyObject } from "../../../utils/empty";
-import { entries } from "../../../utils/entries";
+import { cameraAngleBase } from "../../../utils/vectors/rotateXy";
 import { findStandingOnWithHighestPriorityAndMostOverlap } from "../../collision/checkStandingOn";
-import { GridSpatialIndex } from "../../physics/gridSpace/GridSpatialIndex";
+import { SpatialIndex } from "../../physics/gridSpace/SpatialIndex";
 import { isFreeItem, isLamp, isSpatial } from "../../physics/itemPredicates";
 import { tickLampLightBeams } from "../../physics/mechanics/lightBeams";
 import { type RoomPickupsCollected } from "../GameState";
 import { setStandingOnWithoutRemovingOldFirst } from "../mutators/standingOn/setStandingOnWithoutRemovingOldFirst";
-import {
-  buildRoomJsonDirectionalIndex,
-  type RoomDirectionalIndex,
-} from "./buildRoomJsonDirectionalIndex";
-import { loadItemFromJson } from "./loadItemFromJson";
+import { buildRoomJsonDirectionalIndex } from "./buildRoomJsonDirectionalIndex";
+import { loadItems } from "./loadItems";
 import { loadOutOfBoundsItem } from "./loadOutOfBoundsItem";
 import { loadPortalsAboveAndBelow } from "./loadPortalsAboveAndBelow";
 import { loadRoomEntrySound } from "./loadRoomEntrySound";
 import { maybeLoadExtraCornerShadow } from "./maybeLoadExtraCornerShadow";
-
-function* loadItems<RoomId extends string, RoomItemId extends string>(
-  roomJson: RoomJson<RoomId, RoomItemId>,
-  directionalIndex: RoomDirectionalIndex<RoomId, RoomItemId>,
-  roomPickupsCollected: RoomPickupsCollected,
-  scrollsRead: ScrollsRead,
-  planetsLiberated: Partial<Record<PlanetName, boolean>>,
-  pokesEnabled: PokesEnabled,
-  isNewGame: boolean,
-): Generator<UnionOfAllItemInPlayTypes<RoomId>> {
-  const ent = entries(roomJson.items);
-  for (const [id, item] of ent) {
-    if (item.type === "player" && !isNewGame) {
-      continue;
-    }
-    yield* loadItemFromJson(
-      id,
-      item,
-      roomJson,
-      directionalIndex,
-      roomPickupsCollected,
-      scrollsRead,
-      planetsLiberated,
-      pokesEnabled,
-    );
-  }
-}
 
 /**
  * convert items from a flat list to an object map, key'd by their ids
@@ -129,12 +96,16 @@ export const loadRoom = <RoomId extends string, RoomItemId extends string>({
   const items: RoomStateItems<RoomId, RoomItemId> = {
     ...itemsInItemObjectMap(loadPortalsAboveAndBelow(roomJson, roomItems)),
     ...roomItems,
-    ...itemsInItemObjectMap(maybeLoadExtraCornerShadow(directionalIndex)),
+    // rooms always load at the base camera angle (rotation re-derives via
+    // reloadStructureForCamera):
+    ...itemsInItemObjectMap(
+      maybeLoadExtraCornerShadow(directionalIndex, cameraAngleBase),
+    ),
     ...(roomEntrySound ? { [roomEntrySound.id]: roomEntrySound } : undefined),
     [outOfBoundsItem.id]: outOfBoundsItem,
   };
 
-  const spatialIndex = new GridSpatialIndex(
+  const spatialIndex = new SpatialIndex(
     roomItemsIterable(items).filter(isSpatial),
   );
 

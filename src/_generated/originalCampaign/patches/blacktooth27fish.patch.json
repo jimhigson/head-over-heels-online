@@ -1,7 +1,11 @@
 [
   {
     "op": "remove",
-    "path": "/items/w1/config/times"
+    "path": "/items/w1/config/tiles/2"
+  },
+  {
+    "op": "remove",
+    "path": "/items/w1/config/tiles/1"
   },
   {
     "op": "replace",
@@ -9,16 +13,19 @@
     "value": "towards"
   },
   {
-    "op": "replace",
-    "path": "/items/w/config/direction",
-    "value": "right"
+    "op": "add",
+    "path": "/items/w/config/tiles/1",
+    "value": "plain"
   },
   {
     "op": "add",
-    "path": "/items/w/config/times",
-    "value": {
-      "y": 3
-    }
+    "path": "/items/w/config/tiles/2",
+    "value": "armour"
+  },
+  {
+    "op": "replace",
+    "path": "/items/w/config/direction",
+    "value": "right"
   },
   {
     "op": "replace",

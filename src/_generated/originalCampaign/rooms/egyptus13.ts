@@ -43,12 +43,29 @@ export const room = inferRoomJson({
       type: "teleporter",
     },
     w: {
-      config: { direction: "right", times: { y: 10 } },
+      config: {
+        direction: "right",
+        tiles: [
+          "hieroglyphics",
+          "hieroglyphics",
+          "hieroglyphics",
+          "sarcophagus",
+          "sarcophagus",
+          "hieroglyphics",
+          "hieroglyphics",
+          "hieroglyphics",
+          "sarcophagus",
+          "sarcophagus",
+        ],
+      },
       position: { x: 0, y: 0, z: 0 },
       type: "wall",
     },
     w1: {
-      config: { direction: "towards", times: { x: 3 } },
+      config: {
+        direction: "towards",
+        tiles: ["hieroglyphics", "hieroglyphics", "hieroglyphics"],
+      },
       position: { x: 0, y: 0, z: 0 },
       type: "wall",
     },
@@ -70,7 +87,10 @@ export const room = inferRoomJson({
       type: "wall",
     },
     w3: {
-      config: { direction: "towards", times: { x: 3 } },
+      config: {
+        direction: "towards",
+        tiles: ["hieroglyphics", "hieroglyphics", "hieroglyphics"],
+      },
       position: { x: 5, y: 0, z: 0 },
       type: "wall",
     },

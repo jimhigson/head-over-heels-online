@@ -6,7 +6,7 @@ import { addXyz, type Xyz } from "../../../utils/vectors/vectors";
 import { emptyRoomJsonDirectionalIndex } from "../../gameState/loadRoom/buildRoomJsonDirectionalIndex";
 import { loadItemFromJson } from "../../gameState/loadRoom/loadItemFromJson";
 import { combinePlayablesInSymbiosis } from "../../gameState/mutators/symbiosis";
-import { GridSpatialIndex } from "../gridSpace/GridSpatialIndex";
+import { SpatialIndex } from "../gridSpace/SpatialIndex";
 import { checkSpaceAvailableToPutDown } from "./puttingDown";
 
 const makeHeels = (position: Xyz) => {
@@ -83,9 +83,9 @@ describe("checkSpaceAvailableToPutDown", () => {
   test("if heels is the only item in the room, can put down", () => {
     const heels = makeHeels({ x: 0, y: 0, z: 0 });
 
-    expect(
-      checkSpaceAvailableToPutDown(heels, new GridSpatialIndex([heels])),
-    ).toBe(true);
+    expect(checkSpaceAvailableToPutDown(heels, new SpatialIndex([heels]))).toBe(
+      true,
+    );
   });
 
   test("if headOverHeels is the only item in the room, can put down", () => {
@@ -94,7 +94,7 @@ describe("checkSpaceAvailableToPutDown", () => {
     expect(
       checkSpaceAvailableToPutDown(
         headOverHeels,
-        new GridSpatialIndex([headOverHeels]),
+        new SpatialIndex([headOverHeels]),
       ),
     ).toBe(true);
   });
@@ -104,7 +104,7 @@ describe("checkSpaceAvailableToPutDown", () => {
     const block = makeBlock({ x: 0, y: 0, z: 1 });
 
     expect(
-      checkSpaceAvailableToPutDown(heels, new GridSpatialIndex([heels, block])),
+      checkSpaceAvailableToPutDown(heels, new SpatialIndex([heels, block])),
     ).toBe(false);
   });
 
@@ -116,7 +116,7 @@ describe("checkSpaceAvailableToPutDown", () => {
       expect(
         checkSpaceAvailableToPutDown(
           heels,
-          new GridSpatialIndex([heels, portableBlock]),
+          new SpatialIndex([heels, portableBlock]),
         ),
       ).toBe(true);
     });
@@ -128,7 +128,7 @@ describe("checkSpaceAvailableToPutDown", () => {
       expect(
         checkSpaceAvailableToPutDown(
           heels,
-          new GridSpatialIndex([heels, portableBlock, block]),
+          new SpatialIndex([heels, portableBlock, block]),
         ),
       ).toBe(true);
     });
@@ -140,7 +140,7 @@ describe("checkSpaceAvailableToPutDown", () => {
       expect(
         checkSpaceAvailableToPutDown(
           heels,
-          new GridSpatialIndex([heels, portableBlock, block]),
+          new SpatialIndex([heels, portableBlock, block]),
         ),
       ).toBe(false);
     });

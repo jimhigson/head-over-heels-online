@@ -35,17 +35,17 @@ export const room = inferRoomJson({
       type: "moveableDeadly",
     },
     w: {
-      config: { direction: "right", times: { y: 2 } },
+      config: { direction: "right", tiles: ["loop", "loop"] },
       position: { x: 0, y: 0, z: 0 },
       type: "wall",
     },
     w1: {
-      config: { direction: "towards", times: { x: 2 } },
+      config: { direction: "towards", tiles: ["loop", "loop"] },
       position: { x: 0, y: 0, z: 0 },
       type: "wall",
     },
     w2: {
-      config: { direction: "right", times: { y: 2 } },
+      config: { direction: "right", tiles: ["loop", "skeleton"] },
       position: { x: 0, y: 4, z: 0 },
       type: "wall",
     },
@@ -58,7 +58,7 @@ export const room = inferRoomJson({
       type: "wall",
     },
     w4: {
-      config: { direction: "towards", times: { x: 2 } },
+      config: { direction: "towards", tiles: ["loop", "skeleton"] },
       position: { x: 4, y: 0, z: 0 },
       type: "wall",
     },

@@ -7,6 +7,8 @@ import {
 import { isTextureId } from "../../../../sprites/assertIsTextureId";
 import { type TextureId } from "../../../../sprites/spritesheet/spritesheetData/makeSpritesheetData";
 import { type AppSpritesheet } from "../../../../sprites/spritesheet/variants/AppSpritesheet";
+import { rotateXy } from "../../../../utils/vectors/rotateXy";
+import { unitVectors } from "../../../../utils/vectors/unitVectors";
 import {
   type DirectionXy4,
   type DirectionXy8,
@@ -28,7 +30,7 @@ export const directionalShadowMaskAppearanceXy4 =
   ): ItemAppearance<"charles" | "monster", RenderPropsXy4, Sprite> =>
   ({
     renderContext: {
-      general: { spritesheetVariants },
+      general: { spritesheetVariants, cameraAngle },
       item: {
         state: { facing },
       },
@@ -36,7 +38,10 @@ export const directionalShadowMaskAppearanceXy4 =
     currentRendering,
   }) => {
     const currentlyRenderedProps = currentRendering?.renderProps;
-    const facingXy4 = vectorClosestDirectionXy4(facing) ?? "towards";
+    // rotate the facing by the camera angle so the shadow matches how the
+    // item appears once the camera has turned:
+    const facingXy4 =
+      vectorClosestDirectionXy4(rotateXy(facing, cameraAngle)) ?? "towards";
 
     const render =
       currentlyRenderedProps === undefined ||
@@ -103,7 +108,7 @@ export const playableShadowMaskAppearanceXy8 =
   > =>
   ({
     renderContext: {
-      general: { spritesheetVariants },
+      general: { spritesheetVariants, cameraAngle },
       item,
     },
     currentRendering,
@@ -111,12 +116,17 @@ export const playableShadowMaskAppearanceXy8 =
     const action = item.type === "sceneryPlayer" ? "idle" : item.state.action;
 
     const currentlyRenderedProps = currentRendering?.renderProps;
+    // rotate the facing by the camera angle so the shadow matches how the
+    // character appears once the camera has turned:
     const facingXy8 =
-      item.type === "sceneryPlayer" ?
-        item.config.startDirection
-      : (vectorClosestDirectionXy8(
-          item.state.visualFacingVector ?? item.state.facing,
-        ) ?? "towards");
+      vectorClosestDirectionXy8(
+        rotateXy(
+          item.type === "sceneryPlayer" ?
+            unitVectors[item.config.startDirection]
+          : (item.state.visualFacingVector ?? item.state.facing),
+          cameraAngle,
+        ),
+      ) ?? "towards";
 
     const falling = action === "falling";
 

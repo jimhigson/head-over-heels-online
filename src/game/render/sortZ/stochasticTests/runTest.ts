@@ -1,7 +1,7 @@
-import { GridSpatialIndex } from "../../../physics/gridSpace/GridSpatialIndex";
 import { type DrawOrderComparable } from "../DrawOrderComparable";
 import { type ZGraph } from "../GraphEdges";
 import { updateZEdges } from "../updateZEdges";
+import { VisualIndex } from "../VisualIndex";
 
 export const itemCount = 100;
 export const movePercentage = 0.2;
@@ -42,7 +42,7 @@ export const runTest = () => {
   const items = generateItems(itemCount);
 
   // first call with all items to build initial graph
-  const spatialIndex = new GridSpatialIndex(items.values());
+  const spatialIndex = new VisualIndex(items.values());
   const zEdgesGraph: ZGraph<TestItem> = updateZEdges(items, spatialIndex);
 
   // simulate frames:

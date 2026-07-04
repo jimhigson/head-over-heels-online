@@ -172,6 +172,7 @@ const getDragVector = (
   modifierPressed: boolean,
   draggingAlready: boolean,
   jsonItem: Iterable<EditorJsonItemUnion>,
+  cameraAngle: Xy,
 ): undefined | Xyz => {
   if (mouseDownPointingAt === undefined) {
     return undefined;
@@ -196,7 +197,11 @@ const getDragVector = (
     return undefined;
   }
 
-  const dragVectorWorld = unprojectScreenXyToWorldXyz(plane, mouseMove);
+  const dragVectorWorld = unprojectScreenXyToWorldXyz(
+    plane,
+    mouseMove,
+    cameraAngle,
+  );
 
   return modifierPressed ?
       {
@@ -276,6 +281,7 @@ export class PointerToolHandler
           mouseEvent.metaKey || mouseEvent.shiftKey,
           dragAccVec.current !== undefined,
           jsonItems,
+          storeState.levelEditor.cameraAngle,
         )
         // ignore dragging if it started in a different room:
       : undefined;

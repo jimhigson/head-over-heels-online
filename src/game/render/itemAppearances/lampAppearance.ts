@@ -1,3 +1,4 @@
+import { rotateDirectionXy4ByCameraAngle } from "../../../utils/vectors/vectors";
 import { createSprite } from "../createSprite";
 import { type ItemAppearance } from "./ItemAppearance";
 
@@ -12,7 +13,7 @@ export const lampAppearance: ItemAppearance<"lamp", LampRenderProps> = ({
       state: { activated },
       config: { direction, times },
     },
-    general: { spritesheetVariants },
+    general: { spritesheetVariants, cameraAngle },
   },
   currentRendering,
 }) => {
@@ -26,11 +27,19 @@ export const lampAppearance: ItemAppearance<"lamp", LampRenderProps> = ({
     return "no-update";
   }
 
+  // rotate the lamp's facing by the camera angle so the directional sprite
+  // matches how it appears once the camera has turned:
+  const renderedDirection = rotateDirectionXy4ByCameraAngle(
+    direction,
+    cameraAngle,
+  );
+
   return {
     output: createSprite({
-      textureId: `lamp.${activated ? "on" : "off"}.${direction}`,
+      textureId: `lamp.${activated ? "on" : "off"}.${renderedDirection}`,
       // stacked to double/triple height when the lamp has times.z:
       times,
+      cameraAngle,
       // deactivated lamps don't render in the deactivated palette, they have separate 'off' sprites:
       spritesheet: spritesheetVariants.currentMainSpritesheet(
         false,

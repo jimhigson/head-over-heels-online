@@ -1,11 +1,14 @@
 import { defaultItemProperties } from "../../../model/defaultItemProperties";
 import { type ItemInPlay } from "../../../model/ItemInPlay";
 import { type JsonItem } from "../../../model/json/JsonItem";
+import { isWallHidden } from "../../../model/json/WallJsonConfig";
 import { valuesIter } from "../../../utils/entries";
 import {
   addXyz,
   type DirectionXy4,
   originXyz,
+  rotateDirectionXy4ByCameraAngle,
+  type Xy,
 } from "../../../utils/vectors/vectors";
 import { fullBlockAabb } from "../../collision/boundingBoxes";
 import { multiplyBoundingBox } from "../../collision/multiplyBoundingBox";
@@ -42,6 +45,7 @@ export const loadFloor = <RoomId extends string, RoomItemId extends string>(
   itemId: RoomItemId,
   floorJson: JsonItem<"floor", RoomId, RoomItemId>,
   directionalIndex: RoomDirectionalIndex<RoomId, RoomItemId>,
+  cameraAngle: Xy,
 ): ItemInPlay<"floor", RoomId, RoomItemId> => {
   const {
     config: { times },
@@ -113,6 +117,15 @@ export const loadFloor = <RoomId extends string, RoomItemId extends string>(
         config: { direction },
       } = doorJson;
 
+      // the near/far asymmetry is camera-relative: the door's edge shows the 'near'
+      // amount of floor when it is on a wall facing the camera, the 'far' amount
+      // otherwise. which physical side that is depends on the rotation, so rotate
+      // the direction into camera space (a wall facing the camera is a 'hidden' one):
+      const extraFloorAmount =
+        isWallHidden(rotateDirectionXy4ByCameraAngle(direction, cameraAngle)) ?
+          extraFloorAmountForDoorsNear
+        : extraFloorAmountForDoorsFar;
+
       switch (direction) {
         case "towards":
           if (
@@ -126,10 +139,10 @@ export const loadFloor = <RoomId extends string, RoomItemId extends string>(
             !hasAdjacentFloorTo(direction)
           ) {
             adjustedSizeBlocks = addXyz(adjustedSizeBlocks, {
-              y: extraFloorAmountForDoorsNear,
+              y: extraFloorAmount,
             });
             adjustedPositionBlocks = addXyz(adjustedPositionBlocks, {
-              y: -extraFloorAmountForDoorsNear,
+              y: -extraFloorAmount,
             });
             expandedDirections.towards = true;
           }
@@ -146,7 +159,7 @@ export const loadFloor = <RoomId extends string, RoomItemId extends string>(
             !hasAdjacentFloorTo(direction)
           ) {
             adjustedSizeBlocks = addXyz(adjustedSizeBlocks, {
-              y: extraFloorAmountForDoorsFar,
+              y: extraFloorAmount,
             });
             expandedDirections.away = true;
           }
@@ -163,10 +176,10 @@ export const loadFloor = <RoomId extends string, RoomItemId extends string>(
             !hasAdjacentFloorTo(direction)
           ) {
             adjustedSizeBlocks = addXyz(adjustedSizeBlocks, {
-              x: extraFloorAmountForDoorsNear,
+              x: extraFloorAmount,
             });
             adjustedPositionBlocks = addXyz(adjustedPositionBlocks, {
-              x: -extraFloorAmountForDoorsNear,
+              x: -extraFloorAmount,
             });
             expandedDirections.right = true;
           }
@@ -183,7 +196,7 @@ export const loadFloor = <RoomId extends string, RoomItemId extends string>(
             !hasAdjacentFloorTo(direction)
           ) {
             adjustedSizeBlocks = addXyz(adjustedSizeBlocks, {
-              x: extraFloorAmountForDoorsFar,
+              x: extraFloorAmount,
             });
             expandedDirections.left = true;
           }

@@ -333,22 +333,49 @@ export const room = inferRoomJson({
       type: "switch",
     },
     w: {
-      config: { direction: "right", times: { y: 8 } },
+      config: {
+        direction: "right",
+        tiles: [
+          "coil",
+          "window1",
+          "window2",
+          "window3",
+          "coil",
+          "window1",
+          "window2",
+          "window3",
+        ],
+      },
       position: { x: 0, y: 8, z: 0 },
       type: "wall",
     },
     w1: {
-      config: { direction: "right", times: { y: 8 } },
+      config: {
+        direction: "right",
+        tiles: [
+          "coil",
+          "window1",
+          "window2",
+          "window3",
+          "coil",
+          "window1",
+          "window2",
+          "window3",
+        ],
+      },
       position: { x: 6, y: 0, z: 0 },
       type: "wall",
     },
     w2: {
-      config: { direction: "towards", times: { x: 2 } },
+      config: { direction: "towards", tiles: ["window2", "window3"] },
       position: { x: 6, y: 0, z: 0 },
       type: "wall",
     },
     w3: {
-      config: { direction: "towards", times: { x: 6 } },
+      config: {
+        direction: "towards",
+        tiles: ["coil", "window1", "window2", "window3", "coil", "window1"],
+      },
       position: { x: 0, y: 8, z: 0 },
       type: "wall",
     },
@@ -358,7 +385,7 @@ export const room = inferRoomJson({
       type: "wall",
     },
     w5: {
-      config: { direction: "towards", times: { x: 2 } },
+      config: { direction: "towards", tiles: ["window2", "window3"] },
       position: { x: 10, y: 0, z: 0 },
       type: "wall",
     },

@@ -135,14 +135,15 @@ export const unitVectorInPlace = (xyz: Xyz): Xyz => {
   return scaleXyzInPlace(xyz, 1 / l);
 };
 
-/** the corners that are visible in the isometric view */
-export const visibleCornerVectorsXyz = [
+/** all eight corners of a unit cube, as 0/1 per-axis vectors */
+export const allCornerVectorsXyz = [
   { x: 0, y: 0, z: 0 },
   { x: 0, y: 0, z: 1 },
   { x: 0, y: 1, z: 0 },
   { x: 0, y: 1, z: 1 },
   { x: 1, y: 0, z: 0 },
   { x: 1, y: 0, z: 1 },
+  { x: 1, y: 1, z: 0 },
   { x: 1, y: 1, z: 1 },
 ] as const satisfies Array<Xyz>;
 
@@ -429,6 +430,37 @@ export const rotateDirectionXy4 = (
   const step = sense === "clockwise" ? 1 : 3;
   return directionsXy4Clockwise[(i + step) % 4];
 };
+
+/** whether a 90° camera angle is an odd number of quarter-turns (which swaps the x and y axes) */
+export const cameraAngleIsOddQuarterTurn = (cameraAngle: Xy): boolean =>
+  cameraAngle.x === 0;
+
+/**
+ * rotate a 4-way facing by a 90°-increment camera angle (cos,sin), so a direction-specific
+ * sprite can be chosen for how the item appears once the camera has rotated.
+ */
+export const rotateDirectionXy4ByCameraAngle = (
+  direction: DirectionXy4,
+  cameraAngle: Xy,
+): DirectionXy4 => {
+  const clockwiseQuarterTurns =
+    cameraAngle.y === 1 ? 1
+    : cameraAngle.x === -1 ? 2
+    : cameraAngle.y === -1 ? 3
+    : 0;
+  let rotated = direction;
+  for (let turn = 0; turn < clockwiseQuarterTurns; turn++) {
+    rotated = rotateDirectionXy4(rotated, "clockwise");
+  }
+  return rotated;
+};
+
+/** rotate an x/y axis by a camera angle - swaps x↔y on an odd quarter-turn, unchanged on an even one */
+export const rotateAxisXyByCameraAngle = (
+  axis: AxisXy,
+  cameraAngle: Xy,
+): AxisXy =>
+  cameraAngleIsOddQuarterTurn(cameraAngle) ? perpendicularAxisXy(axis) : axis;
 
 export const distanceSquaredXy = (
   { x: x1, y: y1 }: Xyz,

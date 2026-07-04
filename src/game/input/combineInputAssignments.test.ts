@@ -161,6 +161,14 @@ it("combines two partial input assignments without duplicates", () => {
         gamepadButtons: [],
         keys: [],
       },
+      rotateCameraClockwise: {
+        gamepadButtons: [],
+        keys: [],
+      },
+      rotateCameraAnticlockwise: {
+        gamepadButtons: [],
+        keys: [],
+      },
       towards: {
         gamepadButtons: [],
         keys: [],
@@ -338,6 +346,14 @@ it("combines two partial input with duplicates by later values overriding earlie
         keys: [],
       },
       toggleShowFps: {
+        gamepadButtons: [],
+        keys: [],
+      },
+      rotateCameraClockwise: {
+        gamepadButtons: [],
+        keys: [],
+      },
+      rotateCameraAnticlockwise: {
         gamepadButtons: [],
         keys: [],
       },

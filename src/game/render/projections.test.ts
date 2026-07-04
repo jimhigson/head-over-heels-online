@@ -1,6 +1,12 @@
 import { describe, expect, test } from "vitest";
 
-import { unprojectScreenXyToWorldXyz } from "./projections";
+import { allCameraAngles } from "../../utils/vectors/rotateXy";
+import { type Xyz } from "../../utils/vectors/vectors";
+import {
+  projectWorldXyzToScreenXy,
+  unprojectScreenXyToWorldXyz,
+  unprojectScreenXyToWorldXyzOnFace,
+} from "./projections";
 
 /* define some places using the normal vector to the plane */
 const xyPlane = { x: 0, y: 0, z: 1 };
@@ -90,4 +96,69 @@ describe("unprojectScreenXyToWorldXyzOnFace", () => {
       });
     });
   });
+});
+
+describe("unprojectScreenXyToWorldXyzOnFace at every camera angle", () => {
+  /**
+   * projecting a world point on a face to the screen, then unprojecting the
+   * screen point back onto the same face, recovers the original world point -
+   * at any camera angle
+   */
+  const roundTripCases: Array<{
+    describeFace: string;
+    pointOnPlane: Xyz;
+    plane: Xyz;
+    worldPoint: Xyz;
+  }> = [
+    {
+      describeFace: "top (xy) face",
+      pointOnPlane: { x: 0, y: 0, z: 24 },
+      plane: { x: 0, y: 0, z: 1 },
+      worldPoint: { x: 16, y: 32, z: 24 },
+    },
+    {
+      describeFace: "right (yz) face",
+      pointOnPlane: { x: 16, y: 0, z: 0 },
+      plane: { x: -1, y: 0, z: 0 },
+      worldPoint: { x: 16, y: 8, z: 10 },
+    },
+    {
+      describeFace: "towards (xz) face",
+      pointOnPlane: { x: 0, y: 32, z: 0 },
+      plane: { x: 0, y: -1, z: 0 },
+      worldPoint: { x: 12, y: 32, z: 20 },
+    },
+    {
+      describeFace: "away (xz) face",
+      pointOnPlane: { x: 0, y: 48, z: 0 },
+      plane: { x: 0, y: 1, z: 0 },
+      worldPoint: { x: 20, y: 48, z: 4 },
+    },
+  ];
+
+  test.for(
+    allCameraAngles.flatMap((cameraAngle) =>
+      roundTripCases.map((roundTripCase) => ({
+        cameraAngle,
+        ...roundTripCase,
+      })),
+    ),
+  )(
+    "$describeFace round-trips (camera angle $cameraAngle.x,$cameraAngle.y)",
+    ({ cameraAngle, pointOnPlane, plane, worldPoint }) => {
+      const scr = projectWorldXyzToScreenXy(worldPoint, cameraAngle);
+      expect(
+        unprojectScreenXyToWorldXyzOnFace(
+          pointOnPlane,
+          plane,
+          scr,
+          cameraAngle,
+        ),
+      ).toEqual({
+        x: expect.closeTo(worldPoint.x),
+        y: expect.closeTo(worldPoint.y),
+        z: expect.closeTo(worldPoint.z),
+      });
+    },
+  );
 });

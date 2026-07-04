@@ -86,20 +86,54 @@
     "value": 0
   },
   {
-    "op": "remove",
-    "path": "/items/w5/config/tiles"
+    "op": "replace",
+    "path": "/items/w5/config/tiles/1",
+    "value": "wall"
+  },
+  {
+    "op": "replace",
+    "path": "/items/w5/config/tiles/0",
+    "value": "window"
+  },
+  {
+    "op": "add",
+    "path": "/items/w5/config/tiles/2",
+    "value": "shield"
+  },
+  {
+    "op": "add",
+    "path": "/items/w5/config/tiles/3",
+    "value": "wall"
+  },
+  {
+    "op": "add",
+    "path": "/items/w5/config/tiles/4",
+    "value": "shield"
+  },
+  {
+    "op": "add",
+    "path": "/items/w5/config/tiles/5",
+    "value": "wall"
+  },
+  {
+    "op": "add",
+    "path": "/items/w5/config/tiles/6",
+    "value": "window"
+  },
+  {
+    "op": "add",
+    "path": "/items/w5/config/tiles/7",
+    "value": "window"
+  },
+  {
+    "op": "add",
+    "path": "/items/w5/config/tiles/8",
+    "value": "wall"
   },
   {
     "op": "replace",
     "path": "/items/w5/config/direction",
     "value": "right"
-  },
-  {
-    "op": "add",
-    "path": "/items/w5/config/times",
-    "value": {
-      "y": 9
-    }
   },
   {
     "op": "replace",
@@ -147,8 +181,64 @@
     "value": 0
   },
   {
-    "op": "remove",
-    "path": "/items/w3/config/tiles"
+    "op": "replace",
+    "path": "/items/w3/config/tiles/5",
+    "value": "wall"
+  },
+  {
+    "op": "replace",
+    "path": "/items/w3/config/tiles/4",
+    "value": "window"
+  },
+  {
+    "op": "replace",
+    "path": "/items/w3/config/tiles/2",
+    "value": "wall"
+  },
+  {
+    "op": "replace",
+    "path": "/items/w3/config/tiles/1",
+    "value": "shield"
+  },
+  {
+    "op": "replace",
+    "path": "/items/w3/config/tiles/0",
+    "value": "wall"
+  },
+  {
+    "op": "add",
+    "path": "/items/w3/config/tiles/6",
+    "value": "shield"
+  },
+  {
+    "op": "add",
+    "path": "/items/w3/config/tiles/7",
+    "value": "wall"
+  },
+  {
+    "op": "add",
+    "path": "/items/w3/config/tiles/8",
+    "value": "shield"
+  },
+  {
+    "op": "add",
+    "path": "/items/w3/config/tiles/9",
+    "value": "wall"
+  },
+  {
+    "op": "add",
+    "path": "/items/w3/config/tiles/10",
+    "value": "window"
+  },
+  {
+    "op": "add",
+    "path": "/items/w3/config/tiles/11",
+    "value": "window"
+  },
+  {
+    "op": "add",
+    "path": "/items/w3/config/tiles/12",
+    "value": "wall"
   },
   {
     "op": "replace",
@@ -156,21 +246,47 @@
     "value": "towards"
   },
   {
-    "op": "add",
-    "path": "/items/w3/config/times",
-    "value": {
-      "x": 13
-    }
-  },
-  {
     "op": "replace",
     "path": "/items/w2/position/y",
     "value": 0
   },
   {
+    "op": "remove",
+    "path": "/items/w2/config/tiles/8"
+  },
+  {
+    "op": "remove",
+    "path": "/items/w2/config/tiles/7"
+  },
+  {
+    "op": "remove",
+    "path": "/items/w2/config/tiles/6"
+  },
+  {
+    "op": "remove",
+    "path": "/items/w2/config/tiles/5"
+  },
+  {
+    "op": "remove",
+    "path": "/items/w2/config/tiles/4"
+  },
+  {
+    "op": "remove",
+    "path": "/items/w2/config/tiles/3"
+  },
+  {
+    "op": "remove",
+    "path": "/items/w2/config/tiles/2"
+  },
+  {
     "op": "replace",
-    "path": "/items/w2/config/times/y",
-    "value": 2
+    "path": "/items/w2/config/tiles/1",
+    "value": "shield"
+  },
+  {
+    "op": "replace",
+    "path": "/items/w2/config/tiles/0",
+    "value": "wall"
   },
   {
     "op": "replace",
@@ -183,18 +299,9 @@
     "value": 6
   },
   {
-    "op": "remove",
-    "path": "/items/w1/config/times"
-  },
-  {
     "op": "replace",
     "path": "/items/w1/config/direction",
     "value": "left"
-  },
-  {
-    "op": "add",
-    "path": "/items/w1/config/tiles",
-    "value": ["wall", "shield"]
   },
   {
     "op": "replace",
@@ -208,17 +315,52 @@
   },
   {
     "op": "remove",
-    "path": "/items/w/config/times"
+    "path": "/items/w/config/tiles/12"
+  },
+  {
+    "op": "remove",
+    "path": "/items/w/config/tiles/11"
+  },
+  {
+    "op": "remove",
+    "path": "/items/w/config/tiles/10"
+  },
+  {
+    "op": "remove",
+    "path": "/items/w/config/tiles/9"
+  },
+  {
+    "op": "remove",
+    "path": "/items/w/config/tiles/8"
+  },
+  {
+    "op": "remove",
+    "path": "/items/w/config/tiles/7"
+  },
+  {
+    "op": "remove",
+    "path": "/items/w/config/tiles/6"
+  },
+  {
+    "op": "remove",
+    "path": "/items/w/config/tiles/5"
+  },
+  {
+    "op": "remove",
+    "path": "/items/w/config/tiles/4"
+  },
+  {
+    "op": "remove",
+    "path": "/items/w/config/tiles/3"
+  },
+  {
+    "op": "remove",
+    "path": "/items/w/config/tiles/2"
   },
   {
     "op": "replace",
     "path": "/items/w/config/direction",
     "value": "away"
-  },
-  {
-    "op": "add",
-    "path": "/items/w/config/tiles",
-    "value": ["wall", "shield"]
   },
   {
     "op": "replace",

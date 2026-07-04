@@ -1,12 +1,11 @@
 [
   {
     "op": "remove",
-    "path": "/items/w1/config/times/y"
+    "path": "/items/w1/config/tiles/7"
   },
   {
-    "op": "add",
-    "path": "/items/w1/config/times/x",
-    "value": 6
+    "op": "remove",
+    "path": "/items/w1/config/tiles/6"
   },
   {
     "op": "replace",
@@ -14,13 +13,14 @@
     "value": "towards"
   },
   {
-    "op": "remove",
-    "path": "/items/w/config/times/x"
+    "op": "add",
+    "path": "/items/w/config/tiles/6",
+    "value": "hieroglyphics"
   },
   {
     "op": "add",
-    "path": "/items/w/config/times/y",
-    "value": 8
+    "path": "/items/w/config/tiles/7",
+    "value": "hieroglyphics"
   },
   {
     "op": "replace",

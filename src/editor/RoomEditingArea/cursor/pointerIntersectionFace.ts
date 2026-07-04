@@ -1,24 +1,31 @@
 import {
-  projectBottomCentre,
-  projectTopLeft,
-  projectTopRight,
+  projectApparentBottomCentre,
+  projectApparentTopLeft,
+  projectApparentTopRight,
 } from "../../../game/render/sortZ/projectAabbCorners";
+import { rotateXyzByInverseCameraAngle } from "../../../utils/vectors/rotateXy";
 import { unitVectors } from "../../../utils/vectors/unitVectors";
 import { scaleXyz, type Xy, type Xyz } from "../../../utils/vectors/vectors";
 import { type EditorUnionOfAllItemInPlayTypes } from "../../editorTypes";
 import { type Tool } from "../interactivity/Tool";
 
 const up = { z: 1, x: 0, y: 0 };
+/** the apparent (camera-space) face on the screen-lower-left of an item */
 const towards = { z: 0, x: 0, y: -1 };
+/** the apparent (camera-space) face on the screen-right of an item */
 const right = { z: 0, x: -1, y: 0 };
 
 /**
- * if we already know that the pointer intersects an item, get the face the pointer is over
+ * if we already know that the pointer intersects an item, get the face the
+ * pointer is over, as a physical (world-space) face normal - at rotated camera
+ * angles the apparent face under the pointer belongs to a different physical
+ * face of the item
  */
 export const pointerIntersectionFace = (
   item: EditorUnionOfAllItemInPlayTypes,
   { x, y }: Xy,
   tool: Tool,
+  cameraAngle: Xy,
 ): Xyz => {
   if (
     tool.type === "item" &&
@@ -59,18 +66,19 @@ export const pointerIntersectionFace = (
   const { position } = item.state;
   const { aabb } = item;
 
-  const bottomCentre = projectBottomCentre(position);
-  const topLeft = projectTopLeft(position, aabb);
-  const topRight = projectTopRight(position, aabb);
+  const bottomCentre = projectApparentBottomCentre(position, aabb, cameraAngle);
+  const topLeft = projectApparentTopLeft(position, aabb, cameraAngle);
+  const topRight = projectApparentTopRight(position, aabb, cameraAngle);
 
   const aboveXLine = y < topLeft.y - (topLeft.x - x) / 2;
 
-  if (aboveXLine) {
-    const aboveYLine = y < topRight.y - (x - topRight.x) / 2;
+  const apparentFace =
+    aboveXLine ?
+      y < topRight.y - (x - topRight.x) / 2 ?
+        up
+      : right
+    : x < bottomCentre.x ? towards
+    : right;
 
-    return aboveYLine ? up : right;
-  }
-  const leftOfZLine = x < bottomCentre.x;
-
-  return leftOfZLine ? towards : right;
+  return rotateXyzByInverseCameraAngle(apparentFace, cameraAngle);
 };

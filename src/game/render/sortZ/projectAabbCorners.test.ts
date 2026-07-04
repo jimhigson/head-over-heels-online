@@ -1,12 +1,18 @@
 import { expect, test } from "vitest";
 
+import { cameraAngleBase } from "../../../utils/vectors/rotateXy";
 import { originXyz } from "../../../utils/vectors/vectors";
 import { projectAabbAxes } from "./projectAabbCorners";
 
 const unitCubeSize = { x: 1, y: 1, z: 1 };
 
 test("allAxesProjections for unit cube at origin", () => {
-  const projections = projectAabbAxes({}, originXyz, unitCubeSize);
+  const projections = projectAabbAxes(
+    {},
+    originXyz,
+    unitCubeSize,
+    cameraAngleBase,
+  );
 
   // projected size is always 2x2x2 for a unit cube
 
@@ -22,7 +28,12 @@ test("allAxesProjections for unit cube at origin", () => {
 });
 
 test("allAxesProjections for unit cube one unit up", () => {
-  const projections = projectAabbAxes({}, { x: 0, y: 0, z: 1 }, unitCubeSize);
+  const projections = projectAabbAxes(
+    {},
+    { x: 0, y: 0, z: 1 },
+    unitCubeSize,
+    cameraAngleBase,
+  );
 
   // projected size is always 2x2x2 for a unit cube
 
@@ -38,7 +49,12 @@ test("allAxesProjections for unit cube one unit up", () => {
 });
 
 test("allAxesProjections for unit cube one unit over in x", () => {
-  const projections = projectAabbAxes({}, { x: 1, y: 0, z: 0 }, unitCubeSize);
+  const projections = projectAabbAxes(
+    {},
+    { x: 1, y: 0, z: 0 },
+    unitCubeSize,
+    cameraAngleBase,
+  );
 
   // projected size is always 2x2x2 for a unit cube
   // should never change from origin projection in the axis we move in (x)
@@ -54,11 +70,16 @@ test("allAxesProjections for unit cube one unit over in x", () => {
 });
 
 test("allAxesProjections for 2 in x cuboid at origin", () => {
-  const projections = projectAabbAxes({}, originXyz, {
-    x: 2,
-    y: 1,
-    z: 1,
-  });
+  const projections = projectAabbAxes(
+    {},
+    originXyz,
+    {
+      x: 2,
+      y: 1,
+      z: 1,
+    },
+    cameraAngleBase,
+  );
 
   // projected size is always 3x2x3 for a unit cube
 
@@ -75,12 +96,18 @@ test("allAxesProjections for 2 in x cuboid at origin", () => {
 });
 
 test("floor and wall adjacent on y axis", () => {
-  const projectionFloor = projectAabbAxes({}, originXyz, unitCubeSize);
+  const projectionFloor = projectAabbAxes(
+    {},
+    originXyz,
+    unitCubeSize,
+    cameraAngleBase,
+  );
 
   const projectionWall = projectAabbAxes(
     {},
     { x: 1, y: 0, z: 1 },
     unitCubeSize,
+    cameraAngleBase,
   );
 
   // not x-adjacent:
@@ -95,12 +122,18 @@ test("floor and wall adjacent on y axis", () => {
 });
 
 test("floor and wall adjacent on x axis", () => {
-  const projectionFloor = projectAabbAxes({}, originXyz, unitCubeSize);
+  const projectionFloor = projectAabbAxes(
+    {},
+    originXyz,
+    unitCubeSize,
+    cameraAngleBase,
+  );
 
   const projectionWall = projectAabbAxes(
     {},
     { x: 0, y: 1, z: 1 },
     unitCubeSize,
+    cameraAngleBase,
   );
 
   // not y-adjacent:

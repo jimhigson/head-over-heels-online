@@ -38,8 +38,9 @@
     "value": 6
   },
   {
-    "op": "remove",
-    "path": "/items/w3/config/times"
+    "op": "replace",
+    "path": "/items/w3/config/tiles/1",
+    "value": "book"
   },
   {
     "op": "replace",
@@ -47,18 +48,12 @@
     "value": "away"
   },
   {
-    "op": "add",
-    "path": "/items/w3/config/tiles",
-    "value": ["book", "book"]
+    "op": "remove",
+    "path": "/items/w1/config/tiles/5"
   },
   {
     "op": "remove",
-    "path": "/items/w1/config/times/y"
-  },
-  {
-    "op": "add",
-    "path": "/items/w1/config/times/x",
-    "value": 4
+    "path": "/items/w1/config/tiles/4"
   },
   {
     "op": "replace",
@@ -66,13 +61,24 @@
     "value": "towards"
   },
   {
-    "op": "remove",
-    "path": "/items/w/config/times/x"
+    "op": "add",
+    "path": "/items/w/config/tiles/2",
+    "value": "cowboy"
   },
   {
     "op": "add",
-    "path": "/items/w/config/times/y",
-    "value": 6
+    "path": "/items/w/config/tiles/3",
+    "value": "book"
+  },
+  {
+    "op": "add",
+    "path": "/items/w/config/tiles/4",
+    "value": "book"
+  },
+  {
+    "op": "add",
+    "path": "/items/w/config/tiles/5",
+    "value": "cowboy"
   },
   {
     "op": "replace",

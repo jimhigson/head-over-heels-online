@@ -64,7 +64,9 @@ export const addPerimeterWallsToRoom = <
           type: "wall",
           config: {
             direction,
-            tiles: y === 0 ? [] : [rotatingScenery(roomJson.planet, x)],
+            // every wall (including invisible near walls) needs a tile per block,
+            // so its length - and therefore its collision - is correct:
+            tiles: [rotatingScenery(roomJson.planet, x)],
           },
           position: { x, y, z: 0 },
         });
@@ -81,7 +83,7 @@ export const addPerimeterWallsToRoom = <
           type: "wall",
           config: {
             direction,
-            tiles: x === 0 ? [] : [rotatingScenery(roomJson.planet, y)],
+            tiles: [rotatingScenery(roomJson.planet, y)],
           },
           position: { x, y, z: 0 },
         });

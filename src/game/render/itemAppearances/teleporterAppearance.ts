@@ -17,7 +17,7 @@ export const teleporterAppearance: ItemAppearance<
     isReflection,
     item,
     room,
-    general: { paused, spritesheetVariants },
+    general: { paused, spritesheetVariants, cameraAngle },
   },
   currentRendering,
 }) => {
@@ -55,12 +55,14 @@ export const teleporterAppearance: ItemAppearance<
         createSprite({
           animationId: `${type}.flashing`,
           times,
+          cameraAngle,
           paused,
           spritesheet,
         })
       : createSprite({
           textureId: activated ? type : "block.artificial",
           times,
+          cameraAngle,
           spritesheet,
         }),
     renderProps: { flashing, activated },

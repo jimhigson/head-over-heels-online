@@ -80,48 +80,55 @@ jobs:
           # ROOM SNAPSHOTS           
           # Ubuntu
           ## chrom(ium) based - these run quite fast on github so 2 runners each:
-          - { os: ubuntu-24.04-arm, suite: roomSnapshots, projectOption: --project chromium-desktop, batch_number: 0, batch_count: 2, parallel_tests: 2 }
-          - { os: ubuntu-24.04-arm, suite: roomSnapshots, projectOption: --project chromium-desktop, batch_number: 1, batch_count: 2, parallel_tests: 2 }
+          - { os: ubuntu-24.04-arm, suite: roomSnapshots.spec.ts, projectOption: --project chromium-desktop, batch_number: 0, batch_count: 2, parallel_tests: 2 }
+          - { os: ubuntu-24.04-arm, suite: roomSnapshots.spec.ts, projectOption: --project chromium-desktop, batch_number: 1, batch_count: 2, parallel_tests: 2 }
 
           ### mobile chrome on playwright is slower than desktop so 1 more runner:
-          - { os: ubuntu-24.04-arm, suite: roomSnapshots, projectOption: --project mobile-chrome, batch_number: 0, batch_count: 3, parallel_tests: 2 }
-          - { os: ubuntu-24.04-arm, suite: roomSnapshots, projectOption: --project mobile-chrome, batch_number: 1, batch_count: 3, parallel_tests: 2 }
-          - { os: ubuntu-24.04-arm, suite: roomSnapshots, projectOption: --project mobile-chrome, batch_number: 2, batch_count: 3, parallel_tests: 2 }
+          - { os: ubuntu-24.04-arm, suite: roomSnapshots.spec.ts, projectOption: --project mobile-chrome, batch_number: 0, batch_count: 3, parallel_tests: 2 }
+          - { os: ubuntu-24.04-arm, suite: roomSnapshots.spec.ts, projectOption: --project mobile-chrome, batch_number: 1, batch_count: 3, parallel_tests: 2 }
+          - { os: ubuntu-24.04-arm, suite: roomSnapshots.spec.ts, projectOption: --project mobile-chrome, batch_number: 2, batch_count: 3, parallel_tests: 2 }
 
           ## webkit/safari based - these run a bit slower on github so 1 more runners each,
           ## mobile is still slower than desktop:
           # (neglecting to run all to keep runner count down)
-          - { os: ubuntu-24.04-arm, suite: roomSnapshots, projectOption: --project webkit-desktop, batch_number: 0, batch_count: 3, parallel_tests: 2 }
-          #- { os: ubuntu-24.04-arm, suite: roomSnapshots, projectOption: --project webkit-desktop, batch_number: 1, batch_count: 3, parallel_tests: 2 }
-          - { os: ubuntu-24.04-arm, suite: roomSnapshots, projectOption: --project webkit-desktop, batch_number: 2, batch_count: 3, parallel_tests: 2 }
+          - { os: ubuntu-24.04-arm, suite: roomSnapshots.spec.ts, projectOption: --project webkit-desktop, batch_number: 0, batch_count: 3, parallel_tests: 2 }
+          #- { os: ubuntu-24.04-arm, suite: roomSnapshots.spec.ts, projectOption: --project webkit-desktop, batch_number: 1, batch_count: 3, parallel_tests: 2 }
+          - { os: ubuntu-24.04-arm, suite: roomSnapshots.spec.ts, projectOption: --project webkit-desktop, batch_number: 2, batch_count: 3, parallel_tests: 2 }
 
           ### and mobile:
           # (neglecting to run all to keep runner count down)
-          #- { os: ubuntu-24.04-arm, suite: roomSnapshots, projectOption: --project mobile-safari, batch_number: 0, batch_count: 5, parallel_tests: 2 }
-          - { os: ubuntu-24.04-arm, suite: roomSnapshots, projectOption: --project mobile-safari, batch_number: 1, batch_count: 5, parallel_tests: 2 }
-          #- { os: ubuntu-24.04-arm, suite: roomSnapshots, projectOption: --project mobile-safari, batch_number: 2, batch_count: 5, parallel_tests: 2 }
-          - { os: ubuntu-24.04-arm, suite: roomSnapshots, projectOption: --project mobile-safari, batch_number: 3, batch_count: 5, parallel_tests: 2 }
-          #- { os: ubuntu-24.04-arm, suite: roomSnapshots, projectOption: --project mobile-safari, batch_number: 4, batch_count: 5, parallel_tests: 2 }
+          #- { os: ubuntu-24.04-arm, suite: roomSnapshots.spec.ts, projectOption: --project mobile-safari, batch_number: 0, batch_count: 5, parallel_tests: 2 }
+          - { os: ubuntu-24.04-arm, suite: roomSnapshots.spec.ts, projectOption: --project mobile-safari, batch_number: 1, batch_count: 5, parallel_tests: 2 }
+          #- { os: ubuntu-24.04-arm, suite: roomSnapshots.spec.ts, projectOption: --project mobile-safari, batch_number: 2, batch_count: 5, parallel_tests: 2 }
+          - { os: ubuntu-24.04-arm, suite: roomSnapshots.spec.ts, projectOption: --project mobile-safari, batch_number: 3, batch_count: 5, parallel_tests: 2 }
+          #- { os: ubuntu-24.04-arm, suite: roomSnapshots.spec.ts, projectOption: --project mobile-safari, batch_number: 4, batch_count: 5, parallel_tests: 2 }
 
           # Windows - chromium only (no webkit/safari, no mobile browsers)
           # windows runners are very low-spec so keep to one parallel test at a time
           # Win runners are slow so they get more batches to even it out
           # but not running every one since a representative sample of rooms
           # is sufficient for cross-OS differences, and this takes up too many agents on ci/cd:
-          - { os: windows-latest, suite: roomSnapshots, projectOption: --project chromium-desktop, batch_number: 0, batch_count: 14, parallel_tests: 1, no_toppy: "1" }
-          # - { os: windows-latest, suite: roomSnapshots, projectOption: --project chromium-desktop, batch_number: 1, batch_count: 14, parallel_tests: 1, no_toppy: "1" }
-          # - { os: windows-latest, suite: roomSnapshots, projectOption: --project chromium-desktop, batch_number: 2, batch_count: 14, parallel_tests: 1, no_toppy: "1" }
-          # - { os: windows-latest, suite: roomSnapshots, projectOption: --project chromium-desktop, batch_number: 3, batch_count: 14, parallel_tests: 1, no_toppy: "1" }
-          - { os: windows-latest, suite: roomSnapshots, projectOption: --project chromium-desktop, batch_number: 4, batch_count: 14, parallel_tests: 1, no_toppy: "1" }
-          # - { os: windows-latest, suite: roomSnapshots, projectOption: --project chromium-desktop, batch_number: 5, batch_count: 14, parallel_tests: 1, no_toppy: "1" }
-          # - { os: windows-latest, suite: roomSnapshots, projectOption: --project chromium-desktop, batch_number: 6, batch_count: 14, parallel_tests: 1, no_toppy: "1" }
-          # - { os: windows-latest, suite: roomSnapshots, projectOption: --project chromium-desktop, batch_number: 7, batch_count: 14, parallel_tests: 1, no_toppy: "1" }
-          - { os: windows-latest, suite: roomSnapshots, projectOption: --project chromium-desktop, batch_number: 8, batch_count: 14, parallel_tests: 1, no_toppy: "1" }
-          # - { os: windows-latest, suite: roomSnapshots, projectOption: --project chromium-desktop, batch_number: 9, batch_count: 14, parallel_tests: 1, no_toppy: "1" }
-          # - { os: windows-latest, suite: roomSnapshots, projectOption: --project chromium-desktop, batch_number: 10, batch_count: 14, parallel_tests: 1, no_toppy: "1" }
-          # - { os: windows-latest, suite: roomSnapshots, projectOption: --project chromium-desktop, batch_number: 11, batch_count: 14, parallel_tests: 1, no_toppy: "1" }
-          # - { os: windows-latest, suite: roomSnapshots, projectOption: --project chromium-desktop, batch_number: 12, batch_count: 14, parallel_tests: 1, no_toppy: "1" }
-          - { os: windows-latest, suite: roomSnapshots, projectOption: --project chromium-desktop, batch_number: 13, batch_count: 14, parallel_tests: 1, no_toppy: "1" }
+          - { os: windows-latest, suite: roomSnapshots.spec.ts, projectOption: --project chromium-desktop, batch_number: 0, batch_count: 14, parallel_tests: 1, no_toppy: "1" }
+          # - { os: windows-latest, suite: roomSnapshots.spec.ts, projectOption: --project chromium-desktop, batch_number: 1, batch_count: 14, parallel_tests: 1, no_toppy: "1" }
+          # - { os: windows-latest, suite: roomSnapshots.spec.ts, projectOption: --project chromium-desktop, batch_number: 2, batch_count: 14, parallel_tests: 1, no_toppy: "1" }
+          # - { os: windows-latest, suite: roomSnapshots.spec.ts, projectOption: --project chromium-desktop, batch_number: 3, batch_count: 14, parallel_tests: 1, no_toppy: "1" }
+          - { os: windows-latest, suite: roomSnapshots.spec.ts, projectOption: --project chromium-desktop, batch_number: 4, batch_count: 14, parallel_tests: 1, no_toppy: "1" }
+          # - { os: windows-latest, suite: roomSnapshots.spec.ts, projectOption: --project chromium-desktop, batch_number: 5, batch_count: 14, parallel_tests: 1, no_toppy: "1" }
+          # - { os: windows-latest, suite: roomSnapshots.spec.ts, projectOption: --project chromium-desktop, batch_number: 6, batch_count: 14, parallel_tests: 1, no_toppy: "1" }
+          # - { os: windows-latest, suite: roomSnapshots.spec.ts, projectOption: --project chromium-desktop, batch_number: 7, batch_count: 14, parallel_tests: 1, no_toppy: "1" }
+          - { os: windows-latest, suite: roomSnapshots.spec.ts, projectOption: --project chromium-desktop, batch_number: 8, batch_count: 14, parallel_tests: 1, no_toppy: "1" }
+          # - { os: windows-latest, suite: roomSnapshots.spec.ts, projectOption: --project chromium-desktop, batch_number: 9, batch_count: 14, parallel_tests: 1, no_toppy: "1" }
+          # - { os: windows-latest, suite: roomSnapshots.spec.ts, projectOption: --project chromium-desktop, batch_number: 10, batch_count: 14, parallel_tests: 1, no_toppy: "1" }
+          # - { os: windows-latest, suite: roomSnapshots.spec.ts, projectOption: --project chromium-desktop, batch_number: 11, batch_count: 14, parallel_tests: 1, no_toppy: "1" }
+          # - { os: windows-latest, suite: roomSnapshots.spec.ts, projectOption: --project chromium-desktop, batch_number: 12, batch_count: 14, parallel_tests: 1, no_toppy: "1" }
+          - { os: windows-latest, suite: roomSnapshots.spec.ts, projectOption: --project chromium-desktop, batch_number: 13, batch_count: 14, parallel_tests: 1, no_toppy: "1" }
+
+          # ROTATED ROOM SNAPSHOTS - the rotate-camera-test db campaign captured
+          # at all four camera angles, on a single agent. Chromium/Linux only,
+          # since rotation is unlikely to expose browser-specific rendering
+          # differences. The campaign spec loads from the db (supabase), so needs
+          # it reachable from CI:
+          - { os: ubuntu-24.04-arm, suite: "roomSnapshotsRotatedCampaign.spec.ts", projectOption: --project chromium-desktop }
 
           # LUT SNAPSHOTS - single batch per os/browser combo
           - { os: ubuntu-24.04-arm, suite: lutSnapshot, projectOption: "--project chromium-desktop --project webkit-desktop --project mobile-chrome --project mobile-safari" }
@@ -153,6 +160,7 @@ jobs:
         || matrix.suite == 'menuSnapshotsMainMenu' && format('MnuMain {0}', contains(matrix.os, 'windows') && 'Win' || 'Lnx')
         || matrix.suite == 'settingsReflectInGame' && 'Settings'
         || matrix.suite == 'spritesPage' && 'Sprites'
+        || startsWith(matrix.suite, 'roomSnapshotsRotated') && 'Rotated'
         || matrix.suite == '' && format('All:{0}',
             contains(matrix.projectOption, 'mobile-safari-portrait') && 'mobile-safari-portrait'
               || matrix.projectOption)

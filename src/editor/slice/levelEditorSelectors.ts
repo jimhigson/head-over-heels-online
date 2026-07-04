@@ -1,10 +1,8 @@
 import { createSelector } from "@reduxjs/toolkit";
 
-import { loadRoom } from "../../game/gameState/loadRoom/loadRoom";
 import { floorsRenderExtent } from "../../game/render/room/floorsExtent";
 import { roomVerticalLink } from "../../model/RoomJson";
-import { emptyUserSettings } from "../../store/slices/userSettings/emptyUserSettings";
-import { emptyObject } from "../../utils/empty";
+import { type EditorRootState } from "../../store/store";
 import {
   type EditorJsonItemUnion,
   type EditorRoomId,
@@ -13,23 +11,25 @@ import {
   type EditorRoomState,
 } from "../editorTypes";
 import { type LevelEditorState } from "./levelEditorSlice";
+import { loadEditorRoom } from "./loadEditorRoom";
+
+const selectEditorCameraAngleFromRoot = (state: EditorRootState) =>
+  state.levelEditor.cameraAngle;
 
 /**
- * Selector that loads the current room state from the JSON.
- * Memoized so it only recomputes when the room JSON changes.
+ * Selector that loads the current room state from the JSON, with its
+ * camera-relative structure (walls/doors/floors) derived for the editor's
+ * current view angle. Memoized so it only recomputes when the room JSON or
+ * the view angle changes.
  */
 export const selectEditorRoomState = createSelector(
-  [(state) => selectCurrentRoomJsonFromLevelEditorState(state.levelEditor)],
-  (roomJson): EditorRoomState => {
-    return loadRoom({
-      roomJson,
-      roomPickupsCollected: emptyObject,
-      scrollsRead: emptyObject,
-      // display heads and heels in their starting rooms:
-      isNewGame: true,
-      userSettings: emptyUserSettings,
-    });
-  },
+  [
+    (state: EditorRootState) =>
+      selectCurrentRoomJsonFromLevelEditorState(state.levelEditor),
+    selectEditorCameraAngleFromRoot,
+  ],
+  (roomJson, cameraAngle): EditorRoomState =>
+    loadEditorRoom(roomJson, cameraAngle),
 );
 
 export type RenderedRoomDimensions = {
@@ -42,12 +42,12 @@ export type RenderedRoomDimensions = {
 };
 
 export const selectEditorRoomRenderDimensions = createSelector(
-  [selectEditorRoomState],
-  (editorRoomStateWithPreviews): RenderedRoomDimensions => {
+  [selectEditorRoomState, selectEditorCameraAngleFromRoot],
+  (editorRoomStateWithPreviews, cameraAngle): RenderedRoomDimensions => {
     const {
       floors: { edgeLeftX: l, edgeRightX: r, bottomEdgeY: b },
       allItems: { topEdgeY: t },
-    } = floorsRenderExtent(editorRoomStateWithPreviews);
+    } = floorsRenderExtent(editorRoomStateWithPreviews, cameraAngle);
     // simplify to the x/y/w/h rectangle to inform the editor where the rendering is:
     return {
       l,

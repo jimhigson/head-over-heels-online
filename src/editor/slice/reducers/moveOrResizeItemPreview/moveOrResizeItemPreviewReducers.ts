@@ -6,7 +6,6 @@ import {
 
 import { getConsolidatableVector } from "../../../../consolidateItems/ConsolidatableJsonItem";
 import { generateHoleInWallsForDoor } from "../../../../model/inPlaceMutators/generateHoleInWallsForDoor";
-import { type AnyWallJsonConfig } from "../../../../model/json/WallJsonConfig";
 import { iterateRoomJsonItemsWithIds } from "../../../../model/RoomJson";
 import {
   getJsonItemTimes,
@@ -256,10 +255,7 @@ function* changeWallsAndDoorsForFloorChangeInPlace(
       continue;
     }
 
-    // Cast to AnyWallJsonConfig to handle dynamic property access
-    const wallCopy = structuredClone(
-      current(wall),
-    ) as EditorJsonItem<"wall"> & { config: AnyWallJsonConfig };
+    const wallCopy = structuredClone(current(wall)) as EditorJsonItem<"wall">;
 
     // Calculate new position based on wall direction
     switch (wall.config.direction) {
@@ -292,16 +288,7 @@ function* changeWallsAndDoorsForFloorChangeInPlace(
       // Wall fully spans floor, resize to match new floor size
       const newLength = floorNewTimes[wallInfo.tangentAxis];
 
-      if (
-        wall.config.direction === "away" ||
-        wall.config.direction === "left"
-      ) {
-        // Away and left walls use tiles
-        addOrRemoveWallTilesInPlace(wallCopy.config.tiles!, scenery, newLength);
-      } else {
-        // Towards and right walls use times
-        wallCopy.config.times = { [wallInfo.tangentAxis]: newLength };
-      }
+      addOrRemoveWallTilesInPlace(wallCopy.config.tiles, scenery, newLength);
       yield [id, wallCopy as EditorJsonItem<"wall">];
     } else {
       // Partial wall - calculate new bounds
@@ -366,21 +353,11 @@ function* changeWallsAndDoorsForFloorChangeInPlace(
       if (newWallLength <= 0) {
         yield [id, null];
       } else {
-        // Update wall size based on type
-        if (
-          wall.config.direction === "away" ||
-          wall.config.direction === "left"
-        ) {
-          // Away and left walls use tiles
-          addOrRemoveWallTilesInPlace(
-            wallCopy.config.tiles!,
-            scenery,
-            newWallLength,
-          );
-        } else {
-          // Towards and right walls use times
-          wallCopy.config.times = { [wallInfo.tangentAxis]: newWallLength };
-        }
+        addOrRemoveWallTilesInPlace(
+          wallCopy.config.tiles,
+          scenery,
+          newWallLength,
+        );
         yield [id, wallCopy];
       }
     }

@@ -56,17 +56,20 @@ export const room = inferRoomJson({
       type: "spikes",
     },
     w: {
-      config: { direction: "right", times: { y: 2 } },
+      config: { direction: "right", tiles: ["loop", "loop"] },
       position: { x: 0, y: 0, z: 0 },
       type: "wall",
     },
     w1: {
-      config: { direction: "towards", times: { x: 6 } },
+      config: {
+        direction: "towards",
+        tiles: ["loop", "loop", "skeleton", "loop", "loop", "skeleton"],
+      },
       position: { x: 0, y: 0, z: 0 },
       type: "wall",
     },
     w2: {
-      config: { direction: "right", times: { y: 2 } },
+      config: { direction: "right", tiles: ["loop", "skeleton"] },
       position: { x: 0, y: 4, z: 0 },
       type: "wall",
     },

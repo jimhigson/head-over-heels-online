@@ -3,6 +3,7 @@ import { type Container, type RenderLayer } from "pixi.js";
 import { type RoomState } from "../../../model/RoomState";
 import { emptyMap, emptySet } from "../../../utils/empty";
 import { neverTime } from "../../../utils/neverTime";
+import { cameraAngleBase } from "../../../utils/vectors/rotateXy";
 import { type PortableItem } from "../../physics/itemPredicates";
 import { appearanceForItem } from "../itemAppearances/appearanceForItem";
 import { type ItemZGraph } from "../ItemRenderContexts";
@@ -20,7 +21,7 @@ export const renderCarriedOnce = <
   renderContext: RenderContextSubset<RoomId>,
   room: RoomState<RoomId, RoomItemId>,
 ): Container => {
-  const appearance = appearanceForItem(carrying)!;
+  const appearance = appearanceForItem(carrying, cameraAngleBase)!;
 
   const appearanceReturn = appearance({
     renderContext: {

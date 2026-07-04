@@ -255,6 +255,53 @@ export const SelectTheKeysMenuItems = () => {
       />
       <div class="col-span-3">
         <h2 class="text-midRed zx:text-zxBlue toppy:text-toppyPink2 pt-1 text-double-height pb-1">
+          Camera
+        </h2>
+        <BlockyMarkdown
+          markdown={`Rotate the camera to understand the room better.`}
+          class={optionsHintMarkdownClassname}
+        />
+      </div>
+      <MenuItem
+        id="rotateCameraClockwise"
+        label={
+          <span class="inline-block w-6 text-multi-line">Rotate clockwise</span>
+        }
+        valueElement={
+          <SelectKeysMenuAssignmentValue action="rotateCameraClockwise" />
+        }
+        onSelect={useDispatchActionCallback(
+          assignInputStart,
+          "rotateCameraClockwise",
+        )}
+        leader={
+          <span
+            class={`${spriteLeaderClasses} ${"texture-hud_char_↻" satisfies TextureTailwindClass}`}
+          />
+        }
+      />
+      <MenuItem
+        id="rotateCameraAnticlockwise"
+        label={
+          <span class="inline-block w-6 text-multi-line">
+            Rotate anticlockwise
+          </span>
+        }
+        valueElement={
+          <SelectKeysMenuAssignmentValue action="rotateCameraAnticlockwise" />
+        }
+        onSelect={useDispatchActionCallback(
+          assignInputStart,
+          "rotateCameraAnticlockwise",
+        )}
+        leader={
+          <span
+            class={`${spriteLeaderClasses} ${"texture-hud_char_↺" satisfies TextureTailwindClass}`}
+          />
+        }
+      />
+      <div class="col-span-3">
+        <h2 class="text-midRed zx:text-zxBlue toppy:text-toppyPink2 pt-1 text-double-height pb-1">
           Look controls
         </h2>
         <BlockyMarkdown

@@ -52,7 +52,7 @@ export const itemStaticAppearance = <T extends ItemInPlayType>(
       renderContext: {
         isReflection,
         item: subject,
-        general: { spritesheetVariants },
+        general: { spritesheetVariants, cameraAngle },
       },
     }) => {
       const spritesheet = spritesheetVariants.currentMainSpritesheet(
@@ -66,6 +66,7 @@ export const itemStaticAppearance = <T extends ItemInPlayType>(
             { textureId: createSpriteOptions }
           : createSpriteOptions),
           times: itemInPlayTimes(subject),
+          cameraAngle,
           spritesheet,
         });
       }
@@ -89,7 +90,7 @@ export const itemStaticAnimatedAppearance = <T extends ItemInPlayType>(
       renderContext: {
         isReflection,
         item: subject,
-        general: { paused, spritesheetVariants },
+        general: { paused, spritesheetVariants, cameraAngle },
       },
     }) => {
       const spritesheet = spritesheetVariants.currentMainSpritesheet(
@@ -102,6 +103,7 @@ export const itemStaticAnimatedAppearance = <T extends ItemInPlayType>(
           ...createSpriteOptions,
           times: itemInPlayTimes(subject),
           paused,
+          cameraAngle,
           spritesheet,
         });
       }

@@ -79,6 +79,8 @@ const standardKeyAssignment = {
     toggleShowFps: { keys: ["F9"] },
     cycleSprites: { keys: ["F10"] },
     cycleResolution: { keys: ["0"] },
+    rotateCameraClockwise: { keys: ["."] },
+    rotateCameraAnticlockwise: { keys: [","] },
 
     pageDown: { keys: ["PageDown"] },
     pageUp: { keys: ["PageUp"] },
