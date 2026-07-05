@@ -1,0 +1,2971 @@
+{
+  "capturedFromVersion": "22.0.0",
+  "capturedDate": "2026-07-05",
+  "roomId": "blacktooth87crown",
+  "localStorage": {
+    "persist:hohol/gameMenus/userSettings": {
+      "userSettings": {
+        "displaySettings": {},
+        "soundSettings": {
+          "mute": true
+        }
+      },
+      "savedGames": {
+        "saves": {
+          "{\"campaignName\":\"original\",\"userId\":\"@@original\"}": {
+            "saveTime": 1783247513722,
+            "gameState": {
+              "characterRooms": {
+                "head": {
+                  "color": {
+                    "hue": "white",
+                    "shade": "basic"
+                  },
+                  "id": "blacktooth87crown",
+                  "items": {
+                    "d/frameFar": {
+                      "config": {
+                        "direction": "away",
+                        "toRoom": "blacktooth86",
+                        "inHiddenWall": false,
+                        "part": "far"
+                      },
+                      "position": {
+                        "x": 3,
+                        "y": 8,
+                        "z": 1
+                      },
+                      "type": "doorFrame",
+                      "aabb": {
+                        "x": 8,
+                        "y": 24,
+                        "z": 48
+                      },
+                      "castsShadowWhileStoodOn": false,
+                      "id": "d/frameFar",
+                      "jsonItemId": "d",
+                      "state": {
+                        "expires": null,
+                        "stoodOnBy": {},
+                        "disappearing": null,
+                        "switchedAtRoomTime": -9007199254740991,
+                        "stoodOnUntilRoomTime": -9007199254740991,
+                        "actedOnAt": {
+                          "roomTime": -9007199254740991,
+                          "by": {},
+                          "actedInXY": false,
+                          "actedInZ": false
+                        },
+                        "position": {
+                          "x": 72,
+                          "y": 128,
+                          "z": 12
+                        }
+                      },
+                      "renderAabb": {
+                        "x": 8,
+                        "y": 8,
+                        "z": 48
+                      }
+                    },
+                    "d/frameNear": {
+                      "config": {
+                        "direction": "away",
+                        "toRoom": "blacktooth86",
+                        "inHiddenWall": false,
+                        "part": "near"
+                      },
+                      "position": {
+                        "x": 3,
+                        "y": 8,
+                        "z": 1
+                      },
+                      "type": "doorFrame",
+                      "aabb": {
+                        "x": 9,
+                        "y": 24,
+                        "z": 48
+                      },
+                      "castsShadowWhileStoodOn": false,
+                      "id": "d/frameNear",
+                      "jsonItemId": "d",
+                      "state": {
+                        "expires": null,
+                        "stoodOnBy": {},
+                        "disappearing": null,
+                        "switchedAtRoomTime": -9007199254740991,
+                        "stoodOnUntilRoomTime": -9007199254740991,
+                        "actedOnAt": {
+                          "roomTime": -9007199254740991,
+                          "by": {},
+                          "actedInXY": false,
+                          "actedInZ": false
+                        },
+                        "position": {
+                          "x": 48,
+                          "y": 128,
+                          "z": 12
+                        }
+                      },
+                      "renderAabb": {
+                        "x": 9,
+                        "y": 8,
+                        "z": 48
+                      }
+                    },
+                    "d/frameTop": {
+                      "config": {
+                        "direction": "away",
+                        "toRoom": "blacktooth86",
+                        "inHiddenWall": false,
+                        "part": "top"
+                      },
+                      "position": {
+                        "x": 3,
+                        "y": 8,
+                        "z": 1
+                      },
+                      "type": "doorFrame",
+                      "aabb": {
+                        "x": 15,
+                        "y": 24,
+                        "z": 24
+                      },
+                      "castsShadowWhileStoodOn": true,
+                      "id": "d/frameTop",
+                      "jsonItemId": "d",
+                      "state": {
+                        "expires": null,
+                        "stoodOnBy": {},
+                        "disappearing": null,
+                        "switchedAtRoomTime": -9007199254740991,
+                        "stoodOnUntilRoomTime": -9007199254740991,
+                        "actedOnAt": {
+                          "roomTime": -9007199254740991,
+                          "by": {},
+                          "actedInXY": false,
+                          "actedInZ": false
+                        },
+                        "position": {
+                          "x": 57,
+                          "y": 128,
+                          "z": 36
+                        }
+                      },
+                      "renderAabb": {
+                        "x": 15,
+                        "y": 8,
+                        "z": 24
+                      },
+                      "shadowCastTexture": {
+                        "textureId": "shadow.doorFrame.top.y",
+                        "flipX": true,
+                        "spritesheetVariant": "original"
+                      },
+                      "noShadowCastOn": ["doorLegs"]
+                    },
+                    "d/blockerAbove": {
+                      "config": {},
+                      "position": {
+                        "x": 3,
+                        "y": 8,
+                        "z": 1
+                      },
+                      "type": "blocker",
+                      "aabb": {
+                        "x": 32,
+                        "y": 24,
+                        "z": 9999
+                      },
+                      "castsShadowWhileStoodOn": false,
+                      "id": "d/blockerAbove",
+                      "jsonItemId": "d",
+                      "renders": false,
+                      "state": {
+                        "expires": null,
+                        "stoodOnBy": {},
+                        "disappearing": null,
+                        "switchedAtRoomTime": -9007199254740991,
+                        "stoodOnUntilRoomTime": -9007199254740991,
+                        "actedOnAt": {
+                          "roomTime": -9007199254740991,
+                          "by": {},
+                          "actedInXY": false,
+                          "actedInZ": false
+                        },
+                        "position": {
+                          "x": 48,
+                          "y": 128,
+                          "z": 60
+                        }
+                      },
+                      "renderAabb": {
+                        "x": 0,
+                        "y": 0,
+                        "z": 0
+                      },
+                      "fixedZIndex": -2
+                    },
+                    "d/portal": {
+                      "config": {
+                        "toRoom": "blacktooth86",
+                        "inHidden": false,
+                        "relativePoint": {
+                          "x": 0,
+                          "y": -4,
+                          "z": 0
+                        },
+                        "direction": {
+                          "x": 0,
+                          "y": 1,
+                          "z": 0
+                        }
+                      },
+                      "position": {
+                        "x": 3,
+                        "y": 8,
+                        "z": 1
+                      },
+                      "type": "portal",
+                      "aabb": {
+                        "x": 15,
+                        "y": 16,
+                        "z": 24
+                      },
+                      "castsShadowWhileStoodOn": false,
+                      "id": "d/portal",
+                      "jsonItemId": "d",
+                      "fixedZIndex": -2,
+                      "state": {
+                        "expires": null,
+                        "stoodOnBy": {},
+                        "disappearing": null,
+                        "switchedAtRoomTime": -9007199254740991,
+                        "stoodOnUntilRoomTime": -9007199254740991,
+                        "actedOnAt": {
+                          "roomTime": 0,
+                          "by": {
+                            "head": true
+                          },
+                          "actedInXY": true,
+                          "actedInZ": false
+                        },
+                        "position": {
+                          "x": 57,
+                          "y": 136,
+                          "z": 12
+                        }
+                      }
+                    },
+                    "d/legs": {
+                      "config": {
+                        "direction": "away",
+                        "toRoom": "blacktooth86",
+                        "inHiddenWall": false,
+                        "style": "none",
+                        "side": "away",
+                        "height": 1
+                      },
+                      "position": {
+                        "x": 3,
+                        "y": 8,
+                        "z": 1
+                      },
+                      "type": "doorLegs",
+                      "aabb": {
+                        "x": 32,
+                        "y": 24,
+                        "z": 12
+                      },
+                      "castsShadowWhileStoodOn": false,
+                      "id": "d/legs",
+                      "jsonItemId": "d",
+                      "renders": true,
+                      "state": {
+                        "expires": null,
+                        "stoodOnBy": {},
+                        "disappearing": null,
+                        "switchedAtRoomTime": -9007199254740991,
+                        "stoodOnUntilRoomTime": -9007199254740991,
+                        "actedOnAt": {
+                          "roomTime": -9007199254740991,
+                          "by": {},
+                          "actedInXY": false,
+                          "actedInZ": false
+                        },
+                        "position": {
+                          "x": 48,
+                          "y": 128,
+                          "z": 0
+                        }
+                      },
+                      "shadowOffset": {
+                        "z": 12
+                      }
+                    },
+                    "d/stopAutowalk": {
+                      "aabb": {
+                        "x": 32,
+                        "y": 32,
+                        "z": 24
+                      },
+                      "castsShadowWhileStoodOn": false,
+                      "type": "stopAutowalk",
+                      "id": "d/stopAutowalk",
+                      "jsonItemId": "d",
+                      "config": {},
+                      "fixedZIndex": -2,
+                      "state": {
+                        "expires": null,
+                        "stoodOnBy": {},
+                        "disappearing": null,
+                        "switchedAtRoomTime": -9007199254740991,
+                        "stoodOnUntilRoomTime": -9007199254740991,
+                        "actedOnAt": {
+                          "roomTime": -9007199254740991,
+                          "by": {},
+                          "actedInXY": false,
+                          "actedInZ": false
+                        },
+                        "position": {
+                          "x": 48,
+                          "y": 88,
+                          "z": 12
+                        }
+                      }
+                    },
+                    "db": {
+                      "config": {
+                        "style": "volcano",
+                        "times": {
+                          "x": 2
+                        }
+                      },
+                      "position": {
+                        "x": 6,
+                        "y": 1,
+                        "z": 0
+                      },
+                      "type": "deadlyBlock",
+                      "aabb": {
+                        "x": 32,
+                        "y": 16,
+                        "z": 12
+                      },
+                      "castsShadowWhileStoodOn": false,
+                      "renderAabb": {
+                        "x": 34,
+                        "y": 18,
+                        "z": 12
+                      },
+                      "renderAabbOffset": {
+                        "x": -1,
+                        "y": -1,
+                        "z": 0
+                      },
+                      "id": "db",
+                      "jsonItemId": "db",
+                      "shadowCastTexture": {
+                        "textureId": "shadow.fullBlock",
+                        "spritesheetVariant": "original"
+                      },
+                      "state": {
+                        "expires": null,
+                        "stoodOnBy": {},
+                        "disappearing": null,
+                        "switchedAtRoomTime": -9007199254740991,
+                        "stoodOnUntilRoomTime": -9007199254740991,
+                        "actedOnAt": {
+                          "roomTime": -9007199254740991,
+                          "by": {},
+                          "actedInXY": false,
+                          "actedInZ": false
+                        },
+                        "position": {
+                          "x": 96,
+                          "y": 16,
+                          "z": 0
+                        }
+                      }
+                    },
+                    "db1": {
+                      "config": {
+                        "style": "volcano"
+                      },
+                      "position": {
+                        "x": 6,
+                        "y": 2,
+                        "z": 1
+                      },
+                      "type": "deadlyBlock",
+                      "aabb": {
+                        "x": 16,
+                        "y": 16,
+                        "z": 12
+                      },
+                      "castsShadowWhileStoodOn": false,
+                      "renderAabbOffset": {
+                        "x": -1,
+                        "y": -1,
+                        "z": 0
+                      },
+                      "renderAabb": {
+                        "x": 18,
+                        "y": 18,
+                        "z": 12
+                      },
+                      "id": "db1",
+                      "jsonItemId": "db1",
+                      "shadowCastTexture": {
+                        "textureId": "shadow.fullBlock",
+                        "spritesheetVariant": "original"
+                      },
+                      "state": {
+                        "expires": null,
+                        "stoodOnBy": {},
+                        "disappearing": null,
+                        "switchedAtRoomTime": -9007199254740991,
+                        "stoodOnUntilRoomTime": -9007199254740991,
+                        "actedOnAt": {
+                          "roomTime": -9007199254740991,
+                          "by": {},
+                          "actedInXY": false,
+                          "actedInZ": false
+                        },
+                        "position": {
+                          "x": 96,
+                          "y": 32,
+                          "z": 12
+                        }
+                      }
+                    },
+                    "db2": {
+                      "config": {
+                        "style": "volcano"
+                      },
+                      "position": {
+                        "x": 6,
+                        "y": 3,
+                        "z": 0
+                      },
+                      "type": "deadlyBlock",
+                      "aabb": {
+                        "x": 16,
+                        "y": 16,
+                        "z": 12
+                      },
+                      "castsShadowWhileStoodOn": false,
+                      "renderAabbOffset": {
+                        "x": -1,
+                        "y": -1,
+                        "z": 0
+                      },
+                      "renderAabb": {
+                        "x": 18,
+                        "y": 18,
+                        "z": 12
+                      },
+                      "id": "db2",
+                      "jsonItemId": "db2",
+                      "shadowCastTexture": {
+                        "textureId": "shadow.fullBlock",
+                        "spritesheetVariant": "original"
+                      },
+                      "state": {
+                        "expires": null,
+                        "stoodOnBy": {
+                          "m1": true
+                        },
+                        "disappearing": null,
+                        "switchedAtRoomTime": -9007199254740991,
+                        "stoodOnUntilRoomTime": -9007199254740991,
+                        "actedOnAt": {
+                          "roomTime": -9007199254740991,
+                          "by": {},
+                          "actedInXY": false,
+                          "actedInZ": false
+                        },
+                        "position": {
+                          "x": 96,
+                          "y": 48,
+                          "z": 0
+                        }
+                      }
+                    },
+                    "db3": {
+                      "config": {
+                        "style": "volcano"
+                      },
+                      "position": {
+                        "x": 6,
+                        "y": 4,
+                        "z": 1
+                      },
+                      "type": "deadlyBlock",
+                      "aabb": {
+                        "x": 16,
+                        "y": 16,
+                        "z": 12
+                      },
+                      "castsShadowWhileStoodOn": false,
+                      "renderAabbOffset": {
+                        "x": -1,
+                        "y": -1,
+                        "z": 0
+                      },
+                      "renderAabb": {
+                        "x": 18,
+                        "y": 18,
+                        "z": 12
+                      },
+                      "id": "db3",
+                      "jsonItemId": "db3",
+                      "shadowCastTexture": {
+                        "textureId": "shadow.fullBlock",
+                        "spritesheetVariant": "original"
+                      },
+                      "state": {
+                        "expires": null,
+                        "stoodOnBy": {},
+                        "disappearing": null,
+                        "switchedAtRoomTime": -9007199254740991,
+                        "stoodOnUntilRoomTime": -9007199254740991,
+                        "actedOnAt": {
+                          "roomTime": -9007199254740991,
+                          "by": {},
+                          "actedInXY": false,
+                          "actedInZ": false
+                        },
+                        "position": {
+                          "x": 96,
+                          "y": 64,
+                          "z": 12
+                        }
+                      }
+                    },
+                    "db4": {
+                      "config": {
+                        "style": "volcano",
+                        "times": {
+                          "x": 2
+                        }
+                      },
+                      "position": {
+                        "x": 6,
+                        "y": 5,
+                        "z": 0
+                      },
+                      "type": "deadlyBlock",
+                      "aabb": {
+                        "x": 32,
+                        "y": 16,
+                        "z": 12
+                      },
+                      "castsShadowWhileStoodOn": false,
+                      "renderAabb": {
+                        "x": 34,
+                        "y": 18,
+                        "z": 12
+                      },
+                      "renderAabbOffset": {
+                        "x": -1,
+                        "y": -1,
+                        "z": 0
+                      },
+                      "id": "db4",
+                      "jsonItemId": "db4",
+                      "shadowCastTexture": {
+                        "textureId": "shadow.fullBlock",
+                        "spritesheetVariant": "original"
+                      },
+                      "state": {
+                        "expires": null,
+                        "stoodOnBy": {},
+                        "disappearing": null,
+                        "switchedAtRoomTime": -9007199254740991,
+                        "stoodOnUntilRoomTime": -9007199254740991,
+                        "actedOnAt": {
+                          "roomTime": -9007199254740991,
+                          "by": {},
+                          "actedInXY": false,
+                          "actedInZ": false
+                        },
+                        "position": {
+                          "x": 96,
+                          "y": 80,
+                          "z": 0
+                        }
+                      }
+                    },
+                    "db5": {
+                      "config": {
+                        "style": "volcano"
+                      },
+                      "position": {
+                        "x": 7,
+                        "y": 3,
+                        "z": 2
+                      },
+                      "type": "deadlyBlock",
+                      "aabb": {
+                        "x": 16,
+                        "y": 16,
+                        "z": 12
+                      },
+                      "castsShadowWhileStoodOn": false,
+                      "renderAabbOffset": {
+                        "x": -1,
+                        "y": -1,
+                        "z": 0
+                      },
+                      "renderAabb": {
+                        "x": 18,
+                        "y": 18,
+                        "z": 12
+                      },
+                      "id": "db5",
+                      "jsonItemId": "db5",
+                      "shadowCastTexture": {
+                        "textureId": "shadow.fullBlock",
+                        "spritesheetVariant": "original"
+                      },
+                      "state": {
+                        "expires": null,
+                        "stoodOnBy": {},
+                        "disappearing": null,
+                        "switchedAtRoomTime": -9007199254740991,
+                        "stoodOnUntilRoomTime": -9007199254740991,
+                        "actedOnAt": {
+                          "roomTime": -9007199254740991,
+                          "by": {},
+                          "actedInXY": false,
+                          "actedInZ": false
+                        },
+                        "position": {
+                          "x": 112,
+                          "y": 48,
+                          "z": 24
+                        }
+                      }
+                    },
+                    "f": {
+                      "aabb": {
+                        "x": 128,
+                        "y": 136.32,
+                        "z": 36
+                      },
+                      "castsShadowWhileStoodOn": false,
+                      "type": "floor",
+                      "id": "f",
+                      "jsonItemId": "f",
+                      "config": {
+                        "floorType": "standable",
+                        "scenery": "blacktooth",
+                        "times": {
+                          "x": 8,
+                          "y": 8
+                        },
+                        "naturalFootprint": {
+                          "aabb": {
+                            "x": 128,
+                            "y": 128,
+                            "z": 36
+                          },
+                          "position": {
+                            "x": 0,
+                            "y": 0,
+                            "z": -36
+                          }
+                        }
+                      },
+                      "renderAabb": {
+                        "x": 128,
+                        "y": 136.32,
+                        "z": 10
+                      },
+                      "renderAabbOffset": {
+                        "x": 0,
+                        "y": 0,
+                        "z": 26
+                      },
+                      "shadowCastTexture": {
+                        "textureId": "shadow.fullBlock",
+                        "spritesheetVariant": "original"
+                      },
+                      "state": {
+                        "expires": null,
+                        "stoodOnBy": {
+                          "m": true,
+                          "pi": true
+                        },
+                        "disappearing": null,
+                        "switchedAtRoomTime": -9007199254740991,
+                        "stoodOnUntilRoomTime": -9007199254740991,
+                        "actedOnAt": {
+                          "roomTime": -9007199254740991,
+                          "by": {},
+                          "actedInXY": false,
+                          "actedInZ": false
+                        },
+                        "position": {
+                          "x": 0,
+                          "y": 0,
+                          "z": -36
+                        }
+                      }
+                    },
+                    "m": {
+                      "config": {
+                        "activated": "on",
+                        "movement": "patrol-randomly-diagonal",
+                        "which": "dalek"
+                      },
+                      "position": {
+                        "x": 3,
+                        "y": 3,
+                        "z": 0
+                      },
+                      "type": "monster",
+                      "aabb": {
+                        "x": 12,
+                        "y": 12,
+                        "z": 12
+                      },
+                      "castsShadowWhileStoodOn": false,
+                      "renderAabb": {
+                        "x": 13,
+                        "y": 13,
+                        "z": 12
+                      },
+                      "id": "m",
+                      "jsonItemId": "m",
+                      "shadowCastTexture": {
+                        "textureId": "shadow.smallRound",
+                        "spritesheetVariant": "original"
+                      },
+                      "state": {
+                        "expires": null,
+                        "stoodOnBy": {},
+                        "disappearing": null,
+                        "switchedAtRoomTime": -9007199254740991,
+                        "stoodOnUntilRoomTime": -9007199254740991,
+                        "actedOnAt": {
+                          "roomTime": -9007199254740991,
+                          "by": {},
+                          "actedInXY": false,
+                          "actedInZ": false
+                        },
+                        "position": {
+                          "x": 50,
+                          "y": 50,
+                          "z": 0
+                        },
+                        "vels": {
+                          "gravity": {
+                            "x": 0,
+                            "y": 0,
+                            "z": 0
+                          },
+                          "movingFloor": {
+                            "x": 0,
+                            "y": 0,
+                            "z": 0
+                          },
+                          "walking": {
+                            "x": 0,
+                            "y": 0,
+                            "z": 0
+                          }
+                        },
+                        "latentMovement": [],
+                        "collidedWith": {
+                          "roomTime": -9007199254740991,
+                          "by": {}
+                        },
+                        "controlledWithJoystickAtRoomTime": -9007199254740991,
+                        "standingOnItemId": "f",
+                        "standingOnUntilRoomTime": -9007199254740991,
+                        "previousStandingOnItemId": null,
+                        "activated": true,
+                        "everActivated": true,
+                        "timeOfLastDirectionChange": null,
+                        "facing": {
+                          "x": 0,
+                          "y": -1,
+                          "z": 0
+                        },
+                        "wouldPickUpNext": false
+                      }
+                    },
+                    "m1": {
+                      "config": {
+                        "activated": "on",
+                        "movement": "towards-analogue",
+                        "which": "emperor"
+                      },
+                      "position": {
+                        "x": 6,
+                        "y": 3,
+                        "z": 1
+                      },
+                      "type": "monster",
+                      "aabb": {
+                        "x": 12,
+                        "y": 12,
+                        "z": 12
+                      },
+                      "castsShadowWhileStoodOn": true,
+                      "id": "m1",
+                      "jsonItemId": "m1",
+                      "shadowCastTexture": {
+                        "textureId": "shadow.smallRound",
+                        "spritesheetVariant": "original"
+                      },
+                      "state": {
+                        "expires": null,
+                        "stoodOnBy": {},
+                        "disappearing": null,
+                        "switchedAtRoomTime": -9007199254740991,
+                        "stoodOnUntilRoomTime": -9007199254740991,
+                        "actedOnAt": {
+                          "roomTime": -9007199254740991,
+                          "by": {},
+                          "actedInXY": false,
+                          "actedInZ": false
+                        },
+                        "position": {
+                          "x": 98,
+                          "y": 50,
+                          "z": 12
+                        },
+                        "vels": {
+                          "gravity": {
+                            "x": 0,
+                            "y": 0,
+                            "z": 0
+                          },
+                          "movingFloor": {
+                            "x": 0,
+                            "y": 0,
+                            "z": 0
+                          },
+                          "walking": {
+                            "x": 0,
+                            "y": 0,
+                            "z": 0
+                          }
+                        },
+                        "latentMovement": [],
+                        "collidedWith": {
+                          "roomTime": -9007199254740991,
+                          "by": {}
+                        },
+                        "controlledWithJoystickAtRoomTime": -9007199254740991,
+                        "standingOnItemId": "db2",
+                        "standingOnUntilRoomTime": -9007199254740991,
+                        "previousStandingOnItemId": null,
+                        "activated": true,
+                        "everActivated": true,
+                        "timeOfLastDirectionChange": null,
+                        "facing": {
+                          "x": 0,
+                          "y": -1,
+                          "z": 0
+                        },
+                        "wouldPickUpNext": false
+                      }
+                    },
+                    "pi": {
+                      "config": {
+                        "gives": "crown",
+                        "planet": "blacktooth"
+                      },
+                      "position": {
+                        "x": 7,
+                        "y": 3,
+                        "z": 0
+                      },
+                      "type": "pickup",
+                      "aabb": {
+                        "x": 12,
+                        "y": 12,
+                        "z": 12
+                      },
+                      "castsShadowWhileStoodOn": true,
+                      "renderAabb": {
+                        "x": 14,
+                        "y": 12,
+                        "z": 13
+                      },
+                      "id": "pi",
+                      "jsonItemId": "pi",
+                      "shadowCastTexture": {
+                        "textureId": "shadow.smallRound",
+                        "spritesheetVariant": "original"
+                      },
+                      "state": {
+                        "expires": null,
+                        "stoodOnBy": {},
+                        "disappearing": {
+                          "on": "touch",
+                          "byType": ["head", "heels", "headOverHeels"]
+                        },
+                        "switchedAtRoomTime": -9007199254740991,
+                        "stoodOnUntilRoomTime": -9007199254740991,
+                        "actedOnAt": {
+                          "roomTime": -9007199254740991,
+                          "by": {},
+                          "actedInXY": false,
+                          "actedInZ": false
+                        },
+                        "position": {
+                          "x": 114,
+                          "y": 50,
+                          "z": 0
+                        },
+                        "vels": {
+                          "gravity": {
+                            "x": 0,
+                            "y": 0,
+                            "z": 0
+                          },
+                          "movingFloor": {
+                            "x": 0,
+                            "y": 0,
+                            "z": 0
+                          }
+                        },
+                        "latentMovement": [],
+                        "collidedWith": {
+                          "roomTime": -9007199254740991,
+                          "by": {}
+                        },
+                        "controlledWithJoystickAtRoomTime": -9007199254740991,
+                        "standingOnItemId": "f",
+                        "standingOnUntilRoomTime": -9007199254740991,
+                        "previousStandingOnItemId": null,
+                        "wouldPickUpNext": false
+                      }
+                    },
+                    "w": {
+                      "type": "wall",
+                      "id": "w",
+                      "jsonItemId": "w",
+                      "config": {
+                        "direction": "right",
+                        "times": {
+                          "y": 8
+                        }
+                      },
+                      "aabb": {
+                        "x": 16,
+                        "y": 128,
+                        "z": 9999
+                      },
+                      "fixedZIndex": -2,
+                      "state": {
+                        "expires": null,
+                        "stoodOnBy": {},
+                        "disappearing": null,
+                        "switchedAtRoomTime": -9007199254740991,
+                        "stoodOnUntilRoomTime": -9007199254740991,
+                        "actedOnAt": {
+                          "roomTime": -9007199254740991,
+                          "by": {},
+                          "actedInXY": false,
+                          "actedInZ": false
+                        },
+                        "position": {
+                          "x": -16,
+                          "y": 0,
+                          "z": 0
+                        }
+                      },
+                      "shadowCastTexture": {
+                        "textureId": "shadow.wall.y",
+                        "spritesheetVariant": "original"
+                      },
+                      "castsShadowWhileStoodOn": true
+                    },
+                    "w1": {
+                      "type": "wall",
+                      "id": "w1",
+                      "jsonItemId": "w1",
+                      "config": {
+                        "direction": "towards",
+                        "times": {
+                          "x": 8
+                        }
+                      },
+                      "aabb": {
+                        "x": 128,
+                        "y": 16,
+                        "z": 9999
+                      },
+                      "fixedZIndex": -2,
+                      "state": {
+                        "expires": null,
+                        "stoodOnBy": {},
+                        "disappearing": null,
+                        "switchedAtRoomTime": -9007199254740991,
+                        "stoodOnUntilRoomTime": -9007199254740991,
+                        "actedOnAt": {
+                          "roomTime": -9007199254740991,
+                          "by": {},
+                          "actedInXY": false,
+                          "actedInZ": false
+                        },
+                        "position": {
+                          "x": 0,
+                          "y": -16,
+                          "z": 0
+                        }
+                      },
+                      "shadowCastTexture": {
+                        "textureId": "shadow.wall.y",
+                        "flipX": true,
+                        "spritesheetVariant": "original"
+                      },
+                      "castsShadowWhileStoodOn": true
+                    },
+                    "w2": {
+                      "type": "wall",
+                      "id": "w2",
+                      "jsonItemId": "w2",
+                      "config": {
+                        "direction": "away",
+                        "tiles": ["plain", "shield", "plain"]
+                      },
+                      "aabb": {
+                        "x": 48,
+                        "y": 16,
+                        "z": 9999
+                      },
+                      "renderAabb": {
+                        "x": 48,
+                        "y": 0,
+                        "z": 50
+                      },
+                      "state": {
+                        "expires": null,
+                        "stoodOnBy": {},
+                        "disappearing": null,
+                        "switchedAtRoomTime": -9007199254740991,
+                        "stoodOnUntilRoomTime": -9007199254740991,
+                        "actedOnAt": {
+                          "roomTime": -9007199254740991,
+                          "by": {},
+                          "actedInXY": false,
+                          "actedInZ": false
+                        },
+                        "position": {
+                          "x": 0,
+                          "y": 128,
+                          "z": 0
+                        }
+                      },
+                      "shadowCastTexture": {
+                        "textureId": "shadow.wall.y",
+                        "flipX": true,
+                        "spritesheetVariant": "original"
+                      },
+                      "castsShadowWhileStoodOn": false
+                    },
+                    "w3": {
+                      "type": "wall",
+                      "id": "w3",
+                      "jsonItemId": "w3",
+                      "config": {
+                        "direction": "away",
+                        "tiles": ["plain", "shield", "plain"]
+                      },
+                      "aabb": {
+                        "x": 48,
+                        "y": 16,
+                        "z": 9999
+                      },
+                      "renderAabb": {
+                        "x": 48,
+                        "y": 0,
+                        "z": 50
+                      },
+                      "state": {
+                        "expires": null,
+                        "stoodOnBy": {},
+                        "disappearing": null,
+                        "switchedAtRoomTime": -9007199254740991,
+                        "stoodOnUntilRoomTime": -9007199254740991,
+                        "actedOnAt": {
+                          "roomTime": -9007199254740991,
+                          "by": {},
+                          "actedInXY": false,
+                          "actedInZ": false
+                        },
+                        "position": {
+                          "x": 80,
+                          "y": 128,
+                          "z": 0
+                        }
+                      },
+                      "shadowCastTexture": {
+                        "textureId": "shadow.wall.y",
+                        "flipX": true,
+                        "spritesheetVariant": "original"
+                      },
+                      "castsShadowWhileStoodOn": false
+                    },
+                    "w4": {
+                      "type": "wall",
+                      "id": "w4",
+                      "jsonItemId": "w4",
+                      "config": {
+                        "direction": "left",
+                        "tiles": [
+                          "plain",
+                          "shield",
+                          "armour",
+                          "plain",
+                          "armour",
+                          "shield",
+                          "plain",
+                          "plain"
+                        ]
+                      },
+                      "aabb": {
+                        "x": 16,
+                        "y": 128,
+                        "z": 9999
+                      },
+                      "renderAabb": {
+                        "x": 0,
+                        "y": 128,
+                        "z": 50
+                      },
+                      "state": {
+                        "expires": null,
+                        "stoodOnBy": {},
+                        "disappearing": null,
+                        "switchedAtRoomTime": -9007199254740991,
+                        "stoodOnUntilRoomTime": -9007199254740991,
+                        "actedOnAt": {
+                          "roomTime": -9007199254740991,
+                          "by": {},
+                          "actedInXY": false,
+                          "actedInZ": false
+                        },
+                        "position": {
+                          "x": 128,
+                          "y": 0,
+                          "z": 0
+                        }
+                      },
+                      "shadowCastTexture": {
+                        "textureId": "shadow.wall.y",
+                        "spritesheetVariant": "original"
+                      },
+                      "castsShadowWhileStoodOn": false
+                    },
+                    "outOfBounds": {
+                      "aabb": {
+                        "x": 224,
+                        "y": 224,
+                        "z": 12
+                      },
+                      "castsShadowWhileStoodOn": false,
+                      "type": "outOfBounds",
+                      "id": "outOfBounds",
+                      "fixedZIndex": -2,
+                      "config": {},
+                      "state": {
+                        "expires": null,
+                        "stoodOnBy": {},
+                        "disappearing": null,
+                        "switchedAtRoomTime": -9007199254740991,
+                        "stoodOnUntilRoomTime": -9007199254740991,
+                        "actedOnAt": {
+                          "roomTime": -9007199254740991,
+                          "by": {},
+                          "actedInXY": false,
+                          "actedInZ": false
+                        },
+                        "position": {
+                          "x": -64,
+                          "y": -64,
+                          "z": -120
+                        }
+                      }
+                    },
+                    "head": {
+                      "id": "head",
+                      "jsonItemId": "head",
+                      "type": "head",
+                      "aabb": {
+                        "x": 12,
+                        "y": 12,
+                        "z": 12
+                      },
+                      "castsShadowWhileStoodOn": true,
+                      "config": {},
+                      "shadowCastTexture": {
+                        "textureId": "shadow.playable",
+                        "spritesheetVariant": "original"
+                      },
+                      "renderAabbOffset": {
+                        "x": -0.5,
+                        "y": -0.5,
+                        "z": 0
+                      },
+                      "renderAabb": {
+                        "x": 15,
+                        "y": 15,
+                        "z": 13
+                      },
+                      "state": {
+                        "expires": null,
+                        "stoodOnBy": {},
+                        "disappearing": null,
+                        "switchedAtRoomTime": -9007199254740991,
+                        "stoodOnUntilRoomTime": -9007199254740991,
+                        "actedOnAt": {
+                          "roomTime": 0,
+                          "by": {},
+                          "actedInXY": true,
+                          "actedInZ": false
+                        },
+                        "vels": {
+                          "walking": {
+                            "x": 0,
+                            "y": 0,
+                            "z": 0
+                          },
+                          "gravity": {
+                            "x": 0,
+                            "y": 0,
+                            "z": 0
+                          },
+                          "movingFloor": {
+                            "x": 0,
+                            "y": 0,
+                            "z": 0
+                          }
+                        },
+                        "latentMovement": [],
+                        "collidedWith": {
+                          "roomTime": -9007199254740991,
+                          "by": {}
+                        },
+                        "controlledWithJoystickAtRoomTime": -9007199254740991,
+                        "standingOnItemId": null,
+                        "standingOnUntilRoomTime": 151.79999999999944,
+                        "previousStandingOnItemId": "f",
+                        "action": "moving",
+                        "jumped": false,
+                        "teleporting": null,
+                        "autoWalk": true,
+                        "facing": {
+                          "x": 0,
+                          "y": -1,
+                          "z": 0
+                        },
+                        "visualFacingVector": {
+                          "x": 0,
+                          "y": -1,
+                          "z": 0
+                        },
+                        "walkStartFacing": {
+                          "x": 0,
+                          "y": -1,
+                          "z": 0
+                        },
+                        "walkDistance": 0,
+                        "switchedToAt": -9007199254740991,
+                        "lastDiedAt": -9007199254740991,
+                        "gameTime": 1228.8000000000009,
+                        "lives": 8,
+                        "jumpStartZ": 0,
+                        "hasHooter": false,
+                        "gameWalkDistance": 13.874676195535706,
+                        "fastStepsStartedAtDistance": -9007199254740991,
+                        "shieldCollectedAt": -9007199254740991,
+                        "doughnuts": 0,
+                        "position": {
+                          "x": 57,
+                          "y": 132,
+                          "z": 12
+                        },
+                        "stoppedWalkingAtGameTime": 1096.6114285714284,
+                        "stoppedWalkingSpeed": 0.0008279999999999835
+                      }
+                    },
+                    "doorEntry/1228.8000000000009": {
+                      "id": "doorEntry/1228.8000000000009",
+                      "type": "soundEffect",
+                      "fixedZIndex": -2,
+                      "config": {
+                        "soundOptions": {
+                          "soundId": "door",
+                          "gain": 1,
+                          "playbackRate": 1
+                        }
+                      },
+                      "aabb": {
+                        "x": 0,
+                        "y": 0,
+                        "z": 0
+                      },
+                      "castsShadowWhileStoodOn": false,
+                      "state": {
+                        "expires": null,
+                        "stoodOnBy": {},
+                        "disappearing": null,
+                        "switchedAtRoomTime": -9007199254740991,
+                        "stoodOnUntilRoomTime": -9007199254740991,
+                        "actedOnAt": {
+                          "roomTime": -9007199254740991,
+                          "by": {},
+                          "actedInXY": false,
+                          "actedInZ": false
+                        },
+                        "position": {
+                          "x": 57,
+                          "y": 132,
+                          "z": 12
+                        },
+                        "played": false
+                      },
+                      "noSoundPan": false
+                    }
+                  },
+                  "planet": "blacktooth",
+                  "roomJson": {
+                    "color": {
+                      "hue": "white",
+                      "shade": "basic"
+                    },
+                    "id": "blacktooth87crown",
+                    "items": {
+                      "d": {
+                        "config": {
+                          "direction": "away",
+                          "toRoom": "blacktooth86"
+                        },
+                        "position": {
+                          "x": 3,
+                          "y": 8,
+                          "z": 1
+                        },
+                        "type": "door"
+                      },
+                      "db": {
+                        "config": {
+                          "style": "volcano",
+                          "times": {
+                            "x": 2
+                          }
+                        },
+                        "position": {
+                          "x": 6,
+                          "y": 1,
+                          "z": 0
+                        },
+                        "type": "deadlyBlock"
+                      },
+                      "db1": {
+                        "config": {
+                          "style": "volcano"
+                        },
+                        "position": {
+                          "x": 6,
+                          "y": 2,
+                          "z": 1
+                        },
+                        "type": "deadlyBlock"
+                      },
+                      "db2": {
+                        "config": {
+                          "style": "volcano"
+                        },
+                        "position": {
+                          "x": 6,
+                          "y": 3,
+                          "z": 0
+                        },
+                        "type": "deadlyBlock"
+                      },
+                      "db3": {
+                        "config": {
+                          "style": "volcano"
+                        },
+                        "position": {
+                          "x": 6,
+                          "y": 4,
+                          "z": 1
+                        },
+                        "type": "deadlyBlock"
+                      },
+                      "db4": {
+                        "config": {
+                          "style": "volcano",
+                          "times": {
+                            "x": 2
+                          }
+                        },
+                        "position": {
+                          "x": 6,
+                          "y": 5,
+                          "z": 0
+                        },
+                        "type": "deadlyBlock"
+                      },
+                      "db5": {
+                        "config": {
+                          "style": "volcano"
+                        },
+                        "position": {
+                          "x": 7,
+                          "y": 3,
+                          "z": 2
+                        },
+                        "type": "deadlyBlock"
+                      },
+                      "f": {
+                        "config": {
+                          "floorType": "standable",
+                          "scenery": "blacktooth",
+                          "times": {
+                            "x": 8,
+                            "y": 8
+                          }
+                        },
+                        "position": {
+                          "x": 0,
+                          "y": 0,
+                          "z": 0
+                        },
+                        "type": "floor"
+                      },
+                      "m": {
+                        "config": {
+                          "activated": "on",
+                          "movement": "patrol-randomly-diagonal",
+                          "which": "dalek"
+                        },
+                        "position": {
+                          "x": 3,
+                          "y": 3,
+                          "z": 0
+                        },
+                        "type": "monster"
+                      },
+                      "m1": {
+                        "config": {
+                          "activated": "on",
+                          "movement": "towards-analogue",
+                          "which": "emperor"
+                        },
+                        "position": {
+                          "x": 6,
+                          "y": 3,
+                          "z": 1
+                        },
+                        "type": "monster"
+                      },
+                      "pi": {
+                        "config": {
+                          "gives": "crown",
+                          "planet": "blacktooth"
+                        },
+                        "position": {
+                          "x": 7,
+                          "y": 3,
+                          "z": 0
+                        },
+                        "type": "pickup"
+                      },
+                      "w": {
+                        "config": {
+                          "direction": "right",
+                          "times": {
+                            "y": 8
+                          }
+                        },
+                        "position": {
+                          "x": 0,
+                          "y": 0,
+                          "z": 0
+                        },
+                        "type": "wall"
+                      },
+                      "w1": {
+                        "config": {
+                          "direction": "towards",
+                          "times": {
+                            "x": 8
+                          }
+                        },
+                        "position": {
+                          "x": 0,
+                          "y": 0,
+                          "z": 0
+                        },
+                        "type": "wall"
+                      },
+                      "w2": {
+                        "config": {
+                          "direction": "away",
+                          "tiles": ["plain", "shield", "plain"]
+                        },
+                        "position": {
+                          "x": 0,
+                          "y": 8,
+                          "z": 0
+                        },
+                        "type": "wall"
+                      },
+                      "w3": {
+                        "config": {
+                          "direction": "away",
+                          "tiles": ["plain", "shield", "plain"]
+                        },
+                        "position": {
+                          "x": 5,
+                          "y": 8,
+                          "z": 0
+                        },
+                        "type": "wall"
+                      },
+                      "w4": {
+                        "config": {
+                          "direction": "left",
+                          "tiles": [
+                            "plain",
+                            "shield",
+                            "armour",
+                            "plain",
+                            "armour",
+                            "shield",
+                            "plain",
+                            "plain"
+                          ]
+                        },
+                        "position": {
+                          "x": 8,
+                          "y": 0,
+                          "z": 0
+                        },
+                        "type": "wall"
+                      }
+                    },
+                    "planet": "blacktooth"
+                  },
+                  "roomTime": 0
+                },
+                "heels": {
+                  "color": {
+                    "hue": "cyan",
+                    "shade": "basic"
+                  },
+                  "id": "blacktooth23heels",
+                  "items": {
+                    "br": {
+                      "config": {
+                        "axis": "y",
+                        "times": {
+                          "y": 8,
+                          "z": 3
+                        }
+                      },
+                      "position": {
+                        "x": 4,
+                        "y": 0,
+                        "z": 0
+                      },
+                      "type": "barrier",
+                      "aabb": {
+                        "x": 4,
+                        "y": 127,
+                        "z": 36
+                      },
+                      "castsShadowWhileStoodOn": false,
+                      "id": "br",
+                      "jsonItemId": "br",
+                      "shadowCastTexture": {
+                        "textureId": "shadow.barrier.y",
+                        "spritesheetVariant": "original"
+                      },
+                      "state": {
+                        "expires": null,
+                        "stoodOnBy": {},
+                        "disappearing": null,
+                        "switchedAtRoomTime": -9007199254740991,
+                        "stoodOnUntilRoomTime": -9007199254740991,
+                        "actedOnAt": {
+                          "roomTime": -9007199254740991,
+                          "by": {},
+                          "actedInXY": false,
+                          "actedInZ": false
+                        },
+                        "position": {
+                          "x": 70,
+                          "y": 0,
+                          "z": 0
+                        }
+                      }
+                    },
+                    "co": {
+                      "config": {
+                        "direction": "away",
+                        "times": {
+                          "y": 6
+                        }
+                      },
+                      "position": {
+                        "x": 0,
+                        "y": 1,
+                        "z": 0
+                      },
+                      "type": "conveyor",
+                      "aabb": {
+                        "x": 16,
+                        "y": 96,
+                        "z": 12
+                      },
+                      "castsShadowWhileStoodOn": false,
+                      "renderAabb": {
+                        "x": 18,
+                        "y": 98,
+                        "z": 12
+                      },
+                      "renderAabbOffset": {
+                        "x": -1,
+                        "y": -1,
+                        "z": 0
+                      },
+                      "id": "co",
+                      "jsonItemId": "co",
+                      "shadowCastTexture": {
+                        "textureId": "shadow.fullBlock",
+                        "spritesheetVariant": "original"
+                      },
+                      "state": {
+                        "expires": null,
+                        "stoodOnBy": {},
+                        "disappearing": null,
+                        "switchedAtRoomTime": -9007199254740991,
+                        "stoodOnUntilRoomTime": -9007199254740991,
+                        "actedOnAt": {
+                          "roomTime": -9007199254740991,
+                          "by": {},
+                          "actedInXY": false,
+                          "actedInZ": false
+                        },
+                        "position": {
+                          "x": 0,
+                          "y": 16,
+                          "z": 0
+                        },
+                        "direction": "away",
+                        "times": {
+                          "y": 6
+                        }
+                      }
+                    },
+                    "d/frameFar": {
+                      "config": {
+                        "direction": "left",
+                        "toRoom": "blacktooth1head",
+                        "inHiddenWall": false,
+                        "part": "far"
+                      },
+                      "position": {
+                        "x": 8,
+                        "y": 3,
+                        "z": 0
+                      },
+                      "type": "doorFrame",
+                      "aabb": {
+                        "x": 24,
+                        "y": 8,
+                        "z": 48
+                      },
+                      "castsShadowWhileStoodOn": false,
+                      "id": "d/frameFar",
+                      "jsonItemId": "d",
+                      "state": {
+                        "expires": null,
+                        "stoodOnBy": {},
+                        "disappearing": null,
+                        "switchedAtRoomTime": -9007199254740991,
+                        "stoodOnUntilRoomTime": -9007199254740991,
+                        "actedOnAt": {
+                          "roomTime": -9007199254740991,
+                          "by": {},
+                          "actedInXY": false,
+                          "actedInZ": false
+                        },
+                        "position": {
+                          "x": 128,
+                          "y": 72,
+                          "z": 0
+                        }
+                      },
+                      "renderAabb": {
+                        "y": 8,
+                        "x": 8,
+                        "z": 48
+                      }
+                    },
+                    "d/frameNear": {
+                      "config": {
+                        "direction": "left",
+                        "toRoom": "blacktooth1head",
+                        "inHiddenWall": false,
+                        "part": "near"
+                      },
+                      "position": {
+                        "x": 8,
+                        "y": 3,
+                        "z": 0
+                      },
+                      "type": "doorFrame",
+                      "aabb": {
+                        "x": 24,
+                        "y": 9,
+                        "z": 48
+                      },
+                      "castsShadowWhileStoodOn": false,
+                      "id": "d/frameNear",
+                      "jsonItemId": "d",
+                      "state": {
+                        "expires": null,
+                        "stoodOnBy": {},
+                        "disappearing": null,
+                        "switchedAtRoomTime": -9007199254740991,
+                        "stoodOnUntilRoomTime": -9007199254740991,
+                        "actedOnAt": {
+                          "roomTime": -9007199254740991,
+                          "by": {},
+                          "actedInXY": false,
+                          "actedInZ": false
+                        },
+                        "position": {
+                          "x": 128,
+                          "y": 48,
+                          "z": 0
+                        }
+                      },
+                      "renderAabb": {
+                        "y": 9,
+                        "x": 8,
+                        "z": 48
+                      }
+                    },
+                    "d/frameTop": {
+                      "config": {
+                        "direction": "left",
+                        "toRoom": "blacktooth1head",
+                        "inHiddenWall": false,
+                        "part": "top"
+                      },
+                      "position": {
+                        "x": 8,
+                        "y": 3,
+                        "z": 0
+                      },
+                      "type": "doorFrame",
+                      "aabb": {
+                        "x": 24,
+                        "y": 15,
+                        "z": 24
+                      },
+                      "castsShadowWhileStoodOn": true,
+                      "id": "d/frameTop",
+                      "jsonItemId": "d",
+                      "state": {
+                        "expires": null,
+                        "stoodOnBy": {},
+                        "disappearing": null,
+                        "switchedAtRoomTime": -9007199254740991,
+                        "stoodOnUntilRoomTime": -9007199254740991,
+                        "actedOnAt": {
+                          "roomTime": -9007199254740991,
+                          "by": {},
+                          "actedInXY": false,
+                          "actedInZ": false
+                        },
+                        "position": {
+                          "x": 128,
+                          "y": 57,
+                          "z": 24
+                        }
+                      },
+                      "renderAabb": {
+                        "y": 15,
+                        "x": 8,
+                        "z": 24
+                      },
+                      "shadowCastTexture": {
+                        "textureId": "shadow.doorFrame.top.y",
+                        "spritesheetVariant": "original"
+                      },
+                      "noShadowCastOn": ["doorLegs"]
+                    },
+                    "d/blockerAbove": {
+                      "config": {},
+                      "position": {
+                        "x": 8,
+                        "y": 3,
+                        "z": 0
+                      },
+                      "type": "blocker",
+                      "aabb": {
+                        "x": 24,
+                        "y": 32,
+                        "z": 9999
+                      },
+                      "castsShadowWhileStoodOn": false,
+                      "id": "d/blockerAbove",
+                      "jsonItemId": "d",
+                      "renders": false,
+                      "state": {
+                        "expires": null,
+                        "stoodOnBy": {},
+                        "disappearing": null,
+                        "switchedAtRoomTime": -9007199254740991,
+                        "stoodOnUntilRoomTime": -9007199254740991,
+                        "actedOnAt": {
+                          "roomTime": -9007199254740991,
+                          "by": {},
+                          "actedInXY": false,
+                          "actedInZ": false
+                        },
+                        "position": {
+                          "x": 128,
+                          "y": 48,
+                          "z": 48
+                        }
+                      },
+                      "renderAabb": {
+                        "x": 0,
+                        "y": 0,
+                        "z": 0
+                      },
+                      "fixedZIndex": -2
+                    },
+                    "d/portal": {
+                      "config": {
+                        "toRoom": "blacktooth1head",
+                        "inHidden": false,
+                        "relativePoint": {
+                          "x": -4,
+                          "y": 0,
+                          "z": 0
+                        },
+                        "direction": {
+                          "x": 1,
+                          "y": 0,
+                          "z": 0
+                        }
+                      },
+                      "position": {
+                        "x": 8,
+                        "y": 3,
+                        "z": 0
+                      },
+                      "type": "portal",
+                      "aabb": {
+                        "y": 15,
+                        "x": 16,
+                        "z": 24
+                      },
+                      "castsShadowWhileStoodOn": false,
+                      "id": "d/portal",
+                      "jsonItemId": "d",
+                      "fixedZIndex": -2,
+                      "state": {
+                        "expires": null,
+                        "stoodOnBy": {},
+                        "disappearing": null,
+                        "switchedAtRoomTime": -9007199254740991,
+                        "stoodOnUntilRoomTime": -9007199254740991,
+                        "actedOnAt": {
+                          "roomTime": 149.4,
+                          "by": {
+                            "head": true
+                          },
+                          "actedInXY": true,
+                          "actedInZ": false
+                        },
+                        "position": {
+                          "x": 136,
+                          "y": 57,
+                          "z": 0
+                        }
+                      }
+                    },
+                    "d/stopAutowalk": {
+                      "aabb": {
+                        "x": 32,
+                        "y": 32,
+                        "z": 24
+                      },
+                      "castsShadowWhileStoodOn": false,
+                      "type": "stopAutowalk",
+                      "id": "d/stopAutowalk",
+                      "jsonItemId": "d",
+                      "config": {},
+                      "fixedZIndex": -2,
+                      "state": {
+                        "expires": null,
+                        "stoodOnBy": {},
+                        "disappearing": null,
+                        "switchedAtRoomTime": -9007199254740991,
+                        "stoodOnUntilRoomTime": -9007199254740991,
+                        "actedOnAt": {
+                          "roomTime": -9007199254740991,
+                          "by": {},
+                          "actedInXY": false,
+                          "actedInZ": false
+                        },
+                        "position": {
+                          "x": 88,
+                          "y": 48,
+                          "z": 0
+                        }
+                      }
+                    },
+                    "db": {
+                      "config": {
+                        "style": "volcano"
+                      },
+                      "position": {
+                        "x": 0,
+                        "y": 7,
+                        "z": 0
+                      },
+                      "type": "deadlyBlock",
+                      "aabb": {
+                        "x": 16,
+                        "y": 16,
+                        "z": 12
+                      },
+                      "castsShadowWhileStoodOn": false,
+                      "renderAabbOffset": {
+                        "x": -1,
+                        "y": -1,
+                        "z": 0
+                      },
+                      "renderAabb": {
+                        "x": 18,
+                        "y": 18,
+                        "z": 12
+                      },
+                      "id": "db",
+                      "jsonItemId": "db",
+                      "shadowCastTexture": {
+                        "textureId": "shadow.fullBlock",
+                        "spritesheetVariant": "original"
+                      },
+                      "state": {
+                        "expires": null,
+                        "stoodOnBy": {},
+                        "disappearing": null,
+                        "switchedAtRoomTime": -9007199254740991,
+                        "stoodOnUntilRoomTime": -9007199254740991,
+                        "actedOnAt": {
+                          "roomTime": -9007199254740991,
+                          "by": {},
+                          "actedInXY": false,
+                          "actedInZ": false
+                        },
+                        "position": {
+                          "x": 0,
+                          "y": 112,
+                          "z": 0
+                        }
+                      }
+                    },
+                    "f": {
+                      "aabb": {
+                        "x": 136.32,
+                        "y": 128,
+                        "z": 36
+                      },
+                      "castsShadowWhileStoodOn": false,
+                      "type": "floor",
+                      "id": "f",
+                      "jsonItemId": "f",
+                      "config": {
+                        "floorType": "standable",
+                        "scenery": "jail",
+                        "times": {
+                          "x": 8,
+                          "y": 8
+                        },
+                        "naturalFootprint": {
+                          "aabb": {
+                            "x": 128,
+                            "y": 128,
+                            "z": 36
+                          },
+                          "position": {
+                            "x": 0,
+                            "y": 0,
+                            "z": -36
+                          }
+                        }
+                      },
+                      "renderAabb": {
+                        "x": 136.32,
+                        "y": 128,
+                        "z": 10
+                      },
+                      "renderAabbOffset": {
+                        "x": 0,
+                        "y": 0,
+                        "z": 26
+                      },
+                      "shadowCastTexture": {
+                        "textureId": "shadow.fullBlock",
+                        "spritesheetVariant": "original"
+                      },
+                      "state": {
+                        "expires": null,
+                        "stoodOnBy": {
+                          "heels": true,
+                          "pi": true,
+                          "pi1": true
+                        },
+                        "disappearing": null,
+                        "switchedAtRoomTime": -9007199254740991,
+                        "stoodOnUntilRoomTime": 149.4,
+                        "actedOnAt": {
+                          "roomTime": 4.859999999999945,
+                          "by": {
+                            "head": true
+                          },
+                          "actedInXY": true,
+                          "actedInZ": true
+                        },
+                        "position": {
+                          "x": 0,
+                          "y": 0,
+                          "z": -36
+                        }
+                      }
+                    },
+                    "heels": {
+                      "id": "heels",
+                      "jsonItemId": "heels",
+                      "type": "heels",
+                      "aabb": {
+                        "x": 12,
+                        "y": 12,
+                        "z": 12
+                      },
+                      "castsShadowWhileStoodOn": true,
+                      "config": {},
+                      "shadowCastTexture": {
+                        "textureId": "shadow.playable",
+                        "spritesheetVariant": "original"
+                      },
+                      "renderAabbOffset": {
+                        "x": -1.5,
+                        "y": -1.5,
+                        "z": 0
+                      },
+                      "renderAabb": {
+                        "x": 14,
+                        "y": 14,
+                        "z": 14
+                      },
+                      "state": {
+                        "expires": null,
+                        "stoodOnBy": {},
+                        "disappearing": null,
+                        "switchedAtRoomTime": -9007199254740991,
+                        "stoodOnUntilRoomTime": -9007199254740991,
+                        "actedOnAt": {
+                          "roomTime": -9007199254740991,
+                          "by": {},
+                          "actedInXY": false,
+                          "actedInZ": false
+                        },
+                        "vels": {
+                          "walking": {
+                            "x": 0,
+                            "y": 0,
+                            "z": 0
+                          },
+                          "gravity": {
+                            "x": 0,
+                            "y": 0,
+                            "z": 0
+                          },
+                          "movingFloor": {
+                            "x": 0,
+                            "y": 0,
+                            "z": 0
+                          }
+                        },
+                        "latentMovement": [],
+                        "collidedWith": {
+                          "roomTime": -9007199254740991,
+                          "by": {}
+                        },
+                        "controlledWithJoystickAtRoomTime": -9007199254740991,
+                        "standingOnItemId": "f",
+                        "standingOnUntilRoomTime": -9007199254740991,
+                        "previousStandingOnItemId": null,
+                        "action": "idle",
+                        "jumped": false,
+                        "teleporting": null,
+                        "autoWalk": false,
+                        "facing": {
+                          "x": 0,
+                          "y": -1,
+                          "z": 0
+                        },
+                        "visualFacingVector": {
+                          "x": 0,
+                          "y": -1,
+                          "z": 0
+                        },
+                        "walkStartFacing": {
+                          "x": 0,
+                          "y": -1,
+                          "z": 0
+                        },
+                        "walkDistance": 0,
+                        "switchedToAt": -9007199254740991,
+                        "lastDiedAt": -9007199254740991,
+                        "gameTime": 149.4,
+                        "lives": 8,
+                        "jumpStartZ": 0,
+                        "carrying": null,
+                        "hasBag": false,
+                        "bigJumps": 0,
+                        "isBigJump": false,
+                        "shieldCollectedAt": -9007199254740991,
+                        "position": {
+                          "x": 49,
+                          "y": 57,
+                          "z": 0
+                        }
+                      }
+                    },
+                    "pi": {
+                      "config": {
+                        "gives": "scroll",
+                        "page": "head",
+                        "source": "manual"
+                      },
+                      "position": {
+                        "x": 7,
+                        "y": 1,
+                        "z": 0
+                      },
+                      "type": "pickup",
+                      "aabb": {
+                        "x": 16,
+                        "y": 4,
+                        "z": 13
+                      },
+                      "castsShadowWhileStoodOn": true,
+                      "renderAabbOffset": {
+                        "x": -1,
+                        "y": -1,
+                        "z": 0
+                      },
+                      "renderAabb": {
+                        "x": 18,
+                        "y": 6,
+                        "z": 13
+                      },
+                      "id": "pi",
+                      "jsonItemId": "pi",
+                      "shadowCastTexture": {
+                        "textureId": "shadow.scroll",
+                        "spritesheetVariant": "original"
+                      },
+                      "state": {
+                        "expires": null,
+                        "stoodOnBy": {},
+                        "disappearing": {
+                          "on": "touch",
+                          "byType": ["head", "heels", "headOverHeels"]
+                        },
+                        "switchedAtRoomTime": -9007199254740991,
+                        "stoodOnUntilRoomTime": -9007199254740991,
+                        "actedOnAt": {
+                          "roomTime": -9007199254740991,
+                          "by": {},
+                          "actedInXY": false,
+                          "actedInZ": false
+                        },
+                        "position": {
+                          "x": 112,
+                          "y": 22,
+                          "z": 0
+                        },
+                        "vels": {
+                          "gravity": {
+                            "x": 0,
+                            "y": 0,
+                            "z": 0
+                          },
+                          "movingFloor": {
+                            "x": 0,
+                            "y": 0,
+                            "z": 0
+                          }
+                        },
+                        "latentMovement": [],
+                        "collidedWith": {
+                          "roomTime": -9007199254740991,
+                          "by": {}
+                        },
+                        "controlledWithJoystickAtRoomTime": -9007199254740991,
+                        "standingOnItemId": "f",
+                        "standingOnUntilRoomTime": -9007199254740991,
+                        "previousStandingOnItemId": null,
+                        "wouldPickUpNext": false
+                      }
+                    },
+                    "pi1": {
+                      "config": {
+                        "gives": "scroll",
+                        "page": "heels",
+                        "source": "manual"
+                      },
+                      "position": {
+                        "x": 3,
+                        "y": 7,
+                        "z": 0
+                      },
+                      "type": "pickup",
+                      "aabb": {
+                        "x": 16,
+                        "y": 4,
+                        "z": 13
+                      },
+                      "castsShadowWhileStoodOn": true,
+                      "renderAabbOffset": {
+                        "x": -1,
+                        "y": -1,
+                        "z": 0
+                      },
+                      "renderAabb": {
+                        "x": 18,
+                        "y": 6,
+                        "z": 13
+                      },
+                      "id": "pi1",
+                      "jsonItemId": "pi1",
+                      "shadowCastTexture": {
+                        "textureId": "shadow.scroll",
+                        "spritesheetVariant": "original"
+                      },
+                      "state": {
+                        "expires": null,
+                        "stoodOnBy": {},
+                        "disappearing": {
+                          "on": "touch",
+                          "byType": ["head", "heels", "headOverHeels"]
+                        },
+                        "switchedAtRoomTime": -9007199254740991,
+                        "stoodOnUntilRoomTime": -9007199254740991,
+                        "actedOnAt": {
+                          "roomTime": -9007199254740991,
+                          "by": {},
+                          "actedInXY": false,
+                          "actedInZ": false
+                        },
+                        "position": {
+                          "x": 48,
+                          "y": 118,
+                          "z": 0
+                        },
+                        "vels": {
+                          "gravity": {
+                            "x": 0,
+                            "y": 0,
+                            "z": 0
+                          },
+                          "movingFloor": {
+                            "x": 0,
+                            "y": 0,
+                            "z": 0
+                          }
+                        },
+                        "latentMovement": [],
+                        "collidedWith": {
+                          "roomTime": -9007199254740991,
+                          "by": {}
+                        },
+                        "controlledWithJoystickAtRoomTime": -9007199254740991,
+                        "standingOnItemId": "f",
+                        "standingOnUntilRoomTime": -9007199254740991,
+                        "previousStandingOnItemId": null,
+                        "wouldPickUpNext": false
+                      }
+                    },
+                    "t": {
+                      "config": {
+                        "toRoom": "blacktooth24"
+                      },
+                      "position": {
+                        "x": 0,
+                        "y": 0,
+                        "z": 0
+                      },
+                      "type": "teleporter",
+                      "aabb": {
+                        "x": 16,
+                        "y": 16,
+                        "z": 12
+                      },
+                      "castsShadowWhileStoodOn": false,
+                      "renderAabbOffset": {
+                        "x": -1,
+                        "y": -1,
+                        "z": 0
+                      },
+                      "renderAabb": {
+                        "x": 18,
+                        "y": 18,
+                        "z": 12
+                      },
+                      "id": "t",
+                      "jsonItemId": "t",
+                      "shadowCastTexture": {
+                        "textureId": "shadow.fullBlock",
+                        "spritesheetVariant": "original"
+                      },
+                      "state": {
+                        "expires": null,
+                        "stoodOnBy": {},
+                        "disappearing": null,
+                        "switchedAtRoomTime": -9007199254740991,
+                        "stoodOnUntilRoomTime": -9007199254740991,
+                        "actedOnAt": {
+                          "roomTime": -9007199254740991,
+                          "by": {},
+                          "actedInXY": false,
+                          "actedInZ": false
+                        },
+                        "position": {
+                          "x": 0,
+                          "y": 0,
+                          "z": 0
+                        },
+                        "toRoom": "blacktooth24"
+                      }
+                    },
+                    "w": {
+                      "type": "wall",
+                      "id": "w",
+                      "jsonItemId": "w",
+                      "config": {
+                        "direction": "right",
+                        "times": {
+                          "y": 8
+                        }
+                      },
+                      "aabb": {
+                        "x": 16,
+                        "y": 128,
+                        "z": 9999
+                      },
+                      "fixedZIndex": -2,
+                      "state": {
+                        "expires": null,
+                        "stoodOnBy": {},
+                        "disappearing": null,
+                        "switchedAtRoomTime": -9007199254740991,
+                        "stoodOnUntilRoomTime": -9007199254740991,
+                        "actedOnAt": {
+                          "roomTime": -9007199254740991,
+                          "by": {},
+                          "actedInXY": false,
+                          "actedInZ": false
+                        },
+                        "position": {
+                          "x": -16,
+                          "y": 0,
+                          "z": 0
+                        }
+                      },
+                      "shadowCastTexture": {
+                        "textureId": "shadow.wall.y",
+                        "spritesheetVariant": "original"
+                      },
+                      "castsShadowWhileStoodOn": true
+                    },
+                    "w1": {
+                      "type": "wall",
+                      "id": "w1",
+                      "jsonItemId": "w1",
+                      "config": {
+                        "direction": "towards",
+                        "times": {
+                          "x": 8
+                        }
+                      },
+                      "aabb": {
+                        "x": 128,
+                        "y": 16,
+                        "z": 9999
+                      },
+                      "fixedZIndex": -2,
+                      "state": {
+                        "expires": null,
+                        "stoodOnBy": {},
+                        "disappearing": null,
+                        "switchedAtRoomTime": -9007199254740991,
+                        "stoodOnUntilRoomTime": -9007199254740991,
+                        "actedOnAt": {
+                          "roomTime": -9007199254740991,
+                          "by": {},
+                          "actedInXY": false,
+                          "actedInZ": false
+                        },
+                        "position": {
+                          "x": 0,
+                          "y": -16,
+                          "z": 0
+                        }
+                      },
+                      "shadowCastTexture": {
+                        "textureId": "shadow.wall.y",
+                        "flipX": true,
+                        "spritesheetVariant": "original"
+                      },
+                      "castsShadowWhileStoodOn": true
+                    },
+                    "w2": {
+                      "type": "wall",
+                      "id": "w2",
+                      "jsonItemId": "w2",
+                      "config": {
+                        "direction": "away",
+                        "tiles": [
+                          "bars",
+                          "bars",
+                          "bars",
+                          "bars",
+                          "bars",
+                          "bars",
+                          "bars",
+                          "bars"
+                        ]
+                      },
+                      "aabb": {
+                        "x": 128,
+                        "y": 16,
+                        "z": 9999
+                      },
+                      "renderAabb": {
+                        "x": 128,
+                        "y": 0,
+                        "z": 50
+                      },
+                      "state": {
+                        "expires": null,
+                        "stoodOnBy": {},
+                        "disappearing": null,
+                        "switchedAtRoomTime": -9007199254740991,
+                        "stoodOnUntilRoomTime": -9007199254740991,
+                        "actedOnAt": {
+                          "roomTime": -9007199254740991,
+                          "by": {},
+                          "actedInXY": false,
+                          "actedInZ": false
+                        },
+                        "position": {
+                          "x": 0,
+                          "y": 128,
+                          "z": 0
+                        }
+                      },
+                      "shadowCastTexture": {
+                        "textureId": "shadow.wall.y",
+                        "flipX": true,
+                        "spritesheetVariant": "original"
+                      },
+                      "castsShadowWhileStoodOn": false
+                    },
+                    "w3": {
+                      "type": "wall",
+                      "id": "w3",
+                      "jsonItemId": "w3",
+                      "config": {
+                        "direction": "left",
+                        "tiles": ["bars", "bars", "bars"]
+                      },
+                      "aabb": {
+                        "x": 16,
+                        "y": 48,
+                        "z": 9999
+                      },
+                      "renderAabb": {
+                        "x": 0,
+                        "y": 48,
+                        "z": 50
+                      },
+                      "state": {
+                        "expires": null,
+                        "stoodOnBy": {},
+                        "disappearing": null,
+                        "switchedAtRoomTime": -9007199254740991,
+                        "stoodOnUntilRoomTime": -9007199254740991,
+                        "actedOnAt": {
+                          "roomTime": -9007199254740991,
+                          "by": {},
+                          "actedInXY": false,
+                          "actedInZ": false
+                        },
+                        "position": {
+                          "x": 128,
+                          "y": 0,
+                          "z": 0
+                        }
+                      },
+                      "shadowCastTexture": {
+                        "textureId": "shadow.wall.y",
+                        "spritesheetVariant": "original"
+                      },
+                      "castsShadowWhileStoodOn": false
+                    },
+                    "w4": {
+                      "type": "wall",
+                      "id": "w4",
+                      "jsonItemId": "w4",
+                      "config": {
+                        "direction": "left",
+                        "tiles": ["bars", "bars", "bars"]
+                      },
+                      "aabb": {
+                        "x": 16,
+                        "y": 48,
+                        "z": 9999
+                      },
+                      "renderAabb": {
+                        "x": 0,
+                        "y": 48,
+                        "z": 50
+                      },
+                      "state": {
+                        "expires": null,
+                        "stoodOnBy": {},
+                        "disappearing": null,
+                        "switchedAtRoomTime": -9007199254740991,
+                        "stoodOnUntilRoomTime": -9007199254740991,
+                        "actedOnAt": {
+                          "roomTime": -9007199254740991,
+                          "by": {},
+                          "actedInXY": false,
+                          "actedInZ": false
+                        },
+                        "position": {
+                          "x": 128,
+                          "y": 80,
+                          "z": 0
+                        }
+                      },
+                      "shadowCastTexture": {
+                        "textureId": "shadow.wall.y",
+                        "spritesheetVariant": "original"
+                      },
+                      "castsShadowWhileStoodOn": false
+                    },
+                    "outOfBounds": {
+                      "aabb": {
+                        "x": 224,
+                        "y": 224,
+                        "z": 12
+                      },
+                      "castsShadowWhileStoodOn": false,
+                      "type": "outOfBounds",
+                      "id": "outOfBounds",
+                      "fixedZIndex": -2,
+                      "config": {},
+                      "state": {
+                        "expires": null,
+                        "stoodOnBy": {},
+                        "disappearing": null,
+                        "switchedAtRoomTime": -9007199254740991,
+                        "stoodOnUntilRoomTime": -9007199254740991,
+                        "actedOnAt": {
+                          "roomTime": -9007199254740991,
+                          "by": {},
+                          "actedInXY": false,
+                          "actedInZ": false
+                        },
+                        "position": {
+                          "x": -64,
+                          "y": -64,
+                          "z": -120
+                        }
+                      }
+                    },
+                    "doorEntry/758.5200000000004": {
+                      "id": "doorEntry/758.5200000000004",
+                      "type": "soundEffect",
+                      "fixedZIndex": -2,
+                      "config": {
+                        "soundOptions": {
+                          "soundId": "door",
+                          "gain": 1,
+                          "playbackRate": 1
+                        }
+                      },
+                      "aabb": {
+                        "x": 0,
+                        "y": 0,
+                        "z": 0
+                      },
+                      "castsShadowWhileStoodOn": false,
+                      "state": {
+                        "expires": null,
+                        "stoodOnBy": {},
+                        "disappearing": null,
+                        "switchedAtRoomTime": -9007199254740991,
+                        "stoodOnUntilRoomTime": -9007199254740991,
+                        "actedOnAt": {
+                          "roomTime": -9007199254740991,
+                          "by": {},
+                          "actedInXY": false,
+                          "actedInZ": false
+                        },
+                        "position": {
+                          "x": 132,
+                          "y": 57,
+                          "z": 0
+                        },
+                        "played": false
+                      },
+                      "noSoundPan": false
+                    }
+                  },
+                  "planet": "jail",
+                  "roomJson": {
+                    "color": {
+                      "hue": "cyan",
+                      "shade": "basic"
+                    },
+                    "id": "blacktooth23heels",
+                    "items": {
+                      "br": {
+                        "config": {
+                          "axis": "y",
+                          "times": {
+                            "y": 8,
+                            "z": 3
+                          }
+                        },
+                        "position": {
+                          "x": 4,
+                          "y": 0,
+                          "z": 0
+                        },
+                        "type": "barrier"
+                      },
+                      "co": {
+                        "config": {
+                          "direction": "away",
+                          "times": {
+                            "y": 6
+                          }
+                        },
+                        "position": {
+                          "x": 0,
+                          "y": 1,
+                          "z": 0
+                        },
+                        "type": "conveyor"
+                      },
+                      "d": {
+                        "config": {
+                          "direction": "left",
+                          "toRoom": "blacktooth1head"
+                        },
+                        "position": {
+                          "x": 8,
+                          "y": 3,
+                          "z": 0
+                        },
+                        "type": "door"
+                      },
+                      "db": {
+                        "config": {
+                          "style": "volcano"
+                        },
+                        "position": {
+                          "x": 0,
+                          "y": 7,
+                          "z": 0
+                        },
+                        "type": "deadlyBlock"
+                      },
+                      "f": {
+                        "config": {
+                          "floorType": "standable",
+                          "scenery": "jail",
+                          "times": {
+                            "x": 8,
+                            "y": 8
+                          }
+                        },
+                        "position": {
+                          "x": 0,
+                          "y": 0,
+                          "z": 0
+                        },
+                        "type": "floor"
+                      },
+                      "heels": {
+                        "config": {
+                          "which": "heels"
+                        },
+                        "position": {
+                          "x": 3,
+                          "y": 3.5,
+                          "z": 0
+                        },
+                        "type": "player"
+                      },
+                      "pi": {
+                        "config": {
+                          "gives": "scroll",
+                          "page": "head",
+                          "source": "manual"
+                        },
+                        "position": {
+                          "x": 7,
+                          "y": 1,
+                          "z": 0
+                        },
+                        "type": "pickup"
+                      },
+                      "pi1": {
+                        "config": {
+                          "gives": "scroll",
+                          "page": "heels",
+                          "source": "manual"
+                        },
+                        "position": {
+                          "x": 3,
+                          "y": 7,
+                          "z": 0
+                        },
+                        "type": "pickup"
+                      },
+                      "t": {
+                        "config": {
+                          "toRoom": "blacktooth24"
+                        },
+                        "position": {
+                          "x": 0,
+                          "y": 0,
+                          "z": 0
+                        },
+                        "type": "teleporter"
+                      },
+                      "w": {
+                        "config": {
+                          "direction": "right",
+                          "times": {
+                            "y": 8
+                          }
+                        },
+                        "position": {
+                          "x": 0,
+                          "y": 0,
+                          "z": 0
+                        },
+                        "type": "wall"
+                      },
+                      "w1": {
+                        "config": {
+                          "direction": "towards",
+                          "times": {
+                            "x": 8
+                          }
+                        },
+                        "position": {
+                          "x": 0,
+                          "y": 0,
+                          "z": 0
+                        },
+                        "type": "wall"
+                      },
+                      "w2": {
+                        "config": {
+                          "direction": "away",
+                          "tiles": [
+                            "bars",
+                            "bars",
+                            "bars",
+                            "bars",
+                            "bars",
+                            "bars",
+                            "bars",
+                            "bars"
+                          ]
+                        },
+                        "position": {
+                          "x": 0,
+                          "y": 8,
+                          "z": 0
+                        },
+                        "type": "wall"
+                      },
+                      "w3": {
+                        "config": {
+                          "direction": "left",
+                          "tiles": ["bars", "bars", "bars"]
+                        },
+                        "position": {
+                          "x": 8,
+                          "y": 0,
+                          "z": 0
+                        },
+                        "type": "wall"
+                      },
+                      "w4": {
+                        "config": {
+                          "direction": "left",
+                          "tiles": ["bars", "bars", "bars"]
+                        },
+                        "position": {
+                          "x": 8,
+                          "y": 5,
+                          "z": 0
+                        },
+                        "type": "wall"
+                      }
+                    },
+                    "planet": "jail"
+                  },
+                  "roomTime": 149.4
+                }
+              },
+              "currentCharacterName": "head",
+              "entryState": {
+                "head": {
+                  "position": {
+                    "x": 57,
+                    "y": 132,
+                    "z": 12
+                  },
+                  "facing": {
+                    "x": 0,
+                    "y": -1,
+                    "z": 0
+                  },
+                  "autoWalk": true,
+                  "action": "moving",
+                  "vels": {
+                    "walking": {
+                      "x": 0,
+                      "y": 0,
+                      "z": 0
+                    },
+                    "gravity": {
+                      "x": 0,
+                      "y": 0,
+                      "z": 0
+                    },
+                    "movingFloor": {
+                      "x": 0,
+                      "y": 0,
+                      "z": 0
+                    }
+                  }
+                },
+                "heels": {
+                  "position": {
+                    "x": 49,
+                    "y": 57,
+                    "z": 0
+                  },
+                  "facing": {
+                    "x": 0,
+                    "y": -1,
+                    "z": 0
+                  },
+                  "autoWalk": false,
+                  "action": "idle",
+                  "vels": {
+                    "walking": {
+                      "x": 0,
+                      "y": 0,
+                      "z": 0
+                    },
+                    "gravity": {
+                      "x": 0,
+                      "y": 0,
+                      "z": 0
+                    },
+                    "movingFloor": {
+                      "x": 0,
+                      "y": 0,
+                      "z": 0
+                    }
+                  }
+                }
+              },
+              "gameTime": 1228.8000000000009,
+              "pickupsCollected": {}
+            },
+            "store": {
+              "gameMenus": {
+                "gameInPlay": {
+                  "planetsLiberated": {
+                    "blacktooth": false,
+                    "bookworld": false,
+                    "egyptus": false,
+                    "penitentiary": false,
+                    "safari": false
+                  },
+                  "roomsExplored": {
+                    "finalroom": true,
+                    "blacktooth23heels": true,
+                    "blacktooth0switches": true,
+                    "blacktooth74": true,
+                    "blacktooth86": true,
+                    "blacktooth87crown": true
+                  },
+                  "scrollsRead": {},
+                  "freeCharacters": {},
+                  "campaignLocator": {
+                    "userId": "@@original",
+                    "campaignName": "original",
+                    "version": -1
+                  }
+                }
+              }
+            }
+          }
+        },
+        "lastSavedCampaignLocator": {
+          "userId": "@@original",
+          "campaignName": "original",
+          "version": -1
+        }
+      },
+      "_persist": {
+        "version": 17,
+        "rehydrated": true
+      }
+    },
+    "persist:hohol/spritesheetOverride": {
+      "overrides": {},
+      "_persist": {
+        "version": 1,
+        "rehydrated": true
+      }
+    }
+  }
+}
