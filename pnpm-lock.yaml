@@ -81,8 +81,8 @@ importers:
         specifier: ^6.0.0
         version: 6.0.0(react@19.2.3)(redux@5.0.1)
       snarkdown-in-react:
-        specifier: ^2.0.3
-        version: 2.0.3
+        specifier: ^2.1.0
+        version: 2.1.0
       string-transform:
         specifier: ^21.9.19
         version: 21.9.19
@@ -4995,8 +4995,8 @@ packages:
     resolution: {integrity: sha512-dWUG8F5sIIARXih1DTaQAX4SsiTXhInKf1buxdY9DIg4ZYPZK5nGM1VRIYmEbDbsHt7USo99xSLFu5Q1IqTmsg==}
     engines: {node: '>= 18'}
 
-  snarkdown-in-react@2.0.3:
-    resolution: {integrity: sha512-WQaIYoDZZBAlgTLSSg3Aick36I3uPyLIcu2mZksUg/xqMsKU2avVnFxL647TaD4WA/mSkXHsLDHZ1Cri8EWoCA==}
+  snarkdown-in-react@2.1.0:
+    resolution: {integrity: sha512-Y1l4Ih897NG9ECXnL2EvNJN0NgTs+ja6clWXcbYD2IoGyLrAhx0V5qIZhEBxS4kT+STCHU2hebqLTjjZ0jEyPg==}
 
   source-map-js@1.2.1:
     resolution: {integrity: sha512-UXWMKhLOwVKb728IUtQPXxfYU+usdybtUrK/8uGE8CQMvrhOpwvzDBwj0QhSL7MQc7vIsISBG8VQ8+IDQxpfQA==}
@@ -10440,7 +10440,7 @@ snapshots:
 
   smol-toml@1.6.1: {}
 
-  snarkdown-in-react@2.0.3:
+  snarkdown-in-react@2.1.0:
     dependencies:
       react: 19.2.3
 

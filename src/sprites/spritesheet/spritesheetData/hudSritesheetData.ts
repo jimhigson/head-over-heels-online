@@ -84,6 +84,7 @@ const row1 = [
   { char: "’", width: 4 },
   { char: "'", width: 4 },
   { char: "-", width: 5 },
+  { char: "=", width: 5 },
 ] as const satisfies CharRow;
 
 const row2 = [

@@ -6,5 +6,6 @@ allowBuilds:
   workerd: true
 minimumReleaseAgeExclude:
   - '@blockstacking/jims-shaders@0.4.5'
+  - snarkdown-in-react@2.1.0
 patchedDependencies:
   pixi.js: patches/pixi.js.patch

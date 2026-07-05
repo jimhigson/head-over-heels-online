@@ -14,7 +14,7 @@ const menuLeaders = `${menuLeaderUnfocussedChar}${menuLeaderFocussedChar}${menuL
 
 const specimenText = `pack my box with five dozen liquor jugs
 PACK${emSpace}MY${emSpace}BOX${emSpace}WITH${emSpace}FIVE${emSpace}DOZEN${emSpace}LIQUOR${emSpace}JUGS${emSpace}0123456789
-?!.,;:/\\'\`‘’-+_|%#@*^&<>()[]§©∞☰•★⚡⬅➡⬆⬇↖↗↘↙⏩⁌⁍⇧⌥⌘⎌⟳↻↺🛡♨🕹\uf1ff\ue709\uea78\uf50e\u{f10a9}\uf457\u{ff0e}${menuLeaders}`;
+?!.,;:/\\'\`‘’-=+_|%#@*^&<>()[]§©∞☰•★⚡⬅➡⬆⬇↖↗↘↙⏩⁌⁍⇧⌥⌘⎌⟳↻↺🛡♨🕹\uf1ff\ue709\uea78\uf50e\u{f10a9}\uf457\u{ff0e}${menuLeaders}`;
 
 const scaleFactors = [1, 2] as const;
 
@@ -27,7 +27,7 @@ const colourClasses = [
 
 export const FontSpecimen = () => (
   <div
-    class="bg-pureBlack text-white p-1 w-full overflow-x-clip"
+    class="bg-pureBlack text-white p-1 w-full overflow-x-clip allow-select"
     data-font-specimen
   >
     {scaleFactors.map((scaleFactor, scaleIndex) => (

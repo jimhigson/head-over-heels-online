@@ -21,11 +21,9 @@ export const changeRoomSceneryInPlace = <
     }
 
     if (i.type === "wall") {
-      if (i.config.direction === "away" || i.config.direction === "left") {
-        i.config.tiles = Array.from(
-          rotatingSceneryTiles(sceneryName, i.config.tiles.length),
-        );
-      }
+      i.config.tiles = Array.from(
+        rotatingSceneryTiles(sceneryName, i.config.tiles.length),
+      );
     }
 
     if (i.type === "pickup" && i.config.gives === "crown") {

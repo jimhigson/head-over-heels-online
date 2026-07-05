@@ -233,6 +233,16 @@ export const spritesTailwindPlugin = plugin(
       ".text-multi-line": {
         lineHeight: "calc(11px * var(--scale, 1))",
       },
+      // opt back in to text selection where the app-wide select-none on <body>
+      // would otherwise block it (eg to copy an error message from a dialog)
+      ".allow-select": {
+        "-webkit-user-select": "text",
+        userSelect: "text",
+        "& ::selection": {
+          backgroundColor: "var(--colour-shadow)",
+          color: "white",
+        },
+      },
 
       // sets the css vars for the editor buttons/toolbars etc
       ".scale-editor": {
