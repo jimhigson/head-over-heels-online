@@ -59,6 +59,8 @@ export const speccySpritesheetMeta: SpritesheetMetadata<
     carryAndJump: "redBasic",
     menu: "whiteBasic",
     map: "whiteBasic",
+    rotateClockwise: "whiteBasic",
+    rotateAnticlockwise: "whiteBasic",
   },
   supportsUncolourised: false,
   showFloorOverDraw: true,

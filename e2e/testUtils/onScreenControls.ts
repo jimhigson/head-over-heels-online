@@ -7,7 +7,7 @@ import { osSlowness } from "./infrastructure";
 /**
  * The pixi scene-graph label of each button's visible content. The
  * jump/fire/carry buttons use an {@link ArcadeStyleButtonContainer} (labelled
- * `arcadeButton (which)`); the menu/map buttons are plain text containers.
+ * `arcadeButton (which)`); the menu/map/rotate buttons are plain text containers.
  */
 const buttonContentLabel = {
   jump: "arcadeButton (jump)",
@@ -16,6 +16,8 @@ const buttonContentLabel = {
   carryAndJump: "arcadeButton (carryAndJump)",
   menu: "menuText",
   map: "mapText",
+  rotateAnticlockwise: "rotateText.↺",
+  rotateClockwise: "rotateText.↻",
 } as const satisfies { [K in ButtonId]: string };
 
 /**

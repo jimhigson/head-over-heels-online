@@ -1,5 +1,6 @@
 import { type Color, Container, Sprite, type Texture } from "pixi.js";
 
+import { blockSizePx } from "../../../model/blockSizePx";
 import {
   type HeadAbilities,
   type HeelsAbilities,
@@ -52,6 +53,7 @@ import {
 } from "./hudRendererContexts";
 import { mapButtonAppearance } from "./onScreenControls/buttonAppearances/mapButtonAppearance";
 import { menuButtonAppearance } from "./onScreenControls/buttonAppearances/menuButtonAppearance";
+import { rotateButtonAppearance } from "./onScreenControls/buttonAppearances/rotateButtonAppearance";
 import { OnScreenControls } from "./onScreenControls/OnScreenControls";
 import { renderCarriedOnce } from "./renderCarriedOnce";
 import {
@@ -149,6 +151,10 @@ export class HudRenderer<RoomId extends string, RoomItemId extends string>
   #mapButton: HudButtonRenderer<"map", RoomId, any, any>;
   // eslint-disable-next-line @typescript-eslint/no-explicit-any
   #menuButton: HudButtonRenderer<"menu", RoomId, any, any>;
+  // eslint-disable-next-line @typescript-eslint/no-explicit-any
+  #rotateClockwiseButton: HudButtonRenderer<"rotateClockwise", RoomId, any, any>; // prettier-ignore
+  // eslint-disable-next-line @typescript-eslint/no-explicit-any
+  #rotateAnticlockwiseButton: HudButtonRenderer<"rotateAnticlockwise", RoomId, any, any>; // prettier-ignore
   #lastPointerMoveTime = 0;
 
   #unlisten;
@@ -273,8 +279,39 @@ export class HudRenderer<RoomId extends string, RoomItemId extends string>
       mapButtonAppearance,
       true,
     );
+    this.#rotateAnticlockwiseButton = new HudButtonRenderer(
+      {
+        button: {
+          which: "rotateAnticlockwise",
+          actions: ["rotateCameraAnticlockwise"],
+          id: "rotateAnticlockwise",
+        },
+        general,
+        inputStateTracker,
+      },
+      rotateButtonAppearance("↺"),
+      true,
+    );
+    this.#rotateClockwiseButton = new HudButtonRenderer(
+      {
+        button: {
+          which: "rotateClockwise",
+          actions: ["rotateCameraClockwise"],
+          id: "rotateClockwise",
+        },
+        general,
+        inputStateTracker,
+      },
+      rotateButtonAppearance("↻"),
+      true,
+    );
 
-    for (const button of [this.#menuButton, this.#mapButton]) {
+    for (const button of [
+      this.#menuButton,
+      this.#mapButton,
+      this.#rotateAnticlockwiseButton,
+      this.#rotateClockwiseButton,
+    ]) {
       const { actions } = button.renderContext.button;
       button.output.on("pointerdown", () => {
         for (const action of actions) {
@@ -825,17 +862,42 @@ export class HudRenderer<RoomId extends string, RoomItemId extends string>
       ...buttonTickContext,
       hovered: this.#mapButton.hovered,
     });
+    this.#rotateAnticlockwiseButton.tick({
+      ...buttonTickContext,
+      hovered: this.#rotateAnticlockwiseButton.hovered,
+    });
+    this.#rotateClockwiseButton.tick({
+      ...buttonTickContext,
+      hovered: this.#rotateClockwiseButton.hovered,
+    });
 
     this.#menuButton.output.x = 24;
     this.#menuButton.output.y = 24;
     this.#mapButton.output.x = tickContext.screenSize.x - 3 * 8;
-    this.#mapButton.output.y = 16;
+    // same baseline (y=24) as the menu and rotate buttons:
+    this.#mapButton.output.y = 24;
+
+    // the camera-rotate buttons sit on the same top-edge baseline, one block out
+    // from the menu button (anticlockwise, towards the top-left) and the map
+    // button (clockwise, towards the top-right):
+    this.#rotateAnticlockwiseButton.output.y = 24;
+    this.#rotateAnticlockwiseButton.output.x = Math.round(
+      this.#menuButton.output.x + this.#menuButton.output.width + blockSizePx.x,
+    );
+    this.#rotateClockwiseButton.output.y = 24;
+    this.#rotateClockwiseButton.output.x = Math.round(
+      this.#mapButton.output.x -
+        blockSizePx.x -
+        this.#rotateClockwiseButton.output.width,
+    );
 
     const buttonsVisible =
       !tickContext.paused &&
       (onScreenControls || Date.now() - this.#lastPointerMoveTime < 2_000);
     this.#menuButton.output.visible = buttonsVisible;
     this.#mapButton.output.visible = buttonsVisible;
+    this.#rotateAnticlockwiseButton.output.visible = buttonsVisible;
+    this.#rotateClockwiseButton.output.visible = buttonsVisible;
 
     if (this.#fpsRenderer) {
       this.#fpsRenderer.isDark = tickContext.room.color.shade === "dimmed";

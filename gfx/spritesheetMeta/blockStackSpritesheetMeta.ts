@@ -186,6 +186,8 @@ export const blockStackSpritesheetMeta: SpritesheetMetadata<
     carryAndJump: "midRed",
     menu: "lightGrey",
     map: "lightGrey",
+    rotateClockwise: "lightGrey",
+    rotateAnticlockwise: "lightGrey",
   },
   supportsUncolourised: true,
   showFloorOverDraw: true,

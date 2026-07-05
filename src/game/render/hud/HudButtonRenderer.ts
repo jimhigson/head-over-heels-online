@@ -15,7 +15,9 @@ export type ButtonId =
   | "fire"
   | "jump"
   | "map"
-  | "menu";
+  | "menu"
+  | "rotateAnticlockwise"
+  | "rotateClockwise";
 
 type Button<Which extends ButtonId = ButtonId> = {
   id: string;
