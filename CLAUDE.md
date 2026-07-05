@@ -144,7 +144,7 @@ and we trust that to pre-load in the service worker for us, so the actual game e
 * Don't switch to main first when creating a new branch, do `git fetch && git switch -c (new branch) origin/main`
 * For tasks assigned that include making a branch, completing a task on it, always use a worktree 
 * before writing commit messages check the release-please schema; then write a single-line only commit message
-* always make PRs with `gh pr create -f` -ie, don't put a title or description body, let 'gh' use the commit
+* PR titles: a simple release-please-prefixed message, 10 words max (5 is better); no PR description body - eg `gh pr create --title "chore: save game compat e2e" --body ""`
 * always compare, or branch from `origin/main`, not `main`; `git fetch` first where appropriate
 
 ## Style & Tooling:
