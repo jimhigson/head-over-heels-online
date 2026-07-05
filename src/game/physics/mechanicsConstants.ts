@@ -9,7 +9,7 @@ import { transformObject } from "../../utils/transformObject";
 
 export { blockSizePx, defaultRoomHeightBlocks };
 
-const onePxPerFrameInOriginalGamePxPerMs = zxSpectrumFrameRate / 1000;
+const onePxPerFrameInOriginalGamePxPerMs = zxSpectrumFrameRate / 1_000;
 
 export const playerWalkAcceldPixPerMsSq = {
   // keep these the same so long as we are relying on walk distance at the start of
@@ -30,7 +30,7 @@ export const playerWalkAcceldPixPerMsSq = {
  *
  * 110 Hz ensures 3 sub-ticks per frame at 60fps
  */
-export const maxSubTickDeltaMs = 1000 / 110;
+export const maxSubTickDeltaMs = 1_000 / 110;
 
 /** generally, jumps get (slightly) lower as frame rates increase, and this gets
  * impactful at very high frame rates - limit to 240Hz since this is already at
@@ -46,14 +46,14 @@ export const maxFps = 330;
   setting to zero gives the old, linear jump behaviour. Higher figures mean
   more contrast between initial jump speed and average jump speed
  */
-export const fallG = 0.0002;
+export const fallG = 0.000_2;
 
 export const terminalVelocityPixPerMs = {
   // head glides at height of two blocks per second
-  head: (blockSizePx.z * 2) / 1000,
+  head: (blockSizePx.z * 2) / 1_000,
   // everyone else tops out at 2px/sec in original game
   //others: pxPerFrameSpeed(-2),
-  others: (blockSizePx.z * 6) / 1000,
+  others: (blockSizePx.z * 6) / 1_000,
 };
 
 // the lift moves much faster than the original game, but also slows down much
@@ -148,7 +148,7 @@ export const maximumSpeedCoefficient = 1.5;
 
 // n px per frame in original game;
 const pxPerFrameSpeed = (pxPerFrame: number = 1) =>
-  (pxPerFrame * zxSpectrumFrameRate) / 1000;
+  (pxPerFrame * zxSpectrumFrameRate) / 1_000;
 
 export const conveyorSpeedPixPerMs = pxPerFrameSpeed();
 
@@ -185,7 +185,7 @@ export const switchCharacterHighlightTime = 750;
  * just long enough to not allow a skip in #blacktooth80 in the original
  * campaign
  */
-export const afterDeathInvulnerabilityTime = 1500;
+export const afterDeathInvulnerabilityTime = 1_500;
 /** how quickly to flash after dying? */
 export const afterDeathInvulnerabilityFlashPeriod = 200;
 /** how long to flash for, as a fraction of the flash period */
@@ -213,13 +213,13 @@ const wallHeightPx = wallTileSize.h - wallTileSize.w / 2;
 export const wallRenderHeight = wallHeightPx + 2;
 
 // the practical limit of how high an item can go in a room. Considered to be unreachable
-export const veryHighZ = 9999;
+export const veryHighZ = 9_999;
 
 /**
  * give a few more frames where the player can still jump after walking off (or otherwise leaving)
  * a surface
  */
-export const coyoteTime = 1000 / 12;
+export const coyoteTime = 1_000 / 12;
 
 export const switchMinTimeBetweenToggleMs = 100;
 

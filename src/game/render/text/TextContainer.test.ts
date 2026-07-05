@@ -205,7 +205,7 @@ test("displays numbers correctly", () => {
   expect(container.characterSpriteContainer.children.length).toBe(2);
 
   // Test larger number
-  container.text = 9876;
+  container.text = 9_876;
   expect(container.characterSpriteContainer.children.length).toBe(4);
 
   // Test zero

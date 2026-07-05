@@ -1,18 +1,16 @@
 import { useCallback } from "preact/hooks";
 
-import { useAppDispatch, useAppSelector } from "../../../store/hooks";
-import { selectUpscale } from "../../../store/slices/upscale/upscaleSlice";
+import { useAppDispatch } from "../../../store/hooks";
 import { useEditorAppSelector } from "../../../store/store";
 import { ContextMenu } from "../../../ui/command/ContextMenu";
 import { type Xy } from "../../../utils/vectors/vectors";
-import { useEditorRoomRenderDimensions } from "../../slice/levelEditorSelectorHooks";
 import {
   closeItemContextMenu,
   selectContextMenuXy,
   selectCurrentEditingRoomJson,
   selectSelectedJsonItemIds,
 } from "../../slice/levelEditorSlice";
-import { roomEditingAreaMarginPx } from "../roomEditingAreaMarginPx";
+import { useEditorViewport } from "../viewport/EditorViewportProvider";
 import { ActivationMenuItems } from "./ActivationMenuItems";
 import { CoalesceMenuItem } from "./CoalesceMenuItem";
 import { DeleteMenuItem } from "./DeleteMenuItem";
@@ -45,32 +43,25 @@ export type ItemContextMenuProps = {
 export const ItemContextMenu = ({ renderArea }: ItemContextMenuProps) => {
   const dispatch = useAppDispatch();
   const contextMenuXy = useEditorAppSelector(selectContextMenuXy);
-  const upscale = useAppSelector(selectUpscale);
-  const roomRenderSize = useEditorRoomRenderDimensions();
+  const viewport = useEditorViewport();
   const selectedJsonItemIds = useEditorAppSelector(selectSelectedJsonItemIds);
   const roomJson = useEditorAppSelector(selectCurrentEditingRoomJson);
 
   const close = useCallback(() => dispatch(closeItemContextMenu()), [dispatch]);
 
-  // contextMenuXy is in the room's projected screen space (scaled pixels) - the
-  // inverse of upscaledMousePosition() - so convert it back to a viewport point:
+  // contextMenuXy is in engine (projection-space) coordinates - convert to a
+  // page point via the viewport's transform:
   const anchor = useCallback((): Xy => {
     if (contextMenuXy === undefined || renderArea === null) {
       return { x: 0, y: 0 };
     }
-    const totalUpscale = upscale.cssUpscale * upscale.gameEngineUpscale;
     const rect = renderArea.getBoundingClientRect();
+    const panePoint = viewport.toScreen(contextMenuXy);
     return {
-      x:
-        (contextMenuXy.x - roomRenderSize.l + roomEditingAreaMarginPx) *
-          totalUpscale +
-        rect.left,
-      y:
-        (contextMenuXy.y - roomRenderSize.t + roomEditingAreaMarginPx) *
-          totalUpscale +
-        rect.top,
+      x: panePoint.x + rect.left,
+      y: panePoint.y + rect.top,
     };
-  }, [contextMenuXy, renderArea, roomRenderSize, upscale]);
+  }, [contextMenuXy, renderArea, viewport]);
 
   const open = contextMenuXy !== undefined && renderArea !== null;
 

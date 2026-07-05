@@ -59,7 +59,7 @@ export default defineConfig(({ mode: _mode }) => {
             globPatterns: ["**/*.{js,css,html,json,png,webp,opus,woff2}"],
             // visual-regression builds are unminified so assets are larger
             ...(mode === "visual-regression" && {
-              maximumFileSizeToCacheInBytes: 5 * 1024 * 1024,
+              maximumFileSizeToCacheInBytes: 5 * 1_024 * 1_024,
             }),
             runtimeCaching: [
               {
@@ -170,10 +170,10 @@ export default defineConfig(({ mode: _mode }) => {
       // want to connect using (computername).local, not just the ip
       allowedHosts: [".local"],
       // consistent port number for this project (not vite default)
-      port: 5200,
+      port: 5_200,
     },
     preview: {
-      port: 5201,
+      port: 5_201,
     },
   };
 });

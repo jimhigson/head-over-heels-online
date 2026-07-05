@@ -528,7 +528,7 @@ export const complexRoom = inferRoomJson({
             startDirection: "away",
           },
         },
-        period: 1000,
+        period: 1_000,
         maximum: 5,
       },
       position: {

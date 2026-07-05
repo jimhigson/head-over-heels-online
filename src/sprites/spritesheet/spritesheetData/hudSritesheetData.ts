@@ -272,14 +272,14 @@ const charFrames = <C extends string>(
  */
 export const hudGlyphs: readonly HudGlyph<string>[] = [
   ...rowGlyphs(row1, { x: 1, y: 994 }, hudLowercaseCharTextureSize.h),
-  ...rowGlyphs(row2, { x: 1, y: 1005 }, hudCharTextureSize.h),
-  ...rowGlyphs(row3, { x: 1, y: 1014 }, hudCharTextureSize.h),
+  ...rowGlyphs(row2, { x: 1, y: 1_005 }, hudCharTextureSize.h),
+  ...rowGlyphs(row3, { x: 1, y: 1_014 }, hudCharTextureSize.h),
 ];
 
 export const hudSpritesheetData = {
   frames: {
     ...charFrames(row1, { x: 1, y: 994 }, hudLowercaseCharTextureSize.h),
-    ...charFrames(row2, { x: 1, y: 1005 }),
-    ...charFrames(row3, { x: 1, y: 1014 }),
+    ...charFrames(row2, { x: 1, y: 1_005 }),
+    ...charFrames(row3, { x: 1, y: 1_014 }),
   },
 } as const satisfies Pick<SpritesheetData, "frames">;

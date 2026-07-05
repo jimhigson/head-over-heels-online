@@ -66,21 +66,21 @@ test("emitter respects period and maximum", () => {
 
   // second period elapses, should emit second
   playGameThrough(gameState, {
-    until: 1010,
+    until: 1_010,
     frameRate: fineFrameRate,
   });
   expect(countEmittedItems(gameState)).toBe(2);
 
   // after enough time for all three
   playGameThrough(gameState, {
-    until: 2000,
+    until: 2_000,
     frameRate: fineFrameRate,
   });
   expect(countEmittedItems(gameState)).toBe(3);
 
   // after more time, still at maximum (no more emitted)
   playGameThrough(gameState, {
-    until: 5000,
+    until: 5_000,
     frameRate: fineFrameRate,
   });
   expect(countEmittedItems(gameState)).toBe(3);
@@ -146,7 +146,7 @@ test("emitter with no maximum keeps emitting", () => {
             type: "portableBlock",
             config: { style: "cube" },
           },
-          period: 1000,
+          period: 1_000,
           maximum: null,
         },
       },
@@ -154,7 +154,7 @@ test("emitter with no maximum keeps emitting", () => {
   });
 
   playGameThrough(gameState, {
-    until: 6000,
+    until: 6_000,
     frameRate: { fps: [15] },
   });
 
@@ -195,7 +195,7 @@ test("emitter respects maximumAtOnce and replenishes after collection", () => {
 
   // wait more — still only one due to maximumAtOnce
   playGameThrough(gameState, {
-    until: 1500,
+    until: 1_500,
     frameRate: { fps: [15] },
   });
   expect(countEmittedItems(gameState)).toBe(1);
@@ -205,7 +205,7 @@ test("emitter respects maximumAtOnce and replenishes after collection", () => {
     setupInitialInput(inputState) {
       inputState.mockDirectionPressed = "right";
     },
-    until: 3000,
+    until: 3_000,
     frameRate: { fps: [15] },
   });
 
@@ -229,8 +229,8 @@ test("emitter with delay does not emit until delay has elapsed", () => {
             type: "portableBlock",
             config: { style: "cube" },
           },
-          period: 1000,
-          delay: 2000,
+          period: 1_000,
+          delay: 2_000,
           maximum: null,
         },
       },
@@ -239,28 +239,28 @@ test("emitter with delay does not emit until delay has elapsed", () => {
 
   // before delay, nothing emitted
   playGameThrough(gameState, {
-    until: 1950,
+    until: 1_950,
     frameRate: fineFrameRate,
   });
   expect(countEmittedItems(gameState)).toBe(0);
 
   // after delay, first emission
   playGameThrough(gameState, {
-    until: 2050,
+    until: 2_050,
     frameRate: fineFrameRate,
   });
   expect(countEmittedItems(gameState)).toBe(1);
 
   // not yet second emitting:
   playGameThrough(gameState, {
-    until: 2900,
+    until: 2_900,
     frameRate: fineFrameRate,
   });
   expect(countEmittedItems(gameState)).toBe(1);
 
   // second emission follows after one more period
   playGameThrough(gameState, {
-    until: 3050,
+    until: 3_050,
     frameRate: fineFrameRate,
   });
   expect(countEmittedItems(gameState)).toBe(2);
@@ -449,7 +449,7 @@ describe("whenPlayableInside", () => {
           config: {
             emits: { type: "floatingText", config: { textLines: ["x"] } },
             period: 500,
-            delay: 1000,
+            delay: 1_000,
             maximum: null,
             whenPlayerInside: true,
             times: { x: 1, y: 1, z: 0.1 },
@@ -517,7 +517,7 @@ describe("whenPlayableInside", () => {
 
     // after full delay elapses, should emit again
     playGameThrough(gameState, {
-      until: roomTimeAtReEntry + 2000,
+      until: roomTimeAtReEntry + 2_000,
       frameRate: coarseFrameRate,
     });
 

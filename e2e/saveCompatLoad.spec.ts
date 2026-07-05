@@ -44,7 +44,7 @@ test.describe("save games from previous versions load in the current version", (
       // let the game tick for a while: errors from the loaded rooms (eg a
       // renderer choking on an old format) often only throw once their item
       // gets a frame, not during the load itself:
-      await page.waitForTimeout(2000);
+      await page.waitForTimeout(2_000);
       if ((await page.locator('[data-dialog-id="errorCaught"]').count()) > 0) {
         const errorReport = await page
           .locator('[data-test-id="error-report"]')

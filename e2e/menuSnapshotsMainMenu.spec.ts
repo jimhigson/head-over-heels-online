@@ -62,7 +62,7 @@ for (const spriteOption of enabledSpriteModes) {
               await page.goto(`/?track=0&deployment=${deploymentType}`);
 
               await waitForDialog(page, "mainMenu", {
-                timeout: 5000 * osSlowness,
+                timeout: 5_000 * osSlowness,
               });
               await logSelectorExistence(
                 page,

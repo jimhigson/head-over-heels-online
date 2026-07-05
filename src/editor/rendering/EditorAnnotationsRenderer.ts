@@ -2,7 +2,7 @@ import { type UnknownAction } from "@reduxjs/toolkit";
 import { type Color, Container } from "pixi.js";
 import { type AllUnionFields } from "type-fest";
 
-import { outlineFilters } from "../../game/render/filters/OutlineFilter";
+import { OutlineFilter } from "../../game/render/filters/OutlineFilter";
 import { RevertColouriseFilter } from "../../game/render/filters/RevertColouriseFilter";
 import { noFilters } from "../../game/render/filters/standardFilters";
 import { type DecorateItemMaybeRenderer } from "../../game/render/item/itemRender/DecorateItemRenderer";
@@ -23,6 +23,7 @@ import { type JsonMovement } from "../../model/json/utilityJsonConfigTypes";
 import { roomItemsIterable } from "../../model/RoomState";
 import { paletteBlockstack } from "../../sprites/palette/spritesheetPalette";
 import { editorStore, store } from "../../store/store";
+import { valuesIter } from "../../utils/entries";
 import { type DirectionXy4 } from "../../utils/vectors/vectors";
 import {
   type EditorItemInPlayUnion,
@@ -30,6 +31,8 @@ import {
   type EditorRoomItemId,
   type EditorUnionOfAllItemInPlayTypes,
 } from "../editorTypes";
+import { editorUiScale } from "../editorUiScale";
+import { type EditorViewport } from "../RoomEditingArea/viewport/EditorViewport";
 import {
   changeToRoom,
   selectHoveredItem,
@@ -39,12 +42,63 @@ import {
 } from "../slice/levelEditorSlice";
 
 const selectionColour = paletteBlockstack.pastelBlue;
-const pointerHoverFilter = outlineFilters.highlightBeige;
 const monsterWakesColour = paletteBlockstack.lightBeige;
-const monsterWakesFilter = outlineFilters.lightBeige;
-const eyeDropperHoverFilter = outlineFilters.midRed;
-const controlHighlightFilter = outlineFilters.white;
 const selectedFilter = new RevertColouriseFilter(selectionColour);
+
+/**
+ * outline filters owned by the editor, whose width tracks the viewport zoom so
+ * outlines are always one *game* pixel thick - unlike the shared prebaked
+ * {@link outlineFilters}, whose width follows the game's global upscale
+ */
+type EditorOutlineFilters = {
+  pointerHover: OutlineFilter;
+  monsterWakes: OutlineFilter;
+  eyeDropperHover: OutlineFilter;
+  controlHighlight: OutlineFilter;
+};
+
+const makeEditorOutlineFilters = (
+  viewport: EditorViewport,
+): EditorOutlineFilters => {
+  // the outline is always exactly one game pixel, aligned to the sprite's own
+  // pixel grid: width stays 1 and the filter's *resolution* tracks the inverse
+  // of the zoom, so it rasterises the item at one texel per game pixel, dilates
+  // by one texel, and nearest-upscales back to the screen blocky:
+  const filters: EditorOutlineFilters = {
+    pointerHover: new OutlineFilter({
+      color: paletteBlockstack.highlightBeige,
+      width: 1,
+    }),
+    monsterWakes: new OutlineFilter({
+      color: monsterWakesColour,
+      width: 1,
+    }),
+    eyeDropperHover: new OutlineFilter({
+      color: paletteBlockstack.midRed,
+      width: 1,
+    }),
+    controlHighlight: new OutlineFilter({
+      color: paletteBlockstack.white,
+      width: 1,
+    }),
+  };
+
+  // the subscription lives as long as the viewport (which lives as long as
+  // the pixi app):
+  const trackZoom = () => {
+    const { zoom } = viewport;
+    for (const filter of valuesIter(filters)) {
+      filter.resolution = 1 / zoom;
+      // the one-game-pixel outline needs one game pixel of clearance, in
+      // screen pixels (pixi truncates padding to an integer):
+      filter.padding = Math.ceil(zoom);
+    }
+  };
+  viewport.onChange(trackZoom);
+  trackZoom();
+
+  return filters;
+};
 const textAnnotationNormalColour = paletteBlockstack.white;
 const textAnnotationErrorColour = paletteBlockstack.midRed;
 const textClickableAnnotationHoverColour = paletteBlockstack.pastelBlue;
@@ -178,13 +232,21 @@ class EditorAnnotationsRenderer<T extends ItemInPlayType>
 
   readonly renderContext: ItemRenderContext<T>;
   #childRenderer: ItemPixiRenderer<T>;
+  #viewport: EditorViewport;
+  #outlineFilters: EditorOutlineFilters;
+  /** text annotations, counter-scaled so they read at a constant size under zoom */
+  #annotations: TextContainer[] = [];
 
   constructor(
     renderContext: ItemRenderContext<T>,
     childRenderer: ItemPixiRenderer<T>,
+    viewport: EditorViewport,
+    editorOutlineFilters: EditorOutlineFilters,
   ) {
     this.renderContext = renderContext;
     this.#childRenderer = childRenderer;
+    this.#viewport = viewport;
+    this.#outlineFilters = editorOutlineFilters;
     this.output.addChild(childRenderer.output);
 
     this.#initAnnotations();
@@ -427,10 +489,32 @@ class EditorAnnotationsRenderer<T extends ItemInPlayType>
 
     this.output.addChild(annotationContainer);
     frontLayer.attach(annotationContainer);
+    this.#annotations.push(annotationContainer);
+  }
+
+  /**
+   * annotations are a ui overlay rather than part of the room, so they render
+   * at a constant on-screen size: counter-scale them by the inverse of the
+   * viewport zoom
+   */
+  #updateAnnotationScale() {
+    if (this.#annotations.length === 0) {
+      return;
+    }
+    // annotations counter-scale against the viewport zoom so they stay at the
+    // editor ui's constant on-screen size (matching `.scale-editor`'s --scale):
+    const onScreenScale = editorUiScale / this.#viewport.zoom;
+    if (this.#annotations[0].scale.x === onScreenScale) {
+      return;
+    }
+    for (const annotation of this.#annotations) {
+      annotation.scale = onScreenScale;
+    }
   }
 
   tick(tickContext: ItemTickContext) {
     this.#updateSelectedAndHovered();
+    this.#updateAnnotationScale();
 
     this.#childRenderer.tick(tickContext);
   }
@@ -511,6 +595,13 @@ class EditorAnnotationsRenderer<T extends ItemInPlayType>
               (c) => hoveredJsonItem?.jsonItemId === c,
             ))));
 
+    const {
+      pointerHover: pointerHoverFilter,
+      eyeDropperHover: eyeDropperHoverFilter,
+      controlHighlight: controlHighlightFilter,
+      monsterWakes: monsterWakesFilter,
+    } = this.#outlineFilters;
+
     this.output.filters =
       isHovered && isSelected ?
         [
@@ -536,12 +627,22 @@ class EditorAnnotationsRenderer<T extends ItemInPlayType>
 }
 
 /**
- * {@link DecorateItemRenderer} that wraps an item's appearance in
+ * makes a {@link DecorateItemRenderer} that wraps an item's appearance in
  * {@link EditorAnnotationsRenderer}. Registered via
- * `RoomRenderer.itemDecorators` when the level editor starts.
+ * `RoomRenderer.itemDecorators` when the level editor starts; a factory so the
+ * renderer can counter-scale its annotations against the viewport's zoom.
  */
-export const editorAnnotationsDecorateItemRenderer: DecorateItemMaybeRenderer =
-  (itemRenderContext, childRenderer) =>
+export const makeEditorAnnotationsDecorateItemRenderer = (
+  viewport: EditorViewport,
+): DecorateItemMaybeRenderer => {
+  const editorOutlineFilters = makeEditorOutlineFilters(viewport);
+  return (itemRenderContext, childRenderer) =>
     childRenderer ?
-      new EditorAnnotationsRenderer(itemRenderContext, childRenderer)
+      new EditorAnnotationsRenderer(
+        itemRenderContext,
+        childRenderer,
+        viewport,
+        editorOutlineFilters,
+      )
     : undefined;
+};

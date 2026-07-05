@@ -30,7 +30,7 @@ type Mode =
 // /editor/ subpath it occupies when it shares the game's origin on github pages
 const ownOriginModes: Array<Mode> = ["r2-main", "r2-production"];
 
-const targetPort = 5210;
+const targetPort = 5_210;
 
 // https://vitejs.dev/config/
 export default defineConfig(({ mode: _mode }) => {
@@ -170,7 +170,7 @@ export default defineConfig(({ mode: _mode }) => {
         : undefined,
     },
     preview: {
-      port: 5211,
+      port: 5_211,
     },
   };
 });

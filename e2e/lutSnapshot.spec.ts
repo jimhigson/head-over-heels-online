@@ -16,7 +16,7 @@ test.describe("LUT Texture Visualization", () => {
     await page.goto("/lut?track=0");
 
     // Wait for the LUT display div to appear
-    await page.waitForSelector(".e2e-snapshot-target", { timeout: 5000 });
+    await page.waitForSelector(".e2e-snapshot-target", { timeout: 5_000 });
 
     // Give it a moment to fully load
     await page.waitForTimeout(500);

@@ -35,7 +35,7 @@ export const room = inferRoomJson({
         delay: 0,
         emits: { config: { direction: "left" }, type: "firedDoughnut" },
         maximum: 10,
-        period: 4000,
+        period: 4_000,
       },
       position: { x: 2, y: 2, z: 1.5 },
       type: "emitter",

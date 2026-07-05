@@ -42,7 +42,7 @@ const mtvAlongVectorWriteInto = (
 ): Xyz => {
   // Normalize the vector
   const vectorLength = lengthXyz(vector);
-  if (vectorLength < 0.0001) {
+  if (vectorLength < 0.000_1) {
     // Zero vector - can't constrain
     Object.assign(writeInto, originXyz);
     return writeInto as Xyz;
@@ -68,7 +68,7 @@ const mtvAlongVectorWriteInto = (
   for (const axis of axesXyz) {
     const dirComponent = direction[axis];
 
-    if (Math.abs(dirComponent) < 0.0001) {
+    if (Math.abs(dirComponent) < 0.000_1) {
       // No movement along this axis - check if already overlapping
       const moverMin = moverPosition[axis];
       const moverMax = moverPosition[axis] + moverAabb[axis];

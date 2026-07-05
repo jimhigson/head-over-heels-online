@@ -111,7 +111,7 @@ describe("dissapearing items", () => {
     });
 
     playGameThrough(gameState, {
-      until: 2000,
+      until: 2_000,
     });
 
     const blocksInRoomCount = size(
@@ -222,7 +222,7 @@ describe("dissapearing items", () => {
           mockInputStateTracker.mockDirectionPressed = "away";
           mockInputStateTracker.mockPressing("jump");
         },
-        until: 5000,
+        until: 5_000,
       });
 
       // didn't remove either of these items - heels can jump against them
@@ -269,7 +269,7 @@ describe("dissapearing items", () => {
             mockInputStateTracker.mockDirectionPressed = "away";
             mockInputStateTracker.mockPressing("jump");
           },
-          until: 5000,
+          until: 5_000,
         });
 
         // didn't remove either of these items - heels can jump against them

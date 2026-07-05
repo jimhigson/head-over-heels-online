@@ -74,11 +74,11 @@ export const takeDialogScreenshot = async (
     await retryWithRecovery({
       async action() {
         await page.waitForSelector(`dialog[data-dialog-id="${dialogId}"]`, {
-          timeout: 5000 * osSlowness,
+          timeout: 5_000 * osSlowness,
         });
         await page
           .getByRole("status")
-          .waitFor({ state: "detached", timeout: 5000 * osSlowness });
+          .waitFor({ state: "detached", timeout: 5_000 * osSlowness });
       },
       logHeader,
       actionDescription: `wait for dialog ${dialogId} without spinner`,

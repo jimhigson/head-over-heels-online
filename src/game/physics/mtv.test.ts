@@ -22,7 +22,7 @@ expect.extend({
     const expectedLength = lengthXyz(expectedDirection);
 
     // If received is zero vector, it's not aligned with anything
-    if (receivedLength < 0.0001) {
+    if (receivedLength < 0.000_1) {
       return {
         pass: false,
         message: () =>
@@ -31,7 +31,7 @@ expect.extend({
     }
 
     // If expected is zero vector, invalid test
-    if (expectedLength < 0.0001) {
+    if (expectedLength < 0.000_1) {
       return {
         pass: false,
         message: () => `Expected direction vector cannot be zero`,
@@ -43,7 +43,7 @@ expect.extend({
 
     // Check if vectors are parallel (dot product should be ±1)
     const dot = dotProductXyz(receivedNorm, expectedNorm);
-    const isAligned = Math.abs(Math.abs(dot) - 1) < 0.0001;
+    const isAligned = Math.abs(Math.abs(dot) - 1) < 0.000_1;
 
     return {
       pass: isAligned,

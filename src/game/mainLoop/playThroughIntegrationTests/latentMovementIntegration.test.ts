@@ -59,7 +59,7 @@ test.each(testFrameRates)("%j Hz", (frameRate) => {
 
   playGameThrough(gameState, {
     frameRate,
-    until: 2000,
+    until: 2_000,
     setupInitialInput(mockInputStateTracker) {
       initialPositionDelta = yDeltaNow();
       mockInputStateTracker.mockDirectionPressed = "away";
@@ -79,7 +79,7 @@ test.each(testFrameRates)("%j Hz", (frameRate) => {
 
   playGameThrough(gameState, {
     frameRate,
-    until: 2500, // another half-second to stop
+    until: 2_500, // another half-second to stop
     setupInitialInput(mockInputStateTracker) {
       mockInputStateTracker.mockDirectionPressed = undefined;
     },

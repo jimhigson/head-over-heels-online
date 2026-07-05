@@ -192,7 +192,7 @@ export const sortObstaclesAboutPriorityAndVector = <I extends SortableObstacle>(
       obstaclePointEarliestPointInVector(vector, obsB),
     );
 
-    if (Math.abs(aDistance - bDistance) < 0.0001) {
+    if (Math.abs(aDistance - bDistance) < 0.000_1) {
       // these are effectively being touched at the same time. Arbitrarily
       // choose based on the alphabetical order of the ids. This means that
       // the order is stable between frames. Otherwise, it would flicker back

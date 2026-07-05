@@ -100,7 +100,7 @@ export const voronoiLut = (map: Map<Color, Color>): Texture => {
       for (let ri = 0; ri < chanRes; ) {
         const redSeedDistSquared = redSeedAllDistSquared[ri];
         let riClosestSeedValue: SimpleColor = black;
-        let riClosestSeedDistSq = 9999;
+        let riClosestSeedDistSq = 9_999;
 
         for (let mi = 0; mi < mapCount; mi++) {
           const dSq = blueGreenSeedDistanceSquared[mi] + redSeedDistSquared[mi];
@@ -119,7 +119,7 @@ export const voronoiLut = (map: Map<Color, Color>): Texture => {
 
         for (let la = maxLookaheadRi; la > ri; la--) {
           let lookaheadClosestSeedValue: SimpleColor = black;
-          let lookaheadClosestSeedDistSq = 9999;
+          let lookaheadClosestSeedDistSq = 9_999;
           const lookaheadSeedDistSquared = redSeedAllDistSquared[la];
           for (let mi = 0; mi < mapCount; mi++) {
             const dSq =

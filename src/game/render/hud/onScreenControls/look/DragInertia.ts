@@ -5,10 +5,10 @@ import { type Xy } from "../../../../../utils/vectors/vectors";
  * Calibrated to match previous exponential decay of 0.92/frame at 60fps
  * This gives similar stopping time and feel
  */
-const inertiaDeceleration = 0.0006;
+const inertiaDeceleration = 0.000_6;
 
 /** Velocity below this threshold is considered stopped (pixels/ms) */
-const inertiaMinVelocity = 0.0001;
+const inertiaMinVelocity = 0.000_1;
 
 /** How much to blend new velocity measurements with existing velocity (0-1) */
 const velocitySmoothingFactor = 0.3;

@@ -140,7 +140,7 @@ test("activated:after-player-near", () => {
 
   // no input for a second to start:
   playGameThrough(gameState, {
-    until: 1000,
+    until: 1_000,
   });
 
   // should have stayed in the same place (player didn't go near)
@@ -180,7 +180,7 @@ test("activated:after-player-near", () => {
     setupInitialInput(mockInputStateTracker) {
       mockInputStateTracker.mockDirectionPressed = "right";
     },
-    until: 5000,
+    until: 5_000,
   });
 
   expect(itemState<"monster">(gameState, "monster").activated).toBe(false);

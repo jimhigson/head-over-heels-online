@@ -70,7 +70,7 @@ test.describe("upscale recomputes on display + window changes", () => {
     // Viewport must be big enough that the natural upscale would exceed
     // the CRT-imposed cap (6) — otherwise the cap doesn't bite. With
     // zxSpectrum (256×192) we need totalUpscale > 6, so viewport ≥ 1792×1344.
-    await page.setViewportSize({ width: 2560, height: 1440 });
+    await page.setViewportSize({ width: 2_560, height: 1_440 });
     await page.waitForTimeout(200 * osSlowness);
 
     await dispatchToStore(page, {
@@ -108,7 +108,7 @@ test.describe("upscale recomputes on display + window changes", () => {
     expect(afterTinyChange.gameEngineUpscale).toBe(before.gameEngineUpscale);
 
     // a larger resize crosses an upscale boundary, so the factor should grow
-    await page.setViewportSize({ width: 1280, height: 960 });
+    await page.setViewportSize({ width: 1_280, height: 960 });
     await page.waitForTimeout(500 * osSlowness);
     const afterBigChange = await readUpscale(page);
     expect(afterBigChange.gameEngineUpscale).toBeGreaterThan(

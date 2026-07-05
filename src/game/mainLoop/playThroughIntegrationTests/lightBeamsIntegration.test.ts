@@ -284,7 +284,7 @@ test("colliding with a mirror rotates it, re-routing the light", () => {
     until(gameState) {
       return (
         itemState<"mirror">(gameState, "mirror1").orientation === "awayRight" ||
-        gameState.gameTime > 5000
+        gameState.gameTime > 5_000
       );
     },
   });
@@ -328,7 +328,7 @@ test("monsters will not walk into the light", () => {
 
   let monsterMinX = Number.POSITIVE_INFINITY;
   playGameThrough(gameState, {
-    until: 4000,
+    until: 4_000,
     frameCallbacks(gameState) {
       monsterMinX = Math.min(
         monsterMinX,
@@ -367,14 +367,14 @@ test("a beam that has grown in place still blocks monsters at its new tip", () =
 
   let monsterMinX = Number.POSITIVE_INFINITY;
   playGameThrough(gameState, {
-    until: 5000,
+    until: 5_000,
     setupInitialInput(mockInputStateTracker) {
       // heels steps out of the light:
       mockInputStateTracker.mockDirectionPressed = "away";
     },
     frameCallbacks(gameState) {
       const turtleState = itemState<"monster">(gameState, "turtle");
-      if (gameState.gameTime > 1000 && !turtleState.activated) {
+      if (gameState.gameTime > 1_000 && !turtleState.activated) {
         // heels is well clear and the beam has grown - release the turtle:
         turtleState.activated = true;
         turtleState.everActivated = true;
@@ -408,7 +408,7 @@ test("monsters walk freely where the light would be when the lamp is off", () =>
 
   let monsterMinX = Number.POSITIVE_INFINITY;
   playGameThrough(gameState, {
-    until: 4000,
+    until: 4_000,
     frameCallbacks(gameState) {
       monsterMinX = Math.min(
         monsterMinX,
@@ -448,7 +448,7 @@ test("a switch turns the lamp on", () => {
     until(gameState) {
       return (
         itemState<"lamp">(gameState, "lamp1").activated ||
-        gameState.gameTime > 5000
+        gameState.gameTime > 5_000
       );
     },
   });
@@ -488,7 +488,7 @@ test.for([
       until(gameState) {
         return (
           itemState<"mirror">(gameState, "mirror1").orientation ===
-            "awayRight" || gameState.gameTime > 5000
+            "awayRight" || gameState.gameTime > 5_000
         );
       },
     });
@@ -554,7 +554,7 @@ test.for([
 
     let monsterMinX = Number.POSITIVE_INFINITY;
     playGameThrough(gameState, {
-      until: 4000,
+      until: 4_000,
       frameCallbacks(gameState) {
         monsterMinX = Math.min(
           monsterMinX,
@@ -607,7 +607,7 @@ test.for([
 
     let monsterMinX = Number.POSITIVE_INFINITY;
     playGameThrough(gameState, {
-      until: 4000,
+      until: 4_000,
       frameCallbacks(gameState) {
         monsterMinX = Math.min(
           monsterMinX,
@@ -651,7 +651,7 @@ test("the reflected lower row of a partially-reflected tall beam blocks monsters
 
   let monsterMinY = Number.POSITIVE_INFINITY;
   playGameThrough(gameState, {
-    until: 4000,
+    until: 4_000,
     frameCallbacks(gameState) {
       monsterMinY = Math.min(
         monsterMinY,
@@ -714,7 +714,7 @@ test("a beam looped back through mirrors stops at its own lamp, not through it",
 
   let monsterMinY = Number.POSITIVE_INFINITY;
   playGameThrough(gameState, {
-    until: 5000,
+    until: 5_000,
     frameCallbacks(gameState) {
       monsterMinY = Math.min(
         monsterMinY,

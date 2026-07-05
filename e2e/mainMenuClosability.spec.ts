@@ -40,7 +40,7 @@ test.describe("main menu closability", () => {
 
     await test.step("Press Escape — main menu opens", async () => {
       await dispatchKeyPress(page, "Escape", "Escape");
-      await waitForDialog(page, "mainMenu", { timeout: 5000 * osSlowness });
+      await waitForDialog(page, "mainMenu", { timeout: 5_000 * osSlowness });
     });
 
     await test.step("Press Escape again — main menu closes", async () => {
@@ -50,7 +50,7 @@ test.describe("main menu closability", () => {
       await dispatchKeyPress(page, "Escape", "Escape");
       await waitForDialog(page, "mainMenu", {
         state: "detached",
-        timeout: 5000 * osSlowness,
+        timeout: 5_000 * osSlowness,
       });
     });
   });

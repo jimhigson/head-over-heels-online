@@ -136,7 +136,7 @@ export const emitting = <RoomId extends string, RoomItemId extends string>(
       newlyEmittedItem.state.createdByEmitter = emitterId;
       if (newlyEmittedItem.type === "floatingText") {
         newlyEmittedItem.config.appearanceRoomTime = room.roomTime;
-        newlyEmittedItem.state.expires = room.roomTime + 3000;
+        newlyEmittedItem.state.expires = room.roomTime + 3_000;
       }
 
       const emitOffset =

@@ -48,9 +48,9 @@ import { itemMoveOrResizeWouldCollide } from "../../cursor/editWouldCollide";
 import { roundXyzProjection } from "../../cursor/findPointerPointingAt";
 import { type MaybePointingAtSomething } from "../../cursor/PointingAt";
 import {
-  upscaledMouseMove,
-  upscaledMousePosition,
-} from "../../cursor/upscaledMouse";
+  viewportMouseMovement,
+  viewportMousePosition,
+} from "../../cursor/viewportMouse";
 import { resizeTimesAndPosition } from "../../resizeTimesAndPosition";
 import { dispatchHoveredOnChangedIfNeeded } from "../dispatchHoveredOnChangedIfNeeded";
 import { itemsAreLocked } from "../itemsAreLocked";
@@ -239,11 +239,10 @@ export class PointerToolHandler
     storeState,
     mouseDownPointingAtRef,
     mouseEvent,
-    upscale,
+    viewport,
     dragAccVec,
-    roomRenderSize,
   }: MouseMoveParams<Extract<Tool, { type: "pointer" }>>) {
-    const mouseMoveXy = upscaledMouseMove(upscale, mouseEvent);
+    const mouseMoveXy = viewportMouseMovement(viewport, mouseEvent);
 
     const jsonItemIds: EditorRoomItemId[] = getJsonItemIdsToUseForPointingAt(
       storeState,
@@ -276,7 +275,7 @@ export class PointerToolHandler
       mouseWhenDownInSameRoom ?
         getDragVector(
           mouseDownPointingAtRef.current,
-          upscaledMousePosition(upscale, roomRenderSize, mouseEvent),
+          viewportMousePosition(viewport, mouseEvent),
           mouseMoveXy,
           mouseEvent.metaKey || mouseEvent.shiftKey,
           dragAccVec.current !== undefined,
@@ -441,6 +440,25 @@ export class PointerToolHandler
   ) {
     // Pointer tool doesn't need to do anything special on mouse down
     // The main logic handles setting mouseDownPointingAtRef
+  }
+
+  claimsDrag({
+    pointingAt,
+    roomState,
+    storeState,
+  }: MouseDownParams<Extract<Tool, { type: "pointer" }>>): boolean {
+    // a drag is used (to move/resize) only when it starts on unlocked item(s) -
+    // the same conditions handleMouseMove bails on:
+    const jsonItemIds = getJsonItemIdsToUseForPointingAt(
+      storeState,
+      roomState,
+      pointingAt,
+    );
+    if (jsonItemIds.length === 0) {
+      return false;
+    }
+    const jsonItems = jsonItemIds.map((jiid) => selectItem(storeState, jiid)!);
+    return !itemsAreLocked(storeState, ...jsonItems);
   }
 
   handleMouseLeave(

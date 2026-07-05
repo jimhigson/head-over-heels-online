@@ -123,7 +123,7 @@ test("a button can make an item appear when jumped on repeatedly", () => {
       inputState.mockDirectionPressed = "towards";
       inputState.mockPressing("jump");
     },
-    until: 5000,
+    until: 5_000,
     frameRate: { fps: [20] },
   });
 

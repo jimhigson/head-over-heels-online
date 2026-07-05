@@ -70,6 +70,11 @@ export class EyeDropperToolHandler
     // EyeDropper tool doesn't need to do anything on mouse down
   }
 
+  claimsDrag(_params: MouseDownParams<Extract<Tool, { type: "eyeDropper" }>>) {
+    // the eye dropper picks on click, not drag:
+    return false;
+  }
+
   handleMouseLeave(
     _params: MouseLeaveParams<Extract<Tool, { type: "eyeDropper" }>>,
   ) {

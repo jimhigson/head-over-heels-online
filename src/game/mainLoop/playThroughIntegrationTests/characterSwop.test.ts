@@ -63,7 +63,7 @@ test.for([
       until(gameState) {
         return (
           gameState.currentCharacterName === "headOverHeels" ||
-          gameState.gameTime > 1000
+          gameState.gameTime > 1_000
         );
       },
     });
@@ -136,7 +136,7 @@ test("going into symbiosis with a block also on top of heels", () => {
 
   // give the block a little time to fall down:
   playGameThrough(gameState, {
-    until: 2000,
+    until: 2_000,
   });
 
   // block got pushed off heels and is now on the floor:
@@ -308,7 +308,7 @@ test("fails to go into symbiosis for an impossible case", () => {
     until(gameState) {
       return (
         gameState.currentCharacterName === "headOverHeels" ||
-        gameState.gameTime > 1000
+        gameState.gameTime > 1_000
       );
     },
   });

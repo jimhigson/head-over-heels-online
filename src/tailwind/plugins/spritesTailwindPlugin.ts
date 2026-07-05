@@ -4,6 +4,7 @@ import { type CSSRuleObject } from "tailwindcss/types/config";
 
 import spritesheetPalette from "../../_generated/palette/spritesheetPalette.json" with { type: "json" };
 import toppyPalette from "../../_generated/palette/spritesheetToppyPalette.json" with { type: "json" };
+import { editorUiScale } from "../../editor/editorUiScale";
 import { sanitiseForClassName } from "../../game/components/tailwindSprites/SanitiseForClassName";
 import { zxSpectrumColors } from "../../originalGame";
 import { isTextureId } from "../../sprites/assertIsTextureId";
@@ -235,7 +236,7 @@ export const spritesTailwindPlugin = plugin(
 
       // sets the css vars for the editor buttons/toolbars etc
       ".scale-editor": {
-        "--scale": "2",
+        "--scale": `${editorUiScale}`,
         "--block": `16px`,
         fontSize: "16px",
         lineHeight: "20px",

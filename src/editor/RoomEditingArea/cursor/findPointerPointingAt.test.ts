@@ -44,7 +44,7 @@ describe("at the base camera angle", () => {
   test("pointing at empty space finds nothing", () => {
     expect(
       findPointerPointingAt(
-        { x: 1000, y: 1000 },
+        { x: 1_000, y: 1_000 },
         room,
         pointerTool,
         1,
@@ -104,7 +104,7 @@ describe("at every camera angle", () => {
       const { room } = blockRoomAtAngle(cameraAngle);
       expect(
         findPointerPointingAt(
-          { x: 1000, y: 1000 },
+          { x: 1_000, y: 1_000 },
           room,
           pointerTool,
           1,

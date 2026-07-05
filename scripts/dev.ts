@@ -20,8 +20,8 @@ import getPort, { portNumbers } from "get-port";
 
 const extraArgs = process.argv.slice(2);
 
-const gamePort = await getPort({ port: portNumbers(5200, 5209) });
-const editorPort = await getPort({ port: portNumbers(5210, 5219) });
+const gamePort = await getPort({ port: portNumbers(5_200, 5_209) });
+const editorPort = await getPort({ port: portNumbers(5_210, 5_219) });
 
 const gameUrl = `http://localhost:${gamePort}/`;
 // in dev mode the editor is served from the /editor/ base path

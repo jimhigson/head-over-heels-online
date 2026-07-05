@@ -4,7 +4,7 @@ import { type ValueOf } from "type-fest";
 import { type SaveFailure } from "../../db/campaign";
 import { clearAllData } from "../../store/slices/clearAllData";
 
-export const showOkAfterSaveDuration = 2000;
+export const showOkAfterSaveDuration = 2_000;
 
 /** a save-as targeting a name the user has already saved, awaiting their say-so */
 export type PendingOverwrite = {
