@@ -29,6 +29,7 @@ import {
 import { loadRoom, type LoadRoomOptions } from "./loadRoom/loadRoom";
 import { changeCharacterRoom } from "./mutators/changeCharacterRoom";
 import { entryState } from "./PlayableEntryState";
+import { migrateSavedCharacterRoomsInPlace } from "./saving/migrateSavedCharacterRoomsInPlace";
 import {
   type SavedCharacterRooms,
   type SavedGame,
@@ -154,6 +155,10 @@ const _loadGameState = <RoomId extends string>({
   if (savedGame) {
     const savedGameCharacterRooms = savedGame.gameState.characterRooms;
     const loadedCharacterRooms = badJsonClone(savedGameCharacterRooms);
+
+    // saves embed rooms as the writing version loaded them - old saves can
+    // carry formats the current code no longer handles:
+    migrateSavedCharacterRoomsInPlace(loadedCharacterRooms);
 
     if (
       savedGameCharacterRooms.head !== undefined &&
