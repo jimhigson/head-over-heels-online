@@ -125,7 +125,12 @@
         "no-else-return": "error",
         "prefer-arrow-callback": "error",
         "no-eval": "error",
-        "unicorn/numeric-separators-style": "error",
+        "unicorn/numeric-separators-style": [
+          "error",
+          {
+            "number": { "minimumDigits": 4, "groupLength": 3 }
+          }
+        ],
         "eslint-js/no-restricted-syntax": [
           "error",
           {

@@ -482,7 +482,7 @@ describe("original campaign comparisons", () => {
   test("#bookworld1 adjacency anti-flicker", () => {
     const wall: DrawOrderComparable = {
       id: "wall@0,8,0",
-      aabb: { x: 128, y: 16, z: 9999 },
+      aabb: { x: 128, y: 16, z: 9_999 },
       renderAabb: { x: 128, y: 0, z: 50 },
       state: { position: { x: 0, y: 128, z: 0 } },
     };

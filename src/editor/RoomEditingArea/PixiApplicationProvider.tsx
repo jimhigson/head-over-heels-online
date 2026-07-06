@@ -4,7 +4,6 @@ import { type PropsWithChildren } from "preact/compat";
 import { useContext, useEffect, useState } from "preact/hooks";
 import { type EmptyObject } from "type-fest";
 
-import { paletteBlockstack } from "../../sprites/palette/spritesheetPalette";
 import { stopAppAutoRendering } from "../../utils/pixi/stopAppAutoRendering";
 
 const PixiApplicationContext = createContext<Application>(
@@ -25,7 +24,12 @@ export const PixiApplicationProvider = ({
 
     appThisEffect
       .init({
-        background: paletteBlockstack.pureBlack,
+        // transparent so the pane's checkerboard shows through as the void
+        // around the room:
+        backgroundAlpha: 0,
+        // render at device pixels for crispness; the canvas is styled to fill
+        // its pane in css pixels:
+        resolution: window.devicePixelRatio,
         // the room editor ticks like any other pixi app, it doesn't just react to changes:
         sharedTicker: true,
 
@@ -33,6 +37,12 @@ export const PixiApplicationProvider = ({
         useBackBuffer: true,
       })
       .then(() => {
+        // the canvas always fills its pane; between debounced renderer resizes
+        // it stretches, then sharpens once the resize lands:
+        const canvasStyle = appThisEffect.canvas.style;
+        canvasStyle.width = "100%";
+        canvasStyle.height = "100%";
+        canvasStyle.display = "block";
         // don't ever destroy the app - this is forever once it is made
         // if (unmounted) {
         //   //appThisEffect.destroy();

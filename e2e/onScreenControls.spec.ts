@@ -32,7 +32,7 @@ test.describe("on-screen control buttons drive the game in touch mode", () => {
 
     await withOnScreenButtonHeld(page, "jump", async () => {
       await expect
-        .poll(() => getPlayableZ(page), { timeout: 5000 * osSlowness })
+        .poll(() => getPlayableZ(page), { timeout: 5_000 * osSlowness })
         .toBeGreaterThan(0);
     });
   });

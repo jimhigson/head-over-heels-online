@@ -130,7 +130,7 @@ export const loseOneLife = async (page: Page): Promise<string | undefined> => {
     if (!summoned) {
       summoned = true;
       // short wait in case engine needs to switch chars:
-      await page.waitForTimeout(1000 * osSlowness);
+      await page.waitForTimeout(1_000 * osSlowness);
       log(`lives=${await getCurrentLives(page)} → summon guardian`);
       await clickCheat(page, "cheats-summon-monster-emperorsGuardian");
     }
@@ -164,7 +164,7 @@ export const switchCharacter = async (
         (start) =>
           window._e2e_gamePageGameAi?.gameState.currentCharacterName !== start,
         startCharacter,
-        { timeout: 2000 * osSlowness },
+        { timeout: 2_000 * osSlowness },
       );
     },
     maxAttempts: 5,
@@ -179,9 +179,9 @@ export const switchCharacter = async (
 export const dismissHoldAfterReload = async (page: Page) => {
   await page
     .locator('[data-dialog-id="hold"]')
-    .waitFor({ timeout: 5000 * osSlowness });
+    .waitFor({ timeout: 5_000 * osSlowness });
   await dispatchKeyPress(page, "p", "KeyP");
   await page
     .locator('[data-dialog-id="hold"]')
-    .waitFor({ state: "detached", timeout: 5000 * osSlowness });
+    .waitFor({ state: "detached", timeout: 5_000 * osSlowness });
 };

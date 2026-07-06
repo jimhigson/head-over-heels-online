@@ -233,7 +233,7 @@ const gameRunsAtZeroSpeed = async (page: Page, projectName: string) => {
     },
     async recovery() {
       // Wait a bit for the game to initialize
-      await page.waitForTimeout(2000);
+      await page.waitForTimeout(2_000);
     },
     logHeader: formattedName,
     actionDescription: "set game speed to zero",

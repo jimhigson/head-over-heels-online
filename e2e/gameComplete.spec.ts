@@ -65,7 +65,7 @@ test.describe("game completion - both characters reach freedom", () => {
 
     await test.step("Teleport head to the final room", async () => {
       await clickCheat(page, "cheats-goto-room-finalroom");
-      await page.waitForTimeout(1000 * osSlowness);
+      await page.waitForTimeout(1_000 * osSlowness);
       expect(await getCurrentRoomId(page)).toBe("finalroom");
     });
 
@@ -84,7 +84,7 @@ test.describe("game completion - both characters reach freedom", () => {
 
     await test.step("Teleport heels to the final room", async () => {
       await clickCheat(page, "cheats-goto-room-finalroom");
-      await page.waitForTimeout(1000 * osSlowness);
+      await page.waitForTimeout(1_000 * osSlowness);
       expect(await getCurrentRoomId(page)).toBe("finalroom");
     });
 
@@ -115,7 +115,7 @@ test.describe("game completion - both characters reach freedom", () => {
 
     await test.step("Teleport head to the final room", async () => {
       await clickCheat(page, "cheats-goto-room-finalroom");
-      await page.waitForTimeout(1000 * osSlowness);
+      await page.waitForTimeout(1_000 * osSlowness);
       expect(await getCurrentRoomId(page)).toBe("finalroom");
     });
 

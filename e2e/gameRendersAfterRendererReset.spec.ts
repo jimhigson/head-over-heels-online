@@ -62,7 +62,7 @@ test("game renders correctly after quitting and starting another game", async ({
 
   // freeze the game for a deterministic frame:
   await setZeroGameSpeed(page);
-  await page.waitForTimeout(1000 * osSlowness);
+  await page.waitForTimeout(1_000 * osSlowness);
 
   // compare the bottom HUD strip - it holds the baked text/number glyphs and
   // excludes the animated player in the centre of the screen:
@@ -97,7 +97,7 @@ test("game renders correctly after losing and restoring the WebGL context", asyn
 
   // freeze the game so the frame is deterministic across the context cycle:
   await setZeroGameSpeed(page);
-  await page.waitForTimeout(1000 * osSlowness);
+  await page.waitForTimeout(1_000 * osSlowness);
 
   // lose the WebGL context (the button restores it 100ms later) - this kills
   // every baked RenderTexture, which the main loop must re-bake and rewire into
@@ -105,7 +105,7 @@ test("game renders correctly after losing and restoring the WebGL context", asyn
   await clickCheat(page, "cheats-lose-gl-context");
 
   // allow the restore + re-bake + renderer recreation to settle:
-  await page.waitForTimeout(1000 * osSlowness);
+  await page.waitForTimeout(1_000 * osSlowness);
 
   await expect(page).toHaveScreenshot("game-renders-after-context-loss.png", {
     scale: "css",

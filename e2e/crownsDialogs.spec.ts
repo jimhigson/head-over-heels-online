@@ -25,7 +25,7 @@ test.describe("crowns dialog correctness", () => {
     page,
   }, testInfo) => {
     await startCampaignViaMenu(page, testInfo.project.name, "originalGame");
-    await page.waitForTimeout(1000 * osSlowness);
+    await page.waitForTimeout(1_000 * osSlowness);
     await clickCheat(page, "cheats-summon-crown-blacktooth");
 
     await waitForDialog(page, "crowns");
@@ -66,7 +66,7 @@ test.describe("crowns dialog correctness", () => {
       .locator('[data-dialog-id="crowns"]')
       .waitFor({ state: "detached" });
 
-    await page.waitForTimeout(1000 * osSlowness);
+    await page.waitForTimeout(1_000 * osSlowness);
     await clickCheat(page, "cheats-summon-crown-blacktooth");
     await waitForDialog(page, "crowns");
     await expect(
@@ -82,7 +82,7 @@ test.describe("crowns dialog correctness", () => {
     const formattedName = formatProjectName(testInfo.project.name);
 
     await startCampaignViaMenu(page, testInfo.project.name, "originalGame");
-    await page.waitForTimeout(1000 * osSlowness);
+    await page.waitForTimeout(1_000 * osSlowness);
 
     const planets = [
       "blacktooth",

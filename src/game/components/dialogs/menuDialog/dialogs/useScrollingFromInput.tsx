@@ -34,7 +34,7 @@ export const useScrollingFromInput = () => {
       const newScrollTop =
         distance === "all" ?
           scrollUnitVector.y < 0 ?
-            9999
+            9_999
           : 0
         : distance === "lines" ?
           scrollTop +

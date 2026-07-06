@@ -32,7 +32,7 @@ const particlesSpread = blockSizePx.x / 2;
 let particlesAdded = 0;
 
 const particleByChance = (particlesFrequencyPerS: number, deltaMS: number) =>
-  Math.random() < particlesFrequencyPerS * (deltaMS / 1000);
+  Math.random() < particlesFrequencyPerS * (deltaMS / 1_000);
 
 const createParticleItemInPlay = (
   forItemId: string,

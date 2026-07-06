@@ -154,6 +154,11 @@ export class ItemToolHandler
     // Item tool doesn't need to do anything on mouse down
   }
 
+  claimsDrag(_params: MouseDownParams<Extract<Tool, { type: "item" }>>) {
+    // the item tool places on click, not drag:
+    return false;
+  }
+
   handleMouseLeave(_params: MouseLeaveParams<Extract<Tool, { type: "item" }>>) {
     dispatch(resetPreviewedEdits());
   }

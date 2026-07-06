@@ -69,7 +69,7 @@ export const ErrorCaughtDialog = ({
               onSelect={() =>
                 navigator.clipboard.writeText(errorsReportText).then(() => {
                   setShowCopied(true);
-                  window.setTimeout(() => setShowCopied(false), 2000);
+                  window.setTimeout(() => setShowCopied(false), 2_000);
                 })
               }
             />

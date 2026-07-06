@@ -62,7 +62,7 @@ export class ColourClashCircleEffectFilter extends Filter {
     blackCircleMinSize = 0.33,
     // small default value restricts to 10,000 fps (effectively no quantisation),
     // higher values create low fps effect
-    timeStep = 0.0001,
+    timeStep = 0.000_1,
     blackCircleDarkening = 1.0,
     blackCircleFeathering = 0.4,
     distancePower = 3.0,

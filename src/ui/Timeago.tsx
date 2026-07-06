@@ -1,7 +1,7 @@
 import { useEffect, useReducer } from "preact/hooks";
 import { format } from "timeago.js";
 
-const tickIntervalMs = 5000;
+const tickIntervalMs = 5_000;
 const toggle = (b: boolean) => !b;
 
 export type TimeagoProps = {

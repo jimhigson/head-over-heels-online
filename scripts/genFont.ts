@@ -246,7 +246,7 @@ if (JSON.stringify(committedDesign()) === JSON.stringify(design)) {
 } else {
   ensurePythonToolchain();
   mkdirSync(outputDir, { recursive: true });
-  const builtAt = Math.floor(Date.now() / 1000);
+  const builtAt = Math.floor(Date.now() / 1_000);
   writeFileSync(manifestPath, JSON.stringify({ ...design, builtAt }, null, 2));
   // opentype.js can neither write glyf outlines nor a working gvar, and a
   // hand-assembled variable font is silently not animated by Chromium; fontTools

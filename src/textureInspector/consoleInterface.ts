@@ -14,8 +14,8 @@ import { getTextureMemory, getTrackedTextures } from "./textureData";
  */
 const formatDuration = (ms: number): string => {
   const minutes = Math.floor(ms / 60_000);
-  const seconds = Math.floor((ms % 60_000) / 1000);
-  const milliseconds = ms % 1000;
+  const seconds = Math.floor((ms % 60_000) / 1_000);
+  const milliseconds = ms % 1_000;
 
   const parts: string[] = [];
   if (minutes > 0) {
@@ -30,9 +30,9 @@ const formatDuration = (ms: number): string => {
 };
 
 const formatMemory = (bytes: number): string => {
-  const kb = bytes / 1024;
-  if (kb >= 1024) {
-    return `${Math.round(kb / 1024)} MB`;
+  const kb = bytes / 1_024;
+  if (kb >= 1_024) {
+    return `${Math.round(kb / 1_024)} MB`;
   }
   if (kb >= 1) {
     return `${Math.round(kb)} KB`;

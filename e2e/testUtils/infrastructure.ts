@@ -23,7 +23,7 @@ export const osSlowness =
  * looking.
  */
 export const slownessForHumanObserver = (): number =>
-  test.info().project.use.headless === false ? 1000 : 0;
+  test.info().project.use.headless === false ? 1_000 : 0;
 
 export const retryWithRecovery = async <T>({
   action,

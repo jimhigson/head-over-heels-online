@@ -1,13 +1,14 @@
-import { Container, type Renderer, Ticker } from "pixi.js";
+import { Container, Graphics, type Renderer, Ticker } from "pixi.js";
 import { useEffect } from "preact/hooks";
 
 import { type MovedOrResizedItems } from "../../game/mainLoop/progressGameState";
 import { isSpatial } from "../../game/physics/itemPredicates";
 import { type GeneralRenderContext } from "../../game/render/room/RoomRenderContexts";
 import { RoomRenderer } from "../../game/render/room/RoomRenderer";
+import { paletteBlockstack } from "../../sprites/palette/spritesheetPalette";
 import { spritesheetMetas } from "../../sprites/spritesheet/spritesheetData/spritesheetMetaData";
 import { type SpritesheetVariants } from "../../sprites/spritesheet/variants/SpritesheetVariants";
-import { selectUpscale } from "../../store/slices/upscale/upscaleSlice";
+import { type Upscale } from "../../store/slices/upscale/Upscale";
 import { store } from "../../store/store";
 import { valuesIter } from "../../utils/entries";
 import {
@@ -24,6 +25,22 @@ import {
 import { selectEditorCameraAngle } from "../slice/levelEditorSlice";
 import { useProvidedPixiApplication } from "./PixiApplicationProvider";
 import { roomEditingAreaMarginPx } from "./roomEditingAreaMarginPx";
+import { useEditorViewport } from "./viewport/EditorViewportProvider";
+
+/**
+ * the editor engine always renders at 1:1 - all zooming happens on the
+ * {@link EditorViewport} transform above the room renderer's output, so the
+ * render context (and with it, the item renderers) never changes with zoom
+ */
+const editorEngineUpscale: Upscale = {
+  gameEngineUpscale: 1,
+  cssUpscale: 1,
+  // only used by the game's scroll/hud renderers, which the editor doesn't
+  // create - a nominal value:
+  gameEngineScreenSize: { x: 320, y: 256 },
+  canvasSize: { x: 320, y: 256 },
+  rotate90: false,
+};
 
 const editorGeneralRenderContext = (
   pixiRenderer: Renderer,
@@ -42,7 +59,7 @@ const editorGeneralRenderContext = (
   paused: false,
   spriteOption: { name: "BlockStack", uncolourised: false as const },
   spritesheetMeta: spritesheetMetas.BlockStack,
-  upscale: selectUpscale(store.getState()),
+  upscale: editorEngineUpscale,
   cameraAngle: selectEditorCameraAngle(store.getState()),
   onScreenControls: false,
   speedCoefficient: 1,
@@ -53,6 +70,7 @@ export const useEditorMainLoop = (
   spritesheetVariants: SpritesheetVariants,
 ): void => {
   const pixiApp = useProvidedPixiApplication();
+  const viewport = useEditorViewport();
   const { renderer: pixiRenderer } = pixiApp;
 
   if (!pixiRenderer) {
@@ -63,7 +81,23 @@ export const useEditorMainLoop = (
   const roomRenderSize = useEditorRoomRenderDimensions();
 
   useEffect(() => {
-    const positioner = new Container({ label: "editorPositioner" });
+    // a solid backdrop bounding the room's projected rect - the room reads as
+    // sitting on this, with the pane's checkerboard void around it:
+    const backdrop = new Graphics({ label: "editorRoomBackdrop" });
+    backdrop
+      .rect(
+        roomRenderSize.l - roomEditingAreaMarginPx,
+        roomRenderSize.t - roomEditingAreaMarginPx,
+        roomRenderSize.w + 2 * roomEditingAreaMarginPx,
+        roomRenderSize.h + 2 * roomEditingAreaMarginPx,
+      )
+      .fill(paletteBlockstack.pureBlack);
+
+    // the room renders at its natural projected coordinates - panning/zooming
+    // is entirely the viewport's transform:
+    const roomContainer = new Container({ label: "editorRoom" });
+    viewport.container.addChild(backdrop, roomContainer);
+
     let roomRenderer: EditorRoomRenderer | undefined;
     let lastPlanet = currentEditingRoomState.planet;
     let lastColor = currentEditingRoomState.color;
@@ -79,7 +113,7 @@ export const useEditorMainLoop = (
 
       if (roomRenderer === undefined || lastRoomState !== roomState) {
         roomRenderer?.destroy();
-        positioner.removeChildren();
+        roomContainer.removeChildren();
 
         spritesheetVariants.rebuild(pixiRenderer, planet, color, {
           name: "BlockStack",
@@ -94,8 +128,7 @@ export const useEditorMainLoop = (
           ),
         });
 
-        positioner.addChild(roomRenderer.output.graphics);
-        pixiApp.stage.addChild(positioner);
+        roomContainer.addChild(roomRenderer.output.graphics);
 
         lastPlanet = planet;
         lastColor = color;
@@ -108,9 +141,6 @@ export const useEditorMainLoop = (
         lastPlanet = planet;
         lastColor = color;
       }
-
-      positioner.x = -roomRenderSize.l + roomEditingAreaMarginPx;
-      positioner.y = -roomRenderSize.t + roomEditingAreaMarginPx;
 
       if (roomRenderer.destroyed) {
         return;
@@ -150,8 +180,9 @@ export const useEditorMainLoop = (
     return () => {
       Ticker.shared.remove(tick);
       roomRenderer?.destroy();
-      pixiApp.stage.removeChild(positioner);
-      positioner.destroy();
+      viewport.container.removeChild(backdrop, roomContainer);
+      backdrop.destroy();
+      roomContainer.destroy();
     };
   }, [
     currentEditingRoomState,
@@ -159,5 +190,6 @@ export const useEditorMainLoop = (
     pixiApp,
     spritesheetVariants,
     roomRenderSize,
+    viewport,
   ]);
 };

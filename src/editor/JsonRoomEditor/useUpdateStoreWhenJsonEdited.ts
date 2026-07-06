@@ -16,7 +16,7 @@ const ajvValidate = new Ajv().compile<EditorRoomJson>(roomSchema);
 
 // performance is fine without a debounce, but it can be annoying
 // if the editor changes during typing:
-const debounceMs = 1000;
+const debounceMs = 1_000;
 
 const parseJsonWithCorrection = (text: string): object | undefined => {
   let parsedJson;

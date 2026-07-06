@@ -90,7 +90,7 @@ test("two switches can be ganged", () => {
       const switch2State = itemState<"switch">(gameState, "switch2");
 
       // stop when charles has flipped the switch's setting, or we waited too long:
-      return switch2State.setting === "right" || gameState.gameTime > 1000;
+      return switch2State.setting === "right" || gameState.gameTime > 1_000;
     },
     frameRate: { fps: [20] },
   });
@@ -259,7 +259,7 @@ describe("switching conveyors", () => {
       expect(movedPositive).toBe(positiveMovement);
 
       playGameThrough(gameState, {
-        until: 3000,
+        until: 3_000,
       });
 
       const reversedDirection = oppositeDirection(direction);
@@ -323,7 +323,7 @@ describe("switching conveyors", () => {
 
       playGameThrough(gameState, {
         until(gameState) {
-          return switchState().setting === "left" || gameState.gameTime > 3000;
+          return switchState().setting === "left" || gameState.gameTime > 3_000;
         },
       });
 

@@ -833,7 +833,7 @@ export class HudRenderer<RoomId extends string, RoomItemId extends string>
 
     const buttonsVisible =
       !tickContext.paused &&
-      (onScreenControls || Date.now() - this.#lastPointerMoveTime < 2000);
+      (onScreenControls || Date.now() - this.#lastPointerMoveTime < 2_000);
     this.#menuButton.output.visible = buttonsVisible;
     this.#mapButton.output.visible = buttonsVisible;
 

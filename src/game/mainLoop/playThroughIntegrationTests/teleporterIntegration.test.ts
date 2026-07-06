@@ -343,7 +343,7 @@ test("teleporter can be inactive based on a store value", () => {
     },
     until(gameState) {
       // give it 5 seconds to try to use the teleporter
-      return gameState.gameTime > 5000;
+      return gameState.gameTime > 5_000;
     },
   });
 
@@ -402,7 +402,7 @@ test("teleporter can be activated based on a store value", () => {
       if (gameState.characterRooms.heels?.items["crown"] === undefined) {
         gameState.inputStateTracker.mockPressing("jump");
       }
-      return gameState.gameTime > 5000;
+      return gameState.gameTime > 5_000;
     },
   });
 
@@ -669,7 +669,7 @@ test("teleporting when destination teleporter is missing leaves player in the sa
       mockInputStateTracker.mockPressing("jump");
     },
     until(gameState) {
-      return gameState.gameTime > 5000;
+      return gameState.gameTime > 5_000;
     },
   });
 
@@ -829,8 +829,8 @@ test.for([{ otherCharacterPresent: false }, { otherCharacterPresent: true }])(
     const room = gameState.characterRooms.head!;
     // comparing in seconds at 1dp means the test passes if a few frames happened since
     expect(
-      (headState(gameState).teleporting?.startRoomTime ?? 0) / 1000,
-    ).toBeCloseTo(room.roomTime / 1000, 1);
+      (headState(gameState).teleporting?.startRoomTime ?? 0) / 1_000,
+    ).toBeCloseTo(room.roomTime / 1_000, 1);
   },
 );
 

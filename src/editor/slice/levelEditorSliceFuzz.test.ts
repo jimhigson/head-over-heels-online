@@ -87,7 +87,7 @@ const assertCompletePerimeters = (
   }
 };
 
-const seeds = Array.from({ length: 1024 }, (_, i) => [i]);
+const seeds = Array.from({ length: 1_024 }, (_, i) => [i]);
 
 test.for(seeds)("fuzz insert+coalesce (seed %i)", ([seed]) => {
   const rng = seedrandom(String(seed));

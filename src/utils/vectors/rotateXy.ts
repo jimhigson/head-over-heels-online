@@ -1,5 +1,6 @@
 import {
   type AxisXy,
+  type DirectionXy4,
   rotateAxisXyByCameraAngle,
   type Xy,
   type Xyz,
@@ -26,6 +27,19 @@ export const allCameraAngles: ReadonlyArray<Xy> = [
   halfTurn,
   quarterTurnClockwise,
 ];
+
+/**
+ * the rotation (camera-angle) vector at which world "away" renders in each
+ * apparent (screen) direction - the inverse of
+ * `rotateDirectionXy4ByCameraAngle("away", angle)`, for going from a
+ * direction label back to the rotation it names
+ */
+export const rotationVectorsByDirectionXy4 = {
+  away: cameraAngleBase,
+  right: quarterTurnAnticlockwise,
+  towards: halfTurn,
+  left: quarterTurnClockwise,
+} as const satisfies Record<DirectionXy4, Xy>;
 
 /**
  * rotate a 2d vector by the rotation the unit vector `by` represents, taken as

@@ -1,11 +1,10 @@
 import { type RefObject } from "preact";
 
-import { type Upscale } from "../../../../store/slices/upscale/Upscale";
 import { type EditorRootState } from "../../../../store/store";
 import { type Xyz } from "../../../../utils/vectors/vectors";
 import { type EditorRoomState } from "../../../editorTypes";
-import { type RenderedRoomDimensions } from "../../../slice/levelEditorSelectors";
 import { type MaybePointingAtSomething } from "../../cursor/PointingAt";
+import { type EditorViewport } from "../../viewport/EditorViewport";
 import { type Tool } from "../Tool";
 
 export interface ToolHandler<T extends Tool> {
@@ -13,6 +12,11 @@ export interface ToolHandler<T extends Tool> {
   handleMouseUp(params: MouseUpParams<T>): void;
   handleMouseDown(params: MouseDownParams<T>): void;
   handleMouseLeave(params: MouseLeaveParams<T>): void;
+  /**
+   * whether a drag starting at this mousedown would be used by this tool -
+   * drags that no tool claims pan the editor view instead
+   */
+  claimsDrag(params: MouseDownParams<T>): boolean;
 }
 
 // Base type containing common fields
@@ -26,14 +30,13 @@ type BaseMouseParams<T extends Tool> = {
 // Base type for events that involve pointing at something
 type BasePointingParams<T extends Tool> = BaseMouseParams<T> & {
   pointingAt: MaybePointingAtSomething;
-  upscale: Upscale;
+  viewport: EditorViewport;
 };
 
 export type MouseMoveParams<T extends Tool> = BasePointingParams<T> & {
   pointingAtChanged: boolean;
   mouseDownPointingAtRef: RefObject<MaybePointingAtSomething | undefined>;
   dragAccVec: RefObject<undefined | Xyz>;
-  roomRenderSize: RenderedRoomDimensions;
 };
 
 export type MouseUpParams<T extends Tool> = BasePointingParams<T> & {

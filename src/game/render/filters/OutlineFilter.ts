@@ -48,7 +48,10 @@ export class OutlineFilter extends Filter {
         fragment,
         name: "outline-filter",
       }),
-      padding: upscale,
+      // the upscale (and so the outline width) can be fractional, and pixi
+      // truncates padding to an integer - ceil so the outline always has
+      // enough clearance:
+      padding: Math.ceil(upscale),
       clipToViewport,
       resources: {
         colorReplaceUniforms: {
@@ -79,6 +82,17 @@ export class OutlineFilter extends Filter {
     // uOutlineWidth is set in apply() method
   }
 
+  /**
+   * override the outline width (in the filter's rendered pixels); undefined
+   * reverts to following the game's global upscale
+   */
+  set width(width: number | undefined) {
+    this.#outlineWidth = width;
+    // we always need to expand enough to contain one outline (ceil: widths
+    // can be fractional and pixi truncates padding to an integer):
+    this.padding = Math.ceil(width ?? currentUpscale);
+  }
+
   override apply(
     filterSystem: FilterSystem,
     input: Texture,
@@ -94,7 +108,14 @@ export class OutlineFilter extends Filter {
     // Use custom width if provided, otherwise use standard behavior
     const outlineWidth = this.#outlineWidth ?? currentUpscale;
 
-    this.padding = outlineWidth;
+    if (this.#outlineWidth === undefined) {
+      // no explicit width: follow the global upscale, which can change at
+      // runtime, so keep padding matched to it each frame (an explicit width
+      // owns its own padding, set in the width setter). Ceil: the upscale can
+      // be fractional and pixi truncates padding to an integer:
+      this.padding = Math.ceil(outlineWidth);
+    }
+
     uniforms.uOutlineWidth[0] = outlineWidth;
 
     super.apply(filterSystem, input, output, clearMode);

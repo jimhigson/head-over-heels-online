@@ -2,9 +2,10 @@ import normalizeWheel from "normalize-wheel-es";
 import { type RefObject } from "preact";
 import { useCallback, useEffect, useRef } from "preact/hooks";
 
-const useMouseWheel = (
+/** normalised mouse wheel handler */
+export const useMouseWheel = (
   elementRef: RefObject<Element | null>,
-  callback: (direction: -1 | 1) => void,
+  callback: (direction: -1 | 1, wheelEvent: WheelEvent) => void,
   disabled: boolean = false,
 ) => {
   const wheelY = useRef(0);
@@ -25,12 +26,12 @@ const useMouseWheel = (
       wheelY.current -= norm.spinY;
 
       if (wheelY.current >= 1) {
-        callback(1);
+        callback(1, wheelEvent);
         wheelY.current = 0;
       }
       if (wheelY.current <= -1) {
         // find currently selected item's index:
-        callback(-1);
+        callback(-1, wheelEvent);
         wheelY.current = 0;
       }
     },
@@ -50,6 +51,7 @@ const useMouseWheel = (
   }, [elementRef, onWheel]);
 };
 
+/** useMousewheel, but for using the wheel to choose from a set of options */
 export const useMouseWheelOptions = <T>(
   elementRef: RefObject<Element | null>,
   values: Readonly<T[]>,

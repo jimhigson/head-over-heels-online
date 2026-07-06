@@ -80,11 +80,11 @@ test("calls progress only once if below maxStepDeltaMs", () => {
     .mockReturnValue(mockMovedOrResizedItemsSet(["a"]));
   const gameState = createGameState({ itemIds: ["a"] });
 
-  const progressAt50fps = progressWithSubTicks(mockProgress, 1000 / 50);
-  const moved = progressAt50fps(gameState, 1000 / 100);
+  const progressAt50fps = progressWithSubTicks(mockProgress, 1_000 / 50);
+  const moved = progressAt50fps(gameState, 1_000 / 100);
 
   expect(mockProgress).toHaveBeenCalledTimes(1);
-  expect(mockProgress).toHaveBeenCalledWith(gameState, 1000 / 100);
+  expect(mockProgress).toHaveBeenCalledWith(gameState, 1_000 / 100);
   expect([...moved].map(({ id }) => id)).toEqual(["a"]);
 });
 
@@ -98,8 +98,8 @@ test("splits into multiple steps and combines moved items", () => {
 
   const gameState = createGameState({ itemIds: ["a", "b"] });
 
-  const progressAt60fps = progressWithSubTicks(mockProgress, 1000 / 60);
-  const moved = progressAt60fps(gameState, 1000 / 30);
+  const progressAt60fps = progressWithSubTicks(mockProgress, 1_000 / 60);
+  const moved = progressAt60fps(gameState, 1_000 / 30);
 
   expect(mockProgress).toHaveBeenCalledTimes(2);
   expect([...moved].map(({ id }) => id)).toEqual(
@@ -118,8 +118,8 @@ test("filters out items that are removed by the end of substeps", () => {
   const gameState = createGameState({ itemIds: ["a"] });
   gameState.characterRooms.head!.items = mockItemsInRoom(["a"]);
 
-  const progressAt60fps = progressWithSubTicks(mockProgress, 1000 / 60);
-  const moved = progressAt60fps(gameState, 1000 / 30);
+  const progressAt60fps = progressWithSubTicks(mockProgress, 1_000 / 60);
+  const moved = progressAt60fps(gameState, 1_000 / 30);
 
   expect([...moved].map(({ id }) => id)).toEqual(["a"]);
 });
@@ -132,8 +132,8 @@ test("handles fractional steps correctly", () => {
     .mockReturnValue(mockMovedOrResizedItemsSet(["a"]));
   const gameState = createGameState({ itemIds: ["a"] });
 
-  const progressAt160fps = progressWithSubTicks(mockProgress, 1000 / 160);
-  const moved = progressAt160fps(gameState, 1000 / 50);
+  const progressAt160fps = progressWithSubTicks(mockProgress, 1_000 / 160);
+  const moved = progressAt160fps(gameState, 1_000 / 50);
 
   expect(mockProgress).toHaveBeenCalledTimes(4);
   expect([...moved].map(({ id }) => id)).toEqual(["a"]);

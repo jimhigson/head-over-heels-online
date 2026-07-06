@@ -162,7 +162,7 @@ test("switch disables a deadly block, player walks over it safely", () => {
   ).toBe(true);
 
   playGameThrough(gameState, {
-    until: 3000,
+    until: 3_000,
     frameRate: { fps: [15] },
   });
 

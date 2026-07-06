@@ -72,7 +72,7 @@ const useAddTrackingToStore = () => {
         const state = getState();
 
         const gameTimeSeconds =
-          gameState ? Math.round(gameState.gameTime / 1000) : undefined;
+          gameState ? Math.round(gameState.gameTime / 1_000) : undefined;
 
         const payloadProperties =
           crownCollected.match(action) ? { crownForPlanet: action.payload }

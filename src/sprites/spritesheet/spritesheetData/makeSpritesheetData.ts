@@ -133,4 +133,4 @@ export const makeSpritesheetData = (
   >;
 };
 
-export const spritesheetSize = { w: 1024, h: 1024 };
+export const spritesheetSize = { w: 1_024, h: 1_024 };

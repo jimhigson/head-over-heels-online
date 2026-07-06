@@ -346,7 +346,7 @@ const randomlyChangeDirection = <
       tickerSpeed !== 0
       // change direction probabilistically, about once per second
       // of game time on average
-    : Math.random() < deltaMS / 1000;
+    : Math.random() < deltaMS / 1_000;
 
   if (!produceNewWalk) {
     return unitMechanicalResult;

@@ -182,8 +182,8 @@ export const deployToR2 = async (
   if (stale.length > 0) {
     console.log(`pruning ${stale.length} stale objects from ${bucket}…`);
     // DeleteObjects accepts at most 1000 keys per request
-    for (let i = 0; i < stale.length; i += 1000) {
-      const batch = stale.slice(i, i + 1000);
+    for (let i = 0; i < stale.length; i += 1_000) {
+      const batch = stale.slice(i, i + 1_000);
       await client.send(
         new DeleteObjectsCommand({
           Bucket: bucket,

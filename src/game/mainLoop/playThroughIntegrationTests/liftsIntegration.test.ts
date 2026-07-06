@@ -59,7 +59,7 @@ describe("lifts", () => {
           heelsStandingOnPerFrame.push(heelsState(gameState).standingOnItemId);
         }
       },
-      until: 5000, // run for quite a long time
+      until: 5_000, // run for quite a long time
     });
 
     expect(heelsStandingOnPerFrame).toMatchObject(
@@ -85,7 +85,7 @@ describe("lifts", () => {
           heelsZPosPerFrame.push(heelsState(gameState).position.z);
         }
       },
-      until: 5000, // run for quite a long time
+      until: 5_000, // run for quite a long time
     });
 
     // since the lift is stationary, the z position should have held absolutely solid:
@@ -103,7 +103,7 @@ describe("lifts", () => {
       frameCallbacks(gameState) {
         maxHeight = Math.max(maxHeight, heelsState(gameState).position.z);
       },
-      until: 5000, // run for quite a long time
+      until: 5_000, // run for quite a long time
     });
 
     const expectedMaxHeight = (liftTop + 1) * blockSizePx.z;
@@ -133,7 +133,7 @@ describe("lifts", () => {
     });
 
     playGameThrough(gameState, {
-      until: 5000, // run for quite a long time
+      until: 5_000, // run for quite a long time
     });
 
     // lift is now stuck on top of the player
@@ -179,7 +179,7 @@ describe("lifts", () => {
     });
 
     playGameThrough(gameState, {
-      until: 5000, // run for quite a long time
+      until: 5_000, // run for quite a long time
     });
 
     // heels is now in the above room and standing on the landing
@@ -218,7 +218,7 @@ describe("lifts", () => {
     > = [];
 
     playGameThrough(gameState, {
-      until: 5000, // run for quite a long time
+      until: 5_000, // run for quite a long time
       frameCallbacks(gameState) {
         heelsStandingOnPerFrame.push(heelsState(gameState).standingOnItemId);
       },
@@ -269,7 +269,7 @@ describe("lifts", () => {
     });
 
     playGameThrough(gameState, {
-      until: 5000,
+      until: 5_000,
     });
 
     expect(heelsState(gameState).position.z).toBe(blockSizePx.z * 2);
@@ -303,7 +303,7 @@ describe("lifts", () => {
     });
 
     playGameThrough(gameState, {
-      until: 1000,
+      until: 1_000,
     });
 
     expect(itemState(gameState, "lift")!.position.z).toBeCloseTo(0);

@@ -59,7 +59,7 @@ test.each([
     setupInitialInput(mockInputStateTracker) {
       mockInputStateTracker.mockDirectionPressed = "right";
     },
-    until: 2000,
+    until: 2_000,
   });
   expect(selectCurrentRoomState(gameState)?.id).toBe("secondRoom");
 });

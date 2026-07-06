@@ -51,7 +51,7 @@ program
     const sizeBefore = (await stat(finalWebp)).size;
     await run`magick identify -verbose ${finalWebp}`;
     const sizeAfter = (await stat(finalWebp)).size;
-    const formatKb = (bytes: number) => `${(bytes / 1024).toFixed(2)} KB`;
+    const formatKb = (bytes: number) => `${(bytes / 1_024).toFixed(2)} KB`;
     const delta = sizeAfter - sizeBefore;
     const pct = ((delta / sizeBefore) * 100).toFixed(2);
     console.log(

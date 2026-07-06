@@ -136,8 +136,8 @@ describe("descriptive cases", () => {
     expect(result).toMatchObject({
       // aspect ratios match, so take up the whole screen and use hardware pixels:
       canvasSize: {
-        x: 1600,
-        y: 1200,
+        x: 1_600,
+        y: 1_200,
       },
 
       // would be 6 if rounded down to integer, but eg, with scaleSubsteps of 5,
@@ -171,37 +171,37 @@ function* cartesian<Types extends readonly unknown[]>(
 
 const testScreenResolutions = [
   // iPhones
-  { name: "iPhone 8", x: 750, y: 1334 },
-  { name: "iPhone 8 Plus", x: 1080, y: 1920 },
-  { name: "iPhone X / XS / 11 Pro", x: 1125, y: 2436 },
-  { name: "iPhone XS Max / 11 Pro Max", x: 1242, y: 2688 },
-  { name: "iPhone XR / 11", x: 828, y: 1792 },
-  { name: "iPhone 12 Pro / 13 Pro", x: 1170, y: 2532 },
-  { name: "iPhone 12 Pro Max / 13 Pro Max / 14 Plus", x: 1284, y: 2778 },
-  { name: "iPhone 14 Pro / 15 Pro", x: 1179, y: 2556 },
-  { name: "iPhone 14 Pro Max / 15 Plus / 15 Pro Max", x: 1290, y: 2796 },
+  { name: "iPhone 8", x: 750, y: 1_334 },
+  { name: "iPhone 8 Plus", x: 1_080, y: 1_920 },
+  { name: "iPhone X / XS / 11 Pro", x: 1_125, y: 2_436 },
+  { name: "iPhone XS Max / 11 Pro Max", x: 1_242, y: 2_688 },
+  { name: "iPhone XR / 11", x: 828, y: 1_792 },
+  { name: "iPhone 12 Pro / 13 Pro", x: 1_170, y: 2_532 },
+  { name: "iPhone 12 Pro Max / 13 Pro Max / 14 Plus", x: 1_284, y: 2_778 },
+  { name: "iPhone 14 Pro / 15 Pro", x: 1_179, y: 2_556 },
+  { name: "iPhone 14 Pro Max / 15 Plus / 15 Pro Max", x: 1_290, y: 2_796 },
 
   // other Mobile / Tablet
-  { name: "FHD+ Smartphone", x: 1080, y: 2280 },
-  { name: "2340x1080 Smartphone", x: 2340, y: 1080 },
-  { name: "2400x1080 Smartphone", x: 2400, y: 1080 },
-  { name: "iPhone X/XS/11 Pro", x: 2436, y: 1125 },
-  { name: "Galaxy S9/Note8", x: 2960, y: 1440 }, // Samsung's "Infinity Display"
-  { name: "Xperia 1 Ultra-wide", x: 3840, y: 1600 }, // Ultra-tall cinematic display
+  { name: "FHD+ Smartphone", x: 1_080, y: 2_280 },
+  { name: "2340x1080 Smartphone", x: 2_340, y: 1_080 },
+  { name: "2400x1080 Smartphone", x: 2_400, y: 1_080 },
+  { name: "iPhone X/XS/11 Pro", x: 2_436, y: 1_125 },
+  { name: "Galaxy S9/Note8", x: 2_960, y: 1_440 }, // Samsung's "Infinity Display"
+  { name: "Xperia 1 Ultra-wide", x: 3_840, y: 1_600 }, // Ultra-tall cinematic display
 
   // Desktop / Laptop / Monitor
-  { name: "WXGA", x: 1366, y: 768 }, // Common for budget laptops
-  { name: "FHD (1080p)", x: 1920, y: 1080 },
-  { name: "WUXGA", x: 1920, y: 1200 }, // 16:10 productivity laptops
-  { name: "QHD / WQHD", x: 2560, y: 1440 },
-  { name: "WQXGA", x: 2560, y: 1600 }, // High-res 16:10
-  { name: "MacBook Pro Retina 15″", x: 2880, y: 1800 },
-  { name: "MacBook Pro Retina 16″", x: 3072, y: 1920 },
-  { name: "UltraWide QHD", x: 3440, y: 1440 }, // 21:9 aspect ratio
-  { name: "4K UHD", x: 3840, y: 2160 },
-  { name: "5K Retina iMac", x: 5120, y: 2880 },
-  { name: "5K:2K Ultrawide", x: 5120, y: 2160 }, // 21:9 wide-screen productivity / media monitors
-  { name: "8K UHD", x: 7680, y: 4320 }, // Cutting-edge high-end displays
+  { name: "WXGA", x: 1_366, y: 768 }, // Common for budget laptops
+  { name: "FHD (1080p)", x: 1_920, y: 1_080 },
+  { name: "WUXGA", x: 1_920, y: 1_200 }, // 16:10 productivity laptops
+  { name: "QHD / WQHD", x: 2_560, y: 1_440 },
+  { name: "WQXGA", x: 2_560, y: 1_600 }, // High-res 16:10
+  { name: "MacBook Pro Retina 15″", x: 2_880, y: 1_800 },
+  { name: "MacBook Pro Retina 16″", x: 3_072, y: 1_920 },
+  { name: "UltraWide QHD", x: 3_440, y: 1_440 }, // 21:9 aspect ratio
+  { name: "4K UHD", x: 3_840, y: 2_160 },
+  { name: "5K Retina iMac", x: 5_120, y: 2_880 },
+  { name: "5K:2K Ultrawide", x: 5_120, y: 2_160 }, // 21:9 wide-screen productivity / media monitors
+  { name: "8K UHD", x: 7_680, y: 4_320 }, // Cutting-edge high-end displays
 
   // Legacy / Retro Systems
   { name: "VGA", x: 640, y: 480 },
@@ -213,7 +213,7 @@ const testScreenResolutions = [
   { name: "Neo Geo", x: 384, y: 224 },
   { name: "SNES NTSC", x: 256, y: 224 },
   { name: "EDTV (Wii)", x: 720, y: 480 }, // Enhanced Definition TV
-  { name: "HD 720p", x: 1280, y: 720 },
+  { name: "HD 720p", x: 1_280, y: 720 },
   { name: "PS1 Interlaced", x: 640, y: 448 }, // High-res interlaced PlayStation mode
   { name: "Game Boy / GBC", x: 160, y: 144 },
   { name: "Nintendo DS Screen", x: 256, y: 192 }, // Single DS screen resolution

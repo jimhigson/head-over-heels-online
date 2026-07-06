@@ -1,7 +1,7 @@
 /**
  * tick interval of the original game 1s/25 = (40ms)
  */
-export const originalFramePeriod = 1000 / 25;
+export const originalFramePeriod = 1_000 / 25;
 
 /**
  * 9 frames

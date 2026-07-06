@@ -108,12 +108,12 @@ test.describe("reincarnation points stack across multiple fish", () => {
       await switchCharacter(page, testInfo.project.name);
       expect(await getCurrentCharacter(page)).toBe("heels");
       await clickCheat(page, "cheats-goto-room-egyptus1");
-      await page.waitForTimeout(1000 * osSlowness);
+      await page.waitForTimeout(1_000 * osSlowness);
       expect(await getCurrentRoomId(page)).toBe("egyptus1");
       await clickCheat(page, "cheats-summon-extra-life");
-      await page.waitForTimeout(1500 * osSlowness);
+      await page.waitForTimeout(1_500 * osSlowness);
       await clickCheat(page, "cheats-summon-reincarnation");
-      await page.waitForTimeout(2000 * osSlowness);
+      await page.waitForTimeout(2_000 * osSlowness);
       snapshotAtFishA = await getPlayerSnapshot(page);
       expect(snapshotAtFishA.character).toBe("heels");
       expect(snapshotAtFishA.room).toBe("egyptus1");
@@ -128,12 +128,12 @@ test.describe("reincarnation points stack across multiple fish", () => {
       await switchCharacter(page, testInfo.project.name);
       expect(await getCurrentCharacter(page)).toBe("head");
       await clickCheat(page, "cheats-goto-room-moonbase1");
-      await page.waitForTimeout(1000 * osSlowness);
+      await page.waitForTimeout(1_000 * osSlowness);
       expect(await getCurrentRoomId(page)).toBe("moonbase1");
       await clickCheat(page, "cheats-summon-extra-life");
-      await page.waitForTimeout(1500 * osSlowness);
+      await page.waitForTimeout(1_500 * osSlowness);
       await clickCheat(page, "cheats-summon-reincarnation");
-      await page.waitForTimeout(2000 * osSlowness);
+      await page.waitForTimeout(2_000 * osSlowness);
       snapshotAtFishB = await getPlayerSnapshot(page);
       expect(snapshotAtFishB.character).toBe("head");
       expect(snapshotAtFishB.room).toBe("moonbase1");
@@ -143,12 +143,12 @@ test.describe("reincarnation points stack across multiple fish", () => {
       await switchCharacter(page, testInfo.project.name);
       expect(await getCurrentCharacter(page)).toBe("heels");
       await clickCheat(page, "cheats-goto-room-penitentiary1");
-      await page.waitForTimeout(1000 * osSlowness);
+      await page.waitForTimeout(1_000 * osSlowness);
       expect(await getCurrentRoomId(page)).toBe("penitentiary1");
       await clickCheat(page, "cheats-summon-extra-life");
-      await page.waitForTimeout(1500 * osSlowness);
+      await page.waitForTimeout(1_500 * osSlowness);
       await clickCheat(page, "cheats-summon-reincarnation");
-      await page.waitForTimeout(2000 * osSlowness);
+      await page.waitForTimeout(2_000 * osSlowness);
       snapshotAtFishC = await getPlayerSnapshot(page);
       expect(snapshotAtFishC.character).toBe("heels");
       expect(snapshotAtFishC.room).toBe("penitentiary1");
@@ -157,7 +157,7 @@ test.describe("reincarnation points stack across multiple fish", () => {
     await test.step("Swop to head and walk to room D (safari1) — no fish here", async () => {
       await switchCharacter(page, testInfo.project.name);
       await clickCheat(page, "cheats-goto-room-safari1");
-      await page.waitForTimeout(1000 * osSlowness);
+      await page.waitForTimeout(1_000 * osSlowness);
       expect(await getCurrentRoomId(page)).toBe("safari1");
     });
 

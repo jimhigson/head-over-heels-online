@@ -360,7 +360,7 @@ export const openInGameMainMenu = async (page: Page, logHeader: string) => {
 
         const inGameMainMenuSelector = "[data-dialog-id=mainMenu]";
         await page.waitForSelector(inGameMainMenuSelector, {
-          timeout: 5000 * osSlowness,
+          timeout: 5_000 * osSlowness,
         });
         await logSelectorExistence(page, inGameMainMenuSelector, logHeader);
       },

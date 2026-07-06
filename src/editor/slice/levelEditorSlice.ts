@@ -6,8 +6,9 @@ import {
   quarterTurnAnticlockwise,
   quarterTurnClockwise,
   rotateXy,
+  rotationVectorsByDirectionXy4,
 } from "../../utils/vectors/rotateXy";
-import { type Xy } from "../../utils/vectors/vectors";
+import { type DirectionXy4, type Xy } from "../../utils/vectors/vectors";
 import {
   type EditorCampaign,
   type EditorRoomId,
@@ -163,6 +164,17 @@ export const levelEditorSlice = createSlice({
     rotateViewAnticlockwise(state) {
       state.cameraAngle = rotateXy(state.cameraAngle, quarterTurnAnticlockwise);
     },
+    /**
+     * rotate the editor's view to the angle named by where world "away"
+     * appears on screen - the label the compass between the rotate buttons
+     * shows (eg "away" = the base angle)
+     */
+    rotateViewTo(
+      state,
+      { payload: awayAppearsAs }: PayloadAction<DirectionXy4>,
+    ) {
+      state.cameraAngle = rotationVectorsByDirectionXy4[awayAppearsAs];
+    },
 
     ...editorSettingsReducers,
     ...undoReducers,
@@ -221,10 +233,9 @@ export type LevelEditorSliceAction = ReturnType<
 
 export const {
   addRoom,
+  addRoomToSelection,
   applyItemTool,
   campaignJsonAutoFixed,
-  coalesceSelectedItems,
-  coalesceSelectedRooms,
   changeDragInProgress,
   changeGridResolution,
   changeRoomColour,
@@ -233,6 +244,8 @@ export const {
   changeWallsFloorsLocked,
   clearRoom,
   closeItemContextMenu,
+  coalesceSelectedItems,
+  coalesceSelectedRooms,
   commitCurrentPreviewedEdits,
   deleteSelected,
   explodeSelectedItems,
@@ -242,8 +255,6 @@ export const {
   newCampaign,
   openItemContextMenu,
   redo,
-  addRoomToSelection,
-  selectAllRooms,
   removeRoom,
   resetPreviewedEdits,
   roomBack,
@@ -253,6 +264,9 @@ export const {
   rotateSelectedItems,
   rotateViewAnticlockwise,
   rotateViewClockwise,
+  rotateViewTo,
+  saveSuccessful,
+  selectAllRooms,
   setAutoCoalesce,
   setCampaignName,
   setCampaignPublished,
@@ -261,8 +275,6 @@ export const {
   setClickableAnnotationHovered,
   setCmdKSearch,
   setHoveredItemInRoom,
-  undoHovered,
-  saveSuccessful,
   setRemoteCampaign,
   setRoomAboveOrBelow,
   setSelectedItemsActivation,
@@ -275,6 +287,7 @@ export const {
   toggleRoomInSelection,
   toggleSelectedItemInRoom,
   undo,
+  undoHovered,
 } = levelEditorSlice.actions;
 export const {
   selectBackRooms,

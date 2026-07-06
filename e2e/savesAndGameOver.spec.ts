@@ -45,7 +45,7 @@ test.describe("save lifecycle around game over", () => {
       await startCampaignViaMenu(page, testInfo.project.name, "originalGame");
       // changing room dispatches a save, ensuring one exists before game-over
       await clickCheat(page, "cheats-goto-room-egyptus1");
-      await page.waitForTimeout(1000 * osSlowness);
+      await page.waitForTimeout(1_000 * osSlowness);
     });
 
     await test.step("Confirm a save was written for the original campaign", async () => {

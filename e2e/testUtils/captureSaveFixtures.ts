@@ -95,7 +95,7 @@ export const captureSaveFixtures = async (
     if (!(await crowns.isVisible().catch(() => false))) {
       break;
     }
-    await crowns.click({ timeout: 5000 }).catch(() => {});
+    await crowns.click({ timeout: 5_000 }).catch(() => {});
     await page.waitForTimeout(500);
   }
   await crowns.waitFor({ state: "detached", timeout: 10_000 });

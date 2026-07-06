@@ -55,7 +55,7 @@ const controllerOrKeyboardLookSpeed = 0.2; // 200px/second
 /**
  * how long after looking until the scrolling starts to revert?
  */
-const periodUntilLookRevert = 1250;
+const periodUntilLookRevert = 1_250;
 
 const easeTowards = (vector: Xy, deltaMS: number) => {
   // move towards at 100% per catchup period (but will back off/ease as

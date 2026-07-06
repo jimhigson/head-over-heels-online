@@ -25,11 +25,3 @@ export const useMaybeRotated = (): CSSProperties => {
     transformOrigin: "top left",
   };
 };
-
-export const useCanvasTransform = (): string => {
-  const { cssUpscale, canvasSize, rotate90 } = useAppSelector(selectUpscale);
-
-  return rotate90 ?
-      `scale(${cssUpscale}) rotate(90deg) translate(0, -${canvasSize.y}px)`
-    : `scale(${cssUpscale})`;
-};
