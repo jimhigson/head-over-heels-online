@@ -358,6 +358,8 @@ export const toppySpritesheetMeta: SpritesheetMetadata<
     carryAndJump: "pink2",
     menu: "grey1",
     map: "grey1",
+    rotateClockwise: "grey1",
+    rotateAnticlockwise: "grey1",
   },
   supportsUncolourised: false,
   showFloorOverDraw: false,

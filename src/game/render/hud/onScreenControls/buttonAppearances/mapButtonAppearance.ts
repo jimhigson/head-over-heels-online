@@ -28,6 +28,9 @@ export const mapButtonAppearance: ButtonAppearance<
     spritesheet: general.spritesheetVariants.originalSpritesheet,
     label: "mapText",
     outline: true,
+    // double height (but not width) so it lines up height-wise with the
+    // double-size menu and rotate buttons without stretching the "MAP" text
+    doubleHeight: true,
     text: "MAP",
   });
 
