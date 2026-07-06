@@ -12,7 +12,7 @@ import {
   animationIsUniformlyFlipped,
   keyframesForAnimatedSprite,
 } from "../../tailwind/plugins/spriteCss";
-import { Tooltip } from "../../ui/tooltip/Tooltip";
+import { useTip } from "../../ui/tip/useTip";
 import { keyframesToCss } from "./keyframesToCss";
 import { SpriteName } from "./SpriteName";
 
@@ -29,6 +29,21 @@ export const AnimationTile = ({
 }: AnimationTileProps) => {
   const styleRef = useRef<HTMLStyleElement>(null);
   const spriteOption = useSpritesOption();
+
+  const { interestfor, tip } = useTip(
+    <ul class="max-h-16 block overflow-y-auto">
+      {frames.map((f, i) => (
+        <li key={`${f}/${i}`}>
+          <a
+            href={`#sprite-${sanitiseForClassName(f)}`}
+            class="bitmap-text-link mt-oneScaledPix"
+          >
+            <span class="text-single-line">{f}</span>
+          </a>
+        </li>
+      ))}
+    </ul>,
+  );
 
   const missingFrameIds = frames.filter((f) => !(f in spritesheetData.frames));
 
@@ -69,27 +84,14 @@ export const AnimationTile = ({
       }
       <div class="flex-grow" />
       <SpriteName name={animationName} />
-      <Tooltip
-        triggerContent={
-          <div class="text-lightGrey zx:text-zxWhiteDimmed toppy:text-toppyGrey1 cursor-help">
-            {frames.length}&nbsp;frames
-          </div>
-        }
-        tooltipContent={
-          <ul class="max-h-16 block overflow-y-auto">
-            {frames.map((f, i) => (
-              <li key={`${f}/${i}`}>
-                <a
-                  href={`#sprite-${sanitiseForClassName(f)}`}
-                  class="bitmap-text-link mt-oneScaledPix"
-                >
-                  <span class="text-single-line">{f}</span>
-                </a>
-              </li>
-            ))}
-          </ul>
-        }
-      />
+      <button
+        type="button"
+        interestfor={interestfor}
+        class="text-lightGrey zx:text-zxWhiteDimmed toppy:text-toppyGrey1 cursor-help text-left"
+      >
+        {frames.length}&nbsp;frames
+      </button>
+      {tip}
       <div class="text-midGrey zx:text-zxWhiteDimmed toppy:text-toppyGrey2">
         speed:&nbsp;{frames.animationSpeed}
       </div>

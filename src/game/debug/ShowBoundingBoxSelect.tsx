@@ -1,4 +1,4 @@
-import { useState } from "preact/hooks";
+import { useId, useState } from "preact/hooks";
 
 import { type ItemInPlayType, itemInPlayTypes } from "../../model/ItemInPlay";
 import { roomItemsIterable, type RoomStateItems } from "../../model/RoomState";
@@ -20,7 +20,7 @@ import { CommandInput } from "../../ui/command/CommandInput";
 import { CommandItem } from "../../ui/command/CommandItem";
 import { CommandList } from "../../ui/command/CommandList";
 import { CommandMatch } from "../../ui/command/CommandMatch";
-import { Popover } from "../../ui/Popover";
+import { PopoverPanel } from "../../ui/PopoverPanel";
 import { Switch, SwitchN } from "../../ui/Switch";
 
 const sortedItemInPlayTypes = itemInPlayTypes.toSorted();
@@ -64,6 +64,7 @@ export const ShowBoundingBoxSelect = ({
   const showRoomScrollBounds = useShowRoomScrollBounds();
   const showSubrooms = useShowSubrooms();
   const [open, setOpen] = useState(false);
+  const popoverId = useId();
   const [visibleTypes, setVisibleTypes] = useState<readonly ItemInPlayType[]>(
     sortedItemInPlayTypes,
   );
@@ -94,22 +95,19 @@ export const ShowBoundingBoxSelect = ({
   };
 
   return (
-    <Popover
-      open={open}
-      onOpenChange={handleOpenChange}
-      trigger={
-        <Button
-          class={cn(
-            "h-2 px-1 flex flex-row gap-1 justify-start leading-none w-13",
-          )}
-        >
-          <span class="text-single-line grow overflow-hidden text-left">
-            {triggerLabel(selected)}
-          </span>
-          <span class="text-single-line grow-0">{open ? "X" : "⬇"}</span>
-        </Button>
-      }
-      contents={
+    <>
+      <Button
+        class={cn(
+          "h-2 px-1 flex flex-row gap-1 justify-start leading-none w-13",
+        )}
+        popovertarget={popoverId}
+      >
+        <span class="text-single-line grow overflow-hidden text-left">
+          {triggerLabel(selected)}
+        </span>
+        <span class="text-single-line grow-0">{open ? "X" : "⬇"}</span>
+      </Button>
+      <PopoverPanel id={popoverId} open={open} onOpenChange={handleOpenChange}>
         <Command class="w-24">
           <CommandInput autoFocus placeholder="filter types..." />
           <CommandList>
@@ -223,7 +221,7 @@ export const ShowBoundingBoxSelect = ({
             )}
           </CommandList>
         </Command>
-      }
-    />
+      </PopoverPanel>
+    </>
   );
 };

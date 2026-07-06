@@ -1,11 +1,11 @@
 import { type RefObject, type VNode } from "preact";
 import { type PropsWithChildren } from "preact/compat";
-import { useState } from "preact/hooks";
+import { useId, useState } from "preact/hooks";
 import { type EmptyObject } from "type-fest";
 
 import { Button, type ButtonProps } from "../../../ui/Button";
 import { cn } from "../../../ui/cn";
-import { Popover } from "../../../ui/Popover";
+import { PopoverPanel } from "../../../ui/PopoverPanel";
 import { buttonSizeClassNames } from "../buttonSizeClassNames";
 
 export interface MenuButtonProps {
@@ -22,6 +22,7 @@ export const MenuButton = ({
   ref,
 }: MenuButtonProps) => {
   const [open, setOpen] = useState(false);
+  const popoverId = useId();
 
   return (
     <div
@@ -34,20 +35,24 @@ export const MenuButton = ({
         {main}
 
         {children.length > 0 && (
-          <Popover
-            open={open}
-            onOpenChange={setOpen}
-            trigger={
-              <Button
-                aria-label={open ? "Close menu" : "More actions"}
-                class="absolute right-0 bottom-0 bg-metallicBlueHalfbrite invisible group-hover:visible"
-              >
-                <span class="pl-oneScaledPix py-oneScaledPix text-single-line">
-                  {open ? "X" : "⬇"}
-                </span>
-              </Button>
-            }
-            contents={
+          <>
+            <Button
+              aria-label={open ? "Close menu" : "More actions"}
+              class={cn(
+                "absolute right-0 bottom-0 bg-metallicBlueHalfbrite",
+                // while the menu is open the trigger must stay visible: it is
+                // the menu's close button, and also the popover's anchor - a
+                // hidden anchor makes the anchored panel un-hit-testable in
+                // Chrome, so clicks would fall through to elements behind it
+                open ? "visible" : "invisible group-hover:visible",
+              )}
+              popovertarget={popoverId}
+            >
+              <span class="pl-oneScaledPix py-oneScaledPix text-single-line">
+                {open ? "X" : "⬇"}
+              </span>
+            </Button>
+            <PopoverPanel id={popoverId} open={open} onOpenChange={setOpen}>
               <div
                 class={cn(
                   "flex flex-col gap-oneScaledPix py-oneScaledPix",
@@ -58,8 +63,8 @@ export const MenuButton = ({
               >
                 {children}
               </div>
-            }
-          />
+            </PopoverPanel>
+          </>
         )}
       </span>
     </div>

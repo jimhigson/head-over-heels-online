@@ -1,4 +1,3 @@
-import naturalCompare from "natural-compare-lite";
 import { type ComponentChildren } from "preact";
 
 import { cssForRoomColour } from "../editor/toolbar/buttons/RoomColourSelect";
@@ -6,6 +5,7 @@ import { CssVariables } from "../game/components/CssVariables";
 import { usePlayableTailwindSpriteClassname } from "../game/components/tailwindSprites/playableTailwindSpriteClassname";
 import { type Campaign } from "../model/modelTypes";
 import { useIsUncolourised } from "../store/slices/gameMenus/gameMenusSelectors";
+import { naturalCompare } from "../utils/naturalCompare";
 import { CommandItem } from "./command/CommandItem";
 import { CommandMatch } from "./command/CommandMatch";
 import { Select } from "./Select";

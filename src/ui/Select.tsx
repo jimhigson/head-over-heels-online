@@ -1,6 +1,6 @@
 import { type ComponentChildren } from "preact";
 import { type CSSProperties, type FC } from "preact/compat";
-import { useRef, useState } from "preact/hooks";
+import { useId, useRef, useState } from "preact/hooks";
 
 import { emptyObject } from "../utils/empty";
 import { Button } from "./Button";
@@ -12,7 +12,7 @@ import { CommandInput } from "./command/CommandInput";
 import { CommandItem } from "./command/CommandItem";
 import { CommandList } from "./command/CommandList";
 import { CommandMatch } from "./command/CommandMatch";
-import { Popover } from "./Popover";
+import { PopoverPanel } from "./PopoverPanel";
 import { useMouseWheelOptions } from "./useMouseWheel";
 
 type OptionCommandItemComponent<Value extends string> = FC<{
@@ -69,6 +69,7 @@ export const Select = <Value extends string>(props: SelectProps<Value>) => {
   } = props;
 
   const [open, setOpen] = useState(false);
+  const popoverId = useId();
 
   const wheelElementRef = useRef<HTMLButtonElement | null>(null);
   useMouseWheelOptions(
@@ -81,29 +82,26 @@ export const Select = <Value extends string>(props: SelectProps<Value>) => {
   );
 
   return (
-    <Popover
-      open={open}
-      onOpenChange={setOpen}
-      trigger={
-        <Button
-          class={cn(
-            `h-2 px-1 flex flex-row gap-1 justify-start leading-none`,
-            triggerButtonClassName,
-          )}
-          style={triggerButtonStyle}
-          ref={wheelElementRef}
-          tooltipContent={!open && tooltipContent}
-        >
-          {typeof triggerButtonLabel === "string" ?
-            <span class="grow overflow-hidden text-left text-single-line">
-              {triggerButtonLabel}
-            </span>
-          : triggerButtonLabel}
-          <span class="grow-0 text-single-line">{open ? "X" : "⬇"}</span>
-        </Button>
-      }
-      contents={
-        <Command defaultValue={value} class="w-[--popover-anchor-width]">
+    <>
+      <Button
+        class={cn(
+          `h-2 px-1 flex flex-row gap-1 justify-start leading-none`,
+          triggerButtonClassName,
+        )}
+        style={triggerButtonStyle}
+        ref={wheelElementRef}
+        popovertarget={popoverId}
+        tooltipContent={!open && tooltipContent}
+      >
+        {typeof triggerButtonLabel === "string" ?
+          <span class="grow overflow-hidden text-left text-single-line">
+            {triggerButtonLabel}
+          </span>
+        : triggerButtonLabel}
+        <span class="grow-0 text-single-line">{open ? "X" : "⬇"}</span>
+      </Button>
+      <PopoverPanel id={popoverId} open={open} onOpenChange={setOpen}>
+        <Command defaultValue={value} class="w-full">
           {props.disableCommandInput === true ? null : (
             <CommandInput autoFocus placeholder={props.placeholder} />
           )}
@@ -127,7 +125,7 @@ export const Select = <Value extends string>(props: SelectProps<Value>) => {
             </CommandGroup>
           </CommandList>
         </Command>
-      }
-    />
+      </PopoverPanel>
+    </>
   );
 };

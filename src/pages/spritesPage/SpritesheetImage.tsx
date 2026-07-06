@@ -18,7 +18,7 @@ import {
   keyframesForAnimatedSprite,
   spriteSpecificCssVars,
 } from "../../tailwind/plugins/spriteCss";
-import { Tooltip } from "../../ui/tooltip/Tooltip";
+import { useTip } from "../../ui/tip/useTip";
 import { entries } from "../../utils/entries";
 import { type Xy } from "../../utils/vectors/vectors";
 import { keyframesToCss } from "./keyframesToCss";
@@ -156,22 +156,24 @@ const SpriteOverlayTooltip = ({ position }: { position: SpritePosition }) => {
 
 const SpriteOverlay = ({ position }: { position: SpritePosition }) => {
   const { frame, textureIds } = position;
+  const { interestfor, tip } = useTip(
+    <SpriteOverlayTooltip position={position} />,
+  );
   return (
-    <Tooltip
-      triggerContent={
-        <a
-          href={`#sprite-${sanitiseForClassName(textureIds[0])}`}
-          class="absolute cursor-pointer block border hover:bg-[rgba(255,255,255,0.25)] z-[1]"
-          style={{
-            left: xRelative(frame.x),
-            top: yRelative(frame.y),
-            width: xRelative(frame.w),
-            height: yRelative(frame.h),
-          }}
-        />
-      }
-      tooltipContent={<SpriteOverlayTooltip position={position} />}
-    />
+    <>
+      <a
+        href={`#sprite-${sanitiseForClassName(textureIds[0])}`}
+        interestfor={interestfor}
+        class="absolute cursor-pointer block border hover:bg-[rgba(255,255,255,0.25)] z-[1]"
+        style={{
+          left: xRelative(frame.x),
+          top: yRelative(frame.y),
+          width: xRelative(frame.w),
+          height: yRelative(frame.h),
+        }}
+      />
+      {tip}
+    </>
   );
 };
 

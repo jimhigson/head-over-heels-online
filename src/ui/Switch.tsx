@@ -8,7 +8,7 @@ import { twClass } from "../utils/twClass";
 import { cn } from "./cn";
 import { enhanceTooltipWithHotkeys } from "./enhanceTooltipWithHotkeys";
 import { getSwitchPaddedLabels, paddingChar } from "./getSwitchPaddedLabels";
-import { Tooltip } from "./tooltip/Tooltip";
+import { useTip } from "./tip/useTip";
 import { type ShortcutKeys, useKeyboardShortcut } from "./useKeyboardShortcut";
 
 const uiSoundVolume = 0.3;
@@ -83,7 +83,15 @@ export const Switch = ({
     onChange?.(!value, undefined);
   });
 
-  const element = (
+  const finalTooltipContent =
+    enhanceTooltipWithHotkeys(
+      typeof tooltipContent === "string" ? tooltipContent : undefined,
+      shortcutKeys,
+    ) ?? tooltipContent;
+
+  const { interestfor, tip } = useTip(finalTooltipContent);
+
+  return (
     <span
       onClick={(e) => onChange?.(!value, e)}
       class={cn("inline-flex justify-between leading-none", className)}
@@ -96,12 +104,14 @@ export const Switch = ({
         />
       )}
       {label && <SwitchLabel label={label} htmlFor={switchId} />}
-      <span
+      <button
+        type="button"
         id={switchId}
         role="switch"
         aria-checked={value}
         aria-label={ariaLabel}
         aria-description={ariaDescription}
+        interestfor={interestfor}
         class={clsx(
           "inline-block w-min h-min py-half px-half uppercase whitespace-pre text-single-line",
           value ?
@@ -110,18 +120,9 @@ export const Switch = ({
         )}
       >
         {value ? trueLabelPadded : falseLabelPadded}
-      </span>
+      </button>
+      {tip}
     </span>
-  );
-
-  const finalTooltipContent =
-    enhanceTooltipWithHotkeys(
-      typeof tooltipContent === "string" ? tooltipContent : undefined,
-      shortcutKeys,
-    ) ?? tooltipContent;
-
-  return (
-    <Tooltip triggerContent={element} tooltipContent={finalTooltipContent} />
   );
 };
 
@@ -204,7 +205,15 @@ export const SwitchN = <TValue extends number | string>({
   // Cycle through colors for 4+ options
   const colorIndex = numValues > 4 ? valueIndex % 4 : valueIndex;
 
-  const element = (
+  const finalTooltipContent =
+    enhanceTooltipWithHotkeys(
+      typeof tooltipContent === "string" ? tooltipContent : undefined,
+      shortcutKeys,
+    ) ?? tooltipContent;
+
+  const { interestfor, tip } = useTip(finalTooltipContent);
+
+  return (
     <span
       onClick={goToNextValue}
       class={cn("inline-flex justify-between leading-none", className)}
@@ -217,7 +226,8 @@ export const SwitchN = <TValue extends number | string>({
         />
       )}
       {label && <SwitchLabel label={label} htmlFor={switchId} />}
-      <span
+      <button
+        type="button"
         id={switchId}
         role="switch"
         aria-label={
@@ -225,6 +235,7 @@ export const SwitchN = <TValue extends number | string>({
             `${ariaLabel}: ${notFound ? value : valueLabels[valueIndex]}`
           )
         }
+        interestfor={interestfor}
         class={clsx(
           "inline-block w-min h-min py-half px-half uppercase whitespace-pre text-single-line",
           notFound ? switchNErrorColours : (
@@ -233,18 +244,9 @@ export const SwitchN = <TValue extends number | string>({
         )}
       >
         {notFound ? `${value}` : paddedLabels[valueIndex]}
-      </span>
+      </button>
+      {tip}
     </span>
-  );
-
-  const finalTooltipContent =
-    enhanceTooltipWithHotkeys(
-      typeof tooltipContent === "string" ? tooltipContent : undefined,
-      shortcutKeys,
-    ) ?? tooltipContent;
-
-  return (
-    <Tooltip triggerContent={element} tooltipContent={finalTooltipContent} />
   );
 };
 

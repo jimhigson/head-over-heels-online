@@ -2,6 +2,7 @@ import scrollbar from "tailwind-scrollbar";
 import { type Config } from "tailwindcss";
 
 import { resolutions } from "./src/originalGame";
+import { anchorPopovers } from "./src/tailwind/plugins/anchorPopovers";
 import { fallbackColourVariables } from "./src/tailwind/plugins/fallbackColourVariables";
 import { spritesTailwindPlugin } from "./src/tailwind/plugins/spritesTailwindPlugin";
 import { coloursCssVariables } from "./src/tailwind/tailwindColours";
@@ -228,6 +229,7 @@ export default {
     },
   },
   plugins: [
+    anchorPopovers,
     fallbackColourVariables,
     spritesTailwindPlugin,
     scrollbar({ preferredStrategy: "pseudoelements", nocompatible: true }),
