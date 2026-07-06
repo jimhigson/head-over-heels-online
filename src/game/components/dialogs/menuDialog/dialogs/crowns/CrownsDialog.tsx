@@ -33,6 +33,7 @@ export const CrownsDialog = ({
         class="bg-pureBlack w-zx h-full block p-0"
         onClick={isLoading ? undefined : closeDialog}
         dialogId="crowns"
+        ariaLabel="There are five crowns to collect to be a true hero in this game. This dialog shows their collection status; clicking it will dismiss it."
       >
         {shouldPlayMusic && <PlayAudio soundId="intro" loop />}
         <FiveCrownsDisplay />

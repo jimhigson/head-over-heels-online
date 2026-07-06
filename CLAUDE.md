@@ -243,6 +243,14 @@ and there is no sensible alternative
 * if a value's typescript type is not nullable, do not add checks for it being null/undefined, even explicit checks like using `?.`
 if unsure if the type is nullable, assume that it is not nullable (or undefinable) and let the typecheck inform you later
 
+* do not make a field or parameter optional (`?`) out of an abundance of caution - only when there is a genuine, specific
+reason it can legitimately be absent (eg an old save-game format that predates the field). If in doubt make it required and always
+provide it; the typecheck will surface any site that genuinely needs it optional. The same applies to `?.` - do not reach for
+optional chaining unless there is a clear reason the left-hand side can actually be nullish. Unnecessary optionality is not free:
+it forces every consumer to handle an absent case that never happens, and the resulting mix of shapes (some with the field, some
+without) makes objects polymorphic/megamorphic, which stops V8 from optimising the property accesses into a single hidden class.
+Keep shapes uniform: one consistent set of fields, always present.
+
 * Do not use any in typescript. IF you are copying the parameters of another function, use Parameters<typeof func> 
 instead of `any`
 
@@ -320,10 +328,12 @@ Use `pnpm fix` to auto-fix linting and formatting errors (runs both eslint --fix
 No not use `npx`, use `pnpm`. Do not call `pnpm vitest` directly, call `pnpm check:test` instead, and similar commands for typechecking and other commands that need to be called - if a script exists in package.json to do the test at hand, prefer that unless it comes with major drawbacks.
 
 ### Driving the running game / capturing screenshots
+* **verifying rendering: prefer inspecting the Pixi tree over reading screenshots.** A screenshot is one useful tool, but an LLM agent's ability to tell exactly which sprite/frame/texture is on screen from a screenshot is unreliable (frames can look nearly identical). When the question is "which texture/tile/frame is being drawn", "is this item in the tree", "what is its position/tint/visibility", walk `window.__PIXI_APP__.stage` (or the specific container) and read the actual `label`/`texture`/`textureId`/`position`/`visible` - that is ground truth, not a visual guess. Reach for a screenshot only for holistic "does it look right overall" checks, and even then confirm specifics against the tree. The same applies to derived render decisions (eg which walls the see-through rule fired on): dump the predicate/graph output, don't eyeball the pixels.
 * the redux store is only put on `window._e2e_store` (and the game api on `window._e2e_gamePageGameAi`, pixi app on `window.__PIXI_APP__`) when built in **visual-regression mode** - eg `pnpm exec vite build --mode visual-regression` then `pnpm exec vite preview` (a normal `pnpm build:game` / dev server does NOT expose them). See `import.meta.env.MODE === "visual-regression"` in `store.ts`/`gameMain.ts`.
 * to set game/debug state from automation, dispatch plain actions to `window._e2e_store` (eg `userSettings/setShowBoundingBoxType` with `{ itemType, value: true }`).
 * the bounding-box (and pointer-debug) item-renderer decorators are only registered while the **Cheats panel is mounted** (`useRegisterDecorateItemRenderers` lives inside the `Cheats` component, rendered when `debug.cheatsOn` is true, ie via `?cheats=1`). Setting `showBoundingBoxTypes` alone does nothing if the panel never mounted. `LazyCheats` mounts async, and the decorator only wraps item renderers created *after* it registers - so wait for the panel to mount, then dispatch, then allow time for items to be (re)created (light-beam renderers recast frequently, so they pick up the decorator on their own).
 * prefer the `hohjs-browser-mcp` skill for browser automation patterns and known MCP quirks.
+* **the crowns dialog** (`dialogId="crowns"`, `CrownsDialog.tsx`) opens WHENEVER a new game is started - including when you boot straight into a room via a `campaignName`/`#roomId` URL. It overlays the game (which is already running underneath). To dismiss it you need only **click it once, after it has finished loading**: it renders a `LOADING` banner while `useIsGameLoading()` is true and only becomes clickable (its `onClick` closes it) once loading is done. So: wait for the crowns dialog to stop loading, then click it (its `aria-label` describes it and says clicking dismisses it) - do NOT reach for `gameMenus/closeAllMenus` or other workarounds. The e2e helper `exitCrownsDialog` already encapsulates this wait-then-click.
 
 ## Visual Regression Testing
 
