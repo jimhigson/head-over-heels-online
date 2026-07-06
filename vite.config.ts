@@ -1,4 +1,5 @@
 import preact from "@preact/preset-vite";
+import { execSync } from "node:child_process";
 import path from "path";
 import { visualizer } from "rollup-plugin-visualizer";
 import { defineConfig, type PluginOption } from "vite";
@@ -10,6 +11,17 @@ import { hmrOnlyPreact } from "./hmrOnlyPreact";
 // read by tailwind.config.ts (which runs in this same process) to exclude
 // editor-only sources from the game's css
 process.env.TAILWIND_APP = "game";
+
+const readGitBranch = (): string => {
+  try {
+    return execSync("git rev-parse --abbrev-ref HEAD").toString().trim();
+  } catch {
+    return "";
+  }
+};
+
+// put git branch on env for dev builds:
+process.env.VITE_GIT_BRANCH = readGitBranch();
 
 const oneWeekInSeconds = 60 * 60 * 24 * 7;
 
