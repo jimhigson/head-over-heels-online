@@ -69,11 +69,11 @@ jobs:
         include:
           # 3 groups of ~8 tests each, batched roughly by domain
           - suite: persistence
-            pattern: "persistOnReload offlineCampaignCache"
+            pattern: "persistOnReload offlineCampaignCache saveCompatLoad"
           - suite: endgame
             pattern: "lifeAndDeath savesAndGameOver quitGameFlow gameComplete reincarnationStack gameRendersAfterRestart"
           - suite: gameplayAndMenus
-            pattern: "crownsDialogs scrollAndKeyRebind mainMenuClosability playtestNoSave migrations"
+            pattern: "crownsDialogs scrollAndKeyRebind mainMenuClosability playtestNoSave"
     name: E2E ${{ matrix.suite }}
     steps:
       - uses: actions/checkout@v6
