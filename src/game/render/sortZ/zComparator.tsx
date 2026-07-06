@@ -1,6 +1,6 @@
 //# allFunctionsCalledOnLoad
 
-import { veryClose } from "../../../utils/epsilon";
+import { epsilon, veryClose } from "../../../utils/epsilon";
 import { rotatedX, rotatedY } from "../../../utils/vectors/rotateXy";
 import { type Xyz } from "../../../utils/vectors/vectors";
 import { type DrawOrderComparable } from "./DrawOrderComparable";
@@ -37,6 +37,14 @@ const renderBoxWorldPos = (item: DrawOrderComparable, scratch: Xyz): Xyz => {
   return scratch;
 };
 
+/** overlap length of two 1-D intervals; ≤ 0 when they meet at a point or are disjoint */
+const intervalOverlap = (
+  aLo: number,
+  aHi: number,
+  bLo: number,
+  bHi: number,
+): number => Math.min(aHi, bHi) - Math.max(aLo, bLo);
+
 /**
  * comparator suitable for ordering by z (with a topographic sort, not a normal sort)
  *
@@ -70,10 +78,9 @@ export const zComparator = (
   const bRenderPos = renderBoxWorldPos(b, bRenderScratch);
   const bRenderBb = b.renderAabb ?? b.aabb;
 
-  const visualOverlap = visuallyOverlaps(
-    visualIndex.getItemAxesProjections(a)!,
-    visualIndex.getItemAxesProjections(b)!,
-  );
+  const aProj = visualIndex.getItemAxesProjections(a)!;
+  const bProj = visualIndex.getItemAxesProjections(b)!;
+  const visualOverlap = visuallyOverlaps(aProj, bProj);
 
   switch (visualOverlap) {
     case OVERLAP: {
@@ -139,6 +146,42 @@ export const zComparator = (
       const bZMin = bRenderPos.z;
       const bZMax = bRenderPos.z + bRenderBb.z;
 
+      // the items abut along a seam that runs in world-x; being ADJACENT_X, that seam's
+      // edges are collinear on screen. Its real length is the overlap of the two
+      // abutting edges in projected-x (screen-x = rotY − rotX). Each box abuts along its
+      // world-x edge at the corner nearest the seam: the box on the +xAxisProjection
+      // side touches at its high-rotY corner, the other at its low-rotY corner. A seam
+      // that collapses to a point (eg a zero-thickness wall meeting a floor end-on) is
+      // not a real seam, so gives no ordering:
+      const aRotX0 = rotatedX(aRenderPos.x, aRenderPos.y, cameraAngle);
+      const aRotX1 = rotatedX(
+        aRenderPos.x + aRenderBb.x,
+        aRenderPos.y + aRenderBb.y,
+        cameraAngle,
+      );
+      const bRotX0 = rotatedX(bRenderPos.x, bRenderPos.y, cameraAngle);
+      const bRotX1 = rotatedX(
+        bRenderPos.x + bRenderBb.x,
+        bRenderPos.y + bRenderBb.y,
+        cameraAngle,
+      );
+      const aXMin = Math.min(aRotX0, aRotX1);
+      const aXMax = Math.max(aRotX0, aRotX1);
+      const bXMin = Math.min(bRotX0, bRotX1);
+      const bXMax = Math.max(bRotX0, bRotX1);
+      const aOnPlusSide = aProj.xAxisProjectionMin > bProj.xAxisProjectionMin;
+      const aEdgeRotY = aOnPlusSide ? aYMax : aYMin;
+      const bEdgeRotY = aOnPlusSide ? bYMin : bYMax;
+      const seamOverlap = intervalOverlap(
+        aEdgeRotY - aXMax,
+        aEdgeRotY - aXMin,
+        bEdgeRotY - bXMax,
+        bEdgeRotY - bXMin,
+      );
+      if (seamOverlap < epsilon) {
+        return 0;
+      }
+
       if (veryClose(aYMin, bYMax) && veryClose(aZMin, bZMax)) {
         return 1;
       }
@@ -173,6 +216,42 @@ export const zComparator = (
       const aZMax = aRenderPos.z + aRenderBb.z;
       const bZMin = bRenderPos.z;
       const bZMax = bRenderPos.z + bRenderBb.z;
+
+      // the items abut along a seam that runs in world-y; being ADJACENT_Y, that seam's
+      // edges are collinear on screen. Its real length is the overlap of the two
+      // abutting edges in projected-x (screen-x = rotY − rotX). Each box abuts along its
+      // world-y edge at the corner nearest the seam: the box on the +yAxisProjection
+      // side touches at its high-rotX corner, the other at its low-rotX corner. A seam
+      // that collapses to a point (eg a zero-thickness wall meeting a floor end-on) is
+      // not a real seam, so gives no ordering:
+      const aRotY0 = rotatedY(aRenderPos.x, aRenderPos.y, cameraAngle);
+      const aRotY1 = rotatedY(
+        aRenderPos.x + aRenderBb.x,
+        aRenderPos.y + aRenderBb.y,
+        cameraAngle,
+      );
+      const bRotY0 = rotatedY(bRenderPos.x, bRenderPos.y, cameraAngle);
+      const bRotY1 = rotatedY(
+        bRenderPos.x + bRenderBb.x,
+        bRenderPos.y + bRenderBb.y,
+        cameraAngle,
+      );
+      const aYMin = Math.min(aRotY0, aRotY1);
+      const aYMax = Math.max(aRotY0, aRotY1);
+      const bYMin = Math.min(bRotY0, bRotY1);
+      const bYMax = Math.max(bRotY0, bRotY1);
+      const aOnPlusSide = aProj.yAxisProjectionMin > bProj.yAxisProjectionMin;
+      const aEdgeRotX = aOnPlusSide ? aXMax : aXMin;
+      const bEdgeRotX = aOnPlusSide ? bXMin : bXMax;
+      const seamOverlap = intervalOverlap(
+        aYMin - aEdgeRotX,
+        aYMax - aEdgeRotX,
+        bYMin - bEdgeRotX,
+        bYMax - bEdgeRotX,
+      );
+      if (seamOverlap < epsilon) {
+        return 0;
+      }
 
       if (veryClose(aXMin, bXMax) && veryClose(aZMin, bZMax)) {
         return 1;
