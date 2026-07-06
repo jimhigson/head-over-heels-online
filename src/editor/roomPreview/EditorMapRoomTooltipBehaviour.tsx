@@ -1,58 +1,17 @@
-import { useEffect } from "preact/hooks";
-
 import { type RoomBehaviourProps } from "../../game/components/dialogs/menuDialog/dialogs/map/RoomDecoratorProps";
-import { TooltipFloating } from "../../ui/tooltip/Tooltip";
-import { useTooltip } from "../../ui/tooltip/useTooltip";
+import { Tip } from "../../ui/tip/Tip";
 import { type EditorRoomId } from "../editorTypes";
 import { RoomPreview } from "./RoomPreview";
 
-const EditorMapRoomTooltipBehaviour = ({
+export const EditorMapRoomTooltipBehaviour = ({
   roomId,
   isCurrentRoom,
-  interactiveAreaRef,
-}: RoomBehaviourProps<EditorRoomId>) => {
-  const { refs, floatingStyles, isOpen, getReferenceProps, getFloatingProps } =
-    useTooltip({
-      tooltipOffset: isCurrentRoom ? 32 : 16,
-      tooltipPlacement: "bottom",
-      // faster for this one since it has a useful preview, not just help text
-      hoverDelay: 50,
-    });
-
-  useEffect(() => {
-    const el = interactiveAreaRef.current;
-    if (!el) {
-      return;
-    }
-
-    refs.setReference(el);
-
-    const props = getReferenceProps();
-    const keys = Object.keys(props);
-
-    Object.assign(el, props);
-
-    return () => {
-      for (const key of keys) {
-        delete el[key as keyof typeof el];
-      }
-    };
-  }, [interactiveAreaRef, refs, getReferenceProps]);
-
-  return (
-    <TooltipFloating
-      isOpen={isOpen}
-      floatingStyles={floatingStyles}
-      refs={refs}
-      getFloatingProps={getFloatingProps}
-      tooltipContent={
-        <div class="flex flex-col gap-y-1">
-          <span class="text-single-line">{roomId}</span>
-          {!isCurrentRoom && <RoomPreview roomId={roomId} />}
-        </div>
-      }
-    />
-  );
-};
-
-export default EditorMapRoomTooltipBehaviour;
+  tipId,
+}: RoomBehaviourProps<EditorRoomId>) => (
+  <Tip id={tipId} svgInvoker offset={isCurrentRoom ? 32 : 16}>
+    <div class="flex flex-col gap-y-1">
+      <span class="text-single-line">{roomId}</span>
+      {!isCurrentRoom && <RoomPreview roomId={roomId} />}
+    </div>
+  </Tip>
+);

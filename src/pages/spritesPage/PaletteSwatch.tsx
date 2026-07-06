@@ -2,7 +2,7 @@ import jsonPalette from "../../_generated/palette/spritesheetPalette.json" with 
 import jsonToppyPalette from "../../_generated/palette/spritesheetToppyPalette.json" with { type: "json" };
 import { zxSpectrumColors } from "../../originalGame";
 import { useSpritesOption } from "../../store/slices/gameMenus/gameMenusSelectors";
-import { Tooltip } from "../../ui/tooltip/Tooltip";
+import { useTip } from "../../ui/tip/useTip";
 import { srgbHexToP3 } from "../../utils/colour/srgbHexToP3";
 import { objectEntriesIter } from "../../utils/entries";
 
@@ -38,6 +38,30 @@ const zxEntries = partitionSwops(
     .toArray(),
 );
 
+type SwatchProps = { name: string; hex: string };
+
+const Swatch = ({ name, hex }: SwatchProps) => {
+  const { interestfor, tip } = useTip(
+    <div class="text-shadow zx:text-zxBlack toppy:text-toppyGrey3 flex flex-col gap-oneScaledPix">
+      <span class="text-single-line">{name}</span>
+      <span class="text-single-line">{hex}</span>
+      <span class="text-single-line">{srgbHexToP3(hex)}</span>
+    </div>,
+  );
+
+  return (
+    <>
+      <button
+        type="button"
+        interestfor={interestfor}
+        class="w-3 h-3 border-oneScaledPix border-shadow zx:border-zxWhiteDimmed toppy:border-toppyGrey2"
+        style={{ backgroundColor: hex }}
+      />
+      {tip}
+    </>
+  );
+};
+
 export const PaletteSwatch = () => {
   const spritesOption = useSpritesOption();
 
@@ -47,24 +71,7 @@ export const PaletteSwatch = () => {
     : blockstackEntries;
 
   const renderRow = (entries: ColourEntry[]) =>
-    entries.map(([name, hex]) => (
-      <Tooltip
-        key={name}
-        triggerContent={
-          <div
-            class="w-3 h-3 border-oneScaledPix border-shadow zx:border-zxWhiteDimmed toppy:border-toppyGrey2"
-            style={{ backgroundColor: hex }}
-          />
-        }
-        tooltipContent={
-          <div class="text-shadow zx:text-zxBlack toppy:text-toppyGrey3 flex flex-col gap-oneScaledPix">
-            <span class="text-single-line">{name}</span>
-            <span class="text-single-line">{hex}</span>
-            <span class="text-single-line">{srgbHexToP3(hex)}</span>
-          </div>
-        }
-      />
-    ));
+    entries.map(([name, hex]) => <Swatch key={name} name={name} hex={hex} />);
 
   return (
     <div class="flex flex-col gap-oneScaledPix p-half">

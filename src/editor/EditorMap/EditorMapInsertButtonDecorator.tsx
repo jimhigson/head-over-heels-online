@@ -8,7 +8,7 @@ import { projectWorldXyzToScreenXy } from "../../game/render/projections";
 import { type Boundaries } from "../../model/map/roomGridPositions";
 import { type SortedObjectOfRoomGridPositionSpecs } from "../../model/map/sortRoomGridPositions";
 import { editorStore, useEditorAppSelector } from "../../store/store";
-import { Tooltip } from "../../ui/tooltip/Tooltip";
+import { useTip } from "../../ui/tip/useTip";
 import { valuesIter } from "../../utils/entries";
 import { unitVectors } from "../../utils/vectors/unitVectors";
 import {
@@ -200,11 +200,21 @@ const InsertButton = ({
   label,
   tooltipContent,
   onClick,
-}: InsertButtonProps) => (
-  <Tooltip
-    tooltipContent={tooltipContent}
-    triggerContent={
-      <g class="group cursor-pointer" onClick={onClick}>
+}: InsertButtonProps) => {
+  const { interestfor, tip } = useTip(tooltipContent, { svgInvoker: true });
+
+  return (
+    <>
+      <a
+        href="#"
+        interestfor={interestfor}
+        tabIndex={-1}
+        class="group cursor-pointer outline-none"
+        onClick={(e) => {
+          e.preventDefault();
+          onClick();
+        }}
+      >
         <rect
           x={x - buttonSize / 2}
           y={y - buttonSize / 2}
@@ -228,10 +238,11 @@ const InsertButton = ({
         >
           {label}
         </text>
-      </g>
-    }
-  />
-);
+      </a>
+      {tip}
+    </>
+  );
+};
 
 const EditorMapInsertButtonDecorator = ({
   roomId,

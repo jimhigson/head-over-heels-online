@@ -1,10 +1,10 @@
 import { Fragment } from "preact";
-import { format } from "timeago.js";
 
 import { type CampaignDirectory } from "../../../../../../db/campaign";
 import { type CampaignLocator } from "../../../../../../model/modelTypes";
 import { gameStarted } from "../../../../../../store/slices/gameInPlay/gameInPlaySlice";
 import { useDispatchActionCallback } from "../../../../../../store/useDispatchActionCallback";
+import { timeAgo } from "../../../../../../utils/timeAgo";
 import { selectGameHintMarkdownClassName } from "../../../dialogClasses";
 import { MenuItem } from "../../MenuItem";
 import { MenuItems } from "../../MenuItems";
@@ -35,7 +35,7 @@ const CampaignMenuItem = ({
         <div class="screenshot-mask">
           <span
             class={`${selectGameHintMarkdownClassName} text-single-line`}
-          >{`Updated ${format(createdAt)}`}</span>
+          >{`Updated ${timeAgo(createdAt)}`}</span>
         </div>
       }
     />

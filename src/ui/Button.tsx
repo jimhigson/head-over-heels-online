@@ -11,7 +11,7 @@ import {
   enhanceTooltipWithHotkeys,
   formatShortcutKeysAsMarkdown,
 } from "./enhanceTooltipWithHotkeys";
-import { Tooltip } from "./tooltip/Tooltip";
+import { useTip } from "./tip/useTip";
 import { type ShortcutKeys, useKeyboardShortcut } from "./useKeyboardShortcut";
 
 export type ButtonProps = Simplify<
@@ -23,6 +23,7 @@ export type ButtonProps = Simplify<
     | "class"
     | "onMouseEnter"
     | "onMouseLeave"
+    | "popovertarget"
     | "role"
     | "style"
   > &
@@ -49,11 +50,27 @@ export const Button = ({
   ...props
 }: ButtonProps) => {
   useKeyboardShortcut(shortcutKeys, disabled, onClick);
+
+  const finalTooltipContent =
+    typeof tooltipContent === "string" ?
+      enhanceTooltipWithHotkeys(tooltipContent, shortcutKeys)
+    : tooltipContent !== undefined && shortcutKeys ?
+      <>
+        {tooltipContent}
+        <BlockyMarkdown>
+          {formatShortcutKeysAsMarkdown(shortcutKeys)}
+        </BlockyMarkdown>
+      </>
+    : tooltipContent;
+
+  const { interestfor, tip } = useTip(finalTooltipContent);
+
   const button = (
     <button
       disabled={disabled}
       onClick={onClick}
       data-selected={selected}
+      interestfor={interestfor}
       class={cn(
         `inline-flex items-center justify-center whitespace-nowrap 
           bg-metallicBlue zx:bg-zxBlue toppy:bg-toppyCool3 border-none border-shadow
@@ -75,19 +92,10 @@ export const Button = ({
     </button>
   );
 
-  const finalTooltipContent =
-    typeof tooltipContent === "string" ?
-      enhanceTooltipWithHotkeys(tooltipContent, shortcutKeys)
-    : tooltipContent !== undefined && shortcutKeys ?
-      <>
-        {tooltipContent}
-        <BlockyMarkdown>
-          {formatShortcutKeysAsMarkdown(shortcutKeys)}
-        </BlockyMarkdown>
-      </>
-    : tooltipContent;
-
   return (
-    <Tooltip triggerContent={button} tooltipContent={finalTooltipContent} />
+    <>
+      {button}
+      {tip}
+    </>
   );
 };

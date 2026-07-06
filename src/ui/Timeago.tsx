@@ -1,5 +1,6 @@
 import { useEffect, useReducer } from "preact/hooks";
-import { format } from "timeago.js";
+
+import { timeAgo } from "../utils/timeAgo";
 
 const tickIntervalMs = 5_000;
 const toggle = (b: boolean) => !b;
@@ -19,7 +20,7 @@ export const Timeago = ({ timestamp, class: className }: TimeagoProps) => {
 
   return (
     <span class={`text-single-line${className ? ` ${className}` : ""}`}>
-      {format(timestamp)}
+      {timeAgo(timestamp)}
     </span>
   );
 };

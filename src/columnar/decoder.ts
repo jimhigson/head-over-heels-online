@@ -1,4 +1,5 @@
 import { type Campaign } from "../model/modelTypes";
+import { naturalCompare } from "../utils/naturalCompare";
 
 /**
  * The columnar transposition of a campaign's `rooms`. Items are grouped by
@@ -61,16 +62,6 @@ const deltaDecode = (deltas: number[]): number[] => {
     return acc;
   });
 };
-
-/**
- * natural sort (so `room10` follows `room2`, not `room1`). Matches the
- * `natural-orderby` ordering the original campaign's `campaign.ts` is generated
- * with, so decoded room order is the same whether the game loads the plain ts
- * (dev) or this blob (prod) - room iteration order is observable (eg it decides
- * which door a character enters a room by), so the two must agree.
- */
-const naturalCompare = (a: string, b: string): number =>
-  a.localeCompare(b, undefined, { numeric: true, sensitivity: "base" });
 
 /**
  * A small, fast, non-cryptographic hash of an item's (starting) position to a

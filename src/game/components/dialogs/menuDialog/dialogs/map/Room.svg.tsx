@@ -1,5 +1,4 @@
-import { Suspense } from "preact/compat";
-import { useRef } from "preact/hooks";
+import { useId, useRef } from "preact/hooks";
 
 import {
   type Boundaries,
@@ -143,6 +142,10 @@ M${project({ x: 0, y: 0, z: roomGridSizeZ })}
 L0, 0
 `;
 
+// the interactive area's <a> exists to be an interest invoker (and click
+// target), not to navigate:
+const preventDefault = (e: Event) => e.preventDefault();
+
 // map labels render at a fixed 2x the 8px design grid, independent of the page
 // upscale (the font's em maps to the 8px grid, so font-size is grid * scale)
 const mapLabelScale = 2;
@@ -193,6 +196,7 @@ export const RoomSvg = <RoomId extends string>({
   const label = roomJson.meta?.label;
   const labelLayout = label && labelLayoutByDirection[label.direction];
   const interactiveAreaRef = useRef<null | SVGPathElement>(null);
+  const tipId = useId();
   const hasBehaviours = behaviours !== undefined && behaviours.length > 0;
 
   const floors = valuesIter(items)
@@ -408,21 +412,28 @@ export const RoomSvg = <RoomId extends string>({
       )}
       {hasBehaviours && (
         <>
-          <path
-            ref={interactiveAreaRef}
-            class="fill-transparent cursor-pointer outline-none"
-            d={floorFillPathD}
+          <a
+            href="#"
+            interestfor={tipId}
             tabIndex={-1}
-          />
+            class="cursor-pointer outline-none"
+            onClick={preventDefault}
+          >
+            <path
+              ref={interactiveAreaRef}
+              class="fill-transparent"
+              d={floorFillPathD}
+            />
+          </a>
           {behaviours.map((Behaviour, i) => (
-            <Suspense key={i} fallback={null}>
-              <Behaviour
-                interactiveAreaRef={interactiveAreaRef}
-                roomId={id}
-                subRoomId={subRoomId}
-                isCurrentRoom={isCurrentRoom}
-              />
-            </Suspense>
+            <Behaviour
+              key={i}
+              interactiveAreaRef={interactiveAreaRef}
+              tipId={tipId}
+              roomId={id}
+              subRoomId={subRoomId}
+              isCurrentRoom={isCurrentRoom}
+            />
           ))}
         </>
       )}

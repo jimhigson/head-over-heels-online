@@ -18,6 +18,12 @@ export type RoomDecoratorProps<RoomId extends string> = {
 
 export type RoomBehaviourProps<RoomId extends string> = {
   interactiveAreaRef: RefObject<null | SVGPathElement>;
+  /**
+   * id of the popover the room's interactive area references via
+   * `interestfor`; a behaviour can render a `<Tip id={tipId}>` to give the
+   * room a tooltip
+   */
+  tipId: string;
   roomId: RoomId;
   subRoomId: string;
   isCurrentRoom: boolean;

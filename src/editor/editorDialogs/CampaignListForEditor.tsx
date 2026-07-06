@@ -1,5 +1,4 @@
 import { Fragment } from "preact";
-import { format } from "timeago.js";
 
 import {
   type CampaignDirectory,
@@ -14,6 +13,7 @@ import {
 import { type CampaignLocator } from "../../model/modelTypes";
 import { releaseDateIso8601 } from "../../originalGame";
 import { Button } from "../../ui/Button";
+import { timeAgo } from "../../utils/timeAgo";
 
 const CampaignItem = ({
   campaign,
@@ -39,7 +39,7 @@ const CampaignItem = ({
         <span class="text-white text-single-line">{campaign.name}</span>
       </Button>
       <span class="text-lightGrey ml-2 text-single-line">
-        {`v.${campaign.version} updated ${format(campaign.created_at)}`}
+        {`v.${campaign.version} updated ${timeAgo(campaign.created_at)}`}
       </span>
     </div>
   );

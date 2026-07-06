@@ -72,7 +72,6 @@
   },
   "dependencies": {
     "@blockstacking/jims-shaders": "^0.4.5",
-    "@floating-ui/react": "^0.27.19",
     "@github/mini-throttle": "^2.1.1",
     "@monaco-editor/react": "^4.7.0",
     "@octokit/openapi-types": "^27.0.0",
@@ -81,7 +80,6 @@
     "@tauri-apps/plugin-global-shortcut": "~2.3.1",
     "@tauri-apps/plugin-process": "^2.3.1",
     "@types/nano-equal": "^2.0.2",
-    "@types/natural-compare-lite": "^1.4.2",
     "@typescript/native-preview": "7.0.0-dev.20260601.1",
     "clsx": "^2.1.1",
     "eslint-plugin-perfectionist": "^4.15.0",
@@ -89,8 +87,6 @@
     "mitt": "^3.0.1",
     "monaco-editor": "^0.55.1",
     "nano-equal": "^2.0.2",
-    "natural-compare-lite": "^1.4.0",
-    "natural-orderby": "^5.0.0",
     "pixi.js": "8.16.0",
     "preact": "11.0.0-beta.1",
     "react": "^19.2.3",
@@ -102,7 +98,6 @@
     "string-transform": "^21.9.19",
     "tailwind-merge": "^2.6.0",
     "tailwind-scrollbar": "^3.1.0",
-    "timeago.js": "^4.0.2",
     "wouter": "^3.9.0"
   },
   "devDependencies": {

@@ -1,11 +1,11 @@
 import { canonicalize } from "json-canonicalize";
-import { orderBy } from "natural-orderby";
 import { writeFile } from "node:fs/promises";
 
 import { columnarEncode } from "../../src/columnar/encoder";
 import { type Campaign } from "../../src/model/modelTypes";
 import { type AnyRoomJson } from "../../src/model/RoomJson";
 import { entries, valuesIter } from "../../src/utils/entries";
+import { naturalCompare } from "../../src/utils/naturalCompare";
 
 /**
  * the prod build loads the original campaign from the columnar blob + decoder;
@@ -53,7 +53,9 @@ export const writeOut = async ({
     ...convertedRooms,
   };
 
-  const roomIdsSorted = orderBy(Object.keys(convertedRoomsAndExtraRooms));
+  const roomIdsSorted = Object.keys(convertedRoomsAndExtraRooms).sort(
+    naturalCompare,
+  );
 
   const writeOriginalCampaignRoomIdType = writeFile(
     tsRoomIdsFilename,

@@ -15,7 +15,7 @@ import {
 } from "../../../store/slices/campaigns/editorCampaignsApiSlice";
 import { Button } from "../../../ui/Button";
 import { cn } from "../../../ui/cn";
-import { Tooltip } from "../../../ui/tooltip/Tooltip";
+import { useTip } from "../../../ui/tip/useTip";
 import { useSupabaseUser } from "../useSupabaseUser";
 
 const providerIcons: Partial<Record<Provider, string>> = {
@@ -44,6 +44,7 @@ export const LoggedInStatus = ({ class: className }: { class?: string }) => {
   // the session only carries the email; look up the display name to show instead
   const { data: username } = useGetUsernameQuery(user ? user.id : skipToken);
   const { data: authProviders = [] } = useGetAuthProvidersQuery();
+  const { interestfor, tip } = useTip(user?.email);
 
   if (user === undefined) {
     // no data yet - don't know if logged in. Render a space-holder to stop the
@@ -83,18 +84,18 @@ export const LoggedInStatus = ({ class: className }: { class?: string }) => {
     <div class={cn(className)}>
       {user !== null ?
         <div class="bg-moss overflow-hidden text-center">
-          <Tooltip
-            tooltipContent={user.email}
-            triggerContent={
-              <div class="overflow-hidden">
-                <ProviderIcon
-                  provider={user.app_metadata.provider as Provider}
-                  class="text-highlightBeige"
-                />{" "}
-                <span>{username ?? user.email}</span>
-              </div>
-            }
-          />
+          <button
+            type="button"
+            interestfor={interestfor}
+            class="overflow-hidden block w-full"
+          >
+            <ProviderIcon
+              provider={user.app_metadata.provider as Provider}
+              class="text-highlightBeige"
+            />{" "}
+            <span>{username ?? user.email}</span>
+          </button>
+          {tip}
           <Button
             aria-label="Log out"
             class="px-1 w-full"

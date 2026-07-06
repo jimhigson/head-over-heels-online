@@ -10,9 +10,9 @@ import { swopPlayables } from "../../../../../gameState/mutators/swopPlayables";
 import { useGameApi } from "../../../../GameApiContext";
 import { useScrollingFromInput } from "../useScrollingFromInput";
 import { createClickableRoomBehaviour } from "./createClickableRoomBehaviour";
-import { LazyMapRoomTooltipBehaviour } from "./LazyMapRoomTooltipBehaviour";
 import { MapSvg } from "./Map.svg";
 import { getMapColoursClass } from "./mapColours";
+import { MapRoomTooltipBehaviour } from "./MapRoomTooltipBehaviour";
 import { useMapDataForCurrentGame } from "./useMapDataForCurrentGame";
 import { useAllowCharacterSwopping } from "./useTickingCurrentCharacterName";
 
@@ -29,7 +29,7 @@ const useGameMapBehaviours = <RoomId extends string>() => {
       gameApi.changeRoom(roomId as RoomId);
     });
 
-    return [LazyMapRoomTooltipBehaviour, clickableBehaviour];
+    return [MapRoomTooltipBehaviour, clickableBehaviour];
   }, [cheatsOn, gameApi]);
 };
 

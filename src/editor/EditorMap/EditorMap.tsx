@@ -13,7 +13,7 @@ import { unitVectors } from "../../utils/vectors/unitVectors";
 import { addXyz, xyzEqual } from "../../utils/vectors/vectors";
 import { EditorErrorBoundary } from "../EditorErrorBoundary";
 import { type EditorRoomId } from "../editorTypes";
-import { LazyEditorMapRoomTooltipBehaviour } from "../roomPreview/LazyEditorMapRoomTooltipBehaviour";
+import { EditorMapRoomTooltipBehaviour } from "../roomPreview/EditorMapRoomTooltipBehaviour";
 import { selectCursorRoom } from "../slice/levelEditorSelectors";
 import {
   addRoomToSelection,
@@ -41,7 +41,7 @@ const editorClickableRoomBehaviour = createClickableRoomBehaviour<EditorRoomId>(
 );
 
 const editorBehaviours: RoomBehaviourComponent<EditorRoomId>[] = [
-  LazyEditorMapRoomTooltipBehaviour,
+  EditorMapRoomTooltipBehaviour,
   editorClickableRoomBehaviour,
 ];
 
@@ -214,7 +214,9 @@ const EditorMap = () => {
   }
 
   return (
-    <div class="relative h-full">
+    // faster tooltips on the editor map: its tooltips carry a useful room
+    // preview, not just help text
+    <div class="relative h-full" style={{ "--tipDelay": "50ms" }}>
       <div
         class={`h-full overflow-y-auto scale-editor bg-editor-checkerboard scrollbar scrollbar-w-1 scrollbar-track-pureBlack scrollbar-thumb-metallicBlue outline-none`}
         ref={mapContainerRef}
