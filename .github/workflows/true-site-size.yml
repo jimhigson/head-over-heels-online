@@ -3,6 +3,10 @@ name: true site size
 on:
   pull_request:
     branches: [main]
+  # also run on push to main so an open release PR's report is refreshed to
+  # reflect just-merged code (a pull_request run doesn't re-fire when main moves)
+  push:
+    branches: [main]
 
 permissions:
   contents: read
@@ -78,7 +82,17 @@ jobs:
             sudo chmod +x "$wrapper"
             echo "CHROME_PATH=$wrapper" >> "$GITHUB_ENV"
           fi
+      # on push to main, find the open release PR whose report to refresh
+      - id: release-pr
+        if: github.event_name == 'push'
+        env:
+          GH_TOKEN: ${{ github.token }}
+        run: |
+          n=$(gh pr list --state open --base main --json number,headRefName \
+                --jq 'map(select(.headRefName | startswith("release-please--")))[0].number // empty')
+          echo "number=$n" >> "$GITHUB_OUTPUT"
       - uses: jimhigson/true-site-size@main
+        if: github.event_name == 'pull_request'
         with:
           comment-key: ${{ matrix.target }}
           install-command: pnpm install --frozen-lockfile
@@ -89,7 +103,26 @@ jobs:
           compression-level: 11
           ignore-url-patterns: '["supabase\\.co"]'
           minimum-change-threshold: 50
-          # compare every PR against both main (its merge target) and
-          # production (= the last release), each as its own column
+          # a PR compares vs main (its merge target) and production (the last
+          # release)
           base-refs: '["main", "production"]'
+          journey: ${{ matrix.journey }}
+      - uses: jimhigson/true-site-size@main
+        if: github.event_name == 'push' && steps.release-pr.outputs.number != ''
+        with:
+          comment-key: ${{ matrix.target }}
+          install-command: pnpm install --frozen-lockfile
+          clean-command: pnpm clean:ci
+          build-command: ${{ matrix.build-command }}
+          serve-dir: dist
+          compression: br
+          compression-level: 11
+          ignore-url-patterns: '["supabase\\.co"]'
+          minimum-change-threshold: 50
+          # a push to main *is* main, so it only compares vs production (the
+          # last release)
+          base-refs: '["production"]'
+          # on push, comment on the open release PR so its report reflects the
+          # merged code
+          pr-number: ${{ steps.release-pr.outputs.number }}
           journey: ${{ matrix.journey }}
