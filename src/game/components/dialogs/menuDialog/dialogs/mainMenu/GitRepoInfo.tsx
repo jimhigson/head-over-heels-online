@@ -46,6 +46,11 @@ export const GitRepoInfo = () => {
             {/* extra space pulls away from rounded corners of phone screens and app windows */}
             {deployedMajor}
           </span>
+          {import.meta.env.DEV && (
+            <span class="text-single-line screenshot-mask mr-1 inline-block">
+              {` + ${import.meta.env.VITE_GIT_BRANCH}`}
+            </span>
+          )}
           {isOutdated && (
             <span class="text-single-line animate-flash text-midRed zx:text-zxRed toppy:text-toppyPink2">
               {/* extra space pulls away from rounded corners of phone screens and app windows */}
