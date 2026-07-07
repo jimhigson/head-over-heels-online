@@ -3,11 +3,11 @@
 import { addEdge, deleteEdge } from "../../../utils/graph/Graph";
 import { type DrawOrderComparable } from "./DrawOrderComparable";
 import { type ZGraph } from "./GraphEdges";
-import { VisualIndex } from "./VisualIndex";
+import { type VisualIndex } from "./VisualIndex";
 import { zComparator } from "./zComparator";
 
 /**
- * returns a list of what is in front of what, ie:
+ * updates `zEdges` in-place to hold what is in front of what, ie:
  *
  * order back->front is important, because it is ultimately the back item that has to
  * 'do' something - it needs to mask itself with the front if there's a cycle found
@@ -18,21 +18,19 @@ import { zComparator } from "./zComparator";
  */
 export const updateZEdges = <TItem extends DrawOrderComparable>(
   items: Set<TItem>,
-  // if no visual index is given, make one for the items we are concerned with.
-  // this should not be done in-game, since the index can be kept between frames
-  // and minimally updated
-  visualIndex: VisualIndex<TItem> = new VisualIndex(items.values()),
+  /** an up-to-date visual index containing the items in the items param Set */
+  visualIndex: VisualIndex<TItem>,
   /**
-   * the nodes that have moved - nodes that did not move are not considered
-   *  - if not given, will consider all.
+   * the nodes that have moved - nodes that did not move are not considered.
    * Must be re-iterable since it is iterated twice, hence Array or Set (not iterable type)
    */
-  moved: Array<TItem> | Set<TItem> = items,
+  movedItems: Array<TItem> | Set<TItem>,
   /**
-   * if given, will create an incremental update starting from the previous edges
+   * updated in-place: an incremental update starting from the previous edges. Pass an empty Map if
+   * starting from no knowledge, and that map will be updated
    */
-  zEdges: ZGraph<TItem> = new Map(),
-): ZGraph<TItem> => {
+  zEdges: ZGraph<TItem>,
+): void => {
   // track items that have already been compared to cut out duplicate comparisons:
   const comparisonsDone: Map<TItem, Set<TItem>> = new Map();
 
@@ -50,15 +48,7 @@ export const updateZEdges = <TItem extends DrawOrderComparable>(
     }
   }
 
-  // we are the only code that uses the projected index, and we know what
-  // moved on this frame - it is our responsibility to update the index
-  // for the moved items. this way, multiple physics sub-ticks can run, each moving
-  // the items multiple times, but we wil just do this once per rendering
-  for (const item of moved) {
-    visualIndex.updateItemProjectedIndex(item);
-  }
-
-  for (const itemI of moved) {
+  for (const itemI of movedItems) {
     if (itemI.fixedZIndex !== undefined) {
       continue;
     }
@@ -119,6 +109,4 @@ export const updateZEdges = <TItem extends DrawOrderComparable>(
       deleteEdge(zEdges, front, back);
     }
   }
-
-  return zEdges;
 };
