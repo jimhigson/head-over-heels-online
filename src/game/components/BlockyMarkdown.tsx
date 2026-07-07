@@ -62,14 +62,14 @@ const markdownComponents: CustomComponentsOption = {
   },
   strong: function Strong({ children }: PropsWithChildren<EmptyObject>) {
     return (
-      <strong class="strong text-midRed zx:text-zxRed toppy:text-toppyPink2">
+      <strong class="text-[color:var(--markdown-strong-colour,var(--colour-midRed))] zx:text-[color:var(--markdown-strong-colour,var(--colour-zxRed))] toppy:text-[color:var(--markdown-strong-colour,var(--colour-toppyPink2))]">
         {children}
       </strong>
     );
   },
   em: function Em({ children }: PropsWithChildren<EmptyObject>) {
     return (
-      <em class="em text-moss zx:text-zxBlue toppy:text-toppyCool2">
+      <em class="text-[color:var(--markdown-em-colour,var(--colour-moss))] zx:text-[color:var(--markdown-em-colour,var(--colour-zxBlue))] toppy:text-[color:var(--markdown-em-colour,var(--colour-toppyCool2))]">
         {children}
       </em>
     );

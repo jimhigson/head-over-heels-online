@@ -34,8 +34,8 @@ export const spriteLeaderClasses =
   "sprite zx:sprite-revert-to-two-tone colourised:brightness-halfBrite selectedMenuItem:filter-none zx:selectedMenuItem:sprite-revert-zxYellow toppy:brightness-halfBrite toppy:selectedMenuItem:filter-none sprites-normal-height";
 
 export const optionsHintMarkdownClassname = twClass(
-  "[&_.em]:text-moss zx:[&_.em]:text-zxCyan toppy:[&_.em]:text-toppyCool2 [&_h2]:text-midRed zx:[&_h2]:text-zxBlue toppy:[&_h2]:text-toppyPink2 text-lightGrey zx:text-zxBlack toppy:text-toppyGrey3 sprites-normal-height",
+  "[--markdown-em-colour:var(--colour-moss)] zx:[--markdown-em-colour:var(--colour-zxCyan)] toppy:[--markdown-em-colour:var(--colour-toppyCool2)] [&_h2]:text-midRed zx:[&_h2]:text-zxBlue toppy:[&_h2]:text-toppyPink2 text-lightGrey zx:text-zxBlack toppy:text-toppyGrey3 sprites-normal-height",
 );
 
 export const selectGameHintMarkdownClassName =
-  "text-lightGrey zx:text-zxWhite toppy:text-toppyGrey1 sprites-normal-height zx:[&_.strong]:text-zxYellow toppy:[&_.strong]:text-toppyWarm1";
+  "text-lightGrey zx:text-zxWhite toppy:text-toppyGrey1 sprites-normal-height zx:[--markdown-strong-colour:var(--colour-zxYellow)] toppy:[--markdown-strong-colour:var(--colour-toppyWarm1)]";

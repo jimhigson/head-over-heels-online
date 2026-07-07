@@ -1,5 +1,6 @@
 import { useRef, useState } from "preact/hooks";
 
+import { BlockyMarkdown } from "../../../game/components/BlockyMarkdown";
 import { type JsonItemType } from "../../../model/json/JsonItem";
 import { type CampaignVerificationIssue } from "../../../model/json/verification/CampaignVerification";
 import {
@@ -131,7 +132,7 @@ const VerifyIssuesDialog = ({ issues, onClose }: VerifyIssuesDialogProps) => {
       />
       {/* stop window-level shortcuts catching our keypresses that match their shortcuts */}
       <div class="contents no-keyboard-shortcuts">
-        <Dialog ref={dialogRef} wide tall class="scale-editor p-1">
+        <Dialog ref={dialogRef} wide tall class="scale-editor p-1 allow-select">
           <DialogHeader>{issues.length} Issues</DialogHeader>
           <div class="flex flex-col pt-1 flex-grow text-multi-line overflow-y-auto scrollbar scrollbar-w1 scrollbar-thumb-lightGrey pr-1 gap-2">
             {entries(issuesByRoom)
@@ -185,7 +186,9 @@ const VerifyIssuesDialog = ({ issues, onClose }: VerifyIssuesDialogProps) => {
                           >
                             {issue.verifier.name}
                           </div>
-                          <div class="text-midGrey">{issue.msg}</div>
+                          <BlockyMarkdown class="text-midGrey">
+                            {issue.msg}
+                          </BlockyMarkdown>
                           <div class="flex gap-1">
                             <div class="text-lightGrey">{issue.fixText}</div>
                             <div class="flex-grow" />
@@ -199,10 +202,10 @@ const VerifyIssuesDialog = ({ issues, onClose }: VerifyIssuesDialogProps) => {
                             )}
                             {roomId !== undefined && (
                               <Button
-                                class="bg-pastelBlue px-1 py-half text-white shrink-0 hover:bg-highlightBeige  h-3"
+                                class="bg-pastelBlue px-1 py-half text-white shrink-0 hover:bg-highlightBeige h-3"
                                 onClick={() => goToRoom(roomId, itemId)}
                               >
-                                Go to
+                                ➡ Go to
                               </Button>
                             )}
                           </div>

@@ -18,7 +18,7 @@ import { MenuItems } from "../../MenuItems";
 import { reincarnateSelected } from "../offerReincarnation/OfferReincarnationDialog";
 
 const hintClassName =
-  "zx:[&_.strong]:text-zxYellow toppy:[&_.strong]:text-toppyWarm1";
+  "zx:[--markdown-strong-colour:var(--colour-zxYellow)] toppy:[--markdown-strong-colour:var(--colour-toppyWarm1)]";
 
 const QuitGameHint = () => {
   const focussedItemId = useAppSelector(

@@ -3,7 +3,7 @@ import { produce } from "immer";
 
 import roomSchema from "../../../../_generated/room.schema.json";
 import { entries } from "../../../../utils/entries";
-import { setAtPath } from "../../../../utils/getAtPath";
+import { getAtPath, setAtPath } from "../../../../utils/getAtPath";
 import { type CampaignVerifier, notAutoFixable } from "../CampaignVerification";
 import {
   type VerificationRoomId,
@@ -228,9 +228,25 @@ const errorFix = (error: ErrorObject, narrowed: SchemaNode): ErrorFix => {
   };
 };
 
-/** the failing JSON Pointer with a wrapping arrow between segments, so long paths can be read */
+/** a segment that can be written with dot notation - a plain JS identifier */
+const isPlainIdentifier = (segment: string): boolean =>
+  /^[A-Za-z_$][\w$]*$/.test(segment);
+
+/**
+ * render a JSON Pointer as a JS-style accessor path, eg `items.w3.config.tiles[0]`.
+ * brackets are backslash-escaped so the markdown parser keeps them literal rather
+ * than reading `[0]` as (broken) link syntax. A segment that isn't a plain
+ * identifier (eg an item id containing a slash) is written as `["…"]`
+ */
 const displayPath = (pointer: string): string =>
-  pointer.replace(/^\//, "").replaceAll("/", " ➡ ");
+  pathSegments(pointer).reduce(
+    (acc, segment, index) =>
+      /^\d+$/.test(segment) ? `${acc}\\[${segment}\\]`
+      : !isPlainIdentifier(segment) ? `${acc}\\[‘${segment}’\\]`
+      : index === 0 ? segment
+      : `${acc}.${segment}`,
+    "",
+  );
 
 /**
  * a room that doesn't match the generated room JSON schema - the same validation
@@ -267,14 +283,21 @@ export const schemaComplianceVerifier: CampaignVerifier<SchemaNonCompliant> = {
         seen.add(dedupeKey);
 
         const where = displayPath(path);
+        const currentValue = getAtPath(
+          room as Record<string, unknown>,
+          path,
+          pathSegments,
+        );
+        const valueSuffix =
+          currentValue === undefined ? "" : ` = **‘${String(currentValue)}’**`;
         const fixable = enumValue !== undefined;
-        const at = where === "" ? "" : ` at: ${where}`;
+        const at = where === "" ? "" : ` at: *${where}*`;
         yield {
           severity: "error",
           roomId,
           msg:
             fixable ?
-              `${verb} at: ${where}`
+              `${verb}: *${where}*${valueSuffix}`
             : `JSON schema violated${at} (${error.keyword})`,
           fixable,
           fixText: fixable ? `Set to ‘${enumValue}’` : `Needs hand-editing`,
@@ -294,9 +317,9 @@ export const schemaComplianceVerifier: CampaignVerifier<SchemaNonCompliant> = {
       // constrains the value being written
       setAtPath(
         draft.rooms[roomId] as Record<string, unknown>,
-        instancePath.slice(1),
+        instancePath,
         enumValue,
-        "/",
+        pathSegments,
       );
     });
   },
