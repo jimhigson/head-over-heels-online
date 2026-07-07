@@ -324,7 +324,7 @@ export const Cheats = <RoomId extends string>(_emptyProps: EmptyObject) => {
                 Mkt
               </GoToRoomButton>
               <GoToRoomButton gameApi={gameApi} roomId={"moonbase1" as RoomId}>
-                Mob
+                Mb
               </GoToRoomButton>
               <GoToRoomButton gameApi={gameApi} roomId={"egyptus1" as RoomId}>
                 Egy
@@ -333,7 +333,7 @@ export const Cheats = <RoomId extends string>(_emptyProps: EmptyObject) => {
                 Saf
               </GoToRoomButton>
               <GoToRoomButton gameApi={gameApi} roomId={"bookworld1" as RoomId}>
-                Boo
+                BkWd
               </GoToRoomButton>
               <GoToRoomButton
                 gameApi={gameApi}

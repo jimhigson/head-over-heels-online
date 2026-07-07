@@ -1,11 +1,18 @@
 import "vitest";
 
+import { type Xy } from "../../../utils/vectors/vectors";
 import { type DrawOrderComparable } from "./DrawOrderComparable";
 
+/** which camera angle to evaluate the draw-order relationship at */
+type AtAngle = { whenAtAngle: Xy };
+
 interface CustomMatchers<R = unknown> {
-  toBeInFrontOf: (expected: DrawOrderComparable) => R;
-  toBeBehind: (expected: DrawOrderComparable) => R;
-  toHaveNoOrderPreferenceWith: (expected: DrawOrderComparable) => R;
+  toBeInFrontOf: (expected: DrawOrderComparable, atAngle: AtAngle) => R;
+  toBeBehind: (expected: DrawOrderComparable, atAngle: AtAngle) => R;
+  toHaveNoOrderPreferenceWith: (
+    expected: DrawOrderComparable,
+    atAngle: AtAngle,
+  ) => R;
 }
 
 declare module "vitest" {
