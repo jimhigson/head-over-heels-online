@@ -103,9 +103,11 @@ jobs:
           compression-level: 11
           ignore-url-patterns: '["supabase\\.co"]'
           minimum-change-threshold: 50
-          # a PR compares vs main (its merge target) and production (the last
-          # release)
-          base-refs: '["main", "production"]'
+          # a normal PR compares vs main (its merge target) and production (the
+          # last release). a release-please PR only bumps the build number over
+          # main, so a vs-main comparison is meaningless noise - it compares vs
+          # production alone.
+          base-refs: ${{ startsWith(github.head_ref, 'release-please--') && '["production"]' || '["main", "production"]' }}
           journey: ${{ matrix.journey }}
       - uses: jimhigson/true-site-size@main
         if: github.event_name == 'push' && steps.release-pr.outputs.number != ''
