@@ -41,9 +41,10 @@ export const runTest = () => {
   // generate items
   const items = generateItems(itemCount);
 
-  // first call with all items to build initial graph
+  // build initial index+graph:
   const spatialIndex = new VisualIndex(items.values());
-  const zEdgesGraph: ZGraph<TestItem> = updateZEdges(items, spatialIndex);
+  const zEdgesGraph: ZGraph<TestItem> = new Map();
+  updateZEdges(items, spatialIndex, items, zEdgesGraph);
 
   // simulate frames:
   const stepSize = Math.round(1 / movePercentage);
@@ -63,7 +64,9 @@ export const runTest = () => {
       i++;
     }
 
-    // benchmark the incremental update
+    // benchmark the incremental update like room renderer: get index
+    // up to date with moved items, then update the edges
+    spatialIndex.updateManyItems(items, movedOrResizedItems);
     updateZEdges(items, spatialIndex, movedOrResizedItems, zEdgesGraph);
   }
   return zEdgesGraph;

@@ -117,13 +117,17 @@ test.for(allCameraAngles)(
     const scene = makeScene();
     const baked = bakeRotation(scene, cameraAngle);
 
-    const atAngle = updateZEdges(
+    const zEdgesAtAngle: ZGraph<TestItem> = new Map();
+    updateZEdges(
       scene,
       new VisualIndex(scene.values(), cameraAngle),
+      scene,
+      zEdgesAtAngle,
     );
-    const bakedAtBase = updateZEdges(baked, new VisualIndex(baked.values()));
+    const bakedAtBase: ZGraph<TestItem> = new Map();
+    updateZEdges(baked, new VisualIndex(baked.values()), baked, bakedAtBase);
 
-    expect(behindFrontIdPairs(atAngle)).toEqual(
+    expect(behindFrontIdPairs(zEdgesAtAngle)).toEqual(
       behindFrontIdPairs(bakedAtBase),
     );
   },

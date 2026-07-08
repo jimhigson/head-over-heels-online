@@ -1,5 +1,6 @@
 import { type SetRequired } from "type-fest";
 
+import { type ZGraph } from "../../../game/render/sortZ/GraphEdges";
 import { toposort } from "../../../game/render/sortZ/toposort/toposort";
 import { updateZEdges } from "../../../game/render/sortZ/updateZEdges";
 import { VisualIndex } from "../../../game/render/sortZ/VisualIndex";
@@ -53,13 +54,17 @@ export const frontItemFromPointerIntersections = (
   }
 
   const sortableItemsSet = new Set(topographicallySortableItems);
-  const order = toposort(
-    updateZEdges(
-      sortableItemsSet,
-      new VisualIndex(sortableItemsSet.values(), cameraAngle),
-    ),
+  const zEdges: ZGraph<EditorUnionOfAllItemInPlayTypes> = new Map();
+  updateZEdges(
+    sortableItemsSet,
+    new VisualIndex(sortableItemsSet.values(), cameraAngle),
+    // all items have 'moved':
+    sortableItemsSet,
+    zEdges,
   );
+  const order = toposort(zEdges);
 
-  // items are sorted back-to-front, so we need the last one:
+  // items are sorted back-to-front, so we need the last one this could be more efficient than
+  // doing a full sort - just get the last node from the graph instead
   return order.at(-1);
 };
