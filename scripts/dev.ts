@@ -18,7 +18,6 @@
  */
 import { execa } from "execa";
 import getPort, { portNumbers } from "get-port";
-import { setTimeout as delay } from "node:timers/promises";
 
 // --panes keeps the old behaviour of splitting the current window rather than
 // opening a new one; all other args are forwarded to both vite instances
@@ -55,33 +54,23 @@ const editorViteArgs = [
 const shellQuote = (arg: string) => `'${arg.replaceAll("'", `'\\''`)}'`;
 
 /**
- * whether a tmux pane with this id is still live (ie its command is running).
- * The `-f` filter excludes dead panes so a pane kept around by remain-on-exit
- * after the game stops doesn't leave the poll loop spinning forever.
- */
-const tmuxPaneIsLive = async (paneId: string) => {
-  const { stdout } = await execa("tmux", [
-    "list-panes",
-    "-a",
-    "-f",
-    "#{==:#{pane_dead},0}",
-    "-F",
-    "#{pane_id}",
-  ]);
-  return stdout.split("\n").includes(paneId);
-};
-
-/**
  * opens a new tmux window split into two panes: game on the left, editor on
- * the right. When the game pane exits, the editor pane is killed too.
+ * the right. When the game pane exits, the editor pane is killed too. The
+ * launcher returns as soon as both panes are running so it doesn't hold the
+ * calling pane hostage — teardown is handed off to a detached tmux run-shell.
  */
 const runInNewTmuxWindow = async () => {
   // vite's own screen-clear on startup would otherwise scroll the GAME/EDITOR
   // labels out of view
   const noClear = ["--clearScreen", "false"];
 
+  // the game pane signals this channel when its command exits; a detached
+  // run-shell waits on it to kill the editor pane. Keyed by the (per-run
+  // unique) game port so concurrent dev sessions don't collide.
+  const doneChannel = `hoh-dev-${gamePort}`;
+
   // create the new window running the game; capture the game pane's id so we
-  // can wait on it and split from it
+  // can split from it
   const { stdout: gamePaneId } = await execa("tmux", [
     "new-window",
     "-P",
@@ -91,7 +80,7 @@ const runInNewTmuxWindow = async () => {
     "hoh dev",
     "-e",
     `VITE_EDITOR_URL=${editorUrl}`,
-    `printf '\\033[1;32mGAME\\033[0m\\n'; node ${[...gameNodeArgs, ...noClear].map(shellQuote).join(" ")}`,
+    `printf '\\033[1;32mGAME\\033[0m\\n'; node ${[...gameNodeArgs, ...noClear].map(shellQuote).join(" ")}; tmux wait-for -S ${doneChannel}`,
   ]);
 
   // split that window for the editor
@@ -108,13 +97,14 @@ const runInNewTmuxWindow = async () => {
     `printf '\\033[1;35mEDITOR\\033[0m\\n'; pnpm exec vite ${[...editorViteArgs, ...noClear].map(shellQuote).join(" ")}`,
   ]);
 
-  // the servers now run in the new window; wait for the game to stop, then
-  // tear down the editor pane alongside it
-  while (await tmuxPaneIsLive(gamePaneId)) {
-    await delay(500);
-  }
-
-  await execa("tmux", ["kill-pane", "-t", editorPaneId], { reject: false });
+  // hand the teardown to the tmux server: this backgrounded shell waits for
+  // the game pane to signal, then kills the editor pane. Because it runs on
+  // the server (not here), the launcher can return and free its pane.
+  await execa("tmux", [
+    "run-shell",
+    "-b",
+    `tmux wait-for ${doneChannel}; tmux kill-pane -t ${editorPaneId}`,
+  ]);
 };
 
 /**
