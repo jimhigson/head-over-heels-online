@@ -14,10 +14,42 @@ import {
   reincarnationAccepted,
 } from "../store/slices/gameInPlay/gameInPlaySlice";
 import { errorCaught } from "../store/slices/gameMenus/gameMenusSlice";
+import { entries } from "../utils/entries";
+import { type Xyz } from "../utils/vectors/vectors";
 import { isLocalNetwork } from "./isLocalNetwork";
 
 const umamiScriptSrc = "https://cloud.umami.is/script.js";
 const umamiWebsiteId = "11813495-5844-44e6-acd4-f81e9c955951";
+
+type EventPropertyValue = boolean | number | string;
+
+const isScalarEventProperty = (value: unknown): value is EventPropertyValue =>
+  typeof value === "string" ||
+  typeof value === "number" ||
+  typeof value === "boolean";
+
+/**
+ * Umami stores each event-data property as its own record, flattening nested
+ * objects and arrays into many properties - each of which counts towards the
+ * event quota. Keeping only scalar values means no fat object (a whole
+ * RoomState, an array of errors with stack traces) can accidentally blow
+ * through the quota, however the tracked action payloads change in future.
+ * Absent (undefined) values are dropped too.
+ */
+const scalarEventProperties = (
+  properties: Record<string, unknown>,
+): Record<string, EventPropertyValue> => {
+  const scalars: Record<string, EventPropertyValue> = {};
+  for (const [key, value] of entries(properties)) {
+    if (isScalarEventProperty(value)) {
+      scalars[key] = value;
+    }
+  }
+  return scalars;
+};
+
+const positionToString = ({ x, y, z }: Xyz): string =>
+  `${Math.round(x)},${Math.round(y)},${Math.round(z)}`;
 
 const shouldTrack = () => {
   const searchParams = typedURLSearchParams();
@@ -74,24 +106,27 @@ const useAddTrackingToStore = () => {
         const gameTimeSeconds =
           gameState ? Math.round(gameState.gameTime / 1_000) : undefined;
 
+        const [firstError] = errorCaught.match(action) ? action.payload : [];
+
         const payloadProperties =
           crownCollected.match(action) ? { crownForPlanet: action.payload }
           : lostLife.match(action) ?
             {
-              position: action.payload.characterLosingLifeItem.state.position,
+              position: positionToString(
+                action.payload.characterLosingLifeItem.state.position,
+              ),
             }
+          : errorCaught.match(action) ? { errorMessage: firstError?.message }
           : gameStarted.match(action) ? undefined
           : action.payload;
 
-        const eventProperties = {
+        const eventProperties = scalarEventProperties({
           gameTimeSeconds,
-          // this makes a lot of properties in umami, which are each counted as one event:
-          //...state.gameInPlay.gameInPlay,
           cheatsOn: state.debug.cheatsOn,
           ...(typeof payloadProperties === "object" ? payloadProperties : {}),
           currentCharacter: gameState?.currentCharacterName,
-          inRoom: gameState?.characterRooms[gameState.currentCharacterName],
-        };
+          inRoom: gameState?.characterRooms[gameState.currentCharacterName]?.id,
+        });
 
         if (window.umami) {
           console.debug(
