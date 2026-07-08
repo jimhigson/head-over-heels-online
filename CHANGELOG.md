@@ -1,5 +1,42 @@
 # Changelog
 
+## [26.0.0](https://github.com/jimhigson/head-over-heels-online/compare/v25.0.0...v26.0.0) (2026-07-07)
+
+
+### Features
+
+* describe the crowns dialog and its loading state for assistive tech ([#984](https://github.com/jimhigson/head-over-heels-online/issues/984)) ([8d85969](https://github.com/jimhigson/head-over-heels-online/commit/8d85969551aaac8d6172d2b93fed90a5c995c5ba))
+* moonbase window walls automatically transparent when another floor is behind them ([#986](https://github.com/jimhigson/head-over-heels-online/issues/986)) ([5e3c962](https://github.com/jimhigson/head-over-heels-online/commit/5e3c9628ffa764b4aa90687b5a0c306a33f7201e))
+* on-screen camera-rotate buttons on the hud for touch devices ([#985](https://github.com/jimhigson/head-over-heels-online/issues/985)) ([0c8394b](https://github.com/jimhigson/head-over-heels-online/commit/0c8394bcd74c6806eea6305ece7e8d9c08fe3d1b))
+* rotatable camera at 90º intervals ([#977](https://github.com/jimhigson/head-over-heels-online/issues/977)) ([a20d807](https://github.com/jimhigson/head-over-heels-online/commit/a20d807963a615825777fa8f672c8ae4001add0d))
+
+
+### Bug Fixes
+
+* fullscreen game on iPhone PWA more reliable ([#969](https://github.com/jimhigson/head-over-heels-online/issues/969)) ([9944435](https://github.com/jimhigson/head-over-heels-online/commit/9944435ac45c1170b6d27f1aea24ac83ae75b5e5))
+* release-please branch also gets updates to true site size report on any push to main ([#989](https://github.com/jimhigson/head-over-heels-online/issues/989)) ([5c0b1e4](https://github.com/jimhigson/head-over-heels-online/commit/5c0b1e4a6a532a77b902f8e7f9e856275cba2a75))
+* sprites on the map in Safari now render properly, working around some Safari bugs with foreignObject in svg ([#979](https://github.com/jimhigson/head-over-heels-online/issues/979)) ([dd19dc5](https://github.com/jimhigson/head-over-heels-online/commit/dd19dc5c04cb60d29a80e00127de44c3deb3e93d))
+
+
+### Sprite Changes
+
+* reduce repetition on spritesheets ([#974](https://github.com/jimhigson/head-over-heels-online/issues/974)) ([e95abdd](https://github.com/jimhigson/head-over-heels-online/commit/e95abdd5b4a31b2b8264f207e1d9e4f6c360566e))
+
+
+### Level Editor
+
+* better reporting of json schema validation errors in rooms ([#987](https://github.com/jimhigson/head-over-heels-online/issues/987)) ([0af99bd](https://github.com/jimhigson/head-over-heels-online/commit/0af99bd524580e1d9f0dea82d12d98fad5412541))
+* fix bugs when saving over another campaign, plus ux improvements for "Save As" ([#980](https://github.com/jimhigson/head-over-heels-online/issues/980)) ([6bccd76](https://github.com/jimhigson/head-over-heels-online/commit/6bccd7639ac49b645eac83de18c19bdd54b183c1))
+* full-pane room editing area with continuous pan and zoom ([#981](https://github.com/jimhigson/head-over-heels-online/issues/981)) ([1ce6f5b](https://github.com/jimhigson/head-over-heels-online/commit/1ce6f5ba59e40938634e92f61e689730c3a1ec81))
+* only show auth that is set up (duh) ([#965](https://github.com/jimhigson/head-over-heels-online/issues/965)) ([fefc550](https://github.com/jimhigson/head-over-heels-online/commit/fefc550dd1340af9fbad7a2559d03b3af9ca13bf))
+
+
+### Miscellaneous
+
+* add an "open map" perf mark and measure it in the true-site-size journey ([#973](https://github.com/jimhigson/head-over-heels-online/issues/973)) ([a1f0ff1](https://github.com/jimhigson/head-over-heels-online/commit/a1f0ff1f77305b03de2f75d048fc84cea3805a3d))
+* save game compat e2e ([#983](https://github.com/jimhigson/head-over-heels-online/issues/983)) ([eb9d34c](https://github.com/jimhigson/head-over-heels-online/commit/eb9d34c96b42e2d25a13ed8416c7a08329c07cfa))
+* show git branch on main dialog ([#990](https://github.com/jimhigson/head-over-heels-online/issues/990)) ([db8deb3](https://github.com/jimhigson/head-over-heels-online/commit/db8deb3738c65b281fd4c937980f20c4873521d0))
+
 ## [25.0.0](https://github.com/jimhigson/head-over-heels-online/compare/v24.0.0...v25.0.0) (2026-06-26)
 
 

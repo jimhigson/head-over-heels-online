@@ -7,13 +7,21 @@ import {
 
 const formatPhaseStats = (phase: PhaseStats) => ({
   avgMs: phase.avgMs.toFixed(2),
+  maxMs: phase.maxMs.toFixed(2),
   percentage: phase.percentage.toFixed(1) + "%",
   fps: (1_000 / phase.avgMs).toLocaleString("en-GB", {
+    maximumFractionDigits: 0,
+  }),
+  minFps: (1_000 / phase.maxMs).toLocaleString("en-GB", {
     maximumFractionDigits: 0,
   }),
 });
 
 const logFrameTimingStats = (event: FrameTimingStatsEvent) => {
+  // expose the raw event so automated profiling can read exact numbers (the
+  // console.table is unreadable through the devtools protocol):
+  window.frameStats = event;
+
   const { frameCount, fps, theoreticalFps, phases, elapsedMs } = event;
   console.log(
     `Frame timing (${frameCount} frames in ${(elapsedMs / 1_000).toFixed(3)}s, ${fps.toFixed(1)} fps, theoretical max: ${theoreticalFps.toLocaleString("en-GB", { minimumFractionDigits: 1, maximumFractionDigits: 1 })} fps):`,
@@ -29,12 +37,19 @@ const logFrameTimingStats = (event: FrameTimingStatsEvent) => {
 
 declare global {
   interface Window {
-    detailedFps: () => void;
+    detailedFps: (reportIntervalMs?: number) => void;
+    /** the most recently emitted detailed frame-timing event (see detailedFps) */
+    frameStats?: FrameTimingStatsEvent;
   }
 }
 export const textInterfaceToShowDetailedFrameTiming = () => {
   if (typeof window !== "undefined") {
-    window.detailedFps = () => {
+    window.detailedFps = (reportIntervalMs?: number) => {
+      if (reportIntervalMs !== undefined) {
+        frameTimingStats.setReportInterval(reportIntervalMs);
+      }
+      // idempotent - calling detailedFps() again must not stack duplicate logs:
+      frameTimingStats.off(logFrameTimingStats);
       frameTimingStats.on(logFrameTimingStats);
     };
 
@@ -43,7 +58,7 @@ export const textInterfaceToShowDetailedFrameTiming = () => {
       "color: #4CAF50; font-weight: bold",
     );
     console.log(
-      "call detailedFps() to log detailed frame timing stats to the console (and turn on FPS with F9 or in menus)",
+      "call detailedFps() to log detailed frame timing stats to the console (and turn on FPS with F9 or in menus). Pass an interval in ms, eg detailedFps(50), to report more often.",
     );
   }
 };

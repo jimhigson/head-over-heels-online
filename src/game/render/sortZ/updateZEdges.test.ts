@@ -3,6 +3,7 @@ import { describe, expect, test } from "vitest";
 import { collisionItemWithIndex } from "../../collision/aabbCollision";
 import { SpatialIndex } from "../../physics/gridSpace/SpatialIndex";
 import { type DrawOrderComparable } from "./DrawOrderComparable";
+import { type ZGraph } from "./GraphEdges";
 import { toposort } from "./toposort/toposort";
 import { updateZEdges } from "./updateZEdges";
 import { VisualIndex } from "./VisualIndex";
@@ -54,7 +55,8 @@ test("detects behind in x", () => {
 
   const spatialIndex = new VisualIndex(set.values());
 
-  const edges = updateZEdges(set, spatialIndex);
+  const edges: ZGraph<DrawOrderComparable> = new Map();
+  updateZEdges(set, spatialIndex, set, edges);
   // front => behind
   expect(edgeIds(edges)).toMatchInlineSnapshot(`
     Map {
@@ -99,7 +101,8 @@ test("detects behind in y", () => {
 
   const spatialIndex = new VisualIndex(set.values());
 
-  const relations = updateZEdges(set, spatialIndex);
+  const relations: ZGraph<DrawOrderComparable> = new Map();
+  updateZEdges(set, spatialIndex, set, relations);
   // front => behind
   expect(edgeIds(relations)).toMatchInlineSnapshot(`
     Map {
@@ -144,7 +147,8 @@ test("detects behind in z (inverted from x and y - higher is in front)", () => {
 
   const spatialIndex = new VisualIndex(set.values());
 
-  const relations = updateZEdges(set, spatialIndex);
+  const relations: ZGraph<DrawOrderComparable> = new Map();
+  updateZEdges(set, spatialIndex, set, relations);
   // front => behind
   expect(edgeIds(relations)).toMatchInlineSnapshot(`
     Map {
@@ -180,7 +184,8 @@ test("detects as in front if on top and set back while overlapping", () => {
 
   const spatialIndex = new VisualIndex(set.values());
 
-  const relations = updateZEdges(set, spatialIndex);
+  const relations: ZGraph<DrawOrderComparable> = new Map();
+  updateZEdges(set, spatialIndex, set, relations);
   // front => behind - top in front of bottom:
   expect(edgeIds(relations)).toMatchInlineSnapshot(`
     Map {
@@ -220,7 +225,8 @@ test("detects a tall item is front of two smaller items", () => {
 
   const spatialIndex = new VisualIndex(set.values());
 
-  const relations = updateZEdges(set, spatialIndex);
+  const relations: ZGraph<DrawOrderComparable> = new Map();
+  updateZEdges(set, spatialIndex, set, relations);
   expect(edgeIds(relations)).toMatchInlineSnapshot(`
     Map {
       "smallerTop" => Map {
@@ -264,7 +270,8 @@ test("incremental updates requiring both removal and addition of edges", () => {
   });
   const spatialIndex = new VisualIndex(set.values());
 
-  const edges = updateZEdges(set, spatialIndex);
+  const edges: ZGraph<DrawOrderComparable> = new Map();
+  updateZEdges(set, spatialIndex, set, edges);
   // front => behind
   expect(edgeIds(edges)).toMatchInlineSnapshot(`
     Map {
@@ -285,7 +292,9 @@ test("incremental updates requiring both removal and addition of edges", () => {
   // move item 2 far away in the sky - it is now not behind/in front of anything:
   items[2].state.position.z = 100;
 
-  updateZEdges(set, spatialIndex, new Set([items[1], items[2]]), edges);
+  const moved = new Set([items[1], items[2]]);
+  spatialIndex.updateManyItems(set, moved);
+  updateZEdges(set, spatialIndex, moved, edges);
 
   expect(edgeIds(edges)).toMatchInlineSnapshot(`
     Map {
@@ -322,7 +331,8 @@ test("incremental updates requiring removal of outbound and inbound edges", () =
   });
   const spatialIndex = new VisualIndex(set.values());
 
-  const edges = updateZEdges(set, spatialIndex);
+  const edges: ZGraph<DrawOrderComparable> = new Map();
+  updateZEdges(set, spatialIndex, set, edges);
   // front => behind
   expect(edgeIds(edges)).toMatchInlineSnapshot(`
     Map {
@@ -341,7 +351,9 @@ test("incremental updates requiring removal of outbound and inbound edges", () =
   items.b.state.position.z = 200;
   // move item 2 far away in the sky - it is now not behind/in front of anything:
 
-  updateZEdges(set, spatialIndex, new Set([items.b]), edges);
+  const movedB = new Set([items.b]);
+  spatialIndex.updateManyItems(set, movedB);
+  updateZEdges(set, spatialIndex, movedB, edges);
 
   // b is gone - only a =behind-> c remains
   expect(edgeIds(edges)).toMatchInlineSnapshot(`
@@ -375,7 +387,8 @@ test("incremental updates can completely empty the graph", () => {
   });
   const spatialIndex = new VisualIndex(set.values());
 
-  const edges = updateZEdges(set, spatialIndex);
+  const edges: ZGraph<DrawOrderComparable> = new Map();
+  updateZEdges(set, spatialIndex, set, edges);
   // front => behind
   expect(edgeIds(edges)).toMatchInlineSnapshot(`
     Map {
@@ -393,7 +406,9 @@ test("incremental updates can completely empty the graph", () => {
   items.b.state.position.z = 200;
   // move item 2 far away in the sky - it is now not behind/in front of anything:
 
-  updateZEdges(set, spatialIndex, new Set([items.b]), edges);
+  const movedB = new Set([items.b]);
+  spatialIndex.updateManyItems(set, movedB);
+  updateZEdges(set, spatialIndex, movedB, edges);
 
   // b is gone - only a =behind-> c remains
   expect(edgeIds(edges)).toMatchInlineSnapshot(`Map {}`);
@@ -438,7 +453,8 @@ describe("cyclic dependencies", () => {
 
     const spatialIndex = new VisualIndex(set.values());
 
-    const relations = updateZEdges(set, spatialIndex);
+    const relations: ZGraph<DrawOrderComparable> = new Map();
+    updateZEdges(set, spatialIndex, set, relations);
     expect(() => toposort(relations)).not.toThrow();
   });
 
@@ -499,7 +515,8 @@ describe("cyclic dependencies", () => {
 
     const spatialIndex = new VisualIndex(set.values());
 
-    const relations = updateZEdges(set, spatialIndex);
+    const relations: ZGraph<DrawOrderComparable> = new Map();
+    updateZEdges(set, spatialIndex, set, relations);
 
     // end result should should express:
     //  pushableBlock -behind-> pickup

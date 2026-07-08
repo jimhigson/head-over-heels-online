@@ -15,6 +15,7 @@ export const HoldDialog = () => {
         // isn't possible to leave it on devices with no keyboard/gamepad:
         onClick={useDispatchActionCallback(backToParentMenu)}
         dialogId="hold"
+        ariaLabel="the game is paused, unpause it to continue playing (press the pause key, default 'p', or tap/click the dialog)"
       >
         <div class="w-min mx-auto px-1 bg-zxBlack py-oneScaledPix uppercase">
           <span class="text-double-height">PAUSED</span>

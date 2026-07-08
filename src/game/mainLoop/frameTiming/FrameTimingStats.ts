@@ -5,6 +5,8 @@ import { selectShowFps } from "../../../store/slices/gameMenus/gameMenusSelector
 
 export type PhaseStats = {
   avgMs: number;
+  /** the single slowest frame's time in this phase over the report interval */
+  maxMs: number;
   percentage: number;
 };
 
@@ -30,11 +32,16 @@ class FrameTimingStats {
   static readonly instance = new FrameTimingStats();
 
   #stats = {
-    physics: { totalMs: 0, count: 0 },
-    hudUpdate: { totalMs: 0, count: 0 },
-    updateSceneGraph: { totalMs: 0, count: 0 },
-    pixiRender: { totalMs: 0, count: 0 },
+    physics: { totalMs: 0, count: 0, maxMs: 0 },
+    hudUpdate: { totalMs: 0, count: 0, maxMs: 0 },
+    updateSceneGraph: { totalMs: 0, count: 0, maxMs: 0 },
+    pixiRender: { totalMs: 0, count: 0, maxMs: 0 },
   };
+
+  /** accumulates the measured phase times of the frame currently in progress */
+  #frameTotalMs = 0;
+  /** the worst single frame's summed phase time over the report interval */
+  #maxTotalMs = 0;
 
   #currentTimings: Partial<{
     physicsStart: number;
@@ -51,11 +58,11 @@ class FrameTimingStats {
     fps: 0,
     theoreticalFps: 0,
     phases: {
-      physics: { avgMs: 0, percentage: 0 },
-      hudUpdateSceneGraph: { avgMs: 0, percentage: 0 },
-      updateSceneGraph: { avgMs: 0, percentage: 0 },
-      pixiRender: { avgMs: 0, percentage: 0 },
-      total: { avgMs: 0, percentage: 0 },
+      physics: { avgMs: 0, maxMs: 0, percentage: 0 },
+      hudUpdateSceneGraph: { avgMs: 0, maxMs: 0, percentage: 0 },
+      updateSceneGraph: { avgMs: 0, maxMs: 0, percentage: 0 },
+      pixiRender: { avgMs: 0, maxMs: 0, percentage: 0 },
+      total: { avgMs: 0, maxMs: 0, percentage: 0 },
     },
   };
 
@@ -79,6 +86,8 @@ class FrameTimingStats {
     const elapsed = performance.now() - this.#currentTimings.physicsStart;
     this.#stats.physics.totalMs += elapsed;
     this.#stats.physics.count++;
+    this.#stats.physics.maxMs = Math.max(this.#stats.physics.maxMs, elapsed);
+    this.#frameTotalMs += elapsed;
     this.#currentTimings.physicsStart = undefined;
   }
 
@@ -94,6 +103,11 @@ class FrameTimingStats {
     const elapsed = performance.now() - this.#currentTimings.hudUpdateStart;
     this.#stats.hudUpdate.totalMs += elapsed;
     this.#stats.hudUpdate.count++;
+    this.#stats.hudUpdate.maxMs = Math.max(
+      this.#stats.hudUpdate.maxMs,
+      elapsed,
+    );
+    this.#frameTotalMs += elapsed;
     this.#currentTimings.hudUpdateStart = undefined;
   }
 
@@ -110,6 +124,11 @@ class FrameTimingStats {
       performance.now() - this.#currentTimings.updateSceneGraphStart;
     this.#stats.updateSceneGraph.totalMs += elapsed;
     this.#stats.updateSceneGraph.count++;
+    this.#stats.updateSceneGraph.maxMs = Math.max(
+      this.#stats.updateSceneGraph.maxMs,
+      elapsed,
+    );
+    this.#frameTotalMs += elapsed;
     this.#currentTimings.updateSceneGraphStart = undefined;
   }
 
@@ -125,6 +144,11 @@ class FrameTimingStats {
     const elapsed = performance.now() - this.#currentTimings.pixiRenderStart;
     this.#stats.pixiRender.totalMs += elapsed;
     this.#stats.pixiRender.count++;
+    this.#stats.pixiRender.maxMs = Math.max(
+      this.#stats.pixiRender.maxMs,
+      elapsed,
+    );
+    this.#frameTotalMs += elapsed;
     this.#currentTimings.pixiRenderStart = undefined;
   }
 
@@ -133,10 +157,20 @@ class FrameTimingStats {
    * Reports averages every report interval and resets counters.
    */
   tickDone() {
+    // finalise this frame's summed phase time before it is reset for the next:
+    this.#maxTotalMs = Math.max(this.#maxTotalMs, this.#frameTotalMs);
+    this.#frameTotalMs = 0;
+
     const now = performance.now();
     if (now - this.#lastReportTime >= this.#reportIntervalMs) {
       this.#reportAndReset(now);
     }
+  }
+
+  /** how often the detailed stats are emitted, in ms (see detailedFps) */
+  setReportInterval(ms: number) {
+    this.#reportIntervalMs = ms;
+    this.reset();
   }
 
   on(handler: (event: FrameTimingStatsEvent) => void) {
@@ -195,29 +229,40 @@ class FrameTimingStats {
     this.#eventBuffer.fps = (frameCount / elapsedMs) * 1_000;
     this.#eventBuffer.theoreticalFps = totalAvg > 0 ? 1_000 / totalAvg : 0;
     this.#eventBuffer.phases.physics.avgMs = avgPhysics;
+    this.#eventBuffer.phases.physics.maxMs = physics.maxMs;
     this.#eventBuffer.phases.physics.percentage = (avgPhysics / totalAvg) * 100;
     this.#eventBuffer.phases.hudUpdateSceneGraph.avgMs = avgHudUpdate;
+    this.#eventBuffer.phases.hudUpdateSceneGraph.maxMs = hudUpdate.maxMs;
     this.#eventBuffer.phases.hudUpdateSceneGraph.percentage =
       (avgHudUpdate / totalAvg) * 100;
     this.#eventBuffer.phases.updateSceneGraph.avgMs = avgUpdateSceneGraph;
+    this.#eventBuffer.phases.updateSceneGraph.maxMs = updateSceneGraph.maxMs;
     this.#eventBuffer.phases.updateSceneGraph.percentage =
       (avgUpdateSceneGraph / totalAvg) * 100;
     this.#eventBuffer.phases.pixiRender.avgMs = avgPixiRender;
+    this.#eventBuffer.phases.pixiRender.maxMs = pixiRender.maxMs;
     this.#eventBuffer.phases.pixiRender.percentage =
       (avgPixiRender / totalAvg) * 100;
     this.#eventBuffer.phases.total.avgMs = totalAvg;
+    this.#eventBuffer.phases.total.maxMs = this.#maxTotalMs;
     this.#eventBuffer.phases.total.percentage = 100;
   }
 
   reset(now: number = performance.now()) {
     this.#stats.physics.totalMs = 0;
     this.#stats.physics.count = 0;
+    this.#stats.physics.maxMs = 0;
     this.#stats.hudUpdate.totalMs = 0;
     this.#stats.hudUpdate.count = 0;
+    this.#stats.hudUpdate.maxMs = 0;
     this.#stats.updateSceneGraph.totalMs = 0;
     this.#stats.updateSceneGraph.count = 0;
+    this.#stats.updateSceneGraph.maxMs = 0;
     this.#stats.pixiRender.totalMs = 0;
     this.#stats.pixiRender.count = 0;
+    this.#stats.pixiRender.maxMs = 0;
+    this.#maxTotalMs = 0;
+    this.#frameTotalMs = 0;
     this.#lastReportTime = now;
   }
 }
