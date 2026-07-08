@@ -91,6 +91,30 @@ jobs:
           n=$(gh pr list --state open --base main --json number,headRefName \
                 --jq 'map(select(.headRefName | startswith("release-please--")))[0].number // empty')
           echo "number=$n" >> "$GITHUB_OUTPUT"
+      # the release before the current production tag, for a third historical
+      # comparison point (production's own size delta at the last release)
+      - id: prev-production
+        env:
+          GH_TOKEN: ${{ github.token }}
+        run: |
+          tag=$(gh release list --json tagName,isDraft,isPrerelease --limit 10 \
+                --jq '[.[] | select(.isDraft==false and .isPrerelease==false)][1].tagName // empty')
+          echo "tag=$tag" >> "$GITHUB_OUTPUT"
+      - id: base-refs
+        env:
+          IS_RELEASE_PLEASE_PR: ${{ startsWith(github.head_ref, 'release-please--') }}
+          PREV_PRODUCTION_TAG: ${{ steps.prev-production.outputs.tag }}
+        run: |
+          refs=()
+          if [ "${{ github.event_name }}" = "pull_request" ] && [ "$IS_RELEASE_PLEASE_PR" != "true" ]; then
+            refs+=("main")
+          fi
+          refs+=("production")
+          if [ -n "$PREV_PRODUCTION_TAG" ]; then
+            refs+=("$PREV_PRODUCTION_TAG")
+          fi
+          json=$(printf '%s\n' "${refs[@]}" | jq -R . | jq -sc .)
+          echo "json=$json" >> "$GITHUB_OUTPUT"
       - uses: jimhigson/true-site-size@main
         if: github.event_name == 'pull_request'
         with:
@@ -103,11 +127,12 @@ jobs:
           compression-level: 11
           ignore-url-patterns: '["supabase\\.co"]'
           minimum-change-threshold: 50
-          # a normal PR compares vs main (its merge target) and production (the
-          # last release). a release-please PR only bumps the build number over
-          # main, so a vs-main comparison is meaningless noise - it compares vs
-          # production alone.
-          base-refs: ${{ startsWith(github.head_ref, 'release-please--') && '["production"]' || '["main", "production"]' }}
+          # a normal PR compares vs main (its merge target), production (the
+          # last release) and the release before that. a release-please PR
+          # only bumps the build number over main, so a vs-main comparison is
+          # meaningless noise - it omits main and compares vs the two releases
+          # alone.
+          base-refs: ${{ steps.base-refs.outputs.json }}
           journey: ${{ matrix.journey }}
       - uses: jimhigson/true-site-size@main
         if: github.event_name == 'push' && steps.release-pr.outputs.number != ''
@@ -122,8 +147,8 @@ jobs:
           ignore-url-patterns: '["supabase\\.co"]'
           minimum-change-threshold: 50
           # a push to main *is* main, so it only compares vs production (the
-          # last release)
-          base-refs: '["production"]'
+          # last release) and the release before that
+          base-refs: ${{ steps.base-refs.outputs.json }}
           # on push, comment on the open release PR so its report reflects the
           # merged code
           pr-number: ${{ steps.release-pr.outputs.number }}
