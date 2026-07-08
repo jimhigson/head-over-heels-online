@@ -54,9 +54,20 @@ const editorViteArgs = [
 
 const shellQuote = (arg: string) => `'${arg.replaceAll("'", `'\\''`)}'`;
 
-/** whether a tmux pane with this id still exists (ie its command is running) */
-const tmuxPaneExists = async (paneId: string) => {
-  const { stdout } = await execa("tmux", ["list-panes", "-a", "-F", "#{pane_id}"]);
+/**
+ * whether a tmux pane with this id is still live (ie its command is running).
+ * The `-f` filter excludes dead panes so a pane kept around by remain-on-exit
+ * after the game stops doesn't leave the poll loop spinning forever.
+ */
+const tmuxPaneIsLive = async (paneId: string) => {
+  const { stdout } = await execa("tmux", [
+    "list-panes",
+    "-a",
+    "-f",
+    "#{==:#{pane_dead},0}",
+    "-F",
+    "#{pane_id}",
+  ]);
   return stdout.split("\n").includes(paneId);
 };
 
@@ -99,7 +110,7 @@ const runInNewTmuxWindow = async () => {
 
   // the servers now run in the new window; wait for the game to stop, then
   // tear down the editor pane alongside it
-  while (await tmuxPaneExists(gamePaneId)) {
+  while (await tmuxPaneIsLive(gamePaneId)) {
     await delay(500);
   }
 
