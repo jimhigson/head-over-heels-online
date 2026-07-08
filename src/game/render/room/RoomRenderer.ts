@@ -291,35 +291,6 @@ export class RoomRenderer<RoomId extends string, RoomItemId extends string>
     return this.#lastRenderRoomTime !== undefined;
   }
 
-  /**
-   * Keep the visual index's membership in step with the room's current spatial
-   * items - add any that have appeared, remove any that have gone. Done before the
-   * z-edges are computed (and before #tickItems creates the item renderers), since
-   * updateZEdges requires every moved item to already be present in the index.
-   */
-  #reconcileVisualIndexMembership(
-    itemsSet: Set<UnionOfAllItemInPlayTypes<RoomId, RoomItemId>>,
-  ) {
-    for (const item of itemsSet) {
-      if (!this.#visualIndex.has(item)) {
-        this.#visualIndex.addItem(item);
-      }
-    }
-    let departed:
-      | Array<UnionOfAllItemInPlayTypes<RoomId, RoomItemId>>
-      | undefined;
-    for (const item of this.#visualIndex.items()) {
-      if (!itemsSet.has(item)) {
-        (departed ??= []).push(item);
-      }
-    }
-    if (departed) {
-      for (const item of departed) {
-        this.#visualIndex.removeItem(item);
-      }
-    }
-  }
-
   tick(givenTickContext: RoomTickContext<RoomId, RoomItemId>) {
     /*
      * the given tick context, except override to consider everything to
@@ -340,20 +311,23 @@ export class RoomRenderer<RoomId extends string, RoomItemId extends string>
       renderContext: { room },
     } = this;
 
-    const itemsSet = new Set<UnionOfAllItemInPlayTypes<RoomId, RoomItemId>>(
+    const spatialItems = new Set<UnionOfAllItemInPlayTypes<RoomId, RoomItemId>>(
       roomItemsIterable(room.items).filter(isSpatial),
     );
 
-    // keep our render-position index's membership in step with the room before
-    // computing z-edges from it:
-    this.#reconcileVisualIndexMembership(itemsSet);
+    // bring the render-position index fully up to date (membership and moved
+    // items' projections) before computing z-edges from it:
+    this.#visualIndex.updateManyItems(
+      spatialItems,
+      tickContext.movedOrResizedItems,
+    );
 
     try {
       // it it important that we sort before rendering. This is because sorting updates
       // this.#brokenLinks, which will be used in this.#tickItems to update the rendering,
       // which can be influenced by the broken links (by showing masking)
       updateZEdges(
-        itemsSet,
+        spatialItems,
         this.#visualIndex,
         tickContext.movedOrResizedItems,
         // this.#incrementalZEdges will be updated in-place by the zEdges function to match

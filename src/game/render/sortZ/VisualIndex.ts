@@ -153,6 +153,32 @@ export class VisualIndex<Item extends Indexable = UnionOfAllItemInPlayTypes> {
   }
 
   /**
+   * Get index up to date:
+   *  * remove departed items
+   *  * add newly-present ones
+   *  * update moved/resized
+   */
+  updateManyItems(
+    items: ReadonlySet<Item>,
+    movedOrResizedItems: ReadonlySet<Item>,
+  ): void {
+    for (const item of this.#cells.items()) {
+      if (!items.has(item)) {
+        this.removeItem(item);
+      }
+    }
+    for (const item of items) {
+      if (!this.#cells.has(item)) {
+        // adding projects the item, so a just-added item never needs the
+        // moved/resized re-projection:
+        this.addItem(item);
+      } else if (movedOrResizedItems.has(item)) {
+        this.updateItemProjectedIndex(item);
+      }
+    }
+  }
+
+  /**
    * Get all items whose projected hexagon shares a cell with the given item's. Each
    * item appears only once in the returned set.
    *
