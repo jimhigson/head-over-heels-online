@@ -1,13 +1,9 @@
-import { applyRenderAabbCameraShift } from "../../game/gameState/loadRoom/applyRenderAabbCameraShift";
 import {
   loadRoom,
   type LoadRoomOptions,
 } from "../../game/gameState/loadRoom/loadRoom";
-import { reloadStructureForCamera } from "../../game/gameState/loadRoom/reloadStructureForCamera";
 import { emptyUserSettings } from "../../store/slices/userSettings/emptyUserSettings";
 import { emptyObject } from "../../utils/empty";
-import { cameraAngleBase } from "../../utils/vectors/rotateXy";
-import { type Xy } from "../../utils/vectors/vectors";
 import {
   type EditorRoomId,
   type EditorRoomItemId,
@@ -24,21 +20,9 @@ const loadRoomDefaultOptions = {
 } as const satisfies Partial<LoadRoomOptions<EditorRoomId, EditorRoomItemId>>;
 
 /**
- * load the editing room, re-deriving its camera-relative structure (walls/doors/
- * floors) for the editor's view angle exactly as the game does on rotation. The
- * base angle needs no reload.
+ * load the editing room. The room model is camera-angle-free: everything
+ * angle-dependent (which walls render, render boxes, hidden-wall door art) is
+ * derived at render time, so no re-derivation is needed per view angle.
  */
-export const loadEditorRoom = (
-  roomJson: EditorRoomJson,
-  cameraAngle: Xy,
-): EditorRoomState => {
-  const room = loadRoom({ roomJson, ...loadRoomDefaultOptions });
-  if (
-    cameraAngle.x !== cameraAngleBase.x ||
-    cameraAngle.y !== cameraAngleBase.y
-  ) {
-    reloadStructureForCamera(room, cameraAngle);
-    applyRenderAabbCameraShift(room, cameraAngle);
-  }
-  return room;
-};
+export const loadEditorRoom = (roomJson: EditorRoomJson): EditorRoomState =>
+  loadRoom({ roomJson, ...loadRoomDefaultOptions });

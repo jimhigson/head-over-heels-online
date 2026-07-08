@@ -4,6 +4,7 @@ import {
   paletteBlockstackDim,
 } from "../../src/sprites/palette/spritesheetPalette";
 import { type SpritesheetMetadata } from "../../src/sprites/spritesheet/spritesheetData/spritesheetMetaData";
+import { itemRenderExtents } from "./itemRenderExtents";
 
 export const blockStackSpritesheetMeta: SpritesheetMetadata<
   BlockstackPaletteColourName,
@@ -12,6 +13,7 @@ export const blockStackSpritesheetMeta: SpritesheetMetadata<
   name: "BlockStack",
   palette: paletteBlockstack,
   paletteDim: paletteBlockstackDim,
+  itemRenderExtents,
   playable: {
     head: {
       awayLeft: {

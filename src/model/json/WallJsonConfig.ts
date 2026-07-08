@@ -1,5 +1,9 @@
 import { type SceneryName, type Wall } from "../../sprites/planets";
-import { type DirectionXy4 } from "../../utils/vectors/vectors";
+import {
+  type DirectionXy4,
+  rotateDirectionXy4ByCameraAngle,
+  type Xy,
+} from "../../utils/vectors/vectors";
 
 /**
  * the json config for a wall.
@@ -19,3 +23,15 @@ export type WallJsonConfig<ScN extends SceneryName = SceneryName> = {
 export const isWallHidden = (direction: DirectionXy4) => {
   return direction === "towards" || direction === "right";
 };
+
+/**
+ * whether a wall with the given physical direction is one of the two hidden
+ * (camera-facing, undrawn) walls at the given camera angle. Pure - the room
+ * model holds nothing angle-dependent; hidden-ness is derived wherever it is
+ * consumed
+ */
+export const isWallDirectionHiddenAtAngle = (
+  direction: DirectionXy4,
+  cameraAngle: Xy,
+): boolean =>
+  isWallHidden(rotateDirectionXy4ByCameraAngle(direction, cameraAngle));

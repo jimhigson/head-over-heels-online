@@ -3,6 +3,7 @@ import {
   type ToppyPaletteColourName,
 } from "../../src/sprites/palette/spritesheetPalette";
 import { type SpritesheetMetadata } from "../../src/sprites/spritesheet/spritesheetData/spritesheetMetaData";
+import { itemRenderExtents } from "./itemRenderExtents";
 
 export const toppySpritesheetMeta: SpritesheetMetadata<
   ToppyPaletteColourName,
@@ -10,6 +11,7 @@ export const toppySpritesheetMeta: SpritesheetMetadata<
 > = {
   name: "Toppy",
   palette: paletteToppy,
+  itemRenderExtents,
   playable: {
     head: {
       awayLeft: { shadowMask: true },

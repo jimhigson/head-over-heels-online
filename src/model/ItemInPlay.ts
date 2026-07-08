@@ -56,7 +56,13 @@ export type SwitchSetting = "left" | "right";
 
 type DoorFrameConfig<RoomId extends string> = {
   direction: DirectionXy4;
-  inHiddenWall: boolean;
+  /**
+   * whether the door sits on a floor edge (a world-space fact). The door is in
+   * a hidden wall when this is true AND its wall faces the camera at the
+   * current angle - evaluated at render time via
+   * {@link isDoorPartInHiddenWall}
+   */
+  onFloorEdge: boolean;
   toRoom: ExitGameRoomId | RoomId;
 
   /** is this the near post of the doorframe, or the far one? */
@@ -64,7 +70,8 @@ type DoorFrameConfig<RoomId extends string> = {
 };
 type DoorLegsConfig = {
   direction: DirectionXy4;
-  inHiddenWall: boolean;
+  /** see {@link DoorFrameConfig.onFloorEdge} */
+  onFloorEdge: boolean;
   // equal to the z of the door
   height: number;
 };
@@ -105,6 +112,13 @@ type ItemInPlayConfigMap<RoomId extends string, RoomItemId extends string> = {
       aabb: Xyz;
       position: Xyz;
     };
+    /**
+     * the sides where the physical footprint was expanded (by a constant
+     * amount) to carry the player through a doorway. How much of the
+     * expansion is *drawn* on each side depends on the camera angle, derived
+     * at render time
+     */
+    doorExpandedSides: Array<DirectionXy4>;
   };
   doorFrame: DoorFrameConfig<RoomId>;
   doorLegs: DoorLegsConfig;
@@ -126,33 +140,6 @@ export type ItemInPlayConfig<
   T extends JsonItemType ? JsonItemConfig<T, RoomId, RoomItemId, ScN>
   : EmptyObject;
 
-export type ItemInPlayAAbbInfo = {
-  /**
-   * the bounding box of this item for the sake of collision detection. This is not optional - ie, there
-   * are no non-collideable items
-   */
-  aabb: Aabb;
-  /**
-   * Optional second bb which is used only for determining render order - not for collisions.
-   * Together with @see {renderAabbOffset}, defines a cuboid for the area the sprites render into.
-   *
-   * The extent does not change with the camera angle (the sprite doesn't rotate), so unlike
-   * renderAabbOffset this is set once when the item is built.
-   */
-  readonly renderAabb?: Aabb;
-  /**
-   * the offset of the render aabb from the item position. like renderAabb, has no role in collisions,
-   * only determining the render order.
-   * Together with @see {renderAabb}, defines a cuboid for the area the sprites render into
-   *
-   * Rewritten per camera rotation (renderAabbOffsetForCameraAngle): the sprite is anchored at its
-   * near corner, so the render box follows it by the near-corner offset. Not readonly.
-   */
-  renderAabbOffset?: Aabb;
-  /** the base-angle renderAabbOffset, which renderAabbOffset at each camera angle is derived from */
-  readonly baseRenderAabbOffset?: Aabb;
-};
-
 export type ItemInPlay<
   T extends ItemInPlayType,
   RoomId extends string = string,
@@ -161,8 +148,14 @@ export type ItemInPlay<
   /** the item id for this item */
   ItemId extends RoomItemId = RoomItemId,
   ScN extends SceneryName = SceneryName,
-> = ItemInPlayAAbbInfo & {
+> = {
   type: T;
+
+  /**
+   * the bounding box of this item for the sake of collision detection. This is not optional - ie, there
+   * are no non-collideable items
+   */
+  aabb: Aabb;
 
   /**
    * if we are coming from room json in a campaign, the id of the room json item
@@ -195,6 +188,13 @@ export type ItemInPlay<
 
   /** items this item will cast no shadows on */
   noShadowCastOn?: Array<ItemInPlayType>;
+
+  /**
+   * marks a hint shadow (eg the decorative corner cube): the shadow only
+   * casts when every listed direction's wall is hidden (faces the camera) at
+   * the current angle
+   */
+  hintShadowDirections?: Array<DirectionXy4>;
 
   /**
    * if true casts shadow while stood on. Most items can cast casting a shadow in this case, since

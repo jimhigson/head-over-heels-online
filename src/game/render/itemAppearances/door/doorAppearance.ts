@@ -32,6 +32,7 @@ import {
   projectBlockXyzToScreenXy,
   projectWorldXyzToScreenXy,
 } from "../../projections";
+import { isDoorPartInHiddenWall } from "../../renderBox/makeItemRenderBoxAtCameraAngle";
 import {
   type ItemAppearance,
   itemAppearanceRenderOnce,
@@ -40,13 +41,15 @@ import { doorTexture } from "./doorTexture";
 
 function* doorLegsGenerator<RoomId extends string, RoomItemId extends string>(
   {
-    config: { direction, inHiddenWall, height },
+    config,
+    config: { direction, height },
   }: ItemInPlay<"doorLegs", RoomId, RoomItemId>,
   spritesheet: AppSpritesheet,
   sceneryName: SceneryName,
   isDark: boolean,
   cameraAngle: Xy,
 ): Generator<Container> {
+  const inHiddenWall = isDoorPartInHiddenWall(config, cameraAngle);
   // positions repeat along the door's physical axis (projection rotates them); the
   // sprite uses the apparent axis after the camera rotation:
   const axis = doorAlongAxis(direction);
@@ -175,7 +178,8 @@ export const doorLegsAppearance: ItemAppearance<"doorLegs"> =
         ),
       );
 
-      const { direction, inHiddenWall } = item.config;
+      const { direction } = item.config;
+      const inHiddenWall = isDoorPartInHiddenWall(item.config, cameraAngle);
 
       // the floating threshold's textures carry the floor edges' colours,
       // which swap sides on odd quarter camera turns exactly as the floor's
@@ -233,10 +237,10 @@ export const doorFrameAppearance: ItemAppearance<"doorFrame"> =
     ({
       renderContext: {
         isReflection,
+        item,
         item: {
           config: { direction, part, toRoom },
           aabb,
-          renderAabb,
         },
         room,
         general: {
@@ -245,6 +249,7 @@ export const doorFrameAppearance: ItemAppearance<"doorFrame"> =
           spritesheetMeta,
           cameraAngle,
         },
+        renderBoxes,
       },
     }) => {
       const campaign =
@@ -344,8 +349,21 @@ export const doorFrameAppearance: ItemAppearance<"doorFrame"> =
       // the part's render box:
       const alongReversed = axisProjectsReversed(axis, cameraAngle);
       if (alongReversed) {
+        // the door frame's render box is a per-angle derivation owned by the
+        // room renderer - a wrong/missing box here leaves the shift at 0,
+        // hanging the art over the wrong side at every reversed angle:
+        const renderBox = renderBoxes?.get(item);
+        // shift by the box's along-axis EXTENT plus its along-axis OFFSET: the
+        // offset (eg the apparently-near far post's -1, whose 9th art pixel
+        // extends back past its min corner) used to be encoded in the part's
+        // angle-dependent physical position, but the post freeze fixed the
+        // position, so the art must apply it here to line up:
         const alongShift = projectWorldXyzToScreenXy(
-          { [axis]: renderAabb?.[axis] ?? 0 },
+          {
+            [axis]:
+              (renderBox?.renderAabb?.[axis] ?? 0) +
+              (renderBox?.renderAabbOffset?.[axis] ?? 0),
+          },
           cameraAngle,
         );
         rendered.x += alongShift.x;

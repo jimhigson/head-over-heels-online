@@ -38,9 +38,11 @@ export type SavedCharacterRooms<RoomId extends string> = {
 
 type SavedGameStateFields = (typeof savedGameStateFields)[number];
 
-type SavedGameState<RoomId extends string> = Pick<
-  GameState<RoomId>,
-  Exclude<SavedGameStateFields, "characterRooms">
+type SavedGameState<RoomId extends string> = SetOptional<
+  Pick<GameState<RoomId>, Exclude<SavedGameStateFields, "characterRooms">>,
+  // saves made before the camera could rotate have no cameraAngle; such games
+  // resume at the base view (defaulted on load - see loadGameState)
+  "cameraAngle"
 > & {
   characterRooms: SavedCharacterRooms<RoomId>;
 };

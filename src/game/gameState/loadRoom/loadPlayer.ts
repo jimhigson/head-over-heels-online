@@ -13,7 +13,7 @@ import { emptyObject } from "../../../utils/empty";
 import { neverTime } from "../../../utils/neverTime";
 import { unitVectors } from "../../../utils/vectors/unitVectors";
 import { originXyz } from "../../../utils/vectors/vectors";
-import { headAabbInfo, heelsAabbInfo } from "../../collision/boundingBoxes";
+import { headAabb, heelsAabb } from "../../collision/boundingBoxes";
 import { type PlayableItem } from "../../physics/itemPredicates";
 import { originalGameStartingLives } from "../../physics/mechanicsConstants";
 import { type ShadowCastSpriteOptions } from "../../render/ShadowCastSpriteOptions";
@@ -87,7 +87,7 @@ export const loadPlayer = <RoomId extends string, RoomItemId extends string>(
       hash: 0,
       ...defaultItemProperties,
       ...defaultPlayableRootAttributes,
-      ...headAabbInfo,
+      aabb: headAabb,
       state: {
         ...defaultBaseState<RoomItemId>(),
         ...defaultFreeItemState(),
@@ -112,7 +112,7 @@ export const loadPlayer = <RoomId extends string, RoomItemId extends string>(
     hash: 0,
     ...defaultItemProperties,
     ...defaultPlayableRootAttributes,
-    ...heelsAabbInfo,
+    aabb: heelsAabb,
     state: {
       ...defaultBaseState<RoomItemId>(),
       ...defaultFreeItemState(),

@@ -2,9 +2,9 @@ import { autoDetectRenderer, Rectangle, type Renderer } from "pixi.js";
 
 import { loadRoom } from "../../game/gameState/loadRoom/loadRoom";
 import { type MovedOrResizedItems } from "../../game/mainLoop/progressGameState";
-import { floorsRenderExtent } from "../../game/render/room/floorsExtent";
 import { type GeneralRenderContext } from "../../game/render/room/RoomRenderContexts";
 import { RoomRenderer } from "../../game/render/room/RoomRenderer";
+import { roomRenderExtent } from "../../game/render/room/roomRenderExtent";
 import { paletteBlockstack } from "../../sprites/palette/spritesheetPalette";
 import { spritesheetMetas } from "../../sprites/spritesheet/spritesheetData/spritesheetMetaData";
 import { SpritesheetVariants } from "../../sprites/spritesheet/variants/SpritesheetVariants";
@@ -114,7 +114,7 @@ export const renderRoomPreviewImage = async (
     const {
       floors: { edgeLeftX: l, edgeRightX: r, bottomEdgeY: b },
       allItems: { topEdgeY: t },
-    } = floorsRenderExtent(room);
+    } = roomRenderExtent(room, spritesheetMetas.BlockStack);
 
     const centreX = (l + r) / 2;
     const centreY = (t + b) / 2;

@@ -24,7 +24,7 @@ import {
 } from "../../../../../../utils/vectors/vectors";
 import { type PlayableItem } from "../../../../../physics/itemPredicates";
 import { blockSizePx } from "../../../../../physics/mechanicsConstants";
-import { roomJsonFloorsExtent } from "../../../../../render/room/floorsExtent";
+import { roomJsonFloorsExtent } from "../../../../../render/room/roomRenderExtent";
 import { roomGridSizeXY } from "./mapConstants";
 import {
   type NotableItem,

@@ -5,9 +5,9 @@ import { neverTime } from "../../../utils/neverTime";
 import { pick } from "../../../utils/pick";
 import { addXyz } from "../../../utils/vectors/vectors";
 import {
-  headAabbInfo,
-  headOverHeelsAabbInfo,
-  heelsAabbInfo,
+  headAabb,
+  headOverHeelsAabb,
+  heelsAabb,
 } from "../../collision/boundingBoxes";
 import { type PlayableItem } from "../../physics/itemPredicates";
 import { blockSizePx } from "../../physics/mechanicsConstants";
@@ -33,7 +33,7 @@ export const uncombinePlayablesFromSymbiosis = <
     hash: 0,
     ...defaultItemProperties,
     ...defaultPlayableRootAttributes,
-    ...headAabbInfo,
+    aabb: headAabb,
     state: {
       ...defaultBaseState<RoomItemId>(),
       ...defaultFreeItemState<RoomItemId>(),
@@ -61,7 +61,7 @@ export const uncombinePlayablesFromSymbiosis = <
     hash: 0,
     ...defaultItemProperties,
     ...defaultPlayableRootAttributes,
-    ...heelsAabbInfo,
+    aabb: heelsAabb,
     state: {
       ...defaultBaseState<RoomItemId>(),
       ...defaultFreeItemState<RoomItemId>(),
@@ -115,7 +115,7 @@ export const combinePlayablesInSymbiosis = <
     shadowCastTexture: heels.shadowCastTexture,
     castsShadowWhileStoodOn: heels.castsShadowWhileStoodOn,
     config: emptyObject,
-    ...headOverHeelsAabbInfo,
+    aabb: headOverHeelsAabb,
     state: {
       ...defaultBaseState<RoomItemId>(),
       ...defaultFreeItemState(),

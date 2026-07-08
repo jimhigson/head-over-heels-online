@@ -35,7 +35,7 @@ describe("itemMoveOrResizeWouldCollide", () => {
             position: xyz(5, 5, 0),
             config: {
               style: "tower",
-              times: { x: 1, y: 1, z: 1 },
+              times: { z: 1 },
             },
           },
           ["block1" as EditorRoomItemId]: {

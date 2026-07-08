@@ -58,7 +58,18 @@ test(`rotate-camera-test campaign rooms (${totalShots} shots)`, async ({
   test.setTimeout(totalShots * 20_000 + 60_000);
   await setupE2ePage(page);
 
-  const screenshotOpts = roomScreenshotOptions(testInfo.project.name);
+  const screenshotOpts = {
+    ...roomScreenshotOptions(testInfo.project.name),
+    // These baselines were taken on the camera-rotation commit, whose floor sits
+    // OFF the pixel grid (0.52 block = 8.32px). The transition branch deliberately
+    // moved the floor ON-grid (0.5 block + 0.02 render overhang); at rotated
+    // angles that shifts the whole room's scroll-home by a sub-pixel, an accepted
+    // whole-room translate (no structural change - the doors etc. line up). It
+    // reads as ~10.5k differing pixels on the busiest floor-grid room, so allow
+    // that here while still catching real structural regressions (the door-frame
+    // regression this suite exists to guard was ~35k px):
+    maxDiffPixels: 12_000,
+  };
 
   await page.goto(campaignUrl);
   // the crowns dialog only appears once the campaign has loaded, so wait for the

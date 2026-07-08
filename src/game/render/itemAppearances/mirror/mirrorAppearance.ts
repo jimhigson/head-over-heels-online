@@ -14,7 +14,10 @@ import {
 } from "../../../../utils/vectors/vectors";
 import { blockSizePx } from "../../../physics/mechanicsConstants";
 import { createSprite } from "../../createSprite";
-import { type ItemRenderContext } from "../../ItemRenderContexts";
+import {
+  type AppearanceRenderContext,
+  asItemRenderContext,
+} from "../../ItemRenderContexts";
 import { type ItemAppearance } from "../ItemAppearance";
 import { type ItemAppearanceOutsideView } from "../itemAppearanceOutsideView";
 import { ReflectionRenderers } from "./ReflectionRenderers";
@@ -49,7 +52,7 @@ const surfaceMaskRect = { x: -13, y: -18, w: 26, h: 11 };
 
 const addPivotSprite = (
   restOfMirrorRendering: Container,
-  renderContext: ItemRenderContext<"mirror">,
+  renderContext: AppearanceRenderContext<"mirror">,
 ) => {
   const {
     item: {
@@ -89,7 +92,7 @@ const addPivotSprite = (
  * glint streaks over the top. Only rebuilt when the pane geometry changes.
  */
 const buildFaceOnPane = (
-  renderContext: ItemRenderContext<"mirror">,
+  renderContext: AppearanceRenderContext<"mirror">,
   reflections: Container,
 ): Container => {
   const {
@@ -182,7 +185,9 @@ export const makeMirrorAppearance =
       // animate and reuse, rather than being rebuilt each frame:
       const reflections = new ReflectionRenderers(
         item,
-        renderContext,
+        // reflections render other items' appearances, which needs the full
+        // pipeline context - the mirror never renders standalone:
+        asItemRenderContext(renderContext),
         appearanceLookup,
       );
 

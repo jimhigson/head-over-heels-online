@@ -4,7 +4,7 @@ import {
 } from "../game/physics/mechanicsConstants";
 import { type ItemTickContext } from "../game/render/ItemRenderContexts";
 import { projectWorldXyzToScreenX } from "../game/render/projections";
-import { floorsRenderExtent } from "../game/render/room/floorsExtent";
+import { roomRenderExtent } from "../game/render/room/roomRenderExtent";
 import { type ItemInPlayType } from "../model/ItemInPlay";
 import { rotateXyz } from "../utils/vectors/rotateXy";
 import { addXyzInPlace, scaleXyzWriteInto } from "../utils/vectors/vectors";
@@ -72,8 +72,9 @@ export class SoundPanRenderer<T extends ItemInPlayType>
     this.output.maxDistance = 5;
     this.output.distanceModel = "exponential";
 
-    const floorRenderExtends = floorsRenderExtent(
+    const floorRenderExtends = roomRenderExtent(
       renderContext.room,
+      renderContext.general.spritesheetMeta,
       renderContext.general.cameraAngle,
     ).floors;
 

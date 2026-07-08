@@ -25,6 +25,7 @@ import {
 import { isWall } from "../../physics/itemPredicates";
 import { blockSizePx, veryHighZ } from "../../physics/mechanicsConstants";
 import { createSprite } from "../createSprite";
+import { asItemRenderContext } from "../ItemRenderContexts";
 import {
   projectBlockXyzToScreenXy,
   projectWorldXyzToScreenXy,
@@ -43,15 +44,17 @@ const sampleBuffer: CollideableItem = {
 };
 
 export const farWallAppearance = itemAppearanceRenderOnce<"wall">(
-  ({
-    renderContext: {
+  ({ renderContext }) => {
+    const {
       isReflection,
       general: { pixiRenderer, spritesheetVariants, cameraAngle },
       item,
       room,
-      zEdges,
-    },
-  }) => {
+    } = renderContext;
+    // walls only ever render inside a room renderer (they are not portable, so
+    // never appear in a standalone appearance context) - the full pipeline
+    // context is available for the see-through decision's z-graph:
+    const { zEdges } = asItemRenderContext(renderContext);
     const { id, config } = item;
 
     const { direction, tiles } = config;

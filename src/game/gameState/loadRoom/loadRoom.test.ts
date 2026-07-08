@@ -5,7 +5,6 @@ import {
   roomSpatialIndexKey,
   type RoomState,
 } from "../../../model/RoomState";
-import { epsilon } from "../../../utils/epsilon";
 import {
   type DirectionXy4,
   type Xy,
@@ -85,21 +84,13 @@ describe.for(roomOrigins)("loadRoom with doors (origin %j)", (origin) => {
           expect(stopAutowalkCount).toBe(doorDirections.length);
         });
 
-        test("doors have correct inHiddenWall/inHidden flags", () => {
+        test("doorFrames are marked as on the floor edge", () => {
+          // all doors in these generated rooms sit on the room boundary, so
+          // every frame is on a floor edge (whether the wall is hidden is an
+          // angle question answered at render time):
           for (const item of roomItemsIterable(roomState.items)) {
             if (item.type === "doorFrame") {
-              expect(item.config).toHaveProperty(
-                "inHiddenWall",
-                item.config.direction === "right" ||
-                  item.config.direction === "towards",
-              );
-            }
-            if (item.type === "portal") {
-              expect(item.config).toHaveProperty(
-                "inHidden",
-                item.config.direction.x < -epsilon ||
-                  item.config.direction.y < -epsilon,
-              );
+              expect(item.config).toHaveProperty("onFloorEdge", true);
             }
           }
         });
@@ -137,12 +128,19 @@ describe.for(roomOrigins)("loadRoom with doors (origin %j)", (origin) => {
           }
         });
 
-        test("corner shadow blocker only loads if room has hidden doors on two sides", () => {
-          const hasRightAndTowards =
-            size.x > 2 &&
-            size.y > 2 &&
-            doorDirections.includes("right") &&
-            doorDirections.includes("towards");
+        test("corner shadow blockers load at every corner with doors on both sides", () => {
+          // a corner qualifies when the doors are on adjacent sides (sharing
+          // a corner) - opposite-side pairs share none. Rooms only 2 blocks
+          // across have their short walls entirely consumed by the door, so
+          // no wall touches the corner:
+          const xSidesWithDoor = (["right", "left"] as const).filter((side) =>
+            doorDirections.includes(side),
+          ).length;
+          const ySidesWithDoor = (["towards", "away"] as const).filter((side) =>
+            doorDirections.includes(side),
+          ).length;
+          const adjacentPairs =
+            size.x > 2 && size.y > 2 ? xSidesWithDoor * ySidesWithDoor : 0;
 
           const cornerShadows = roomItemsIterable(roomState.items)
             .filter(
@@ -152,7 +150,7 @@ describe.for(roomOrigins)("loadRoom with doors (origin %j)", (origin) => {
             )
             .toArray();
 
-          expect(cornerShadows.length).toBe(hasRightAndTowards ? 1 : 0);
+          expect(cornerShadows.length).toBe(adjacentPairs);
         });
       });
     });

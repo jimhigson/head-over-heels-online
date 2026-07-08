@@ -247,16 +247,17 @@ export class ItemBoundingBoxRenderer<T extends ItemInPlayType>
         item.type === "floor" ? "top" : "bottom",
       ),
     );
-    if (item.renderAabb) {
+    const renderBox = this.renderContext.renderBoxes.get(item);
+    if (renderBox) {
       const renderAabbGraphics = renderBB(
-        item.renderAabb,
+        renderBox.renderAabb,
         color,
         cameraAngle,
         bbLineWidth / 2,
       );
-      if (item.renderAabbOffset) {
+      if (renderBox.renderAabbOffset) {
         const offset = projectWorldXyzToScreenXy(
-          item.renderAabbOffset,
+          renderBox.renderAabbOffset,
           cameraAngle,
         );
         renderAabbGraphics.position.set(offset.x, offset.y);

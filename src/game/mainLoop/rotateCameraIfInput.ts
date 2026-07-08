@@ -1,5 +1,4 @@
 import {
-  cameraAngleBase,
   quarterTurnAnticlockwise,
   quarterTurnClockwise,
   rotateXy,
@@ -16,7 +15,7 @@ export const rotateCameraIfInput = <RoomId extends string>(
   gameState: GameState<RoomId>,
 ) => {
   const { inputStateTracker } = gameState;
-  const currentAngle = gameState.cameraAngle ?? cameraAngleBase;
+  const currentAngle = gameState.cameraAngle;
 
   if (inputStateTracker.currentActionPress("rotateCameraClockwise") === "tap") {
     gameState.cameraAngle = rotateXy(currentAngle, quarterTurnClockwise);

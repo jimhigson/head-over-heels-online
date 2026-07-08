@@ -4,17 +4,14 @@ import { type JsonItem } from "../../../model/json/JsonItem";
 import { type StoodOnBy } from "../../../model/StoodOnBy";
 import { emptyObject } from "../../../utils/empty";
 import { pick } from "../../../utils/pick";
-import { axisProjectsReversed } from "../../../utils/vectors/rotateXy";
 import { unitVectors } from "../../../utils/vectors/unitVectors";
 import {
   addXyz,
   doorAlongAxis,
   originXyz,
   perpendicularAxisXy,
-  rotateAxisXyByCameraAngle,
   scaleXyz,
   subXyz,
-  type Xy,
   type Xyz,
 } from "../../../utils/vectors/vectors";
 import { blockSizePx, veryHighZ } from "../../physics/mechanicsConstants";
@@ -23,28 +20,36 @@ import { type ShadowCastSpriteOptions } from "../../render/ShadowCastSpriteOptio
 import { nonRenderingItemFixedZIndex } from "../../render/sortZ/fixedZIndexes";
 import { type RoomDirectionalIndex } from "./buildRoomJsonDirectionalIndex";
 import { floorZAtPosition } from "./floorZAtPosition";
-import { isDoorInHiddenWall } from "./isDoorInHiddenWall";
+import { isDoorOnFloorEdge } from "./isDoorOnFloorEdge";
 import { defaultBaseState } from "./itemDefaultStates";
 
+/**
+ * shadow textures baked for the door's physical axis at the base angle; the
+ * shadow renderer flips them when the camera rotates onto an odd quarter turn
+ */
 const shadowDoorFloatingThresholdY: ShadowCastSpriteOptions = Object.freeze({
   textureId: "shadow.door.floatingThreshold.double.y",
+  flipsOnOddQuarterCameraTurns: true,
+});
+
+const shadowDoorFloatingThresholdX: ShadowCastSpriteOptions = Object.freeze({
+  textureId: "shadow.door.floatingThreshold.double.y",
+  flipX: true,
+  flipsOnOddQuarterCameraTurns: true,
 });
 
 const shadowDoorFrameTopY: ShadowCastSpriteOptions = Object.freeze({
   textureId: "shadow.doorFrame.top.y",
+  flipsOnOddQuarterCameraTurns: true,
 });
 
 const shadowDoorFrameTopX: ShadowCastSpriteOptions = Object.freeze({
   textureId: "shadow.doorFrame.top.y",
   flipX: true,
+  flipsOnOddQuarterCameraTurns: true,
 });
 
 const doorFrameTopNoCastShadowOn = ["doorLegs" as const];
-
-const shadowDoorFloatingThresholdX: ShadowCastSpriteOptions = Object.freeze({
-  textureId: "shadow.door.floatingThreshold.double.y",
-  flipX: true,
-});
 
 /**
  * this looks low when the bounding boxes are rendered, but visually
@@ -57,7 +62,28 @@ export const doorPostHeightPx = blockSizePx.z * doorPostHeightBlocks;
 
 /** how many blocks wide is the door, including frame and doorway? */
 const doorOverallWidthBlocks = 2;
-export const doorOverallWidthPx = 2 * blockSizePx.x;
+export const doorOverallWidthPx = doorOverallWidthBlocks * blockSizePx.x;
+
+/**
+ * both posts are physically 8px along the wall at every camera angle. The
+ * *drawn* posts are asymmetric (the apparently-nearer is 9px), which is
+ * render-time-derived; freezing the physical width means the camera can
+ * never change the room's geometry - at the cost of a constant 1px
+ * art-vs-physics difference on exactly one post
+ */
+const doorPostWidthPx = 8;
+const doorPostWidthInThroughDoorAxis = 8;
+
+/**
+ * the doorway gap the player walks through, and enters relative to, is placed
+ * at the ORIGINAL game's asymmetric post widths (near 9px / far 8px) - NOT the
+ * frozen 8px render posts. The portal is non-rendering physics, so keeping it
+ * at the original geometry preserves the exact spot the player enters at (which
+ * the first-frame scroll snaps to) without affecting the camera-invariant post
+ * render. Baking the 9/8 asymmetry into world space is itself camera-invariant.
+ */
+const entryNearPostWidthPx = 9;
+const entryFarPostWidthPx = 8;
 
 // to be true to the original game, this should be 0.75 blocks, which is
 // enough to be completely outside the doorframe, and to fall off the ledge
@@ -68,11 +94,15 @@ const autoWalkDistanceBlocks = 0.5;
 // the room, like the other player walking through the door
 const stopAutoWalkDepthBlocks = 0.5;
 
+/**
+ * loads a door's items with only angle-invariant (physical) properties: the
+ * drawn post widths (9px apparently-near), whether the parts render as being
+ * in a hidden wall, and their render boxes are all derived at render time
+ */
 export function* loadDoor<RoomId extends string, RoomItemId extends string>(
   jsonDoor: JsonItem<"door", RoomId, RoomItemId>,
   jsonItemId: RoomItemId,
   directionalIndex: RoomDirectionalIndex<RoomId, RoomItemId>,
-  cameraAngle: Xy,
 ): Generator<
   ItemTypeUnion<
     "blocker" | "doorFrame" | "doorLegs" | "portal" | "stopAutowalk" | "wall",
@@ -88,7 +118,7 @@ export function* loadDoor<RoomId extends string, RoomItemId extends string>(
   const alongWallAxis = doorAlongAxis(direction);
   const throughDoorAxis = perpendicularAxisXy(alongWallAxis);
 
-  const inHidden = isDoorInHiddenWall(jsonDoor, directionalIndex, cameraAngle);
+  const onFloorEdge = isDoorOnFloorEdge(jsonDoor, directionalIndex);
   const floorZ = floorZAtPosition(position, directionalIndex) ?? 0;
   const legHeight = position.z - floorZ;
 
@@ -128,149 +158,111 @@ export function* loadDoor<RoomId extends string, RoomItemId extends string>(
     [throughDoorAxis]: doorTunnelLengthPx,
   };
 
-  /* the graphics draw the camera-nearer post 9px wide along the wall and the
-     farther post 8px - an artwork quirk that can't be changed, so the geometry
-     deliberately follows it. Which of the two posts is camera-nearer swaps
-     when the along-wall axis projects reversed on screen: */
-  const alongReversed = axisProjectsReversed(alongWallAxis, cameraAngle);
-  const nearPostWidthInAxis = alongReversed ? 8 : 9;
-  const farPostWidthInAxis = alongReversed ? 9 : 8;
-  const postWidthInThroughDoorAxis = 8;
+  const framePartsOrigin = blockXyzToFineXyz(
+    addXyz(position, invisibleWallSetBackBlocks, tunnelSetbackBlocks),
+  );
 
-  {
-    const renderAabb = {
-      [alongWallAxis]: farPostWidthInAxis,
-      [throughDoorAxis]: postWidthInThroughDoorAxis,
+  const postAabb = addXyz(
+    {
+      [alongWallAxis]: doorPostWidthPx,
+      [throughDoorAxis]: doorPostWidthInThroughDoorAxis,
       z: doorPostHeightPx,
-    } as Xyz;
-    yield {
-      ...jsonDoor,
-      ...defaultItemProperties,
-      ...{
-        type: "doorFrame",
-        // doorframes never animate, so the hash (only used to de-synchronise animations) is irrelevant:
-        hash: 0,
-        id: `${jsonItemId}/frameFar` as RoomItemId,
-        jsonItemId,
-        config: {
-          ...jsonDoor.config,
-          inHiddenWall: inHidden,
-          part: "far",
-        },
-        state: {
-          ...defaultBaseState(),
-          // the far post ends flush with the door's overall (2-block) span,
-          // so its position follows from its own (camera-dependent) width:
-          position: addXyz(
-            blockXyzToFineXyz(
-              addXyz(position, invisibleWallSetBackBlocks, tunnelSetbackBlocks),
-            ),
-            { [alongWallAxis]: doorOverallWidthPx - farPostWidthInAxis },
-          ),
-          stoodOnBy: emptyObject as StoodOnBy<RoomItemId>,
-        },
-        aabb: addXyz(renderAabb, doorTunnelAabbPx),
-        renderAabb,
-        renderAabbOffset: outIsNegative ? doorTunnelAabbPx : undefined,
-      },
-    };
-  }
-  {
-    const renderAabb = {
-      [alongWallAxis]: nearPostWidthInAxis,
-      [throughDoorAxis]: postWidthInThroughDoorAxis,
-      z: doorPostHeightPx,
-    } as Xyz;
+    } as Xyz,
+    doorTunnelAabbPx,
+  );
 
-    yield {
-      ...jsonDoor,
-      ...defaultItemProperties,
-      ...{
-        type: "doorFrame",
-        hash: 0,
-        id: `${jsonItemId}/frameNear` as RoomItemId,
-        jsonItemId,
-        config: {
-          ...jsonDoor.config,
-          inHiddenWall: inHidden,
-          part: "near",
-        },
-        state: {
-          ...defaultBaseState(),
-          position: blockXyzToFineXyz(
-            addXyz(position, invisibleWallSetBackBlocks, tunnelSetbackBlocks),
-          ),
-          stoodOnBy: emptyObject as StoodOnBy<RoomItemId>,
-        },
-
-        aabb: addXyz(renderAabb, doorTunnelAabbPx),
-        renderAabb,
-        renderAabbOffset: outIsNegative ? doorTunnelAabbPx : undefined,
+  yield {
+    ...jsonDoor,
+    ...defaultItemProperties,
+    ...{
+      type: "doorFrame",
+      // doorframes never animate, so the hash (only used to de-synchronise animations) is irrelevant:
+      hash: 0,
+      id: `${jsonItemId}/frameFar` as RoomItemId,
+      jsonItemId,
+      config: {
+        ...jsonDoor.config,
+        onFloorEdge,
+        part: "far",
       },
-    };
-  }
+      state: {
+        ...defaultBaseState(),
+        // the far post ends flush with the door's overall (2-block) span:
+        position: addXyz(framePartsOrigin, {
+          [alongWallAxis]: doorOverallWidthPx - doorPostWidthPx,
+        }),
+        stoodOnBy: emptyObject as StoodOnBy<RoomItemId>,
+      },
+      aabb: postAabb,
+    },
+  };
+
+  yield {
+    ...jsonDoor,
+    ...defaultItemProperties,
+    ...{
+      type: "doorFrame",
+      hash: 0,
+      id: `${jsonItemId}/frameNear` as RoomItemId,
+      jsonItemId,
+      config: {
+        ...jsonDoor.config,
+        onFloorEdge,
+        part: "near",
+      },
+      state: {
+        ...defaultBaseState(),
+        position: framePartsOrigin,
+        stoodOnBy: emptyObject as StoodOnBy<RoomItemId>,
+      },
+      aabb: postAabb,
+    },
+  };
+
   /**
    * the bit at the top of the frame between the two door posts
    */
-  {
-    const renderAabb = {
-      [alongWallAxis]:
-        2 * blockSizePx.x - nearPostWidthInAxis - farPostWidthInAxis,
-      [throughDoorAxis]: postWidthInThroughDoorAxis,
-      z: doorPostHeightPx - doorPortalHeight,
-    } as Xyz;
-    yield {
-      ...jsonDoor,
-      ...defaultItemProperties,
-      ...{
-        type: "doorFrame",
-        hash: 0,
-        id: `${jsonItemId}/frameTop` as RoomItemId,
-        jsonItemId,
-        config: {
-          ...jsonDoor.config,
-          inHiddenWall: inHidden,
-          part: "top",
-        },
-        state: {
-          ...defaultBaseState(),
-          position: addXyz(
-            blockXyzToFineXyz(
-              addXyz(position, invisibleWallSetBackBlocks, tunnelSetbackBlocks),
-            ),
-            {
-              // the top's art lines up with the camera-nearer (9px) post's
-              // art, so it keeps the same vector from that post's origin as
-              // at the base angle - flipped along the wall when the near
-              // post is at the door's far end:
-              [alongWallAxis]: nearPostWidthInAxis + (alongReversed ? 1 : -1),
-              z: doorPortalHeight,
-            },
-          ),
-          stoodOnBy: emptyObject as StoodOnBy<RoomItemId>,
-        },
-        aabb: addXyz(renderAabb, doorTunnelAabbPx, { [alongWallAxis]: 1 }),
-        renderAabb,
-        // the drawn box is the gap between the posts, which sits on the other
-        // side of the position's 1px overlap with the near post:
-        renderAabbOffset: addXyz(outIsNegative ? doorTunnelAabbPx : originXyz, {
-          [alongWallAxis]: alongReversed ? -1 : 1,
-        }),
-        shadowCastTexture:
-          inHidden ? undefined
-          : rotateAxisXyByCameraAngle(alongWallAxis, cameraAngle) === "x" ?
-            shadowDoorFrameTopX
-          : shadowDoorFrameTopY,
-        shadowOffset: {
-          [alongWallAxis]: -1,
-          [throughDoorAxis]: 1,
-        },
-        // ie, if character jumps while stood in a doorway, the top of the doorframe is now 'standing' on them:
-        castsShadowWhileStoodOn: true,
-        noShadowCastOn: inHidden ? undefined : doorFrameTopNoCastShadowOn,
+  yield {
+    ...jsonDoor,
+    ...defaultItemProperties,
+    ...{
+      type: "doorFrame",
+      hash: 0,
+      id: `${jsonItemId}/frameTop` as RoomItemId,
+      jsonItemId,
+      config: {
+        ...jsonDoor.config,
+        onFloorEdge,
+        part: "top",
       },
-    };
-  }
+      state: {
+        ...defaultBaseState(),
+        // the physical top bar spans the gap between the (8px) posts:
+        position: addXyz(framePartsOrigin, {
+          [alongWallAxis]: doorPostWidthPx,
+          z: doorPortalHeight,
+        }),
+        stoodOnBy: emptyObject as StoodOnBy<RoomItemId>,
+      },
+      aabb: addXyz(
+        {
+          [alongWallAxis]: doorOverallWidthPx - 2 * doorPostWidthPx,
+          [throughDoorAxis]: doorPostWidthInThroughDoorAxis,
+          z: doorPostHeightPx - doorPortalHeight,
+        } as Xyz,
+        doorTunnelAabbPx,
+      ),
+      shadowCastTexture:
+        alongWallAxis === "x" ? shadowDoorFrameTopX : shadowDoorFrameTopY,
+      shadowOffset: {
+        [alongWallAxis]: -1,
+        [throughDoorAxis]: 1,
+      },
+      // ie, if character jumps while stood in a doorway, the top of the doorframe is now 'standing' on them:
+      castsShadowWhileStoodOn: true,
+      noShadowCastOn: doorFrameTopNoCastShadowOn,
+    },
+  };
 
   // wall above the door, up to the ceiling:
   yield {
@@ -285,14 +277,9 @@ export function* loadDoor<RoomId extends string, RoomItemId extends string>(
       renders: false,
       state: {
         ...defaultBaseState(),
-        position: addXyz(
-          blockXyzToFineXyz(
-            addXyz(position, invisibleWallSetBackBlocks, tunnelSetbackBlocks),
-          ),
-          {
-            z: doorPostHeightPx,
-          },
-        ),
+        position: addXyz(framePartsOrigin, {
+          z: doorPostHeightPx,
+        }),
         stoodOnBy: emptyObject as StoodOnBy<RoomItemId>,
       },
       aabb: addXyz(
@@ -300,10 +287,8 @@ export function* loadDoor<RoomId extends string, RoomItemId extends string>(
           [alongWallAxis]: 2,
           [throughDoorAxis]: doorTunnelLengthBlocks,
         }),
-        { [throughDoorAxis]: postWidthInThroughDoorAxis, z: veryHighZ },
+        { [throughDoorAxis]: doorPostWidthInThroughDoorAxis, z: veryHighZ },
       ),
-      // helps the editor to know not to consider a hover on this:
-      renderAabb: originXyz,
       fixedZIndex: nonRenderingItemFixedZIndex,
     },
   };
@@ -319,7 +304,6 @@ export function* loadDoor<RoomId extends string, RoomItemId extends string>(
       jsonItemId,
       config: {
         ...pick(jsonDoor.config, "toRoom", "toDoor"),
-        inHidden,
         relativePoint: blockXyzToFineXyz({
           ...originXyz,
           // the relative point gets put halfway through the doorframe
@@ -337,22 +321,20 @@ export function* loadDoor<RoomId extends string, RoomItemId extends string>(
               // set the portal back to the 'back' side of the door (looking from
               // inside the room) so the character has to walk all the way to the
               // other side of the frame to touch it. The tunnel term is fixed by
-              // the door's world direction; the embed term follows the
-              // (camera-relative) hidden wall:
+              // the door's world direction; the embed term follows the wall
+              // setback:
               [throughDoorAxis]:
                 (outIsNegative ? -doorTunnelLengthBlocks : 0.5) +
                 invisibleWallSetBackBlocks[throughDoorAxis],
             }),
           ),
-          { [alongWallAxis]: nearPostWidthInAxis },
+          { [alongWallAxis]: entryNearPostWidthPx },
         ),
         stoodOnBy: emptyObject as StoodOnBy<RoomItemId>,
       },
       aabb: {
         [alongWallAxis]:
-          doorOverallWidthBlocks * blockSizePx.x -
-          nearPostWidthInAxis -
-          farPostWidthInAxis,
+          doorOverallWidthPx - entryNearPostWidthPx - entryFarPostWidthPx,
         // portals get thickness for the same reason walls do -
         // it makes it harder to push items such as enemies through
         // them during collisions with a lot of overlap - ie, if items
@@ -375,25 +357,23 @@ export function* loadDoor<RoomId extends string, RoomItemId extends string>(
         jsonItemId,
         config: {
           ...jsonDoor.config,
-          inHiddenWall: inHidden,
+          onFloorEdge,
           style: "none",
           side: "away", // TODO: look at typings - this isn't needed for hidden walls
           height: legHeight,
         },
         renders: true,
+        // the floating threshold only shows (and casts) in a hidden wall -
+        // gated per angle by shadowCastTextureAtAngle:
         shadowCastTexture:
-          inHidden ?
-            rotateAxisXyByCameraAngle(alongWallAxis, cameraAngle) === "x" ?
-              shadowDoorFloatingThresholdX
-            : shadowDoorFloatingThresholdY
-          : undefined,
-        castsShadowWhileStoodOn: inHidden,
+          alongWallAxis === "x" ?
+            shadowDoorFloatingThresholdX
+          : shadowDoorFloatingThresholdY,
+        castsShadowWhileStoodOn: false,
         state: {
           ...defaultBaseState(),
           position: {
-            ...blockXyzToFineXyz(
-              addXyz(position, invisibleWallSetBackBlocks, tunnelSetbackBlocks),
-            ),
+            ...framePartsOrigin,
             z: floorZ * blockSizePx.z,
           },
         },
@@ -405,35 +385,6 @@ export function* loadDoor<RoomId extends string, RoomItemId extends string>(
           }),
           doorTunnelAabbPx,
         ),
-        renderAabb:
-          inHidden ?
-            addXyz(
-              blockXyzToFineXyz({
-                [alongWallAxis]: 2,
-                // assume the floating threhold is 0.5 blocks wide
-                // in the direction through the door - this is actually
-                // slightly low since it is drawn to extend further than
-                // the door frame
-                [throughDoorAxis]: 0.5,
-                z: 0.5,
-              }),
-            )
-          : undefined,
-        renderAabbOffset:
-          inHidden ?
-            addXyz(
-              {
-                [alongWallAxis]: 0,
-                [throughDoorAxis]: 0,
-                z: (legHeight - 0.5) * blockSizePx.z,
-              } as Xyz,
-              outIsNegative ?
-                {
-                  [throughDoorAxis]: doorTunnelAabbPx[throughDoorAxis],
-                }
-              : originXyz,
-            )
-          : undefined,
         shadowOffset: {
           // bring shadows up to the top of the legs:
           z: legHeight * blockSizePx.z,

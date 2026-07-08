@@ -4,7 +4,7 @@ import { type AnyRoomJson } from "../../../model/RoomJson";
 import {
   type RoomJsonFloorsExtent,
   roomJsonFloorsExtent,
-} from "./floorsExtent";
+} from "./roomRenderExtent";
 
 test("returns undefined for room with no floors", () => {
   const roomJson: AnyRoomJson = {

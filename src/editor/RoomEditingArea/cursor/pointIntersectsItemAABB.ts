@@ -1,3 +1,4 @@
+import { type RenderBoxes } from "../../../game/render/renderBox/makeItemRenderBoxAtCameraAngle";
 import {
   projectApparentBottomCentre,
   projectApparentTopLeft,
@@ -16,6 +17,7 @@ const itemVisibleBounds = (
   item: EditorUnionOfAllItemInPlayTypes,
   tool: Tool,
   allowOutsideRender: boolean,
+  renderBoxes: RenderBoxes<EditorUnionOfAllItemInPlayTypes>,
 ): {
   position: Xyz;
   aabb: Xyz;
@@ -29,9 +31,13 @@ const itemVisibleBounds = (
     };
   }
 
+  const renderBox = renderBoxes.get(item);
   return {
-    position: addXyz(item.state.position, item.renderAabbOffset ?? originXyz),
-    aabb: item.renderAabb ?? item.aabb,
+    position: addXyz(
+      item.state.position,
+      renderBox?.renderAabbOffset ?? originXyz,
+    ),
+    aabb: renderBox?.renderAabb ?? item.aabb,
   };
 };
 
@@ -102,11 +108,14 @@ export const pointIntersectsItemAABB = (
   tool: Tool,
   item: EditorUnionOfAllItemInPlayTypes,
   cameraAngle: Xy,
+  /** the drawn extents, from the editor's room renderer */
+  renderBoxes: RenderBoxes<EditorUnionOfAllItemInPlayTypes>,
 ): PointerItemMaybeIntersection => {
   const { position: renderPos, aabb: renderAabb } = itemVisibleBounds(
     item,
     tool,
     false,
+    renderBoxes,
   );
 
   if (pointIntersectsAABB(pointerXy, renderPos, renderAabb, cameraAngle)) {
@@ -118,7 +127,7 @@ export const pointIntersectsItemAABB = (
   const allowOutsideRender = tool.type === "item" && item.type === "wall";
 
   if (allowOutsideRender) {
-    const { position, aabb } = itemVisibleBounds(item, tool, true);
+    const { position, aabb } = itemVisibleBounds(item, tool, true, renderBoxes);
     if (pointIntersectsAABB(pointerXy, position, aabb, cameraAngle)) {
       return "intersects-unrendered";
     }

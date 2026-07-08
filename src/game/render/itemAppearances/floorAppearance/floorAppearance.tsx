@@ -6,7 +6,10 @@ import {
   TilingSprite,
 } from "pixi.js";
 
-import { type ItemInPlay } from "../../../../model/ItemInPlay";
+import {
+  type ItemInPlay,
+  type UnionOfAllItemInPlayTypes,
+} from "../../../../model/ItemInPlay";
 import { roomItemsIterable, type RoomState } from "../../../../model/RoomState";
 import { zxSpectrumColors } from "../../../../originalGame";
 import { assertIsTextureId } from "../../../../sprites/assertIsTextureId";
@@ -46,7 +49,11 @@ import {
   projectWorldXyzToScreenX,
   projectWorldXyzToScreenXy,
 } from "../../projections";
-import { nonRenderingItemFixedZIndex } from "../../sortZ/fixedZIndexes";
+import { type RenderBoxes } from "../../renderBox/makeItemRenderBoxAtCameraAngle";
+import {
+  effectiveFixedZIndex,
+  nonRenderingItemFixedZIndex,
+} from "../../sortZ/fixedZIndexes";
 import {
   type ItemAppearance,
   itemAppearanceRenderOnce,
@@ -82,6 +89,7 @@ const floorLeftRightCutOffMask = <
   room: RoomState<RoomId, RoomItemId>,
   floorItem: ItemInPlay<"floor", RoomId, RoomItemId>,
   cameraAngle: Xy,
+  renderBoxes: RenderBoxes<UnionOfAllItemInPlayTypes> | undefined,
 ): Graphics | undefined => {
   const {
     config: {
@@ -142,18 +150,15 @@ const floorLeftRightCutOffMask = <
       return overlaps;
     })
     .reduce(
-      (
-        acc,
-        {
+      (acc, boundingItem) => {
+        const {
           aabb,
-          renderAabb,
-          renderAabbOffset,
           state: { position },
-          fixedZIndex,
           config: { direction },
-        },
-      ) => {
-        const nonRendering = fixedZIndex === nonRenderingItemFixedZIndex;
+        } = boundingItem;
+        const nonRendering =
+          effectiveFixedZIndex(boundingItem, cameraAngle) ===
+          nonRenderingItemFixedZIndex;
 
         // non-rendering items (on the hidden sides) draw nothing, so their
         // box's out-of-room extent must not widen the window: they bound it at
@@ -172,8 +177,12 @@ const floorLeftRightCutOffMask = <
               addXyz(position, { [faceAxis]: aabb[faceAxis] })
             : position;
         } else {
-          visAabb = renderAabb ?? aabb;
-          visPosition = addXyz(position, renderAabbOffset ?? originXyz);
+          const renderBox = renderBoxes?.get(boundingItem);
+          visAabb = renderBox?.renderAabb ?? aabb;
+          visPosition = addXyz(
+            position,
+            renderBox?.renderAabbOffset ?? originXyz,
+          );
         }
 
         // which footprint corner projects screen-leftmost/rightmost depends
@@ -342,6 +351,7 @@ export const floorAppearance: ItemAppearance<"floor"> =
           cameraAngle,
         },
         colourClashLayer,
+        renderBoxes,
       },
     }) => {
       const {
@@ -359,19 +369,41 @@ export const floorAppearance: ItemAppearance<"floor"> =
       const container = new Container({ label: "floorAppearance" });
       const spritesRenderContainer = new Container({ label: "sprites" });
 
+      // draw the whole floor (tiles, edge lips, cut-off mask) to its render box,
+      // not its raw physical aabb: the box extends the apparently-far ("back")
+      // door-expanded edges by a cosmetic 0.02 block so they meet the back wall
+      // (see makeItemRenderBoxAtCameraAngle), while the physical aabb stays integer-aligned.
+      // Only the horizontal x/y extent comes from the box; z stays the physical
+      // floor thickness (aabb.z). The edge-lip layout below relies on this
+      // extent carrying the door fraction (matching the pre-refactor aabb):
+      const floorRenderBox = renderBoxes?.get(floorItem);
+      const drawnMin = floorRenderBox?.renderAabbOffset ?? originXyz;
+      const drawnAabb: Xyz = {
+        x: floorRenderBox?.renderAabb.x ?? aabb.x,
+        y: floorRenderBox?.renderAabb.y ?? aabb.y,
+        z: aabb.z,
+      };
+      const xMin = drawnMin.x;
+      const xMax = drawnMin.x + drawnAabb.x;
+      const yMin = drawnMin.y;
+      const yMax = drawnMin.y + drawnAabb.y;
+
       const tilesLeft = projectWorldXyzToScreenXy(
-        { ...aabb, y: 0 },
+        { x: xMax, y: yMin, z: aabb.z },
         cameraAngle,
       );
       const tilesBottom = projectWorldXyzToScreenXy(
-        { ...aabb, x: 0, y: 0 },
+        { x: xMin, y: yMin, z: aabb.z },
         cameraAngle,
       );
       const tilesRight = projectWorldXyzToScreenXy(
-        { ...aabb, x: 0 },
+        { x: xMin, y: yMax, z: aabb.z },
         cameraAngle,
       );
-      const tilesTop = projectWorldXyzToScreenXy(aabb, cameraAngle);
+      const tilesTop = projectWorldXyzToScreenXy(
+        { x: xMax, y: yMax, z: aabb.z },
+        cameraAngle,
+      );
 
       // the four projected floor corners in cyclic (perimeter) order. which one is
       // screen-topmost depends on the camera rotation, so re-order them starting
@@ -586,8 +618,8 @@ export const floorAppearance: ItemAppearance<"floor"> =
         //   overDrawFallenItemsGraphic.destroy();
         // }
 
-        const edgeTilesX = Math.ceil(aabb.x / blockSizePx.x);
-        const edgeTilesY = Math.ceil(aabb.y / blockSizePx.x);
+        const edgeTilesX = Math.ceil(drawnAabb.x / blockSizePx.x);
+        const edgeTilesY = Math.ceil(drawnAabb.y / blockSizePx.x);
 
         // the floor's four edges, each anchored at its own corner and running the
         // floor's full extent along its axis. only the two that face the camera
@@ -597,22 +629,22 @@ export const floorAppearance: ItemAppearance<"floor"> =
         const floorEdges = [
           {
             direction: "towards",
-            position: { z: aabb.z },
+            position: { z: drawnAabb.z },
             times: { x: edgeTilesX },
           },
           {
             direction: "away",
-            position: { y: aabb.y, z: aabb.z },
+            position: { y: drawnAabb.y, z: drawnAabb.z },
             times: { x: edgeTilesX },
           },
           {
             direction: "right",
-            position: { z: aabb.z },
+            position: { z: drawnAabb.z },
             times: { y: edgeTilesY },
           },
           {
             direction: "left",
-            position: { x: aabb.x, z: aabb.z },
+            position: { x: drawnAabb.x, z: drawnAabb.z },
             times: { y: edgeTilesY },
           },
         ] as const satisfies ReadonlyArray<{
@@ -651,7 +683,8 @@ export const floorAppearance: ItemAppearance<"floor"> =
             // The overshoot must sit at the camera-far end (where the cutoff
             // mask clips it), never over the near corner shared with the other
             // lip - so the reversed shift is reduced by the overshoot:
-            const alongExtentPx = worldAlongAxis === "x" ? aabb.x : aabb.y;
+            const alongExtentPx =
+              worldAlongAxis === "x" ? drawnAabb.x : drawnAabb.y;
             const tilesCount = worldAlongAxis === "x" ? edgeTilesX : edgeTilesY;
             const overshootPx = tilesCount * blockSizePx.x - alongExtentPx;
 
@@ -706,6 +739,7 @@ export const floorAppearance: ItemAppearance<"floor"> =
           room,
           floorItem,
           cameraAngle,
+          renderBoxes,
         );
         if (cutoffMask !== undefined) {
           // rendering to a sprite first works around an issue in

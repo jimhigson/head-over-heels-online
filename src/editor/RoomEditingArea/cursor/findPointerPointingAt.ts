@@ -5,6 +5,7 @@ import { roomItemsIterable } from "../../../model/RoomState";
 import { orthoPlaneForNormal } from "../../../utils/vectors/orthoPlane";
 import { type Xy, type Xyz } from "../../../utils/vectors/vectors";
 import {
+  type EditorRoomRenderer,
   type EditorRoomState,
   type EditorUnionOfAllItemInPlayTypes,
 } from "../../editorTypes";
@@ -130,12 +131,24 @@ export const findPointerPointingAt = (
   tool: Tool,
   gridResolution: GridResolution,
   cameraAngle: Xy,
+  /**
+   * the editor's current room renderer, whose render boxes (drawn extents)
+   * picking selects by. Undefined = no renderer exists yet (first load, or
+   * between renderer swaps), so nothing has been drawn and there is nothing
+   * to point at
+   */
+  roomRenderer: Pick<EditorRoomRenderer, "renderBoxes"> | undefined,
 ): MaybePointingAtSomething => {
+  if (roomRenderer === undefined) {
+    return { roomId: room.id, scrXy, world: undefined };
+  }
+  const { renderBoxes } = roomRenderer;
+
   const intersections = roomItemsIterable(room.items)
     .filter(isPointableItemForTool(tool))
     .map((item): [typeof item, PointerItemMaybeIntersection] => [
       item,
-      pointIntersectsItemAABB(scrXy, tool, item, cameraAngle),
+      pointIntersectsItemAABB(scrXy, tool, item, cameraAngle, renderBoxes),
     ])
     .filter(
       (tup): tup is [(typeof tup)[0], PointerItemIntersection] =>
@@ -148,6 +161,7 @@ export const findPointerPointingAt = (
   const itemPointingTo = frontItemFromPointerIntersections(
     intersectionsArray,
     cameraAngle,
+    renderBoxes,
   );
 
   const roomId = room.id;

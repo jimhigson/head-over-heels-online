@@ -1,7 +1,9 @@
 //# allFunctionsCalledOnLoad
 
 import { addEdge, deleteEdge } from "../../../utils/graph/Graph";
+import { type RenderBoxes } from "../renderBox/makeItemRenderBoxAtCameraAngle";
 import { type DrawOrderComparable } from "./DrawOrderComparable";
+import { effectiveFixedZIndex } from "./fixedZIndexes";
 import { type ZGraph } from "./GraphEdges";
 import { type VisualIndex } from "./VisualIndex";
 import { zComparator } from "./zComparator";
@@ -30,6 +32,8 @@ export const updateZEdges = <TItem extends DrawOrderComparable>(
    * starting from no knowledge, and that map will be updated
    */
   zEdges: ZGraph<TItem>,
+  /** the drawn extents, owned by the caller (in-game, the room renderer) */
+  renderBoxes: RenderBoxes<TItem>,
 ): void => {
   // track items that have already been compared to cut out duplicate comparisons:
   const comparisonsDone: Map<TItem, Set<TItem>> = new Map();
@@ -49,7 +53,7 @@ export const updateZEdges = <TItem extends DrawOrderComparable>(
   }
 
   for (const itemI of movedItems) {
-    if (itemI.fixedZIndex !== undefined) {
+    if (effectiveFixedZIndex(itemI, visualIndex.cameraAngle) !== undefined) {
       continue;
     }
 
@@ -78,14 +82,14 @@ export const updateZEdges = <TItem extends DrawOrderComparable>(
     // ie - every moved node is compared again against every other node
     for (const itemJ of projectionNeighbourhood) {
       if (
-        itemJ.fixedZIndex !== undefined ||
+        effectiveFixedZIndex(itemJ, visualIndex.cameraAngle) !== undefined ||
         // already compared the other way:
         comparisonsDone.get(itemJ)?.has(itemI)
       ) {
         continue;
       }
 
-      const comparison = zComparator(itemI, itemJ, visualIndex);
+      const comparison = zComparator(itemI, itemJ, visualIndex, renderBoxes);
 
       if (!comparisonsDone.has(itemI)) {
         comparisonsDone.set(itemI, new Set());

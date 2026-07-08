@@ -61,11 +61,11 @@ export type GameState<RoomId extends string = string> = {
   gameTime: number;
 
   /**
-   * the 90°-increment camera rotation, as a (cos,sin) unit vector. Absent ⇒ the
-   * default view (1,0). Saved with the game, so reloading a save resumes the
-   * same angle.
+   * the 90°-increment camera rotation, as a (cos,sin) unit vector. Always set -
+   * a fresh game starts at the base view (1,0). Saved with the game, so reloading
+   * a save resumes the same angle.
    */
-  cameraAngle?: Xy;
+  cameraAngle: Xy;
 };
 
 // if you don't care about the RoomId generic, you can't emit events (since they are callbacks)

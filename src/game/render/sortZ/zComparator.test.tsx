@@ -1,10 +1,15 @@
 import { describe, expect, test } from "vitest";
 
-import { type ItemInPlayAAbbInfo } from "../../../model/ItemInPlay";
-import { addXyz, originXyz, type Xy } from "../../../utils/vectors/vectors";
+import {
+  addXyz,
+  originXyz,
+  subXyz,
+  type Xy,
+} from "../../../utils/vectors/vectors";
+import { type RenderBox } from "../renderBox/makeItemRenderBoxAtCameraAngle";
+import { populatedVisualIndex } from "./__test__/populatedVisualIndex";
 import { worldBoxToCameraSpace } from "./__test__/worldBoxToCameraSpace";
 import { type DrawOrderComparable } from "./DrawOrderComparable";
-import { VisualIndex } from "./VisualIndex";
 import { zComparator } from "./zComparator";
 
 const unitCube = { x: 1, y: 1, z: 1 };
@@ -34,32 +39,36 @@ const inverseAngle = ({ x, y }: Xy): Xy => ({ x, y: -y });
 
 const describeAngle = ({ x, y }: Xy) => `camera (${x},${y})`;
 
+/**
+ * a sort-test item plus its (base-angle, world-space) render box - the box is
+ * a test-local pairing, never an item field; it feeds the renderBoxes map the
+ * sort reads from
+ */
+type TestComparable = DrawOrderComparable & {
+  renderBox?: RenderBox;
+};
+
 /** rotate a comparable's physical and render boxes about the vertical (z) axis */
-const rotateComparable = (
-  item: DrawOrderComparable,
-  angle: Xy,
-): DrawOrderComparable => {
+const rotateComparable = (item: TestComparable, angle: Xy): TestComparable => {
   const physical = worldBoxToCameraSpace(item.state.position, item.aabb, angle);
-  const rotated: DrawOrderComparable = {
+  const rotated: TestComparable = {
     ...item,
     state: { position: physical.position },
     aabb: physical.aabb,
   };
-  if (item.renderAabb === undefined && item.renderAabbOffset === undefined) {
+  if (item.renderBox === undefined) {
     return rotated;
   }
-  const renderBox = worldBoxToCameraSpace(
-    addXyz(item.state.position, item.renderAabbOffset ?? originXyz),
-    item.renderAabb ?? item.aabb,
+  const box = worldBoxToCameraSpace(
+    addXyz(item.state.position, item.renderBox.renderAabbOffset ?? originXyz),
+    item.renderBox.renderAabb,
     angle,
   );
   return {
     ...rotated,
-    renderAabb: renderBox.aabb,
-    renderAabbOffset: {
-      x: renderBox.position.x - physical.position.x,
-      y: renderBox.position.y - physical.position.y,
-      z: renderBox.position.z - physical.position.z,
+    renderBox: {
+      renderAabb: box.aabb,
+      renderAabbOffset: subXyz(box.position, physical.position),
     },
   };
 };
@@ -75,19 +84,28 @@ const rotateComparable = (
  * turns, no rounding), reached via different internal data (rotated boxes + a different
  * cameraAngle). So the ground-truth front/back order is provably the same as the base
  * angle the test is written in, and asserting it at all four angles exercises the
- * comparator's angle handling (rotatedX/Y, deriveRenderBox, the axis projections) for
- * self-consistency - it catches angle-*asymmetries*, not base-angle bugs shared
+ * comparator's angle handling (rotatedX/Y, the render boxes, the axis projections)
+ * for self-consistency - it catches angle-*asymmetries*, not base-angle bugs shared
  * identically across all angles.
  */
 const orderAtCameraAngle = (
-  received: DrawOrderComparable,
-  reference: DrawOrderComparable,
+  received: TestComparable,
+  reference: TestComparable,
   atAngle: Xy,
 ): number => {
   const inverse = inverseAngle(atAngle);
   const a = rotateComparable(received, inverse);
   const b = rotateComparable(reference, inverse);
-  return zComparator(a, b, new VisualIndex([a, b], atAngle));
+  const renderBoxes = new Map<DrawOrderComparable, null | RenderBox>([
+    [a, a.renderBox ?? null],
+    [b, b.renderBox ?? null],
+  ]);
+  return zComparator(
+    a,
+    b,
+    populatedVisualIndex(new Set([a, b]), renderBoxes, atAngle),
+    renderBoxes,
+  );
 };
 
 expect.extend({
@@ -460,20 +478,23 @@ describe.each(cameraAngles)("viewed at camera ($x,$y)", (cameraAngle: Xy) => {
   });
 
   describe("overlapping renderAABBs", () => {
-    const awayOrTowardsWallAabbInfo: ItemInPlayAAbbInfo = {
+    type AabbInfo = Pick<TestComparable, "aabb" | "renderBox">;
+    const awayOrTowardsWallAabbInfo: AabbInfo = {
       aabb: { x: 8, y: 1, z: 4 },
     };
-    const leftOrRightWallAabbInfo: ItemInPlayAAbbInfo = {
+    const leftOrRightWallAabbInfo: AabbInfo = {
       aabb: { x: 1, y: 8, z: 4 },
     };
-    const floorAabbInfo: ItemInPlayAAbbInfo = {
+    const floorAabbInfo: AabbInfo = {
       aabb: { x: 8, y: 8, z: 1 },
     };
-    const headAabbInfo: ItemInPlayAAbbInfo = {
+    const headAabbInfo: AabbInfo = {
       aabb: unitCube,
       // character renders slightly bigger than their aabb (on all sides):
-      renderAabbOffset: { x: -0.1, y: -0.1, z: -0.1 },
-      renderAabb: { x: 1.2, y: 1.2, z: 1.2 },
+      renderBox: {
+        renderAabb: { x: 1.2, y: 1.2, z: 1.2 },
+        renderAabbOffset: { x: -0.1, y: -0.1, z: -0.1 },
+      },
     };
 
     test("character at far wall", () => {
@@ -482,7 +503,7 @@ describe.each(cameraAngles)("viewed at camera ($x,$y)", (cameraAngle: Xy) => {
         state: { position: { x: 0, y: 8, z: 0 } },
         ...awayOrTowardsWallAabbInfo,
       };
-      const head: DrawOrderComparable = {
+      const head: TestComparable = {
         id: "head",
         state: { position: { x: 4, y: 7, z: 0 } },
         ...headAabbInfo,
@@ -498,7 +519,7 @@ describe.each(cameraAngles)("viewed at camera ($x,$y)", (cameraAngle: Xy) => {
         state: { position: { x: 0, y: -1, z: 0 } },
         ...awayOrTowardsWallAabbInfo,
       };
-      const head: DrawOrderComparable = {
+      const head: TestComparable = {
         id: "head",
         state: { position: { x: 4, y: 0, z: 0 } },
         ...headAabbInfo,
@@ -514,7 +535,7 @@ describe.each(cameraAngles)("viewed at camera ($x,$y)", (cameraAngle: Xy) => {
         state: { position: { x: 8, y: 0, z: 0 } },
         ...leftOrRightWallAabbInfo,
       };
-      const head: DrawOrderComparable = {
+      const head: TestComparable = {
         id: "head",
         state: { position: { x: 7, y: 4, z: 0 } },
         ...headAabbInfo,
@@ -530,7 +551,7 @@ describe.each(cameraAngles)("viewed at camera ($x,$y)", (cameraAngle: Xy) => {
         state: { position: { x: -1, y: 0, z: 0 } },
         ...leftOrRightWallAabbInfo,
       };
-      const head: DrawOrderComparable = {
+      const head: TestComparable = {
         id: "head",
         state: { position: { x: 0, y: 4, z: 0 } },
         ...headAabbInfo,
@@ -546,7 +567,7 @@ describe.each(cameraAngles)("viewed at camera ($x,$y)", (cameraAngle: Xy) => {
         state: { position: { x: 0, y: 0, z: -1 } },
         ...floorAabbInfo,
       };
-      const head: DrawOrderComparable = {
+      const head: TestComparable = {
         id: "head",
         state: { position: { x: 4, y: 4, z: 0 } },
         ...headAabbInfo,
@@ -559,10 +580,13 @@ describe.each(cameraAngles)("viewed at camera ($x,$y)", (cameraAngle: Xy) => {
 
   describe("original campaign comparisons", () => {
     test("#bookworld1 adjacency anti-flicker", () => {
-      const wall: DrawOrderComparable = {
+      const wall: TestComparable = {
         id: "wall@0,8,0",
         aabb: { x: 128, y: 16, z: 9_999 },
-        renderAabb: { x: 128, y: 0, z: 50 },
+        renderBox: {
+          renderAabb: { x: 128, y: 0, z: 50 },
+          renderAabbOffset: undefined,
+        },
         state: { position: { x: 0, y: 128, z: 0 } },
       };
       const block: DrawOrderComparable = {
@@ -576,18 +600,22 @@ describe.each(cameraAngles)("viewed at camera ($x,$y)", (cameraAngle: Xy) => {
     });
 
     test("#bookworld7 door in front of floor", () => {
-      const doorFrame: DrawOrderComparable = {
+      const doorFrame: TestComparable = {
         id: "door@1,0,4/frameNear",
         aabb: { x: 9, y: 24, z: 48 },
-        renderAabb: { x: 9, y: 8, z: 48 },
-        renderAabbOffset: { x: 0, y: 16, z: 0 },
+        renderBox: {
+          renderAabb: { x: 9, y: 8, z: 48 },
+          renderAabbOffset: { x: 0, y: 16, z: 0 },
+        },
         state: { position: { x: 16, y: -24, z: 48 } },
       };
-      const floor: DrawOrderComparable = {
+      const floor: TestComparable = {
         id: "floor@0,0,0",
         aabb: { x: 64, y: 144.32, z: 36 },
-        renderAabb: { x: 64, y: 144.32, z: 10 },
-        renderAabbOffset: { x: 0, y: 0, z: 26 },
+        renderBox: {
+          renderAabb: { x: 64, y: 144.32, z: 10 },
+          renderAabbOffset: { x: 0, y: 0, z: 26 },
+        },
         state: { position: { x: 0, y: -8, z: -36 } },
       };
 
@@ -596,18 +624,18 @@ describe.each(cameraAngles)("viewed at camera ($x,$y)", (cameraAngle: Xy) => {
     });
 
     test("#safari17fish bubbles after hush puppy vanish in front of tower", () => {
-      const bubbles: DrawOrderComparable = {
+      const bubbles: TestComparable = {
         id: "bubbles",
         aabb: { x: 12, y: 12, z: 12 },
-        renderAabb: undefined,
-        renderAabbOffset: undefined,
         state: { position: { x: 2, y: 66, z: 24 } },
       };
-      const tower: DrawOrderComparable = {
+      const tower: TestComparable = {
         id: "b2",
         aabb: { x: 27, y: 11, z: 36 },
-        renderAabb: { x: 30, y: 14, z: 36 },
-        renderAabbOffset: { x: 0, y: 0, z: 0 },
+        renderBox: {
+          renderAabb: { x: 30, y: 14, z: 36 },
+          renderAabbOffset: { x: 0, y: 0, z: 0 },
+        },
         state: { position: { x: 18, y: 114, z: 0 } },
       };
 
@@ -616,18 +644,22 @@ describe.each(cameraAngles)("viewed at camera ($x,$y)", (cameraAngle: Xy) => {
     });
 
     test("#penitentiary28 towards-side door legs in front of left-side wall", () => {
-      const doorLegs: DrawOrderComparable = {
+      const doorLegs: TestComparable = {
         id: "doorLegs",
         aabb: { x: 32, y: 24, z: 48 },
-        renderAabb: { x: 32, y: 8, z: 6 },
-        renderAabbOffset: { x: 0, y: 16, z: 42 },
+        renderBox: {
+          renderAabb: { x: 32, y: 8, z: 6 },
+          renderAabbOffset: { x: 0, y: 16, z: 42 },
+        },
         state: { position: { x: 48, y: -24, z: 0 } },
       };
-      const wall: DrawOrderComparable = {
+      const wall: TestComparable = {
         id: "wall",
         aabb: { x: 16, y: 48, z: 9_999 },
-        renderAabb: { x: 0, y: 48, z: 50 },
-        renderAabbOffset: undefined,
+        renderBox: {
+          renderAabb: { x: 0, y: 48, z: 50 },
+          renderAabbOffset: undefined,
+        },
         state: { position: { x: 128, y: 0, z: 0 } },
       };
 

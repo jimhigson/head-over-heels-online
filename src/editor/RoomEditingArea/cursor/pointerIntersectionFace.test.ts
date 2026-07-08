@@ -2,17 +2,17 @@ import { describe, expect, test } from "vitest";
 
 import { type Xyz } from "../../../utils/vectors/vectors";
 import {
-  blockRoomAtAngle,
+  blockRoom,
   pointerTool,
   projectFaceCentre,
   visibleSideFaces,
-} from "./__test__/blockRoomAtAngle";
+} from "./__test__/blockRoom";
 import { pointerIntersectionFace } from "./pointerIntersectionFace";
 
 const cameraAngleBase = { x: 1, y: 0 };
 
 describe("at the base camera angle", () => {
-  const { block } = blockRoomAtAngle(cameraAngleBase);
+  const { block } = blockRoom();
 
   test("pointing at the top face centre gives the up face", () => {
     expect(
@@ -52,7 +52,7 @@ describe("at every camera angle, the physical face is returned", () => {
   test.for(visibleSideFaces)(
     "up face is angle-independent (camera angle $cameraAngle.x,$cameraAngle.y)",
     ({ cameraAngle }) => {
-      const { block } = blockRoomAtAngle(cameraAngle);
+      const { block } = blockRoom();
       expect(
         pointerIntersectionFace(
           block,
@@ -67,7 +67,7 @@ describe("at every camera angle, the physical face is returned", () => {
   test.for(visibleSideFaces)(
     "the screen-right face maps to its physical face (camera angle $cameraAngle.x,$cameraAngle.y)",
     ({ cameraAngle, apparentRight }) => {
-      const { block } = blockRoomAtAngle(cameraAngle);
+      const { block } = blockRoom();
       expect(
         pointerIntersectionFace(
           block,
@@ -82,7 +82,7 @@ describe("at every camera angle, the physical face is returned", () => {
   test.for(visibleSideFaces)(
     "the screen-towards face maps to its physical face (camera angle $cameraAngle.x,$cameraAngle.y)",
     ({ cameraAngle, apparentTowards }) => {
-      const { block } = blockRoomAtAngle(cameraAngle);
+      const { block } = blockRoom();
       expect(
         pointerIntersectionFace(
           block,

@@ -3,7 +3,12 @@
 import { epsilon, veryClose } from "../../../utils/epsilon";
 import { rotatedX, rotatedY } from "../../../utils/vectors/rotateXy";
 import { type Xyz } from "../../../utils/vectors/vectors";
+import {
+  type RenderBox,
+  type RenderBoxes,
+} from "../renderBox/makeItemRenderBoxAtCameraAngle";
 import { type DrawOrderComparable } from "./DrawOrderComparable";
+import { effectiveFixedZIndex } from "./fixedZIndexes";
 import { type VisualIndex } from "./VisualIndex";
 import {
   ADJACENT_X,
@@ -25,9 +30,13 @@ const aRenderScratch: Xyz = { x: 0, y: 0, z: 0 };
 const bRenderScratch: Xyz = { x: 0, y: 0, z: 0 };
 
 /** the world min-corner of an item's render box, using `scratch` if it has a render offset */
-const renderBoxWorldPos = (item: DrawOrderComparable, scratch: Xyz): Xyz => {
+const renderBoxWorldPos = (
+  item: DrawOrderComparable,
+  renderBox: null | RenderBox | undefined,
+  scratch: Xyz,
+): Xyz => {
   const { position } = item.state;
-  const offset = item.renderAabbOffset;
+  const offset = renderBox?.renderAabbOffset;
   if (offset === undefined) {
     return position;
   }
@@ -61,22 +70,27 @@ export const zComparator = (
   a: DrawOrderComparable,
   b: DrawOrderComparable,
   visualIndex: VisualIndex<DrawOrderComparable>,
+  /** the drawn extents, owned by the caller (in-game, the room renderer) */
+  renderBoxes: RenderBoxes<DrawOrderComparable>,
 ): number => {
+  const { cameraAngle } = visualIndex;
+
   if (
-    // zero-volume (render) bb items don't participate in z-ordering - this is THE one way
-    // to take an item out of z-sorting for efficiency.
-    a.fixedZIndex !== undefined ||
-    b.fixedZIndex !== undefined
+    // fixed-z-index items (including walls hidden at this angle) don't
+    // participate in z-ordering - this is THE one way to take an item out of
+    // z-sorting for efficiency.
+    effectiveFixedZIndex(a, cameraAngle) !== undefined ||
+    effectiveFixedZIndex(b, cameraAngle) !== undefined
   ) {
     return 0;
   }
 
-  const { cameraAngle } = visualIndex;
-
-  const aRenderPos = renderBoxWorldPos(a, aRenderScratch);
-  const aRenderBb = a.renderAabb ?? a.aabb;
-  const bRenderPos = renderBoxWorldPos(b, bRenderScratch);
-  const bRenderBb = b.renderAabb ?? b.aabb;
+  const aRenderBox = renderBoxes.get(a);
+  const bRenderBox = renderBoxes.get(b);
+  const aRenderPos = renderBoxWorldPos(a, aRenderBox, aRenderScratch);
+  const aRenderBb = aRenderBox?.renderAabb ?? a.aabb;
+  const bRenderPos = renderBoxWorldPos(b, bRenderBox, bRenderScratch);
+  const bRenderBb = bRenderBox?.renderAabb ?? b.aabb;
 
   const aProj = visualIndex.getItemAxesProjections(a)!;
   const bProj = visualIndex.getItemAxesProjections(b)!;
@@ -93,10 +107,7 @@ export const zComparator = (
       );
       if (renderBBsOrder === Z_COMPARATOR_OF_VISUALLY_OVERLAPPING_UNDECIDED) {
         const renderBBDifferentFromPhysical =
-          a.renderAabbOffset !== undefined ||
-          a.renderAabb !== undefined ||
-          b.renderAabbOffset !== undefined ||
-          b.renderAabb !== undefined;
+          aRenderBox !== undefined || bRenderBox !== undefined;
 
         if (renderBBDifferentFromPhysical) {
           // if the render bbs are undecided, move onto the physical bbs:

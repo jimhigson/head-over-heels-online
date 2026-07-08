@@ -14,7 +14,15 @@ My name is Jim Higson and my tag on github is jimhigson
  * Shadows are rendered on all items that are eligible for them, and that have shadow 'casters' directly above them. Shadows are masked, and the masks
    reflect the top surface of the item, which is the only part of an item that is able to render a shadow
  * Item rendering is via an object-composed chain of item renderers whose lifecycle is managed by the room renderer
- * Item renderers are recreated on change of camera angle. There are four possible camera angles, expressed by the cameraAngle vector
+ * There are four camera angles, expressed by the `cameraAngle` Xy unit vector (cos,sin ∈ {(1,0),(0,1),(−1,0),(0,−1)})
+
+### Camera angle is a render-time concern (angle-free room model)
+ * The loaded room model (items' `position`, `aabb`, config) is camera-angle-FREE - loaders take no `cameraAngle`. Nothing about the physical/collision model changes when the camera turns; the camera can never alter room geometry.
+ * All angle-dependent geometry is derived at render time. The key primitive is `makeItemRenderBoxAtCameraAngle(item, cameraAngle, spritesheetMeta)` (`src/game/render/renderBox/`) → a `RenderBox` (drawn extent + near-corner offset) used for z-sorting and drawn extents; `undefined` = render true to the physical aabb (the common case, incl. lightBeams).
+ * Items carry NO render geometry: the structural types (walls, door frames/legs, floors) derive their whole box inline in `makeItemRenderBoxAtCameraAngle`; every other kind's angle-invariant overdraw box comes from the `itemRenderExtents` table in the spritesheet meta (`gfx/spritesheetMeta/itemRenderExtents.ts`), keyed by dotted kind ids (`block.tower`, `monster.monkey`) that are compile-time checked against the item/config types.
+ * The room renderer OWNS the boxes: it derives once per (item, angle) into its `renderBoxes` map (`Map<item, null | RenderBox>`; `null` = deliberately boxless, a `.get` miss = not in the render world) and reconciles membership each tick. Everything else consumes that map - it is passed as data on the item render context, into the `VisualIndex`/`zComparator`/`updateZEdges` sort machinery as call arguments, and exposed read-only for editor pointer picking. Nothing else calls the derive at time of use.
+ * Wall-hidden-ness, apparent near/far edges, door-post apparent widths, shadow X/Y flips etc are all functions of `cameraAngle` evaluated at render time (e.g. `isWallDirectionHiddenAtAngle`, `effectiveFixedZIndex`, `isDoorPartInHiddenWall`). Door frame parts carry a world-fixed `onFloorEdge` (not an angle-stamped `inHiddenWall`).
+ * Floors: physically expand a clean **0.5 block** (integer px, on-grid at every angle) through each doorway so players can't fall out of the world under a door; the expanded sides are recorded in the floor config's `doorExpandedSides`. The apparently-far ("back") expanded edges are *drawn* a cosmetic **0.02 block** larger (`floorBackEdgeOverhangBlocks` in `makeItemRenderBoxAtCameraAngle`, applied in `floorAppearance`) so the floor meets the back wall pixel-perfectly like the original game - render-only, never in the physical aabb. Do NOT bake fractional expansion into the physical aabb: it slides the whole floor off the pixel grid.
  * z-ordering is done by maintaining a graph of which items are in front or behind which other items, which is updated in-place for each frame, and a topological
    sort finds the order
  * cyclic rendering is detected in the topological sort and these links are broken; masking resolves the cycle in the ItemPositionRenderer, which takes on an extra
@@ -312,9 +320,12 @@ throw new Error(
 
  * run playwright using `pnpm playwright test` etc
 
+ * to speed up the room-snapshot specs, restrict which rooms run with the `ROOMS` env var (comma-separated room ids or `*` wildcards), eg `ROOMS=blacktooth10 pnpm playwright test roomSnapshots.spec.ts --project=chromium-desktop`, or `ROOMS=blacktooth*,moonbase*`. `ROOMS_CONTAINING=conveyor` (or `type[configProp=value]`) filters to rooms holding a given item. `NO_UNCOLOURISED=1` / `NO_TOPPY=1` skip those variants. (parsed in `resolveRoomIds`; full list in the `roomSnapshots.spec.ts` header)
+
 
 ## Vite
 * There are two vite configs - for the editor and the game.
+* NEVER extract `import.meta.env` reads (`DEV`, `MODE`, etc.) into a module-level const and import that elsewhere. The extraction defeats dead-code elimination: the define-replacement folds inside the extracted module, but tree-shaking does not propagate an imported const's value across module boundaries, so guarded code ships in production builds even though the guard itself is later minified away. Always write the `import.meta.env` expression INLINE at the `if` where it gates code (or use a vite `define` global) so the branch is statically dead at tree-shake time.
 * the editor vite starts in a different dir, as given by the package.json file
 * whenever starting a server (`dev`/`preview`), check which port it actually started on (read its stdout) before trying to connect - if the default port is already in use, vite silently falls through to the next free port, so don't assume the port
 
