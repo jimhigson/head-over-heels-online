@@ -1,0 +1,1 @@
+import{Rr as e,n as t,pi as n}from"./store-DBxwEdCA.js";import{t as r}from"./continueWithRefresh-DTapl85R.js";var i=i=>{t.dispatch(e()),n({actionCreator:r,effect(){i(!0)}})};export{i as onNeedRefresh};

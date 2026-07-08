@@ -1,1 +1,0 @@
-import{Pr as e,li as t,n}from"./store-DETbtT0j.js";import{t as r}from"./continueWithRefresh-CepoUnLx.js";var i=i=>{n.dispatch(e()),t({actionCreator:r,effect(){i(!0)}})};export{i as onNeedRefresh};

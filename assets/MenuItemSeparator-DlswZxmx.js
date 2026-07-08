@@ -1,0 +1,1 @@
+import{r as e}from"./index-BpecbhtC.js";var t=()=>e(`div`,{class:`col-span-3 h-1`});export{t};

@@ -1,0 +1,1 @@
+var e=`/assets/campaign.columnar-MDKTOI8e.json`;export{e as default};

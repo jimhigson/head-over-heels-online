@@ -1,0 +1,1 @@
+import{rr as e,yn as t}from"./store-DBxwEdCA.js";var n={x:1,y:0,z:0},r={x:-1,y:0,z:0},i={x:0,y:-1,z:0},a={x:0,y:1,z:0},o={away:a,left:n,right:r,towards:i,down:{x:0,y:0,z:-1},up:{x:0,y:0,z:1},awayRight:e(t(a,r)),towardsRight:e(t(i,r)),towardsLeft:e(t(i,n)),awayLeft:e(t(a,n))};export{o as t};
