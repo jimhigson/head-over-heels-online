@@ -13,7 +13,7 @@ import {
   type NamedColours,
   type NamedSwops,
 } from "../../../utils/palette/palette";
-import { type Aabb, type DirectionXy8 } from "../../../utils/vectors/vectors";
+import { type DirectionXy8 } from "../../../utils/vectors/vectors";
 import { type LoadableSpriteOption } from "../variants/SpritesheetVariants";
 import { type TextureId } from "./makeSpritesheetData";
 
@@ -57,19 +57,22 @@ type EffectColours<PaletteColourName extends string> = {
 export type EffectColourName = Simplify<keyof EffectColours<string>>;
 
 /**
- * the world-space box an item kind's sprites draw into, where that differs
- * from the physical aabb (sprite overdraw - eg characters draw slightly
- * bigger than their collision box)
+ * how far an item kind's sprites draw outside (positive) or inside (negative)
+ * each face of its physical aabb, in world px at the base camera angle -
+ * makeItemRenderBoxAtCameraAngle builds the camera-current drawn box from
+ * these. Omitted faces draw true to the physical box. `"none"` means the kind
+ * draws nothing at all (eg the invisible blocker)
  */
-export type ItemRenderExtent = {
-  /** the drawn extent - camera-invariant, since sprites don't rotate with the world */
-  renderAabb: Aabb;
-  /**
-   * the base-angle offset of the drawn box from the item position;
-   * makeItemRenderBoxAtCameraAngle derives the camera-current offset from it
-   */
-  baseRenderAabbOffset?: Aabb;
-};
+export type ItemRenderExtent =
+  | "none"
+  | {
+      xNeg?: number;
+      xPos?: number;
+      yNeg?: number;
+      yPos?: number;
+      zNeg?: number;
+      zPos?: number;
+    };
 
 /** the item kinds whose rendering (and so overdraw) varies by a config field */
 type StyleKeyedType =
