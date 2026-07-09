@@ -8,15 +8,15 @@ import {
 } from "../../../utils/vectors/vectors";
 import {
   apparentSilhouette,
-  blockRoomAtAngle,
+  blockRoom,
   pointerTool,
-} from "./__test__/blockRoomAtAngle";
+} from "./__test__/blockRoom";
 import { pointerIntersectionEdge } from "./pointerIntersectionEdge";
 
 const cameraAngleBase = { x: 1, y: 0 };
 
 describe("at the base camera angle", () => {
-  const { block } = blockRoomAtAngle(cameraAngleBase);
+  const { block } = blockRoom();
   const silhouette = apparentSilhouette(block, cameraAngleBase);
 
   test("near vertical edge between right and towards faces", () => {
@@ -112,7 +112,7 @@ describe("at every camera angle, the physical edge plane is returned", () => {
   test.for(nearVerticalEdgeCases)(
     "near vertical edge (camera angle $cameraAngle.x,$cameraAngle.y)",
     ({ cameraAngle, apparentTowards, expectedPlane }) => {
-      const { block } = blockRoomAtAngle(cameraAngle);
+      const { block } = blockRoom();
       const { bottomCentre } = apparentSilhouette(block, cameraAngle);
 
       expect(
@@ -168,7 +168,7 @@ describe("at every camera angle, the physical edge plane is returned", () => {
   test.for(topRightEdgeCases)(
     "top face's screen-right edge (camera angle $cameraAngle.x,$cameraAngle.y)",
     ({ cameraAngle, expectedPlane }) => {
-      const { block } = blockRoomAtAngle(cameraAngle);
+      const { block } = blockRoom();
       const { topCorner } = apparentSilhouette(block, cameraAngle);
 
       expect(

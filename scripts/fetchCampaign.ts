@@ -2,6 +2,8 @@ import { createClient } from "@supabase/supabase-js";
 import { toUint8Array } from "js-base64";
 import { gunzipSync } from "node:zlib";
 
+import { columnarDecode, isColumnarEncoded } from "../src/columnar/decoder";
+
 const [, , campaignName] = process.argv;
 if (!campaignName) {
   console.error("usage: tsx scripts/fetchCampaign.ts <campaignName> [userId]");
@@ -28,6 +30,12 @@ if (res.error) {
 
 const compressed = toUint8Array(res.data.data);
 const decompressed = gunzipSync(Buffer.from(compressed));
-const campaign = JSON.parse(decompressed.toString("utf-8"));
+const parsed = JSON.parse(decompressed.toString("utf-8"));
+
+// newer campaigns are columnar-encoded in the db (marked with `_enc`); decode
+// back to plain row form so the output is directly readable/queryable. Legacy
+// non-columnar rows pass straight through:
+const campaign =
+  isColumnarEncoded(parsed) ? columnarDecode<string>(parsed) : parsed;
 
 console.log(JSON.stringify(campaign, null, 2));

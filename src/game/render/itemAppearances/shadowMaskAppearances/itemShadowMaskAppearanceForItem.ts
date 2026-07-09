@@ -30,6 +30,7 @@ import {
   createSprite,
   type SpecifiedTextureCreateSpriteOptions,
 } from "../../createSprite";
+import { isDoorPartInHiddenWall } from "../../renderBox/makeItemRenderBoxAtCameraAngle";
 import {
   type ItemAppearance,
   type ItemAppearanceOptions,
@@ -177,22 +178,19 @@ const itemShadowMaskAppearances: {
       rotateAxisXyByCameraAngle(tangentAxis(direction), cameraAngle) === "x",
   })),
 
-  doorLegs: shadowMaskFromConfigAppearance(
-    ({ direction, inHiddenWall }, cameraAngle) => {
-      return {
-        textureId:
-          // inHiddenWall is camera-relative (re-derived on rotation by
-          // reloadStructureForCamera), matching whether the legs render the
-          // floating threshold or the full legs:
-          inHiddenWall ?
-            "shadowMask.door.floatingThreshold.double.y"
-          : "shadowMask.door.legs.threshold.double.y",
-        flipX:
-          rotateAxisXyByCameraAngle(tangentAxis(direction), cameraAngle) ===
-          "y",
-      };
-    },
-  ),
+  doorLegs: shadowMaskFromConfigAppearance((config, cameraAngle) => {
+    const { direction } = config;
+    return {
+      textureId:
+        // matches whether the legs render the floating threshold (hidden
+        // wall) or the full legs at this angle:
+        isDoorPartInHiddenWall(config, cameraAngle) ?
+          "shadowMask.door.floatingThreshold.double.y"
+        : "shadowMask.door.legs.threshold.double.y",
+      flipX:
+        rotateAxisXyByCameraAngle(tangentAxis(direction), cameraAngle) === "y",
+    };
+  }),
 
   teleporter: teleporterShadowMaskAppearance,
   portableTeleporter: teleporterShadowMaskAppearance,

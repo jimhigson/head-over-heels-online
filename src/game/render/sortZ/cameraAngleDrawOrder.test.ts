@@ -9,11 +9,11 @@ import {
 } from "../../../utils/vectors/rotateXy";
 import { type Xy, type Xyz } from "../../../utils/vectors/vectors";
 import { projectWorldXyzToScreenXy } from "../projections";
+import { populatedVisualIndex } from "./__test__/populatedVisualIndex";
 import { worldBoxToCameraSpace } from "./__test__/worldBoxToCameraSpace";
 import { type DrawOrderComparable } from "./DrawOrderComparable";
 import { type ZGraph } from "./GraphEdges";
 import { updateZEdges } from "./updateZEdges";
-import { VisualIndex } from "./VisualIndex";
 
 // --- worldBoxToCameraSpace: hand-computed expectations, so this is not circular
 // with the implementation it is proving. Box is min-corner (0,0,0), extents (2,4,1).
@@ -79,8 +79,6 @@ const makeScene = (): Set<TestItem> => {
         id: `item-${i++}`,
         state: { position: { x, y, z } },
         aabb: { x: 1, y: 1, z: 1 },
-        renderAabb: undefined,
-        renderAabbOffset: undefined,
         fixedZIndex: undefined,
       });
     }
@@ -117,15 +115,23 @@ test.for(allCameraAngles)(
     const scene = makeScene();
     const baked = bakeRotation(scene, cameraAngle);
 
+    const noRenderBoxes = new Map<TestItem, null>();
     const zEdgesAtAngle: ZGraph<TestItem> = new Map();
     updateZEdges(
       scene,
-      new VisualIndex(scene.values(), cameraAngle),
+      populatedVisualIndex(scene, noRenderBoxes, cameraAngle),
       scene,
       zEdgesAtAngle,
+      noRenderBoxes,
     );
     const bakedAtBase: ZGraph<TestItem> = new Map();
-    updateZEdges(baked, new VisualIndex(baked.values()), baked, bakedAtBase);
+    updateZEdges(
+      baked,
+      populatedVisualIndex(baked),
+      baked,
+      bakedAtBase,
+      noRenderBoxes,
+    );
 
     expect(behindFrontIdPairs(zEdgesAtAngle)).toEqual(
       behindFrontIdPairs(bakedAtBase),

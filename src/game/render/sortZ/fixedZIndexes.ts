@@ -1,3 +1,7 @@
+import { type ItemInPlayType } from "../../../model/ItemInPlay";
+import { isWallDirectionHiddenAtAngle } from "../../../model/json/WallJsonConfig";
+import { type DirectionXy4, type Xy } from "../../../utils/vectors/vectors";
+
 /*
  * floating text appears above all 'normal' items. This number must be larger than the
  * number of items in the room to guarantee that.
@@ -9,3 +13,37 @@ export const floatingTextFixedZIndex = 1_000;
  * when sorted start at 0, this will never intersect the rendering items.
  */
 export const nonRenderingItemFixedZIndex = -2;
+
+/**
+ * the item's fixed z-index at this camera angle: its own fixed index, or the
+ * non-rendering index for a wall on a hidden (camera-facing) side. Undefined
+ * means the item participates in draw-ordering
+ */
+export const effectiveFixedZIndex = (
+  item: {
+    fixedZIndex?: number;
+    type?: ItemInPlayType;
+    config?: unknown;
+  },
+  cameraAngle: Xy,
+): number | undefined =>
+  (
+    (item.fixedZIndex ??
+    (item.type === "wall" &&
+      isWallDirectionHiddenAtAngle(
+        (item.config as { direction: DirectionXy4 }).direction,
+        cameraAngle,
+      )))
+  ) ?
+    nonRenderingItemFixedZIndex
+  : undefined;
+
+/**
+ * whether the item takes part in draw-order sorting at this camera angle.
+ * Items with a fixed z-index (including walls on hidden, camera-facing sides)
+ * never do: they are excluded from the visual index and never compared
+ */
+export const participatesInDrawOrder = (
+  item: Parameters<typeof effectiveFixedZIndex>[0],
+  cameraAngle: Xy,
+): boolean => effectiveFixedZIndex(item, cameraAngle) === undefined;

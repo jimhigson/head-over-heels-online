@@ -44,34 +44,36 @@ export const waitForRoomRenderEvent = async (
   logHeader?: string,
 ): Promise<void> => {
   // the timeout lives inside the browser so the listener is always removed,
-  // whether the event arrives or we time out (null):
-  const foundRoomId = await page.evaluate(
-    (timeoutMs) =>
-      new Promise<null | string>((resolve) => {
+  // whether the event arrives or we time out (false). Wait for the SPECIFIC
+  // expected room and ignore any other room's render in the meantime - during a
+  // finalroom→target navigation finalroom renders first, and catching that
+  // (rather than the target) is a race that fails spuriously under load:
+  const found = await page.evaluate(
+    ({ timeoutMs, wantRoomId }) =>
+      new Promise<boolean>((resolve) => {
         const handler = (event: Event) => {
           const { roomId } = (event as CustomEvent).detail;
+          if (roomId !== wantRoomId) {
+            return;
+          }
           window.removeEventListener("firstRenderOfRoom", handler);
-          resolve(roomId);
+          resolve(true);
         };
         window.addEventListener("firstRenderOfRoom", handler);
-        // on timeout, remove the listener and resolve null; if the event
+        // on timeout, remove the listener and resolve false; if a matching event
         // already fired this resolve is an ignored no-op:
         setTimeout(() => {
           window.removeEventListener("firstRenderOfRoom", handler);
-          resolve(null);
+          resolve(false);
         }, timeoutMs);
       }),
-    maximumWaitForStep,
+    { timeoutMs: maximumWaitForStep, wantRoomId: expectedRoomId },
   );
 
-  if (foundRoomId === null) {
+  if (!found) {
     throw new Error(
       `Timeout waiting for firstRenderOfRoom event ${expectedRoomId} after ${formatDuration(maximumWaitForStep)}`,
     );
-  }
-
-  if (foundRoomId !== expectedRoomId) {
-    throw new Error(`Expected roomId ${expectedRoomId} but got ${foundRoomId}`);
   }
 
   if (logHeader !== undefined) {

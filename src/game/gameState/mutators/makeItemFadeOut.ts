@@ -47,10 +47,7 @@ export const makeItemFadeOut = <
   // need the bounding box from before it was multiplied 'times' was applied.
   // simple division doesn't work here because the multiplied takes into account
   // gaps between items
-  const touchedItemHalfAabb = scaleXyz(
-    boundingBoxForItem(touchedItem).aabb,
-    0.5,
-  );
+  const touchedItemHalfAabb = scaleXyz(boundingBoxForItem(touchedItem), 0.5);
 
   // Create bubbles for each segment (will be just one bubble for regular items)
   for (let x = 0; x < times.x; x++) {

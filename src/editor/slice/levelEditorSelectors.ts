@@ -1,7 +1,8 @@
 import { createSelector } from "@reduxjs/toolkit";
 
-import { floorsRenderExtent } from "../../game/render/room/floorsExtent";
+import { roomRenderExtent } from "../../game/render/room/roomRenderExtent";
 import { roomVerticalLink } from "../../model/RoomJson";
+import { spritesheetMetas } from "../../sprites/spritesheet/spritesheetData/spritesheetMetaData";
 import { type EditorRootState } from "../../store/store";
 import {
   type EditorJsonItemUnion,
@@ -17,19 +18,15 @@ const selectEditorCameraAngleFromRoot = (state: EditorRootState) =>
   state.levelEditor.cameraAngle;
 
 /**
- * Selector that loads the current room state from the JSON, with its
- * camera-relative structure (walls/doors/floors) derived for the editor's
- * current view angle. Memoized so it only recomputes when the room JSON or
- * the view angle changes.
+ * Selector that loads the current room state from the JSON. The room model is
+ * camera-angle-free, so this only recomputes when the room JSON changes.
  */
 export const selectEditorRoomState = createSelector(
   [
     (state: EditorRootState) =>
       selectCurrentRoomJsonFromLevelEditorState(state.levelEditor),
-    selectEditorCameraAngleFromRoot,
   ],
-  (roomJson, cameraAngle): EditorRoomState =>
-    loadEditorRoom(roomJson, cameraAngle),
+  (roomJson): EditorRoomState => loadEditorRoom(roomJson),
 );
 
 export type RenderedRoomDimensions = {
@@ -47,7 +44,11 @@ export const selectEditorRoomRenderDimensions = createSelector(
     const {
       floors: { edgeLeftX: l, edgeRightX: r, bottomEdgeY: b },
       allItems: { topEdgeY: t },
-    } = floorsRenderExtent(editorRoomStateWithPreviews, cameraAngle);
+    } = roomRenderExtent(
+      editorRoomStateWithPreviews,
+      spritesheetMetas.BlockStack,
+      cameraAngle,
+    );
     // simplify to the x/y/w/h rectangle to inform the editor where the rendering is:
     return {
       l,

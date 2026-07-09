@@ -3,6 +3,7 @@ import {
   roomJsonItemsIterable,
 } from "../../../model/RoomJson";
 import { roomItemsIterable, type RoomState } from "../../../model/RoomState";
+import { type SpritesheetMetadata } from "../../../sprites/spritesheet/spritesheetData/spritesheetMetaData";
 import { cameraAngleBase } from "../../../utils/vectors/rotateXy";
 import {
   addXyz,
@@ -12,7 +13,11 @@ import {
 } from "../../../utils/vectors/vectors";
 import { blockSizePx } from "../../physics/mechanicsConstants";
 import { projectWorldXyzToScreenXy } from "../projections";
-import { nonRenderingItemFixedZIndex } from "../sortZ/fixedZIndexes";
+import { makeItemRenderBoxAtCameraAngle } from "../renderBox/makeItemRenderBoxAtCameraAngle";
+import {
+  effectiveFixedZIndex,
+  nonRenderingItemFixedZIndex,
+} from "../sortZ/fixedZIndexes";
 
 export type ItemsProjectedExtents = {
   floors: {
@@ -36,8 +41,9 @@ export type ItemsProjectedExtents = {
 };
 
 /**
- * get projected rectangle for the floor(s) of a room, used for room scrolling
- * like:
+ * get the projected extents of a room's rendering: the floors' rectangle
+ * (left/right/bottom - used for room scrolling) plus the highest drawn point
+ * of any item in the room (the rendering's top edge). Floor rectangle like:
  * ```
  *                            floor natural pos/aabb
  *                     ---------------------
@@ -49,11 +55,12 @@ export type ItemsProjectedExtents = {
  *
  * ```
  */
-export const floorsRenderExtent = <
+export const roomRenderExtent = <
   RoomId extends string,
   RoomItemId extends string,
 >(
   roomState: RoomState<RoomId, RoomItemId>,
+  spritesheetMeta: SpritesheetMetadata,
   cameraAngle: Xy = cameraAngleBase,
 ): ItemsProjectedExtents => {
   let floorsEdgeLeftX = Number.POSITIVE_INFINITY;
@@ -69,10 +76,13 @@ export const floorsRenderExtent = <
       const {
         config: { naturalFootprint },
         state: { position },
-        renderAabb,
-        renderAabbOffset,
         aabb,
       } = item;
+      const renderBox = makeItemRenderBoxAtCameraAngle(
+        item,
+        cameraAngle,
+        spritesheetMeta,
+      );
 
       floorsNaturalMaxX = Math.max(
         floorsNaturalMaxX,
@@ -104,8 +114,11 @@ export const floorsRenderExtent = <
 
       // the near (front/bottom) edge is the lowest of the extended render box's
       // surface-level corners - which one is lowest also depends on the angle:
-      const extendedPosition = addXyz(position, renderAabbOffset ?? originXyz);
-      const extendedAabb = renderAabb ?? aabb;
+      const extendedPosition = addXyz(
+        position,
+        renderBox?.renderAabbOffset ?? originXyz,
+      );
+      const extendedAabb = renderBox?.renderAabb ?? aabb;
       for (const dx of [0, extendedAabb.x]) {
         for (const dy of [0, extendedAabb.y]) {
           const { y } = projectWorldXyzToScreenXy(
@@ -120,12 +133,19 @@ export const floorsRenderExtent = <
       // impact scrolling, but is being left to keep scrolling changes
       // out of the current work - a future item should be raised to deal
       // with them separately to keep work isolated to one change at once
-      if (item.fixedZIndex === nonRenderingItemFixedZIndex) {
+      if (
+        effectiveFixedZIndex(item, cameraAngle) === nonRenderingItemFixedZIndex
+      ) {
         continue;
       }
 
       // any non-floor item: its highest point on screen comes from the top
       // corners of its render box; which is highest depends on the camera angle:
+      const itemRenderBox = makeItemRenderBoxAtCameraAngle(
+        item,
+        cameraAngle,
+        spritesheetMeta,
+      );
       const itemPosition = addXyz(
         item.type === "lift" ?
           // lifts are a special case - use the top of their travel instead of
@@ -135,9 +155,9 @@ export const floorsRenderExtent = <
             z: item.config.top * blockSizePx.z,
           }
         : item.state.position,
-        item.renderAabbOffset ?? originXyz,
+        itemRenderBox?.renderAabbOffset ?? originXyz,
       );
-      const itemAabb = item.renderAabb ?? item.aabb ?? originXyz;
+      const itemAabb = itemRenderBox?.renderAabb ?? item.aabb ?? originXyz;
       for (const dx of [0, itemAabb.x]) {
         for (const dy of [0, itemAabb.y]) {
           const { y } = projectWorldXyzToScreenXy(

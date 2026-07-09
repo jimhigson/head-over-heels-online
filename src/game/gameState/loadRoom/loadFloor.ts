@@ -1,15 +1,8 @@
 import { defaultItemProperties } from "../../../model/defaultItemProperties";
 import { type ItemInPlay } from "../../../model/ItemInPlay";
 import { type JsonItem } from "../../../model/json/JsonItem";
-import { isWallHidden } from "../../../model/json/WallJsonConfig";
-import { valuesIter } from "../../../utils/entries";
-import {
-  addXyz,
-  type DirectionXy4,
-  originXyz,
-  rotateDirectionXy4ByCameraAngle,
-  type Xy,
-} from "../../../utils/vectors/vectors";
+import { keys, valuesIter } from "../../../utils/entries";
+import { addXyz, type DirectionXy4 } from "../../../utils/vectors/vectors";
 import { fullBlockAabb } from "../../collision/boundingBoxes";
 import { multiplyBoundingBox } from "../../collision/multiplyBoundingBox";
 import { blockXyzToFineXyz } from "../../render/projections";
@@ -21,21 +14,17 @@ import { defaultBaseState } from "./itemDefaultStates";
 // there are collisions on-load, than if it were just 1.
 const floorThicknessBlocks = 3;
 /**
- * the room edge is much thinner since we don't have to worry about things
- * being pushed through it
+ * how much (in blocks) the floor physically extends through a doorway so a
+ * player can't fall out of the world in the doorway. A whole 0.5 block (an
+ * integer number of pixels) so the floor's aabb - and therefore its rendered
+ * position - always lands exactly on the pixel grid, at every camera angle.
+ * The apparently-far ("back") edges are *drawn* a further 0.02 block so they
+ * meet the back wall like the original game; that cosmetic overhang lives in
+ * the floor appearance / render box only (see floorBackEdgeOverhangBlocks in
+ * makeItemRenderBoxAtCameraAngle), keyed off the doorExpandedSides this loader bakes into
+ * the floor's config
  */
-const floorEdgeRenderThicknessPx = 10;
-
-/**
- * how much (in blocks) to extend the floor for doors?
- * this value (for far) happens to give the right amount of floor drawn visible 'through'
- * the door to match the original game.
- *
- * I could extend the rendering, but with floors as first-class items, this impacts
- * non-extended floors too, and makes them draw too much
- */
-const extraFloorAmountForDoorsFar = 0.52;
-const extraFloorAmountForDoorsNear = 0.5;
+const extraFloorAmountForDoors = 0.5;
 
 const shadowFullBlock: ShadowCastSpriteOptions = Object.freeze({
   textureId: "shadow.fullBlock",
@@ -45,7 +34,6 @@ export const loadFloor = <RoomId extends string, RoomItemId extends string>(
   itemId: RoomItemId,
   floorJson: JsonItem<"floor", RoomId, RoomItemId>,
   directionalIndex: RoomDirectionalIndex<RoomId, RoomItemId>,
-  cameraAngle: Xy,
 ): ItemInPlay<"floor", RoomId, RoomItemId> => {
   const {
     config: { times },
@@ -65,6 +53,9 @@ export const loadFloor = <RoomId extends string, RoomItemId extends string>(
   const doorsIter = valuesIter(directionalIndex.doors).flatMap(
     (doorsAtLocation) => valuesIter(doorsAtLocation),
   );
+
+  // can only expand once per direction:
+  const expandedDirections: { [d in DirectionXy4]?: true } = {};
 
   const thisFloorMaxX = naturalPositionBlocks.x + times.x;
   const thisFloorMaxY = naturalPositionBlocks.y + times.y;
@@ -107,24 +98,12 @@ export const loadFloor = <RoomId extends string, RoomItemId extends string>(
   // down as the closest floor below it, and then extending all floors
   // that legs would reach down to
   if (floorBlockPosition.z === 0) {
-    // can only expand once per direction:
-    const expandedDirections: { [d in DirectionXy4]?: true } = {};
-
     // find any doors that sit on the edge of this floor, and expand as necessary
     for (const doorJson of doorsIter) {
       const {
         position: doorJsonPosition,
         config: { direction },
       } = doorJson;
-
-      // the near/far asymmetry is camera-relative: the door's edge shows the 'near'
-      // amount of floor when it is on a wall facing the camera, the 'far' amount
-      // otherwise. which physical side that is depends on the rotation, so rotate
-      // the direction into camera space (a wall facing the camera is a 'hidden' one):
-      const extraFloorAmount =
-        isWallHidden(rotateDirectionXy4ByCameraAngle(direction, cameraAngle)) ?
-          extraFloorAmountForDoorsNear
-        : extraFloorAmountForDoorsFar;
 
       switch (direction) {
         case "towards":
@@ -139,10 +118,10 @@ export const loadFloor = <RoomId extends string, RoomItemId extends string>(
             !hasAdjacentFloorTo(direction)
           ) {
             adjustedSizeBlocks = addXyz(adjustedSizeBlocks, {
-              y: extraFloorAmount,
+              y: extraFloorAmountForDoors,
             });
             adjustedPositionBlocks = addXyz(adjustedPositionBlocks, {
-              y: -extraFloorAmount,
+              y: -extraFloorAmountForDoors,
             });
             expandedDirections.towards = true;
           }
@@ -159,7 +138,7 @@ export const loadFloor = <RoomId extends string, RoomItemId extends string>(
             !hasAdjacentFloorTo(direction)
           ) {
             adjustedSizeBlocks = addXyz(adjustedSizeBlocks, {
-              y: extraFloorAmount,
+              y: extraFloorAmountForDoors,
             });
             expandedDirections.away = true;
           }
@@ -176,10 +155,10 @@ export const loadFloor = <RoomId extends string, RoomItemId extends string>(
             !hasAdjacentFloorTo(direction)
           ) {
             adjustedSizeBlocks = addXyz(adjustedSizeBlocks, {
-              x: extraFloorAmount,
+              x: extraFloorAmountForDoors,
             });
             adjustedPositionBlocks = addXyz(adjustedPositionBlocks, {
-              x: -extraFloorAmount,
+              x: -extraFloorAmountForDoors,
             });
             expandedDirections.right = true;
           }
@@ -196,7 +175,7 @@ export const loadFloor = <RoomId extends string, RoomItemId extends string>(
             !hasAdjacentFloorTo(direction)
           ) {
             adjustedSizeBlocks = addXyz(adjustedSizeBlocks, {
-              x: extraFloorAmount,
+              x: extraFloorAmountForDoors,
             });
             expandedDirections.left = true;
           }
@@ -208,10 +187,7 @@ export const loadFloor = <RoomId extends string, RoomItemId extends string>(
   }
 
   const floorPosition = blockXyzToFineXyz(adjustedPositionBlocks);
-  const floorAabb = multiplyBoundingBox({
-    singleItemBBInfo: { aabb: fullBlockAabb },
-    times: adjustedSizeBlocks,
-  }).aabb;
+  const floorAabb = multiplyBoundingBox(fullBlockAabb, adjustedSizeBlocks);
 
   return {
     ...defaultItemProperties,
@@ -222,24 +198,13 @@ export const loadFloor = <RoomId extends string, RoomItemId extends string>(
     jsonItemId: itemId,
     config: {
       ...floorJson.config,
+      doorExpandedSides: keys(expandedDirections),
       naturalFootprint: {
-        aabb: multiplyBoundingBox({
-          singleItemBBInfo: { aabb: fullBlockAabb },
-          times: naturalAabbBlocks,
-        }).aabb,
+        aabb: multiplyBoundingBox(fullBlockAabb, naturalAabbBlocks),
         position: blockXyzToFineXyz(naturalPositionBlocks),
       },
     },
     aabb: floorAabb,
-    // the floor is 1px thick for the sake of rendering
-    renderAabb: {
-      ...floorAabb,
-      z: floorEdgeRenderThicknessPx,
-    },
-    renderAabbOffset: {
-      ...originXyz,
-      z: floorAabb.z - floorEdgeRenderThicknessPx,
-    },
 
     // unusual for a floor to cast a shadow, but could be raised somehow in the remake engine
     shadowCastTexture: shadowFullBlock,

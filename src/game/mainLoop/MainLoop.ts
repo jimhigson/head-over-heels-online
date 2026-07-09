@@ -23,12 +23,8 @@ import { store } from "../../store/store";
 import { emptySet } from "../../utils/empty";
 import { validateSceneGraph } from "../../utils/pixi/validateSceneGraph";
 import { createSerialisableErrors } from "../../utils/redux/createSerialisableErrors";
-import { cameraAngleBase } from "../../utils/vectors/rotateXy";
-import { type Xy } from "../../utils/vectors/vectors";
 import { type GameState } from "../gameState/GameState";
 import { selectCurrentRoomState } from "../gameState/gameStateSelectors/selectCurrentRoomState";
-import { applyRenderAabbCameraShift } from "../gameState/loadRoom/applyRenderAabbCameraShift";
-import { reloadStructureForCamera } from "../gameState/loadRoom/reloadStructureForCamera";
 import { maxFps, maxSubTickDeltaMs } from "../physics/mechanicsConstants";
 import { ColourClashCircleEffectRenderer } from "../render/ColourClashCircleEffectRenderer";
 import { HudRenderer } from "../render/hud/HudRenderer";
@@ -131,10 +127,6 @@ export class MainLoop<RoomId extends string> {
 
   #firstFrameMarked = false;
 
-  // the camera angle the current room's structure was last (re)built for, so a
-  // change can be detected and the camera-relative structure re-derived:
-  #previousCameraAngle: Xy = cameraAngleBase;
-
   // set when the canvas regains its WebGL context after a loss; the next tick
   // re-bakes the spritesheet variants, whose RenderTextures died with the old
   // WebGL context:
@@ -225,7 +217,7 @@ export class MainLoop<RoomId extends string> {
 
     // read after the physics tick so a rotation input this frame takes effect
     // immediately - the physics ticker is where the camera-rotate tap is applied:
-    const tickCameraAngle = this.#gameState.cameraAngle ?? cameraAngleBase;
+    const tickCameraAngle = this.#gameState.cameraAngle;
 
     timingRecord?.startUpdateSceneGraph();
     // the tick could end on a different room than it started on, eg if ticking
@@ -239,24 +231,6 @@ export class MainLoop<RoomId extends string> {
     }
 
     const roomChanged = this.#roomRenderer?.renderContext.room !== tickEndRoom;
-
-    // re-derive the camera-relative structure (walls/floors/doors + derived items)
-    // before the renderer rebuilds, so it reads the reloaded items at the new angle.
-    // also needed when entering a new room while already rotated, since rooms always
-    // load at the base angle:
-    const cameraAngleChanged =
-      this.#previousCameraAngle.x !== tickCameraAngle.x ||
-      this.#previousCameraAngle.y !== tickCameraAngle.y;
-    if (
-      cameraAngleChanged ||
-      (roomChanged &&
-        (tickCameraAngle.x !== cameraAngleBase.x ||
-          tickCameraAngle.y !== cameraAngleBase.y))
-    ) {
-      reloadStructureForCamera(tickEndRoom, tickCameraAngle);
-      applyRenderAabbCameraShift(tickEndRoom, tickCameraAngle);
-    }
-    this.#previousCameraAngle = tickCameraAngle;
 
     const spritesheetVariantsStale =
       (roomChanged ||
@@ -448,7 +422,6 @@ export class MainLoop<RoomId extends string> {
       this.#roomRenderer.renderContext.general.speedCoefficient =
         this.#app.ticker.speed;
     }
-
     this.#roomRenderer?.tick({
       movedOrResizedItems,
       deltaMS,
@@ -456,7 +429,11 @@ export class MainLoop<RoomId extends string> {
 
     timingRecord?.endUpdateSceneGraph();
 
-    if (import.meta.env.DEV) {
+    // inline env reads so this is statically dead at tree-shake time and the
+    // checker never ships in a production build; also check in the
+    // visual-regression build so the e2e suite catches broken invariants
+    // (destroyed/null textures) instead of an opaque pixi crash
+    if (import.meta.env.DEV || import.meta.env.MODE === "visual-regression") {
       validateSceneGraph(this.#app.stage);
     }
 

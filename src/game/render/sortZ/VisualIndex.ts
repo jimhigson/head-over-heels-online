@@ -1,5 +1,4 @@
 import { type UnionOfAllItemInPlayTypes } from "../../../model/ItemInPlay";
-import { cameraAngleBase } from "../../../utils/vectors/rotateXy";
 import { type Xy, type Xyz } from "../../../utils/vectors/vectors";
 import {
   CellIndex,
@@ -8,6 +7,12 @@ import {
   type XyCellKey,
 } from "../../physics/gridSpace/CellIndex";
 import { blockSizePx } from "../../physics/mechanicsConstants";
+import {
+  type RenderBox,
+  type RenderBoxableItem,
+  type RenderBoxes,
+} from "../renderBox/makeItemRenderBoxAtCameraAngle";
+import { participatesInDrawOrder } from "./fixedZIndexes";
 import { projectAabbAxes, type ProjectionOnAxes } from "./projectAabbCorners";
 
 // reused scratch for the render-box world position (render offset applied), to
@@ -31,7 +36,9 @@ const projCellWidth = blockSizePx.x * 2;
  *
  * The projection depends on the camera angle, unlike the world-space SpatialIndex.
  */
-export class VisualIndex<Item extends Indexable = UnionOfAllItemInPlayTypes> {
+export class VisualIndex<
+  Item extends RenderBoxableItem & Indexable = UnionOfAllItemInPlayTypes,
+> {
   #cells = new CellIndex<Item>();
 
   /** cache of where each item projects to on the on-screen axes (x,y,z)(min,max) */
@@ -40,22 +47,16 @@ export class VisualIndex<Item extends Indexable = UnionOfAllItemInPlayTypes> {
   /** the camera rotation the projections are computed for; fixed for the index's life */
   readonly cameraAngle: Xy;
 
-  constructor(
-    /** Optional iterable of items to initially populate the index */
-    items?: Iterable<Item>,
-    cameraAngle: Xy = cameraAngleBase,
-  ) {
+  constructor(cameraAngle: Xy) {
     this.cameraAngle = cameraAngle;
-    if (items) {
-      for (const item of items) {
-        this.addItem(item);
-      }
-    }
   }
 
-  #upsertAxesProjections(i: Item): ProjectionOnAxes {
+  #upsertAxesProjections(
+    i: Item,
+    renderBox: null | RenderBox,
+  ): ProjectionOnAxes {
     const { position } = i.state;
-    const offset = i.renderAabbOffset;
+    const offset = renderBox?.renderAabbOffset;
     let worldPos: Xyz;
     if (offset === undefined) {
       worldPos = position;
@@ -65,7 +66,7 @@ export class VisualIndex<Item extends Indexable = UnionOfAllItemInPlayTypes> {
       renderOffsetPos.z = position.z + offset.z;
       worldPos = renderOffsetPos;
     }
-    const bb = i.renderAabb || i.aabb;
+    const bb = renderBox?.renderAabb ?? i.aabb;
 
     // project the world box onto the on-screen axes for the current camera angle;
     // the rotation is applied inside projectAabbAxes at the point of projection,
@@ -121,34 +122,24 @@ export class VisualIndex<Item extends Indexable = UnionOfAllItemInPlayTypes> {
     }
   }
 
-  /** add an item, computing its projection */
-  addItem(item: Item): void {
-    this.#upsertAxesProjections(item);
+  /** add an item, computing its projection from its drawn box (null = true to its aabb) */
+  #addItem(item: Item, renderBox: null | RenderBox): void {
+    this.#upsertAxesProjections(item, renderBox);
     this.#cells.add(item, this.#iterateProjectionCellKeys(item));
   }
 
   /** remove an item, discarding its cached projection */
-  removeItem(item: Item): void {
+  #removeItem(item: Item): void {
     this.#cells.remove(item);
     this.#itemToProjectionAxesMap.delete(item);
-  }
-
-  /** whether the item is currently in the index */
-  has(item: Item): boolean {
-    return this.#cells.has(item);
-  }
-
-  /** every item currently in the index */
-  items(): IterableIterator<Item> {
-    return this.#cells.items();
   }
 
   /**
    * Update an item's projection in the index. After this, z-edge graph updates
    * should work.
    */
-  updateItemProjectedIndex(item: Item): void {
-    this.#upsertAxesProjections(item);
+  #updateItemProjectedIndex(item: Item, renderBox: null | RenderBox): void {
+    this.#upsertAxesProjections(item, renderBox);
     this.#cells.update(item, this.#iterateProjectionCellKeys(item));
   }
 
@@ -161,43 +152,48 @@ export class VisualIndex<Item extends Indexable = UnionOfAllItemInPlayTypes> {
   updateManyItems(
     items: ReadonlySet<Item>,
     movedOrResizedItems: ReadonlySet<Item>,
+    /** the drawn extents, owned by the caller (in-game, the room renderer) */
+    renderBoxes: RenderBoxes<Item>,
   ): void {
     for (const item of this.#cells.items()) {
       if (!items.has(item)) {
-        this.removeItem(item);
+        this.#removeItem(item);
       }
     }
     for (const item of items) {
+      if (!participatesInDrawOrder(item, this.cameraAngle)) {
+        // fixed-z items (including hidden walls, which have very tall physical
+        // colliders) are never draw-order sorted - keeping them out of the
+        // index entirely means neighbourhoods stay clean and their projected
+        // extents are never bucketed:
+        continue;
+      }
       if (!this.#cells.has(item)) {
         // adding projects the item, so a just-added item never needs the
         // moved/resized re-projection:
-        this.addItem(item);
+        this.#addItem(item, renderBoxes.get(item) ?? null);
       } else if (movedOrResizedItems.has(item)) {
-        this.updateItemProjectedIndex(item);
+        this.#updateItemProjectedIndex(item, renderBoxes.get(item) ?? null);
       }
     }
   }
 
   /**
-   * Get all items whose projected hexagon shares a cell with the given item's. Each
-   * item appears only once in the returned set.
+   * Get all OTHER items whose projected hexagon shares a cell with the given
+   * item's. Each item appears only once in the returned set; the queried item
+   * is never included.
    *
    * The item *must* be in the index, and be up to date (this does not re-project
    * it first).
    */
-  getProjectedNeighbourhood(
-    /** The item whose projection neighbourhood to check */
-    item: Item,
-    /** Optional item to exclude from results (usually the querying item) */
-    excludeItem?: Item,
-  ): Set<Item> {
+  getItemProjectedNeighbourhood(item: Item): Set<Item> {
     const neighbours = new Set<Item>();
 
     for (const cellKey of this.#iterateProjectionCellKeys(item)) {
       const cell = this.#cells.getCell(cellKey);
       if (cell) {
         for (const neighbour of cell) {
-          if (neighbour !== excludeItem) {
+          if (neighbour !== item) {
             neighbours.add(neighbour);
           }
         }
@@ -205,10 +201,6 @@ export class VisualIndex<Item extends Indexable = UnionOfAllItemInPlayTypes> {
     }
 
     return neighbours;
-  }
-
-  getItemProjectedNeighbourhood(item: Item): Set<Item> {
-    return this.getProjectedNeighbourhood(item, item);
   }
 
   /**

@@ -17,6 +17,7 @@ import {
   cameraAngleIsOddQuarterTurn,
   originXy,
   subXy,
+  type Xy,
 } from "../../../../utils/vectors/vectors";
 import {
   type CollideableItem,
@@ -34,6 +35,11 @@ import {
   type ItemTickContext,
 } from "../../ItemRenderContexts";
 import { projectWorldXyzToScreenXy } from "../../projections";
+import {
+  castsShadowWhileStoodOnAtAngle,
+  noShadowCastOnAtAngle,
+  shadowCastTextureAtAngle,
+} from "../../shadows/shadowAtAngle";
 import { ItemAppearancePixiRenderer } from "./ItemAppearancePixiRenderer";
 import { type ItemPixiRenderer } from "./ItemPixiRenderer";
 import { itemTypesExemptFromNearCornerOffset } from "./itemTypesExemptFromNearCornerOffset";
@@ -89,8 +95,9 @@ type ShadowCaster = SetRequired<
 const castsShapedShadowOnTop = (
   caster: ShadowCaster,
   receiver: CollideableItem,
+  cameraAngle: Xy,
 ) =>
-  caster.castsShadowWhileStoodOn ||
+  castsShadowWhileStoodOnAtAngle(caster, cameraAngle) ||
   caster.state.position.z > receiver.state.position.z + receiver.aabb.z;
 
 // Buffer to avoid allocating memory for the pseudo-item used to find shadow casters
@@ -278,7 +285,8 @@ class ItemShadowRenderer<T extends ItemInPlayType>
         > =>
           maybeCaster !== item &&
           itemCastsShadow(maybeCaster) &&
-          !maybeCaster.noShadowCastOn?.includes(item.type),
+          shadowCastTextureAtAngle(maybeCaster, cameraAngle) !== undefined &&
+          !noShadowCastOnAtAngle(maybeCaster, cameraAngle)?.includes(item.type),
       ),
     );
 
@@ -300,7 +308,7 @@ class ItemShadowRenderer<T extends ItemInPlayType>
     const shapedCasters = new Set(
       castersAbove
         .values()
-        .filter((caster) => castsShapedShadowOnTop(caster, item)),
+        .filter((caster) => castsShapedShadowOnTop(caster, item, cameraAngle)),
     );
 
     let hasAnyShadows = false;
@@ -330,6 +338,7 @@ class ItemShadowRenderer<T extends ItemInPlayType>
           : (caster.config as ConsolidatableConfig).times;
 
         const { flipsOnOddQuarterCameraTurns, ...shadowCastTexture } =
+          shadowCastTextureAtAngle(caster, cameraAngle) ??
           caster.shadowCastTexture;
         const { general } = this.renderContext;
         const { shadowSpritesheet } = general.spritesheetVariants;
@@ -378,7 +387,7 @@ class ItemShadowRenderer<T extends ItemInPlayType>
           // the cast art matches the caster's rendered box where that differs
           // from its physics box (eg door legs, whose physics extends down the
           // door tunnel but whose hint shadow covers only the threshold):
-          caster.renderAabb ?? caster.aabb,
+          this.renderContext.renderBoxes.get(caster)?.renderAabb ?? caster.aabb,
         );
         const receiverNearCornerOffset =
           itemTypesExemptFromNearCornerOffset.has(item.type) ? originXy : (

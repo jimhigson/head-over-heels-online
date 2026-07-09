@@ -15,6 +15,7 @@ import { store } from "../../store/store";
 import { badJsonClone } from "../../utils/badJsonClone";
 import { emptyObject } from "../../utils/empty";
 import { valuesIter } from "../../utils/entries";
+import { cameraAngleBase } from "../../utils/vectors/rotateXy";
 import {
   cheatRoomIdFromUrlHash,
   cheatsOn,
@@ -173,6 +174,10 @@ const _loadGameState = <RoomId extends string>({
       ...badJsonClone(savedGame.gameState),
     });
 
+    // saves made before the camera could rotate have no cameraAngle - resume such
+    // games at the base view:
+    writeInto.cameraAngle ??= cameraAngleBase;
+
     writeInto.characterRooms =
       addIndexToIndexSavedCharacterRooms(loadedCharacterRooms);
 
@@ -230,6 +235,7 @@ const _loadGameState = <RoomId extends string>({
   // gather what we know so far:
   const gameState: GameState<RoomId> = Object.assign(writeInto, {
     inputStateTracker,
+    cameraAngle: cameraAngleBase,
     currentCharacterName: startAs,
     entryState: {
       head: headItem === undefined ? undefined : entryState(headItem),

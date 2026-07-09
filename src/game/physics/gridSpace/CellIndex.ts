@@ -27,8 +27,6 @@ export type Indexable = {
     position: Xyz;
   };
   aabb: Xyz;
-  renderAabb?: Xyz;
-  renderAabbOffset?: Xyz;
 };
 
 /**

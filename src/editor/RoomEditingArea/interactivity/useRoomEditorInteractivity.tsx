@@ -1,4 +1,5 @@
 import nanoEqual from "nano-equal";
+import { type RefObject } from "preact";
 import { useEffect, useMemo, useRef } from "preact/hooks";
 
 import { useAppDispatch } from "../../../store/hooks";
@@ -6,6 +7,7 @@ import { editorStore, store } from "../../../store/store";
 import { useMouseWheel } from "../../../ui/useMouseWheel";
 import { catchErrors } from "../../../utils/errors/errors";
 import { type Xyz } from "../../../utils/vectors/vectors";
+import { type EditorRoomRenderer } from "../../editorTypes";
 import {
   selectCursorRoomId,
   selectEditorRoomState,
@@ -54,6 +56,8 @@ type PanSession = {
 
 export const useRoomEditorInteractivity = (
   renderArea: HTMLDivElement | null,
+  /** the current room renderer, for its render boxes (the drawn extents picking selects by) */
+  roomRendererRef: RefObject<EditorRoomRenderer | undefined>,
 ) => {
   const viewport = useEditorViewport();
 
@@ -144,6 +148,7 @@ export const useRoomEditorInteractivity = (
         tool,
         storeState.levelEditor.gridResolution,
         storeState.levelEditor.cameraAngle,
+        roomRendererRef.current,
       );
 
       // we don't care if just the xy of the mouse changed (if it didn't point at anything new),
@@ -214,6 +219,7 @@ export const useRoomEditorInteractivity = (
         tool,
         storeState.levelEditor.gridResolution,
         storeState.levelEditor.cameraAngle,
+        roomRendererRef.current,
       );
 
       const isDragEnd = dragAccVec.current !== undefined;
@@ -310,6 +316,7 @@ export const useRoomEditorInteractivity = (
         tool,
         storeState.levelEditor.gridResolution,
         storeState.levelEditor.cameraAngle,
+        roomRendererRef.current,
       );
       mouseDownPointingAtRef.current = pointingAt;
 
@@ -384,5 +391,5 @@ export const useRoomEditorInteractivity = (
       renderArea.removeEventListener("contextmenu", handleContextMenu);
       window.removeEventListener("keydown", handleKeyDown);
     };
-  }, [renderArea, dispatch, viewport]);
+  }, [renderArea, dispatch, viewport, roomRendererRef]);
 };

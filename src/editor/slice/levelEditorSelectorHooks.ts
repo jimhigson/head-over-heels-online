@@ -1,6 +1,6 @@
 import { createSelector } from "@reduxjs/toolkit";
 import { produce } from "immer";
-import { useEffect, useRef } from "preact/hooks";
+import { useEffect } from "preact/hooks";
 import { type ValueOf } from "type-fest";
 
 import { buildRoomJsonDirectionalIndex } from "../../game/gameState/loadRoom/buildRoomJsonDirectionalIndex";
@@ -15,7 +15,6 @@ import { roomItemsIterable } from "../../model/RoomState";
 import { startEditorListening } from "../../store/listenerMiddleware";
 import { type EditorRootState, useEditorAppSelector } from "../../store/store";
 import { objectEntriesIter } from "../../utils/entries";
-import { cameraAngleBase } from "../../utils/vectors/rotateXy";
 import {
   type EditorJsonItemUnion,
   type EditorRoomId,
@@ -111,15 +110,8 @@ export const useEditorRoomStateWithPreviews = (): EditorRoomState => {
   const roomJsonWithPreviews = useEditorAppSelector(
     selectCurrentEditingRoomJsonWithPreviews,
   );
-  const cameraAngle = useEditorAppSelector(
-    (state) => state.levelEditor.cameraAngle,
-  );
-
   const { loadedRoomStateRef, prevRoomJsonWithPreviewsRef } =
     useEditorRoomStateRefs();
-  // the camera angle the loaded room state was (re-)derived for, so a rotate
-  // forces a re-derive even when the room json is unchanged:
-  const loadedAngleRef = useRef(cameraAngle);
 
   // caching the mutated-in-place room state over committed edits is generally fine,
   // but some items like lightBeams from lamps benefit from a full reload of the room,
@@ -138,15 +130,10 @@ export const useEditorRoomStateWithPreviews = (): EditorRoomState => {
       effect(_action, { getState }) {
         const latestCommittedRoomJson =
           selectCurrentRoomJsonFromLevelEditorState(getState().levelEditor);
-        const angle = getState().levelEditor.cameraAngle;
 
-        loadedRoomStateRef.current = loadEditorRoom(
-          latestCommittedRoomJson,
-          angle,
-        );
+        loadedRoomStateRef.current = loadEditorRoom(latestCommittedRoomJson);
         // assuming there hasn't been time to make any previews yet:
         prevRoomJsonWithPreviewsRef.current = latestCommittedRoomJson;
-        loadedAngleRef.current = angle;
       },
     });
   });
@@ -154,22 +141,11 @@ export const useEditorRoomStateWithPreviews = (): EditorRoomState => {
   // since roomJsonWithPreviews comes from a caching selector, it will be referentially unequal to the
   // previous value if  something has changed. Only mutate the state to match roomJsonWithPreviews in
   // this case:
-  const angleChanged = loadedAngleRef.current !== cameraAngle;
-  const viewIsRotated =
-    cameraAngle.x !== cameraAngleBase.x || cameraAngle.y !== cameraAngleBase.y;
-
-  if (
-    prevRoomJsonWithPreviewsRef.current !== roomJsonWithPreviews ||
-    angleChanged
-  ) {
+  if (prevRoomJsonWithPreviewsRef.current !== roomJsonWithPreviews) {
     const prevRoomJsonWithPreviews = prevRoomJsonWithPreviewsRef.current;
     const loadedRoomState = loadedRoomStateRef.current;
 
     const needsFullReload =
-      angleChanged ||
-      // a rotated view always full-reloads, so the incremental path never adds
-      // base-angle structural items into a re-derived (rotated) room:
-      viewIsRotated ||
       prevRoomJsonWithPreviews === undefined ||
       loadedRoomState === undefined ||
       loadedRoomState.id !== roomJsonWithPreviews.id ||
@@ -177,11 +153,8 @@ export const useEditorRoomStateWithPreviews = (): EditorRoomState => {
       prevRoomJsonWithPreviews.color !== roomJsonWithPreviews.color;
 
     if (needsFullReload) {
-      // first render, room switch, or a (re)rotated view — full load
-      loadedRoomStateRef.current = loadEditorRoom(
-        roomJsonWithPreviews,
-        cameraAngle,
-      );
+      // first render or room switch — full load
+      loadedRoomStateRef.current = loadEditorRoom(roomJsonWithPreviews);
     } else {
       // mutate roomState in-place (much cheaper than reloading)
       const directionalIndex = buildRoomJsonDirectionalIndex(
@@ -237,7 +210,6 @@ export const useEditorRoomStateWithPreviews = (): EditorRoomState => {
     }
 
     prevRoomJsonWithPreviewsRef.current = roomJsonWithPreviews;
-    loadedAngleRef.current = cameraAngle;
   }
 
   return loadedRoomStateRef.current!;

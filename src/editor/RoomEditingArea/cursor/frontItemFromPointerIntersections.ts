@@ -1,5 +1,6 @@
 import { type SetRequired } from "type-fest";
 
+import { type RenderBoxes } from "../../../game/render/renderBox/makeItemRenderBoxAtCameraAngle";
 import { type ZGraph } from "../../../game/render/sortZ/GraphEdges";
 import { toposort } from "../../../game/render/sortZ/toposort/toposort";
 import { updateZEdges } from "../../../game/render/sortZ/updateZEdges";
@@ -18,6 +19,8 @@ export const frontItemFromPointerIntersections = (
     [EditorUnionOfAllItemInPlayTypes, PointerItemIntersection]
   >,
   cameraAngle: Xy,
+  /** the drawn extents, from the editor's room renderer */
+  renderBoxes: RenderBoxes<EditorUnionOfAllItemInPlayTypes>,
 ): EditorUnionOfAllItemInPlayTypes | undefined => {
   const someIntersectRendered = intersections.some(
     ([, int]) => int === "intersects-rendered",
@@ -54,13 +57,18 @@ export const frontItemFromPointerIntersections = (
   }
 
   const sortableItemsSet = new Set(topographicallySortableItems);
+  const visualIndex = new VisualIndex<EditorUnionOfAllItemInPlayTypes>(
+    cameraAngle,
+  );
+  visualIndex.updateManyItems(sortableItemsSet, sortableItemsSet, renderBoxes);
   const zEdges: ZGraph<EditorUnionOfAllItemInPlayTypes> = new Map();
   updateZEdges(
     sortableItemsSet,
-    new VisualIndex(sortableItemsSet.values(), cameraAngle),
+    visualIndex,
     // all items have 'moved':
     sortableItemsSet,
     zEdges,
+    renderBoxes,
   );
   const order = toposort(zEdges);
 

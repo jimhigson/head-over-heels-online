@@ -1,45 +1,21 @@
-import { type Writable } from "type-fest";
-
-import { type ItemInPlayAAbbInfo } from "../../model/ItemInPlay";
 import { completeTimesXyz } from "../../model/times";
-import {
-  addXyz,
-  productXyz,
-  subXyz,
-  subXyzInPlace,
-  type Xyz,
-} from "../../utils/vectors/vectors";
+import { type Aabb, type Xyz } from "../../utils/vectors/vectors";
 import { blockSizePx } from "../physics/mechanicsConstants";
 
-export const multiplyBoundingBox = ({
-  singleItemBBInfo: { aabb: singleItemBB, baseRenderAabbOffset, renderAabb },
-  times: timesConfig = {},
-}: {
-  singleItemBBInfo: ItemInPlayAAbbInfo;
-  times?: Partial<Xyz>;
-}): ItemInPlayAAbbInfo => {
-  const timesCompleted = completeTimesXyz(timesConfig);
-
-  const difference = subXyz(blockSizePx, singleItemBB);
-
-  const multipliedAabb = subXyzInPlace(
-    productXyz(timesCompleted, blockSizePx),
-    difference,
-  );
-
-  const multipliedRenderAabb =
-    renderAabb === undefined ? undefined : (
-      addXyz(multipliedAabb, subXyz(renderAabb, singleItemBB))
-    );
-
-  const result: Writable<ItemInPlayAAbbInfo> = { aabb: multipliedAabb };
-
-  if (renderAabb !== undefined) {
-    result.renderAabb = multipliedRenderAabb;
-  }
-  if (baseRenderAabbOffset !== undefined) {
-    result.baseRenderAabbOffset = baseRenderAabbOffset;
-  }
-
-  return result;
+/**
+ * stretch a single-block-item's box over a `times` repetition:
+ * `box + (times - 1) · blockSize` per axis. The box keeps its margin relative
+ * to the repeated blocks, so this works for any box - physical aabbs (loaders)
+ * and visual overdraw boxes (render-box derivation) alike
+ */
+export const multiplyBoundingBox = (
+  box: Aabb,
+  times: Partial<Xyz> | undefined,
+): Aabb => {
+  const timesCompleted = completeTimesXyz(times ?? {});
+  return {
+    x: box.x + (timesCompleted.x - 1) * blockSizePx.x,
+    y: box.y + (timesCompleted.y - 1) * blockSizePx.y,
+    z: box.z + (timesCompleted.z - 1) * blockSizePx.z,
+  };
 };

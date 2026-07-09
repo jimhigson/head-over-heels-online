@@ -6,11 +6,12 @@ import { type Xyz } from "../../../utils/vectors/vectors";
 import {
   blockJsonItemId,
   blockPositionBlocks,
-  blockRoomAtAngle,
+  blockRoom,
   pointerTool,
   projectFaceCentre,
+  renderBoxesForRoom,
   visibleSideFaces,
-} from "./__test__/blockRoomAtAngle";
+} from "./__test__/blockRoom";
 import { findPointerPointingAt } from "./findPointerPointingAt";
 
 const cameraAngleBase = { x: 1, y: 0 };
@@ -23,7 +24,11 @@ const topFacePosition: Xyz = {
 };
 
 describe("at the base camera angle", () => {
-  const { room, block } = blockRoomAtAngle(cameraAngleBase);
+  const { room, block } = blockRoom();
+  // stands in for the editor's room renderer, which owns the drawn extents:
+  const roomRenderer = {
+    renderBoxes: renderBoxesForRoom(room, cameraAngleBase),
+  };
 
   test("pointing at the top face finds the block, up face, and world position", () => {
     expect(
@@ -33,6 +38,7 @@ describe("at the base camera angle", () => {
         pointerTool,
         1,
         cameraAngleBase,
+        roomRenderer,
       ).world,
     ).toMatchObject({
       itemId: blockJsonItemId,
@@ -49,6 +55,7 @@ describe("at the base camera angle", () => {
         pointerTool,
         1,
         cameraAngleBase,
+        roomRenderer,
       ).world,
     ).toBeUndefined();
   });
@@ -58,7 +65,7 @@ describe("at every camera angle", () => {
   test.for(allCameraAngles)(
     "pointing at the top face gives the same physical result (camera angle $x,$y)",
     (cameraAngle) => {
-      const { room, block } = blockRoomAtAngle(cameraAngle);
+      const { room, block } = blockRoom();
 
       expect(
         findPointerPointingAt(
@@ -67,6 +74,7 @@ describe("at every camera angle", () => {
           pointerTool,
           1,
           cameraAngle,
+          { renderBoxes: renderBoxesForRoom(room, cameraAngle) },
         ).world,
       ).toMatchObject({
         itemId: blockJsonItemId,
@@ -79,7 +87,10 @@ describe("at every camera angle", () => {
   test.for(visibleSideFaces)(
     "pointing at the visible side faces gives their physical faces (camera angle $cameraAngle.x,$cameraAngle.y)",
     ({ cameraAngle, apparentRight, apparentTowards }) => {
-      const { room, block } = blockRoomAtAngle(cameraAngle);
+      const { room, block } = blockRoom();
+      const roomRenderer = {
+        renderBoxes: renderBoxesForRoom(room, cameraAngle),
+      };
 
       for (const face of [apparentRight, apparentTowards]) {
         expect(
@@ -89,6 +100,7 @@ describe("at every camera angle", () => {
             pointerTool,
             1,
             cameraAngle,
+            roomRenderer,
           ).world,
         ).toMatchObject({
           itemId: blockJsonItemId,
@@ -101,7 +113,7 @@ describe("at every camera angle", () => {
   test.for(allCameraAngles)(
     "pointing at empty space finds nothing (camera angle $x,$y)",
     (cameraAngle) => {
-      const { room } = blockRoomAtAngle(cameraAngle);
+      const { room } = blockRoom();
       expect(
         findPointerPointingAt(
           { x: 1_000, y: 1_000 },
@@ -109,6 +121,7 @@ describe("at every camera angle", () => {
           pointerTool,
           1,
           cameraAngle,
+          { renderBoxes: renderBoxesForRoom(room, cameraAngle) },
         ).world,
       ).toBeUndefined();
     },

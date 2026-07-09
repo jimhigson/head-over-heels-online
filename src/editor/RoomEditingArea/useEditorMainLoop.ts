@@ -1,4 +1,5 @@
 import { Container, Graphics, type Renderer, Ticker } from "pixi.js";
+import { type RefObject } from "preact";
 import { useEffect } from "preact/hooks";
 
 import { type MovedOrResizedItems } from "../../game/mainLoop/progressGameState";
@@ -68,6 +69,11 @@ const editorGeneralRenderContext = (
 
 export const useEditorMainLoop = (
   spritesheetVariants: SpritesheetVariants,
+  /**
+   * kept pointing at the current room renderer, so consumers of the rendering
+   * (eg pointer picking) can read its render boxes
+   */
+  roomRendererRef: RefObject<EditorRoomRenderer | undefined>,
 ): void => {
   const pixiApp = useProvidedPixiApplication();
   const viewport = useEditorViewport();
@@ -129,6 +135,7 @@ export const useEditorMainLoop = (
         });
 
         roomContainer.addChild(roomRenderer.output.graphics);
+        roomRendererRef.current = roomRenderer;
 
         lastPlanet = planet;
         lastColor = color;
@@ -180,6 +187,7 @@ export const useEditorMainLoop = (
     return () => {
       Ticker.shared.remove(tick);
       roomRenderer?.destroy();
+      roomRendererRef.current = undefined;
       viewport.container.removeChild(backdrop, roomContainer);
       backdrop.destroy();
       roomContainer.destroy();
@@ -191,5 +199,6 @@ export const useEditorMainLoop = (
     spritesheetVariants,
     roomRenderSize,
     viewport,
+    roomRendererRef,
   ]);
 };

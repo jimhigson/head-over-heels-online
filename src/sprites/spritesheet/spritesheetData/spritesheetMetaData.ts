@@ -4,6 +4,8 @@ import { blockStackSpritesheetMeta } from "../../../../gfx/spritesheetMeta/block
 import { speccySpritesheetMeta } from "../../../../gfx/spritesheetMeta/speccySpritesheetMeta";
 import { toppySpritesheetMeta } from "../../../../gfx/spritesheetMeta/toppySpritesheetMeta";
 import { type ButtonId } from "../../../game/render/hud/HudButtonRenderer";
+import { type ItemInPlayType } from "../../../model/ItemInPlay";
+import { type JsonItemConfig } from "../../../model/json/JsonItem";
 import { type ZxSpectrumPaletteColour } from "../../../originalGame";
 import { type SpriteOption } from "../../../store/slices/userSettings/userSettingsSlice";
 import { entries } from "../../../utils/entries";
@@ -11,7 +13,7 @@ import {
   type NamedColours,
   type NamedSwops,
 } from "../../../utils/palette/palette";
-import { type DirectionXy8 } from "../../../utils/vectors/vectors";
+import { type Aabb, type DirectionXy8 } from "../../../utils/vectors/vectors";
 import { type LoadableSpriteOption } from "../variants/SpritesheetVariants";
 import { type TextureId } from "./makeSpritesheetData";
 
@@ -54,6 +56,56 @@ type EffectColours<PaletteColourName extends string> = {
 
 export type EffectColourName = Simplify<keyof EffectColours<string>>;
 
+/**
+ * the world-space box an item kind's sprites draw into, where that differs
+ * from the physical aabb (sprite overdraw - eg characters draw slightly
+ * bigger than their collision box)
+ */
+export type ItemRenderExtent = {
+  /** the drawn extent - camera-invariant, since sprites don't rotate with the world */
+  renderAabb: Aabb;
+  /**
+   * the base-angle offset of the drawn box from the item position;
+   * makeItemRenderBoxAtCameraAngle derives the camera-current offset from it
+   */
+  baseRenderAabbOffset?: Aabb;
+};
+
+/** the item kinds whose rendering (and so overdraw) varies by a config field */
+type StyleKeyedType =
+  | "block"
+  | "deadlyBlock"
+  | "moveableDeadly"
+  | "slidingBlock";
+type WhichKeyedType = "monster" | "sceneryPlayer";
+
+/**
+ * every id an item kind can have in the {@link ItemRenderExtents} table:
+ * dotted kind-plus-discriminator ids following the TextureId convention
+ * (`block.tower`, `monster.monkey`, `pickup.crown`), or the plain type for
+ * kinds with a single rendering - constructed from the real item/config types
+ * so table keys are compile-time checked
+ */
+export type ItemRenderExtentKey =
+  | {
+      [T in StyleKeyedType]: `${T}.${JsonItemConfig<T, string, string>["style"]}`;
+    }[StyleKeyedType]
+  | {
+      [T in WhichKeyedType]: `${T}.${JsonItemConfig<T, string, string>["which"]}`;
+    }[WhichKeyedType]
+  | `pickup.${JsonItemConfig<"pickup", string, string>["gives"]}`
+  | Exclude<ItemInPlayType, "pickup" | StyleKeyedType | WhichKeyedType>;
+
+/**
+ * per-item-kind drawn overdraw boxes. A missing key means the kind draws true
+ * to its physical aabb. Consumed only by makeItemRenderBoxAtCameraAngle - the
+ * structural types (wall, doorFrame, doorLegs, floor) derive their boxes
+ * inline there and have no entries
+ */
+export type ItemRenderExtents = Partial<
+  Record<ItemRenderExtentKey, ItemRenderExtent>
+>;
+
 export type SpritesheetMetadata<
   /** if not given, the spritesheet has no specified named colours - colours can have any name */
   PaletteColourName extends string = string,
@@ -64,6 +116,7 @@ export type SpritesheetMetadata<
   /** if given, an alternative palette to use in dimmed rooms */
   paletteDim?: NamedColours<PaletteColourName>;
   playable: PlayableSpritesheetMetaData;
+  itemRenderExtents: ItemRenderExtents;
   overrides?: SpriteOverrides;
   missedTextures?: TextureId[];
   swops?: {

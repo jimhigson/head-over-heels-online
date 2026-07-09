@@ -10,16 +10,6 @@ Map {
     },
     "fixedZIndex": undefined,
     "id": "item-22",
-    "renderAabb": {
-      "x": 1,
-      "y": 1,
-      "z": 1,
-    },
-    "renderAabbOffset": {
-      "x": 0,
-      "y": 0,
-      "z": 0,
-    },
     "state": {
       "position": {
         "x": 4,
@@ -36,16 +26,6 @@ Map {
       },
       "fixedZIndex": undefined,
       "id": "item-11",
-      "renderAabb": {
-        "x": 1,
-        "y": 1,
-        "z": 1,
-      },
-      "renderAabbOffset": {
-        "x": 0,
-        "y": 0,
-        "z": 0,
-      },
       "state": {
         "position": {
           "x": 2,
@@ -63,16 +43,6 @@ Map {
     },
     "fixedZIndex": undefined,
     "id": "item-12",
-    "renderAabb": {
-      "x": 1,
-      "y": 1,
-      "z": 1,
-    },
-    "renderAabbOffset": {
-      "x": 0,
-      "y": 0,
-      "z": 0,
-    },
     "state": {
       "position": {
         "x": 4,
@@ -89,16 +59,6 @@ Map {
       },
       "fixedZIndex": undefined,
       "id": "item-1",
-      "renderAabb": {
-        "x": 1,
-        "y": 1,
-        "z": 1,
-      },
-      "renderAabbOffset": {
-        "x": 0,
-        "y": 0,
-        "z": 0,
-      },
       "state": {
         "position": {
           "x": 2,
@@ -116,16 +76,6 @@ Map {
     },
     "fixedZIndex": undefined,
     "id": "item-23",
-    "renderAabb": {
-      "x": 1,
-      "y": 1,
-      "z": 1,
-    },
-    "renderAabbOffset": {
-      "x": 0,
-      "y": 0,
-      "z": 0,
-    },
     "state": {
       "position": {
         "x": 6,
@@ -142,16 +92,6 @@ Map {
       },
       "fixedZIndex": undefined,
       "id": "item-1",
-      "renderAabb": {
-        "x": 1,
-        "y": 1,
-        "z": 1,
-      },
-      "renderAabbOffset": {
-        "x": 0,
-        "y": 0,
-        "z": 0,
-      },
       "state": {
         "position": {
           "x": 2,
@@ -168,16 +108,6 @@ Map {
       },
       "fixedZIndex": undefined,
       "id": "item-12",
-      "renderAabb": {
-        "x": 1,
-        "y": 1,
-        "z": 1,
-      },
-      "renderAabbOffset": {
-        "x": 0,
-        "y": 0,
-        "z": 0,
-      },
       "state": {
         "position": {
           "x": 4,
@@ -195,16 +125,6 @@ Map {
     },
     "fixedZIndex": undefined,
     "id": "item-13",
-    "renderAabb": {
-      "x": 1,
-      "y": 1,
-      "z": 1,
-    },
-    "renderAabbOffset": {
-      "x": 0,
-      "y": 0,
-      "z": 0,
-    },
     "state": {
       "position": {
         "x": 6,
@@ -221,16 +141,6 @@ Map {
       },
       "fixedZIndex": undefined,
       "id": "item-2",
-      "renderAabb": {
-        "x": 1,
-        "y": 1,
-        "z": 1,
-      },
-      "renderAabbOffset": {
-        "x": 0,
-        "y": 0,
-        "z": 0,
-      },
       "state": {
         "position": {
           "x": 4,
@@ -248,16 +158,6 @@ Map {
     },
     "fixedZIndex": undefined,
     "id": "item-24",
-    "renderAabb": {
-      "x": 1,
-      "y": 1,
-      "z": 1,
-    },
-    "renderAabbOffset": {
-      "x": 0,
-      "y": 0,
-      "z": 0,
-    },
     "state": {
       "position": {
         "x": 8,
@@ -274,16 +174,6 @@ Map {
       },
       "fixedZIndex": undefined,
       "id": "item-2",
-      "renderAabb": {
-        "x": 1,
-        "y": 1,
-        "z": 1,
-      },
-      "renderAabbOffset": {
-        "x": 0,
-        "y": 0,
-        "z": 0,
-      },
       "state": {
         "position": {
           "x": 4,
@@ -300,16 +190,6 @@ Map {
       },
       "fixedZIndex": undefined,
       "id": "item-13",
-      "renderAabb": {
-        "x": 1,
-        "y": 1,
-        "z": 1,
-      },
-      "renderAabbOffset": {
-        "x": 0,
-        "y": 0,
-        "z": 0,
-      },
       "state": {
         "position": {
           "x": 6,
@@ -327,16 +207,6 @@ Map {
     },
     "fixedZIndex": undefined,
     "id": "item-14",
-    "renderAabb": {
-      "x": 1,
-      "y": 1,
-      "z": 1,
-    },
-    "renderAabbOffset": {
-      "x": 0,
-      "y": 0,
-      "z": 0,
-    },
     "state": {
       "position": {
         "x": 8,
@@ -353,16 +223,6 @@ Map {
       },
       "fixedZIndex": undefined,
       "id": "item-3",
-      "renderAabb": {
-        "x": 1,
-        "y": 1,
-        "z": 1,
-      },
-      "renderAabbOffset": {
-        "x": 0,
-        "y": 0,
-        "z": 0,
-      },
       "state": {
         "position": {
           "x": 6,
@@ -380,16 +240,6 @@ Map {
     },
     "fixedZIndex": undefined,
     "id": "item-36",
-    "renderAabb": {
-      "x": 1,
-      "y": 1,
-      "z": 1,
-    },
-    "renderAabbOffset": {
-      "x": 0,
-      "y": 0,
-      "z": 0,
-    },
     "state": {
       "position": {
         "x": 12,
@@ -406,16 +256,6 @@ Map {
       },
       "fixedZIndex": undefined,
       "id": "item-14",
-      "renderAabb": {
-        "x": 1,
-        "y": 1,
-        "z": 1,
-      },
-      "renderAabbOffset": {
-        "x": 0,
-        "y": 0,
-        "z": 0,
-      },
       "state": {
         "position": {
           "x": 8,
@@ -433,16 +273,6 @@ Map {
     },
     "fixedZIndex": undefined,
     "id": "item-37",
-    "renderAabb": {
-      "x": 1,
-      "y": 1,
-      "z": 1,
-    },
-    "renderAabbOffset": {
-      "x": 0,
-      "y": 0,
-      "z": 0,
-    },
     "state": {
       "position": {
         "x": 14,
@@ -459,16 +289,6 @@ Map {
       },
       "fixedZIndex": undefined,
       "id": "item-26",
-      "renderAabb": {
-        "x": 1,
-        "y": 1,
-        "z": 1,
-      },
-      "renderAabbOffset": {
-        "x": 0,
-        "y": 0,
-        "z": 0,
-      },
       "state": {
         "position": {
           "x": 12,
@@ -485,16 +305,6 @@ Map {
       },
       "fixedZIndex": undefined,
       "id": "item-15",
-      "renderAabb": {
-        "x": 1,
-        "y": 1,
-        "z": 1,
-      },
-      "renderAabbOffset": {
-        "x": 0,
-        "y": 0,
-        "z": 0,
-      },
       "state": {
         "position": {
           "x": 10,
@@ -512,16 +322,6 @@ Map {
     },
     "fixedZIndex": undefined,
     "id": "item-48",
-    "renderAabb": {
-      "x": 1,
-      "y": 1,
-      "z": 1,
-    },
-    "renderAabbOffset": {
-      "x": 0,
-      "y": 0,
-      "z": 0,
-    },
     "state": {
       "position": {
         "x": 16,
@@ -538,16 +338,6 @@ Map {
       },
       "fixedZIndex": undefined,
       "id": "item-26",
-      "renderAabb": {
-        "x": 1,
-        "y": 1,
-        "z": 1,
-      },
-      "renderAabbOffset": {
-        "x": 0,
-        "y": 0,
-        "z": 0,
-      },
       "state": {
         "position": {
           "x": 12,
@@ -564,16 +354,6 @@ Map {
       },
       "fixedZIndex": undefined,
       "id": "item-37",
-      "renderAabb": {
-        "x": 1,
-        "y": 1,
-        "z": 1,
-      },
-      "renderAabbOffset": {
-        "x": 0,
-        "y": 0,
-        "z": 0,
-      },
       "state": {
         "position": {
           "x": 14,
@@ -590,16 +370,6 @@ Map {
       },
       "fixedZIndex": undefined,
       "id": "item-15",
-      "renderAabb": {
-        "x": 1,
-        "y": 1,
-        "z": 1,
-      },
-      "renderAabbOffset": {
-        "x": 0,
-        "y": 0,
-        "z": 0,
-      },
       "state": {
         "position": {
           "x": 10,
@@ -617,16 +387,6 @@ Map {
     },
     "fixedZIndex": undefined,
     "id": "item-38",
-    "renderAabb": {
-      "x": 1,
-      "y": 1,
-      "z": 1,
-    },
-    "renderAabbOffset": {
-      "x": 0,
-      "y": 0,
-      "z": 0,
-    },
     "state": {
       "position": {
         "x": 16,
@@ -643,16 +403,6 @@ Map {
       },
       "fixedZIndex": undefined,
       "id": "item-27",
-      "renderAabb": {
-        "x": 1,
-        "y": 1,
-        "z": 1,
-      },
-      "renderAabbOffset": {
-        "x": 0,
-        "y": 0,
-        "z": 0,
-      },
       "state": {
         "position": {
           "x": 14,
@@ -670,16 +420,6 @@ Map {
     },
     "fixedZIndex": undefined,
     "id": "item-49",
-    "renderAabb": {
-      "x": 1,
-      "y": 1,
-      "z": 1,
-    },
-    "renderAabbOffset": {
-      "x": 0,
-      "y": 0,
-      "z": 0,
-    },
     "state": {
       "position": {
         "x": 18,
@@ -696,16 +436,6 @@ Map {
       },
       "fixedZIndex": undefined,
       "id": "item-27",
-      "renderAabb": {
-        "x": 1,
-        "y": 1,
-        "z": 1,
-      },
-      "renderAabbOffset": {
-        "x": 0,
-        "y": 0,
-        "z": 0,
-      },
       "state": {
         "position": {
           "x": 14,
@@ -722,16 +452,6 @@ Map {
       },
       "fixedZIndex": undefined,
       "id": "item-38",
-      "renderAabb": {
-        "x": 1,
-        "y": 1,
-        "z": 1,
-      },
-      "renderAabbOffset": {
-        "x": 0,
-        "y": 0,
-        "z": 0,
-      },
       "state": {
         "position": {
           "x": 16,
@@ -749,16 +469,6 @@ Map {
     },
     "fixedZIndex": undefined,
     "id": "item-39",
-    "renderAabb": {
-      "x": 1,
-      "y": 1,
-      "z": 1,
-    },
-    "renderAabbOffset": {
-      "x": 0,
-      "y": 0,
-      "z": 0,
-    },
     "state": {
       "position": {
         "x": 18,
@@ -775,16 +485,6 @@ Map {
       },
       "fixedZIndex": undefined,
       "id": "item-28",
-      "renderAabb": {
-        "x": 1,
-        "y": 1,
-        "z": 1,
-      },
-      "renderAabbOffset": {
-        "x": 0,
-        "y": 0,
-        "z": 0,
-      },
       "state": {
         "position": {
           "x": 16,
@@ -802,16 +502,6 @@ Map {
     },
     "fixedZIndex": undefined,
     "id": "item-47",
-    "renderAabb": {
-      "x": 1,
-      "y": 1,
-      "z": 1,
-    },
-    "renderAabbOffset": {
-      "x": 0,
-      "y": 0,
-      "z": 0,
-    },
     "state": {
       "position": {
         "x": 14,
@@ -828,16 +518,6 @@ Map {
       },
       "fixedZIndex": undefined,
       "id": "item-36",
-      "renderAabb": {
-        "x": 1,
-        "y": 1,
-        "z": 1,
-      },
-      "renderAabbOffset": {
-        "x": 0,
-        "y": 0,
-        "z": 0,
-      },
       "state": {
         "position": {
           "x": 12,
@@ -855,16 +535,6 @@ Map {
     },
     "fixedZIndex": undefined,
     "id": "item-62",
-    "renderAabb": {
-      "x": 1,
-      "y": 1,
-      "z": 1,
-    },
-    "renderAabbOffset": {
-      "x": 0,
-      "y": 0,
-      "z": 0,
-    },
     "state": {
       "position": {
         "x": 4,
@@ -881,16 +551,6 @@ Map {
       },
       "fixedZIndex": undefined,
       "id": "item-51",
-      "renderAabb": {
-        "x": 1,
-        "y": 1,
-        "z": 1,
-      },
-      "renderAabbOffset": {
-        "x": 0,
-        "y": 0,
-        "z": 0,
-      },
       "state": {
         "position": {
           "x": 2,
@@ -907,16 +567,6 @@ Map {
       },
       "fixedZIndex": undefined,
       "id": "item-40",
-      "renderAabb": {
-        "x": 1,
-        "y": 1,
-        "z": 1,
-      },
-      "renderAabbOffset": {
-        "x": 0,
-        "y": 0,
-        "z": 0,
-      },
       "state": {
         "position": {
           "x": 0,
@@ -934,16 +584,6 @@ Map {
     },
     "fixedZIndex": undefined,
     "id": "item-73",
-    "renderAabb": {
-      "x": 1,
-      "y": 1,
-      "z": 1,
-    },
-    "renderAabbOffset": {
-      "x": 0,
-      "y": 0,
-      "z": 0,
-    },
     "state": {
       "position": {
         "x": 6,
@@ -960,16 +600,6 @@ Map {
       },
       "fixedZIndex": undefined,
       "id": "item-51",
-      "renderAabb": {
-        "x": 1,
-        "y": 1,
-        "z": 1,
-      },
-      "renderAabbOffset": {
-        "x": 0,
-        "y": 0,
-        "z": 0,
-      },
       "state": {
         "position": {
           "x": 2,
@@ -986,16 +616,6 @@ Map {
       },
       "fixedZIndex": undefined,
       "id": "item-62",
-      "renderAabb": {
-        "x": 1,
-        "y": 1,
-        "z": 1,
-      },
-      "renderAabbOffset": {
-        "x": 0,
-        "y": 0,
-        "z": 0,
-      },
       "state": {
         "position": {
           "x": 4,
@@ -1012,16 +632,6 @@ Map {
       },
       "fixedZIndex": undefined,
       "id": "item-40",
-      "renderAabb": {
-        "x": 1,
-        "y": 1,
-        "z": 1,
-      },
-      "renderAabbOffset": {
-        "x": 0,
-        "y": 0,
-        "z": 0,
-      },
       "state": {
         "position": {
           "x": 0,
@@ -1039,16 +649,6 @@ Map {
     },
     "fixedZIndex": undefined,
     "id": "item-52",
-    "renderAabb": {
-      "x": 1,
-      "y": 1,
-      "z": 1,
-    },
-    "renderAabbOffset": {
-      "x": 0,
-      "y": 0,
-      "z": 0,
-    },
     "state": {
       "position": {
         "x": 4,
@@ -1065,16 +665,6 @@ Map {
       },
       "fixedZIndex": undefined,
       "id": "item-41",
-      "renderAabb": {
-        "x": 1,
-        "y": 1,
-        "z": 1,
-      },
-      "renderAabbOffset": {
-        "x": 0,
-        "y": 0,
-        "z": 0,
-      },
       "state": {
         "position": {
           "x": 2,
@@ -1092,16 +682,6 @@ Map {
     },
     "fixedZIndex": undefined,
     "id": "item-63",
-    "renderAabb": {
-      "x": 1,
-      "y": 1,
-      "z": 1,
-    },
-    "renderAabbOffset": {
-      "x": 0,
-      "y": 0,
-      "z": 0,
-    },
     "state": {
       "position": {
         "x": 6,
@@ -1118,16 +698,6 @@ Map {
       },
       "fixedZIndex": undefined,
       "id": "item-52",
-      "renderAabb": {
-        "x": 1,
-        "y": 1,
-        "z": 1,
-      },
-      "renderAabbOffset": {
-        "x": 0,
-        "y": 0,
-        "z": 0,
-      },
       "state": {
         "position": {
           "x": 4,
@@ -1145,16 +715,6 @@ Map {
     },
     "fixedZIndex": undefined,
     "id": "item-74",
-    "renderAabb": {
-      "x": 1,
-      "y": 1,
-      "z": 1,
-    },
-    "renderAabbOffset": {
-      "x": 0,
-      "y": 0,
-      "z": 0,
-    },
     "state": {
       "position": {
         "x": 8,
@@ -1171,16 +731,6 @@ Map {
       },
       "fixedZIndex": undefined,
       "id": "item-52",
-      "renderAabb": {
-        "x": 1,
-        "y": 1,
-        "z": 1,
-      },
-      "renderAabbOffset": {
-        "x": 0,
-        "y": 0,
-        "z": 0,
-      },
       "state": {
         "position": {
           "x": 4,
@@ -1197,16 +747,6 @@ Map {
       },
       "fixedZIndex": undefined,
       "id": "item-63",
-      "renderAabb": {
-        "x": 1,
-        "y": 1,
-        "z": 1,
-      },
-      "renderAabbOffset": {
-        "x": 0,
-        "y": 0,
-        "z": 0,
-      },
       "state": {
         "position": {
           "x": 6,
@@ -1224,16 +764,6 @@ Map {
     },
     "fixedZIndex": undefined,
     "id": "item-64",
-    "renderAabb": {
-      "x": 1,
-      "y": 1,
-      "z": 1,
-    },
-    "renderAabbOffset": {
-      "x": 0,
-      "y": 0,
-      "z": 0,
-    },
     "state": {
       "position": {
         "x": 8,
@@ -1250,16 +780,6 @@ Map {
       },
       "fixedZIndex": undefined,
       "id": "item-53",
-      "renderAabb": {
-        "x": 1,
-        "y": 1,
-        "z": 1,
-      },
-      "renderAabbOffset": {
-        "x": 0,
-        "y": 0,
-        "z": 0,
-      },
       "state": {
         "position": {
           "x": 6,
@@ -1277,16 +797,6 @@ Map {
     },
     "fixedZIndex": undefined,
     "id": "item-86",
-    "renderAabb": {
-      "x": 1,
-      "y": 1,
-      "z": 1,
-    },
-    "renderAabbOffset": {
-      "x": 0,
-      "y": 0,
-      "z": 0,
-    },
     "state": {
       "position": {
         "x": 12,
@@ -1303,16 +813,6 @@ Map {
       },
       "fixedZIndex": undefined,
       "id": "item-53",
-      "renderAabb": {
-        "x": 1,
-        "y": 1,
-        "z": 1,
-      },
-      "renderAabbOffset": {
-        "x": 0,
-        "y": 0,
-        "z": 0,
-      },
       "state": {
         "position": {
           "x": 6,
@@ -1329,16 +829,6 @@ Map {
       },
       "fixedZIndex": undefined,
       "id": "item-64",
-      "renderAabb": {
-        "x": 1,
-        "y": 1,
-        "z": 1,
-      },
-      "renderAabbOffset": {
-        "x": 0,
-        "y": 0,
-        "z": 0,
-      },
       "state": {
         "position": {
           "x": 8,
@@ -1356,16 +846,6 @@ Map {
     },
     "fixedZIndex": undefined,
     "id": "item-72",
-    "renderAabb": {
-      "x": 1,
-      "y": 1,
-      "z": 1,
-    },
-    "renderAabbOffset": {
-      "x": 0,
-      "y": 0,
-      "z": 0,
-    },
     "state": {
       "position": {
         "x": 4,
@@ -1382,16 +862,6 @@ Map {
       },
       "fixedZIndex": undefined,
       "id": "item-61",
-      "renderAabb": {
-        "x": 1,
-        "y": 1,
-        "z": 1,
-      },
-      "renderAabbOffset": {
-        "x": 0,
-        "y": 0,
-        "z": 0,
-      },
       "state": {
         "position": {
           "x": 2,
@@ -1409,16 +879,6 @@ Map {
     },
     "fixedZIndex": undefined,
     "id": "item-87",
-    "renderAabb": {
-      "x": 1,
-      "y": 1,
-      "z": 1,
-    },
-    "renderAabbOffset": {
-      "x": 0,
-      "y": 0,
-      "z": 0,
-    },
     "state": {
       "position": {
         "x": 14,
@@ -1435,16 +895,6 @@ Map {
       },
       "fixedZIndex": undefined,
       "id": "item-76",
-      "renderAabb": {
-        "x": 1,
-        "y": 1,
-        "z": 1,
-      },
-      "renderAabbOffset": {
-        "x": 0,
-        "y": 0,
-        "z": 0,
-      },
       "state": {
         "position": {
           "x": 12,
@@ -1461,16 +911,6 @@ Map {
       },
       "fixedZIndex": undefined,
       "id": "item-65",
-      "renderAabb": {
-        "x": 1,
-        "y": 1,
-        "z": 1,
-      },
-      "renderAabbOffset": {
-        "x": 0,
-        "y": 0,
-        "z": 0,
-      },
       "state": {
         "position": {
           "x": 10,
@@ -1488,16 +928,6 @@ Map {
     },
     "fixedZIndex": undefined,
     "id": "item-98",
-    "renderAabb": {
-      "x": 1,
-      "y": 1,
-      "z": 1,
-    },
-    "renderAabbOffset": {
-      "x": 0,
-      "y": 0,
-      "z": 0,
-    },
     "state": {
       "position": {
         "x": 16,
@@ -1514,16 +944,6 @@ Map {
       },
       "fixedZIndex": undefined,
       "id": "item-76",
-      "renderAabb": {
-        "x": 1,
-        "y": 1,
-        "z": 1,
-      },
-      "renderAabbOffset": {
-        "x": 0,
-        "y": 0,
-        "z": 0,
-      },
       "state": {
         "position": {
           "x": 12,
@@ -1540,16 +960,6 @@ Map {
       },
       "fixedZIndex": undefined,
       "id": "item-87",
-      "renderAabb": {
-        "x": 1,
-        "y": 1,
-        "z": 1,
-      },
-      "renderAabbOffset": {
-        "x": 0,
-        "y": 0,
-        "z": 0,
-      },
       "state": {
         "position": {
           "x": 14,
@@ -1566,16 +976,6 @@ Map {
       },
       "fixedZIndex": undefined,
       "id": "item-65",
-      "renderAabb": {
-        "x": 1,
-        "y": 1,
-        "z": 1,
-      },
-      "renderAabbOffset": {
-        "x": 0,
-        "y": 0,
-        "z": 0,
-      },
       "state": {
         "position": {
           "x": 10,
@@ -1593,16 +993,6 @@ Map {
     },
     "fixedZIndex": undefined,
     "id": "item-77",
-    "renderAabb": {
-      "x": 1,
-      "y": 1,
-      "z": 1,
-    },
-    "renderAabbOffset": {
-      "x": 0,
-      "y": 0,
-      "z": 0,
-    },
     "state": {
       "position": {
         "x": 14,
@@ -1619,16 +1009,6 @@ Map {
       },
       "fixedZIndex": undefined,
       "id": "item-66",
-      "renderAabb": {
-        "x": 1,
-        "y": 1,
-        "z": 1,
-      },
-      "renderAabbOffset": {
-        "x": 0,
-        "y": 0,
-        "z": 0,
-      },
       "state": {
         "position": {
           "x": 12,
@@ -1646,16 +1026,6 @@ Map {
     },
     "fixedZIndex": undefined,
     "id": "item-88",
-    "renderAabb": {
-      "x": 1,
-      "y": 1,
-      "z": 1,
-    },
-    "renderAabbOffset": {
-      "x": 0,
-      "y": 0,
-      "z": 0,
-    },
     "state": {
       "position": {
         "x": 16,
@@ -1672,16 +1042,6 @@ Map {
       },
       "fixedZIndex": undefined,
       "id": "item-77",
-      "renderAabb": {
-        "x": 1,
-        "y": 1,
-        "z": 1,
-      },
-      "renderAabbOffset": {
-        "x": 0,
-        "y": 0,
-        "z": 0,
-      },
       "state": {
         "position": {
           "x": 14,
@@ -1699,16 +1059,6 @@ Map {
     },
     "fixedZIndex": undefined,
     "id": "item-99",
-    "renderAabb": {
-      "x": 1,
-      "y": 1,
-      "z": 1,
-    },
-    "renderAabbOffset": {
-      "x": 0,
-      "y": 0,
-      "z": 0,
-    },
     "state": {
       "position": {
         "x": 18,
@@ -1725,16 +1075,6 @@ Map {
       },
       "fixedZIndex": undefined,
       "id": "item-77",
-      "renderAabb": {
-        "x": 1,
-        "y": 1,
-        "z": 1,
-      },
-      "renderAabbOffset": {
-        "x": 0,
-        "y": 0,
-        "z": 0,
-      },
       "state": {
         "position": {
           "x": 14,
@@ -1751,16 +1091,6 @@ Map {
       },
       "fixedZIndex": undefined,
       "id": "item-88",
-      "renderAabb": {
-        "x": 1,
-        "y": 1,
-        "z": 1,
-      },
-      "renderAabbOffset": {
-        "x": 0,
-        "y": 0,
-        "z": 0,
-      },
       "state": {
         "position": {
           "x": 16,
@@ -1778,16 +1108,6 @@ Map {
     },
     "fixedZIndex": undefined,
     "id": "item-89",
-    "renderAabb": {
-      "x": 1,
-      "y": 1,
-      "z": 1,
-    },
-    "renderAabbOffset": {
-      "x": 0,
-      "y": 0,
-      "z": 0,
-    },
     "state": {
       "position": {
         "x": 18,
@@ -1804,16 +1124,6 @@ Map {
       },
       "fixedZIndex": undefined,
       "id": "item-78",
-      "renderAabb": {
-        "x": 1,
-        "y": 1,
-        "z": 1,
-      },
-      "renderAabbOffset": {
-        "x": 0,
-        "y": 0,
-        "z": 0,
-      },
       "state": {
         "position": {
           "x": 16,
@@ -1831,16 +1141,6 @@ Map {
     },
     "fixedZIndex": undefined,
     "id": "item-25",
-    "renderAabb": {
-      "x": 1,
-      "y": 1,
-      "z": 1,
-    },
-    "renderAabbOffset": {
-      "x": 0,
-      "y": 0,
-      "z": 0,
-    },
     "state": {
       "position": {
         "x": 10,
@@ -1857,16 +1157,6 @@ Map {
       },
       "fixedZIndex": undefined,
       "id": "item-3",
-      "renderAabb": {
-        "x": 1,
-        "y": 1,
-        "z": 1,
-      },
-      "renderAabbOffset": {
-        "x": 0,
-        "y": 0,
-        "z": 0,
-      },
       "state": {
         "position": {
           "x": 6,
@@ -1883,16 +1173,6 @@ Map {
       },
       "fixedZIndex": undefined,
       "id": "item-14",
-      "renderAabb": {
-        "x": 1,
-        "y": 1,
-        "z": 1,
-      },
-      "renderAabbOffset": {
-        "x": 0,
-        "y": 0,
-        "z": 0,
-      },
       "state": {
         "position": {
           "x": 8,
@@ -1910,16 +1190,6 @@ Map {
     },
     "fixedZIndex": undefined,
     "id": "item-75",
-    "renderAabb": {
-      "x": 1,
-      "y": 1,
-      "z": 1,
-    },
-    "renderAabbOffset": {
-      "x": 0,
-      "y": 0,
-      "z": 0,
-    },
     "state": {
       "position": {
         "x": 10,
@@ -1936,16 +1206,6 @@ Map {
       },
       "fixedZIndex": undefined,
       "id": "item-53",
-      "renderAabb": {
-        "x": 1,
-        "y": 1,
-        "z": 1,
-      },
-      "renderAabbOffset": {
-        "x": 0,
-        "y": 0,
-        "z": 0,
-      },
       "state": {
         "position": {
           "x": 6,
@@ -1962,16 +1222,6 @@ Map {
       },
       "fixedZIndex": undefined,
       "id": "item-42",
-      "renderAabb": {
-        "x": 1,
-        "y": 1,
-        "z": 1,
-      },
-      "renderAabbOffset": {
-        "x": 0,
-        "y": 0,
-        "z": 0,
-      },
       "state": {
         "position": {
           "x": 4,
@@ -1989,16 +1239,6 @@ Map {
     },
     "fixedZIndex": undefined,
     "id": "item-51",
-    "renderAabb": {
-      "x": 1,
-      "y": 1,
-      "z": 1,
-    },
-    "renderAabbOffset": {
-      "x": 0,
-      "y": 0,
-      "z": 0,
-    },
     "state": {
       "position": {
         "x": 2,
@@ -2015,16 +1255,6 @@ Map {
       },
       "fixedZIndex": undefined,
       "id": "item-40",
-      "renderAabb": {
-        "x": 1,
-        "y": 1,
-        "z": 1,
-      },
-      "renderAabbOffset": {
-        "x": 0,
-        "y": 0,
-        "z": 0,
-      },
       "state": {
         "position": {
           "x": 0,
@@ -2042,16 +1272,6 @@ Map {
     },
     "fixedZIndex": undefined,
     "id": "item-26",
-    "renderAabb": {
-      "x": 1,
-      "y": 1,
-      "z": 1,
-    },
-    "renderAabbOffset": {
-      "x": 0,
-      "y": 0,
-      "z": 0,
-    },
     "state": {
       "position": {
         "x": 12,
@@ -2068,16 +1288,6 @@ Map {
       },
       "fixedZIndex": undefined,
       "id": "item-15",
-      "renderAabb": {
-        "x": 1,
-        "y": 1,
-        "z": 1,
-      },
-      "renderAabbOffset": {
-        "x": 0,
-        "y": 0,
-        "z": 0,
-      },
       "state": {
         "position": {
           "x": 10,
@@ -2095,16 +1305,6 @@ Map {
     },
     "fixedZIndex": undefined,
     "id": "item-76",
-    "renderAabb": {
-      "x": 1,
-      "y": 1,
-      "z": 1,
-    },
-    "renderAabbOffset": {
-      "x": 0,
-      "y": 0,
-      "z": 0,
-    },
     "state": {
       "position": {
         "x": 12,
@@ -2121,16 +1321,6 @@ Map {
       },
       "fixedZIndex": undefined,
       "id": "item-65",
-      "renderAabb": {
-        "x": 1,
-        "y": 1,
-        "z": 1,
-      },
-      "renderAabbOffset": {
-        "x": 0,
-        "y": 0,
-        "z": 0,
-      },
       "state": {
         "position": {
           "x": 10,
@@ -2148,16 +1338,6 @@ Map {
     },
     "fixedZIndex": undefined,
     "id": "item-21",
-    "renderAabb": {
-      "x": 1,
-      "y": 1,
-      "z": 1,
-    },
-    "renderAabbOffset": {
-      "x": 0,
-      "y": 0,
-      "z": 0,
-    },
     "state": {
       "position": {
         "x": 2,
@@ -2174,16 +1354,6 @@ Map {
       },
       "fixedZIndex": undefined,
       "id": "item-10",
-      "renderAabb": {
-        "x": 1,
-        "y": 1,
-        "z": 1,
-      },
-      "renderAabbOffset": {
-        "x": 0,
-        "y": 0,
-        "z": 0,
-      },
       "state": {
         "position": {
           "x": 0,
@@ -2201,16 +1371,6 @@ Map {
     },
     "fixedZIndex": undefined,
     "id": "item-46",
-    "renderAabb": {
-      "x": 1,
-      "y": 1,
-      "z": 1,
-    },
-    "renderAabbOffset": {
-      "x": 0,
-      "y": 0,
-      "z": 0,
-    },
     "state": {
       "position": {
         "x": 12,
@@ -2227,16 +1387,6 @@ Map {
       },
       "fixedZIndex": undefined,
       "id": "item-35",
-      "renderAabb": {
-        "x": 1,
-        "y": 1,
-        "z": 1,
-      },
-      "renderAabbOffset": {
-        "x": 0,
-        "y": 0,
-        "z": 0,
-      },
       "state": {
         "position": {
           "x": 10,
@@ -2254,16 +1404,6 @@ Map {
     },
     "fixedZIndex": undefined,
     "id": "item-55",
-    "renderAabb": {
-      "x": 1,
-      "y": 1,
-      "z": 1,
-    },
-    "renderAabbOffset": {
-      "x": 0,
-      "y": 0,
-      "z": 0,
-    },
     "state": {
       "position": {
         "x": 10,
@@ -2280,16 +1420,6 @@ Map {
       },
       "fixedZIndex": undefined,
       "id": "item-44",
-      "renderAabb": {
-        "x": 1,
-        "y": 1,
-        "z": 1,
-      },
-      "renderAabbOffset": {
-        "x": 0,
-        "y": 0,
-        "z": 0,
-      },
       "state": {
         "position": {
           "x": 8,
@@ -2307,16 +1437,6 @@ Map {
     },
     "fixedZIndex": undefined,
     "id": "item-96",
-    "renderAabb": {
-      "x": 1,
-      "y": 1,
-      "z": 1,
-    },
-    "renderAabbOffset": {
-      "x": 0,
-      "y": 0,
-      "z": 0,
-    },
     "state": {
       "position": {
         "x": 12,
@@ -2333,16 +1453,6 @@ Map {
       },
       "fixedZIndex": undefined,
       "id": "item-85",
-      "renderAabb": {
-        "x": 1,
-        "y": 1,
-        "z": 1,
-      },
-      "renderAabbOffset": {
-        "x": 0,
-        "y": 0,
-        "z": 0,
-      },
       "state": {
         "position": {
           "x": 10,

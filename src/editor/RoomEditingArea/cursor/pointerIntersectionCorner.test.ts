@@ -5,9 +5,9 @@ import { allCameraAngles } from "../../../utils/vectors/rotateXy";
 import { addXyz, type Xyz } from "../../../utils/vectors/vectors";
 import {
   apparentSilhouette,
-  blockRoomAtAngle,
+  blockRoom,
   pointerTool,
-} from "./__test__/blockRoomAtAngle";
+} from "./__test__/blockRoom";
 import { pointerIntersectionCorner } from "./pointerIntersectionCorner";
 
 const cameraAngleBase = { x: 1, y: 0 };
@@ -28,7 +28,7 @@ const projectItemCorner = (
   );
 
 describe("at the base camera angle", () => {
-  const { block } = blockRoomAtAngle(cameraAngleBase);
+  const { block } = blockRoom();
 
   test("pointing at the near-bottom corner finds it", () => {
     expect(
@@ -69,7 +69,7 @@ describe("at every camera angle", () => {
   test.for(allCameraAngles)(
     "pointing at the projected top-far corner finds the physical corner (camera angle $x,$y)",
     (cameraAngle) => {
-      const { block } = blockRoomAtAngle(cameraAngle);
+      const { block } = blockRoom();
       expect(
         pointerIntersectionCorner(
           block,
@@ -84,7 +84,7 @@ describe("at every camera angle", () => {
   test.for(allCameraAngles)(
     "the hidden back corner cannot be pointed at (camera angle $x,$y)",
     (cameraAngle) => {
-      const { block } = blockRoomAtAngle(cameraAngle);
+      const { block } = blockRoom();
       const { hiddenBackCorner } = apparentSilhouette(block, cameraAngle);
       expect(
         pointerIntersectionCorner(

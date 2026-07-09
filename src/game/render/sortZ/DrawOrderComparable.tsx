@@ -1,8 +1,17 @@
-import { type UnionOfAllItemInPlayTypes } from "../../../model/ItemInPlay";
+import { type ItemInPlayType } from "../../../model/ItemInPlay";
+import { type Aabb, type Xyz } from "../../../utils/vectors/vectors";
 
-export type DrawOrderComparable = Pick<
-  UnionOfAllItemInPlayTypes,
-  "aabb" | "fixedZIndex" | "id" | "renderAabb" | "renderAabbOffset"
-> & {
-  state: { position: { x: number; y: number; z: number } };
+/**
+ * the surface the draw-order machinery needs from an item - purely physical.
+ * Real in-play items satisfy this; synthetic sort-test items may omit
+ * `type`/`config`. Render boxes are never read off items: they come from the
+ * renderBoxes map (owned in-game by the room renderer)
+ */
+export type DrawOrderComparable = {
+  readonly id: string;
+  aabb: Aabb;
+  fixedZIndex?: number;
+  type?: ItemInPlayType;
+  config?: unknown;
+  state: { position: Xyz };
 };

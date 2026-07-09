@@ -2,6 +2,7 @@ import { Container, Graphics } from "pixi.js";
 import { type SetRequired } from "type-fest";
 
 import { type RoomState } from "../../../model/RoomState";
+import { type SpritesheetMetadata } from "../../../sprites/spritesheet/spritesheetData/spritesheetMetaData";
 import { defaultUserSettings } from "../../../store/slices/userSettings/defaultUserSettings";
 import { epsilon } from "../../../utils/epsilon";
 import { neverTime } from "../../../utils/neverTime";
@@ -20,7 +21,6 @@ import {
 import { selectCurrentPlayableItem } from "../../gameState/gameStateSelectors/selectPlayableItem";
 import { projectWorldXyzToScreenXy } from "../projections";
 import { type SoundAndGraphicsOutput } from "../SoundAndGraphicsOutput";
-import { floorsRenderExtent } from "./floorsExtent";
 import {
   type RoomRenderContextInGame,
   type RoomTickContext,
@@ -29,6 +29,7 @@ import {
   type RoomRendererType,
   type RoomRendererTypeInGameOnly,
 } from "./RoomRendererType";
+import { roomRenderExtent } from "./roomRenderExtent";
 
 // how close over towards the edge of the screen do you have to be for scrolling to occur?
 // a higher value means more scrolling will occur.
@@ -77,6 +78,121 @@ const easeTowards = (vector: Xy, deltaMS: number) => {
 const onScreenControlsOverscroll = 64;
 
 /**
+ * the angle-dependent geometry the scroll uses to place a room on screen: its home
+ * position plus the flags/edges that drive player-follow scrolling. Derived purely
+ * from the room and a discrete camera angle, so a given (room, angle) always yields
+ * the same values - which is what lets the two renderers of a pseudo-rotation agree
+ * on an interpolated scroll at the midpoint hand-over.
+ */
+type RoomScrollGeometry = {
+  /** the position the room 'wants' to be at - where it would be (roughly) in the original game without any scrolling */
+  roomHomePosition: Xy;
+  edgeLeftXTranslated: number;
+  edgeRightXTranslated: number;
+  scrollableLeft: boolean;
+  scrollableRight: boolean;
+  scrollableUp: boolean;
+};
+
+const computeRoomScrollGeometry = <
+  RoomId extends string,
+  RoomItemId extends string,
+>(
+  room: RoomState<RoomId, RoomItemId>,
+  cameraAngle: Xy,
+  effectiveScreenSize: Xy,
+  onScreenControls: boolean,
+  spritesheetMeta: SpritesheetMetadata,
+): RoomScrollGeometry => {
+  const {
+    floors: {
+      edgeLeftX: floorsEdgeLeftX,
+      edgeRightX: floorsEdgeRightX,
+      bottomEdgeY: floorsBottomEdgeY,
+      nearCornerX: floorsNearCornerX,
+    },
+    allItems: { topEdgeY: allItemsTopEdgeY },
+  } = roomRenderExtent(room, spritesheetMeta, cameraAngle);
+  // take into account the that floor isn't always rendered at 0,0:
+  const edgeLeftXTranslated = floorsEdgeLeftX;
+  const edgeRightXTranslated = floorsEdgeRightX;
+
+  // how horizontally lopsided the room is about its camera-near corner. At the
+  // base angle the near corner projects at exactly x=0 so this is just the
+  // extent's median (the historic behaviour); rotated, the extent carries the
+  // near corner's own projection offset, which must not read as lopsidedness:
+  let asymmetryX = (floorsEdgeRightX + floorsEdgeLeftX) / 2 - floorsNearCornerX;
+
+  const roomRenderingWidth = floorsEdgeRightX - floorsEdgeLeftX;
+  const roomRenderingHeight = floorsBottomEdgeY - allItemsTopEdgeY;
+  const fitsInY = effectiveScreenSize.y >= roomRenderingHeight;
+  const fitsInX = effectiveScreenSize.x >= roomRenderingWidth;
+  const roomFitsOnScreen = fitsInY && fitsInX;
+
+  if (fitsInX && !onScreenControls) {
+    // if we have space, reduce the lopsidedness correction to make the room
+    // more centred in the ui, which also brings it lower in the ui, allowing more
+    // of the higher parts to be seen
+    asymmetryX /= 2;
+  }
+
+  const renderingMedianX = floorsNearCornerX + asymmetryX;
+
+  // how much to move the room up (at home position) to bring off the hud
+  const bottomMargin =
+    onScreenControls ?
+      // probably on mobile space is super-tight and we don't have the traditional hud to worry about
+      // - allow half a playable block to go off-screen
+      -4
+    : fitsInY ?
+      // like the original:
+      16
+      // we don't fit so we're going to not sacrifice vertical y space to the gap
+      // at the bottom - the very bottom standable pixel will be at the bottom of the screen, overlapping the hud
+    : 0;
+
+  const roomHomePosition: Xy = {
+    x: effectiveScreenSize.x / 2 - renderingMedianX,
+    y:
+      fitsInY && onScreenControls ?
+        // streamlined version for rooms that fit on the screen in y on mobile - simply centre vertically:
+        Math.floor((effectiveScreenSize.y + roomRenderingHeight) / 2) - 4
+      : effectiveScreenSize.y -
+        bottomMargin -
+        floorsBottomEdgeY -
+        (roomFitsOnScreen && !onScreenControls ?
+          /* similar to the original's (non-scrolling) room  positioning on screen: moving up by half
+           the x offset creates movement in the 2:1 isometric projection along the x/y in-game axes;
+           also avoids the hud elements since they are set up at about 2:1 ratio
+
+           test on (eg #egyptus33 or #egyptus35)
+           */
+          Math.abs(asymmetryX / 2)
+          // ignore this adjustment on mobile since we are free to let the room render all the way down
+          // to the bottom of the screen
+          // ignore this adjustment if the room is wider than the screen - it tends to force a
+          // black space below, especially on non-rectangular 'big' rooms and mobile-sized displays, where
+        : 0),
+  };
+
+  return {
+    roomHomePosition,
+    edgeLeftXTranslated,
+    edgeRightXTranslated,
+    // is there content off the left edge when the room is in its home position?
+    // < 0 performs poorly in #blacktooth35, #bookworld3 since the door coming into the room will be under the
+    // hud joystick
+    scrollableLeft: roomHomePosition.x + edgeLeftXTranslated < 0,
+    // is there content off the right edge when the room is in its home position?
+    scrollableRight:
+      roomHomePosition.x + edgeRightXTranslated > effectiveScreenSize.x,
+    // scrollable up in y if the top of the room is off the top of the screen when
+    // in the home position:
+    scrollableUp: roomHomePosition.y + allItemsTopEdgeY < 0,
+  };
+};
+
+/**
  * put the room on the screen in the right place - either scrolling, or at its home position similar to how
  * it would have been put onto the screen in the original game
  */
@@ -92,13 +208,8 @@ export class RoomScrollRenderer<
   #lastLookTime: number = neverTime;
 
   #everRendered: boolean = false;
-  #scrollableLeft: boolean;
-  #scrollableRight: boolean;
-  #scrollableUp: boolean;
-  #edgeLeftXTranslated: number;
-  #edgeRightXTranslated: number;
-  /* the position the room 'wants' to be at - where it would be (roughly) in the original game without any scrolling */
-  #roomHomePosition: Xy;
+  /** angle-dependent scroll geometry at this renderer's own discrete camera angle */
+  #geometry: RoomScrollGeometry;
 
   public output: SetRequired<SoundAndGraphicsOutput, "graphics">;
 
@@ -124,91 +235,13 @@ export class RoomScrollRenderer<
       renderContext.general.onScreenControls ??
       defaultUserSettings.onScreenControls;
 
-    const {
-      floors: {
-        edgeLeftX: floorsEdgeLeftX,
-        edgeRightX: floorsEdgeRightX,
-        bottomEdgeY: floorsBottomEdgeY,
-        nearCornerX: floorsNearCornerX,
-      },
-      allItems: { topEdgeY: allItemsTopEdgeY },
-    } = floorsRenderExtent(room, cameraAngle);
-    // take into account the that floor isn't always rendered at 0,0:
-    this.#edgeLeftXTranslated = floorsEdgeLeftX;
-    this.#edgeRightXTranslated = floorsEdgeRightX;
-
-    // how horizontally lopsided the room is about its camera-near corner. At the
-    // base angle the near corner projects at exactly x=0 so this is just the
-    // extent's median (the historic behaviour); rotated, the extent carries the
-    // near corner's own projection offset, which must not read as lopsidedness:
-    let asymmetryX =
-      (floorsEdgeRightX + floorsEdgeLeftX) / 2 - floorsNearCornerX;
-
-    const roomRenderingWidth = floorsEdgeRightX - floorsEdgeLeftX;
-    const roomRenderingHeight = floorsBottomEdgeY - allItemsTopEdgeY;
-    const fitsInY = effectiveScreenSize.y >= roomRenderingHeight;
-    const fitsInX = effectiveScreenSize.x >= roomRenderingWidth;
-    const roomFitsOnScreen = fitsInY && fitsInX;
-
-    if (fitsInX && !onScreenControls) {
-      // if we have space, reduce the lopsidedness correction to make the room
-      // more centred in the ui, which also brings it lower in the ui, allowing more
-      // of the higher parts to be seen
-      asymmetryX /= 2;
-    }
-
-    const renderingMedianX = floorsNearCornerX + asymmetryX;
-
-    // how much to move the room up (at home position) to bring off the hud
-    const bottomMargin =
-      onScreenControls ?
-        // probably on mobile space is super-tight and we don't have the traditional hud to worry about
-        // - allow half a playable block to go off-screen
-        -4
-      : fitsInY ?
-        // like the original:
-        16
-        // we don't fit so we're going to not sacrifice vertical y space to the gap
-        // at the bottom - the very bottom standable pixel will be at the bottom of the screen, overlapping the hud
-      : 0;
-
-    this.#roomHomePosition = {
-      x: effectiveScreenSize.x / 2 - renderingMedianX,
-      y:
-        fitsInY && onScreenControls ?
-          // streamlined version for rooms that fit on the screen in y on mobile - simply centre vertically:
-          Math.floor((effectiveScreenSize.y + roomRenderingHeight) / 2) - 4
-        : effectiveScreenSize.y -
-          bottomMargin -
-          floorsBottomEdgeY -
-          (roomFitsOnScreen && !onScreenControls ?
-            /* similar to the original's (non-scrolling) room  positioning on screen: moving up by half
-             the x offset creates movement in the 2:1 isometric projection along the x/y in-game axes;
-             also avoids the hud elements since they are set up at about 2:1 ratio
-
-             test on (eg #egyptus33 or #egyptus35)
-             */
-            Math.abs(asymmetryX / 2)
-            // ignore this adjustment on mobile since we are free to let the room render all the way down
-            // to the bottom of the screen
-            // ignore this adjustment if the room is wider than the screen - it tends to force a
-            // black space below, especially on non-rectangular 'big' rooms and mobile-sized displays, where
-          : 0),
-    };
-
-    // is there content off the left edge when the room is in its home position?
-    this.#scrollableLeft =
-      // < 0 performs poorly in #blacktooth35, #bookworld3 since the door coming into the room will be under the
-      // hud joystick
-      this.#roomHomePosition.x + this.#edgeLeftXTranslated < 0;
-    // is there content off the right edge when the room is in its home position?
-    this.#scrollableRight =
-      this.#roomHomePosition.x + this.#edgeRightXTranslated >
-      effectiveScreenSize.x;
-
-    // scrollable up in y if the top of the room is off the top of the screen when
-    // in the home position:
-    this.#scrollableUp = this.#roomHomePosition.y + allItemsTopEdgeY < 0;
+    this.#geometry = computeRoomScrollGeometry(
+      room,
+      cameraAngle,
+      effectiveScreenSize,
+      onScreenControls,
+      renderContext.general.spritesheetMeta,
+    );
 
     const childRendererGraphics = this.#childRenderer.output.graphics;
     if (childRendererGraphics === undefined) {
@@ -228,20 +261,36 @@ export class RoomScrollRenderer<
 
     if (showScrollBounds) {
       output.graphics.addChild(
-        showRoomScrollBounds(renderContext.room, cameraAngle),
+        showRoomScrollBounds(
+          renderContext.room,
+          cameraAngle,
+          renderContext.general.spritesheetMeta,
+        ),
       );
     }
     this.output = output;
   }
 
-  #targetRoomPosition(playablePosition: Xyz): Xy {
+  #targetRoomPosition(
+    playablePosition: Xyz,
+    geometry: RoomScrollGeometry,
+    cameraAngle: Xy,
+  ): Xy {
     const {
       general: {
         upscale: { gameEngineScreenSize: effectiveScreenSize },
         onScreenControls,
-        cameraAngle,
       },
     } = this.renderContext;
+
+    const {
+      roomHomePosition,
+      edgeLeftXTranslated,
+      edgeRightXTranslated,
+      scrollableLeft,
+      scrollableRight,
+      scrollableUp,
+    } = geometry;
 
     const characterProjectionInRoom = projectWorldXyzToScreenXy(
       playablePosition,
@@ -252,21 +301,21 @@ export class RoomScrollRenderer<
     let y: number;
 
     const overscroll = onScreenControls ? onScreenControlsOverscroll : 0;
-    const { x: homeX, y: homeY } = this.#roomHomePosition;
+    const { x: homeX, y: homeY } = roomHomePosition;
     const combinedProjectedPositionAtRoomHome = addXy(
       characterProjectionInRoom,
-      this.#roomHomePosition,
+      roomHomePosition,
     );
 
     if (
-      this.#scrollableLeft &&
+      scrollableLeft &&
       combinedProjectedPositionAtRoomHome.x <
         effectiveScreenSize.x * scrollLimitCoefficient
     ) {
       const adjustedPlayerX = Math.max(
         characterProjectionInRoom.x,
         onScreenControls ?
-          this.#edgeLeftXTranslated + onScreenControlsOverscroll
+          edgeLeftXTranslated + onScreenControlsOverscroll
           // unit value of .max (no effect)
         : Number.NEGATIVE_INFINITY,
       );
@@ -278,19 +327,19 @@ export class RoomScrollRenderer<
       x = Math.min(
         // x with left-edge of the room on the left edge of the screen - ie the
         // most left-scrolled position we will go to:
-        -this.#edgeLeftXTranslated + overscroll,
+        -edgeLeftXTranslated + overscroll,
         // put player on scrollLimit proportion of effective width:
         maxX,
       );
     } else if (
-      this.#scrollableRight &&
+      scrollableRight &&
       combinedProjectedPositionAtRoomHome.x >
         effectiveScreenSize.x * (1 - scrollLimitCoefficient)
     ) {
       const adjustedPlayerX = Math.min(
         characterProjectionInRoom.x,
         onScreenControls ?
-          this.#edgeRightXTranslated - onScreenControlsOverscroll
+          edgeRightXTranslated - onScreenControlsOverscroll
         : Number.POSITIVE_INFINITY,
       );
 
@@ -301,7 +350,7 @@ export class RoomScrollRenderer<
       // scrolling to show more of the right side of the room
       x = Math.max(
         // x with right-edge of the room on the right edge of the screen:
-        effectiveScreenSize.x - this.#edgeRightXTranslated - overscroll,
+        effectiveScreenSize.x - edgeRightXTranslated - overscroll,
 
         minX,
       );
@@ -311,7 +360,7 @@ export class RoomScrollRenderer<
     }
 
     if (
-      this.#scrollableUp &&
+      scrollableUp &&
       combinedProjectedPositionAtRoomHome.y <
         effectiveScreenSize.y * scrollLimitCoefficient
     ) {
@@ -392,7 +441,7 @@ export class RoomScrollRenderer<
 
   tick(tickContext: RoomTickContext<RoomId, RoomItemId>) {
     const {
-      general: { gameState },
+      general: { gameState, cameraAngle },
     } = this.renderContext;
     const { deltaMS } = tickContext;
 
@@ -406,6 +455,8 @@ export class RoomScrollRenderer<
 
     const targetRoomPositionWithScrolling = this.#targetRoomPosition(
       playable.state.position,
+      this.#geometry,
+      cameraAngle,
     );
 
     const snapInstantly = !this.#everRendered;
@@ -449,6 +500,7 @@ export class RoomScrollRenderer<
 const showRoomScrollBounds = <RoomId extends string, RoomItemId extends string>(
   roomState: RoomState<RoomId, RoomItemId>,
   cameraAngle: Xy,
+  spritesheetMeta: SpritesheetMetadata,
 ) => {
   const {
     floors: {
@@ -458,7 +510,7 @@ const showRoomScrollBounds = <RoomId extends string, RoomItemId extends string>(
       topEdgeY: floorTopEdgeY,
     },
     allItems: { topEdgeY: allItemsTopEdgeY },
-  } = floorsRenderExtent(roomState, cameraAngle);
+  } = roomRenderExtent(roomState, spritesheetMeta, cameraAngle);
 
   const graphics = new Graphics()
     .rect(

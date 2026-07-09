@@ -17,6 +17,11 @@ import {
 } from "../item/itemRender/createItemRenderer";
 import { type DecorateItemMaybeRenderer } from "../item/itemRender/DecorateItemRenderer";
 import { type ItemTickContext, type ItemZGraph } from "../ItemRenderContexts";
+import {
+  makeItemRenderBoxAtCameraAngle,
+  type RenderBox,
+  type RenderBoxes,
+} from "../renderBox/makeItemRenderBoxAtCameraAngle";
 import { toposort } from "../sortZ/toposort/toposort";
 import { updateZEdges } from "../sortZ/updateZEdges";
 import { VisualIndex } from "../sortZ/VisualIndex";
@@ -78,6 +83,18 @@ export class RoomRenderer<RoomId extends string, RoomItemId extends string>
     ItemRenderPipeline<ItemInPlayType>
   > = new Map();
 
+  /**
+   * every spatial item's render box at this renderer's camera angle (`null` =
+   * deliberately no box - the item renders true to its physical aabb).
+   * Reconciled against the room's items each tick; entries never go stale
+   * because anything whose physical aabb changes in-life (eg lightBeams)
+   * derives null
+   */
+  #renderBoxes = new Map<
+    UnionOfAllItemInPlayTypes<RoomId, RoomItemId>,
+    null | RenderBox
+  >();
+
   /** items indexed by their draw position on screen, used for draw-order edge finding */
   #visualIndex: VisualIndex<UnionOfAllItemInPlayTypes<RoomId, RoomItemId>>;
 
@@ -89,7 +106,7 @@ export class RoomRenderer<RoomId extends string, RoomItemId extends string>
     // the angle changes, so the angle is fixed for this index's lifetime:
     this.#visualIndex = new VisualIndex<
       UnionOfAllItemInPlayTypes<RoomId, RoomItemId>
-    >(undefined, renderContext.general.cameraAngle);
+    >(renderContext.general.cameraAngle);
     const {
       general: { spriteOption, soundSettings },
       room,
@@ -122,11 +139,48 @@ export class RoomRenderer<RoomId extends string, RoomItemId extends string>
     }
   }
 
+  /**
+   * this renderer's per-angle render boxes, read-only - lets consumers of the
+   * rendering (eg editor pointer picking) see the same drawn extents the
+   * renderer sorts and draws with
+   */
+  get renderBoxes(): RenderBoxes<
+    UnionOfAllItemInPlayTypes<RoomId, RoomItemId>
+  > {
+    return this.#renderBoxes;
+  }
+
   #getItemRenderPipeline = (item: UnionOfAllItemInPlayTypes) => {
     return this.#itemRenderers.get(
       item as UnionOfAllItemInPlayTypes<RoomId, RoomItemId>,
     );
   };
+
+  /**
+   * bring #renderBoxes into step with the room's current spatial items:
+   * derive for items that have appeared, evict items that have gone. Boxes
+   * are fixed per (item, angle) and the renderer is rebuilt on angle change,
+   * so membership is the only upkeep
+   */
+  #reconcileRenderBoxes(
+    spatialItems: Set<UnionOfAllItemInPlayTypes<RoomId, RoomItemId>>,
+  ) {
+    for (const item of this.#renderBoxes.keys()) {
+      if (!spatialItems.has(item)) {
+        this.#renderBoxes.delete(item);
+      }
+    }
+    const { cameraAngle, spritesheetMeta } = this.renderContext.general;
+    for (const item of spatialItems) {
+      if (!this.#renderBoxes.has(item)) {
+        this.#renderBoxes.set(
+          item,
+          makeItemRenderBoxAtCameraAngle(item, cameraAngle, spritesheetMeta) ??
+            null,
+        );
+      }
+    }
+  }
 
   #tickItem(
     itemTickContext: ItemTickContext,
@@ -145,6 +199,7 @@ export class RoomRenderer<RoomId extends string, RoomItemId extends string>
           item,
           zEdges: this.#zEdges,
           getItemRenderPipeline: this.#getItemRenderPipeline,
+          renderBoxes: this.#renderBoxes,
           isReflection: false,
         },
         RoomRenderer.itemDecorators,
@@ -315,11 +370,16 @@ export class RoomRenderer<RoomId extends string, RoomItemId extends string>
       roomItemsIterable(room.items).filter(isSpatial),
     );
 
+    // derive render boxes for newly-present items before the visual index
+    // (re)projects, since projection reads the boxes:
+    this.#reconcileRenderBoxes(spatialItems);
+
     // bring the render-position index fully up to date (membership and moved
     // items' projections) before computing z-edges from it:
     this.#visualIndex.updateManyItems(
       spatialItems,
       tickContext.movedOrResizedItems,
+      this.#renderBoxes,
     );
 
     try {
@@ -333,6 +393,7 @@ export class RoomRenderer<RoomId extends string, RoomItemId extends string>
         // this.#incrementalZEdges will be updated in-place by the zEdges function to match
         // the current ordering state of the room, starting from the previous ordering state
         this.#zEdges,
+        this.#renderBoxes,
       );
     } catch (e) {
       throw new Error(

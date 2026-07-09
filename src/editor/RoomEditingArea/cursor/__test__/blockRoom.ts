@@ -1,5 +1,11 @@
 import { projectWorldXyzToScreenXy } from "../../../../game/render/projections";
+import {
+  makeItemRenderBoxAtCameraAngle,
+  type RenderBox,
+  type RenderBoxes,
+} from "../../../../game/render/renderBox/makeItemRenderBoxAtCameraAngle";
 import { roomItemsIterable } from "../../../../model/RoomState";
+import { spritesheetMetas } from "../../../../sprites/spritesheet/spritesheetData/spritesheetMetaData";
 import { addXyz, type Xy, type Xyz } from "../../../../utils/vectors/vectors";
 import {
   type EditorRoomId,
@@ -50,12 +56,14 @@ export const blockJsonItemId = "block1" as EditorRoomItemId;
 export const blockPositionBlocks: Xyz = { x: 2, y: 3, z: 0 };
 
 /**
- * load a room containing a single full-size block, through the editor's own
- * room-loading path for the given camera angle
+ * load a room containing a single full-size block through the editor's own
+ * room-loading path (the room model is camera-angle-free; the angle only
+ * matters to the hit-testing that these fixtures feed)
  */
-export const blockRoomAtAngle = (
-  cameraAngle: Xy,
-): { room: EditorRoomState; block: EditorUnionOfAllItemInPlayTypes } => {
+export const blockRoom = (): {
+  room: EditorRoomState;
+  block: EditorUnionOfAllItemInPlayTypes;
+} => {
   const roomJson = {
     id: "testRoom" as EditorRoomId,
     planet: "blacktooth",
@@ -72,12 +80,37 @@ export const blockRoomAtAngle = (
     },
   } as EditorRoomJson;
 
-  const room = loadEditorRoom(roomJson, cameraAngle);
+  const room = loadEditorRoom(roomJson);
   const block = roomItemsIterable(room.items).find((i) => i.type === "block");
   if (block === undefined) {
     throw new Error("fixture room has no block");
   }
   return { room, block };
+};
+
+/**
+ * the drawn extents for every item in the room at one camera angle - the same
+ * map the editor's room renderer owns and picking reads in the real app
+ */
+export const renderBoxesForRoom = (
+  room: EditorRoomState,
+  cameraAngle: Xy,
+): RenderBoxes<EditorUnionOfAllItemInPlayTypes> => {
+  const renderBoxes = new Map<
+    EditorUnionOfAllItemInPlayTypes,
+    null | RenderBox
+  >();
+  for (const item of roomItemsIterable(room.items)) {
+    renderBoxes.set(
+      item,
+      makeItemRenderBoxAtCameraAngle(
+        item,
+        cameraAngle,
+        spritesheetMetas.BlockStack,
+      ) ?? null,
+    );
+  }
+  return renderBoxes;
 };
 
 /**

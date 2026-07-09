@@ -4,17 +4,19 @@ import { allCameraAngles } from "../../../utils/vectors/rotateXy";
 import { addXy } from "../../../utils/vectors/vectors";
 import {
   apparentSilhouette,
-  blockRoomAtAngle,
+  blockRoom,
   pointerTool,
   projectFaceCentre,
+  renderBoxesForRoom,
   visibleSideFaces,
-} from "./__test__/blockRoomAtAngle";
+} from "./__test__/blockRoom";
 import { pointIntersectsItemAABB } from "./pointIntersectsItemAABB";
 
 const cameraAngleBase = { x: 1, y: 0 };
 
 describe("at the base camera angle", () => {
-  const { block } = blockRoomAtAngle(cameraAngleBase);
+  const { room, block } = blockRoom();
+  const renderBoxes = renderBoxesForRoom(room, cameraAngleBase);
 
   test("intersects at the centre of the top face", () => {
     expect(
@@ -23,6 +25,7 @@ describe("at the base camera angle", () => {
         pointerTool,
         block,
         cameraAngleBase,
+        renderBoxes,
       ),
     ).toBe("intersects-rendered");
   });
@@ -34,6 +37,7 @@ describe("at the base camera angle", () => {
         pointerTool,
         block,
         cameraAngleBase,
+        renderBoxes,
       ),
     ).toBe("intersects-rendered");
   });
@@ -45,6 +49,7 @@ describe("at the base camera angle", () => {
         pointerTool,
         block,
         cameraAngleBase,
+        renderBoxes,
       ),
     ).toBe("intersects-rendered");
   });
@@ -57,6 +62,7 @@ describe("at the base camera angle", () => {
         pointerTool,
         block,
         cameraAngleBase,
+        renderBoxes,
       ),
     ).toBe("non-intersecting");
   });
@@ -69,6 +75,7 @@ describe("at the base camera angle", () => {
         pointerTool,
         block,
         cameraAngleBase,
+        renderBoxes,
       ),
     ).toBe("non-intersecting");
   });
@@ -78,7 +85,8 @@ describe("at every camera angle", () => {
   test.for(visibleSideFaces)(
     "intersects at the visible physical face centres (camera angle $cameraAngle.x,$cameraAngle.y)",
     ({ cameraAngle, apparentRight, apparentTowards }) => {
-      const { block } = blockRoomAtAngle(cameraAngle);
+      const { room, block } = blockRoom();
+      const renderBoxes = renderBoxesForRoom(room, cameraAngle);
 
       for (const face of [
         { x: 0, y: 0, z: 1 },
@@ -91,6 +99,7 @@ describe("at every camera angle", () => {
             pointerTool,
             block,
             cameraAngle,
+            renderBoxes,
           ),
         ).toBe("intersects-rendered");
       }
@@ -100,7 +109,8 @@ describe("at every camera angle", () => {
   test.for(allCameraAngles)(
     "does not intersect just outside the silhouette (camera angle $x,$y)",
     (cameraAngle) => {
-      const { block } = blockRoomAtAngle(cameraAngle);
+      const { room, block } = blockRoom();
+      const renderBoxes = renderBoxesForRoom(room, cameraAngle);
       const { topLeft, topRight, bottomCentre, topCorner } = apparentSilhouette(
         block,
         cameraAngle,
@@ -113,7 +123,13 @@ describe("at every camera angle", () => {
         addXy(topCorner.scr, { x: 0, y: -8 }),
       ]) {
         expect(
-          pointIntersectsItemAABB(outside, pointerTool, block, cameraAngle),
+          pointIntersectsItemAABB(
+            outside,
+            pointerTool,
+            block,
+            cameraAngle,
+            renderBoxes,
+          ),
         ).toBe("non-intersecting");
       }
     },

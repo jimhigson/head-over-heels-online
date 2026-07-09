@@ -1,7 +1,7 @@
+import { populatedVisualIndex } from "../__test__/populatedVisualIndex";
 import { type DrawOrderComparable } from "../DrawOrderComparable";
 import { type ZGraph } from "../GraphEdges";
 import { updateZEdges } from "../updateZEdges";
-import { VisualIndex } from "../VisualIndex";
 
 export const itemCount = 100;
 export const movePercentage = 0.2;
@@ -29,8 +29,6 @@ const generateItems = (count: number): Set<TestItem> => {
         position: { x, y, z },
       },
       aabb: { x: 1, y: 1, z: 1 },
-      renderAabb: { x: 1, y: 1, z: 1 },
-      renderAabbOffset: { x: 0, y: 0, z: 0 },
       fixedZIndex: undefined,
     });
   }
@@ -42,9 +40,10 @@ export const runTest = () => {
   const items = generateItems(itemCount);
 
   // build initial index+graph:
-  const spatialIndex = new VisualIndex(items.values());
+  const noRenderBoxes = new Map<TestItem, null>();
+  const spatialIndex = populatedVisualIndex(items);
   const zEdgesGraph: ZGraph<TestItem> = new Map();
-  updateZEdges(items, spatialIndex, items, zEdgesGraph);
+  updateZEdges(items, spatialIndex, items, zEdgesGraph, noRenderBoxes);
 
   // simulate frames:
   const stepSize = Math.round(1 / movePercentage);
@@ -66,8 +65,14 @@ export const runTest = () => {
 
     // benchmark the incremental update like room renderer: get index
     // up to date with moved items, then update the edges
-    spatialIndex.updateManyItems(items, movedOrResizedItems);
-    updateZEdges(items, spatialIndex, movedOrResizedItems, zEdgesGraph);
+    spatialIndex.updateManyItems(items, movedOrResizedItems, noRenderBoxes);
+    updateZEdges(
+      items,
+      spatialIndex,
+      movedOrResizedItems,
+      zEdgesGraph,
+      noRenderBoxes,
+    );
   }
   return zEdgesGraph;
 };

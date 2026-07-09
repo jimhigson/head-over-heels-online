@@ -11,8 +11,6 @@ const makeItem = (
   id,
   state: { position },
   aabb,
-  renderAabb: undefined,
-  renderAabbOffset: undefined,
 });
 
 // cells are blockSizePx.x*2 = 32 world px wide/deep; placing an item at

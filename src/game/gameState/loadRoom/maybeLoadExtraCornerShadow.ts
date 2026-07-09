@@ -7,9 +7,6 @@ import {
   addXyz,
   type DirectionXy4,
   doorAlongAxis,
-  rotateDirectionXy4ByCameraAngle,
-  tangentAxis,
-  type Xy,
   type Xyz,
 } from "../../../utils/vectors/vectors";
 import { blockXyzToFineXyz } from "../../render/projections";
@@ -24,33 +21,28 @@ const cubeSize: Xyz = blockXyzToFineXyz({
   z: 1,
 });
 
+/** the (x-bounding, y-bounding) wall direction pairs of the room's four corners */
+const cornerDirectionPairs: ReadonlyArray<[DirectionXy4, DirectionXy4]> = [
+  ["right", "towards"],
+  ["right", "away"],
+  ["left", "towards"],
+  ["left", "away"],
+];
+
 /**
- * loads the purely decorative shadow-caster at the camera-near corner of the
- * room, for rooms that have (hidden) walls on both of their near sides. Which
- * world corner is near depends on the camera angle, so this is re-derived when
- * the room structure reloads for a new angle.
+ * loads the purely decorative shadow-casters at the room's corners, for
+ * corners that have walls on both sides ending in same-facing doors. Every
+ * qualifying world corner gets an item; only the corner that is camera-near
+ * (both its walls hidden) actually casts, gated per angle by its
+ * hintShadowDirections
  */
 export function* maybeLoadExtraCornerShadow<
   RoomId extends string,
   RoomItemId extends string,
 >(
   directionalIndex: RoomDirectionalIndex<RoomId, RoomItemId>,
-  cameraAngle: Xy,
 ): Generator<ItemInPlay<"blocker", RoomId, RoomItemId>> {
   const { walls: wallLocations, doors: doorLocations } = directionalIndex;
-
-  // the world directions that render as the two near (hidden) sides under
-  // this camera - rotating the rendered direction by the inverse angle:
-  const inverseAngle: Xy = { x: cameraAngle.x, y: -cameraAngle.y };
-  const nearDirections = [
-    rotateDirectionXy4ByCameraAngle("towards", inverseAngle),
-    rotateDirectionXy4ByCameraAngle("right", inverseAngle),
-  ] as const;
-  // of the two near directions, one bounds the room on each world axis:
-  const [xNearDirection, yNearDirection] =
-    tangentAxis(nearDirections[0]) === "x" ? nearDirections : (
-      [nearDirections[1], nearDirections[0]]
-    );
 
   const wallsOfDirection = (direction: DirectionXy4) =>
     valuesIter(wallLocations)
@@ -86,48 +78,78 @@ export function* maybeLoadExtraCornerShadow<
     );
   };
 
-  for (const xNearWall of wallsOfDirection(xNearDirection).toArray()) {
-    for (const yNearWall of wallsOfDirection(yNearDirection)) {
-      // each near wall gives the corner's ordinate on its own tangent axis:
-      const corner: Xy = { x: xNearWall.position.x, y: yNearWall.position.y };
+  /**
+   * whether any wall occupies the given block cell - in concave (multi-)
+   * rooms, the cell diagonally out of an interior corner can be another
+   * section's wall, and the cube must not be spawned inside it
+   */
+  const cellHasWall = (cellX: number, cellY: number): boolean =>
+    valuesIter(wallLocations)
+      .flatMap((wallsAtLocation) => valuesIter(wallsAtLocation))
+      .some((wall) => {
+        const alongAxis = doorAlongAxis(wall.config.direction);
+        const { x, y } = wall.position;
+        const wallLength = wall.config.tiles.length;
+        return alongAxis === "y" ?
+            cellX === x && cellY >= y && cellY < y + wallLength
+          : cellY === y && cellX >= x && cellX < x + wallLength;
+      });
 
-      if (
-        // the x-tangent wall runs along y, so meets the corner at corner.y:
-        !touchesCornerAndEndsWithDoor(xNearWall, corner.y) ||
-        !touchesCornerAndEndsWithDoor(yNearWall, corner.x)
-      ) {
-        continue;
+  for (const [xDirection, yDirection] of cornerDirectionPairs) {
+    for (const xWall of wallsOfDirection(xDirection).toArray()) {
+      for (const yWall of wallsOfDirection(yDirection)) {
+        // each wall gives the corner's ordinate on its own tangent axis:
+        const corner = { x: xWall.position.x, y: yWall.position.y };
+
+        if (
+          // the x-tangent wall runs along y, so meets the corner at corner.y:
+          !touchesCornerAndEndsWithDoor(xWall, corner.y) ||
+          !touchesCornerAndEndsWithDoor(yWall, corner.x)
+        ) {
+          continue;
+        }
+
+        // the cell the cube would (partially) occupy, diagonally out of the
+        // room at the corner:
+        if (
+          cellHasWall(
+            unitVectors[xDirection].x > 0 ? corner.x : corner.x - 1,
+            unitVectors[yDirection].y > 0 ? corner.y : corner.y - 1,
+          )
+        ) {
+          continue;
+        }
+
+        // the cube pokes diagonally out of the room at the corner: on each
+        // axis, out of the room is the bounding direction's outward normal:
+        yield {
+          id: `extraCornerShadow-${corner.x},${corner.y}` as RoomItemId,
+          type: "blocker",
+          // never animates, so the hash (only used to de-synchronise animations) is irrelevant:
+          hash: 0,
+          state: {
+            ...defaultBaseState<RoomItemId>(),
+            position: blockXyzToFineXyz({
+              x:
+                corner.x +
+                (unitVectors[xDirection].x > 0 ? 0 : -cubeSetbackBlocks),
+              y:
+                corner.y +
+                (unitVectors[yDirection].y > 0 ? 0 : -cubeSetbackBlocks),
+              z: 0,
+            }),
+          },
+          shadowCastTexture: {
+            textureId: "shadow.wallCorner",
+          },
+          castsShadowWhileStoodOn: false,
+          // only casts when this corner is the camera-near one:
+          hintShadowDirections: [xDirection, yDirection],
+          config: emptyObject,
+          aabb: cubeSize,
+          fixedZIndex: nonRenderingItemFixedZIndex,
+        };
       }
-
-      // the cube pokes diagonally out of the room at the corner: on each
-      // axis, out of the room is the near direction's outward normal:
-      const cornerCube: ItemInPlay<"blocker", RoomId, RoomItemId> = {
-        id: `extraCornerShadow-${corner.x},${corner.y}` as RoomItemId,
-        type: "blocker",
-        // never animates, so the hash (only used to de-synchronise animations) is irrelevant:
-        hash: 0,
-        state: {
-          ...defaultBaseState<RoomItemId>(),
-          position: blockXyzToFineXyz({
-            x:
-              corner.x +
-              (unitVectors[xNearDirection].x > 0 ? 0 : -cubeSetbackBlocks),
-            y:
-              corner.y +
-              (unitVectors[yNearDirection].y > 0 ? 0 : -cubeSetbackBlocks),
-            z: 0,
-          }),
-        },
-        shadowCastTexture: {
-          textureId: "shadow.wallCorner",
-        },
-        castsShadowWhileStoodOn: true,
-        config: emptyObject,
-        aabb: cubeSize,
-        fixedZIndex: nonRenderingItemFixedZIndex,
-      };
-
-      yield cornerCube;
     }
   }
 }

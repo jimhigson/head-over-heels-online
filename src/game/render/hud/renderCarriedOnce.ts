@@ -1,12 +1,11 @@
-import { type Container, type RenderLayer } from "pixi.js";
+import { type Container } from "pixi.js";
 
 import { type RoomState } from "../../../model/RoomState";
-import { emptyMap, emptySet } from "../../../utils/empty";
+import { emptySet } from "../../../utils/empty";
 import { neverTime } from "../../../utils/neverTime";
 import { cameraAngleBase } from "../../../utils/vectors/rotateXy";
 import { type PortableItem } from "../../physics/itemPredicates";
 import { appearanceForItem } from "../itemAppearances/appearanceForItem";
-import { type ItemZGraph } from "../ItemRenderContexts";
 import { type GeneralRenderContext } from "../room/RoomRenderContexts";
 
 type RenderContextSubset<RoomId extends string> = {
@@ -24,19 +23,13 @@ export const renderCarriedOnce = <
   const appearance = appearanceForItem(carrying, cameraAngleBase)!;
 
   const appearanceReturn = appearance({
+    // a standalone appearance context with no room renderer behind it - the
+    // layer/render-box fields are genuinely absent (no portable item's
+    // appearance reads them):
     renderContext: {
       general: renderContext.general,
       item: carrying,
       room,
-      // nothing that can be carried ever renders to the uncolourised layer so cheat the types to provide this:
-      colourClashLayer: undefined as unknown as RenderLayer,
-      frontLayer: undefined as unknown as RenderLayer,
-      zEdges: emptyMap as ItemZGraph<RoomId, RoomItemId>,
-      getItemRenderPipeline() {
-        throw new Error(
-          "getOtherItemContainer not supported in carried sprite",
-        );
-      },
       isReflection: false,
     },
     tickContext: {

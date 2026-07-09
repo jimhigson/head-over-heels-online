@@ -16,7 +16,7 @@ import {
   type SpecifiedTextureCreateSpriteOptions,
 } from "../createSprite";
 import {
-  type ItemRenderContext,
+  type AppearanceRenderContext,
   type ItemTickContext,
 } from "../ItemRenderContexts";
 
@@ -25,7 +25,7 @@ export type ItemAppearanceOptions<
   RenderProps extends object = EmptyObject,
   Output extends Container = Container,
 > = AppearanceOptions<
-  ItemRenderContext<T>,
+  AppearanceRenderContext<T>,
   ItemTickContext,
   RenderProps,
   Output

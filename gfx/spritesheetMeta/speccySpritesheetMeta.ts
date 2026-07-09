@@ -12,6 +12,7 @@ export const speccySpritesheetMeta: SpritesheetMetadata<
   name: "BlockStack",
   palette: zxSpectrumPaletteColours,
   playable: blockStackSpritesheetMeta.playable,
+  itemRenderExtents: blockStackSpritesheetMeta.itemRenderExtents,
   overrides: blockStackSpritesheetMeta.overrides,
   swops: {
     deactivated: {

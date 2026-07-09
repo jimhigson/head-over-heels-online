@@ -10,7 +10,6 @@ import { type PlanetName, type SceneryName } from "../../../sprites/planets";
 import { type ScrollsRead } from "../../../store/slices/gameInPlay/gameInPlaySlice";
 import { type UserSettings } from "../../../store/slices/userSettings/userSettingsSlice";
 import { emptyObject } from "../../../utils/empty";
-import { cameraAngleBase } from "../../../utils/vectors/rotateXy";
 import { findStandingOnWithHighestPriorityAndMostOverlap } from "../../collision/checkStandingOn";
 import { SpatialIndex } from "../../physics/gridSpace/SpatialIndex";
 import { isFreeItem, isLamp, isSpatial } from "../../physics/itemPredicates";
@@ -98,9 +97,7 @@ export const loadRoom = <RoomId extends string, RoomItemId extends string>({
     ...roomItems,
     // rooms always load at the base camera angle (rotation re-derives via
     // reloadStructureForCamera):
-    ...itemsInItemObjectMap(
-      maybeLoadExtraCornerShadow(directionalIndex, cameraAngleBase),
-    ),
+    ...itemsInItemObjectMap(maybeLoadExtraCornerShadow(directionalIndex)),
     ...(roomEntrySound ? { [roomEntrySound.id]: roomEntrySound } : undefined),
     [outOfBoundsItem.id]: outOfBoundsItem,
   };
