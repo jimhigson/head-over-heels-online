@@ -16,7 +16,6 @@ import {
   type Xy,
   type Xyz,
 } from "../../../utils/vectors/vectors";
-import { multiplyBoundingBox } from "../../collision/multiplyBoundingBox";
 import {
   blockSizePx,
   wallRenderHeight,
@@ -286,12 +285,11 @@ const floorRenderBox = (
 };
 
 /**
- * generic items take their angle-invariant overdraw box from the spritesheet
- * meta's itemRenderExtents table (no entry = draws true to the physical
- * aabb), stretched over any `times` repetition. The render box's near corner
- * sits on the aabb's near corner (where the footprint sprite is anchored), so
- * on camera-reversed axes the box offsets back by its overdraw. The table's
- * base offset is added on top.
+ * generic items take their angle-invariant per-face overdraw from the
+ * spritesheet meta's itemRenderExtents table (no entry = draws true to the
+ * physical aabb; "none" = draws nothing). The render box's near corner sits
+ * on the aabb's near corner (where the footprint sprite is anchored), so on
+ * camera-reversed axes the box offsets back by its overdraw.
  */
 const genericRenderBox = (
   item: RenderBoxableItem,
@@ -305,23 +303,37 @@ const genericRenderBox = (
   if (extent === undefined) {
     return undefined;
   }
-  const { times } = (item.config ?? {}) as { times?: Partial<Xyz> };
-  const renderAabb =
-    times === undefined ?
-      extent.renderAabb
-    : multiplyBoundingBox(extent.renderAabb, times);
-  const base = extent.baseRenderAabbOffset ?? originXyz;
   const { aabb } = item;
+  const reversedX = cameraAngle.x + cameraAngle.y < 0;
+  const reversedY = cameraAngle.x - cameraAngle.y < 0;
+
+  if (extent === "none") {
+    // a zero-size box on the aabb's near corner:
+    return {
+      renderAabb: originXyz,
+      renderAabbOffset: {
+        x: reversedX ? aabb.x : 0,
+        y: reversedY ? aabb.y : 0,
+        z: 0,
+      },
+    };
+  }
+
+  const { xNeg = 0, xPos = 0, yNeg = 0, yPos = 0, zNeg = 0, zPos = 0 } = extent;
+  // the deltas are margins on the physical box, so `times` repetition needs
+  // no special handling - the aabb is already stretched over the repetition:
+  const renderAabb: Aabb = {
+    x: aabb.x + xNeg + xPos,
+    y: aabb.y + yNeg + yPos,
+    z: aabb.z + zNeg + zPos,
+  };
   return {
     renderAabb,
     renderAabbOffset: {
-      x:
-        base.x +
-        (cameraAngle.x + cameraAngle.y < 0 ? aabb.x - renderAabb.x : 0),
-      y:
-        base.y +
-        (cameraAngle.x - cameraAngle.y < 0 ? aabb.y - renderAabb.y : 0),
-      z: base.z,
+      x: -xNeg + (reversedX ? aabb.x - renderAabb.x : 0),
+      y: -yNeg + (reversedY ? aabb.y - renderAabb.y : 0),
+      // 0 - normalises the IEEE -0 that a plain negation gives when zNeg is 0:
+      z: 0 - zNeg,
     },
   };
 };
