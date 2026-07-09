@@ -28,14 +28,14 @@ jobs:
             journey: |
               [
                 { "goto": "/?track=0" },
-                { "row": "to menu", "mark": "menu-ready" },
+                { "row": "to menu", "mark": "menu-ready", "emoji": "📋" },
                 { "click": "[data-menuitem_id=\"playGame\"]" },
                 { "click": "[data-menuitem_id=\"originalGame\"]" },
                 { "click": "[data-dialog-id=\"crowns\"]", "afterMark": "first-gameplay" },
                 { "waitForGone": "[data-dialog-id=\"crowns\"]" },
-                { "row": "to game", "mark": "first-gameplay" },
+                { "row": "to game", "mark": "first-gameplay", "emoji": "🎮" },
                 { "keys": "M" },
-                { "row": "open map", "mark": "open map" }
+                { "row": "open map", "mark": "open map", "emoji": "🗺️" }
               ]
           - target: editor
             build-command: pnpm build:editor
@@ -43,7 +43,7 @@ jobs:
             journey: |
               [
                 { "goto": "/editor/" },
-                { "row": "editor", "marks": ["editor-monaco-ready", "editor-map-ready"] }
+                { "row": "editor", "marks": ["editor-monaco-ready", "editor-map-ready"], "emoji": "🛠️" }
               ]
     name: ${{ matrix.target }} size
     steps:
