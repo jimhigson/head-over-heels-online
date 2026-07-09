@@ -109,6 +109,8 @@ export const renderRoomPreviewImage = async (
         EditorRoomId,
         EditorRoomItemId
       >,
+      // no fps display in the editor - nothing records frame timings:
+      timingRecord: undefined,
     });
 
     const {

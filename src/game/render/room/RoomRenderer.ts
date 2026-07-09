@@ -10,6 +10,10 @@ import { zxSpectrumColor } from "../../../originalGame";
 import { audioCtx } from "../../../sound/audioCtx";
 import { soundsFadeDurationSec } from "../../../sound/soundUtils/stopWithFade";
 import { defaultUserSettings } from "../../../store/slices/userSettings/defaultUserSettings";
+import {
+  type SceneGraphPhaseRecorder,
+  type SceneGraphSubPhase,
+} from "../../mainLoop/frameTiming/FrameTimingStats";
 import { isSpatial } from "../../physics/itemPredicates";
 import {
   createItemRenderer,
@@ -32,6 +36,22 @@ import {
   type RoomTickContext,
 } from "./RoomRenderContexts";
 import { type RoomRendererType } from "./RoomRendererType";
+
+/**
+ * report the time since the previous sub-phase boundary to the timing
+ * record, and return the new boundary time. Only called while the fps
+ * display is on (the tick context carries no recorder otherwise)
+ */
+const recordPerf = (
+  timingRecord: SceneGraphPhaseRecorder,
+  subPhase: SceneGraphSubPhase,
+  /** the previous boundary: when this sub-phase started */
+  subPhaseStartMs: number,
+): number => {
+  const now = performance.now();
+  timingRecord.recordSceneGraphSubPhase(subPhase, now - subPhaseStartMs);
+  return now;
+};
 
 export class RoomRenderer<RoomId extends string, RoomItemId extends string>
   implements RoomRendererType<RoomId, RoomItemId>
@@ -370,9 +390,20 @@ export class RoomRenderer<RoomId extends string, RoomItemId extends string>
       roomItemsIterable(room.items).filter(isSpatial),
     );
 
+    const { timingRecord } = tickContext;
+    let subPhaseStartMs = timingRecord === undefined ? 0 : performance.now();
+
     // derive render boxes for newly-present items before the visual index
     // (re)projects, since projection reads the boxes:
     this.#reconcileRenderBoxes(spatialItems);
+
+    if (timingRecord !== undefined) {
+      subPhaseStartMs = recordPerf(
+        timingRecord,
+        "reconcileRenderBoxes",
+        subPhaseStartMs,
+      );
+    }
 
     // bring the render-position index fully up to date (membership and moved
     // items' projections) before computing z-edges from it:
@@ -381,6 +412,14 @@ export class RoomRenderer<RoomId extends string, RoomItemId extends string>
       tickContext.movedOrResizedItems,
       this.#renderBoxes,
     );
+
+    if (timingRecord !== undefined) {
+      subPhaseStartMs = recordPerf(
+        timingRecord,
+        "updateVisualIndex",
+        subPhaseStartMs,
+      );
+    }
 
     try {
       // it it important that we sort before rendering. This is because sorting updates
@@ -406,7 +445,19 @@ export class RoomRenderer<RoomId extends string, RoomItemId extends string>
       );
     }
 
+    if (timingRecord !== undefined) {
+      subPhaseStartMs = recordPerf(
+        timingRecord,
+        "updateZEdges",
+        subPhaseStartMs,
+      );
+    }
+
     const order = toposort(this.#zEdges);
+
+    if (timingRecord !== undefined) {
+      subPhaseStartMs = recordPerf(timingRecord, "toposort", subPhaseStartMs);
+    }
 
     if (!this.#everRendered) {
       // these only get to render once (never tick again)
@@ -418,9 +469,18 @@ export class RoomRenderer<RoomId extends string, RoomItemId extends string>
           }
         }
       }
+      if (timingRecord !== undefined) {
+        // one-off decorator construction is not part of any sub-phase: reset
+        // the boundary so it doesn't inflate the first frame's tickItems
+        subPhaseStartMs = performance.now();
+      }
     }
 
     this.#tickItems(tickContext);
+
+    if (timingRecord !== undefined) {
+      recordPerf(timingRecord, "tickItems", subPhaseStartMs);
+    }
 
     if (!this.#everRendered || tickContext.movedOrResizedItems.size > 0) {
       this.#tickItemsZIndex(order);
