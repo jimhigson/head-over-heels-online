@@ -34,14 +34,17 @@ import { type RoomRenderContextInGame } from "../render/room/RoomRenderContexts"
 import { RoomRenderer } from "../render/room/RoomRenderer";
 import { type RoomRendererType } from "../render/room/RoomRendererType";
 import { RoomScrollRenderer } from "../render/room/RoomScrollRenderer";
-import { frameTimingStats } from "./frameTiming/FrameTimingStats";
-import { textInterfaceToShowDetailedFrameTiming } from "./frameTiming/textInterfaceToShowDetailedFrameTiming";
+import {
+  loadedFrameTimingStats,
+  loadFrameTimingStats,
+} from "./frameTiming/lazyFrameTimingStats";
+import { registerDetailedFpsGlobal } from "./frameTiming/registerDetailedFpsGlobal";
 import { progressGameState } from "./progressGameState";
 import { progressWithSubTicks } from "./progressWithSubTicks";
 import { tickGameSpeed } from "./tickGameSpeed";
 import { topLevelFilters } from "./topLevelFilters";
 
-textInterfaceToShowDetailedFrameTiming();
+registerDetailedFpsGlobal();
 
 const quarterTurnClockwise = Math.PI / 2;
 const pausedDimTint = 0x99_99_99;
@@ -160,8 +163,13 @@ export class MainLoop<RoomId extends string> {
 
   #tick = ({ deltaMS: tickerDeltaMS }: Ticker): void => {
     const tickState = store.getState();
-    const timingRecord =
-      selectShowFps(tickState) ? frameTimingStats : undefined;
+    const showFps = selectShowFps(tickState);
+    const timingRecord = showFps ? loadedFrameTimingStats() : undefined;
+    if (showFps && timingRecord === undefined) {
+      // the frame-timing chunk is lazy-loaded - start (or continue) fetching
+      // it; frames until it lands just go unmeasured
+      loadFrameTimingStats();
+    }
 
     if (!tickState.gameInPlay.gameRunning) {
       // the effect that starts this loop may not unmount exactly when the game stops due

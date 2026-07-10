@@ -57,8 +57,12 @@ export type FrameTimingStatsEvent = {
 /**
  * Tracks frame timing statistics for different phases of the game loop.
  * Accumulates timing data and reports averages periodically.
+ *
+ * This module is kept out of the main game bundle - load it via
+ * `loadFrameTimingStats` in `lazyFrameTimingStats.ts` (the chunk is only
+ * fetched when the fps display is turned on, or `detailedFps()` is called)
  */
-class FrameTimingStats {
+export class FrameTimingStats {
   static readonly instance = new FrameTimingStats();
 
   #stats = {

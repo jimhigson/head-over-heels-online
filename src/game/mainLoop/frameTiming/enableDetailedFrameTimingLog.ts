@@ -172,7 +172,6 @@ const logFrameTimingStats = (event: FrameTimingStatsEvent) => {
 
 declare global {
   interface Window {
-    detailedFps: (reportIntervalMs?: number) => void;
     /** the most recently emitted detailed frame-timing event (see detailedFps) */
     frameStats?: FrameTimingStatsEvent;
   }
@@ -188,23 +187,17 @@ declare global {
     };
   }
 }
-export const textInterfaceToShowDetailedFrameTiming = () => {
-  if (typeof window !== "undefined") {
-    window.detailedFps = (reportIntervalMs?: number) => {
-      if (reportIntervalMs !== undefined) {
-        frameTimingStats.setReportInterval(reportIntervalMs);
-      }
-      // idempotent - calling detailedFps() again must not stack duplicate logs:
-      frameTimingStats.off(logFrameTimingStats);
-      frameTimingStats.on(logFrameTimingStats);
-    };
 
-    console.log(
-      "%cPerformance timing available:",
-      "color: #4CAF50; font-weight: bold",
-    );
-    console.log(
-      "call detailedFps() to log detailed frame timing stats to the console (and turn on FPS with F9 or in menus). Pass an interval in ms, eg detailedFps(50), to report more often.",
-    );
+/**
+ * start logging the detailed frame-timing table to the console - the
+ * implementation behind `window.detailedFps()`, whose stub in the main
+ * bundle lazily imports this module (see registerDetailedFpsGlobal.ts)
+ */
+export const enableDetailedFrameTimingLog = (reportIntervalMs?: number) => {
+  if (reportIntervalMs !== undefined) {
+    frameTimingStats.setReportInterval(reportIntervalMs);
   }
+  // idempotent - calling detailedFps() again must not stack duplicate logs:
+  frameTimingStats.off(logFrameTimingStats);
+  frameTimingStats.on(logFrameTimingStats);
 };
