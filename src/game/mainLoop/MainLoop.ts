@@ -260,11 +260,15 @@ export class MainLoop<RoomId extends string> {
           // RenderTextures died with the old WebGL context and must be re-baked.
           this.#spritesheetVariants.invalidateBakedTextures();
         }
+        const rebuildStartMs = performance.now();
         this.#spritesheetVariants.rebuild(
           this.#app.renderer,
           tickEndRoom.planet,
           tickEndRoom.color,
           tickSpriteOption,
+        );
+        timingRecord?.recordSpritesheetRebuild(
+          performance.now() - rebuildStartMs,
         );
       }
     }
@@ -425,6 +429,7 @@ export class MainLoop<RoomId extends string> {
     this.#roomRenderer?.tick({
       movedOrResizedItems,
       deltaMS,
+      timingRecord,
     });
 
     timingRecord?.endUpdateSceneGraph();

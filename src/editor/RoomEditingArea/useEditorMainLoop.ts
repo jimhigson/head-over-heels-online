@@ -178,6 +178,8 @@ export const useEditorMainLoop = (
         // or this might be fast enough given the level editor doesn't need to run as smoothly
         // as the actual game
         movedOrResizedItems: considerAllItemsHaveMoved,
+        // no fps display in the editor - nothing records frame timings:
+        timingRecord: undefined,
       });
       pixiApp.render();
     };

@@ -10,6 +10,21 @@ export type PhaseStats = {
   percentage: number;
 };
 
+/**
+ * the sub-phases of updateSceneGraph, measured inside `RoomRenderer.tick` (in
+ * this pipeline order): render-box reconcile, visual-index update, z-edge
+ * (draw-order graph) update, topological sort, and the item renderers' ticks
+ */
+export const sceneGraphSubPhases = [
+  "reconcileRenderBoxes",
+  "updateVisualIndex",
+  "updateZEdges",
+  "toposort",
+  "tickItems",
+] as const;
+
+export type SceneGraphSubPhase = (typeof sceneGraphSubPhases)[number];
+
 export type FrameTimingStatsEvent = {
   frameCount: number;
   elapsedMs: number;
@@ -19,6 +34,21 @@ export type FrameTimingStatsEvent = {
     physics: PhaseStats;
     hudUpdateSceneGraph: PhaseStats;
     updateSceneGraph: PhaseStats;
+    /**
+     * breakdown of {@link FrameTimingStatsEvent.phases}.updateSceneGraph -
+     * the room renderer's own phases. Sub-phase counts can be lower than the
+     * parent's (frames can run the scene-graph phase without a room
+     * renderer), and not everything in the parent is measured (scroll,
+     * renderer construction etc), so the sub-phase averages sum to at most
+     * the parent's
+     */
+    updateSceneGraphSubPhases: { [P in SceneGraphSubPhase]: PhaseStats };
+    /**
+     * the main loop's spritesheet-variant rebuilds - usually not measured at all
+     * (no rebuild that interval, so count 0). Its time is already inside the
+     * updateSceneGraph phase, so it does not add to the frame total
+     */
+    spritesheetRebuild: PhaseStats;
     pixiRender: PhaseStats;
     total: PhaseStats;
   };
@@ -38,10 +68,34 @@ class FrameTimingStats {
     pixiRender: { totalMs: 0, count: 0, maxMs: 0 },
   };
 
+  /**
+   * accumulators for the room renderer's sub-phases of updateSceneGraph
+   * (fixed structure, mutated in place - no per-frame allocation)
+   */
+  #subPhaseStats: {
+    [P in SceneGraphSubPhase]: {
+      totalMs: number;
+      count: number;
+      maxMs: number;
+    };
+  } = {
+    reconcileRenderBoxes: { totalMs: 0, count: 0, maxMs: 0 },
+    updateVisualIndex: { totalMs: 0, count: 0, maxMs: 0 },
+    updateZEdges: { totalMs: 0, count: 0, maxMs: 0 },
+    toposort: { totalMs: 0, count: 0, maxMs: 0 },
+    tickItems: { totalMs: 0, count: 0, maxMs: 0 },
+  };
+
   /** accumulates the measured phase times of the frame currently in progress */
   #frameTotalMs = 0;
   /** the worst single frame's summed phase time over the report interval */
   #maxTotalMs = 0;
+
+  /**
+   * timing accumulator for the main loop's spritesheet-variant rebuilds over the
+   * interval - measured like a sub-phase (does not add to the frame total)
+   */
+  #spritesheetRebuildStats = { totalMs: 0, count: 0, maxMs: 0 };
 
   #currentTimings: Partial<{
     physicsStart: number;
@@ -61,6 +115,14 @@ class FrameTimingStats {
       physics: { avgMs: 0, maxMs: 0, percentage: 0 },
       hudUpdateSceneGraph: { avgMs: 0, maxMs: 0, percentage: 0 },
       updateSceneGraph: { avgMs: 0, maxMs: 0, percentage: 0 },
+      updateSceneGraphSubPhases: {
+        reconcileRenderBoxes: { avgMs: 0, maxMs: 0, percentage: 0 },
+        updateVisualIndex: { avgMs: 0, maxMs: 0, percentage: 0 },
+        updateZEdges: { avgMs: 0, maxMs: 0, percentage: 0 },
+        toposort: { avgMs: 0, maxMs: 0, percentage: 0 },
+        tickItems: { avgMs: 0, maxMs: 0, percentage: 0 },
+      },
+      spritesheetRebuild: { avgMs: 0, maxMs: 0, percentage: 0 },
       pixiRender: { avgMs: 0, maxMs: 0, percentage: 0 },
       total: { avgMs: 0, maxMs: 0, percentage: 0 },
     },
@@ -130,6 +192,26 @@ class FrameTimingStats {
     );
     this.#frameTotalMs += elapsed;
     this.#currentTimings.updateSceneGraphStart = undefined;
+  }
+
+  /**
+   * accumulate one room-renderer sub-phase's time for the current frame. The
+   * time is already inside the updateSceneGraph phase's measurement, so it
+   * does not add to the frame total
+   */
+  recordSceneGraphSubPhase(subPhase: SceneGraphSubPhase, elapsedMs: number) {
+    const stat = this.#subPhaseStats[subPhase];
+    stat.totalMs += elapsedMs;
+    stat.count++;
+    stat.maxMs = Math.max(stat.maxMs, elapsedMs);
+  }
+
+  /** record one spritesheet-variant rebuild the main loop ran this frame */
+  recordSpritesheetRebuild(elapsedMs: number) {
+    const stat = this.#spritesheetRebuildStats;
+    stat.totalMs += elapsedMs;
+    stat.count++;
+    stat.maxMs = Math.max(stat.maxMs, elapsedMs);
   }
 
   startPixiRender() {
@@ -239,10 +321,24 @@ class FrameTimingStats {
     this.#eventBuffer.phases.updateSceneGraph.maxMs = updateSceneGraph.maxMs;
     this.#eventBuffer.phases.updateSceneGraph.percentage =
       (avgUpdateSceneGraph / totalAvg) * 100;
+    for (const subPhase of sceneGraphSubPhases) {
+      const stat = this.#subPhaseStats[subPhase];
+      const buffer =
+        this.#eventBuffer.phases.updateSceneGraphSubPhases[subPhase];
+      buffer.avgMs = stat.count > 0 ? stat.totalMs / stat.count : 0;
+      buffer.maxMs = stat.maxMs;
+      buffer.percentage = (buffer.avgMs / totalAvg) * 100;
+    }
     this.#eventBuffer.phases.pixiRender.avgMs = avgPixiRender;
     this.#eventBuffer.phases.pixiRender.maxMs = pixiRender.maxMs;
     this.#eventBuffer.phases.pixiRender.percentage =
       (avgPixiRender / totalAvg) * 100;
+    const rebuild = this.#spritesheetRebuildStats;
+    const avgRebuild = rebuild.count > 0 ? rebuild.totalMs / rebuild.count : 0;
+    this.#eventBuffer.phases.spritesheetRebuild.avgMs = avgRebuild;
+    this.#eventBuffer.phases.spritesheetRebuild.maxMs = rebuild.maxMs;
+    this.#eventBuffer.phases.spritesheetRebuild.percentage =
+      totalAvg > 0 ? (avgRebuild / totalAvg) * 100 : 0;
     this.#eventBuffer.phases.total.avgMs = totalAvg;
     this.#eventBuffer.phases.total.maxMs = this.#maxTotalMs;
     this.#eventBuffer.phases.total.percentage = 100;
@@ -261,6 +357,15 @@ class FrameTimingStats {
     this.#stats.pixiRender.totalMs = 0;
     this.#stats.pixiRender.count = 0;
     this.#stats.pixiRender.maxMs = 0;
+    for (const subPhase of sceneGraphSubPhases) {
+      const stat = this.#subPhaseStats[subPhase];
+      stat.totalMs = 0;
+      stat.count = 0;
+      stat.maxMs = 0;
+    }
+    this.#spritesheetRebuildStats.totalMs = 0;
+    this.#spritesheetRebuildStats.count = 0;
+    this.#spritesheetRebuildStats.maxMs = 0;
     this.#maxTotalMs = 0;
     this.#frameTotalMs = 0;
     this.#lastReportTime = now;
@@ -268,6 +373,17 @@ class FrameTimingStats {
 }
 
 export const frameTimingStats = FrameTimingStats.instance;
+
+/**
+ * the narrow surface the room renderer uses to report its scene-graph
+ * sub-phase timings. Threaded through the room tick context by the main
+ * loop: the real stats object when the fps display is on, undefined
+ * otherwise - so with the display off, no timing marks are taken at all
+ */
+export type SceneGraphPhaseRecorder = Pick<
+  FrameTimingStats,
+  "recordSceneGraphSubPhase"
+>;
 
 startAppListening({
   predicate(_action, currentState, previousState) {

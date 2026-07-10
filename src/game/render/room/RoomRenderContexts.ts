@@ -12,6 +12,7 @@ import {
 } from "../../../store/slices/userSettings/userSettingsSlice";
 import { type Xy } from "../../../utils/vectors/vectors";
 import { type GameState } from "../../gameState/GameState";
+import { type SceneGraphPhaseRecorder } from "../../mainLoop/frameTiming/FrameTimingStats";
 import { type MovedOrResizedItems } from "../../mainLoop/progressGameState";
 
 /**
@@ -72,4 +73,8 @@ export type RoomTickContext<
 > = {
   movedOrResizedItems: MovedOrResizedItems<RoomId, RoomItemId>;
   deltaMS: number;
+  /**
+   * object to write timings to, or if undefined, don't write them anywhere
+   */
+  timingRecord: SceneGraphPhaseRecorder | undefined;
 };
