@@ -6,10 +6,11 @@ import {
   maybeDimPalette,
 } from "../../../sprites/palette/spritesheetPalette";
 import { hudCharTextureSize } from "../../../sprites/spritesheet/spritesheetData/textureSizes";
+import { type FrameTimingStatsEvent } from "../../mainLoop/frameTiming/FrameTimingStats";
 import {
-  frameTimingStats,
-  type FrameTimingStatsEvent,
-} from "../../mainLoop/frameTiming/FrameTimingStats";
+  loadedFrameTimingStats,
+  loadFrameTimingStats,
+} from "../../mainLoop/frameTiming/lazyFrameTimingStats";
 import { type Renderer } from "../Renderer";
 import { TextContainer } from "../text/TextContainer";
 import { type HudRenderContext } from "./hudRendererContexts";
@@ -22,6 +23,7 @@ export class FpsRenderer
   #fpsText: TextContainer;
   #isDark = false;
   #fpsValue: number | undefined;
+  #destroyed = false;
 
   set isDark(value: boolean) {
     const changed = this.#isDark !== value;
@@ -45,7 +47,13 @@ export class FpsRenderer
       text: "...",
     });
     this.#container.addChild(this.#fpsText);
-    frameTimingStats.on(this.tick);
+    // the frame-timing chunk is lazy-loaded; subscribe once it lands (the
+    // "..." placeholder shows until the first stats event):
+    loadFrameTimingStats().then((frameTimingStats) => {
+      if (!this.#destroyed) {
+        frameTimingStats.on(this.tick);
+      }
+    });
   }
 
   #colourNameForFps(
@@ -84,7 +92,10 @@ export class FpsRenderer
   }
 
   destroy() {
-    frameTimingStats.off(this.tick);
+    this.#destroyed = true;
+    // undefined if destroyed while the frame-timing chunk is still in
+    // flight - in that case the load callback above never subscribes:
+    loadedFrameTimingStats()?.off(this.tick);
     this.#container.destroy();
   }
 }

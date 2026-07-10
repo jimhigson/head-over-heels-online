@@ -179,6 +179,7 @@ and we trust that to pre-load in the service worker for us, so the actual game e
  * use double-quotes for js strings unless templates or strings containing double quotes
  * use arrow functions when defining new functions, other than where this isn't possible, for example when making generators
  * do not write IIFEs (immediately-invoked function expressions) to scope-gate a computation. Prefer extracting a named helper function (usually at module scope) that you call conditionally — this avoids both the IIFE ceremony and the need for a `let`, keeping the call site a single `const`. Use `if` + `let` only when extraction is impractical.
+ * do not write `void` before a fire-and-forget promise (eg `void someAsyncFn()` or `void import(...)`). Just call it — `someAsyncFn();`. The `void` operator adds noise without value; a bare call reads the same and is the house style (see `import("./registerAppSW")` in `src/main.tsx`).
  * work is not complete until `pnpm check` passes. Make this pass before calling work done.
  *	Written in TypeScript using modern features (destructuring, `for...of`, not `.forEach()` etc.).
  * when extracting values from arrays, use multiple levels of destructuring if possible. Eg:
