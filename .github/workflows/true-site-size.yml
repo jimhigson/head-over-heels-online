@@ -110,7 +110,7 @@ jobs:
           fi
           json=$(printf '%s\n' "${refs[@]}" | jq -R . | jq -sc .)
           echo "json=$json" >> "$GITHUB_OUTPUT"
-      - uses: jimhigson/true-site-size@claude/hohjs-tss-two-builds-renyki
+      - uses: jimhigson/true-site-size@main
         if: github.event_name == 'pull_request'
         with:
           install-command: pnpm install --frozen-lockfile
@@ -131,7 +131,7 @@ jobs:
           # alone.
           base-refs: ${{ steps.base-refs.outputs.json }}
           journey: ${{ env.journey }}
-      - uses: jimhigson/true-site-size@claude/hohjs-tss-two-builds-renyki
+      - uses: jimhigson/true-site-size@main
         if: github.event_name == 'push' && steps.release-pr.outputs.number != ''
         with:
           install-command: pnpm install --frozen-lockfile
