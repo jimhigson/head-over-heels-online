@@ -1,23 +1,34 @@
-import { expect, test } from "@playwright/test";
+import { expect, type Page, test, type TestInfo } from "@playwright/test";
 
+import { type OriginalCampaignRoomId } from "../src/_generated/originalCampaign/OriginalCampaignRoomId";
+import { type SpriteOption } from "../src/store/slices/userSettings/userSettingsSlice";
 import { type Xy } from "../src/utils/vectors/vectors";
 import {
   setZeroGameSpeed,
   waitForGameState,
   waitForRoomRenderEvent,
 } from "./testUtils/gameStateQueries";
-import { exitCrownsDialog } from "./testUtils/menuNavigation";
+import {
+  clickOriginalCampaign,
+  clickPlayTheGame,
+  exitCrownsDialog,
+} from "./testUtils/menuNavigation";
 import { setupE2ePage } from "./testUtils/pageSetup";
 import { roomScreenshotOptions } from "./testUtils/screenshots";
 import { setSpriteOption } from "./testUtils/setSpriteOption";
 
 /**
- * visual regression for the rotate-camera-test community campaign: rooms
- * purpose-built to exercise camera rotation, each captured at all four camera
- * angles in a single sprite mode (BlockStack, colourised).
+ * visual regression for rendering at the four canonical camera angles:
+ * rooms of the rotate-camera-test community campaign, purpose-built to
+ * exercise camera rotation, plus original-campaign rooms covering cases
+ * those rooms don't (eg the floor's colour clash in uncolourised mode).
  *
- * Unlike the original-campaign suites, the campaign is loaded from the db
- * (supabase), so this spec depends on the db being reachable.
+ * One test per scenario, each booting its own fresh context, so rooms pass
+ * and fail independently.
+ *
+ * Unlike the original-campaign suites, the rotate-camera-test campaign is
+ * loaded from the db (supabase), so its tests depend on the db being
+ * reachable.
  */
 
 const campaignUrl =
@@ -30,10 +41,20 @@ const angles: ReadonlyArray<readonly [string, Xy]> = [
   ["cw270", { x: 0, y: 1 }],
 ];
 
+type TestScenario =
+  | {
+      campaign: "@@original";
+      roomId: OriginalCampaignRoomId;
+      spriteOption: SpriteOption;
+    }
+  | {
+      campaign: "rotate-camera-test";
+      roomId: string;
+      spriteOption: SpriteOption;
+    };
+
 /**
  * what each room exercises:
- * - start: the campaign's starting room, whatever it currently is - a general
- *   canary captured before any warping
  * - lamp: lamps and their light beams (tile layout, terminus, mirrors' beam
  *   reflection physics)
  * - 4doors: doors on all four sides at z=0 (post widths, top frame placement,
@@ -42,49 +63,46 @@ const angles: ReadonlyArray<readonly [string, Xy]> = [
  *   thresholds and their hint shadows)
  * - mirrors: both mirror orientations with adjacent items (face-on pane
  *   flipping with the camera, reflection placement)
+ * - safari6triple (original campaign, uncolourised): the floor's colour-clash
+ *   rendering must survive to every rotated angle
  */
-const campaignRooms: ReadonlyArray<string> = [
-  "lamp",
-  "4doors",
-  "4doorhi",
-  "mirrors",
+const testScenarios: ReadonlyArray<TestScenario> = [
+  {
+    campaign: "rotate-camera-test",
+    roomId: "lamp",
+    spriteOption: { name: "BlockStack", uncolourised: false },
+  },
+  {
+    campaign: "rotate-camera-test",
+    roomId: "4doors",
+    spriteOption: { name: "BlockStack", uncolourised: false },
+  },
+  {
+    campaign: "rotate-camera-test",
+    roomId: "4doorhi",
+    spriteOption: { name: "BlockStack", uncolourised: false },
+  },
+  {
+    campaign: "rotate-camera-test",
+    roomId: "mirrors",
+    spriteOption: { name: "BlockStack", uncolourised: false },
+  },
+  {
+    campaign: "@@original",
+    roomId: "safari6triple",
+    spriteOption: { name: "BlockStack", uncolourised: true },
+  },
 ];
 
-const totalShots = (campaignRooms.length + 1) * angles.length;
+const screenshotAllAngles = async (
+  page: Page,
+  testInfo: TestInfo,
+  name: string,
+) => {
+  const screenshotOpts = roomScreenshotOptions(testInfo.project.name);
 
-test(`rotate-camera-test campaign rooms (${totalShots} shots)`, async ({
-  page,
-}, testInfo) => {
-  test.setTimeout(totalShots * 20_000 + 60_000);
-  await setupE2ePage(page);
-
-  const screenshotOpts = {
-    ...roomScreenshotOptions(testInfo.project.name),
-    // These baselines were taken on the camera-rotation commit, whose floor sits
-    // OFF the pixel grid (0.52 block = 8.32px). The transition branch deliberately
-    // moved the floor ON-grid (0.5 block + 0.02 render overhang); at rotated
-    // angles that shifts the whole room's scroll-home by a sub-pixel, an accepted
-    // whole-room translate (no structural change - the doors etc. line up). It
-    // reads as ~10.5k differing pixels on the busiest floor-grid room, so allow
-    // that here while still catching real structural regressions (the door-frame
-    // regression this suite exists to guard was ~35k px):
-    maxDiffPixels: 12_000,
-  };
-
-  await page.goto(campaignUrl);
-  // the crowns dialog only appears once the campaign has loaded, so wait for the
-  // load first - dismissing it earlier is a no-op, and it then pops up and blocks
-  // everything after:
-  await waitForGameState(page);
-  await page.waitForSelector("[data-dialog-id=crowns]", { timeout: 15_000 });
-  await exitCrownsDialog(page, "rotatedCampaign");
-  await setSpriteOption(page, "rotatedCampaign", {
-    name: "BlockStack",
-    uncolourised: false,
-  });
-
-  const screenshotAllAngles = async (name: string) => {
-    for (const [angleName, angle] of angles) {
+  for (const [angleName, angle] of angles) {
+    await test.step(`angle ${angleName}`, async () => {
       await page.evaluate((a) => {
         window._e2e_gamePageGameAi!.gameState.cameraAngle = a;
       }, angle);
@@ -95,37 +113,92 @@ test(`rotate-camera-test campaign rooms (${totalShots} shots)`, async ({
         .configure({ timeout: 15_000 })
         .soft(page)
         .toHaveScreenshot(`${name}-${angleName}.png`, screenshotOpts);
-    }
-
-    // reset to base for the next room's load (rooms reload at the base angle
-    // anyway, but this keeps the render-event navigation deterministic):
-    await page.evaluate(() => {
-      window._e2e_gamePageGameAi!.gameState.cameraAngle = { x: 1, y: 0 };
     });
-    await page.waitForTimeout(300);
-  };
-
-  // the campaign's starting room, before any warping:
-  const startRoomId = await page.evaluate(() => {
-    const gameAi = window._e2e_gamePageGameAi!;
-    return gameAi.gameState.characterRooms[
-      gameAi.gameState.currentCharacterName
-    ].roomJson.id;
-  });
-  await setZeroGameSpeed(page);
-  await page.waitForTimeout(300);
-  await screenshotAllAngles("start");
-
-  for (const roomId of campaignRooms) {
-    // the start room may be one of these rooms, in which case it is
-    // already loaded (warping to the current room is not supported):
-    if (roomId !== startRoomId) {
-      const renderPromise = waitForRoomRenderEvent(page, roomId);
-      await page.goto(`${campaignUrl}#${roomId}`);
-      await renderPromise;
-      await setZeroGameSpeed(page);
-      await page.waitForTimeout(300);
-    }
-    await screenshotAllAngles(roomId);
   }
+};
+
+/**
+ * boot a fresh page into the scenario's campaign and room, following the
+ * roomSnapshots pattern: boot into a room that is not being captured, freeze
+ * physics while the crowns dialog still covers the game, then hash-navigate
+ * into the capture room - so it is entered with nothing having moved, and
+ * always from the same previous room
+ */
+const bootScenario = async (page: Page, scenario: TestScenario) => {
+  await setupE2ePage(page);
+
+  if (scenario.campaign === "rotate-camera-test") {
+    // boots into the campaign's start room, which no scenario captures:
+    await page.goto(campaignUrl);
+    // the crowns dialog only appears once the campaign has loaded, so wait
+    // for the load first - dismissing it earlier is a no-op, and it then pops
+    // up and blocks everything after:
+    await waitForGameState(page);
+    await setZeroGameSpeed(page);
+    await page.waitForSelector("[data-dialog-id=crowns]", { timeout: 15_000 });
+    await exitCrownsDialog(page, "rotatedCampaign");
+
+    const renderPromise = waitForRoomRenderEvent(page, scenario.roomId);
+    await page.goto(`${campaignUrl}#${scenario.roomId}`);
+    await renderPromise;
+  } else {
+    // the original campaign starts through the menus (a hash on the url alone
+    // does not start a game); boot into finalroom, which is not captured:
+    await page.goto("/?cheats=1&track=0#finalroom");
+    await clickPlayTheGame(page, "rotatedCampaign");
+    await clickOriginalCampaign(page, "rotatedCampaign");
+    await waitForGameState(page);
+    await setZeroGameSpeed(page);
+    await exitCrownsDialog(page, "rotatedCampaign");
+
+    const renderPromise = waitForRoomRenderEvent(page, scenario.roomId);
+    await page.goto(`/?cheats=1&track=0#${scenario.roomId}`);
+    await renderPromise;
+  }
+
+  await setSpriteOption(page, "rotatedCampaign", scenario.spriteOption);
+  await page.waitForTimeout(300);
+};
+
+test("rotate-camera-test start room at all four camera angles", async ({
+  page,
+}, testInfo) => {
+  test.setTimeout(180_000);
+  await setupE2ePage(page);
+  await page.goto(campaignUrl);
+  await waitForGameState(page);
+  await setZeroGameSpeed(page);
+  await page.waitForSelector("[data-dialog-id=crowns]", { timeout: 15_000 });
+  await exitCrownsDialog(page, "rotatedCampaign");
+
+  // the boot placed the character in the start room while physics could
+  // still tick; bounce out to another room and back so the capture is of a
+  // start room entered with physics already frozen:
+  const lampRenderPromise = waitForRoomRenderEvent(page, "lamp");
+  await page.goto(`${campaignUrl}#lamp`);
+  await lampRenderPromise;
+  const startRenderPromise = waitForRoomRenderEvent(page, "start");
+  await page.goto(`${campaignUrl}#start`);
+  await startRenderPromise;
+
+  await setSpriteOption(page, "rotatedCampaign", {
+    name: "BlockStack",
+    uncolourised: false,
+  });
+  await page.waitForTimeout(300);
+
+  await screenshotAllAngles(page, testInfo, "start");
 });
+
+for (const scenario of testScenarios) {
+  const name =
+    scenario.spriteOption.uncolourised ?
+      `${scenario.roomId}-uncolourised`
+    : scenario.roomId;
+
+  test(`${name} at all four camera angles`, async ({ page }, testInfo) => {
+    test.setTimeout(180_000);
+    await bootScenario(page, scenario);
+    await screenshotAllAngles(page, testInfo, name);
+  });
+}
