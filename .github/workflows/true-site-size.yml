@@ -19,33 +19,28 @@ concurrency:
 jobs:
   measure:
     runs-on: ubuntu-latest
-    strategy:
-      fail-fast: false
-      matrix:
-        include:
-          - target: game
-            build-command: pnpm build:game
-            journey: |
-              [
-                { "goto": "/?track=0" },
-                { "row": "to menu", "mark": "menu-ready", "emoji": "📋" },
-                { "click": "[data-menuitem_id=\"playGame\"]" },
-                { "click": "[data-menuitem_id=\"originalGame\"]" },
-                { "click": "[data-dialog-id=\"crowns\"]", "afterMark": "first-gameplay" },
-                { "waitForGone": "[data-dialog-id=\"crowns\"]" },
-                { "row": "to game", "mark": "first-gameplay", "emoji": "🎮" },
-                { "keys": "M" },
-                { "row": "open map", "mark": "open map", "emoji": "🗺️" }
-              ]
-          - target: editor
-            build-command: pnpm build:editor
-            # the editor builds into dist/editor and serves from /editor/
-            journey: |
-              [
-                { "goto": "/editor/" },
-                { "row": "editor", "marks": ["editor-monaco-ready", "editor-map-ready"], "emoji": "🛠️" }
-              ]
-    name: ${{ matrix.target }} size
+    name: size
+    env:
+      # one journey covers both apps from a single `pnpm build` (game into
+      # dist, editor into dist/editor): the game visit, then a startAgain
+      # cold-restarts the browser so the editor visit is measured from an
+      # empty cache with its own rows and total
+      journey: |
+        [
+          { "startAgain": "game" },
+          { "goto": "/?track=0" },
+          { "row": "to menu", "mark": "menu-ready", "emoji": "📋" },
+          { "click": "[data-menuitem_id=\"playGame\"]" },
+          { "click": "[data-menuitem_id=\"originalGame\"]" },
+          { "click": "[data-dialog-id=\"crowns\"]", "afterMark": "first-gameplay" },
+          { "waitForGone": "[data-dialog-id=\"crowns\"]" },
+          { "row": "to game", "mark": "first-gameplay", "emoji": "🎮" },
+          { "keys": "M" },
+          { "row": "open map", "mark": "open map", "emoji": "🗺️" },
+          { "startAgain": "editor" },
+          { "goto": "/editor/" },
+          { "row": "editor", "marks": ["editor-monaco-ready", "editor-map-ready"], "emoji": "🛠️" }
+        ]
     steps:
       - uses: actions/checkout@v6
       - uses: pnpm/action-setup@v5
@@ -115,41 +110,43 @@ jobs:
           fi
           json=$(printf '%s\n' "${refs[@]}" | jq -R . | jq -sc .)
           echo "json=$json" >> "$GITHUB_OUTPUT"
-      - uses: jimhigson/true-site-size@main
+      - uses: jimhigson/true-site-size@claude/hohjs-tss-two-builds-renyki
         if: github.event_name == 'pull_request'
         with:
-          comment-key: ${{ matrix.target }}
           install-command: pnpm install --frozen-lockfile
           clean-command: pnpm clean:ci
-          build-command: ${{ matrix.build-command }}
+          build-command: pnpm build
           serve-dir: dist
           compression: br
           compression-level: 11
           ignore-url-patterns: '["supabase\\.co"]'
           minimum-change-threshold: 50
+          # each ref now builds both apps in one go, so allow longer than the
+          # action's 15-minute default before the whole-run watchdog fires
+          timeout-ms: "1800000"
           # a normal PR compares vs main (its merge target), production (the
           # last release) and the release before that. a release-please PR
           # only bumps the build number over main, so a vs-main comparison is
           # meaningless noise - it omits main and compares vs the two releases
           # alone.
           base-refs: ${{ steps.base-refs.outputs.json }}
-          journey: ${{ matrix.journey }}
-      - uses: jimhigson/true-site-size@main
+          journey: ${{ env.journey }}
+      - uses: jimhigson/true-site-size@claude/hohjs-tss-two-builds-renyki
         if: github.event_name == 'push' && steps.release-pr.outputs.number != ''
         with:
-          comment-key: ${{ matrix.target }}
           install-command: pnpm install --frozen-lockfile
           clean-command: pnpm clean:ci
-          build-command: ${{ matrix.build-command }}
+          build-command: pnpm build
           serve-dir: dist
           compression: br
           compression-level: 11
           ignore-url-patterns: '["supabase\\.co"]'
           minimum-change-threshold: 50
+          timeout-ms: "1800000"
           # a push to main *is* main, so it only compares vs production (the
           # last release) and the release before that
           base-refs: ${{ steps.base-refs.outputs.json }}
           # on push, comment on the open release PR so its report reflects the
           # merged code
           pr-number: ${{ steps.release-pr.outputs.number }}
-          journey: ${{ matrix.journey }}
+          journey: ${{ env.journey }}
