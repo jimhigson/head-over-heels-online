@@ -324,6 +324,8 @@ throw new Error(
 
  * to speed up the room-snapshot specs, restrict which rooms run with the `ROOMS` env var (comma-separated room ids or `*` wildcards), eg `ROOMS=blacktooth10 pnpm playwright test roomSnapshots.spec.ts --project=chromium-desktop`, or `ROOMS=blacktooth*,moonbase*`. `ROOMS_CONTAINING=conveyor` (or `type[configProp=value]`) filters to rooms holding a given item. `NO_UNCOLOURISED=1` / `NO_TOPPY=1` skip those variants. (parsed in `resolveRoomIds`; full list in the `roomSnapshots.spec.ts` header)
 
+ * screenshot specs freeze physics by calling `setZeroGameSpeed` as soon as the game api exists (while the crowns dialog still covers the game, before any navigation), then hash-navigate into the room being captured - so it is entered with nothing having moved and the capture is deterministic.
+
 
 ## Vite
 * There are two vite configs - for the editor and the game.
