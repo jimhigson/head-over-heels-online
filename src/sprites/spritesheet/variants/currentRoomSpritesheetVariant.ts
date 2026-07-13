@@ -3,7 +3,6 @@ import { type Texture } from "pixi.js";
 import { roomSpritesheetTextureSwops } from "../roomSpritesheetTextureSwops";
 import {
   createSpritesheetVariant,
-  noopSpritesheetTextureSwops,
   type SpritesheetTextureSwops,
 } from "../spritesheetPaletteSwop";
 import { type VariantBuildContext } from "../VariantBuildContext";
@@ -13,12 +12,16 @@ export const buildCurrentRoomSpritesheet = (
   context: VariantBuildContext,
   baseTexture: Texture,
   originalSpritesheet: AppSpritesheet,
-): AppSpritesheet => {
+): AppSpritesheet | undefined => {
   const { roomScenery, roomColor, spriteOption } = context;
 
-  const spritesheetTextureSwops: SpritesheetTextureSwops =
-    roomSpritesheetTextureSwops(roomScenery, roomColor, spriteOption) ??
-    noopSpritesheetTextureSwops;
+  const spritesheetTextureSwops: SpritesheetTextureSwops | undefined =
+    roomSpritesheetTextureSwops(roomScenery, roomColor, spriteOption);
+
+  if (spritesheetTextureSwops === undefined) {
+    // no room swops declared: this sheet has no per-room variant
+    return undefined;
+  }
 
   return createSpritesheetVariant(
     context,

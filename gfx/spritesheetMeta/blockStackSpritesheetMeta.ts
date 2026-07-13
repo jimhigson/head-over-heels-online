@@ -8,7 +8,8 @@ import { itemRenderExtents } from "./itemRenderExtents";
 
 export const blockStackSpritesheetMeta: SpritesheetMetadata<
   BlockstackPaletteColourName,
-  "BlockStack"
+  "BlockStack",
+  true
 > = {
   name: "BlockStack",
   palette: paletteBlockstack,
@@ -155,6 +156,14 @@ export const blockStackSpritesheetMeta: SpritesheetMetadata<
         lightBeige: "pastelBlue",
         highlightBeige: "pastelBlue",
         white: "pastelBlue",
+      },
+    },
+    // the citizens of Freedom recolour to moss to distinguish from the player:
+    sceneryPlayer: {
+      colours: {
+        pastelBlue: "moss",
+        metallicBlue: "moss",
+        pink: "moss",
       },
     },
   },

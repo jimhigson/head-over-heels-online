@@ -1,6 +1,7 @@
 import { type Simplify } from "type-fest";
 
 import { blockStackSpritesheetMeta } from "../../../../gfx/spritesheetMeta/blockStackSpritesheetMeta";
+import { debugSpritesheetMeta } from "../../../../gfx/spritesheetMeta/debugSpritesheetMeta";
 import { speccySpritesheetMeta } from "../../../../gfx/spritesheetMeta/speccySpritesheetMeta";
 import { toppySpritesheetMeta } from "../../../../gfx/spritesheetMeta/toppySpritesheetMeta";
 import { type ButtonId } from "../../../game/render/hud/HudButtonRenderer";
@@ -14,7 +15,6 @@ import {
   type NamedSwops,
 } from "../../../utils/palette/palette";
 import { type DirectionXy8 } from "../../../utils/vectors/vectors";
-import { type LoadableSpriteOption } from "../variants/SpritesheetVariants";
 import { type TextureId } from "./makeSpritesheetData";
 
 type SpriteOverrides = Partial<
@@ -109,10 +109,17 @@ export type ItemRenderExtents = Partial<
   Record<ItemRenderExtentKey, ItemRenderExtent>
 >;
 
+/** the name of every spritesheet that has a meta, taken from the metas themselves */
+export type SpritesheetName =
+  | typeof blockStackSpritesheetMeta.name
+  | typeof debugSpritesheetMeta.name
+  | typeof toppySpritesheetMeta.name;
+
 export type SpritesheetMetadata<
   /** if not given, the spritesheet has no specified named colours - colours can have any name */
   PaletteColourName extends string = string,
-  Name extends LoadableSpriteOption = LoadableSpriteOption,
+  Name extends string = SpritesheetName,
+  SupportsUncolourised extends boolean = boolean,
 > = {
   name: Name;
   palette: NamedColours<PaletteColourName>;
@@ -141,6 +148,14 @@ export type SpritesheetMetadata<
     mirrorReflection?: {
       colours: NamedSwops<PaletteColourName>;
     };
+    /**
+     * how the citizens of Freedom recolour to distinguish them from the
+     * player. Optional: a spritesheet without this renders scenery players
+     * from its normal variant
+     */
+    sceneryPlayer?: {
+      colours: NamedSwops<PaletteColourName>;
+    };
   };
   effectColours: EffectColours<PaletteColourName>;
   /**
@@ -148,7 +163,13 @@ export type SpritesheetMetadata<
    * floating text fade-in/fade-out effect. Last element is the peak brightness.
    */
   floatingTextGradient: PaletteColourName[];
-  supportsUncolourised: boolean;
+  supportsUncolourised: SupportsUncolourised;
+  /**
+   * a debugging sheet: offered only by the cheats panel and the
+   * cycle-sprites key while cheats are on - excluded from
+   * {@link spriteOptionValues}, so the normal display menus never offer it
+   */
+  debug?: true;
   /** if true, shows original-game correct overdraws to emulate rendering artifacts on floors */
   showFloorOverDraw: boolean;
 
@@ -196,12 +217,12 @@ export type PlayableSpritesheetFrames = {
   [D in DirectionXy8]?: PlayableDirectionFrames;
 };
 
+// the satisfies constrains each meta to sit under a key equal to its own name
 export const spritesheetMetas = {
   BlockStack: blockStackSpritesheetMeta,
   Toppy: toppySpritesheetMeta,
-} satisfies {
-  [SO in LoadableSpriteOption]: SpritesheetMetadata<string, SO>;
-};
+  Debug: debugSpritesheetMeta,
+} satisfies { [Name in SpritesheetName]: SpritesheetMetadata<string, Name> };
 
 export const spritesheetMetaForOption = (
   spriteOption: SpriteOption,
@@ -210,12 +231,36 @@ export const spritesheetMetaForOption = (
     speccySpritesheetMeta
   : spritesheetMetas[spriteOption.name];
 
-export const spriteOptionValues = entries(spritesheetMetas).flatMap(
-  ([name, meta]) =>
+/**
+ * the sprite options offered by the normal display menus: every non-debug
+ * sheet, in both colourised and (where supported) uncolourised forms
+ */
+export const spriteOptionValues = entries(spritesheetMetas)
+  .filter(([, meta]) => meta.debug !== true)
+  .flatMap(([name, meta]) =>
     meta.supportsUncolourised ?
       [
         { name, uncolourised: false as const },
         { name, uncolourised: true as const },
       ]
     : [{ name, uncolourised: false as const }],
-) as SpriteOption[];
+  ) as SpriteOption[];
+
+/**
+ * the cheats-only debug rendering option - deliberately absent from
+ * {@link spriteOptionValues}, so the normal display menus never offer it
+ */
+export const debugSpriteOption: SpriteOption = {
+  name: "Debug",
+  uncolourised: false,
+};
+
+/**
+ * the sprite options offered while cheats are on: the normal set plus the
+ * debug sheet. Used by the cheats panel's sprites select and the cycle-sprites
+ * key
+ */
+export const spriteOptionValuesWithDebug: SpriteOption[] = [
+  ...spriteOptionValues,
+  debugSpriteOption,
+];

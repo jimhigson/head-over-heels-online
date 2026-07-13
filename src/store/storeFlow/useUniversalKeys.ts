@@ -10,8 +10,8 @@ import {
   mapPressed,
   menuOpenOrExitPressed,
 } from "../slices/gameMenus/gameMenusSlice";
+import { cycleSpritesOptionThunk } from "../slices/userSettings/cycleSpritesOptionThunk";
 import {
-  nextSpritesOption,
   setEmulatedResolution,
   toggleUserSetting,
 } from "../slices/userSettings/userSettingsSlice";
@@ -78,7 +78,7 @@ export const useUniversalKeys = () => {
 
   useActionTap({
     action: "cycleSprites",
-    handler: useDispatchActionCallback(nextSpritesOption),
+    handler: useDispatchActionCallback(cycleSpritesOptionThunk),
     disabled: assigningKeys,
   });
 

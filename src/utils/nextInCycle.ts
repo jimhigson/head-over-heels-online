@@ -1,3 +1,4 @@
+/** @returns the next in the cycle, wrapping around, or the first item if the current is not in the array */
 export const nextInCycle = <T>(
   arr: Readonly<T[]> | T[],
   current: T,

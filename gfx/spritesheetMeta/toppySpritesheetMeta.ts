@@ -7,7 +7,8 @@ import { itemRenderExtents } from "./itemRenderExtents";
 
 export const toppySpritesheetMeta: SpritesheetMetadata<
   ToppyPaletteColourName,
-  "Toppy"
+  "Toppy",
+  false
 > = {
   name: "Toppy",
   palette: paletteToppy,

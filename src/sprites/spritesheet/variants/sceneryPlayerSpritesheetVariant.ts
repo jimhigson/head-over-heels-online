@@ -1,10 +1,9 @@
 import { type Texture } from "pixi.js";
 
 import {
-  type PartialNamedColours,
+  resolveNamedColourSwops,
   resolveSwops,
 } from "../../../utils/palette/palette";
-import { paletteBlockstack } from "../../palette/spritesheetPalette";
 import {
   ambientDimSwops,
   createSpritesheetVariant,
@@ -13,27 +12,29 @@ import {
 import { type VariantBuildContext } from "../VariantBuildContext";
 import { type AppSpritesheet } from "./AppSpritesheet";
 
-/** Change the appearance of the citizens of Freedom to distinguish from the player */
-const sceneryPlayerSwaps: PartialNamedColours<keyof typeof paletteBlockstack> =
-  {
-    pastelBlue: paletteBlockstack.moss,
-    metallicBlue: paletteBlockstack.moss,
-    pink: paletteBlockstack.moss,
-  };
-
 export const buildSceneryPlayerSpritesheet = (
   context: VariantBuildContext,
   baseTexture: Texture,
   originalSpritesheet: AppSpritesheet,
-): AppSpritesheet => {
+): AppSpritesheet | undefined => {
   const { roomColor, spritesheetMetaData } = context;
+  const { palette } = spritesheetMetaData;
+
+  const sceneryPlayerSwops = spritesheetMetaData.swops?.sceneryPlayer;
+  if (sceneryPlayerSwops === undefined) {
+    // no scenery-player swops declared: this sheet has no such variant
+    return undefined;
+  }
 
   let result = createSpritesheetVariant(
     context,
     {
       ambient: [
         {
-          swops: resolveSwops(paletteBlockstack, sceneryPlayerSwaps),
+          swops: resolveSwops(
+            palette,
+            resolveNamedColourSwops(sceneryPlayerSwops.colours, palette),
+          ),
           lutType: "sparse",
         },
       ],

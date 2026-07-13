@@ -7,6 +7,7 @@ import {
 } from "pixi.js";
 
 import blockStackSpritesheetUrl from "../../../../gfx/sprites.webp";
+import debugSpritesheetUrl from "../../../../gfx/spritesDebug.webp";
 import toppySpritesheetUrl from "../../../../gfx/spritesToppy.webp";
 import { ShadowPreprocessFilter } from "../../../game/render/filters/shadows/ShadowPreprocessFilter";
 import { type ZxSpectrumRoomColour } from "../../../originalGame";
@@ -159,17 +160,14 @@ export class SpritesheetVariants {
     if (this.#uncolourisedSpritesheet !== undefined) {
       return this.#uncolourisedSpritesheet;
     }
+    // a variant exists only if the sheet's meta declares swops for it;
+    // otherwise fall back towards the sheet as loaded:
     const sheet =
       reflection ? this.#mirrorReflectionSpritesheet
       : doughnutted ? this.#doughnuttedSpritesheet
       : deactivated ? this.#deactivatedSpritesheet
-      : this.#forCurrentRoomSpritesheet;
-    if (sheet === undefined) {
-      throw new Error(
-        "currentMainSpritesheet not available — rebuild() not yet called",
-      );
-    }
-    return sheet;
+      : undefined;
+    return sheet ?? this.#forCurrentRoomSpritesheet ?? this.originalSpritesheet;
   }
 
   get shadowSpritesheet(): AppSpritesheet {
@@ -177,24 +175,20 @@ export class SpritesheetVariants {
   }
 
   get spritesheetForCurrentRoom(): AppSpritesheet {
-    if (this.#forCurrentRoomSpritesheet === undefined) {
-      throw new Error(
-        "spritesheetForCurrentRoom not available — rebuild() not yet called or in uncolourised mode",
-      );
-    }
-    return this.#forCurrentRoomSpritesheet;
+    return (
+      this.#forCurrentRoomSpritesheet ??
+      this.#uncolourisedSpritesheet ??
+      this.originalSpritesheet
+    );
   }
 
   get sceneryPlayerSpritesheet(): AppSpritesheet {
-    if (this.#uncolourisedSpritesheet !== undefined) {
-      return this.#uncolourisedSpritesheet;
-    }
-    if (this.#sceneryPlayerSpritesheet === undefined) {
-      throw new Error(
-        "sceneryPlayerSpritesheet not available — rebuild() not yet called or in uncolourised mode",
-      );
-    }
-    return this.#sceneryPlayerSpritesheet;
+    return (
+      this.#uncolourisedSpritesheet ??
+      this.#sceneryPlayerSpritesheet ??
+      this.#forCurrentRoomSpritesheet ??
+      this.originalSpritesheet
+    );
   }
 
   async loadImage(spriteOption: LoadableSpriteOption): Promise<void> {
@@ -213,8 +207,8 @@ export class SpritesheetVariants {
       : selectSpritesheetOverrideBlobUrl(store.getState(), spriteOption);
     const url =
       overrideBlobUrl ??
-      (spriteOption === "BlockStack" ?
-        blockStackSpritesheetUrl
+      (spriteOption === "BlockStack" ? blockStackSpritesheetUrl
+      : spriteOption === "Debug" ? debugSpritesheetUrl
       : toppySpritesheetUrl);
     let strippedImageObjectUrl: string | undefined = undefined;
 

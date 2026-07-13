@@ -14,18 +14,25 @@ import {
   otherIndividualCharacterName,
 } from "../../../model/modelTypes";
 import { getRoomItem, roomSpatialIndexKey } from "../../../model/RoomState";
+import { spriteOptionValuesWithDebug } from "../../../sprites/spritesheet/spritesheetData/spritesheetMetaData";
 import {
   type AnimatedTextureTailwindClass,
   type TextureTailwindClass,
 } from "../../../sprites/spritesheet/spritesheetData/TextureTailwindClass";
 import { useAppDispatch, useAppSelector } from "../../../store/hooks";
-import { useShowShadowMasks } from "../../../store/slices/gameMenus/gameMenusSelectors";
+import {
+  useShowShadowMasks,
+  useSpritesOption,
+} from "../../../store/slices/gameMenus/gameMenusSelectors";
 import { type SelectableGameSpeeds } from "../../../store/slices/userSettings/selectableGameSpeeds";
 import {
   setGameSpeed,
   setShowShadowMasks,
+  setSpritesOption,
+  type SpriteOption,
 } from "../../../store/slices/userSettings/userSettingsSlice";
 import { Button } from "../../../ui/Button";
+import { Select } from "../../../ui/Select";
 import { Switch } from "../../../ui/Switch";
 import { ShowBoundingBoxSelect } from "../../debug/ShowBoundingBoxSelect";
 import { type GameApi } from "../../GameApi";
@@ -237,6 +244,18 @@ const cheatsDecorators = [
 
 const cheatsRoomDecorators = [subRoomBoundariesDecorateRoomRenderer];
 
+const spritesheetSelectLabel = (option: SpriteOption): string =>
+  option.uncolourised ? `${option.name} zx` : option.name;
+
+/** spritesheets, includes the debug option: */
+const spritesheetSelectOptions: ReadonlyMap<string, SpriteOption> = new Map(
+  spriteOptionValuesWithDebug.map((option) => [
+    spritesheetSelectLabel(option),
+    option,
+  ]),
+);
+const spritesheetSelectLabels = [...spritesheetSelectOptions.keys()];
+
 export const Cheats = <RoomId extends string>(_emptyProps: EmptyObject) => {
   useRegisterDecorateItemRenderers(cheatsDecorators);
   useRegisterDecorateRoomRenderers(cheatsRoomDecorators);
@@ -244,6 +263,7 @@ export const Cheats = <RoomId extends string>(_emptyProps: EmptyObject) => {
   const spriteClassname = usePlayableTailwindSpriteClassname();
 
   const showShadowMasks = useShowShadowMasks();
+  const spritesOption = useSpritesOption();
   const dispatch = useAppDispatch();
 
   useLevelSelectByUrlHash(gameApi);
@@ -356,6 +376,19 @@ export const Cheats = <RoomId extends string>(_emptyProps: EmptyObject) => {
                 onChange={(newValue, e) => {
                   dispatch(setShowShadowMasks(newValue));
                   (e?.currentTarget as HTMLElement | undefined)?.blur();
+                }}
+              />
+              <span class="text-single-line">sprites:</span>
+              <Select
+                disableCommandInput
+                values={spritesheetSelectLabels}
+                value={spritesheetSelectLabel(spritesOption)}
+                triggerButtonLabel={spritesheetSelectLabel(spritesOption)}
+                onSelect={(label) => {
+                  const option = spritesheetSelectOptions.get(label);
+                  if (option !== undefined) {
+                    dispatch(setSpritesOption(option));
+                  }
                 }}
               />
             </div>

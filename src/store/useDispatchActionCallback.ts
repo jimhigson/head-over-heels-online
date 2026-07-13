@@ -6,6 +6,7 @@ import {
 import { useCallback } from "preact/hooks";
 
 import { useAppDispatch } from "./hooks";
+import { type AppThunk } from "./store";
 
 export function useDispatchActionCallback<Payload>(
   actionCreator: ActionCreatorWithPayload<Payload>,
@@ -15,14 +16,20 @@ export function useDispatchActionCallback(
   actionCreator: ActionCreatorWithoutPayload,
   payload?: never,
 ): () => void;
+export function useDispatchActionCallback(
+  actionCreator: () => AppThunk,
+  payload?: never,
+): () => void;
 export function useDispatchActionCallback<Payload>(
-  actionCreator:
-    | ActionCreatorWithoutPayload
-    | ActionCreatorWithPayload<Payload>,
+  actionCreator: (p: Payload) => AppThunk,
+  payload?: NoInfer<Payload>,
+): () => void;
+export function useDispatchActionCallback<Payload>(
+  actionCreator: (p: Payload) => Action | AppThunk,
   payload: NoInfer<Payload>,
 ) {
   const dispatch = useAppDispatch();
   return useCallback(() => {
-    dispatch((actionCreator as (p: Payload) => Action)(payload));
-  }, [actionCreator, dispatch, payload]);
+    dispatch(actionCreator(payload));
+  }, [dispatch, actionCreator, payload]);
 }
