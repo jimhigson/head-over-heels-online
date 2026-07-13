@@ -3,12 +3,13 @@ import { Color, type ColorSource, Container, Graphics } from "pixi.js";
 import { type ItemInPlayType } from "../../../../model/ItemInPlay";
 import { selectShowBoundingBoxTypesSet } from "../../../../store/slices/gameMenus/gameMenusSelectors";
 import { store } from "../../../../store/store";
+import { nearestQuarterAngle } from "../../../../utils/vectors/rotateXy";
 import { type Aabb, type Xy } from "../../../../utils/vectors/vectors";
 import { isItemType } from "../../../physics/itemPredicates";
 import { type ItemRenderContext } from "../../ItemRenderContexts";
 import { projectWorldXyzToScreenXy } from "../../projections";
 import { TextContainer } from "../../text/TextContainer";
-import { type ItemPixiRenderer } from "./ItemPixiRenderer";
+import { type ItemChainPixiRenderer } from "./ItemPixiRenderer";
 
 const bbColors: Record<ItemInPlayType, string> = {
   // players
@@ -92,24 +93,24 @@ type ShadeFace = "bottom" | "none" | "top";
 const addCuboidPathsToGraphics = (
   cuboid: Aabb,
   graphics: Graphics,
-  cameraAngle: Xy,
+  cameraQuarterAngle: Xy,
   shadeFace: ShadeFace = "none",
   color?: ColorSource,
 ) => {
   const bottomFace = [
-    projectWorldXyzToScreenXy({}, cameraAngle),
-    projectWorldXyzToScreenXy({ x: cuboid.x }, cameraAngle),
-    projectWorldXyzToScreenXy({ x: cuboid.x, y: cuboid.y }, cameraAngle),
-    projectWorldXyzToScreenXy({ y: cuboid.y }, cameraAngle),
+    projectWorldXyzToScreenXy({}, cameraQuarterAngle),
+    projectWorldXyzToScreenXy({ x: cuboid.x }, cameraQuarterAngle),
+    projectWorldXyzToScreenXy({ x: cuboid.x, y: cuboid.y }, cameraQuarterAngle),
+    projectWorldXyzToScreenXy({ y: cuboid.y }, cameraQuarterAngle),
   ];
   const topFace = [
-    projectWorldXyzToScreenXy({ z: cuboid.z }, cameraAngle),
-    projectWorldXyzToScreenXy({ x: cuboid.x, z: cuboid.z }, cameraAngle),
+    projectWorldXyzToScreenXy({ z: cuboid.z }, cameraQuarterAngle),
+    projectWorldXyzToScreenXy({ x: cuboid.x, z: cuboid.z }, cameraQuarterAngle),
     projectWorldXyzToScreenXy(
       { x: cuboid.x, y: cuboid.y, z: cuboid.z },
-      cameraAngle,
+      cameraQuarterAngle,
     ),
-    projectWorldXyzToScreenXy({ y: cuboid.y, z: cuboid.z }, cameraAngle),
+    projectWorldXyzToScreenXy({ y: cuboid.y, z: cuboid.z }, cameraQuarterAngle),
   ];
 
   // faintly shade one face - the footprint (bottom) or the top - in the box's
@@ -125,17 +126,26 @@ const addCuboidPathsToGraphics = (
     .poly(bottomFace)
     // right:
     .poly([
-      projectWorldXyzToScreenXy({}, cameraAngle),
-      projectWorldXyzToScreenXy({ z: cuboid.z }, cameraAngle),
-      projectWorldXyzToScreenXy({ y: cuboid.y, z: cuboid.z }, cameraAngle),
-      projectWorldXyzToScreenXy({ y: cuboid.y }, cameraAngle),
+      projectWorldXyzToScreenXy({}, cameraQuarterAngle),
+      projectWorldXyzToScreenXy({ z: cuboid.z }, cameraQuarterAngle),
+      projectWorldXyzToScreenXy(
+        { y: cuboid.y, z: cuboid.z },
+        cameraQuarterAngle,
+      ),
+      projectWorldXyzToScreenXy({ y: cuboid.y }, cameraQuarterAngle),
     ])
     // left:
     .poly([
-      projectWorldXyzToScreenXy({ x: cuboid.x }, cameraAngle),
-      projectWorldXyzToScreenXy({ x: cuboid.x, z: cuboid.z }, cameraAngle),
-      projectWorldXyzToScreenXy(cuboid, cameraAngle),
-      projectWorldXyzToScreenXy({ x: cuboid.x, y: cuboid.y }, cameraAngle),
+      projectWorldXyzToScreenXy({ x: cuboid.x }, cameraQuarterAngle),
+      projectWorldXyzToScreenXy(
+        { x: cuboid.x, z: cuboid.z },
+        cameraQuarterAngle,
+      ),
+      projectWorldXyzToScreenXy(cuboid, cameraQuarterAngle),
+      projectWorldXyzToScreenXy(
+        { x: cuboid.x, y: cuboid.y },
+        cameraQuarterAngle,
+      ),
     ])
     // top:
     .poly(topFace);
@@ -146,12 +156,18 @@ const bbLineWidth = 0.66;
 const renderBB = (
   aabb: Aabb,
   color: ColorSource,
-  cameraAngle: Xy,
+  cameraQuarterAngle: Xy,
   lineWidth = bbLineWidth,
   shadeFace: ShadeFace = "none",
 ) => {
   const graphics = new Graphics();
-  addCuboidPathsToGraphics(aabb, graphics, cameraAngle, shadeFace, color);
+  addCuboidPathsToGraphics(
+    aabb,
+    graphics,
+    cameraQuarterAngle,
+    shadeFace,
+    color,
+  );
 
   graphics.stroke({
     width: lineWidth,
@@ -165,7 +181,7 @@ const renderBB = (
   });
   graphics.on("pointerleave", () => {
     graphics.clear();
-    addCuboidPathsToGraphics(aabb, graphics, cameraAngle, "none", color);
+    addCuboidPathsToGraphics(aabb, graphics, cameraQuarterAngle, "none", color);
 
     graphics.stroke({
       width: lineWidth,
@@ -178,7 +194,7 @@ const renderBB = (
 };
 
 export class ItemBoundingBoxRenderer<T extends ItemInPlayType>
-  implements ItemPixiRenderer<T>
+  implements ItemChainPixiRenderer<T>
 {
   #container: Container;
   #shown = false;
@@ -211,6 +227,7 @@ export class ItemBoundingBoxRenderer<T extends ItemInPlayType>
 
     const { item } = this.renderContext;
     const { cameraAngle } = this.renderContext.general;
+    const cameraQuarterAngle = nearestQuarterAngle(cameraAngle);
     const color = bbColors[item.type];
 
     // the box draws every corner at its true projected position (project(worldCorner)
@@ -221,7 +238,7 @@ export class ItemBoundingBoxRenderer<T extends ItemInPlayType>
     if (isItemType("portal")(item)) {
       const relativePointScreenXy = projectWorldXyzToScreenXy(
         item.config.relativePoint,
-        cameraAngle,
+        cameraQuarterAngle,
       );
       this.#container.addChild(
         new Graphics()
@@ -242,7 +259,7 @@ export class ItemBoundingBoxRenderer<T extends ItemInPlayType>
       renderBB(
         item.aabb,
         color,
-        cameraAngle,
+        cameraQuarterAngle,
         undefined,
         item.type === "floor" ? "top" : "bottom",
       ),
@@ -252,13 +269,13 @@ export class ItemBoundingBoxRenderer<T extends ItemInPlayType>
       const renderAabbGraphics = renderBB(
         renderBox.renderAabb,
         color,
-        cameraAngle,
+        cameraQuarterAngle,
         bbLineWidth / 2,
       );
       if (renderBox.renderAabbOffset) {
         const offset = projectWorldXyzToScreenXy(
           renderBox.renderAabbOffset,
-          cameraAngle,
+          cameraQuarterAngle,
         );
         renderAabbGraphics.position.set(offset.x, offset.y);
         renderAabbGraphics.circle(0, 0, 2).fill(color);
@@ -305,7 +322,7 @@ export class ItemBoundingBoxRenderer<T extends ItemInPlayType>
     });
 
     this.#lastRenderedAabb = item.aabb;
-    this.#lastRenderedCameraAngle = cameraAngle;
+    this.#lastRenderedCameraAngle = cameraQuarterAngle;
   }
 
   #show() {
@@ -341,12 +358,14 @@ export class ItemBoundingBoxRenderer<T extends ItemInPlayType>
 
     // already showing: redraw if the bounding box changed (new aabb reference) or the
     // camera rotated (the box shape and the renderAabb offset are camera-dependent)
-    const { cameraAngle } = this.renderContext.general;
+    const cameraQuarterAngle = nearestQuarterAngle(
+      this.renderContext.general.cameraAngle,
+    );
     if (
       shouldShow &&
       (this.renderContext.item.aabb !== this.#lastRenderedAabb ||
-        cameraAngle.x !== this.#lastRenderedCameraAngle?.x ||
-        cameraAngle.y !== this.#lastRenderedCameraAngle?.y)
+        cameraQuarterAngle.x !== this.#lastRenderedCameraAngle?.x ||
+        cameraQuarterAngle.y !== this.#lastRenderedCameraAngle?.y)
     ) {
       this.#draw();
     }

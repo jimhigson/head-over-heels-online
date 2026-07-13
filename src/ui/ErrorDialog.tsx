@@ -147,7 +147,7 @@ export type ErrorDialogProps = ErrorDialogReportProps;
 export const ErrorDialog = (props: ErrorDialogProps) => (
   <DialogPortal>
     <Border class="loading-border zx:zx-loading-border toppy:toppy-loading-border" />
-    <Dialog class="" tall wide dialogId="errorCaught">
+    <Dialog tall wide dialogId="errorCaught">
       <ErrorDialogReport {...props} />
     </Dialog>
   </DialogPortal>

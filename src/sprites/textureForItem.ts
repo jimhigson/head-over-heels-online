@@ -33,7 +33,7 @@ export const textureForItem = (
           }
         }
         default:
-          item.config.style satisfies never;
+          item.config satisfies never;
       }
       break;
     case "barrier":
@@ -221,7 +221,7 @@ export const textureForItem = (
         case "right":
           return twClass(`texture-conveyor_x_1`);
         default:
-          item.config.direction satisfies never;
+          item.config satisfies never;
       }
       break;
     case "door":
@@ -265,14 +265,14 @@ export const textureForItem = (
             spritesheetName: "BlockStack" as "BlockStack",
             character: "head",
             action: "idle",
-            facingXy8: item.config.startDirection ?? "towards",
+            facingXy8: item.config.startDirection,
           });
         case "heels":
           return playableTailwindSpriteClassname({
             spritesheetName: "BlockStack" as "BlockStack",
             character: "heels",
             action: "idle",
-            facingXy8: item.config.startDirection ?? "towards",
+            facingXy8: item.config.startDirection,
           });
         default:
           item.config.which satisfies never;
@@ -403,10 +403,12 @@ export const textureForItem = (
       break;
     case "mirror":
       switch (item.config.orientation) {
+        // at the base camera angle awayLeft shows edge-on (d1), awayRight
+        // face-on (d3):
         case "awayLeft":
-          return twClass("texture-mirror_awayLeft");
+          return twClass("texture-mirror_d1");
         case "awayRight":
-          return twClass("texture-mirror_awayRight");
+          return twClass("texture-mirror_d3");
         default:
           item.config.orientation satisfies never;
       }

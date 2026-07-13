@@ -171,10 +171,7 @@
     "path": "/items/b1",
     "value": {
       "config": {
-        "style": "tower",
-        "times": {
-          "x": 2
-        }
+        "style": "tower"
       },
       "position": {
         "x": 4,
@@ -189,13 +186,40 @@
     "path": "/items/b2",
     "value": {
       "config": {
-        "style": "tower",
-        "times": {
-          "x": 2
-        }
+        "style": "tower"
       },
       "position": {
         "x": 4,
+        "y": 5,
+        "z": 0
+      },
+      "type": "block"
+    }
+  },
+  {
+    "op": "add",
+    "path": "/items/b3",
+    "value": {
+      "config": {
+        "style": "tower"
+      },
+      "position": {
+        "x": 5,
+        "y": 2,
+        "z": 0
+      },
+      "type": "block"
+    }
+  },
+  {
+    "op": "add",
+    "path": "/items/b4",
+    "value": {
+      "config": {
+        "style": "tower"
+      },
+      "position": {
+        "x": 5,
         "y": 5,
         "z": 0
       },

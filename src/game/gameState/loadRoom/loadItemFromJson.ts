@@ -10,6 +10,7 @@ import { type ScrollsRead } from "../../../store/slices/gameInPlay/gameInPlaySli
 import { type PokesEnabled } from "../../../store/slices/userSettings/userSettingsSlice";
 import { emptyObject } from "../../../utils/empty";
 import { hashXyzToNumber0to1 } from "../../../utils/maths/hashXyzToNumber0to1";
+import { unitVectors } from "../../../utils/vectors/unitVectors";
 import {
   addXyz,
   lengthXyz,
@@ -196,8 +197,15 @@ export function* loadItemFromJson<
           // spiky balls:
           jsonItem.type === "slidingDeadly" ||
           jsonItem.type === "spring",
-        // eslint-disable-next-line @typescript-eslint/no-explicit-any
-        config: jsonItem.config as any,
+        // lamps hold their direction as a (cardinal) unit vector in-play,
+        // converted here from the json direction name (the json stays a name):
+        config: (jsonItem.type === "lamp" ?
+          {
+            ...jsonItem.config,
+            direction: unitVectors[jsonItem.config.direction],
+          }
+          // eslint-disable-next-line @typescript-eslint/no-explicit-any
+        : jsonItem.config) as any,
         state,
       };
 

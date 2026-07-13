@@ -61,11 +61,59 @@ export type GameState<RoomId extends string = string> = {
   gameTime: number;
 
   /**
-   * the 90°-increment camera rotation, as a (cos,sin) unit vector. Always set -
-   * a fresh game starts at the base view (1,0). Saved with the game, so reloading
-   * a save resumes the same angle.
+   * the camera's target angle, as a (cos,sin) unit vector. Always a quarter
+   * angle; always set - a fresh game starts at the base view (1,0). Saved with
+   * the game, so reloading a save resumes the same angle. This is the DISCRETE
+   * target angle: model-level consumers (input mapping, structure, sort)
+   * always see the quarter-turn endpoint, even mid {@link cameraTransition} -
+   * only rendering interpolates θ(t).
    */
-  cameraAngle: Xy;
+  targetCameraAngle: Xy;
+
+  /**
+   * the animated rotation towards {@link targetCameraAngle}, present only
+   * while one is playing. `fromAngle` is the continuous angle the current
+   * turn started from - NOT necessarily a quarter angle: a rotate input
+   * mid-turn retargets by re-anchoring fromAngle at the current interpolated
+   * angle, rotating {@link targetCameraAngle} a further quarter, and
+   * resetting progress - so a quick second tap sweeps 180° in one motion, and
+   * an opposite tap cancels back. `progress` is the linear time fraction 0→1
+   * over `durationMs` (easing is applied at render time, not here).
+   */
+  cameraTransition?: {
+    fromAngle: Xy;
+    /**
+     * the signed arc this turn sweeps from `fromAngle`, in radians (positive
+     * is anticlockwise). Carried explicitly so the camera always turns the
+     * way the player pressed: each rotate input adds a quarter turn in its
+     * direction to the remaining arc, so three anticlockwise taps sweep 270°
+     * anticlockwise rather than taking the shorter 90° clockwise path to the
+     * same endpoint
+     */
+    arc: number;
+    /** linear time fraction, 0..1 */
+    progress: number;
+    /**
+     * how long this transition takes: proportional to its arc, capped at the
+     * full-quarter-turn duration - so a retargeted 180° sweep moves faster
+     * rather than taking longer, and a cancel finishes quickly
+     */
+    durationMs: number;
+    /**
+     * initial slope of the easing curve (see hermiteEase): 0 for a fresh turn
+     * (smoothstep); a retarget sets the slope that carries the previous
+     * turn's angular velocity into this one, keeping the camera's speed
+     * continuous - negative for a cancel still moving towards the old target
+     */
+    startSlope: number;
+  };
+
+  /**
+   * test hook (set via `window._e2e_gamePageGameAi`): when defined, the active
+   * transition's progress is clamped to this value and never completes, for
+   * deterministic screenshots at any point along the turn.
+   */
+  _e2e_cameraTransitionHold?: number;
 };
 
 // if you don't care about the RoomId generic, you can't emit events (since they are callbacks)

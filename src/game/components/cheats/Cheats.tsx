@@ -59,6 +59,7 @@ import { useGameApi } from "../GameApiContext";
 import { usePlayableTailwindSpriteClassname } from "../tailwindSprites/playableTailwindSpriteClassname";
 import { ConsoleDumpButton } from "./ConsoleDumpButton";
 import { GameApiConnectedRoomSelect } from "./GameApiConnectedRoomSelect";
+import { jsonStringifySafe } from "./jsonStringifySafe";
 import { useLevelSelectByUrlHash } from "./useLevelSelectByUrlHash";
 
 // the z-order-graph dump is also callable from automation/the console; installed
@@ -826,92 +827,91 @@ export const Cheats = <RoomId extends string>(_emptyProps: EmptyObject) => {
             </div>
             <Heading>write to console:</Heading>
             <div class="flex flex-row items-center flex-wrap">
-              <Button
-                class="flex-grow h-3"
-                onClick={(e) => {
-                  if (gameApi) {
-                    console.log(gameApi.gameState);
-                    // eslint-disable-next-line @typescript-eslint/no-explicit-any
-                    (window as any).gs = gameApi.gameState;
-                    console.log("gameState on window.gs");
-                  }
-                  (e?.currentTarget as HTMLElement | undefined)?.blur();
+              <ConsoleDumpButton
+                log={() => {
+                  console.log(gameApi.gameState);
+                  // eslint-disable-next-line @typescript-eslint/no-explicit-any
+                  (window as any).gs = gameApi.gameState;
+                  console.log("gameState on window.gs");
                 }}
+                copyText={() => jsonStringifySafe(gameApi.gameState)}
               >
                 gameState
-              </Button>
-              <Button
-                class="flex-grow h-3"
-                onClick={(e) => {
-                  if (gameApi) {
-                    const roomJson = selectCurrentRoomState(
-                      gameApi.gameState,
-                    )?.roomJson;
-                    // eslint-disable-next-line @typescript-eslint/no-explicit-any
-                    (window as any).roomJson = roomJson;
-                    console.log("roomJson:", roomJson);
-                    console.log("roomJson on window.roomJson");
-                  }
-                  (e?.currentTarget as HTMLElement | undefined)?.blur();
+              </ConsoleDumpButton>
+              <ConsoleDumpButton
+                log={() => {
+                  const roomJson = selectCurrentRoomState(
+                    gameApi.gameState,
+                  )?.roomJson;
+                  // eslint-disable-next-line @typescript-eslint/no-explicit-any
+                  (window as any).roomJson = roomJson;
+                  console.log("roomJson:", roomJson);
+                  console.log("roomJson on window.roomJson");
+                }}
+                copyText={() => {
+                  const roomJson = selectCurrentRoomState(
+                    gameApi.gameState,
+                  )?.roomJson;
+                  return roomJson === undefined ? "no current room" : (
+                      JSON.stringify(roomJson, null, 2)
+                    );
                 }}
               >
                 Room JSON
-              </Button>
-              <Button
-                class="flex-grow h-3"
-                onClick={(e) => {
-                  if (gameApi) {
-                    // eslint-disable-next-line @typescript-eslint/no-explicit-any
-                    (window as any).room = gameApi.currentRoom;
-                    if (gameApi.currentRoom) {
-                      console.log(gameApi.currentRoom);
-                      console.log(
-                        "spatial index is",
-                        gameApi.currentRoom[
-                          roomSpatialIndexKey
-                        ].debugToString(),
-                      );
-                      console.log("currentRoom on window.room");
-                    }
+              </ConsoleDumpButton>
+              <ConsoleDumpButton
+                log={() => {
+                  // eslint-disable-next-line @typescript-eslint/no-explicit-any
+                  (window as any).room = gameApi.currentRoom;
+                  if (gameApi.currentRoom) {
+                    console.log(gameApi.currentRoom);
+                    console.log(
+                      "spatial index is",
+                      gameApi.currentRoom[roomSpatialIndexKey].debugToString(),
+                    );
+                    console.log("currentRoom on window.room");
                   }
-                  (e?.currentTarget as HTMLElement | undefined)?.blur();
                 }}
+                copyText={() =>
+                  gameApi.currentRoom === undefined ?
+                    "no current room"
+                  : jsonStringifySafe(gameApi.currentRoom)
+                }
               >
                 Room state
-              </Button>
-              <Button
-                class="flex-grow"
-                onClick={(e) => {
-                  if (gameApi) {
-                    const playable = selectCurrentPlayableItem(
-                      gameApi.gameState,
-                    );
-                    if (playable === undefined) {
-                      console.log("no playable item");
-                      return;
-                    }
-
-                    // eslint-disable-next-line @typescript-eslint/no-explicit-any
-                    (window as any).playable = playable;
-                    console.log("currentCharacterName:", playable);
-                    console.log("playable on window.playable");
-
-                    if (playable.id !== "headOverHeels") {
-                      const otherName = otherIndividualCharacterName(
-                        playable.id as IndividualCharacterName,
-                      );
-                      const otherPlayableRoom =
-                        gameApi.gameState.characterRooms[otherName];
-                      console.log(
-                        otherName,
-                        "in room",
-                        otherPlayableRoom?.id,
-                        otherPlayableRoom?.items[otherName],
-                      );
-                    }
+              </ConsoleDumpButton>
+              <ConsoleDumpButton
+                log={() => {
+                  const playable = selectCurrentPlayableItem(gameApi.gameState);
+                  if (playable === undefined) {
+                    console.log("no playable item");
+                    return;
                   }
 
-                  (e?.currentTarget as HTMLElement | undefined)?.blur();
+                  // eslint-disable-next-line @typescript-eslint/no-explicit-any
+                  (window as any).playable = playable;
+                  console.log("currentCharacterName:", playable);
+                  console.log("playable on window.playable");
+
+                  if (playable.id !== "headOverHeels") {
+                    const otherName = otherIndividualCharacterName(
+                      playable.id as IndividualCharacterName,
+                    );
+                    const otherPlayableRoom =
+                      gameApi.gameState.characterRooms[otherName];
+                    console.log(
+                      otherName,
+                      "in room",
+                      otherPlayableRoom?.id,
+                      otherPlayableRoom?.items[otherName],
+                    );
+                  }
+                }}
+                copyText={() => {
+                  const playable = selectCurrentPlayableItem(gameApi.gameState);
+                  return playable === undefined ? "no playable item" : (
+                      jsonStringifySafe(playable)
+                    );
                 }}
               >
                 <span
@@ -920,7 +920,7 @@ export const Cheats = <RoomId extends string>(_emptyProps: EmptyObject) => {
                 <span
                   class={`sprite ${spriteClassname({ character: "heels", action: "idle", facingXy8: "right" })}`}
                 />
-              </Button>
+              </ConsoleDumpButton>
               <ConsoleDumpButton
                 data-test-id="cheats-dump-z-graph"
                 log={() => dumpZGraph(window.__e2e_zGraph)}

@@ -8,8 +8,10 @@ import {
 import { type RoomState } from "../../model/RoomState";
 import { type MovedOrResizedItems } from "../mainLoop/progressGameState";
 import { type ItemRenderPipeline } from "./item/itemRender/createItemRenderer";
+import { type ItemLeafPixiRenderer } from "./item/itemRender/ItemPixiRenderer";
 import { type RenderBoxes } from "./renderBox/makeItemRenderBoxAtCameraAngle";
 import { type GeneralRenderContext } from "./room/RoomRenderContexts";
+import { type FilterCache } from "./room/RoomRenderer";
 import { type ZGraph } from "./sortZ/GraphEdges";
 
 export type ItemZGraph<
@@ -18,12 +20,12 @@ export type ItemZGraph<
 > = ZGraph<UnionOfAllItemInPlayTypes<RoomId, RoomItemId>>;
 
 /**
- * the context appearances receive. The layer/render-box fields are optional
- * because standalone contexts (eg the hud's carried-item render) genuinely
- * have no room renderer behind them; in-room rendering always provides them
- * (see {@link ItemRenderContext})
+ * the context a leaf item renderer receives. The layer/render-box fields are
+ * optional because standalone contexts (eg the hud's carried-item render)
+ * genuinely have no room renderer behind them; in-room rendering always
+ * provides them (see {@link ItemRenderContext})
  */
-export type AppearanceRenderContext<T extends ItemInPlayType> = {
+export type ItemLeafRenderContext<T extends ItemInPlayType> = {
   item: ItemTypeUnion<T, string, string>;
   room: RoomState<string, string>;
   general: GeneralRenderContext<string>;
@@ -42,46 +44,57 @@ export type AppearanceRenderContext<T extends ItemInPlayType> = {
    * (the item renders true to its physical aabb)
    */
   renderBoxes?: RenderBoxes<UnionOfAllItemInPlayTypes>;
+  /**
+   * shared, keyed filters for any item renderer/appearance to stash filters
+   * that others (or itself, on a later render) can reuse.
+   *
+   * Optional because
+   * standalone contexts (eg the hud's carried-item render) have no room renderer
+   * behind them to own one; every appearance that reads it is only ever rendered
+   * in-room, where {@link ItemRenderContext} guarantees it
+   */
+  filterCache?: FilterCache;
 };
 
 /**
- * the {@link AppearanceRenderContext} plus the pipeline-renderer-only
- * concerns (which no appearance reads), with the room-renderer-provided
- * fields guaranteed present. Declared flat (not as an intersection) so
- * narrowing/comparability behaves like a plain object type
+ * the {@link ItemLeafRenderContext} plus the pipeline-renderer-only concerns
+ * (which no appearance reads), with the room-renderer-provided fields (which are
+ * optional on the leaf context) guaranteed present
  */
-export type ItemRenderContext<T extends ItemInPlayType> = {
-  item: ItemTypeUnion<T, string, string>;
-  room: RoomState<string, string>;
-  general: GeneralRenderContext<string>;
-  isReflection: boolean;
-  /** see {@link AppearanceRenderContext.colourClashLayer} */
-  colourClashLayer?: RenderLayer;
-  frontLayer: RenderLayer;
-  /** see {@link AppearanceRenderContext.renderBoxes} */
-  renderBoxes: RenderBoxes<UnionOfAllItemInPlayTypes>;
-  /**
-   * the container positioned at this item's projected origin - the
-   * ItemPositionRenderer's output, set once that renderer is constructed. Debug
-   * overlays that draw at the item's true projected positions (eg the bounding box)
-   * parent to this, so they are not shifted by the near-corner offset applied to the
-   * item's sprites.
-   */
-  itemPositionContainer?: Container;
-  /**
-   * the (mutated in place) record of which items is in front of which,
-   * including what can't be applied due to cyclic dependencies
-   * - updated by the time the item renders
-   */
-  zEdges: ItemZGraph;
-  /**
-   * allows any item's renderers to get access to another item's current
-   * render pipeline (ie, for masking against other items's renderings)
-   */
-  getItemRenderPipeline: (
-    item: UnionOfAllItemInPlayTypes,
-  ) => ItemRenderPipeline<ItemInPlayType> | undefined;
-};
+export type ItemRenderContext<T extends ItemInPlayType> =
+  ItemLeafRenderContext<T> & {
+    frontLayer: RenderLayer;
+    renderBoxes: RenderBoxes<UnionOfAllItemInPlayTypes>;
+    filterCache: FilterCache;
+    /**
+     * the container positioned at this item's projected origin - the
+     * ItemPositionRenderer's output, set once that renderer is constructed. Debug
+     * overlays that draw at the item's true projected positions (eg the bounding box)
+     * parent to this, so they are not shifted by the near-corner offset applied to the
+     * item's sprites.
+     */
+    itemPositionContainer?: Container;
+    /**
+     * the (mutated in place) record of which items is in front of which,
+     * including what can't be applied due to cyclic dependencies
+     * - updated by the time the item renders
+     */
+    zEdges: ItemZGraph;
+    /**
+     * allows any item's renderers to get access to another item's current
+     * render pipeline (ie, for masking against other items's renderings)
+     */
+    getItemRenderPipeline: (
+      item: UnionOfAllItemInPlayTypes,
+    ) => ItemRenderPipeline<ItemInPlayType> | undefined;
+    /**
+     * to create a renderer for another item - lets a room item (eg
+     * a mirror rendering reflections) render other items
+     */
+    createItemLeafPixiRenderer: <U extends ItemInPlayType>(
+      renderContext: ItemLeafRenderContext<U>,
+    ) => ItemLeafPixiRenderer<U> | undefined;
+  };
 
 /**
  * narrow an appearance context back to the full pipeline context, for the few
@@ -91,7 +104,7 @@ export type ItemRenderContext<T extends ItemInPlayType> = {
  * rather than making every appearance carry the pipeline surface
  */
 export const asItemRenderContext = <T extends ItemInPlayType>(
-  renderContext: AppearanceRenderContext<T>,
+  renderContext: ItemLeafRenderContext<T>,
 ): ItemRenderContext<T> => {
   if (!("zEdges" in renderContext)) {
     throw new Error(
@@ -101,7 +114,12 @@ export const asItemRenderContext = <T extends ItemInPlayType>(
   return renderContext as ItemRenderContext<T>;
 };
 
-export type ItemTickContext = {
+/**
+ * the tick context a leaf item renderer (or an appearance) needs - without the
+ * room-orchestration fields, which only the position/shadow/z-sort wrappers
+ * read (see {@link ItemTickContext})
+ */
+export type ItemLeafTickContext = {
   /**
    * The lastRenderRoomTime from the room's renderer. This is not a property
    * of the room itself, but of the room's rendering.
@@ -110,5 +128,12 @@ export type ItemTickContext = {
    */
   lastRenderRoomTime: number | undefined;
   deltaMS: number;
+};
+
+export type ItemTickContext = ItemLeafTickContext & {
+  /**
+   * the items that moved or resized since the last tick - read by the position,
+   * shadow and z-sort machinery, never by a leaf renderer
+   */
   movedOrResizedItems: MovedOrResizedItems<string, string>;
 };

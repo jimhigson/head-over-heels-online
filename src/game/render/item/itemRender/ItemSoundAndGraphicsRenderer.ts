@@ -6,7 +6,7 @@ import {
 } from "../../ItemRenderContexts";
 import { type Renderer } from "../../Renderer";
 import { type SoundAndGraphicsOutput } from "../../SoundAndGraphicsOutput";
-import { type ItemPixiRenderer } from "./ItemPixiRenderer";
+import { type ItemChainPixiRenderer } from "./ItemPixiRenderer";
 
 export class ItemSoundAndGraphicsRenderer<T extends ItemInPlayType>
   implements
@@ -16,14 +16,14 @@ export class ItemSoundAndGraphicsRenderer<T extends ItemInPlayType>
 
   readonly renderContext: ItemRenderContext<T>;
   #componentRenderers: {
-    graphics?: ItemPixiRenderer<T>;
+    graphics?: ItemChainPixiRenderer<T>;
     sound?: ItemSoundRenderer<T>;
   };
 
   constructor(
     renderContext: ItemRenderContext<T>,
     componentRenderers: {
-      graphics?: ItemPixiRenderer<T>;
+      graphics?: ItemChainPixiRenderer<T>;
       sound?: ItemSoundRenderer<T>;
     },
   ) {

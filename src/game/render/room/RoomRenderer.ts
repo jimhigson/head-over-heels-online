@@ -1,4 +1,4 @@
-import { Container, RenderLayer } from "pixi.js";
+import { Container, type Filter, RenderLayer } from "pixi.js";
 import { type SetRequired } from "type-fest";
 
 import {
@@ -10,11 +10,15 @@ import { zxSpectrumColor } from "../../../originalGame";
 import { audioCtx } from "../../../sound/audioCtx";
 import { soundsFadeDurationSec } from "../../../sound/soundUtils/stopWithFade";
 import { defaultUserSettings } from "../../../store/slices/userSettings/defaultUserSettings";
+import { nearestQuarterAngle } from "../../../utils/vectors/rotateXy";
+import { type Xy } from "../../../utils/vectors/vectors";
 import {
   type SceneGraphPhaseRecorder,
   type SceneGraphSubPhase,
 } from "../../mainLoop/frameTiming/FrameTimingStats";
 import { isSpatial } from "../../physics/itemPredicates";
+import { PaletteSwapFilter } from "../filters/PaletteSwapFilter";
+import { createItemLeafPixiRenderer } from "../item/itemRender/createItemLeafPixiRenderer";
 import {
   createItemRenderer,
   type ItemRenderPipeline,
@@ -26,6 +30,7 @@ import {
   type RenderBox,
   type RenderBoxes,
 } from "../renderBox/makeItemRenderBoxAtCameraAngle";
+import { participatesInDrawOrder } from "../sortZ/fixedZIndexes";
 import { toposort } from "../sortZ/toposort/toposort";
 import { updateZEdges } from "../sortZ/updateZEdges";
 import { VisualIndex } from "../sortZ/VisualIndex";
@@ -36,6 +41,9 @@ import {
   type RoomTickContext,
 } from "./RoomRenderContexts";
 import { type RoomRendererType } from "./RoomRendererType";
+
+/** shared, keyed filters that item renderers/appearances stash and reuse */
+export type FilterCache = Map<string, Filter>;
 
 /**
  * report the time since the previous sub-phase boundary to the timing
@@ -80,9 +88,12 @@ export class RoomRenderer<RoomId extends string, RoomItemId extends string>
   /**
    * render into this layer to appear over everything, even the room occlusion
    */
-  #frontLayer: RenderLayer = new RenderLayer({
-    sortableChildren: false,
-  });
+  #frontLayer: RenderLayer = Object.assign(
+    new RenderLayer({
+      sortableChildren: false,
+    }),
+    { label: "frontLayer" },
+  );
 
   public readonly output: SetRequired<SoundAndGraphicsOutput, "graphics">;
   /**
@@ -115,6 +126,13 @@ export class RoomRenderer<RoomId extends string, RoomItemId extends string>
     null | RenderBox
   >();
 
+  /**
+   * see {@link ItemLeafRenderContext.filterCache}: shared keyed filters for
+   * this room's item renderers. Survives {@link #changeCameraAngle}; every
+   * filter in it is destroyed with this renderer
+   */
+  #filterCache: FilterCache = new Map();
+
   /** items indexed by their draw position on screen, used for draw-order edge finding */
   #visualIndex: VisualIndex<UnionOfAllItemInPlayTypes<RoomId, RoomItemId>>;
 
@@ -122,16 +140,20 @@ export class RoomRenderer<RoomId extends string, RoomItemId extends string>
 
   constructor(renderContext: RoomRenderContext<RoomId, RoomItemId>) {
     this.renderContext = renderContext;
+    this.#appliedQuarterAngle = nearestQuarterAngle(
+      renderContext.general.cameraAngle,
+    );
 
     if (import.meta.env.DEV) {
       // share for e2e/agents:
       window.__e2e_zGraph = this.#zEdges;
     }
-    // the visual index projects with the camera angle; the renderer is rebuilt when
-    // the angle changes, so the angle is fixed for this index's lifetime:
+    // the visual index projects with the camera angle; the quarter-flip
+    // check in tick replaces it wholesale, so the angle is fixed for the
+    // index's lifetime:
     this.#visualIndex = new VisualIndex<
       UnionOfAllItemInPlayTypes<RoomId, RoomItemId>
-    >(renderContext.general.cameraAngle);
+    >(this.#appliedQuarterAngle);
     const {
       general: { spriteOption, soundSettings },
       room,
@@ -151,9 +173,12 @@ export class RoomRenderer<RoomId extends string, RoomItemId extends string>
 
     this.output.graphics.addChild(this.#itemsContainer);
     if (spriteOption.uncolourised) {
-      this.#colourClashLayer = new RenderLayer({
-        sortableChildren: false,
-      });
+      this.#colourClashLayer = Object.assign(
+        new RenderLayer({
+          sortableChildren: false,
+        }),
+        { label: "colourClashLayer" },
+      );
       this.output.graphics.addChild(this.#colourClashLayer);
     }
     // layer in front of all else - for floating text, etc
@@ -182,10 +207,44 @@ export class RoomRenderer<RoomId extends string, RoomItemId extends string>
   };
 
   /**
+   * the quarter angle this renderer's per-angle structures were last built
+   * for. When {@link nearestQuarterAngle} of the render angle flips away from
+   * it mid-rotation (the midpoint of a rotation, or an instant angle
+   * change), {@link #changeCameraAngle} rebuilds those structures IN PLACE
+   * instead of the renderer being destroyed and rebuilt
+   */
+  #appliedQuarterAngle: Xy;
+
+  /**
+   * switch this renderer to a new discrete camera angle IN PLACE. Everything
+   * per-angle resets; item renderers survive and react to the changed angle
+   * on their next tick, re-rendering only what resolves differently.
+   * Runs at the very top of {@link tick}, before
+   * any item ticks, so the rebuilt sort/masks are in place before warp
+   * snapshots re-bake
+   */
+  #changeCameraAngle(cameraQuarterAngle: Xy) {
+    this.#appliedQuarterAngle = cameraQuarterAngle;
+
+    // render boxes are per-angle: clear IN PLACE (the same map object is on
+    // the item render contexts) and let the next tick's reconcile rederive:
+    this.#renderBoxes.clear();
+
+    // projections are per-angle; a fresh index repopulates from the next
+    // tick's updateManyItems:
+    this.#visualIndex = new VisualIndex(cameraQuarterAngle);
+
+    // the draw-order graph is per-angle; clear IN PLACE (shared with item
+    // contexts) and rebuild from the all-moved tick (the caller re-projects
+    // every item on the tick it detects the flip):
+    this.#zEdges.clear();
+  }
+
+  /**
    * bring #renderBoxes into step with the room's current spatial items:
    * derive for items that have appeared, evict items that have gone. Boxes
-   * are fixed per (item, angle) and the renderer is rebuilt on angle change,
-   * so membership is the only upkeep
+   * are fixed per (item, angle) and the map is cleared wholesale on angle
+   * change, so membership is the only upkeep
    */
   #reconcileRenderBoxes(
     spatialItems: Set<UnionOfAllItemInPlayTypes<RoomId, RoomItemId>>,
@@ -195,13 +254,17 @@ export class RoomRenderer<RoomId extends string, RoomItemId extends string>
         this.#renderBoxes.delete(item);
       }
     }
-    const { cameraAngle, spritesheetMeta } = this.renderContext.general;
+    const { spritesheetMeta } = this.renderContext.general;
+    const cameraQuarterAngle = this.#appliedQuarterAngle;
     for (const item of spatialItems) {
       if (!this.#renderBoxes.has(item)) {
         this.#renderBoxes.set(
           item,
-          makeItemRenderBoxAtCameraAngle(item, cameraAngle, spritesheetMeta) ??
-            null,
+          makeItemRenderBoxAtCameraAngle(
+            item,
+            cameraQuarterAngle,
+            spritesheetMeta,
+          ) ?? null,
         );
       }
     }
@@ -224,7 +287,9 @@ export class RoomRenderer<RoomId extends string, RoomItemId extends string>
           item,
           zEdges: this.#zEdges,
           getItemRenderPipeline: this.#getItemRenderPipeline,
+          createItemLeafPixiRenderer,
           renderBoxes: this.#renderBoxes,
+          filterCache: this.#filterCache,
           isReflection: false,
         },
         RoomRenderer.itemDecorators,
@@ -354,12 +419,21 @@ export class RoomRenderer<RoomId extends string, RoomItemId extends string>
         );
       }
 
+      if (
+        !participatesInDrawOrder(item, this.renderContext.general.cameraAngle)
+      ) {
+        // non-rendering items (static fixed-z items, plus walls hidden at this
+        // angle - whose appearance declines, leaving an empty container) are
+        // never draw-order sorted, so must not receive a z-index. They are
+        // still in the sort's node set (spatialItems), so skip them here:
+        continue;
+      }
+
       const graphicsOutput = itemRenderer.top.output.graphics;
       if (!graphicsOutput) {
-        // an item in the spatial sort can still render nothing - eg a wall the
-        // camera has rotated onto a near (hidden) side. it stays in the sort so
-        // it can keep casting its floor shadow, but has no graphics to receive a
-        // z-index, so skip it:
+        // a participating item can still legitimately produce no graphics (eg an
+        // item whose renderer has only sibling shadow renderers): nothing to
+        // receive a z-index, so skip it:
         continue;
       }
 
@@ -372,20 +446,30 @@ export class RoomRenderer<RoomId extends string, RoomItemId extends string>
   }
 
   tick(givenTickContext: RoomTickContext<RoomId, RoomItemId>) {
+    // detect the mid-rotation quarter flip FIRST, before any item ticks:
+    // the rebuilt sort/masks must be in place before warp snapshots re-bake
+    const cameraQuarterAngle = nearestQuarterAngle(
+      this.renderContext.general.cameraAngle,
+    );
+    const angleChanged = cameraQuarterAngle !== this.#appliedQuarterAngle;
+    if (angleChanged) {
+      this.#changeCameraAngle(cameraQuarterAngle);
+    }
+
     /*
      * the given tick context, except override to consider everything to
-     * have moved if this is the first rendering
+     * have moved if this is the first rendering or the camera angle just
+     * changed in place (everything re-projects)
      */
     const tickContext =
-      this.#everRendered ? givenTickContext : (
-        {
+      this.#everRendered && !angleChanged ?
+        givenTickContext
+      : {
           ...givenTickContext,
-          // if we have never rendered before, consider that all items have moved:
           movedOrResizedItems: new Set(
             roomItemsIterable(this.renderContext.room.items).filter(isSpatial),
           ),
-        }
-      );
+        };
 
     const {
       renderContext: { room },
@@ -458,7 +542,9 @@ export class RoomRenderer<RoomId extends string, RoomItemId extends string>
       );
     }
 
-    const order = toposort(this.#zEdges);
+    // spatialItems (room-item order) as the canonical tie-break: the same
+    // room state always sorts the same, regardless of movement history:
+    const order = toposort(this.#zEdges, spatialItems);
 
     if (timingRecord !== undefined) {
       subPhaseStartMs = recordPerf(timingRecord, "toposort", subPhaseStartMs);
@@ -507,6 +593,14 @@ export class RoomRenderer<RoomId extends string, RoomItemId extends string>
     this.#itemRenderers.forEach((itemRenderer) => {
       itemRenderer.top.destroy();
     });
+    for (const filter of this.#filterCache.values()) {
+      if (filter instanceof PaletteSwapFilter) {
+        filter.destroy({ destroyLutTexture: true });
+      } else {
+        filter.destroy();
+      }
+    }
+    this.#filterCache.clear();
     this.#destroyed = true;
   }
 

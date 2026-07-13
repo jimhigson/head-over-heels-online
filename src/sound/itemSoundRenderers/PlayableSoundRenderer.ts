@@ -1,5 +1,5 @@
 import { selectHeelsAbilities } from "../../game/gameState/gameStateSelectors/selectPlayableItem";
-import { isHighlightedPlayableItem } from "../../game/render/itemAppearances/playableAppearance";
+import { isHighlightedPlayableItem } from "../../game/render/itemAppearances/playable/isHighlightedPlayableItem";
 import { type ItemTickContext } from "../../game/render/ItemRenderContexts";
 import { type CharacterName } from "../../model/modelTypes";
 import { defaultUserSettings } from "../../store/slices/userSettings/defaultUserSettings";

@@ -61,6 +61,8 @@ const editorGeneralRenderContext = (
   spriteOption: { name: "BlockStack", uncolourised: false as const },
   spritesheetMeta: spritesheetMetas.BlockStack,
   upscale: editorEngineUpscale,
+  // the editor has no rotation transitions - the render angle is always the
+  // settled quarter angle:
   cameraAngle: selectEditorCameraAngle(store.getState()),
   onScreenControls: false,
   speedCoefficient: 1,

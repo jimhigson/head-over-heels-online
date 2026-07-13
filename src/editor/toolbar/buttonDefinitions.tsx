@@ -594,7 +594,7 @@ reflective on both sides
 rotates to the other diagonal when collided with`,
     children: (
       <span
-        class={`sprite ${"texture-mirror_awayRight" satisfies TextureTailwindClass} ${buttonSpriteRevertColourClasses}`}
+        class={`sprite ${"texture-mirror_d3" satisfies TextureTailwindClass} ${buttonSpriteRevertColourClasses}`}
       />
     ),
   },

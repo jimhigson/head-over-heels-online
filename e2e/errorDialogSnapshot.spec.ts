@@ -1,6 +1,6 @@
 import { expect, test } from "@playwright/test";
 
-import { compressCampaignObject } from "../src/db/compressCampaignObject";
+import { campaignToDataParam } from "../src/db/campaignToDataParam";
 import { type Campaign } from "../src/model/modelTypes";
 import {
   type setEmulatedResolution,
@@ -50,9 +50,8 @@ const noPlayableCampaign: Campaign<string> = {
 let noPlayableCampaignUrl: string;
 
 test.beforeAll(async () => {
-  const encoded = await compressCampaignObject(noPlayableCampaign);
   noPlayableCampaignUrl = `/?${new URLSearchParams({
-    campaignName: `data:${encoded}`,
+    campaignName: await campaignToDataParam(noPlayableCampaign),
     campaignAuthorUserId: "editorUser",
     cheats: "1",
     track: "0",

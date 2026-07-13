@@ -70,7 +70,7 @@ export const frontItemFromPointerIntersections = (
     zEdges,
     renderBoxes,
   );
-  const order = toposort(zEdges);
+  const order = toposort(zEdges, sortableItemsSet);
 
   // items are sorted back-to-front, so we need the last one this could be more efficient than
   // doing a full sort - just get the last node from the graph instead

@@ -8,6 +8,10 @@ import { epsilon } from "../../../utils/epsilon";
 import { neverTime } from "../../../utils/neverTime";
 import { assignRoundedXy } from "../../../utils/pixi/assignRoundedXy";
 import {
+  isAtQuarterAngle,
+  nearestQuarterAngle,
+} from "../../../utils/vectors/rotateXy";
+import {
   addXy,
   addXyz,
   lengthXySquared,
@@ -19,6 +23,7 @@ import {
   type Xyz,
 } from "../../../utils/vectors/vectors";
 import { selectCurrentPlayableItem } from "../../gameState/gameStateSelectors/selectPlayableItem";
+import { hermiteEase } from "../../mainLoop/transitionCameraAngle";
 import { projectWorldXyzToScreenXy } from "../projections";
 import { type SoundAndGraphicsOutput } from "../SoundAndGraphicsOutput";
 import {
@@ -81,7 +86,7 @@ const onScreenControlsOverscroll = 64;
  * the angle-dependent geometry the scroll uses to place a room on screen: its home
  * position plus the flags/edges that drive player-follow scrolling. Derived purely
  * from the room and a discrete camera angle, so a given (room, angle) always yields
- * the same values - which is what lets the two renderers of a pseudo-rotation agree
+ * the same values - which is what lets the two renderers of a rotation agree
  * on an interpolated scroll at the midpoint hand-over.
  */
 type RoomScrollGeometry = {
@@ -210,6 +215,27 @@ export class RoomScrollRenderer<
   #everRendered: boolean = false;
   /** angle-dependent scroll geometry at this renderer's own discrete camera angle */
   #geometry: RoomScrollGeometry;
+  /**
+   * the two endpoint geometries of the rotation currently animating,
+   * memoised so {@link roomRenderExtent} is not re-derived for both angles every
+   * frame. Rebuilt when the transition's from/to angles change (a chained turn).
+   */
+  #transitionGeometries:
+    | {
+        fromAngle: Xy;
+        toAngle: Xy;
+        from: RoomScrollGeometry;
+        to: RoomScrollGeometry;
+      }
+    | undefined;
+  /**
+   * cache key for {@link #geometry}: the quarter angle it was computed for.
+   * Compared against the current derived quarter at use; a mismatch (the
+   * camera's discrete angle changed) recomputes the geometry - and doubles
+   * as the signal that the room must snap exactly onto the new angle's
+   * scroll target
+   */
+  #geometryQuarterAngle: Xy;
 
   public output: SetRequired<SoundAndGraphicsOutput, "graphics">;
 
@@ -231,13 +257,16 @@ export class RoomScrollRenderer<
       },
     } = renderContext;
 
+    const cameraQuarterAngle = nearestQuarterAngle(cameraAngle);
+    this.#geometryQuarterAngle = cameraQuarterAngle;
+
     const onScreenControls =
       renderContext.general.onScreenControls ??
       defaultUserSettings.onScreenControls;
 
     this.#geometry = computeRoomScrollGeometry(
       room,
-      cameraAngle,
+      cameraQuarterAngle,
       effectiveScreenSize,
       onScreenControls,
       renderContext.general.spritesheetMeta,
@@ -263,7 +292,7 @@ export class RoomScrollRenderer<
       output.graphics.addChild(
         showRoomScrollBounds(
           renderContext.room,
-          cameraAngle,
+          cameraQuarterAngle,
           renderContext.general.spritesheetMeta,
         ),
       );
@@ -439,6 +468,57 @@ export class RoomScrollRenderer<
     }
   }
 
+  /**
+   * the two endpoint scroll geometries for the currently-animating rotation,
+   * memoised so the room extents are not re-derived for both angles every frame.
+   */
+  #transitionEndpointGeometries(
+    fromAngle: Xy,
+    toAngle: Xy,
+  ): { from: RoomScrollGeometry; to: RoomScrollGeometry } {
+    const cache = this.#transitionGeometries;
+    if (
+      cache !== undefined &&
+      cache.fromAngle.x === fromAngle.x &&
+      cache.fromAngle.y === fromAngle.y &&
+      cache.toAngle.x === toAngle.x &&
+      cache.toAngle.y === toAngle.y
+    ) {
+      return cache;
+    }
+
+    const {
+      room,
+      general: {
+        upscale: { gameEngineScreenSize: effectiveScreenSize },
+        onScreenControls,
+      },
+    } = this.renderContext;
+    const resolvedOnScreenControls =
+      onScreenControls ?? defaultUserSettings.onScreenControls;
+
+    const rebuilt = {
+      fromAngle,
+      toAngle,
+      from: computeRoomScrollGeometry(
+        room,
+        fromAngle,
+        effectiveScreenSize,
+        resolvedOnScreenControls,
+        this.renderContext.general.spritesheetMeta,
+      ),
+      to: computeRoomScrollGeometry(
+        room,
+        toAngle,
+        effectiveScreenSize,
+        resolvedOnScreenControls,
+        this.renderContext.general.spritesheetMeta,
+      ),
+    };
+    this.#transitionGeometries = rebuilt;
+    return rebuilt;
+  }
+
   tick(tickContext: RoomTickContext<RoomId, RoomItemId>) {
     const {
       general: { gameState, cameraAngle },
@@ -453,32 +533,101 @@ export class RoomScrollRenderer<
       return;
     }
 
-    const targetRoomPositionWithScrolling = this.#targetRoomPosition(
-      playable.state.position,
-      this.#geometry,
-      cameraAngle,
-    );
-
-    const snapInstantly = !this.#everRendered;
-    if (snapInstantly) {
-      this.#curScroll = targetRoomPositionWithScrolling;
+    const { cameraTransition } = gameState;
+    if (cameraTransition !== undefined && !isAtQuarterAngle(cameraAngle)) {
+      // interpolate the container's scroll between the two discrete-angle targets,
+      // so the from-angle and to-angle renderers land on the identical offset at
+      // the midpoint hand-over (no whole-room snap) and the room tracks the item
+      // warps smoothly through the turn. Set directly rather than eased: the eased
+      // progress already smooths it, and both renderers must agree frame-for-frame.
+      const { fromAngle } = cameraTransition;
+      const toAngle = gameState.targetCameraAngle;
+      const { from, to } = this.#transitionEndpointGeometries(
+        fromAngle,
+        toAngle,
+      );
+      const targetFrom = this.#targetRoomPosition(
+        playable.state.position,
+        from,
+        fromAngle,
+      );
+      const targetTo = this.#targetRoomPosition(
+        playable.state.position,
+        to,
+        toAngle,
+      );
+      const eased = hermiteEase(
+        cameraTransition.progress,
+        cameraTransition.startSlope,
+      );
+      this.#curScroll = {
+        x: targetFrom.x + (targetTo.x - targetFrom.x) * eased,
+        y: targetFrom.y + (targetTo.y - targetFrom.y) * eased,
+      };
     } else {
-      // ease towards from target position:
+      this.#transitionGeometries = undefined;
 
-      const targetScrollDelta = subXy(
-        this.#curScroll,
-        targetRoomPositionWithScrolling,
+      // the settled angle - either truly settled, or a transition held
+      // within epsilon of one of its endpoints (where the blend and the
+      // plain per-angle target coincide):
+      const cameraQuarterAngle = nearestQuarterAngle(cameraAngle);
+      const angleChanged = cameraQuarterAngle !== this.#geometryQuarterAngle;
+      if (angleChanged) {
+        // the per-angle home geometry is a cache; invalidated by the
+        // camera's discrete angle having changed since it was computed:
+        const { room, general } = this.renderContext;
+        this.#geometry = computeRoomScrollGeometry(
+          room,
+          cameraQuarterAngle,
+          general.upscale.gameEngineScreenSize,
+          general.onScreenControls ?? defaultUserSettings.onScreenControls,
+          general.spritesheetMeta,
+        );
+        this.#geometryQuarterAngle = cameraQuarterAngle;
+      }
+
+      const targetRoomPositionWithScrolling = this.#targetRoomPosition(
+        playable.state.position,
+        this.#geometry,
+        cameraQuarterAngle,
       );
 
-      if (lengthXySquared(targetScrollDelta) > smallestScrollSquared) {
-        // move towards at 100% per catchup period (but will back off/ease as
-        // that distance gets smaller):
-        const targetScrollDeltaFrame = easeTowards(targetScrollDelta, deltaMS);
+      const snapInstantly =
+        !this.#everRendered ||
+        // the camera's discrete angle changed since the room was last placed
+        // (a completed or endpoint-held turn, or an instant angle change -
+        // possibly with no mid-turn frame ever rendered): the room must land
+        // EXACTLY on the new angle's target, the position a freshly-created
+        // renderer at this angle would snap to. The ease cannot be trusted to
+        // close the gap - it stops anywhere inside its dead zone, and cannot
+        // move at all at zero game speed, where its deltaMS is always 0:
+        angleChanged ||
+        // mid-transition frames held at an endpoint also land here: the
+        // blend's value at an endpoint IS the exact per-angle target:
+        cameraTransition !== undefined;
+      if (snapInstantly) {
+        this.#curScroll = targetRoomPositionWithScrolling;
+      } else {
+        // ease towards from target position:
 
-        this.#curScroll = {
-          x: this.#curScroll.x - targetScrollDeltaFrame.x,
-          y: this.#curScroll.y - targetScrollDeltaFrame.y,
-        };
+        const targetScrollDelta = subXy(
+          this.#curScroll,
+          targetRoomPositionWithScrolling,
+        );
+
+        if (lengthXySquared(targetScrollDelta) > smallestScrollSquared) {
+          // move towards at 100% per catchup period (but will back off/ease as
+          // that distance gets smaller):
+          const targetScrollDeltaFrame = easeTowards(
+            targetScrollDelta,
+            deltaMS,
+          );
+
+          this.#curScroll = {
+            x: this.#curScroll.x - targetScrollDeltaFrame.x,
+            y: this.#curScroll.y - targetScrollDeltaFrame.y,
+          };
+        }
       }
     }
 

@@ -229,8 +229,15 @@ describe("switching conveyors", () => {
           },
           conveyor: {
             type: "conveyor",
-            position: { x: 2, y: 2, z: 0 },
-            config: { direction, times: { x: 4, y: 4 } },
+            // a strip along the belt's run axis, positioned under heels and
+            // long enough that she rides it without falling off (times may
+            // only repeat on the run axis):
+            position:
+              axis === "x" ? { x: 1, y: 3, z: 0 } : { x: 3, y: 1, z: 0 },
+            config:
+              direction === "left" || direction === "right" ?
+                { direction, times: { x: 6 } }
+              : { direction, times: { y: 6 } },
           },
           ball: {
             type: "ball",
@@ -295,7 +302,7 @@ describe("switching conveyors", () => {
             position: { x: 2, y: 2, z: 0 },
             config: {
               direction: "left",
-              times: { x: 4, y: 4 },
+              times: { x: 4 },
               disabled: startsDisabled,
             },
           },

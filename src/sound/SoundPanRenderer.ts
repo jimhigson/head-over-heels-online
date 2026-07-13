@@ -4,8 +4,8 @@ import {
 } from "../game/physics/mechanicsConstants";
 import { type ItemTickContext } from "../game/render/ItemRenderContexts";
 import { projectWorldXyzToScreenX } from "../game/render/projections";
-import { roomRenderExtent } from "../game/render/room/roomRenderExtent";
 import { type ItemInPlayType } from "../model/ItemInPlay";
+import { roomItemsIterable } from "../model/RoomState";
 import { rotateXyz } from "../utils/vectors/rotateXy";
 import { addXyzInPlace, scaleXyzWriteInto } from "../utils/vectors/vectors";
 import { audioCtx } from "./audioCtx";
@@ -16,20 +16,15 @@ import { type ItemSoundRenderer } from "./ItemSoundRenderer";
 
 const log = 0;
 
-// bounds for how 'high' into the screen the sound is
-// things can go below zero but it is rare, and at this point they are effectively out of the game
-// so set the limit not very low:
+// screen-y (height) bounds; rarely below zero, so the floor isn't set low
 const soundPositionMinY = blockSizePx.z * -1;
 const soundPositionMaxY = blockSizePx.z * defaultRoomHeightBlocks;
 
-// bounds for how 'deep' into the screen the sound is
+// depth bounds: x+y from the listener, up to ~8+8 blocks
 const soundPositionMinZ = 0;
-// x+y blocks away from the listener - a typical large room is 8, so
-// max depth would be 8+8 = 16
 const soundPositionMaxZ = blockSizePx.x * 16;
 
-// a buffer to use while calculating positions - avoids creating new objects,
-// is safe to use because no two SoundPanRenderer can be ticking at the same time
+// reused scratch (only one renderer ticks at a time), to avoid per-tick allocation
 const positionBuffer = { x: 0, y: 0, z: 0 };
 
 const numberInRangeToMinus1To1Range = (
@@ -44,11 +39,9 @@ const numberInRangeToMinus1To1Range = (
   return rangeBetweenMinusOneAndOne;
 };
 
-/* tone down the extremeness on the x left/right stereo channels - a smaller number
-   makes the panning more subtle */
+// smaller = subtler left/right panning
 const maxXOffsetFromCentre = 0.3;
-/* going into the screen (z-direction) changes the loudness in too extreme ways. Allow
-   to adjust in a more reasonable way */
+// smaller = subtler depth (z) loudness change
 const maxZOffsetFromCentre = 0.3;
 
 export class SoundPanRenderer<T extends ItemInPlayType>
@@ -72,14 +65,27 @@ export class SoundPanRenderer<T extends ItemInPlayType>
     this.output.maxDistance = 5;
     this.output.distanceModel = "exponential";
 
-    const floorRenderExtends = roomRenderExtent(
-      renderContext.room,
-      renderContext.general.spritesheetMeta,
-      renderContext.general.cameraAngle,
-    ).floors;
-
-    this.#soundPositionMinX = floorRenderExtends.edgeLeftX;
-    this.#soundPositionMaxX = floorRenderExtends.edgeRightX;
+    // half-width the pan normalises over. The pan itself tracks the camera (in
+    // tick); only this range is angle-free: ±max(floor x span, y span) bounds
+    // the projected screen-x at every quarter angle - enough for an ear-feel.
+    let floorsMaxX = 0;
+    let floorsMaxY = 0;
+    for (const roomItem of roomItemsIterable(renderContext.room.items)) {
+      if (roomItem.type === "floor") {
+        const { naturalFootprint } = roomItem.config;
+        floorsMaxX = Math.max(
+          floorsMaxX,
+          naturalFootprint.position.x + naturalFootprint.aabb.x,
+        );
+        floorsMaxY = Math.max(
+          floorsMaxY,
+          naturalFootprint.position.y + naturalFootprint.aabb.y,
+        );
+      }
+    }
+    const panHalfSpan = Math.max(floorsMaxX, floorsMaxY, blockSizePx.x);
+    this.#soundPositionMinX = -panHalfSpan;
+    this.#soundPositionMaxX = panHalfSpan;
   }
 
   tick(tickContext: ItemTickContext) {
@@ -100,7 +106,7 @@ export class SoundPanRenderer<T extends ItemInPlayType>
       this.#soundPositionMaxX,
     );
 
-    // y in screen-coords, z (altitude) in game-coords
+    // altitude (game z) mapped to screen height
     const soundPositionY = numberInRangeToMinus1To1Range(
       itemCentrePosition.z,
       soundPositionMinY,
@@ -108,7 +114,7 @@ export class SoundPanRenderer<T extends ItemInPlayType>
     );
 
     if (!Number.isFinite(soundPositionY)) {
-      // leaving a descriptive error here to help find a bug that's tricky to track down
+      // verbose on purpose - a hard-to-track-down bug
       throw new Error(
         `y position for sound rendering is not finite;
         positionY = numberInRangeToMinus1To1Range(
@@ -123,7 +129,7 @@ export class SoundPanRenderer<T extends ItemInPlayType>
       );
     }
 
-    // z (depth on screen, x+y in-game) - also follows the camera angle:
+    // depth (x+y in-game), rotated by the camera:
     const rotatedCentre = rotateXyz(itemCentrePosition, cameraAngle);
     const soundPositionZ = numberInRangeToMinus1To1Range(
       rotatedCentre.x + rotatedCentre.y,

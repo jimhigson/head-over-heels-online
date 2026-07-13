@@ -7,7 +7,10 @@ import {
   type UnionOfAllItemInPlayTypes,
 } from "../../../../model/ItemInPlay";
 import { roomSpatialIndexKey } from "../../../../model/RoomState";
-import { rotateXy } from "../../../../utils/vectors/rotateXy";
+import {
+  nearestQuarterAngle,
+  rotateXy,
+} from "../../../../utils/vectors/rotateXy";
 import { type Xy } from "../../../../utils/vectors/vectors";
 import {
   type CollideableItem,
@@ -15,26 +18,16 @@ import {
 } from "../../../collision/aabbCollision";
 import { isItemType } from "../../../physics/itemPredicates";
 import { blockSizePx } from "../../../physics/mechanicsConstants";
-import { ItemAppearancePixiRenderer } from "../../item/itemRender/ItemAppearancePixiRenderer";
+import { type ItemLeafPixiRenderer } from "../../item/itemRender/ItemPixiRenderer";
 import {
+  type ItemLeafTickContext,
   type ItemRenderContext,
-  type ItemTickContext,
 } from "../../ItemRenderContexts";
 import {
   projectFootprintScreenXExtent,
   projectWorldXyzToScreenXy,
 } from "../../projections";
 import { nearCornerOffsetWorldXyz } from "../adjustNearCornerForCameraAngle";
-import { type ItemAppearanceOutsideView } from "../itemAppearanceOutsideView";
-
-/**
- * how the mirror looks up other items' appearances to draw their
- * reflections - injected by appearanceForItem to avoid a circular import
- */
-export type AppearanceLookup = (
-  item: UnionOfAllItemInPlayTypes<string, string>,
-  cameraAngle: Xy,
-) => ItemAppearanceOutsideView<ItemInPlayType> | undefined;
 
 /**
  * the x/y reach searched around the mirror (via the room's spatial index) for
@@ -92,11 +85,7 @@ const isUnreflectedItemType = isItemType(
 const isReflectedItemType = (item: UnionOfAllItemInPlayTypes<string, string>) =>
   !isUnreflectedItemType(item);
 
-type ReflectionRenderer = ItemAppearancePixiRenderer<
-  ItemInPlayType,
-  object,
-  Container
->;
+type ReflectionRenderer = ItemLeafPixiRenderer<ItemInPlayType>;
 
 /**
  * a reflected item's renderer plus the tick count it was last seen reflected on,
@@ -134,16 +123,13 @@ export class ReflectionRenderers {
   #tickCount = 0;
   readonly #mirror: ItemTypeUnion<"mirror", string, string>;
   readonly #renderContext: ItemRenderContext<"mirror">;
-  readonly #appearanceLookup: AppearanceLookup;
 
   constructor(
     mirror: ItemTypeUnion<"mirror", string, string>,
     renderContext: ItemRenderContext<"mirror">,
-    appearanceLookup: AppearanceLookup,
   ) {
     this.#mirror = mirror;
     this.#renderContext = renderContext;
-    this.#appearanceLookup = appearanceLookup;
   }
 
   #removeReflectedItem(
@@ -162,13 +148,14 @@ export class ReflectionRenderers {
    * place each. Collection and reconciliation share a single pass, so no
    * per-frame list of reflected items is allocated.
    */
-  tick(tickContext: ItemTickContext) {
+  tick(tickContext: ItemLeafTickContext) {
     const mirror = this.#mirror;
     const {
       state: { position: mirrorPosition },
       config: { times },
     } = mirror;
     const { cameraAngle } = this.#renderContext.general;
+    const cameraQuarterAngle = nearestQuarterAngle(cameraAngle);
 
     const timesZ = times?.z ?? 1;
     // search further for taller mirrors
@@ -192,17 +179,27 @@ export class ReflectionRenderers {
     // has no screen-x overlap with it - their reflection would fall entirely
     // off the glass:
     const { left: mirrorScreenXMin, right: mirrorScreenXMax } =
-      projectFootprintScreenXExtent(mirrorPosition, mirror.aabb, cameraAngle);
+      projectFootprintScreenXExtent(
+        mirrorPosition,
+        mirror.aabb,
+        cameraQuarterAngle,
+      );
 
     // the mirror's camera-near corner - the reflecting plane passes through it
     // (as it does at the base angle, where it is the mirror's origin), and the
     // mirror's near-corner container offset (which wraps this reflections
     // container) is subtracted back out of the placements below:
-    const mirrorNearCornerWorld = nearCornerOffsetWorldXyz(mirror, cameraAngle);
-    const mirrorNearCornerCam = rotateXy(mirrorNearCornerWorld, cameraAngle);
+    const mirrorNearCornerWorld = nearCornerOffsetWorldXyz(
+      mirror,
+      cameraQuarterAngle,
+    );
+    const mirrorNearCornerCam = rotateXy(
+      mirrorNearCornerWorld,
+      cameraQuarterAngle,
+    );
     const mirrorNearCornerOffset = projectWorldXyzToScreenXy(
       mirrorNearCornerWorld,
-      cameraAngle,
+      cameraQuarterAngle,
     );
 
     // stamp every entry seen this tick with this count, so the sweep below can
@@ -224,7 +221,7 @@ export class ReflectionRenderers {
           x: itemPosition.x - mirrorPosition.x,
           y: itemPosition.y - mirrorPosition.y,
         },
-        cameraAngle,
+        cameraQuarterAngle,
       );
 
       // how far in front of the reflecting plane (through the mirror's
@@ -240,7 +237,11 @@ export class ReflectionRenderers {
 
       // skip items that project entirely to one side of the mirror on screen-x:
       const { left: itemScreenXMin, right: itemScreenXMax } =
-        projectFootprintScreenXExtent(itemPosition, item.aabb, cameraAngle);
+        projectFootprintScreenXExtent(
+          itemPosition,
+          item.aabb,
+          cameraQuarterAngle,
+        );
       if (
         itemScreenXMax <= mirrorScreenXMin ||
         itemScreenXMin >= mirrorScreenXMax
@@ -250,22 +251,17 @@ export class ReflectionRenderers {
 
       let entry = this.#reflectedItemRenderers.get(item);
       if (entry === undefined) {
-        // create a new renderer for the reflection:
-        const appearance = this.#appearanceLookup(
+        // create a new renderer for the reflection - drawn as its real self with
+        // `isReflection: true`, so it flips its facing and uses the reflection
+        // spritesheet:
+        const renderer = this.#renderContext.createItemLeafPixiRenderer({
+          ...this.#renderContext,
           item,
-          this.#renderContext.general.cameraAngle,
-        );
-        if (appearance === undefined) {
-          throw new Error(`no appearance for reflected item "${item.id}"`);
+          isReflection: true,
+        });
+        if (renderer === undefined) {
+          throw new Error(`no renderer for reflected item "${item.id}"`);
         }
-        const renderer = new ItemAppearancePixiRenderer(
-          {
-            ...this.#renderContext,
-            item,
-            isReflection: true,
-          },
-          appearance,
-        );
         entry = { renderer, lastSeenTick: thisTick };
         this.#reflectedItemRenderers.set(item, entry);
         this.container.addChild(renderer.output);
@@ -295,8 +291,8 @@ export class ReflectionRenderers {
       // the same offset here to keep the reflected art directly above the
       // original:
       const itemNearCornerOffset = projectWorldXyzToScreenXy(
-        nearCornerOffsetWorldXyz(item, cameraAngle),
-        cameraAngle,
+        nearCornerOffsetWorldXyz(item, cameraQuarterAngle),
+        cameraQuarterAngle,
       );
 
       const { output } = renderer;

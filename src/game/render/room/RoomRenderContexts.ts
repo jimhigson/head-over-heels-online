@@ -38,7 +38,10 @@ export type GeneralRenderContext<RoomId extends string> = {
   spriteOption: SpriteOption;
   spritesheetMeta: SpritesheetMetadata;
   upscale: Upscale;
-  /** the 90°-increment camera rotation as a (cos,sin) unit vector */
+  /**
+   * Camera rotation: continuous (cos,sin) unit vector mutated in place each frame while a
+   * rotation animates; a quarter-angle while the camera is not transitioning.
+   */
   cameraAngle: Xy;
 
   onScreenControls: boolean;
@@ -46,6 +49,15 @@ export type GeneralRenderContext<RoomId extends string> = {
   speedCoefficient: number;
   spritesheetVariants: SpritesheetVariants;
 };
+
+/**
+ * the {@link GeneralRenderContext} with `gameState` guaranteed present - ie for
+ * renderers that only ever run while a game is in progress (not the editor)
+ */
+export type InGameGeneralRenderContext<RoomId extends string> = SetRequired<
+  GeneralRenderContext<RoomId>,
+  "gameState"
+>;
 
 export type RoomRenderContext<
   RoomId extends string,
@@ -64,7 +76,7 @@ export type RoomRenderContextInGame<
   RoomItemId extends string,
 > = {
   room: RoomState<RoomId, RoomItemId>;
-  general: SetRequired<GeneralRenderContext<RoomId>, "gameState">;
+  general: InGameGeneralRenderContext<RoomId>;
 };
 
 export type RoomTickContext<

@@ -94,21 +94,51 @@
                 "additionalProperties": false,
                 "properties": {
                   "config": {
-                    "additionalProperties": false,
-                    "properties": {
-                      "disappearing": {
-                        "$ref": "#/definitions/r82"
+                    "anyOf": [
+                      {
+                        "additionalProperties": false,
+                        "properties": {
+                          "disappearing": {
+                            "$ref": "#/definitions/r82"
+                          },
+                          "style": {
+                            "const": "tower",
+                            "type": "string"
+                          },
+                          "times": {
+                            "additionalProperties": false,
+                            "properties": {
+                              "z": {
+                                "type": "number",
+                                "multipleOf": 1,
+                                "minimum": 1,
+                                "maximum": 99
+                              }
+                            },
+                            "type": "object"
+                          }
+                        },
+                        "required": ["style"],
+                        "type": "object"
                       },
-                      "style": {
-                        "enum": ["artificial", "book", "organic", "tower"],
-                        "type": "string"
-                      },
-                      "times": {
-                        "$ref": "#/definitions/r60"
+                      {
+                        "additionalProperties": false,
+                        "properties": {
+                          "disappearing": {
+                            "$ref": "#/definitions/r82"
+                          },
+                          "style": {
+                            "enum": ["artificial", "book", "organic"],
+                            "type": "string"
+                          },
+                          "times": {
+                            "$ref": "#/definitions/r60"
+                          }
+                        },
+                        "required": ["style"],
+                        "type": "object"
                       }
-                    },
-                    "required": ["style"],
-                    "type": "object"
+                    ]
                   },
                   "position": {
                     "$ref": "#/definitions/r49"
@@ -279,28 +309,76 @@
                 "additionalProperties": false,
                 "properties": {
                   "config": {
-                    "additionalProperties": false,
-                    "properties": {
-                      "direction": {
-                        "$ref": "#/definitions/r100"
+                    "anyOf": [
+                      {
+                        "additionalProperties": false,
+                        "properties": {
+                          "direction": {
+                            "enum": ["away", "towards"],
+                            "type": "string"
+                          },
+                          "disabled": {
+                            "enum": [false, true],
+                            "type": "boolean"
+                          },
+                          "disappearing": {
+                            "$ref": "#/definitions/r82"
+                          },
+                          "speed": {
+                            "description": "speed multiplier — undefined is treated as 1 (original game speed)",
+                            "type": "number"
+                          },
+                          "times": {
+                            "additionalProperties": false,
+                            "properties": {
+                              "y": {
+                                "type": "number",
+                                "multipleOf": 1,
+                                "minimum": 1,
+                                "maximum": 99
+                              }
+                            },
+                            "type": "object"
+                          }
+                        },
+                        "required": ["direction"],
+                        "type": "object"
                       },
-                      "disabled": {
-                        "enum": [false, true],
-                        "type": "boolean"
-                      },
-                      "disappearing": {
-                        "$ref": "#/definitions/r82"
-                      },
-                      "speed": {
-                        "description": "speed multiplier — undefined is treated as 1 (original game speed)",
-                        "type": "number"
-                      },
-                      "times": {
-                        "$ref": "#/definitions/r60"
+                      {
+                        "additionalProperties": false,
+                        "properties": {
+                          "direction": {
+                            "enum": ["left", "right"],
+                            "type": "string"
+                          },
+                          "disabled": {
+                            "enum": [false, true],
+                            "type": "boolean"
+                          },
+                          "disappearing": {
+                            "$ref": "#/definitions/r82"
+                          },
+                          "speed": {
+                            "description": "speed multiplier — undefined is treated as 1 (original game speed)",
+                            "type": "number"
+                          },
+                          "times": {
+                            "additionalProperties": false,
+                            "properties": {
+                              "x": {
+                                "type": "number",
+                                "multipleOf": 1,
+                                "minimum": 1,
+                                "maximum": 99
+                              }
+                            },
+                            "type": "object"
+                          }
+                        },
+                        "required": ["direction"],
+                        "type": "object"
                       }
-                    },
-                    "required": ["direction"],
-                    "type": "object"
+                    ]
                   },
                   "position": {
                     "$ref": "#/definitions/r49"

@@ -1,36 +1,32 @@
 import { Container } from "pixi.js";
 
+import { type ItemInPlayType } from "../../../../model/ItemInPlay";
 import { roomItemsIterable } from "../../../../model/RoomState";
 import { renderBobBounce } from "../../../../utils/maths/renderBob";
-import {
-  type FreeItem,
-  type FreeItemTypes,
-  isConveyor,
-  isFreeItem,
-} from "../../../physics/itemPredicates";
+import { isConveyor, isFreeItem } from "../../../physics/itemPredicates";
 import {
   type ItemRenderContext,
   type ItemTickContext,
 } from "../../ItemRenderContexts";
 import { type DecorateItemRenderer } from "./DecorateItemRenderer";
-import { type ItemPixiRenderer } from "./ItemPixiRenderer";
+import { type ItemChainPixiRenderer } from "./ItemPixiRenderer";
 
 const baseBobPeriod = 50;
 const bobAmplitude = 0.66;
 
-class ConveyorBobRenderer<T extends FreeItemTypes>
-  implements ItemPixiRenderer<T>
+class ConveyorBobRenderer<T extends ItemInPlayType>
+  implements ItemChainPixiRenderer<T>
 {
   public readonly output: Container = new Container({
     label: "ConveyorBobRenderer",
   });
 
   readonly renderContext: ItemRenderContext<T>;
-  #childRenderer: ItemPixiRenderer<T>;
+  #childRenderer: ItemChainPixiRenderer<T>;
 
   constructor(
     renderContext: ItemRenderContext<T>,
-    childRenderer: ItemPixiRenderer<T>,
+    childRenderer: ItemChainPixiRenderer<T>,
   ) {
     this.renderContext = renderContext;
     this.#childRenderer = childRenderer;
@@ -38,11 +34,10 @@ class ConveyorBobRenderer<T extends FreeItemTypes>
   }
 
   tick(tickContext: ItemTickContext) {
-    const item = this.renderContext.item as FreeItem<string, string>;
-    const {
-      state: { standingOnItemId },
-    } = item;
-    const { room } = this.renderContext;
+    const { item, room } = this.renderContext;
+
+    const standingOnItemId =
+      isFreeItem(item) ? item.state.standingOnItemId : null;
 
     if (standingOnItemId !== null) {
       const standingOn = room.items[standingOnItemId];
@@ -56,7 +51,7 @@ class ConveyorBobRenderer<T extends FreeItemTypes>
           room.roomTime,
           baseBobPeriod / speedMultiplier,
           bobAmplitude,
-          this.renderContext.item.hash,
+          item.hash,
           this.renderContext.general.spriteOption.uncolourised,
         );
       } else {
@@ -84,9 +79,6 @@ export const conveyorBobDecorateItemRenderer: DecorateItemRenderer = (
   );
 
   return roomHasConveyor && isFreeItem(itemRenderContext.item) ?
-      (new ConveyorBobRenderer(
-        itemRenderContext as ItemRenderContext<FreeItemTypes>,
-        childRenderer as ItemPixiRenderer<FreeItemTypes>,
-      ) as typeof childRenderer)
+      new ConveyorBobRenderer(itemRenderContext, childRenderer)
     : childRenderer;
 };

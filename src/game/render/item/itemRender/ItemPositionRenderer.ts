@@ -1,95 +1,50 @@
-import { Container, type Filter } from "pixi.js";
+import { Container } from "pixi.js";
 
-import {
-  type ItemInPlayType,
-  type UnionOfAllItemInPlayTypes,
-} from "../../../../model/ItemInPlay";
-import { emptySet } from "../../../../utils/empty";
+import { type ItemInPlayType } from "../../../../model/ItemInPlay";
 import { assignRoundedXy } from "../../../../utils/pixi/assignRoundedXy";
-import { pixiContainerToString } from "../../../../utils/pixi/pixiContainerToString";
-import { renderContainerToSprite } from "../../../../utils/pixi/renderContainerToSprite";
-import { type UniqueTextureSprite } from "../../../../utils/pixi/UniqueTextureSprite";
-import { subXy } from "../../../../utils/vectors/vectors";
-import { redAsAlphaFilter } from "../../filters/redAsAlphaFilter";
-import { adjustNearCornerForCameraAngle } from "../../itemAppearances/adjustNearCornerForCameraAngle";
+import { isAtQuarterAngle } from "../../../../utils/vectors/rotateXy";
+import { addXyz } from "../../../../utils/vectors/vectors";
 import {
   type ItemRenderContext,
   type ItemTickContext,
 } from "../../ItemRenderContexts";
 import { projectWorldXyzToScreenXy } from "../../projections";
-import { type ItemPixiRenderer } from "./ItemPixiRenderer";
-import { itemTypesExemptFromNearCornerOffset } from "./itemTypesExemptFromNearCornerOffset";
-
-/** specialisation of Container that always contains a thing to be masked, and the (sprite) mask */
-interface MaskingContainer extends Container {
-  getChildAt(index: 0): UniqueTextureSprite;
-  getChildAt(index: 1): Container;
-  getChildAt(index: number): unknown;
-  children: [UniqueTextureSprite, Container];
-}
-
-const logCyclicRendering = import.meta.env.VITE_LOG_CYCLIC_RENDERING === "true";
+import { floorDrawnOriginXyOffset } from "../../renderBox/makeItemRenderBoxAtCameraAngle";
+import { isCuboidWarpItem } from "./isCuboidWarpItem";
+import { type ItemChainPixiRenderer } from "./ItemPixiRenderer";
 
 /**
- * Most items anchor their footprint sprite at the camera-nearest corner of their base cell,
- * which moves around the footprint as the camera rotates. That offset is a per-item,
- * per-camera-angle constant; since item renderers are recreated whenever the camera angle
- * changes, it never changes during this renderer's life. It is therefore applied once, here,
- * to a dedicated container wrapping all of the item's graphics (appearance and shadows alike),
- * so the shadows cast on the item move with the surface they fall on.
+ * The outermost link of an item's graphics chain: the container placed in the
+ * room, positioned each frame at the item's projected screen origin. It rounds
+ * to the device grid at rest, but positions boxy items at their EXACT unrounded
+ * origin mid-rotation so the cuboid warp's shared corners weld across items.
+ *
+ * Its {@link output} also hosts debug overlays that must sit at the item's true
+ * origin (eg the bounding box), outside the near-corner offset. The near-corner
+ * offset, cyclic-render masking and cuboid warp are handled by the wrapped
+ * {@link NearCornerOffsetRenderer}/{@link TransitionSurfaceRenderer} links.
  */
-const nearCornerOffsetGraphics = <T extends ItemInPlayType>(
-  renderContext: ItemRenderContext<T>,
-  graphics: Container,
-): Container => {
-  const {
-    item,
-    general: { cameraAngle },
-  } = renderContext;
-
-  if (itemTypesExemptFromNearCornerOffset.has(item.type)) {
-    return graphics;
-  }
-
-  const offsetContainer = new Container({
-    label: "nearCornerOffset",
-    children: [graphics],
-  });
-  adjustNearCornerForCameraAngle(item, cameraAngle, offsetContainer);
-  return offsetContainer;
-};
-
 export class ItemPositionRenderer<T extends ItemInPlayType>
-  implements ItemPixiRenderer<T>
+  implements ItemChainPixiRenderer<T>
 {
   output: Container;
-  // store our hierarchy of masking containers by the front item they are using to mask:
-  #maskingContainers: Map<UnionOfAllItemInPlayTypes, MaskingContainer> =
-    new Map();
-
   readonly renderContext: ItemRenderContext<T>;
-  #wrappedRenderer: ItemPixiRenderer<T>;
+  #wrappedRenderer: ItemChainPixiRenderer<T>;
   /**
-   * the content that masks are applied to - initially the (near-corner-offset) graphics,
-   * then the outermost masking container once cyclic-rendering masks wrap it. Tracked by
-   * reference rather than as `output.children[0]`, because debug overlays (the bounding box)
-   * are also direct children of `output` and must not be mistaken for the masked content.
+   * whether the last tick ran during a rotation - grants one further update
+   * after a turn ends, snapping the item to its exact discrete-angle position
    */
-  #maskedContent: Container;
+  #tickedMidRotation = false;
 
   constructor(
     renderContext: ItemRenderContext<T>,
-    wrappedRenderer: ItemPixiRenderer<T>,
+    wrappedRenderer: ItemChainPixiRenderer<T>,
   ) {
     this.renderContext = renderContext;
     this.#wrappedRenderer = wrappedRenderer;
-    this.#maskedContent = nearCornerOffsetGraphics(
-      renderContext,
-      wrappedRenderer.output,
-    );
     this.output = new Container({
       label: `ItemPositionRenderer ${renderContext.item.id}`,
-      children: [this.#maskedContent],
+      children: [wrappedRenderer.output],
     });
     // overlays that must sit at the item's true origin (eg the bounding box debug
     // renderer) parent to this container, outside the near-corner offset:
@@ -104,196 +59,66 @@ export class ItemPositionRenderer<T extends ItemInPlayType>
         spriteOption: { uncolourised },
         cameraAngle,
       },
+      item,
     } = this.renderContext;
 
+    const roundTo = uncolourised ? 1 : gameEngineUpscale;
+
+    // a render angle away from the canonical quarter angles means the camera is
+    // mid-rotation: boxy items are drawn as a warped cuboid, so place the
+    // container at the item origin's EXACT (unrounded) projection - items
+    // touching at a world corner keep that corner welded on screen through the
+    // turn. (Non-boxy items and settled items fall through to rounded below.)
+    if (!isAtQuarterAngle(cameraAngle) && isCuboidWarpItem(item)) {
+      const origin = projectWorldXyzToScreenXy(
+        item.state.position,
+        cameraAngle,
+      );
+      this.output.position.set(origin.x, origin.y);
+      return;
+    }
+
+    // the item slides along the continuous render angle; at rest this is exactly
+    // the quarter angle:
     const projectionXy = projectWorldXyzToScreenXy(
-      this.renderContext.item.state.position,
+      // floors anchor at their drawn origin - on camera-reversed axes the
+      // drawn 0.02-block overhang's fractional corner (see floorRenderBox) -
+      // so the single device-grid rounding below lands the whole drawn floor
+      // where the loaded (camera-rotated) room model used to put it:
+      item.type === "floor" ?
+        addXyz(
+          item.state.position,
+          floorDrawnOriginXyOffset(this.renderContext.renderBoxes.get(item)),
+        )
+      : item.state.position,
       cameraAngle,
     );
 
-    assignRoundedXy(
-      this.output,
-      projectionXy.x,
-      projectionXy.y,
-      uncolourised ? 1 : gameEngineUpscale,
-    );
+    assignRoundedXy(this.output, projectionXy.x, projectionXy.y, roundTo);
   }
 
   tick(tickContext: ItemTickContext) {
-    this.#wrappedRenderer?.tick(tickContext);
+    this.#wrappedRenderer.tick(tickContext);
 
-    if (tickContext.movedOrResizedItems.has(this.renderContext.item)) {
-      // item has moved - update its position:
+    const midRotation = !isAtQuarterAngle(
+      this.renderContext.general.cameraAngle,
+    );
+    if (
+      tickContext.movedOrResizedItems.has(this.renderContext.item) ||
+      // mid-rotation nothing moves (the moved set is truthfully empty) but
+      // every item re-projects along the continuous θ(t):
+      midRotation ||
+      // run once more after the render angle settles back onto a quarter angle:
+      // this snaps every item to its exact discrete-angle position:
+      this.#tickedMidRotation
+    ) {
       this.#updatePosition();
     }
-
-    this.#tickMasks();
-  }
-
-  // get all the broken edges in front of this item
-  #brokenEdges(): Set<UnionOfAllItemInPlayTypes> {
-    const inFrontOfItemEdges = this.renderContext.zEdges.get(
-      this.renderContext.item,
-    );
-
-    if (!inFrontOfItemEdges) {
-      return emptySet as Set<UnionOfAllItemInPlayTypes>;
-    }
-
-    let brokenEdges: Set<UnionOfAllItemInPlayTypes> | undefined;
-    for (const [frontItem, isBroken] of inFrontOfItemEdges) {
-      if (isBroken) {
-        if (!brokenEdges) {
-          brokenEdges = new Set<UnionOfAllItemInPlayTypes>();
-        }
-        brokenEdges.add(frontItem);
-      }
-    }
-    return brokenEdges ?? (emptySet as Set<UnionOfAllItemInPlayTypes>);
-  }
-
-  #addMaskingContainer(
-    frontItem: UnionOfAllItemInPlayTypes,
-    maskingSprite: UniqueTextureSprite,
-  ) {
-    const maskingContainer = new Container({
-      label: `maskWith: ${frontItem.id}`,
-      // push the current masked content one level down in the hierarchy:
-      children: [maskingSprite, this.#maskedContent],
-    }) as MaskingContainer;
-
-    this.output.addChild(maskingContainer);
-
-    // that's the point of this, to mask:
-    maskingContainer.setMask({ mask: maskingSprite, inverse: true });
-
-    // record our masking container:
-    this.#maskingContainers.set(frontItem, maskingContainer);
-
-    // the masking container now holds (and so masks) what was the masked content:
-    this.#maskedContent = maskingContainer;
-
-    return maskingContainer;
-  }
-
-  #destroyMaskingContainer(
-    frontItem: UnionOfAllItemInPlayTypes,
-    maskingContainer: MaskingContainer,
-  ) {
-    const [maskingSprite, contents] = maskingContainer.children;
-    const localParent = maskingContainer.parent!;
-
-    localParent.removeChild(maskingContainer);
-    localParent.addChild(contents);
-
-    // if we just unwrapped the outermost mask, its contents become the masked content again:
-    if (this.#maskedContent === maskingContainer) {
-      this.#maskedContent = contents;
-    }
-
-    // probably doesn't matter since we're going to destroy anyway,
-    // but .mask can cause crashes sometimes if things aren't set up just so
-    maskingContainer.mask = null;
-    maskingSprite.destroy();
-    maskingContainer.destroy();
-    this.#maskingContainers.delete(frontItem);
-  }
-
-  #tickMasks() {
-    const { pixiRenderer, cameraAngle } = this.renderContext.general;
-
-    // map of all items in front of us => if the edge is broken
-    const brokenEdges = this.#brokenEdges();
-
-    // check for broken links (have masking sprites) that are no longer broken:
-    for (const previousFront of this.#maskingContainers.keys()) {
-      if (!brokenEdges.has(previousFront)) {
-        // edge no longer broken: remove the masking sprite
-        const maskingContainer = this.#maskingContainers.get(previousFront);
-
-        if (maskingContainer) {
-          if (logCyclicRendering) {
-            console.info(
-              "no longer masking:",
-              previousFront.id,
-              "from:",
-              this.renderContext.item.id,
-            );
-          }
-
-          try {
-            this.#destroyMaskingContainer(previousFront, maskingContainer);
-          } catch (e) {
-            throw new Error(
-              `error while destroying masking container ${pixiContainerToString(maskingContainer)}
-              for our rendering: ${pixiContainerToString(this.output)}`,
-              { cause: e },
-            );
-          }
-        }
-      }
-    }
-
-    for (const frontItem of brokenEdges) {
-      const preExistingMaskingContainer =
-        this.#maskingContainers.get(frontItem);
-
-      const preExistingMaskingSprite = preExistingMaskingContainer?.children[0];
-
-      const frontRenderingForMask =
-        this.renderContext.getItemRenderPipeline(frontItem)
-          ?.itemAppearanceRenderer?.output;
-
-      if (frontRenderingForMask === undefined) {
-        throw new Error("nothing to use as a mask");
-      }
-
-      const previousFilters = frontRenderingForMask.filters;
-      // temporarily swop in a filter for rendering this container
-      frontRenderingForMask.filters = redAsAlphaFilter;
-
-      const curMaskingSprite = renderContainerToSprite(
-        pixiRenderer,
-        frontRenderingForMask,
-        // attempt to reuse the existing sprite, if there is one
-        // NOTE: renderContainerToSprite will handle destroying the renderTexture
-        // of this sprite if it can't be reused
-        preExistingMaskingSprite,
-        `red mask: ${frontItem.id}`,
-      );
-
-      // pixi's .filter property is readonly when read, and mutable when set, so we
-      // need to cast even just to give a container back its old filters
-      // TODO: remove after this PR merged/released in pixi: https://github.com/pixijs/pixijs/pull/11757
-      frontRenderingForMask.filters = previousFilters as Filter[];
-
-      if (preExistingMaskingContainer === undefined) {
-        if (logCyclicRendering) {
-          console.warn(
-            "adding masking for item in front:",
-            frontItem.id,
-            "from:",
-            this.renderContext.item.id,
-          );
-        }
-        this.#addMaskingContainer(frontItem, curMaskingSprite);
-      }
-
-      const renderedPositionDiff = subXy(
-        projectWorldXyzToScreenXy(frontItem.state.position, cameraAngle),
-        projectWorldXyzToScreenXy(
-          this.renderContext.item.state.position,
-          cameraAngle,
-        ),
-      );
-
-      curMaskingSprite.x = renderedPositionDiff.x;
-      curMaskingSprite.y = renderedPositionDiff.y;
-    }
+    this.#tickedMidRotation = midRotation;
   }
 
   destroy(): void {
     this.output.destroy({ children: true });
-    this.#wrappedRenderer?.destroy();
+    this.#wrappedRenderer.destroy();
   }
 }

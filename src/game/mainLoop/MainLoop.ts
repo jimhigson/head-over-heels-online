@@ -18,11 +18,16 @@ import {
 import { type Upscale } from "../../store/slices/upscale/Upscale";
 import { selectGameEngineUpscale } from "../../store/slices/upscale/upscaleSlice";
 import { spriteOptionEquals } from "../../store/slices/userSettings/spriteOptionEquals";
-import { type SpriteOption } from "../../store/slices/userSettings/userSettingsSlice";
+import {
+  type DisplaySettings,
+  type SoundSettings,
+  type SpriteOption,
+} from "../../store/slices/userSettings/userSettingsSlice";
 import { store } from "../../store/store";
 import { emptySet } from "../../utils/empty";
 import { validateSceneGraph } from "../../utils/pixi/validateSceneGraph";
 import { createSerialisableErrors } from "../../utils/redux/createSerialisableErrors";
+import { type Xy } from "../../utils/vectors/vectors";
 import { type GameState } from "../gameState/GameState";
 import { selectCurrentRoomState } from "../gameState/gameStateSelectors/selectCurrentRoomState";
 import { maxFps, maxSubTickDeltaMs } from "../physics/mechanicsConstants";
@@ -30,7 +35,10 @@ import { ColourClashCircleEffectRenderer } from "../render/ColourClashCircleEffe
 import { HudRenderer } from "../render/hud/HudRenderer";
 import { needsNewHudRenderer } from "../render/hud/needsNewHudRenderer";
 import { needsNewRoomRenderer } from "../render/room/needsNewRoomRenderer";
-import { type RoomRenderContextInGame } from "../render/room/RoomRenderContexts";
+import {
+  type InGameGeneralRenderContext,
+  type RoomRenderContextInGame,
+} from "../render/room/RoomRenderContexts";
 import { RoomRenderer } from "../render/room/RoomRenderer";
 import { type RoomRendererType } from "../render/room/RoomRendererType";
 import { RoomScrollRenderer } from "../render/room/RoomScrollRenderer";
@@ -41,8 +49,11 @@ import {
 import { registerDetailedFpsGlobal } from "./frameTiming/registerDetailedFpsGlobal";
 import { progressGameState } from "./progressGameState";
 import { progressWithSubTicks } from "./progressWithSubTicks";
+import { rotateCameraIfInput } from "./rotateCameraIfInput";
+import { tickCameraTransition } from "./tickCameraTransition";
 import { tickGameSpeed } from "./tickGameSpeed";
 import { topLevelFilters } from "./topLevelFilters";
+import { transitionCameraAngle } from "./transitionCameraAngle";
 
 registerDetailedFpsGlobal();
 
@@ -82,6 +93,12 @@ export class MainLoop<RoomId extends string> {
   #app: Application;
   #gameState: GameState<RoomId>;
   #spritesheetVariants: SpritesheetVariants;
+  /**
+   * the single general render context, owned and mutated in place
+   * here for use in both the room and hud renderers
+   */
+  #generalRenderContext: InGameGeneralRenderContext<RoomId> | undefined =
+    undefined;
 
   constructor(
     app: Application,
@@ -161,7 +178,66 @@ export class MainLoop<RoomId extends string> {
     this.#mainContainer.position.x = rotate90 ? gameEngineScreenSize.y : 0;
   }
 
-  #tick = ({ deltaMS: tickerDeltaMS }: Ticker): void => {
+  /**
+   * the single {@link InGameGeneralRenderContext} shared by the room and hud
+   * renderers, mutated in place (never reassigned once created) so a renderer
+   * not recreated this frame keeps reading live values from the same object.
+   */
+  #syncGeneralRenderContext(
+    /**
+     * rewrite the recreation-triggered fields below - pass true exactly when a
+     * renderer is (re)created, the only time they can have changed
+     */
+    rebuildStable: boolean,
+    paused: boolean,
+    displaySettings: DisplaySettings,
+    soundSettings: SoundSettings,
+    spriteOption: SpriteOption,
+    upscale: Upscale,
+    /** whether the on-screen touch controls are shown */
+    onScreenControls: boolean,
+    /** continuous camera rotation, stepping through θ(t) mid-turn */
+    cameraAngle: Xy,
+    /** game-speed multiplier - <1 for slow-mo, 0 while paused */
+    speedCoefficient: number,
+  ): InGameGeneralRenderContext<RoomId> {
+    const existing = this.#generalRenderContext;
+
+    if (existing === undefined) {
+      const created: InGameGeneralRenderContext<RoomId> = {
+        gameState: this.#gameState,
+        pixiRenderer: this.#app.renderer,
+        spritesheetVariants: this.#spritesheetVariants,
+        paused,
+        displaySettings,
+        soundSettings,
+        spriteOption,
+        spritesheetMeta: spritesheetMetaForOption(spriteOption),
+        upscale,
+        onScreenControls,
+        cameraAngle,
+        speedCoefficient,
+      };
+      this.#generalRenderContext = created;
+      return created;
+    }
+
+    if (rebuildStable) {
+      existing.paused = paused;
+      existing.displaySettings = displaySettings;
+      existing.soundSettings = soundSettings;
+      existing.spriteOption = spriteOption;
+      existing.spritesheetMeta = spritesheetMetaForOption(spriteOption);
+      existing.upscale = upscale;
+      existing.onScreenControls = onScreenControls;
+    }
+
+    existing.cameraAngle = cameraAngle;
+    existing.speedCoefficient = speedCoefficient;
+    return existing;
+  }
+
+  #tick = ({ deltaMS: tickerDeltaMS, elapsedMS }: Ticker): void => {
     const tickState = store.getState();
     const showFps = selectShowFps(tickState);
     const timingRecord = showFps ? loadedFrameTimingStats() : undefined;
@@ -216,6 +292,14 @@ export class MainLoop<RoomId extends string> {
     this.#mainContainer.tint =
       isPaused && !tickSpriteOption.uncolourised ? pausedDimTint : noTint;
 
+    // camera rotation is a view concern, decoupled from the game speed: the
+    // rotate input is read and the rotation advanced on the real
+    // (unscaled) frame clock, so transitions run even if gameSpeed = 0.
+    if (!isPaused) {
+      rotateCameraIfInput(this.#gameState);
+      tickCameraTransition(this.#gameState, elapsedMS);
+    }
+
     // note that progressing the game state can change/reload the room,
     // so we need to tick physics considering recreating the room renderer
     timingRecord?.startPhysics();
@@ -223,9 +307,9 @@ export class MainLoop<RoomId extends string> {
       deltaMS === 0 ? emptySet : this.#physicsTicker(this.#gameState, deltaMS);
     timingRecord?.endPhysics();
 
-    // read after the physics tick so a rotation input this frame takes effect
-    // immediately - the physics ticker is where the camera-rotate tap is applied:
-    const tickCameraAngle = this.#gameState.cameraAngle;
+    // read after the rotate-input read above, so a rotation input this frame
+    // takes effect immediately:
+    const tickCameraAngle = this.#gameState.targetCameraAngle;
 
     timingRecord?.startUpdateSceneGraph();
     // the tick could end on a different room than it started on, eg if ticking
@@ -324,24 +408,50 @@ export class MainLoop<RoomId extends string> {
       this.#webGlContextRestored,
     );
 
+    // a rebuild is fine mid-transition: the fresh renderer builds against the
+    // discrete (nearest-quarter) angle like any renderer, and the playing
+    // transition carries on over it - eg a turn continues through a door into
+    // the next room (rooms share a world orientation under the angle-free
+    // model):
+    const createNewRoomRenderer = needsNewRoomRenderer(
+      this.#roomRenderer,
+      roomChanged,
+      tickUpscale,
+      tickDisplaySettings,
+      tickSoundSettings,
+      isPaused,
+      this.#webGlContextRestored,
+    );
+
+    const { cameraTransition } = this.#gameState;
+
+    // continuous θ(t) angle while a rotation animates, settled quarter-angle otherwise:
+    const cameraAngle =
+      cameraTransition === undefined ? tickCameraAngle : (
+        transitionCameraAngle(
+          cameraTransition.fromAngle,
+          cameraTransition.arc,
+          cameraTransition.progress,
+          cameraTransition.startSlope,
+        )
+      );
+
+    const general = this.#syncGeneralRenderContext(
+      createNewHudRenderer || createNewRoomRenderer,
+      isPaused,
+      tickDisplaySettings,
+      tickSoundSettings,
+      tickSpriteOption,
+      tickUpscale,
+      tickOnScreenControls,
+      cameraAngle,
+      this.#app.ticker.speed,
+    );
+
     if (createNewHudRenderer) {
       this.#hudRenderer?.destroy();
       this.#hudRenderer = new HudRenderer({
-        general: {
-          gameState: this.#gameState,
-          paused: isPaused,
-          pixiRenderer: this.#app.renderer,
-          displaySettings: tickDisplaySettings,
-          soundSettings: tickSoundSettings,
-          spriteOption: tickSpriteOption,
-          spritesheetMeta: spritesheetMetaForOption(tickSpriteOption),
-          upscale: tickUpscale,
-          cameraAngle: tickCameraAngle,
-          onScreenControls: tickOnScreenControls,
-          speedCoefficient: this.#app.ticker.speed,
-          spritesheetVariants: this.#spritesheetVariants,
-        },
-
+        general,
         inputDirectionMode: tickInputDirectionMode,
       });
       this.#mainContainer.addChild(this.#hudRenderer.output);
@@ -350,23 +460,11 @@ export class MainLoop<RoomId extends string> {
     this.#hudRenderer!.tick({
       screenSize: tickUpscale.gameEngineScreenSize,
       deltaMS,
-      paused: isPaused,
       room: tickEndRoom,
       freeCharacters: tickFreeCharacters,
     });
     timingRecord?.endHudUpdate();
-    // render hud end
 
-    const createNewRoomRenderer = needsNewRoomRenderer(
-      this.#roomRenderer,
-      roomChanged,
-      tickUpscale,
-      tickDisplaySettings,
-      tickSoundSettings,
-      isPaused,
-      tickCameraAngle,
-      this.#webGlContextRestored,
-    );
     if (
       // for several things that change infrequently, we don't bother to try to adjust the room scene
       // graph if it changes - we simply destroy and recreate it entirely:
@@ -376,20 +474,7 @@ export class MainLoop<RoomId extends string> {
 
       if (tickEndRoom) {
         const roomRenderContext: RoomRenderContextInGame<RoomId, string> = {
-          general: {
-            gameState: this.#gameState,
-            paused: isPaused,
-            pixiRenderer: this.#app.renderer,
-            displaySettings: tickDisplaySettings,
-            soundSettings: tickSoundSettings,
-            spriteOption: tickSpriteOption,
-            spritesheetMeta: spritesheetMetaForOption(tickSpriteOption),
-            upscale: tickUpscale,
-            cameraAngle: tickCameraAngle,
-            onScreenControls: tickOnScreenControls,
-            speedCoefficient: this.#app.ticker.speed,
-            spritesheetVariants: this.#spritesheetVariants,
-          },
+          general,
           room: tickEndRoom,
         };
         this.#roomRenderer = new RoomScrollRenderer(
@@ -428,17 +513,10 @@ export class MainLoop<RoomId extends string> {
     // the dead textures - clear the flag:
     this.#webGlContextRestored = false;
 
-    // the room renderer runs even while paused - it is its responsibility to
-    // exit quickly when nothing has changed
-    if (this.#roomRenderer) {
-      this.#roomRenderer.renderContext.general.speedCoefficient =
-        this.#app.ticker.speed;
+    // the room renderer runs even while paused
+    if (this.#roomRenderer !== undefined) {
+      this.#roomRenderer.tick({ movedOrResizedItems, deltaMS, timingRecord });
     }
-    this.#roomRenderer?.tick({
-      movedOrResizedItems,
-      deltaMS,
-      timingRecord,
-    });
 
     timingRecord?.endUpdateSceneGraph();
 
@@ -462,7 +540,7 @@ export class MainLoop<RoomId extends string> {
       if (import.meta.env.MODE === "visual-regression") {
         if (createNewRoomRenderer && tickEndRoom) {
           window.dispatchEvent(
-            new CustomEvent("firstRenderOfRoom", {
+            new CustomEvent("_e2e_firstRenderOfRoom", {
               detail: { roomId: tickEndRoom.id },
             }),
           );
@@ -471,7 +549,7 @@ export class MainLoop<RoomId extends string> {
         // playwright wait for a sprite option change to land in the output rather
         // than guessing with a fixed delay:
         window.dispatchEvent(
-          new CustomEvent("spriteOptionRendered", {
+          new CustomEvent("_e2e_spriteOptionRendered", {
             detail: { spriteOption: tickSpriteOption },
           }),
         );
@@ -502,6 +580,7 @@ export class MainLoop<RoomId extends string> {
     this.#app.stage.removeChild(this.#mainContainer);
     this.#worldSound.disconnect();
     this.#roomRenderer?.destroy();
+    this.#roomRenderer = undefined;
     this.#hudRenderer?.destroy();
     this.#app.ticker.remove(this.#tickAndCatch);
   }

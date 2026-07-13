@@ -1,8 +1,10 @@
 import { type TextureTailwindClass } from "../../sprites/spritesheet/spritesheetData/TextureTailwindClass";
 import { store, useEditorAppSelector } from "../../store/store";
+import { rotateXy } from "../../utils/vectors/rotateXy";
+import { unitVectors } from "../../utils/vectors/unitVectors";
 import {
   type DirectionXy4,
-  rotateDirectionXy4ByCameraAngle,
+  nonZeroVectorClosestDirectionXy4,
 } from "../../utils/vectors/vectors";
 import {
   rotateViewAnticlockwise,
@@ -27,7 +29,9 @@ const directionGlyphs = {
  */
 export const RotateViewControls = () => {
   const cameraAngle = useEditorAppSelector(selectEditorCameraAngle);
-  const cameraAngleXy4 = rotateDirectionXy4ByCameraAngle("away", cameraAngle);
+  const cameraAngleXy4 = nonZeroVectorClosestDirectionXy4(
+    rotateXy(unitVectors.away, cameraAngle),
+  );
 
   return (
     <div class="flex gap-0 leading-none">

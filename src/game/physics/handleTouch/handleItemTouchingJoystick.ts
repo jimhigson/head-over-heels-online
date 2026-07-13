@@ -4,10 +4,8 @@ import {
 } from "../../../model/ItemInPlay";
 import { roomItemsIterable } from "../../../model/RoomState";
 import {
-  scaleXy,
   scaleXyz,
-  unitVector,
-  vectorClosestDirectionXy4,
+  unitVectorInPlace,
   type Xy,
 } from "../../../utils/vectors/vectors";
 import { assignLatentMovement } from "../../gameState/mutators/assignLatentMovement";
@@ -40,11 +38,13 @@ export const handleItemTouchingJoystick = <
     aabb: joystickAabb,
   } = joystickItem;
 
+  // calculate the vector of the joystick moving out of the moving item,
+  // which is the direction the joystick is being pushed in
   const m = mtv(
-    movingItem.state.position,
-    movingItem.aabb,
     joystickPosition,
     joystickAabb,
+    movingItem.state.position,
+    movingItem.aabb,
   );
 
   if (m.x === 0 && m.y === 0) {
@@ -52,11 +52,9 @@ export const handleItemTouchingJoystick = <
     return;
   }
 
-  const unitM = unitVector(m);
+  const unitM = unitVectorInPlace(m);
 
-  joystickItem.state.lastPushDirection = vectorClosestDirectionXy4(
-    scaleXy(unitM, -1),
-  );
+  joystickItem.state.lastPushDirection = unitM;
 
   type CompatibleItem = Extract<
     UnionOfAllItemInPlayTypes<RoomId, RoomItemId>,
@@ -89,7 +87,7 @@ export const handleItemTouchingJoystick = <
       continue;
     }
 
-    const posDelta = scaleXyz(unitM, -moveSpeedPixPerMs.charles * deltaMS);
+    const posDelta = scaleXyz(unitM, moveSpeedPixPerMs.charles * deltaMS);
     controlledItem.state.facing = posDelta;
     controlledItem.state.controlledWithJoystickAtRoomTime = roomTime;
 

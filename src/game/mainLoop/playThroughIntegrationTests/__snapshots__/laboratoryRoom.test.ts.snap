@@ -1311,9 +1311,9 @@ exports[`playing through a complex, deterministic room ("laboratory") should alw
         "disappearing": null,
         "expires": null,
         "facing": {
-          "x": -0,
+          "x": 0,
           "y": -0.25000000000000006,
-          "z": -0,
+          "z": 0,
         },
         "latentMovement": [
           {
@@ -1321,9 +1321,9 @@ exports[`playing through a complex, deterministic room ("laboratory") should alw
             "fromStandingOn": "floor@0,0,0",
             "startAtRoomTime": 30009.33333333183,
             "velocity": {
-              "x": -0,
+              "x": 0,
               "y": 0.030000000000000006,
-              "z": -0,
+              "z": 0,
             },
           },
           {
@@ -1331,9 +1331,9 @@ exports[`playing through a complex, deterministic room ("laboratory") should alw
             "fromStandingOn": "floor@0,0,0",
             "startAtRoomTime": 30017.66666666516,
             "velocity": {
-              "x": -0,
+              "x": 0,
               "y": -0.030000000000000006,
-              "z": -0,
+              "z": 0,
             },
           },
         ],
@@ -3272,7 +3272,11 @@ exports[`playing through a complex, deterministic room ("laboratory") should alw
         ],
         "disappearing": null,
         "expires": null,
-        "lastPushDirection": "away",
+        "lastPushDirection": {
+          "x": 0,
+          "y": 1,
+          "z": 0,
+        },
         "position": {
           "x": 65,
           "y": 17,

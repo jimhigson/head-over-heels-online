@@ -6,15 +6,17 @@ import { wallTileSize } from "../../../sprites/spritesheet/spritesheetData/textu
 import { isEmpty } from "../../../utils/iterators/isEmpty";
 import { phaseForSubItem } from "../../../utils/maths/hashXyzToNumber0to1";
 import { renderContainerToSprite } from "../../../utils/pixi/renderContainerToSprite";
+import { resolveCameraRelativeVectorXy4 } from "../../../utils/vectors/resolveCameraRelativeVector";
 import {
   axisProjectsReversed,
   invertCameraAngle,
+  nearestQuarterAngle,
   rotateXy,
 } from "../../../utils/vectors/rotateXy";
+import { unitVectors } from "../../../utils/vectors/unitVectors";
 import {
   originXy,
   perpendicularAxisXy,
-  rotateDirectionXy4ByCameraAngle,
   tangentAxis,
   type Xy,
 } from "../../../utils/vectors/vectors";
@@ -35,15 +37,15 @@ import {
   seeThroughWallTile,
   wallOccludesRoomFloorBehind,
 } from "../wallWindowSeeThrough";
-import { itemAppearanceRenderOnce } from "./ItemAppearance";
+import { itemAppearanceRenderMemoised } from "./ItemAppearance";
 
 const sampleBuffer: CollideableItem = {
   aabb: { x: 1, y: 1, z: veryHighZ },
-  id: "farWallAppearanceSampleBuffer",
+  id: "wallAppearanceSampleBuffer",
   state: { position: { x: 0, y: 0, z: 0 } },
 };
 
-export const farWallAppearance = itemAppearanceRenderOnce<"wall">(
+export const wallAppearance = itemAppearanceRenderMemoised<"wall">(
   ({ renderContext }) => {
     const {
       isReflection,
@@ -51,29 +53,34 @@ export const farWallAppearance = itemAppearanceRenderOnce<"wall">(
       item,
       room,
     } = renderContext;
+    const cameraQuarterAngle = nearestQuarterAngle(cameraAngle);
     // walls only ever render inside a room renderer (they are not portable, so
     // never appear in a standalone appearance context) - the full pipeline
     // context is available for the see-through decision's z-graph:
     const { zEdges } = asItemRenderContext(renderContext);
-    const { id, config } = item;
+    const { config } = item;
 
     const { direction, tiles } = config;
 
-    // which sprite a wall shows, and whether it shows at all, depends on its
-    // facing after the camera rotation:
-    const renderedDirection = rotateDirectionXy4ByCameraAngle(
-      direction,
+    // which far-side sprite the wall shows depends on its facing after the
+    // camera rotation, resolved against the continuous angle. A wall that
+    // resolves to a near/hidden side ({right, towards}) draws nothing: decline
+    // to render, removing any current rendering. This near/far split matches
+    // isWallDirectionHiddenAtAngle, which excludes the same wall from z-sorting
+    // in effectiveFixedZIndex - keeping draw and sort in lockstep:
+    const renderedDirection = resolveCameraRelativeVectorXy4(
+      unitVectors[direction],
       cameraAngle,
+      false,
     );
-
     if (renderedDirection === "right" || renderedDirection === "towards") {
-      throw new Error(`wall is near after rotation: ${id}`);
+      return undefined;
     }
 
     // the tiles still repeat along the wall's physical axis (the projection
     // rotates them onto the screen):
     const alongAxis = perpendicularAxisXy(tangentAxis(direction));
-    const alongReversed = axisProjectsReversed(alongAxis, cameraAngle);
+    const alongReversed = axisProjectsReversed(alongAxis, cameraQuarterAngle);
 
     // the tile apparently furthest from the camera - the array-last tile at the
     // base angle, or the first when the along axis projects reversed:
@@ -92,7 +99,7 @@ export const farWallAppearance = itemAppearanceRenderOnce<"wall">(
         {
           [alongAxis]: i,
         },
-        cameraAngle,
+        cameraQuarterAngle,
       );
 
       const tileRenderPivot =
@@ -157,7 +164,7 @@ export const farWallAppearance = itemAppearanceRenderOnce<"wall">(
             renderedDirection === "away" ?
               { x: blockSizePx.x, y: -blockSizePx.y }
             : { x: -blockSizePx.x, y: blockSizePx.y },
-            invertCameraAngle(cameraAngle),
+            invertCameraAngle(cameraQuarterAngle),
           );
           // the world min corner of the apparent end block: the max-along end of
           // the run normally, or the min-along end when the run projects
@@ -225,7 +232,7 @@ export const farWallAppearance = itemAppearanceRenderOnce<"wall">(
       direction === "towards" || direction === "right" ?
         projectWorldXyzToScreenXy(
           { [tangentAxis(direction)]: item.aabb[tangentAxis(direction)] },
-          cameraAngle,
+          cameraQuarterAngle,
         )
       : originXy;
 
@@ -235,7 +242,7 @@ export const farWallAppearance = itemAppearanceRenderOnce<"wall">(
     // shift the whole wall one block along its axis to compensate:
     const alongShiftXy =
       alongReversed ?
-        projectBlockXyzToScreenXy({ [alongAxis]: 1 }, cameraAngle)
+        projectBlockXyzToScreenXy({ [alongAxis]: 1 }, cameraQuarterAngle)
       : originXy;
 
     mainContainer.x = roomFaceXy.x + alongShiftXy.x;
@@ -243,4 +250,9 @@ export const farWallAppearance = itemAppearanceRenderOnce<"wall">(
 
     return mainContainer;
   },
+  // re-render on every quarter turn: a wall persists across camera flips (it is
+  // no longer torn down), so the render-once cache must invalidate when the
+  // quarter angle changes, to re-decide decline vs draw and re-pick the
+  // far-side sprite - exactly as barrier and doorLegs already do:
+  (_item, cameraQuarterAngle) => cameraQuarterAngle,
 );

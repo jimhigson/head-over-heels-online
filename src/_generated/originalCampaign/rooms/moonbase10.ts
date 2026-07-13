@@ -15,6 +15,11 @@ export const room = inferRoomJson({
       position: { x: 0, y: 7, z: 3 },
       type: "block",
     },
+    b10: {
+      config: { style: "tower", times: { z: 3 } },
+      position: { x: 5, y: 7, z: 0 },
+      type: "block",
+    },
     b2: {
       config: { style: "artificial" },
       position: { x: 0, y: 7, z: 5 },
@@ -26,7 +31,7 @@ export const room = inferRoomJson({
       type: "block",
     },
     b4: {
-      config: { style: "tower", times: { y: 4, z: 3 } },
+      config: { style: "tower", times: { z: 3 } },
       position: { x: 0, y: 0, z: 0 },
       type: "block",
     },
@@ -36,8 +41,23 @@ export const room = inferRoomJson({
       type: "block",
     },
     b6: {
-      config: { style: "tower", times: { x: 2, z: 3 } },
+      config: { style: "tower", times: { z: 3 } },
       position: { x: 4, y: 7, z: 0 },
+      type: "block",
+    },
+    b7: {
+      config: { style: "tower", times: { z: 3 } },
+      position: { x: 0, y: 1, z: 0 },
+      type: "block",
+    },
+    b8: {
+      config: { style: "tower", times: { z: 3 } },
+      position: { x: 0, y: 2, z: 0 },
+      type: "block",
+    },
+    b9: {
+      config: { style: "tower", times: { z: 3 } },
+      position: { x: 0, y: 3, z: 0 },
       type: "block",
     },
     d: {

@@ -5,7 +5,7 @@ import {
   type TextureTailwindClass,
 } from "../../../../../../sprites/spritesheet/spritesheetData/TextureTailwindClass";
 import {
-  vectorClosestDirectionXy8,
+  nonZeroVectorClosestDirectionXy8,
   type Xyz,
 } from "../../../../../../utils/vectors/vectors";
 import { usePlayableTailwindSpriteClassname } from "../../../../tailwindSprites/playableTailwindSpriteClassname";
@@ -42,7 +42,7 @@ export const PlayableItemInRoom = ({
       spriteClass={spriteClassname({
         character: characterName,
         action: isCurrent ? "walking" : "idle",
-        facingXy8: vectorClosestDirectionXy8(facing) ?? "towards",
+        facingXy8: nonZeroVectorClosestDirectionXy8(facing),
       })}
       scrollTo={isCurrent}
       yAdjust={yAdjust}

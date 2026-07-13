@@ -184,11 +184,19 @@ export type ItemConfigMap<
     // barriers can only disappear on touch:
     disappearing?: Subset<Disappear, { on: "touch" }>;
   };
-  block: ConsolidatableConfig & {
-    style: BlockStyle;
-    // barriers can only disappear on stand (never touch):
-    disappearing?: Subset<Disappear, { on: "stand" }>;
-  };
+  block:
+    | (ConsolidatableConfig & {
+        style: Exclude<BlockStyle, "tower">;
+        // barriers can only disappear on stand (never touch):
+        disappearing?: Subset<Disappear, { on: "stand" }>;
+      })
+    // towers are cylindrical and only stack vertically so they don't
+    // distort too badly under animated camera angle transition
+    | {
+        style: "tower";
+        times?: { z?: number };
+        disappearing?: Subset<Disappear, { on: "stand" }>;
+      };
   deadlyBlock: ConsolidatableConfig & {
     style: DeadlyBlockStyle;
     disabled?: boolean;
@@ -204,14 +212,18 @@ export type ItemConfigMap<
     // should this sprite (initially at rest) be on frame 1 or 2? allows some variation
     startingPhase: 1 | 2;
   };
-  conveyor: ConsolidatableConfig & {
-    direction: DirectionXy4;
+  // a run of conveyor tiles may only repeat along the axis the belt runs on:
+  // away/towards run on y, left/right run on x
+  conveyor: {
     /** speed multiplier — undefined is treated as 1 (original game speed) */
     speed?: number;
     disabled?: boolean;
     // conveyors can only disappear on stand (never touch):
     disappearing?: Subset<Disappear, { on: "stand" }>;
-  };
+  } & (
+    | { direction: "away" | "towards"; times?: { y?: number } }
+    | { direction: "left" | "right"; times?: { x?: number } }
+  );
   hushPuppy: ConsolidatableConfig;
   pickup: PickupConfig;
   player: {

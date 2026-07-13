@@ -3,6 +3,7 @@ import { type Sprite } from "pixi.js";
 import { iterateStoodOnByItems } from "../../../../model/stoodOnItemsLookup";
 import { maybeRenderContainerToSprite } from "../../../../utils/pixi/renderContainerToSprite";
 import { renderMultipliedXy } from "../../../../utils/pixi/renderMultipliedXy";
+import { nearestQuarterAngle } from "../../../../utils/vectors/rotateXy";
 import { isPlayableItem } from "../../../physics/itemPredicates";
 import { teleporterIsActive } from "../../../physics/mechanics/teleporting";
 import { type ItemAppearance } from "../ItemAppearance";
@@ -24,6 +25,7 @@ export const teleporterShadowMaskAppearance: ItemAppearance<
   },
   currentRendering,
 }) => {
+  const cameraQuarterAngle = nearestQuarterAngle(cameraAngle);
   const {
     type,
     state: { stoodOnBy },
@@ -58,7 +60,7 @@ export const teleporterShadowMaskAppearance: ItemAppearance<
             : "shadowMask.artificial",
           // multiplied masks tile along their world axes, which the projection
           // rotates on screen:
-          cameraAngle,
+          cameraQuarterAngle,
           spritesheet: spritesheetVariants.shadowSpritesheet,
         },
         times,

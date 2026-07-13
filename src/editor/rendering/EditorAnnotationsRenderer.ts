@@ -6,7 +6,7 @@ import { OutlineFilter } from "../../game/render/filters/OutlineFilter";
 import { RevertColouriseFilter } from "../../game/render/filters/RevertColouriseFilter";
 import { noFilters } from "../../game/render/filters/standardFilters";
 import { type DecorateItemMaybeRenderer } from "../../game/render/item/itemRender/DecorateItemRenderer";
-import { type ItemPixiRenderer } from "../../game/render/item/itemRender/ItemPixiRenderer";
+import { type ItemChainPixiRenderer } from "../../game/render/item/itemRender/ItemPixiRenderer";
 import {
   type ItemRenderContext,
   type ItemTickContext,
@@ -224,14 +224,14 @@ const isWakingMonster = (item: EditorUnionOfAllItemInPlayTypes) => {
  *    * doors (destination and clickthrough)
  */
 class EditorAnnotationsRenderer<T extends ItemInPlayType>
-  implements ItemPixiRenderer<T>
+  implements ItemChainPixiRenderer<T>
 {
   public readonly output: Container = new Container({
     label: "EditorAnnotationsRenderer",
   });
 
   readonly renderContext: ItemRenderContext<T>;
-  #childRenderer: ItemPixiRenderer<T>;
+  #childRenderer: ItemChainPixiRenderer<T>;
   #viewport: EditorViewport;
   #outlineFilters: EditorOutlineFilters;
   /** text annotations, counter-scaled so they read at a constant size under zoom */
@@ -239,7 +239,7 @@ class EditorAnnotationsRenderer<T extends ItemInPlayType>
 
   constructor(
     renderContext: ItemRenderContext<T>,
-    childRenderer: ItemPixiRenderer<T>,
+    childRenderer: ItemChainPixiRenderer<T>,
     viewport: EditorViewport,
     editorOutlineFilters: EditorOutlineFilters,
   ) {

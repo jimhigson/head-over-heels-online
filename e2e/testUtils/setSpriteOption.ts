@@ -34,7 +34,7 @@ export const setSpriteOption = async (
         );
       }
 
-      // spriteOptionRendered is only emitted by the game's main loop, so it
+      // _e2e_spriteOptionRendered is only emitted by the game's main loop, so it
       // only fires when a game is running. In-game, wait until a rendered frame
       // actually reflects the new option (covers the async spritesheet load when
       // switching to/from Toppy). With no running loop (eg at the main menu or a

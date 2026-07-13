@@ -3,7 +3,6 @@ import { type EmptyObject, type Simplify } from "type-fest";
 import { type PortableItem } from "../game/physics/itemPredicates";
 import { type SceneryName } from "../sprites/planets";
 import {
-  type DirectionXy4,
   type DirectionXyz4,
   type Xy,
   type Xyz,
@@ -309,8 +308,9 @@ export type ItemStateMap<RoomId extends string, RoomItemId extends string> = {
   >;
 
   joystick: {
-    // the direction this joystick was pushed most recently:
-    lastPushDirection: DirectionXy4 | undefined;
+    // the direction the joystick was pushed most recently, as a cardinal unit
+    // vector:
+    lastPushDirection: undefined | Xyz;
   } & ItemConfigMap<RoomId, RoomItemId, SceneryName>["joystick"]; // copying the config into the state means that these settings are mutable at run-time. eg, changing what the joystick controls using switches
   teleporter: ItemConfigMap<RoomId, RoomItemId, SceneryName>["teleporter"]; // copying the config into the state means that these settings are mutable at run-time. eg, by switches
   portableTeleporter: FreeItemState<RoomItemId> &

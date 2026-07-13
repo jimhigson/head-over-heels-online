@@ -1,5 +1,4 @@
 import { Sprite } from "pixi.js";
-import { type EmptyObject } from "type-fest";
 
 import { type ItemTypeUnion } from "../../../../_generated/types/ItemInPlayUnion";
 import {
@@ -12,12 +11,12 @@ import {
   type AnimationId,
   type TextureId,
 } from "../../../../sprites/spritesheet/spritesheetData/makeSpritesheetData";
-import { emptyObject } from "../../../../utils/empty";
 import {
   maybeRenderContainerToSprite,
   renderContainerToSprite,
 } from "../../../../utils/pixi/renderContainerToSprite";
 import { renderMultipliedXy } from "../../../../utils/pixi/renderMultipliedXy";
+import { nearestQuarterAngle } from "../../../../utils/vectors/rotateXy";
 import {
   rotateAxisXyByCameraAngle,
   tangentAxis,
@@ -32,9 +31,12 @@ import {
 } from "../../createSprite";
 import { isDoorPartInHiddenWall } from "../../renderBox/makeItemRenderBoxAtCameraAngle";
 import {
+  cameraQuarterAngleEqual,
   type ItemAppearance,
   type ItemAppearanceOptions,
-  itemAppearanceRenderOnce,
+  itemAppearanceRenderMemoised,
+  multipliedLayoutAngle,
+  type RenderOnceProps,
 } from "../ItemAppearance";
 import { springShadowMaskAppearance } from "../springAppearance";
 import {
@@ -52,19 +54,20 @@ type ShadowMaskSpriteOptions = {
 
 const shadowMaskStaticAppearance = <T extends ItemInPlayType>(
   createSpriteOptions: ShadowMaskSpriteOptions,
-): ItemAppearance<T, EmptyObject, Sprite> =>
-  itemAppearanceRenderOnce(
+): ItemAppearance<T, RenderOnceProps, Sprite> =>
+  itemAppearanceRenderMemoised(
     ({
       renderContext: {
         item: subject,
         general: { pixiRenderer, spritesheetVariants, cameraAngle },
       },
     }) => {
+      const cameraQuarterAngle = nearestQuarterAngle(cameraAngle);
       const options = {
         ...createSpriteOptions,
         // multiplied masks tile along their world axes, which the projection
         // rotates on screen:
-        cameraAngle,
+        cameraQuarterAngle,
         spritesheet: spritesheetVariants.shadowSpritesheet,
       } as SpecifiedTextureCreateSpriteOptions;
 
@@ -91,6 +94,7 @@ const shadowMaskStaticAppearance = <T extends ItemInPlayType>(
       }
       return sprite;
     },
+    multipliedLayoutAngle,
   );
 
 /**
@@ -107,11 +111,11 @@ const shadowMaskFromConfigAppearance =
   <T extends ItemInPlayType>(
     spriteOptionsFromConfig: (
       config: ItemInPlayConfig<T, string, string>,
-      cameraAngle: Xy,
+      cameraQuarterAngle: Xy,
     ) => ShadowMaskSpriteOptions,
   ): ((
-    options: ItemAppearanceOptions<T, EmptyObject, Sprite>,
-  ) => AppearanceReturn<EmptyObject, Sprite>) =>
+    options: ItemAppearanceOptions<T, RenderOnceProps, Sprite>,
+  ) => AppearanceReturn<RenderOnceProps, Sprite>) =>
   ({
     renderContext: {
       general: { pixiRenderer, spritesheetVariants, cameraAngle },
@@ -119,17 +123,25 @@ const shadowMaskFromConfigAppearance =
     },
     currentRendering,
   }) => {
-    if (currentRendering === undefined) {
+    const cameraQuarterAngle = nearestQuarterAngle(cameraAngle);
+    // the mask resolves per camera angle (directional art + multiplied tiling):
+    if (
+      currentRendering === undefined ||
+      !cameraQuarterAngleEqual(
+        currentRendering.renderProps.cameraQuarterAngle,
+        cameraQuarterAngle,
+      )
+    ) {
       const times = itemInPlayTimes(item);
       const baseOptions = spriteOptionsFromConfig(
         item.config as ItemInPlayConfig<T, string, string>,
-        cameraAngle,
+        cameraQuarterAngle,
       );
       const options = {
         ...baseOptions,
         // multiplied masks tile along their world axes, which the projection
         // rotates on screen:
-        cameraAngle,
+        cameraQuarterAngle,
         spritesheet: spritesheetVariants.shadowSpritesheet,
       } as SpecifiedTextureCreateSpriteOptions;
 
@@ -138,7 +150,7 @@ const shadowMaskFromConfigAppearance =
           pixiRenderer,
           renderMultipliedXy(options, times),
         ),
-        renderProps: emptyObject,
+        renderProps: { cameraQuarterAngle },
       };
 
       if (times) {
@@ -172,23 +184,31 @@ const itemShadowMaskAppearances: {
   lift: shadowMaskStaticAppearance({
     textureId: "shadowMask.smallBlock",
   }),
-  conveyor: shadowMaskFromConfigAppearance(({ direction }, cameraAngle) => ({
-    textureId: "shadowMask.conveyor",
-    flipX:
-      rotateAxisXyByCameraAngle(tangentAxis(direction), cameraAngle) === "x",
-  })),
+  conveyor: shadowMaskFromConfigAppearance(
+    ({ direction }, cameraQuarterAngle) => ({
+      textureId: "shadowMask.conveyor",
+      flipX:
+        rotateAxisXyByCameraAngle(
+          tangentAxis(direction),
+          cameraQuarterAngle,
+        ) === "x",
+    }),
+  ),
 
-  doorLegs: shadowMaskFromConfigAppearance((config, cameraAngle) => {
+  doorLegs: shadowMaskFromConfigAppearance((config, cameraQuarterAngle) => {
     const { direction } = config;
     return {
       textureId:
         // matches whether the legs render the floating threshold (hidden
         // wall) or the full legs at this angle:
-        isDoorPartInHiddenWall(config, cameraAngle) ?
+        isDoorPartInHiddenWall(config, cameraQuarterAngle) ?
           "shadowMask.door.floatingThreshold.double.y"
         : "shadowMask.door.legs.threshold.double.y",
       flipX:
-        rotateAxisXyByCameraAngle(tangentAxis(direction), cameraAngle) === "y",
+        rotateAxisXyByCameraAngle(
+          tangentAxis(direction),
+          cameraQuarterAngle,
+        ) === "y",
     };
   }),
 
@@ -198,9 +218,9 @@ const itemShadowMaskAppearances: {
   // no shadow mast for the floor
   floor: "no-mask",
 
-  barrier: shadowMaskFromConfigAppearance(({ axis }, cameraAngle) => ({
+  barrier: shadowMaskFromConfigAppearance(({ axis }, cameraQuarterAngle) => ({
     textureId: "shadowMask.barrier.y",
-    flipX: rotateAxisXyByCameraAngle(axis, cameraAngle) === "x",
+    flipX: rotateAxisXyByCameraAngle(axis, cameraQuarterAngle) === "x",
     // needs this to line up with the sprite - not sure why
     y: -1,
   })),

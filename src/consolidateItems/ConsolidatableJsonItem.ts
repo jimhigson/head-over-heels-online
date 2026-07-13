@@ -57,7 +57,7 @@ export const getConsolidatableVector = (jsonItem: JsonItemUnion): Xyz => {
         case "towards":
           return unitXyz_y;
         default:
-          jsonItem.config.direction satisfies never;
+          jsonItem.config satisfies never;
           throw new Error();
       }
 
@@ -83,7 +83,9 @@ export const getConsolidatableVector = (jsonItem: JsonItemUnion): Xyz => {
       if (jsonItem.config.disappearing) {
         return originXyz;
       }*/
-      return unitXyz;
+      // towers are cylindrical - they stack vertically only, never merging in x/y
+      // (same as lamps/mirrors above):
+      return jsonItem.config.style === "tower" ? unitXyz_z : unitXyz;
     case "barrier":
       if (jsonItem.config.disappearing) {
         return originXyz;

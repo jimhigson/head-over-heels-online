@@ -38,6 +38,36 @@ export const waitForGameState = async (page: Page) => {
   }
 };
 
+/**
+ * wait for the game to be fully ready to drive: BOTH e2e hooks present - the
+ * pixi application ({@link Window._e2e_pixiApplication}, put on window partway
+ * through gameMain) and the game api ({@link Window._e2e_gamePageGameAi}, set
+ * once gameMain returns). Helpers that touch the pixi app (eg setZeroGameSpeed's
+ * ticker) must gate on this, not just game state, or a cold boot under
+ * concurrent load races past. Also watches for the error dialog, as
+ * {@link waitForGameState} does.
+ */
+export const waitForGameReady = async (page: Page) => {
+  await page.waitForFunction(
+    () =>
+      (window._e2e_gamePageGameAi?.gameState !== undefined &&
+        window._e2e_pixiApplication !== undefined) ||
+      document.querySelector('[data-dialog-id="errorCaught"]') !== null,
+    undefined,
+    { timeout: longTimeout },
+  );
+
+  if ((await page.locator('[data-dialog-id="errorCaught"]').count()) > 0) {
+    const errorReport = await page
+      .locator('[data-test-id="error-report"]')
+      .textContent()
+      .catch(() => "(could not read the error report)");
+    throw new Error(
+      `error dialog shown while waiting for game to be ready:\n${errorReport}`,
+    );
+  }
+};
+
 export const waitForRoomRenderEvent = async (
   page: Page,
   expectedRoomId: string,
@@ -56,14 +86,14 @@ export const waitForRoomRenderEvent = async (
           if (roomId !== wantRoomId) {
             return;
           }
-          window.removeEventListener("firstRenderOfRoom", handler);
+          window.removeEventListener("_e2e_firstRenderOfRoom", handler);
           resolve(true);
         };
-        window.addEventListener("firstRenderOfRoom", handler);
+        window.addEventListener("_e2e_firstRenderOfRoom", handler);
         // on timeout, remove the listener and resolve false; if a matching event
         // already fired this resolve is an ignored no-op:
         setTimeout(() => {
-          window.removeEventListener("firstRenderOfRoom", handler);
+          window.removeEventListener("_e2e_firstRenderOfRoom", handler);
           resolve(false);
         }, timeoutMs);
       }),
@@ -72,13 +102,13 @@ export const waitForRoomRenderEvent = async (
 
   if (!found) {
     throw new Error(
-      `Timeout waiting for firstRenderOfRoom event ${expectedRoomId} after ${formatDuration(maximumWaitForStep)}`,
+      `Timeout waiting for _e2e_firstRenderOfRoom event ${expectedRoomId} after ${formatDuration(maximumWaitForStep)}`,
     );
   }
 
   if (logHeader !== undefined) {
     console.log(
-      `${logHeader} ${elapsed()} received firstRenderOfRoom for ${chalk.cyan(expectedRoomId)}`,
+      `${logHeader} ${elapsed()} received _e2e_firstRenderOfRoom for ${chalk.cyan(expectedRoomId)}`,
     );
   }
 };
@@ -86,7 +116,7 @@ export const waitForRoomRenderEvent = async (
 /**
  * wait until a rendered frame actually reflects the given sprite option, rather
  * than guessing with a fixed delay after dispatching the option change. The
- * engine fires `spriteOptionRendered` every frame (in visual-regression mode)
+ * engine fires `_e2e_spriteOptionRendered` every frame (in visual-regression mode)
  * carrying the option that frame was rendered with.
  */
 export const waitForSpriteOptionRenderEvent = async (
@@ -107,15 +137,15 @@ export const waitForSpriteOptionRenderEvent = async (
             spriteOption.name === expected.name &&
             spriteOption.uncolourised === expected.uncolourised
           ) {
-            window.removeEventListener("spriteOptionRendered", handler);
+            window.removeEventListener("_e2e_spriteOptionRendered", handler);
             resolve(true);
           }
         };
-        window.addEventListener("spriteOptionRendered", handler);
+        window.addEventListener("_e2e_spriteOptionRendered", handler);
         // on timeout, remove the per-frame listener and resolve false; if a
         // matching frame already resolved true this is an ignored no-op:
         setTimeout(() => {
-          window.removeEventListener("spriteOptionRendered", handler);
+          window.removeEventListener("_e2e_spriteOptionRendered", handler);
           resolve(false);
         }, timeoutMs);
       }),
@@ -124,13 +154,13 @@ export const waitForSpriteOptionRenderEvent = async (
 
   if (!matched) {
     throw new Error(
-      `Timeout waiting for spriteOptionRendered event (${spriteOption.name}, uncolourised: ${spriteOption.uncolourised}) after ${formatDuration(maximumWaitForStep)}`,
+      `Timeout waiting for _e2e_spriteOptionRendered event (${spriteOption.name}, uncolourised: ${spriteOption.uncolourised}) after ${formatDuration(maximumWaitForStep)}`,
     );
   }
 
   if (logHeader !== undefined) {
     console.log(
-      `${logHeader} ${elapsed()} received spriteOptionRendered for ${chalk.cyan(spriteOption.name)} (uncolourised: ${spriteOption.uncolourised})`,
+      `${logHeader} ${elapsed()} received _e2e_spriteOptionRendered for ${chalk.cyan(spriteOption.name)} (uncolourised: ${spriteOption.uncolourised})`,
     );
   }
 };
@@ -142,7 +172,7 @@ export const waitForAnyRoomRenderEvent = async (page: Page): Promise<string> =>
       () =>
         new Promise<string>((resolve) => {
           window.addEventListener(
-            "firstRenderOfRoom",
+            "_e2e_firstRenderOfRoom",
             (event) => {
               const { roomId } = (event as CustomEvent).detail;
               resolve(roomId);
@@ -156,7 +186,7 @@ export const waitForAnyRoomRenderEvent = async (page: Page): Promise<string> =>
         () =>
           reject(
             new Error(
-              `Timeout waiting for firstRenderOfRoom event after ${formatDuration(maximumWaitForStep)}`,
+              `Timeout waiting for _e2e_firstRenderOfRoom event after ${formatDuration(maximumWaitForStep)}`,
             ),
           ),
         maximumWaitForStep,
@@ -214,6 +244,15 @@ export const waitForPlayableGrounded = (page: Page) =>
   );
 
 export const setZeroGameSpeed = async (page: Page): Promise<boolean> => {
+  // the pixi app is put on window partway through the (slow, async) game boot;
+  // under concurrent load the boot lags, so wait for it rather than racing the
+  // `!` assertion below into an undefined - which otherwise throws
+  // "Cannot read properties of undefined (reading 'ticker')" on a cold boot:
+  await page.waitForFunction(
+    () => window._e2e_pixiApplication !== undefined,
+    undefined,
+    { timeout: longTimeout },
+  );
   await page.evaluate(() => {
     window._e2e_pixiApplication!.ticker.speed = 0;
   });

@@ -12,15 +12,15 @@ import { unitVectors } from "../../../../utils/vectors/unitVectors";
 import {
   type DirectionXy4,
   type DirectionXy8,
-  vectorClosestDirectionXy4,
-  vectorClosestDirectionXy8,
+  nonZeroVectorClosestDirectionXy4,
+  nonZeroVectorClosestDirectionXy8,
 } from "../../../../utils/vectors/vectors";
 import { blockSizePx } from "../../../physics/mechanicsConstants";
 import { createSprite } from "../../createSprite";
 import { type ItemAppearance } from "../ItemAppearance";
 
 type RenderPropsXy4 = {
-  facingXy4: DirectionXy4;
+  resolvedFacingXy4: DirectionXy4;
 };
 
 export const directionalShadowMaskAppearanceXy4 =
@@ -38,21 +38,23 @@ export const directionalShadowMaskAppearanceXy4 =
     currentRendering,
   }) => {
     const currentlyRenderedProps = currentRendering?.renderProps;
-    // rotate the facing by the camera angle so the shadow matches how the
-    // item appears once the camera has turned:
-    const facingXy4 =
-      vectorClosestDirectionXy4(rotateXy(facing, cameraAngle)) ?? "towards";
+    // rotate the facing by the continuous camera angle so the shadow matches
+    // how the item appears once the camera has turned, stepping through
+    // intermediate facings mid-turn in lockstep with the appearance it masks:
+    const resolvedFacingXy4 = nonZeroVectorClosestDirectionXy4(
+      rotateXy(facing, cameraAngle),
+    );
 
     const render =
       currentlyRenderedProps === undefined ||
-      facingXy4 !== currentlyRenderedProps.facingXy4;
+      resolvedFacingXy4 !== currentlyRenderedProps.resolvedFacingXy4;
 
     if (!render) {
       return "no-update";
     }
     const sprite: Sprite = createSprite({
       textureId:
-        facingXy4 === "left" || facingXy4 === "away" ?
+        resolvedFacingXy4 === "left" || resolvedFacingXy4 === "away" ?
           `shadowMask.${shadowMaskBaseShadowId}.away`
         : `shadowMask.${shadowMaskBaseShadowId}.right`,
       spritesheet: spritesheetVariants.shadowSpritesheet,
@@ -60,16 +62,17 @@ export const directionalShadowMaskAppearanceXy4 =
 
     sprite.y = -(blockSizePx.z * (heightBlocks - 1));
 
-    sprite.scale.x = facingXy4 === "away" || facingXy4 === "right" ? 1 : -1;
+    sprite.scale.x =
+      resolvedFacingXy4 === "away" || resolvedFacingXy4 === "right" ? 1 : -1;
 
     return {
       output: sprite,
-      renderProps: { facingXy4 },
+      renderProps: { resolvedFacingXy4 },
     };
   };
 
 type PlayableShadowMaskRenderProps = {
-  facingXy8: DirectionXy8;
+  resolvedFacingXy8: DirectionXy8;
   falling: boolean;
 };
 
@@ -116,31 +119,32 @@ export const playableShadowMaskAppearanceXy8 =
     const action = item.type === "sceneryPlayer" ? "idle" : item.state.action;
 
     const currentlyRenderedProps = currentRendering?.renderProps;
-    // rotate the facing by the camera angle so the shadow matches how the
-    // character appears once the camera has turned:
-    const facingXy8 =
-      vectorClosestDirectionXy8(
-        rotateXy(
-          item.type === "sceneryPlayer" ?
-            unitVectors[item.config.startDirection]
-          : (item.state.visualFacingVector ?? item.state.facing),
-          cameraAngle,
-        ),
-      ) ?? "towards";
+    // rotate the facing by the continuous camera angle so the shadow matches
+    // how the character appears once the camera has turned. During a
+    // rotation the player steps through the intermediate facings along
+    // θ(t), so its shadow does too:
+    const resolvedFacingXy8 = nonZeroVectorClosestDirectionXy8(
+      rotateXy(
+        item.type === "sceneryPlayer" ?
+          unitVectors[item.config.startDirection]
+        : (item.state.visualFacingVector ?? item.state.facing),
+        cameraAngle,
+      ),
+    );
 
     const falling = action === "falling";
 
     const render =
       currentlyRenderedProps === undefined ||
-      facingXy8 !== currentlyRenderedProps.facingXy8 ||
+      resolvedFacingXy8 !== currentlyRenderedProps.resolvedFacingXy8 ||
       falling !== currentlyRenderedProps.falling;
 
     if (!render) {
       return "no-update";
     }
 
-    const flippedDirection = flipXy8[facingXy8];
-    const shadowMaskDirection = flippedDirection ?? facingXy8;
+    const flippedDirection = flipXy8[resolvedFacingXy8];
+    const shadowMaskDirection = flippedDirection ?? resolvedFacingXy8;
 
     const spritesheet = spritesheetVariants.shadowSpritesheet;
 
@@ -162,6 +166,6 @@ export const playableShadowMaskAppearanceXy8 =
 
     return {
       output: sprite,
-      renderProps: { facingXy8, falling },
+      renderProps: { resolvedFacingXy8, falling },
     };
   };

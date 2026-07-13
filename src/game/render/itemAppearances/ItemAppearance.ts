@@ -1,10 +1,16 @@
 import { type Container } from "pixi.js";
 import { type EmptyObject } from "type-fest";
 
+import { type ItemTypeUnion } from "../../../_generated/types/ItemInPlayUnion";
 import { type ItemInPlayType } from "../../../model/ItemInPlay";
 import { itemInPlayTimes } from "../../../model/times";
 import { type TextureId } from "../../../sprites/spritesheet/spritesheetData/makeSpritesheetData";
-import { emptyObject } from "../../../utils/empty";
+import {
+  asReuseSprite,
+  maybeRenderContainerToSprite,
+} from "../../../utils/pixi/renderContainerToSprite";
+import { nearestQuarterAngle } from "../../../utils/vectors/rotateXy";
+import { type Xy, xyEqual } from "../../../utils/vectors/vectors";
 import { isMultipliedItem } from "../../physics/itemPredicates";
 import {
   type AppearanceOptions,
@@ -16,8 +22,8 @@ import {
   type SpecifiedTextureCreateSpriteOptions,
 } from "../createSprite";
 import {
-  type AppearanceRenderContext,
-  type ItemTickContext,
+  type ItemLeafRenderContext,
+  type ItemLeafTickContext,
 } from "../ItemRenderContexts";
 
 export type ItemAppearanceOptions<
@@ -25,8 +31,8 @@ export type ItemAppearanceOptions<
   RenderProps extends object = EmptyObject,
   Output extends Container = Container,
 > = AppearanceOptions<
-  AppearanceRenderContext<T>,
-  ItemTickContext,
+  ItemLeafRenderContext<T>,
+  ItemLeafTickContext,
   RenderProps,
   Output
 >;
@@ -46,29 +52,38 @@ export type ItemAppearance<
 
 export const itemStaticAppearance = <T extends ItemInPlayType>(
   createSpriteOptions: SpecifiedTextureCreateSpriteOptions | TextureId,
-): ItemAppearance<T> =>
-  itemAppearanceRenderOnce(
+): ItemAppearance<T, RenderOnceProps> =>
+  itemAppearanceRenderMemoised(
     ({
       renderContext: {
         isReflection,
         item: subject,
-        general: { spritesheetVariants, cameraAngle },
+        general: { pixiRenderer, spritesheetVariants, cameraAngle },
       },
+      currentRendering,
     }) => {
+      const cameraQuarterAngle = nearestQuarterAngle(cameraAngle);
       const spritesheet = spritesheetVariants.currentMainSpritesheet(
         false,
         false,
         isReflection,
       );
       if (isMultipliedItem(subject)) {
-        return createSprite({
-          ...(typeof createSpriteOptions === "string" ?
-            { textureId: createSpriteOptions }
-          : createSpriteOptions),
-          times: itemInPlayTimes(subject),
-          cameraAngle,
-          spritesheet,
-        });
+        // reduce the multiple sprites down to one baked sprite; camera-angle
+        // re-renders bake into the previous render texture (the multiplied
+        // bake is the same size at every quarter turn):
+        return maybeRenderContainerToSprite(
+          pixiRenderer,
+          createSprite({
+            ...(typeof createSpriteOptions === "string" ?
+              { textureId: createSpriteOptions }
+            : createSpriteOptions),
+            times: itemInPlayTimes(subject),
+            cameraQuarterAngle,
+            spritesheet,
+          }),
+          asReuseSprite(currentRendering?.output),
+        );
       }
       return createSprite({
         ...(typeof createSpriteOptions === "string" ?
@@ -77,6 +92,7 @@ export const itemStaticAppearance = <T extends ItemInPlayType>(
         spritesheet,
       });
     },
+    multipliedLayoutAngle,
   );
 
 export const itemStaticAnimatedAppearance = <T extends ItemInPlayType>(
@@ -84,8 +100,8 @@ export const itemStaticAnimatedAppearance = <T extends ItemInPlayType>(
     AnimatedCreateSpriteOptions,
     "gameSpeed" | "paused" | "spritesheet"
   >,
-): ItemAppearance<T> =>
-  itemAppearanceRenderOnce(
+): ItemAppearance<T, RenderOnceProps> =>
+  itemAppearanceRenderMemoised(
     ({
       renderContext: {
         isReflection,
@@ -93,6 +109,7 @@ export const itemStaticAnimatedAppearance = <T extends ItemInPlayType>(
         general: { paused, spritesheetVariants, cameraAngle },
       },
     }) => {
+      const cameraQuarterAngle = nearestQuarterAngle(cameraAngle);
       const spritesheet = spritesheetVariants.currentMainSpritesheet(
         false,
         false,
@@ -103,7 +120,7 @@ export const itemStaticAnimatedAppearance = <T extends ItemInPlayType>(
           ...createSpriteOptions,
           times: itemInPlayTimes(subject),
           paused,
-          cameraAngle,
+          cameraQuarterAngle,
           spritesheet,
         });
       }
@@ -113,13 +130,44 @@ export const itemStaticAnimatedAppearance = <T extends ItemInPlayType>(
         spritesheet,
       });
     },
+    multipliedLayoutAngle,
   );
 
 /**
  * plenty of items never need to be re-rendered and have no render props - convenience for that case
  * that handles not rendering again after the first render
  */
-export const itemAppearanceRenderOnce =
+
+/**
+ * equality over the nullable camera angle stored in renderProps: null means
+ * "the camera angle does not affect this item's rendering"
+ */
+export const cameraQuarterAngleEqual = (a: null | Xy, b: null | Xy): boolean =>
+  a === null || b === null ? a === b : xyEqual(a, b);
+
+/**
+ * the camera angle, but only where it affects the item's rendered layout: a
+ * `times` multiplication along x/y tiles sprites along a world axis, which
+ * rotates on screen with the camera. Null for anything else, so single items
+ * never re-render for a camera rotation
+ */
+export const multipliedLayoutAngle = (
+  item: Parameters<typeof isMultipliedItem>[0],
+  cameraQuarterAngle: Xy,
+): null | Xy => {
+  if (!isMultipliedItem(item)) {
+    return null;
+  }
+  const times = itemInPlayTimes(item);
+  return (times?.x ?? 1) > 1 || (times?.y ?? 1) > 1 ? cameraQuarterAngle : null;
+};
+
+export type RenderOnceProps = {
+  /** see {@link itemAppearanceRenderMemoised}'s cameraAngleRerenderGate */
+  cameraQuarterAngle: null | Xy;
+};
+
+export const itemAppearanceRenderMemoised =
   <
     T extends ItemInPlayType,
     /**
@@ -130,24 +178,52 @@ export const itemAppearanceRenderOnce =
   >(
     renderWith: (
       appearance: Omit<
-        ItemAppearanceOptions<T, EmptyObject, Output>,
+        ItemAppearanceOptions<T, RenderOnceProps, Output>,
         "currentlyRenderedProps"
       >,
-    ) => Output,
+      /**
+       * returning undefined means the appearance declines to render this frame -
+       * any current rendering is removed. Used by walls after camera rotation
+       * if moves to the hidden side, or initially if starting on a hidden side
+       */
+    ) => Output | undefined,
+    /**
+     * the camera angle the rendering resolves against, or null where it has
+     * no effect: when it changes (the renderer's camera angle changed
+     * mid-life) the appearance renders again. Omit for renderings with no
+     * angle dependence at all, which render exactly once
+     */
+    cameraAngleRerenderGate?: (
+      item: ItemTypeUnion<T, string, string>,
+      cameraQuarterAngle: Xy,
+    ) => null | Xy,
   ): ((
-    options: ItemAppearanceOptions<T, EmptyObject, Output>,
-  ) => AppearanceReturn<EmptyObject, Output>) =>
+    options: ItemAppearanceOptions<T, RenderOnceProps, Output>,
+  ) => AppearanceReturn<RenderOnceProps, Output>) =>
   // inner function - calls renderWith
   ({ renderContext, currentRendering, tickContext }) => {
-    if (currentRendering === undefined) {
+    const cameraQuarterAngle =
+      cameraAngleRerenderGate?.(
+        renderContext.item,
+        nearestQuarterAngle(renderContext.general.cameraAngle),
+      ) ?? null;
+    if (
+      currentRendering === undefined ||
+      !cameraQuarterAngleEqual(
+        currentRendering.renderProps.cameraQuarterAngle,
+        cameraQuarterAngle,
+      )
+    ) {
       return {
+        // the previous rendering (if any) is passed through so renderWith can
+        // reuse its output (eg re-bake into an existing sprite's render
+        // texture) instead of building afresh:
         output: renderWith({
           renderContext,
-          // this only renders once, so we know it has never been rendered before:
-          currentRendering: undefined,
+          currentRendering,
           tickContext,
         }),
-        renderProps: emptyObject,
+        renderProps: { cameraQuarterAngle },
       };
     }
     return "no-update";

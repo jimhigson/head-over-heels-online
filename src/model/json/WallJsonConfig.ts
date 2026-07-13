@@ -1,9 +1,6 @@
 import { type SceneryName, type Wall } from "../../sprites/planets";
-import {
-  type DirectionXy4,
-  rotateDirectionXy4ByCameraAngle,
-  type Xy,
-} from "../../utils/vectors/vectors";
+import { unitVectors } from "../../utils/vectors/unitVectors";
+import { type DirectionXy4, type Xy } from "../../utils/vectors/vectors";
 
 /**
  * the json config for a wall.
@@ -28,10 +25,19 @@ export const isWallHidden = (direction: DirectionXy4) => {
  * whether a wall with the given physical direction is one of the two hidden
  * (camera-facing, undrawn) walls at the given camera angle. Pure - the room
  * model holds nothing angle-dependent; hidden-ness is derived wherever it is
- * consumed
+ * consumed. On the hot z-sort path, so the direction's unit vector is rotated
+ * inline without allocating: hidden ⟺ the rotated vector lies in the
+ * {towards, right} half-plane (x + y < 0)
  */
 export const isWallDirectionHiddenAtAngle = (
   direction: DirectionXy4,
   cameraAngle: Xy,
-): boolean =>
-  isWallHidden(rotateDirectionXy4ByCameraAngle(direction, cameraAngle));
+): boolean => {
+  const directionVector = unitVectors[direction];
+  return (
+    directionVector.x * cameraAngle.x -
+      directionVector.y * cameraAngle.y +
+      (directionVector.x * cameraAngle.y + directionVector.y * cameraAngle.x) <
+    0
+  );
+};

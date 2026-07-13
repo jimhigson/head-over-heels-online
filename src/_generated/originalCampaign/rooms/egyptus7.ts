@@ -15,6 +15,46 @@ export const room = inferRoomJson({
       position: { x: 0, y: 6, z: 3 },
       type: "block",
     },
+    b10: {
+      config: { style: "tower", times: { z: 3 } },
+      position: { x: 1, y: 7, z: 0 },
+      type: "block",
+    },
+    b11: {
+      config: { style: "tower", times: { z: 3 } },
+      position: { x: 7, y: 1, z: 0 },
+      type: "block",
+    },
+    b12: {
+      config: { style: "tower", times: { z: 3 } },
+      position: { x: 6, y: 7, z: 0 },
+      type: "block",
+    },
+    b13: {
+      config: { style: "tower", times: { z: 3 } },
+      position: { x: 7, y: 6, z: 0 },
+      type: "block",
+    },
+    b14: {
+      config: { style: "tower", times: { z: 3 } },
+      position: { x: 7, y: 7, z: 0 },
+      type: "block",
+    },
+    b15: {
+      config: { style: "tower", times: { z: 3 } },
+      position: { x: 0, y: 1, z: 0 },
+      type: "block",
+    },
+    b16: {
+      config: { style: "tower", times: { z: 3 } },
+      position: { x: 1, y: 0, z: 0 },
+      type: "block",
+    },
+    b17: {
+      config: { style: "tower", times: { z: 3 } },
+      position: { x: 1, y: 1, z: 0 },
+      type: "block",
+    },
     b2: {
       config: { style: "organic", times: { y: 2 } },
       position: { x: 7, y: 0, z: 3 },
@@ -26,23 +66,33 @@ export const room = inferRoomJson({
       type: "block",
     },
     b4: {
-      config: { style: "tower", times: { x: 2, y: 2, z: 3 } },
+      config: { style: "tower", times: { z: 3 } },
       position: { x: 0, y: 6, z: 0 },
       type: "block",
     },
     b5: {
-      config: { style: "tower", times: { y: 2, z: 3 } },
+      config: { style: "tower", times: { z: 3 } },
       position: { x: 7, y: 0, z: 0 },
       type: "block",
     },
     b6: {
-      config: { style: "tower", times: { x: 2, y: 2, z: 3 } },
+      config: { style: "tower", times: { z: 3 } },
       position: { x: 6, y: 6, z: 0 },
       type: "block",
     },
     b7: {
-      config: { style: "tower", times: { x: 2, y: 2, z: 3 } },
+      config: { style: "tower", times: { z: 3 } },
       position: { x: 0, y: 0, z: 0 },
+      type: "block",
+    },
+    b8: {
+      config: { style: "tower", times: { z: 3 } },
+      position: { x: 0, y: 7, z: 0 },
+      type: "block",
+    },
+    b9: {
+      config: { style: "tower", times: { z: 3 } },
+      position: { x: 1, y: 6, z: 0 },
       type: "block",
     },
     d: {

@@ -2,8 +2,8 @@ import { type ItemTickContext } from "../../game/render/ItemRenderContexts";
 import { type MonsterWhich } from "../../model/json/MonsterJsonConfig";
 import {
   type DirectionXy8,
+  nonZeroVectorClosestDirectionXy8,
   originXyz,
-  vectorClosestDirectionXy8,
   xyzEqual,
 } from "../../utils/vectors/vectors";
 import { audioCtx } from "../audioCtx";
@@ -138,7 +138,7 @@ export class MonsterSoundRenderer implements ItemSoundRenderer<"monster"> {
     } = item;
 
     if (this.#turnaroundBracketed) {
-      const facingXy8 = vectorClosestDirectionXy8(facing);
+      const facingXy8 = nonZeroVectorClosestDirectionXy8(facing);
       this.#turnaroundBracketed(facingXy8);
     }
 

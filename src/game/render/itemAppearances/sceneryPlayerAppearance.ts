@@ -1,14 +1,9 @@
-import { maybeReflectedVector } from "../../../model/MirrorOrientation";
 import { type IndividualCharacterName } from "../../../model/modelTypes";
 import { isAnimationId } from "../../../sprites/assertIsTextureId";
 import { type AppSpritesheet } from "../../../sprites/spritesheet/variants/AppSpritesheet";
-import { emptyObject } from "../../../utils/empty";
-import { rotateXy } from "../../../utils/vectors/rotateXy";
+import { resolveCameraRelativeVectorXy8 } from "../../../utils/vectors/resolveCameraRelativeVector";
 import { unitVectors } from "../../../utils/vectors/unitVectors";
-import {
-  type DirectionXy8,
-  vectorClosestDirectionXy8,
-} from "../../../utils/vectors/vectors";
+import { type DirectionXy8 } from "../../../utils/vectors/vectors";
 import { createSprite, type CreateSpriteOptions } from "../createSprite";
 import { createStackedSprites } from "./createStackedSprites";
 import { type ItemAppearance } from "./ItemAppearance";
@@ -33,7 +28,14 @@ const spriteOptions = (
   return { textureId: `${name}.walking.${direction}.2`, spritesheet };
 };
 
-export const sceneryPlayerAppearance: ItemAppearance<"sceneryPlayer"> = ({
+type SceneryPlayerRenderProps = {
+  resolvedRenderDirection: DirectionXy8;
+};
+
+export const sceneryPlayerAppearance: ItemAppearance<
+  "sceneryPlayer",
+  SceneryPlayerRenderProps
+> = ({
   renderContext: {
     isReflection,
     item: {
@@ -46,7 +48,18 @@ export const sceneryPlayerAppearance: ItemAppearance<"sceneryPlayer"> = ({
 }) => {
   const currentlyRenderedProps = currentRendering?.renderProps;
 
-  const render = currentlyRenderedProps === undefined;
+  // resolve the configured facing against the continuous camera angle -
+  // stepping through intermediate facings mid-turn. Rounding happens only
+  // here, at the final sprite-name pick:
+  const resolvedRenderDirection = resolveCameraRelativeVectorXy8(
+    unitVectors[startDirection],
+    cameraAngle,
+    isReflection,
+  );
+
+  const render =
+    currentlyRenderedProps === undefined ||
+    resolvedRenderDirection !== currentlyRenderedProps.resolvedRenderDirection;
 
   if (!render) {
     return "no-update";
@@ -59,30 +72,34 @@ export const sceneryPlayerAppearance: ItemAppearance<"sceneryPlayer"> = ({
       spritesheetVariants.currentMainSpritesheet(false, false, true)
     : spritesheetVariants.sceneryPlayerSpritesheet;
 
-  // face the reflected way when seen in a mirror, and rotate the facing by the
-  // camera angle so the sprite matches how the character appears after turning:
-  const direction =
-    vectorClosestDirectionXy8(
-      rotateXy(
-        maybeReflectedVector(
-          unitVectors[startDirection],
-          isReflection,
-          cameraAngle,
-        ),
-        cameraAngle,
-      ),
-    ) ?? startDirection;
-
   return {
     output:
       which === "headOverHeels" ?
         createStackedSprites({
-          top: spriteOptions("head", direction, hash, paused, spritesheet),
-          bottom: spriteOptions("heels", direction, hash, paused, spritesheet),
+          top: spriteOptions(
+            "head",
+            resolvedRenderDirection,
+            hash,
+            paused,
+            spritesheet,
+          ),
+          bottom: spriteOptions(
+            "heels",
+            resolvedRenderDirection,
+            hash,
+            paused,
+            spritesheet,
+          ),
         })
       : createSprite(
-          spriteOptions(which, direction, hash, paused, spritesheet),
+          spriteOptions(
+            which,
+            resolvedRenderDirection,
+            hash,
+            paused,
+            spritesheet,
+          ),
         ),
-    renderProps: emptyObject,
+    renderProps: { resolvedRenderDirection },
   };
 };

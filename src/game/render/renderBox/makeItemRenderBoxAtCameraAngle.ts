@@ -18,8 +18,18 @@ import {
 } from "../../../utils/vectors/vectors";
 import {
   blockSizePx,
-  wallRenderHeight,
+  wallFaceHeightPx,
 } from "../../physics/mechanicsConstants";
+
+// wall art overflows the top of the nominal face parallelogram: sampling every
+// wall tile's opaque pixels, the tallest tops (moonbase coil) reach this far
+// above the face top edge. The render box height must cover it or the cuboid
+// transition mesh clips the tops. Fractional px are expected - isometric corners
+// rarely land on whole pixels. (The box bottom must stay at the wall base, z=0,
+// so the z-sort keeps walls resting on - drawn in front of - the floor.)
+const wallArtOverflowTopPx = 7.75;
+
+export const wallRenderHeight = wallFaceHeightPx + wallArtOverflowTopPx;
 
 /**
  * a render box for an item at a camera angle: the cuboid the item's sprites
@@ -140,9 +150,7 @@ const wallRenderBox = (
     outIsNegative ?
       {
         ...originXyz,
-        [thicknessAxis]:
-          wallThicknessBlocks *
-          (thicknessAxis === "x" ? blockSizePx.x : blockSizePx.y),
+        [thicknessAxis]: wallThicknessBlocks * blockSizePx[thicknessAxis],
       }
     : undefined;
   return { renderAabb, renderAabbOffset };
@@ -265,24 +273,45 @@ const floorRenderBox = (
   };
 
   // the physical expansion is a clean 0.5 block on every door-expanded side;
-  // the apparently-far ("back") sides draw a hair more so the floor meets the
-  // back wall. Apparently-near (hidden-wall) sides draw flush to the physical
-  // edge, so they stay exactly on the pixel grid:
+  // the world-away/left sides draw a hair (0.02 block) more, matching the
+  // original game's floors, which expanded 0.52 through those doors and 0.5
+  // through towards/right ones. On a camera-reversed axis that overhung side
+  // is the apparently-near one, so the drawn origin moves out to it - the
+  // floor's container anchors on this (fractional) origin so the whole drawn
+  // floor rounds to the device grid as one, exactly as when the expansion
+  // was baked into the loaded (camera-rotated) room model:
   for (const side of doorExpandedSides) {
-    if (isWallDirectionHiddenAtAngle(side, cameraAngle)) {
+    if (side !== "away" && side !== "left") {
       continue;
     }
     const axis = perpendicularAxisXy(doorAlongAxis(side));
     renderAabb[axis] += floorBackEdgeOverhangPx;
-    if (side === "towards" || side === "right") {
-      // a min-coordinate side seen as the back edge grows outward from the
-      // near corner, so shift the render box's near corner out too:
+    const axisReversed =
+      axis === "x" ?
+        cameraAngle.x + cameraAngle.y < 0
+      : cameraAngle.x - cameraAngle.y < 0;
+    if (axisReversed) {
       renderAabbOffset[axis] -= floorBackEdgeOverhangPx;
     }
   }
 
   return { renderAabb, renderAabbOffset };
 };
+
+/**
+ * the world x/y offset from a floor's physical position to its drawn origin -
+ * the fractional near corner given by the drawn 0.02-block overhang on
+ * camera-reversed axes (see {@link floorRenderBox}). z is always 0: the drawn
+ * box's z offset describes the drawn edge thickness, not a position shift.
+ * The floor's container, its baked art and its received shadows all take
+ * this origin, so they round to the device pixel grid together
+ */
+export const floorDrawnOriginXyOffset = (
+  renderBox: null | RenderBox | undefined,
+): Xyz =>
+  renderBox?.renderAabbOffset === undefined ?
+    originXyz
+  : { x: renderBox.renderAabbOffset.x, y: renderBox.renderAabbOffset.y, z: 0 };
 
 /**
  * generic items take their angle-invariant per-face overdraw from the

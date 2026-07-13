@@ -1,7 +1,6 @@
 import { type Container, type Sprite } from "pixi.js";
 
 import { type ItemInPlay } from "../../../model/ItemInPlay";
-import { maybeReflectedVector } from "../../../model/MirrorOrientation";
 import { type RoomState } from "../../../model/RoomState";
 import { isAnimationId, isTextureId } from "../../../sprites/assertIsTextureId";
 import {
@@ -10,11 +9,10 @@ import {
 } from "../../../sprites/spritesheet/spritesheetData/makeSpritesheetData";
 import { type AppSpritesheet } from "../../../sprites/spritesheet/variants/AppSpritesheet";
 import { renderBobSine } from "../../../utils/maths/renderBob";
-import { rotateXy } from "../../../utils/vectors/rotateXy";
+import { resolveCameraRelativeVectorXy4 } from "../../../utils/vectors/resolveCameraRelativeVector";
 import {
   type DirectionXy4,
   originXy,
-  vectorClosestDirectionXy4,
   xyEqual,
 } from "../../../utils/vectors/vectors";
 import { blockSizePx } from "../../physics/mechanicsConstants";
@@ -54,7 +52,7 @@ const dalekAnimationId = (
 
 type MonsterRenderProps = {
   walking?: boolean;
-  facingXy4?: DirectionXy4;
+  resolvedFacingXy4?: DirectionXy4;
   activated: boolean;
   busyLickingDoughnutsOffFace: boolean;
 };
@@ -141,22 +139,22 @@ export const monsterAppearance: ItemAppearance<
     case "monkey": {
       // rendering is directional (xy4)
 
-      // rotate the facing by the camera angle so the directional sprite matches
-      // how the monster appears once the camera has turned:
-      const facingXy4 =
-        vectorClosestDirectionXy4(
-          rotateXy(
-            maybeReflectedVector(state.facing, isReflection, cameraAngle),
-            cameraAngle,
-          ),
-        ) ?? "towards";
+      // resolve the facing against the continuous camera angle so the
+      // directional sprite matches how the monster appears once the camera
+      // has turned - stepping through intermediate facings mid-turn.
+      // Rounding happens only here, at the final sprite-name pick:
+      const resolvedFacingXy4 = resolveCameraRelativeVectorXy4(
+        state.facing,
+        cameraAngle,
+        isReflection,
+      );
 
       const render =
         currentlyRenderedProps === undefined ||
         activated !== currentlyRenderedProps.activated ||
         busyLickingDoughnutsOffFace !==
           currentlyRenderedProps.busyLickingDoughnutsOffFace ||
-        facingXy4 !== currentlyRenderedProps.facingXy4;
+        resolvedFacingXy4 !== currentlyRenderedProps.resolvedFacingXy4;
 
       if (!render) {
         maybeAddBob(item, room, currentRendering!.output!, uncolourised);
@@ -164,7 +162,7 @@ export const monsterAppearance: ItemAppearance<
         return "no-update";
       }
       const renderProps: MonsterRenderProps = {
-        facingXy4,
+        resolvedFacingXy4,
         activated,
         busyLickingDoughnutsOffFace,
       };
@@ -172,13 +170,13 @@ export const monsterAppearance: ItemAppearance<
       switch (config.which) {
         case "skiHead": {
           // directional, style, no anim — fall back to first style if this one is missing
-          const preferredId = `${config.which}.${config.style}.${facingXy4}`;
+          const preferredId = `${config.which}.${config.style}.${resolvedFacingXy4}`;
           const spritesheetData = spritesheetVariants.originalSpritesheet.data;
           return {
             output: createSprite({
               textureId:
                 isTextureId(preferredId, spritesheetData) ? preferredId : (
-                  (`${config.which}.greenAndPink.${facingXy4}` as TextureId)
+                  (`${config.which}.greenAndPink.${resolvedFacingXy4}` as TextureId)
                 ),
               spritesheet,
             }),
@@ -189,7 +187,7 @@ export const monsterAppearance: ItemAppearance<
           // directional, no style, no anim
           return {
             output: createSprite({
-              textureId: `elephant.${facingXy4}`,
+              textureId: `elephant.${resolvedFacingXy4}`,
               spritesheet,
             }),
             renderProps,
@@ -201,13 +199,13 @@ export const monsterAppearance: ItemAppearance<
             output:
               animate ?
                 createSprite({
-                  animationId: `${config.which}.${facingXy4}`,
+                  animationId: `${config.which}.${resolvedFacingXy4}`,
                   spritesheet,
                   paused,
                   startFramePhase: hash,
                 })
               : createSprite({
-                  textureId: `${config.which}.${facingXy4}.1`,
+                  textureId: `${config.which}.${resolvedFacingXy4}.1`,
                   spritesheet,
                 }),
             renderProps,
@@ -223,7 +221,7 @@ export const monsterAppearance: ItemAppearance<
                   room,
                   createStackedSprites({
                     top: {
-                      textureId: `${config.which}.${facingXy4}`,
+                      textureId: `${config.which}.${resolvedFacingXy4}`,
                       spritesheet,
                     },
                     bottom: {
@@ -236,7 +234,7 @@ export const monsterAppearance: ItemAppearance<
                 )
                 // charging on a toaster
               : createSprite({
-                  textureId: `${config.which}.${facingXy4}`,
+                  textureId: `${config.which}.${resolvedFacingXy4}`,
                   spritesheet,
                 }),
             renderProps,
@@ -252,7 +250,7 @@ export const monsterAppearance: ItemAppearance<
               room,
               createStackedSprites({
                 top: {
-                  textureId: `${config.which}.${facingXy4}`,
+                  textureId: `${config.which}.${resolvedFacingXy4}`,
                   spritesheet,
                 },
                 bottom: {
