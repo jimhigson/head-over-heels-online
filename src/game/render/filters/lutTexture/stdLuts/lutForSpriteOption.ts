@@ -27,6 +27,7 @@ export const teleportingLutForSpriteOption = (
     case "Toppy":
       return (cachedTeleportingToppy ??= toppyToSpectrumLut());
   }
+  throw new Error("not available");
 };
 
 const deathLutFromMeta = (meta: SpritesheetMetadata): Texture =>
@@ -56,4 +57,5 @@ export const deathLutForSpriteOption = (
         spritesheetMetaForOption(spriteOption),
       ));
   }
+  throw new Error("not available");
 };

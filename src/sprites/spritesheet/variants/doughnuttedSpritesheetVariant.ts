@@ -7,7 +7,6 @@ import {
 import {
   ambientDimSwops,
   createSpritesheetVariant,
-  noopSpritesheetTextureSwops,
   replaceSpritesheetWithSwopped,
   type SpritesheetTextureSwops,
 } from "../spritesheetPaletteSwop";
@@ -18,26 +17,28 @@ export const buildDoughnuttedSpritesheet = (
   context: VariantBuildContext,
   baseTexture: Texture,
   originalSpritesheet: AppSpritesheet,
-): AppSpritesheet => {
+): AppSpritesheet | undefined => {
   const { roomColor, spritesheetMetaData } = context;
 
   const { palette } = spritesheetMetaData;
   const doughnuttedSwops = spritesheetMetaData.swops?.doughnutted;
 
-  const swops: SpritesheetTextureSwops =
-    doughnuttedSwops === undefined ?
-      noopSpritesheetTextureSwops
-    : {
-        ambient: [
-          {
-            swops: resolveSwops(
-              palette,
-              resolveNamedColourSwops(doughnuttedSwops.colours, palette),
-            ),
-            lutType: "sparse",
-          },
-        ],
-      };
+  if (doughnuttedSwops === undefined) {
+    // no doughnutted swops declared: this sheet has no doughnutted variant
+    return undefined;
+  }
+
+  const swops: SpritesheetTextureSwops = {
+    ambient: [
+      {
+        swops: resolveSwops(
+          palette,
+          resolveNamedColourSwops(doughnuttedSwops.colours, palette),
+        ),
+        lutType: "sparse",
+      },
+    ],
+  };
 
   let result = createSpritesheetVariant(
     context,

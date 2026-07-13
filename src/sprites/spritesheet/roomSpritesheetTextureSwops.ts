@@ -121,6 +121,9 @@ export const roomSpritesheetTextureSwops = (
           ...floorEdgeSwops(roomColor),
         ],
       };
+    case "Debug":
+      // the Debug sheet renders the same in every room:
+      return undefined;
     default:
       spriteOption satisfies never;
       return undefined;

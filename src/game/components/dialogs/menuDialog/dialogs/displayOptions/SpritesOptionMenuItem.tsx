@@ -5,11 +5,8 @@ import {
 } from "../../../../../../sprites/spritesheet/spritesheetData/TextureTailwindClass";
 import { useAppSelector } from "../../../../../../store/hooks";
 import { selectSpritesOption } from "../../../../../../store/slices/gameMenus/gameMenusSelectors";
-import { spriteOptionEquals } from "../../../../../../store/slices/userSettings/spriteOptionEquals";
-import {
-  nextSpritesOption,
-  type SpriteOption,
-} from "../../../../../../store/slices/userSettings/userSettingsSlice";
+import { cycleSpritesOptionThunk } from "../../../../../../store/slices/userSettings/cycleSpritesOptionThunk";
+import { type SpriteOption } from "../../../../../../store/slices/userSettings/userSettingsSlice";
 import { useDispatchActionCallback } from "../../../../../../store/useDispatchActionCallback";
 import { SwitchN } from "../../../../../../ui/Switch";
 import { BlockyMarkdown } from "../../../../BlockyMarkdown";
@@ -39,9 +36,6 @@ const spritesOptionDescription = (spriteOption: SpriteOption): string =>
 
 const spriteOptionLabels = spriteOptionValues.map(spritesOptionLabel);
 
-const spriteOptionIndex = (spriteOption: SpriteOption): number =>
-  spriteOptionValues.findIndex((v) => spriteOptionEquals(v, spriteOption));
-
 export const SpritesOptionMenuItem = () => {
   const spritesOption = useAppSelector(selectSpritesOption);
   return (
@@ -53,10 +47,10 @@ export const SpritesOptionMenuItem = () => {
         <SwitchN
           class="ml-auto"
           values={spriteOptionLabels}
-          value={spriteOptionLabels[spriteOptionIndex(spritesOption)]}
+          value={spritesOptionLabel(spritesOption)}
         />
       }
-      onSelect={useDispatchActionCallback(nextSpritesOption)}
+      onSelect={useDispatchActionCallback(cycleSpritesOptionThunk)}
       verticalAlignItemsCentre
       hint={
         <BlockyMarkdown

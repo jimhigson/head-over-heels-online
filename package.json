@@ -54,6 +54,7 @@
     "deploy": "gh-pages -d dist",
     "deploy:r2": "tsx scripts/deployToR2.ts",
     "toppySpritesheet": "tsx scripts/toppySpritesheet.ts",
+    "gen:debugSpritesheet": "tsx scripts/debugSpritesheet.ts",
     "gen:font": "tsx scripts/genFont.ts",
     "iff2png": "./scripts/iff2png.sh",
     "watch:iff2png": "pnpm run iff2png && chokidar gfx/sprites.iff -c \"pnpm run iff2png\"",

@@ -16,7 +16,11 @@ import {
   itemInPlayTypes,
 } from "../../../model/ItemInPlay";
 import { type ResolutionName, resolutionNames } from "../../../originalGame";
-import { spriteOptionValues } from "../../../sprites/spritesheet/spritesheetData/spritesheetMetaData";
+import {
+  spriteOptionValues,
+  spriteOptionValuesWithDebug,
+  type spritesheetMetas,
+} from "../../../sprites/spritesheet/spritesheetData/spritesheetMetaData";
 import { getAtPath, setAtPath } from "../../../utils/getAtPath";
 import { nextInCycle } from "../../../utils/nextInCycle";
 import { type ToggleablePaths } from "../../../utils/Toggleable";
@@ -34,10 +38,25 @@ import {
 } from "./selectableGameSpeeds";
 import { spriteOptionEquals } from "./spriteOptionEquals";
 
-export type SpriteOption =
-  | { name: "BlockStack"; uncolourised: false }
-  | { name: "BlockStack"; uncolourised: true }
-  | { name: "Toppy"; uncolourised: false };
+export type SpriteOptionFor<
+  Name extends string,
+  SupportsUncolourised extends boolean,
+> =
+  SupportsUncolourised extends true ?
+    { name: Name; uncolourised: false } | { name: Name; uncolourised: true }
+  : { name: Name; uncolourised: false };
+
+/**
+ * every sprite option, derived from the spritesheet metas: each sheet in
+ * colourised form, plus uncolourised where the sheet supports it. Debug is
+ * included (cheats-only) since it has a meta
+ */
+export type SpriteOption = {
+  [Name in keyof typeof spritesheetMetas]: SpriteOptionFor<
+    Name,
+    (typeof spritesheetMetas)[Name]["supportsUncolourised"]
+  >;
+}[keyof typeof spritesheetMetas];
 
 export type DisplaySettings = {
   emulatedResolution?: ResolutionName;
@@ -192,9 +211,22 @@ export const userSettingsSlice = createSlice({
     setShowShadowMasks(state, { payload }: PayloadAction<boolean>) {
       state.userSettings.displaySettings.showShadowMasks = payload;
     },
-    nextSpritesOption(state) {
+    nextSpritesOption(
+      state,
+      {
+        payload,
+      }: PayloadAction<
+        | {
+            /** should we include the debug spritesheet in the cycle? */
+            includeDebug: boolean;
+          }
+        | undefined
+      >,
+    ) {
       state.userSettings.displaySettings.sprites = nextInCycle(
-        spriteOptionValues,
+        payload?.includeDebug ?
+          spriteOptionValuesWithDebug
+        : spriteOptionValues,
         state.userSettings.displaySettings.sprites ??
           defaultUserSettings.displaySettings.sprites,
         spriteOptionEquals,

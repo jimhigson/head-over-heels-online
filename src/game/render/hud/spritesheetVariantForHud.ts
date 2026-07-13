@@ -40,6 +40,9 @@ export const tintForHud = (
   if (spriteOption.name === "Toppy") {
     return toppyReplacementColour(hudHue);
   }
+  if (spriteOption.name === "Debug") {
+    return noTint;
+  }
   spriteOption.name satisfies "BlockStack";
   return replacementColour(
     hudHue,
@@ -60,6 +63,9 @@ export const tintForIcon = (
   }
   if (spriteOption.name === "Toppy") {
     return toppyReplacementColour(iconHue);
+  }
+  if (spriteOption.name === "Debug") {
+    return noTint;
   }
   spriteOption.name satisfies "BlockStack";
   return replacementColour(iconHue, false, roomColor.shade === "dimmed");

@@ -164,6 +164,11 @@ export class ColourClashCircleEffectRenderer<
       },
     } = this;
 
+    if (spritesheetMeta.debug === true) {
+      // no teleport/death effects with the debug spritesheet
+      return;
+    }
+
     this.#effectFilter = new ColourClashCircleEffectFilter(
       isDeath ?
         {
@@ -240,6 +245,11 @@ export class ColourClashCircleEffectRenderer<
       this.#createFilter(isDeath, playable);
     }
 
+    if (this.#effectFilter === undefined) {
+      // #createFilter declined to create (debug spritesheet)
+      return;
+    }
+
     let progress01: number;
 
     if (isDeath) {
@@ -260,7 +270,7 @@ export class ColourClashCircleEffectRenderer<
       );
     }
 
-    this.#effectFilter!.progress = progress01;
+    this.#effectFilter.progress = progress01;
     this.#updateFilterCentreXy(playable);
   }
 

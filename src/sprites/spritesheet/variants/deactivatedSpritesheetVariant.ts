@@ -11,7 +11,6 @@ import { type SpritesheetMetadata } from "../spritesheetData/spritesheetMetaData
 import {
   ambientDimSwops,
   createSpritesheetVariant,
-  noopSpritesheetTextureSwops,
   replaceSpritesheetWithSwopped,
   type SpritesheetTextureSwops,
 } from "../spritesheetPaletteSwop";
@@ -24,13 +23,11 @@ const buildDeactivatedSwops = <
   SO extends LoadableSpriteOption,
 >(
   spritesheetMetaData: SpritesheetMetadata<PaletteColourName, SO>,
+  deactivated: NonNullable<
+    SpritesheetMetadata<PaletteColourName, SO>["swops"]
+  >["deactivated"] &
+    object,
 ): SpritesheetTextureSwops => {
-  const deactivated = spritesheetMetaData.swops?.deactivated;
-
-  if (deactivated === undefined) {
-    return noopSpritesheetTextureSwops;
-  }
-
   const { palette } = spritesheetMetaData;
 
   const ambientNamed: PartialNamedColours<PaletteColourName> =
@@ -66,12 +63,18 @@ export const buildDeactivatedSpritesheet = (
   context: VariantBuildContext,
   baseTexture: Texture,
   originalSpritesheet: AppSpritesheet,
-): AppSpritesheet => {
+): AppSpritesheet | undefined => {
   const { roomScenery, roomColor, spritesheetMetaData } = context;
+
+  const deactivated = spritesheetMetaData.swops?.deactivated;
+  if (deactivated === undefined) {
+    // no deactivated swops declared: this sheet has no deactivated variant
+    return undefined;
+  }
 
   let result = createSpritesheetVariant(
     context,
-    buildDeactivatedSwops(spritesheetMetaData),
+    buildDeactivatedSwops(spritesheetMetaData, deactivated),
     baseTexture,
     originalSpritesheet,
   );
