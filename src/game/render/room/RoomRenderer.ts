@@ -122,6 +122,11 @@ export class RoomRenderer<RoomId extends string, RoomItemId extends string>
 
   constructor(renderContext: RoomRenderContext<RoomId, RoomItemId>) {
     this.renderContext = renderContext;
+
+    if (import.meta.env.DEV) {
+      // share for e2e/agents:
+      window.__e2e_zGraph = this.#zEdges;
+    }
     // the visual index projects with the camera angle; the renderer is rebuilt when
     // the angle changes, so the angle is fixed for this index's lifetime:
     this.#visualIndex = new VisualIndex<

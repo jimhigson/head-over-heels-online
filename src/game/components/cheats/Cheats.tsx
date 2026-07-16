@@ -48,13 +48,23 @@ import { blockSizePx } from "../../physics/mechanicsConstants";
 import { boundingBoxDecorateItemRenderer } from "../../render/item/itemRender/boundingBoxDecorateItemRenderer";
 import { debugPointerDecorateItemRenderer } from "../../render/item/itemRender/debugPointerDecorateItemRenderer";
 import { subRoomBoundariesDecorateRoomRenderer } from "../../render/room/subRoomBoundariesDecorateRoomRenderer";
+import {
+  dumpZGraph,
+  formatZGraph,
+} from "../../render/sortZ/zGraphDump/dumpZGraph";
 import { useRegisterDecorateItemRenderers } from "../../render/useRegisterDecorateItemRenderers";
 import { useRegisterDecorateRoomRenderers } from "../../render/useRegisterDecorateRoomRenderers";
 import { CssVariables } from "../CssVariables";
 import { useGameApi } from "../GameApiContext";
 import { usePlayableTailwindSpriteClassname } from "../tailwindSprites/playableTailwindSpriteClassname";
+import { ConsoleDumpButton } from "./ConsoleDumpButton";
 import { GameApiConnectedRoomSelect } from "./GameApiConnectedRoomSelect";
 import { useLevelSelectByUrlHash } from "./useLevelSelectByUrlHash";
+
+// the z-order-graph dump is also callable from automation/the console; installed
+// as soon as the (lazy-loaded) cheats module loads:
+window.__e2e_dumpZGraph = () => dumpZGraph(window.__e2e_zGraph);
+console.log("call __e2e_dumpZGraph() to see zGraph");
 
 interface SpeedButtonProps {
   speed: number;
@@ -911,6 +921,13 @@ export const Cheats = <RoomId extends string>(_emptyProps: EmptyObject) => {
                   class={`sprite ${spriteClassname({ character: "heels", action: "idle", facingXy8: "right" })}`}
                 />
               </Button>
+              <ConsoleDumpButton
+                data-test-id="cheats-dump-z-graph"
+                log={() => dumpZGraph(window.__e2e_zGraph)}
+                copyText={() => formatZGraph(window.__e2e_zGraph)}
+              >
+                z-graph
+              </ConsoleDumpButton>
             </div>
           </CssVariables>
         </div>
