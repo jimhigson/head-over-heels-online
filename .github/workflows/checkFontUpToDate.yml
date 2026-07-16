@@ -27,7 +27,7 @@ jobs:
       - uses: pnpm/action-setup@v5
       - uses: actions/setup-node@v6
         with:
-          node-version: 25.x
+          node-version-file: ".node-version"
           cache: "pnpm"
       - run: pnpm install
       - uses: actions/setup-python@v5

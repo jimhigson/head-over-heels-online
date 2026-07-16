@@ -8,21 +8,16 @@ jobs:
   deploy:
     runs-on: ubuntu-24.04-arm
 
-    strategy:
-      matrix:
-        node-version: [25.x]
-        # See supported Node.js release schedule at https://nodejs.org/en/about/releases/
-
     steps:
       - uses: actions/checkout@v6
         with:
           ref: production
       - name: Install pnpm
         uses: pnpm/action-setup@v5
-      - name: Use Node.js ${{ matrix.node-version }}
+      - name: Use Node.js
         uses: actions/setup-node@v6
         with:
-          node-version: ${{ matrix.node-version }}
+          node-version-file: ".node-version"
           cache: "pnpm"
       - run: pnpm install
       - run: pnpm run predeploy

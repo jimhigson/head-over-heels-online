@@ -18,11 +18,7 @@ jobs:
     # which only has the legacy `convert`/`compare` commands. The node:*-trixie
     # variant (not bare debian:trixie) is used so the JS actions below have a
     # node interpreter to run on.
-    container: node:24-trixie
-
-    strategy:
-      matrix:
-        node-version: [25.x]
+    container: node:26-trixie
 
     defaults:
       run:
@@ -45,7 +41,7 @@ jobs:
       - uses: pnpm/action-setup@v5
       - uses: actions/setup-node@v6
         with:
-          node-version: ${{ matrix.node-version }}
+          node-version-file: ".node-version"
           cache: "pnpm"
       - run: pnpm install
       - name: Save original image files before regeneration

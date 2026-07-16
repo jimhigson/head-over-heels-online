@@ -66,6 +66,45 @@ snapshots matched the committed baselines exactly on a bridged browser — but a
 *red* on a bridged build could be version noise, so inspect the `*-diff.png`
 before trusting it.
 
+## WebKit in the sandbox
+
+Real webkit (`--project=webkit-desktop`) runs in the Linux sandbox. The
+Playwright CDN is usually reachable, so download it plainly:
+
+```bash
+pnpm exec playwright install webkit
+```
+
+The sandbox image is missing webkit's system libraries. `apt-get update`
+first (the baked package lists 404), then install:
+
+```bash
+apt-get update
+apt-get install -y --no-install-recommends \
+  libgtk-4-1 libgraphene-1.0-0 libevent-2.1-7 libopus0 gstreamer1.0-gl \
+  libgstreamer-plugins-bad1.0-0 flite libwebpdemux2 libavif16 \
+  libharfbuzz-icu0 libenchant-2-2 libsecret-1-0 libhyphen0 \
+  libmanette-0.2-0 libx264-164 libwebpmux3 libwayland-server0 libwoff-dev
+```
+
+If launch still complains about specific `.so` files, install whatever
+package provides them and re-run — the list only needs to be complete
+enough for launch (`playwright install-deps` also wants ~150 gstreamer
+codec packages which are NOT needed; see below).
+
+**Symptom of missing audio codecs**: the app loads (store present, no JS
+errors) but no dialog ever mounts — `assetsLoading.count` stays at 1
+because webkit's `decodeAudioData` never settles without gstreamer codecs,
+and the menu dialogs gate on menu sounds (`Dialogs.tsx`). Visual-regression
+builds stub out audio decoding entirely (`loadAndDecode.ts`), so a current
+build is immune; if hitting this on an older build, either rebuild or
+`apt-get install gstreamer1.0-{libav,plugins-base,plugins-good,plugins-bad}`.
+
+Webkit renders matched CI's macOS webkit renders to within ~350px (the
+animated chevron/leader sprites), well inside the menu snapshots'
+`maxDiffPixelRatio: 0.03` (~5,900px) — so sandbox webkit is good enough to
+regenerate `webkit-desktop` baselines with `--update-snapshots`.
+
 ## Scope
 
 Visual regression is a regression guard for steady-state rendering; it does

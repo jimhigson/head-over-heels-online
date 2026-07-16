@@ -55,7 +55,7 @@ jobs:
         if: steps.game-build-cache.outputs.cache-hit != 'true'
         uses: actions/setup-node@v6
         with:
-          node-version: 25.x
+          node-version-file: ".node-version"
           cache: "pnpm"
 
       - run: pnpm install
@@ -88,20 +88,21 @@ jobs:
           - { os: ubuntu-24.04-arm, suite: roomSnapshots.spec.ts, projectOption: --project mobile-chrome, batch_number: 1, batch_count: 3, parallel_tests: 2 }
           - { os: ubuntu-24.04-arm, suite: roomSnapshots.spec.ts, projectOption: --project mobile-chrome, batch_number: 2, batch_count: 3, parallel_tests: 2 }
 
-          ## webkit/safari based - these run a bit slower on github so 1 more runners each,
-          ## mobile is still slower than desktop:
+          ## webkit/safari based - run on macOS runners so WebKit rendering (real
+          ## Safari fonts, P3 colour) matches actual Safari and the macOS-captured
+          ## baselines, rather than Playwright's Linux WebKit build:
           # (neglecting to run all to keep runner count down)
-          - { os: ubuntu-24.04-arm, suite: roomSnapshots.spec.ts, projectOption: --project webkit-desktop, batch_number: 0, batch_count: 3, parallel_tests: 2 }
-          #- { os: ubuntu-24.04-arm, suite: roomSnapshots.spec.ts, projectOption: --project webkit-desktop, batch_number: 1, batch_count: 3, parallel_tests: 2 }
-          - { os: ubuntu-24.04-arm, suite: roomSnapshots.spec.ts, projectOption: --project webkit-desktop, batch_number: 2, batch_count: 3, parallel_tests: 2 }
+          - { os: macos-latest, suite: roomSnapshots.spec.ts, projectOption: --project webkit-desktop, batch_number: 0, batch_count: 3, parallel_tests: 2 }
+          #- { os: macos-latest, suite: roomSnapshots.spec.ts, projectOption: --project webkit-desktop, batch_number: 1, batch_count: 3, parallel_tests: 2 }
+          - { os: macos-latest, suite: roomSnapshots.spec.ts, projectOption: --project webkit-desktop, batch_number: 2, batch_count: 3, parallel_tests: 2 }
 
-          ### and mobile:
+          ### and mobile safari (also WebKit → macOS):
           # (neglecting to run all to keep runner count down)
-          #- { os: ubuntu-24.04-arm, suite: roomSnapshots.spec.ts, projectOption: --project mobile-safari, batch_number: 0, batch_count: 5, parallel_tests: 2 }
-          - { os: ubuntu-24.04-arm, suite: roomSnapshots.spec.ts, projectOption: --project mobile-safari, batch_number: 1, batch_count: 5, parallel_tests: 2 }
-          #- { os: ubuntu-24.04-arm, suite: roomSnapshots.spec.ts, projectOption: --project mobile-safari, batch_number: 2, batch_count: 5, parallel_tests: 2 }
-          - { os: ubuntu-24.04-arm, suite: roomSnapshots.spec.ts, projectOption: --project mobile-safari, batch_number: 3, batch_count: 5, parallel_tests: 2 }
-          #- { os: ubuntu-24.04-arm, suite: roomSnapshots.spec.ts, projectOption: --project mobile-safari, batch_number: 4, batch_count: 5, parallel_tests: 2 }
+          #- { os: macos-latest, suite: roomSnapshots.spec.ts, projectOption: --project mobile-safari, batch_number: 0, batch_count: 5, parallel_tests: 2 }
+          - { os: macos-latest, suite: roomSnapshots.spec.ts, projectOption: --project mobile-safari, batch_number: 1, batch_count: 5, parallel_tests: 2 }
+          #- { os: macos-latest, suite: roomSnapshots.spec.ts, projectOption: --project mobile-safari, batch_number: 2, batch_count: 5, parallel_tests: 2 }
+          - { os: macos-latest, suite: roomSnapshots.spec.ts, projectOption: --project mobile-safari, batch_number: 3, batch_count: 5, parallel_tests: 2 }
+          #- { os: macos-latest, suite: roomSnapshots.spec.ts, projectOption: --project mobile-safari, batch_number: 4, batch_count: 5, parallel_tests: 2 }
 
           # Windows - chromium only (no webkit/safari, no mobile browsers)
           # windows runners are very low-spec so keep to one parallel test at a time
@@ -131,33 +132,41 @@ jobs:
           - { os: ubuntu-24.04-arm, suite: "roomSnapshotsRotatedCampaign.spec.ts", projectOption: --project chromium-desktop }
 
           # LUT SNAPSHOTS - single batch per os/browser combo
-          - { os: ubuntu-24.04-arm, suite: lutSnapshot, projectOption: "--project chromium-desktop --project webkit-desktop --project mobile-chrome --project mobile-safari" }
+          # chromium/mobile-chrome on Linux, webkit/mobile-safari on macOS:
+          - { os: ubuntu-24.04-arm, suite: lutSnapshot, projectOption: "--project chromium-desktop --project mobile-chrome" }
+          - { os: macos-latest, suite: lutSnapshot, projectOption: "--project webkit-desktop --project mobile-safari" }
           - { os: windows-latest, suite: lutSnapshot, projectOption: --project chromium-desktop }
 
           # MENU SNAPSHOTS - one agent per spec file per OS
-          - { os: ubuntu-24.04-arm, suite: "menuSnapshotsDialogs errorDialogSnapshot", projectOption: "--project chromium-desktop --project webkit-desktop --project mobile-chrome --project mobile-safari" }
-          - { os: ubuntu-24.04-arm, suite: menuSnapshotsInGame, projectOption: "--project chromium-desktop --project webkit-desktop --project mobile-chrome --project mobile-safari" }
-          - { os: ubuntu-24.04-arm, suite: menuSnapshotsMainMenu, projectOption: "--project chromium-desktop --project webkit-desktop --project mobile-chrome --project mobile-safari" }
+          # chromium/mobile-chrome on Linux, webkit/mobile-safari on macOS (real Safari font rendering):
+          - { os: ubuntu-24.04-arm, suite: "menuSnapshotsDialogs errorDialogSnapshot", projectOption: "--project chromium-desktop --project mobile-chrome" }
+          - { os: macos-latest, suite: "menuSnapshotsDialogs errorDialogSnapshot", projectOption: "--project webkit-desktop --project mobile-safari" }
+          - { os: ubuntu-24.04-arm, suite: menuSnapshotsInGame, projectOption: "--project chromium-desktop --project mobile-chrome" }
+          - { os: macos-latest, suite: menuSnapshotsInGame, projectOption: "--project webkit-desktop --project mobile-safari" }
+          - { os: ubuntu-24.04-arm, suite: menuSnapshotsMainMenu, projectOption: "--project chromium-desktop --project mobile-chrome" }
+          - { os: macos-latest, suite: menuSnapshotsMainMenu, projectOption: "--project webkit-desktop --project mobile-safari" }
           # skip uncolourised and toppy on windows to speed it up since it is the slowest:
           - { os: windows-latest, suite: menuSnapshotsDialogs, projectOption: --project chromium-desktop, no_uncolourised: "1", no_toppy: "1" }
           - { os: windows-latest, suite: menuSnapshotsInGame, projectOption: --project chromium-desktop, no_uncolourised: "1", no_toppy: "1" }
           - { os: windows-latest, suite: menuSnapshotsMainMenu, projectOption: --project chromium-desktop, no_uncolourised: "1", no_toppy: "1" }
 
-          # SETTINGS REFLECT IN GAME - single agent, all browsers
-          - { os: ubuntu-24.04-arm, suite: settingsReflectInGame, projectOption: "--project chromium-desktop --project webkit-desktop --project mobile-chrome --project mobile-safari" }
+          # SETTINGS REFLECT IN GAME - chromium/mobile-chrome on Linux, webkit/mobile-safari on macOS
+          - { os: ubuntu-24.04-arm, suite: settingsReflectInGame, projectOption: "--project chromium-desktop --project mobile-chrome" }
+          - { os: macos-latest, suite: settingsReflectInGame, projectOption: "--project webkit-desktop --project mobile-safari" }
 
           # PORTRAIT - room + menu snapshots on a single agent (suite filter not needed, project testMatch restricts specs)
-          - { os: ubuntu-24.04-arm, suite: "", projectOption: --project mobile-safari-portrait }
+          # mobile-safari-portrait is WebKit → macOS
+          - { os: macos-latest, suite: "", projectOption: --project mobile-safari-portrait }
 
           # SPRITES - single batch, chromium-desktop only on Linux
           - { os: ubuntu-24.04-arm, suite: spritesPage, projectOption: --project chromium-desktop }
     # name is super-compressed to fit on the github UI with enough info to identify what's being run
     name: >-
       ${{
-        matrix.suite == 'lutSnapshot' && format('Lut {0}', contains(matrix.os, 'windows') && 'Windows' || 'Linux')
-        || startsWith(matrix.suite, 'menuSnapshotsDialogs') && format('MnuDlg {0}', contains(matrix.os, 'windows') && 'Win' || 'Lnx')
-        || matrix.suite == 'menuSnapshotsInGame' && format('MnuGame {0}', contains(matrix.os, 'windows') && 'Win' || 'Lnx')
-        || matrix.suite == 'menuSnapshotsMainMenu' && format('MnuMain {0}', contains(matrix.os, 'windows') && 'Win' || 'Lnx')
+        matrix.suite == 'lutSnapshot' && format('Lut {0}', contains(matrix.os, 'windows') && 'Windows' || contains(matrix.os, 'macos') && 'macOS' || 'Linux')
+        || startsWith(matrix.suite, 'menuSnapshotsDialogs') && format('MnuDlg {0}', contains(matrix.os, 'windows') && 'Win' || contains(matrix.os, 'macos') && 'Mac' || 'Lnx')
+        || matrix.suite == 'menuSnapshotsInGame' && format('MnuGame {0}', contains(matrix.os, 'windows') && 'Win' || contains(matrix.os, 'macos') && 'Mac' || 'Lnx')
+        || matrix.suite == 'menuSnapshotsMainMenu' && format('MnuMain {0}', contains(matrix.os, 'windows') && 'Win' || contains(matrix.os, 'macos') && 'Mac' || 'Lnx')
         || matrix.suite == 'settingsReflectInGame' && 'Settings'
         || matrix.suite == 'spritesPage' && 'Sprites'
         || startsWith(matrix.suite, 'roomSnapshotsRotated') && 'Rotated'
@@ -165,7 +174,7 @@ jobs:
             contains(matrix.projectOption, 'mobile-safari-portrait') && 'mobile-safari-portrait'
               || matrix.projectOption)
         || format('Room:{0}.{1}{2} {3}/{4}',
-            contains(matrix.os, 'windows') && 'Win' || 'Lnx',
+            contains(matrix.os, 'windows') && 'Win' || contains(matrix.os, 'macos') && 'Mac' || 'Lnx',
             contains(matrix.projectOption, 'chrom') && 'Chrm'
               || contains(matrix.projectOption, 'webkit') && 'Wkit'
               || contains(matrix.projectOption, 'safari') && 'Wkit'
@@ -184,7 +193,7 @@ jobs:
       - name: Use Node.js
         uses: actions/setup-node@v6
         with:
-          node-version: 25.x
+          node-version-file: ".node-version"
           cache: "pnpm"
 
       - run: pnpm install
@@ -200,7 +209,7 @@ jobs:
         uses: actions/cache@v5
         id: playwright-cache
         with:
-          path: ${{ runner.os == 'Windows' && '~/AppData/Local/ms-playwright' || '~/.cache/ms-playwright' }}
+          path: ${{ runner.os == 'Windows' && '~/AppData/Local/ms-playwright' || runner.os == 'macOS' && '~/Library/Caches/ms-playwright' || '~/.cache/ms-playwright' }}
           key: ${{ runner.os }}-${{ runner.arch }}-playwright-${{ hashFiles('**/pnpm-lock.yaml') }}
 
       - name: Install Playwright system dependencies

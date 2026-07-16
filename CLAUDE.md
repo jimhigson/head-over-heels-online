@@ -190,7 +190,7 @@ and we trust that to pre-load in the service worker for us, so the actual game e
  *  when destructuring arrays, if you don't need some of the first elements, use a hole in the array. eg: `const [,foo] = array;` not `const [_ignored, foo] = array;` 
  * also, use destructuring even if just getting the first element: `const [foo] = array` not `const foo = array[0]`
  *  All typescript types should appear with an initial capital letter
- *	Project uses pnpm and Node.js 23.
+ *	Project uses pnpm and Node.js 26.
  *	Prettier-style formatting, with the experimental 'curious ternary' option enabled.
  *  do not run code through prettier or linting etc after editing - assume the work is a work in progress
  *	Code avoids legacy constructs and uses satisfies never for exhaustive switches.
@@ -361,7 +361,7 @@ No not use `npx`, use `pnpm`. Do not call `pnpm vitest` directly, call `pnpm che
 * If platform differences emerge, we'll need to revisit this approach, but for now we expect pixel-perfect matches
 
 ## typechecking
-* use tsgo `as pnpm tsgo`
+* typecheck with `pnpm check:type` - this runs `tsc`, which is the native TypeScript 7 compiler (`@typescript/native`); the `typescript` package itself is aliased to `@typescript/typescript6` only to provide the classic compiler API to tooling
 
 ## Attitude
 
