@@ -14,6 +14,12 @@ export const loadAndDecode = (url: string): Promise<AudioBuffer> => {
 };
 
 const fetchAndDecode = async (url: string): Promise<AudioBuffer> => {
+  if (import.meta.env.MODE === "visual-regression") {
+    // silent stub - snapshots never need audible sound, and decoding depends
+    // on codecs that automated browsers may not have (webkit's decodeAudioData
+    // never settles without them, hanging anything gated on sound loading)
+    return audioCtx.createBuffer(2, 1, audioCtx.sampleRate);
+  }
   try {
     return await audioCtx.decodeAudioData(
       await (await fetch(url)).arrayBuffer(),
