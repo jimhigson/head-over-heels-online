@@ -46,7 +46,7 @@ jobs:
       - uses: pnpm/action-setup@v5
       - uses: actions/setup-node@v6
         with:
-          node-version: 25.x
+          node-version-file: ".node-version"
           cache: pnpm
       # GitHub's hosted ubuntu-latest runner ships with Google Chrome
       # preinstalled, so this step is a no-op in CI. It exists only so the

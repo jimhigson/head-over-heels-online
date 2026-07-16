@@ -156,6 +156,7 @@
     "zeroable"
   ],
   "js/ts.tsdk.path": "node_modules/typescript/lib",
+  "typescript.experimental.useTsgo": true,
   "cSpell.language": "en-GB,en-US",
   "window.commandCenter": false,
   "js/ts.preferences.importModuleSpecifier": "relative",
