@@ -1,0 +1,75 @@
+name: Visual test setup
+description: >-
+  Shared setup for Playwright visual-snapshot jobs: install dependencies,
+  restore the cached game build, and install the Playwright browsers implied by
+  the given project flags. Assumes the repository is already checked out.
+
+inputs:
+  project-option:
+    description: >-
+      The Playwright --project flag(s) for this job, eg
+      "--project chromium-desktop --project mobile-chrome". Determines which
+      browsers are installed and whether Linux system dependencies are needed.
+    required: true
+
+runs:
+  using: composite
+  steps:
+    - name: Install pnpm
+      uses: pnpm/action-setup@v5
+
+    - name: Use Node.js
+      uses: actions/setup-node@v6
+      with:
+        node-version-file: ".node-version"
+        cache: "pnpm"
+
+    - name: Install dependencies
+      shell: bash
+      run: pnpm install
+
+    - name: Restore game build cache
+      uses: actions/cache/restore@v5
+      with:
+        path: dist/
+        key: game-build-visual-regression-${{ github.sha }}
+        enableCrossOsArchive: true
+
+    - name: Cache Playwright browsers
+      uses: actions/cache@v5
+      id: playwright-cache
+      with:
+        path: ${{ runner.os == 'Windows' && '~/AppData/Local/ms-playwright' || runner.os == 'macOS' && '~/Library/Caches/ms-playwright' || '~/.cache/ms-playwright' }}
+        key: ${{ runner.os }}-${{ runner.arch }}-playwright-${{ hashFiles('**/pnpm-lock.yaml') }}
+
+    - name: Install Playwright system dependencies
+      if: (contains(inputs.project-option, 'webkit') || contains(inputs.project-option, 'safari') || contains(inputs.project-option, 'firefox')) && runner.os == 'Linux'
+      shell: bash
+      run: |
+        sudo rm -rf /var/lib/apt/lists/*
+        sudo apt-get clean
+        sudo apt-get update
+        # Retry loop - ports.ubuntu.com load balances across mirrors that can be out of sync
+        for attempt in 1 2 3; do
+          echo "=== Attempt $attempt ==="
+          if pnpm playwright install-deps; then
+            break
+          fi
+          echo "=== Failed, retrying in 10s ==="
+          sleep 10
+        done
+
+    - name: Install Playwright browsers
+      shell: bash
+      run: |
+        # Install all browsers mentioned in the --project flags
+        # Always run this - playwright install is smart enough to skip if already installed
+        if [[ "${{ inputs.project-option }}" == *"chromium"* ]] || [[ "${{ inputs.project-option }}" == *"chrome"* ]]; then
+          pnpm playwright install chromium
+        fi
+        if [[ "${{ inputs.project-option }}" == *"firefox"* ]]; then
+          pnpm playwright install firefox
+        fi
+        if [[ "${{ inputs.project-option }}" == *"webkit"* ]] || [[ "${{ inputs.project-option }}" == *"safari"* ]]; then
+          pnpm playwright install webkit
+        fi

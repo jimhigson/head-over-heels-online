@@ -25,6 +25,7 @@ jobs:
               - 'gfx/**'
               - 'pnpm-lock.yaml'
               - '.github/workflows/visual-regression.yml'
+              - '.github/actions/visual-test-setup/**'
 
   # job builds once, and then the built, cached asset of the game (not inc editor) is used for all playwright
   # jobs - meaning that each playwright runner does not have to do its own build
@@ -187,61 +188,10 @@ jobs:
     steps:
       - uses: actions/checkout@v6
 
-      - name: Install pnpm
-        uses: pnpm/action-setup@v5
-
-      - name: Use Node.js
-        uses: actions/setup-node@v6
+      - name: Set up visual test environment
+        uses: ./.github/actions/visual-test-setup
         with:
-          node-version-file: ".node-version"
-          cache: "pnpm"
-
-      - run: pnpm install
-
-      - name: Restore game build cache
-        uses: actions/cache/restore@v5
-        with:
-          path: dist/
-          key: game-build-visual-regression-${{ github.sha }}
-          enableCrossOsArchive: true
-
-      - name: Cache Playwright browsers
-        uses: actions/cache@v5
-        id: playwright-cache
-        with:
-          path: ${{ runner.os == 'Windows' && '~/AppData/Local/ms-playwright' || runner.os == 'macOS' && '~/Library/Caches/ms-playwright' || '~/.cache/ms-playwright' }}
-          key: ${{ runner.os }}-${{ runner.arch }}-playwright-${{ hashFiles('**/pnpm-lock.yaml') }}
-
-      - name: Install Playwright system dependencies
-        if: (contains(matrix.projectOption, 'webkit') || contains(matrix.projectOption, 'safari') || contains(matrix.projectOption, 'firefox')) && runner.os == 'Linux'
-        run: |
-          sudo rm -rf /var/lib/apt/lists/*
-          sudo apt-get clean
-          sudo apt-get update
-          # Retry loop - ports.ubuntu.com load balances across mirrors that can be out of sync
-          for attempt in 1 2 3; do
-            echo "=== Attempt $attempt ==="
-            if pnpm playwright install-deps; then
-              break
-            fi
-            echo "=== Failed, retrying in 10s ==="
-            sleep 10
-          done
-
-      - name: Install Playwright browsers
-        shell: bash
-        run: |
-          # Install all browsers mentioned in the --project flags
-          # Always run this - playwright install is smart enough to skip if already installed
-          if [[ "${{ matrix.projectOption }}" == *"chromium"* ]] || [[ "${{ matrix.projectOption }}" == *"chrome"* ]]; then
-            pnpm playwright install chromium
-          fi
-          if [[ "${{ matrix.projectOption }}" == *"firefox"* ]]; then
-            pnpm playwright install firefox
-          fi
-          if [[ "${{ matrix.projectOption }}" == *"webkit"* ]] || [[ "${{ matrix.projectOption }}" == *"safari"* ]]; then
-            pnpm playwright install webkit
-          fi
+          project-option: ${{ matrix.projectOption }}
 
       - name: Run Playwright tests
         env:

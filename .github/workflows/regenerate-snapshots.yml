@@ -1,0 +1,188 @@
+name: Regenerate Snapshots
+
+# Manually-triggered, on-demand regeneration of the Playwright visual snapshots.
+# Run it against any branch from the Actions tab (or `gh workflow run`). It builds
+# the game, re-captures snapshots on the same runners the visual-regression gate
+# verifies against - chromium/mobile-chrome on Linux, webkit/mobile-safari on
+# macOS - and opens a pull request of the changed images into the branch it ran on.
+on:
+  workflow_dispatch:
+    inputs:
+      specs:
+        description: >-
+          Optional Playwright spec filter (space-separated substrings), eg
+          "roomSnapshots menuSnapshotsDialogs". Blank regenerates every snapshot.
+        required: false
+        default: ""
+      rooms:
+        description: >-
+          Optional ROOMS filter for room snapshots (comma-separated ids or
+          wildcards, eg "egyptus16,blacktooth*"). Blank means all rooms.
+        required: false
+        default: ""
+      workers:
+        description: Playwright workers per runner (higher is faster but needs more memory).
+        required: false
+        default: "2"
+
+# needed for peter-evans/create-pull-request to push the branch and open the PR
+permissions:
+  contents: write
+  pull-requests: write
+
+concurrency:
+  group: regenerate-snapshots-${{ github.ref }}
+  cancel-in-progress: true
+
+jobs:
+  # build the game once and cache it, exactly as the visual-regression workflow does,
+  # so both regenerate runners restore the same asset rather than each building it
+  build-game:
+    runs-on: ubuntu-24.04-arm
+    steps:
+      - uses: actions/checkout@v6
+
+      - name: Cache game build
+        uses: actions/cache@v5
+        id: game-build-cache
+        with:
+          path: dist/
+          key: game-build-visual-regression-${{ github.sha }}
+          enableCrossOsArchive: true
+
+      - name: Install pnpm
+        if: steps.game-build-cache.outputs.cache-hit != 'true'
+        uses: pnpm/action-setup@v5
+
+      - name: Use Node.js
+        if: steps.game-build-cache.outputs.cache-hit != 'true'
+        uses: actions/setup-node@v6
+        with:
+          node-version-file: ".node-version"
+          cache: "pnpm"
+
+      - run: pnpm install
+        if: steps.game-build-cache.outputs.cache-hit != 'true'
+
+      - name: Build game
+        if: steps.game-build-cache.outputs.cache-hit != 'true'
+        run: pnpm build:game --mode visual-regression
+
+  regenerate:
+    needs: build-game
+    runs-on: ${{ matrix.os }}
+    strategy:
+      fail-fast: false
+      matrix:
+        # one runner per rendering engine - each project's snapshot files are keyed
+        # by project name (no OS in the path), so every project is generated exactly
+        # once, on the platform whose rendering the committed baselines were captured on
+        include:
+          # chromium-based snapshots - generated on Linux (matches the gate's Linux runners)
+          - {
+              os: ubuntu-24.04-arm,
+              projectOption: "--project chromium-desktop --project mobile-chrome",
+            }
+          # WebKit/Safari snapshots - must be captured on macOS to match the baselines
+          - {
+              os: macos-latest,
+              projectOption: "--project webkit-desktop --project mobile-safari --project mobile-safari-portrait",
+            }
+    name: Regen ${{ contains(matrix.os, 'macos') && 'macOS (webkit/safari)' || 'Linux (chromium)' }}
+    steps:
+      - uses: actions/checkout@v6
+
+      - name: Set up visual test environment
+        uses: ./.github/actions/visual-test-setup
+        with:
+          project-option: ${{ matrix.projectOption }}
+
+      # --update-snapshots rewrites any differing/missing snapshot and exits without
+      # failing on a pure image diff, so a normal regen still succeeds; but a real test
+      # error now fails the job (no continue-on-error), so the collect/PR steps below do
+      # not run for a broken run. inputs.specs is passed through the environment rather
+      # than interpolated into the command, so a malicious dispatch input cannot inject
+      # shell (word-splitting of multiple space-separated specs is still preserved).
+      - name: Regenerate snapshots
+        env:
+          PARALLEL_TESTS: ${{ inputs.workers }}
+          ROOMS: ${{ inputs.rooms }}
+          SPECS: ${{ inputs.specs }}
+        run: pnpm playwright test $SPECS ${{ matrix.projectOption }} --update-snapshots
+
+      - name: Collect changed snapshots
+        id: collect
+        shell: bash
+        run: |
+          git add -A
+          # only snapshot files (path contains "-snapshots/"), never test-results / reports
+          mapfile -t files < <(git diff --cached --name-only | grep -- '-snapshots/' || true)
+          echo "count=${#files[@]}" >> "$GITHUB_OUTPUT"
+          if [[ ${#files[@]} -eq 0 ]]; then
+            echo "No snapshots changed on this runner."
+            exit 0
+          fi
+          echo "Changed ${#files[@]} snapshot file(s):"
+          printf '  %s\n' "${files[@]}"
+          mkdir -p "$RUNNER_TEMP/updated"
+          for f in "${files[@]}"; do
+            mkdir -p "$RUNNER_TEMP/updated/$(dirname "$f")"
+            cp "$f" "$RUNNER_TEMP/updated/$f"
+          done
+
+      - name: Upload changed snapshots
+        if: steps.collect.outputs.count != '0'
+        uses: actions/upload-artifact@v7
+        with:
+          name: updated-snapshots-${{ matrix.os }}
+          path: ${{ runner.temp }}/updated/
+          if-no-files-found: error
+          retention-days: 3
+
+  open-pr:
+    needs: regenerate
+    if: always()
+    runs-on: ubuntu-24.04-arm
+    steps:
+      - uses: actions/checkout@v6
+
+      # each engine's runner uploaded a disjoint set of files, so merge-multiple
+      # overlays them into the working tree with no conflicts
+      - name: Download updated snapshots
+        id: download
+        continue-on-error: true
+        uses: actions/download-artifact@v7
+        with:
+          pattern: updated-snapshots-*
+          merge-multiple: true
+          path: .
+
+      - name: Check for changes
+        id: changes
+        shell: bash
+        run: |
+          if [[ -z "$(git status --porcelain)" ]]; then
+            echo "has-changes=false" >> "$GITHUB_OUTPUT"
+            echo "No snapshot changes were produced - nothing to open a PR for."
+          else
+            echo "has-changes=true" >> "$GITHUB_OUTPUT"
+            git status --short
+          fi
+
+      - name: Open pull request
+        if: steps.changes.outputs.has-changes == 'true'
+        uses: peter-evans/create-pull-request@v7
+        with:
+          commit-message: "test: regenerate visual snapshots"
+          branch: snapshots/${{ github.ref_name }}
+          base: ${{ github.ref_name }}
+          delete-branch: true
+          title: "test: regenerate visual snapshots for ${{ github.ref_name }}"
+          body: |
+            Regenerated visual-regression snapshots for `${{ github.ref_name }}`.
+
+            - `chromium-desktop` / `mobile-chrome` captured on `ubuntu-24.04-arm`
+            - `webkit-desktop` / `mobile-safari` / `mobile-safari-portrait` captured on `macos-latest`
+
+            Produced by the **Regenerate Snapshots** workflow (run `${{ github.run_id }}`).
+            Review the image diff before merging.
