@@ -1,8 +1,14 @@
 import { nearestQuarterAngle } from "./rotateXy";
 import {
   cameraAngleIsOddQuarterTurn,
+  type DirectionIndexXy4,
+  type DirectionIndexXy8,
   type DirectionXy4,
   type DirectionXy8,
+  mirrorDirectionIndexXy4,
+  mirrorDirectionIndexXy8,
+  nonZeroClosestDirectionIndexXy4,
+  nonZeroClosestDirectionIndexXy8,
   nonZeroClosestDirectionXy4,
   nonZeroClosestDirectionXy8,
   type Xy,
@@ -82,3 +88,60 @@ export const resolveCameraRelativeVectorXy8 = (
     isReflection,
     nonZeroClosestDirectionXy8,
   );
+
+/**
+ * whether directional sprites render horizontally flipped at this camera
+ * angle: true on odd quarter turns. Directional sprite variants are drawn lit
+ * for the base camera angle; a quarter turn moves every facing into the
+ * mirror-image form, so the renderer shows the mirror variant flipped - the
+ * form is the reflection (the variants are mirror-symmetric pairs), and the
+ * flip carries each sprite's painted shading with its world faces, keeping
+ * the light source fixed in the world as the camera moves
+ */
+export const spriteFlipXAtAngle = (cameraAngle: Xy): boolean =>
+  cameraAngleIsOddQuarterTurn(nearestQuarterAngle(cameraAngle));
+
+/**
+ * the 4-way sprite-variant index (`.d0`..`.d3`) to draw for a world facing at
+ * a camera angle: the apparent facing's ring index, mirrored on odd quarter
+ * turns to pair with {@link spriteFlipXAtAngle}'s horizontal flip - so
+ * `d(resolveSpriteDirectionIndexXy4(...))` with `flipX:
+ * spriteFlipXAtAngle(...)` always shows the correct form, with the lighting
+ * world-fixed. The facing may be continuous (mid-turn); rounding happens only
+ * here at the final pick
+ */
+export const resolveSpriteDirectionIndexXy4 = (
+  facing: Xy,
+  cameraAngle: Xy,
+  isReflection: boolean,
+): DirectionIndexXy4 => {
+  const apparentIndex = reflectedThenRotated(
+    facing,
+    cameraAngle,
+    isReflection,
+    nonZeroClosestDirectionIndexXy4,
+  );
+  return spriteFlipXAtAngle(cameraAngle) ?
+      mirrorDirectionIndexXy4(apparentIndex)
+    : apparentIndex;
+};
+
+/**
+ * like {@link resolveSpriteDirectionIndexXy4} for the 8-way (`.d0`..`.d7`)
+ * sprite variants
+ */
+export const resolveSpriteDirectionIndexXy8 = (
+  facing: Xy,
+  cameraAngle: Xy,
+  isReflection: boolean,
+): DirectionIndexXy8 => {
+  const apparentIndex = reflectedThenRotated(
+    facing,
+    cameraAngle,
+    isReflection,
+    nonZeroClosestDirectionIndexXy8,
+  );
+  return spriteFlipXAtAngle(cameraAngle) ?
+      mirrorDirectionIndexXy8(apparentIndex)
+    : apparentIndex;
+};

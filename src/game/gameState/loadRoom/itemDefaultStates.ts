@@ -86,7 +86,6 @@ export const initialState = (jsonItem: JsonItemUnion) => {
       jsonItem.type === "joystick" ||
       jsonItem.type === "timer" ||
       jsonItem.type === "lift" ||
-      jsonItem.type === "conveyor" ||
       jsonItem.type === "teleporter" ||
       jsonItem.type === "portableTeleporter"
     ) ?
@@ -94,6 +93,14 @@ export const initialState = (jsonItem: JsonItemUnion) => {
       // be changed at run-time by other items such as switches
       ({
         ...structuredClone(jsonItem.config),
+      } satisfies StateFragment<typeof jsonItem.type>)
+    : emptyObject),
+    ...(jsonItem.type === "conveyor" ?
+      // conveyors also copy their config into state (mutable by switches), with
+      // the json direction name becoming a unit vector in-play:
+      ({
+        ...structuredClone(jsonItem.config),
+        direction: unitVectors[jsonItem.config.direction],
       } satisfies StateFragment<typeof jsonItem.type>)
     : emptyObject),
     ...(jsonItem.type === "emitter" ?

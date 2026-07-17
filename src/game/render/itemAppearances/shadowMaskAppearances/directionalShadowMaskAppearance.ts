@@ -8,7 +8,6 @@ import { isTextureId } from "../../../../sprites/assertIsTextureId";
 import { type TextureId } from "../../../../sprites/spritesheet/spritesheetData/makeSpritesheetData";
 import { type AppSpritesheet } from "../../../../sprites/spritesheet/variants/AppSpritesheet";
 import { rotateXy } from "../../../../utils/vectors/rotateXy";
-import { unitVectors } from "../../../../utils/vectors/unitVectors";
 import {
   type DirectionXy4,
   type DirectionXy8,
@@ -126,7 +125,7 @@ export const playableShadowMaskAppearanceXy8 =
     const resolvedFacingXy8 = nonZeroVectorClosestDirectionXy8(
       rotateXy(
         item.type === "sceneryPlayer" ?
-          unitVectors[item.config.startDirection]
+          item.config.startDirection
         : (item.state.visualFacingVector ?? item.state.facing),
         cameraAngle,
       ),

@@ -182,6 +182,8 @@ export function* loadDoor<RoomId extends string, RoomItemId extends string>(
       jsonItemId,
       config: {
         ...jsonDoor.config,
+        // the json direction name becomes a unit vector in-play:
+        direction: unitVectors[direction],
         onFloorEdge,
         part: "far",
       },
@@ -207,6 +209,7 @@ export function* loadDoor<RoomId extends string, RoomItemId extends string>(
       jsonItemId,
       config: {
         ...jsonDoor.config,
+        direction: unitVectors[direction],
         onFloorEdge,
         part: "near",
       },
@@ -232,6 +235,7 @@ export function* loadDoor<RoomId extends string, RoomItemId extends string>(
       jsonItemId,
       config: {
         ...jsonDoor.config,
+        direction: unitVectors[direction],
         onFloorEdge,
         part: "top",
       },
@@ -357,6 +361,7 @@ export function* loadDoor<RoomId extends string, RoomItemId extends string>(
         jsonItemId,
         config: {
           ...jsonDoor.config,
+          direction: unitVectors[direction],
           onFloorEdge,
           style: "none",
           side: "away", // TODO: look at typings - this isn't needed for hidden walls

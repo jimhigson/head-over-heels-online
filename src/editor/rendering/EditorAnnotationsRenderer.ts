@@ -24,7 +24,7 @@ import { roomItemsIterable } from "../../model/RoomState";
 import { paletteBlockstack } from "../../sprites/palette/spritesheetPalette";
 import { editorStore, store } from "../../store/store";
 import { valuesIter } from "../../utils/entries";
-import { type DirectionXy4 } from "../../utils/vectors/vectors";
+import { isNegativeSideXy, type Xy } from "../../utils/vectors/vectors";
 import {
   type EditorItemInPlayUnion,
   type EditorRoomId,
@@ -103,12 +103,15 @@ const textAnnotationNormalColour = paletteBlockstack.white;
 const textAnnotationErrorColour = paletteBlockstack.midRed;
 const textClickableAnnotationHoverColour = paletteBlockstack.pastelBlue;
 
-const directionArrows = {
-  left: `↖`,
-  away: `↗`,
-  right: `↘`,
-  towards: `↙`,
-};
+/** the isometric arrow glyph pointing along a cardinal direction vector */
+const directionArrow = ({ x, y }: Xy): string =>
+  y > 0 ?
+    `↗` // away
+  : y < 0 ?
+    `↙` // towards
+  : x > 0 ?
+    `↖` // left
+  : `↘`; // right
 
 const isItemThatControlsOtherItems = (
   item: UnionOfAllItemInPlayTypes<string, string>,
@@ -136,72 +139,54 @@ const isItemThatControlsOtherItems = (
 
 const movementPatternAnnotationText = (
   movement: JsonMovement,
-  startDirection: DirectionXy4,
+  startDirection: Xy,
 ) => {
+  const { x, y } = startDirection;
+
   switch (movement) {
-    case "back-forth": {
-      switch (startDirection) {
-        case "left":
-          return "↖↘";
-        case "right":
-          return "↘↖";
-        case "away":
-          return "↗↙";
-        case "towards":
-          return "↙↗";
-        default:
-          startDirection satisfies never;
-          throw new Error(`Unexpected startDirection`);
-      }
-    }
+    case "back-forth":
+      return (
+        x > 0 ?
+          "↖↘" // left
+        : x < 0 ?
+          "↘↖" // right
+        : y > 0 ?
+          "↗↙" // away
+        : "↙↗" // towards
+      );
 
-    case "forwards": {
-      switch (startDirection) {
-        case "left":
-          return "↖";
-        case "right":
-          return "↘";
-        case "away":
-          return "↗";
-        case "towards":
-          return "↙";
-        default:
-          startDirection satisfies never;
-          throw new Error(`Unexpected startDirection`);
-      }
-    }
+    case "forwards":
+      return (
+        x > 0 ?
+          "↖" // left
+        : x < 0 ?
+          "↘" // right
+        : y > 0 ?
+          "↗" // away
+        : "↙" // towards
+      );
 
-    case "clockwise": {
-      switch (startDirection) {
-        case "left":
-          return "↖↗↘↙";
-        case "right":
-          return "↘↙↖↗";
-        case "away":
-          return "↗↘↙↖";
-        case "towards":
-          return "↙↖↗↘";
-        default:
-          startDirection satisfies never;
-          throw new Error(`Unexpected startDirection`);
-      }
-    }
+    case "clockwise":
+      return (
+        x > 0 ?
+          "↖↗↘↙" // left
+        : x < 0 ?
+          "↘↙↖↗" // right
+        : y > 0 ?
+          "↗↘↙↖" // away
+        : "↙↖↗↘" // towards
+      );
 
-    case "anticlockwise": {
-      switch (startDirection) {
-        case "left":
-          return "↖↙↘↗";
-        case "right":
-          return "↘↗↖↙";
-        case "away":
-          return "↗↖↙↘";
-        case "towards":
-          return "↙↘↗↖";
-        default:
-          startDirection satisfies never;
-          throw new Error(`Unexpected startDirection`);
-      }
-    }
+    case "anticlockwise":
+      return (
+        x > 0 ?
+          "↖↙↘↗" // left
+        : x < 0 ?
+          "↘↗↖↙" // right
+        : y > 0 ?
+          "↗↖↙↘" // away
+        : "↙↘↗↖" // towards
+      );
 
     case "towards-analogue":
       return "➡.⬅";
@@ -296,15 +281,15 @@ class EditorAnnotationsRenderer<T extends ItemInPlayType>
           if (toRoom !== exitGameRoomId) {
             const toRoomExists = !!rooms[toRoom];
 
-            const arrow = directionArrows[direction];
+            const arrow = directionArrow(direction);
             const text =
-              direction === "away" || direction === "right" ?
+              direction.y > 0 || direction.x < 0 ?
                 `${toRoom}${arrow}`
               : `${arrow}${toRoom}`;
 
             this.#addTextAnnotation({
               annotationText: text,
-              yAdj: direction === "left" || direction === "away" ? -48 : 0,
+              yAdj: !isNegativeSideXy(direction) ? -48 : 0,
               tint:
                 toRoomExists ?
                   textAnnotationNormalColour
@@ -363,7 +348,7 @@ class EditorAnnotationsRenderer<T extends ItemInPlayType>
           // direction arrow:
           this.#addTextAnnotation({
             annotationText:
-              disappearing !== null ? "*" : directionArrows[direction],
+              disappearing !== null ? "*" : directionArrow(direction),
             yAdj: -12,
           });
         }

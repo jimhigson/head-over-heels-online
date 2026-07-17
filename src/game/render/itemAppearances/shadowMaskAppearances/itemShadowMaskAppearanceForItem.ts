@@ -18,8 +18,8 @@ import {
 import { renderMultipliedXy } from "../../../../utils/pixi/renderMultipliedXy";
 import { nearestQuarterAngle } from "../../../../utils/vectors/rotateXy";
 import {
+  dominantAxisXy,
   rotateAxisXyByCameraAngle,
-  tangentAxis,
   type Xy,
 } from "../../../../utils/vectors/vectors";
 import { isMultipliedItem } from "../../../physics/itemPredicates";
@@ -189,7 +189,7 @@ const itemShadowMaskAppearances: {
       textureId: "shadowMask.conveyor",
       flipX:
         rotateAxisXyByCameraAngle(
-          tangentAxis(direction),
+          dominantAxisXy(direction),
           cameraQuarterAngle,
         ) === "x",
     }),
@@ -206,7 +206,7 @@ const itemShadowMaskAppearances: {
         : "shadowMask.door.legs.threshold.double.y",
       flipX:
         rotateAxisXyByCameraAngle(
-          tangentAxis(direction),
+          dominantAxisXy(direction),
           cameraQuarterAngle,
         ) === "y",
     };

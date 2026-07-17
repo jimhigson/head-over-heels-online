@@ -2,6 +2,7 @@ import { defaultItemProperties } from "../../../model/defaultItemProperties";
 import { type ItemInPlay } from "../../../model/ItemInPlay";
 import { type JsonItem } from "../../../model/json/JsonItem";
 import { keys, valuesIter } from "../../../utils/entries";
+import { unitVectors } from "../../../utils/vectors/unitVectors";
 import { addXyz, type DirectionXy4 } from "../../../utils/vectors/vectors";
 import { fullBlockAabb } from "../../collision/boundingBoxes";
 import { multiplyBoundingBox } from "../../collision/multiplyBoundingBox";
@@ -198,7 +199,8 @@ export const loadFloor = <RoomId extends string, RoomItemId extends string>(
     jsonItemId: itemId,
     config: {
       ...floorJson.config,
-      doorExpandedSides: keys(expandedDirections),
+      // side names become outward unit vectors in-play:
+      doorExpandedSides: keys(expandedDirections).map((d) => unitVectors[d]),
       naturalFootprint: {
         aabb: multiplyBoundingBox(fullBlockAabb, naturalAabbBlocks),
         position: blockXyzToFineXyz(naturalPositionBlocks),

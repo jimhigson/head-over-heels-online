@@ -117,26 +117,22 @@ export type SwitchItemModificationUnion<
        * "reverse" = set direction to the opposite of the item's config.direction.
        */
       reverses?: boolean;
-      leftState?: Subset<
-        Partial<ItemState<"conveyor", RoomId, RoomItemId>>,
-        {
-          disabled?: boolean;
-          direction?: DirectionXy4;
-          disappearing?: {
-            on: "stand";
-          } | null;
-        }
-      >;
-      rightState?: Subset<
-        Partial<ItemState<"conveyor", RoomId, RoomItemId>>,
-        {
-          disabled?: boolean;
-          direction?: DirectionXy4;
-          disappearing?: {
-            on: "stand";
-          } | null;
-        }
-      >;
+      // the json patch names the direction; it becomes a unit vector when
+      // applied to the in-play state (see getNewState):
+      leftState?: {
+        disabled?: boolean;
+        direction?: DirectionXy4;
+        disappearing?: {
+          on: "stand";
+        } | null;
+      };
+      rightState?: {
+        disabled?: boolean;
+        direction?: DirectionXy4;
+        disappearing?: {
+          on: "stand";
+        } | null;
+      };
     }
   | {
       expectType: "deadlyBlock";

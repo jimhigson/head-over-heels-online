@@ -415,14 +415,45 @@ export const nonZeroClosestDirectionXy4 = (
 };
 
 /**
+ * like {@link nonZeroClosestDirectionXy4} but returning the direction's ring
+ * index (see {@link DirectionIndexXy4}) instead of its name - for sprite
+ * variant arithmetic. Same comparisons, so ties resolve identically
+ */
+export const nonZeroClosestDirectionIndexXy4 = (
+  x: number,
+  y: number,
+): DirectionIndexXy4 => {
+  if (
+    (import.meta.env.DEV || import.meta.env.MODE === "visual-regression") &&
+    veryClose(x, 0) &&
+    veryClose(y, 0)
+  ) {
+    throw new Error(
+      "zero-length vector given where a non-zero direction vector is required",
+    );
+  }
+  if (y > x) {
+    // away : right
+    return y > -x ? 3 : 0;
+  }
+  // left : towards
+  return y > -x ? 2 : 1;
+};
+
+/**
  * like {@link nonZeroClosestDirectionXy4}, taking the direction as an {@link Xy}
  * (eg a facing, which is always a real direction).
  */
 export const nonZeroVectorClosestDirectionXy4 = ({ x, y }: Xy): DirectionXy4 =>
   nonZeroClosestDirectionXy4(x, y);
 
-const directionsXy8Octants: DirectionXy8[] = [
-  // these need to be in order clockwise
+/**
+ * the eight directions in ring order: each step is the 45° turn that a
+ * quarter-turn of the camera advances by two of, so an index around this ring
+ * is directly usable as a sprite-variant number (`.d0`..`.d7`). Successive
+ * quarter camera turns advance an apparent facing +2 around the ring
+ */
+export const directionsXy8Octants: DirectionXy8[] = [
   "right",
   "towardsRight",
   "towards",
@@ -432,6 +463,34 @@ const directionsXy8Octants: DirectionXy8[] = [
   "away",
   "awayRight",
 ];
+
+/**
+ * the 4-way sprite-variant number: an index around the ring of even members of
+ * {@link directionsXy8Octants} (right=0, towards=1, left=2, away=3) -
+ * successive quarter camera turns advance an apparent facing +1 around it
+ */
+export type DirectionIndexXy4 = 0 | 1 | 2 | 3;
+/** index around {@link directionsXy8Octants} - the 8-way sprite-variant number */
+export type DirectionIndexXy8 = 4 | 5 | 6 | 7 | DirectionIndexXy4;
+
+/**
+ * reflect a ring index about the vertical screen axis. In this isometric
+ * projection the world x=y diagonal projects vertically, so the reflection maps
+ * each direction to the one whose projected form is its horizontal mirror
+ * (right↔towards, left↔away)
+ */
+export const mirrorDirectionIndexXy4 = (
+  index: DirectionIndexXy4,
+): DirectionIndexXy4 => ((5 - index) % 4) as DirectionIndexXy4;
+
+/**
+ * reflect an octant ring index about the vertical screen axis (see
+ * {@link mirrorDirectionIndexXy4}) - awayLeft (d5) and towardsRight (d1)
+ * project onto the axis itself so are their own mirrors
+ */
+export const mirrorDirectionIndexXy8 = (
+  index: DirectionIndexXy8,
+): DirectionIndexXy8 => ((10 - index) % 8) as DirectionIndexXy8;
 
 export const vectorClosestDirectionXy8 = ({
   x,
@@ -458,6 +517,18 @@ export const nonZeroClosestDirectionXy8 = (
   x: number,
   y: number,
 ): DirectionXy8 => {
+  return directionsXy8Octants[nonZeroClosestDirectionIndexXy8(x, y)];
+};
+
+/**
+ * like {@link nonZeroClosestDirectionXy8} but returning the octant ring index
+ * (see {@link DirectionIndexXy8}) instead of its name - for sprite variant
+ * arithmetic
+ */
+export const nonZeroClosestDirectionIndexXy8 = (
+  x: number,
+  y: number,
+): DirectionIndexXy8 => {
   if (
     (import.meta.env.DEV || import.meta.env.MODE === "visual-regression") &&
     veryClose(x, 0) &&
@@ -468,8 +539,7 @@ export const nonZeroClosestDirectionXy8 = (
     );
   }
   const angle = Math.atan2(-y, -x);
-  const octant = Math.round((8 * angle) / (2 * Math.PI)) & 7;
-  return directionsXy8Octants[octant];
+  return (Math.round((8 * angle) / (2 * Math.PI)) & 7) as DirectionIndexXy8;
 };
 
 /**
@@ -487,6 +557,29 @@ export const nonZeroVectorClosestDirectionXy8 = ({ x, y }: Xy): DirectionXy8 =>
  * camera-apparent orientation - at any continuous angle, no snapping
  */
 export const isNegativeSideXy = ({ x, y }: Xy): boolean => x + y < 0;
+
+/**
+ * whether the vector (x, y) rounds to the given cardinal unit vector - ie
+ * whether {@link nonZeroClosestDirectionXy4} of (x, y) names that cardinal.
+ * Scalar cardinal components so callers can negate without allocating. Uses
+ * the same strict comparisons as the rounding, so ties at exact diagonals
+ * resolve identically
+ */
+export const roundsToCardinalXy4 = (
+  x: number,
+  y: number,
+  cardinalX: number,
+  cardinalY: number,
+): boolean =>
+  y > x === cardinalY > cardinalX && y > -x === cardinalY > -cardinalX;
+
+/**
+ * the x/y axis a wall or door runs along: the axis perpendicular to its
+ * outward-facing direction vector - the vector counterpart of
+ * {@link doorAlongAxis}
+ */
+export const alongAxisOfDirectionXy = (direction: Xy): AxisXy =>
+  perpendicularAxisXy(dominantAxisXy(direction));
 
 /**
  * rotate a facing by `octants` eighth-turns around the clockwise octant ring

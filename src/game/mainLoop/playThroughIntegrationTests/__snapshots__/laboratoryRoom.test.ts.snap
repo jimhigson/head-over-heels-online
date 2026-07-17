@@ -1442,7 +1442,11 @@ exports[`playing through a complex, deterministic room ("laboratory") should alw
       "castsShadowWhileStoodOn": false,
       "castsWholeShadows": true,
       "config": {
-        "direction": "away",
+        "direction": {
+          "x": 0,
+          "y": 1,
+          "z": 0,
+        },
         "times": {
           "y": 2,
         },
@@ -1468,7 +1472,11 @@ exports[`playing through a complex, deterministic room ("laboratory") should alw
           },
           "roomTime": 1924.9999999999936,
         },
-        "direction": "away",
+        "direction": {
+          "x": 0,
+          "y": 1,
+          "z": 0,
+        },
         "disappearing": null,
         "expires": null,
         "position": {
@@ -1494,7 +1502,11 @@ exports[`playing through a complex, deterministic room ("laboratory") should alw
       "castsShadowWhileStoodOn": false,
       "castsWholeShadows": true,
       "config": {
-        "direction": "away",
+        "direction": {
+          "x": 0,
+          "y": 1,
+          "z": 0,
+        },
         "times": {
           "y": 3,
         },
@@ -1520,7 +1532,11 @@ exports[`playing through a complex, deterministic room ("laboratory") should alw
           },
           "roomTime": 28849.999999998665,
         },
-        "direction": "away",
+        "direction": {
+          "x": 0,
+          "y": 1,
+          "z": 0,
+        },
         "disappearing": null,
         "expires": null,
         "position": {
@@ -1548,7 +1564,11 @@ exports[`playing through a complex, deterministic room ("laboratory") should alw
       "castsShadowWhileStoodOn": false,
       "castsWholeShadows": true,
       "config": {
-        "direction": "left",
+        "direction": {
+          "x": 1,
+          "y": 0,
+          "z": 0,
+        },
         "times": {
           "x": 3,
         },
@@ -1575,7 +1595,11 @@ exports[`playing through a complex, deterministic room ("laboratory") should alw
           },
           "roomTime": 25308.333333332514,
         },
-        "direction": "left",
+        "direction": {
+          "x": 1,
+          "y": 0,
+          "z": 0,
+        },
         "disappearing": null,
         "expires": null,
         "position": {
@@ -1601,7 +1625,11 @@ exports[`playing through a complex, deterministic room ("laboratory") should alw
       "castsShadowWhileStoodOn": false,
       "castsWholeShadows": true,
       "config": {
-        "direction": "right",
+        "direction": {
+          "x": -1,
+          "y": 0,
+          "z": 0,
+        },
         "times": {
           "x": 3,
         },
@@ -1628,7 +1656,11 @@ exports[`playing through a complex, deterministic room ("laboratory") should alw
           },
           "roomTime": 9349.999999999965,
         },
-        "direction": "right",
+        "direction": {
+          "x": -1,
+          "y": 0,
+          "z": 0,
+        },
         "disappearing": null,
         "expires": null,
         "position": {
@@ -1654,7 +1686,11 @@ exports[`playing through a complex, deterministic room ("laboratory") should alw
       "castsShadowWhileStoodOn": false,
       "castsWholeShadows": true,
       "config": {
-        "direction": "right",
+        "direction": {
+          "x": -1,
+          "y": 0,
+          "z": 0,
+        },
       },
       "fixedZIndex": undefined,
       "hash": 0.6157101895660162,
@@ -1678,7 +1714,11 @@ exports[`playing through a complex, deterministic room ("laboratory") should alw
           },
           "roomTime": 2049.9999999999927,
         },
-        "direction": "right",
+        "direction": {
+          "x": -1,
+          "y": 0,
+          "z": 0,
+        },
         "disappearing": null,
         "expires": null,
         "position": {
@@ -1701,7 +1741,11 @@ exports[`playing through a complex, deterministic room ("laboratory") should alw
       "castsShadowWhileStoodOn": false,
       "castsWholeShadows": true,
       "config": {
-        "direction": "towards",
+        "direction": {
+          "x": 0,
+          "y": -1,
+          "z": 0,
+        },
         "times": {
           "y": 3,
         },
@@ -1727,7 +1771,11 @@ exports[`playing through a complex, deterministic room ("laboratory") should alw
           },
           "roomTime": 30016.66666666516,
         },
-        "direction": "towards",
+        "direction": {
+          "x": 0,
+          "y": -1,
+          "z": 0,
+        },
         "disappearing": null,
         "expires": null,
         "position": {
@@ -1977,7 +2025,11 @@ exports[`playing through a complex, deterministic room ("laboratory") should alw
       },
       "castsShadowWhileStoodOn": false,
       "config": {
-        "direction": "towards",
+        "direction": {
+          "x": 0,
+          "y": -1,
+          "z": 0,
+        },
         "onFloorEdge": true,
         "part": "far",
         "toRoom": "nowhere",
@@ -2018,7 +2070,11 @@ exports[`playing through a complex, deterministic room ("laboratory") should alw
       },
       "castsShadowWhileStoodOn": false,
       "config": {
-        "direction": "towards",
+        "direction": {
+          "x": 0,
+          "y": -1,
+          "z": 0,
+        },
         "onFloorEdge": true,
         "part": "near",
         "toRoom": "nowhere",
@@ -2059,7 +2115,11 @@ exports[`playing through a complex, deterministic room ("laboratory") should alw
       },
       "castsShadowWhileStoodOn": true,
       "config": {
-        "direction": "towards",
+        "direction": {
+          "x": 0,
+          "y": -1,
+          "z": 0,
+        },
         "onFloorEdge": true,
         "part": "top",
         "toRoom": "nowhere",
@@ -2112,7 +2172,11 @@ exports[`playing through a complex, deterministic room ("laboratory") should alw
       },
       "castsShadowWhileStoodOn": false,
       "config": {
-        "direction": "towards",
+        "direction": {
+          "x": 0,
+          "y": -1,
+          "z": 0,
+        },
         "height": 2,
         "onFloorEdge": true,
         "side": "away",
@@ -2285,7 +2349,11 @@ exports[`playing through a complex, deterministic room ("laboratory") should alw
       },
       "castsShadowWhileStoodOn": false,
       "config": {
-        "direction": "away",
+        "direction": {
+          "x": 0,
+          "y": 1,
+          "z": 0,
+        },
         "onFloorEdge": true,
         "part": "far",
         "toRoom": "nowhere",
@@ -2326,7 +2394,11 @@ exports[`playing through a complex, deterministic room ("laboratory") should alw
       },
       "castsShadowWhileStoodOn": false,
       "config": {
-        "direction": "away",
+        "direction": {
+          "x": 0,
+          "y": 1,
+          "z": 0,
+        },
         "onFloorEdge": true,
         "part": "near",
         "toRoom": "nowhere",
@@ -2367,7 +2439,11 @@ exports[`playing through a complex, deterministic room ("laboratory") should alw
       },
       "castsShadowWhileStoodOn": true,
       "config": {
-        "direction": "away",
+        "direction": {
+          "x": 0,
+          "y": 1,
+          "z": 0,
+        },
         "onFloorEdge": true,
         "part": "top",
         "toRoom": "nowhere",
@@ -2420,7 +2496,11 @@ exports[`playing through a complex, deterministic room ("laboratory") should alw
       },
       "castsShadowWhileStoodOn": false,
       "config": {
-        "direction": "away",
+        "direction": {
+          "x": 0,
+          "y": 1,
+          "z": 0,
+        },
         "height": 2,
         "onFloorEdge": true,
         "side": "away",
@@ -2624,7 +2704,11 @@ exports[`playing through a complex, deterministic room ("laboratory") should alw
       "config": {
         "activated": "on",
         "movement": "towards-on-shortest-axis-xy4",
-        "startDirection": "away",
+        "startDirection": {
+          "x": 0,
+          "y": 1,
+          "z": 0,
+        },
         "which": "cyberman",
       },
       "fixedZIndex": undefined,
@@ -2710,7 +2794,11 @@ exports[`playing through a complex, deterministic room ("laboratory") should alw
       "config": {
         "activated": "on",
         "movement": "towards-on-shortest-axis-xy4",
-        "startDirection": "away",
+        "startDirection": {
+          "x": 0,
+          "y": 1,
+          "z": 0,
+        },
         "which": "cyberman",
       },
       "fixedZIndex": undefined,
@@ -2797,7 +2885,11 @@ exports[`playing through a complex, deterministic room ("laboratory") should alw
       "config": {
         "activated": "on",
         "movement": "towards-on-shortest-axis-xy4",
-        "startDirection": "away",
+        "startDirection": {
+          "x": 0,
+          "y": 1,
+          "z": 0,
+        },
         "which": "cyberman",
       },
       "fixedZIndex": undefined,
@@ -2884,7 +2976,11 @@ exports[`playing through a complex, deterministic room ("laboratory") should alw
       "config": {
         "activated": "on",
         "movement": "towards-on-shortest-axis-xy4",
-        "startDirection": "away",
+        "startDirection": {
+          "x": 0,
+          "y": 1,
+          "z": 0,
+        },
         "which": "cyberman",
       },
       "fixedZIndex": undefined,
@@ -2968,7 +3064,11 @@ exports[`playing through a complex, deterministic room ("laboratory") should alw
       "config": {
         "activated": "on",
         "movement": "towards-on-shortest-axis-xy4",
-        "startDirection": "away",
+        "startDirection": {
+          "x": 0,
+          "y": 1,
+          "z": 0,
+        },
         "which": "cyberman",
       },
       "fixedZIndex": undefined,
@@ -3052,8 +3152,16 @@ exports[`playing through a complex, deterministic room ("laboratory") should alw
       "castsShadowWhileStoodOn": false,
       "config": {
         "doorExpandedSides": [
-          "towards",
-          "away",
+          {
+            "x": 0,
+            "y": -1,
+            "z": 0,
+          },
+          {
+            "x": 0,
+            "y": 1,
+            "z": 0,
+          },
         ],
         "floorType": "standable",
         "naturalFootprint": {
@@ -3619,7 +3727,11 @@ exports[`playing through a complex, deterministic room ("laboratory") should alw
       "config": {
         "activated": "on",
         "movement": "back-forth",
-        "startDirection": "left",
+        "startDirection": {
+          "x": 1,
+          "y": 0,
+          "z": 0,
+        },
         "style": "starsAndStripes",
         "which": "skiHead",
       },
@@ -3704,7 +3816,11 @@ exports[`playing through a complex, deterministic room ("laboratory") should alw
       "config": {
         "activated": "on",
         "movement": "back-forth",
-        "startDirection": "right",
+        "startDirection": {
+          "x": -1,
+          "y": 0,
+          "z": 0,
+        },
         "style": "starsAndStripes",
         "which": "skiHead",
       },
@@ -3789,7 +3905,11 @@ exports[`playing through a complex, deterministic room ("laboratory") should alw
       "config": {
         "activated": "on",
         "movement": "back-forth",
-        "startDirection": "away",
+        "startDirection": {
+          "x": 0,
+          "y": 1,
+          "z": 0,
+        },
         "style": "starsAndStripes",
         "which": "skiHead",
       },
@@ -3874,7 +3994,11 @@ exports[`playing through a complex, deterministic room ("laboratory") should alw
       "config": {
         "activated": "on",
         "movement": "back-forth",
-        "startDirection": "right",
+        "startDirection": {
+          "x": -1,
+          "y": 0,
+          "z": 0,
+        },
         "style": "greenAndPink",
         "which": "skiHead",
       },
@@ -3959,7 +4083,11 @@ exports[`playing through a complex, deterministic room ("laboratory") should alw
       "config": {
         "activated": "on",
         "movement": "back-forth",
-        "startDirection": "away",
+        "startDirection": {
+          "x": 0,
+          "y": 1,
+          "z": 0,
+        },
         "style": "greenAndPink",
         "which": "skiHead",
       },
@@ -4044,7 +4172,11 @@ exports[`playing through a complex, deterministic room ("laboratory") should alw
       "config": {
         "activated": "on",
         "movement": "back-forth",
-        "startDirection": "away",
+        "startDirection": {
+          "x": 0,
+          "y": 1,
+          "z": 0,
+        },
         "style": "greenAndPink",
         "which": "skiHead",
       },
@@ -4127,7 +4259,11 @@ exports[`playing through a complex, deterministic room ("laboratory") should alw
       "config": {
         "activated": "on",
         "movement": "towards-on-shortest-axis-xy4",
-        "startDirection": "away",
+        "startDirection": {
+          "x": 0,
+          "y": 1,
+          "z": 0,
+        },
         "which": "cyberman",
       },
       "fixedZIndex": undefined,
@@ -7336,7 +7472,11 @@ exports[`playing through a complex, deterministic room ("laboratory") should alw
       "config": {
         "activated": "on",
         "movement": "clockwise",
-        "startDirection": "towards",
+        "startDirection": {
+          "x": 0,
+          "y": -1,
+          "z": 0,
+        },
         "which": "turtle",
       },
       "fixedZIndex": undefined,
@@ -7421,7 +7561,11 @@ exports[`playing through a complex, deterministic room ("laboratory") should alw
       "config": {
         "activated": "on",
         "movement": "clockwise",
-        "startDirection": "left",
+        "startDirection": {
+          "x": 1,
+          "y": 0,
+          "z": 0,
+        },
         "which": "turtle",
       },
       "fixedZIndex": undefined,
@@ -7634,7 +7778,11 @@ exports[`playing through a complex, deterministic room ("laboratory") should alw
       },
       "castsShadowWhileStoodOn": false,
       "config": {
-        "direction": "right",
+        "direction": {
+          "x": -1,
+          "y": 0,
+          "z": 0,
+        },
         "tiles": [
           "hieroglyphics",
           "hieroglyphics",
@@ -7689,7 +7837,11 @@ exports[`playing through a complex, deterministic room ("laboratory") should alw
       },
       "castsShadowWhileStoodOn": false,
       "config": {
-        "direction": "towards",
+        "direction": {
+          "x": 0,
+          "y": -1,
+          "z": 0,
+        },
         "tiles": [
           "hieroglyphics",
           "hieroglyphics",
@@ -7736,7 +7888,11 @@ exports[`playing through a complex, deterministic room ("laboratory") should alw
       },
       "castsShadowWhileStoodOn": false,
       "config": {
-        "direction": "away",
+        "direction": {
+          "x": 0,
+          "y": 1,
+          "z": 0,
+        },
         "tiles": [
           "sarcophagus",
           "hieroglyphics",
@@ -7783,7 +7939,11 @@ exports[`playing through a complex, deterministic room ("laboratory") should alw
       },
       "castsShadowWhileStoodOn": false,
       "config": {
-        "direction": "left",
+        "direction": {
+          "x": 1,
+          "y": 0,
+          "z": 0,
+        },
         "tiles": [
           "sarcophagus",
           "hieroglyphics",
@@ -7838,7 +7998,11 @@ exports[`playing through a complex, deterministic room ("laboratory") should alw
       },
       "castsShadowWhileStoodOn": false,
       "config": {
-        "direction": "towards",
+        "direction": {
+          "x": 0,
+          "y": -1,
+          "z": 0,
+        },
         "tiles": [
           "hieroglyphics",
           "hieroglyphics",
@@ -7889,7 +8053,11 @@ exports[`playing through a complex, deterministic room ("laboratory") should alw
       },
       "castsShadowWhileStoodOn": false,
       "config": {
-        "direction": "away",
+        "direction": {
+          "x": 0,
+          "y": 1,
+          "z": 0,
+        },
         "tiles": [
           "hieroglyphics",
           "sarcophagus",

@@ -3,7 +3,7 @@ import {
   type UnionOfAllItemInPlayTypes,
 } from "../../../model/ItemInPlay";
 import { isWallDirectionHiddenAtAngle } from "../../../model/json/WallJsonConfig";
-import { type DirectionXy4, type Xy } from "../../../utils/vectors/vectors";
+import { type Xy, type Xyz } from "../../../utils/vectors/vectors";
 import { isDoorPartInHiddenWall } from "../renderBox/makeItemRenderBoxAtCameraAngle";
 
 type ShadowFieldsItem = Pick<
@@ -42,7 +42,7 @@ export const shadowCastTextureAtAngle = (
     case "doorLegs":
       return (
           isDoorPartInHiddenWall(
-            item.config as { direction: DirectionXy4; onFloorEdge: boolean },
+            item.config as { direction: Xyz; onFloorEdge: boolean },
             cameraAngle,
           )
         ) ?
@@ -50,7 +50,7 @@ export const shadowCastTextureAtAngle = (
         : undefined;
     case "doorFrame": {
       const config = item.config as {
-        direction: DirectionXy4;
+        direction: Xyz;
         onFloorEdge: boolean;
         part: "far" | "near" | "top";
       };
@@ -73,7 +73,7 @@ export const castsShadowWhileStoodOnAtAngle = (
 ): boolean => {
   if (item.type === "wall") {
     return isWallDirectionHiddenAtAngle(
-      (item.config as { direction: DirectionXy4 }).direction,
+      (item.config as { direction: Xyz }).direction,
       cameraAngle,
     );
   }
@@ -84,7 +84,7 @@ export const castsShadowWhileStoodOnAtAngle = (
   }
   if (item.type === "doorLegs") {
     return isDoorPartInHiddenWall(
-      item.config as { direction: DirectionXy4; onFloorEdge: boolean },
+      item.config as { direction: Xyz; onFloorEdge: boolean },
       cameraAngle,
     );
   }
@@ -101,7 +101,7 @@ export const noShadowCastOnAtAngle = (
 ): ShadowFieldsItem["noShadowCastOn"] => {
   if (item.type === "doorFrame") {
     const config = item.config as {
-      direction: DirectionXy4;
+      direction: Xyz;
       onFloorEdge: boolean;
       part: "far" | "near" | "top";
     };

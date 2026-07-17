@@ -7,7 +7,7 @@ import {
 } from "../../../../model/ItemInPlay";
 import { type ConsolidatableConfig } from "../../../../model/json/utilityJsonConfigTypes";
 import { roomSpatialIndexKey } from "../../../../model/RoomState";
-import { wallTimes } from "../../../../model/times";
+import { wallInPlayTimes } from "../../../../model/times";
 import { store } from "../../../../store/store";
 import { assignRoundedXy } from "../../../../utils/pixi/assignRoundedXy";
 import { maybeRenderContainerToSprite } from "../../../../utils/pixi/renderContainerToSprite";
@@ -405,7 +405,7 @@ class ItemShadowRenderer<T extends ItemInPlayType>
         // derive it - their cast shadow must repeat along the wall's length:
         const times =
           caster.type === "wall" ?
-            wallTimes(caster.config)
+            wallInPlayTimes(caster.config)
           : (caster.config as ConsolidatableConfig).times;
 
         const { flipsOnOddQuarterCameraTurns, ...shadowCastTexture } =

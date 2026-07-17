@@ -4,7 +4,6 @@ import {
   projectApparentTopRight,
 } from "../../../game/render/sortZ/projectAabbCorners";
 import { rotateXyzByInverseCameraAngle } from "../../../utils/vectors/rotateXy";
-import { unitVectors } from "../../../utils/vectors/unitVectors";
 import { scaleXyz, type Xy, type Xyz } from "../../../utils/vectors/vectors";
 import { type EditorUnionOfAllItemInPlayTypes } from "../../editorTypes";
 import { type Tool } from "../interactivity/Tool";
@@ -35,7 +34,7 @@ export const pointerIntersectionFace = (
     const wallDirection = item.config.direction;
     // for placing doors on walls, only consider the face of the wall
     // that is going into the room
-    return scaleXyz(unitVectors[wallDirection], -1);
+    return scaleXyz(wallDirection, -1);
   }
 
   /*

@@ -32,11 +32,12 @@ import {
   type AxisXy,
   cameraAngleIsOddQuarterTurn,
   type DirectionXy4,
+  dominantAxisXy,
+  isNegativeSideXy,
   nonZeroVectorClosestDirectionXy4,
   originXyz,
   perpendicularAxisXy,
   subXy,
-  tangentAxis,
   type Xy,
   type Xyz,
 } from "../../../../utils/vectors/vectors";
@@ -139,13 +140,12 @@ const floorLeftRightCutOffMask = <
 
       const itemDirection = item.config.direction;
       // axis going into or out of the room (if a door) or bouncing off the wall
-      const intoRoomAxis = tangentAxis(itemDirection);
+      const intoRoomAxis = dominantAxisXy(itemDirection);
       // axis along the item:
       const alongItemAxis = perpendicularAxisXy(intoRoomAxis);
       // will this item have to be on the positive or negative side of the axis?
       // 1 for far, 0 for near
-      const farSide =
-        itemDirection === "away" || itemDirection === "left" ? true : false;
+      const farSide = !isNegativeSideXy(itemDirection);
 
       const floorOrdOnIntoRoomAxis =
         floorNaturalPosition[intoRoomAxis] +
@@ -187,9 +187,8 @@ const floorLeftRightCutOffMask = <
         let visAabb: Xyz;
         let visPosition: Xyz;
         if (nonRendering) {
-          const faceAxis = tangentAxis(direction);
-          const outIsNegative =
-            direction === "towards" || direction === "right";
+          const faceAxis = dominantAxisXy(direction);
+          const outIsNegative = isNegativeSideXy(direction);
           visAabb = { ...aabb, [faceAxis]: 0 };
           visPosition =
             outIsNegative ?

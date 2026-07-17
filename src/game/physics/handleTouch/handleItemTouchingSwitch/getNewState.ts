@@ -6,7 +6,7 @@ import { type ItemState } from "../../../../model/ItemState";
 import { type SwitchItemModificationUnion } from "../../../../model/json/SwitchConfig";
 import { emptyObject } from "../../../../utils/empty";
 import { unitVectors } from "../../../../utils/vectors/unitVectors";
-import { oppositeDirection, scaleXyz } from "../../../../utils/vectors/vectors";
+import { scaleXyz } from "../../../../utils/vectors/vectors";
 
 export const getNewState = <RoomId extends string, RoomItemId extends string>(
   modifiesItem: SwitchItemModificationUnion<RoomId, RoomItemId>,
@@ -86,10 +86,20 @@ export const getNewState = <RoomId extends string, RoomItemId extends string>(
     const configDirection = targetItem.config.direction;
     return (
       setting === (reverses ? "left" : "right") ?
-        { direction: oppositeDirection(configDirection) }
+        { direction: scaleXyz(configDirection, -1) }
       : { direction: configDirection }) satisfies Partial<
       ItemState<"conveyor", RoomId, RoomItemId>
     >;
+  }
+
+  if (modifiesItem.expectType === "conveyor") {
+    // the json patch names the direction; the in-play state holds a unit
+    // vector:
+    const { direction, ...rest } = modifiesItem[`${setting}State`] ?? {};
+    return (
+      direction === undefined ? rest : (
+        { ...rest, direction: unitVectors[direction] }
+      )) satisfies Partial<ItemState<"conveyor", RoomId, RoomItemId>>;
   }
 
   if (modifiesItem.expectType === "deadlyBlock" && "disables" in modifiesItem) {
