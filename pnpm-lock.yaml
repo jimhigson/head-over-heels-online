@@ -89,9 +89,6 @@ importers:
       tailwind-scrollbar:
         specifier: ^3.1.0
         version: 3.1.0(tailwindcss@3.4.17(ts-node@10.9.2(@swc/core@1.11.9)(@types/node@26.1.1)(@typescript/typescript6@6.0.2)))
-      wouter:
-        specifier: ^3.9.0
-        version: 3.9.0(react@19.2.3)
     devDependencies:
       '@aws-sdk/client-s3':
         specifier: ^3.1073.0
@@ -183,9 +180,6 @@ importers:
       immer:
         specifier: ^11.1.8
         version: 11.1.8
-      js-base64:
-        specifier: ^3.7.7
-        version: 3.7.7
       json-canonicalize:
         specifier: ^1.0.6
         version: 1.0.6
@@ -4249,9 +4243,6 @@ packages:
     resolution: {integrity: sha512-AC/7JofJvZGrrneWNaEnJeOLUx+JlGt7tNa0wZiRPT4MY1wmfKjt2+6O2p2uz2+skll8OZZmJMNqeke7kKbNgQ==}
     hasBin: true
 
-  js-base64@3.7.7:
-    resolution: {integrity: sha512-7rCnleh0z2CkXhH67J8K1Ytz0b2Y+yxTPL+/KOJoa20hfnVQ/3/T6W/KflYI4bRHRagNeXeU2bkNGI3v1oS/lw==}
-
   js-binary-schema-parser@2.0.3:
     resolution: {integrity: sha512-xezGJmOb4lk/M1ZZLTR/jaBHQ4gG/lqQnJqdIv4721DMggsa1bDVlHXNeHYogaIEHD9vCRv0fcL4hMA+Coarkg==}
 
@@ -4930,10 +4921,6 @@ packages:
   regexp.prototype.flags@1.5.4:
     resolution: {integrity: sha512-dYqgNSZbDwkaJ2ceRd9ojCGjBq+mOm9LmtXnAnEGyHhN/5R7iDW2TRw3h+o/jCFxus3P2LfWIIiwowAjANm7IA==}
     engines: {node: '>= 0.4'}
-
-  regexparam@3.0.0:
-    resolution: {integrity: sha512-RSYAtP31mvYLkAHrOlh25pCNQ5hWnT106VukGaaFfuJrZFkGRX5GhUAdPqpSDXxOhA2c4akmRuplv1mRqnBn6Q==}
-    engines: {node: '>=8'}
 
   regexpu-core@6.4.0:
     resolution: {integrity: sha512-0ghuzq67LI9bLXpOX/ISfve/Mq33a4aFRzoQYhnnok1JOFpmE/A2TBGkNVenOGEeSBCjIiWcc6MVOG5HEQv0sA==}
@@ -5728,11 +5715,6 @@ packages:
     resolution: {integrity: sha512-CS/640T7pIJ2HYX6x2DwKFGbcSckAWN3tgcdq+ptB6SaqjWUhlzIgA/YhPuwIU+/NnMnGpqOFX/hC18Oyge63w==}
     engines: {node: '>=16'}
     hasBin: true
-
-  wouter@3.9.0:
-    resolution: {integrity: sha512-sF/od/PIgqEQBQcrN7a2x3MX6MQE6nW0ygCfy9hQuUkuB28wEZuu/6M5GyqkrrEu9M6jxdkgE12yDFsQMKos4Q==}
-    peerDependencies:
-      react: '>=16.8.0'
 
   wrangler@4.100.0:
     resolution: {integrity: sha512-dSQO7DO+mD6XDzkVWIWBoGLO3yw+lacWSc/KhFvd7pgfpth+kX98qb5SGRHZN8ACCDhhfwzDLXwB6qHsIHhfBg==}
@@ -9650,8 +9632,6 @@ snapshots:
 
   jiti@2.7.0: {}
 
-  js-base64@3.7.7: {}
-
   js-binary-schema-parser@2.0.3: {}
 
   js-tokens@4.0.0: {}
@@ -10323,8 +10303,6 @@ snapshots:
       get-proto: 1.0.1
       gopd: 1.2.0
       set-function-name: 2.0.2
-
-  regexparam@3.0.0: {}
 
   regexpu-core@6.4.0:
     dependencies:
@@ -11327,13 +11305,6 @@ snapshots:
       '@cloudflare/workerd-linux-64': 1.20260611.1
       '@cloudflare/workerd-linux-arm64': 1.20260611.1
       '@cloudflare/workerd-windows-64': 1.20260611.1
-
-  wouter@3.9.0(react@19.2.3):
-    dependencies:
-      mitt: 3.0.1
-      react: 19.2.3
-      regexparam: 3.0.0
-      use-sync-external-store: 1.6.0(react@19.2.3)
 
   wrangler@4.100.0:
     dependencies:
