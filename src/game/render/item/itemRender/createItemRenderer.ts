@@ -4,19 +4,19 @@ import { type ItemInPlayType } from "../../../../model/ItemInPlay";
 import { createSoundRenderer } from "../../../../sound/createSoundRenderer";
 import { SoundPanRenderer } from "../../../../sound/SoundPanRenderer";
 import { defaultUserSettings } from "../../../../store/slices/userSettings/defaultUserSettings";
-import { appearanceForItem } from "../../itemAppearances/appearanceForItem";
-import { type ItemAppearanceOutsideView } from "../../itemAppearances/itemAppearanceOutsideView";
 import { type ItemRenderContext } from "../../ItemRenderContexts";
 import { CompositeItemGraphicsRenderer } from "./CompositeItemGraphicsRenderer";
 import { conveyorBobDecorateItemRenderer } from "./ConveyorBobRenderer";
+import { createItemLeafPixiRenderer } from "./createItemLeafPixiRenderer";
 import { type DecorateItemMaybeRenderer } from "./DecorateItemRenderer";
-import { ItemAppearancePixiRenderer } from "./ItemAppearancePixiRenderer";
 import { flashOnSwitchedDecorateItemRenderer } from "./ItemFlashOnSwitchedRenderer";
-import { type ItemPixiRenderer } from "./ItemPixiRenderer";
+import { type ItemChainPixiRenderer } from "./ItemPixiRenderer";
 import { ItemPositionRenderer } from "./ItemPositionRenderer";
 import { maybeCreateItemShadowRenderer } from "./ItemShadowRenderer";
 import { ItemSoundAndGraphicsRenderer } from "./ItemSoundAndGraphicsRenderer";
+import { NearCornerOffsetRenderer } from "./NearCornerOffsetRenderer";
 import { portableItemPickHighlightDecorateItemRenderer } from "./PortableItemPickUpNextHighlightRenderer";
+import { TransitionSurfaceRenderer } from "./TransitionSurfaceRenderer";
 
 /**
  * creating an item renderer creates one special 'top' property which is the "render this item
@@ -31,14 +31,15 @@ export type ItemRenderPipeline<T extends ItemInPlayType> = {
   /** the top-level, chained renderer that was created for this item. Tick this to tick the item */
   top: ItemSoundAndGraphicsRenderer<T>;
 
-  // a hook into the sub-renderer that makes the actual appearance - more could be added later if needed
-  itemAppearanceRenderer?: ItemAppearancePixiRenderer<T, object, Container>;
+  // a hook into the sub-renderer that renders the item itself - without shadows,
+  // sound or decorators - eg for using an item's art as a mask
+  itemPixiRenderer?: ItemChainPixiRenderer<T>;
 };
 
 const maybeWrapWithInjected = <T extends ItemInPlayType>(
   injectedDecorators: DecorateItemMaybeRenderer[][],
   itemRenderContext: ItemRenderContext<T>,
-  childRenderer?: ItemPixiRenderer<T>,
+  childRenderer?: ItemChainPixiRenderer<T>,
 ) => {
   if (injectedDecorators.length === 0) {
     return childRenderer;
@@ -64,30 +65,21 @@ export const createItemRenderer = <T extends ItemInPlayType>(
 
   const { item } = itemRenderContext;
 
-  const siblingPixiRenderers: ItemPixiRenderer<T>[] = [];
+  const siblingPixiRenderers: ItemChainPixiRenderer<T>[] = [];
 
-  const appearance = appearanceForItem(
-    item,
-    itemRenderContext.general.cameraAngle,
-  ) as ItemAppearanceOutsideView<T>;
-  let itemAppearanceRenderer:
-    | ItemRenderPipeline<T>["itemAppearanceRenderer"]
-    | undefined = undefined;
+  const itemPixiRenderer = createItemLeafPixiRenderer(itemRenderContext);
 
   const mainRenderChain = maybeWrapWithInjected(
     injectedDecorators,
     itemRenderContext,
-    appearance === undefined ? undefined : (
+    itemPixiRenderer === undefined ? undefined : (
       conveyorBobDecorateItemRenderer(
         itemRenderContext,
         portableItemPickHighlightDecorateItemRenderer(
           itemRenderContext,
           flashOnSwitchedDecorateItemRenderer(
             itemRenderContext,
-            (itemAppearanceRenderer = new ItemAppearancePixiRenderer(
-              itemRenderContext,
-              appearance,
-            )),
+            itemPixiRenderer,
           ),
         ),
       )
@@ -115,7 +107,7 @@ export const createItemRenderer = <T extends ItemInPlayType>(
     siblingPixiRenderers.push(maybeItemShadowRenderer);
   }
 
-  let graphics: ItemPixiRenderer<T> | undefined;
+  let graphics: ItemChainPixiRenderer<T> | undefined;
   if (siblingPixiRenderers.length === 0) {
     graphics = undefined;
   } else {
@@ -128,7 +120,15 @@ export const createItemRenderer = <T extends ItemInPlayType>(
           graphicsContainer,
         );
 
-    graphics = new ItemPositionRenderer(itemRenderContext, compositeRenderer);
+    // the item's graphics chain, inner → outer: art → near-corner offset →
+    // (cyclic mask + cuboid warp + wall fade) → screen positioning:
+    graphics = new ItemPositionRenderer(
+      itemRenderContext,
+      new TransitionSurfaceRenderer(
+        itemRenderContext,
+        new NearCornerOffsetRenderer(itemRenderContext, compositeRenderer),
+      ),
+    );
   }
 
   const mute =
@@ -150,6 +150,6 @@ export const createItemRenderer = <T extends ItemInPlayType>(
       graphics,
       sound,
     }),
-    itemAppearanceRenderer,
+    itemPixiRenderer,
   };
 };

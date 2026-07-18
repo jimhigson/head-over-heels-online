@@ -2,7 +2,7 @@ import { expect, type Page, test, type TestInfo } from "@playwright/test";
 
 import { type OriginalCampaignRoomId } from "../src/_generated/originalCampaign/OriginalCampaignRoomId";
 import { type SpriteOption } from "../src/store/slices/userSettings/userSettingsSlice";
-import { type Xy } from "../src/utils/vectors/vectors";
+import { dispatchKeyPress } from "./testUtils/gameInteractions";
 import {
   setZeroGameSpeed,
   waitForGameState,
@@ -34,12 +34,8 @@ import { setSpriteOption } from "./testUtils/setSpriteOption";
 const campaignUrl =
   "/?campaignName=rotate-camera-test&campaignAuthorUserId=2924c962-99f1-4dd2-9b9c-fef832dc991b&cheats=1&track=0";
 
-const angles: ReadonlyArray<readonly [string, Xy]> = [
-  ["base", { x: 1, y: 0 }],
-  ["cw90", { x: 0, y: -1 }],
-  ["cw180", { x: -1, y: 0 }],
-  ["cw270", { x: 0, y: 1 }],
-];
+// visited in order by turning a quarter clockwise before each (after base):
+const angleNames = ["base", "cw90", "cw180", "cw270"] as const;
 
 type TestScenario =
   | {
@@ -101,22 +97,31 @@ const screenshotAllAngles = async (
 ) => {
   const screenshotOpts = {
     ...roomScreenshotOptions(testInfo.project.name),
-    // the baselines record the intended rendering, which differs from the
-    // game's current output in two known ways: the extraCornerShadow is
-    // missing at rotated angles (a rendering bug being fixed separately), and
-    // the frozen boot lands the scroll-home a pixel away from where the
-    // baselines' drifting boot did. Together those read as up to ~12k pixels
-    // on the busiest rooms; the allowance accepts them while still failing on
-    // large structural regressions (eg a misplaced door frame is ~35k):
-    maxDiffPixels: 12_000,
+    // the playable can drift a few pixels from its spawn before the game
+    // speed is zeroed (eg when it spawns on a conveyor), which reads as a
+    // sprite-sized diff. Real regressions in what this suite guards (item
+    // placement, colour clash presence, door/mirror structure) are thousands
+    // of pixels:
+    maxDiffPixels: 1_000,
   };
 
-  for (const [angleName, angle] of angles) {
+  for (const [i, angleName] of angleNames.entries()) {
     await test.step(`angle ${angleName}`, async () => {
-      await page.evaluate((a) => {
-        window._e2e_gamePageGameAi!.gameState.cameraAngle = a;
-      }, angle);
-      // let the main loop notice the angle changed and rebuild the room renderer:
+      if (i > 0) {
+        // rotate to this angle the way a player does - a quarter-turn
+        // clockwise via the animated transition (NOT by setting the angle
+        // directly, which re-renders everything from scratch and so cannot
+        // catch rendering that fails to survive the transition):
+        await dispatchKeyPress(page, ".", "Period");
+        await page.waitForFunction(
+          () =>
+            window._e2e_gamePageGameAi?.gameState.cameraTransition ===
+            undefined,
+          undefined,
+          { timeout: 10_000 },
+        );
+      }
+      // let the settled frame re-project and the scroll land:
       await page.waitForTimeout(600);
 
       await expect
@@ -176,18 +181,20 @@ test("rotate-camera-test start room at all four camera angles", async ({
   test.setTimeout(180_000);
   await setupE2ePage(page);
   await page.goto(campaignUrl);
-  // this test captures the boot room itself, so the character is at its boot
-  // spawn; physics is frozen as soon as the game state exists, while the
-  // crowns dialog still covers the game:
   await waitForGameState(page);
   await setZeroGameSpeed(page);
   await page.waitForSelector("[data-dialog-id=crowns]", { timeout: 15_000 });
   await exitCrownsDialog(page, "rotatedCampaign");
 
-  await setSpriteOption(page, "rotatedCampaign", {
-    name: "BlockStack",
-    uncolourised: false,
-  });
+  // the boot placed the character in the start room while physics could
+  // still tick; bounce out to another room and back so the capture is of a
+  // start room entered with physics already frozen:
+  const lampRenderPromise = waitForRoomRenderEvent(page, "lamp");
+  await page.goto(`${campaignUrl}#lamp`);
+  await lampRenderPromise;
+  const startRenderPromise = waitForRoomRenderEvent(page, "start");
+  await page.goto(`${campaignUrl}#start`);
+  await startRenderPromise;
   await page.waitForTimeout(300);
 
   await screenshotAllAngles(page, testInfo, "start");

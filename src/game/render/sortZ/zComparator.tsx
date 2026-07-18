@@ -55,6 +55,38 @@ const intervalOverlap = (
 ): number => Math.min(aHi, bHi) - Math.max(aLo, bLo);
 
 /**
+ * for screen-adjacent boxes: when one box sits entirely at-or-above the other's
+ * top AND their world (x,y) plans overlap with real area, the higher one is in
+ * front - anything resting on or floating over another item draws over it. The
+ * screen-adjacency is then a visual coincidence of the projection (eg a raised
+ * door post whose drawn bottom row of pixels meets the floor's far edge), and
+ * the side-by-side seam heuristics below would compare unrelated global
+ * extremes of very differently-sized boxes.
+ *
+ * returns ±1, or 0 to fall through to the seam logic
+ */
+const adjacentStackedOrder = (
+  aPos: Xyz,
+  aBb: Xyz,
+  bPos: Xyz,
+  bBb: Xyz,
+): number => {
+  const aAbove = aPos.z >= bPos.z + bBb.z - epsilon;
+  const bAbove = bPos.z >= aPos.z + aBb.z - epsilon;
+  if (aAbove === bAbove) {
+    return 0;
+  }
+  if (
+    intervalOverlap(aPos.x, aPos.x + aBb.x, bPos.x, bPos.x + bBb.x) <=
+      epsilon ||
+    intervalOverlap(aPos.y, aPos.y + aBb.y, bPos.y, bPos.y + bBb.y) <= epsilon
+  ) {
+    return 0;
+  }
+  return aAbove ? 1 : -1;
+};
+
+/**
  * comparator suitable for ordering by z (with a topographic sort, not a normal sort)
  *
  *  returns:
@@ -193,6 +225,16 @@ export const zComparator = (
         return 0;
       }
 
+      const stackedOrder = adjacentStackedOrder(
+        aRenderPos,
+        aRenderBb,
+        bRenderPos,
+        bRenderBb,
+      );
+      if (stackedOrder !== 0) {
+        return stackedOrder;
+      }
+
       if (veryClose(aYMin, bYMax) && veryClose(aZMin, bZMax)) {
         return 1;
       }
@@ -262,6 +304,16 @@ export const zComparator = (
       );
       if (seamOverlap < epsilon) {
         return 0;
+      }
+
+      const stackedOrder = adjacentStackedOrder(
+        aRenderPos,
+        aRenderBb,
+        bRenderPos,
+        bRenderBb,
+      );
+      if (stackedOrder !== 0) {
+        return stackedOrder;
       }
 
       if (veryClose(aXMin, bXMax) && veryClose(aZMin, bZMax)) {

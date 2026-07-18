@@ -2,13 +2,17 @@ import { type AnimatedSprite, Container } from "pixi.js";
 
 import { type LightBeamEnd } from "../../../model/ItemStateMap";
 import { originalGameFrameDuration } from "../../../originalGame";
-import { axisProjectsReversed } from "../../../utils/vectors/rotateXy";
-import { unitVectors } from "../../../utils/vectors/unitVectors";
 import {
-  type DirectionXy4,
+  axisProjectsReversed,
+  nearestQuarterAngle,
+} from "../../../utils/vectors/rotateXy";
+import {
+  dominantAxisXy,
   perpendicularAxisXy,
   rotateAxisXyByCameraAngle,
-  tangentAxis,
+  type Xy,
+  xyEqual,
+  type Xyz,
 } from "../../../utils/vectors/vectors";
 import { lightBeamCrossSectionPx } from "../../physics/mechanics/lightBeams";
 import { createSprite } from "../createSprite";
@@ -16,9 +20,11 @@ import { projectWorldXyzToScreenXy } from "../projections";
 import { type ItemAppearance } from "./ItemAppearance";
 
 type LightBeamRenderProps = {
-  direction: DirectionXy4;
+  direction: Xyz;
   lengthPx: number;
   end: LightBeamEnd;
+  /** the beam's rendered axis and tiling resolve per camera angle */
+  cameraQuarterAngle: Xy;
   /** the live tile sprites, in order from the source, reused between renders */
   tiles: AnimatedSprite[];
   /** the live end-glow sprite, present only while the beam ends in a terminus */
@@ -63,29 +69,31 @@ export const lightBeamAppearance: ItemAppearance<
   },
   currentRendering,
 }) => {
-  const axis = tangentAxis(direction);
+  const cameraQuarterAngle = nearestQuarterAngle(cameraAngle);
+  const axis = dominantAxisXy(direction);
   const crossAxis = perpendicularAxisXy(axis);
   // the beam runs along its world axis, but on screen it appears along the axis
   // the camera rotation has turned that into - which is what the sprite flip and
   // the tile projection below follow:
-  const renderedAxis = rotateAxisXyByCameraAngle(axis, cameraAngle);
+  const renderedAxis = rotateAxisXyByCameraAngle(axis, cameraQuarterAngle);
   const lengthPx = aabb[axis];
 
   // each tile's art extends from its anchor in the rendered axis's base screen
   // direction; when an axis of the beam projects reversed on screen the art
   // hangs on the other side of its anchor, so anchors move one tile along the
   // beam / one cross-section across it to keep the art over the beam's box:
-  const alongReversed = axisProjectsReversed(axis, cameraAngle);
-  const crossReversed = axisProjectsReversed(crossAxis, cameraAngle);
+  const alongReversed = axisProjectsReversed(axis, cameraQuarterAngle);
+  const crossReversed = axisProjectsReversed(crossAxis, cameraQuarterAngle);
   const alongAnchorAdjust = alongReversed ? beamTilePx : 0;
   const crossAnchorAdjust = crossReversed ? lightBeamCrossSectionPx : 0;
 
   const previous = currentRendering?.renderProps;
   if (
     previous !== undefined &&
-    direction === previous.direction &&
+    xyEqual(direction, previous.direction) &&
     end === previous.end &&
-    lengthPx === previous.lengthPx
+    lengthPx === previous.lengthPx &&
+    xyEqual(cameraQuarterAngle, previous.cameraQuarterAngle)
   ) {
     return "no-update";
   }
@@ -95,7 +103,7 @@ export const lightBeamAppearance: ItemAppearance<
     false,
     isReflection,
   );
-  const sign = unitVectors[direction][axis];
+  const dominantOrdinal = direction[axis];
   const tileCount = Math.max(1, Math.round(lengthPx / beamTilePx));
 
   // the y-axis beam is the x-axis beam flipped in x (swapping x/y axes is a
@@ -107,13 +115,19 @@ export const lightBeamAppearance: ItemAppearance<
   const frameDurationMs = originalGameFrameDuration / animationSpeed;
   const startFrame = Math.floor(roomTime / frameDurationMs) % frameCount;
 
-  // tiles can only be reused while the beam's orientation is unchanged - a
-  // different direction means different positions, flip and play direction, so
-  // a new rendering is started (the caller drops the old one) in that case:
+  // tiles can only be reused while the beam's apparent orientation is
+  // unchanged - a different world direction OR a different camera quarter
+  // means different positions, flip and play direction (those are baked into
+  // the tiles at creation), so a new rendering is started (the caller drops
+  // the old one) in that case:
   const reused =
     (
       currentRendering !== undefined &&
-      currentRendering.renderProps.direction === direction
+      xyEqual(currentRendering.renderProps.direction, direction) &&
+      xyEqual(
+        currentRendering.renderProps.cameraQuarterAngle,
+        cameraQuarterAngle,
+      )
     ) ?
       currentRendering
     : undefined;
@@ -130,14 +144,16 @@ export const lightBeamAppearance: ItemAppearance<
 
   for (let tileI = 0; tileI < tileCount; tileI++) {
     const alongAxis =
-      sign > 0 ? tileI * beamTilePx : lengthPx - (tileI + 1) * beamTilePx;
+      dominantOrdinal > 0 ?
+        tileI * beamTilePx
+      : lengthPx - (tileI + 1) * beamTilePx;
     const screenXy = projectWorldXyzToScreenXy(
       {
         [axis]: alongAxis + alongAnchorAdjust,
         [crossAxis]: crossAnchorAdjust,
         z: 0,
       },
-      cameraAngle,
+      cameraQuarterAngle,
     );
 
     let tile: AnimatedSprite;
@@ -153,7 +169,7 @@ export const lightBeamAppearance: ItemAppearance<
         // play in reverse for beams going the negative way. When the axis
         // projects reversed on screen the art's travel appears mirrored, so
         // the play direction swaps with it:
-        reverse: sign < 0 !== alongReversed,
+        reverse: dominantOrdinal < 0 !== alongReversed,
         paused,
         x: screenXy.x,
         y: screenXy.y,
@@ -181,11 +197,11 @@ export const lightBeamAppearance: ItemAppearance<
     // centre with no anchor-side adjustments:
     const tipScreenXy = projectWorldXyzToScreenXy(
       {
-        [axis]: sign > 0 ? lengthPx : 0,
+        [axis]: dominantOrdinal > 0 ? lengthPx : 0,
         [crossAxis]: lightBeamCrossSectionPx / 2,
         z: lightBeamCrossSectionPx / 2,
       },
-      cameraAngle,
+      cameraQuarterAngle,
     );
     if (terminus === undefined) {
       terminus = createSprite({
@@ -212,6 +228,13 @@ export const lightBeamAppearance: ItemAppearance<
 
   return {
     output: rendering,
-    renderProps: { direction, lengthPx, end, tiles, terminus },
+    renderProps: {
+      direction,
+      lengthPx,
+      end,
+      tiles,
+      terminus,
+      cameraQuarterAngle,
+    },
   };
 };

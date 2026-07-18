@@ -35,6 +35,8 @@ export type ButtonTickContext = {
   room: RoomState<string, string>;
   currentPlayable: PlayableItem | undefined;
   screenSize: Xy;
+  /** Delta time in milliseconds since last tick */
+  deltaMS: number;
   hovered?: boolean;
 };
 

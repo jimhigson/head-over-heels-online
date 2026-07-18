@@ -1,7 +1,9 @@
 import { Container, type Sprite } from "pixi.js";
 
+import { type ItemInPlayType } from "../../../../../model/ItemInPlay";
 import { type RoomState } from "../../../../../model/RoomState";
 import { type AppSpritesheet } from "../../../../../sprites/spritesheet/variants/AppSpritesheet";
+import { neverTime } from "../../../../../utils/neverTime";
 import { selectHeelsAbilities } from "../../../../gameState/gameStateSelectors/selectPlayableItem";
 import {
   type PlayableItem,
@@ -9,8 +11,9 @@ import {
 } from "../../../../physics/itemPredicates";
 import { findItemToPickup } from "../../../../physics/mechanics/pickingUp";
 import { createSprite } from "../../../createSprite";
+import { createItemLeafPixiRenderer } from "../../../item/itemRender/createItemLeafPixiRenderer";
+import { type ItemLeafPixiRenderer } from "../../../item/itemRender/ItemPixiRenderer";
 import { type ButtonAppearance } from "../../HudButtonRenderer";
-import { renderCarriedOnce } from "../../renderCarriedOnce";
 import { ArcadeStyleButtonContainer } from "../ArcadeStyleButtonContainer";
 import { buttonActionsPressed } from "./buttonActionsPressed";
 
@@ -42,6 +45,8 @@ export type CarryButtonRenderProps = {
   carrying: null | PortableItem<string, string>;
   disabled: boolean;
   renderedInRoom: RoomState<string, string> | undefined;
+  /** the carried item's renderer, held across renders so it can be ticked */
+  carriedRenderer: ItemLeafPixiRenderer<ItemInPlayType> | undefined;
 };
 
 export const carryButtonAppearance: ButtonAppearance<
@@ -117,15 +122,34 @@ export const carryButtonAppearance: ButtonAppearance<
     carriedContainer.visible = carrying !== null;
   }
 
+  let carriedRenderer = previouslyRenderedProps?.carriedRenderer;
+
   if (carrying !== previouslyRenderedProps?.carrying || roomChanged) {
     carriedContainer.removeChildren();
+    carriedRenderer?.destroy();
+    carriedRenderer = undefined;
     if (carrying !== null && room !== undefined) {
-      carriedContainer.addChild(
-        renderCarriedOnce(carrying, renderContext, tickContext.room),
-      );
+      const maybeCarriedRenderer = createItemLeafPixiRenderer({
+        general: renderContext.general,
+        item: carrying,
+        room,
+        isReflection: false,
+      });
+      if (import.meta.env.DEV && maybeCarriedRenderer === undefined) {
+        throw new Error(`no renderer for carried item "${carrying.id}"`);
+      }
+      carriedRenderer = maybeCarriedRenderer!;
+      carriedContainer.addChild(carriedRenderer.output);
     }
   }
   //}
+
+  // tick every frame so a directional carried item keeps up with the camera -
+  // the carried renderer shares the live general, so its camera angle is current:
+  carriedRenderer?.tick({
+    deltaMS: tickContext.deltaMS,
+    lastRenderRoomTime: neverTime,
+  });
 
   return {
     output: container,
@@ -135,6 +159,7 @@ export const carryButtonAppearance: ButtonAppearance<
       carrying,
       disabled,
       renderedInRoom: room,
+      carriedRenderer,
     },
   };
 };

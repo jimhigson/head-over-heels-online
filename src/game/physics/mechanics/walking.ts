@@ -7,7 +7,7 @@ import {
 import { epsilon } from "../../../utils/epsilon";
 import { neverTime } from "../../../utils/neverTime";
 import { accelerateToSpeed2 } from "../../../utils/vectors/accelerateUpToSpeed";
-import { cameraAngleBase, rotateXyz } from "../../../utils/vectors/rotateXy";
+import { rotateXyzByInverseCameraAngle } from "../../../utils/vectors/rotateXy";
 import {
   lengthXy,
   lengthXyz,
@@ -23,6 +23,7 @@ import {
 import { type GameState } from "../../gameState/GameState";
 import { fastStepsRemaining } from "../../gameState/gameStateSelectors/selectPickupAbilities";
 import { type PressStatus } from "../../input/InputStateTracker";
+import { currentQuarterCameraAngle } from "../../mainLoop/tickCameraTransition";
 import { isSpring, type PlayableItem } from "../itemPredicates";
 import { type Mechanic, type MechanicResult } from "../MechanicResult";
 import {
@@ -111,14 +112,13 @@ export const walking: Mechanic<CharacterName> = <
 const walkingImpl = <RoomId extends string, RoomItemId extends string>(
   playableItem: PlayableItem<CharacterName, RoomId, RoomItemId>,
   room: RoomState<RoomId, RoomItemId>,
-  {
-    inputStateTracker,
-    currentCharacterName,
-    gameTime,
-    cameraAngle = cameraAngleBase,
-  }: GameState<RoomId>,
+  gameState: GameState<RoomId>,
   deltaMS: number,
 ): MechanicResult<CharacterName, RoomId, RoomItemId> => {
+  const { inputStateTracker, currentCharacterName, gameTime } = gameState;
+  // input is relative to the quarter angle the camera is visually closest to
+  // - mid-turn this flips at the visual midpoint, not when the turn starts:
+  const cameraAngle = currentQuarterCameraAngle(gameState);
   const {
     type,
     state: {
@@ -146,17 +146,18 @@ const walkingImpl = <RoomId extends string, RoomItemId extends string>(
     isCurrentCharacter ?
       inputStateTracker.currentActionPress("jump")
     : "released";
+  const inputVector = inputStateTracker.directionVector;
   const directionInput: Xyz =
-    !isCurrentCharacter ? originXyz
-      // the direction input is relative to the screen, so rotate it by the inverse
-      // of the camera rotation ((cos,sin) → (cos,−sin)) to get a world-space walk
-      // direction. the base angle is the identity, so the raw vector is used
-      // without allocating a rotated copy:
-    : cameraAngle.x === 1 ? inputStateTracker.directionVector
-    : rotateXyz(inputStateTracker.directionVector, {
-        x: cameraAngle.x,
-        y: -cameraAngle.y,
-      });
+    (
+      // not the current character = no input
+      !isCurrentCharacter ||
+      // no input (the common idle frame): nothing to rotate, no allocation:
+      xyzEqual(inputVector, originXyz)
+    ) ?
+      originXyz
+      // the direction input is relative to the screen, so rotate it by the
+      // inverse of the camera rotation to get a world-space walk direction:
+    : rotateXyzByInverseCameraAngle(inputVector, cameraAngle);
 
   const isFalling = effectivelyStandingOnItemId === null && gravityVel.z < 0;
   const hasFastSteps =

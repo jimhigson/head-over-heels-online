@@ -1,9 +1,17 @@
 import { maybeRenderContainerToAnimatedSprite } from "../../../utils/pixi/renderContainerToSprite";
+import { nearestQuarterAngle } from "../../../utils/vectors/rotateXy";
+import { type Xy } from "../../../utils/vectors/vectors";
 import { createSprite } from "../createSprite";
-import { type ItemAppearance } from "./ItemAppearance";
+import {
+  cameraQuarterAngleEqual,
+  type ItemAppearance,
+  multipliedLayoutAngle,
+} from "./ItemAppearance";
 
 type DeadlyBlockRenderProps = {
   disabled: boolean;
+  /** the multiplied tiling resolves per camera angle; null when single */
+  multipliedAtAngle: null | Xy;
 };
 
 export const deadlyBlockAppearance: ItemAppearance<
@@ -12,6 +20,7 @@ export const deadlyBlockAppearance: ItemAppearance<
 > = ({
   renderContext: {
     isReflection,
+    item,
     item: {
       hash,
       config: { times, style },
@@ -21,9 +30,15 @@ export const deadlyBlockAppearance: ItemAppearance<
   },
   currentRendering,
 }) => {
+  const cameraQuarterAngle = nearestQuarterAngle(cameraAngle);
+  const multipliedAtAngle = multipliedLayoutAngle(item, cameraQuarterAngle);
   if (
     currentRendering &&
-    !!disabled === currentRendering.renderProps.disabled
+    !!disabled === currentRendering.renderProps.disabled &&
+    cameraQuarterAngleEqual(
+      multipliedAtAngle,
+      currentRendering.renderProps.multipliedAtAngle,
+    )
   ) {
     return "no-update";
   }
@@ -36,11 +51,11 @@ export const deadlyBlockAppearance: ItemAppearance<
 
   const rendering = createSprite(
     disabled ?
-      { textureId: `${style}.disabled`, times, cameraAngle, spritesheet }
+      { textureId: `${style}.disabled`, times, cameraQuarterAngle, spritesheet }
     : {
         animationId: style,
         times,
-        cameraAngle,
+        cameraQuarterAngle,
         startFramePhase: hash,
         paused,
         spritesheet,
@@ -54,6 +69,6 @@ export const deadlyBlockAppearance: ItemAppearance<
       style,
       spritesheet,
     ),
-    renderProps: { disabled: !!disabled },
+    renderProps: { disabled: !!disabled, multipliedAtAngle },
   };
 };

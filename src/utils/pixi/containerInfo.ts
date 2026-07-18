@@ -1,4 +1,4 @@
-import { type Container, Sprite } from "pixi.js";
+import { type Container, type RenderLayer, Sprite } from "pixi.js";
 
 const emojis: Record<string, string | undefined> = {
   Container: "📦",
@@ -11,13 +11,26 @@ const emojis: Record<string, string | undefined> = {
   BitmapText: "🔤",
   Mesh: "🔺",
   NineSliceSprite: "🔳",
+  RenderLayer: "🥞",
 };
+
+/**
+ * structural RenderLayer detection - constructor names are mangled in
+ * minified builds, but only layers carry renderLayerChildren
+ */
+const isRenderLayer = (container: Container): container is RenderLayer =>
+  "renderLayerChildren" in container;
 
 /**
  * Gets the type name of a container, stripping leading underscore if present
  * (minified Pixi builds may use names like _Container, _Sprite, etc.)
  */
 export const getContainerTypeName = (container: Container): string => {
+  if (isRenderLayer(container)) {
+    // structural, so it also holds in minified builds where the
+    // constructor name is mangled:
+    return "RenderLayer";
+  }
   const rawTypeName = container.constructor.name;
   return rawTypeName.startsWith("_") ? rawTypeName.slice(1) : rawTypeName;
 };
@@ -56,6 +69,24 @@ export const getContainerAdditionalInfo = (container: Container): string[] => {
 
   if (container.mask) {
     additionalInfo.push("😷 masked");
+  }
+
+  // rendered by a RenderLayer instead of at its tree position:
+  if (container.parentRenderLayer) {
+    additionalInfo.push(
+      `🥞 in layer "${container.parentRenderLayer.label ?? "(unlabelled)"}"`,
+    );
+  }
+
+  if (isRenderLayer(container)) {
+    const attached = container.renderLayerChildren;
+    additionalInfo.push(
+      attached.length === 0 ?
+        "layer children: none"
+      : `layer children: ${attached
+          .map((child) => `"${child.label ?? "(unlabelled)"}"`)
+          .join(", ")}`,
+    );
   }
 
   if (container instanceof Sprite) {

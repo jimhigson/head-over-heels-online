@@ -6,15 +6,13 @@ import {
 } from "../../../model/ItemInPlay";
 import { type LightBeamEnd } from "../../../model/ItemStateMap";
 import { typePrefix } from "../../../model/json/typePrefix";
-import { reflectedBeamDirection } from "../../../model/MirrorOrientation";
+import { reflectedFacingVector } from "../../../model/MirrorOrientation";
 import { roomSpatialIndexKey, type RoomState } from "../../../model/RoomState";
 import { emptyArray } from "../../../utils/empty";
-import { unitVectors } from "../../../utils/vectors/unitVectors";
 import {
   type AxisXy,
-  type DirectionXy4,
+  dominantAxisXy,
   perpendicularAxisXy,
-  tangentAxis,
   type Xyz,
   xyzEqual,
 } from "../../../utils/vectors/vectors";
@@ -41,7 +39,7 @@ const idPrefix = typePrefix.lightBeam;
  * single-height beam item
  */
 type BeamSegment = {
-  direction: DirectionXy4;
+  direction: Xyz;
   /** min corner of the segment's box */
   position: Xyz;
   aabb: Xyz;
@@ -69,15 +67,10 @@ const containsBand = (itemMin: number, itemMax: number, bandMin: number) =>
 
 /** which side a beam turns to when its direction reflects to another */
 const turnOfReflection = (
-  from: DirectionXy4,
-  to: DirectionXy4,
-): "reflect-left" | "reflect-right" => {
-  const fromVector = unitVectors[from];
-  const toVector = unitVectors[to];
-  return fromVector.x * toVector.y - fromVector.y * toVector.x > 0 ?
-      "reflect-left"
-    : "reflect-right";
-};
+  from: Xyz,
+  to: Xyz,
+): "reflect-left" | "reflect-right" =>
+  from.x * to.y - from.y * to.x > 0 ? "reflect-left" : "reflect-right";
 
 /**
  * walk one block-row of the beam from the lamp, reflecting at mirrors,
@@ -103,9 +96,9 @@ const castBeamRowSegments = <RoomId extends string, RoomItemId extends string>(
   // always ends at a solid blocker (including the opaque source lamp, should
   // mirrors route the beam back into it) or the room's edge
   for (;;) {
-    const axis = tangentAxis(direction);
+    const axis = dominantAxisXy(direction);
     const perpAxis = perpendicularAxisXy(axis);
-    const sign = unitVectors[direction][axis];
+    const sign = direction[axis];
 
     const sourcePosition: Xyz = source.state.position;
     // the 8px cross-section, centred in the source's perpendicular footprint:
@@ -264,7 +257,7 @@ const castBeamRowSegments = <RoomId extends string, RoomItemId extends string>(
 
     const reflectedDirection =
       reflectingMirror === undefined ? undefined : (
-        reflectedBeamDirection(reflectingMirror.state.orientation, direction)
+        reflectedFacingVector(reflectingMirror.state.orientation, direction)
       );
 
     if (nearestDistance > 0) {

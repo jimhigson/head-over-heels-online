@@ -952,16 +952,37 @@ const frames = {
     },
   },
 
-  // mirrors - at 45° to the orthogonal axes, in either diagonal orientation:
-  "mirror.awayLeft": {
+  // the mirror pane by direction number d0..d3 - the four orientations a 45°
+  // pane shows as it (or the camera) turns, each 1/8 turn apart. d3 is the
+  // face-on (reflective) pane, d1 edge-on, d0/d2 the axis-aligned panes between:
+  "mirror.d0": {
+    frame: {
+      ...largeItemGridLocation({ x: 12, y: 6 }),
+      ...largeItemTextureSize,
+    },
+  },
+  "mirror.d1": {
     frame: {
       ...largeItemGridLocation({ x: 10, y: 5 }),
       ...largeItemTextureSize,
     },
   },
-  "mirror.awayRight": {
+  "mirror.d2": {
+    frame: {
+      ...largeItemGridLocation({ x: 13, y: 6 }),
+      ...largeItemTextureSize,
+    },
+  },
+  "mirror.d3": {
     frame: {
       ...largeItemGridLocation({ x: 11, y: 5 }),
+      ...largeItemTextureSize,
+    },
+  },
+  // the sprite in front of the reflections in the face-on (d3) mirror pane:
+  "mirror.d3.front": {
+    frame: {
+      ...largeItemGridLocation({ x: 11, y: 6 }),
       ...largeItemTextureSize,
     },
   },
@@ -975,28 +996,6 @@ const frames = {
   "mirror.bottom": {
     frame: {
       ...largeItemGridLocation({ x: 13, y: 5 }),
-      ...largeItemTextureSize,
-    },
-  },
-  // the sprite in front of the reflections in the mirror:
-  "mirror.awayRight.front": {
-    frame: {
-      ...largeItemGridLocation({ x: 11, y: 6 }),
-      ...largeItemTextureSize,
-    },
-  },
-
-  // brief transition frames shown as a mirror rotates 90° between its two
-  // diagonal orientations - the pane axis-aligned, halfway through the turn:
-  "mirror.flipping.x": {
-    frame: {
-      ...largeItemGridLocation({ x: 12, y: 6 }),
-      ...largeItemTextureSize,
-    },
-  },
-  "mirror.flipping.y": {
-    frame: {
-      ...largeItemGridLocation({ x: 13, y: 6 }),
       ...largeItemTextureSize,
     },
   },

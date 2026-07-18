@@ -30,7 +30,20 @@ const logCyclicRendering = import.meta.env.VITE_LOG_CYCLIC_RENDERING === "true";
  * @note automatically breaks cycles by marking edges as broken by mutating the graph that is
  * passed in
  */
-export const toposort = <N>(graph: ZGraph<N>): N[] => {
+export const toposort = <N>(
+  graph: ZGraph<N>,
+  /**
+   * the graph's nodes in a canonical order, which decides the relative order
+   * of UNCONSTRAINED nodes (and which edge of a cycle gets broken). Without
+   * this, ties would follow the graph map's insertion order - which mutates
+   * as the incremental edge updates delete and re-add moved items' entries,
+   * so the same room state could sort differently depending on movement
+   * history (leaving eg an item flipped to the other side of an overlapping
+   * neighbour after a camera-rotation round trip). Omit to fall back to the
+   * graph's own (history-dependent) order
+   */
+  canonicalNodes?: Iterable<N>,
+): N[] => {
   // Mark all edges as not broken on entry
   for (const [, toMap] of graph) {
     for (const [to] of toMap) {
@@ -38,7 +51,7 @@ export const toposort = <N>(graph: ZGraph<N>): N[] => {
     }
   }
 
-  const nodes = Array.from(uniqueNodes(graph));
+  const nodes = Array.from(canonicalNodes ?? uniqueNodes(graph));
 
   let cursor = nodes.length;
   let i = cursor;

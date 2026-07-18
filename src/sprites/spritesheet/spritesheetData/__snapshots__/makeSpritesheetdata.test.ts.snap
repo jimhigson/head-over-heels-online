@@ -4130,30 +4130,6 @@ exports[`for tailwind plugin we must have all possible frames and animations 1`]
       "y": 735,
     },
   },
-  "mirror.awayLeft": {
-    "frame": {
-      "h": 28,
-      "w": 32,
-      "x": 331,
-      "y": 827,
-    },
-  },
-  "mirror.awayRight": {
-    "frame": {
-      "h": 28,
-      "w": 32,
-      "x": 364,
-      "y": 827,
-    },
-  },
-  "mirror.awayRight.front": {
-    "frame": {
-      "h": 28,
-      "w": 32,
-      "x": 364,
-      "y": 856,
-    },
-  },
   "mirror.bottom": {
     "frame": {
       "h": 28,
@@ -4162,7 +4138,7 @@ exports[`for tailwind plugin we must have all possible frames and animations 1`]
       "y": 827,
     },
   },
-  "mirror.flipping.x": {
+  "mirror.d0": {
     "frame": {
       "h": 28,
       "w": 32,
@@ -4170,11 +4146,35 @@ exports[`for tailwind plugin we must have all possible frames and animations 1`]
       "y": 856,
     },
   },
-  "mirror.flipping.y": {
+  "mirror.d1": {
+    "frame": {
+      "h": 28,
+      "w": 32,
+      "x": 331,
+      "y": 827,
+    },
+  },
+  "mirror.d2": {
     "frame": {
       "h": 28,
       "w": 32,
       "x": 430,
+      "y": 856,
+    },
+  },
+  "mirror.d3": {
+    "frame": {
+      "h": 28,
+      "w": 32,
+      "x": 364,
+      "y": 827,
+    },
+  },
+  "mirror.d3.front": {
+    "frame": {
+      "h": 28,
+      "w": 32,
+      "x": 364,
       "y": 856,
     },
   },

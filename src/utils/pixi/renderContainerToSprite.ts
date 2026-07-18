@@ -14,6 +14,7 @@ import {
 import { type AnimationId } from "../../sprites/spritesheet/spritesheetData/makeSpritesheetData";
 import { type AppSpritesheet } from "../../sprites/spritesheet/variants/AppSpritesheet";
 import { range } from "../iterators/range";
+import { type Xy } from "../vectors/vectors";
 import { pixiContainerToString } from "./pixiContainerToString";
 import { UniqueTextureAnimatedSprite } from "./UniqueTextureAnimatedSprite";
 import { UniqueTextureSprite } from "./UniqueTextureSprite";
@@ -27,15 +28,21 @@ export const renderContainerToTexture = (
   container: Container,
   /**
    * a render texture to try to reuse - there is no guarantee it
-   * will be reused - if the size doesn't match the container's size
-   * a new one will be created.
+   * will be reused - if it is smaller than the container in either
+   * dimension a new one will be created. A larger texture is reused
+   * as-is (cleared before rendering) - the unused margin stays
+   * transparent, which draws nothing.
    *
    * If not reused, will be DESTROYED so that there is only one at a time
    * active.
-   *
-   * TODO: maybe consider reuse if the container is larger
    */
   reuseTexture?: RenderTexture,
+  /**
+   * created textures are at least this size - pass where the container's
+   * size varies slightly between renders (eg per camera angle) so one
+   * texture serves every variant via the reuse path
+   */
+  minimumSize?: Xy,
 ): Texture => {
   const localBounds = container.getLocalBounds();
 
@@ -45,15 +52,15 @@ export const renderContainerToTexture = (
 
   const canReuse =
     reuseTexture !== undefined ?
-      reuseTexture.width === width && reuseTexture.height === height
+      reuseTexture.width >= width && reuseTexture.height >= height
     : false;
 
   const renderTexture =
     canReuse ?
       (reuseTexture as RenderTexture)
     : RenderTexture.create({
-        width,
-        height,
+        width: Math.max(width, minimumSize?.x ?? 0),
+        height: Math.max(height, minimumSize?.y ?? 0),
         antialias: false, // Disable for mask textures (performance)
         autoGenerateMipmaps: false,
       });
@@ -101,6 +108,8 @@ export const renderContainerToSprite = (
   container: Container,
   reuseSprite?: UniqueTextureSprite,
   label?: string,
+  /** see {@link renderContainerToTexture}'s minimumSize */
+  minimumSize?: Xy,
 ): UniqueTextureSprite => {
   const localBounds = container.getLocalBounds();
 
@@ -113,6 +122,7 @@ export const renderContainerToSprite = (
     pixiRenderer,
     container,
     reuseTexture,
+    minimumSize,
   );
 
   const sprite = reuseSprite ? reuseSprite : new UniqueTextureSprite();
@@ -199,11 +209,26 @@ export const maybeRenderContainerToAnimatedSprite = <
 export const maybeRenderContainerToSprite = (
   pixiRenderer: Renderer,
   container: Container,
+  /** see {@link renderContainerToSprite}'s reuseSprite */
+  reuseSprite?: UniqueTextureSprite,
 ) => {
   if (container instanceof Sprite) {
     // simple case where we got a sprite:
     return container;
   }
   // times case where createSprite gave us a container of sprites:
-  return renderContainerToSprite(pixiRenderer, container);
+  return renderContainerToSprite(pixiRenderer, container, reuseSprite);
 };
+
+/**
+ * narrow an appearance's previous rendering to something a re-render can bake
+ * into: only sprites that own their (render) texture qualify - plain sprites
+ * (single, unbaked items) and non-sprite containers return undefined, so the
+ * bake creates afresh
+ */
+export const asReuseSprite = (
+  previousRendering: Container | undefined,
+): undefined | UniqueTextureSprite =>
+  previousRendering instanceof UniqueTextureSprite ? previousRendering : (
+    undefined
+  );

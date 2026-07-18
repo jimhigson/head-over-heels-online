@@ -1,6 +1,7 @@
 import { type Color, Container, Sprite, type Texture } from "pixi.js";
 
 import { blockSizePx } from "../../../model/blockSizePx";
+import { type ItemInPlayType } from "../../../model/ItemInPlay";
 import {
   type HeadAbilities,
   type HeelsAbilities,
@@ -29,6 +30,7 @@ import { startAppListening } from "../../../store/listenerMiddleware";
 import { selectShowFps } from "../../../store/slices/gameMenus/gameMenusSelectors";
 import { type SpriteOption } from "../../../store/slices/userSettings/userSettingsSlice";
 import { store } from "../../../store/store";
+import { neverTime } from "../../../utils/neverTime";
 import { type DirectionXy4, type Xy } from "../../../utils/vectors/vectors";
 import { type GameState } from "../../gameState/GameState";
 import {
@@ -42,6 +44,8 @@ import {
 import { type PortableItem } from "../../physics/itemPredicates";
 import { outlineFilters } from "../filters/OutlineFilter";
 import { getRoomColorScheme } from "../gameColours/colourScheme";
+import { createItemLeafPixiRenderer } from "../item/itemRender/createItemLeafPixiRenderer";
+import { type ItemLeafPixiRenderer } from "../item/itemRender/ItemPixiRenderer";
 import { type Renderer } from "../Renderer";
 import { TextContainer } from "../text/TextContainer";
 import { FpsRenderer } from "./FpsRenderer";
@@ -55,7 +59,6 @@ import { mapButtonAppearance } from "./onScreenControls/buttonAppearances/mapBut
 import { menuButtonAppearance } from "./onScreenControls/buttonAppearances/menuButtonAppearance";
 import { rotateButtonAppearance } from "./onScreenControls/buttonAppearances/rotateButtonAppearance";
 import { OnScreenControls } from "./onScreenControls/OnScreenControls";
-import { renderCarriedOnce } from "./renderCarriedOnce";
 import {
   tintForHud,
   tintForHudIfUncolourised,
@@ -159,6 +162,9 @@ export class HudRenderer<RoomId extends string, RoomItemId extends string>
 
   #unlisten;
   #carryingItemRoom: RoomState<RoomId, RoomItemId> | undefined = undefined;
+  /** the renderer for the currently-carried item, ticked each hud frame */
+  #carriedRenderer: ItemLeafPixiRenderer<ItemInPlayType> | undefined =
+    undefined;
 
   readonly renderContext: HudRenderContext<RoomId>;
 
@@ -510,6 +516,7 @@ export class HudRenderer<RoomId extends string, RoomItemId extends string>
   /** update the carrying element for heel's bag contents */
   #tickBagAndCarrying({
     room,
+    deltaMS,
   }: HudRendererTickContextWithRoom<RoomId, RoomItemId>) {
     const {
       renderContext: {
@@ -524,6 +531,8 @@ export class HudRenderer<RoomId extends string, RoomItemId extends string>
     const hasSprite = carryingContainer.children.length > 0;
     if (carrying === null && hasSprite) {
       // was carrying; not now:
+      this.#carriedRenderer?.destroy();
+      this.#carriedRenderer = undefined;
       for (const child of carryingContainer.children) {
         child.destroy();
       }
@@ -537,15 +546,22 @@ export class HudRenderer<RoomId extends string, RoomItemId extends string>
         // destroyed
         room !== this.#carryingItemRoom)
     ) {
-      const carriedRendering = renderCarriedOnce<RoomId, RoomItemId>(
-        carrying as PortableItem<RoomId, RoomItemId>,
-        this.renderContext,
+      this.#carriedRenderer?.destroy();
+      const carriedItem = carrying as PortableItem<RoomId, RoomItemId>;
+      const maybeCarriedRenderer = createItemLeafPixiRenderer({
+        general: this.renderContext.general,
+        item: carriedItem,
         room,
-      );
+        isReflection: false,
+      });
+      if (import.meta.env.DEV && maybeCarriedRenderer === undefined) {
+        throw new Error(`no renderer for carried item "${carriedItem.id}"`);
+      }
+      this.#carriedRenderer = maybeCarriedRenderer!;
       this.#carryingItemRoom = room;
 
       carryingContainer.removeChildren();
-      carryingContainer.addChild(carriedRendering);
+      carryingContainer.addChild(this.#carriedRenderer.output);
 
       carryingContainer.tint = tintForHudIfUncolourised(
         spriteOption,
@@ -554,6 +570,11 @@ export class HudRenderer<RoomId extends string, RoomItemId extends string>
         true,
       );
     }
+
+    // tick the carried item every frame so directional/animated items keep up
+    // with the camera angle and the passage of time - the carried renderer
+    // shares the live general render context, so its camera angle is current:
+    this.#carriedRenderer?.tick({ deltaMS, lastRenderRoomTime: neverTime });
 
     const bagSprite = this.#hudElements.heels.bag.icon;
     const hasBag = heelsAbilities?.hasBag;
@@ -849,7 +870,7 @@ export class HudRenderer<RoomId extends string, RoomItemId extends string>
 
     this.#onScreenControls?.tick(tickContext);
 
-    const { onScreenControls, gameState } = this.renderContext.general;
+    const { onScreenControls, gameState, paused } = this.renderContext.general;
     const buttonTickContext = {
       ...tickContext,
       currentPlayable: selectCurrentPlayableItem(gameState),
@@ -892,7 +913,7 @@ export class HudRenderer<RoomId extends string, RoomItemId extends string>
     );
 
     const buttonsVisible =
-      !tickContext.paused &&
+      !paused &&
       (onScreenControls || Date.now() - this.#lastPointerMoveTime < 2_000);
     this.#menuButton.output.visible = buttonsVisible;
     this.#mapButton.output.visible = buttonsVisible;

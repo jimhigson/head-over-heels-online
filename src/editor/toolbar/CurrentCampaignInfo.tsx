@@ -30,10 +30,8 @@ export const CurrentCampaignInfo = () => {
   >(undefined);
 
   return (
-    <>
-      <span class="">
-        {isOwnedByCurrentUser ? "Your campaign:" : "Campaign:"}
-      </span>{" "}
+    <span class="select-text">
+      {isOwnedByCurrentUser ? "Your campaign:" : "Campaign:"}{" "}
       {campaignName ?
         <>
           <span class="text-highlightBeige">{`‘${campaignName}’`}</span>{" "}
@@ -67,6 +65,6 @@ export const CurrentCampaignInfo = () => {
             onDismiss={() => setDismissedForVersion(latestVersion)}
           />
         )}
-    </>
+    </span>
   );
 };

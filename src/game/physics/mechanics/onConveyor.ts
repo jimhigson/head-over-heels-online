@@ -3,10 +3,10 @@ import { type RoomState } from "../../../model/RoomState";
 import { stoodOnItem } from "../../../model/stoodOnItemsLookup";
 import { unitVectors } from "../../../utils/vectors/unitVectors";
 import {
+  nonZeroVectorClosestDirectionXy4,
   oppositeDirection,
   originXyz,
   scaleXyz,
-  vectorClosestDirectionXy4,
 } from "../../../utils/vectors/vectors";
 import { type GameState } from "../../gameState/GameState";
 import {
@@ -79,7 +79,7 @@ export const onConveyor: Mechanic<FreeItemTypes> = <
     speedMultiplier === 1 &&
     isHeels(item) &&
     item.state.action === "moving" &&
-    vectorClosestDirectionXy4(item.state.facing) ===
+    nonZeroVectorClosestDirectionXy4(item.state.facing) ===
       oppositeDirection(direction);
 
   const conveyorSpeed =

@@ -21,6 +21,15 @@ export type DirectionXy8 = (typeof directionsXy8)[number];
 export const tangentAxis = (direction: DirectionXy4): AxisXy =>
   direction === "away" || direction === "towards" ? "y" : "x";
 
+/**
+ * the axis a vector points most strongly along - the vector counterpart of
+ * {@link tangentAxis}. For an axis-aligned vector this is simply its non-zero
+ * axis; for an off-axis vector (eg a direction part-way through a camera turn)
+ * it is the dominant component
+ */
+export const dominantAxisXy = ({ x, y }: Xy): AxisXy =>
+  Math.abs(y) > Math.abs(x) ? "y" : "x";
+
 export const oppositeDirection = (direction: DirectionXy4): DirectionXy4 =>
   direction === "away" ? "towards"
   : direction === "towards" ? "away"
@@ -345,6 +354,14 @@ export const dotProductXy = (a: Xy, b: Xy): number => {
   return a.x * b.x + a.y * b.y;
 };
 
+/**
+ * the 2D (scalar) cross product - positive when `b` is anticlockwise of `a`,
+ * negative when clockwise, zero when parallel
+ */
+export const crossProductXy = (a: Xy, b: Xy): number => {
+  return a.x * b.y - a.y * b.x;
+};
+
 export const vectorClosestDirectionXy4 = ({
   x,
   y,
@@ -364,6 +381,45 @@ export const vectorClosestDirectionXy4 = ({
   }
   return "towards";
 };
+
+/**
+ * like {@link vectorClosestDirectionXy4}, for vectors that are non-zero by
+ * construction (eg a facing, which is always a real direction) - never
+ * returns undefined, so call sites need no defaulting. Zero-length input
+ * throws in dev/vr builds; production trusts the caller (a pathological zero
+ * resolves to an arbitrary direction rather than crashing)
+ */
+export const nonZeroClosestDirectionXy4 = (
+  x: number,
+  y: number,
+): DirectionXy4 => {
+  if (
+    (import.meta.env.DEV || import.meta.env.MODE === "visual-regression") &&
+    veryClose(x, 0) &&
+    veryClose(y, 0)
+  ) {
+    throw new Error(
+      "zero-length vector given where a non-zero direction vector is required",
+    );
+  }
+  if (y > x) {
+    if (y > -x) {
+      return "away";
+    }
+    return "right";
+  }
+  if (y > -x) {
+    return "left";
+  }
+  return "towards";
+};
+
+/**
+ * like {@link nonZeroClosestDirectionXy4}, taking the direction as an {@link Xy}
+ * (eg a facing, which is always a real direction).
+ */
+export const nonZeroVectorClosestDirectionXy4 = ({ x, y }: Xy): DirectionXy4 =>
+  nonZeroClosestDirectionXy4(x, y);
 
 const directionsXy8Octants: DirectionXy8[] = [
   // these need to be in order clockwise
@@ -390,6 +446,47 @@ export const vectorClosestDirectionXy8 = ({
 
   return directionsXy8Octants[octant];
 };
+
+/**
+ * like {@link vectorClosestDirectionXy8}, for a non-zero direction given as its
+ * x/y components (no Xy allocation) - for hot paths that already have the
+ * components to hand. Zero-length input throws in dev/vr builds; production
+ * trusts the caller (a pathological zero resolves to an arbitrary direction
+ * rather than crashing)
+ */
+export const nonZeroClosestDirectionXy8 = (
+  x: number,
+  y: number,
+): DirectionXy8 => {
+  if (
+    (import.meta.env.DEV || import.meta.env.MODE === "visual-regression") &&
+    veryClose(x, 0) &&
+    veryClose(y, 0)
+  ) {
+    throw new Error(
+      "zero-length vector given where a non-zero direction vector is required",
+    );
+  }
+  const angle = Math.atan2(-y, -x);
+  const octant = Math.round((8 * angle) / (2 * Math.PI)) & 7;
+  return directionsXy8Octants[octant];
+};
+
+/**
+ * like {@link nonZeroClosestDirectionXy8}, taking the direction as an {@link Xy}
+ * (eg a facing, which is always a real direction).
+ */
+export const nonZeroVectorClosestDirectionXy8 = ({ x, y }: Xy): DirectionXy8 =>
+  nonZeroClosestDirectionXy8(x, y);
+
+/**
+ * whether a direction vector lies in the {towards, right} half-plane
+ * (x + y < 0). Exact for rotated cardinals: {away, left} sum their components
+ * to +1 and {towards, right} to −1, so this single sign test answers "is this
+ * one of the near/negative sides" for a world direction rotated to its
+ * camera-apparent orientation - at any continuous angle, no snapping
+ */
+export const isNegativeSideXy = ({ x, y }: Xy): boolean => x + y < 0;
 
 /**
  * rotate a facing by `octants` eighth-turns around the clockwise octant ring
@@ -432,28 +529,8 @@ export const rotateDirectionXy4 = (
 };
 
 /** whether a 90° camera angle is an odd number of quarter-turns (which swaps the x and y axes) */
-export const cameraAngleIsOddQuarterTurn = (cameraAngle: Xy): boolean =>
-  cameraAngle.x === 0;
-
-/**
- * rotate a 4-way facing by a 90°-increment camera angle (cos,sin), so a direction-specific
- * sprite can be chosen for how the item appears once the camera has rotated.
- */
-export const rotateDirectionXy4ByCameraAngle = (
-  direction: DirectionXy4,
-  cameraAngle: Xy,
-): DirectionXy4 => {
-  const clockwiseQuarterTurns =
-    cameraAngle.y === 1 ? 1
-    : cameraAngle.x === -1 ? 2
-    : cameraAngle.y === -1 ? 3
-    : 0;
-  let rotated = direction;
-  for (let turn = 0; turn < clockwiseQuarterTurns; turn++) {
-    rotated = rotateDirectionXy4(rotated, "clockwise");
-  }
-  return rotated;
-};
+export const cameraAngleIsOddQuarterTurn = (quarterCameraAngle: Xy): boolean =>
+  quarterCameraAngle.x === 0;
 
 /** rotate an x/y axis by a camera angle - swaps x↔y on an odd quarter-turn, unchanged on an even one */
 export const rotateAxisXyByCameraAngle = (

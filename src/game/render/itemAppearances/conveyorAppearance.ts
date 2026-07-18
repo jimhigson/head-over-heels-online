@@ -4,11 +4,13 @@ import { isStoodOn } from "../../../model/StoodOnBy";
 import { type AppSpritesheet } from "../../../sprites/spritesheet/variants/AppSpritesheet";
 import { neverTime } from "../../../utils/neverTime";
 import { maybeRenderContainerToAnimatedSprite } from "../../../utils/pixi/renderContainerToSprite";
+import { nearestQuarterAngle, rotateXy } from "../../../utils/vectors/rotateXy";
+import { unitVectors } from "../../../utils/vectors/unitVectors";
 import {
   type DirectionXy4,
-  rotateDirectionXy4ByCameraAngle,
-  tangentAxis,
+  isNegativeSideXy,
   type Xy,
+  xyEqual,
 } from "../../../utils/vectors/vectors";
 import { createSprite } from "../createSprite";
 import { type ItemAppearance } from "./ItemAppearance";
@@ -22,6 +24,8 @@ type ConveyorRenderProps = {
   roomTimeStoppedMoving?: number;
   // normally won't change, but then there are switches...
   direction: DirectionXy4;
+  /** the belt art and tiling resolve per camera angle */
+  cameraQuarterAngle: Xy;
 };
 
 const easeOut = (t: number): number => 1 - (1 - t) ** 2;
@@ -49,22 +53,23 @@ const createRendering = (
   times: Partial<Xy> | undefined,
   spritesheet: AppSpritesheet,
   frameCount: number,
-  cameraAngle: Xy,
+  cameraQuarterAngle: Xy,
 ): Container<AnimatedSprite> => {
-  // pick the directional sprite + animation sense for how the conveyor appears
-  // once the camera has rotated:
-  const renderedDirection = rotateDirectionXy4ByCameraAngle(
-    direction,
-    cameraAngle,
+  // pick the directional sprite + animation sense for how the conveyor
+  // appears once the camera has apparentDirection - the direction stays a vector
+  // throughout, with the axis and belt sense read straight off it:
+  const apparentDirection = rotateXy(
+    unitVectors[direction],
+    cameraQuarterAngle,
   );
-  const axis = tangentAxis(renderedDirection);
-  const reverse =
-    renderedDirection === "towards" || renderedDirection === "right";
+  const axis =
+    Math.abs(apparentDirection.y) > Math.abs(apparentDirection.x) ? "y" : "x";
+  const reverse = isNegativeSideXy(apparentDirection);
   const sprites = createSprite({
     animationId: `conveyor.${axis}`,
     reverse,
     times,
-    cameraAngle,
+    cameraQuarterAngle,
     spritesheet,
   });
   // createSprite will return a single AnimatedSprite for a single conveyor,
@@ -102,6 +107,7 @@ const conveyorAppearanceImpl: ItemAppearance<
   },
   currentRendering,
 }) => {
+  const cameraQuarterAngle = nearestQuarterAngle(cameraAngle);
   const currentlyRenderedProps = currentRendering?.renderProps;
   const moving = !disabled && isStoodOn(stoodOnBy);
 
@@ -123,6 +129,7 @@ const conveyorAppearanceImpl: ItemAppearance<
   const rerender =
     !currentOutput ||
     direction !== currentlyRenderedProps?.direction ||
+    !xyEqual(cameraQuarterAngle, currentlyRenderedProps.cameraQuarterAngle) ||
     disabledChanged;
 
   const spritesheet = spritesheetVariants.currentMainSpritesheet(
@@ -139,7 +146,13 @@ const conveyorAppearanceImpl: ItemAppearance<
     rerender ?
       maybeRenderContainerToAnimatedSprite(
         pixiRenderer,
-        createRendering(direction, times, spritesheet, frameCount, cameraAngle),
+        createRendering(
+          direction,
+          times,
+          spritesheet,
+          frameCount,
+          cameraQuarterAngle,
+        ),
         "conveyor.x",
         spritesheet,
       )
@@ -167,6 +180,7 @@ const conveyorAppearanceImpl: ItemAppearance<
           disabled: !!disabled,
           roomTimeStoppedMoving,
           direction,
+          cameraQuarterAngle,
         },
       }
     : "no-update";

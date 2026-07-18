@@ -1,40 +1,21 @@
 import { Container, Sprite, Texture } from "pixi.js";
 
-import {
-  type ItemInPlayType,
-  type UnionOfAllItemInPlayTypes,
-} from "../../../../model/ItemInPlay";
-import {
-  flippedMirrorOrientation,
-  type MirrorOrientation,
-} from "../../../../model/MirrorOrientation";
-import {
-  cameraAngleIsOddQuarterTurn,
-  type Xy,
-} from "../../../../utils/vectors/vectors";
 import { blockSizePx } from "../../../physics/mechanicsConstants";
 import { createSprite } from "../../createSprite";
 import {
-  type AppearanceRenderContext,
   asItemRenderContext,
+  type ItemLeafRenderContext,
 } from "../../ItemRenderContexts";
 import { type ItemAppearance } from "../ItemAppearance";
-import { type ItemAppearanceOutsideView } from "../itemAppearanceOutsideView";
 import { ReflectionRenderers } from "./ReflectionRenderers";
-
-/**
- * how the mirror looks up other items' appearances to draw their
- * reflections - injected by appearanceForItem to avoid a circular import
- */
-export type AppearanceLookup = (
-  item: UnionOfAllItemInPlayTypes<string, string>,
-  cameraAngle: Xy,
-) => ItemAppearanceOutsideView<ItemInPlayType> | undefined;
+import {
+  type MirrorPaneNumber,
+  resolveMirrorPaneNumber,
+} from "./resolveMirrorPaneNumber";
 
 type MirrorRenderProps = {
-  orientation: MirrorOrientation;
-  /** if currently showing the brief axis-aligned mid-flip frame */
-  flipping: boolean;
+  /** the pane shown, by direction number (see resolveMirrorPaneNumber) */
+  number: MirrorPaneNumber;
   /**
    * the live per-reflected-item renderers, kept across ticks so each reflected
    * item animates and reuses its rendering. Present only while the face-on pane
@@ -52,7 +33,7 @@ const surfaceMaskRect = { x: -13, y: -18, w: 26, h: 11 };
 
 const addPivotSprite = (
   restOfMirrorRendering: Container,
-  renderContext: AppearanceRenderContext<"mirror">,
+  renderContext: ItemLeafRenderContext<"mirror">,
 ) => {
   const {
     item: {
@@ -92,7 +73,7 @@ const addPivotSprite = (
  * glint streaks over the top. Only rebuilt when the pane geometry changes.
  */
 const buildFaceOnPane = (
-  renderContext: AppearanceRenderContext<"mirror">,
+  renderContext: ItemLeafRenderContext<"mirror">,
   reflections: Container,
 ): Container => {
   const {
@@ -111,7 +92,7 @@ const buildFaceOnPane = (
 
   const rendering = new Container({ label: "mirror" });
   rendering.addChild(
-    createSprite({ textureId: "mirror.awayRight", times, spritesheet }),
+    createSprite({ textureId: "mirror.d3", times, spritesheet }),
   );
 
   // one mask rectangle per block of the (possibly stacked) pane's surface:
@@ -132,126 +113,93 @@ const buildFaceOnPane = (
 
   // front-frame of the mirror in front of the reflection:
   rendering.addChild(
-    createSprite({ textureId: "mirror.awayRight.front", times, spritesheet }),
+    createSprite({ textureId: "mirror.d3.front", times, spritesheet }),
   );
 
   return rendering;
 };
 
-/**
- * how long after a flip the axis-aligned transition frame shows for, so the
- * eye can track the 90° rotation between the two diagonal orientations
- */
-const flipTransitionMs = 100;
+export const mirrorAppearance: ItemAppearance<"mirror", MirrorRenderProps> = ({
+  renderContext,
+  currentRendering,
+  tickContext,
+}) => {
+  const {
+    item,
+    room: { roomTime },
+    general: { spritesheetVariants, cameraAngle },
+    isReflection,
+  } = renderContext;
+  const { orientation, flippedAtRoomTime, flipDirection } = item.state;
 
-export const makeMirrorAppearance =
-  (
-    appearanceLookup: AppearanceLookup,
-  ): ItemAppearance<"mirror", MirrorRenderProps> =>
-  ({ renderContext, currentRendering, tickContext }) => {
-    const {
-      item,
-      room: { roomTime },
-      general: { spritesheetVariants, cameraAngle },
-      isReflection,
-    } = renderContext;
-    const { orientation, flippedAtRoomTime, flipDirection } = item.state;
+  // the pane shown is a pure function of the (possibly mid-turn) camera angle
+  // and the mirror's facing, as a direction number d0..d3 snapped to the
+  // nearest 1/8 turn - d3 face-on (reflective), d1 edge-on, d0/d2 the
+  // axis-aligned panes between. An item spinning the mirror interpolates its
+  // facing so the number steps through the in-between pane:
+  const { number, faceOn } = resolveMirrorPaneNumber(
+    cameraAngle,
+    orientation,
+    roomTime,
+    flippedAtRoomTime,
+    flipDirection,
+  );
 
-    // the mirror has only two drawn orientations, and an odd quarter camera
-    // turn shows the other one - the whole rendering (face-on pane with
-    // reflections vs edge-on sliver) follows the orientation as rendered:
-    const renderedOrientation =
-      cameraAngleIsOddQuarterTurn(cameraAngle) ?
-        flippedMirrorOrientation(orientation)
-      : orientation;
+  const prevRenderProps = currentRendering?.renderProps;
 
-    const flipping =
-      flippedAtRoomTime !== undefined &&
-      roomTime - flippedAtRoomTime < flipTransitionMs;
+  // only the face-on (d3) pane has a visible reflective surface; the edge-on
+  // and axis-aligned panes are static slivers with no reflection:
+  if (faceOn) {
+    const existingReflections = prevRenderProps?.reflections;
 
-    const prevRenderProps = currentRendering?.renderProps;
-
-    // only the face-on pane has visible surface; the edge-on pane is a sliver
-    // that shows no reflection (and neither does the mid-flip frame):
-    if (renderedOrientation === "awayRight" && !flipping) {
-      const existingReflections = prevRenderProps?.reflections;
-
-      if (existingReflections) {
-        existingReflections.tick(tickContext);
-        return "no-update";
-      }
-
-      // keep the per-item reflection renderers alive across ticks so they
-      // animate and reuse, rather than being rebuilt each frame:
-      const reflections = new ReflectionRenderers(
-        item,
-        // reflections render other items' appearances, which needs the full
-        // pipeline context - the mirror never renders standalone:
-        asItemRenderContext(renderContext),
-        appearanceLookup,
-      );
-
-      reflections.tick(tickContext);
-
-      return {
-        output:
-          existingReflections ?
-            currentRendering!.output
-          : addPivotSprite(
-              buildFaceOnPane(renderContext, reflections.container),
-              renderContext,
-            ),
-        renderProps: { orientation, flipping, reflections },
-      };
-    }
-
-    // edge-on / mid-flip panes are static sprites - only (re)build when the
-    // state actually changed; otherwise keep the existing one. (prevRenderProps
-    // being set implies there is a current rendering to keep.)
-    if (
-      prevRenderProps !== undefined &&
-      prevRenderProps.reflections === undefined &&
-      prevRenderProps.orientation === orientation &&
-      prevRenderProps.flipping === flipping
-    ) {
+    if (existingReflections) {
+      existingReflections.tick(tickContext);
       return "no-update";
     }
 
-    // not face-on: any previous reflection renderers are torn down along with
-    // the old output container the framework replaces (so renderProps drops the
-    // reflections manager).
+    // keep the per-item reflection renderers alive across ticks so they
+    // animate and reuse, rather than being rebuilt each frame:
+    const reflections = new ReflectionRenderers(
+      item,
+      // reflections render other items with the full pipeline context - the
+      // mirror never renders standalone:
+      asItemRenderContext(renderContext),
+    );
 
-    /*
-     * the axis the pane passes through mid-flip depends on which way it is
-     * turning: turning (screen-)clockwise into awayRight sweeps through the
-     * y axis, anticlockwise through the x axis - and vice versa for turns
-     * into awayLeft
-     */
-    const flippingAxis =
-      (
-        (renderedOrientation === "awayRight") ===
-        (flipDirection !== "anticlockwise")
-      ) ?
-        "y"
-      : "x";
-
-    const mirrorCells = createSprite({
-      // mid-flip: the pane axis-aligned halfway through its turn; otherwise
-      // the static edge-on (awayLeft) pane:
-      textureId:
-        flipping ?
-          `mirror.flipping.${flippingAxis}`
-        : `mirror.${renderedOrientation}`,
-      times: item.config.times,
-      spritesheet: spritesheetVariants.currentMainSpritesheet(
-        false,
-        false,
-        isReflection,
-      ),
-    });
+    reflections.tick(tickContext);
 
     return {
-      output: addPivotSprite(mirrorCells, renderContext),
-      renderProps: { orientation, flipping },
+      output: addPivotSprite(
+        buildFaceOnPane(renderContext, reflections.container),
+        renderContext,
+      ),
+      renderProps: { number, reflections },
     };
+  }
+
+  // edge-on / axis-aligned panes are static sprites - only (re)build when the
+  // number actually changed; otherwise keep the existing one. (prevRenderProps
+  // being set implies there is a current rendering to keep.)
+  if (
+    prevRenderProps !== undefined &&
+    prevRenderProps.reflections === undefined &&
+    prevRenderProps.number === number
+  ) {
+    return "no-update";
+  }
+
+  const mirrorCells = createSprite({
+    textureId: `mirror.d${number}`,
+    times: item.config.times,
+    spritesheet: spritesheetVariants.currentMainSpritesheet(
+      false,
+      false,
+      isReflection,
+    ),
+  });
+
+  return {
+    output: addPivotSprite(mirrorCells, renderContext),
+    renderProps: { number },
   };
+};

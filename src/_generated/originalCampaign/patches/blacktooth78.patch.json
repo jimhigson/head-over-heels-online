@@ -101,6 +101,10 @@
     "value": 0
   },
   {
+    "op": "remove",
+    "path": "/items/b1/config/times/x"
+  },
+  {
     "op": "add",
     "path": "/items/b1/config/times/z",
     "value": 3
@@ -117,7 +121,6 @@
       "config": {
         "style": "tower",
         "times": {
-          "y": 2,
           "z": 2
         }
       },
@@ -143,6 +146,42 @@
         "x": 7,
         "y": 0,
         "z": 2
+      },
+      "type": "block"
+    }
+  },
+  {
+    "op": "add",
+    "path": "/items/b6",
+    "value": {
+      "config": {
+        "style": "tower",
+        "times": {
+          "z": 3
+        }
+      },
+      "position": {
+        "x": 4,
+        "y": 7,
+        "z": 0
+      },
+      "type": "block"
+    }
+  },
+  {
+    "op": "add",
+    "path": "/items/b7",
+    "value": {
+      "config": {
+        "style": "tower",
+        "times": {
+          "z": 2
+        }
+      },
+      "position": {
+        "x": 7,
+        "y": 1,
+        "z": 0
       },
       "type": "block"
     }

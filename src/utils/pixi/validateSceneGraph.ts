@@ -1,6 +1,19 @@
-import { type Container, Sprite } from "pixi.js";
+import { type Container, Mesh, Sprite, type Texture } from "pixi.js";
 
 import { formatContainerInfo } from "./containerInfo";
+
+const textureIssue = (texture: Texture): string | undefined => {
+  if (texture.destroyed) {
+    return "texture destroyed";
+  }
+  if (texture.source === null) {
+    return "texture source is null";
+  }
+  if (texture.source.destroyed) {
+    return "texture source destroyed";
+  }
+  return undefined;
+};
 
 const getAncestryPath = (container: Container, root: Container): string => {
   let path = formatContainerInfo(container);
@@ -18,14 +31,8 @@ const getDestroyedIssue = (container: Container): string | undefined => {
   if (container.destroyed) {
     return "container destroyed";
   }
-  if (container instanceof Sprite) {
-    const { texture } = container;
-    if (texture.destroyed) {
-      return "texture destroyed";
-    }
-    if (texture.source?.destroyed) {
-      return "texture source destroyed";
-    }
+  if (container instanceof Sprite || container instanceof Mesh) {
+    return textureIssue(container.texture);
   }
   return undefined;
 };

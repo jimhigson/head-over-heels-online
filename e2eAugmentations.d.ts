@@ -1,6 +1,6 @@
 import { type Application } from "pixi.js";
 
-import { type GameApi } from "./src/game/gameMain";
+import { type GameApi } from "./src/game/GameApi";
 import { type ItemZGraph } from "./src/game/render/ItemRenderContexts";
 import { type AppStore } from "./src/store/store";
 
@@ -18,5 +18,8 @@ declare global {
     // z-order-graph dump developer cheat: dumps __e2e_zGraph's text form to the
     // console and returns it; installed when the lazy cheats module loads
     __e2e_dumpZGraph?: () => string;
+    // always set (not just in visual-regression builds) for pixi devtools;
+    // e2e tests walk its stage to read render-world ground truth
+    __PIXI_APP__?: Application;
   }
 }

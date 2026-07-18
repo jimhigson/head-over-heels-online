@@ -5,17 +5,17 @@ import {
   type ItemRenderContext,
   type ItemTickContext,
 } from "../../ItemRenderContexts";
-import { type ItemPixiRenderer } from "./ItemPixiRenderer";
+import { type ItemChainPixiRenderer } from "./ItemPixiRenderer";
 
 export class CompositeItemGraphicsRenderer<T extends ItemInPlayType>
-  implements ItemPixiRenderer<T>
+  implements ItemChainPixiRenderer<T>
 {
-  #componentRenderers: ItemPixiRenderer<T>[];
+  #componentRenderers: ItemChainPixiRenderer<T>[];
   #container: Container;
   readonly renderContext: ItemRenderContext<T>;
 
   constructor(
-    componentRenderers: ItemPixiRenderer<T>[],
+    componentRenderers: ItemChainPixiRenderer<T>[],
     /* the composite renderer doesn't actually use the render context, but it's needed
        to implement the interface */
     renderContext: ItemRenderContext<T>,

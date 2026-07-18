@@ -18,17 +18,23 @@ import { frac } from "../../../../utils/maths/maths";
 import { rangesOverlap } from "../../../../utils/maths/numberPairs";
 import { getAmbientSwoppedColour } from "../../../../utils/palette/palette";
 import { renderContainerToSprite } from "../../../../utils/pixi/renderContainerToSprite";
+import { type UniqueTextureSprite } from "../../../../utils/pixi/UniqueTextureSprite";
 import { type Subset } from "../../../../utils/Subset";
-import { axisProjectsReversed } from "../../../../utils/vectors/rotateXy";
+import {
+  axisProjectsReversed,
+  nearestQuarterAngle,
+  rotateXy,
+} from "../../../../utils/vectors/rotateXy";
+import { unitVectors } from "../../../../utils/vectors/unitVectors";
 import {
   addXy,
   addXyz,
   type AxisXy,
+  cameraAngleIsOddQuarterTurn,
   type DirectionXy4,
+  nonZeroVectorClosestDirectionXy4,
   originXyz,
   perpendicularAxisXy,
-  rotateAxisXyByCameraAngle,
-  rotateDirectionXy4ByCameraAngle,
   subXy,
   tangentAxis,
   type Xy,
@@ -43,20 +49,27 @@ import { PaletteSwapFilter } from "../../filters/PaletteSwapFilter";
 import { floorTextureId } from "../../floorTextureId";
 import { edgeOriginalGameColour } from "../../gameColours/colourScheme";
 import { floorEdgeCrossSwops } from "../../gameColours/floorEdgeCrossSwops";
+import { boxProjectedExtent } from "../../item/itemRender/cuboidTransitionMesh";
 import {
   projectBlockXyzToScreenXy,
   projectFootprintScreenXExtent,
   projectWorldXyzToScreenX,
   projectWorldXyzToScreenXy,
 } from "../../projections";
-import { type RenderBoxes } from "../../renderBox/makeItemRenderBoxAtCameraAngle";
+import {
+  floorDrawnOriginXyOffset,
+  type RenderBoxes,
+} from "../../renderBox/makeItemRenderBoxAtCameraAngle";
+import { maxRenderBoxScreenExtentAtAnyQuarterAngle } from "../../renderBox/maxRenderBoxScreenExtentAtAnyQuarterAngle";
+import { type FilterCache } from "../../room/RoomRenderer";
 import {
   effectiveFixedZIndex,
   nonRenderingItemFixedZIndex,
 } from "../../sortZ/fixedZIndexes";
 import {
   type ItemAppearance,
-  itemAppearanceRenderOnce,
+  itemAppearanceRenderMemoised,
+  type RenderOnceProps,
 } from "../ItemAppearance";
 import { renderFloorOverdraws } from "./renderFloorOverdraws";
 
@@ -67,13 +80,13 @@ import { renderFloorOverdraws } from "./renderFloorOverdraws";
 const footprintScreenXExtent = (
   position: Xyz,
   aabb: Xyz,
-  cameraAngle: Xy,
+  cameraQuarterAngle: Xy,
   offsetX: number,
 ): { left: number; right: number } => {
   const { left, right } = projectFootprintScreenXExtent(
     position,
     aabb,
-    cameraAngle,
+    cameraQuarterAngle,
   );
   return { left: left + offsetX, right: right + offsetX };
 };
@@ -88,7 +101,7 @@ const floorLeftRightCutOffMask = <
 >(
   room: RoomState<RoomId, RoomItemId>,
   floorItem: ItemInPlay<"floor", RoomId, RoomItemId>,
-  cameraAngle: Xy,
+  cameraQuarterAngle: Xy,
   renderBoxes: RenderBoxes<UnionOfAllItemInPlayTypes> | undefined,
 ): Graphics | undefined => {
   const {
@@ -105,9 +118,15 @@ const floorLeftRightCutOffMask = <
   //   return undefined;
   // }
 
+  // the mask is drawn in the floor's content-local space, whose origin is
+  // the drawn (render box) origin, not the physical position:
+  const floorDrawnOrigin = addXyz(
+    floorPosition,
+    floorDrawnOriginXyOffset(renderBoxes?.get(floorItem)),
+  );
   const offsetX = projectWorldXyzToScreenX(
-    subXy(originXyz, floorPosition),
-    cameraAngle,
+    subXy(originXyz, floorDrawnOrigin),
+    cameraQuarterAngle,
   );
 
   const { left, right } = roomItemsIterable(room.items)
@@ -157,7 +176,7 @@ const floorLeftRightCutOffMask = <
           config: { direction },
         } = boundingItem;
         const nonRendering =
-          effectiveFixedZIndex(boundingItem, cameraAngle) ===
+          effectiveFixedZIndex(boundingItem, cameraQuarterAngle) ===
           nonRenderingItemFixedZIndex;
 
         // non-rendering items (on the hidden sides) draw nothing, so their
@@ -190,7 +209,7 @@ const floorLeftRightCutOffMask = <
         const { left: itemLeft, right: itemRight } = footprintScreenXExtent(
           visPosition,
           visAabb,
-          cameraAngle,
+          cameraQuarterAngle,
           offsetX,
         );
 
@@ -207,7 +226,7 @@ const floorLeftRightCutOffMask = <
       footprintScreenXExtent(
         floorNaturalPosition,
         floorNaturalAabb,
-        cameraAngle,
+        cameraQuarterAngle,
         offsetX,
       ),
     );
@@ -232,21 +251,21 @@ const edgeSprites = ({
   times,
   position,
   spritesheet,
-  cameraAngle,
+  cameraQuarterAngle,
 }: {
   /** the camera-space direction the edge appears on, used to pick the sprite */
   direction: Subset<DirectionXy4, "right" | "towards">;
   times: Partial<Xy> | undefined;
   position: Partial<Xyz>;
   spritesheet: AppSpritesheet;
-  cameraAngle: Xy;
+  cameraQuarterAngle: Xy;
 }): Container<Sprite> => {
   return createSprite({
     label: `floorEdge(${direction})`,
     textureId: `floorEdge.${direction}`,
     times,
-    ...projectWorldXyzToScreenXy(position, cameraAngle),
-    cameraAngle,
+    ...projectWorldXyzToScreenXy(position, cameraQuarterAngle),
+    cameraQuarterAngle,
     spritesheet,
   }) as Container<Sprite>;
 };
@@ -269,14 +288,25 @@ type NearFloorEdge = {
   sharedCornerAtEnd: boolean;
 };
 
+/**
+ * where the previous rendering stashes its baked floor sprite, so a
+ * camera-angle re-render can bake into the same sprite/render texture
+ */
+const floorBakeSpriteSymbol: unique symbol = Symbol();
+type FloorRenderingContainer = Container & {
+  [floorBakeSpriteSymbol]?: UniqueTextureSprite;
+};
+
 const createColourClash = ({
   room,
   edges,
-  cameraAngle,
+  cameraQuarterAngle,
+  filterCache,
 }: {
   room: RoomState<string, string>;
   edges: NearFloorEdge[];
-  cameraAngle: Xy;
+  cameraQuarterAngle: Xy;
+  filterCache: FilterCache;
 }) => {
   const container = new Container({
     label: "floorColourClash",
@@ -298,7 +328,12 @@ const createColourClash = ({
     );
     const edgeContainer = new Container({
       label: `floorColourClash.${direction}`,
-      filters: [new ColourClashFilter(colour)],
+      filters: [
+        filterCache.getOrInsertComputed(
+          `colourClash(${colour.toHex()})`,
+          () => new ColourClashFilter(colour),
+        ),
+      ],
     });
     for (let i = 0; i <= tilesCount; i++) {
       const screenXy = projectWorldXyzToScreenXy(
@@ -306,7 +341,7 @@ const createColourClash = ({
           { ...originXyz, ...position },
           { [worldAlongAxis]: i * blockSizePx.x },
         ),
-        cameraAngle,
+        cameraQuarterAngle,
       );
       // don't cross past the corner shared with the other edge's strip:
       const atSharedCorner = sharedCornerAtEnd ? i === tilesCount : i === 0;
@@ -336,8 +371,8 @@ const createColourClash = ({
   return container;
 };
 
-export const floorAppearance: ItemAppearance<"floor"> =
-  itemAppearanceRenderOnce(
+export const floorAppearance: ItemAppearance<"floor", RenderOnceProps> =
+  itemAppearanceRenderMemoised(
     ({
       renderContext: {
         isReflection,
@@ -352,8 +387,18 @@ export const floorAppearance: ItemAppearance<"floor"> =
         },
         colourClashLayer,
         renderBoxes,
+        filterCache: maybeFilterCache,
       },
+      currentRendering,
     }) => {
+      if (import.meta.env.DEV && maybeFilterCache === undefined) {
+        throw new Error(
+          "floorAppearance requires a filterCache but was rendered without one",
+        );
+      }
+      const filterCache = maybeFilterCache!;
+
+      const cameraQuarterAngle = nearestQuarterAngle(cameraAngle);
       const {
         color: { shade },
       } = room;
@@ -369,40 +414,47 @@ export const floorAppearance: ItemAppearance<"floor"> =
       const container = new Container({ label: "floorAppearance" });
       const spritesRenderContainer = new Container({ label: "sprites" });
 
-      // draw the whole floor (tiles, edge lips, cut-off mask) to its render box,
-      // not its raw physical aabb: the box extends the apparently-far ("back")
-      // door-expanded edges by a cosmetic 0.02 block so they meet the back wall
-      // (see makeItemRenderBoxAtCameraAngle), while the physical aabb stays integer-aligned.
-      // Only the horizontal x/y extent comes from the box; z stays the physical
-      // floor thickness (aabb.z). The edge-lip layout below relies on this
-      // extent carrying the door fraction (matching the pre-refactor aabb):
+      // draw the whole floor (tiles, edge lips, cut-off mask) to its render
+      // box, not its raw physical aabb: the box extends the world-away/left
+      // door-expanded edges by a cosmetic 0.02 block so they meet the back
+      // walls (see makeItemRenderBoxAtCameraAngle), while the physical aabb
+      // stays integer-aligned. All content is laid out relative to the box's
+      // drawn origin (fractional on camera-reversed axes), which is also
+      // where the floor's container anchors (see ItemPositionRenderer), so
+      // the whole drawn floor rounds to the device grid as one. Only the
+      // horizontal x/y extent comes from the box; z stays the physical floor
+      // thickness (aabb.z). The edge-lip layout below relies on this extent
+      // carrying the door fraction (matching the pre-refactor aabb):
       const floorRenderBox = renderBoxes?.get(floorItem);
-      const drawnMin = floorRenderBox?.renderAabbOffset ?? originXyz;
+      const drawnOrigin = addXyz(
+        position,
+        floorDrawnOriginXyOffset(floorRenderBox),
+      );
       const drawnAabb: Xyz = {
         x: floorRenderBox?.renderAabb.x ?? aabb.x,
         y: floorRenderBox?.renderAabb.y ?? aabb.y,
         z: aabb.z,
       };
-      const xMin = drawnMin.x;
-      const xMax = drawnMin.x + drawnAabb.x;
-      const yMin = drawnMin.y;
-      const yMax = drawnMin.y + drawnAabb.y;
+      const xMin = 0;
+      const xMax = drawnAabb.x;
+      const yMin = 0;
+      const yMax = drawnAabb.y;
 
       const tilesLeft = projectWorldXyzToScreenXy(
         { x: xMax, y: yMin, z: aabb.z },
-        cameraAngle,
+        cameraQuarterAngle,
       );
       const tilesBottom = projectWorldXyzToScreenXy(
         { x: xMin, y: yMin, z: aabb.z },
-        cameraAngle,
+        cameraQuarterAngle,
       );
       const tilesRight = projectWorldXyzToScreenXy(
         { x: xMin, y: yMax, z: aabb.z },
-        cameraAngle,
+        cameraQuarterAngle,
       );
       const tilesTop = projectWorldXyzToScreenXy(
         { x: xMax, y: yMax, z: aabb.z },
-        cameraAngle,
+        cameraQuarterAngle,
       );
 
       // the four projected floor corners in cyclic (perimeter) order. which one is
@@ -426,20 +478,25 @@ export const floorAppearance: ItemAppearance<"floor"> =
         isReflection,
       );
 
-      const outlineFilter = new OutlineFilter({
-        color:
-          spriteOption.uncolourised ?
-            zxSpectrumColors.black
-          : getAmbientSwoppedColour(
-              spritesheetMeta.palette,
-              spritesheetMeta.effectColours.outline,
-              spritesheet.ambient,
-            ),
-        width: 1,
-        // floor tiles are baked off-screen via renderContainerToSprite, so the
-        // outline must not be clipped to the screen viewport:
-        clipToViewport: false,
-      });
+      const outlineColour =
+        spriteOption.uncolourised ?
+          zxSpectrumColors.black
+        : getAmbientSwoppedColour(
+            spritesheetMeta.palette,
+            spritesheetMeta.effectColours.outline,
+            spritesheet.ambient,
+          );
+      const outlineFilter = filterCache.getOrInsertComputed(
+        `outline(${outlineColour.toHex()},w1,noclip)`,
+        () =>
+          new OutlineFilter({
+            color: outlineColour,
+            width: 1,
+            // floor tiles are baked off-screen via renderContainerToSprite, so the
+            // outline must not be clipped to the screen viewport:
+            clipToViewport: false,
+          }),
+      );
 
       if (floorType !== "none") {
         const tilesContainer = new Container({
@@ -475,7 +532,7 @@ export const floorAppearance: ItemAppearance<"floor"> =
         /* for deciding the offset of the floor tiles, only the towards/left (near side)
            doors count. Find how much we were offset by from the natural position when 
            the floor was loaded*/
-        const tileOffsetVector = subXy(naturalFootprint.position, position);
+        const tileOffsetVector = subXy(naturalFootprint.position, drawnOrigin);
 
         const tileOffsetBlocks = {
           x: frac(tileOffsetVector.x / blockSizePx.x),
@@ -524,7 +581,7 @@ export const floorAppearance: ItemAppearance<"floor"> =
         const tilePosition = subXy(
           projectBlockXyzToScreenXy(
             addXy(tileOffsetBlocks, { x: 0.5, y: 0.5 }),
-            cameraAngle,
+            cameraQuarterAngle,
           ),
           // origin of the floor is at the bottom of its thickness,
           // so adjust in y to bring to the top
@@ -544,7 +601,12 @@ export const floorAppearance: ItemAppearance<"floor"> =
 
         if (spritesheetMeta.showFloorOverDraw) {
           tilesContainer.addChild(
-            renderFloorOverdraws(floorItem, room, spritesheet, cameraAngle),
+            renderFloorOverdraws(
+              drawnOrigin,
+              room,
+              spritesheet,
+              cameraQuarterAngle,
+            ),
           );
         }
 
@@ -658,9 +720,11 @@ export const floorAppearance: ItemAppearance<"floor"> =
         const nearEdges: NearFloorEdge[] = [];
 
         for (const { direction, position, times } of floorEdges) {
-          const renderedDirection = rotateDirectionXy4ByCameraAngle(
-            direction,
-            cameraAngle,
+          // the edge's world direction rotated to how it appears, named once
+          // here - the name keys the sprite pick and the near-side test, so
+          // both always agree:
+          const renderedDirection = nonZeroVectorClosestDirectionXy4(
+            rotateXy(unitVectors[direction], cameraQuarterAngle),
           );
           if (
             renderedDirection === "towards" ||
@@ -675,7 +739,7 @@ export const floorAppearance: ItemAppearance<"floor"> =
               direction === "towards" || direction === "away" ? "x" : "y";
             const alongReversed = axisProjectsReversed(
               worldAlongAxis,
-              cameraAngle,
+              cameraQuarterAngle,
             );
 
             // the strip is a whole number of tiles but the edge can be
@@ -683,8 +747,7 @@ export const floorAppearance: ItemAppearance<"floor"> =
             // The overshoot must sit at the camera-far end (where the cutoff
             // mask clips it), never over the near corner shared with the other
             // lip - so the reversed shift is reduced by the overshoot:
-            const alongExtentPx =
-              worldAlongAxis === "x" ? drawnAabb.x : drawnAabb.y;
+            const alongExtentPx = drawnAabb[worldAlongAxis];
             const tilesCount = worldAlongAxis === "x" ? edgeTilesX : edgeTilesY;
             const overshootPx = tilesCount * blockSizePx.x - alongExtentPx;
 
@@ -710,7 +773,7 @@ export const floorAppearance: ItemAppearance<"floor"> =
                 times,
                 position: lipPosition,
                 spritesheet,
-                cameraAngle,
+                cameraQuarterAngle,
               }),
             );
           }
@@ -722,14 +785,17 @@ export const floorAppearance: ItemAppearance<"floor"> =
         // edge is showing the other pair's world edge, so swap the two edge
         // colour sets on the baked lips (180° pairs opposite edges, which share
         // a colour, so it needs no swap):
-        const oddQuarterTurn =
-          rotateAxisXyByCameraAngle("x", cameraAngle) === "y";
+        const oddQuarterTurn = cameraAngleIsOddQuarterTurn(cameraQuarterAngle);
         if (oddQuarterTurn) {
-          floorEdgeContainer.filters = new PaletteSwapFilter(
-            { swops: floorEdgeCrossSwops(room.color), lutType: "sparse" },
-            // baked off-screen, so don't clip to the viewport:
-            Texture.WHITE,
-            false,
+          floorEdgeContainer.filters = filterCache.getOrInsertComputed(
+            `floorEdgeCross(${room.color.hue},${room.color.shade})`,
+            () =>
+              new PaletteSwapFilter(
+                { swops: floorEdgeCrossSwops(room.color), lutType: "sparse" },
+                // baked off-screen, so don't clip to the viewport:
+                Texture.WHITE,
+                false,
+              ),
           );
         }
 
@@ -738,7 +804,7 @@ export const floorAppearance: ItemAppearance<"floor"> =
         const cutoffMask = floorLeftRightCutOffMask(
           room,
           floorItem,
-          cameraAngle,
+          cameraQuarterAngle,
           renderBoxes,
         );
         if (cutoffMask !== undefined) {
@@ -755,21 +821,57 @@ export const floorAppearance: ItemAppearance<"floor"> =
           cutoffMask.destroy();
         }
 
-        container.addChild(
-          renderContainerToSprite(pixiRenderer, spritesRenderContainer),
+        // bake the whole floor to one sprite, re-baking into the previous
+        // rendering's texture on camera-angle re-renders. The bake's bounds
+        // differ across angles only by the render box's change (the cosmetic
+        // back-edge overhang moves to different world edges), so sizing the
+        // texture for the largest box extent at any quarter turn guarantees
+        // the reuse always hits:
+        const bakeBounds = spritesRenderContainer.getLocalBounds();
+        const boxExtentNow = boxProjectedExtent(
+          { x: drawnAabb.x, y: drawnAabb.y, z: drawnAabb.z },
+          floorRenderBox?.renderAabbOffset ?? originXyz,
+          cameraQuarterAngle,
         );
+        const maxBoxExtent = maxRenderBoxScreenExtentAtAnyQuarterAngle(
+          floorItem,
+          spritesheetMeta,
+        );
+        const bakedFloorSprite = renderContainerToSprite(
+          pixiRenderer,
+          spritesRenderContainer,
+          (currentRendering?.output as FloorRenderingContainer | undefined)?.[
+            floorBakeSpriteSymbol
+          ],
+          undefined,
+          {
+            x: Math.ceil(
+              bakeBounds.maxX -
+                bakeBounds.minX +
+                (maxBoxExtent.x - (boxExtentNow.max.x - boxExtentNow.min.x)),
+            ),
+            y: Math.ceil(
+              bakeBounds.maxY -
+                bakeBounds.minY +
+                (maxBoxExtent.y - (boxExtentNow.max.y - boxExtentNow.min.y)),
+            ),
+          },
+        );
+        container.addChild(bakedFloorSprite);
+        (container as FloorRenderingContainer)[floorBakeSpriteSymbol] =
+          bakedFloorSprite;
 
         spritesRenderContainer.destroy({
           // destroying children is needed to free mem used for intermediate textures
           children: true,
         });
-        outlineFilter.destroy(false /* do not destroy programs */);
 
         if (spriteOption.uncolourised) {
           const colourClashContainer = createColourClash({
             edges: nearEdges,
             room,
-            cameraAngle,
+            cameraQuarterAngle,
+            filterCache,
           });
 
           container.addChild(colourClashContainer);
@@ -779,4 +881,7 @@ export const floorAppearance: ItemAppearance<"floor"> =
 
       return container;
     },
+    // the floor's drawn overhang edges and cut-off masks resolve per camera
+    // angle:
+    (_item, cameraQuarterAngle) => cameraQuarterAngle,
   );

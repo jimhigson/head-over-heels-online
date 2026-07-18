@@ -1,4 +1,4 @@
-import { Container } from "pixi.js";
+import { Container, type Filter } from "pixi.js";
 
 import { type ItemInPlayType } from "../../../../model/ItemInPlay";
 import { roomItemsIterable } from "../../../../model/RoomState";
@@ -13,27 +13,27 @@ import {
   type ItemTickContext,
 } from "../../ItemRenderContexts";
 import { type DecorateItemRenderer } from "./DecorateItemRenderer";
-import { type ItemPixiRenderer } from "./ItemPixiRenderer";
+import { type ItemChainPixiRenderer } from "./ItemPixiRenderer";
 
 const flashDurationMs = 75;
 
 class ItemFlashOnSwitchedRenderer<T extends ItemInPlayType>
-  implements ItemPixiRenderer<T>
+  implements ItemChainPixiRenderer<T>
 {
   public readonly output: Container = new Container({
     label: "ItemFlashOnSwitchedRenderer",
   });
 
-  #leftColourFilter: OneColourFilter;
-  #rightColourFilter: OneColourFilter;
-  #outlineFilter: OutlineFilter;
+  #leftColourFilter: Filter;
+  #rightColourFilter: Filter;
+  #outlineFilter: Filter;
 
   readonly renderContext: ItemRenderContext<T>;
-  #childRenderer: ItemPixiRenderer<T>;
+  #childRenderer: ItemChainPixiRenderer<T>;
 
   constructor(
     renderContext: ItemRenderContext<T>,
-    childRenderer: ItemPixiRenderer<T>,
+    childRenderer: ItemChainPixiRenderer<T>,
   ) {
     this.renderContext = renderContext;
     this.#childRenderer = childRenderer;
@@ -56,30 +56,34 @@ class ItemFlashOnSwitchedRenderer<T extends ItemInPlayType>
       rightColour = effectColour(spritesheetMeta, useDim, "right");
     }
 
-    this.#leftColourFilter = new OneColourFilter(leftColour);
-    this.#rightColourFilter = new OneColourFilter(rightColour);
+    // shared via the room renderer's filter cache (one of each per colour
+    // serves every switch-modified item in the room), so flashing is applied
+    // by attaching/detaching them, never by mutating the filters:
+    const { filterCache } = renderContext;
+    this.#leftColourFilter = filterCache.getOrInsertComputed(
+      `oneColour(${leftColour.toHex()})`,
+      () => new OneColourFilter(leftColour),
+    );
+    this.#rightColourFilter = filterCache.getOrInsertComputed(
+      `oneColour(${rightColour.toHex()})`,
+      () => new OneColourFilter(rightColour),
+    );
 
-    this.#outlineFilter = new OutlineFilter({
-      color:
-        spriteOption.uncolourised ?
-          zxSpectrumColors.black
-        : getAmbientSwoppedColour(
-            spritesheetMeta.palette,
-            spritesheetMeta.effectColours.outline,
-            spritesheetVariants.spritesheetForCurrentRoom.ambient,
-          ),
-    });
-
-    this.#leftColourFilter.enabled = false;
-    this.#rightColourFilter.enabled = false;
-    this.#outlineFilter.enabled = false;
-
-    this.output.filters = [
-      this.#leftColourFilter,
-      this.#rightColourFilter,
-      this.#outlineFilter,
-    ];
+    const outlineColour =
+      spriteOption.uncolourised ?
+        zxSpectrumColors.black
+      : getAmbientSwoppedColour(
+          spritesheetMeta.palette,
+          spritesheetMeta.effectColours.outline,
+          spritesheetVariants.spritesheetForCurrentRoom.ambient,
+        );
+    this.#outlineFilter = filterCache.getOrInsertComputed(
+      `outline(${outlineColour.toHex()})`,
+      () => new OutlineFilter({ color: outlineColour }),
+    );
   }
+
+  #appliedFlash: "left" | "none" | "right" = "none";
 
   tick(tickContext: ItemTickContext) {
     const {
@@ -92,11 +96,21 @@ class ItemFlashOnSwitchedRenderer<T extends ItemInPlayType>
     } = this;
 
     const isFlashing = roomTime - switchedAtRoomTime < flashDurationMs;
-    const isLeft = switchedSetting === "left";
+    const flash =
+      !isFlashing ? "none"
+      : switchedSetting === "left" ? "left"
+      : "right";
 
-    this.#leftColourFilter.enabled = isFlashing && isLeft;
-    this.#rightColourFilter.enabled = isFlashing && !isLeft;
-    this.#outlineFilter.enabled = isFlashing;
+    if (flash !== this.#appliedFlash) {
+      this.output.filters =
+        flash === "none" ?
+          []
+        : [
+            flash === "left" ? this.#leftColourFilter : this.#rightColourFilter,
+            this.#outlineFilter,
+          ];
+      this.#appliedFlash = flash;
+    }
 
     this.#childRenderer.tick(tickContext);
   }

@@ -21,6 +21,7 @@ import { changeCharacterRoom } from "./gameState/mutators/changeCharacterRoom";
 import { type SavedGame } from "./gameState/saving/SavedGameState";
 import { type InputStateTrackerInterface } from "./input/InputStateTracker";
 import { MainLoop } from "./mainLoop/MainLoop";
+import { startCameraRotation } from "./mainLoop/tickCameraTransition";
 
 TextureStyle.defaultOptions.scaleMode = "nearest";
 
@@ -162,6 +163,21 @@ export const gameMain = async <RoomId extends string>(
     get gameState() {
       return gameState;
     },
+    _e2e_holdCameraTransition:
+      import.meta.env.MODE === "visual-regression" ?
+        (direction, progress) => {
+          // only start a rotation if none is held yet - repeat calls (eg a sweep
+          // sampling many progresses) just move the hold along the same turn,
+          // rather than retargeting a further quarter each call:
+          if (gameState.cameraTransition === undefined) {
+            startCameraRotation(gameState, direction);
+          }
+          if (gameState.cameraTransition !== undefined) {
+            gameState.cameraTransition.progress = progress;
+          }
+          gameState._e2e_cameraTransitionHold = progress;
+        }
+      : undefined,
     reincarnateFrom(savedGame: SavedGame<RoomId>) {
       loadGameState({
         campaign,

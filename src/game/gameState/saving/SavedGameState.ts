@@ -12,7 +12,7 @@ import { type CharacterRooms, type GameState } from "../GameState";
  */
 export const savedGameStateFields = [
   // TODO: this means the room json also goes in the save - hmmmm.
-  "cameraAngle",
+  "targetCameraAngle",
   "characterRooms",
   "currentCharacterName",
   "entryState",
@@ -40,9 +40,9 @@ type SavedGameStateFields = (typeof savedGameStateFields)[number];
 
 type SavedGameState<RoomId extends string> = SetOptional<
   Pick<GameState<RoomId>, Exclude<SavedGameStateFields, "characterRooms">>,
-  // saves made before the camera could rotate have no cameraAngle; such games
-  // resume at the base view (defaulted on load - see loadGameState)
-  "cameraAngle"
+  // saves made before the camera could rotate have no camera angle at all;
+  // such games resume at the base view (defaulted on load - see loadGameState)
+  "targetCameraAngle"
 > & {
   characterRooms: SavedCharacterRooms<RoomId>;
 };

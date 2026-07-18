@@ -5,6 +5,7 @@ import { paletteBlockstack } from "../../../sprites/palette/spritesheetPalette";
 import { selectShowSubrooms } from "../../../store/slices/gameMenus/gameMenusSelectors";
 import { store } from "../../../store/store";
 import { objectEntriesIter } from "../../../utils/entries";
+import { nearestQuarterAngle } from "../../../utils/vectors/rotateXy";
 import { projectBlockXyzToScreenXy } from "../projections";
 import { TextContainer } from "../text/TextContainer";
 import { type DecorateRoomRenderer } from "./DecorateRoomRenderer";
@@ -33,6 +34,7 @@ export const subRoomBoundariesDecorateRoomRenderer: DecorateRoomRenderer = (
   const container = new Container({ label: "subRoomBoundaries" });
   const { pixiRenderer, spritesheetVariants, cameraAngle } =
     renderContext.general;
+  const cameraQuarterAngle = nearestQuarterAngle(cameraAngle);
 
   let colourIndex = 0;
   for (const [name, subRoom] of objectEntriesIter(subRooms)) {
@@ -42,10 +44,10 @@ export const subRoomBoundariesDecorateRoomRenderer: DecorateRoomRenderer = (
     const graphics = new Graphics();
 
     graphics.poly([
-      projectBlockXyzToScreenXy({ x: from.x, y: from.y }, cameraAngle),
-      projectBlockXyzToScreenXy({ x: to.x, y: from.y }, cameraAngle),
-      projectBlockXyzToScreenXy({ x: to.x, y: to.y }, cameraAngle),
-      projectBlockXyzToScreenXy({ x: from.x, y: to.y }, cameraAngle),
+      projectBlockXyzToScreenXy({ x: from.x, y: from.y }, cameraQuarterAngle),
+      projectBlockXyzToScreenXy({ x: to.x, y: from.y }, cameraQuarterAngle),
+      projectBlockXyzToScreenXy({ x: to.x, y: to.y }, cameraQuarterAngle),
+      projectBlockXyzToScreenXy({ x: from.x, y: to.y }, cameraQuarterAngle),
     ]);
 
     graphics.stroke({ width: 2, color, alpha: 0.8 });
@@ -55,7 +57,7 @@ export const subRoomBoundariesDecorateRoomRenderer: DecorateRoomRenderer = (
         x: (from.x + to.x) / 2,
         y: (from.y + to.y) / 2,
       },
-      cameraAngle,
+      cameraQuarterAngle,
     );
 
     const label = new TextContainer({

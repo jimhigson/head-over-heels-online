@@ -208,12 +208,29 @@
   },
   {
     "op": "add",
+    "path": "/items/b10",
+    "value": {
+      "config": {
+        "style": "tower",
+        "times": {
+          "z": 3
+        }
+      },
+      "position": {
+        "x": 5,
+        "y": 7,
+        "z": 0
+      },
+      "type": "block"
+    }
+  },
+  {
+    "op": "add",
     "path": "/items/b4",
     "value": {
       "config": {
         "style": "tower",
         "times": {
-          "y": 4,
           "z": 3
         }
       },
@@ -250,13 +267,66 @@
       "config": {
         "style": "tower",
         "times": {
-          "x": 2,
           "z": 3
         }
       },
       "position": {
         "x": 4,
         "y": 7,
+        "z": 0
+      },
+      "type": "block"
+    }
+  },
+  {
+    "op": "add",
+    "path": "/items/b7",
+    "value": {
+      "config": {
+        "style": "tower",
+        "times": {
+          "z": 3
+        }
+      },
+      "position": {
+        "x": 0,
+        "y": 1,
+        "z": 0
+      },
+      "type": "block"
+    }
+  },
+  {
+    "op": "add",
+    "path": "/items/b8",
+    "value": {
+      "config": {
+        "style": "tower",
+        "times": {
+          "z": 3
+        }
+      },
+      "position": {
+        "x": 0,
+        "y": 2,
+        "z": 0
+      },
+      "type": "block"
+    }
+  },
+  {
+    "op": "add",
+    "path": "/items/b9",
+    "value": {
+      "config": {
+        "style": "tower",
+        "times": {
+          "z": 3
+        }
+      },
+      "position": {
+        "x": 0,
+        "y": 3,
         "z": 0
       },
       "type": "block"

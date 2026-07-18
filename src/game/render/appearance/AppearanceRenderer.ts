@@ -11,8 +11,8 @@ import { type Appearance, type AppearanceRendering } from "./Appearance";
 
 export class AppearanceRenderer<
   /**
-   * context provided once to this renderer that never changes - if this
-   * changes the renderer has to be destroyed and recreated
+   * context provided once to this renderer; the object's identity never
+   * changes, but fields inside it can be mutated in place between ticks
    */
   RenderContext extends object,
   TickContext extends object,

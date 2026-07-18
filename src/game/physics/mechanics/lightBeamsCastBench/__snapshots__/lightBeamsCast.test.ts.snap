@@ -8,7 +8,11 @@ exports[`bench scenario casts a stable set of beam items 1`] = `
       "y": 144,
       "z": 8,
     },
-    "direction": "away",
+    "direction": {
+      "x": 0,
+      "y": 1,
+      "z": 0,
+    },
     "end": "reflect-left",
     "id": "lb",
     "position": {
@@ -23,7 +27,11 @@ exports[`bench scenario casts a stable set of beam items 1`] = `
       "y": 8,
       "z": 8,
     },
-    "direction": "right",
+    "direction": {
+      "x": -1,
+      "y": -0,
+      "z": 0,
+    },
     "end": "reflect-left",
     "id": "lb1",
     "position": {
@@ -38,7 +46,11 @@ exports[`bench scenario casts a stable set of beam items 1`] = `
       "y": 112,
       "z": 8,
     },
-    "direction": "towards",
+    "direction": {
+      "x": -0,
+      "y": -1,
+      "z": 0,
+    },
     "end": "reflect-left",
     "id": "lb2",
     "position": {
@@ -53,7 +65,11 @@ exports[`bench scenario casts a stable set of beam items 1`] = `
       "y": 8,
       "z": 8,
     },
-    "direction": "left",
+    "direction": {
+      "x": 1,
+      "y": 0,
+      "z": 0,
+    },
     "end": "terminus",
     "id": "lb3",
     "position": {
@@ -68,7 +84,11 @@ exports[`bench scenario casts a stable set of beam items 1`] = `
       "y": 144,
       "z": 8,
     },
-    "direction": "away",
+    "direction": {
+      "x": 0,
+      "y": 1,
+      "z": 0,
+    },
     "end": "reflect-left",
     "id": "lb4",
     "position": {
@@ -83,7 +103,11 @@ exports[`bench scenario casts a stable set of beam items 1`] = `
       "y": 8,
       "z": 8,
     },
-    "direction": "right",
+    "direction": {
+      "x": -1,
+      "y": -0,
+      "z": 0,
+    },
     "end": "terminus",
     "id": "lb5",
     "position": {

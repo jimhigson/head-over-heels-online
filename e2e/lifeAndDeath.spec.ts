@@ -1,5 +1,6 @@
 import { expect, test } from "@playwright/test";
 
+import { type ItemInPlay } from "../src/model/ItemInPlay";
 import {
   clickCheat,
   dispatchKeyPress,
@@ -81,8 +82,8 @@ test.describe("life and death flows", () => {
           return false;
         }
         const room = state.characterRooms[state.currentCharacterName];
-        const head = room?.items.head;
-        return head?.state.standingOnItemId === "heels";
+        const head = room?.items.head as ItemInPlay<"head">;
+        return head.state.standingOnItemId === "heels";
       },
       undefined,
       { timeout: 15_000 * osSlowness },

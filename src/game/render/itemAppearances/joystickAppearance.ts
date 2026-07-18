@@ -1,10 +1,10 @@
 import { Container, type Sprite } from "pixi.js";
 
 import { type AppSpritesheet } from "../../../sprites/spritesheet/variants/AppSpritesheet";
+import { resolveCameraRelativeVectorXy4 } from "../../../utils/vectors/resolveCameraRelativeVector";
 import {
   type DirectionXy4,
   originXy,
-  rotateDirectionXy4ByCameraAngle,
   type Xy,
 } from "../../../utils/vectors/vectors";
 import { createSprite } from "../createSprite";
@@ -12,7 +12,9 @@ import { type ItemAppearance } from "./ItemAppearance";
 
 type PushDirection = DirectionXy4 | undefined;
 type JoystickRenderProps = {
-  pushDirection: PushDirection;
+  /** the on-screen push direction the ball is nudged towards, resolved per
+   * camera angle; undefined when the joystick is not being pushed */
+  screenPushDirection: PushDirection;
 };
 
 const createContainerAndSprites = (spritesheet: AppSpritesheet) => {
@@ -51,11 +53,17 @@ export const joystickAppearance: ItemAppearance<
 
   const pushDirection =
     roomTime === actedOnAt.roomTime ? lastPushDirection : undefined;
-  const currentPushDirection = currentlyRenderedProps?.pushDirection;
+  // the offsets nudge the ball the way it was pushed as seen on screen, so
+  // rotate the world push direction into camera space - rounded only here, at
+  // the offset lookup:
+  const screenPushDirection =
+    pushDirection === undefined ? undefined : (
+      resolveCameraRelativeVectorXy4(pushDirection, cameraAngle, false)
+    );
 
   const render =
     currentlyRenderedProps === undefined ||
-    pushDirection !== currentPushDirection;
+    screenPushDirection !== currentlyRenderedProps.screenPushDirection;
 
   if (!render) {
     return "no-update";
@@ -73,14 +81,10 @@ export const joystickAppearance: ItemAppearance<
   const ballSprite = output.getChildAt(1) as Sprite;
   ballSprite.texture =
     spritesheet.textures[
-      pushDirection === undefined ? "joystick.ball" : `joystick.ball.active`
+      screenPushDirection === undefined ? "joystick.ball" : (
+        `joystick.ball.active`
+      )
     ];
-  // the offsets nudge the ball the way it was pushed as seen on screen, so rotate
-  // the world push direction into camera space before looking the offset up:
-  const screenPushDirection =
-    pushDirection === undefined ? undefined : (
-      rotateDirectionXy4ByCameraAngle(pushDirection, cameraAngle)
-    );
   const ballSpriteXy = ballRenderPushOffsets.get(screenPushDirection);
 
   ballSprite.x = ballSpriteXy?.x ?? 0;
@@ -88,6 +92,6 @@ export const joystickAppearance: ItemAppearance<
 
   return {
     output,
-    renderProps: { pushDirection },
+    renderProps: { screenPushDirection },
   };
 };

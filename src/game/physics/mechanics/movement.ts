@@ -17,13 +17,13 @@ import {
   directionsXyDiagonal,
   type DirectionXy8,
   lengthXy,
+  nonZeroVectorClosestDirectionXy4,
   originXy,
   originXyz,
   perpendicularAxisXy,
   scaleXyz,
   subXy,
   unitVector,
-  vectorClosestDirectionXy4,
   xyEqual,
   xyzEqual,
 } from "../../../utils/vectors/vectors";
@@ -145,7 +145,7 @@ const turnTowardsPlayer = <RoomId extends string, RoomItemId extends string>(
   );
 
   const newFacing =
-    unitVectors[vectorClosestDirectionXy4(vectorXyToClosestPlayer)!];
+    unitVectors[nonZeroVectorClosestDirectionXy4(vectorXyToClosestPlayer)];
 
   const changedDirection = !xyEqual(newFacing, facing);
 

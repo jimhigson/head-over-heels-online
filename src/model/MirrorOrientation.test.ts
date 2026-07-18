@@ -1,10 +1,11 @@
 import { expect, test } from "vitest";
 
-import { type DirectionXy4 } from "../utils/vectors/vectors";
+import { unitVectors } from "../utils/vectors/unitVectors";
+import { type DirectionXy4, xyzEqual } from "../utils/vectors/vectors";
 import {
   flippedMirrorOrientation,
   type MirrorOrientation,
-  reflectedBeamDirection,
+  reflectedFacingVector,
 } from "./MirrorOrientation";
 
 type ReflectionCase = [MirrorOrientation, DirectionXy4, DirectionXy4];
@@ -23,7 +24,12 @@ test.for([
 ] satisfies ReflectionCase[])(
   "a %s mirror reflects a beam travelling %s to %s",
   ([orientation, incoming, outgoing]) => {
-    expect(reflectedBeamDirection(orientation, incoming)).toBe(outgoing);
+    expect(
+      xyzEqual(
+        reflectedFacingVector(orientation, unitVectors[incoming]),
+        unitVectors[outgoing],
+      ),
+    ).toBe(true);
   },
 );
 

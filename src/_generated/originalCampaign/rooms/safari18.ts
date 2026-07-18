@@ -40,8 +40,23 @@ export const room = inferRoomJson({
       type: "block",
     },
     b6: {
-      config: { style: "tower", times: { y: 4, z: 2 } },
+      config: { style: "tower", times: { z: 2 } },
       position: { x: 0, y: 0, z: 0 },
+      type: "block",
+    },
+    b7: {
+      config: { style: "tower", times: { z: 2 } },
+      position: { x: 0, y: 1, z: 0 },
+      type: "block",
+    },
+    b8: {
+      config: { style: "tower", times: { z: 2 } },
+      position: { x: 0, y: 2, z: 0 },
+      type: "block",
+    },
+    b9: {
+      config: { style: "tower", times: { z: 2 } },
+      position: { x: 0, y: 3, z: 0 },
       type: "block",
     },
     d: {

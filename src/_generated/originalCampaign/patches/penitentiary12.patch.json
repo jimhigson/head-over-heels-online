@@ -236,14 +236,66 @@
       "config": {
         "style": "tower",
         "times": {
-          "x": 2,
-          "y": 2,
           "z": 3
         }
       },
       "position": {
         "x": 0,
         "y": 1,
+        "z": 0
+      },
+      "type": "block"
+    }
+  },
+  {
+    "op": "add",
+    "path": "/items/b3",
+    "value": {
+      "config": {
+        "style": "tower",
+        "times": {
+          "z": 3
+        }
+      },
+      "position": {
+        "x": 0,
+        "y": 2,
+        "z": 0
+      },
+      "type": "block"
+    }
+  },
+  {
+    "op": "add",
+    "path": "/items/b4",
+    "value": {
+      "config": {
+        "style": "tower",
+        "times": {
+          "z": 3
+        }
+      },
+      "position": {
+        "x": 1,
+        "y": 1,
+        "z": 0
+      },
+      "type": "block"
+    }
+  },
+  {
+    "op": "add",
+    "path": "/items/b5",
+    "value": {
+      "config": {
+        "style": "tower",
+        "times": {
+          "z": 3
+        }
+      },
+      "position": {
+        "x": 1,
+        "y": 2,
         "z": 0
       },
       "type": "block"

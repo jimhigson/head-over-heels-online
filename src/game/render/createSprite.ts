@@ -58,7 +58,7 @@ export type AnimatedCreateSpriteOptions = CreateSpriteSpritesheetSpecifier & {
   playOnce?: "and-destroy" | "and-stop";
   times?: Partial<Xyz>;
   /** the camera rotation, so a tiled (times) sprite tiles in the rotated direction */
-  cameraAngle?: Xy;
+  cameraQuarterAngle?: Xy;
   label?: string;
 
   /** if the game is paused, nothing should animate - this will automatically create just
@@ -75,7 +75,7 @@ type BaseCreateSpriteOptions = CreateSpriteSpritesheetSpecifier & {
   y?: number;
   filter?: Filter | Filter[];
   /** the camera rotation, so a tiled (times) sprite tiles in the rotated direction */
-  cameraAngle?: Xy;
+  cameraQuarterAngle?: Xy;
   label?: string;
 };
 
@@ -130,7 +130,8 @@ const isAnimatedOptions = (
 
 /** utility for creating a sprite while setting several properties on it */
 const createSpriteImpl = (options: CreateSpriteOptions): Container => {
-  const { anchor, flipX, pivot, x, y, times, label, cameraAngle } = options;
+  const { anchor, flipX, pivot, x, y, times, label, cameraQuarterAngle } =
+    options;
 
   // `times: undefined` or `times: {x:1}` should NOT cause the sprite to be wrapped in a container
   // even if this means the the types change between two otherwise identical calls
@@ -150,9 +151,9 @@ const createSpriteImpl = (options: CreateSpriteOptions): Container => {
       // affected by the horizontal camera rotation, so always goes low-to-high
       // (taller sub-sprites draw on top):
       const xDelta =
-        projectBlockXyzToScreenXy({ x: 1 }, cameraAngle).y > 0 ? 1 : -1;
+        projectBlockXyzToScreenXy({ x: 1 }, cameraQuarterAngle).y > 0 ? 1 : -1;
       const yDelta =
-        projectBlockXyzToScreenXy({ y: 1 }, cameraAngle).y > 0 ? 1 : -1;
+        projectBlockXyzToScreenXy({ y: 1 }, cameraQuarterAngle).y > 0 ? 1 : -1;
       const xStart = xDelta === 1 ? 1 : completeTimes.x;
       const yStart = yDelta === 1 ? 1 : completeTimes.y;
       for (let x = xStart; x >= 1 && x <= completeTimes.x; x += xDelta) {
@@ -191,7 +192,7 @@ const createSpriteImpl = (options: CreateSpriteOptions): Container => {
                 y: y - 1,
                 z: z - 1,
               },
-              cameraAngle,
+              cameraQuarterAngle,
             );
             component.x += displaceXy.x;
             component.y += +displaceXy.y;

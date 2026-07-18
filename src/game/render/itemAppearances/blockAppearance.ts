@@ -3,14 +3,28 @@ import { isTextureId } from "../../../sprites/assertIsTextureId";
 import { type SceneryName } from "../../../sprites/planets";
 import { type TextureId } from "../../../sprites/spritesheet/spritesheetData/makeSpritesheetData";
 import { type AppSpritesheetData } from "../../../sprites/spritesheet/variants/AppSpritesheet";
-import { maybeRenderContainerToSprite } from "../../../utils/pixi/renderContainerToSprite";
+import {
+  asReuseSprite,
+  maybeRenderContainerToSprite,
+} from "../../../utils/pixi/renderContainerToSprite";
+import { nearestQuarterAngle } from "../../../utils/vectors/rotateXy";
+import { type Xy } from "../../../utils/vectors/vectors";
 import { createSprite } from "../createSprite";
-import { type ItemAppearance } from "./ItemAppearance";
+import {
+  cameraQuarterAngleEqual,
+  type ItemAppearance,
+  multipliedLayoutAngle,
+} from "./ItemAppearance";
 
 type BlockRenderProps = {
   // flatten disappear down to a single value, since all we care about is if it is on or not
   // for the sake of rendering
   isDissapearing: boolean;
+  /**
+   * the multiplied tiling resolves per camera angle; null for single blocks,
+   * which never re-render for a rotation
+   */
+  multipliedAtAngle: null | Xy;
 };
 
 const blockTextureId = (
@@ -44,6 +58,7 @@ export const blockAppearance: ItemAppearance<"block", BlockRenderProps> = ({
   renderContext: {
     isReflection,
     general: { pixiRenderer, spritesheetVariants, cameraAngle },
+    item,
     item: {
       config: { style, times },
       state: { disappearing: disappear },
@@ -52,11 +67,17 @@ export const blockAppearance: ItemAppearance<"block", BlockRenderProps> = ({
   },
   currentRendering,
 }) => {
+  const cameraQuarterAngle = nearestQuarterAngle(cameraAngle);
   const currentlyRenderedProps = currentRendering?.renderProps;
   const isDissapearing = disappear !== null;
+  const multipliedAtAngle = multipliedLayoutAngle(item, cameraQuarterAngle);
   const render =
     currentlyRenderedProps === undefined ||
-    currentlyRenderedProps.isDissapearing !== isDissapearing;
+    currentlyRenderedProps.isDissapearing !== isDissapearing ||
+    !cameraQuarterAngleEqual(
+      currentlyRenderedProps.multipliedAtAngle,
+      multipliedAtAngle,
+    );
 
   if (!render) {
     return "no-update";
@@ -74,14 +95,17 @@ export const blockAppearance: ItemAppearance<"block", BlockRenderProps> = ({
           spritesheetVariants.originalSpritesheet.data,
         ),
         times,
-        cameraAngle,
+        cameraQuarterAngle,
         spritesheet: spritesheetVariants.currentMainSpritesheet(
           false,
           false,
           isReflection,
         ),
       }),
+      // camera-angle re-renders bake into the previous render texture (the
+      // multiplied bake is the same size at every quarter turn):
+      asReuseSprite(currentRendering?.output),
     ),
-    renderProps: { isDissapearing },
+    renderProps: { isDissapearing, multipliedAtAngle },
   };
 };

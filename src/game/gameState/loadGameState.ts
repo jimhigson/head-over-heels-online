@@ -174,9 +174,9 @@ const _loadGameState = <RoomId extends string>({
       ...badJsonClone(savedGame.gameState),
     });
 
-    // saves made before the camera could rotate have no cameraAngle - resume such
-    // games at the base view:
-    writeInto.cameraAngle ??= cameraAngleBase;
+    // saves made before the camera could rotate have no target angle -
+    // resume such games at the base view:
+    writeInto.targetCameraAngle ??= cameraAngleBase;
 
     writeInto.characterRooms =
       addIndexToIndexSavedCharacterRooms(loadedCharacterRooms);
@@ -235,7 +235,7 @@ const _loadGameState = <RoomId extends string>({
   // gather what we know so far:
   const gameState: GameState<RoomId> = Object.assign(writeInto, {
     inputStateTracker,
-    cameraAngle: cameraAngleBase,
+    targetCameraAngle: cameraAngleBase,
     currentCharacterName: startAs,
     entryState: {
       head: headItem === undefined ? undefined : entryState(headItem),

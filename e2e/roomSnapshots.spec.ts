@@ -14,6 +14,7 @@ import {
   dispatchToStore,
   maximumWaitForStep,
   setZeroGameSpeed,
+  waitForGameReady,
   waitForRoomRenderEvent,
 } from "./testUtils/gameStateQueries";
 import {
@@ -198,13 +199,15 @@ const gameRunsAtZeroSpeed = async (page: Page, projectName: string) => {
 
   await retryWithRecovery({
     async action(attempt) {
-      const gameApiFound = await page.evaluate(() => {
-        if (window._e2e_gamePageGameAi && window._e2e_pixiApplication) {
-          // set the frame rate very low - this reduces how much cpu the tests need to run
-          window._e2e_pixiApplication.ticker.maxFPS = 5;
-          return true;
-        }
-        return false;
+      // gate on the game being fully booted (both e2e hooks present) before
+      // touching the pixi app or dispatching - a cold boot under concurrent
+      // load lags, and racing past here is what used to throw
+      // "Cannot read properties of undefined (reading 'ticker')":
+      await waitForGameReady(page);
+
+      // set the frame rate very low - this reduces how much cpu the tests need to run
+      await page.evaluate(() => {
+        window._e2e_pixiApplication!.ticker.maxFPS = 5;
       });
 
       type ToggleUserSettingAction = ReturnType<typeof toggleUserSetting>;
@@ -217,14 +220,14 @@ const gameRunsAtZeroSpeed = async (page: Page, projectName: string) => {
         payload: { path: "displaySettings.crtFilter", value: false },
       } satisfies ToggleUserSettingAction);
 
-      if (!gameApiFound || !successSetSpeed || !successToggleCrtFilter) {
+      if (!successSetSpeed || !successToggleCrtFilter) {
         await page
           .screenshot({
-            path: `test-results/game-runs-zero-speed-${projectName}-attempt-${attempt}-no-game-api-found.png`,
+            path: `test-results/game-runs-zero-speed-${projectName}-attempt-${attempt}-set-speed-failed.png`,
             fullPage: true,
           })
           .catch(() => {});
-        throw new Error(`gameApi not found on window`);
+        throw new Error(`could not set zero game speed / toggle crt filter`);
       }
 
       console.log(

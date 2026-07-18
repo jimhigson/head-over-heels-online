@@ -102,13 +102,30 @@
       "config": {
         "style": "tower",
         "times": {
-          "y": 2,
           "z": 2
         }
       },
       "position": {
         "x": 7,
         "y": 2,
+        "z": 0
+      },
+      "type": "block"
+    }
+  },
+  {
+    "op": "add",
+    "path": "/items/b4",
+    "value": {
+      "config": {
+        "style": "tower",
+        "times": {
+          "z": 2
+        }
+      },
+      "position": {
+        "x": 7,
+        "y": 3,
         "z": 0
       },
       "type": "block"

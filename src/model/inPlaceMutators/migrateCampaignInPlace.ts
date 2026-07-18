@@ -1,5 +1,6 @@
 import { valuesIter } from "../../utils/entries";
 import { type AnyRoomJson } from "../RoomJson";
+import { migrateTowersInPlace } from "./migrateTowersInPlace";
 import { migrateWallTilesInPlace } from "./migrateWallTilesInPlace";
 
 /**
@@ -16,5 +17,6 @@ export const migrateCampaignInPlace = (campaign: {
 }): void => {
   for (const room of valuesIter(campaign.rooms)) {
     migrateWallTilesInPlace(room);
+    migrateTowersInPlace(room);
   }
 };

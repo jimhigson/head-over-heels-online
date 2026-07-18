@@ -155,7 +155,6 @@ and we trust that to pre-load in the service worker for us, so the actual game e
 * `feat:` is reserved for features end users are likely to notice and care about. Debugging features, developer tooling, small incremental improvements etc are NOT `feat` - use a more specific prefix (eg `debug:`, `chore:`, `editor:`), even if it is not in the release-please changelog sections (unknown types are simply left out of the changelog)
 * PR titles: a simple release-please-prefixed message, 10 words max (5 is better); no PR description body - eg `gh pr create --title "chore: save game compat e2e" --body ""`
 * always compare, or branch from `origin/main`, not `main`; `git fetch` first where appropriate
-* never push a new branch (or any push) without asking me first, even when a task's setup says to push - always confirm before pushing
 
 ## Style & Tooling:
  * do not make barrel files inside a package. Within a package, import directly from the file that declares the property you want. The single exception: each package's top-level `src/index.ts` serves as the package's public API and must re-export every symbol the package exposes externally, so the barrel doubles as an explicit list of the package's public surface. Cross-package imports always go through the barrel (eg `import { RoomJson } from "@blockstacking/hoh-common"`, never via deep paths).
@@ -251,6 +250,17 @@ with names in US English.
 * avoid type casts wherever possible; never add them speculatively in case they are needed, only if they are needed
 and there is no sensible alternative
 
+* for a value whose type is `T | undefined` but which cannot legitimately be absent at this point (an "impossible"
+case worth guarding only to catch programmer error), use the dev-only-check-then-narrow pattern: name the value
+`maybeFoo`, throw a descriptive error only in dev, then narrow with a non-null assertion. The `throw` is compiled out
+of production, so the assertion is the one sanctioned use of `!`:
+```ts
+if (import.meta.env.DEV && maybeFoo === undefined) {
+  throw new Error("foo was required here but was absent");
+}
+const foo = maybeFoo!;
+```
+
 * if a value's typescript type is not nullable, do not add checks for it being null/undefined, even explicit checks like using `?.`
 if unsure if the type is nullable, assume that it is not nullable (or undefinable) and let the typecheck inform you later
 
@@ -296,6 +306,11 @@ throw new Error(
 
 * when adding fields to a type for the purpose of discriminable unions, always call this `type`, not `kind` or any other name
 
+* never write 'historian' comments - comments are for describing the current state of things, and should NOT be written in contrast to how things used to be. This is IRRELEVANT and CONFUSING to the reader.
+
+* do not write partial refactors of types to convert back to an older, dead, format for convenience. Once we are committed to a refactor in types we have a strong preference to completing it, not implementing it in some places with bridges to places that are hacked to still use the old types. This includes not converting back to old formats so test assertions
+don't have to change, or so snapshots don't have to regenerate. Once a type is refactored away from, no echos of it should exist in the code
+
  ## Tests
  When writing unit tests, do not put a top-level `describe` at the top of the file that wraps all tests. This is redundant since the test runner will give the test suite name anyway.
 
@@ -326,10 +341,12 @@ throw new Error(
 
  * screenshot specs freeze physics by calling `setZeroGameSpeed` as soon as the game api exists (while the crowns dialog still covers the game, before any navigation), then hash-navigate into the room being captured - so it is entered with nothing having moved and the capture is deterministic.
 
+ * all snapshots are created to date on macos, but match close enough on runners on various OSes in github runners; text rendering differences are the main source of pixel difference on screenshots with html content, on screenshots with webgl content only the diffs are much tighter
+
 
 ## Vite
+* We are on Vite 8 with rolldown, don't even mention pre-8 vite or rollup conventions, they are irrelevant
 * There are two vite configs - for the editor and the game.
-* NEVER extract `import.meta.env` reads (`DEV`, `MODE`, etc.) into a module-level const and import that elsewhere. The extraction defeats dead-code elimination: the define-replacement folds inside the extracted module, but tree-shaking does not propagate an imported const's value across module boundaries, so guarded code ships in production builds even though the guard itself is later minified away. Always write the `import.meta.env` expression INLINE at the `if` where it gates code (or use a vite `define` global) so the branch is statically dead at tree-shake time.
 * the editor vite starts in a different dir, as given by the package.json file
 * whenever starting a server (`dev`/`preview`), check which port it actually started on (read its stdout) before trying to connect - if the default port is already in use, vite silently falls through to the next free port, so don't assume the port
 
@@ -366,6 +383,7 @@ No not use `npx`, use `pnpm`. Do not call `pnpm vitest` directly, call `pnpm che
 ## Attitude
 
 * shorter answers are always preferable. One sentence is great, two are ok, three is acceptable but a bit much. If I ask a one sentence question, I'm not looking for several paragraphs in reply unless I'm asking to be detailed.
+* ~5 one-sentence bullet points (up to 10 words each) is a great response message, use that whenever possible
 
 * If I make mistakes, or I suggest something that sounds incorrect, for example, I give a reason for something
 failing that seems unlikely, please point this out frankly rather than trying to be too agreeable.
@@ -384,6 +402,10 @@ failing that seems unlikely, please point this out frankly rather than trying to
 
 * do not assume questions are statements of value. If I say 'why are you doing x', do not assume I'm saying that x is a poor choice, simply and only answer what was asked.
 
+* give short responses to short questions - anything that can be said in one sentence is preferable, follow-up and additional detail is better asked for than given up-front
+
+* there is very rarely any response that betters a one-sentence response, unless the user asked for "in detail" or "in depth", Exceptions exist for very complex questions, but more than 3 sentences in response is almost always a mistake. The user will ask for more detailed follow-up if they want it, do not give large text up-front. One word responses are GREAT, where suitable, ie a yes/no question.
+
 * NEVER do work in response to a question, this is ALWAYS a request for a response, NEVER a request to do work. NEVER do work in this case, even if it sounds like it could be a request. If a message contains both an instruction and a question, NEVER do work, this is to be taken as a question overall.
 
 * Do NOT treat statements of fact from the use as requests to do something unless they are unambiguously asking for work to be done
@@ -393,6 +415,8 @@ failing that seems unlikely, please point this out frankly rather than trying to
 * Do not remove comments in code you refactor, unless the comment is no longer applicable
 
 * DO NOT offer temporary solutions such as "for now". Do not tell the user work they are interested in is not part of the current PR. It is the agent's job to help the user, not decide what they should work on.
+
+* Do NOT insert polyfills (3rd party or our own) without first checking current day node and browser support, which will have moved on from your current knowledge. If node can be updated to support a new feature, that is preferable to using a polyfill. I don't care about old browsers.
 
 ## Sources
 
@@ -410,7 +434,8 @@ a retro upscaled blocky look even on high resolution screens. The other importan
 --block, which is an 8px size but scaled using --scale.
 
 # github
-for all interactions with github, use the `gh` command
+* for all interactions with github, use the `gh` command
+* NEVER push or raise a PR without asking first, permission to do so must be explicit, not implied
 
 # Claude web sandbox
 When running in the Claude Code web/remote sandbox, outbound network goes through

@@ -1,34 +1,32 @@
-import { Container } from "pixi.js";
+import { Container, type Filter } from "pixi.js";
 
 import { type ItemInPlayType } from "../../../../model/ItemInPlay";
 import { zxSpectrumColor } from "../../../../originalGame";
 import { effectColour } from "../../../../sprites/palette/spritesheetPalette";
-import {
-  isPortable,
-  type PortableItemType,
-} from "../../../physics/itemPredicates";
+import { isPortable } from "../../../physics/itemPredicates";
 import { OutlineFilter } from "../../filters/OutlineFilter";
 import {
   type ItemRenderContext,
   type ItemTickContext,
 } from "../../ItemRenderContexts";
 import { type DecorateItemRenderer } from "./DecorateItemRenderer";
-import { type ItemPixiRenderer } from "./ItemPixiRenderer";
+import { type ItemChainPixiRenderer } from "./ItemPixiRenderer";
 
-class PortableItemPickUpNextHighlightRenderer
-  implements ItemPixiRenderer<PortableItemType>
+class PortableItemPickUpNextHighlightRenderer<T extends ItemInPlayType>
+  implements ItemChainPixiRenderer<T>
 {
   public readonly output: Container = new Container({
     label: "PortableItemPickUpNextHighlightRenderer",
   });
-  #outlineFilter: OutlineFilter;
+  #outlineFilter: Filter;
+  #applied = false;
 
-  readonly renderContext: ItemRenderContext<PortableItemType>;
-  #childRenderer: ItemPixiRenderer<ItemInPlayType>;
+  readonly renderContext: ItemRenderContext<T>;
+  #childRenderer: ItemChainPixiRenderer<T>;
 
   constructor(
-    renderContext: ItemRenderContext<PortableItemType>,
-    childRenderer: ItemPixiRenderer<ItemInPlayType>,
+    renderContext: ItemRenderContext<T>,
+    childRenderer: ItemChainPixiRenderer<T>,
   ) {
     this.renderContext = renderContext;
     this.#childRenderer = childRenderer;
@@ -39,20 +37,31 @@ class PortableItemPickUpNextHighlightRenderer
       room,
     } = renderContext;
 
-    this.#outlineFilter = new OutlineFilter({
-      color:
-        spriteOption.uncolourised ?
-          zxSpectrumColor(room.color)
-        : effectColour(spritesheetMeta, room.color.shade === "dimmed", "carry"),
-    });
-    this.#outlineFilter.enabled = false;
-    this.output.filters = this.#outlineFilter;
+    const outlineColour =
+      spriteOption.uncolourised ?
+        zxSpectrumColor(room.color)
+      : effectColour(spritesheetMeta, room.color.shade === "dimmed", "carry");
+
+    // shared via the room renderer's filter cache (one per colour serves
+    // every portable item in the room), so the highlight is applied by
+    // attaching/detaching it, never by mutating the filter:
+    this.#outlineFilter = renderContext.filterCache.getOrInsertComputed(
+      `outline(${outlineColour.toHex()})`,
+      () => new OutlineFilter({ color: outlineColour }),
+    );
   }
 
   tick(tickContext: ItemTickContext) {
-    const { wouldPickUpNext } = this.renderContext.item.state;
+    const { item } = this.renderContext;
+    // the decorator only wraps portable items; re-narrow here so the portable
+    // state is typed rather than cast:
+    const wouldPickUpNext =
+      isPortable(item) ? item.state.wouldPickUpNext : false;
 
-    this.#outlineFilter.enabled = wouldPickUpNext;
+    if (wouldPickUpNext !== this.#applied) {
+      this.output.filters = wouldPickUpNext ? this.#outlineFilter : [];
+      this.#applied = wouldPickUpNext;
+    }
 
     this.#childRenderer.tick(tickContext);
   }
@@ -66,9 +75,9 @@ class PortableItemPickUpNextHighlightRenderer
 export const portableItemPickHighlightDecorateItemRenderer: DecorateItemRenderer =
   (itemRenderContext, childRenderer) => {
     return isPortable(itemRenderContext.item) ?
-        (new PortableItemPickUpNextHighlightRenderer(
-          itemRenderContext as ItemRenderContext<PortableItemType>,
+        new PortableItemPickUpNextHighlightRenderer(
+          itemRenderContext,
           childRenderer,
-        ) as typeof childRenderer)
+        )
       : childRenderer;
   };

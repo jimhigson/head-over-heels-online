@@ -3,12 +3,12 @@ import { Container } from "pixi.js";
 import { type ItemTypeUnion } from "../../../_generated/types/ItemInPlayUnion";
 import { type ItemInPlayType } from "../../../model/ItemInPlay";
 import { smallItemTextureSize } from "../../../sprites/spritesheet/spritesheetData/textureSizes";
-import { maybeRenderContainerToSprite } from "../../../utils/pixi/renderContainerToSprite";
 import {
-  rotateAxisXyByCameraAngle,
-  rotateDirectionXy4ByCameraAngle,
-  type Xy,
-} from "../../../utils/vectors/vectors";
+  asReuseSprite,
+  maybeRenderContainerToSprite,
+} from "../../../utils/pixi/renderContainerToSprite";
+import { nearestQuarterAngle } from "../../../utils/vectors/rotateXy";
+import { rotateAxisXyByCameraAngle } from "../../../utils/vectors/vectors";
 import { createSprite, type CreateSpriteOptions } from "../createSprite";
 import { blockAppearance } from "./blockAppearance";
 import { buttonAppearance } from "./buttonAppearance";
@@ -19,38 +19,37 @@ import { doorFrameAppearance, doorLegsAppearance } from "./door/doorAppearance";
 import { floatingTextAppearance } from "./floatingTextAppearance";
 import { floorAppearance } from "./floorAppearance/floorAppearance";
 import {
-  itemAppearanceRenderOnce,
+  itemAppearanceRenderMemoised,
   itemStaticAnimatedAppearance,
   itemStaticAppearance,
 } from "./ItemAppearance";
-import { type ItemAppearanceOutsideView } from "./itemAppearanceOutsideView";
+import {
+  itemAppearanceOutsideView,
+  type ItemAppearanceOutsideView,
+} from "./itemAppearanceOutsideView";
 import { joystickAppearance } from "./joystickAppearance";
 import { lampAppearance } from "./lampAppearance";
 import { lightBeamAppearance } from "./lightBeamAppearance";
-import { makeMirrorAppearance } from "./mirror/mirrorAppearance";
+import { mirrorAppearance } from "./mirror/mirrorAppearance";
 import { monsterAppearance } from "./monsterAppearance";
-import { playableAppearance } from "./playableAppearance";
 import { sceneryPlayerAppearance } from "./sceneryPlayerAppearance";
 import { spikyBallAppearance } from "./spikyBallAppearance";
 import { springAppearance } from "./springAppearance";
 import { switchAppearance } from "./switchAppearance";
 import { teleporterAppearance } from "./teleporterAppearance";
-import { farWallAppearance } from "./wallAppearance";
+import { wallAppearance } from "./wallAppearance";
 
 const itemAppearancesMap: {
   [T in ItemInPlayType]?: ItemAppearanceOutsideView<T>;
 } = {
   // casts allow these appearances to use Container specialisations as their output without
   // clashing with the `itemAppearances` types
-  head: playableAppearance,
-  heels: playableAppearance,
-  headOverHeels: playableAppearance,
-  doorFrame: doorFrameAppearance,
+  doorFrame: itemAppearanceOutsideView(doorFrameAppearance),
   doorLegs: doorLegsAppearance,
   monster: monsterAppearance,
   floatingText: floatingTextAppearance,
 
-  barrier: itemAppearanceRenderOnce(
+  barrier: itemAppearanceRenderMemoised(
     ({
       renderContext: {
         isReflection,
@@ -59,22 +58,27 @@ const itemAppearancesMap: {
         },
         general: { spritesheetVariants, pixiRenderer, cameraAngle },
       },
+      currentRendering,
     }) => {
-      const renderedAxis = rotateAxisXyByCameraAngle(axis, cameraAngle);
+      const cameraQuarterAngle = nearestQuarterAngle(cameraAngle);
+      const renderedAxis = rotateAxisXyByCameraAngle(axis, cameraQuarterAngle);
       return maybeRenderContainerToSprite(
         pixiRenderer,
         createSprite({
           textureId: `barrier.${renderedAxis}${disappearing ? ".disappearing" : ""}`,
           times,
-          cameraAngle,
+          cameraQuarterAngle,
           spritesheet: spritesheetVariants.currentMainSpritesheet(
             false,
             false,
             isReflection,
           ),
         }),
+        asReuseSprite(currentRendering?.output),
       );
     },
+    // the barrier's art follows its apparent (rotated) axis:
+    (_item, cameraQuarterAngle) => cameraQuarterAngle,
   ),
 
   deadlyBlock: deadlyBlockAppearance,
@@ -82,7 +86,7 @@ const itemAppearancesMap: {
 
   slidingDeadly: spikyBallAppearance,
 
-  slidingBlock: itemAppearanceRenderOnce(
+  slidingBlock: itemAppearanceRenderMemoised(
     ({
       renderContext: {
         isReflection,
@@ -112,7 +116,7 @@ const itemAppearancesMap: {
 
   conveyor: conveyorAppearance,
 
-  lift: itemAppearanceRenderOnce(
+  lift: itemAppearanceRenderMemoised(
     ({
       renderContext: {
         isReflection,
@@ -151,14 +155,14 @@ const itemAppearancesMap: {
   portableTeleporter: teleporterAppearance,
 
   lamp: lampAppearance,
-  // the mirror renders other items' reflections, so gets the lookup
-  // injected (a direct import would be a circular dependency):
-  mirror: makeMirrorAppearance((item, cameraAngle) =>
-    appearanceForItem(item, cameraAngle),
-  ),
+  // the mirror renders other items' reflections via the context's
+  // createItemLeafPixiRenderer capability, so it needs no injected lookup:
+  mirror: mirrorAppearance,
   lightBeam: lightBeamAppearance,
 
-  sceneryCrown: itemAppearanceRenderOnce(
+  wall: wallAppearance,
+
+  sceneryCrown: itemAppearanceRenderMemoised(
     ({
       renderContext: {
         isReflection,
@@ -179,7 +183,7 @@ const itemAppearancesMap: {
     },
   ),
 
-  pickup: itemAppearanceRenderOnce(
+  pickup: itemAppearanceRenderMemoised(
     ({
       renderContext: {
         isReflection,
@@ -246,7 +250,7 @@ const itemAppearancesMap: {
   movingPlatform: itemStaticAppearance("sandwich"),
   pushableBlock: itemStaticAppearance("stepStool"),
 
-  portableBlock: itemAppearanceRenderOnce(
+  portableBlock: itemAppearanceRenderMemoised(
     ({
       renderContext: {
         isReflection,
@@ -272,7 +276,7 @@ const itemAppearancesMap: {
 
   hushPuppy: itemStaticAppearance("hushPuppy"),
 
-  bubbles: itemAppearanceRenderOnce(
+  bubbles: itemAppearanceRenderMemoised(
     ({
       renderContext: {
         isReflection,
@@ -303,7 +307,7 @@ const itemAppearancesMap: {
 
   floor: floorAppearance,
 
-  particle: itemAppearanceRenderOnce(
+  particle: itemAppearanceRenderMemoised(
     ({
       renderContext: {
         isReflection,
@@ -331,25 +335,9 @@ const itemAppearancesMap: {
 
 /**
  * for any given item, return the appearance for that item, or undefined if we
- * have none
+ * have none.
  */
 export const appearanceForItem = <T extends ItemInPlayType>(
   item: ItemTypeUnion<T, string, string>,
-  cameraAngle: Xy,
-): ItemAppearanceOutsideView<T> | undefined => {
-  if (item.type === "wall") {
-    // walls only render on the far sides of the room (so we can see in); which
-    // sides count as far depends on the camera angle, so rotate the wall's
-    // direction by it first:
-    const renderedDirection = rotateDirectionXy4ByCameraAngle(
-      item.config.direction,
-      cameraAngle,
-    );
-    if (renderedDirection === "right" || renderedDirection === "towards") {
-      return undefined;
-    }
-    return farWallAppearance as ItemAppearanceOutsideView<T>;
-  }
-
-  return itemAppearancesMap[item.type as T];
-};
+): ItemAppearanceOutsideView<T> | undefined =>
+  itemAppearancesMap[item.type as T];

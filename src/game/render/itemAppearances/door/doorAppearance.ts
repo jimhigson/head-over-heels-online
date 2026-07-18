@@ -11,7 +11,11 @@ import { store } from "../../../../store/store";
 import { resolveSwops } from "../../../../utils/palette/palette";
 import { iterateToContainer } from "../../../../utils/pixi/iterateToContainer";
 import { renderContainerToSprite } from "../../../../utils/pixi/renderContainerToSprite";
-import { axisProjectsReversed } from "../../../../utils/vectors/rotateXy";
+import { type UniqueTextureSprite } from "../../../../utils/pixi/UniqueTextureSprite";
+import {
+  axisProjectsReversed,
+  nearestQuarterAngle,
+} from "../../../../utils/vectors/rotateXy";
 import {
   addXy,
   cameraAngleIsOddQuarterTurn,
@@ -35,7 +39,8 @@ import {
 import { isDoorPartInHiddenWall } from "../../renderBox/makeItemRenderBoxAtCameraAngle";
 import {
   type ItemAppearance,
-  itemAppearanceRenderOnce,
+  itemAppearanceRenderMemoised,
+  type RenderOnceProps,
 } from "../ItemAppearance";
 import { doorTexture } from "./doorTexture";
 
@@ -47,13 +52,13 @@ function* doorLegsGenerator<RoomId extends string, RoomItemId extends string>(
   spritesheet: AppSpritesheet,
   sceneryName: SceneryName,
   isDark: boolean,
-  cameraAngle: Xy,
+  cameraQuarterAngle: Xy,
 ): Generator<Container> {
-  const inHiddenWall = isDoorPartInHiddenWall(config, cameraAngle);
+  const inHiddenWall = isDoorPartInHiddenWall(config, cameraQuarterAngle);
   // positions repeat along the door's physical axis (projection rotates them); the
   // sprite uses the apparent axis after the camera rotation:
   const axis = doorAlongAxis(direction);
-  const renderedAxis = rotateAxisXyByCameraAngle(axis, cameraAngle);
+  const renderedAxis = rotateAxisXyByCameraAngle(axis, cameraQuarterAngle);
 
   if (inHiddenWall) {
     if (height !== 0) {
@@ -68,7 +73,7 @@ function* doorLegsGenerator<RoomId extends string, RoomItemId extends string>(
           isDark,
         ),
         times: { [axis]: 2 },
-        cameraAngle,
+        cameraQuarterAngle,
         y: -blockSizePx.z * height,
         spritesheet,
       });
@@ -109,7 +114,10 @@ function* doorLegsGenerator<RoomId extends string, RoomItemId extends string>(
         spritesheet.data,
         isDark,
       ),
-      ...projectBlockXyzToScreenXy({ ...originXy, z: height }, cameraAngle),
+      ...projectBlockXyzToScreenXy(
+        { ...originXy, z: height },
+        cameraQuarterAngle,
+      ),
       spritesheet,
     });
   }
@@ -126,7 +134,7 @@ function* doorLegsGenerator<RoomId extends string, RoomItemId extends string>(
 const xyToTranslateToInsideOfRoom = (
   direction: DirectionXy4,
   aabb: Xyz,
-  cameraAngle: Xy,
+  cameraQuarterAngle: Xy,
 ): Xy => {
   const axis = doorAlongAxis(direction);
   const crossAxis = perpendicularAxisXy(axis);
@@ -138,7 +146,7 @@ const xyToTranslateToInsideOfRoom = (
   // projects reversed on screen the art hangs on the wrong side of the
   // anchor (out of the tunnel, or sunk into it), so shift it back over
   // the tunnel's room end:
-  const crossReversed = axisProjectsReversed(crossAxis, cameraAngle);
+  const crossReversed = axisProjectsReversed(crossAxis, cameraQuarterAngle);
 
   const roomEndCross =
     direction === "towards" || direction === "right" ?
@@ -148,20 +156,29 @@ const xyToTranslateToInsideOfRoom = (
 
   return projectWorldXyzToScreenXy(
     { [crossAxis]: roomEndCross + reversalShift },
-    cameraAngle,
+    cameraQuarterAngle,
   );
 };
 
-export const doorLegsAppearance: ItemAppearance<"doorLegs"> =
-  itemAppearanceRenderOnce(
+export const doorLegsAppearance: ItemAppearance<"doorLegs", RenderOnceProps> =
+  itemAppearanceRenderMemoised(
     ({
       renderContext: {
         isReflection,
         item,
         general: { pixiRenderer, spritesheetVariants, cameraAngle },
         room,
+        filterCache: maybeFilterCache,
       },
     }) => {
+      if (import.meta.env.DEV && maybeFilterCache === undefined) {
+        throw new Error(
+          "doorLegsAppearance requires a filterCache but was rendered without one",
+        );
+      }
+      const filterCache = maybeFilterCache!;
+
+      const cameraQuarterAngle = nearestQuarterAngle(cameraAngle);
       const { planet, color } = room;
       const spritesheet = spritesheetVariants.currentMainSpritesheet(
         false,
@@ -174,23 +191,30 @@ export const doorLegsAppearance: ItemAppearance<"doorLegs"> =
           spritesheet,
           planet,
           color.shade === "dimmed",
-          cameraAngle,
+          cameraQuarterAngle,
         ),
       );
 
       const { direction } = item.config;
-      const inHiddenWall = isDoorPartInHiddenWall(item.config, cameraAngle);
+      const inHiddenWall = isDoorPartInHiddenWall(
+        item.config,
+        cameraQuarterAngle,
+      );
 
       // the floating threshold's textures carry the floor edges' colours,
       // which swap sides on odd quarter camera turns exactly as the floor's
       // own edge lips do:
       const crossSwopFilter =
-        inHiddenWall && cameraAngleIsOddQuarterTurn(cameraAngle) ?
-          new PaletteSwapFilter(
-            { swops: floorEdgeCrossSwops(color), lutType: "sparse" },
-            // baked off-screen, so don't clip to the viewport:
-            Texture.WHITE,
-            false,
+        inHiddenWall && cameraAngleIsOddQuarterTurn(cameraQuarterAngle) ?
+          filterCache.getOrInsertComputed(
+            `floorEdgeCross(${color.hue},${color.shade})`,
+            () =>
+              new PaletteSwapFilter(
+                { swops: floorEdgeCrossSwops(color), lutType: "sparse" },
+                Texture.WHITE,
+                // baked off-screen, so don't clip to the viewport:
+                false,
+              ),
           )
         : undefined;
       if (crossSwopFilter !== undefined) {
@@ -200,7 +224,6 @@ export const doorLegsAppearance: ItemAppearance<"doorLegs"> =
       // door legs can take quite a few sprites (ie, 11 each for the 5-high
       // doors in #blacktooth39 - reduce down to a single sprite:
       const sprite = renderContainerToSprite(pixiRenderer, doorLegsContainer);
-      crossSwopFilter?.destroy({ destroyLutTexture: true, destroyMask: true });
 
       const axis = doorAlongAxis(direction);
       // the legs' art extends over its blocks in the direction the wall runs at
@@ -208,12 +231,12 @@ export const doorLegsAppearance: ItemAppearance<"doorLegs"> =
       // art would hang over the blocks on the wrong side of its anchor, so shift
       // it back over the legs' footprint. The floating threshold is anchored
       // per-block (shift one), the legs/base sprites span both blocks (shift two):
-      const alongReversed = axisProjectsReversed(axis, cameraAngle);
+      const alongReversed = axisProjectsReversed(axis, cameraQuarterAngle);
       const alongShiftXy =
         alongReversed ?
           projectBlockXyzToScreenXy(
             { [axis]: inHiddenWall ? 1 : 2 },
-            cameraAngle,
+            cameraQuarterAngle,
           )
         : originXy;
 
@@ -221,7 +244,7 @@ export const doorLegsAppearance: ItemAppearance<"doorLegs"> =
         xyToTranslateToInsideOfRoom(
           item.config.direction,
           item.aabb,
-          cameraAngle,
+          cameraQuarterAngle,
         ),
         alongShiftXy,
       );
@@ -230,146 +253,182 @@ export const doorLegsAppearance: ItemAppearance<"doorLegs"> =
 
       return sprite;
     },
+    // the legs resolve their form (full legs vs floating threshold) and
+    // position per camera angle:
+    (_item, cameraQuarterAngle) => cameraQuarterAngle,
   );
 
-export const doorFrameAppearance: ItemAppearance<"doorFrame"> =
-  itemAppearanceRenderOnce(
-    ({
-      renderContext: {
-        isReflection,
-        item,
-        item: {
-          config: { direction, part, toRoom },
-          aabb,
-        },
-        room,
-        general: {
-          pixiRenderer,
-          spritesheetVariants,
-          spritesheetMeta,
-          cameraAngle,
-        },
-        renderBoxes,
-      },
-    }) => {
-      const campaign =
-        import.meta.env.VITE_APP === "editor" ?
-          (store.getState().levelEditor?.campaignInProgress as
-            | Campaign<string>
-            | undefined)
-        : selectMaybeCurrentCampaign(store.getState());
-      const axis = doorAlongAxis(direction);
-      const renderedAxis = rotateAxisXyByCameraAngle(axis, cameraAngle);
-
-      // the far post sits at +alongWall from the near post, so it is drawn behind
-      // the near post only while +alongWall still points away from the camera.
-      // once the camera has rotated enough that +alongWall points towards the
-      // viewer (its projected depth goes negative), the far post is actually
-      // nearer the camera, so the near/far post graphics must swap:
-      const farPostNowNearer =
-        (axis === "x" ?
-          cameraAngle.x + cameraAngle.y
-        : cameraAngle.x - cameraAngle.y) < 0;
-      const renderedPart =
-        !farPostNowNearer ? part
-        : part === "near" ? "far"
-        : part === "far" ? "near"
-        : part;
-
-      const useColoursFromRoom =
-        campaign?.rooms[toRoom] ??
-        // toRoom might not exist if working in the editor and didn't make it yet
-        // so just colour using the current room's colours:
-        room;
-
-      const filter = new PaletteSwapFilter(
-        {
-          swops: resolveSwops(
-            paletteBlockstack,
-            replacementColours(
-              useColoursFromRoom.color.hue,
-              spritesheetMeta.paletteDim !== undefined &&
-                room.color.shade === "dimmed",
-              room.planet === "moonbase" ?
-                // moonbase doors are illuminated:
-                "light-mid"
-              : "light-dark",
-            ),
-          ),
-          lutType: "sparse",
-        },
-        // the door frame is baked off-screen via renderContainerToSprite, so the
-        // filter must not be clipped to the screen viewport:
-        Texture.WHITE,
-        false,
-      );
-
-      const { x, y } = xyToTranslateToInsideOfRoom(
-        direction,
+export const doorFrameAppearance: ItemAppearance<
+  "doorFrame",
+  RenderOnceProps,
+  UniqueTextureSprite
+> = itemAppearanceRenderMemoised(
+  ({
+    renderContext: {
+      isReflection,
+      item,
+      item: {
+        config: { direction, part, toRoom },
         aabb,
+      },
+      room,
+      general: {
+        pixiRenderer,
+        spritesheetVariants,
+        spritesheetMeta,
         cameraAngle,
-      );
-
-      const doorFrameSprite = createSprite({
-        textureId: doorTexture(
-          room,
-          renderedAxis,
-          renderedPart,
-          spritesheetVariants.originalSpritesheet,
-        ),
-        // needs a special filter since this may not be going to the same room:
-        x,
-        y,
-        spritesheet: spritesheetVariants.currentMainSpritesheet(
-          false,
-          false,
-          isReflection,
-        ),
-      });
-      doorFrameSprite.filters = filter;
-
-      // render to a static sprite to avoid every-frame application of the filter
-      // which would break sprite batching
-      const spriteInContainer = new Container({ children: [doorFrameSprite] });
-      const rendered = renderContainerToSprite(pixiRenderer, spriteInContainer);
-
-      spriteInContainer.destroy({ children: true });
-      filter.destroy({ destroyLutTexture: true, destroyMask: true });
-
-      if (part === "top") {
-        // since the near post is 9px (odd)
-        // we fudge the door top to render on a even world-pixel on its along axis,
-        // so that the y is predictable (not on a half and subject to rounding errors)
-        rendered.x = renderedAxis === "x" ? -1 : 1;
-      }
-
-      // each part's art extends over its box in the direction the wall runs at
-      // the base angle; when the along-wall axis projects reversed on screen the
-      // art would hang over the wrong side of its anchor, so shift it back over
-      // the part's render box:
-      const alongReversed = axisProjectsReversed(axis, cameraAngle);
-      if (alongReversed) {
-        // the door frame's render box is a per-angle derivation owned by the
-        // room renderer - a wrong/missing box here leaves the shift at 0,
-        // hanging the art over the wrong side at every reversed angle:
-        const renderBox = renderBoxes?.get(item);
-        // shift by the box's along-axis EXTENT plus its along-axis OFFSET: the
-        // offset (eg the apparently-near far post's -1, whose 9th art pixel
-        // extends back past its min corner) used to be encoded in the part's
-        // angle-dependent physical position, but the post freeze fixed the
-        // position, so the art must apply it here to line up:
-        const alongShift = projectWorldXyzToScreenXy(
-          {
-            [axis]:
-              (renderBox?.renderAabb?.[axis] ?? 0) +
-              (renderBox?.renderAabbOffset?.[axis] ?? 0),
-          },
-          cameraAngle,
-        );
-        rendered.x += alongShift.x;
-        rendered.y += alongShift.y;
-      }
-
-      return rendered;
+      },
+      renderBoxes,
+      filterCache: maybeFilterCache,
     },
-  );
+    currentRendering,
+  }) => {
+    if (import.meta.env.DEV && maybeFilterCache === undefined) {
+      throw new Error(
+        "doorFrameAppearance requires a filterCache but was rendered without one",
+      );
+    }
+    const filterCache = maybeFilterCache!;
+
+    const cameraQuarterAngle = nearestQuarterAngle(cameraAngle);
+    const campaign =
+      import.meta.env.VITE_APP === "editor" ?
+        (store.getState().levelEditor?.campaignInProgress as
+          | Campaign<string>
+          | undefined)
+      : selectMaybeCurrentCampaign(store.getState());
+    const axis = doorAlongAxis(direction);
+    const renderedAxis = rotateAxisXyByCameraAngle(axis, cameraQuarterAngle);
+
+    // the far post sits at +alongWall from the near post, so it is drawn behind
+    // the near post only while +alongWall still points away from the camera.
+    // once the camera has rotated enough that +alongWall points towards the
+    // viewer (its projected depth goes negative), the far post is actually
+    // nearer the camera, so the near/far post graphics must swap:
+    const farPostNowNearer =
+      (axis === "x" ?
+        cameraQuarterAngle.x + cameraQuarterAngle.y
+      : cameraQuarterAngle.x - cameraQuarterAngle.y) < 0;
+    const renderedPart =
+      !farPostNowNearer ? part
+      : part === "near" ? "far"
+      : part === "far" ? "near"
+      : part;
+
+    const useColoursFromRoom =
+      campaign?.rooms[toRoom] ??
+      // toRoom might not exist if working in the editor and didn't make it yet
+      // so just colour using the current room's colours:
+      room;
+
+    const dimmed =
+      spritesheetMeta.paletteDim !== undefined && room.color.shade === "dimmed";
+    // moonbase doors are illuminated:
+    const trend = room.planet === "moonbase" ? "light-mid" : "light-dark";
+
+    // all parts of every door to a same-coloured room share one filter; the
+    // room renderer's cache owns and destroys it:
+    const filter = filterCache.getOrInsertComputed(
+      `paletteSwop(${useColoursFromRoom.color.hue},${dimmed},${trend})`,
+      () =>
+        new PaletteSwapFilter(
+          {
+            swops: resolveSwops(
+              paletteBlockstack,
+              replacementColours(useColoursFromRoom.color.hue, dimmed, trend),
+            ),
+            lutType: "sparse",
+          },
+          // the door frame is baked off-screen via renderContainerToSprite, so the
+          // filter must not be clipped to the screen viewport:
+          Texture.WHITE,
+          false,
+        ),
+    );
+
+    const { x, y } = xyToTranslateToInsideOfRoom(
+      direction,
+      aabb,
+      cameraQuarterAngle,
+    );
+
+    const doorFrameSprite = createSprite({
+      textureId: doorTexture(
+        room,
+        renderedAxis,
+        renderedPart,
+        spritesheetVariants.originalSpritesheet,
+      ),
+      // needs a special filter since this may not be going to the same room:
+      x,
+      y,
+      spritesheet: spritesheetVariants.currentMainSpritesheet(
+        false,
+        false,
+        isReflection,
+      ),
+    });
+    doorFrameSprite.filters = filter;
+
+    const spriteInContainer = new Container({ children: [doorFrameSprite] });
+
+    // render to a static sprite to avoid every-frame application of the filter
+    // which would break sprite batching. On camera-angle re-renders the
+    // previous sprite (and its render texture) is baked into again rather
+    // than recreated - the minimum size fits every angle's art (posts are
+    // 20×58 or 17×57, tops 15×36), so the reuse path always hits:
+    const rendered = renderContainerToSprite(
+      pixiRenderer,
+      spriteInContainer,
+      currentRendering?.output,
+      undefined,
+      { x: 32, y: 64 },
+    );
+
+    spriteInContainer.destroy({ children: true });
+
+    // a reused sprite still carries the previous angle's position - start
+    // from the origin like a fresh sprite before applying this angle's
+    // shifts:
+    rendered.x = 0;
+    rendered.y = 0;
+
+    if (part === "top") {
+      // since the near post is 9px (odd)
+      // we fudge the door top to render on a even world-pixel on its along axis,
+      // so that the y is predictable (not on a half and subject to rounding errors)
+      rendered.x = renderedAxis === "x" ? -1 : 1;
+    }
+
+    // each part's art extends over its box in the direction the wall runs at
+    // the base angle; when the along-wall axis projects reversed on screen the
+    // art would hang over the wrong side of its anchor, so shift it back over
+    // the part's render box:
+    const alongReversed = axisProjectsReversed(axis, cameraQuarterAngle);
+    if (alongReversed) {
+      // the door frame's render box is a per-angle derivation owned by the
+      // room renderer - a wrong/missing box here leaves the shift at 0,
+      // hanging the art over the wrong side at every reversed angle:
+      const renderBox = renderBoxes?.get(item);
+      // shift by the box's along-axis EXTENT plus its along-axis OFFSET: the
+      // offset (eg the apparently-near far post's -1, whose 9th art pixel
+      // extends back past its min corner) used to be encoded in the part's
+      // angle-dependent physical position, but the post freeze fixed the
+      // position, so the art must apply it here to line up:
+      const alongShift = projectWorldXyzToScreenXy(
+        {
+          [axis]:
+            (renderBox?.renderAabb?.[axis] ?? 0) +
+            (renderBox?.renderAabbOffset?.[axis] ?? 0),
+        },
+        cameraQuarterAngle,
+      );
+      rendered.x += alongShift.x;
+      rendered.y += alongShift.y;
+    }
+
+    return rendered;
+  },
+  // the frame resolves its apparent post widths/shifts per camera angle:
+  (_item, cameraQuarterAngle) => cameraQuarterAngle,
+);

@@ -204,13 +204,9 @@ export const buttonStayPressedAfterReleasePeriod = 150;
  */
 export const maxPushRecursionDepth = 8;
 
-// the height of a wall tile without the width - ie, the height from wall bottom on a x-coord of the sprite
-// to the wall-top on the same x-coord column
-const wallHeightPx = wallTileSize.h - wallTileSize.w / 2;
-
-// in practice, walls render details above their height, so give the render height a few
-// extra pixels:
-export const wallRenderHeight = wallHeightPx + 2;
+// nominal wall-face parallelogram height (per screen column): the tile height
+// minus the isometric shear (w/2).
+export const wallFaceHeightPx = wallTileSize.h - wallTileSize.w / 2;
 
 // the practical limit of how high an item can go in a room. Considered to be unreachable
 export const veryHighZ = 9_999;

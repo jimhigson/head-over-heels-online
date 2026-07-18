@@ -96,7 +96,7 @@ type ItemInPlayConfigMap<RoomId extends string, RoomItemId extends string> = {
   };
   lightBeam: {
     /** the direction this (straight segment of a) beam travels in */
-    direction: DirectionXy4;
+    direction: Xyz;
     /** the id of the lamp item this beam was emitted from */
     sourceItemId: RoomItemId;
   };
@@ -104,6 +104,10 @@ type ItemInPlayConfigMap<RoomId extends string, RoomItemId extends string> = {
     forCharacter: "crown" | IndividualCharacterName;
   };
   stopAutowalk: EmptyObject;
+  // change lamp config's direction from a string to a vector while in-play
+  lamp: Omit<JsonItemConfig<"lamp", RoomId, RoomItemId>, "direction"> & {
+    direction: Xyz;
+  };
   // disappearing can be turned off (#blacktooth6 aka room with first doughnuts) so it is state, not config
   block: Omit<JsonItemConfig<"block", RoomId, RoomItemId>, "disappearing">;
   floor: JsonItemConfig<"floor", RoomId, RoomItemId> & {

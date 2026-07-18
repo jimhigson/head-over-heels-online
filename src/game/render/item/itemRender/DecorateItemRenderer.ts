@@ -1,6 +1,6 @@
 import { type ItemInPlayType } from "../../../../model/ItemInPlay";
 import { type ItemRenderContext } from "../../ItemRenderContexts";
-import { type ItemPixiRenderer } from "./ItemPixiRenderer";
+import { type ItemChainPixiRenderer } from "./ItemPixiRenderer";
 
 /**
  * Creates a decorator/wrapper around a child item renderer, adding some additional
@@ -9,8 +9,8 @@ import { type ItemPixiRenderer } from "./ItemPixiRenderer";
  */
 export type DecorateItemRenderer = <T extends ItemInPlayType>(
   itemRenderContext: ItemRenderContext<T>,
-  childRenderer: ItemPixiRenderer<T>,
-) => ItemPixiRenderer<T>;
+  childRenderer: ItemChainPixiRenderer<T>,
+) => ItemChainPixiRenderer<T>;
 
 /**
  * Like {@link DecorateItemRenderer} but for injected decorators that may be
@@ -18,5 +18,5 @@ export type DecorateItemRenderer = <T extends ItemInPlayType>(
  */
 export type DecorateItemMaybeRenderer = <T extends ItemInPlayType>(
   itemRenderContext: ItemRenderContext<T>,
-  childRenderer?: ItemPixiRenderer<T>,
-) => ItemPixiRenderer<T> | undefined;
+  childRenderer?: ItemChainPixiRenderer<T>,
+) => ItemChainPixiRenderer<T> | undefined;

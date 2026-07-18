@@ -1,12 +1,24 @@
 import { iterateStoodOnByItems } from "../../../model/stoodOnItemsLookup";
+import {
+  asReuseSprite,
+  maybeRenderContainerToSprite,
+} from "../../../utils/pixi/renderContainerToSprite";
+import { nearestQuarterAngle } from "../../../utils/vectors/rotateXy";
+import { type Xy } from "../../../utils/vectors/vectors";
 import { isPlayableItem } from "../../physics/itemPredicates";
 import { teleporterIsActive } from "../../physics/mechanics/teleporting";
 import { createSprite } from "../createSprite";
-import { type ItemAppearance } from "./ItemAppearance";
+import {
+  cameraQuarterAngleEqual,
+  type ItemAppearance,
+  multipliedLayoutAngle,
+} from "./ItemAppearance";
 
 type TeleporterRenderProps = {
   flashing: boolean;
   activated: boolean;
+  /** the multiplied tiling resolves per camera angle; null when single */
+  multipliedAtAngle: null | Xy;
 };
 
 export const teleporterAppearance: ItemAppearance<
@@ -17,10 +29,11 @@ export const teleporterAppearance: ItemAppearance<
     isReflection,
     item,
     room,
-    general: { paused, spritesheetVariants, cameraAngle },
+    general: { paused, pixiRenderer, spritesheetVariants, cameraAngle },
   },
   currentRendering,
 }) => {
+  const cameraQuarterAngle = nearestQuarterAngle(cameraAngle);
   const {
     type,
     state: { stoodOnBy },
@@ -34,10 +47,15 @@ export const teleporterAppearance: ItemAppearance<
   const flashing =
     activated && iterateStoodOnByItems(stoodOnBy, room).some(isPlayableItem);
 
+  const multipliedAtAngle = multipliedLayoutAngle(item, cameraQuarterAngle);
   const render =
     currentlyRenderedProps === undefined ||
     activated !== currentlyRenderedProps.activated ||
-    flashing !== currentlyRenderedProps.flashing;
+    flashing !== currentlyRenderedProps.flashing ||
+    !cameraQuarterAngleEqual(
+      multipliedAtAngle,
+      currentlyRenderedProps.multipliedAtAngle,
+    );
 
   if (!render) {
     return "no-update";
@@ -52,19 +70,28 @@ export const teleporterAppearance: ItemAppearance<
   return {
     output:
       flashing ?
+        // animated, so can't be baked to a single static sprite:
         createSprite({
           animationId: `${type}.flashing`,
           times,
-          cameraAngle,
+          cameraQuarterAngle,
           paused,
           spritesheet,
         })
-      : createSprite({
-          textureId: activated ? type : "block.artificial",
-          times,
-          cameraAngle,
-          spritesheet,
-        }),
-    renderProps: { flashing, activated },
+        // reduce the multiple sprites down to one baked sprite; camera-angle
+        // re-renders bake into the previous render texture (the multiplied
+        // bake is the same size at every quarter turn). asReuseSprite rejects
+        // the previous rendering when it was the flashing (unbaked) container:
+      : maybeRenderContainerToSprite(
+          pixiRenderer,
+          createSprite({
+            textureId: activated ? type : "block.artificial",
+            times,
+            cameraQuarterAngle,
+            spritesheet,
+          }),
+          asReuseSprite(currentRendering?.output),
+        ),
+    renderProps: { flashing, activated, multipliedAtAngle },
   };
 };

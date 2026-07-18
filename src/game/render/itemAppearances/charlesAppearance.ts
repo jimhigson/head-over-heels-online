@@ -1,16 +1,12 @@
-import { maybeReflectedVector } from "../../../model/MirrorOrientation";
 import { keysIter } from "../../../utils/entries";
-import { rotateXy } from "../../../utils/vectors/rotateXy";
-import {
-  type DirectionXy4,
-  vectorClosestDirectionXy4,
-} from "../../../utils/vectors/vectors";
+import { resolveCameraRelativeVectorXy4 } from "../../../utils/vectors/resolveCameraRelativeVector";
+import { type DirectionXy4 } from "../../../utils/vectors/vectors";
 import { isJoystick } from "../../physics/itemPredicates";
 import { createStackedSprites } from "./createStackedSprites";
 import { type ItemAppearance } from "./ItemAppearance";
 
 type CharlesRenderProps = {
-  facingXy4: DirectionXy4;
+  resolvedFacingXy4: DirectionXy4;
   controlledByJoystick: boolean;
   activated: boolean;
 };
@@ -34,15 +30,12 @@ export const charlesAppearance: ItemAppearance<
   currentRendering,
 }) => {
   const currentlyRenderedProps = currentRendering?.renderProps;
-  // rotate the facing by the camera angle so the directional sprite matches how
-  // charles appears once the camera has turned:
-  const facingXy4 =
-    vectorClosestDirectionXy4(
-      rotateXy(
-        maybeReflectedVector(facing, isReflection, cameraAngle),
-        cameraAngle,
-      ),
-    ) ?? "towards";
+
+  const resolvedFacingXy4 = resolveCameraRelativeVectorXy4(
+    facing,
+    cameraAngle,
+    isReflection,
+  );
 
   const controlledByJoystick =
     roomTime === roomTimeActedOn &&
@@ -50,7 +43,7 @@ export const charlesAppearance: ItemAppearance<
 
   const render =
     currentlyRenderedProps === undefined ||
-    facingXy4 !== currentlyRenderedProps.facingXy4 ||
+    resolvedFacingXy4 !== currentlyRenderedProps.resolvedFacingXy4 ||
     controlledByJoystick !== currentlyRenderedProps.controlledByJoystick ||
     activated !== currentlyRenderedProps.activated;
 
@@ -66,12 +59,12 @@ export const charlesAppearance: ItemAppearance<
 
   return {
     output: createStackedSprites({
-      top: { textureId: `charles.${facingXy4}`, spritesheet },
+      top: { textureId: `charles.${resolvedFacingXy4}`, spritesheet },
       bottom: {
         textureId: controlledByJoystick ? "headlessBase.all" : "headlessBase",
         spritesheet,
       },
     }),
-    renderProps: { facingXy4, controlledByJoystick, activated },
+    renderProps: { resolvedFacingXy4, controlledByJoystick, activated },
   };
 };

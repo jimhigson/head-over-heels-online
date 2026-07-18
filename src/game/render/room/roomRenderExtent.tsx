@@ -11,13 +11,22 @@ import {
   type Xy,
   type Xyz,
 } from "../../../utils/vectors/vectors";
-import { blockSizePx } from "../../physics/mechanicsConstants";
+import {
+  blockSizePx,
+  wallFaceHeightPx,
+} from "../../physics/mechanicsConstants";
 import { projectWorldXyzToScreenXy } from "../projections";
 import { makeItemRenderBoxAtCameraAngle } from "../renderBox/makeItemRenderBoxAtCameraAngle";
 import {
   effectiveFixedZIndex,
   nonRenderingItemFixedZIndex,
 } from "../sortZ/fixedZIndexes";
+
+/**
+ * Just a fudge to keep scrolling in the same place after wall render boxes got a bit taller.
+ * Probably remove it later.
+ */
+const wallLayoutHeight = wallFaceHeightPx + 2;
 
 export type ItemsProjectedExtents = {
   floors: {
@@ -158,10 +167,15 @@ export const roomRenderExtent = <
         itemRenderBox?.renderAabbOffset ?? originXyz,
       );
       const itemAabb = itemRenderBox?.renderAabb ?? item.aabb ?? originXyz;
+      // walls' render boxes extend above their nominal face to cover art
+      // overdraw (the tallest tile tops); for layout estimation treat walls
+      // as their layout height, so the overdraw doesn't read as empty space
+      // pushing the room down the screen:
+      const itemTopZ = item.type === "wall" ? wallLayoutHeight : itemAabb.z;
       for (const dx of [0, itemAabb.x]) {
         for (const dy of [0, itemAabb.y]) {
           const { y } = projectWorldXyzToScreenXy(
-            addXyz(itemPosition, { x: dx, y: dy, z: itemAabb.z }),
+            addXyz(itemPosition, { x: dx, y: dy, z: itemTopZ }),
             cameraAngle,
           );
           allItemsTopEdgeY = Math.min(allItemsTopEdgeY, y);

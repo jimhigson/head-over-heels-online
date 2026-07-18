@@ -76,17 +76,27 @@ export type RoomJsonSchema = {
           y: number;
           z: number;
         };
-        config: {
-          times?: {
-            x?: number;
-            y?: number;
-            z?: number;
-          };
-          style: "artificial" | "book" | "organic" | "tower";
-          disappearing?: {
-            on: "stand";
-          };
-        };
+        config:
+          | {
+              style: "tower";
+              times?: {
+                z?: number;
+              };
+              disappearing?: {
+                on: "stand";
+              };
+            }
+          | {
+              times?: {
+                x?: number;
+                y?: number;
+                z?: number;
+              };
+              style: "artificial" | "book" | "organic";
+              disappearing?: {
+                on: "stand";
+              };
+            };
       }
     | {
         type: "bubbles";
@@ -1253,22 +1263,35 @@ export type RoomJsonSchema = {
           y: number;
           z: number;
         };
-        config: {
-          times?: {
-            x?: number;
-            y?: number;
-            z?: number;
-          };
-          direction: "away" | "left" | "right" | "towards";
-          /**
-           * speed multiplier — undefined is treated as 1 (original game speed)
-           */
-          speed?: number;
-          disabled?: false | true;
-          disappearing?: {
-            on: "stand";
-          };
-        };
+        config:
+          | {
+              /**
+               * speed multiplier — undefined is treated as 1 (original game speed)
+               */
+              speed?: number;
+              disabled?: false | true;
+              disappearing?: {
+                on: "stand";
+              };
+              direction: "away" | "towards";
+              times?: {
+                y?: number;
+              };
+            }
+          | {
+              /**
+               * speed multiplier — undefined is treated as 1 (original game speed)
+               */
+              speed?: number;
+              disabled?: false | true;
+              disappearing?: {
+                on: "stand";
+              };
+              direction: "left" | "right";
+              times?: {
+                x?: number;
+              };
+            };
       }
     | {
         type: "deadlyBlock";

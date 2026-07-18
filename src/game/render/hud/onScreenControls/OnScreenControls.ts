@@ -1,12 +1,11 @@
 import { Container } from "pixi.js";
-import { type SetRequired } from "type-fest";
 
 import { type InputDirectionMode } from "../../../../store/slices/userSettings/userSettingsSlice";
 import { valuesIter } from "../../../../utils/entries";
 import { type Xy } from "../../../../utils/vectors/vectors";
 import { selectCurrentPlayableItem } from "../../../gameState/gameStateSelectors/selectPlayableItem";
 import { type Renderer } from "../../Renderer";
-import { type GeneralRenderContext } from "../../room/RoomRenderContexts";
+import { type InGameGeneralRenderContext } from "../../room/RoomRenderContexts";
 import { HudButtonRenderer } from "../HudButtonRenderer";
 import { type HudRendererTickContextWithRoom } from "../hudRendererContexts";
 import { carryAndJumpButtonAppearance } from "./buttonAppearances/carryAndJumpButtonAppearance";
@@ -24,10 +23,7 @@ const mainNextXFromRightEdge = 44;
 const mainNextYFromBottom = 20;
 
 type OnScreenControlsRenderContext<RoomId extends string> = {
-  /**
-   * for HUDs, there really must be a game playing, so set the (usually optional) gameState to required
-   */
-  general: SetRequired<GeneralRenderContext<RoomId>, "gameState">;
+  general: InGameGeneralRenderContext<RoomId>;
   inputDirectionMode: InputDirectionMode;
 };
 
@@ -185,13 +181,13 @@ export class OnScreenControls<RoomId extends string, RoomItemId extends string>
   tick(tickContext: HudRendererTickContextWithRoom<RoomId, RoomItemId>): void {
     const { screenSize } = tickContext;
     const {
-      general: { gameState },
+      general: { gameState, paused },
     } = this.renderContext;
 
     this.#updateElementPositions(screenSize);
 
-    this.#hudElements.mainButtonNest.visible = !tickContext.paused;
-    this.#hudElements.joystick.output.visible = !tickContext.paused;
+    this.#hudElements.mainButtonNest.visible = !paused;
+    this.#hudElements.joystick.output.visible = !paused;
 
     for (const b of valuesIter(this.#hudElements.buttons)) {
       b.tick({
