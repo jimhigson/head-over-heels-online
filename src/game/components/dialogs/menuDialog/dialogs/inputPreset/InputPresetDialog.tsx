@@ -30,3 +30,6 @@ export const InputPresetDialog = () => {
     </DialogPortal>
   );
 };
+
+/** default export for preact/compat lazy() */
+export default InputPresetDialog;

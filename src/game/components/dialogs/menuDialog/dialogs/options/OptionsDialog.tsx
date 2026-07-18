@@ -190,3 +190,6 @@ export const OptionsDialog = () => {
     </DialogPortal>
   );
 };
+
+/** default export for preact/compat lazy() */
+export default OptionsDialog;

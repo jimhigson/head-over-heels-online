@@ -127,3 +127,6 @@ export const QuitGameConfirmDialog = () => {
     </DialogPortal>
   );
 };
+
+/** default export for preact/compat lazy() */
+export default QuitGameConfirmDialog;

@@ -53,3 +53,6 @@ export const CommunityGamesDialog = (_emptyProps: EmptyObject) => {
     </DialogPortal>
   );
 };
+
+/** default export for preact/compat lazy() */
+export default CommunityGamesDialog;

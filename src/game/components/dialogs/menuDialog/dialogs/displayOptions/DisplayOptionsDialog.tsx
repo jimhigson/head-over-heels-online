@@ -109,3 +109,6 @@ export const DisplayOptionsDialog = () => {
     </Dialog>
   );
 };
+
+/** default export for preact/compat lazy() */
+export default DisplayOptionsDialog;

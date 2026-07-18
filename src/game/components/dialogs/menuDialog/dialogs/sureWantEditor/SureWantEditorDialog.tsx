@@ -52,3 +52,6 @@ export const SureWantEditorDialog = () => {
     </DialogPortal>
   );
 };
+
+/** default export for preact/compat lazy() */
+export default SureWantEditorDialog;

@@ -146,3 +146,6 @@ export const ControlOptionsDialog = () => {
     </DialogPortal>
   );
 };
+
+/** default export for preact/compat lazy() */
+export default ControlOptionsDialog;
