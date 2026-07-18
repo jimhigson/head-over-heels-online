@@ -46,10 +46,25 @@ version with the exact blockers and fixes.
    apt source baked into `catthehacker/ubuntu:act-latest` 403s under egress policy,
    failing the whole `apt-get update`.
    - **Fix:** bake Chrome into the runner image (remove the git-lfs apt source
-     first; `dl.google.com` is reachable in-container once the CA is trusted),
-     wrap the binary with `--no-sandbox` (act runs as root), and pass
-     `CHROME_PATH=/usr/bin/google-chrome-stable`. This makes the workflow's
-     runtime Chrome step a no-op.
+     first; `dl.google.com` is reachable in-container once the CA is trusted)
+     and wrap the binary with `--no-sandbox` (act runs as root). This makes the
+     workflow's runtime Chrome step a no-op.
+   - **Do NOT pass `CHROME_PATH` to act.** With Chrome baked, true-site-size
+     auto-detects the browser and the game journeys measure. Forcing
+     `--env CHROME_PATH=/usr/bin/google-chrome-stable` changes the launch path
+     enough that Web Audio decoding breaks in the container - and the game's
+     menu is gated on sound loading (`Dialogs.tsx` only mounts
+     `MainMenuDialog`, which fires the `menu-ready` mark, after the menu
+     sounds decode). Result: every game journey fails with
+     `mark "menu-ready" not seen within 60s` for BOTH head and base, while
+     the editor journey (no audio gate) keeps measuring fine. That signature
+     looks exactly like "environment broke" - it is not; remove `CHROME_PATH`.
+   - **Simplest robust alternative:** skip the baked Google Chrome entirely and
+     use the sandbox's playwright chromium - bind-mount it into the container
+     (`--container-options "-v /opt/pw-browsers:/opt/pw-browsers"`) and give
+     true-site-size a small wrapper that execs
+     `/opt/pw-browsers/chromium --no-sandbox`. A current chromium works at
+     least as well as the pinned .deb and needs no dl.google.com fetch.
 
 5. **Base-ref comparison / `gh` steps need a real token** — the repo is **public**,
    so base-ref (`main`) fetch works anonymously in-container. The `production` /
@@ -88,7 +103,6 @@ act pull_request -W /tmp/tss-local.yml \
   --env TRUE_SITE_SIZE_OUTPUT_FILE=/tmp/tss-out/comment.md \
   --env NODE_EXTRA_CA_CERTS=/etc/ssl/certs/ca-certificates.crt \
   --env NODE_OPTIONS=--use-openssl-ca \
-  --env CHROME_PATH=/usr/bin/google-chrome-stable \
   --container-options "-v /tmp/tss-out:/tmp/tss-out" \
   -e /tmp/tss-event.json          # {"pull_request":{"base":{"ref":"main"}}}
 ```
@@ -116,3 +130,29 @@ RUN deb="$(mktemp --suffix=.deb)" && \
 ```
 (`ca-bundle.crt` is `cp /root/.ccr/ca-bundle.crt` into the build context.)
 ```
+
+## Troubleshooting hard-won lessons
+
+- **Game rows fail (`menu-ready not seen`) but editor row measures** - for
+  BOTH head and base: this is the harness, not the code. First suspect any
+  `CHROME_PATH` env (see above). The game journey is audio-gated; the editor
+  journey is not - that asymmetry is the tell.
+- **A single-side failure** (head fails, base measures) IS a real breakage in
+  the working tree - e.g. a chunk-init cycle from `advancedChunks` grouping
+  vendor/runtime modules crashes boot with `<mangled> is not a function`.
+  Verify quickly with a headless boot check against `vite preview`:
+  playwright chromium at `/opt/pw-browsers/chromium`, load `/?track=0`, then
+  assert `performance.getEntriesByName("menu-ready").length` and
+  `[data-dialog-id="mainMenu"]`.
+- **dockerd dies between runs** (`Cannot connect to the Docker daemon`):
+  just restart it (`sudo dockerd &`, wait ~8s) and rerun; disk is usually NOT
+  the cause (check `df` before assuming).
+- **Keep the act log alive across shell restarts**: launch via
+  `setsid bash -c '/tmp/run-act.sh >/tmp/act.log 2>&1' </dev/null &` - the
+  harness recycles shells (exit 144), and a redirect owned by a killed shell
+  loses the log while act keeps running. The report file
+  (`TRUE_SITE_SIZE_OUTPUT_FILE`, bind-mounted) survives regardless - poll that.
+- **act builds the working tree** - don't edit source, switch branches, or
+  `git reset` mid-run; commits/ref moves can also confuse the in-container
+  base-ref fetch. Wait for the report, then edit.
+
