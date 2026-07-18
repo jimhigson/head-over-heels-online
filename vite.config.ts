@@ -173,12 +173,12 @@ export default defineConfig(({ mode: _mode }) => {
                 includeDependenciesRecursively: false,
                 groups: [
                   {
-                    // all rarely-opened dialogs batch into one lazy chunk:
-                    // they load together on the first rare-dialog open rather
-                    // than as ~17 tiny chunks (which compress badly)
-                    name: "rareDialogs",
+                    // the lazy-loaded dialogs batch into one chunk: they
+                    // load together on the first lazy-dialog open rather than
+                    // as ~18 tiny chunks (which compress badly)
+                    name: "lazyDialogs",
                     test: (id: string) =>
-                      /[\\/]src[\\/]game[\\/]components[\\/]dialogs[\\/]menuDialog[\\/]dialogs[\\/](about|communityGames|controlOptions|death|displayOptions|emulatedResolution|hold|inputPreset|install|offerReincarnation|options|proclaimEmperor|quitGameConfirm|reincarnatedRestart|score|sound|sureWantEditor)[\\/]/.test(
+                      /[\\/]src[\\/]game[\\/]components[\\/]dialogs[\\/]menuDialog[\\/]dialogs[\\/](about|communityGames|controlOptions|death|displayOptions|emulatedResolution|hold|inputPreset|install|offerReincarnation|options|proclaimEmperor|quitGameConfirm|reincarnatedRestart|score|sound|sureWantEditor|errorCaught)[\\/]/.test(
                         id,
                       ) &&
                       // the *.lazy.tsx wrappers are the eager stubs that

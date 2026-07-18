@@ -14,7 +14,7 @@ import { CrownsDialog } from "./dialogs/crowns/CrownsDialog";
 import { LazyDeathDialog } from "./dialogs/death/DeathDialog.lazy";
 import { LazyDisplayOptionsDialog } from "./dialogs/displayOptions/DisplayOptionsDialog.lazy";
 import { LazyEmulatedResolutionDialog } from "./dialogs/emulatedResolution/EmulatedResolutionDialog.lazy";
-import { ErrorCaughtDialog } from "./dialogs/errorCaught/ErrorCaughtDialog";
+import { LazyErrorCaughtDialog } from "./dialogs/errorCaught/ErrorCaughtDialog.lazy";
 import { LazyHoldDialog } from "./dialogs/hold/HoldDialog.lazy";
 import { LazyInputPresetDialog } from "./dialogs/inputPreset/InputPresetDialog.lazy";
 import { LazyInstallDialog } from "./dialogs/install/InstallDialog.lazy";
@@ -101,7 +101,7 @@ export const Dialogs = (_emptyProps: EmptyObject) => {
     case "emulatedResolution":
       return <LazyEmulatedResolutionDialog />;
     case "errorCaught":
-      return <ErrorCaughtDialog errors={topOpenMenu.menuParam} />;
+      return <LazyErrorCaughtDialog errors={topOpenMenu.menuParam} />;
     case "hold":
       return <LazyHoldDialog />;
     case "inputPreset":

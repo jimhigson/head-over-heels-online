@@ -79,3 +79,6 @@ export const ErrorCaughtDialog = ({
     </ErrorDialog>
   );
 };
+
+/** default export for preact/compat lazy() */
+export default ErrorCaughtDialog;
