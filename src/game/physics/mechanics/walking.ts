@@ -278,6 +278,9 @@ const walkingImpl = <RoomId extends string, RoomItemId extends string>(
         gameTime &&
       (stoppedWalkingSpeed ?? 0) > epsilon
     ) {
+      if (import.meta.env.DEV) {
+        console.log("keep speed grace");
+      }
       //resuming walking after a very short stop - this means we can resume at the old speed:
       return {
         movementType: "vel",

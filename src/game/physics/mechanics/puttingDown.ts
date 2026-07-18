@@ -132,11 +132,27 @@ export const checkSpaceAvailableToPutDown = <
 
   for (const collision of collisions) {
     if (!isFreeItem(collision)) {
+      if (import.meta.env.DEV) {
+        console.log(
+          "carrying: cannot put down due to collision: item:",
+          item,
+          "can't move up because it would collide with non-free",
+          collision,
+        );
+      }
       return false;
     }
 
     // if there is a collision, check if it can be moved up too:
     if (!checkSpaceAvailableToPutDown(collision, roomSpatialIndex)) {
+      if (import.meta.env.DEV) {
+        console.log(
+          "carrying: cannot put down due to collision: item:",
+          item,
+          "can't move up because it would collide with free that has nowhere to go:",
+          collision,
+        );
+      }
       return false;
     }
   }

@@ -206,6 +206,10 @@ export const jumping: Mechanic<CharacterName> = <
     jumpButtonDown &&
     isJumpOffable(effectivelyStandingOn);
 
+  if (import.meta.env.DEV && !standingOnItemId && startingAJump) {
+    console.log("coyote jump");
+  }
+
   if (!startingAJump) {
     if (standingOnItemId !== null) {
       return {

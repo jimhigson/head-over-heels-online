@@ -35,4 +35,10 @@ function* paletteColors(): Generator<[Color, Color]> {
  * Pre-baked LUT that quantizes colors to the nearest color in the spritesheet palette.
  * Maps each color in RGB space to the closest color from spritesheetPalette.
  */
+const paletteQuantisationLutStart = performance.now();
 export const paletteQuantisationLut = voronoiLut(new Map([...paletteColors()]));
+if (import.meta.env.DEV) {
+  console.log(
+    `paletteQuantisationLut: ${(performance.now() - paletteQuantisationLutStart).toFixed(2)}ms`,
+  );
+}
