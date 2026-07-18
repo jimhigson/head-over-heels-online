@@ -69,6 +69,9 @@ export default defineConfig(({ mode: _mode }) => {
           registerType: "prompt",
           workbox: {
             globPatterns: ["**/*.{js,css,html,json,png,webp,opus,woff2}"],
+            // the debug spritesheet is cheats-only - don't push it to every
+            // player in the precache; it fetches on demand when selected
+            globIgnores: ["**/spritesDebug*"],
             // visual-regression builds are unminified so assets are larger
             ...(mode === "visual-regression" && {
               maximumFileSizeToCacheInBytes: 5 * 1_024 * 1_024,
