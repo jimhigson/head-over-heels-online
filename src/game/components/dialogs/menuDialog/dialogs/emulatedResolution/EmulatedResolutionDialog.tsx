@@ -71,3 +71,6 @@ export const EmulatedResolutionDialog = () => {
     </DialogPortal>
   );
 };
+
+/** default export for preact/compat lazy() */
+export default EmulatedResolutionDialog;

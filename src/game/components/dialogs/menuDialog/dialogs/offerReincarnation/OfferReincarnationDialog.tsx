@@ -71,3 +71,6 @@ export const OfferReincarnationDialog = () => {
     </DialogPortal>
   );
 };
+
+/** default export for preact/compat lazy() */
+export default OfferReincarnationDialog;

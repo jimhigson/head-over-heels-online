@@ -92,3 +92,6 @@ export const SoundDialog = () => {
     </Dialog>
   );
 };
+
+/** default export for preact/compat lazy() */
+export default SoundDialog;

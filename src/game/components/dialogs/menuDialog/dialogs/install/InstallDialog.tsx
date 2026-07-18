@@ -47,3 +47,6 @@ export const InstallDialog = (_emptyProps: EmptyObject) => {
     </DialogPortal>
   );
 };
+
+/** default export for preact/compat lazy() */
+export default InstallDialog;

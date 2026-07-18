@@ -59,3 +59,6 @@ export const ProclaimEmperorDialog = () => {
     </DialogPortal>
   );
 };
+
+/** default export for preact/compat lazy() */
+export default ProclaimEmperorDialog;

@@ -373,7 +373,7 @@ export const openInGameMainMenu = async (page: Page, logHeader: string) => {
 };
 
 /** Generous timeout to wait through game-over and animation pauses. */
-export const waitForDialog = (
+export const waitForDialog = async (
   page: Page,
   dialogId: string,
   {
@@ -383,4 +383,16 @@ export const waitForDialog = (
     state?: "attached" | "detached" | "hidden" | "visible";
     timeout?: number;
   } = {},
-) => page.locator(`[data-dialog-id="${dialogId}"]`).waitFor({ state, timeout });
+) => {
+  await page
+    .locator(`[data-dialog-id="${dialogId}"]`)
+    .waitFor({ state, timeout });
+  if (state === "visible" || state === "attached") {
+    // lazy dialogs render the spinner fallback while their chunk loads; wait
+    // for it to leave so callers interact with the real dialog content
+    await page
+      .getByRole("status")
+      .waitFor({ state: "detached", timeout })
+      .catch(() => {});
+  }
+};
