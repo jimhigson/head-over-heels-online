@@ -155,6 +155,46 @@ export default defineConfig(({ mode: _mode }) => {
               assetFileNames: "assets/[name][extname]",
             }
           : {
+              // vite 8.1's rolldown fragments code into many more chunks than
+              // vite 8.0, costing per-chunk boilerplate and cross-chunk
+              // compression loss. These groups re-merge fragments within a
+              // single load boundary without changing which journey loads
+              // them. (Vendor/runtime chunks are deliberately NOT grouped:
+              // forcing those into a shared chunk breaks module
+              // initialisation order and the game fails to boot.)
+              advancedChunks: {
+                // groups take only their matched modules; without this,
+                // rolldown recursively absorbs each group's dependencies,
+                // dragging game-only code into menu-eager chunks (and vice
+                // versa)
+                includeDependenciesRecursively: false,
+                groups: [
+                  {
+                    // all rarely-opened dialogs batch into one lazy chunk:
+                    // they load together on the first rare-dialog open rather
+                    // than as ~17 tiny chunks (which compress badly)
+                    name: "rareDialogs",
+                    test: (id: string) =>
+                      /[\\/]src[\\/]game[\\/]components[\\/]dialogs[\\/]menuDialog[\\/]dialogs[\\/](about|communityGames|controlOptions|death|displayOptions|emulatedResolution|hold|inputPreset|install|offerReincarnation|options|proclaimEmperor|quitGameConfirm|reincarnatedRestart|score|sound|sureWantEditor)[\\/]/.test(
+                        id,
+                      ) &&
+                      // the *.lazy.tsx wrappers are the eager stubs that
+                      // import() this chunk - they must stay outside it
+                      !/\.lazy\.tsx?$/.test(id),
+                  },
+                  {
+                    // game-engine code loaded between menu-ready and first
+                    // room render; excludes menu-used files and cheats-only
+                    // debug modules (which stay in the lazy Cheats chunk)
+                    name: "game",
+                    test: (id: string) =>
+                      /[\\/]src[\\/](game|sound|sprites)[\\/]/.test(id) &&
+                      !/[\\/]src[\\/](game[\\/](components|input)[\\/]|game[\\/]gameState[\\/]saving[\\/]|game[\\/](gameMain\.import|handleGameBoot|isInPlaytestMode)\.|game[\\/]physics[\\/](itemPredicates|mechanicsConstants)\.|game[\\/]gameState[\\/]mutators[\\/](deleteItemFromRoom|standingOn[\\/]removeStandingOn)\.|game[\\/]mainLoop[\\/]frameTiming[\\/]enableDetailedFrameTimingLog\.|game[\\/]render[\\/](item[\\/]itemRender[\\/](ItemBoundingBoxRenderer|boundingBoxDecorateItemRenderer|debugPointerDecorateItemRenderer)|room[\\/]subRoomBoundariesDecorateRoomRenderer|sortZ[\\/]zGraphDump[\\/]dumpZGraph|useRegisterDecorateItemRenderers|useRegisterDecorateRoomRenderers)\.|sound[\\/](audioCtx|loadAndDecode|soundsLoader)\.|sound[\\/]soundUtils[\\/]|sprites[\\/](escapeCharForTailwind|planets)\.|sprites[\\/]palette[\\/]spritesheetPalette\.|sprites[\\/]spritesheet[\\/]spritesheetData[\\/])/.test(
+                        id,
+                      ),
+                  },
+                ],
+              },
               minify: {
                 compress: {
                   target: "esnext",
