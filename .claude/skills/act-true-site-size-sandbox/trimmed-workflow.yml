@@ -1,0 +1,67 @@
+name: true site size local
+on:
+  pull_request:
+    branches: [main]
+permissions:
+  contents: read
+  pull-requests: write
+jobs:
+  measure:
+    runs-on: ubuntu-latest
+    name: size
+    env:
+      journey: |
+        [
+          { "startAgain": "game" },
+          { "goto": "/?track=0" },
+          { "row": "to menu", "mark": "menu-ready", "emoji": "📋" },
+          { "click": "[data-menuitem_id=\"playGame\"]" },
+          { "click": "[data-menuitem_id=\"originalGame\"]" },
+          { "click": "[data-dialog-id=\"crowns\"]", "afterMark": "first-gameplay" },
+          { "waitForGone": "[data-dialog-id=\"crowns\"]" },
+          { "row": "to game", "mark": "first-gameplay", "emoji": "🎮" },
+          { "keys": "M" },
+          { "row": "open map", "mark": "open map", "emoji": "🗺️" },
+          { "startAgain": "editor" },
+          { "goto": "/editor/" },
+          { "row": "editor", "marks": ["editor-monaco-ready", "editor-map-ready"], "emoji": "🛠️" }
+        ]
+    steps:
+      - uses: actions/checkout@v6
+      - uses: pnpm/action-setup@v5
+      - uses: actions/setup-node@v6
+        with:
+          node-version-file: ".node-version"
+          cache: pnpm
+      - name: Ensure Chrome is installed (for local act runs)
+        shell: bash
+        run: |
+          if command -v google-chrome-stable >/dev/null 2>&1; then
+            echo "Chrome already present"
+          else
+            deb="$(mktemp --suffix=.deb)"
+            curl -fsSL -o "$deb" https://dl.google.com/linux/direct/google-chrome-stable_current_amd64.deb
+            sudo apt-get update
+            sudo apt-get install -y "$deb"
+            rm -f "$deb"
+            wrapper=/usr/local/bin/chrome-no-sandbox
+            printf '#!/usr/bin/env bash\nexec /usr/bin/google-chrome-stable --no-sandbox "$@"\n' | sudo tee "$wrapper" >/dev/null
+            sudo chmod +x "$wrapper"
+            echo "CHROME_PATH=$wrapper" >> "$GITHUB_ENV"
+          fi
+      - name: Point origin at public github (base-ref fetch in-container)
+        shell: bash
+        run: git remote set-url origin https://github.com/jimhigson/head-over-heels-online || true
+      - uses: jimhigson/true-site-size@main
+        with:
+          install-command: pnpm install --frozen-lockfile
+          clean-command: pnpm clean:ci
+          build-command: pnpm build
+          serve-dir: dist
+          compression: br
+          compression-level: 11
+          ignore-url-patterns: '["supabase\\.co"]'
+          minimum-change-threshold: 50
+          timeout-ms: "1800000"
+          base-refs: '["main"]'
+          journey: ${{ env.journey }}
