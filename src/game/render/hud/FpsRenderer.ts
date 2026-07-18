@@ -1,4 +1,4 @@
-import { Container } from "pixi.js";
+import { type BitmapText, Container } from "pixi.js";
 
 import { blockStackSpritesheetMeta } from "../../../../gfx/spritesheetMeta/blockStackSpritesheetMeta";
 import {
@@ -12,7 +12,7 @@ import {
   loadFrameTimingStats,
 } from "../../mainLoop/frameTiming/lazyFrameTimingStats";
 import { type Renderer } from "../Renderer";
-import { TextContainer } from "../text/TextContainer";
+import { createHudText } from "../text/createHudText";
 import { type HudRenderContext } from "./hudRendererContexts";
 
 export class FpsRenderer
@@ -20,7 +20,7 @@ export class FpsRenderer
     Renderer<HudRenderContext<string>, FrameTimingStatsEvent, Container>
 {
   #container = new Container({ label: "FpsRenderer" });
-  #fpsText: TextContainer;
+  #fpsText: BitmapText;
   #isDark = false;
   #fpsValue: number | undefined;
   #destroyed = false;
@@ -37,10 +37,7 @@ export class FpsRenderer
 
   constructor(renderContext: HudRenderContext<string>) {
     this.renderContext = renderContext;
-    this.#fpsText = new TextContainer({
-      pixiRenderer: renderContext.general.pixiRenderer,
-      spritesheet:
-        renderContext.general.spritesheetVariants.originalSpritesheet,
+    this.#fpsText = createHudText({
       label: "fps",
       outline: true,
       y: hudCharTextureSize.h,
@@ -79,7 +76,7 @@ export class FpsRenderer
     const colourName =
       fpsValue === undefined ? "white" : this.#colourNameForFps(fpsValue, 60);
     const palette = maybeDimPalette(blockStackSpritesheetMeta, this.#isDark);
-    this.#fpsText.colour = palette[colourName];
+    this.#fpsText.tint = palette[colourName];
   }
 
   tick = (frameTimingStatsEvent: FrameTimingStatsEvent): void => {

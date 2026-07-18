@@ -1,5 +1,5 @@
 import { type UnknownAction } from "@reduxjs/toolkit";
-import { type Color, Container } from "pixi.js";
+import { type BitmapText, type Color, Container } from "pixi.js";
 import { type AllUnionFields } from "type-fest";
 
 import { OutlineFilter } from "../../game/render/filters/OutlineFilter";
@@ -11,7 +11,7 @@ import {
   type ItemRenderContext,
   type ItemTickContext,
 } from "../../game/render/ItemRenderContexts";
-import { TextContainer } from "../../game/render/text/TextContainer";
+import { createHudText } from "../../game/render/text/createHudText";
 import {
   type ItemInPlay,
   type ItemInPlayType,
@@ -235,7 +235,7 @@ class EditorAnnotationsRenderer<T extends ItemInPlayType>
   #viewport: EditorViewport;
   #outlineFilters: EditorOutlineFilters;
   /** text annotations, counter-scaled so they read at a constant size under zoom */
-  #annotations: TextContainer[] = [];
+  #annotations: BitmapText[] = [];
 
   constructor(
     renderContext: ItemRenderContext<T>,
@@ -447,15 +447,10 @@ class EditorAnnotationsRenderer<T extends ItemInPlayType>
     // });
 
     const {
-      renderContext: {
-        frontLayer,
-        general: { pixiRenderer, spritesheetVariants },
-      },
+      renderContext: { frontLayer },
     } = this;
 
-    const annotationContainer = new TextContainer({
-      pixiRenderer,
-      spritesheet: spritesheetVariants.originalSpritesheet,
+    const annotationContainer = createHudText({
       label: "EditorAnnotationTextContainer",
       outline: true,
       colour: tint,
@@ -478,11 +473,11 @@ class EditorAnnotationsRenderer<T extends ItemInPlayType>
         // TODO: this is over-dispatching - need some way to
         // prevent firing when enter/leave children
         store.dispatch(setClickableAnnotationHovered(true));
-        annotationContainer.colour = textClickableAnnotationHoverColour;
+        annotationContainer.tint = textClickableAnnotationHoverColour;
       });
       annotationContainer.on("mouseout", () => {
         store.dispatch(setClickableAnnotationHovered(false));
-        annotationContainer.colour = tint;
+        annotationContainer.tint = tint;
       });
       annotationContainer.cursor = "pointer";
     }

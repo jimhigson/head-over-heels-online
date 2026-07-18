@@ -1,15 +1,14 @@
-import { type AnimatedSprite, Container, type Renderer } from "pixi.js";
+import { type AnimatedSprite, type BitmapText, Container } from "pixi.js";
 
 import { type RoomState } from "../../../../../model/RoomState";
 import { type SpritesheetVariants } from "../../../../../sprites/spritesheet/variants/SpritesheetVariants";
-import { type SpriteOption } from "../../../../../store/slices/userSettings/userSettingsSlice";
 import { teleporterIsActive } from "../../../../physics/mechanics/teleporting";
 import {
   createSprite,
   framesWithOriginalGameTimings,
 } from "../../../createSprite";
 import { getWhite } from "../../../gameColours/gameColours";
-import { TextContainer } from "../../../text/TextContainer";
+import { createHudText } from "../../../text/createHudText";
 import {
   type ButtonAppearance,
   textYForButtonCentre,
@@ -17,15 +16,11 @@ import {
 import { ArcadeStyleButtonContainer } from "../ArcadeStyleButtonContainer";
 import { buttonActionsPressed } from "./buttonActionsPressed";
 
-export type JumpButtonSurfaceContainer = Container<
-  AnimatedSprite | TextContainer
->;
+export type JumpButtonSurfaceContainer = Container<AnimatedSprite | BitmapText>;
 
-type SurfaceContentChildren = [text: TextContainer, teleporter: AnimatedSprite];
+type SurfaceContentChildren = [text: BitmapText, teleporter: AnimatedSprite];
 
 const createSurface = (
-  spriteOption: SpriteOption,
-  pixiRenderer: Renderer,
   spritesheetVariants: SpritesheetVariants,
 ): JumpButtonSurfaceContainer => {
   const teleporter = createSprite({
@@ -38,13 +33,11 @@ const createSurface = (
       false,
     ),
   });
-  const text = new TextContainer({
-    pixiRenderer,
-    spritesheet: spritesheetVariants.originalSpritesheet,
+  const text = createHudText({
     text: "JUMP",
     y: textYForButtonCentre,
   });
-  return new Container<AnimatedSprite | TextContainer>({
+  return new Container<AnimatedSprite | BitmapText>({
     label: "jumpButtonSurface",
     children: [
       // index 0
@@ -104,7 +97,7 @@ export const jumpButtonAppearance: ButtonAppearance<
       button.which,
       pixiRenderer,
       spritesheetVariants.originalSpritesheet,
-      createSurface(spriteOption, pixiRenderer, spritesheetVariants),
+      createSurface(spritesheetVariants),
     );
 
   const pressedChanged = previouslyRenderedProps?.pressed !== pressed;
@@ -161,7 +154,7 @@ export const jumpButtonAppearance: ButtonAppearance<
       teleporter.gotoAndPlay(0);
     }
 
-    text.colour = getWhite(spriteOption, room?.color.shade === "dimmed");
+    text.tint = getWhite(spriteOption, room?.color.shade === "dimmed");
 
     buttonContainer.generateButtonSpriteTextures(room);
   }

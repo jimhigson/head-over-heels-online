@@ -4,16 +4,17 @@ import { execFileSync } from "node:child_process";
 import { existsSync, mkdirSync, readFileSync, writeFileSync } from "node:fs";
 
 import {
-  type HudGlyph,
-  hudGlyphs,
-} from "../src/sprites/spritesheet/spritesheetData/hudSritesheetData";
-import {
   hudCharTextureSize,
   hudLowercaseCharTextureSize,
 } from "../src/sprites/spritesheet/spritesheetData/textureSizes";
 import { size } from "../src/utils/iterators/size";
+import { charRowsTop, type HudGlyph, hudGlyphs } from "./font/hudGlyphs";
 
-const spritesheetPath = "gfx/sprites.webp";
+// the char rows leave the shipped gfx/sprites.webp (they're masked out), so the
+// font is generated from a build-only strip cropped from those rows in
+// scripts/iff2png.sh - hence glyph frame.y values (absolute sheet coords) are
+// offset by charRowsTop to index into the strip:
+const spritesheetPath = "scripts/font/hudChars.webp";
 const outputDir = "src/_generated/font";
 const outputPath = `${outputDir}/blockstack-head-over-heels.woff2`;
 const manifestPath = `${outputDir}/manifest.json`;
@@ -87,7 +88,7 @@ const mergeInkRects = (
 ): Rect[] => {
   const consumed: boolean[] = new Array(frame.w * frame.h).fill(false);
   const ink = (col: number, row: number) =>
-    isInk(image, frame.x + col, frame.y + row);
+    isInk(image, frame.x + col, frame.y - charRowsTop + row);
   const used = (col: number, row: number) => consumed[row * frame.w + col];
 
   const rects: Rect[] = [];

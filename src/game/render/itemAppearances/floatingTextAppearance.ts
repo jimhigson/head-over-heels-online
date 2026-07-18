@@ -1,4 +1,4 @@
-import { type Color, Container } from "pixi.js";
+import { type BitmapText, type Color, Container } from "pixi.js";
 
 import { type SpritesheetMetadata } from "../../../sprites/spritesheet/spritesheetData/spritesheetMetaData";
 import { type AppSpritesheet } from "../../../sprites/spritesheet/variants/AppSpritesheet";
@@ -7,7 +7,7 @@ import {
   blockSizePx,
   moveSpeedPixPerMs,
 } from "../../physics/mechanicsConstants";
-import { TextContainer } from "../text/TextContainer";
+import { createHudText } from "../text/createHudText";
 import { type ItemAppearance } from "./ItemAppearance";
 
 const floatingTextRiseSpeedPxPerMs = moveSpeedPixPerMs.floatingText;
@@ -46,7 +46,7 @@ export const floatingTextAppearance: ItemAppearance<
       config: { textLines, appearanceRoomTime = 0, sway },
     },
     room: { roomTime },
-    general: { spritesheetVariants, spritesheetMeta, pixiRenderer },
+    general: { spritesheetVariants, spritesheetMeta },
     frontLayer,
   },
   currentRendering,
@@ -62,22 +62,20 @@ export const floatingTextAppearance: ItemAppearance<
         spritesheetVariants.currentMainSpritesheet(false, false, isReflection),
       );
   const previousRendering = currentRendering?.output;
-  let mainContainer: Container<TextContainer>;
+  let mainContainer: Container<BitmapText>;
 
   const age = roomTime - appearanceRoomTime;
 
   const itemRenderHeight = age * floatingTextRiseSpeedPxPerMs;
 
   if (previousRendering === undefined) {
-    mainContainer = new Container<TextContainer>();
+    mainContainer = new Container<BitmapText>();
     frontLayer?.attach(mainContainer);
 
     // add all lines early, even if some will be hidden right away:
     for (let i = 0; i < textLines.length; i++) {
       const textLine = textLines[i];
-      const lineContainer = new TextContainer({
-        pixiRenderer,
-        spritesheet: spritesheetVariants.originalSpritesheet,
+      const lineContainer = createHudText({
         y: i * lineHeightPx,
         outline: true,
         text: textLine,
@@ -85,7 +83,7 @@ export const floatingTextAppearance: ItemAppearance<
       mainContainer.addChild(lineContainer);
     }
   } else {
-    mainContainer = previousRendering as Container<TextContainer>;
+    mainContainer = previousRendering as Container<BitmapText>;
   }
 
   let anyVisible = false;
@@ -108,7 +106,7 @@ export const floatingTextAppearance: ItemAppearance<
       const colourIndex = Math.floor(
         (lineHeight / maxLineHeight) * fadeOrder.length,
       );
-      lineContainer.colour = fadeOrder[colourIndex];
+      lineContainer.tint = fadeOrder[colourIndex];
     }
   }
 

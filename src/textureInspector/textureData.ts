@@ -15,8 +15,7 @@ export interface TrackedTextureSource {
     | "PaletteSwapFilter"
     | "spritesheet(original)"
     | "spritesheet(variant)"
-    | "TeleporterFilterLut"
-    | "TextContainer";
+    | "TeleporterFilterLut";
 }
 
 // Track all dynamically created textures
@@ -40,9 +39,6 @@ const detectType = (stack: string): TrackedTextureSource["type"] => {
   }
   if (stack.includes("#tickMasks")) {
     return "Item/Item Mask";
-  }
-  if (stack.includes("TextContainer")) {
-    return "TextContainer";
   }
   if (stack.includes("createSpritesheetVariant")) {
     return "spritesheet(variant)";

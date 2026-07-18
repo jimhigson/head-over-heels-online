@@ -43,6 +43,9 @@ export const gameMain = async <RoomId extends string>(
   const [campaignResult] = await Promise.all([
     loadCampaignFromApi<RoomId>(campaignLocator),
     loadSoundCategory("requiredForGameplay"),
+    // the first dynamic BitmapText rasterisation would otherwise cache
+    // fallback-font glyphs if the web font hadn't loaded yet:
+    document.fonts.load('8px "HeadOverHeels"'),
     app.init({
       background: "#000000",
       // run on the shared ticker to keep in sync with the input state tracker

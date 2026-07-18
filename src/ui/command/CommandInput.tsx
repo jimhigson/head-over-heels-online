@@ -1,6 +1,5 @@
 import { type ComponentProps } from "preact";
 
-import { type TextureTailwindClass } from "../../sprites/spritesheet/spritesheetData/TextureTailwindClass";
 import { cn } from "../cn";
 import { useAutoFocus } from "../useAutoFocus";
 import { useCommandContext } from "./useCommandContext";
@@ -25,9 +24,7 @@ export const CommandInput = ({
   const ref = useAutoFocus<HTMLInputElement>(autoFocus);
   return (
     <div class="flex items-center border-b px-1 pb-1">
-      <span
-        class={`sprite mr-1 ${"texture-hud_char_gt" satisfies TextureTailwindClass}`}
-      />
+      <span class="text-single-line mr-1">{">"}</span>
       <input
         ref={ref}
         value={search}

@@ -1,7 +1,8 @@
+import { type BitmapText } from "pixi.js";
 import { type EmptyObject } from "type-fest";
 
 import { emptyObject } from "../../../../../utils/empty";
-import { TextContainer } from "../../../text/TextContainer";
+import { createHudText } from "../../../text/createHudText";
 import { type ButtonAppearance } from "../../HudButtonRenderer";
 import { tintForHud } from "../../spritesheetVariantForHud";
 
@@ -11,7 +12,7 @@ export const menuButtonAppearance: ButtonAppearance<
   "menu",
   string,
   MenuButtonRenderProps,
-  TextContainer
+  BitmapText
 > = ({ currentRendering, tickContext, renderContext: { general } }) => {
   if (currentRendering !== undefined) {
     currentRendering.output!.tint = tintForHud(
@@ -23,9 +24,7 @@ export const menuButtonAppearance: ButtonAppearance<
     return "no-update";
   }
 
-  const output = new TextContainer({
-    pixiRenderer: general.pixiRenderer,
-    spritesheet: general.spritesheetVariants.originalSpritesheet,
+  const output = createHudText({
     label: "menuText",
     outline: true,
     doubleHeight: true,

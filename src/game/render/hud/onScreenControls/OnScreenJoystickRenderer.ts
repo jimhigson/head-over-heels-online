@@ -25,7 +25,7 @@ import {
 import { createSprite } from "../../createSprite";
 import { type Renderer } from "../../Renderer";
 import { type GeneralRenderContext } from "../../room/RoomRenderContexts";
-import { TextContainer } from "../../text/TextContainer";
+import { createHudText } from "../../text/createHudText";
 import { type HudRendererTickContextWithRoom } from "../hudRendererContexts";
 import { tintForHud } from "../spritesheetVariantForHud";
 import { type OnScreenLookRenderer } from "./look/OnScreenLookRenderer";
@@ -77,9 +77,8 @@ export class OnScreenJoystickRenderer
     this.renderContext = renderContext;
     const {
       inputDirectionMode,
-      general: { spritesheetVariants, pixiRenderer },
+      general: { spritesheetVariants },
     } = renderContext;
-    const { originalSpritesheet } = spritesheetVariants;
 
     this.#joystickSprite = createSprite({
       textureId: "joystick.whole",
@@ -93,33 +92,25 @@ export class OnScreenJoystickRenderer
     });
 
     this.#arrowSprites = {
-      away: new TextContainer({
-        pixiRenderer,
-        spritesheet: originalSpritesheet,
+      away: createHudText({
         outline: true,
         x: joystickArrowOffset,
         y: -joystickArrowOffset,
         text: "↗",
       }),
-      right: new TextContainer({
-        pixiRenderer,
-        spritesheet: originalSpritesheet,
+      right: createHudText({
         outline: true,
         x: joystickArrowOffset,
         y: joystickArrowOffset,
         text: "↘",
       }),
-      towards: new TextContainer({
-        pixiRenderer,
-        spritesheet: originalSpritesheet,
+      towards: createHudText({
         outline: true,
         x: -joystickArrowOffset,
         y: joystickArrowOffset,
         text: "↙",
       }),
-      left: new TextContainer({
-        pixiRenderer,
-        spritesheet: originalSpritesheet,
+      left: createHudText({
         outline: true,
         x: -joystickArrowOffset,
         y: -joystickArrowOffset,
@@ -127,30 +118,22 @@ export class OnScreenJoystickRenderer
       }),
       ...(inputDirectionMode !== "4-way" ?
         {
-          awayRight: new TextContainer({
-            pixiRenderer,
-            spritesheet: originalSpritesheet,
+          awayRight: createHudText({
             outline: true,
             x: joystickArrowOffset * Math.SQRT2,
             text: "➡",
           }),
-          towardsRight: new TextContainer({
-            pixiRenderer,
-            spritesheet: originalSpritesheet,
+          towardsRight: createHudText({
             outline: true,
             y: joystickArrowOffset * Math.SQRT2,
             text: "⬇",
           }),
-          towardsLeft: new TextContainer({
-            pixiRenderer,
-            spritesheet: originalSpritesheet,
+          towardsLeft: createHudText({
             outline: true,
             x: -joystickArrowOffset * Math.SQRT2,
             text: "⬅",
           }),
-          awayLeft: new TextContainer({
-            pixiRenderer,
-            spritesheet: originalSpritesheet,
+          awayLeft: createHudText({
             outline: true,
             y: -joystickArrowOffset * Math.SQRT2,
             text: "⬆",

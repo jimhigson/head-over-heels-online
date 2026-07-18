@@ -8,7 +8,7 @@ import { type Aabb, type Xy } from "../../../../utils/vectors/vectors";
 import { isItemType } from "../../../physics/itemPredicates";
 import { type ItemRenderContext } from "../../ItemRenderContexts";
 import { projectWorldXyzToScreenXy } from "../../projections";
-import { TextContainer } from "../../text/TextContainer";
+import { createHudText } from "../../text/createHudText";
 import { type ItemChainPixiRenderer } from "./ItemPixiRenderer";
 
 const bbColors: Record<ItemInPlayType, string> = {
@@ -284,15 +284,13 @@ export class ItemBoundingBoxRenderer<T extends ItemInPlayType>
     }
 
     this.#container.eventMode = "static";
-    // the game's own sprite-font (TextContainer), not pixi's Text: this is
-    // the only Text usage in the game/editor, so avoiding it lets the
-    // bundler tree-shake all of pixi's text rendering away
+    // hover info rendered with the HUD web font via createHudText (Pixi
+    // BitmapText):
     let textNode: Container | undefined;
     this.#container.on("pointerenter", () => {
       if (textNode !== undefined) {
         return;
       }
-      const { pixiRenderer, spritesheetVariants } = this.renderContext.general;
       const lines = [
         `${item.id} ${item.type}`,
         `at (${item.state.position.x}, ${item.state.position.y}, ${item.state.position.z})`,
@@ -301,9 +299,7 @@ export class ItemBoundingBoxRenderer<T extends ItemInPlayType>
       textNode = new Container({ label: "bbHoverInfo" });
       for (const [i, line] of lines.entries()) {
         textNode.addChild(
-          new TextContainer({
-            pixiRenderer,
-            spritesheet: spritesheetVariants.originalSpritesheet,
+          createHudText({
             text: line,
             colour: new Color(color),
             y: i * 10,

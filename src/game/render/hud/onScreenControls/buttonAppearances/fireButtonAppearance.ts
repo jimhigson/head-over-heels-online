@@ -1,4 +1,4 @@
-import { Container, type Renderer, type Sprite } from "pixi.js";
+import { type BitmapText, Container, type Sprite } from "pixi.js";
 
 import {
   type PokeableNumber,
@@ -9,7 +9,7 @@ import { type AppSpritesheet } from "../../../../../sprites/spritesheet/variants
 import { selectHeadAbilities } from "../../../../gameState/gameStateSelectors/selectPlayableItem";
 import { createSprite } from "../../../createSprite";
 import { getWhite } from "../../../gameColours/gameColours";
-import { TextContainer } from "../../../text/TextContainer";
+import { createHudText } from "../../../text/createHudText";
 import {
   type ButtonAppearance,
   textYForButtonCentre,
@@ -22,13 +22,12 @@ type ShowingSprite = "doughnuts" | "hooter" | "none";
 type SurfaceContentChildren = [
   hooter: Sprite,
   doughnuts: Sprite,
-  text: TextContainer,
+  text: BitmapText,
 ];
 
 const createSurface = (
-  pixiRenderer: Renderer,
   originalSpritesheet: AppSpritesheet,
-): Container<Sprite | TextContainer> => {
+): Container<BitmapText | Sprite> => {
   const hooter = createSprite({
     textureId: "hooter",
     y: -3,
@@ -41,14 +40,12 @@ const createSurface = (
     spritesheet: originalSpritesheet,
   });
 
-  const text = new TextContainer({
-    pixiRenderer,
-    spritesheet: originalSpritesheet,
+  const text = createHudText({
     outline: true,
     y: textYForButtonCentre,
   });
 
-  return new Container<Sprite | TextContainer>({
+  return new Container<BitmapText | Sprite>({
     label: "fireButtonSurface",
     children: [hooter, doughnuts, text] satisfies SurfaceContentChildren,
   });
@@ -66,7 +63,7 @@ export const fireButtonAppearance: ButtonAppearance<
   "fire",
   string,
   FireButtonRenderProps,
-  ArcadeStyleButtonContainer<Container<Sprite | TextContainer>>
+  ArcadeStyleButtonContainer<Container<BitmapText | Sprite>>
 > = ({
   renderContext: {
     button,
@@ -118,12 +115,12 @@ export const fireButtonAppearance: ButtonAppearance<
   const { originalSpritesheet } = spritesheetVariants;
   const container =
     currentRendering?.output ??
-    new ArcadeStyleButtonContainer<Container<Sprite | TextContainer>>(
+    new ArcadeStyleButtonContainer<Container<BitmapText | Sprite>>(
       spritesheetMeta,
       button.which,
       pixiRenderer,
       originalSpritesheet,
-      createSurface(pixiRenderer, originalSpritesheet),
+      createSurface(originalSpritesheet),
     );
 
   if (roomChanged) {
@@ -155,7 +152,7 @@ export const fireButtonAppearance: ButtonAppearance<
 
     hooter.texture = spritesheet.textures["hooter"];
     doughnuts.texture = spritesheet.textures["doughnuts"];
-    text.colour = getWhite(spriteOption, room.color.shade === "dimmed");
+    text.tint = getWhite(spriteOption, room.color.shade === "dimmed");
   }
 
   if (doughnutsCount !== previouslyRenderedProps?.doughnutsCount) {

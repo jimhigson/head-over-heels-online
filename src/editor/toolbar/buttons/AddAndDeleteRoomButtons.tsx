@@ -65,9 +65,7 @@ export const AddAndDeleteRoomButtons = () => {
             onClick={useDispatchActionCallback(addRoom, {})}
             tooltipContent={addTooltipMarkdown}
           >
-            <span
-              class={`sprite ${"texture-hud_char_+" satisfies TextureTailwindClass} relative`}
-            />
+            <span class="text-single-line">+</span>
           </ToolbarButton>
         }
       >
@@ -456,9 +454,7 @@ export const AddAndDeleteRoomButtons = () => {
         disabled={!hasOtherRooms}
         tooltipContent={deleteTooltipMarkdown}
       >
-        <span
-          class={`sprite ${"texture-hud_char_X" satisfies TextureTailwindClass} relative`}
-        />
+        <span class="text-single-line">X</span>
       </ToolbarButton>
     </>
   );

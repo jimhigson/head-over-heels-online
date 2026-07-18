@@ -2,7 +2,7 @@ import {
   menuLeaderBackChar,
   menuLeaderFocussedChar,
   menuLeaderUnfocussedChar,
-} from "../../../../../sprites/spritesheet/spritesheetData/hudSritesheetData";
+} from "../../../../../sprites/spritesheet/spritesheetData/hudChars";
 
 export const StandardMenuItemLeader = ({
   isBack = false,

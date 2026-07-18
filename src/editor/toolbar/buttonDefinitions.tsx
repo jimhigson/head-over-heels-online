@@ -706,11 +706,7 @@ edit the json to choose:
       },
     },
     tooltipContent: `## Emitter\nCreates items at regular intervals\n\nEdit the json to configure what it emits`,
-    children: (
-      <span
-        class={`sprite ${"texture-hud_char_E" satisfies TextureTailwindClass} ${buttonSpriteRevertColourClasses}`}
-      />
-    ),
+    children: <span class="text-single-line">E</span>,
   },
   timer: {
     ariaLabel: "Timer",
@@ -723,11 +719,7 @@ edit the json to choose:
       },
     },
     tooltipContent: `## Timer\nPeriodically toggles switch-style modifications\n\nEdit the json to configure targets`,
-    children: (
-      <span
-        class={`sprite ${"texture-hud_char_T" satisfies TextureTailwindClass} ${buttonSpriteRevertColourClasses}`}
-      />
-    ),
+    children: <span class="text-single-line">T</span>,
   },
   spring: {
     ariaLabel: "Spring",

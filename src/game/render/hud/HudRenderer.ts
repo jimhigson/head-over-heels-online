@@ -1,10 +1,17 @@
-import { type Color, Container, Sprite, type Texture } from "pixi.js";
+import {
+  type BitmapText,
+  Color,
+  Container,
+  Sprite,
+  type Texture,
+} from "pixi.js";
 
 import { blockSizePx } from "../../../model/blockSizePx";
 import { type ItemInPlayType } from "../../../model/ItemInPlay";
 import {
   type HeadAbilities,
   type HeelsAbilities,
+  type PokeableNumber,
 } from "../../../model/ItemStateMap";
 import {
   type CharacterName,
@@ -47,7 +54,7 @@ import { getRoomColorScheme } from "../gameColours/colourScheme";
 import { createItemLeafPixiRenderer } from "../item/itemRender/createItemLeafPixiRenderer";
 import { type ItemLeafPixiRenderer } from "../item/itemRender/ItemPixiRenderer";
 import { type Renderer } from "../Renderer";
-import { TextContainer } from "../text/TextContainer";
+import { abilityText, createHudText } from "../text/createHudText";
 import { FpsRenderer } from "./FpsRenderer";
 import { HudButtonRenderer } from "./HudButtonRenderer";
 import {
@@ -70,11 +77,25 @@ const renderContextHasRoom = <RoomId extends string, RoomItemId extends string>(
 ): ctx is HudRendererTickContextWithRoom<RoomId, RoomItemId> =>
   ctx.room !== undefined;
 
-type IconWithNumber = {
-  textContainer: TextContainer;
-  icon: Sprite;
+type IconWithNumber<Icon extends BitmapText | Sprite = BitmapText | Sprite> = {
+  textContainer: BitmapText;
+  icon: Icon;
   container: Container;
 };
+
+/**
+ * per-flashing-text state reproducing the old sprite-font container's flash:
+ * when the displayed value changes and a flashColour is set, the tint jumps to
+ * the flash colour then reverts to the base colour after {@link flashDurationMs}
+ */
+type HudTextFlashState = {
+  displayedText: string;
+  colour: Color;
+  flashColour: Color | undefined;
+  timeout: ReturnType<typeof setTimeout> | undefined;
+};
+
+const flashDurationMs = 100;
 
 const livesTextFromCentre = (
   onScreenControls: boolean,
@@ -132,21 +153,24 @@ export class HudRenderer<RoomId extends string, RoomItemId extends string>
   #hudElements: {
     head: {
       sprite: Sprite;
-      livesText: TextContainer;
-      shield: IconWithNumber;
-      extraSkill: IconWithNumber;
-      doughnuts: IconWithNumber;
-      hooter: IconWithNumber;
+      livesText: BitmapText;
+      shield: IconWithNumber<BitmapText>;
+      extraSkill: IconWithNumber<BitmapText>;
+      doughnuts: IconWithNumber<Sprite>;
+      hooter: IconWithNumber<Sprite>;
     };
     heels: {
       sprite: Sprite;
-      livesText: TextContainer;
-      shield: IconWithNumber;
-      extraSkill: IconWithNumber;
-      bag: IconWithNumber;
+      livesText: BitmapText;
+      shield: IconWithNumber<BitmapText>;
+      extraSkill: IconWithNumber<BitmapText>;
+      bag: IconWithNumber<Sprite>;
       carrying: { container: Container };
     };
   };
+
+  /** flash state for HUD number texts, keyed by their BitmapText */
+  #flashState = new Map<BitmapText, HudTextFlashState>();
 
   #characterTextureIds: Record<IndividualCharacterName, TextureId>;
 
@@ -171,7 +195,6 @@ export class HudRenderer<RoomId extends string, RoomItemId extends string>
   constructor(renderContext: HudRenderContext<RoomId>) {
     this.renderContext = renderContext;
     const { general } = renderContext;
-    const originalSS = general.spritesheetVariants.originalSpritesheet;
 
     this.#characterTextureIds = {
       head: this.#resolveCharacterTextureId("head"),
@@ -181,58 +204,46 @@ export class HudRenderer<RoomId extends string, RoomItemId extends string>
     this.#hudElements = {
       head: {
         sprite: this.#createCharacterSprite("head"),
-        livesText: new TextContainer({
-          pixiRenderer: general.pixiRenderer,
-          spritesheet: originalSS,
-          label: "headLives",
-          doubleHeight: true,
-          outline: true,
-        }),
+        livesText: this.#createLivesText("headLives"),
         shield: this.#iconWithNumber({
           label: "headShield",
-          textureId: "hud.char.🛡",
+          icon: this.#glyphIcon("🛡"),
           outline: true,
         }),
         extraSkill: this.#iconWithNumber({
           label: "headFastSteps",
-          textureId: "hud.char.⚡",
+          icon: this.#glyphIcon("⚡"),
           outline: true,
         }),
         doughnuts: this.#iconWithNumber({
           label: "headDoughnuts",
-          textureId: "doughnuts",
+          icon: this.#spriteIcon("doughnuts", true),
           textOnTop: true,
           outline: "text-only",
         }),
         hooter: this.#iconWithNumber({
           label: "headHooter",
-          textureId: "hooter",
+          icon: this.#spriteIcon("hooter", true),
           textOnTop: true,
           noText: true,
         }),
       },
       heels: {
         sprite: this.#createCharacterSprite("heels"),
-        livesText: new TextContainer({
-          pixiRenderer: general.pixiRenderer,
-          spritesheet: originalSS,
-          label: "heelsLives",
-          doubleHeight: true,
-          outline: true,
-        }),
+        livesText: this.#createLivesText("heelsLives"),
         shield: this.#iconWithNumber({
           label: "heelsShield",
-          textureId: "hud.char.🛡",
+          icon: this.#glyphIcon("🛡"),
           outline: true,
         }),
         extraSkill: this.#iconWithNumber({
           label: "heelsBigJumps",
-          textureId: "hud.char.♨",
+          icon: this.#glyphIcon("♨"),
           outline: true,
         }),
         bag: this.#iconWithNumber({
           label: "heelsBag",
-          textureId: "bag",
+          icon: this.#spriteIcon("bag", true),
           textOnTop: true,
           noText: true,
         }),
@@ -406,36 +417,58 @@ export class HudRenderer<RoomId extends string, RoomItemId extends string>
     }
   }
 
-  #iconWithNumber({
-    textureId,
-    textOnTop = false,
-    noText = false,
-    outline = false,
-    label,
-  }: {
-    textureId: TextureId;
-    textOnTop?: boolean;
-    noText?: boolean;
-    outline?: "text-only" | boolean;
-    label: string;
-  }): IconWithNumber {
-    const container = new Container({ label });
-    container.pivot = { x: 4, y: 16 };
+  /** a double-height, outlined lives count, registered for the (colour-only) tint path */
+  #createLivesText(label: string): BitmapText {
+    const livesText = createHudText({
+      label,
+      doubleHeight: true,
+      outline: true,
+    });
+    this.#registerFlashText(livesText);
+    return livesText;
+  }
 
-    const icon = new Sprite({
+  /** an icon rendered from a real game sprite (eg the doughnut/hooter/bag) */
+  #spriteIcon(textureId: TextureId, textOnTop: boolean): Sprite {
+    return new Sprite({
       texture:
         this.renderContext.general.spritesheetVariants.originalSpritesheet
           .textures[textureId],
       anchor: textOnTop ? { x: 0.5, y: 0 } : { x: 0.5, y: 1 },
       y: textOnTop ? 0 : 8,
     });
-    container.addChild(icon);
+  }
+
+  /**
+   * an icon rendered as a HUD-font glyph (the shield/lightning/hot-spring
+   * symbols), placed like a bottom-anchored 8px sprite so its baseline sits where
+   * the old char sprite's bottom edge did
+   */
+  #glyphIcon(glyph: string): BitmapText {
+    return createHudText({ text: glyph, y: 8 });
+  }
+
+  #iconWithNumber<Icon extends BitmapText | Sprite>({
+    icon,
+    textOnTop = false,
+    noText = false,
+    outline = false,
+    label,
+  }: {
+    icon: Icon;
+    textOnTop?: boolean;
+    noText?: boolean;
+    outline?: "text-only" | boolean;
+    label: string;
+  }): IconWithNumber<Icon> {
+    const container = new Container({ label });
+    container.pivot = { x: 4, y: 16 };
 
     const x = hudCharTextureSize.w / 2;
-    const text = new TextContainer({
-      pixiRenderer: this.renderContext.general.pixiRenderer,
-      spritesheet:
-        this.renderContext.general.spritesheetVariants.originalSpritesheet,
+    icon.x = x;
+    container.addChild(icon);
+
+    const text = createHudText({
       outline: outline === "text-only",
       y: textOnTop ? 0 : 16,
       x,
@@ -443,18 +476,65 @@ export class HudRenderer<RoomId extends string, RoomItemId extends string>
     if (noText) {
       text.visible = false;
     }
-    icon.x = x;
     container.addChild(text);
 
     if (outline === true) {
       container.filters = outlineFilters.pureBlack;
     }
 
+    this.#registerFlashText(text);
+
     return {
       textContainer: text,
       icon,
       container,
     };
+  }
+
+  #registerFlashText(text: BitmapText) {
+    this.#flashState.set(text, {
+      displayedText: "",
+      colour: new Color(0xff_ff_ff),
+      flashColour: undefined,
+      timeout: undefined,
+    });
+  }
+
+  /**
+   * set a HUD number/text, flashing to the flash colour on change (reproducing
+   * the old sprite-font container's behaviour)
+   */
+  #setHudText(text: BitmapText, value: PokeableNumber | string) {
+    const state = this.#flashState.get(text)!;
+    const str = abilityText(value);
+    if (state.displayedText === str) {
+      return;
+    }
+    state.displayedText = str;
+    text.text = str;
+
+    if (state.flashColour === undefined) {
+      return;
+    }
+    clearTimeout(state.timeout);
+    text.tint = state.flashColour;
+    state.timeout = setTimeout(() => {
+      state.timeout = undefined;
+      text.tint = state.colour;
+    }, flashDurationMs);
+  }
+
+  /** set a HUD text's base colour; applied immediately unless a flash is in flight */
+  #setHudTextColour(text: BitmapText, colour: Color) {
+    const state = this.#flashState.get(text)!;
+    state.colour = colour;
+    if (state.timeout === undefined) {
+      text.tint = colour;
+    }
+  }
+
+  #setHudTextFlashColour(text: BitmapText, flashColour: Color) {
+    this.#flashState.get(text)!.flashColour = flashColour;
   }
 
   #resolveCharacterTextureId(
@@ -625,19 +705,17 @@ export class HudRenderer<RoomId extends string, RoomItemId extends string>
         false,
       ).textures["doughnuts"];
 
-    this.#hudElements.head.doughnuts.textContainer.text =
-      doughnutCount === "infinite" ? "∞" : doughnutCount;
-    doughnutsText.colour = tintForHud(
-      spriteOption,
-      room.color,
-      false,
-      spritesheetMeta,
+    this.#setHudText(
+      doughnutsText,
+      doughnutCount === "infinite" ? "∞" : doughnutCount,
     );
-    doughnutsText.flashColour = tintForHud(
-      spriteOption,
-      room.color,
-      true,
-      spritesheetMeta,
+    this.#setHudTextColour(
+      doughnutsText,
+      tintForHud(spriteOption, room.color, false, spritesheetMeta),
+    );
+    this.#setHudTextFlashColour(
+      doughnutsText,
+      tintForHud(spriteOption, room.color, true, spritesheetMeta),
     );
 
     hooterSprite.tint = tintForHudIfUncolourised(
@@ -679,7 +757,7 @@ export class HudRenderer<RoomId extends string, RoomItemId extends string>
     shieldContainer.visible = shieldVisible;
 
     if (shieldVisible) {
-      shieldText.text = shieldNumber;
+      this.#setHudText(shieldText, shieldNumber);
       shieldContainer.y = screenSize.y - shieldFromBottom(onScreenControls);
     }
 
@@ -703,34 +781,26 @@ export class HudRenderer<RoomId extends string, RoomItemId extends string>
     extraSkillContainer.visible = extraSkillVisible;
 
     if (extraSkillVisible) {
-      skillText.text = extraSkillNumber;
+      this.#setHudText(skillText, extraSkillNumber);
       extraSkillContainer.y =
         screenSize.y - extraSkillFromBottom(onScreenControls);
     }
 
-    skillText.colour = tintForHud(
-      spriteOption,
-      room.color,
-      false,
-      spritesheetMeta,
+    this.#setHudTextColour(
+      skillText,
+      tintForHud(spriteOption, room.color, false, spritesheetMeta),
     );
-    skillText.flashColour = tintForHud(
-      spriteOption,
-      room.color,
-      true,
-      spritesheetMeta,
+    this.#setHudTextFlashColour(
+      skillText,
+      tintForHud(spriteOption, room.color, true, spritesheetMeta),
     );
-    shieldText.colour = tintForHud(
-      spriteOption,
-      room.color,
-      false,
-      spritesheetMeta,
+    this.#setHudTextColour(
+      shieldText,
+      tintForHud(spriteOption, room.color, false, spritesheetMeta),
     );
-    shieldText.flashColour = tintForHud(
-      spriteOption,
-      room.color,
-      true,
-      spritesheetMeta,
+    this.#setHudTextFlashColour(
+      shieldText,
+      tintForHud(spriteOption, room.color, true, spritesheetMeta),
     );
     shieldIcon.tint = tintForIcon(spriteOption, room.color);
     extraSkillIcon.tint = tintForIcon(spriteOption, room.color);
@@ -841,14 +911,17 @@ export class HudRenderer<RoomId extends string, RoomItemId extends string>
     livesTextContainer.y =
       onScreenControls ? Math.round(screenSize.y * 0.4) + 16 : screenSize.y;
 
-    livesTextContainer.text = livesText;
+    this.#setHudText(livesTextContainer, livesText);
 
-    livesTextContainer.colour = this.#characterTextColour(
-      spritesheetMeta,
-      spriteOption,
-      characterName,
-      this.#characterIsActive(gameState, characterName),
-      room.color,
+    this.#setHudTextColour(
+      livesTextContainer,
+      this.#characterTextColour(
+        spritesheetMeta,
+        spriteOption,
+        characterName,
+        this.#characterIsActive(gameState, characterName),
+        room.color,
+      ),
     );
   }
 
@@ -930,10 +1003,11 @@ export class HudRenderer<RoomId extends string, RoomItemId extends string>
   }
 
   destroy() {
-    // text has dynamic sprites so explicitly destroy these:
-    this.#hudElements.head.doughnuts.textContainer.destroy();
-    this.#hudElements.head.hooter.textContainer.destroy();
-    this.#hudElements.heels.bag.textContainer.destroy();
+    // cancel any in-flight flash timeouts before the texts are destroyed:
+    for (const { timeout } of this.#flashState.values()) {
+      clearTimeout(timeout);
+    }
+    this.#flashState.clear();
     this.#container.destroy({ children: true });
     this.#onScreenControls?.destroy();
     this.#fpsRenderer?.destroy();

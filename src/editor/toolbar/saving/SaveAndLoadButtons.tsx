@@ -65,11 +65,12 @@ export const SaveAndLoadButtons = () => {
             >
               <div class="flex flex-row items-center">
                 <span
-                  class={cn(
-                    `sprite sprite-tinted text-highlightBeige ${"texture-hud_char_➡" satisfies TextureTailwindClass} relative`,
-                    { "text-lightGrey": user === null },
-                  )}
-                />
+                  class={cn("text-single-line text-highlightBeige", {
+                    "text-lightGrey": user === null,
+                  })}
+                >
+                  ➡
+                </span>
                 <span
                   class={cn(
                     `sprite ${"texture-editor_tool_save" satisfies TextureTailwindClass} relative`,
@@ -109,11 +110,7 @@ export const SaveAndLoadButtons = () => {
                   `sprite ${"texture-editor_tool_open" satisfies TextureTailwindClass} relative`,
                 )}
               />
-              <span
-                class={cn(
-                  `sprite sprite-tinted text-highlightBeige ${"texture-hud_char_➡" satisfies TextureTailwindClass} relative`,
-                )}
-              />
+              <span class="text-single-line text-highlightBeige">➡</span>
             </div>
           </ToolbarButton>
         }

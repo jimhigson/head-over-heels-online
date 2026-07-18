@@ -1,7 +1,8 @@
+import { type BitmapText } from "pixi.js";
 import { type EmptyObject } from "type-fest";
 
 import { emptyObject } from "../../../../../utils/empty";
-import { TextContainer } from "../../../text/TextContainer";
+import { createHudText } from "../../../text/createHudText";
 import { type ButtonAppearance } from "../../HudButtonRenderer";
 import { tintForHud } from "../../spritesheetVariantForHud";
 
@@ -18,7 +19,7 @@ type RotateButtonId = "rotateAnticlockwise" | "rotateClockwise";
 export const rotateButtonAppearance =
   <BT extends RotateButtonId>(
     glyph: "↺" | "↻",
-  ): ButtonAppearance<BT, string, RotateButtonRenderProps, TextContainer> =>
+  ): ButtonAppearance<BT, string, RotateButtonRenderProps, BitmapText> =>
   ({ currentRendering, tickContext, renderContext: { general } }) => {
     if (currentRendering !== undefined) {
       currentRendering.output!.tint = tintForHud(
@@ -30,9 +31,7 @@ export const rotateButtonAppearance =
       return "no-update";
     }
 
-    const output = new TextContainer({
-      pixiRenderer: general.pixiRenderer,
-      spritesheet: general.spritesheetVariants.originalSpritesheet,
+    const output = createHudText({
       label: `rotateText.${glyph}`,
       outline: true,
       doubleHeight: true,

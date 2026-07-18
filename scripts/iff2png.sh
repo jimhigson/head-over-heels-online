@@ -224,6 +224,14 @@ for icon in $TMP_DIR_ICONS/icon-192 $TMP_DIR_ICONS/icon-512; do
     echo "  $(basename "$icon").webp: $(ls -lh "$icon.webp" | awk '{print $5}') (png $(ls -lh "$icon.png" | awk '{print $5}'))"
 done
 
+# crop the HUD char rows into a build-only strip for the font generator, before
+# masking blanks those rows from the shipped sheet. Full width, from charRowsTop
+# (993) to the sheet bottom; alpha is binary from -transparent, so no colour
+# profile matters for ink detection (see scripts/genFont.ts).
+echo "🤖 ✂️ cropping HUD char strip for font generation -> scripts/font/hudChars.webp"
+magick "$TMP_DIR/sprites.png" -crop 1024x31+0+993 +repage "$TMP_DIR/hudChars.png"
+cwebp -quiet -z 9 "$TMP_DIR/hudChars.png" -o scripts/font/hudChars.webp
+
 # blank everything that isn't inside a BlockStack sprite frame (sprites.webp is
 # the BlockStack sheet) - drops the palette-swatch strip, gutters and any stray
 # off-frame art the game never samples. Done after the icon is cut, so the icon

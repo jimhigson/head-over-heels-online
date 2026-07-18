@@ -366,9 +366,10 @@ export const textureForItem = (
     case "bubbles":
       return twClass(`texture-bubbles_white_1`);
     case "emitter":
-      return twClass("texture-hud_char_E");
     case "timer":
-      return twClass("texture-hud_char_T");
+      // these have no sprite of their own - they are shown as a font-text glyph
+      // (see itemGlyph) where the DOM context allows text, and blank otherwise:
+      return twClass("texture-blank");
     case "button":
       return twClass("texture-buttonInGame");
     case "lamp":
@@ -414,10 +415,29 @@ export const textureForItem = (
       }
       break;
     case "floatingText":
-      return twClass("texture-hud_char_t");
+      // shown as a font-text glyph (see itemGlyph) where text is allowed:
+      return twClass("texture-blank");
     default:
       item satisfies never;
-      return twClass("texture-hud_char_questMk");
+      return twClass("texture-blank");
   }
   throw new Error("by the types, this shouldn't be possible");
+};
+
+/**
+ * The single-character glyph shown for items that have no sprite of their own
+ * (emitter, timer, floating-text). Rendered as font text by DOM consumers;
+ * `undefined` means the item has a real sprite ({@link textureForItem}).
+ */
+export const itemGlyph = (item: JsonItemUnion): string | undefined => {
+  switch (item.type) {
+    case "emitter":
+      return "E";
+    case "timer":
+      return "T";
+    case "floatingText":
+      return "t";
+    default:
+      return undefined;
+  }
 };
