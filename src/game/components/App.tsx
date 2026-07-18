@@ -1,7 +1,6 @@
 import { lazy, Suspense } from "preact/compat";
 import { useEffect } from "preact/hooks";
 import { Provider } from "react-redux";
-import { Route, Switch } from "wouter";
 
 import { GamePage } from "../../pages/gamePage/GamePage.tsx";
 import { importLutPage } from "../../pages/LutPage.import.ts";
@@ -14,6 +13,8 @@ import { InputStateProvider } from "../input/InputStateProvider.tsx";
 import { pixiInputTicker } from "../input/pixiInputTicker.ts";
 import { CssVariables } from "./CssVariables.tsx";
 import { NotFound404Page } from "./NotFound404Page.tsx";
+import { Route } from "./router/Route.tsx";
+import { Switch } from "./router/Switch.tsx";
 import { WantedEditor404 } from "./WantedEditor404.tsx";
 
 const LazyLutPage = lazy(importLutPage);

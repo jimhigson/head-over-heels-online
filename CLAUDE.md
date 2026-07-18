@@ -412,6 +412,17 @@ a retro upscaled blocky look even on high resolution screens. The other importan
 # github
 for all interactions with github, use the `gh` command
 
+# Claude web sandbox
+When running in the Claude Code web/remote sandbox, outbound network goes through
+an egress proxy. The `dougmencken_HeadOverHeels` github-tarball devDependency is
+blocked there (codeload.github.com returns 403) and is not in the store, so
+`pnpm install` fails on it. It is only used by offline codegen (`gen:rooms`),
+never by `pnpm build` / typecheck / e2e, so it is fine to temporarily disable it
+to unblock installs in the sandbox: move it out of `devDependencies` into an
+ignored top-level key (eg `//sandbox-disabled-devDependencies`, which pnpm skips)
+and run `pnpm install --lockfile-only`. Restore it into `devDependencies` before
+committing so normal (non-sandbox) checkouts keep it.
+
 # git worktrees
 Always create new worktrees under `/Users/jim/dev/hohjs.worktrees/<branch-name>`
 (eg `git worktree add /Users/jim/dev/hohjs.worktrees/my-feature my-feature`).

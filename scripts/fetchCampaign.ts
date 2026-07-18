@@ -1,5 +1,4 @@
 import { createClient } from "@supabase/supabase-js";
-import { toUint8Array } from "js-base64";
 import { gunzipSync } from "node:zlib";
 
 import { columnarDecode, isColumnarEncoded } from "../src/columnar/decoder";
@@ -28,7 +27,9 @@ if (res.error) {
   process.exit(1);
 }
 
-const compressed = toUint8Array(res.data.data);
+const compressed = Uint8Array.fromBase64(res.data.data, {
+  alphabet: "base64url",
+});
 const decompressed = gunzipSync(Buffer.from(compressed));
 const parsed = JSON.parse(decompressed.toString("utf-8"));
 
