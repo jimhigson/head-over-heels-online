@@ -89,7 +89,7 @@ jobs:
       # act only: the sandbox checkout's origin points at an unreachable local
       # git proxy; the in-container base-ref fetch needs the public URL
       - if: ${{ env.ACT }}
-        run: git remote set-url origin https://github.com/${{ github.repository }}
+        run: git remote set-url origin https://github.com/jimhigson/head-over-heels-online
       # the release before the current production tag, for a third historical
       # comparison point (production's own size delta at the last release).
       # Skipped under act: `gh release list` needs a real token
