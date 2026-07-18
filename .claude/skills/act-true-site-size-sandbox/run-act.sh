@@ -12,7 +12,6 @@ act pull_request -W /tmp/tss-local.yml \
   --env TRUE_SITE_SIZE_OUTPUT_FILE=/tmp/tss-out/comment.md \
   --env NODE_EXTRA_CA_CERTS=/etc/ssl/certs/ca-certificates.crt \
   --env NODE_OPTIONS=--use-openssl-ca \
-  --env CHROME_PATH=/usr/bin/google-chrome-stable \
   --container-options "-v /tmp/tss-out:/tmp/tss-out" \
   -e /tmp/tss-event.json
 echo "ACT_EXIT=$?"
