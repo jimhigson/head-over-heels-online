@@ -206,10 +206,6 @@ export const jumping: Mechanic<CharacterName> = <
     jumpButtonDown &&
     isJumpOffable(effectivelyStandingOn);
 
-  if (!standingOnItemId && startingAJump) {
-    console.log("coyote jump");
-  }
-
   if (!startingAJump) {
     if (standingOnItemId !== null) {
       return {

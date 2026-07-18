@@ -11,8 +11,7 @@
     "src/game/components/App.tsx",
     "src/store/store.ts",
     "src/editor/JsonRoomEditor/monaco-loader.ts",
-    "src/game/mainLoop/frameTiming/FrameTimingStats.ts",
-    "src/game/render/filters/lutTexture/stdLuts/paletteQuantisationLut.ts"
+    "src/game/mainLoop/frameTiming/FrameTimingStats.ts"
   ],
   "repository": {
     "type": "git",
