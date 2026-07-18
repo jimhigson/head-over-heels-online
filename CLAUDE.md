@@ -354,6 +354,11 @@ don't have to change, or so snapshots don't have to regenerate. Once a type is r
 
 Before running any commands, ensure you have the correct node version by running `eval "$(fnm env)" && fnm use`.
 
+**Use the supported node version ONLY. DO NOT ATTEMPT TO RUN ANYTHING IN ANY OTHER NODE VERSION.**
+
+If `fnm` is not installed (eg the Claude web sandbox, which ships an older node), install Node 26 directly before doing anything else:
+`curl -sSLO https://nodejs.org/dist/v26.5.0/node-v26.5.0-linux-x64.tar.xz && tar xf node-v26.5.0-linux-x64.tar.xz` and prefix PATH with its `bin` dir (the SessionStart hook in `.claude/hooks/session-start.sh` does this automatically for web sessions).
+
 Maintain familiarity with the scripts in package.json. Call these with `pnpm` where possible, in preference to running scripts directly.
 
 Use `pnpm fix` to auto-fix linting and formatting errors (runs both eslint --fix and prettier --write).
@@ -438,6 +443,7 @@ a retro upscaled blocky look even on high resolution screens. The other importan
 * NEVER push or raise a PR without asking first, permission to do so must be explicit, not implied
 
 # Claude web sandbox
+The sandbox ships the wrong Node (22): install Node 26 before running any tests - see the Running section above. This is mandatory, not advisory.
 When running in the Claude Code web/remote sandbox, outbound network goes through
 an egress proxy. The `dougmencken_HeadOverHeels` github-tarball devDependency is
 blocked there (codeload.github.com returns 403) and is not in the store, so
