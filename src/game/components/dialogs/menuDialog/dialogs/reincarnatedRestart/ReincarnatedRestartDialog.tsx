@@ -41,6 +41,3 @@ export const ReincarnatedRestartDialog = () => {
     </DialogPortal>
   );
 };
-
-/** default export for preact/compat lazy() */
-export default ReincarnatedRestartDialog;

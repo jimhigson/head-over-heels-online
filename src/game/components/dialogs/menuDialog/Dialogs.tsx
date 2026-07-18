@@ -11,11 +11,11 @@ import { LazyAboutDialog } from "./dialogs/about/AboutDialog.lazy";
 import { LazyCommunityGamesDialog } from "./dialogs/communityGames/CommunityGamesDialog.lazy";
 import { LazyControlOptionsDialog } from "./dialogs/controlOptions/ControlOptionsDialog.lazy";
 import { CrownsDialog } from "./dialogs/crowns/CrownsDialog";
-import { LazyDeathDialog } from "./dialogs/death/DeathDialog.lazy";
+import { DeathDialog } from "./dialogs/death/DeathDialog";
 import { LazyDisplayOptionsDialog } from "./dialogs/displayOptions/DisplayOptionsDialog.lazy";
 import { LazyEmulatedResolutionDialog } from "./dialogs/emulatedResolution/EmulatedResolutionDialog.lazy";
 import { ErrorCaughtDialog } from "./dialogs/errorCaught/ErrorCaughtDialog";
-import { LazyHoldDialog } from "./dialogs/hold/HoldDialog.lazy";
+import { HoldDialog } from "./dialogs/hold/HoldDialog";
 import { LazyInputPresetDialog } from "./dialogs/inputPreset/InputPresetDialog.lazy";
 import { LazyInstallDialog } from "./dialogs/install/InstallDialog.lazy";
 import { MainMenuDialog } from "./dialogs/mainMenu/MainMenuDialog";
@@ -27,7 +27,7 @@ import { LazyOptionsDialog } from "./dialogs/options/OptionsDialog.lazy";
 import { LazyProclaimEmperorDialog } from "./dialogs/proclaimEmperor/ProclaimEmperorDialog.lazy";
 import { LazyQuitGameConfirmDialog } from "./dialogs/quitGameConfirm/QuitGameConfirmDialog.lazy";
 import { LazyReadTheManualDialog } from "./dialogs/ReadTheManualDialog.lazy";
-import { LazyReincarnatedRestartDialog } from "./dialogs/reincarnatedRestart/ReincarnatedRestartDialog.lazy";
+import { ReincarnatedRestartDialog } from "./dialogs/reincarnatedRestart/ReincarnatedRestartDialog";
 import { LazyScoreDialog } from "./dialogs/score/ScoreDialog.lazy";
 import { LazySoundDialog } from "./dialogs/sound/SoundDialog.lazy";
 import { LazySureWantEditorDialog } from "./dialogs/sureWantEditor/SureWantEditorDialog.lazy";
@@ -93,7 +93,7 @@ export const Dialogs = (_emptyProps: EmptyObject) => {
     case "communityGames":
       return <LazyCommunityGamesDialog />;
     case "death":
-      return <LazyDeathDialog {...topOpenMenu.menuParam} />;
+      return <DeathDialog {...topOpenMenu.menuParam} />;
     case "controlOptions":
       return <LazyControlOptionsDialog />;
     case "crowns":
@@ -103,7 +103,7 @@ export const Dialogs = (_emptyProps: EmptyObject) => {
     case "errorCaught":
       return <ErrorCaughtDialog errors={topOpenMenu.menuParam} />;
     case "hold":
-      return <LazyHoldDialog />;
+      return <HoldDialog />;
     case "inputPreset":
       return <LazyInputPresetDialog />;
     case "mainMenu":
@@ -123,7 +123,7 @@ export const Dialogs = (_emptyProps: EmptyObject) => {
     case "readTheManual":
       return <LazyReadTheManualDialog />;
     case "reincarnatedRestart":
-      return <LazyReincarnatedRestartDialog />;
+      return <ReincarnatedRestartDialog />;
     case "score":
       return <LazyScoreDialog />;
     case "displayOptions":

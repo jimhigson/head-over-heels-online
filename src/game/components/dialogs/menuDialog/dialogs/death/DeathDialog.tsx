@@ -215,6 +215,3 @@ export const DeathDialog = (props: DeathDialogProps) => {
     </DialogPortal>
   );
 };
-
-/** default export for preact/compat lazy() */
-export default DeathDialog;

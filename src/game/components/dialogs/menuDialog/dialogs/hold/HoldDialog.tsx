@@ -60,6 +60,3 @@ export const HoldDialog = () => {
     </DialogPortal>
   );
 };
-
-/** default export for preact/compat lazy() */
-export default HoldDialog;
