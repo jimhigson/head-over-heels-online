@@ -198,3 +198,15 @@ gh pr create -f                                       # no extra params
 gh pr checks <n>;  gh run rerun <run-id> --failed
 gh pr merge -sd <n>                                   # squash + delete branch
 ```
+
+## Node version (sandbox)
+
+Use the supported node version ONLY (Node 26, `.node-version`) - never run
+anything on the sandbox's default Node 22. If `node --version` is not 26.x:
+```bash
+cd /tmp && curl -sSLO https://nodejs.org/dist/v26.5.0/node-v26.5.0-linux-x64.tar.xz
+tar xf node-v26.5.0-linux-x64.tar.xz
+export PATH=/tmp/node-v26.5.0-linux-x64/bin:$PATH
+```
+(The SessionStart hook does this automatically once merged; in-container act
+runs are unaffected - setup-node reads `.node-version`.)
