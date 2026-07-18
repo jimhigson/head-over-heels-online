@@ -13,8 +13,8 @@ import {
   nearestQuarterAngle,
 } from "../../../../utils/vectors/rotateXy";
 import {
+  alongAxisOfDirectionXy,
   type AxisXy,
-  doorAlongAxis,
   dotProductXy,
   originXyz,
   subXy,
@@ -320,7 +320,7 @@ export class TransitionSurfaceRenderer<T extends ItemInPlayType>
 
     if (item.type === "wall") {
       this.output.alpha = wallEdgeOnFadeAlpha(
-        doorAlongAxis(item.config.direction),
+        alongAxisOfDirectionXy(item.config.direction),
         cameraAngle,
       );
     }

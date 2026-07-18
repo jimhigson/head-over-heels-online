@@ -4,6 +4,7 @@ import { campaign } from "../../../_generated/originalCampaign/campaign";
 import { type OriginalCampaignRoomId } from "../../../_generated/originalCampaign/OriginalCampaignRoomId";
 import { roomJsonItemsIterable } from "../../../model/RoomJson";
 import { entries } from "../../../utils/entries";
+import { unitVectors } from "../../../utils/vectors/unitVectors";
 import { type Xyz } from "../../../utils/vectors/vectors";
 import { buildRoomJsonDirectionalIndex } from "./buildRoomJsonDirectionalIndex";
 import { maybeLoadExtraCornerShadow } from "./maybeLoadExtraCornerShadow";
@@ -59,8 +60,8 @@ const baseNearCornerCube = (
   ].filter(
     ({ hintShadowDirections }) =>
       hintShadowDirections !== undefined &&
-      hintShadowDirections.includes("right") &&
-      hintShadowDirections.includes("towards"),
+      hintShadowDirections.includes(unitVectors.right) &&
+      hintShadowDirections.includes(unitVectors.towards),
   );
 
 test.each(roomsWithShadow)("%s has the extra corner shadow", (_, roomJson) => {
@@ -87,24 +88,25 @@ test("blacktooth11 loads a gated corner cube at every corner", () => {
     ),
   ];
 
-  const byDirections = new Map(
-    cubes.map((cube) => [cube.hintShadowDirections!.join(","), cube]),
-  );
+  const positionForDirections = (xDirection: Xyz, yDirection: Xyz) =>
+    cubes.find(
+      ({ hintShadowDirections }) =>
+        hintShadowDirections!.includes(xDirection) &&
+        hintShadowDirections!.includes(yDirection),
+    )!.state.position;
 
-  expect<Array<[string, Xyz]>>(
-    (
-      [
-        ["right,towards", { x: -12, y: -12, z: 0 }],
-        ["left,towards", { x: 128, y: -12, z: 0 }],
-        ["left,away", { x: 128, y: 128, z: 0 }],
-        ["right,away", { x: -12, y: 128, z: 0 }],
-      ] as Array<[string, Xyz]>
-    ).map(([key]) => [key, byDirections.get(key)!.state.position]),
-  ).toEqual([
-    ["right,towards", { x: -12, y: -12, z: 0 }],
-    ["left,towards", { x: 128, y: -12, z: 0 }],
-    ["left,away", { x: 128, y: 128, z: 0 }],
-    ["right,away", { x: -12, y: 128, z: 0 }],
+  const { right, towards, left, away } = unitVectors;
+
+  expect<Array<Xyz>>([
+    positionForDirections(right, towards),
+    positionForDirections(left, towards),
+    positionForDirections(left, away),
+    positionForDirections(right, away),
+  ]).toEqual<Array<Xyz>>([
+    { x: -12, y: -12, z: 0 },
+    { x: 128, y: -12, z: 0 },
+    { x: 128, y: 128, z: 0 },
+    { x: -12, y: 128, z: 0 },
   ]);
   expect(cubes.length).toBe(4);
 });

@@ -40,6 +40,41 @@ type ItemConfigMaybeWithMultiplication = {
 };
 
 /**
+ * the in-play form of a json item's config: identical except that direction
+ * names become unit vectors (the json stays a name) - the engine handles
+ * directions only as vectors
+ */
+const inPlayConfig = (jsonItem: JsonItemUnion): unknown => {
+  switch (jsonItem.type) {
+    case "lamp":
+    case "conveyor":
+      return {
+        ...jsonItem.config,
+        direction: unitVectors[jsonItem.config.direction],
+      };
+    case "firedDoughnut":
+      return jsonItem.config.direction === undefined ?
+          jsonItem.config
+        : { direction: unitVectors[jsonItem.config.direction] };
+    case "sceneryPlayer":
+    case "movingPlatform":
+      return {
+        ...jsonItem.config,
+        startDirection: unitVectors[jsonItem.config.startDirection],
+      };
+    case "monster":
+      return "startDirection" in jsonItem.config ?
+          {
+            ...jsonItem.config,
+            startDirection: unitVectors[jsonItem.config.startDirection],
+          }
+        : jsonItem.config;
+    default:
+      return jsonItem.config;
+  }
+};
+
+/**
  * Convert a json item to its in-play item(s). Every in-play item sets its own
  * {@link ItemInPlay.hash hash} (a {@link hashXyzToNumber0to1 hash} of its
  * initial position) inline, used to de-synchronise animations without depending
@@ -197,15 +232,8 @@ export function* loadItemFromJson<
           // spiky balls:
           jsonItem.type === "slidingDeadly" ||
           jsonItem.type === "spring",
-        // lamps hold their direction as a (cardinal) unit vector in-play,
-        // converted here from the json direction name (the json stays a name):
-        config: (jsonItem.type === "lamp" ?
-          {
-            ...jsonItem.config,
-            direction: unitVectors[jsonItem.config.direction],
-          }
-          // eslint-disable-next-line @typescript-eslint/no-explicit-any
-        : jsonItem.config) as any,
+        // eslint-disable-next-line @typescript-eslint/no-explicit-any
+        config: inPlayConfig(jsonItem) as any,
         state,
       };
 

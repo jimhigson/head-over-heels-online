@@ -18,9 +18,9 @@ import {
 } from "../../../../utils/vectors/rotateXy";
 import {
   addXy,
+  alongAxisOfDirectionXy,
   cameraAngleIsOddQuarterTurn,
-  type DirectionXy4,
-  doorAlongAxis,
+  isNegativeSideXy,
   originXy,
   perpendicularAxisXy,
   rotateAxisXyByCameraAngle,
@@ -57,7 +57,7 @@ function* doorLegsGenerator<RoomId extends string, RoomItemId extends string>(
   const inHiddenWall = isDoorPartInHiddenWall(config, cameraQuarterAngle);
   // positions repeat along the door's physical axis (projection rotates them); the
   // sprite uses the apparent axis after the camera rotation:
-  const axis = doorAlongAxis(direction);
+  const axis = alongAxisOfDirectionXy(direction);
   const renderedAxis = rotateAxisXyByCameraAngle(axis, cameraQuarterAngle);
 
   if (inHiddenWall) {
@@ -132,11 +132,11 @@ function* doorLegsGenerator<RoomId extends string, RoomItemId extends string>(
  * away/left doors already have their position at the room end.
  */
 const xyToTranslateToInsideOfRoom = (
-  direction: DirectionXy4,
+  direction: Xyz,
   aabb: Xyz,
   cameraQuarterAngle: Xy,
 ): Xy => {
-  const axis = doorAlongAxis(direction);
+  const axis = alongAxisOfDirectionXy(direction);
   const crossAxis = perpendicularAxisXy(axis);
 
   const doorPostRenderedDepth = 8;
@@ -149,9 +149,7 @@ const xyToTranslateToInsideOfRoom = (
   const crossReversed = axisProjectsReversed(crossAxis, cameraQuarterAngle);
 
   const roomEndCross =
-    direction === "towards" || direction === "right" ?
-      aabb[crossAxis] - doorPostRenderedDepth
-    : 0;
+    isNegativeSideXy(direction) ? aabb[crossAxis] - doorPostRenderedDepth : 0;
   const reversalShift = crossReversed ? doorPostRenderedDepth : 0;
 
   return projectWorldXyzToScreenXy(
@@ -225,7 +223,7 @@ export const doorLegsAppearance: ItemAppearance<"doorLegs", RenderOnceProps> =
       // doors in #blacktooth39 - reduce down to a single sprite:
       const sprite = renderContainerToSprite(pixiRenderer, doorLegsContainer);
 
-      const axis = doorAlongAxis(direction);
+      const axis = alongAxisOfDirectionXy(direction);
       // the legs' art extends over its blocks in the direction the wall runs at
       // the base angle; when the along-wall axis projects reversed on screen the
       // art would hang over the blocks on the wrong side of its anchor, so shift
@@ -297,7 +295,7 @@ export const doorFrameAppearance: ItemAppearance<
           | Campaign<string>
           | undefined)
       : selectMaybeCurrentCampaign(store.getState());
-    const axis = doorAlongAxis(direction);
+    const axis = alongAxisOfDirectionXy(direction);
     const renderedAxis = rotateAxisXyByCameraAngle(axis, cameraQuarterAngle);
 
     // the far post sits at +alongWall from the near post, so it is drawn behind

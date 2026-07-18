@@ -92,7 +92,9 @@ export const loadWall = <RoomId extends string, RoomItemId extends string>(
     hash: hashXyzToNumber0to1(wallPosition),
     id: jsonItemId,
     jsonItemId,
-    config: jsonWall.config,
+    // the json direction name becomes a unit vector in-play (the json stays a
+    // name):
+    config: { ...jsonWall.config, direction: unitVectors[direction] },
     aabb,
     state: {
       ...defaultBaseState(),

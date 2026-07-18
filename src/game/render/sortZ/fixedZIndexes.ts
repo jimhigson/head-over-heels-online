@@ -1,6 +1,6 @@
 import { type ItemInPlayType } from "../../../model/ItemInPlay";
 import { isWallDirectionHiddenAtAngle } from "../../../model/json/WallJsonConfig";
-import { type DirectionXy4, type Xy } from "../../../utils/vectors/vectors";
+import { type Xy, type Xyz } from "../../../utils/vectors/vectors";
 
 /*
  * floating text appears above all 'normal' items. This number must be larger than the
@@ -31,7 +31,7 @@ export const effectiveFixedZIndex = (
     (item.fixedZIndex ??
     (item.type === "wall" &&
       isWallDirectionHiddenAtAngle(
-        (item.config as { direction: DirectionXy4 }).direction,
+        (item.config as { direction: Xyz }).direction,
         cameraAngle,
       )))
   ) ?

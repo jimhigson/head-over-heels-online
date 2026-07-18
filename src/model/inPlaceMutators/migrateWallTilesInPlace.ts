@@ -1,9 +1,11 @@
 import { type SceneryName, type Wall } from "../../sprites/planets";
 import { valuesIter } from "../../utils/entries";
 import {
+  alongAxisOfDirectionXy,
   type DirectionXy4,
   doorAlongAxis,
   type Xy,
+  type Xyz,
 } from "../../utils/vectors/vectors";
 import { type AnyRoomJson } from "../RoomJson";
 import { rotatingSceneryTiles } from "./rotatingSceneryTiles";
@@ -11,13 +13,20 @@ import { rotatingSceneryTiles } from "./rotatingSceneryTiles";
 /**
  * the shape a wall's config could take before every wall was required to
  * carry tiles: near (towards/right) walls had no tiles and, if they were a
- * non-default length, encoded that length in a times property
+ * non-default length, encoded that length in a times property. The direction
+ * is a name in json/old saves, or a unit vector for an in-play wall from a
+ * newer save
  */
 export type LegacyWallConfig = {
-  direction: DirectionXy4;
+  direction: DirectionXy4 | Xyz;
   tiles?: Array<Wall<SceneryName>>;
   times?: Partial<Xy>;
 };
+
+const legacyWallAlongAxis = (direction: LegacyWallConfig["direction"]) =>
+  typeof direction === "string" ?
+    doorAlongAxis(direction)
+  : alongAxisOfDirectionXy(direction);
 
 /**
  * normalise a single wall's config so it carries tiles: tiles are generated
@@ -35,7 +44,7 @@ export const migrateWallConfigInPlace = (
     return;
   }
 
-  const alongAxis = doorAlongAxis(config.direction);
+  const alongAxis = legacyWallAlongAxis(config.direction);
   const length = config.times?.[alongAxis] ?? config.tiles?.length ?? 1;
   config.tiles = Array.from(
     rotatingSceneryTiles(planet, length, positionAlongAxisBlocks),
@@ -56,7 +65,7 @@ export const migrateWallTilesInPlace = (room: AnyRoomJson): void => {
       continue;
     }
     const config = item.config as LegacyWallConfig;
-    const alongAxis = doorAlongAxis(config.direction);
+    const alongAxis = legacyWallAlongAxis(config.direction);
     migrateWallConfigInPlace(config, room.planet, item.position[alongAxis]);
   }
 };

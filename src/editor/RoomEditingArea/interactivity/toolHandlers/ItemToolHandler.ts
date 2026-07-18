@@ -2,6 +2,7 @@ import { produce } from "immer";
 
 import { type DoorConfig } from "../../../../model/json/ItemConfigMap";
 import { store } from "../../../../store/store";
+import { nonZeroVectorClosestDirectionXy4 } from "../../../../utils/vectors/vectors";
 import {
   type EditorItemInPlayUnion,
   type EditorRoomId,
@@ -77,7 +78,7 @@ export class ItemToolHandler
             pointingAt.world.itemId
           ] as EditorItemInPlayUnion<"wall">;
           (draft.config as DoorConfig<EditorRoomId>).direction =
-            wall.config.direction;
+            nonZeroVectorClosestDirectionXy4(wall.config.direction);
         })
         // otherwise, can use as-is
       : tool.item;

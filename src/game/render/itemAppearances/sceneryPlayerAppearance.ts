@@ -2,7 +2,6 @@ import { type IndividualCharacterName } from "../../../model/modelTypes";
 import { isAnimationId } from "../../../sprites/assertIsTextureId";
 import { type AppSpritesheet } from "../../../sprites/spritesheet/variants/AppSpritesheet";
 import { resolveCameraRelativeVectorXy8 } from "../../../utils/vectors/resolveCameraRelativeVector";
-import { unitVectors } from "../../../utils/vectors/unitVectors";
 import { type DirectionXy8 } from "../../../utils/vectors/vectors";
 import { createSprite, type CreateSpriteOptions } from "../createSprite";
 import { createStackedSprites } from "./createStackedSprites";
@@ -52,7 +51,7 @@ export const sceneryPlayerAppearance: ItemAppearance<
   // stepping through intermediate facings mid-turn. Rounding happens only
   // here, at the final sprite-name pick:
   const resolvedRenderDirection = resolveCameraRelativeVectorXy8(
-    unitVectors[startDirection],
+    startDirection,
     cameraAngle,
     isReflection,
   );

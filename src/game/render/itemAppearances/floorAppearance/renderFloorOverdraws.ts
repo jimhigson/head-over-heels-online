@@ -2,21 +2,20 @@ import { Container } from "pixi.js";
 
 import { type ItemTypeUnion } from "../../../../_generated/types/ItemInPlayUnion";
 import { roomItemsIterable, type RoomState } from "../../../../model/RoomState";
-import { wallTimes } from "../../../../model/times";
+import { wallInPlayTimes } from "../../../../model/times";
 import { type AppSpritesheet } from "../../../../sprites/spritesheet/variants/AppSpritesheet";
 import { iterateToContainer } from "../../../../utils/pixi/iterateToContainer";
 import {
   axisProjectsReversed,
   rotateXy,
 } from "../../../../utils/vectors/rotateXy";
-import { unitVectors } from "../../../../utils/vectors/unitVectors";
 import {
   addXyz,
+  dominantAxisXy,
   isNegativeSideXy,
   originXyz,
   perpendicularAxisXy,
   subXyz,
-  tangentAxis,
   type Xy,
   type Xyz,
 } from "../../../../utils/vectors/vectors";
@@ -42,9 +41,7 @@ export const renderFloorOverdraws = (
   const isOnFarSide = (
     item: ItemTypeUnion<"doorFrame" | "wall", string, string>,
   ): boolean =>
-    !isNegativeSideXy(
-      rotateXy(unitVectors[item.config.direction], cameraQuarterAngle),
-    );
+    !isNegativeSideXy(rotateXy(item.config.direction, cameraQuarterAngle));
 
   const floorOverdraws = iterateToContainer(
     roomItemsIterable(roomState.items)
@@ -67,18 +64,15 @@ export const renderFloorOverdraws = (
           config: { direction },
           state: { position: doorOrWallPosition },
         } = item;
-        const apparentDirection = rotateXy(
-          unitVectors[direction],
-          cameraQuarterAngle,
-        );
+        const apparentDirection = rotateXy(direction, cameraQuarterAngle);
 
-        const crossAxis = tangentAxis(direction);
+        const crossAxis = dominantAxisXy(direction);
         const alongAxis = perpendicularAxisXy(crossAxis);
 
         // towards/right items' boxes extend negative, out of the room, so
         // their position (min corner) is off the floor edge by the item's
         // cross-axis extent - the corners anchor at the room-face edge:
-        const outIsNegative = direction === "towards" || direction === "right";
+        const outIsNegative = isNegativeSideXy(direction);
 
         // the corner sprites extend from their anchor in the rendered axis's
         // base screen direction; when the world along-axis projects reversed
@@ -102,7 +96,7 @@ export const renderFloorOverdraws = (
           ...projectWorldXyzToScreenXy(anchorWorld, cameraQuarterAngle),
           times:
             item.type === "wall" ?
-              wallTimes(item.config)
+              wallInPlayTimes(item.config)
               // doors are two blocks wide:
             : { [alongAxis]: 2 },
           cameraQuarterAngle,

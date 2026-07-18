@@ -4,11 +4,7 @@ import { type ItemTypeUnion } from "../_generated/types/ItemInPlayUnion";
 import { type ShadowCastSpriteOptions } from "../game/render/ShadowCastSpriteOptions";
 import { type BracketedSegmentOptions } from "../sound/soundUtils/createBracketedSound";
 import { type SceneryName } from "../sprites/planets";
-import {
-  type Aabb,
-  type DirectionXy4,
-  type Xyz,
-} from "../utils/vectors/vectors";
+import { type Aabb, type Xy, type Xyz } from "../utils/vectors/vectors";
 import { type ItemState } from "./ItemState";
 import { type ExitGameRoomId } from "./json/ItemConfigMap";
 import {
@@ -55,7 +51,8 @@ export type ItemInPlayType = (typeof itemInPlayTypes)[number];
 export type SwitchSetting = "left" | "right";
 
 type DoorFrameConfig<RoomId extends string> = {
-  direction: DirectionXy4;
+  /** the door's world direction as a cardinal unit vector */
+  direction: Xyz;
   /**
    * whether the door sits on a floor edge (a world-space fact). The door is in
    * a hidden wall when this is true AND its wall faces the camera at the
@@ -69,14 +66,34 @@ type DoorFrameConfig<RoomId extends string> = {
   part: "far" | "near" | "top";
 };
 type DoorLegsConfig = {
-  direction: DirectionXy4;
+  /** the door's world direction as a cardinal unit vector */
+  direction: Xyz;
   /** see {@link DoorFrameConfig.onFloorEdge} */
   onFloorEdge: boolean;
   // equal to the z of the door
   height: number;
 };
 
-type ItemInPlayConfigMap<RoomId extends string, RoomItemId extends string> = {
+/**
+ * on-disk (json) configs describe directions with friendly names ("away",
+ * "towardsRight"); in-play the engine holds them as unit vectors so that all
+ * direction handling is arithmetic. This maps a json config (union) member's
+ * `startDirection` name to its vector form, distributing over config unions
+ * (members without a startDirection pass through unchanged)
+ */
+type VectorisedStartDirection<C> =
+  C extends { startDirection: string } ?
+    Omit<C, "startDirection"> & {
+      /** the starting facing as a unit vector */
+      startDirection: Xyz;
+    }
+  : C;
+
+type ItemInPlayConfigMap<
+  RoomId extends string,
+  RoomItemId extends string,
+  ScN extends SceneryName,
+> = {
   portal: {
     toRoom: ExitGameRoomId | RoomId;
     /**
@@ -108,6 +125,37 @@ type ItemInPlayConfigMap<RoomId extends string, RoomItemId extends string> = {
   lamp: Omit<JsonItemConfig<"lamp", RoomId, RoomItemId>, "direction"> & {
     direction: Xyz;
   };
+  wall: Omit<JsonItemConfig<"wall", RoomId, RoomItemId, ScN>, "direction"> & {
+    /** the wall's outward-facing world direction as a cardinal unit vector */
+    direction: Xyz;
+  };
+  /**
+   * the json conveyor config is a union discriminated on the direction name
+   * (constraining `times` to the belt's axis); in-play it flattens to a
+   * direction vector, with the times constraint already enforced at the json
+   * boundary
+   */
+  conveyor: Omit<
+    JsonItemConfig<"conveyor", RoomId, RoomItemId>,
+    "direction" | "times"
+  > & {
+    /** the direction the belt carries items, as a cardinal unit vector */
+    direction: Xyz;
+    times?: Partial<Xy>;
+  };
+  sceneryPlayer: VectorisedStartDirection<
+    JsonItemConfig<"sceneryPlayer", RoomId, RoomItemId>
+  >;
+  monster: VectorisedStartDirection<
+    JsonItemConfig<"monster", RoomId, RoomItemId>
+  >;
+  movingPlatform: VectorisedStartDirection<
+    JsonItemConfig<"movingPlatform", RoomId, RoomItemId>
+  >;
+  firedDoughnut: {
+    /** the direction of travel as a unit vector, if fired with one */
+    direction?: Xyz;
+  };
   // disappearing can be turned off (#blacktooth6 aka room with first doughnuts) so it is state, not config
   block: Omit<JsonItemConfig<"block", RoomId, RoomItemId>, "disappearing">;
   floor: JsonItemConfig<"floor", RoomId, RoomItemId> & {
@@ -118,11 +166,11 @@ type ItemInPlayConfigMap<RoomId extends string, RoomItemId extends string> = {
     };
     /**
      * the sides where the physical footprint was expanded (by a constant
-     * amount) to carry the player through a doorway. How much of the
-     * expansion is *drawn* on each side depends on the camera angle, derived
-     * at render time
+     * amount) to carry the player through a doorway, as outward cardinal unit
+     * vectors. How much of the expansion is *drawn* on each side depends on
+     * the camera angle, derived at render time
      */
-    doorExpandedSides: Array<DirectionXy4>;
+    doorExpandedSides: Array<Xyz>;
   };
   doorFrame: DoorFrameConfig<RoomId>;
   doorLegs: DoorLegsConfig;
@@ -138,8 +186,8 @@ export type ItemInPlayConfig<
   ScN extends SceneryName = SceneryName,
 > =
   // config type explicitly given for this item type:
-  T extends keyof ItemInPlayConfigMap<RoomId, RoomItemId> ?
-    ItemInPlayConfigMap<RoomId, RoomItemId>[T]
+  T extends keyof ItemInPlayConfigMap<RoomId, RoomItemId, ScN> ?
+    ItemInPlayConfigMap<RoomId, RoomItemId, ScN>[T]
   : // fall back to the config from the json types:
   T extends JsonItemType ? JsonItemConfig<T, RoomId, RoomItemId, ScN>
   : EmptyObject;
@@ -195,10 +243,10 @@ export type ItemInPlay<
 
   /**
    * marks a hint shadow (eg the decorative corner cube): the shadow only
-   * casts when every listed direction's wall is hidden (faces the camera) at
-   * the current angle
+   * casts when every listed direction's (given as outward cardinal unit
+   * vectors) wall is hidden (faces the camera) at the current angle
    */
-  hintShadowDirections?: Array<DirectionXy4>;
+  hintShadowDirections?: Array<Xyz>;
 
   /**
    * if true casts shadow while stood on. Most items can cast casting a shadow in this case, since

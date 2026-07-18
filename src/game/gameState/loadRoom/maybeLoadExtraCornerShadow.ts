@@ -144,7 +144,10 @@ export function* maybeLoadExtraCornerShadow<
           },
           castsShadowWhileStoodOn: false,
           // only casts when this corner is the camera-near one:
-          hintShadowDirections: [xDirection, yDirection],
+          hintShadowDirections: [
+            unitVectors[xDirection],
+            unitVectors[yDirection],
+          ],
           config: emptyObject,
           aabb: cubeSize,
           fixedZIndex: nonRenderingItemFixedZIndex,

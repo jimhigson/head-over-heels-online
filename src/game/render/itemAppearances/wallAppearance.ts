@@ -13,11 +13,11 @@ import {
   nearestQuarterAngle,
   rotateXy,
 } from "../../../utils/vectors/rotateXy";
-import { unitVectors } from "../../../utils/vectors/unitVectors";
 import {
+  alongAxisOfDirectionXy,
+  dominantAxisXy,
+  isNegativeSideXy,
   originXy,
-  perpendicularAxisXy,
-  tangentAxis,
   type Xy,
 } from "../../../utils/vectors/vectors";
 import {
@@ -69,7 +69,7 @@ export const wallAppearance = itemAppearanceRenderMemoised<"wall">(
     // isWallDirectionHiddenAtAngle, which excludes the same wall from z-sorting
     // in effectiveFixedZIndex - keeping draw and sort in lockstep:
     const renderedDirection = resolveCameraRelativeVectorXy4(
-      unitVectors[direction],
+      direction,
       cameraAngle,
       false,
     );
@@ -79,7 +79,7 @@ export const wallAppearance = itemAppearanceRenderMemoised<"wall">(
 
     // the tiles still repeat along the wall's physical axis (the projection
     // rotates them onto the screen):
-    const alongAxis = perpendicularAxisXy(tangentAxis(direction));
+    const alongAxis = alongAxisOfDirectionXy(direction);
     const alongReversed = axisProjectsReversed(alongAxis, cameraQuarterAngle);
 
     // the tile apparently furthest from the camera - the array-last tile at the
@@ -229,9 +229,9 @@ export const wallAppearance = itemAppearanceRenderMemoised<"wall">(
     // position (min corner); towards/right walls' boxes extend negative (out of the
     // room), so their room face is a wall-thickness away from the position:
     const roomFaceXy =
-      direction === "towards" || direction === "right" ?
+      isNegativeSideXy(direction) ?
         projectWorldXyzToScreenXy(
-          { [tangentAxis(direction)]: item.aabb[tangentAxis(direction)] },
+          { [dominantAxisXy(direction)]: item.aabb[dominantAxisXy(direction)] },
           cameraQuarterAngle,
         )
       : originXy;

@@ -5,12 +5,11 @@ import { type AppSpritesheet } from "../../../sprites/spritesheet/variants/AppSp
 import { neverTime } from "../../../utils/neverTime";
 import { maybeRenderContainerToAnimatedSprite } from "../../../utils/pixi/renderContainerToSprite";
 import { nearestQuarterAngle, rotateXy } from "../../../utils/vectors/rotateXy";
-import { unitVectors } from "../../../utils/vectors/unitVectors";
 import {
-  type DirectionXy4,
   isNegativeSideXy,
   type Xy,
   xyEqual,
+  type Xyz,
 } from "../../../utils/vectors/vectors";
 import { createSprite } from "../createSprite";
 import { type ItemAppearance } from "./ItemAppearance";
@@ -23,7 +22,7 @@ type ConveyorRenderProps = {
   disabled: boolean;
   roomTimeStoppedMoving?: number;
   // normally won't change, but then there are switches...
-  direction: DirectionXy4;
+  direction: Xyz;
   /** the belt art and tiling resolve per camera angle */
   cameraQuarterAngle: Xy;
 };
@@ -49,7 +48,7 @@ const staggerAnimation = (
 };
 
 const createRendering = (
-  direction: DirectionXy4,
+  direction: Xyz,
   times: Partial<Xy> | undefined,
   spritesheet: AppSpritesheet,
   frameCount: number,
@@ -58,10 +57,7 @@ const createRendering = (
   // pick the directional sprite + animation sense for how the conveyor
   // appears once the camera has apparentDirection - the direction stays a vector
   // throughout, with the axis and belt sense read straight off it:
-  const apparentDirection = rotateXy(
-    unitVectors[direction],
-    cameraQuarterAngle,
-  );
+  const apparentDirection = rotateXy(direction, cameraQuarterAngle);
   const axis =
     Math.abs(apparentDirection.y) > Math.abs(apparentDirection.x) ? "y" : "x";
   const reverse = isNegativeSideXy(apparentDirection);
@@ -128,7 +124,8 @@ const conveyorAppearanceImpl: ItemAppearance<
   const disabledChanged = !!disabled !== !!currentlyRenderedProps?.disabled;
   const rerender =
     !currentOutput ||
-    direction !== currentlyRenderedProps?.direction ||
+    currentlyRenderedProps === undefined ||
+    !xyEqual(direction, currentlyRenderedProps.direction) ||
     !xyEqual(cameraQuarterAngle, currentlyRenderedProps.cameraQuarterAngle) ||
     disabledChanged;
 

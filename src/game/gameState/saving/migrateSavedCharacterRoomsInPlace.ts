@@ -6,20 +6,45 @@ import {
 import { type ItemInPlayConfig } from "../../../model/ItemInPlay";
 import { roomItemsIterable } from "../../../model/RoomState";
 import { valuesIter } from "../../../utils/entries";
+import { unitVectors } from "../../../utils/vectors/unitVectors";
 import {
-  type DirectionXy4,
+  alongAxisOfDirectionXy,
+  type Direction8Xyz,
   doorAlongAxis,
   type Xyz,
 } from "../../../utils/vectors/vectors";
 import { fineXyzToBlockXyz } from "../../render/projections";
 import { type SavedCharacterRooms } from "./SavedGameState";
 
+/**
+ * a direction as an old save could hold it (a friendly name) or as the in-play
+ * model now holds it (a unit vector) - old saves are normalised to vectors
+ */
+type MaybeNamedDirection = Direction8Xyz | Xyz;
+
+const asDirectionVector = (direction: MaybeNamedDirection): Xyz =>
+  typeof direction === "string" ? unitVectors[direction] : direction;
+
+/** in-place: convert a config/state's direction-ish field from name to vector */
+const vectoriseInPlace = <F extends string>(
+  holder: Partial<Record<F, MaybeNamedDirection>>,
+  field: F,
+): void => {
+  const value: MaybeNamedDirection | undefined = holder[field];
+  if (typeof value === "string") {
+    holder[field] = unitVectors[value];
+  }
+};
+
 type LegacyFloorConfig = Omit<
   ItemInPlayConfig<"floor", string, string>,
   "doorExpandedSides"
 > & {
-  /** saves from before floors carried this field omit it; derived on load */
-  doorExpandedSides?: Array<DirectionXy4>;
+  /**
+   * saves from before floors carried this field omit it (derived on load);
+   * saves from before directions were vectorised carry side names
+   */
+  doorExpandedSides?: Array<MaybeNamedDirection>;
 };
 
 /**
@@ -37,26 +62,28 @@ const migrateFloorConfigInPlace = (
   aabb: Xyz,
 ): void => {
   if (config.doorExpandedSides !== undefined) {
+    // saves written when the sides were names normalise to vectors:
+    config.doorExpandedSides = config.doorExpandedSides.map(asDirectionVector);
     return;
   }
 
   const { naturalFootprint } = config;
-  const doorExpandedSides: Array<DirectionXy4> = [];
+  const doorExpandedSides: Array<Xyz> = [];
 
   const shiftX = naturalFootprint.position.x - position.x;
   if (shiftX > 0) {
-    doorExpandedSides.push("right");
+    doorExpandedSides.push(unitVectors.right);
   }
   if (aabb.x - naturalFootprint.aabb.x > shiftX) {
-    doorExpandedSides.push("left");
+    doorExpandedSides.push(unitVectors.left);
   }
 
   const shiftY = naturalFootprint.position.y - position.y;
   if (shiftY > 0) {
-    doorExpandedSides.push("towards");
+    doorExpandedSides.push(unitVectors.towards);
   }
   if (aabb.y - naturalFootprint.aabb.y > shiftY) {
-    doorExpandedSides.push("away");
+    doorExpandedSides.push(unitVectors.away);
   }
 
   config.doorExpandedSides = doorExpandedSides;
@@ -67,7 +94,8 @@ const migrateFloorConfigInPlace = (
  * embed both the room json and the loaded (in-play) items exactly as the
  * version that wrote them loaded them, so a save from an old version can
  * carry formats the current code no longer loads - eg walls without tiles
- * (pre-v25); this normalises them before the save is brought into play.
+ * (pre-v25), or direction names where the in-play model now holds unit
+ * vectors; this normalises them before the save is brought into play.
  */
 export const migrateSavedCharacterRoomsInPlace = <RoomId extends string>(
   savedCharacterRooms: SavedCharacterRooms<RoomId>,
@@ -77,20 +105,60 @@ export const migrateSavedCharacterRoomsInPlace = <RoomId extends string>(
     migrateWallTilesInPlace(room.roomJson);
 
     for (const item of roomItemsIterable(room.items)) {
-      if (item.type === "wall") {
-        const config = item.config as LegacyWallConfig;
-        const alongAxis = doorAlongAxis(config.direction);
-        migrateWallConfigInPlace(
-          config,
-          room.planet,
-          fineXyzToBlockXyz(item.state.position)[alongAxis],
-        );
-      } else if (item.type === "floor") {
-        migrateFloorConfigInPlace(
-          item.config as LegacyFloorConfig,
-          item.state.position,
-          item.aabb,
-        );
+      if (item.hintShadowDirections !== undefined) {
+        item.hintShadowDirections =
+          item.hintShadowDirections.map(asDirectionVector);
+      }
+
+      switch (item.type) {
+        case "wall": {
+          const config = item.config as unknown as LegacyWallConfig;
+          const alongAxis =
+            typeof config.direction === "string" ?
+              doorAlongAxis(config.direction)
+            : alongAxisOfDirectionXy(config.direction);
+          migrateWallConfigInPlace(
+            config,
+            room.planet,
+            fineXyzToBlockXyz(item.state.position)[alongAxis],
+          );
+          vectoriseInPlace(config, "direction");
+          break;
+        }
+        case "floor":
+          migrateFloorConfigInPlace(
+            item.config as LegacyFloorConfig,
+            item.state.position,
+            item.aabb,
+          );
+          break;
+        case "doorFrame":
+        case "doorLegs":
+        case "lamp":
+        case "firedDoughnut":
+          vectoriseInPlace(
+            item.config as { direction?: MaybeNamedDirection },
+            "direction",
+          );
+          break;
+        case "conveyor":
+          vectoriseInPlace(
+            item.config as { direction: MaybeNamedDirection },
+            "direction",
+          );
+          vectoriseInPlace(
+            item.state as { direction: MaybeNamedDirection },
+            "direction",
+          );
+          break;
+        case "monster":
+        case "movingPlatform":
+        case "sceneryPlayer":
+          vectoriseInPlace(
+            item.config as { startDirection?: MaybeNamedDirection },
+            "startDirection",
+          );
+          break;
       }
     }
   }

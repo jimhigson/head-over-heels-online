@@ -8,11 +8,11 @@ import {
 import { axisProjectsReversed } from "../../../utils/vectors/rotateXy";
 import {
   type Aabb,
-  type DirectionXy4,
-  doorAlongAxis,
+  alongAxisOfDirectionXy,
+  dominantAxisXy,
+  isNegativeSideXy,
   originXyz,
   perpendicularAxisXy,
-  tangentAxis,
   type Xy,
   type Xyz,
 } from "../../../utils/vectors/vectors";
@@ -59,7 +59,7 @@ export const isDoorPartInHiddenWall = (
     direction,
     onFloorEdge,
   }: {
-    direction: DirectionXy4;
+    direction: Xyz;
     onFloorEdge: boolean;
   },
   cameraAngle: Xy,
@@ -130,12 +130,12 @@ const wallRenderBox = (
   item: RenderBoxableItem,
   cameraAngle: Xy,
 ): RenderBox | undefined => {
-  const { direction } = item.config as { direction: DirectionXy4 };
+  const { direction } = item.config as { direction: Xyz };
   if (isWallDirectionHiddenAtAngle(direction, cameraAngle)) {
     return undefined;
   }
-  const alongAxis = doorAlongAxis(direction);
-  const thicknessAxis = tangentAxis(direction);
+  const alongAxis = alongAxisOfDirectionXy(direction);
+  const thicknessAxis = dominantAxisXy(direction);
 
   const renderAabb: Xyz = {
     ...originXyz,
@@ -145,7 +145,7 @@ const wallRenderBox = (
   // the wall draws on its room-side face: towards/right walls' boxes extend
   // negative (out of the room), so the drawn plane is a wall-thickness from
   // the position:
-  const outIsNegative = direction === "towards" || direction === "right";
+  const outIsNegative = isNegativeSideXy(direction);
   const renderAabbOffset: Aabb | undefined =
     outIsNegative ?
       {
@@ -161,12 +161,12 @@ const doorFrameRenderBox = (
   cameraAngle: Xy,
 ): RenderBox => {
   const { direction, part } = item.config as {
-    direction: DirectionXy4;
+    direction: Xyz;
     part: "far" | "near" | "top";
   };
-  const alongAxis = doorAlongAxis(direction);
+  const alongAxis = alongAxisOfDirectionXy(direction);
   const throughAxis = perpendicularAxisXy(alongAxis);
-  const outIsNegative = direction === "towards" || direction === "right";
+  const outIsNegative = isNegativeSideXy(direction);
   const alongReversed = axisProjectsReversed(alongAxis, cameraAngle);
 
   // the tunnel: physical aabbs extend a block out of the room; the drawn box
@@ -226,7 +226,7 @@ const doorLegsRenderBox = (
   cameraAngle: Xy,
 ): RenderBox | undefined => {
   const config = item.config as {
-    direction: DirectionXy4;
+    direction: Xyz;
     onFloorEdge: boolean;
     height: number;
   };
@@ -234,10 +234,9 @@ const doorLegsRenderBox = (
     // legs in a visible wall render within their physical box:
     return undefined;
   }
-  const alongAxis = doorAlongAxis(config.direction);
+  const alongAxis = alongAxisOfDirectionXy(config.direction);
   const throughAxis = perpendicularAxisXy(alongAxis);
-  const outIsNegative =
-    config.direction === "towards" || config.direction === "right";
+  const outIsNegative = isNegativeSideXy(config.direction);
 
   // in a hidden wall the legs draw only the floating threshold:
   const renderAabb: Xyz = {
@@ -259,7 +258,7 @@ const floorRenderBox = (
   cameraAngle: Xy,
 ): RenderBox => {
   const { doorExpandedSides } = item.config as {
-    doorExpandedSides: Array<DirectionXy4>;
+    doorExpandedSides: Array<Xyz>;
   };
 
   const renderAabb: Xyz = {
@@ -281,10 +280,10 @@ const floorRenderBox = (
   // floor rounds to the device grid as one, exactly as when the expansion
   // was baked into the loaded (camera-rotated) room model:
   for (const side of doorExpandedSides) {
-    if (side !== "away" && side !== "left") {
+    if (isNegativeSideXy(side)) {
       continue;
     }
-    const axis = perpendicularAxisXy(doorAlongAxis(side));
+    const axis = perpendicularAxisXy(alongAxisOfDirectionXy(side));
     renderAabb[axis] += floorBackEdgeOverhangPx;
     const axisReversed =
       axis === "x" ?

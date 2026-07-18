@@ -1,11 +1,9 @@
 import { type ItemTypeUnion } from "../../../_generated/types/ItemInPlayUnion";
 import { type RoomState } from "../../../model/RoomState";
 import { stoodOnItem } from "../../../model/stoodOnItemsLookup";
-import { unitVectors } from "../../../utils/vectors/unitVectors";
 import {
-  nonZeroVectorClosestDirectionXy4,
-  oppositeDirection,
   originXyz,
+  roundsToCardinalXy4,
   scaleXyz,
 } from "../../../utils/vectors/vectors";
 import { type GameState } from "../../gameState/GameState";
@@ -79,15 +77,20 @@ export const onConveyor: Mechanic<FreeItemTypes> = <
     speedMultiplier === 1 &&
     isHeels(item) &&
     item.state.action === "moving" &&
-    nonZeroVectorClosestDirectionXy4(item.state.facing) ===
-      oppositeDirection(direction);
+    // heels' facing rounds to the exact opposite of the belt's direction:
+    roundsToCardinalXy4(
+      item.state.facing.x,
+      item.state.facing.y,
+      -direction.x,
+      -direction.y,
+    );
 
   const conveyorSpeed =
     heelsWalkingAgainst ?
       moveSpeedPixPerMs.heels
     : conveyorSpeedPixPerMs * speedMultiplier;
 
-  const conveyorVelocity = scaleXyz(unitVectors[direction], conveyorSpeed);
+  const conveyorVelocity = scaleXyz(direction, conveyorSpeed);
 
   recordActedOnBy(standingOn.id, item, room, true, false);
 

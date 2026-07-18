@@ -1,6 +1,9 @@
 import { type SceneryName, type Wall } from "../../sprites/planets";
-import { unitVectors } from "../../utils/vectors/unitVectors";
-import { type DirectionXy4, type Xy } from "../../utils/vectors/vectors";
+import {
+  type DirectionXy4,
+  type Xy,
+  type Xyz,
+} from "../../utils/vectors/vectors";
 
 /**
  * the json config for a wall.
@@ -17,27 +20,22 @@ export type WallJsonConfig<ScN extends SceneryName = SceneryName> = {
   tiles: Array<Wall<ScN>>;
 };
 
-export const isWallHidden = (direction: DirectionXy4) => {
-  return direction === "towards" || direction === "right";
-};
-
 /**
- * whether a wall with the given physical direction is one of the two hidden
- * (camera-facing, undrawn) walls at the given camera angle. Pure - the room
- * model holds nothing angle-dependent; hidden-ness is derived wherever it is
- * consumed. On the hot z-sort path, so the direction's unit vector is rotated
- * inline without allocating: hidden ⟺ the rotated vector lies in the
- * {towards, right} half-plane (x + y < 0)
+ * whether a wall with the given physical direction (an in-play cardinal unit
+ * vector) is one of the two hidden (camera-facing, undrawn) walls at the given
+ * camera angle. Pure - the room model holds nothing angle-dependent;
+ * hidden-ness is derived wherever it is consumed. On the hot z-sort path, so
+ * the direction is rotated inline without allocating: hidden ⟺ the rotated
+ * vector lies in the {towards, right} half-plane (x + y < 0)
  */
 export const isWallDirectionHiddenAtAngle = (
-  direction: DirectionXy4,
+  direction: Xyz,
   cameraAngle: Xy,
 ): boolean => {
-  const directionVector = unitVectors[direction];
   return (
-    directionVector.x * cameraAngle.x -
-      directionVector.y * cameraAngle.y +
-      (directionVector.x * cameraAngle.y + directionVector.y * cameraAngle.x) <
+    direction.x * cameraAngle.x -
+      direction.y * cameraAngle.y +
+      (direction.x * cameraAngle.y + direction.y * cameraAngle.x) <
     0
   );
 };

@@ -3,12 +3,12 @@ import {
   doorPostHeightPx,
 } from "../../../game/gameState/loadRoom/loadDoor";
 import { fineXyzToBlockXyz } from "../../../game/render/projections";
-import { completeTimesXy, wallTimes } from "../../../model/times";
+import { completeTimesXy, wallInPlayTimes } from "../../../model/times";
 import { epsilon } from "../../../utils/epsilon";
 import {
   addXyz,
-  perpendicularAxisXy,
-  tangentAxis,
+  alongAxisOfDirectionXy,
+  dominantAxisXy,
   type Xy,
   type Xyz,
 } from "../../../utils/vectors/vectors";
@@ -50,14 +50,12 @@ export const itemToolPutDownLocation = (
       state: { position: wallPosition },
     } = pointingAtItem;
 
-    const currentWallTimes: Xy = completeTimesXy(wallTimes(wallConfig));
+    const currentWallTimes: Xy = completeTimesXy(wallInPlayTimes(wallConfig));
 
     /** axis running along the wall the door sits on */
-    const alongWallAxis = perpendicularAxisXy(
-      tangentAxis(wallConfig.direction),
-    );
+    const alongWallAxis = alongAxisOfDirectionXy(wallConfig.direction);
     /** axis for direction of travel through the doorway */
-    const doorDirectionAxis = tangentAxis(wallConfig.direction);
+    const doorDirectionAxis = dominantAxisXy(wallConfig.direction);
 
     if (currentWallTimes[alongWallAxis] < 2) {
       return undefined; // wall not big enough for a door
