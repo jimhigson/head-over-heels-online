@@ -198,3 +198,15 @@ gh pr create -f                                       # no extra params
 gh pr checks <n>;  gh run rerun <run-id> --failed
 gh pr merge -sd <n>                                   # squash + delete branch
 ```
+
+## Node version (sandbox)
+
+Use the supported node version ONLY (see `.node-version`) - the sandbox's
+provisioned node is likely to be out of date; never run anything on it. If
+`node --version` doesn't match `.node-version`, run the SessionStart hook,
+which resolves and installs the right version and prints the PATH to use:
+```bash
+CLAUDE_CODE_REMOTE=true CLAUDE_ENV_FILE=/tmp/node-env CLAUDE_PROJECT_DIR=$PWD \
+  ./.claude/hooks/session-start.sh && source /tmp/node-env
+```
+(In-container act runs are unaffected - setup-node reads `.node-version`.)

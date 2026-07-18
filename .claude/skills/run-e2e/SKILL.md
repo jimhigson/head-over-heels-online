@@ -1,6 +1,6 @@
 ---
 name: run-e2e
-description: "Run the Playwright e2e / visual-regression suite. Use when asked to run e2e tests, visual regression, or room snapshots — especially for the chromium-desktop project or in a sandbox where the browser download is blocked."
+description: "Read BEFORE invoking `playwright test` in any form, for any reason — running e2e, visual regression, room snapshots, or verifying a change 'via e2e'. Covers required project scoping (chromium-desktop, matching CI), the sandbox browser-build bridge, and the pnpm webServer failure. Also load on these failure signatures: every test failing at browserType.launch, 'Executable doesn't exist at /opt/pw-browsers/...', or 'Process from config.webServer was not able to start'."
 ---
 
 # Running e2e / visual regression
@@ -13,8 +13,26 @@ mode:
 pnpm build:game --mode visual-regression
 ```
 
-Reuse `dist/` if nothing in the game changed since the last build. CI runs
-**only** `--project=chromium-desktop`; match that locally.
+**Never run the bare multi-project suite in the sandbox without installing
+the browsers first** — `playwright test` without `--project` fails every test
+whose browser is missing, and the run tells you nothing. Start with
+`--project=chromium-desktop --project=mobile-chrome` (the E2E Gate pair);
+webkit also works here after
+the setup in the WebKit section below (`playwright install webkit` + apt
+libs), so add `--project=webkit-desktop` when a change affects rendering and
+deserves second-engine coverage. Firefox is untested in the sandbox.
+
+Reuse `dist/` if nothing in the game changed since the last build.
+
+What CI actually runs (do not trust folklore - read the workflows):
+- **E2E Gate** (`e2e.yml`): `--project chromium-desktop --project mobile-chrome`
+- **Visual Regression Gate** (`visual-regression.yml`): a matrix of
+  chromium-desktop + mobile-chrome (linux), webkit-desktop + mobile-safari
+  (macOS), chromium-desktop (windows), mobile-safari-portrait.
+
+So local gate-parity for the functional e2e specs means BOTH
+`chromium-desktop` and `mobile-chrome`. For snapshot coverage add
+webkit-desktop (works in the sandbox - see below).
 
 ## Visual regression only
 
@@ -113,3 +131,34 @@ settles). Ignore `Audio decode failed` warnings (no headless audio codec).
 
 GitHub CI jobs — e2e and the native Tauri builds especially — sometimes fail
 randomly; re-run before assuming a real break.
+
+## pnpm webServer failure in the sandbox
+
+`playwright test` dying immediately with
+`Process from config.webServer was not able to start. Exit code: 1` is usually
+NOT the server: the webServer command is `pnpm preview:game`, and pnpm's
+verify-deps pre-check fails when `package.json` lists the
+`dougmencken_HeadOverHeels` git dep but `node_modules` was installed with it
+disabled (the sandbox install workaround). Fix for the session: temporarily
+remove that devDependency line from package.json (leave `pnpm-lock.yaml`
+untouched) so pnpm's check passes; **restore the line before committing**.
+
+## Node version in the sandbox
+
+The sandbox's provisioned node is likely to be out of date vs `.node-version`
+(`engines`), and `fnm` is not installed. Tests (unit and e2e fixture helpers)
+use recent node APIs (eg `Uint8Array.prototype.toBase64`) - the failure
+signature on an outdated node is `bytes.toBase64 is not a function` in
+`compressObject.ts` across the saves/persistence/errorDialog specs. Do not
+classify these as flakes or "environmental" and move on: get the right node
+first via the SessionStart hook (resolves `.node-version` and installs it):
+
+```bash
+CLAUDE_CODE_REMOTE=true CLAUDE_ENV_FILE=/tmp/node-env CLAUDE_PROJECT_DIR=$PWD \
+  ./.claude/hooks/session-start.sh && source /tmp/node-env
+```
+
+(vite builds may happen to work on the outdated node, and the in-container
+act/TSS runs use `.node-version` via setup-node regardless - only host-side
+test runs are affected.)
+

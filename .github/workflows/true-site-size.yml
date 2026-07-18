@@ -86,9 +86,15 @@ jobs:
           n=$(gh pr list --state open --base main --json number,headRefName \
                 --jq 'map(select(.headRefName | startswith("release-please--")))[0].number // empty')
           echo "number=$n" >> "$GITHUB_OUTPUT"
+      # act only: the sandbox checkout's origin points at an unreachable local
+      # git proxy; the in-container base-ref fetch needs the public URL
+      - if: ${{ env.ACT }}
+        run: git remote set-url origin https://github.com/jimhigson/head-over-heels-online
       # the release before the current production tag, for a third historical
-      # comparison point (production's own size delta at the last release)
+      # comparison point (production's own size delta at the last release).
+      # Skipped under act: `gh release list` needs a real token
       - id: prev-production
+        if: ${{ !env.ACT }}
         env:
           GH_TOKEN: ${{ github.token }}
         run: |
@@ -100,6 +106,13 @@ jobs:
           IS_RELEASE_PLEASE_PR: ${{ startsWith(github.head_ref, 'release-please--') }}
           PREV_PRODUCTION_TAG: ${{ steps.prev-production.outputs.tag }}
         run: |
+          # local `act` runs can pass --env TSS_BASE_REFS="main" to compare
+          # against fewer refs (each ref is a full build+measure); unset in CI
+          if [ -n "${TSS_BASE_REFS:-}" ]; then
+            json=$(printf '%s\n' $TSS_BASE_REFS | jq -R . | jq -sc .)
+            echo "json=$json" >> "$GITHUB_OUTPUT"
+            exit 0
+          fi
           refs=()
           if [ "${{ github.event_name }}" = "pull_request" ] && [ "$IS_RELEASE_PLEASE_PR" != "true" ]; then
             refs+=("main")

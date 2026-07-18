@@ -189,7 +189,7 @@ and we trust that to pre-load in the service worker for us, so the actual game e
  *  when destructuring arrays, if you don't need some of the first elements, use a hole in the array. eg: `const [,foo] = array;` not `const [_ignored, foo] = array;` 
  * also, use destructuring even if just getting the first element: `const [foo] = array` not `const foo = array[0]`
  *  All typescript types should appear with an initial capital letter
- *	Project uses pnpm and Node.js 26.
+ *	Project uses pnpm and the Node.js version given in `.node-version`.
  *	Prettier-style formatting, with the experimental 'curious ternary' option enabled.
  *  do not run code through prettier or linting etc after editing - assume the work is a work in progress
  *	Code avoids legacy constructs and uses satisfies never for exhaustive switches.
@@ -354,6 +354,10 @@ don't have to change, or so snapshots don't have to regenerate. Once a type is r
 
 Before running any commands, ensure you have the correct node version by running `eval "$(fnm env)" && fnm use`.
 
+**Use the supported node version ONLY. DO NOT ATTEMPT TO RUN ANYTHING IN ANY OTHER NODE VERSION.**
+
+If `fnm` is not installed (eg the Claude web sandbox, which ships an older node), install the version given in `.node-version` before doing anything else. The SessionStart hook in `.claude/hooks/session-start.sh` does exactly this (resolves the `.node-version` major to its newest release on nodejs.org, installs it, and puts it first on PATH) - run it, or replicate its steps, rather than hardcoding a version.
+
 Maintain familiarity with the scripts in package.json. Call these with `pnpm` where possible, in preference to running scripts directly.
 
 Use `pnpm fix` to auto-fix linting and formatting errors (runs both eslint --fix and prettier --write).
@@ -438,6 +442,7 @@ a retro upscaled blocky look even on high resolution screens. The other importan
 * NEVER push or raise a PR without asking first, permission to do so must be explicit, not implied
 
 # Claude web sandbox
+The sandbox ships the wrong Node: install the `.node-version` version before running any tests - see the Running section above. This is mandatory, not advisory.
 When running in the Claude Code web/remote sandbox, outbound network goes through
 an egress proxy. The `dougmencken_HeadOverHeels` github-tarball devDependency is
 blocked there (codeload.github.com returns 403) and is not in the store, so

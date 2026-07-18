@@ -168,3 +168,6 @@ export const ScoreDialog = () => {
     </DialogPortal>
   );
 };
+
+/** default export for preact/compat lazy() */
+export default ScoreDialog;

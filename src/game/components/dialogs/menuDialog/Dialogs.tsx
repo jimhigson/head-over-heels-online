@@ -7,30 +7,30 @@ import { useAppSelector } from "../../../../store/hooks";
 import { AssetLoading } from "../../../../store/slices/assetsLoading/AssetLoading";
 import { Dialog } from "../../../../ui/Dialog";
 import { type DialogId } from "./DialogId";
-import { AboutDialog } from "./dialogs/about/AboutDialog";
-import { CommunityGamesDialog } from "./dialogs/communityGames/CommunityGamesDialog";
-import { ControlOptionsDialog } from "./dialogs/controlOptions/ControlOptionsDialog";
+import { LazyAboutDialog } from "./dialogs/about/AboutDialog.lazy";
+import { LazyCommunityGamesDialog } from "./dialogs/communityGames/CommunityGamesDialog.lazy";
+import { LazyControlOptionsDialog } from "./dialogs/controlOptions/ControlOptionsDialog.lazy";
 import { CrownsDialog } from "./dialogs/crowns/CrownsDialog";
 import { DeathDialog } from "./dialogs/death/DeathDialog";
-import { DisplayOptionsDialog } from "./dialogs/displayOptions/DisplayOptionsDialog";
-import { EmulatedResolutionDialog } from "./dialogs/emulatedResolution/EmulatedResolutionDialog";
+import { LazyDisplayOptionsDialog } from "./dialogs/displayOptions/DisplayOptionsDialog.lazy";
+import { LazyEmulatedResolutionDialog } from "./dialogs/emulatedResolution/EmulatedResolutionDialog.lazy";
 import { ErrorCaughtDialog } from "./dialogs/errorCaught/ErrorCaughtDialog";
 import { HoldDialog } from "./dialogs/hold/HoldDialog";
-import { InputPresetDialog } from "./dialogs/inputPreset/InputPresetDialog";
-import { InstallDialog } from "./dialogs/install/InstallDialog";
+import { LazyInputPresetDialog } from "./dialogs/inputPreset/InputPresetDialog.lazy";
+import { LazyInstallDialog } from "./dialogs/install/InstallDialog.lazy";
 import { MainMenuDialog } from "./dialogs/mainMenu/MainMenuDialog";
 import { LazyMapDialog } from "./dialogs/map/MapDialog.lazy";
 import { LazyMarkdownDialog } from "./dialogs/markdown/MarkdownDialog.lazy";
 import { LazyNeedRefreshDialog } from "./dialogs/needRefresh/NeedRefreshDialog.lazy";
-import { OfferReincarnationDialog } from "./dialogs/offerReincarnation/OfferReincarnationDialog";
-import { OptionsDialog } from "./dialogs/options/OptionsDialog";
-import { ProclaimEmperorDialog } from "./dialogs/proclaimEmperor/ProclaimEmperorDialog";
-import { QuitGameConfirmDialog } from "./dialogs/quitGameConfirm/QuitGameConfirmDialog";
+import { LazyOfferReincarnationDialog } from "./dialogs/offerReincarnation/OfferReincarnationDialog.lazy";
+import { LazyOptionsDialog } from "./dialogs/options/OptionsDialog.lazy";
+import { LazyProclaimEmperorDialog } from "./dialogs/proclaimEmperor/ProclaimEmperorDialog.lazy";
+import { LazyQuitGameConfirmDialog } from "./dialogs/quitGameConfirm/QuitGameConfirmDialog.lazy";
 import { LazyReadTheManualDialog } from "./dialogs/ReadTheManualDialog.lazy";
 import { ReincarnatedRestartDialog } from "./dialogs/reincarnatedRestart/ReincarnatedRestartDialog";
-import { ScoreDialog } from "./dialogs/score/ScoreDialog";
-import { SoundDialog } from "./dialogs/sound/SoundDialog";
-import { SureWantEditorDialog } from "./dialogs/sureWantEditor/SureWantEditorDialog";
+import { LazyScoreDialog } from "./dialogs/score/ScoreDialog.lazy";
+import { LazySoundDialog } from "./dialogs/sound/SoundDialog.lazy";
+import { LazySureWantEditorDialog } from "./dialogs/sureWantEditor/SureWantEditorDialog.lazy";
 import { WhichGameDialog } from "./dialogs/whichGame/WhichGameDialog";
 
 const isMarkdownPage = <D extends DialogId>(
@@ -89,23 +89,23 @@ export const Dialogs = (_emptyProps: EmptyObject) => {
 
   switch (topOpenMenu.menuId) {
     case "about":
-      return <AboutDialog />;
+      return <LazyAboutDialog />;
     case "communityGames":
-      return <CommunityGamesDialog />;
+      return <LazyCommunityGamesDialog />;
     case "death":
       return <DeathDialog {...topOpenMenu.menuParam} />;
     case "controlOptions":
-      return <ControlOptionsDialog />;
+      return <LazyControlOptionsDialog />;
     case "crowns":
       return <CrownsDialog playMusic={topOpenMenu.menuParam.playMusic} />;
     case "emulatedResolution":
-      return <EmulatedResolutionDialog />;
+      return <LazyEmulatedResolutionDialog />;
     case "errorCaught":
       return <ErrorCaughtDialog errors={topOpenMenu.menuParam} />;
     case "hold":
       return <HoldDialog />;
     case "inputPreset":
-      return <InputPresetDialog />;
+      return <LazyInputPresetDialog />;
     case "mainMenu":
       return <MainMenuDialog />;
     case "map":
@@ -113,29 +113,29 @@ export const Dialogs = (_emptyProps: EmptyObject) => {
     case "needRefresh":
       return <LazyNeedRefreshDialog />;
     case "modernisationOptions":
-      return <OptionsDialog />;
+      return <LazyOptionsDialog />;
     case "offerReincarnation":
-      return <OfferReincarnationDialog />;
+      return <LazyOfferReincarnationDialog />;
     case "proclaimEmperor":
-      return <ProclaimEmperorDialog />;
+      return <LazyProclaimEmperorDialog />;
     case "quitGameConfirm":
-      return <QuitGameConfirmDialog />;
+      return <LazyQuitGameConfirmDialog />;
     case "readTheManual":
       return <LazyReadTheManualDialog />;
     case "reincarnatedRestart":
       return <ReincarnatedRestartDialog />;
     case "score":
-      return <ScoreDialog />;
+      return <LazyScoreDialog />;
     case "displayOptions":
-      return <DisplayOptionsDialog />;
+      return <LazyDisplayOptionsDialog />;
     case "sound":
-      return <SoundDialog />;
+      return <LazySoundDialog />;
     case "sureWantEditor":
-      return <SureWantEditorDialog />;
+      return <LazySureWantEditorDialog />;
     case "whichGame":
       return <WhichGameDialog />;
     case "installGuide":
-      return <InstallDialog />;
+      return <LazyInstallDialog />;
 
     default:
       topOpenMenu.menuId satisfies never;

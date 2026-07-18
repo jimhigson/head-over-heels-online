@@ -373,7 +373,7 @@ export const openInGameMainMenu = async (page: Page, logHeader: string) => {
 };
 
 /** Generous timeout to wait through game-over and animation pauses. */
-export const waitForDialog = (
+export const waitForDialog = async (
   page: Page,
   dialogId: string,
   {
@@ -383,4 +383,19 @@ export const waitForDialog = (
     state?: "attached" | "detached" | "hidden" | "visible";
     timeout?: number;
   } = {},
-) => page.locator(`[data-dialog-id="${dialogId}"]`).waitFor({ state, timeout });
+) => {
+  await page
+    .locator(`[data-dialog-id="${dialogId}"]`)
+    .waitFor({ state, timeout });
+  if (state === "visible" || state === "attached") {
+    // the Suspense fallback dialog carries no data-dialog-id, so the wait
+    // above already proves the lazy chunk loaded; this additionally waits for
+    // any in-dialog loading spinner. Count-based so multiple role=status
+    // nodes can't strict-mode-throw. Bounded rather than strict because some
+    // spinners are legitimately long-lived (eg the community games list while
+    // its db fetch is in flight) - the snapshot helper does the strict wait
+    await expect(page.locator('[role="status"]'))
+      .toHaveCount(0, { timeout })
+      .catch(() => {});
+  }
+};
