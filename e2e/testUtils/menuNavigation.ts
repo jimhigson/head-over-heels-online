@@ -388,11 +388,14 @@ export const waitForDialog = async (
     .locator(`[data-dialog-id="${dialogId}"]`)
     .waitFor({ state, timeout });
   if (state === "visible" || state === "attached") {
-    // lazy dialogs render the spinner fallback while their chunk loads; wait
-    // for it to leave so callers interact with the real dialog content
-    await page
-      .getByRole("status")
-      .waitFor({ state: "detached", timeout })
+    // the Suspense fallback dialog carries no data-dialog-id, so the wait
+    // above already proves the lazy chunk loaded; this additionally waits for
+    // any in-dialog loading spinner. Count-based so multiple role=status
+    // nodes can't strict-mode-throw. Bounded rather than strict because some
+    // spinners are legitimately long-lived (eg the community games list while
+    // its db fetch is in flight) - the snapshot helper does the strict wait
+    await expect(page.locator('[role="status"]'))
+      .toHaveCount(0, { timeout })
       .catch(() => {});
   }
 };
