@@ -108,11 +108,6 @@ export default {
 
   safelist: [
     {
-      // any single-char sprite could be shown by parsing a markdown file, the others
-      // have to be specifically referenced
-      pattern: /texture-hud_char_/,
-    },
-    {
       // playable character animations are referenced dynamically via playableTailwindSpriteClassname
       pattern: /texture-animated-(head|heels)_(walking|idle)_/,
       variants: ["selectedMenuItem", "activated"],
