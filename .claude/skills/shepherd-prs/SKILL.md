@@ -201,12 +201,12 @@ gh pr merge -sd <n>                                   # squash + delete branch
 
 ## Node version (sandbox)
 
-Use the supported node version ONLY (Node 26, `.node-version`) - never run
-anything on the sandbox's default Node 22. If `node --version` is not 26.x:
+Use the supported node version ONLY (see `.node-version`) - the sandbox's
+provisioned node is likely to be out of date; never run anything on it. If
+`node --version` doesn't match `.node-version`, run the SessionStart hook,
+which resolves and installs the right version and prints the PATH to use:
 ```bash
-cd /tmp && curl -sSLO https://nodejs.org/dist/v26.5.0/node-v26.5.0-linux-x64.tar.xz
-tar xf node-v26.5.0-linux-x64.tar.xz
-export PATH=/tmp/node-v26.5.0-linux-x64/bin:$PATH
+CLAUDE_CODE_REMOTE=true CLAUDE_ENV_FILE=/tmp/node-env CLAUDE_PROJECT_DIR=$PWD \
+  ./.claude/hooks/session-start.sh && source /tmp/node-env
 ```
-(The SessionStart hook does this automatically once merged; in-container act
-runs are unaffected - setup-node reads `.node-version`.)
+(In-container act runs are unaffected - setup-node reads `.node-version`.)

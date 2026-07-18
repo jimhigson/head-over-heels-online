@@ -1,6 +1,6 @@
 #!/usr/bin/env bash
 cd /home/user/head-over-heels-online
-act pull_request -W /tmp/tss-local.yml \
+act pull_request -W .github/workflows/true-site-size.yml \
   --container-architecture linux/amd64 \
   -P ubuntu-latest=hoh-act-runner --pull=false \
   --action-offline-mode \
@@ -9,6 +9,7 @@ act pull_request -W /tmp/tss-local.yml \
   --local-repository actions/setup-node@v6=/tmp/act-actions/setup-node \
   --local-repository jimhigson/true-site-size@main=/tmp/act-actions/true-site-size \
   -s GITHUB_TOKEN="$GITHUB_TOKEN" \
+  --env TSS_BASE_REFS="main" \
   --env TRUE_SITE_SIZE_OUTPUT_FILE=/tmp/tss-out/comment.md \
   --env NODE_EXTRA_CA_CERTS=/etc/ssl/certs/ca-certificates.crt \
   --env NODE_OPTIONS=--use-openssl-ca \

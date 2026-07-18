@@ -145,20 +145,20 @@ untouched) so pnpm's check passes; **restore the line before committing**.
 
 ## Node version in the sandbox
 
-The sandbox ships Node 22 but the project requires 26 (`.node-version`,
-`engines`), and `fnm` is not installed. Tests (unit and e2e fixture helpers)
-use `Uint8Array.prototype.toBase64`, which does not exist on 22 - the failure
-signature is `bytes.toBase64 is not a function` in `compressObject.ts` across
-the saves/persistence/errorDialog specs. Do not classify these as flakes or
-"environmental" and move on: install 26 first (takes a minute, nodejs.org is
-reachable):
+The sandbox's provisioned node is likely to be out of date vs `.node-version`
+(`engines`), and `fnm` is not installed. Tests (unit and e2e fixture helpers)
+use recent node APIs (eg `Uint8Array.prototype.toBase64`) - the failure
+signature on an outdated node is `bytes.toBase64 is not a function` in
+`compressObject.ts` across the saves/persistence/errorDialog specs. Do not
+classify these as flakes or "environmental" and move on: get the right node
+first via the SessionStart hook (resolves `.node-version` and installs it):
 
 ```bash
-cd /tmp && curl -sSL -O https://nodejs.org/dist/v26.5.0/node-v26.5.0-linux-x64.tar.xz
-tar xf node-v26.5.0-linux-x64.tar.xz
-export PATH=/tmp/node-v26.5.0-linux-x64/bin:$PATH   # per command/shell
+CLAUDE_CODE_REMOTE=true CLAUDE_ENV_FILE=/tmp/node-env CLAUDE_PROJECT_DIR=$PWD \
+  ./.claude/hooks/session-start.sh && source /tmp/node-env
 ```
 
-(vite builds happen to work on 22, and the in-container act/TSS runs use 26
-via setup-node regardless - only host-side test runs are affected.)
+(vite builds may happen to work on the outdated node, and the in-container
+act/TSS runs use `.node-version` via setup-node regardless - only host-side
+test runs are affected.)
 

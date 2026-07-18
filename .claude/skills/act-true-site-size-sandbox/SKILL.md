@@ -66,12 +66,14 @@ version with the exact blockers and fixes.
      `/opt/pw-browsers/chromium --no-sandbox`. A current chromium works at
      least as well as the pinned .deb and needs no dl.google.com fetch.
 
-5. **Base-ref comparison / `gh` steps need a real token** — the repo is **public**,
-   so base-ref (`main`) fetch works anonymously in-container. The `production` /
-   prev-tag comparison points use `gh release list` (needs a real token) — drop
-   them. Use a trimmed local workflow that compares vs `main` only (also ~halves
-   runtime: two builds instead of four). Add a step to point `origin` at
-   `https://github.com/<owner>/<repo>` so the in-container base fetch is reachable.
+5. **Base-ref comparison / `gh` steps need a real token** — handled inside the
+   REAL workflow (`.github/workflows/true-site-size.yml`), which is act-aware:
+   the `gh`-dependent prev-production step is `if: ${{ !env.ACT }}`, an
+   act-only step points `origin` at the public github URL (the sandbox origin
+   is an unreachable local proxy), and passing `--env TSS_BASE_REFS="main"`
+   restricts the comparison to main only (~halves runtime; unset in CI so CI
+   behaviour is unchanged). Run the real workflow - do NOT keep a trimmed
+   copy; copies drift.
 
 ## Procedure
 
@@ -88,11 +90,8 @@ docker build -t hoh-act-runner /tmp/hoh-act
 #    actions/checkout@v6, pnpm/action-setup@v5, actions/setup-node@v6, jimhigson/true-site-size@main
 git clone --depth 1 --branch <ref> https://github.com/<owner>/<repo> /tmp/act-actions/<name>
 
-# 3. trimmed workflow (base-refs '["main"]', drop gh steps, add `git remote set-url origin`)
-#    -> /tmp/tss-local.yml
-
-# 4. run
-act pull_request -W /tmp/tss-local.yml \
+# 3. run (the REAL workflow - it is act-aware, see blocker 5)
+act pull_request -W .github/workflows/true-site-size.yml \
   --container-architecture linux/amd64 \
   -P ubuntu-latest=hoh-act-runner --pull=false --action-offline-mode \
   --local-repository actions/checkout@v6=/tmp/act-actions/checkout \
@@ -100,6 +99,7 @@ act pull_request -W /tmp/tss-local.yml \
   --local-repository actions/setup-node@v6=/tmp/act-actions/setup-node \
   --local-repository jimhigson/true-site-size@main=/tmp/act-actions/true-site-size \
   -s GITHUB_TOKEN="$GITHUB_TOKEN" \
+  --env TSS_BASE_REFS="main" \
   --env TRUE_SITE_SIZE_OUTPUT_FILE=/tmp/tss-out/comment.md \
   --env NODE_EXTRA_CA_CERTS=/etc/ssl/certs/ca-certificates.crt \
   --env NODE_OPTIONS=--use-openssl-ca \
@@ -158,12 +158,12 @@ RUN deb="$(mktemp --suffix=.deb)" && \
 
 ## Node version (sandbox)
 
-Use the supported node version ONLY (Node 26, `.node-version`) - never run
-anything on the sandbox's default Node 22. If `node --version` is not 26.x:
+Use the supported node version ONLY (see `.node-version`) - the sandbox's
+provisioned node is likely to be out of date; never run anything on it. If
+`node --version` doesn't match `.node-version`, run the SessionStart hook,
+which resolves and installs the right version and prints the PATH to use:
 ```bash
-cd /tmp && curl -sSLO https://nodejs.org/dist/v26.5.0/node-v26.5.0-linux-x64.tar.xz
-tar xf node-v26.5.0-linux-x64.tar.xz
-export PATH=/tmp/node-v26.5.0-linux-x64/bin:$PATH
+CLAUDE_CODE_REMOTE=true CLAUDE_ENV_FILE=/tmp/node-env CLAUDE_PROJECT_DIR=$PWD \
+  ./.claude/hooks/session-start.sh && source /tmp/node-env
 ```
-(The SessionStart hook does this automatically once merged; in-container act
-runs are unaffected - setup-node reads `.node-version`.)
+(In-container act runs are unaffected - setup-node reads `.node-version`.)
