@@ -5,6 +5,7 @@ import {
   setZeroGameSpeed,
   waitForRoomRenderEvent,
 } from "./testUtils/gameStateQueries";
+import { restrictToCameraRotationProjects } from "./testUtils/infrastructure";
 import {
   clickOriginalCampaign,
   clickPlayTheGame,
@@ -12,6 +13,8 @@ import {
 } from "./testUtils/menuNavigation";
 import { setupE2ePage } from "./testUtils/pageSetup";
 import { roomScreenshotOptions } from "./testUtils/screenshots";
+
+restrictToCameraRotationProjects();
 
 /**
  * rotating the camera and returning to the base angle must render identically

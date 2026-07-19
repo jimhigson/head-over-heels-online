@@ -19,9 +19,9 @@ jobs:
           COMMIT_TIMESTAMP: ${{ github.event.head_commit.timestamp }}
         run: |
           summary=$(printf '%s' "$COMMIT_MESSAGE" | head -n1)
-          conventionalFeatOrFix='^(feat|fix)(\([^)]+\))?!?:'
+          conventionalFeatOrFix='^feat(\([^)]+\))?!?:'
           if [[ ! "$summary" =~ $conventionalFeatOrFix ]]; then
-            echo "Not a feat/fix commit — skipping Discord post: $summary"
+            echo "Not a feat commit — skipping Discord post: $summary"
             exit 0
           fi
           jq -n \

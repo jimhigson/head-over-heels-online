@@ -37,10 +37,7 @@ import {
   type ItemTickContext,
 } from "../../ItemRenderContexts";
 import { projectWorldXyzToScreenXy } from "../../projections";
-import {
-  floorDrawnOriginXyOffset,
-  type RenderBox,
-} from "../../renderBox/makeItemRenderBoxAtCameraAngle";
+import { type RenderBox } from "../../renderBox/makeItemRenderBoxAtCameraAngle";
 import {
   castsShadowWhileStoodOnAtAngle,
   noShadowCastOnAtAngle,
@@ -468,12 +465,6 @@ class ItemShadowRenderer<T extends ItemInPlayType>
           itemTypesExemptFromNearCornerOffset.has(item.type) ? originXy : (
             nearCornerOffsetWorldXyz(item, cameraQuarterAngle)
           );
-        // shadows render in the receiver's content-local space; a floor's
-        // origin is its drawn (render box) origin, not its physical position:
-        const receiverDrawnOriginOffset =
-          item.type === "floor" ?
-            floorDrawnOriginXyOffset(this.renderContext.renderBoxes.get(item))
-          : originXy;
         const screenXy = projectWorldXyzToScreenXy(
           {
             ...addXy(
@@ -481,7 +472,6 @@ class ItemShadowRenderer<T extends ItemInPlayType>
                 caster.state.position,
                 item.state.position,
                 receiverNearCornerOffset,
-                receiverDrawnOriginOffset,
               ),
               // use just the xy part of the shadow offset to position the shadow on the surface:
               caster.shadowOffset ?? originXy,

@@ -274,11 +274,12 @@ const floorRenderBox = (
   // the physical expansion is a clean 0.5 block on every door-expanded side;
   // the world-away/left sides draw a hair (0.02 block) more, matching the
   // original game's floors, which expanded 0.52 through those doors and 0.5
-  // through towards/right ones. On a camera-reversed axis that overhung side
-  // is the apparently-near one, so the drawn origin moves out to it - the
-  // floor's container anchors on this (fractional) origin so the whole drawn
-  // floor rounds to the device grid as one, exactly as when the expansion
-  // was baked into the loaded (camera-rotated) room model:
+  // through towards/right ones. On a camera-reversed axis the box min moves
+  // back by the overhang, keeping the overhang on the apparently-far side.
+  // The fraction stays inside the floor's drawn content (laid out from this
+  // box in the item frame - see floorAppearance); the container itself
+  // anchors at the integer physical position so the floor never leaves the
+  // whole-pixel grid:
   for (const side of doorExpandedSides) {
     if (isNegativeSideXy(side)) {
       continue;
@@ -298,12 +299,12 @@ const floorRenderBox = (
 };
 
 /**
- * the world x/y offset from a floor's physical position to its drawn origin -
- * the fractional near corner given by the drawn 0.02-block overhang on
- * camera-reversed axes (see {@link floorRenderBox}). z is always 0: the drawn
- * box's z offset describes the drawn edge thickness, not a position shift.
- * The floor's container, its baked art and its received shadows all take
- * this origin, so they round to the device pixel grid together
+ * the world x/y offset from a floor's physical position to its drawn box's
+ * min corner - fractional (the drawn 0.02-block overhang) on camera-reversed
+ * axes (see {@link floorRenderBox}). z is always 0: the drawn box's z offset
+ * describes the drawn edge thickness, not a position shift. Used only to lay
+ * the floor's drawn content out in the item frame (floorAppearance); anchors
+ * and shadows use the integer physical position
  */
 export const floorDrawnOriginXyOffset = (
   renderBox: null | RenderBox | undefined,

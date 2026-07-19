@@ -3,13 +3,11 @@ import { Container } from "pixi.js";
 import { type ItemInPlayType } from "../../../../model/ItemInPlay";
 import { assignRoundedXy } from "../../../../utils/pixi/assignRoundedXy";
 import { isAtQuarterAngle } from "../../../../utils/vectors/rotateXy";
-import { addXyz } from "../../../../utils/vectors/vectors";
 import {
   type ItemRenderContext,
   type ItemTickContext,
 } from "../../ItemRenderContexts";
 import { projectWorldXyzToScreenXy } from "../../projections";
-import { floorDrawnOriginXyOffset } from "../../renderBox/makeItemRenderBoxAtCameraAngle";
 import { isCuboidWarpItem } from "./isCuboidWarpItem";
 import { type ItemChainPixiRenderer } from "./ItemPixiRenderer";
 
@@ -79,18 +77,9 @@ export class ItemPositionRenderer<T extends ItemInPlayType>
     }
 
     // the item slides along the continuous render angle; at rest this is exactly
-    // the quarter angle:
+    // the quarter angle
     const projectionXy = projectWorldXyzToScreenXy(
-      // floors anchor at their drawn origin - on camera-reversed axes the
-      // drawn 0.02-block overhang's fractional corner (see floorRenderBox) -
-      // so the single device-grid rounding below lands the whole drawn floor
-      // where the loaded (camera-rotated) room model used to put it:
-      item.type === "floor" ?
-        addXyz(
-          item.state.position,
-          floorDrawnOriginXyOffset(this.renderContext.renderBoxes.get(item)),
-        )
-      : item.state.position,
+      item.state.position,
       cameraAngle,
     );
 

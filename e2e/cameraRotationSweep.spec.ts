@@ -10,6 +10,7 @@ import {
   waitForGameState,
   waitForRoomRenderEvent,
 } from "./testUtils/gameStateQueries";
+import { restrictToCameraRotationProjects } from "./testUtils/infrastructure";
 import {
   clickOriginalCampaign,
   clickPlayTheGame,
@@ -17,6 +18,8 @@ import {
 } from "./testUtils/menuNavigation";
 import { setupE2ePage } from "./testUtils/pageSetup";
 import { roomScreenshotOptions } from "./testUtils/screenshots";
+
+restrictToCameraRotationProjects();
 
 /**
  * a fine-grained sweep of the camera-rotation transition: the camera is

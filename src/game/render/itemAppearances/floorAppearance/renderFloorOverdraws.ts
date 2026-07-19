@@ -28,10 +28,10 @@ import { projectWorldXyzToScreenXy } from "../../projections";
 // make the same effect
 export const renderFloorOverdraws = (
   /**
-   * the origin of the floor's content-local space - the drawn (render box)
-   * origin, not the physical position
+   * the origin of the floor's content-local space - its (integer) physical
+   * position
    */
-  floorDrawnOrigin: Xyz,
+  floorPosition: Xyz,
   roomState: RoomState<string, string>,
   spritesheet: AppSpritesheet,
   cameraQuarterAngle: Xy,
@@ -84,7 +84,7 @@ export const renderFloorOverdraws = (
         );
 
         const anchorWorld = addXyz(
-          subXyz(doorOrWallPosition, floorDrawnOrigin),
+          subXyz(doorOrWallPosition, floorPosition),
           outIsNegative ? { [crossAxis]: item.aabb[crossAxis] } : originXyz,
           alongReversed ? { [alongAxis]: blockSizePx[alongAxis] } : originXyz,
         );
