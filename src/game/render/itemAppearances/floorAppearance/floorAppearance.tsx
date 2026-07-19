@@ -632,6 +632,12 @@ export const floorAppearance: ItemAppearance<"floor", RenderOnceProps> =
         const tilesMaskSprite = renderContainerToSprite(
           pixiRenderer,
           tilesMask,
+          undefined,
+          undefined,
+          undefined,
+          // vector graphics, so bake at the sheet's (cleanEdge) resolution to
+          // clip the tiles with an edge as fine as the art:
+          spritesheet.textureSource.resolution,
         );
         tilesMask.destroy();
 
@@ -800,6 +806,12 @@ export const floorAppearance: ItemAppearance<"floor", RenderOnceProps> =
           const cutoffSprite = renderContainerToSprite(
             pixiRenderer,
             cutoffMask,
+            undefined,
+            undefined,
+            undefined,
+            // vector graphics, so bake at the sheet's (cleanEdge) resolution
+            // to cut off with an edge as fine as the art:
+            spritesheet.textureSource.resolution,
           );
           spritesRenderContainer.addChild(cutoffSprite);
           spritesRenderContainer.mask = cutoffSprite;
