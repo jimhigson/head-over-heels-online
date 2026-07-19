@@ -60,6 +60,13 @@ export const renderContainerToTexture = (
    * texture serves every variant via the reuse path
    */
   minimumSize?: Xy,
+  /**
+   * backing-store scale for the bake; when not given, derived from the
+   * highest-resolution sprite in the container. Pass explicitly for
+   * sprite-less content (eg vector Graphics masks) that should match a
+   * cleanEdge-upscaled bake it will be composed/masked with
+   */
+  explicitResolution?: number,
 ): Texture => {
   const localBounds = container.getLocalBounds();
 
@@ -69,7 +76,7 @@ export const renderContainerToTexture = (
 
   // bake at the resolution of the sprites being composed, so a
   // cleanEdge-upscaled sheet isn't flattened back to 1x by the bake:
-  const resolution = maxTextureResolution(container);
+  const resolution = explicitResolution ?? maxTextureResolution(container);
 
   const canReuse =
     reuseTexture !== undefined ?
@@ -134,6 +141,8 @@ export const renderContainerToSprite = (
   label?: string,
   /** see {@link renderContainerToTexture}'s minimumSize */
   minimumSize?: Xy,
+  /** see {@link renderContainerToTexture}'s explicitResolution */
+  explicitResolution?: number,
 ): UniqueTextureSprite => {
   const localBounds = container.getLocalBounds();
 
@@ -147,6 +156,7 @@ export const renderContainerToSprite = (
     container,
     reuseTexture,
     minimumSize,
+    explicitResolution,
   );
 
   const sprite = reuseSprite ? reuseSprite : new UniqueTextureSprite();
