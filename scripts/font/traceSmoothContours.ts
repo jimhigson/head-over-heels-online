@@ -147,7 +147,7 @@ const stairStepShapes: Array<[number, number]> = [
  */
 export const collapseStairs = (
   cornerLoop: TracedLoop,
-  minSteps: number = 3,
+  minSteps: number = 2,
 ): TracedLoop => {
   const n = cornerLoop.length;
   if (n < 4) {
@@ -236,10 +236,42 @@ export const collapseStairs = (
 };
 
 /**
+ * Merge the tiny axis-aligned connector left where two collapsed diagonals
+ * of different slopes meet (cleanEdge's slope-transition raster): a segment
+ * of at most one subpixel whose neighbours are BOTH diagonal collapses to
+ * its midpoint. Genuine square art is untouched - its segments neighbour
+ * other axis-aligned segments.
+ */
+const smoothSlopeTransitions = (loop: TracedLoop): TracedLoop => {
+  const n = loop.length;
+  const pt = (i: number): Point => loop[((i % n) + n) % n];
+  const isDiagonal = ([ax, ay]: Point, [bx, by]: Point) =>
+    ax !== bx && ay !== by;
+  const isShortAxisStub = ([ax, ay]: Point, [bx, by]: Point) =>
+    (ax === bx || ay === by) && Math.abs(bx - ax) + Math.abs(by - ay) <= 1;
+
+  // a transition corner sits between two collapsed diagonals as
+  // [diagonal] -> stub -> CORNER -> stub -> [diagonal]; dropping the corner
+  // joins the two stub midpoints into a small connecting diagonal
+  return loop.filter((_, i) => {
+    const corner = pt(i);
+    const before = pt(i - 1);
+    const after = pt(i + 1);
+    return !(
+      isShortAxisStub(before, corner) &&
+      isShortAxisStub(corner, after) &&
+      isDiagonal(pt(i - 2), before) &&
+      isDiagonal(after, pt(i + 2))
+    );
+  });
+};
+
+/**
  * bitmap to simplified vector loops: boundary trace, collinear merge, then
- * uniform staircases collapse to their intended diagonal lines
+ * uniform staircases collapse to their intended diagonal lines, and the
+ * residual single-step notches between differing slopes are smoothed
  */
 export const traceSmoothContours = (bitmap: boolean[][]): TracedLoop[] =>
   traceBitmapToLoops(bitmap).map((loop) =>
-    collapseStairs(mergeCollinear(loop)),
+    smoothSlopeTransitions(collapseStairs(mergeCollinear(loop))),
   );
