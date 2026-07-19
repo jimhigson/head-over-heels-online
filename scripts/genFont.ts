@@ -29,10 +29,12 @@ const requirementsPath = "scripts/font/requirements.txt";
 
 /**
  * the smooth font's glyphs are the same bitmaps upscaled with cleanEdge at
- * this factor - matching the cap the game engine bakes its spritesheets at,
- * so ui text shows exactly the texels the game would
+ * this factor before their outlines are traced. Since the outlines resolve
+ * staircases to cleanEdge's intended diagonal lines (not its raster), a high
+ * factor just pins those lines (and the residual transition notches) to a
+ * finer grid - 1/16 design pixel - far below visibility. Offline cost only
  */
-const smoothFactor = 4;
+const smoothFactor = 16;
 
 const unitsPerEm = 512;
 /** font units per design pixel - 512/8 gives clean integer pixel boundaries */
