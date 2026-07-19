@@ -10,7 +10,10 @@ import {
 import { size } from "../src/utils/iterators/size";
 import { cleanEdgeUpscaleBinary } from "./font/cleanEdgeUpscaleBinary";
 import { type HudGlyph, hudGlyphs } from "./font/hudGlyphs";
-import { traceSmoothContours } from "./font/traceSmoothContours";
+import {
+  roundSmoothedCorners,
+  traceSmoothContours,
+} from "./font/traceSmoothContours";
 
 // the shipped gfx/sprites.webp has every non-frame area (including the HUD char
 // rows) masked to transparent, so the font is generated from the unmasked full
@@ -35,6 +38,14 @@ const requirementsPath = "scripts/font/requirements.txt";
  * finer grid - 1/16 design pixel - far below visibility. Offline cost only
  */
 const smoothFactor = 16;
+
+/**
+ * how far each smoothed corner's rounding reaches along its incident
+ * segments, in 1/smoothFactor subpixels - one design pixel. Big enough that
+ * cleanEdge's short diagonal cuts are consumed whole into curves; straight
+ * edges stay straight beyond a pixel of their smoothed corners
+ */
+const cornerRoundRadius = smoothFactor;
 
 const unitsPerEm = 512;
 /** font units per design pixel - 512/8 gives clean integer pixel boundaries */
@@ -75,8 +86,13 @@ const heightAxis = {
 
 type DecodedImage = { width: number; height: number; data: Uint8ClampedArray };
 
-/** a closed contour of on-curve points, in font units with the baseline at y=0 */
-type Contour = Array<[number, number]>;
+/**
+ * a closed contour in font units with the baseline at y=0. A point is
+ * `[x, y]` (on-curve) or `[x, y, 0]` (an off-curve quadratic control -
+ * TrueType implies on-curve midpoints between consecutive off-curve points,
+ * so runs of them render as a smooth B-spline)
+ */
+type Contour = Array<[number, number, 0] | [number, number]>;
 
 type GlyphData = {
   unicode: number;
@@ -281,9 +297,15 @@ const circleContour = (col: number, row: number, hole: boolean): Contour => {
   const points: Contour = [];
   for (let i = 0; i < circleSides; i++) {
     const theta = ((i + 0.5) / circleSides) * 2 * Math.PI * (hole ? 1 : -1);
+    // all off-curve: TrueType renders the ring of controls as a closed
+    // quadratic B-spline - a genuinely smooth circle. The spline runs
+    // slightly inside its control polygon, so the radius is bumped to keep
+    // the equal-area property (mean spline radius is ~0.9856 of control
+    // radius for 16 controls):
     points.push([
-      centreX + radius * Math.cos(theta),
-      centreY + radius * Math.sin(theta),
+      centreX + (radius / 0.985_6) * Math.cos(theta),
+      centreY + (radius / 0.985_6) * Math.sin(theta),
+      0,
     ]);
   }
   return points;
@@ -340,18 +362,22 @@ const smoothGlyphContours = (
   }
 
   // vector outlines faithful to the algorithm's intent: uniform 1:1/2:1/1:2
-  // staircases in the upscaled raster become true diagonal lines. The y-flip
-  // into font units reverses orientation, so the point order is reversed too,
-  // keeping the convention that outers wind clockwise in y-up space
+  // staircases in the upscaled raster become true diagonal lines, whose
+  // corners are then rounded into quadratic curves - short diagonal cuts
+  // melt entirely into curves while right-angled art corners stay sharp.
+  // The y-flip into font units reverses orientation, so the point order is
+  // reversed too, keeping the convention that outers wind clockwise in
+  // y-up space
   const subPx = px / smoothFactor;
-  const traced = traceSmoothContours(bitmap).map(
-    (loop): Contour =>
-      loop
-        .map(([x, y]): [number, number] => [
-          x * subPx,
-          baselineFromTop * px - y * subPx,
-        ])
-        .reverse(),
+  const traced = traceSmoothContours(bitmap).map((loop): Contour =>
+    roundSmoothedCorners(loop, cornerRoundRadius)
+      .map((point): Contour[number] => {
+        const [x, y] = point;
+        const fontX = x * subPx;
+        const fontY = baselineFromTop * px - y * subPx;
+        return point.length === 3 ? [fontX, fontY, 0] : [fontX, fontY];
+      })
+      .reverse(),
   );
   return [...traced, ...circles];
 };
