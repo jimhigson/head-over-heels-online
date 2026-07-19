@@ -1,5 +1,6 @@
 import { expectTypeOf, test } from "vitest";
 
+import { octantIndexOfDirection } from "../../../utils/vectors/octantIndexOfDirection" with { type: "macro" };
 import {
   type FrameNumbers,
   type NumberedTextureName,
@@ -21,19 +22,19 @@ test("generating animation frame names with numbers", () => {
 
   expectTypeOf(
     seriesOfNumberedTextures(
-      "heels.walking.left",
+      `heels.walking.d${octantIndexOfDirection("left")}`,
       3,
       { x: 0, y: 0 },
       { w: 1, h: 1 },
     ),
   ).toMatchTypeOf<{
-    "heels.walking.left.1": {
+    "heels.walking.d0.1": {
       frame: { x: number; y: number; w: number; h: number };
     };
-    "heels.walking.left.2": {
+    "heels.walking.d0.2": {
       frame: { x: number; y: number; w: number; h: number };
     };
-    "heels.walking.left.3": {
+    "heels.walking.d0.3": {
       frame: { x: number; y: number; w: number; h: number };
     };
   }>();

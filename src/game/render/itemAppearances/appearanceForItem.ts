@@ -8,8 +8,12 @@ import {
   asReuseSprite,
   maybeRenderContainerToSprite,
 } from "../../../utils/pixi/renderContainerToSprite";
+import { octantIndexOfDirection } from "../../../utils/vectors/octantIndexOfDirection" with { type: "macro" };
 import { nearestQuarterAngle } from "../../../utils/vectors/rotateXy";
-import { rotateAxisXyByCameraAngle } from "../../../utils/vectors/vectors";
+import {
+  axisIndexXy8,
+  rotateAxisXyByCameraAngle,
+} from "../../../utils/vectors/vectors";
 import { createSprite, type CreateSpriteOptions } from "../createSprite";
 import { blockAppearance } from "./blockAppearance";
 import { buttonAppearance } from "./buttonAppearance";
@@ -67,7 +71,7 @@ const itemAppearancesMap: {
         pixiRenderer,
         createSprite({
           textureId: variantTextureId(
-            `barrier.${renderedAxis}${disappearing ? ".disappearing" : ""}`,
+            `barrier.d${axisIndexXy8[renderedAxis]}${disappearing ? ".disappearing" : ""}`,
             isReflection,
             false,
             false,
@@ -101,7 +105,7 @@ const itemAppearancesMap: {
     }) => {
       return createSprite({
         textureId: variantTextureId(
-          style === "book" ? "book.y" : style,
+          style === "book" ? `book.d${octantIndexOfDirection("away")}` : style,
           isReflection,
           false,
           false,

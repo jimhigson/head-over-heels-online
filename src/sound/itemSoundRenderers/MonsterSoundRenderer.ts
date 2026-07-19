@@ -1,8 +1,8 @@
 import { type ItemTickContext } from "../../game/render/ItemRenderContexts";
 import { type MonsterWhich } from "../../model/json/MonsterJsonConfig";
 import {
-  type DirectionXy8,
-  nonZeroVectorClosestDirectionXy8,
+  type DirectionIndexXy8,
+  nonZeroClosestDirectionIndexXy8,
   originXyz,
   xyzEqual,
 } from "../../utils/vectors/vectors";
@@ -68,7 +68,7 @@ export class MonsterSoundRenderer implements ItemSoundRenderer<"monster"> {
   #spotChannel: GainNode = audioCtx.createGain();
   #ambientChannel: GainNode = audioCtx.createGain();
 
-  #turnaroundBracketed: BracketedSound<DirectionXy8 | undefined> | undefined;
+  #turnaroundBracketed: BracketedSound<DirectionIndexXy8> | undefined;
   #ambientBracketed: BracketedSound<boolean> | undefined;
   #freeItemSoundRenderer: FreeItemSoundRenderer;
   #movingBracketed: BracketedSound<boolean> | undefined;
@@ -138,8 +138,11 @@ export class MonsterSoundRenderer implements ItemSoundRenderer<"monster"> {
     } = item;
 
     if (this.#turnaroundBracketed) {
-      const facingXy8 = nonZeroVectorClosestDirectionXy8(facing);
-      this.#turnaroundBracketed(facingXy8);
+      const facingIndexXy8 = nonZeroClosestDirectionIndexXy8(
+        facing.x,
+        facing.y,
+      );
+      this.#turnaroundBracketed(facingIndexXy8);
     }
 
     if (this.#ambientBracketed) {

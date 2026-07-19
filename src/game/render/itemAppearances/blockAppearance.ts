@@ -8,6 +8,7 @@ import {
   asReuseSprite,
   maybeRenderContainerToSprite,
 } from "../../../utils/pixi/renderContainerToSprite";
+import { octantIndexOfDirection } from "../../../utils/vectors/octantIndexOfDirection" with { type: "macro" };
 import { nearestQuarterAngle } from "../../../utils/vectors/rotateXy";
 import { type Xy } from "../../../utils/vectors/vectors";
 import { createSprite } from "../createSprite";
@@ -28,7 +29,9 @@ type BlockRenderProps = {
   multipliedAtAngle: null | Xy;
 };
 
-type BaseBlockTextureId = BaseTextureIdWithPrefix<"block" | "book.x" | "tower">;
+type BaseBlockTextureId = BaseTextureIdWithPrefix<
+  "block" | "book.d0" | "tower"
+>;
 
 const blockTextureId = (
   isDark: boolean,
@@ -42,7 +45,7 @@ const blockTextureId = (
     return isTextureId(sceneryTower, spritesheetData) ? sceneryTower : "tower";
   }
   if (style === "book") {
-    return `book.x`;
+    return `book.d${octantIndexOfDirection("left")}`;
   }
   const base = `block.${style}` as const;
   const suffix = isDissapearing ? ".disappearing" : "";

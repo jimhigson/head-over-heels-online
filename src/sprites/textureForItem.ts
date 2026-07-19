@@ -1,6 +1,6 @@
 import { playableTailwindSpriteClassname } from "../game/components/tailwindSprites/playableTailwindSpriteClassname";
 import { type JsonItemUnion } from "../model/json/JsonItem";
-import { twClass } from "../utils/twClass";
+import { twClass } from "../utils/twClass" with { type: "macro" };
 import { type SceneryName } from "./planets";
 import {
   type AnimatedTextureTailwindClass,
@@ -23,7 +23,7 @@ export const textureForItem = (
               twClass(`texture-block_artificial_disappearing`)
             : twClass(`texture-block_artificial`);
         case "book":
-          return twClass(`texture-book_x`);
+          return twClass(`texture-book_d0`);
         case "tower": {
           switch (scenery) {
             case "moonbase":
@@ -39,9 +39,9 @@ export const textureForItem = (
     case "barrier":
       switch (item.config.axis) {
         case "x":
-          return twClass(`texture-barrier_x`);
+          return twClass(`texture-barrier_d0`);
         case "y":
-          return twClass(`texture-barrier_y`);
+          return twClass(`texture-barrier_d2`);
         default:
           item.config.axis satisfies never;
       }
@@ -103,41 +103,41 @@ export const textureForItem = (
       }
       break;
     case "charles":
-      return twClass(`texture-charles_towards`);
+      return twClass(`texture-charles_d6`);
     case "monster":
       switch (item.config.which) {
         case "dalek":
           return twClass(`texture-dalek_1`);
         case "cyberman":
-          return twClass(`texture-cyberman_towards`);
+          return twClass(`texture-cyberman_d6`);
         case "bubbleRobot":
         case "emperor":
           return twClass(`texture-bubbles_cold_2`);
         case "elephant":
         case "elephantHead":
-          return twClass(`texture-elephant_towards`);
+          return twClass(`texture-elephant_d6`);
         case "homingBot":
           return twClass(`texture-headlessBase`);
         case "monkey":
-          return twClass(`texture-monkey_towards`);
+          return twClass(`texture-monkey_d6`);
         case "emperorsGuardian":
           return twClass(`texture-ball`);
         case "turtle":
-          return twClass(`texture-turtle_towards_1`);
+          return twClass(`texture-turtle_d6_1`);
         case "helicopterBug":
           return twClass(`texture-helicopterBug_1`);
         case "skiHead":
           switch (item.config.style) {
             case "greenAndPink":
-              return twClass(`texture-skiHead_greenAndPink_towards`);
+              return twClass(`texture-skiHead_greenAndPink_d6`);
             case "starsAndStripes":
-              return twClass(`texture-skiHead_starsAndStripes_towards`);
+              return twClass(`texture-skiHead_starsAndStripes_d6`);
             default:
               item.config.style satisfies never;
           }
           break;
         case "computerBot":
-          return twClass(`texture-computerBot_towards`);
+          return twClass(`texture-computerBot_d6`);
         default:
           item.config satisfies never;
       }
@@ -165,7 +165,7 @@ export const textureForItem = (
     case "slidingBlock":
       switch (item.config.style) {
         case "book":
-          return twClass(`texture-book_y`);
+          return twClass(`texture-book_d2`);
         case "puck":
           return twClass(`texture-puck`);
         default:
@@ -216,10 +216,10 @@ export const textureForItem = (
       switch (item.config.direction) {
         case "away":
         case "towards":
-          return twClass(`texture-conveyor_y_1`);
+          return twClass(`texture-conveyor_d2_1`);
         case "left":
         case "right":
-          return twClass(`texture-conveyor_x_1`);
+          return twClass(`texture-conveyor_d0_1`);
         default:
           item.config satisfies never;
       }
@@ -228,10 +228,10 @@ export const textureForItem = (
       switch (item.config.direction) {
         case "away":
         case "towards":
-          return twClass(`texture-door_frame_generic_x_whole`);
+          return twClass(`texture-door_frame_generic_d0_whole`);
         case "left":
         case "right":
-          return twClass(`texture-door_frame_generic_y_whole`);
+          return twClass(`texture-door_frame_generic_d2_whole`);
         default:
           item.config.direction satisfies never;
       }
@@ -286,21 +286,21 @@ export const textureForItem = (
         case "towards":
           switch (scenery) {
             case "blacktooth":
-              return twClass(`texture-blacktooth_wall_plain_away`);
+              return twClass(`texture-blacktooth_wall_plain_d2`);
             case "egyptus":
-              return twClass(`texture-egyptus_wall_hieroglyphics_away`);
+              return twClass(`texture-egyptus_wall_hieroglyphics_d2`);
             case "bookworld":
-              return twClass(`texture-bookworld_wall_book_away`);
+              return twClass(`texture-bookworld_wall_book_d2`);
             case "penitentiary":
-              return twClass(`texture-penitentiary_wall_loop_away`);
+              return twClass(`texture-penitentiary_wall_loop_d2`);
             case "safari":
-              return twClass(`texture-safari_wall_wall_away`);
+              return twClass(`texture-safari_wall_wall_d2`);
             case "jail":
-              return twClass(`texture-jail_wall_bars_away`);
+              return twClass(`texture-jail_wall_bars_d2`);
             case "market":
-              return twClass(`texture-market_wall_fruits_away`);
+              return twClass(`texture-market_wall_fruits_d2`);
             case "moonbase":
-              return twClass(`texture-moonbase_dark_wall_window1_away`);
+              return twClass(`texture-moonbase_dark_wall_window1_d2`);
             default:
               scenery satisfies never;
           }
@@ -309,21 +309,21 @@ export const textureForItem = (
         case "right":
           switch (scenery) {
             case "blacktooth":
-              return twClass(`texture-blacktooth_wall_plain_left`);
+              return twClass(`texture-blacktooth_wall_plain_d0`);
             case "egyptus":
-              return twClass(`texture-egyptus_wall_hieroglyphics_left`);
+              return twClass(`texture-egyptus_wall_hieroglyphics_d0`);
             case "bookworld":
-              return twClass(`texture-bookworld_wall_book_left`);
+              return twClass(`texture-bookworld_wall_book_d0`);
             case "penitentiary":
-              return twClass(`texture-penitentiary_wall_loop_left`);
+              return twClass(`texture-penitentiary_wall_loop_d0`);
             case "safari":
-              return twClass(`texture-safari_wall_wall_left`);
+              return twClass(`texture-safari_wall_wall_d0`);
             case "jail":
-              return twClass(`texture-jail_wall_bars_left`);
+              return twClass(`texture-jail_wall_bars_d0`);
             case "market":
-              return twClass(`texture-market_wall_fruits_left`);
+              return twClass(`texture-market_wall_fruits_d0`);
             case "moonbase":
-              return twClass(`texture-moonbase_dark_wall_window1_left`);
+              return twClass(`texture-moonbase_dark_wall_window1_d0`);
             default:
               scenery satisfies never;
           }
@@ -375,29 +375,21 @@ export const textureForItem = (
     case "lamp":
       switch (item.config.direction) {
         case "left":
-          return twClass(
-            (item.config.activated ?? true) ?
-              "texture-lamp_on_left"
-            : "texture-lamp_off_left",
-          );
+          return (item.config.activated ?? true) ?
+              twClass("texture-lamp_on_d0")
+            : twClass("texture-lamp_off_d0");
         case "away":
-          return twClass(
-            (item.config.activated ?? true) ?
-              "texture-lamp_on_away"
-            : "texture-lamp_off_away",
-          );
+          return (item.config.activated ?? true) ?
+              twClass("texture-lamp_on_d2")
+            : twClass("texture-lamp_off_d2");
         case "towards":
-          return twClass(
-            (item.config.activated ?? true) ?
-              "texture-lamp_on_towards"
-            : "texture-lamp_off_towards",
-          );
+          return (item.config.activated ?? true) ?
+              twClass("texture-lamp_on_d6")
+            : twClass("texture-lamp_off_d6");
         case "right":
-          return twClass(
-            (item.config.activated ?? true) ?
-              "texture-lamp_on_right"
-            : "texture-lamp_off_right",
-          );
+          return (item.config.activated ?? true) ?
+              twClass("texture-lamp_on_d4")
+            : twClass("texture-lamp_off_d4");
         default:
           item.config.direction satisfies never;
       }

@@ -6,7 +6,8 @@ import { wallTileSize } from "../../../sprites/spritesheet/spritesheetData/textu
 import { isEmpty } from "../../../utils/iterators/isEmpty";
 import { phaseForSubItem } from "../../../utils/maths/hashing";
 import { renderContainerToSprite } from "../../../utils/pixi/renderContainerToSprite";
-import { resolveCameraRelativeVectorXy4 } from "../../../utils/vectors/resolveCameraRelativeVector";
+import { octantIndexOfDirection } from "../../../utils/vectors/octantIndexOfDirection" with { type: "macro" };
+import { resolveCameraRelativeIndexXy4 } from "../../../utils/vectors/resolveCameraRelativeVector";
 import {
   axisProjectsReversed,
   invertCameraAngle,
@@ -15,6 +16,7 @@ import {
 } from "../../../utils/vectors/rotateXy";
 import {
   alongAxisOfDirectionXy,
+  directionIndexXy8,
   dominantAxisXy,
   isNegativeSideXy,
   originXy,
@@ -67,12 +69,15 @@ export const wallAppearance = itemAppearanceRenderMemoised<"wall">(
     // to render, removing any current rendering. This near/far split matches
     // isWallDirectionHiddenAtAngle, which excludes the same wall from z-sorting
     // in effectiveFixedZIndex - keeping draw and sort in lockstep:
-    const renderedDirection = resolveCameraRelativeVectorXy4(
+    const apparentIndex = resolveCameraRelativeIndexXy4(
       direction,
       cameraAngle,
       false,
     );
-    if (renderedDirection === "right" || renderedDirection === "towards") {
+    if (
+      apparentIndex === directionIndexXy8.right ||
+      apparentIndex === directionIndexXy8.towards
+    ) {
       return undefined;
     }
 
@@ -102,7 +107,7 @@ export const wallAppearance = itemAppearanceRenderMemoised<"wall">(
       );
 
       const tileRenderPivot =
-        renderedDirection === "away" ?
+        apparentIndex === directionIndexXy8.away ?
           {
             x: wallTileSize.w,
             y: wallTileSize.h,
@@ -118,7 +123,7 @@ export const wallAppearance = itemAppearanceRenderMemoised<"wall">(
         textureId: wallTextureId(
           room.planet,
           clearTile ?? tiles[i],
-          renderedDirection,
+          apparentIndex,
           room.color.shade === "dimmed",
           spritesheet.data,
         ),
@@ -130,15 +135,17 @@ export const wallAppearance = itemAppearanceRenderMemoised<"wall">(
       wallTilesContainer.addChild(wallTileSprite);
 
       if (room.planet === "moonbase") {
-        const animationId = `moonbase.wall.screen.${tiles[i]}.away`;
+        const animationId = `moonbase.wall.screen.${tiles[i]}.d${octantIndexOfDirection("away")}`;
         // only moonbase has animated walls
         if (isAnimationId(animationId, spritesheet.data)) {
           wallAnimationsContainer.addChild(
             createSprite({
               animationId,
               startFramePhase: phaseForSubItem(item.hash, i),
-              flipX: renderedDirection === "left",
-              x: tileRenderPosition.x + (renderedDirection === "away" ? -8 : 8),
+              flipX: apparentIndex === directionIndexXy8.left,
+              x:
+                tileRenderPosition.x +
+                (apparentIndex === directionIndexXy8.away ? -8 : 8),
               y: tileRenderPosition.y - 23,
               spritesheet,
             }),
@@ -156,7 +163,7 @@ export const wallAppearance = itemAppearanceRenderMemoised<"wall">(
           // camera space for away-rendered walls, (-1,+1) for left - rotated
           // back into world space to probe the spatial index:
           const cornerDiagonal = rotateXy(
-            renderedDirection === "away" ?
+            apparentIndex === directionIndexXy8.away ?
               { x: blockSizePx.x, y: -blockSizePx.y }
             : { x: -blockSizePx.x, y: blockSizePx.y },
             invertCameraAngle(cameraQuarterAngle),
@@ -185,14 +192,14 @@ export const wallAppearance = itemAppearanceRenderMemoised<"wall">(
 
             wallTilesContainer.addChild(
               createSprite({
-                textureId: `moonbase.wallDoorTransition.${renderedDirection}${isDarkStr}`,
+                textureId: `moonbase.wallDoorTransition.d${apparentIndex}${isDarkStr}`,
                 ...tileRenderPosition,
                 pivot: tileRenderPivot,
                 spritesheet,
               }),
             );
             const maskSprite = createSprite({
-              textureId: `moonbase.wallDoorTransition.${renderedDirection}.mask`,
+              textureId: `moonbase.wallDoorTransition.d${apparentIndex}.mask`,
               ...tileRenderPosition,
               pivot: tileRenderPivot,
               // masks are read through their red channel, so must sample the

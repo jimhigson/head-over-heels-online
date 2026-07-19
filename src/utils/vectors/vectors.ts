@@ -433,11 +433,11 @@ export const nonZeroClosestDirectionIndexXy4 = (
     );
   }
   if (y > x) {
-    // away : right
-    return y > -x ? 3 : 0;
+    // away, or right
+    return y > -x ? 2 : 4;
   }
-  // left : towards
-  return y > -x ? 2 : 1;
+  // left, or towards
+  return y > -x ? 0 : 6;
 };
 
 /**
@@ -448,45 +448,64 @@ export const nonZeroVectorClosestDirectionXy4 = ({ x, y }: Xy): DirectionXy4 =>
   nonZeroClosestDirectionXy4(x, y);
 
 /**
- * the eight directions in ring order: each step is the 45° turn that a
- * quarter-turn of the camera advances by two of, so an index around this ring
- * is directly usable as a sprite-variant number (`.d0`..`.d7`). Successive
- * quarter camera turns advance an apparent facing +2 around the ring
+ * the eight directions in ring order, anchored at +x (`left = {x:1,y:0}`, the
+ * traditional zero angle) and stepping 45° anticlockwise per index - so the
+ * index is `atan2(y,x)` in eighth-turns, directly usable as a sprite-variant
+ * number (`.d0`..`.d7`). Each step is the 45° turn that a quarter-turn of the
+ * camera advances by two of.
  */
 export const directionsXy8Octants: DirectionXy8[] = [
-  "right",
-  "towardsRight",
-  "towards",
-  "towardsLeft",
   "left",
   "awayLeft",
   "away",
   "awayRight",
+  "right",
+  "towardsRight",
+  "towards",
+  "towardsLeft",
 ];
 
-/**
- * the 4-way sprite-variant number: an index around the ring of even members of
- * {@link directionsXy8Octants} (right=0, towards=1, left=2, away=3) -
- * successive quarter camera turns advance an apparent facing +1 around it
- */
-export type DirectionIndexXy4 = 0 | 1 | 2 | 3;
 /** index around {@link directionsXy8Octants} - the 8-way sprite-variant number */
-export type DirectionIndexXy8 = 4 | 5 | 6 | 7 | DirectionIndexXy4;
-
+export type DirectionIndexXy8 = 0 | 1 | 2 | 3 | 4 | 5 | 6 | 7;
 /**
- * reflect a ring index about the vertical screen axis. In this isometric
- * projection the world x=y diagonal projects vertically, so the reflection maps
- * each direction to the one whose projected form is its horizontal mirror
- * (right↔towards, left↔away)
+ * the 4-way sprite-variant number: the octant ring index of a cardinal - the
+ * even members of {@link directionsXy8Octants} (left=0, away=2, right=4,
+ * towards=6), anchored at +x and stepping 90° anticlockwise. A subtype of
+ * {@link DirectionIndexXy8}, so cardinal and octant variants share one numbering
+ * and successive quarter camera turns advance an apparent facing by two octants
+ * around it
  */
-export const mirrorDirectionIndexXy4 = (
-  index: DirectionIndexXy4,
-): DirectionIndexXy4 => ((5 - index) % 4) as DirectionIndexXy4;
+export type DirectionIndexXy4 = 0 | 2 | 4 | 6;
 
 /**
- * reflect an octant ring index about the vertical screen axis (see
- * {@link mirrorDirectionIndexXy4}) - awayLeft (d5) and towardsRight (d1)
- * project onto the axis itself so are their own mirrors
+ * the octant ring index of each named direction - the numbered sprite-variant
+ * space keyed by name, so imperative sites can compare against a named index
+ * (eg `=== directionIndexXy8.right`) rather than a bare integer. Kept in step
+ * with {@link directionsXy8Octants} by the dev assertion below
+ */
+export const directionIndexXy8 = {
+  left: 0,
+  awayLeft: 1,
+  away: 2,
+  awayRight: 3,
+  right: 4,
+  towardsRight: 5,
+  towards: 6,
+  towardsLeft: 7,
+} as const satisfies Record<DirectionXy8, DirectionIndexXy8>;
+
+/** the octant ring index of each x/y axis (x runs left, y runs away) */
+export const axisIndexXy8 = {
+  x: directionIndexXy8.left,
+  y: directionIndexXy8.away,
+} as const satisfies Record<AxisXy, DirectionIndexXy4>;
+
+/**
+ * reflect an octant ring index about the vertical screen axis. In this
+ * isometric projection the world x=y diagonal projects vertically, so the
+ * reflection maps each direction to the one whose projected form is its
+ * horizontal mirror (left↔away, right↔towards); awayLeft (d1) and
+ * towardsRight (d5) project onto the axis itself so are their own mirrors
  */
 export const mirrorDirectionIndexXy8 = (
   index: DirectionIndexXy8,
@@ -500,7 +519,7 @@ export const vectorClosestDirectionXy8 = ({
     return undefined;
   }
 
-  const angle = Math.atan2(-y, -x);
+  const angle = Math.atan2(y, x);
   const octant = Math.round((8 * angle) / (2 * Math.PI)) & 7;
 
   return directionsXy8Octants[octant];
@@ -538,7 +557,7 @@ export const nonZeroClosestDirectionIndexXy8 = (
       "zero-length vector given where a non-zero direction vector is required",
     );
   }
-  const angle = Math.atan2(-y, -x);
+  const angle = Math.atan2(y, x);
   return (Math.round((8 * angle) / (2 * Math.PI)) & 7) as DirectionIndexXy8;
 };
 

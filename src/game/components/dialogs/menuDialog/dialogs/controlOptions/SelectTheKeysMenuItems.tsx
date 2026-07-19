@@ -162,10 +162,10 @@ export const SelectTheKeysMenuItems = () => {
         leader={
           <span class="relative overflow-hidden w-3 h-3">
             <span
-              class={`${spriteLeaderClasses} ${spriteClassname({ character: "head", action: "idle", facingXy8: "towardsRight" })} ${"selectedMenuItem:texture-animated-head_walking_towardsRight" satisfies AnimatedTextureTailwindClass} absolute right-[50%]`}
+              class={`${spriteLeaderClasses} ${spriteClassname({ character: "head", action: "idle", facingXy8: "towardsRight" })} ${"selectedMenuItem:texture-animated-head_walking_d5" satisfies AnimatedTextureTailwindClass} absolute right-[50%]`}
             />
             <span
-              class={`${spriteLeaderClasses} ${spriteClassname({ character: "heels", action: "idle", facingXy8: "towardsRight" })} ${"selectedMenuItem:texture-animated-heels_walking_towardsRight" satisfies AnimatedTextureTailwindClass} absolute left-[50%]`}
+              class={`${spriteLeaderClasses} ${spriteClassname({ character: "heels", action: "idle", facingXy8: "towardsRight" })} ${"selectedMenuItem:texture-animated-heels_walking_d5" satisfies AnimatedTextureTailwindClass} absolute left-[50%]`}
             />
           </span>
         }
@@ -185,7 +185,7 @@ export const SelectTheKeysMenuItems = () => {
         }
         leader={
           <span
-            class={`${spriteLeaderClasses} ${spriteClassname({ character: "head", action: "idle", facingXy8: "towardsRight" })} ${"selectedMenuItem:texture-animated-head_walking_towardsRight" satisfies AnimatedTextureTailwindClass}`}
+            class={`${spriteLeaderClasses} ${spriteClassname({ character: "head", action: "idle", facingXy8: "towardsRight" })} ${"selectedMenuItem:texture-animated-head_walking_d5" satisfies AnimatedTextureTailwindClass}`}
           />
         }
       />
@@ -209,7 +209,7 @@ export const SelectTheKeysMenuItems = () => {
         }
         leader={
           <span
-            class={`${spriteLeaderClasses} ${spriteClassname({ character: "heels", action: "idle", facingXy8: "towardsRight" })} ${"selectedMenuItem:texture-animated-heels_walking_towardsRight" satisfies AnimatedTextureTailwindClass}`}
+            class={`${spriteLeaderClasses} ${spriteClassname({ character: "heels", action: "idle", facingXy8: "towardsRight" })} ${"selectedMenuItem:texture-animated-heels_walking_d5" satisfies AnimatedTextureTailwindClass}`}
           />
         }
       />

@@ -311,7 +311,7 @@ exports[`playing through a complex, deterministic room ("laboratory") should alw
       "shadowCastTexture": {
         "flipX": true,
         "flipsOnOddQuarterCameraTurns": true,
-        "textureId": "shadow.barrier.y",
+        "textureId": "shadow.barrier.d2",
       },
       "state": {
         "actedOnAt": {
@@ -359,7 +359,7 @@ exports[`playing through a complex, deterministic room ("laboratory") should alw
       "shadowCastTexture": {
         "flipX": true,
         "flipsOnOddQuarterCameraTurns": true,
-        "textureId": "shadow.barrier.y",
+        "textureId": "shadow.barrier.d2",
       },
       "state": {
         "actedOnAt": {
@@ -406,7 +406,7 @@ exports[`playing through a complex, deterministic room ("laboratory") should alw
       "shadowCastTexture": {
         "flipX": true,
         "flipsOnOddQuarterCameraTurns": true,
-        "textureId": "shadow.barrier.y",
+        "textureId": "shadow.barrier.d2",
       },
       "state": {
         "actedOnAt": {
@@ -454,7 +454,7 @@ exports[`playing through a complex, deterministic room ("laboratory") should alw
       "shadowCastTexture": {
         "flipX": true,
         "flipsOnOddQuarterCameraTurns": true,
-        "textureId": "shadow.barrier.y",
+        "textureId": "shadow.barrier.d2",
       },
       "state": {
         "actedOnAt": {
@@ -2138,7 +2138,7 @@ exports[`playing through a complex, deterministic room ("laboratory") should alw
       "shadowCastTexture": {
         "flipX": true,
         "flipsOnOddQuarterCameraTurns": true,
-        "textureId": "shadow.doorFrame.top.y",
+        "textureId": "shadow.doorFrame.top.d2",
       },
       "shadowOffset": {
         "x": -1,
@@ -2195,7 +2195,7 @@ exports[`playing through a complex, deterministic room ("laboratory") should alw
       "shadowCastTexture": {
         "flipX": true,
         "flipsOnOddQuarterCameraTurns": true,
-        "textureId": "shadow.door.floatingThreshold.double.y",
+        "textureId": "shadow.door.floatingThreshold.double.d2",
       },
       "shadowOffset": {
         "y": 16,
@@ -2462,7 +2462,7 @@ exports[`playing through a complex, deterministic room ("laboratory") should alw
       "shadowCastTexture": {
         "flipX": true,
         "flipsOnOddQuarterCameraTurns": true,
-        "textureId": "shadow.doorFrame.top.y",
+        "textureId": "shadow.doorFrame.top.d2",
       },
       "shadowOffset": {
         "x": -1,
@@ -2519,7 +2519,7 @@ exports[`playing through a complex, deterministic room ("laboratory") should alw
       "shadowCastTexture": {
         "flipX": true,
         "flipsOnOddQuarterCameraTurns": true,
-        "textureId": "shadow.door.floatingThreshold.double.y",
+        "textureId": "shadow.door.floatingThreshold.double.d2",
       },
       "shadowOffset": {
         "y": undefined,
@@ -7805,7 +7805,7 @@ exports[`playing through a complex, deterministic room ("laboratory") should alw
       "jsonItemId": "wall(right)@0,0,0",
       "shadowCastTexture": {
         "flipsOnOddQuarterCameraTurns": true,
-        "textureId": "shadow.wall.y",
+        "textureId": "shadow.wall.d2",
       },
       "state": {
         "actedOnAt": {
@@ -7856,7 +7856,7 @@ exports[`playing through a complex, deterministic room ("laboratory") should alw
       "shadowCastTexture": {
         "flipX": true,
         "flipsOnOddQuarterCameraTurns": true,
-        "textureId": "shadow.wall.y",
+        "textureId": "shadow.wall.d2",
       },
       "state": {
         "actedOnAt": {
@@ -7907,7 +7907,7 @@ exports[`playing through a complex, deterministic room ("laboratory") should alw
       "shadowCastTexture": {
         "flipX": true,
         "flipsOnOddQuarterCameraTurns": true,
-        "textureId": "shadow.wall.y",
+        "textureId": "shadow.wall.d2",
       },
       "state": {
         "actedOnAt": {
@@ -7966,7 +7966,7 @@ exports[`playing through a complex, deterministic room ("laboratory") should alw
       "jsonItemId": "wall@18,0,0",
       "shadowCastTexture": {
         "flipsOnOddQuarterCameraTurns": true,
-        "textureId": "shadow.wall.y",
+        "textureId": "shadow.wall.d2",
       },
       "state": {
         "actedOnAt": {
@@ -8023,7 +8023,7 @@ exports[`playing through a complex, deterministic room ("laboratory") should alw
       "shadowCastTexture": {
         "flipX": true,
         "flipsOnOddQuarterCameraTurns": true,
-        "textureId": "shadow.wall.y",
+        "textureId": "shadow.wall.d2",
       },
       "state": {
         "actedOnAt": {
@@ -8078,7 +8078,7 @@ exports[`playing through a complex, deterministic room ("laboratory") should alw
       "shadowCastTexture": {
         "flipX": true,
         "flipsOnOddQuarterCameraTurns": true,
-        "textureId": "shadow.wall.y",
+        "textureId": "shadow.wall.d2",
       },
       "state": {
         "actedOnAt": {

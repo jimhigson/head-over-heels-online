@@ -463,7 +463,7 @@ a retro upscaled blocky look even on high resolution screens. The other importan
 
 # github
 * for all interactions with github, use the `gh` command
-* NEVER push or raise a PR without asking first, permission to do so must be explicit, not implied
+* NEVER push or raise a PR without asking first in an interactive session, permission to do so must be explicit, not implied, and is NEVER ongoing. Ask before every push with NO EXCEPTION. A non-interactive session eg, the /shepherd-prs sill) is ok to push, so long as agreed in advance.
 
 # Claude web sandbox
 The sandbox ships the wrong Node: install the `.node-version` version before running any tests - see the Running section above. This is mandatory, not advisory.

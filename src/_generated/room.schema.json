@@ -2388,9 +2388,6 @@
         },
         "expires": {
           "$ref": "#/definitions/r36"
-        },
-        "facing": {
-          "$ref": "#/definitions/r75"
         }
       },
       "type": "object"

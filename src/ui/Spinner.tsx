@@ -11,7 +11,7 @@ export const SpinnerHead = ({ loadingBorder }: LoaderProps = {}) => (
     aria-label="Loading"
   >
     <span
-      class={`sprite ${"texture-animated-head_walking_right" satisfies AnimatedTextureTailwindClass} zx:sprite-revert-zxYellow`}
+      class={`sprite ${"texture-animated-head_walking_d4" satisfies AnimatedTextureTailwindClass} zx:sprite-revert-zxYellow`}
       aria-hidden
     />
   </div>
@@ -23,7 +23,7 @@ export const SpinnerHeels = ({ loadingBorder }: LoaderProps = {}) => (
     aria-label="Loading"
   >
     <span
-      class={`sprite ${"texture-animated-heels_walking_towards" satisfies AnimatedTextureTailwindClass} zx:sprite-revert-zxYellow`}
+      class={`sprite ${"texture-animated-heels_walking_d6" satisfies AnimatedTextureTailwindClass} zx:sprite-revert-zxYellow`}
       aria-hidden
     />
   </div>

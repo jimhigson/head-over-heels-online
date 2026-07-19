@@ -326,7 +326,8 @@ const run = async () => {
   }
 
   await sharp(out, { raw: info })
-    .webp({ lossless: true, effort: 11 })
+    // 6 is the maximum webp effort sharp accepts:
+    .webp({ lossless: true, effort: 6 })
     .toFile(outPath);
   console.log(`written ${outPath}`);
 };

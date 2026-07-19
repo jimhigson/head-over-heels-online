@@ -14,19 +14,23 @@ type LitOrDarkWallTextureId<P extends SceneryName> =
 export const wallTextureId = <P extends SceneryName, TDark extends boolean>(
   planet: P,
   wallName: Wall<P>,
-  side: "away" | "left",
+  /**
+   * which of the two far-side wall arts to use, as the facing's octant index:
+   * 0 = left art, 2 = away art
+   */
+  artIndex: 0 | 2,
   dark: TDark,
   spritesheetData: AppSpritesheetData,
 ): LitOrDarkWallTextureId<P> => {
   if (!dark) {
-    return `${planet}.wall.${wallName}.${side}` as const;
+    return `${planet}.wall.${wallName}.d${artIndex}` as const;
   }
 
-  const darkTextureId = `${planet}.dark.wall.${wallName}.${side}` as const;
+  const darkTextureId = `${planet}.dark.wall.${wallName}.d${artIndex}` as const;
   if (isTextureId(darkTextureId, spritesheetData)) {
     return darkTextureId;
   }
 
   // no dark texture, use non-dark:
-  return `${planet}.wall.${wallName}.${side}` as const;
+  return `${planet}.wall.${wallName}.d${artIndex}` as const;
 };

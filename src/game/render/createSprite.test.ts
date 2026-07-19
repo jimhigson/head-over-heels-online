@@ -3,8 +3,14 @@ import { beforeAll, describe, expect, expectTypeOf, test } from "vitest";
 
 import { type AppSpritesheetWithVariants } from "../../sprites/spritesheet/AppSpritesheet";
 import { type TextureId } from "../../sprites/spritesheet/spritesheetData/makeSpritesheetData";
+import { octantIndexOfDirection } from "../../utils/vectors/octantIndexOfDirection" with { type: "macro" };
 import { type Xyz } from "../../utils/vectors/vectors";
 import { createSprite, type CreateSpriteOptions } from "./createSprite";
+
+const conveyorAnimationId =
+  `conveyor.d${octantIndexOfDirection("left")}` as const;
+const conveyorFrame1 = `${conveyorAnimationId}.1` as const;
+const conveyorFrame2 = `${conveyorAnimationId}.2` as const;
 
 const mockTextures = {
   bag: new Texture(),
@@ -12,8 +18,8 @@ const mockTextures = {
   "block.organic": new Texture({ label: "block.organic" }),
   "dalek.1": new Texture({ label: "dalek.1" }),
   "dalek.2": new Texture({ label: "dalek.2" }),
-  "conveyor.x.1": new Texture({ label: "conveyor.x.1" }),
-  "conveyor.x.2": new Texture({ label: "conveyor.x.2" }),
+  [conveyorFrame1]: new Texture({ label: conveyorFrame1 }),
+  [conveyorFrame2]: new Texture({ label: conveyorFrame2 }),
 } satisfies Partial<Record<TextureId, Texture>>;
 
 const mockFrame = { frame: { x: 0, y: 0, w: 24, h: 24 } };
@@ -26,7 +32,10 @@ const spritesheet = {
   },
   animations: {
     dalek: [mockTextures["dalek.1"], mockTextures["dalek.2"]],
-    "conveyor.x": [mockTextures["conveyor.x.1"], mockTextures["conveyor.x.2"]],
+    [conveyorAnimationId]: [
+      mockTextures[conveyorFrame1],
+      mockTextures[conveyorFrame2],
+    ],
   },
   data: {
     frames: {
@@ -36,7 +45,7 @@ const spritesheet = {
     },
     animations: {
       dalek: Object.assign(["dalek.1", "dalek.2"], { animationSpeed: 1 }),
-      "conveyor.x": Object.assign(["conveyor.x.1", "conveyor.x.2"], {
+      [conveyorAnimationId]: Object.assign([conveyorFrame1, conveyorFrame2], {
         animationSpeed: 1,
       }),
     },
@@ -224,7 +233,7 @@ test("creating sprite with {animationId}", () => {
 });
 test("creating sprite with {animationId, times: {x:2}}", () => {
   const containerAnimatedSprite = createSprite({
-    animationId: "conveyor.x",
+    animationId: conveyorAnimationId,
     times: { x: 2 },
     spritesheet,
   });
@@ -237,7 +246,7 @@ test("creating sprite with {animationId, times: {x:2}}", () => {
 });
 test("creating sprite with {animationId, times: {x:1, y:1, z:1}}", () => {
   const containerAnimatedSprite = createSprite({
-    animationId: "conveyor.x",
+    animationId: conveyorAnimationId,
     times: { x: 1, y: 1, z: 1 },
     spritesheet,
   });
@@ -249,7 +258,7 @@ test("creating sprite with {animationId, times: {x:1, y:1, z:1}}", () => {
 });
 test("creating sprite with {animationId, times: undefined}", () => {
   const containerAnimatedSprite = createSprite({
-    animationId: "conveyor.x",
+    animationId: conveyorAnimationId,
     times: undefined,
     spritesheet,
   });

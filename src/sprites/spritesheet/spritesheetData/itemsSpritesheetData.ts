@@ -1,5 +1,6 @@
 import { type SpritesheetData } from "pixi.js";
 
+import { octantIndexOfDirection } from "../../../utils/vectors/octantIndexOfDirection" with { type: "macro" };
 import {
   fourDirections,
   fourDirectionsOfNumberedTextures,
@@ -93,13 +94,13 @@ const frames = {
     smallItemGridLocation({ x: 0, y: 3 }),
     smallItemTextureSize,
   ),
-  "shadowMask.turtle.away": {
+  [`shadowMask.turtle.d${octantIndexOfDirection("away")}` as const]: {
     frame: {
       ...smallItemGridLocation({ x: 4, y: 3 }),
       ...smallItemTextureSize,
     },
   },
-  "shadowMask.turtle.right": {
+  [`shadowMask.turtle.d${octantIndexOfDirection("right")}` as const]: {
     frame: {
       ...smallItemGridLocation({ x: 4, y: 4 }),
       ...smallItemTextureSize,
@@ -123,14 +124,14 @@ const frames = {
     { w: 24, h: 32 },
   ),
 
-  "shadowMask.skiHead.away": {
+  [`shadowMask.skiHead.d${octantIndexOfDirection("away")}` as const]: {
     frame: {
       ...smallItemGridLocation({ x: 13, y: 3 }),
       ...smallItemTextureSize,
       h: 32,
     },
   },
-  "shadowMask.skiHead.right": {
+  [`shadowMask.skiHead.d${octantIndexOfDirection("right")}` as const]: {
     frame: {
       ...smallItemGridLocation({ x: 14, y: 3 }),
       ...smallItemTextureSize,
@@ -144,13 +145,13 @@ const frames = {
     smallItemTextureSize,
   ),
 
-  "shadowMask.charles.away": {
+  [`shadowMask.charles.d${octantIndexOfDirection("away")}` as const]: {
     frame: {
       ...smallItemGridLocation({ x: 2, y: 5 }),
       ...smallItemTextureSize,
     },
   },
-  "shadowMask.charles.right": {
+  [`shadowMask.charles.d${octantIndexOfDirection("right")}` as const]: {
     frame: {
       ...smallItemGridLocation({ x: 2, y: 6 }),
       ...smallItemTextureSize,
@@ -182,42 +183,42 @@ const frames = {
     smallItemTextureSize,
   ),
 
-  "barrier.x.disappearing": {
+  [`barrier.d${octantIndexOfDirection("left")}.disappearing` as const]: {
     frame: {
       ...smallItemGridLocation({ x: 17, y: 0 }),
       ...smallItemTextureSize,
       pivot: { x: 18, y: 23 },
     },
   },
-  "barrier.y.disappearing": {
+  [`barrier.d${octantIndexOfDirection("away")}.disappearing` as const]: {
     frame: {
       ...smallItemGridLocation({ x: 18, y: 0 }),
       ...smallItemTextureSize,
       pivot: { x: 6, y: 23 },
     },
   },
-  "barrier.x": {
+  [`barrier.d${octantIndexOfDirection("left")}` as const]: {
     frame: {
       ...smallItemGridLocation({ x: 19, y: 0 }),
       ...smallItemTextureSize,
       pivot: { x: 18, y: 23 },
     },
   },
-  "barrier.y": {
+  [`barrier.d${octantIndexOfDirection("away")}` as const]: {
     frame: {
       ...smallItemGridLocation({ x: 20, y: 0 }),
       ...smallItemTextureSize,
       pivot: { x: 6, y: 23 },
     },
   },
-  "shadow.barrier.y": {
+  [`shadow.barrier.d${octantIndexOfDirection("away")}` as const]: {
     frame: {
       ...smallItemGridLocation({ x: 21, y: 0 }),
       ...smallItemTextureSize,
       pivot: { x: 6, y: 22 },
     },
   },
-  "shadowMask.barrier.y": {
+  [`shadowMask.barrier.d${octantIndexOfDirection("away")}` as const]: {
     frame: {
       ...smallItemGridLocation({ x: 22, y: 0 }),
       ...smallItemTextureSize,
@@ -762,13 +763,13 @@ const frames = {
       ...largeItemTextureSize,
     },
   },
-  "book.x": {
+  [`book.d${octantIndexOfDirection("left")}` as const]: {
     frame: {
       ...largeItemGridLocation({ x: 8, y: 0 }),
       ...largeItemTextureSize,
     },
   },
-  "book.y": {
+  [`book.d${octantIndexOfDirection("away")}` as const]: {
     frame: {
       ...largeItemGridLocation({ x: 9, y: 0 }),
       ...largeItemTextureSize,
@@ -846,7 +847,7 @@ const frames = {
     },
   },
   ...seriesOfNumberedTextures(
-    "conveyor.x",
+    `conveyor.d${octantIndexOfDirection("left")}`,
     7,
     largeItemGridLocation({ x: 0, y: 2 }),
     largeItemTextureSize,
@@ -876,7 +877,7 @@ const frames = {
     },
   },
   ...seriesOfNumberedTextures(
-    "conveyor.y",
+    `conveyor.d${octantIndexOfDirection("away")}`,
     7,
     largeItemGridLocation({ x: 0, y: (y = 3) }),
     largeItemTextureSize,
@@ -955,32 +956,32 @@ const frames = {
   // the mirror pane by direction number d0..d3 - the four orientations a 45°
   // pane shows as it (or the camera) turns, each 1/8 turn apart. d3 is the
   // face-on (reflective) pane, d1 edge-on, d0/d2 the axis-aligned panes between:
-  "mirror.d0": {
+  [`mirror.d${octantIndexOfDirection("left")}` as const]: {
     frame: {
       ...largeItemGridLocation({ x: 12, y: 6 }),
       ...largeItemTextureSize,
     },
   },
-  "mirror.d1": {
+  [`mirror.d${octantIndexOfDirection("awayLeft")}` as const]: {
     frame: {
       ...largeItemGridLocation({ x: 10, y: 5 }),
       ...largeItemTextureSize,
     },
   },
-  "mirror.d2": {
+  [`mirror.d${octantIndexOfDirection("away")}` as const]: {
     frame: {
       ...largeItemGridLocation({ x: 13, y: 6 }),
       ...largeItemTextureSize,
     },
   },
-  "mirror.d3": {
+  [`mirror.d${octantIndexOfDirection("awayRight")}` as const]: {
     frame: {
       ...largeItemGridLocation({ x: 11, y: 5 }),
       ...largeItemTextureSize,
     },
   },
   // the sprite in front of the reflections in the face-on (d3) mirror pane:
-  "mirror.d3.front": {
+  [`mirror.d${octantIndexOfDirection("awayRight")}.front` as const]: {
     frame: {
       ...largeItemGridLocation({ x: 11, y: 6 }),
       ...largeItemTextureSize,
@@ -1081,14 +1082,32 @@ export const itemsSpritesheetData = {
     ),
     dalek: withSpeed(["dalek.1", "dalek.2"] as const, 0.5),
     "dalek.dark": withSpeed(["dalek.dark.1", "dalek.dark.2"] as const, 0.5),
-    "turtle.left": withSpeed(["turtle.left.1", "turtle.left.2"] as const, 0.25),
-    "turtle.away": withSpeed(["turtle.away.1", "turtle.away.2"] as const, 0.25),
-    "turtle.towards": withSpeed(
-      ["turtle.towards.1", "turtle.towards.2"] as const,
+    [`turtle.d${octantIndexOfDirection("right")}` as const]: withSpeed(
+      [
+        `turtle.d${octantIndexOfDirection("right")}.1`,
+        `turtle.d${octantIndexOfDirection("right")}.2`,
+      ] as const,
       0.25,
     ),
-    "turtle.right": withSpeed(
-      ["turtle.right.1", "turtle.right.2"] as const,
+    [`turtle.d${octantIndexOfDirection("towards")}` as const]: withSpeed(
+      [
+        `turtle.d${octantIndexOfDirection("towards")}.1`,
+        `turtle.d${octantIndexOfDirection("towards")}.2`,
+      ] as const,
+      0.25,
+    ),
+    [`turtle.d${octantIndexOfDirection("away")}` as const]: withSpeed(
+      [
+        `turtle.d${octantIndexOfDirection("away")}.1`,
+        `turtle.d${octantIndexOfDirection("away")}.2`,
+      ] as const,
+      0.25,
+    ),
+    [`turtle.d${octantIndexOfDirection("left")}` as const]: withSpeed(
+      [
+        `turtle.d${octantIndexOfDirection("left")}.1`,
+        `turtle.d${octantIndexOfDirection("left")}.2`,
+      ] as const,
       0.25,
     ),
     helicopterBug: withSpeed(
@@ -1133,15 +1152,21 @@ export const itemsSpritesheetData = {
       ["bubbles.jetpack.1", "bubbles.jetpack.2"] as const,
       0.25,
     ),
-    "conveyor.x": withSpeed(
-      seriesOfAnimationFrameTextureIds("conveyor.x", 7),
+    [`conveyor.d${octantIndexOfDirection("left")}` as const]: withSpeed(
+      seriesOfAnimationFrameTextureIds(
+        `conveyor.d${octantIndexOfDirection("left")}`,
+        7,
+      ),
       0.5,
     ),
-    "conveyor.y": withSpeed(
-      seriesOfAnimationFrameTextureIds("conveyor.y", 7),
+    [`conveyor.d${octantIndexOfDirection("away")}` as const]: withSpeed(
+      seriesOfAnimationFrameTextureIds(
+        `conveyor.d${octantIndexOfDirection("away")}`,
+        7,
+      ),
       0.5,
     ),
-    "lightBeam.x": withSpeed(
+    [`lightBeam.d${octantIndexOfDirection("left")}` as const]: withSpeed(
       seriesOfAnimationFrameTextureIds("lightBeam", 3),
       0.5,
     ),

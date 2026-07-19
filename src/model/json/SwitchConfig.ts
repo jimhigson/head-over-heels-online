@@ -33,13 +33,13 @@ export type SwitchItemModificationUnion<
       leftState?: Partial<
         Pick<
           ItemState<"monster" | "movingPlatform", RoomId, RoomItemId>,
-          "activated" | "disappearing" | "everActivated" | "expires" | "facing"
+          "activated" | "disappearing" | "everActivated" | "expires"
         >
       >;
       rightState?: Partial<
         Pick<
           ItemState<"monster" | "movingPlatform", RoomId, RoomItemId>,
-          "activated" | "disappearing" | "everActivated" | "expires" | "facing"
+          "activated" | "disappearing" | "everActivated" | "expires"
         >
       >;
     }

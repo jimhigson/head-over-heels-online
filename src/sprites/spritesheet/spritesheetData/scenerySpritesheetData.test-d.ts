@@ -9,12 +9,12 @@ describe("generating frame string union type", () => {
     type Blacktooth = BackgroundTextureId<"blacktooth", "">;
     type BlacktoothExpected =
       | "blacktooth.floor"
-      | "blacktooth.wall.armour.away"
-      | "blacktooth.wall.armour.left"
-      | "blacktooth.wall.plain.away"
-      | "blacktooth.wall.plain.left"
-      | "blacktooth.wall.shield.away"
-      | "blacktooth.wall.shield.left";
+      | "blacktooth.wall.armour.d0"
+      | "blacktooth.wall.armour.d2"
+      | "blacktooth.wall.plain.d0"
+      | "blacktooth.wall.plain.d2"
+      | "blacktooth.wall.shield.d0"
+      | "blacktooth.wall.shield.d2";
 
     const _1: BlacktoothExpected = {} as Blacktooth;
     const _2: Blacktooth = {} as BlacktoothExpected;
@@ -24,10 +24,10 @@ describe("generating frame string union type", () => {
     type EgyptusDark = BackgroundTextureId<"egyptus", ".dark">;
     type EgyptusDarkExpected =
       | "egyptus.dark.floor"
-      | "egyptus.dark.wall.hieroglyphics.away"
-      | "egyptus.dark.wall.hieroglyphics.left"
-      | "egyptus.dark.wall.sarcophagus.away"
-      | "egyptus.dark.wall.sarcophagus.left";
+      | "egyptus.dark.wall.hieroglyphics.d0"
+      | "egyptus.dark.wall.hieroglyphics.d2"
+      | "egyptus.dark.wall.sarcophagus.d0"
+      | "egyptus.dark.wall.sarcophagus.d2";
 
     const _1: EgyptusDarkExpected = {} as EgyptusDark;
     const _2: EgyptusDark = {} as EgyptusDarkExpected;
@@ -37,16 +37,16 @@ describe("generating frame string union type", () => {
     type Moonbase = BackgroundTextureId<"moonbase", "">;
     type MoonbaseExpected =
       | "moonbase.floor"
-      | "moonbase.wall.coil.away"
-      | "moonbase.wall.coil.left"
-      | "moonbase.wall.window-clear.away"
-      | "moonbase.wall.window-clear.left"
-      | "moonbase.wall.window1.away"
-      | "moonbase.wall.window1.left"
-      | "moonbase.wall.window2.away"
-      | "moonbase.wall.window2.left"
-      | "moonbase.wall.window3.away"
-      | "moonbase.wall.window3.left"
+      | "moonbase.wall.coil.d0"
+      | "moonbase.wall.coil.d2"
+      | "moonbase.wall.window-clear.d0"
+      | "moonbase.wall.window-clear.d2"
+      | "moonbase.wall.window1.d0"
+      | "moonbase.wall.window1.d2"
+      | "moonbase.wall.window2.d0"
+      | "moonbase.wall.window2.d2"
+      | "moonbase.wall.window3.d0"
+      | "moonbase.wall.window3.d2"
       | DoorFrameTextureName<"moonbase">;
 
     const _1: MoonbaseExpected = {} as Moonbase;
@@ -57,16 +57,16 @@ describe("generating frame string union type", () => {
     type MoonbaseDark = BackgroundTextureId<"moonbase", ".dark">;
     type MoonbaseDarkExpected =
       | "moonbase.dark.floor"
-      | "moonbase.dark.wall.coil.away"
-      | "moonbase.dark.wall.coil.left"
-      | "moonbase.dark.wall.window-clear.away"
-      | "moonbase.dark.wall.window-clear.left"
-      | "moonbase.dark.wall.window1.away"
-      | "moonbase.dark.wall.window1.left"
-      | "moonbase.dark.wall.window2.away"
-      | "moonbase.dark.wall.window2.left"
-      | "moonbase.dark.wall.window3.away"
-      | "moonbase.dark.wall.window3.left"
+      | "moonbase.dark.wall.coil.d0"
+      | "moonbase.dark.wall.coil.d2"
+      | "moonbase.dark.wall.window-clear.d0"
+      | "moonbase.dark.wall.window-clear.d2"
+      | "moonbase.dark.wall.window1.d0"
+      | "moonbase.dark.wall.window1.d2"
+      | "moonbase.dark.wall.window2.d0"
+      | "moonbase.dark.wall.window2.d2"
+      | "moonbase.dark.wall.window3.d0"
+      | "moonbase.dark.wall.window3.d2"
       | DoorFrameTextureName<"moonbase.dark">;
 
     const _1: MoonbaseDarkExpected = {} as MoonbaseDark;

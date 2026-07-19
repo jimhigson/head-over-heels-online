@@ -1,5 +1,5 @@
 import { variantTextureId } from "../../../sprites/spritesheet/variantTextureId";
-import { resolveCameraRelativeVectorXy4 } from "../../../utils/vectors/resolveCameraRelativeVector";
+import { resolveCameraRelativeIndexXy4 } from "../../../utils/vectors/resolveCameraRelativeVector";
 import { nearestQuarterAngle } from "../../../utils/vectors/rotateXy";
 import { type Xy, xyEqual } from "../../../utils/vectors/vectors";
 import { createSprite } from "../createSprite";
@@ -37,7 +37,7 @@ export const lampAppearance: ItemAppearance<"lamp", LampRenderProps> = ({
   // resolve the lamp's facing against the continuous camera angle so the
   // directional sprite matches how it appears once the camera has turned -
   // rounded only here, at the texture pick:
-  const renderedDirection = resolveCameraRelativeVectorXy4(
+  const apparentIndex = resolveCameraRelativeIndexXy4(
     direction,
     cameraAngle,
     false,
@@ -46,7 +46,7 @@ export const lampAppearance: ItemAppearance<"lamp", LampRenderProps> = ({
   return {
     output: createSprite({
       textureId: variantTextureId(
-        `lamp.${activated ? "on" : "off"}.${renderedDirection}`,
+        `lamp.${activated ? "on" : "off"}.d${apparentIndex}`,
         isReflection,
         false,
         false,

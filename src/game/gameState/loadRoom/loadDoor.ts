@@ -4,6 +4,7 @@ import { type JsonItem } from "../../../model/json/JsonItem";
 import { type StoodOnBy } from "../../../model/StoodOnBy";
 import { emptyObject } from "../../../utils/empty";
 import { pick } from "../../../utils/pick";
+import { octantIndexOfDirection } from "../../../utils/vectors/octantIndexOfDirection" with { type: "macro" };
 import { unitVectors } from "../../../utils/vectors/unitVectors";
 import {
   addXyz,
@@ -28,23 +29,27 @@ import { defaultBaseState } from "./itemDefaultStates";
  * shadow renderer flips them when the camera rotates onto an odd quarter turn
  */
 const shadowDoorFloatingThresholdY: ShadowCastSpriteOptions = Object.freeze({
-  textureId: "shadow.door.floatingThreshold.double.y",
+  textureId: `shadow.door.floatingThreshold.double.d${octantIndexOfDirection(
+    "away",
+  )}`,
   flipsOnOddQuarterCameraTurns: true,
 });
 
 const shadowDoorFloatingThresholdX: ShadowCastSpriteOptions = Object.freeze({
-  textureId: "shadow.door.floatingThreshold.double.y",
+  textureId: `shadow.door.floatingThreshold.double.d${octantIndexOfDirection(
+    "away",
+  )}`,
   flipX: true,
   flipsOnOddQuarterCameraTurns: true,
 });
 
 const shadowDoorFrameTopY: ShadowCastSpriteOptions = Object.freeze({
-  textureId: "shadow.doorFrame.top.y",
+  textureId: `shadow.doorFrame.top.d${octantIndexOfDirection("away")}`,
   flipsOnOddQuarterCameraTurns: true,
 });
 
 const shadowDoorFrameTopX: ShadowCastSpriteOptions = Object.freeze({
-  textureId: "shadow.doorFrame.top.y",
+  textureId: `shadow.doorFrame.top.d${octantIndexOfDirection("away")}`,
   flipX: true,
   flipsOnOddQuarterCameraTurns: true,
 });

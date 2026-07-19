@@ -16,6 +16,7 @@ import {
   renderContainerToSprite,
 } from "../../../../utils/pixi/renderContainerToSprite";
 import { renderMultipliedXy } from "../../../../utils/pixi/renderMultipliedXy";
+import { octantIndexOfDirection } from "../../../../utils/vectors/octantIndexOfDirection" with { type: "macro" };
 import { nearestQuarterAngle } from "../../../../utils/vectors/rotateXy";
 import {
   dominantAxisXy,
@@ -203,8 +204,12 @@ const itemShadowMaskAppearances: {
         // matches whether the legs render the floating threshold (hidden
         // wall) or the full legs at this angle:
         isDoorPartInHiddenWall(config, cameraQuarterAngle) ?
-          "shadowMask.door.floatingThreshold.double.y"
-        : "shadowMask.door.legs.threshold.double.y",
+          `shadowMask.door.floatingThreshold.double.d${octantIndexOfDirection(
+            "away",
+          )}`
+        : `shadowMask.door.legs.threshold.double.d${octantIndexOfDirection(
+            "away",
+          )}`,
       flipX:
         rotateAxisXyByCameraAngle(
           dominantAxisXy(direction),
@@ -220,7 +225,7 @@ const itemShadowMaskAppearances: {
   floor: "no-mask",
 
   barrier: shadowMaskFromConfigAppearance(({ axis }, cameraQuarterAngle) => ({
-    textureId: "shadowMask.barrier.y",
+    textureId: `shadowMask.barrier.d${octantIndexOfDirection("away")}`,
     flipX: rotateAxisXyByCameraAngle(axis, cameraQuarterAngle) === "x",
     // needs this to line up with the sprite - not sure why
     y: -1,

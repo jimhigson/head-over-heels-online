@@ -4,6 +4,7 @@ import { type StoodOnBy } from "../../../model/StoodOnBy";
 import { wallTimes } from "../../../model/times";
 import { emptyObject } from "../../../utils/empty";
 import { hashXyzToNumber0to1 } from "../../../utils/maths/hashing";
+import { octantIndexOfDirection } from "../../../utils/vectors/octantIndexOfDirection" with { type: "macro" };
 import { unitVectors } from "../../../utils/vectors/unitVectors";
 import {
   addXyz,
@@ -21,12 +22,12 @@ import { defaultBaseState } from "./itemDefaultStates";
  * shadow renderer flips them when the camera rotates onto an odd quarter turn
  */
 const shadowWallY: ShadowCastSpriteOptions = Object.freeze({
-  textureId: "shadow.wall.y",
+  textureId: `shadow.wall.d${octantIndexOfDirection("away")}`,
   flipsOnOddQuarterCameraTurns: true,
 });
 
 const shadowWallX: ShadowCastSpriteOptions = Object.freeze({
-  textureId: "shadow.wall.y",
+  textureId: `shadow.wall.d${octantIndexOfDirection("away")}`,
   flipX: true,
   flipsOnOddQuarterCameraTurns: true,
 });

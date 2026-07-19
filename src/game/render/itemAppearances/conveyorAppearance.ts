@@ -5,8 +5,10 @@ import { type AppSpritesheetWithVariants } from "../../../sprites/spritesheet/Ap
 import { variantTextureId } from "../../../sprites/spritesheet/variantTextureId";
 import { neverTime } from "../../../utils/neverTime";
 import { maybeRenderContainerToAnimatedSprite } from "../../../utils/pixi/renderContainerToSprite";
+import { octantIndexOfDirection } from "../../../utils/vectors/octantIndexOfDirection" with { type: "macro" };
 import { nearestQuarterAngle, rotateXy } from "../../../utils/vectors/rotateXy";
 import {
+  axisIndexXy8,
   isNegativeSideXy,
   type Xy,
   xyEqual,
@@ -66,7 +68,7 @@ const createRendering = (
   const reverse = isNegativeSideXy(apparentDirection);
   const sprites = createSprite({
     animationId: variantTextureId(
-      `conveyor.${axis}`,
+      `conveyor.d${axisIndexXy8[axis]}`,
       isReflection,
       false,
       disabled,
@@ -140,8 +142,11 @@ const conveyorAppearanceImpl: ItemAppearance<
 
   const { spritesheetForCurrentRoom: spritesheet } = spritesheets;
 
-  const { animationSpeed: conveyorAnimationSpeed, length: frameCount } =
-    spritesheet.data.animations["conveyor.x"];
+  const conveyorAnimationId =
+    `conveyor.d${octantIndexOfDirection("left")}` as const;
+  const conveyorAnimationSpeed: number =
+    spritesheet.data.animations[conveyorAnimationId].animationSpeed;
+  const frameCount = spritesheet.data.animations[conveyorAnimationId].length;
 
   const rendering: AnimatedSprite =
     rerender ?
@@ -156,7 +161,7 @@ const conveyorAppearanceImpl: ItemAppearance<
           !!disabled,
           isReflection,
         ),
-        "conveyor.x",
+        conveyorAnimationId,
         spritesheet,
       )
     : currentOutput;

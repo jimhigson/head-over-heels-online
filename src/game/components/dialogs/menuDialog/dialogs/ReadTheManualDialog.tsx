@@ -70,11 +70,11 @@ const ReadTheManualDialog = () => {
             }
           >
             <span
-              class={`sprite ${"texture-book_x" satisfies TextureTailwindClass} zx:sprite-revert-to-white sprites-normal-height`}
+              class={`sprite ${"texture-book_d0" satisfies TextureTailwindClass} zx:sprite-revert-to-white sprites-normal-height`}
             />
             <span class="text-double-height mx-1">Read the manual</span>
             <span
-              class={`sprite ${"texture-book_y" satisfies TextureTailwindClass} zx:sprite-revert-to-white sprites-normal-height`}
+              class={`sprite ${"texture-book_d2" satisfies TextureTailwindClass} zx:sprite-revert-to-white sprites-normal-height`}
             />
           </h1>
           <MenuItems>

@@ -1,6 +1,7 @@
 import {
   addXyz,
   type Direction8Xyz,
+  directionsXy8Octants,
   unitVectorInPlace,
   type Xyz,
 } from "./vectors";
@@ -22,3 +23,13 @@ export const unitVectors: Record<Direction8Xyz, Xyz> = {
   towardsLeft: unitVectorInPlace(addXyz(t, l)),
   awayLeft: unitVectorInPlace(addXyz(a, l)),
 };
+
+/**
+ * the eight unit direction vectors in octant ring order, indexed by their
+ * {@link DirectionIndexXy8} - the vector counterpart of
+ * {@link directionsXy8Octants}, so a discretised direction index maps straight
+ * to its unit vector without naming the direction
+ */
+export const unitVectorsXy8Octants: readonly Xyz[] = directionsXy8Octants.map(
+  (direction) => unitVectors[direction],
+);

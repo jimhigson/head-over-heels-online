@@ -6,7 +6,7 @@ their entire lives.
 
 They are often used as tables and even used as building bricks.
 
-![](texture-head_walking_right_2?clear-both)They are a native of Freedom, and for many thousands of years Head and his ancestors 
+![](texture-head_walking_d4_2?clear-both)They are a native of Freedom, and for many thousands of years Head and his ancestors 
 have been mistaking them for Heels and causing so much trouble to the poor old hush
 puppies that they evolved a defense mechanism they somehow learned to teleport
 themselves away.

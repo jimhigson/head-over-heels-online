@@ -4,7 +4,7 @@
 expectations, recovered all five crowns, toppled the Emperor, and made it back
 to Freedom alive.
 
-![](texture-market_wall_fruits_left?bg-pureBlack)For a generation, the Blacktooth Empire was no more. The castle fell into
+![](texture-market_wall_fruits_d0?bg-pureBlack)For a generation, the Blacktooth Empire was no more. The castle fell into
 disrepair. The market traders sold what they liked without fear of requisition.
 
 It did not last.
@@ -18,12 +18,12 @@ thirty-eight years to ferment.
 ![](texture-crown_egyptus?clear-left)![](texture-crown_penitentiary?float-right&clear-right)![](texture-crown_safari?clear-left)The slave worlds have been reconquered, their crowns seized once again. The new
 Emperor is, by all accounts, considerably more paranoid than the last one.
 
-![](texture-head_walking_right_2)Head and Heels had been enjoying retirement on their personal moonbase, orbiting their planet of Freedom.
+![](texture-head_walking_d4_2)Head and Heels had been enjoying retirement on their personal moonbase, orbiting their planet of Freedom.
 
-![](texture-heels_standing_towards?float-right&clear-right)Although now positively middle-aged, symbiotic biology ages rather well.
+![](texture-heels_standing_d6?float-right&clear-right)Although now positively middle-aged, symbiotic biology ages rather well.
 Head can still glide. Heels can still run. Head hasn’t forgotten how to climb a ladder.
 
-![](texture-blacktooth_wall_armour_left?bg-pureBlack)![](texture-blacktooth_wall_shield_away?bg-pureBlack&float-right)The new Emperor has learned from his predecessor’s mistakes. The guards are
+![](texture-blacktooth_wall_armour_d0?bg-pureBlack)![](texture-blacktooth_wall_shield_d2?bg-pureBlack&float-right)The new Emperor has learned from his predecessor’s mistakes. The guards are
 more numerous. The crowns are better hidden. The castle is full of new traps,
 designed by The Architect after hours studying longplays on Youtube,
 noting every point at which our heroes slipped through the last time.

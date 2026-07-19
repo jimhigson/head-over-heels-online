@@ -1,13 +1,13 @@
 import { variantTextureId } from "../../../sprites/spritesheet/variantTextureId";
 import { keysIter } from "../../../utils/entries";
-import { resolveCameraRelativeVectorXy4 } from "../../../utils/vectors/resolveCameraRelativeVector";
-import { type DirectionXy4 } from "../../../utils/vectors/vectors";
+import { resolveCameraRelativeIndexXy4 } from "../../../utils/vectors/resolveCameraRelativeVector";
+import { type DirectionIndexXy4 } from "../../../utils/vectors/vectors";
 import { isJoystick } from "../../physics/itemPredicates";
 import { createStackedSprites } from "./createStackedSprites";
 import { type ItemAppearance } from "./ItemAppearance";
 
 type CharlesRenderProps = {
-  resolvedFacingXy4: DirectionXy4;
+  resolvedFacingIndexXy4: DirectionIndexXy4;
   controlledByJoystick: boolean;
   activated: boolean;
 };
@@ -32,7 +32,7 @@ export const charlesAppearance: ItemAppearance<
 }) => {
   const currentlyRenderedProps = currentRendering?.renderProps;
 
-  const resolvedFacingXy4 = resolveCameraRelativeVectorXy4(
+  const resolvedFacingIndexXy4 = resolveCameraRelativeIndexXy4(
     facing,
     cameraAngle,
     isReflection,
@@ -44,7 +44,7 @@ export const charlesAppearance: ItemAppearance<
 
   const render =
     currentlyRenderedProps === undefined ||
-    resolvedFacingXy4 !== currentlyRenderedProps.resolvedFacingXy4 ||
+    resolvedFacingIndexXy4 !== currentlyRenderedProps.resolvedFacingIndexXy4 ||
     controlledByJoystick !== currentlyRenderedProps.controlledByJoystick ||
     activated !== currentlyRenderedProps.activated;
 
@@ -58,7 +58,7 @@ export const charlesAppearance: ItemAppearance<
     output: createStackedSprites({
       top: {
         textureId: variantTextureId(
-          `charles.${resolvedFacingXy4}`,
+          `charles.d${resolvedFacingIndexXy4}`,
           isReflection,
           false,
           !activated,
@@ -77,6 +77,6 @@ export const charlesAppearance: ItemAppearance<
         spritesheet,
       },
     }),
-    renderProps: { resolvedFacingXy4, controlledByJoystick, activated },
+    renderProps: { resolvedFacingIndexXy4, controlledByJoystick, activated },
   };
 };

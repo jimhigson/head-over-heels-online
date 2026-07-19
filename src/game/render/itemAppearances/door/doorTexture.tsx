@@ -12,31 +12,32 @@ import {
 /** only the sceneries with door art of their own have a frame of their own */
 const hasWorldSpecificTexture = (
   planet: SceneryName,
-  axis: "x" | "y",
+  axisIndex: 0 | 2,
   spritesheetData: AppSpritesheetData,
 ): planet is SceneryWithOwnDoors =>
-  isTextureId(`door.frame.${planet}.${axis}.near`, spritesheetData);
+  isTextureId(`door.frame.${planet}.d${axisIndex}.near`, spritesheetData);
 
 export const doorTexture = (
   room: Pick<UnknownRoomState, "color" | "planet">,
-  axis: "x" | "y",
+  /** the door's along-wall world axis as a d-number: 0 = x, 2 = y */
+  axisIndex: 0 | 2,
   position: "far" | "near" | "top",
   spritesheetData: AppSpritesheetData,
   /** the destination room's hue the frame variant is recoloured to */
   hue: ZxSpectrumRoomHue,
 ): `${DoorFrameId}.${DoorHueSuffix}` => {
   const sceneryName =
-    hasWorldSpecificTexture(room.planet, axis, spritesheetData) ?
+    hasWorldSpecificTexture(room.planet, axisIndex, spritesheetData) ?
       room.planet
     : "generic";
 
   if (room.color.shade === "dimmed") {
     const darkId =
-      `door.frame.${sceneryName}.dark.${axis}.${position}` as const;
+      `door.frame.${sceneryName}.dark.d${axisIndex}.${position}` as const;
     if (isTextureId(darkId, spritesheetData)) {
       return `${darkId}.hue=${hue}`;
     }
   }
 
-  return `door.frame.${sceneryName}.${axis}.${position}.hue=${hue}`;
+  return `door.frame.${sceneryName}.d${axisIndex}.${position}.hue=${hue}`;
 };

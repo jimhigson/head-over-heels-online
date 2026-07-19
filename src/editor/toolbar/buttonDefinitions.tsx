@@ -6,7 +6,7 @@ import {
   type TextureTailwindClass,
 } from "../../sprites/spritesheet/spritesheetData/TextureTailwindClass";
 import { emptyArray, emptyObject } from "../../utils/empty";
-import { twClass } from "../../utils/twClass";
+import { twClass } from "../../utils/twClass" with { type: "macro" };
 import {
   type LevelEditorState,
   selectCurrentEditingRoomJson,
@@ -46,8 +46,8 @@ The basic block`,
 Disappearing basic block`,
     children: (
       <DissapearingItemToolbarIcon
-        iconClassName={twClass(
-          "texture-block_organic_disappearing" satisfies TextureTailwindClass,
+        iconClassName={twClass<TextureTailwindClass>(
+          "texture-block_organic_disappearing",
         )}
       />
     ),
@@ -75,8 +75,8 @@ Basic block with a metallic look`,
 Disappearing metallic look block`,
     children: (
       <DissapearingItemToolbarIcon
-        iconClassName={twClass(
-          "texture-block_artificial_disappearing" satisfies TextureTailwindClass,
+        iconClassName={twClass<TextureTailwindClass>(
+          "texture-block_artificial_disappearing",
         )}
       />
     ),
@@ -98,7 +98,7 @@ Very high block`,
     itemTool: { type: "block", config: { style: "book" } },
     children: (
       <span
-        class={`sprite ${"texture-book_x" satisfies TextureTailwindClass} ${buttonSpriteRevertColourClasses}`}
+        class={`sprite ${"texture-book_d0" satisfies TextureTailwindClass} ${buttonSpriteRevertColourClasses}`}
       />
     ),
   },
@@ -107,7 +107,7 @@ Very high block`,
     itemTool: { type: "barrier", config: { axis: "x" } },
     children: (
       <span
-        class={`sprite ${"texture-barrier_x" satisfies TextureTailwindClass} ${buttonSpriteRevertColourClasses}`}
+        class={`sprite ${"texture-barrier_d0" satisfies TextureTailwindClass} ${buttonSpriteRevertColourClasses}`}
       />
     ),
   },
@@ -116,7 +116,7 @@ Very high block`,
     itemTool: { type: "barrier", config: { axis: "y" } },
     children: (
       <span
-        class={`sprite ${"texture-barrier_y" satisfies TextureTailwindClass} ${buttonSpriteRevertColourClasses}`}
+        class={`sprite ${"texture-barrier_d2" satisfies TextureTailwindClass} ${buttonSpriteRevertColourClasses}`}
       />
     ),
   },
@@ -128,9 +128,7 @@ Very high block`,
     },
     children: (
       <DissapearingItemToolbarIcon
-        iconClassName={twClass(
-          "texture-barrier_x" satisfies TextureTailwindClass,
-        )}
+        iconClassName={twClass<TextureTailwindClass>("texture-barrier_d0")}
       />
     ),
   },
@@ -142,9 +140,7 @@ Very high block`,
     },
     children: (
       <DissapearingItemToolbarIcon
-        iconClassName={twClass(
-          "texture-barrier_y" satisfies TextureTailwindClass,
-        )}
+        iconClassName={twClass<TextureTailwindClass>("texture-barrier_d2")}
       />
     ),
   },
@@ -187,7 +183,7 @@ heels can outrun, but not head
 place on a toaster to make a charging guard`,
     children: (
       <StackedToolbarIcons
-        topClasses={`${"texture-cyberman_towards" satisfies TextureTailwindClass} ${"activated:texture-cyberman_right" satisfies TextureTailwindClass}`}
+        topClasses={`${"texture-cyberman_d6" satisfies TextureTailwindClass} ${"activated:texture-cyberman_d4" satisfies TextureTailwindClass}`}
         bottomClasses={`${"texture-bubbles_cold_2" satisfies TextureTailwindClass} ${"activated:texture-animated-bubbles_cold" satisfies AnimatedTextureTailwindClass}`}
       />
     ),
@@ -210,7 +206,7 @@ moves *back and forth* by default
 or can be set to *patrol clockwise*`,
     children: (
       <span
-        class={`sprite ${"texture-skiHead_greenAndPink_towards" satisfies TextureTailwindClass} ${"activated:texture-skiHead_greenAndPink_right" satisfies TextureTailwindClass} ${buttonSpriteRevertColourClasses}`}
+        class={`sprite ${"texture-skiHead_greenAndPink_d6" satisfies TextureTailwindClass} ${"activated:texture-skiHead_greenAndPink_d4" satisfies TextureTailwindClass} ${buttonSpriteRevertColourClasses}`}
       />
     ),
   },
@@ -245,7 +241,7 @@ or can be set to *patrol clockwise*`,
 plods along in a clockwise pattern`,
     children: (
       <span
-        class={`sprite ${"texture-turtle_towards_1" satisfies TextureTailwindClass} ${"activated:texture-animated-turtle_right" satisfies AnimatedTextureTailwindClass} ${buttonSpriteRevertColourClasses}`}
+        class={`sprite ${"texture-turtle_d6_1" satisfies TextureTailwindClass} ${"activated:texture-animated-turtle_d4" satisfies AnimatedTextureTailwindClass} ${buttonSpriteRevertColourClasses}`}
       />
     ),
   },
@@ -282,7 +278,7 @@ detects a player in a straight line on an axis and rushes towards them`,
 usually patrols randomly, but can be programmed to move towards the player`,
     children: (
       <StackedToolbarIcons
-        topClasses={`${"texture-computerBot_towards" satisfies TextureTailwindClass} ${"activated:texture-computerBot_right" satisfies TextureTailwindClass}`}
+        topClasses={`${"texture-computerBot_d6" satisfies TextureTailwindClass} ${"activated:texture-computerBot_d4" satisfies TextureTailwindClass}`}
       />
     ),
   },
@@ -302,12 +298,8 @@ patrols randomly in 8 directions
 fast and dangerous`,
     children: (
       <StackedToolbarIcons
-        topClasses={twClass(
-          `${"texture-bubbles_cold_2" satisfies TextureTailwindClass} ${"activated:texture-animated-bubbles_cold" satisfies AnimatedTextureTailwindClass}`,
-        )}
-        bottomClasses={twClass(
-          "texture-headlessBase" satisfies TextureTailwindClass,
-        )}
+        topClasses={`${twClass<TextureTailwindClass>("texture-bubbles_cold_2")} ${twClass<AnimatedTextureTailwindClass>("activated:texture-animated-bubbles_cold")}`}
+        bottomClasses={twClass<TextureTailwindClass>("texture-headlessBase")}
       />
     ),
   },
@@ -324,7 +316,7 @@ fast and dangerous`,
     },
     children: (
       <StackedToolbarIcons
-        topClasses={`${"texture-monkey_towards" satisfies TextureTailwindClass} ${"activated:texture-monkey_right" satisfies TextureTailwindClass}`}
+        topClasses={`${"texture-monkey_d6" satisfies TextureTailwindClass} ${"activated:texture-monkey_d4" satisfies TextureTailwindClass}`}
       />
     ),
   },
@@ -340,7 +332,7 @@ fast and dangerous`,
     },
     children: (
       <StackedToolbarIcons
-        topClasses={`${"texture-elephant_towards" satisfies TextureTailwindClass} ${"activated:texture-elephant_right" satisfies TextureTailwindClass}`}
+        topClasses={`${"texture-elephant_d6" satisfies TextureTailwindClass} ${"activated:texture-elephant_d4" satisfies TextureTailwindClass}`}
       />
     ),
   },
@@ -361,7 +353,7 @@ Things have gone weird
 Stationary, but deadly`,
     children: (
       <span
-        class={`sprite ${"texture-elephant_towards" satisfies TextureTailwindClass} ${"activated:texture-elephant_right" satisfies TextureTailwindClass} ${buttonSpriteRevertColourClasses}`}
+        class={`sprite ${"texture-elephant_d6" satisfies TextureTailwindClass} ${"activated:texture-elephant_d4" satisfies TextureTailwindClass} ${buttonSpriteRevertColourClasses}`}
       />
     ),
   },
@@ -575,7 +567,7 @@ monsters will not walk into the light
 can be turned on/off by switches and buttons`,
     children: (
       <span
-        class={`sprite ${"texture-lamp_on_towards" satisfies TextureTailwindClass} ${"activated:texture-lamp_on_right" satisfies TextureTailwindClass} ${buttonSpriteRevertColourClasses}`}
+        class={`sprite ${"texture-lamp_on_d6" satisfies TextureTailwindClass} ${"activated:texture-lamp_on_d4" satisfies TextureTailwindClass} ${buttonSpriteRevertColourClasses}`}
       />
     ),
   },
@@ -632,7 +624,7 @@ turns so poisonous that a single lick can kill`,
     itemTool: { type: "charles", config: emptyObject },
     children: (
       <StackedToolbarIcons
-        topClasses={`${"texture-charles_towards" satisfies TextureTailwindClass} ${"activated:texture-charles_right" satisfies TextureTailwindClass}`}
+        topClasses={`${"texture-charles_d6" satisfies TextureTailwindClass} ${"activated:texture-charles_d4" satisfies TextureTailwindClass}`}
       />
     ),
   },
@@ -804,7 +796,7 @@ Small item that can be stood on and slides when touched`,
 Why are the books slippery?`,
     children: (
       <span
-        class={`sprite ${"texture-book_y" satisfies TextureTailwindClass} ${buttonSpriteRevertColourClasses}`}
+        class={`sprite ${"texture-book_d2" satisfies TextureTailwindClass} ${buttonSpriteRevertColourClasses}`}
       />
     ),
   },
@@ -828,7 +820,7 @@ Why are the books slippery?`,
     itemTool: { type: "conveyor", config: { direction: "away" } },
     children: (
       <LabelledToolbarIcon
-        iconClasses={`${"texture-conveyor_y_1" satisfies TextureTailwindClass} ${"activated:texture-animated-conveyor_y" satisfies AnimatedTextureTailwindClass}`}
+        iconClasses={`${"texture-conveyor_d2_1" satisfies TextureTailwindClass} ${"activated:texture-animated-conveyor_d2" satisfies AnimatedTextureTailwindClass}`}
         text="↗"
       />
     ),
@@ -838,7 +830,7 @@ Why are the books slippery?`,
     itemTool: { type: "conveyor", config: { direction: "towards" } },
     children: (
       <LabelledToolbarIcon
-        iconClasses={`${"texture-conveyor_y_1" satisfies TextureTailwindClass} ${"activated:texture-animated-reversed-conveyor_y" satisfies AnimatedTextureTailwindClass}`}
+        iconClasses={`${"texture-conveyor_d2_1" satisfies TextureTailwindClass} ${"activated:texture-animated-reversed-conveyor_d2" satisfies AnimatedTextureTailwindClass}`}
         text="↙"
       />
     ),
@@ -848,7 +840,7 @@ Why are the books slippery?`,
     itemTool: { type: "conveyor", config: { direction: "left" } },
     children: (
       <LabelledToolbarIcon
-        iconClasses={`${"texture-conveyor_x_1" satisfies TextureTailwindClass} ${"activated:texture-animated-conveyor_x" satisfies AnimatedTextureTailwindClass}`}
+        iconClasses={`${"texture-conveyor_d0_1" satisfies TextureTailwindClass} ${"activated:texture-animated-conveyor_d0" satisfies AnimatedTextureTailwindClass}`}
         text="↖"
       />
     ),
@@ -858,7 +850,7 @@ Why are the books slippery?`,
     itemTool: { type: "conveyor", config: { direction: "right" } },
     children: (
       <LabelledToolbarIcon
-        iconClasses={`${"texture-conveyor_x_1" satisfies TextureTailwindClass} ${"activated:texture-animated-reversed-conveyor_x" satisfies AnimatedTextureTailwindClass}`}
+        iconClasses={`${"texture-conveyor_d0_1" satisfies TextureTailwindClass} ${"activated:texture-animated-reversed-conveyor_d0" satisfies AnimatedTextureTailwindClass}`}
         text="↘"
       />
     ),
@@ -1023,23 +1015,22 @@ stand around not doing much`,
   wall(state: LevelEditorState) {
     const scenery = selectCurrentEditingRoomJson({ levelEditor: state }).planet;
 
-    const textureClassname = twClass(
+    const textureClassname =
       scenery === "blacktooth" ?
-        ("texture-blacktooth_wall_plain_away" satisfies TextureTailwindClass)
+        twClass<TextureTailwindClass>("texture-blacktooth_wall_plain_d2")
       : scenery === "bookworld" ?
-        ("texture-bookworld_wall_cowboy_away" satisfies TextureTailwindClass)
+        twClass<TextureTailwindClass>("texture-bookworld_wall_cowboy_d2")
       : scenery === "jail" ?
-        ("texture-jail_wall_bars_away" satisfies TextureTailwindClass)
+        twClass<TextureTailwindClass>("texture-jail_wall_bars_d2")
       : scenery === "egyptus" ?
-        ("texture-egyptus_wall_hieroglyphics_away" satisfies TextureTailwindClass)
+        twClass<TextureTailwindClass>("texture-egyptus_wall_hieroglyphics_d2")
       : scenery === "market" ?
-        ("texture-market_wall_passage_away" satisfies TextureTailwindClass)
+        twClass<TextureTailwindClass>("texture-market_wall_passage_d2")
       : scenery === "moonbase" ?
-        ("texture-moonbase_wall_window1_away" satisfies TextureTailwindClass)
+        twClass<TextureTailwindClass>("texture-moonbase_wall_window1_d2")
       : scenery === "penitentiary" ?
-        ("texture-penitentiary_wall_loop_away" satisfies TextureTailwindClass)
-      : ("texture-safari_wall_wall_away" satisfies TextureTailwindClass),
-    );
+        twClass<TextureTailwindClass>("texture-penitentiary_wall_loop_d2")
+      : twClass<TextureTailwindClass>("texture-safari_wall_wall_d2");
 
     return {
       ariaLabel: "Wall",

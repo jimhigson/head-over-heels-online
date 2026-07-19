@@ -16,6 +16,7 @@ import {
 import {
   addXy,
   alongAxisOfDirectionXy,
+  axisIndexXy8,
   cameraAngleIsOddQuarterTurn,
   isNegativeSideXy,
   originXy,
@@ -55,6 +56,7 @@ function* doorLegsGenerator<RoomId extends string, RoomItemId extends string>(
   // sprite uses the apparent axis after the camera rotation:
   const axis = alongAxisOfDirectionXy(direction);
   const renderedAxis = rotateAxisXyByCameraAngle(axis, cameraQuarterAngle);
+  const renderedAxisIndex = axisIndexXy8[renderedAxis];
 
   if (inHiddenWall) {
     if (height !== 0) {
@@ -64,7 +66,7 @@ function* doorLegsGenerator<RoomId extends string, RoomItemId extends string>(
       yield createSprite({
         textureId: planetSpecificIfExists(
           sceneryName,
-          `door.floatingThreshold.${renderedAxis}`,
+          `door.floatingThreshold.d${renderedAxisIndex}`,
           spritesheet.data,
           isDark,
         ),
@@ -78,7 +80,7 @@ function* doorLegsGenerator<RoomId extends string, RoomItemId extends string>(
     yield createSprite({
       textureId: planetSpecificIfExists(
         sceneryName,
-        `door.legs.base.${renderedAxis}`,
+        `door.legs.base.d${renderedAxisIndex}`,
         spritesheet.data,
         isDark,
       ),
@@ -87,7 +89,7 @@ function* doorLegsGenerator<RoomId extends string, RoomItemId extends string>(
 
     const pillarTextureId = planetSpecificIfExists(
       sceneryName,
-      `door.legs.pillar.${renderedAxis}`,
+      `door.legs.pillar.d${renderedAxisIndex}`,
       spritesheet.data,
       isDark,
     );
@@ -106,7 +108,7 @@ function* doorLegsGenerator<RoomId extends string, RoomItemId extends string>(
     yield createSprite({
       textureId: planetSpecificIfExists(
         sceneryName,
-        `door.legs.threshold.${renderedAxis}`,
+        `door.legs.threshold.d${renderedAxisIndex}`,
         spritesheet.data,
         isDark,
       ),
@@ -303,7 +305,7 @@ export const doorFrameAppearance: ItemAppearance<"doorFrame", RenderOnceProps> =
       const rendered = createSprite({
         textureId: doorTexture(
           room,
-          renderedAxis,
+          axisIndexXy8[renderedAxis],
           renderedPart,
           spritesheet.data,
           useColoursFromRoom.color.hue,

@@ -22,21 +22,21 @@ const idleHeadClass = (
   if (hasIdleAnimation) {
     switch (facingXy8) {
       case "away":
-        return twClass("texture-animated-head_idle_away");
+        return twClass("texture-animated-head_idle_d2");
       case "towards":
-        return twClass("texture-animated-head_idle_towards");
+        return twClass("texture-animated-head_idle_d6");
       case "left":
-        return twClass("texture-animated-head_idle_left");
+        return twClass("texture-animated-head_idle_d0");
       case "right":
-        return twClass("texture-animated-head_idle_right");
+        return twClass("texture-animated-head_idle_d4");
       case "awayRight":
-        return twClass("texture-animated-head_idle_awayRight");
+        return twClass("texture-animated-head_idle_d3");
       case "towardsRight":
-        return twClass("texture-animated-head_idle_towardsRight");
+        return twClass("texture-animated-head_idle_d5");
       case "towardsLeft":
-        return twClass("texture-animated-head_idle_towardsLeft");
+        return twClass("texture-animated-head_idle_d7");
       case "awayLeft":
-        return twClass("texture-animated-head_idle_awayLeft");
+        return twClass("texture-animated-head_idle_d1");
       default:
         facingXy8 satisfies never;
         throw new Error(`Invalid facingXy8: ${facingXy8}`);
@@ -47,21 +47,21 @@ const idleHeadClass = (
   if (standing === true) {
     switch (facingXy8) {
       case "away":
-        return twClass("texture-head_standing_away");
+        return twClass("texture-head_standing_d2");
       case "towards":
-        return twClass("texture-head_standing_towards");
+        return twClass("texture-head_standing_d6");
       case "left":
-        return twClass("texture-head_standing_left");
+        return twClass("texture-head_standing_d0");
       case "right":
-        return twClass("texture-head_standing_right");
+        return twClass("texture-head_standing_d4");
       case "awayRight":
-        return twClass("texture-head_standing_awayRight");
+        return twClass("texture-head_standing_d3");
       case "towardsRight":
-        return twClass("texture-head_standing_towardsRight");
+        return twClass("texture-head_standing_d5");
       case "towardsLeft":
-        return twClass("texture-head_standing_towardsLeft");
+        return twClass("texture-head_standing_d7");
       case "awayLeft":
-        return twClass("texture-head_standing_awayLeft");
+        return twClass("texture-head_standing_d1");
       default:
         facingXy8 satisfies never;
         throw new Error(`Invalid facingXy8: ${facingXy8}`);
@@ -72,51 +72,51 @@ const idleHeadClass = (
   switch (facingXy8) {
     case "away":
       return (
-        walkFrame === 1 ? twClass("texture-head_walking_away_1")
-        : walkFrame === 3 ? twClass("texture-head_walking_away_3")
-        : twClass("texture-head_walking_away_2")
+        walkFrame === 1 ? twClass("texture-head_walking_d2_1")
+        : walkFrame === 3 ? twClass("texture-head_walking_d2_3")
+        : twClass("texture-head_walking_d2_2")
       );
     case "towards":
       return (
-        walkFrame === 1 ? twClass("texture-head_walking_towards_1")
-        : walkFrame === 3 ? twClass("texture-head_walking_towards_3")
-        : twClass("texture-head_walking_towards_2")
+        walkFrame === 1 ? twClass("texture-head_walking_d6_1")
+        : walkFrame === 3 ? twClass("texture-head_walking_d6_3")
+        : twClass("texture-head_walking_d6_2")
       );
     case "left":
       return (
-        walkFrame === 1 ? twClass("texture-head_walking_left_1")
-        : walkFrame === 3 ? twClass("texture-head_walking_left_3")
-        : twClass("texture-head_walking_left_2")
+        walkFrame === 1 ? twClass("texture-head_walking_d0_1")
+        : walkFrame === 3 ? twClass("texture-head_walking_d0_3")
+        : twClass("texture-head_walking_d0_2")
       );
     case "right":
       return (
-        walkFrame === 1 ? twClass("texture-head_walking_right_1")
-        : walkFrame === 3 ? twClass("texture-head_walking_right_3")
-        : twClass("texture-head_walking_right_2")
+        walkFrame === 1 ? twClass("texture-head_walking_d4_1")
+        : walkFrame === 3 ? twClass("texture-head_walking_d4_3")
+        : twClass("texture-head_walking_d4_2")
       );
     case "awayRight":
       return (
-        walkFrame === 1 ? twClass("texture-head_walking_awayRight_1")
-        : walkFrame === 3 ? twClass("texture-head_walking_awayRight_3")
-        : twClass("texture-head_walking_awayRight_2")
+        walkFrame === 1 ? twClass("texture-head_walking_d3_1")
+        : walkFrame === 3 ? twClass("texture-head_walking_d3_3")
+        : twClass("texture-head_walking_d3_2")
       );
     case "towardsRight":
       return (
-        walkFrame === 1 ? twClass("texture-head_walking_towardsRight_1")
-        : walkFrame === 3 ? twClass("texture-head_walking_towardsRight_3")
-        : twClass("texture-head_walking_towardsRight_2")
+        walkFrame === 1 ? twClass("texture-head_walking_d5_1")
+        : walkFrame === 3 ? twClass("texture-head_walking_d5_3")
+        : twClass("texture-head_walking_d5_2")
       );
     case "towardsLeft":
       return (
-        walkFrame === 1 ? twClass("texture-head_walking_towardsLeft_1")
-        : walkFrame === 3 ? twClass("texture-head_walking_towardsLeft_3")
-        : twClass("texture-head_walking_towardsLeft_2")
+        walkFrame === 1 ? twClass("texture-head_walking_d7_1")
+        : walkFrame === 3 ? twClass("texture-head_walking_d7_3")
+        : twClass("texture-head_walking_d7_2")
       );
     case "awayLeft":
       return (
-        walkFrame === 1 ? twClass("texture-head_walking_awayLeft_1")
-        : walkFrame === 3 ? twClass("texture-head_walking_awayLeft_3")
-        : twClass("texture-head_walking_awayLeft_2")
+        walkFrame === 1 ? twClass("texture-head_walking_d1_1")
+        : walkFrame === 3 ? twClass("texture-head_walking_d1_3")
+        : twClass("texture-head_walking_d1_2")
       );
     default:
       facingXy8 satisfies never;
@@ -136,21 +136,21 @@ const idleHeelsClass = (
   if (hasIdleAnimation) {
     switch (facingXy8) {
       case "away":
-        return twClass("texture-animated-heels_idle_away");
+        return twClass("texture-animated-heels_idle_d2");
       case "towards":
-        return twClass("texture-animated-heels_idle_towards");
+        return twClass("texture-animated-heels_idle_d6");
       case "left":
-        return twClass("texture-animated-heels_idle_left");
+        return twClass("texture-animated-heels_idle_d0");
       case "right":
-        return twClass("texture-animated-heels_idle_right");
+        return twClass("texture-animated-heels_idle_d4");
       case "awayRight":
-        return twClass("texture-animated-heels_idle_awayRight");
+        return twClass("texture-animated-heels_idle_d3");
       case "towardsRight":
-        return twClass("texture-animated-heels_idle_towardsRight");
+        return twClass("texture-animated-heels_idle_d5");
       case "towardsLeft":
-        return twClass("texture-animated-heels_idle_towardsLeft");
+        return twClass("texture-animated-heels_idle_d7");
       case "awayLeft":
-        return twClass("texture-animated-heels_idle_awayLeft");
+        return twClass("texture-animated-heels_idle_d1");
       default:
         facingXy8 satisfies never;
         throw new Error(`Invalid facingXy8: ${facingXy8}`);
@@ -161,21 +161,21 @@ const idleHeelsClass = (
   if (standing === true) {
     switch (facingXy8) {
       case "away":
-        return twClass("texture-heels_standing_away");
+        return twClass("texture-heels_standing_d2");
       case "towards":
-        return twClass("texture-heels_standing_towards");
+        return twClass("texture-heels_standing_d6");
       case "left":
-        return twClass("texture-heels_standing_left");
+        return twClass("texture-heels_standing_d0");
       case "right":
-        return twClass("texture-heels_standing_right");
+        return twClass("texture-heels_standing_d4");
       case "awayRight":
-        return twClass("texture-heels_standing_awayRight");
+        return twClass("texture-heels_standing_d3");
       case "towardsRight":
-        return twClass("texture-heels_standing_towardsRight");
+        return twClass("texture-heels_standing_d5");
       case "towardsLeft":
-        return twClass("texture-heels_standing_towardsLeft");
+        return twClass("texture-heels_standing_d7");
       case "awayLeft":
-        return twClass("texture-heels_standing_awayLeft");
+        return twClass("texture-heels_standing_d1");
       default:
         facingXy8 satisfies never;
         throw new Error(`Invalid facingXy8: ${facingXy8}`);
@@ -186,51 +186,51 @@ const idleHeelsClass = (
   switch (facingXy8) {
     case "away":
       return (
-        walkFrame === 1 ? twClass("texture-heels_walking_away_1")
-        : walkFrame === 3 ? twClass("texture-heels_walking_away_3")
-        : twClass("texture-heels_walking_away_2")
+        walkFrame === 1 ? twClass("texture-heels_walking_d2_1")
+        : walkFrame === 3 ? twClass("texture-heels_walking_d2_3")
+        : twClass("texture-heels_walking_d2_2")
       );
     case "towards":
       return (
-        walkFrame === 1 ? twClass("texture-heels_walking_towards_1")
-        : walkFrame === 3 ? twClass("texture-heels_walking_towards_3")
-        : twClass("texture-heels_walking_towards_2")
+        walkFrame === 1 ? twClass("texture-heels_walking_d6_1")
+        : walkFrame === 3 ? twClass("texture-heels_walking_d6_3")
+        : twClass("texture-heels_walking_d6_2")
       );
     case "left":
       return (
-        walkFrame === 1 ? twClass("texture-heels_walking_left_1")
-        : walkFrame === 3 ? twClass("texture-heels_walking_left_3")
-        : twClass("texture-heels_walking_left_2")
+        walkFrame === 1 ? twClass("texture-heels_walking_d0_1")
+        : walkFrame === 3 ? twClass("texture-heels_walking_d0_3")
+        : twClass("texture-heels_walking_d0_2")
       );
     case "right":
       return (
-        walkFrame === 1 ? twClass("texture-heels_walking_right_1")
-        : walkFrame === 3 ? twClass("texture-heels_walking_right_3")
-        : twClass("texture-heels_walking_right_2")
+        walkFrame === 1 ? twClass("texture-heels_walking_d4_1")
+        : walkFrame === 3 ? twClass("texture-heels_walking_d4_3")
+        : twClass("texture-heels_walking_d4_2")
       );
     case "awayRight":
       return (
-        walkFrame === 1 ? twClass("texture-heels_walking_awayRight_1")
-        : walkFrame === 3 ? twClass("texture-heels_walking_awayRight_3")
-        : twClass("texture-heels_walking_awayRight_2")
+        walkFrame === 1 ? twClass("texture-heels_walking_d3_1")
+        : walkFrame === 3 ? twClass("texture-heels_walking_d3_3")
+        : twClass("texture-heels_walking_d3_2")
       );
     case "towardsRight":
       return (
-        walkFrame === 1 ? twClass("texture-heels_walking_towardsRight_1")
-        : walkFrame === 3 ? twClass("texture-heels_walking_towardsRight_3")
-        : twClass("texture-heels_walking_towardsRight_2")
+        walkFrame === 1 ? twClass("texture-heels_walking_d5_1")
+        : walkFrame === 3 ? twClass("texture-heels_walking_d5_3")
+        : twClass("texture-heels_walking_d5_2")
       );
     case "towardsLeft":
       return (
-        walkFrame === 1 ? twClass("texture-heels_walking_towardsLeft_1")
-        : walkFrame === 3 ? twClass("texture-heels_walking_towardsLeft_3")
-        : twClass("texture-heels_walking_towardsLeft_2")
+        walkFrame === 1 ? twClass("texture-heels_walking_d7_1")
+        : walkFrame === 3 ? twClass("texture-heels_walking_d7_3")
+        : twClass("texture-heels_walking_d7_2")
       );
     case "awayLeft":
       return (
-        walkFrame === 1 ? twClass("texture-heels_walking_awayLeft_1")
-        : walkFrame === 3 ? twClass("texture-heels_walking_awayLeft_3")
-        : twClass("texture-heels_walking_awayLeft_2")
+        walkFrame === 1 ? twClass("texture-heels_walking_d1_1")
+        : walkFrame === 3 ? twClass("texture-heels_walking_d1_3")
+        : twClass("texture-heels_walking_d1_2")
       );
     default:
       facingXy8 satisfies never;
@@ -255,21 +255,21 @@ export const playableTailwindSpriteClassname = ({
         case "walking": {
           switch (facingXy8) {
             case "away":
-              return twClass("texture-animated-head_walking_away");
+              return twClass("texture-animated-head_walking_d2");
             case "towards":
-              return twClass("texture-animated-head_walking_towards");
+              return twClass("texture-animated-head_walking_d6");
             case "left":
-              return twClass("texture-animated-head_walking_left");
+              return twClass("texture-animated-head_walking_d0");
             case "right":
-              return twClass("texture-animated-head_walking_right");
+              return twClass("texture-animated-head_walking_d4");
             case "awayRight":
-              return twClass("texture-animated-head_walking_awayRight");
+              return twClass("texture-animated-head_walking_d3");
             case "towardsRight":
-              return twClass("texture-animated-head_walking_towardsRight");
+              return twClass("texture-animated-head_walking_d5");
             case "towardsLeft":
-              return twClass("texture-animated-head_walking_towardsLeft");
+              return twClass("texture-animated-head_walking_d7");
             case "awayLeft":
-              return twClass("texture-animated-head_walking_awayLeft");
+              return twClass("texture-animated-head_walking_d1");
             default:
               facingXy8 satisfies never;
               throw new Error(`Invalid facingXy8: ${facingXy8}`);
@@ -285,21 +285,21 @@ export const playableTailwindSpriteClassname = ({
         case "walking": {
           switch (facingXy8) {
             case "away":
-              return twClass("texture-animated-heels_walking_away");
+              return twClass("texture-animated-heels_walking_d2");
             case "towards":
-              return twClass("texture-animated-heels_walking_towards");
+              return twClass("texture-animated-heels_walking_d6");
             case "left":
-              return twClass("texture-animated-heels_walking_left");
+              return twClass("texture-animated-heels_walking_d0");
             case "right":
-              return twClass("texture-animated-heels_walking_right");
+              return twClass("texture-animated-heels_walking_d4");
             case "awayRight":
-              return twClass("texture-animated-heels_walking_awayRight");
+              return twClass("texture-animated-heels_walking_d3");
             case "towardsRight":
-              return twClass("texture-animated-heels_walking_towardsRight");
+              return twClass("texture-animated-heels_walking_d5");
             case "towardsLeft":
-              return twClass("texture-animated-heels_walking_towardsLeft");
+              return twClass("texture-animated-heels_walking_d7");
             case "awayLeft":
-              return twClass("texture-animated-heels_walking_awayLeft");
+              return twClass("texture-animated-heels_walking_d1");
             default:
               facingXy8 satisfies never;
               throw new Error(`Invalid facingXy8: ${facingXy8}`);

@@ -1056,11 +1056,6 @@ export type RoomJsonSchema = {
                        * If null, the item is not scheduled for removal (the normal case)
                        */
                       expires?: null | number;
-                      facing?: {
-                        x: number;
-                        y: number;
-                        z: number;
-                      };
                     };
                     rightState?: {
                       /**
@@ -1144,11 +1139,6 @@ export type RoomJsonSchema = {
                        * If null, the item is not scheduled for removal (the normal case)
                        */
                       expires?: null | number;
-                      facing?: {
-                        x: number;
-                        y: number;
-                        z: number;
-                      };
                     };
                   }
                 | {
@@ -3177,11 +3167,6 @@ export type RoomJsonSchema = {
                        * If null, the item is not scheduled for removal (the normal case)
                        */
                       expires?: null | number;
-                      facing?: {
-                        x: number;
-                        y: number;
-                        z: number;
-                      };
                     };
                     rightState?: {
                       /**
@@ -3265,11 +3250,6 @@ export type RoomJsonSchema = {
                        * If null, the item is not scheduled for removal (the normal case)
                        */
                       expires?: null | number;
-                      facing?: {
-                        x: number;
-                        y: number;
-                        z: number;
-                      };
                     };
                   }
                 | {
@@ -4288,11 +4268,6 @@ export type RoomJsonSchema = {
                    * If null, the item is not scheduled for removal (the normal case)
                    */
                   expires?: null | number;
-                  facing?: {
-                    x: number;
-                    y: number;
-                    z: number;
-                  };
                 };
                 rightState?: {
                   /**
@@ -4376,11 +4351,6 @@ export type RoomJsonSchema = {
                    * If null, the item is not scheduled for removal (the normal case)
                    */
                   expires?: null | number;
-                  facing?: {
-                    x: number;
-                    y: number;
-                    z: number;
-                  };
                 };
               }
             | {

@@ -14,12 +14,12 @@ import { optionsHintMarkdownClassname } from "../../../dialogClasses";
 import { MenuItem } from "../../MenuItem";
 
 const spritesOptionExampleSprites = [
-  "texture-animated-heels_walking_towardsRight" satisfies AnimatedTextureTailwindClass,
-  "texture-animated-turtle_towards" satisfies AnimatedTextureTailwindClass,
+  "texture-animated-heels_walking_d5" satisfies AnimatedTextureTailwindClass,
+  "texture-animated-turtle_d6" satisfies AnimatedTextureTailwindClass,
   "texture-crown_blacktooth" satisfies TextureTailwindClass,
   "texture-whiteRabbit_extra-life" satisfies TextureTailwindClass,
   "texture-drum" satisfies TextureTailwindClass,
-  "texture-charles_towards" satisfies TextureTailwindClass,
+  "texture-charles_d6" satisfies TextureTailwindClass,
   "texture-animated-switch" satisfies AnimatedTextureTailwindClass,
 ];
 const spritesOptionExampleSpritesMarkdown = spritesOptionExampleSprites

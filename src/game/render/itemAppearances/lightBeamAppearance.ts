@@ -2,6 +2,7 @@ import { type AnimatedSprite, Container } from "pixi.js";
 
 import { type LightBeamEnd } from "../../../model/ItemStateMap";
 import { originalGameFrameDuration } from "../../../originalGame";
+import { octantIndexOfDirection } from "../../../utils/vectors/octantIndexOfDirection" with { type: "macro" };
 import {
   axisProjectsReversed,
   nearestQuarterAngle,
@@ -105,7 +106,7 @@ export const lightBeamAppearance: ItemAppearance<
 
   // the y-axis beam is the x-axis beam flipped in x (swapping x/y axes is a
   // horizontal flip in this projection), so only the x art exists:
-  const animationId = "lightBeam.x";
+  const animationId = `lightBeam.d${octantIndexOfDirection("left")}` as const;
   const flipX = renderedAxis === "y";
   const { animationSpeed, length: frameCount } =
     spritesheet.data.animations[animationId];
