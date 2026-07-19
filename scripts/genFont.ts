@@ -319,30 +319,91 @@ const rectContours = (rects: Rect[], pixelDivisor: number): Contour[] =>
   });
 
 /**
+ * an isolated pixel (opposite to all 8 of its neighbours) renders as a
+ * regular polygon-circle of this many sides, with the same area as the
+ * square pixel - eg the single-pixel counter of the 'o' becomes a round
+ * hole. Radius chosen so the POLYGON's area is exactly one pixel
+ */
+const circleSides = 16;
+const circleRadiusPx = Math.sqrt(
+  2 / (circleSides * Math.sin((2 * Math.PI) / circleSides)),
+);
+
+/**
+ * equal-area circle contour for an isolated pixel, in font units. Additive
+ * (ink dot) contours wind clockwise in y-up space like the rect contours;
+ * `hole` reverses the winding so non-zero fill subtracts it
+ */
+const circleContour = (col: number, row: number, hole: boolean): Contour => {
+  const centreX = (col + 0.5) * px;
+  const centreY = baselineFromTop * px - (row + 0.5) * px;
+  const radius = circleRadiusPx * px;
+  const points: Contour = [];
+  for (let i = 0; i < circleSides; i++) {
+    const theta = ((i + 0.5) / circleSides) * 2 * Math.PI * (hole ? 1 : -1);
+    points.push([
+      centreX + radius * Math.cos(theta),
+      centreY + radius * Math.sin(theta),
+    ]);
+  }
+  return points;
+};
+
+/**
  * as {@link glyphContours}, but of the glyph bitmap cleanEdge-upscaled by
  * {@link smoothFactor} - contours land on 1/smoothFactor design-pixel
- * boundaries, exactly the texels the game's baked spritesheets show
+ * boundaries, exactly the texels the game's baked spritesheets show. The
+ * exception is isolated single pixels (dots, and holes like the counter of
+ * the 'o'), which become true {@link circleContour}s
  */
 const smoothGlyphContours = (
   image: DecodedImage,
   { frame }: HudGlyph<string>,
 ): Contour[] => {
-  const bitmap = cleanEdgeUpscaleBinary(
-    (x, y) =>
-      x >= 0 &&
-      y >= 0 &&
-      x < frame.w &&
-      y < frame.h &&
-      isInk(image, frame.x + x, frame.y + y),
-    frame.w,
-    frame.h,
-    smoothFactor,
-  );
+  const ink = (x: number, y: number) =>
+    x >= 0 &&
+    y >= 0 &&
+    x < frame.w &&
+    y < frame.h &&
+    isInk(image, frame.x + x, frame.y + y);
+
+  const isolated = (x: number, y: number) => {
+    const v = ink(x, y);
+    for (let dy = -1; dy <= 1; dy++) {
+      for (let dx = -1; dx <= 1; dx++) {
+        if ((dx !== 0 || dy !== 0) && ink(x + dx, y + dy) === v) {
+          return false;
+        }
+      }
+    }
+    return true;
+  };
+
+  const bitmap = cleanEdgeUpscaleBinary(ink, frame.w, frame.h, smoothFactor);
+
+  const circles: Contour[] = [];
+  for (let y = 0; y < frame.h; y++) {
+    for (let x = 0; x < frame.w; x++) {
+      if (!isolated(x, y)) {
+        continue;
+      }
+      const isHole = !ink(x, y);
+      // a hole's cell fills solid (the circle contour carves it back out);
+      // a dot's cell empties (the circle contour draws it):
+      for (let sy = y * smoothFactor; sy < (y + 1) * smoothFactor; sy++) {
+        for (let sx = x * smoothFactor; sx < (x + 1) * smoothFactor; sx++) {
+          bitmap[sy][sx] = isHole;
+        }
+      }
+      circles.push(circleContour(x, y, isHole));
+    }
+  }
+
   const rects = mergeRects((col, row) => bitmap[row][col], {
     w: frame.w * smoothFactor,
     h: frame.h * smoothFactor,
   });
-  return rectContours(rects, smoothFactor);
+  return [...rectContours(rects, smoothFactor), ...circles];
 };
 
 const { data: rawPixels, info } = await sharp(spritesheetPath)
