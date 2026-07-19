@@ -25,6 +25,8 @@ export const defaultUserSettings: DefaultUserSettings = {
     // crt filters are distinctive look for the game,
     // but also maybe slow it down on older devices
     crtFilter: false,
+    // authentic blocky pixels by default; cleanEdge smoothing is opt-in
+    smoothSprites: false,
     emulatedResolution:
       detectDeviceType() === "mobile" ? "handheld" : "zxSpectrum",
     sprites: { name: "BlockStack", uncolourised: false },

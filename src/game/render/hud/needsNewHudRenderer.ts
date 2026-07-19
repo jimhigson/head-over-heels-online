@@ -20,9 +20,16 @@ export const needsNewHudRenderer = <
    * so it must be rebuilt to pick up the re-baked ones
    */
   webGlContextRestored: boolean,
+  /**
+   * the original spritesheet instance was recreated this tick (eg at a new
+   * cleanEdge bake factor) - the renderer's glyph sprites reference textures
+   * destroyed with the old sheet
+   */
+  originalSheetRebuilt: boolean,
 ): boolean =>
   renderer === undefined ||
   webGlContextRestored ||
+  originalSheetRebuilt ||
   renderer.renderContext.general.spriteOption !== spriteOption ||
   renderer.renderContext.general.onScreenControls !== onScreenControls ||
   renderer.renderContext.inputDirectionMode !== inputDirectionMode ||
