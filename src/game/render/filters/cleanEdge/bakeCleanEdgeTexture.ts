@@ -7,8 +7,8 @@ import {
   type Texture,
 } from "pixi.js";
 
-import cleanEdgeFrag from "./cleanEdge.frag";
 import cleanEdgeVert from "./cleanEdge.vert";
+import cleanEdgeColourMixFrag from "./cleanEdgeColourMix.frag";
 
 /**
  * cap on the cleanEdge bake factor: 4x is a 4096^2 backing store for the
@@ -53,8 +53,11 @@ export const bakeCleanEdgeTexture = (
   const shader = Shader.from({
     gl: {
       vertex: cleanEdgeVert,
-      fragment: cleanEdgeFrag,
-      name: "clean-edge",
+      // the art-aware variant: cleanEdge geometry on the
+      // transparent/black/colour classes, with colour fills interpolated from
+      // non-black neighbours (cleanEdge.frag is the faithful original)
+      fragment: cleanEdgeColourMixFrag,
+      name: "clean-edge-colour-mix",
     },
     resources: {
       uTexture: sourceTexture.source,
