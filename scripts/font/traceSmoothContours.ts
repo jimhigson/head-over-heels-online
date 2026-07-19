@@ -267,11 +267,119 @@ const smoothSlopeTransitions = (loop: TracedLoop): TracedLoop => {
 };
 
 /**
+ * Weld the residual half-sub-segment axis stubs that anchor each collapsed
+ * diagonal (left by {@link collapseStairs}' midpoint anchoring) into the
+ * diagonal itself: a vertex whose incident segments are a diagonal and a
+ * tiny axis stub is dropped, extending the diagonal to the corner at the
+ * stub's far end. Moves the outline by at most the stub length (a fraction
+ * of a subpixel - invisible), and lets corner rounding reach past the
+ * corner into the long straight edge.
+ */
+const weldDiagonalStubs = (loop: TracedLoop): TracedLoop => {
+  const maxStubLength = 2;
+  const n = loop.length;
+  const pt = (i: number): Point => loop[((i % n) + n) % n];
+  const isDiagonal = ([ax, ay]: Point, [bx, by]: Point) =>
+    ax !== bx && ay !== by;
+  const isTinyAxisStub = ([ax, ay]: Point, [bx, by]: Point) =>
+    (ax === bx || ay === by) &&
+    Math.abs(bx - ax) + Math.abs(by - ay) <= maxStubLength;
+  return loop.filter((vertex, i) => {
+    const prev = pt(i - 1);
+    const next = pt(i + 1);
+    return !(
+      (isDiagonal(prev, vertex) && isTinyAxisStub(vertex, next)) ||
+      (isTinyAxisStub(prev, vertex) && isDiagonal(vertex, next))
+    );
+  });
+};
+
+/**
  * bitmap to simplified vector loops: boundary trace, collinear merge, then
- * uniform staircases collapse to their intended diagonal lines, and the
- * residual single-step notches between differing slopes are smoothed
+ * uniform staircases collapse to their intended diagonal lines, the
+ * residual single-step notches between differing slopes are smoothed, and
+ * the stubs anchoring each diagonal weld into it
  */
 export const traceSmoothContours = (bitmap: boolean[][]): TracedLoop[] =>
   traceBitmapToLoops(bitmap).map((loop) =>
-    smoothSlopeTransitions(collapseStairs(mergeCollinear(loop))),
+    weldDiagonalStubs(
+      smoothSlopeTransitions(collapseStairs(mergeCollinear(loop))),
+    ),
   );
+
+/**
+ * one flag per loop vertex: true where the vertex joins at least one
+ * diagonal segment - ie where the geometry came from cleanEdge's smoothing
+ * rather than the square art
+ */
+const smoothedVertexFlags = (loop: TracedLoop): boolean[] => {
+  const n = loop.length;
+  const isDiagonal = ([ax, ay]: Point, [bx, by]: Point) =>
+    ax !== bx && ay !== by;
+  return loop.map((vertex, i) => {
+    const prev = loop[(i - 1 + n) % n];
+    const next = loop[(i + 1) % n];
+    return isDiagonal(prev, vertex) || isDiagonal(vertex, next);
+  });
+};
+
+/**
+ * a loop point ready for font conversion: [x, y] on-curve, or [x, y, 0] an
+ * off-curve quadratic control (the same convention as the font Contour type);
+ * coordinates may be fractional (segment midpoints)
+ */
+export type CurvedLoopPoint = [number, number, 0] | [number, number];
+
+/**
+ * Round the smoothed (diagonal-touching) corners of a traced loop into
+ * quadratic curves: each such vertex becomes an off-curve control flanked by
+ * on-curve points a fixed reach along its two incident segments, so short
+ * diagonal cuts melt entirely into curves while long straight edges stay
+ * straight beyond the rounding, and genuine right-angled art corners stay
+ * sharp.
+ */
+export const roundSmoothedCorners = (
+  loop: TracedLoop,
+  /**
+   * how far the rounding reaches along each incident segment, in the loop's
+   * subpixel units; capped at half the segment so neighbouring roundings
+   * meet exactly at segment midpoints rather than crossing
+   */
+  radius: number,
+): CurvedLoopPoint[] => {
+  const n = loop.length;
+  const flags = smoothedVertexFlags(loop);
+  const towards = ([vx, vy]: Point, [ax, ay]: Point): Point => {
+    const dx = ax - vx;
+    const dy = ay - vy;
+    const length = Math.hypot(dx, dy);
+    const t = Math.min(radius, length / 2) / length;
+    return [vx + dx * t, vy + dy * t];
+  };
+  const out: CurvedLoopPoint[] = [];
+  for (let i = 0; i < n; i++) {
+    const vertex = loop[i];
+    if (!flags[i]) {
+      out.push([vertex[0], vertex[1]]);
+      continue;
+    }
+    const prev = loop[(i - 1 + n) % n];
+    const next = loop[(i + 1) % n];
+    out.push(
+      towards(vertex, prev),
+      [vertex[0], vertex[1], 0],
+      towards(vertex, next),
+    );
+  }
+  // two roundings capped on the same short segment both land exactly on its
+  // midpoint - drop the duplicated on-curve point
+  return out.filter((pt, i) => {
+    const prevPt = out[(i - 1 + out.length) % out.length];
+    return !(
+      pt.length === 2 &&
+      prevPt.length === 2 &&
+      pt[0] === prevPt[0] &&
+      pt[1] === prevPt[1]
+    );
+  });
+};

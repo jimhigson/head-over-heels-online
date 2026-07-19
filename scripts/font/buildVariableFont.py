@@ -45,6 +45,39 @@ def glyph_name(unicode_value):
     return "glyph%x" % unicode_value
 
 
+def draw_contour(pen, pts):
+    """Draw one closed contour of (x, y, on_curve) points, emitting lineTo for
+    on-on segments and qCurveTo for runs of off-curve controls. A contour with
+    no on-curve points at all is drawn as the TrueType all-off-curve special
+    case (a closed quadratic B-spline)."""
+    if all(on for (_, _, on) in pts):
+        pen.moveTo(pts[0][:2])
+        for p in pts[1:]:
+            pen.lineTo(p[:2])
+        pen.closePath()
+        return
+    if not any(on for (_, _, on) in pts):
+        pen.qCurveTo(*[p[:2] for p in pts], None)
+        pen.closePath()
+        return
+    start = next(i for i, p in enumerate(pts) if p[2])
+    ordered = pts[start:] + pts[:start]
+    pen.moveTo(ordered[0][:2])
+    off_run = []
+    for p in ordered[1:]:
+        if p[2]:
+            if off_run:
+                pen.qCurveTo(*off_run, p[:2])
+                off_run = []
+            else:
+                pen.lineTo(p[:2])
+        else:
+            off_run.append(p[:2])
+    if off_run:
+        pen.qCurveTo(*off_run, ordered[0][:2])
+    pen.closePath()
+
+
 def build_master(
     data, glyph_order, cmap, y_scale, ascender, descender, style_name, unit
 ):
@@ -63,11 +96,14 @@ def build_master(
         pen = TTGlyphPen(None)
         xs = []
         for contour in g["contours"]:
-            pts = [(int(round(x)), int(round(y * y_scale))) for (x, y) in contour]
-            pen.moveTo(pts[0])
-            for p in pts[1:]:
-                pen.lineTo(p)
-            pen.closePath()
+            # a point is [x, y] (on-curve) or [x, y, 0] (off-curve quadratic
+            # control); consecutive off-curve points imply on-curve midpoints
+            # per TrueType, so runs of them render as a smooth B-spline
+            pts = [
+                (int(round(p[0])), int(round(p[1] * y_scale)), len(p) < 3)
+                for p in contour
+            ]
+            draw_contour(pen, pts)
             xs.extend(p[0] for p in pts)
         glyf[name] = pen.glyph()
         metrics[name] = (int(round(g["advanceWidth"])), min(xs) if xs else 0)
