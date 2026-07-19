@@ -8,6 +8,7 @@ import {
   hudLowercaseCharTextureSize,
 } from "../src/sprites/spritesheet/spritesheetData/textureSizes";
 import { size } from "../src/utils/iterators/size";
+import { cleanEdgeUpscaleBinary } from "./font/cleanEdgeUpscaleBinary";
 import { type HudGlyph, hudGlyphs } from "./font/hudGlyphs";
 
 // the shipped gfx/sprites.webp has every non-frame area (including the HUD char
@@ -20,8 +21,17 @@ const spritesheetPath = "gfx/sprites.borders.png";
 const outputDir = "src/_generated/font";
 const outputPath = `${outputDir}/blockstack-head-over-heels.woff2`;
 const manifestPath = `${outputDir}/manifest.json`;
+const smoothOutputPath = `${outputDir}/blockstack-head-over-heels-smooth.woff2`;
+const smoothManifestPath = `${outputDir}/manifest-smooth.json`;
 const builderScript = "scripts/font/buildVariableFont.py";
 const requirementsPath = "scripts/font/requirements.txt";
+
+/**
+ * the smooth font's glyphs are the same bitmaps upscaled with cleanEdge at
+ * this factor - matching the cap the game engine bakes its spritesheets at,
+ * so ui text shows exactly the texels the game would
+ */
+const smoothFactor = 4;
 
 const unitsPerEm = 512;
 /** font units per design pixel - 512/8 gives clean integer pixel boundaries */
@@ -245,6 +255,96 @@ const glyphContours = (
   );
 };
 
+type Rect = { col: number; row: number; w: number; h: number };
+
+/**
+ * Merge ink pixels into as few axis-aligned rectangles as possible: each
+ * unconsumed ink pixel grows greedily rightward then downward as far as it
+ * stays a solid block, keeping the contour count (and so the font size) low.
+ */
+const mergeRects = (
+  ink: (col: number, row: number) => boolean,
+  frame: { w: number; h: number },
+): Rect[] => {
+  const consumed: boolean[] = new Array(frame.w * frame.h).fill(false);
+  const used = (col: number, row: number) => consumed[row * frame.w + col];
+
+  const rects: Rect[] = [];
+  for (let row = 0; row < frame.h; row++) {
+    for (let col = 0; col < frame.w; col++) {
+      if (!ink(col, row) || used(col, row)) {
+        continue;
+      }
+
+      let w = 1;
+      while (col + w < frame.w && ink(col + w, row) && !used(col + w, row)) {
+        w++;
+      }
+
+      let h = 1;
+      growDown: while (row + h < frame.h) {
+        for (let dx = 0; dx < w; dx++) {
+          if (!ink(col + dx, row + h) || used(col + dx, row + h)) {
+            break growDown;
+          }
+        }
+        h++;
+      }
+
+      for (let dy = 0; dy < h; dy++) {
+        for (let dx = 0; dx < w; dx++) {
+          consumed[(row + dy) * frame.w + col + dx] = true;
+        }
+      }
+      rects.push({ col, row, w, h });
+    }
+  }
+  return rects;
+};
+
+/** rects (in units of 1/pixelDivisor design pixels) to font-unit contours */
+const rectContours = (rects: Rect[], pixelDivisor: number): Contour[] =>
+  rects.map(({ col, row, w, h }) => {
+    const subPx = px / pixelDivisor;
+    const xLeft = col * subPx;
+    const xRight = (col + w) * subPx;
+    const yTop = baselineFromTop * px - row * subPx;
+    const yBottom = baselineFromTop * px - (row + h) * subPx;
+    return [
+      [xLeft, yBottom],
+      [xLeft, yTop],
+      [xRight, yTop],
+      [xRight, yBottom],
+    ] as Contour;
+  });
+
+/**
+ * as {@link glyphContours}, but of the glyph bitmap cleanEdge-upscaled by
+ * {@link smoothFactor} - contours land on 1/smoothFactor design-pixel
+ * boundaries, exactly the texels the game's baked spritesheets show
+ */
+const smoothGlyphContours = (
+  image: DecodedImage,
+  { frame }: HudGlyph<string>,
+): Contour[] => {
+  const bitmap = cleanEdgeUpscaleBinary(
+    (x, y) =>
+      x >= 0 &&
+      y >= 0 &&
+      x < frame.w &&
+      y < frame.h &&
+      isInk(image, frame.x + x, frame.y + y),
+    frame.w,
+    frame.h,
+    smoothFactor,
+  );
+  const rects = mergeRects((col, row) => bitmap[row][col], {
+    w: frame.w * smoothFactor,
+    h: frame.h * smoothFactor,
+  });
+  return rectContours(rects, smoothFactor);
+};
+
 const { data: rawPixels, info } = await sharp(spritesheetPath)
   .ensureAlpha()
   .raw()
@@ -255,45 +355,55 @@ const image: DecodedImage = {
   data: new Uint8ClampedArray(rawPixels),
 };
 
-const glyphs: GlyphData[] = [];
-for (const hudGlyph of hudGlyphs) {
-  // only single-codepoint chars become font glyphs (bar namedGlyphCodePoints);
-  // this drops the unused EnterFullscreen/ExitFullscreen pseudo-glyphs and the
-  // uppercaseCharReplacement strings (eg "QUESTMK"), so duplicated punctuation
-  // resolves to the row1 variant
-  if (size(hudGlyph.char) !== 1) {
-    const namedCodePoint = namedGlyphCodePoints[hudGlyph.char];
-    if (namedCodePoint !== undefined) {
-      glyphs.push({
-        unicode: namedCodePoint,
-        advanceWidth: hudGlyph.advanceWidth * px,
-        contours: glyphContours(image, hudGlyph),
-      });
+const buildGlyphs = (
+  contoursFor: (image: DecodedImage, hudGlyph: HudGlyph<string>) => Contour[],
+): GlyphData[] => {
+  const glyphs: GlyphData[] = [];
+  for (const hudGlyph of hudGlyphs) {
+    // only single-codepoint chars become font glyphs (bar namedGlyphCodePoints);
+    // this drops the unused EnterFullscreen/ExitFullscreen pseudo-glyphs and the
+    // uppercaseCharReplacement strings (eg "QUESTMK"), so duplicated punctuation
+    // resolves to the row1 variant
+    if (size(hudGlyph.char) !== 1) {
+      const namedCodePoint = namedGlyphCodePoints[hudGlyph.char];
+      if (namedCodePoint !== undefined) {
+        glyphs.push({
+          unicode: namedCodePoint,
+          advanceWidth: hudGlyph.advanceWidth * px,
+          contours: contoursFor(image, hudGlyph),
+        });
+      }
+      continue;
     }
-    continue;
+    const codePoint = hudGlyph.char.codePointAt(0)!;
+    const advanceWidth =
+      codePoint === spaceCodePoint ? spaceAdvanceWidth : hudGlyph.advanceWidth;
+    glyphs.push({
+      unicode: codePoint,
+      advanceWidth: advanceWidth * px,
+      contours: contoursFor(image, hudGlyph),
+    });
   }
-  const codePoint = hudGlyph.char.codePointAt(0)!;
-  const advanceWidth =
-    codePoint === spaceCodePoint ? spaceAdvanceWidth : hudGlyph.advanceWidth;
-  glyphs.push({
-    unicode: codePoint,
-    advanceWidth: advanceWidth * px,
-    contours: glyphContours(image, hudGlyph),
-  });
-}
 
-// em space exists only in the font (not the spritesheet), as an empty glyph with
-// a full-block advance
-glyphs.push({
-  unicode: emSpaceCodePoint,
-  advanceWidth: emSpaceAdvanceWidth * px,
-  contours: [],
-});
+  // em space exists only in the font (not the spritesheet), as an empty glyph with
+  // a full-block advance
+  glyphs.push({
+    unicode: emSpaceCodePoint,
+    advanceWidth: emSpaceAdvanceWidth * px,
+    contours: [],
+  });
+
+  return glyphs;
+};
+
+const glyphs = buildGlyphs(glyphContours);
 
 // everything about the design that determines the font output - glyph outlines,
 // advances, metrics and the axis. Change-detection compares only this, so an
 // unchanged design skips the rebuild and keeps the committed woff2 bytes.
-const design = {
+// everything but the glyph outlines is shared between the base and smooth
+// fonts - identical metrics make the two interchangeable with no layout shift
+const designFor = (designGlyphs: GlyphData[]) => ({
   // bump whenever buildVariableFont.py changes what it emits for the same
   // glyph data, so the rebuild isn't skipped as "unchanged"
   builderVersion: 3,
@@ -305,19 +415,21 @@ const design = {
   // (eg the underline) without re-deriving this from unitsPerEm
   unitsPerPixel: px,
   axis: heightAxis,
-  glyphs,
-};
+  glyphs: designGlyphs,
+});
+
+const design = designFor(glyphs);
 
 // the committed manifest is the design plus a `builtAt` unix timestamp. The
 // builder bakes builtAt into head.modified, so the font's version stamp only
 // advances when the design genuinely changes (and the build is otherwise
 // deterministic - an unchanged design rebuilds to identical bytes)
-const committedDesign = (): unknown => {
-  if (!existsSync(manifestPath)) {
+const committedDesign = (fromManifestPath: string): unknown => {
+  if (!existsSync(fromManifestPath)) {
     return undefined;
   }
   try {
-    const parsed = JSON.parse(readFileSync(manifestPath, "utf8"));
+    const parsed = JSON.parse(readFileSync(fromManifestPath, "utf8"));
     delete parsed.builtAt;
     return parsed;
   } catch {
@@ -347,19 +459,38 @@ const ensurePythonToolchain = () => {
   }
 };
 
-if (JSON.stringify(committedDesign()) === JSON.stringify(design)) {
-  console.log(
-    `🅵 font unchanged (${glyphs.length} glyphs) - kept existing ${outputPath}`,
-  );
-} else {
+const buildIfChanged = (
+  builtDesign: ReturnType<typeof designFor>,
+  toManifestPath: string,
+  toOutputPath: string,
+) => {
+  if (
+    JSON.stringify(committedDesign(toManifestPath)) ===
+    JSON.stringify(builtDesign)
+  ) {
+    console.log(
+      `🅵 font unchanged (${builtDesign.glyphs.length} glyphs) - kept existing ${toOutputPath}`,
+    );
+    return;
+  }
   ensurePythonToolchain();
   mkdirSync(outputDir, { recursive: true });
   const builtAt = Math.floor(Date.now() / 1_000);
-  writeFileSync(manifestPath, JSON.stringify({ ...design, builtAt }, null, 2));
+  writeFileSync(
+    toManifestPath,
+    JSON.stringify({ ...builtDesign, builtAt }, null, 2),
+  );
   // opentype.js can neither write glyf outlines nor a working gvar, and a
   // hand-assembled variable font is silently not animated by Chromium; fontTools
   // (varLib) builds one that is. See scripts/font/buildVariableFont.py.
-  execFileSync(python, [builderScript, manifestPath, outputPath], {
+  execFileSync(python, [builderScript, toManifestPath, toOutputPath], {
     stdio: "inherit",
   });
-}
+};
+
+buildIfChanged(design, manifestPath, outputPath);
+buildIfChanged(
+  designFor(buildGlyphs(smoothGlyphContours)),
+  smoothManifestPath,
+  smoothOutputPath,
+);
