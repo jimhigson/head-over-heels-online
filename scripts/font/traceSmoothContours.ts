@@ -135,10 +135,15 @@ const stairStepShapes: Array<[number, number]> = [
 ];
 
 /**
- * Collapse maximal runs of uniform staircase steps into single diagonal
- * segments. A run qualifies when consecutive corner-to-corner steps repeat
- * the same (dx, dy) shape - one of cleanEdge's 1:1, 2:1 or 1:2 slopes - for
- * at least `minSteps` steps.
+ * Collapse maximal staircase alternations into single diagonal segments. A
+ * staircase is a maximal run of boundary sub-segments whose per-axis lengths
+ * and directions are uniform and whose (horizontal, vertical) step shape is
+ * one of cleanEdge's 1:1, 2:1 or 1:2 slopes, lasting at least `minSteps`
+ * whole steps. The diagonal is anchored at the MIDPOINTS of the run's first
+ * and last sub-segments: that is where cleanEdge's cut line actually
+ * crosses, and because maximal runs and segment midpoints are invariant
+ * under mirroring and traversal direction, symmetrical glyphs stay
+ * symmetrical.
  */
 export const collapseStairs = (
   cornerLoop: TracedLoop,
@@ -149,53 +154,85 @@ export const collapseStairs = (
     return cornerLoop;
   }
 
-  // between consecutive corners the boundary moves by an L-step; the loop
-  // alternates H and V movement by construction (corners only)
-  const step = (i: number): Point => {
-    const [ax, ay] = cornerLoop[i];
-    const [bx, by] = cornerLoop[(i + 2) % n];
+  const pt = (i: number): Point => cornerLoop[((i % n) + n) % n];
+
+  /** sub-segment i runs pt(i) -> pt(i+1); corner loops strictly alternate H/V */
+  const segDelta = (i: number): Point => {
+    const [ax, ay] = pt(i);
+    const [bx, by] = pt(i + 1);
     return [bx - ax, by - ay];
   };
 
-  const sameStep = ([ax, ay]: Point, [bx, by]: Point) => ax === bx && ay === by;
+  const mid = (i: number): Point => {
+    const [ax, ay] = pt(i);
+    const [bx, by] = pt(i + 1);
+    return [(ax + bx) / 2, (ay + by) / 2];
+  };
 
-  const isDiagonalStep = ([dx, dy]: Point) =>
-    stairStepShapes.some(
-      ([w, h]) => Math.abs(dx) === w && Math.abs(dy) === h,
-    ) &&
-    dx !== 0 &&
-    dy !== 0;
-
-  // mark corners interior to a qualifying run for removal
-  const keep = new Array<boolean>(n).fill(true);
-  let i = 0;
-  while (i < n) {
-    const s = step(i);
-    if (!isDiagonalStep(s)) {
-      i++;
-      continue;
-    }
-    // extend the run of identical corner-to-corner steps
-    let count = 1;
-    while (
-      count < Math.floor(n / 2) &&
-      sameStep(step((i + count * 2) % n), s)
+  /**
+   * how many sub-segments, starting at j, form a uniform staircase: every
+   * horizontal sub-segment identical, every vertical sub-segment identical,
+   * and the (|h|, |v|) shape an allowed slope
+   */
+  const runLengthFrom = (j: number): number => {
+    const [firstDx, firstDy] = segDelta(j);
+    const [secondDx, secondDy] = segDelta(j + 1);
+    const hDelta: Point = firstDx !== 0 ? [firstDx, 0] : [secondDx, 0];
+    const vDelta: Point = firstDx !== 0 ? [0, secondDy] : [0, firstDy];
+    if (
+      !stairStepShapes.some(
+        ([w, h]) => Math.abs(hDelta[0]) === w && Math.abs(vDelta[1]) === h,
+      )
     ) {
+      return 0;
+    }
+    let count = 0;
+    while (count < n) {
+      const [dx, dy] = segDelta(j + count);
+      const expected = (count % 2 === 0) === (firstDx !== 0) ? hDelta : vDelta;
+      if (dx !== expected[0] || dy !== expected[1]) {
+        break;
+      }
       count++;
     }
-    if (count >= minSteps) {
-      // drop every corner strictly inside the run (the zig-zag vertices and
-      // the intermediate on-line corners), keeping the run's two endpoints
-      for (let k = 1; k < count * 2; k++) {
-        keep[(i + k) % n] = false;
-      }
-      i += count * 2;
-    } else {
-      i += 2;
+    return count;
+  };
+
+  // rotate the scan to start just after a seam (a sub-segment that no run
+  // can extend backwards through), so runs never split across the cyclic
+  // wrap. A loop with no seam is a perfect repeating diamond - left square
+  const isSeam = (j: number): boolean => runLengthFrom(j) < 2;
+  let startAt = -1;
+  for (let j = 0; j < n; j++) {
+    if (isSeam(j)) {
+      startAt = j + 1;
+      break;
     }
   }
+  if (startAt === -1) {
+    return cornerLoop;
+  }
 
-  return cornerLoop.filter((_, index) => keep[index]);
+  const out: TracedLoop = [];
+  let i = startAt;
+  const end = startAt + n;
+  while (i < end) {
+    const segCount = Math.min(runLengthFrom(i), end - i);
+    if (segCount >= minSteps * 2) {
+      // corner into the run, half of its first sub-segment, the diagonal,
+      // half of its last sub-segment; the corner after the run is emitted
+      // by the following iterations
+      out.push(pt(i));
+      out.push(mid(i));
+      out.push(mid(i + segCount - 1));
+      i += segCount;
+      continue;
+    }
+    out.push(pt(i));
+    i++;
+  }
+
+  return out;
 };
 
 /**
