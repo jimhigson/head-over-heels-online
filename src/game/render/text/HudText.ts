@@ -1,12 +1,11 @@
 import { CanvasSource, type Color, Sprite, Texture } from "pixi.js";
 
 import { type PokeableNumber } from "../../../model/ItemStateMap";
-import { paletteBlockstack } from "../../../sprites/palette/spritesheetPalette";
 import {
   hudCharTextureSize,
   hudLowercaseCharTextureSize,
 } from "../../../sprites/spritesheet/spritesheetData/textureSizes";
-import { OutlineFilter } from "../filters/OutlineFilter";
+import { outlineFilters } from "../filters/OutlineFilter";
 
 /**
  * The HUD web font, declared as `@font-face { font-family: "HeadOverHeels" }` in
@@ -73,7 +72,13 @@ const context2d = (canvas: HTMLCanvasElement) => {
   if (import.meta.env.DEV && maybeContext === null) {
     throw new Error("could not get a 2d context for hud text rasterisation");
   }
-  return maybeContext!;
+  const context = maybeContext!;
+  // the default ("auto") lets the browser grid-fit (hint) the unhinted pixel
+  // font at 8px, which fattens glyphs with diagonal edges (eg ⚡/🛡/♨) by 1-2px
+  // per row; geometricPrecision renders the true contours, which are already
+  // on the pixel grid and need no fitting
+  context.textRendering = "geometricPrecision";
+  return context;
 };
 
 let measureContext: CanvasRenderingContext2D | undefined;
@@ -177,11 +182,12 @@ export class HudText extends Sprite {
     }
 
     if (outline) {
-      this.filters = new OutlineFilter({
-        color: paletteBlockstack.pureBlack,
-        width: 1,
-        clipToViewport: false,
-      });
+      // the shared filter follows the game's global upscale, so the outline is
+      // always 1px on the game's own pixel grid. (The old sprite-font renderer
+      // used width 1 with clipToViewport false because it applied the filter
+      // while baking off-screen at 1:1 game resolution; this filter runs live
+      // on-screen, where filter pixels are upscaled screen pixels.)
+      this.filters = outlineFilters.pureBlack;
     }
 
     // constructed before the font loaded: the texture just rasterised shows a
