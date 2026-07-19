@@ -78,7 +78,10 @@ export const spritesTailwindPlugin = plugin(
     // everywhere by default; --block / --scale fallbacks keep this valid even
     // before those vars cascade in. Multi-line text opts in via .text-multi-line
     base["body"] = {
-      fontFamily: '"HeadOverHeels", monospace',
+      // both HeadOverHeels variants are registered dynamically via the
+      // FontFace api (see useSmoothUiAssets) - smooth ui swaps --ui-font to
+      // the cleanEdge-upscaled variant; the two have identical metrics
+      fontFamily: 'var(--ui-font, "HeadOverHeels"), monospace',
       fontSize: "var(--block, 8px)",
       lineHeight: "calc(10px * var(--scale, 1))",
     };
@@ -152,11 +155,15 @@ export const spritesTailwindPlugin = plugin(
         "--spritesheetW": `${spritesheetSize.width}`,
         "--spritesheetH": `${spritesheetSize.height}`,
       },
+      // the smooth-spritesheet vars are set on :root (see useSmoothUiAssets)
+      // to a runtime cleanEdge-upscaled blob of the same sheet; sprite
+      // geometry is in logical sheet units, so the higher-resolution image is
+      // a drop-in
       ".blockstack-spritesheet": {
-        "--spritesheetUrl": `url('gfx/sprites.webp')`,
+        "--spritesheetUrl": `var(--smooth-spritesheet-blockstack, url('gfx/sprites.webp'))`,
       },
       ".toppy-spritesheet": {
-        "--spritesheetUrl": `url('gfx/spritesToppy.webp')`,
+        "--spritesheetUrl": `var(--smooth-spritesheet-toppy, url('gfx/spritesToppy.webp'))`,
       },
       ".sprite-scale-2": {
         "--sprite-scale": "2",
