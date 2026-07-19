@@ -129,10 +129,16 @@ export const useEditorMainLoop = (
         roomRenderer?.destroy();
         roomContainer.removeChildren();
 
-        spritesheets.rebuild(pixiRenderer, planet, color, {
-          name: "BlockStack",
-          uncolourised: false as const,
-        });
+        spritesheets.rebuild(
+          pixiRenderer,
+          planet,
+          color,
+          {
+            name: "BlockStack",
+            uncolourised: false as const,
+          },
+          1,
+        );
 
         roomRenderer = new RoomRenderer({
           room: roomState,
@@ -146,10 +152,16 @@ export const useEditorMainLoop = (
         lastColor = color;
         lastRoomState = roomState;
       } else if (planet !== lastPlanet || color !== lastColor) {
-        spritesheets.rebuild(pixiRenderer, planet, color, {
-          name: "BlockStack",
-          uncolourised: false as const,
-        });
+        spritesheets.rebuild(
+          pixiRenderer,
+          planet,
+          color,
+          {
+            name: "BlockStack",
+            uncolourised: false as const,
+          },
+          1,
+        );
         lastPlanet = planet;
         lastColor = color;
       }

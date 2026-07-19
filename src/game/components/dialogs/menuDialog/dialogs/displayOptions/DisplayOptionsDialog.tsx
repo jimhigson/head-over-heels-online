@@ -1,6 +1,7 @@
 import { useAppSelector } from "../../../../../../store/hooks";
 import {
   selectIsCrtFilter,
+  selectIsSmoothSprites,
   selectShowFps,
 } from "../../../../../../store/slices/gameMenus/gameMenusSelectors";
 import { toggleUserSetting } from "../../../../../../store/slices/userSettings/userSettingsSlice";
@@ -24,6 +25,11 @@ import { SpritesOptionMenuItem } from "./SpritesOptionMenuItem";
 const crtEffectMarkdown = `Here for the nostalgia?
 
 Make your fancy new screen look like it’s 1987 again.`;
+
+const smoothSpritesMarkdown = `Redraws the sprites with smooth edges at your
+screen’s resolution, using the cleanEdge algorithm.
+
+Purists look away.`;
 
 export const DisplayOptionsDialog = () => {
   return (
@@ -69,6 +75,27 @@ export const DisplayOptionsDialog = () => {
               <BlockyMarkdown
                 class={optionsHintMarkdownClassname}
                 markdown={crtEffectMarkdown}
+              />
+            }
+          />
+          <MenuItem
+            doubleHeight
+            id="smoothSprites"
+            verticalAlignItemsCentre
+            label="Smooth Sprites"
+            valueElement={
+              <Switch
+                class="ml-auto"
+                value={useAppSelector(selectIsSmoothSprites)}
+              />
+            }
+            onSelect={useDispatchActionCallback(toggleUserSetting, {
+              path: "displaySettings.smoothSprites",
+            })}
+            hint={
+              <BlockyMarkdown
+                class={optionsHintMarkdownClassname}
+                markdown={smoothSpritesMarkdown}
               />
             }
           />
