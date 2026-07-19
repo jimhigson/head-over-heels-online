@@ -1,4 +1,4 @@
-import { type AnimatedSprite, type BitmapText, Container } from "pixi.js";
+import { type AnimatedSprite, Container } from "pixi.js";
 
 import { type RoomState } from "../../../../../model/RoomState";
 import { type SpritesheetVariants } from "../../../../../sprites/spritesheet/variants/SpritesheetVariants";
@@ -8,7 +8,7 @@ import {
   framesWithOriginalGameTimings,
 } from "../../../createSprite";
 import { getWhite } from "../../../gameColours/gameColours";
-import { createHudText } from "../../../text/createHudText";
+import { HudText } from "../../../text/HudText";
 import {
   type ButtonAppearance,
   textYForButtonCentre,
@@ -16,9 +16,9 @@ import {
 import { ArcadeStyleButtonContainer } from "../ArcadeStyleButtonContainer";
 import { buttonActionsPressed } from "./buttonActionsPressed";
 
-export type JumpButtonSurfaceContainer = Container<AnimatedSprite | BitmapText>;
+export type JumpButtonSurfaceContainer = Container<AnimatedSprite | HudText>;
 
-type SurfaceContentChildren = [text: BitmapText, teleporter: AnimatedSprite];
+type SurfaceContentChildren = [text: HudText, teleporter: AnimatedSprite];
 
 const createSurface = (
   spritesheetVariants: SpritesheetVariants,
@@ -33,11 +33,11 @@ const createSurface = (
       false,
     ),
   });
-  const text = createHudText({
+  const text = new HudText({
     text: "JUMP",
     y: textYForButtonCentre,
   });
-  return new Container<AnimatedSprite | BitmapText>({
+  return new Container<AnimatedSprite | HudText>({
     label: "jumpButtonSurface",
     children: [
       // index 0

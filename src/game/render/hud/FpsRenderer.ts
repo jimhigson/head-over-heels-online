@@ -1,4 +1,4 @@
-import { type BitmapText, Container } from "pixi.js";
+import { Container } from "pixi.js";
 
 import { blockStackSpritesheetMeta } from "../../../../gfx/spritesheetMeta/blockStackSpritesheetMeta";
 import {
@@ -12,7 +12,7 @@ import {
   loadFrameTimingStats,
 } from "../../mainLoop/frameTiming/lazyFrameTimingStats";
 import { type Renderer } from "../Renderer";
-import { createHudText } from "../text/createHudText";
+import { HudText } from "../text/HudText";
 import { type HudRenderContext } from "./hudRendererContexts";
 
 export class FpsRenderer
@@ -20,7 +20,7 @@ export class FpsRenderer
     Renderer<HudRenderContext<string>, FrameTimingStatsEvent, Container>
 {
   #container = new Container({ label: "FpsRenderer" });
-  #fpsText: BitmapText;
+  #fpsText: HudText;
   #isDark = false;
   #fpsValue: number | undefined;
   #destroyed = false;
@@ -37,7 +37,7 @@ export class FpsRenderer
 
   constructor(renderContext: HudRenderContext<string>) {
     this.renderContext = renderContext;
-    this.#fpsText = createHudText({
+    this.#fpsText = new HudText({
       label: "fps",
       outline: true,
       y: hudCharTextureSize.h,

@@ -1,5 +1,5 @@
 import { type UnknownAction } from "@reduxjs/toolkit";
-import { type BitmapText, type Color, Container } from "pixi.js";
+import { type Color, Container } from "pixi.js";
 import { type AllUnionFields } from "type-fest";
 
 import { OutlineFilter } from "../../game/render/filters/OutlineFilter";
@@ -11,7 +11,7 @@ import {
   type ItemRenderContext,
   type ItemTickContext,
 } from "../../game/render/ItemRenderContexts";
-import { createHudText } from "../../game/render/text/createHudText";
+import { HudText } from "../../game/render/text/HudText";
 import {
   type ItemInPlay,
   type ItemInPlayType,
@@ -235,7 +235,7 @@ class EditorAnnotationsRenderer<T extends ItemInPlayType>
   #viewport: EditorViewport;
   #outlineFilters: EditorOutlineFilters;
   /** text annotations, counter-scaled so they read at a constant size under zoom */
-  #annotations: BitmapText[] = [];
+  #annotations: HudText[] = [];
 
   constructor(
     renderContext: ItemRenderContext<T>,
@@ -450,7 +450,7 @@ class EditorAnnotationsRenderer<T extends ItemInPlayType>
       renderContext: { frontLayer },
     } = this;
 
-    const annotationContainer = createHudText({
+    const annotationContainer = new HudText({
       label: "EditorAnnotationTextContainer",
       outline: true,
       colour: tint,

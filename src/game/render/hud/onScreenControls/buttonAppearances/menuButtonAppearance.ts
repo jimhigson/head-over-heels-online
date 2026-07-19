@@ -1,8 +1,7 @@
-import { type BitmapText } from "pixi.js";
 import { type EmptyObject } from "type-fest";
 
 import { emptyObject } from "../../../../../utils/empty";
-import { createHudText } from "../../../text/createHudText";
+import { HudText } from "../../../text/HudText";
 import { type ButtonAppearance } from "../../HudButtonRenderer";
 import { tintForHud } from "../../spritesheetVariantForHud";
 
@@ -12,7 +11,7 @@ export const menuButtonAppearance: ButtonAppearance<
   "menu",
   string,
   MenuButtonRenderProps,
-  BitmapText
+  HudText
 > = ({ currentRendering, tickContext, renderContext: { general } }) => {
   if (currentRendering !== undefined) {
     currentRendering.output!.tint = tintForHud(
@@ -24,7 +23,7 @@ export const menuButtonAppearance: ButtonAppearance<
     return "no-update";
   }
 
-  const output = createHudText({
+  const output = new HudText({
     label: "menuText",
     outline: true,
     doubleHeight: true,

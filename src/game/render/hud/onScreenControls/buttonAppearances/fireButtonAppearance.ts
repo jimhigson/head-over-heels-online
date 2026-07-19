@@ -1,4 +1,4 @@
-import { type BitmapText, Container, type Sprite } from "pixi.js";
+import { Container, type Sprite } from "pixi.js";
 
 import {
   type PokeableNumber,
@@ -9,7 +9,7 @@ import { type AppSpritesheet } from "../../../../../sprites/spritesheet/variants
 import { selectHeadAbilities } from "../../../../gameState/gameStateSelectors/selectPlayableItem";
 import { createSprite } from "../../../createSprite";
 import { getWhite } from "../../../gameColours/gameColours";
-import { createHudText } from "../../../text/createHudText";
+import { HudText } from "../../../text/HudText";
 import {
   type ButtonAppearance,
   textYForButtonCentre,
@@ -22,12 +22,12 @@ type ShowingSprite = "doughnuts" | "hooter" | "none";
 type SurfaceContentChildren = [
   hooter: Sprite,
   doughnuts: Sprite,
-  text: BitmapText,
+  text: HudText,
 ];
 
 const createSurface = (
   originalSpritesheet: AppSpritesheet,
-): Container<BitmapText | Sprite> => {
+): Container<HudText | Sprite> => {
   const hooter = createSprite({
     textureId: "hooter",
     y: -3,
@@ -40,12 +40,12 @@ const createSurface = (
     spritesheet: originalSpritesheet,
   });
 
-  const text = createHudText({
+  const text = new HudText({
     outline: true,
     y: textYForButtonCentre,
   });
 
-  return new Container<BitmapText | Sprite>({
+  return new Container<HudText | Sprite>({
     label: "fireButtonSurface",
     children: [hooter, doughnuts, text] satisfies SurfaceContentChildren,
   });
@@ -63,7 +63,7 @@ export const fireButtonAppearance: ButtonAppearance<
   "fire",
   string,
   FireButtonRenderProps,
-  ArcadeStyleButtonContainer<Container<BitmapText | Sprite>>
+  ArcadeStyleButtonContainer<Container<HudText | Sprite>>
 > = ({
   renderContext: {
     button,
@@ -115,7 +115,7 @@ export const fireButtonAppearance: ButtonAppearance<
   const { originalSpritesheet } = spritesheetVariants;
   const container =
     currentRendering?.output ??
-    new ArcadeStyleButtonContainer<Container<BitmapText | Sprite>>(
+    new ArcadeStyleButtonContainer<Container<HudText | Sprite>>(
       spritesheetMeta,
       button.which,
       pixiRenderer,

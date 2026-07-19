@@ -1,9 +1,7 @@
-import { type BitmapText } from "pixi.js";
-
 import { type RoomState } from "../../../../../model/RoomState";
 import { selectHeelsAbilities } from "../../../../gameState/gameStateSelectors/selectPlayableItem";
 import { getWhite } from "../../../gameColours/gameColours";
-import { createHudText } from "../../../text/createHudText";
+import { HudText } from "../../../text/HudText";
 import {
   type ButtonAppearance,
   textYForButtonCentre,
@@ -21,7 +19,7 @@ export const carryAndJumpButtonAppearance: ButtonAppearance<
   "carryAndJump",
   string,
   CarryAndJumpButtonRenderProps,
-  ArcadeStyleButtonContainer<BitmapText>
+  ArcadeStyleButtonContainer<HudText>
 > = ({
   renderContext: {
     button,
@@ -59,14 +57,14 @@ export const carryAndJumpButtonAppearance: ButtonAppearance<
   }
 
   const { originalSpritesheet } = spritesheetVariants;
-  const container: ArcadeStyleButtonContainer<BitmapText> =
+  const container: ArcadeStyleButtonContainer<HudText> =
     previousRendering === undefined ?
       new ArcadeStyleButtonContainer(
         spritesheetMeta,
         button.which,
         pixiRenderer,
         originalSpritesheet,
-        createHudText({
+        new HudText({
           text: "C+J",
           y: textYForButtonCentre,
         }),

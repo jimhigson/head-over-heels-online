@@ -25,7 +25,7 @@ import {
 import { createSprite } from "../../createSprite";
 import { type Renderer } from "../../Renderer";
 import { type GeneralRenderContext } from "../../room/RoomRenderContexts";
-import { createHudText } from "../../text/createHudText";
+import { HudText } from "../../text/HudText";
 import { type HudRendererTickContextWithRoom } from "../hudRendererContexts";
 import { tintForHud } from "../spritesheetVariantForHud";
 import { type OnScreenLookRenderer } from "./look/OnScreenLookRenderer";
@@ -92,25 +92,25 @@ export class OnScreenJoystickRenderer
     });
 
     this.#arrowSprites = {
-      away: createHudText({
+      away: new HudText({
         outline: true,
         x: joystickArrowOffset,
         y: -joystickArrowOffset,
         text: "↗",
       }),
-      right: createHudText({
+      right: new HudText({
         outline: true,
         x: joystickArrowOffset,
         y: joystickArrowOffset,
         text: "↘",
       }),
-      towards: createHudText({
+      towards: new HudText({
         outline: true,
         x: -joystickArrowOffset,
         y: joystickArrowOffset,
         text: "↙",
       }),
-      left: createHudText({
+      left: new HudText({
         outline: true,
         x: -joystickArrowOffset,
         y: -joystickArrowOffset,
@@ -118,22 +118,22 @@ export class OnScreenJoystickRenderer
       }),
       ...(inputDirectionMode !== "4-way" ?
         {
-          awayRight: createHudText({
+          awayRight: new HudText({
             outline: true,
             x: joystickArrowOffset * Math.SQRT2,
             text: "➡",
           }),
-          towardsRight: createHudText({
+          towardsRight: new HudText({
             outline: true,
             y: joystickArrowOffset * Math.SQRT2,
             text: "⬇",
           }),
-          towardsLeft: createHudText({
+          towardsLeft: new HudText({
             outline: true,
             x: -joystickArrowOffset * Math.SQRT2,
             text: "⬅",
           }),
-          awayLeft: createHudText({
+          awayLeft: new HudText({
             outline: true,
             y: -joystickArrowOffset * Math.SQRT2,
             text: "⬆",

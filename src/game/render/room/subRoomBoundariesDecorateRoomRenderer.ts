@@ -7,7 +7,7 @@ import { store } from "../../../store/store";
 import { objectEntriesIter } from "../../../utils/entries";
 import { nearestQuarterAngle } from "../../../utils/vectors/rotateXy";
 import { projectBlockXyzToScreenXy } from "../projections";
-import { createHudText } from "../text/createHudText";
+import { HudText } from "../text/HudText";
 import { type DecorateRoomRenderer } from "./DecorateRoomRenderer";
 
 const subRoomColours = [
@@ -59,7 +59,7 @@ export const subRoomBoundariesDecorateRoomRenderer: DecorateRoomRenderer = (
       cameraQuarterAngle,
     );
 
-    const label = createHudText({
+    const label = new HudText({
       text: `${name} (${subRoom.gridPosition.x},${subRoom.gridPosition.y})`,
       colour: color,
       outline: true,

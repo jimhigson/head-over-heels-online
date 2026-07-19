@@ -8,7 +8,7 @@ import { type Aabb, type Xy } from "../../../../utils/vectors/vectors";
 import { isItemType } from "../../../physics/itemPredicates";
 import { type ItemRenderContext } from "../../ItemRenderContexts";
 import { projectWorldXyzToScreenXy } from "../../projections";
-import { createHudText } from "../../text/createHudText";
+import { HudText } from "../../text/HudText";
 import { type ItemChainPixiRenderer } from "./ItemPixiRenderer";
 
 const bbColors: Record<ItemInPlayType, string> = {
@@ -284,8 +284,7 @@ export class ItemBoundingBoxRenderer<T extends ItemInPlayType>
     }
 
     this.#container.eventMode = "static";
-    // hover info rendered with the HUD web font via createHudText (Pixi
-    // BitmapText):
+    // hover info rendered with the HUD web font via HudText:
     let textNode: Container | undefined;
     this.#container.on("pointerenter", () => {
       if (textNode !== undefined) {
@@ -299,7 +298,7 @@ export class ItemBoundingBoxRenderer<T extends ItemInPlayType>
       textNode = new Container({ label: "bbHoverInfo" });
       for (const [i, line] of lines.entries()) {
         textNode.addChild(
-          createHudText({
+          new HudText({
             text: line,
             colour: new Color(color),
             y: i * 10,

@@ -1,4 +1,4 @@
-import { type BitmapText, type Color, Container } from "pixi.js";
+import { type Color, Container } from "pixi.js";
 
 import { type SpritesheetMetadata } from "../../../sprites/spritesheet/spritesheetData/spritesheetMetaData";
 import { type AppSpritesheet } from "../../../sprites/spritesheet/variants/AppSpritesheet";
@@ -7,7 +7,7 @@ import {
   blockSizePx,
   moveSpeedPixPerMs,
 } from "../../physics/mechanicsConstants";
-import { createHudText } from "../text/createHudText";
+import { HudText } from "../text/HudText";
 import { type ItemAppearance } from "./ItemAppearance";
 
 const floatingTextRiseSpeedPxPerMs = moveSpeedPixPerMs.floatingText;
@@ -62,20 +62,20 @@ export const floatingTextAppearance: ItemAppearance<
         spritesheetVariants.currentMainSpritesheet(false, false, isReflection),
       );
   const previousRendering = currentRendering?.output;
-  let mainContainer: Container<BitmapText>;
+  let mainContainer: Container<HudText>;
 
   const age = roomTime - appearanceRoomTime;
 
   const itemRenderHeight = age * floatingTextRiseSpeedPxPerMs;
 
   if (previousRendering === undefined) {
-    mainContainer = new Container<BitmapText>();
+    mainContainer = new Container<HudText>();
     frontLayer?.attach(mainContainer);
 
     // add all lines early, even if some will be hidden right away:
     for (let i = 0; i < textLines.length; i++) {
       const textLine = textLines[i];
-      const lineContainer = createHudText({
+      const lineContainer = new HudText({
         y: i * lineHeightPx,
         outline: true,
         text: textLine,
@@ -83,7 +83,7 @@ export const floatingTextAppearance: ItemAppearance<
       mainContainer.addChild(lineContainer);
     }
   } else {
-    mainContainer = previousRendering as Container<BitmapText>;
+    mainContainer = previousRendering as Container<HudText>;
   }
 
   let anyVisible = false;
