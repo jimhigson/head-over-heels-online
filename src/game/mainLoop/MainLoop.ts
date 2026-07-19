@@ -7,6 +7,7 @@ import { type Spritesheets } from "../../sprites/spritesheet/Spritesheets";
 import {
   selectInputDirectionMode,
   selectIsPaused,
+  selectIsSmoothSprites,
   selectShouldRenderOnScreenControls,
   selectShowFps,
   selectSpritesOption,
@@ -32,6 +33,7 @@ import { type GameState } from "../gameState/GameState";
 import { selectCurrentRoomState } from "../gameState/gameStateSelectors/selectCurrentRoomState";
 import { maxFps, maxSubTickDeltaMs } from "../physics/mechanicsConstants";
 import { ColourClashCircleEffectRenderer } from "../render/ColourClashCircleEffectRenderer";
+import { maxCleanEdgeBakeFactor } from "../render/filters/cleanEdge/bakeCleanEdgeTexture";
 import { HudRenderer } from "../render/hud/HudRenderer";
 import { needsNewHudRenderer } from "../render/hud/needsNewHudRenderer";
 import { needsNewRoomRenderer } from "../render/room/needsNewRoomRenderer";
@@ -296,6 +298,14 @@ export class MainLoop<RoomId extends string> {
     this.#mainContainer.tint =
       isPaused && !tickSpriteOption.uncolourised ? pausedDimTint : noTint;
 
+    // cleanEdge bake factor for the spritesheet: match the game engine's
+    // upscale exactly (texels 1:1 with canvas pixels), capped for memory and
+    // guaranteed-supported texture size:
+    const tickBakeFactor =
+      selectIsSmoothSprites(tickState) ?
+        Math.min(tickUpscale.gameEngineUpscale, maxCleanEdgeBakeFactor)
+      : 1;
+
     // the rotation advances on the game-speed-scaled clock, so slow-motion
     // (or a zero game speed) slows/freezes a rotation mid-turn for
     // inspection; tests never rely on the transition playing out - they
@@ -333,6 +343,7 @@ export class MainLoop<RoomId extends string> {
     const spritesheetVariantsStale =
       (roomChanged ||
         this.#webGlContextRestored ||
+        this.#spritesheets.bakeFactor !== tickBakeFactor ||
         (this.#roomRenderer !== undefined &&
           !spriteOptionEquals(
             tickSpriteOption,
@@ -340,6 +351,11 @@ export class MainLoop<RoomId extends string> {
           ))) &&
       tickEndRoom !== undefined &&
       this.#spritesheetLoadPromise === undefined;
+
+    // set when this tick's variants rebuild recreated the original
+    // spritesheet - sprites built from it (eg the hud's) hold destroyed
+    // textures and their renderer must be recreated below:
+    let originalSheetRebuilt = false;
 
     if (spritesheetVariantsStale) {
       if (!this.#spritesheets.isTextureLoaded(tickSpriteOption.name)) {
@@ -354,11 +370,12 @@ export class MainLoop<RoomId extends string> {
           });
       } else {
         const rebuildStartMs = performance.now();
-        this.#spritesheets.rebuild(
+        originalSheetRebuilt = this.#spritesheets.rebuild(
           this.#app.renderer,
           tickEndRoom.planet,
           tickEndRoom.color,
           tickSpriteOption,
+          tickBakeFactor,
         );
         timingRecord?.recordSpritesheetRebuild(
           performance.now() - rebuildStartMs,
@@ -407,6 +424,7 @@ export class MainLoop<RoomId extends string> {
       tickInputDirectionMode,
       tickUpscale,
       this.#webGlContextRestored,
+      originalSheetRebuilt,
     );
 
     // a rebuild is fine mid-transition: the fresh renderer builds against the
