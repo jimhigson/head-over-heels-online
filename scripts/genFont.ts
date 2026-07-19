@@ -10,6 +10,7 @@ import {
 import { size } from "../src/utils/iterators/size";
 import { cleanEdgeUpscaleBinary } from "./font/cleanEdgeUpscaleBinary";
 import { type HudGlyph, hudGlyphs } from "./font/hudGlyphs";
+import { traceSmoothContours } from "./font/traceSmoothContours";
 
 // the shipped gfx/sprites.webp has every non-frame area (including the HUD char
 // rows) masked to transparent, so the font is generated from the unmasked full
@@ -255,69 +256,6 @@ const glyphContours = (
   );
 };
 
-type Rect = { col: number; row: number; w: number; h: number };
-
-/**
- * Merge ink pixels into as few axis-aligned rectangles as possible: each
- * unconsumed ink pixel grows greedily rightward then downward as far as it
- * stays a solid block, keeping the contour count (and so the font size) low.
- */
-const mergeRects = (
-  ink: (col: number, row: number) => boolean,
-  frame: { w: number; h: number },
-): Rect[] => {
-  const consumed: boolean[] = new Array(frame.w * frame.h).fill(false);
-  const used = (col: number, row: number) => consumed[row * frame.w + col];
-
-  const rects: Rect[] = [];
-  for (let row = 0; row < frame.h; row++) {
-    for (let col = 0; col < frame.w; col++) {
-      if (!ink(col, row) || used(col, row)) {
-        continue;
-      }
-
-      let w = 1;
-      while (col + w < frame.w && ink(col + w, row) && !used(col + w, row)) {
-        w++;
-      }
-
-      let h = 1;
-      growDown: while (row + h < frame.h) {
-        for (let dx = 0; dx < w; dx++) {
-          if (!ink(col + dx, row + h) || used(col + dx, row + h)) {
-            break growDown;
-          }
-        }
-        h++;
-      }
-
-      for (let dy = 0; dy < h; dy++) {
-        for (let dx = 0; dx < w; dx++) {
-          consumed[(row + dy) * frame.w + col + dx] = true;
-        }
-      }
-      rects.push({ col, row, w, h });
-    }
-  }
-  return rects;
-};
-
-/** rects (in units of 1/pixelDivisor design pixels) to font-unit contours */
-const rectContours = (rects: Rect[], pixelDivisor: number): Contour[] =>
-  rects.map(({ col, row, w, h }) => {
-    const subPx = px / pixelDivisor;
-    const xLeft = col * subPx;
-    const xRight = (col + w) * subPx;
-    const yTop = baselineFromTop * px - row * subPx;
-    const yBottom = baselineFromTop * px - (row + h) * subPx;
-    return [
-      [xLeft, yBottom],
-      [xLeft, yTop],
-      [xRight, yTop],
-      [xRight, yBottom],
-    ] as Contour;
-  });
-
 /**
  * an isolated pixel (opposite to all 8 of its neighbours) renders as a
  * regular polygon-circle of this many sides, with the same area as the
@@ -331,7 +269,7 @@ const circleRadiusPx = Math.sqrt(
 
 /**
  * equal-area circle contour for an isolated pixel, in font units. Additive
- * (ink dot) contours wind clockwise in y-up space like the rect contours;
+ * (ink dot) contours wind clockwise in y-up space like the traced contours;
  * `hole` reverses the winding so non-zero fill subtracts it
  */
 const circleContour = (col: number, row: number, hole: boolean): Contour => {
@@ -399,11 +337,21 @@ const smoothGlyphContours = (
     }
   }
 
-  const rects = mergeRects((col, row) => bitmap[row][col], {
-    w: frame.w * smoothFactor,
-    h: frame.h * smoothFactor,
-  });
-  return [...rectContours(rects, smoothFactor), ...circles];
+  // vector outlines faithful to the algorithm's intent: uniform 1:1/2:1/1:2
+  // staircases in the upscaled raster become true diagonal lines. The y-flip
+  // into font units reverses orientation, so the point order is reversed too,
+  // keeping the convention that outers wind clockwise in y-up space
+  const subPx = px / smoothFactor;
+  const traced = traceSmoothContours(bitmap).map(
+    (loop): Contour =>
+      loop
+        .map(([x, y]): [number, number] => [
+          x * subPx,
+          baselineFromTop * px - y * subPx,
+        ])
+        .reverse(),
+  );
+  return [...traced, ...circles];
 };
 
 const { data: rawPixels, info } = await sharp(spritesheetPath)
