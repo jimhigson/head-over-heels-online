@@ -21,3 +21,6 @@ redAsAlphaFilter.matrix = [
 // so it must not be clipped to the screen viewport (which would crop the mask to
 // the canvas size):
 redAsAlphaFilter.clipToViewport = false;
+// run at the bake target's resolution (pixi's default is a fixed 1), so a
+// cleanEdge-upscaled bake isn't flattened back to 1x by this pass:
+redAsAlphaFilter.resolution = "inherit";

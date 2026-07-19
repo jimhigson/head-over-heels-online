@@ -58,6 +58,7 @@ export const carryAndJumpButtonAppearance: ButtonAppearance<
         spritesheets.originalSpritesheet,
         new TextContainer({
           pixiRenderer,
+          resolution: spritesheets.bakeFactor,
           text: "C+J",
           y: textYForButtonCentre,
         }),

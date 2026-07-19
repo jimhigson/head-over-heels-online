@@ -24,7 +24,11 @@ import { installE2eFastForwardHandle } from "./mainLoop/installE2eFastForwardHan
 import { installE2eSwopCharacterHandle } from "./mainLoop/installE2eSwopCharacterHandle";
 import { MainLoop } from "./mainLoop/MainLoop";
 import { startCameraRotation } from "./mainLoop/tickCameraTransition";
-import { loadHudFont } from "./render/text/TextContainer";
+import { selectCleanEdgeBakeFactor } from "./render/filters/cleanEdge/selectCleanEdgeBakeFactor";
+import {
+  ensureUiFontLoaded,
+  uiFontVariantAtResolution,
+} from "./render/text/uiFont";
 
 TextureStyle.defaultOptions.scaleMode = "nearest";
 
@@ -46,9 +50,13 @@ export const gameMain = async <RoomId extends string>(
   const [campaignResult] = await Promise.all([
     loadCampaignFromApi<RoomId>(campaignLocator),
     loadSoundCategory("requiredForGameplay"),
-    // TextContainer rasterises strings with canvas 2d, which would silently draw
-    // with a fallback font if the web font hadn't loaded yet:
-    loadHudFont(),
+    // the hud rasterises strings with canvas 2d, which would silently draw
+    // with a fallback font if the web font hadn't loaded yet. Only the variant
+    // the current settings call for is fetched; the main loop fetches the
+    // other if the settings later change to it:
+    ensureUiFontLoaded(
+      uiFontVariantAtResolution(selectCleanEdgeBakeFactor(store.getState())),
+    ),
     app.init({
       background: "#000000",
       // run on the shared ticker to keep in sync with the input state tracker

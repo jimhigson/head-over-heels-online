@@ -1,22 +1,33 @@
 import { expect, type Page, test } from "@playwright/test";
+import { type Container, type Texture } from "pixi.js";
 
 import { type OriginalCampaignRoomId } from "../src/_generated/originalCampaign/OriginalCampaignRoomId";
 import { type ResolutionName } from "../src/originalGame";
 import { type SpriteOption } from "../src/store/slices/userSettings/userSettingsSlice";
 import { allItemsTestRoomCampaign } from "./fixtures/allItemsTestRoom";
 import { bootPlaytestCampaign } from "./testUtils/bootPlaytestCampaign";
+import { enableSmoothSprites } from "./testUtils/enableSmoothSprites";
 import {
   dispatchToStore,
   setZeroGameSpeed,
+  waitForGameReady,
   waitForGameState,
   waitForRoomRenderEvent,
 } from "./testUtils/gameStateQueries";
-import { restrictToCameraRotationProjects } from "./testUtils/infrastructure";
+import {
+  osSlowness,
+  restrictToCameraRotationProjects,
+} from "./testUtils/infrastructure";
+import { formatProjectName } from "./testUtils/logging";
 import {
   clickOriginalCampaign,
   clickPlayTheGame,
   exitCrownsDialog,
+  navigateToSubmenu,
+  openInGameMainMenu,
+  startCampaignViaMenu,
 } from "./testUtils/menuNavigation";
+import { enableOnScreenControls } from "./testUtils/onScreenControls";
 import { setupE2ePage } from "./testUtils/pageSetup";
 import { relaySupabase } from "./testUtils/relaySupabase";
 import {
@@ -163,6 +174,12 @@ type SweepScenario<C extends SweepCampaign = SweepCampaign> = {
    * rendering of the alternate sheets/modes
    */
   spriteOptions?: SpriteOption[];
+  /**
+   * turn the smooth-sprites (cleanEdge upscaling) display setting on once the
+   * room is entered, waiting for the upscaled sheets to be live before any
+   * captures - so every frame of the scenario shows the smooth rendering
+   */
+  smoothSprites?: boolean;
   /**
    * how many pixels may differ from the baseline, loosening the shared
    * room-screenshot budget (zero) for scenarios whose frames legitimately
@@ -410,6 +427,39 @@ const scenarios: readonly SweepScenario[] = [
     spriteOptions: [{ name: "BlockStack", uncolourised: true }],
     maxDiffPixels: 1_000,
   }),
+  // the smooth-sprites (cleanEdge upscaled) rendering across three sceneries
+  // the suite does not otherwise sweep, each at the base and one rotated
+  // settled angle:
+  sweepScenario({
+    roomId: "bookworld28",
+    campaign: "original",
+    // entered through the door from adjacent bookworld27:
+    enterFrom: "bookworld27",
+    character: "head",
+    angles: [0, 90],
+    emulatedResolution: "$$default",
+    smoothSprites: true,
+  }),
+  sweepScenario({
+    roomId: "moonbase1",
+    campaign: "original",
+    // entered through the door from adjacent moonbase2:
+    enterFrom: "moonbase2",
+    character: "head",
+    angles: [0, 90],
+    emulatedResolution: "$$default",
+    smoothSprites: true,
+  }),
+  sweepScenario({
+    roomId: "penitentiary18fish",
+    campaign: "original",
+    // entered through the door from adjacent penitentiary17:
+    enterFrom: "penitentiary17",
+    character: "head",
+    angles: [0, 90],
+    emulatedResolution: "$$default",
+    smoothSprites: true,
+  }),
   ...(["blacktooth15", "blacktooth1head", "blacktooth13"] as const).map(
     (roomId) =>
       // the turn's start must be continuous: an infinitesimal step into a turn
@@ -642,6 +692,12 @@ const bootScenario = async (page: Page, scenario: SweepScenario) => {
 
   await enterRoom(page, scenario, campaignHashUrl);
 
+  if (scenario.smoothSprites) {
+    // set after entering so the upscaled-sheet wait inside is satisfied by the
+    // swept room's own stage, not a boot room passed through:
+    await enableSmoothSprites(page);
+  }
+
   await page.waitForTimeout(500);
 };
 
@@ -655,6 +711,7 @@ const scenarioBaseName = ({
   character,
   enterFrom,
   emulatedResolution,
+  smoothSprites,
 }: SweepScenario): string =>
   [
     roomId,
@@ -663,6 +720,7 @@ const scenarioBaseName = ({
     : enterFrom === "$$final" ? "-from-final"
     : `-from-${enterFrom}`,
     emulatedResolution === "$$default" ? "" : `-${emulatedResolution}`,
+    smoothSprites ? "-smooth" : "",
   ].join("");
 
 /**
@@ -676,6 +734,7 @@ const scenarioBaseName = ({
  * | character          | head                  | `-heels`                       |
  * | enterFrom          | "$$startingRoom"      | `-from-<room>` / `-from-final` |
  * | emulatedResolution | "$$default"           | `-<resolutionName>`            |
+ * | smoothSprites      | false                 | `-smooth`                      |
  * | spriteOption       | BlockStack colourised | `-uncolourised` / `-toppy`     |
  * | angle              | 0°                    | `-<degrees>deg`                |
  * | capture time       | 0ms                   | `-<milliseconds>ms`            |
@@ -771,7 +830,10 @@ for (const scenario of scenarios) {
   test(`camera angles render deterministically: ${scenarioBaseName(scenario)} (${scenarioAxes(scenario)})`, async ({
     page,
   }, testInfo) => {
-    test.setTimeout(360_000);
+    // smooth-sprites scenarios need longer: software-rendered environments
+    // (SwiftShader in CI or a sandbox) are very slow to compile the cleanEdge
+    // shader on first bake:
+    test.setTimeout(scenario.smoothSprites ? 600_000 : 360_000);
     await bootScenario(page, scenario);
 
     // the sprite options to capture in - just the platform default when the
@@ -819,3 +881,155 @@ for (const scenario of scenarios) {
     }
   });
 }
+
+/**
+ * the live hud's identity and the textures it draws: pixi's own `uid` for the
+ * hud container (so a rebuild is detectable), and every texture that is not
+ * the shared empty one as `label: resolution` pairs. Reading this off the
+ * scene graph is ground truth for both "is this drawn from an upscaled bake"
+ * and "was the hud rebuilt", neither of which pixels can tell apart
+ */
+const hudRendererState = (page: Page) =>
+  page.evaluate(() => {
+    const findHud = (node: Container): Container | undefined => {
+      if (node.label === "HudRenderer") {
+        return node;
+      }
+      for (const child of node.children) {
+        const found = findHud(child as Container);
+        if (found !== undefined) {
+          return found;
+        }
+      }
+      return undefined;
+    };
+    const hud = findHud(window.__PIXI_APP__!.stage);
+    if (hud === undefined) {
+      throw new Error("no hud in the pixi scene graph");
+    }
+
+    const resolutions: Record<string, number> = {};
+    const walk = (node: Container, path: string) => {
+      const here = `${path}/${node.label}`;
+      const { texture } = node as { texture?: Texture };
+      if (
+        texture !== undefined &&
+        texture.source !== undefined &&
+        // an empty string (eg a zero shield count) draws nothing, so has no
+        // rendering to be smoothed
+        texture.label !== "EMPTY"
+      ) {
+        resolutions[here] = texture.source.resolution;
+      }
+      for (const child of node.children) {
+        walk(child as Container, here);
+      }
+    };
+    walk(hud, "");
+    return { uid: hud.uid, resolutions };
+  });
+
+test.describe("smooth sprites", () => {
+  // the cleanEdge shader is slow to compile where rendering is in software
+  test.setTimeout(600_000 * osSlowness);
+
+  test.beforeEach(async ({ page }) => {
+    await setupE2ePage(page);
+  });
+
+  test("turning it on live smooths the hud, not only the room", async ({
+    page,
+  }, testInfo) => {
+    await startCampaignViaMenu(page, testInfo.project.name, "originalGame");
+    // the touch hud is the densest one - a joystick, arcade buttons and their
+    // labels on top of the icons the pointer hud also shows
+    await enableOnScreenControls(page);
+
+    await enableSmoothSprites(page);
+
+    // ground truth first: every hud texture must report the upscaled bake,
+    // not just the ones a screenshot's tolerance happens to catch:
+    const { resolutions } = await hudRendererState(page);
+    expect(Object.keys(resolutions).length).toBeGreaterThan(0);
+    expect(
+      Object.entries(resolutions).filter(([, resolution]) => resolution === 1),
+    ).toEqual([]);
+
+    await setZeroGameSpeed(page);
+    await page.waitForTimeout(300);
+    await freezeAnimations(page);
+    await page.waitForTimeout(100);
+
+    await expect(page).toHaveScreenshot(
+      "smooth-sprites-hud-live-toggle.png",
+      roomScreenshotOptions(testInfo.project.name),
+    );
+  });
+
+  test("opening a display menu does not rebuild the hud every frame", async ({
+    page,
+  }, testInfo) => {
+    await startCampaignViaMenu(page, testInfo.project.name, "originalGame");
+    await enableOnScreenControls(page);
+    await enableSmoothSprites(page);
+
+    // the option a paused tick renders under is derived per tick, so a menu
+    // being open is exactly the state that can rebuild the hud endlessly -
+    // and at this bake factor every rebuild re-rasterises the hud's text into
+    // freshly allocated upscaled textures
+    const logHeader = formatProjectName(testInfo.project.name);
+    await openInGameMainMenu(page, logHeader);
+    await navigateToSubmenu(page, "options", logHeader);
+    await page.locator('[data-dialog-id="modernisationOptions"]').waitFor();
+    await navigateToSubmenu(page, "display", logHeader);
+    await page.locator('[data-dialog-id="displayOptions"]').waitFor();
+    await page.waitForTimeout(1_000 * osSlowness);
+
+    const { uid: uidWhileOpen } = await hudRendererState(page);
+    await page.waitForTimeout(2_000 * osSlowness);
+
+    // pixi hands out a fresh uid per container, so an unchanged one is proof
+    // the hud instance survived, rather than being destroyed and rebuilt on
+    // every one of the frames rendered in between
+    expect((await hudRendererState(page)).uid).toBe(uidWhileOpen);
+  });
+
+  test("the game starts when it is already on at boot", async ({
+    page,
+  }, testInfo) => {
+    await startCampaignViaMenu(page, testInfo.project.name, "originalGame");
+    await enableSmoothSprites(page);
+
+    // reloading resumes the game with the setting persisted on, so the very
+    // first frame is rendered smooth rather than transitioning into it:
+    await page.reload();
+    await waitForGameReady(page);
+
+    // the engine runs on under the hold dialog the reload resumes into, so
+    // the engine having drawn a frame is the ground-truth assertion - a black
+    // canvas (the reported bug) would never reach this mark:
+    await expect
+      .poll(
+        () =>
+          page.evaluate(
+            () => performance.getEntriesByName("first-gameplay").length,
+          ),
+        { timeout: 30_000 * osSlowness },
+      )
+      .toBe(1);
+
+    // the reload resumes under the hold dialog without freezing the ticker,
+    // so settle to a deterministic frame before the visual check - a
+    // screenshot of exactly this combined view (hold dialog over the canvas)
+    // is the direct regression guard for the reported black canvas:
+    await setZeroGameSpeed(page);
+    await page.waitForTimeout(300);
+    await freezeAnimations(page);
+    await page.waitForTimeout(100);
+
+    await expect(page).toHaveScreenshot(
+      "smooth-sprites-boot-after-reload.png",
+      roomScreenshotOptions(testInfo.project.name),
+    );
+  });
+});

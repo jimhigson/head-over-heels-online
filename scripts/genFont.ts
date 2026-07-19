@@ -8,7 +8,12 @@ import {
   hudLowercaseCharTextureSize,
 } from "../src/sprites/spritesheet/spritesheetData/textureSizes";
 import { size } from "../src/utils/iterators/size";
+import { cleanEdgeUpscaleBinary } from "./font/cleanEdgeUpscaleBinary";
 import { type HudGlyph, hudGlyphs } from "./font/hudGlyphs";
+import {
+  roundSmoothedCorners,
+  traceSmoothContours,
+} from "./font/traceSmoothContours";
 
 // the shipped gfx/sprites.webp has every non-frame area (including the HUD char
 // rows) masked to transparent, so the font is generated from the unmasked full
@@ -20,8 +25,27 @@ const spritesheetPath = "gfx/sprites.borders.png";
 const outputDir = "src/_generated/font";
 const outputPath = `${outputDir}/blockstack-head-over-heels.woff2`;
 const manifestPath = `${outputDir}/manifest.json`;
+const smoothOutputPath = `${outputDir}/blockstack-head-over-heels-smooth.woff2`;
+const smoothManifestPath = `${outputDir}/manifest-smooth.json`;
 const builderScript = "scripts/font/buildVariableFont.py";
 const requirementsPath = "scripts/font/requirements.txt";
+
+/**
+ * the smooth font's glyphs are the same bitmaps upscaled with cleanEdge at
+ * this factor before their outlines are traced. Since the outlines resolve
+ * staircases to cleanEdge's intended diagonal lines (not its raster), a high
+ * factor just pins those lines (and the residual transition notches) to a
+ * finer grid - 1/16 design pixel - far below visibility. Offline cost only
+ */
+const smoothFactor = 16;
+
+/**
+ * how far each smoothed corner's rounding reaches along its incident
+ * segments, in 1/smoothFactor subpixels - one design pixel. Big enough that
+ * cleanEdge's short diagonal cuts are consumed whole into curves; straight
+ * edges stay straight beyond a pixel of their smoothed corners
+ */
+const cornerRoundRadius = smoothFactor;
 
 const unitsPerEm = 512;
 /** font units per design pixel - 512/8 gives clean integer pixel boundaries */
@@ -62,8 +86,13 @@ const heightAxis = {
 
 type DecodedImage = { width: number; height: number; data: Uint8ClampedArray };
 
-/** a closed contour of on-curve points, in font units with the baseline at y=0 */
-type Contour = Array<[number, number]>;
+/**
+ * a closed contour in font units with the baseline at y=0. A point is
+ * `[x, y]` (on-curve) or `[x, y, 0]` (an off-curve quadratic control -
+ * TrueType implies on-curve midpoints between consecutive off-curve points,
+ * so runs of them render as a smooth B-spline)
+ */
+type Contour = Array<[number, number, 0] | [number, number]>;
 
 type GlyphData = {
   unicode: number;
@@ -245,6 +274,114 @@ const glyphContours = (
   );
 };
 
+/**
+ * an isolated pixel (opposite to all 8 of its neighbours) renders as a
+ * regular polygon-circle of this many sides, with the same area as the
+ * square pixel - eg the single-pixel counter of the 'o' becomes a round
+ * hole. Radius chosen so the POLYGON's area is exactly one pixel
+ */
+const circleSides = 16;
+const circleRadiusPx = Math.sqrt(
+  2 / (circleSides * Math.sin((2 * Math.PI) / circleSides)),
+);
+
+/**
+ * equal-area circle contour for an isolated pixel, in font units. Additive
+ * (ink dot) contours wind clockwise in y-up space like the traced contours;
+ * `hole` reverses the winding so non-zero fill subtracts it
+ */
+const circleContour = (col: number, row: number, hole: boolean): Contour => {
+  const centreX = (col + 0.5) * px;
+  const centreY = baselineFromTop * px - (row + 0.5) * px;
+  const radius = circleRadiusPx * px;
+  const points: Contour = [];
+  for (let i = 0; i < circleSides; i++) {
+    const theta = ((i + 0.5) / circleSides) * 2 * Math.PI * (hole ? 1 : -1);
+    // all off-curve: TrueType renders the ring of controls as a closed
+    // quadratic B-spline - a genuinely smooth circle. The spline runs
+    // slightly inside its control polygon, so the radius is bumped to keep
+    // the equal-area property (mean spline radius is ~0.9856 of control
+    // radius for 16 controls):
+    points.push([
+      centreX + (radius / 0.985_6) * Math.cos(theta),
+      centreY + (radius / 0.985_6) * Math.sin(theta),
+      0,
+    ]);
+  }
+  return points;
+};
+
+/**
+ * as {@link glyphContours}, but of the glyph bitmap cleanEdge-upscaled by
+ * {@link smoothFactor} - contours land on 1/smoothFactor design-pixel
+ * boundaries, exactly the texels the game's baked spritesheets show. The
+ * exception is isolated single pixels (dots, and holes like the counter of
+ * the 'o'), which become true {@link circleContour}s
+ */
+const smoothGlyphContours = (
+  image: DecodedImage,
+  { frame }: HudGlyph<string>,
+): Contour[] => {
+  const ink = (x: number, y: number) =>
+    x >= 0 &&
+    y >= 0 &&
+    x < frame.w &&
+    y < frame.h &&
+    isInk(image, frame.x + x, frame.y + y);
+
+  const isolated = (x: number, y: number) => {
+    const v = ink(x, y);
+    for (let dy = -1; dy <= 1; dy++) {
+      for (let dx = -1; dx <= 1; dx++) {
+        if ((dx !== 0 || dy !== 0) && ink(x + dx, y + dy) === v) {
+          return false;
+        }
+      }
+    }
+    return true;
+  };
+
+  const bitmap = cleanEdgeUpscaleBinary(ink, frame.w, frame.h, smoothFactor);
+
+  const circles: Contour[] = [];
+  for (let y = 0; y < frame.h; y++) {
+    for (let x = 0; x < frame.w; x++) {
+      if (!isolated(x, y)) {
+        continue;
+      }
+      const isHole = !ink(x, y);
+      // a hole's cell fills solid (the circle contour carves it back out);
+      // a dot's cell empties (the circle contour draws it):
+      for (let sy = y * smoothFactor; sy < (y + 1) * smoothFactor; sy++) {
+        for (let sx = x * smoothFactor; sx < (x + 1) * smoothFactor; sx++) {
+          bitmap[sy][sx] = isHole;
+        }
+      }
+      circles.push(circleContour(x, y, isHole));
+    }
+  }
+
+  // vector outlines faithful to the algorithm's intent: uniform 1:1/2:1/1:2
+  // staircases in the upscaled raster become true diagonal lines, whose
+  // corners are then rounded into quadratic curves - short diagonal cuts
+  // melt entirely into curves while right-angled art corners stay sharp.
+  // The y-flip into font units reverses orientation, so the point order is
+  // reversed too, keeping the convention that outers wind clockwise in
+  // y-up space
+  const subPx = px / smoothFactor;
+  const traced = traceSmoothContours(bitmap).map((loop): Contour =>
+    roundSmoothedCorners(loop, cornerRoundRadius)
+      .map((point): Contour[number] => {
+        const [x, y] = point;
+        const fontX = x * subPx;
+        const fontY = baselineFromTop * px - y * subPx;
+        return point.length === 3 ? [fontX, fontY, 0] : [fontX, fontY];
+      })
+      .reverse(),
+  );
+  return [...traced, ...circles];
+};
+
 const { data: rawPixels, info } = await sharp(spritesheetPath)
   .ensureAlpha()
   .raw()
@@ -255,45 +392,55 @@ const image: DecodedImage = {
   data: new Uint8ClampedArray(rawPixels),
 };
 
-const glyphs: GlyphData[] = [];
-for (const hudGlyph of hudGlyphs) {
-  // only single-codepoint chars become font glyphs (bar namedGlyphCodePoints);
-  // this drops the unused EnterFullscreen/ExitFullscreen pseudo-glyphs and the
-  // uppercaseCharReplacement strings (eg "QUESTMK"), so duplicated punctuation
-  // resolves to the row1 variant
-  if (size(hudGlyph.char) !== 1) {
-    const namedCodePoint = namedGlyphCodePoints[hudGlyph.char];
-    if (namedCodePoint !== undefined) {
-      glyphs.push({
-        unicode: namedCodePoint,
-        advanceWidth: hudGlyph.advanceWidth * px,
-        contours: glyphContours(image, hudGlyph),
-      });
+const buildGlyphs = (
+  contoursFor: (image: DecodedImage, hudGlyph: HudGlyph<string>) => Contour[],
+): GlyphData[] => {
+  const glyphs: GlyphData[] = [];
+  for (const hudGlyph of hudGlyphs) {
+    // only single-codepoint chars become font glyphs (bar namedGlyphCodePoints);
+    // this drops the unused EnterFullscreen/ExitFullscreen pseudo-glyphs and the
+    // uppercaseCharReplacement strings (eg "QUESTMK"), so duplicated punctuation
+    // resolves to the row1 variant
+    if (size(hudGlyph.char) !== 1) {
+      const namedCodePoint = namedGlyphCodePoints[hudGlyph.char];
+      if (namedCodePoint !== undefined) {
+        glyphs.push({
+          unicode: namedCodePoint,
+          advanceWidth: hudGlyph.advanceWidth * px,
+          contours: contoursFor(image, hudGlyph),
+        });
+      }
+      continue;
     }
-    continue;
+    const codePoint = hudGlyph.char.codePointAt(0)!;
+    const advanceWidth =
+      codePoint === spaceCodePoint ? spaceAdvanceWidth : hudGlyph.advanceWidth;
+    glyphs.push({
+      unicode: codePoint,
+      advanceWidth: advanceWidth * px,
+      contours: contoursFor(image, hudGlyph),
+    });
   }
-  const codePoint = hudGlyph.char.codePointAt(0)!;
-  const advanceWidth =
-    codePoint === spaceCodePoint ? spaceAdvanceWidth : hudGlyph.advanceWidth;
-  glyphs.push({
-    unicode: codePoint,
-    advanceWidth: advanceWidth * px,
-    contours: glyphContours(image, hudGlyph),
-  });
-}
 
-// em space exists only in the font (not the spritesheet), as an empty glyph with
-// a full-block advance
-glyphs.push({
-  unicode: emSpaceCodePoint,
-  advanceWidth: emSpaceAdvanceWidth * px,
-  contours: [],
-});
+  // em space exists only in the font (not the spritesheet), as an empty glyph with
+  // a full-block advance
+  glyphs.push({
+    unicode: emSpaceCodePoint,
+    advanceWidth: emSpaceAdvanceWidth * px,
+    contours: [],
+  });
+
+  return glyphs;
+};
+
+const glyphs = buildGlyphs(glyphContours);
 
 // everything about the design that determines the font output - glyph outlines,
 // advances, metrics and the axis. Change-detection compares only this, so an
 // unchanged design skips the rebuild and keeps the committed woff2 bytes.
-const design = {
+// everything but the glyph outlines is shared between the base and smooth
+// fonts - identical metrics make the two interchangeable with no layout shift
+const designFor = (designGlyphs: GlyphData[]) => ({
   // bump whenever buildVariableFont.py changes what it emits for the same
   // glyph data, so the rebuild isn't skipped as "unchanged"
   builderVersion: 3,
@@ -305,19 +452,21 @@ const design = {
   // (eg the underline) without re-deriving this from unitsPerEm
   unitsPerPixel: px,
   axis: heightAxis,
-  glyphs,
-};
+  glyphs: designGlyphs,
+});
+
+const design = designFor(glyphs);
 
 // the committed manifest is the design plus a `builtAt` unix timestamp. The
 // builder bakes builtAt into head.modified, so the font's version stamp only
 // advances when the design genuinely changes (and the build is otherwise
 // deterministic - an unchanged design rebuilds to identical bytes)
-const committedDesign = (): unknown => {
-  if (!existsSync(manifestPath)) {
+const committedDesign = (fromManifestPath: string): unknown => {
+  if (!existsSync(fromManifestPath)) {
     return undefined;
   }
   try {
-    const parsed = JSON.parse(readFileSync(manifestPath, "utf8"));
+    const parsed = JSON.parse(readFileSync(fromManifestPath, "utf8"));
     delete parsed.builtAt;
     return parsed;
   } catch {
@@ -347,19 +496,38 @@ const ensurePythonToolchain = () => {
   }
 };
 
-if (JSON.stringify(committedDesign()) === JSON.stringify(design)) {
-  console.log(
-    `🅵 font unchanged (${glyphs.length} glyphs) - kept existing ${outputPath}`,
-  );
-} else {
+const buildIfChanged = (
+  builtDesign: ReturnType<typeof designFor>,
+  toManifestPath: string,
+  toOutputPath: string,
+) => {
+  if (
+    JSON.stringify(committedDesign(toManifestPath)) ===
+    JSON.stringify(builtDesign)
+  ) {
+    console.log(
+      `🅵 font unchanged (${builtDesign.glyphs.length} glyphs) - kept existing ${toOutputPath}`,
+    );
+    return;
+  }
   ensurePythonToolchain();
   mkdirSync(outputDir, { recursive: true });
   const builtAt = Math.floor(Date.now() / 1_000);
-  writeFileSync(manifestPath, JSON.stringify({ ...design, builtAt }, null, 2));
+  writeFileSync(
+    toManifestPath,
+    JSON.stringify({ ...builtDesign, builtAt }, null, 2),
+  );
   // opentype.js can neither write glyf outlines nor a working gvar, and a
   // hand-assembled variable font is silently not animated by Chromium; fontTools
   // (varLib) builds one that is. See scripts/font/buildVariableFont.py.
-  execFileSync(python, [builderScript, manifestPath, outputPath], {
+  execFileSync(python, [builderScript, toManifestPath, toOutputPath], {
     stdio: "inherit",
   });
-}
+};
+
+buildIfChanged(design, manifestPath, outputPath);
+buildIfChanged(
+  designFor(buildGlyphs(smoothGlyphContours)),
+  smoothManifestPath,
+  smoothOutputPath,
+);

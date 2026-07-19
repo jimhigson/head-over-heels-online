@@ -19,4 +19,8 @@ export const invertRedToAlphaFilter = new Filter({
   // baked off-screen onto the spritesheet, never on the screen target, so it
   // must not be clipped to the screen viewport (which would crop the sheet):
   clipToViewport: false,
+  // run the filter pass at the bake target's resolution (pixi's default is a
+  // fixed 1), so a cleanEdge-upscaled sheet keeps its full backing store
+  // instead of being flattened back to 1x:
+  resolution: "inherit",
 });

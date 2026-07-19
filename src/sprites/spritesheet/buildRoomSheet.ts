@@ -159,7 +159,16 @@ export const buildRoomSheet = (
   }
   const packedData: AppSpritesheetDataWithVariants = { ...data, frames };
 
-  const target = reuseOrCreateSheetTarget(previousTarget, pack.height);
+  // any cleanEdge upscale baked into the original sheet is carried through to
+  // the room sheet: the bake's blits and filter passes all run at this
+  // backing-store resolution over the same logical layout
+  const bakeResolution = baseTexture.source.resolution;
+
+  const target = reuseOrCreateSheetTarget(
+    previousTarget,
+    pack.height,
+    bakeResolution,
+  );
 
   // shared (destroyed once, after all groups): the ambient and texture-specific
   // palette swops, reused by every base recipe that references them
@@ -272,6 +281,10 @@ export const buildRoomSheet = (
   }
 
   const sheet = new Spritesheet(target, packedData) as AppSpritesheet;
+  // pixi's Spritesheet applies the sheet data's meta.scale (1) to the texture
+  // source, wiping any cleanEdge bake resolution - restore it before parsing
+  // so frame UVs are computed against the logical 1x size:
+  sheet.textureSource.resolution = bakeResolution;
   sheet.parseSync();
   sheet.textureSource.scaleMode = "nearest";
   sheet.spriteOptionName = spriteOptionName;

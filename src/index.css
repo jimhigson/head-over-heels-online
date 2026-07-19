@@ -3,15 +3,11 @@
 @tailwind components;
 @tailwind utilities;
 
-/* a variable font: the custom "HGHT" axis makes glyphs twice as tall at its peak,
-   which the text-double-height utility selects for real double-height text */
-@font-face {
-  font-family: "HeadOverHeels";
-  src: url("./_generated/font/blockstack-head-over-heels.woff2") format("woff2");
-  font-display: block;
-  font-weight: normal;
-  font-style: normal;
-}
+/* the HeadOverHeels variable font (custom "HGHT" axis for real double-height
+   text) is NOT declared with a static font-face: both its base and
+   cleanEdge-smoothed variants are registered dynamically via the FontFace api
+   (see useSmoothUiAssets), so a player only ever fetches the variant their
+   persisted settings select */
 
 @layer base {
   html,
