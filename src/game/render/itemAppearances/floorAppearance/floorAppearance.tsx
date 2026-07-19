@@ -120,13 +120,9 @@ const floorLeftRightCutOffMask = <
   // }
 
   // the mask is drawn in the floor's content-local space, whose origin is
-  // the drawn (render box) origin, not the physical position:
-  const floorDrawnOrigin = addXyz(
-    floorPosition,
-    floorDrawnOriginXyOffset(renderBoxes?.get(floorItem)),
-  );
+  // the floor's (integer) physical position:
   const offsetX = projectWorldXyzToScreenX(
-    subXy(originXyz, floorDrawnOrigin),
+    subXy(originXyz, floorPosition),
     cameraQuarterAngle,
   );
 
@@ -414,30 +410,30 @@ export const floorAppearance: ItemAppearance<"floor", RenderOnceProps> =
       const spritesRenderContainer = new Container({ label: "sprites" });
 
       // draw the whole floor (tiles, edge lips, cut-off mask) to its render
-      // box, not its raw physical aabb: the box extends the world-away/left
-      // door-expanded edges by a cosmetic 0.02 block so they meet the back
-      // walls (see makeItemRenderBoxAtCameraAngle), while the physical aabb
-      // stays integer-aligned. All content is laid out relative to the box's
-      // drawn origin (fractional on camera-reversed axes), which is also
-      // where the floor's container anchors (see ItemPositionRenderer), so
-      // the whole drawn floor rounds to the device grid as one. Only the
-      // horizontal x/y extent comes from the box; z stays the physical floor
-      // thickness (aabb.z). The edge-lip layout below relies on this extent
-      // carrying the door fraction (matching the pre-refactor aabb):
+      // box, not its raw physical aabb: the box extends the apparently-far
+      // ("back") door-expanded edges by a cosmetic 0.02 block so they meet
+      // the back walls (see makeItemRenderBoxAtCameraAngle), while the
+      // physical aabb stays integer-aligned. Content is laid out in the
+      // floor's own (item) frame - the box min is fractional on
+      // camera-reversed axes - and the container anchors at the projection
+      // of the INTEGER physical position (see ItemPositionRenderer), so the
+      // fraction lives only inside the drawn content, where the bake's
+      // single rasterisation absorbs it; the anchor itself never leaves the
+      // whole-pixel grid. Only the horizontal x/y extent comes from the box;
+      // z stays the physical floor thickness (aabb.z). The edge-lip layout
+      // below relies on this extent carrying the door fraction (matching the
+      // pre-refactor aabb):
       const floorRenderBox = renderBoxes?.get(floorItem);
-      const drawnOrigin = addXyz(
-        position,
-        floorDrawnOriginXyOffset(floorRenderBox),
-      );
+      const drawnMin = floorDrawnOriginXyOffset(floorRenderBox);
       const drawnAabb: Xyz = {
         x: floorRenderBox?.renderAabb.x ?? aabb.x,
         y: floorRenderBox?.renderAabb.y ?? aabb.y,
         z: aabb.z,
       };
-      const xMin = 0;
-      const xMax = drawnAabb.x;
-      const yMin = 0;
-      const yMax = drawnAabb.y;
+      const xMin = drawnMin.x;
+      const xMax = drawnMin.x + drawnAabb.x;
+      const yMin = drawnMin.y;
+      const yMax = drawnMin.y + drawnAabb.y;
 
       const tilesLeft = projectWorldXyzToScreenXy(
         { x: xMax, y: yMin, z: aabb.z },
@@ -531,7 +527,7 @@ export const floorAppearance: ItemAppearance<"floor", RenderOnceProps> =
         /* for deciding the offset of the floor tiles, only the towards/left (near side)
            doors count. Find how much we were offset by from the natural position when 
            the floor was loaded*/
-        const tileOffsetVector = subXy(naturalFootprint.position, drawnOrigin);
+        const tileOffsetVector = subXy(naturalFootprint.position, position);
 
         const tileOffsetBlocks = {
           x: frac(tileOffsetVector.x / blockSizePx.x),
@@ -601,7 +597,7 @@ export const floorAppearance: ItemAppearance<"floor", RenderOnceProps> =
         if (spritesheetMeta.showFloorOverDraw) {
           tilesContainer.addChild(
             renderFloorOverdraws(
-              drawnOrigin,
+              position,
               room,
               spritesheet,
               cameraQuarterAngle,

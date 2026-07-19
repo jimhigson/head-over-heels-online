@@ -8,6 +8,7 @@ import {
   waitForGameState,
   waitForRoomRenderEvent,
 } from "./testUtils/gameStateQueries";
+import { restrictToCameraRotationProjects } from "./testUtils/infrastructure";
 import {
   clickOriginalCampaign,
   clickPlayTheGame,
@@ -16,6 +17,8 @@ import {
 import { setupE2ePage } from "./testUtils/pageSetup";
 import { roomScreenshotOptions } from "./testUtils/screenshots";
 import { setSpriteOption } from "./testUtils/setSpriteOption";
+
+restrictToCameraRotationProjects();
 
 /**
  * visual regression for rendering at the four canonical camera angles:

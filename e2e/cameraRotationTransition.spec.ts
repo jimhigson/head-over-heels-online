@@ -4,6 +4,7 @@ import {
   setZeroGameSpeed,
   waitForRoomRenderEvent,
 } from "./testUtils/gameStateQueries";
+import { restrictToCameraRotationProjects } from "./testUtils/infrastructure";
 import {
   clickOriginalCampaign,
   clickPlayTheGame,
@@ -11,6 +12,8 @@ import {
 } from "./testUtils/menuNavigation";
 import { setupE2ePage } from "./testUtils/pageSetup";
 import { roomScreenshotOptions } from "./testUtils/screenshots";
+
+restrictToCameraRotationProjects();
 
 // blacktooth13 exercises the common boxy items; egyptus7 is a tower room -
 // towers are cylindrical and deliberately NOT mesh-warped, so its mid-transition

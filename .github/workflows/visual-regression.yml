@@ -125,12 +125,12 @@ jobs:
           # - { os: windows-latest, suite: roomSnapshots.spec.ts, projectOption: --project chromium-desktop, batch_number: 12, batch_count: 14, parallel_tests: 1, no_toppy: "1" }
           - { os: windows-latest, suite: roomSnapshots.spec.ts, projectOption: --project chromium-desktop, batch_number: 13, batch_count: 14, parallel_tests: 1, no_toppy: "1" }
 
-          # ROTATED ROOM SNAPSHOTS - the rotate-camera-test db campaign captured
-          # at all four camera angles, on a single agent. Chromium/Linux only,
-          # since rotation is unlikely to expose browser-specific rendering
-          # differences. The campaign spec loads from the db (supabase), so needs
-          # it reachable from CI:
+          # CAMERA ROTATION (rotation/sweep/transition + rotated campaign) - 
+          # only desktop-chromium (Linux) and one mobile-webkit (macOS)
+          - { os: ubuntu-24.04-arm, suite: cameraRotation, projectOption: --project chromium-desktop }
+          - { os: macos-latest, suite: cameraRotation, projectOption: --project mobile-safari }
           - { os: ubuntu-24.04-arm, suite: "roomSnapshotsRotatedCampaign.spec.ts", projectOption: --project chromium-desktop }
+          - { os: macos-latest, suite: "roomSnapshotsRotatedCampaign.spec.ts", projectOption: --project mobile-safari }
 
           # LUT SNAPSHOTS - single batch per os/browser combo
           # chromium/mobile-chrome on Linux, webkit/mobile-safari on macOS:
@@ -170,7 +170,8 @@ jobs:
         || matrix.suite == 'menuSnapshotsMainMenu' && format('MnuMain {0}', contains(matrix.os, 'windows') && 'Win' || contains(matrix.os, 'macos') && 'Mac' || 'Lnx')
         || matrix.suite == 'settingsReflectInGame' && 'Settings'
         || matrix.suite == 'spritesPage' && 'Sprites'
-        || startsWith(matrix.suite, 'roomSnapshotsRotated') && 'Rotated'
+        || startsWith(matrix.suite, 'cameraRotation') && format('CamRot {0}', contains(matrix.os, 'macos') && 'Mac' || 'Lnx')
+        || startsWith(matrix.suite, 'roomSnapshotsRotated') && format('Rotated {0}', contains(matrix.os, 'macos') && 'Mac' || 'Lnx')
         || matrix.suite == '' && format('All:{0}',
             contains(matrix.projectOption, 'mobile-safari-portrait') && 'mobile-safari-portrait'
               || matrix.projectOption)

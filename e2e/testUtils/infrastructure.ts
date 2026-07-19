@@ -25,6 +25,21 @@ export const osSlowness =
 export const slownessForHumanObserver = (): number =>
   test.info().project.use.headless === false ? 1_000 : 0;
 
+/**
+ * camera-rotation-family specs (rotation, sweep, transition) render in just the 2 most important
+ * browsers so we don't have too many screenshots
+ */
+export const restrictToCameraRotationProjects = (): void => {
+  const projectNames = ["chromium-desktop", "mobile-safari"];
+  test.beforeEach(() => {
+    const { name } = test.info().project;
+    test.skip(
+      !projectNames.includes(name),
+      `camera-rotation snapshots are not browser-specific; run only on ${projectNames.join(", ")}`,
+    );
+  });
+};
+
 export const retryWithRecovery = async <T>({
   action,
   recovery,
