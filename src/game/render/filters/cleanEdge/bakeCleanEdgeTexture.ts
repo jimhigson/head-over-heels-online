@@ -8,7 +8,7 @@ import {
 } from "pixi.js";
 
 import cleanEdgeVert from "./cleanEdge.vert";
-import cleanEdgeColourMixFrag from "./cleanEdgeColourMix.frag";
+import cleanEdgeTwoPassFrag from "./cleanEdgeTwoPass.frag";
 
 /**
  * cap on the cleanEdge bake factor: 4x is a 4096^2 backing store for the
@@ -53,11 +53,13 @@ export const bakeCleanEdgeTexture = (
   const shader = Shader.from({
     gl: {
       vertex: cleanEdgeVert,
-      // the art-aware variant: cleanEdge geometry on the
-      // transparent/black/colour classes, with colour fills interpolated from
-      // non-black neighbours (cleanEdge.frag is the faithful original)
-      fragment: cleanEdgeColourMixFrag,
-      name: "clean-edge-colour-mix",
+      // the two-pass art-aware variant: cleanEdge geometry on the
+      // transparent/black/colour classes, then a second colour-distance
+      // cleanEdge resolve of the fills in which black/transparent abstain
+      // (cleanEdge.frag is the faithful original; cleanEdgeColourMix.frag
+      // the earlier fill-interpolating experiment)
+      fragment: cleanEdgeTwoPassFrag,
+      name: "clean-edge-two-pass",
     },
     resources: {
       uTexture: sourceTexture.source,
