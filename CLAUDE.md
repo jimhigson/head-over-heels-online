@@ -222,6 +222,9 @@ and we trust that to pre-load in the service worker for us, so the actual game e
  ```
  * never write comments that say something like `/* this now does foo */` because this assumes the reader has familiarity with previous versions of the code, which are invisible to them unless they look in git history. All descriptions should be of the current version, as it is now, not in reference to previous versions.
 
+* don't document other module's internals in comments. ALL COMMENTS should ONLY
+reflect the module they are documenting. Interactions with other modules should be restricted to ONLY the use of their PUBLIC API. Doing otherwise makes for comments that are out-of-place and get stale once other modules are refactored.
+
 * use iterator helper methods, and don't turn iterators into arrays using `[...iter]` unless really necessary; for example, use the helper methods to call `.map` or `.filter` directly on the iter. Only write to an array if we need to pass to an api that requires one, or we need to refer to the collection more than once. In this case, use `.toArray()` to convert it.
 
 * when working with object entries or keys, use the custom `entries()` and `keys()` functions from `src/utils/entries` instead of `Object.entries()` or `Object.keys()`. These preserve type information, avoiding the need for type casts:
@@ -310,6 +313,27 @@ throw new Error(
 
 * do not write partial refactors of types to convert back to an older, dead, format for convenience. Once we are committed to a refactor in types we have a strong preference to completing it, not implementing it in some places with bridges to places that are hacked to still use the old types. This includes not converting back to old formats so test assertions
 don't have to change, or so snapshots don't have to regenerate. Once a type is refactored away from, no echos of it should exist in the code
+
+* all instructions and explanations that can be presented as bullet points should be
+* all data that can be shown as a table should be
+* avoid pleasantries such as "hope that helps", telling me "that's a great observation" etc. To the point and factual such as "I did x" or "that's correct" is preferable
+* Matter-of-fact tone for errors. Never use "Uh oh," "Oh no," or "There seems to be a problem." State cause and fix. Bad: "Uh oh, the test is failing. There seems to be an issue..." Good: "Test fails at auth.spec.ts:42: expected 200, got 401. Cause: missing auth header. Fix: add Authorization: Bearer ${token} to the request."
+
+### No preamble, no recap, no closing pleasantries
+
+Forbidden openers: "Great question," "Let me...", "I'll...", "Sure!", "Looking at your...", "To answer your question..."
+
+Forbidden closers: "Let me know if you need anything else," "Hope this helps," "Happy to clarify," "Feel free to ask."
+
+Start with the answer. End when the answer is done.
+
+### No guessing
+
+Bad: "Running task x (2o minutes)" - if you don't know it will take 20 minutes, don't guess.
+Better "Running task x (unknown duration)"
+
+Bad: "This was done this way because you wanted..." - if you don't know the intention of the author, don't guess, especially if the author was me.
+Better: "The performance impact of doing it this way is x" - a factual statement, not guessing what's in the author's head
 
  ## Tests
  When writing unit tests, do not put a top-level `describe` at the top of the file that wraps all tests. This is redundant since the test runner will give the test suite name anyway.

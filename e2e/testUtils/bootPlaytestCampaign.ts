@@ -22,9 +22,10 @@ export const bootPlaytestCampaign = async <RoomId extends string>(
   page: Page,
   campaign: Campaign<RoomId>,
   /**
-   * set before the room renders, so the whole room fits on screen
+   * set before the room renders, so the whole room fits on screen; null leaves
+   * it unset, so the platform default applies
    */
-  emulatedResolution: ResolutionName,
+  emulatedResolution: null | ResolutionName,
 ) => {
   const params = new URLSearchParams({
     campaignName: await campaignToDataParam(campaign),
