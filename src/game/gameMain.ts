@@ -22,6 +22,7 @@ import { type SavedGame } from "./gameState/saving/SavedGameState";
 import { type InputStateTrackerInterface } from "./input/InputStateTracker";
 import { MainLoop } from "./mainLoop/MainLoop";
 import { startCameraRotation } from "./mainLoop/tickCameraTransition";
+import { loadHudFont } from "./render/text/TextContainer";
 
 TextureStyle.defaultOptions.scaleMode = "nearest";
 
@@ -43,6 +44,9 @@ export const gameMain = async <RoomId extends string>(
   const [campaignResult] = await Promise.all([
     loadCampaignFromApi<RoomId>(campaignLocator),
     loadSoundCategory("requiredForGameplay"),
+    // TextContainer rasterises strings with canvas 2d, which would silently draw
+    // with a fallback font if the web font hadn't loaded yet:
+    loadHudFont(),
     app.init({
       background: "#000000",
       // run on the shared ticker to keep in sync with the input state tracker

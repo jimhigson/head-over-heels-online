@@ -70,9 +70,11 @@ const renderContextHasRoom = <RoomId extends string, RoomItemId extends string>(
 ): ctx is HudRendererTickContextWithRoom<RoomId, RoomItemId> =>
   ctx.room !== undefined;
 
-type IconWithNumber = {
+type IconWithNumber<
+  Icon extends Sprite | TextContainer = Sprite | TextContainer,
+> = {
   textContainer: TextContainer;
-  icon: Sprite;
+  icon: Icon;
   container: Container;
 };
 
@@ -133,17 +135,17 @@ export class HudRenderer<RoomId extends string, RoomItemId extends string>
     head: {
       sprite: Sprite;
       livesText: TextContainer;
-      shield: IconWithNumber;
-      extraSkill: IconWithNumber;
-      doughnuts: IconWithNumber;
-      hooter: IconWithNumber;
+      shield: IconWithNumber<TextContainer>;
+      extraSkill: IconWithNumber<TextContainer>;
+      doughnuts: IconWithNumber<Sprite>;
+      hooter: IconWithNumber<Sprite>;
     };
     heels: {
       sprite: Sprite;
       livesText: TextContainer;
-      shield: IconWithNumber;
-      extraSkill: IconWithNumber;
-      bag: IconWithNumber;
+      shield: IconWithNumber<TextContainer>;
+      extraSkill: IconWithNumber<TextContainer>;
+      bag: IconWithNumber<Sprite>;
       carrying: { container: Container };
     };
   };
@@ -190,23 +192,23 @@ export class HudRenderer<RoomId extends string, RoomItemId extends string>
         }),
         shield: this.#iconWithNumber({
           label: "headShield",
-          textureId: "hud.char.🛡",
+          icon: { glyph: "🛡" },
           outline: true,
         }),
         extraSkill: this.#iconWithNumber({
           label: "headFastSteps",
-          textureId: "hud.char.⚡",
+          icon: { glyph: "⚡" },
           outline: true,
         }),
         doughnuts: this.#iconWithNumber({
           label: "headDoughnuts",
-          textureId: "doughnuts",
+          icon: "doughnuts",
           textOnTop: true,
           outline: "text-only",
         }),
         hooter: this.#iconWithNumber({
           label: "headHooter",
-          textureId: "hooter",
+          icon: "hooter",
           textOnTop: true,
           noText: true,
         }),
@@ -222,17 +224,17 @@ export class HudRenderer<RoomId extends string, RoomItemId extends string>
         }),
         shield: this.#iconWithNumber({
           label: "heelsShield",
-          textureId: "hud.char.🛡",
+          icon: { glyph: "🛡" },
           outline: true,
         }),
         extraSkill: this.#iconWithNumber({
           label: "heelsBigJumps",
-          textureId: "hud.char.♨",
+          icon: { glyph: "♨" },
           outline: true,
         }),
         bag: this.#iconWithNumber({
           label: "heelsBag",
-          textureId: "bag",
+          icon: "bag",
           textOnTop: true,
           noText: true,
         }),
@@ -406,14 +408,33 @@ export class HudRenderer<RoomId extends string, RoomItemId extends string>
     }
   }
 
+  #iconWithNumber(options: {
+    icon: TextureId;
+    textOnTop?: boolean;
+    noText?: boolean;
+    outline?: "text-only" | boolean;
+    label: string;
+  }): IconWithNumber<Sprite>;
+  #iconWithNumber(options: {
+    icon: { glyph: string };
+    textOnTop?: boolean;
+    noText?: boolean;
+    outline?: "text-only" | boolean;
+    label: string;
+  }): IconWithNumber<TextContainer>;
   #iconWithNumber({
-    textureId,
+    icon: iconSource,
     textOnTop = false,
     noText = false,
     outline = false,
     label,
   }: {
-    textureId: TextureId;
+    /**
+     * a real sprite texture id, or a single hud-font glyph (the
+     * shield/lightning/hot-spring symbols, which live in the font rather than
+     * the spritesheet) to render as the icon
+     */
+    icon: { glyph: string } | TextureId;
     textOnTop?: boolean;
     noText?: boolean;
     outline?: "text-only" | boolean;
@@ -422,13 +443,22 @@ export class HudRenderer<RoomId extends string, RoomItemId extends string>
     const container = new Container({ label });
     container.pivot = { x: 4, y: 16 };
 
-    const icon = new Sprite({
-      texture:
-        this.renderContext.general.spritesheetVariants.originalSpritesheet
-          .textures[textureId],
-      anchor: textOnTop ? { x: 0.5, y: 0 } : { x: 0.5, y: 1 },
-      y: textOnTop ? 0 : 8,
-    });
+    const icon =
+      typeof iconSource === "string" ?
+        new Sprite({
+          texture:
+            this.renderContext.general.spritesheetVariants.originalSpritesheet
+              .textures[iconSource],
+          anchor: textOnTop ? { x: 0.5, y: 0 } : { x: 0.5, y: 1 },
+          y: textOnTop ? 0 : 8,
+        })
+      : new TextContainer({
+          pixiRenderer: this.renderContext.general.pixiRenderer,
+          spritesheet:
+            this.renderContext.general.spritesheetVariants.originalSpritesheet,
+          text: iconSource.glyph,
+          y: 8,
+        });
     container.addChild(icon);
 
     const x = hudCharTextureSize.w / 2;

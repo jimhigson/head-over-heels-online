@@ -636,9 +636,7 @@ export const Cheats = <RoomId extends string>(_emptyProps: EmptyObject) => {
                 <span
                   class={`sprite ${"texture-whiteRabbit_extra-life" satisfies TextureTailwindClass}`}
                 />
-                <span
-                  class={`sprite ${"texture-hud_char_2" satisfies TextureTailwindClass} left-m2 relative`}
-                />
+                <span class="text-single-line left-m2 relative">2</span>
               </Button>
               <Button
                 data-test-id="cheats-summon-shield"
@@ -651,9 +649,7 @@ export const Cheats = <RoomId extends string>(_emptyProps: EmptyObject) => {
                 <span
                   class={`sprite ${"texture-whiteRabbit_shield" satisfies TextureTailwindClass}`}
                 />
-                <span
-                  class={`sprite ${"texture-hud_char_🛡" satisfies TextureTailwindClass} left-m2 relative`}
-                />
+                <span class="text-single-line left-m2 relative">🛡</span>
               </Button>
               <Button
                 data-test-id="cheats-summon-fast"
@@ -666,9 +662,7 @@ export const Cheats = <RoomId extends string>(_emptyProps: EmptyObject) => {
                 <span
                   class={`sprite ${"texture-whiteRabbit_fast" satisfies TextureTailwindClass}`}
                 />
-                <span
-                  class={`sprite ${"texture-hud_char_⚡" satisfies TextureTailwindClass} left-m2 relative`}
-                />
+                <span class="text-single-line left-m2 relative">⚡</span>
               </Button>
               <Button
                 data-test-id="cheats-summon-jumps"
@@ -681,9 +675,7 @@ export const Cheats = <RoomId extends string>(_emptyProps: EmptyObject) => {
                 <span
                   class={`sprite ${"texture-whiteRabbit_jumps" satisfies TextureTailwindClass}`}
                 />
-                <span
-                  class={`sprite ${"texture-hud_char_♨" satisfies TextureTailwindClass} left-m2 relative`}
-                />
+                <span class="text-single-line left-m2 relative">♨</span>
               </Button>
               <Button
                 data-test-id="cheats-summon-reincarnation"

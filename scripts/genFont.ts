@@ -1,19 +1,22 @@
 #!/usr/bin/env -S pnpm tsx
-import { decode } from "@cwasm/webp";
 import { execFileSync } from "node:child_process";
 import { existsSync, mkdirSync, readFileSync, writeFileSync } from "node:fs";
+import sharp from "sharp";
 
-import {
-  type HudGlyph,
-  hudGlyphs,
-} from "../src/sprites/spritesheet/spritesheetData/hudSritesheetData";
 import {
   hudCharTextureSize,
   hudLowercaseCharTextureSize,
 } from "../src/sprites/spritesheet/spritesheetData/textureSizes";
 import { size } from "../src/utils/iterators/size";
+import { type HudGlyph, hudGlyphs } from "./font/hudGlyphs";
 
-const spritesheetPath = "gfx/sprites.webp";
+// the shipped gfx/sprites.webp has every non-frame area (including the HUD char
+// rows) masked to transparent, so the font is generated from the unmasked full
+// sheet iff2png keeps for reference: gfx/sprites.borders.png. There the char ink
+// is pure white on a coloured background and the png carries no useful alpha, so
+// ink is keyed on white (see isInk), and glyph frame.y values (absolute sheet
+// coords) index straight into the sheet.
+const spritesheetPath = "gfx/sprites.borders.png";
 const outputDir = "src/_generated/font";
 const outputPath = `${outputDir}/blockstack-head-over-heels.woff2`;
 const manifestPath = `${outputDir}/manifest.json`;
@@ -25,7 +28,6 @@ const unitsPerEm = 512;
 const px = unitsPerEm / hudCharTextureSize.h;
 /** the baseline sits this many design pixels below the top of each cell */
 const baselineFromTop = hudCharTextureSize.h;
-const inkAlphaThreshold = 128;
 
 const spaceCodePoint = 0x20;
 const emSpaceCodePoint = 0x20_03;
@@ -70,8 +72,13 @@ type GlyphData = {
 };
 
 const isInk = (image: DecodedImage, x: number, y: number): boolean => {
-  const alpha = image.data[(y * image.width + x) * 4 + 3];
-  return alpha > inkAlphaThreshold;
+  const i = (y * image.width + x) * 4;
+  // ink is pure white in the source sheet; every other colour is background
+  return (
+    image.data[i] === 255 &&
+    image.data[i + 1] === 255 &&
+    image.data[i + 2] === 255
+  );
 };
 
 /**
@@ -238,7 +245,15 @@ const glyphContours = (
   );
 };
 
-const image = decode(readFileSync(spritesheetPath)) as DecodedImage;
+const { data: rawPixels, info } = await sharp(spritesheetPath)
+  .ensureAlpha()
+  .raw()
+  .toBuffer({ resolveWithObject: true });
+const image: DecodedImage = {
+  width: info.width,
+  height: info.height,
+  data: new Uint8ClampedArray(rawPixels),
+};
 
 const glyphs: GlyphData[] = [];
 for (const hudGlyph of hudGlyphs) {

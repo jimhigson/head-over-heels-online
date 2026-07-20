@@ -1,4 +1,3 @@
-import { type TextureTailwindClass } from "../../../sprites/spritesheet/spritesheetData/TextureTailwindClass";
 import { store, useEditorAppSelector } from "../../../store/store";
 import { deleteSelected } from "../../slice/levelEditorSlice";
 import { ToolbarButton } from "./ToolbarButton";
@@ -18,9 +17,7 @@ export const DeleteItemToolButton = () => {
       tooltipContent={`## Delete items
 delete selected item(s)`}
     >
-      <span
-        class={`sprite sprite-tinted ${"texture-hud_char_X" satisfies TextureTailwindClass} relative`}
-      />
+      <span class="text-single-line">X</span>
     </ToolbarButton>
   );
 };

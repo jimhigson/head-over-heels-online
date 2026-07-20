@@ -1,4 +1,3 @@
-import { type TextureTailwindClass } from "../../sprites/spritesheet/spritesheetData/TextureTailwindClass";
 import { store, useEditorAppSelector } from "../../store/store";
 import { rotateXy } from "../../utils/vectors/rotateXy";
 import { unitVectors } from "../../utils/vectors/unitVectors";
@@ -40,9 +39,7 @@ export const RotateViewControls = () => {
         tooltipContent="Rotate view ↺"
         onClick={() => store.dispatch(rotateViewAnticlockwise())}
       >
-        <span
-          class={`sprite ${"texture-hud_char_↺" satisfies TextureTailwindClass}`}
-        />
+        <span class="text-single-line">↺</span>
       </ToolbarButton>
       <ToolbarButton
         class={`px-1 ${cameraAngleXy4 === "away" ? "bg-moss" : "bg-shadow"} items-center flex text-single-line pt-half`}
@@ -56,9 +53,7 @@ export const RotateViewControls = () => {
         tooltipContent="Rotate view ↻"
         onClick={() => store.dispatch(rotateViewClockwise())}
       >
-        <span
-          class={`sprite ${"texture-hud_char_↻" satisfies TextureTailwindClass}`}
-        />
+        <span class="text-single-line">↻</span>
       </ToolbarButton>
     </div>
   );

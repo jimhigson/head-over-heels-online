@@ -1,4 +1,3 @@
-import { type TextureTailwindClass } from "../../../sprites/spritesheet/spritesheetData/TextureTailwindClass";
 import { useAppDispatch } from "../../../store/hooks";
 import { useIsUncolourised } from "../../../store/slices/gameMenus/gameMenusSelectors";
 import { useEditorAppSelector } from "../../../store/store";
@@ -51,9 +50,7 @@ export const BackAndForwardRoomButtons = () => {
             shortcutKeys={["⇧<"]}
             tooltipContent={backTooltipMarkdown}
           >
-            <span
-              class={`sprite ${"texture-hud_char_lt" satisfies TextureTailwindClass} relative`}
-            />
+            <span class="text-single-line">{"<"}</span>
           </ToolbarButton>
         }
       >
@@ -86,9 +83,7 @@ export const BackAndForwardRoomButtons = () => {
             shortcutKeys={["⇧>"]}
             tooltipContent={forwardTooltipMarkdown}
           >
-            <span
-              class={`sprite ${"texture-hud_char_gt" satisfies TextureTailwindClass} relative`}
-            />
+            <span class="text-single-line">{">"}</span>
           </ToolbarButton>
         }
       >

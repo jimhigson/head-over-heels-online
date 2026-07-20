@@ -3,7 +3,7 @@ import {
   menuLeaderBackChar,
   menuLeaderFocussedChar,
   menuLeaderUnfocussedChar,
-} from "../../sprites/spritesheet/spritesheetData/hudSritesheetData";
+} from "../../sprites/spritesheet/spritesheetData/hudChars";
 import { twClass } from "../../utils/twClass";
 
 const emSpace = "\u2003";

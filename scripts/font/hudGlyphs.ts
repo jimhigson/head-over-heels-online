@@ -1,33 +1,19 @@
-import { type SpritesheetData, type SpritesheetFrameData } from "pixi.js";
-
-import { fromAllEntries } from "../../../utils/entries";
-import { type Xy } from "../../../utils/vectors/vectors";
+import { uppercaseCharReplacement } from "../../src/sprites/escapeCharForTailwind";
 import {
-  escapeCharForTailwind,
-  type EscapedForTailwind,
-  uppercaseCharReplacement,
-} from "../../escapeCharForTailwind";
+  menuLeaderBackChar,
+  menuLeaderFocussedChar,
+  menuLeaderUnfocussedChar,
+  nerdFontAppleChar,
+  nerdFontDiscordChar,
+  nerdFontGithubChar,
+  nerdFontGoogleChar,
+  nerdFontTwitchChar,
+} from "../../src/sprites/spritesheet/spritesheetData/hudChars";
 import {
   hudCharTextureSize,
   hudLowercaseCharTextureSize,
-} from "./textureSizes";
-
-// this source really needs a nerd font to read it:
-// https://www.nerdfonts.com/cheat-sheet
-export const nerdFontDiscordChar = "\uf1ff";
-export const nerdFontGithubChar = "\ue709";
-export const nerdFontTwitchChar = "\uf1e8";
-export const nerdFontAppleChar = "\ue711";
-export const nerdFontGoogleChar = "\ue7f0";
-
-// double-width (16px) menu-item leader glyphs, in the private-use area. Their
-// spritesheet art is built from an existing 8px glyph \u2014 the focussed one is \u23e9
-// doubled, the unfocussed one is \u204c plus its mirror \u204d \u2014 so each leader renders as
-// a single char instead of two.
-export const menuLeaderFocussedChar = "\ue021";
-export const menuLeaderUnfocussedChar = "\ue020";
-// the focussed leader reversed (\u25c0\u25c0), for back buttons \u2014 so the DOM needn't flip it
-export const menuLeaderBackChar = "\ue022";
+} from "../../src/sprites/spritesheet/spritesheetData/textureSizes";
+import { type Xy } from "../../src/utils/vectors/vectors";
 
 const chromePwaInstall = ""; // \uea78
 const iosMacShare = ""; // \uf50e;
@@ -212,13 +198,11 @@ const row3 = [
   { char: menuLeaderBackChar, width: 16 },
 ] as const satisfies CharRow;
 
-export type CharSpriteTextureId<C extends string> =
-  `hud.char.${EscapedForTailwind<C>}`;
-
 /**
- * A single HUD glyph as the font generator and the spritesheet both see it:
- * the raw character (before escapeCharForTailwind), its advance width, and the
- * frame rectangle on the spritesheet.
+ * A single HUD glyph as the font generator sees it: the raw character, its
+ * advance width, and its frame rectangle in BlockStack spritesheet coordinates
+ * (the generator samples these pixels from the unmasked sheet,
+ * gfx/sprites.borders.png).
  */
 export type HudGlyph<C extends string> = {
   char: C;
@@ -245,42 +229,12 @@ function* rowGlyphs<C extends string>(
   }
 }
 
-const charFrames = <C extends string>(
-  ar: CharRow<C>,
-  startPosition: Xy,
-  height: number = hudCharTextureSize.h,
-): Record<
-  CharSpriteTextureId<C>,
-  SpritesheetFrameData & {
-    pivot?: Xy;
-  }
-> => {
-  function* charFramesGenerator(): Generator<
-    [CharSpriteTextureId<C>, SpritesheetFrameData]
-  > {
-    for (const { char, frame } of rowGlyphs(ar, startPosition, height)) {
-      yield [`hud.char.${escapeCharForTailwind(char)}`, { frame }];
-    }
-  }
-
-  return fromAllEntries(charFramesGenerator());
-};
-
 /**
- * Every HUD glyph in spritesheet order, sharing the same per-row walk that
- * produces the spritesheet frames. The font generator consumes this so the
- * generated font and the in-game sprites are derived from one source of truth.
+ * Every HUD glyph in spritesheet order. The font generator consumes this to
+ * build the woff2, sampling each glyph's pixels from the cropped char strip.
  */
 export const hudGlyphs: readonly HudGlyph<string>[] = [
   ...rowGlyphs(row1, { x: 1, y: 994 }, hudLowercaseCharTextureSize.h),
   ...rowGlyphs(row2, { x: 1, y: 1_005 }, hudCharTextureSize.h),
   ...rowGlyphs(row3, { x: 1, y: 1_014 }, hudCharTextureSize.h),
 ];
-
-export const hudSpritesheetData = {
-  frames: {
-    ...charFrames(row1, { x: 1, y: 994 }, hudLowercaseCharTextureSize.h),
-    ...charFrames(row2, { x: 1, y: 1_005 }),
-    ...charFrames(row3, { x: 1, y: 1_014 }),
-  },
-} as const satisfies Pick<SpritesheetData, "frames">;

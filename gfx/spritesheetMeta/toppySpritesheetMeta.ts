@@ -224,9 +224,6 @@ export const toppySpritesheetMeta: SpritesheetMetadata<
         flipX: true,
       },
     },
-    "hud.char.⁍": { copyFrom: { textureId: "hud.char.⁌", flipX: true } },
-    "hud.char.⟳": { copyFrom: { textureId: "hud.char.⎌", flipX: true } },
-    "hud.char.↺": { copyFrom: { textureId: "hud.char.↻", flipX: true } },
     // near-mirrors: intended as exact mirrors of their opposite direction but
     // with a few accidental differing pixels, so not auto-detected. Their own
     // regions are blanked and they render from the clean mirror, dropping the

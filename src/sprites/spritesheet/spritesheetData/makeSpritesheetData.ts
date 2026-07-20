@@ -5,7 +5,6 @@ import { type AnimationsOfFrames } from "./AnimationsOfFrames";
 import { type AppSpriteFrame } from "./AppSpriteFrame";
 import { doorSpritesheetData } from "./doorSpritesheetData";
 import { editorSpritesheetData } from "./editorSpritesheetData";
-import { hudSpritesheetData } from "./hudSritesheetData";
 import { itemsSpritesheetData } from "./itemsSpritesheetData";
 import { playableSpritesheetData } from "./playableSpritesheetData";
 import { scenerySpritesheetData } from "./scenerySpritesheetData";
@@ -15,7 +14,6 @@ export type TextureId =
   | keyof ReturnType<typeof playableSpritesheetData>["frames"]
   | keyof typeof doorSpritesheetData.frames
   | keyof typeof editorSpritesheetData.frames
-  | keyof typeof hudSpritesheetData.frames
   | keyof typeof itemsSpritesheetData.frames
   | keyof typeof scenerySpritesheetData.frames;
 
@@ -41,7 +39,6 @@ export const makeSpritesheetData = (
     ...itemsSpritesheetData.frames,
     ...playable.frames,
     ...scenerySpritesheetData.frames,
-    ...hudSpritesheetData.frames,
     ...doorSpritesheetData.frames,
     ...editorSpritesheetData.frames,
   };

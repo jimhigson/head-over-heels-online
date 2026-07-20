@@ -274,11 +274,7 @@ export const SelectTheKeysMenuItems = () => {
           assignInputStart,
           "rotateCameraClockwise",
         )}
-        leader={
-          <span
-            class={`${spriteLeaderClasses} ${"texture-hud_char_↻" satisfies TextureTailwindClass}`}
-          />
-        }
+        leader={<span class="text-single-line">↻</span>}
       />
       <MenuItem
         id="rotateCameraAnticlockwise"
@@ -294,11 +290,7 @@ export const SelectTheKeysMenuItems = () => {
           assignInputStart,
           "rotateCameraAnticlockwise",
         )}
-        leader={
-          <span
-            class={`${spriteLeaderClasses} ${"texture-hud_char_↺" satisfies TextureTailwindClass}`}
-          />
-        }
+        leader={<span class="text-single-line">↺</span>}
       />
       <div class="col-span-3">
         <h2 class="text-midRed zx:text-zxBlue toppy:text-toppyPink2 pt-1 text-double-height pb-1">

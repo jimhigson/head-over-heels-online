@@ -8,7 +8,7 @@ import {
   nerdFontGithubChar,
   nerdFontGoogleChar,
   nerdFontTwitchChar,
-} from "../../../sprites/spritesheet/spritesheetData/hudSritesheetData";
+} from "../../../sprites/spritesheet/spritesheetData/hudChars";
 import {
   useGetAuthProvidersQuery,
   useGetUsernameQuery,
