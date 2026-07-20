@@ -5,7 +5,7 @@ import { discordInviteUrl } from "../../../../../../gameInfo";
 import {
   nerdFontDiscordChar,
   nerdFontGithubChar,
-} from "../../../../../../sprites/spritesheet/spritesheetData/hudSritesheetData";
+} from "../../../../../../sprites/spritesheet/spritesheetData/hudChars";
 import { Border } from "../../../../../../ui/Border";
 import { Dialog } from "../../../../../../ui/Dialog";
 import { DialogPortal } from "../../../../../../ui/DialogPortal";

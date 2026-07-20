@@ -1,6 +1,6 @@
 import { twMerge } from "tailwind-merge";
 
-import { menuLeaderBackChar } from "../../../../../sprites/spritesheet/spritesheetData/hudSritesheetData";
+import { menuLeaderBackChar } from "../../../../../sprites/spritesheet/spritesheetData/hudChars";
 import { backToParentMenu } from "../../../../../store/slices/gameMenus/gameMenusSlice";
 import { useDispatchActionCallback } from "../../../../../store/useDispatchActionCallback";
 import { useMenuItem } from "./menus/useMenuItem";

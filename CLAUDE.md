@@ -453,6 +453,23 @@ ignored top-level key (eg `//sandbox-disabled-devDependencies`, which pnpm skips
 and run `pnpm install --lockfile-only`. Restore it into `devDependencies` before
 committing so normal (non-sandbox) checkouts keep it.
 
+## Downloading CI artifacts (eg Playwright reports / visual-regression diffs)
+Direct `curl` to `api.github.com` from the sandbox is blocked by the egress
+proxy: only `/user` passes; the Actions REST routes (`/actions/...`,
+`/repos/...`) return 403 `"GitHub access is not enabled for this session"`. The
+`gh` CLI does not help - it hits the same host. GitHub access is instead
+mediated by the GitHub MCP tools, so use those:
+1. `mcp__github__actions_list` method `list_workflow_run_artifacts`
+   (`resource_id` = the run id) to list artifacts and their ids.
+2. `mcp__github__actions_get` method `download_workflow_run_artifact`
+   (`resource_id` = the artifact id) - this returns a short-lived signed
+   `*.blob.core.windows.net` download URL. That blob host *is* allowed through
+   the egress proxy, so `curl -sSL -o art.zip "<url>"` fetches it. The signed
+   URL expires in ~10 min, so download promptly.
+The zips are the whole Playwright report (~250MB each). Extract only the
+`*-expected.png` / `*-actual.png` / `*-diff.png` you need (`unzip -j`) and delete
+the zip to stay inside the per-session disk allowance.
+
 # git worktrees
 Always create new worktrees under `/Users/jim/dev/hohjs.worktrees/<branch-name>`
 (eg `git worktree add /Users/jim/dev/hohjs.worktrees/my-feature my-feature`).

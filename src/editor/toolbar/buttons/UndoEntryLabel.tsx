@@ -1,5 +1,5 @@
 import { type SceneryName } from "../../../sprites/planets";
-import { textureForItem } from "../../../sprites/textureForItem";
+import { itemGlyph, textureForItem } from "../../../sprites/textureForItem";
 import { Timeago } from "../../../ui/Timeago";
 import { twClass } from "../../../utils/twClass";
 import { type EditorJsonItemUnion } from "../../editorTypes";
@@ -20,13 +20,16 @@ type ItemIconProps = {
   scenery: SceneryName;
 };
 
-const ItemIcon = ({ item, scenery }: ItemIconProps) => (
-  <span
-    class={twClass(
-      `sprite ${textureForItem(item, scenery)} inline-block [--scale:1]`,
-    )}
-  />
-);
+const ItemIcon = ({ item, scenery }: ItemIconProps) => {
+  const glyph = itemGlyph(item);
+  return glyph !== undefined ?
+      <span class="text-single-line inline-block [--scale:1]">{glyph}</span>
+    : <span
+        class={twClass(
+          `sprite ${textureForItem(item, scenery)} inline-block [--scale:1]`,
+        )}
+      />;
+};
 
 const ItemIcons = ({
   items,

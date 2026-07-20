@@ -7,8 +7,6 @@ import toppyPalette from "../../_generated/palette/spritesheetToppyPalette.json"
 import { editorUiScale } from "../../editor/editorUiScale";
 import { sanitiseForClassName } from "../../game/components/tailwindSprites/SanitiseForClassName";
 import { zxSpectrumColors } from "../../originalGame";
-import { isTextureId } from "../../sprites/assertIsTextureId";
-import { charReplacements } from "../../sprites/escapeCharForTailwind";
 import {
   type FramesWithSpeed,
   makeSpritesheetData,
@@ -396,17 +394,6 @@ export const spritesTailwindPlugin = plugin(
       },
     };
 
-    // bidirectional map between lowercase and uppercase char replacement names
-    // so that eg DQUOTE correctly maps back to dQuote (not dquote)
-    const charCaseMap = new Map<string, string>();
-    for (const [, name] of entries(charReplacements)) {
-      const upper = name.toUpperCase();
-      if (upper !== name) {
-        charCaseMap.set(name, upper);
-        charCaseMap.set(upper, name);
-      }
-    }
-
     for (const [
       textureId,
       {
@@ -421,44 +408,6 @@ export const spritesTailwindPlugin = plugin(
         false,
         fullSpritesheetData,
       );
-
-      // allow sprites-uppercase class to work as an equivalent to
-      // text-transform: upper
-      const hudCharMatch = textureId.match(/^hud\.char\.(?<char>.+)$/);
-      if (hudCharMatch) {
-        const { char } = hudCharMatch.groups!;
-        const uppercaseTextureId = `hud.char.${char.toUpperCase()}`;
-        if (isTextureId(uppercaseTextureId, fullSpritesheetData)) {
-          const upperCaseFrame = fullSpritesheetData.frames[uppercaseTextureId];
-          if (upperCaseFrame) {
-            const {
-              frame: { h: hUpper, w: wUpper, x: xUpper, y: yUpper },
-            } = upperCaseFrame;
-            // this is a char and there is also an upper-case version available:
-            base[`.sprites-uppercase .texture-${sanitiseId(textureId)}`] = {
-              "--w": `${wUpper}`,
-              "--h": `${hUpper}`,
-              "--x": `${xUpper}`,
-              "--y": `${yUpper}`,
-            };
-          }
-        }
-
-        // if this char doesn't have an opposite-case equivalent on the spritesheet,
-        // generate an alias so both cases resolve to the same sprite
-        const otherCase =
-          charCaseMap.get(char) ??
-          (char === char.toUpperCase() ?
-            char.toLowerCase()
-          : char.toUpperCase());
-        if (otherCase !== char) {
-          const otherCaseTextureId = `hud.char.${otherCase}`;
-          if (!isTextureId(otherCaseTextureId, fullSpritesheetData)) {
-            utilities[`.texture-${sanitiseId(otherCaseTextureId)}`] =
-              spriteSpecificCssVars(w, h, x, y, false, fullSpritesheetData);
-          }
-        }
-      }
     }
 
     type AnimationsRecord = Record<string, FramesWithSpeed<TextureId[]>>;

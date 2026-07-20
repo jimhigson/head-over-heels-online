@@ -4,7 +4,7 @@ import {
   version as deployedVersion,
   repository,
 } from "../../../../../../../package.json";
-import { nerdFontGithubChar } from "../../../../../../sprites/spritesheet/spritesheetData/hudSritesheetData";
+import { nerdFontGithubChar } from "../../../../../../sprites/spritesheet/spritesheetData/hudChars";
 import { useGetLatestReleaseQuery } from "../../../../../../store/slices/githubApiSlice";
 import { linkOpenExternalClickHandler } from "../../../../../../utils/tauri/openExternalLink";
 
