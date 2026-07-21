@@ -918,6 +918,133 @@ export const allItemsTestRoom = inferRoomJson({
       position: { x: 2, y: 15, z: 0 },
       type: "monster",
     },
+    // a row of deactivated monsters, one of every type, floating at z=4 above
+    // the back edge: they render from the deactivated spritesheet variant,
+    // which none of the "on" monsters above ever sample:
+    bubbleRobotOff: {
+      config: {
+        which: "bubbleRobot",
+        movement: "patrol-randomly-xy8",
+        activated: "off",
+      },
+      position: { x: 0, y: 15, z: 4 },
+      type: "monster",
+    },
+    computerBotOff: {
+      config: {
+        which: "computerBot",
+        startDirection: "towards",
+        movement: "patrol-randomly-xy4-and-reverse",
+        activated: "off",
+      },
+      position: { x: 1, y: 15, z: 4 },
+      type: "monster",
+    },
+    cybermanOff: {
+      config: {
+        which: "cyberman",
+        startDirection: "towards",
+        movement: "towards-on-shortest-axis-xy4",
+        activated: "off",
+      },
+      position: { x: 2, y: 15, z: 4 },
+      type: "monster",
+    },
+    elephantOff: {
+      config: {
+        which: "elephant",
+        movement: "patrol-randomly-xy4",
+        activated: "off",
+      },
+      position: { x: 4, y: 15, z: 4 },
+      type: "monster",
+    },
+    elephantHeadOff: {
+      config: {
+        which: "elephantHead",
+        startDirection: "towards",
+        movement: "turn-to-player",
+        activated: "off",
+      },
+      position: { x: 5, y: 15, z: 4 },
+      type: "monster",
+    },
+    emperorOff: {
+      config: {
+        which: "emperor",
+        movement: "towards-analogue",
+        activated: "off",
+      },
+      position: { x: 6, y: 15, z: 4 },
+      type: "monster",
+    },
+    emperorsGuardianOff: {
+      config: {
+        which: "emperorsGuardian",
+        movement: "towards-analogue-unless-planet-crowns",
+        activated: "off",
+      },
+      position: { x: 8, y: 15, z: 4 },
+      type: "monster",
+    },
+    helicopterBugOff: {
+      config: {
+        which: "helicopterBug",
+        movement: "patrol-randomly-xy8",
+        activated: "off",
+      },
+      position: { x: 9, y: 15, z: 4 },
+      type: "monster",
+    },
+    homingBotOff: {
+      config: {
+        which: "homingBot",
+        movement: "towards-tripped-on-axis-xy4",
+        activated: "off",
+      },
+      position: { x: 10, y: 15, z: 4 },
+      type: "monster",
+    },
+    monkeyOff: {
+      config: {
+        which: "monkey",
+        startDirection: "towards",
+        movement: "patrol-randomly-xy4",
+        activated: "off",
+      },
+      position: { x: 12, y: 15, z: 4 },
+      type: "monster",
+    },
+    skiHeadOff: {
+      config: {
+        which: "skiHead",
+        style: "greenAndPink",
+        startDirection: "towards",
+        movement: "back-forth",
+        activated: "off",
+      },
+      position: { x: 13, y: 15, z: 4 },
+      type: "monster",
+    },
+    turtleOff: {
+      config: {
+        which: "turtle",
+        startDirection: "towards",
+        movement: "back-forth",
+        activated: "off",
+      },
+      position: { x: 14, y: 15, z: 4 },
+      type: "monster",
+    },
+    dalekOff: {
+      config: {
+        which: "dalek",
+        movement: "patrol-randomly-diagonal",
+        activated: "off",
+      },
+      position: { x: 15, y: 15, z: 4 },
+      type: "monster",
+    },
 
     // headOverHeels (symbiosis) scenery players at every legal direction:
     sceneryHohAway: {

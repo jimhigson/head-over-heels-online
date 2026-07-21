@@ -3,7 +3,7 @@ import { type JsonItem } from "../../../model/json/JsonItem";
 import { type StoodOnBy } from "../../../model/StoodOnBy";
 import { wallTimes } from "../../../model/times";
 import { emptyObject } from "../../../utils/empty";
-import { hashXyzToNumber0to1 } from "../../../utils/maths/hashXyzToNumber0to1";
+import { hashXyzToNumber0to1 } from "../../../utils/maths/hashing";
 import { unitVectors } from "../../../utils/vectors/unitVectors";
 import {
   addXyz,

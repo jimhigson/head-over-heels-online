@@ -1,6 +1,10 @@
 import { expect, test } from "vitest";
 
-import { hashXyzToNumber0to1, phaseForSubItem } from "./hashXyzToNumber0to1";
+import {
+  hashNumberToNumber0to1,
+  hashXyzToNumber0to1,
+  phaseForSubItem,
+} from "./hashing";
 
 test("is deterministic for a given position", () => {
   expect(hashXyzToNumber0to1({ x: 3, y: 4, z: 5 })).toBe(
@@ -49,4 +53,29 @@ test("phaseForSubItem stays in [0, 1)", () => {
 
 test("phaseForSubItem treats an absent hash as zero", () => {
   expect(phaseForSubItem(undefined, 0)).toBe(0);
+});
+
+test("hashNumberToNumber0to1 is deterministic for a given input", () => {
+  expect(hashNumberToNumber0to1(0.318 + 1_234)).toBe(
+    hashNumberToNumber0to1(0.318 + 1_234),
+  );
+});
+
+test("hashNumberToNumber0to1 always returns a number in [0, 1)", () => {
+  const samples = Array.from({ length: 500 }, (_, i) =>
+    hashNumberToNumber0to1(i / 500 + i),
+  );
+  expect(samples.every((h) => h >= 0 && h < 1)).toBe(true);
+});
+
+// item hashes are themselves values in [0, 1), so nearby fractions must not
+// collide or cluster
+test("hashNumberToNumber0to1 distinguishes close values in [0, 1)", () => {
+  expect(hashNumberToNumber0to1(0.318)).not.toBe(hashNumberToNumber0to1(0.319));
+});
+
+test("hashNumberToNumber0to1 distinguishes whole-part differences", () => {
+  expect(hashNumberToNumber0to1(0.318 + 40)).not.toBe(
+    hashNumberToNumber0to1(0.318 + 80),
+  );
 });

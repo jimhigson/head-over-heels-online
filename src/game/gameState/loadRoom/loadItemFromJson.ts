@@ -9,7 +9,7 @@ import { type PlanetName } from "../../../sprites/planets";
 import { type ScrollsRead } from "../../../store/slices/gameInPlay/gameInPlaySlice";
 import { type PokesEnabled } from "../../../store/slices/userSettings/userSettingsSlice";
 import { emptyObject } from "../../../utils/empty";
-import { hashXyzToNumber0to1 } from "../../../utils/maths/hashXyzToNumber0to1";
+import { hashXyzToNumber0to1 } from "../../../utils/maths/hashing";
 import { unitVectors } from "../../../utils/vectors/unitVectors";
 import {
   addXyz,

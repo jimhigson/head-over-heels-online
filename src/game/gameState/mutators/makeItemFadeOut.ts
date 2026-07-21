@@ -1,7 +1,7 @@
 import { type UnionOfAllItemInPlayTypes } from "../../../model/ItemInPlay";
 import { type RoomState } from "../../../model/RoomState";
 import { getItemInPlayTimes } from "../../../model/times";
-import { hashStringToNumber0to1 } from "../../../utils/maths/hashStringToNumber0to1";
+import { hashStringToNumber0to1 } from "../../../utils/maths/hashing";
 import {
   addXyz,
   originXyz,

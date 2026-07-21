@@ -7,8 +7,8 @@ import { store } from "../../../store/store";
 import { emptyObject } from "../../../utils/empty";
 import { valuesIter } from "../../../utils/entries";
 import { nonZero } from "../../../utils/epsilon";
+import { hashNumberToNumber0to1 } from "../../../utils/maths/hashing";
 import { smoothstep } from "../../../utils/maths/maths";
-import { randomFromArray } from "../../../utils/random/randomFromArray";
 import { unitVectors } from "../../../utils/vectors/unitVectors";
 import {
   areInSameDirection,
@@ -318,7 +318,7 @@ const randomlyChangeDirection = <
   RoomItemId extends string,
 >(
   itemWithMovement: ItemWithMovement<RoomId, RoomItemId>,
-  _room: RoomState<RoomId, RoomItemId>,
+  { roomTime }: RoomState<RoomId, RoomItemId>,
   _gameState: GameState<RoomId>,
   deltaMS: number,
   directionNames: Readonly<Array<DirectionXy8>>,
@@ -328,6 +328,7 @@ const randomlyChangeDirection = <
       vels: { walking },
       standingOnItemId,
     },
+    hash: itemHash,
   } = itemWithMovement;
 
   if (standingOnItemId === null) {
@@ -338,6 +339,8 @@ const randomlyChangeDirection = <
     shared: { speed: tickerSpeed },
   } = Ticker;
 
+  const roll = hashNumberToNumber0to1(itemHash + roomTime);
+
   const produceNewWalk =
     xyzEqual(walking, originXyz) ?
       // standing on something but not walking - start walking (unless game speed is zero
@@ -346,13 +349,19 @@ const randomlyChangeDirection = <
       tickerSpeed !== 0
       // change direction probabilistically, about once per second
       // of game time on average
-    : Math.random() < deltaMS / 1_000;
+    : roll < deltaMS / 1_000;
 
   if (!produceNewWalk) {
     return unitMechanicalResult;
   }
 
-  const newDirectionName = randomFromArray(directionNames);
+  // re-hash the roll for the direction pick: using the roll directly would
+  // correlate the pick with the roll passing its threshold (a passing roll is
+  // always small, which would nearly always pick the first direction)
+  const newDirectionName =
+    directionNames[
+      Math.floor(hashNumberToNumber0to1(roll) * directionNames.length)
+    ];
   const newDirectionUnitVector = unitVectors[newDirectionName];
 
   return {
@@ -415,6 +424,7 @@ const handleMonsterTouchingItemByTurning = <
       aabb: touchedItemAabb,
     },
     deltaMS,
+    room: { roomTime },
   }: ItemTouchEvent<RoomId, RoomItemId, ItemWithMovement<RoomId, RoomItemId>>,
   turnStrategy: TurnStrategy,
 ) => {
@@ -426,6 +436,7 @@ const handleMonsterTouchingItemByTurning = <
       facing,
     },
     aabb,
+    hash: itemHash,
   } = itemWithMovement;
 
   if (!activated) {
@@ -445,14 +456,17 @@ const handleMonsterTouchingItemByTurning = <
     return;
   }
 
-  const newWalking = turnedVector(walking, m, turnStrategy);
+  const turnRoll = hashNumberToNumber0to1(itemHash + roomTime);
+
+  const newWalking = turnedVector(walking, m, turnStrategy, turnRoll);
   itemWithMovement.state.vels.walking = newWalking;
 
   const facingMaybeReverse =
     (
       turnStrategy === "perpendicular-or-reverse" &&
-      // face backwards about a third of the time:
-      Math.random() > 0.66
+      // face backwards about a third of the time; re-hash the turn roll so
+      // the reverse choice doesn't correlate with the turn side:
+      hashNumberToNumber0to1(turnRoll) > 0.66
     ) ?
       -1
     : 1;
@@ -461,7 +475,7 @@ const handleMonsterTouchingItemByTurning = <
     xyEqual(newWalking, originXy) ?
       // calc facing vector separately from walk, since walk can be (0,0,0) - usually if the item
       // is falling:
-      turnedVector(facing, m, turnStrategy)
+      turnedVector(facing, m, turnStrategy, turnRoll)
     : unitVector(newWalking),
     facingMaybeReverse,
   );

@@ -14,6 +14,7 @@ import {
   type Xy,
 } from "../../../../utils/vectors/vectors";
 import { charHeight } from "../../../components/dialogs/menuDialog/dialogs/useScrollingFromInput";
+import { selectCurrentRoomState } from "../../../gameState/gameStateSelectors/selectCurrentRoomState";
 import {
   lightlySnapXy4,
   rotateInputVector45,
@@ -77,9 +78,25 @@ export class OnScreenJoystickRenderer
     this.renderContext = renderContext;
     const {
       inputDirectionMode,
-      general: { spritesheetVariants, pixiRenderer },
+      general: {
+        spritesheetVariants,
+        pixiRenderer,
+        gameState,
+        spriteOption,
+        spritesheetMeta,
+      },
     } = renderContext;
     const { originalSpritesheet } = spritesheetVariants;
+
+    // the arrows' not-active hud tint: ticks re-tint the arrows, but
+    // early-return while a menu is open, so the construction colour is what
+    // shows until the first menu-closed tick
+    const room =
+      gameState === undefined ? undefined : selectCurrentRoomState(gameState);
+    const arrowColour =
+      room === undefined ? undefined : (
+        tintForHud(spriteOption, room.color, false, spritesheetMeta)
+      );
 
     this.#joystickSprite = createSprite({
       textureId: "joystick.whole",
@@ -100,6 +117,7 @@ export class OnScreenJoystickRenderer
         x: joystickArrowOffset,
         y: -joystickArrowOffset,
         text: "↗",
+        colour: arrowColour,
       }),
       right: new TextContainer({
         pixiRenderer,
@@ -108,6 +126,7 @@ export class OnScreenJoystickRenderer
         x: joystickArrowOffset,
         y: joystickArrowOffset,
         text: "↘",
+        colour: arrowColour,
       }),
       towards: new TextContainer({
         pixiRenderer,
@@ -116,6 +135,7 @@ export class OnScreenJoystickRenderer
         x: -joystickArrowOffset,
         y: joystickArrowOffset,
         text: "↙",
+        colour: arrowColour,
       }),
       left: new TextContainer({
         pixiRenderer,
@@ -124,6 +144,7 @@ export class OnScreenJoystickRenderer
         x: -joystickArrowOffset,
         y: -joystickArrowOffset,
         text: "↖",
+        colour: arrowColour,
       }),
       ...(inputDirectionMode !== "4-way" ?
         {
@@ -133,6 +154,7 @@ export class OnScreenJoystickRenderer
             outline: true,
             x: joystickArrowOffset * Math.SQRT2,
             text: "➡",
+            colour: arrowColour,
           }),
           towardsRight: new TextContainer({
             pixiRenderer,
@@ -140,6 +162,7 @@ export class OnScreenJoystickRenderer
             outline: true,
             y: joystickArrowOffset * Math.SQRT2,
             text: "⬇",
+            colour: arrowColour,
           }),
           towardsLeft: new TextContainer({
             pixiRenderer,
@@ -147,6 +170,7 @@ export class OnScreenJoystickRenderer
             outline: true,
             x: -joystickArrowOffset * Math.SQRT2,
             text: "⬅",
+            colour: arrowColour,
           }),
           awayLeft: new TextContainer({
             pixiRenderer,
@@ -154,6 +178,7 @@ export class OnScreenJoystickRenderer
             outline: true,
             y: -joystickArrowOffset * Math.SQRT2,
             text: "⬆",
+            colour: arrowColour,
           }),
         }
       : {}),

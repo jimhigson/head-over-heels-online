@@ -4,8 +4,10 @@ import { type ItemInPlay, type ItemInPlayConfig } from "../../model/ItemInPlay";
 import { itemInPlayCentre } from "../../model/itemInPlayCentre";
 import { playablesInRoom, type RoomState } from "../../model/RoomState";
 import { epsilon } from "../../utils/epsilon";
-import { hashXyzToNumber0to1 } from "../../utils/maths/hashXyzToNumber0to1";
-import { randomFromArray } from "../../utils/random/randomFromArray";
+import {
+  hashNumberToNumber0to1,
+  hashXyzToNumber0to1,
+} from "../../utils/maths/hashing";
 import {
   addXyz,
   axesXyz,
@@ -31,31 +33,45 @@ const particlesSpread = blockSizePx.x / 2;
 
 let particlesAdded = 0;
 
-const particleByChance = (particlesFrequencyPerS: number, deltaMS: number) =>
-  Math.random() < particlesFrequencyPerS * (deltaMS / 1_000);
+const particleByChance = (
+  itemHash: number,
+  roomTime: number,
+  particlesFrequencyPerS: number,
+  deltaMS: number,
+) =>
+  hashNumberToNumber0to1(itemHash + roomTime) <
+  particlesFrequencyPerS * (deltaMS / 1_000);
 
 const createParticleItemInPlay = (
   forItemId: string,
   forCharacter: ItemInPlayConfig<"particle">["forCharacter"],
   position: Xyz,
   roomTime: number,
-): ItemInPlay<"particle"> => ({
-  ...defaultItemProperties,
+): ItemInPlay<"particle"> => {
   // fold roomTime in so particles spawned at the same spot at different
   // times don't start their fade animation in sync:
-  hash: hashXyzToNumber0to1(position, roomTime),
-  id: `particle.${forItemId}.${particlesAdded++}`,
-  type: "particle",
-  aabb: originXyz,
-  config: {
-    forCharacter,
-  },
-  state: {
-    ...defaultBaseState(),
-    expires: roomTime + particleLifetimeMs + Math.random() * particleLifetimeMs,
-    position,
-  },
-});
+  const hash = hashXyzToNumber0to1(position, roomTime);
+  return {
+    ...defaultItemProperties,
+    hash,
+    id: `particle.${forItemId}.${particlesAdded++}`,
+    type: "particle",
+    aabb: originXyz,
+    config: {
+      forCharacter,
+    },
+    state: {
+      ...defaultBaseState(),
+      // re-hash the hash for the lifetime so it doesn't correlate with the
+      // fade animation phase the hash itself drives:
+      expires:
+        roomTime +
+        particleLifetimeMs +
+        hashNumberToNumber0to1(hash) * particleLifetimeMs,
+      position,
+    },
+  };
+};
 
 const addParticlesUnderPlayableItem = <
   RoomId extends string,
@@ -66,14 +82,22 @@ const addParticlesUnderPlayableItem = <
   particlesFrequencyPerS: number,
   deltaMS: number,
 ) => {
-  if (!particleByChance(particlesFrequencyPerS, deltaMS)) {
+  if (
+    !particleByChance(item.hash, room.roomTime, particlesFrequencyPerS, deltaMS)
+  ) {
     return;
   }
 
+  // re-hash the (always-small, since it passed its threshold) chance roll so
+  // the spread doesn't correlate with it; chain again for an independent y:
+  const xRoll = hashNumberToNumber0to1(
+    hashNumberToNumber0to1(item.hash + room.roomTime),
+  );
+  const yRoll = hashNumberToNumber0to1(xRoll);
   const particlePosition = {
     ...addXyz(itemInPlayCentre(item), {
-      x: Math.random() * particlesSpread - particlesSpread / 2,
-      y: Math.random() * particlesSpread - particlesSpread / 2,
+      x: xRoll * particlesSpread - particlesSpread / 2,
+      y: yRoll * particlesSpread - particlesSpread / 2,
     }),
     z: item.state.position.z,
   };
@@ -173,15 +197,31 @@ export const addParticlesAroundCrown = <
   },
   deltaMS: number,
 ) => {
-  if (!particleByChance(crownParticlesFrequencyPerS, deltaMS)) {
+  if (
+    !particleByChance(
+      crown.hash,
+      room.roomTime,
+      crownParticlesFrequencyPerS,
+      deltaMS,
+    )
+  ) {
     return;
   }
 
-  const face = randomFromArray(axesXyz);
+  // re-hash the (always-small, since it passed its threshold) chance roll so
+  // the face pick doesn't correlate with it; chain again for independent
+  // positions on the chosen face:
+  const faceRoll = hashNumberToNumber0to1(
+    hashNumberToNumber0to1(crown.hash + room.roomTime),
+  );
+  const xRoll = hashNumberToNumber0to1(faceRoll);
+  const yRoll = hashNumberToNumber0to1(xRoll);
+  const zRoll = hashNumberToNumber0to1(yRoll);
+  const face = axesXyz[Math.floor(faceRoll * axesXyz.length)];
   const particlePosition = addXyz(crown.state.position, {
-    x: face === "x" ? 0 : Math.random() * blockSizePx.x,
-    y: face === "y" ? 0 : Math.random() * blockSizePx.y,
-    z: face === "z" ? blockSizePx.z : Math.random() * blockSizePx.z,
+    x: face === "x" ? 0 : xRoll * blockSizePx.x,
+    y: face === "y" ? 0 : yRoll * blockSizePx.y,
+    z: face === "z" ? blockSizePx.z : zRoll * blockSizePx.z,
   });
 
   addItemToRoom({
