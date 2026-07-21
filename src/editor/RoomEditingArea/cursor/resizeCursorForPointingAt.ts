@@ -1,7 +1,7 @@
 import nanoEqual from "nano-equal";
 
 import { worldCornerForCameraCorner } from "../../../game/render/sortZ/projectAabbCorners";
-import { twClass } from "../../../utils/twClass";
+import { twClass } from "../../../utils/twClass" with { type: "macro" };
 import { rotateXyz } from "../../../utils/vectors/rotateXy";
 import { type Xy } from "../../../utils/vectors/vectors";
 import {

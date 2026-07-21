@@ -2,7 +2,7 @@ import { type PlanetName } from "../../../../../../sprites/planets";
 import { type TextureTailwindClass } from "../../../../../../sprites/spritesheet/spritesheetData/TextureTailwindClass";
 import { useAppSelector } from "../../../../../../store/hooks";
 import { useIsUncolourised } from "../../../../../../store/slices/gameMenus/gameMenusSelectors";
-import { twClass } from "../../../../../../utils/twClass";
+import { twClass } from "../../../../../../utils/twClass" with { type: "macro" };
 import { ColourCycleText } from "../../../../ColourCycleText";
 
 const colourCycle: Record<PlanetName, string[]> = {

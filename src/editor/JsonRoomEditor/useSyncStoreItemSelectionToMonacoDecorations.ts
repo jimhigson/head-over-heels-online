@@ -5,7 +5,7 @@ import { type editor } from "monaco-editor";
 import { useEffect, useRef, useState } from "preact/hooks";
 
 import { useEditorAppSelector } from "../../store/store";
-import { twClass } from "../../utils/twClass";
+import { twClass } from "../../utils/twClass" with { type: "macro" };
 import { type EditorRoomItemId } from "../editorTypes";
 import { useLoadMonaco } from "./useLoadMonaco";
 

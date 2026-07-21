@@ -2,7 +2,7 @@ import { getConsolidatableVector } from "../../../consolidateItems/Consolidatabl
 import { getJsonItemTimes } from "../../../model/times";
 import { useAppDispatch } from "../../../store/hooks";
 import { editorStore, useEditorAppSelector } from "../../../store/store";
-import { twClass } from "../../../utils/twClass";
+import { twClass } from "../../../utils/twClass" with { type: "macro" };
 import { unitVectors } from "../../../utils/vectors/unitVectors";
 import {
   elementWiseProductXyz,
