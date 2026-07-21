@@ -13,20 +13,20 @@ import {
  * there is no floating-point drift.
  */
 export const cameraAngleBase: Xy =
-  import.meta.env.DEV ? Object.freeze({ x: 1, y: 0 }) : { x: 1, y: 0 };
+  import.meta.env?.DEV ? Object.freeze({ x: 1, y: 0 }) : { x: 1, y: 0 };
 /** a quarter-turn clockwise, as a (cos,sin) multiplier to pass to rotateXy */
 export const quarterTurnClockwise: Xy =
-  import.meta.env.DEV ? Object.freeze({ x: 0, y: -1 }) : { x: 0, y: -1 };
+  import.meta.env?.DEV ? Object.freeze({ x: 0, y: -1 }) : { x: 0, y: -1 };
 /** a quarter-turn anticlockwise, as a (cos,sin) multiplier to pass to rotateXy */
 export const quarterTurnAnticlockwise: Xy =
-  import.meta.env.DEV ? Object.freeze({ x: 0, y: 1 }) : { x: 0, y: 1 };
+  import.meta.env?.DEV ? Object.freeze({ x: 0, y: 1 }) : { x: 0, y: 1 };
 /** 180º rotation from the original angle */
 export const halfTurn: Xy =
-  import.meta.env.DEV ? Object.freeze({ x: -1, y: 0 }) : { x: -1, y: 0 };
+  import.meta.env?.DEV ? Object.freeze({ x: -1, y: 0 }) : { x: -1, y: 0 };
 
 /** the four 90° camera angles, as (cos,sin) unit vectors */
 export const allCameraAngles: ReadonlyArray<Xy> =
-  import.meta.env.DEV ?
+  import.meta.env?.DEV ?
     Object.freeze([
       cameraAngleBase,
       quarterTurnAnticlockwise,

@@ -28,7 +28,7 @@ const floorThicknessBlocks = 3;
 const extraFloorAmountForDoors = 0.5;
 
 const shadowFullBlock: ShadowCastSpriteOptions =
-  import.meta.env.DEV ?
+  import.meta.env?.DEV ?
     Object.freeze({
       textureId: "shadow.fullBlock",
     })

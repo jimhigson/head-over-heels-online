@@ -3,7 +3,7 @@ import { tangentAxis } from "../../../utils/vectors/vectors";
 import { type ShadowCastSpriteOptions } from "../../render/ShadowCastSpriteOptions";
 
 const shadowLift: ShadowCastSpriteOptions =
-  import.meta.env.DEV ?
+  import.meta.env?.DEV ?
     Object.freeze({
       animationId: "shadow.lift",
     })
@@ -12,7 +12,7 @@ const shadowLift: ShadowCastSpriteOptions =
     };
 
 const shadowSmallBlock: ShadowCastSpriteOptions =
-  import.meta.env.DEV ?
+  import.meta.env?.DEV ?
     Object.freeze({
       textureId: "shadow.smallBlock",
     })
@@ -21,7 +21,7 @@ const shadowSmallBlock: ShadowCastSpriteOptions =
     };
 
 export const shadowSmallRound: ShadowCastSpriteOptions =
-  import.meta.env.DEV ?
+  import.meta.env?.DEV ?
     Object.freeze({
       textureId: "shadow.smallRound",
     })
@@ -30,7 +30,7 @@ export const shadowSmallRound: ShadowCastSpriteOptions =
     };
 
 const shadowFullBlock: ShadowCastSpriteOptions =
-  import.meta.env.DEV ?
+  import.meta.env?.DEV ?
     Object.freeze({
       textureId: "shadow.fullBlock",
     })
@@ -39,7 +39,7 @@ const shadowFullBlock: ShadowCastSpriteOptions =
     };
 
 const shadowFullBlockFlipX: ShadowCastSpriteOptions =
-  import.meta.env.DEV ?
+  import.meta.env?.DEV ?
     Object.freeze({
       textureId: "shadow.fullBlock",
       flipX: true,
@@ -53,7 +53,7 @@ const shadowFullBlockFlipX: ShadowCastSpriteOptions =
 // the same art flipped. Which axis the barrier renders along swaps on odd
 // quarter camera turns, so the flip must swap with it:
 const shadowBarrier: ShadowCastSpriteOptions =
-  import.meta.env.DEV ?
+  import.meta.env?.DEV ?
     Object.freeze({
       textureId: "shadow.barrier.y",
       flipsOnOddQuarterCameraTurns: true,
@@ -64,7 +64,7 @@ const shadowBarrier: ShadowCastSpriteOptions =
     };
 
 const shadowBarrierFlipX: ShadowCastSpriteOptions =
-  import.meta.env.DEV ?
+  import.meta.env?.DEV ?
     Object.freeze({
       textureId: "shadow.barrier.y",
       flipX: true,
@@ -77,7 +77,7 @@ const shadowBarrierFlipX: ShadowCastSpriteOptions =
     };
 
 const shadowScroll: ShadowCastSpriteOptions =
-  import.meta.env.DEV ?
+  import.meta.env?.DEV ?
     Object.freeze({
       textureId: "shadow.scroll",
     })

@@ -26,7 +26,7 @@ const activateResult = {
   string,
   string
 > satisfies MechanicResult<"movingPlatform", string, string>;
-if (import.meta.env.DEV) {
+if (import.meta.env?.DEV) {
   Object.freeze(activateResult);
 }
 const deactivateResult = {
@@ -37,7 +37,7 @@ const deactivateResult = {
   string,
   string
 > satisfies MechanicResult<"movingPlatform", string, string>;
-if (import.meta.env.DEV) {
+if (import.meta.env?.DEV) {
   Object.freeze(deactivateResult);
 }
 

@@ -21,7 +21,7 @@ import { defaultBaseState } from "./itemDefaultStates";
  * shadow renderer flips them when the camera rotates onto an odd quarter turn
  */
 const shadowWallY: ShadowCastSpriteOptions =
-  import.meta.env.DEV ?
+  import.meta.env?.DEV ?
     Object.freeze({
       textureId: "shadow.wall.y",
       flipsOnOddQuarterCameraTurns: true,
@@ -32,7 +32,7 @@ const shadowWallY: ShadowCastSpriteOptions =
     };
 
 const shadowWallX: ShadowCastSpriteOptions =
-  import.meta.env.DEV ?
+  import.meta.env?.DEV ?
     Object.freeze({
       textureId: "shadow.wall.y",
       flipX: true,

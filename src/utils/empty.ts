@@ -21,7 +21,7 @@ emptyMap.delete = () => {
   throw new Error("emptyMap.delete");
 };
 
-export const emptyObject = import.meta.env.DEV ? Object.freeze({}) : {};
+export const emptyObject = import.meta.env?.DEV ? Object.freeze({}) : {};
 
 export const isEmptyObject = (obj: object): boolean => {
   for (const _ in obj) {

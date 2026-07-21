@@ -60,7 +60,7 @@ const notWalking = {
   string,
   string
 > satisfies MechanicResult<"movingPlatform", string, string>;
-if (import.meta.env.DEV) {
+if (import.meta.env?.DEV) {
   Object.freeze(notWalking);
 }
 

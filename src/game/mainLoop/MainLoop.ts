@@ -55,7 +55,7 @@ import { tickGameSpeed } from "./tickGameSpeed";
 import { topLevelFilters } from "./topLevelFilters";
 import { transitionCameraAngle } from "./transitionCameraAngle";
 
-if (import.meta.env.DEV) {
+if (import.meta.env?.DEV) {
   registerDetailedFpsGlobal();
 }
 

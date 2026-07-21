@@ -21,7 +21,7 @@ import { defaultBaseState, defaultFreeItemState } from "./itemDefaultStates";
 import { positionCentredInBlock } from "./positionCentredInBlock";
 
 const shadowPlayable: ShadowCastSpriteOptions =
-  import.meta.env.DEV ?
+  import.meta.env?.DEV ?
     Object.freeze({
       textureId: "shadow.playable",
     })

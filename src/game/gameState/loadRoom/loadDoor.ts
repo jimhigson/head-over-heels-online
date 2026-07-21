@@ -28,7 +28,7 @@ import { defaultBaseState } from "./itemDefaultStates";
  * shadow renderer flips them when the camera rotates onto an odd quarter turn
  */
 const shadowDoorFloatingThresholdY: ShadowCastSpriteOptions =
-  import.meta.env.DEV ?
+  import.meta.env?.DEV ?
     Object.freeze({
       textureId: "shadow.door.floatingThreshold.double.y",
       flipsOnOddQuarterCameraTurns: true,
@@ -39,7 +39,7 @@ const shadowDoorFloatingThresholdY: ShadowCastSpriteOptions =
     };
 
 const shadowDoorFloatingThresholdX: ShadowCastSpriteOptions =
-  import.meta.env.DEV ?
+  import.meta.env?.DEV ?
     Object.freeze({
       textureId: "shadow.door.floatingThreshold.double.y",
       flipX: true,
@@ -52,7 +52,7 @@ const shadowDoorFloatingThresholdX: ShadowCastSpriteOptions =
     };
 
 const shadowDoorFrameTopY: ShadowCastSpriteOptions =
-  import.meta.env.DEV ?
+  import.meta.env?.DEV ?
     Object.freeze({
       textureId: "shadow.doorFrame.top.y",
       flipsOnOddQuarterCameraTurns: true,
@@ -63,7 +63,7 @@ const shadowDoorFrameTopY: ShadowCastSpriteOptions =
     };
 
 const shadowDoorFrameTopX: ShadowCastSpriteOptions =
-  import.meta.env.DEV ?
+  import.meta.env?.DEV ?
     Object.freeze({
       textureId: "shadow.doorFrame.top.y",
       flipX: true,
