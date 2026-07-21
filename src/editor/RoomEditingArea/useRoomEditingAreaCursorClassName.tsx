@@ -1,6 +1,6 @@
 import { isConsolidatable } from "../../consolidateItems/ConsolidatableJsonItem";
 import { type EditorRootState, useEditorAppSelector } from "../../store/store";
-import { twClass } from "../../utils/twClass";
+import { twClass } from "../../utils/twClass" with { type: "macro" };
 import { selectItemInLevelEditorState } from "../slice/levelEditorSelectors";
 import { resizeCursorForPointingAt } from "./cursor/resizeCursorForPointingAt";
 

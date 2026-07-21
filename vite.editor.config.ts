@@ -1,6 +1,7 @@
 import preact from "@preact/preset-vite";
 import path from "node:path";
 import { visualizer } from "rollup-plugin-visualizer";
+import Macros from "unplugin-macros/vite";
 import { defineConfig, loadEnv, type PluginOption } from "vite";
 import glsl from "vite-plugin-glsl";
 
@@ -73,6 +74,7 @@ export default defineConfig(({ mode: _mode }) => {
     publicDir: path.resolve(__dirname, "public"),
 
     plugins: [
+      Macros(),
       hmrOnlyPreact(),
       preact({
         devtoolsInProd: false,

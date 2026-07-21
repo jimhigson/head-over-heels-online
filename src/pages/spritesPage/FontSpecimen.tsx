@@ -4,7 +4,7 @@ import {
   menuLeaderFocussedChar,
   menuLeaderUnfocussedChar,
 } from "../../sprites/spritesheet/spritesheetData/hudChars";
-import { twClass } from "../../utils/twClass";
+import { twClass } from "../../utils/twClass" with { type: "macro" };
 
 const emSpace = "\u2003";
 

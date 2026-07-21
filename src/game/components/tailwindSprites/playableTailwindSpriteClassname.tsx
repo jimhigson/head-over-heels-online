@@ -7,7 +7,7 @@ import {
 import { type LoadableSpriteOption } from "../../../sprites/spritesheet/variants/SpritesheetVariants";
 import { useAppSelector } from "../../../store/hooks";
 import { selectSpritesOption } from "../../../store/slices/gameMenus/gameMenusSelectors";
-import { twClass } from "../../../utils/twClass";
+import { twClass } from "../../../utils/twClass" with { type: "macro" };
 import { type DirectionXy8 } from "../../../utils/vectors/vectors";
 
 const idleHeadClass = (

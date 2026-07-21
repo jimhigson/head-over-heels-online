@@ -4,7 +4,7 @@ import { useCallback, useEffect, useId, useRef, useState } from "preact/hooks";
 
 import { type ExportedSoundId } from "../_generated/sfxdex/sfx";
 import { PlayAudio } from "../utils/sound/PlayAudio";
-import { twClass } from "../utils/twClass";
+import { twClass } from "../utils/twClass" with { type: "macro" };
 import { cn } from "./cn";
 import { enhanceTooltipWithHotkeys } from "./enhanceTooltipWithHotkeys";
 import { getSwitchPaddedLabels, paddingChar } from "./getSwitchPaddedLabels";

@@ -1,4 +1,4 @@
-import { twClass } from "../../utils/twClass";
+import { twClass } from "../../utils/twClass" with { type: "macro" };
 
 // want to fit into the block grid with an outline, so 3blocks minus one (scales) pixel
 export const buttonSizeClassNames =
