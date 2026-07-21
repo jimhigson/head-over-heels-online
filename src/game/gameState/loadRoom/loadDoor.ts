@@ -27,27 +27,53 @@ import { defaultBaseState } from "./itemDefaultStates";
  * shadow textures baked for the door's physical axis at the base angle; the
  * shadow renderer flips them when the camera rotates onto an odd quarter turn
  */
-const shadowDoorFloatingThresholdY: ShadowCastSpriteOptions = Object.freeze({
-  textureId: "shadow.door.floatingThreshold.double.y",
-  flipsOnOddQuarterCameraTurns: true,
-});
+const shadowDoorFloatingThresholdY: ShadowCastSpriteOptions =
+  import.meta.env.DEV ?
+    Object.freeze({
+      textureId: "shadow.door.floatingThreshold.double.y",
+      flipsOnOddQuarterCameraTurns: true,
+    })
+  : {
+      textureId: "shadow.door.floatingThreshold.double.y",
+      flipsOnOddQuarterCameraTurns: true,
+    };
 
-const shadowDoorFloatingThresholdX: ShadowCastSpriteOptions = Object.freeze({
-  textureId: "shadow.door.floatingThreshold.double.y",
-  flipX: true,
-  flipsOnOddQuarterCameraTurns: true,
-});
+const shadowDoorFloatingThresholdX: ShadowCastSpriteOptions =
+  import.meta.env.DEV ?
+    Object.freeze({
+      textureId: "shadow.door.floatingThreshold.double.y",
+      flipX: true,
+      flipsOnOddQuarterCameraTurns: true,
+    })
+  : {
+      textureId: "shadow.door.floatingThreshold.double.y",
+      flipX: true,
+      flipsOnOddQuarterCameraTurns: true,
+    };
 
-const shadowDoorFrameTopY: ShadowCastSpriteOptions = Object.freeze({
-  textureId: "shadow.doorFrame.top.y",
-  flipsOnOddQuarterCameraTurns: true,
-});
+const shadowDoorFrameTopY: ShadowCastSpriteOptions =
+  import.meta.env.DEV ?
+    Object.freeze({
+      textureId: "shadow.doorFrame.top.y",
+      flipsOnOddQuarterCameraTurns: true,
+    })
+  : {
+      textureId: "shadow.doorFrame.top.y",
+      flipsOnOddQuarterCameraTurns: true,
+    };
 
-const shadowDoorFrameTopX: ShadowCastSpriteOptions = Object.freeze({
-  textureId: "shadow.doorFrame.top.y",
-  flipX: true,
-  flipsOnOddQuarterCameraTurns: true,
-});
+const shadowDoorFrameTopX: ShadowCastSpriteOptions =
+  import.meta.env.DEV ?
+    Object.freeze({
+      textureId: "shadow.doorFrame.top.y",
+      flipX: true,
+      flipsOnOddQuarterCameraTurns: true,
+    })
+  : {
+      textureId: "shadow.doorFrame.top.y",
+      flipX: true,
+      flipsOnOddQuarterCameraTurns: true,
+    };
 
 const doorFrameTopNoCastShadowOn = ["doorLegs" as const];
 

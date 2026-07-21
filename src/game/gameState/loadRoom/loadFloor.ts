@@ -27,9 +27,14 @@ const floorThicknessBlocks = 3;
  */
 const extraFloorAmountForDoors = 0.5;
 
-const shadowFullBlock: ShadowCastSpriteOptions = Object.freeze({
-  textureId: "shadow.fullBlock",
-});
+const shadowFullBlock: ShadowCastSpriteOptions =
+  import.meta.env.DEV ?
+    Object.freeze({
+      textureId: "shadow.fullBlock",
+    })
+  : {
+      textureId: "shadow.fullBlock",
+    };
 
 export const loadFloor = <RoomId extends string, RoomItemId extends string>(
   itemId: RoomItemId,

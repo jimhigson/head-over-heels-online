@@ -20,9 +20,14 @@ import { type ShadowCastSpriteOptions } from "../../render/ShadowCastSpriteOptio
 import { defaultBaseState, defaultFreeItemState } from "./itemDefaultStates";
 import { positionCentredInBlock } from "./positionCentredInBlock";
 
-const shadowPlayable: ShadowCastSpriteOptions = Object.freeze({
-  textureId: "shadow.playable",
-});
+const shadowPlayable: ShadowCastSpriteOptions =
+  import.meta.env.DEV ?
+    Object.freeze({
+      textureId: "shadow.playable",
+    })
+  : {
+      textureId: "shadow.playable",
+    };
 
 export const defaultPlayableRootAttributes = {
   config: emptyObject,

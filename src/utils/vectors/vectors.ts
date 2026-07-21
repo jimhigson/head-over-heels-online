@@ -316,21 +316,46 @@ export const roundXyz = ({ x, y, z }: Xyz) => ({
   z: Math.round(z),
 });
 
-export const originXy: Xy = Object.freeze({ x: 0, y: 0 });
-export const originXyz: Xyz = Object.freeze({ x: 0, y: 0, z: 0 });
-export const unitXyz: Xyz = Object.freeze({ x: 1, y: 1, z: 1 });
+export const originXy: Xy =
+  import.meta.env.DEV ? Object.freeze({ x: 0, y: 0 }) : { x: 0, y: 0 };
+export const originXyz: Xyz =
+  import.meta.env.DEV ?
+    Object.freeze({ x: 0, y: 0, z: 0 })
+  : { x: 0, y: 0, z: 0 };
+export const unitXyz: Xyz =
+  import.meta.env.DEV ?
+    Object.freeze({ x: 1, y: 1, z: 1 })
+  : { x: 1, y: 1, z: 1 };
 /** xyz vector with unit length in x and y */
-export const unitXyz_xy: Xyz = Object.freeze({ x: 1, y: 1, z: 0 });
+export const unitXyz_xy: Xyz =
+  import.meta.env.DEV ?
+    Object.freeze({ x: 1, y: 1, z: 0 })
+  : { x: 1, y: 1, z: 0 };
 /** xyz vector with unit length in x and z */
-export const unitXyz_xz: Xyz = Object.freeze({ x: 1, y: 0, z: 1 });
+export const unitXyz_xz: Xyz =
+  import.meta.env.DEV ?
+    Object.freeze({ x: 1, y: 0, z: 1 })
+  : { x: 1, y: 0, z: 1 };
 /** xyz vector with unit length in y and z */
-export const unitXyz_yz: Xyz = Object.freeze({ x: 0, y: 1, z: 1 });
+export const unitXyz_yz: Xyz =
+  import.meta.env.DEV ?
+    Object.freeze({ x: 0, y: 1, z: 1 })
+  : { x: 0, y: 1, z: 1 };
 /** xyz vector with unit length in x only */
-export const unitXyz_x: Xyz = Object.freeze({ x: 1, y: 0, z: 0 });
+export const unitXyz_x: Xyz =
+  import.meta.env.DEV ?
+    Object.freeze({ x: 1, y: 0, z: 0 })
+  : { x: 1, y: 0, z: 0 };
 /** xyz vector with unit length in y only */
-export const unitXyz_y: Xyz = Object.freeze({ x: 0, y: 1, z: 0 });
+export const unitXyz_y: Xyz =
+  import.meta.env.DEV ?
+    Object.freeze({ x: 0, y: 1, z: 0 })
+  : { x: 0, y: 1, z: 0 };
 /** xyz vector with unit length in z only */
-export const unitXyz_z: Xyz = Object.freeze({ x: 0, y: 0, z: 1 });
+export const unitXyz_z: Xyz =
+  import.meta.env.DEV ?
+    Object.freeze({ x: 0, y: 0, z: 1 })
+  : { x: 0, y: 0, z: 1 };
 
 export type Xyz = {
   x: number;

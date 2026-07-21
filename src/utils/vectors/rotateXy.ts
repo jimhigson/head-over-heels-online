@@ -12,21 +12,28 @@ import {
  * (1,0) (0,1) (-1,0) (0,-1); since 90° turns keep the components in {-1,0,1}
  * there is no floating-point drift.
  */
-export const cameraAngleBase: Xy = Object.freeze({ x: 1, y: 0 });
+export const cameraAngleBase: Xy =
+  import.meta.env.DEV ? Object.freeze({ x: 1, y: 0 }) : { x: 1, y: 0 };
 /** a quarter-turn clockwise, as a (cos,sin) multiplier to pass to rotateXy */
-export const quarterTurnClockwise: Xy = Object.freeze({ x: 0, y: -1 });
+export const quarterTurnClockwise: Xy =
+  import.meta.env.DEV ? Object.freeze({ x: 0, y: -1 }) : { x: 0, y: -1 };
 /** a quarter-turn anticlockwise, as a (cos,sin) multiplier to pass to rotateXy */
-export const quarterTurnAnticlockwise: Xy = Object.freeze({ x: 0, y: 1 });
+export const quarterTurnAnticlockwise: Xy =
+  import.meta.env.DEV ? Object.freeze({ x: 0, y: 1 }) : { x: 0, y: 1 };
 /** 180º rotation from the original angle */
-export const halfTurn: Xy = Object.freeze({ x: -1, y: 0 });
+export const halfTurn: Xy =
+  import.meta.env.DEV ? Object.freeze({ x: -1, y: 0 }) : { x: -1, y: 0 };
 
 /** the four 90° camera angles, as (cos,sin) unit vectors */
-export const allCameraAngles: ReadonlyArray<Xy> = Object.freeze([
-  cameraAngleBase,
-  quarterTurnAnticlockwise,
-  halfTurn,
-  quarterTurnClockwise,
-]);
+export const allCameraAngles: ReadonlyArray<Xy> =
+  import.meta.env.DEV ?
+    Object.freeze([
+      cameraAngleBase,
+      quarterTurnAnticlockwise,
+      halfTurn,
+      quarterTurnClockwise,
+    ])
+  : [cameraAngleBase, quarterTurnAnticlockwise, halfTurn, quarterTurnClockwise];
 
 /**
  * the quarter-turn camera angle nearest to a continuous render angle. Always

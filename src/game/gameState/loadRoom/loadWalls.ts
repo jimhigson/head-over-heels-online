@@ -20,16 +20,29 @@ import { defaultBaseState } from "./itemDefaultStates";
  * shadow textures baked for the wall's physical axis at the base angle; the
  * shadow renderer flips them when the camera rotates onto an odd quarter turn
  */
-const shadowWallY: ShadowCastSpriteOptions = Object.freeze({
-  textureId: "shadow.wall.y",
-  flipsOnOddQuarterCameraTurns: true,
-});
+const shadowWallY: ShadowCastSpriteOptions =
+  import.meta.env.DEV ?
+    Object.freeze({
+      textureId: "shadow.wall.y",
+      flipsOnOddQuarterCameraTurns: true,
+    })
+  : {
+      textureId: "shadow.wall.y",
+      flipsOnOddQuarterCameraTurns: true,
+    };
 
-const shadowWallX: ShadowCastSpriteOptions = Object.freeze({
-  textureId: "shadow.wall.y",
-  flipX: true,
-  flipsOnOddQuarterCameraTurns: true,
-});
+const shadowWallX: ShadowCastSpriteOptions =
+  import.meta.env.DEV ?
+    Object.freeze({
+      textureId: "shadow.wall.y",
+      flipX: true,
+      flipsOnOddQuarterCameraTurns: true,
+    })
+  : {
+      textureId: "shadow.wall.y",
+      flipX: true,
+      flipsOnOddQuarterCameraTurns: true,
+    };
 
 // can't take room height blocks times block height, or it is still possible to
 // jump over the wall in some cases in rooms without a ceiling portal.

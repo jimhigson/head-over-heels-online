@@ -18,22 +18,28 @@ type ItemWithActivation<RoomId extends string, RoomItemId extends string> =
   | ItemInPlay<"monster", RoomId, RoomItemId>
   | ItemInPlay<"movingPlatform", RoomId, RoomItemId>;
 
-const activateResult = Object.freeze({
+const activateResult = {
   movementType: "steady",
   stateDelta: { activated: true, everActivated: true },
 } as const satisfies MechanicResult<
   "monster",
   string,
   string
-> satisfies MechanicResult<"movingPlatform", string, string>);
-const deactivateResult = Object.freeze({
+> satisfies MechanicResult<"movingPlatform", string, string>;
+if (import.meta.env.DEV) {
+  Object.freeze(activateResult);
+}
+const deactivateResult = {
   movementType: "steady",
   stateDelta: { activated: false },
 } as const satisfies MechanicResult<
   "monster",
   string,
   string
-> satisfies MechanicResult<"movingPlatform", string, string>);
+> satisfies MechanicResult<"movingPlatform", string, string>;
+if (import.meta.env.DEV) {
+  Object.freeze(deactivateResult);
+}
 
 const nearnessThreshold = blockSizePx.x * 3;
 

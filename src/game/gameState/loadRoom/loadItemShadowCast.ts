@@ -2,44 +2,88 @@ import { type JsonItemUnion } from "../../../model/json/JsonItem";
 import { tangentAxis } from "../../../utils/vectors/vectors";
 import { type ShadowCastSpriteOptions } from "../../render/ShadowCastSpriteOptions";
 
-const shadowLift: ShadowCastSpriteOptions = Object.freeze({
-  animationId: "shadow.lift",
-});
+const shadowLift: ShadowCastSpriteOptions =
+  import.meta.env.DEV ?
+    Object.freeze({
+      animationId: "shadow.lift",
+    })
+  : {
+      animationId: "shadow.lift",
+    };
 
-const shadowSmallBlock: ShadowCastSpriteOptions = Object.freeze({
-  textureId: "shadow.smallBlock",
-});
+const shadowSmallBlock: ShadowCastSpriteOptions =
+  import.meta.env.DEV ?
+    Object.freeze({
+      textureId: "shadow.smallBlock",
+    })
+  : {
+      textureId: "shadow.smallBlock",
+    };
 
-export const shadowSmallRound: ShadowCastSpriteOptions = Object.freeze({
-  textureId: "shadow.smallRound",
-});
+export const shadowSmallRound: ShadowCastSpriteOptions =
+  import.meta.env.DEV ?
+    Object.freeze({
+      textureId: "shadow.smallRound",
+    })
+  : {
+      textureId: "shadow.smallRound",
+    };
 
-const shadowFullBlock: ShadowCastSpriteOptions = Object.freeze({
-  textureId: "shadow.fullBlock",
-});
+const shadowFullBlock: ShadowCastSpriteOptions =
+  import.meta.env.DEV ?
+    Object.freeze({
+      textureId: "shadow.fullBlock",
+    })
+  : {
+      textureId: "shadow.fullBlock",
+    };
 
-const shadowFullBlockFlipX: ShadowCastSpriteOptions = Object.freeze({
-  textureId: "shadow.fullBlock",
-  flipX: true,
-});
+const shadowFullBlockFlipX: ShadowCastSpriteOptions =
+  import.meta.env.DEV ?
+    Object.freeze({
+      textureId: "shadow.fullBlock",
+      flipX: true,
+    })
+  : {
+      textureId: "shadow.fullBlock",
+      flipX: true,
+    };
 
 // the barrier shadow art is drawn for a y-axis barrier; the x-axis variant is
 // the same art flipped. Which axis the barrier renders along swaps on odd
 // quarter camera turns, so the flip must swap with it:
-const shadowBarrier: ShadowCastSpriteOptions = Object.freeze({
-  textureId: "shadow.barrier.y",
-  flipsOnOddQuarterCameraTurns: true,
-});
+const shadowBarrier: ShadowCastSpriteOptions =
+  import.meta.env.DEV ?
+    Object.freeze({
+      textureId: "shadow.barrier.y",
+      flipsOnOddQuarterCameraTurns: true,
+    })
+  : {
+      textureId: "shadow.barrier.y",
+      flipsOnOddQuarterCameraTurns: true,
+    };
 
-const shadowBarrierFlipX: ShadowCastSpriteOptions = Object.freeze({
-  textureId: "shadow.barrier.y",
-  flipX: true,
-  flipsOnOddQuarterCameraTurns: true,
-});
+const shadowBarrierFlipX: ShadowCastSpriteOptions =
+  import.meta.env.DEV ?
+    Object.freeze({
+      textureId: "shadow.barrier.y",
+      flipX: true,
+      flipsOnOddQuarterCameraTurns: true,
+    })
+  : {
+      textureId: "shadow.barrier.y",
+      flipX: true,
+      flipsOnOddQuarterCameraTurns: true,
+    };
 
-const shadowScroll: ShadowCastSpriteOptions = Object.freeze({
-  textureId: "shadow.scroll",
-});
+const shadowScroll: ShadowCastSpriteOptions =
+  import.meta.env.DEV ?
+    Object.freeze({
+      textureId: "shadow.scroll",
+    })
+  : {
+      textureId: "shadow.scroll",
+    };
 
 export const loadItemShadowCast = (
   jsonItem: JsonItemUnion,

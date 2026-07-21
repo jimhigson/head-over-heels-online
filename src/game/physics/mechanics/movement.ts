@@ -52,14 +52,17 @@ export type ItemWithMovement<
   | ItemInPlay<"monster", RoomId, RoomItemId>
   | ItemInPlay<"movingPlatform", RoomId, RoomItemId>;
 
-const notWalking = Object.freeze({
+const notWalking = {
   movementType: "vel",
   vels: { walking: originXyz },
 } as const satisfies MechanicResult<
   "monster",
   string,
   string
-> satisfies MechanicResult<"movingPlatform", string, string>);
+> satisfies MechanicResult<"movingPlatform", string, string>;
+if (import.meta.env.DEV) {
+  Object.freeze(notWalking);
+}
 
 const rushTripThreshold = blockSizePx.x / 2;
 const rushTowardPlayerXy4 = <RoomId extends string, RoomItemId extends string>(

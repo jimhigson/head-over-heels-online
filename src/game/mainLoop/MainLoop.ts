@@ -55,7 +55,9 @@ import { tickGameSpeed } from "./tickGameSpeed";
 import { topLevelFilters } from "./topLevelFilters";
 import { transitionCameraAngle } from "./transitionCameraAngle";
 
-registerDetailedFpsGlobal();
+if (import.meta.env.DEV) {
+  registerDetailedFpsGlobal();
+}
 
 const quarterTurnClockwise = Math.PI / 2;
 const pausedDimTint = 0x99_99_99;

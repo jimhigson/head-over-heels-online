@@ -10,20 +10,29 @@ import {
   type SpritesheetMetadata,
 } from "../spritesheet/spritesheetData/spritesheetMetaData";
 
-export const paletteBlockstack = Object.freeze(
-  transformObject(jsonPalette, ([key, hexStr]) => [key, new Color(hexStr)]),
+export const paletteBlockstack = transformObject(
+  jsonPalette,
+  ([key, hexStr]) => [key, new Color(hexStr)],
 );
-export const paletteBlockstackDim = Object.freeze(
-  transformObject(jsonPaletteDim, ([key, hexStr]) => [key, new Color(hexStr)]),
+if (import.meta.env.DEV) {
+  Object.freeze(paletteBlockstack);
+}
+export const paletteBlockstackDim = transformObject(
+  jsonPaletteDim,
+  ([key, hexStr]) => [key, new Color(hexStr)],
 );
+if (import.meta.env.DEV) {
+  Object.freeze(paletteBlockstackDim);
+}
 export type BlockstackPaletteColourName = keyof typeof paletteBlockstack;
 
-export const paletteToppy = Object.freeze(
-  transformObject(jsonToppyPalette, ([key, hexStr]) => [
-    key,
-    new Color(hexStr),
-  ]),
+export const paletteToppy = transformObject(
+  jsonToppyPalette,
+  ([key, hexStr]) => [key, new Color(hexStr)],
 );
+if (import.meta.env.DEV) {
+  Object.freeze(paletteToppy);
+}
 export type ToppyPaletteColourName = keyof typeof paletteToppy;
 
 export const maybeDimPalette = <PaletteColourName extends string = string>(
