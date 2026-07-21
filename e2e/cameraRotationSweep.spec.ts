@@ -1,9 +1,9 @@
 import { expect, type Page, test } from "@playwright/test";
 
+import { type OriginalCampaignRoomId } from "../src/_generated/originalCampaign/OriginalCampaignRoomId";
 import { type ResolutionName } from "../src/originalGame";
 import { allItemsTestRoomCampaign } from "./fixtures/allItemsTestRoom";
 import { bootPlaytestCampaign } from "./testUtils/bootPlaytestCampaign";
-import { dispatchKeyPress } from "./testUtils/gameInteractions";
 import {
   dispatchToStore,
   setZeroGameSpeed,
@@ -55,19 +55,56 @@ const sweptAngles = (
   );
 };
 
-type SweepScenario = {
-  roomId: string;
+type SweepCampaign = "allItemsTestRoom" | "original" | "rotate-camera-test";
+
+/**
+ * the valid room ids for a campaign - lets each scenario's roomId/enterFrom be
+ * typo-checked against the campaign it belongs to (the db-loaded
+ * rotate-camera-test has no generated id union, so it stays `string`)
+ */
+type RoomsForCampaign<C extends SweepCampaign> =
+  C extends "allItemsTestRoom" ? "allItemsTestRoom"
+  : C extends "original" ? OriginalCampaignRoomId
+  : string;
+
+type SweepScenario<C extends SweepCampaign = SweepCampaign> = {
+  roomId: RoomsForCampaign<C>;
   /**
    * original: boot the burnt-in campaign through the menus and navigate by
    * hash. allItemsTestRoom: boot the inline test campaign via a playtest-style
    * `data:` url. rotate-camera-test: the community campaign loaded by url,
    * entered by hash like the original
    */
-  campaign: "allItemsTestRoom" | "original" | "rotate-camera-test";
-  /** switch to this character before entering (eg heels, so head doesn't clear the hush puppies) */
-  character?: "heels";
-  /** set before sweeping, so the whole room fits on screen */
-  emulatedResolution: ResolutionName;
+  campaign: C;
+  /**
+   * where the character stands when the swept room is captured, made explicit
+   * so the screenshot is deterministic rather than an artifact of navigation
+   * history:
+   * - "$$startingRoom": roomId IS this character's starting room, so they are
+   *   shown at their spawn (throws if roomId is not their start room)
+   * - a room id: enter roomId through the door from that (adjacent) room, so
+   *   the character stands at that door - deterministic given the layout
+   * - "$$final": roomId's only door is the game-finishing (usually exit-only)
+   *   door; enter through it - for the final room, which has no neighbour to
+   *   name
+   */
+  enterFrom: "$$final" | "$$startingRoom" | RoomsForCampaign<C>;
+  /** which character to view the room as (eg heels, so head doesn't clear the hush puppies) */
+  character: "head" | "heels";
+  /**
+   * set before sweeping, so the whole room fits on screen. "$$default" instead
+   * leaves the setting unset, so each platform sweeps at its own default
+   * (handheld on mobile, zxSpectrum on desktop) - which is what a real player
+   * on that platform sees
+   */
+  emulatedResolution: "$$default" | ResolutionName;
+  /**
+   * fast-forward the game simulation by this many ms (via
+   * window.__e2e_fastForwardMs) after entering the room, while the game
+   * speed stays zero - lets a scenario's setup play out (items falling,
+   * pickups collected) and transient floating text expire, deterministically
+   */
+  fastForwardMs?: number;
   /**
    * the angles (degrees) to screenshot at: either an explicit list, or a
    * `startAngle`→`endAngle` arc sampled every `sweepIntervalDegrees`
@@ -77,28 +114,48 @@ type SweepScenario = {
     | number[];
 };
 
+/**
+ * identity builder that infers the campaign generic per scenario, so each
+ * scenario's roomId and enterFrom are typo-checked against its own campaign
+ * while the array stays heterogeneous
+ */
+const sweepScenario = <C extends SweepCampaign>(
+  scenario: SweepScenario<C>,
+): SweepScenario<C> => scenario;
+
 const scenarios: readonly SweepScenario[] = [
-  {
+  sweepScenario({
     roomId: "blacktooth13",
     campaign: "original",
+    // entered through the door from adjacent blacktooth12:
+    enterFrom: "blacktooth12",
     angles: [0, 20, 44.999, 45.001, 70],
-    emulatedResolution: "zxSpectrum",
-  },
-  {
+    emulatedResolution: "$$default",
+    character: "head",
+  }),
+  sweepScenario({
     roomId: "blacktooth56",
     campaign: "original",
+    // entered through the door from adjacent blacktooth55:
+    enterFrom: "blacktooth55",
     angles: [180, 226],
-    emulatedResolution: "zxSpectrum",
-  },
-  {
+    emulatedResolution: "$$default",
+    character: "head",
+  }),
+  sweepScenario({
     roomId: "finalroom",
     campaign: "original",
+    // the final room's only door is the game-finishing exit door:
+    enterFrom: "$$final",
     angles: { startAngle: 0, endAngle: 90, sweepIntervalDegrees: 10 },
-    emulatedResolution: "zxSpectrum",
-  },
-  {
+    emulatedResolution: "$$default",
+    character: "head",
+  }),
+  sweepScenario({
     roomId: "allItemsTestRoom",
     campaign: "allItemsTestRoom",
+    // the inline campaign's single room - the character spawns here:
+    enterFrom: "$$startingRoom",
     // quarter angles plus a whisker before/after each eighth
     angles: [
       0, 44.999, 45.001, 90, 134.999, 135.001, 180, 224.999, 225.001, 270,
@@ -106,25 +163,61 @@ const scenarios: readonly SweepScenario[] = [
     ],
     // the largest resolution: a 16×16 room fits on screen whole
     emulatedResolution: "amigaHiResPal",
-  },
-  {
+    character: "head",
+  }),
+  sweepScenario({
     // a stacked hush-puppy pair (cyclic masked pair) that must stay carved and
     // correctly projected through the whole turn - entered as heels since head
     // would clear the hush puppies:
     roomId: "hushpuppies",
     campaign: "rotate-camera-test",
     character: "heels",
+    // entered through the door from adjacent mirrors:
+    enterFrom: "mirrors",
     angles: { startAngle: 0, endAngle: 360, sweepIntervalDegrees: 18 },
-    emulatedResolution: "zxSpectrum",
-  },
-  {
-    // a working draw-order cycle (present at the base angle, of multiplied
-    // blocks) - a control that must stay correct through the whole turn:
+    emulatedResolution: "$$default",
+  }),
+  sweepScenario({
+    // the demanding cycles room (a working draw-order cycle at the base angle,
+    // of multiplied blocks, plus the eight-barrier weave) swept at a dense 5°
+    // grid as the cyclic-masking guard through the whole turn. The nine fine
+    // angles inserted between 180 and 185 pin the found bugs where the
+    // toposort's severed-edge choice flips within that band (180.11/180.12 and
+    // 182.84/182.841 bracket the flips):
     roomId: "cycles",
     campaign: "rotate-camera-test",
-    angles: { startAngle: 0, endAngle: 360, sweepIntervalDegrees: 18 },
-    emulatedResolution: "zxSpectrum",
-  },
+    // head's starting room, shown at spawn:
+    enterFrom: "$$startingRoom",
+    angles: [
+      0, 5, 10, 15, 20, 25, 30, 35, 40, 45, 50, 55, 60, 65, 70, 75, 80, 85, 90,
+      95, 100, 105, 110, 115, 120, 125, 130, 135, 140, 145, 150, 155, 160, 165,
+      170, 175, 180, 180.11, 180.12, 181, 182.8, 182.84, 182.841, 182.85, 182.9,
+      183, 185, 190, 195, 200, 205, 210, 215, 220, 225, 230, 235, 240, 245, 250,
+      255, 260, 265, 270, 275, 280, 285, 290, 295, 300, 305, 310, 315, 320, 325,
+      330, 335, 340, 345, 350, 355,
+    ],
+    emulatedResolution: "$$default",
+    character: "head",
+  }),
+  sweepScenario({
+    // heels boots here with the bag pickup right above her and a portable
+    // block right below: the fast-forward drops the bag onto her (collected)
+    // and settles her stood on the block, so the pick-up-next highlight
+    // outline is showing; it also expires the pickup's floating text. 0 is
+    // the settled reference (outline correct); the epsilon angle pins the
+    // found bug where the outline mid-turn shades the block's whole square
+    // instead of outlining its pixels - at so slight an angle the two frames
+    // should differ only by a little mesh softening, making the broken
+    // outline the whole story of the diff:
+    roomId: "start",
+    campaign: "rotate-camera-test",
+    // heels' starting room, shown at spawn:
+    enterFrom: "$$startingRoom",
+    character: "heels",
+    fastForwardMs: 5_000,
+    angles: [0, 0.000_1],
+    emulatedResolution: "$$default",
+  }),
 ];
 
 const sweepDegreesForScenario = ({
@@ -184,93 +277,189 @@ const holdCameraAtDegrees = async (page: Page, degrees: number) => {
 };
 
 /**
- * press ] (swap character) until the wanted one is active - retried since a
- * single press may land on the wrong character (head/heels/headOverHeels)
+ * swop to the wanted character via the e2e handle, which calls the swop mutator
+ * directly - so it works at zero game speed, where the normal swop input (read
+ * only inside the speed-scaled physics tick) never fires. A no-op when already
+ * that character (so head, the usual boot default, is left alone)
  */
-const switchToCharacter = async (page: Page, character: "heels") => {
-  await expect(async () => {
-    await dispatchKeyPress(page, "]", "BracketRight");
-    await page.waitForFunction(
-      (c) => window._e2e_gamePageGameAi?.gameState.currentCharacterName === c,
-      character,
-      { timeout: 2_000 },
-    );
-  }).toPass({ timeout: 20_000 });
+const switchToCharacter = async (page: Page, character: "head" | "heels") => {
+  await page.evaluate((c) => {
+    if (window._e2e_gamePageGameAi?.gameState.currentCharacterName !== c) {
+      window.__e2e_swopCharacter!(c);
+    }
+  }, character);
+  await page.waitForFunction(
+    (c) => window._e2e_gamePageGameAi?.gameState.currentCharacterName === c,
+    character,
+    { timeout: 2_000 },
+  );
 };
+
+/**
+ * put the current character into the swept room per {@link
+ * SweepScenario.enterFrom}, so their position when captured is deterministic
+ * rather than an artifact of navigation history. `campaignHashUrl` is the base
+ * url whose `#<roomId>` hash drives a cheat level-select (unused for
+ * "$$startingRoom", which navigates nowhere)
+ */
+const enterRoom = async (
+  page: Page,
+  scenario: SweepScenario,
+  campaignHashUrl: string,
+) => {
+  const { roomId, enterFrom } = scenario;
+
+  const levelSelectTo = async (room: string) => {
+    const renderEvent = waitForRoomRenderEvent(
+      page,
+      room,
+      "cameraRotationSweep",
+    );
+    await page.goto(`${campaignHashUrl}#${room}`);
+    await renderEvent;
+  };
+
+  if (enterFrom === "$$startingRoom") {
+    // roomId is this character's starting room, so they are already stood at
+    // their spawn - just confirm the boot landed them there:
+    const currentRoomId = await page.evaluate(() => {
+      const { gameState } = window._e2e_gamePageGameAi!;
+      return gameState.characterRooms[gameState.currentCharacterName]?.id;
+    });
+    if (currentRoomId !== roomId) {
+      throw new Error(
+        `scenario ${roomId} declares enterFrom "$$startingRoom" but the character is in ${currentRoomId} - roomId is not this character's starting room`,
+      );
+    }
+    return;
+  }
+
+  // enter through a door: for a named adjacent room, first route the character
+  // into it so the level-select into roomId picks the door back to it. A
+  // "$$final" room has only its finishing door, so a direct level-select
+  // falls through to it:
+  if (enterFrom !== "$$final") {
+    await levelSelectTo(enterFrom);
+  }
+  await levelSelectTo(roomId);
+};
+
+const originalCampaignUrl = "/?cheats=1&track=0";
+
+/**
+ * the store payload for a scenario's emulated resolution: an explicit
+ * ResolutionName, or null to unset it - leaving the platform's own default in
+ * place (see {@link SweepScenario.emulatedResolution})
+ */
+const emulatedResolutionPayload = ({
+  emulatedResolution,
+}: SweepScenario): null | ResolutionName =>
+  emulatedResolution === "$$default" ? null : emulatedResolution;
 
 const bootScenario = async (page: Page, scenario: SweepScenario) => {
   await setupE2ePage(page);
+  // boot the campaign into its own start room (not swept), then zero the game
+  // speed before the game is allowed to play on - so every sprite is created
+  // frozen at its deterministic start frame rather than caught mid-animation
+  // (matching roomSnapshots.spec). Character selection and navigation then
+  // happen at zero speed, and enterRoom does the deterministic per-scenario
+  // entry. campaignHashUrl is the base url whose #room hash drives level-select
+  // (empty for the single-room inline campaign):
+  let campaignHashUrl = "";
   if (scenario.campaign === "allItemsTestRoom") {
     await bootPlaytestCampaign(
       page,
       allItemsTestRoomCampaign,
-      scenario.emulatedResolution,
+      emulatedResolutionPayload(scenario),
     );
   } else if (scenario.campaign === "rotate-camera-test") {
-    // the rotate-camera-test community campaign, loaded from the db by url:
-    // boot into its start room (not swept), freeze, optionally switch
-    // character, then hash-navigate into the swept room:
     await page.goto(rotateCameraTestCampaignUrl);
     await waitForGameState(page);
+    // zero the speed before playing on, so sprites are born frozen:
+    await setZeroGameSpeed(page);
     await page.waitForSelector("[data-dialog-id=crowns]", { timeout: 15_000 });
     await exitCrownsDialog(page, "cameraRotationSweep");
-    // switch character while the game still ticks (the swap needs a running
-    // tick); any drift is in the start room, which is not swept:
-    if (scenario.character !== undefined) {
-      await switchToCharacter(page, scenario.character);
-    }
-    await setZeroGameSpeed(page);
+    await switchToCharacter(page, scenario.character);
     await dispatchToStore(page, {
       type: "userSettings/setEmulatedResolution",
-      payload: scenario.emulatedResolution,
+      payload: emulatedResolutionPayload(scenario),
     });
-    const renderEvent = waitForRoomRenderEvent(
-      page,
-      scenario.roomId,
-      "cameraRotationSweep",
-    );
-    await page.goto(`${rotateCameraTestCampaignUrl}#${scenario.roomId}`);
-    await renderEvent;
+    campaignHashUrl = rotateCameraTestCampaignUrl;
   } else {
-    // boot into the campaign's start room (no hash), which is not swept, and
-    // freeze physics while the crowns dialog still covers the game; the swept
-    // room is then entered by hash navigation with nothing having moved:
-    await page.goto("/?cheats=1&track=0");
+    await page.goto(originalCampaignUrl);
     await clickPlayTheGame(page, "cameraRotationSweep");
     await clickOriginalCampaign(page, "cameraRotationSweep");
     await waitForGameState(page);
+    // zero the speed before playing on, so sprites are born frozen:
     await setZeroGameSpeed(page);
+    await switchToCharacter(page, scenario.character);
     await dispatchToStore(page, {
       type: "userSettings/setEmulatedResolution",
-      payload: scenario.emulatedResolution,
+      payload: emulatedResolutionPayload(scenario),
     });
     await exitCrownsDialog(page, "cameraRotationSweep");
+    campaignHashUrl = originalCampaignUrl;
+  }
 
-    const renderEvent = waitForRoomRenderEvent(
-      page,
-      scenario.roomId,
-      "cameraRotationSweep",
+  await enterRoom(page, scenario, campaignHashUrl);
+
+  if (scenario.fastForwardMs !== undefined) {
+    await page.evaluate(
+      (ms) => window.__e2e_fastForwardMs!(ms),
+      scenario.fastForwardMs,
     );
-    await page.goto(`/?cheats=1&track=0#${scenario.roomId}`);
-    await renderEvent;
+    // a real tick delivers the fast-forward's moved items to the renderers:
+    await page.waitForTimeout(300);
   }
   await page.waitForTimeout(500);
 };
 
+/** the screenshot/test-title base name for a scenario */
+const scenarioName = (scenario: SweepScenario): string => scenario.roomId;
+
+/**
+ * stop every sprite animation at frame 0. Animations advance on the real
+ * ticker even at zero game speed, and a cuboid-warp snapshot latches whichever
+ * frame is showing when the warp starts - so without this, mask-heavy rooms'
+ * mid-turn captures vary run-to-run with boot timing. Sprites recreated by a
+ * renderer rebuild start at frame 0 anyway, so re-freezing after each hold
+ * keeps everything deterministic
+ */
+const freezeAnimations = (page: Page) =>
+  page.evaluate(() => {
+    type AnyNode = {
+      children?: AnyNode[];
+      gotoAndStop?: (frame: number) => void;
+    };
+    const walk = (node: AnyNode) => {
+      node.gotoAndStop?.(0);
+      for (const child of node.children ?? []) {
+        walk(child);
+      }
+    };
+    walk(window.__PIXI_APP__!.stage as unknown as AnyNode);
+  });
+
 for (const scenario of scenarios) {
-  test(`camera rotation sweep renders deterministically: ${scenario.roomId}`, async ({
+  test(`camera rotation sweep renders deterministically: ${scenarioName(scenario)}`, async ({
     page,
   }, testInfo) => {
     test.setTimeout(360_000);
     await bootScenario(page, scenario);
 
+    await freezeAnimations(page);
     for (const degrees of sweepDegreesForScenario(scenario)) {
       await holdCameraAtDegrees(page, degrees);
       // let the held frame re-project and the blended scroll settle:
       await page.waitForTimeout(600);
+      // sprites recreated since the last freeze (eg by the quarter-flip
+      // renderer rebuild) started at frame 0, but stop them anyway so nothing
+      // is mid-animation when captured:
+      await freezeAnimations(page);
+      await page.waitForTimeout(100);
 
       await expect(page).toHaveScreenshot(
-        `${scenario.roomId}-sweep-${degrees}deg.png`,
+        `${scenarioName(scenario)}-sweep-${degrees}deg.png`,
         roomScreenshotOptions(testInfo.project.name),
       );
     }

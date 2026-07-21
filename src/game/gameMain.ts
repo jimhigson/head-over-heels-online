@@ -20,6 +20,8 @@ import { loadGameState } from "./gameState/loadGameState";
 import { changeCharacterRoom } from "./gameState/mutators/changeCharacterRoom";
 import { type SavedGame } from "./gameState/saving/SavedGameState";
 import { type InputStateTrackerInterface } from "./input/InputStateTracker";
+import { installE2eFastForwardHandle } from "./mainLoop/installE2eFastForwardHandle";
+import { installE2eSwopCharacterHandle } from "./mainLoop/installE2eSwopCharacterHandle";
 import { MainLoop } from "./mainLoop/MainLoop";
 import { startCameraRotation } from "./mainLoop/tickCameraTransition";
 import { loadHudFont } from "./render/text/TextContainer";
@@ -98,11 +100,6 @@ export const gameMain = async <RoomId extends string>(
 
   stopAppAutoRendering(app);
 
-  // only put on window after initialised and maxFPS set - this ensures it can also be
-  // overwritten
-  if (import.meta.env.MODE === "visual-regression") {
-    window._e2e_pixiApplication = app;
-  }
   if (import.meta.env.DEV || import.meta.env.MODE === "visual-regression") {
     // add for pixi dev tools:
     // eslint-disable-next-line @typescript-eslint/no-explicit-any
@@ -130,6 +127,18 @@ export const gameMain = async <RoomId extends string>(
     if (gameState.characterRooms.heels) {
       store.dispatch(roomExplored(gameState.characterRooms.heels.id));
     }
+  }
+
+  if (import.meta.env.MODE === "visual-regression") {
+    // e2e-only handles, each in its own module so the main loop carries no test
+    // scaffolding, installed here (after the game state exists) since the swop
+    // handle needs it; all excluded from prod by this gate. The swop handle
+    // swops the character via the mutator directly, so it works at zero game
+    // speed - where the input-driven swop, read only inside the physics tick,
+    // never fires:
+    window._e2e_pixiApplication = app;
+    installE2eFastForwardHandle(app);
+    installE2eSwopCharacterHandle(gameState);
   }
 
   const loop = new MainLoop(app, gameState, spritesheetVariants).start();

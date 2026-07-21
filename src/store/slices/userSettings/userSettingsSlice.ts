@@ -143,8 +143,13 @@ export const userSettingsSlice = createSlice({
   reducers: {
     setEmulatedResolution(
       state,
-      { payload }: PayloadAction<ResolutionName | undefined>,
+      { payload }: PayloadAction<null | ResolutionName | undefined>,
     ) {
+      if (payload === null) {
+        // explicit unset - falls back to default:
+        delete state.userSettings.displaySettings.emulatedResolution;
+        return;
+      }
       const current =
         state.userSettings.displaySettings.emulatedResolution ??
         defaultUserSettings.displaySettings.emulatedResolution;
