@@ -1,7 +1,7 @@
 import { type AnimatedSprite, Container, type Renderer } from "pixi.js";
 
 import { type RoomState } from "../../../../../model/RoomState";
-import { type SpritesheetVariants } from "../../../../../sprites/spritesheet/variants/SpritesheetVariants";
+import { type Spritesheets } from "../../../../../sprites/spritesheet/Spritesheets";
 import { type SpriteOption } from "../../../../../store/slices/userSettings/userSettingsSlice";
 import { teleporterIsActive } from "../../../../physics/mechanics/teleporting";
 import {
@@ -26,21 +26,16 @@ type SurfaceContentChildren = [text: TextContainer, teleporter: AnimatedSprite];
 const createSurface = (
   spriteOption: SpriteOption,
   pixiRenderer: Renderer,
-  spritesheetVariants: SpritesheetVariants,
+  spritesheets: Spritesheets,
 ): JumpButtonSurfaceContainer => {
   const teleporter = createSprite({
     // this should include paused, but it isn't on the renderContext yet
     animationId: "teleporter.flashing",
     y: 5,
-    spritesheet: spritesheetVariants.currentMainSpritesheet(
-      false,
-      false,
-      false,
-    ),
+    spritesheet: spritesheets.spritesheetForCurrentRoom,
   });
   const text = new TextContainer({
     pixiRenderer,
-    spritesheet: spritesheetVariants.originalSpritesheet,
     text: "JUMP",
     y: textYForButtonCentre,
   });
@@ -73,7 +68,7 @@ export const jumpButtonAppearance: ButtonAppearance<
     inputStateTracker,
     general: {
       spriteOption,
-      spritesheetVariants,
+      spritesheets,
       spritesheetMeta,
       pixiRenderer,
       paused,
@@ -103,8 +98,8 @@ export const jumpButtonAppearance: ButtonAppearance<
       spritesheetMeta,
       button.which,
       pixiRenderer,
-      spritesheetVariants.originalSpritesheet,
-      createSurface(spriteOption, pixiRenderer, spritesheetVariants),
+      spritesheets.spritesheetForCurrentRoom,
+      createSurface(spriteOption, pixiRenderer, spritesheets),
     );
 
   const pressedChanged = previouslyRenderedProps?.pressed !== pressed;
@@ -149,13 +144,8 @@ export const jumpButtonAppearance: ButtonAppearance<
 
   if (roomChangedSinceLastRendered) {
     // update teleporter textures for room's spritesheet
-    const variantSpritesheet = spritesheetVariants.currentMainSpritesheet(
-      false,
-      false,
-      false,
-    );
     teleporter.textures = framesWithOriginalGameTimings(
-      variantSpritesheet.animations["teleporter.flashing"],
+      spritesheets.spritesheetForCurrentRoom.animations["teleporter.flashing"],
     );
     if (!paused) {
       teleporter.gotoAndPlay(0);

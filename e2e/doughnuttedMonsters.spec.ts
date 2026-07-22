@@ -33,7 +33,9 @@ const doughnutAllMonsters = (page: Page) =>
     const { gameState } = window._e2e_gamePageGameAi!;
     const room = gameState.characterRooms[gameState.currentCharacterName]!;
     for (const item of Object.values(room.items)) {
-      if (item.type === "monster") {
+      // the emperor's guardian is immune to doughnuts, so the doughnutted
+      // state (and its recoloured sprites) can never exist for it:
+      if (item.type === "monster" && item.config.which !== "emperorsGuardian") {
         item.state.busyLickingDoughnutsOffFace = true;
       }
     }

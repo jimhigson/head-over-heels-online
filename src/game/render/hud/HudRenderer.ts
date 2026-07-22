@@ -17,7 +17,10 @@ import {
   type ZxSpectrumRoomColour,
 } from "../../../originalGame";
 import { effectColour } from "../../../sprites/palette/spritesheetPalette";
-import { type TextureId } from "../../../sprites/spritesheet/spritesheetData/makeSpritesheetData";
+import {
+  type BaseTextureId,
+  type BaseTextureIdWithPrefix,
+} from "../../../sprites/spritesheet/spritesheetData/makeSpritesheetData";
 import {
   type SpritesheetMetadata,
   spritesheetMetas,
@@ -26,6 +29,7 @@ import {
   hudCharTextureSize,
   smallItemTextureSize,
 } from "../../../sprites/spritesheet/spritesheetData/textureSizes";
+import { variantTextureId } from "../../../sprites/spritesheet/variantTextureId";
 import { startAppListening } from "../../../store/listenerMiddleware";
 import { selectShowFps } from "../../../store/slices/gameMenus/gameMenusSelectors";
 import { type SpriteOption } from "../../../store/slices/userSettings/userSettingsSlice";
@@ -116,6 +120,9 @@ const hudCharacterDirection = {
   heels: "towards",
 } as const satisfies Record<IndividualCharacterName, DirectionXy4>;
 
+type HudCharacterTextureId =
+  BaseTextureIdWithPrefix<`${"head" | "heels"}.${"standing" | "walking"}`>;
+
 export class HudRenderer<
   RoomId extends string,
   RoomItemId extends string,
@@ -150,7 +157,7 @@ export class HudRenderer<
     };
   };
 
-  #characterTextureIds: Record<IndividualCharacterName, TextureId>;
+  #characterTextureIds: Record<IndividualCharacterName, HudCharacterTextureId>;
 
   // eslint-disable-next-line @typescript-eslint/no-explicit-any
   #mapButton: HudButtonRenderer<"map", RoomId, any, any>;
@@ -173,7 +180,6 @@ export class HudRenderer<
   constructor(renderContext: HudRenderContext<RoomId>) {
     this.renderContext = renderContext;
     const { general } = renderContext;
-    const originalSS = general.spritesheetVariants.originalSpritesheet;
 
     this.#characterTextureIds = {
       head: this.#resolveCharacterTextureId("head"),
@@ -185,7 +191,6 @@ export class HudRenderer<
         sprite: this.#createCharacterSprite("head"),
         livesText: new TextContainer({
           pixiRenderer: general.pixiRenderer,
-          spritesheet: originalSS,
           label: "headLives",
           doubleHeight: true,
           outline: true,
@@ -217,7 +222,6 @@ export class HudRenderer<
         sprite: this.#createCharacterSprite("heels"),
         livesText: new TextContainer({
           pixiRenderer: general.pixiRenderer,
-          spritesheet: originalSS,
           label: "heelsLives",
           doubleHeight: true,
           outline: true,
@@ -409,7 +413,7 @@ export class HudRenderer<
   }
 
   #iconWithNumber(options: {
-    icon: TextureId;
+    icon: BaseTextureId;
     textOnTop?: boolean;
     noText?: boolean;
     outline?: "text-only" | boolean;
@@ -434,7 +438,7 @@ export class HudRenderer<
      * shield/lightning/hot-spring symbols, which live in the font rather than
      * the spritesheet) to render as the icon
      */
-    icon: { glyph: string } | TextureId;
+    icon: { glyph: string } | BaseTextureId;
     textOnTop?: boolean;
     noText?: boolean;
     outline?: "text-only" | boolean;
@@ -447,15 +451,13 @@ export class HudRenderer<
       typeof iconSource === "string" ?
         new Sprite({
           texture:
-            this.renderContext.general.spritesheetVariants.originalSpritesheet
+            this.renderContext.general.spritesheets.originalSpritesheet
               .textures[iconSource],
           anchor: textOnTop ? { x: 0.5, y: 0 } : { x: 0.5, y: 1 },
           y: textOnTop ? 0 : 8,
         })
       : new TextContainer({
           pixiRenderer: this.renderContext.general.pixiRenderer,
-          spritesheet:
-            this.renderContext.general.spritesheetVariants.originalSpritesheet,
           text: iconSource.glyph,
           y: 8,
         });
@@ -464,8 +466,6 @@ export class HudRenderer<
     const x = hudCharTextureSize.w / 2;
     const text = new TextContainer({
       pixiRenderer: this.renderContext.general.pixiRenderer,
-      spritesheet:
-        this.renderContext.general.spritesheetVariants.originalSpritesheet,
       outline: outline === "text-only",
       y: textOnTop ? 0 : 16,
       x,
@@ -489,7 +489,7 @@ export class HudRenderer<
 
   #resolveCharacterTextureId(
     characterName: IndividualCharacterName,
-  ): TextureId {
+  ): HudCharacterTextureId {
     const { spriteOption } = this.renderContext.general;
     const direction = hudCharacterDirection[characterName];
     const standing =
@@ -508,8 +508,9 @@ export class HudRenderer<
 
   #createCharacterSprite(characterName: IndividualCharacterName): Sprite {
     const characterSprite = new Sprite(
-      this.renderContext.general.spritesheetVariants.originalSpritesheet
-        .textures[this.#characterTextureIds[characterName]],
+      this.renderContext.general.spritesheets.originalSpritesheet.textures[
+        this.#characterTextureIds[characterName]
+      ],
     );
 
     characterSprite.anchor = { x: 0.5, y: 0 };
@@ -608,11 +609,16 @@ export class HudRenderer<
     const bagSprite = this.#hudElements.heels.bag.icon;
     const hasBag = heelsAbilities?.hasBag;
     bagSprite.texture =
-      this.renderContext.general.spritesheetVariants.currentMainSpritesheet(
-        !(hasBag ?? false),
-        false,
-        false,
-      ).textures["bag"];
+      this.renderContext.general.spritesheets.spritesheetForCurrentRoom.textures[
+        variantTextureId(
+          "bag",
+          false,
+          false,
+          !(hasBag ?? false),
+          false,
+          undefined,
+        )
+      ];
 
     bagSprite.tint = tintForHudIfUncolourised(
       spriteOption,
@@ -642,17 +648,27 @@ export class HudRenderer<
     // TODO: colourise will never change in the lifetime of the renderer, this doesn't need to be done each tick
 
     hooterSprite.texture =
-      this.renderContext.general.spritesheetVariants.currentMainSpritesheet(
-        !(hasHooter ?? false),
-        false,
-        false,
-      ).textures["hooter"];
+      this.renderContext.general.spritesheets.spritesheetForCurrentRoom.textures[
+        variantTextureId(
+          "hooter",
+          false,
+          false,
+          !(hasHooter ?? false),
+          false,
+          undefined,
+        )
+      ];
     doughnutsSprite.texture =
-      this.renderContext.general.spritesheetVariants.currentMainSpritesheet(
-        !hasDoughnuts,
-        false,
-        false,
-      ).textures["doughnuts"];
+      this.renderContext.general.spritesheets.spritesheetForCurrentRoom.textures[
+        variantTextureId(
+          "doughnuts",
+          false,
+          false,
+          !hasDoughnuts,
+          false,
+          undefined,
+        )
+      ];
 
     this.#hudElements.head.doughnuts.textContainer.text =
       doughnutCount === "infinite" ? "∞" : doughnutCount;
@@ -793,11 +809,17 @@ export class HudRenderer<
 
     try {
       characterTexture =
-        this.renderContext.general.spritesheetVariants.currentMainSpritesheet(
-          !isActive,
-          false,
-          false,
-        ).textures[this.#characterTextureIds[characterName]];
+        this.renderContext.general.spritesheets.spritesheetForCurrentRoom
+          .textures[
+          variantTextureId(
+            this.#characterTextureIds[characterName],
+            false,
+            false,
+            !isActive,
+            false,
+            undefined,
+          )
+        ];
     } catch (e) {
       console.error(this.renderContext);
       throw new Error(`error getting character texture for ${characterName}`, {

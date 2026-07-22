@@ -58,14 +58,13 @@ export const lightBeamAppearance: ItemAppearance<
   LightBeamRenderProps
 > = ({
   renderContext: {
-    isReflection,
     item: {
       aabb,
       config: { direction },
       state: { end },
     },
     room: { roomTime },
-    general: { paused, spritesheetVariants, cameraAngle },
+    general: { paused, spritesheets, cameraAngle },
   },
   currentRendering,
 }) => {
@@ -98,11 +97,9 @@ export const lightBeamAppearance: ItemAppearance<
     return "no-update";
   }
 
-  const spritesheet = spritesheetVariants.currentMainSpritesheet(
-    false,
-    false,
-    isReflection,
-  );
+  // light beams are an unreflected item type, so never take the
+  // mirror-reflection suffix:
+  const { spritesheetForCurrentRoom: spritesheet } = spritesheets;
   const dominantOrdinal = direction[axis];
   const tileCount = Math.max(1, Math.round(lengthPx / beamTilePx));
 

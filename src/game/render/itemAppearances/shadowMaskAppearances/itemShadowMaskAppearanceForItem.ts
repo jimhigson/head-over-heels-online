@@ -8,8 +8,8 @@ import {
 import { type MonsterJsonConfig } from "../../../../model/json/MonsterJsonConfig";
 import { itemInPlayTimes } from "../../../../model/times";
 import {
-  type AnimationId,
-  type TextureId,
+  type BaseAnimationIdWithPrefix,
+  type BaseTextureIdWithPrefix,
 } from "../../../../sprites/spritesheet/spritesheetData/makeSpritesheetData";
 import {
   maybeRenderContainerToSprite,
@@ -46,8 +46,9 @@ import {
 import { teleporterShadowMaskAppearance } from "./teleporterShadowMaskAppearance";
 
 type ShadowMaskSpriteOptions = {
-  textureId?: TextureId;
-  animationId?: AnimationId;
+  /** `blank` masks out everything - for items that cast no shadow at all */
+  textureId?: "blank" | BaseTextureIdWithPrefix<"shadowMask">;
+  animationId?: BaseAnimationIdWithPrefix<"shadowMask">;
   flipX?: boolean;
   y?: number;
 };
@@ -59,7 +60,7 @@ const shadowMaskStaticAppearance = <T extends ItemInPlayType>(
     ({
       renderContext: {
         item: subject,
-        general: { pixiRenderer, spritesheetVariants, cameraAngle },
+        general: { pixiRenderer, spritesheets, cameraAngle },
       },
     }) => {
       const cameraQuarterAngle = nearestQuarterAngle(cameraAngle);
@@ -68,7 +69,7 @@ const shadowMaskStaticAppearance = <T extends ItemInPlayType>(
         // multiplied masks tile along their world axes, which the projection
         // rotates on screen:
         cameraQuarterAngle,
-        spritesheet: spritesheetVariants.shadowSpritesheet,
+        spritesheet: spritesheets.shadowSpritesheet,
       } as SpecifiedTextureCreateSpriteOptions;
 
       const times = itemInPlayTimes(subject);
@@ -118,7 +119,7 @@ const shadowMaskFromConfigAppearance =
   ) => AppearanceReturn<RenderOnceProps, Sprite>) =>
   ({
     renderContext: {
-      general: { pixiRenderer, spritesheetVariants, cameraAngle },
+      general: { pixiRenderer, spritesheets, cameraAngle },
       item,
     },
     currentRendering,
@@ -142,7 +143,7 @@ const shadowMaskFromConfigAppearance =
         // multiplied masks tile along their world axes, which the projection
         // rotates on screen:
         cameraQuarterAngle,
-        spritesheet: spritesheetVariants.shadowSpritesheet,
+        spritesheet: spritesheets.shadowSpritesheet,
       } as SpecifiedTextureCreateSpriteOptions;
 
       const appearanceReturn = {

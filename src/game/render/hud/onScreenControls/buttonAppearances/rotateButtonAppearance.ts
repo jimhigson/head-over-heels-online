@@ -32,7 +32,6 @@ export const rotateButtonAppearance =
 
     const output = new TextContainer({
       pixiRenderer: general.pixiRenderer,
-      spritesheet: general.spritesheetVariants.originalSpritesheet,
       label: `rotateText.${glyph}`,
       outline: true,
       doubleHeight: true,

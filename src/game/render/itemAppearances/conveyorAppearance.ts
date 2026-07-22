@@ -1,7 +1,8 @@
 import { AnimatedSprite, Container } from "pixi.js";
 
 import { isStoodOn } from "../../../model/StoodOnBy";
-import { type AppSpritesheet } from "../../../sprites/spritesheet/variants/AppSpritesheet";
+import { type AppSpritesheetWithVariants } from "../../../sprites/spritesheet/AppSpritesheet";
+import { variantTextureId } from "../../../sprites/spritesheet/variantTextureId";
 import { neverTime } from "../../../utils/neverTime";
 import { maybeRenderContainerToAnimatedSprite } from "../../../utils/pixi/renderContainerToSprite";
 import { nearestQuarterAngle, rotateXy } from "../../../utils/vectors/rotateXy";
@@ -50,9 +51,11 @@ const staggerAnimation = (
 const createRendering = (
   direction: Xyz,
   times: Partial<Xy> | undefined,
-  spritesheet: AppSpritesheet,
+  spritesheet: AppSpritesheetWithVariants,
   frameCount: number,
   cameraQuarterAngle: Xy,
+  disabled: boolean,
+  isReflection: boolean,
 ): Container<AnimatedSprite> => {
   // pick the directional sprite + animation sense for how the conveyor
   // appears once the camera has apparentDirection - the direction stays a vector
@@ -62,7 +65,14 @@ const createRendering = (
     Math.abs(apparentDirection.y) > Math.abs(apparentDirection.x) ? "y" : "x";
   const reverse = isNegativeSideXy(apparentDirection);
   const sprites = createSprite({
-    animationId: `conveyor.${axis}`,
+    animationId: variantTextureId(
+      `conveyor.${axis}`,
+      isReflection,
+      false,
+      disabled,
+      false,
+      undefined,
+    ),
     reverse,
     times,
     cameraQuarterAngle,
@@ -99,7 +109,7 @@ const conveyorAppearanceImpl: ItemAppearance<
       state: { stoodOnBy, direction, disabled },
     },
     room: { roomTime },
-    general: { spritesheetVariants, pixiRenderer, paused, cameraAngle },
+    general: { spritesheets, pixiRenderer, paused, cameraAngle },
   },
   currentRendering,
 }) => {
@@ -129,15 +139,10 @@ const conveyorAppearanceImpl: ItemAppearance<
     !xyEqual(cameraQuarterAngle, currentlyRenderedProps.cameraQuarterAngle) ||
     disabledChanged;
 
-  const spritesheet = spritesheetVariants.currentMainSpritesheet(
-    !!disabled,
-    false,
-    isReflection,
-  );
+  const { spritesheetForCurrentRoom: spritesheet } = spritesheets;
 
-  const conveyorAnimationSpeed: number =
-    spritesheet.data.animations["conveyor.x"].animationSpeed;
-  const frameCount = spritesheet.data.animations["conveyor.x"].length;
+  const { animationSpeed: conveyorAnimationSpeed, length: frameCount } =
+    spritesheet.data.animations["conveyor.x"];
 
   const rendering: AnimatedSprite =
     rerender ?
@@ -149,6 +154,8 @@ const conveyorAppearanceImpl: ItemAppearance<
           spritesheet,
           frameCount,
           cameraQuarterAngle,
+          !!disabled,
+          isReflection,
         ),
         "conveyor.x",
         spritesheet,

@@ -14,8 +14,9 @@ import {
   isTextureId,
 } from "../../../../sprites/assertIsTextureId";
 import { effectColour } from "../../../../sprites/palette/spritesheetPalette";
+import { type AppSpritesheetWithVariants } from "../../../../sprites/spritesheet/AppSpritesheet";
 import { type SpritesheetMetadata } from "../../../../sprites/spritesheet/spritesheetData/spritesheetMetaData";
-import { type AppSpritesheet } from "../../../../sprites/spritesheet/variants/AppSpritesheet";
+import { variantTextureId } from "../../../../sprites/spritesheet/variantTextureId";
 import { type SpriteOption } from "../../../../store/slices/userSettings/userSettingsSlice";
 import { isEmptyObject } from "../../../../utils/empty";
 import { resolveCameraRelativeVectorXy8 } from "../../../../utils/vectors/resolveCameraRelativeVector";
@@ -66,15 +67,24 @@ const playableCreateSpriteOptions = ({
   spritesheet,
   isStoodOn,
   isInSymbiosis,
+  isReflection,
 }: PlayableRenderProps & {
   name: IndividualCharacterName;
   paused: boolean;
-  spritesheet: AppSpritesheet;
+  spritesheet: AppSpritesheetWithVariants;
   isInSymbiosis: boolean;
+  isReflection: boolean;
 }): CreateSpriteOptions => {
   if (action === "death") {
     return {
-      animationId: `${name}.fadeOut`,
+      animationId: variantTextureId(
+        `${name}.fadeOut`,
+        isReflection,
+        false,
+        false,
+        false,
+        undefined,
+      ),
       paused,
       spritesheet,
     };
@@ -82,7 +92,14 @@ const playableCreateSpriteOptions = ({
 
   if (teleportingPhase === "out") {
     return {
-      animationId: `${name}.fadeOut`,
+      animationId: variantTextureId(
+        `${name}.fadeOut`,
+        isReflection,
+        false,
+        false,
+        false,
+        undefined,
+      ),
       paused,
       spritesheet,
     };
@@ -90,7 +107,14 @@ const playableCreateSpriteOptions = ({
 
   if (teleportingPhase === "in") {
     return {
-      animationId: `${name}.fadeOut`,
+      animationId: variantTextureId(
+        `${name}.fadeOut`,
+        isReflection,
+        false,
+        false,
+        false,
+        undefined,
+      ),
       paused,
       spritesheet,
     };
@@ -104,7 +128,14 @@ const playableCreateSpriteOptions = ({
     )
   ) {
     return {
-      animationId: `${name}.walking.${resolvedFacingXy8}`,
+      animationId: variantTextureId(
+        `${name}.walking.${resolvedFacingXy8}`,
+        isReflection,
+        false,
+        false,
+        false,
+        undefined,
+      ),
       paused,
       spritesheet,
     };
@@ -113,7 +144,14 @@ const playableCreateSpriteOptions = ({
   if (action === "jumping") {
     if (gravityZ < jumpSpriteGravityZThreshold) {
       return {
-        textureId: `${name}.walking.${resolvedFacingXy8}.2`,
+        textureId: variantTextureId(
+          `${name}.walking.${resolvedFacingXy8}.2`,
+          isReflection,
+          false,
+          false,
+          false,
+          undefined,
+        ),
         spritesheet,
       };
     }
@@ -123,25 +161,49 @@ const playableCreateSpriteOptions = ({
         ?.jumpAscent ?? 1;
 
     return {
-      textureId: `${name}.walking.${resolvedFacingXy8}.${jumpAscentWalkTextureNo}`,
+      textureId: variantTextureId(
+        `${name}.walking.${resolvedFacingXy8}.${jumpAscentWalkTextureNo}`,
+        isReflection,
+        false,
+        false,
+        false,
+        undefined,
+      ),
       spritesheet,
     };
   }
 
   if (action === "falling") {
-    const fallingTextureName = `${name}.falling.${resolvedFacingXy8}`;
+    const fallingTextureName = `${name}.falling.${resolvedFacingXy8}` as const;
 
     if (isTextureId(fallingTextureName, spritesheet.data)) {
-      return { textureId: fallingTextureName, spritesheet };
+      return {
+        textureId: variantTextureId(
+          fallingTextureName,
+          isReflection,
+          false,
+          false,
+          false,
+          undefined,
+        ),
+        spritesheet,
+      };
     }
   }
 
   if (name === "head" && isStoodOn) {
     // head (or head component of head-over-heels) - show with eyes closed
-    const blinkingTextureId = `${name}.blinking.${resolvedFacingXy8}`;
+    const blinkingTextureId = `${name}.blinking.${resolvedFacingXy8}` as const;
     if (isTextureId(blinkingTextureId, spritesheet.data)) {
       return {
-        textureId: blinkingTextureId,
+        textureId: variantTextureId(
+          blinkingTextureId,
+          isReflection,
+          false,
+          false,
+          false,
+          undefined,
+        ),
         spritesheet,
       };
     }
@@ -151,13 +213,30 @@ const playableCreateSpriteOptions = ({
   if (isAnimationId(idleAnimationId, spritesheet.data)) {
     // we have an idle anim for this character/direction
     return {
-      animationId: idleAnimationId,
+      animationId: variantTextureId(
+        idleAnimationId,
+        isReflection,
+        false,
+        false,
+        false,
+        undefined,
+      ),
       paused,
       spritesheet,
     };
   }
   // no idle animation:
-  return { textureId: `${name}.walking.${resolvedFacingXy8}.2`, spritesheet };
+  return {
+    textureId: variantTextureId(
+      `${name}.walking.${resolvedFacingXy8}.2`,
+      isReflection,
+      false,
+      false,
+      false,
+      undefined,
+    ),
+    spritesheet,
+  };
 };
 
 /** should player have the flashing effect after losing a life */
@@ -209,6 +288,7 @@ class IndividualPlayableRendering {
 
   readonly #name: IndividualCharacterName;
   readonly #isInSymbiosis: boolean;
+  readonly #isReflection: boolean;
 
   constructor(
     name: IndividualCharacterName,
@@ -217,11 +297,13 @@ class IndividualPlayableRendering {
     spriteOption: SpriteOption,
     spritesheetMeta: SpritesheetMetadata,
     roomColour: ZxSpectrumRoomColour,
-    shineSpritesheet: AppSpritesheet,
+    shineSpritesheet: AppSpritesheetWithVariants,
     filterCache: FilterCache,
+    isReflection: boolean,
   ) {
     this.#name = name;
     this.#isInSymbiosis = isInSymbiosis;
+    this.#isReflection = isReflection;
 
     this.container.addChild(this.#bodySpriteContainer);
 
@@ -236,7 +318,14 @@ class IndividualPlayableRendering {
       : effectColour(spritesheetMeta, isDim, "invulnerable");
 
     this.#shineSprite = createSprite({
-      animationId: isInSymbiosis ? `shine.${name}InSymbio` : `shine.${name}`,
+      animationId: variantTextureId(
+        isInSymbiosis ? `shine.${name}InSymbio` : `shine.${name}`,
+        isReflection,
+        false,
+        false,
+        false,
+        undefined,
+      ),
       paused,
       flipX: name === "heels",
       spritesheet: shineSpritesheet,
@@ -260,7 +349,7 @@ class IndividualPlayableRendering {
   #refreshBodySprite(
     renderProps: PlayableRenderProps,
     paused: boolean,
-    spritesheet: AppSpritesheet,
+    spritesheet: AppSpritesheetWithVariants,
   ) {
     this.#bodySpriteContainer.removeChildren();
     this.#bodySpriteContainer.addChild(
@@ -271,6 +360,7 @@ class IndividualPlayableRendering {
           paused,
           spritesheet,
           isInSymbiosis: this.#isInSymbiosis,
+          isReflection: this.#isReflection,
         }),
       ),
     );
@@ -303,7 +393,7 @@ class IndividualPlayableRendering {
     refreshSprites: boolean,
     renderProps: PlayableRenderProps,
     paused: boolean,
-    spritesheet: AppSpritesheet,
+    spritesheet: AppSpritesheetWithVariants,
   ) {
     if (refreshSprites) {
       this.#refreshBodySprite(renderProps, paused, spritesheet);
@@ -338,7 +428,7 @@ export class PlayableItemPixiRenderer implements ItemLeafPixiRenderer<CharacterN
   constructor(renderContext: ItemLeafRenderContext<CharacterName>) {
     this.renderContext = renderContext;
     const {
-      general: { paused, spriteOption, spritesheetMeta, spritesheetVariants },
+      general: { paused, spriteOption, spritesheetMeta, spritesheets },
       room: { color: roomColour },
       filterCache,
       isReflection,
@@ -352,12 +442,6 @@ export class PlayableItemPixiRenderer implements ItemLeafPixiRenderer<CharacterN
       throw new Error("PlayableItemPixiRenderer requires a filterCache");
     }
 
-    const shineSpritesheet = spritesheetVariants.currentMainSpritesheet(
-      false,
-      false,
-      isReflection,
-    );
-
     const makeIndividualRendering = (
       name: IndividualCharacterName,
       isInSymbiosis: boolean,
@@ -369,8 +453,9 @@ export class PlayableItemPixiRenderer implements ItemLeafPixiRenderer<CharacterN
         spriteOption,
         spritesheetMeta,
         roomColour,
-        shineSpritesheet,
+        spritesheets.spritesheetForCurrentRoom,
         filterCache,
+        isReflection,
       );
 
     if (item.type === "headOverHeels") {
@@ -389,7 +474,7 @@ export class PlayableItemPixiRenderer implements ItemLeafPixiRenderer<CharacterN
 
   tick() {
     const {
-      general: { gameState, paused, spritesheetVariants, cameraAngle },
+      general: { gameState, paused, spritesheets, cameraAngle },
       room: { roomTime },
       isReflection,
       item: subject,
@@ -451,18 +536,12 @@ export class PlayableItemPixiRenderer implements ItemLeafPixiRenderer<CharacterN
       this.#prevGravityAboveThreshold !== gravityAboveThreshold ||
       this.#prevIsStoodOn !== isStoodOn;
 
-    const spritesheet = spritesheetVariants.currentMainSpritesheet(
-      false,
-      false,
-      isReflection,
-    );
-
     for (let i = 0; i < this.#individuals.length; i++) {
       this.#individuals[i].update(
         refreshSprites,
         renderProps,
         paused,
-        spritesheet,
+        spritesheets.spritesheetForCurrentRoom,
       );
     }
 

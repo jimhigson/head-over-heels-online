@@ -1,8 +1,8 @@
 import { AnimatedSprite, Container, Sprite, Texture } from "pixi.js";
 import { beforeAll, describe, expect, expectTypeOf, test } from "vitest";
 
+import { type AppSpritesheetWithVariants } from "../../sprites/spritesheet/AppSpritesheet";
 import { type TextureId } from "../../sprites/spritesheet/spritesheetData/makeSpritesheetData";
-import { type AppSpritesheet } from "../../sprites/spritesheet/variants/AppSpritesheet";
 import { type Xyz } from "../../utils/vectors/vectors";
 import { createSprite, type CreateSpriteOptions } from "./createSprite";
 
@@ -41,7 +41,7 @@ const spritesheet = {
       }),
     },
   },
-} as unknown as AppSpritesheet;
+} as unknown as AppSpritesheetWithVariants;
 
 beforeAll(() => {
   globalThis.requestAnimationFrame = (

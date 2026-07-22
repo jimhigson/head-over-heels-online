@@ -11,8 +11,8 @@ import {
   maybeDimPalette,
   paletteBlockstack,
 } from "../../../../sprites/palette/spritesheetPalette";
+import { type AppSpritesheetWithVariants } from "../../../../sprites/spritesheet/AppSpritesheet";
 import { type SpritesheetMetadata } from "../../../../sprites/spritesheet/spritesheetData/spritesheetMetaData";
-import { type AppSpritesheet } from "../../../../sprites/spritesheet/variants/AppSpritesheet";
 import { halfbrite } from "../../../../utils/colour/halfbrite";
 import { resolveSwops } from "../../../../utils/palette/palette";
 import { renderContainerToTexture } from "../../../../utils/pixi/renderContainerToSprite";
@@ -39,20 +39,20 @@ export class ArcadeStyleButtonContainer<
   #spritesheetMeta: SpritesheetMetadata;
   #which: ButtonId;
   #pixiRenderer: Renderer;
-  #originalSpritesheet: AppSpritesheet;
+  #spritesheetForCurrentRoom: AppSpritesheetWithVariants;
 
   constructor(
     spritesheetMeta: SpritesheetMetadata,
     which: ButtonId,
     pixiRenderer: Renderer,
-    originalSpritesheet: AppSpritesheet,
+    spritesheetForCurrentRoom: AppSpritesheetWithVariants,
     initiallyShowOnSurface: SurfaceContent,
   ) {
     super({ label: `arcadeButton (${which})` });
     this.#spritesheetMeta = spritesheetMeta;
     this.#which = which;
     this.#pixiRenderer = pixiRenderer;
-    this.#originalSpritesheet = originalSpritesheet;
+    this.#spritesheetForCurrentRoom = spritesheetForCurrentRoom;
 
     // a container so that the whole button can move down together
     // to show the 'pressed' effect
@@ -71,7 +71,7 @@ export class ArcadeStyleButtonContainer<
     const surfaceMask = createSprite({
       textureId: "button.surfaceMask",
       label: "surfaceMask",
-      spritesheet: this.#originalSpritesheet,
+      spritesheet: this.#spritesheetForCurrentRoom,
     });
     this.#depressTranslateContainer.addChild(surfaceMask);
     this.#surface.mask = surfaceMask;
@@ -108,7 +108,7 @@ export class ArcadeStyleButtonContainer<
 
     const spriteTemplate = createSprite({
       textureId: "button",
-      spritesheet: this.#originalSpritesheet,
+      spritesheet: this.#spritesheetForCurrentRoom,
     });
 
     const palette = maybeDimPalette(meta, room.color.shade === "dimmed");
@@ -141,7 +141,7 @@ export class ArcadeStyleButtonContainer<
     );
 
     spriteTemplate.texture =
-      this.#originalSpritesheet.textures["button.pressed"];
+      this.#spritesheetForCurrentRoom.textures["button.pressed"];
 
     const pressedButtonTexture = renderContainerToTexture(
       this.#pixiRenderer,

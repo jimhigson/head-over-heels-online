@@ -3,7 +3,7 @@ import { type SetRequired } from "type-fest";
 
 import { type RoomState } from "../../../model/RoomState";
 import { type SpritesheetMetadata } from "../../../sprites/spritesheet/spritesheetData/spritesheetMetaData";
-import { type SpritesheetVariants } from "../../../sprites/spritesheet/variants/SpritesheetVariants";
+import { type Spritesheets } from "../../../sprites/spritesheet/Spritesheets";
 import { type Upscale } from "../../../store/slices/upscale/Upscale";
 import {
   type DisplaySettings,
@@ -47,7 +47,7 @@ export type GeneralRenderContext<RoomId extends string> = {
   onScreenControls: boolean;
   /** game speed multiplier for the current frame — 0 when paused, <1 during slow-motion (e.g. death animation) */
   speedCoefficient: number;
-  spritesheetVariants: SpritesheetVariants;
+  spritesheets: Spritesheets;
 };
 
 /**

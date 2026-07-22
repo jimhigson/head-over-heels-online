@@ -1,6 +1,7 @@
 import { type IndividualCharacterName } from "../../../model/modelTypes";
 import { isAnimationId } from "../../../sprites/assertIsTextureId";
-import { type AppSpritesheet } from "../../../sprites/spritesheet/variants/AppSpritesheet";
+import { type AppSpritesheetWithVariants } from "../../../sprites/spritesheet/AppSpritesheet";
+import { variantTextureId } from "../../../sprites/spritesheet/variantTextureId";
 import { resolveCameraRelativeVectorXy8 } from "../../../utils/vectors/resolveCameraRelativeVector";
 import { type DirectionXy8 } from "../../../utils/vectors/vectors";
 import { createSprite, type CreateSpriteOptions } from "../createSprite";
@@ -12,19 +13,37 @@ const spriteOptions = (
   direction: DirectionXy8,
   hash: number | undefined,
   paused: boolean,
-  spritesheet: AppSpritesheet,
+  spritesheet: AppSpritesheetWithVariants,
+  isReflection: boolean,
 ): Exclude<CreateSpriteOptions, string> => {
-  const possibleAnimationId = `${name}.idle.${direction}`;
+  const possibleAnimationId = `${name}.idle.${direction}` as const;
 
   if (isAnimationId(possibleAnimationId, spritesheet.data)) {
     return {
-      animationId: possibleAnimationId,
+      animationId: variantTextureId(
+        possibleAnimationId,
+        isReflection,
+        false,
+        false,
+        true,
+        undefined,
+      ),
       startFramePhase: hash,
       paused,
       spritesheet,
     };
   }
-  return { textureId: `${name}.walking.${direction}.2`, spritesheet };
+  return {
+    textureId: variantTextureId(
+      `${name}.walking.${direction}.2`,
+      isReflection,
+      false,
+      false,
+      true,
+      undefined,
+    ),
+    spritesheet,
+  };
 };
 
 type SceneryPlayerRenderProps = {
@@ -41,7 +60,7 @@ export const sceneryPlayerAppearance: ItemAppearance<
       hash,
       config: { which, startDirection },
     },
-    general: { paused, spritesheetVariants, cameraAngle },
+    general: { paused, spritesheets, cameraAngle },
   },
   currentRendering,
 }) => {
@@ -64,12 +83,7 @@ export const sceneryPlayerAppearance: ItemAppearance<
     return "no-update";
   }
 
-  // scenery players have their own spritesheet variant, but in a reflection
-  // they draw from the mirror-reflection variant like everything else:
-  const spritesheet =
-    isReflection ?
-      spritesheetVariants.currentMainSpritesheet(false, false, true)
-    : spritesheetVariants.sceneryPlayerSpritesheet;
+  const { spritesheetForCurrentRoom: spritesheet } = spritesheets;
 
   return {
     output:
@@ -81,6 +95,7 @@ export const sceneryPlayerAppearance: ItemAppearance<
             hash,
             paused,
             spritesheet,
+            isReflection,
           ),
           bottom: spriteOptions(
             "heels",
@@ -88,6 +103,7 @@ export const sceneryPlayerAppearance: ItemAppearance<
             hash,
             paused,
             spritesheet,
+            isReflection,
           ),
         })
       : createSprite(
@@ -97,6 +113,7 @@ export const sceneryPlayerAppearance: ItemAppearance<
             hash,
             paused,
             spritesheet,
+            isReflection,
           ),
         ),
     renderProps: { resolvedRenderDirection },

@@ -10,6 +10,22 @@ exports[`for tailwind plugin we must have all possible frames and animations 1`]
       "y": 127,
     },
   },
+  "bag.deactivated": {
+    "frame": {
+      "h": 24,
+      "w": 24,
+      "x": 526,
+      "y": 127,
+    },
+  },
+  "bag.mirrorReflection": {
+    "frame": {
+      "h": 24,
+      "w": 24,
+      "x": 526,
+      "y": 127,
+    },
+  },
   "ball": {
     "frame": {
       "h": 24,
@@ -18,7 +34,23 @@ exports[`for tailwind plugin we must have all possible frames and animations 1`]
       "y": 52,
     },
   },
+  "ball.mirrorReflection": {
+    "frame": {
+      "h": 24,
+      "w": 24,
+      "x": 426,
+      "y": 52,
+    },
+  },
   "ball.uncolourised": {
+    "frame": {
+      "h": 24,
+      "w": 24,
+      "x": 476,
+      "y": 52,
+    },
+  },
+  "ball.uncolourised.mirrorReflection": {
     "frame": {
       "h": 24,
       "w": 24,
@@ -50,6 +82,30 @@ exports[`for tailwind plugin we must have all possible frames and animations 1`]
       "y": 2,
     },
   },
+  "barrier.x.disappearing.mirrorReflection": {
+    "frame": {
+      "h": 24,
+      "pivot": {
+        "x": 18,
+        "y": 23,
+      },
+      "w": 24,
+      "x": 426,
+      "y": 2,
+    },
+  },
+  "barrier.x.mirrorReflection": {
+    "frame": {
+      "h": 24,
+      "pivot": {
+        "x": 18,
+        "y": 23,
+      },
+      "w": 24,
+      "x": 476,
+      "y": 2,
+    },
+  },
   "barrier.y": {
     "frame": {
       "h": 24,
@@ -71,6 +127,30 @@ exports[`for tailwind plugin we must have all possible frames and animations 1`]
       },
       "w": 24,
       "x": 451,
+      "y": 2,
+    },
+  },
+  "barrier.y.disappearing.mirrorReflection": {
+    "frame": {
+      "h": 24,
+      "pivot": {
+        "x": 6,
+        "y": 23,
+      },
+      "w": 24,
+      "x": 451,
+      "y": 2,
+    },
+  },
+  "barrier.y.mirrorReflection": {
+    "frame": {
+      "h": 24,
+      "pivot": {
+        "x": 6,
+        "y": 23,
+      },
+      "w": 24,
+      "x": 501,
       "y": 2,
     },
   },
@@ -194,6 +274,14 @@ exports[`for tailwind plugin we must have all possible frames and animations 1`]
       "y": 914,
     },
   },
+  "blank.mirrorReflection": {
+    "frame": {
+      "h": 28,
+      "w": 32,
+      "x": 1,
+      "y": 914,
+    },
+  },
   "block.artificial": {
     "frame": {
       "h": 28,
@@ -207,6 +295,22 @@ exports[`for tailwind plugin we must have all possible frames and animations 1`]
       "h": 28,
       "w": 32,
       "x": 199,
+      "y": 682,
+    },
+  },
+  "block.artificial.disappearing.mirrorReflection": {
+    "frame": {
+      "h": 28,
+      "w": 32,
+      "x": 199,
+      "y": 682,
+    },
+  },
+  "block.artificial.mirrorReflection": {
+    "frame": {
+      "h": 28,
+      "w": 32,
+      "x": 166,
       "y": 682,
     },
   },
@@ -234,11 +338,43 @@ exports[`for tailwind plugin we must have all possible frames and animations 1`]
       "y": 682,
     },
   },
+  "block.organic.dark.disappearing.mirrorReflection": {
+    "frame": {
+      "h": 28,
+      "w": 32,
+      "x": 100,
+      "y": 682,
+    },
+  },
+  "block.organic.dark.mirrorReflection": {
+    "frame": {
+      "h": 28,
+      "w": 32,
+      "x": 67,
+      "y": 682,
+    },
+  },
   "block.organic.disappearing": {
     "frame": {
       "h": 28,
       "w": 32,
       "x": 34,
+      "y": 682,
+    },
+  },
+  "block.organic.disappearing.mirrorReflection": {
+    "frame": {
+      "h": 28,
+      "w": 32,
+      "x": 34,
+      "y": 682,
+    },
+  },
+  "block.organic.mirrorReflection": {
+    "frame": {
+      "h": 28,
+      "w": 32,
+      "x": 1,
       "y": 682,
     },
   },
@@ -250,7 +386,23 @@ exports[`for tailwind plugin we must have all possible frames and animations 1`]
       "y": 682,
     },
   },
+  "book.x.mirrorReflection": {
+    "frame": {
+      "h": 28,
+      "w": 32,
+      "x": 265,
+      "y": 682,
+    },
+  },
   "book.y": {
+    "frame": {
+      "h": 28,
+      "w": 32,
+      "x": 298,
+      "y": 682,
+    },
+  },
+  "book.y.mirrorReflection": {
     "frame": {
       "h": 28,
       "w": 32,
@@ -306,7 +458,55 @@ exports[`for tailwind plugin we must have all possible frames and animations 1`]
       "y": 302,
     },
   },
+  "bubbles.blueGreen.1.deactivated": {
+    "frame": {
+      "h": 24,
+      "w": 24,
+      "x": 576,
+      "y": 302,
+    },
+  },
+  "bubbles.blueGreen.1.doughnutted": {
+    "frame": {
+      "h": 24,
+      "w": 24,
+      "x": 576,
+      "y": 302,
+    },
+  },
+  "bubbles.blueGreen.1.mirrorReflection": {
+    "frame": {
+      "h": 24,
+      "w": 24,
+      "x": 576,
+      "y": 302,
+    },
+  },
   "bubbles.blueGreen.2": {
+    "frame": {
+      "h": 24,
+      "w": 24,
+      "x": 601,
+      "y": 302,
+    },
+  },
+  "bubbles.blueGreen.2.deactivated": {
+    "frame": {
+      "h": 24,
+      "w": 24,
+      "x": 601,
+      "y": 302,
+    },
+  },
+  "bubbles.blueGreen.2.doughnutted": {
+    "frame": {
+      "h": 24,
+      "w": 24,
+      "x": 601,
+      "y": 302,
+    },
+  },
+  "bubbles.blueGreen.2.mirrorReflection": {
     "frame": {
       "h": 24,
       "w": 24,
@@ -322,7 +522,55 @@ exports[`for tailwind plugin we must have all possible frames and animations 1`]
       "y": 327,
     },
   },
+  "bubbles.cold.1.deactivated": {
+    "frame": {
+      "h": 24,
+      "w": 24,
+      "x": 576,
+      "y": 327,
+    },
+  },
+  "bubbles.cold.1.doughnutted": {
+    "frame": {
+      "h": 24,
+      "w": 24,
+      "x": 576,
+      "y": 327,
+    },
+  },
+  "bubbles.cold.1.mirrorReflection": {
+    "frame": {
+      "h": 24,
+      "w": 24,
+      "x": 576,
+      "y": 327,
+    },
+  },
   "bubbles.cold.2": {
+    "frame": {
+      "h": 24,
+      "w": 24,
+      "x": 601,
+      "y": 327,
+    },
+  },
+  "bubbles.cold.2.deactivated": {
+    "frame": {
+      "h": 24,
+      "w": 24,
+      "x": 601,
+      "y": 327,
+    },
+  },
+  "bubbles.cold.2.doughnutted": {
+    "frame": {
+      "h": 24,
+      "w": 24,
+      "x": 601,
+      "y": 327,
+    },
+  },
+  "bubbles.cold.2.mirrorReflection": {
     "frame": {
       "h": 24,
       "w": 24,
@@ -338,7 +586,23 @@ exports[`for tailwind plugin we must have all possible frames and animations 1`]
       "y": 252,
     },
   },
+  "bubbles.head.1.mirrorReflection": {
+    "frame": {
+      "h": 24,
+      "w": 24,
+      "x": 26,
+      "y": 252,
+    },
+  },
   "bubbles.head.2": {
+    "frame": {
+      "h": 24,
+      "w": 24,
+      "x": 51,
+      "y": 252,
+    },
+  },
+  "bubbles.head.2.mirrorReflection": {
     "frame": {
       "h": 24,
       "w": 24,
@@ -354,7 +618,23 @@ exports[`for tailwind plugin we must have all possible frames and animations 1`]
       "y": 252,
     },
   },
+  "bubbles.head.3.mirrorReflection": {
+    "frame": {
+      "h": 24,
+      "w": 24,
+      "x": 76,
+      "y": 252,
+    },
+  },
   "bubbles.head.4": {
+    "frame": {
+      "h": 24,
+      "w": 24,
+      "x": 101,
+      "y": 252,
+    },
+  },
+  "bubbles.head.4.mirrorReflection": {
     "frame": {
       "h": 24,
       "w": 24,
@@ -370,7 +650,23 @@ exports[`for tailwind plugin we must have all possible frames and animations 1`]
       "y": 252,
     },
   },
+  "bubbles.head.5.mirrorReflection": {
+    "frame": {
+      "h": 24,
+      "w": 24,
+      "x": 126,
+      "y": 252,
+    },
+  },
   "bubbles.head.6": {
+    "frame": {
+      "h": 24,
+      "w": 24,
+      "x": 151,
+      "y": 252,
+    },
+  },
+  "bubbles.head.6.mirrorReflection": {
     "frame": {
       "h": 24,
       "w": 24,
@@ -386,7 +682,23 @@ exports[`for tailwind plugin we must have all possible frames and animations 1`]
       "y": 252,
     },
   },
+  "bubbles.heels.1.mirrorReflection": {
+    "frame": {
+      "h": 24,
+      "w": 24,
+      "x": 251,
+      "y": 252,
+    },
+  },
   "bubbles.heels.2": {
+    "frame": {
+      "h": 24,
+      "w": 24,
+      "x": 276,
+      "y": 252,
+    },
+  },
+  "bubbles.heels.2.mirrorReflection": {
     "frame": {
       "h": 24,
       "w": 24,
@@ -402,7 +714,23 @@ exports[`for tailwind plugin we must have all possible frames and animations 1`]
       "y": 252,
     },
   },
+  "bubbles.heels.3.mirrorReflection": {
+    "frame": {
+      "h": 24,
+      "w": 24,
+      "x": 301,
+      "y": 252,
+    },
+  },
   "bubbles.heels.4": {
+    "frame": {
+      "h": 24,
+      "w": 24,
+      "x": 326,
+      "y": 252,
+    },
+  },
+  "bubbles.heels.4.mirrorReflection": {
     "frame": {
       "h": 24,
       "w": 24,
@@ -418,7 +746,23 @@ exports[`for tailwind plugin we must have all possible frames and animations 1`]
       "y": 252,
     },
   },
+  "bubbles.heels.5.mirrorReflection": {
+    "frame": {
+      "h": 24,
+      "w": 24,
+      "x": 351,
+      "y": 252,
+    },
+  },
   "bubbles.heels.6": {
+    "frame": {
+      "h": 24,
+      "w": 24,
+      "x": 376,
+      "y": 252,
+    },
+  },
+  "bubbles.heels.6.mirrorReflection": {
     "frame": {
       "h": 24,
       "w": 24,
@@ -434,7 +778,55 @@ exports[`for tailwind plugin we must have all possible frames and animations 1`]
       "y": 277,
     },
   },
+  "bubbles.jetpack.1.deactivated": {
+    "frame": {
+      "h": 24,
+      "w": 24,
+      "x": 576,
+      "y": 277,
+    },
+  },
+  "bubbles.jetpack.1.doughnutted": {
+    "frame": {
+      "h": 24,
+      "w": 24,
+      "x": 576,
+      "y": 277,
+    },
+  },
+  "bubbles.jetpack.1.mirrorReflection": {
+    "frame": {
+      "h": 24,
+      "w": 24,
+      "x": 576,
+      "y": 277,
+    },
+  },
   "bubbles.jetpack.2": {
+    "frame": {
+      "h": 24,
+      "w": 24,
+      "x": 601,
+      "y": 277,
+    },
+  },
+  "bubbles.jetpack.2.deactivated": {
+    "frame": {
+      "h": 24,
+      "w": 24,
+      "x": 601,
+      "y": 277,
+    },
+  },
+  "bubbles.jetpack.2.doughnutted": {
+    "frame": {
+      "h": 24,
+      "w": 24,
+      "x": 601,
+      "y": 277,
+    },
+  },
+  "bubbles.jetpack.2.mirrorReflection": {
     "frame": {
       "h": 24,
       "w": 24,
@@ -450,7 +842,23 @@ exports[`for tailwind plugin we must have all possible frames and animations 1`]
       "y": 252,
     },
   },
+  "bubbles.taupe.1.mirrorReflection": {
+    "frame": {
+      "h": 24,
+      "w": 24,
+      "x": 576,
+      "y": 252,
+    },
+  },
   "bubbles.taupe.2": {
+    "frame": {
+      "h": 24,
+      "w": 24,
+      "x": 601,
+      "y": 252,
+    },
+  },
+  "bubbles.taupe.2.mirrorReflection": {
     "frame": {
       "h": 24,
       "w": 24,
@@ -466,7 +874,23 @@ exports[`for tailwind plugin we must have all possible frames and animations 1`]
       "y": 252,
     },
   },
+  "bubbles.taupe.3.mirrorReflection": {
+    "frame": {
+      "h": 24,
+      "w": 24,
+      "x": 626,
+      "y": 252,
+    },
+  },
   "bubbles.white.1": {
+    "frame": {
+      "h": 24,
+      "w": 24,
+      "x": 576,
+      "y": 227,
+    },
+  },
+  "bubbles.white.1.mirrorReflection": {
     "frame": {
       "h": 24,
       "w": 24,
@@ -482,7 +906,23 @@ exports[`for tailwind plugin we must have all possible frames and animations 1`]
       "y": 227,
     },
   },
+  "bubbles.white.2.mirrorReflection": {
+    "frame": {
+      "h": 24,
+      "w": 24,
+      "x": 601,
+      "y": 227,
+    },
+  },
   "bubbles.white.3": {
+    "frame": {
+      "h": 24,
+      "w": 24,
+      "x": 626,
+      "y": 227,
+    },
+  },
+  "bubbles.white.3.mirrorReflection": {
     "frame": {
       "h": 24,
       "w": 24,
@@ -498,7 +938,23 @@ exports[`for tailwind plugin we must have all possible frames and animations 1`]
       "y": 740,
     },
   },
+  "button.mirrorReflection": {
+    "frame": {
+      "h": 28,
+      "w": 32,
+      "x": 298,
+      "y": 740,
+    },
+  },
   "button.pressed": {
+    "frame": {
+      "h": 28,
+      "w": 32,
+      "x": 331,
+      "y": 740,
+    },
+  },
+  "button.pressed.mirrorReflection": {
     "frame": {
       "h": 28,
       "w": 32,
@@ -514,7 +970,23 @@ exports[`for tailwind plugin we must have all possible frames and animations 1`]
       "y": 740,
     },
   },
+  "button.surfaceMask.mirrorReflection": {
+    "frame": {
+      "h": 28,
+      "w": 32,
+      "x": 364,
+      "y": 740,
+    },
+  },
   "buttonInGame": {
+    "frame": {
+      "h": 24,
+      "w": 24,
+      "x": 526,
+      "y": 377,
+    },
+  },
+  "buttonInGame.mirrorReflection": {
     "frame": {
       "h": 24,
       "w": 24,
@@ -530,7 +1002,31 @@ exports[`for tailwind plugin we must have all possible frames and animations 1`]
       "y": 377,
     },
   },
+  "buttonInGame.pressed.mirrorReflection": {
+    "frame": {
+      "h": 24,
+      "w": 24,
+      "x": 551,
+      "y": 377,
+    },
+  },
   "charles.away": {
+    "frame": {
+      "h": 24,
+      "w": 24,
+      "x": 26,
+      "y": 127,
+    },
+  },
+  "charles.away.deactivated": {
+    "frame": {
+      "h": 24,
+      "w": 24,
+      "x": 26,
+      "y": 127,
+    },
+  },
+  "charles.away.mirrorReflection": {
     "frame": {
       "h": 24,
       "w": 24,
@@ -546,7 +1042,39 @@ exports[`for tailwind plugin we must have all possible frames and animations 1`]
       "y": 127,
     },
   },
+  "charles.left.deactivated": {
+    "frame": {
+      "h": 24,
+      "w": 24,
+      "x": 1,
+      "y": 127,
+    },
+  },
+  "charles.left.mirrorReflection": {
+    "frame": {
+      "h": 24,
+      "w": 24,
+      "x": 1,
+      "y": 127,
+    },
+  },
   "charles.right": {
+    "frame": {
+      "h": 24,
+      "w": 24,
+      "x": 26,
+      "y": 152,
+    },
+  },
+  "charles.right.deactivated": {
+    "frame": {
+      "h": 24,
+      "w": 24,
+      "x": 26,
+      "y": 152,
+    },
+  },
+  "charles.right.mirrorReflection": {
     "frame": {
       "h": 24,
       "w": 24,
@@ -562,7 +1090,47 @@ exports[`for tailwind plugin we must have all possible frames and animations 1`]
       "y": 152,
     },
   },
+  "charles.towards.deactivated": {
+    "frame": {
+      "h": 24,
+      "w": 24,
+      "x": 1,
+      "y": 152,
+    },
+  },
+  "charles.towards.mirrorReflection": {
+    "frame": {
+      "h": 24,
+      "w": 24,
+      "x": 1,
+      "y": 152,
+    },
+  },
   "computerBot.away": {
+    "frame": {
+      "h": 24,
+      "w": 24,
+      "x": 101,
+      "y": 177,
+    },
+  },
+  "computerBot.away.deactivated": {
+    "frame": {
+      "h": 24,
+      "w": 24,
+      "x": 101,
+      "y": 177,
+    },
+  },
+  "computerBot.away.doughnutted": {
+    "frame": {
+      "h": 24,
+      "w": 24,
+      "x": 101,
+      "y": 177,
+    },
+  },
+  "computerBot.away.mirrorReflection": {
     "frame": {
       "h": 24,
       "w": 24,
@@ -578,7 +1146,55 @@ exports[`for tailwind plugin we must have all possible frames and animations 1`]
       "y": 177,
     },
   },
+  "computerBot.left.deactivated": {
+    "frame": {
+      "h": 24,
+      "w": 24,
+      "x": 76,
+      "y": 177,
+    },
+  },
+  "computerBot.left.doughnutted": {
+    "frame": {
+      "h": 24,
+      "w": 24,
+      "x": 76,
+      "y": 177,
+    },
+  },
+  "computerBot.left.mirrorReflection": {
+    "frame": {
+      "h": 24,
+      "w": 24,
+      "x": 76,
+      "y": 177,
+    },
+  },
   "computerBot.right": {
+    "frame": {
+      "h": 24,
+      "w": 24,
+      "x": 101,
+      "y": 202,
+    },
+  },
+  "computerBot.right.deactivated": {
+    "frame": {
+      "h": 24,
+      "w": 24,
+      "x": 101,
+      "y": 202,
+    },
+  },
+  "computerBot.right.doughnutted": {
+    "frame": {
+      "h": 24,
+      "w": 24,
+      "x": 101,
+      "y": 202,
+    },
+  },
+  "computerBot.right.mirrorReflection": {
     "frame": {
       "h": 24,
       "w": 24,
@@ -594,7 +1210,47 @@ exports[`for tailwind plugin we must have all possible frames and animations 1`]
       "y": 202,
     },
   },
+  "computerBot.towards.deactivated": {
+    "frame": {
+      "h": 24,
+      "w": 24,
+      "x": 76,
+      "y": 202,
+    },
+  },
+  "computerBot.towards.doughnutted": {
+    "frame": {
+      "h": 24,
+      "w": 24,
+      "x": 76,
+      "y": 202,
+    },
+  },
+  "computerBot.towards.mirrorReflection": {
+    "frame": {
+      "h": 24,
+      "w": 24,
+      "x": 76,
+      "y": 202,
+    },
+  },
   "conveyor.x.1": {
+    "frame": {
+      "h": 28,
+      "w": 32,
+      "x": 1,
+      "y": 740,
+    },
+  },
+  "conveyor.x.1.deactivated": {
+    "frame": {
+      "h": 28,
+      "w": 32,
+      "x": 1,
+      "y": 740,
+    },
+  },
+  "conveyor.x.1.mirrorReflection": {
     "frame": {
       "h": 28,
       "w": 32,
@@ -610,7 +1266,39 @@ exports[`for tailwind plugin we must have all possible frames and animations 1`]
       "y": 740,
     },
   },
+  "conveyor.x.2.deactivated": {
+    "frame": {
+      "h": 28,
+      "w": 32,
+      "x": 34,
+      "y": 740,
+    },
+  },
+  "conveyor.x.2.mirrorReflection": {
+    "frame": {
+      "h": 28,
+      "w": 32,
+      "x": 34,
+      "y": 740,
+    },
+  },
   "conveyor.x.3": {
+    "frame": {
+      "h": 28,
+      "w": 32,
+      "x": 67,
+      "y": 740,
+    },
+  },
+  "conveyor.x.3.deactivated": {
+    "frame": {
+      "h": 28,
+      "w": 32,
+      "x": 67,
+      "y": 740,
+    },
+  },
+  "conveyor.x.3.mirrorReflection": {
     "frame": {
       "h": 28,
       "w": 32,
@@ -626,7 +1314,39 @@ exports[`for tailwind plugin we must have all possible frames and animations 1`]
       "y": 740,
     },
   },
+  "conveyor.x.4.deactivated": {
+    "frame": {
+      "h": 28,
+      "w": 32,
+      "x": 100,
+      "y": 740,
+    },
+  },
+  "conveyor.x.4.mirrorReflection": {
+    "frame": {
+      "h": 28,
+      "w": 32,
+      "x": 100,
+      "y": 740,
+    },
+  },
   "conveyor.x.5": {
+    "frame": {
+      "h": 28,
+      "w": 32,
+      "x": 133,
+      "y": 740,
+    },
+  },
+  "conveyor.x.5.deactivated": {
+    "frame": {
+      "h": 28,
+      "w": 32,
+      "x": 133,
+      "y": 740,
+    },
+  },
+  "conveyor.x.5.mirrorReflection": {
     "frame": {
       "h": 28,
       "w": 32,
@@ -642,7 +1362,39 @@ exports[`for tailwind plugin we must have all possible frames and animations 1`]
       "y": 740,
     },
   },
+  "conveyor.x.6.deactivated": {
+    "frame": {
+      "h": 28,
+      "w": 32,
+      "x": 166,
+      "y": 740,
+    },
+  },
+  "conveyor.x.6.mirrorReflection": {
+    "frame": {
+      "h": 28,
+      "w": 32,
+      "x": 166,
+      "y": 740,
+    },
+  },
   "conveyor.x.7": {
+    "frame": {
+      "h": 28,
+      "w": 32,
+      "x": 199,
+      "y": 740,
+    },
+  },
+  "conveyor.x.7.deactivated": {
+    "frame": {
+      "h": 28,
+      "w": 32,
+      "x": 199,
+      "y": 740,
+    },
+  },
+  "conveyor.x.7.mirrorReflection": {
     "frame": {
       "h": 28,
       "w": 32,
@@ -658,7 +1410,39 @@ exports[`for tailwind plugin we must have all possible frames and animations 1`]
       "y": 769,
     },
   },
+  "conveyor.y.1.deactivated": {
+    "frame": {
+      "h": 28,
+      "w": 32,
+      "x": 1,
+      "y": 769,
+    },
+  },
+  "conveyor.y.1.mirrorReflection": {
+    "frame": {
+      "h": 28,
+      "w": 32,
+      "x": 1,
+      "y": 769,
+    },
+  },
   "conveyor.y.2": {
+    "frame": {
+      "h": 28,
+      "w": 32,
+      "x": 34,
+      "y": 769,
+    },
+  },
+  "conveyor.y.2.deactivated": {
+    "frame": {
+      "h": 28,
+      "w": 32,
+      "x": 34,
+      "y": 769,
+    },
+  },
+  "conveyor.y.2.mirrorReflection": {
     "frame": {
       "h": 28,
       "w": 32,
@@ -674,7 +1458,39 @@ exports[`for tailwind plugin we must have all possible frames and animations 1`]
       "y": 769,
     },
   },
+  "conveyor.y.3.deactivated": {
+    "frame": {
+      "h": 28,
+      "w": 32,
+      "x": 67,
+      "y": 769,
+    },
+  },
+  "conveyor.y.3.mirrorReflection": {
+    "frame": {
+      "h": 28,
+      "w": 32,
+      "x": 67,
+      "y": 769,
+    },
+  },
   "conveyor.y.4": {
+    "frame": {
+      "h": 28,
+      "w": 32,
+      "x": 100,
+      "y": 769,
+    },
+  },
+  "conveyor.y.4.deactivated": {
+    "frame": {
+      "h": 28,
+      "w": 32,
+      "x": 100,
+      "y": 769,
+    },
+  },
+  "conveyor.y.4.mirrorReflection": {
     "frame": {
       "h": 28,
       "w": 32,
@@ -690,7 +1506,39 @@ exports[`for tailwind plugin we must have all possible frames and animations 1`]
       "y": 769,
     },
   },
+  "conveyor.y.5.deactivated": {
+    "frame": {
+      "h": 28,
+      "w": 32,
+      "x": 133,
+      "y": 769,
+    },
+  },
+  "conveyor.y.5.mirrorReflection": {
+    "frame": {
+      "h": 28,
+      "w": 32,
+      "x": 133,
+      "y": 769,
+    },
+  },
   "conveyor.y.6": {
+    "frame": {
+      "h": 28,
+      "w": 32,
+      "x": 166,
+      "y": 769,
+    },
+  },
+  "conveyor.y.6.deactivated": {
+    "frame": {
+      "h": 28,
+      "w": 32,
+      "x": 166,
+      "y": 769,
+    },
+  },
+  "conveyor.y.6.mirrorReflection": {
     "frame": {
       "h": 28,
       "w": 32,
@@ -706,7 +1554,31 @@ exports[`for tailwind plugin we must have all possible frames and animations 1`]
       "y": 769,
     },
   },
+  "conveyor.y.7.deactivated": {
+    "frame": {
+      "h": 28,
+      "w": 32,
+      "x": 199,
+      "y": 769,
+    },
+  },
+  "conveyor.y.7.mirrorReflection": {
+    "frame": {
+      "h": 28,
+      "w": 32,
+      "x": 199,
+      "y": 769,
+    },
+  },
   "crown.blacktooth": {
+    "frame": {
+      "h": 24,
+      "w": 24,
+      "x": 401,
+      "y": 177,
+    },
+  },
+  "crown.blacktooth.mirrorReflection": {
     "frame": {
       "h": 24,
       "w": 24,
@@ -722,7 +1594,23 @@ exports[`for tailwind plugin we must have all possible frames and animations 1`]
       "y": 177,
     },
   },
+  "crown.bookworld.mirrorReflection": {
+    "frame": {
+      "h": 24,
+      "w": 24,
+      "x": 501,
+      "y": 177,
+    },
+  },
   "crown.egyptus": {
+    "frame": {
+      "h": 24,
+      "w": 24,
+      "x": 451,
+      "y": 177,
+    },
+  },
+  "crown.egyptus.mirrorReflection": {
     "frame": {
       "h": 24,
       "w": 24,
@@ -738,7 +1626,23 @@ exports[`for tailwind plugin we must have all possible frames and animations 1`]
       "y": 177,
     },
   },
+  "crown.penitentiary.mirrorReflection": {
+    "frame": {
+      "h": 24,
+      "w": 24,
+      "x": 476,
+      "y": 177,
+    },
+  },
   "crown.safari": {
+    "frame": {
+      "h": 24,
+      "w": 24,
+      "x": 426,
+      "y": 177,
+    },
+  },
+  "crown.safari.mirrorReflection": {
     "frame": {
       "h": 24,
       "w": 24,
@@ -754,7 +1658,23 @@ exports[`for tailwind plugin we must have all possible frames and animations 1`]
       "y": 177,
     },
   },
+  "crown.uncolourised.mirrorReflection": {
+    "frame": {
+      "h": 24,
+      "w": 24,
+      "x": 526,
+      "y": 177,
+    },
+  },
   "cube": {
+    "frame": {
+      "h": 24,
+      "w": 24,
+      "x": 476,
+      "y": 77,
+    },
+  },
+  "cube.mirrorReflection": {
     "frame": {
       "h": 24,
       "w": 24,
@@ -770,7 +1690,55 @@ exports[`for tailwind plugin we must have all possible frames and animations 1`]
       "y": 77,
     },
   },
+  "cyberman.away.deactivated": {
+    "frame": {
+      "h": 24,
+      "w": 24,
+      "x": 176,
+      "y": 77,
+    },
+  },
+  "cyberman.away.doughnutted": {
+    "frame": {
+      "h": 24,
+      "w": 24,
+      "x": 176,
+      "y": 77,
+    },
+  },
+  "cyberman.away.mirrorReflection": {
+    "frame": {
+      "h": 24,
+      "w": 24,
+      "x": 176,
+      "y": 77,
+    },
+  },
   "cyberman.left": {
+    "frame": {
+      "h": 24,
+      "w": 24,
+      "x": 151,
+      "y": 77,
+    },
+  },
+  "cyberman.left.deactivated": {
+    "frame": {
+      "h": 24,
+      "w": 24,
+      "x": 151,
+      "y": 77,
+    },
+  },
+  "cyberman.left.doughnutted": {
+    "frame": {
+      "h": 24,
+      "w": 24,
+      "x": 151,
+      "y": 77,
+    },
+  },
+  "cyberman.left.mirrorReflection": {
     "frame": {
       "h": 24,
       "w": 24,
@@ -786,7 +1754,55 @@ exports[`for tailwind plugin we must have all possible frames and animations 1`]
       "y": 102,
     },
   },
+  "cyberman.right.deactivated": {
+    "frame": {
+      "h": 24,
+      "w": 24,
+      "x": 176,
+      "y": 102,
+    },
+  },
+  "cyberman.right.doughnutted": {
+    "frame": {
+      "h": 24,
+      "w": 24,
+      "x": 176,
+      "y": 102,
+    },
+  },
+  "cyberman.right.mirrorReflection": {
+    "frame": {
+      "h": 24,
+      "w": 24,
+      "x": 176,
+      "y": 102,
+    },
+  },
   "cyberman.towards": {
+    "frame": {
+      "h": 24,
+      "w": 24,
+      "x": 151,
+      "y": 102,
+    },
+  },
+  "cyberman.towards.deactivated": {
+    "frame": {
+      "h": 24,
+      "w": 24,
+      "x": 151,
+      "y": 102,
+    },
+  },
+  "cyberman.towards.doughnutted": {
+    "frame": {
+      "h": 24,
+      "w": 24,
+      "x": 151,
+      "y": 102,
+    },
+  },
+  "cyberman.towards.mirrorReflection": {
     "frame": {
       "h": 24,
       "w": 24,
@@ -802,7 +1818,55 @@ exports[`for tailwind plugin we must have all possible frames and animations 1`]
       "y": 2,
     },
   },
+  "dalek.1.deactivated": {
+    "frame": {
+      "h": 24,
+      "w": 24,
+      "x": 1,
+      "y": 2,
+    },
+  },
+  "dalek.1.doughnutted": {
+    "frame": {
+      "h": 24,
+      "w": 24,
+      "x": 1,
+      "y": 2,
+    },
+  },
+  "dalek.1.mirrorReflection": {
+    "frame": {
+      "h": 24,
+      "w": 24,
+      "x": 1,
+      "y": 2,
+    },
+  },
   "dalek.2": {
+    "frame": {
+      "h": 24,
+      "w": 24,
+      "x": 26,
+      "y": 2,
+    },
+  },
+  "dalek.2.deactivated": {
+    "frame": {
+      "h": 24,
+      "w": 24,
+      "x": 26,
+      "y": 2,
+    },
+  },
+  "dalek.2.doughnutted": {
+    "frame": {
+      "h": 24,
+      "w": 24,
+      "x": 26,
+      "y": 2,
+    },
+  },
+  "dalek.2.mirrorReflection": {
     "frame": {
       "h": 24,
       "w": 24,
@@ -818,6 +1882,30 @@ exports[`for tailwind plugin we must have all possible frames and animations 1`]
       "y": 27,
     },
   },
+  "dalek.dark.1.deactivated": {
+    "frame": {
+      "h": 24,
+      "w": 24,
+      "x": 1,
+      "y": 27,
+    },
+  },
+  "dalek.dark.1.doughnutted": {
+    "frame": {
+      "h": 24,
+      "w": 24,
+      "x": 1,
+      "y": 27,
+    },
+  },
+  "dalek.dark.1.mirrorReflection": {
+    "frame": {
+      "h": 24,
+      "w": 24,
+      "x": 1,
+      "y": 27,
+    },
+  },
   "dalek.dark.2": {
     "frame": {
       "h": 24,
@@ -826,7 +1914,91 @@ exports[`for tailwind plugin we must have all possible frames and animations 1`]
       "y": 27,
     },
   },
+  "dalek.dark.2.deactivated": {
+    "frame": {
+      "h": 24,
+      "w": 24,
+      "x": 26,
+      "y": 27,
+    },
+  },
+  "dalek.dark.2.doughnutted": {
+    "frame": {
+      "h": 24,
+      "w": 24,
+      "x": 26,
+      "y": 27,
+    },
+  },
+  "dalek.dark.2.mirrorReflection": {
+    "frame": {
+      "h": 24,
+      "w": 24,
+      "x": 26,
+      "y": 27,
+    },
+  },
   "door.frame.generic.x.far": {
+    "frame": {
+      "h": 57,
+      "pivot": {
+        "x": 8,
+        "y": 52,
+      },
+      "w": 17,
+      "x": 364,
+      "y": 617,
+    },
+  },
+  "door.frame.generic.x.far.toCyan": {
+    "frame": {
+      "h": 57,
+      "pivot": {
+        "x": 8,
+        "y": 52,
+      },
+      "w": 17,
+      "x": 364,
+      "y": 617,
+    },
+  },
+  "door.frame.generic.x.far.toGreen": {
+    "frame": {
+      "h": 57,
+      "pivot": {
+        "x": 8,
+        "y": 52,
+      },
+      "w": 17,
+      "x": 364,
+      "y": 617,
+    },
+  },
+  "door.frame.generic.x.far.toMagenta": {
+    "frame": {
+      "h": 57,
+      "pivot": {
+        "x": 8,
+        "y": 52,
+      },
+      "w": 17,
+      "x": 364,
+      "y": 617,
+    },
+  },
+  "door.frame.generic.x.far.toWhite": {
+    "frame": {
+      "h": 57,
+      "pivot": {
+        "x": 8,
+        "y": 52,
+      },
+      "w": 17,
+      "x": 364,
+      "y": 617,
+    },
+  },
+  "door.frame.generic.x.far.toYellow": {
     "frame": {
       "h": 57,
       "pivot": {
@@ -850,7 +2022,127 @@ exports[`for tailwind plugin we must have all possible frames and animations 1`]
       "y": 623,
     },
   },
+  "door.frame.generic.x.near.toCyan": {
+    "frame": {
+      "h": 58,
+      "pivot": {
+        "x": 12,
+        "y": 58,
+      },
+      "w": 20,
+      "x": 384,
+      "y": 623,
+    },
+  },
+  "door.frame.generic.x.near.toGreen": {
+    "frame": {
+      "h": 58,
+      "pivot": {
+        "x": 12,
+        "y": 58,
+      },
+      "w": 20,
+      "x": 384,
+      "y": 623,
+    },
+  },
+  "door.frame.generic.x.near.toMagenta": {
+    "frame": {
+      "h": 58,
+      "pivot": {
+        "x": 12,
+        "y": 58,
+      },
+      "w": 20,
+      "x": 384,
+      "y": 623,
+    },
+  },
+  "door.frame.generic.x.near.toWhite": {
+    "frame": {
+      "h": 58,
+      "pivot": {
+        "x": 12,
+        "y": 58,
+      },
+      "w": 20,
+      "x": 384,
+      "y": 623,
+    },
+  },
+  "door.frame.generic.x.near.toYellow": {
+    "frame": {
+      "h": 58,
+      "pivot": {
+        "x": 12,
+        "y": 58,
+      },
+      "w": 20,
+      "x": 384,
+      "y": 623,
+    },
+  },
   "door.frame.generic.x.top": {
+    "frame": {
+      "h": 36,
+      "pivot": {
+        "x": 15,
+        "y": 37,
+      },
+      "w": 15,
+      "x": 405,
+      "y": 616,
+    },
+  },
+  "door.frame.generic.x.top.toCyan": {
+    "frame": {
+      "h": 36,
+      "pivot": {
+        "x": 15,
+        "y": 37,
+      },
+      "w": 15,
+      "x": 405,
+      "y": 616,
+    },
+  },
+  "door.frame.generic.x.top.toGreen": {
+    "frame": {
+      "h": 36,
+      "pivot": {
+        "x": 15,
+        "y": 37,
+      },
+      "w": 15,
+      "x": 405,
+      "y": 616,
+    },
+  },
+  "door.frame.generic.x.top.toMagenta": {
+    "frame": {
+      "h": 36,
+      "pivot": {
+        "x": 15,
+        "y": 37,
+      },
+      "w": 15,
+      "x": 405,
+      "y": 616,
+    },
+  },
+  "door.frame.generic.x.top.toWhite": {
+    "frame": {
+      "h": 36,
+      "pivot": {
+        "x": 15,
+        "y": 37,
+      },
+      "w": 15,
+      "x": 405,
+      "y": 616,
+    },
+  },
+  "door.frame.generic.x.top.toYellow": {
     "frame": {
       "h": 36,
       "pivot": {
@@ -874,7 +2166,127 @@ exports[`for tailwind plugin we must have all possible frames and animations 1`]
       "y": 617,
     },
   },
+  "door.frame.generic.x.whole.toCyan": {
+    "frame": {
+      "h": 64,
+      "pivot": {
+        "x": 31,
+        "y": 63,
+      },
+      "w": 40,
+      "x": 364,
+      "y": 617,
+    },
+  },
+  "door.frame.generic.x.whole.toGreen": {
+    "frame": {
+      "h": 64,
+      "pivot": {
+        "x": 31,
+        "y": 63,
+      },
+      "w": 40,
+      "x": 364,
+      "y": 617,
+    },
+  },
+  "door.frame.generic.x.whole.toMagenta": {
+    "frame": {
+      "h": 64,
+      "pivot": {
+        "x": 31,
+        "y": 63,
+      },
+      "w": 40,
+      "x": 364,
+      "y": 617,
+    },
+  },
+  "door.frame.generic.x.whole.toWhite": {
+    "frame": {
+      "h": 64,
+      "pivot": {
+        "x": 31,
+        "y": 63,
+      },
+      "w": 40,
+      "x": 364,
+      "y": 617,
+    },
+  },
+  "door.frame.generic.x.whole.toYellow": {
+    "frame": {
+      "h": 64,
+      "pivot": {
+        "x": 31,
+        "y": 63,
+      },
+      "w": 40,
+      "x": 364,
+      "y": 617,
+    },
+  },
   "door.frame.generic.y.far": {
+    "frame": {
+      "h": 57,
+      "pivot": {
+        "x": 9,
+        "y": 52,
+      },
+      "w": 17,
+      "x": 346,
+      "y": 617,
+    },
+  },
+  "door.frame.generic.y.far.toCyan": {
+    "frame": {
+      "h": 57,
+      "pivot": {
+        "x": 9,
+        "y": 52,
+      },
+      "w": 17,
+      "x": 346,
+      "y": 617,
+    },
+  },
+  "door.frame.generic.y.far.toGreen": {
+    "frame": {
+      "h": 57,
+      "pivot": {
+        "x": 9,
+        "y": 52,
+      },
+      "w": 17,
+      "x": 346,
+      "y": 617,
+    },
+  },
+  "door.frame.generic.y.far.toMagenta": {
+    "frame": {
+      "h": 57,
+      "pivot": {
+        "x": 9,
+        "y": 52,
+      },
+      "w": 17,
+      "x": 346,
+      "y": 617,
+    },
+  },
+  "door.frame.generic.y.far.toWhite": {
+    "frame": {
+      "h": 57,
+      "pivot": {
+        "x": 9,
+        "y": 52,
+      },
+      "w": 17,
+      "x": 346,
+      "y": 617,
+    },
+  },
+  "door.frame.generic.y.far.toYellow": {
     "frame": {
       "h": 57,
       "pivot": {
@@ -898,7 +2310,127 @@ exports[`for tailwind plugin we must have all possible frames and animations 1`]
       "y": 623,
     },
   },
+  "door.frame.generic.y.near.toCyan": {
+    "frame": {
+      "h": 58,
+      "pivot": {
+        "x": 8,
+        "y": 58,
+      },
+      "w": 20,
+      "x": 323,
+      "y": 623,
+    },
+  },
+  "door.frame.generic.y.near.toGreen": {
+    "frame": {
+      "h": 58,
+      "pivot": {
+        "x": 8,
+        "y": 58,
+      },
+      "w": 20,
+      "x": 323,
+      "y": 623,
+    },
+  },
+  "door.frame.generic.y.near.toMagenta": {
+    "frame": {
+      "h": 58,
+      "pivot": {
+        "x": 8,
+        "y": 58,
+      },
+      "w": 20,
+      "x": 323,
+      "y": 623,
+    },
+  },
+  "door.frame.generic.y.near.toWhite": {
+    "frame": {
+      "h": 58,
+      "pivot": {
+        "x": 8,
+        "y": 58,
+      },
+      "w": 20,
+      "x": 323,
+      "y": 623,
+    },
+  },
+  "door.frame.generic.y.near.toYellow": {
+    "frame": {
+      "h": 58,
+      "pivot": {
+        "x": 8,
+        "y": 58,
+      },
+      "w": 20,
+      "x": 323,
+      "y": 623,
+    },
+  },
   "door.frame.generic.y.top": {
+    "frame": {
+      "h": 36,
+      "pivot": {
+        "x": 0,
+        "y": 37,
+      },
+      "w": 15,
+      "x": 307,
+      "y": 616,
+    },
+  },
+  "door.frame.generic.y.top.toCyan": {
+    "frame": {
+      "h": 36,
+      "pivot": {
+        "x": 0,
+        "y": 37,
+      },
+      "w": 15,
+      "x": 307,
+      "y": 616,
+    },
+  },
+  "door.frame.generic.y.top.toGreen": {
+    "frame": {
+      "h": 36,
+      "pivot": {
+        "x": 0,
+        "y": 37,
+      },
+      "w": 15,
+      "x": 307,
+      "y": 616,
+    },
+  },
+  "door.frame.generic.y.top.toMagenta": {
+    "frame": {
+      "h": 36,
+      "pivot": {
+        "x": 0,
+        "y": 37,
+      },
+      "w": 15,
+      "x": 307,
+      "y": 616,
+    },
+  },
+  "door.frame.generic.y.top.toWhite": {
+    "frame": {
+      "h": 36,
+      "pivot": {
+        "x": 0,
+        "y": 37,
+      },
+      "w": 15,
+      "x": 307,
+      "y": 616,
+    },
+  },
+  "door.frame.generic.y.top.toYellow": {
     "frame": {
       "h": 36,
       "pivot": {
@@ -922,7 +2454,127 @@ exports[`for tailwind plugin we must have all possible frames and animations 1`]
       "y": 617,
     },
   },
+  "door.frame.generic.y.whole.toCyan": {
+    "frame": {
+      "h": 64,
+      "pivot": {
+        "x": 9,
+        "y": 63,
+      },
+      "w": 40,
+      "x": 323,
+      "y": 617,
+    },
+  },
+  "door.frame.generic.y.whole.toGreen": {
+    "frame": {
+      "h": 64,
+      "pivot": {
+        "x": 9,
+        "y": 63,
+      },
+      "w": 40,
+      "x": 323,
+      "y": 617,
+    },
+  },
+  "door.frame.generic.y.whole.toMagenta": {
+    "frame": {
+      "h": 64,
+      "pivot": {
+        "x": 9,
+        "y": 63,
+      },
+      "w": 40,
+      "x": 323,
+      "y": 617,
+    },
+  },
+  "door.frame.generic.y.whole.toWhite": {
+    "frame": {
+      "h": 64,
+      "pivot": {
+        "x": 9,
+        "y": 63,
+      },
+      "w": 40,
+      "x": 323,
+      "y": 617,
+    },
+  },
+  "door.frame.generic.y.whole.toYellow": {
+    "frame": {
+      "h": 64,
+      "pivot": {
+        "x": 9,
+        "y": 63,
+      },
+      "w": 40,
+      "x": 323,
+      "y": 617,
+    },
+  },
   "door.frame.moonbase.dark.x.far": {
+    "frame": {
+      "h": 57,
+      "pivot": {
+        "x": 8,
+        "y": 52,
+      },
+      "w": 17,
+      "x": 914,
+      "y": 314,
+    },
+  },
+  "door.frame.moonbase.dark.x.far.toCyan": {
+    "frame": {
+      "h": 57,
+      "pivot": {
+        "x": 8,
+        "y": 52,
+      },
+      "w": 17,
+      "x": 914,
+      "y": 314,
+    },
+  },
+  "door.frame.moonbase.dark.x.far.toGreen": {
+    "frame": {
+      "h": 57,
+      "pivot": {
+        "x": 8,
+        "y": 52,
+      },
+      "w": 17,
+      "x": 914,
+      "y": 314,
+    },
+  },
+  "door.frame.moonbase.dark.x.far.toMagenta": {
+    "frame": {
+      "h": 57,
+      "pivot": {
+        "x": 8,
+        "y": 52,
+      },
+      "w": 17,
+      "x": 914,
+      "y": 314,
+    },
+  },
+  "door.frame.moonbase.dark.x.far.toWhite": {
+    "frame": {
+      "h": 57,
+      "pivot": {
+        "x": 8,
+        "y": 52,
+      },
+      "w": 17,
+      "x": 914,
+      "y": 314,
+    },
+  },
+  "door.frame.moonbase.dark.x.far.toYellow": {
     "frame": {
       "h": 57,
       "pivot": {
@@ -946,7 +2598,127 @@ exports[`for tailwind plugin we must have all possible frames and animations 1`]
       "y": 320,
     },
   },
+  "door.frame.moonbase.dark.x.near.toCyan": {
+    "frame": {
+      "h": 58,
+      "pivot": {
+        "x": 12,
+        "y": 58,
+      },
+      "w": 20,
+      "x": 934,
+      "y": 320,
+    },
+  },
+  "door.frame.moonbase.dark.x.near.toGreen": {
+    "frame": {
+      "h": 58,
+      "pivot": {
+        "x": 12,
+        "y": 58,
+      },
+      "w": 20,
+      "x": 934,
+      "y": 320,
+    },
+  },
+  "door.frame.moonbase.dark.x.near.toMagenta": {
+    "frame": {
+      "h": 58,
+      "pivot": {
+        "x": 12,
+        "y": 58,
+      },
+      "w": 20,
+      "x": 934,
+      "y": 320,
+    },
+  },
+  "door.frame.moonbase.dark.x.near.toWhite": {
+    "frame": {
+      "h": 58,
+      "pivot": {
+        "x": 12,
+        "y": 58,
+      },
+      "w": 20,
+      "x": 934,
+      "y": 320,
+    },
+  },
+  "door.frame.moonbase.dark.x.near.toYellow": {
+    "frame": {
+      "h": 58,
+      "pivot": {
+        "x": 12,
+        "y": 58,
+      },
+      "w": 20,
+      "x": 934,
+      "y": 320,
+    },
+  },
   "door.frame.moonbase.dark.x.top": {
+    "frame": {
+      "h": 36,
+      "pivot": {
+        "x": 15,
+        "y": 37,
+      },
+      "w": 15,
+      "x": 955,
+      "y": 313,
+    },
+  },
+  "door.frame.moonbase.dark.x.top.toCyan": {
+    "frame": {
+      "h": 36,
+      "pivot": {
+        "x": 15,
+        "y": 37,
+      },
+      "w": 15,
+      "x": 955,
+      "y": 313,
+    },
+  },
+  "door.frame.moonbase.dark.x.top.toGreen": {
+    "frame": {
+      "h": 36,
+      "pivot": {
+        "x": 15,
+        "y": 37,
+      },
+      "w": 15,
+      "x": 955,
+      "y": 313,
+    },
+  },
+  "door.frame.moonbase.dark.x.top.toMagenta": {
+    "frame": {
+      "h": 36,
+      "pivot": {
+        "x": 15,
+        "y": 37,
+      },
+      "w": 15,
+      "x": 955,
+      "y": 313,
+    },
+  },
+  "door.frame.moonbase.dark.x.top.toWhite": {
+    "frame": {
+      "h": 36,
+      "pivot": {
+        "x": 15,
+        "y": 37,
+      },
+      "w": 15,
+      "x": 955,
+      "y": 313,
+    },
+  },
+  "door.frame.moonbase.dark.x.top.toYellow": {
     "frame": {
       "h": 36,
       "pivot": {
@@ -970,7 +2742,127 @@ exports[`for tailwind plugin we must have all possible frames and animations 1`]
       "y": 314,
     },
   },
+  "door.frame.moonbase.dark.x.whole.toCyan": {
+    "frame": {
+      "h": 64,
+      "pivot": {
+        "x": 31,
+        "y": 63,
+      },
+      "w": 40,
+      "x": 914,
+      "y": 314,
+    },
+  },
+  "door.frame.moonbase.dark.x.whole.toGreen": {
+    "frame": {
+      "h": 64,
+      "pivot": {
+        "x": 31,
+        "y": 63,
+      },
+      "w": 40,
+      "x": 914,
+      "y": 314,
+    },
+  },
+  "door.frame.moonbase.dark.x.whole.toMagenta": {
+    "frame": {
+      "h": 64,
+      "pivot": {
+        "x": 31,
+        "y": 63,
+      },
+      "w": 40,
+      "x": 914,
+      "y": 314,
+    },
+  },
+  "door.frame.moonbase.dark.x.whole.toWhite": {
+    "frame": {
+      "h": 64,
+      "pivot": {
+        "x": 31,
+        "y": 63,
+      },
+      "w": 40,
+      "x": 914,
+      "y": 314,
+    },
+  },
+  "door.frame.moonbase.dark.x.whole.toYellow": {
+    "frame": {
+      "h": 64,
+      "pivot": {
+        "x": 31,
+        "y": 63,
+      },
+      "w": 40,
+      "x": 914,
+      "y": 314,
+    },
+  },
   "door.frame.moonbase.dark.y.far": {
+    "frame": {
+      "h": 57,
+      "pivot": {
+        "x": 9,
+        "y": 52,
+      },
+      "w": 17,
+      "x": 737,
+      "y": 314,
+    },
+  },
+  "door.frame.moonbase.dark.y.far.toCyan": {
+    "frame": {
+      "h": 57,
+      "pivot": {
+        "x": 9,
+        "y": 52,
+      },
+      "w": 17,
+      "x": 737,
+      "y": 314,
+    },
+  },
+  "door.frame.moonbase.dark.y.far.toGreen": {
+    "frame": {
+      "h": 57,
+      "pivot": {
+        "x": 9,
+        "y": 52,
+      },
+      "w": 17,
+      "x": 737,
+      "y": 314,
+    },
+  },
+  "door.frame.moonbase.dark.y.far.toMagenta": {
+    "frame": {
+      "h": 57,
+      "pivot": {
+        "x": 9,
+        "y": 52,
+      },
+      "w": 17,
+      "x": 737,
+      "y": 314,
+    },
+  },
+  "door.frame.moonbase.dark.y.far.toWhite": {
+    "frame": {
+      "h": 57,
+      "pivot": {
+        "x": 9,
+        "y": 52,
+      },
+      "w": 17,
+      "x": 737,
+      "y": 314,
+    },
+  },
+  "door.frame.moonbase.dark.y.far.toYellow": {
     "frame": {
       "h": 57,
       "pivot": {
@@ -994,7 +2886,127 @@ exports[`for tailwind plugin we must have all possible frames and animations 1`]
       "y": 320,
     },
   },
+  "door.frame.moonbase.dark.y.near.toCyan": {
+    "frame": {
+      "h": 58,
+      "pivot": {
+        "x": 8,
+        "y": 58,
+      },
+      "w": 20,
+      "x": 714,
+      "y": 320,
+    },
+  },
+  "door.frame.moonbase.dark.y.near.toGreen": {
+    "frame": {
+      "h": 58,
+      "pivot": {
+        "x": 8,
+        "y": 58,
+      },
+      "w": 20,
+      "x": 714,
+      "y": 320,
+    },
+  },
+  "door.frame.moonbase.dark.y.near.toMagenta": {
+    "frame": {
+      "h": 58,
+      "pivot": {
+        "x": 8,
+        "y": 58,
+      },
+      "w": 20,
+      "x": 714,
+      "y": 320,
+    },
+  },
+  "door.frame.moonbase.dark.y.near.toWhite": {
+    "frame": {
+      "h": 58,
+      "pivot": {
+        "x": 8,
+        "y": 58,
+      },
+      "w": 20,
+      "x": 714,
+      "y": 320,
+    },
+  },
+  "door.frame.moonbase.dark.y.near.toYellow": {
+    "frame": {
+      "h": 58,
+      "pivot": {
+        "x": 8,
+        "y": 58,
+      },
+      "w": 20,
+      "x": 714,
+      "y": 320,
+    },
+  },
   "door.frame.moonbase.dark.y.top": {
+    "frame": {
+      "h": 36,
+      "pivot": {
+        "x": 0,
+        "y": 37,
+      },
+      "w": 15,
+      "x": 698,
+      "y": 313,
+    },
+  },
+  "door.frame.moonbase.dark.y.top.toCyan": {
+    "frame": {
+      "h": 36,
+      "pivot": {
+        "x": 0,
+        "y": 37,
+      },
+      "w": 15,
+      "x": 698,
+      "y": 313,
+    },
+  },
+  "door.frame.moonbase.dark.y.top.toGreen": {
+    "frame": {
+      "h": 36,
+      "pivot": {
+        "x": 0,
+        "y": 37,
+      },
+      "w": 15,
+      "x": 698,
+      "y": 313,
+    },
+  },
+  "door.frame.moonbase.dark.y.top.toMagenta": {
+    "frame": {
+      "h": 36,
+      "pivot": {
+        "x": 0,
+        "y": 37,
+      },
+      "w": 15,
+      "x": 698,
+      "y": 313,
+    },
+  },
+  "door.frame.moonbase.dark.y.top.toWhite": {
+    "frame": {
+      "h": 36,
+      "pivot": {
+        "x": 0,
+        "y": 37,
+      },
+      "w": 15,
+      "x": 698,
+      "y": 313,
+    },
+  },
+  "door.frame.moonbase.dark.y.top.toYellow": {
     "frame": {
       "h": 36,
       "pivot": {
@@ -1018,7 +3030,127 @@ exports[`for tailwind plugin we must have all possible frames and animations 1`]
       "y": 314,
     },
   },
+  "door.frame.moonbase.dark.y.whole.toCyan": {
+    "frame": {
+      "h": 64,
+      "pivot": {
+        "x": 9,
+        "y": 63,
+      },
+      "w": 40,
+      "x": 714,
+      "y": 314,
+    },
+  },
+  "door.frame.moonbase.dark.y.whole.toGreen": {
+    "frame": {
+      "h": 64,
+      "pivot": {
+        "x": 9,
+        "y": 63,
+      },
+      "w": 40,
+      "x": 714,
+      "y": 314,
+    },
+  },
+  "door.frame.moonbase.dark.y.whole.toMagenta": {
+    "frame": {
+      "h": 64,
+      "pivot": {
+        "x": 9,
+        "y": 63,
+      },
+      "w": 40,
+      "x": 714,
+      "y": 314,
+    },
+  },
+  "door.frame.moonbase.dark.y.whole.toWhite": {
+    "frame": {
+      "h": 64,
+      "pivot": {
+        "x": 9,
+        "y": 63,
+      },
+      "w": 40,
+      "x": 714,
+      "y": 314,
+    },
+  },
+  "door.frame.moonbase.dark.y.whole.toYellow": {
+    "frame": {
+      "h": 64,
+      "pivot": {
+        "x": 9,
+        "y": 63,
+      },
+      "w": 40,
+      "x": 714,
+      "y": 314,
+    },
+  },
   "door.frame.moonbase.x.far": {
+    "frame": {
+      "h": 57,
+      "pivot": {
+        "x": 8,
+        "y": 52,
+      },
+      "w": 17,
+      "x": 914,
+      "y": 240,
+    },
+  },
+  "door.frame.moonbase.x.far.toCyan": {
+    "frame": {
+      "h": 57,
+      "pivot": {
+        "x": 8,
+        "y": 52,
+      },
+      "w": 17,
+      "x": 914,
+      "y": 240,
+    },
+  },
+  "door.frame.moonbase.x.far.toGreen": {
+    "frame": {
+      "h": 57,
+      "pivot": {
+        "x": 8,
+        "y": 52,
+      },
+      "w": 17,
+      "x": 914,
+      "y": 240,
+    },
+  },
+  "door.frame.moonbase.x.far.toMagenta": {
+    "frame": {
+      "h": 57,
+      "pivot": {
+        "x": 8,
+        "y": 52,
+      },
+      "w": 17,
+      "x": 914,
+      "y": 240,
+    },
+  },
+  "door.frame.moonbase.x.far.toWhite": {
+    "frame": {
+      "h": 57,
+      "pivot": {
+        "x": 8,
+        "y": 52,
+      },
+      "w": 17,
+      "x": 914,
+      "y": 240,
+    },
+  },
+  "door.frame.moonbase.x.far.toYellow": {
     "frame": {
       "h": 57,
       "pivot": {
@@ -1042,7 +3174,127 @@ exports[`for tailwind plugin we must have all possible frames and animations 1`]
       "y": 246,
     },
   },
+  "door.frame.moonbase.x.near.toCyan": {
+    "frame": {
+      "h": 58,
+      "pivot": {
+        "x": 12,
+        "y": 58,
+      },
+      "w": 20,
+      "x": 934,
+      "y": 246,
+    },
+  },
+  "door.frame.moonbase.x.near.toGreen": {
+    "frame": {
+      "h": 58,
+      "pivot": {
+        "x": 12,
+        "y": 58,
+      },
+      "w": 20,
+      "x": 934,
+      "y": 246,
+    },
+  },
+  "door.frame.moonbase.x.near.toMagenta": {
+    "frame": {
+      "h": 58,
+      "pivot": {
+        "x": 12,
+        "y": 58,
+      },
+      "w": 20,
+      "x": 934,
+      "y": 246,
+    },
+  },
+  "door.frame.moonbase.x.near.toWhite": {
+    "frame": {
+      "h": 58,
+      "pivot": {
+        "x": 12,
+        "y": 58,
+      },
+      "w": 20,
+      "x": 934,
+      "y": 246,
+    },
+  },
+  "door.frame.moonbase.x.near.toYellow": {
+    "frame": {
+      "h": 58,
+      "pivot": {
+        "x": 12,
+        "y": 58,
+      },
+      "w": 20,
+      "x": 934,
+      "y": 246,
+    },
+  },
   "door.frame.moonbase.x.top": {
+    "frame": {
+      "h": 36,
+      "pivot": {
+        "x": 15,
+        "y": 37,
+      },
+      "w": 15,
+      "x": 955,
+      "y": 239,
+    },
+  },
+  "door.frame.moonbase.x.top.toCyan": {
+    "frame": {
+      "h": 36,
+      "pivot": {
+        "x": 15,
+        "y": 37,
+      },
+      "w": 15,
+      "x": 955,
+      "y": 239,
+    },
+  },
+  "door.frame.moonbase.x.top.toGreen": {
+    "frame": {
+      "h": 36,
+      "pivot": {
+        "x": 15,
+        "y": 37,
+      },
+      "w": 15,
+      "x": 955,
+      "y": 239,
+    },
+  },
+  "door.frame.moonbase.x.top.toMagenta": {
+    "frame": {
+      "h": 36,
+      "pivot": {
+        "x": 15,
+        "y": 37,
+      },
+      "w": 15,
+      "x": 955,
+      "y": 239,
+    },
+  },
+  "door.frame.moonbase.x.top.toWhite": {
+    "frame": {
+      "h": 36,
+      "pivot": {
+        "x": 15,
+        "y": 37,
+      },
+      "w": 15,
+      "x": 955,
+      "y": 239,
+    },
+  },
+  "door.frame.moonbase.x.top.toYellow": {
     "frame": {
       "h": 36,
       "pivot": {
@@ -1066,7 +3318,127 @@ exports[`for tailwind plugin we must have all possible frames and animations 1`]
       "y": 240,
     },
   },
+  "door.frame.moonbase.x.whole.toCyan": {
+    "frame": {
+      "h": 64,
+      "pivot": {
+        "x": 31,
+        "y": 63,
+      },
+      "w": 40,
+      "x": 914,
+      "y": 240,
+    },
+  },
+  "door.frame.moonbase.x.whole.toGreen": {
+    "frame": {
+      "h": 64,
+      "pivot": {
+        "x": 31,
+        "y": 63,
+      },
+      "w": 40,
+      "x": 914,
+      "y": 240,
+    },
+  },
+  "door.frame.moonbase.x.whole.toMagenta": {
+    "frame": {
+      "h": 64,
+      "pivot": {
+        "x": 31,
+        "y": 63,
+      },
+      "w": 40,
+      "x": 914,
+      "y": 240,
+    },
+  },
+  "door.frame.moonbase.x.whole.toWhite": {
+    "frame": {
+      "h": 64,
+      "pivot": {
+        "x": 31,
+        "y": 63,
+      },
+      "w": 40,
+      "x": 914,
+      "y": 240,
+    },
+  },
+  "door.frame.moonbase.x.whole.toYellow": {
+    "frame": {
+      "h": 64,
+      "pivot": {
+        "x": 31,
+        "y": 63,
+      },
+      "w": 40,
+      "x": 914,
+      "y": 240,
+    },
+  },
   "door.frame.moonbase.y.far": {
+    "frame": {
+      "h": 57,
+      "pivot": {
+        "x": 9,
+        "y": 52,
+      },
+      "w": 17,
+      "x": 737,
+      "y": 240,
+    },
+  },
+  "door.frame.moonbase.y.far.toCyan": {
+    "frame": {
+      "h": 57,
+      "pivot": {
+        "x": 9,
+        "y": 52,
+      },
+      "w": 17,
+      "x": 737,
+      "y": 240,
+    },
+  },
+  "door.frame.moonbase.y.far.toGreen": {
+    "frame": {
+      "h": 57,
+      "pivot": {
+        "x": 9,
+        "y": 52,
+      },
+      "w": 17,
+      "x": 737,
+      "y": 240,
+    },
+  },
+  "door.frame.moonbase.y.far.toMagenta": {
+    "frame": {
+      "h": 57,
+      "pivot": {
+        "x": 9,
+        "y": 52,
+      },
+      "w": 17,
+      "x": 737,
+      "y": 240,
+    },
+  },
+  "door.frame.moonbase.y.far.toWhite": {
+    "frame": {
+      "h": 57,
+      "pivot": {
+        "x": 9,
+        "y": 52,
+      },
+      "w": 17,
+      "x": 737,
+      "y": 240,
+    },
+  },
+  "door.frame.moonbase.y.far.toYellow": {
     "frame": {
       "h": 57,
       "pivot": {
@@ -1090,7 +3462,127 @@ exports[`for tailwind plugin we must have all possible frames and animations 1`]
       "y": 246,
     },
   },
+  "door.frame.moonbase.y.near.toCyan": {
+    "frame": {
+      "h": 58,
+      "pivot": {
+        "x": 8,
+        "y": 58,
+      },
+      "w": 20,
+      "x": 714,
+      "y": 246,
+    },
+  },
+  "door.frame.moonbase.y.near.toGreen": {
+    "frame": {
+      "h": 58,
+      "pivot": {
+        "x": 8,
+        "y": 58,
+      },
+      "w": 20,
+      "x": 714,
+      "y": 246,
+    },
+  },
+  "door.frame.moonbase.y.near.toMagenta": {
+    "frame": {
+      "h": 58,
+      "pivot": {
+        "x": 8,
+        "y": 58,
+      },
+      "w": 20,
+      "x": 714,
+      "y": 246,
+    },
+  },
+  "door.frame.moonbase.y.near.toWhite": {
+    "frame": {
+      "h": 58,
+      "pivot": {
+        "x": 8,
+        "y": 58,
+      },
+      "w": 20,
+      "x": 714,
+      "y": 246,
+    },
+  },
+  "door.frame.moonbase.y.near.toYellow": {
+    "frame": {
+      "h": 58,
+      "pivot": {
+        "x": 8,
+        "y": 58,
+      },
+      "w": 20,
+      "x": 714,
+      "y": 246,
+    },
+  },
   "door.frame.moonbase.y.top": {
+    "frame": {
+      "h": 36,
+      "pivot": {
+        "x": 0,
+        "y": 37,
+      },
+      "w": 15,
+      "x": 698,
+      "y": 239,
+    },
+  },
+  "door.frame.moonbase.y.top.toCyan": {
+    "frame": {
+      "h": 36,
+      "pivot": {
+        "x": 0,
+        "y": 37,
+      },
+      "w": 15,
+      "x": 698,
+      "y": 239,
+    },
+  },
+  "door.frame.moonbase.y.top.toGreen": {
+    "frame": {
+      "h": 36,
+      "pivot": {
+        "x": 0,
+        "y": 37,
+      },
+      "w": 15,
+      "x": 698,
+      "y": 239,
+    },
+  },
+  "door.frame.moonbase.y.top.toMagenta": {
+    "frame": {
+      "h": 36,
+      "pivot": {
+        "x": 0,
+        "y": 37,
+      },
+      "w": 15,
+      "x": 698,
+      "y": 239,
+    },
+  },
+  "door.frame.moonbase.y.top.toWhite": {
+    "frame": {
+      "h": 36,
+      "pivot": {
+        "x": 0,
+        "y": 37,
+      },
+      "w": 15,
+      "x": 698,
+      "y": 239,
+    },
+  },
+  "door.frame.moonbase.y.top.toYellow": {
     "frame": {
       "h": 36,
       "pivot": {
@@ -1114,6 +3606,66 @@ exports[`for tailwind plugin we must have all possible frames and animations 1`]
       "y": 240,
     },
   },
+  "door.frame.moonbase.y.whole.toCyan": {
+    "frame": {
+      "h": 64,
+      "pivot": {
+        "x": 9,
+        "y": 63,
+      },
+      "w": 40,
+      "x": 714,
+      "y": 240,
+    },
+  },
+  "door.frame.moonbase.y.whole.toGreen": {
+    "frame": {
+      "h": 64,
+      "pivot": {
+        "x": 9,
+        "y": 63,
+      },
+      "w": 40,
+      "x": 714,
+      "y": 240,
+    },
+  },
+  "door.frame.moonbase.y.whole.toMagenta": {
+    "frame": {
+      "h": 64,
+      "pivot": {
+        "x": 9,
+        "y": 63,
+      },
+      "w": 40,
+      "x": 714,
+      "y": 240,
+    },
+  },
+  "door.frame.moonbase.y.whole.toWhite": {
+    "frame": {
+      "h": 64,
+      "pivot": {
+        "x": 9,
+        "y": 63,
+      },
+      "w": 40,
+      "x": 714,
+      "y": 240,
+    },
+  },
+  "door.frame.moonbase.y.whole.toYellow": {
+    "frame": {
+      "h": 64,
+      "pivot": {
+        "x": 9,
+        "y": 63,
+      },
+      "w": 40,
+      "x": 714,
+      "y": 240,
+    },
+  },
   "doughnuts": {
     "frame": {
       "h": 24,
@@ -1122,7 +3674,31 @@ exports[`for tailwind plugin we must have all possible frames and animations 1`]
       "y": 127,
     },
   },
+  "doughnuts.deactivated": {
+    "frame": {
+      "h": 24,
+      "w": 24,
+      "x": 451,
+      "y": 127,
+    },
+  },
+  "doughnuts.mirrorReflection": {
+    "frame": {
+      "h": 24,
+      "w": 24,
+      "x": 451,
+      "y": 127,
+    },
+  },
   "drum": {
+    "frame": {
+      "h": 24,
+      "w": 24,
+      "x": 526,
+      "y": 77,
+    },
+  },
+  "drum.mirrorReflection": {
     "frame": {
       "h": 24,
       "w": 24,
@@ -1338,7 +3914,55 @@ exports[`for tailwind plugin we must have all possible frames and animations 1`]
       "y": 177,
     },
   },
+  "elephant.away.deactivated": {
+    "frame": {
+      "h": 24,
+      "w": 24,
+      "x": 176,
+      "y": 177,
+    },
+  },
+  "elephant.away.doughnutted": {
+    "frame": {
+      "h": 24,
+      "w": 24,
+      "x": 176,
+      "y": 177,
+    },
+  },
+  "elephant.away.mirrorReflection": {
+    "frame": {
+      "h": 24,
+      "w": 24,
+      "x": 176,
+      "y": 177,
+    },
+  },
   "elephant.left": {
+    "frame": {
+      "h": 24,
+      "w": 24,
+      "x": 151,
+      "y": 177,
+    },
+  },
+  "elephant.left.deactivated": {
+    "frame": {
+      "h": 24,
+      "w": 24,
+      "x": 151,
+      "y": 177,
+    },
+  },
+  "elephant.left.doughnutted": {
+    "frame": {
+      "h": 24,
+      "w": 24,
+      "x": 151,
+      "y": 177,
+    },
+  },
+  "elephant.left.mirrorReflection": {
     "frame": {
       "h": 24,
       "w": 24,
@@ -1354,7 +3978,55 @@ exports[`for tailwind plugin we must have all possible frames and animations 1`]
       "y": 202,
     },
   },
+  "elephant.right.deactivated": {
+    "frame": {
+      "h": 24,
+      "w": 24,
+      "x": 176,
+      "y": 202,
+    },
+  },
+  "elephant.right.doughnutted": {
+    "frame": {
+      "h": 24,
+      "w": 24,
+      "x": 176,
+      "y": 202,
+    },
+  },
+  "elephant.right.mirrorReflection": {
+    "frame": {
+      "h": 24,
+      "w": 24,
+      "x": 176,
+      "y": 202,
+    },
+  },
   "elephant.towards": {
+    "frame": {
+      "h": 24,
+      "w": 24,
+      "x": 151,
+      "y": 202,
+    },
+  },
+  "elephant.towards.deactivated": {
+    "frame": {
+      "h": 24,
+      "w": 24,
+      "x": 151,
+      "y": 202,
+    },
+  },
+  "elephant.towards.doughnutted": {
+    "frame": {
+      "h": 24,
+      "w": 24,
+      "x": 151,
+      "y": 202,
+    },
+  },
+  "elephant.towards.mirrorReflection": {
     "frame": {
       "h": 24,
       "w": 24,
@@ -1370,7 +4042,39 @@ exports[`for tailwind plugin we must have all possible frames and animations 1`]
       "y": 352,
     },
   },
+  "emperorsGuardian.1.deactivated": {
+    "frame": {
+      "h": 24,
+      "w": 24,
+      "x": 576,
+      "y": 352,
+    },
+  },
+  "emperorsGuardian.1.mirrorReflection": {
+    "frame": {
+      "h": 24,
+      "w": 24,
+      "x": 576,
+      "y": 352,
+    },
+  },
   "emperorsGuardian.2": {
+    "frame": {
+      "h": 24,
+      "w": 24,
+      "x": 601,
+      "y": 352,
+    },
+  },
+  "emperorsGuardian.2.deactivated": {
+    "frame": {
+      "h": 24,
+      "w": 24,
+      "x": 601,
+      "y": 352,
+    },
+  },
+  "emperorsGuardian.2.mirrorReflection": {
     "frame": {
       "h": 24,
       "w": 24,
@@ -1386,6 +4090,14 @@ exports[`for tailwind plugin we must have all possible frames and animations 1`]
       "y": 127,
     },
   },
+  "fish.1.mirrorReflection": {
+    "frame": {
+      "h": 24,
+      "w": 24,
+      "x": 401,
+      "y": 127,
+    },
+  },
   "fish.2": {
     "frame": {
       "h": 24,
@@ -1394,7 +4106,23 @@ exports[`for tailwind plugin we must have all possible frames and animations 1`]
       "y": 127,
     },
   },
+  "fish.2.mirrorReflection": {
+    "frame": {
+      "h": 24,
+      "w": 24,
+      "x": 426,
+      "y": 127,
+    },
+  },
   "fish.dead": {
+    "frame": {
+      "h": 24,
+      "w": 24,
+      "x": 376,
+      "y": 127,
+    },
+  },
+  "fish.dead.mirrorReflection": {
     "frame": {
       "h": 24,
       "w": 24,
@@ -1578,7 +4306,39 @@ exports[`for tailwind plugin we must have all possible frames and animations 1`]
       "y": 302,
     },
   },
+  "head.blinking.away.mirrorReflection": {
+    "frame": {
+      "h": 24,
+      "w": 24,
+      "x": 151,
+      "y": 302,
+    },
+  },
+  "head.blinking.away.sceneryPlayer": {
+    "frame": {
+      "h": 24,
+      "w": 24,
+      "x": 151,
+      "y": 302,
+    },
+  },
   "head.blinking.awayLeft": {
+    "frame": {
+      "h": 24,
+      "w": 24,
+      "x": 151,
+      "y": 277,
+    },
+  },
+  "head.blinking.awayLeft.mirrorReflection": {
+    "frame": {
+      "h": 24,
+      "w": 24,
+      "x": 151,
+      "y": 277,
+    },
+  },
+  "head.blinking.awayLeft.sceneryPlayer": {
     "frame": {
       "h": 24,
       "w": 24,
@@ -1594,7 +4354,39 @@ exports[`for tailwind plugin we must have all possible frames and animations 1`]
       "y": 327,
     },
   },
+  "head.blinking.awayRight.mirrorReflection": {
+    "frame": {
+      "h": 24,
+      "w": 24,
+      "x": 151,
+      "y": 327,
+    },
+  },
+  "head.blinking.awayRight.sceneryPlayer": {
+    "frame": {
+      "h": 24,
+      "w": 24,
+      "x": 151,
+      "y": 327,
+    },
+  },
   "head.blinking.left": {
+    "frame": {
+      "h": 24,
+      "w": 24,
+      "x": 151,
+      "y": 452,
+    },
+  },
+  "head.blinking.left.mirrorReflection": {
+    "frame": {
+      "h": 24,
+      "w": 24,
+      "x": 151,
+      "y": 452,
+    },
+  },
+  "head.blinking.left.sceneryPlayer": {
     "frame": {
       "h": 24,
       "w": 24,
@@ -1610,7 +4402,39 @@ exports[`for tailwind plugin we must have all possible frames and animations 1`]
       "y": 352,
     },
   },
+  "head.blinking.right.mirrorReflection": {
+    "frame": {
+      "h": 24,
+      "w": 24,
+      "x": 151,
+      "y": 352,
+    },
+  },
+  "head.blinking.right.sceneryPlayer": {
+    "frame": {
+      "h": 24,
+      "w": 24,
+      "x": 151,
+      "y": 352,
+    },
+  },
   "head.blinking.towards": {
+    "frame": {
+      "h": 24,
+      "w": 24,
+      "x": 151,
+      "y": 402,
+    },
+  },
+  "head.blinking.towards.mirrorReflection": {
+    "frame": {
+      "h": 24,
+      "w": 24,
+      "x": 151,
+      "y": 402,
+    },
+  },
+  "head.blinking.towards.sceneryPlayer": {
     "frame": {
       "h": 24,
       "w": 24,
@@ -1626,7 +4450,39 @@ exports[`for tailwind plugin we must have all possible frames and animations 1`]
       "y": 427,
     },
   },
+  "head.blinking.towardsLeft.mirrorReflection": {
+    "frame": {
+      "h": 24,
+      "w": 24,
+      "x": 151,
+      "y": 427,
+    },
+  },
+  "head.blinking.towardsLeft.sceneryPlayer": {
+    "frame": {
+      "h": 24,
+      "w": 24,
+      "x": 151,
+      "y": 427,
+    },
+  },
   "head.blinking.towardsRight": {
+    "frame": {
+      "h": 24,
+      "w": 24,
+      "x": 151,
+      "y": 377,
+    },
+  },
+  "head.blinking.towardsRight.mirrorReflection": {
+    "frame": {
+      "h": 24,
+      "w": 24,
+      "x": 151,
+      "y": 377,
+    },
+  },
+  "head.blinking.towardsRight.sceneryPlayer": {
     "frame": {
       "h": 24,
       "w": 24,
@@ -1642,7 +4498,23 @@ exports[`for tailwind plugin we must have all possible frames and animations 1`]
       "y": 302,
     },
   },
+  "head.falling.away.mirrorReflection": {
+    "frame": {
+      "h": 24,
+      "w": 24,
+      "x": 126,
+      "y": 302,
+    },
+  },
   "head.falling.awayLeft": {
+    "frame": {
+      "h": 24,
+      "w": 24,
+      "x": 126,
+      "y": 277,
+    },
+  },
+  "head.falling.awayLeft.mirrorReflection": {
     "frame": {
       "h": 24,
       "w": 24,
@@ -1658,7 +4530,23 @@ exports[`for tailwind plugin we must have all possible frames and animations 1`]
       "y": 327,
     },
   },
+  "head.falling.awayRight.mirrorReflection": {
+    "frame": {
+      "h": 24,
+      "w": 24,
+      "x": 126,
+      "y": 327,
+    },
+  },
   "head.falling.left": {
+    "frame": {
+      "h": 24,
+      "w": 24,
+      "x": 126,
+      "y": 452,
+    },
+  },
+  "head.falling.left.mirrorReflection": {
     "frame": {
       "h": 24,
       "w": 24,
@@ -1674,7 +4562,23 @@ exports[`for tailwind plugin we must have all possible frames and animations 1`]
       "y": 352,
     },
   },
+  "head.falling.right.mirrorReflection": {
+    "frame": {
+      "h": 24,
+      "w": 24,
+      "x": 126,
+      "y": 352,
+    },
+  },
   "head.falling.towards": {
+    "frame": {
+      "h": 24,
+      "w": 24,
+      "x": 126,
+      "y": 402,
+    },
+  },
+  "head.falling.towards.mirrorReflection": {
     "frame": {
       "h": 24,
       "w": 24,
@@ -1690,7 +4594,23 @@ exports[`for tailwind plugin we must have all possible frames and animations 1`]
       "y": 427,
     },
   },
+  "head.falling.towardsLeft.mirrorReflection": {
+    "frame": {
+      "h": 24,
+      "w": 24,
+      "x": 126,
+      "y": 427,
+    },
+  },
   "head.falling.towardsRight": {
+    "frame": {
+      "h": 24,
+      "w": 24,
+      "x": 126,
+      "y": 377,
+    },
+  },
+  "head.falling.towardsRight.mirrorReflection": {
     "frame": {
       "h": 24,
       "w": 24,
@@ -1706,7 +4626,39 @@ exports[`for tailwind plugin we must have all possible frames and animations 1`]
       "y": 302,
     },
   },
+  "head.looking1.away.mirrorReflection": {
+    "frame": {
+      "h": 24,
+      "w": 24,
+      "x": 176,
+      "y": 302,
+    },
+  },
+  "head.looking1.away.sceneryPlayer": {
+    "frame": {
+      "h": 24,
+      "w": 24,
+      "x": 176,
+      "y": 302,
+    },
+  },
   "head.looking1.awayLeft": {
+    "frame": {
+      "h": 24,
+      "w": 24,
+      "x": 176,
+      "y": 277,
+    },
+  },
+  "head.looking1.awayLeft.mirrorReflection": {
+    "frame": {
+      "h": 24,
+      "w": 24,
+      "x": 176,
+      "y": 277,
+    },
+  },
+  "head.looking1.awayLeft.sceneryPlayer": {
     "frame": {
       "h": 24,
       "w": 24,
@@ -1722,7 +4674,39 @@ exports[`for tailwind plugin we must have all possible frames and animations 1`]
       "y": 327,
     },
   },
+  "head.looking1.awayRight.mirrorReflection": {
+    "frame": {
+      "h": 24,
+      "w": 24,
+      "x": 176,
+      "y": 327,
+    },
+  },
+  "head.looking1.awayRight.sceneryPlayer": {
+    "frame": {
+      "h": 24,
+      "w": 24,
+      "x": 176,
+      "y": 327,
+    },
+  },
   "head.looking1.left": {
+    "frame": {
+      "h": 24,
+      "w": 24,
+      "x": 176,
+      "y": 452,
+    },
+  },
+  "head.looking1.left.mirrorReflection": {
+    "frame": {
+      "h": 24,
+      "w": 24,
+      "x": 176,
+      "y": 452,
+    },
+  },
+  "head.looking1.left.sceneryPlayer": {
     "frame": {
       "h": 24,
       "w": 24,
@@ -1738,7 +4722,39 @@ exports[`for tailwind plugin we must have all possible frames and animations 1`]
       "y": 352,
     },
   },
+  "head.looking1.right.mirrorReflection": {
+    "frame": {
+      "h": 24,
+      "w": 24,
+      "x": 176,
+      "y": 352,
+    },
+  },
+  "head.looking1.right.sceneryPlayer": {
+    "frame": {
+      "h": 24,
+      "w": 24,
+      "x": 176,
+      "y": 352,
+    },
+  },
   "head.looking1.towards": {
+    "frame": {
+      "h": 24,
+      "w": 24,
+      "x": 176,
+      "y": 402,
+    },
+  },
+  "head.looking1.towards.mirrorReflection": {
+    "frame": {
+      "h": 24,
+      "w": 24,
+      "x": 176,
+      "y": 402,
+    },
+  },
+  "head.looking1.towards.sceneryPlayer": {
     "frame": {
       "h": 24,
       "w": 24,
@@ -1754,7 +4770,39 @@ exports[`for tailwind plugin we must have all possible frames and animations 1`]
       "y": 427,
     },
   },
+  "head.looking1.towardsLeft.mirrorReflection": {
+    "frame": {
+      "h": 24,
+      "w": 24,
+      "x": 176,
+      "y": 427,
+    },
+  },
+  "head.looking1.towardsLeft.sceneryPlayer": {
+    "frame": {
+      "h": 24,
+      "w": 24,
+      "x": 176,
+      "y": 427,
+    },
+  },
   "head.looking1.towardsRight": {
+    "frame": {
+      "h": 24,
+      "w": 24,
+      "x": 176,
+      "y": 377,
+    },
+  },
+  "head.looking1.towardsRight.mirrorReflection": {
+    "frame": {
+      "h": 24,
+      "w": 24,
+      "x": 176,
+      "y": 377,
+    },
+  },
+  "head.looking1.towardsRight.sceneryPlayer": {
     "frame": {
       "h": 24,
       "w": 24,
@@ -1770,7 +4818,39 @@ exports[`for tailwind plugin we must have all possible frames and animations 1`]
       "y": 302,
     },
   },
+  "head.looking2.away.mirrorReflection": {
+    "frame": {
+      "h": 24,
+      "w": 24,
+      "x": 201,
+      "y": 302,
+    },
+  },
+  "head.looking2.away.sceneryPlayer": {
+    "frame": {
+      "h": 24,
+      "w": 24,
+      "x": 201,
+      "y": 302,
+    },
+  },
   "head.looking2.awayLeft": {
+    "frame": {
+      "h": 24,
+      "w": 24,
+      "x": 201,
+      "y": 277,
+    },
+  },
+  "head.looking2.awayLeft.mirrorReflection": {
+    "frame": {
+      "h": 24,
+      "w": 24,
+      "x": 201,
+      "y": 277,
+    },
+  },
+  "head.looking2.awayLeft.sceneryPlayer": {
     "frame": {
       "h": 24,
       "w": 24,
@@ -1786,7 +4866,39 @@ exports[`for tailwind plugin we must have all possible frames and animations 1`]
       "y": 327,
     },
   },
+  "head.looking2.awayRight.mirrorReflection": {
+    "frame": {
+      "h": 24,
+      "w": 24,
+      "x": 201,
+      "y": 327,
+    },
+  },
+  "head.looking2.awayRight.sceneryPlayer": {
+    "frame": {
+      "h": 24,
+      "w": 24,
+      "x": 201,
+      "y": 327,
+    },
+  },
   "head.looking2.left": {
+    "frame": {
+      "h": 24,
+      "w": 24,
+      "x": 201,
+      "y": 452,
+    },
+  },
+  "head.looking2.left.mirrorReflection": {
+    "frame": {
+      "h": 24,
+      "w": 24,
+      "x": 201,
+      "y": 452,
+    },
+  },
+  "head.looking2.left.sceneryPlayer": {
     "frame": {
       "h": 24,
       "w": 24,
@@ -1802,7 +4914,39 @@ exports[`for tailwind plugin we must have all possible frames and animations 1`]
       "y": 352,
     },
   },
+  "head.looking2.right.mirrorReflection": {
+    "frame": {
+      "h": 24,
+      "w": 24,
+      "x": 201,
+      "y": 352,
+    },
+  },
+  "head.looking2.right.sceneryPlayer": {
+    "frame": {
+      "h": 24,
+      "w": 24,
+      "x": 201,
+      "y": 352,
+    },
+  },
   "head.looking2.towards": {
+    "frame": {
+      "h": 24,
+      "w": 24,
+      "x": 201,
+      "y": 402,
+    },
+  },
+  "head.looking2.towards.mirrorReflection": {
+    "frame": {
+      "h": 24,
+      "w": 24,
+      "x": 201,
+      "y": 402,
+    },
+  },
+  "head.looking2.towards.sceneryPlayer": {
     "frame": {
       "h": 24,
       "w": 24,
@@ -1818,7 +4962,39 @@ exports[`for tailwind plugin we must have all possible frames and animations 1`]
       "y": 427,
     },
   },
+  "head.looking2.towardsLeft.mirrorReflection": {
+    "frame": {
+      "h": 24,
+      "w": 24,
+      "x": 201,
+      "y": 427,
+    },
+  },
+  "head.looking2.towardsLeft.sceneryPlayer": {
+    "frame": {
+      "h": 24,
+      "w": 24,
+      "x": 201,
+      "y": 427,
+    },
+  },
   "head.looking2.towardsRight": {
+    "frame": {
+      "h": 24,
+      "w": 24,
+      "x": 201,
+      "y": 377,
+    },
+  },
+  "head.looking2.towardsRight.mirrorReflection": {
+    "frame": {
+      "h": 24,
+      "w": 24,
+      "x": 201,
+      "y": 377,
+    },
+  },
+  "head.looking2.towardsRight.sceneryPlayer": {
     "frame": {
       "h": 24,
       "w": 24,
@@ -1834,7 +5010,55 @@ exports[`for tailwind plugin we must have all possible frames and animations 1`]
       "y": 302,
     },
   },
+  "head.standing.away.deactivated": {
+    "frame": {
+      "h": 24,
+      "w": 24,
+      "x": 226,
+      "y": 302,
+    },
+  },
+  "head.standing.away.mirrorReflection": {
+    "frame": {
+      "h": 24,
+      "w": 24,
+      "x": 226,
+      "y": 302,
+    },
+  },
+  "head.standing.away.sceneryPlayer": {
+    "frame": {
+      "h": 24,
+      "w": 24,
+      "x": 226,
+      "y": 302,
+    },
+  },
   "head.standing.awayLeft": {
+    "frame": {
+      "h": 24,
+      "w": 24,
+      "x": 226,
+      "y": 277,
+    },
+  },
+  "head.standing.awayLeft.deactivated": {
+    "frame": {
+      "h": 24,
+      "w": 24,
+      "x": 226,
+      "y": 277,
+    },
+  },
+  "head.standing.awayLeft.mirrorReflection": {
+    "frame": {
+      "h": 24,
+      "w": 24,
+      "x": 226,
+      "y": 277,
+    },
+  },
+  "head.standing.awayLeft.sceneryPlayer": {
     "frame": {
       "h": 24,
       "w": 24,
@@ -1850,7 +5074,55 @@ exports[`for tailwind plugin we must have all possible frames and animations 1`]
       "y": 327,
     },
   },
+  "head.standing.awayRight.deactivated": {
+    "frame": {
+      "h": 24,
+      "w": 24,
+      "x": 226,
+      "y": 327,
+    },
+  },
+  "head.standing.awayRight.mirrorReflection": {
+    "frame": {
+      "h": 24,
+      "w": 24,
+      "x": 226,
+      "y": 327,
+    },
+  },
+  "head.standing.awayRight.sceneryPlayer": {
+    "frame": {
+      "h": 24,
+      "w": 24,
+      "x": 226,
+      "y": 327,
+    },
+  },
   "head.standing.left": {
+    "frame": {
+      "h": 24,
+      "w": 24,
+      "x": 226,
+      "y": 452,
+    },
+  },
+  "head.standing.left.deactivated": {
+    "frame": {
+      "h": 24,
+      "w": 24,
+      "x": 226,
+      "y": 452,
+    },
+  },
+  "head.standing.left.mirrorReflection": {
+    "frame": {
+      "h": 24,
+      "w": 24,
+      "x": 226,
+      "y": 452,
+    },
+  },
+  "head.standing.left.sceneryPlayer": {
     "frame": {
       "h": 24,
       "w": 24,
@@ -1866,7 +5138,55 @@ exports[`for tailwind plugin we must have all possible frames and animations 1`]
       "y": 352,
     },
   },
+  "head.standing.right.deactivated": {
+    "frame": {
+      "h": 24,
+      "w": 24,
+      "x": 226,
+      "y": 352,
+    },
+  },
+  "head.standing.right.mirrorReflection": {
+    "frame": {
+      "h": 24,
+      "w": 24,
+      "x": 226,
+      "y": 352,
+    },
+  },
+  "head.standing.right.sceneryPlayer": {
+    "frame": {
+      "h": 24,
+      "w": 24,
+      "x": 226,
+      "y": 352,
+    },
+  },
   "head.standing.towards": {
+    "frame": {
+      "h": 24,
+      "w": 24,
+      "x": 226,
+      "y": 402,
+    },
+  },
+  "head.standing.towards.deactivated": {
+    "frame": {
+      "h": 24,
+      "w": 24,
+      "x": 226,
+      "y": 402,
+    },
+  },
+  "head.standing.towards.mirrorReflection": {
+    "frame": {
+      "h": 24,
+      "w": 24,
+      "x": 226,
+      "y": 402,
+    },
+  },
+  "head.standing.towards.sceneryPlayer": {
     "frame": {
       "h": 24,
       "w": 24,
@@ -1882,7 +5202,55 @@ exports[`for tailwind plugin we must have all possible frames and animations 1`]
       "y": 427,
     },
   },
+  "head.standing.towardsLeft.deactivated": {
+    "frame": {
+      "h": 24,
+      "w": 24,
+      "x": 226,
+      "y": 427,
+    },
+  },
+  "head.standing.towardsLeft.mirrorReflection": {
+    "frame": {
+      "h": 24,
+      "w": 24,
+      "x": 226,
+      "y": 427,
+    },
+  },
+  "head.standing.towardsLeft.sceneryPlayer": {
+    "frame": {
+      "h": 24,
+      "w": 24,
+      "x": 226,
+      "y": 427,
+    },
+  },
   "head.standing.towardsRight": {
+    "frame": {
+      "h": 24,
+      "w": 24,
+      "x": 226,
+      "y": 377,
+    },
+  },
+  "head.standing.towardsRight.deactivated": {
+    "frame": {
+      "h": 24,
+      "w": 24,
+      "x": 226,
+      "y": 377,
+    },
+  },
+  "head.standing.towardsRight.mirrorReflection": {
+    "frame": {
+      "h": 24,
+      "w": 24,
+      "x": 226,
+      "y": 377,
+    },
+  },
+  "head.standing.towardsRight.sceneryPlayer": {
     "frame": {
       "h": 24,
       "w": 24,
@@ -1898,7 +5266,55 @@ exports[`for tailwind plugin we must have all possible frames and animations 1`]
       "y": 302,
     },
   },
+  "head.walking.away.1.deactivated": {
+    "frame": {
+      "h": 24,
+      "w": 24,
+      "x": 51,
+      "y": 302,
+    },
+  },
+  "head.walking.away.1.mirrorReflection": {
+    "frame": {
+      "h": 24,
+      "w": 24,
+      "x": 51,
+      "y": 302,
+    },
+  },
+  "head.walking.away.1.sceneryPlayer": {
+    "frame": {
+      "h": 24,
+      "w": 24,
+      "x": 51,
+      "y": 302,
+    },
+  },
   "head.walking.away.2": {
+    "frame": {
+      "h": 24,
+      "w": 24,
+      "x": 76,
+      "y": 302,
+    },
+  },
+  "head.walking.away.2.deactivated": {
+    "frame": {
+      "h": 24,
+      "w": 24,
+      "x": 76,
+      "y": 302,
+    },
+  },
+  "head.walking.away.2.mirrorReflection": {
+    "frame": {
+      "h": 24,
+      "w": 24,
+      "x": 76,
+      "y": 302,
+    },
+  },
+  "head.walking.away.2.sceneryPlayer": {
     "frame": {
       "h": 24,
       "w": 24,
@@ -1914,7 +5330,55 @@ exports[`for tailwind plugin we must have all possible frames and animations 1`]
       "y": 302,
     },
   },
+  "head.walking.away.3.deactivated": {
+    "frame": {
+      "h": 24,
+      "w": 24,
+      "x": 101,
+      "y": 302,
+    },
+  },
+  "head.walking.away.3.mirrorReflection": {
+    "frame": {
+      "h": 24,
+      "w": 24,
+      "x": 101,
+      "y": 302,
+    },
+  },
+  "head.walking.away.3.sceneryPlayer": {
+    "frame": {
+      "h": 24,
+      "w": 24,
+      "x": 101,
+      "y": 302,
+    },
+  },
   "head.walking.awayLeft.1": {
+    "frame": {
+      "h": 24,
+      "w": 24,
+      "x": 51,
+      "y": 277,
+    },
+  },
+  "head.walking.awayLeft.1.deactivated": {
+    "frame": {
+      "h": 24,
+      "w": 24,
+      "x": 51,
+      "y": 277,
+    },
+  },
+  "head.walking.awayLeft.1.mirrorReflection": {
+    "frame": {
+      "h": 24,
+      "w": 24,
+      "x": 51,
+      "y": 277,
+    },
+  },
+  "head.walking.awayLeft.1.sceneryPlayer": {
     "frame": {
       "h": 24,
       "w": 24,
@@ -1930,7 +5394,55 @@ exports[`for tailwind plugin we must have all possible frames and animations 1`]
       "y": 277,
     },
   },
+  "head.walking.awayLeft.2.deactivated": {
+    "frame": {
+      "h": 24,
+      "w": 24,
+      "x": 76,
+      "y": 277,
+    },
+  },
+  "head.walking.awayLeft.2.mirrorReflection": {
+    "frame": {
+      "h": 24,
+      "w": 24,
+      "x": 76,
+      "y": 277,
+    },
+  },
+  "head.walking.awayLeft.2.sceneryPlayer": {
+    "frame": {
+      "h": 24,
+      "w": 24,
+      "x": 76,
+      "y": 277,
+    },
+  },
   "head.walking.awayLeft.3": {
+    "frame": {
+      "h": 24,
+      "w": 24,
+      "x": 101,
+      "y": 277,
+    },
+  },
+  "head.walking.awayLeft.3.deactivated": {
+    "frame": {
+      "h": 24,
+      "w": 24,
+      "x": 101,
+      "y": 277,
+    },
+  },
+  "head.walking.awayLeft.3.mirrorReflection": {
+    "frame": {
+      "h": 24,
+      "w": 24,
+      "x": 101,
+      "y": 277,
+    },
+  },
+  "head.walking.awayLeft.3.sceneryPlayer": {
     "frame": {
       "h": 24,
       "w": 24,
@@ -1946,7 +5458,55 @@ exports[`for tailwind plugin we must have all possible frames and animations 1`]
       "y": 327,
     },
   },
+  "head.walking.awayRight.1.deactivated": {
+    "frame": {
+      "h": 24,
+      "w": 24,
+      "x": 51,
+      "y": 327,
+    },
+  },
+  "head.walking.awayRight.1.mirrorReflection": {
+    "frame": {
+      "h": 24,
+      "w": 24,
+      "x": 51,
+      "y": 327,
+    },
+  },
+  "head.walking.awayRight.1.sceneryPlayer": {
+    "frame": {
+      "h": 24,
+      "w": 24,
+      "x": 51,
+      "y": 327,
+    },
+  },
   "head.walking.awayRight.2": {
+    "frame": {
+      "h": 24,
+      "w": 24,
+      "x": 76,
+      "y": 327,
+    },
+  },
+  "head.walking.awayRight.2.deactivated": {
+    "frame": {
+      "h": 24,
+      "w": 24,
+      "x": 76,
+      "y": 327,
+    },
+  },
+  "head.walking.awayRight.2.mirrorReflection": {
+    "frame": {
+      "h": 24,
+      "w": 24,
+      "x": 76,
+      "y": 327,
+    },
+  },
+  "head.walking.awayRight.2.sceneryPlayer": {
     "frame": {
       "h": 24,
       "w": 24,
@@ -1962,7 +5522,55 @@ exports[`for tailwind plugin we must have all possible frames and animations 1`]
       "y": 327,
     },
   },
+  "head.walking.awayRight.3.deactivated": {
+    "frame": {
+      "h": 24,
+      "w": 24,
+      "x": 101,
+      "y": 327,
+    },
+  },
+  "head.walking.awayRight.3.mirrorReflection": {
+    "frame": {
+      "h": 24,
+      "w": 24,
+      "x": 101,
+      "y": 327,
+    },
+  },
+  "head.walking.awayRight.3.sceneryPlayer": {
+    "frame": {
+      "h": 24,
+      "w": 24,
+      "x": 101,
+      "y": 327,
+    },
+  },
   "head.walking.left.1": {
+    "frame": {
+      "h": 24,
+      "w": 24,
+      "x": 51,
+      "y": 452,
+    },
+  },
+  "head.walking.left.1.deactivated": {
+    "frame": {
+      "h": 24,
+      "w": 24,
+      "x": 51,
+      "y": 452,
+    },
+  },
+  "head.walking.left.1.mirrorReflection": {
+    "frame": {
+      "h": 24,
+      "w": 24,
+      "x": 51,
+      "y": 452,
+    },
+  },
+  "head.walking.left.1.sceneryPlayer": {
     "frame": {
       "h": 24,
       "w": 24,
@@ -1978,7 +5586,55 @@ exports[`for tailwind plugin we must have all possible frames and animations 1`]
       "y": 452,
     },
   },
+  "head.walking.left.2.deactivated": {
+    "frame": {
+      "h": 24,
+      "w": 24,
+      "x": 76,
+      "y": 452,
+    },
+  },
+  "head.walking.left.2.mirrorReflection": {
+    "frame": {
+      "h": 24,
+      "w": 24,
+      "x": 76,
+      "y": 452,
+    },
+  },
+  "head.walking.left.2.sceneryPlayer": {
+    "frame": {
+      "h": 24,
+      "w": 24,
+      "x": 76,
+      "y": 452,
+    },
+  },
   "head.walking.left.3": {
+    "frame": {
+      "h": 24,
+      "w": 24,
+      "x": 101,
+      "y": 452,
+    },
+  },
+  "head.walking.left.3.deactivated": {
+    "frame": {
+      "h": 24,
+      "w": 24,
+      "x": 101,
+      "y": 452,
+    },
+  },
+  "head.walking.left.3.mirrorReflection": {
+    "frame": {
+      "h": 24,
+      "w": 24,
+      "x": 101,
+      "y": 452,
+    },
+  },
+  "head.walking.left.3.sceneryPlayer": {
     "frame": {
       "h": 24,
       "w": 24,
@@ -1994,7 +5650,55 @@ exports[`for tailwind plugin we must have all possible frames and animations 1`]
       "y": 352,
     },
   },
+  "head.walking.right.1.deactivated": {
+    "frame": {
+      "h": 24,
+      "w": 24,
+      "x": 51,
+      "y": 352,
+    },
+  },
+  "head.walking.right.1.mirrorReflection": {
+    "frame": {
+      "h": 24,
+      "w": 24,
+      "x": 51,
+      "y": 352,
+    },
+  },
+  "head.walking.right.1.sceneryPlayer": {
+    "frame": {
+      "h": 24,
+      "w": 24,
+      "x": 51,
+      "y": 352,
+    },
+  },
   "head.walking.right.2": {
+    "frame": {
+      "h": 24,
+      "w": 24,
+      "x": 76,
+      "y": 352,
+    },
+  },
+  "head.walking.right.2.deactivated": {
+    "frame": {
+      "h": 24,
+      "w": 24,
+      "x": 76,
+      "y": 352,
+    },
+  },
+  "head.walking.right.2.mirrorReflection": {
+    "frame": {
+      "h": 24,
+      "w": 24,
+      "x": 76,
+      "y": 352,
+    },
+  },
+  "head.walking.right.2.sceneryPlayer": {
     "frame": {
       "h": 24,
       "w": 24,
@@ -2010,7 +5714,55 @@ exports[`for tailwind plugin we must have all possible frames and animations 1`]
       "y": 352,
     },
   },
+  "head.walking.right.3.deactivated": {
+    "frame": {
+      "h": 24,
+      "w": 24,
+      "x": 101,
+      "y": 352,
+    },
+  },
+  "head.walking.right.3.mirrorReflection": {
+    "frame": {
+      "h": 24,
+      "w": 24,
+      "x": 101,
+      "y": 352,
+    },
+  },
+  "head.walking.right.3.sceneryPlayer": {
+    "frame": {
+      "h": 24,
+      "w": 24,
+      "x": 101,
+      "y": 352,
+    },
+  },
   "head.walking.towards.1": {
+    "frame": {
+      "h": 24,
+      "w": 24,
+      "x": 51,
+      "y": 402,
+    },
+  },
+  "head.walking.towards.1.deactivated": {
+    "frame": {
+      "h": 24,
+      "w": 24,
+      "x": 51,
+      "y": 402,
+    },
+  },
+  "head.walking.towards.1.mirrorReflection": {
+    "frame": {
+      "h": 24,
+      "w": 24,
+      "x": 51,
+      "y": 402,
+    },
+  },
+  "head.walking.towards.1.sceneryPlayer": {
     "frame": {
       "h": 24,
       "w": 24,
@@ -2026,7 +5778,55 @@ exports[`for tailwind plugin we must have all possible frames and animations 1`]
       "y": 402,
     },
   },
+  "head.walking.towards.2.deactivated": {
+    "frame": {
+      "h": 24,
+      "w": 24,
+      "x": 76,
+      "y": 402,
+    },
+  },
+  "head.walking.towards.2.mirrorReflection": {
+    "frame": {
+      "h": 24,
+      "w": 24,
+      "x": 76,
+      "y": 402,
+    },
+  },
+  "head.walking.towards.2.sceneryPlayer": {
+    "frame": {
+      "h": 24,
+      "w": 24,
+      "x": 76,
+      "y": 402,
+    },
+  },
   "head.walking.towards.3": {
+    "frame": {
+      "h": 24,
+      "w": 24,
+      "x": 101,
+      "y": 402,
+    },
+  },
+  "head.walking.towards.3.deactivated": {
+    "frame": {
+      "h": 24,
+      "w": 24,
+      "x": 101,
+      "y": 402,
+    },
+  },
+  "head.walking.towards.3.mirrorReflection": {
+    "frame": {
+      "h": 24,
+      "w": 24,
+      "x": 101,
+      "y": 402,
+    },
+  },
+  "head.walking.towards.3.sceneryPlayer": {
     "frame": {
       "h": 24,
       "w": 24,
@@ -2042,7 +5842,55 @@ exports[`for tailwind plugin we must have all possible frames and animations 1`]
       "y": 427,
     },
   },
+  "head.walking.towardsLeft.1.deactivated": {
+    "frame": {
+      "h": 24,
+      "w": 24,
+      "x": 51,
+      "y": 427,
+    },
+  },
+  "head.walking.towardsLeft.1.mirrorReflection": {
+    "frame": {
+      "h": 24,
+      "w": 24,
+      "x": 51,
+      "y": 427,
+    },
+  },
+  "head.walking.towardsLeft.1.sceneryPlayer": {
+    "frame": {
+      "h": 24,
+      "w": 24,
+      "x": 51,
+      "y": 427,
+    },
+  },
   "head.walking.towardsLeft.2": {
+    "frame": {
+      "h": 24,
+      "w": 24,
+      "x": 76,
+      "y": 427,
+    },
+  },
+  "head.walking.towardsLeft.2.deactivated": {
+    "frame": {
+      "h": 24,
+      "w": 24,
+      "x": 76,
+      "y": 427,
+    },
+  },
+  "head.walking.towardsLeft.2.mirrorReflection": {
+    "frame": {
+      "h": 24,
+      "w": 24,
+      "x": 76,
+      "y": 427,
+    },
+  },
+  "head.walking.towardsLeft.2.sceneryPlayer": {
     "frame": {
       "h": 24,
       "w": 24,
@@ -2058,7 +5906,55 @@ exports[`for tailwind plugin we must have all possible frames and animations 1`]
       "y": 427,
     },
   },
+  "head.walking.towardsLeft.3.deactivated": {
+    "frame": {
+      "h": 24,
+      "w": 24,
+      "x": 101,
+      "y": 427,
+    },
+  },
+  "head.walking.towardsLeft.3.mirrorReflection": {
+    "frame": {
+      "h": 24,
+      "w": 24,
+      "x": 101,
+      "y": 427,
+    },
+  },
+  "head.walking.towardsLeft.3.sceneryPlayer": {
+    "frame": {
+      "h": 24,
+      "w": 24,
+      "x": 101,
+      "y": 427,
+    },
+  },
   "head.walking.towardsRight.1": {
+    "frame": {
+      "h": 24,
+      "w": 24,
+      "x": 51,
+      "y": 377,
+    },
+  },
+  "head.walking.towardsRight.1.deactivated": {
+    "frame": {
+      "h": 24,
+      "w": 24,
+      "x": 51,
+      "y": 377,
+    },
+  },
+  "head.walking.towardsRight.1.mirrorReflection": {
+    "frame": {
+      "h": 24,
+      "w": 24,
+      "x": 51,
+      "y": 377,
+    },
+  },
+  "head.walking.towardsRight.1.sceneryPlayer": {
     "frame": {
       "h": 24,
       "w": 24,
@@ -2074,7 +5970,55 @@ exports[`for tailwind plugin we must have all possible frames and animations 1`]
       "y": 377,
     },
   },
+  "head.walking.towardsRight.2.deactivated": {
+    "frame": {
+      "h": 24,
+      "w": 24,
+      "x": 76,
+      "y": 377,
+    },
+  },
+  "head.walking.towardsRight.2.mirrorReflection": {
+    "frame": {
+      "h": 24,
+      "w": 24,
+      "x": 76,
+      "y": 377,
+    },
+  },
+  "head.walking.towardsRight.2.sceneryPlayer": {
+    "frame": {
+      "h": 24,
+      "w": 24,
+      "x": 76,
+      "y": 377,
+    },
+  },
   "head.walking.towardsRight.3": {
+    "frame": {
+      "h": 24,
+      "w": 24,
+      "x": 101,
+      "y": 377,
+    },
+  },
+  "head.walking.towardsRight.3.deactivated": {
+    "frame": {
+      "h": 24,
+      "w": 24,
+      "x": 101,
+      "y": 377,
+    },
+  },
+  "head.walking.towardsRight.3.mirrorReflection": {
+    "frame": {
+      "h": 24,
+      "w": 24,
+      "x": 101,
+      "y": 377,
+    },
+  },
+  "head.walking.towardsRight.3.sceneryPlayer": {
     "frame": {
       "h": 24,
       "w": 24,
@@ -2098,7 +6042,55 @@ exports[`for tailwind plugin we must have all possible frames and animations 1`]
       "y": 2,
     },
   },
+  "headlessBase.1.deactivated": {
+    "frame": {
+      "h": 24,
+      "w": 24,
+      "x": 201,
+      "y": 2,
+    },
+  },
+  "headlessBase.1.doughnutted": {
+    "frame": {
+      "h": 24,
+      "w": 24,
+      "x": 201,
+      "y": 2,
+    },
+  },
+  "headlessBase.1.mirrorReflection": {
+    "frame": {
+      "h": 24,
+      "w": 24,
+      "x": 201,
+      "y": 2,
+    },
+  },
   "headlessBase.2": {
+    "frame": {
+      "h": 24,
+      "w": 24,
+      "x": 226,
+      "y": 2,
+    },
+  },
+  "headlessBase.2.deactivated": {
+    "frame": {
+      "h": 24,
+      "w": 24,
+      "x": 226,
+      "y": 2,
+    },
+  },
+  "headlessBase.2.doughnutted": {
+    "frame": {
+      "h": 24,
+      "w": 24,
+      "x": 226,
+      "y": 2,
+    },
+  },
+  "headlessBase.2.mirrorReflection": {
     "frame": {
       "h": 24,
       "w": 24,
@@ -2114,7 +6106,55 @@ exports[`for tailwind plugin we must have all possible frames and animations 1`]
       "y": 2,
     },
   },
+  "headlessBase.3.deactivated": {
+    "frame": {
+      "h": 24,
+      "w": 24,
+      "x": 251,
+      "y": 2,
+    },
+  },
+  "headlessBase.3.doughnutted": {
+    "frame": {
+      "h": 24,
+      "w": 24,
+      "x": 251,
+      "y": 2,
+    },
+  },
+  "headlessBase.3.mirrorReflection": {
+    "frame": {
+      "h": 24,
+      "w": 24,
+      "x": 251,
+      "y": 2,
+    },
+  },
   "headlessBase.4": {
+    "frame": {
+      "h": 24,
+      "w": 24,
+      "x": 276,
+      "y": 2,
+    },
+  },
+  "headlessBase.4.deactivated": {
+    "frame": {
+      "h": 24,
+      "w": 24,
+      "x": 276,
+      "y": 2,
+    },
+  },
+  "headlessBase.4.doughnutted": {
+    "frame": {
+      "h": 24,
+      "w": 24,
+      "x": 276,
+      "y": 2,
+    },
+  },
+  "headlessBase.4.mirrorReflection": {
     "frame": {
       "h": 24,
       "w": 24,
@@ -2130,7 +6170,71 @@ exports[`for tailwind plugin we must have all possible frames and animations 1`]
       "y": 2,
     },
   },
+  "headlessBase.all.deactivated": {
+    "frame": {
+      "h": 24,
+      "w": 24,
+      "x": 301,
+      "y": 2,
+    },
+  },
+  "headlessBase.all.doughnutted": {
+    "frame": {
+      "h": 24,
+      "w": 24,
+      "x": 301,
+      "y": 2,
+    },
+  },
+  "headlessBase.all.mirrorReflection": {
+    "frame": {
+      "h": 24,
+      "w": 24,
+      "x": 301,
+      "y": 2,
+    },
+  },
+  "headlessBase.deactivated": {
+    "frame": {
+      "h": 24,
+      "w": 24,
+      "x": 176,
+      "y": 2,
+    },
+  },
+  "headlessBase.doughnutted": {
+    "frame": {
+      "h": 24,
+      "w": 24,
+      "x": 176,
+      "y": 2,
+    },
+  },
+  "headlessBase.mirrorReflection": {
+    "frame": {
+      "h": 24,
+      "w": 24,
+      "x": 176,
+      "y": 2,
+    },
+  },
   "heels.blinking.away": {
+    "frame": {
+      "h": 24,
+      "w": 24,
+      "x": 376,
+      "y": 302,
+    },
+  },
+  "heels.blinking.away.mirrorReflection": {
+    "frame": {
+      "h": 24,
+      "w": 24,
+      "x": 376,
+      "y": 302,
+    },
+  },
+  "heels.blinking.away.sceneryPlayer": {
     "frame": {
       "h": 24,
       "w": 24,
@@ -2146,7 +6250,39 @@ exports[`for tailwind plugin we must have all possible frames and animations 1`]
       "y": 277,
     },
   },
+  "heels.blinking.awayLeft.mirrorReflection": {
+    "frame": {
+      "h": 24,
+      "w": 24,
+      "x": 376,
+      "y": 277,
+    },
+  },
+  "heels.blinking.awayLeft.sceneryPlayer": {
+    "frame": {
+      "h": 24,
+      "w": 24,
+      "x": 376,
+      "y": 277,
+    },
+  },
   "heels.blinking.awayRight": {
+    "frame": {
+      "h": 24,
+      "w": 24,
+      "x": 376,
+      "y": 327,
+    },
+  },
+  "heels.blinking.awayRight.mirrorReflection": {
+    "frame": {
+      "h": 24,
+      "w": 24,
+      "x": 376,
+      "y": 327,
+    },
+  },
+  "heels.blinking.awayRight.sceneryPlayer": {
     "frame": {
       "h": 24,
       "w": 24,
@@ -2162,7 +6298,39 @@ exports[`for tailwind plugin we must have all possible frames and animations 1`]
       "y": 452,
     },
   },
+  "heels.blinking.left.mirrorReflection": {
+    "frame": {
+      "h": 24,
+      "w": 24,
+      "x": 376,
+      "y": 452,
+    },
+  },
+  "heels.blinking.left.sceneryPlayer": {
+    "frame": {
+      "h": 24,
+      "w": 24,
+      "x": 376,
+      "y": 452,
+    },
+  },
   "heels.blinking.right": {
+    "frame": {
+      "h": 24,
+      "w": 24,
+      "x": 376,
+      "y": 352,
+    },
+  },
+  "heels.blinking.right.mirrorReflection": {
+    "frame": {
+      "h": 24,
+      "w": 24,
+      "x": 376,
+      "y": 352,
+    },
+  },
+  "heels.blinking.right.sceneryPlayer": {
     "frame": {
       "h": 24,
       "w": 24,
@@ -2178,7 +6346,39 @@ exports[`for tailwind plugin we must have all possible frames and animations 1`]
       "y": 402,
     },
   },
+  "heels.blinking.towards.mirrorReflection": {
+    "frame": {
+      "h": 24,
+      "w": 24,
+      "x": 376,
+      "y": 402,
+    },
+  },
+  "heels.blinking.towards.sceneryPlayer": {
+    "frame": {
+      "h": 24,
+      "w": 24,
+      "x": 376,
+      "y": 402,
+    },
+  },
   "heels.blinking.towardsLeft": {
+    "frame": {
+      "h": 24,
+      "w": 24,
+      "x": 376,
+      "y": 427,
+    },
+  },
+  "heels.blinking.towardsLeft.mirrorReflection": {
+    "frame": {
+      "h": 24,
+      "w": 24,
+      "x": 376,
+      "y": 427,
+    },
+  },
+  "heels.blinking.towardsLeft.sceneryPlayer": {
     "frame": {
       "h": 24,
       "w": 24,
@@ -2194,7 +6394,31 @@ exports[`for tailwind plugin we must have all possible frames and animations 1`]
       "y": 377,
     },
   },
+  "heels.blinking.towardsRight.mirrorReflection": {
+    "frame": {
+      "h": 24,
+      "w": 24,
+      "x": 376,
+      "y": 377,
+    },
+  },
+  "heels.blinking.towardsRight.sceneryPlayer": {
+    "frame": {
+      "h": 24,
+      "w": 24,
+      "x": 376,
+      "y": 377,
+    },
+  },
   "heels.falling.away": {
+    "frame": {
+      "h": 24,
+      "w": 24,
+      "x": 351,
+      "y": 302,
+    },
+  },
+  "heels.falling.away.mirrorReflection": {
     "frame": {
       "h": 24,
       "w": 24,
@@ -2210,7 +6434,23 @@ exports[`for tailwind plugin we must have all possible frames and animations 1`]
       "y": 277,
     },
   },
+  "heels.falling.awayLeft.mirrorReflection": {
+    "frame": {
+      "h": 24,
+      "w": 24,
+      "x": 351,
+      "y": 277,
+    },
+  },
   "heels.falling.awayRight": {
+    "frame": {
+      "h": 24,
+      "w": 24,
+      "x": 351,
+      "y": 327,
+    },
+  },
+  "heels.falling.awayRight.mirrorReflection": {
     "frame": {
       "h": 24,
       "w": 24,
@@ -2226,7 +6466,23 @@ exports[`for tailwind plugin we must have all possible frames and animations 1`]
       "y": 452,
     },
   },
+  "heels.falling.left.mirrorReflection": {
+    "frame": {
+      "h": 24,
+      "w": 24,
+      "x": 351,
+      "y": 452,
+    },
+  },
   "heels.falling.right": {
+    "frame": {
+      "h": 24,
+      "w": 24,
+      "x": 351,
+      "y": 352,
+    },
+  },
+  "heels.falling.right.mirrorReflection": {
     "frame": {
       "h": 24,
       "w": 24,
@@ -2242,7 +6498,23 @@ exports[`for tailwind plugin we must have all possible frames and animations 1`]
       "y": 402,
     },
   },
+  "heels.falling.towards.mirrorReflection": {
+    "frame": {
+      "h": 24,
+      "w": 24,
+      "x": 351,
+      "y": 402,
+    },
+  },
   "heels.falling.towardsLeft": {
+    "frame": {
+      "h": 24,
+      "w": 24,
+      "x": 351,
+      "y": 427,
+    },
+  },
+  "heels.falling.towardsLeft.mirrorReflection": {
     "frame": {
       "h": 24,
       "w": 24,
@@ -2258,7 +6530,31 @@ exports[`for tailwind plugin we must have all possible frames and animations 1`]
       "y": 377,
     },
   },
+  "heels.falling.towardsRight.mirrorReflection": {
+    "frame": {
+      "h": 24,
+      "w": 24,
+      "x": 351,
+      "y": 377,
+    },
+  },
   "heels.looking1.away": {
+    "frame": {
+      "h": 24,
+      "w": 24,
+      "x": 401,
+      "y": 302,
+    },
+  },
+  "heels.looking1.away.mirrorReflection": {
+    "frame": {
+      "h": 24,
+      "w": 24,
+      "x": 401,
+      "y": 302,
+    },
+  },
+  "heels.looking1.away.sceneryPlayer": {
     "frame": {
       "h": 24,
       "w": 24,
@@ -2274,7 +6570,39 @@ exports[`for tailwind plugin we must have all possible frames and animations 1`]
       "y": 277,
     },
   },
+  "heels.looking1.awayLeft.mirrorReflection": {
+    "frame": {
+      "h": 24,
+      "w": 24,
+      "x": 401,
+      "y": 277,
+    },
+  },
+  "heels.looking1.awayLeft.sceneryPlayer": {
+    "frame": {
+      "h": 24,
+      "w": 24,
+      "x": 401,
+      "y": 277,
+    },
+  },
   "heels.looking1.awayRight": {
+    "frame": {
+      "h": 24,
+      "w": 24,
+      "x": 401,
+      "y": 327,
+    },
+  },
+  "heels.looking1.awayRight.mirrorReflection": {
+    "frame": {
+      "h": 24,
+      "w": 24,
+      "x": 401,
+      "y": 327,
+    },
+  },
+  "heels.looking1.awayRight.sceneryPlayer": {
     "frame": {
       "h": 24,
       "w": 24,
@@ -2290,7 +6618,39 @@ exports[`for tailwind plugin we must have all possible frames and animations 1`]
       "y": 452,
     },
   },
+  "heels.looking1.left.mirrorReflection": {
+    "frame": {
+      "h": 24,
+      "w": 24,
+      "x": 401,
+      "y": 452,
+    },
+  },
+  "heels.looking1.left.sceneryPlayer": {
+    "frame": {
+      "h": 24,
+      "w": 24,
+      "x": 401,
+      "y": 452,
+    },
+  },
   "heels.looking1.right": {
+    "frame": {
+      "h": 24,
+      "w": 24,
+      "x": 401,
+      "y": 352,
+    },
+  },
+  "heels.looking1.right.mirrorReflection": {
+    "frame": {
+      "h": 24,
+      "w": 24,
+      "x": 401,
+      "y": 352,
+    },
+  },
+  "heels.looking1.right.sceneryPlayer": {
     "frame": {
       "h": 24,
       "w": 24,
@@ -2306,7 +6666,39 @@ exports[`for tailwind plugin we must have all possible frames and animations 1`]
       "y": 402,
     },
   },
+  "heels.looking1.towards.mirrorReflection": {
+    "frame": {
+      "h": 24,
+      "w": 24,
+      "x": 401,
+      "y": 402,
+    },
+  },
+  "heels.looking1.towards.sceneryPlayer": {
+    "frame": {
+      "h": 24,
+      "w": 24,
+      "x": 401,
+      "y": 402,
+    },
+  },
   "heels.looking1.towardsLeft": {
+    "frame": {
+      "h": 24,
+      "w": 24,
+      "x": 401,
+      "y": 427,
+    },
+  },
+  "heels.looking1.towardsLeft.mirrorReflection": {
+    "frame": {
+      "h": 24,
+      "w": 24,
+      "x": 401,
+      "y": 427,
+    },
+  },
+  "heels.looking1.towardsLeft.sceneryPlayer": {
     "frame": {
       "h": 24,
       "w": 24,
@@ -2322,7 +6714,39 @@ exports[`for tailwind plugin we must have all possible frames and animations 1`]
       "y": 377,
     },
   },
+  "heels.looking1.towardsRight.mirrorReflection": {
+    "frame": {
+      "h": 24,
+      "w": 24,
+      "x": 401,
+      "y": 377,
+    },
+  },
+  "heels.looking1.towardsRight.sceneryPlayer": {
+    "frame": {
+      "h": 24,
+      "w": 24,
+      "x": 401,
+      "y": 377,
+    },
+  },
   "heels.looking2.away": {
+    "frame": {
+      "h": 24,
+      "w": 24,
+      "x": 426,
+      "y": 302,
+    },
+  },
+  "heels.looking2.away.mirrorReflection": {
+    "frame": {
+      "h": 24,
+      "w": 24,
+      "x": 426,
+      "y": 302,
+    },
+  },
+  "heels.looking2.away.sceneryPlayer": {
     "frame": {
       "h": 24,
       "w": 24,
@@ -2338,7 +6762,39 @@ exports[`for tailwind plugin we must have all possible frames and animations 1`]
       "y": 277,
     },
   },
+  "heels.looking2.awayLeft.mirrorReflection": {
+    "frame": {
+      "h": 24,
+      "w": 24,
+      "x": 426,
+      "y": 277,
+    },
+  },
+  "heels.looking2.awayLeft.sceneryPlayer": {
+    "frame": {
+      "h": 24,
+      "w": 24,
+      "x": 426,
+      "y": 277,
+    },
+  },
   "heels.looking2.awayRight": {
+    "frame": {
+      "h": 24,
+      "w": 24,
+      "x": 426,
+      "y": 327,
+    },
+  },
+  "heels.looking2.awayRight.mirrorReflection": {
+    "frame": {
+      "h": 24,
+      "w": 24,
+      "x": 426,
+      "y": 327,
+    },
+  },
+  "heels.looking2.awayRight.sceneryPlayer": {
     "frame": {
       "h": 24,
       "w": 24,
@@ -2354,7 +6810,39 @@ exports[`for tailwind plugin we must have all possible frames and animations 1`]
       "y": 452,
     },
   },
+  "heels.looking2.left.mirrorReflection": {
+    "frame": {
+      "h": 24,
+      "w": 24,
+      "x": 426,
+      "y": 452,
+    },
+  },
+  "heels.looking2.left.sceneryPlayer": {
+    "frame": {
+      "h": 24,
+      "w": 24,
+      "x": 426,
+      "y": 452,
+    },
+  },
   "heels.looking2.right": {
+    "frame": {
+      "h": 24,
+      "w": 24,
+      "x": 426,
+      "y": 352,
+    },
+  },
+  "heels.looking2.right.mirrorReflection": {
+    "frame": {
+      "h": 24,
+      "w": 24,
+      "x": 426,
+      "y": 352,
+    },
+  },
+  "heels.looking2.right.sceneryPlayer": {
     "frame": {
       "h": 24,
       "w": 24,
@@ -2370,7 +6858,39 @@ exports[`for tailwind plugin we must have all possible frames and animations 1`]
       "y": 402,
     },
   },
+  "heels.looking2.towards.mirrorReflection": {
+    "frame": {
+      "h": 24,
+      "w": 24,
+      "x": 426,
+      "y": 402,
+    },
+  },
+  "heels.looking2.towards.sceneryPlayer": {
+    "frame": {
+      "h": 24,
+      "w": 24,
+      "x": 426,
+      "y": 402,
+    },
+  },
   "heels.looking2.towardsLeft": {
+    "frame": {
+      "h": 24,
+      "w": 24,
+      "x": 426,
+      "y": 427,
+    },
+  },
+  "heels.looking2.towardsLeft.mirrorReflection": {
+    "frame": {
+      "h": 24,
+      "w": 24,
+      "x": 426,
+      "y": 427,
+    },
+  },
+  "heels.looking2.towardsLeft.sceneryPlayer": {
     "frame": {
       "h": 24,
       "w": 24,
@@ -2386,7 +6906,47 @@ exports[`for tailwind plugin we must have all possible frames and animations 1`]
       "y": 377,
     },
   },
+  "heels.looking2.towardsRight.mirrorReflection": {
+    "frame": {
+      "h": 24,
+      "w": 24,
+      "x": 426,
+      "y": 377,
+    },
+  },
+  "heels.looking2.towardsRight.sceneryPlayer": {
+    "frame": {
+      "h": 24,
+      "w": 24,
+      "x": 426,
+      "y": 377,
+    },
+  },
   "heels.standing.away": {
+    "frame": {
+      "h": 24,
+      "w": 24,
+      "x": 451,
+      "y": 302,
+    },
+  },
+  "heels.standing.away.deactivated": {
+    "frame": {
+      "h": 24,
+      "w": 24,
+      "x": 451,
+      "y": 302,
+    },
+  },
+  "heels.standing.away.mirrorReflection": {
+    "frame": {
+      "h": 24,
+      "w": 24,
+      "x": 451,
+      "y": 302,
+    },
+  },
+  "heels.standing.away.sceneryPlayer": {
     "frame": {
       "h": 24,
       "w": 24,
@@ -2402,7 +6962,55 @@ exports[`for tailwind plugin we must have all possible frames and animations 1`]
       "y": 277,
     },
   },
+  "heels.standing.awayLeft.deactivated": {
+    "frame": {
+      "h": 24,
+      "w": 24,
+      "x": 451,
+      "y": 277,
+    },
+  },
+  "heels.standing.awayLeft.mirrorReflection": {
+    "frame": {
+      "h": 24,
+      "w": 24,
+      "x": 451,
+      "y": 277,
+    },
+  },
+  "heels.standing.awayLeft.sceneryPlayer": {
+    "frame": {
+      "h": 24,
+      "w": 24,
+      "x": 451,
+      "y": 277,
+    },
+  },
   "heels.standing.awayRight": {
+    "frame": {
+      "h": 24,
+      "w": 24,
+      "x": 451,
+      "y": 327,
+    },
+  },
+  "heels.standing.awayRight.deactivated": {
+    "frame": {
+      "h": 24,
+      "w": 24,
+      "x": 451,
+      "y": 327,
+    },
+  },
+  "heels.standing.awayRight.mirrorReflection": {
+    "frame": {
+      "h": 24,
+      "w": 24,
+      "x": 451,
+      "y": 327,
+    },
+  },
+  "heels.standing.awayRight.sceneryPlayer": {
     "frame": {
       "h": 24,
       "w": 24,
@@ -2418,7 +7026,55 @@ exports[`for tailwind plugin we must have all possible frames and animations 1`]
       "y": 452,
     },
   },
+  "heels.standing.left.deactivated": {
+    "frame": {
+      "h": 24,
+      "w": 24,
+      "x": 451,
+      "y": 452,
+    },
+  },
+  "heels.standing.left.mirrorReflection": {
+    "frame": {
+      "h": 24,
+      "w": 24,
+      "x": 451,
+      "y": 452,
+    },
+  },
+  "heels.standing.left.sceneryPlayer": {
+    "frame": {
+      "h": 24,
+      "w": 24,
+      "x": 451,
+      "y": 452,
+    },
+  },
   "heels.standing.right": {
+    "frame": {
+      "h": 24,
+      "w": 24,
+      "x": 451,
+      "y": 352,
+    },
+  },
+  "heels.standing.right.deactivated": {
+    "frame": {
+      "h": 24,
+      "w": 24,
+      "x": 451,
+      "y": 352,
+    },
+  },
+  "heels.standing.right.mirrorReflection": {
+    "frame": {
+      "h": 24,
+      "w": 24,
+      "x": 451,
+      "y": 352,
+    },
+  },
+  "heels.standing.right.sceneryPlayer": {
     "frame": {
       "h": 24,
       "w": 24,
@@ -2434,7 +7090,55 @@ exports[`for tailwind plugin we must have all possible frames and animations 1`]
       "y": 402,
     },
   },
+  "heels.standing.towards.deactivated": {
+    "frame": {
+      "h": 24,
+      "w": 24,
+      "x": 451,
+      "y": 402,
+    },
+  },
+  "heels.standing.towards.mirrorReflection": {
+    "frame": {
+      "h": 24,
+      "w": 24,
+      "x": 451,
+      "y": 402,
+    },
+  },
+  "heels.standing.towards.sceneryPlayer": {
+    "frame": {
+      "h": 24,
+      "w": 24,
+      "x": 451,
+      "y": 402,
+    },
+  },
   "heels.standing.towardsLeft": {
+    "frame": {
+      "h": 24,
+      "w": 24,
+      "x": 451,
+      "y": 427,
+    },
+  },
+  "heels.standing.towardsLeft.deactivated": {
+    "frame": {
+      "h": 24,
+      "w": 24,
+      "x": 451,
+      "y": 427,
+    },
+  },
+  "heels.standing.towardsLeft.mirrorReflection": {
+    "frame": {
+      "h": 24,
+      "w": 24,
+      "x": 451,
+      "y": 427,
+    },
+  },
+  "heels.standing.towardsLeft.sceneryPlayer": {
     "frame": {
       "h": 24,
       "w": 24,
@@ -2450,7 +7154,55 @@ exports[`for tailwind plugin we must have all possible frames and animations 1`]
       "y": 377,
     },
   },
+  "heels.standing.towardsRight.deactivated": {
+    "frame": {
+      "h": 24,
+      "w": 24,
+      "x": 451,
+      "y": 377,
+    },
+  },
+  "heels.standing.towardsRight.mirrorReflection": {
+    "frame": {
+      "h": 24,
+      "w": 24,
+      "x": 451,
+      "y": 377,
+    },
+  },
+  "heels.standing.towardsRight.sceneryPlayer": {
+    "frame": {
+      "h": 24,
+      "w": 24,
+      "x": 451,
+      "y": 377,
+    },
+  },
   "heels.walking.away.1": {
+    "frame": {
+      "h": 24,
+      "w": 24,
+      "x": 276,
+      "y": 302,
+    },
+  },
+  "heels.walking.away.1.deactivated": {
+    "frame": {
+      "h": 24,
+      "w": 24,
+      "x": 276,
+      "y": 302,
+    },
+  },
+  "heels.walking.away.1.mirrorReflection": {
+    "frame": {
+      "h": 24,
+      "w": 24,
+      "x": 276,
+      "y": 302,
+    },
+  },
+  "heels.walking.away.1.sceneryPlayer": {
     "frame": {
       "h": 24,
       "w": 24,
@@ -2466,7 +7218,55 @@ exports[`for tailwind plugin we must have all possible frames and animations 1`]
       "y": 302,
     },
   },
+  "heels.walking.away.2.deactivated": {
+    "frame": {
+      "h": 24,
+      "w": 24,
+      "x": 301,
+      "y": 302,
+    },
+  },
+  "heels.walking.away.2.mirrorReflection": {
+    "frame": {
+      "h": 24,
+      "w": 24,
+      "x": 301,
+      "y": 302,
+    },
+  },
+  "heels.walking.away.2.sceneryPlayer": {
+    "frame": {
+      "h": 24,
+      "w": 24,
+      "x": 301,
+      "y": 302,
+    },
+  },
   "heels.walking.away.3": {
+    "frame": {
+      "h": 24,
+      "w": 24,
+      "x": 326,
+      "y": 302,
+    },
+  },
+  "heels.walking.away.3.deactivated": {
+    "frame": {
+      "h": 24,
+      "w": 24,
+      "x": 326,
+      "y": 302,
+    },
+  },
+  "heels.walking.away.3.mirrorReflection": {
+    "frame": {
+      "h": 24,
+      "w": 24,
+      "x": 326,
+      "y": 302,
+    },
+  },
+  "heels.walking.away.3.sceneryPlayer": {
     "frame": {
       "h": 24,
       "w": 24,
@@ -2482,7 +7282,55 @@ exports[`for tailwind plugin we must have all possible frames and animations 1`]
       "y": 277,
     },
   },
+  "heels.walking.awayLeft.1.deactivated": {
+    "frame": {
+      "h": 24,
+      "w": 24,
+      "x": 276,
+      "y": 277,
+    },
+  },
+  "heels.walking.awayLeft.1.mirrorReflection": {
+    "frame": {
+      "h": 24,
+      "w": 24,
+      "x": 276,
+      "y": 277,
+    },
+  },
+  "heels.walking.awayLeft.1.sceneryPlayer": {
+    "frame": {
+      "h": 24,
+      "w": 24,
+      "x": 276,
+      "y": 277,
+    },
+  },
   "heels.walking.awayLeft.2": {
+    "frame": {
+      "h": 24,
+      "w": 24,
+      "x": 301,
+      "y": 277,
+    },
+  },
+  "heels.walking.awayLeft.2.deactivated": {
+    "frame": {
+      "h": 24,
+      "w": 24,
+      "x": 301,
+      "y": 277,
+    },
+  },
+  "heels.walking.awayLeft.2.mirrorReflection": {
+    "frame": {
+      "h": 24,
+      "w": 24,
+      "x": 301,
+      "y": 277,
+    },
+  },
+  "heels.walking.awayLeft.2.sceneryPlayer": {
     "frame": {
       "h": 24,
       "w": 24,
@@ -2498,7 +7346,55 @@ exports[`for tailwind plugin we must have all possible frames and animations 1`]
       "y": 277,
     },
   },
+  "heels.walking.awayLeft.3.deactivated": {
+    "frame": {
+      "h": 24,
+      "w": 24,
+      "x": 326,
+      "y": 277,
+    },
+  },
+  "heels.walking.awayLeft.3.mirrorReflection": {
+    "frame": {
+      "h": 24,
+      "w": 24,
+      "x": 326,
+      "y": 277,
+    },
+  },
+  "heels.walking.awayLeft.3.sceneryPlayer": {
+    "frame": {
+      "h": 24,
+      "w": 24,
+      "x": 326,
+      "y": 277,
+    },
+  },
   "heels.walking.awayRight.1": {
+    "frame": {
+      "h": 24,
+      "w": 24,
+      "x": 276,
+      "y": 327,
+    },
+  },
+  "heels.walking.awayRight.1.deactivated": {
+    "frame": {
+      "h": 24,
+      "w": 24,
+      "x": 276,
+      "y": 327,
+    },
+  },
+  "heels.walking.awayRight.1.mirrorReflection": {
+    "frame": {
+      "h": 24,
+      "w": 24,
+      "x": 276,
+      "y": 327,
+    },
+  },
+  "heels.walking.awayRight.1.sceneryPlayer": {
     "frame": {
       "h": 24,
       "w": 24,
@@ -2514,7 +7410,55 @@ exports[`for tailwind plugin we must have all possible frames and animations 1`]
       "y": 327,
     },
   },
+  "heels.walking.awayRight.2.deactivated": {
+    "frame": {
+      "h": 24,
+      "w": 24,
+      "x": 301,
+      "y": 327,
+    },
+  },
+  "heels.walking.awayRight.2.mirrorReflection": {
+    "frame": {
+      "h": 24,
+      "w": 24,
+      "x": 301,
+      "y": 327,
+    },
+  },
+  "heels.walking.awayRight.2.sceneryPlayer": {
+    "frame": {
+      "h": 24,
+      "w": 24,
+      "x": 301,
+      "y": 327,
+    },
+  },
   "heels.walking.awayRight.3": {
+    "frame": {
+      "h": 24,
+      "w": 24,
+      "x": 326,
+      "y": 327,
+    },
+  },
+  "heels.walking.awayRight.3.deactivated": {
+    "frame": {
+      "h": 24,
+      "w": 24,
+      "x": 326,
+      "y": 327,
+    },
+  },
+  "heels.walking.awayRight.3.mirrorReflection": {
+    "frame": {
+      "h": 24,
+      "w": 24,
+      "x": 326,
+      "y": 327,
+    },
+  },
+  "heels.walking.awayRight.3.sceneryPlayer": {
     "frame": {
       "h": 24,
       "w": 24,
@@ -2530,7 +7474,55 @@ exports[`for tailwind plugin we must have all possible frames and animations 1`]
       "y": 452,
     },
   },
+  "heels.walking.left.1.deactivated": {
+    "frame": {
+      "h": 24,
+      "w": 24,
+      "x": 276,
+      "y": 452,
+    },
+  },
+  "heels.walking.left.1.mirrorReflection": {
+    "frame": {
+      "h": 24,
+      "w": 24,
+      "x": 276,
+      "y": 452,
+    },
+  },
+  "heels.walking.left.1.sceneryPlayer": {
+    "frame": {
+      "h": 24,
+      "w": 24,
+      "x": 276,
+      "y": 452,
+    },
+  },
   "heels.walking.left.2": {
+    "frame": {
+      "h": 24,
+      "w": 24,
+      "x": 301,
+      "y": 452,
+    },
+  },
+  "heels.walking.left.2.deactivated": {
+    "frame": {
+      "h": 24,
+      "w": 24,
+      "x": 301,
+      "y": 452,
+    },
+  },
+  "heels.walking.left.2.mirrorReflection": {
+    "frame": {
+      "h": 24,
+      "w": 24,
+      "x": 301,
+      "y": 452,
+    },
+  },
+  "heels.walking.left.2.sceneryPlayer": {
     "frame": {
       "h": 24,
       "w": 24,
@@ -2546,7 +7538,55 @@ exports[`for tailwind plugin we must have all possible frames and animations 1`]
       "y": 452,
     },
   },
+  "heels.walking.left.3.deactivated": {
+    "frame": {
+      "h": 24,
+      "w": 24,
+      "x": 326,
+      "y": 452,
+    },
+  },
+  "heels.walking.left.3.mirrorReflection": {
+    "frame": {
+      "h": 24,
+      "w": 24,
+      "x": 326,
+      "y": 452,
+    },
+  },
+  "heels.walking.left.3.sceneryPlayer": {
+    "frame": {
+      "h": 24,
+      "w": 24,
+      "x": 326,
+      "y": 452,
+    },
+  },
   "heels.walking.right.1": {
+    "frame": {
+      "h": 24,
+      "w": 24,
+      "x": 276,
+      "y": 352,
+    },
+  },
+  "heels.walking.right.1.deactivated": {
+    "frame": {
+      "h": 24,
+      "w": 24,
+      "x": 276,
+      "y": 352,
+    },
+  },
+  "heels.walking.right.1.mirrorReflection": {
+    "frame": {
+      "h": 24,
+      "w": 24,
+      "x": 276,
+      "y": 352,
+    },
+  },
+  "heels.walking.right.1.sceneryPlayer": {
     "frame": {
       "h": 24,
       "w": 24,
@@ -2562,7 +7602,55 @@ exports[`for tailwind plugin we must have all possible frames and animations 1`]
       "y": 352,
     },
   },
+  "heels.walking.right.2.deactivated": {
+    "frame": {
+      "h": 24,
+      "w": 24,
+      "x": 301,
+      "y": 352,
+    },
+  },
+  "heels.walking.right.2.mirrorReflection": {
+    "frame": {
+      "h": 24,
+      "w": 24,
+      "x": 301,
+      "y": 352,
+    },
+  },
+  "heels.walking.right.2.sceneryPlayer": {
+    "frame": {
+      "h": 24,
+      "w": 24,
+      "x": 301,
+      "y": 352,
+    },
+  },
   "heels.walking.right.3": {
+    "frame": {
+      "h": 24,
+      "w": 24,
+      "x": 326,
+      "y": 352,
+    },
+  },
+  "heels.walking.right.3.deactivated": {
+    "frame": {
+      "h": 24,
+      "w": 24,
+      "x": 326,
+      "y": 352,
+    },
+  },
+  "heels.walking.right.3.mirrorReflection": {
+    "frame": {
+      "h": 24,
+      "w": 24,
+      "x": 326,
+      "y": 352,
+    },
+  },
+  "heels.walking.right.3.sceneryPlayer": {
     "frame": {
       "h": 24,
       "w": 24,
@@ -2578,7 +7666,55 @@ exports[`for tailwind plugin we must have all possible frames and animations 1`]
       "y": 402,
     },
   },
+  "heels.walking.towards.1.deactivated": {
+    "frame": {
+      "h": 24,
+      "w": 24,
+      "x": 276,
+      "y": 402,
+    },
+  },
+  "heels.walking.towards.1.mirrorReflection": {
+    "frame": {
+      "h": 24,
+      "w": 24,
+      "x": 276,
+      "y": 402,
+    },
+  },
+  "heels.walking.towards.1.sceneryPlayer": {
+    "frame": {
+      "h": 24,
+      "w": 24,
+      "x": 276,
+      "y": 402,
+    },
+  },
   "heels.walking.towards.2": {
+    "frame": {
+      "h": 24,
+      "w": 24,
+      "x": 301,
+      "y": 402,
+    },
+  },
+  "heels.walking.towards.2.deactivated": {
+    "frame": {
+      "h": 24,
+      "w": 24,
+      "x": 301,
+      "y": 402,
+    },
+  },
+  "heels.walking.towards.2.mirrorReflection": {
+    "frame": {
+      "h": 24,
+      "w": 24,
+      "x": 301,
+      "y": 402,
+    },
+  },
+  "heels.walking.towards.2.sceneryPlayer": {
     "frame": {
       "h": 24,
       "w": 24,
@@ -2594,7 +7730,55 @@ exports[`for tailwind plugin we must have all possible frames and animations 1`]
       "y": 402,
     },
   },
+  "heels.walking.towards.3.deactivated": {
+    "frame": {
+      "h": 24,
+      "w": 24,
+      "x": 326,
+      "y": 402,
+    },
+  },
+  "heels.walking.towards.3.mirrorReflection": {
+    "frame": {
+      "h": 24,
+      "w": 24,
+      "x": 326,
+      "y": 402,
+    },
+  },
+  "heels.walking.towards.3.sceneryPlayer": {
+    "frame": {
+      "h": 24,
+      "w": 24,
+      "x": 326,
+      "y": 402,
+    },
+  },
   "heels.walking.towardsLeft.1": {
+    "frame": {
+      "h": 24,
+      "w": 24,
+      "x": 276,
+      "y": 427,
+    },
+  },
+  "heels.walking.towardsLeft.1.deactivated": {
+    "frame": {
+      "h": 24,
+      "w": 24,
+      "x": 276,
+      "y": 427,
+    },
+  },
+  "heels.walking.towardsLeft.1.mirrorReflection": {
+    "frame": {
+      "h": 24,
+      "w": 24,
+      "x": 276,
+      "y": 427,
+    },
+  },
+  "heels.walking.towardsLeft.1.sceneryPlayer": {
     "frame": {
       "h": 24,
       "w": 24,
@@ -2610,7 +7794,55 @@ exports[`for tailwind plugin we must have all possible frames and animations 1`]
       "y": 427,
     },
   },
+  "heels.walking.towardsLeft.2.deactivated": {
+    "frame": {
+      "h": 24,
+      "w": 24,
+      "x": 301,
+      "y": 427,
+    },
+  },
+  "heels.walking.towardsLeft.2.mirrorReflection": {
+    "frame": {
+      "h": 24,
+      "w": 24,
+      "x": 301,
+      "y": 427,
+    },
+  },
+  "heels.walking.towardsLeft.2.sceneryPlayer": {
+    "frame": {
+      "h": 24,
+      "w": 24,
+      "x": 301,
+      "y": 427,
+    },
+  },
   "heels.walking.towardsLeft.3": {
+    "frame": {
+      "h": 24,
+      "w": 24,
+      "x": 326,
+      "y": 427,
+    },
+  },
+  "heels.walking.towardsLeft.3.deactivated": {
+    "frame": {
+      "h": 24,
+      "w": 24,
+      "x": 326,
+      "y": 427,
+    },
+  },
+  "heels.walking.towardsLeft.3.mirrorReflection": {
+    "frame": {
+      "h": 24,
+      "w": 24,
+      "x": 326,
+      "y": 427,
+    },
+  },
+  "heels.walking.towardsLeft.3.sceneryPlayer": {
     "frame": {
       "h": 24,
       "w": 24,
@@ -2626,7 +7858,55 @@ exports[`for tailwind plugin we must have all possible frames and animations 1`]
       "y": 377,
     },
   },
+  "heels.walking.towardsRight.1.deactivated": {
+    "frame": {
+      "h": 24,
+      "w": 24,
+      "x": 276,
+      "y": 377,
+    },
+  },
+  "heels.walking.towardsRight.1.mirrorReflection": {
+    "frame": {
+      "h": 24,
+      "w": 24,
+      "x": 276,
+      "y": 377,
+    },
+  },
+  "heels.walking.towardsRight.1.sceneryPlayer": {
+    "frame": {
+      "h": 24,
+      "w": 24,
+      "x": 276,
+      "y": 377,
+    },
+  },
   "heels.walking.towardsRight.2": {
+    "frame": {
+      "h": 24,
+      "w": 24,
+      "x": 301,
+      "y": 377,
+    },
+  },
+  "heels.walking.towardsRight.2.deactivated": {
+    "frame": {
+      "h": 24,
+      "w": 24,
+      "x": 301,
+      "y": 377,
+    },
+  },
+  "heels.walking.towardsRight.2.mirrorReflection": {
+    "frame": {
+      "h": 24,
+      "w": 24,
+      "x": 301,
+      "y": 377,
+    },
+  },
+  "heels.walking.towardsRight.2.sceneryPlayer": {
     "frame": {
       "h": 24,
       "w": 24,
@@ -2642,7 +7922,55 @@ exports[`for tailwind plugin we must have all possible frames and animations 1`]
       "y": 377,
     },
   },
+  "heels.walking.towardsRight.3.deactivated": {
+    "frame": {
+      "h": 24,
+      "w": 24,
+      "x": 326,
+      "y": 377,
+    },
+  },
+  "heels.walking.towardsRight.3.mirrorReflection": {
+    "frame": {
+      "h": 24,
+      "w": 24,
+      "x": 326,
+      "y": 377,
+    },
+  },
+  "heels.walking.towardsRight.3.sceneryPlayer": {
+    "frame": {
+      "h": 24,
+      "w": 24,
+      "x": 326,
+      "y": 377,
+    },
+  },
   "helicopterBug.1": {
+    "frame": {
+      "h": 24,
+      "w": 24,
+      "x": 226,
+      "y": 177,
+    },
+  },
+  "helicopterBug.1.deactivated": {
+    "frame": {
+      "h": 24,
+      "w": 24,
+      "x": 226,
+      "y": 177,
+    },
+  },
+  "helicopterBug.1.doughnutted": {
+    "frame": {
+      "h": 24,
+      "w": 24,
+      "x": 226,
+      "y": 177,
+    },
+  },
+  "helicopterBug.1.mirrorReflection": {
     "frame": {
       "h": 24,
       "w": 24,
@@ -2658,7 +7986,55 @@ exports[`for tailwind plugin we must have all possible frames and animations 1`]
       "y": 177,
     },
   },
+  "helicopterBug.2.deactivated": {
+    "frame": {
+      "h": 24,
+      "w": 24,
+      "x": 251,
+      "y": 177,
+    },
+  },
+  "helicopterBug.2.doughnutted": {
+    "frame": {
+      "h": 24,
+      "w": 24,
+      "x": 251,
+      "y": 177,
+    },
+  },
+  "helicopterBug.2.mirrorReflection": {
+    "frame": {
+      "h": 24,
+      "w": 24,
+      "x": 251,
+      "y": 177,
+    },
+  },
   "helicopterBug.3": {
+    "frame": {
+      "h": 24,
+      "w": 24,
+      "x": 276,
+      "y": 177,
+    },
+  },
+  "helicopterBug.3.deactivated": {
+    "frame": {
+      "h": 24,
+      "w": 24,
+      "x": 276,
+      "y": 177,
+    },
+  },
+  "helicopterBug.3.doughnutted": {
+    "frame": {
+      "h": 24,
+      "w": 24,
+      "x": 276,
+      "y": 177,
+    },
+  },
+  "helicopterBug.3.mirrorReflection": {
     "frame": {
       "h": 24,
       "w": 24,
@@ -2674,6 +8050,30 @@ exports[`for tailwind plugin we must have all possible frames and animations 1`]
       "y": 177,
     },
   },
+  "helicopterBug.4.deactivated": {
+    "frame": {
+      "h": 24,
+      "w": 24,
+      "x": 301,
+      "y": 177,
+    },
+  },
+  "helicopterBug.4.doughnutted": {
+    "frame": {
+      "h": 24,
+      "w": 24,
+      "x": 301,
+      "y": 177,
+    },
+  },
+  "helicopterBug.4.mirrorReflection": {
+    "frame": {
+      "h": 24,
+      "w": 24,
+      "x": 301,
+      "y": 177,
+    },
+  },
   "hooter": {
     "frame": {
       "h": 24,
@@ -2682,7 +8082,31 @@ exports[`for tailwind plugin we must have all possible frames and animations 1`]
       "y": 127,
     },
   },
+  "hooter.deactivated": {
+    "frame": {
+      "h": 24,
+      "w": 24,
+      "x": 501,
+      "y": 127,
+    },
+  },
+  "hooter.mirrorReflection": {
+    "frame": {
+      "h": 24,
+      "w": 24,
+      "x": 501,
+      "y": 127,
+    },
+  },
   "hushPuppy": {
+    "frame": {
+      "h": 28,
+      "w": 32,
+      "x": 166,
+      "y": 711,
+    },
+  },
+  "hushPuppy.mirrorReflection": {
     "frame": {
       "h": 28,
       "w": 32,
@@ -2730,7 +8154,31 @@ exports[`for tailwind plugin we must have all possible frames and animations 1`]
       "y": 27,
     },
   },
+  "joystick.ball.active.mirrorReflection": {
+    "frame": {
+      "h": 24,
+      "w": 24,
+      "x": 451,
+      "y": 27,
+    },
+  },
+  "joystick.ball.mirrorReflection": {
+    "frame": {
+      "h": 24,
+      "w": 24,
+      "x": 476,
+      "y": 27,
+    },
+  },
   "joystick.stick": {
+    "frame": {
+      "h": 24,
+      "w": 24,
+      "x": 426,
+      "y": 27,
+    },
+  },
+  "joystick.stick.mirrorReflection": {
     "frame": {
       "h": 24,
       "w": 24,
@@ -2746,7 +8194,23 @@ exports[`for tailwind plugin we must have all possible frames and animations 1`]
       "y": 27,
     },
   },
+  "joystick.whole.mirrorReflection": {
+    "frame": {
+      "h": 24,
+      "w": 24,
+      "x": 501,
+      "y": 27,
+    },
+  },
   "lamp.off.away": {
+    "frame": {
+      "h": 28,
+      "w": 32,
+      "x": 298,
+      "y": 827,
+    },
+  },
+  "lamp.off.away.mirrorReflection": {
     "frame": {
       "h": 28,
       "w": 32,
@@ -2762,7 +8226,23 @@ exports[`for tailwind plugin we must have all possible frames and animations 1`]
       "y": 827,
     },
   },
+  "lamp.off.left.mirrorReflection": {
+    "frame": {
+      "h": 28,
+      "w": 32,
+      "x": 265,
+      "y": 827,
+    },
+  },
   "lamp.off.right": {
+    "frame": {
+      "h": 28,
+      "w": 32,
+      "x": 298,
+      "y": 856,
+    },
+  },
+  "lamp.off.right.mirrorReflection": {
     "frame": {
       "h": 28,
       "w": 32,
@@ -2778,7 +8258,23 @@ exports[`for tailwind plugin we must have all possible frames and animations 1`]
       "y": 856,
     },
   },
+  "lamp.off.towards.mirrorReflection": {
+    "frame": {
+      "h": 28,
+      "w": 32,
+      "x": 265,
+      "y": 856,
+    },
+  },
   "lamp.on.away": {
+    "frame": {
+      "h": 28,
+      "w": 32,
+      "x": 232,
+      "y": 827,
+    },
+  },
+  "lamp.on.away.mirrorReflection": {
     "frame": {
       "h": 28,
       "w": 32,
@@ -2794,7 +8290,23 @@ exports[`for tailwind plugin we must have all possible frames and animations 1`]
       "y": 827,
     },
   },
+  "lamp.on.left.mirrorReflection": {
+    "frame": {
+      "h": 28,
+      "w": 32,
+      "x": 199,
+      "y": 827,
+    },
+  },
   "lamp.on.right": {
+    "frame": {
+      "h": 28,
+      "w": 32,
+      "x": 232,
+      "y": 856,
+    },
+  },
+  "lamp.on.right.mirrorReflection": {
     "frame": {
       "h": 28,
       "w": 32,
@@ -2810,7 +8322,23 @@ exports[`for tailwind plugin we must have all possible frames and animations 1`]
       "y": 856,
     },
   },
+  "lamp.on.towards.mirrorReflection": {
+    "frame": {
+      "h": 28,
+      "w": 32,
+      "x": 199,
+      "y": 856,
+    },
+  },
   "lift.1": {
+    "frame": {
+      "h": 24,
+      "w": 24,
+      "x": 551,
+      "y": 402,
+    },
+  },
+  "lift.1.mirrorReflection": {
     "frame": {
       "h": 24,
       "w": 24,
@@ -2826,7 +8354,23 @@ exports[`for tailwind plugin we must have all possible frames and animations 1`]
       "y": 402,
     },
   },
+  "lift.2.mirrorReflection": {
+    "frame": {
+      "h": 24,
+      "w": 24,
+      "x": 576,
+      "y": 402,
+    },
+  },
   "lift.3": {
+    "frame": {
+      "h": 24,
+      "w": 24,
+      "x": 601,
+      "y": 402,
+    },
+  },
+  "lift.3.mirrorReflection": {
     "frame": {
       "h": 24,
       "w": 24,
@@ -2842,7 +8386,23 @@ exports[`for tailwind plugin we must have all possible frames and animations 1`]
       "y": 402,
     },
   },
+  "lift.4.mirrorReflection": {
+    "frame": {
+      "h": 24,
+      "w": 24,
+      "x": 626,
+      "y": 402,
+    },
+  },
   "lift.static": {
+    "frame": {
+      "h": 24,
+      "w": 24,
+      "x": 526,
+      "y": 402,
+    },
+  },
+  "lift.static.mirrorReflection": {
     "frame": {
       "h": 24,
       "w": 24,
@@ -3010,7 +8570,55 @@ exports[`for tailwind plugin we must have all possible frames and animations 1`]
       "y": 177,
     },
   },
+  "monkey.away.deactivated": {
+    "frame": {
+      "h": 24,
+      "w": 24,
+      "x": 26,
+      "y": 177,
+    },
+  },
+  "monkey.away.doughnutted": {
+    "frame": {
+      "h": 24,
+      "w": 24,
+      "x": 26,
+      "y": 177,
+    },
+  },
+  "monkey.away.mirrorReflection": {
+    "frame": {
+      "h": 24,
+      "w": 24,
+      "x": 26,
+      "y": 177,
+    },
+  },
   "monkey.left": {
+    "frame": {
+      "h": 24,
+      "w": 24,
+      "x": 1,
+      "y": 177,
+    },
+  },
+  "monkey.left.deactivated": {
+    "frame": {
+      "h": 24,
+      "w": 24,
+      "x": 1,
+      "y": 177,
+    },
+  },
+  "monkey.left.doughnutted": {
+    "frame": {
+      "h": 24,
+      "w": 24,
+      "x": 1,
+      "y": 177,
+    },
+  },
+  "monkey.left.mirrorReflection": {
     "frame": {
       "h": 24,
       "w": 24,
@@ -3026,7 +8634,55 @@ exports[`for tailwind plugin we must have all possible frames and animations 1`]
       "y": 202,
     },
   },
+  "monkey.right.deactivated": {
+    "frame": {
+      "h": 24,
+      "w": 24,
+      "x": 26,
+      "y": 202,
+    },
+  },
+  "monkey.right.doughnutted": {
+    "frame": {
+      "h": 24,
+      "w": 24,
+      "x": 26,
+      "y": 202,
+    },
+  },
+  "monkey.right.mirrorReflection": {
+    "frame": {
+      "h": 24,
+      "w": 24,
+      "x": 26,
+      "y": 202,
+    },
+  },
   "monkey.towards": {
+    "frame": {
+      "h": 24,
+      "w": 24,
+      "x": 1,
+      "y": 202,
+    },
+  },
+  "monkey.towards.deactivated": {
+    "frame": {
+      "h": 24,
+      "w": 24,
+      "x": 1,
+      "y": 202,
+    },
+  },
+  "monkey.towards.doughnutted": {
+    "frame": {
+      "h": 24,
+      "w": 24,
+      "x": 1,
+      "y": 202,
+    },
+  },
+  "monkey.towards.mirrorReflection": {
     "frame": {
       "h": 24,
       "w": 24,
@@ -3586,7 +9242,23 @@ exports[`for tailwind plugin we must have all possible frames and animations 1`]
       "y": 152,
     },
   },
+  "planet.blacktooth.mirrorReflection": {
+    "frame": {
+      "h": 24,
+      "w": 24,
+      "x": 401,
+      "y": 152,
+    },
+  },
   "planet.bookworld": {
+    "frame": {
+      "h": 24,
+      "w": 24,
+      "x": 501,
+      "y": 152,
+    },
+  },
+  "planet.bookworld.mirrorReflection": {
     "frame": {
       "h": 24,
       "w": 24,
@@ -3602,6 +9274,14 @@ exports[`for tailwind plugin we must have all possible frames and animations 1`]
       "y": 152,
     },
   },
+  "planet.egyptus.mirrorReflection": {
+    "frame": {
+      "h": 24,
+      "w": 24,
+      "x": 451,
+      "y": 152,
+    },
+  },
   "planet.penitentiary": {
     "frame": {
       "h": 24,
@@ -3610,7 +9290,23 @@ exports[`for tailwind plugin we must have all possible frames and animations 1`]
       "y": 152,
     },
   },
+  "planet.penitentiary.mirrorReflection": {
+    "frame": {
+      "h": 24,
+      "w": 24,
+      "x": 476,
+      "y": 152,
+    },
+  },
   "planet.safari": {
+    "frame": {
+      "h": 24,
+      "w": 24,
+      "x": 426,
+      "y": 152,
+    },
+  },
+  "planet.safari.mirrorReflection": {
     "frame": {
       "h": 24,
       "w": 24,
@@ -3634,6 +9330,14 @@ exports[`for tailwind plugin we must have all possible frames and animations 1`]
       "y": 577,
     },
   },
+  "portableTeleporter.flashing.1.mirrorReflection": {
+    "frame": {
+      "h": 24,
+      "w": 24,
+      "x": 26,
+      "y": 577,
+    },
+  },
   "portableTeleporter.flashing.2": {
     "frame": {
       "h": 24,
@@ -3642,7 +9346,31 @@ exports[`for tailwind plugin we must have all possible frames and animations 1`]
       "y": 577,
     },
   },
+  "portableTeleporter.flashing.2.mirrorReflection": {
+    "frame": {
+      "h": 24,
+      "w": 24,
+      "x": 51,
+      "y": 577,
+    },
+  },
+  "portableTeleporter.mirrorReflection": {
+    "frame": {
+      "h": 24,
+      "w": 24,
+      "x": 1,
+      "y": 577,
+    },
+  },
   "puck": {
+    "frame": {
+      "h": 24,
+      "w": 24,
+      "x": 376,
+      "y": 102,
+    },
+  },
+  "puck.mirrorReflection": {
     "frame": {
       "h": 24,
       "w": 24,
@@ -3714,7 +9442,27 @@ exports[`for tailwind plugin we must have all possible frames and animations 1`]
       "y": 711,
     },
   },
+  "sandwich.mirrorReflection": {
+    "frame": {
+      "h": 28,
+      "w": 32,
+      "x": 364,
+      "y": 711,
+    },
+  },
   "scroll": {
+    "frame": {
+      "h": 24,
+      "pivot": {
+        "x": 17,
+        "y": 24,
+      },
+      "w": 24,
+      "x": 401,
+      "y": 202,
+    },
+  },
+  "scroll.mirrorReflection": {
     "frame": {
       "h": 24,
       "pivot": {
@@ -4470,7 +10218,23 @@ exports[`for tailwind plugin we must have all possible frames and animations 1`]
       "y": 798,
     },
   },
+  "shine.head.1.mirrorReflection": {
+    "frame": {
+      "h": 28,
+      "w": 32,
+      "x": 1,
+      "y": 798,
+    },
+  },
   "shine.head.2": {
+    "frame": {
+      "h": 28,
+      "w": 32,
+      "x": 34,
+      "y": 798,
+    },
+  },
+  "shine.head.2.mirrorReflection": {
     "frame": {
       "h": 28,
       "w": 32,
@@ -4486,7 +10250,23 @@ exports[`for tailwind plugin we must have all possible frames and animations 1`]
       "y": 798,
     },
   },
+  "shine.head.3.mirrorReflection": {
+    "frame": {
+      "h": 28,
+      "w": 32,
+      "x": 67,
+      "y": 798,
+    },
+  },
   "shine.head.4": {
+    "frame": {
+      "h": 28,
+      "w": 32,
+      "x": 1,
+      "y": 827,
+    },
+  },
+  "shine.head.4.mirrorReflection": {
     "frame": {
       "h": 28,
       "w": 32,
@@ -4502,7 +10282,23 @@ exports[`for tailwind plugin we must have all possible frames and animations 1`]
       "y": 827,
     },
   },
+  "shine.head.5.mirrorReflection": {
+    "frame": {
+      "h": 28,
+      "w": 32,
+      "x": 34,
+      "y": 827,
+    },
+  },
   "shine.head.6": {
+    "frame": {
+      "h": 28,
+      "w": 32,
+      "x": 67,
+      "y": 827,
+    },
+  },
+  "shine.head.6.mirrorReflection": {
     "frame": {
       "h": 28,
       "w": 32,
@@ -4518,7 +10314,23 @@ exports[`for tailwind plugin we must have all possible frames and animations 1`]
       "y": 856,
     },
   },
+  "shine.heels.1.mirrorReflection": {
+    "frame": {
+      "h": 28,
+      "w": 32,
+      "x": 1,
+      "y": 856,
+    },
+  },
   "shine.heels.2": {
+    "frame": {
+      "h": 28,
+      "w": 32,
+      "x": 34,
+      "y": 856,
+    },
+  },
+  "shine.heels.2.mirrorReflection": {
     "frame": {
       "h": 28,
       "w": 32,
@@ -4534,7 +10346,23 @@ exports[`for tailwind plugin we must have all possible frames and animations 1`]
       "y": 856,
     },
   },
+  "shine.heels.3.mirrorReflection": {
+    "frame": {
+      "h": 28,
+      "w": 32,
+      "x": 67,
+      "y": 856,
+    },
+  },
   "shine.heels.4": {
+    "frame": {
+      "h": 28,
+      "w": 32,
+      "x": 1,
+      "y": 885,
+    },
+  },
+  "shine.heels.4.mirrorReflection": {
     "frame": {
       "h": 28,
       "w": 32,
@@ -4550,7 +10378,23 @@ exports[`for tailwind plugin we must have all possible frames and animations 1`]
       "y": 885,
     },
   },
+  "shine.heels.5.mirrorReflection": {
+    "frame": {
+      "h": 28,
+      "w": 32,
+      "x": 34,
+      "y": 885,
+    },
+  },
   "shine.heels.6": {
+    "frame": {
+      "h": 28,
+      "w": 32,
+      "x": 67,
+      "y": 885,
+    },
+  },
+  "shine.heels.6.mirrorReflection": {
     "frame": {
       "h": 28,
       "w": 32,
@@ -4566,7 +10410,55 @@ exports[`for tailwind plugin we must have all possible frames and animations 1`]
       "y": 77,
     },
   },
+  "skiHead.greenAndPink.away.deactivated": {
+    "frame": {
+      "h": 32,
+      "w": 24,
+      "x": 251,
+      "y": 77,
+    },
+  },
+  "skiHead.greenAndPink.away.doughnutted": {
+    "frame": {
+      "h": 32,
+      "w": 24,
+      "x": 251,
+      "y": 77,
+    },
+  },
+  "skiHead.greenAndPink.away.mirrorReflection": {
+    "frame": {
+      "h": 32,
+      "w": 24,
+      "x": 251,
+      "y": 77,
+    },
+  },
   "skiHead.greenAndPink.left": {
+    "frame": {
+      "h": 32,
+      "w": 24,
+      "x": 226,
+      "y": 77,
+    },
+  },
+  "skiHead.greenAndPink.left.deactivated": {
+    "frame": {
+      "h": 32,
+      "w": 24,
+      "x": 226,
+      "y": 77,
+    },
+  },
+  "skiHead.greenAndPink.left.doughnutted": {
+    "frame": {
+      "h": 32,
+      "w": 24,
+      "x": 226,
+      "y": 77,
+    },
+  },
+  "skiHead.greenAndPink.left.mirrorReflection": {
     "frame": {
       "h": 32,
       "w": 24,
@@ -4582,7 +10474,55 @@ exports[`for tailwind plugin we must have all possible frames and animations 1`]
       "y": 110,
     },
   },
+  "skiHead.greenAndPink.right.deactivated": {
+    "frame": {
+      "h": 32,
+      "w": 24,
+      "x": 251,
+      "y": 110,
+    },
+  },
+  "skiHead.greenAndPink.right.doughnutted": {
+    "frame": {
+      "h": 32,
+      "w": 24,
+      "x": 251,
+      "y": 110,
+    },
+  },
+  "skiHead.greenAndPink.right.mirrorReflection": {
+    "frame": {
+      "h": 32,
+      "w": 24,
+      "x": 251,
+      "y": 110,
+    },
+  },
   "skiHead.greenAndPink.towards": {
+    "frame": {
+      "h": 32,
+      "w": 24,
+      "x": 226,
+      "y": 110,
+    },
+  },
+  "skiHead.greenAndPink.towards.deactivated": {
+    "frame": {
+      "h": 32,
+      "w": 24,
+      "x": 226,
+      "y": 110,
+    },
+  },
+  "skiHead.greenAndPink.towards.doughnutted": {
+    "frame": {
+      "h": 32,
+      "w": 24,
+      "x": 226,
+      "y": 110,
+    },
+  },
+  "skiHead.greenAndPink.towards.mirrorReflection": {
     "frame": {
       "h": 32,
       "w": 24,
@@ -4598,7 +10538,55 @@ exports[`for tailwind plugin we must have all possible frames and animations 1`]
       "y": 77,
     },
   },
+  "skiHead.starsAndStripes.away.deactivated": {
+    "frame": {
+      "h": 32,
+      "w": 24,
+      "x": 301,
+      "y": 77,
+    },
+  },
+  "skiHead.starsAndStripes.away.doughnutted": {
+    "frame": {
+      "h": 32,
+      "w": 24,
+      "x": 301,
+      "y": 77,
+    },
+  },
+  "skiHead.starsAndStripes.away.mirrorReflection": {
+    "frame": {
+      "h": 32,
+      "w": 24,
+      "x": 301,
+      "y": 77,
+    },
+  },
   "skiHead.starsAndStripes.left": {
+    "frame": {
+      "h": 32,
+      "w": 24,
+      "x": 276,
+      "y": 77,
+    },
+  },
+  "skiHead.starsAndStripes.left.deactivated": {
+    "frame": {
+      "h": 32,
+      "w": 24,
+      "x": 276,
+      "y": 77,
+    },
+  },
+  "skiHead.starsAndStripes.left.doughnutted": {
+    "frame": {
+      "h": 32,
+      "w": 24,
+      "x": 276,
+      "y": 77,
+    },
+  },
+  "skiHead.starsAndStripes.left.mirrorReflection": {
     "frame": {
       "h": 32,
       "w": 24,
@@ -4614,7 +10602,55 @@ exports[`for tailwind plugin we must have all possible frames and animations 1`]
       "y": 110,
     },
   },
+  "skiHead.starsAndStripes.right.deactivated": {
+    "frame": {
+      "h": 32,
+      "w": 24,
+      "x": 301,
+      "y": 110,
+    },
+  },
+  "skiHead.starsAndStripes.right.doughnutted": {
+    "frame": {
+      "h": 32,
+      "w": 24,
+      "x": 301,
+      "y": 110,
+    },
+  },
+  "skiHead.starsAndStripes.right.mirrorReflection": {
+    "frame": {
+      "h": 32,
+      "w": 24,
+      "x": 301,
+      "y": 110,
+    },
+  },
   "skiHead.starsAndStripes.towards": {
+    "frame": {
+      "h": 32,
+      "w": 24,
+      "x": 276,
+      "y": 110,
+    },
+  },
+  "skiHead.starsAndStripes.towards.deactivated": {
+    "frame": {
+      "h": 32,
+      "w": 24,
+      "x": 276,
+      "y": 110,
+    },
+  },
+  "skiHead.starsAndStripes.towards.doughnutted": {
+    "frame": {
+      "h": 32,
+      "w": 24,
+      "x": 276,
+      "y": 110,
+    },
+  },
+  "skiHead.starsAndStripes.towards.mirrorReflection": {
     "frame": {
       "h": 32,
       "w": 24,
@@ -4630,7 +10666,23 @@ exports[`for tailwind plugin we must have all possible frames and animations 1`]
       "y": 682,
     },
   },
+  "spikes.mirrorReflection": {
+    "frame": {
+      "h": 28,
+      "w": 32,
+      "x": 397,
+      "y": 682,
+    },
+  },
   "spikyBall.1": {
+    "frame": {
+      "h": 24,
+      "w": 24,
+      "x": 501,
+      "y": 52,
+    },
+  },
+  "spikyBall.1.mirrorReflection": {
     "frame": {
       "h": 24,
       "w": 24,
@@ -4646,7 +10698,23 @@ exports[`for tailwind plugin we must have all possible frames and animations 1`]
       "y": 52,
     },
   },
+  "spikyBall.2.mirrorReflection": {
+    "frame": {
+      "h": 24,
+      "w": 24,
+      "x": 526,
+      "y": 52,
+    },
+  },
   "spring.compressed": {
+    "frame": {
+      "h": 24,
+      "w": 24,
+      "x": 476,
+      "y": 102,
+    },
+  },
+  "spring.compressed.mirrorReflection": {
     "frame": {
       "h": 24,
       "w": 24,
@@ -4662,7 +10730,23 @@ exports[`for tailwind plugin we must have all possible frames and animations 1`]
       "y": 102,
     },
   },
+  "spring.moreCompressed.mirrorReflection": {
+    "frame": {
+      "h": 24,
+      "w": 24,
+      "x": 451,
+      "y": 102,
+    },
+  },
   "spring.released": {
+    "frame": {
+      "h": 24,
+      "w": 24,
+      "x": 501,
+      "y": 102,
+    },
+  },
+  "spring.released.mirrorReflection": {
     "frame": {
       "h": 24,
       "w": 24,
@@ -4678,7 +10762,23 @@ exports[`for tailwind plugin we must have all possible frames and animations 1`]
       "y": 711,
     },
   },
+  "stepStool.mirrorReflection": {
+    "frame": {
+      "h": 28,
+      "w": 32,
+      "x": 1,
+      "y": 711,
+    },
+  },
   "sticks": {
+    "frame": {
+      "h": 24,
+      "w": 24,
+      "x": 451,
+      "y": 77,
+    },
+  },
+  "sticks.mirrorReflection": {
     "frame": {
       "h": 24,
       "w": 24,
@@ -4694,7 +10794,23 @@ exports[`for tailwind plugin we must have all possible frames and animations 1`]
       "y": 377,
     },
   },
+  "switch.left.mirrorReflection": {
+    "frame": {
+      "h": 24,
+      "w": 24,
+      "x": 601,
+      "y": 377,
+    },
+  },
   "switch.right": {
+    "frame": {
+      "h": 24,
+      "w": 24,
+      "x": 626,
+      "y": 377,
+    },
+  },
+  "switch.right.mirrorReflection": {
     "frame": {
       "h": 24,
       "w": 24,
@@ -4718,11 +10834,35 @@ exports[`for tailwind plugin we must have all possible frames and animations 1`]
       "y": 624,
     },
   },
+  "teleporter.flashing.1.mirrorReflection": {
+    "frame": {
+      "h": 28,
+      "w": 32,
+      "x": 34,
+      "y": 624,
+    },
+  },
   "teleporter.flashing.2": {
     "frame": {
       "h": 28,
       "w": 32,
       "x": 67,
+      "y": 624,
+    },
+  },
+  "teleporter.flashing.2.mirrorReflection": {
+    "frame": {
+      "h": 28,
+      "w": 32,
+      "x": 67,
+      "y": 624,
+    },
+  },
+  "teleporter.mirrorReflection": {
+    "frame": {
+      "h": 28,
+      "w": 32,
+      "x": 1,
       "y": 624,
     },
   },
@@ -4742,7 +10882,23 @@ exports[`for tailwind plugin we must have all possible frames and animations 1`]
       "y": 769,
     },
   },
+  "toaster.1.mirrorReflection": {
+    "frame": {
+      "h": 28,
+      "w": 32,
+      "x": 232,
+      "y": 769,
+    },
+  },
   "toaster.2": {
+    "frame": {
+      "h": 28,
+      "w": 32,
+      "x": 265,
+      "y": 769,
+    },
+  },
+  "toaster.2.mirrorReflection": {
     "frame": {
       "h": 28,
       "w": 32,
@@ -4758,7 +10914,23 @@ exports[`for tailwind plugin we must have all possible frames and animations 1`]
       "y": 769,
     },
   },
+  "toaster.disabled.mirrorReflection": {
+    "frame": {
+      "h": 28,
+      "w": 32,
+      "x": 298,
+      "y": 769,
+    },
+  },
   "tower": {
+    "frame": {
+      "h": 24,
+      "w": 24,
+      "x": 376,
+      "y": 77,
+    },
+  },
+  "tower.mirrorReflection": {
     "frame": {
       "h": 24,
       "w": 24,
@@ -4774,7 +10946,39 @@ exports[`for tailwind plugin we must have all possible frames and animations 1`]
       "y": 52,
     },
   },
+  "tower.moonbase.mirrorReflection": {
+    "frame": {
+      "h": 24,
+      "w": 24,
+      "x": 376,
+      "y": 52,
+    },
+  },
   "turtle.away.1": {
+    "frame": {
+      "h": 24,
+      "w": 24,
+      "x": 51,
+      "y": 77,
+    },
+  },
+  "turtle.away.1.deactivated": {
+    "frame": {
+      "h": 24,
+      "w": 24,
+      "x": 51,
+      "y": 77,
+    },
+  },
+  "turtle.away.1.doughnutted": {
+    "frame": {
+      "h": 24,
+      "w": 24,
+      "x": 51,
+      "y": 77,
+    },
+  },
+  "turtle.away.1.mirrorReflection": {
     "frame": {
       "h": 24,
       "w": 24,
@@ -4790,7 +10994,55 @@ exports[`for tailwind plugin we must have all possible frames and animations 1`]
       "y": 77,
     },
   },
+  "turtle.away.2.deactivated": {
+    "frame": {
+      "h": 24,
+      "w": 24,
+      "x": 76,
+      "y": 77,
+    },
+  },
+  "turtle.away.2.doughnutted": {
+    "frame": {
+      "h": 24,
+      "w": 24,
+      "x": 76,
+      "y": 77,
+    },
+  },
+  "turtle.away.2.mirrorReflection": {
+    "frame": {
+      "h": 24,
+      "w": 24,
+      "x": 76,
+      "y": 77,
+    },
+  },
   "turtle.left.1": {
+    "frame": {
+      "h": 24,
+      "w": 24,
+      "x": 1,
+      "y": 77,
+    },
+  },
+  "turtle.left.1.deactivated": {
+    "frame": {
+      "h": 24,
+      "w": 24,
+      "x": 1,
+      "y": 77,
+    },
+  },
+  "turtle.left.1.doughnutted": {
+    "frame": {
+      "h": 24,
+      "w": 24,
+      "x": 1,
+      "y": 77,
+    },
+  },
+  "turtle.left.1.mirrorReflection": {
     "frame": {
       "h": 24,
       "w": 24,
@@ -4806,7 +11058,55 @@ exports[`for tailwind plugin we must have all possible frames and animations 1`]
       "y": 77,
     },
   },
+  "turtle.left.2.deactivated": {
+    "frame": {
+      "h": 24,
+      "w": 24,
+      "x": 26,
+      "y": 77,
+    },
+  },
+  "turtle.left.2.doughnutted": {
+    "frame": {
+      "h": 24,
+      "w": 24,
+      "x": 26,
+      "y": 77,
+    },
+  },
+  "turtle.left.2.mirrorReflection": {
+    "frame": {
+      "h": 24,
+      "w": 24,
+      "x": 26,
+      "y": 77,
+    },
+  },
   "turtle.right.1": {
+    "frame": {
+      "h": 24,
+      "w": 24,
+      "x": 51,
+      "y": 102,
+    },
+  },
+  "turtle.right.1.deactivated": {
+    "frame": {
+      "h": 24,
+      "w": 24,
+      "x": 51,
+      "y": 102,
+    },
+  },
+  "turtle.right.1.doughnutted": {
+    "frame": {
+      "h": 24,
+      "w": 24,
+      "x": 51,
+      "y": 102,
+    },
+  },
+  "turtle.right.1.mirrorReflection": {
     "frame": {
       "h": 24,
       "w": 24,
@@ -4822,7 +11122,55 @@ exports[`for tailwind plugin we must have all possible frames and animations 1`]
       "y": 102,
     },
   },
+  "turtle.right.2.deactivated": {
+    "frame": {
+      "h": 24,
+      "w": 24,
+      "x": 76,
+      "y": 102,
+    },
+  },
+  "turtle.right.2.doughnutted": {
+    "frame": {
+      "h": 24,
+      "w": 24,
+      "x": 76,
+      "y": 102,
+    },
+  },
+  "turtle.right.2.mirrorReflection": {
+    "frame": {
+      "h": 24,
+      "w": 24,
+      "x": 76,
+      "y": 102,
+    },
+  },
   "turtle.towards.1": {
+    "frame": {
+      "h": 24,
+      "w": 24,
+      "x": 1,
+      "y": 102,
+    },
+  },
+  "turtle.towards.1.deactivated": {
+    "frame": {
+      "h": 24,
+      "w": 24,
+      "x": 1,
+      "y": 102,
+    },
+  },
+  "turtle.towards.1.doughnutted": {
+    "frame": {
+      "h": 24,
+      "w": 24,
+      "x": 1,
+      "y": 102,
+    },
+  },
+  "turtle.towards.1.mirrorReflection": {
     "frame": {
       "h": 24,
       "w": 24,
@@ -4838,7 +11186,39 @@ exports[`for tailwind plugin we must have all possible frames and animations 1`]
       "y": 102,
     },
   },
+  "turtle.towards.2.deactivated": {
+    "frame": {
+      "h": 24,
+      "w": 24,
+      "x": 26,
+      "y": 102,
+    },
+  },
+  "turtle.towards.2.doughnutted": {
+    "frame": {
+      "h": 24,
+      "w": 24,
+      "x": 26,
+      "y": 102,
+    },
+  },
+  "turtle.towards.2.mirrorReflection": {
+    "frame": {
+      "h": 24,
+      "w": 24,
+      "x": 26,
+      "y": 102,
+    },
+  },
   "volcano.1": {
+    "frame": {
+      "h": 28,
+      "w": 32,
+      "x": 232,
+      "y": 798,
+    },
+  },
+  "volcano.1.mirrorReflection": {
     "frame": {
       "h": 28,
       "w": 32,
@@ -4854,7 +11234,23 @@ exports[`for tailwind plugin we must have all possible frames and animations 1`]
       "y": 798,
     },
   },
+  "volcano.2.mirrorReflection": {
+    "frame": {
+      "h": 28,
+      "w": 32,
+      "x": 265,
+      "y": 798,
+    },
+  },
   "volcano.disabled": {
+    "frame": {
+      "h": 28,
+      "w": 32,
+      "x": 298,
+      "y": 798,
+    },
+  },
+  "volcano.disabled.mirrorReflection": {
     "frame": {
       "h": 28,
       "w": 32,
@@ -4870,7 +11266,23 @@ exports[`for tailwind plugin we must have all possible frames and animations 1`]
       "y": 127,
     },
   },
+  "whiteRabbit.extra-life.mirrorReflection": {
+    "frame": {
+      "h": 24,
+      "w": 24,
+      "x": 551,
+      "y": 127,
+    },
+  },
   "whiteRabbit.fast": {
+    "frame": {
+      "h": 24,
+      "w": 24,
+      "x": 576,
+      "y": 127,
+    },
+  },
+  "whiteRabbit.fast.mirrorReflection": {
     "frame": {
       "h": 24,
       "w": 24,
@@ -4886,7 +11298,23 @@ exports[`for tailwind plugin we must have all possible frames and animations 1`]
       "y": 127,
     },
   },
+  "whiteRabbit.jumps.mirrorReflection": {
+    "frame": {
+      "h": 24,
+      "w": 24,
+      "x": 626,
+      "y": 127,
+    },
+  },
   "whiteRabbit.shield": {
+    "frame": {
+      "h": 24,
+      "w": 24,
+      "x": 601,
+      "y": 127,
+    },
+  },
+  "whiteRabbit.shield.mirrorReflection": {
     "frame": {
       "h": 24,
       "w": 24,
@@ -4903,28 +11331,79 @@ exports[`for tailwind plugin we must have all possible frames and animations 2`]
     "bubbles.blueGreen.1",
     "bubbles.blueGreen.2",
   ],
+  "bubbles.blueGreen.deactivated": [
+    "bubbles.blueGreen.1.deactivated",
+    "bubbles.blueGreen.2.deactivated",
+  ],
+  "bubbles.blueGreen.doughnutted": [
+    "bubbles.blueGreen.1.doughnutted",
+    "bubbles.blueGreen.2.doughnutted",
+  ],
+  "bubbles.blueGreen.mirrorReflection": [
+    "bubbles.blueGreen.1.mirrorReflection",
+    "bubbles.blueGreen.2.mirrorReflection",
+  ],
   "bubbles.bounce.white": [
     "bubbles.white.1",
     "bubbles.white.2",
     "bubbles.white.3",
     "bubbles.white.2",
   ],
+  "bubbles.bounce.white.mirrorReflection": [
+    "bubbles.white.1.mirrorReflection",
+    "bubbles.white.2.mirrorReflection",
+    "bubbles.white.3.mirrorReflection",
+    "bubbles.white.2.mirrorReflection",
+  ],
   "bubbles.cold": [
     "bubbles.cold.1",
     "bubbles.cold.2",
+  ],
+  "bubbles.cold.deactivated": [
+    "bubbles.cold.1.deactivated",
+    "bubbles.cold.2.deactivated",
+  ],
+  "bubbles.cold.doughnutted": [
+    "bubbles.cold.1.doughnutted",
+    "bubbles.cold.2.doughnutted",
+  ],
+  "bubbles.cold.mirrorReflection": [
+    "bubbles.cold.1.mirrorReflection",
+    "bubbles.cold.2.mirrorReflection",
   ],
   "bubbles.doughnut": [
     "bubbles.taupe.1",
     "bubbles.taupe.2",
   ],
+  "bubbles.doughnut.mirrorReflection": [
+    "bubbles.taupe.1.mirrorReflection",
+    "bubbles.taupe.2.mirrorReflection",
+  ],
   "bubbles.jetpack": [
     "bubbles.jetpack.1",
     "bubbles.jetpack.2",
+  ],
+  "bubbles.jetpack.deactivated": [
+    "bubbles.jetpack.1.deactivated",
+    "bubbles.jetpack.2.deactivated",
+  ],
+  "bubbles.jetpack.doughnutted": [
+    "bubbles.jetpack.1.doughnutted",
+    "bubbles.jetpack.2.doughnutted",
+  ],
+  "bubbles.jetpack.mirrorReflection": [
+    "bubbles.jetpack.1.mirrorReflection",
+    "bubbles.jetpack.2.mirrorReflection",
   ],
   "bubbles.white": [
     "bubbles.white.1",
     "bubbles.white.2",
     "bubbles.white.3",
+  ],
+  "bubbles.white.mirrorReflection": [
+    "bubbles.white.1.mirrorReflection",
+    "bubbles.white.2.mirrorReflection",
+    "bubbles.white.3.mirrorReflection",
   ],
   "conveyor.x": [
     "conveyor.x.1",
@@ -4935,6 +11414,24 @@ exports[`for tailwind plugin we must have all possible frames and animations 2`]
     "conveyor.x.6",
     "conveyor.x.7",
   ],
+  "conveyor.x.deactivated": [
+    "conveyor.x.1.deactivated",
+    "conveyor.x.2.deactivated",
+    "conveyor.x.3.deactivated",
+    "conveyor.x.4.deactivated",
+    "conveyor.x.5.deactivated",
+    "conveyor.x.6.deactivated",
+    "conveyor.x.7.deactivated",
+  ],
+  "conveyor.x.mirrorReflection": [
+    "conveyor.x.1.mirrorReflection",
+    "conveyor.x.2.mirrorReflection",
+    "conveyor.x.3.mirrorReflection",
+    "conveyor.x.4.mirrorReflection",
+    "conveyor.x.5.mirrorReflection",
+    "conveyor.x.6.mirrorReflection",
+    "conveyor.x.7.mirrorReflection",
+  ],
   "conveyor.y": [
     "conveyor.y.1",
     "conveyor.y.2",
@@ -4944,6 +11441,24 @@ exports[`for tailwind plugin we must have all possible frames and animations 2`]
     "conveyor.y.6",
     "conveyor.y.7",
   ],
+  "conveyor.y.deactivated": [
+    "conveyor.y.1.deactivated",
+    "conveyor.y.2.deactivated",
+    "conveyor.y.3.deactivated",
+    "conveyor.y.4.deactivated",
+    "conveyor.y.5.deactivated",
+    "conveyor.y.6.deactivated",
+    "conveyor.y.7.deactivated",
+  ],
+  "conveyor.y.mirrorReflection": [
+    "conveyor.y.1.mirrorReflection",
+    "conveyor.y.2.mirrorReflection",
+    "conveyor.y.3.mirrorReflection",
+    "conveyor.y.4.mirrorReflection",
+    "conveyor.y.5.mirrorReflection",
+    "conveyor.y.6.mirrorReflection",
+    "conveyor.y.7.mirrorReflection",
+  ],
   "dalek": [
     "dalek.1",
     "dalek.2",
@@ -4952,13 +11467,49 @@ exports[`for tailwind plugin we must have all possible frames and animations 2`]
     "dalek.dark.1",
     "dalek.dark.2",
   ],
+  "dalek.dark.deactivated": [
+    "dalek.dark.1.deactivated",
+    "dalek.dark.2.deactivated",
+  ],
+  "dalek.dark.doughnutted": [
+    "dalek.dark.1.doughnutted",
+    "dalek.dark.2.doughnutted",
+  ],
+  "dalek.dark.mirrorReflection": [
+    "dalek.dark.1.mirrorReflection",
+    "dalek.dark.2.mirrorReflection",
+  ],
+  "dalek.deactivated": [
+    "dalek.1.deactivated",
+    "dalek.2.deactivated",
+  ],
+  "dalek.doughnutted": [
+    "dalek.1.doughnutted",
+    "dalek.2.doughnutted",
+  ],
+  "dalek.mirrorReflection": [
+    "dalek.1.mirrorReflection",
+    "dalek.2.mirrorReflection",
+  ],
   "emperorsGuardian": [
     "emperorsGuardian.1",
     "emperorsGuardian.2",
   ],
+  "emperorsGuardian.deactivated": [
+    "emperorsGuardian.1.deactivated",
+    "emperorsGuardian.2.deactivated",
+  ],
+  "emperorsGuardian.mirrorReflection": [
+    "emperorsGuardian.1.mirrorReflection",
+    "emperorsGuardian.2.mirrorReflection",
+  ],
   "fish": [
     "fish.1",
     "fish.2",
+  ],
+  "fish.mirrorReflection": [
+    "fish.1.mirrorReflection",
+    "fish.2.mirrorReflection",
   ],
   "head.fadeOut": [
     "bubbles.head.1",
@@ -4971,11 +11522,40 @@ exports[`for tailwind plugin we must have all possible frames and animations 2`]
     "bubbles.head.6",
     "bubbles.head.5",
   ],
+  "head.fadeOut.mirrorReflection": [
+    "bubbles.head.1.mirrorReflection",
+    "bubbles.head.2.mirrorReflection",
+    "bubbles.head.4.mirrorReflection",
+    "bubbles.head.3.mirrorReflection",
+    "bubbles.head.4.mirrorReflection",
+    "bubbles.head.6.mirrorReflection",
+    "bubbles.head.5.mirrorReflection",
+    "bubbles.head.6.mirrorReflection",
+    "bubbles.head.5.mirrorReflection",
+  ],
   "head.walking.away": [
     "head.walking.away.1",
     "head.walking.away.2",
     "head.walking.away.3",
     "head.walking.away.2",
+  ],
+  "head.walking.away.deactivated": [
+    "head.walking.away.1.deactivated",
+    "head.walking.away.2.deactivated",
+    "head.walking.away.3.deactivated",
+    "head.walking.away.2.deactivated",
+  ],
+  "head.walking.away.mirrorReflection": [
+    "head.walking.away.1.mirrorReflection",
+    "head.walking.away.2.mirrorReflection",
+    "head.walking.away.3.mirrorReflection",
+    "head.walking.away.2.mirrorReflection",
+  ],
+  "head.walking.away.sceneryPlayer": [
+    "head.walking.away.1.sceneryPlayer",
+    "head.walking.away.2.sceneryPlayer",
+    "head.walking.away.3.sceneryPlayer",
+    "head.walking.away.2.sceneryPlayer",
   ],
   "head.walking.awayLeft": [
     "head.walking.awayLeft.1",
@@ -4983,11 +11563,47 @@ exports[`for tailwind plugin we must have all possible frames and animations 2`]
     "head.walking.awayLeft.3",
     "head.walking.awayLeft.2",
   ],
+  "head.walking.awayLeft.deactivated": [
+    "head.walking.awayLeft.1.deactivated",
+    "head.walking.awayLeft.2.deactivated",
+    "head.walking.awayLeft.3.deactivated",
+    "head.walking.awayLeft.2.deactivated",
+  ],
+  "head.walking.awayLeft.mirrorReflection": [
+    "head.walking.awayLeft.1.mirrorReflection",
+    "head.walking.awayLeft.2.mirrorReflection",
+    "head.walking.awayLeft.3.mirrorReflection",
+    "head.walking.awayLeft.2.mirrorReflection",
+  ],
+  "head.walking.awayLeft.sceneryPlayer": [
+    "head.walking.awayLeft.1.sceneryPlayer",
+    "head.walking.awayLeft.2.sceneryPlayer",
+    "head.walking.awayLeft.3.sceneryPlayer",
+    "head.walking.awayLeft.2.sceneryPlayer",
+  ],
   "head.walking.awayRight": [
     "head.walking.awayRight.1",
     "head.walking.awayRight.2",
     "head.walking.awayRight.3",
     "head.walking.awayRight.2",
+  ],
+  "head.walking.awayRight.deactivated": [
+    "head.walking.awayRight.1.deactivated",
+    "head.walking.awayRight.2.deactivated",
+    "head.walking.awayRight.3.deactivated",
+    "head.walking.awayRight.2.deactivated",
+  ],
+  "head.walking.awayRight.mirrorReflection": [
+    "head.walking.awayRight.1.mirrorReflection",
+    "head.walking.awayRight.2.mirrorReflection",
+    "head.walking.awayRight.3.mirrorReflection",
+    "head.walking.awayRight.2.mirrorReflection",
+  ],
+  "head.walking.awayRight.sceneryPlayer": [
+    "head.walking.awayRight.1.sceneryPlayer",
+    "head.walking.awayRight.2.sceneryPlayer",
+    "head.walking.awayRight.3.sceneryPlayer",
+    "head.walking.awayRight.2.sceneryPlayer",
   ],
   "head.walking.left": [
     "head.walking.left.1",
@@ -4995,11 +11611,47 @@ exports[`for tailwind plugin we must have all possible frames and animations 2`]
     "head.walking.left.3",
     "head.walking.left.2",
   ],
+  "head.walking.left.deactivated": [
+    "head.walking.left.1.deactivated",
+    "head.walking.left.2.deactivated",
+    "head.walking.left.3.deactivated",
+    "head.walking.left.2.deactivated",
+  ],
+  "head.walking.left.mirrorReflection": [
+    "head.walking.left.1.mirrorReflection",
+    "head.walking.left.2.mirrorReflection",
+    "head.walking.left.3.mirrorReflection",
+    "head.walking.left.2.mirrorReflection",
+  ],
+  "head.walking.left.sceneryPlayer": [
+    "head.walking.left.1.sceneryPlayer",
+    "head.walking.left.2.sceneryPlayer",
+    "head.walking.left.3.sceneryPlayer",
+    "head.walking.left.2.sceneryPlayer",
+  ],
   "head.walking.right": [
     "head.walking.right.1",
     "head.walking.right.2",
     "head.walking.right.3",
     "head.walking.right.2",
+  ],
+  "head.walking.right.deactivated": [
+    "head.walking.right.1.deactivated",
+    "head.walking.right.2.deactivated",
+    "head.walking.right.3.deactivated",
+    "head.walking.right.2.deactivated",
+  ],
+  "head.walking.right.mirrorReflection": [
+    "head.walking.right.1.mirrorReflection",
+    "head.walking.right.2.mirrorReflection",
+    "head.walking.right.3.mirrorReflection",
+    "head.walking.right.2.mirrorReflection",
+  ],
+  "head.walking.right.sceneryPlayer": [
+    "head.walking.right.1.sceneryPlayer",
+    "head.walking.right.2.sceneryPlayer",
+    "head.walking.right.3.sceneryPlayer",
+    "head.walking.right.2.sceneryPlayer",
   ],
   "head.walking.towards": [
     "head.walking.towards.1",
@@ -5007,11 +11659,47 @@ exports[`for tailwind plugin we must have all possible frames and animations 2`]
     "head.walking.towards.3",
     "head.walking.towards.2",
   ],
+  "head.walking.towards.deactivated": [
+    "head.walking.towards.1.deactivated",
+    "head.walking.towards.2.deactivated",
+    "head.walking.towards.3.deactivated",
+    "head.walking.towards.2.deactivated",
+  ],
+  "head.walking.towards.mirrorReflection": [
+    "head.walking.towards.1.mirrorReflection",
+    "head.walking.towards.2.mirrorReflection",
+    "head.walking.towards.3.mirrorReflection",
+    "head.walking.towards.2.mirrorReflection",
+  ],
+  "head.walking.towards.sceneryPlayer": [
+    "head.walking.towards.1.sceneryPlayer",
+    "head.walking.towards.2.sceneryPlayer",
+    "head.walking.towards.3.sceneryPlayer",
+    "head.walking.towards.2.sceneryPlayer",
+  ],
   "head.walking.towardsLeft": [
     "head.walking.towardsLeft.1",
     "head.walking.towardsLeft.2",
     "head.walking.towardsLeft.3",
     "head.walking.towardsLeft.2",
+  ],
+  "head.walking.towardsLeft.deactivated": [
+    "head.walking.towardsLeft.1.deactivated",
+    "head.walking.towardsLeft.2.deactivated",
+    "head.walking.towardsLeft.3.deactivated",
+    "head.walking.towardsLeft.2.deactivated",
+  ],
+  "head.walking.towardsLeft.mirrorReflection": [
+    "head.walking.towardsLeft.1.mirrorReflection",
+    "head.walking.towardsLeft.2.mirrorReflection",
+    "head.walking.towardsLeft.3.mirrorReflection",
+    "head.walking.towardsLeft.2.mirrorReflection",
+  ],
+  "head.walking.towardsLeft.sceneryPlayer": [
+    "head.walking.towardsLeft.1.sceneryPlayer",
+    "head.walking.towardsLeft.2.sceneryPlayer",
+    "head.walking.towardsLeft.3.sceneryPlayer",
+    "head.walking.towardsLeft.2.sceneryPlayer",
   ],
   "head.walking.towardsRight": [
     "head.walking.towardsRight.1",
@@ -5019,9 +11707,39 @@ exports[`for tailwind plugin we must have all possible frames and animations 2`]
     "head.walking.towardsRight.3",
     "head.walking.towardsRight.2",
   ],
+  "head.walking.towardsRight.deactivated": [
+    "head.walking.towardsRight.1.deactivated",
+    "head.walking.towardsRight.2.deactivated",
+    "head.walking.towardsRight.3.deactivated",
+    "head.walking.towardsRight.2.deactivated",
+  ],
+  "head.walking.towardsRight.mirrorReflection": [
+    "head.walking.towardsRight.1.mirrorReflection",
+    "head.walking.towardsRight.2.mirrorReflection",
+    "head.walking.towardsRight.3.mirrorReflection",
+    "head.walking.towardsRight.2.mirrorReflection",
+  ],
+  "head.walking.towardsRight.sceneryPlayer": [
+    "head.walking.towardsRight.1.sceneryPlayer",
+    "head.walking.towardsRight.2.sceneryPlayer",
+    "head.walking.towardsRight.3.sceneryPlayer",
+    "head.walking.towardsRight.2.sceneryPlayer",
+  ],
   "headlessBase.flash": [
     "headlessBase.all",
     "headlessBase",
+  ],
+  "headlessBase.flash.deactivated": [
+    "headlessBase.all.deactivated",
+    "headlessBase.deactivated",
+  ],
+  "headlessBase.flash.doughnutted": [
+    "headlessBase.all.doughnutted",
+    "headlessBase.doughnutted",
+  ],
+  "headlessBase.flash.mirrorReflection": [
+    "headlessBase.all.mirrorReflection",
+    "headlessBase.mirrorReflection",
   ],
   "headlessBase.scan": [
     "headlessBase.4",
@@ -5042,6 +11760,63 @@ exports[`for tailwind plugin we must have all possible frames and animations 2`]
     "headlessBase",
     "headlessBase",
   ],
+  "headlessBase.scan.deactivated": [
+    "headlessBase.4.deactivated",
+    "headlessBase.deactivated",
+    "headlessBase.3.deactivated",
+    "headlessBase.deactivated",
+    "headlessBase.2.deactivated",
+    "headlessBase.deactivated",
+    "headlessBase.1.deactivated",
+    "headlessBase.deactivated",
+    "headlessBase.deactivated",
+    "headlessBase.deactivated",
+    "headlessBase.deactivated",
+    "headlessBase.deactivated",
+    "headlessBase.all.deactivated",
+    "headlessBase.deactivated",
+    "headlessBase.deactivated",
+    "headlessBase.deactivated",
+    "headlessBase.deactivated",
+  ],
+  "headlessBase.scan.doughnutted": [
+    "headlessBase.4.doughnutted",
+    "headlessBase.doughnutted",
+    "headlessBase.3.doughnutted",
+    "headlessBase.doughnutted",
+    "headlessBase.2.doughnutted",
+    "headlessBase.doughnutted",
+    "headlessBase.1.doughnutted",
+    "headlessBase.doughnutted",
+    "headlessBase.doughnutted",
+    "headlessBase.doughnutted",
+    "headlessBase.doughnutted",
+    "headlessBase.doughnutted",
+    "headlessBase.all.doughnutted",
+    "headlessBase.doughnutted",
+    "headlessBase.doughnutted",
+    "headlessBase.doughnutted",
+    "headlessBase.doughnutted",
+  ],
+  "headlessBase.scan.mirrorReflection": [
+    "headlessBase.4.mirrorReflection",
+    "headlessBase.mirrorReflection",
+    "headlessBase.3.mirrorReflection",
+    "headlessBase.mirrorReflection",
+    "headlessBase.2.mirrorReflection",
+    "headlessBase.mirrorReflection",
+    "headlessBase.1.mirrorReflection",
+    "headlessBase.mirrorReflection",
+    "headlessBase.mirrorReflection",
+    "headlessBase.mirrorReflection",
+    "headlessBase.mirrorReflection",
+    "headlessBase.mirrorReflection",
+    "headlessBase.all.mirrorReflection",
+    "headlessBase.mirrorReflection",
+    "headlessBase.mirrorReflection",
+    "headlessBase.mirrorReflection",
+    "headlessBase.mirrorReflection",
+  ],
   "heels.fadeOut": [
     "bubbles.heels.1",
     "bubbles.heels.2",
@@ -5053,6 +11828,17 @@ exports[`for tailwind plugin we must have all possible frames and animations 2`]
     "bubbles.heels.6",
     "bubbles.heels.5",
   ],
+  "heels.fadeOut.mirrorReflection": [
+    "bubbles.heels.1.mirrorReflection",
+    "bubbles.heels.2.mirrorReflection",
+    "bubbles.heels.4.mirrorReflection",
+    "bubbles.heels.3.mirrorReflection",
+    "bubbles.heels.4.mirrorReflection",
+    "bubbles.heels.6.mirrorReflection",
+    "bubbles.heels.5.mirrorReflection",
+    "bubbles.heels.6.mirrorReflection",
+    "bubbles.heels.5.mirrorReflection",
+  ],
   "heels.mixedDirections": [
     "heels.walking.towardsRight.2",
     "heels.walking.towards.2",
@@ -5063,11 +11849,27 @@ exports[`for tailwind plugin we must have all possible frames and animations 2`]
     "heels.walking.awayRight.2",
     "heels.walking.right.2",
   ],
+  "heels.mixedDirections.mirrorReflection": [
+    "heels.walking.towardsRight.2.mirrorReflection",
+    "heels.walking.towards.2.mirrorReflection",
+    "heels.walking.towardsLeft.2.mirrorReflection",
+    "heels.walking.left.2.mirrorReflection",
+    "heels.walking.awayLeft.2.mirrorReflection",
+    "heels.walking.away.2.mirrorReflection",
+    "heels.walking.awayRight.2.mirrorReflection",
+    "heels.walking.right.2.mirrorReflection",
+  ],
   "heels.screenDirections": [
     "heels.walking.towardsRight.2",
     "heels.walking.towardsLeft.2",
     "heels.walking.awayLeft.2",
     "heels.walking.awayRight.2",
+  ],
+  "heels.screenDirections.mirrorReflection": [
+    "heels.walking.towardsRight.2.mirrorReflection",
+    "heels.walking.towardsLeft.2.mirrorReflection",
+    "heels.walking.awayLeft.2.mirrorReflection",
+    "heels.walking.awayRight.2.mirrorReflection",
   ],
   "heels.walking.away": [
     "heels.walking.away.1",
@@ -5075,11 +11877,47 @@ exports[`for tailwind plugin we must have all possible frames and animations 2`]
     "heels.walking.away.3",
     "heels.walking.away.2",
   ],
+  "heels.walking.away.deactivated": [
+    "heels.walking.away.1.deactivated",
+    "heels.walking.away.2.deactivated",
+    "heels.walking.away.3.deactivated",
+    "heels.walking.away.2.deactivated",
+  ],
+  "heels.walking.away.mirrorReflection": [
+    "heels.walking.away.1.mirrorReflection",
+    "heels.walking.away.2.mirrorReflection",
+    "heels.walking.away.3.mirrorReflection",
+    "heels.walking.away.2.mirrorReflection",
+  ],
+  "heels.walking.away.sceneryPlayer": [
+    "heels.walking.away.1.sceneryPlayer",
+    "heels.walking.away.2.sceneryPlayer",
+    "heels.walking.away.3.sceneryPlayer",
+    "heels.walking.away.2.sceneryPlayer",
+  ],
   "heels.walking.awayLeft": [
     "heels.walking.awayLeft.1",
     "heels.walking.awayLeft.2",
     "heels.walking.awayLeft.3",
     "heels.walking.awayLeft.2",
+  ],
+  "heels.walking.awayLeft.deactivated": [
+    "heels.walking.awayLeft.1.deactivated",
+    "heels.walking.awayLeft.2.deactivated",
+    "heels.walking.awayLeft.3.deactivated",
+    "heels.walking.awayLeft.2.deactivated",
+  ],
+  "heels.walking.awayLeft.mirrorReflection": [
+    "heels.walking.awayLeft.1.mirrorReflection",
+    "heels.walking.awayLeft.2.mirrorReflection",
+    "heels.walking.awayLeft.3.mirrorReflection",
+    "heels.walking.awayLeft.2.mirrorReflection",
+  ],
+  "heels.walking.awayLeft.sceneryPlayer": [
+    "heels.walking.awayLeft.1.sceneryPlayer",
+    "heels.walking.awayLeft.2.sceneryPlayer",
+    "heels.walking.awayLeft.3.sceneryPlayer",
+    "heels.walking.awayLeft.2.sceneryPlayer",
   ],
   "heels.walking.awayRight": [
     "heels.walking.awayRight.1",
@@ -5087,11 +11925,47 @@ exports[`for tailwind plugin we must have all possible frames and animations 2`]
     "heels.walking.awayRight.3",
     "heels.walking.awayRight.2",
   ],
+  "heels.walking.awayRight.deactivated": [
+    "heels.walking.awayRight.1.deactivated",
+    "heels.walking.awayRight.2.deactivated",
+    "heels.walking.awayRight.3.deactivated",
+    "heels.walking.awayRight.2.deactivated",
+  ],
+  "heels.walking.awayRight.mirrorReflection": [
+    "heels.walking.awayRight.1.mirrorReflection",
+    "heels.walking.awayRight.2.mirrorReflection",
+    "heels.walking.awayRight.3.mirrorReflection",
+    "heels.walking.awayRight.2.mirrorReflection",
+  ],
+  "heels.walking.awayRight.sceneryPlayer": [
+    "heels.walking.awayRight.1.sceneryPlayer",
+    "heels.walking.awayRight.2.sceneryPlayer",
+    "heels.walking.awayRight.3.sceneryPlayer",
+    "heels.walking.awayRight.2.sceneryPlayer",
+  ],
   "heels.walking.left": [
     "heels.walking.left.1",
     "heels.walking.left.2",
     "heels.walking.left.3",
     "heels.walking.left.2",
+  ],
+  "heels.walking.left.deactivated": [
+    "heels.walking.left.1.deactivated",
+    "heels.walking.left.2.deactivated",
+    "heels.walking.left.3.deactivated",
+    "heels.walking.left.2.deactivated",
+  ],
+  "heels.walking.left.mirrorReflection": [
+    "heels.walking.left.1.mirrorReflection",
+    "heels.walking.left.2.mirrorReflection",
+    "heels.walking.left.3.mirrorReflection",
+    "heels.walking.left.2.mirrorReflection",
+  ],
+  "heels.walking.left.sceneryPlayer": [
+    "heels.walking.left.1.sceneryPlayer",
+    "heels.walking.left.2.sceneryPlayer",
+    "heels.walking.left.3.sceneryPlayer",
+    "heels.walking.left.2.sceneryPlayer",
   ],
   "heels.walking.right": [
     "heels.walking.right.1",
@@ -5099,11 +11973,47 @@ exports[`for tailwind plugin we must have all possible frames and animations 2`]
     "heels.walking.right.3",
     "heels.walking.right.2",
   ],
+  "heels.walking.right.deactivated": [
+    "heels.walking.right.1.deactivated",
+    "heels.walking.right.2.deactivated",
+    "heels.walking.right.3.deactivated",
+    "heels.walking.right.2.deactivated",
+  ],
+  "heels.walking.right.mirrorReflection": [
+    "heels.walking.right.1.mirrorReflection",
+    "heels.walking.right.2.mirrorReflection",
+    "heels.walking.right.3.mirrorReflection",
+    "heels.walking.right.2.mirrorReflection",
+  ],
+  "heels.walking.right.sceneryPlayer": [
+    "heels.walking.right.1.sceneryPlayer",
+    "heels.walking.right.2.sceneryPlayer",
+    "heels.walking.right.3.sceneryPlayer",
+    "heels.walking.right.2.sceneryPlayer",
+  ],
   "heels.walking.towards": [
     "heels.walking.towards.1",
     "heels.walking.towards.2",
     "heels.walking.towards.3",
     "heels.walking.towards.2",
+  ],
+  "heels.walking.towards.deactivated": [
+    "heels.walking.towards.1.deactivated",
+    "heels.walking.towards.2.deactivated",
+    "heels.walking.towards.3.deactivated",
+    "heels.walking.towards.2.deactivated",
+  ],
+  "heels.walking.towards.mirrorReflection": [
+    "heels.walking.towards.1.mirrorReflection",
+    "heels.walking.towards.2.mirrorReflection",
+    "heels.walking.towards.3.mirrorReflection",
+    "heels.walking.towards.2.mirrorReflection",
+  ],
+  "heels.walking.towards.sceneryPlayer": [
+    "heels.walking.towards.1.sceneryPlayer",
+    "heels.walking.towards.2.sceneryPlayer",
+    "heels.walking.towards.3.sceneryPlayer",
+    "heels.walking.towards.2.sceneryPlayer",
   ],
   "heels.walking.towardsLeft": [
     "heels.walking.towardsLeft.1",
@@ -5111,11 +12021,47 @@ exports[`for tailwind plugin we must have all possible frames and animations 2`]
     "heels.walking.towardsLeft.3",
     "heels.walking.towardsLeft.2",
   ],
+  "heels.walking.towardsLeft.deactivated": [
+    "heels.walking.towardsLeft.1.deactivated",
+    "heels.walking.towardsLeft.2.deactivated",
+    "heels.walking.towardsLeft.3.deactivated",
+    "heels.walking.towardsLeft.2.deactivated",
+  ],
+  "heels.walking.towardsLeft.mirrorReflection": [
+    "heels.walking.towardsLeft.1.mirrorReflection",
+    "heels.walking.towardsLeft.2.mirrorReflection",
+    "heels.walking.towardsLeft.3.mirrorReflection",
+    "heels.walking.towardsLeft.2.mirrorReflection",
+  ],
+  "heels.walking.towardsLeft.sceneryPlayer": [
+    "heels.walking.towardsLeft.1.sceneryPlayer",
+    "heels.walking.towardsLeft.2.sceneryPlayer",
+    "heels.walking.towardsLeft.3.sceneryPlayer",
+    "heels.walking.towardsLeft.2.sceneryPlayer",
+  ],
   "heels.walking.towardsRight": [
     "heels.walking.towardsRight.1",
     "heels.walking.towardsRight.2",
     "heels.walking.towardsRight.3",
     "heels.walking.towardsRight.2",
+  ],
+  "heels.walking.towardsRight.deactivated": [
+    "heels.walking.towardsRight.1.deactivated",
+    "heels.walking.towardsRight.2.deactivated",
+    "heels.walking.towardsRight.3.deactivated",
+    "heels.walking.towardsRight.2.deactivated",
+  ],
+  "heels.walking.towardsRight.mirrorReflection": [
+    "heels.walking.towardsRight.1.mirrorReflection",
+    "heels.walking.towardsRight.2.mirrorReflection",
+    "heels.walking.towardsRight.3.mirrorReflection",
+    "heels.walking.towardsRight.2.mirrorReflection",
+  ],
+  "heels.walking.towardsRight.sceneryPlayer": [
+    "heels.walking.towardsRight.1.sceneryPlayer",
+    "heels.walking.towardsRight.2.sceneryPlayer",
+    "heels.walking.towardsRight.3.sceneryPlayer",
+    "heels.walking.towardsRight.2.sceneryPlayer",
   ],
   "heels.worldDirections": [
     "heels.walking.towards.2",
@@ -5123,17 +12069,47 @@ exports[`for tailwind plugin we must have all possible frames and animations 2`]
     "heels.walking.away.2",
     "heels.walking.right.2",
   ],
+  "heels.worldDirections.mirrorReflection": [
+    "heels.walking.towards.2.mirrorReflection",
+    "heels.walking.left.2.mirrorReflection",
+    "heels.walking.away.2.mirrorReflection",
+    "heels.walking.right.2.mirrorReflection",
+  ],
   "helicopterBug": [
     "helicopterBug.1",
     "helicopterBug.2",
     "helicopterBug.3",
     "helicopterBug.4",
   ],
+  "helicopterBug.deactivated": [
+    "helicopterBug.1.deactivated",
+    "helicopterBug.2.deactivated",
+    "helicopterBug.3.deactivated",
+    "helicopterBug.4.deactivated",
+  ],
+  "helicopterBug.doughnutted": [
+    "helicopterBug.1.doughnutted",
+    "helicopterBug.2.doughnutted",
+    "helicopterBug.3.doughnutted",
+    "helicopterBug.4.doughnutted",
+  ],
+  "helicopterBug.mirrorReflection": [
+    "helicopterBug.1.mirrorReflection",
+    "helicopterBug.2.mirrorReflection",
+    "helicopterBug.3.mirrorReflection",
+    "helicopterBug.4.mirrorReflection",
+  ],
   "lift": [
     "lift.1",
     "lift.2",
     "lift.3",
     "lift.4",
+  ],
+  "lift.mirrorReflection": [
+    "lift.1.mirrorReflection",
+    "lift.2.mirrorReflection",
+    "lift.3.mirrorReflection",
+    "lift.4.mirrorReflection",
   ],
   "lightBeam.terminus": [
     "lightBeam.terminus.1",
@@ -5177,6 +12153,10 @@ exports[`for tailwind plugin we must have all possible frames and animations 2`]
     "portableTeleporter.flashing.1",
     "portableTeleporter.flashing.2",
   ],
+  "portableTeleporter.flashing.mirrorReflection": [
+    "portableTeleporter.flashing.1.mirrorReflection",
+    "portableTeleporter.flashing.2.mirrorReflection",
+  ],
   "shadow.lift": [
     "shadow.lift.1",
     "shadow.lift.2",
@@ -5213,6 +12193,14 @@ exports[`for tailwind plugin we must have all possible frames and animations 2`]
     "shine.head.5",
     "shine.head.6",
   ],
+  "shine.head.mirrorReflection": [
+    "shine.head.1.mirrorReflection",
+    "shine.head.2.mirrorReflection",
+    "shine.head.3.mirrorReflection",
+    "shine.head.4.mirrorReflection",
+    "shine.head.5.mirrorReflection",
+    "shine.head.6.mirrorReflection",
+  ],
   "shine.headInSymbio": [
     "shine.head.1",
     "shine.head.2",
@@ -5227,6 +12215,20 @@ exports[`for tailwind plugin we must have all possible frames and animations 2`]
     "shine.head.5",
     "shine.head.6",
   ],
+  "shine.headInSymbio.mirrorReflection": [
+    "shine.head.1.mirrorReflection",
+    "shine.head.2.mirrorReflection",
+    "shine.head.3.mirrorReflection",
+    "blank.mirrorReflection",
+    "blank.mirrorReflection",
+    "blank.mirrorReflection",
+    "blank.mirrorReflection",
+    "blank.mirrorReflection",
+    "blank.mirrorReflection",
+    "shine.head.4.mirrorReflection",
+    "shine.head.5.mirrorReflection",
+    "shine.head.6.mirrorReflection",
+  ],
   "shine.heels": [
     "shine.heels.1",
     "shine.heels.2",
@@ -5234,6 +12236,14 @@ exports[`for tailwind plugin we must have all possible frames and animations 2`]
     "shine.heels.4",
     "shine.heels.5",
     "shine.heels.6",
+  ],
+  "shine.heels.mirrorReflection": [
+    "shine.heels.1.mirrorReflection",
+    "shine.heels.2.mirrorReflection",
+    "shine.heels.3.mirrorReflection",
+    "shine.heels.4.mirrorReflection",
+    "shine.heels.5.mirrorReflection",
+    "shine.heels.6.mirrorReflection",
   ],
   "shine.heelsInSymbio": [
     "blank",
@@ -5248,6 +12258,20 @@ exports[`for tailwind plugin we must have all possible frames and animations 2`]
     "blank",
     "blank",
     "blank",
+  ],
+  "shine.heelsInSymbio.mirrorReflection": [
+    "blank.mirrorReflection",
+    "blank.mirrorReflection",
+    "blank.mirrorReflection",
+    "shine.heels.1.mirrorReflection",
+    "shine.heels.2.mirrorReflection",
+    "shine.heels.3.mirrorReflection",
+    "shine.heels.4.mirrorReflection",
+    "shine.heels.5.mirrorReflection",
+    "shine.heels.6.mirrorReflection",
+    "blank.mirrorReflection",
+    "blank.mirrorReflection",
+    "blank.mirrorReflection",
   ],
   "spring.bounce": [
     "spring.moreCompressed",
@@ -5271,37 +12295,123 @@ exports[`for tailwind plugin we must have all possible frames and animations 2`]
     "spring.compressed",
     "spring.released",
   ],
+  "spring.bounce.mirrorReflection": [
+    "spring.moreCompressed.mirrorReflection",
+    "spring.released.mirrorReflection",
+    "spring.compressed.mirrorReflection",
+    "spring.moreCompressed.mirrorReflection",
+    "spring.compressed.mirrorReflection",
+    "spring.released.mirrorReflection",
+    "spring.compressed.mirrorReflection",
+    "spring.moreCompressed.mirrorReflection",
+    "spring.compressed.mirrorReflection",
+    "spring.released.mirrorReflection",
+    "spring.compressed.mirrorReflection",
+    "spring.moreCompressed.mirrorReflection",
+    "spring.compressed.mirrorReflection",
+    "spring.released.mirrorReflection",
+    "spring.compressed.mirrorReflection",
+    "spring.released.mirrorReflection",
+    "spring.compressed.mirrorReflection",
+    "spring.released.mirrorReflection",
+    "spring.compressed.mirrorReflection",
+    "spring.released.mirrorReflection",
+  ],
   "switch": [
     "switch.left",
     "switch.right",
+  ],
+  "switch.mirrorReflection": [
+    "switch.left.mirrorReflection",
+    "switch.right.mirrorReflection",
   ],
   "teleporter.flashing": [
     "teleporter.flashing.1",
     "teleporter.flashing.2",
   ],
+  "teleporter.flashing.mirrorReflection": [
+    "teleporter.flashing.1.mirrorReflection",
+    "teleporter.flashing.2.mirrorReflection",
+  ],
   "toaster": [
     "toaster.1",
     "toaster.2",
+  ],
+  "toaster.mirrorReflection": [
+    "toaster.1.mirrorReflection",
+    "toaster.2.mirrorReflection",
   ],
   "turtle.away": [
     "turtle.away.1",
     "turtle.away.2",
   ],
+  "turtle.away.deactivated": [
+    "turtle.away.1.deactivated",
+    "turtle.away.2.deactivated",
+  ],
+  "turtle.away.doughnutted": [
+    "turtle.away.1.doughnutted",
+    "turtle.away.2.doughnutted",
+  ],
+  "turtle.away.mirrorReflection": [
+    "turtle.away.1.mirrorReflection",
+    "turtle.away.2.mirrorReflection",
+  ],
   "turtle.left": [
     "turtle.left.1",
     "turtle.left.2",
+  ],
+  "turtle.left.deactivated": [
+    "turtle.left.1.deactivated",
+    "turtle.left.2.deactivated",
+  ],
+  "turtle.left.doughnutted": [
+    "turtle.left.1.doughnutted",
+    "turtle.left.2.doughnutted",
+  ],
+  "turtle.left.mirrorReflection": [
+    "turtle.left.1.mirrorReflection",
+    "turtle.left.2.mirrorReflection",
   ],
   "turtle.right": [
     "turtle.right.1",
     "turtle.right.2",
   ],
+  "turtle.right.deactivated": [
+    "turtle.right.1.deactivated",
+    "turtle.right.2.deactivated",
+  ],
+  "turtle.right.doughnutted": [
+    "turtle.right.1.doughnutted",
+    "turtle.right.2.doughnutted",
+  ],
+  "turtle.right.mirrorReflection": [
+    "turtle.right.1.mirrorReflection",
+    "turtle.right.2.mirrorReflection",
+  ],
   "turtle.towards": [
     "turtle.towards.1",
     "turtle.towards.2",
   ],
+  "turtle.towards.deactivated": [
+    "turtle.towards.1.deactivated",
+    "turtle.towards.2.deactivated",
+  ],
+  "turtle.towards.doughnutted": [
+    "turtle.towards.1.doughnutted",
+    "turtle.towards.2.doughnutted",
+  ],
+  "turtle.towards.mirrorReflection": [
+    "turtle.towards.1.mirrorReflection",
+    "turtle.towards.2.mirrorReflection",
+  ],
   "volcano": [
     "volcano.1",
     "volcano.2",
+  ],
+  "volcano.mirrorReflection": [
+    "volcano.1.mirrorReflection",
+    "volcano.2.mirrorReflection",
   ],
 }
 `;

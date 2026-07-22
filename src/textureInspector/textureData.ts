@@ -14,7 +14,7 @@ export interface TrackedTextureSource {
     | "ItemShadowRenderer"
     | "PaletteSwapFilter"
     | "spritesheet(original)"
-    | "spritesheet(variant)"
+    | "spritesheet(swopped)"
     | "TeleporterFilterLut"
     | "TextContainer";
 }
@@ -44,8 +44,8 @@ const detectType = (stack: string): TrackedTextureSource["type"] => {
   if (stack.includes("TextContainer")) {
     return "TextContainer";
   }
-  if (stack.includes("createSpritesheetVariant")) {
-    return "spritesheet(variant)";
+  if (stack.includes("createSwoppedSpritesheet")) {
+    return "spritesheet(swopped)";
   }
   if (stack.includes("buildOriginal")) {
     return "spritesheet(original)";

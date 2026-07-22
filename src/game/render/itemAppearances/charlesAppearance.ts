@@ -1,3 +1,4 @@
+import { variantTextureId } from "../../../sprites/spritesheet/variantTextureId";
 import { keysIter } from "../../../utils/entries";
 import { resolveCameraRelativeVectorXy4 } from "../../../utils/vectors/resolveCameraRelativeVector";
 import { type DirectionXy4 } from "../../../utils/vectors/vectors";
@@ -25,7 +26,7 @@ export const charlesAppearance: ItemAppearance<
       },
     },
     room: { roomTime, items },
-    general: { spritesheetVariants, cameraAngle },
+    general: { spritesheets, cameraAngle },
   },
   currentRendering,
 }) => {
@@ -51,17 +52,30 @@ export const charlesAppearance: ItemAppearance<
     return "no-update";
   }
 
-  const spritesheet = spritesheetVariants.currentMainSpritesheet(
-    !activated,
-    false,
-    isReflection,
-  );
+  const { spritesheetForCurrentRoom: spritesheet } = spritesheets;
 
   return {
     output: createStackedSprites({
-      top: { textureId: `charles.${resolvedFacingXy4}`, spritesheet },
+      top: {
+        textureId: variantTextureId(
+          `charles.${resolvedFacingXy4}`,
+          isReflection,
+          false,
+          !activated,
+          false,
+          undefined,
+        ),
+        spritesheet,
+      },
       bottom: {
-        textureId: controlledByJoystick ? "headlessBase.all" : "headlessBase",
+        textureId: variantTextureId(
+          controlledByJoystick ? "headlessBase.all" : "headlessBase",
+          isReflection,
+          false,
+          !activated,
+          false,
+          undefined,
+        ),
         spritesheet,
       },
     }),

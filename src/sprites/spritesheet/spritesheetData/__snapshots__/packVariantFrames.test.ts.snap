@@ -1,0 +1,8 @@
+// Vitest Snapshot v1, https://vitest.dev/guide/snapshot.html
+
+exports[`layout snapshot 1`] = `
+{
+  "cellCount": 616,
+  "stripHeight": 575,
+}
+`;

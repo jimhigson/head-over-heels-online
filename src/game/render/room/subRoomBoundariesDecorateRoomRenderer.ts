@@ -32,8 +32,7 @@ export const subRoomBoundariesDecorateRoomRenderer: DecorateRoomRenderer = (
   }
 
   const container = new Container({ label: "subRoomBoundaries" });
-  const { pixiRenderer, spritesheetVariants, cameraAngle } =
-    renderContext.general;
+  const { pixiRenderer, cameraAngle } = renderContext.general;
   const cameraQuarterAngle = nearestQuarterAngle(cameraAngle);
 
   let colourIndex = 0;
@@ -62,7 +61,6 @@ export const subRoomBoundariesDecorateRoomRenderer: DecorateRoomRenderer = (
 
     const label = new TextContainer({
       pixiRenderer,
-      spritesheet: spritesheetVariants.originalSpritesheet,
       text: `${name} (${subRoom.gridPosition.x},${subRoom.gridPosition.y})`,
       colour: color,
       outline: true,

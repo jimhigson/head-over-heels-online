@@ -76,14 +76,13 @@ export class OnScreenJoystickRenderer implements Renderer<
     const {
       inputDirectionMode,
       general: {
-        spritesheetVariants,
+        spritesheets,
         pixiRenderer,
         gameState,
         spriteOption,
         spritesheetMeta,
       },
     } = renderContext;
-    const { originalSpritesheet } = spritesheetVariants;
 
     // the arrows' not-active hud tint: ticks re-tint the arrows, but
     // early-return while a menu is open, so the construction colour is what
@@ -99,17 +98,12 @@ export class OnScreenJoystickRenderer implements Renderer<
       textureId: "joystick.whole",
       anchor: { x: 0.5, y: 0.5 },
       y: 1,
-      spritesheet: spritesheetVariants.currentMainSpritesheet(
-        false,
-        false,
-        false,
-      ),
+      spritesheet: spritesheets.spritesheetForCurrentRoom,
     });
 
     this.#arrowSprites = {
       away: new TextContainer({
         pixiRenderer,
-        spritesheet: originalSpritesheet,
         outline: true,
         x: joystickArrowOffset,
         y: -joystickArrowOffset,
@@ -118,7 +112,6 @@ export class OnScreenJoystickRenderer implements Renderer<
       }),
       right: new TextContainer({
         pixiRenderer,
-        spritesheet: originalSpritesheet,
         outline: true,
         x: joystickArrowOffset,
         y: joystickArrowOffset,
@@ -127,7 +120,6 @@ export class OnScreenJoystickRenderer implements Renderer<
       }),
       towards: new TextContainer({
         pixiRenderer,
-        spritesheet: originalSpritesheet,
         outline: true,
         x: -joystickArrowOffset,
         y: joystickArrowOffset,
@@ -136,7 +128,6 @@ export class OnScreenJoystickRenderer implements Renderer<
       }),
       left: new TextContainer({
         pixiRenderer,
-        spritesheet: originalSpritesheet,
         outline: true,
         x: -joystickArrowOffset,
         y: -joystickArrowOffset,
@@ -147,7 +138,6 @@ export class OnScreenJoystickRenderer implements Renderer<
         {
           awayRight: new TextContainer({
             pixiRenderer,
-            spritesheet: originalSpritesheet,
             outline: true,
             x: joystickArrowOffset * Math.SQRT2,
             text: "➡",
@@ -155,7 +145,6 @@ export class OnScreenJoystickRenderer implements Renderer<
           }),
           towardsRight: new TextContainer({
             pixiRenderer,
-            spritesheet: originalSpritesheet,
             outline: true,
             y: joystickArrowOffset * Math.SQRT2,
             text: "⬇",
@@ -163,7 +152,6 @@ export class OnScreenJoystickRenderer implements Renderer<
           }),
           towardsLeft: new TextContainer({
             pixiRenderer,
-            spritesheet: originalSpritesheet,
             outline: true,
             x: -joystickArrowOffset * Math.SQRT2,
             text: "⬅",
@@ -171,7 +159,6 @@ export class OnScreenJoystickRenderer implements Renderer<
           }),
           awayLeft: new TextContainer({
             pixiRenderer,
-            spritesheet: originalSpritesheet,
             outline: true,
             y: -joystickArrowOffset * Math.SQRT2,
             text: "⬆",
@@ -285,17 +272,14 @@ export class OnScreenJoystickRenderer implements Renderer<
   tick({ room }: HudRendererTickContextWithRoom<string, string>): void {
     const {
       renderContext: {
-        general: { spriteOption, spritesheetVariants, spritesheetMeta },
+        general: { spriteOption, spritesheets, spritesheetMeta },
         inputStateTracker: { directionVector },
       },
     } = this;
 
     if (this.#roomRenderedIn !== room) {
-      this.#joystickSprite.texture = spritesheetVariants.currentMainSpritesheet(
-        false,
-        false,
-        false,
-      ).textures["joystick.whole"];
+      this.#joystickSprite.texture =
+        spritesheets.spritesheetForCurrentRoom.textures["joystick.whole"];
       this.#roomRenderedIn = room;
     }
 

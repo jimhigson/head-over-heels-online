@@ -1,5 +1,6 @@
 import { type SwitchSetting } from "../../../model/ItemInPlay";
 import { type SwitchConfig } from "../../../model/json/SwitchConfig";
+import { variantTextureId } from "../../../sprites/spritesheet/variantTextureId";
 import { selectBooleanUserSetting } from "../../../store/slices/gameMenus/gameMenusSelectors";
 import { store } from "../../../store/store";
 import { createSprite } from "../createSprite";
@@ -33,7 +34,7 @@ export const switchAppearance: ItemAppearance<"switch", SwitchRenderProps> = ({
       state: { setting: stateSetting },
       config: switchConfig,
     },
-    general: { spritesheetVariants },
+    general: { spritesheets },
   },
   currentRendering,
 }) => {
@@ -55,12 +56,15 @@ export const switchAppearance: ItemAppearance<"switch", SwitchRenderProps> = ({
 
   return {
     output: createSprite({
-      textureId: `switch.${setting}`,
-      spritesheet: spritesheetVariants.currentMainSpritesheet(
-        false,
-        false,
+      textureId: variantTextureId(
+        `switch.${setting}`,
         isReflection,
+        false,
+        false,
+        false,
+        undefined,
       ),
+      spritesheet: spritesheets.spritesheetForCurrentRoom,
     }),
     renderProps: { setting },
   };

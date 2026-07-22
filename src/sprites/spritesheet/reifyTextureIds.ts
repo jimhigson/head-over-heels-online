@@ -1,14 +1,16 @@
 import { keysIter } from "../../utils/entries";
 import { type TextureId } from "./spritesheetData/makeSpritesheetData";
-import { type AppSpritesheetData } from "./variants/AppSpritesheet";
 
-type TexturesPredicate = (candidate: TextureId) => boolean;
-export type TexturesSpecifier = Iterable<TextureId> | TexturesPredicate;
+type TexturesPredicate<Id extends string = TextureId> = (
+  candidate: Id,
+) => boolean;
+export type TexturesSpecifier<Id extends string = TextureId> =
+  Iterable<Id> | TexturesPredicate<Id>;
 
-export const reifyTextureIds = (
-  specifier: TexturesSpecifier,
-  spritesheetDataFrames: AppSpritesheetData["frames"],
-): Iterable<TextureId> =>
+export const reifyTextureIds = <Id extends string>(
+  specifier: TexturesSpecifier<Id>,
+  spritesheetDataFrames: Partial<Record<Id, unknown>>,
+): Iterable<Id> =>
   typeof specifier === "function" ?
     keysIter(spritesheetDataFrames).filter(specifier)
   : specifier;

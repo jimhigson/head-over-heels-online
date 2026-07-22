@@ -9,9 +9,9 @@ import {
 } from "../../../game/input/keyAssignmentPresets";
 import { type ItemInPlayType } from "../../../model/ItemInPlay";
 import { type Campaign } from "../../../model/modelTypes";
-import { makeSpritesheetData } from "../../../sprites/spritesheet/spritesheetData/makeSpritesheetData";
+import { type AppSpritesheetData } from "../../../sprites/spritesheet/AppSpritesheet";
+import { makeBaseSpritesheetData } from "../../../sprites/spritesheet/spritesheetData/makeSpritesheetData";
 import { spritesheetMetas } from "../../../sprites/spritesheet/spritesheetData/spritesheetMetaData";
-import { type AppSpritesheetData } from "../../../sprites/spritesheet/variants/AppSpritesheet";
 import { objectEntriesIter, valuesIter } from "../../../utils/entries";
 import { getAtPath } from "../../../utils/getAtPath";
 import { size } from "../../../utils/iterators/size";
@@ -246,12 +246,12 @@ export const selectMaybeCurrentCampaign = <RoomId extends string = string>(
 
 /**
  * caching selector to get the spritesheet data for the currently
- * selected spritesOption
+ * selected spritesOption. Base texture ids only, not variants
  */
 const selectCurrentSpritesheetData = createSelector(
   [selectSpritesOption],
   (spriteOption): AppSpritesheetData =>
-    makeSpritesheetData(spritesheetMetas[spriteOption.name]),
+    makeBaseSpritesheetData(spritesheetMetas[spriteOption.name]),
 );
 
 export const useCurrentSpritesheetData = () =>

@@ -409,7 +409,7 @@ class ItemShadowRenderer<
           shadowCastTextureAtAngle(caster, cameraQuarterAngle) ??
           caster.shadowCastTexture;
         const { general } = this.renderContext;
-        const { shadowSpritesheet } = general.spritesheetVariants;
+        const { shadowSpritesheet } = general.spritesheets;
 
         // axis-following shadow art (eg barriers) is drawn for one world axis
         // and flipped for the other; an odd quarter camera turn swaps which
