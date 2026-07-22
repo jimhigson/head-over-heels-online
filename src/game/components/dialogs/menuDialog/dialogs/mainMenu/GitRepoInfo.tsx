@@ -47,7 +47,7 @@ export const GitRepoInfo = () => {
             {deployedMajor}
           </span>
           {import.meta.env.DEV && (
-            <span class="text-single-line screenshot-mask mr-1 inline-block">
+            <span class="text-single-line screenshot-mask mr-1 inline-block max-w-8 whitespace-nowrap">
               {` + ${import.meta.env.VITE_GIT_BRANCH}`}
             </span>
           )}

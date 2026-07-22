@@ -19,10 +19,16 @@ export const installE2eFastForwardHandle = (app: Application) => {
     const { ticker } = app;
     const previousGameSpeed = selectGameSpeed(store.getState());
     const savedMinFps = ticker.minFPS;
+    const savedMaxFps = ticker.maxFPS;
     const savedSpeed = ticker.speed;
 
     // remove minFPS so pixi is happy to give a single tick for a large jump:
     ticker.minFPS = 0;
+    // remove the maxFPS throttle (the main loop throttles to 10fps while the
+    // game speed is zero): Ticker.update silently swallows the whole update -
+    // firing no listeners at all - when called within maxFPS's
+    // minimum-elapsed interval, which would eat jumps smaller than ~100ms:
+    ticker.maxFPS = 0;
     // fake the game actually running at normal speed for one tick:
     ticker.speed = 1;
     store.dispatch(setGameSpeed(1));
@@ -30,6 +36,7 @@ export const installE2eFastForwardHandle = (app: Application) => {
     store.dispatch(setGameSpeed(previousGameSpeed));
     ticker.speed = savedSpeed;
 
+    ticker.maxFPS = savedMaxFps;
     ticker.minFPS = savedMinFps;
     // tidy up the ticker's lastTime
     ticker.lastTime = performance.now();

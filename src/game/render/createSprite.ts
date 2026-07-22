@@ -17,7 +17,7 @@ import {
   type TextureId,
 } from "../../sprites/spritesheet/spritesheetData/makeSpritesheetData";
 import { type AppSpritesheet } from "../../sprites/spritesheet/variants/AppSpritesheet";
-import { phaseForSubItem } from "../../utils/maths/hashXyzToNumber0to1";
+import { phaseForSubItem } from "../../utils/maths/hashing";
 import { lengthXyz, type Xy, type Xyz } from "../../utils/vectors/vectors";
 import { projectBlockXyzToScreenXy } from "./projections";
 

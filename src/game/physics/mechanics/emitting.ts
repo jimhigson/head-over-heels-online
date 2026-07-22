@@ -6,7 +6,7 @@ import {
   roomSpatialIndexKey,
   type RoomState,
 } from "../../../model/RoomState";
-import { hashXyzToNumber0to1 } from "../../../utils/maths/hashXyzToNumber0to1";
+import { hashXyzToNumber0to1 } from "../../../utils/maths/hashing";
 import {
   addXyz,
   originXyz,

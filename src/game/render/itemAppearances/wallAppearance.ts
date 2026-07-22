@@ -4,7 +4,7 @@ import { roomSpatialIndexKey } from "../../../model/RoomState";
 import { isAnimationId } from "../../../sprites/assertIsTextureId";
 import { wallTileSize } from "../../../sprites/spritesheet/spritesheetData/textureSizes";
 import { isEmpty } from "../../../utils/iterators/isEmpty";
-import { phaseForSubItem } from "../../../utils/maths/hashXyzToNumber0to1";
+import { phaseForSubItem } from "../../../utils/maths/hashing";
 import { renderContainerToSprite } from "../../../utils/pixi/renderContainerToSprite";
 import { resolveCameraRelativeVectorXy4 } from "../../../utils/vectors/resolveCameraRelativeVector";
 import {

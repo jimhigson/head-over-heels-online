@@ -32,6 +32,12 @@ export const mapButtonAppearance: ButtonAppearance<
     // double-size menu and rotate buttons without stretching the "MAP" text
     doubleHeight: true,
     text: "MAP",
+    colour: tintForHud(
+      general.spriteOption,
+      tickContext.room.color,
+      tickContext.hovered ?? false,
+      general.spritesheetMeta,
+    ),
   });
 
   return {

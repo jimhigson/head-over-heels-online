@@ -2,6 +2,7 @@ import { expect, type Page, test } from "@playwright/test";
 
 import { type OriginalCampaignRoomId } from "../src/_generated/originalCampaign/OriginalCampaignRoomId";
 import { type ResolutionName } from "../src/originalGame";
+import { type SpriteOption } from "../src/store/slices/userSettings/userSettingsSlice";
 import { allItemsTestRoomCampaign } from "./fixtures/allItemsTestRoom";
 import { bootPlaytestCampaign } from "./testUtils/bootPlaytestCampaign";
 import {
@@ -18,6 +19,7 @@ import {
 } from "./testUtils/menuNavigation";
 import { setupE2ePage } from "./testUtils/pageSetup";
 import { roomScreenshotOptions } from "./testUtils/screenshots";
+import { setSpriteOption } from "./testUtils/setSpriteOption";
 
 restrictToCameraRotationProjects();
 
@@ -99,12 +101,19 @@ type SweepScenario<C extends SweepCampaign = SweepCampaign> = {
    */
   emulatedResolution: "$$default" | ResolutionName;
   /**
-   * fast-forward the game simulation by this many ms (via
-   * window.__e2e_fastForwardMs) after entering the room, while the game
-   * speed stays zero - lets a scenario's setup play out (items falling,
-   * pickups collected) and transient floating text expire, deterministically
+   * cumulative simulated times (ms) to capture at: the game is fast-forwarded
+   * (via window.__e2e_fastForwardMs, while the game speed stays zero) to each
+   * time in turn, capturing every angle at each - so a scenario's setup plays
+   * out deterministically (items falling, pickups collected, floating text
+   * expiring) across the captures. Suffixes the screenshot names (eg `-90ms`)
    */
-  fastForwardMs?: number;
+  captureTimesMs?: number[];
+  /**
+   * appended to the room id in the test title and screenshot names, to
+   * distinguish this scenario from another sweeping the same room (eg
+   * `-anim`)
+   */
+  nameSuffix?: string;
   /**
    * the angles (degrees) to screenshot at: either an explicit list, or a
    * `startAngle`→`endAngle` arc sampled every `sweepIntervalDegrees`
@@ -112,6 +121,13 @@ type SweepScenario<C extends SweepCampaign = SweepCampaign> = {
   angles:
     | { startAngle: number; endAngle: number; sweepIntervalDegrees: number }
     | number[];
+  /**
+   * capture in each of these sprite options in turn, instead of just the
+   * platform default (BlockStack colourised) - guards the palette-swapped
+   * rendering of the alternate sheets/modes. Each non-default option
+   * suffixes its screenshot names (eg `-toppy`, `-uncolourised`)
+   */
+  spriteOptions?: SpriteOption[];
 };
 
 /**
@@ -165,6 +181,26 @@ const scenarios: readonly SweepScenario[] = [
     emulatedResolution: "amigaHiResPal",
     character: "head",
   }),
+  // the all-items room progressing through time in every sprite option:
+  // captures just past 1/12-second boundaries (rounded up to 2dp of a
+  // second) so successive shots show the simulation advanced - items
+  // falling, animations progressing - guarding time-progression rendering
+  // and the palette-swapped rendering of every item type in each sheet/mode
+  sweepScenario({
+    roomId: "allItemsTestRoom",
+    campaign: "allItemsTestRoom",
+    enterFrom: "$$startingRoom",
+    angles: [0],
+    emulatedResolution: "amigaHiResPal",
+    character: "head",
+    nameSuffix: "-anim",
+    spriteOptions: [
+      { name: "BlockStack", uncolourised: false },
+      { name: "Toppy", uncolourised: false },
+      { name: "BlockStack", uncolourised: true },
+    ],
+    captureTimesMs: [90, 170, 260],
+  }),
   sweepScenario({
     // a stacked hush-puppy pair (cyclic masked pair) that must stay carved and
     // correctly projected through the whole turn - entered as heels since head
@@ -214,7 +250,7 @@ const scenarios: readonly SweepScenario[] = [
     // heels' starting room, shown at spawn:
     enterFrom: "$$startingRoom",
     character: "heels",
-    fastForwardMs: 5_000,
+    captureTimesMs: [5_000],
     angles: [0, 0.000_1],
     emulatedResolution: "$$default",
   }),
@@ -403,19 +439,22 @@ const bootScenario = async (page: Page, scenario: SweepScenario) => {
 
   await enterRoom(page, scenario, campaignHashUrl);
 
-  if (scenario.fastForwardMs !== undefined) {
-    await page.evaluate(
-      (ms) => window.__e2e_fastForwardMs!(ms),
-      scenario.fastForwardMs,
-    );
-    // a real tick delivers the fast-forward's moved items to the renderers:
-    await page.waitForTimeout(300);
-  }
   await page.waitForTimeout(500);
 };
 
 /** the screenshot/test-title base name for a scenario */
-const scenarioName = (scenario: SweepScenario): string => scenario.roomId;
+const scenarioName = ({ roomId, nameSuffix }: SweepScenario): string =>
+  `${roomId}${nameSuffix ?? ""}`;
+
+/**
+ * the screenshot-name suffix for the sprite option a capture is taken in
+ * ("" for the default BlockStack colourised)
+ */
+const spriteOptionSuffix = (spriteOption: SpriteOption | undefined): string =>
+  spriteOption === undefined ? ""
+  : spriteOption.uncolourised ? "-uncolourised"
+  : spriteOption.name === "BlockStack" ? ""
+  : `-${spriteOption.name.toLowerCase()}`;
 
 /**
  * stop every sprite animation at frame 0. Animations advance on the real
@@ -447,21 +486,50 @@ for (const scenario of scenarios) {
     test.setTimeout(360_000);
     await bootScenario(page, scenario);
 
-    await freezeAnimations(page);
-    for (const degrees of sweepDegreesForScenario(scenario)) {
-      await holdCameraAtDegrees(page, degrees);
-      // let the held frame re-project and the blended scroll settle:
-      await page.waitForTimeout(600);
-      // sprites recreated since the last freeze (eg by the quarter-flip
-      // renderer rebuild) started at frame 0, but stop them anyway so nothing
-      // is mid-animation when captured:
-      await freezeAnimations(page);
-      await page.waitForTimeout(100);
+    // the sprite options to capture in - just the platform default when the
+    // scenario doesn't list any:
+    const spriteOptions: ReadonlyArray<SpriteOption | undefined> =
+      scenario.spriteOptions ?? [undefined];
 
-      await expect(page).toHaveScreenshot(
-        `${scenarioName(scenario)}-sweep-${degrees}deg.png`,
-        roomScreenshotOptions(testInfo.project.name),
-      );
+    for (const spriteOption of spriteOptions) {
+      if (spriteOption !== undefined) {
+        await setSpriteOption(page, "cameraRotationSweep", spriteOption);
+      }
+      // fast-forward to each capture time in turn (or a single un-forwarded
+      // pass when the scenario names no times), capturing every angle at
+      // each - so all of a time's angles show the same simulated moment:
+      let advancedMs = 0;
+      for (const captureTimeMs of scenario.captureTimesMs ?? [undefined]) {
+        if (captureTimeMs !== undefined) {
+          await page.evaluate(
+            (ms) => window.__e2e_fastForwardMs!(ms),
+            captureTimeMs - advancedMs,
+          );
+          advancedMs = captureTimeMs;
+          // a real tick delivers the fast-forward's moved items to the
+          // renderers:
+          await page.waitForTimeout(300);
+        }
+        await freezeAnimations(page);
+
+        for (const degrees of sweepDegreesForScenario(scenario)) {
+          await holdCameraAtDegrees(page, degrees);
+          // let the held frame re-project and the blended scroll settle:
+          await page.waitForTimeout(600);
+          // sprites recreated since the last freeze (eg by the quarter-flip
+          // renderer rebuild) started at frame 0, but stop them anyway so
+          // nothing is mid-animation when captured:
+          await freezeAnimations(page);
+          await page.waitForTimeout(100);
+
+          const timeSuffix =
+            captureTimeMs === undefined ? "" : `-${captureTimeMs}ms`;
+          await expect(page).toHaveScreenshot(
+            `${scenarioName(scenario)}${spriteOptionSuffix(spriteOption)}-sweep-${degrees}deg${timeSuffix}.png`,
+            roomScreenshotOptions(testInfo.project.name),
+          );
+        }
+      }
     }
   });
 }

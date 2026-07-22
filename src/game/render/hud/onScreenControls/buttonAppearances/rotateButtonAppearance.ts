@@ -38,6 +38,12 @@ export const rotateButtonAppearance =
       doubleHeight: true,
       doubleWidth: true,
       text: glyph,
+      colour: tintForHud(
+        general.spriteOption,
+        tickContext.room.color,
+        tickContext.hovered ?? false,
+        general.spritesheetMeta,
+      ),
     });
 
     return {

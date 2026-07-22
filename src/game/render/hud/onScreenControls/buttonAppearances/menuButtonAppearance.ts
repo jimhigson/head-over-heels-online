@@ -31,6 +31,12 @@ export const menuButtonAppearance: ButtonAppearance<
     doubleHeight: true,
     doubleWidth: true,
     text: "☰",
+    colour: tintForHud(
+      general.spriteOption,
+      tickContext.room.color,
+      tickContext.hovered ?? false,
+      general.spritesheetMeta,
+    ),
   });
 
   return {
