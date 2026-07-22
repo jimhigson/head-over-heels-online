@@ -193,9 +193,9 @@ const renderBB = (
   return graphics;
 };
 
-export class ItemBoundingBoxRenderer<T extends ItemInPlayType>
-  implements ItemChainPixiRenderer<T>
-{
+export class ItemBoundingBoxRenderer<
+  T extends ItemInPlayType,
+> implements ItemChainPixiRenderer<T> {
   #container: Container;
   #shown = false;
   /**

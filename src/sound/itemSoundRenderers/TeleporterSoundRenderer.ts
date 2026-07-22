@@ -17,9 +17,9 @@ const isPortableTeleporterContext = (
 ): ctx is ItemSoundRenderContext<"portableTeleporter"> =>
   ctx.item.type === "portableTeleporter";
 
-export class TeleporterSoundRenderer
-  implements ItemSoundRenderer<"portableTeleporter" | "teleporter">
-{
+export class TeleporterSoundRenderer implements ItemSoundRenderer<
+  "portableTeleporter" | "teleporter"
+> {
   public readonly output: GainNode = audioCtx.createGain();
 
   #sirenBracket;

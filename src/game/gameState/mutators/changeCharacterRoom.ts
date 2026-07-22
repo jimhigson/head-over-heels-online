@@ -180,8 +180,7 @@ const findTeleporterDestinationPosition = <
   }
 
   type DestinationItem =
-    | undefined
-    | UnionOfAllItemInPlayTypes<RoomId, RoomItemId>;
+    undefined | UnionOfAllItemInPlayTypes<RoomId, RoomItemId>;
 
   let destinationItem: DestinationItem;
 
@@ -192,8 +191,7 @@ const findTeleporterDestinationPosition = <
       // still one last change to find - maybe the room has Heels in it and heels is carrying a portable
       // teleporter:
       const heels = toRoom.items["heels" as RoomItemId] as
-        | PlayableItem<"heels", RoomId, RoomItemId>
-        | undefined;
+        PlayableItem<"heels", RoomId, RoomItemId> | undefined;
       if (
         heels !== undefined &&
         heels.state.carrying !== null &&
@@ -232,8 +230,7 @@ const findTeleporterDestinationPosition = <
       // still one last change to find - maybe the room has Heels in it and heels is carrying a portable
       // teleporter:
       const heels = toRoom.items["heels" as RoomItemId] as
-        | PlayableItem<"heels", RoomId, RoomItemId>
-        | undefined;
+        PlayableItem<"heels", RoomId, RoomItemId> | undefined;
       if (
         heels !== undefined &&
         heels.state.carrying !== null &&

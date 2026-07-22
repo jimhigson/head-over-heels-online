@@ -52,13 +52,11 @@ export const doorsBackTo = (
   }
   return iterateRoomJsonItemsWithIds(campaign.rooms[toRoom].items, "door")
     .filter(([, door]) => door.config.toRoom === fromRoom)
-    .map(
-      ([doorId, door]): DoorRef => ({
-        roomId: toRoom,
-        doorId: doorId as VerificationRoomItemId,
-        door,
-      }),
-    )
+    .map(([doorId, door]): DoorRef => ({
+      roomId: toRoom,
+      doorId: doorId as VerificationRoomItemId,
+      door,
+    }))
     .toArray();
 };
 

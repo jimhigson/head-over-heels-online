@@ -97,7 +97,7 @@ export const voronoiLut = (map: Map<Color, Color>): Texture => {
           blueSeedDistanceSquared[mi] + greenSeedDistSquared[mi];
       }
 
-      for (let ri = 0; ri < chanRes; ) {
+      for (let ri = 0; ri < chanRes;) {
         const redSeedDistSquared = redSeedAllDistSquared[ri];
         let riClosestSeedValue: SimpleColor = black;
         let riClosestSeedDistSq = 9_999;

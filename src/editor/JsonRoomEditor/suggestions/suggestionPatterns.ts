@@ -98,8 +98,7 @@ const getTeleporterDestinationItemIds: SuggestionGenerator = (
   config,
 ) => {
   const otherRoomId = getNodePropertyValue(config, "toRoom") as
-    | EditorRoomId
-    | undefined;
+    EditorRoomId | undefined;
 
   if (otherRoomId === undefined) {
     return emptyArray;
@@ -185,11 +184,9 @@ export const suggestionPatterns: SuggestionPatterns = {
     config,
   ) {
     const direction = getNodePropertyValue(config, "direction") as
-      | DirectionXy4
-      | undefined;
+      DirectionXy4 | undefined;
     const otherRoomId = getNodePropertyValue(config, "toRoom") as
-      | EditorRoomId
-      | undefined;
+      EditorRoomId | undefined;
 
     if (otherRoomId === undefined || direction === undefined) {
       return emptyArray;

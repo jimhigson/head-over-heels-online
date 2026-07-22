@@ -45,10 +45,7 @@ import { turnedVector, type TurnStrategy } from "./turnedVector";
 // pass between turning and turning again, depending on the movement pattern
 const turnAroundTime = 150;
 
-export type ItemWithMovement<
-  RoomId extends string,
-  RoomItemId extends string,
-> =
+export type ItemWithMovement<RoomId extends string, RoomItemId extends string> =
   | ItemInPlay<"monster", RoomId, RoomItemId>
   | ItemInPlay<"movingPlatform", RoomId, RoomItemId>;
 

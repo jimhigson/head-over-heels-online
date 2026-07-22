@@ -23,8 +23,7 @@ export const selectPlayableItem = <
   character: C,
 ): PlayableItem<C, RoomId, RoomItemId> | undefined => {
   return gameState.characterRooms[character]?.items[character] as
-    | PlayableItem<C, RoomId, RoomItemId>
-    | undefined;
+    PlayableItem<C, RoomId, RoomItemId> | undefined;
 };
 
 /**

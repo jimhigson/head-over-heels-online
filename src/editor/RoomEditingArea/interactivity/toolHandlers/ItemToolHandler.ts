@@ -26,9 +26,9 @@ import {
 
 const { dispatch } = store;
 
-export class ItemToolHandler
-  implements ToolHandler<Extract<Tool, { type: "item" }>>
-{
+export class ItemToolHandler implements ToolHandler<
+  Extract<Tool, { type: "item" }>
+> {
   handleMouseMove({
     pointingAtChanged,
     roomState,

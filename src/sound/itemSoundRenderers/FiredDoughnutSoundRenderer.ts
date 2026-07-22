@@ -3,9 +3,7 @@ import { type ItemSoundRenderContext } from "../ItemSoundRenderContext";
 import { type ItemSoundRenderer } from "../ItemSoundRenderer";
 import { createAudioNode } from "../soundUtils/createAudioNode";
 
-export class FiredDoughnutSoundRenderer
-  implements ItemSoundRenderer<"firedDoughnut">
-{
+export class FiredDoughnutSoundRenderer implements ItemSoundRenderer<"firedDoughnut"> {
   public readonly output: GainNode = audioCtx.createGain();
 
   readonly renderContext: ItemSoundRenderContext<"firedDoughnut">;

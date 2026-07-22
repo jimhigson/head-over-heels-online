@@ -38,9 +38,7 @@ import { gameStartedWithCampaign } from "./initStoreForTests";
 import { MockInputStateTracker } from "./MockInputStateTracker";
 
 export type TestCampaignRoomId =
-  | "headStartingRoom"
-  | "heelsStartingRoom"
-  | "thirdRoom";
+  "headStartingRoom" | "heelsStartingRoom" | "thirdRoom";
 const roomProperties = {
   color: { hue: "yellow", shade: "basic" },
   planet: "blacktooth",

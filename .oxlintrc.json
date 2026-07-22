@@ -128,7 +128,11 @@
         "unicorn/numeric-separators-style": [
           "error",
           {
-            "number": { "minimumDigits": 4, "groupLength": 3 }
+            "number": {
+              "minimumDigits": 4,
+              "groupLength": 3,
+              "fractionGroupLength": 3
+            }
           }
         ],
         "eslint-js/no-restricted-syntax": [
@@ -217,7 +221,7 @@
       "jsPlugins": [
         "eslint-plugin-unused-imports",
         "eslint-plugin-perfectionist",
-        "oxlint-plugin-eslint",
+        { "name": "eslint-js", "specifier": "oxlint-plugin-eslint" },
         "./oxlint-rules/preactClass.js"
       ],
       "env": {

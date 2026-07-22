@@ -11,11 +11,8 @@ export type EditorToolRoomId = "+" | "nowhere" | EditorRoomId;
  */
 export type ItemTool<
   T extends JsonItemType = JsonItemType,
-  Config extends JsonItemConfig<
-    T,
-    EditorToolRoomId,
-    EditorRoomItemId
-  > = JsonItemConfig<T, EditorToolRoomId, EditorRoomItemId>,
+  Config extends JsonItemConfig<T, EditorToolRoomId, EditorRoomItemId> =
+    JsonItemConfig<T, EditorToolRoomId, EditorRoomItemId>,
 > = {
   type: T;
   config: Config;

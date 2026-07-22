@@ -5,10 +5,7 @@ import { type EditorJsonItemUnion } from "./editorTypes";
  * of how each item type stores it (a `disabled` boolean vs an `activated` value)
  */
 export type ActivationState =
-  | "disabled"
-  | "enabled"
-  | "enabledOnPlayerNear"
-  | "enabledOnStand";
+  "disabled" | "enabled" | "enabledOnPlayerNear" | "enabledOnStand";
 
 export const activationLabel = {
   enabled: "Enable",

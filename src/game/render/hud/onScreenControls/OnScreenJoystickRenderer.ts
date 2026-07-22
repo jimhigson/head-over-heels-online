@@ -52,14 +52,11 @@ const snapCosineThreshold = Math.cos(30 * (Math.PI / 180));
 
 const joystickFurthestTouchRadius = 55;
 const fullyTransparentHex = "#00000000";
-export class OnScreenJoystickRenderer
-  implements
-    Renderer<
-      JoystickRenderContext,
-      HudRendererTickContextWithRoom<string, string>,
-      Container
-    >
-{
+export class OnScreenJoystickRenderer implements Renderer<
+  JoystickRenderContext,
+  HudRendererTickContextWithRoom<string, string>,
+  Container
+> {
   output = new Container({ label: "OnScreenJoystick", eventMode: "static" });
 
   #arrowSprites: Partial<Record<DirectionXy8, Container>>;

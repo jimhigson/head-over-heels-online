@@ -160,8 +160,7 @@ export const insertRoomInPlace = (
   const existingRoomAtTarget =
     targetSpec ?
       (state.campaignInProgress.rooms[targetSpec.roomId] as
-        | EditorRoomJson
-        | undefined)
+        EditorRoomJson | undefined)
     : undefined;
 
   const hasDoors =

@@ -14,8 +14,7 @@ export type UseTipOptions = {
  * `interestfor` referencing a popover that isn't rendered
  */
 export type UseTipReturn =
-  | { interestfor: string; tip: VNode }
-  | { interestfor: undefined; tip: null };
+  { interestfor: string; tip: VNode } | { interestfor: undefined; tip: null };
 
 /**
  * pairs a trigger with a tooltip without the caller inventing an id: put the

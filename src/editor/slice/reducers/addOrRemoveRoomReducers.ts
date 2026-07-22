@@ -62,8 +62,7 @@ export const addOrRemoveRoomReducers = {
       first(iterateRoomJsonItemsWithIds(cursorRoom.items, "teleporter"));
 
     const adjacentRoom = doorOrTeleporterEntry?.[1].config.toRoom as
-      | EditorRoomId
-      | undefined;
+      EditorRoomId | undefined;
 
     const nextRoom = (
       (

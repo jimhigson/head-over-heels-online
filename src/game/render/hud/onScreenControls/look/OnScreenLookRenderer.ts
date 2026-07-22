@@ -22,13 +22,11 @@ type LookRenderContext = {
 export class OnScreenLookRenderer<
   RoomId extends string = string,
   RoomItemId extends string = string,
-> implements
-    Renderer<
-      LookRenderContext,
-      HudRendererTickContext<RoomId, RoomItemId>,
-      Container
-    >
-{
+> implements Renderer<
+  LookRenderContext,
+  HudRendererTickContext<RoomId, RoomItemId>,
+  Container
+> {
   output = new Graphics({ label: "OnScreenLook", eventMode: "static" });
 
   #curPointerId: number | undefined;

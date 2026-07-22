@@ -26,10 +26,7 @@ export type OVERLAP = typeof OVERLAP;
 export type ADJACENT_X = typeof ADJACENT_X;
 export type ADJACENT_Y = typeof ADJACENT_Y;
 export type VisuallyOverlapsReturn =
-  | ADJACENT_X
-  | ADJACENT_Y
-  | NO_OVERLAP
-  | OVERLAP;
+  ADJACENT_X | ADJACENT_Y | NO_OVERLAP | OVERLAP;
 
 /**
  * return whether the projected hexagons of the two aabbs overlaps in

@@ -36,9 +36,11 @@ export const candidatePartnerDoors = <RoomId extends string>(
       ([, door]) =>
         door.config.toRoom === fromRoom && door.config.direction === wanted,
     )
-    .map(
-      ([doorId, door]): DoorRef<RoomId> => ({ roomId: toRoom, doorId, door }),
-    )
+    .map(([doorId, door]): DoorRef<RoomId> => ({
+      roomId: toRoom,
+      doorId,
+      door,
+    }))
     .toArray();
 };
 

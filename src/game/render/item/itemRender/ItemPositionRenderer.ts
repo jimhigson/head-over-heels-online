@@ -22,9 +22,9 @@ import { type ItemChainPixiRenderer } from "./ItemPixiRenderer";
  * offset, cyclic-render masking and cuboid warp are handled by the wrapped
  * {@link NearCornerOffsetRenderer}/{@link TransitionSurfaceRenderer} links.
  */
-export class ItemPositionRenderer<T extends ItemInPlayType>
-  implements ItemChainPixiRenderer<T>
-{
+export class ItemPositionRenderer<
+  T extends ItemInPlayType,
+> implements ItemChainPixiRenderer<T> {
   output: Container;
   readonly renderContext: ItemRenderContext<T>;
   #wrappedRenderer: ItemChainPixiRenderer<T>;

@@ -56,8 +56,7 @@ export const noopSpritesheetTextureSwops = {
 };
 
 type TextureIdsListOrPredicate =
-  | ((candidate: TextureId) => boolean)
-  | Iterable<TextureId>;
+  ((candidate: TextureId) => boolean) | Iterable<TextureId>;
 
 const isNeverSwoppedTextureId = (
   name: TextureId,

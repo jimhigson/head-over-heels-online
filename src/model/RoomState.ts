@@ -102,11 +102,9 @@ export const playablesInRoom = <
 ) => {
   return {
     head: roomItems["head" as RoomItemId] as
-      | ItemInPlay<"head", RoomId, RoomItemId, RoomItemId, ScN>
-      | undefined,
+      ItemInPlay<"head", RoomId, RoomItemId, RoomItemId, ScN> | undefined,
     heels: roomItems["heels" as RoomItemId] as
-      | ItemInPlay<"heels", RoomId, RoomItemId, RoomItemId, ScN>
-      | undefined,
+      ItemInPlay<"heels", RoomId, RoomItemId, RoomItemId, ScN> | undefined,
     headOverHeels: roomItems["headOverHeels" as RoomItemId] as
       | ItemInPlay<"headOverHeels", RoomId, RoomItemId, RoomItemId, ScN>
       | undefined,

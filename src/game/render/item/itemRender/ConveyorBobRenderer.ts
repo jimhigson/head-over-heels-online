@@ -14,9 +14,9 @@ import { type ItemChainPixiRenderer } from "./ItemPixiRenderer";
 const baseBobPeriod = 50;
 const bobAmplitude = 0.66;
 
-class ConveyorBobRenderer<T extends ItemInPlayType>
-  implements ItemChainPixiRenderer<T>
-{
+class ConveyorBobRenderer<
+  T extends ItemInPlayType,
+> implements ItemChainPixiRenderer<T> {
   public readonly output: Container = new Container({
     label: "ConveyorBobRenderer",
   });

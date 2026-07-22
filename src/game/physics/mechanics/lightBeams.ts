@@ -112,8 +112,7 @@ const castBeamRowSegments = <RoomId extends string, RoomItemId extends string>(
       : sourcePosition[axis];
 
     let nearestBlocker:
-      | undefined
-      | UnionOfAllItemInPlayTypes<RoomId, RoomItemId>;
+      undefined | UnionOfAllItemInPlayTypes<RoomId, RoomItemId>;
     let nearestDistance = maxBeamLengthPx;
 
     /*

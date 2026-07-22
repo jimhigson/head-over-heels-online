@@ -62,8 +62,7 @@ export type SaveFailure = {
 };
 
 export type SaveResult =
-  | { failure: SaveFailure; ok: false }
-  | { ok: true; version: number };
+  { failure: SaveFailure; ok: false } | { ok: true; version: number };
 
 /** map a db / transport error from a save into a category the editor can act on */
 export const classifySaveError = (error: {

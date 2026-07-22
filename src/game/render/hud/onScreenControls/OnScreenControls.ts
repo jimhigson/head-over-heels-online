@@ -27,14 +27,14 @@ type OnScreenControlsRenderContext<RoomId extends string> = {
   inputDirectionMode: InputDirectionMode;
 };
 
-export class OnScreenControls<RoomId extends string, RoomItemId extends string>
-  implements
-    Renderer<
-      OnScreenControlsRenderContext<RoomId>,
-      HudRendererTickContextWithRoom<RoomId, RoomItemId>,
-      Container
-    >
-{
+export class OnScreenControls<
+  RoomId extends string,
+  RoomItemId extends string,
+> implements Renderer<
+  OnScreenControlsRenderContext<RoomId>,
+  HudRendererTickContextWithRoom<RoomId, RoomItemId>,
+  Container
+> {
   #container = new Container({ label: "OnScreenControls" });
 
   #hudElements;

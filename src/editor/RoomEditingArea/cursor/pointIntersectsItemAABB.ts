@@ -97,11 +97,9 @@ const pointIntersectsAABB = (
 };
 
 export type PointerItemIntersection =
-  | "intersects-rendered"
-  | "intersects-unrendered";
+  "intersects-rendered" | "intersects-unrendered";
 export type PointerItemMaybeIntersection =
-  | "non-intersecting"
-  | PointerItemIntersection;
+  "non-intersecting" | PointerItemIntersection;
 
 export const pointIntersectsItemAABB = (
   pointerXy: Xy,

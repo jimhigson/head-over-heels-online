@@ -43,8 +43,7 @@ export type SubRoom<RoomId extends string> = {
 };
 
 export type SubRooms<RoomId extends string> =
-  | { "*": AllRoomSubRoom<RoomId> }
-  | Record<string, SubRoom<RoomId>>;
+  { "*": AllRoomSubRoom<RoomId> } | Record<string, SubRoom<RoomId>>;
 
 /**
  * a room's `subRooms` is either the whole-room form (a single `'*'` entry, used

@@ -11,9 +11,7 @@ import { FreeItemSoundRenderer } from "./generic/FreeItemSoundRenderer";
 
 const walkGain = 0.8;
 
-export class MovingPlatformSoundRenderer
-  implements ItemSoundRenderer<"movingPlatform">
-{
+export class MovingPlatformSoundRenderer implements ItemSoundRenderer<"movingPlatform"> {
   public readonly output: GainNode = audioCtx.createGain();
 
   #freeItemSoundRenderer: FreeItemSoundRenderer;

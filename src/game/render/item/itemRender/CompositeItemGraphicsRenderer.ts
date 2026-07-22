@@ -7,9 +7,9 @@ import {
 } from "../../ItemRenderContexts";
 import { type ItemChainPixiRenderer } from "./ItemPixiRenderer";
 
-export class CompositeItemGraphicsRenderer<T extends ItemInPlayType>
-  implements ItemChainPixiRenderer<T>
-{
+export class CompositeItemGraphicsRenderer<
+  T extends ItemInPlayType,
+> implements ItemChainPixiRenderer<T> {
   #componentRenderers: ItemChainPixiRenderer<T>[];
   #container: Container;
   readonly renderContext: ItemRenderContext<T>;

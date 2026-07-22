@@ -230,9 +230,9 @@ const roundDragVector = (
   );
 };
 
-export class PointerToolHandler
-  implements ToolHandler<Extract<Tool, { type: "pointer" }>>
-{
+export class PointerToolHandler implements ToolHandler<
+  Extract<Tool, { type: "pointer" }>
+> {
   handleMouseMove({
     roomState,
     pointingAt,

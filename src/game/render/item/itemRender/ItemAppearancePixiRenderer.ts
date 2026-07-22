@@ -10,10 +10,10 @@ import { type ItemLeafPixiRenderer } from "./ItemPixiRenderer";
 
 /** specialise appearance renderer (in types only) to handle (specifically) Items more conveniently */
 export class ItemAppearancePixiRenderer<
-    T extends ItemInPlayType,
-    RenderProps extends object,
-    Output extends Container = Container,
-  >
+  T extends ItemInPlayType,
+  RenderProps extends object,
+  Output extends Container = Container,
+>
   extends AppearanceRenderer<
     ItemLeafRenderContext<T>,
     ItemLeafTickContext,

@@ -60,11 +60,7 @@ export type RoomNode<RoomId extends string> = {
 };
 
 export type RoomGraphEdgeKind =
-  | "door"
-  | "ncr"
-  | "subRoom"
-  | "teleporter"
-  | "vertical";
+  "door" | "ncr" | "subRoom" | "teleporter" | "vertical";
 
 export type RoomEdge = {
   kind: RoomGraphEdgeKind;

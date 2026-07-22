@@ -4,9 +4,7 @@ import { type ItemSoundRenderContext } from "../ItemSoundRenderContext";
 import { type ItemSoundRenderer } from "../ItemSoundRenderer";
 import { FreeItemSoundRenderer } from "./generic/FreeItemSoundRenderer";
 
-export class PushableBlockSoundRenderer
-  implements ItemSoundRenderer<"pushableBlock">
-{
+export class PushableBlockSoundRenderer implements ItemSoundRenderer<"pushableBlock"> {
   public readonly output: GainNode = audioCtx.createGain();
 
   #freeItemSoundRenderer: FreeItemSoundRenderer;

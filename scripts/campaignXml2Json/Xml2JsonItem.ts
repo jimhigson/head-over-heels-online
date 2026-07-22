@@ -69,8 +69,7 @@ export type Xml2JsonItem = {
       class: "griditem";
       // one room has a conveyor with a disappearing behavior (bookworld|byblos)2
       behavior?:
-        | "behavior of conveyor"
-        | "vanishing when some free dude is above";
+        "behavior of conveyor" | "vanishing when some free dude is above";
     }
   | {
       kind: "diver" | "imperial-guard-head" | "turtle";

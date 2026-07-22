@@ -4,9 +4,7 @@ import { type ItemSoundRenderContext } from "../ItemSoundRenderContext";
 import { type ItemSoundRenderer } from "../ItemSoundRenderer";
 import { FreeItemSoundRenderer } from "./generic/FreeItemSoundRenderer";
 
-export class SlidingDeadlySoundRenderer
-  implements ItemSoundRenderer<"slidingDeadly">
-{
+export class SlidingDeadlySoundRenderer implements ItemSoundRenderer<"slidingDeadly"> {
   public readonly output: GainNode = audioCtx.createGain();
 
   #freeItemSoundRenderer: FreeItemSoundRenderer;

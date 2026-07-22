@@ -1,7 +1,40 @@
 echo running pre-commit...
-echo oxlint --fix
-git-format-staged --formatter 'sh scripts/oxlintFixStdin.sh "{}"' 'src/*.ts' 'src/*.tsx' 'e2e/*.ts' 'gfx/*.ts' 'scripts/*.ts'
-echo prettier
-git-format-staged --formatter 'prettier --stdin-filepath "{}"' 'src/*.ts' 'src/*.tsx' 'src/*.json' 'src/*.html' 'e2e/*.ts' 'gfx/*.ts' 'scripts/*.ts'
-echo ...pre-commit done
 
+# Batch oxlint --fix + prettier --write over the STAGED (index) content in a temp
+# dir, then apply once via git-format-staged (index+worktree write, unstaged
+# changes preserved). One materialise, one apply - not per-file.
+patterns="src/*.ts src/*.tsx src/*.json src/*.html e2e/*.ts gfx/*.ts scripts/*.ts"
+tmp=$(mktemp -d "$PWD/.precommit-batch-XXXXXX")
+trap 'rm -rf "$tmp"' EXIT
+git diff --cached --name-only --diff-filter=ACMR -z -- $patterns \
+  | git checkout-index --prefix="$tmp/" -z --stdin
+
+if [ -n "$(find "$tmp" -type f -print -quit)" ]; then
+  echo oxlint --fix
+  # oxlint applies only non-overlapping fixes per run, so loop --fix over the whole
+  # batch until it stops changing (a fixpoint) before checking for errors.
+  i=0
+  while [ "$i" -lt 10 ]; do
+    before=$(find "$tmp" -type f -exec cksum {} + | sort | cksum)
+    oxlint --fix --no-ignore "$tmp" >/dev/null 2>&1 || true
+    after=$(find "$tmp" -type f -exec cksum {} + | sort | cksum)
+    [ "$before" = "$after" ] && break
+    i=$((i + 1))
+  done
+  if ! oxlint --no-ignore "$tmp"; then
+    echo "pre-commit: oxlint found lint errors that could not be auto-fixed" >&2
+    exit 1
+  fi
+
+  echo prettier
+  # run prettier from inside the temp so .prettierignore (copied in) and the repo
+  # config (found by walking up, since temp lives under the repo root) both resolve
+  cp .prettierignore "$tmp/.prettierignore" 2>/dev/null || true
+  ( cd "$tmp" && prettier --write --ignore-path .prettierignore --log-level warn . )
+
+  # apply the fixed+formatted copies to the index (and worktree when the patch is
+  # clean); files git-format-staged sees but that were skipped pass through unchanged
+  git-format-staged --formatter 'if [ -f "'"$tmp"'/{}" ]; then cat "'"$tmp"'/{}"; else cat; fi' $patterns
+fi
+
+echo ...pre-commit done

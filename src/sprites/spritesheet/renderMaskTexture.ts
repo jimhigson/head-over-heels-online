@@ -23,8 +23,7 @@ export const black = new Color(0x00_00_00);
 export const white = new Color(0xff_ff_ff);
 
 type TextureIdsListOrPredicate =
-  | ((candidate: TextureId) => boolean)
-  | Iterable<TextureId>;
+  ((candidate: TextureId) => boolean) | Iterable<TextureId>;
 
 export type RenderMaskTextureOptions = {
   /**
