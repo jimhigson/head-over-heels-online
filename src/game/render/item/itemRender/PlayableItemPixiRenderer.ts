@@ -100,7 +100,7 @@ const playableCreateSpriteOptions = ({
     action === "moving" &&
     !(
       // head along for the ride:
-      (isInSymbiosis && name === "head")
+      isInSymbiosis && name === "head"
     )
   ) {
     return {
@@ -318,9 +318,7 @@ class IndividualPlayableRendering {
  * holding its per-character rendering state (sprite, shine, filters + the
  * change-detection memos) as private fields.
  */
-export class PlayableItemPixiRenderer
-  implements ItemLeafPixiRenderer<CharacterName>
-{
+export class PlayableItemPixiRenderer implements ItemLeafPixiRenderer<CharacterName> {
   readonly output = new Container({ label: "PlayableItemPixiRenderer" });
   readonly renderContext: ItemLeafRenderContext<CharacterName>;
 

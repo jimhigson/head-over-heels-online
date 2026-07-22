@@ -12,9 +12,9 @@ import {
 import { type DecorateItemRenderer } from "./DecorateItemRenderer";
 import { type ItemChainPixiRenderer } from "./ItemPixiRenderer";
 
-class PortableItemPickUpNextHighlightRenderer<T extends ItemInPlayType>
-  implements ItemChainPixiRenderer<T>
-{
+class PortableItemPickUpNextHighlightRenderer<
+  T extends ItemInPlayType,
+> implements ItemChainPixiRenderer<T> {
   public readonly output: Container = new Container({
     label: "PortableItemPickUpNextHighlightRenderer",
   });

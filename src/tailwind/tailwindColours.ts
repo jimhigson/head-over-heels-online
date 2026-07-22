@@ -86,8 +86,7 @@ export const coloursCssVariables = transformObject(colorsSrgb, ([name]) => [
 
 type TailwindColourName = keyof typeof colorsSrgb;
 type TailwindColourisedColourName =
-  | keyof typeof displayPalette
-  | keyof typeof halfbriteSpritesheetPalette;
+  keyof typeof displayPalette | keyof typeof halfbriteSpritesheetPalette;
 type TailwindToppyColourName = keyof typeof toppyTailwindColours;
 
 export type TailwindTextColourClassname =

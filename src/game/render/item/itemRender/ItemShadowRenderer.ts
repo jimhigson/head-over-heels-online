@@ -136,9 +136,9 @@ const spaceAboveSurfaceBuffer: WritableDeep<CollideableItem> = {
   },
 };
 
-class ItemShadowRenderer<T extends ItemInPlayType>
-  implements ItemChainPixiRenderer<T>
-{
+class ItemShadowRenderer<
+  T extends ItemInPlayType,
+> implements ItemChainPixiRenderer<T> {
   #output: Container = new Container({
     label: "ItemShadowRenderer",
   });

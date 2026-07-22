@@ -57,9 +57,9 @@ const nearCornerOffsetGraphics = <T extends ItemInPlayType>(
  * (cuboid-warp) items mid-rotation are positioned by the warp instead (see
  * {@link TransitionSurfaceRenderer}), so the offset is left alone for them here.
  */
-export class NearCornerOffsetRenderer<T extends ItemInPlayType>
-  implements ItemChainPixiRenderer<T>
-{
+export class NearCornerOffsetRenderer<
+  T extends ItemInPlayType,
+> implements ItemChainPixiRenderer<T> {
   output: Container;
   readonly renderContext: ItemRenderContext<T>;
   #wrappedRenderer: ItemChainPixiRenderer<T>;

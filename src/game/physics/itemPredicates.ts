@@ -97,13 +97,11 @@ export const isSolid = (
 export const isStandable = (item: UnionOfAllItemInPlayTypes) => {
   return !(
     // unsolid items are never standable:
-    (
-      isNeverSolidItemType(item) ||
-      // protals are sometimes solid, but are never standable:
-      item.type === "portal" ||
-      // light beams are solid to monsters, but nothing can stand on light:
-      item.type === "lightBeam"
-    )
+    isNeverSolidItemType(item) ||
+    // protals are sometimes solid, but are never standable:
+    item.type === "portal" ||
+    // light beams are solid to monsters, but nothing can stand on light:
+    item.type === "lightBeam"
   );
 };
 

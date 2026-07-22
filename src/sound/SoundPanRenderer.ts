@@ -44,9 +44,9 @@ const maxXOffsetFromCentre = 0.3;
 // smaller = subtler depth (z) loudness change
 const maxZOffsetFromCentre = 0.3;
 
-export class SoundPanRenderer<T extends ItemInPlayType>
-  implements ItemSoundRenderer<T>
-{
+export class SoundPanRenderer<
+  T extends ItemInPlayType,
+> implements ItemSoundRenderer<T> {
   public readonly output = audioCtx.createPanner();
   #soundPositionMinX;
   #soundPositionMaxX;

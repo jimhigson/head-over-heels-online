@@ -15,10 +15,11 @@ import { type Renderer } from "../Renderer";
 import { TextContainer } from "../text/TextContainer";
 import { type HudRenderContext } from "./hudRendererContexts";
 
-export class FpsRenderer
-  implements
-    Renderer<HudRenderContext<string>, FrameTimingStatsEvent, Container>
-{
+export class FpsRenderer implements Renderer<
+  HudRenderContext<string>,
+  FrameTimingStatsEvent,
+  Container
+> {
   #container = new Container({ label: "FpsRenderer" });
   #fpsText: TextContainer;
   #isDark = false;

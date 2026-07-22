@@ -16,10 +16,7 @@ import { type TimedRelationWithOtherItem } from "./TimedRelationWithOtherItem";
  *  - "none": runs off an open room edge, ending without any end-cap rendering
  */
 export type LightBeamEnd =
-  | "none"
-  | "reflect-left"
-  | "reflect-right"
-  | "terminus";
+  "none" | "reflect-left" | "reflect-right" | "terminus";
 
 export type PlayableActionState =
   | "falling"

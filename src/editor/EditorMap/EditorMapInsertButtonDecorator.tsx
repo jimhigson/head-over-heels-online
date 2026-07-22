@@ -27,12 +27,7 @@ const zOutwardOffset = 44;
 const centre = projectWorldXyzToScreenXy({ x: half, y: half });
 
 type InsertDirection =
-  | "above"
-  | "away"
-  | "below"
-  | "left"
-  | "right"
-  | "towards";
+  "above" | "away" | "below" | "left" | "right" | "towards";
 
 const allDirections: InsertDirection[] = [
   "left",

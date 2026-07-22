@@ -52,9 +52,7 @@ type CallbackMenuItemProps = BaseMenuItemProps & {
 };
 
 export type MenuItemProps =
-  | CallbackMenuItemProps
-  | LinkMenuItemProps
-  | SubMenuMenuItemProps;
+  CallbackMenuItemProps | LinkMenuItemProps | SubMenuMenuItemProps;
 
 const noop = () => {};
 

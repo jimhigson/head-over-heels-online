@@ -21,8 +21,7 @@ export const recordActedOnBy = <
   // this cannot be undefined by the current types. However, an old save could
   // not have this for non-free items:
   const actedOnAt = subjectItem.state.actedOnAt as
-    | typeof subjectItem.state.actedOnAt
-    | undefined;
+    typeof subjectItem.state.actedOnAt | undefined;
 
   if (actedOnAt === undefined) {
     // TODO: this check can be removed when happy to break back compatibility

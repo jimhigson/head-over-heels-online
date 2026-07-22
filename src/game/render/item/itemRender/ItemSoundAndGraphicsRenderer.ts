@@ -8,10 +8,13 @@ import { type Renderer } from "../../Renderer";
 import { type SoundAndGraphicsOutput } from "../../SoundAndGraphicsOutput";
 import { type ItemChainPixiRenderer } from "./ItemPixiRenderer";
 
-export class ItemSoundAndGraphicsRenderer<T extends ItemInPlayType>
-  implements
-    Renderer<ItemRenderContext<T>, ItemTickContext, SoundAndGraphicsOutput>
-{
+export class ItemSoundAndGraphicsRenderer<
+  T extends ItemInPlayType,
+> implements Renderer<
+  ItemRenderContext<T>,
+  ItemTickContext,
+  SoundAndGraphicsOutput
+> {
   public readonly output: SoundAndGraphicsOutput;
 
   readonly renderContext: ItemRenderContext<T>;

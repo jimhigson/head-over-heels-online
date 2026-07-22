@@ -13,5 +13,4 @@ export const selectCurrentRoomState = <
   gameState: Pick<GameState<RoomId>, "characterRooms" | "currentCharacterName">,
 ) =>
   gameState.characterRooms[gameState.currentCharacterName] as
-    | RoomState<RoomId, RoomItemId>
-    | undefined;
+    RoomState<RoomId, RoomItemId> | undefined;

@@ -61,8 +61,7 @@ const branchMatches = (branch: SchemaNode, data: unknown): boolean => {
     return false;
   }
   const properties = deref(branch).properties as
-    | Record<string, SchemaNode>
-    | undefined;
+    Record<string, SchemaNode> | undefined;
   if (properties === undefined) {
     return false;
   }
@@ -149,8 +148,7 @@ const enumAt = (
   let node = deref(schemaRoot);
   for (const segment of segments) {
     const properties = node.properties as
-      | Record<string, SchemaNode>
-      | undefined;
+      Record<string, SchemaNode> | undefined;
     if (properties === undefined || !(segment in properties)) {
       return undefined;
     }

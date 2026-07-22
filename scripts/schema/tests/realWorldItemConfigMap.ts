@@ -43,13 +43,7 @@ type ItemConfigMap<
 
 // JsonItemType
 type JsonItemType =
-  | "ball"
-  | "block"
-  | "conveyor"
-  | "door"
-  | "hushPuppy"
-  | "spikes"
-  | "wall";
+  "ball" | "block" | "conveyor" | "door" | "hushPuppy" | "spikes" | "wall";
 
 // JsonItemConfig following exact pattern
 type JsonItemConfig<

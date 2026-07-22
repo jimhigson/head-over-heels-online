@@ -16,9 +16,7 @@ const glassyOptions: FreeItemSoundRendererConstructorOptions = {
   },
 };
 
-export class SlidingBlockSoundRenderer
-  implements ItemSoundRenderer<"slidingBlock">
-{
+export class SlidingBlockSoundRenderer implements ItemSoundRenderer<"slidingBlock"> {
   public readonly output: GainNode = audioCtx.createGain();
 
   #freeItemSoundRenderer: FreeItemSoundRenderer;

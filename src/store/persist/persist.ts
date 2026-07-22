@@ -83,15 +83,13 @@ const savedGamesMigrations = createMigrate({
     }
     const s = state as Record<string, unknown>;
     const saves = s.saves as
-      | Record<string, Record<string, unknown>>
-      | undefined;
+      Record<string, Record<string, unknown>> | undefined;
     if (!saves) {
       return state;
     }
     for (const save of Object.values(saves)) {
       const store = save.store as
-        | Record<string, Record<string, unknown>>
-        | undefined;
+        Record<string, Record<string, unknown>> | undefined;
       if (!store) {
         continue;
       }

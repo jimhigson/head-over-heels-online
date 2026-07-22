@@ -17,9 +17,9 @@ import { type ItemChainPixiRenderer } from "./ItemPixiRenderer";
 
 const flashDurationMs = 75;
 
-class ItemFlashOnSwitchedRenderer<T extends ItemInPlayType>
-  implements ItemChainPixiRenderer<T>
-{
+class ItemFlashOnSwitchedRenderer<
+  T extends ItemInPlayType,
+> implements ItemChainPixiRenderer<T> {
   public readonly output: Container = new Container({
     label: "ItemFlashOnSwitchedRenderer",
   });

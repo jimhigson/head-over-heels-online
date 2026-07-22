@@ -56,8 +56,7 @@ const findEffectTarget = <RoomId extends string, RoomItemId extends string>(
   }
 
   const currentPlayable = items[currentCharacterName as RoomItemId] as
-    | PlayableItem
-    | undefined;
+    PlayableItem | undefined;
 
   if (
     currentPlayable !== undefined &&
@@ -77,8 +76,7 @@ const findEffectTarget = <RoomId extends string, RoomItemId extends string>(
 export class ColourClashCircleEffectRenderer<
   RoomId extends string,
   RoomItemId extends string,
-> implements RoomRendererTypeInGameOnly<RoomId, RoomItemId>
-{
+> implements RoomRendererTypeInGameOnly<RoomId, RoomItemId> {
   public output: SetRequired<SoundAndGraphicsOutput, "graphics">;
 
   #effectFilter: ColourClashCircleEffectFilter | undefined;

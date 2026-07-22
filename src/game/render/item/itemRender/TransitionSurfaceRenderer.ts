@@ -108,9 +108,9 @@ const wallEdgeOnFadeAlpha = (
  * {@link ItemPositionRenderer} owns that. Its output holds the (near-corner
  * offset) art content, any mask wrappers, and - mid-warp - the warp mesh.
  */
-export class TransitionSurfaceRenderer<T extends ItemInPlayType>
-  implements ItemChainPixiRenderer<T>
-{
+export class TransitionSurfaceRenderer<
+  T extends ItemInPlayType,
+> implements ItemChainPixiRenderer<T> {
   output: Container;
   // store our hierarchy of masking containers by the front item they are using to mask:
   #maskingContainers: Map<UnionOfAllItemInPlayTypes, MaskingContainer> =

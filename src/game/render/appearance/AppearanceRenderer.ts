@@ -19,8 +19,7 @@ export class AppearanceRenderer<
   RenderProps extends object,
   /** the type of the thing returned by this renderer */
   Output extends Container = Container,
-> implements Renderer<RenderContext, TickContext, Container>
-{
+> implements Renderer<RenderContext, TickContext, Container> {
   /* what is currently rendered by the appearance,
      and what render props did it use?
    */

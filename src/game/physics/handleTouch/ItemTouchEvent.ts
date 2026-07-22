@@ -18,14 +18,10 @@ import {
 export type ItemTouchEvent<
   RoomId extends string,
   RoomItemId extends string,
-  MovingItem extends UnionOfAllItemInPlayTypes<
-    RoomId,
-    RoomItemId
-  > = UnionOfAllItemInPlayTypes<RoomId, RoomItemId>,
-  TouchedItem extends UnionOfAllItemInPlayTypes<
-    RoomId,
-    RoomItemId
-  > = UnionOfAllItemInPlayTypes<RoomId, RoomItemId>,
+  MovingItem extends UnionOfAllItemInPlayTypes<RoomId, RoomItemId> =
+    UnionOfAllItemInPlayTypes<RoomId, RoomItemId>,
+  TouchedItem extends UnionOfAllItemInPlayTypes<RoomId, RoomItemId> =
+    UnionOfAllItemInPlayTypes<RoomId, RoomItemId>,
 > = {
   movingItem: MovingItem;
   movementVector: Xyz;

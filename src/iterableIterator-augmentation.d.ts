@@ -11,8 +11,11 @@
 // that does inherit from `Iterator.prototype` and has the helpers.
 declare global {
   /* eslint-disable @typescript-eslint/no-empty-object-type */
-  interface IterableIterator<T, TReturn = undefined, TNext = unknown>
-    extends IteratorObject<T, TReturn, TNext> {}
+  interface IterableIterator<
+    T,
+    TReturn = undefined,
+    TNext = unknown,
+  > extends IteratorObject<T, TReturn, TNext> {}
   /* eslint-enable @typescript-eslint/no-empty-object-type */
 }
 

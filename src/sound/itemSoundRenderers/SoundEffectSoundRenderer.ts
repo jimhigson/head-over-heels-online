@@ -8,9 +8,7 @@ import { createAudioNode } from "../soundUtils/createAudioNode";
 import { stopWithFade } from "../soundUtils/stopWithFade";
 
 /** plays the sound given by the item's config.soundId */
-export class SoundEffectSoundRenderer
-  implements ItemSoundRenderer<"soundEffect">
-{
+export class SoundEffectSoundRenderer implements ItemSoundRenderer<"soundEffect"> {
   public readonly output: GainNode = audioCtx.createGain();
   #source: AudioBufferSourceNode | undefined;
 

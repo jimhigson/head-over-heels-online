@@ -61,9 +61,10 @@ const recordPerf = (
   return now;
 };
 
-export class RoomRenderer<RoomId extends string, RoomItemId extends string>
-  implements RoomRendererType<RoomId, RoomItemId>
-{
+export class RoomRenderer<
+  RoomId extends string,
+  RoomItemId extends string,
+> implements RoomRendererType<RoomId, RoomItemId> {
   static itemDecorators: DecorateItemMaybeRenderer[][] = [];
   static roomDecorators: DecorateRoomRenderer[][] = [];
 

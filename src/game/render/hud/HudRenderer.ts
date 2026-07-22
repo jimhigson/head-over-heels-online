@@ -116,14 +116,14 @@ const hudCharacterDirection = {
   heels: "towards",
 } as const satisfies Record<IndividualCharacterName, DirectionXy4>;
 
-export class HudRenderer<RoomId extends string, RoomItemId extends string>
-  implements
-    Renderer<
-      HudRenderContext<RoomId>,
-      HudRendererTickContext<RoomId, RoomItemId>,
-      Container
-    >
-{
+export class HudRenderer<
+  RoomId extends string,
+  RoomItemId extends string,
+> implements Renderer<
+  HudRenderContext<RoomId>,
+  HudRendererTickContext<RoomId, RoomItemId>,
+  Container
+> {
   #container = new Container({ label: "HudRenderer", isRenderGroup: true });
 
   #onScreenControls: OnScreenControls<RoomId, RoomItemId> | undefined =
@@ -508,9 +508,8 @@ export class HudRenderer<RoomId extends string, RoomItemId extends string>
 
   #createCharacterSprite(characterName: IndividualCharacterName): Sprite {
     const characterSprite = new Sprite(
-      this.renderContext.general.spritesheetVariants.originalSpritesheet.textures[
-        this.#characterTextureIds[characterName]
-      ],
+      this.renderContext.general.spritesheetVariants.originalSpritesheet
+        .textures[this.#characterTextureIds[characterName]],
     );
 
     characterSprite.anchor = { x: 0.5, y: 0 };

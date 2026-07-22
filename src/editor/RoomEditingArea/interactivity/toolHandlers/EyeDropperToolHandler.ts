@@ -14,9 +14,9 @@ import {
 
 const { dispatch } = store;
 
-export class EyeDropperToolHandler
-  implements ToolHandler<Extract<Tool, { type: "eyeDropper" }>>
-{
+export class EyeDropperToolHandler implements ToolHandler<
+  Extract<Tool, { type: "eyeDropper" }>
+> {
   handleMouseMove({
     roomState,
     pointingAt,

@@ -158,16 +158,14 @@ export const emitting = <RoomId extends string, RoomItemId extends string>(
       );
 
       // check if the emitted item would immediately collide - if so, skip it:
-      if (
-        !(
-          isSolid(newlyEmittedItem) &&
-          hasCollisionItemWithIndex(
-            newlyEmittedItem,
-            room[roomSpatialIndexKey],
-            (item) => isSolid(item, newlyEmittedItem),
-          )
+      if (!(
+        isSolid(newlyEmittedItem) &&
+        hasCollisionItemWithIndex(
+          newlyEmittedItem,
+          room[roomSpatialIndexKey],
+          (item) => isSolid(item, newlyEmittedItem),
         )
-      ) {
+      )) {
         addItemToRoom({
           room,
           item: newlyEmittedItem,

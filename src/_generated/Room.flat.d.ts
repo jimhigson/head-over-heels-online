@@ -357,15 +357,10 @@ export type RoomJsonSchema = {
                             }
                           | {
                               movement:
-                                | "back-forth"
-                                | "clockwise"
-                                | "towards-analogue";
+                                "back-forth" | "clockwise" | "towards-analogue";
                               activated: "off" | "on-stand" | "on";
                               startDirection:
-                                | "away"
-                                | "left"
-                                | "right"
-                                | "towards";
+                                "away" | "left" | "right" | "towards";
                             }
                           | {
                               planet:
@@ -457,10 +452,7 @@ export type RoomJsonSchema = {
                                 | "patrol-randomly-xy4-and-reverse"
                                 | "towards-on-shortest-axis-xy4";
                               startDirection:
-                                | "away"
-                                | "left"
-                                | "right"
-                                | "towards";
+                                "away" | "left" | "right" | "towards";
                               activated: "off" | "on";
                             }
                           | {
@@ -468,10 +460,7 @@ export type RoomJsonSchema = {
                               activated: "after-player-near" | "off" | "on";
                               movement: "towards-on-shortest-axis-xy4";
                               startDirection:
-                                | "away"
-                                | "left"
-                                | "right"
-                                | "towards";
+                                "away" | "left" | "right" | "towards";
                             }
                           | {
                               which: "dalek";
@@ -487,10 +476,7 @@ export type RoomJsonSchema = {
                               which: "elephantHead";
                               movement: "turn-to-player";
                               startDirection:
-                                | "away"
-                                | "left"
-                                | "right"
-                                | "towards";
+                                "away" | "left" | "right" | "towards";
                               activated: "off" | "on";
                             }
                           | {
@@ -518,8 +504,7 @@ export type RoomJsonSchema = {
                           | {
                               which: "helicopterBug";
                               movement:
-                                | "patrol-randomly-xy8"
-                                | "towards-analogue";
+                                "patrol-randomly-xy8" | "towards-analogue";
                               activated: "off" | "on";
                             }
                           | {
@@ -533,10 +518,7 @@ export type RoomJsonSchema = {
                                 | "patrol-randomly-xy4"
                                 | "towards-on-shortest-axis-xy4";
                               startDirection:
-                                | "away"
-                                | "left"
-                                | "right"
-                                | "towards";
+                                "away" | "left" | "right" | "towards";
                               activated: "off" | "on";
                             }
                           | {
@@ -544,10 +526,7 @@ export type RoomJsonSchema = {
                               activated: "off" | "on";
                               movement: "back-forth" | "clockwise" | "forwards";
                               startDirection:
-                                | "away"
-                                | "left"
-                                | "right"
-                                | "towards";
+                                "away" | "left" | "right" | "towards";
                               style: "greenAndPink" | "starsAndStripes";
                             }
                           | {
@@ -558,10 +537,7 @@ export type RoomJsonSchema = {
                                 | "clockwise"
                                 | "forwards";
                               startDirection:
-                                | "away"
-                                | "left"
-                                | "right"
-                                | "towards";
+                                "away" | "left" | "right" | "towards";
                               activated: "off" | "on";
                             }
                           | Record<string, any>;
@@ -704,15 +680,10 @@ export type RoomJsonSchema = {
                             }
                           | {
                               movement:
-                                | "back-forth"
-                                | "clockwise"
-                                | "towards-analogue";
+                                "back-forth" | "clockwise" | "towards-analogue";
                               activated: "off" | "on-stand" | "on";
                               startDirection:
-                                | "away"
-                                | "left"
-                                | "right"
-                                | "towards";
+                                "away" | "left" | "right" | "towards";
                             }
                           | {
                               planet:
@@ -804,10 +775,7 @@ export type RoomJsonSchema = {
                                 | "patrol-randomly-xy4-and-reverse"
                                 | "towards-on-shortest-axis-xy4";
                               startDirection:
-                                | "away"
-                                | "left"
-                                | "right"
-                                | "towards";
+                                "away" | "left" | "right" | "towards";
                               activated: "off" | "on";
                             }
                           | {
@@ -815,10 +783,7 @@ export type RoomJsonSchema = {
                               activated: "after-player-near" | "off" | "on";
                               movement: "towards-on-shortest-axis-xy4";
                               startDirection:
-                                | "away"
-                                | "left"
-                                | "right"
-                                | "towards";
+                                "away" | "left" | "right" | "towards";
                             }
                           | {
                               which: "dalek";
@@ -834,10 +799,7 @@ export type RoomJsonSchema = {
                               which: "elephantHead";
                               movement: "turn-to-player";
                               startDirection:
-                                | "away"
-                                | "left"
-                                | "right"
-                                | "towards";
+                                "away" | "left" | "right" | "towards";
                               activated: "off" | "on";
                             }
                           | {
@@ -865,8 +827,7 @@ export type RoomJsonSchema = {
                           | {
                               which: "helicopterBug";
                               movement:
-                                | "patrol-randomly-xy8"
-                                | "towards-analogue";
+                                "patrol-randomly-xy8" | "towards-analogue";
                               activated: "off" | "on";
                             }
                           | {
@@ -880,10 +841,7 @@ export type RoomJsonSchema = {
                                 | "patrol-randomly-xy4"
                                 | "towards-on-shortest-axis-xy4";
                               startDirection:
-                                | "away"
-                                | "left"
-                                | "right"
-                                | "towards";
+                                "away" | "left" | "right" | "towards";
                               activated: "off" | "on";
                             }
                           | {
@@ -891,10 +849,7 @@ export type RoomJsonSchema = {
                               activated: "off" | "on";
                               movement: "back-forth" | "clockwise" | "forwards";
                               startDirection:
-                                | "away"
-                                | "left"
-                                | "right"
-                                | "towards";
+                                "away" | "left" | "right" | "towards";
                               style: "greenAndPink" | "starsAndStripes";
                             }
                           | {
@@ -905,10 +860,7 @@ export type RoomJsonSchema = {
                                 | "clockwise"
                                 | "forwards";
                               startDirection:
-                                | "away"
-                                | "left"
-                                | "right"
-                                | "towards";
+                                "away" | "left" | "right" | "towards";
                               activated: "off" | "on";
                             }
                           | Record<string, any>;
@@ -1441,8 +1393,7 @@ export type RoomJsonSchema = {
                   | {
                       which: "monkey";
                       movement:
-                        | "patrol-randomly-xy4"
-                        | "towards-on-shortest-axis-xy4";
+                        "patrol-randomly-xy4" | "towards-on-shortest-axis-xy4";
                       startDirection: "away" | "left" | "right" | "towards";
                       activated: "off" | "on";
                     }
@@ -2035,10 +1986,7 @@ export type RoomJsonSchema = {
           | {
               which: "turtle";
               movement:
-                | "anticlockwise"
-                | "back-forth"
-                | "clockwise"
-                | "forwards";
+                "anticlockwise" | "back-forth" | "clockwise" | "forwards";
               startDirection: "away" | "left" | "right" | "towards";
               activated: "off" | "on";
             };
@@ -2240,11 +2188,7 @@ export type RoomJsonSchema = {
         };
         config: {
           planet:
-            | "blacktooth"
-            | "bookworld"
-            | "egyptus"
-            | "penitentiary"
-            | "safari";
+            "blacktooth" | "bookworld" | "egyptus" | "penitentiary" | "safari";
         };
       }
     | {
@@ -2534,15 +2478,10 @@ export type RoomJsonSchema = {
                             }
                           | {
                               movement:
-                                | "back-forth"
-                                | "clockwise"
-                                | "towards-analogue";
+                                "back-forth" | "clockwise" | "towards-analogue";
                               activated: "off" | "on-stand" | "on";
                               startDirection:
-                                | "away"
-                                | "left"
-                                | "right"
-                                | "towards";
+                                "away" | "left" | "right" | "towards";
                             }
                           | {
                               planet:
@@ -2634,10 +2573,7 @@ export type RoomJsonSchema = {
                                 | "patrol-randomly-xy4-and-reverse"
                                 | "towards-on-shortest-axis-xy4";
                               startDirection:
-                                | "away"
-                                | "left"
-                                | "right"
-                                | "towards";
+                                "away" | "left" | "right" | "towards";
                               activated: "off" | "on";
                             }
                           | {
@@ -2645,10 +2581,7 @@ export type RoomJsonSchema = {
                               activated: "after-player-near" | "off" | "on";
                               movement: "towards-on-shortest-axis-xy4";
                               startDirection:
-                                | "away"
-                                | "left"
-                                | "right"
-                                | "towards";
+                                "away" | "left" | "right" | "towards";
                             }
                           | {
                               which: "dalek";
@@ -2664,10 +2597,7 @@ export type RoomJsonSchema = {
                               which: "elephantHead";
                               movement: "turn-to-player";
                               startDirection:
-                                | "away"
-                                | "left"
-                                | "right"
-                                | "towards";
+                                "away" | "left" | "right" | "towards";
                               activated: "off" | "on";
                             }
                           | {
@@ -2695,8 +2625,7 @@ export type RoomJsonSchema = {
                           | {
                               which: "helicopterBug";
                               movement:
-                                | "patrol-randomly-xy8"
-                                | "towards-analogue";
+                                "patrol-randomly-xy8" | "towards-analogue";
                               activated: "off" | "on";
                             }
                           | {
@@ -2710,10 +2639,7 @@ export type RoomJsonSchema = {
                                 | "patrol-randomly-xy4"
                                 | "towards-on-shortest-axis-xy4";
                               startDirection:
-                                | "away"
-                                | "left"
-                                | "right"
-                                | "towards";
+                                "away" | "left" | "right" | "towards";
                               activated: "off" | "on";
                             }
                           | {
@@ -2721,10 +2647,7 @@ export type RoomJsonSchema = {
                               activated: "off" | "on";
                               movement: "back-forth" | "clockwise" | "forwards";
                               startDirection:
-                                | "away"
-                                | "left"
-                                | "right"
-                                | "towards";
+                                "away" | "left" | "right" | "towards";
                               style: "greenAndPink" | "starsAndStripes";
                             }
                           | {
@@ -2735,10 +2658,7 @@ export type RoomJsonSchema = {
                                 | "clockwise"
                                 | "forwards";
                               startDirection:
-                                | "away"
-                                | "left"
-                                | "right"
-                                | "towards";
+                                "away" | "left" | "right" | "towards";
                               activated: "off" | "on";
                             }
                           | Record<string, any>;
@@ -2881,15 +2801,10 @@ export type RoomJsonSchema = {
                             }
                           | {
                               movement:
-                                | "back-forth"
-                                | "clockwise"
-                                | "towards-analogue";
+                                "back-forth" | "clockwise" | "towards-analogue";
                               activated: "off" | "on-stand" | "on";
                               startDirection:
-                                | "away"
-                                | "left"
-                                | "right"
-                                | "towards";
+                                "away" | "left" | "right" | "towards";
                             }
                           | {
                               planet:
@@ -2981,10 +2896,7 @@ export type RoomJsonSchema = {
                                 | "patrol-randomly-xy4-and-reverse"
                                 | "towards-on-shortest-axis-xy4";
                               startDirection:
-                                | "away"
-                                | "left"
-                                | "right"
-                                | "towards";
+                                "away" | "left" | "right" | "towards";
                               activated: "off" | "on";
                             }
                           | {
@@ -2992,10 +2904,7 @@ export type RoomJsonSchema = {
                               activated: "after-player-near" | "off" | "on";
                               movement: "towards-on-shortest-axis-xy4";
                               startDirection:
-                                | "away"
-                                | "left"
-                                | "right"
-                                | "towards";
+                                "away" | "left" | "right" | "towards";
                             }
                           | {
                               which: "dalek";
@@ -3011,10 +2920,7 @@ export type RoomJsonSchema = {
                               which: "elephantHead";
                               movement: "turn-to-player";
                               startDirection:
-                                | "away"
-                                | "left"
-                                | "right"
-                                | "towards";
+                                "away" | "left" | "right" | "towards";
                               activated: "off" | "on";
                             }
                           | {
@@ -3042,8 +2948,7 @@ export type RoomJsonSchema = {
                           | {
                               which: "helicopterBug";
                               movement:
-                                | "patrol-randomly-xy8"
-                                | "towards-analogue";
+                                "patrol-randomly-xy8" | "towards-analogue";
                               activated: "off" | "on";
                             }
                           | {
@@ -3057,10 +2962,7 @@ export type RoomJsonSchema = {
                                 | "patrol-randomly-xy4"
                                 | "towards-on-shortest-axis-xy4";
                               startDirection:
-                                | "away"
-                                | "left"
-                                | "right"
-                                | "towards";
+                                "away" | "left" | "right" | "towards";
                               activated: "off" | "on";
                             }
                           | {
@@ -3068,10 +2970,7 @@ export type RoomJsonSchema = {
                               activated: "off" | "on";
                               movement: "back-forth" | "clockwise" | "forwards";
                               startDirection:
-                                | "away"
-                                | "left"
-                                | "right"
-                                | "towards";
+                                "away" | "left" | "right" | "towards";
                               style: "greenAndPink" | "starsAndStripes";
                             }
                           | {
@@ -3082,10 +2981,7 @@ export type RoomJsonSchema = {
                                 | "clockwise"
                                 | "forwards";
                               startDirection:
-                                | "away"
-                                | "left"
-                                | "right"
-                                | "towards";
+                                "away" | "left" | "right" | "towards";
                               activated: "off" | "on";
                             }
                           | Record<string, any>;
@@ -3709,9 +3605,7 @@ export type RoomJsonSchema = {
                         }
                       | {
                           movement:
-                            | "back-forth"
-                            | "clockwise"
-                            | "towards-analogue";
+                            "back-forth" | "clockwise" | "towards-analogue";
                           activated: "off" | "on-stand" | "on";
                           startDirection: "away" | "left" | "right" | "towards";
                         }
@@ -4026,9 +3920,7 @@ export type RoomJsonSchema = {
                         }
                       | {
                           movement:
-                            | "back-forth"
-                            | "clockwise"
-                            | "towards-analogue";
+                            "back-forth" | "clockwise" | "towards-analogue";
                           activated: "off" | "on-stand" | "on";
                           startDirection: "away" | "left" | "right" | "towards";
                         }

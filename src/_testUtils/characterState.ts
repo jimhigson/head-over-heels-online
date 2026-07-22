@@ -42,8 +42,7 @@ export const item = <T extends ItemInPlayType>(
   itemId: string,
 ) => {
   return selectCurrentRoomState(gameState)?.items[itemId] as
-    | ItemInPlay<T, TestRoomId, string>
-    | undefined;
+    ItemInPlay<T, TestRoomId, string> | undefined;
 };
 
 export const itemState = <T extends ItemInPlayType>(

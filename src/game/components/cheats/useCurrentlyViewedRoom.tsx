@@ -5,8 +5,7 @@ import { characterRoomChange } from "../../../store/slices/gameInPlay/gameInPlay
 import { useGameApi } from "../GameApiContext";
 
 export const useCurrentlyViewedRoom = <RoomId extends string>():
-  | RoomId
-  | undefined => {
+  RoomId | undefined => {
   const gameApi = useGameApi<RoomId>();
 
   const [currentRoom, setCurrentRoom] = useState<RoomId | undefined>(

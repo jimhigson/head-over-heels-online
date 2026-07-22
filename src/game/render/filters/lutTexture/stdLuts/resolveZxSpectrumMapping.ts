@@ -9,8 +9,7 @@ import { objectEntriesIter } from "../../../../../utils/entries";
 import { resolveSwops } from "../../../../../utils/palette/palette";
 
 type ZxSpectrumMappingProperty =
-  | "mapToZxSpectrumForDeathEffectPalette"
-  | "mapToZxSpectrumPalette";
+  "mapToZxSpectrumForDeathEffectPalette" | "mapToZxSpectrumPalette";
 
 /** resolves a spritesheet meta's spectrum colour name mapping into a `Map<Color, Color>` */
 export const resolveZxSpectrumMapping = (

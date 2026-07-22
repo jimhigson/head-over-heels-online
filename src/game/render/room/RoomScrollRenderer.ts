@@ -204,8 +204,7 @@ const computeRoomScrollGeometry = <
 export class RoomScrollRenderer<
   RoomId extends string,
   RoomItemId extends string,
-> implements RoomRendererTypeInGameOnly<RoomId, RoomItemId>
-{
+> implements RoomRendererTypeInGameOnly<RoomId, RoomItemId> {
   /** the current position, not counting looking */
   #curScroll: Xy = { x: 0, y: 0 };
   /** the user's input into looking around */

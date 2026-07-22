@@ -76,10 +76,7 @@ export type ItemRenderExtent =
 
 /** the item kinds whose rendering (and so overdraw) varies by a config field */
 type StyleKeyedType =
-  | "block"
-  | "deadlyBlock"
-  | "moveableDeadly"
-  | "slidingBlock";
+  "block" | "deadlyBlock" | "moveableDeadly" | "slidingBlock";
 type WhichKeyedType = "monster" | "sceneryPlayer";
 
 /**
@@ -91,10 +88,14 @@ type WhichKeyedType = "monster" | "sceneryPlayer";
  */
 export type ItemRenderExtentKey =
   | {
-      [T in StyleKeyedType]: `${T}.${JsonItemConfig<T, string, string>["style"]}`;
+      [
+        T in StyleKeyedType
+      ]: `${T}.${JsonItemConfig<T, string, string>["style"]}`;
     }[StyleKeyedType]
   | {
-      [T in WhichKeyedType]: `${T}.${JsonItemConfig<T, string, string>["which"]}`;
+      [
+        T in WhichKeyedType
+      ]: `${T}.${JsonItemConfig<T, string, string>["which"]}`;
     }[WhichKeyedType]
   | `pickup.${JsonItemConfig<"pickup", string, string>["gives"]}`
   | Exclude<ItemInPlayType, "pickup" | StyleKeyedType | WhichKeyedType>;
