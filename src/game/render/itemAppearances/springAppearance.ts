@@ -1,6 +1,7 @@
 import { type AnimatedSprite } from "pixi.js";
 
 import { isStoodOn } from "../../../model/StoodOnBy";
+import { variantTextureId } from "../../../sprites/spritesheet/variantTextureId";
 import { createSprite } from "../createSprite";
 import { type ItemAppearance } from "./ItemAppearance";
 import { itemAppearanceOutsideView } from "./itemAppearanceOutsideView";
@@ -31,7 +32,7 @@ const springAppearanceImpl: (
       item: {
         state: { stoodOnBy, stoodOnUntilRoomTime },
       },
-      general: { paused, spritesheetVariants },
+      general: { paused, spritesheets },
     },
     tickContext: { lastRenderRoomTime },
     currentRendering,
@@ -44,14 +45,20 @@ const springAppearanceImpl: (
       rendering = currentRendering?.output;
     } else {
       rendering = createSprite({
+        // shadow-mask art is never palette-swopped, so only the visible spring
+        // takes the reflection recolour:
         animationId:
-          isShadowMask ? "shadowMask.spring.bounce" : "spring.bounce",
+          isShadowMask ?
+            "shadowMask.spring.bounce"
+          : variantTextureId(
+              "spring.bounce",
+              isReflection,
+              false,
+              false,
+              false,
+            ),
         paused,
-        spritesheet: spritesheetVariants.currentMainSpritesheet(
-          false,
-          false,
-          isReflection,
-        ),
+        spritesheet: spritesheets.spritesheetForCurrentRoom,
       });
       rendering.loop = false;
       rendering.gotoAndStop(rendering.totalFrames - 1);

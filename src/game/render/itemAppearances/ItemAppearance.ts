@@ -4,7 +4,12 @@ import { type EmptyObject } from "type-fest";
 import { type ItemTypeUnion } from "../../../_generated/types/ItemInPlayUnion";
 import { type ItemInPlayType } from "../../../model/ItemInPlay";
 import { itemInPlayTimes } from "../../../model/times";
-import { type TextureId } from "../../../sprites/spritesheet/spritesheetData/makeSpritesheetData";
+import {
+  type BaseAnimationId,
+  type BaseTextureId,
+} from "../../../sprites/spritesheet/spritesheetData/makeSpritesheetData";
+import { type ReflectableId } from "../../../sprites/spritesheet/spritesheetData/variantSpritesheetData";
+import { variantTextureId } from "../../../sprites/spritesheet/variantTextureId";
 import {
   asReuseSprite,
   maybeRenderContainerToSprite,
@@ -19,7 +24,6 @@ import {
 import {
   type AnimatedCreateSpriteOptions,
   createSprite,
-  type SpecifiedTextureCreateSpriteOptions,
 } from "../createSprite";
 import {
   type ItemLeafRenderContext,
@@ -51,22 +55,26 @@ export type ItemAppearance<
 ) => AppearanceReturn<RenderProps, Output>;
 
 export const itemStaticAppearance = <T extends ItemInPlayType>(
-  createSpriteOptions: SpecifiedTextureCreateSpriteOptions | TextureId,
+  /** the reflection recolour suffix is applied to this base id at render time */
+  baseTextureId: BaseTextureId & ReflectableId,
 ): ItemAppearance<T, RenderOnceProps> =>
   itemAppearanceRenderMemoised(
     ({
       renderContext: {
         isReflection,
         item: subject,
-        general: { pixiRenderer, spritesheetVariants, cameraAngle },
+        general: { pixiRenderer, spritesheets, cameraAngle },
       },
       currentRendering,
     }) => {
       const cameraQuarterAngle = nearestQuarterAngle(cameraAngle);
-      const spritesheet = spritesheetVariants.currentMainSpritesheet(
-        false,
-        false,
+      const { spritesheetForCurrentRoom: spritesheet } = spritesheets;
+      const textureId = variantTextureId(
+        baseTextureId,
         isReflection,
+        false,
+        false,
+        false,
       );
       if (isMultipliedItem(subject)) {
         // reduce the multiple sprites down to one baked sprite; camera-angle
@@ -75,9 +83,7 @@ export const itemStaticAppearance = <T extends ItemInPlayType>(
         return maybeRenderContainerToSprite(
           pixiRenderer,
           createSprite({
-            ...(typeof createSpriteOptions === "string" ?
-              { textureId: createSpriteOptions }
-            : createSpriteOptions),
+            textureId,
             times: itemInPlayTimes(subject),
             cameraQuarterAngle,
             spritesheet,
@@ -86,9 +92,7 @@ export const itemStaticAppearance = <T extends ItemInPlayType>(
         );
       }
       return createSprite({
-        ...(typeof createSpriteOptions === "string" ?
-          { textureId: createSpriteOptions }
-        : createSpriteOptions),
+        textureId,
         spritesheet,
       });
     },
@@ -98,26 +102,30 @@ export const itemStaticAppearance = <T extends ItemInPlayType>(
 export const itemStaticAnimatedAppearance = <T extends ItemInPlayType>(
   createSpriteOptions: Omit<
     AnimatedCreateSpriteOptions,
-    "gameSpeed" | "paused" | "spritesheet"
-  >,
+    "animationId" | "gameSpeed" | "paused" | "spritesheet"
+  > & { animationId: BaseAnimationId & ReflectableId },
 ): ItemAppearance<T, RenderOnceProps> =>
   itemAppearanceRenderMemoised(
     ({
       renderContext: {
         isReflection,
         item: subject,
-        general: { paused, spritesheetVariants, cameraAngle },
+        general: { paused, spritesheets, cameraAngle },
       },
     }) => {
       const cameraQuarterAngle = nearestQuarterAngle(cameraAngle);
-      const spritesheet = spritesheetVariants.currentMainSpritesheet(
-        false,
-        false,
+      const { spritesheetForCurrentRoom: spritesheet } = spritesheets;
+      const animationId = variantTextureId(
+        createSpriteOptions.animationId,
         isReflection,
+        false,
+        false,
+        false,
       );
       if (isMultipliedItem(subject)) {
         return createSprite({
           ...createSpriteOptions,
+          animationId,
           times: itemInPlayTimes(subject),
           paused,
           cameraQuarterAngle,
@@ -126,6 +134,7 @@ export const itemStaticAnimatedAppearance = <T extends ItemInPlayType>(
       }
       return createSprite({
         ...createSpriteOptions,
+        animationId,
         paused,
         spritesheet,
       });

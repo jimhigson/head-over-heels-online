@@ -1,11 +1,11 @@
 import {
-  type AnimationId,
-  type TextureId,
+  type BaseAnimationIdWithPrefix,
+  type BaseTextureIdWithPrefix,
 } from "../../sprites/spritesheet/spritesheetData/makeSpritesheetData";
 
 export type ShadowCastSpriteOptions =
   | {
-      textureId: TextureId;
+      textureId: BaseTextureIdWithPrefix<"shadow">;
       animationId?: undefined;
       flipX?: boolean;
       /** should we flip the shadow when the camera's x and y is
@@ -14,7 +14,7 @@ export type ShadowCastSpriteOptions =
     }
   | {
       textureId?: undefined;
-      animationId: AnimationId;
+      animationId: BaseAnimationIdWithPrefix<"shadow">;
       flipX?: boolean;
       flipsOnOddQuarterCameraTurns?: boolean;
     };

@@ -5,7 +5,6 @@ import { boundingBoxDecorateItemRenderer } from "../../game/render/item/itemRend
 import { subRoomBoundariesDecorateRoomRenderer } from "../../game/render/room/subRoomBoundariesDecorateRoomRenderer";
 import { useRegisterDecorateItemRenderers } from "../../game/render/useRegisterDecorateItemRenderers";
 import { useRegisterDecorateRoomRenderers } from "../../game/render/useRegisterDecorateRoomRenderers";
-import { useFixedSpritesheetVariants } from "../../sprites/spritesheet/variants/useFixedSpritesheetVariants";
 import { type EditorRoomRenderer } from "../editorTypes";
 import { makeEditorAnnotationsDecorateItemRenderer } from "../rendering/EditorAnnotationsRenderer";
 import { ItemContextMenu } from "./contextMenu/ItemContextMenu";
@@ -18,6 +17,7 @@ import { useEditorMainLoop } from "./useEditorMainLoop";
 import { useRemoveCursorPreviewsWhenToolChanges } from "./useRemoveCursorPreviewsWhenToolChanges";
 import { useResizePixiApplicationToPane } from "./useResizePixiApplicationToPane";
 import { useRoomEditingAreaCursorClassName } from "./useRoomEditingAreaCursorClassName";
+import { useSpritesheets } from "./useSpritesheets";
 import {
   EditorViewportProvider,
   useEditorViewport,
@@ -29,7 +29,7 @@ TextureStyle.defaultOptions.scaleMode = "nearest";
 const editorRoomDecorators = [subRoomBoundariesDecorateRoomRenderer];
 
 const RoomEditingAreaInner = () => {
-  const spritesheetVariants = useFixedSpritesheetVariants("BlockStack");
+  const spritesheets = useSpritesheets();
 
   const viewport = useEditorViewport();
   const editorItemRendererDecorators = useMemo(
@@ -46,7 +46,7 @@ const RoomEditingAreaInner = () => {
   // the main loop keeps this pointing at the current room renderer;
   // interactivity reads its render boxes for pointer picking:
   const roomRendererRef = useRef<EditorRoomRenderer | undefined>(undefined);
-  useEditorMainLoop(spritesheetVariants, roomRendererRef);
+  useEditorMainLoop(spritesheets, roomRendererRef);
 
   const [renderArea, setRenderArea] = useState<HTMLDivElement | null>(null);
 

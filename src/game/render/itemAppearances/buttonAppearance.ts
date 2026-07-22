@@ -1,3 +1,4 @@
+import { variantTextureId } from "../../../sprites/spritesheet/variantTextureId";
 import { createSprite } from "../createSprite";
 import { type ItemAppearance } from "./ItemAppearance";
 
@@ -11,7 +12,7 @@ export const buttonAppearance: ItemAppearance<"button", ButtonRenderProps> = ({
     item: {
       state: { pressed },
     },
-    general: { spritesheetVariants },
+    general: { spritesheets },
   },
   currentRendering,
 }) => {
@@ -27,12 +28,14 @@ export const buttonAppearance: ItemAppearance<"button", ButtonRenderProps> = ({
 
   return {
     output: createSprite({
-      textureId: pressed ? `buttonInGame.pressed` : "buttonInGame",
-      spritesheet: spritesheetVariants.currentMainSpritesheet(
-        false,
-        false,
+      textureId: variantTextureId(
+        pressed ? `buttonInGame.pressed` : "buttonInGame",
         isReflection,
+        false,
+        false,
+        false,
       ),
+      spritesheet: spritesheets.spritesheetForCurrentRoom,
     }),
     renderProps: { pressed },
   };

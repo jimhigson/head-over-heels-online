@@ -1,6 +1,7 @@
 import { Container, type Sprite } from "pixi.js";
 
-import { type AppSpritesheet } from "../../../sprites/spritesheet/variants/AppSpritesheet";
+import { type AppSpritesheetWithVariants } from "../../../sprites/spritesheet/AppSpritesheet";
+import { variantTextureId } from "../../../sprites/spritesheet/variantTextureId";
 import { resolveCameraRelativeVectorXy4 } from "../../../utils/vectors/resolveCameraRelativeVector";
 import {
   type DirectionXy4,
@@ -17,13 +18,36 @@ type JoystickRenderProps = {
   screenPushDirection: PushDirection;
 };
 
-const createContainerAndSprites = (spritesheet: AppSpritesheet) => {
+const createContainerAndSprites = (
+  spritesheet: AppSpritesheetWithVariants,
+  isReflection: boolean,
+) => {
   const container = new Container({ label: "joystick" });
 
   container.addChild(
-    createSprite({ textureId: "joystick.stick", spritesheet }),
+    createSprite({
+      textureId: variantTextureId(
+        "joystick.stick",
+        isReflection,
+        false,
+        false,
+        false,
+      ),
+      spritesheet,
+    }),
   );
-  container.addChild(createSprite({ textureId: "joystick.ball", spritesheet }));
+  container.addChild(
+    createSprite({
+      textureId: variantTextureId(
+        "joystick.ball",
+        isReflection,
+        false,
+        false,
+        false,
+      ),
+      spritesheet,
+    }),
+  );
   return container;
 };
 
@@ -45,7 +69,7 @@ export const joystickAppearance: ItemAppearance<
       state: { actedOnAt, lastPushDirection },
     },
     room: { roomTime },
-    general: { spritesheetVariants, cameraAngle },
+    general: { spritesheets, cameraAngle },
   },
   currentRendering,
 }) => {
@@ -69,20 +93,23 @@ export const joystickAppearance: ItemAppearance<
     return "no-update";
   }
 
-  const spritesheet = spritesheetVariants.currentMainSpritesheet(
-    false,
-    false,
-    isReflection,
-  );
+  const { spritesheetForCurrentRoom: spritesheet } = spritesheets;
 
   const output =
-    currentRendering?.output ?? createContainerAndSprites(spritesheet);
+    currentRendering?.output ??
+    createContainerAndSprites(spritesheet, isReflection);
 
   const ballSprite = output.getChildAt(1) as Sprite;
   ballSprite.texture =
     spritesheet.textures[
-      screenPushDirection === undefined ? "joystick.ball" : (
-        `joystick.ball.active`
+      variantTextureId(
+        screenPushDirection === undefined ? "joystick.ball" : (
+          `joystick.ball.active`
+        ),
+        isReflection,
+        false,
+        false,
+        false,
       )
     ];
   const ballSpriteXy = ballRenderPushOffsets.get(screenPushDirection);

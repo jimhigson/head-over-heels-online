@@ -3,7 +3,7 @@ import { type Application, Container, Rectangle, type Ticker } from "pixi.js";
 import { audioCtx } from "../../sound/audioCtx";
 import { ensureRoomSoundsLoaded } from "../../sound/ensureRoomSoundsLoaded";
 import { spritesheetMetaForOption } from "../../sprites/spritesheet/spritesheetData/spritesheetMetaData";
-import { type SpritesheetVariants } from "../../sprites/spritesheet/variants/SpritesheetVariants";
+import { type Spritesheets } from "../../sprites/spritesheet/Spritesheets";
 import {
   selectInputDirectionMode,
   selectIsPaused,
@@ -92,7 +92,7 @@ export class MainLoop<RoomId extends string> {
 
   #app: Application;
   #gameState: GameState<RoomId>;
-  #spritesheetVariants: SpritesheetVariants;
+  #spritesheets: Spritesheets;
   /**
    * the single general render context, owned and mutated in place
    * here for use in both the room and hud renderers
@@ -103,11 +103,11 @@ export class MainLoop<RoomId extends string> {
   constructor(
     app: Application,
     gameState: GameState<RoomId>,
-    spritesheetVariants: SpritesheetVariants,
+    spritesheets: Spritesheets,
   ) {
     this.#app = app;
     this.#gameState = gameState;
-    this.#spritesheetVariants = spritesheetVariants;
+    this.#spritesheets = spritesheets;
     try {
       const storeState = store.getState();
 
@@ -148,11 +148,15 @@ export class MainLoop<RoomId extends string> {
   #firstFrameMarked = false;
 
   // set when the canvas regains its WebGL context after a loss; the next tick
-  // re-bakes the spritesheet variants, whose RenderTextures died with the old
-  // WebGL context:
+  // refetches the spritesheet image and re-bakes the variants, whose
+  // RenderTextures died with the old WebGL context:
   #webGlContextRestored = false;
   #onWebGlContextRestored = () => {
     this.#webGlContextRestored = true;
+    // every baked RenderTexture died with the old context - dropping them also
+    // resets the loaded sprite option, so the next tick's isTextureLoaded
+    // check refetches the image and re-bakes the original from it:
+    this.#spritesheets.invalidateBakedTextures();
   };
 
   #tickAndCatch = (ticker: Ticker): void => {
@@ -207,7 +211,7 @@ export class MainLoop<RoomId extends string> {
       const created: InGameGeneralRenderContext<RoomId> = {
         gameState: this.#gameState,
         pixiRenderer: this.#app.renderer,
-        spritesheetVariants: this.#spritesheetVariants,
+        spritesheets: this.#spritesheets,
         paused,
         displaySettings,
         soundSettings,
@@ -336,9 +340,9 @@ export class MainLoop<RoomId extends string> {
       this.#spritesheetLoadPromise === undefined;
 
     if (spritesheetVariantsStale) {
-      if (!this.#spritesheetVariants.isTextureLoaded(tickSpriteOption.name)) {
-        this.#spritesheetLoadPromise = this.#spritesheetVariants
-          .loadImage(tickSpriteOption.name)
+      if (!this.#spritesheets.isTextureLoaded(tickSpriteOption.name)) {
+        this.#spritesheetLoadPromise = this.#spritesheets
+          .loadImage(this.#app.renderer, tickSpriteOption.name)
           .then(() => {
             this.#spritesheetLoadPromise = undefined;
           })
@@ -347,13 +351,8 @@ export class MainLoop<RoomId extends string> {
             this.#handleError(e);
           });
       } else {
-        if (this.#webGlContextRestored) {
-          // the WebGL context came back after a loss - the variants' baked
-          // RenderTextures died with the old WebGL context and must be re-baked.
-          this.#spritesheetVariants.invalidateBakedTextures();
-        }
         const rebuildStartMs = performance.now();
-        this.#spritesheetVariants.rebuild(
+        this.#spritesheets.rebuild(
           this.#app.renderer,
           tickEndRoom.planet,
           tickEndRoom.color,

@@ -1,7 +1,7 @@
 import { type Color, Container } from "pixi.js";
 
+import { type AppSpritesheet } from "../../../sprites/spritesheet/AppSpritesheet";
 import { type SpritesheetMetadata } from "../../../sprites/spritesheet/spritesheetData/spritesheetMetaData";
-import { type AppSpritesheet } from "../../../sprites/spritesheet/variants/AppSpritesheet";
 import { getAmbientSwoppedColour } from "../../../utils/palette/palette";
 import {
   blockSizePx,
@@ -20,9 +20,8 @@ const buildFadeOrder = <PaletteColourName extends string>(
   spritesheetMeta: SpritesheetMetadata<PaletteColourName>,
   spritesheet: AppSpritesheet,
 ): Color[] => {
-  const variant = spritesheet;
   const lightening = spritesheetMeta.floatingTextGradient.map((name) =>
-    getAmbientSwoppedColour(spritesheetMeta.palette, name, variant.ambient),
+    getAmbientSwoppedColour(spritesheetMeta.palette, name, spritesheet.ambient),
   );
   const peakColour = lightening[lightening.length - 1];
   return [
@@ -41,12 +40,11 @@ export const floatingTextAppearance: ItemAppearance<
   FloatingTextRenderProps
 > = ({
   renderContext: {
-    isReflection,
     item: {
       config: { textLines, appearanceRoomTime = 0, sway },
     },
     room: { roomTime },
-    general: { spritesheetVariants, spritesheetMeta, pixiRenderer },
+    general: { spritesheets, spritesheetMeta, pixiRenderer },
     frontLayer,
   },
   currentRendering,
@@ -57,10 +55,7 @@ export const floatingTextAppearance: ItemAppearance<
   const fadeOrder =
     currentRendering ?
       currentRendering.renderProps.fadeOrder
-    : buildFadeOrder(
-        spritesheetMeta,
-        spritesheetVariants.currentMainSpritesheet(false, false, isReflection),
-      );
+    : buildFadeOrder(spritesheetMeta, spritesheets.spritesheetForCurrentRoom);
   const previousRendering = currentRendering?.output;
   let mainContainer: Container<TextContainer>;
 
@@ -77,7 +72,6 @@ export const floatingTextAppearance: ItemAppearance<
       const textLine = textLines[i];
       const lineContainer = new TextContainer({
         pixiRenderer,
-        spritesheet: spritesheetVariants.originalSpritesheet,
         y: i * lineHeightPx,
         outline: true,
         text: textLine,

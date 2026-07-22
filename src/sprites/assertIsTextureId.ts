@@ -1,12 +1,15 @@
 import {
+  type AppSpritesheetData,
+  type AppSpritesheetDataWithVariants,
+} from "./spritesheet/AppSpritesheet";
+import {
   type AnimationId,
   type TextureId,
 } from "./spritesheet/spritesheetData/makeSpritesheetData";
-import { type AppSpritesheetData } from "./spritesheet/variants/AppSpritesheet";
 
 export function assertIsTextureId(
   textureId: string,
-  spritesheetData: AppSpritesheetData,
+  spritesheetData: AppSpritesheetData | AppSpritesheetDataWithVariants,
 ): asserts textureId is TextureId {
   if (!isTextureId(textureId, spritesheetData)) {
     throw new Error(
@@ -22,14 +25,14 @@ export function assertIsTextureId(
 
 export function isTextureId(
   textureId: string,
-  spritesheetData: AppSpritesheetData,
+  spritesheetData: AppSpritesheetData | AppSpritesheetDataWithVariants,
 ): textureId is TextureId {
-  return spritesheetData.frames[textureId as TextureId] !== undefined;
+  return Object.hasOwn(spritesheetData.frames, textureId);
 }
 
 export function isAnimationId(
   animationId: string,
-  spritesheetData: AppSpritesheetData,
+  spritesheetData: AppSpritesheetData | AppSpritesheetDataWithVariants,
 ): animationId is AnimationId {
-  return spritesheetData.animations[animationId as AnimationId] !== undefined;
+  return Object.hasOwn(spritesheetData.animations, animationId);
 }

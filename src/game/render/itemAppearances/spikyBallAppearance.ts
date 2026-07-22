@@ -1,6 +1,7 @@
 import { type Sprite } from "pixi.js";
 
 import { wallTileSize } from "../../../sprites/spritesheet/spritesheetData/textureSizes";
+import { variantTextureId } from "../../../sprites/spritesheet/variantTextureId";
 import { nearestQuarterAngle } from "../../../utils/vectors/rotateXy";
 import { lengthXy } from "../../../utils/vectors/vectors";
 import { createSprite } from "../createSprite";
@@ -24,7 +25,7 @@ const spikyBallAppearanceImpl: ItemAppearance<
       },
       config: { startingPhase },
     },
-    general: { paused, spritesheetVariants, cameraAngle },
+    general: { paused, spritesheets, cameraAngle },
   },
   tickContext: { deltaMS },
   currentRendering,
@@ -51,15 +52,17 @@ const spikyBallAppearanceImpl: ItemAppearance<
 
   const previousRendering = currentRendering?.output;
 
-  const spritesheet = spritesheetVariants.currentMainSpritesheet(
-    false,
-    false,
-    isReflection,
-  );
+  const { spritesheetForCurrentRoom: spritesheet } = spritesheets;
   const rendering =
     previousRendering ??
     createSprite({
-      textureId: "spikyBall.1",
+      textureId: variantTextureId(
+        "spikyBall.1",
+        isReflection,
+        false,
+        false,
+        false,
+      ),
       spritesheet,
     });
 
@@ -67,7 +70,10 @@ const spikyBallAppearanceImpl: ItemAppearance<
     ((distanceTravelled + angleDistance) * 2) / wallTileSize.w,
   );
   const phase = (((stepsTravelled + startingPhase) % 2) + 1) as 1 | 2;
-  rendering.texture = spritesheet.textures[`spikyBall.${phase}`];
+  rendering.texture =
+    spritesheet.textures[
+      variantTextureId(`spikyBall.${phase}`, isReflection, false, false, false)
+    ];
 
   return {
     output: rendering,

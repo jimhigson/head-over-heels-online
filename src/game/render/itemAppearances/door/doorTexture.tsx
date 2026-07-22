@@ -1,26 +1,42 @@
 import { type UnknownRoomState } from "../../../../model/RoomState";
-import { type DoorFrameTextureName } from "../../../../sprites/spritesheet/spritesheetData/doorSpritesheetData";
-import { type TextureId } from "../../../../sprites/spritesheet/spritesheetData/makeSpritesheetData";
-import { type AppSpritesheet } from "../../../../sprites/spritesheet/variants/AppSpritesheet";
+import { type ZxSpectrumRoomHue } from "../../../../originalGame";
+import { isTextureId } from "../../../../sprites/assertIsTextureId";
+import { type SceneryName } from "../../../../sprites/planets";
+import { type AppSpritesheetData } from "../../../../sprites/spritesheet/AppSpritesheet";
+import { type SceneryWithOwnDoors } from "../../../../sprites/spritesheet/spritesheetData/doorSpritesheetData";
+import {
+  type DoorFrameId,
+  type DoorHueSuffix,
+} from "../../../../sprites/spritesheet/spritesheetData/variantSpritesheetData";
+
+/** only the sceneries with door art of their own have a frame of their own */
+const hasWorldSpecificTexture = (
+  planet: SceneryName,
+  axis: "x" | "y",
+  spritesheetData: AppSpritesheetData,
+): planet is SceneryWithOwnDoors =>
+  isTextureId(`door.frame.${planet}.${axis}.near`, spritesheetData);
 
 export const doorTexture = (
   room: Pick<UnknownRoomState, "color" | "planet">,
   axis: "x" | "y",
   position: "far" | "near" | "top",
-  originalSpritesheet: AppSpritesheet,
-): DoorFrameTextureName => {
-  const hasWorldSpecificTexture =
-    originalSpritesheet.textures[
-      `door.frame.${room.planet}.${axis}.near` as TextureId
-    ] !== undefined;
+  spritesheetData: AppSpritesheetData,
+  /** the destination room's hue the frame variant is recoloured to */
+  hue: ZxSpectrumRoomHue,
+): `${DoorFrameId}.${DoorHueSuffix}` => {
+  const sceneryName =
+    hasWorldSpecificTexture(room.planet, axis, spritesheetData) ?
+      room.planet
+    : "generic";
 
-  const sceneryName = hasWorldSpecificTexture ? room.planet : "generic";
+  if (room.color.shade === "dimmed") {
+    const darkId =
+      `door.frame.${sceneryName}.dark.${axis}.${position}` as const;
+    if (isTextureId(darkId, spritesheetData)) {
+      return `${darkId}.hue=${hue}`;
+    }
+  }
 
-  const useDarkTexture =
-    room.color.shade === "dimmed" &&
-    originalSpritesheet.textures[
-      `door.frame.${sceneryName}.dark.${axis}.${position}` as TextureId
-    ] !== undefined;
-
-  return `door.frame.${sceneryName}${useDarkTexture ? ".dark" : ""}.${axis}.${position}` as DoorFrameTextureName;
+  return `door.frame.${sceneryName}.${axis}.${position}.hue=${hue}`;
 };

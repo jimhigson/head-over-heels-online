@@ -3,7 +3,7 @@ import { Container } from "pixi.js";
 import { type ItemTypeUnion } from "../../../../_generated/types/ItemInPlayUnion";
 import { roomItemsIterable, type RoomState } from "../../../../model/RoomState";
 import { wallInPlayTimes } from "../../../../model/times";
-import { type AppSpritesheet } from "../../../../sprites/spritesheet/variants/AppSpritesheet";
+import { type AppSpritesheetWithVariants } from "../../../../sprites/spritesheet/AppSpritesheet";
 import { iterateToContainer } from "../../../../utils/pixi/iterateToContainer";
 import {
   axisProjectsReversed,
@@ -33,7 +33,7 @@ export const renderFloorOverdraws = (
    */
   floorPosition: Xyz,
   roomState: RoomState<string, string>,
-  spritesheet: AppSpritesheet,
+  spritesheet: AppSpritesheetWithVariants,
   cameraQuarterAngle: Xy,
 ): Container => {
   // which walls/doors are on the far side of the room - and so get a floor

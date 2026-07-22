@@ -39,16 +39,12 @@ const addPivotSprite = (
     item: {
       config: { times },
     },
-    general: { spritesheetVariants },
+    general: { spritesheets },
   } = renderContext;
 
   const timesZ = times?.z ?? 1;
 
-  const spritesheet = spritesheetVariants.currentMainSpritesheet(
-    false,
-    false,
-    false,
-  );
+  const { spritesheetForCurrentRoom: spritesheet } = spritesheets;
   const container = new Container();
   container.addChild(
     createSprite({
@@ -80,19 +76,18 @@ const buildFaceOnPane = (
     item: {
       config: { times },
     },
-    general: { spritesheetVariants },
-    isReflection,
+    general: { spritesheets },
   } = renderContext;
-  const spritesheet = spritesheetVariants.currentMainSpritesheet(
-    false,
-    false,
-    isReflection,
-  );
+  const { spritesheetForCurrentRoom: spritesheet } = spritesheets;
   const timesZ = times?.z ?? 1;
 
   const rendering = new Container({ label: "mirror" });
   rendering.addChild(
-    createSprite({ textureId: "mirror.d3", times, spritesheet }),
+    createSprite({
+      textureId: "mirror.d3",
+      times,
+      spritesheet,
+    }),
   );
 
   // one mask rectangle per block of the (possibly stacked) pane's surface:
@@ -113,7 +108,11 @@ const buildFaceOnPane = (
 
   // front-frame of the mirror in front of the reflection:
   rendering.addChild(
-    createSprite({ textureId: "mirror.d3.front", times, spritesheet }),
+    createSprite({
+      textureId: "mirror.d3.front",
+      times,
+      spritesheet,
+    }),
   );
 
   return rendering;
@@ -127,8 +126,7 @@ export const mirrorAppearance: ItemAppearance<"mirror", MirrorRenderProps> = ({
   const {
     item,
     room: { roomTime },
-    general: { spritesheetVariants, cameraAngle },
-    isReflection,
+    general: { spritesheets, cameraAngle },
   } = renderContext;
   const { orientation, flippedAtRoomTime, flipDirection } = item.state;
 
@@ -191,11 +189,7 @@ export const mirrorAppearance: ItemAppearance<"mirror", MirrorRenderProps> = ({
   const mirrorCells = createSprite({
     textureId: `mirror.d${number}`,
     times: item.config.times,
-    spritesheet: spritesheetVariants.currentMainSpritesheet(
-      false,
-      false,
-      isReflection,
-    ),
+    spritesheet: spritesheets.spritesheetForCurrentRoom,
   });
 
   return {

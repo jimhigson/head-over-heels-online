@@ -1,6 +1,6 @@
 import { sanitiseForClassName } from "../../game/components/tailwindSprites/SanitiseForClassName";
 import { type AppSpriteFrame } from "../../sprites/spritesheet/spritesheetData/AppSpriteFrame";
-import { type TextureId } from "../../sprites/spritesheet/spritesheetData/makeSpritesheetData";
+import { type BaseTextureId } from "../../sprites/spritesheet/spritesheetData/makeSpritesheetData";
 import { useSpritesOption } from "../../store/slices/gameMenus/gameMenusSelectors";
 import { spriteSpecificCssVars } from "../../tailwind/plugins/spriteCss";
 import { SpriteName } from "./SpriteName";
@@ -21,7 +21,7 @@ declare module "preact" {
 const pivotOutlineSizePx = 10;
 
 export type SpriteTileProps = {
-  textureId: TextureId;
+  textureId: BaseTextureId;
   frame: AppSpriteFrame;
   scale: number;
 };

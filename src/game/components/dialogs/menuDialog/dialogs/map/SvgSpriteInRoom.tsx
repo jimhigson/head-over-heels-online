@@ -1,24 +1,24 @@
 import { useMemo } from "preact/hooks";
 
 import { zxSpectrumFrameRate } from "../../../../../../originalGame";
+import { type AppSpritesheetData } from "../../../../../../sprites/spritesheet/AppSpritesheet";
 import { type AppSpriteFrame } from "../../../../../../sprites/spritesheet/spritesheetData/AppSpriteFrame";
+import { spritesheetSize } from "../../../../../../sprites/spritesheet/spritesheetData/makeBaseSpritesheetData";
 import {
-  type AnimationId,
+  type BaseAnimationId,
+  type BaseTextureId,
   type FramesWithSpeed,
-  spritesheetSize,
-  type TextureId,
 } from "../../../../../../sprites/spritesheet/spritesheetData/makeSpritesheetData";
 import {
   type AnimatedTextureTailwindClass,
   type TextureTailwindClass,
 } from "../../../../../../sprites/spritesheet/spritesheetData/TextureTailwindClass";
-import { type AppSpritesheetData } from "../../../../../../sprites/spritesheet/variants/AppSpritesheet";
 import { useCurrentSpritesheetData } from "../../../../../../store/slices/gameMenus/gameMenusSelectors";
 import { animationIsUniformlyFlipped } from "../../../../../../tailwind/plugins/spriteCss";
 import { keys } from "../../../../../../utils/entries";
 import { sanitiseForClassName } from "../../../../tailwindSprites/SanitiseForClassName";
-import { useCurrentSpritesheetUrl } from "../../../../tailwindSprites/useCurrentSpritesheetUrl";
 import { ScrollIntoView } from "./ScrollIntoView";
+import { useCurrentSpritesheetUrl } from "./useCurrentSpritesheetUrl";
 
 /**
  * A sprite drawn on the map as a native SVG `<image>` cropped to one frame of the
@@ -55,12 +55,12 @@ const reversedPrefix = "reversed-";
 
 /**
  * Maps from a sanitised class-name fragment (as `texture-*` classes are built)
- * back to the `TextureId`/`AnimationId` it came from, so we can look up frame
- * geometry at runtime. Cached per spritesheet-data object (memoised upstream).
+ * back to the id it came from, so we can look up frame geometry at runtime.
+ * Cached per spritesheet-data object (memoised upstream).
  */
 type ReverseIdMaps = {
-  textures: Map<string, TextureId>;
-  animations: Map<string, AnimationId>;
+  textures: Map<string, BaseTextureId>;
+  animations: Map<string, BaseAnimationId>;
 };
 const reverseIdMapsCache = new WeakMap<AppSpritesheetData, ReverseIdMaps>();
 
@@ -72,11 +72,11 @@ const reverseIdMapsFor = (
     return cached;
   }
 
-  const textures = new Map<string, TextureId>();
+  const textures = new Map<string, BaseTextureId>();
   for (const textureId of keys(spritesheetData.frames)) {
     textures.set(sanitiseForClassName(textureId), textureId);
   }
-  const animations = new Map<string, AnimationId>();
+  const animations = new Map<string, BaseAnimationId>();
   for (const animationId of keys(spritesheetData.animations)) {
     animations.set(sanitiseForClassName(animationId), animationId);
   }
@@ -105,8 +105,8 @@ const resolveSpriteClass = (
 
     const framesWithSpeed = (
       spritesheetData.animations as Record<
-        AnimationId,
-        FramesWithSpeed<TextureId[]>
+        BaseAnimationId,
+        FramesWithSpeed<BaseTextureId[]>
       >
     )[animationId];
     const orderedTextureIds =

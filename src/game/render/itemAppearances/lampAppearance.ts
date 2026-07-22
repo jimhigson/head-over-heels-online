@@ -1,3 +1,4 @@
+import { variantTextureId } from "../../../sprites/spritesheet/variantTextureId";
 import { resolveCameraRelativeVectorXy4 } from "../../../utils/vectors/resolveCameraRelativeVector";
 import { nearestQuarterAngle } from "../../../utils/vectors/rotateXy";
 import { type Xy, xyEqual } from "../../../utils/vectors/vectors";
@@ -17,7 +18,7 @@ export const lampAppearance: ItemAppearance<"lamp", LampRenderProps> = ({
       state: { activated },
       config: { direction, times },
     },
-    general: { spritesheetVariants, cameraAngle },
+    general: { spritesheets, cameraAngle },
   },
   currentRendering,
 }) => {
@@ -44,16 +45,18 @@ export const lampAppearance: ItemAppearance<"lamp", LampRenderProps> = ({
 
   return {
     output: createSprite({
-      textureId: `lamp.${activated ? "on" : "off"}.${renderedDirection}`,
+      textureId: variantTextureId(
+        `lamp.${activated ? "on" : "off"}.${renderedDirection}`,
+        isReflection,
+        false,
+        false,
+        false,
+      ),
       // stacked to double/triple height when the lamp has times.z:
       times,
       cameraQuarterAngle,
       // deactivated lamps don't render in the deactivated palette, they have separate 'off' sprites:
-      spritesheet: spritesheetVariants.currentMainSpritesheet(
-        false,
-        false,
-        isReflection,
-      ),
+      spritesheet: spritesheets.spritesheetForCurrentRoom,
     }),
     renderProps: { activated, cameraQuarterAngle },
   };

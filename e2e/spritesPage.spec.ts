@@ -58,7 +58,9 @@ test.describe("Sprites page", () => {
     // Wait for the e2e-snapshot-target container first
     await page.waitForSelector(".e2e-snapshot-target", { timeout: 5_000 });
 
-    // Get all sprite elements with data-texture-id attribute
+    // Get all sprite elements with data-texture-id attribute - the page lists
+    // only the base ids (variant-suffixed ids are runtime re-bakes with no
+    // pixels of their own in the source image):
     const textureIds = (await page
       .locator("[data-texture-id]")
       .evaluateAll((els) =>

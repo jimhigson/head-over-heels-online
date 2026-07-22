@@ -14,7 +14,7 @@ import {
   type PartialNamedColours,
   resolveSwops,
 } from "../../utils/palette/palette";
-import { type DirectionXy4 } from "../../utils/vectors/vectors";
+import { type AxisXy } from "../../utils/vectors/vectors";
 import {
   type BlockstackPaletteColourName,
   paletteBlockstack,
@@ -22,41 +22,43 @@ import {
   paletteToppy,
 } from "../palette/spritesheetPalette";
 import { type SceneryName } from "../planets";
-import { type TextureId } from "./spritesheetData/makeSpritesheetData";
+import {
+  type BaseTextureId,
+  type TextureId,
+} from "./spritesheetData/makeSpritesheetData";
 import {
   type SpritesheetTextureSwops,
   type TextureSpecificPaletteSwops,
 } from "./spritesheetPaletteSwop";
-import { type LoadableSpriteOption } from "./variants/SpritesheetVariants";
+import { type LoadableSpriteOption } from "./Spritesheets";
 const isDoorTexture = (tid: TextureId) => tid.startsWith("door.");
 
 /** NOTE: - does not match deadly floors */
-const isFloorTexture = (
-  textureId: TextureId,
-): textureId is TextureId & `${string}.floor${".deadly" | ""}` =>
+const isFloorTexture = (textureId: TextureId): boolean =>
   /\.floor$/.test(textureId);
 
-const isWallTexture = (
-  textureId: TextureId,
-): textureId is TextureId & `${string}.wall.${string}.${DirectionXy4}` =>
+/** door leg pillars take the wall swops, since they stand in the wall's plane */
+const isWallTexture = (textureId: TextureId): boolean =>
   /\.wall\.[^.]+\.(away|left)$|door\.legs\.pillar/.test(textureId);
 
 const isDoorLegsPillarTexture = (
   textureId: TextureId,
-): textureId is TextureId & `${string}.door.legs.pillar.${string}` =>
-  /door\.legs\.pillar/.test(textureId);
+): textureId is Extract<
+  BaseTextureId,
+  `${string}.door.legs.pillar.${AxisXy}`
+> => /door\.legs\.pillar/.test(textureId);
 
 const isLeftWallTexture = (
   textureId: TextureId,
-): textureId is TextureId & `${string}.wall.${string}.left` =>
+): textureId is Extract<BaseTextureId, `${string}.wall.${string}.left`> =>
   /\.wall\.[^.]+\.left$/.test(textureId);
 
 const isMoonbaseScreen = (
   textureId: TextureId,
-): textureId is TextureId & `moonbase.wall.screen.${number}` =>
+): textureId is Extract<BaseTextureId, `moonbase.wall.screen.${string}`> =>
   /^moonbase\.wall\.screen/.test(textureId);
 
-const isSceneryTexture = (t: TextureId) =>
+const isSceneryTexture = (t: TextureId): boolean =>
   isFloorTexture(t) || isWallTexture(t);
 
 export const roomSpritesheetTextureSwops = (
@@ -67,7 +69,7 @@ export const roomSpritesheetTextureSwops = (
    * param allows us to handle them differently in these cases
    */
   spriteOption: LoadableSpriteOption,
-): SpritesheetTextureSwops | undefined => {
+): SpritesheetTextureSwops => {
   switch (spriteOption) {
     case "BlockStack":
       return {
@@ -122,11 +124,12 @@ export const roomSpritesheetTextureSwops = (
         ],
       };
     case "Debug":
-      // the Debug sheet renders the same in every room:
-      return undefined;
+      // the Debug sheet renders the same in every room - an empty swop, so it
+      // still goes through the ordinary atlas bake like every other sheet:
+      return { ambient: [] };
     default:
       spriteOption satisfies never;
-      return undefined;
+      throw new Error(`unknown sprite option "${spriteOption}"`);
   }
 };
 
@@ -393,19 +396,30 @@ const blockstackHueColourReplacements: Partial<
   cyan: { shadow: paletteBlockstack.shadow_blue },
 };
 
+/**
+ * bright rooms get extra 'ambience' swops for shadow and pureBlack according
+ * to their scenery/hue, as named colour replacements. Boosting pureBlack a
+ * little gives shadows a little space to be darker than the 'black' bits of
+ * the floors.
+ */
+export const blockstackAmbienceNamedSwops = (
+  roomScenery: SceneryName,
+  roomColor: ZxSpectrumRoomColour,
+): PartialNamedColours<BlockstackPaletteColourName> => ({
+  ...(blockstackHueColourReplacements[roomColor.hue] ?? emptyObject),
+  // scenery replacements overrides hue:
+  ...(blockstackSceneryColourReplacements[roomScenery] ?? emptyObject),
+});
+
 export const blockstackAmbienceSwops = (
   roomScenery: SceneryName,
   roomColor: ZxSpectrumRoomColour,
 ): PaletteSwopSpec => {
   return {
-    // bright rooms get extra 'ambience' swops for shadow and pureBlack according to their
-    // scenery/hue. Boosting pureBlack a little gives shadows a little space to be darker
-    // than the 'black' bits of the floors.
     lutType: "sparse" as const,
-    swops: resolveSwops(paletteBlockstack, {
-      ...(blockstackHueColourReplacements[roomColor.hue] ?? emptyObject),
-      // scenery replacements overrides hue:
-      ...(blockstackSceneryColourReplacements[roomScenery] ?? emptyObject),
-    }),
+    swops: resolveSwops(
+      paletteBlockstack,
+      blockstackAmbienceNamedSwops(roomScenery, roomColor),
+    ),
   };
 };

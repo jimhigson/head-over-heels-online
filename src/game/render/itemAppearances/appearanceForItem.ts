@@ -3,6 +3,7 @@ import { Container } from "pixi.js";
 import { type ItemTypeUnion } from "../../../_generated/types/ItemInPlayUnion";
 import { type ItemInPlayType } from "../../../model/ItemInPlay";
 import { smallItemTextureSize } from "../../../sprites/spritesheet/spritesheetData/textureSizes";
+import { variantTextureId } from "../../../sprites/spritesheet/variantTextureId";
 import {
   asReuseSprite,
   maybeRenderContainerToSprite,
@@ -56,7 +57,7 @@ const itemAppearancesMap: {
         item: {
           config: { axis, times, disappearing },
         },
-        general: { spritesheetVariants, pixiRenderer, cameraAngle },
+        general: { spritesheets, pixiRenderer, cameraAngle },
       },
       currentRendering,
     }) => {
@@ -65,14 +66,16 @@ const itemAppearancesMap: {
       return maybeRenderContainerToSprite(
         pixiRenderer,
         createSprite({
-          textureId: `barrier.${renderedAxis}${disappearing ? ".disappearing" : ""}`,
+          textureId: variantTextureId(
+            `barrier.${renderedAxis}${disappearing ? ".disappearing" : ""}`,
+            isReflection,
+            false,
+            false,
+            false,
+          ),
           times,
           cameraQuarterAngle,
-          spritesheet: spritesheetVariants.currentMainSpritesheet(
-            false,
-            false,
-            isReflection,
-          ),
+          spritesheet: spritesheets.spritesheetForCurrentRoom,
         }),
         asReuseSprite(currentRendering?.output),
       );
@@ -93,19 +96,19 @@ const itemAppearancesMap: {
         item: {
           config: { style },
         },
-        general: { spritesheetVariants },
+        general: { spritesheets },
       },
     }) => {
-      const spritesheet = spritesheetVariants.currentMainSpritesheet(
-        false,
-        false,
-        isReflection,
-      );
-      return createSprite(
-        style === "book" ?
-          { textureId: "book.y", spritesheet }
-        : { textureId: style, spritesheet },
-      );
+      return createSprite({
+        textureId: variantTextureId(
+          style === "book" ? "book.y" : style,
+          isReflection,
+          false,
+          false,
+          false,
+        ),
+        spritesheet: spritesheets.spritesheetForCurrentRoom,
+      });
     },
   ),
 
@@ -120,15 +123,11 @@ const itemAppearancesMap: {
     ({
       renderContext: {
         isReflection,
-        general: { paused, spritesheetVariants },
+        general: { paused, spritesheets },
       },
     }) => {
       const rendering = new Container();
-      const spritesheet = spritesheetVariants.currentMainSpritesheet(
-        false,
-        false,
-        isReflection,
-      );
+      const { spritesheetForCurrentRoom: spritesheet } = spritesheets;
 
       const pivot = {
         x: smallItemTextureSize.w / 2,
@@ -136,7 +135,13 @@ const itemAppearancesMap: {
       };
       rendering.addChild(
         createSprite({
-          animationId: "lift",
+          animationId: variantTextureId(
+            "lift",
+            isReflection,
+            false,
+            false,
+            false,
+          ),
           pivot,
           paused,
           spritesheet,
@@ -144,7 +149,17 @@ const itemAppearancesMap: {
       );
 
       rendering.addChild(
-        createSprite({ textureId: "lift.static", pivot, spritesheet }),
+        createSprite({
+          textureId: variantTextureId(
+            "lift.static",
+            isReflection,
+            false,
+            false,
+            false,
+          ),
+          pivot,
+          spritesheet,
+        }),
       );
 
       return rendering;
@@ -169,16 +184,18 @@ const itemAppearancesMap: {
         item: {
           config: { planet },
         },
-        general: { spritesheetVariants },
+        general: { spritesheets },
       },
     }) => {
       return createSprite({
-        textureId: `crown.${planet}`,
-        spritesheet: spritesheetVariants.currentMainSpritesheet(
-          false,
-          false,
+        textureId: variantTextureId(
+          `crown.${planet}`,
           isReflection,
+          false,
+          false,
+          false,
         ),
+        spritesheet: spritesheets.spritesheetForCurrentRoom,
       });
     },
   ),
@@ -188,18 +205,20 @@ const itemAppearancesMap: {
       renderContext: {
         isReflection,
         item: { config },
-        general: { paused, spritesheetVariants },
+        general: { paused, spritesheets },
       },
     }) => {
-      const spritesheet = spritesheetVariants.currentMainSpritesheet(
-        false,
-        false,
-        isReflection,
-      );
+      const { spritesheetForCurrentRoom: spritesheet } = spritesheets;
 
       if (config.gives === "crown") {
         return createSprite({
-          textureId: `crown.${config.planet}`,
+          textureId: variantTextureId(
+            `crown.${config.planet}`,
+            isReflection,
+            false,
+            false,
+            false,
+          ),
           spritesheet,
         });
       }
@@ -209,27 +228,87 @@ const itemAppearancesMap: {
         CreateSpriteOptions
       > = {
         shield: {
-          textureId: "whiteRabbit.shield",
+          textureId: variantTextureId(
+            "whiteRabbit.shield",
+            isReflection,
+            false,
+            false,
+            false,
+          ),
           spritesheet,
         },
         jumps: {
-          textureId: "whiteRabbit.jumps",
+          textureId: variantTextureId(
+            "whiteRabbit.jumps",
+            isReflection,
+            false,
+            false,
+            false,
+          ),
           spritesheet,
         },
         fast: {
-          textureId: "whiteRabbit.fast",
+          textureId: variantTextureId(
+            "whiteRabbit.fast",
+            isReflection,
+            false,
+            false,
+            false,
+          ),
           spritesheet,
         },
         "extra-life": {
-          textureId: "whiteRabbit.extra-life",
+          textureId: variantTextureId(
+            "whiteRabbit.extra-life",
+            isReflection,
+            false,
+            false,
+            false,
+          ),
           spritesheet,
         },
-        bag: { textureId: "bag", spritesheet },
-        doughnuts: { textureId: "doughnuts", spritesheet },
-        hooter: { textureId: "hooter", spritesheet },
-        scroll: { textureId: "scroll", spritesheet },
+        bag: {
+          textureId: variantTextureId("bag", isReflection, false, false, false),
+          spritesheet,
+        },
+        doughnuts: {
+          textureId: variantTextureId(
+            "doughnuts",
+            isReflection,
+            false,
+            false,
+            false,
+          ),
+          spritesheet,
+        },
+        hooter: {
+          textureId: variantTextureId(
+            "hooter",
+            isReflection,
+            false,
+            false,
+            false,
+          ),
+          spritesheet,
+        },
+        scroll: {
+          textureId: variantTextureId(
+            "scroll",
+            isReflection,
+            false,
+            false,
+            false,
+          ),
+          spritesheet,
+        },
         reincarnation: {
-          animationId: "fish",
+          animationId: variantTextureId(
+            "fish",
+            isReflection,
+            false,
+            false,
+            false,
+          ),
           paused,
           spritesheet,
         },
@@ -257,16 +336,12 @@ const itemAppearancesMap: {
         item: {
           config: { style },
         },
-        general: { spritesheetVariants },
+        general: { spritesheets },
       },
     }) =>
       createSprite({
-        textureId: style,
-        spritesheet: spritesheetVariants.currentMainSpritesheet(
-          false,
-          false,
-          isReflection,
-        ),
+        textureId: variantTextureId(style, isReflection, false, false, false),
+        spritesheet: spritesheets.spritesheetForCurrentRoom,
       }),
   ),
 
@@ -284,18 +359,20 @@ const itemAppearancesMap: {
           hash,
           config: { style },
         },
-        general: { paused, spritesheetVariants },
+        general: { paused, spritesheets },
       },
     }) => {
       return createSprite({
-        animationId: `bubbles.bounce.${style}`,
+        animationId: variantTextureId(
+          `bubbles.bounce.${style}`,
+          isReflection,
+          false,
+          false,
+          false,
+        ),
         paused,
         startFramePhase: hash,
-        spritesheet: spritesheetVariants.currentMainSpritesheet(
-          false,
-          false,
-          isReflection,
-        ),
+        spritesheet: spritesheets.spritesheetForCurrentRoom,
       });
     },
   ),
@@ -310,24 +387,21 @@ const itemAppearancesMap: {
   particle: itemAppearanceRenderMemoised(
     ({
       renderContext: {
-        isReflection,
         item: {
           config: { forCharacter },
         },
-        general: { paused, spritesheetVariants },
+        general: { paused, spritesheets },
       },
     }) => {
       const characterEquivalent = forCharacter === "head" ? "head" : "heels";
 
+      // particles are an unreflected item type, so never take the
+      // mirror-reflection suffix:
       return createSprite({
         animationId: `particle.${characterEquivalent}.fade`,
         anchor: { x: 0.5, y: 0.5 },
         paused,
-        spritesheet: spritesheetVariants.currentMainSpritesheet(
-          false,
-          false,
-          isReflection,
-        ),
+        spritesheet: spritesheets.spritesheetForCurrentRoom,
       });
     },
   ),

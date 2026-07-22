@@ -11,19 +11,19 @@ import {
 
 import { completeTimesXyz } from "../../model/times";
 import { originalGameFrameDuration } from "../../originalGame";
+import { type AppSpritesheetWithVariants } from "../../sprites/spritesheet/AppSpritesheet";
 import { type AppSpriteFrame } from "../../sprites/spritesheet/spritesheetData/AppSpriteFrame";
 import {
   type AnimationId,
   type TextureId,
 } from "../../sprites/spritesheet/spritesheetData/makeSpritesheetData";
-import { type AppSpritesheet } from "../../sprites/spritesheet/variants/AppSpritesheet";
 import { phaseForSubItem } from "../../utils/maths/hashing";
 import { lengthXyz, type Xy, type Xyz } from "../../utils/vectors/vectors";
 import { projectBlockXyzToScreenXy } from "./projections";
 
 type CreateSpriteSpritesheetSpecifier =
   | {
-      spritesheet: AppSpritesheet;
+      spritesheet: AppSpritesheetWithVariants;
     }
   | {
       textureId?: undefined;
@@ -289,7 +289,7 @@ const createSpriteImpl = (options: CreateSpriteOptions): Container => {
 /** the animation speed, as should be passed to AnimatedSprite.animationSpeed */
 export const animationSpeed = (
   animationId: AnimationId,
-  spritesheet: AppSpritesheet,
+  spritesheet: AppSpritesheetWithVariants,
   paused: boolean = false,
 ) => {
   const tickerSpeed = Ticker.shared.speed;

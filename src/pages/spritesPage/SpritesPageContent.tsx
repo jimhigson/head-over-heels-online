@@ -1,10 +1,10 @@
 import { type AppSpriteFrame } from "../../sprites/spritesheet/spritesheetData/AppSpriteFrame";
 import {
+  type BaseTextureId,
   type FramesWithSpeed,
-  type TextureId,
 } from "../../sprites/spritesheet/spritesheetData/makeSpritesheetData";
 import { useCurrentSpritesheetData } from "../../store/slices/gameMenus/gameMenusSelectors";
-import { entries } from "../../utils/entries";
+import { entries, keys } from "../../utils/entries";
 import { AnimationTile } from "./AnimationTile";
 import { FontSpecimen } from "./FontSpecimen";
 import { PaletteSwatch } from "./PaletteSwatch";
@@ -22,13 +22,11 @@ export const SpritesPageContent = ({
   const animationEntries = entries(
     currentSpritesheetData.animations as Record<
       string,
-      FramesWithSpeed<TextureId[]>
+      FramesWithSpeed<BaseTextureId[]>
     >,
   ).sort(([a], [b]) => a.localeCompare(b));
 
-  const textureIds = Object.keys(
-    currentSpritesheetData.frames,
-  ).sort() as TextureId[];
+  const textureIds = keys(currentSpritesheetData.frames).sort();
   return (
     <div class="e2e-snapshot-target">
       <PaletteSwatch />

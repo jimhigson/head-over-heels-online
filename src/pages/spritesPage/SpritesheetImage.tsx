@@ -5,8 +5,8 @@ import { BlockyMarkdown } from "../../game/components/BlockyMarkdown";
 import { sanitiseForClassName } from "../../game/components/tailwindSprites/SanitiseForClassName";
 import { type AppSpriteFrame } from "../../sprites/spritesheet/spritesheetData/AppSpriteFrame";
 import {
+  type BaseTextureId,
   type FramesWithSpeed,
-  type TextureId,
 } from "../../sprites/spritesheet/spritesheetData/makeSpritesheetData";
 import {
   useCurrentSpritesheetData,
@@ -33,7 +33,7 @@ const yRelative = (value: number) =>
  * the sprite drawn there directly, plus any `copyFrom` copies (which share the
  * region, some horizontally mirrored).
  */
-type SpritePosition = { frame: AppSpriteFrame; textureIds: TextureId[] };
+type SpritePosition = { frame: AppSpriteFrame; textureIds: BaseTextureId[] };
 
 const positionKey = ({ x, y, w, h }: AppSpriteFrame) => `${x},${y},${w},${h}`;
 
@@ -42,7 +42,7 @@ const AnimationPreview = ({
   frames,
 }: {
   animationName: string;
-  frames: FramesWithSpeed<TextureId[]>;
+  frames: FramesWithSpeed<BaseTextureId[]>;
 }) => {
   const currentSpritesheetData = useCurrentSpritesheetData();
   const spriteOption = useSpritesOption();
@@ -90,7 +90,7 @@ const TextureIdEntry = ({
   frame,
   flipX,
 }: {
-  textureId: TextureId;
+  textureId: BaseTextureId;
   frame: AppSpriteFrame;
   flipX: boolean;
 }) => {
@@ -100,7 +100,7 @@ const TextureIdEntry = ({
   const containingAnimations = entries(
     currentSpritesheetData.animations as Record<
       string,
-      FramesWithSpeed<TextureId[]>
+      FramesWithSpeed<BaseTextureId[]>
     >,
   ).filter(([, frames]) => frames.includes(textureId));
 

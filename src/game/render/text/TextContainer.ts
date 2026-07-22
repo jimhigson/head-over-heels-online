@@ -14,7 +14,6 @@ import {
   hudCharTextureSize,
   hudLowercaseCharTextureSize,
 } from "../../../sprites/spritesheet/spritesheetData/textureSizes";
-import { type AppSpritesheet } from "../../../sprites/spritesheet/variants/AppSpritesheet";
 import { renderContainerToTexture } from "../../../utils/pixi/renderContainerToSprite";
 import { alphaThresholdFilter } from "../filters/alphaThresholdFilter";
 import { OutlineFilter } from "../filters/OutlineFilter";
@@ -123,7 +122,6 @@ const rasteriseInk = (str: string): Texture => {
 
 export type TextContainerOptions = {
   pixiRenderer: Renderer;
-  spritesheet: AppSpritesheet;
   doubleHeight?: boolean;
   doubleWidth?: boolean;
   outline?: boolean;

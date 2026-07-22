@@ -1,35 +1,41 @@
 import { type FloorConfig } from "../../model/json/ItemConfigMap";
 import { isTextureId } from "../../sprites/assertIsTextureId";
 import { type SceneryName } from "../../sprites/planets";
-import { type TextureId } from "../../sprites/spritesheet/spritesheetData/makeSpritesheetData";
-import { type AppSpritesheetData } from "../../sprites/spritesheet/variants/AppSpritesheet";
+import { type AppSpritesheetData } from "../../sprites/spritesheet/AppSpritesheet";
+import { type BaseTextureIdWithPrefix } from "../../sprites/spritesheet/spritesheetData/makeSpritesheetData";
+
+type FloorTextureId = BaseTextureIdWithPrefix<
+  `${SceneryName}${".dark" | ""}.floor` | `generic${".dark" | ""}.floor`
+>;
 
 export const floorTextureId = (
   floorConfig: FloorConfig<SceneryName>,
   dark: boolean,
   spritesheetData: AppSpritesheetData,
-): TextureId => {
+): FloorTextureId => {
   const { floorType } = floorConfig;
-  const base =
-    floorType === "deadly" ? "generic"
-    : floorType === "standable" ? floorConfig.scenery
-    : undefined;
 
-  if (base === undefined) {
+  if (floorType !== "deadly" && floorType !== "standable") {
     throw new Error(`floorTextureId called with floorType "${floorType}"`);
   }
 
-  const suffix = floorType === "deadly" ? ".floor.deadly" : ".floor";
+  // only the generic scenery has deadly floor art, so the deadly suffix and
+  // the per-scenery floors are separate ids, not a scenery × suffix product:
+  const isDeadly = floorType === "deadly";
 
   if (!dark) {
-    return `${base}${suffix}` as TextureId;
+    return isDeadly ? "generic.floor.deadly" : `${floorConfig.scenery}.floor`;
   }
 
-  const darkTextureId = `${base}.dark${suffix}`;
-  if (isTextureId(darkTextureId, spritesheetData)) {
-    return darkTextureId;
-  }
+  const darkTextureId =
+    isDeadly ?
+      ("generic.dark.floor.deadly" as const)
+    : (`${floorConfig.scenery}.dark.floor` as const);
 
-  // no dark texture, fall back to non-dark:
-  return `${base}${suffix}` as TextureId;
+  // not every scenery has a dark floor; fall back to the lit one:
+  return (
+    isTextureId(darkTextureId, spritesheetData) ? darkTextureId
+    : isDeadly ? "generic.floor.deadly"
+    : `${floorConfig.scenery}.floor`
+  );
 };

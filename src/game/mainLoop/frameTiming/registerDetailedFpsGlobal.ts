@@ -1,4 +1,6 @@
 /* eslint-disable no-console */
+import { toggleUserSetting } from "../../../store/slices/userSettings/userSettingsSlice";
+import { store } from "../../../store/store";
 import { importOnce } from "../../../utils/importOnce";
 
 declare global {
@@ -24,6 +26,9 @@ export const registerDetailedFpsGlobal = () => {
   }
 
   window.detailedFps = (reportIntervalMs?: number) => {
+    // the main loop only feeds the timing stats while the fps display is on,
+    // so turn it on - without it the log would silently never fire:
+    store.dispatch(toggleUserSetting({ path: "showFps", value: true }));
     importEnableDetailedFrameTimingLog().then(
       ({ enableDetailedFrameTimingLog }) =>
         enableDetailedFrameTimingLog(reportIntervalMs),
@@ -35,6 +40,6 @@ export const registerDetailedFpsGlobal = () => {
     "color: #4CAF50; font-weight: bold",
   );
   console.log(
-    "call detailedFps() to log detailed frame timing stats to the console (and turn on FPS with F9 or in menus). Pass an interval in ms, eg detailedFps(50), to report more often.",
+    "call detailedFps() to log detailed frame timing stats to the console (also turns on the FPS display). Pass an interval in ms, eg detailedFps(50), to report more often.",
   );
 };

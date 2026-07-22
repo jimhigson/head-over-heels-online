@@ -123,6 +123,54 @@ animated chevron/leader sprites), well inside the menu snapshots'
 `maxDiffPixelRatio: 0.03` (~5,900px) — so sandbox webkit is good enough to
 regenerate `webkit-desktop` baselines with `--update-snapshots`.
 
+## Supabase / DB-backed specs in the sandbox
+
+`roomSnapshots` uses the burnt-in original campaign and needs no network, but
+some visual specs load a community campaign from supabase and **cannot run in
+the sandbox as-is**: `cameraRotationSweep` loads the `rotate-camera-test`
+campaign (`userId 2924c962-99f1-4dd2-9b9c-fef832dc991b`) and fails at
+`loadCampaignFromDb` with "could not get campaign".
+
+Why: the egress proxy re-terminates TLS (MITM). CLI tools trust its CA bundle,
+but Playwright's bundled browser does not, and the browser's tunnelled TLS to
+supabase is **reset** (`net::ERR_CONNECTION_RESET`); `--ignore-certificate-errors`,
+`--disable-http2`, `--disable-quic` and disabling ECH do NOT fix it. The host is
+allowed (a denied host gives `ERR_TUNNEL_CONNECTION_FAILED` instead), so it is
+the interception, not egress policy.
+
+**CLI supabase access DOES work** through the proxy with the anon key baked into
+the build (`grep -oE 'eyJ[A-Za-z0-9_-]+\.eyJ[A-Za-z0-9_-]+\.[A-Za-z0-9_-]+' dist/assets/postgrestDb.js`).
+The campaign load is a POST RPC:
+
+```bash
+KEY=<anon key from dist>
+curl -sS -X POST \
+  https://pkswdnpftrundnewgnya.supabase.co/rest/v1/rpc/get_latest_campaign \
+  -H "apikey: $KEY" -H "Authorization: Bearer $KEY" \
+  -H "Content-Type: application/json" \
+  -d '{"p_campaign_name":"rotate-camera-test","p_user_id":"2924c962-99f1-4dd2-9b9c-fef832dc991b"}'
+# -> 200, {"name":"rotate-camera-test","data":"H4sI...", ...}
+```
+
+**Working solution in-repo**: `e2e/testUtils/relaySupabase.ts` intercepts the
+browser's supabase requests with `page.route` and re-issues them from the node
+test process (which CAN reach supabase), relaying the live response back - no
+fixture to go stale. It is opt-in behind `E2E_RELAY_SUPABASE`, so CI (where the
+browser reaches the db directly) is untouched. `cameraRotationSweep` calls it
+before the rotate-camera-test `page.goto`. Node's fetch only uses the proxy with
+`NODE_USE_ENV_PROXY=1` (the CA is already trusted via `NODE_EXTRA_CA_CERTS`), so
+regenerate that spec's baselines locally with:
+
+```bash
+E2E_RELAY_SUPABASE=1 NODE_USE_ENV_PROXY=1 pnpm playwright test \
+  cameraRotationSweep.spec.ts --project=chromium-desktop --update-snapshots
+```
+
+(only `chromium-desktop` matches CI's Linux runner - `webkit-desktop`/`CamRot Mac`
+render on macOS and won't match here, see the WebKit note above). Alternative if
+the browser ever needs to reach supabase directly: ask the admin to make
+`*.supabase.co` a TLS-passthrough (no-MITM) host in the egress policy.
+
 ## Scope
 
 Visual regression is a regression guard for steady-state rendering; it does

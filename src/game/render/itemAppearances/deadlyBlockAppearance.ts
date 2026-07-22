@@ -1,3 +1,4 @@
+import { variantTextureId } from "../../../sprites/spritesheet/variantTextureId";
 import { maybeRenderContainerToAnimatedSprite } from "../../../utils/pixi/renderContainerToSprite";
 import { nearestQuarterAngle } from "../../../utils/vectors/rotateXy";
 import { type Xy } from "../../../utils/vectors/vectors";
@@ -26,7 +27,7 @@ export const deadlyBlockAppearance: ItemAppearance<
       config: { times, style },
       state: { disabled },
     },
-    general: { pixiRenderer, paused, spritesheetVariants, cameraAngle },
+    general: { pixiRenderer, paused, spritesheets, cameraAngle },
   },
   currentRendering,
 }) => {
@@ -43,17 +44,24 @@ export const deadlyBlockAppearance: ItemAppearance<
     return "no-update";
   }
 
-  const spritesheet = spritesheetVariants.currentMainSpritesheet(
-    false,
-    false,
-    isReflection,
-  );
+  const { spritesheetForCurrentRoom: spritesheet } = spritesheets;
 
   const rendering = createSprite(
     disabled ?
-      { textureId: `${style}.disabled`, times, cameraQuarterAngle, spritesheet }
+      {
+        textureId: variantTextureId(
+          `${style}.disabled`,
+          isReflection,
+          false,
+          false,
+          false,
+        ),
+        times,
+        cameraQuarterAngle,
+        spritesheet,
+      }
     : {
-        animationId: style,
+        animationId: variantTextureId(style, isReflection, false, false, false),
         times,
         cameraQuarterAngle,
         startFramePhase: hash,

@@ -14,7 +14,12 @@ import { seriesOfNumberedTextures } from "./spriteGenerators";
 import { floorTileSize, wallTileSize } from "./textureSizes";
 import { withSpeed } from "./withSpeed";
 
-type WallTextureId<
+/**
+ * the wall ids for a scenery, keeping each scenery paired with its own wall
+ * tile names (a plain `${SceneryName}.wall.${Wall<SceneryName>}` template
+ * would admit every scenery × tile combination)
+ */
+export type WallTextureId<
   PS extends SceneryName,
   TDark extends ".dark" | "",
 > = string &

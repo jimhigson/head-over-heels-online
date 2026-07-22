@@ -48,8 +48,7 @@ const sampleBuffer: CollideableItem = {
 export const wallAppearance = itemAppearanceRenderMemoised<"wall">(
   ({ renderContext }) => {
     const {
-      isReflection,
-      general: { pixiRenderer, spritesheetVariants, cameraAngle },
+      general: { pixiRenderer, spritesheets, cameraAngle },
       item,
       room,
     } = renderContext;
@@ -110,11 +109,7 @@ export const wallAppearance = itemAppearanceRenderMemoised<"wall">(
           }
         : { x: 0, y: wallTileSize.h };
 
-      const spritesheet = spritesheetVariants.currentMainSpritesheet(
-        false,
-        false,
-        isReflection,
-      );
+      const { spritesheetForCurrentRoom: spritesheet } = spritesheets;
 
       const clearTile =
         seeThrough ? seeThroughWallTile(room.planet, tiles[i]) : undefined;
@@ -193,18 +188,17 @@ export const wallAppearance = itemAppearanceRenderMemoised<"wall">(
                 textureId: `moonbase.wallDoorTransition.${renderedDirection}${isDarkStr}`,
                 ...tileRenderPosition,
                 pivot: tileRenderPivot,
-                spritesheet: spritesheetVariants.currentMainSpritesheet(
-                  false,
-                  false,
-                  isReflection,
-                ),
+                spritesheet,
               }),
             );
             const maskSprite = createSprite({
               textureId: `moonbase.wallDoorTransition.${renderedDirection}.mask`,
               ...tileRenderPosition,
               pivot: tileRenderPivot,
-              spritesheet: spritesheetVariants.originalSpritesheet,
+              // masks are read through their red channel, so must sample the
+              // pristine sheet - the room bake's ambient swops would recolour
+              // the mask art and change how strongly it cuts:
+              spritesheet: spritesheets.originalSpritesheet,
             });
             wallTilesContainer.addChild(maskSprite);
             wallTileSprite.setMask({ mask: maskSprite, inverse: true });

@@ -15,23 +15,21 @@ import { ShadowPreprocessFilter } from "../../game/render/filters/shadows/Shadow
 import { emptyArray } from "../../utils/empty";
 import { entries } from "../../utils/entries";
 import { concat } from "../../utils/iterators/concat";
-import { type NamedColours, resolveSwops } from "../../utils/palette/palette";
+import { type NamedColours } from "../../utils/palette/palette";
 import { applySpritesheetFlips } from "./applySpritesheetFlips";
-import { reifyTextureIds } from "./reifyTextureIds";
+import {
+  type AppSpritesheet,
+  type AppSpritesheetDataWithVariants,
+} from "./AppSpritesheet";
+import { reifyTextureIds, type TexturesSpecifier } from "./reifyTextureIds";
 import { black, renderMaskTexture, white } from "./renderMaskTexture";
 import {
+  type BaseTextureId,
   makeSpritesheetData,
   type TextureId,
 } from "./spritesheetData/makeSpritesheetData";
-import {
-  type SpritesheetMetadata,
-  spritesheetMetas,
-} from "./spritesheetData/spritesheetMetaData";
+import { spritesheetMetas } from "./spritesheetData/spritesheetMetaData";
 import { type VariantBuildContext } from "./VariantBuildContext";
-import {
-  type AppSpritesheet,
-  type AppSpritesheetData,
-} from "./variants/AppSpritesheet";
 
 export type TextureSpecificPaletteSwops = {
   textureIds: TextureIdsListOrPredicate;
@@ -46,13 +44,14 @@ export type TextureSpecificPaletteSwops = {
 export type SpritesheetTextureSwops = {
   ambient: Array<PaletteSwopSpec>;
   textureSpecific?: Array<TextureSpecificPaletteSwops>;
-  noReplacePlaceholderTextures?: TextureIdsListOrPredicate;
+  noReplacePlaceholderTextures?: TexturesSpecifier<BaseTextureId>;
   /** textures whose alpha/red channels should be snapped to binary 0 or 1 */
   hardenAlphaTextureIds?: TextureIdsListOrPredicate;
-};
-
-export const noopSpritesheetTextureSwops = {
-  ambient: [],
+  /**
+   * textures whose alpha-encoded shadow strength should snap to fully opaque
+   * wherever it is non-zero - the binary (ZX-style) shadow rendering
+   */
+  binariseAlphaTextureIds?: TextureIdsListOrPredicate;
 };
 
 type TextureIdsListOrPredicate =
@@ -98,10 +97,13 @@ const spritesheetPaletteSwop = (
      */
     noReplacePlaceholderTextures,
     hardenAlphaTextureIds,
+    binariseAlphaTextureIds,
   }: SpritesheetTextureSwops,
   baseTexture: Texture,
-  spritesheetData: AppSpritesheetData,
+  spritesheetData: AppSpritesheetDataWithVariants,
   originalSpritesheet: AppSpritesheet,
+  /** render into this texture instead of creating one (eg an atlas) */
+  target?: RenderTexture,
 ): Texture => {
   const { pixiRenderer, spritesheetMetaData } = context;
   const filters: Filter[] = [];
@@ -137,6 +139,18 @@ const spritesheetPaletteSwop = (
       clearColour: black,
     });
     filters.push(new ShadowPreprocessFilter("hardenChannels", hardenMask));
+  }
+
+  if (binariseAlphaTextureIds !== undefined) {
+    const binariseMask = renderMaskTexture(pixiRenderer, {
+      rects: {
+        textureIds: binariseAlphaTextureIds,
+        color: white,
+        spritesheetDataFrames: spritesheetData.frames,
+      },
+      clearColour: black,
+    });
+    filters.push(new ShadowPreprocessFilter("binariseAlpha", binariseMask));
   }
 
   // Draw black rectangles over shadow/shadowMask/hud frames (filter does not apply)
@@ -189,10 +203,14 @@ const spritesheetPaletteSwop = (
   const sprite = new Sprite(baseTexture);
   sprite.filters = filters;
 
-  const swoppedTexture = RenderTexture.create({
-    width: baseTexture.width,
-    height: baseTexture.height,
-  });
+  // an atlas target can be taller than the base texture (a variant strip
+  // below the base layout); the filters only affect the sprite's own bounds
+  const swoppedTexture =
+    target ??
+    RenderTexture.create({
+      width: baseTexture.width,
+      height: baseTexture.height,
+    });
 
   pixiRenderer.render({
     container: sprite,
@@ -225,7 +243,7 @@ const spritesheetPaletteSwop = (
   return swoppedTexture;
 };
 
-export const createSpritesheetVariant = (
+export const createSwoppedSpritesheet = (
   context: Pick<
     VariantBuildContext,
     "pixiRenderer" | "spriteOption" | "spritesheetMetaData"
@@ -233,15 +251,23 @@ export const createSpritesheetVariant = (
   spritesheetTextureSwops: SpritesheetTextureSwops,
   baseTexture: Texture,
   originalSpritesheet: AppSpritesheet,
+  /**
+   * bake into an atlas instead of a base-sized sheet: `data` has the variant
+   * frame entries re-pointed at their packed strip rects, and `target` is
+   * tall enough to hold the strip below the base layout
+   */
+  atlas?: { data: AppSpritesheetDataWithVariants; target: RenderTexture },
 ) => {
   const { spriteOption } = context;
-  const spritesheetData = makeSpritesheetData(spritesheetMetas[spriteOption]);
+  const spritesheetData =
+    atlas?.data ?? makeSpritesheetData(spritesheetMetas[spriteOption]);
   const swoppedTexture = spritesheetPaletteSwop(
     context,
     spritesheetTextureSwops,
     baseTexture,
     spritesheetData,
     originalSpritesheet,
+    atlas?.target,
   );
   const swoppedSpritesheet = new Spritesheet(
     swoppedTexture.source,
@@ -253,56 +279,5 @@ export const createSpritesheetVariant = (
   swoppedSpritesheet.ambient = spritesheetTextureSwops.ambient;
   swoppedSpritesheet.spritesheetMeta = spritesheetMetas[spriteOption];
   applySpritesheetFlips(swoppedSpritesheet);
-  return swoppedSpritesheet;
-};
-
-/** dim swops for any spritesheet meta with a palette and paletteDim
- * - creates a SpritesheetTextureSwops that replaces the palette colours
- * with their dimmed variation
- */
-export const ambientDimSwops = <PaletteColourName extends string>(
-  spritesheetMeta: SpritesheetMetadata<PaletteColourName>,
-): SpritesheetTextureSwops | undefined => {
-  if (spritesheetMeta.paletteDim === undefined) {
-    // this skin does not support dim swops:
-    return undefined;
-  }
-
-  return {
-    ambient: [
-      {
-        swops: resolveSwops(
-          spritesheetMeta.palette,
-          spritesheetMeta.paletteDim,
-        ),
-        lutType: "sparse",
-      },
-    ],
-  };
-};
-
-/**
- * Applies palette swaps to an existing spritesheet variant, creating a new
- * swopped version. The base spritesheet is destroyed after the new version is created.
- */
-export const replaceSpritesheetWithSwopped = (
-  context: Pick<
-    VariantBuildContext,
-    "pixiRenderer" | "spriteOption" | "spritesheetMetaData"
-  >,
-  baseSpritesheet: AppSpritesheet,
-  swops: SpritesheetTextureSwops,
-  originalSpritesheet: AppSpritesheet,
-): AppSpritesheet => {
-  const baseTexture = Texture.from(baseSpritesheet.textureSource);
-  const swoppedSpritesheet = createSpritesheetVariant(
-    context,
-    swops,
-    baseTexture,
-    originalSpritesheet,
-  );
-  baseTexture.destroy();
-  baseSpritesheet.textureSource.destroy();
-  baseSpritesheet.destroy(true);
   return swoppedSpritesheet;
 };

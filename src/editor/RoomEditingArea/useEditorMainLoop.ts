@@ -8,7 +8,7 @@ import { type GeneralRenderContext } from "../../game/render/room/RoomRenderCont
 import { RoomRenderer } from "../../game/render/room/RoomRenderer";
 import { paletteBlockstack } from "../../sprites/palette/spritesheetPalette";
 import { spritesheetMetas } from "../../sprites/spritesheet/spritesheetData/spritesheetMetaData";
-import { type SpritesheetVariants } from "../../sprites/spritesheet/variants/SpritesheetVariants";
+import { type Spritesheets } from "../../sprites/spritesheet/Spritesheets";
 import { type Upscale } from "../../store/slices/upscale/Upscale";
 import { store } from "../../store/store";
 import { valuesIter } from "../../utils/entries";
@@ -45,7 +45,7 @@ const editorEngineUpscale: Upscale = {
 
 const editorGeneralRenderContext = (
   pixiRenderer: Renderer,
-  spritesheetVariants: SpritesheetVariants,
+  spritesheets: Spritesheets,
 ): GeneralRenderContext<EditorRoomId> => ({
   displaySettings: {
     emulatedResolution: "amigaLowResPal",
@@ -66,11 +66,11 @@ const editorGeneralRenderContext = (
   cameraAngle: selectEditorCameraAngle(store.getState()),
   onScreenControls: false,
   speedCoefficient: 1,
-  spritesheetVariants,
+  spritesheets,
 });
 
 export const useEditorMainLoop = (
-  spritesheetVariants: SpritesheetVariants,
+  spritesheets: Spritesheets,
   /**
    * kept pointing at the current room renderer, so consumers of the rendering
    * (eg pointer picking) can read its render boxes
@@ -111,8 +111,14 @@ export const useEditorMainLoop = (
     let lastColor = currentEditingRoomState.color;
     let lastRoomState: EditorRoomState = currentEditingRoomState;
 
+    let spritesheetLoadStarted = false;
+
     const tick = ({ deltaMS }: Ticker) => {
-      if (!spritesheetVariants.isTextureLoaded("BlockStack")) {
+      if (!spritesheets.isTextureLoaded("BlockStack")) {
+        if (!spritesheetLoadStarted) {
+          spritesheetLoadStarted = true;
+          spritesheets.loadImage(pixiRenderer, "BlockStack");
+        }
         return;
       }
 
@@ -123,17 +129,14 @@ export const useEditorMainLoop = (
         roomRenderer?.destroy();
         roomContainer.removeChildren();
 
-        spritesheetVariants.rebuild(pixiRenderer, planet, color, {
+        spritesheets.rebuild(pixiRenderer, planet, color, {
           name: "BlockStack",
           uncolourised: false as const,
         });
 
         roomRenderer = new RoomRenderer({
           room: roomState,
-          general: editorGeneralRenderContext(
-            pixiRenderer,
-            spritesheetVariants,
-          ),
+          general: editorGeneralRenderContext(pixiRenderer, spritesheets),
         });
 
         roomContainer.addChild(roomRenderer.output.graphics);
@@ -143,7 +146,7 @@ export const useEditorMainLoop = (
         lastColor = color;
         lastRoomState = roomState;
       } else if (planet !== lastPlanet || color !== lastColor) {
-        spritesheetVariants.rebuild(pixiRenderer, planet, color, {
+        spritesheets.rebuild(pixiRenderer, planet, color, {
           name: "BlockStack",
           uncolourised: false as const,
         });
@@ -200,7 +203,7 @@ export const useEditorMainLoop = (
     currentEditingRoomState,
     pixiRenderer,
     pixiApp,
-    spritesheetVariants,
+    spritesheets,
     roomRenderSize,
     viewport,
     roomRendererRef,

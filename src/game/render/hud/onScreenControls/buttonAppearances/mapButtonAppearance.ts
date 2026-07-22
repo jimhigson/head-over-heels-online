@@ -25,7 +25,6 @@ export const mapButtonAppearance: ButtonAppearance<
 
   const output = new TextContainer({
     pixiRenderer: general.pixiRenderer,
-    spritesheet: general.spritesheetVariants.originalSpritesheet,
     label: "mapText",
     outline: true,
     // double height (but not width) so it lines up height-wise with the

@@ -9,21 +9,16 @@ import {
 } from "pixi.js";
 
 import { type PaletteSwapFilter } from "../../game/render/filters/PaletteSwapFilter";
-import { reifyTextureIds } from "./reifyTextureIds";
+import { type AppSpritesheet } from "./AppSpritesheet";
+import { reifyTextureIds, type TexturesSpecifier } from "./reifyTextureIds";
+import { spritesheetSize } from "./spritesheetData/makeBaseSpritesheetData";
 import {
-  spritesheetSize,
-  type TextureId,
+  type BaseTextureId,
+  type SpritesheetDataFrames,
 } from "./spritesheetData/makeSpritesheetData";
-import {
-  type AppSpritesheet,
-  type AppSpritesheetData,
-} from "./variants/AppSpritesheet";
 
 export const black = new Color(0x00_00_00);
 export const white = new Color(0xff_ff_ff);
-
-type TextureIdsListOrPredicate =
-  ((candidate: TextureId) => boolean) | Iterable<TextureId>;
 
 export type RenderMaskTextureOptions = {
   /**
@@ -31,10 +26,10 @@ export type RenderMaskTextureOptions = {
    */
   rects?: {
     /** either a list of texture ids, or the criteria for a texture id being selected to filter */
-    textureIds: TextureIdsListOrPredicate;
+    textureIds: TexturesSpecifier;
     color: Color;
     /** the frames that define the rects for the given textureIds */
-    spritesheetDataFrames: AppSpritesheetData["frames"];
+    spritesheetDataFrames: SpritesheetDataFrames;
   };
   /**
    * where to mask out only the placeholder colours - this is useful if the game engine needs to replace the
@@ -42,7 +37,11 @@ export type RenderMaskTextureOptions = {
    * that they lead to
    */
   placeholderColoursMasks?: {
-    textureIds: TextureIdsListOrPredicate;
+    /**
+     * base-id specifier: the masking sprites sample the original sheet, which
+     * only draws the base ids
+     */
+    textureIds: TexturesSpecifier<BaseTextureId>;
     /** the colours write over the placeholder colours */
     placeholder: Color;
     /** colour to write over all non-placeholder colours */

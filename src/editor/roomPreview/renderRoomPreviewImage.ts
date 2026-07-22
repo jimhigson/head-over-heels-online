@@ -7,7 +7,7 @@ import { RoomRenderer } from "../../game/render/room/RoomRenderer";
 import { roomRenderExtent } from "../../game/render/room/roomRenderExtent";
 import { paletteBlockstack } from "../../sprites/palette/spritesheetPalette";
 import { spritesheetMetas } from "../../sprites/spritesheet/spritesheetData/spritesheetMetaData";
-import { SpritesheetVariants } from "../../sprites/spritesheet/variants/SpritesheetVariants";
+import { Spritesheets } from "../../sprites/spritesheet/Spritesheets";
 import { selectUpscale } from "../../store/slices/upscale/upscaleSlice";
 import { emptyUserSettings } from "../../store/slices/userSettings/emptyUserSettings";
 import { type SpriteOption } from "../../store/slices/userSettings/userSettingsSlice";
@@ -29,10 +29,10 @@ const blockStackSpriteOption = {
 } as const satisfies SpriteOption;
 
 let rendererPromise: Promise<Renderer> | undefined;
-let spritesheetVariants: SpritesheetVariants | undefined;
+let spritesheets: Spritesheets | undefined;
 
 /**
- * lazily create the single off-screen renderer + its own SpritesheetVariants
+ * lazily create the single off-screen renderer + its own Spritesheets
  * used for all room previews. Kept alive for the editor session - one extra
  * webgl context. Built with useBackBuffer so the shadow filter works during
  * extraction.
@@ -48,9 +48,9 @@ const getRenderer = (): Promise<Renderer> => {
         useBackBuffer: true,
         antialias: false,
       });
-      const ssv = new SpritesheetVariants();
-      await ssv.loadImage(blockStackSpriteOption.name);
-      spritesheetVariants = ssv;
+      const s = new Spritesheets();
+      await s.loadImage(renderer, blockStackSpriteOption.name);
+      spritesheets = s;
       return renderer;
     })();
   }
@@ -60,14 +60,14 @@ const getRenderer = (): Promise<Renderer> => {
 /**
  * render a single, non-interactive frame of a room to a 320×240 webp data url,
  * with the room centred. The caller is responsible for serialising calls -
- * the single renderer and its SpritesheetVariants can only hold one room's
+ * the single renderer and its Spritesheets can only hold one room's
  * (planet, colour) at a time.
  */
 export const renderRoomPreviewImage = async (
   roomJson: EditorRoomJson,
 ): Promise<string> => {
   const renderer = await getRenderer();
-  const ssv = spritesheetVariants!;
+  const ssv = spritesheets!;
 
   const room = loadRoom({
     roomJson,
@@ -92,7 +92,7 @@ export const renderRoomPreviewImage = async (
     cameraAngle: cameraAngleBase,
     onScreenControls: false,
     speedCoefficient: 1,
-    spritesheetVariants: ssv,
+    spritesheets: ssv,
   };
 
   const roomRenderer = new RoomRenderer<EditorRoomId, EditorRoomItemId>({
