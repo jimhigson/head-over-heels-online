@@ -18,16 +18,24 @@ import {
   exitCrownsDialog,
 } from "./testUtils/menuNavigation";
 import { setupE2ePage } from "./testUtils/pageSetup";
-import { roomScreenshotOptions } from "./testUtils/screenshots";
+import {
+  roomScreenshotOptions,
+  spriteOptionSuffix,
+} from "./testUtils/screenshots";
 import { setSpriteOption } from "./testUtils/setSpriteOption";
 
 restrictToCameraRotationProjects();
 
 /**
- * a fine-grained sweep of the camera-rotation transition: the camera is
- * frozen and screenshotted at many angles. This pins the exact rendering of
- * the warp at many intermediate angles, as a dense regression guard for
- * refactors of the transition/angle model.
+ * the visual regression of the camera angle: the camera is frozen and
+ * screenshotted at many angles - the settled quarters a player turns between,
+ * and part-way angles held mid-turn. This pins the exact rendering of the warp
+ * at many intermediate angles, as a dense regression guard for refactors of
+ * the transition/angle model.
+ *
+ * every captured frame is identified by the angle it is captured at (see
+ * {@link SweepAngles}), optionally at several simulated times and in several
+ * spritesheets.
  *
  * the whole test runs at zero game speed (transitions advance and hold on
  * the real frame clock), so every frame is deterministic.
@@ -44,20 +52,58 @@ const progressForSweptFraction = (eased: number): number =>
 // the angles (degrees) swept from `startAngle` to `endAngle` every
 // `intervalDegrees`; the end angle is included unless the arc is a whole turn
 // back to the start (360° == 0°), which would repeat the first screenshot
-const sweptAngles = (
+function* angleRange(
   startAngle: number,
   endAngle: number,
   intervalDegrees: number,
-): readonly number[] => {
+): Generator<number> {
   const steps = Math.round((endAngle - startAngle) / intervalDegrees);
   const isWholeTurn = (endAngle - startAngle) % 360 === 0;
-  return Array.from(
-    { length: isWholeTurn ? steps : steps + 1 },
-    (_, i) => startAngle + i * intervalDegrees,
-  );
-};
+  const count = isWholeTurn ? steps : steps + 1;
+  for (let step = 0; step < count; step++) {
+    yield startAngle + step * intervalDegrees;
+  }
+}
 
 type SweepCampaign = "allItemsTestRoom" | "original" | "rotate-camera-test";
+
+/**
+ * an infinitesimal step into a turn: far too small to move anything by a whole
+ * pixel, so a frame held here must render as the settled angle it left
+ */
+const epsilonDegrees = 0.000_000_1;
+
+/**
+ * which angles a scenario captures - everything is expressed as an angle in
+ * degrees anticlockwise from the base view, since all this suite cares about is
+ * what the room renders as at a given angle:
+ * - a `number[]`: those angles, each held directly - an exact quarter settles,
+ *   anything else holds a part-way transition. {@link angleRange} generates an
+ *   evenly-spaced arc, either as the whole list (`.toArray()`) or spread in
+ *   among individually chosen angles
+ * - `"identicallyRenderingAngles"`: groups of angles asserted to render the
+ *   same as each other. Rendering is a function of angle, and it must be
+ *   continuous at a turn's start: a settled quarter and an infinitesimal step
+ *   into the turn away from it differ by no visible pixels. Every angle in a
+ *   group shares ONE baseline - the one named for the group's first angle - so
+ *   the second frame is measured against the first, which is what makes the
+ *   invariant impossible to regenerate away. A baseline per angle would be a
+ *   strictly weaker test that looked identical
+ */
+type SweepAngles =
+  { type: "identicallyRenderingAngles"; groups: number[][] } | number[];
+
+/** one screenshotted frame of a scenario */
+type SweepCapture = {
+  /** the angle (degrees anticlockwise) the camera is held at */
+  degrees: number;
+  /**
+   * the angle the baseline is named for - the held angle itself, except within
+   * an identically-rendering group, where every angle is compared against the
+   * baseline of the group's first (settled) angle
+   */
+  baselineDegrees: number;
+};
 
 /**
  * the valid room ids for a campaign - lets each scenario's roomId/enterFrom be
@@ -84,8 +130,10 @@ type SweepScenario<C extends SweepCampaign = SweepCampaign> = {
    * history:
    * - "$$startingRoom": roomId IS this character's starting room, so they are
    *   shown at their spawn (throws if roomId is not their start room)
-   * - a room id: enter roomId through the door from that (adjacent) room, so
-   *   the character stands at that door - deterministic given the layout
+   * - a room id: level-select into that room first, so roomId is entered with
+   *   it as the previous room. For an adjacent room the character stands at
+   *   the door back to it; for a non-adjacent one the level-select falls
+   *   through to roomId's own first door - either way deterministic
    * - "$$final": roomId's only door is the game-finishing (usually exit-only)
    *   door; enter through it - for the final room, which has no neighbour to
    *   name
@@ -105,29 +153,30 @@ type SweepScenario<C extends SweepCampaign = SweepCampaign> = {
    * (via window.__e2e_fastForwardMs, while the game speed stays zero) to each
    * time in turn, capturing every angle at each - so a scenario's setup plays
    * out deterministically (items falling, pickups collected, floating text
-   * expiring) across the captures. Suffixes the screenshot names (eg `-90ms`)
+   * expiring) across the captures. Omitted, the room is captured as entered
    */
   captureTimesMs?: number[];
   /**
-   * appended to the room id in the test title and screenshot names, to
-   * distinguish this scenario from another sweeping the same room (eg
-   * `-anim`)
-   */
-  nameSuffix?: string;
-  /**
-   * the angles (degrees) to screenshot at: either an explicit list, or a
-   * `startAngle`→`endAngle` arc sampled every `sweepIntervalDegrees`
-   */
-  angles:
-    | { startAngle: number; endAngle: number; sweepIntervalDegrees: number }
-    | number[];
-  /**
    * capture in each of these sprite options in turn, instead of just the
    * platform default (BlockStack colourised) - guards the palette-swapped
-   * rendering of the alternate sheets/modes. Each non-default option
-   * suffixes its screenshot names (eg `-toppy`, `-uncolourised`)
+   * rendering of the alternate sheets/modes
    */
   spriteOptions?: SpriteOption[];
+  /**
+   * how many pixels may differ from the baseline, loosening the shared
+   * room-screenshot budget (zero) for scenarios whose frames legitimately
+   * jitter by a handful of pixels
+   */
+  maxDiffPixels?: number;
+  /**
+   * what fraction of pixels may differ from the baseline. Replaces the
+   * pixel-count budget, for frames compared against each other rather than
+   * against a pinned image - the warp meshes soften edges, so a proportional
+   * budget absorbs that while a real discontinuity (many percent) still fails
+   */
+  maxDiffPixelRatio?: number;
+  /** which frames to screenshot, and how the camera reaches them */
+  angles: SweepAngles;
 };
 
 /**
@@ -145,7 +194,7 @@ const scenarios: readonly SweepScenario[] = [
     campaign: "original",
     // entered through the door from adjacent blacktooth12:
     enterFrom: "blacktooth12",
-    angles: [0, 20, 44.999, 45.001, 70],
+    angles: [0, 20, 44.999, 45.001, 70, 90],
     emulatedResolution: "$$default",
     character: "head",
   }),
@@ -163,7 +212,7 @@ const scenarios: readonly SweepScenario[] = [
     campaign: "original",
     // the final room's only door is the game-finishing exit door:
     enterFrom: "$$final",
-    angles: { startAngle: 0, endAngle: 90, sweepIntervalDegrees: 10 },
+    angles: angleRange(0, 90, 10).toArray(),
     emulatedResolution: "$$default",
     character: "head",
   }),
@@ -193,7 +242,6 @@ const scenarios: readonly SweepScenario[] = [
     angles: [0],
     emulatedResolution: "amigaHiResPal",
     character: "head",
-    nameSuffix: "-anim",
     spriteOptions: [
       { name: "BlockStack", uncolourised: false },
       { name: "Toppy", uncolourised: false },
@@ -210,7 +258,7 @@ const scenarios: readonly SweepScenario[] = [
     character: "heels",
     // entered through the door from adjacent mirrors:
     enterFrom: "mirrors",
-    angles: { startAngle: 0, endAngle: 360, sweepIntervalDegrees: 18 },
+    angles: angleRange(0, 360, 18).toArray(),
     emulatedResolution: "$$default",
   }),
   sweepScenario({
@@ -254,14 +302,151 @@ const scenarios: readonly SweepScenario[] = [
     angles: [0, 0.000_1],
     emulatedResolution: "$$default",
   }),
+  sweepScenario({
+    // a tower room - towers are cylindrical and deliberately NOT mesh-warped,
+    // so its part-way angles confirm the towers slide as whole pillars rather
+    // than warping:
+    roomId: "egyptus7",
+    campaign: "original",
+    enterFrom: "finalroom",
+    character: "head",
+    // 44.999/45.001 sit a hair either side of the renderer hand-over, which
+    // falls at exactly 45°: below it the old-angle renderer still owns the
+    // scene, above it the new-angle one does, and their scroll is
+    // all-but-identical there - so a well-behaved hand-over differs only by the
+    // art/angle flip:
+    angles: [0, 20, 44.999, 45.001, 70, 90],
+    emulatedResolution: "$$default",
+    // part-way frames wobble by a pixel or two (blended scroll settling to
+    // within the scroll-ease dead-zone, pixelate-filter texture rounding).
+    // Allow that small jitter while still catching real regressions - a
+    // misaligned item or an un-warped floor differs by thousands of pixels:
+    maxDiffPixels: 600,
+  }),
+  sweepScenario({
+    // lamps and their light beams (tile layout, terminus, mirrors' beam
+    // reflection physics):
+    roomId: "lamp",
+    campaign: "rotate-camera-test",
+    // the room the campaign boots head into, which no scenario captures:
+    enterFrom: "cycles",
+    character: "head",
+    angles: [0, 90, 180, 270],
+    emulatedResolution: "$$default",
+    spriteOptions: [{ name: "BlockStack", uncolourised: false }],
+    // the playable can drift a few pixels from its spawn before the game speed
+    // is zeroed (eg when it spawns on a conveyor), which reads as a
+    // sprite-sized diff. Real regressions in what these rooms guard (item
+    // placement, door/mirror structure) are thousands of pixels:
+    maxDiffPixels: 1_000,
+  }),
+  sweepScenario({
+    // doors on all four sides at z=0 (post widths, top frame placement,
+    // thresholds):
+    roomId: "4doors",
+    campaign: "rotate-camera-test",
+    enterFrom: "cycles",
+    character: "head",
+    angles: [0, 90, 180, 270],
+    emulatedResolution: "$$default",
+    spriteOptions: [{ name: "BlockStack", uncolourised: false }],
+    maxDiffPixels: 1_000,
+  }),
+  sweepScenario({
+    // doors on all four sides raised up high (legs, floating thresholds and
+    // their hint shadows):
+    roomId: "4doorhi",
+    campaign: "rotate-camera-test",
+    enterFrom: "cycles",
+    character: "head",
+    angles: [0, 90, 180, 270],
+    emulatedResolution: "$$default",
+    spriteOptions: [{ name: "BlockStack", uncolourised: false }],
+    maxDiffPixels: 1_000,
+  }),
+  sweepScenario({
+    // both mirror orientations with adjacent items (face-on pane flipping with
+    // the camera, reflection placement):
+    roomId: "mirrors",
+    campaign: "rotate-camera-test",
+    enterFrom: "cycles",
+    character: "head",
+    angles: [0, 90, 180, 270],
+    emulatedResolution: "$$default",
+    spriteOptions: [{ name: "BlockStack", uncolourised: false }],
+    maxDiffPixels: 1_000,
+  }),
+  sweepScenario({
+    // the start room at its four settled angles, entered via lamp so it is
+    // captured as a room entered with physics already frozen, rather than as
+    // the boot room the character was placed in while physics could still tick:
+    roomId: "start",
+    campaign: "rotate-camera-test",
+    enterFrom: "lamp",
+    character: "head",
+    angles: [0, 90, 180, 270],
+    emulatedResolution: "$$default",
+    maxDiffPixels: 1_000,
+  }),
+  sweepScenario({
+    // the floor's colour-clash rendering must survive to every rotated angle,
+    // which the colourised rotate-camera-test rooms cannot show:
+    roomId: "safari6triple",
+    campaign: "original",
+    enterFrom: "finalroom",
+    character: "head",
+    angles: [0, 90, 180, 270],
+    emulatedResolution: "$$default",
+    spriteOptions: [{ name: "BlockStack", uncolourised: true }],
+    maxDiffPixels: 1_000,
+  }),
+  ...(["blacktooth15", "blacktooth1head", "blacktooth13"] as const).map(
+    (roomId) =>
+      // the turn's start must be continuous: an infinitesimal step into a turn
+      // renders as the angle it left, both from the base angle and from an
+      // already-rotated one. These rooms are a rendering stress test for that -
+      // blacktooth1head in particular puts a character in shot:
+      sweepScenario({
+        roomId,
+        campaign: "original",
+        enterFrom: "finalroom",
+        character: "head",
+        angles: {
+          type: "identicallyRenderingAngles",
+          groups: [
+            [0, epsilonDegrees],
+            [90, 90 + epsilonDegrees],
+          ],
+        },
+        emulatedResolution: "$$default",
+        // the warp meshes soften edges even this far into a turn; a real
+        // discontinuity is many percent:
+        maxDiffPixelRatio: 0.02,
+      }),
+  ),
 ];
 
-const sweepDegreesForScenario = ({
+const heldAt = (degrees: number): SweepCapture => ({
+  degrees,
+  baselineDegrees: degrees,
+});
+
+const capturesForScenario = ({
   angles,
-}: SweepScenario): readonly number[] =>
-  Array.isArray(angles) ? angles : (
-    sweptAngles(angles.startAngle, angles.endAngle, angles.sweepIntervalDegrees)
-  );
+}: SweepScenario): readonly SweepCapture[] => {
+  if (Array.isArray(angles)) {
+    return angles.map(heldAt);
+  }
+  // every angle in a group is compared against the baseline named for the
+  // group's first angle:
+  return angles.groups.flatMap((group) => {
+    const [baselineDegrees] = group;
+    return group.map((degrees): SweepCapture => ({
+      degrees,
+      baselineDegrees,
+    }));
+  });
+};
 
 const rotateCameraTestCampaignUrl =
   "/?campaignName=rotate-camera-test&campaignAuthorUserId=2924c962-99f1-4dd2-9b9c-fef832dc991b&cheats=1&track=0";
@@ -345,6 +530,12 @@ const enterRoom = async (
 ) => {
   const { roomId, enterFrom } = scenario;
 
+  const currentRoom = () =>
+    page.evaluate(() => {
+      const { gameState } = window._e2e_gamePageGameAi!;
+      return gameState.characterRooms[gameState.currentCharacterName]?.id;
+    });
+
   const levelSelectTo = async (room: string) => {
     const renderEvent = waitForRoomRenderEvent(
       page,
@@ -358,10 +549,7 @@ const enterRoom = async (
   if (enterFrom === "$$startingRoom") {
     // roomId is this character's starting room, so they are already stood at
     // their spawn - just confirm the boot landed them there:
-    const currentRoomId = await page.evaluate(() => {
-      const { gameState } = window._e2e_gamePageGameAi!;
-      return gameState.characterRooms[gameState.currentCharacterName]?.id;
-    });
+    const currentRoomId = await currentRoom();
     if (currentRoomId !== roomId) {
       throw new Error(
         `scenario ${roomId} declares enterFrom "$$startingRoom" but the character is in ${currentRoomId} - roomId is not this character's starting room`,
@@ -371,10 +559,12 @@ const enterRoom = async (
   }
 
   // enter through a door: for a named adjacent room, first route the character
-  // into it so the level-select into roomId picks the door back to it. A
-  // "$$final" room has only its finishing door, so a direct level-select
-  // falls through to it:
-  if (enterFrom !== "$$final") {
+  // into it so the level-select into roomId picks the door back to it - unless
+  // the boot already left them there, since re-entering it would re-render a
+  // room we only pass through (the campaign's boot room can be a heavy one). A
+  // "$$final" room has only its finishing door, so a direct level-select falls
+  // through to it:
+  if (enterFrom !== "$$final" && (await currentRoom()) !== enterFrom) {
     await levelSelectTo(enterFrom);
   }
   await levelSelectTo(roomId);
@@ -442,19 +632,104 @@ const bootScenario = async (page: Page, scenario: SweepScenario) => {
   await page.waitForTimeout(500);
 };
 
-/** the screenshot/test-title base name for a scenario */
-const scenarioName = ({ roomId, nameSuffix }: SweepScenario): string =>
-  `${roomId}${nameSuffix ?? ""}`;
+/**
+ * the part of a capture's file name that identifies the room and the state it
+ * is entered in - everything that does not vary within a scenario (see
+ * {@link captureFileName})
+ */
+const scenarioBaseName = ({
+  roomId,
+  character,
+  enterFrom,
+  emulatedResolution,
+}: SweepScenario): string =>
+  [
+    roomId,
+    character === "head" ? "" : `-${character}`,
+    enterFrom === "$$startingRoom" ? ""
+    : enterFrom === "$$final" ? "-from-final"
+    : `-from-${enterFrom}`,
+    emulatedResolution === "$$default" ? "" : `-${emulatedResolution}`,
+  ].join("");
 
 /**
- * the screenshot-name suffix for the sprite option a capture is taken in
- * ("" for the default BlockStack colourised)
+ * the screenshot file name for one captured frame. It is a pure function of
+ * everything that affects what is drawn: the room, then every parameter that
+ * is NOT at its default, always in this order:
+ *
+ * | parameter          | default (no suffix)   | suffix when set                |
+ * | ------------------ | --------------------- | ------------------------------ |
+ * | roomId             | -                     | the base name                  |
+ * | character          | head                  | `-heels`                       |
+ * | enterFrom          | "$$startingRoom"      | `-from-<room>` / `-from-final` |
+ * | emulatedResolution | "$$default"           | `-<resolutionName>`            |
+ * | spriteOption       | BlockStack colourised | `-uncolourised` / `-toppy`     |
+ * | angle              | 0°                    | `-<degrees>deg`                |
+ * | capture time       | 0ms                   | `-<milliseconds>ms`            |
+ *
+ * so two frames drawn from identical parameters name one file, and are
+ * asserted against one baseline - which is the point: identical parameters
+ * must produce an identical image. Playwright sanitises the `.` of a
+ * fractional angle to a `-`, so 44.999° lands in `...-44-999deg.png`
  */
-const spriteOptionSuffix = (spriteOption: SpriteOption | undefined): string =>
-  spriteOption === undefined ? ""
-  : spriteOption.uncolourised ? "-uncolourised"
-  : spriteOption.name === "BlockStack" ? ""
-  : `-${spriteOption.name.toLowerCase()}`;
+const captureFileName = (
+  scenario: SweepScenario,
+  spriteOption: SpriteOption | undefined,
+  captureTimeMs: number,
+  { baselineDegrees }: SweepCapture,
+): string =>
+  [
+    scenarioBaseName(scenario),
+    spriteOption === undefined ? "" : spriteOptionSuffix(spriteOption),
+    baselineDegrees === 0 ? "" : `-${baselineDegrees}deg`,
+    captureTimeMs === 0 ? "" : `-${captureTimeMs}ms`,
+    ".png",
+  ].join("");
+
+const count = (n: number, noun: string): string =>
+  `${n} ${noun}${n === 1 ? "" : "s"}`;
+
+/**
+ * the axes a scenario captures over, so two scenarios of the same room in the
+ * same state - differing only in which angles/sheets/times they capture - are
+ * still told apart by their test titles
+ */
+const scenarioAxes = (scenario: SweepScenario): string => {
+  const { angles, spriteOptions, captureTimesMs } = scenario;
+  const anglesPart =
+    !Array.isArray(angles) && angles.type === "identicallyRenderingAngles" ?
+      count(angles.groups.length, "identically rendering angle group")
+    : count(capturesForScenario(scenario).length, "angle");
+
+  return [
+    anglesPart,
+    spriteOptions === undefined ? "" : (
+      `, ${count(spriteOptions.length, "sprite option")}`
+    ),
+    captureTimesMs === undefined ? "" : (
+      `, ${count(captureTimesMs.length, "capture time")}`
+    ),
+  ].join("");
+};
+
+const screenshotOptionsForScenario = (
+  scenario: SweepScenario,
+  projectName: string,
+) => {
+  const options = roomScreenshotOptions(projectName);
+  if (scenario.maxDiffPixelRatio !== undefined) {
+    // a proportional budget replaces the pixel-count one rather than adding to
+    // it - leaving both set would keep the stricter of the two:
+    return {
+      ...options,
+      maxDiffPixels: undefined,
+      maxDiffPixelRatio: scenario.maxDiffPixelRatio,
+    };
+  }
+  return scenario.maxDiffPixels === undefined ?
+      options
+    : { ...options, maxDiffPixels: scenario.maxDiffPixels };
+};
 
 /**
  * stop every sprite animation at frame 0. Animations advance on the real
@@ -480,7 +755,7 @@ const freezeAnimations = (page: Page) =>
   });
 
 for (const scenario of scenarios) {
-  test(`camera rotation sweep renders deterministically: ${scenarioName(scenario)}`, async ({
+  test(`camera angles render deterministically: ${scenarioBaseName(scenario)} (${scenarioAxes(scenario)})`, async ({
     page,
   }, testInfo) => {
     test.setTimeout(360_000);
@@ -499,8 +774,8 @@ for (const scenario of scenarios) {
       // pass when the scenario names no times), capturing every angle at
       // each - so all of a time's angles show the same simulated moment:
       let advancedMs = 0;
-      for (const captureTimeMs of scenario.captureTimesMs ?? [undefined]) {
-        if (captureTimeMs !== undefined) {
+      for (const captureTimeMs of scenario.captureTimesMs ?? [0]) {
+        if (captureTimeMs > 0) {
           await page.evaluate(
             (ms) => window.__e2e_fastForwardMs!(ms),
             captureTimeMs - advancedMs,
@@ -512,8 +787,8 @@ for (const scenario of scenarios) {
         }
         await freezeAnimations(page);
 
-        for (const degrees of sweepDegreesForScenario(scenario)) {
-          await holdCameraAtDegrees(page, degrees);
+        for (const capture of capturesForScenario(scenario)) {
+          await holdCameraAtDegrees(page, capture.degrees);
           // let the held frame re-project and the blended scroll settle:
           await page.waitForTimeout(600);
           // sprites recreated since the last freeze (eg by the quarter-flip
@@ -522,11 +797,9 @@ for (const scenario of scenarios) {
           await freezeAnimations(page);
           await page.waitForTimeout(100);
 
-          const timeSuffix =
-            captureTimeMs === undefined ? "" : `-${captureTimeMs}ms`;
           await expect(page).toHaveScreenshot(
-            `${scenarioName(scenario)}${spriteOptionSuffix(spriteOption)}-sweep-${degrees}deg${timeSuffix}.png`,
-            roomScreenshotOptions(testInfo.project.name),
+            captureFileName(scenario, spriteOption, captureTimeMs, capture),
+            screenshotOptionsForScenario(scenario, testInfo.project.name),
           );
         }
       }
