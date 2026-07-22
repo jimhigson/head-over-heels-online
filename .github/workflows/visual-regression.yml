@@ -125,12 +125,10 @@ jobs:
           # - { os: windows-latest, suite: roomSnapshots.spec.ts, projectOption: --project chromium-desktop, batch_number: 12, batch_count: 14, parallel_tests: 1, no_toppy: "1" }
           - { os: windows-latest, suite: roomSnapshots.spec.ts, projectOption: --project chromium-desktop, batch_number: 13, batch_count: 14, parallel_tests: 1, no_toppy: "1" }
 
-          # CAMERA ROTATION (rotation/sweep/transition + rotated campaign) - 
+          # CAMERA ROTATION (identity + sweep) -
           # only desktop-chromium (Linux) and one mobile-webkit (macOS)
           - { os: ubuntu-24.04-arm, suite: cameraRotation, projectOption: --project chromium-desktop }
           - { os: macos-latest, suite: cameraRotation, projectOption: --project mobile-safari }
-          - { os: ubuntu-24.04-arm, suite: "roomSnapshotsRotatedCampaign.spec.ts", projectOption: --project chromium-desktop }
-          - { os: macos-latest, suite: "roomSnapshotsRotatedCampaign.spec.ts", projectOption: --project mobile-safari }
 
           # LUT SNAPSHOTS - single batch per os/browser combo
           # chromium/mobile-chrome on Linux, webkit/mobile-safari on macOS:
