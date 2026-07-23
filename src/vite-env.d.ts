@@ -21,6 +21,7 @@ interface ImportMetaEnv {
   readonly VITE_GAME_URL: string;
   readonly VITE_LOG_MOVE_ITEM?: string;
   readonly VITE_GIT_BRANCH?: string;
+  readonly VITE_GIT_PR_NUMBER?: string;
   readonly VITE_SUPABASE_URL: string;
   readonly VITE_SUPABASE_ANON_KEY: string;
 }
