@@ -6,6 +6,7 @@ import { type GameApi } from "../../game/GameApi";
 import { useAppSelector } from "../../store/hooks";
 import { selectUpscale } from "../../store/slices/upscale/upscaleSlice";
 import { DialogPortalTargetContext } from "../../ui/DialogPortal";
+import { SoftwarePointer } from "./SoftwarePointer";
 
 export type DialogsInCanvasProps = PropsWithChildren<{
   gameApi: GameApi<string>;
@@ -49,6 +50,10 @@ export const DialogsInCanvas = ({
   return createPortal(
     <div
       ref={setMirrorElement}
+      // the os pointer is hidden everywhere in the subtree (beating eg
+      // cursor-pointer on buttons) - the SoftwarePointer below replaces it,
+      // warped by the crt shaders along with the dialogs
+      class="[&_*]:!cursor-none"
       style={{
         position: "absolute",
         left: 0,
@@ -56,6 +61,7 @@ export const DialogsInCanvas = ({
         width: canvasSize.x,
         height: canvasSize.y,
         overflow: "hidden",
+        cursor: "none",
         // always a transform (even identity) so this is the containing block
         // for the dialogs' position:fixed, keeping them inside the mirrored
         // subtree and centring them on the canvas
@@ -75,6 +81,7 @@ export const DialogsInCanvas = ({
             }}
           >
             {children}
+            <SoftwarePointer />
           </DialogPortalTargetContext.Provider>
         )}
       </CssUpscaleVariables>

@@ -1226,14 +1226,6 @@ exports[`for tailwind plugin we must have all possible frames and animations 1`]
       "y": 10,
     },
   },
-  "editor.tool.pointer": {
-    "frame": {
-      "h": 12,
-      "w": 12,
-      "x": 679,
-      "y": 10,
-    },
-  },
   "editor.tool.save": {
     "frame": {
       "h": 12,
@@ -3616,6 +3608,14 @@ exports[`for tailwind plugin we must have all possible frames and animations 1`]
       "w": 24,
       "x": 426,
       "y": 152,
+    },
+  },
+  "pointer": {
+    "frame": {
+      "h": 12,
+      "w": 12,
+      "x": 679,
+      "y": 10,
     },
   },
   "portableTeleporter": {
