@@ -1,3 +1,4 @@
+import { RoundedCornersFilter } from "@blockstacking/jims-shaders";
 import { Application, Sprite, TextureStyle, type WebGLRenderer } from "pixi.js";
 
 import { type CampaignLocator } from "../model/modelTypes";
@@ -181,6 +182,10 @@ export const gameMain = async <RoomId extends string>(
         // over the whole canvas:
         const { gameEngineUpscale } = store.getState().upscale.upscale;
         sprite.scale = 1 / gameEngineUpscale;
+        // black rounded corners on the dialogs only (not the game): the
+        // shader darkens rgb but keeps alpha, so it only shows where the
+        // dialogs actually have pixels
+        sprite.filters = [new RoundedCornersFilter()];
         // after mainContainer, so the mirror draws over the room and hud:
         app.stage.addChild(sprite);
         disposeMirror = () => {
