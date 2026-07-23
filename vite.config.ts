@@ -14,6 +14,15 @@ import { hmrOnlyPreact } from "./hmrOnlyPreact";
 process.env.TAILWIND_APP = "game";
 
 const readGitBranch = (): string => {
+  // netlify builds from a detached HEAD so asking git for the branch doesn't
+  // work there; it provides the branch name in the build env instead. HEAD is
+  // the pr's source branch name, whereas BRANCH can be a fetched ref like
+  // pull/123/head:
+  // https://docs.netlify.com/configure-builds/environment-variables/#git-metadata
+  const netlifyBranch = process.env.HEAD || process.env.BRANCH;
+  if (netlifyBranch) {
+    return netlifyBranch;
+  }
   try {
     return execSync("git rev-parse --abbrev-ref HEAD").toString().trim();
   } catch {
@@ -23,6 +32,12 @@ const readGitBranch = (): string => {
 
 // put git branch on env for dev builds:
 process.env.VITE_GIT_BRANCH = readGitBranch();
+
+// netlify deploy previews give the pr number as REVIEW_ID:
+// https://docs.netlify.com/configure-builds/environment-variables/#git-metadata
+if (process.env.REVIEW_ID) {
+  process.env.VITE_GIT_PR_NUMBER = process.env.REVIEW_ID;
+}
 
 const oneWeekInSeconds = 60 * 60 * 24 * 7;
 

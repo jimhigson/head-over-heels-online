@@ -18,6 +18,8 @@ const deployedMajor = parseMajor(deployedVersion)!;
 export const GitRepoInfo = () => {
   const { data: latestRelease } = useGetLatestReleaseQuery();
 
+  const prNumber = import.meta.env.VITE_GIT_PR_NUMBER;
+
   const latestTag = latestRelease?.tag_name;
   const latestMajor =
     latestTag === undefined ? undefined : parseMajor(latestTag);
@@ -46,11 +48,6 @@ export const GitRepoInfo = () => {
             {/* extra space pulls away from rounded corners of phone screens and app windows */}
             {deployedMajor}
           </span>
-          {import.meta.env.DEV && (
-            <span class="text-single-line screenshot-mask mr-1 inline-block max-w-8 whitespace-nowrap">
-              {` + ${import.meta.env.VITE_GIT_BRANCH}`}
-            </span>
-          )}
           {isOutdated && (
             <span class="text-single-line animate-flash text-midRed zx:text-zxRed toppy:text-toppyPink2">
               {/* extra space pulls away from rounded corners of phone screens and app windows */}
@@ -58,6 +55,22 @@ export const GitRepoInfo = () => {
             </span>
           )}
         </a>
+        {(import.meta.env.DEV || prNumber !== undefined) && (
+          <span class="text-single-line screenshot-mask mr-1 inline-block max-w-24 whitespace-nowrap bg-pastelBlueHalfbrite text-metallicBlueHalfbrite zx:bg-zxBlack toppy:bg-toppyCool3">
+            {" "}
+            {prNumber !== undefined && (
+              <a
+                href={`${repository.url}/pull/${prNumber}`}
+                target="_blank"
+                onClick={linkOpenExternalClickHandler}
+                class="bitmap-text-link"
+              >
+                {`#${prNumber} `}
+              </a>
+            )}
+            {import.meta.env.VITE_GIT_BRANCH}
+          </span>
+        )}
       </span>
       <a
         href={repository.url}
