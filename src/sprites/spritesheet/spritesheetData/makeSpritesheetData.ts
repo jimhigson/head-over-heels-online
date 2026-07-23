@@ -177,7 +177,7 @@ export const makeBaseSpritesheetData = (
 
 /**
  * the base sheet data plus every suffixed variant id
- * (`turtle.towards.doughnutted`, `door.frame.generic.x.near.toCyan`, …), whose
+ * (`turtle.towards.doughnutted`, `door.frame.generic.x.near.hue=cyan`, …), whose
  * entries alias their base frame's rect until a bake re-points them at the
  * packed strip
  */

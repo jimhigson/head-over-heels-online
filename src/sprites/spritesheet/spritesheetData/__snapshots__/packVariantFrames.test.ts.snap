@@ -2,7 +2,7 @@
 
 exports[`layout snapshot 1`] = `
 {
-  "cellCount": 616,
+  "cellCount": 624,
   "stripHeight": 575,
 }
 `;

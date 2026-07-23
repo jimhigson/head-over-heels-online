@@ -101,14 +101,28 @@ type NeverReflectedIdPattern =
  */
 type DoorFrameIdPattern = `door.frame.${string}`;
 
+/** the arcade button body art, colour-baked per action */
+type ButtonShellIdPattern = "button.pressed" | "button";
+
 export const doorHueSuffixes = {
-  toCyan: "cyan",
-  toGreen: "green",
-  toMagenta: "magenta",
-  toWhite: "white",
-  toYellow: "yellow",
+  "hue=cyan": "cyan",
+  "hue=green": "green",
+  "hue=magenta": "magenta",
+  "hue=white": "white",
+  "hue=yellow": "yellow",
 } as const satisfies Record<string, ZxSpectrumRoomHue>;
 export type DoorHueSuffix = keyof typeof doorHueSuffixes;
+
+/** the four on-screen action buttons, keyed suffix → action (which drives buttonColours) */
+export const arcadeButtonSuffixes = {
+  "action=carry": "carry",
+  "action=carryAndJump": "carryAndJump",
+  "action=fire": "fire",
+  "action=jump": "jump",
+} as const;
+export type ArcadeButtonSuffix = keyof typeof arcadeButtonSuffixes;
+export type ArcadeButtonAction =
+  (typeof arcadeButtonSuffixes)[ArcadeButtonSuffix];
 
 /**
  * every suffixed variant texture id: ordinary frames in the sheet data whose
@@ -117,6 +131,7 @@ export type DoorHueSuffix = keyof typeof doorHueSuffixes;
  */
 export type VariantTextureId =
   | `${Exclude<BaseTextureId, NeverReflectedIdPattern>}.mirrorReflection`
+  | `${Extract<BaseTextureId, ButtonShellIdPattern>}.${ArcadeButtonSuffix}`
   | `${Extract<BaseTextureId, DeactivatedIdPattern>}.deactivated`
   | `${Extract<BaseTextureId, DoorFrameIdPattern>}.${DoorHueSuffix}`
   | `${Extract<BaseTextureId, MonsterIdPattern>}.doughnutted`
@@ -151,15 +166,19 @@ export type SceneryPlayerableId = Extract<
 export type DoorFrameId = Extract<BaseTextureId, DoorFrameIdPattern>;
 
 const variantSuffixes = [
+  "action=carry",
+  "action=carryAndJump",
+  "action=fire",
+  "action=jump",
   "deactivated",
   "doughnutted",
   "mirrorReflection",
   "sceneryPlayer",
-  "toCyan",
-  "toGreen",
-  "toMagenta",
-  "toWhite",
-  "toYellow",
+  "hue=cyan",
+  "hue=green",
+  "hue=magenta",
+  "hue=white",
+  "hue=yellow",
 ] as const;
 export type VariantSuffix = (typeof variantSuffixes)[number];
 
@@ -231,7 +250,14 @@ const isMonsterId = (id: string): boolean => matchesAny(id, monsterPrefixes);
  */
 const isDoorFrameId = (id: string): boolean => id.startsWith("door.frame.");
 
+const isButtonShellId = (id: string): boolean =>
+  id === "button" || id === "button.pressed";
+
 const variantEligible: Record<VariantSuffix, (id: string) => boolean> = {
+  "action=carry": isButtonShellId,
+  "action=carryAndJump": isButtonShellId,
+  "action=fire": isButtonShellId,
+  "action=jump": isButtonShellId,
   deactivated: (id) =>
     isMonsterId(id) ||
     id === "bag" ||
@@ -248,11 +274,11 @@ const variantEligible: Record<VariantSuffix, (id: string) => boolean> = {
     /^(head|heels)\.(blinking|idle|looking1|looking2|standing|walking)\./.test(
       id,
     ),
-  toCyan: isDoorFrameId,
-  toGreen: isDoorFrameId,
-  toMagenta: isDoorFrameId,
-  toWhite: isDoorFrameId,
-  toYellow: isDoorFrameId,
+  "hue=cyan": isDoorFrameId,
+  "hue=green": isDoorFrameId,
+  "hue=magenta": isDoorFrameId,
+  "hue=white": isDoorFrameId,
+  "hue=yellow": isDoorFrameId,
 };
 
 type FrameEntry = { frame: AppSpriteFrame };
@@ -264,7 +290,7 @@ type FrameEntry = { frame: AppSpriteFrame };
  * merged data
  */
 export const isVariantId = (id: string): id is VariantTextureId =>
-  /\.(deactivated|doughnutted|mirrorReflection|sceneryPlayer|toCyan|toGreen|toMagenta|toWhite|toYellow)$/.test(
+  /\.(action=carry|action=carryAndJump|action=fire|action=jump|deactivated|doughnutted|mirrorReflection|sceneryPlayer|hue=cyan|hue=green|hue=magenta|hue=white|hue=yellow)$/.test(
     id,
   );
 

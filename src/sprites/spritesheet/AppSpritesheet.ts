@@ -31,7 +31,7 @@ export type AppSpritesheetData = {
 
 /**
  * sheet data additionally carrying every variant-suffixed id
- * (`turtle.towards.doughnutted`, `door.frame.generic.x.near.toCyan`, …):
+ * (`turtle.towards.doughnutted`, `door.frame.generic.x.near.hue=cyan`, …):
  * re-pointed at packed strip rects where the sheet bakes that variant,
  * aliases of the base rects otherwise
  */

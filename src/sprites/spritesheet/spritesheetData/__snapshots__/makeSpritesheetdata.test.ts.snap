@@ -938,6 +938,38 @@ exports[`for tailwind plugin we must have all possible frames and animations 1`]
       "y": 740,
     },
   },
+  "button.action=carry": {
+    "frame": {
+      "h": 28,
+      "w": 32,
+      "x": 298,
+      "y": 740,
+    },
+  },
+  "button.action=carryAndJump": {
+    "frame": {
+      "h": 28,
+      "w": 32,
+      "x": 298,
+      "y": 740,
+    },
+  },
+  "button.action=fire": {
+    "frame": {
+      "h": 28,
+      "w": 32,
+      "x": 298,
+      "y": 740,
+    },
+  },
+  "button.action=jump": {
+    "frame": {
+      "h": 28,
+      "w": 32,
+      "x": 298,
+      "y": 740,
+    },
+  },
   "button.mirrorReflection": {
     "frame": {
       "h": 28,
@@ -947,6 +979,38 @@ exports[`for tailwind plugin we must have all possible frames and animations 1`]
     },
   },
   "button.pressed": {
+    "frame": {
+      "h": 28,
+      "w": 32,
+      "x": 331,
+      "y": 740,
+    },
+  },
+  "button.pressed.action=carry": {
+    "frame": {
+      "h": 28,
+      "w": 32,
+      "x": 331,
+      "y": 740,
+    },
+  },
+  "button.pressed.action=carryAndJump": {
+    "frame": {
+      "h": 28,
+      "w": 32,
+      "x": 331,
+      "y": 740,
+    },
+  },
+  "button.pressed.action=fire": {
+    "frame": {
+      "h": 28,
+      "w": 32,
+      "x": 331,
+      "y": 740,
+    },
+  },
+  "button.pressed.action=jump": {
     "frame": {
       "h": 28,
       "w": 32,
@@ -1950,7 +2014,7 @@ exports[`for tailwind plugin we must have all possible frames and animations 1`]
       "y": 617,
     },
   },
-  "door.frame.generic.x.far.toCyan": {
+  "door.frame.generic.x.far.hue=cyan": {
     "frame": {
       "h": 57,
       "pivot": {
@@ -1962,7 +2026,7 @@ exports[`for tailwind plugin we must have all possible frames and animations 1`]
       "y": 617,
     },
   },
-  "door.frame.generic.x.far.toGreen": {
+  "door.frame.generic.x.far.hue=green": {
     "frame": {
       "h": 57,
       "pivot": {
@@ -1974,7 +2038,7 @@ exports[`for tailwind plugin we must have all possible frames and animations 1`]
       "y": 617,
     },
   },
-  "door.frame.generic.x.far.toMagenta": {
+  "door.frame.generic.x.far.hue=magenta": {
     "frame": {
       "h": 57,
       "pivot": {
@@ -1986,7 +2050,7 @@ exports[`for tailwind plugin we must have all possible frames and animations 1`]
       "y": 617,
     },
   },
-  "door.frame.generic.x.far.toWhite": {
+  "door.frame.generic.x.far.hue=white": {
     "frame": {
       "h": 57,
       "pivot": {
@@ -1998,7 +2062,7 @@ exports[`for tailwind plugin we must have all possible frames and animations 1`]
       "y": 617,
     },
   },
-  "door.frame.generic.x.far.toYellow": {
+  "door.frame.generic.x.far.hue=yellow": {
     "frame": {
       "h": 57,
       "pivot": {
@@ -2022,7 +2086,7 @@ exports[`for tailwind plugin we must have all possible frames and animations 1`]
       "y": 623,
     },
   },
-  "door.frame.generic.x.near.toCyan": {
+  "door.frame.generic.x.near.hue=cyan": {
     "frame": {
       "h": 58,
       "pivot": {
@@ -2034,7 +2098,7 @@ exports[`for tailwind plugin we must have all possible frames and animations 1`]
       "y": 623,
     },
   },
-  "door.frame.generic.x.near.toGreen": {
+  "door.frame.generic.x.near.hue=green": {
     "frame": {
       "h": 58,
       "pivot": {
@@ -2046,7 +2110,7 @@ exports[`for tailwind plugin we must have all possible frames and animations 1`]
       "y": 623,
     },
   },
-  "door.frame.generic.x.near.toMagenta": {
+  "door.frame.generic.x.near.hue=magenta": {
     "frame": {
       "h": 58,
       "pivot": {
@@ -2058,7 +2122,7 @@ exports[`for tailwind plugin we must have all possible frames and animations 1`]
       "y": 623,
     },
   },
-  "door.frame.generic.x.near.toWhite": {
+  "door.frame.generic.x.near.hue=white": {
     "frame": {
       "h": 58,
       "pivot": {
@@ -2070,7 +2134,7 @@ exports[`for tailwind plugin we must have all possible frames and animations 1`]
       "y": 623,
     },
   },
-  "door.frame.generic.x.near.toYellow": {
+  "door.frame.generic.x.near.hue=yellow": {
     "frame": {
       "h": 58,
       "pivot": {
@@ -2094,7 +2158,7 @@ exports[`for tailwind plugin we must have all possible frames and animations 1`]
       "y": 616,
     },
   },
-  "door.frame.generic.x.top.toCyan": {
+  "door.frame.generic.x.top.hue=cyan": {
     "frame": {
       "h": 36,
       "pivot": {
@@ -2106,7 +2170,7 @@ exports[`for tailwind plugin we must have all possible frames and animations 1`]
       "y": 616,
     },
   },
-  "door.frame.generic.x.top.toGreen": {
+  "door.frame.generic.x.top.hue=green": {
     "frame": {
       "h": 36,
       "pivot": {
@@ -2118,7 +2182,7 @@ exports[`for tailwind plugin we must have all possible frames and animations 1`]
       "y": 616,
     },
   },
-  "door.frame.generic.x.top.toMagenta": {
+  "door.frame.generic.x.top.hue=magenta": {
     "frame": {
       "h": 36,
       "pivot": {
@@ -2130,7 +2194,7 @@ exports[`for tailwind plugin we must have all possible frames and animations 1`]
       "y": 616,
     },
   },
-  "door.frame.generic.x.top.toWhite": {
+  "door.frame.generic.x.top.hue=white": {
     "frame": {
       "h": 36,
       "pivot": {
@@ -2142,7 +2206,7 @@ exports[`for tailwind plugin we must have all possible frames and animations 1`]
       "y": 616,
     },
   },
-  "door.frame.generic.x.top.toYellow": {
+  "door.frame.generic.x.top.hue=yellow": {
     "frame": {
       "h": 36,
       "pivot": {
@@ -2166,7 +2230,7 @@ exports[`for tailwind plugin we must have all possible frames and animations 1`]
       "y": 617,
     },
   },
-  "door.frame.generic.x.whole.toCyan": {
+  "door.frame.generic.x.whole.hue=cyan": {
     "frame": {
       "h": 64,
       "pivot": {
@@ -2178,7 +2242,7 @@ exports[`for tailwind plugin we must have all possible frames and animations 1`]
       "y": 617,
     },
   },
-  "door.frame.generic.x.whole.toGreen": {
+  "door.frame.generic.x.whole.hue=green": {
     "frame": {
       "h": 64,
       "pivot": {
@@ -2190,7 +2254,7 @@ exports[`for tailwind plugin we must have all possible frames and animations 1`]
       "y": 617,
     },
   },
-  "door.frame.generic.x.whole.toMagenta": {
+  "door.frame.generic.x.whole.hue=magenta": {
     "frame": {
       "h": 64,
       "pivot": {
@@ -2202,7 +2266,7 @@ exports[`for tailwind plugin we must have all possible frames and animations 1`]
       "y": 617,
     },
   },
-  "door.frame.generic.x.whole.toWhite": {
+  "door.frame.generic.x.whole.hue=white": {
     "frame": {
       "h": 64,
       "pivot": {
@@ -2214,7 +2278,7 @@ exports[`for tailwind plugin we must have all possible frames and animations 1`]
       "y": 617,
     },
   },
-  "door.frame.generic.x.whole.toYellow": {
+  "door.frame.generic.x.whole.hue=yellow": {
     "frame": {
       "h": 64,
       "pivot": {
@@ -2238,7 +2302,7 @@ exports[`for tailwind plugin we must have all possible frames and animations 1`]
       "y": 617,
     },
   },
-  "door.frame.generic.y.far.toCyan": {
+  "door.frame.generic.y.far.hue=cyan": {
     "frame": {
       "h": 57,
       "pivot": {
@@ -2250,7 +2314,7 @@ exports[`for tailwind plugin we must have all possible frames and animations 1`]
       "y": 617,
     },
   },
-  "door.frame.generic.y.far.toGreen": {
+  "door.frame.generic.y.far.hue=green": {
     "frame": {
       "h": 57,
       "pivot": {
@@ -2262,7 +2326,7 @@ exports[`for tailwind plugin we must have all possible frames and animations 1`]
       "y": 617,
     },
   },
-  "door.frame.generic.y.far.toMagenta": {
+  "door.frame.generic.y.far.hue=magenta": {
     "frame": {
       "h": 57,
       "pivot": {
@@ -2274,7 +2338,7 @@ exports[`for tailwind plugin we must have all possible frames and animations 1`]
       "y": 617,
     },
   },
-  "door.frame.generic.y.far.toWhite": {
+  "door.frame.generic.y.far.hue=white": {
     "frame": {
       "h": 57,
       "pivot": {
@@ -2286,7 +2350,7 @@ exports[`for tailwind plugin we must have all possible frames and animations 1`]
       "y": 617,
     },
   },
-  "door.frame.generic.y.far.toYellow": {
+  "door.frame.generic.y.far.hue=yellow": {
     "frame": {
       "h": 57,
       "pivot": {
@@ -2310,7 +2374,7 @@ exports[`for tailwind plugin we must have all possible frames and animations 1`]
       "y": 623,
     },
   },
-  "door.frame.generic.y.near.toCyan": {
+  "door.frame.generic.y.near.hue=cyan": {
     "frame": {
       "h": 58,
       "pivot": {
@@ -2322,7 +2386,7 @@ exports[`for tailwind plugin we must have all possible frames and animations 1`]
       "y": 623,
     },
   },
-  "door.frame.generic.y.near.toGreen": {
+  "door.frame.generic.y.near.hue=green": {
     "frame": {
       "h": 58,
       "pivot": {
@@ -2334,7 +2398,7 @@ exports[`for tailwind plugin we must have all possible frames and animations 1`]
       "y": 623,
     },
   },
-  "door.frame.generic.y.near.toMagenta": {
+  "door.frame.generic.y.near.hue=magenta": {
     "frame": {
       "h": 58,
       "pivot": {
@@ -2346,7 +2410,7 @@ exports[`for tailwind plugin we must have all possible frames and animations 1`]
       "y": 623,
     },
   },
-  "door.frame.generic.y.near.toWhite": {
+  "door.frame.generic.y.near.hue=white": {
     "frame": {
       "h": 58,
       "pivot": {
@@ -2358,7 +2422,7 @@ exports[`for tailwind plugin we must have all possible frames and animations 1`]
       "y": 623,
     },
   },
-  "door.frame.generic.y.near.toYellow": {
+  "door.frame.generic.y.near.hue=yellow": {
     "frame": {
       "h": 58,
       "pivot": {
@@ -2382,7 +2446,7 @@ exports[`for tailwind plugin we must have all possible frames and animations 1`]
       "y": 616,
     },
   },
-  "door.frame.generic.y.top.toCyan": {
+  "door.frame.generic.y.top.hue=cyan": {
     "frame": {
       "h": 36,
       "pivot": {
@@ -2394,7 +2458,7 @@ exports[`for tailwind plugin we must have all possible frames and animations 1`]
       "y": 616,
     },
   },
-  "door.frame.generic.y.top.toGreen": {
+  "door.frame.generic.y.top.hue=green": {
     "frame": {
       "h": 36,
       "pivot": {
@@ -2406,7 +2470,7 @@ exports[`for tailwind plugin we must have all possible frames and animations 1`]
       "y": 616,
     },
   },
-  "door.frame.generic.y.top.toMagenta": {
+  "door.frame.generic.y.top.hue=magenta": {
     "frame": {
       "h": 36,
       "pivot": {
@@ -2418,7 +2482,7 @@ exports[`for tailwind plugin we must have all possible frames and animations 1`]
       "y": 616,
     },
   },
-  "door.frame.generic.y.top.toWhite": {
+  "door.frame.generic.y.top.hue=white": {
     "frame": {
       "h": 36,
       "pivot": {
@@ -2430,7 +2494,7 @@ exports[`for tailwind plugin we must have all possible frames and animations 1`]
       "y": 616,
     },
   },
-  "door.frame.generic.y.top.toYellow": {
+  "door.frame.generic.y.top.hue=yellow": {
     "frame": {
       "h": 36,
       "pivot": {
@@ -2454,7 +2518,7 @@ exports[`for tailwind plugin we must have all possible frames and animations 1`]
       "y": 617,
     },
   },
-  "door.frame.generic.y.whole.toCyan": {
+  "door.frame.generic.y.whole.hue=cyan": {
     "frame": {
       "h": 64,
       "pivot": {
@@ -2466,7 +2530,7 @@ exports[`for tailwind plugin we must have all possible frames and animations 1`]
       "y": 617,
     },
   },
-  "door.frame.generic.y.whole.toGreen": {
+  "door.frame.generic.y.whole.hue=green": {
     "frame": {
       "h": 64,
       "pivot": {
@@ -2478,7 +2542,7 @@ exports[`for tailwind plugin we must have all possible frames and animations 1`]
       "y": 617,
     },
   },
-  "door.frame.generic.y.whole.toMagenta": {
+  "door.frame.generic.y.whole.hue=magenta": {
     "frame": {
       "h": 64,
       "pivot": {
@@ -2490,7 +2554,7 @@ exports[`for tailwind plugin we must have all possible frames and animations 1`]
       "y": 617,
     },
   },
-  "door.frame.generic.y.whole.toWhite": {
+  "door.frame.generic.y.whole.hue=white": {
     "frame": {
       "h": 64,
       "pivot": {
@@ -2502,7 +2566,7 @@ exports[`for tailwind plugin we must have all possible frames and animations 1`]
       "y": 617,
     },
   },
-  "door.frame.generic.y.whole.toYellow": {
+  "door.frame.generic.y.whole.hue=yellow": {
     "frame": {
       "h": 64,
       "pivot": {
@@ -2526,7 +2590,7 @@ exports[`for tailwind plugin we must have all possible frames and animations 1`]
       "y": 314,
     },
   },
-  "door.frame.moonbase.dark.x.far.toCyan": {
+  "door.frame.moonbase.dark.x.far.hue=cyan": {
     "frame": {
       "h": 57,
       "pivot": {
@@ -2538,7 +2602,7 @@ exports[`for tailwind plugin we must have all possible frames and animations 1`]
       "y": 314,
     },
   },
-  "door.frame.moonbase.dark.x.far.toGreen": {
+  "door.frame.moonbase.dark.x.far.hue=green": {
     "frame": {
       "h": 57,
       "pivot": {
@@ -2550,7 +2614,7 @@ exports[`for tailwind plugin we must have all possible frames and animations 1`]
       "y": 314,
     },
   },
-  "door.frame.moonbase.dark.x.far.toMagenta": {
+  "door.frame.moonbase.dark.x.far.hue=magenta": {
     "frame": {
       "h": 57,
       "pivot": {
@@ -2562,7 +2626,7 @@ exports[`for tailwind plugin we must have all possible frames and animations 1`]
       "y": 314,
     },
   },
-  "door.frame.moonbase.dark.x.far.toWhite": {
+  "door.frame.moonbase.dark.x.far.hue=white": {
     "frame": {
       "h": 57,
       "pivot": {
@@ -2574,7 +2638,7 @@ exports[`for tailwind plugin we must have all possible frames and animations 1`]
       "y": 314,
     },
   },
-  "door.frame.moonbase.dark.x.far.toYellow": {
+  "door.frame.moonbase.dark.x.far.hue=yellow": {
     "frame": {
       "h": 57,
       "pivot": {
@@ -2598,7 +2662,7 @@ exports[`for tailwind plugin we must have all possible frames and animations 1`]
       "y": 320,
     },
   },
-  "door.frame.moonbase.dark.x.near.toCyan": {
+  "door.frame.moonbase.dark.x.near.hue=cyan": {
     "frame": {
       "h": 58,
       "pivot": {
@@ -2610,7 +2674,7 @@ exports[`for tailwind plugin we must have all possible frames and animations 1`]
       "y": 320,
     },
   },
-  "door.frame.moonbase.dark.x.near.toGreen": {
+  "door.frame.moonbase.dark.x.near.hue=green": {
     "frame": {
       "h": 58,
       "pivot": {
@@ -2622,7 +2686,7 @@ exports[`for tailwind plugin we must have all possible frames and animations 1`]
       "y": 320,
     },
   },
-  "door.frame.moonbase.dark.x.near.toMagenta": {
+  "door.frame.moonbase.dark.x.near.hue=magenta": {
     "frame": {
       "h": 58,
       "pivot": {
@@ -2634,7 +2698,7 @@ exports[`for tailwind plugin we must have all possible frames and animations 1`]
       "y": 320,
     },
   },
-  "door.frame.moonbase.dark.x.near.toWhite": {
+  "door.frame.moonbase.dark.x.near.hue=white": {
     "frame": {
       "h": 58,
       "pivot": {
@@ -2646,7 +2710,7 @@ exports[`for tailwind plugin we must have all possible frames and animations 1`]
       "y": 320,
     },
   },
-  "door.frame.moonbase.dark.x.near.toYellow": {
+  "door.frame.moonbase.dark.x.near.hue=yellow": {
     "frame": {
       "h": 58,
       "pivot": {
@@ -2670,7 +2734,7 @@ exports[`for tailwind plugin we must have all possible frames and animations 1`]
       "y": 313,
     },
   },
-  "door.frame.moonbase.dark.x.top.toCyan": {
+  "door.frame.moonbase.dark.x.top.hue=cyan": {
     "frame": {
       "h": 36,
       "pivot": {
@@ -2682,7 +2746,7 @@ exports[`for tailwind plugin we must have all possible frames and animations 1`]
       "y": 313,
     },
   },
-  "door.frame.moonbase.dark.x.top.toGreen": {
+  "door.frame.moonbase.dark.x.top.hue=green": {
     "frame": {
       "h": 36,
       "pivot": {
@@ -2694,7 +2758,7 @@ exports[`for tailwind plugin we must have all possible frames and animations 1`]
       "y": 313,
     },
   },
-  "door.frame.moonbase.dark.x.top.toMagenta": {
+  "door.frame.moonbase.dark.x.top.hue=magenta": {
     "frame": {
       "h": 36,
       "pivot": {
@@ -2706,7 +2770,7 @@ exports[`for tailwind plugin we must have all possible frames and animations 1`]
       "y": 313,
     },
   },
-  "door.frame.moonbase.dark.x.top.toWhite": {
+  "door.frame.moonbase.dark.x.top.hue=white": {
     "frame": {
       "h": 36,
       "pivot": {
@@ -2718,7 +2782,7 @@ exports[`for tailwind plugin we must have all possible frames and animations 1`]
       "y": 313,
     },
   },
-  "door.frame.moonbase.dark.x.top.toYellow": {
+  "door.frame.moonbase.dark.x.top.hue=yellow": {
     "frame": {
       "h": 36,
       "pivot": {
@@ -2742,7 +2806,7 @@ exports[`for tailwind plugin we must have all possible frames and animations 1`]
       "y": 314,
     },
   },
-  "door.frame.moonbase.dark.x.whole.toCyan": {
+  "door.frame.moonbase.dark.x.whole.hue=cyan": {
     "frame": {
       "h": 64,
       "pivot": {
@@ -2754,7 +2818,7 @@ exports[`for tailwind plugin we must have all possible frames and animations 1`]
       "y": 314,
     },
   },
-  "door.frame.moonbase.dark.x.whole.toGreen": {
+  "door.frame.moonbase.dark.x.whole.hue=green": {
     "frame": {
       "h": 64,
       "pivot": {
@@ -2766,7 +2830,7 @@ exports[`for tailwind plugin we must have all possible frames and animations 1`]
       "y": 314,
     },
   },
-  "door.frame.moonbase.dark.x.whole.toMagenta": {
+  "door.frame.moonbase.dark.x.whole.hue=magenta": {
     "frame": {
       "h": 64,
       "pivot": {
@@ -2778,7 +2842,7 @@ exports[`for tailwind plugin we must have all possible frames and animations 1`]
       "y": 314,
     },
   },
-  "door.frame.moonbase.dark.x.whole.toWhite": {
+  "door.frame.moonbase.dark.x.whole.hue=white": {
     "frame": {
       "h": 64,
       "pivot": {
@@ -2790,7 +2854,7 @@ exports[`for tailwind plugin we must have all possible frames and animations 1`]
       "y": 314,
     },
   },
-  "door.frame.moonbase.dark.x.whole.toYellow": {
+  "door.frame.moonbase.dark.x.whole.hue=yellow": {
     "frame": {
       "h": 64,
       "pivot": {
@@ -2814,7 +2878,7 @@ exports[`for tailwind plugin we must have all possible frames and animations 1`]
       "y": 314,
     },
   },
-  "door.frame.moonbase.dark.y.far.toCyan": {
+  "door.frame.moonbase.dark.y.far.hue=cyan": {
     "frame": {
       "h": 57,
       "pivot": {
@@ -2826,7 +2890,7 @@ exports[`for tailwind plugin we must have all possible frames and animations 1`]
       "y": 314,
     },
   },
-  "door.frame.moonbase.dark.y.far.toGreen": {
+  "door.frame.moonbase.dark.y.far.hue=green": {
     "frame": {
       "h": 57,
       "pivot": {
@@ -2838,7 +2902,7 @@ exports[`for tailwind plugin we must have all possible frames and animations 1`]
       "y": 314,
     },
   },
-  "door.frame.moonbase.dark.y.far.toMagenta": {
+  "door.frame.moonbase.dark.y.far.hue=magenta": {
     "frame": {
       "h": 57,
       "pivot": {
@@ -2850,7 +2914,7 @@ exports[`for tailwind plugin we must have all possible frames and animations 1`]
       "y": 314,
     },
   },
-  "door.frame.moonbase.dark.y.far.toWhite": {
+  "door.frame.moonbase.dark.y.far.hue=white": {
     "frame": {
       "h": 57,
       "pivot": {
@@ -2862,7 +2926,7 @@ exports[`for tailwind plugin we must have all possible frames and animations 1`]
       "y": 314,
     },
   },
-  "door.frame.moonbase.dark.y.far.toYellow": {
+  "door.frame.moonbase.dark.y.far.hue=yellow": {
     "frame": {
       "h": 57,
       "pivot": {
@@ -2886,7 +2950,7 @@ exports[`for tailwind plugin we must have all possible frames and animations 1`]
       "y": 320,
     },
   },
-  "door.frame.moonbase.dark.y.near.toCyan": {
+  "door.frame.moonbase.dark.y.near.hue=cyan": {
     "frame": {
       "h": 58,
       "pivot": {
@@ -2898,7 +2962,7 @@ exports[`for tailwind plugin we must have all possible frames and animations 1`]
       "y": 320,
     },
   },
-  "door.frame.moonbase.dark.y.near.toGreen": {
+  "door.frame.moonbase.dark.y.near.hue=green": {
     "frame": {
       "h": 58,
       "pivot": {
@@ -2910,7 +2974,7 @@ exports[`for tailwind plugin we must have all possible frames and animations 1`]
       "y": 320,
     },
   },
-  "door.frame.moonbase.dark.y.near.toMagenta": {
+  "door.frame.moonbase.dark.y.near.hue=magenta": {
     "frame": {
       "h": 58,
       "pivot": {
@@ -2922,7 +2986,7 @@ exports[`for tailwind plugin we must have all possible frames and animations 1`]
       "y": 320,
     },
   },
-  "door.frame.moonbase.dark.y.near.toWhite": {
+  "door.frame.moonbase.dark.y.near.hue=white": {
     "frame": {
       "h": 58,
       "pivot": {
@@ -2934,7 +2998,7 @@ exports[`for tailwind plugin we must have all possible frames and animations 1`]
       "y": 320,
     },
   },
-  "door.frame.moonbase.dark.y.near.toYellow": {
+  "door.frame.moonbase.dark.y.near.hue=yellow": {
     "frame": {
       "h": 58,
       "pivot": {
@@ -2958,7 +3022,7 @@ exports[`for tailwind plugin we must have all possible frames and animations 1`]
       "y": 313,
     },
   },
-  "door.frame.moonbase.dark.y.top.toCyan": {
+  "door.frame.moonbase.dark.y.top.hue=cyan": {
     "frame": {
       "h": 36,
       "pivot": {
@@ -2970,7 +3034,7 @@ exports[`for tailwind plugin we must have all possible frames and animations 1`]
       "y": 313,
     },
   },
-  "door.frame.moonbase.dark.y.top.toGreen": {
+  "door.frame.moonbase.dark.y.top.hue=green": {
     "frame": {
       "h": 36,
       "pivot": {
@@ -2982,7 +3046,7 @@ exports[`for tailwind plugin we must have all possible frames and animations 1`]
       "y": 313,
     },
   },
-  "door.frame.moonbase.dark.y.top.toMagenta": {
+  "door.frame.moonbase.dark.y.top.hue=magenta": {
     "frame": {
       "h": 36,
       "pivot": {
@@ -2994,7 +3058,7 @@ exports[`for tailwind plugin we must have all possible frames and animations 1`]
       "y": 313,
     },
   },
-  "door.frame.moonbase.dark.y.top.toWhite": {
+  "door.frame.moonbase.dark.y.top.hue=white": {
     "frame": {
       "h": 36,
       "pivot": {
@@ -3006,7 +3070,7 @@ exports[`for tailwind plugin we must have all possible frames and animations 1`]
       "y": 313,
     },
   },
-  "door.frame.moonbase.dark.y.top.toYellow": {
+  "door.frame.moonbase.dark.y.top.hue=yellow": {
     "frame": {
       "h": 36,
       "pivot": {
@@ -3030,7 +3094,7 @@ exports[`for tailwind plugin we must have all possible frames and animations 1`]
       "y": 314,
     },
   },
-  "door.frame.moonbase.dark.y.whole.toCyan": {
+  "door.frame.moonbase.dark.y.whole.hue=cyan": {
     "frame": {
       "h": 64,
       "pivot": {
@@ -3042,7 +3106,7 @@ exports[`for tailwind plugin we must have all possible frames and animations 1`]
       "y": 314,
     },
   },
-  "door.frame.moonbase.dark.y.whole.toGreen": {
+  "door.frame.moonbase.dark.y.whole.hue=green": {
     "frame": {
       "h": 64,
       "pivot": {
@@ -3054,7 +3118,7 @@ exports[`for tailwind plugin we must have all possible frames and animations 1`]
       "y": 314,
     },
   },
-  "door.frame.moonbase.dark.y.whole.toMagenta": {
+  "door.frame.moonbase.dark.y.whole.hue=magenta": {
     "frame": {
       "h": 64,
       "pivot": {
@@ -3066,7 +3130,7 @@ exports[`for tailwind plugin we must have all possible frames and animations 1`]
       "y": 314,
     },
   },
-  "door.frame.moonbase.dark.y.whole.toWhite": {
+  "door.frame.moonbase.dark.y.whole.hue=white": {
     "frame": {
       "h": 64,
       "pivot": {
@@ -3078,7 +3142,7 @@ exports[`for tailwind plugin we must have all possible frames and animations 1`]
       "y": 314,
     },
   },
-  "door.frame.moonbase.dark.y.whole.toYellow": {
+  "door.frame.moonbase.dark.y.whole.hue=yellow": {
     "frame": {
       "h": 64,
       "pivot": {
@@ -3102,7 +3166,7 @@ exports[`for tailwind plugin we must have all possible frames and animations 1`]
       "y": 240,
     },
   },
-  "door.frame.moonbase.x.far.toCyan": {
+  "door.frame.moonbase.x.far.hue=cyan": {
     "frame": {
       "h": 57,
       "pivot": {
@@ -3114,7 +3178,7 @@ exports[`for tailwind plugin we must have all possible frames and animations 1`]
       "y": 240,
     },
   },
-  "door.frame.moonbase.x.far.toGreen": {
+  "door.frame.moonbase.x.far.hue=green": {
     "frame": {
       "h": 57,
       "pivot": {
@@ -3126,7 +3190,7 @@ exports[`for tailwind plugin we must have all possible frames and animations 1`]
       "y": 240,
     },
   },
-  "door.frame.moonbase.x.far.toMagenta": {
+  "door.frame.moonbase.x.far.hue=magenta": {
     "frame": {
       "h": 57,
       "pivot": {
@@ -3138,7 +3202,7 @@ exports[`for tailwind plugin we must have all possible frames and animations 1`]
       "y": 240,
     },
   },
-  "door.frame.moonbase.x.far.toWhite": {
+  "door.frame.moonbase.x.far.hue=white": {
     "frame": {
       "h": 57,
       "pivot": {
@@ -3150,7 +3214,7 @@ exports[`for tailwind plugin we must have all possible frames and animations 1`]
       "y": 240,
     },
   },
-  "door.frame.moonbase.x.far.toYellow": {
+  "door.frame.moonbase.x.far.hue=yellow": {
     "frame": {
       "h": 57,
       "pivot": {
@@ -3174,7 +3238,7 @@ exports[`for tailwind plugin we must have all possible frames and animations 1`]
       "y": 246,
     },
   },
-  "door.frame.moonbase.x.near.toCyan": {
+  "door.frame.moonbase.x.near.hue=cyan": {
     "frame": {
       "h": 58,
       "pivot": {
@@ -3186,7 +3250,7 @@ exports[`for tailwind plugin we must have all possible frames and animations 1`]
       "y": 246,
     },
   },
-  "door.frame.moonbase.x.near.toGreen": {
+  "door.frame.moonbase.x.near.hue=green": {
     "frame": {
       "h": 58,
       "pivot": {
@@ -3198,7 +3262,7 @@ exports[`for tailwind plugin we must have all possible frames and animations 1`]
       "y": 246,
     },
   },
-  "door.frame.moonbase.x.near.toMagenta": {
+  "door.frame.moonbase.x.near.hue=magenta": {
     "frame": {
       "h": 58,
       "pivot": {
@@ -3210,7 +3274,7 @@ exports[`for tailwind plugin we must have all possible frames and animations 1`]
       "y": 246,
     },
   },
-  "door.frame.moonbase.x.near.toWhite": {
+  "door.frame.moonbase.x.near.hue=white": {
     "frame": {
       "h": 58,
       "pivot": {
@@ -3222,7 +3286,7 @@ exports[`for tailwind plugin we must have all possible frames and animations 1`]
       "y": 246,
     },
   },
-  "door.frame.moonbase.x.near.toYellow": {
+  "door.frame.moonbase.x.near.hue=yellow": {
     "frame": {
       "h": 58,
       "pivot": {
@@ -3246,7 +3310,7 @@ exports[`for tailwind plugin we must have all possible frames and animations 1`]
       "y": 239,
     },
   },
-  "door.frame.moonbase.x.top.toCyan": {
+  "door.frame.moonbase.x.top.hue=cyan": {
     "frame": {
       "h": 36,
       "pivot": {
@@ -3258,7 +3322,7 @@ exports[`for tailwind plugin we must have all possible frames and animations 1`]
       "y": 239,
     },
   },
-  "door.frame.moonbase.x.top.toGreen": {
+  "door.frame.moonbase.x.top.hue=green": {
     "frame": {
       "h": 36,
       "pivot": {
@@ -3270,7 +3334,7 @@ exports[`for tailwind plugin we must have all possible frames and animations 1`]
       "y": 239,
     },
   },
-  "door.frame.moonbase.x.top.toMagenta": {
+  "door.frame.moonbase.x.top.hue=magenta": {
     "frame": {
       "h": 36,
       "pivot": {
@@ -3282,7 +3346,7 @@ exports[`for tailwind plugin we must have all possible frames and animations 1`]
       "y": 239,
     },
   },
-  "door.frame.moonbase.x.top.toWhite": {
+  "door.frame.moonbase.x.top.hue=white": {
     "frame": {
       "h": 36,
       "pivot": {
@@ -3294,7 +3358,7 @@ exports[`for tailwind plugin we must have all possible frames and animations 1`]
       "y": 239,
     },
   },
-  "door.frame.moonbase.x.top.toYellow": {
+  "door.frame.moonbase.x.top.hue=yellow": {
     "frame": {
       "h": 36,
       "pivot": {
@@ -3318,7 +3382,7 @@ exports[`for tailwind plugin we must have all possible frames and animations 1`]
       "y": 240,
     },
   },
-  "door.frame.moonbase.x.whole.toCyan": {
+  "door.frame.moonbase.x.whole.hue=cyan": {
     "frame": {
       "h": 64,
       "pivot": {
@@ -3330,7 +3394,7 @@ exports[`for tailwind plugin we must have all possible frames and animations 1`]
       "y": 240,
     },
   },
-  "door.frame.moonbase.x.whole.toGreen": {
+  "door.frame.moonbase.x.whole.hue=green": {
     "frame": {
       "h": 64,
       "pivot": {
@@ -3342,7 +3406,7 @@ exports[`for tailwind plugin we must have all possible frames and animations 1`]
       "y": 240,
     },
   },
-  "door.frame.moonbase.x.whole.toMagenta": {
+  "door.frame.moonbase.x.whole.hue=magenta": {
     "frame": {
       "h": 64,
       "pivot": {
@@ -3354,7 +3418,7 @@ exports[`for tailwind plugin we must have all possible frames and animations 1`]
       "y": 240,
     },
   },
-  "door.frame.moonbase.x.whole.toWhite": {
+  "door.frame.moonbase.x.whole.hue=white": {
     "frame": {
       "h": 64,
       "pivot": {
@@ -3366,7 +3430,7 @@ exports[`for tailwind plugin we must have all possible frames and animations 1`]
       "y": 240,
     },
   },
-  "door.frame.moonbase.x.whole.toYellow": {
+  "door.frame.moonbase.x.whole.hue=yellow": {
     "frame": {
       "h": 64,
       "pivot": {
@@ -3390,7 +3454,7 @@ exports[`for tailwind plugin we must have all possible frames and animations 1`]
       "y": 240,
     },
   },
-  "door.frame.moonbase.y.far.toCyan": {
+  "door.frame.moonbase.y.far.hue=cyan": {
     "frame": {
       "h": 57,
       "pivot": {
@@ -3402,7 +3466,7 @@ exports[`for tailwind plugin we must have all possible frames and animations 1`]
       "y": 240,
     },
   },
-  "door.frame.moonbase.y.far.toGreen": {
+  "door.frame.moonbase.y.far.hue=green": {
     "frame": {
       "h": 57,
       "pivot": {
@@ -3414,7 +3478,7 @@ exports[`for tailwind plugin we must have all possible frames and animations 1`]
       "y": 240,
     },
   },
-  "door.frame.moonbase.y.far.toMagenta": {
+  "door.frame.moonbase.y.far.hue=magenta": {
     "frame": {
       "h": 57,
       "pivot": {
@@ -3426,7 +3490,7 @@ exports[`for tailwind plugin we must have all possible frames and animations 1`]
       "y": 240,
     },
   },
-  "door.frame.moonbase.y.far.toWhite": {
+  "door.frame.moonbase.y.far.hue=white": {
     "frame": {
       "h": 57,
       "pivot": {
@@ -3438,7 +3502,7 @@ exports[`for tailwind plugin we must have all possible frames and animations 1`]
       "y": 240,
     },
   },
-  "door.frame.moonbase.y.far.toYellow": {
+  "door.frame.moonbase.y.far.hue=yellow": {
     "frame": {
       "h": 57,
       "pivot": {
@@ -3462,7 +3526,7 @@ exports[`for tailwind plugin we must have all possible frames and animations 1`]
       "y": 246,
     },
   },
-  "door.frame.moonbase.y.near.toCyan": {
+  "door.frame.moonbase.y.near.hue=cyan": {
     "frame": {
       "h": 58,
       "pivot": {
@@ -3474,7 +3538,7 @@ exports[`for tailwind plugin we must have all possible frames and animations 1`]
       "y": 246,
     },
   },
-  "door.frame.moonbase.y.near.toGreen": {
+  "door.frame.moonbase.y.near.hue=green": {
     "frame": {
       "h": 58,
       "pivot": {
@@ -3486,7 +3550,7 @@ exports[`for tailwind plugin we must have all possible frames and animations 1`]
       "y": 246,
     },
   },
-  "door.frame.moonbase.y.near.toMagenta": {
+  "door.frame.moonbase.y.near.hue=magenta": {
     "frame": {
       "h": 58,
       "pivot": {
@@ -3498,7 +3562,7 @@ exports[`for tailwind plugin we must have all possible frames and animations 1`]
       "y": 246,
     },
   },
-  "door.frame.moonbase.y.near.toWhite": {
+  "door.frame.moonbase.y.near.hue=white": {
     "frame": {
       "h": 58,
       "pivot": {
@@ -3510,7 +3574,7 @@ exports[`for tailwind plugin we must have all possible frames and animations 1`]
       "y": 246,
     },
   },
-  "door.frame.moonbase.y.near.toYellow": {
+  "door.frame.moonbase.y.near.hue=yellow": {
     "frame": {
       "h": 58,
       "pivot": {
@@ -3534,7 +3598,7 @@ exports[`for tailwind plugin we must have all possible frames and animations 1`]
       "y": 239,
     },
   },
-  "door.frame.moonbase.y.top.toCyan": {
+  "door.frame.moonbase.y.top.hue=cyan": {
     "frame": {
       "h": 36,
       "pivot": {
@@ -3546,7 +3610,7 @@ exports[`for tailwind plugin we must have all possible frames and animations 1`]
       "y": 239,
     },
   },
-  "door.frame.moonbase.y.top.toGreen": {
+  "door.frame.moonbase.y.top.hue=green": {
     "frame": {
       "h": 36,
       "pivot": {
@@ -3558,7 +3622,7 @@ exports[`for tailwind plugin we must have all possible frames and animations 1`]
       "y": 239,
     },
   },
-  "door.frame.moonbase.y.top.toMagenta": {
+  "door.frame.moonbase.y.top.hue=magenta": {
     "frame": {
       "h": 36,
       "pivot": {
@@ -3570,7 +3634,7 @@ exports[`for tailwind plugin we must have all possible frames and animations 1`]
       "y": 239,
     },
   },
-  "door.frame.moonbase.y.top.toWhite": {
+  "door.frame.moonbase.y.top.hue=white": {
     "frame": {
       "h": 36,
       "pivot": {
@@ -3582,7 +3646,7 @@ exports[`for tailwind plugin we must have all possible frames and animations 1`]
       "y": 239,
     },
   },
-  "door.frame.moonbase.y.top.toYellow": {
+  "door.frame.moonbase.y.top.hue=yellow": {
     "frame": {
       "h": 36,
       "pivot": {
@@ -3606,7 +3670,7 @@ exports[`for tailwind plugin we must have all possible frames and animations 1`]
       "y": 240,
     },
   },
-  "door.frame.moonbase.y.whole.toCyan": {
+  "door.frame.moonbase.y.whole.hue=cyan": {
     "frame": {
       "h": 64,
       "pivot": {
@@ -3618,7 +3682,7 @@ exports[`for tailwind plugin we must have all possible frames and animations 1`]
       "y": 240,
     },
   },
-  "door.frame.moonbase.y.whole.toGreen": {
+  "door.frame.moonbase.y.whole.hue=green": {
     "frame": {
       "h": 64,
       "pivot": {
@@ -3630,7 +3694,7 @@ exports[`for tailwind plugin we must have all possible frames and animations 1`]
       "y": 240,
     },
   },
-  "door.frame.moonbase.y.whole.toMagenta": {
+  "door.frame.moonbase.y.whole.hue=magenta": {
     "frame": {
       "h": 64,
       "pivot": {
@@ -3642,7 +3706,7 @@ exports[`for tailwind plugin we must have all possible frames and animations 1`]
       "y": 240,
     },
   },
-  "door.frame.moonbase.y.whole.toWhite": {
+  "door.frame.moonbase.y.whole.hue=white": {
     "frame": {
       "h": 64,
       "pivot": {
@@ -3654,7 +3718,7 @@ exports[`for tailwind plugin we must have all possible frames and animations 1`]
       "y": 240,
     },
   },
-  "door.frame.moonbase.y.whole.toYellow": {
+  "door.frame.moonbase.y.whole.hue=yellow": {
     "frame": {
       "h": 64,
       "pivot": {

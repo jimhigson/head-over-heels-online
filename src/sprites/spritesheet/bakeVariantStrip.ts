@@ -11,6 +11,7 @@ import {
   type PaletteSwopSpec,
 } from "../../game/render/filters/PaletteSwapFilter";
 import { replacementColours } from "../../game/render/gameColours/gameColours";
+import { halfbrite } from "../../utils/colour/halfbrite";
 import { emptyObject } from "../../utils/empty";
 import {
   resolveNamedColourSwops,
@@ -18,6 +19,7 @@ import {
 } from "../../utils/palette/palette";
 import { omitArray } from "../../utils/pick";
 import {
+  maybeDimPalette,
   paletteBlockstack,
   paletteBlockstackDim,
 } from "../palette/spritesheetPalette";
@@ -27,6 +29,8 @@ import {
 } from "./roomSpritesheetTextureSwops";
 import { type PackedVariantFrames } from "./spritesheetData/packVariantFrames";
 import {
+  type ArcadeButtonSuffix,
+  arcadeButtonSuffixes,
   doorHueSuffixes,
   type VariantSuffix,
 } from "./spritesheetData/variantSpritesheetData";
@@ -35,6 +39,9 @@ import { type VariantBuildContext } from "./VariantBuildContext";
 const isDoorHueSuffix = (
   group: string,
 ): group is keyof typeof doorHueSuffixes => group in doorHueSuffixes;
+
+const isArcadeButtonSuffix = (group: string): group is ArcadeButtonSuffix =>
+  group in arcadeButtonSuffixes;
 
 /**
  * the variant suffixes this sheet can actually re-bake: those whose swops the
@@ -61,6 +68,9 @@ export const bakeableVariantSuffixes = (
   // door destination-colour recolours derive from the game colour system, not
   // per-sheet swop declarations - bakeable on every sheet with a room bake:
   for (const suffix of Object.keys(doorHueSuffixes) as VariantSuffix[]) {
+    bakeable.add(suffix);
+  }
+  for (const suffix of Object.keys(arcadeButtonSuffixes) as VariantSuffix[]) {
     bakeable.add(suffix);
   }
   return bakeable;
@@ -113,6 +123,23 @@ const stripGroupPasses = (
     dimmed && paletteDim !== undefined ?
       { swops: resolveSwops(palette, paletteDim), lutType: "sparse" }
     : undefined;
+
+  if (isArcadeButtonSuffix(group)) {
+    // recolour the placeholder button art to this action's colour, dimmed per room:
+    const buttonPalette = maybeDimPalette(spritesheetMetaData, dimmed);
+    const colour =
+      buttonPalette[spritesheetMetaData.buttonColours[arcadeButtonSuffixes[group]]];
+    return [
+      {
+        swops: resolveSwops(paletteBlockstack, {
+          replaceLight: colour,
+          replaceDark: halfbrite(colour, 0.66),
+          pureBlack: buttonPalette[spritesheetMetaData.effectColours.outline],
+        }),
+        lutType: "sparse",
+      },
+    ];
+  }
 
   if (isDoorHueSuffix(group)) {
     // a door frame recoloured for the room its door leads to. One merged pass:

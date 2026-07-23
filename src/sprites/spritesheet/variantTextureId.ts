@@ -4,20 +4,22 @@ import {
   type BaseTextureId,
 } from "./spritesheetData/makeSpritesheetData";
 import {
+  type ArcadeButtonAction,
   type DeactivatableId,
   type DoorFrameId,
   type DoorHueSuffix,
   type DoughnuttableId,
   type ReflectableId,
   type SceneryPlayerableId,
+  type VariantTextureId,
 } from "./spritesheetData/variantSpritesheetData";
 
 const hueToDoorSuffix = {
-  cyan: "toCyan",
-  green: "toGreen",
-  magenta: "toMagenta",
-  white: "toWhite",
-  yellow: "toYellow",
+  cyan: "hue=cyan",
+  green: "hue=green",
+  magenta: "hue=magenta",
+  white: "hue=white",
+  yellow: "hue=yellow",
 } as const satisfies Record<ZxSpectrumRoomHue, DoorHueSuffix>;
 
 /**
@@ -109,3 +111,9 @@ export const variantTextureId: VariantIdFn = (<
   : sceneryPlayer ? `${id}.sceneryPlayer`
   : toHue !== undefined ? `${id}.${hueToDoorSuffix[toHue]}`
   : id) as VariantIdFn;
+
+/** the pre-baked colour-variant id for an on-screen action button */
+export const buttonVariantTextureId = (
+  base: "button.pressed" | "button",
+  action: ArcadeButtonAction,
+): VariantTextureId => `${base}.action=${action}`;
