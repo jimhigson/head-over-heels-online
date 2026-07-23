@@ -30,7 +30,7 @@ import { createSerialisableErrors } from "../../utils/redux/createSerialisableEr
 import { type Xy } from "../../utils/vectors/vectors";
 import { type GameState } from "../gameState/GameState";
 import { selectCurrentRoomState } from "../gameState/gameStateSelectors/selectCurrentRoomState";
-import { maxFps, maxSubTickDeltaMs } from "../physics/mechanicsConstants";
+import { maxSubTickDeltaMs } from "../physics/mechanicsConstants";
 import { ColourClashCircleEffectRenderer } from "../render/ColourClashCircleEffectRenderer";
 import { HudRenderer } from "../render/hud/HudRenderer";
 import { needsNewHudRenderer } from "../render/hud/needsNewHudRenderer";
@@ -559,9 +559,6 @@ export class MainLoop<RoomId extends string> {
     }
 
     timingRecord?.tickDone();
-
-    // throttle framerate when paused to reduce CPU/GPU load (nothing is moving anyway)
-    this.#app.ticker.maxFPS = this.#app.ticker.speed === 0 ? 10 : maxFps;
   };
 
   start() {
