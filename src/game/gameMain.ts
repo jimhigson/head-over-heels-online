@@ -186,7 +186,10 @@ export const gameMain = async <RoomId extends string>(
         // shader darkens rgb but keeps alpha, so it only shows where the
         // dialogs actually have pixels
         sprite.filters = [new RoundedCornersFilter()];
-        // after mainContainer, so the mirror draws over the room and hud:
+        // always over the game (mainContainer, zIndex 0), regardless of the
+        // order stage children are added in:
+        sprite.zIndex = 1;
+        app.stage.sortableChildren = true;
         app.stage.addChild(sprite);
         disposeMirror = () => {
           app.stage.removeChild(sprite);
