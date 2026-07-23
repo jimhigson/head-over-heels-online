@@ -149,7 +149,7 @@ importers:
         version: 14.0.0
       dougmencken_HeadOverHeels:
         specifier: github:dougmencken/HeadOverHeels#08aee0cb050405dc23d95bf288631452bec28c9f
-        version: git+ssh://git@github.com/dougmencken/HeadOverHeels.git#08aee0cb050405dc23d95bf288631452bec28c9f
+        version: https://codeload.github.com/dougmencken/HeadOverHeels/tar.gz/08aee0cb050405dc23d95bf288631452bec28c9f
       dpdm:
         specifier: ^3.14.0
         version: 3.14.0
@@ -3536,8 +3536,8 @@ packages:
   domutils@3.2.2:
     resolution: {integrity: sha512-6kZKyUajlDuqlHKVX1w7gyslj9MPIXzIFiz/rGu35uC1wMi+kMhQwGhl4lt9unC9Vb9INnY9Z3/ZA3+FhASLaw==}
 
-  dougmencken_HeadOverHeels@git+ssh://git@github.com/dougmencken/HeadOverHeels.git#08aee0cb050405dc23d95bf288631452bec28c9f:
-    resolution: {commit: 08aee0cb050405dc23d95bf288631452bec28c9f, repo: git@github.com:dougmencken/HeadOverHeels.git, type: git}
+  dougmencken_HeadOverHeels@https://codeload.github.com/dougmencken/HeadOverHeels/tar.gz/08aee0cb050405dc23d95bf288631452bec28c9f:
+    resolution: {gitHosted: true, tarball: https://codeload.github.com/dougmencken/HeadOverHeels/tar.gz/08aee0cb050405dc23d95bf288631452bec28c9f}
     version: 0.0.0
 
   dpdm@3.14.0:
@@ -8881,7 +8881,7 @@ snapshots:
       domelementtype: 2.3.0
       domhandler: 5.0.3
 
-  dougmencken_HeadOverHeels@git+ssh://git@github.com/dougmencken/HeadOverHeels.git#08aee0cb050405dc23d95bf288631452bec28c9f: {}
+  dougmencken_HeadOverHeels@https://codeload.github.com/dougmencken/HeadOverHeels/tar.gz/08aee0cb050405dc23d95bf288631452bec28c9f: {}
 
   dpdm@3.14.0:
     dependencies:
