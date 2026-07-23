@@ -1,27 +1,14 @@
-import {
-  Container,
-  type Renderer,
-  type RenderTexture,
-  Sprite,
-  Texture,
-} from "pixi.js";
+import { Container, Sprite } from "pixi.js";
 
-import { type RoomState } from "../../../../model/RoomState";
-import {
-  maybeDimPalette,
-  paletteBlockstack,
-} from "../../../../sprites/palette/spritesheetPalette";
 import { type AppSpritesheetWithVariants } from "../../../../sprites/spritesheet/AppSpritesheet";
-import { type SpritesheetMetadata } from "../../../../sprites/spritesheet/spritesheetData/spritesheetMetaData";
-import { halfbrite } from "../../../../utils/colour/halfbrite";
-import { resolveSwops } from "../../../../utils/palette/palette";
-import { renderContainerToTexture } from "../../../../utils/pixi/renderContainerToSprite";
+import { type ArcadeButtonAction } from "../../../../sprites/spritesheet/spritesheetData/variantSpritesheetData";
+import { buttonVariantTextureId } from "../../../../sprites/spritesheet/variantTextureId";
 import { createSprite } from "../../createSprite";
-import { PaletteSwapFilter } from "../../filters/PaletteSwapFilter";
-import { type ButtonId } from "../HudButtonRenderer";
 
 /**
- * A round button shape with a masked top surface to render into if required
+ * A round button shape with a masked top surface to render into if required.
+ * Its body art is pre-baked per action colour, so this holds no atlas
+ * reference between room changes.
  */
 export class ArcadeStyleButtonContainer<
   /* if button can ever not have a surface rendering, include undefined in this parametric type */
@@ -36,23 +23,16 @@ export class ArcadeStyleButtonContainer<
   #buttonSprite: Sprite;
   #pressedButtonSprite: Sprite;
 
-  #spritesheetMeta: SpritesheetMetadata;
-  #which: ButtonId;
-  #pixiRenderer: Renderer;
-  #spritesheetForCurrentRoom: AppSpritesheetWithVariants;
+  #which: ArcadeButtonAction;
 
   constructor(
-    spritesheetMeta: SpritesheetMetadata,
-    which: ButtonId,
-    pixiRenderer: Renderer,
-    spritesheetForCurrentRoom: AppSpritesheetWithVariants,
+    which: ArcadeButtonAction,
+    /** pristine sheet, sampled only for the uncoloured surfaceMask */
+    originalSpritesheet: AppSpritesheetWithVariants,
     initiallyShowOnSurface: SurfaceContent,
   ) {
     super({ label: `arcadeButton (${which})` });
-    this.#spritesheetMeta = spritesheetMeta;
     this.#which = which;
-    this.#pixiRenderer = pixiRenderer;
-    this.#spritesheetForCurrentRoom = spritesheetForCurrentRoom;
 
     // a container so that the whole button can move down together
     // to show the 'pressed' effect
@@ -71,7 +51,7 @@ export class ArcadeStyleButtonContainer<
     const surfaceMask = createSprite({
       textureId: "button.surfaceMask",
       label: "surfaceMask",
-      spritesheet: this.#spritesheetForCurrentRoom,
+      spritesheet: originalSpritesheet,
     });
     this.#depressTranslateContainer.addChild(surfaceMask);
     this.#surface.mask = surfaceMask;
@@ -102,61 +82,13 @@ export class ArcadeStyleButtonContainer<
     this.#depressTranslateContainer.y = value ? 1 : 0;
   }
 
-  generateButtonSpriteTextures(room: RoomState<string, string>): void {
-    const which = this.#which;
-    const meta = this.#spritesheetMeta;
-
-    const spriteTemplate = createSprite({
-      textureId: "button",
-      spritesheet: this.#spritesheetForCurrentRoom,
-    });
-
-    const palette = maybeDimPalette(meta, room.color.shade === "dimmed");
-    const colour = palette[meta.buttonColours[which]];
-    const colourDim = halfbrite(colour, 0.66);
-    const colourBlack = palette[meta.effectColours.outline];
-
-    const filter = new PaletteSwapFilter(
-      {
-        lutType: "sparse",
-        swops: resolveSwops(paletteBlockstack, {
-          replaceLight: colour,
-          replaceDark: colourDim,
-          pureBlack: colourBlack,
-        }),
-      },
-      // the button textures are baked off-screen via renderContainerToTexture,
-      // so the filter must not be clipped to the screen viewport:
-      Texture.WHITE,
-      false,
-    );
-    spriteTemplate.filters = filter;
-
-    const buttonTexture = renderContainerToTexture(
-      this.#pixiRenderer,
-      spriteTemplate,
-      this.#buttonSprite.texture === Texture.EMPTY ?
-        undefined
-      : (this.#buttonSprite.texture as RenderTexture | undefined),
-    );
-
-    spriteTemplate.texture =
-      this.#spritesheetForCurrentRoom.textures["button.pressed"];
-
-    const pressedButtonTexture = renderContainerToTexture(
-      this.#pixiRenderer,
-      spriteTemplate,
-      this.#pressedButtonSprite.texture === Texture.EMPTY ?
-        undefined
-      : (this.#pressedButtonSprite.texture as RenderTexture | undefined),
-    );
-
-    // this assignment may be unnecessary if the RenderTextures were reused
-    // inside renderContainerToTexture
-    this.#buttonSprite.texture = buttonTexture;
-    this.#pressedButtonSprite.texture = pressedButtonTexture;
-
-    filter.destroy({ destroyLutTexture: true });
-    spriteTemplate.destroy({ children: true });
+  /** point the sprites at this atlas's pre-baked button variants; call per room change */
+  setSpritesheet(spritesheet: AppSpritesheetWithVariants): void {
+    this.#buttonSprite.texture =
+      spritesheet.textures[buttonVariantTextureId("button", this.#which)];
+    this.#pressedButtonSprite.texture =
+      spritesheet.textures[
+        buttonVariantTextureId("button.pressed", this.#which)
+      ];
   }
 }

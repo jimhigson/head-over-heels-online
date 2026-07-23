@@ -24,7 +24,7 @@ export const carryAndJumpButtonAppearance: ButtonAppearance<
   renderContext: {
     button,
     inputStateTracker,
-    general: { spriteOption, spritesheets, spritesheetMeta, pixiRenderer },
+    general: { spriteOption, spritesheets, pixiRenderer },
   },
   currentRendering,
   tickContext: { currentPlayable, room },
@@ -51,14 +51,11 @@ export const carryAndJumpButtonAppearance: ButtonAppearance<
     return "no-update";
   }
 
-  const { spritesheetForCurrentRoom: spritesheet } = spritesheets;
   const container: ArcadeStyleButtonContainer<TextContainer> =
     previousRendering === undefined ?
       new ArcadeStyleButtonContainer(
-        spritesheetMeta,
         button.which,
-        pixiRenderer,
-        spritesheet,
+        spritesheets.originalSpritesheet,
         new TextContainer({
           pixiRenderer,
           text: "C+J",
@@ -68,7 +65,7 @@ export const carryAndJumpButtonAppearance: ButtonAppearance<
     : previousRendering;
 
   if (roomChangedSinceLastRendered) {
-    container.generateButtonSpriteTextures(room);
+    container.setSpritesheet(spritesheets.spritesheetForCurrentRoom);
     container.shownOnSurface.tint = getWhite(
       spriteOption,
       room?.color.shade === "dimmed",

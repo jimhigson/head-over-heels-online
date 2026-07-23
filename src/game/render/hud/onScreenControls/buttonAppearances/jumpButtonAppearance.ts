@@ -66,13 +66,7 @@ export const jumpButtonAppearance: ButtonAppearance<
   renderContext: {
     button,
     inputStateTracker,
-    general: {
-      spriteOption,
-      spritesheets,
-      spritesheetMeta,
-      pixiRenderer,
-      paused,
-    },
+    general: { spriteOption, spritesheets, pixiRenderer, paused },
   },
   tickContext: { room, currentPlayable },
   currentRendering,
@@ -95,10 +89,8 @@ export const jumpButtonAppearance: ButtonAppearance<
   const buttonContainer =
     previousRendering ??
     new ArcadeStyleButtonContainer<JumpButtonSurfaceContainer>(
-      spritesheetMeta,
       button.which,
-      pixiRenderer,
-      spritesheets.spritesheetForCurrentRoom,
+      spritesheets.originalSpritesheet,
       createSurface(spriteOption, pixiRenderer, spritesheets),
     );
 
@@ -153,7 +145,7 @@ export const jumpButtonAppearance: ButtonAppearance<
 
     text.colour = getWhite(spriteOption, room?.color.shade === "dimmed");
 
-    buttonContainer.generateButtonSpriteTextures(room);
+    buttonContainer.setSpritesheet(spritesheets.spritesheetForCurrentRoom);
   }
 
   return {

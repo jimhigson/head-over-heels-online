@@ -59,7 +59,7 @@ export const carryButtonAppearance: ButtonAppearance<
   const {
     button,
     inputStateTracker,
-    general: { spritesheets, spritesheetMeta, pixiRenderer },
+    general: { spritesheets },
   } = renderContext;
   const { currentPlayable, room } = tickContext;
   const previouslyRenderedProps = currentRendering?.renderProps;
@@ -85,10 +85,8 @@ export const carryButtonAppearance: ButtonAppearance<
   const container =
     previousRendering ??
     new ArcadeStyleButtonContainer<Container>(
-      spritesheetMeta,
       button.which,
-      pixiRenderer,
-      spritesheet,
+      spritesheets.originalSpritesheet,
       createSurface(spritesheet),
     );
 
@@ -96,7 +94,7 @@ export const carryButtonAppearance: ButtonAppearance<
   const roomChanged = room !== previouslyRenderedProps?.renderedInRoom;
 
   if (roomChanged) {
-    container.generateButtonSpriteTextures(room);
+    container.setSpritesheet(spritesheet);
   }
 
   container.visible = hasBag;

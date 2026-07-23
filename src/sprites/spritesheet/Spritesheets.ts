@@ -23,6 +23,7 @@ import {
   type AppSpritesheet,
   type AppSpritesheetDataWithVariants,
   type AppSpritesheetWithVariants,
+  withVariantsBaked,
 } from "./AppSpritesheet";
 import { buildAtlasSpritesheet } from "./atlasSpritesheet";
 import { buildUncolourisedSpritesheet } from "./buildUncolourisedSpritesheet";
@@ -57,7 +58,7 @@ export class Spritesheets {
    * in, never room-swopped. Built by loadImage (the raw decoded texture is
    * discarded immediately after)
    */
-  #originalSpritesheet: AppSpritesheet | undefined;
+  #originalSpritesheet: AppSpritesheetWithVariants | undefined;
   /**
    * the sheet all in-room rendering samples, rebuilt per room, built from #originalSpritesheet
    */
@@ -110,7 +111,7 @@ export class Spritesheets {
     bt.destroy();
   }
 
-  get originalSpritesheet(): AppSpritesheet {
+  get originalSpritesheet(): AppSpritesheetWithVariants {
     if (this.#originalSpritesheet === undefined) {
       throw new Error(
         "originalSpritesheet not available — loadImage() not yet completed",
@@ -231,7 +232,7 @@ export class Spritesheets {
     pixiRenderer: Renderer,
     spriteOption: LoadableSpriteOption,
     decodedTexture: Texture,
-  ): AppSpritesheet {
+  ): AppSpritesheetWithVariants {
     const spritesheetMeta = spritesheetMetas[spriteOption];
     const spriteSheetData: AppSpritesheetDataWithVariants =
       makeSpritesheetData(spritesheetMeta);
@@ -245,7 +246,7 @@ export class Spritesheets {
       ) as AppSpritesheet;
       emptySheet.spriteOption = spriteOption;
       emptySheet.spritesheetMeta = spritesheetMeta;
-      return emptySheet;
+      return withVariantsBaked(emptySheet);
     }
 
     const shadowSpritesMask = renderMaskTexture(pixiRenderer, {
@@ -288,7 +289,7 @@ export class Spritesheets {
     sprite.destroy();
     shadowSpritesMask.destroy(true);
 
-    return spriteSheet;
+    return withVariantsBaked(spriteSheet);
   }
 
   /**
