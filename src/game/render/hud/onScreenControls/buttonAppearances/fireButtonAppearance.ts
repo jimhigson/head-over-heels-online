@@ -142,11 +142,11 @@ export const fireButtonAppearance: ButtonAppearance<
   if (disabledChanged || roomChanged) {
     hooter.texture =
       spritesheet.textures[
-        variantTextureId("hooter", false, false, disabled, false, undefined)
+        variantTextureId("hooter", false, false, disabled, false)
       ];
     doughnuts.texture =
       spritesheet.textures[
-        variantTextureId("doughnuts", false, false, disabled, false, undefined)
+        variantTextureId("doughnuts", false, false, disabled, false)
       ];
     text.colour = getWhite(spriteOption, room.color.shade === "dimmed");
   }

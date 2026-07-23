@@ -62,7 +62,6 @@ const spikyBallAppearanceImpl: ItemAppearance<
         false,
         false,
         false,
-        undefined,
       ),
       spritesheet,
     });
@@ -73,14 +72,7 @@ const spikyBallAppearanceImpl: ItemAppearance<
   const phase = (((stepsTravelled + startingPhase) % 2) + 1) as 1 | 2;
   rendering.texture =
     spritesheet.textures[
-      variantTextureId(
-        `spikyBall.${phase}`,
-        isReflection,
-        false,
-        false,
-        false,
-        undefined,
-      )
+      variantTextureId(`spikyBall.${phase}`, isReflection, false, false, false)
     ];
 
   return {

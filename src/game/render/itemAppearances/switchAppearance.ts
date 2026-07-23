@@ -62,7 +62,6 @@ export const switchAppearance: ItemAppearance<"switch", SwitchRenderProps> = ({
         false,
         false,
         false,
-        undefined,
       ),
       spritesheet: spritesheets.spritesheetForCurrentRoom,
     }),

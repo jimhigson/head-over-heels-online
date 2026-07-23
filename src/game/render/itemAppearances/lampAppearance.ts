@@ -51,7 +51,6 @@ export const lampAppearance: ItemAppearance<"lamp", LampRenderProps> = ({
         false,
         false,
         false,
-        undefined,
       ),
       // stacked to double/triple height when the lamp has times.z:
       times,

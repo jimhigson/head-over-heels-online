@@ -100,7 +100,6 @@ export const blockAppearance: ItemAppearance<"block", BlockRenderProps> = ({
           false,
           false,
           false,
-          undefined,
         ),
         times,
         cameraQuarterAngle,

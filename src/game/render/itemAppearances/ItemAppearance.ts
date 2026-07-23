@@ -75,7 +75,6 @@ export const itemStaticAppearance = <T extends ItemInPlayType>(
         false,
         false,
         false,
-        undefined,
       );
       if (isMultipliedItem(subject)) {
         // reduce the multiple sprites down to one baked sprite; camera-angle
@@ -122,7 +121,6 @@ export const itemStaticAnimatedAppearance = <T extends ItemInPlayType>(
         false,
         false,
         false,
-        undefined,
       );
       if (isMultipliedItem(subject)) {
         return createSprite({

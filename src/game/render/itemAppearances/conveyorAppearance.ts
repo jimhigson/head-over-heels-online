@@ -71,7 +71,6 @@ const createRendering = (
       false,
       disabled,
       false,
-      undefined,
     ),
     reverse,
     times,

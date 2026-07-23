@@ -17,7 +17,6 @@ describe("variantId accepts only eligible (id, states) combinations", () => {
       runtimeBoolean,
       runtimeBoolean,
       false,
-      undefined,
     );
     const _animation: AnimationId = variantTextureId(
       "turtle.towards",
@@ -25,7 +24,6 @@ describe("variantId accepts only eligible (id, states) combinations", () => {
       runtimeBoolean,
       runtimeBoolean,
       false,
-      undefined,
     );
   });
 
@@ -36,7 +34,6 @@ describe("variantId accepts only eligible (id, states) combinations", () => {
       false,
       runtimeBoolean,
       false,
-      undefined,
     );
     const _charles: TextureId = variantTextureId(
       "charles.towards",
@@ -44,7 +41,6 @@ describe("variantId accepts only eligible (id, states) combinations", () => {
       false,
       runtimeBoolean,
       false,
-      undefined,
     );
     const _conveyor: AnimationId = variantTextureId(
       "conveyor.x",
@@ -52,14 +48,13 @@ describe("variantId accepts only eligible (id, states) combinations", () => {
       false,
       runtimeBoolean,
       false,
-      undefined,
     );
     // @ts-expect-error - a runtime boolean cannot be passed as doughnutted for
     // art that can never be doughnutted
-    variantTextureId("bag", false, runtimeBoolean, false, false, undefined);
+    variantTextureId("bag", false, runtimeBoolean, false, false);
     // prettier-ignore
     // @ts-expect-error - the emperor's guardian is doughnut-immune
-    variantTextureId("emperorsGuardian.1", false, runtimeBoolean, false, false, undefined);
+    variantTextureId("emperorsGuardian.1", false, runtimeBoolean, false, false);
   });
 
   test("reflection-only art takes no other state", () => {
@@ -69,7 +64,6 @@ describe("variantId accepts only eligible (id, states) combinations", () => {
       false,
       false,
       false,
-      undefined,
     );
     const _animation: AnimationId = variantTextureId(
       "spring.bounce",
@@ -77,13 +71,12 @@ describe("variantId accepts only eligible (id, states) combinations", () => {
       false,
       false,
       false,
-      undefined,
     );
     // prettier-ignore
     // @ts-expect-error - room structure never renders in a reflection
-    variantTextureId("moonbase.floor", runtimeBoolean, false, false, false, undefined);
+    variantTextureId("moonbase.floor", runtimeBoolean, false, false, false);
     // @ts-expect-error - deactivated does not apply to reflection-only art
-    variantTextureId("ball", false, false, runtimeBoolean, false, undefined);
+    variantTextureId("ball", false, false, runtimeBoolean, false);
   });
 
   test("sceneryPlayer recolour is only for playable frames", () => {
@@ -93,7 +86,6 @@ describe("variantId accepts only eligible (id, states) combinations", () => {
       false,
       false,
       true,
-      undefined,
     );
     const _animation: AnimationId = variantTextureId(
       "head.idle.towards",
@@ -101,28 +93,11 @@ describe("variantId accepts only eligible (id, states) combinations", () => {
       false,
       false,
       true,
-      undefined,
     );
     // @ts-expect-error - monsters never take the sceneryPlayer recolour
-    variantTextureId("turtle.towards.1", false, false, false, true, undefined);
+    variantTextureId("turtle.towards.1", false, false, false, true);
     // prettier-ignore
     // @ts-expect-error - doughnutted and sceneryPlayer are mutually exclusive
-    variantTextureId("head.walking.towards.2", false, true, false, true, undefined);
-  });
-
-  test("destination hues are only for door frames", () => {
-    const _door: TextureId = variantTextureId(
-      "door.frame.generic.x.near",
-      false,
-      false,
-      false,
-      false,
-      "cyan",
-    );
-    // @ts-expect-error - only door frames recolour to a destination hue
-    variantTextureId("bag", false, false, false, false, "cyan");
-    // prettier-ignore
-    // @ts-expect-error - no other state may combine with a destination hue
-    variantTextureId("door.frame.generic.x.near", false, false, false, true, "cyan");
+    variantTextureId("head.walking.towards.2", false, true, false, true);
   });
 });

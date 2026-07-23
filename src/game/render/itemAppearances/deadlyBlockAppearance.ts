@@ -55,21 +55,13 @@ export const deadlyBlockAppearance: ItemAppearance<
           false,
           false,
           false,
-          undefined,
         ),
         times,
         cameraQuarterAngle,
         spritesheet,
       }
     : {
-        animationId: variantTextureId(
-          style,
-          isReflection,
-          false,
-          false,
-          false,
-          undefined,
-        ),
+        animationId: variantTextureId(style, isReflection, false, false, false),
         times,
         cameraQuarterAngle,
         startFramePhase: hash,

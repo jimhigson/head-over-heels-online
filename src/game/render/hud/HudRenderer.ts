@@ -610,14 +610,7 @@ export class HudRenderer<
     const hasBag = heelsAbilities?.hasBag;
     bagSprite.texture =
       this.renderContext.general.spritesheets.spritesheetForCurrentRoom.textures[
-        variantTextureId(
-          "bag",
-          false,
-          false,
-          !(hasBag ?? false),
-          false,
-          undefined,
-        )
+        variantTextureId("bag", false, false, !(hasBag ?? false), false)
       ];
 
     bagSprite.tint = tintForHudIfUncolourised(
@@ -649,25 +642,11 @@ export class HudRenderer<
 
     hooterSprite.texture =
       this.renderContext.general.spritesheets.spritesheetForCurrentRoom.textures[
-        variantTextureId(
-          "hooter",
-          false,
-          false,
-          !(hasHooter ?? false),
-          false,
-          undefined,
-        )
+        variantTextureId("hooter", false, false, !(hasHooter ?? false), false)
       ];
     doughnutsSprite.texture =
       this.renderContext.general.spritesheets.spritesheetForCurrentRoom.textures[
-        variantTextureId(
-          "doughnuts",
-          false,
-          false,
-          !hasDoughnuts,
-          false,
-          undefined,
-        )
+        variantTextureId("doughnuts", false, false, !hasDoughnuts, false)
       ];
 
     this.#hudElements.head.doughnuts.textContainer.text =
@@ -817,7 +796,6 @@ export class HudRenderer<
             false,
             !isActive,
             false,
-            undefined,
           )
         ];
     } catch (e) {

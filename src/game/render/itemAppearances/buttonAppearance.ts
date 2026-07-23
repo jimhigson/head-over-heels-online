@@ -34,7 +34,6 @@ export const buttonAppearance: ItemAppearance<"button", ButtonRenderProps> = ({
         false,
         false,
         false,
-        undefined,
       ),
       spritesheet: spritesheets.spritesheetForCurrentRoom,
     }),

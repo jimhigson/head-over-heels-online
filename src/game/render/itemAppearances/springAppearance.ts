@@ -56,7 +56,6 @@ const springAppearanceImpl: (
               false,
               false,
               false,
-              undefined,
             ),
         paused,
         spritesheet: spritesheets.spritesheetForCurrentRoom,

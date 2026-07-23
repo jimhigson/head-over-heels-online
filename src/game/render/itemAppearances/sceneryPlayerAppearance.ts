@@ -26,7 +26,6 @@ const spriteOptions = (
         false,
         false,
         true,
-        undefined,
       ),
       startFramePhase: hash,
       paused,
@@ -40,7 +39,6 @@ const spriteOptions = (
       false,
       false,
       true,
-      undefined,
     ),
     spritesheet,
   };

@@ -5,7 +5,6 @@ import { type Campaign } from "../../../../model/modelTypes";
 import { type SceneryName } from "../../../../sprites/planets";
 import { planetSpecificIfExists } from "../../../../sprites/planetSpecificIfExists";
 import { type AppSpritesheetWithVariants } from "../../../../sprites/spritesheet/AppSpritesheet";
-import { variantTextureId } from "../../../../sprites/spritesheet/variantTextureId";
 import { selectMaybeCurrentCampaign } from "../../../../store/slices/gameMenus/gameMenusSelectors";
 import { store } from "../../../../store/store";
 import { iterateToContainer } from "../../../../utils/pixi/iterateToContainer";
@@ -302,14 +301,12 @@ export const doorFrameAppearance: ItemAppearance<"doorFrame", RenderOnceProps> =
       // the frame's recolour to the destination room's hue is pre-baked into
       // the atlas as a suffixed variant frame - just pick the texture:
       const rendered = createSprite({
-        textureId: variantTextureId(
-          doorTexture(room, renderedAxis, renderedPart, spritesheet.data),
-          false,
-          false,
-          false,
-          false,
-          useColoursFromRoom.color.hue,
-        ),
+        textureId: `${doorTexture(
+          room,
+          renderedAxis,
+          renderedPart,
+          spritesheet.data,
+        )}.hue=${useColoursFromRoom.color.hue}`,
         x,
         y,
         spritesheet,

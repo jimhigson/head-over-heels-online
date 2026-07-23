@@ -106,7 +106,7 @@ export const carryButtonAppearance: ButtonAppearance<
   if (disabled !== previouslyRenderedProps?.disabled || roomChanged) {
     bag.texture =
       spritesheet.textures[
-        variantTextureId("bag", false, false, disabled, false, undefined)
+        variantTextureId("bag", false, false, disabled, false)
       ];
   }
 

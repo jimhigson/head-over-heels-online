@@ -32,7 +32,6 @@ const createContainerAndSprites = (
         false,
         false,
         false,
-        undefined,
       ),
       spritesheet,
     }),
@@ -45,7 +44,6 @@ const createContainerAndSprites = (
         false,
         false,
         false,
-        undefined,
       ),
       spritesheet,
     }),
@@ -112,7 +110,6 @@ export const joystickAppearance: ItemAppearance<
         false,
         false,
         false,
-        undefined,
       )
     ];
   const ballSpriteXy = ballRenderPushOffsets.get(screenPushDirection);
