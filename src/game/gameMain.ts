@@ -1,4 +1,4 @@
-import { Application, TextureStyle, type WebGLRenderer } from "pixi.js";
+import { Application, Sprite, TextureStyle, type WebGLRenderer } from "pixi.js";
 
 import { type CampaignLocator } from "../model/modelTypes";
 import { loadSoundCategory } from "../sound/soundsLoader";
@@ -19,6 +19,7 @@ import { selectCurrentPlayableItem } from "./gameState/gameStateSelectors/select
 import { loadGameState } from "./gameState/loadGameState";
 import { changeCharacterRoom } from "./gameState/mutators/changeCharacterRoom";
 import { type SavedGame } from "./gameState/saving/SavedGameState";
+import { htmlInCanvasSupported } from "./htmlInCanvas/htmlInCanvasSupported";
 import { type InputStateTrackerInterface } from "./input/InputStateTracker";
 import { installE2eFastForwardHandle } from "./mainLoop/installE2eFastForwardHandle";
 import { installE2eSwopCharacterHandle } from "./mainLoop/installE2eSwopCharacterHandle";
@@ -27,6 +28,33 @@ import { startCameraRotation } from "./mainLoop/tickCameraTransition";
 import { loadHudFont } from "./render/text/TextContainer";
 
 TextureStyle.defaultOptions.scaleMode = "nearest";
+
+const initApp = async (app: Application<WebGLRenderer>) => {
+  if (htmlInCanvasSupported) {
+    // pixi merges texture uploaders into the renderer at construction, so the
+    // html-source module (used to mirror dialogs into the canvas when the crt
+    // filter is on) must be registered before app.init creates the renderer
+    await import("pixi.js/html-source");
+  }
+  await app.init({
+    background: "#000000",
+    // run on the shared ticker to keep in sync with the input state tracker
+    sharedTicker: true,
+    eventFeatures: {
+      // https://pixijs.com/8.x/guides/components/interaction
+      // this is needed for the on-screen controls:
+      move: true,
+      globalMove: true,
+      click: true,
+      wheel: false,
+    },
+    // I will have to tell pixi.js when to render:
+    autoStart: false,
+    // the ColourClash filter requires a backbuffer (although this is
+    // only used when not colourised)
+    useBackBuffer: true,
+  });
+};
 
 /**
  * If you came from GamePage, we are now outside of React-land
@@ -49,24 +77,7 @@ export const gameMain = async <RoomId extends string>(
     // TextContainer rasterises strings with canvas 2d, which would silently draw
     // with a fallback font if the web font hadn't loaded yet:
     loadHudFont(),
-    app.init({
-      background: "#000000",
-      // run on the shared ticker to keep in sync with the input state tracker
-      sharedTicker: true,
-      eventFeatures: {
-        // https://pixijs.com/8.x/guides/components/interaction
-        // this is needed for the on-screen controls:
-        move: true,
-        globalMove: true,
-        click: true,
-        wheel: false,
-      },
-      // I will have to tell pixi.js when to render:
-      autoStart: false,
-      // the ColourClash filter requires a backbuffer (although this is
-      // only used when not colourised)
-      useBackBuffer: true,
-    }),
+    initApp(app),
   ]);
 
   /**
@@ -147,6 +158,42 @@ export const gameMain = async <RoomId extends string>(
     campaign,
     renderIn(containerElement) {
       containerElement.appendChild(app.canvas);
+    },
+    get canvas() {
+      return app.canvas;
+    },
+    mirrorHtmlElement(element: HTMLElement) {
+      let disposed = false;
+      let disposeMirror: (() => void) | undefined;
+
+      // loaded late per the loading policy - the html-source module is only
+      // needed on the rare path where the experimental browser api exists
+      // and the crt filter is on
+      import("pixi.js/html-source").then(({ HTMLSource }) => {
+        if (disposed) {
+          return;
+        }
+        const source = new HTMLSource({ resource: element });
+        const sprite = Sprite.from(source);
+        sprite.label = "htmlMirror";
+        // the texture is at canvas device-pixel size; the stage is scaled by
+        // gameEngineUpscale, so counter-scale to draw the mirrored dom 1:1
+        // over the whole canvas:
+        const { gameEngineUpscale } = store.getState().upscale.upscale;
+        sprite.scale = 1 / gameEngineUpscale;
+        // after mainContainer, so the mirror draws over the room and hud:
+        app.stage.addChild(sprite);
+        disposeMirror = () => {
+          app.stage.removeChild(sprite);
+          sprite.destroy();
+          source.destroy();
+        };
+      });
+
+      return () => {
+        disposed = true;
+        disposeMirror?.();
+      };
     },
     resizeTo(newSize: Xy, rot90: boolean) {
       // app.resizeTo is not very reliable - it only resizes if the window resizes. That's usually

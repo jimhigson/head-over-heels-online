@@ -15,6 +15,18 @@ export type GameApi<RoomId extends string = string> = {
    */
   currentRoom: RoomState<RoomId, string> | undefined;
   renderIn: (div: HTMLDivElement) => void;
+  /** the canvas element the game renders into */
+  canvas: HTMLCanvasElement;
+  /**
+   * Mirror a live html element into the game's stage via the experimental
+   * html-in-canvas API (pixi `HTMLSource`), so the top-level (crt) filters
+   * apply to it. The element must be a direct child of {@link canvas}; it
+   * stays interactive in the dom while its pixels are drawn by the game.
+   * Only callable when {@link htmlInCanvasSupported} is true.
+   *
+   * @returns cleanup that removes the mirror sprite and its texture source
+   */
+  mirrorHtmlElement: (element: HTMLElement) => () => void;
   gameState: GameState<RoomId>;
   /**
    * Start a camera-rotation transition and immediately freeze it at `progress`
