@@ -32,16 +32,7 @@ export const playerWalkAcceldPixPerMsSq = {
  */
 export const maxSubTickDeltaMs = 1_000 / 110;
 
-/** generally, jumps get (slightly) lower as frame rates increase, and this gets
- * impactful at very high frame rates - limit to 240Hz since this is already at
- * the edge of screen tech (2025) and very fast
- *
- * Actually, I boughtA NEW MONITOR that can do 330Hz if I restrict to 1080p, so
- * that's the new max
- **/
-export const maxFps = 330;
-
-/** 
+/**
   acceleration due to gravity while jumping, in m/s²
   setting to zero gives the old, linear jump behaviour. Higher figures mean
   more contrast between initial jump speed and average jump speed

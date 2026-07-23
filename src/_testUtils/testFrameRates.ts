@@ -1,5 +1,3 @@
-import { maxFps } from "../game/physics/mechanicsConstants";
-
 const repeat = (n: number, value: number): number[] => Array(n).fill(value);
 
 export type FrameRateSpec = { fps: Array<number> };
@@ -28,9 +26,8 @@ export const testFrameRates: Array<FrameRateSpec> = [
   { fps: [260] }, // old highest supported
   { fps: [280] }, // old highest supported
   { fps: [300] }, // old highest supported
-  { fps: [330, 240, 330, 330] }, // highest supported with some dropped frames
-  { fps: [330] }, // highest supported (ok, I bought a new monitor!)
-  { fps: [maxFps] }, // testing the highest supported actually works, in case it changes!
+  { fps: [330, 240, 330, 330] }, // 330Hz monitor with some dropped frames
+  { fps: [330] }, // 330Hz monitor - highest rate the physics is validated at
 
   // now, some inconsistent frame rates:
   { fps: [30, 15] },
