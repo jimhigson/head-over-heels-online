@@ -33,8 +33,13 @@ if [ -n "$(find "$tmp" -type f -print -quit)" ]; then
   ( cd "$tmp" && prettier --write --ignore-path .prettierignore --log-level warn . )
 
   # apply the fixed+formatted copies to the index (and worktree when the patch is
-  # clean); files git-format-staged sees but that were skipped pass through unchanged
-  git-format-staged --formatter 'if [ -f "'"$tmp"'/{}" ]; then cat "'"$tmp"'/{}"; else cat; fi' $patterns
+  # clean); files git-format-staged sees but that were skipped pass through unchanged.
+  # the formatter's stdin is the original blob content piped from `git cat-file`
+  # by git-format-staged itself - it must always be drained even when a batch-fixed
+  # copy exists in $tmp, or the unread pipe SIGPIPEs that upstream `git cat-file` and
+  # git-format-staged aborts (this races: it reproduces reliably inside worktrees,
+  # where the extra .git indirection slows `git cat-file` enough to lose the race)
+  git-format-staged --formatter 'if [ -f "'"$tmp"'/{}" ]; then cat >/dev/null; cat "'"$tmp"'/{}"; else cat; fi' $patterns
 fi
 
 echo ...pre-commit done
