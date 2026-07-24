@@ -1,10 +1,4 @@
-import {
-  Container,
-  Rectangle,
-  type RenderTexture,
-  Sprite,
-  Texture,
-} from "pixi.js";
+import { Texture } from "pixi.js";
 
 import {
   PaletteSwapFilter,
@@ -27,7 +21,6 @@ import {
   blockstackAmbienceNamedSwops,
   blockstackAmbienceSwops,
 } from "./roomSpritesheetTextureSwops";
-import { type PackedVariantFrames } from "./spritesheetData/packVariantFrames";
 import {
   arcadeButtonActionOfSuffix,
   type ArcadeButtonSuffix,
@@ -79,35 +72,36 @@ export const bakeableVariantSuffixes = (
 };
 
 /**
- * the strip cells are grouped so each group can take one homogeneous filter
- * chain: the deactivated variant preserves each playable's characteristic
- * colours on their own sprites, so head/heels cells form their own groups
+ * the cells are grouped so each group can take one homogeneous filter chain:
+ * the deactivated variant preserves each playable's characteristic colours on
+ * their own sprites, so head/heels cells form their own groups
  */
-type StripGroup = `${VariantSuffix}${".head" | ".heels" | ""}`;
+export type StripGroup = `${VariantSuffix}${".head" | ".heels" | ""}`;
 
-const groupOfCell = (
-  cell: PackedVariantFrames["cells"][number],
+/** the strip group a variant id belongs to, splitting deactivated by playable */
+export const stripGroupOf = (
+  suffix: VariantSuffix,
+  /** an id in the group, to split deactivated head/heels */
+  id: string,
 ): StripGroup => {
-  if (cell.suffix === "deactivated") {
-    const [firstId] = cell.ids;
-    if (firstId.startsWith("head.")) {
+  if (suffix === "deactivated") {
+    if (id.startsWith("head.")) {
       return "deactivated.head";
     }
-    if (firstId.startsWith("heels.")) {
+    if (id.startsWith("heels.")) {
       return "deactivated.heels";
     }
   }
-  return cell.suffix;
+  return suffix;
 };
 
 /**
  * the ordered ambient palette-swop passes to bake a strip group with, in the
- * given room - mirroring what the full-sheet variant builders apply: the
- * variant's own swops, then the dim palette in dimmed rooms (deactivated
- * instead takes the room ambience in non-dimmed rooms, as its full-sheet
- * builder does). Undefined = this sheet does not bake this group.
+ * given room - the variant's own swops, then the dim palette in dimmed rooms
+ * (deactivated instead takes the room ambience in non-dimmed rooms).
+ * Undefined = this sheet does not bake this group.
  */
-const stripGroupPasses = (
+export const stripGroupPasses = (
   group: StripGroup,
   {
     roomScenery,
@@ -147,11 +141,9 @@ const stripGroupPasses = (
 
   if (isDoorHueSuffix(group)) {
     // a door frame recoloured for the room its door leads to. One merged pass:
-    // the room's ambience/dim replacements cover the non-placeholder pixels
-    // (what region-0 doors receive), and the destination replacements are
-    // spread last so the placeholder colours map to the destination room's
-    // colours - composing exactly as region 0's placeholder mask plus the
-    // per-door runtime filter this bake replaces
+    // the room's ambience/dim replacements cover the non-placeholder pixels,
+    // and the destination replacements are spread last so the placeholder
+    // colours map to the destination room's colours
     const destinationHue = doorHueOfSuffix(group);
     // moonbase doors are illuminated:
     const trend = roomScenery === "moonbase" ? "light-mid" : "light-dark";
@@ -223,74 +215,11 @@ const stripGroupPasses = (
 };
 
 /**
- * bake the packed variant strip into the atlas: for each strip group, a
- * container of sprites copying each cell's source rect from the base texture
- * to its packed rect, rendered through the group's swop passes. Renders with
- * clear:false, so the region-0 (base sheet) bake must already be in the
- * target.
+ * build the maskless palette-swop filters for an ordered list of swop passes.
+ * clipToViewport is false: these bake the sheet off-screen, so the filter must
+ * not be cropped to the screen viewport
  */
-export const bakeVariantStrip = (
-  context: VariantBuildContext,
-  baseTexture: Texture,
-  target: RenderTexture,
-  cells: PackedVariantFrames["cells"],
-): void => {
-  const { pixiRenderer } = context;
-
-  const groups = new Map<StripGroup, Container>();
-  const cellTextures: Texture[] = [];
-
-  for (const cell of cells) {
-    const group = groupOfCell(cell);
-    let container = groups.get(group);
-    if (container === undefined) {
-      container = new Container();
-      groups.set(group, container);
-    }
-    const cellTexture = new Texture({
-      source: baseTexture.source,
-      frame: new Rectangle(
-        cell.source.x,
-        cell.source.y,
-        cell.source.w,
-        cell.source.h,
-      ),
-    });
-    cellTextures.push(cellTexture);
-    const sprite = new Sprite(cellTexture);
-    sprite.position.set(cell.dest.x, cell.dest.y);
-    container.addChild(sprite);
-  }
-
-  for (const [group, container] of groups) {
-    const passes = stripGroupPasses(group, context);
-    if (passes === undefined) {
-      // this sheet has no swops for the group - leave its cells unbaked (their
-      // frame entries stay aliased to the base rects)
-      container.destroy({ children: true });
-      continue;
-    }
-
-    const filters = passes.map(
-      (pass) => new PaletteSwapFilter(pass, Texture.WHITE, false),
-    );
-    container.filters = filters;
-
-    pixiRenderer.render({ container, target, clear: false });
-
-    for (const filter of filters) {
-      filter.destroy({
-        destroyLutTexture: true,
-        // the mask is the shared Texture.WHITE - never destroy it:
-        destroyMask: false,
-        destroyPrograms: false,
-      });
-    }
-    container.destroy({ children: true });
-  }
-
-  for (const cellTexture of cellTextures) {
-    // false = do not destroy the shared base texture source:
-    cellTexture.destroy(false);
-  }
-};
+export const filtersForPasses = (
+  passes: PaletteSwopSpec[],
+): PaletteSwapFilter[] =>
+  passes.map((pass) => new PaletteSwapFilter(pass, Texture.WHITE, false));

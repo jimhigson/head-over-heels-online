@@ -26,7 +26,7 @@ export const SpritesheetOverrideButtons = () => {
         reader.onload = () => {
           dispatch(
             setSpritesheetOverride({
-              spriteOption: spriteOption.name,
+              spriteOptionName: spriteOption.name,
               dataUrl: reader.result as string,
             }),
           );

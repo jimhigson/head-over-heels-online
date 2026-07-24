@@ -9,7 +9,7 @@ import {
   type SpritesheetDataFrames,
 } from "./spritesheetData/makeSpritesheetData";
 import { type SpritesheetMetadata } from "./spritesheetData/spritesheetMetaData";
-import { type LoadableSpriteOption } from "./Spritesheets";
+import { type SpriteOptionName } from "./Spritesheets";
 
 /**
  * the animations each builder writes, taken from the builders themselves so
@@ -50,7 +50,7 @@ declare const variantsBaked: unique symbol;
  * whose variant ids are all aliases
  */
 export type AppSpritesheet = Spritesheet<AppSpritesheetDataWithVariants> & {
-  spriteOption: LoadableSpriteOption;
+  spriteOptionName: SpriteOptionName;
   ambient?: PaletteSwopSpec[];
   spritesheetMeta: SpritesheetMetadata;
 };
