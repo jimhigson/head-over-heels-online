@@ -11,4 +11,6 @@ export type VariantBuildContext<PaletteColourName extends string = string> = {
   roomColor: ZxSpectrumRoomColour;
   spriteOption: LoadableSpriteOption;
   spritesheetMetaData: SpritesheetMetadata<PaletteColourName>;
+  /** true when baking the ZX/uncolourised sheet (tinted at render time) */
+  uncolourised: boolean;
 };

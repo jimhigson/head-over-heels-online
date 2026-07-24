@@ -1,3 +1,5 @@
+import { type Color } from "pixi.js";
+
 import { type PaletteSwopSpec } from "../../game/render/filters/PaletteSwapFilter";
 import { colorScheme } from "../../game/render/gameColours/colourScheme";
 import {
@@ -22,16 +24,25 @@ import {
   paletteToppy,
 } from "../palette/spritesheetPalette";
 import { type SceneryName } from "../planets";
+import { type TexturesSpecifier } from "./reifyTextureIds";
 import {
   type BaseTextureId,
   type TextureId,
 } from "./spritesheetData/makeSpritesheetData";
-import {
-  type SpritesheetTextureSwops,
-  type TextureSpecificPaletteSwops,
-} from "./spritesheetPaletteSwop";
 import { type LoadableSpriteOption } from "./Spritesheets";
-const isDoorTexture = (tid: TextureId) => tid.startsWith("door.");
+
+export type TextureSpecificPaletteSwops = {
+  textureIds: TexturesSpecifier;
+  swops: Map<Color, Color>;
+  /** if true, the ambient swops won't apply on top of the swops given for this texture */
+  dodgeAmbient?: boolean;
+};
+
+/** the swops to apply to a spritesheet to colour it for a room */
+export type SpritesheetTextureSwops = {
+  ambient: Array<PaletteSwopSpec>;
+  textureSpecific?: Array<TextureSpecificPaletteSwops>;
+};
 
 /** NOTE: - does not match deadly floors */
 const isFloorTexture = (textureId: TextureId): boolean =>
@@ -94,10 +105,6 @@ export const roomSpritesheetTextureSwops = (
           ...floorEdgeSwops(roomColor),
           ...blockstackBookSwops(roomColor),
         ],
-        // do not replace placeholder colours on doors with the room's colour,
-        // since doors need to have them replaced with the colour of the room the
-        // door leads to
-        noReplacePlaceholderTextures: isDoorTexture,
       };
     case "Toppy":
       return {

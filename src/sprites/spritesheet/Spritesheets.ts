@@ -1,4 +1,7 @@
 import {
+  Container,
+  Graphics,
+  Rectangle,
   type Renderer,
   RenderTexture,
   Sprite,
@@ -9,12 +12,13 @@ import {
 import blockStackSpritesheetUrl from "../../../gfx/sprites.webp";
 import debugSpritesheetUrl from "../../../gfx/spritesDebug.webp";
 import toppySpritesheetUrl from "../../../gfx/spritesToppy.webp";
-import { ShadowPreprocessFilter } from "../../game/render/filters/shadows/ShadowPreprocessFilter";
+import { invertRedToAlphaFilter } from "../../game/render/filters/shadows/invertRedToAlphaFilter";
 import { type ZxSpectrumRoomColour } from "../../originalGame";
 import { selectSpritesheetOverrideBlobUrl } from "../../store/slices/spritesheetOverrideSlice";
 import { type SpriteOption } from "../../store/slices/userSettings/userSettingsSlice";
 import { store } from "../../store/store";
 import { detectDeviceType } from "../../utils/detectEnv/detectDeviceType";
+import { objectEntriesIter } from "../../utils/entries";
 import { stripIccProfilePng } from "../../utils/image/stripIccProfilePng";
 import { stripIccProfileWebp } from "../../utils/image/stripIccProfileWebp";
 import { type SceneryName } from "../planets";
@@ -25,13 +29,8 @@ import {
   type AppSpritesheetWithVariants,
   withVariantsBaked,
 } from "./AppSpritesheet";
-import { buildAtlasSpritesheet } from "./atlasSpritesheet";
-import { buildUncolourisedSpritesheet } from "./buildUncolourisedSpritesheet";
-import { black, renderMaskTexture, white } from "./renderMaskTexture";
-import {
-  makeSpritesheetData,
-  type TextureId,
-} from "./spritesheetData/makeSpritesheetData";
+import { buildRoomSheet } from "./buildRoomSheet";
+import { makeSpritesheetData } from "./spritesheetData/makeSpritesheetData";
 import {
   type SpritesheetMetadata,
   spritesheetMetaForOption,
@@ -97,30 +96,20 @@ export class Spritesheets {
     this.#currentSpritesheet?.destroy(false);
     this.#currentSpritesheet = undefined;
 
-    const built =
-      spriteOption.uncolourised ?
-        buildUncolourisedSpritesheet(
-          pixiRenderer,
-          bt,
-          orig,
-          roomScenery,
-          roomColor,
-          this.#currentSheetTarget,
-        )
-      : buildAtlasSpritesheet(
-          {
-            pixiRenderer,
-            roomScenery,
-            roomColor,
-            spriteOption: spriteOption.name,
-            spritesheetMetaData: spritesheetMetaForOption(
-              spriteOption,
-            ) as SpritesheetMetadata,
-          },
-          bt,
-          orig,
-          this.#currentSheetTarget,
-        );
+    const built = buildRoomSheet(
+      {
+        pixiRenderer,
+        roomScenery,
+        roomColor,
+        spriteOption: spriteOption.name,
+        spritesheetMetaData: spritesheetMetaForOption(
+          spriteOption,
+        ) as SpritesheetMetadata,
+        uncolourised: spriteOption.uncolourised,
+      },
+      bt,
+      this.#currentSheetTarget,
+    );
 
     this.#currentSpritesheet = built.sheet;
     this.#currentSheetTarget = built.target;
@@ -266,31 +255,57 @@ export class Spritesheets {
       return withVariantsBaked(emptySheet);
     }
 
-    const shadowSpritesMask = renderMaskTexture(pixiRenderer, {
-      rects: {
-        textureIds: (candidate: TextureId) => candidate.startsWith("shadow."),
-        color: white,
-        spritesheetDataFrames: spriteSheetData.frames,
-      },
-      clearColour: black,
-    });
-
-    const preprocessShadowTexturesFilter = new ShadowPreprocessFilter(
-      "invertRedToAlpha",
-      shadowSpritesMask,
-    );
-
-    const sprite = new Sprite(decodedTexture);
-    sprite.filters = preprocessShadowTexturesFilter;
-
     const processedTexture = RenderTexture.create({
       width: decodedTexture.width,
       height: decodedTexture.height,
     });
 
+    // copy the raw sheet unchanged...
+    const base = new Sprite(decodedTexture);
+    pixiRenderer.render({ container: base, target: processedTexture });
+    base.destroy();
+
+    // ...then replace the shadow frames in place with their alpha-encoded form.
+    // No mask needed: each shadow rect is erased to transparent and redrawn
+    // through the (maskless) invert filter, so only shadow pixels are touched
+    const shadowOverlay = new Container();
+    const eraser = new Graphics();
+    const shadowFrameSprites: Sprite[] = [];
+    const seenShadowRects = new Set<string>();
+    for (const [id, { frame }] of objectEntriesIter(spriteSheetData.frames)) {
+      if (!id.startsWith("shadow.")) {
+        continue;
+      }
+      const { x, y, w, h } = frame;
+      const rectKey = `${x},${y},${w},${h}`;
+      if (seenShadowRects.has(rectKey)) {
+        continue;
+      }
+      seenShadowRects.add(rectKey);
+
+      eraser.rect(x, y, w, h);
+
+      const frameSprite = new Sprite(
+        new Texture({
+          source: decodedTexture.source,
+          frame: new Rectangle(x, y, w, h),
+        }),
+      );
+      frameSprite.position.set(x, y);
+      frameSprite.filters = invertRedToAlphaFilter;
+      shadowFrameSprites.push(frameSprite);
+      shadowOverlay.addChild(frameSprite);
+    }
+    // erase (before the inverted frames draw) so the raw white backgrounds do
+    // not show through the now-transparent parts of the alpha-encoded shadows
+    eraser.fill(0xff_ff_ff);
+    eraser.blendMode = "erase";
+    shadowOverlay.addChildAt(eraser, 0);
+
     pixiRenderer.render({
-      container: sprite,
+      container: shadowOverlay,
       target: processedTexture,
+      clear: false,
     });
 
     const spriteSheet = new Spritesheet(
@@ -303,8 +318,12 @@ export class Spritesheets {
     spriteSheet.spritesheetMeta = spritesheetMeta;
     applySpritesheetFlips(spriteSheet);
 
-    sprite.destroy();
-    shadowSpritesMask.destroy(true);
+    eraser.destroy();
+    for (const frameSprite of shadowFrameSprites) {
+      // destroy the per-frame Texture wrapper but not the shared source (that is
+      // the caller's decodedTexture, destroyed once after this returns)
+      frameSprite.destroy({ texture: true, textureSource: false });
+    }
 
     return withVariantsBaked(spriteSheet);
   }

@@ -3,12 +3,11 @@ import { RenderTexture } from "pixi.js";
 import { spritesheetSize } from "./spritesheetData/makeBaseSpritesheetData";
 
 /**
- * every room sheet bakes into a double-height (power-of-two, so warp-mesh
- * edge sampling of the base region rounds identically to the square base
- * sheet's) atlas: the base layout on top, the variant strip below. The strip
- * must fit in the lower half; VR catches it if it ever outgrows this.
+ * every room sheet bakes into a square (power-of-two) atlas holding the whole
+ * freshly-packed layout. The pack must fit; the throw below catches it if it
+ * outgrows this.
  */
-const sheetTargetHeight = spritesheetSize.h * 2;
+const sheetTargetHeight = spritesheetSize.h;
 
 /**
  * the GPU texture a room sheet is baked into: reuses the previous room's
@@ -17,14 +16,12 @@ const sheetTargetHeight = spritesheetSize.h * 2;
  */
 export const reuseOrCreateSheetTarget = (
   previousTarget: RenderTexture | undefined,
-  stripHeight: number,
+  /** total rows the packed layout uses, from y=0 */
+  requiredHeight: number,
 ): RenderTexture => {
-  if (
-    import.meta.env.DEV &&
-    spritesheetSize.h + stripHeight > sheetTargetHeight
-  ) {
+  if (import.meta.env.DEV && requiredHeight > sheetTargetHeight) {
     throw new Error(
-      `variant strip (${stripHeight} rows) does not fit the double-height sheet`,
+      `packed sheet (${requiredHeight} rows) does not fit the ${sheetTargetHeight}-row target`,
     );
   }
 
