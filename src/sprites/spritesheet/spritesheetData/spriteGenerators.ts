@@ -2,33 +2,43 @@ import { type SpritesheetFrameData } from "pixi.js";
 
 import { type SpriteSize } from "../../../model/modelTypes";
 import { range } from "../../../utils/iterators/range";
+import { octantIndexOfDirection } from "../../../utils/vectors/octantIndexOfDirection" with { type: "macro" };
 import {
   addXy,
-  type DirectionXy4,
+  type DirectionIndexXy4,
   type Xy,
 } from "../../../utils/vectors/vectors";
 
-type DirectionalTexture<TName extends string> = `${TName}.${DirectionXy4}`;
+/**
+ * a 4-way directional texture id: the suffix is the facing's even-octant ring
+ * index (left=d0, away=d2, right=d4, towards=d6) so appearances can compute
+ * which variant to draw arithmetically
+ */
+type DirectionalTexture<TName extends string> =
+  `${TName}.d${DirectionIndexXy4}`;
 export const fourDirections = <TName extends string>(
   name: TName,
 
   { x: startX, y: startY }: Xy,
   textureSize: SpriteSize,
-): Record<`${TName}.${DirectionXy4}`, SpritesheetFrameData> => {
+): Record<DirectionalTexture<TName>, SpritesheetFrameData> => {
   function* generator(): Generator<
-    [`${TName}.${DirectionXy4}`, SpritesheetFrameData]
+    [DirectionalTexture<TName>, SpritesheetFrameData]
   > {
-    yield [`${name}.left`, { frame: { x: startX, y: startY, ...textureSize } }];
     yield [
-      `${name}.away`,
+      `${name}.d${octantIndexOfDirection("left")}`,
+      { frame: { x: startX, y: startY, ...textureSize } },
+    ];
+    yield [
+      `${name}.d${octantIndexOfDirection("away")}`,
       { frame: { x: startX + textureSize.w + 1, y: startY, ...textureSize } },
     ];
     yield [
-      `${name}.towards`,
+      `${name}.d${octantIndexOfDirection("towards")}`,
       { frame: { x: startX, y: startY + textureSize.h + 1, ...textureSize } },
     ];
     yield [
-      `${name}.right`,
+      `${name}.d${octantIndexOfDirection("right")}`,
       {
         frame: {
           x: startX + textureSize.w + 1,
@@ -140,25 +150,30 @@ export const fourDirectionsOfNumberedTextures = <
   position: Xy,
   textureSize: SpriteSize,
 ): Record<
-  `${TName}.${DirectionXy4}.${FrameNumbers<N>}`,
+  `${DirectionalTexture<TName>}.${FrameNumbers<N>}`,
   SpritesheetFrameData
 > => {
   const frames = {
-    ...seriesOfNumberedTextures(`${name}.left`, n, position, textureSize),
     ...seriesOfNumberedTextures(
-      `${name}.away`,
+      `${name}.d${octantIndexOfDirection("left")}`,
+      n,
+      position,
+      textureSize,
+    ),
+    ...seriesOfNumberedTextures(
+      `${name}.d${octantIndexOfDirection("away")}`,
       n,
       addXy(position, { x: (textureSize.w + 1) * n }),
       textureSize,
     ),
     ...seriesOfNumberedTextures(
-      `${name}.towards`,
+      `${name}.d${octantIndexOfDirection("towards")}`,
       n,
       addXy(position, { y: textureSize.h + 1 }),
       textureSize,
     ),
     ...seriesOfNumberedTextures(
-      `${name}.right`,
+      `${name}.d${octantIndexOfDirection("right")}`,
       n,
       addXy(position, {
         x: (textureSize.w + 1) * n,

@@ -8,9 +8,9 @@ import { type BaseAnimationId } from "../../../sprites/spritesheet/spritesheetDa
 import { type DoughnuttableId } from "../../../sprites/spritesheet/spritesheetData/variantSpritesheetData";
 import { variantTextureId } from "../../../sprites/spritesheet/variantTextureId";
 import { renderBobSine } from "../../../utils/maths/renderBob";
-import { resolveCameraRelativeVectorXy4 } from "../../../utils/vectors/resolveCameraRelativeVector";
+import { resolveCameraRelativeIndexXy4 } from "../../../utils/vectors/resolveCameraRelativeVector";
 import {
-  type DirectionXy4,
+  type DirectionIndexXy4,
   originXy,
   xyEqual,
 } from "../../../utils/vectors/vectors";
@@ -51,7 +51,7 @@ const dalekAnimationId = (
 
 type MonsterRenderProps = {
   walking?: boolean;
-  resolvedFacingXy4?: DirectionXy4;
+  resolvedFacingIndexXy4?: DirectionIndexXy4;
   activated: boolean;
   busyLickingDoughnutsOffFace: boolean;
 };
@@ -141,7 +141,7 @@ export const monsterAppearance: ItemAppearance<
       // directional sprite matches how the monster appears once the camera
       // has turned - stepping through intermediate facings mid-turn.
       // Rounding happens only here, at the final sprite-name pick:
-      const resolvedFacingXy4 = resolveCameraRelativeVectorXy4(
+      const resolvedFacingIndexXy4 = resolveCameraRelativeIndexXy4(
         state.facing,
         cameraAngle,
         isReflection,
@@ -152,7 +152,8 @@ export const monsterAppearance: ItemAppearance<
         activated !== currentlyRenderedProps.activated ||
         busyLickingDoughnutsOffFace !==
           currentlyRenderedProps.busyLickingDoughnutsOffFace ||
-        resolvedFacingXy4 !== currentlyRenderedProps.resolvedFacingXy4;
+        resolvedFacingIndexXy4 !==
+          currentlyRenderedProps.resolvedFacingIndexXy4;
 
       if (!render) {
         maybeAddBob(item, room, currentRendering!.output!, uncolourised);
@@ -160,7 +161,7 @@ export const monsterAppearance: ItemAppearance<
         return "no-update";
       }
       const renderProps: MonsterRenderProps = {
-        resolvedFacingXy4,
+        resolvedFacingIndexXy4,
         activated,
         busyLickingDoughnutsOffFace,
       };
@@ -169,13 +170,13 @@ export const monsterAppearance: ItemAppearance<
         case "skiHead": {
           // directional, style, no anim — fall back to first style if this one is missing
           const preferredId =
-            `${config.which}.${config.style}.${resolvedFacingXy4}` as const;
+            `${config.which}.${config.style}.d${resolvedFacingIndexXy4}` as const;
           const spritesheetData = spritesheets.originalSpritesheet.data;
           return {
             output: createSprite({
               textureId: variantTextureId(
                 isTextureId(preferredId, spritesheetData) ? preferredId : (
-                  `${config.which}.greenAndPink.${resolvedFacingXy4}`
+                  `${config.which}.greenAndPink.d${resolvedFacingIndexXy4}`
                 ),
                 isReflection,
                 busyLickingDoughnutsOffFace,
@@ -192,7 +193,7 @@ export const monsterAppearance: ItemAppearance<
           return {
             output: createSprite({
               textureId: variantTextureId(
-                `elephant.${resolvedFacingXy4}`,
+                `elephant.d${resolvedFacingIndexXy4}`,
                 isReflection,
                 busyLickingDoughnutsOffFace,
                 !activated,
@@ -210,7 +211,7 @@ export const monsterAppearance: ItemAppearance<
               animate ?
                 createSprite({
                   animationId: variantTextureId(
-                    `${config.which}.${resolvedFacingXy4}`,
+                    `${config.which}.d${resolvedFacingIndexXy4}`,
                     isReflection,
                     busyLickingDoughnutsOffFace,
                     !activated,
@@ -222,7 +223,7 @@ export const monsterAppearance: ItemAppearance<
                 })
               : createSprite({
                   textureId: variantTextureId(
-                    `${config.which}.${resolvedFacingXy4}.1`,
+                    `${config.which}.d${resolvedFacingIndexXy4}.1`,
                     isReflection,
                     busyLickingDoughnutsOffFace,
                     !activated,
@@ -244,7 +245,7 @@ export const monsterAppearance: ItemAppearance<
                   createStackedSprites({
                     top: {
                       textureId: variantTextureId(
-                        `${config.which}.${resolvedFacingXy4}`,
+                        `${config.which}.d${resolvedFacingIndexXy4}`,
                         isReflection,
                         busyLickingDoughnutsOffFace,
                         !activated,
@@ -269,7 +270,7 @@ export const monsterAppearance: ItemAppearance<
                 // charging on a toaster
               : createSprite({
                   textureId: variantTextureId(
-                    `${config.which}.${resolvedFacingXy4}`,
+                    `${config.which}.d${resolvedFacingIndexXy4}`,
                     isReflection,
                     busyLickingDoughnutsOffFace,
                     !activated,
@@ -291,7 +292,7 @@ export const monsterAppearance: ItemAppearance<
               createStackedSprites({
                 top: {
                   textureId: variantTextureId(
-                    `${config.which}.${resolvedFacingXy4}`,
+                    `${config.which}.d${resolvedFacingIndexXy4}`,
                     isReflection,
                     busyLickingDoughnutsOffFace,
                     !activated,

@@ -2,21 +2,21 @@ import { type IndividualCharacterName } from "../../../model/modelTypes";
 import { isAnimationId } from "../../../sprites/assertIsTextureId";
 import { type AppSpritesheetWithVariants } from "../../../sprites/spritesheet/AppSpritesheet";
 import { variantTextureId } from "../../../sprites/spritesheet/variantTextureId";
-import { resolveCameraRelativeVectorXy8 } from "../../../utils/vectors/resolveCameraRelativeVector";
-import { type DirectionXy8 } from "../../../utils/vectors/vectors";
+import { resolveCameraRelativeIndexXy8 } from "../../../utils/vectors/resolveCameraRelativeVector";
+import { type DirectionIndexXy8 } from "../../../utils/vectors/vectors";
 import { createSprite, type CreateSpriteOptions } from "../createSprite";
 import { createStackedSprites } from "./createStackedSprites";
 import { type ItemAppearance } from "./ItemAppearance";
 
 const spriteOptions = (
   name: IndividualCharacterName,
-  direction: DirectionXy8,
+  direction: DirectionIndexXy8,
   hash: number | undefined,
   paused: boolean,
   spritesheet: AppSpritesheetWithVariants,
   isReflection: boolean,
 ): Exclude<CreateSpriteOptions, string> => {
-  const possibleAnimationId = `${name}.idle.${direction}` as const;
+  const possibleAnimationId = `${name}.idle.d${direction}` as const;
 
   if (isAnimationId(possibleAnimationId, spritesheet.data)) {
     return {
@@ -34,7 +34,7 @@ const spriteOptions = (
   }
   return {
     textureId: variantTextureId(
-      `${name}.walking.${direction}.2`,
+      `${name}.walking.d${direction}.2`,
       isReflection,
       false,
       false,
@@ -45,7 +45,7 @@ const spriteOptions = (
 };
 
 type SceneryPlayerRenderProps = {
-  resolvedRenderDirection: DirectionXy8;
+  resolvedRenderDirectionIndex: DirectionIndexXy8;
 };
 
 export const sceneryPlayerAppearance: ItemAppearance<
@@ -67,7 +67,7 @@ export const sceneryPlayerAppearance: ItemAppearance<
   // resolve the configured facing against the continuous camera angle -
   // stepping through intermediate facings mid-turn. Rounding happens only
   // here, at the final sprite-name pick:
-  const resolvedRenderDirection = resolveCameraRelativeVectorXy8(
+  const resolvedRenderDirectionIndex = resolveCameraRelativeIndexXy8(
     startDirection,
     cameraAngle,
     isReflection,
@@ -75,7 +75,8 @@ export const sceneryPlayerAppearance: ItemAppearance<
 
   const render =
     currentlyRenderedProps === undefined ||
-    resolvedRenderDirection !== currentlyRenderedProps.resolvedRenderDirection;
+    resolvedRenderDirectionIndex !==
+      currentlyRenderedProps.resolvedRenderDirectionIndex;
 
   if (!render) {
     return "no-update";
@@ -89,7 +90,7 @@ export const sceneryPlayerAppearance: ItemAppearance<
         createStackedSprites({
           top: spriteOptions(
             "head",
-            resolvedRenderDirection,
+            resolvedRenderDirectionIndex,
             hash,
             paused,
             spritesheet,
@@ -97,7 +98,7 @@ export const sceneryPlayerAppearance: ItemAppearance<
           ),
           bottom: spriteOptions(
             "heels",
-            resolvedRenderDirection,
+            resolvedRenderDirectionIndex,
             hash,
             paused,
             spritesheet,
@@ -107,13 +108,13 @@ export const sceneryPlayerAppearance: ItemAppearance<
       : createSprite(
           spriteOptions(
             which,
-            resolvedRenderDirection,
+            resolvedRenderDirectionIndex,
             hash,
             paused,
             spritesheet,
             isReflection,
           ),
         ),
-    renderProps: { resolvedRenderDirection },
+    renderProps: { resolvedRenderDirectionIndex },
   };
 };

@@ -1,4 +1,5 @@
 import { type JsonItemUnion } from "../../../model/json/JsonItem";
+import { octantIndexOfDirection } from "../../../utils/vectors/octantIndexOfDirection" with { type: "macro" };
 import { tangentAxis } from "../../../utils/vectors/vectors";
 import { type ShadowCastSpriteOptions } from "../../render/ShadowCastSpriteOptions";
 
@@ -27,12 +28,12 @@ const shadowFullBlockFlipX: ShadowCastSpriteOptions = Object.freeze({
 // the same art flipped. Which axis the barrier renders along swaps on odd
 // quarter camera turns, so the flip must swap with it:
 const shadowBarrier: ShadowCastSpriteOptions = Object.freeze({
-  textureId: "shadow.barrier.y",
+  textureId: `shadow.barrier.d${octantIndexOfDirection("away")}`,
   flipsOnOddQuarterCameraTurns: true,
 });
 
 const shadowBarrierFlipX: ShadowCastSpriteOptions = Object.freeze({
-  textureId: "shadow.barrier.y",
+  textureId: `shadow.barrier.d${octantIndexOfDirection("away")}`,
   flipX: true,
   flipsOnOddQuarterCameraTurns: true,
 });

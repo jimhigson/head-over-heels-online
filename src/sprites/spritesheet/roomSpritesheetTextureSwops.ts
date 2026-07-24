@@ -14,6 +14,7 @@ import {
   type PartialNamedColours,
   resolveSwops,
 } from "../../utils/palette/palette";
+import { octantIndexOfDirection } from "../../utils/vectors/octantIndexOfDirection" with { type: "macro" };
 import { type AxisXy } from "../../utils/vectors/vectors";
 import {
   type BlockstackPaletteColourName,
@@ -37,9 +38,12 @@ const isDoorTexture = (tid: TextureId) => tid.startsWith("door.");
 const isFloorTexture = (textureId: TextureId): boolean =>
   /\.floor$/.test(textureId);
 
-/** door leg pillars take the wall swops, since they stand in the wall's plane */
+/**
+ * door leg pillars take the wall swops, since they stand in the wall's plane.
+ * wall art is the two far-side facings, d0 (left) and d2 (away)
+ */
 const isWallTexture = (textureId: TextureId): boolean =>
-  /\.wall\.[^.]+\.(away|left)$|door\.legs\.pillar/.test(textureId);
+  /\.wall\.[^.]+\.d[02]$|door\.legs\.pillar/.test(textureId);
 
 const isDoorLegsPillarTexture = (
   textureId: TextureId,
@@ -50,8 +54,8 @@ const isDoorLegsPillarTexture = (
 
 const isLeftWallTexture = (
   textureId: TextureId,
-): textureId is Extract<BaseTextureId, `${string}.wall.${string}.left`> =>
-  /\.wall\.[^.]+\.left$/.test(textureId);
+): textureId is Extract<BaseTextureId, `${string}.wall.${string}.d0`> =>
+  /\.wall\.[^.]+\.d0$/.test(textureId);
 
 const isMoonbaseScreen = (
   textureId: TextureId,
@@ -154,18 +158,20 @@ const floorEdgeSwops = (
   // replacement colours come from the blockstack-keyed gameColours system.
   return [
     {
+      // the right lip and the y-axis threshold both run along y:
       textureIds: [
-        "floorEdge.half.right",
-        "floorEdge.right",
-        "generic.door.floatingThreshold.y",
+        `floorEdge.half.d${octantIndexOfDirection("right")}`,
+        `floorEdge.d${octantIndexOfDirection("right")}`,
+        `generic.door.floatingThreshold.d${octantIndexOfDirection("away")}`,
       ],
       swops: resolveSwops(paletteBlockstack, rightEdgeSwops),
     },
     {
+      // the towards lip and the x-axis threshold both run along x:
       textureIds: [
-        "floorEdge.half.towards",
-        "floorEdge.towards",
-        "generic.door.floatingThreshold.x",
+        `floorEdge.half.d${octantIndexOfDirection("towards")}`,
+        `floorEdge.d${octantIndexOfDirection("towards")}`,
+        `generic.door.floatingThreshold.d${octantIndexOfDirection("left")}`,
       ],
       swops: resolveSwops(paletteBlockstack, towardsEdgeSwops),
     },
@@ -334,7 +340,10 @@ const blockstackBookSwops = (
   if (hue === "white" || hue === "yellow") {
     return [
       {
-        textureIds: ["book.x", "book.y"],
+        textureIds: [
+          `book.d${octantIndexOfDirection("left")}`,
+          `book.d${octantIndexOfDirection("away")}`,
+        ],
         swops: resolveSwops(paletteBlockstack, {
           ...replacementColours(hue, shade === "dimmed", "light-mid"),
           // books don't use any shadow pixels other than on their covers,
@@ -348,7 +357,10 @@ const blockstackBookSwops = (
   if (shade === "dimmed") {
     return [
       {
-        textureIds: ["book.x", "book.y"],
+        textureIds: [
+          `book.d${octantIndexOfDirection("left")}`,
+          `book.d${octantIndexOfDirection("away")}`,
+        ],
         swops: resolveSwops(paletteBlockstack, {
           ...replacementColours(
             roomColor.hue,

@@ -12,14 +12,14 @@ const runtimeBoolean = {} as boolean;
 describe("variantId accepts only eligible (id, states) combinations", () => {
   test("monsters take the full state set with runtime booleans", () => {
     const _texture: TextureId = variantTextureId(
-      "turtle.towards.1",
+      "turtle.d6.1",
       runtimeBoolean,
       runtimeBoolean,
       runtimeBoolean,
       false,
     );
     const _animation: AnimationId = variantTextureId(
-      "turtle.towards",
+      "turtle.d6",
       runtimeBoolean,
       runtimeBoolean,
       runtimeBoolean,
@@ -36,14 +36,14 @@ describe("variantId accepts only eligible (id, states) combinations", () => {
       false,
     );
     const _charles: TextureId = variantTextureId(
-      "charles.towards",
+      "charles.d6",
       runtimeBoolean,
       false,
       runtimeBoolean,
       false,
     );
     const _conveyor: AnimationId = variantTextureId(
-      "conveyor.x",
+      "conveyor.d0",
       runtimeBoolean,
       false,
       runtimeBoolean,
@@ -81,23 +81,23 @@ describe("variantId accepts only eligible (id, states) combinations", () => {
 
   test("sceneryPlayer recolour is only for playable frames", () => {
     const _texture: TextureId = variantTextureId(
-      "head.walking.towards.2",
+      "head.walking.d6.2",
       runtimeBoolean,
       false,
       false,
       true,
     );
     const _animation: AnimationId = variantTextureId(
-      "head.idle.towards",
+      "head.idle.d6",
       runtimeBoolean,
       false,
       false,
       true,
     );
     // @ts-expect-error - monsters never take the sceneryPlayer recolour
-    variantTextureId("turtle.towards.1", false, false, false, true);
+    variantTextureId("turtle.d6.1", false, false, false, true);
     // prettier-ignore
     // @ts-expect-error - doughnutted and sceneryPlayer are mutually exclusive
-    variantTextureId("head.walking.towards.2", false, true, false, true);
+    variantTextureId("head.walking.d6.2", false, true, false, true);
   });
 });

@@ -29,12 +29,15 @@ import { unitVectors } from "../../../../utils/vectors/unitVectors";
 import {
   addXy,
   addXyz,
+  alongAxisOfDirectionXy,
   type AxisXy,
   cameraAngleIsOddQuarterTurn,
-  type DirectionXy4,
+  type DirectionIndexXy4,
+  directionIndexXy8,
+  directionsXy8Octants,
   dominantAxisXy,
   isNegativeSideXy,
-  nonZeroVectorClosestDirectionXy4,
+  nonZeroClosestDirectionIndexXy4,
   originXyz,
   perpendicularAxisXy,
   subXy,
@@ -242,22 +245,25 @@ const floorLeftRightCutOffMask = <
 };
 
 const edgeSprites = ({
-  direction,
+  directionIndex,
   times,
   position,
   spritesheet,
   cameraQuarterAngle,
 }: {
-  /** the camera-space direction the edge appears on, used to pick the sprite */
-  direction: Subset<DirectionXy4, "right" | "towards">;
+  /**
+   * the camera-space edge as a d-number (right = 4, towards = 6), picking the
+   * sprite directly
+   */
+  directionIndex: Subset<DirectionIndexXy4, 4 | 6>;
   times: Partial<Xy> | undefined;
   position: Partial<Xyz>;
   spritesheet: AppSpritesheetWithVariants;
   cameraQuarterAngle: Xy;
 }): Container<Sprite> => {
   return createSprite({
-    label: `floorEdge(${direction})`,
-    textureId: `floorEdge.${direction}`,
+    label: `floorEdge(${directionsXy8Octants[directionIndex]})`,
+    textureId: `floorEdge.d${directionIndex}`,
     times,
     ...projectWorldXyzToScreenXy(position, cameraQuarterAngle),
     cameraQuarterAngle,
@@ -270,8 +276,8 @@ const edgeSprites = ({
  * clash strips are drawn from the same layout so the two always align
  */
 type NearFloorEdge = {
-  /** the camera-space direction the edge appears on */
-  direction: Subset<DirectionXy4, "right" | "towards">;
+  /** the camera-space edge as a d-number (right = 4, towards = 6) */
+  directionIndex: Subset<DirectionIndexXy4, 4 | 6>;
   /** the lip strip's (possibly reversal-shifted) anchor, in fine world px */
   position: Partial<Xyz>;
   worldAlongAxis: AxisXy;
@@ -308,7 +314,7 @@ const createColourClash = ({
   });
 
   for (const {
-    direction,
+    directionIndex,
     position,
     worldAlongAxis,
     tilesCount,
@@ -322,7 +328,7 @@ const createColourClash = ({
       worldAlongAxis === "x" ? "towards" : "right",
     );
     const edgeContainer = new Container({
-      label: `floorColourClash.${direction}`,
+      label: `floorColourClash.${directionsXy8Octants[directionIndex]}`,
       filters: [
         filterCache.getOrInsertComputed(
           `colourClash(${colour.toHex()})`,
@@ -341,7 +347,7 @@ const createColourClash = ({
       // don't cross past the corner shared with the other edge's strip:
       const atSharedCorner = sharedCornerAtEnd ? i === tilesCount : i === 0;
       const g =
-        direction === "right" ?
+        directionIndex === directionIndexXy8.right ?
           new Graphics()
             .rect(
               screenXy.x - (atSharedCorner ? 0 : 8),
@@ -682,27 +688,27 @@ export const floorAppearance: ItemAppearance<"floor", RenderOnceProps> =
         // the sprite (so the lip art swaps axis on odd quarter turns):
         const floorEdges = [
           {
-            direction: "towards",
+            vector: unitVectors.towards,
             position: { z: drawnAabb.z },
             times: { x: edgeTilesX },
           },
           {
-            direction: "away",
+            vector: unitVectors.away,
             position: { y: drawnAabb.y, z: drawnAabb.z },
             times: { x: edgeTilesX },
           },
           {
-            direction: "right",
+            vector: unitVectors.right,
             position: { z: drawnAabb.z },
             times: { y: edgeTilesY },
           },
           {
-            direction: "left",
+            vector: unitVectors.left,
             position: { x: drawnAabb.x, z: drawnAabb.z },
             times: { y: edgeTilesY },
           },
         ] as const satisfies ReadonlyArray<{
-          direction: DirectionXy4;
+          vector: Xyz;
           position: Partial<Xyz>;
           times: Partial<Xy>;
         }>;
@@ -711,24 +717,25 @@ export const floorAppearance: ItemAppearance<"floor", RenderOnceProps> =
         // colour clash (uncolourised mode) is drawn from the same layout:
         const nearEdges: NearFloorEdge[] = [];
 
-        for (const { direction, position, times } of floorEdges) {
-          // the edge's world direction rotated to how it appears, named once
-          // here - the name keys the sprite pick and the near-side test, so
-          // both always agree:
-          const renderedDirection = nonZeroVectorClosestDirectionXy4(
-            rotateXy(unitVectors[direction], cameraQuarterAngle),
+        for (const { vector, position, times } of floorEdges) {
+          // the edge's world direction rotated to how it appears, as a ring
+          // index once here - the index keys the sprite pick and the near-side
+          // test, so both always agree:
+          const rotatedDirection = rotateXy(vector, cameraQuarterAngle);
+          const renderedDirectionIndex = nonZeroClosestDirectionIndexXy4(
+            rotatedDirection.x,
+            rotatedDirection.y,
           );
           if (
-            renderedDirection === "towards" ||
-            renderedDirection === "right"
+            renderedDirectionIndex === directionIndexXy8.towards ||
+            renderedDirectionIndex === directionIndexXy8.right
           ) {
             // each lip tile's art extends over its cell in the direction the
             // rendered edge runs at the base angle. When the edge's world axis
             // projects reversed relative to that, every tile would hang over the
             // cell on the wrong side of its anchor corner - so anchor the strip
             // one block along the axis to compensate:
-            const worldAlongAxis: AxisXy =
-              direction === "towards" || direction === "away" ? "x" : "y";
+            const worldAlongAxis: AxisXy = alongAxisOfDirectionXy(vector);
             const alongReversed = axisProjectsReversed(
               worldAlongAxis,
               cameraQuarterAngle,
@@ -752,7 +759,7 @@ export const floorAppearance: ItemAppearance<"floor", RenderOnceProps> =
               : position;
 
             nearEdges.push({
-              direction: renderedDirection,
+              directionIndex: renderedDirectionIndex,
               position: lipPosition,
               worldAlongAxis,
               tilesCount,
@@ -761,7 +768,7 @@ export const floorAppearance: ItemAppearance<"floor", RenderOnceProps> =
 
             floorEdgeContainer.addChild(
               edgeSprites({
-                direction: renderedDirection,
+                directionIndex: renderedDirectionIndex,
                 times,
                 position: lipPosition,
                 spritesheet,

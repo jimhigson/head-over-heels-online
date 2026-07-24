@@ -3,7 +3,9 @@ import { type SpritesheetData, type SpritesheetFrameData } from "pixi.js";
 import { type CharacterName } from "../../../model/modelTypes";
 import { zxSpectrumFrameRate } from "../../../originalGame";
 import { fromEntries } from "../../../utils/entries";
+import { octantIndexOfDirection } from "../../../utils/vectors/octantIndexOfDirection";
 import {
+  type DirectionIndexXy8,
   directionsXy8,
   type DirectionXy8,
   type Xy,
@@ -27,24 +29,31 @@ import {
 } from "./textureSizes";
 import { withSpeed } from "./withSpeed";
 
+/**
+ * a playable sprite's directional suffix: the facing's octant ring index
+ * (left=d0, stepping a 45° turn anticlockwise per increment) so appearances
+ * compute the variant arithmetically
+ */
+type OctantSuffix = `d${DirectionIndexXy8}`;
+
 type WalkingTextureId<
   P extends CharacterName = CharacterName,
-  D extends DirectionXy8 = DirectionXy8,
+  D extends OctantSuffix = OctantSuffix,
 > = `${P}.walking.${D}.${"1" | "2" | "3"}`;
 
 type PlayableTextureId<P extends CharacterName = CharacterName> =
-  | `${P}.blinking.${DirectionXy8}`
-  | `${P}.falling.${DirectionXy8}`
-  | `${P}.looking1.${DirectionXy8}`
-  | `${P}.looking2.${DirectionXy8}`
-  | `${P}.standing.${DirectionXy8}`
-  | `shadowMask.${P}.${DirectionXy8}`
-  | `shadowMask.${P}.falling.${DirectionXy8}`
+  | `${P}.blinking.${OctantSuffix}`
+  | `${P}.falling.${OctantSuffix}`
+  | `${P}.looking1.${OctantSuffix}`
+  | `${P}.looking2.${OctantSuffix}`
+  | `${P}.standing.${OctantSuffix}`
+  | `shadowMask.${P}.${OctantSuffix}`
+  | `shadowMask.${P}.falling.${OctantSuffix}`
   | WalkingTextureId<P>;
 
 type WalkingAnimationId<
   P extends CharacterName,
-  D extends DirectionXy8 = DirectionXy8,
+  D extends OctantSuffix = OctantSuffix,
 > = `${P}.walking.${D}`;
 
 export const playableWalkAnimationSpeed = 0.5;
@@ -55,39 +64,39 @@ const heelsBlinkPeriod = headBlinkPeriod * 2;
 
 const standingTextureId = <P extends CharacterName>(
   p: P,
-  direction: DirectionXy8,
+  dSuffix: OctantSuffix,
   directionFrames: PlayableDirectionFrames,
 ):
-  | `${P}.standing.${DirectionXy8}`
-  | `${P}.walking.${DirectionXy8}.${1 | 2 | 3}` => {
+  | `${P}.standing.${OctantSuffix}`
+  | `${P}.walking.${OctantSuffix}.${1 | 2 | 3}` => {
   const { standing } = directionFrames;
   if (!standing) {
-    throw new Error(`no standing defined for ${p}.${direction}`);
+    throw new Error(`no standing defined for ${p}.${dSuffix}`);
   }
 
   return standing === true ?
-      `${p}.standing.${direction}`
-    : `${p}.walking.${direction}.${standing}`;
+      `${p}.standing.${dSuffix}`
+    : `${p}.walking.${dSuffix}.${standing}`;
 };
 
 const headBlinkingFrames = (
-  direction: DirectionXy8,
+  dSuffix: OctantSuffix,
   directionFrames: PlayableDirectionFrames,
 ) => {
   const totalFrames = Math.round(headBlinkPeriod / (zxSpectrumFrameRate * 4));
 
   const neutralTextureId: PlayableFrame = standingTextureId(
     "head",
-    direction,
+    dSuffix,
     directionFrames,
   );
 
   const look1TextureId: PlayableFrame | undefined =
-    directionFrames.looking1 ? `head.looking1.${direction}` : undefined;
+    directionFrames.looking1 ? `head.looking1.${dSuffix}` : undefined;
   const look2TextureId: PlayableFrame | undefined =
-    directionFrames.looking2 ? `head.looking2.${direction}` : undefined;
+    directionFrames.looking2 ? `head.looking2.${dSuffix}` : undefined;
   const blinkingTextureId: PlayableFrame | undefined =
-    directionFrames.blinking ? `head.blinking.${direction}` : undefined;
+    directionFrames.blinking ? `head.blinking.${dSuffix}` : undefined;
 
   const frameIndex = (u: number) => {
     return Math.floor(totalFrames * u);
@@ -123,22 +132,22 @@ const headBlinkingFrames = (
 };
 
 const heelsBlinkingFrames = (
-  direction: DirectionXy8,
+  dSuffix: OctantSuffix,
   directionFrames: PlayableDirectionFrames,
 ) => {
   const totalFrames = Math.round(heelsBlinkPeriod / (zxSpectrumFrameRate * 4));
 
   const neutralTextureId: PlayableFrame = standingTextureId(
     "heels",
-    direction,
+    dSuffix,
     directionFrames,
   );
   const look1TextureId: PlayableFrame | undefined =
-    directionFrames.looking1 ? `heels.looking1.${direction}` : undefined;
+    directionFrames.looking1 ? `heels.looking1.${dSuffix}` : undefined;
   const look2TextureId: PlayableFrame | undefined =
-    directionFrames.looking2 ? `heels.looking2.${direction}` : undefined;
+    directionFrames.looking2 ? `heels.looking2.${dSuffix}` : undefined;
   const blinkingTextureId: PlayableFrame | undefined =
-    directionFrames.blinking ? `heels.blinking.${direction}` : undefined;
+    directionFrames.blinking ? `heels.blinking.${dSuffix}` : undefined;
 
   const frameIndex = (u: number) => {
     return Math.floor(totalFrames * u);
@@ -193,11 +202,12 @@ const playableFrames = <P extends CharacterName>(
   > {
     for (let iD = 0; iD < directionsOrderOnSpritesheet.length; iD++) {
       const d = directionsOrderOnSpritesheet[iD];
+      const dSuffix = `d${octantIndexOfDirection(d)}` as const;
 
       const directionFrames = availableFrames[d];
 
       if (!directionFrames || directionFrames.shadowMaskFalling) {
-        const textureId = `shadowMask.${p}.falling.${d}` as const;
+        const textureId = `shadowMask.${p}.falling.${dSuffix}` as const;
         yield [
           textureId,
           {
@@ -214,7 +224,7 @@ const playableFrames = <P extends CharacterName>(
       }
 
       if (!directionFrames || directionFrames.shadowMask) {
-        const textureId = `shadowMask.${p}.${d}` as const;
+        const textureId = `shadowMask.${p}.${dSuffix}` as const;
         yield [
           textureId,
           {
@@ -231,7 +241,7 @@ const playableFrames = <P extends CharacterName>(
       }
 
       for (let iN: 1 | 2 | 3 = 1; iN <= 3; iN++) {
-        const textureId = `${p}.walking.${d}.${iN as 1 | 2 | 3}` as const;
+        const textureId = `${p}.walking.${dSuffix}.${iN as 1 | 2 | 3}` as const;
         yield [
           textureId,
           {
@@ -246,7 +256,7 @@ const playableFrames = <P extends CharacterName>(
           },
         ] as const;
       }
-      const textureId = `${p}.falling.${d}` as const;
+      const textureId = `${p}.falling.${dSuffix}` as const;
       yield [
         textureId,
         {
@@ -262,7 +272,7 @@ const playableFrames = <P extends CharacterName>(
       ] as const;
 
       if (!directionFrames || directionFrames.blinking) {
-        const textureId = `${p}.blinking.${d}` as const;
+        const textureId = `${p}.blinking.${dSuffix}` as const;
         yield [
           textureId,
           {
@@ -279,7 +289,7 @@ const playableFrames = <P extends CharacterName>(
       }
 
       if (!directionFrames || directionFrames.looking1) {
-        const textureId = `${p}.looking1.${d}` as const;
+        const textureId = `${p}.looking1.${dSuffix}` as const;
         yield [
           textureId,
           {
@@ -296,7 +306,7 @@ const playableFrames = <P extends CharacterName>(
       }
 
       if (!directionFrames || directionFrames.looking2) {
-        const textureId = `${p}.looking2.${d}` as const;
+        const textureId = `${p}.looking2.${dSuffix}` as const;
         yield [
           textureId,
           {
@@ -313,7 +323,7 @@ const playableFrames = <P extends CharacterName>(
       }
 
       if (!directionFrames || directionFrames.standing === true) {
-        const textureId = `${p}.standing.${d}` as const;
+        const textureId = `${p}.standing.${dSuffix}` as const;
         yield [
           textureId,
           {
@@ -338,24 +348,26 @@ const playableFrames = <P extends CharacterName>(
 };
 
 function walkingAnimation<P extends CharacterName>(p: P) {
-  function* walkingFramesGen<P extends CharacterName, D extends DirectionXy8>(
+  function* walkingFramesGen<P extends CharacterName, D extends OctantSuffix>(
     p: P,
-    d: D,
+    dSuffix: D,
   ): Generator<WalkingTextureId<P, D>> {
     // if are starting walking from standing, am coming from walking frame 2 already (which doubles up as the idle frame)
     // except head has his frame 3 as the idle frame (it matches his blinking frame). Need to start on 1 so it is different
     // whichever we are coming from
-    yield `${p}.walking.${d}.1`;
-    yield `${p}.walking.${d}.2`;
-    yield `${p}.walking.${d}.3`;
-    yield `${p}.walking.${d}.2`;
+    yield `${p}.walking.${dSuffix}.1`;
+    yield `${p}.walking.${dSuffix}.2`;
+    yield `${p}.walking.${dSuffix}.3`;
+    yield `${p}.walking.${dSuffix}.2`;
   }
 
   return directionsXy8.reduce(
     (ac, d) => ({
       ...ac,
-      [`${p}.walking.${d}`]: withSpeed(
-        [...walkingFramesGen(p, d)] as const,
+      [`${p}.walking.d${octantIndexOfDirection(d)}`]: withSpeed(
+        [
+          ...walkingFramesGen(p, `d${octantIndexOfDirection(d)}` as const),
+        ] as const,
         playableWalkAnimationSpeed,
       ),
     }),
@@ -432,19 +444,22 @@ export const playableSpritesheetData = (
 ) => {
   const frames = makeFrames(playableSpritesheetMetaData);
 
-  type IdleAnimationId = `${CharacterName}.idle.${DirectionXy8}`;
+  type IdleAnimationId = `${CharacterName}.idle.${OctantSuffix}`;
 
   function* idleAnimationsFor(
     character: CharacterName,
     characterFrames: PlayableSpritesheetFrames,
     blinkFn: (
-      d: DirectionXy8,
+      dSuffix: OctantSuffix,
       directionFrames: PlayableDirectionFrames,
     ) => FramesWithSpeed<PlayableFrame[]>,
   ): Generator<[IdleAnimationId, FramesWithSpeed<PlayableFrame[]>]> {
     for (const d of directionsXy8) {
       if (characterFrames[d]?.blinking && characterFrames[d]?.standing) {
-        yield [`${character}.idle.${d}`, blinkFn(d, characterFrames[d])];
+        yield [
+          `${character}.idle.d${octantIndexOfDirection(d)}`,
+          blinkFn(`d${octantIndexOfDirection(d)}`, characterFrames[d]),
+        ];
       }
     }
   }
@@ -471,36 +486,39 @@ export const playableSpritesheetData = (
     animations: {
       ...walkingAnimation("head"),
       ...walkingAnimation("heels"),
+      // the diagonals:
       "heels.screenDirections": withSpeed(
         [
-          "heels.walking.towardsRight.2",
-          "heels.walking.towardsLeft.2",
-          "heels.walking.awayLeft.2",
-          "heels.walking.awayRight.2",
+          `heels.walking.d${octantIndexOfDirection("towardsRight")}.2`,
+          `heels.walking.d${octantIndexOfDirection("towardsLeft")}.2`,
+          `heels.walking.d${octantIndexOfDirection("awayLeft")}.2`,
+          `heels.walking.d${octantIndexOfDirection("awayRight")}.2`,
         ] as const,
         1 / 16,
       ),
+      // the cardinals:
       "heels.worldDirections": withSpeed(
         [
           // ignore standing frames or that frame 3 might be the standing frame from the walking animation sometimes,
           // these aren't that important so just hardcode to 2, which will always exist
-          "heels.walking.towards.2",
-          "heels.walking.left.2",
-          "heels.walking.away.2",
-          "heels.walking.right.2",
+          `heels.walking.d${octantIndexOfDirection("towards")}.2`,
+          `heels.walking.d${octantIndexOfDirection("left")}.2`,
+          `heels.walking.d${octantIndexOfDirection("away")}.2`,
+          `heels.walking.d${octantIndexOfDirection("right")}.2`,
         ] as const,
         1 / 16,
       ),
+      // all eight, from towardsRight anticlockwise:
       "heels.mixedDirections": withSpeed(
         [
-          "heels.walking.towardsRight.2",
-          "heels.walking.towards.2",
-          "heels.walking.towardsLeft.2",
-          "heels.walking.left.2",
-          "heels.walking.awayLeft.2",
-          "heels.walking.away.2",
-          "heels.walking.awayRight.2",
-          "heels.walking.right.2",
+          `heels.walking.d${octantIndexOfDirection("towardsRight")}.2`,
+          `heels.walking.d${octantIndexOfDirection("towards")}.2`,
+          `heels.walking.d${octantIndexOfDirection("towardsLeft")}.2`,
+          `heels.walking.d${octantIndexOfDirection("left")}.2`,
+          `heels.walking.d${octantIndexOfDirection("awayLeft")}.2`,
+          `heels.walking.d${octantIndexOfDirection("away")}.2`,
+          `heels.walking.d${octantIndexOfDirection("awayRight")}.2`,
+          `heels.walking.d${octantIndexOfDirection("right")}.2`,
         ] as const,
         1 / 8,
       ),

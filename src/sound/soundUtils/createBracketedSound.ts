@@ -30,6 +30,15 @@ export type CreateBracketedEventOptions = {
   noStartOnFirstFrame?: boolean;
 };
 
+/**
+ * whether a bracket's value means its sound is active. "Off" is expressed
+ * either as no value at all, or as `false` for the boolean-valued brackets -
+ * so a meaningful falsy value (such as the direction index `0`) still counts
+ * as active, and only changes the sound rather than stopping it.
+ */
+const isActive = <Value>(value: Value): boolean =>
+  value !== undefined && value !== false;
+
 export const createBracketedSound = <Value = boolean>(
   {
     start,
@@ -48,9 +57,9 @@ export const createBracketedSound = <Value = boolean>(
   let currentValue: Value;
 
   return (value: Value) => {
-    const startedOrStopped = !!value !== !!currentValue;
+    const startedOrStopped = isActive(value) !== isActive(currentValue);
     if (startedOrStopped) {
-      if (value) {
+      if (isActive(value)) {
         // starting
         if (start !== undefined && !(isFirstFrame && noStartOnFirstFrame)) {
           // stop in case was playing the end sound and is starting up again
@@ -78,7 +87,7 @@ export const createBracketedSound = <Value = boolean>(
             } else {
               // once the start sound finishes, start the 'loop' sound:
               currentSound.onended = () => {
-                if (!currentValue) {
+                if (!isActive(currentValue)) {
                   return;
                 }
                 if (currentSound && currentGain) {

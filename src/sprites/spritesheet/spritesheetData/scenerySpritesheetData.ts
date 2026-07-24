@@ -1,6 +1,7 @@
 import { type SpritesheetData, type SpritesheetFrameData } from "pixi.js";
 
 import { fromAllEntries } from "../../../utils/entries";
+import { octantIndexOfDirection } from "../../../utils/vectors/octantIndexOfDirection" with { type: "macro" };
 import { type Xy } from "../../../utils/vectors/vectors";
 import { type SceneryName, type Wall, wallTiles } from "../../planets";
 import { type AnimationsOfFrames } from "./AnimationsOfFrames";
@@ -25,7 +26,9 @@ export type WallTextureId<
 > = string &
   {
     [P in PS]: {
-      [D in TDark]: `${P}${TDark}.wall.${Wall<P>}.${"away" | "left"}`;
+      // wall art exists for the two far-side facings only: d0 (left) and
+      // d2 (away) in the octant ring numbering:
+      [D in TDark]: `${P}${TDark}.wall.${Wall<P>}.${"d0" | "d2"}`;
     };
   }[PS][TDark];
 
@@ -61,8 +64,9 @@ const backgroundFrames = <SN extends SceneryName, TDark extends ".dark" | "">(
     const yStep = w >> 1;
 
     for (let i = 0; i < walls.length; i++) {
+      // left-facing wall art:
       yield [
-        `${planet}${isDark}.wall.${walls[i]}.left`,
+        `${planet}${isDark}.wall.${walls[i]}.d${octantIndexOfDirection("left")}`,
         {
           frame: {
             x: startX - w * (i + 1),
@@ -71,8 +75,9 @@ const backgroundFrames = <SN extends SceneryName, TDark extends ".dark" | "">(
           },
         },
       ];
+      // away-facing wall art:
       yield [
-        `${planet}${isDark}.wall.${walls[i]}.away`,
+        `${planet}${isDark}.wall.${walls[i]}.d${octantIndexOfDirection("away")}`,
         {
           frame: {
             x: startX + w * i,
@@ -124,7 +129,7 @@ type DoorLegPrefix<S extends "generic" | SceneryName, Dark extends boolean> =
 type DoorLegTextureId<
   S extends "generic" | SceneryName,
   Dark extends boolean,
-> = `${DoorLegPrefix<S, Dark>}.door.legs.${"base" | "pillar" | "threshold"}.${"x" | "y"}`;
+> = `${DoorLegPrefix<S, Dark>}.door.legs.${"base" | "pillar" | "threshold"}.${"d0" | "d2"}`;
 type SpritesheetFrameDataMaybeWithPivot = SpritesheetFrameData & {
   frame: { pivot?: Xy };
 };
@@ -150,7 +155,9 @@ const doorLegsFrames = <
       ["base", 46, 20, 17],
     ] as const) {
       yield [
-        `${prefix}.door.legs.${part}.x` as DoorLegTextureId<S, Dark>,
+        `${prefix}.door.legs.${part}.d${octantIndexOfDirection(
+          "left",
+        )}` as DoorLegTextureId<S, Dark>,
         {
           frame: {
             x: centrePosition.x + 1,
@@ -162,7 +169,9 @@ const doorLegsFrames = <
         },
       ];
       yield [
-        `${prefix}.door.legs.${part}.y` as DoorLegTextureId<S, Dark>,
+        `${prefix}.door.legs.${part}.d${octantIndexOfDirection(
+          "away",
+        )}` as DoorLegTextureId<S, Dark>,
         {
           frame: {
             x: centrePosition.x - 40,
@@ -195,25 +204,27 @@ const frames = {
   ...backgroundFrames("market", x, (y += yPeriod), ""),
   ...backgroundFrames("safari", x, (y += yPeriod), ""),
 
-  "floorEdge.towards": {
+  // the two near floor-edge lips, as a subset of the cardinal ring: d6 =
+  // towards, d4 = right (the far edges d0/d2 are never drawn as lips):
+  [`floorEdge.d${octantIndexOfDirection("towards")}` as const]: {
     frame: { x: 244, y: 589, ...floorEdgeSize, pivot: { x: 15, y: 4 } },
   },
-  "floorEdge.half.towards": {
+  [`floorEdge.half.d${octantIndexOfDirection("towards")}` as const]: {
     frame: { x: 244, y: 589, ...floorEdgeHalfSize, pivot: { x: 7, y: 0 } },
   },
-  "floorEdge.right": {
+  [`floorEdge.d${octantIndexOfDirection("right")}` as const]: {
     frame: { x: 261, y: 589, ...floorEdgeSize, pivot: { x: 0, y: 4 } },
   },
-  "floorEdge.half.right": {
+  [`floorEdge.half.d${octantIndexOfDirection("right")}` as const]: {
     frame: { x: 261, y: 593, ...floorEdgeHalfSize, pivot: { x: 0, y: 0 } },
   },
   "floorOverdraw.cornerNearWall": {
     frame: { x: 405, y: 654, w: wallTileSize.w, h: 8 },
   },
-  "shadow.wall.y": {
+  [`shadow.wall.d${octantIndexOfDirection("away")}` as const]: {
     frame: { x: 255, y: 552, w: 36, h: 16 },
   },
-  "shadow.doorFrame.top.y": {
+  [`shadow.doorFrame.top.d${octantIndexOfDirection("away")}` as const]: {
     frame: { x: 255, y: 519, w: 36, h: 32, pivot: { x: 17, y: 31 } },
   },
   "generic.floor.deadly": {
@@ -227,36 +238,41 @@ const frames = {
   ...doorLegsFrames("moonbase", { x: 955, y: 173 }),
   ...doorLegsFrames("moonbase", { x: 955, y: 387 }, true),
 
-  "shadowMask.door.legs.threshold.double.y": {
-    frame: {
-      x: 292,
-      y: 547,
-      w: wallTileSize.w * 2,
-      h: 21,
-      pivot: { x: 0, y: 21 },
+  [`shadowMask.door.legs.threshold.double.d${octantIndexOfDirection("away")}` as const]:
+    {
+      frame: {
+        x: 292,
+        y: 547,
+        w: wallTileSize.w * 2,
+        h: 21,
+        pivot: { x: 0, y: 21 },
+      },
     },
-  },
-  "generic.door.floatingThreshold.x": {
-    frame: {
-      x: 271,
-      y: 569,
-      w: 26,
-      h: 19,
+  [`generic.door.floatingThreshold.d${octantIndexOfDirection("left")}` as const]:
+    {
+      frame: {
+        x: 271,
+        y: 569,
+        w: 26,
+        h: 19,
 
-      pivot: { x: 18, y: 12 },
+        pivot: { x: 18, y: 12 },
+      },
     },
-  },
-  "generic.door.floatingThreshold.y": {
-    frame: {
-      x: 244,
-      y: 569,
-      w: 26,
-      h: 19,
+  [`generic.door.floatingThreshold.d${octantIndexOfDirection("away")}` as const]:
+    {
+      frame: {
+        x: 244,
+        y: 569,
+        w: 26,
+        h: 19,
 
-      pivot: { x: 8, y: 12 },
+        pivot: { x: 8, y: 12 },
+      },
     },
-  },
-  "shadowMask.door.floatingThreshold.double.y": {
+  [`shadowMask.door.floatingThreshold.double.d${octantIndexOfDirection(
+    "away",
+  )}` as const]: {
     frame: {
       x: 321,
       y: 594,
@@ -271,19 +287,20 @@ const frames = {
       pivot: { x: 8, y: 20 },
     },
   },
-  "shadow.door.floatingThreshold.double.y": {
-    frame: {
-      x: 364,
-      y: 594,
-      w: 42,
-      h: 21,
-      // the legs are as deep as the wall is, so this pivot value is sensitive to the
-      // depth of the door legs bb:
-      pivot: { x: 8, y: 20 },
+  [`shadow.door.floatingThreshold.double.d${octantIndexOfDirection("away")}` as const]:
+    {
+      frame: {
+        x: 364,
+        y: 594,
+        w: 42,
+        h: 21,
+        // the legs are as deep as the wall is, so this pivot value is sensitive to the
+        // depth of the door legs bb:
+        pivot: { x: 8, y: 20 },
+      },
     },
-  },
   ...seriesOfNumberedTextures(
-    "moonbase.wall.screen.window1.away",
+    `moonbase.wall.screen.window1.d${octantIndexOfDirection("away")}`,
     3,
     {
       x: 883,
@@ -292,7 +309,7 @@ const frames = {
     { w: 10, h: 7 },
   ),
   ...seriesOfNumberedTextures(
-    "moonbase.wall.screen.window2.away",
+    `moonbase.wall.screen.window2.d${octantIndexOfDirection("away")}`,
     2,
     {
       x: 867,
@@ -301,7 +318,7 @@ const frames = {
     { w: 10, h: 7 },
   ),
   ...seriesOfNumberedTextures(
-    "moonbase.wall.screen.window3.away",
+    `moonbase.wall.screen.window3.d${octantIndexOfDirection("away")}`,
     4,
     {
       x: 851,
@@ -309,79 +326,86 @@ const frames = {
     },
     { w: 10, h: 7 },
   ),
-  "moonbase.wallDoorTransition.away": {
+  [`moonbase.wallDoorTransition.d${octantIndexOfDirection("away")}` as const]: {
     frame: {
       x: 971,
       y: 247,
       ...wallTileSize,
     },
   },
-  "moonbase.wallDoorTransition.away.dark": {
-    frame: {
-      x: 971,
-      y: 321,
-      ...wallTileSize,
+  [`moonbase.wallDoorTransition.d${octantIndexOfDirection("away")}.dark` as const]:
+    {
+      frame: {
+        x: 971,
+        y: 321,
+        ...wallTileSize,
+      },
     },
-  },
-  "moonbase.wallDoorTransition.away.mask": {
-    frame: {
-      x: 988,
-      y: 247,
-      ...wallTileSize,
+  [`moonbase.wallDoorTransition.d${octantIndexOfDirection("away")}.mask` as const]:
+    {
+      frame: {
+        x: 988,
+        y: 247,
+        ...wallTileSize,
+      },
     },
-  },
-  "moonbase.wallDoorTransition.left": {
-    frame: {
-      x: 681,
-      y: 247,
-      ...wallTileSize,
-    },
-  },
-  "moonbase.wallDoorTransition.left.dark": {
+  [`moonbase.wallDoorTransition.d${octantIndexOfDirection("left")}` as const]: {
     frame: {
       x: 681,
-      y: 321,
-      ...wallTileSize,
-    },
-  },
-  "moonbase.wallDoorTransition.left.mask": {
-    frame: {
-      x: 664,
       y: 247,
       ...wallTileSize,
     },
   },
+  [`moonbase.wallDoorTransition.d${octantIndexOfDirection("left")}.dark` as const]:
+    {
+      frame: {
+        x: 681,
+        y: 321,
+        ...wallTileSize,
+      },
+    },
+  [`moonbase.wallDoorTransition.d${octantIndexOfDirection("left")}.mask` as const]:
+    {
+      frame: {
+        x: 664,
+        y: 247,
+        ...wallTileSize,
+      },
+    },
 } as const;
 
 export const scenerySpritesheetData = {
   frames,
   animations: {
-    "moonbase.wall.screen.window1.away": withSpeed(
-      [
-        "moonbase.wall.screen.window1.away.1",
-        "moonbase.wall.screen.window1.away.2",
-        "moonbase.wall.screen.window1.away.3",
-      ] as const,
-      1 / 16,
-    ),
-    "moonbase.wall.screen.window2.away": withSpeed(
-      [
-        "moonbase.wall.screen.window2.away.1",
-        "moonbase.wall.screen.window2.away.1",
-        "moonbase.wall.screen.window2.away.2",
-      ] as const,
-      1 / 16,
-    ),
-    "moonbase.wall.screen.window3.away": withSpeed(
-      [
-        "moonbase.wall.screen.window3.away.1",
-        "moonbase.wall.screen.window3.away.2",
-        "moonbase.wall.screen.window3.away.3",
-        "moonbase.wall.screen.window3.away.4",
-        "moonbase.wall.screen.window3.away.4",
-      ] as const,
-      1 / 16,
-    ),
+    [`moonbase.wall.screen.window1.d${octantIndexOfDirection("away")}` as const]:
+      withSpeed(
+        [
+          `moonbase.wall.screen.window1.d${octantIndexOfDirection("away")}.1`,
+          `moonbase.wall.screen.window1.d${octantIndexOfDirection("away")}.2`,
+          `moonbase.wall.screen.window1.d${octantIndexOfDirection("away")}.3`,
+        ] as const,
+        1 / 16,
+      ),
+    [`moonbase.wall.screen.window2.d${octantIndexOfDirection("away")}` as const]:
+      withSpeed(
+        [
+          `moonbase.wall.screen.window2.d${octantIndexOfDirection("away")}.1`,
+          `moonbase.wall.screen.window2.d${octantIndexOfDirection("away")}.1`,
+          `moonbase.wall.screen.window2.d${octantIndexOfDirection("away")}.2`,
+        ] as const,
+        1 / 16,
+      ),
+    [`moonbase.wall.screen.window3.d${octantIndexOfDirection("away")}` as const]:
+      withSpeed(
+        [
+          `moonbase.wall.screen.window3.d${octantIndexOfDirection("away")}.1`,
+          `moonbase.wall.screen.window3.d${octantIndexOfDirection("away")}.2`,
+          `moonbase.wall.screen.window3.d${octantIndexOfDirection("away")}.3`,
+          `moonbase.wall.screen.window3.d${octantIndexOfDirection("away")}.4`,
+          `moonbase.wall.screen.window3.d${octantIndexOfDirection("away")}.4`,
+        ] as const,
+        1 / 16,
+      ),
   },
 } as const satisfies Pick<
   SpritesheetData,

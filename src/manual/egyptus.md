@@ -1,6 +1,6 @@
 ## Planet Egyptus
 
-![](texture-egyptus_wall_sarcophagus_left)![](texture-egyptus_wall_sarcophagus_away?float-right)![](texture-egyptus_wall_hieroglyphics_left?clear-left)![](texture-egyptus_wall_hieroglyphics_away?float-right&clear-right)Once, a long time ago, a craft from Blacktooth got a bit lost while doing a
+![](texture-egyptus_wall_sarcophagus_d0)![](texture-egyptus_wall_sarcophagus_d2?float-right)![](texture-egyptus_wall_hieroglyphics_d0?clear-left)![](texture-egyptus_wall_hieroglyphics_d2?float-right&clear-right)Once, a long time ago, a craft from Blacktooth got a bit lost while doing a
 hyperspace jump and landed on an unknown planet.
 
 Here the crew found a primitive

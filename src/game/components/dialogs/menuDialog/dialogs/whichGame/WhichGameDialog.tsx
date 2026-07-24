@@ -85,7 +85,7 @@ export const WhichGameDialog = (_emptyProps: EmptyObject) => {
               subMenuId="communityGames"
               leader={
                 <span
-                  class={`${spriteLeaderClasses} sprite ${"texture-charles_right" satisfies TextureTailwindClass} sprites-normal-height zx:sprite-revert-to-white`}
+                  class={`${spriteLeaderClasses} sprite ${"texture-charles_d4" satisfies TextureTailwindClass} sprites-normal-height zx:sprite-revert-to-white`}
                 />
               }
               hint={

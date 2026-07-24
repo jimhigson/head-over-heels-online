@@ -4,6 +4,7 @@ import {
   paletteBlockstackDim,
 } from "../../src/sprites/palette/spritesheetPalette";
 import { type SpritesheetMetadata } from "../../src/sprites/spritesheet/spritesheetData/spritesheetMetaData";
+import { octantIndexOfDirection } from "../../src/utils/vectors/octantIndexOfDirection" with { type: "macro" };
 import { itemRenderExtents } from "./itemRenderExtents";
 
 export const blockStackSpritesheetMeta: SpritesheetMetadata<
@@ -88,9 +89,15 @@ export const blockStackSpritesheetMeta: SpritesheetMetadata<
   // override the sprite's pivot to get the 'lean forward' effect when falling
   // where it isn't already baked into the sprite:
   overrides: {
-    "head.falling.awayRight": { pivot: { x: 11, y: 24 } },
-    "head.falling.towardsLeft": { pivot: { x: 13, y: 24 } },
-    "head.falling.awayLeft": { pivot: { x: 12, y: 25 } },
+    [`head.falling.d${octantIndexOfDirection("awayRight")}`]: {
+      pivot: { x: 11, y: 24 },
+    },
+    [`head.falling.d${octantIndexOfDirection("towardsLeft")}`]: {
+      pivot: { x: 13, y: 24 },
+    },
+    [`head.falling.d${octantIndexOfDirection("awayLeft")}`]: {
+      pivot: { x: 12, y: 25 },
+    },
     // sprites that share another's region of the sheet (their own regions can
     // later be blanked). The whiteRabbit power-ups and planet icons are
     // placeholders not yet given distinct art, so they render as their canonical

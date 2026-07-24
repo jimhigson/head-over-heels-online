@@ -3,6 +3,7 @@ import {
   type ToppyPaletteColourName,
 } from "../../src/sprites/palette/spritesheetPalette";
 import { type SpritesheetMetadata } from "../../src/sprites/spritesheet/spritesheetData/spritesheetMetaData";
+import { octantIndexOfDirection } from "../../src/utils/vectors/octantIndexOfDirection" with { type: "macro" };
 import { itemRenderExtents } from "./itemRenderExtents";
 
 export const toppySpritesheetMeta: SpritesheetMetadata<
@@ -83,46 +84,115 @@ export const toppySpritesheetMeta: SpritesheetMetadata<
   // another sprite, so it shares that sprite's region of the sheet and its own
   // region is blanked to transparent.
   overrides: {
-    "turtle.away.1": { copyFrom: { textureId: "turtle.left.1", flipX: true } },
-    "turtle.away.2": { copyFrom: { textureId: "turtle.left.2", flipX: true } },
-    "turtle.right.1": {
-      copyFrom: { textureId: "turtle.towards.1", flipX: true },
+    [`turtle.d${octantIndexOfDirection("away")}.1`]: {
+      copyFrom: {
+        textureId: `turtle.d${octantIndexOfDirection("left")}.1`,
+        flipX: true,
+      },
     },
-    "turtle.right.2": {
-      copyFrom: { textureId: "turtle.towards.2", flipX: true },
+    [`turtle.d${octantIndexOfDirection("away")}.2`]: {
+      copyFrom: {
+        textureId: `turtle.d${octantIndexOfDirection("left")}.2`,
+        flipX: true,
+      },
     },
-    "cyberman.away": { copyFrom: { textureId: "cyberman.left", flipX: true } },
-    "cyberman.right": {
-      copyFrom: { textureId: "cyberman.towards", flipX: true },
+    [`turtle.d${octantIndexOfDirection("right")}.1`]: {
+      copyFrom: {
+        textureId: `turtle.d${octantIndexOfDirection("towards")}.1`,
+        flipX: true,
+      },
     },
-    "skiHead.greenAndPink.away": {
-      copyFrom: { textureId: "skiHead.greenAndPink.left", flipX: true },
+    [`turtle.d${octantIndexOfDirection("right")}.2`]: {
+      copyFrom: {
+        textureId: `turtle.d${octantIndexOfDirection("towards")}.2`,
+        flipX: true,
+      },
     },
-    "skiHead.greenAndPink.right": {
-      copyFrom: { textureId: "skiHead.greenAndPink.towards", flipX: true },
+    [`cyberman.d${octantIndexOfDirection("away")}`]: {
+      copyFrom: {
+        textureId: `cyberman.d${octantIndexOfDirection("left")}`,
+        flipX: true,
+      },
     },
-    "charles.away": { copyFrom: { textureId: "charles.left", flipX: true } },
-    "charles.right": {
-      copyFrom: { textureId: "charles.towards", flipX: true },
+    [`cyberman.d${octantIndexOfDirection("right")}`]: {
+      copyFrom: {
+        textureId: `cyberman.d${octantIndexOfDirection("towards")}`,
+        flipX: true,
+      },
     },
-    "monkey.away": { copyFrom: { textureId: "monkey.left", flipX: true } },
-    "monkey.right": { copyFrom: { textureId: "monkey.towards", flipX: true } },
-    "computerBot.away": {
-      copyFrom: { textureId: "computerBot.left", flipX: true },
+    [`skiHead.greenAndPink.d${octantIndexOfDirection("away")}`]: {
+      copyFrom: {
+        textureId: `skiHead.greenAndPink.d${octantIndexOfDirection("left")}`,
+        flipX: true,
+      },
     },
-    "computerBot.right": {
-      copyFrom: { textureId: "computerBot.towards", flipX: true },
+    [`skiHead.greenAndPink.d${octantIndexOfDirection("right")}`]: {
+      copyFrom: {
+        textureId: `skiHead.greenAndPink.d${octantIndexOfDirection("towards")}`,
+        flipX: true,
+      },
     },
-    "elephant.away": { copyFrom: { textureId: "elephant.left", flipX: true } },
+    [`charles.d${octantIndexOfDirection("away")}`]: {
+      copyFrom: {
+        textureId: `charles.d${octantIndexOfDirection("left")}`,
+        flipX: true,
+      },
+    },
+    [`charles.d${octantIndexOfDirection("right")}`]: {
+      copyFrom: {
+        textureId: `charles.d${octantIndexOfDirection("towards")}`,
+        flipX: true,
+      },
+    },
+    [`monkey.d${octantIndexOfDirection("away")}`]: {
+      copyFrom: {
+        textureId: `monkey.d${octantIndexOfDirection("left")}`,
+        flipX: true,
+      },
+    },
+    [`monkey.d${octantIndexOfDirection("right")}`]: {
+      copyFrom: {
+        textureId: `monkey.d${octantIndexOfDirection("towards")}`,
+        flipX: true,
+      },
+    },
+    [`computerBot.d${octantIndexOfDirection("away")}`]: {
+      copyFrom: {
+        textureId: `computerBot.d${octantIndexOfDirection("left")}`,
+        flipX: true,
+      },
+    },
+    [`computerBot.d${octantIndexOfDirection("right")}`]: {
+      copyFrom: {
+        textureId: `computerBot.d${octantIndexOfDirection("towards")}`,
+        flipX: true,
+      },
+    },
+    [`elephant.d${octantIndexOfDirection("away")}`]: {
+      copyFrom: {
+        textureId: `elephant.d${octantIndexOfDirection("left")}`,
+        flipX: true,
+      },
+    },
     "helicopterBug.2": {
       copyFrom: { textureId: "helicopterBug.1", flipX: true },
     },
-    "barrier.y.disappearing": {
-      copyFrom: { textureId: "barrier.x.disappearing", flipX: true },
+    [`barrier.d${octantIndexOfDirection("away")}.disappearing`]: {
+      copyFrom: {
+        textureId: `barrier.d${octantIndexOfDirection("left")}.disappearing`,
+        flipX: true,
+      },
     },
-    "barrier.x": { copyFrom: { textureId: "barrier.x.disappearing" } },
-    "barrier.y": {
-      copyFrom: { textureId: "barrier.x.disappearing", flipX: true },
+    [`barrier.d${octantIndexOfDirection("left")}`]: {
+      copyFrom: {
+        textureId: `barrier.d${octantIndexOfDirection("left")}.disappearing`,
+      },
+    },
+    [`barrier.d${octantIndexOfDirection("away")}`]: {
+      copyFrom: {
+        textureId: `barrier.d${octantIndexOfDirection("left")}.disappearing`,
+        flipX: true,
+      },
     },
     "planet.safari": { copyFrom: { textureId: "planet.blacktooth" } },
     "planet.egyptus": { copyFrom: { textureId: "planet.blacktooth" } },
@@ -132,95 +202,206 @@ export const toppySpritesheetMeta: SpritesheetMetadata<
     "lift.4": { copyFrom: { textureId: "lift.1", flipX: true } },
     "shadow.lift.3": { copyFrom: { textureId: "shadow.lift.2", flipX: true } },
     "shadow.lift.4": { copyFrom: { textureId: "shadow.lift.1", flipX: true } },
-    "book.y": { copyFrom: { textureId: "book.x", flipX: true } },
+    [`book.d${octantIndexOfDirection("away")}`]: {
+      copyFrom: {
+        textureId: `book.d${octantIndexOfDirection("left")}`,
+        flipX: true,
+      },
+    },
     "shadowMask.fullBlock": { copyFrom: { textureId: "shadowMask.book" } },
-    "conveyor.x.7": { copyFrom: { textureId: "conveyor.x.1" } },
-    "conveyor.y.1": { copyFrom: { textureId: "conveyor.x.1", flipX: true } },
-    "conveyor.y.2": { copyFrom: { textureId: "conveyor.x.2", flipX: true } },
-    "conveyor.y.3": { copyFrom: { textureId: "conveyor.x.3", flipX: true } },
-    "conveyor.y.4": { copyFrom: { textureId: "conveyor.x.4", flipX: true } },
-    "conveyor.y.5": { copyFrom: { textureId: "conveyor.x.5", flipX: true } },
-    "conveyor.y.6": { copyFrom: { textureId: "conveyor.x.6", flipX: true } },
-    "conveyor.y.7": { copyFrom: { textureId: "conveyor.x.1", flipX: true } },
+    [`conveyor.d${octantIndexOfDirection("left")}.7`]: {
+      copyFrom: { textureId: `conveyor.d${octantIndexOfDirection("left")}.1` },
+    },
+    [`conveyor.d${octantIndexOfDirection("away")}.1`]: {
+      copyFrom: {
+        textureId: `conveyor.d${octantIndexOfDirection("left")}.1`,
+        flipX: true,
+      },
+    },
+    [`conveyor.d${octantIndexOfDirection("away")}.2`]: {
+      copyFrom: {
+        textureId: `conveyor.d${octantIndexOfDirection("left")}.2`,
+        flipX: true,
+      },
+    },
+    [`conveyor.d${octantIndexOfDirection("away")}.3`]: {
+      copyFrom: {
+        textureId: `conveyor.d${octantIndexOfDirection("left")}.3`,
+        flipX: true,
+      },
+    },
+    [`conveyor.d${octantIndexOfDirection("away")}.4`]: {
+      copyFrom: {
+        textureId: `conveyor.d${octantIndexOfDirection("left")}.4`,
+        flipX: true,
+      },
+    },
+    [`conveyor.d${octantIndexOfDirection("away")}.5`]: {
+      copyFrom: {
+        textureId: `conveyor.d${octantIndexOfDirection("left")}.5`,
+        flipX: true,
+      },
+    },
+    [`conveyor.d${octantIndexOfDirection("away")}.6`]: {
+      copyFrom: {
+        textureId: `conveyor.d${octantIndexOfDirection("left")}.6`,
+        flipX: true,
+      },
+    },
+    [`conveyor.d${octantIndexOfDirection("away")}.7`]: {
+      copyFrom: {
+        textureId: `conveyor.d${octantIndexOfDirection("left")}.1`,
+        flipX: true,
+      },
+    },
     "shadowMask.toaster.disabled": {
       copyFrom: { textureId: "shadowMask.toaster" },
     },
     "particle.heels.3": { copyFrom: { textureId: "particle.head.3" } },
-    "head.walking.towards.1": {
-      copyFrom: { textureId: "head.walking.right.1", flipX: true },
+    [`head.walking.d${octantIndexOfDirection("towards")}.1`]: {
+      copyFrom: {
+        textureId: `head.walking.d${octantIndexOfDirection("right")}.1`,
+        flipX: true,
+      },
     },
-    "head.walking.towards.2": {
-      copyFrom: { textureId: "head.walking.right.2", flipX: true },
+    [`head.walking.d${octantIndexOfDirection("towards")}.2`]: {
+      copyFrom: {
+        textureId: `head.walking.d${octantIndexOfDirection("right")}.2`,
+        flipX: true,
+      },
     },
-    "head.walking.towards.3": {
-      copyFrom: { textureId: "head.walking.right.3", flipX: true },
+    [`head.walking.d${octantIndexOfDirection("towards")}.3`]: {
+      copyFrom: {
+        textureId: `head.walking.d${octantIndexOfDirection("right")}.3`,
+        flipX: true,
+      },
     },
-    "head.falling.towards": {
-      copyFrom: { textureId: "head.falling.right", flipX: true },
+    [`head.falling.d${octantIndexOfDirection("towards")}`]: {
+      copyFrom: {
+        textureId: `head.falling.d${octantIndexOfDirection("right")}`,
+        flipX: true,
+      },
     },
-    "head.blinking.towards": {
-      copyFrom: { textureId: "head.blinking.right", flipX: true },
+    [`head.blinking.d${octantIndexOfDirection("towards")}`]: {
+      copyFrom: {
+        textureId: `head.blinking.d${octantIndexOfDirection("right")}`,
+        flipX: true,
+      },
     },
-    "head.looking1.towards": {
-      copyFrom: { textureId: "head.looking1.right", flipX: true },
+    [`head.looking1.d${octantIndexOfDirection("towards")}`]: {
+      copyFrom: {
+        textureId: `head.looking1.d${octantIndexOfDirection("right")}`,
+        flipX: true,
+      },
     },
-    "head.looking2.towards": {
-      copyFrom: { textureId: "head.looking2.right", flipX: true },
+    [`head.looking2.d${octantIndexOfDirection("towards")}`]: {
+      copyFrom: {
+        textureId: `head.looking2.d${octantIndexOfDirection("right")}`,
+        flipX: true,
+      },
     },
-    "head.walking.towardsLeft.1": {
-      copyFrom: { textureId: "head.walking.awayRight.1", flipX: true },
+    [`head.walking.d${octantIndexOfDirection("towardsLeft")}.1`]: {
+      copyFrom: {
+        textureId: `head.walking.d${octantIndexOfDirection("awayRight")}.1`,
+        flipX: true,
+      },
     },
-    "head.walking.towardsLeft.2": {
-      copyFrom: { textureId: "head.walking.awayRight.2", flipX: true },
+    [`head.walking.d${octantIndexOfDirection("towardsLeft")}.2`]: {
+      copyFrom: {
+        textureId: `head.walking.d${octantIndexOfDirection("awayRight")}.2`,
+        flipX: true,
+      },
     },
-    "head.walking.towardsLeft.3": {
-      copyFrom: { textureId: "head.walking.awayRight.3", flipX: true },
+    [`head.walking.d${octantIndexOfDirection("towardsLeft")}.3`]: {
+      copyFrom: {
+        textureId: `head.walking.d${octantIndexOfDirection("awayRight")}.3`,
+        flipX: true,
+      },
     },
-    "head.falling.towardsLeft": {
-      copyFrom: { textureId: "head.falling.awayRight", flipX: true },
+    [`head.falling.d${octantIndexOfDirection("towardsLeft")}`]: {
+      copyFrom: {
+        textureId: `head.falling.d${octantIndexOfDirection("awayRight")}`,
+        flipX: true,
+      },
     },
-    "head.blinking.towardsLeft": {
-      copyFrom: { textureId: "head.blinking.awayRight", flipX: true },
+    [`head.blinking.d${octantIndexOfDirection("towardsLeft")}`]: {
+      copyFrom: {
+        textureId: `head.blinking.d${octantIndexOfDirection("awayRight")}`,
+        flipX: true,
+      },
     },
-    "head.walking.left.3": {
-      copyFrom: { textureId: "head.walking.away.3", flipX: true },
+    [`head.walking.d${octantIndexOfDirection("left")}.3`]: {
+      copyFrom: {
+        textureId: `head.walking.d${octantIndexOfDirection("away")}.3`,
+        flipX: true,
+      },
     },
-    "head.falling.left": {
-      copyFrom: { textureId: "head.falling.away", flipX: true },
+    [`head.falling.d${octantIndexOfDirection("left")}`]: {
+      copyFrom: {
+        textureId: `head.falling.d${octantIndexOfDirection("away")}`,
+        flipX: true,
+      },
     },
     "bubbles.heels.6": {
       copyFrom: { textureId: "bubbles.heels.5", flipX: true },
     },
-    "heels.walking.towardsLeft.1": {
-      copyFrom: { textureId: "heels.walking.awayRight.1", flipX: true },
-    },
-    "heels.walking.towardsLeft.2": {
-      copyFrom: { textureId: "heels.walking.awayRight.2", flipX: true },
-    },
-    "heels.walking.towardsLeft.3": {
-      copyFrom: { textureId: "heels.walking.awayRight.3", flipX: true },
-    },
-    "heels.falling.towardsLeft": {
-      copyFrom: { textureId: "heels.falling.awayRight", flipX: true },
-    },
-    "heels.blinking.towardsLeft": {
-      copyFrom: { textureId: "heels.blinking.awayRight", flipX: true },
-    },
-    "heels.looking1.towardsLeft": {
-      copyFrom: { textureId: "heels.looking1.awayRight", flipX: true },
-    },
-    "heels.walking.left.1": {
-      copyFrom: { textureId: "heels.walking.away.1", flipX: true },
-    },
-    "heels.walking.left.2": {
-      copyFrom: { textureId: "heels.walking.away.2", flipX: true },
-    },
-    "heels.walking.left.3": {
-      copyFrom: { textureId: "heels.walking.away.3", flipX: true },
-    },
-    "moonbase.wallDoorTransition.left.mask": {
+    [`heels.walking.d${octantIndexOfDirection("towardsLeft")}.1`]: {
       copyFrom: {
-        textureId: "moonbase.wallDoorTransition.away.mask",
+        textureId: `heels.walking.d${octantIndexOfDirection("awayRight")}.1`,
+        flipX: true,
+      },
+    },
+    [`heels.walking.d${octantIndexOfDirection("towardsLeft")}.2`]: {
+      copyFrom: {
+        textureId: `heels.walking.d${octantIndexOfDirection("awayRight")}.2`,
+        flipX: true,
+      },
+    },
+    [`heels.walking.d${octantIndexOfDirection("towardsLeft")}.3`]: {
+      copyFrom: {
+        textureId: `heels.walking.d${octantIndexOfDirection("awayRight")}.3`,
+        flipX: true,
+      },
+    },
+    [`heels.falling.d${octantIndexOfDirection("towardsLeft")}`]: {
+      copyFrom: {
+        textureId: `heels.falling.d${octantIndexOfDirection("awayRight")}`,
+        flipX: true,
+      },
+    },
+    [`heels.blinking.d${octantIndexOfDirection("towardsLeft")}`]: {
+      copyFrom: {
+        textureId: `heels.blinking.d${octantIndexOfDirection("awayRight")}`,
+        flipX: true,
+      },
+    },
+    [`heels.looking1.d${octantIndexOfDirection("towardsLeft")}`]: {
+      copyFrom: {
+        textureId: `heels.looking1.d${octantIndexOfDirection("awayRight")}`,
+        flipX: true,
+      },
+    },
+    [`heels.walking.d${octantIndexOfDirection("left")}.1`]: {
+      copyFrom: {
+        textureId: `heels.walking.d${octantIndexOfDirection("away")}.1`,
+        flipX: true,
+      },
+    },
+    [`heels.walking.d${octantIndexOfDirection("left")}.2`]: {
+      copyFrom: {
+        textureId: `heels.walking.d${octantIndexOfDirection("away")}.2`,
+        flipX: true,
+      },
+    },
+    [`heels.walking.d${octantIndexOfDirection("left")}.3`]: {
+      copyFrom: {
+        textureId: `heels.walking.d${octantIndexOfDirection("away")}.3`,
+        flipX: true,
+      },
+    },
+    [`moonbase.wallDoorTransition.d${octantIndexOfDirection("left")}.mask`]: {
+      copyFrom: {
+        textureId: `moonbase.wallDoorTransition.d${octantIndexOfDirection("away")}.mask`,
         flipX: true,
       },
     },
@@ -228,17 +409,29 @@ export const toppySpritesheetMeta: SpritesheetMetadata<
     // with a few accidental differing pixels, so not auto-detected. Their own
     // regions are blanked and they render from the clean mirror, dropping the
     // stray pixels.
-    "head.walking.left.1": {
-      copyFrom: { textureId: "head.walking.away.1", flipX: true },
+    [`head.walking.d${octantIndexOfDirection("left")}.1`]: {
+      copyFrom: {
+        textureId: `head.walking.d${octantIndexOfDirection("away")}.1`,
+        flipX: true,
+      },
     },
-    "head.walking.left.2": {
-      copyFrom: { textureId: "head.walking.away.2", flipX: true },
+    [`head.walking.d${octantIndexOfDirection("left")}.2`]: {
+      copyFrom: {
+        textureId: `head.walking.d${octantIndexOfDirection("away")}.2`,
+        flipX: true,
+      },
     },
-    "heels.falling.left": {
-      copyFrom: { textureId: "heels.falling.away", flipX: true },
+    [`heels.falling.d${octantIndexOfDirection("left")}`]: {
+      copyFrom: {
+        textureId: `heels.falling.d${octantIndexOfDirection("away")}`,
+        flipX: true,
+      },
     },
-    "elephant.right": {
-      copyFrom: { textureId: "elephant.towards", flipX: true },
+    [`elephant.d${octantIndexOfDirection("right")}`]: {
+      copyFrom: {
+        textureId: `elephant.d${octantIndexOfDirection("towards")}`,
+        flipX: true,
+      },
     },
     "helicopterBug.4": {
       copyFrom: { textureId: "helicopterBug.3", flipX: true },
@@ -256,10 +449,10 @@ export const toppySpritesheetMeta: SpritesheetMetadata<
     "block.organic.dark",
     "block.organic.dark.disappearing",
     "ball.uncolourised",
-    "skiHead.starsAndStripes.away",
-    "skiHead.starsAndStripes.towards",
-    "skiHead.starsAndStripes.left",
-    "skiHead.starsAndStripes.right",
+    `skiHead.starsAndStripes.d${octantIndexOfDirection("away")}`,
+    `skiHead.starsAndStripes.d${octantIndexOfDirection("towards")}`,
+    `skiHead.starsAndStripes.d${octantIndexOfDirection("left")}`,
+    `skiHead.starsAndStripes.d${octantIndexOfDirection("right")}`,
   ],
   swops: {
     deactivated: {

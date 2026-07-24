@@ -35,7 +35,12 @@ import { selectShowFps } from "../../../store/slices/gameMenus/gameMenusSelector
 import { type SpriteOption } from "../../../store/slices/userSettings/userSettingsSlice";
 import { store } from "../../../store/store";
 import { neverTime } from "../../../utils/neverTime";
-import { type DirectionXy4, type Xy } from "../../../utils/vectors/vectors";
+import {
+  type DirectionIndexXy8,
+  directionIndexXy8,
+  directionsXy8Octants,
+  type Xy,
+} from "../../../utils/vectors/vectors";
 import { type GameState } from "../../gameState/GameState";
 import {
   fastStepsRemaining,
@@ -116,9 +121,9 @@ const sideMultiplier = (character: CharacterName) => {
 };
 
 const hudCharacterDirection = {
-  head: "right",
-  heels: "towards",
-} as const satisfies Record<IndividualCharacterName, DirectionXy4>;
+  head: directionIndexXy8.right,
+  heels: directionIndexXy8.towards,
+} as const satisfies Record<IndividualCharacterName, DirectionIndexXy8>;
 
 type HudCharacterTextureId =
   BaseTextureIdWithPrefix<`${"head" | "heels"}.${"standing" | "walking"}`>;
@@ -491,19 +496,21 @@ export class HudRenderer<
     characterName: IndividualCharacterName,
   ): HudCharacterTextureId {
     const { spriteOption } = this.renderContext.general;
-    const direction = hudCharacterDirection[characterName];
+    const directionIndex = hudCharacterDirection[characterName];
+    // the per-direction meta stays keyed by the art's direction name:
     const standing =
-      spritesheetMetas[spriteOption.name].playable[characterName][direction]
-        ?.standing;
+      spritesheetMetas[spriteOption.name].playable[characterName][
+        directionsXy8Octants[directionIndex]
+      ]?.standing;
     if (!standing) {
       throw new Error(
-        `no standing defined for ${characterName}.${direction} in ${spriteOption.name}`,
+        `no standing defined for ${characterName}.d${directionIndex} in ${spriteOption.name}`,
       );
     }
 
     return standing === true ?
-        `${characterName}.standing.${direction}`
-      : `${characterName}.walking.${direction}.${standing}`;
+        `${characterName}.standing.d${directionIndex}`
+      : `${characterName}.walking.d${directionIndex}.${standing}`;
   }
 
   #createCharacterSprite(characterName: IndividualCharacterName): Sprite {

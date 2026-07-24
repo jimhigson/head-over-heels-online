@@ -18,9 +18,9 @@ If you pick them up while head and heels are joined, they get *two each*
 
 ## ![](texture-whiteRabbit_jumps?sprites-normal-height&float-right)**♨** Jump higher bunny
 
-![](texture-animated-heels_idle_right?text-metallicBlue&float-left)Only works on Heels
+![](texture-animated-heels_idle_d4?text-metallicBlue&float-left)Only works on Heels
 
 ## ![](texture-whiteRabbit_fast?sprites-normal-height&float-right)**⚡** Go faster bunny
-![](texture-animated-head_idle_right?text-metallicBlue&float-left)Only works on slow-moving Head
+![](texture-animated-head_idle_d4?text-metallicBlue&float-left)Only works on slow-moving Head
 
 > Section adapted from the original Head over Heels manual

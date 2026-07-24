@@ -481,7 +481,7 @@ export const Cheats = <RoomId extends string>(_emptyProps: EmptyObject) => {
                 }}
               >
                 <span
-                  class={`sprite ${"texture-turtle_towards_1" satisfies TextureTailwindClass} ${"hover:texture-animated-turtle_towards" satisfies AnimatedTextureTailwindClass}`}
+                  class={`sprite ${"texture-turtle_d6_1" satisfies TextureTailwindClass} ${"hover:texture-animated-turtle_d6" satisfies AnimatedTextureTailwindClass}`}
                 />
               </Button>
               <Button
@@ -500,7 +500,7 @@ export const Cheats = <RoomId extends string>(_emptyProps: EmptyObject) => {
                 }}
               >
                 <span
-                  class={`sprite ${"texture-skiHead_greenAndPink_towards" satisfies TextureTailwindClass}`}
+                  class={`sprite ${"texture-skiHead_greenAndPink_d6" satisfies TextureTailwindClass}`}
                 />
               </Button>
               <Button

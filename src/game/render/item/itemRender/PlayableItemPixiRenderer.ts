@@ -19,8 +19,11 @@ import { type SpritesheetMetadata } from "../../../../sprites/spritesheet/sprite
 import { variantTextureId } from "../../../../sprites/spritesheet/variantTextureId";
 import { type SpriteOption } from "../../../../store/slices/userSettings/userSettingsSlice";
 import { isEmptyObject } from "../../../../utils/empty";
-import { resolveCameraRelativeVectorXy8 } from "../../../../utils/vectors/resolveCameraRelativeVector";
-import { type DirectionXy8 } from "../../../../utils/vectors/vectors";
+import { resolveCameraRelativeIndexXy8 } from "../../../../utils/vectors/resolveCameraRelativeVector";
+import {
+  type DirectionIndexXy8,
+  directionsXy8Octants,
+} from "../../../../utils/vectors/vectors";
 import { playerDiedRecently } from "../../../gameState/gameStateSelectors/playerDiedRecently";
 import { playableHasShield } from "../../../gameState/gameStateSelectors/selectPickupAbilities";
 import { type PlayableItem } from "../../../physics/itemPredicates";
@@ -38,7 +41,7 @@ import { type FilterCache } from "../../room/RoomRenderer";
 import { type ItemLeafPixiRenderer } from "./ItemPixiRenderer";
 
 type PlayableRenderProps = {
-  resolvedFacingXy8: DirectionXy8;
+  resolvedFacingIndexXy8: DirectionIndexXy8;
   action: PlayableActionState;
   teleportingPhase: "in" | "out" | null;
   gravityZ: number;
@@ -60,7 +63,7 @@ const jumpSpriteGravityZThreshold = 0.02;
 const playableCreateSpriteOptions = ({
   name,
   action,
-  resolvedFacingXy8,
+  resolvedFacingIndexXy8,
   teleportingPhase,
   gravityZ,
   paused,
@@ -126,7 +129,7 @@ const playableCreateSpriteOptions = ({
   ) {
     return {
       animationId: variantTextureId(
-        `${name}.walking.${resolvedFacingXy8}`,
+        `${name}.walking.d${resolvedFacingIndexXy8}`,
         isReflection,
         false,
         false,
@@ -141,7 +144,7 @@ const playableCreateSpriteOptions = ({
     if (gravityZ < jumpSpriteGravityZThreshold) {
       return {
         textureId: variantTextureId(
-          `${name}.walking.${resolvedFacingXy8}.2`,
+          `${name}.walking.d${resolvedFacingIndexXy8}.2`,
           isReflection,
           false,
           false,
@@ -152,12 +155,13 @@ const playableCreateSpriteOptions = ({
     }
 
     const jumpAscentWalkTextureNo =
-      spritesheet.spritesheetMeta.playable[name][resolvedFacingXy8]
-        ?.jumpAscent ?? 1;
+      spritesheet.spritesheetMeta.playable[name][
+        directionsXy8Octants[resolvedFacingIndexXy8]
+      ]?.jumpAscent ?? 1;
 
     return {
       textureId: variantTextureId(
-        `${name}.walking.${resolvedFacingXy8}.${jumpAscentWalkTextureNo}`,
+        `${name}.walking.d${resolvedFacingIndexXy8}.${jumpAscentWalkTextureNo}`,
         isReflection,
         false,
         false,
@@ -168,7 +172,8 @@ const playableCreateSpriteOptions = ({
   }
 
   if (action === "falling") {
-    const fallingTextureName = `${name}.falling.${resolvedFacingXy8}` as const;
+    const fallingTextureName =
+      `${name}.falling.d${resolvedFacingIndexXy8}` as const;
 
     if (isTextureId(fallingTextureName, spritesheet.data)) {
       return {
@@ -186,7 +191,8 @@ const playableCreateSpriteOptions = ({
 
   if (name === "head" && isStoodOn) {
     // head (or head component of head-over-heels) - show with eyes closed
-    const blinkingTextureId = `${name}.blinking.${resolvedFacingXy8}` as const;
+    const blinkingTextureId =
+      `${name}.blinking.d${resolvedFacingIndexXy8}` as const;
     if (isTextureId(blinkingTextureId, spritesheet.data)) {
       return {
         textureId: variantTextureId(
@@ -201,7 +207,7 @@ const playableCreateSpriteOptions = ({
     }
   }
 
-  const idleAnimationId = `${name}.idle.${resolvedFacingXy8}` as const;
+  const idleAnimationId = `${name}.idle.d${resolvedFacingIndexXy8}` as const;
   if (isAnimationId(idleAnimationId, spritesheet.data)) {
     // we have an idle anim for this character/direction
     return {
@@ -219,7 +225,7 @@ const playableCreateSpriteOptions = ({
   // no idle animation:
   return {
     textureId: variantTextureId(
-      `${name}.walking.${resolvedFacingXy8}.2`,
+      `${name}.walking.d${resolvedFacingIndexXy8}.2`,
       isReflection,
       false,
       false,
@@ -409,7 +415,7 @@ export class PlayableItemPixiRenderer implements ItemLeafPixiRenderer<CharacterN
   // the previous tick's values of the render props that gate a body-sprite
   // refresh, to decide whether this tick needs one:
   #prevAction: PlayableActionState | undefined;
-  #prevFacingXy8: DirectionXy8 | undefined;
+  #prevFacingIndexXy8: DirectionIndexXy8 | undefined;
   #prevTeleportingPhase: "in" | "out" | null | undefined;
   #prevGravityAboveThreshold: boolean | undefined;
   #prevIsStoodOn: boolean | undefined;
@@ -487,7 +493,7 @@ export class PlayableItemPixiRenderer implements ItemLeafPixiRenderer<CharacterN
     // turned - it steps through the intermediate facings along θ(t) mid-turn
     // rather than snapping old->new. Rounding happens only here, at the final
     // sprite-name pick:
-    const resolvedFacingXy8 = resolveCameraRelativeVectorXy8(
+    const resolvedFacingIndexXy8 = resolveCameraRelativeIndexXy8(
       visualFacingVector ?? facing,
       cameraAngle,
       isReflection,
@@ -506,7 +512,7 @@ export class PlayableItemPixiRenderer implements ItemLeafPixiRenderer<CharacterN
 
     const renderProps: PlayableRenderProps = {
       action,
-      resolvedFacingXy8,
+      resolvedFacingIndexXy8,
       teleportingPhase,
       flashing,
       highlighted,
@@ -520,7 +526,7 @@ export class PlayableItemPixiRenderer implements ItemLeafPixiRenderer<CharacterN
       // note: not all props are used here!
       !this.#hasRenderedOnce ||
       this.#prevAction !== action ||
-      this.#prevFacingXy8 !== resolvedFacingXy8 ||
+      this.#prevFacingIndexXy8 !== resolvedFacingIndexXy8 ||
       this.#prevTeleportingPhase !== teleportingPhase ||
       this.#prevGravityAboveThreshold !== gravityAboveThreshold ||
       this.#prevIsStoodOn !== isStoodOn;
@@ -536,7 +542,7 @@ export class PlayableItemPixiRenderer implements ItemLeafPixiRenderer<CharacterN
 
     this.#hasRenderedOnce = true;
     this.#prevAction = action;
-    this.#prevFacingXy8 = resolvedFacingXy8;
+    this.#prevFacingIndexXy8 = resolvedFacingIndexXy8;
     this.#prevTeleportingPhase = teleportingPhase;
     this.#prevGravityAboveThreshold = gravityAboveThreshold;
     this.#prevIsStoodOn = isStoodOn;

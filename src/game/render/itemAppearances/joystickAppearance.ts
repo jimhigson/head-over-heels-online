@@ -2,20 +2,20 @@ import { Container, type Sprite } from "pixi.js";
 
 import { type AppSpritesheetWithVariants } from "../../../sprites/spritesheet/AppSpritesheet";
 import { variantTextureId } from "../../../sprites/spritesheet/variantTextureId";
-import { resolveCameraRelativeVectorXy4 } from "../../../utils/vectors/resolveCameraRelativeVector";
+import { resolveCameraRelativeIndexXy4 } from "../../../utils/vectors/resolveCameraRelativeVector";
 import {
-  type DirectionXy4,
+  type DirectionIndexXy4,
+  directionIndexXy8,
   originXy,
   type Xy,
 } from "../../../utils/vectors/vectors";
 import { createSprite } from "../createSprite";
 import { type ItemAppearance } from "./ItemAppearance";
 
-type PushDirection = DirectionXy4 | undefined;
 type JoystickRenderProps = {
-  /** the on-screen push direction the ball is nudged towards, resolved per
-   * camera angle; undefined when the joystick is not being pushed */
-  screenPushDirection: PushDirection;
+  /** the on-screen push direction ring index the ball is nudged towards,
+   * resolved per camera angle; undefined when the joystick is not being pushed */
+  pushIndex: DirectionIndexXy4 | undefined;
 };
 
 const createContainerAndSprites = (
@@ -51,13 +51,12 @@ const createContainerAndSprites = (
   return container;
 };
 
-const ballRenderPushOffsets: Map<PushDirection, Xy> = new Map([
-  ["towards", { x: -1, y: 1 }],
-  ["right", { x: 1, y: 1 }],
-  ["left", { x: -1, y: 0 }],
-  ["away", { x: 1, y: 0 }],
-  [undefined, originXy],
-]);
+const ballRenderPushOffsets = {
+  [directionIndexXy8.towards]: { x: -1, y: 1 },
+  [directionIndexXy8.right]: { x: 1, y: 1 },
+  [directionIndexXy8.left]: { x: -1, y: 0 },
+  [directionIndexXy8.away]: { x: 1, y: 0 },
+} as const satisfies Record<DirectionIndexXy4, Xy>;
 
 export const joystickAppearance: ItemAppearance<
   "joystick",
@@ -80,14 +79,14 @@ export const joystickAppearance: ItemAppearance<
   // the offsets nudge the ball the way it was pushed as seen on screen, so
   // rotate the world push direction into camera space - rounded only here, at
   // the offset lookup:
-  const screenPushDirection =
+  const pushIndex =
     pushDirection === undefined ? undefined : (
-      resolveCameraRelativeVectorXy4(pushDirection, cameraAngle, false)
+      resolveCameraRelativeIndexXy4(pushDirection, cameraAngle, false)
     );
 
   const render =
     currentlyRenderedProps === undefined ||
-    screenPushDirection !== currentlyRenderedProps.screenPushDirection;
+    pushIndex !== currentlyRenderedProps.pushIndex;
 
   if (!render) {
     return "no-update";
@@ -103,22 +102,21 @@ export const joystickAppearance: ItemAppearance<
   ballSprite.texture =
     spritesheet.textures[
       variantTextureId(
-        screenPushDirection === undefined ? "joystick.ball" : (
-          `joystick.ball.active`
-        ),
+        pushIndex === undefined ? "joystick.ball" : `joystick.ball.active`,
         isReflection,
         false,
         false,
         false,
       )
     ];
-  const ballSpriteXy = ballRenderPushOffsets.get(screenPushDirection);
+  const ballSpriteXy =
+    pushIndex === undefined ? originXy : ballRenderPushOffsets[pushIndex];
 
-  ballSprite.x = ballSpriteXy?.x ?? 0;
-  ballSprite.y = ballSpriteXy?.y ?? 0;
+  ballSprite.x = ballSpriteXy.x;
+  ballSprite.y = ballSpriteXy.y;
 
   return {
     output,
-    renderProps: { screenPushDirection },
+    renderProps: { pushIndex },
   };
 };

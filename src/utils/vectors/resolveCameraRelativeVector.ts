@@ -3,14 +3,8 @@ import {
   cameraAngleIsOddQuarterTurn,
   type DirectionIndexXy4,
   type DirectionIndexXy8,
-  type DirectionXy4,
-  type DirectionXy8,
-  mirrorDirectionIndexXy4,
-  mirrorDirectionIndexXy8,
   nonZeroClosestDirectionIndexXy4,
   nonZeroClosestDirectionIndexXy8,
-  nonZeroClosestDirectionXy4,
-  nonZeroClosestDirectionXy8,
   type Xy,
 } from "./vectors";
 
@@ -55,93 +49,33 @@ const reflectedThenRotated = <T>(
 };
 
 /**
- * a world-space facing resolved to the nearest 4-way direction name of how it
- * appears on screen (reflected when drawn as a reflection, then rotated by the
- * camera angle) - for the common appearance idiom of resolving a facing
- * straight to a sprite name, without allocating an intermediate vector.
+ * a world-space facing resolved to the even-octant ring index
+ * (`.d0`/`.d2`/`.d4`/`.d6`) of the 4-way direction it *appears* as on screen
+ * (reflected when a reflection, then rotated by the camera angle) - for
+ * building a `.dN` sprite id from the apparent facing, so the sprite variant
+ * swaps as the camera turns.
  */
-export const resolveCameraRelativeVectorXy4 = (
+export const resolveCameraRelativeIndexXy4 = (
   facing: Xy,
   cameraAngle: Xy,
   isReflection: boolean,
-): DirectionXy4 =>
+): DirectionIndexXy4 =>
   reflectedThenRotated(
-    facing,
-    cameraAngle,
-    isReflection,
-    nonZeroClosestDirectionXy4,
-  );
-
-/**
- * like {@link resolveCameraRelativeVectorXy4}, but resolves to the nearest
- * 8-way direction (reusing {@link nonZeroClosestDirectionXy8}) - again without
- * allocating the intermediate vector.
- */
-export const resolveCameraRelativeVectorXy8 = (
-  facing: Xy,
-  cameraAngle: Xy,
-  isReflection: boolean,
-): DirectionXy8 =>
-  reflectedThenRotated(
-    facing,
-    cameraAngle,
-    isReflection,
-    nonZeroClosestDirectionXy8,
-  );
-
-/**
- * whether directional sprites render horizontally flipped at this camera
- * angle: true on odd quarter turns. Directional sprite variants are drawn lit
- * for the base camera angle; a quarter turn moves every facing into the
- * mirror-image form, so the renderer shows the mirror variant flipped - the
- * form is the reflection (the variants are mirror-symmetric pairs), and the
- * flip carries each sprite's painted shading with its world faces, keeping
- * the light source fixed in the world as the camera moves
- */
-export const spriteFlipXAtAngle = (cameraAngle: Xy): boolean =>
-  cameraAngleIsOddQuarterTurn(nearestQuarterAngle(cameraAngle));
-
-/**
- * the 4-way sprite-variant index (`.d0`..`.d3`) to draw for a world facing at
- * a camera angle: the apparent facing's ring index, mirrored on odd quarter
- * turns to pair with {@link spriteFlipXAtAngle}'s horizontal flip - so
- * `d(resolveSpriteDirectionIndexXy4(...))` with `flipX:
- * spriteFlipXAtAngle(...)` always shows the correct form, with the lighting
- * world-fixed. The facing may be continuous (mid-turn); rounding happens only
- * here at the final pick
- */
-export const resolveSpriteDirectionIndexXy4 = (
-  facing: Xy,
-  cameraAngle: Xy,
-  isReflection: boolean,
-): DirectionIndexXy4 => {
-  const apparentIndex = reflectedThenRotated(
     facing,
     cameraAngle,
     isReflection,
     nonZeroClosestDirectionIndexXy4,
   );
-  return spriteFlipXAtAngle(cameraAngle) ?
-      mirrorDirectionIndexXy4(apparentIndex)
-    : apparentIndex;
-};
 
-/**
- * like {@link resolveSpriteDirectionIndexXy4} for the 8-way (`.d0`..`.d7`)
- * sprite variants
- */
-export const resolveSpriteDirectionIndexXy8 = (
+/** like {@link resolveCameraRelativeIndexXy4} for the 8-way (`.d0`..`.d7`) ring */
+export const resolveCameraRelativeIndexXy8 = (
   facing: Xy,
   cameraAngle: Xy,
   isReflection: boolean,
-): DirectionIndexXy8 => {
-  const apparentIndex = reflectedThenRotated(
+): DirectionIndexXy8 =>
+  reflectedThenRotated(
     facing,
     cameraAngle,
     isReflection,
     nonZeroClosestDirectionIndexXy8,
   );
-  return spriteFlipXAtAngle(cameraAngle) ?
-      mirrorDirectionIndexXy8(apparentIndex)
-    : apparentIndex;
-};

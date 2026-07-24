@@ -2,7 +2,9 @@ import { describe, expect, test } from "vitest";
 
 import {
   addXyz,
+  type DirectionIndexXy8,
   elementWiseProductXyz,
+  mirrorDirectionIndexXy8,
   vectorClosestDirectionXy4,
   vectorClosestDirectionXy8,
   xyzSnapIfCloseToIntegers,
@@ -205,4 +207,14 @@ describe("elementWiseProductXyz", () => {
     const result = elementWiseProductXyz(vector, unitVector);
     expect(result).toEqual(vector);
   });
+});
+
+test("mirrorDirectionIndexXy8 fixes the on-axis octants and swaps the rest", () => {
+  expect(
+    ([0, 1, 2, 3, 4, 5, 6, 7] as const).map(mirrorDirectionIndexXy8),
+  ).toEqual<DirectionIndexXy8[]>(
+    // right↔towards, towardsRight/awayLeft self, towardsLeft↔awayRight,
+    // left↔away:
+    [2, 1, 0, 7, 6, 5, 4, 3],
+  );
 });

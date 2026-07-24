@@ -27,13 +27,13 @@ export const ProclaimEmperorDialog = () => {
             <div class="flex flex-col gap-y-oneScaledPix items-center me-1">
               <span class={crownClass} />
               <span
-                class={`sprite zx:sprite-revert-zxYellow ${"texture-animated-head_idle_right" satisfies AnimatedTextureTailwindClass} ${"hover:texture-animated-head_walking_right" satisfies AnimatedTextureTailwindClass} relative z-topSprite`}
+                class={`sprite zx:sprite-revert-zxYellow ${"texture-animated-head_idle_d4" satisfies AnimatedTextureTailwindClass} ${"hover:texture-animated-head_walking_d4" satisfies AnimatedTextureTailwindClass} relative z-topSprite`}
               />
             </div>
             <div class="flex flex-col items-center me-1">
               <span class={crownClass} />
               <span
-                class={`sprite zx:sprite-revert-zxYellow ${"texture-animated-heels_idle_towards" satisfies AnimatedTextureTailwindClass} ${"hover:texture-animated-heels_walking_towards" satisfies AnimatedTextureTailwindClass} relative z-topSprite`}
+                class={`sprite zx:sprite-revert-zxYellow ${"texture-animated-heels_idle_d6" satisfies AnimatedTextureTailwindClass} ${"hover:texture-animated-heels_walking_d6" satisfies AnimatedTextureTailwindClass} relative z-topSprite`}
               />
             </div>
           </div>

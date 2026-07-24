@@ -148,6 +148,16 @@ If a non-blocking check (netlify preview, or a job that silently never started) 
 - **Unexpected snapshot diff** (a change the branch shouldn't cause) → **halt that branch, keep the others moving, and report** what looks wrong. Don't paper over it with a baseline update.
 - **Other failures** → diagnose the cause; fix **only if it's easily identifiable and mechanical** (missing import, formatting, a config/type mismatch, an omitted e2e label) — **no new logic**. Apply with `git commit --amend`, force-with-lease, and **message the user what was fixed**. If it needs real logic changes, stop and report instead.
 
+## At any time - e2e visual regression failures due to font rendering differences only
+
+This stage only applies if you are able to compare screenshots and be CERTAIN the difference is per-OS font rendering ONLY
+
+If VR fails due to ONLY font rendering differences on the github runners, the fix is to:
+
+- not commit font rendering differences after running playwright with `--update-snapshots` locally
+- Run the `regenerate-snapshots.yml` https://github.com/jimhigson/head-over-heels-online/actions/workflows/regenerate-snapshots.yml workflow on github, this will generate using the same runners as judge the work later
+- Merge the PR that `regenerate-snapshots.yml` raises into the branch
+
 ## Phase 6.2 True-site-size comment
 
 * On git the true-size-site workflow+action should comment on the PR with the site size.

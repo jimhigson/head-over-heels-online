@@ -9,7 +9,10 @@ import { valuesIter } from "../../../utils/entries";
 import { nonZero } from "../../../utils/epsilon";
 import { hashNumberToNumber0to1 } from "../../../utils/maths/hashing";
 import { smoothstep } from "../../../utils/maths/maths";
-import { unitVectors } from "../../../utils/vectors/unitVectors";
+import {
+  unitVectors,
+  unitVectorsXy8Octants,
+} from "../../../utils/vectors/unitVectors";
 import {
   areInSameDirection,
   directionsXy4,
@@ -17,7 +20,7 @@ import {
   directionsXyDiagonal,
   type DirectionXy8,
   lengthXy,
-  nonZeroVectorClosestDirectionXy4,
+  nonZeroClosestDirectionIndexXy4,
   originXy,
   originXyz,
   perpendicularAxisXy,
@@ -142,7 +145,12 @@ const turnTowardsPlayer = <RoomId extends string, RoomItemId extends string>(
   );
 
   const newFacing =
-    unitVectors[nonZeroVectorClosestDirectionXy4(vectorXyToClosestPlayer)];
+    unitVectorsXy8Octants[
+      nonZeroClosestDirectionIndexXy4(
+        vectorXyToClosestPlayer.x,
+        vectorXyToClosestPlayer.y,
+      )
+    ];
 
   const changedDirection = !xyEqual(newFacing, facing);
 

@@ -14,8 +14,12 @@ export const sceneryWithOwnDoors = [
 export type SceneryWithOwnDoors = (typeof sceneryWithOwnDoors)[number];
 type DoorSceneryName = "generic" | `${SceneryWithOwnDoors}${".dark" | ""}`;
 
+/**
+ * door frame texture ids carry the door's along-wall axis as a d-number:
+ * d0 = runs along x, d2 = runs along y
+ */
 export type DoorFrameTextureName<SN extends DoorSceneryName = DoorSceneryName> =
-  `door.frame.${SN}.${AxisXy}.${"far" | "near" | "top" | "whole"}`;
+  `door.frame.${SN}.${"d0" | "d2"}.${"far" | "near" | "top" | "whole"}`;
 
 type Frame = {
   x: number;
@@ -30,6 +34,7 @@ export function* doorFrames<SN extends DoorSceneryName>(
   orientation: AxisXy,
   startPosition: Xy,
 ): Generator<[DoorFrameTextureName<SN>, SpritesheetFrameData]> {
+  const d = orientation === "x" ? "d0" : "d2";
   const maybeMirror = ({ x, y, w, h, pivot }: Frame) =>
     orientation === "x" ?
       {
@@ -46,7 +51,7 @@ export function* doorFrames<SN extends DoorSceneryName>(
       };
 
   yield [
-    `door.frame.${name}.${orientation}.whole`,
+    `door.frame.${name}.${d}.whole`,
     {
       frame: {
         ...maybeMirror({
@@ -60,7 +65,7 @@ export function* doorFrames<SN extends DoorSceneryName>(
     },
   ];
   yield [
-    `door.frame.${name}.${orientation}.far`,
+    `door.frame.${name}.${d}.far`,
     {
       frame: {
         ...maybeMirror({
@@ -74,7 +79,7 @@ export function* doorFrames<SN extends DoorSceneryName>(
     },
   ];
   yield [
-    `door.frame.${name}.${orientation}.near`,
+    `door.frame.${name}.${d}.near`,
     {
       frame: {
         ...maybeMirror({
@@ -88,7 +93,7 @@ export function* doorFrames<SN extends DoorSceneryName>(
     },
   ];
   yield [
-    `door.frame.${name}.${orientation}.top`,
+    `door.frame.${name}.${d}.top`,
     {
       frame: {
         ...maybeMirror({
