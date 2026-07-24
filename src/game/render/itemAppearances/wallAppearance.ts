@@ -7,7 +7,10 @@ import { isEmpty } from "../../../utils/iterators/isEmpty";
 import { phaseForSubItem } from "../../../utils/maths/hashing";
 import { renderContainerToSprite } from "../../../utils/pixi/renderContainerToSprite";
 import { octantIndexOfDirection } from "../../../utils/vectors/octantIndexOfDirection" with { type: "macro" };
-import { resolveCameraRelativeIndexXy4 } from "../../../utils/vectors/resolveCameraRelativeVector";
+import {
+  resolveSpriteDirectionIndexXy4,
+  spriteFlipXAtAngle,
+} from "../../../utils/vectors/resolveCameraRelativeVector";
 import {
   axisProjectsReversed,
   invertCameraAngle,
@@ -19,6 +22,7 @@ import {
   directionIndexXy8,
   dominantAxisXy,
   isNegativeSideXy,
+  mirrorDirectionIndexXy4,
   originXy,
   type Xy,
 } from "../../../utils/vectors/vectors";
@@ -63,23 +67,35 @@ export const wallAppearance = itemAppearanceRenderMemoised<"wall">(
 
     const { direction, tiles } = config;
 
-    // which far-side sprite the wall shows depends on its facing after the
-    // camera rotation, resolved against the continuous angle. A wall that
-    // resolves to a near/hidden side ({right, towards}) draws nothing: decline
-    // to render, removing any current rendering. This near/far split matches
-    // isWallDirectionHiddenAtAngle, which excludes the same wall from z-sorting
-    // in effectiveFixedZIndex - keeping draw and sort in lockstep:
-    const apparentIndex = resolveCameraRelativeIndexXy4(
+    // the sprite variant to draw (d0 = left art / d2 = away art), resolved
+    // against the continuous angle, with its paired flip. The flip keeps each
+    // tile's painted shading on its world faces - so the light source stays
+    // fixed in the world as the camera turns - while the mirror-symmetric
+    // outline lands exactly where the other variant's would. A wall whose
+    // apparent facing lands on a near/hidden side resolves to right/towards
+    // (which no art exists for) and draws nothing: decline to render, removing
+    // any current rendering. This near/far split matches
+    // isWallDirectionHiddenAtAngle, which excludes the same wall from
+    // z-sorting in effectiveFixedZIndex - keeping draw and sort in lockstep:
+    const flipX = spriteFlipXAtAngle(cameraAngle);
+    const resolvedFacingArtIndexXy4 = resolveSpriteDirectionIndexXy4(
       direction,
       cameraAngle,
       false,
     );
     if (
-      apparentIndex === directionIndexXy8.right ||
-      apparentIndex === directionIndexXy8.towards
+      resolvedFacingArtIndexXy4 === directionIndexXy8.right ||
+      resolvedFacingArtIndexXy4 === directionIndexXy8.towards
     ) {
       return undefined;
     }
+    // which slot the wall occupies on screen (the apparent facing): the away
+    // (d2) slot anchors tiles at their far corner, the left (d0) slot at their
+    // near one:
+    const slotIsAway =
+      (flipX ?
+        mirrorDirectionIndexXy4(resolvedFacingArtIndexXy4)
+      : resolvedFacingArtIndexXy4) === directionIndexXy8.away;
 
     // the tiles still repeat along the wall's physical axis (the projection
     // rotates them onto the screen):
@@ -106,8 +122,12 @@ export const wallAppearance = itemAppearanceRenderMemoised<"wall">(
         cameraQuarterAngle,
       );
 
+      // the pivot pairs with the ART variant (not the slot): pixi mirrors
+      // art-and-pivot together about the sprite's position, so a flipped
+      // variant lands exactly over its slot's tile cell. The away (d2) art
+      // anchors at the far corner:
       const tileRenderPivot =
-        apparentIndex === directionIndexXy8.away ?
+        resolvedFacingArtIndexXy4 === directionIndexXy8.away ?
           {
             x: wallTileSize.w,
             y: wallTileSize.h,
@@ -123,12 +143,13 @@ export const wallAppearance = itemAppearanceRenderMemoised<"wall">(
         textureId: wallTextureId(
           room.planet,
           clearTile ?? tiles[i],
-          apparentIndex,
+          resolvedFacingArtIndexXy4,
           room.color.shade === "dimmed",
           spritesheet.data,
         ),
         ...tileRenderPosition,
         pivot: tileRenderPivot,
+        flipX,
         spritesheet,
       });
       // TODO: use callback version of createSprite to create the wall with different textures
@@ -136,16 +157,17 @@ export const wallAppearance = itemAppearanceRenderMemoised<"wall">(
 
       if (room.planet === "moonbase") {
         const animationId = `moonbase.wall.screen.${tiles[i]}.d${octantIndexOfDirection("away")}`;
-        // only moonbase has animated walls
+        // only moonbase has animated walls. The screens exist only as the
+        // away-facing (d2) art, so the flip is form-forced by the slot (a
+        // left-slot screen must show the mirrored form) rather than paired
+        // with the lighting flip:
         if (isAnimationId(animationId, spritesheet.data)) {
           wallAnimationsContainer.addChild(
             createSprite({
               animationId,
               startFramePhase: phaseForSubItem(item.hash, i),
-              flipX: apparentIndex === directionIndexXy8.left,
-              x:
-                tileRenderPosition.x +
-                (apparentIndex === directionIndexXy8.away ? -8 : 8),
+              flipX: !slotIsAway,
+              x: tileRenderPosition.x + (slotIsAway ? -8 : 8),
               y: tileRenderPosition.y - 23,
               spritesheet,
             }),
@@ -163,7 +185,7 @@ export const wallAppearance = itemAppearanceRenderMemoised<"wall">(
           // camera space for away-rendered walls, (-1,+1) for left - rotated
           // back into world space to probe the spatial index:
           const cornerDiagonal = rotateXy(
-            apparentIndex === directionIndexXy8.away ?
+            slotIsAway ?
               { x: blockSizePx.x, y: -blockSizePx.y }
             : { x: -blockSizePx.x, y: blockSizePx.y },
             invertCameraAngle(cameraQuarterAngle),
@@ -190,18 +212,22 @@ export const wallAppearance = itemAppearanceRenderMemoised<"wall">(
           if (!wallCornerAtEndOfWall) {
             const isDarkStr = room.color.shade === "dimmed" ? ".dark" : "";
 
+            // the transition art (and its mask) follows the wall's own (d2/d3)
+            // variant and lighting flip, exactly like the tiles it caps:
             wallTilesContainer.addChild(
               createSprite({
-                textureId: `moonbase.wallDoorTransition.d${apparentIndex}${isDarkStr}`,
+                textureId: `moonbase.wallDoorTransition.d${resolvedFacingArtIndexXy4}${isDarkStr}`,
                 ...tileRenderPosition,
                 pivot: tileRenderPivot,
+                flipX,
                 spritesheet,
               }),
             );
             const maskSprite = createSprite({
-              textureId: `moonbase.wallDoorTransition.d${apparentIndex}.mask`,
+              textureId: `moonbase.wallDoorTransition.d${resolvedFacingArtIndexXy4}.mask`,
               ...tileRenderPosition,
               pivot: tileRenderPivot,
+              flipX,
               // masks are read through their red channel, so must sample the
               // pristine sheet - the room bake's ambient swops would recolour
               // the mask art and change how strongly it cuts:

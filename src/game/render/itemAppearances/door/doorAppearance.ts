@@ -1,4 +1,4 @@
-import { type Container, Texture } from "pixi.js";
+import { type Container } from "pixi.js";
 
 import { type ItemInPlay } from "../../../../model/ItemInPlay";
 import { type Campaign } from "../../../../model/modelTypes";
@@ -9,6 +9,7 @@ import { selectMaybeCurrentCampaign } from "../../../../store/slices/gameMenus/g
 import { store } from "../../../../store/store";
 import { iterateToContainer } from "../../../../utils/pixi/iterateToContainer";
 import { renderContainerToSprite } from "../../../../utils/pixi/renderContainerToSprite";
+import { spriteFlipXAtAngle } from "../../../../utils/vectors/resolveCameraRelativeVector";
 import {
   axisProjectsReversed,
   nearestQuarterAngle,
@@ -17,7 +18,6 @@ import {
   addXy,
   alongAxisOfDirectionXy,
   axisIndexXy8,
-  cameraAngleIsOddQuarterTurn,
   isNegativeSideXy,
   originXy,
   perpendicularAxisXy,
@@ -27,8 +27,6 @@ import {
 } from "../../../../utils/vectors/vectors";
 import { blockSizePx } from "../../../physics/mechanicsConstants";
 import { createSprite } from "../../createSprite";
-import { PaletteSwapFilter } from "../../filters/PaletteSwapFilter";
-import { floorEdgeCrossSwops } from "../../gameColours/floorEdgeCrossSwops";
 import {
   projectBlockXyzToScreenXy,
   projectWorldXyzToScreenXy,
@@ -52,11 +50,14 @@ function* doorLegsGenerator<RoomId extends string, RoomItemId extends string>(
   cameraQuarterAngle: Xy,
 ): Generator<Container> {
   const inHiddenWall = isDoorPartInHiddenWall(config, cameraQuarterAngle);
-  // positions repeat along the door's physical axis (projection rotates them); the
-  // sprite uses the apparent axis after the camera rotation:
+  // positions repeat along the door's physical axis (projection rotates them).
+  // The art is keyed by the WORLD axis (d0 = x, d2 = y) and horizontally
+  // flipped on odd quarter turns: the flip carries the art's painted shading
+  // (and the thresholds' baked floor-edge colours) with the door's world
+  // faces, keeping the light source fixed in the world as the camera turns:
   const axis = alongAxisOfDirectionXy(direction);
-  const renderedAxis = rotateAxisXyByCameraAngle(axis, cameraQuarterAngle);
-  const renderedAxisIndex = axisIndexXy8[renderedAxis];
+  const axisIndex = axisIndexXy8[axis];
+  const flipX = spriteFlipXAtAngle(cameraQuarterAngle);
 
   if (inHiddenWall) {
     if (height !== 0) {
@@ -66,12 +67,13 @@ function* doorLegsGenerator<RoomId extends string, RoomItemId extends string>(
       yield createSprite({
         textureId: planetSpecificIfExists(
           sceneryName,
-          `door.floatingThreshold.d${renderedAxisIndex}`,
+          `door.floatingThreshold.d${axisIndex}`,
           spritesheet.data,
           isDark,
         ),
         times: { [axis]: 2 },
         cameraQuarterAngle,
+        flipX,
         y: -blockSizePx.z * height,
         spritesheet,
       });
@@ -80,16 +82,17 @@ function* doorLegsGenerator<RoomId extends string, RoomItemId extends string>(
     yield createSprite({
       textureId: planetSpecificIfExists(
         sceneryName,
-        `door.legs.base.d${renderedAxisIndex}`,
+        `door.legs.base.d${axisIndex}`,
         spritesheet.data,
         isDark,
       ),
+      flipX,
       spritesheet,
     });
 
     const pillarTextureId = planetSpecificIfExists(
       sceneryName,
-      `door.legs.pillar.d${renderedAxisIndex}`,
+      `door.legs.pillar.d${axisIndex}`,
       spritesheet.data,
       isDark,
     );
@@ -97,6 +100,7 @@ function* doorLegsGenerator<RoomId extends string, RoomItemId extends string>(
     for (let h = 1; h < height; h++) {
       yield createSprite({
         textureId: pillarTextureId,
+        flipX,
         y: -h * blockSizePx.z,
         spritesheet,
       });
@@ -108,10 +112,11 @@ function* doorLegsGenerator<RoomId extends string, RoomItemId extends string>(
     yield createSprite({
       textureId: planetSpecificIfExists(
         sceneryName,
-        `door.legs.threshold.d${renderedAxisIndex}`,
+        `door.legs.threshold.d${axisIndex}`,
         spritesheet.data,
         isDark,
       ),
+      flipX,
       ...projectBlockXyzToScreenXy(
         { ...originXy, z: height },
         cameraQuarterAngle,
@@ -163,16 +168,8 @@ export const doorLegsAppearance: ItemAppearance<"doorLegs", RenderOnceProps> =
         item,
         general: { pixiRenderer, spritesheets, cameraAngle },
         room,
-        filterCache: maybeFilterCache,
       },
     }) => {
-      if (import.meta.env.DEV && maybeFilterCache === undefined) {
-        throw new Error(
-          "doorLegsAppearance requires a filterCache but was rendered without one",
-        );
-      }
-      const filterCache = maybeFilterCache!;
-
       const cameraQuarterAngle = nearestQuarterAngle(cameraAngle);
       const { planet, color } = room;
       const doorLegsContainer = iterateToContainer(
@@ -190,26 +187,6 @@ export const doorLegsAppearance: ItemAppearance<"doorLegs", RenderOnceProps> =
         item.config,
         cameraQuarterAngle,
       );
-
-      // the floating threshold's textures carry the floor edges' colours,
-      // which swap sides on odd quarter camera turns exactly as the floor's
-      // own edge lips do:
-      const crossSwopFilter =
-        inHiddenWall && cameraAngleIsOddQuarterTurn(cameraQuarterAngle) ?
-          filterCache.getOrInsertComputed(
-            `floorEdgeCross(${color.hue},${color.shade})`,
-            () =>
-              new PaletteSwapFilter(
-                { swops: floorEdgeCrossSwops(color), lutType: "sparse" },
-                Texture.WHITE,
-                // baked off-screen, so don't clip to the viewport:
-                false,
-              ),
-          )
-        : undefined;
-      if (crossSwopFilter !== undefined) {
-        doorLegsContainer.filters = crossSwopFilter;
-      }
 
       // door legs can take quite a few sprites (ie, 11 each for the 5-high
       // doors in #blacktooth39 - reduce down to a single sprite:
@@ -270,6 +247,10 @@ export const doorFrameAppearance: ItemAppearance<"doorFrame", RenderOnceProps> =
         : selectMaybeCurrentCampaign(store.getState());
       const axis = alongAxisOfDirectionXy(direction);
       const renderedAxis = rotateAxisXyByCameraAngle(axis, cameraQuarterAngle);
+      // the art is keyed by the WORLD axis and flipped on odd quarter turns,
+      // so its painted shading stays on the door's world faces (the light
+      // source stays fixed in the world as the camera turns):
+      const flipX = spriteFlipXAtAngle(cameraQuarterAngle);
 
       // the far post sits at +alongWall from the near post, so it is drawn behind
       // the near post only while +alongWall still points away from the camera.
@@ -305,11 +286,12 @@ export const doorFrameAppearance: ItemAppearance<"doorFrame", RenderOnceProps> =
       const rendered = createSprite({
         textureId: doorTexture(
           room,
-          axisIndexXy8[renderedAxis],
+          axisIndexXy8[axis],
           renderedPart,
           spritesheet.data,
           useColoursFromRoom.color.hue,
         ),
+        flipX,
         x,
         y,
         spritesheet,

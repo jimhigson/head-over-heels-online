@@ -6,9 +6,11 @@ import { variantTextureId } from "../../../sprites/spritesheet/variantTextureId"
 import { neverTime } from "../../../utils/neverTime";
 import { maybeRenderContainerToAnimatedSprite } from "../../../utils/pixi/renderContainerToSprite";
 import { octantIndexOfDirection } from "../../../utils/vectors/octantIndexOfDirection" with { type: "macro" };
+import { spriteFlipXAtAngle } from "../../../utils/vectors/resolveCameraRelativeVector";
 import { nearestQuarterAngle, rotateXy } from "../../../utils/vectors/rotateXy";
 import {
   axisIndexXy8,
+  dominantAxisXy,
   isNegativeSideXy,
   type Xy,
   xyEqual,
@@ -59,21 +61,21 @@ const createRendering = (
   disabled: boolean,
   isReflection: boolean,
 ): Container<AnimatedSprite> => {
-  // pick the directional sprite + animation sense for how the conveyor
-  // appears once the camera has apparentDirection - the direction stays a vector
-  // throughout, with the axis and belt sense read straight off it:
+  // the belt art is keyed by the conveyor's WORLD axis and horizontally
+  // flipped on odd quarter turns, keeping its painted shading on its world
+  // faces (the light source stays fixed in the world); the play sense follows
+  // the apparent direction so the belt still travels the way it carries:
   const apparentDirection = rotateXy(direction, cameraQuarterAngle);
-  const axis =
-    Math.abs(apparentDirection.y) > Math.abs(apparentDirection.x) ? "y" : "x";
   const reverse = isNegativeSideXy(apparentDirection);
   const sprites = createSprite({
     animationId: variantTextureId(
-      `conveyor.d${axisIndexXy8[axis]}`,
+      `conveyor.d${axisIndexXy8[dominantAxisXy(direction)]}`,
       isReflection,
       false,
       disabled,
       false,
     ),
+    flipX: spriteFlipXAtAngle(cameraQuarterAngle),
     reverse,
     times,
     cameraQuarterAngle,

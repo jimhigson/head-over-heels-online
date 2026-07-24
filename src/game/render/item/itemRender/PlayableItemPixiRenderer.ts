@@ -19,7 +19,10 @@ import { type SpritesheetMetadata } from "../../../../sprites/spritesheet/sprite
 import { variantTextureId } from "../../../../sprites/spritesheet/variantTextureId";
 import { type SpriteOption } from "../../../../store/slices/userSettings/userSettingsSlice";
 import { isEmptyObject } from "../../../../utils/empty";
-import { resolveCameraRelativeIndexXy8 } from "../../../../utils/vectors/resolveCameraRelativeVector";
+import {
+  resolveSpriteDirectionIndexXy8,
+  spriteFlipXAtAngle,
+} from "../../../../utils/vectors/resolveCameraRelativeVector";
 import {
   type DirectionIndexXy8,
   directionsXy8Octants,
@@ -41,7 +44,10 @@ import { type FilterCache } from "../../room/RoomRenderer";
 import { type ItemLeafPixiRenderer } from "./ItemPixiRenderer";
 
 type PlayableRenderProps = {
-  resolvedFacingIndexXy8: DirectionIndexXy8;
+  /** the directional sprite-variant index drawn */
+  resolvedFacingArtIndexXy8: DirectionIndexXy8;
+  /** whether the directional sprite is drawn horizontally flipped */
+  flipX: boolean;
   action: PlayableActionState;
   teleportingPhase: "in" | "out" | null;
   gravityZ: number;
@@ -63,7 +69,8 @@ const jumpSpriteGravityZThreshold = 0.02;
 const playableCreateSpriteOptions = ({
   name,
   action,
-  resolvedFacingIndexXy8,
+  resolvedFacingArtIndexXy8,
+  flipX,
   teleportingPhase,
   gravityZ,
   paused,
@@ -129,12 +136,13 @@ const playableCreateSpriteOptions = ({
   ) {
     return {
       animationId: variantTextureId(
-        `${name}.walking.d${resolvedFacingIndexXy8}`,
+        `${name}.walking.d${resolvedFacingArtIndexXy8}`,
         isReflection,
         false,
         false,
         false,
       ),
+      flipX,
       paused,
       spritesheet,
     };
@@ -144,36 +152,39 @@ const playableCreateSpriteOptions = ({
     if (gravityZ < jumpSpriteGravityZThreshold) {
       return {
         textureId: variantTextureId(
-          `${name}.walking.d${resolvedFacingIndexXy8}.2`,
+          `${name}.walking.d${resolvedFacingArtIndexXy8}.2`,
           isReflection,
           false,
           false,
           false,
         ),
+        flipX,
         spritesheet,
       };
     }
 
+    // the per-direction meta stays keyed by the art's direction name:
     const jumpAscentWalkTextureNo =
       spritesheet.spritesheetMeta.playable[name][
-        directionsXy8Octants[resolvedFacingIndexXy8]
+        directionsXy8Octants[resolvedFacingArtIndexXy8]
       ]?.jumpAscent ?? 1;
 
     return {
       textureId: variantTextureId(
-        `${name}.walking.d${resolvedFacingIndexXy8}.${jumpAscentWalkTextureNo}`,
+        `${name}.walking.d${resolvedFacingArtIndexXy8}.${jumpAscentWalkTextureNo}`,
         isReflection,
         false,
         false,
         false,
       ),
+      flipX,
       spritesheet,
     };
   }
 
   if (action === "falling") {
     const fallingTextureName =
-      `${name}.falling.d${resolvedFacingIndexXy8}` as const;
+      `${name}.falling.d${resolvedFacingArtIndexXy8}` as const;
 
     if (isTextureId(fallingTextureName, spritesheet.data)) {
       return {
@@ -184,6 +195,7 @@ const playableCreateSpriteOptions = ({
           false,
           false,
         ),
+        flipX,
         spritesheet,
       };
     }
@@ -192,7 +204,7 @@ const playableCreateSpriteOptions = ({
   if (name === "head" && isStoodOn) {
     // head (or head component of head-over-heels) - show with eyes closed
     const blinkingTextureId =
-      `${name}.blinking.d${resolvedFacingIndexXy8}` as const;
+      `${name}.blinking.d${resolvedFacingArtIndexXy8}` as const;
     if (isTextureId(blinkingTextureId, spritesheet.data)) {
       return {
         textureId: variantTextureId(
@@ -202,12 +214,13 @@ const playableCreateSpriteOptions = ({
           false,
           false,
         ),
+        flipX,
         spritesheet,
       };
     }
   }
 
-  const idleAnimationId = `${name}.idle.d${resolvedFacingIndexXy8}` as const;
+  const idleAnimationId = `${name}.idle.d${resolvedFacingArtIndexXy8}` as const;
   if (isAnimationId(idleAnimationId, spritesheet.data)) {
     // we have an idle anim for this character/direction
     return {
@@ -218,6 +231,7 @@ const playableCreateSpriteOptions = ({
         false,
         false,
       ),
+      flipX,
       paused,
       spritesheet,
     };
@@ -225,12 +239,13 @@ const playableCreateSpriteOptions = ({
   // no idle animation:
   return {
     textureId: variantTextureId(
-      `${name}.walking.d${resolvedFacingIndexXy8}.2`,
+      `${name}.walking.d${resolvedFacingArtIndexXy8}.2`,
       isReflection,
       false,
       false,
       false,
     ),
+    flipX,
     spritesheet,
   };
 };
@@ -415,7 +430,8 @@ export class PlayableItemPixiRenderer implements ItemLeafPixiRenderer<CharacterN
   // the previous tick's values of the render props that gate a body-sprite
   // refresh, to decide whether this tick needs one:
   #prevAction: PlayableActionState | undefined;
-  #prevFacingIndexXy8: DirectionIndexXy8 | undefined;
+  #prevFacingArtIndexXy8: DirectionIndexXy8 | undefined;
+  #prevFlipX: boolean | undefined;
   #prevTeleportingPhase: "in" | "out" | null | undefined;
   #prevGravityAboveThreshold: boolean | undefined;
   #prevIsStoodOn: boolean | undefined;
@@ -488,16 +504,18 @@ export class PlayableItemPixiRenderer implements ItemLeafPixiRenderer<CharacterN
       },
     } = subject;
 
-    // resolve the facing vector against the continuous camera angle so the
-    // directional sprite matches how the character appears after the camera has
-    // turned - it steps through the intermediate facings along θ(t) mid-turn
+    // resolve the facing vector against the continuous camera angle to the
+    // sprite-variant index with its paired flip (keeping the painted shading
+    // on the character's world faces - the light source stays fixed in the
+    // world) - it steps through the intermediate facings along θ(t) mid-turn
     // rather than snapping old->new. Rounding happens only here, at the final
     // sprite-name pick:
-    const resolvedFacingIndexXy8 = resolveCameraRelativeIndexXy8(
+    const resolvedFacingArtIndexXy8 = resolveSpriteDirectionIndexXy8(
       visualFacingVector ?? facing,
       cameraAngle,
       isReflection,
     );
+    const flipX = spriteFlipXAtAngle(cameraAngle);
 
     const highlighted = isHighlightedPlayableItem(gameState, subject);
     const flashing = isFlashing(subject);
@@ -512,7 +530,8 @@ export class PlayableItemPixiRenderer implements ItemLeafPixiRenderer<CharacterN
 
     const renderProps: PlayableRenderProps = {
       action,
-      resolvedFacingIndexXy8,
+      resolvedFacingArtIndexXy8,
+      flipX,
       teleportingPhase,
       flashing,
       highlighted,
@@ -526,7 +545,8 @@ export class PlayableItemPixiRenderer implements ItemLeafPixiRenderer<CharacterN
       // note: not all props are used here!
       !this.#hasRenderedOnce ||
       this.#prevAction !== action ||
-      this.#prevFacingIndexXy8 !== resolvedFacingIndexXy8 ||
+      this.#prevFacingArtIndexXy8 !== resolvedFacingArtIndexXy8 ||
+      this.#prevFlipX !== flipX ||
       this.#prevTeleportingPhase !== teleportingPhase ||
       this.#prevGravityAboveThreshold !== gravityAboveThreshold ||
       this.#prevIsStoodOn !== isStoodOn;
@@ -542,7 +562,8 @@ export class PlayableItemPixiRenderer implements ItemLeafPixiRenderer<CharacterN
 
     this.#hasRenderedOnce = true;
     this.#prevAction = action;
-    this.#prevFacingIndexXy8 = resolvedFacingIndexXy8;
+    this.#prevFacingArtIndexXy8 = resolvedFacingArtIndexXy8;
+    this.#prevFlipX = flipX;
     this.#prevTeleportingPhase = teleportingPhase;
     this.#prevGravityAboveThreshold = gravityAboveThreshold;
     this.#prevIsStoodOn = isStoodOn;

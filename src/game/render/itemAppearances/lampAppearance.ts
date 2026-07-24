@@ -1,5 +1,8 @@
 import { variantTextureId } from "../../../sprites/spritesheet/variantTextureId";
-import { resolveCameraRelativeIndexXy4 } from "../../../utils/vectors/resolveCameraRelativeVector";
+import {
+  resolveSpriteDirectionIndexXy4,
+  spriteFlipXAtAngle,
+} from "../../../utils/vectors/resolveCameraRelativeVector";
 import { nearestQuarterAngle } from "../../../utils/vectors/rotateXy";
 import { type Xy, xyEqual } from "../../../utils/vectors/vectors";
 import { createSprite } from "../createSprite";
@@ -34,10 +37,11 @@ export const lampAppearance: ItemAppearance<"lamp", LampRenderProps> = ({
     return "no-update";
   }
 
-  // resolve the lamp's facing against the continuous camera angle so the
-  // directional sprite matches how it appears once the camera has turned -
+  // resolve the lamp's facing against the continuous camera angle to the
+  // sprite-variant index, with its paired flip - the flip keeps the painted
+  // shading on the lamp's world faces (light source fixed in the world) -
   // rounded only here, at the texture pick:
-  const apparentIndex = resolveCameraRelativeIndexXy4(
+  const resolvedFacingArtIndexXy4 = resolveSpriteDirectionIndexXy4(
     direction,
     cameraAngle,
     false,
@@ -46,12 +50,13 @@ export const lampAppearance: ItemAppearance<"lamp", LampRenderProps> = ({
   return {
     output: createSprite({
       textureId: variantTextureId(
-        `lamp.${activated ? "on" : "off"}.d${apparentIndex}`,
+        `lamp.${activated ? "on" : "off"}.d${resolvedFacingArtIndexXy4}`,
         isReflection,
         false,
         false,
         false,
       ),
+      flipX: spriteFlipXAtAngle(cameraAngle),
       // stacked to double/triple height when the lamp has times.z:
       times,
       cameraQuarterAngle,

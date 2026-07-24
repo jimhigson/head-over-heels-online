@@ -204,8 +204,8 @@ const frames = {
   ...backgroundFrames("market", x, (y += yPeriod), ""),
   ...backgroundFrames("safari", x, (y += yPeriod), ""),
 
-  // the two near floor-edge lips, as a subset of the cardinal ring: d6 =
-  // towards, d4 = right (the far edges d0/d2 are never drawn as lips):
+  // the two near floor edges, as a subset of the cardinal ring: d6 =
+  // towards, d4 = right (the far edges d0/d2 are never drawn):
   [`floorEdge.d${octantIndexOfDirection("towards")}` as const]: {
     frame: { x: 244, y: 589, ...floorEdgeSize, pivot: { x: 15, y: 4 } },
   },

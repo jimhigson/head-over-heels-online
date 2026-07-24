@@ -165,7 +165,7 @@ const floorEdgeSwops = (
   // replacement colours come from the blockstack-keyed gameColours system.
   return [
     {
-      // the right lip and the y-axis threshold both run along y:
+      // the right floor edge and the y-axis threshold both run along y:
       textureIds: [
         `floorEdge.half.d${octantIndexOfDirection("right")}`,
         `floorEdge.d${octantIndexOfDirection("right")}`,
@@ -174,7 +174,7 @@ const floorEdgeSwops = (
       swops: resolveSwops(paletteBlockstack, rightEdgeSwops),
     },
     {
-      // the towards lip and the x-axis threshold both run along x:
+      // the towards floor edge and the x-axis threshold both run along x:
       textureIds: [
         `floorEdge.half.d${octantIndexOfDirection("towards")}`,
         `floorEdge.d${octantIndexOfDirection("towards")}`,

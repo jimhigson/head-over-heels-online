@@ -9,11 +9,9 @@ import {
   maybeRenderContainerToSprite,
 } from "../../../utils/pixi/renderContainerToSprite";
 import { octantIndexOfDirection } from "../../../utils/vectors/octantIndexOfDirection" with { type: "macro" };
+import { spriteFlipXAtAngle } from "../../../utils/vectors/resolveCameraRelativeVector";
 import { nearestQuarterAngle } from "../../../utils/vectors/rotateXy";
-import {
-  axisIndexXy8,
-  rotateAxisXyByCameraAngle,
-} from "../../../utils/vectors/vectors";
+import { axisIndexXy8 } from "../../../utils/vectors/vectors";
 import { createSprite, type CreateSpriteOptions } from "../createSprite";
 import { blockAppearance } from "./blockAppearance";
 import { buttonAppearance } from "./buttonAppearance";
@@ -66,17 +64,21 @@ const itemAppearancesMap: {
       currentRendering,
     }) => {
       const cameraQuarterAngle = nearestQuarterAngle(cameraAngle);
-      const renderedAxis = rotateAxisXyByCameraAngle(axis, cameraQuarterAngle);
+      // the art is keyed by the barrier's WORLD axis (d0 = x, d2 = y) and
+      // flipped on odd quarter turns - the flip gives the other axis's
+      // mirror-symmetric form while the painted shading stays on the
+      // barrier's world faces (the light source stays fixed in the world):
       return maybeRenderContainerToSprite(
         pixiRenderer,
         createSprite({
           textureId: variantTextureId(
-            `barrier.d${axisIndexXy8[renderedAxis]}${disappearing ? ".disappearing" : ""}`,
+            `barrier.d${axisIndexXy8[axis]}${disappearing ? ".disappearing" : ""}`,
             isReflection,
             false,
             false,
             false,
           ),
+          flipX: spriteFlipXAtAngle(cameraQuarterAngle),
           times,
           cameraQuarterAngle,
           spritesheet: spritesheets.spritesheetForCurrentRoom,
@@ -84,7 +86,7 @@ const itemAppearancesMap: {
         asReuseSprite(currentRendering?.output),
       );
     },
-    // the barrier's art follows its apparent (rotated) axis:
+    // the barrier's flip resolves per quarter turn:
     (_item, cameraQuarterAngle) => cameraQuarterAngle,
   ),
 
@@ -100,9 +102,12 @@ const itemAppearancesMap: {
         item: {
           config: { style },
         },
-        general: { spritesheets },
+        general: { spritesheets, cameraAngle },
       },
     }) => {
+      // sliding books lie along world y (d2); the flip keeps the art's
+      // painted shading (the book's, or a puck's highlight) on its world
+      // faces as the camera turns:
       return createSprite({
         textureId: variantTextureId(
           style === "book" ? `book.d${octantIndexOfDirection("away")}` : style,
@@ -111,9 +116,12 @@ const itemAppearancesMap: {
           false,
           false,
         ),
+        flipX: spriteFlipXAtAngle(cameraAngle),
         spritesheet: spritesheets.spritesheetForCurrentRoom,
       });
     },
+    // the flip resolves per quarter turn:
+    (_item, cameraQuarterAngle) => cameraQuarterAngle,
   ),
 
   block: blockAppearance,
@@ -127,11 +135,12 @@ const itemAppearancesMap: {
     ({
       renderContext: {
         isReflection,
-        general: { paused, spritesheets },
+        general: { paused, spritesheets, cameraAngle },
       },
     }) => {
       const rendering = new Container();
       const { spritesheetForCurrentRoom: spritesheet } = spritesheets;
+      const flipX = spriteFlipXAtAngle(cameraAngle);
 
       const pivot = {
         x: smallItemTextureSize.w / 2,
@@ -147,6 +156,7 @@ const itemAppearancesMap: {
             false,
           ),
           pivot,
+          flipX,
           paused,
           spritesheet,
         }),
@@ -162,12 +172,15 @@ const itemAppearancesMap: {
             false,
           ),
           pivot,
+          flipX,
           spritesheet,
         }),
       );
 
       return rendering;
     },
+    // the flip resolves per quarter turn:
+    (_item, cameraQuarterAngle) => cameraQuarterAngle,
   ),
 
   teleporter: teleporterAppearance,
@@ -188,7 +201,7 @@ const itemAppearancesMap: {
         item: {
           config: { planet },
         },
-        general: { spritesheets },
+        general: { spritesheets, cameraAngle },
       },
     }) => {
       return createSprite({
@@ -199,9 +212,12 @@ const itemAppearancesMap: {
           false,
           false,
         ),
+        flipX: spriteFlipXAtAngle(cameraAngle),
         spritesheet: spritesheets.spritesheetForCurrentRoom,
       });
     },
+    // the flip resolves per quarter turn:
+    (_item, cameraQuarterAngle) => cameraQuarterAngle,
   ),
 
   pickup: itemAppearanceRenderMemoised(
@@ -209,10 +225,11 @@ const itemAppearancesMap: {
       renderContext: {
         isReflection,
         item: { config },
-        general: { paused, spritesheets },
+        general: { paused, spritesheets, cameraAngle },
       },
     }) => {
       const { spritesheetForCurrentRoom: spritesheet } = spritesheets;
+      const flipX = spriteFlipXAtAngle(cameraAngle);
 
       if (config.gives === "crown") {
         return createSprite({
@@ -223,6 +240,7 @@ const itemAppearancesMap: {
             false,
             false,
           ),
+          flipX,
           spritesheet,
         });
       }
@@ -239,6 +257,7 @@ const itemAppearancesMap: {
             false,
             false,
           ),
+          flipX,
           spritesheet,
         },
         jumps: {
@@ -249,6 +268,7 @@ const itemAppearancesMap: {
             false,
             false,
           ),
+          flipX,
           spritesheet,
         },
         fast: {
@@ -259,6 +279,7 @@ const itemAppearancesMap: {
             false,
             false,
           ),
+          flipX,
           spritesheet,
         },
         "extra-life": {
@@ -269,10 +290,12 @@ const itemAppearancesMap: {
             false,
             false,
           ),
+          flipX,
           spritesheet,
         },
         bag: {
           textureId: variantTextureId("bag", isReflection, false, false, false),
+          flipX,
           spritesheet,
         },
         doughnuts: {
@@ -283,6 +306,7 @@ const itemAppearancesMap: {
             false,
             false,
           ),
+          flipX,
           spritesheet,
         },
         hooter: {
@@ -293,6 +317,7 @@ const itemAppearancesMap: {
             false,
             false,
           ),
+          flipX,
           spritesheet,
         },
         scroll: {
@@ -303,6 +328,7 @@ const itemAppearancesMap: {
             false,
             false,
           ),
+          flipX,
           spritesheet,
         },
         reincarnation: {
@@ -313,6 +339,7 @@ const itemAppearancesMap: {
             false,
             false,
           ),
+          flipX,
           paused,
           spritesheet,
         },
@@ -321,6 +348,8 @@ const itemAppearancesMap: {
 
       return createSprite(createSpriteOptions);
     },
+    // the flip resolves per quarter turn:
+    (_item, cameraQuarterAngle) => cameraQuarterAngle,
   ),
 
   // these are always dead fish:
@@ -340,13 +369,16 @@ const itemAppearancesMap: {
         item: {
           config: { style },
         },
-        general: { spritesheets },
+        general: { spritesheets, cameraAngle },
       },
     }) =>
       createSprite({
         textureId: variantTextureId(style, isReflection, false, false, false),
+        flipX: spriteFlipXAtAngle(cameraAngle),
         spritesheet: spritesheets.spritesheetForCurrentRoom,
       }),
+    // the flip resolves per quarter turn:
+    (_item, cameraQuarterAngle) => cameraQuarterAngle,
   ),
 
   spring: springAppearance,

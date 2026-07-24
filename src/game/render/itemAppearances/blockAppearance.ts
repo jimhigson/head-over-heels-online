@@ -8,29 +8,26 @@ import {
   asReuseSprite,
   maybeRenderContainerToSprite,
 } from "../../../utils/pixi/renderContainerToSprite";
-import { octantIndexOfDirection } from "../../../utils/vectors/octantIndexOfDirection" with { type: "macro" };
+import {
+  octantIndexOfDirection,
+  type OctantIndexOfDirection,
+} from "../../../utils/vectors/octantIndexOfDirection" with { type: "macro" };
+import { spriteFlipXAtAngle } from "../../../utils/vectors/resolveCameraRelativeVector";
 import { nearestQuarterAngle } from "../../../utils/vectors/rotateXy";
 import { type Xy } from "../../../utils/vectors/vectors";
 import { createSprite } from "../createSprite";
-import {
-  cameraQuarterAngleEqual,
-  type ItemAppearance,
-  multipliedLayoutAngle,
-} from "./ItemAppearance";
+import { cameraQuarterAngleEqual, type ItemAppearance } from "./ItemAppearance";
 
 type BlockRenderProps = {
   // flatten disappear down to a single value, since all we care about is if it is on or not
   // for the sake of rendering
   isDissapearing: boolean;
-  /**
-   * the multiplied tiling resolves per camera angle; null for single blocks,
-   * which never re-render for a rotation
-   */
-  multipliedAtAngle: null | Xy;
+  /** the flip (and any multiplied tiling) resolves per camera angle */
+  renderedAtAngle: Xy;
 };
 
 type BaseBlockTextureId = BaseTextureIdWithPrefix<
-  "block" | "book.d0" | "tower"
+  "block" | "tower" | `book.d${OctantIndexOfDirection<"left">}`
 >;
 
 const blockTextureId = (
@@ -62,7 +59,6 @@ export const blockAppearance: ItemAppearance<"block", BlockRenderProps> = ({
   renderContext: {
     isReflection,
     general: { pixiRenderer, spritesheets, cameraAngle },
-    item,
     item: {
       config: { style, times },
       state: { disappearing: disappear },
@@ -74,13 +70,12 @@ export const blockAppearance: ItemAppearance<"block", BlockRenderProps> = ({
   const cameraQuarterAngle = nearestQuarterAngle(cameraAngle);
   const currentlyRenderedProps = currentRendering?.renderProps;
   const isDissapearing = disappear !== null;
-  const multipliedAtAngle = multipliedLayoutAngle(item, cameraQuarterAngle);
   const render =
     currentlyRenderedProps === undefined ||
     currentlyRenderedProps.isDissapearing !== isDissapearing ||
     !cameraQuarterAngleEqual(
-      currentlyRenderedProps.multipliedAtAngle,
-      multipliedAtAngle,
+      currentlyRenderedProps.renderedAtAngle,
+      cameraQuarterAngle,
     );
 
   if (!render) {
@@ -104,6 +99,10 @@ export const blockAppearance: ItemAppearance<"block", BlockRenderProps> = ({
           false,
           false,
         ),
+        // blocks flip on odd quarter turns so their painted shading stays on
+        // their world faces (light source fixed in the world) - each
+        // sub-sprite of a multiplied run flips individually before the bake:
+        flipX: spriteFlipXAtAngle(cameraQuarterAngle),
         times,
         cameraQuarterAngle,
         spritesheet: spritesheets.spritesheetForCurrentRoom,
@@ -112,6 +111,6 @@ export const blockAppearance: ItemAppearance<"block", BlockRenderProps> = ({
       // multiplied bake is the same size at every quarter turn):
       asReuseSprite(currentRendering?.output),
     ),
-    renderProps: { isDissapearing, multipliedAtAngle },
+    renderProps: { isDissapearing, renderedAtAngle: cameraQuarterAngle },
   };
 };

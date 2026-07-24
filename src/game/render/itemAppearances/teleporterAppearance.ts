@@ -4,22 +4,19 @@ import {
   asReuseSprite,
   maybeRenderContainerToSprite,
 } from "../../../utils/pixi/renderContainerToSprite";
+import { spriteFlipXAtAngle } from "../../../utils/vectors/resolveCameraRelativeVector";
 import { nearestQuarterAngle } from "../../../utils/vectors/rotateXy";
 import { type Xy } from "../../../utils/vectors/vectors";
 import { isPlayableItem } from "../../physics/itemPredicates";
 import { teleporterIsActive } from "../../physics/mechanics/teleporting";
 import { createSprite } from "../createSprite";
-import {
-  cameraQuarterAngleEqual,
-  type ItemAppearance,
-  multipliedLayoutAngle,
-} from "./ItemAppearance";
+import { cameraQuarterAngleEqual, type ItemAppearance } from "./ItemAppearance";
 
 type TeleporterRenderProps = {
   flashing: boolean;
   activated: boolean;
-  /** the multiplied tiling resolves per camera angle; null when single */
-  multipliedAtAngle: null | Xy;
+  /** the flip (and any multiplied tiling) resolves per camera angle */
+  renderedAtAngle: Xy;
 };
 
 export const teleporterAppearance: ItemAppearance<
@@ -48,14 +45,13 @@ export const teleporterAppearance: ItemAppearance<
   const flashing =
     activated && iterateStoodOnByItems(stoodOnBy, room).some(isPlayableItem);
 
-  const multipliedAtAngle = multipliedLayoutAngle(item, cameraQuarterAngle);
   const render =
     currentlyRenderedProps === undefined ||
     activated !== currentlyRenderedProps.activated ||
     flashing !== currentlyRenderedProps.flashing ||
     !cameraQuarterAngleEqual(
-      multipliedAtAngle,
-      currentlyRenderedProps.multipliedAtAngle,
+      cameraQuarterAngle,
+      currentlyRenderedProps.renderedAtAngle,
     );
 
   if (!render) {
@@ -63,6 +59,10 @@ export const teleporterAppearance: ItemAppearance<
   }
 
   const { spritesheetForCurrentRoom: spritesheet } = spritesheets;
+  // teleporters flip on odd quarter turns so their painted shading stays on
+  // their world faces (light source fixed in the world); each sub-sprite of a
+  // multiplied pad flips individually before any bake:
+  const flipX = spriteFlipXAtAngle(cameraQuarterAngle);
 
   return {
     output:
@@ -76,6 +76,7 @@ export const teleporterAppearance: ItemAppearance<
             false,
             false,
           ),
+          flipX,
           times,
           cameraQuarterAngle,
           paused,
@@ -95,12 +96,13 @@ export const teleporterAppearance: ItemAppearance<
               false,
               false,
             ),
+            flipX,
             times,
             cameraQuarterAngle,
             spritesheet,
           }),
           asReuseSprite(currentRendering?.output),
         ),
-    renderProps: { flashing, activated, multipliedAtAngle },
+    renderProps: { flashing, activated, renderedAtAngle: cameraQuarterAngle },
   };
 };

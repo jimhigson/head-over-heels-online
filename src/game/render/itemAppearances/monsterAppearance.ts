@@ -8,7 +8,10 @@ import { type BaseAnimationId } from "../../../sprites/spritesheet/spritesheetDa
 import { type DoughnuttableId } from "../../../sprites/spritesheet/spritesheetData/variantSpritesheetData";
 import { variantTextureId } from "../../../sprites/spritesheet/variantTextureId";
 import { renderBobSine } from "../../../utils/maths/renderBob";
-import { resolveCameraRelativeIndexXy4 } from "../../../utils/vectors/resolveCameraRelativeVector";
+import {
+  resolveSpriteDirectionIndexXy4,
+  spriteFlipXAtAngle,
+} from "../../../utils/vectors/resolveCameraRelativeVector";
 import {
   type DirectionIndexXy4,
   originXy,
@@ -51,7 +54,10 @@ const dalekAnimationId = (
 
 type MonsterRenderProps = {
   walking?: boolean;
-  resolvedFacingIndexXy4?: DirectionIndexXy4;
+  /** the directional sprite-variant index drawn, for directional monsters */
+  resolvedFacingArtIndexXy4?: DirectionIndexXy4;
+  /** whether the directional sprite is drawn horizontally flipped */
+  flipX?: boolean;
   activated: boolean;
   busyLickingDoughnutsOffFace: boolean;
 };
@@ -137,23 +143,26 @@ export const monsterAppearance: ItemAppearance<
     case "monkey": {
       // rendering is directional (xy4)
 
-      // resolve the facing against the continuous camera angle so the
-      // directional sprite matches how the monster appears once the camera
-      // has turned - stepping through intermediate facings mid-turn.
-      // Rounding happens only here, at the final sprite-name pick:
-      const resolvedFacingIndexXy4 = resolveCameraRelativeIndexXy4(
+      // resolve the facing against the continuous camera angle to the
+      // sprite-variant index, with its paired flip: the flip keeps the
+      // sprite's painted shading on the monster's world faces (light source
+      // fixed in the world), stepping through intermediate facings mid-turn.
+      // Rounding happens only here, at the final sprite pick:
+      const resolvedFacingArtIndexXy4 = resolveSpriteDirectionIndexXy4(
         state.facing,
         cameraAngle,
         isReflection,
       );
+      const flipX = spriteFlipXAtAngle(cameraAngle);
 
       const render =
         currentlyRenderedProps === undefined ||
         activated !== currentlyRenderedProps.activated ||
         busyLickingDoughnutsOffFace !==
           currentlyRenderedProps.busyLickingDoughnutsOffFace ||
-        resolvedFacingIndexXy4 !==
-          currentlyRenderedProps.resolvedFacingIndexXy4;
+        resolvedFacingArtIndexXy4 !==
+          currentlyRenderedProps.resolvedFacingArtIndexXy4 ||
+        flipX !== currentlyRenderedProps.flipX;
 
       if (!render) {
         maybeAddBob(item, room, currentRendering!.output!, uncolourised);
@@ -161,7 +170,8 @@ export const monsterAppearance: ItemAppearance<
         return "no-update";
       }
       const renderProps: MonsterRenderProps = {
-        resolvedFacingIndexXy4,
+        resolvedFacingArtIndexXy4,
+        flipX,
         activated,
         busyLickingDoughnutsOffFace,
       };
@@ -170,19 +180,20 @@ export const monsterAppearance: ItemAppearance<
         case "skiHead": {
           // directional, style, no anim — fall back to first style if this one is missing
           const preferredId =
-            `${config.which}.${config.style}.d${resolvedFacingIndexXy4}` as const;
+            `${config.which}.${config.style}.d${resolvedFacingArtIndexXy4}` as const;
           const spritesheetData = spritesheets.originalSpritesheet.data;
           return {
             output: createSprite({
               textureId: variantTextureId(
                 isTextureId(preferredId, spritesheetData) ? preferredId : (
-                  `${config.which}.greenAndPink.d${resolvedFacingIndexXy4}`
+                  `${config.which}.greenAndPink.d${resolvedFacingArtIndexXy4}`
                 ),
                 isReflection,
                 busyLickingDoughnutsOffFace,
                 !activated,
                 false,
               ),
+              flipX,
               spritesheet,
             }),
             renderProps,
@@ -193,12 +204,13 @@ export const monsterAppearance: ItemAppearance<
           return {
             output: createSprite({
               textureId: variantTextureId(
-                `elephant.d${resolvedFacingIndexXy4}`,
+                `elephant.d${resolvedFacingArtIndexXy4}`,
                 isReflection,
                 busyLickingDoughnutsOffFace,
                 !activated,
                 false,
               ),
+              flipX,
               spritesheet,
             }),
             renderProps,
@@ -211,24 +223,26 @@ export const monsterAppearance: ItemAppearance<
               animate ?
                 createSprite({
                   animationId: variantTextureId(
-                    `${config.which}.d${resolvedFacingIndexXy4}`,
+                    `${config.which}.d${resolvedFacingArtIndexXy4}`,
                     isReflection,
                     busyLickingDoughnutsOffFace,
                     !activated,
                     false,
                   ),
+                  flipX,
                   spritesheet,
                   paused,
                   startFramePhase: hash,
                 })
               : createSprite({
                   textureId: variantTextureId(
-                    `${config.which}.d${resolvedFacingIndexXy4}.1`,
+                    `${config.which}.d${resolvedFacingArtIndexXy4}.1`,
                     isReflection,
                     busyLickingDoughnutsOffFace,
                     !activated,
                     false,
                   ),
+                  flipX,
                   spritesheet,
                 }),
             renderProps,
@@ -245,12 +259,13 @@ export const monsterAppearance: ItemAppearance<
                   createStackedSprites({
                     top: {
                       textureId: variantTextureId(
-                        `${config.which}.d${resolvedFacingIndexXy4}`,
+                        `${config.which}.d${resolvedFacingArtIndexXy4}`,
                         isReflection,
                         busyLickingDoughnutsOffFace,
                         !activated,
                         false,
                       ),
+                      flipX,
                       spritesheet,
                     },
                     bottom: {
@@ -270,12 +285,13 @@ export const monsterAppearance: ItemAppearance<
                 // charging on a toaster
               : createSprite({
                   textureId: variantTextureId(
-                    `${config.which}.d${resolvedFacingIndexXy4}`,
+                    `${config.which}.d${resolvedFacingArtIndexXy4}`,
                     isReflection,
                     busyLickingDoughnutsOffFace,
                     !activated,
                     false,
                   ),
+                  flipX,
                   spritesheet,
                 }),
             renderProps,
@@ -292,12 +308,13 @@ export const monsterAppearance: ItemAppearance<
               createStackedSprites({
                 top: {
                   textureId: variantTextureId(
-                    `${config.which}.d${resolvedFacingIndexXy4}`,
+                    `${config.which}.d${resolvedFacingArtIndexXy4}`,
                     isReflection,
                     busyLickingDoughnutsOffFace,
                     !activated,
                     false,
                   ),
+                  flipX,
                   spritesheet,
                 },
                 bottom: {
@@ -311,6 +328,7 @@ export const monsterAppearance: ItemAppearance<
                   // by playing once, the enemy's base flashes only when it has
                   // just changed direction etc
                   playOnce: "and-stop",
+                  flipX,
                   spritesheet,
                 },
               }),
@@ -328,13 +346,17 @@ export const monsterAppearance: ItemAppearance<
     case "homingBot": {
       // not directional, not animated, but different if 'walking' towards the player
       const walking = !xyEqual(state.vels.walking, originXy);
+      // the dome base flips on odd quarter turns so its painted highlight
+      // stays on its world side (light source fixed in the world):
+      const flipX = spriteFlipXAtAngle(cameraAngle);
 
       const render =
         currentlyRenderedProps === undefined ||
         busyLickingDoughnutsOffFace !==
           currentlyRenderedProps.busyLickingDoughnutsOffFace ||
         activated !== currentlyRenderedProps.activated ||
-        walking !== currentlyRenderedProps.walking;
+        walking !== currentlyRenderedProps.walking ||
+        flipX !== currentlyRenderedProps.flipX;
 
       if (!render) {
         return "no-update";
@@ -352,6 +374,7 @@ export const monsterAppearance: ItemAppearance<
                 !activated,
                 false,
               ),
+              flipX,
               spritesheet,
             }
           : {
@@ -362,6 +385,7 @@ export const monsterAppearance: ItemAppearance<
                 !activated,
                 false,
               ),
+              flipX,
               spritesheet,
             },
         ),
@@ -369,6 +393,7 @@ export const monsterAppearance: ItemAppearance<
           activated,
           busyLickingDoughnutsOffFace,
           walking,
+          flipX,
         },
       };
     }
@@ -378,12 +403,18 @@ export const monsterAppearance: ItemAppearance<
     case "dalek":
     case "bubbleRobot":
     case "emperorsGuardian": {
-      // not directional
+      // not directional. Only the shaded solids flip (the dalek, and the
+      // bubbleRobot's dome base); pure bubbles/spinning forms gain nothing
+      // from the world-fixed lighting flip:
+      const flipX =
+        (config.which === "dalek" || config.which === "bubbleRobot") &&
+        spriteFlipXAtAngle(cameraAngle);
       const render =
         currentlyRenderedProps === undefined ||
         busyLickingDoughnutsOffFace !==
           currentlyRenderedProps.busyLickingDoughnutsOffFace ||
-        activated !== currentlyRenderedProps.activated;
+        activated !== currentlyRenderedProps.activated ||
+        flipX !== currentlyRenderedProps.flipX;
 
       if (!render) {
         maybeAddBob(item, room, currentRendering!.output!, uncolourised);
@@ -394,6 +425,7 @@ export const monsterAppearance: ItemAppearance<
       const renderProps: MonsterRenderProps = {
         activated,
         busyLickingDoughnutsOffFace,
+        flipX,
       };
 
       // rendering is uni-directional
@@ -418,6 +450,7 @@ export const monsterAppearance: ItemAppearance<
                       !activated,
                       false,
                     ),
+                    flipX,
                     spritesheet,
                     paused,
                     startFramePhase: hash,
@@ -430,6 +463,7 @@ export const monsterAppearance: ItemAppearance<
                       !activated,
                       false,
                     ),
+                    flipX,
                     spritesheet,
                   },
               ),
@@ -478,6 +512,7 @@ export const monsterAppearance: ItemAppearance<
                     !activated,
                     false,
                   ),
+                  flipX,
                   spritesheet,
                 },
               }),

@@ -1,5 +1,6 @@
 import { Container, Sprite, Texture } from "pixi.js";
 
+import { spriteFlipXAtAngle } from "../../../../utils/vectors/resolveCameraRelativeVector";
 import { blockSizePx } from "../../../physics/mechanicsConstants";
 import { createSprite } from "../../createSprite";
 import {
@@ -39,16 +40,20 @@ const addPivotSprite = (
     item: {
       config: { times },
     },
-    general: { spritesheets },
+    general: { spritesheets, cameraAngle },
   } = renderContext;
 
   const timesZ = times?.z ?? 1;
 
   const { spritesheetForCurrentRoom: spritesheet } = spritesheets;
+  // the pivot caps flip on odd quarter turns so their painted shading stays
+  // on their world faces (light source fixed in the world):
+  const flipX = spriteFlipXAtAngle(cameraAngle);
   const container = new Container();
   container.addChild(
     createSprite({
       textureId: "mirror.bottom",
+      flipX,
       spritesheet,
     }),
   );
@@ -56,6 +61,7 @@ const addPivotSprite = (
   container.addChild(
     createSprite({
       textureId: "mirror.top",
+      flipX,
       spritesheet,
       y: -(timesZ - 1) * blockSizePx.z,
     }),
