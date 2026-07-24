@@ -4,7 +4,7 @@ import {
   type AnimatedTextureTailwindClass,
   type TextureTailwindClass,
 } from "../../../sprites/spritesheet/spritesheetData/TextureTailwindClass";
-import { type LoadableSpriteOption } from "../../../sprites/spritesheet/variants/SpritesheetVariants";
+import { type LoadableSpriteOption } from "../../../sprites/spritesheet/Spritesheets";
 import { useAppSelector } from "../../../store/hooks";
 import { selectSpritesOption } from "../../../store/slices/gameMenus/gameMenusSelectors";
 import { twClass } from "../../../utils/twClass" with { type: "macro" };

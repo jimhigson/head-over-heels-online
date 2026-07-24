@@ -3,11 +3,10 @@ import { type Container, type Sprite } from "pixi.js";
 import { type ItemInPlay } from "../../../model/ItemInPlay";
 import { type RoomState } from "../../../model/RoomState";
 import { isAnimationId, isTextureId } from "../../../sprites/assertIsTextureId";
-import {
-  type AnimationId,
-  type TextureId,
-} from "../../../sprites/spritesheet/spritesheetData/makeSpritesheetData";
-import { type AppSpritesheet } from "../../../sprites/spritesheet/variants/AppSpritesheet";
+import { type AppSpritesheet } from "../../../sprites/spritesheet/AppSpritesheet";
+import { type BaseAnimationId } from "../../../sprites/spritesheet/spritesheetData/makeSpritesheetData";
+import { type DoughnuttableId } from "../../../sprites/spritesheet/spritesheetData/variantSpritesheetData";
+import { variantTextureId } from "../../../sprites/spritesheet/variantTextureId";
 import { renderBobSine } from "../../../utils/maths/renderBob";
 import { resolveCameraRelativeVectorXy4 } from "../../../utils/vectors/resolveCameraRelativeVector";
 import {
@@ -31,7 +30,7 @@ import { type ItemAppearance } from "./ItemAppearance";
 const dalekAnimationId = (
   room: RoomState<string, string>,
   spritesheet: AppSpritesheet,
-): AnimationId => {
+): BaseAnimationId & DoughnuttableId => {
   if (room.color.shade !== "dimmed") {
     return "dalek";
   }
@@ -111,7 +110,7 @@ export const monsterAppearance: ItemAppearance<
     room,
     general: {
       paused,
-      spritesheetVariants,
+      spritesheets,
       spriteOption: { uncolourised },
       cameraAngle,
     },
@@ -123,11 +122,10 @@ export const monsterAppearance: ItemAppearance<
 
   const { activated, busyLickingDoughnutsOffFace } = state;
 
-  const spritesheet = spritesheetVariants.currentMainSpritesheet(
-    !activated,
-    busyLickingDoughnutsOffFace,
-    isReflection,
-  );
+  const { spritesheetForCurrentRoom: spritesheet } = spritesheets;
+
+  // every sampled id takes the suffix for the monster's current variant state,
+  // so each draw passes (isReflection, busyLickingDoughnutsOffFace, !activated)
 
   switch (config.which) {
     case "skiHead":
@@ -170,14 +168,20 @@ export const monsterAppearance: ItemAppearance<
       switch (config.which) {
         case "skiHead": {
           // directional, style, no anim — fall back to first style if this one is missing
-          const preferredId = `${config.which}.${config.style}.${resolvedFacingXy4}`;
-          const spritesheetData = spritesheetVariants.originalSpritesheet.data;
+          const preferredId =
+            `${config.which}.${config.style}.${resolvedFacingXy4}` as const;
+          const spritesheetData = spritesheets.originalSpritesheet.data;
           return {
             output: createSprite({
-              textureId:
+              textureId: variantTextureId(
                 isTextureId(preferredId, spritesheetData) ? preferredId : (
-                  (`${config.which}.greenAndPink.${resolvedFacingXy4}` as TextureId)
+                  `${config.which}.greenAndPink.${resolvedFacingXy4}`
                 ),
+                isReflection,
+                busyLickingDoughnutsOffFace,
+                !activated,
+                false,
+              ),
               spritesheet,
             }),
             renderProps,
@@ -187,7 +191,13 @@ export const monsterAppearance: ItemAppearance<
           // directional, no style, no anim
           return {
             output: createSprite({
-              textureId: `elephant.${resolvedFacingXy4}`,
+              textureId: variantTextureId(
+                `elephant.${resolvedFacingXy4}`,
+                isReflection,
+                busyLickingDoughnutsOffFace,
+                !activated,
+                false,
+              ),
               spritesheet,
             }),
             renderProps,
@@ -199,13 +209,25 @@ export const monsterAppearance: ItemAppearance<
             output:
               animate ?
                 createSprite({
-                  animationId: `${config.which}.${resolvedFacingXy4}`,
+                  animationId: variantTextureId(
+                    `${config.which}.${resolvedFacingXy4}`,
+                    isReflection,
+                    busyLickingDoughnutsOffFace,
+                    !activated,
+                    false,
+                  ),
                   spritesheet,
                   paused,
                   startFramePhase: hash,
                 })
               : createSprite({
-                  textureId: `${config.which}.${resolvedFacingXy4}.1`,
+                  textureId: variantTextureId(
+                    `${config.which}.${resolvedFacingXy4}.1`,
+                    isReflection,
+                    busyLickingDoughnutsOffFace,
+                    !activated,
+                    false,
+                  ),
                   spritesheet,
                 }),
             renderProps,
@@ -221,11 +243,23 @@ export const monsterAppearance: ItemAppearance<
                   room,
                   createStackedSprites({
                     top: {
-                      textureId: `${config.which}.${resolvedFacingXy4}`,
+                      textureId: variantTextureId(
+                        `${config.which}.${resolvedFacingXy4}`,
+                        isReflection,
+                        busyLickingDoughnutsOffFace,
+                        !activated,
+                        false,
+                      ),
                       spritesheet,
                     },
                     bottom: {
-                      animationId: "bubbles.jetpack",
+                      animationId: variantTextureId(
+                        "bubbles.jetpack",
+                        isReflection,
+                        busyLickingDoughnutsOffFace,
+                        !activated,
+                        false,
+                      ),
                       paused,
                       spritesheet,
                     },
@@ -234,7 +268,13 @@ export const monsterAppearance: ItemAppearance<
                 )
                 // charging on a toaster
               : createSprite({
-                  textureId: `${config.which}.${resolvedFacingXy4}`,
+                  textureId: variantTextureId(
+                    `${config.which}.${resolvedFacingXy4}`,
+                    isReflection,
+                    busyLickingDoughnutsOffFace,
+                    !activated,
+                    false,
+                  ),
                   spritesheet,
                 }),
             renderProps,
@@ -250,11 +290,23 @@ export const monsterAppearance: ItemAppearance<
               room,
               createStackedSprites({
                 top: {
-                  textureId: `${config.which}.${resolvedFacingXy4}`,
+                  textureId: variantTextureId(
+                    `${config.which}.${resolvedFacingXy4}`,
+                    isReflection,
+                    busyLickingDoughnutsOffFace,
+                    !activated,
+                    false,
+                  ),
                   spritesheet,
                 },
                 bottom: {
-                  animationId: `headlessBase.flash`,
+                  animationId: variantTextureId(
+                    `headlessBase.flash`,
+                    isReflection,
+                    busyLickingDoughnutsOffFace,
+                    !activated,
+                    false,
+                  ),
                   // by playing once, the enemy's base flashes only when it has
                   // just changed direction etc
                   playOnce: "and-stop",
@@ -292,11 +344,23 @@ export const monsterAppearance: ItemAppearance<
         output: createSprite(
           activated && !busyLickingDoughnutsOffFace ?
             {
-              animationId: walking ? "headlessBase.flash" : "headlessBase.scan",
+              animationId: variantTextureId(
+                walking ? "headlessBase.flash" : "headlessBase.scan",
+                isReflection,
+                busyLickingDoughnutsOffFace,
+                !activated,
+                false,
+              ),
               spritesheet,
             }
           : {
-              textureId: `headlessBase`,
+              textureId: variantTextureId(
+                `headlessBase`,
+                isReflection,
+                busyLickingDoughnutsOffFace,
+                !activated,
+                false,
+              ),
               spritesheet,
             },
         ),
@@ -344,15 +408,29 @@ export const monsterAppearance: ItemAppearance<
               createSprite(
                 animate ?
                   ({
-                    animationId:
+                    animationId: variantTextureId(
                       config.which === "dalek" ?
                         dalekAnimationId(room, spritesheet)
                       : "helicopterBug",
+                      isReflection,
+                      busyLickingDoughnutsOffFace,
+                      !activated,
+                      false,
+                    ),
                     spritesheet,
                     paused,
                     startFramePhase: hash,
                   } satisfies AnimatedCreateSpriteOptions)
-                : { textureId: `${config.which}.1`, spritesheet },
+                : {
+                    textureId: variantTextureId(
+                      `${config.which}.1`,
+                      isReflection,
+                      busyLickingDoughnutsOffFace,
+                      !activated,
+                      false,
+                    ),
+                    spritesheet,
+                  },
               ),
               uncolourised,
             ),
@@ -370,14 +448,35 @@ export const monsterAppearance: ItemAppearance<
                 top:
                   activated && !busyLickingDoughnutsOffFace ?
                     {
-                      animationId: "bubbles.blueGreen",
+                      animationId: variantTextureId(
+                        "bubbles.blueGreen",
+                        isReflection,
+                        busyLickingDoughnutsOffFace,
+                        !activated,
+                        false,
+                      ),
                       startFramePhase: hash,
                       paused,
                       spritesheet,
                     }
-                  : { textureId: "bubbles.blueGreen.1", spritesheet },
+                  : {
+                      textureId: variantTextureId(
+                        "bubbles.blueGreen.1",
+                        isReflection,
+                        busyLickingDoughnutsOffFace,
+                        !activated,
+                        false,
+                      ),
+                      spritesheet,
+                    },
                 bottom: {
-                  textureId: "headlessBase",
+                  textureId: variantTextureId(
+                    "headlessBase",
+                    isReflection,
+                    busyLickingDoughnutsOffFace,
+                    !activated,
+                    false,
+                  ),
                   spritesheet,
                 },
               }),
@@ -396,12 +495,51 @@ export const monsterAppearance: ItemAppearance<
               createStackedSprites({
                 top:
                   activated && !busyLickingDoughnutsOffFace ?
-                    { animationId: `emperorsGuardian`, spritesheet }
-                  : { textureId: `emperorsGuardian.1`, spritesheet },
+                    {
+                      // the guardian is doughnut-immune, so it never takes
+                      // the doughnutted recolour:
+                      animationId: variantTextureId(
+                        `emperorsGuardian`,
+                        isReflection,
+                        false,
+                        !activated,
+                        false,
+                      ),
+                      spritesheet,
+                    }
+                  : {
+                      textureId: variantTextureId(
+                        `emperorsGuardian.1`,
+                        isReflection,
+                        false,
+                        !activated,
+                        false,
+                      ),
+                      spritesheet,
+                    },
                 bottom:
                   activated && !busyLickingDoughnutsOffFace ?
-                    { animationId: "bubbles.cold", spritesheet, paused }
-                  : { textureId: "bubbles.cold.1", spritesheet },
+                    {
+                      animationId: variantTextureId(
+                        "bubbles.cold",
+                        isReflection,
+                        busyLickingDoughnutsOffFace,
+                        !activated,
+                        false,
+                      ),
+                      spritesheet,
+                      paused,
+                    }
+                  : {
+                      textureId: variantTextureId(
+                        "bubbles.cold.1",
+                        isReflection,
+                        busyLickingDoughnutsOffFace,
+                        !activated,
+                        false,
+                      ),
+                      spritesheet,
+                    },
               }),
               uncolourised,
             ),
@@ -412,8 +550,27 @@ export const monsterAppearance: ItemAppearance<
           return {
             output: createSprite(
               activated && !busyLickingDoughnutsOffFace ?
-                { animationId: "bubbles.cold", spritesheet, paused }
-              : { textureId: "bubbles.cold.1", spritesheet },
+                {
+                  animationId: variantTextureId(
+                    "bubbles.cold",
+                    isReflection,
+                    busyLickingDoughnutsOffFace,
+                    !activated,
+                    false,
+                  ),
+                  spritesheet,
+                  paused,
+                }
+              : {
+                  textureId: variantTextureId(
+                    "bubbles.cold.1",
+                    isReflection,
+                    busyLickingDoughnutsOffFace,
+                    !activated,
+                    false,
+                  ),
+                  spritesheet,
+                },
             ),
             renderProps,
           };

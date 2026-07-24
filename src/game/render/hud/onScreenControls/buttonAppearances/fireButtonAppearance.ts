@@ -5,7 +5,8 @@ import {
   pokeableToNumber,
 } from "../../../../../model/ItemStateMap";
 import { type RoomState } from "../../../../../model/RoomState";
-import { type AppSpritesheet } from "../../../../../sprites/spritesheet/variants/AppSpritesheet";
+import { type AppSpritesheetWithVariants } from "../../../../../sprites/spritesheet/AppSpritesheet";
+import { variantTextureId } from "../../../../../sprites/spritesheet/variantTextureId";
 import { selectHeadAbilities } from "../../../../gameState/gameStateSelectors/selectPlayableItem";
 import { createSprite } from "../../../createSprite";
 import { getWhite } from "../../../gameColours/gameColours";
@@ -27,23 +28,22 @@ type SurfaceContentChildren = [
 
 const createSurface = (
   pixiRenderer: Renderer,
-  originalSpritesheet: AppSpritesheet,
+  spritesheet: AppSpritesheetWithVariants,
 ): Container<Sprite | TextContainer> => {
   const hooter = createSprite({
     textureId: "hooter",
     y: -3,
-    spritesheet: originalSpritesheet,
+    spritesheet,
   });
 
   const doughnuts = createSprite({
     textureId: "doughnuts",
     y: -2,
-    spritesheet: originalSpritesheet,
+    spritesheet,
   });
 
   const text = new TextContainer({
     pixiRenderer,
-    spritesheet: originalSpritesheet,
     outline: true,
     y: textYForButtonCentre,
   });
@@ -71,12 +71,7 @@ export const fireButtonAppearance: ButtonAppearance<
   renderContext: {
     button,
     inputStateTracker,
-    general: {
-      spriteOption,
-      spritesheetVariants,
-      spritesheetMeta,
-      pixiRenderer,
-    },
+    general: { spriteOption, spritesheets, pixiRenderer },
   },
   currentRendering,
   tickContext: { currentPlayable, room },
@@ -115,19 +110,17 @@ export const fireButtonAppearance: ButtonAppearance<
     return "no-update";
   }
 
-  const { originalSpritesheet } = spritesheetVariants;
+  const { spritesheetForCurrentRoom: spritesheet } = spritesheets;
   const container =
     currentRendering?.output ??
     new ArcadeStyleButtonContainer<Container<Sprite | TextContainer>>(
-      spritesheetMeta,
       button.which,
-      pixiRenderer,
-      originalSpritesheet,
-      createSurface(pixiRenderer, originalSpritesheet),
+      spritesheets.originalSpritesheet,
+      createSurface(pixiRenderer, spritesheet),
     );
 
   if (roomChanged) {
-    container.generateButtonSpriteTextures(room);
+    container.setSpritesheet(spritesheet);
   }
 
   container.visible = showingSprite !== "none";
@@ -147,14 +140,14 @@ export const fireButtonAppearance: ButtonAppearance<
   }
 
   if (disabledChanged || roomChanged) {
-    const spritesheet = spritesheetVariants.currentMainSpritesheet(
-      disabled,
-      false,
-      false,
-    );
-
-    hooter.texture = spritesheet.textures["hooter"];
-    doughnuts.texture = spritesheet.textures["doughnuts"];
+    hooter.texture =
+      spritesheet.textures[
+        variantTextureId("hooter", false, false, disabled, false)
+      ];
+    doughnuts.texture =
+      spritesheet.textures[
+        variantTextureId("doughnuts", false, false, disabled, false)
+      ];
     text.colour = getWhite(spriteOption, room.color.shade === "dimmed");
   }
 

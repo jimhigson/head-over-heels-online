@@ -1,16 +1,16 @@
 import { zxSpectrumFrameRate } from "../../originalGame";
+import { type AppSpritesheetData } from "../../sprites/spritesheet/AppSpritesheet";
 import { type AppSpriteFrame } from "../../sprites/spritesheet/spritesheetData/AppSpriteFrame";
 import {
+  type BaseTextureId,
   type FramesWithSpeed,
-  type TextureId,
 } from "../../sprites/spritesheet/spritesheetData/makeSpritesheetData";
-import { type AppSpritesheetData } from "../../sprites/spritesheet/variants/AppSpritesheet";
 
 type Sanitise = (s: string) => string;
 
 const atMost1dp = (n: number): number => parseFloat(n.toFixed(1));
 
-const defaultTextureId: TextureId = "thisIsABug";
+const defaultTextureId: BaseTextureId = "thisIsABug";
 
 /**
  * The defaultTextureId sprite's dims are set as `--w`/`--h` defaults on `.sprite`,
@@ -69,7 +69,7 @@ export const spriteSpecificCssVars = (
 
 const computeAnimationBase = (
   animationName: string,
-  frames: FramesWithSpeed<TextureId[]>,
+  frames: FramesWithSpeed<BaseTextureId[]>,
   spritesheetData: AppSpritesheetData,
   reversed: boolean,
 ) => {
@@ -111,7 +111,7 @@ const computeAnimationBase = (
 export const animatedSpriteSpecificCssVars = (
   animationName: string,
   sanitise: Sanitise,
-  frames: FramesWithSpeed<TextureId[]>,
+  frames: FramesWithSpeed<BaseTextureId[]>,
   spritesheetData: AppSpritesheetData,
   reversed = false,
 ) => {
@@ -135,7 +135,7 @@ export const animatedSpriteSpecificCssVars = (
 export const animatedSpriteIndirectCssVars = (
   animationName: string,
   sanitise: Sanitise,
-  frames: FramesWithSpeed<TextureId[]>,
+  frames: FramesWithSpeed<BaseTextureId[]>,
   spritesheetData: AppSpritesheetData,
   reversed = false,
 ) => {
@@ -164,7 +164,7 @@ export const animatedSpriteIndirectCssVars = (
 export const animationCssVarValues = (
   animationName: string,
   sanitise: Sanitise,
-  frames: FramesWithSpeed<TextureId[]>,
+  frames: FramesWithSpeed<BaseTextureId[]>,
   spritesheetData: AppSpritesheetData,
   /** prefix for the @keyframes name, e.g. "blockstack-" */
   keyframePrefix = "",
@@ -191,7 +191,7 @@ export const animationCssVarValues = (
  * nothing.
  */
 export const animationIsUniformlyFlipped = (
-  frames: FramesWithSpeed<TextureId[]>,
+  frames: FramesWithSpeed<BaseTextureId[]>,
   spritesheetData: AppSpritesheetData,
 ) =>
   frames.every(
@@ -203,7 +203,7 @@ export const animationIsUniformlyFlipped = (
 export const keyframesForAnimatedSprite = (
   animationName: string,
   sanitise: Sanitise,
-  frames: FramesWithSpeed<TextureId[]>,
+  frames: FramesWithSpeed<BaseTextureId[]>,
   spritesheetData: AppSpritesheetData,
   /** prefix for the @keyframes name, e.g. "blockstack-" */
   keyframePrefix = "",

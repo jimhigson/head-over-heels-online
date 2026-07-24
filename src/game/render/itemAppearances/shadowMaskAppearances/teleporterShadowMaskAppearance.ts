@@ -19,7 +19,7 @@ export const teleporterShadowMaskAppearance: ItemAppearance<
   Sprite
 > = ({
   renderContext: {
-    general: { pixiRenderer, spritesheetVariants, cameraAngle },
+    general: { pixiRenderer, spritesheets, cameraAngle },
     item,
     room,
   },
@@ -61,7 +61,7 @@ export const teleporterShadowMaskAppearance: ItemAppearance<
           // multiplied masks tile along their world axes, which the projection
           // rotates on screen:
           cameraQuarterAngle,
-          spritesheet: spritesheetVariants.shadowSpritesheet,
+          spritesheet: spritesheets.shadowSpritesheet,
         },
         times,
       ),

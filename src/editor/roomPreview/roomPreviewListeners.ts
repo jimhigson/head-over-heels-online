@@ -27,7 +27,7 @@ const firstRequestedRoomId = (
 export const registerRoomPreviewSnapshotListeners = () => {
   /**
    * only one room renders at a time - the off-screen renderer and its
-   * SpritesheetVariants can only hold one (planet, colour) at once. This flag
+   * Spritesheets can only hold one (planet, colour) at once. This flag
    * guards a single drain loop; concurrent requests are picked up by the loop
    * rather than starting a competing render.
    */

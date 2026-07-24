@@ -1,8 +1,9 @@
 import { type BlockStyle } from "../../../model/json/utilityJsonConfigTypes";
 import { isTextureId } from "../../../sprites/assertIsTextureId";
 import { type SceneryName } from "../../../sprites/planets";
-import { type TextureId } from "../../../sprites/spritesheet/spritesheetData/makeSpritesheetData";
-import { type AppSpritesheetData } from "../../../sprites/spritesheet/variants/AppSpritesheet";
+import { type AppSpritesheetData } from "../../../sprites/spritesheet/AppSpritesheet";
+import { type BaseTextureIdWithPrefix } from "../../../sprites/spritesheet/spritesheetData/makeSpritesheetData";
+import { variantTextureId } from "../../../sprites/spritesheet/variantTextureId";
 import {
   asReuseSprite,
   maybeRenderContainerToSprite,
@@ -27,37 +28,37 @@ type BlockRenderProps = {
   multipliedAtAngle: null | Xy;
 };
 
+type BaseBlockTextureId = BaseTextureIdWithPrefix<"block" | "book.x" | "tower">;
+
 const blockTextureId = (
   isDark: boolean,
   style: BlockStyle,
   isDissapearing: boolean,
   scenery: SceneryName,
   spritesheetData: AppSpritesheetData,
-): TextureId => {
+): BaseBlockTextureId => {
   if (style === "tower") {
-    const sceneryTower = `tower.${scenery}`;
-    return isTextureId(sceneryTower, spritesheetData) ?
-        (sceneryTower as TextureId)
-      : "tower";
+    const sceneryTower = `tower.${scenery}` as const;
+    return isTextureId(sceneryTower, spritesheetData) ? sceneryTower : "tower";
   }
   if (style === "book") {
     return `book.x`;
   }
-  const base = `block.${style}`;
+  const base = `block.${style}` as const;
   const suffix = isDissapearing ? ".disappearing" : "";
   if (isDark) {
-    const darkId = `${base}.dark${suffix}`;
+    const darkId = `${base}.dark${suffix}` as const;
     if (isTextureId(darkId, spritesheetData)) {
-      return darkId as TextureId;
+      return darkId;
     }
   }
-  return `${base}${suffix}` as TextureId;
+  return `${base}${suffix}` as const;
 };
 
 export const blockAppearance: ItemAppearance<"block", BlockRenderProps> = ({
   renderContext: {
     isReflection,
-    general: { pixiRenderer, spritesheetVariants, cameraAngle },
+    general: { pixiRenderer, spritesheets, cameraAngle },
     item,
     item: {
       config: { style, times },
@@ -87,20 +88,22 @@ export const blockAppearance: ItemAppearance<"block", BlockRenderProps> = ({
     output: maybeRenderContainerToSprite(
       pixiRenderer,
       createSprite({
-        textureId: blockTextureId(
-          room.color.shade === "dimmed",
-          style,
-          isDissapearing,
-          room.planet,
-          spritesheetVariants.originalSpritesheet.data,
+        textureId: variantTextureId(
+          blockTextureId(
+            room.color.shade === "dimmed",
+            style,
+            isDissapearing,
+            room.planet,
+            spritesheets.originalSpritesheet.data,
+          ),
+          isReflection,
+          false,
+          false,
+          false,
         ),
         times,
         cameraQuarterAngle,
-        spritesheet: spritesheetVariants.currentMainSpritesheet(
-          false,
-          false,
-          isReflection,
-        ),
+        spritesheet: spritesheets.spritesheetForCurrentRoom,
       }),
       // camera-angle re-renders bake into the previous render texture (the
       // multiplied bake is the same size at every quarter turn):

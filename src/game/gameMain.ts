@@ -2,7 +2,7 @@ import { Application, TextureStyle, type WebGLRenderer } from "pixi.js";
 
 import { type CampaignLocator } from "../model/modelTypes";
 import { loadSoundCategory } from "../sound/soundsLoader";
-import { SpritesheetVariants } from "../sprites/spritesheet/variants/SpritesheetVariants";
+import { Spritesheets } from "../sprites/spritesheet/Spritesheets";
 import { loadCampaignFromApi } from "../store/slices/campaigns/campaignApiHelpers";
 import {
   gameRestoreFromSave,
@@ -41,7 +41,7 @@ export const gameMain = async <RoomId extends string>(
   // destroyed along with the Pixi Application that they belong to. This prevents the reuse of
   // assets used in one application in another, which can mean reclaimed resources trying to
   // be reused and cause missing textures in-game
-  const spritesheetVariants = new SpritesheetVariants();
+  const spritesheets = new Spritesheets();
 
   const [campaignResult] = await Promise.all([
     loadCampaignFromApi<RoomId>(campaignLocator),
@@ -141,7 +141,7 @@ export const gameMain = async <RoomId extends string>(
     installE2eSwopCharacterHandle(gameState);
   }
 
-  const loop = new MainLoop(app, gameState, spritesheetVariants).start();
+  const loop = new MainLoop(app, gameState, spritesheets).start();
 
   return {
     campaign,
@@ -220,7 +220,7 @@ export const gameMain = async <RoomId extends string>(
       loop.stop();
       // destroy the baked spritesheet RenderTextures while the renderer is still
       // alive, before it goes with the app:
-      spritesheetVariants.destroy();
+      spritesheets.destroy();
       app.destroy();
     },
   };

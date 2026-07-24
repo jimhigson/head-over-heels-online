@@ -51,7 +51,7 @@ test("game renders correctly after quitting and starting another game", async ({
   await waitForDialog(page, "mainMenu");
 
   // start another game without reloading the page, so the (now stale)
-  // SpritesheetVariants from the first game is reused on the second game's fresh
+  // Spritesheets from the first game is reused on the second game's fresh
   // renderer - the situation that used to blank the HUD text. The bug is about
   // the app being torn down and recreated, not which campaign, so we restart the
   // original campaign (the sequel needs the DB, which isn't always reachable):

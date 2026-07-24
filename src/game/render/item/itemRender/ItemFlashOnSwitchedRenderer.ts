@@ -39,7 +39,7 @@ class ItemFlashOnSwitchedRenderer<
     this.#childRenderer = childRenderer;
     this.output.addChild(childRenderer.output);
 
-    const { spriteOption, spritesheetVariants, spritesheetMeta } =
+    const { spriteOption, spritesheets, spritesheetMeta } =
       renderContext.general;
     const { color: roomColor } = renderContext.room;
 
@@ -75,7 +75,7 @@ class ItemFlashOnSwitchedRenderer<
       : getAmbientSwoppedColour(
           spritesheetMeta.palette,
           spritesheetMeta.effectColours.outline,
-          spritesheetVariants.spritesheetForCurrentRoom.ambient,
+          spritesheets.spritesheetForCurrentRoom.ambient,
         );
     this.#outlineFilter = filterCache.getOrInsertComputed(
       `outline(${outlineColour.toHex()})`,

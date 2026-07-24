@@ -1,11 +1,11 @@
 import { useEffect, useRef } from "preact/hooks";
 
 import { sanitiseForClassName } from "../../game/components/tailwindSprites/SanitiseForClassName";
+import { type AppSpritesheetData } from "../../sprites/spritesheet/AppSpritesheet";
 import {
+  type BaseTextureId,
   type FramesWithSpeed,
-  type TextureId,
 } from "../../sprites/spritesheet/spritesheetData/makeSpritesheetData";
-import { type AppSpritesheetData } from "../../sprites/spritesheet/variants/AppSpritesheet";
 import { useSpritesOption } from "../../store/slices/gameMenus/gameMenusSelectors";
 import {
   animatedSpriteSpecificCssVars,
@@ -18,7 +18,7 @@ import { SpriteName } from "./SpriteName";
 
 export type AnimationTileProps = {
   animationName: string;
-  frames: FramesWithSpeed<TextureId[]>;
+  frames: FramesWithSpeed<BaseTextureId[]>;
   spritesheetData: AppSpritesheetData;
 };
 

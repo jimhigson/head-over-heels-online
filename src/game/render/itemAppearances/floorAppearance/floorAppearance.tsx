@@ -13,7 +13,7 @@ import {
 import { roomItemsIterable, type RoomState } from "../../../../model/RoomState";
 import { zxSpectrumColors } from "../../../../originalGame";
 import { assertIsTextureId } from "../../../../sprites/assertIsTextureId";
-import { type AppSpritesheet } from "../../../../sprites/spritesheet/variants/AppSpritesheet";
+import { type AppSpritesheetWithVariants } from "../../../../sprites/spritesheet/AppSpritesheet";
 import { frac } from "../../../../utils/maths/maths";
 import { rangesOverlap } from "../../../../utils/maths/numberPairs";
 import { getAmbientSwoppedColour } from "../../../../utils/palette/palette";
@@ -252,7 +252,7 @@ const edgeSprites = ({
   direction: Subset<DirectionXy4, "right" | "towards">;
   times: Partial<Xy> | undefined;
   position: Partial<Xyz>;
-  spritesheet: AppSpritesheet;
+  spritesheet: AppSpritesheetWithVariants;
   cameraQuarterAngle: Xy;
 }): Container<Sprite> => {
   return createSprite({
@@ -370,12 +370,11 @@ export const floorAppearance: ItemAppearance<"floor", RenderOnceProps> =
   itemAppearanceRenderMemoised(
     ({
       renderContext: {
-        isReflection,
         room,
         item: floorItem,
         general: {
           spriteOption,
-          spritesheetVariants,
+          spritesheets,
           spritesheetMeta,
           pixiRenderer,
           cameraAngle,
@@ -467,11 +466,9 @@ export const floorAppearance: ItemAppearance<"floor", RenderOnceProps> =
         (offset) => cyclicCorners[(topCornerIndex + offset) % 4],
       );
 
-      const spritesheet = spritesheetVariants.currentMainSpritesheet(
-        false,
-        false,
-        isReflection,
-      );
+      // floors are an unreflected item type, so never take the
+      // mirror-reflection suffix:
+      const { spritesheetForCurrentRoom: spritesheet } = spritesheets;
 
       const outlineColour =
         spriteOption.uncolourised ?

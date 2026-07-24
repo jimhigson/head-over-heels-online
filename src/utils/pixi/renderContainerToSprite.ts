@@ -11,8 +11,8 @@ import {
   animationSpeed,
   framesWithOriginalGameTimings,
 } from "../../game/render/createSprite";
+import { type AppSpritesheetWithVariants } from "../../sprites/spritesheet/AppSpritesheet";
 import { type AnimationId } from "../../sprites/spritesheet/spritesheetData/makeSpritesheetData";
-import { type AppSpritesheet } from "../../sprites/spritesheet/variants/AppSpritesheet";
 import { range } from "../iterators/range";
 import { type Xy } from "../vectors/vectors";
 import { pixiContainerToString } from "./pixiContainerToString";
@@ -149,7 +149,7 @@ export const maybeRenderContainerToAnimatedSprite = <
   // used only to get the correct animation speed — multiple animations
   // running at different speeds are not supported
   animationId: AnimationId,
-  spritesheet: AppSpritesheet,
+  spritesheet: AppSpritesheetWithVariants,
   label?: string,
 ): C => {
   if (container instanceof AnimatedSprite || container instanceof Sprite) {

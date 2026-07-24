@@ -15,11 +15,11 @@ import {
   type NamedSwops,
 } from "../../../utils/palette/palette";
 import { type DirectionXy8 } from "../../../utils/vectors/vectors";
-import { type TextureId } from "./makeSpritesheetData";
+import { type BaseTextureId } from "./makeSpritesheetData";
 
 type SpriteOverrides = Partial<
   Record<
-    TextureId,
+    BaseTextureId,
     {
       pivot?: {
         x: number;
@@ -34,7 +34,7 @@ type SpriteOverrides = Partial<
        * every draw site.
        */
       copyFrom?: {
-        textureId: TextureId;
+        textureId: BaseTextureId;
         flipX?: boolean;
       };
     }
@@ -129,7 +129,7 @@ export type SpritesheetMetadata<
   playable: PlayableSpritesheetMetaData;
   itemRenderExtents: ItemRenderExtents;
   overrides?: SpriteOverrides;
-  missedTextures?: TextureId[];
+  missedTextures?: BaseTextureId[];
   swops?: {
     deactivated?: {
       colours: NamedSwops<PaletteColourName>;

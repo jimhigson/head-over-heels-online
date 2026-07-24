@@ -1,8 +1,8 @@
-import blockStackSpritesheetUrl from "../../../../gfx/sprites.webp";
-import toppySpritesheetUrl from "../../../../gfx/spritesToppy.webp";
-import { useAppSelector } from "../../../store/hooks";
-import { selectSpritesOption } from "../../../store/slices/gameMenus/gameMenusSelectors";
-import { selectSpritesheetOverrideBlobUrl } from "../../../store/slices/spritesheetOverrideSlice";
+import blockStackSpritesheetUrl from "../../../../../../../gfx/sprites.webp";
+import toppySpritesheetUrl from "../../../../../../../gfx/spritesToppy.webp";
+import { useAppSelector } from "../../../../../../store/hooks";
+import { selectSpritesOption } from "../../../../../../store/slices/gameMenus/gameMenusSelectors";
+import { selectSpritesheetOverrideBlobUrl } from "../../../../../../store/slices/spritesheetOverrideSlice";
 
 /**
  * The runtime URL of the spritesheet image for the currently-selected sprites

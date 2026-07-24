@@ -434,13 +434,12 @@ class EditorAnnotationsRenderer<
     const {
       renderContext: {
         frontLayer,
-        general: { pixiRenderer, spritesheetVariants },
+        general: { pixiRenderer },
       },
     } = this;
 
     const annotationContainer = new TextContainer({
       pixiRenderer,
-      spritesheet: spritesheetVariants.originalSpritesheet,
       label: "EditorAnnotationTextContainer",
       outline: true,
       colour: tint,

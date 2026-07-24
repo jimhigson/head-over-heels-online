@@ -2,7 +2,8 @@ import { Container, type Sprite } from "pixi.js";
 
 import { type ItemInPlayType } from "../../../../../model/ItemInPlay";
 import { type RoomState } from "../../../../../model/RoomState";
-import { type AppSpritesheet } from "../../../../../sprites/spritesheet/variants/AppSpritesheet";
+import { type AppSpritesheetWithVariants } from "../../../../../sprites/spritesheet/AppSpritesheet";
+import { variantTextureId } from "../../../../../sprites/spritesheet/variantTextureId";
 import { neverTime } from "../../../../../utils/neverTime";
 import { selectHeelsAbilities } from "../../../../gameState/gameStateSelectors/selectPlayableItem";
 import {
@@ -20,7 +21,7 @@ import { buttonActionsPressed } from "./buttonActionsPressed";
 type SurfaceContentChildren = [carried: Container, bag: Sprite];
 
 const createSurface = (
-  originalSpritesheet: AppSpritesheet,
+  spritesheet: AppSpritesheetWithVariants,
 ): Container<Container | Sprite> => {
   const carried = createSprite({
     label: "carriedItem",
@@ -30,7 +31,7 @@ const createSurface = (
     label: "bag",
     textureId: "bag",
     y: -2,
-    spritesheet: originalSpritesheet,
+    spritesheet,
   });
 
   return new Container<Container | Sprite>({
@@ -58,7 +59,7 @@ export const carryButtonAppearance: ButtonAppearance<
   const {
     button,
     inputStateTracker,
-    general: { spritesheetVariants, spritesheetMeta, pixiRenderer },
+    general: { spritesheets },
   } = renderContext;
   const { currentPlayable, room } = tickContext;
   const previouslyRenderedProps = currentRendering?.renderProps;
@@ -80,22 +81,20 @@ export const carryButtonAppearance: ButtonAppearance<
 
   const disabled = hasBag && !willPickUp && carrying === null;
 
-  const { originalSpritesheet } = spritesheetVariants;
+  const { spritesheetForCurrentRoom: spritesheet } = spritesheets;
   const container =
     previousRendering ??
     new ArcadeStyleButtonContainer<Container>(
-      spritesheetMeta,
       button.which,
-      pixiRenderer,
-      originalSpritesheet,
-      createSurface(originalSpritesheet),
+      spritesheets.originalSpritesheet,
+      createSurface(spritesheet),
     );
 
   // (or is first render)
   const roomChanged = room !== previouslyRenderedProps?.renderedInRoom;
 
   if (roomChanged) {
-    container.generateButtonSpriteTextures(room);
+    container.setSpritesheet(spritesheet);
   }
 
   container.visible = hasBag;
@@ -105,12 +104,10 @@ export const carryButtonAppearance: ButtonAppearance<
     .children as SurfaceContentChildren;
 
   if (disabled !== previouslyRenderedProps?.disabled || roomChanged) {
-    const spritesheet = spritesheetVariants.currentMainSpritesheet(
-      disabled,
-      false,
-      false,
-    );
-    bag.texture = spritesheet.textures["bag"];
+    bag.texture =
+      spritesheet.textures[
+        variantTextureId("bag", false, false, disabled, false)
+      ];
   }
 
   if (previouslyRenderedProps?.pressed !== pressed) {

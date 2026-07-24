@@ -7,10 +7,10 @@ import toppyPalette from "../../_generated/palette/spritesheetToppyPalette.json"
 import { editorUiScale } from "../../editor/editorUiScale";
 import { sanitiseForClassName } from "../../game/components/tailwindSprites/SanitiseForClassName";
 import { zxSpectrumColors } from "../../originalGame";
+import { makeBaseSpritesheetData } from "../../sprites/spritesheet/spritesheetData/makeBaseSpritesheetData";
 import {
+  type BaseTextureId,
   type FramesWithSpeed,
-  makeSpritesheetData,
-  type TextureId,
 } from "../../sprites/spritesheet/spritesheetData/makeSpritesheetData";
 import { spritesheetMetas } from "../../sprites/spritesheet/spritesheetData/spritesheetMetaData";
 import { halfbriteHex } from "../../utils/colour/halfbrite";
@@ -36,7 +36,7 @@ export const spritesTailwindPlugin = plugin(
      * A full version of the spritesheet data with every possible sprite loaded. So tailwind thinks every possible
      * textureId exists. postcss can cut them down from there to what's actually used
      */
-    const fullSpritesheetData = makeSpritesheetData({
+    const fullSpritesheetData = makeBaseSpritesheetData({
       playable: {
         head: {},
         heels: {},
@@ -45,13 +45,13 @@ export const spritesTailwindPlugin = plugin(
 
     const perSheetData = fromAllEntries(
       entries(spritesheetMetas).map(
-        ([name, meta]) => [name, makeSpritesheetData(meta)] as const,
+        ([name, meta]) => [name, makeBaseSpritesheetData(meta)] as const,
       ),
     );
 
     const animationsAreEqual = (
-      a: FramesWithSpeed<TextureId[]>,
-      b: FramesWithSpeed<TextureId[]>,
+      a: FramesWithSpeed<BaseTextureId[]>,
+      b: FramesWithSpeed<BaseTextureId[]>,
     ) =>
       a.length === b.length &&
       a.animationSpeed === b.animationSpeed &&
@@ -62,7 +62,7 @@ export const spritesTailwindPlugin = plugin(
     // source's region), so it must not take the "shared" path that reads coords
     // from the override-less fullSpritesheetData
     const animationUsesCopyFrom = (
-      frames: FramesWithSpeed<TextureId[]> | undefined,
+      frames: FramesWithSpeed<BaseTextureId[]> | undefined,
       sheetName: keyof typeof spritesheetMetas,
     ) =>
       frames?.some(
@@ -90,7 +90,7 @@ export const spritesTailwindPlugin = plugin(
     });
 
     const bugFrame =
-      fullSpritesheetData.frames["thisIsABug" as TextureId].frame;
+      fullSpritesheetData.frames["thisIsABug" as BaseTextureId].frame;
 
     const utilities: CSSRuleObject = {
       ".sprite": {
@@ -410,7 +410,7 @@ export const spritesTailwindPlugin = plugin(
       );
     }
 
-    type AnimationsRecord = Record<string, FramesWithSpeed<TextureId[]>>;
+    type AnimationsRecord = Record<string, FramesWithSpeed<BaseTextureId[]>>;
     const blockStackAnimations = perSheetData.BlockStack!
       .animations as AnimationsRecord;
     const toppyAnimations = perSheetData.Toppy!.animations as AnimationsRecord;
@@ -434,7 +434,7 @@ export const spritesTailwindPlugin = plugin(
         !animationUsesCopyFrom(toppyFrames, "Toppy");
 
       const emitUtilities = (
-        frames: FramesWithSpeed<TextureId[]>,
+        frames: FramesWithSpeed<BaseTextureId[]>,
         cssVarsFn: (
           ...args: Parameters<typeof animatedSpriteSpecificCssVars>
         ) => CSSRuleObject,
@@ -456,8 +456,8 @@ export const spritesTailwindPlugin = plugin(
       };
 
       const assignKeyframesToUtility = (
-        frames: FramesWithSpeed<TextureId[]>,
-        spritesheetData: ReturnType<typeof makeSpritesheetData>,
+        frames: FramesWithSpeed<BaseTextureId[]>,
+        spritesheetData: ReturnType<typeof makeBaseSpritesheetData>,
         keyframePrefix = "",
         elideOverride?: { x?: boolean; y?: boolean },
       ) => {
@@ -522,8 +522,8 @@ export const spritesTailwindPlugin = plugin(
         };
 
         const sheetAnimationVariation = (
-          frames: FramesWithSpeed<TextureId[]> | undefined,
-          sheetData: ReturnType<typeof makeSpritesheetData>,
+          frames: FramesWithSpeed<BaseTextureId[]> | undefined,
+          sheetData: ReturnType<typeof makeBaseSpritesheetData>,
           sheetPrefix: string,
         ): Record<string, unknown> => {
           if (frames === undefined) {

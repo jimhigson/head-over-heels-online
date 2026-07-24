@@ -40,8 +40,6 @@ export class FpsRenderer implements Renderer<
     this.renderContext = renderContext;
     this.#fpsText = new TextContainer({
       pixiRenderer: renderContext.general.pixiRenderer,
-      spritesheet:
-        renderContext.general.spritesheetVariants.originalSpritesheet,
       label: "fps",
       outline: true,
       y: hudCharTextureSize.h,

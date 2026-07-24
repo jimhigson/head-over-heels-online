@@ -1,4 +1,5 @@
 import { iterateStoodOnByItems } from "../../../model/stoodOnItemsLookup";
+import { variantTextureId } from "../../../sprites/spritesheet/variantTextureId";
 import {
   asReuseSprite,
   maybeRenderContainerToSprite,
@@ -29,7 +30,7 @@ export const teleporterAppearance: ItemAppearance<
     isReflection,
     item,
     room,
-    general: { paused, pixiRenderer, spritesheetVariants, cameraAngle },
+    general: { paused, pixiRenderer, spritesheets, cameraAngle },
   },
   currentRendering,
 }) => {
@@ -61,18 +62,20 @@ export const teleporterAppearance: ItemAppearance<
     return "no-update";
   }
 
-  const spritesheet = spritesheetVariants.currentMainSpritesheet(
-    false,
-    false,
-    isReflection,
-  );
+  const { spritesheetForCurrentRoom: spritesheet } = spritesheets;
 
   return {
     output:
       flashing ?
         // animated, so can't be baked to a single static sprite:
         createSprite({
-          animationId: `${type}.flashing`,
+          animationId: variantTextureId(
+            `${type}.flashing`,
+            isReflection,
+            false,
+            false,
+            false,
+          ),
           times,
           cameraQuarterAngle,
           paused,
@@ -85,7 +88,13 @@ export const teleporterAppearance: ItemAppearance<
       : maybeRenderContainerToSprite(
           pixiRenderer,
           createSprite({
-            textureId: activated ? type : "block.artificial",
+            textureId: variantTextureId(
+              activated ? type : "block.artificial",
+              isReflection,
+              false,
+              false,
+              false,
+            ),
             times,
             cameraQuarterAngle,
             spritesheet,

@@ -106,17 +106,27 @@ jobs:
       - name: Regenerate snapshots
         env:
           PARALLEL_TESTS: ${{ inputs.workers }}
-          ROOMS: ${{ inputs.rooms }}
+          # an unset ROOMS regenerates every room, but a set-but-empty ROOMS
+          # matches ZERO (resolveRoomIds compiles "" to the /^$/ regex), so pass
+          # the input as ROOMS_INPUT and only export ROOMS when it is non-empty -
+          # a blank input then means all rooms, as the input's help promises:
+          ROOMS_INPUT: ${{ inputs.rooms }}
           SPECS: ${{ inputs.specs }}
-        run: pnpm playwright test $SPECS ${{ matrix.projectOption }} --update-snapshots
+        run: |
+          if [ -n "$ROOMS_INPUT" ]; then export ROOMS="$ROOMS_INPUT"; fi
+          pnpm playwright test $SPECS ${{ matrix.projectOption }} --update-snapshots
 
       - name: Collect changed snapshots
         id: collect
         shell: bash
         run: |
           git add -A
-          # only snapshot files (path contains "-snapshots/"), never test-results / reports
-          mapfile -t files < <(git diff --cached --name-only | grep -- '-snapshots/' || true)
+          # only snapshot files (path contains "-snapshots/"), never test-results / reports.
+          # a read loop rather than mapfile so this runs on the macOS runner's bash 3.2:
+          files=()
+          while IFS= read -r file; do
+            files+=("$file")
+          done < <(git diff --cached --name-only | grep -- '-snapshots/' || true)
           echo "count=${#files[@]}" >> "$GITHUB_OUTPUT"
           if [[ ${#files[@]} -eq 0 ]]; then
             echo "No snapshots changed on this runner."

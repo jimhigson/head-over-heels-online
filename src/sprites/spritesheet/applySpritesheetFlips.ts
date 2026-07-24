@@ -1,26 +1,23 @@
 import { groupD8, Texture } from "pixi.js";
 
 import { objectEntriesIter, valuesIter } from "../../utils/entries";
-import { type AppSpritesheet } from "./variants/AppSpritesheet";
+import { type AppSpritesheet } from "./AppSpritesheet";
 
 /**
- * Replaces every texture declared as a flipped copy (`copyFrom.flipX`) in the
- * spritesheet meta overrides with a horizontally-mirrored texture sampling the
- * same region. The mirror is baked into the texture's uvs (via groupD8) rather
- * than applied as a per-sprite scale, so it composes transparently with
+ * Replaces every texture whose frame data is flagged `flipX` (declared as a
+ * flipped copy via `copyFrom.flipX` in the spritesheet meta overrides, or a
+ * variant id derived from one) with a horizontally-mirrored texture sampling
+ * the same region. The mirror is baked into the texture's uvs (via groupD8)
+ * rather than applied as a per-sprite scale, so it composes transparently with
  * AnimatedSprites and every draw site.
  *
- * Must be called after `parseSync()` and after `spritesheetMeta` is set on the
- * spritesheet.
+ * Must be called after `parseSync()`.
  */
 export const applySpritesheetFlips = (spritesheet: AppSpritesheet) => {
-  const { overrides } = spritesheet.spritesheetMeta;
-  if (overrides === undefined) {
-    return;
-  }
-
-  for (const [textureId, override] of objectEntriesIter(overrides)) {
-    if (override?.copyFrom?.flipX !== true) {
+  for (const [textureId, frameData] of objectEntriesIter(
+    spritesheet.data.frames,
+  )) {
+    if (frameData.frame.flipX !== true) {
       continue;
     }
     const original = spritesheet.textures[textureId];
