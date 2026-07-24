@@ -14,6 +14,7 @@ import {
   asReuseSprite,
   maybeRenderContainerToSprite,
 } from "../../../utils/pixi/renderContainerToSprite";
+import { spriteFlipXAtAngle } from "../../../utils/vectors/resolveCameraRelativeVector";
 import { nearestQuarterAngle } from "../../../utils/vectors/rotateXy";
 import { type Xy, xyEqual } from "../../../utils/vectors/vectors";
 import { isMultipliedItem } from "../../physics/itemPredicates";
@@ -68,6 +69,11 @@ export const itemStaticAppearance = <T extends ItemInPlayType>(
       currentRendering,
     }) => {
       const cameraQuarterAngle = nearestQuarterAngle(cameraAngle);
+      // single-art items flip on odd quarter turns so their painted shading
+      // stays on their world faces (the light source stays fixed in the
+      // world) - their outlines are mirror-symmetric so only the shading
+      // moves:
+      const flipX = spriteFlipXAtAngle(cameraQuarterAngle);
       const { spritesheetForCurrentRoom: spritesheet } = spritesheets;
       const textureId = variantTextureId(
         baseTextureId,
@@ -77,13 +83,15 @@ export const itemStaticAppearance = <T extends ItemInPlayType>(
         false,
       );
       if (isMultipliedItem(subject)) {
-        // reduce the multiple sprites down to one baked sprite; camera-angle
+        // reduce the multiple sprites down to one baked sprite (each
+        // sub-sprite flips individually before the bake); camera-angle
         // re-renders bake into the previous render texture (the multiplied
         // bake is the same size at every quarter turn):
         return maybeRenderContainerToSprite(
           pixiRenderer,
           createSprite({
             textureId,
+            flipX,
             times: itemInPlayTimes(subject),
             cameraQuarterAngle,
             spritesheet,
@@ -93,10 +101,12 @@ export const itemStaticAppearance = <T extends ItemInPlayType>(
       }
       return createSprite({
         textureId,
+        flipX,
         spritesheet,
       });
     },
-    multipliedLayoutAngle,
+    // the flip resolves per quarter turn:
+    (_item, cameraQuarterAngle) => cameraQuarterAngle,
   );
 
 export const itemStaticAnimatedAppearance = <T extends ItemInPlayType>(

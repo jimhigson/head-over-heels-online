@@ -1,13 +1,19 @@
 import { variantTextureId } from "../../../sprites/spritesheet/variantTextureId";
 import { keysIter } from "../../../utils/entries";
-import { resolveCameraRelativeIndexXy4 } from "../../../utils/vectors/resolveCameraRelativeVector";
+import {
+  resolveSpriteDirectionIndexXy4,
+  spriteFlipXAtAngle,
+} from "../../../utils/vectors/resolveCameraRelativeVector";
 import { type DirectionIndexXy4 } from "../../../utils/vectors/vectors";
 import { isJoystick } from "../../physics/itemPredicates";
 import { createStackedSprites } from "./createStackedSprites";
 import { type ItemAppearance } from "./ItemAppearance";
 
 type CharlesRenderProps = {
-  resolvedFacingIndexXy4: DirectionIndexXy4;
+  /** the directional sprite-variant index drawn */
+  resolvedFacingArtIndexXy4: DirectionIndexXy4;
+  /** whether the directional sprite is drawn horizontally flipped */
+  flipX: boolean;
   controlledByJoystick: boolean;
   activated: boolean;
 };
@@ -32,11 +38,15 @@ export const charlesAppearance: ItemAppearance<
 }) => {
   const currentlyRenderedProps = currentRendering?.renderProps;
 
-  const resolvedFacingIndexXy4 = resolveCameraRelativeIndexXy4(
+  // the facing resolves to a sprite-variant index with its paired flip - the
+  // flip keeps the painted shading on charles' world faces (light source
+  // fixed in the world):
+  const resolvedFacingArtIndexXy4 = resolveSpriteDirectionIndexXy4(
     facing,
     cameraAngle,
     isReflection,
   );
+  const flipX = spriteFlipXAtAngle(cameraAngle);
 
   const controlledByJoystick =
     roomTime === roomTimeActedOn &&
@@ -44,7 +54,9 @@ export const charlesAppearance: ItemAppearance<
 
   const render =
     currentlyRenderedProps === undefined ||
-    resolvedFacingIndexXy4 !== currentlyRenderedProps.resolvedFacingIndexXy4 ||
+    resolvedFacingArtIndexXy4 !==
+      currentlyRenderedProps.resolvedFacingArtIndexXy4 ||
+    flipX !== currentlyRenderedProps.flipX ||
     controlledByJoystick !== currentlyRenderedProps.controlledByJoystick ||
     activated !== currentlyRenderedProps.activated;
 
@@ -58,12 +70,13 @@ export const charlesAppearance: ItemAppearance<
     output: createStackedSprites({
       top: {
         textureId: variantTextureId(
-          `charles.d${resolvedFacingIndexXy4}`,
+          `charles.d${resolvedFacingArtIndexXy4}`,
           isReflection,
           false,
           !activated,
           false,
         ),
+        flipX,
         spritesheet,
       },
       bottom: {
@@ -74,9 +87,15 @@ export const charlesAppearance: ItemAppearance<
           !activated,
           false,
         ),
+        flipX,
         spritesheet,
       },
     }),
-    renderProps: { resolvedFacingIndexXy4, controlledByJoystick, activated },
+    renderProps: {
+      resolvedFacingArtIndexXy4,
+      flipX,
+      controlledByJoystick,
+      activated,
+    },
   };
 };

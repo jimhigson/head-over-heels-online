@@ -511,6 +511,14 @@ export const mirrorDirectionIndexXy8 = (
   index: DirectionIndexXy8,
 ): DirectionIndexXy8 => ((10 - index) % 8) as DirectionIndexXy8;
 
+/**
+ * {@link mirrorDirectionIndexXy8} narrowed to the cardinal (even-octant) ring:
+ * the mirror of an even octant is always another even octant
+ */
+export const mirrorDirectionIndexXy4 = mirrorDirectionIndexXy8 as (
+  index: DirectionIndexXy4,
+) => DirectionIndexXy4;
+
 export const vectorClosestDirectionXy8 = ({
   x,
   y,

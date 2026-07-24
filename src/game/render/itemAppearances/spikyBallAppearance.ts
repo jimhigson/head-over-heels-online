@@ -2,6 +2,7 @@ import { type Sprite } from "pixi.js";
 
 import { wallTileSize } from "../../../sprites/spritesheet/spritesheetData/textureSizes";
 import { variantTextureId } from "../../../sprites/spritesheet/variantTextureId";
+import { spriteFlipXAtAngle } from "../../../utils/vectors/resolveCameraRelativeVector";
 import { nearestQuarterAngle } from "../../../utils/vectors/rotateXy";
 import { lengthXy } from "../../../utils/vectors/vectors";
 import { createSprite } from "../createSprite";
@@ -74,6 +75,9 @@ const spikyBallAppearanceImpl: ItemAppearance<
     spritesheet.textures[
       variantTextureId(`spikyBall.${phase}`, isReflection, false, false, false)
     ];
+  // the ball flips on odd quarter turns so its painted highlight stays on its
+  // world side (light source fixed in the world):
+  rendering.scale.x = spriteFlipXAtAngle(cameraQuarterAngle) ? -1 : 1;
 
   return {
     output: rendering,

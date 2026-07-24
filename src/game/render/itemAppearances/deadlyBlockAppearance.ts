@@ -1,18 +1,15 @@
 import { variantTextureId } from "../../../sprites/spritesheet/variantTextureId";
 import { maybeRenderContainerToAnimatedSprite } from "../../../utils/pixi/renderContainerToSprite";
+import { spriteFlipXAtAngle } from "../../../utils/vectors/resolveCameraRelativeVector";
 import { nearestQuarterAngle } from "../../../utils/vectors/rotateXy";
 import { type Xy } from "../../../utils/vectors/vectors";
 import { createSprite } from "../createSprite";
-import {
-  cameraQuarterAngleEqual,
-  type ItemAppearance,
-  multipliedLayoutAngle,
-} from "./ItemAppearance";
+import { cameraQuarterAngleEqual, type ItemAppearance } from "./ItemAppearance";
 
 type DeadlyBlockRenderProps = {
   disabled: boolean;
-  /** the multiplied tiling resolves per camera angle; null when single */
-  multipliedAtAngle: null | Xy;
+  /** the flip (and any multiplied tiling) resolves per camera angle */
+  renderedAtAngle: Xy;
 };
 
 export const deadlyBlockAppearance: ItemAppearance<
@@ -21,7 +18,6 @@ export const deadlyBlockAppearance: ItemAppearance<
 > = ({
   renderContext: {
     isReflection,
-    item,
     item: {
       hash,
       config: { times, style },
@@ -32,19 +28,22 @@ export const deadlyBlockAppearance: ItemAppearance<
   currentRendering,
 }) => {
   const cameraQuarterAngle = nearestQuarterAngle(cameraAngle);
-  const multipliedAtAngle = multipliedLayoutAngle(item, cameraQuarterAngle);
   if (
     currentRendering &&
     !!disabled === currentRendering.renderProps.disabled &&
     cameraQuarterAngleEqual(
-      multipliedAtAngle,
-      currentRendering.renderProps.multipliedAtAngle,
+      cameraQuarterAngle,
+      currentRendering.renderProps.renderedAtAngle,
     )
   ) {
     return "no-update";
   }
 
   const { spritesheetForCurrentRoom: spritesheet } = spritesheets;
+  // deadly blocks flip on odd quarter turns so their painted shading stays on
+  // their world faces (light source fixed in the world); each sub-sprite of a
+  // multiplied run flips individually before any bake:
+  const flipX = spriteFlipXAtAngle(cameraQuarterAngle);
 
   const rendering = createSprite(
     disabled ?
@@ -56,12 +55,14 @@ export const deadlyBlockAppearance: ItemAppearance<
           false,
           false,
         ),
+        flipX,
         times,
         cameraQuarterAngle,
         spritesheet,
       }
     : {
         animationId: variantTextureId(style, isReflection, false, false, false),
+        flipX,
         times,
         cameraQuarterAngle,
         startFramePhase: hash,
@@ -77,6 +78,6 @@ export const deadlyBlockAppearance: ItemAppearance<
       style,
       spritesheet,
     ),
-    renderProps: { disabled: !!disabled, multipliedAtAngle },
+    renderProps: { disabled: !!disabled, renderedAtAngle: cameraQuarterAngle },
   };
 };

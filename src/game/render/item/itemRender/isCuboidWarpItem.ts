@@ -24,6 +24,7 @@ const cuboidWarpTypes = new Set<UnionOfAllItemInPlayTypes["type"]>([
   "lamp",
   "lightBeam",
   "slidingBlock",
+  "pickup",
 ]);
 
 /**
@@ -32,7 +33,9 @@ const cuboidWarpTypes = new Set<UnionOfAllItemInPlayTypes["type"]>([
  * repeated column, not a single box, so a cuboid warp would distort it. Likewise
  * the round items are excluded (the `drum` portable block and the `puck` sliding
  * block) - the box-shaped `cube`/`sticks` portable blocks and `book` sliding
- * block warp.
+ * block warp. Of the pickups, only the `scroll` warps: its rolled-paper art is
+ * the one box-shaped pickup; the rest (rabbits, crowns, doughnuts...) have
+ * rounded silhouettes.
  */
 export const isCuboidWarpItem = (item: UnionOfAllItemInPlayTypes): boolean => {
   if (!cuboidWarpTypes.has(item.type)) {
@@ -45,6 +48,9 @@ export const isCuboidWarpItem = (item: UnionOfAllItemInPlayTypes): boolean => {
     return false;
   }
   if (item.type === "slidingBlock" && item.config.style === "puck") {
+    return false;
+  }
+  if (item.type === "pickup" && item.config.gives !== "scroll") {
     return false;
   }
   return true;

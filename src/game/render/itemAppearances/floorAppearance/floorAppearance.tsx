@@ -1,10 +1,4 @@
-import {
-  Container,
-  Graphics,
-  type Sprite,
-  Texture,
-  TilingSprite,
-} from "pixi.js";
+import { Container, Graphics, type Sprite, TilingSprite } from "pixi.js";
 
 import {
   type ItemInPlay,
@@ -20,6 +14,7 @@ import { getAmbientSwoppedColour } from "../../../../utils/palette/palette";
 import { renderContainerToSprite } from "../../../../utils/pixi/renderContainerToSprite";
 import { type UniqueTextureSprite } from "../../../../utils/pixi/UniqueTextureSprite";
 import { type Subset } from "../../../../utils/Subset";
+import { spriteFlipXAtAngle } from "../../../../utils/vectors/resolveCameraRelativeVector";
 import {
   axisProjectsReversed,
   nearestQuarterAngle,
@@ -31,7 +26,6 @@ import {
   addXyz,
   alongAxisOfDirectionXy,
   type AxisXy,
-  cameraAngleIsOddQuarterTurn,
   type DirectionIndexXy4,
   directionIndexXy8,
   directionsXy8Octants,
@@ -49,10 +43,8 @@ import { blockSizePx } from "../../../physics/mechanicsConstants";
 import { createSprite } from "../../createSprite";
 import { ColourClashFilter } from "../../filters/ColourClashFilter";
 import { OutlineFilter } from "../../filters/OutlineFilter";
-import { PaletteSwapFilter } from "../../filters/PaletteSwapFilter";
 import { floorTextureId } from "../../floorTextureId";
 import { edgeOriginalGameColour } from "../../gameColours/colourScheme";
-import { floorEdgeCrossSwops } from "../../gameColours/floorEdgeCrossSwops";
 import { boxProjectedExtent } from "../../item/itemRender/cuboidTransitionMesh";
 import {
   projectBlockXyzToScreenXy,
@@ -245,25 +237,38 @@ const floorLeftRightCutOffMask = <
 };
 
 const edgeSprites = ({
-  directionIndex,
+  slotDirectionIndex,
   times,
   position,
   spritesheet,
   cameraQuarterAngle,
 }: {
   /**
-   * the camera-space edge as a d-number (right = 4, towards = 6), picking the
-   * sprite directly
+   * the camera-near cardinal edge this floor edge draws on, as a d-number:
+   * right (d4) or towards (d6)
    */
-  directionIndex: Subset<DirectionIndexXy4, 4 | 6>;
+  slotDirectionIndex: Subset<DirectionIndexXy4, 4 | 6>;
   times: Partial<Xy> | undefined;
   position: Partial<Xyz>;
   spritesheet: AppSpritesheetWithVariants;
   cameraQuarterAngle: Xy;
 }): Container<Sprite> => {
+  // on odd quarter turns the slot shows the OTHER world edge's art,
+  // flipped: the mirror-symmetric outline lands identically, while the art's
+  // painted shading and baked world-side colours travel with the world edge -
+  // the light source (and edge colouring) stays fixed in the world. The mirror
+  // swaps the two near cardinals (right d4 ↔ towards d6):
+  const flipX = spriteFlipXAtAngle(cameraQuarterAngle);
+  const artDirectionIndex: Subset<DirectionIndexXy4, 4 | 6> =
+    flipX ?
+      slotDirectionIndex === directionIndexXy8.right ?
+        directionIndexXy8.towards
+      : directionIndexXy8.right
+    : slotDirectionIndex;
   return createSprite({
-    label: `floorEdge(${directionsXy8Octants[directionIndex]})`,
-    textureId: `floorEdge.d${directionIndex}`,
+    label: `floorEdge(${directionsXy8Octants[slotDirectionIndex]})`,
+    textureId: `floorEdge.d${artDirectionIndex}`,
+    flipX,
     times,
     ...projectWorldXyzToScreenXy(position, cameraQuarterAngle),
     cameraQuarterAngle,
@@ -272,19 +277,20 @@ const edgeSprites = ({
 };
 
 /**
- * one camera-near floor edge as laid out for its lip sprites - the colour
+ * one camera-near floor edge as laid out for its edge sprites - the colour
  * clash strips are drawn from the same layout so the two always align
  */
 type NearFloorEdge = {
   /** the camera-space edge as a d-number (right = 4, towards = 6) */
   directionIndex: Subset<DirectionIndexXy4, 4 | 6>;
-  /** the lip strip's (possibly reversal-shifted) anchor, in fine world px */
+  /** the edge strip's (possibly reversal-shifted) anchor, in fine world px */
   position: Partial<Xyz>;
   worldAlongAxis: AxisXy;
   tilesCount: number;
   /**
    * true when the edge's world axis projects reversed on screen, putting the
-   * corner shared with the other lip at the strip's far (max index) end
+   * corner shared with the other floor edge at the strip's far (max index)
+   * end
    */
   sharedCornerAtEnd: boolean;
 };
@@ -414,7 +420,7 @@ export const floorAppearance: ItemAppearance<"floor", RenderOnceProps> =
       const container = new Container({ label: "floorAppearance" });
       const spritesRenderContainer = new Container({ label: "sprites" });
 
-      // draw the whole floor (tiles, edge lips, cut-off mask) to its render
+      // draw the whole floor (tiles, floor edges, cut-off mask) to its render
       // box, not its raw physical aabb: the box extends the apparently-far
       // ("back") door-expanded edges by a cosmetic 0.02 block so they meet
       // the back walls (see makeItemRenderBoxAtCameraAngle), while the
@@ -425,7 +431,7 @@ export const floorAppearance: ItemAppearance<"floor", RenderOnceProps> =
       // fraction lives only inside the drawn content, where the bake's
       // single rasterisation absorbs it; the anchor itself never leaves the
       // whole-pixel grid. Only the horizontal x/y extent comes from the box;
-      // z stays the physical floor thickness (aabb.z). The edge-lip layout
+      // z stays the physical floor thickness (aabb.z). The floor-edge layout
       // below relies on this extent carrying the door fraction (matching the
       // pre-refactor aabb):
       const floorRenderBox = renderBoxes?.get(floorItem);
@@ -683,9 +689,9 @@ export const floorAppearance: ItemAppearance<"floor", RenderOnceProps> =
 
         // the floor's four edges, each anchored at its own corner and running the
         // floor's full extent along its axis. only the two that face the camera
-        // get a drawn lip: a camera-near edge is one whose direction rotates into a
+        // are drawn: a camera-near edge is one whose direction rotates into a
         // camera-facing (towards/right) side, and that rotated direction also picks
-        // the sprite (so the lip art swaps axis on odd quarter turns):
+        // the sprite (so the edge art swaps axis on odd quarter turns):
         const floorEdges = [
           {
             vector: unitVectors.towards,
@@ -713,13 +719,13 @@ export const floorAppearance: ItemAppearance<"floor", RenderOnceProps> =
           times: Partial<Xy>;
         }>;
 
-        // the two camera-near edges' layouts, as used by the lip sprites - the
+        // the two camera-near edges' layouts, as used by the edge sprites - the
         // colour clash (uncolourised mode) is drawn from the same layout:
         const nearEdges: NearFloorEdge[] = [];
 
         for (const { vector, position, times } of floorEdges) {
           // the edge's world direction rotated to how it appears, as a ring
-          // index once here - the index keys the sprite pick and the near-side
+          // index once here - the index keys the slot pick and the near-side
           // test, so both always agree:
           const rotatedDirection = rotateXy(vector, cameraQuarterAngle);
           const renderedDirectionIndex = nonZeroClosestDirectionIndexXy4(
@@ -730,7 +736,7 @@ export const floorAppearance: ItemAppearance<"floor", RenderOnceProps> =
             renderedDirectionIndex === directionIndexXy8.towards ||
             renderedDirectionIndex === directionIndexXy8.right
           ) {
-            // each lip tile's art extends over its cell in the direction the
+            // each edge tile's art extends over its cell in the direction the
             // rendered edge runs at the base angle. When the edge's world axis
             // projects reversed relative to that, every tile would hang over the
             // cell on the wrong side of its anchor corner - so anchor the strip
@@ -745,7 +751,7 @@ export const floorAppearance: ItemAppearance<"floor", RenderOnceProps> =
             // fractional (extended for doors), overshooting by the fraction.
             // The overshoot must sit at the camera-far end (where the cutoff
             // mask clips it), never over the near corner shared with the other
-            // lip - so the reversed shift is reduced by the overshoot:
+            // floor edge - so the reversed shift is reduced by the overshoot:
             const alongExtentPx = drawnAabb[worldAlongAxis];
             const tilesCount = worldAlongAxis === "x" ? edgeTilesX : edgeTilesY;
             const overshootPx = tilesCount * blockSizePx.x - alongExtentPx;
@@ -768,7 +774,7 @@ export const floorAppearance: ItemAppearance<"floor", RenderOnceProps> =
 
             floorEdgeContainer.addChild(
               edgeSprites({
-                directionIndex: renderedDirectionIndex,
+                slotDirectionIndex: renderedDirectionIndex,
                 times,
                 position: lipPosition,
                 spritesheet,
@@ -776,26 +782,6 @@ export const floorAppearance: ItemAppearance<"floor", RenderOnceProps> =
               }),
             );
           }
-        }
-
-        // the lip textures are colour-swopped per world side at spritesheet
-        // build. Their colours belong to the world edges and must travel with
-        // them as the camera rotates: at odd quarter-turns each rendered near
-        // edge is showing the other pair's world edge, so swap the two edge
-        // colour sets on the baked lips (180° pairs opposite edges, which share
-        // a colour, so it needs no swap):
-        const oddQuarterTurn = cameraAngleIsOddQuarterTurn(cameraQuarterAngle);
-        if (oddQuarterTurn) {
-          floorEdgeContainer.filters = filterCache.getOrInsertComputed(
-            `floorEdgeCross(${room.color.hue},${room.color.shade})`,
-            () =>
-              new PaletteSwapFilter(
-                { swops: floorEdgeCrossSwops(room.color), lutType: "sparse" },
-                // baked off-screen, so don't clip to the viewport:
-                Texture.WHITE,
-                false,
-              ),
-          );
         }
 
         spritesRenderContainer.addChild(floorEdgeContainer);

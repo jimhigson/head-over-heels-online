@@ -2,7 +2,10 @@ import { Container, type Sprite } from "pixi.js";
 
 import { type AppSpritesheetWithVariants } from "../../../sprites/spritesheet/AppSpritesheet";
 import { variantTextureId } from "../../../sprites/spritesheet/variantTextureId";
-import { resolveCameraRelativeIndexXy4 } from "../../../utils/vectors/resolveCameraRelativeVector";
+import {
+  resolveCameraRelativeIndexXy4,
+  spriteFlipXAtAngle,
+} from "../../../utils/vectors/resolveCameraRelativeVector";
 import {
   type DirectionIndexXy4,
   directionIndexXy8,
@@ -16,11 +19,18 @@ type JoystickRenderProps = {
   /** the on-screen push direction ring index the ball is nudged towards,
    * resolved per camera angle; undefined when the joystick is not being pushed */
   pushIndex: DirectionIndexXy4 | undefined;
+  /** whether the sprites are drawn horizontally flipped */
+  flipX: boolean;
 };
 
 const createContainerAndSprites = (
   spritesheet: AppSpritesheetWithVariants,
   isReflection: boolean,
+  /**
+   * flipped on odd quarter turns so the painted highlights stay on the
+   * joystick's world side (light source fixed in the world)
+   */
+  flipX: boolean,
 ) => {
   const container = new Container({ label: "joystick" });
 
@@ -33,6 +43,7 @@ const createContainerAndSprites = (
         false,
         false,
       ),
+      flipX,
       spritesheet,
     }),
   );
@@ -45,6 +56,7 @@ const createContainerAndSprites = (
         false,
         false,
       ),
+      flipX,
       spritesheet,
     }),
   );
@@ -83,10 +95,12 @@ export const joystickAppearance: ItemAppearance<
     pushDirection === undefined ? undefined : (
       resolveCameraRelativeIndexXy4(pushDirection, cameraAngle, false)
     );
+  const flipX = spriteFlipXAtAngle(cameraAngle);
 
   const render =
     currentlyRenderedProps === undefined ||
-    pushIndex !== currentlyRenderedProps.pushIndex;
+    pushIndex !== currentlyRenderedProps.pushIndex ||
+    flipX !== currentlyRenderedProps.flipX;
 
   if (!render) {
     return "no-update";
@@ -95,8 +109,9 @@ export const joystickAppearance: ItemAppearance<
   const { spritesheetForCurrentRoom: spritesheet } = spritesheets;
 
   const output =
-    currentRendering?.output ??
-    createContainerAndSprites(spritesheet, isReflection);
+    flipX === currentlyRenderedProps?.flipX ?
+      currentRendering!.output!
+    : createContainerAndSprites(spritesheet, isReflection, flipX);
 
   const ballSprite = output.getChildAt(1) as Sprite;
   ballSprite.texture =
@@ -117,6 +132,6 @@ export const joystickAppearance: ItemAppearance<
 
   return {
     output,
-    renderProps: { pushIndex },
+    renderProps: { pushIndex, flipX },
   };
 };

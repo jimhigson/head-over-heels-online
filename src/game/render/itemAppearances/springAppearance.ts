@@ -2,6 +2,7 @@ import { type AnimatedSprite } from "pixi.js";
 
 import { isStoodOn } from "../../../model/StoodOnBy";
 import { variantTextureId } from "../../../sprites/spritesheet/variantTextureId";
+import { spriteFlipXAtAngle } from "../../../utils/vectors/resolveCameraRelativeVector";
 import { createSprite } from "../createSprite";
 import { type ItemAppearance } from "./ItemAppearance";
 import { itemAppearanceOutsideView } from "./itemAppearanceOutsideView";
@@ -32,7 +33,7 @@ const springAppearanceImpl: (
       item: {
         state: { stoodOnBy, stoodOnUntilRoomTime },
       },
-      general: { paused, spritesheets },
+      general: { paused, spritesheets, cameraAngle },
     },
     tickContext: { lastRenderRoomTime },
     currentRendering,
@@ -62,6 +63,13 @@ const springAppearanceImpl: (
       });
       rendering.loop = false;
       rendering.gotoAndStop(rendering.totalFrames - 1);
+    }
+
+    if (!isShadowMask) {
+      // the coil flips on odd quarter turns so its painted highlight stays on
+      // its world side (light source fixed in the world); the mask is a
+      // symmetric silhouette so needs no flip:
+      rendering.scale.x = spriteFlipXAtAngle(cameraAngle) ? -1 : 1;
     }
 
     const boing =
