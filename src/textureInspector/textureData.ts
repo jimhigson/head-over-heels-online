@@ -44,7 +44,7 @@ const detectType = (stack: string): TrackedTextureSource["type"] => {
   if (stack.includes("TextContainer")) {
     return "TextContainer";
   }
-  if (stack.includes("createSwoppedSpritesheet")) {
+  if (stack.includes("buildRoomSheet")) {
     return "spritesheet(swopped)";
   }
   if (stack.includes("buildOriginal")) {

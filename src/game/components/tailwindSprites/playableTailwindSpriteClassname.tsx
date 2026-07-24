@@ -4,7 +4,7 @@ import {
   type AnimatedTextureTailwindClass,
   type TextureTailwindClass,
 } from "../../../sprites/spritesheet/spritesheetData/TextureTailwindClass";
-import { type LoadableSpriteOption } from "../../../sprites/spritesheet/Spritesheets";
+import { type SpriteOptionName } from "../../../sprites/spritesheet/Spritesheets";
 import { useAppSelector } from "../../../store/hooks";
 import { selectSpritesOption } from "../../../store/slices/gameMenus/gameMenusSelectors";
 import { twClass } from "../../../utils/twClass" with { type: "macro" };
@@ -12,7 +12,7 @@ import { type DirectionXy8 } from "../../../utils/vectors/vectors";
 
 const idleHeadClass = (
   facingXy8: DirectionXy8,
-  spritesheetName: LoadableSpriteOption,
+  spritesheetName: SpriteOptionName,
 ): AnimatedTextureTailwindClass | TextureTailwindClass => {
   const directionFrames =
     spritesheetMetas[spritesheetName].playable.head[facingXy8];
@@ -126,7 +126,7 @@ const idleHeadClass = (
 
 const idleHeelsClass = (
   facingXy8: DirectionXy8,
-  spritesheetName: LoadableSpriteOption,
+  spritesheetName: SpriteOptionName,
 ): AnimatedTextureTailwindClass | TextureTailwindClass => {
   const directionFrames =
     spritesheetMetas[spritesheetName].playable.heels[facingXy8];
@@ -247,7 +247,7 @@ export const playableTailwindSpriteClassname = ({
   character: IndividualCharacterName;
   facingXy8: DirectionXy8;
   action: "idle" | "walking";
-  spritesheetName: LoadableSpriteOption;
+  spritesheetName: SpriteOptionName;
 }): AnimatedTextureTailwindClass | TextureTailwindClass => {
   switch (character) {
     case "head": {
