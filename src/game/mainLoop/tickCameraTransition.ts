@@ -12,8 +12,12 @@ import {
   transitionCameraAngle,
 } from "./transitionCameraAngle";
 
-/** how long a full 90° rotation transition takes, in ms */
-export const cameraTransitionDurationMs = 500;
+/**
+ * how long a full 90° rotation transition takes, in game-speed-scaled ms: the
+ * transition advances on the scaled clock, so at the default 1.2 game speed
+ * this plays in 500ms of real time
+ */
+export const cameraTransitionDurationMs = 600;
 
 const halfPi = Math.PI / 2;
 

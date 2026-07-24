@@ -1,5 +1,6 @@
 import { expect, type Page, test } from "@playwright/test";
 
+import { type CameraRotationDirection } from "../src/game/mainLoop/tickCameraTransition";
 import { dispatchKeyPress } from "./testUtils/gameInteractions";
 import {
   setZeroGameSpeed,
@@ -23,10 +24,11 @@ restrictToCameraRotationProjects();
  * surfaces, so any item that fails to survive the round trip (eg a vanished
  * bake) shows up as a screenshot diff against the pre-rotation baseline.
  *
- * the whole test runs at zero game speed: camera turns advance on the real
- * frame clock (decoupled from game speed), while physics and sprite
- * animations never run - roomTime is asserted unchanged across the test, so
- * the two screenshots compare exactly the same room state.
+ * the whole test runs at zero game speed, so physics and sprite animations
+ * never run - roomTime is asserted unchanged across the test, so the two
+ * screenshots compare exactly the same room state. Camera turns are applied
+ * as instant flips of the settled camera angle: only the resulting angle
+ * matters to the rendering under test, so no rotation is animated.
  *
  * NOTE: the committed baseline is the PRE-rotation rendering - do not
  * regenerate with --update-snapshots while the post-rotation assertion fails,
@@ -41,29 +43,21 @@ const identityCases: Array<{
    * head enters a room, so rooms exercising them must be entered as heels
    */
   character: "head" | "heels";
-  /** rotation keys pressed in order; the sequence returns to the base angle */
-  turns: Array<{ key: string; code: string }>;
+  /** quarter turns applied in order; the sequence returns to the base angle */
+  turns: Array<CameraRotationDirection>;
 }> = [
   {
     // a full anticlockwise revolution; the upper block must still render
     room: "blacktooth11",
     character: "head",
-    turns: [
-      { key: ",", code: "Comma" },
-      { key: ",", code: "Comma" },
-      { key: ",", code: "Comma" },
-      { key: ",", code: "Comma" },
-    ],
+    turns: ["anticlockwise", "anticlockwise", "anticlockwise", "anticlockwise"],
   },
   {
     // one anticlockwise turn and back again; the bottom row of hush puppies
     // must still render
     room: "blacktooth61",
     character: "heels",
-    turns: [
-      { key: ",", code: "Comma" },
-      { key: ".", code: "Period" },
-    ],
+    turns: ["anticlockwise", "clockwise"],
   },
 ];
 
@@ -75,12 +69,21 @@ const currentRoomTime = (page: Page) =>
     return roomTime;
   });
 
-const rotationFinished = async (page: Page) => {
-  await page.waitForFunction(
-    () => window._e2e_gamePageGameAi?.gameState.cameraTransition === undefined,
-    undefined,
-    { timeout: 10_000 },
-  );
+/**
+ * flip the camera a quarter turn instantly by writing the settled
+ * targetCameraAngle directly: the rendering under test needs only the
+ * resulting angle, so no transition is started and nothing animates
+ */
+const quarterTurnCameraInstantly = async (
+  page: Page,
+  direction: CameraRotationDirection,
+) => {
+  await page.evaluate((direction) => {
+    const { gameState } = window._e2e_gamePageGameAi!;
+    const { x, y } = gameState.targetCameraAngle;
+    gameState.targetCameraAngle =
+      direction === "anticlockwise" ? { x: -y, y: x } : { x: y, y: -x };
+  }, direction);
 };
 
 /**
@@ -123,11 +126,10 @@ test("mid-return-turn draws the masked cyclic pair whole: blacktooth61", async (
   await renderEvent;
   await page.waitForTimeout(500);
 
-  // one full anticlockwise turn, then hold the return turn well past its
-  // midpoint hand-over, where the re-created mask must already be baked into
-  // the warp snapshots:
-  await dispatchKeyPress(page, ",", "Comma");
-  await rotationFinished(page);
+  // settle one anticlockwise quarter from base, then hold the return turn
+  // well past its midpoint hand-over, where the re-created mask must already
+  // be baked into the warp snapshots:
+  await quarterTurnCameraInstantly(page, "anticlockwise");
   await page.waitForTimeout(300);
   await page.evaluate(() => {
     window._e2e_gamePageGameAi!._e2e_holdCameraTransition!("clockwise", 0.7);
@@ -216,11 +218,9 @@ for (const { room, character, turns } of identityCases) {
       return scroll!;
     });
 
-    // camera turns run on the real frame clock even at zero game speed, so
-    // physics/animations stay frozen throughout:
-    for (const { key, code } of turns) {
-      await dispatchKeyPress(page, key, code);
-      await rotationFinished(page);
+    // instant angle flips, so physics/animations stay frozen throughout:
+    for (const direction of turns) {
+      await quarterTurnCameraInstantly(page, direction);
       await page.waitForTimeout(300);
     }
 

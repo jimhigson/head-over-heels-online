@@ -241,7 +241,7 @@ export class MainLoop<RoomId extends string> {
     return existing;
   }
 
-  #tick = ({ deltaMS: tickerDeltaMS, elapsedMS }: Ticker): void => {
+  #tick = ({ deltaMS: tickerDeltaMS }: Ticker): void => {
     const tickState = store.getState();
     const showFps = selectShowFps(tickState);
     const timingRecord = showFps ? loadedFrameTimingStats() : undefined;
@@ -296,12 +296,14 @@ export class MainLoop<RoomId extends string> {
     this.#mainContainer.tint =
       isPaused && !tickSpriteOption.uncolourised ? pausedDimTint : noTint;
 
-    // camera rotation is a view concern, decoupled from the game speed: the
-    // rotate input is read and the rotation advanced on the real
-    // (unscaled) frame clock, so transitions run even if gameSpeed = 0.
+    // the rotation advances on the game-speed-scaled clock, so slow-motion
+    // (or a zero game speed) slows/freezes a rotation mid-turn for
+    // inspection; tests never rely on the transition playing out - they
+    // either jump straight to a camera angle or clamp the progress via
+    // _e2e_cameraTransitionHold:
     if (!isPaused) {
       rotateCameraIfInput(this.#gameState);
-      tickCameraTransition(this.#gameState, elapsedMS);
+      tickCameraTransition(this.#gameState, deltaMS);
     }
 
     // note that progressing the game state can change/reload the room,
