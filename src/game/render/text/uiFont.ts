@@ -37,3 +37,4 @@ export const ensureUiFontLoaded = (variant: UiFontVariant): Promise<FontFace> =>
     document.fonts.add(fontFace);
     return fontFace;
   });
+
