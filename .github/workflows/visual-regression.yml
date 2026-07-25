@@ -126,9 +126,17 @@ jobs:
           - { os: windows-latest, suite: roomSnapshots.spec.ts, projectOption: --project chromium-desktop, batch_number: 13, batch_count: 14, parallel_tests: 1, no_toppy: "1" }
 
           # CAMERA ROTATION (identity + sweep) -
-          # only desktop-chromium (Linux) and one mobile-webkit (macOS)
-          - { os: ubuntu-24.04-arm, suite: cameraRotation, projectOption: --project chromium-desktop }
-          - { os: macos-latest, suite: cameraRotation, projectOption: --project mobile-safari }
+          # only desktop-chromium (Linux) and one mobile-webkit (macOS).
+          # excludes the smooth-sprites tests below (their own job) so they
+          # don't also run here as part of the whole spec file:
+          - { os: ubuntu-24.04-arm, suite: cameraRotation, projectOption: --project chromium-desktop, grepInvert: "smooth sprites" }
+          - { os: macos-latest, suite: cameraRotation, projectOption: --project mobile-safari, grepInvert: "smooth sprites" }
+
+          # SMOOTH SPRITES (live toggle + reload-with-setting-persisted) - bespoke
+          # boot/reload steps unlike the angle-sweep scenarios, so filtered by test
+          # title rather than folded into the scenario loop above:
+          - { os: ubuntu-24.04-arm, suite: cameraRotation, projectOption: --project chromium-desktop, grep: "smooth sprites" }
+          - { os: macos-latest, suite: cameraRotation, projectOption: --project mobile-safari, grep: "smooth sprites" }
 
           # LUT SNAPSHOTS - single batch per os/browser combo
           # chromium/mobile-chrome on Linux, webkit/mobile-safari on macOS:
@@ -168,6 +176,7 @@ jobs:
         || matrix.suite == 'menuSnapshotsMainMenu' && format('MnuMain {0}', contains(matrix.os, 'windows') && 'Win' || contains(matrix.os, 'macos') && 'Mac' || 'Lnx')
         || matrix.suite == 'settingsReflectInGame' && 'Settings'
         || matrix.suite == 'spritesPage' && 'Sprites'
+        || matrix.grep == 'smooth sprites' && format('Smooth {0}', contains(matrix.os, 'macos') && 'Mac' || 'Lnx')
         || startsWith(matrix.suite, 'cameraRotation') && format('CamRot {0}', contains(matrix.os, 'macos') && 'Mac' || 'Lnx')
         || startsWith(matrix.suite, 'roomSnapshotsRotated') && format('Rotated {0}', contains(matrix.os, 'macos') && 'Mac' || 'Lnx')
         || matrix.suite == '' && format('All:{0}',
@@ -201,7 +210,10 @@ jobs:
           PLAYWRIGHT_CHROMIUM_ARGS: ${{ runner.os == 'Windows' && '--enable-unsafe-swiftshader' || '' }}
           NO_UNCOLOURISED: ${{ matrix.no_uncolourised }}
           NO_TOPPY: ${{ matrix.no_toppy }}
-        run: pnpm playwright test ${{ matrix.suite }} ${{ matrix.projectOption }}
+        run: >-
+          pnpm playwright test ${{ matrix.suite }} ${{ matrix.projectOption }}
+          ${{ matrix.grep && format('-g "{0}"', matrix.grep) || '' }}
+          ${{ matrix.grepInvert && format('--grep-invert "{0}"', matrix.grepInvert) || '' }}
 
       - name: Upload test results
         uses: actions/upload-artifact@v7
