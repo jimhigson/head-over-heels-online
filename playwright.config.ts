@@ -34,6 +34,19 @@ if (isRootPlaywrightProcess) {
   process.env.PW_WEBSERVER_PORT = String(webserverPort);
 }
 
+/**
+ * headless Chromium on Linux resolves font hinting/subpixel-positioning from
+ * a fontconfig query at launch, and lands in one of two discrete, otherwise
+ * fully deterministic rendering modes depending on that VM's fontconfig
+ * state: normal crisp integer-hinted text, or a subpixel-positioned mode with
+ * a +2px title/body gap and antialiased glyph edges. Disabling subpixel
+ * positioning pins every runner to the crisp mode, matching the committed
+ * baselines - see https://chromium.googlesource.com/chromium/src/+/e1b855d4545dc4fff19cee500d7ce105126f3bd2
+ */
+const chromiumFontRenderingLaunchOptions = {
+  args: ["--disable-font-subpixel-positioning"],
+};
+
 export default defineConfig<ScreenshotTestOptions>({
   testDir: "./e2e",
   testMatch: "**/*.spec.ts",
@@ -55,6 +68,7 @@ export default defineConfig<ScreenshotTestOptions>({
       use: {
         ...devices["Desktop Chrome"],
         ...desktopSize,
+        launchOptions: chromiumFontRenderingLaunchOptions,
       },
     },
     {
@@ -76,6 +90,7 @@ export default defineConfig<ScreenshotTestOptions>({
       use: {
         ...devices["Pixel 5 landscape"],
         ...phoneSize,
+        launchOptions: chromiumFontRenderingLaunchOptions,
       },
     },
     {
