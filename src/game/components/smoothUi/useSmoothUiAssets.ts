@@ -12,8 +12,8 @@ import { selectTotalUpscale } from "../../../store/slices/upscale/upscaleSlice";
 import { persistor } from "../../../store/store";
 import { createSerialisableErrors } from "../../../utils/redux/createSerialisableErrors";
 import { maxCleanEdgeBakeFactor } from "../../render/filters/cleanEdge/bakeCleanEdgeTexture";
+import { ensureUiFontLoaded, uiFontFamilies } from "../../render/text/uiFont";
 import { bakeCleanEdgeImageBlob } from "./bakeCleanEdgeImageBlob";
-import { ensureUiFontLoaded, uiFontFamilies } from "./uiFont";
 
 /**
  * css property (on :root) that switches all ui text between the base and
