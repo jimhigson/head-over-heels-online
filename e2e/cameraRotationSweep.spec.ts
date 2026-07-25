@@ -92,7 +92,8 @@ const epsilonDegrees = 0.000_000_1;
  *   strictly weaker test that looked identical
  */
 type SweepAngles =
-  { type: "identicallyRenderingAngles"; groups: number[][] } | number[];
+  | { type: "identicallyRenderingAngles"; groups: number[][] }
+  | number[];
 
 /** one screenshotted frame of a scenario */
 type SweepCapture = {
@@ -390,6 +391,15 @@ const scenarios: readonly SweepScenario[] = [
     maxDiffPixels: 1_000,
   }),
   sweepScenario({
+    roomId: "blacktooth5",
+    campaign: "original",
+    // entered through the door from adjacent blacktooth4:
+    enterFrom: "blacktooth4",
+    angles: [0, 90, 180, 270],
+    emulatedResolution: "$$default",
+    character: "head",
+  }),
+  sweepScenario({
     // the floor's colour-clash rendering must survive to every rotated angle,
     // which the colourised rotate-camera-test rooms cannot show:
     roomId: "safari6triple",
@@ -442,10 +452,12 @@ const capturesForScenario = ({
   // group's first angle:
   return angles.groups.flatMap((group) => {
     const [baselineDegrees] = group;
-    return group.map((degrees): SweepCapture => ({
-      degrees,
-      baselineDegrees,
-    }));
+    return group.map(
+      (degrees): SweepCapture => ({
+        degrees,
+        baselineDegrees,
+      }),
+    );
   });
 };
 
