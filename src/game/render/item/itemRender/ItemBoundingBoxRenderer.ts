@@ -292,7 +292,7 @@ export class ItemBoundingBoxRenderer<
       if (textNode !== undefined) {
         return;
       }
-      const { pixiRenderer } = this.renderContext.general;
+      const { pixiRenderer, spritesheets } = this.renderContext.general;
       const lines = [
         `${item.id} ${item.type}`,
         `at (${item.state.position.x}, ${item.state.position.y}, ${item.state.position.z})`,
@@ -303,6 +303,7 @@ export class ItemBoundingBoxRenderer<
         textNode.addChild(
           new TextContainer({
             pixiRenderer,
+            resolution: spritesheets.bakeFactor,
             text: line,
             colour: new Color(color),
             y: i * 10,
