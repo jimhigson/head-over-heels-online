@@ -1,4 +1,5 @@
 import { type Upscale } from "../../../store/slices/upscale/Upscale";
+import { spriteOptionEquals } from "../../../store/slices/userSettings/spriteOptionEquals";
 import {
   type InputDirectionMode,
   type SpriteOption,
@@ -31,7 +32,13 @@ export const needsNewHudRenderer = <
   renderer === undefined ||
   webGlContextRestored ||
   originalSheetRebuilt ||
-  renderer.renderContext.general.spriteOption !== spriteOption ||
+  // compared by value: the option the tick renders under is derived (a paused
+  // tick renders a sheet-supporting option uncolourised), so an equal option
+  // arrives as a fresh object on every tick it is derived on
+  !spriteOptionEquals(
+    renderer.renderContext.general.spriteOption,
+    spriteOption,
+  ) ||
   renderer.renderContext.general.onScreenControls !== onScreenControls ||
   renderer.renderContext.inputDirectionMode !== inputDirectionMode ||
   // invalidate on changing landscape/portrait since on-screen controls need this

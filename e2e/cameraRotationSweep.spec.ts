@@ -18,10 +18,13 @@ import {
   osSlowness,
   restrictToCameraRotationProjects,
 } from "./testUtils/infrastructure";
+import { formatProjectName } from "./testUtils/logging";
 import {
   clickOriginalCampaign,
   clickPlayTheGame,
   exitCrownsDialog,
+  navigateToSubmenu,
+  openInGameMainMenu,
   startCampaignViaMenu,
 } from "./testUtils/menuNavigation";
 import { enableOnScreenControls } from "./testUtils/onScreenControls";
@@ -871,12 +874,13 @@ for (const scenario of scenarios) {
 }
 
 /**
- * every texture drawn by the hud that is not the shared empty texture, as
- * `label: resolution` pairs. Reading the resolutions off the live scene graph
- * is ground truth for "is this drawn from an upscaled bake", which pixels
- * cannot reliably tell apart
+ * the live hud's identity and the textures it draws: pixi's own `uid` for the
+ * hud container (so a rebuild is detectable), and every texture that is not
+ * the shared empty one as `label: resolution` pairs. Reading this off the
+ * scene graph is ground truth for both "is this drawn from an upscaled bake"
+ * and "was the hud rebuilt", neither of which pixels can tell apart
  */
-const hudTextureResolutions = (page: Page) =>
+const hudRendererState = (page: Page) =>
   page.evaluate(() => {
     const findHud = (node: Container): Container | undefined => {
       if (node.label === "HudRenderer") {
@@ -913,7 +917,7 @@ const hudTextureResolutions = (page: Page) =>
       }
     };
     walk(hud, "");
-    return resolutions;
+    return { uid: hud.uid, resolutions };
   });
 
 test.describe("smooth sprites", () => {
@@ -936,7 +940,7 @@ test.describe("smooth sprites", () => {
 
     // ground truth first: every hud texture must report the upscaled bake,
     // not just the ones a screenshot's tolerance happens to catch:
-    const resolutions = await hudTextureResolutions(page);
+    const { resolutions } = await hudRendererState(page);
     expect(Object.keys(resolutions).length).toBeGreaterThan(0);
     expect(
       Object.entries(resolutions).filter(([, resolution]) => resolution === 1),
@@ -951,6 +955,34 @@ test.describe("smooth sprites", () => {
       "smooth-sprites-hud-live-toggle.png",
       roomScreenshotOptions(testInfo.project.name),
     );
+  });
+
+  test("opening a display menu does not rebuild the hud every frame", async ({
+    page,
+  }, testInfo) => {
+    await startCampaignViaMenu(page, testInfo.project.name, "originalGame");
+    await enableOnScreenControls(page);
+    await enableSmoothSprites(page);
+
+    // the option a paused tick renders under is derived per tick, so a menu
+    // being open is exactly the state that can rebuild the hud endlessly -
+    // and at this bake factor every rebuild re-rasterises the hud's text into
+    // freshly allocated upscaled textures
+    const logHeader = formatProjectName(testInfo.project.name);
+    await openInGameMainMenu(page, logHeader);
+    await navigateToSubmenu(page, "options", logHeader);
+    await page.locator('[data-dialog-id="modernisationOptions"]').waitFor();
+    await navigateToSubmenu(page, "display", logHeader);
+    await page.locator('[data-dialog-id="displayOptions"]').waitFor();
+    await page.waitForTimeout(1_000 * osSlowness);
+
+    const { uid: uidWhileOpen } = await hudRendererState(page);
+    await page.waitForTimeout(2_000 * osSlowness);
+
+    // pixi hands out a fresh uid per container, so an unchanged one is proof
+    // the hud instance survived, rather than being destroyed and rebuilt on
+    // every one of the frames rendered in between
+    expect((await hudRendererState(page)).uid).toBe(uidWhileOpen);
   });
 
   test("the game starts when it is already on at boot", async ({
