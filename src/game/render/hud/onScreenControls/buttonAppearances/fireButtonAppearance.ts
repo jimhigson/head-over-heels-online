@@ -29,6 +29,7 @@ type SurfaceContentChildren = [
 const createSurface = (
   pixiRenderer: Renderer,
   spritesheet: AppSpritesheetWithVariants,
+  resolution: number,
 ): Container<Sprite | TextContainer> => {
   const hooter = createSprite({
     textureId: "hooter",
@@ -44,6 +45,7 @@ const createSurface = (
 
   const text = new TextContainer({
     pixiRenderer,
+    resolution,
     outline: true,
     y: textYForButtonCentre,
   });
@@ -116,7 +118,7 @@ export const fireButtonAppearance: ButtonAppearance<
     new ArcadeStyleButtonContainer<Container<Sprite | TextContainer>>(
       button.which,
       spritesheets.originalSpritesheet,
-      createSurface(pixiRenderer, spritesheet),
+      createSurface(pixiRenderer, spritesheet, spritesheets.bakeFactor),
     );
 
   if (roomChanged) {

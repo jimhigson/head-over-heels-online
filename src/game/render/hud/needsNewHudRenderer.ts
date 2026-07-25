@@ -21,9 +21,10 @@ export const needsNewHudRenderer = <
    */
   webGlContextRestored: boolean,
   /**
-   * the original spritesheet instance was recreated this tick (eg at a new
-   * cleanEdge bake factor) - the renderer's glyph sprites reference textures
-   * destroyed with the old sheet
+   * the original spritesheet instance has been recreated (eg at a new
+   * cleanEdge bake factor) since the renderer was built - its glyph sprites
+   * reference textures destroyed with the old sheet, and its text is
+   * rasterised for the old bake factor
    */
   originalSheetRebuilt: boolean,
 ): boolean =>
