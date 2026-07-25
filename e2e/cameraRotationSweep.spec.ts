@@ -92,8 +92,7 @@ const epsilonDegrees = 0.000_000_1;
  *   strictly weaker test that looked identical
  */
 type SweepAngles =
-  | { type: "identicallyRenderingAngles"; groups: number[][] }
-  | number[];
+  { type: "identicallyRenderingAngles"; groups: number[][] } | number[];
 
 /** one screenshotted frame of a scenario */
 type SweepCapture = {
@@ -452,12 +451,10 @@ const capturesForScenario = ({
   // group's first angle:
   return angles.groups.flatMap((group) => {
     const [baselineDegrees] = group;
-    return group.map(
-      (degrees): SweepCapture => ({
-        degrees,
-        baselineDegrees,
-      }),
-    );
+    return group.map((degrees): SweepCapture => ({
+      degrees,
+      baselineDegrees,
+    }));
   });
 };
 
