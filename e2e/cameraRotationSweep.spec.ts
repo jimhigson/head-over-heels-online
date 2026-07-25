@@ -5,6 +5,7 @@ import { type ResolutionName } from "../src/originalGame";
 import { type SpriteOption } from "../src/store/slices/userSettings/userSettingsSlice";
 import { allItemsTestRoomCampaign } from "./fixtures/allItemsTestRoom";
 import { bootPlaytestCampaign } from "./testUtils/bootPlaytestCampaign";
+import { enableSmoothSprites } from "./testUtils/enableSmoothSprites";
 import {
   dispatchToStore,
   setZeroGameSpeed,
@@ -163,6 +164,12 @@ type SweepScenario<C extends SweepCampaign = SweepCampaign> = {
    * rendering of the alternate sheets/modes
    */
   spriteOptions?: SpriteOption[];
+  /**
+   * turn the smooth-sprites (cleanEdge upscaling) display setting on once the
+   * room is entered, waiting for the upscaled sheets to be live before any
+   * captures - so every frame of the scenario shows the smooth rendering
+   */
+  smoothSprites?: boolean;
   /**
    * how many pixels may differ from the baseline, loosening the shared
    * room-screenshot budget (zero) for scenarios whose frames legitimately
@@ -401,6 +408,39 @@ const scenarios: readonly SweepScenario[] = [
     spriteOptions: [{ name: "BlockStack", uncolourised: true }],
     maxDiffPixels: 1_000,
   }),
+  // the smooth-sprites (cleanEdge upscaled) rendering across three sceneries
+  // the suite does not otherwise sweep, each at the base and one rotated
+  // settled angle:
+  sweepScenario({
+    roomId: "bookworld28",
+    campaign: "original",
+    // entered through the door from adjacent bookworld27:
+    enterFrom: "bookworld27",
+    character: "head",
+    angles: [0, 90],
+    emulatedResolution: "$$default",
+    smoothSprites: true,
+  }),
+  sweepScenario({
+    roomId: "moonbase1",
+    campaign: "original",
+    // entered through the door from adjacent moonbase2:
+    enterFrom: "moonbase2",
+    character: "head",
+    angles: [0, 90],
+    emulatedResolution: "$$default",
+    smoothSprites: true,
+  }),
+  sweepScenario({
+    roomId: "penitentiary18fish",
+    campaign: "original",
+    // entered through the door from adjacent penitentiary17:
+    enterFrom: "penitentiary17",
+    character: "head",
+    angles: [0, 90],
+    emulatedResolution: "$$default",
+    smoothSprites: true,
+  }),
   ...(["blacktooth15", "blacktooth1head", "blacktooth13"] as const).map(
     (roomId) =>
       // the turn's start must be continuous: an infinitesimal step into a turn
@@ -633,6 +673,12 @@ const bootScenario = async (page: Page, scenario: SweepScenario) => {
 
   await enterRoom(page, scenario, campaignHashUrl);
 
+  if (scenario.smoothSprites) {
+    // set after entering so the upscaled-sheet wait inside is satisfied by the
+    // swept room's own stage, not a boot room passed through:
+    await enableSmoothSprites(page);
+  }
+
   await page.waitForTimeout(500);
 };
 
@@ -646,6 +692,7 @@ const scenarioBaseName = ({
   character,
   enterFrom,
   emulatedResolution,
+  smoothSprites,
 }: SweepScenario): string =>
   [
     roomId,
@@ -654,6 +701,7 @@ const scenarioBaseName = ({
     : enterFrom === "$$final" ? "-from-final"
     : `-from-${enterFrom}`,
     emulatedResolution === "$$default" ? "" : `-${emulatedResolution}`,
+    smoothSprites ? "-smooth" : "",
   ].join("");
 
 /**
@@ -667,6 +715,7 @@ const scenarioBaseName = ({
  * | character          | head                  | `-heels`                       |
  * | enterFrom          | "$$startingRoom"      | `-from-<room>` / `-from-final` |
  * | emulatedResolution | "$$default"           | `-<resolutionName>`            |
+ * | smoothSprites      | false                 | `-smooth`                      |
  * | spriteOption       | BlockStack colourised | `-uncolourised` / `-toppy`     |
  * | angle              | 0°                    | `-<degrees>deg`                |
  * | capture time       | 0ms                   | `-<milliseconds>ms`            |
@@ -762,7 +811,10 @@ for (const scenario of scenarios) {
   test(`camera angles render deterministically: ${scenarioBaseName(scenario)} (${scenarioAxes(scenario)})`, async ({
     page,
   }, testInfo) => {
-    test.setTimeout(360_000);
+    // smooth-sprites scenarios need longer: software-rendered environments
+    // (SwiftShader in CI or a sandbox) are very slow to compile the cleanEdge
+    // shader on first bake:
+    test.setTimeout(scenario.smoothSprites ? 600_000 : 360_000);
     await bootScenario(page, scenario);
 
     // the sprite options to capture in - just the platform default when the
