@@ -11,6 +11,13 @@ const pointerFps = 24;
 const pointerIntervalMs = 1_000 / pointerFps;
 
 /**
+ * hidden this long after the mouse stops moving - same time as the hud's
+ * pointer-summoned buttons use, so the pointer and buttons appear and
+ * disappear together
+ */
+const hideAfterIdleMs = 2_000;
+
+/**
  * A software-rendered mouse pointer for when the dialogs are mirrored into
  * the canvas for the crt filter. Rendered inside the mirrored subtree, it is
  * warped by the crt shaders along with the dialogs - so the pointer always
@@ -23,7 +30,9 @@ const pointerIntervalMs = 1_000 / pointerFps;
  *
  * The sprite's tip is at its top-left, so no hotspot offset is needed.
  *
- * Only shown for mouse input; touch input has no pointer to draw.
+ * Only shown for mouse input; touch input has no pointer to draw. Like the
+ * hud's pointer-summoned buttons, it hides after {@link hideAfterIdleMs} of
+ * the mouse not moving.
  */
 export const SoftwarePointer = (_emptyProps: EmptyObject) => {
   const [position, setPosition] = useState<null | Xy>(null);
@@ -34,6 +43,15 @@ export const SoftwarePointer = (_emptyProps: EmptyObject) => {
     let lastAppliedAtMs = -Infinity;
     let pending: null | Xy = null;
     let trailingTimeout: number | undefined;
+    let hideTimeout: number | undefined;
+
+    const restartHideTimeout = () => {
+      window.clearTimeout(hideTimeout);
+      hideTimeout = window.setTimeout(() => {
+        lastApplied = null;
+        setPosition(null);
+      }, hideAfterIdleMs);
+    };
 
     const apply = (snapped: Xy) => {
       if (
@@ -56,6 +74,7 @@ export const SoftwarePointer = (_emptyProps: EmptyObject) => {
         setPosition(null);
         return;
       }
+      restartHideTimeout();
       // viewport px -> the mirrored subtree's layout space (the canvas'
       // pre-css-upscale box, positioned at the viewport origin), snapped to
       // whole scaled pixels
@@ -86,6 +105,7 @@ export const SoftwarePointer = (_emptyProps: EmptyObject) => {
     return () => {
       window.removeEventListener("pointermove", handlePointerMove);
       window.clearTimeout(trailingTimeout);
+      window.clearTimeout(hideTimeout);
     };
   }, [cssUpscale, gameEngineUpscale]);
 
