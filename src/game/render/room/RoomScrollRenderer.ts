@@ -160,8 +160,13 @@ const computeRoomScrollGeometry = <
     x: effectiveScreenSize.x / 2 - renderingMedianX,
     y:
       fitsInY && onScreenControls ?
-        // streamlined version for rooms that fit on the screen in y on mobile - simply centre vertically:
-        Math.floor((effectiveScreenSize.y + roomRenderingHeight) / 2) - 4
+        // streamlined version for rooms that fit on the screen in y on mobile -
+        // simply centre vertically. Anchoring on the floors' projected bottom
+        // edge keeps this correct at every camera angle - the projection
+        // rotates about the world origin, so the bottom edge is only near
+        // zero at the base angle:
+        Math.floor((effectiveScreenSize.y + roomRenderingHeight) / 2) -
+        floorsBottomEdgeY
       : effectiveScreenSize.y -
         bottomMargin -
         floorsBottomEdgeY -

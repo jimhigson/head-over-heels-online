@@ -390,6 +390,15 @@ const scenarios: readonly SweepScenario[] = [
     maxDiffPixels: 1_000,
   }),
   sweepScenario({
+    roomId: "blacktooth5",
+    campaign: "original",
+    // entered through the door from adjacent blacktooth4:
+    enterFrom: "blacktooth4",
+    angles: [0, 90, 180, 270],
+    emulatedResolution: "$$default",
+    character: "head",
+  }),
+  sweepScenario({
     // the floor's colour-clash rendering must survive to every rotated angle,
     // which the colourised rotate-camera-test rooms cannot show:
     roomId: "safari6triple",
