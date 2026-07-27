@@ -5,7 +5,7 @@ settings:
   excludeLinksFromLockfile: false
 
 patchedDependencies:
-  pixi.js: 6c958ee45355bbad8e7a66d319664117e21f41e7bfdd5d9eea03dfbaa0af190a
+  pixi.js: 3695281549aebda9f7d3a527d6e54291e81a281fc8a4fde87cb3e6e36edcb3e2
 
 importers:
 
@@ -13,7 +13,7 @@ importers:
     dependencies:
       '@blockstacking/jims-shaders':
         specifier: ^0.4.5
-        version: 0.4.5(pixi.js@8.16.0(patch_hash=6c958ee45355bbad8e7a66d319664117e21f41e7bfdd5d9eea03dfbaa0af190a))
+        version: 0.4.5(pixi.js@8.19.0(patch_hash=3695281549aebda9f7d3a527d6e54291e81a281fc8a4fde87cb3e6e36edcb3e2))
       '@github/mini-throttle':
         specifier: ^2.1.1
         version: 2.1.1
@@ -57,8 +57,8 @@ importers:
         specifier: ^2.0.2
         version: 2.0.2
       pixi.js:
-        specifier: 8.16.0
-        version: 8.16.0(patch_hash=6c958ee45355bbad8e7a66d319664117e21f41e7bfdd5d9eea03dfbaa0af190a)
+        specifier: 8.19.0
+        version: 8.19.0(patch_hash=3695281549aebda9f7d3a527d6e54291e81a281fc8a4fde87cb3e6e36edcb3e2)
       preact:
         specifier: 11.0.0-beta.1
         version: 11.0.0-beta.1
@@ -269,8 +269,6 @@ importers:
         version: 1.6.11
 
 packages:
-  dougmencken_HeadOverHeels@https://codeload.github.com/dougmencken/HeadOverHeels/tar.gz/08aee0cb050405dc23d95bf288631452bec28c9f:
-    resolution: {gitHosted: true, tarball: https://codeload.github.com/dougmencken/HeadOverHeels/tar.gz/08aee0cb050405dc23d95bf288631452bec28c9f}
 
   '@alloc/quick-lru@5.2.0':
     resolution: {integrity: sha512-UrcABB+4bUrFABwbluTIBErXwvbsU/V7TZWfmbgJfbkwiBuziS9gxdODUyuiecfdGQ85jglMW6juS3+z5TsKLw==}
@@ -3088,10 +3086,9 @@ packages:
   '@webgpu/types@0.1.69':
     resolution: {integrity: sha512-RPmm6kgRbI8e98zSD3RVACvnuktIja5+yLgDAkTmxLr90BEwdTXRQWNLF3ETTTyH/8mKhznZuN5AveXYFEsMGQ==}
 
-  '@xmldom/xmldom@0.8.11':
-    resolution: {integrity: sha512-cQzWCtO6C8TQiYl1ruKNn2U6Ao4o4WBBcbL61yJl84x+j5sOWWFU9X7DpND8XZG3daDppSsigMdfAIl2upQBRw==}
+  '@xmldom/xmldom@0.8.13':
+    resolution: {integrity: sha512-KRYzxepc14G/CEpEGc3Yn+JKaAeT63smlDr+vjB8jRfgTBBI9wRj/nkQEO+ucV8p8I9bfKLWp37uHgFrbntPvw==}
     engines: {node: '>=10.0.0'}
-    deprecated: this version has critical issues, please update to the latest version
 
   acorn-jsx@5.3.2:
     resolution: {integrity: sha512-rq9s+JNhf0IChjtDXxllJ7g41oZk5SlXtp0LHwyA5cejwn7vKmKp4pPri6YEePv2PU65sAsegbXtIinmDFDXgQ==}
@@ -3538,6 +3535,10 @@ packages:
 
   domutils@3.2.2:
     resolution: {integrity: sha512-6kZKyUajlDuqlHKVX1w7gyslj9MPIXzIFiz/rGu35uC1wMi+kMhQwGhl4lt9unC9Vb9INnY9Z3/ZA3+FhASLaw==}
+
+  dougmencken_HeadOverHeels@https://codeload.github.com/dougmencken/HeadOverHeels/tar.gz/08aee0cb050405dc23d95bf288631452bec28c9f:
+    resolution: {gitHosted: true, tarball: https://codeload.github.com/dougmencken/HeadOverHeels/tar.gz/08aee0cb050405dc23d95bf288631452bec28c9f}
+    version: 0.0.0
 
   dpdm@3.14.0:
     resolution: {integrity: sha512-YJzsFSyEtj88q5eTELg3UWU7TVZkG1dpbF4JDQ3t1b07xuzXmdoGeSz9TKOke1mUuOpWlk4q+pBh+aHzD6GBTg==}
@@ -4676,8 +4677,8 @@ packages:
     resolution: {integrity: sha512-TXfryirbmq34y8QBwgqCVLi+8oA3oWx2eAnSn62ITyEhEYaWRlVZ2DvMM9eZbMs/RfxPu/PK/aBLyGj4IrqMHw==}
     engines: {node: '>=18'}
 
-  parse-svg-path@0.1.2:
-    resolution: {integrity: sha512-JyPSBnkTJ0AI8GGJLfMXvKq42cj5c006fnLz6fXy6zfoVjJizi8BNTpu8on8ziI1cKy9d9DGNuY17Ce7wuejpQ==}
+  parse-svg-path@0.2.0:
+    resolution: {integrity: sha512-Tf7FFIrguPKQwzD4pWnYkR2VOv3raoHeKED80Bm+BYHI3KxC8KsgsGC5+fSMzAGDA6UEk4bHvmi+RsjmL3khpg==}
 
   parse5-htmlparser2-tree-adapter@6.0.1:
     resolution: {integrity: sha512-qPuWvbLgvDGilKc5BoicRovlT4MtYT6JfJyBOMDsKoiT+GiuP5qyrPCnR9HcPECIJJmZh5jRndyNThnhhb/vlA==}
@@ -4755,8 +4756,8 @@ packages:
     resolution: {integrity: sha512-saLsH7WeYYPiD25LDuLRRY/i+6HaPYr6G1OUlN39otzkSTxKnubR9RTxS3/Kk50s1g2JTgFwWQDQyplC5/SHZg==}
     engines: {node: '>= 6'}
 
-  pixi.js@8.16.0:
-    resolution: {integrity: sha512-gu2xw3sZGAn3cWBtk0HqTQT+v19YAfiaYXwUGgWoJl5NKz4cEZJUgWrwkmdfDszGyYBAGqOvJNbd2M9+vzLLMg==}
+  pixi.js@8.19.0:
+    resolution: {integrity: sha512-pq1O6emA/GFjjeF+8d3Pb5t7knD8FsnfWGqQcRjYjsqFZ7QdzG1XgjLDUu0DFJRbafjV5+g8iNLFBx0b9649lg==}
 
   pkg-dir@4.2.0:
     resolution: {integrity: sha512-HRDzbaKjC+AOWVXxAU/x54COGeIv9eb+6CkDSQoNTt4XyWoIJvuPsXizxu/Fr23EiekbtZwmh1IcIG/l/a10GQ==}
@@ -5914,7 +5915,6 @@ packages:
     resolution: {integrity: sha512-ytENFjIJFl2UwYglde2jchW2Hwm4GJFLDiSXWdTrJQBIN9Fcyp7n4DhxJEiWNAJMV1/BqWfW/kkg71UDcHJyTQ==}
 
 snapshots:
-  dougmencken_HeadOverHeels@https://codeload.github.com/dougmencken/HeadOverHeels/tar.gz/08aee0cb050405dc23d95bf288631452bec28c9f: {}
 
   '@alloc/quick-lru@5.2.0': {}
 
@@ -6900,9 +6900,9 @@ snapshots:
       '@babel/helper-string-parser': 8.0.0
       '@babel/helper-validator-identifier': 8.0.4
 
-  '@blockstacking/jims-shaders@0.4.5(pixi.js@8.16.0(patch_hash=6c958ee45355bbad8e7a66d319664117e21f41e7bfdd5d9eea03dfbaa0af190a))':
+  '@blockstacking/jims-shaders@0.4.5(pixi.js@8.19.0(patch_hash=3695281549aebda9f7d3a527d6e54291e81a281fc8a4fde87cb3e6e36edcb3e2))':
     dependencies:
-      pixi.js: 8.16.0(patch_hash=6c958ee45355bbad8e7a66d319664117e21f41e7bfdd5d9eea03dfbaa0af190a)
+      pixi.js: 8.19.0(patch_hash=3695281549aebda9f7d3a527d6e54291e81a281fc8a4fde87cb3e6e36edcb3e2)
 
   '@cloudflare/kv-asset-handler@0.5.0': {}
 
@@ -8437,7 +8437,7 @@ snapshots:
 
   '@webgpu/types@0.1.69': {}
 
-  '@xmldom/xmldom@0.8.11': {}
+  '@xmldom/xmldom@0.8.13': {}
 
   acorn-jsx@5.3.2(acorn@8.17.0):
     dependencies:
@@ -8880,6 +8880,8 @@ snapshots:
       dom-serializer: 2.0.0
       domelementtype: 2.3.0
       domhandler: 5.0.3
+
+  dougmencken_HeadOverHeels@https://codeload.github.com/dougmencken/HeadOverHeels/tar.gz/08aee0cb050405dc23d95bf288631452bec28c9f: {}
 
   dpdm@3.14.0:
     dependencies:
@@ -10154,7 +10156,7 @@ snapshots:
 
   parse-ms@4.0.0: {}
 
-  parse-svg-path@0.1.2: {}
+  parse-svg-path@0.2.0: {}
 
   parse5-htmlparser2-tree-adapter@6.0.1:
     dependencies:
@@ -10206,17 +10208,17 @@ snapshots:
 
   pirates@4.0.6: {}
 
-  pixi.js@8.16.0(patch_hash=6c958ee45355bbad8e7a66d319664117e21f41e7bfdd5d9eea03dfbaa0af190a):
+  pixi.js@8.19.0(patch_hash=3695281549aebda9f7d3a527d6e54291e81a281fc8a4fde87cb3e6e36edcb3e2):
     dependencies:
       '@pixi/colord': 2.9.6
       '@types/earcut': 3.0.0
       '@webgpu/types': 0.1.69
-      '@xmldom/xmldom': 0.8.11
+      '@xmldom/xmldom': 0.8.13
       earcut: 3.0.2
       eventemitter3: 5.0.4
       gifuct-js: 2.1.2
       ismobilejs: 1.1.1
-      parse-svg-path: 0.1.2
+      parse-svg-path: 0.2.0
       tiny-lru: 11.4.7
 
   pkg-dir@4.2.0:

@@ -86,7 +86,7 @@
     "mitt": "^3.0.1",
     "monaco-editor": "^0.55.1",
     "nano-equal": "^2.0.2",
-    "pixi.js": "8.16.0",
+    "pixi.js": "8.19.0",
     "preact": "11.0.0-beta.1",
     "react": "^19.2.3",
     "react-dom": "^19.2.3",

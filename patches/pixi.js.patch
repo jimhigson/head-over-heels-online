@@ -1,13 +1,100 @@
 diff --git a/lib/environment-browser/browserAll.mjs b/lib/environment-browser/browserAll.mjs
-index b8f3fef4d30fa42012d7d8a0093b645ce950259c..6070bc8e8ebba9286c1d91c6f4b5568e616a8f26 100644
+index b56e54c3b8e48c69aa4fa2cbb6023dd2f278b823..bf3449343503821fbcc65952b91c813c6479442e 100644
 --- a/lib/environment-browser/browserAll.mjs
 +++ b/lib/environment-browser/browserAll.mjs
-@@ -1,4 +1,4 @@
+@@ -1,5 +1,7 @@
 -import '../accessibility/init.mjs';
+-import '../dom/init.mjs';
 +// patched: accessibility system removed - the game does not use it
++// patched: DOMContainer (dom/init) removed - the game does not use it, and it
++// is otherwise pulled eagerly into the main chunk. The html-in-canvas dialog
++// mirroring uses pixi.js/html-source, which does not depend on this
  import '../events/init.mjs';
  import '../spritesheet/init.mjs';
  import '../rendering/init.mjs';
+diff --git a/lib/filters/init.mjs b/lib/filters/init.mjs
+index 20d77f0c051d0f898c7a97835e3d19f8b9b2e6bf..f3908c7326f5e8d23cedab941d8411d68f111c42 100644
+--- a/lib/filters/init.mjs
++++ b/lib/filters/init.mjs
+@@ -1,9 +1,9 @@
+ import { extensions } from '../extensions/Extensions.mjs';
+-import { CanvasFilterSystem } from './CanvasFilterSystem.mjs';
+ import { FilterPipe } from './FilterPipe.mjs';
+ import { FilterSystem } from './FilterSystem.mjs';
+ 
+ "use strict";
+-extensions.add(FilterSystem, CanvasFilterSystem);
++// patched: canvas-renderer filter system removed - this build is webgl-only
++extensions.add(FilterSystem);
+ extensions.add(FilterPipe);
+ //# sourceMappingURL=init.mjs.map
+diff --git a/lib/html-source/HTMLSource.mjs b/lib/html-source/HTMLSource.mjs
+index c92390eb2fece9f4335125f034e2122d11a89668..8f4b4ec7b4c479e24e6f1ac2dd434aee2c0d0a2e 100644
+--- a/lib/html-source/HTMLSource.mjs
++++ b/lib/html-source/HTMLSource.mjs
+@@ -131,7 +131,16 @@ const _HTMLSource = class _HTMLSource extends TextureSource {
+   }
+   _onPaint(event) {
+     const changedElements = event.changedElements;
+-    if (changedElements?.length && !changedElements.includes(this.resource)) {
++    if (
++      changedElements?.length &&
++      // patched: the browser reports the deepest changed elements, so accept
++      // paints where any changed element is INSIDE the mirrored element (not
++      // only the mirrored element itself) - otherwise changes to descendants
++      // never update the texture
++      !changedElements.some(
++        (el) => el === this.resource || this.resource.contains?.(el)
++      )
++    ) {
+       return;
+     }
+     this._isReady = true;
+diff --git a/lib/html-source/glUploadHTMLResource.mjs b/lib/html-source/glUploadHTMLResource.mjs
+index a4f3f52da6a22af0dc9f72fe7c87b9cea2518d21..3130f71f17b29cb0b54b4b54bfee37b5942a37fd 100644
+--- a/lib/html-source/glUploadHTMLResource.mjs
++++ b/lib/html-source/glUploadHTMLResource.mjs
+@@ -41,15 +41,31 @@ const glUploadHTMLResource = {
+       source.requestPaint?.();
+       return;
+     }
+-    upload.call(
+-      gl,
+-      target,
+-      0,
+-      glTexture.internalFormat,
+-      glTexture.format,
+-      glTexture.type,
+-      source.resource
+-    );
++    try {
++      if (upload.length === 3) {
++        // patched: newer chrome builds (>=150) changed the signature to
++        // texElementImage2D(target, internalformat, element) with
++        // internalformat restricted to RGBA8/SRGB8_ALPHA8/RGBA16F/RGBA32F
++        upload.call(gl, target, gl.RGBA8, source.resource);
++      } else {
++        upload.call(
++          gl,
++          target,
++          0,
++          glTexture.internalFormat,
++          glTexture.format,
++          glTexture.type,
++          source.resource
++        );
++      }
++    } catch (e) {
++      // patched: "no cached paint record" - the browser has not painted the
++      // element since it last changed; allocate (keeping the texture valid)
++      // and ask for a paint so a later upload succeeds
++      ensureAllocated(gl, glTexture, target, textureWidth, textureHeight);
++      source.requestPaint?.();
++      return;
++    }
+     glTexture.width = textureWidth;
+     glTexture.height = textureHeight;
+   }
 diff --git a/lib/rendering/batcher/shared/DefaultShader.mjs b/lib/rendering/batcher/shared/DefaultShader.mjs
 index 43a692c8104743427c5748ad69443765ee268307..90eb50ff8795124ab4ecfcf20b01c1bd5a7e5c9f 100644
 --- a/lib/rendering/batcher/shared/DefaultShader.mjs
@@ -49,10 +136,10 @@ index 43a692c8104743427c5748ad69443765ee268307..90eb50ff8795124ab4ecfcf20b01c1bd
          batchSamplers: getBatchSamplersUniformGroup(maxTextures)
        }
 diff --git a/lib/rendering/renderers/autoDetectRenderer.mjs b/lib/rendering/renderers/autoDetectRenderer.mjs
-index 300cfe066ea20316e21657a7551f0f54f285fc8c..ad3dfe99024f55e31a91ff6691ba50c4f917b261 100644
+index 46412ea3d6120cce7eb87f3f2339811458d786c5..ad3dfe99024f55e31a91ff6691ba50c4f917b261 100644
 --- a/lib/rendering/renderers/autoDetectRenderer.mjs
 +++ b/lib/rendering/renderers/autoDetectRenderer.mjs
-@@ -1,54 +1,28 @@
+@@ -1,58 +1,28 @@
  import { isWebGLSupported } from '../../utils/browser/isWebGLSupported.mjs';
 -import { isWebGPUSupported } from '../../utils/browser/isWebGPUSupported.mjs';
  import { AbstractRenderer } from './shared/system/AbstractRenderer.mjs';
@@ -70,12 +157,16 @@ index 300cfe066ea20316e21657a7551f0f54f285fc8c..ad3dfe99024f55e31a91ff6691ba50c4
  async function autoDetectRenderer(options) {
 -  let preferredOrder = [];
 -  if (options.preference) {
--    preferredOrder.push(options.preference);
--    renderPriority.forEach((item) => {
--      if (item !== options.preference) {
--        preferredOrder.push(item);
--      }
--    });
+-    if (Array.isArray(options.preference)) {
+-      preferredOrder = options.preference.slice();
+-    } else {
+-      preferredOrder.push(options.preference);
+-      renderPriority.forEach((item) => {
+-        if (item !== options.preference) {
+-          preferredOrder.push(item);
+-        }
+-      });
+-    }
 -  } else {
 -    preferredOrder = renderPriority.slice();
 -  }
@@ -121,6 +212,30 @@ index 300cfe066ea20316e21657a7551f0f54f285fc8c..ad3dfe99024f55e31a91ff6691ba50c4
  
  export { autoDetectRenderer };
 -//# sourceMappingURL=autoDetectRenderer.mjs.map
+diff --git a/lib/rendering/renderers/gpu/shader/BindGroup.mjs b/lib/rendering/renderers/gpu/shader/BindGroup.mjs
+index 8f9ad3e932317b700d9dedf9568bc55afbb84616..545f922debb8cd09c087fa2ed4d739964e0d4120 100644
+--- a/lib/rendering/renderers/gpu/shader/BindGroup.mjs
++++ b/lib/rendering/renderers/gpu/shader/BindGroup.mjs
+@@ -79,7 +79,18 @@ class BindGroup {
+   onResourceChange(resource) {
+     this._dirty = true;
+     if (resource.destroyed) {
+-      this.destroy();
++      // patched: null only the destroyed resource (pixi <=8.16 behaviour)
++      // instead of destroying the whole bind group. Destroying the group
++      // breaks filters that share a resource with a destroyed texture (eg
++      // pooled AlphaMaskEffect MaskFilters after a spritesheet rebuild
++      // destroys a baked texture source): their uniforms bind group nulls
++      // and the next uniform access crashes.
++      const resources = this.resources;
++      for (const i in resources) {
++        if (resources[i] === resource) {
++          resources[i] = null;
++        }
++      }
+     } else {
+       this._updateKey();
+     }
 diff --git a/lib/scene/graphics/init.mjs b/lib/scene/graphics/init.mjs
 index 084ce3493a08b04ad7ab876b255c08c64fa2fa5f..49ddf2cfb1ea3c162ebcda2066c1e43e9267f39c 100644
 --- a/lib/scene/graphics/init.mjs

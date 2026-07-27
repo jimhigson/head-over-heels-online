@@ -11,10 +11,12 @@ import { Dialogs } from "../../game/components/dialogs/menuDialog/Dialogs.tsx";
 import { GameApiProvider } from "../../game/components/GameApiContext.tsx";
 import { type GameApi } from "../../game/GameApi.tsx";
 import { importGameMainOnce } from "../../game/gameMain.import.ts";
+import { htmlInCanvasSupported } from "../../game/htmlInCanvas/htmlInCanvasSupported.ts";
 import { useInputStateTracker } from "../../game/input/InputStateProvider.tsx";
 import { useAppSelector } from "../../store/hooks.ts";
 import { withLoadingCaptured } from "../../store/slices/assetsLoading/assetsLoadingSlice.ts";
 import {
+  selectIsCrtFilter,
   useCheatsOn,
   useIsGameRunning,
 } from "../../store/slices/gameMenus/gameMenusSelectors.ts";
@@ -27,12 +29,14 @@ import { useUpdateUpscaleOnDisplaySettingsChange } from "../../store/slices/upsc
 import { useUpdateUpscaleWhenElementResizes } from "../../store/slices/upscale/useUpdateUpscaleWhenElementResizes.ts";
 import { store } from "../../store/store.ts";
 import { ConnectInputToStore } from "../../store/storeFlow/ConnectInputToStore.tsx";
+import { SoftwarePointer } from "../../ui/SoftwarePointer.tsx";
 import { DispatchingErrorBoundary } from "../../utils/preact/DispatchingErrorBoundary.tsx";
 import { createSerialisableErrors } from "../../utils/redux/createSerialisableErrors.ts";
 import {
   useCanvasInlineStyle,
   useMaybeRotated,
 } from "../../utils/scaledRendering/useCanvasInlineStyle.tsx";
+import { DialogsInCanvas } from "./DialogsInCanvas.tsx";
 import { usePageAsAnApp } from "./usePageAsAnApp.tsx";
 
 const LazyCheats = lazy(importCheats) as typeof Cheats;
@@ -133,6 +137,12 @@ export const GamePage = () => {
   const gameApi = useCreateGameApi();
   const canvasSize = useAppSelector(selectCanvasSize);
   const rot90 = useAppSelector(selectRot90);
+  const crtFilter = useAppSelector(selectIsCrtFilter);
+  // when the crt filter is on and the browser has the experimental
+  // html-in-canvas api, the dialogs are drawn inside the game's canvas so the
+  // crt shader chain applies to them too:
+  const dialogsInCanvas =
+    crtFilter && htmlInCanvasSupported && gameApi !== undefined;
 
   const canvasInlineStyle = useCanvasInlineStyle();
 
@@ -161,6 +171,8 @@ export const GamePage = () => {
 
   return (
     <>
+      {/* the mouse pointer is drawn as a sprite, like everything else */}
+      <SoftwarePointer />
       {/* 👇👇 where the magic happens - the element the game plays in! 👇👇 */}
       {/* the sizing area fills the real screen via css; its measured size drives
           the upscale, so the backdrop covers the whole screen even if the
@@ -187,7 +199,11 @@ export const GamePage = () => {
           to the game engine which can be rotated using opengl transforms
           */}
           <div style={useMaybeRotated()}>
-            <Dialogs />
+            {dialogsInCanvas ?
+              <DialogsInCanvas gameApi={gameApi}>
+                <Dialogs />
+              </DialogsInCanvas>
+            : <Dialogs />}
           </div>
         </DispatchingErrorBoundary>
         {gameApi && cheatsOn && (
