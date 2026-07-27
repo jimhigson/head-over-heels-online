@@ -366,7 +366,7 @@ export const NudgeButtons = () => {
             disabled={rotatable}
             onClick={() => rotate("anticlockwise")}
             shortcutKeys={["["]}
-            tooltipContent={`##Rotate anti-clockwise\n\nTurn the selected item(s) - or the item the current tool will place - a quarter-turn anti-clockwise`}
+            tooltipContent={`## Rotate anti-clockwise\n\nTurn the selected item(s) - or the item the current tool will place - a quarter-turn anti-clockwise`}
           >
             <span class="relative text-single-line">↺</span>
           </ToolbarButton>
@@ -376,7 +376,7 @@ export const NudgeButtons = () => {
             disabled={rotatable}
             onClick={() => rotate("clockwise")}
             shortcutKeys={["]"]}
-            tooltipContent={`##Rotate clockwise\n\nTurn the selected item(s) - or the item the current tool will place - a quarter-turn clockwise`}
+            tooltipContent={`## Rotate clockwise\n\nTurn the selected item(s) - or the item the current tool will place - a quarter-turn clockwise`}
           >
             <span class="relative text-single-line">↻</span>
           </ToolbarButton>

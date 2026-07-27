@@ -12,7 +12,7 @@ import {
 } from "../../../dialogClasses";
 import { MenuItem } from "../../MenuItem";
 
-const clearAllDataMarkdown = `##Rest all data
+const clearAllDataMarkdown = `## Rest all data
 
 Wipes saved games, key bindings, display and sound preferences, and all other state. **Cannot be undone.**`;
 
