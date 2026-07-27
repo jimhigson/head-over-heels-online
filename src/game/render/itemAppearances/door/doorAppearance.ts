@@ -9,11 +9,11 @@ import { selectMaybeCurrentCampaign } from "../../../../store/slices/gameMenus/g
 import { store } from "../../../../store/store";
 import { iterateToContainer } from "../../../../utils/pixi/iterateToContainer";
 import { renderContainerToSprite } from "../../../../utils/pixi/renderContainerToSprite";
-import { spriteFlipXAtAngle } from "../../../../utils/vectors/resolveCameraRelativeVector";
+import { nearestQuarterAngle } from "../../../../utils/vectors/cameraAngleVectors";
 import {
   axisProjectsReversed,
-  nearestQuarterAngle,
-} from "../../../../utils/vectors/rotateXy";
+  spriteFlipXAtAngle,
+} from "../../../../utils/vectors/resolveCameraRelativeVector";
 import {
   addXy,
   alongAxisOfDirectionXy,

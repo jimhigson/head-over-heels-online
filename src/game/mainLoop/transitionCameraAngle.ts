@@ -25,9 +25,9 @@ export const hermiteEaseSlope = (t: number, startSlope: number): number =>
  * targetCameraAngle). The arc is carried on the transition rather than
  * derived from the endpoints, so the camera always turns the way the player
  * pressed - stacked same-direction taps sweep the long way round rather than
- * flipping to the shorter path. ONLY item positions/scroll may read this -
- * art/structure/sort keep reading the discrete endpoint angle (they cannot
- * handle a non-quarter angle).
+ * flipping to the shorter path. Positions, scroll and the draw-order sort all
+ * follow this continuous angle; only the quarter-quantised concerns (art,
+ * draw-order participation, render boxes) read its nearest quarter instead.
  */
 export const transitionCameraAngle = (
   /**

@@ -1,6 +1,6 @@
 import { describe, expect, test } from "vitest";
 
-import { allCameraAngles } from "../../../utils/vectors/rotateXy";
+import { quarterCameraAngles } from "../../../utils/vectors/cameraAngleVectors";
 import { addXy } from "../../../utils/vectors/vectors";
 import {
   apparentSilhouette,
@@ -106,7 +106,7 @@ describe("at every camera angle", () => {
     },
   );
 
-  test.for(allCameraAngles)(
+  test.for(quarterCameraAngles)(
     "does not intersect just outside the silhouette (camera angle $x,$y)",
     (cameraAngle) => {
       const { room, block } = blockRoom();

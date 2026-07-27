@@ -4,7 +4,7 @@ import {
 } from "../../../model/RoomJson";
 import { roomItemsIterable, type RoomState } from "../../../model/RoomState";
 import { type SpritesheetMetadata } from "../../../sprites/spritesheet/spritesheetData/spritesheetMetaData";
-import { cameraAngleBase } from "../../../utils/vectors/rotateXy";
+import { cameraAngleBase } from "../../../utils/vectors/cameraAngleVectors";
 import {
   addXyz,
   originXyz,

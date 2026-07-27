@@ -16,8 +16,8 @@ import {
   renderContainerToSprite,
 } from "../../../../utils/pixi/renderContainerToSprite";
 import { renderMultipliedXy } from "../../../../utils/pixi/renderMultipliedXy";
+import { nearestQuarterAngle } from "../../../../utils/vectors/cameraAngleVectors";
 import { octantIndexOfDirection } from "../../../../utils/vectors/octantIndexOfDirection" with { type: "macro" };
-import { nearestQuarterAngle } from "../../../../utils/vectors/rotateXy";
 import {
   dominantAxisXy,
   rotateAxisXyByCameraAngle,

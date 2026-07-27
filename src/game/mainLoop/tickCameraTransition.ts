@@ -2,8 +2,8 @@ import {
   nearestQuarterAngle,
   quarterTurnAnticlockwise,
   quarterTurnClockwise,
-  rotateXy,
-} from "../../utils/vectors/rotateXy";
+} from "../../utils/vectors/cameraAngleVectors";
+import { rotateXy } from "../../utils/vectors/rotateXy";
 import { type Xy } from "../../utils/vectors/vectors";
 import { type GameState } from "../gameState/GameState";
 import {
@@ -143,9 +143,10 @@ export const tickCameraTransition = (
     return false;
   }
 
-  // build-time gated like the api's _e2e_holdCameraTransition that sets the
-  // hold: statically false in production builds, so the whole clamp branch
-  // dead-code-eliminates out (dev is kept so unit tests can exercise it):
+  // the hold is only ever set by dev/e2e tooling (the holdCameraAtDegrees
+  // mutator and test drivers writing gameState directly): statically false in
+  // production builds, so the whole clamp branch dead-code-eliminates out
+  // (dev is kept so unit tests can exercise it):
   if (import.meta.env.DEV || import.meta.env.MODE === "visual-regression") {
     const { _e2e_cameraTransitionHold } = gameState;
     if (_e2e_cameraTransitionHold !== undefined) {

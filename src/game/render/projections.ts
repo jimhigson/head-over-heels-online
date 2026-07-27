@@ -1,11 +1,15 @@
 import { type Container } from "pixi.js";
 
-import { orthoPlaneForNormal } from "../../utils/vectors/orthoPlane";
 import {
   cameraAngleBase,
+  rotateXyzByInverseCameraAngle,
+} from "../../utils/vectors/cameraAngleVectors";
+import { orthoPlaneForNormal } from "../../utils/vectors/orthoPlane";
+import {
+  rotatedX,
+  rotatedY,
   rotateXy,
   rotateXyz,
-  rotateXyzByInverseCameraAngle,
 } from "../../utils/vectors/rotateXy";
 import { addXyz, subXy, type Xy, type Xyz } from "../../utils/vectors/vectors";
 import { blockSizePx } from "../physics/mechanicsConstants";
@@ -14,10 +18,17 @@ import { blockSizePx } from "../physics/mechanicsConstants";
 export const projectWorldXyzToScreenX = (
   { x: xw = 0, y: yw = 0 }: Partial<Xyz>,
   cameraAngle: Xy = cameraAngleBase,
-): number => {
-  const { x, y } = rotateXy({ x: xw, y: yw }, cameraAngle);
-  return y - x;
-};
+): number => rotatedY(xw, yw, cameraAngle) - rotatedX(xw, yw, cameraAngle);
+
+/**
+ * scalar sibling of {@link projectWorldXyzToScreenXy}'s y component, for hot
+ * paths that must not allocate an `Xy`
+ */
+export const projectWorldXyzToScreenY = (
+  { x: xw = 0, y: yw = 0, z: zw = 0 }: Partial<Xyz>,
+  cameraAngle: Xy = cameraAngleBase,
+): number =>
+  -(rotatedX(xw, yw, cameraAngle) + rotatedY(xw, yw, cameraAngle)) / 2 - zw;
 
 /**
  * the screen-x range a footprint (position + aabb) spans when projected -

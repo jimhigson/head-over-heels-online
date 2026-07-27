@@ -1,116 +1,46 @@
 //# allFunctionsCalledOnLoad
 
-import { addEdge, deleteEdge } from "../../../utils/graph/Graph";
 import { type RenderBoxes } from "../renderBox/makeItemRenderBoxAtCameraAngle";
+import { type DrawOrderBroadPhase } from "./DrawOrderBroadPhase";
 import { type DrawOrderComparable } from "./DrawOrderComparable";
-import { effectiveFixedZIndex } from "./fixedZIndexes";
-import { type ZGraph } from "./GraphEdges";
-import { type VisualIndex } from "./VisualIndex";
 import { zComparator } from "./zComparator";
+import { type ZOrderGraph } from "./ZOrderGraph";
 
 /**
- * updates `zEdges` in-place to hold what is in front of what, ie:
+ * rebuilds `zEdges` from scratch to hold what draws in front of what.
  *
- * order back->front is important, because it is ultimately the back item that has to
- * 'do' something - it needs to mask itself with the front if there's a cycle found
+ * Thin by design: the broad phase's sweep supplies each broad-phase
+ * candidate pair exactly once, the comparator classifies it, and nonzero
+ * classifications append a back→front edge. Fixed-z items (including
+ * hidden walls) never appear - they are excluded from the broad phase by the
+ * participation filter at its quarter angle.
  *
- * ```ts
- *    Map{ itemBehind => Map{ itemInFront => broken } }
- * ```
+ * The graph is rebuilt in place (same instance, reused buffers): callers
+ * sharing it by reference (the item render contexts) always see the
+ * current frame's edges. Edges start unbroken; the toposort marks cyclic
+ * edges broken afterwards.
  */
 export const updateZEdges = <TItem extends DrawOrderComparable>(
-  items: Set<TItem>,
-  /** an up-to-date visual index containing the items in the items param Set */
-  visualIndex: VisualIndex<TItem>,
-  /**
-   * the nodes that have moved - nodes that did not move are not considered.
-   * Must be re-iterable since it is iterated twice, hence Array or Set (not iterable type)
-   */
-  movedItems: Array<TItem> | Set<TItem>,
-  /**
-   * updated in-place: an incremental update starting from the previous edges. Pass an empty Map if
-   * starting from no knowledge, and that map will be updated
-   */
-  zEdges: ZGraph<TItem>,
+  /** every item to sort - these become the graph's canonical node order */
+  items: ReadonlySet<TItem>,
+  /** an up-to-date broad phase containing the items in the items param Set */
+  broadPhase: DrawOrderBroadPhase<TItem>,
+  /** rebuilt in place from scratch */
+  zEdges: ZOrderGraph<TItem>,
   /** the drawn extents, owned by the caller (in-game, the room renderer) */
   renderBoxes: RenderBoxes<TItem>,
 ): void => {
-  // track items that have already been compared to cut out duplicate comparisons:
-  const comparisonsDone: Map<TItem, Set<TItem>> = new Map();
-
-  // sanitise the given zEdges for nodes that no longer exist - this
-  // is important for incremental updates:
-  for (const [behind, fronts] of zEdges) {
-    if (!items.has(behind)) {
-      zEdges.delete(behind);
+  zEdges.beginRebuild(items);
+  broadPhase.forEachCandidatePair((itemI, itemJ) => {
+    const comparison = zComparator(itemI, itemJ, broadPhase, renderBoxes);
+    if (comparison === 0) {
+      return;
+    }
+    if (comparison > 0) {
+      zEdges.addEdge(itemJ, itemI);
     } else {
-      for (const [f] of fronts) {
-        if (!items.has(f)) {
-          deleteEdge(zEdges, behind, f);
-        }
-      }
+      zEdges.addEdge(itemI, itemJ);
     }
-  }
-
-  for (const itemI of movedItems) {
-    if (effectiveFixedZIndex(itemI, visualIndex.cameraAngle) !== undefined) {
-      continue;
-    }
-
-    const projectionNeighbourhood =
-      visualIndex.getItemProjectedNeighbourhood(itemI);
-
-    {
-      // remove all edges (either way) with items not in this items
-      // projectionNeighbourhood:
-      const outgoing = zEdges.get(itemI);
-      outgoing?.forEach((_edgeData, front) => {
-        if (!projectionNeighbourhood.has(front)) {
-          outgoing.delete(front);
-        }
-      });
-      zEdges.forEach((_fronts, behind) => {
-        if (!projectionNeighbourhood.has(behind)) {
-          deleteEdge(zEdges, behind, itemI);
-        }
-      });
-    }
-
-    // moved nodes are compared against all nodes in its neighbourhood (moving or not):
-    // - only unmoved/unmoved pairs can be skipped since they
-    // are known not to have changed
-    // ie - every moved node is compared again against every other node
-    for (const itemJ of projectionNeighbourhood) {
-      if (
-        effectiveFixedZIndex(itemJ, visualIndex.cameraAngle) !== undefined ||
-        // already compared the other way:
-        comparisonsDone.get(itemJ)?.has(itemI)
-      ) {
-        continue;
-      }
-
-      const comparison = zComparator(itemI, itemJ, visualIndex, renderBoxes);
-
-      if (!comparisonsDone.has(itemI)) {
-        comparisonsDone.set(itemI, new Set());
-      }
-      comparisonsDone.get(itemI)!.add(itemJ);
-
-      if (comparison === 0) {
-        deleteEdge(zEdges, itemI, itemJ);
-        deleteEdge(zEdges, itemJ, itemI);
-        continue;
-      }
-
-      const front = comparison > 0 ? itemI : itemJ;
-      const back = comparison > 0 ? itemJ : itemI;
-
-      // edges are initially added as not broken - the sorting algo later might
-      // find a cycle though and mark this as broken in order to defeat the cycle
-      addEdge(zEdges, back, front, false);
-
-      // can't link the other way - delete if it does:
-      deleteEdge(zEdges, front, back);
-    }
-  }
+  });
+  zEdges.finalise();
 };

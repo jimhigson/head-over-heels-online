@@ -30,7 +30,7 @@ if [ -n "$(find "$tmp" -type f -print -quit)" ]; then
   # run prettier from inside the temp so .prettierignore (copied in) and the repo
   # config (found by walking up, since temp lives under the repo root) both resolve
   cp .prettierignore "$tmp/.prettierignore" 2>/dev/null || true
-  ( cd "$tmp" && prettier --write --ignore-path .prettierignore --log-level warn . )
+  ( cd "$tmp" && pnpm prettier --write --ignore-path .prettierignore --log-level warn . )
 
   # apply the fixed+formatted copies to the index (and worktree when the patch is
   # clean); files git-format-staged sees but that were skipped pass through unchanged.

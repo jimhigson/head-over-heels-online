@@ -3,7 +3,7 @@ import { Color, type ColorSource, Container, Graphics } from "pixi.js";
 import { type ItemInPlayType } from "../../../../model/ItemInPlay";
 import { selectShowBoundingBoxTypesSet } from "../../../../store/slices/gameMenus/gameMenusSelectors";
 import { store } from "../../../../store/store";
-import { nearestQuarterAngle } from "../../../../utils/vectors/rotateXy";
+import { nearestQuarterAngle } from "../../../../utils/vectors/cameraAngleVectors";
 import { type Aabb, type Xy } from "../../../../utils/vectors/vectors";
 import { isItemType } from "../../../physics/itemPredicates";
 import { type ItemRenderContext } from "../../ItemRenderContexts";

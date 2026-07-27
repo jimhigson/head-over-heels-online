@@ -10,7 +10,7 @@ import { zxSpectrumColor } from "../../../originalGame";
 import { audioCtx } from "../../../sound/audioCtx";
 import { soundsFadeDurationSec } from "../../../sound/soundUtils/stopWithFade";
 import { defaultUserSettings } from "../../../store/slices/userSettings/defaultUserSettings";
-import { nearestQuarterAngle } from "../../../utils/vectors/rotateXy";
+import { nearestQuarterAngle } from "../../../utils/vectors/cameraAngleVectors";
 import { type Xy } from "../../../utils/vectors/vectors";
 import {
   type SceneGraphPhaseRecorder,
@@ -30,10 +30,10 @@ import {
   type RenderBox,
   type RenderBoxes,
 } from "../renderBox/makeItemRenderBoxAtCameraAngle";
+import { DrawOrderBroadPhase } from "../sortZ/DrawOrderBroadPhase";
 import { participatesInDrawOrder } from "../sortZ/fixedZIndexes";
-import { toposort } from "../sortZ/toposort/toposort";
 import { updateZEdges } from "../sortZ/updateZEdges";
-import { VisualIndex } from "../sortZ/VisualIndex";
+import { ZOrderGraph } from "../sortZ/ZOrderGraph";
 import { type SoundAndGraphicsOutput } from "../SoundAndGraphicsOutput";
 import { type DecorateRoomRenderer } from "./DecorateRoomRenderer";
 import {
@@ -103,9 +103,12 @@ export class RoomRenderer<
    * they happened since the last render) */
   #lastRenderRoomTime: number | undefined = undefined;
   /**
-   * store the edges of the behind/front graph between frames so we can incrementally update it
+   * Holder for the z-graph, maintained as an attribute to avoid malloc.
+   * Shared BY REFERENCE with the item render contexts (masking and wall
+   * see-through read it), so it is only ever mutated in place, never
+   * replaced
    */
-  #zEdges: ItemZGraph<RoomId, RoomItemId> = new Map();
+  #zEdges: ItemZGraph<RoomId, RoomItemId> = new ZOrderGraph();
 
   #itemRenderers: Map<
     // keying by the item, not the item's id because ids are only guaranteed to be unique at a given
@@ -116,11 +119,12 @@ export class RoomRenderer<
   > = new Map();
 
   /**
-   * every spatial item's render box at this renderer's camera angle (`null` =
-   * deliberately no box - the item renders true to its physical aabb).
-   * Reconciled against the room's items each tick; entries never go stale
-   * because anything whose physical aabb changes in-life (eg lightBeams)
-   * derives null
+   * every spatial item's render box at this renderer's camera angle. `null`
+   * (a spatial item with no derived box) and a `.get` miss (not a spatial
+   * item) both mean "render true to the physical aabb" - no consumer
+   * distinguishes them. Reconciled against the room's items each tick;
+   * entries never go stale because anything whose physical aabb changes
+   * in-life (eg lightBeams) derives null
    */
   #renderBoxes = new Map<
     UnionOfAllItemInPlayTypes<RoomId, RoomItemId>,
@@ -134,8 +138,13 @@ export class RoomRenderer<
    */
   #filterCache: FilterCache = new Map();
 
-  /** items indexed by their draw position on screen, used for draw-order edge finding */
-  #visualIndex: VisualIndex<UnionOfAllItemInPlayTypes<RoomId, RoomItemId>>;
+  /**
+   * processes our per-frame screen projections and the
+   * decides the overlapping candidate pairs for edges in the z-graph
+   */
+  #broadPhase: DrawOrderBroadPhase<
+    UnionOfAllItemInPlayTypes<RoomId, RoomItemId>
+  >;
 
   readonly renderContext: RoomRenderContext<RoomId, RoomItemId>;
 
@@ -144,15 +153,9 @@ export class RoomRenderer<
     this.#appliedQuarterAngle = nearestQuarterAngle(
       renderContext.general.cameraAngle,
     );
-
-    if (import.meta.env.DEV) {
-      // share for e2e/agents:
-      window.__e2e_zGraph = this.#zEdges;
-    }
-    // the visual index projects with the camera angle; the quarter-flip
-    // check in tick replaces it wholesale, so the angle is fixed for the
-    // index's lifetime:
-    this.#visualIndex = new VisualIndex<
+    // the broad phase projects at the continuous angle passed each tick;
+    // only its participation angle is per-quarter (set on a quarter flip):
+    this.#broadPhase = new DrawOrderBroadPhase<
       UnionOfAllItemInPlayTypes<RoomId, RoomItemId>
     >(this.#appliedQuarterAngle);
     const {
@@ -227,18 +230,18 @@ export class RoomRenderer<
   #changeCameraAngle(cameraQuarterAngle: Xy) {
     this.#appliedQuarterAngle = cameraQuarterAngle;
 
-    // render boxes are per-angle: clear IN PLACE (the same map object is on
-    // the item render contexts) and let the next tick's reconcile rederive:
+    // render boxes are the one per-angle structure NOT rebuilt every tick
+    // (the reconcile only derives boxes it is missing), so clear them IN
+    // PLACE - the same map object is on the item render contexts - and let
+    // the next tick's reconcile rederive at the new angle.
+    // Walls hidden at the new angle decline to render per-frame (their
+    // appearance returns undefined, leaving an empty container), so no
+    // wall-renderer teardown is needed here:
     this.#renderBoxes.clear();
 
-    // projections are per-angle; a fresh index repopulates from the next
-    // tick's updateManyItems:
-    this.#visualIndex = new VisualIndex(cameraQuarterAngle);
-
-    // the draw-order graph is per-angle; clear IN PLACE (shared with item
-    // contexts) and rebuild from the all-moved tick (the caller re-projects
-    // every item on the tick it detects the flip):
-    this.#zEdges.clear();
+    // draw-order participation is per-quarter-angle; the projections and the
+    // z-graph rebuild themselves from scratch every tick regardless:
+    this.#broadPhase.setQuarterAngle(cameraQuarterAngle);
   }
 
   /**
@@ -248,11 +251,13 @@ export class RoomRenderer<
    * change, so membership is the only upkeep
    */
   #reconcileRenderBoxes(
-    spatialItems: Set<UnionOfAllItemInPlayTypes<RoomId, RoomItemId>>,
-  ) {
+    spatialItems: ReadonlySet<UnionOfAllItemInPlayTypes<RoomId, RoomItemId>>,
+  ): boolean {
+    let membershipChanged = false;
     for (const item of this.#renderBoxes.keys()) {
       if (!spatialItems.has(item)) {
         this.#renderBoxes.delete(item);
+        membershipChanged = true;
       }
     }
     const { spritesheetMeta } = this.renderContext.general;
@@ -267,8 +272,10 @@ export class RoomRenderer<
             spritesheetMeta,
           ) ?? null,
         );
+        membershipChanged = true;
       }
     }
+    return membershipChanged;
   }
 
   #tickItem(
@@ -329,12 +336,16 @@ export class RoomRenderer<
     }
   }
 
-  #tickItems(roomTickContext: RoomTickContext<RoomId, RoomItemId>) {
+  #tickItems(
+    roomTickContext: RoomTickContext<RoomId, RoomItemId>,
+    roomMembershipChanged: boolean,
+  ) {
     const { room } = this.renderContext;
 
     const itemTickContext: ItemTickContext = {
       ...roomTickContext,
       lastRenderRoomTime: this.#lastRenderRoomTime,
+      roomMembershipChanged,
     };
 
     type Item = UnionOfAllItemInPlayTypes<RoomId, RoomItemId>;
@@ -349,20 +360,15 @@ export class RoomRenderer<
      */
     const tickItemWithGuard = (item: Item) => {
       if (tickedItems.has(item)) {
-        // already ticked, nothing to do
+        // already ticked (or on the recursion path right now), nothing to do
         return;
       }
-      const edges = this.#zEdges.get(item);
-      if (edges) {
-        for (const [front, broken] of edges.entries()) {
-          if (broken) {
-            // tick front first
-            tickItemWithGuard(front);
-          }
-        }
-      }
-      this.#tickItem(itemTickContext, item);
+      // marked BEFORE recursing into broken edge fronts:
       tickedItems.add(item);
+      // broken edges first - this item bakes those fronts' renderings into
+      // its cyclic masks, so they must be up to date:
+      this.#zEdges.forEachBrokenEdgeFrom(item, tickItemWithGuard);
+      this.#tickItem(itemTickContext, item);
     };
 
     for (const item of roomItemsIterable(room.items)) {
@@ -420,13 +426,14 @@ export class RoomRenderer<
         );
       }
 
-      if (
-        !participatesInDrawOrder(item, this.renderContext.general.cameraAngle)
-      ) {
+      if (!participatesInDrawOrder(item, this.#appliedQuarterAngle)) {
         // non-rendering items (static fixed-z items, plus walls hidden at this
         // angle - whose appearance declines, leaving an empty container) are
         // never draw-order sorted, so must not receive a z-index. They are
-        // still in the sort's node set (spatialItems), so skip them here:
+        // still in the sort's node set (spatialItems), so skip them here.
+        // Participation is quarter-quantised (isWallDirectionHiddenAtAngle
+        // assumes a quarter angle), so use the applied quarter, not the
+        // continuous camera angle which sweeps mid-transition:
         continue;
       }
 
@@ -449,43 +456,45 @@ export class RoomRenderer<
   tick(givenTickContext: RoomTickContext<RoomId, RoomItemId>) {
     // detect the mid-rotation quarter flip FIRST, before any item ticks:
     // the rebuilt sort/masks must be in place before warp snapshots re-bake
-    const cameraQuarterAngle = nearestQuarterAngle(
-      this.renderContext.general.cameraAngle,
-    );
-    const angleChanged = cameraQuarterAngle !== this.#appliedQuarterAngle;
-    if (angleChanged) {
-      this.#changeCameraAngle(cameraQuarterAngle);
+    const { cameraAngle } = this.renderContext.general;
+    const quarterAngle = nearestQuarterAngle(cameraAngle);
+    if (quarterAngle !== this.#appliedQuarterAngle) {
+      this.#changeCameraAngle(quarterAngle);
     }
 
-    /*
-     * the given tick context, except override to consider everything to
-     * have moved if this is the first rendering or the camera angle just
-     * changed in place (everything re-projects)
-     */
-    const tickContext =
-      this.#everRendered && !angleChanged ?
-        givenTickContext
-      : {
-          ...givenTickContext,
-          movedOrResizedItems: new Set(
-            roomItemsIterable(this.renderContext.room.items).filter(isSpatial),
-          ),
-        };
+    // the sort geometry follows the continuous camera angle θ; when it
+    // changes (every frame of a camera transition) every item re-projects
+    // and the whole graph re-derives - a trigger physics knows nothing
+    // about, so the renderer raises it itself. A fresh broad phase (first
+    // render) has NaN geometry, so always reads as changed here:
+    const geometryAngleChanged =
+      cameraAngle.x !== this.#broadPhase.geometryAngle.x ||
+      cameraAngle.y !== this.#broadPhase.geometryAngle.y;
 
     const {
       renderContext: { room },
     } = this;
 
-    const spatialItems = new Set<UnionOfAllItemInPlayTypes<RoomId, RoomItemId>>(
+    const spatialItems = new Set(
       roomItemsIterable(room.items).filter(isSpatial),
     );
+
+    /*
+     * the given tick context, except override to consider everything to
+     * have moved if the continuous geometry angle moved (everything
+     * re-projects) - which is exactly the spatial items
+     */
+    const tickContext =
+      this.#everRendered && !geometryAngleChanged ?
+        givenTickContext
+      : { ...givenTickContext, movedOrResizedItems: spatialItems };
 
     const { timingRecord } = tickContext;
     let subPhaseStartMs = timingRecord === undefined ? 0 : performance.now();
 
-    // derive render boxes for newly-present items before the visual index
+    // derive render boxes for newly-present items before the broad phase
     // (re)projects, since projection reads the boxes:
-    this.#reconcileRenderBoxes(spatialItems);
+    const membershipChanged = this.#reconcileRenderBoxes(spatialItems);
 
     if (timingRecord !== undefined) {
       subPhaseStartMs = recordPerf(
@@ -495,32 +504,32 @@ export class RoomRenderer<
       );
     }
 
-    // bring the render-position index fully up to date (membership and moved
-    // items' projections) before computing z-edges from it:
-    this.#visualIndex.updateManyItems(
+    // bring the broad phase fully up to date (membership, and every item's
+    // projection at the continuous render angle) before computing z-edges
+    // from it:
+    this.#broadPhase.updateManyItems(
       spatialItems,
-      tickContext.movedOrResizedItems,
       this.#renderBoxes,
+      cameraAngle,
     );
 
     if (timingRecord !== undefined) {
       subPhaseStartMs = recordPerf(
         timingRecord,
-        "updateVisualIndex",
+        "updateBroadPhase",
         subPhaseStartMs,
       );
     }
 
     try {
       // it it important that we sort before rendering. This is because sorting updates
-      // this.#brokenLinks, which will be used in this.#tickItems to update the rendering,
+      // the broken links, which will be used in this.#tickItems to update the rendering,
       // which can be influenced by the broken links (by showing masking)
       updateZEdges(
         spatialItems,
-        this.#visualIndex,
-        tickContext.movedOrResizedItems,
-        // this.#incrementalZEdges will be updated in-place by the zEdges function to match
-        // the current ordering state of the room, starting from the previous ordering state
+        this.#broadPhase,
+        // rebuilt in place (same instance, reused buffers) so the item
+        // render contexts sharing it by reference stay current:
         this.#zEdges,
         this.#renderBoxes,
       );
@@ -543,9 +552,10 @@ export class RoomRenderer<
       );
     }
 
-    // spatialItems (room-item order) as the canonical tie-break: the same
-    // room state always sorts the same, regardless of movement history:
-    const order = toposort(this.#zEdges, spatialItems);
+    // spatialItems (room-item order) is the graph's canonical node order, so
+    // ties between unconstrained items - and which edge of a cycle is broken
+    // - are a pure function of the room state, never of movement history:
+    const order = this.#zEdges.toposort();
 
     if (timingRecord !== undefined) {
       subPhaseStartMs = recordPerf(timingRecord, "toposort", subPhaseStartMs);
@@ -568,7 +578,7 @@ export class RoomRenderer<
       }
     }
 
-    this.#tickItems(tickContext);
+    this.#tickItems(tickContext, membershipChanged);
 
     if (timingRecord !== undefined) {
       recordPerf(timingRecord, "tickItems", subPhaseStartMs);

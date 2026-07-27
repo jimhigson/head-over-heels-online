@@ -87,21 +87,19 @@ export const getJsonItemTimes = (item: JsonItemUnion): Xyz => {
  * no matter what type it is - this is a complete function that handles
  * all items
  */
-export const getItemInPlayTimes = (item: UnionOfAllItemInPlayTypes): Xyz => {
-  const isMultipliedItemInPlay = (
-    item: UnionOfAllItemInPlayTypes,
-  ): item is UnionOfAllItemInPlayTypes & {
-    config: { times: Partial<Xyz> };
-  } => {
-    type ItemConfigMaybeWithMultiplication = {
-      times?: Partial<Xyz> | undefined;
-    };
-
-    return (
-      (item.config as ItemConfigMaybeWithMultiplication).times !== undefined
-    );
+const isMultipliedItemInPlay = (
+  item: UnionOfAllItemInPlayTypes,
+): item is UnionOfAllItemInPlayTypes & {
+  config: { times: Partial<Xyz> };
+} => {
+  type ItemConfigMaybeWithMultiplication = {
+    times?: Partial<Xyz> | undefined;
   };
 
+  return (item.config as ItemConfigMaybeWithMultiplication).times !== undefined;
+};
+
+export const getItemInPlayTimes = (item: UnionOfAllItemInPlayTypes): Xyz => {
   return (
     item.type === "wall" ? completeTimesXyz(wallInPlayTimes(item.config))
     : isMultipliedItemInPlay(item) ? completeTimesXyz(item.config.times)

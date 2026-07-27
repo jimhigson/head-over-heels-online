@@ -8,9 +8,11 @@
  * sprite by name hash) with its texture id written across it in a tiny pixel
  * font. Gameplay sprites (characters, monsters, pickups, portable
  * items, springs, joysticks, crowns, planets) fill their whole frame; the rest
- * (walls, blocks, doors, scenery) keep their silhouette. Floors bake to pure
- * unlabelled white so sprites and shadows land visibly on them. Shadows, shadow
- * masks, hud and editor sprites are copied through unchanged - shadows carry the
+ * (walls, blocks, doors, scenery) keep their silhouette. Wall tiles bake only
+ * to shades of blue (hash-picked per texture), so walls always read apart from
+ * the free-standing items in front of them. Floors bake to pure unlabelled
+ * white so sprites and shadows land visibly on them. Shadows, shadow masks,
+ * hud and editor sprites are copied through unchanged - shadows carry the
  * red-channel encoding the loader turns into alpha, the others need to stay
  * legible.
  *
@@ -71,14 +73,34 @@ const huePairByColour = new Map(
 const spriteBaseName = (textureId: TextureId): string =>
   textureId.replace(/\.\d+$/, "");
 
-const blockColourFor = (textureId: TextureId): Rgb => {
-  const name = spriteBaseName(textureId);
+const hashPick = (name: string, palette: Rgb[]): Rgb => {
   let hash = 0;
   for (let i = 0; i < name.length; i++) {
     hash = (hash * 31 + name.charCodeAt(i)) | 0;
   }
-  return blockColours[Math.abs(hash) % blockColours.length];
+  return palette[Math.abs(hash) % palette.length];
 };
+
+const blockColourFor = (textureId: TextureId): Rgb =>
+  hashPick(spriteBaseName(textureId), blockColours);
+
+/**
+ * wall tiles bake only to shades of blue (dark navy through pale sky), so
+ * walls always read apart from the free-standing items in front of them
+ */
+const wallBlues: Rgb[] = [
+  [0x00, 0x00, 0x66],
+  [0x00, 0x00, 0xd7],
+  [0x22, 0x44, 0xcc],
+  [0x00, 0x66, 0xff],
+  [0x33, 0x66, 0xee],
+  [0x44, 0x88, 0xdd],
+  [0x66, 0x99, 0xff],
+  [0x99, 0xbb, 0xff],
+];
+
+/** wall tile textures are `planet.[dark.]wall.tileName.side` */
+const isWall = (textureId: TextureId): boolean => textureId.includes(".wall.");
 
 const isLight = ([r, g, b]: Rgb): boolean =>
   0.299 * r + 0.587 * g + 0.114 * b >= 128;
@@ -95,6 +117,10 @@ const frameNumber = (textureId: TextureId): number => {
  * sheet while staying on the ZX Spectrum palette
  */
 const fillColourFor = (textureId: TextureId): Rgb => {
+  if (isWall(textureId)) {
+    // hash on the full id so each tile (and each side of it) gets its own blue:
+    return hashPick(textureId, wallBlues);
+  }
   const base = blockColourFor(textureId);
   const frame = frameNumber(textureId);
   const pair = huePairByColour.get(rgbKey(base));

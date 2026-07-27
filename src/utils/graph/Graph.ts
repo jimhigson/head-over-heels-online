@@ -17,14 +17,3 @@ export const addEdge = <N, E>(
   edges.get(from)!.set(to, edgeData);
   return edges; // for chaining
 };
-
-export const deleteEdge = <N, E>(edges: Graph<N, E>, from: N, to: N) => {
-  const toMap = edges.get(from);
-  if (toMap !== undefined) {
-    toMap.delete(to);
-    if (toMap.size === 0) {
-      edges.delete(from);
-    }
-  }
-  return edges; // for chaining
-};

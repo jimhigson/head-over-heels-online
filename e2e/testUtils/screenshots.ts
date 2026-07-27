@@ -19,10 +19,11 @@ import { elapsed, formatDuration } from "./logging";
 
 export const testTimeout = (process.env.CI ? 600_000 : 120_000) * osSlowness;
 
-/** short label for a sprite option: "uncolourised", "toppy", or "" for default BlockStack */
+/** short label for a sprite option: "uncolourised", "toppy", "debug", or "" for default BlockStack */
 export const spriteOptionName = (spriteOption: SpriteOption): string =>
   spriteOption.uncolourised ? "uncolourised"
   : spriteOption.name === "Toppy" ? "toppy"
+  : spriteOption.name === "Debug" ? "debug"
     // no name otherwise - because it was the first variant, and I don't want to rename all the old files,
     // Blockstack colourised gets no suffix/name added to files
   : "";

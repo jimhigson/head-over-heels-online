@@ -1,4 +1,10 @@
-import { Container, type Filter, RenderTexture, type Texture } from "pixi.js";
+import {
+  Container,
+  type Filter,
+  type MeshGeometry,
+  RenderTexture,
+  type Texture,
+} from "pixi.js";
 
 import {
   type ItemInPlayType,
@@ -11,13 +17,12 @@ import { type UniqueTextureSprite } from "../../../../utils/pixi/UniqueTextureSp
 import {
   isAtQuarterAngle,
   nearestQuarterAngle,
-} from "../../../../utils/vectors/rotateXy";
+} from "../../../../utils/vectors/cameraAngleVectors";
 import {
   alongAxisOfDirectionXy,
   type AxisXy,
   dotProductXy,
   originXyz,
-  subXy,
   type Xy,
 } from "../../../../utils/vectors/vectors";
 import { redAsAlphaFilter } from "../../filters/redAsAlphaFilter";
@@ -26,7 +31,11 @@ import {
   type ItemRenderContext,
   type ItemTickContext,
 } from "../../ItemRenderContexts";
-import { projectWorldXyzToScreenXy } from "../../projections";
+import {
+  projectWorldXyzToScreenX,
+  projectWorldXyzToScreenXy,
+  projectWorldXyzToScreenY,
+} from "../../projections";
 import {
   boxProjectedExtent,
   createCuboidTransitionMesh,
@@ -45,6 +54,30 @@ interface MaskingContainer extends Container {
 }
 
 const logCyclicRendering = import.meta.env.VITE_LOG_CYCLIC_RENDERING === "true";
+
+/**
+ * every live cyclic-mask wrapper, across all items: lets a silhouette bake
+ * recognise carve wrappers inside the front item's subtree so it can suspend
+ * them for the bake. Shadow masks (regular, non-inverse) are NOT in here and
+ * stay applied - they shape the art's own alpha
+ */
+const cyclicMaskWrappers = new WeakSet<Container>();
+
+/** reused between bakes - the wrappers found in the currently-baking subtree */
+const suspendedWrappers: MaskingContainer[] = [];
+
+/**
+ * find every cyclic-mask wrapper in the subtree, remembering them in
+ * {@link suspendedWrappers} for restoration after the bake
+ */
+const collectCarveWrappers = (node: Container): void => {
+  if (cyclicMaskWrappers.has(node)) {
+    suspendedWrappers.push(node as MaskingContainer);
+  }
+  for (const child of node.children) {
+    collectCarveWrappers(child);
+  }
+};
 
 /**
  * A wall warps as a vertical plane; as that plane turns towards edge-on its drawn
@@ -100,9 +133,12 @@ const wallEdgeOnFadeAlpha = (
  * Chain link owning how an item's drawn surface behaves under cyclic-render
  * breaks and camera rotation: the inverse-mask carves that resolve draw-order
  * cycles, the cuboid warp that deforms boxy items through the continuous turn,
- * and the wall edge-on fade. These are kept together because the warp snapshots
- * the item's masked content - so the carves must already be baked in before the
- * snapshot is taken (see the mask reconcile at the top of {@link tick}).
+ * and the wall edge-on fade. These are kept together because the carves target
+ * whichever surface is currently drawn - settled, the (quarter-angle) art;
+ * mid-turn, the warp mesh - re-baked per frame from the front item's drawn
+ * silhouette at the current render angle (see {@link #tickMasks}), never baked
+ * into the warp snapshot (a carve frozen into the snapshot would drift off the
+ * front item as the two items warp differently).
  *
  * This link does NOT set its output's screen position - the outer
  * {@link ItemPositionRenderer} owns that. Its output holds the (near-corner
@@ -121,9 +157,11 @@ export class TransitionSurfaceRenderer<
   /** whether this item type anchors its art at the origin (no near-corner offset) */
   #exemptFromNearCornerOffset: boolean;
   /**
-   * the content that masks are applied to - initially the (near-corner-offset) graphics
-   * (the wrapped renderer's output), then the outermost masking container once cyclic-rendering
-   * masks wrap it. Tracked by reference because it MOVES when masks wrap/unwrap.
+   * the content that masks are applied to - this item's currently-drawn
+   * surface: the (near-corner-offset) graphics normally, the warp mesh while
+   * one draws in the art's place, and the outermost masking container once
+   * cyclic-rendering masks wrap either. Tracked by reference because it
+   * MOVES when masks wrap/unwrap and when the warp mesh comes and goes.
    */
   #maskedContent: Container;
   /**
@@ -141,6 +179,12 @@ export class TransitionSurfaceRenderer<
    * Both undefined when not warping.
    */
   #cuboidMesh: CuboidTransitionMesh | undefined;
+  /**
+   * the mesh's geometry, held directly: pixi's Mesh.destroy nulls the mesh's
+   * own reference without destroying it, so releasing it after the subtree
+   * has been destroyed needs this handle
+   */
+  #cuboidMeshGeometry: MeshGeometry | undefined;
   #cuboidSnapshotTexture: Texture | undefined;
   /**
    * the discrete layer angle the cuboid mesh/snapshot were built for. When the
@@ -259,25 +303,14 @@ export class TransitionSurfaceRenderer<
         antialias: false,
       });
       this.#cuboidSnapshotTexture = texture;
-      // position for the snapshot so the art's origin lands on (artShift): when
-      // cyclic-rendering masks have wrapped the art, the wrapper is the render
-      // root (so the masks' carves bake into the snapshot) - the art inside is
-      // re-anchored at its discrete layer-angle offset (its live offset may be
-      // a stale mid-turn interpolation) and the wrapper shifted by the
-      // remainder, which keeps every mask sprite at its authored offset
-      // relative to the art:
-      const snapshotRoot = this.#maskedContent;
-      const priorRootX = snapshotRoot.position.x;
-      const priorRootY = snapshotRoot.position.y;
-      if (snapshotRoot === this.#artContent) {
-        snapshotRoot.position.set(artShiftX, artShiftY);
-      } else {
-        this.#artContent.position.set(artOriginX, artOriginY);
-        snapshotRoot.position.set(
-          artShiftX - artOriginX,
-          artShiftY - artOriginY,
-        );
-      }
+      // position for the snapshot so the art's origin lands on (artShift). The
+      // render root is the RAW art - never a cyclic-mask wrapper: the quarter
+      // carves must NOT bake into the snapshot, because mid-turn the carves
+      // are applied to the warped mesh instead (see #tickWarpMasks), tracking
+      // the front item's true θ silhouette. Rendering the art directly
+      // bypasses any wrapper masks (they are set on the wrapper, not the art):
+      const snapshotRoot = this.#artContent;
+      snapshotRoot.position.set(artShiftX, artShiftY);
       // pixi's render({container}) permanently converts the container into a
       // render group as a side effect (AbstractRenderer calls
       // enableRenderGroup on it). A live in-tree render group breaks any
@@ -289,14 +322,13 @@ export class TransitionSurfaceRenderer<
       // grouping it had before:
       const wasRenderGroup = snapshotRoot.isRenderGroup;
       pixiRenderer.render({ container: snapshotRoot, target: texture });
+      // NOTE: this restore triggers a pixi defect - the subtree's inherited
+      // groupColor, rebased during the bake, is left stale on re-attachment
+      // (see PIXI_BUGS.md, bug 1). RoomRenderer's per-tick tint re-dirty is
+      // the interim workaround:
       snapshotRoot.isRenderGroup = wasRenderGroup;
-      // restore: the art stays re-anchored at the discrete layer-angle offset
-      // (matching the unwrapped path); a mask wrapper goes back where it was:
-      if (snapshotRoot === this.#artContent) {
-        snapshotRoot.position.set(artOriginX, artOriginY);
-      } else {
-        snapshotRoot.position.set(priorRootX, priorRootY);
-      }
+      // restore: the art stays re-anchored at the discrete layer-angle offset:
+      snapshotRoot.position.set(artOriginX, artOriginY);
 
       this.#cuboidMesh = createCuboidTransitionMesh(
         item,
@@ -307,12 +339,18 @@ export class TransitionSurfaceRenderer<
         dims,
         offset,
       );
+      // any masks currently wrap the (about to be hidden) art; the drawn
+      // surface is now the mesh, so drop them - the next #tickMasks
+      // re-creates them around it:
+      this.#clearMasks();
       // hide the real art and show the warping mesh in its place. Hidden via
       // #artContent (stable identity), NOT #maskedContent: masks can re-wrap
       // the masked content mid-warp, and restoring visibility on a different
       // container than was hidden would leave the art invisible forever:
       this.#artContent.visible = false;
       this.output.addChild(this.#cuboidMesh.mesh);
+      this.#cuboidMeshGeometry = this.#cuboidMesh.mesh.geometry;
+      this.#maskedContent = this.#cuboidMesh.mesh;
       this.#cuboidMeshLayerAngle = layerAngle;
     }
 
@@ -329,11 +367,14 @@ export class TransitionSurfaceRenderer<
   #teardownCuboidWarp() {
     // walls dim towards edge-on during the warp; restore full opacity once it ends:
     this.output.alpha = 1;
+    // unwrap and destroy the masks first, so the mesh is a direct child
+    // of the output again before it is removed:
+    this.#clearMasks();
     if (this.#cuboidMesh !== undefined) {
-      const { geometry } = this.#cuboidMesh.mesh;
       this.output.removeChild(this.#cuboidMesh.mesh);
       this.#cuboidMesh.mesh.destroy();
-      geometry.destroy();
+      this.#cuboidMeshGeometry?.destroy();
+      this.#cuboidMeshGeometry = undefined;
       this.#cuboidMesh = undefined;
     }
     if (this.#cuboidSnapshotTexture !== undefined) {
@@ -342,6 +383,8 @@ export class TransitionSurfaceRenderer<
     }
     this.#cuboidMeshLayerAngle = undefined;
     this.#artContent.visible = true;
+    // the drawn surface is the real art again - masks re-create around it:
+    this.#maskedContent = this.#artContent;
   }
 
   #updateWarp() {
@@ -366,21 +409,14 @@ export class TransitionSurfaceRenderer<
   tick(tickContext: ItemTickContext) {
     this.#wrappedRenderer.tick(tickContext);
 
-    // masks reconcile BEFORE the warp update: mid-transition the art is drawn
-    // via a snapshot baked from the masked content, so a mask that (re)wraps on
-    // the same tick as the warp (re)builds - eg at the midpoint hand-over, where
-    // the z-graph and its cyclic breaks are recomputed - must be in place before
-    // the snapshot is taken, or the mesh shows uncarved art overdrawing the item
-    // in front of it
-    this.#tickMasks();
-
     const midRotation = !isAtQuarterAngle(
       this.renderContext.general.cameraAngle,
     );
+
     if (
       tickContext.movedOrResizedItems.has(this.renderContext.item) ||
-      // mid-rotation nothing moves (the moved set is truthfully empty) but
-      // every item re-projects along the continuous θ(t):
+      // mid-rotation every item re-projects along the continuous θ(t),
+      // whether or not it moved in-world:
       midRotation ||
       // run once more after the render angle settles back onto a quarter
       // angle: this tears down any cuboid warp mesh (restoring the real art):
@@ -388,28 +424,42 @@ export class TransitionSurfaceRenderer<
     ) {
       this.#updateWarp();
     }
+
+    // AFTER the warp update, so a newly-built (or torn-down) mesh is the
+    // surface the masks wrap; the fronts' surfaces are already updated for
+    // this frame (broken fronts tick first):
+    this.#tickMasks();
+
     this.#tickedMidRotation = midRotation;
   }
 
-  // get all the broken edges in front of this item
-  #brokenEdges(): Set<UnionOfAllItemInPlayTypes> {
-    const inFrontOfItemEdges = this.renderContext.zEdges.get(
-      this.renderContext.item,
-    );
-
-    if (!inFrontOfItemEdges) {
-      return emptySet as Set<UnionOfAllItemInPlayTypes>;
+  /**
+   * destroy all cyclic masks - used when the drawn surface they wrap changes
+   * identity (the warp mesh being built or torn down); {@link #tickMasks}
+   * recreates them around the new surface
+   */
+  #clearMasks() {
+    for (const [frontItem, maskingContainer] of this.#maskingContainers) {
+      this.#destroyMaskingContainer(frontItem, maskingContainer);
     }
+  }
 
+  /**
+   * the items in front of this one whose draw-order edge the sort had to
+   * sever - the cycles this item resolves by carving them out of its own
+   * surface
+   */
+  #brokenEdges(): Set<UnionOfAllItemInPlayTypes> {
     let brokenEdges: Set<UnionOfAllItemInPlayTypes> | undefined;
-    for (const [frontItem, isBroken] of inFrontOfItemEdges) {
-      if (isBroken) {
+    this.renderContext.zEdges.forEachBrokenEdgeFrom(
+      this.renderContext.item,
+      (frontItem) => {
         if (!brokenEdges) {
           brokenEdges = new Set<UnionOfAllItemInPlayTypes>();
         }
         brokenEdges.add(frontItem);
-      }
-    }
+      },
+    );
     return brokenEdges ?? (emptySet as Set<UnionOfAllItemInPlayTypes>);
   }
 
@@ -430,6 +480,7 @@ export class TransitionSurfaceRenderer<
 
     // record our masking container:
     this.#maskingContainers.set(frontItem, maskingContainer);
+    cyclicMaskWrappers.add(maskingContainer);
 
     // the masking container now holds (and so masks) what was the masked content:
     this.#maskedContent = maskingContainer;
@@ -455,16 +506,79 @@ export class TransitionSurfaceRenderer<
     // probably doesn't matter since we're going to destroy anyway,
     // but .mask can cause crashes sometimes if things aren't set up just so
     maskingContainer.mask = null;
+    cyclicMaskWrappers.delete(maskingContainer);
     maskingSprite.destroy();
     maskingContainer.destroy();
     this.#maskingContainers.delete(frontItem);
   }
 
-  #tickMasks() {
-    const { pixiRenderer, cameraAngle } = this.renderContext.general;
-    const cameraQuarterAngle = nearestQuarterAngle(cameraAngle);
+  /**
+   * bake a container's current rendering into a sprite whose alpha is that
+   * rendering's silhouette - the shape an item in front carves out of this
+   * item. The red-as-alpha filter is swopped in only for the bake.
+   *
+   * The front's OWN cyclic carves are suspended for the bake, for two
+   * reasons: the carve should be the front's FULL silhouette (both choices
+   * of a cycle's severed edge must render near-identically, which nested
+   * carve holes would break), and pixi computes a mask-wrapped container's
+   * bounds with regular-mask semantics - clipping by what is really an
+   * inverse mask, cropping the bake wrongly.
+   */
+  #bakeSilhouetteSprite(
+    container: Container,
+    reuseSprite: undefined | UniqueTextureSprite,
+    label: string,
+  ): UniqueTextureSprite {
+    collectCarveWrappers(container);
+    for (const wrapper of suspendedWrappers) {
+      // detach the carve AND hide its mask sprite: unmasked, the sprite
+      // would otherwise render as ordinary content (and stretch the bounds)
+      wrapper.mask = null;
+      wrapper.children[0].visible = false;
+    }
 
-    // map of all items in front of us => if the edge is broken
+    const previousFilters = container.filters;
+    container.filters = redAsAlphaFilter;
+    const sprite = renderContainerToSprite(
+      this.renderContext.general.pixiRenderer,
+      container,
+      reuseSprite,
+      label,
+    );
+    // pixi's .filter property is readonly when read, and mutable when set, so we
+    // need to cast even just to give a container back its old filters
+    // TODO: remove after this PR merged/released in pixi: https://github.com/pixijs/pixijs/pull/11757
+    container.filters = previousFilters as Filter[];
+
+    for (const wrapper of suspendedWrappers) {
+      wrapper.children[0].visible = true;
+      wrapper.setMask({ mask: wrapper.children[0], inverse: true });
+    }
+    suspendedWrappers.length = 0;
+
+    return sprite;
+  }
+
+  /**
+   * reconcile the cyclic-render carves against the live draw-order graph: for
+   * each broken edge, bake the front item's currently-drawn surface and
+   * inverse-mask it out of this item's, positioned at the two items'
+   * projected-position diff at the current render angle (settled that is
+   * exactly the quarter angle; mid-turn it is the continuous θ both surfaces
+   * are actually placed at).
+   *
+   * The bake root is the front's whole position-free rendering
+   * ({@link ItemRenderPipeline.maskSourceGraphics}): near-corner offset, any
+   * warp mesh, and outer decoration (eg the pick-up-next highlight outline)
+   * included - so the carve is exactly the pixels the front draws, and needs
+   * no registration arithmetic of its own. The front's own carves are
+   * suspended for the bake (see {@link #bakeSilhouetteSprite}).
+   */
+  #tickMasks() {
+    const { cameraAngle } = this.renderContext.general;
+
+    // map of all items in front of us => if the edge is broken, from the live
+    // draw-order graph:
     const brokenEdges = this.#brokenEdges();
 
     // check for broken links (have masking sprites) that are no longer broken:
@@ -509,19 +623,13 @@ export class TransitionSurfaceRenderer<
       const preExistingMaskingSprite = preExistingMaskingContainer?.children[0];
 
       const frontRenderingForMask =
-        this.renderContext.getItemRenderPipeline(frontItem)?.itemPixiRenderer
-          ?.output;
+        this.renderContext.getItemRenderPipeline(frontItem)?.maskSourceGraphics;
 
       if (frontRenderingForMask === undefined) {
         throw new Error("nothing to use as a mask");
       }
 
-      const previousFilters = frontRenderingForMask.filters;
-      // temporarily swop in a filter for rendering this container
-      frontRenderingForMask.filters = redAsAlphaFilter;
-
-      const curMaskingSprite = renderContainerToSprite(
-        pixiRenderer,
+      const curMaskingSprite = this.#bakeSilhouetteSprite(
         frontRenderingForMask,
         // attempt to reuse the existing sprite, if there is one
         // NOTE: renderContainerToSprite will handle destroying the renderTexture
@@ -529,11 +637,6 @@ export class TransitionSurfaceRenderer<
         preExistingMaskingSprite,
         `red mask: ${frontItem.id}`,
       );
-
-      // pixi's .filter property is readonly when read, and mutable when set, so we
-      // need to cast even just to give a container back its old filters
-      // TODO: remove after this PR merged/released in pixi: https://github.com/pixijs/pixijs/pull/11757
-      frontRenderingForMask.filters = previousFilters as Filter[];
 
       if (preExistingMaskingContainer === undefined) {
         if (logCyclicRendering) {
@@ -547,37 +650,28 @@ export class TransitionSurfaceRenderer<
         this.#addMaskingContainer(frontItem, curMaskingSprite);
       }
 
-      const renderedPositionDiff = subXy(
-        projectWorldXyzToScreenXy(frontItem.state.position, cameraQuarterAngle),
-        projectWorldXyzToScreenXy(
-          this.renderContext.item.state.position,
-          cameraQuarterAngle,
-        ),
-      );
-
-      // the mask was baked from the front item's appearance output, whose art
-      // is anchored at the front's near corner by a container OUTSIDE that
-      // output - so the carve must be offset by the front's near-corner offset
-      // too (zero at the base angle, a base cell on each camera-reversed
-      // axis otherwise). Exempt types draw at their origin with no offset:
-      const frontNearCornerOffset =
-        itemTypesExemptFromNearCornerOffset.has(frontItem.type) ? originXyz : (
-          nearCornerOffsetWorldXyz(frontItem, cameraQuarterAngle)
-        );
-      const frontNearCornerOffsetXy = projectWorldXyzToScreenXy(
-        frontNearCornerOffset,
-        cameraQuarterAngle,
-      );
-
-      curMaskingSprite.x = renderedPositionDiff.x + frontNearCornerOffsetXy.x;
-      curMaskingSprite.y = renderedPositionDiff.y + frontNearCornerOffsetXy.y;
+      // the carve registers at the current render angle - the frame both
+      // items' surfaces are actually placed in this frame. The bake root
+      // carries the front's own internal placement (near-corner offset etc),
+      // so the position diff is the whole registration:
+      const frontPosition = frontItem.state.position;
+      const itemPosition = this.renderContext.item.state.position;
+      curMaskingSprite.x =
+        projectWorldXyzToScreenX(frontPosition, cameraAngle) -
+        projectWorldXyzToScreenX(itemPosition, cameraAngle);
+      curMaskingSprite.y =
+        projectWorldXyzToScreenY(frontPosition, cameraAngle) -
+        projectWorldXyzToScreenY(itemPosition, cameraAngle);
     }
   }
 
   destroy(): void {
-    // release the warp snapshot texture if a transition was interrupted (eg by a
-    // room change) mid-turn; the display objects (mask sprites, mesh, art) are
-    // destroyed by the outer position renderer's `destroy({ children: true })`:
+    // the display subtree (mask sprites, mesh, art) is destroyed by the
+    // outer position renderer's `destroy({ children: true })` BEFORE this
+    // runs - so never touch the scene graph here. Release only the GPU
+    // resources that walk does not own: the mesh geometry (pixi's
+    // Mesh.destroy leaves it alive) and the warp snapshot texture
+    this.#cuboidMeshGeometry?.destroy();
     this.#cuboidSnapshotTexture?.destroy(true);
     this.#wrappedRenderer.destroy();
   }

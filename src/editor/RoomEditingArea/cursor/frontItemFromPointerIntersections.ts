@@ -1,10 +1,9 @@
 import { type SetRequired } from "type-fest";
 
 import { type RenderBoxes } from "../../../game/render/renderBox/makeItemRenderBoxAtCameraAngle";
-import { type ZGraph } from "../../../game/render/sortZ/GraphEdges";
-import { toposort } from "../../../game/render/sortZ/toposort/toposort";
+import { DrawOrderBroadPhase } from "../../../game/render/sortZ/DrawOrderBroadPhase";
 import { updateZEdges } from "../../../game/render/sortZ/updateZEdges";
-import { VisualIndex } from "../../../game/render/sortZ/VisualIndex";
+import { ZOrderGraph } from "../../../game/render/sortZ/ZOrderGraph";
 import { type Xy } from "../../../utils/vectors/vectors";
 import { type EditorUnionOfAllItemInPlayTypes } from "../../editorTypes";
 import { type PointerItemIntersection } from "./pointIntersectsItemAABB";
@@ -57,20 +56,18 @@ export const frontItemFromPointerIntersections = (
   }
 
   const sortableItemsSet = new Set(topographicallySortableItems);
-  const visualIndex = new VisualIndex<EditorUnionOfAllItemInPlayTypes>(
+  const broadPhase = new DrawOrderBroadPhase<EditorUnionOfAllItemInPlayTypes>(
     cameraAngle,
   );
-  visualIndex.updateManyItems(sortableItemsSet, sortableItemsSet, renderBoxes);
-  const zEdges: ZGraph<EditorUnionOfAllItemInPlayTypes> = new Map();
-  updateZEdges(
+  broadPhase.updateManyItems(
     sortableItemsSet,
-    visualIndex,
-    // all items have 'moved':
-    sortableItemsSet,
-    zEdges,
     renderBoxes,
+    // the editor is always settled at a quarter angle:
+    cameraAngle,
   );
-  const order = toposort(zEdges, sortableItemsSet);
+  const zEdges = new ZOrderGraph<EditorUnionOfAllItemInPlayTypes>();
+  updateZEdges(sortableItemsSet, broadPhase, zEdges, renderBoxes);
+  const order = zEdges.toposort();
 
   // items are sorted back-to-front, so we need the last one this could be more efficient than
   // doing a full sort - just get the last node from the graph instead

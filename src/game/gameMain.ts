@@ -17,13 +17,13 @@ import { type GameApi } from "./GameApi";
 import { selectCurrentRoomState } from "./gameState/gameStateSelectors/selectCurrentRoomState";
 import { selectCurrentPlayableItem } from "./gameState/gameStateSelectors/selectPlayableItem";
 import { loadGameState } from "./gameState/loadGameState";
+import { __e2e_holdCameraAtDegrees } from "./gameState/mutators/__e2e_holdCameraAtDegrees";
 import { changeCharacterRoom } from "./gameState/mutators/changeCharacterRoom";
 import { type SavedGame } from "./gameState/saving/SavedGameState";
 import { type InputStateTrackerInterface } from "./input/InputStateTracker";
 import { installE2eFastForwardHandle } from "./mainLoop/installE2eFastForwardHandle";
 import { installE2eSwopCharacterHandle } from "./mainLoop/installE2eSwopCharacterHandle";
 import { MainLoop } from "./mainLoop/MainLoop";
-import { startCameraRotation } from "./mainLoop/tickCameraTransition";
 import { loadHudFont } from "./render/text/TextContainer";
 
 TextureStyle.defaultOptions.scaleMode = "nearest";
@@ -116,6 +116,10 @@ export const gameMain = async <RoomId extends string>(
     inputStateTracker,
     savedGame: savedGameToContinueFrom,
   });
+  // camera-angle developer tool, drivable from the browser console (degrees
+  // anticlockwise from the base view; an exact quarter settles/releases):
+  window.__e2e_holdCameraAtDegrees = (degrees: number) =>
+    __e2e_holdCameraAtDegrees(gameState, degrees);
   if (savedGameToContinueFrom !== undefined) {
     const savedGameInPlay = savedGameToContinueFrom.gameInPlay;
     store.dispatch(gameRestoreFromSave(savedGameInPlay));
@@ -178,21 +182,6 @@ export const gameMain = async <RoomId extends string>(
     get gameState() {
       return gameState;
     },
-    _e2e_holdCameraTransition:
-      import.meta.env.MODE === "visual-regression" ?
-        (direction, progress) => {
-          // only start a rotation if none is held yet - repeat calls (eg a sweep
-          // sampling many progresses) just move the hold along the same turn,
-          // rather than retargeting a further quarter each call:
-          if (gameState.cameraTransition === undefined) {
-            startCameraRotation(gameState, direction);
-          }
-          if (gameState.cameraTransition !== undefined) {
-            gameState.cameraTransition.progress = progress;
-          }
-          gameState._e2e_cameraTransitionHold = progress;
-        }
-      : undefined,
     reincarnateFrom(savedGame: SavedGame<RoomId>) {
       loadGameState({
         campaign,

@@ -6,7 +6,11 @@ import {
   makeItemRenderBoxAtCameraAngle,
   type RenderBox,
 } from "../renderBox/makeItemRenderBoxAtCameraAngle";
-import { populatedVisualIndex } from "./__test__/populatedVisualIndex";
+import {
+  geometryAngleAtQuarterOffset,
+  midTransitionGeometryOffsetsDegrees,
+} from "./__test__/geometryAngleAtQuarterOffset";
+import { populatedBroadPhase } from "./__test__/populatedBroadPhase";
 import { type DrawOrderComparable } from "./DrawOrderComparable";
 import { zComparator } from "./zComparator";
 
@@ -97,13 +101,20 @@ const quarterAngles: Xy[] = [
   { x: 0, y: -1 },
 ];
 
-const cases = quarterAngles.flatMap((angle) =>
-  onFloor.map((item) => [angle, item] as const),
+// a floor draws behind whatever stands on it at EVERY angle, not only the
+// quarters the game settles at, so the invariant is asserted with participation
+// and render boxes quantised to the quarter (as masking is) while the draw-order
+// geometry is projected at the offset angle - exactly what the room renderer
+// does while a rotation transition is in flight:
+const cases = quarterAngles.flatMap((cameraAngle) =>
+  midTransitionGeometryOffsetsDegrees.flatMap((geometryOffsetDegrees) =>
+    onFloor.map((item) => [cameraAngle, geometryOffsetDegrees, item] as const),
+  ),
 );
 
 test.for(cases)(
-  "floor is behind %s at camera angle %s",
-  ([cameraAngle, item]) => {
+  "floor is behind an item standing on it at camera angle %s, geometry offset %s° (%s)",
+  ([cameraAngle, geometryOffsetDegrees, item]) => {
     const renderBoxes = new Map<DrawOrderComparable, null | RenderBox>([
       [
         floor,
@@ -122,16 +133,17 @@ test.for(cases)(
         ) ?? null,
       ],
     ]);
-    const visualIndex = populatedVisualIndex(
+    const broadPhase = populatedBroadPhase(
       new Set<DrawOrderComparable>([floor, item]),
       renderBoxes,
       cameraAngle,
+      geometryAngleAtQuarterOffset(cameraAngle, geometryOffsetDegrees),
     );
     // behind (<0) or unordered (0, when transitively ordered via other items)
     // are both fine - a floor must never compare IN FRONT of what stands on it:
     expect(
-      zComparator(floor, item, visualIndex, renderBoxes),
-      `floor should not be in front of ${item.id} at (${cameraAngle.x},${cameraAngle.y})`,
+      zComparator(floor, item, broadPhase, renderBoxes),
+      `floor should not be in front of ${item.id} at (${cameraAngle.x},${cameraAngle.y}) geometry offset ${geometryOffsetDegrees}°`,
     ).toBeLessThanOrEqual(0);
   },
 );

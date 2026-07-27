@@ -20,20 +20,21 @@ import { TransitionSurfaceRenderer } from "./TransitionSurfaceRenderer";
 
 /**
  * creating an item renderer creates one special 'top' property which is the "render this item
- * in every way it needs to be rendered" machine. However, there are also hooks into the pipeline
- * available to get access to some of the sub-renderers.
- *
- * Eg, if masking against an item's appearance,
- * we don't need to get its shadows, sounds, annotations, etc, just its basic item appearance
- * renderer output
+ * in every way it needs to be rendered" machine, plus a hook into the pipeline
+ * for other items' renderers to work against.
  */
 export type ItemRenderPipeline<T extends ItemInPlayType> = {
   /** the top-level, chained renderer that was created for this item. Tick this to tick the item */
   top: ItemSoundAndGraphicsRenderer<T>;
 
-  // a hook into the sub-renderer that renders the item itself - without shadows,
-  // sound or decorators - eg for using an item's art as a mask
-  itemPixiRenderer?: ItemChainPixiRenderer<T>;
+  /**
+   * the item's position-free drawn content: everything it renders except the
+   * screen positioning - art, near-corner offset, its own carves, any warp
+   * mesh, and outer decoration (eg the pick-up-next highlight outline).
+   * Cyclic masks bake the front item's silhouette from this, so a carve is
+   * exactly the pixels the front actually draws
+   */
+  maskSourceGraphics?: Container;
 };
 
 const maybeWrapWithInjected = <T extends ItemInPlayType>(
@@ -75,12 +76,9 @@ export const createItemRenderer = <T extends ItemInPlayType>(
     itemPixiRenderer === undefined ? undefined : (
       conveyorBobDecorateItemRenderer(
         itemRenderContext,
-        portableItemPickHighlightDecorateItemRenderer(
+        flashOnSwitchedDecorateItemRenderer(
           itemRenderContext,
-          flashOnSwitchedDecorateItemRenderer(
-            itemRenderContext,
-            itemPixiRenderer,
-          ),
+          itemPixiRenderer,
         ),
       )
     ),
@@ -108,6 +106,7 @@ export const createItemRenderer = <T extends ItemInPlayType>(
   }
 
   let graphics: ItemChainPixiRenderer<T> | undefined;
+  let positionFreeRenderer: ItemChainPixiRenderer<T> | undefined;
   if (siblingPixiRenderers.length === 0) {
     graphics = undefined;
   } else {
@@ -121,13 +120,19 @@ export const createItemRenderer = <T extends ItemInPlayType>(
         );
 
     // the item's graphics chain, inner → outer: art → near-corner offset →
-    // (cyclic mask + cuboid warp + wall fade) → screen positioning:
-    graphics = new ItemPositionRenderer(
+    // (cyclic mask + cuboid warp + wall fade) → pick-up highlight → screen
+    // positioning. The highlight sits OUTSIDE the transition surface so its
+    // outline (or any other filter) always is applied after any warping:
+    positionFreeRenderer = portableItemPickHighlightDecorateItemRenderer(
       itemRenderContext,
       new TransitionSurfaceRenderer(
         itemRenderContext,
         new NearCornerOffsetRenderer(itemRenderContext, compositeRenderer),
       ),
+    );
+    graphics = new ItemPositionRenderer(
+      itemRenderContext,
+      positionFreeRenderer,
     );
   }
 
@@ -150,6 +155,6 @@ export const createItemRenderer = <T extends ItemInPlayType>(
       graphics,
       sound,
     }),
-    itemPixiRenderer,
+    maskSourceGraphics: positionFreeRenderer?.output,
   };
 };

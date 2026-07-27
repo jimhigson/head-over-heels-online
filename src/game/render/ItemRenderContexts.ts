@@ -12,12 +12,12 @@ import { type ItemLeafPixiRenderer } from "./item/itemRender/ItemPixiRenderer";
 import { type RenderBoxes } from "./renderBox/makeItemRenderBoxAtCameraAngle";
 import { type GeneralRenderContext } from "./room/RoomRenderContexts";
 import { type FilterCache } from "./room/RoomRenderer";
-import { type ZGraph } from "./sortZ/GraphEdges";
+import { type ZOrderGraph } from "./sortZ/ZOrderGraph";
 
 export type ItemZGraph<
   RoomId extends string = string,
   RoomItemId extends string = string,
-> = ZGraph<UnionOfAllItemInPlayTypes<RoomId, RoomItemId>>;
+> = ZOrderGraph<UnionOfAllItemInPlayTypes<RoomId, RoomItemId>>;
 
 /**
  * the context a leaf item renderer receives. The layer/render-box fields are
@@ -75,9 +75,12 @@ export type ItemRenderContext<T extends ItemInPlayType> =
      */
     itemPositionContainer?: Container;
     /**
-     * the (mutated in place) record of which items is in front of which,
-     * including what can't be applied due to cyclic dependencies
-     * - updated by the time the item renders
+     * the (mutated in place) live draw-order graph at the continuous render
+     * angle θ, rebuilt from room geometry every tick before items render.
+     * Records which item is in front of which, including the broken (cyclic)
+     * edges that can't be honoured by draw order alone - masking carves those
+     * from this graph, so the cycles that actually exist at θ are exactly the
+     * ones masked
      */
     zEdges: ItemZGraph;
     /**
@@ -136,4 +139,11 @@ export type ItemTickContext = ItemLeafTickContext & {
    * shadow and z-sort machinery, never by a leaf renderer
    */
   movedOrResizedItems: MovedOrResizedItems<string, string>;
+  /**
+   * whether the room's spatial membership changed since the last tick (an
+   * item appeared or vanished) - movement alone leaves it false. Lets
+   * consumers whose output is a pure function of (membership, movement,
+   * angle) skip work on frames where none of those changed
+   */
+  roomMembershipChanged: boolean;
 };

@@ -1,19 +1,20 @@
 import { expect, test } from "vitest";
 
 import {
-  allCameraAngles,
   cameraAngleBase,
   halfTurn,
+  quarterCameraAngles,
   quarterTurnAnticlockwise,
   quarterTurnClockwise,
-} from "../../../utils/vectors/rotateXy";
+} from "../../../utils/vectors/cameraAngleVectors";
 import { type Xy, type Xyz } from "../../../utils/vectors/vectors";
 import { projectWorldXyzToScreenXy } from "../projections";
-import { populatedVisualIndex } from "./__test__/populatedVisualIndex";
+import { populatedBroadPhase } from "./__test__/populatedBroadPhase";
 import { worldBoxToCameraSpace } from "./__test__/worldBoxToCameraSpace";
+import { zOrderGraphEdgeStrings } from "./__test__/zOrderGraphEdgeStrings";
 import { type DrawOrderComparable } from "./DrawOrderComparable";
-import { type ZGraph } from "./GraphEdges";
 import { updateZEdges } from "./updateZEdges";
+import { ZOrderGraph } from "./ZOrderGraph";
 
 // --- worldBoxToCameraSpace: hand-computed expectations, so this is not circular
 // with the implementation it is proving. Box is min-corner (0,0,0), extents (2,4,1).
@@ -63,7 +64,7 @@ test("a quarter-turn anticlockwise moves that +x point to the screen right", () 
 
 // --- the depth sort, at every angle, must equal baking that rotation into the
 // world coordinates and sorting at the base angle. This proves the camera angle is
-// threaded consistently through both the VisualIndex (broad phase) and zComparator
+// threaded consistently through both the DrawOrderBroadPhase (broad phase) and zComparator
 // (fine phase); base sorting is already covered by updateZEdgesStochastic.
 
 type TestItem = DrawOrderComparable & { id: string };
@@ -99,42 +100,25 @@ const bakeRotation = (scene: Set<TestItem>, cameraAngle: Xy): Set<TestItem> => {
   return baked;
 };
 
-const behindFrontIdPairs = (graph: ZGraph<TestItem>): Set<string> => {
-  const pairs = new Set<string>();
-  for (const [behind, fronts] of graph) {
-    for (const [front] of fronts) {
-      pairs.add(`${behind.id}->${front.id}`);
-    }
-  }
-  return pairs;
-};
-
-test.for(allCameraAngles)(
+test.for(quarterCameraAngles)(
   "draw order at camera angle %o matches the rotation baked into world coords",
   (cameraAngle) => {
     const scene = makeScene();
     const baked = bakeRotation(scene, cameraAngle);
 
     const noRenderBoxes = new Map<TestItem, null>();
-    const zEdgesAtAngle: ZGraph<TestItem> = new Map();
+    const zEdgesAtAngle = new ZOrderGraph<TestItem>();
     updateZEdges(
       scene,
-      populatedVisualIndex(scene, noRenderBoxes, cameraAngle),
-      scene,
+      populatedBroadPhase(scene, noRenderBoxes, cameraAngle),
       zEdgesAtAngle,
       noRenderBoxes,
     );
-    const bakedAtBase: ZGraph<TestItem> = new Map();
-    updateZEdges(
-      baked,
-      populatedVisualIndex(baked),
-      baked,
-      bakedAtBase,
-      noRenderBoxes,
-    );
+    const bakedAtBase = new ZOrderGraph<TestItem>();
+    updateZEdges(baked, populatedBroadPhase(baked), bakedAtBase, noRenderBoxes);
 
-    expect(behindFrontIdPairs(zEdgesAtAngle)).toEqual(
-      behindFrontIdPairs(bakedAtBase),
+    expect(zOrderGraphEdgeStrings(zEdgesAtAngle)).toEqual(
+      zOrderGraphEdgeStrings(bakedAtBase),
     );
   },
 );

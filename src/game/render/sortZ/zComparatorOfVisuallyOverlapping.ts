@@ -1,19 +1,66 @@
-import { rotatedX, rotatedY } from "../../../utils/vectors/rotateXy";
+import {
+  rotatedXMaxOverRect,
+  rotatedXMinOverRect,
+  rotatedYMaxOverRect,
+  rotatedYMinOverRect,
+} from "../../../utils/vectors/rotateXy";
 import { type Xy, type Xyz } from "../../../utils/vectors/vectors";
 
 export const Z_COMPARATOR_OF_VISUALLY_OVERLAPPING_UNDECIDED = 2 as const;
+
+/**
+ * order for one horizontal (world x or y) axis: which of the two boxes the
+ * viewer sees in front, given they are separated on that axis, or 0 when they
+ * are not separated on it. `viewDirection` is the view ray's component along
+ * the axis, whose sign says which side is nearer.
+ *
+ * Both "separated with a lower" and "separated with b lower" can only hold at
+ * once for coincident zero-extent boxes (two items in the same plane) - there
+ * is then no separation direction and no view-correct order, so a stable,
+ * view-independent order is returned (a in front - the same resolution the
+ * fixed-camera rules gave at every quarter angle)
+ */
+const horizontalSeparationOrder = (
+  aMax: number,
+  bMin: number,
+  bMax: number,
+  aMin: number,
+  viewDirection: number,
+): -1 | 0 | 1 => {
+  const aLower = aMax <= bMin;
+  const bLower = bMax <= aMin;
+  if (aLower && bLower) {
+    return 1;
+  }
+  if (aLower) {
+    return viewDirection > 0 ? 1 : -1;
+  }
+  if (bLower) {
+    return viewDirection > 0 ? -1 : 1;
+  }
+  return 0;
+};
 
 /** returns (strictly)
  * 1 if A in front
  * -1 if B in front
  * 2 if objects are overlapping
  *
- * The camera rotation is folded into the comparison here: the boxes are compared in
- * camera space (world x,y rotated by `cameraAngle`; z is the rotation axis, so
- * unchanged), computed inline rather than from a pre-rotated box. In camera space the
- * fixed-camera ordering rules apply (lower x / lower y in front, higher z in front).
- * For a 90° turn `rotatedX`/`rotatedY` is a signed axis pick, so the two opposite xy
- * corners span the extreme.
+ * World-axis separation: two world-aligned boxes are disjoint iff separated
+ * (touching included) on world x, y or z, and the separating axis decides
+ * front/back exactly, at any camera angle - the box on the side the view ray
+ * comes from is in front. The view ray is camera-space `(1, 1, −1)` at every
+ * angle, which in world space is `(cos+sin, cos−sin, −1)`; the sign of its
+ * component along the separating axis picks the front side. UNDECIDED is
+ * returned only when the boxes genuinely intersect in world space (overlap
+ * strictly on all three axes).
+ *
+ * The world axis currently rendering nearest to camera-x is tested first, so
+ * at the four quarter angles (where camera axes ARE world axes) the decision
+ * precedence is identical to the fixed-camera rules (lower camera-x / lower
+ * camera-y in front, higher z in front). An axis exactly perpendicular to the
+ * view (component 0, only at the exact turn diagonals) gives no occlusion
+ * order and is skipped.
  */
 export const zComparatorOfVisuallyOverlapping = (
   aPosition: Xyz,
@@ -22,73 +69,68 @@ export const zComparatorOfVisuallyOverlapping = (
   bBb: Xyz,
   cameraAngle: Xy,
 ): -1 | 1 | typeof Z_COMPARATOR_OF_VISUALLY_OVERLAPPING_UNDECIDED => {
-  // camera-space x interval of each box:
-  const aRotX0 = rotatedX(aPosition.x, aPosition.y, cameraAngle);
-  const aRotX1 = rotatedX(
-    aPosition.x + aBb.x,
-    aPosition.y + aBb.y,
-    cameraAngle,
-  );
-  const aXMin = Math.min(aRotX0, aRotX1);
-  const aXMax = Math.max(aRotX0, aRotX1);
-  const bRotX0 = rotatedX(bPosition.x, bPosition.y, cameraAngle);
-  const bRotX1 = rotatedX(
-    bPosition.x + bBb.x,
-    bPosition.y + bBb.y,
-    cameraAngle,
-  );
-  const bXMin = Math.min(bRotX0, bRotX1);
+  const { x: c, y: s } = cameraAngle;
+  const dX = c + s;
+  const dY = c - s;
 
-  // check x: lower x is in front
-  if (aXMax <= bXMin) {
-    // a is entirely less than b in [x] — a is in front
-    return 1;
+  const ax1 = aPosition.x + aBb.x;
+  const bx1 = bPosition.x + bBb.x;
+  const ay1 = aPosition.y + aBb.y;
+  const by1 = bPosition.y + bBb.y;
+
+  const xDominant = Math.abs(c) >= Math.abs(s);
+
+  // the horizontal axes in precedence order: the axis the view direction
+  // leans on more is tested first, since when the boxes are separated on
+  // both it is the dominant one that decides what the viewer sees in front.
+  // Plain sequenced calls (no closures): this runs per candidate pair per
+  // frame
+  let horizontalOrder: -1 | 0 | 1 = 0;
+  if (xDominant && dX !== 0) {
+    horizontalOrder = horizontalSeparationOrder(
+      ax1,
+      bPosition.x,
+      bx1,
+      aPosition.x,
+      dX,
+    );
   }
-  const bXMax = Math.max(bRotX0, bRotX1);
-  if (aXMin >= bXMax) {
-    // b is entirely less than a in [x] — b is in front
+  if (horizontalOrder === 0 && dY !== 0) {
+    horizontalOrder = horizontalSeparationOrder(
+      ay1,
+      bPosition.y,
+      by1,
+      aPosition.y,
+      dY,
+    );
+  }
+  if (horizontalOrder === 0 && !xDominant && dX !== 0) {
+    horizontalOrder = horizontalSeparationOrder(
+      ax1,
+      bPosition.x,
+      bx1,
+      aPosition.x,
+      dX,
+    );
+  }
+  if (horizontalOrder !== 0) {
+    return horizontalOrder;
+  }
+
+  // z is the rotation axis: the view ray's z component is −1 at every angle,
+  // so higher z is always in front
+  const aZMax = aPosition.z + aBb.z;
+  const bZMax = bPosition.z + bBb.z;
+  const aSideZ = aZMax <= bPosition.z;
+  const bSideZ = bZMax <= aPosition.z;
+  if (aSideZ && bSideZ) {
     return -1;
   }
-
-  // camera-space y interval of each box:
-  const aRotY0 = rotatedY(aPosition.x, aPosition.y, cameraAngle);
-  const aRotY1 = rotatedY(
-    aPosition.x + aBb.x,
-    aPosition.y + aBb.y,
-    cameraAngle,
-  );
-  const aYMin = Math.min(aRotY0, aRotY1);
-  const aYMax = Math.max(aRotY0, aRotY1);
-  const bRotY0 = rotatedY(bPosition.x, bPosition.y, cameraAngle);
-  const bRotY1 = rotatedY(
-    bPosition.x + bBb.x,
-    bPosition.y + bBb.y,
-    cameraAngle,
-  );
-  const bYMin = Math.min(bRotY0, bRotY1);
-
-  // a and b overlap in x, check y: lower y is in front
-  if (aYMax <= bYMin) {
-    // a is entirely less than b in [y] — a is in front
-    return 1;
-  }
-  const bYMax = Math.max(bRotY0, bRotY1);
-  if (aYMin >= bYMax) {
-    // b is entirely less than a in [y] — b is in front
-    return -1;
-  }
-
-  // z is the rotation axis, so unchanged:
-  const aZMin = aPosition.z;
-  const aZMax = aZMin + aBb.z;
-  const bZMin = bPosition.z;
-  // a and b overlap in x and y, check z: *higher* z is in front/above (sign flipped vs x and y)
-  if (aZMax <= bZMin) {
+  if (aSideZ) {
     // a is entirely below b in [z] — a is behind
     return -1;
   }
-  const bZMax = bPosition.z + bBb.z;
-  if (aZMin >= bZMax) {
+  if (bSideZ) {
     // b is entirely below a in [z] — b is behind
     return 1;
   }
@@ -103,40 +145,26 @@ export const zComparatorOfVisuallyOverlappingByMtv = (
   bBb: Xyz,
   cameraAngle: Xy,
 ): number => {
-  // camera-space x/y intervals (z is the rotation axis, so unchanged):
-  const aRotX0 = rotatedX(aPosition.x, aPosition.y, cameraAngle);
-  const aRotX1 = rotatedX(
-    aPosition.x + aBb.x,
-    aPosition.y + aBb.y,
-    cameraAngle,
-  );
-  const aXMin = Math.min(aRotX0, aRotX1);
-  const aXMax = Math.max(aRotX0, aRotX1);
-  const bRotX0 = rotatedX(bPosition.x, bPosition.y, cameraAngle);
-  const bRotX1 = rotatedX(
-    bPosition.x + bBb.x,
-    bPosition.y + bBb.y,
-    cameraAngle,
-  );
-  const bXMin = Math.min(bRotX0, bRotX1);
-  const bXMax = Math.max(bRotX0, bRotX1);
+  const ax0 = aPosition.x;
+  const ax1 = aPosition.x + aBb.x;
+  const ay0 = aPosition.y;
+  const ay1 = aPosition.y + aBb.y;
+  const bx0 = bPosition.x;
+  const bx1 = bPosition.x + bBb.x;
+  const by0 = bPosition.y;
+  const by1 = bPosition.y + bBb.y;
 
-  const aRotY0 = rotatedY(aPosition.x, aPosition.y, cameraAngle);
-  const aRotY1 = rotatedY(
-    aPosition.x + aBb.x,
-    aPosition.y + aBb.y,
-    cameraAngle,
-  );
-  const aYMin = Math.min(aRotY0, aRotY1);
-  const aYMax = Math.max(aRotY0, aRotY1);
-  const bRotY0 = rotatedY(bPosition.x, bPosition.y, cameraAngle);
-  const bRotY1 = rotatedY(
-    bPosition.x + bBb.x,
-    bPosition.y + bBb.y,
-    cameraAngle,
-  );
-  const bYMin = Math.min(bRotY0, bRotY1);
-  const bYMax = Math.max(bRotY0, bRotY1);
+  // camera-space x/y intervals (z is the rotation axis, so unchanged), by
+  // interval arithmetic over the footprint - exact at any camera angle:
+  const aXMin = rotatedXMinOverRect(ax0, ax1, ay0, ay1, cameraAngle);
+  const aXMax = rotatedXMaxOverRect(ax0, ax1, ay0, ay1, cameraAngle);
+  const bXMin = rotatedXMinOverRect(bx0, bx1, by0, by1, cameraAngle);
+  const bXMax = rotatedXMaxOverRect(bx0, bx1, by0, by1, cameraAngle);
+
+  const aYMin = rotatedYMinOverRect(ax0, ax1, ay0, ay1, cameraAngle);
+  const aYMax = rotatedYMaxOverRect(ax0, ax1, ay0, ay1, cameraAngle);
+  const bYMin = rotatedYMinOverRect(bx0, bx1, by0, by1, cameraAngle);
+  const bYMax = rotatedYMaxOverRect(bx0, bx1, by0, by1, cameraAngle);
 
   const aZMin = aPosition.z;
   const aZMax = aZMin + aBb.z;

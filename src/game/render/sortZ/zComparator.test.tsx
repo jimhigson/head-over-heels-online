@@ -7,7 +7,7 @@ import {
   type Xy,
 } from "../../../utils/vectors/vectors";
 import { type RenderBox } from "../renderBox/makeItemRenderBoxAtCameraAngle";
-import { populatedVisualIndex } from "./__test__/populatedVisualIndex";
+import { populatedBroadPhase } from "./__test__/populatedBroadPhase";
 import { worldBoxToCameraSpace } from "./__test__/worldBoxToCameraSpace";
 import { type DrawOrderComparable } from "./DrawOrderComparable";
 import { zComparator } from "./zComparator";
@@ -103,7 +103,7 @@ const orderAtCameraAngle = (
   return zComparator(
     a,
     b,
-    populatedVisualIndex(new Set([a, b]), renderBoxes, atAngle),
+    populatedBroadPhase(new Set([a, b]), renderBoxes, atAngle),
     renderBoxes,
   );
 };

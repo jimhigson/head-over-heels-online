@@ -46,9 +46,17 @@ export const renderContainerToTexture = (
 ): Texture => {
   const localBounds = container.getLocalBounds();
 
-  // rounding because bounds can be fractional, but size of the texture can't be
-  const width = Math.ceil(localBounds.maxX - localBounds.minX);
-  const height = Math.ceil(localBounds.maxY - localBounds.minY);
+  // the bake displaces by a whole-pixel amount only, so any integer-positioned
+  // content is never resampled; content at fractional positions rounds once,
+  // in the bake, exactly as a live raster would round it. (An exact-min
+  // displacement would push the fraction into every pixel of the bake.)
+  const shiftX = Math.floor(localBounds.minX);
+  const shiftY = Math.floor(localBounds.minY);
+
+  // rounding because bounds can be fractional, but size of the texture can't
+  // be; sized from the integer shift so the fractional overhang still fits:
+  const width = Math.ceil(localBounds.maxX - shiftX);
+  const height = Math.ceil(localBounds.maxY - shiftY);
 
   const canReuse =
     reuseTexture !== undefined ?
@@ -75,8 +83,8 @@ export const renderContainerToTexture = (
   const { x, y } = container;
 
   // displace container contents to the origin of the sprite:
-  container.x -= localBounds.minX;
-  container.y -= localBounds.minY;
+  container.x -= shiftX;
+  container.y -= shiftY;
 
   try {
     pixiRenderer.render({
@@ -130,11 +138,12 @@ export const renderContainerToSprite = (
   sprite.texture = texture;
   sprite.label = label ?? `sprite of container (${container.label})`;
   sprite.pivot = {
-    // without rounding of bounds here, floor tiles render in not quite the right
-    // place, since they can have fractional bounds. Rounded up the extent, so need
-    // to round down the x and y (expanding the range)
-    x: Math.floor(-localBounds.minX),
-    y: Math.floor(-localBounds.minY),
+    // the texture's origin is the bake's whole-pixel displacement
+    // (floor of the bounds min), so the pivot mirrors exactly that -
+    // fractional content then sits at its fractional offset within the
+    // texture, rounded once by the bake:
+    x: -Math.floor(localBounds.minX),
+    y: -Math.floor(localBounds.minY),
   };
 
   return sprite;
@@ -191,11 +200,9 @@ export const maybeRenderContainerToAnimatedSprite = <
   outputAnimatedSprite.label =
     label ?? `animated sprite of container (${container.label})`;
   outputAnimatedSprite.pivot = {
-    // without rounding of bounds here, floor tiles render in not quite the right
-    // place, since they can have fractional bounds. Rounded up the extent, so need
-    // to round down the x and y (expanding the range)
-    x: Math.floor(-localBounds.minX),
-    y: Math.floor(-localBounds.minY),
+    // mirrors the bake's whole-pixel displacement (floor of the bounds min):
+    x: -Math.floor(localBounds.minX),
+    y: -Math.floor(localBounds.minY),
   };
 
   return outputAnimatedSprite as C;

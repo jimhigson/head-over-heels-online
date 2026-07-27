@@ -6,17 +6,17 @@ import { wallTileSize } from "../../../sprites/spritesheet/spritesheetData/textu
 import { isEmpty } from "../../../utils/iterators/isEmpty";
 import { phaseForSubItem } from "../../../utils/maths/hashing";
 import { renderContainerToSprite } from "../../../utils/pixi/renderContainerToSprite";
+import {
+  invertCameraAngle,
+  nearestQuarterAngle,
+} from "../../../utils/vectors/cameraAngleVectors";
 import { octantIndexOfDirection } from "../../../utils/vectors/octantIndexOfDirection" with { type: "macro" };
 import {
+  axisProjectsReversed,
   resolveSpriteDirectionIndexXy4,
   spriteFlipXAtAngle,
 } from "../../../utils/vectors/resolveCameraRelativeVector";
-import {
-  axisProjectsReversed,
-  invertCameraAngle,
-  nearestQuarterAngle,
-  rotateXy,
-} from "../../../utils/vectors/rotateXy";
+import { rotateXy } from "../../../utils/vectors/rotateXy";
 import {
   alongAxisOfDirectionXy,
   directionIndexXy8,

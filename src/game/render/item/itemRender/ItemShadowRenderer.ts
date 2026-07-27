@@ -12,7 +12,7 @@ import { store } from "../../../../store/store";
 import { assignRoundedXy } from "../../../../utils/pixi/assignRoundedXy";
 import { maybeRenderContainerToSprite } from "../../../../utils/pixi/renderContainerToSprite";
 import { renderMultipliedXy } from "../../../../utils/pixi/renderMultipliedXy";
-import { nearestQuarterAngle } from "../../../../utils/vectors/rotateXy";
+import { nearestQuarterAngle } from "../../../../utils/vectors/cameraAngleVectors";
 import {
   addXy,
   cameraAngleIsOddQuarterTurn,
@@ -277,9 +277,12 @@ class ItemShadowRenderer<
   destroy() {
     this.#output.destroy(true);
     this.#shadowMaskRenderer?.destroy();
-    for (const c of Object.values(this.#shadowSprites)) {
-      // destroy all sprites, and destroy texture too if it was uniquely created for this cast
-      c.sprite.destroy();
+    // destroy every recorded shadow sprite (releasing any uniquely-created
+    // texture); usually already covered by the output subtree destroy above,
+    // but this owns the map so it does not rely on the sprites being parented
+    // there (pixi guards against double destroy):
+    for (const sprite of this.#shadowSprites.values()) {
+      sprite.destroy();
     }
   }
   /**

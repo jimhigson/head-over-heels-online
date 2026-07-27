@@ -2,8 +2,8 @@ import { type Sprite } from "pixi.js";
 
 import { wallTileSize } from "../../../sprites/spritesheet/spritesheetData/textureSizes";
 import { variantTextureId } from "../../../sprites/spritesheet/variantTextureId";
+import { nearestQuarterAngle } from "../../../utils/vectors/cameraAngleVectors";
 import { spriteFlipXAtAngle } from "../../../utils/vectors/resolveCameraRelativeVector";
-import { nearestQuarterAngle } from "../../../utils/vectors/rotateXy";
 import { lengthXy } from "../../../utils/vectors/vectors";
 import { createSprite } from "../createSprite";
 import { type ItemAppearance } from "./ItemAppearance";

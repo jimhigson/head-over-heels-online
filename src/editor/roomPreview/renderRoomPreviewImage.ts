@@ -13,7 +13,7 @@ import { emptyUserSettings } from "../../store/slices/userSettings/emptyUserSett
 import { type SpriteOption } from "../../store/slices/userSettings/userSettingsSlice";
 import { store } from "../../store/store";
 import { emptyObject } from "../../utils/empty";
-import { cameraAngleBase } from "../../utils/vectors/rotateXy";
+import { cameraAngleBase } from "../../utils/vectors/cameraAngleVectors";
 import {
   type EditorRoomId,
   type EditorRoomItemId,

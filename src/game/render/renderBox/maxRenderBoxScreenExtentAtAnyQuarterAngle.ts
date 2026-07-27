@@ -1,5 +1,5 @@
 import { type SpritesheetMetadata } from "../../../sprites/spritesheet/spritesheetData/spritesheetMetaData";
-import { allCameraAngles } from "../../../utils/vectors/rotateXy";
+import { quarterCameraAngles } from "../../../utils/vectors/cameraAngleVectors";
 import { originXyz, type Xy } from "../../../utils/vectors/vectors";
 import { boxProjectedExtent } from "../item/itemRender/cuboidTransitionMesh";
 import {
@@ -25,7 +25,7 @@ export const maxRenderBoxScreenExtentAtAnyQuarterAngle = (
 ): Xy => {
   let width = 0;
   let height = 0;
-  for (const angle of allCameraAngles) {
+  for (const angle of quarterCameraAngles) {
     const box = makeItemRenderBoxAtCameraAngle(item, angle, spritesheetMeta);
     const { min, max } = boxProjectedExtent(
       box?.renderAabb ?? item.aabb,

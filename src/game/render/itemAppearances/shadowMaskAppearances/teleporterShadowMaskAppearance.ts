@@ -3,7 +3,7 @@ import { type Sprite } from "pixi.js";
 import { iterateStoodOnByItems } from "../../../../model/stoodOnItemsLookup";
 import { maybeRenderContainerToSprite } from "../../../../utils/pixi/renderContainerToSprite";
 import { renderMultipliedXy } from "../../../../utils/pixi/renderMultipliedXy";
-import { nearestQuarterAngle } from "../../../../utils/vectors/rotateXy";
+import { nearestQuarterAngle } from "../../../../utils/vectors/cameraAngleVectors";
 import { isPlayableItem } from "../../../physics/itemPredicates";
 import { teleporterIsActive } from "../../../physics/mechanics/teleporting";
 import { type ItemAppearance } from "../ItemAppearance";

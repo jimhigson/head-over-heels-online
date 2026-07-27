@@ -30,11 +30,13 @@ export const wallOccludesRoomFloorBehind = (
   alongAxis: AxisXy,
   zEdges: ItemZGraph,
 ): boolean => {
-  for (const [behind, fronts] of zEdges) {
+  const n = zEdges.nodeCount;
+  for (let i = 0; i < n; i++) {
+    const behind = zEdges.nodeAt(i);
     if (
       isFloor(behind) &&
       behind.config.floorType === "standable" &&
-      fronts.has(wall) &&
+      zEdges.hasEdge(behind, wall) &&
       // not a floor this wall runs along the edge of (the floor it bounds):
       !overlapsOnAxis(wall, behind, alongAxis)
     ) {

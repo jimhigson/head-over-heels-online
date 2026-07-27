@@ -478,11 +478,12 @@ export class MainLoop<RoomId extends string> {
           general,
           room: tickEndRoom,
         };
+        const innerRoomRenderer = new RoomRenderer(roomRenderContext);
         this.#roomRenderer = new RoomScrollRenderer(
           roomRenderContext,
           new ColourClashCircleEffectRenderer(
             roomRenderContext,
-            new RoomRenderer(roomRenderContext),
+            innerRoomRenderer,
           ),
         );
         this.#worldContainer.addChild(this.#roomRenderer.output.graphics);

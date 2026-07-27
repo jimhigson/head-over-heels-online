@@ -8,9 +8,9 @@ import {
   asReuseSprite,
   maybeRenderContainerToSprite,
 } from "../../../utils/pixi/renderContainerToSprite";
+import { nearestQuarterAngle } from "../../../utils/vectors/cameraAngleVectors";
 import { octantIndexOfDirection } from "../../../utils/vectors/octantIndexOfDirection" with { type: "macro" };
 import { spriteFlipXAtAngle } from "../../../utils/vectors/resolveCameraRelativeVector";
-import { nearestQuarterAngle } from "../../../utils/vectors/rotateXy";
 import { axisIndexXy8 } from "../../../utils/vectors/vectors";
 import { createSprite, type CreateSpriteOptions } from "../createSprite";
 import { blockAppearance } from "./blockAppearance";

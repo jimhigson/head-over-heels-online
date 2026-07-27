@@ -5,7 +5,7 @@ import { paletteBlockstack } from "../../../sprites/palette/spritesheetPalette";
 import { selectShowSubrooms } from "../../../store/slices/gameMenus/gameMenusSelectors";
 import { store } from "../../../store/store";
 import { objectEntriesIter } from "../../../utils/entries";
-import { nearestQuarterAngle } from "../../../utils/vectors/rotateXy";
+import { nearestQuarterAngle } from "../../../utils/vectors/cameraAngleVectors";
 import { projectBlockXyzToScreenXy } from "../projections";
 import { TextContainer } from "../text/TextContainer";
 import { type DecorateRoomRenderer } from "./DecorateRoomRenderer";

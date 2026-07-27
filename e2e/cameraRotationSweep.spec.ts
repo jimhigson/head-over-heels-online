@@ -1,6 +1,8 @@
 import { expect, type Page, test } from "@playwright/test";
 
 import { type OriginalCampaignRoomId } from "../src/_generated/originalCampaign/OriginalCampaignRoomId";
+import { quarterMaskFaultRoomCampaign } from "../src/game/render/sortZ/__test__/quarterMaskFaultRoom";
+import { wallFloorSeamRoomCampaign } from "../src/game/render/sortZ/__test__/wallFloorSeamRoom";
 import { type ResolutionName } from "../src/originalGame";
 import { type SpriteOption } from "../src/store/slices/userSettings/userSettingsSlice";
 import { allItemsTestRoomCampaign } from "./fixtures/allItemsTestRoom";
@@ -66,7 +68,12 @@ function* angleRange(
   }
 }
 
-type SweepCampaign = "allItemsTestRoom" | "original" | "rotate-camera-test";
+type SweepCampaign =
+  | "allItemsTestRoom"
+  | "original"
+  | "quarterMaskFaultRoom"
+  | "rotate-camera-test"
+  | "wallFloorSeamRoom";
 
 /**
  * an infinitesimal step into a turn: far too small to move anything by a whole
@@ -113,6 +120,8 @@ type SweepCapture = {
  */
 type RoomsForCampaign<C extends SweepCampaign> =
   C extends "allItemsTestRoom" ? "allItemsTestRoom"
+  : C extends "wallFloorSeamRoom" ? "wallFloorSeamRoom"
+  : C extends "quarterMaskFaultRoom" ? "quarterMaskFaultRoom"
   : C extends "original" ? OriginalCampaignRoomId
   : string;
 
@@ -190,6 +199,40 @@ const sweepScenario = <C extends SweepCampaign>(
 ): SweepScenario<C> => scenario;
 
 const scenarios: readonly SweepScenario[] = [
+  sweepScenario({
+    // the minimal wall/floor seam isolation: settled (0) and one mid-transition
+    // angle (-20) - just enough to show the thin line where the wall meets the
+    // floor edge, decided by the ADJACENT/seam branch at the continuous angle
+    roomId: "wallFloorSeamRoom",
+    campaign: "wallFloorSeamRoom",
+    // the inline campaign's single room - head spawns here:
+    enterFrom: "$$startingRoom",
+    angles: [0, -20],
+    emulatedResolution: "zxSpectrum",
+    character: "head",
+  }),
+  sweepScenario({
+    // two tower/column/row trios whose draw-order cycles come and go at
+    // MID-TRANSITION angles (bands pinned by quarterMaskFaultRoom.test.ts):
+    // trio A's cycle exists only at θ ≈ 25°..37.5° (neither quarter), trio
+    // B's exists settled and dissolves at θ ≈ 26.5°. The towers are non-warp,
+    // so any masking scheme frozen to quarter angles renders these bands
+    // wrongly: towerA stamps uncarved over rowA (30°/35°), and towerB keeps a
+    // stale carve-hole after its cycle has dissolved (30°..44°):
+    roomId: "quarterMaskFaultRoom",
+    campaign: "quarterMaskFaultRoom",
+    enterFrom: "$$startingRoom",
+    angles: [0, 20, 30, 35, 40, 44.999, 45.001, 50, 90],
+    emulatedResolution: "zxSpectrum",
+    character: "head",
+    // also captured on the Debug sheet: flat per-sprite block colours with
+    // texture ids, so a stale carve-hole or an uncarved stamp reads
+    // unambiguously (which sprite is on top, and exactly where it is cut):
+    spriteOptions: [
+      { name: "BlockStack", uncolourised: false },
+      { name: "Debug", uncolourised: false },
+    ],
+  }),
   sweepScenario({
     roomId: "blacktooth13",
     campaign: "original",
@@ -276,13 +319,48 @@ const scenarios: readonly SweepScenario[] = [
     angles: [
       0, 5, 10, 15, 20, 25, 30, 35, 40, 45, 50, 55, 60, 65, 70, 75, 80, 85, 90,
       95, 100, 105, 110, 115, 120, 125, 130, 135, 140, 145, 150, 155, 160, 165,
-      170, 175, 180, 180.11, 180.12, 181, 182.8, 182.84, 182.841, 182.85, 182.9,
-      183, 185, 190, 195, 200, 205, 210, 215, 220, 225, 230, 235, 240, 245, 250,
-      255, 260, 265, 270, 275, 280, 285, 290, 295, 300, 305, 310, 315, 320, 325,
-      330, 335, 340, 345, 350, 355,
+      170, 175, 180, 180.11, 180.12, 181,
+      // sometimes rendering breaks in this 1/100the of an angle:
+      182.84, 182.841,
+      // back to regular 5º:
+      185, 190, 195, 200, 205, 210, 215, 220, 225, 230, 235, 240, 245, 250, 255,
+      260, 265, 270, 275, 280, 285, 290, 295, 300, 305, 310, 315, 320, 325, 330,
+      335, 340, 345, 350, 355,
     ],
     emulatedResolution: "$$default",
     character: "head",
+  }),
+  sweepScenario({
+    // some highlighted angles with debug sprites
+    roomId: "cycles",
+    campaign: "rotate-camera-test",
+    // head's starting room, shown at spawn:
+    enterFrom: "$$startingRoom",
+    angles: [
+      150, 155,
+      // currently shows a slight error (floor showing through mask between items)
+      180,
+    ],
+    emulatedResolution: "$$default",
+    character: "head",
+    spriteOptions: [{ name: "Debug", uncolourised: false }],
+  }),
+  sweepScenario({
+    // the cycles room's cyclic masks in uncolourised mode: the room colour is
+    // ONE ancestor tint on the room renderer's items container over the white
+    // two-tone art, and the masked/carved sprites must keep it at every
+    // settled angle - pins the found bug where cyclic-mask rooms lost the
+    // tint (rendered raw white) after camera rotations. The angles are
+    // captured in sequence in one session, so each later angle is also an
+    // after-rotations frame:
+    roomId: "cycles",
+    campaign: "rotate-camera-test",
+    // head's starting room, shown at spawn:
+    enterFrom: "$$startingRoom",
+    character: "head",
+    angles: [0, 90, 180, 270],
+    emulatedResolution: "$$default",
+    spriteOptions: [{ name: "BlockStack", uncolourised: true }],
   }),
   sweepScenario({
     // heels boots here with the bag pickup right above her and a portable
@@ -380,13 +458,21 @@ const scenarios: readonly SweepScenario[] = [
   sweepScenario({
     // the start room at its four settled angles, entered via lamp so it is
     // captured as a room entered with physics already frozen, rather than as
-    // the boot room the character was placed in while physics could still tick:
+    // the boot room the character was placed in while physics could still
+    // tick. Also captured uncolourised: the raised doors' legs and floating
+    // thresholds must render only legal zx-palette colours at every settled
+    // angle (an illegal shade means two tints multiplied together, eg a door
+    // leg tinted by the room colour twice):
     roomId: "start",
     campaign: "rotate-camera-test",
     enterFrom: "lamp",
     character: "head",
     angles: [0, 90, 180, 270],
     emulatedResolution: "$$default",
+    spriteOptions: [
+      { name: "BlockStack", uncolourised: false },
+      { name: "BlockStack", uncolourised: true },
+    ],
     maxDiffPixels: 1_000,
   }),
   sweepScenario({
@@ -409,6 +495,47 @@ const scenarios: readonly SweepScenario[] = [
     emulatedResolution: "$$default",
     spriteOptions: [{ name: "BlockStack", uncolourised: true }],
     maxDiffPixels: 1_000,
+  }),
+  sweepScenario({
+    // blacktooth39's floor has differently-coloured colour-clash strips per
+    // edge (each edge takes its neighbouring room's hue) around raised
+    // doors; each edge must keep ITS OWN colour at every settled angle:
+    roomId: "blacktooth39",
+    campaign: "original",
+    enterFrom: "finalroom",
+    character: "head",
+    angles: [0, 90, 270],
+    emulatedResolution: "$$default",
+    spriteOptions: [{ name: "BlockStack", uncolourised: true }],
+  }),
+  sweepScenario({
+    // a full revolution of settled quarters, ending back where it started:
+    // the repeated 0 names the same baseline as the first, so the last frame
+    // is asserted identical to the first - any item that fails to survive
+    // the revisits (eg a vanished bake) shows up as a diff. The upper block
+    // must still render at every quarter:
+    roomId: "blacktooth11",
+    campaign: "original",
+    enterFrom: "finalroom",
+    character: "head",
+    angles: [0, 90, 180, 270, 0],
+    emulatedResolution: "$$default",
+  }),
+  sweepScenario({
+    // blacktooth61's hush puppy stack has a cyclic draw-order pair (the
+    // bottom row is masked by the middle row's rendering) - entered as heels
+    // since head would vanish the hush puppies. 19.44° pins the mid-turn
+    // frame where the pair is drawn by warp meshes whose snapshots must
+    // include the cyclic mask (a snapshot missing it shows the bottom row
+    // uncarved, overdrawing the middle row); the repeated 0 asserts the
+    // room renders identically to its first frame after the other angles
+    // have been visited:
+    roomId: "blacktooth61",
+    campaign: "original",
+    enterFrom: "finalroom",
+    character: "heels",
+    angles: [0, 90, 19.44, 0],
+    emulatedResolution: "$$default",
   }),
   ...(["blacktooth15", "blacktooth1head", "blacktooth13"] as const).map(
     (roomId) =>
@@ -608,6 +735,18 @@ const bootScenario = async (page: Page, scenario: SweepScenario) => {
       allItemsTestRoomCampaign,
       emulatedResolutionPayload(scenario),
     );
+  } else if (scenario.campaign === "wallFloorSeamRoom") {
+    await bootPlaytestCampaign(
+      page,
+      wallFloorSeamRoomCampaign,
+      emulatedResolutionPayload(scenario),
+    );
+  } else if (scenario.campaign === "quarterMaskFaultRoom") {
+    await bootPlaytestCampaign(
+      page,
+      quarterMaskFaultRoomCampaign,
+      emulatedResolutionPayload(scenario),
+    );
   } else if (scenario.campaign === "rotate-camera-test") {
     if (process.env.E2E_RELAY_SUPABASE) {
       await relaySupabase(page);
@@ -650,19 +789,37 @@ const bootScenario = async (page: Page, scenario: SweepScenario) => {
  * is entered in - everything that does not vary within a scenario (see
  * {@link captureFileName})
  */
-const scenarioBaseName = ({
-  roomId,
-  character,
-  enterFrom,
-  emulatedResolution,
-}: SweepScenario): string =>
+/**
+ * the resolution a platform sweeps at when a scenario leaves the setting
+ * unset - what a real player on that platform sees (mirrors
+ * defaultUserSettings' device detection)
+ */
+const platformDefaultResolution = (projectName: string): ResolutionName =>
+  projectName.startsWith("mobile") ? "handheld" : "zxSpectrum";
+
+const scenarioBaseName = (
+  { roomId, character, enterFrom, emulatedResolution }: SweepScenario,
+  /**
+   * when given, an explicit resolution matching this project's platform
+   * default is left out of the name - it adds nothing a viewer of that
+   * project's baselines doesn't already assume. Omitted (for test titles,
+   * which are project-independent), an explicit resolution always names
+   */
+  projectName?: string,
+): string =>
   [
     roomId,
     character === "head" ? "" : `-${character}`,
     enterFrom === "$$startingRoom" ? ""
     : enterFrom === "$$final" ? "-from-final"
     : `-from-${enterFrom}`,
-    emulatedResolution === "$$default" ? "" : `-${emulatedResolution}`,
+    (
+      emulatedResolution === "$$default" ||
+      (projectName !== undefined &&
+        emulatedResolution === platformDefaultResolution(projectName))
+    ) ?
+      ""
+    : `-${emulatedResolution}`,
   ].join("");
 
 /**
@@ -670,15 +827,15 @@ const scenarioBaseName = ({
  * everything that affects what is drawn: the room, then every parameter that
  * is NOT at its default, always in this order:
  *
- * | parameter          | default (no suffix)   | suffix when set                |
- * | ------------------ | --------------------- | ------------------------------ |
- * | roomId             | -                     | the base name                  |
- * | character          | head                  | `-heels`                       |
- * | enterFrom          | "$$startingRoom"      | `-from-<room>` / `-from-final` |
- * | emulatedResolution | "$$default"           | `-<resolutionName>`            |
- * | spriteOption       | BlockStack colourised | `-uncolourised` / `-toppy`     |
- * | angle              | 0°                    | `-<degrees>deg`                |
- * | capture time       | 0ms                   | `-<milliseconds>ms`            |
+ * | parameter          | default (no suffix)      | suffix when set                |
+ * | ------------------ | ------------------------ | ------------------------------ |
+ * | roomId             | -                        | the base name                  |
+ * | character          | head                     | `-heels`                       |
+ * | enterFrom          | "$$startingRoom"         | `-from-<room>` / `-from-final` |
+ * | emulatedResolution | the project's platform default (or "$$default") | `-<resolutionName>` |
+ * | spriteOption       | BlockStack colourised    | `-uncolourised` / `-toppy`     |
+ * | angle              | 0°                       | `-<degrees>deg`                |
+ * | capture time       | 0ms                      | `-<milliseconds>ms`            |
  *
  * so two frames drawn from identical parameters name one file, and are
  * asserted against one baseline - which is the point: identical parameters
@@ -687,12 +844,13 @@ const scenarioBaseName = ({
  */
 const captureFileName = (
   scenario: SweepScenario,
+  projectName: string,
   spriteOption: SpriteOption | undefined,
   captureTimeMs: number,
   { baselineDegrees }: SweepCapture,
 ): string =>
   [
-    scenarioBaseName(scenario),
+    scenarioBaseName(scenario, projectName),
     spriteOption === undefined ? "" : spriteOptionSuffix(spriteOption),
     baselineDegrees === 0 ? "" : `-${baselineDegrees}deg`,
     captureTimeMs === 0 ? "" : `-${captureTimeMs}ms`,
@@ -811,7 +969,13 @@ for (const scenario of scenarios) {
           await page.waitForTimeout(100);
 
           await expect(page).toHaveScreenshot(
-            captureFileName(scenario, spriteOption, captureTimeMs, capture),
+            captureFileName(
+              scenario,
+              testInfo.project.name,
+              spriteOption,
+              captureTimeMs,
+              capture,
+            ),
             screenshotOptionsForScenario(scenario, testInfo.project.name),
           );
         }

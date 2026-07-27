@@ -2,8 +2,13 @@ import { type Container } from "pixi.js";
 
 import { type UnionOfAllItemInPlayTypes } from "../../../model/ItemInPlay";
 import { getItemInPlayTimes } from "../../../model/times";
-import { type Xy, type Xyz } from "../../../utils/vectors/vectors";
-import { projectWorldXyzToScreenXyOnContainer } from "../projections";
+import { originXy, type Xy, type Xyz } from "../../../utils/vectors/vectors";
+import { itemTypesExemptFromNearCornerOffset } from "../item/itemRender/itemTypesExemptFromNearCornerOffset";
+import {
+  projectWorldXyzToScreenX,
+  projectWorldXyzToScreenXyOnContainer,
+  projectWorldXyzToScreenY,
+} from "../projections";
 
 /**
  * the world-space vector from an item's origin to the (camera-closest) corner its
@@ -26,6 +31,41 @@ export const nearCornerOffsetWorldXyz = (
     x: cameraAngle.x + cameraAngle.y < 0 ? box.x / times.x : 0,
     y: cameraAngle.x - cameraAngle.y < 0 ? box.y / times.y : 0,
     z: 0,
+  };
+};
+
+/**
+ * the projected (screen px) near-corner offset at a point part-way through a
+ * camera rotation: eased between the from-angle's offset and the to-angle's.
+ * Every renderer that anchors to - or registers against - a non-warp item's
+ * drawn art mid-turn must use this SAME shared offset (the art's own anchor,
+ * and any cyclic-render carve baked from that art), or they drift apart by up
+ * to a base cell through the turn
+ */
+export const transitionNearCornerOffsetXy = (
+  item: UnionOfAllItemInPlayTypes,
+  /**
+   * the continuous angle the turn started from (not necessarily a quarter -
+   * a mid-turn retarget re-anchors it)
+   */
+  fromAngle: Xy,
+  /** the quarter angle the turn eases towards */
+  toAngle: Xy,
+  /** eased progress 0..1 (hermiteEase of the transition's linear progress) */
+  eased: number,
+): Xy => {
+  if (itemTypesExemptFromNearCornerOffset.has(item.type)) {
+    return originXy;
+  }
+  const fromWorld = nearCornerOffsetWorldXyz(item, fromAngle);
+  const toWorld = nearCornerOffsetWorldXyz(item, toAngle);
+  const fromX = projectWorldXyzToScreenX(fromWorld, fromAngle);
+  const fromY = projectWorldXyzToScreenY(fromWorld, fromAngle);
+  const toX = projectWorldXyzToScreenX(toWorld, toAngle);
+  const toY = projectWorldXyzToScreenY(toWorld, toAngle);
+  return {
+    x: fromX + (toX - fromX) * eased,
+    y: fromY + (toY - fromY) * eased,
   };
 };
 
