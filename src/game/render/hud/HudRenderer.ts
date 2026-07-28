@@ -34,12 +34,15 @@ import { startAppListening } from "../../../store/listenerMiddleware";
 import { selectShowFps } from "../../../store/slices/gameMenus/gameMenusSelectors";
 import { type SpriteOption } from "../../../store/slices/userSettings/userSettingsSlice";
 import { store } from "../../../store/store";
+import { IdleTracker } from "../../../utils/idle/IdleTracker";
 import { neverTime } from "../../../utils/neverTime";
 import {
   type DirectionIndexXy8,
   directionIndexXy8,
   directionsXy8Octants,
+  originXyz,
   type Xy,
+  xyzEqual,
 } from "../../../utils/vectors/vectors";
 import { type GameState } from "../../gameState/GameState";
 import {
@@ -73,6 +76,19 @@ import {
   tintForHudIfUncolourised,
   tintForIcon,
 } from "./spritesheetVariantForHud";
+
+/**
+ * pointer actions that count as the hud being in use, so its buttons stay up.
+ * Only the move events have `global` (non-hit-tested) variants in pixi, so the
+ * presses register only while the pointer is over the hud's own children -
+ * enough to keep the buttons up while one is being clicked
+ */
+const hudPointerActivityEvents = [
+  "globalpointermove",
+  "pointerdown",
+  "pointerup",
+  "pointerupoutside",
+] as const;
 
 const renderContextHasRoom = <RoomId extends string, RoomItemId extends string>(
   ctx: HudRendererTickContext<RoomId, RoomItemId>,
@@ -172,7 +188,7 @@ export class HudRenderer<
   #rotateClockwiseButton: HudButtonRenderer<"rotateClockwise", RoomId, any, any>; // prettier-ignore
   // eslint-disable-next-line @typescript-eslint/no-explicit-any
   #rotateAnticlockwiseButton: HudButtonRenderer<"rotateAnticlockwise", RoomId, any, any>; // prettier-ignore
-  #lastPointerMoveTime = 0;
+  #pointerIdleTracker = new IdleTracker();
 
   #unlisten;
   #carryingItemRoom: RoomState<RoomId, RoomItemId> | undefined = undefined;
@@ -350,9 +366,16 @@ export class HudRenderer<
 
     if (!general.onScreenControls) {
       this.#container.eventMode = "static";
-      this.#container.on("globalpointermove", () => {
-        this.#lastPointerMoveTime = Date.now();
-      });
+      // in visual-regression builds the pointer never counts as in use, so the
+      // buttons' visibility is deterministic rather than being caught
+      // mid-countdown by a screenshot after one of playwright's own clicks
+      if (import.meta.env.MODE !== "visual-regression") {
+        for (const eventName of hudPointerActivityEvents) {
+          this.#container.on(eventName, () => {
+            this.#pointerIdleTracker.markActive();
+          });
+        }
+      }
     }
 
     // these have to come after the on-screen controls, since they are tappable to
@@ -948,9 +971,18 @@ export class HudRenderer<
         this.#rotateClockwiseButton.output.width,
     );
 
+    // checked every tick, so the buttons go the moment a direction is pressed
+    // rather than lingering for the rest of the idle countdown
+    const isSteering = !xyzEqual(
+      gameState.inputStateTracker.directionVector,
+      originXyz,
+    );
+    if (isSteering) {
+      this.#pointerIdleTracker.makeIdleNow();
+    }
+
     const buttonsVisible =
-      !paused &&
-      (onScreenControls || Date.now() - this.#lastPointerMoveTime < 2_000);
+      !paused && (onScreenControls || !this.#pointerIdleTracker.idle);
     this.#menuButton.output.visible = buttonsVisible;
     this.#mapButton.output.visible = buttonsVisible;
     this.#rotateAnticlockwiseButton.output.visible = buttonsVisible;
@@ -973,6 +1005,7 @@ export class HudRenderer<
     this.#container.destroy({ children: true });
     this.#onScreenControls?.destroy();
     this.#fpsRenderer?.destroy();
+    this.#pointerIdleTracker.destroy();
     this.#unlisten();
   }
 }

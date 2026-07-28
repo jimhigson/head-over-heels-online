@@ -27,6 +27,7 @@ import { useUpdateUpscaleOnDisplaySettingsChange } from "../../store/slices/upsc
 import { useUpdateUpscaleWhenElementResizes } from "../../store/slices/upscale/useUpdateUpscaleWhenElementResizes.ts";
 import { store } from "../../store/store.ts";
 import { ConnectInputToStore } from "../../store/storeFlow/ConnectInputToStore.tsx";
+import { SoftwarePointer } from "../../ui/SoftwarePointer.tsx";
 import { DispatchingErrorBoundary } from "../../utils/preact/DispatchingErrorBoundary.tsx";
 import { createSerialisableErrors } from "../../utils/redux/createSerialisableErrors.ts";
 import {
@@ -161,6 +162,10 @@ export const GamePage = () => {
 
   return (
     <>
+      {/* retro, non-system pointer - rendering as HTML gives more control such as allowing
+          it to warp with the screen in html-in-canvas mode, and also restricting its FPS
+      */}
+      <SoftwarePointer />
       {/* 👇👇 where the magic happens - the element the game plays in! 👇👇 */}
       {/* the sizing area fills the real screen via css; its measured size drives
           the upscale, so the backdrop covers the whole screen even if the

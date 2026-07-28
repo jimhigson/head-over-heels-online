@@ -22,7 +22,7 @@ export const PointerToolButton = () => {
       tooltipContent={`## Pointer`}
     >
       <span
-        class={`sprite ${"texture-editor_tool_pointer" satisfies TextureTailwindClass} relative`}
+        class={`sprite ${"texture-pointer" satisfies TextureTailwindClass} relative`}
       />
     </ToolbarButton>
   );

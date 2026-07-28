@@ -5,8 +5,12 @@ import {
   repository,
 } from "../../../../../../../package.json";
 import { nerdFontGithubChar } from "../../../../../../sprites/spritesheet/spritesheetData/hudChars";
+import { useAppSelector } from "../../../../../../store/hooks";
+import { selectShouldRenderOnScreenControls } from "../../../../../../store/slices/gameMenus/gameMenusSelectors";
 import { useGetLatestReleaseQuery } from "../../../../../../store/slices/githubApiSlice";
+import { cn } from "../../../../../../ui/cn";
 import { linkOpenExternalClickHandler } from "../../../../../../utils/tauri/openExternalLink";
+import { usePointerActive } from "../../../../../input/usePointerActive";
 
 const parseMajorRegex = /v?(?<major>\d+)\./;
 const parseMajor = (version: string): number | undefined => {
@@ -17,6 +21,11 @@ const deployedMajor = parseMajor(deployedVersion)!;
 
 export const GitRepoInfo = () => {
   const { data: latestRelease } = useGetLatestReleaseQuery();
+
+  const pointerActive = usePointerActive();
+  // with touch controls there is no mouse to summon it back, so it always shows
+  const onScreenControls = useAppSelector(selectShouldRenderOnScreenControls);
+  const shown = onScreenControls || pointerActive;
 
   const prNumber = import.meta.env.VITE_GIT_PR_NUMBER;
 
@@ -35,7 +44,12 @@ export const GitRepoInfo = () => {
   }, [isOutdated, latestMajor, latestTag]);
 
   return (
-    <div class="flex absolute top-0 z-dialog w-full justify-between">
+    <div
+      class={cn(
+        "flex absolute top-0 z-dialog w-full justify-between",
+        !shown && "hidden",
+      )}
+    >
       <span>
         <a
           href={`${repository.url}/releases`}
@@ -56,7 +70,7 @@ export const GitRepoInfo = () => {
           )}
         </a>
         {(import.meta.env.DEV || prNumber !== undefined) && (
-          <span class="text-single-line screenshot-mask mr-1 inline-block max-w-24 whitespace-nowrap bg-pastelBlueHalfbrite text-metallicBlueHalfbrite zx:bg-zxBlack toppy:bg-toppyCool3">
+          <span class="text-single-line screenshot-mask mr-1 inline-block max-w-24 whitespace-nowrap bg-pastelBlueHalfbrite text-metallicBlueHalfbrite zx:text-zxCyan zx:bg-zxBlack toppy:bg-toppyCool3">
             {" "}
             {prNumber !== undefined && (
               <a
