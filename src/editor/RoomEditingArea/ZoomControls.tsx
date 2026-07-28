@@ -38,7 +38,7 @@ export const ZoomControls = () => {
       <ToolbarButton
         small
         ariaLabel="Zoom out"
-        tooltipContent={`##zoom ⬇\n\nmakes things look *smaller*`}
+        tooltipContent={`## zoom ⬇\n\nmakes things look *smaller*`}
         onClick={() => {
           viewport.setZoom(nextLadderStepDown(viewport.zoom), paneCentre());
         }}
@@ -52,7 +52,7 @@ export const ZoomControls = () => {
       <ToolbarButton
         small
         ariaLabel="Zoom in"
-        tooltipContent={`##zoom ⬆\n\nmakes things look *bigger*`}
+        tooltipContent={`## zoom ⬆\n\nmakes things look *bigger*`}
         onClick={() => {
           viewport.setZoom(nextLadderStepUp(viewport.zoom), paneCentre());
         }}
@@ -64,7 +64,7 @@ export const ZoomControls = () => {
         small
         class="bg-moss px-2"
         ariaLabel="Fit room in view"
-        tooltipContent={`##fit\n\nzoom and pan the room to exactly fit the pane`}
+        tooltipContent={`## fit\n\nzoom and pan the room to exactly fit the pane`}
         onClick={() => {
           fitRoomInView(viewport, application.renderer);
         }}

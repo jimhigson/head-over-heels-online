@@ -44,7 +44,7 @@ export const PlayTestButton = () => {
         <ToolbarButton
           ariaLabel="Play test"
           onClick={playtest}
-          tooltipContent={`##Playtest\n\nPlay this room without saving`}
+          tooltipContent={`## Playtest\n\nPlay this room without saving`}
           shortcutKeys={["⌘P", "^P"]}
         >
           <IconWithTwoLineHoverText

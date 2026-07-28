@@ -40,7 +40,7 @@ export const CopyPasteButtons = () => {
           await navigator.clipboard.writeText(jsonString);
         }}
         shortcutKeys={["⌘C", "^C"]}
-        tooltipContent={`##Copy\n\nCopy the selected item(s) to the clipboard to paste into another room`}
+        tooltipContent={`## Copy\n\nCopy the selected item(s) to the clipboard to paste into another room`}
       >
         <IconWithTwoLineHoverText
           icon={<span class="text-single-line">C</span>}
@@ -77,7 +77,7 @@ export const CopyPasteButtons = () => {
           }
         }}
         shortcutKeys={["⌘V", "^V"]}
-        tooltipContent={`##Paste\n\nPaste an item into this room copied from another room`}
+        tooltipContent={`## Paste\n\nPaste an item into this room copied from another room`}
       >
         <IconWithTwoLineHoverText
           icon={<span class="text-single-line">P</span>}

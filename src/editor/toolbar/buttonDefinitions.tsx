@@ -969,7 +969,7 @@ This is where head will start the game`,
       type: "sceneryPlayer",
       config: { which: "head", startDirection: "towards" },
     },
-    tooltipContent: `##NPC head
+    tooltipContent: `## NPC head
 Citizens of Freedom
 
 stand around not doing much`,
@@ -985,7 +985,7 @@ stand around not doing much`,
       type: "sceneryPlayer",
       config: { which: "heels", startDirection: "towards" },
     },
-    tooltipContent: `##NPC heels
+    tooltipContent: `## NPC heels
 Citizens of Freedom
 
 stand around not doing much`,

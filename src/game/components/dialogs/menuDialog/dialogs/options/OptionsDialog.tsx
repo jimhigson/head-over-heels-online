@@ -40,7 +40,7 @@ Extra life rabbits have no effect`;
 
 const controlOptionsMarkdown = `*Select the keys* and other input settings`;
 
-const pokesMarkdown = `##Cheats
+const pokesMarkdown = `## Cheats
 
 Magazines used to print memory locations to ‘*poke*’ values into so that readers could modify their games; usually to cheat.
 
