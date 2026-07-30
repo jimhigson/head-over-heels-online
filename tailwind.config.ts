@@ -196,6 +196,9 @@ export default {
       cheats: "40",
       // eg, the body opening from selects
       popups: "50",
+      // the sprite drawn in place of the os cursor - over everything, since a
+      // real cursor is never covered either
+      softwarePointer: "60",
     },
     keyframes: {
       // cursor flash - for when selecting the keys for an action

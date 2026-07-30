@@ -161,10 +161,10 @@ export class TextContainer extends Container {
 
     // rasterising happens synchronously via canvas fillText, which silently
     // falls back to a system font if the HUD font is not loaded yet. Callers
-    // must await loadHudFont() before constructing text - not doing so is a bug.
+    // must await loadHudFont() before instantiating
     if (!document.fonts.check(hudFont)) {
       throw new Error(
-        `TextContainer created before the HUD font was loaded - await loadHudFont() first`,
+        `Font not loaded for TC with text: ${JSON.stringify(text)}`,
       );
     }
 

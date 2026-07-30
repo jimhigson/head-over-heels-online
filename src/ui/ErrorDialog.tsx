@@ -90,9 +90,15 @@ ${sanitizedStack}
 
   return `
 ${environmentPart}
+____________________________________________
+
 ${gameApiPart}    
-${recentActionsPart}
+⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯
+
 ${errorsPart}
+⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯
+
+${recentActionsPart}
   `;
 };
 

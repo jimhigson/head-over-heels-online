@@ -43,6 +43,14 @@
   *:focus {
     outline: none;
   }
+
+  /* the game draws its own blocky pointer sprite (SoftwarePointer) in place of
+     the os cursor. !important so it also beats elements asking for a cursor of
+     their own, eg the cursor-pointer on buttons */
+  body,
+  body * {
+    cursor: none !important;
+  }
 }
 
 @layer components {
