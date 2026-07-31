@@ -103,6 +103,12 @@ export class RoomRenderer<
    * they happened since the last render) */
   #lastRenderRoomTime: number | undefined = undefined;
   /**
+   * the room's progression count as of the last render (undefined before the
+   * first): items stamped after it have moved/resized/entered since this
+   * renderer last saw them
+   */
+  #renderedOnProgression: number | undefined = undefined;
+  /**
    * Holder for the z-graph, maintained as an attribute to avoid malloc.
    * Shared BY REFERENCE with the item render contexts (masking and wall
    * see-through read it), so it is only ever mutated in place, never
@@ -336,15 +342,13 @@ export class RoomRenderer<
     }
   }
 
-  #tickItems(
-    roomTickContext: RoomTickContext<RoomId, RoomItemId>,
-    roomMembershipChanged: boolean,
-  ) {
+  #tickItems(roomTickContext: RoomTickContext, roomMembershipChanged: boolean) {
     const { room } = this.renderContext;
 
     const itemTickContext: ItemTickContext = {
       ...roomTickContext,
       lastRenderRoomTime: this.#lastRenderRoomTime,
+      renderedOnProgression: this.#renderedOnProgression,
       roomMembershipChanged,
     };
 
@@ -453,7 +457,7 @@ export class RoomRenderer<
     return this.#lastRenderRoomTime !== undefined;
   }
 
-  tick(givenTickContext: RoomTickContext<RoomId, RoomItemId>) {
+  tick(givenTickContext: RoomTickContext) {
     // detect the mid-rotation quarter flip FIRST, before any item ticks:
     // the rebuilt sort/masks must be in place before warp snapshots re-bake
     const { cameraAngle } = this.renderContext.general;
@@ -479,17 +483,7 @@ export class RoomRenderer<
       roomItemsIterable(room.items).filter(isSpatial),
     );
 
-    /*
-     * the given tick context, except override to consider everything to
-     * have moved if the continuous geometry angle moved (everything
-     * re-projects) - which is exactly the spatial items
-     */
-    const tickContext =
-      this.#everRendered && !geometryAngleChanged ?
-        givenTickContext
-      : { ...givenTickContext, movedOrResizedItems: spatialItems };
-
-    const { timingRecord } = tickContext;
+    const { timingRecord } = givenTickContext;
     let subPhaseStartMs = timingRecord === undefined ? 0 : performance.now();
 
     // derive render boxes for newly-present items before the broad phase
@@ -534,14 +528,7 @@ export class RoomRenderer<
         this.#renderBoxes,
       );
     } catch (e) {
-      throw new Error(
-        `error updating Z edges for moved/resized items: ${tickContext.movedOrResizedItems
-          .values()
-          .map((item) => item.id)
-          .toArray()
-          .join(", ")}`,
-        { cause: e },
-      );
+      throw new Error("error updating Z edges", { cause: e });
     }
 
     if (timingRecord !== undefined) {
@@ -578,16 +565,25 @@ export class RoomRenderer<
       }
     }
 
-    this.#tickItems(tickContext, membershipChanged);
+    this.#tickItems(givenTickContext, membershipChanged);
 
     if (timingRecord !== undefined) {
       recordPerf(timingRecord, "tickItems", subPhaseStartMs);
     }
 
-    if (!this.#everRendered || tickContext.movedOrResizedItems.size > 0) {
+    if (
+      !this.#everRendered ||
+      // anything moved/resized/entered since the last render:
+      this.#renderedOnProgression !== room.progression ||
+      // items leaving put nothing on the progression count:
+      membershipChanged ||
+      // mid-turn the θ projections shift the whole order every frame:
+      geometryAngleChanged
+    ) {
       this.#tickItemsZIndex(order);
     }
 
+    this.#renderedOnProgression = room.progression;
     this.#lastRenderRoomTime = this.renderContext.room.roomTime;
   }
 

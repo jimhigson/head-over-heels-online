@@ -2,8 +2,6 @@ import { Container, Graphics, type Renderer, Ticker } from "pixi.js";
 import { type RefObject } from "preact";
 import { useEffect } from "preact/hooks";
 
-import { type MovedOrResizedItems } from "../../game/mainLoop/progressGameState";
-import { isSpatial } from "../../game/physics/itemPredicates";
 import { type GeneralRenderContext } from "../../game/render/room/RoomRenderContexts";
 import { RoomRenderer } from "../../game/render/room/RoomRenderer";
 import { paletteBlockstack } from "../../sprites/palette/spritesheetPalette";
@@ -14,10 +12,8 @@ import { store } from "../../store/store";
 import { valuesIter } from "../../utils/entries";
 import {
   type EditorRoomId,
-  type EditorRoomItemId,
   type EditorRoomRenderer,
   type EditorRoomState,
-  type EditorUnionOfAllItemInPlayTypes,
 } from "../editorTypes";
 import {
   useEditorRoomRenderDimensions,
@@ -162,16 +158,15 @@ export const useEditorMainLoop = (
         console.warn("room renderer does not have the current room");
       }
 
-      const considerAllItemsHaveMoved: MovedOrResizedItems<
-        EditorRoomId,
-        EditorRoomItemId
-      > = new Set(
-        (
-          valuesIter(
-            roomState.items,
-          ) as IterableIterator<EditorUnionOfAllItemInPlayTypes>
-        ).filter(isSpatial),
-      );
+      // stamp everything as moved every frame - the editor doesn't track
+      // real movement.
+      // TODO: probably should stamp only what actually changed, like a
+      // 'proper' main loop - or this might be fast enough given the level
+      // editor doesn't need to run as smoothly as the actual game
+      roomState.progression++;
+      for (const item of valuesIter(roomState.items)) {
+        item.state.movedOrResizedOnProgression = roomState.progression;
+      }
 
       // some animations (ie, cyberman bob) depend on the roomTime
       // incrementing between frames
@@ -179,10 +174,6 @@ export const useEditorMainLoop = (
 
       roomRenderer.tick({
         deltaMS,
-        // TODO: probably needs this to be the real set of moved items, like a 'proper' main loop,
-        // or this might be fast enough given the level editor doesn't need to run as smoothly
-        // as the actual game
-        movedOrResizedItems: considerAllItemsHaveMoved,
         // no fps display in the editor - nothing records frame timings:
         timingRecord: undefined,
       });

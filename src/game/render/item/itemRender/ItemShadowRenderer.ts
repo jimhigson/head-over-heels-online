@@ -33,6 +33,7 @@ import {
   itemShadowMaskAppearanceForItem,
 } from "../../itemAppearances/shadowMaskAppearances/itemShadowMaskAppearanceForItem";
 import {
+  itemMovedSinceRendered,
   type ItemRenderContext,
   type ItemTickContext,
 } from "../../ItemRenderContexts";
@@ -289,8 +290,6 @@ class ItemShadowRenderer<
    * @returns true iff the item needs z-order resorting for the room
    */
   tick(itemTickContext: ItemTickContext) {
-    const { movedOrResizedItems } = itemTickContext;
-
     const {
       item,
       general: {
@@ -328,7 +327,7 @@ class ItemShadowRenderer<
       this.#appliedCameraAngle = cameraQuarterAngle;
     }
 
-    const surfaceMoved = movedOrResizedItems.has(item);
+    const surfaceMoved = itemMovedSinceRendered(item, itemTickContext);
     const itemTop = item.state.position.z + item.aabb.z;
 
     // Values are copied into the buffer to avoid malloc/gc:
@@ -446,7 +445,11 @@ class ItemShadowRenderer<
         isNew = true;
       }
 
-      if (isNew || surfaceMoved || movedOrResizedItems.has(caster)) {
+      if (
+        isNew ||
+        surfaceMoved ||
+        itemMovedSinceRendered(caster, itemTickContext)
+      ) {
         // shadow needs (re) positioning. The shadow art is footprint-anchored like the
         // caster's sprite, so it takes the caster's near-corner offset to sit under the
         // caster's rendered footprint. It renders inside this (receiving) item's

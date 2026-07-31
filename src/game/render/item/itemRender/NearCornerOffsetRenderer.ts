@@ -12,6 +12,7 @@ import {
   transitionNearCornerOffsetXy,
 } from "../../itemAppearances/adjustNearCornerForCameraAngle";
 import {
+  itemMovedSinceRendered,
   type ItemRenderContext,
   type ItemTickContext,
 } from "../../ItemRenderContexts";
@@ -158,7 +159,7 @@ export class NearCornerOffsetRenderer<
       this.renderContext.general.cameraAngle,
     );
     if (
-      tickContext.movedOrResizedItems.has(this.renderContext.item) ||
+      itemMovedSinceRendered(this.renderContext.item, tickContext) ||
       midRotation ||
       this.#tickedMidRotation
     ) {

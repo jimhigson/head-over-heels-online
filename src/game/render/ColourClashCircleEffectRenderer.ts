@@ -272,7 +272,7 @@ export class ColourClashCircleEffectRenderer<
     this.#updateFilterCentreXy(playable);
   }
 
-  tick(tickContext: RoomTickContext<RoomId, RoomItemId>) {
+  tick(tickContext: RoomTickContext) {
     this.#childRenderer.tick(tickContext);
     this.#update();
   }

@@ -82,6 +82,10 @@ export const addItemToRoom = <
     item.state.position = atPosition;
   }
 
+  // entering the room is a progressing change - consumers comparing against
+  // the progression they last handled must see fresh items:
+  item.state.movedOrResizedOnProgression = ++room.progression;
+
   if (isSpatial(item)) {
     const spatialIndex = room[roomSpatialIndexKey];
     spatialIndex.addItem(item);

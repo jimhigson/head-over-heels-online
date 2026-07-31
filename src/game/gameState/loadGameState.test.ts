@@ -15,6 +15,7 @@ test("if there is a saved game with both characters in the same room, only load 
   const savedRoom: UnindexedRoomState<OriginalCampaignRoomId, string> = {
     id: "blacktooth1head",
     roomTime: 0,
+    progression: 0,
     items: {
       head: loadPlayer(
         {

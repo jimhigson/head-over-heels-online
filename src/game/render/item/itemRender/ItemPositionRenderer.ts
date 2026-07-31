@@ -4,6 +4,7 @@ import { type ItemInPlayType } from "../../../../model/ItemInPlay";
 import { assignRoundedXy } from "../../../../utils/pixi/assignRoundedXy";
 import { isAtQuarterAngle } from "../../../../utils/vectors/cameraAngleVectors";
 import {
+  itemMovedSinceRendered,
   type ItemRenderContext,
   type ItemTickContext,
 } from "../../ItemRenderContexts";
@@ -95,7 +96,7 @@ export class ItemPositionRenderer<
       this.renderContext.general.cameraAngle,
     );
     if (
-      tickContext.movedOrResizedItems.has(this.renderContext.item) ||
+      itemMovedSinceRendered(this.renderContext.item, tickContext) ||
       // mid-rotation every item re-projects along the continuous θ(t),
       // whether or not it moved in-world:
       midRotation ||

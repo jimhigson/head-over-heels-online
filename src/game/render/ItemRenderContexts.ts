@@ -6,7 +6,6 @@ import {
   type UnionOfAllItemInPlayTypes,
 } from "../../model/ItemInPlay";
 import { type RoomState } from "../../model/RoomState";
-import { type MovedOrResizedItems } from "../mainLoop/progressGameState";
 import { type ItemRenderPipeline } from "./item/itemRender/createItemRenderer";
 import { type ItemLeafPixiRenderer } from "./item/itemRender/ItemPixiRenderer";
 import { type RenderBoxes } from "./renderBox/makeItemRenderBoxAtCameraAngle";
@@ -133,12 +132,27 @@ export type ItemLeafTickContext = {
   deltaMS: number;
 };
 
+/**
+ * whether the item has moved, resized or entered the room since this room's
+ * renderers last rendered - the standard change test for tick-time work
+ * gates. True on the first render (nothing has been rendered yet)
+ */
+export const itemMovedSinceRendered = (
+  item: { state: { movedOrResizedOnProgression: number } },
+  tickContext: Pick<ItemTickContext, "renderedOnProgression">,
+): boolean =>
+  tickContext.renderedOnProgression === undefined ||
+  item.state.movedOrResizedOnProgression > tickContext.renderedOnProgression;
+
 export type ItemTickContext = ItemLeafTickContext & {
   /**
-   * the items that moved or resized since the last tick - read by the position,
+   * the room's {@link RoomState.progression} count as of the LAST render
+   * (undefined on the first): an item with a later
+   * {@link BaseItemState.movedOrResizedOnProgression} stamp has moved, resized or
+   * entered the room since this renderer last saw it. Read by the position,
    * shadow and z-sort machinery, never by a leaf renderer
    */
-  movedOrResizedItems: MovedOrResizedItems<string, string>;
+  renderedOnProgression: number | undefined;
   /**
    * whether the room's spatial membership changed since the last tick (an
    * item appeared or vanished) - movement alone leaves it false. Lets

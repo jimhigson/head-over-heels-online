@@ -104,7 +104,11 @@ export const migrateSavedCharacterRoomsInPlace = <RoomId extends string>(
   for (const room of new Set(valuesIter(savedCharacterRooms))) {
     migrateWallTilesInPlace(room.roomJson);
 
+    // saves from before change-tracking was a progression count omit these:
+    room.progression ??= 0;
+
     for (const item of roomItemsIterable(room.items)) {
+      item.state.movedOrResizedOnProgression ??= 0;
       if (item.hintShadowDirections !== undefined) {
         item.hintShadowDirections =
           item.hintShadowDirections.map(asDirectionVector);

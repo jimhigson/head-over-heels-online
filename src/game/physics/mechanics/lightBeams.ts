@@ -358,7 +358,9 @@ export const tickLampLightBeams = <
         // a beam growing in its positive direction lengthens without its
         // min corner moving - the spatial index covers position+aabb, so
         // it must be reindexed for aabb-only changes too, or the index
-        // under-covers the beam's new tip:
+        // under-covers the beam's new tip. A resize counts as a progressing
+        // change like a move does (z-sorting and rendering follow the aabb):
+        existing.state.movedOrResizedOnProgression = ++room.progression;
         room[roomSpatialIndexKey].updateItemSpatialIndex(existing);
       }
       beam = existing;

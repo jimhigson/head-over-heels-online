@@ -21,6 +21,7 @@ import { positionCentredInBlock } from "./positionCentredInBlock";
 
 export const defaultBaseState = <RoomItemId extends string>() =>
   ({
+    movedOrResizedOnProgression: 0,
     expires: null,
     stoodOnBy: {} as StoodOnBy<RoomItemId>,
     disappearing: null,

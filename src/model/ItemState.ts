@@ -18,6 +18,15 @@ export type BaseItemState<RoomItemId extends string = string> = {
   position: Readonly<Xyz>;
 
   /**
+   * the {@link RoomState.progression} count when this item last moved,
+   * resized, or entered the room - consumers (rendering, sound) compare it
+   * against the progression they last handled to see whether the item has
+   * changed since. Backfilled to 0 for items loaded from saves that predate
+   * it
+   */
+  movedOrResizedOnProgression: number;
+
+  /**
    * The item will be removed from the room after the room it is in has more than this roomTime.
    * To guarantee removal on the next frame (effectively immediately)
    * set to -1. Otherwise, can set to the current roomTime + duration of an animation

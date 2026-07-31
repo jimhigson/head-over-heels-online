@@ -137,6 +137,12 @@ export type RoomState<
      */
     roomTime: number;
     /**
+     * how many times this room's state has progressed: bumped on every
+     * progressing mutation (an item moving, resizing, or entering the room).
+     * Items take this value and increment it when they mutate in an applicable way
+     */
+    progression: number;
+    /**
      * since this is stored under a symbol, it will not be written to JSON when the room
      * state is saved
      */

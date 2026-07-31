@@ -21,7 +21,7 @@ export type ItemLeafPixiRenderer<
 /**
  * the item-renderer interface used across the render chain - the leaves plus the
  * position/shadow/bounding-box wrappers that carry the fuller
- * {@link ItemRenderContext} and read {@link ItemTickContext.movedOrResizedItems}.
+ * {@link ItemRenderContext} and test {@link itemMovedSinceRendered}.
  */
 export type ItemChainPixiRenderer<
   T extends ItemInPlayType,

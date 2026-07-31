@@ -28,6 +28,7 @@ import {
 import { redAsAlphaFilter } from "../../filters/redAsAlphaFilter";
 import { nearCornerOffsetWorldXyz } from "../../itemAppearances/adjustNearCornerForCameraAngle";
 import {
+  itemMovedSinceRendered,
   type ItemRenderContext,
   type ItemTickContext,
 } from "../../ItemRenderContexts";
@@ -414,7 +415,7 @@ export class TransitionSurfaceRenderer<
     );
 
     if (
-      tickContext.movedOrResizedItems.has(this.renderContext.item) ||
+      itemMovedSinceRendered(this.renderContext.item, tickContext) ||
       // mid-rotation every item re-projects along the continuous θ(t),
       // whether or not it moved in-world:
       midRotation ||
