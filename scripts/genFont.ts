@@ -8,12 +8,13 @@ import {
   hudLowercaseCharTextureSize,
 } from "../src/sprites/spritesheet/spritesheetData/textureSizes";
 import { size } from "../src/utils/iterators/size";
-import { cleanEdgeUpscaleBinary } from "./font/cleanEdgeUpscaleBinary";
 import { type HudGlyph, hudGlyphs } from "./font/hudGlyphs";
 import {
-  roundSmoothedCorners,
-  traceSmoothContours,
-} from "./font/traceSmoothContours";
+  type CornerName,
+  kernelRules,
+  scanKernelRules,
+} from "./font/kernelRules";
+import { mergeCollinear, traceBitmapToLoops } from "./font/traceSmoothContours";
 
 // the shipped gfx/sprites.webp has every non-frame area (including the HUD char
 // rows) masked to transparent, so the font is generated from the unmasked full
@@ -29,23 +30,6 @@ const smoothOutputPath = `${outputDir}/blockstack-head-over-heels-smooth.woff2`;
 const smoothManifestPath = `${outputDir}/manifest-smooth.json`;
 const builderScript = "scripts/font/buildVariableFont.py";
 const requirementsPath = "scripts/font/requirements.txt";
-
-/**
- * the smooth font's glyphs are the same bitmaps upscaled with cleanEdge at
- * this factor before their outlines are traced. Since the outlines resolve
- * staircases to cleanEdge's intended diagonal lines (not its raster), a high
- * factor just pins those lines (and the residual transition notches) to a
- * finer grid - 1/16 design pixel - far below visibility. Offline cost only
- */
-const smoothFactor = 16;
-
-/**
- * how far each smoothed corner's rounding reaches along its incident
- * segments, in 1/smoothFactor subpixels - one design pixel. Big enough that
- * cleanEdge's short diagonal cuts are consumed whole into curves; straight
- * edges stay straight beyond a pixel of their smoothed corners
- */
-const cornerRoundRadius = smoothFactor;
 
 const unitsPerEm = 512;
 /** font units per design pixel - 512/8 gives clean integer pixel boundaries */
@@ -275,10 +259,10 @@ const glyphContours = (
 };
 
 /**
- * an isolated pixel (opposite to all 8 of its neighbours) renders as a
- * regular polygon-circle of this many sides, with the same area as the
- * square pixel - eg the single-pixel counter of the 'o' becomes a round
- * hole. Radius chosen so the POLYGON's area is exactly one pixel
+ * a cell claimed by a circle-drawing kernel rule renders as a regular polygon
+ * of this many sides - eg the single-pixel counter of the 'o' becomes a round
+ * hole. The base radius is the one whose POLYGON area is exactly one pixel,
+ * scaled up by {@link circleOversize}
  */
 const circleSides = 16;
 const circleRadiusPx = Math.sqrt(
@@ -286,14 +270,30 @@ const circleRadiusPx = Math.sqrt(
 );
 
 /**
- * equal-area circle contour for an isolated pixel, in font units. Additive
- * (ink dot) contours wind clockwise in y-up space like the traced contours;
- * `hole` reverses the winding so non-zero fill subtracts it
+ * the circle is drawn this much larger than equal-area, so the hole stays
+ * legible rather than closing up against the ink around it. Safe to grow: the
+ * rule's pattern requires ink on all eight sides, so there is a pixel and a
+ * half of ink in every direction to bulge into
+ */
+const circleOversize = 1.2;
+
+/** the radius every drawn circle and slot cap is rendered at, in font units */
+const circleRadius = circleRadiusPx * px * circleOversize;
+
+/** the centre of a cell, in font units */
+const cellCentre = (col: number, row: number): [number, number] => [
+  (col + 0.5) * px,
+  baselineFromTop * px - (row + 0.5) * px,
+];
+
+/**
+ * circle contour for an isolated pixel, in font units. Additive (ink dot)
+ * contours wind clockwise in y-up space like the traced contours; `hole`
+ * reverses the winding so non-zero fill subtracts it
  */
 const circleContour = (col: number, row: number, hole: boolean): Contour => {
-  const centreX = (col + 0.5) * px;
-  const centreY = baselineFromTop * px - (row + 0.5) * px;
-  const radius = circleRadiusPx * px;
+  const [centreX, centreY] = cellCentre(col, row);
+  const radius = circleRadius;
   const points: Contour = [];
   for (let i = 0; i < circleSides; i++) {
     const theta = ((i + 0.5) / circleSides) * 2 * Math.PI * (hole ? 1 : -1);
@@ -311,75 +311,184 @@ const circleContour = (col: number, row: number, hole: boolean): Contour => {
   return points;
 };
 
+/** each semicircular cap of a slot is drawn as this many quadratic segments */
+const slotCapSegments = 4;
+
 /**
- * as {@link glyphContours}, but of the glyph bitmap cleanEdge-upscaled by
- * {@link smoothFactor} - contours land on 1/smoothFactor design-pixel
- * boundaries, exactly the texels the game's baked spritesheets show. The
- * exception is isolated single pixels (dots, and holes like the counter of
- * the 'o'), which become true {@link circleContour}s
+ * slot contour for a two-cell-tall hole, in font units: a cap of the same
+ * radius as {@link circleContour} centred on each of the two cells, joined by
+ * straight sides. Wound anticlockwise in y-up space so non-zero fill
+ * subtracts it from the ink around it.
  */
-const smoothGlyphContours = (
+const slotContour = (col: number, topRow: number): Contour => {
+  const [centreX, topY] = cellCentre(col, topRow);
+  const [, bottomY] = cellCentre(col, topRow + 1);
+  const segmentAngle = Math.PI / slotCapSegments;
+  // a quadratic spanning `segmentAngle` puts its off-curve control where the
+  // two end tangents meet, further out than the arc itself:
+  const controlRadius = circleRadius / Math.cos(segmentAngle / 2);
+  const at = (
+    capY: number,
+    angle: number,
+    radius: number,
+  ): [number, number] => [
+    centreX + radius * Math.cos(angle),
+    capY + radius * Math.sin(angle),
+  ];
+
+  // up the right side, over the top cap, down the left side, under the
+  // bottom cap - the closing point back to the start is implied
+  const points: Contour = [
+    at(bottomY, 0, circleRadius),
+    at(topY, 0, circleRadius),
+  ];
+  for (let i = 0; i < slotCapSegments; i++) {
+    const [controlX, controlY] = at(
+      topY,
+      segmentAngle * (i + 0.5),
+      controlRadius,
+    );
+    points.push([controlX, controlY, 0]);
+    points.push(at(topY, segmentAngle * (i + 1), circleRadius));
+  }
+  points.push(at(bottomY, Math.PI, circleRadius));
+  for (let i = 0; i < slotCapSegments; i++) {
+    const [controlX, controlY] = at(
+      bottomY,
+      Math.PI + segmentAngle * (i + 0.5),
+      controlRadius,
+    );
+    points.push([controlX, controlY, 0]);
+    if (i < slotCapSegments - 1) {
+      points.push(at(bottomY, Math.PI + segmentAngle * (i + 1), circleRadius));
+    }
+  }
+  return points;
+};
+
+/** a quarter-circle corner is drawn as this many quadratic segments */
+const cornerArcSegments = 2;
+
+/**
+ * per corner: the cell lattice point the quarter-circle is centred on (as an
+ * offset from the cell's top-left, in cells) and the angle its arc starts at.
+ * The centre is always the cell corner facing the ink, so the arc runs from
+ * one cell edge to the other and meets the straight edges either side of the
+ * cell tangentially - a rounded-rectangle corner
+ */
+const cornerArcs = {
+  topLeft: { centre: [1, 1], startAngle: Math.PI / 2 },
+  topRight: { centre: [0, 1], startAngle: 0 },
+  bottomLeft: { centre: [1, 0], startAngle: Math.PI },
+  bottomRight: { centre: [0, 0], startAngle: (3 * Math.PI) / 2 },
+} as const satisfies Record<
+  CornerName,
+  { centre: readonly [number, number]; startAngle: number }
+>;
+
+/**
+ * the ink a cut-off corner cell gains to become a rounded-rectangle corner,
+ * in font units: a quarter-disc of exactly one pixel radius, with its right
+ * angle at the cell corner facing the ink. Wound clockwise in y-up space like
+ * the traced outer contours, so non-zero fill adds it
+ */
+const roundedCornerContour = (
+  col: number,
+  row: number,
+  corner: CornerName,
+): Contour => {
+  const {
+    centre: [centreCol, centreRow],
+    startAngle,
+  } = cornerArcs[corner];
+  const centreX = (col + centreCol) * px;
+  const centreY = baselineFromTop * px - (row + centreRow) * px;
+  const quarterTurn = Math.PI / 2;
+  const segmentAngle = quarterTurn / cornerArcSegments;
+  const controlRadius = px / Math.cos(segmentAngle / 2);
+  const at = (angle: number, radius: number): [number, number] => [
+    centreX + radius * Math.cos(angle),
+    centreY + radius * Math.sin(angle),
+  ];
+
+  // the right angle, then the arc walked from its far end back to its near
+  // end - the direction that winds the quarter-disc clockwise
+  const points: Contour = [
+    [centreX, centreY],
+    at(startAngle + quarterTurn, px),
+  ];
+  for (let i = cornerArcSegments; i > 0; i--) {
+    const [controlX, controlY] = at(
+      startAngle + segmentAngle * (i - 0.5),
+      controlRadius,
+    );
+    points.push([controlX, controlY, 0]);
+    points.push(at(startAngle + segmentAngle * (i - 1), px));
+  }
+  return points;
+};
+
+/**
+ * as {@link glyphContours}, but pixels matching a {@link kernelRules} pattern
+ * are replaced by that rule's action instead of contributing their plain
+ * square shape - a lone hole becomes round, a two-cell-tall one becomes a
+ * slot. Every other pixel stays perfectly square: this is the base the kernel
+ * rule set grows from, one exception at a time.
+ */
+const kernelGlyphContours = (
   image: DecodedImage,
   { frame }: HudGlyph<string>,
 ): Contour[] => {
-  const ink = (x: number, y: number) =>
-    x >= 0 &&
-    y >= 0 &&
-    x < frame.w &&
-    y < frame.h &&
-    isInk(image, frame.x + x, frame.y + y);
+  const ink = (col: number, row: number): boolean =>
+    col >= 0 &&
+    row >= 0 &&
+    col < frame.w &&
+    row < frame.h &&
+    isInk(image, frame.x + col, frame.y + row);
 
-  const isolated = (x: number, y: number) => {
-    const v = ink(x, y);
-    for (let dy = -1; dy <= 1; dy++) {
-      for (let dx = -1; dx <= 1; dx++) {
-        if ((dx !== 0 || dy !== 0) && ink(x + dx, y + dy) === v) {
-          return false;
-        }
-      }
-    }
-    return true;
-  };
+  const bitmap: boolean[][] = [];
+  for (let row = 0; row < frame.h; row++) {
+    bitmap.push(Array.from({ length: frame.w }, (_, col) => ink(col, row)));
+  }
 
-  const bitmap = cleanEdgeUpscaleBinary(ink, frame.w, frame.h, smoothFactor);
+  const matches = scanKernelRules(bitmap, kernelRules);
 
-  const circles: Contour[] = [];
-  for (let y = 0; y < frame.h; y++) {
-    for (let x = 0; x < frame.w; x++) {
-      if (!isolated(x, y)) {
-        continue;
-      }
-      const isHole = !ink(x, y);
-      // a hole's cell fills solid (the circle contour carves it back out);
-      // a dot's cell empties (the circle contour draws it):
-      for (let sy = y * smoothFactor; sy < (y + 1) * smoothFactor; sy++) {
-        for (let sx = x * smoothFactor; sx < (x + 1) * smoothFactor; sx++) {
-          bitmap[sy][sx] = isHole;
-        }
-      }
-      circles.push(circleContour(x, y, isHole));
+  // matched cells no longer contribute their plain square shape to the
+  // trace - carve them so the rectilinear tracer ignores them, then add the
+  // rule's own shape on top:
+  const carved = bitmap.map((row) => [...row]);
+  const shapes: Contour[] = [];
+  for (const { x, y, rule } of matches) {
+    switch (rule.action.type) {
+      case "circleHole":
+        carved[y][x] = true;
+        shapes.push(circleContour(x, y, true));
+        break;
+      case "slotHole":
+        carved[y][x] = true;
+        carved[y + 1][x] = true;
+        shapes.push(slotContour(x, y));
+        break;
+      case "roundedCorner":
+        // additive, so the cell keeps its square notch in the traced outline
+        // and the quarter-disc fills it back in as far as the arc
+        shapes.push(roundedCornerContour(x, y, rule.action.corner));
+        break;
+      default:
+        rule.action satisfies never;
     }
   }
 
-  // vector outlines faithful to the algorithm's intent: uniform 1:1/2:1/1:2
-  // staircases in the upscaled raster become true diagonal lines, whose
-  // corners are then rounded into quadratic curves - short diagonal cuts
-  // melt entirely into curves while right-angled art corners stay sharp.
-  // The y-flip into font units reverses orientation, so the point order is
+  // the y-flip into font units reverses orientation, so the point order is
   // reversed too, keeping the convention that outers wind clockwise in
   // y-up space
-  const subPx = px / smoothFactor;
-  const traced = traceSmoothContours(bitmap).map((loop): Contour =>
-    roundSmoothedCorners(loop, cornerRoundRadius)
-      .map((point): Contour[number] => {
-        const [x, y] = point;
-        const fontX = x * subPx;
-        const fontY = baselineFromTop * px - y * subPx;
-        return point.length === 3 ? [fontX, fontY, 0] : [fontX, fontY];
-      })
+  const traced = traceBitmapToLoops(carved).map((loop): Contour =>
+    mergeCollinear(loop)
+      .map(([x, y]): Contour[number] => [x * px, baselineFromTop * px - y * px])
       .reverse(),
   );
-  return [...traced, ...circles];
+
+  return [...traced, ...shapes];
 };
 
 const { data: rawPixels, info } = await sharp(spritesheetPath)
@@ -474,27 +583,68 @@ const committedDesign = (fromManifestPath: string): unknown => {
   }
 };
 
-// override with PYTHON=/path/to/python for a venv install (eg on macOS where
-// PEP 668 blocks pip installing into the system python)
-const python = process.env.PYTHON ?? "python3";
+// a dedicated venv, self-bootstrapped below - avoids PEP 668's "externally
+// managed environment" block on installing into the system python (eg via
+// Homebrew on macOS). Override with PYTHON=/path/to/python to use a
+// different install instead
+const venvDir = "scripts/font/.venv";
+const venvPython = `${venvDir}/bin/python`;
+const python = process.env.PYTHON ?? venvPython;
 
-// fail with an actionable message rather than a raw ENOENT or Python traceback
-// when the build toolchain isn't installed
-const ensurePythonToolchain = () => {
+const hasToolchain = (forPython: string): boolean => {
   try {
-    execFileSync(python, ["-c", "import fontTools, brotli"], {
+    execFileSync(forPython, ["-c", "import fontTools, brotli"], {
       stdio: "ignore",
     });
+    return true;
+  } catch {
+    return false;
+  }
+};
+
+/**
+ * bootstrap {@link venvDir} and install the pinned toolchain into it, so
+ * `pnpm gen:font` works with no manual python setup. Only attempted when the
+ * caller hasn't overridden PYTHON to point somewhere else.
+ */
+const bootstrapVenv = () => {
+  console.log(`setting up python toolchain in ${venvDir}...`);
+  try {
+    execFileSync("python3", ["-m", "venv", venvDir], { stdio: "inherit" });
+    execFileSync(
+      venvPython,
+      ["-m", "pip", "install", "-q", "-r", requirementsPath],
+      { stdio: "inherit" },
+    );
   } catch (e) {
-    const pythonMissing = (e as { code?: string }).code === "ENOENT";
     throw new Error(
-      pythonMissing ?
-        `${python} is required to build the font but was not found. Install Python 3, then: pip install -r ${requirementsPath}`
-      : `the font builder's Python dependencies are missing. Install them with: pip install -r ${requirementsPath} (or set PYTHON to a venv python that has them)`,
+      `could not set up the font builder's python toolchain in ${venvDir}. ` +
+        `Install python 3 (eg via Homebrew), then re-run pnpm gen:font`,
       { cause: e },
     );
   }
 };
+
+// fail with an actionable message rather than a raw ENOENT or Python traceback
+// when the build toolchain isn't installed
+const ensurePythonToolchain = () => {
+  if (hasToolchain(python)) {
+    return;
+  }
+  if (python === venvPython) {
+    bootstrapVenv();
+    if (hasToolchain(python)) {
+      return;
+    }
+  }
+  throw new Error(
+    `the font builder's python dependencies are missing at ${python}. ` +
+      `Install them with: ${python} -m pip install -r ${requirementsPath} ` +
+      `(or unset PYTHON to let gen:font manage its own venv)`,
+  );
+};
+
+const forceRebuild = process.argv.includes("--force");
 
 const buildIfChanged = (
   builtDesign: ReturnType<typeof designFor>,
@@ -502,8 +652,9 @@ const buildIfChanged = (
   toOutputPath: string,
 ) => {
   if (
+    !forceRebuild &&
     JSON.stringify(committedDesign(toManifestPath)) ===
-    JSON.stringify(builtDesign)
+      JSON.stringify(builtDesign)
   ) {
     console.log(
       `🅵 font unchanged (${builtDesign.glyphs.length} glyphs) - kept existing ${toOutputPath}`,
@@ -527,7 +678,7 @@ const buildIfChanged = (
 
 buildIfChanged(design, manifestPath, outputPath);
 buildIfChanged(
-  designFor(buildGlyphs(smoothGlyphContours)),
+  designFor(buildGlyphs(kernelGlyphContours)),
   smoothManifestPath,
   smoothOutputPath,
 );

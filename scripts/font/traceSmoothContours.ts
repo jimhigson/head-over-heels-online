@@ -112,7 +112,7 @@ export const traceBitmapToLoops = (bitmap: boolean[][]): TracedLoop[] => {
 };
 
 /** drop vertices where the direction of travel does not change */
-const mergeCollinear = (loop: TracedLoop): TracedLoop => {
+export const mergeCollinear = (loop: TracedLoop): TracedLoop => {
   const out: TracedLoop = [];
   for (let i = 0; i < loop.length; i++) {
     const prev = loop[(i - 1 + loop.length) % loop.length];
