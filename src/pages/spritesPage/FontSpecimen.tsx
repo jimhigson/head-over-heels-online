@@ -13,8 +13,10 @@ const emSpace = "\u2003";
 const menuLeaders = `${menuLeaderUnfocussedChar}${menuLeaderFocussedChar}${menuLeaderBackChar}`;
 
 const specimenText = `pack my box with five dozen liquor jugs
-PACK${emSpace}MY${emSpace}BOX${emSpace}WITH${emSpace}FIVE${emSpace}DOZEN${emSpace}LIQUOR${emSpace}JUGS${emSpace}0123456789
-?!.,;:/\\'\`‘’-=+_|%#@*^&<>()[]§©∞☰•★⚡⬅➡⬆⬇↖↗↘↙⏩⁌⁍⇧⌥⌘⎌⟳↻↺🛡♨🕹\uf1ff\ue709\uea78\uf50e\u{f10a9}\uf457\u{ff0e}${menuLeaders}`;
+PACK${emSpace}MY${emSpace}BOX${emSpace}WITH${emSpace}FIVE${emSpace}DOZEN${emSpace}LIQUOR${emSpace}JUGS
+0123456789
+?!.,;:/\\'\`‘’-=+_|%#@*^&<>()[]§©∞☰•★⚡⬅➡⬆⬇↖↗↘↙⏩⁌⁍⇧⌥⌘⎌⟳↻↺
+🛡♨🕹\uf1ff\ue709\uea78\uf50e\u{f10a9}\uf457\u{ff0e}${menuLeaders}`;
 
 const colourClasses = [
   twClass("text-highlightBeige zx:text-zxYellow toppy:text-toppyWarm2"),
