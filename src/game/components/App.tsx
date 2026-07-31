@@ -43,9 +43,11 @@ const AppInner = () => {
         </CssVariables>
       </Route>
       <Route path="/sprites">
-        <Suspense fallback={<SpinnerHead loadingBorder />}>
-          <LazySpritesPage />
-        </Suspense>
+        <InputStateProvider ticker={pixiInputTicker}>
+          <Suspense fallback={<SpinnerHead loadingBorder />}>
+            <LazySpritesPage />
+          </Suspense>
+        </InputStateProvider>
       </Route>
       <Route path="/lut">
         <LazyLutPage />
