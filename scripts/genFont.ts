@@ -477,12 +477,14 @@ const diagonalEdgeContours = (
   col: number,
   row: number,
   {
+    axis,
     ink,
     step,
     treadHeight,
     topReach,
     bottomReach,
   }: {
+    axis: "horizontal" | "vertical";
     ink: "left" | "right";
     step: "left" | "right";
     treadHeight: number;
@@ -491,26 +493,30 @@ const diagonalEdgeContours = (
   },
 ): Contour[] => {
   const inkOnRight = ink === "right";
-  // the boundary this tread owns is the far side of the cell from the ink
-  const edgeCol = inkOnRight ? col : col + 1;
   const stepDir = step === "left" ? -1 : 1;
-  const at = (cellX: number, cellY: number): [number, number] => [
-    cellX * px,
-    baselineFromTop * px - cellY * px,
-  ];
+  const acrossAxis = axis === "vertical";
+  // worked in the tread's own frame - one coordinate across the edge, one
+  // along it - then mapped to font units, which is where the two axes differ
+  const edgeStart = (acrossAxis ? col : row) + (inkOnRight ? 0 : 1);
+  const alongStart = acrossAxis ? row : col;
+  const at = (edge: number, along: number): [number, number] =>
+    acrossAxis ?
+      [edge * px, baselineFromTop * px - along * px]
+    : [along * px, baselineFromTop * px - edge * px];
   // the line runs from one reach to the other, so it crosses the blocky edge
   // wherever those two distances balance
-  const crossing = row + (treadHeight * topReach) / (topReach + bottomReach);
+  const crossing =
+    alongStart + (treadHeight * topReach) / (topReach + bottomReach);
 
   const upper: Array<[number, number]> = [
-    at(edgeCol, row),
-    at(edgeCol - stepDir * topReach, row),
-    at(edgeCol, crossing),
+    at(edgeStart, alongStart),
+    at(edgeStart - stepDir * topReach, alongStart),
+    at(edgeStart, crossing),
   ];
   const lower: Array<[number, number]> = [
-    at(edgeCol, crossing),
-    at(edgeCol, row + treadHeight),
-    at(edgeCol + stepDir * bottomReach, row + treadHeight),
+    at(edgeStart, crossing),
+    at(edgeStart, alongStart + treadHeight),
+    at(edgeStart + stepDir * bottomReach, alongStart + treadHeight),
   ];
   // whichever half of the tread the line cuts into the ink is the half to
   // take away; the other half it swings clear of, and is added
@@ -561,20 +567,41 @@ const kernelGlyphContours = (
         break;
       case "taperPoint": {
         // the lone cell is cleared and replaced by a triangle of equal area:
-        // a base two cells wide where the stroke ends, and the apex a cell
+        // a base two cells across where the stroke ends, and the apex a cell
         // beyond it, which puts both sides at 45 degrees
         carved[y][x] = false;
-        const baseRow = rule.action.towards === "down" ? y : y + 1;
-        const apexRow = rule.action.towards === "down" ? y + 1 : y;
+        const { towards } = rule.action;
+        const sideways = towards === "left" || towards === "right";
+        // the base sits on the edge of the cell the stroke comes from, and
+        // the apex on the far one
+        const base = towards === "down" || towards === "right" ? 0 : 1;
+        const apex = 1 - base;
+        const at = (across: number, along: number): [number, number] =>
+          sideways ?
+            [(x + across) * px, baselineFromTop * px - (y + along) * px]
+          : [(x + along) * px, baselineFromTop * px - (y + across) * px];
         shapes.push(
-          wound(
-            [
-              [(x - 0.5) * px, baselineFromTop * px - baseRow * px],
-              [(x + 1.5) * px, baselineFromTop * px - baseRow * px],
-              [(x + 0.5) * px, baselineFromTop * px - apexRow * px],
-            ],
-            true,
-          ),
+          wound([at(base, -0.5), at(base, 1.5), at(apex, 0.5)], true),
+        );
+        break;
+      }
+      case "notch": {
+        // the bite is filled in so the edge traces straight, then a triangle
+        // of the same area is taken back out of it: a mouth two cells wide
+        // on the edge narrowing to a point one cell in, so both sides run at
+        // 45 degrees
+        carved[y][x] = true;
+        const { opens } = rule.action;
+        const sideways = opens === "left" || opens === "right";
+        // the edge is the side of the cell the bite opens towards
+        const mouth = opens === "right" || opens === "down" ? 1 : 0;
+        const apex = 1 - mouth;
+        const at = (across: number, along: number): [number, number] =>
+          sideways ?
+            [(x + across) * px, baselineFromTop * px - (y + along) * px]
+          : [(x + along) * px, baselineFromTop * px - (y + across) * px];
+        shapes.push(
+          wound([at(mouth, -0.5), at(apex, 0.5), at(mouth, 1.5)], false),
         );
         break;
       }

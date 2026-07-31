@@ -44,6 +44,14 @@ export type KernelRuleAction =
    */
   | {
       type: "diagonalEdge";
+      /**
+       * whether the edge this tread belongs to runs down the glyph (a slope
+       * of one across per `treadHeight` down) or across it (the transpose,
+       * `treadHeight` across per one down). On the horizontal axis `ink` and
+       * `step` name directions in the transposed frame, where x and y swap:
+       * "right" reads as "down"
+       */
+      axis: "vertical" | "horizontal";
       /** which side of this edge the ink lies on */
       ink: "left" | "right";
       /** which way the edge moves as it descends */
@@ -66,7 +74,13 @@ export type KernelRuleAction =
    * of the same area with sides at 45 degrees, so the stroke comes to a
    * proper point
    */
-  | { type: "taperPoint"; towards: "up" | "down" };
+  | { type: "taperPoint"; towards: "up" | "down" | "left" | "right" }
+  /**
+   * the claimed cell is a single cell bitten out of an otherwise straight
+   * edge. It is recut as a V of the same area with sides at 45 degrees - a
+   * mouth two cells wide across the edge, one cell deep
+   */
+  | { type: "notch"; opens: "up" | "down" | "left" | "right" };
 
 export type KernelRule = {
   name: string;
@@ -86,6 +100,9 @@ export type KernelRule = {
   alsoClaims?: readonly (readonly [number, number])[];
   action: KernelRuleAction;
 };
+
+/** the tallest tread any staircase rule matches - a 1:2 or 2:1 slope */
+const longestTread = 2;
 
 /**
  * where along its staircase a tread sits. A run may simply stop (`start`,
@@ -151,9 +168,13 @@ const staircaseRule = (
   // a run's first and last treads are told from a lone step - which is a cut
   // corner, not a slope - by looking a whole tread further along: the run has
   // to keep stepping the same way for the tread beyond the neighbouring one.
-  // A junction is told from a tread by the edge holding its column for longer
-  // than a tread is tall, which is a straight edge rather than another step
-  const straightRun = new Array(treadHeight + 1);
+  //
+  // A junction is a genuinely straight edge, so it has to hold its column for
+  // longer than any tread could. Were it merely longer than this tread, a 45
+  // degree tread would read the 1:2 tread above it as a straight edge and
+  // reach a whole cell into it, rather than meeting its line where the two
+  // slopes change over - which is how a curve of mixed slopes stays smooth
+  const straightRun = new Array(longestTread + 1);
   const pattern =
     position === "start" ?
       [beyondRun, ...treadRows, ...nextTreadRows, rowWithEdgeAt(2 * stepDir)]
@@ -211,6 +232,7 @@ const staircaseRule = (
     ...(hasNotch ? { alsoClaims: notch } : {}),
     action: {
       type: "diagonalEdge",
+      axis: "vertical",
       ink,
       step,
       treadHeight,
@@ -221,21 +243,59 @@ const staircaseRule = (
 };
 
 /**
- * every staircase tread rule, taller treads first so a 1:2 slope is never
- * read as a pair of 45 degree steps
+ * the same rule with x and y swapped, turning a slope that runs down the
+ * glyph into one that runs across it - a 1:2 becomes a 2:1. Patterns
+ * transpose row-for-column, and every cell coordinate swaps with it
  */
-const staircaseRules: readonly KernelRule[] = [2, 1].flatMap((treadHeight) =>
-  (["right", "left"] as const).flatMap((ink) =>
-    (["left", "right"] as const).flatMap((step) =>
-      // the junction variants come before `middle`, which a tread abutting a
-      // straight edge would otherwise match, taking the midpoint anchor and
-      // leaving a step of horizontal behind
-      (["junctionStart", "junctionEnd", "middle", "start", "end"] as const).map(
-        (position) => staircaseRule(ink, step, treadHeight, position),
+const transposed = (rule: KernelRule): KernelRule => {
+  const [firstRow] = rule.pattern;
+  const swap = ([x, y]: readonly [number, number]) => [y, x] as const;
+  if (rule.action.type !== "diagonalEdge") {
+    throw new Error("only a diagonalEdge rule can be transposed");
+  }
+  return {
+    ...rule,
+    name: rule.name.replace("staircase1to", "staircaseFlat1to"),
+    pattern: [...firstRow].map((_, column) =>
+      rule.pattern.map((row) => row[column]).join(""),
+    ),
+    activeSite: rule.activeSite.map(swap),
+    alsoClaims: rule.alsoClaims?.map(swap),
+    action: { ...rule.action, axis: "horizontal" },
+  };
+};
+
+/**
+ * every staircase tread rule, longer treads first so a 1:2 or 2:1 slope is
+ * never read as a pair of 45 degree steps. A 45 degree slope is its own
+ * transpose, so only the two-cell treads are generated both ways round
+ */
+const verticalStaircaseRules: readonly KernelRule[] = [2, 1].flatMap(
+  (treadHeight) =>
+    (["right", "left"] as const).flatMap((ink) =>
+      (["left", "right"] as const).flatMap((step) =>
+        // the junction variants come before `middle`, which a tread abutting a
+        // straight edge would otherwise match, taking the midpoint anchor and
+        // leaving a step of horizontal behind
+        (
+          ["junctionStart", "junctionEnd", "middle", "start", "end"] as const
+        ).map((position) => staircaseRule(ink, step, treadHeight, position)),
       ),
     ),
-  ),
 );
+
+const isTwoCellTread = (rule: KernelRule) =>
+  rule.action.type === "diagonalEdge" && rule.action.treadHeight > 1;
+
+/**
+ * the two-cell treads both ways round before the 45 degree ones, so a 1:2 or
+ * 2:1 slope is never read as a pair of 45 degree steps
+ */
+const staircaseRules: readonly KernelRule[] = [
+  ...verticalStaircaseRules.filter(isTwoCellTread),
+  ...verticalStaircaseRules.filter(isTwoCellTread).map(transposed),
+  ...verticalStaircaseRules.filter((rule) => !isTwoCellTread(rule)),
+];
 
 export const kernelRules: readonly KernelRule[] = [
   // a stroke tapering to a single cell - the point of a ''' or '!', and the
@@ -254,6 +314,46 @@ export const kernelRules: readonly KernelRule[] = [
     pattern: ["...", ".#.", "###"],
     activeSite: [[1, 1]],
     action: { type: "taperPoint", towards: "up" },
+  },
+  {
+    name: "taperPointLeft",
+    pattern: ["..#", ".##", "..#"],
+    activeSite: [[1, 1]],
+    action: { type: "taperPoint", towards: "left" },
+  },
+  {
+    name: "taperPointRight",
+    pattern: ["#..", "##.", "#.."],
+    activeSite: [[1, 1]],
+    action: { type: "taperPoint", towards: "right" },
+  },
+  // a single cell bitten out of an otherwise straight edge - the waist of a
+  // 'k', the four bites of an 'x', and one each in 'w' and 'B'. The column or
+  // row just outside the edge has to be clear for the whole height of the
+  // pattern, which is what makes the edge straight either side of the bite
+  {
+    name: "notchOpensRight",
+    pattern: ["##.", "#..", "##."],
+    activeSite: [[1, 1]],
+    action: { type: "notch", opens: "right" },
+  },
+  {
+    name: "notchOpensLeft",
+    pattern: [".##", "..#", ".##"],
+    activeSite: [[1, 1]],
+    action: { type: "notch", opens: "left" },
+  },
+  {
+    name: "notchOpensUp",
+    pattern: ["...", "#.#", "###"],
+    activeSite: [[1, 1]],
+    action: { type: "notch", opens: "up" },
+  },
+  {
+    name: "notchOpensDown",
+    pattern: ["###", "#.#", "..."],
+    activeSite: [[1, 1]],
+    action: { type: "notch", opens: "down" },
   },
   // staircase treads - the 1:2 slopes of '/', '\', '%', '7', 'v' and 'V', and
   // the 45 degree ones of 'Z', '`' and the arrows. Listed before the corner
@@ -347,6 +447,13 @@ const cornerRuleNames = [
   "roundedCornerBottomRight",
 ];
 
+const notchRuleNames = [
+  "notchOpensRight",
+  "notchOpensLeft",
+  "notchOpensUp",
+  "notchOpensDown",
+];
+
 /**
  * Characters that opt out of a rule their shape defeats. Some features are
  * genuinely indistinguishable by pattern - the tail of a ',' and the end of a
@@ -357,8 +464,11 @@ const cornerRuleNames = [
 const rulesDisabledForChar: { [char: string]: readonly string[] } = {
   // rounding the end of the crossbar reads as a blob rather than a bar
   "4": ["roundedCornerBottomRight"],
-  // its strokes should stay crisp; rounding every corner softens the whole glyph
-  "#": cornerRuleNames,
+  // its strokes should stay crisp: rounding every corner softens the whole
+  // glyph, and its four bites are where the strokes cross rather than nicks
+  "#": [...cornerRuleNames, ...notchRuleNames],
+  // its bites are the gaps between the star's points, not nicks in an edge
+  "*": notchRuleNames,
 };
 
 /** the rules that apply to one character, minus any it opts out of */
