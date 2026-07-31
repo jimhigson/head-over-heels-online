@@ -11,7 +11,7 @@ import { size } from "../src/utils/iterators/size";
 import { type HudGlyph, hudGlyphs } from "./font/hudGlyphs";
 import {
   type CornerName,
-  kernelRules,
+  kernelRulesForChar,
   scanKernelRules,
 } from "./font/kernelRules";
 import { mergeCollinear, traceBitmapToLoops } from "./font/traceSmoothContours";
@@ -370,27 +370,42 @@ const slotContour = (col: number, topRow: number): Contour => {
 const cornerArcSegments = 2;
 
 /**
- * per corner: the cell lattice point the quarter-circle is centred on (as an
- * offset from the cell's top-left, in cells) and the angle its arc starts at.
- * The centre is always the cell corner facing the ink, so the arc runs from
- * one cell edge to the other and meets the straight edges either side of the
- * cell tangentially - a rounded-rectangle corner
+ * how far a rounded corner reaches along each of its two edges, in pixels.
+ * The cut corner cell is filled in and a corner-square-minus-quarter-disc is
+ * taken back out of it, an area of r²(1 - π/4); at this radius that is
+ * exactly the one pixel the square cut removed, so rounding a corner leaves
+ * the glyph's total ink unchanged
+ */
+const cornerRadiusPx = 1 / Math.sqrt(1 - Math.PI / 4);
+
+/**
+ * per corner: which lattice point of the cell the shape's sharp corner would
+ * be at (as an offset from the cell's top-left, in cells), the direction from
+ * there towards the ink, and the angle the arc starts at
  */
 const cornerArcs = {
-  topLeft: { centre: [1, 1], startAngle: Math.PI / 2 },
-  topRight: { centre: [0, 1], startAngle: 0 },
-  bottomLeft: { centre: [1, 0], startAngle: Math.PI },
-  bottomRight: { centre: [0, 0], startAngle: (3 * Math.PI) / 2 },
+  topLeft: { sharp: [0, 0], towardsInk: [1, 1], startAngle: Math.PI / 2 },
+  topRight: { sharp: [1, 0], towardsInk: [-1, 1], startAngle: 0 },
+  bottomLeft: { sharp: [0, 1], towardsInk: [1, -1], startAngle: Math.PI },
+  bottomRight: {
+    sharp: [1, 1],
+    towardsInk: [-1, -1],
+    startAngle: (3 * Math.PI) / 2,
+  },
 } as const satisfies Record<
   CornerName,
-  { centre: readonly [number, number]; startAngle: number }
+  {
+    sharp: readonly [number, number];
+    towardsInk: readonly [number, number];
+    startAngle: number;
+  }
 >;
 
 /**
- * the ink a cut-off corner cell gains to become a rounded-rectangle corner,
- * in font units: a quarter-disc of exactly one pixel radius, with its right
- * angle at the cell corner facing the ink. Wound clockwise in y-up space like
- * the traced outer contours, so non-zero fill adds it
+ * the ink taken back out of a filled-in corner to round it, in font units:
+ * the region between the shape's sharp corner and an arc of
+ * {@link cornerRadiusPx}, which meets the two edges tangentially. Wound
+ * anticlockwise in y-up space, so non-zero fill subtracts it
  */
 const roundedCornerContour = (
   col: number,
@@ -398,24 +413,29 @@ const roundedCornerContour = (
   corner: CornerName,
 ): Contour => {
   const {
-    centre: [centreCol, centreRow],
+    sharp: [sharpCol, sharpRow],
+    towardsInk: [inkCol, inkRow],
     startAngle,
   } = cornerArcs[corner];
-  const centreX = (col + centreCol) * px;
-  const centreY = baselineFromTop * px - (row + centreRow) * px;
+  const apexX = (col + sharpCol) * px;
+  const apexY = baselineFromTop * px - (row + sharpRow) * px;
+  const radius = cornerRadiusPx * px;
+  const centreX = (col + sharpCol + inkCol * cornerRadiusPx) * px;
+  const centreY =
+    baselineFromTop * px - (row + sharpRow + inkRow * cornerRadiusPx) * px;
   const quarterTurn = Math.PI / 2;
   const segmentAngle = quarterTurn / cornerArcSegments;
-  const controlRadius = px / Math.cos(segmentAngle / 2);
-  const at = (angle: number, radius: number): [number, number] => [
-    centreX + radius * Math.cos(angle),
-    centreY + radius * Math.sin(angle),
+  const controlRadius = radius / Math.cos(segmentAngle / 2);
+  const at = (angle: number, atRadius: number): [number, number] => [
+    centreX + atRadius * Math.cos(angle),
+    centreY + atRadius * Math.sin(angle),
   ];
 
-  // the right angle, then the arc walked from its far end back to its near
-  // end - the direction that winds the quarter-disc clockwise
+  // the sharp corner, then the arc walked from its far end back to its near
+  // end - the direction that winds this anticlockwise about the apex
   const points: Contour = [
-    [centreX, centreY],
-    at(startAngle + quarterTurn, px),
+    [apexX, apexY],
+    at(startAngle + quarterTurn, radius),
   ];
   for (let i = cornerArcSegments; i > 0; i--) {
     const [controlX, controlY] = at(
@@ -423,9 +443,79 @@ const roundedCornerContour = (
       controlRadius,
     );
     points.push([controlX, controlY, 0]);
-    points.push(at(startAngle + segmentAngle * (i - 1), px));
+    points.push(at(startAngle + segmentAngle * (i - 1), radius));
   }
   return points;
+};
+
+/** a closed contour wound the way non-zero fill needs to add or subtract it */
+const wound = (
+  points: Array<[number, number]>,
+  /** true to wind clockwise in y-up space, which fill adds */
+  clockwise: boolean,
+): Contour => {
+  let twiceArea = 0;
+  for (let i = 0; i < points.length; i++) {
+    const [x1, y1] = points[i];
+    const [x2, y2] = points[(i + 1) % points.length];
+    twiceArea += x1 * y2 - x2 * y1;
+  }
+  const isAnticlockwise = twiceArea > 0;
+  return isAnticlockwise === clockwise ? [...points].reverse() : points;
+};
+
+/**
+ * One tread of a 1:2 staircase recut as the straight line it approximates,
+ * in font units. The line runs between the midpoints of the horizontal steps
+ * above and below the tread, so consecutive treads meet exactly and a whole
+ * staircase becomes one unbroken line at the true slope. It crosses the
+ * blocky edge at the tread's middle, leaving a triangle of ink to take away
+ * on one side of that crossing and an equal one to add on the other - so
+ * straightening a staircase leaves the glyph's total ink unchanged.
+ */
+const diagonalEdgeContours = (
+  col: number,
+  row: number,
+  {
+    ink,
+    step,
+    treadHeight,
+    topReach,
+    bottomReach,
+  }: {
+    ink: "left" | "right";
+    step: "left" | "right";
+    treadHeight: number;
+    topReach: number;
+    bottomReach: number;
+  },
+): Contour[] => {
+  const inkOnRight = ink === "right";
+  // the boundary this tread owns is the far side of the cell from the ink
+  const edgeCol = inkOnRight ? col : col + 1;
+  const stepDir = step === "left" ? -1 : 1;
+  const at = (cellX: number, cellY: number): [number, number] => [
+    cellX * px,
+    baselineFromTop * px - cellY * px,
+  ];
+  // the line runs from one reach to the other, so it crosses the blocky edge
+  // wherever those two distances balance
+  const crossing = row + (treadHeight * topReach) / (topReach + bottomReach);
+
+  const upper: Array<[number, number]> = [
+    at(edgeCol, row),
+    at(edgeCol - stepDir * topReach, row),
+    at(edgeCol, crossing),
+  ];
+  const lower: Array<[number, number]> = [
+    at(edgeCol, crossing),
+    at(edgeCol, row + treadHeight),
+    at(edgeCol + stepDir * bottomReach, row + treadHeight),
+  ];
+  // whichever half of the tread the line cuts into the ink is the half to
+  // take away; the other half it swings clear of, and is added
+  const upperIsSubtracted = inkOnRight === stepDir < 0;
+  return [wound(upper, !upperIsSubtracted), wound(lower, upperIsSubtracted)];
 };
 
 /**
@@ -437,7 +527,7 @@ const roundedCornerContour = (
  */
 const kernelGlyphContours = (
   image: DecodedImage,
-  { frame }: HudGlyph<string>,
+  { frame, char }: HudGlyph<string>,
 ): Contour[] => {
   const ink = (col: number, row: number): boolean =>
     col >= 0 &&
@@ -451,7 +541,7 @@ const kernelGlyphContours = (
     bitmap.push(Array.from({ length: frame.w }, (_, col) => ink(col, row)));
   }
 
-  const matches = scanKernelRules(bitmap, kernelRules);
+  const matches = scanKernelRules(bitmap, kernelRulesForChar(char));
 
   // matched cells no longer contribute their plain square shape to the
   // trace - carve them so the rectilinear tracer ignores them, then add the
@@ -469,10 +559,35 @@ const kernelGlyphContours = (
         carved[y + 1][x] = true;
         shapes.push(slotContour(x, y));
         break;
+      case "taperPoint": {
+        // the lone cell is cleared and replaced by a triangle of equal area:
+        // a base two cells wide where the stroke ends, and the apex a cell
+        // beyond it, which puts both sides at 45 degrees
+        carved[y][x] = false;
+        const baseRow = rule.action.towards === "down" ? y : y + 1;
+        const apexRow = rule.action.towards === "down" ? y + 1 : y;
+        shapes.push(
+          wound(
+            [
+              [(x - 0.5) * px, baselineFromTop * px - baseRow * px],
+              [(x + 1.5) * px, baselineFromTop * px - baseRow * px],
+              [(x + 0.5) * px, baselineFromTop * px - apexRow * px],
+            ],
+            true,
+          ),
+        );
+        break;
+      }
       case "roundedCorner":
-        // additive, so the cell keeps its square notch in the traced outline
-        // and the quarter-disc fills it back in as far as the arc
+        // fill the cut corner in, so the traced outline is a clean right
+        // angle, then take the rounding back out of it
+        carved[y][x] = true;
         shapes.push(roundedCornerContour(x, y, rule.action.corner));
+        break;
+      case "diagonalEdge":
+        // the tread keeps its square cells in the traced outline; the two
+        // triangles trade the ink either side of the line across it
+        shapes.push(...diagonalEdgeContours(x, y, rule.action));
         break;
       default:
         rule.action satisfies never;
