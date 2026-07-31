@@ -122,13 +122,6 @@ export const asItemRenderContext = <T extends ItemInPlayType>(
  * read (see {@link ItemTickContext})
  */
 export type ItemLeafTickContext = {
-  /**
-   * The lastRenderRoomTime from the room's renderer. This is not a property
-   * of the room itself, but of the room's rendering.
-   *
-   * @see RoomRenderer.#lastRenderRoomTime
-   */
-  lastRenderRoomTime: number | undefined;
   deltaMS: number;
 };
 

@@ -5,7 +5,6 @@ import {
 } from "../../../game/render/ItemRenderContexts";
 import { keysIter } from "../../../utils/entries";
 import { isEmpty } from "../../../utils/iterators/isEmpty";
-import { neverTime } from "../../../utils/neverTime";
 import { audioCtx } from "../../audioCtx";
 import { type ItemSoundRenderContext } from "../../ItemSoundRenderContext";
 import { type ItemSoundRenderer } from "../../ItemSoundRenderer";
@@ -70,6 +69,13 @@ export class FreeItemSoundRenderer implements ItemSoundRenderer<FreeItemTypes> {
 
   currentPositionZ: number = 0;
 
+  /**
+   * the collidedWith.roomTime stamp as of the last tick - a change means a
+   * collision happened since then. Initialised from the item's current state
+   * so a stale stamp (eg from a loaded save) doesn't sound on the first tick
+   */
+  #seenCollidedWithRoomTime: number;
+
   readonly renderContext: ItemSoundRenderContext<FreeItemTypes>;
 
   constructor(
@@ -77,6 +83,8 @@ export class FreeItemSoundRenderer implements ItemSoundRenderer<FreeItemTypes> {
     options?: FreeItemSoundRendererConstructorOptions,
   ) {
     this.renderContext = renderContext;
+    this.#seenCollidedWithRoomTime =
+      renderContext.item.state.collidedWith.roomTime;
     const fallChannel: GainNode = audioCtx.createGain();
     fallChannel.connect(this.output);
     this.#fallBracketedSound = createBracketedSound(
@@ -155,12 +163,16 @@ export class FreeItemSoundRenderer implements ItemSoundRenderer<FreeItemTypes> {
       this.currentPositionZ = positionZ;
     }
 
+    const collidedSinceLastTick =
+      roomTimeCollidedWith !== this.#seenCollidedWithRoomTime;
+    this.#seenCollidedWithRoomTime = roomTimeCollidedWith;
+
     if (this.#standingOnBracketedSound !== undefined) {
       const landed =
         // standing on something:
         standingOnItemId !== null &&
-        // the thing we are standing on - we collided with since the room last rendered:
-        roomTimeCollidedWith > (tickContext.lastRenderRoomTime ?? neverTime) &&
+        // the thing we are standing on - we collided with since we last ticked:
+        collidedSinceLastTick &&
         collidedWith[standingOnItemId];
 
       this.#standingOnBracketedSound(landed);
@@ -168,8 +180,7 @@ export class FreeItemSoundRenderer implements ItemSoundRenderer<FreeItemTypes> {
 
     if (this.#collisionBracketedSound !== undefined) {
       const collidedWithSomething =
-        roomTimeCollidedWith > (tickContext.lastRenderRoomTime ?? neverTime) &&
-        !isEmpty(keysIter(collidedWith));
+        collidedSinceLastTick && !isEmpty(keysIter(collidedWith));
 
       this.#collisionBracketedSound(collidedWithSomething);
     }
