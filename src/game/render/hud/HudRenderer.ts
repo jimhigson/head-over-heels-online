@@ -35,7 +35,6 @@ import { selectShowFps } from "../../../store/slices/gameMenus/gameMenusSelector
 import { type SpriteOption } from "../../../store/slices/userSettings/userSettingsSlice";
 import { store } from "../../../store/store";
 import { IdleTracker } from "../../../utils/idle/IdleTracker";
-import { neverTime } from "../../../utils/neverTime";
 import {
   type DirectionIndexXy8,
   directionIndexXy8,
@@ -634,7 +633,7 @@ export class HudRenderer<
     // tick the carried item every frame so directional/animated items keep up
     // with the camera angle and the passage of time - the carried renderer
     // shares the live general render context, so its camera angle is current:
-    this.#carriedRenderer?.tick({ deltaMS, lastRenderRoomTime: neverTime });
+    this.#carriedRenderer?.tick({ deltaMS });
 
     const bagSprite = this.#hudElements.heels.bag.icon;
     const hasBag = heelsAbilities?.hasBag;

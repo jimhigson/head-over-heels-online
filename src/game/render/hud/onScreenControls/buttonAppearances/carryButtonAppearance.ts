@@ -4,7 +4,6 @@ import { type ItemInPlayType } from "../../../../../model/ItemInPlay";
 import { type RoomState } from "../../../../../model/RoomState";
 import { type AppSpritesheetWithVariants } from "../../../../../sprites/spritesheet/AppSpritesheet";
 import { variantTextureId } from "../../../../../sprites/spritesheet/variantTextureId";
-import { neverTime } from "../../../../../utils/neverTime";
 import { selectHeelsAbilities } from "../../../../gameState/gameStateSelectors/selectPlayableItem";
 import {
   type PlayableItem,
@@ -145,7 +144,6 @@ export const carryButtonAppearance: ButtonAppearance<
   // the carried renderer shares the live general, so its camera angle is current:
   carriedRenderer?.tick({
     deltaMS: tickContext.deltaMS,
-    lastRenderRoomTime: neverTime,
   });
 
   return {

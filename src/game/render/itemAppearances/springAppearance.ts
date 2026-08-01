@@ -10,6 +10,11 @@ import { type ItemShadowAppearanceOutsideView } from "./shadowMaskAppearances/it
 
 type SpringRenderProps = {
   compressed: boolean;
+  /**
+   * the {@link BaseItemState.stoodOnUntilRoomTime} stamp as of the last
+   * render - a change means a stander stepped off since then
+   */
+  stoodOnUntilRoomTime: number;
 };
 
 /**
@@ -35,7 +40,6 @@ const springAppearanceImpl: (
       },
       general: { paused, spritesheets, cameraAngle },
     },
-    tickContext: { lastRenderRoomTime },
     currentRendering,
   }) => {
     const currentlyRenderedProps = currentRendering?.renderProps;
@@ -73,8 +77,10 @@ const springAppearanceImpl: (
     }
 
     const boing =
-      lastRenderRoomTime !== undefined &&
-      stoodOnUntilRoomTime > lastRenderRoomTime &&
+      // never on the first render - a stale stamp (eg from a loaded save) is
+      // not a fresh release:
+      currentlyRenderedProps !== undefined &&
+      stoodOnUntilRoomTime !== currentlyRenderedProps.stoodOnUntilRoomTime &&
       // spring could have stopped being stood on, but immediately been stood on again:
       !compressed;
 
@@ -100,7 +106,7 @@ const springAppearanceImpl: (
 
     return {
       output: rendering,
-      renderProps: { compressed },
+      renderProps: { compressed, stoodOnUntilRoomTime },
     };
   };
 
