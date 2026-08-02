@@ -5,13 +5,13 @@ import { useMaybeGameApi } from "../game/components/GameApiContext";
 import { typedURLSearchParams } from "../options/queryParams";
 import { startAppListening } from "../store/listenerMiddleware";
 import {
-  characterRoomChange,
   crownCollected,
   gameOver,
   gameStarted,
   lostAllLives,
   lostLife,
   reincarnationAccepted,
+  roomExplored,
 } from "../store/slices/gameInPlay/gameInPlaySlice";
 import { errorCaught } from "../store/slices/gameMenus/gameMenusSlice";
 import { entries } from "../utils/entries";
@@ -80,15 +80,13 @@ const isTrackedEvent = isAnyOf(
   gameOver,
   lostAllLives,
   reincarnationAccepted,
-  // roomExplored is almost the same as characterRoomChange, but has less information
-  //roomExplored,
   lostLife,
   errorCaught,
   gameStarted,
   crownCollected,
 
-  // this burns though the event quota quite quickly - disable if running out:
-  characterRoomChange,
+  // only fires the first time a room is entered this game, via getOriginalState dedup below:
+  roomExplored,
 );
 
 const useAddTrackingToStore = () => {
@@ -97,11 +95,18 @@ const useAddTrackingToStore = () => {
   useEffect(() => {
     const unsub = startAppListening({
       matcher: isTrackedEvent,
-      effect(action, { getState }) {
+      effect(action, { getOriginalState }) {
+        if (
+          roomExplored.match(action) &&
+          getOriginalState().gameInPlay.gameInPlay.roomsExplored[action.payload]
+        ) {
+          // already explored earlier this game - don't re-track re-entering a room
+          return;
+        }
+
         const gameState = maybeGameApi?.gameState;
 
         const [, actionNameWithoutSlice] = action.type.split("/");
-        const state = getState();
 
         const gameTimeSeconds =
           gameState ? Math.round(gameState.gameTime / 1_000) : undefined;
@@ -117,15 +122,17 @@ const useAddTrackingToStore = () => {
               ),
             }
           : errorCaught.match(action) ? { errorMessage: firstError?.message }
+          : roomExplored.match(action) ? { roomId: action.payload }
           : gameStarted.match(action) ? undefined
           : action.payload;
 
         const eventProperties = scalarEventProperties({
           gameTimeSeconds,
-          cheatsOn: state.debug.cheatsOn,
           ...(typeof payloadProperties === "object" ? payloadProperties : {}),
-          currentCharacter: gameState?.currentCharacterName,
-          inRoom: gameState?.characterRooms[gameState.currentCharacterName]?.id,
+          inRoom:
+            roomExplored.match(action) ? undefined : (
+              gameState?.characterRooms[gameState.currentCharacterName]?.id
+            ),
         });
 
         if (window.umami) {
