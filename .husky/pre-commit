@@ -3,27 +3,39 @@ echo running pre-commit...
 # Batch oxlint --fix + prettier --write over the STAGED (index) content in a temp
 # dir, then apply once via git-format-staged (index+worktree write, unstaged
 # changes preserved). One materialise, one apply - not per-file.
-patterns="src/*.ts src/*.tsx src/*.json src/*.html e2e/*.ts gfx/*.ts scripts/*.ts"
+# held as positional parameters and always passed quoted, so the shell never
+# gets to expand them: unquoted, it globs each against the working tree first,
+# which only ever matches files sitting directly in those directories - every
+# nested path went unlinted and unformatted. Passed through, git does the
+# matching, where `*` crosses directory separators
+set -- 'src/*.ts' 'src/*.tsx' 'src/*.json' 'src/*.html' 'e2e/*.ts' 'gfx/*.ts' 'scripts/*.ts'
 tmp=$(mktemp -d "$PWD/.precommit-batch-XXXXXX")
 trap 'rm -rf "$tmp"' EXIT
-git diff --cached --name-only --diff-filter=ACMR -z -- $patterns \
+git diff --cached --name-only --diff-filter=ACMR -z -- "$@" \
   | git checkout-index --prefix="$tmp/" -z --stdin
 
 if [ -n "$(find "$tmp" -type f -print -quit)" ]; then
-  echo oxlint --fix
-  # oxlint applies only non-overlapping fixes per run, so loop --fix over the whole
-  # batch until it stops changing (a fixpoint) before checking for errors.
-  i=0
-  while [ "$i" -lt 10 ]; do
-    before=$(find "$tmp" -type f -exec cksum {} + | sort | cksum)
-    oxlint --fix --no-ignore "$tmp" >/dev/null 2>&1 || true
-    after=$(find "$tmp" -type f -exec cksum {} + | sort | cksum)
-    [ "$before" = "$after" ] && break
-    i=$((i + 1))
-  done
-  if ! oxlint --no-ignore "$tmp"; then
-    echo "pre-commit: oxlint found lint errors that could not be auto-fixed" >&2
-    exit 1
+  # oxlint reads only javascript and typescript, and exits non-zero with
+  # "No files found to lint" when handed a batch holding none - a commit of
+  # json alone is not a lint failure, so it is not put to oxlint at all
+  lintable=$(find "$tmp" -type f \( -name '*.ts' -o -name '*.tsx' -o -name '*.js' \
+    -o -name '*.jsx' -o -name '*.mjs' -o -name '*.cjs' \) -print -quit)
+  if [ -n "$lintable" ]; then
+    echo oxlint --fix
+    # oxlint applies only non-overlapping fixes per run, so loop --fix over the whole
+    # batch until it stops changing (a fixpoint) before checking for errors.
+    i=0
+    while [ "$i" -lt 10 ]; do
+      before=$(find "$tmp" -type f -exec cksum {} + | sort | cksum)
+      oxlint --fix --no-ignore "$tmp" >/dev/null 2>&1 || true
+      after=$(find "$tmp" -type f -exec cksum {} + | sort | cksum)
+      [ "$before" = "$after" ] && break
+      i=$((i + 1))
+    done
+    if ! oxlint --no-ignore "$tmp"; then
+      echo "pre-commit: oxlint found lint errors that could not be auto-fixed" >&2
+      exit 1
+    fi
   fi
 
   echo prettier
@@ -39,7 +51,7 @@ if [ -n "$(find "$tmp" -type f -print -quit)" ]; then
   # copy exists in $tmp, or the unread pipe SIGPIPEs that upstream `git cat-file` and
   # git-format-staged aborts (this races: it reproduces reliably inside worktrees,
   # where the extra .git indirection slows `git cat-file` enough to lose the race)
-  git-format-staged --formatter 'if [ -f "'"$tmp"'/{}" ]; then cat >/dev/null; cat "'"$tmp"'/{}"; else cat; fi' $patterns
+  git-format-staged --formatter 'if [ -f "'"$tmp"'/{}" ]; then cat >/dev/null; cat "'"$tmp"'/{}"; else cat; fi' "$@"
 fi
 
 echo ...pre-commit done
