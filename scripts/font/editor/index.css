@@ -1,0 +1,281 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+/*
+  the ui components borrowed from src/ are sized in --block and --scale, which
+  the game sets from the viewport to keep its retro upscaling. Here the editor
+  is an ordinary desktop tool, so both are pinned: the controls stay a
+  comfortable fixed size whatever the window does
+*/
+:root {
+  --scale: 1;
+  --block: calc(var(--scale) * 8px);
+}
+
+/*
+  the editor writes its own chrome in the font it edits. The committed base
+  woff2 is used rather than the smooth one, so the tool's text stays the plain
+  pixel form whatever the smoothing is currently doing - and at a whole
+  multiple of the design pixel, so it lands on the screen grid
+*/
+@font-face {
+  font-family: "BlockStack";
+  src: url("../../../src/_generated/font/blockstack-head-over-heels.woff2")
+    format("woff2");
+  font-display: block;
+}
+
+body {
+  background-color: #17181c;
+  color: #e8e8ea;
+  font-family: "BlockStack", ui-monospace, Menlo, monospace;
+  font-size: 16px;
+  /* the pixel font carries no leading of its own, so rows of text would sit
+     on top of each other wherever one wraps */
+  line-height: 1.5;
+  font-synthesis: none;
+  -webkit-font-smoothing: none;
+  -moz-osx-font-smoothing: grayscale;
+}
+
+/*
+  the game's tailwind theme replaces width, height and spacing wholesale with
+  multiples of a --block, which is what its own layouts are drawn on. This app
+  is a desktop tool laid out in ordinary pixels, so its frame is written here
+  rather than bent into block units - the theme's colours are still used
+  throughout
+*/
+.editor-shell {
+  display: flex;
+  flex-direction: column;
+  height: 100vh;
+}
+
+.editor-header {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  padding: 6px 10px;
+  border-bottom: 1px solid #3a3d46;
+}
+
+.editor-title {
+  margin-right: auto;
+  font-size: 13px;
+}
+
+.editor-body {
+  display: flex;
+  flex: 1;
+  min-height: 0;
+}
+
+.editor-chars {
+  /* the panes are sized by react-resizable-panels, so each fills whatever it
+     is given rather than carrying a width of its own */
+  width: 100%;
+  height: 100%;
+  overflow-y: auto;
+  padding: 6px;
+}
+
+.editor-char-band {
+  margin-bottom: 10px;
+}
+
+.editor-char-band-glyphs {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 1px;
+  align-content: flex-start;
+}
+
+.editor-char {
+  position: relative;
+  /* width comes from the glyph's own frame - these are not a fixed pitch */
+  height: 82px;
+  border: 1px solid transparent;
+  color: #d9dbe2;
+  background: none;
+  padding: 0;
+}
+.editor-char:hover {
+  border-color: #7ea8ff;
+}
+.editor-char[data-selected="true"] {
+  border-color: #f4e3c1;
+  background-color: #2a3350;
+}
+
+.editor-char-badge {
+  position: absolute;
+  right: 2px;
+  top: 2px;
+  width: 8px;
+  height: 8px;
+  background-color: #8de08d;
+}
+.editor-char-badge[data-stale="true"] {
+  background-color: #ff5555;
+}
+
+.editor-main {
+  width: 100%;
+  height: 100%;
+  overflow: auto;
+  padding: 12px;
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+  align-items: flex-start;
+}
+
+.editor-aside {
+  width: 100%;
+  height: 100%;
+  overflow-y: auto;
+  padding: 6px;
+}
+
+.editor-row {
+  display: flex;
+  align-items: center;
+  gap: 6px;
+  flex-wrap: wrap;
+}
+
+.editor-column {
+  display: flex;
+  flex-direction: column;
+  gap: 4px;
+}
+
+.editor-note {
+  opacity: 0.6;
+}
+
+/*
+  the game's switches set their own line-height to nothing, because in the
+  game they sit in grids that give them their height. Here they are rows in a
+  list and have to carry their own, so both the tree's rows restore it
+*/
+.editor-rule,
+.editor-branch-head {
+  line-height: 1.5;
+}
+
+.editor-rule {
+  display: flex;
+  justify-content: space-between;
+  gap: 8px;
+  padding: 0 4px 0 14px;
+}
+
+/* a rule name too long for the panel is cut, so its switch stays in its column */
+.editor-rule > label {
+  flex: 1;
+  min-width: 0;
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+.editor-rule > button {
+  flex: none;
+}
+
+.editor-rule-note {
+  display: block;
+  padding-left: 14px;
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+
+.editor-rule-off {
+  text-decoration: line-through;
+  opacity: 0.45;
+}
+
+.editor-branch-head {
+  display: flex;
+  align-items: center;
+  gap: 6px;
+  padding: 2px 0;
+}
+
+.editor-twisty {
+  flex: 1;
+  min-width: 0;
+  text-align: left;
+  background: none;
+  border: none;
+  color: inherit;
+  padding: 0;
+  font: inherit;
+  cursor: pointer;
+  /* the pixel font is wide; a name too long for the panel is cut rather than
+     wrapped, so every row of the tree stays one line tall */
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+.editor-twisty:hover {
+  color: #7ea8ff;
+}
+
+.editor-branch-toggle {
+  padding: 0 4px;
+  font-size: 10px;
+}
+
+.editor-specimen {
+  font-size: 32px;
+  line-height: 1.4;
+  max-width: 640px;
+  -webkit-font-smoothing: none;
+}
+
+/* named the way it would be said out loud, so a pixel can be pointed at in
+   conversation without counting squares */
+.editor-pixel-readout {
+  color: #ffe94b;
+}
+.editor-pixel-readout[data-inert="true"] {
+  color: #7c8090;
+}
+
+.editor-pixel-tip {
+  max-width: 300px;
+}
+.editor-pixel-tip li {
+  white-space: nowrap;
+}
+
+.editor-kernel-shape {
+  display: flex;
+  flex-direction: column;
+  gap: 4px;
+  align-items: flex-start;
+  max-width: 260px;
+}
+
+.editor-rule-option {
+  align-items: center;
+  padding-left: 26px;
+}
+.editor-rule-option-trigger {
+  flex: 1;
+  min-width: 0;
+  justify-content: space-between;
+}
+
+.editor-choice-preview {
+  flex: none;
+  display: block;
+}
+.editor-choice-item {
+  display: flex;
+  align-items: center;
+  gap: 6px;
+}

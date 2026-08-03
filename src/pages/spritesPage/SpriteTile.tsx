@@ -38,7 +38,7 @@ export const SpriteTile = ({ textureId, frame, scale }: SpriteTileProps) => {
     >
       <div
         class={`
-        sprite bg-pureBlack zx:bg-zxBlack toppy:bg-toppyBlack hover:bg-moss zx:hover:bg-zxYellow toppy:hover:bg-toppyWarm3 border-shadow zx:border-zxRedDimmed toppy:border-toppyGrey2
+        sprite bg-white zx:bg-zxWhite toppy:bg-toppyGrey1 hover:bg-moss zx:hover:bg-zxYellow toppy:hover:bg-toppyWarm3 border-shadow zx:border-zxRedDimmed toppy:border-toppyGrey2
         box-content w-min
         ${spriteOption.uncolourised ? "sprite-revert-to-two-tone" : ""}`}
         // most of these textures won't have classes loaded by tailwind due to ,
@@ -66,11 +66,7 @@ export const SpriteTile = ({ textureId, frame, scale }: SpriteTileProps) => {
       </div>
       {/* take up space to keep the text at the bottom: */}
       <div class="flex-grow" />
-      <SpriteName name={textureId} />
-
-      <div class="text-lightGrey zx:text-zxWhiteDimmed toppy:text-toppyGrey1">
-        {frame.w}&nbsp;x&nbsp;{frame.h}
-      </div>
+      <SpriteName name={textureId} size={{ width: frame.w, height: frame.h }} />
 
       {frame.pivot ?
         <div class="text-midRed zx:text-zxRed toppy:text-toppyPink2 zx:bg-zxBlack toppy:bg-toppyBlack">

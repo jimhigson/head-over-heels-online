@@ -7,3 +7,4 @@
 # change (pnpm gen:font).
 fonttools==4.63.0
 brotli==1.2.0
+skia-pathops==0.9.2

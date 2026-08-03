@@ -257,6 +257,9 @@ export class TransitionSurfaceRenderer<
         width: Math.max(1, Math.ceil(unionMaxX + originX)),
         height: Math.max(1, Math.ceil(unionMaxY + originY)),
         antialias: false,
+        // snapshot at the sheet's cleanEdge bake factor so smooth-sprites
+        // art doesn't drop to 1x detail during the rotation transition:
+        resolution: this.renderContext.general.spritesheets.bakeFactor,
       });
       this.#cuboidSnapshotTexture = texture;
       // position for the snapshot so the art's origin lands on (artShift): when

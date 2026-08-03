@@ -15,6 +15,7 @@ import { CssVariables } from "./CssVariables.tsx";
 import { NotFound404Page } from "./NotFound404Page.tsx";
 import { Route } from "./router/Route.tsx";
 import { Switch } from "./router/Switch.tsx";
+import { useSmoothUiAssets } from "./smoothUi/useSmoothUiAssets.ts";
 import { WantedEditor404 } from "./WantedEditor404.tsx";
 
 const LazyLutPage = lazy(importLutPage);
@@ -24,6 +25,7 @@ handleGameBoot();
 
 const AppInner = () => {
   const spritesOption = useSpritesOption();
+  useSmoothUiAssets();
   useEffect(() => {
     // note that this isn't done before the first load, since we don't have the store then!
     document.body.classList.toggle("zx", spritesOption.uncolourised);
@@ -41,9 +43,11 @@ const AppInner = () => {
         </CssVariables>
       </Route>
       <Route path="/sprites">
-        <Suspense fallback={<SpinnerHead loadingBorder />}>
-          <LazySpritesPage />
-        </Suspense>
+        <InputStateProvider ticker={pixiInputTicker}>
+          <Suspense fallback={<SpinnerHead loadingBorder />}>
+            <LazySpritesPage />
+          </Suspense>
+        </InputStateProvider>
       </Route>
       <Route path="/lut">
         <LazyLutPage />

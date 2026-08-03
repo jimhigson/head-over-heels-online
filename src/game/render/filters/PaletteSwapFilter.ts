@@ -54,6 +54,11 @@ export class PaletteSwapFilter extends Filter {
         name: "palette-swop-filter1",
       }),
       clipToViewport,
+      // run the filter pass at the render target's resolution (pixi's default
+      // is a fixed 1): on-screen targets are resolution 1 so this changes
+      // nothing there, but baking over a cleanEdge-upscaled sheet keeps its
+      // full backing store instead of flattening back to 1x:
+      resolution: "inherit",
       resources: {
         colorReplaceUniforms: {},
         uLut: lutTexture.source,

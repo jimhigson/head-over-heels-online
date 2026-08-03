@@ -53,6 +53,12 @@ export class OutlineFilter extends Filter {
       // enough clearance:
       padding: Math.ceil(upscale),
       clipToViewport,
+      // run the filter pass at the render target's resolution (pixi's default
+      // is a fixed 1): on-screen targets are resolution 1 so this changes
+      // nothing there, but baking over a cleanEdge-upscaled sheet keeps its
+      // full backing store instead of flattening back to 1x. The outline
+      // width is scaled to match in apply():
+      resolution: "inherit",
       resources: {
         colorReplaceUniforms: {
           uOutline: {
@@ -116,7 +122,10 @@ export class OutlineFilter extends Filter {
       this.padding = Math.ceil(outlineWidth);
     }
 
-    uniforms.uOutlineWidth[0] = outlineWidth;
+    // the shader's width is in texels of the filter input texture; the pass
+    // runs at the input's resolution ("inherit" above), so scale to keep the
+    // outline's logical thickness when baking over an upscaled sheet:
+    uniforms.uOutlineWidth[0] = outlineWidth * input.source.resolution;
 
     super.apply(filterSystem, input, output, clearMode);
   }
