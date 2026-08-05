@@ -1,6 +1,6 @@
 import { type UnionOfAllItemInPlayTypes } from "../../../model/ItemInPlay";
 import { type LatentMovementFrame } from "../../../model/ItemStateMap";
-import { type RoomState } from "../../../model/RoomState";
+import { roomItemsIterable, type RoomState } from "../../../model/RoomState";
 import { iterateStoodOnByItems } from "../../../model/stoodOnItemsLookup";
 import {
   originXy,
@@ -9,7 +9,6 @@ import {
   xyEqual,
   type Xyz,
 } from "../../../utils/vectors/vectors";
-import { type MovedOrResizedItems } from "../../mainLoop/progressGameState";
 import { type FreeItem } from "../../physics/itemPredicates";
 import { originalFramePeriod } from "../../render/animationTimings";
 
@@ -50,17 +49,25 @@ export const assignLatentMovementFromStandingOn = <
   RoomId extends string,
   RoomItemId extends string,
 >(
-  movedOrResizedItems: MovedOrResizedItems<RoomId, RoomItemId>,
   room: RoomState<RoomId, RoomItemId>,
   startingPositions: Record<string, Xyz>,
   deltaMS: number,
+  /**
+   * the room's progression count when this tick started - items stamped
+   * after it are the ones that moved (or resized) during this tick
+   */
+  progressionAtTickStart: number,
 ) => {
   /**
    * standing on updated here for all - because, eg, if a lift moves down with a player on it,
    * if the check is done inside the lift's tick, the player is then not on the lift and has no
    * ability to walk (the walk mechanic will return a null result) while the lift descends
    */
-  for (const moverItem of movedOrResizedItems) {
+  for (const moverItem of roomItemsIterable(room.items)) {
+    if (moverItem.state.movedOrResizedOnProgression <= progressionAtTickStart) {
+      // did not move during this tick:
+      continue;
+    }
     const previousPosition: undefined | Xyz = startingPositions[moverItem.id];
 
     if (previousPosition === undefined) {

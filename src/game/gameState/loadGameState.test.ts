@@ -2,7 +2,7 @@ import { expect, test } from "vitest";
 
 import { campaign } from "../../_generated/originalCampaign/campaign";
 import { type OriginalCampaignRoomId } from "../../_generated/originalCampaign/OriginalCampaignRoomId";
-import { roomSpatialIndexKey } from "../../model/RoomState";
+import { type Progression, roomSpatialIndexKey } from "../../model/RoomState";
 import { noPlanetsLiberated } from "../../store/slices/gameInPlay/gameInPlaySlice";
 import { badJsonClone } from "../../utils/badJsonClone";
 import { type HudInputState } from "../input/hudInputState";
@@ -15,6 +15,7 @@ test("if there is a saved game with both characters in the same room, only load 
   const savedRoom: UnindexedRoomState<OriginalCampaignRoomId, string> = {
     id: "blacktooth1head",
     roomTime: 0,
+    progression: 0 as Progression,
     items: {
       head: loadPlayer(
         {

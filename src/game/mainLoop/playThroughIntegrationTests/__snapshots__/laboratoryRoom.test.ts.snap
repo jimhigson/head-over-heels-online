@@ -48,6 +48,7 @@ exports[`playing through a complex, deterministic room ("laboratory") should alw
         "disappearing": null,
         "expires": null,
         "latentMovement": [],
+        "movedOrResizedOnProgression": 316293,
         "position": {
           "x": 201,
           "y": 66,
@@ -115,6 +116,7 @@ exports[`playing through a complex, deterministic room ("laboratory") should alw
         "disappearing": null,
         "expires": null,
         "latentMovement": [],
+        "movedOrResizedOnProgression": 0,
         "position": {
           "x": 114,
           "y": 34,
@@ -186,6 +188,7 @@ exports[`playing through a complex, deterministic room ("laboratory") should alw
         "disappearing": null,
         "expires": null,
         "latentMovement": [],
+        "movedOrResizedOnProgression": 316490,
         "position": {
           "x": 177,
           "y": 66,
@@ -257,6 +260,7 @@ exports[`playing through a complex, deterministic room ("laboratory") should alw
         "disappearing": null,
         "expires": null,
         "latentMovement": [],
+        "movedOrResizedOnProgression": 316392,
         "position": {
           "x": 189,
           "y": 66,
@@ -322,6 +326,7 @@ exports[`playing through a complex, deterministic room ("laboratory") should alw
         },
         "disappearing": null,
         "expires": null,
+        "movedOrResizedOnProgression": 0,
         "position": {
           "x": 160,
           "y": 102,
@@ -372,6 +377,7 @@ exports[`playing through a complex, deterministic room ("laboratory") should alw
           "on": "touch",
         },
         "expires": null,
+        "movedOrResizedOnProgression": 0,
         "position": {
           "x": 160,
           "y": 102,
@@ -417,6 +423,7 @@ exports[`playing through a complex, deterministic room ("laboratory") should alw
         },
         "disappearing": null,
         "expires": null,
+        "movedOrResizedOnProgression": 0,
         "position": {
           "x": 160,
           "y": 134,
@@ -467,6 +474,7 @@ exports[`playing through a complex, deterministic room ("laboratory") should alw
           "on": "touch",
         },
         "expires": null,
+        "movedOrResizedOnProgression": 0,
         "position": {
           "x": 160,
           "y": 134,
@@ -513,6 +521,7 @@ exports[`playing through a complex, deterministic room ("laboratory") should alw
         },
         "disappearing": null,
         "expires": null,
+        "movedOrResizedOnProgression": 0,
         "position": {
           "x": 208,
           "y": 48,
@@ -561,6 +570,7 @@ exports[`playing through a complex, deterministic room ("laboratory") should alw
         },
         "disappearing": null,
         "expires": null,
+        "movedOrResizedOnProgression": 0,
         "position": {
           "x": 208,
           "y": 64,
@@ -607,6 +617,7 @@ exports[`playing through a complex, deterministic room ("laboratory") should alw
         },
         "disappearing": null,
         "expires": null,
+        "movedOrResizedOnProgression": 0,
         "position": {
           "x": 210,
           "y": 82,
@@ -650,6 +661,7 @@ exports[`playing through a complex, deterministic room ("laboratory") should alw
         },
         "disappearing": null,
         "expires": null,
+        "movedOrResizedOnProgression": 0,
         "position": {
           "x": 210,
           "y": 114,
@@ -696,6 +708,7 @@ exports[`playing through a complex, deterministic room ("laboratory") should alw
         },
         "disappearing": null,
         "expires": null,
+        "movedOrResizedOnProgression": 0,
         "position": {
           "x": 226,
           "y": 50,
@@ -743,6 +756,7 @@ exports[`playing through a complex, deterministic room ("laboratory") should alw
         },
         "disappearing": null,
         "expires": null,
+        "movedOrResizedOnProgression": 0,
         "position": {
           "x": 248,
           "y": 128,
@@ -786,6 +800,7 @@ exports[`playing through a complex, deterministic room ("laboratory") should alw
         },
         "disappearing": null,
         "expires": null,
+        "movedOrResizedOnProgression": 0,
         "position": {
           "x": 256,
           "y": 136,
@@ -829,6 +844,7 @@ exports[`playing through a complex, deterministic room ("laboratory") should alw
         },
         "disappearing": null,
         "expires": null,
+        "movedOrResizedOnProgression": 0,
         "position": {
           "x": 48,
           "y": 48,
@@ -872,6 +888,7 @@ exports[`playing through a complex, deterministic room ("laboratory") should alw
         },
         "disappearing": null,
         "expires": null,
+        "movedOrResizedOnProgression": 0,
         "position": {
           "x": 48,
           "y": 80,
@@ -919,6 +936,7 @@ exports[`playing through a complex, deterministic room ("laboratory") should alw
         },
         "disappearing": null,
         "expires": null,
+        "movedOrResizedOnProgression": 0,
         "position": {
           "x": 64,
           "y": 48,
@@ -962,6 +980,7 @@ exports[`playing through a complex, deterministic room ("laboratory") should alw
         },
         "disappearing": null,
         "expires": null,
+        "movedOrResizedOnProgression": 0,
         "position": {
           "x": 80,
           "y": 0,
@@ -1007,6 +1026,7 @@ exports[`playing through a complex, deterministic room ("laboratory") should alw
         },
         "disappearing": null,
         "expires": null,
+        "movedOrResizedOnProgression": 0,
         "position": {
           "x": 96,
           "y": 96,
@@ -1052,6 +1072,7 @@ exports[`playing through a complex, deterministic room ("laboratory") should alw
         },
         "disappearing": null,
         "expires": null,
+        "movedOrResizedOnProgression": 0,
         "position": {
           "x": 128,
           "y": 0,
@@ -1107,6 +1128,7 @@ exports[`playing through a complex, deterministic room ("laboratory") should alw
           "on": "stand",
         },
         "expires": null,
+        "movedOrResizedOnProgression": 0,
         "position": {
           "x": 144,
           "y": 0,
@@ -1162,6 +1184,7 @@ exports[`playing through a complex, deterministic room ("laboratory") should alw
           "on": "stand",
         },
         "expires": null,
+        "movedOrResizedOnProgression": 0,
         "position": {
           "x": 160,
           "y": 0,
@@ -1210,6 +1233,7 @@ exports[`playing through a complex, deterministic room ("laboratory") should alw
           "on": "stand",
         },
         "expires": null,
+        "movedOrResizedOnProgression": 0,
         "position": {
           "x": 144,
           "y": 0,
@@ -1258,6 +1282,7 @@ exports[`playing through a complex, deterministic room ("laboratory") should alw
           "on": "stand",
         },
         "expires": null,
+        "movedOrResizedOnProgression": 0,
         "position": {
           "x": 144,
           "y": 0,
@@ -1337,6 +1362,7 @@ exports[`playing through a complex, deterministic room ("laboratory") should alw
             },
           },
         ],
+        "movedOrResizedOnProgression": 324521,
         "position": {
           "x": 50,
           "y": 1.4699999999997821,
@@ -1405,6 +1431,7 @@ exports[`playing through a complex, deterministic room ("laboratory") should alw
           "z": 0,
         },
         "latentMovement": [],
+        "movedOrResizedOnProgression": 0,
         "position": {
           "x": 50,
           "y": 82,
@@ -1479,6 +1506,7 @@ exports[`playing through a complex, deterministic room ("laboratory") should alw
         },
         "disappearing": null,
         "expires": null,
+        "movedOrResizedOnProgression": 0,
         "position": {
           "x": 0,
           "y": 0,
@@ -1539,6 +1567,7 @@ exports[`playing through a complex, deterministic room ("laboratory") should alw
         },
         "disappearing": null,
         "expires": null,
+        "movedOrResizedOnProgression": 0,
         "position": {
           "x": 48,
           "y": 96,
@@ -1602,6 +1631,7 @@ exports[`playing through a complex, deterministic room ("laboratory") should alw
         },
         "disappearing": null,
         "expires": null,
+        "movedOrResizedOnProgression": 0,
         "position": {
           "x": 48,
           "y": 144,
@@ -1663,6 +1693,7 @@ exports[`playing through a complex, deterministic room ("laboratory") should alw
         },
         "disappearing": null,
         "expires": null,
+        "movedOrResizedOnProgression": 0,
         "position": {
           "x": 64,
           "y": 96,
@@ -1721,6 +1752,7 @@ exports[`playing through a complex, deterministic room ("laboratory") should alw
         },
         "disappearing": null,
         "expires": null,
+        "movedOrResizedOnProgression": 0,
         "position": {
           "x": 64,
           "y": 96,
@@ -1778,6 +1810,7 @@ exports[`playing through a complex, deterministic room ("laboratory") should alw
         },
         "disappearing": null,
         "expires": null,
+        "movedOrResizedOnProgression": 0,
         "position": {
           "x": 96,
           "y": 112,
@@ -1830,6 +1863,7 @@ exports[`playing through a complex, deterministic room ("laboratory") should alw
         "disabled": false,
         "disappearing": null,
         "expires": null,
+        "movedOrResizedOnProgression": 0,
         "position": {
           "x": 272,
           "y": 32,
@@ -1877,6 +1911,7 @@ exports[`playing through a complex, deterministic room ("laboratory") should alw
         "disabled": false,
         "disappearing": null,
         "expires": null,
+        "movedOrResizedOnProgression": 0,
         "position": {
           "x": 272,
           "y": 48,
@@ -1924,6 +1959,7 @@ exports[`playing through a complex, deterministic room ("laboratory") should alw
         "disabled": false,
         "disappearing": null,
         "expires": null,
+        "movedOrResizedOnProgression": 0,
         "position": {
           "x": 272,
           "y": 64,
@@ -1968,6 +2004,7 @@ exports[`playing through a complex, deterministic room ("laboratory") should alw
         "disabled": false,
         "disappearing": null,
         "expires": null,
+        "movedOrResizedOnProgression": 0,
         "position": {
           "x": 272,
           "y": 80,
@@ -2006,6 +2043,7 @@ exports[`playing through a complex, deterministic room ("laboratory") should alw
         },
         "disappearing": null,
         "expires": null,
+        "movedOrResizedOnProgression": 0,
         "position": {
           "x": 80,
           "y": -24,
@@ -2051,6 +2089,7 @@ exports[`playing through a complex, deterministic room ("laboratory") should alw
         },
         "disappearing": null,
         "expires": null,
+        "movedOrResizedOnProgression": 0,
         "position": {
           "x": 104,
           "y": -24,
@@ -2096,6 +2135,7 @@ exports[`playing through a complex, deterministic room ("laboratory") should alw
         },
         "disappearing": null,
         "expires": null,
+        "movedOrResizedOnProgression": 0,
         "position": {
           "x": 80,
           "y": -24,
@@ -2153,6 +2193,7 @@ exports[`playing through a complex, deterministic room ("laboratory") should alw
         },
         "disappearing": null,
         "expires": null,
+        "movedOrResizedOnProgression": 0,
         "position": {
           "x": 88,
           "y": -24,
@@ -2210,6 +2251,7 @@ exports[`playing through a complex, deterministic room ("laboratory") should alw
         },
         "disappearing": null,
         "expires": null,
+        "movedOrResizedOnProgression": 0,
         "position": {
           "x": 80,
           "y": -24,
@@ -2260,6 +2302,7 @@ exports[`playing through a complex, deterministic room ("laboratory") should alw
         },
         "disappearing": null,
         "expires": null,
+        "movedOrResizedOnProgression": 0,
         "position": {
           "x": 89,
           "y": -24,
@@ -2292,6 +2335,7 @@ exports[`playing through a complex, deterministic room ("laboratory") should alw
         },
         "disappearing": null,
         "expires": null,
+        "movedOrResizedOnProgression": 0,
         "position": {
           "x": 92,
           "y": 8,
@@ -2330,6 +2374,7 @@ exports[`playing through a complex, deterministic room ("laboratory") should alw
         },
         "disappearing": null,
         "expires": null,
+        "movedOrResizedOnProgression": 0,
         "position": {
           "x": 80,
           "y": 224,
@@ -2375,6 +2420,7 @@ exports[`playing through a complex, deterministic room ("laboratory") should alw
         },
         "disappearing": null,
         "expires": null,
+        "movedOrResizedOnProgression": 0,
         "position": {
           "x": 104,
           "y": 224,
@@ -2420,6 +2466,7 @@ exports[`playing through a complex, deterministic room ("laboratory") should alw
         },
         "disappearing": null,
         "expires": null,
+        "movedOrResizedOnProgression": 0,
         "position": {
           "x": 80,
           "y": 224,
@@ -2477,6 +2524,7 @@ exports[`playing through a complex, deterministic room ("laboratory") should alw
         },
         "disappearing": null,
         "expires": null,
+        "movedOrResizedOnProgression": 0,
         "position": {
           "x": 88,
           "y": 224,
@@ -2534,6 +2582,7 @@ exports[`playing through a complex, deterministic room ("laboratory") should alw
         },
         "disappearing": null,
         "expires": null,
+        "movedOrResizedOnProgression": 0,
         "position": {
           "x": 80,
           "y": 224,
@@ -2584,6 +2633,7 @@ exports[`playing through a complex, deterministic room ("laboratory") should alw
         },
         "disappearing": null,
         "expires": null,
+        "movedOrResizedOnProgression": 0,
         "position": {
           "x": 89,
           "y": 232,
@@ -2616,6 +2666,7 @@ exports[`playing through a complex, deterministic room ("laboratory") should alw
         },
         "disappearing": null,
         "expires": null,
+        "movedOrResizedOnProgression": 0,
         "position": {
           "x": 92,
           "y": 208,
@@ -2680,6 +2731,7 @@ exports[`playing through a complex, deterministic room ("laboratory") should alw
         "expires": null,
         "lastEmittedAtRoomTime": 5016.666666666663,
         "maximum": 5,
+        "movedOrResizedOnProgression": 0,
         "period": 1000,
         "position": {
           "x": 280,
@@ -2750,6 +2802,7 @@ exports[`playing through a complex, deterministic room ("laboratory") should alw
           "z": 0,
         },
         "latentMovement": [],
+        "movedOrResizedOnProgression": 324514,
         "position": {
           "x": 224,
           "y": 2,
@@ -2841,6 +2894,7 @@ exports[`playing through a complex, deterministic room ("laboratory") should alw
           "z": 0,
         },
         "latentMovement": [],
+        "movedOrResizedOnProgression": 324515,
         "position": {
           "x": 236,
           "y": 2,
@@ -2932,6 +2986,7 @@ exports[`playing through a complex, deterministic room ("laboratory") should alw
           "z": 0,
         },
         "latentMovement": [],
+        "movedOrResizedOnProgression": 324516,
         "position": {
           "x": 248,
           "y": 2,
@@ -3020,6 +3075,7 @@ exports[`playing through a complex, deterministic room ("laboratory") should alw
           "z": 0,
         },
         "latentMovement": [],
+        "movedOrResizedOnProgression": 324517,
         "position": {
           "x": 260,
           "y": 2,
@@ -3110,6 +3166,7 @@ exports[`playing through a complex, deterministic room ("laboratory") should alw
           "z": 0,
         },
         "latentMovement": [],
+        "movedOrResizedOnProgression": 324519,
         "position": {
           "x": 176,
           "y": 2,
@@ -3199,6 +3256,7 @@ exports[`playing through a complex, deterministic room ("laboratory") should alw
         },
         "disappearing": null,
         "expires": null,
+        "movedOrResizedOnProgression": 0,
         "position": {
           "x": 0,
           "y": -8,
@@ -3297,6 +3355,7 @@ exports[`playing through a complex, deterministic room ("laboratory") should alw
         "lastDiedAt": -9007199254740991,
         "latentMovement": [],
         "lives": 8,
+        "movedOrResizedOnProgression": 1681,
         "position": {
           "x": 129,
           "y": 1,
@@ -3385,6 +3444,7 @@ exports[`playing through a complex, deterministic room ("laboratory") should alw
           "y": 1,
           "z": 0,
         },
+        "movedOrResizedOnProgression": 0,
         "position": {
           "x": 65,
           "y": 17,
@@ -3431,6 +3491,7 @@ exports[`playing through a complex, deterministic room ("laboratory") should alw
         ],
         "disappearing": null,
         "expires": null,
+        "movedOrResizedOnProgression": 0,
         "position": {
           "x": 81,
           "y": 49,
@@ -3477,6 +3538,7 @@ exports[`playing through a complex, deterministic room ("laboratory") should alw
         "direction": "up",
         "disappearing": null,
         "expires": null,
+        "movedOrResizedOnProgression": 324424,
         "position": {
           "x": 2,
           "y": 66,
@@ -3533,6 +3595,7 @@ exports[`playing through a complex, deterministic room ("laboratory") should alw
         "direction": "up",
         "disappearing": null,
         "expires": null,
+        "movedOrResizedOnProgression": 324426,
         "position": {
           "x": 18,
           "y": 66,
@@ -3589,6 +3652,7 @@ exports[`playing through a complex, deterministic room ("laboratory") should alw
         "direction": "down",
         "disappearing": null,
         "expires": null,
+        "movedOrResizedOnProgression": 324430,
         "position": {
           "x": 210,
           "y": 98,
@@ -3643,6 +3707,7 @@ exports[`playing through a complex, deterministic room ("laboratory") should alw
         "direction": "up",
         "disappearing": null,
         "expires": null,
+        "movedOrResizedOnProgression": 324428,
         "position": {
           "x": 34,
           "y": 66,
@@ -3697,6 +3762,7 @@ exports[`playing through a complex, deterministic room ("laboratory") should alw
         "direction": "up",
         "disappearing": null,
         "expires": null,
+        "movedOrResizedOnProgression": 324429,
         "position": {
           "x": 50,
           "y": 66,
@@ -3772,6 +3838,7 @@ exports[`playing through a complex, deterministic room ("laboratory") should alw
           "z": 0,
         },
         "latentMovement": [],
+        "movedOrResizedOnProgression": 324431,
         "position": {
           "x": 143.4500000000001,
           "y": 66,
@@ -3861,6 +3928,7 @@ exports[`playing through a complex, deterministic room ("laboratory") should alw
           "z": 0,
         },
         "latentMovement": [],
+        "movedOrResizedOnProgression": 324439,
         "position": {
           "x": 0,
           "y": 111.96366380106298,
@@ -3950,6 +4018,7 @@ exports[`playing through a complex, deterministic room ("laboratory") should alw
           "z": 0,
         },
         "latentMovement": [],
+        "movedOrResizedOnProgression": 324441,
         "position": {
           "x": 20,
           "y": 193.5,
@@ -4039,6 +4108,7 @@ exports[`playing through a complex, deterministic room ("laboratory") should alw
           "z": 0,
         },
         "latentMovement": [],
+        "movedOrResizedOnProgression": 324440,
         "position": {
           "x": 1,
           "y": 123.96366380106298,
@@ -4128,6 +4198,7 @@ exports[`playing through a complex, deterministic room ("laboratory") should alw
           "z": 0,
         },
         "latentMovement": [],
+        "movedOrResizedOnProgression": 324435,
         "position": {
           "x": 66,
           "y": 5,
@@ -4215,6 +4286,7 @@ exports[`playing through a complex, deterministic room ("laboratory") should alw
           "z": 0,
         },
         "latentMovement": [],
+        "movedOrResizedOnProgression": 324433,
         "position": {
           "x": 66,
           "y": 31,
@@ -4302,6 +4374,7 @@ exports[`playing through a complex, deterministic room ("laboratory") should alw
           "z": 0,
         },
         "latentMovement": [],
+        "movedOrResizedOnProgression": 324437,
         "position": {
           "x": 84,
           "y": 129.9574666666664,
@@ -4355,6 +4428,7 @@ exports[`playing through a complex, deterministic room ("laboratory") should alw
         },
         "disappearing": null,
         "expires": null,
+        "movedOrResizedOnProgression": 0,
         "position": {
           "x": -64,
           "y": -64,
@@ -4414,6 +4488,7 @@ exports[`playing through a complex, deterministic room ("laboratory") should alw
         },
         "expires": null,
         "latentMovement": [],
+        "movedOrResizedOnProgression": 324425,
         "position": {
           "x": 2,
           "y": 66,
@@ -4489,6 +4564,7 @@ exports[`playing through a complex, deterministic room ("laboratory") should alw
         },
         "expires": null,
         "latentMovement": [],
+        "movedOrResizedOnProgression": 324427,
         "position": {
           "x": 18,
           "y": 66,
@@ -4564,6 +4640,7 @@ exports[`playing through a complex, deterministic room ("laboratory") should alw
         },
         "expires": null,
         "latentMovement": [],
+        "movedOrResizedOnProgression": 324511,
         "position": {
           "x": 188,
           "y": 2,
@@ -4636,6 +4713,7 @@ exports[`playing through a complex, deterministic room ("laboratory") should alw
         },
         "expires": null,
         "latentMovement": [],
+        "movedOrResizedOnProgression": 0,
         "position": {
           "x": 242,
           "y": 18,
@@ -4708,6 +4786,7 @@ exports[`playing through a complex, deterministic room ("laboratory") should alw
         },
         "expires": null,
         "latentMovement": [],
+        "movedOrResizedOnProgression": 0,
         "position": {
           "x": 258,
           "y": 18,
@@ -4782,6 +4861,7 @@ exports[`playing through a complex, deterministic room ("laboratory") should alw
         },
         "expires": null,
         "latentMovement": [],
+        "movedOrResizedOnProgression": 0,
         "position": {
           "x": 258,
           "y": 18,
@@ -4854,6 +4934,7 @@ exports[`playing through a complex, deterministic room ("laboratory") should alw
         },
         "expires": null,
         "latentMovement": [],
+        "movedOrResizedOnProgression": 0,
         "position": {
           "x": 274,
           "y": 18,
@@ -4928,6 +5009,7 @@ exports[`playing through a complex, deterministic room ("laboratory") should alw
         },
         "expires": null,
         "latentMovement": [],
+        "movedOrResizedOnProgression": 0,
         "position": {
           "x": 274,
           "y": 18,
@@ -5002,6 +5084,7 @@ exports[`playing through a complex, deterministic room ("laboratory") should alw
         },
         "expires": null,
         "latentMovement": [],
+        "movedOrResizedOnProgression": 0,
         "position": {
           "x": 274,
           "y": 18,
@@ -5074,6 +5157,7 @@ exports[`playing through a complex, deterministic room ("laboratory") should alw
         },
         "expires": null,
         "latentMovement": [],
+        "movedOrResizedOnProgression": 0,
         "position": {
           "x": 50,
           "y": 82,
@@ -5150,6 +5234,7 @@ exports[`playing through a complex, deterministic room ("laboratory") should alw
         },
         "expires": null,
         "latentMovement": [],
+        "movedOrResizedOnProgression": 292919,
         "position": {
           "x": 44,
           "y": 156,
@@ -5225,6 +5310,7 @@ exports[`playing through a complex, deterministic room ("laboratory") should alw
         },
         "expires": null,
         "latentMovement": [],
+        "movedOrResizedOnProgression": 293017,
         "position": {
           "x": 43,
           "y": 168,
@@ -5301,6 +5387,7 @@ exports[`playing through a complex, deterministic room ("laboratory") should alw
         },
         "expires": null,
         "latentMovement": [],
+        "movedOrResizedOnProgression": 324522,
         "position": {
           "x": 51.79985651607331,
           "y": 124.21868567643607,
@@ -5377,6 +5464,7 @@ exports[`playing through a complex, deterministic room ("laboratory") should alw
         },
         "expires": null,
         "latentMovement": [],
+        "movedOrResizedOnProgression": 288301,
         "position": {
           "x": 44,
           "y": 164,
@@ -5449,6 +5537,7 @@ exports[`playing through a complex, deterministic room ("laboratory") should alw
         "disappearing": null,
         "expires": null,
         "latentMovement": [],
+        "movedOrResizedOnProgression": 6480,
         "position": {
           "x": 2,
           "y": 32,
@@ -5520,6 +5609,7 @@ exports[`playing through a complex, deterministic room ("laboratory") should alw
         "disappearing": null,
         "expires": null,
         "latentMovement": [],
+        "movedOrResizedOnProgression": 8263,
         "position": {
           "x": 2,
           "y": 32,
@@ -5585,6 +5675,7 @@ exports[`playing through a complex, deterministic room ("laboratory") should alw
         "disappearing": null,
         "expires": null,
         "latentMovement": [],
+        "movedOrResizedOnProgression": 0,
         "position": {
           "x": 210,
           "y": 18,
@@ -5652,6 +5743,7 @@ exports[`playing through a complex, deterministic room ("laboratory") should alw
         "disappearing": null,
         "expires": null,
         "latentMovement": [],
+        "movedOrResizedOnProgression": 0,
         "position": {
           "x": 210,
           "y": 18,
@@ -5719,6 +5811,7 @@ exports[`playing through a complex, deterministic room ("laboratory") should alw
         "disappearing": null,
         "expires": null,
         "latentMovement": [],
+        "movedOrResizedOnProgression": 0,
         "position": {
           "x": 210,
           "y": 18,
@@ -5784,6 +5877,7 @@ exports[`playing through a complex, deterministic room ("laboratory") should alw
         "disappearing": null,
         "expires": null,
         "latentMovement": [],
+        "movedOrResizedOnProgression": 0,
         "position": {
           "x": 210,
           "y": 34,
@@ -5849,6 +5943,7 @@ exports[`playing through a complex, deterministic room ("laboratory") should alw
         "disappearing": null,
         "expires": null,
         "latentMovement": [],
+        "movedOrResizedOnProgression": 0,
         "position": {
           "x": 210,
           "y": 50,
@@ -5914,6 +6009,7 @@ exports[`playing through a complex, deterministic room ("laboratory") should alw
         "disappearing": null,
         "expires": null,
         "latentMovement": [],
+        "movedOrResizedOnProgression": 0,
         "position": {
           "x": 210,
           "y": 50,
@@ -5983,6 +6079,7 @@ exports[`playing through a complex, deterministic room ("laboratory") should alw
         "disappearing": null,
         "expires": null,
         "latentMovement": [],
+        "movedOrResizedOnProgression": 316292,
         "position": {
           "x": 213,
           "y": 66,
@@ -6048,6 +6145,7 @@ exports[`playing through a complex, deterministic room ("laboratory") should alw
         "disappearing": null,
         "expires": null,
         "latentMovement": [],
+        "movedOrResizedOnProgression": 0,
         "position": {
           "x": 218,
           "y": 50,
@@ -6113,6 +6211,7 @@ exports[`playing through a complex, deterministic room ("laboratory") should alw
         "disappearing": null,
         "expires": null,
         "latentMovement": [],
+        "movedOrResizedOnProgression": 0,
         "position": {
           "x": 50,
           "y": 210,
@@ -6178,6 +6277,7 @@ exports[`playing through a complex, deterministic room ("laboratory") should alw
         "disappearing": null,
         "expires": null,
         "latentMovement": [],
+        "movedOrResizedOnProgression": 0,
         "position": {
           "x": 66,
           "y": 210,
@@ -6247,6 +6347,7 @@ exports[`playing through a complex, deterministic room ("laboratory") should alw
         "disappearing": null,
         "expires": null,
         "latentMovement": [],
+        "movedOrResizedOnProgression": 324523,
         "position": {
           "x": 96.25,
           "y": 117.37413333333268,
@@ -6314,6 +6415,7 @@ exports[`playing through a complex, deterministic room ("laboratory") should alw
         "disappearing": null,
         "expires": null,
         "latentMovement": [],
+        "movedOrResizedOnProgression": 63094,
         "position": {
           "x": 79,
           "y": 210,
@@ -6383,6 +6485,7 @@ exports[`playing through a complex, deterministic room ("laboratory") should alw
         "disappearing": null,
         "expires": null,
         "latentMovement": [],
+        "movedOrResizedOnProgression": 288199,
         "position": {
           "x": 45,
           "y": 178,
@@ -6450,6 +6553,7 @@ exports[`playing through a complex, deterministic room ("laboratory") should alw
         "disappearing": null,
         "expires": null,
         "latentMovement": [],
+        "movedOrResizedOnProgression": 321822,
         "position": {
           "x": 16,
           "y": 96,
@@ -6518,6 +6622,7 @@ exports[`playing through a complex, deterministic room ("laboratory") should alw
         "disappearing": null,
         "expires": null,
         "latentMovement": [],
+        "movedOrResizedOnProgression": 312582,
         "position": {
           "x": 11,
           "y": 95.96366380106298,
@@ -6586,6 +6691,7 @@ exports[`playing through a complex, deterministic room ("laboratory") should alw
         "disappearing": null,
         "expires": null,
         "latentMovement": [],
+        "movedOrResizedOnProgression": 313868,
         "position": {
           "x": 9,
           "y": 96,
@@ -6648,6 +6754,7 @@ exports[`playing through a complex, deterministic room ("laboratory") should alw
         "disappearing": null,
         "expires": null,
         "latentMovement": [],
+        "movedOrResizedOnProgression": 0,
         "position": {
           "x": 160,
           "y": 112,
@@ -6712,6 +6819,7 @@ exports[`playing through a complex, deterministic room ("laboratory") should alw
         "disappearing": null,
         "expires": null,
         "latentMovement": [],
+        "movedOrResizedOnProgression": 0,
         "position": {
           "x": 160,
           "y": 112,
@@ -6776,6 +6884,7 @@ exports[`playing through a complex, deterministic room ("laboratory") should alw
         "disappearing": null,
         "expires": null,
         "latentMovement": [],
+        "movedOrResizedOnProgression": 0,
         "position": {
           "x": 160,
           "y": 112,
@@ -6840,6 +6949,7 @@ exports[`playing through a complex, deterministic room ("laboratory") should alw
         "disappearing": null,
         "expires": null,
         "latentMovement": [],
+        "movedOrResizedOnProgression": 0,
         "position": {
           "x": 160,
           "y": 112,
@@ -6904,6 +7014,7 @@ exports[`playing through a complex, deterministic room ("laboratory") should alw
         "disappearing": null,
         "expires": null,
         "latentMovement": [],
+        "movedOrResizedOnProgression": 0,
         "position": {
           "x": 160,
           "y": 112,
@@ -6968,6 +7079,7 @@ exports[`playing through a complex, deterministic room ("laboratory") should alw
         "disappearing": null,
         "expires": null,
         "latentMovement": [],
+        "movedOrResizedOnProgression": 0,
         "position": {
           "x": 160,
           "y": 112,
@@ -7034,6 +7146,7 @@ exports[`playing through a complex, deterministic room ("laboratory") should alw
         "disappearing": null,
         "expires": null,
         "latentMovement": [],
+        "movedOrResizedOnProgression": 315443,
         "position": {
           "x": 32,
           "y": 96,
@@ -7102,6 +7215,7 @@ exports[`playing through a complex, deterministic room ("laboratory") should alw
         "disappearing": null,
         "expires": null,
         "latentMovement": [],
+        "movedOrResizedOnProgression": 317491,
         "position": {
           "x": 27,
           "y": 96,
@@ -7170,6 +7284,7 @@ exports[`playing through a complex, deterministic room ("laboratory") should alw
         "disappearing": null,
         "expires": null,
         "latentMovement": [],
+        "movedOrResizedOnProgression": 303938,
         "position": {
           "x": 25,
           "y": 96,
@@ -7236,6 +7351,7 @@ exports[`playing through a complex, deterministic room ("laboratory") should alw
         "disappearing": null,
         "expires": null,
         "latentMovement": [],
+        "movedOrResizedOnProgression": 128736,
         "position": {
           "x": 32,
           "y": 144,
@@ -7304,6 +7420,7 @@ exports[`playing through a complex, deterministic room ("laboratory") should alw
         "disappearing": null,
         "expires": null,
         "latentMovement": [],
+        "movedOrResizedOnProgression": 324512,
         "position": {
           "x": 200,
           "y": 2,
@@ -7371,6 +7488,7 @@ exports[`playing through a complex, deterministic room ("laboratory") should alw
         "disappearing": null,
         "expires": null,
         "latentMovement": [],
+        "movedOrResizedOnProgression": 324513,
         "position": {
           "x": 212,
           "y": 2,
@@ -7449,6 +7567,7 @@ exports[`playing through a complex, deterministic room ("laboratory") should alw
         "disappearing": null,
         "expires": null,
         "lastToggledAtRoomTime": 17441.66666666699,
+        "movedOrResizedOnProgression": 0,
         "position": {
           "x": 274,
           "y": 194,
@@ -7516,6 +7635,7 @@ exports[`playing through a complex, deterministic room ("laboratory") should alw
           "z": 0,
         },
         "latentMovement": [],
+        "movedOrResizedOnProgression": 324443,
         "position": {
           "x": 0,
           "y": 80.5,
@@ -7605,6 +7725,7 @@ exports[`playing through a complex, deterministic room ("laboratory") should alw
           "z": 0,
         },
         "latentMovement": [],
+        "movedOrResizedOnProgression": 324442,
         "position": {
           "x": 197.55000000000004,
           "y": 160,
@@ -7675,6 +7796,7 @@ exports[`playing through a complex, deterministic room ("laboratory") should alw
         },
         "disappearing": null,
         "expires": null,
+        "movedOrResizedOnProgression": 0,
         "position": {
           "x": 16,
           "y": 0,
@@ -7757,6 +7879,7 @@ exports[`playing through a complex, deterministic room ("laboratory") should alw
         "expires": null,
         "lastEmittedAtRoomTime": -6000,
         "maximum": null,
+        "movedOrResizedOnProgression": 0,
         "period": 8000,
         "position": {
           "x": 16,
@@ -7818,6 +7941,7 @@ exports[`playing through a complex, deterministic room ("laboratory") should alw
         },
         "disappearing": null,
         "expires": null,
+        "movedOrResizedOnProgression": 0,
         "position": {
           "x": -16,
           "y": 0,
@@ -7869,6 +7993,7 @@ exports[`playing through a complex, deterministic room ("laboratory") should alw
         },
         "disappearing": null,
         "expires": null,
+        "movedOrResizedOnProgression": 0,
         "position": {
           "x": 0,
           "y": -16,
@@ -7920,6 +8045,7 @@ exports[`playing through a complex, deterministic room ("laboratory") should alw
         },
         "disappearing": null,
         "expires": null,
+        "movedOrResizedOnProgression": 0,
         "position": {
           "x": 0,
           "y": 224,
@@ -7979,6 +8105,7 @@ exports[`playing through a complex, deterministic room ("laboratory") should alw
         },
         "disappearing": null,
         "expires": null,
+        "movedOrResizedOnProgression": 0,
         "position": {
           "x": 288,
           "y": 0,
@@ -8034,6 +8161,7 @@ exports[`playing through a complex, deterministic room ("laboratory") should alw
         },
         "disappearing": null,
         "expires": null,
+        "movedOrResizedOnProgression": 0,
         "position": {
           "x": 112,
           "y": -16,
@@ -8091,6 +8219,7 @@ exports[`playing through a complex, deterministic room ("laboratory") should alw
         },
         "disappearing": null,
         "expires": null,
+        "movedOrResizedOnProgression": 0,
         "position": {
           "x": 112,
           "y": 224,
@@ -8104,6 +8233,7 @@ exports[`playing through a complex, deterministic room ("laboratory") should alw
     },
   },
   "planet": "egyptus",
+  "progression": 324523,
   "roomJson": {
     "color": {
       "hue": "yellow",

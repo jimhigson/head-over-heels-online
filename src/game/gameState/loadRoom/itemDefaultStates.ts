@@ -5,6 +5,7 @@ import {
   type JsonItemType,
   type JsonItemUnion,
 } from "../../../model/json/JsonItem";
+import { type Progression } from "../../../model/RoomState";
 import { type StoodOnBy } from "../../../model/StoodOnBy";
 import { emptyObject } from "../../../utils/empty";
 import { neverTime } from "../../../utils/neverTime";
@@ -21,6 +22,7 @@ import { positionCentredInBlock } from "./positionCentredInBlock";
 
 export const defaultBaseState = <RoomItemId extends string>() =>
   ({
+    movedOrResizedOnProgression: 0 as Progression,
     expires: null,
     stoodOnBy: {} as StoodOnBy<RoomItemId>,
     disappearing: null,

@@ -7,7 +7,6 @@ import {
 } from "../../model/ItemInPlay";
 import { type RoomState } from "../../model/RoomState";
 import { type Graph } from "../../utils/graph/Graph";
-import { type MovedOrResizedItems } from "../mainLoop/progressGameState";
 import { type ItemRenderPipeline } from "./item/itemRender/createItemRenderer";
 import { type ItemLeafPixiRenderer } from "./item/itemRender/ItemPixiRenderer";
 import { type RenderBoxes } from "./renderBox/makeItemRenderBoxAtCameraAngle";
@@ -128,10 +127,47 @@ export type ItemLeafTickContext = {
   deltaMS: number;
 };
 
+/**
+ * has the item has moved, resized or entered the room since the given
+ * progression?
+ */
+export const itemMovedSinceRendered = (
+  item: { state: { movedOrResizedOnProgression: number } },
+  tickContext: Pick<ItemTickContext, "renderedOnProgression">,
+): boolean =>
+  tickContext.renderedOnProgression === undefined ||
+  item.state.movedOrResizedOnProgression > tickContext.renderedOnProgression;
+
+/**
+ * whether the item's angle-derived rendering is stale - because the item
+ * moved/resized/entered the room, or because the camera angle the room
+ * renders at changed (which re-projects every item while moving none of
+ * them). The standard change test for tick-time render gates
+ */
+export const itemRenderingStale = (
+  item: { state: { movedOrResizedOnProgression: number } },
+  tickContext: Pick<
+    ItemTickContext,
+    "cameraAngleChanged" | "renderedOnProgression"
+  >,
+): boolean =>
+  tickContext.cameraAngleChanged || itemMovedSinceRendered(item, tickContext);
+
 export type ItemTickContext = ItemLeafTickContext & {
   /**
-   * the items that moved or resized since the last tick - read by the position,
+   * the room's {@link RoomState.progression} count as of the LAST render
+   * (undefined on the first): an item with a later
+   * {@link BaseItemState.movedOrResizedOnProgression} stamp has moved, resized or
+   * entered the room since this renderer last saw it. Read by the position,
    * shadow and z-sort machinery, never by a leaf renderer
    */
-  movedOrResizedItems: MovedOrResizedItems<string, string>;
+  renderedOnProgression: number | undefined;
+  /**
+   * whether the camera angle this room renders at changed since the last
+   * render - every item's projection is then stale even though no item
+   * moved. True on every frame of a camera transition, and on the single
+   * frame of an instant angle change (which no other signal covers: nothing
+   * moves, and no transition ever runs)
+   */
+  cameraAngleChanged: boolean;
 };

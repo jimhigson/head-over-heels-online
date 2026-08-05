@@ -426,7 +426,7 @@ export class RoomScrollRenderer<
     );
   }
 
-  #tickLookOffset(tickContext: RoomTickContext<RoomId, RoomItemId>) {
+  #tickLookOffset(tickContext: RoomTickContext) {
     const {
       general: { gameState },
       room: { roomTime },
@@ -523,7 +523,7 @@ export class RoomScrollRenderer<
     return rebuilt;
   }
 
-  tick(tickContext: RoomTickContext<RoomId, RoomItemId>) {
+  tick(tickContext: RoomTickContext) {
     const {
       general: { gameState, cameraAngle },
     } = this.renderContext;

@@ -1,7 +1,6 @@
 import { autoDetectRenderer, Rectangle, type Renderer } from "pixi.js";
 
 import { loadRoom } from "../../game/gameState/loadRoom/loadRoom";
-import { type MovedOrResizedItems } from "../../game/mainLoop/progressGameState";
 import { type GeneralRenderContext } from "../../game/render/room/RoomRenderContexts";
 import { RoomRenderer } from "../../game/render/room/RoomRenderer";
 import { roomRenderExtent } from "../../game/render/room/roomRenderExtent";
@@ -105,10 +104,6 @@ export const renderRoomPreviewImage = async (
     // so a static render can pass an empty moved set
     roomRenderer.tick({
       deltaMS: 0,
-      movedOrResizedItems: new Set() as MovedOrResizedItems<
-        EditorRoomId,
-        EditorRoomItemId
-      >,
       // no fps display in the editor - nothing records frame timings:
       timingRecord: undefined,
     });

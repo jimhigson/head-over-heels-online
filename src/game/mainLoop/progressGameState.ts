@@ -1,18 +1,8 @@
-import { type OverrideProperties } from "type-fest";
-
-import { type ItemTypeUnion } from "../../_generated/types/ItemInPlayUnion";
-import {
-  type ItemInPlayType,
-  type UnionOfAllItemInPlayTypes,
-} from "../../model/ItemInPlay";
 import {
   iterateRoomItemEntries,
   roomItemsArray,
   roomItemsIterable,
-  type RoomStateItems,
 } from "../../model/RoomState";
-import { emptySet } from "../../utils/empty";
-import { type Xyz, xyzEqual } from "../../utils/vectors/vectors";
 import { type GameState } from "../gameState/GameState";
 import { selectCurrentRoomState } from "../gameState/gameStateSelectors/selectCurrentRoomState";
 import { selectCurrentPlayableItem } from "../gameState/gameStateSelectors/selectPlayableItem";
@@ -21,7 +11,7 @@ import { deleteItemFromRoom } from "../gameState/mutators/deleteItemFromRoom";
 import { playableLosesLife } from "../gameState/mutators/playableLosesLife";
 import { updateStandingOn } from "../gameState/mutators/standingOn/updateStandingOn";
 import { validateStandingOn } from "../gameState/mutators/standingOn/validateStandingOn";
-import { isPlayableItem, isSpatial } from "../physics/itemPredicates";
+import { isPlayableItem } from "../physics/itemPredicates";
 import { addParticlesForPlayablesInRoom } from "./addParticlesToRoom";
 import { advanceTime } from "./advanceTime";
 import { correctFloatingPointErrorsInRoom } from "./correctFloatingPointErrorsInRoom";
@@ -32,58 +22,11 @@ import { tickItem } from "./tickItem";
 
 // set to 1 to check for inconsistencies in the model for every subtick
 const extraDebugChecks = 0;
-type SpatialItem<
-  RoomId extends string,
-  RoomItemId extends string,
-> = ItemTypeUnion<Exclude<ItemInPlayType, "timer">, RoomId, RoomItemId>;
 
-export type MovedOrResizedItems<
-  RoomId extends string,
-  RoomItemId extends string,
-> = OverrideProperties<
-  Set<SpatialItem<RoomId, RoomItemId>>,
-  { has(item: UnionOfAllItemInPlayTypes<RoomId, RoomItemId>): boolean }
->;
-
-const calculateMovedOrResizedItems = <
-  RoomId extends string,
-  RoomItemId extends string,
->(
-  roomItems: RoomStateItems<RoomId, RoomItemId>,
-  startingPositions: Record<string, Xyz>,
-  startingAabbs: Record<string, Xyz>,
-): MovedOrResizedItems<RoomId, RoomItemId> => {
-  const movedOrResizedItems = new Set() as MovedOrResizedItems<
-    RoomId,
-    RoomItemId
-  >;
-
-  for (const item of roomItemsIterable(roomItems)) {
-    const prev = startingPositions[item.id];
-    const prevAabb = startingAabbs[item.id];
-    if (
-      (prev === undefined ||
-        !xyzEqual(prev, item.state.position) ||
-        // items with variable aabbs (light beams) can change extent without
-        // their min corner moving - that counts as movement for everything
-        // downstream (z-sorting etc):
-        !xyzEqual(prevAabb, item.aabb)) &&
-      isSpatial(item)
-    ) {
-      movedOrResizedItems.add(item);
-    }
-  }
-
-  return movedOrResizedItems;
-};
-
-export type ProgressGameState<
-  RoomId extends string,
-  RoomItemId extends string,
-> = (
+export type ProgressGameState<RoomId extends string> = (
   gameState: GameState<RoomId>,
   deltaMS: number,
-) => MovedOrResizedItems<RoomId, RoomItemId>;
+) => void;
 
 export const progressGameState = <
   RoomId extends string,
@@ -91,30 +34,31 @@ export const progressGameState = <
 >(
   gameState: GameState<RoomId>,
   deltaMS: number,
-): MovedOrResizedItems<RoomId, RoomItemId> => {
+): void => {
   const room = selectCurrentRoomState<RoomId, RoomItemId>(gameState);
 
   if (room === undefined) {
     // no current room - probably this is because game over
-    return emptySet as MovedOrResizedItems<RoomId, RoomItemId>;
+    return;
   }
+
+  // items stamped after this progression count moved (or resized) during
+  // this tick:
+  const progressionAtTickStart = room.progression;
 
   // advance time before applying the mechanics of the game
   // so item's acted on times will match the current game time in the
   // renderers (renderers can check if items are acted on in the current frame)
   advanceTime(gameState, room, deltaMS);
 
-  // take a snapshot of item positions before any physics ticks so we
-  // can check later what has moved. DOne per physics tick, not render-tick
-  // because otherwise latent movement is double-applied
+  // take a snapshot of item positions before any physics ticks so latent
+  // movement can compute per-tick deltas. Done per physics tick, not
+  // render-tick, because otherwise latent movement is double-applied
   const startingPositions = Object.fromEntries(
     iterateRoomItemEntries(room.items).map(([id, item]) => [
       id,
       item.state.position,
     ]),
-  );
-  const startingAabbs = Object.fromEntries(
-    iterateRoomItemEntries(room.items).map(([id, item]) => [id, item.aabb]),
   );
 
   for (const item of roomItemsIterable(room.items)) {
@@ -160,22 +104,15 @@ export const progressGameState = <
   }
   updateStandingOn(room);
 
-  // floating point correction must be done before looking for moved/resized items:
+  // corrections route through the position-update funnel, so items they
+  // adjust are stamped as moved like any other movement:
   correctFloatingPointErrorsInRoom(room);
 
-  const movedOrResizedItems = calculateMovedOrResizedItems<RoomId, RoomItemId>(
-    room.items,
-    startingPositions,
-    startingAabbs,
-  );
-
   assignLatentMovementFromStandingOn(
-    movedOrResizedItems,
     room,
     startingPositions,
     deltaMS,
+    progressionAtTickStart,
   );
-  snapInactiveItemsToPixelGrid(room, movedOrResizedItems);
-
-  return movedOrResizedItems;
+  snapInactiveItemsToPixelGrid(room);
 };

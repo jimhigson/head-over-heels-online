@@ -1,4 +1,4 @@
-import { type Simplify, type ValueOf } from "type-fest";
+import { type Simplify, type Tagged, type ValueOf } from "type-fest";
 
 import { type SpatialIndex } from "../game/physics/gridSpace/SpatialIndex";
 import { type SceneryName } from "../sprites/planets";
@@ -118,6 +118,12 @@ export const playablesInRoom = <
 export const roomSpatialIndexKey = Symbol("roomSpatialIndexKey");
 
 /**
+ * a count on a room's progression clock - tagged so it can't be swopped with
+ * the roomTime, the other number a room counts in
+ */
+export type Progression = Tagged<number, "Progression">;
+
+/**
  * Representation of a room in-play. This is in memory only for the current
  * one or two rooms (that head and heels are in, but they could be in the same
  * room)
@@ -136,6 +142,11 @@ export type RoomState<
      * is the current room
      */
     roomTime: number;
+    /**
+     * how many times this room's state has progressed: bumped on every
+     * progressing mutation (an item moving, resizing, or entering the room)
+     */
+    progression: Progression;
     /**
      * since this is stored under a symbol, it will not be written to JSON when the room
      * state is saved

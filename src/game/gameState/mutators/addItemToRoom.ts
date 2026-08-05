@@ -6,7 +6,11 @@ import {
   type JsonItemUnion,
 } from "../../../model/json/JsonItem";
 import { roomJsonItemsIterable } from "../../../model/RoomJson";
-import { roomSpatialIndexKey, type RoomState } from "../../../model/RoomState";
+import {
+  type Progression,
+  roomSpatialIndexKey,
+  type RoomState,
+} from "../../../model/RoomState";
 import { emptyObject } from "../../../utils/empty";
 import { originXyz, type Xyz } from "../../../utils/vectors/vectors";
 import { isSpatial } from "../../physics/itemPredicates";
@@ -81,6 +85,10 @@ export const addItemToRoom = <
   if (atPosition !== undefined) {
     item.state.position = atPosition;
   }
+
+  // entering the room is a progressing change - consumers comparing against
+  // the progression they last handled must see fresh items:
+  item.state.movedOrResizedOnProgression = ++room.progression as Progression;
 
   if (isSpatial(item)) {
     const spatialIndex = room[roomSpatialIndexKey];

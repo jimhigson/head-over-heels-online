@@ -13,7 +13,6 @@ import {
 import { type Xy } from "../../../utils/vectors/vectors";
 import { type GameState } from "../../gameState/GameState";
 import { type SceneGraphPhaseRecorder } from "../../mainLoop/frameTiming/FrameTimingStats";
-import { type MovedOrResizedItems } from "../../mainLoop/progressGameState";
 
 /**
  * some context that most renderers need, to be composed into their contexts
@@ -79,11 +78,7 @@ export type RoomRenderContextInGame<
   general: InGameGeneralRenderContext<RoomId>;
 };
 
-export type RoomTickContext<
-  RoomId extends string,
-  RoomItemId extends string,
-> = {
-  movedOrResizedItems: MovedOrResizedItems<RoomId, RoomItemId>;
+export type RoomTickContext = {
   deltaMS: number;
   /**
    * object to write timings to, or if undefined, don't write them anywhere

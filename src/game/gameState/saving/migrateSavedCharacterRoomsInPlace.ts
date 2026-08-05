@@ -4,7 +4,7 @@ import {
   migrateWallTilesInPlace,
 } from "../../../model/inPlaceMutators/migrateWallTilesInPlace";
 import { type ItemInPlayConfig } from "../../../model/ItemInPlay";
-import { roomItemsIterable } from "../../../model/RoomState";
+import { type Progression, roomItemsIterable } from "../../../model/RoomState";
 import { valuesIter } from "../../../utils/entries";
 import { unitVectors } from "../../../utils/vectors/unitVectors";
 import {
@@ -104,7 +104,11 @@ export const migrateSavedCharacterRoomsInPlace = <RoomId extends string>(
   for (const room of new Set(valuesIter(savedCharacterRooms))) {
     migrateWallTilesInPlace(room.roomJson);
 
+    // saves from before change-tracking was a progression count omit these:
+    room.progression ??= 0 as Progression;
+
     for (const item of roomItemsIterable(room.items)) {
+      item.state.movedOrResizedOnProgression ??= 0 as Progression;
       if (item.hintShadowDirections !== undefined) {
         item.hintShadowDirections =
           item.hintShadowDirections.map(asDirectionVector);
