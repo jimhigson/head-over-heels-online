@@ -1,4 +1,11 @@
-import { type Application, Container, Rectangle, type Ticker } from "pixi.js";
+import { SwitchOnFilter } from "@blockstacking/jims-shaders";
+import {
+  type Application,
+  Container,
+  type Filter,
+  Rectangle,
+  type Ticker,
+} from "pixi.js";
 
 import { audioCtx } from "../../sound/audioCtx";
 import { ensureRoomSoundsLoaded } from "../../sound/ensureRoomSoundsLoaded";
@@ -32,6 +39,7 @@ import { type GameState } from "../gameState/GameState";
 import { selectCurrentRoomState } from "../gameState/gameStateSelectors/selectCurrentRoomState";
 import { maxFps, maxSubTickDeltaMs } from "../physics/mechanicsConstants";
 import { ColourClashCircleEffectRenderer } from "../render/ColourClashCircleEffectRenderer";
+import { noFilters } from "../render/filters/standardFilters";
 import { HudRenderer } from "../render/hud/HudRenderer";
 import { needsNewHudRenderer } from "../render/hud/needsNewHudRenderer";
 import { needsNewRoomRenderer } from "../render/room/needsNewRoomRenderer";
@@ -134,6 +142,13 @@ export class MainLoop<RoomId extends string> {
     store.dispatch(errorCaught(createSerialisableErrors(thrown)));
   }
 
+  #topLevelFilters: Filter[] = noFilters;
+  /**
+   * held onto only so that the switch-on can be taken back out of the chain once the
+   * picture has finished coming up, since it does nothing to it after that
+   */
+  #switchOnFilter: SwitchOnFilter | undefined;
+
   #initTopLevelFilters() {
     const {
       userSettings: {
@@ -142,7 +157,26 @@ export class MainLoop<RoomId extends string> {
       upscale: { upscale },
     } = store.getState();
 
-    this.#app.stage.filters = topLevelFilters(displaySettings, upscale);
+    this.#topLevelFilters = topLevelFilters(displaySettings, upscale);
+    this.#app.stage.filters = this.#topLevelFilters;
+    this.#switchOnFilter = this.#topLevelFilters.find(
+      (filter): filter is SwitchOnFilter => filter instanceof SwitchOnFilter,
+    );
+  }
+
+  #dropSwitchOnFilterWhenFinished() {
+    const switchOnFilter = this.#switchOnFilter;
+
+    if (switchOnFilter === undefined || !switchOnFilter.finished) {
+      return;
+    }
+
+    this.#topLevelFilters = this.#topLevelFilters.filter(
+      (filter) => filter !== switchOnFilter,
+    );
+    this.#app.stage.filters = this.#topLevelFilters;
+    this.#switchOnFilter = undefined;
+    switchOnFilter.destroy();
   }
 
   #firstFrameMarked = false;
@@ -242,6 +276,8 @@ export class MainLoop<RoomId extends string> {
   }
 
   #tick = ({ deltaMS: tickerDeltaMS }: Ticker): void => {
+    this.#dropSwitchOnFilterWhenFinished();
+
     const tickState = store.getState();
     const showFps = selectShowFps(tickState);
     const timingRecord = showFps ? loadedFrameTimingStats() : undefined;
