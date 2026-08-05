@@ -1,11 +1,15 @@
 import {
   BloomFilter,
   ColorAdjustmentFilter,
-  CurvatureFilter,
+  FlickerFilter,
   NoiseFilter,
   PhosphorMaskFilter,
   RaiseBlackPointFilter,
+  RoundedCornersFilter,
   ScanlinesFilter,
+  ScreenGeometryFilter,
+  SharpenFilter,
+  SwitchOnFilter,
   VignetteFilter,
 } from "@blockstacking/jims-shaders";
 import { type Filter } from "pixi.js";
@@ -41,6 +45,17 @@ export const topLevelFilters = (
 
     new NoiseFilter({ intensity: 0.03, fps: 29.97, scale: 5 }),
 
+    // the peaking of the set's luminance amplifier, which acts on the signal before
+    // it reaches the tube - so before anything modelling the beam or the phosphors
+    new SharpenFilter({
+      amount: 0.45,
+      // the ringing of a set's luminance bandwidth lands over roughly half an
+      // emulated pixel, so it follows the upscale rather than the output resolution
+      radius: upscale.gameEngineUpscale * 0.5,
+      asymmetry: 0.35,
+      signalBlur: 0.25,
+    }),
+
     // Scanlines and phosphor mask first (applied to flat image)
     new ScanlinesFilter({
       pixelHeight: upscale.gameEngineUpscale,
@@ -52,6 +67,14 @@ export const topLevelFilters = (
       maskBrightness: 0.6,
       numSamples: 2,
       transitionWidth: 0.2,
+    }),
+
+    // the phosphors dying away between passes of the beam, at the Spectrum's own
+    // 50Hz - and so before the bloom that their light scatters into
+    new FlickerFilter({
+      hz: 50,
+      depth: 0.12,
+      persistence: 0.3,
     }),
 
     // selectively blur just fairly light items on a small, intense radius:
@@ -67,14 +90,23 @@ export const topLevelFilters = (
       radius: 0.7,
     }),
 
-    // Then curvature (curves everything including scanlines)
-    new CurvatureFilter({
+    new RaiseBlackPointFilter({ blackPoint: 0.03 }),
+
+    // the tube coming up to temperature. Once it has, MainLoop takes this back out
+    // of the chain, so it costs nothing for the rest of the game
+    new SwitchOnFilter(),
+
+    // cut to the shape of the screen before it is curved, so that the edge is already
+    // faded and does not come out of the curve as a hard line
+    new RoundedCornersFilter({ cornerRadius: 0.03 }),
+
+    // all of the geometry at once - the curve of the glass and the stretch of the
+    // raster under the beam current the picture is drawing
+    new ScreenGeometryFilter({
       curvatureX: 0.13,
       curvatureY: 0.12,
       multisampling: true,
     }),
-
-    new RaiseBlackPointFilter({ blackPoint: 0.03 }),
 
     new ColorAdjustmentFilter({
       gamma: 1.1,
