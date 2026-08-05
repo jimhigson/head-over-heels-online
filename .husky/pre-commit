@@ -40,9 +40,12 @@ if [ -n "$(find "$tmp" -type f -print -quit)" ]; then
 
   echo prettier
   # run prettier from inside the temp so .prettierignore (copied in) and the repo
-  # config (found by walking up, since temp lives under the repo root) both resolve
+  # config (found by walking up, since temp lives under the repo root) both resolve.
+  # it goes through pnpm, which finds the repo's node_modules by walking up too - the
+  # hook's PATH carries node_modules/.bin relative to the repo root, so a bare prettier
+  # is unresolvable once cd'd elsewhere
   cp .prettierignore "$tmp/.prettierignore" 2>/dev/null || true
-  ( cd "$tmp" && prettier --write --ignore-path .prettierignore --log-level warn . )
+  ( cd "$tmp" && pnpm prettier --write --ignore-path .prettierignore --log-level warn . )
 
   # apply the fixed+formatted copies to the index (and worktree when the patch is
   # clean); files git-format-staged sees but that were skipped pass through unchanged.

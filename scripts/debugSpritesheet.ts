@@ -29,6 +29,11 @@ import {
   type TextureId,
 } from "../src/sprites/spritesheet/spritesheetData/makeSpritesheetData";
 import { entries } from "../src/utils/entries";
+import {
+  debugFontGlyphHeight,
+  debugFontGlyphs,
+  debugFontGlyphWidth,
+} from "./debugFontGlyphs";
 
 const sourcePath = "gfx/sprites.webp";
 const outPath = "gfx/spritesDebug.webp";
@@ -150,59 +155,10 @@ const isExempt = (textureId: TextureId): boolean =>
 const isFloor = (textureId: TextureId): boolean =>
   textureId.endsWith(".floor") || textureId.endsWith(".floor.deadly");
 
-/**
- * a Tom-Thumb-style 3×5 pixel font - about the smallest legible pixel font,
- * drawn as literal pixels so it stays crisp. Uppercase, digits and basic
- * punctuation only; each glyph is 5 rows of 3 bits
- */
-const glyphs: { [char: string]: [number, number, number, number, number] } = {
-  A: [0b010, 0b101, 0b111, 0b101, 0b101],
-  B: [0b110, 0b101, 0b110, 0b101, 0b110],
-  C: [0b011, 0b100, 0b100, 0b100, 0b011],
-  D: [0b110, 0b101, 0b101, 0b101, 0b110],
-  E: [0b111, 0b100, 0b110, 0b100, 0b111],
-  F: [0b111, 0b100, 0b110, 0b100, 0b100],
-  G: [0b011, 0b100, 0b101, 0b101, 0b011],
-  H: [0b101, 0b101, 0b111, 0b101, 0b101],
-  I: [0b111, 0b010, 0b010, 0b010, 0b111],
-  J: [0b011, 0b001, 0b001, 0b101, 0b010],
-  K: [0b101, 0b101, 0b110, 0b101, 0b101],
-  L: [0b100, 0b100, 0b100, 0b100, 0b111],
-  M: [0b101, 0b111, 0b111, 0b101, 0b101],
-  N: [0b110, 0b101, 0b101, 0b101, 0b101],
-  O: [0b010, 0b101, 0b101, 0b101, 0b010],
-  P: [0b110, 0b101, 0b110, 0b100, 0b100],
-  Q: [0b010, 0b101, 0b101, 0b010, 0b001],
-  R: [0b110, 0b101, 0b110, 0b101, 0b101],
-  S: [0b011, 0b100, 0b010, 0b001, 0b110],
-  T: [0b111, 0b010, 0b010, 0b010, 0b010],
-  U: [0b101, 0b101, 0b101, 0b101, 0b111],
-  V: [0b101, 0b101, 0b101, 0b101, 0b010],
-  W: [0b101, 0b101, 0b111, 0b111, 0b101],
-  X: [0b101, 0b101, 0b010, 0b101, 0b101],
-  Y: [0b101, 0b101, 0b010, 0b010, 0b010],
-  Z: [0b111, 0b001, 0b010, 0b100, 0b111],
-  "0": [0b111, 0b101, 0b101, 0b101, 0b111],
-  "1": [0b010, 0b110, 0b010, 0b010, 0b111],
-  "2": [0b110, 0b001, 0b010, 0b100, 0b111],
-  "3": [0b110, 0b001, 0b010, 0b001, 0b110],
-  "4": [0b101, 0b101, 0b111, 0b001, 0b001],
-  "5": [0b111, 0b100, 0b110, 0b001, 0b110],
-  "6": [0b011, 0b100, 0b110, 0b101, 0b010],
-  "7": [0b111, 0b001, 0b010, 0b010, 0b010],
-  "8": [0b010, 0b101, 0b010, 0b101, 0b010],
-  "9": [0b010, 0b101, 0b011, 0b001, 0b110],
-  ".": [0b000, 0b000, 0b000, 0b000, 0b010],
-  "-": [0b000, 0b000, 0b111, 0b000, 0b000],
-  "/": [0b001, 0b001, 0b010, 0b100, 0b100],
-};
-
-const glyphWidth = 3;
-const glyphHeight = 5;
 /** horizontal advance per character (glyph width + 1px spacing) */
-const advance = glyphWidth + 1;
+const advance = debugFontGlyphWidth + 1;
 /** vertical advance per line (glyph height + 1px spacing) */
-const lineAdvance = glyphHeight + 1;
+const lineAdvance = debugFontGlyphHeight + 1;
 
 const run = async () => {
   const { data, info } = await sharp(sourcePath)
@@ -295,17 +251,17 @@ const run = async () => {
         if (penX >= clipRightX) {
           break;
         }
-        const glyph = glyphs[char];
+        const glyph = debugFontGlyphs.get(char);
         if (glyph !== undefined) {
-          for (let row = 0; row < glyphHeight; row++) {
-            for (let col = 0; col < glyphWidth; col++) {
+          for (let row = 0; row < debugFontGlyphHeight; row++) {
+            for (let col = 0; col < debugFontGlyphWidth; col++) {
               const px = penX + col;
               const py = lineY + row;
               if (
                 px < clipRightX &&
                 py >= y &&
                 py < y + h &&
-                (glyph[row] >> (glyphWidth - 1 - col)) & 1 &&
+                (glyph[row] >> (debugFontGlyphWidth - 1 - col)) & 1 &&
                 isSpritePixel(px, py)
               ) {
                 setPixel(
