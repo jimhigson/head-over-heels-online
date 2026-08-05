@@ -19,6 +19,7 @@ declare module "sharp" {
   };
   const sharp: {
     (input: Buffer, options: SharpRawOptions): SharpInstance;
+    (input: Buffer): SharpInstance;
     (input: string): SharpInstance;
   };
   export default sharp;
