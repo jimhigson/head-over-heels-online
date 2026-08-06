@@ -1,10 +1,9 @@
 import { type SetRequired } from "type-fest";
 
 import { type RenderBoxes } from "../../../game/render/renderBox/makeItemRenderBoxAtCameraAngle";
-import { type ZGraph } from "../../../game/render/sortZ/GraphEdges";
-import { toposort } from "../../../game/render/sortZ/toposort/toposort";
+import { DrawOrderBroadPhase } from "../../../game/render/sortZ/DrawOrderBroadPhase";
 import { updateZEdges } from "../../../game/render/sortZ/updateZEdges";
-import { VisualIndex } from "../../../game/render/sortZ/VisualIndex";
+import { Graph } from "../../../utils/graph/Graph";
 import { type Xy } from "../../../utils/vectors/vectors";
 import { type EditorUnionOfAllItemInPlayTypes } from "../../editorTypes";
 import { type PointerItemIntersection } from "./pointIntersectsItemAABB";
@@ -57,20 +56,26 @@ export const frontItemFromPointerIntersections = (
   }
 
   const sortableItemsSet = new Set(topographicallySortableItems);
-  const visualIndex = new VisualIndex<EditorUnionOfAllItemInPlayTypes>(
+  // SMELL: this re-derives draw order from scratch on every pointer event, over
+  // only the items under the pointer - so constraints running through excluded
+  // items are missing and the answer can disagree with what the renderer
+  // actually drew. The room renderer resolves a full-room order every tick
+  // already; asking it which of these items it drew last would be both cheaper
+  // and correct. That needs the sort to keep each node's position (which would
+  // also answer "the frontmost" without sorting again here), and the renderer
+  // to expose the query - it already hands this function its render boxes
+  const broadPhase = new DrawOrderBroadPhase<EditorUnionOfAllItemInPlayTypes>(
     cameraAngle,
   );
-  visualIndex.updateManyItems(sortableItemsSet, sortableItemsSet, renderBoxes);
-  const zEdges: ZGraph<EditorUnionOfAllItemInPlayTypes> = new Map();
-  updateZEdges(
+  broadPhase.updateManyItems(
     sortableItemsSet,
-    visualIndex,
-    // all items have 'moved':
-    sortableItemsSet,
-    zEdges,
     renderBoxes,
+    // the editor is always settled at a quarter angle:
+    cameraAngle,
   );
-  const order = toposort(zEdges, sortableItemsSet);
+  const zEdges = new Graph<EditorUnionOfAllItemInPlayTypes>();
+  updateZEdges(sortableItemsSet, broadPhase, zEdges, renderBoxes);
+  const order = zEdges.topologicalSortInPlace();
 
   // items are sorted back-to-front, so we need the last one this could be more efficient than
   // doing a full sort - just get the last node from the graph instead

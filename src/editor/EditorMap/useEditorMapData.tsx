@@ -33,27 +33,24 @@ export const selectEditorMapData = createSelector(
   ): MapData<EditorRoomId> | MapDataError => {
     try {
       const graph = roomGridPositions({ campaign, roomId, subRoomId });
-      const positions = [...graph.keys()];
+      const positions = graph.nodes;
 
-      const teleporterLinks: TeleporterLink<EditorRoomId>[] = [];
-      for (const [from, edges] of graph) {
-        for (const [to, edge] of edges) {
-          if (edge.kind === "teleporter") {
-            teleporterLinks.push({
-              from: {
-                roomId: from.roomId,
-                subRoomId: from.subRoomId,
-                itemId: edge.viaItemId,
-              },
-              to: {
-                roomId: to.roomId,
-                subRoomId: to.subRoomId,
-                itemId: edge.toItemId,
-              },
-            });
-          }
-        }
-      }
+      const teleporterLinks: TeleporterLink<EditorRoomId>[] = graph
+        .iterateAnnotatedEdges()
+        .filter(({ annotation }) => annotation.kind === "teleporter")
+        .map(({ from, to, annotation }) => ({
+          from: {
+            roomId: from.roomId,
+            subRoomId: from.subRoomId,
+            itemId: annotation.viaItemId,
+          },
+          to: {
+            roomId: to.roomId,
+            subRoomId: to.subRoomId,
+            itemId: annotation.toItemId,
+          },
+        }))
+        .toArray();
 
       const sortedObjectOfPositions = sortRoomGridPositions(positions);
 

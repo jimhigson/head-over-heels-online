@@ -16,14 +16,6 @@ export type GameApi<RoomId extends string = string> = {
   currentRoom: RoomState<RoomId, string> | undefined;
   renderIn: (div: HTMLDivElement) => void;
   gameState: GameState<RoomId>;
-  /**
-   * Start a camera-rotation transition and immediately freeze it at `progress`
-   * (0..1), so a specific point of the turn can be inspected/snapshotted. For
-   * tests and debugging - the turn stays pinned until the hold is cleared.
-   */
-  _e2e_holdCameraTransition:
-    | ((direction: "anticlockwise" | "clockwise", progress: number) => void)
-    | undefined;
   stop: () => void;
   reincarnateFrom: (gameState: SavedGame<RoomId>) => void;
   /**

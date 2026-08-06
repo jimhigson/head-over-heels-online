@@ -7,7 +7,10 @@ import {
   type ItemRenderContext,
   type ItemTickContext,
 } from "../../ItemRenderContexts";
-import { projectWorldXyzToScreenXy } from "../../projections";
+import {
+  projectWorldXyzToScreenX,
+  projectWorldXyzToScreenY,
+} from "../../projections";
 import { isCuboidWarpItem } from "./isCuboidWarpItem";
 import { type ItemChainPixiRenderer } from "./ItemPixiRenderer";
 
@@ -62,28 +65,20 @@ export class ItemPositionRenderer<
 
     const roundTo = uncolourised ? 1 : gameEngineUpscale;
 
+    const screenX = projectWorldXyzToScreenX(item.state.position, cameraAngle);
+    const screenY = projectWorldXyzToScreenY(item.state.position, cameraAngle);
+
     // a render angle away from the canonical quarter angles means the camera is
     // mid-rotation: boxy items are drawn as a warped cuboid, so place the
     // container at the item origin's EXACT (unrounded) projection - items
     // touching at a world corner keep that corner welded on screen through the
     // turn. (Non-boxy items and settled items fall through to rounded below.)
     if (!isAtQuarterAngle(cameraAngle) && isCuboidWarpItem(item)) {
-      const origin = projectWorldXyzToScreenXy(
-        item.state.position,
-        cameraAngle,
-      );
-      this.output.position.set(origin.x, origin.y);
+      this.output.position.set(screenX, screenY);
       return;
     }
 
-    // the item slides along the continuous render angle; at rest this is exactly
-    // the quarter angle
-    const projectionXy = projectWorldXyzToScreenXy(
-      item.state.position,
-      cameraAngle,
-    );
-
-    assignRoundedXy(this.output, projectionXy.x, projectionXy.y, roundTo);
+    assignRoundedXy(this.output, screenX, screenY, roundTo);
   }
 
   tick(tickContext: ItemTickContext) {
@@ -94,8 +89,8 @@ export class ItemPositionRenderer<
     );
     if (
       tickContext.movedOrResizedItems.has(this.renderContext.item) ||
-      // mid-rotation nothing moves (the moved set is truthfully empty) but
-      // every item re-projects along the continuous θ(t):
+      // mid-rotation every item re-projects along the continuous θ(t),
+      // whether or not it moved in-world:
       midRotation ||
       // run once more after the render angle settles back onto a quarter angle:
       // this snaps every item to its exact discrete-angle position:

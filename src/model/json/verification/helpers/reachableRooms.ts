@@ -30,9 +30,7 @@ export const reachableRoomIds = (
   graph: RoomGraph<string>,
   starts: ReadonlySet<VerificationRoomId>,
 ): Set<VerificationRoomId> => {
-  const startNodes = [...graph.keys()].filter((node) =>
-    starts.has(node.roomId),
-  );
+  const startNodes = graph.nodes.filter((node) => starts.has(node.roomId));
   const reached = new Set<VerificationRoomId>();
   for (const node of reachableNodes(graph, startNodes)) {
     reached.add(node.roomId);

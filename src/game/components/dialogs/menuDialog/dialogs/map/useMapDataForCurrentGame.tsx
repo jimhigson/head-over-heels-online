@@ -60,13 +60,11 @@ export const useMapDataForCurrentGame = <
         }
       }
 
-      const positions = [
-        ...roomGridPositions({
-          campaign,
-          roomId: centreRoomId,
-          subRoomId: curSubRoom,
-        }).keys(),
-      ];
+      const positions = roomGridPositions({
+        campaign,
+        roomId: centreRoomId,
+        subRoomId: curSubRoom,
+      }).nodes;
       const sortedObjectOfPositions = sortRoomGridPositions(positions);
 
       return {

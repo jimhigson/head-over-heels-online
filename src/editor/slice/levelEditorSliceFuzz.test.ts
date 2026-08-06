@@ -28,13 +28,11 @@ const directions: DirectionXy4[] = ["left", "right", "away", "towards"];
 
 const solveMapGeometry = (state: typeof initialLevelEditorSliceState) => {
   const { roomId, subRoomId } = selectCursorRoom(state);
-  const positions = [
-    ...roomGridPositions({
-      campaign: state.campaignInProgress,
-      roomId,
-      subRoomId,
-    }).keys(),
-  ];
+  const positions = roomGridPositions({
+    campaign: state.campaignInProgress,
+    roomId,
+    subRoomId,
+  }).nodes;
   return sortRoomGridPositions(positions);
 };
 

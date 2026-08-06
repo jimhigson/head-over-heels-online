@@ -121,6 +121,42 @@ index 300cfe066ea20316e21657a7551f0f54f285fc8c..ad3dfe99024f55e31a91ff6691ba50c4
  
  export { autoDetectRenderer };
 -//# sourceMappingURL=autoDetectRenderer.mjs.map
+diff --git a/lib/scene/container/RenderGroup.js b/lib/scene/container/RenderGroup.js
+index 0b71077811b681a7909138189f0d6d757b4903b2..73615f8fc74f593eda2240d98afdc319b3b74540 100644
+--- a/lib/scene/container/RenderGroup.js
++++ b/lib/scene/container/RenderGroup.js
+@@ -105,6 +105,13 @@ class RenderGroup {
+     this.structureDidChange = true;
+     child.parentRenderGroup = this;
+     child.updateTick = -1;
++    // PATCH (see PIXI_BUGS.md bug 1): the child may be arriving from another
++    // render group (eg when a render group is disabled and its subtree is
++    // re-attached to the parent group). Its inherited colour, blend mode and
++    // visibility were derived relative to the old group root, so flag them
++    // (UPDATE_COLOR | UPDATE_BLEND | UPDATE_VISIBLE) for re-derivation on the
++    // next update pass - otherwise the stale group-relative values persist:
++    child._updateFlags |= 7;
+     if (child.parent === this.root) {
+       child.relativeRenderGroupDepth = 1;
+     } else {
+diff --git a/lib/scene/container/RenderGroup.mjs b/lib/scene/container/RenderGroup.mjs
+index 8f8fb74b9deec90289c6b7f93472b344f406c66a..b17048cecc22548a547d681a655e6edbbd900677 100644
+--- a/lib/scene/container/RenderGroup.mjs
++++ b/lib/scene/container/RenderGroup.mjs
+@@ -103,6 +103,13 @@ class RenderGroup {
+     this.structureDidChange = true;
+     child.parentRenderGroup = this;
+     child.updateTick = -1;
++    // PATCH (see PIXI_BUGS.md bug 1): the child may be arriving from another
++    // render group (eg when a render group is disabled and its subtree is
++    // re-attached to the parent group). Its inherited colour, blend mode and
++    // visibility were derived relative to the old group root, so flag them
++    // (UPDATE_COLOR | UPDATE_BLEND | UPDATE_VISIBLE) for re-derivation on the
++    // next update pass - otherwise the stale group-relative values persist:
++    child._updateFlags |= 7;
+     if (child.parent === this.root) {
+       child.relativeRenderGroupDepth = 1;
+     } else {
 diff --git a/lib/scene/graphics/init.mjs b/lib/scene/graphics/init.mjs
 index 084ce3493a08b04ad7ab876b255c08c64fa2fa5f..49ddf2cfb1ea3c162ebcda2066c1e43e9267f39c 100644
 --- a/lib/scene/graphics/init.mjs

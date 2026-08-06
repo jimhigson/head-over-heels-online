@@ -14,20 +14,31 @@ My name is Jim Higson and my tag on github is jimhigson
  * Shadows are rendered on all items that are eligible for them, and that have shadow 'casters' directly above them. Shadows are masked, and the masks
    reflect the top surface of the item, which is the only part of an item that is able to render a shadow
  * Item rendering is via an object-composed chain of item renderers whose lifecycle is managed by the room renderer
- * There are four camera angles, expressed by the `cameraAngle` Xy unit vector (cos,sin ∈ {(1,0),(0,1),(−1,0),(0,−1)})
+ * There are four 'settled' camera angles, expressed by the `cameraAngle` Xy unit vector (cos,sin ∈ {(1,0),(0,1),(−1,0),(0,−1)}) - these are the angles the game is generally played at, with the first
+ being the angle used in the 1987 original game. However, all rendering is continuous with respect to
+ camera angle, and should work at any in-between angle. The camera's z (look up or down) currently
+ does not change.
+
 
 ### Camera angle is a render-time concern (angle-free room model)
  * The loaded room model (items' `position`, `aabb`, config) is camera-angle-FREE - loaders take no `cameraAngle`. Nothing about the physical/collision model changes when the camera turns; the camera can never alter room geometry.
- * All angle-dependent geometry is derived at render time. The key primitive is `makeItemRenderBoxAtCameraAngle(item, cameraAngle, spritesheetMeta)` (`src/game/render/renderBox/`) → a `RenderBox` (drawn extent + near-corner offset) used for z-sorting and drawn extents; `undefined` = render true to the physical aabb (the common case, incl. lightBeams).
- * Items carry NO render geometry: the structural types (walls, door frames/legs, floors) derive their whole box inline in `makeItemRenderBoxAtCameraAngle`; every other kind's angle-invariant overdraw box comes from the `itemRenderExtents` table in the spritesheet meta (`gfx/spritesheetMeta/itemRenderExtents.ts`), keyed by dotted kind ids (`block.tower`, `monster.monkey`) that are compile-time checked against the item/config types.
- * The room renderer OWNS the boxes: it derives once per (item, angle) into its `renderBoxes` map (`Map<item, null | RenderBox>`; `null` = deliberately boxless, a `.get` miss = not in the render world) and reconciles membership each tick. Everything else consumes that map - it is passed as data on the item render context, into the `VisualIndex`/`zComparator`/`updateZEdges` sort machinery as call arguments, and exposed read-only for editor pointer picking. Nothing else calls the derive at time of use.
+ * All camera-angle-dependent geometry is derived at render time. The key primitive is `makeItemRenderBoxAtCameraAngle(item, cameraAngle, spritesheetMeta)` (`src/game/render/renderBox/`) → a `RenderBox` (drawn extent + near-corner offset) used for z-sorting and drawn extents; `undefined` = render true to the physical aabb (the common case, incl. lightBeams).
+ * Items carry no specific render geometry, only physical (their position in space and size as
+ xyz AABB). Items typically items render using their physical box for deciding z-order,
+ but there can be separate renderBoxes as a renderer concern that over-rides the physical box, as a render concern these are owned by the RoomRenderer. Render boxes are quarter-angle sensitive.
+ * The room renderer OWNS the boxes: it derives once per (item, angle) into its `renderBoxes` map (`Map<item, RenderBox | undefined>`) and reconciles membership each tick. An item held with an `undefined` value is deliberately boxless - it draws true to its physical aabb - while an item absent from the map is not in the render world at all. Both read back as `undefined`, so consumers MUST distinguish them with `has`, never by the value alone. Everything else consumes that map - it is passed as data on the item render context, into the sort machinery as call arguments, and exposed read-only for editor pointer picking. Nothing else calls the derive at time of use.
  * Wall-hidden-ness, apparent near/far edges, door-post apparent widths, shadow X/Y flips etc are all functions of `cameraAngle` evaluated at render time (e.g. `isWallDirectionHiddenAtAngle`, `effectiveFixedZIndex`, `isDoorPartInHiddenWall`). Door frame parts carry a world-fixed `onFloorEdge` (not an angle-stamped `inHiddenWall`).
  * Floors: physically expand a clean **0.5 block** (integer px, on-grid at every angle) through each doorway so players can't fall out of the world under a door; the expanded sides are recorded in the floor config's `doorExpandedSides`. The apparently-far ("back") expanded edges are *drawn* a cosmetic **0.02 block** larger (`floorBackEdgeOverhangBlocks` in `makeItemRenderBoxAtCameraAngle`, applied in `floorAppearance`) so the floor meets the back wall pixel-perfectly like the original game - render-only, never in the physical aabb. Do NOT bake fractional expansion into the physical aabb: it slides the whole floor off the pixel grid.
- * z-ordering is done by maintaining a graph of which items are in front or behind which other items, which is updated in-place for each frame, and a topological
-   sort finds the order
- * cyclic rendering is detected in the topological sort and these links are broken; masking resolves the cycle in the ItemPositionRenderer, which takes on an extra
-   responsibility above its normal role of positioning items 
- * Item position renderer positions the items according to their .position property, but also applies masking 
+ * z-ordering is completely rebuilt from room geometry every render tick (no cross-frame incremental edge state, no moved-tracking in the sort path): each spatial item's render box is projected
+   at the continuous render angle θ, a sweep-and-prune broad phase (`DrawOrderBroadPhase`, persistent typed-array buffers) yields the overlapping candidate pairs, and a fine comparator
+   decides front/back for each pair by **world-axis separation** — two world-aligned boxes are disjoint iff separated on world x, y or z; the separating axis plus the view ray's
+   world direction `(cos+sin, cos−sin, −1)` picks the front, and only genuine 3D intersections fall through to an MTV heuristic (`zComparatorOfVisuallyOverlapping`). The resulting
+   back→front edges are appended into a flat integer-indexed graph (`utils/graph/Graph`, reusable buffers rebuilt from scratch each frame; canonical node order = room-item order), and an
+   iterative topological sort over it produces the draw order. There is ONE graph: the same θ graph drives the draw order, the cycle masks, and broken-fronts-first ticking.
+   Participation (fixedZ, hidden walls, render boxes) stays quarter-quantised.
+ * cyclic rendering is detected in the topological sort and these edges are marked broken; masking resolves the cycle in the TransitionSurfaceRenderer, which carves the
+   front item's silhouette out of the back item's drawn surface
+ * Item position renderer positions the items according to their projected .position; masking is not its concern (it lives in the TransitionSurfaceRenderer)
 
 ## Level Format:
  *	Game levels are stored as JSON files.
@@ -319,6 +330,8 @@ don't have to change, or so snapshots don't have to regenerate. Once a type is r
 * avoid pleasantries such as "hope that helps", telling me "that's a great observation" etc. To the point and factual such as "I did x" or "that's correct" is preferable
 * Matter-of-fact tone for errors. Never use "Uh oh," "Oh no," or "There seems to be a problem." State cause and fix. Bad: "Uh oh, the test is failing. There seems to be an issue..." Good: "Test fails at auth.spec.ts:42: expected 200, got 401. Cause: missing auth header. Fix: add Authorization: Bearer ${token} to the request."
 
+* prefer variable names that are on the longer side if doing so makes them more descriptive; where there is only one instance of a const, let, or param, it is usually best for the name to be different from the type. Eg: `const zDrawOrder: ZDrawOrder` NOT: `const order: ZDrawOrder`. When reading from a collection, prefer the single version of the collection's name, ie `for( let shadowSprite of shadowSprites)` NOT: `for( let sprite of shadowSprites)`
+
 ### No preamble, no recap, no closing pleasantries
 
 Forbidden openers: "Great question," "Let me...", "I'll...", "Sure!", "Looking at your...", "To answer your question..."
@@ -337,6 +350,8 @@ Better: "The performance impact of doing it this way is x" - a factual statement
 
  ## Tests
  When writing unit tests, do not put a top-level `describe` at the top of the file that wraps all tests. This is redundant since the test runner will give the test suite name anyway.
+
+Never padd off a test as 'flaky' as an excuse - a 'flaky' test is a broken test. End of.
 
  Prefer one `expect` per test, except for where this would create a large amount of duplication of set-up code for the test
 
@@ -396,6 +411,7 @@ No not use `npx`, use `pnpm`. Do not call `pnpm vitest` directly, call `pnpm che
 * to set game/debug state from automation, dispatch plain actions to `window._e2e_store` (eg `userSettings/setShowBoundingBoxType` with `{ itemType, value: true }`).
 * **visual-regression builds log every non-zero physics advance** - the main loop prints `[game-speed] physics advanced <deltaMS>ms (elapsed <elapsedMS>ms × gameSpeed <n>)` whenever game time moves. Screenshots are captured with the world frozen at game speed zero, so any such line is either a deliberate `__e2e_fastForwardMs` jump or the explanation for a capture that differs from its baseline - read them first when a snapshot shows an item in an unexpected position.
 * **the Debug spritesheet: use this when debugging rendering issues** (sprite/shadow placement, alignment, which sprite is drawn where). Every sprite renders flattened to a per-sprite block colour with its texture id written in its centre in a 3×5 pixel font; floors are pure white (so shadows land visibly); playables/characters are their whole frame rectangle; shadows render as normal shadow art. It is an ordinary committed spritesheet image (`gfx/spritesDebug.webp`, sharing BlockStack's frame layout - see `debugSpritesheetMeta`) loaded like any other sheet; since its meta declares no swops, no variants are built from it (variants exist per sheet only where the meta declares their swops), so what you see on screen is exactly the sheet's pixels. Enable via the cheats panel's *debug rendering* row ("sprites:" select, which offers all sprite options including "Debug"), by cycling with F10 (Debug joins the cycle only while cheats are on - see `cycleSpritesOptionThunk`), or from automation: `_e2e_store.dispatch({ type: "userSettings/setSpritesOption", payload: { name: "Debug", uncolourised: false } })`. It is cheats-only (`debug` on its meta), deliberately excluded from the normal display menus.
+* when fixing bugs, ALWAYS offer to reproduce in-game first, either in tests or by driving the browser, THEN fix it. If validated by tests, validate right away, if that is not possible OFFER to validate in a real browser
 * the bounding-box (and pointer-debug) item-renderer decorators are only registered while the **Cheats panel is mounted** (`useRegisterDecorateItemRenderers` lives inside the `Cheats` component, rendered when `debug.cheatsOn` is true, ie via `?cheats=1`). Setting `showBoundingBoxTypes` alone does nothing if the panel never mounted. `LazyCheats` mounts async, and the decorator only wraps item renderers created *after* it registers - so wait for the panel to mount, then dispatch, then allow time for items to be (re)created (light-beam renderers recast frequently, so they pick up the decorator on their own).
 * prefer the `hohjs-browser-mcp` skill for browser automation patterns and known MCP quirks.
 * **the crowns dialog** (`dialogId="crowns"`, `CrownsDialog.tsx`) opens WHENEVER a new game is started - including when you boot straight into a room via a `campaignName`/`#roomId` URL. It overlays the game (which is already running underneath). To dismiss it you need only **click it once, after it has finished loading**: it renders a `LOADING` banner while `useIsGameLoading()` is true and only becomes clickable (its `onClick` closes it) once loading is done. So: wait for the crowns dialog to stop loading, then click it (its `aria-label` describes it and says clicking dismisses it) - do NOT reach for `gameMenus/closeAllMenus` or other workarounds. The e2e helper `exitCrownsDialog` already encapsulates this wait-then-click.

@@ -17,16 +17,12 @@ export const reachableNodes = <N, E>(
     }
   }
   for (let head = 0; head < queue.length; head++) {
-    const outgoing = graph.get(queue[head]);
-    if (outgoing === undefined) {
-      continue;
-    }
-    for (const next of outgoing.keys()) {
-      if (!reached.has(next)) {
-        reached.add(next);
-        queue.push(next);
+    graph.forEachEdgeFrom(queue[head], (to) => {
+      if (!reached.has(to)) {
+        reached.add(to);
+        queue.push(to);
       }
-    }
+    });
   }
   return reached;
 };

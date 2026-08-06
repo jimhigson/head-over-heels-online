@@ -91,7 +91,11 @@ export type GameState<RoomId extends string = string> = {
      * same endpoint
      */
     arc: number;
-    /** linear time fraction, 0..1 */
+    /** linear time fraction, 0..1
+     *
+     * TODO: switch to physics-based inertial simulation with easing and (slight)
+     * snapback
+     */
     progress: number;
     /**
      * how long this transition takes: proportional to its arc, capped at the
@@ -107,13 +111,6 @@ export type GameState<RoomId extends string = string> = {
      */
     startSlope: number;
   };
-
-  /**
-   * test hook (set via `window._e2e_gamePageGameAi`): when defined, the active
-   * transition's progress is clamped to this value and never completes, for
-   * deterministic screenshots at any point along the turn.
-   */
-  _e2e_cameraTransitionHold?: number;
 };
 
 // if you don't care about the RoomId generic, you can't emit events (since they are callbacks)

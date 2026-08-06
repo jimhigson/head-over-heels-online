@@ -1,4 +1,5 @@
 import { keys } from "../../../../utils/entries";
+import { Graph } from "../../../../utils/graph/Graph";
 import {
   type RoomGraph,
   roomGridPositions,
@@ -15,7 +16,7 @@ export const verificationGraph = (
 ): RoomGraph<string> => {
   const [seedRoomId] = keys(campaign.rooms);
   if (seedRoomId === undefined) {
-    return new Map();
+    return new Graph(true);
   }
   return roomGridPositions({
     campaign,

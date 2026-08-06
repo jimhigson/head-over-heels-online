@@ -1,15 +1,34 @@
 import { type UnionOfAllItemInPlayTypes } from "../../../model/ItemInPlay";
 import { addXyz, type Xyz } from "../../../utils/vectors/vectors";
 import { blockSizePx } from "../mechanicsConstants";
-import {
-  CellIndex,
-  decodeCellKey,
-  type Indexable,
-  makeCellKey,
-  type XyCellKey,
-} from "./CellIndex";
 
-export { type Indexable } from "./CellIndex";
+/** two cell coords packed into one 32-bit int (16 bits each) - see {@link makeCellKey} */
+type XyCellKey = number;
+
+/**
+ * Pack cell coordinates into a single integer key. 16 bits per axis, masked so a
+ * negative coord doesn't bleed into the other half - rooms are far smaller than
+ * the ±32767-cell range this allows.
+ */
+const makeCellKey = (x: number, y: number): XyCellKey =>
+  ((x & 0xff_ff) << 16) | (y & 0xff_ff);
+
+/** the (x, y) cell coordinates packed into a key by {@link makeCellKey} */
+const decodeCellKey = (key: XyCellKey): { x: number; y: number } =>
+  // sign-extend each 16-bit half back to a signed coordinate:
+  ({ x: key >> 16, y: (key << 16) >> 16 });
+
+/**
+ * The shape an item needs to be indexed: a stable identity, a world position and
+ * a bounding box.
+ */
+export type Indexable = {
+  id: string;
+  state: {
+    position: Xyz;
+  };
+  aabb: Xyz;
+};
 
 // these multiplications empirically give good performance in larger rooms.
 // if the cells are too fine, the search for shadow-casters has to visit
@@ -45,7 +64,14 @@ export class SpatialIndex<
   RoomItemId extends string = string,
   Item extends Indexable = UnionOfAllItemInPlayTypes<RoomId, RoomItemId>,
 > {
-  #cells = new CellIndex<Item>();
+  /** cell key → the set of items occupying that cell. Sparse: empty cells aren't stored. */
+  #cells = new Map<XyCellKey, Set<Item>>();
+  /**
+   * item → the set of cell keys it currently occupies. This reverse mapping makes
+   * update/remove O(cells-of-item) rather than a scan of the whole grid. Held
+   * alongside {@link #cells} so the two can never desync
+   */
+  #itemToCellKeys = new Map<Item, Set<XyCellKey>>();
 
   /**
    * cached occupied-cell extent of the cuboid index (x/y cells only - the index
@@ -91,12 +117,102 @@ export class SpatialIndex<
     }
   }
 
+  #ensureCell(cellKey: XyCellKey): Set<Item> {
+    let cell = this.#cells.get(cellKey);
+    if (!cell) {
+      cell = new Set();
+      this.#cells.set(cellKey, cell);
+    }
+    return cell;
+  }
+
+  /** put an item into all the given cells */
+  #addToCells(item: Item, cellKeys: Iterable<XyCellKey>): void {
+    const occupiedCells = new Set<XyCellKey>();
+    for (const cellKey of cellKeys) {
+      this.#ensureCell(cellKey).add(item);
+      occupiedCells.add(cellKey);
+    }
+    this.#itemToCellKeys.set(item, occupiedCells);
+  }
+
+  /** take an item out of every cell it is in, dropping any it leaves empty */
+  #removeFromCells(item: Item): void {
+    const occupiedCells = this.#itemToCellKeys.get(item);
+    this.#itemToCellKeys.delete(item);
+
+    if (!occupiedCells) {
+      return;
+    }
+
+    for (const cellKey of occupiedCells) {
+      const cell = this.#cells.get(cellKey);
+      if (cell) {
+        cell.delete(item);
+        if (cell.size === 0) {
+          this.#cells.delete(cellKey);
+        }
+      }
+    }
+  }
+
+  /**
+   * move an item to a new set of cells, touching only the cells that actually
+   * changed. The item must already be in the index.
+   */
+  #moveToCells(item: Item, cellKeys: Iterable<XyCellKey>): void {
+    const oldCellKeys = this.#itemToCellKeys.get(item);
+    if (!oldCellKeys) {
+      throw new Error(`Item not in index`);
+    }
+
+    const newCellKeys = new Set<XyCellKey>(cellKeys);
+    let deleted = false;
+    let added = false;
+
+    // Remove from old cells that are not in new cells
+    for (const cellKey of oldCellKeys) {
+      if (!newCellKeys.has(cellKey)) {
+        const cell = this.#cells.get(cellKey);
+        if (cell) {
+          deleted = true;
+          cell.delete(item);
+        }
+      }
+    }
+
+    // Add to new cells that were not in old cells
+    for (const cellKey of newCellKeys) {
+      if (!oldCellKeys.has(cellKey)) {
+        this.#ensureCell(cellKey).add(item);
+        added = true;
+      }
+    }
+
+    // Clean up empty cells
+    if (deleted) {
+      for (const cellKey of oldCellKeys) {
+        const cell = this.#cells.get(cellKey);
+        if (cell && cell.size === 0) {
+          this.#cells.delete(cellKey);
+        }
+      }
+    }
+
+    // Update tracking
+    if (deleted || added) {
+      this.#itemToCellKeys.set(item, newCellKeys);
+    } else {
+      newCellKeys.clear();
+    }
+  }
+
   /** Add an item to the grid at its current position. */
   addItem(item: Item): void {
-    if (this.#cells.has(item)) {
+    if (this.#itemToCellKeys.has(item)) {
       throw new Error(`Item ${item.id} is already in the spatial index`);
     }
-    this.#cells.add(
+    this.#addToCells(
       item,
       this.#iterateCuboidCellKeys(item.state.position, item.aabb),
     );
@@ -105,10 +221,10 @@ export class SpatialIndex<
 
   /** Remove an item from the grid. */
   removeItem(item: Item): void {
-    if (!this.#cells.has(item)) {
+    if (!this.#itemToCellKeys.has(item)) {
       throw new Error(`Item ${item.id} is not in the spatial index`);
     }
-    this.#cells.remove(item);
+    this.#removeFromCells(item);
     this.#cuboidCellExtentDirty = true;
   }
 
@@ -117,7 +233,7 @@ export class SpatialIndex<
    * detection should work.
    */
   updateItemSpatialIndex(item: Item): void {
-    this.#cells.update(
+    this.#moveToCells(
       item,
       this.#iterateCuboidCellKeys(item.state.position, item.aabb),
     );
@@ -144,7 +260,7 @@ export class SpatialIndex<
     cellX: number,
     cellY: number,
   ): ReadonlySet<Item> | undefined {
-    return this.#cells.getCell(makeCellKey(cellX, cellY));
+    return this.#cells.get(makeCellKey(cellX, cellY));
   }
 
   /**
@@ -158,7 +274,7 @@ export class SpatialIndex<
       let maxCellX = -Infinity;
       let minCellY = Infinity;
       let maxCellY = -Infinity;
-      for (const key of this.#cells.occupiedCellKeys()) {
+      for (const key of this.#cells.keys()) {
         const { x: cx, y: cy } = decodeCellKey(key);
         minCellX = Math.min(minCellX, cx);
         maxCellX = Math.max(maxCellX, cx);
@@ -189,7 +305,7 @@ export class SpatialIndex<
     const neighbours = new Set<Item>();
 
     for (const cellKey of this.#iterateCuboidCellKeys(position, size)) {
-      const cell = this.#cells.getCell(cellKey);
+      const cell = this.#cells.get(cellKey);
       if (cell) {
         for (const neighbour of cell) {
           if (neighbour !== excludeItem) {
@@ -215,12 +331,10 @@ export class SpatialIndex<
    * cheats panel.
    */
   debugToString(): string {
-    const sortedCellKeys = Array.from(this.#cells.occupiedCellKeys()).sort(
-      (a, b) => a - b,
-    );
+    const sortedCellKeys = Array.from(this.#cells.keys()).sort((a, b) => a - b);
 
     const cellEntries = sortedCellKeys.map((cellKey) => {
-      const cell = this.#cells.getCell(cellKey)!;
+      const cell = this.#cells.get(cellKey)!;
       const itemIds = Array.from(cell).map((item) => item.id);
       const { x, y } = decodeCellKey(cellKey);
       return `  (${x},${y}) [raw ${cellKey}] => [${itemIds.join(", ")}]`;

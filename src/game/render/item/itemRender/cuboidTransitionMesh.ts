@@ -71,6 +71,18 @@ const nearCornerXy = (cameraAngle: Xy): { nearX: 0 | 1; nearY: 0 | 1 } => ({
  * The box spans `offset` .. `offset + dims` from the item origin (dims/offset are
  * the render box, so the mesh hugs the drawn art rather than the physics aabb).
  */
+/** a box corner's world-space position relative to the item origin */
+const cornerWorldOffset = (
+  cornerVector: CornerVector,
+  dims: Xyz,
+  offset: Xyz,
+): Xyz =>
+  addXyz(offset, {
+    x: cornerVector.x * dims.x,
+    y: cornerVector.y * dims.y,
+    z: cornerVector.z * dims.z,
+  });
+
 const cornerScreenOffset = (
   cornerVector: CornerVector,
   dims: Xyz,
@@ -78,11 +90,7 @@ const cornerScreenOffset = (
   angle: Xy,
 ): Xy =>
   projectWorldXyzToScreenXy(
-    addXyz(offset, {
-      x: cornerVector.x * dims.x,
-      y: cornerVector.y * dims.y,
-      z: cornerVector.z * dims.z,
-    }),
+    cornerWorldOffset(cornerVector, dims, offset),
     angle,
   );
 
@@ -188,7 +196,7 @@ export const createCuboidTransitionMesh = (
   layerAngle: Xy,
   /**
    * the pixel position of the item origin within `texture` - i.e. `-boundsMin`
-   * of the snapshotted container (see bakeContainerToTexture).
+   * of the snapshotted container (see renderContainerToTexture).
    */
   textureOriginOffset: Xy,
   /** the box the mesh warps, in world px (the item's render box, hugging the art) */
@@ -288,24 +296,64 @@ export const createCuboidTransitionMesh = (
 
   const positionBuffer = geometry.getBuffer("aPosition");
 
+  // update() runs per warping item per frame, so it works entirely in
+  // per-mesh scalar scratch - no objects are allocated. The world-space
+  // corner coordinates are fixed for the mesh's life; only the rotation
+  // (then the fixed 2:1 projection) changes with the camera angle:
+  const faceCount = usedFaces.length;
+  /** apex and per-face b/c corners in world space: [x, y, z] each */
+  const apexWorld = new Float64Array(3);
+  {
+    const apexOffset = cornerWorldOffset(apex, dims, offset);
+    apexWorld[0] = apexOffset.x;
+    apexWorld[1] = apexOffset.y;
+    apexWorld[2] = apexOffset.z;
+  }
+  /** per face: bX, bY, bZ, cX, cY, cZ */
+  const faceWorlds = new Float64Array(faceCount * 6);
+  usedFaces.forEach((face, f) => {
+    const bOffset = cornerWorldOffset(face.b, dims, offset);
+    const cOffset = cornerWorldOffset(face.c, dims, offset);
+    const o = f * 6;
+    faceWorlds[o] = bOffset.x;
+    faceWorlds[o + 1] = bOffset.y;
+    faceWorlds[o + 2] = bOffset.z;
+    faceWorlds[o + 3] = cOffset.x;
+    faceWorlds[o + 4] = cOffset.y;
+    faceWorlds[o + 5] = cOffset.z;
+  });
+  /** per-update scratch, per face: ux, uy, vx, vy */
+  const faceBases = new Float64Array(faceCount * 4);
+
   const update = (cameraAngle: Xy) => {
-    const apexNow = cornerScreenOffset(apex, dims, offset, cameraAngle);
-    const faceBasesNow = usedFaces.map((face) => {
-      const bNow = cornerScreenOffset(face.b, dims, offset, cameraAngle);
-      const cNow = cornerScreenOffset(face.c, dims, offset, cameraAngle);
-      return {
-        ux: bNow.x - apexNow.x,
-        uy: bNow.y - apexNow.y,
-        vx: cNow.x - apexNow.x,
-        vy: cNow.y - apexNow.y,
-      };
-    });
+    const { x: cos, y: sin } = cameraAngle;
+    // rotate about z then project (screenX = ry − rx, screenY = −(rx+ry)/2 − z):
+    const apexRx = cos * apexWorld[0] - sin * apexWorld[1];
+    const apexRy = sin * apexWorld[0] + cos * apexWorld[1];
+    const apexScreenX = apexRy - apexRx;
+    const apexScreenY = -(apexRx + apexRy) / 2 - apexWorld[2];
+
+    for (let f = 0; f < faceCount; f++) {
+      const o = f * 6;
+      const bRx = cos * faceWorlds[o] - sin * faceWorlds[o + 1];
+      const bRy = sin * faceWorlds[o] + cos * faceWorlds[o + 1];
+      const cRx = cos * faceWorlds[o + 3] - sin * faceWorlds[o + 4];
+      const cRy = sin * faceWorlds[o + 3] + cos * faceWorlds[o + 4];
+      const b = f * 4;
+      faceBases[b] = bRy - bRx - apexScreenX;
+      faceBases[b + 1] = -(bRx + bRy) / 2 - faceWorlds[o + 2] - apexScreenY;
+      faceBases[b + 2] = cRy - cRx - apexScreenX;
+      faceBases[b + 3] = -(cRx + cRy) / 2 - faceWorlds[o + 5] - apexScreenY;
+    }
+
     for (let i = 0; i < vertexCount; i++) {
-      const basis = faceBasesNow[faceIndexOfVertex[i]];
+      const b = faceIndexOfVertex[i] * 4;
       const alpha = alphas[i];
       const beta = betas[i];
-      positions[i * 2] = apexNow.x + alpha * basis.ux + beta * basis.vx;
-      positions[i * 2 + 1] = apexNow.y + alpha * basis.uy + beta * basis.vy;
+      positions[i * 2] =
+        apexScreenX + alpha * faceBases[b] + beta * faceBases[b + 2];
+      positions[i * 2 + 1] =
+        apexScreenY + alpha * faceBases[b + 1] + beta * faceBases[b + 3];
     }
     positionBuffer.update();
   };

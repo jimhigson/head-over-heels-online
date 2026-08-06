@@ -222,13 +222,14 @@ test.for<{
 
   const { subRoomId: cursorSubRoomId } = selectCursorRoom(result);
   expect
-    .soft(() => [
-      ...roomGridPositions({
-        campaign: result.campaignInProgress,
-        roomId: cursorRoomId,
-        subRoomId: cursorSubRoomId,
-      }).keys(),
-    ])
+    .soft(
+      () =>
+        roomGridPositions({
+          campaign: result.campaignInProgress,
+          roomId: cursorRoomId,
+          subRoomId: cursorSubRoomId,
+        }).nodes,
+    )
     .not.toThrow();
 });
 
@@ -255,13 +256,11 @@ test("coalescing rooms below a room that has a room above does not break map geo
 
   const { roomId, subRoomId } = selectCursorRoom(result);
 
-  const specs = [
-    ...roomGridPositions({
-      campaign: result.campaignInProgress,
-      roomId,
-      subRoomId,
-    }).keys(),
-  ];
+  const specs = roomGridPositions({
+    campaign: result.campaignInProgress,
+    roomId,
+    subRoomId,
+  }).nodes;
 
   // the rooms form a closed loop (away, away, down, towards, towards, up), so on
   // the map they should be a single ring of six cells: no two cells sharing a
@@ -315,11 +314,12 @@ test("merging two rooms below a room that is above one of them does not break ma
 
   const { roomId, subRoomId } = selectCursorRoom(result);
 
-  expect(() => [
-    ...roomGridPositions({
-      campaign: result.campaignInProgress,
-      roomId,
-      subRoomId,
-    }).keys(),
-  ]).not.toThrow();
+  expect(
+    () =>
+      roomGridPositions({
+        campaign: result.campaignInProgress,
+        roomId,
+        subRoomId,
+      }).nodes,
+  ).not.toThrow();
 });

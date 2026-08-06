@@ -13,7 +13,7 @@ test("traversing original campaign from the start room", () => {
       roomGridPositions({
         campaign,
         roomId: "blacktooth1head",
-      }).keys(),
+      }).nodes,
     ),
   ).toMatchInlineSnapshot(`
     {
@@ -2219,7 +2219,7 @@ test("traversing original campaign from the final room", () => {
       roomGridPositions({
         campaign,
         roomId: "finalroom",
-      }).keys(),
+      }).nodes,
     ),
   ).toMatchInlineSnapshot(`
     {
@@ -4436,26 +4436,22 @@ const collectTeleporterLinks = (
     roomId: fromRoomId,
     totalGraph: true,
   });
-  const teleporterLinks: TeleporterLink<string>[] = [];
-  for (const [from, edges] of graph) {
-    for (const [to, edge] of edges) {
-      if (edge.kind === "teleporter") {
-        teleporterLinks.push({
-          from: {
-            roomId: from.roomId,
-            subRoomId: from.subRoomId,
-            itemId: edge.viaItemId,
-          },
-          to: {
-            roomId: to.roomId,
-            subRoomId: to.subRoomId,
-            itemId: edge.toItemId,
-          },
-        });
-      }
-    }
-  }
-  return teleporterLinks;
+  return graph
+    .iterateAnnotatedEdges()
+    .filter(({ annotation }) => annotation.kind === "teleporter")
+    .map(({ from, to, annotation }) => ({
+      from: {
+        roomId: from.roomId,
+        subRoomId: from.subRoomId,
+        itemId: annotation.viaItemId,
+      },
+      to: {
+        roomId: to.roomId,
+        subRoomId: to.subRoomId,
+        itemId: annotation.toItemId,
+      },
+    }))
+    .toArray();
 };
 
 test("teleporter with toPosition resolves the destination sub-room (no item id)", () => {

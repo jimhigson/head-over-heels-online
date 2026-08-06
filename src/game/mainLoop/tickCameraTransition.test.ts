@@ -140,14 +140,13 @@ test("the target angle persists after the transition completes", () => {
   expect<Xy>(gs.targetCameraAngle).toEqual<Xy>(clockwise);
 });
 
-test("_e2e_cameraTransitionHold clamps progress and never completes", () => {
-  const gs: CameraTransitionCarrier = {
-    targetCameraAngle: cameraAngleBase,
-    _e2e_cameraTransitionHold: 0.7,
-  };
+test("a zero delta leaves the progress where it was set, without completing", () => {
+  const gs = baseCarrier();
   startCameraRotation(gs, "clockwise");
-  // a delta far larger than the duration would normally complete it:
-  const stillActive = tickCameraTransition(gs, cameraTransitionDurationMs * 5);
+  gs.cameraTransition!.progress = 0.7;
+  // the transition advances on the game-speed-scaled clock, so at zero game
+  // speed it stays put - which is how tests pin the camera mid-turn:
+  const stillActive = tickCameraTransition(gs, 0);
   expect({ stillActive, progress: gs.cameraTransition?.progress }).toEqual({
     stillActive: true,
     progress: 0.7,

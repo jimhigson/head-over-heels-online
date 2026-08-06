@@ -25,6 +25,7 @@ import {
   addXy,
   addXyz,
   alongAxisOfDirectionXy,
+  axesXy,
   type AxisXy,
   type DirectionIndexXy4,
   directionIndexXy8,
@@ -277,25 +278,6 @@ const edgeSprites = ({
 };
 
 /**
- * one camera-near floor edge as laid out for its edge sprites - the colour
- * clash strips are drawn from the same layout so the two always align
- */
-type NearFloorEdge = {
-  /** the camera-space edge as a d-number (right = 4, towards = 6) */
-  directionIndex: Subset<DirectionIndexXy4, 4 | 6>;
-  /** the edge strip's (possibly reversal-shifted) anchor, in fine world px */
-  position: Partial<Xyz>;
-  worldAlongAxis: AxisXy;
-  tilesCount: number;
-  /**
-   * true when the edge's world axis projects reversed on screen, putting the
-   * corner shared with the other floor edge at the strip's far (max index)
-   * end
-   */
-  sharedCornerAtEnd: boolean;
-};
-
-/**
  * where the previous rendering stashes its baked floor sprite, so a
  * camera-angle re-render can bake into the same sprite/render texture
  */
@@ -304,14 +286,28 @@ type FloorRenderingContainer = Container & {
   [floorBakeSpriteSymbol]?: UniqueTextureSprite;
 };
 
+/**
+ * the clash strips for the floor's two apparently-near edges: from the
+ * floor's apparent-near corner, each edge's cell rects walk outward along
+ * the projected 2:1 diagonal, one rect per block. The corner is always an
+ * integer point in the item frame (door expansions are whole 0.5 blocks and
+ * the 0.02 drawn overhang only ever extends apparently-far edges) and the
+ * steps are whole blocks, so every rect lands on the 8px attribute-cell
+ * grid at every quarter angle; the fractional far-end overshoot is clipped
+ * by the cutoff mask like the edge tiles' own
+ */
 const createColourClash = ({
   room,
-  edges,
+  floorAabb,
+  drawnAabb,
   cameraQuarterAngle,
   filterCache,
 }: {
   room: RoomState<string, string>;
-  edges: NearFloorEdge[];
+  /** the floor's physical (integer) aabb - locates the near corner */
+  floorAabb: Xyz;
+  /** the drawn extent, incl door expansions + overhang - sets strip length */
+  drawnAabb: Xyz;
   cameraQuarterAngle: Xy;
   filterCache: FilterCache;
 }) => {
@@ -319,13 +315,18 @@ const createColourClash = ({
     label: "floorColourClash",
   });
 
-  for (const {
-    directionIndex,
-    position,
-    worldAlongAxis,
-    tilesCount,
-    sharedCornerAtEnd,
-  } of edges) {
+  const reversedX = axisProjectsReversed("x", cameraQuarterAngle);
+  const reversedY = axisProjectsReversed("y", cameraQuarterAngle);
+  const cornerXy = projectWorldXyzToScreenXy(
+    {
+      x: reversedX ? floorAabb.x : 0,
+      y: reversedY ? floorAabb.y : 0,
+      z: floorAabb.z,
+    },
+    cameraQuarterAngle,
+  );
+
+  for (const worldAlongAxis of axesXy) {
     // the colour belongs to the world edge and travels with it as the camera
     // rotates (towards/away edges run along x, right/left along y - opposite
     // edges share a colour, so a 180° rotation looks like the base angle):
@@ -334,7 +335,7 @@ const createColourClash = ({
       worldAlongAxis === "x" ? "towards" : "right",
     );
     const edgeContainer = new Container({
-      label: `floorColourClash.${directionsXy8Octants[directionIndex]}`,
+      label: `floorColourClash.${worldAlongAxis}`,
       filters: [
         filterCache.getOrInsertComputed(
           `colourClash(${colour.toHex()})`,
@@ -342,34 +343,32 @@ const createColourClash = ({
         ),
       ],
     });
+    // one block along this edge, away from the near corner - projects to
+    // (±blockXy, -blockXy/2), rising a half-block per step by definition of
+    // the near corner:
+    const step = projectWorldXyzToScreenXy(
+      {
+        [worldAlongAxis]:
+          (
+            worldAlongAxis === "x" ? reversedX : reversedY
+          ) ?
+            -blockSizePx.x
+          : blockSizePx.x,
+      },
+      cameraQuarterAngle,
+    );
+    const tilesCount = Math.ceil(drawnAabb[worldAlongAxis] / blockSizePx.x);
+    const stepsRight = step.x > 0;
     for (let i = 0; i <= tilesCount; i++) {
-      const screenXy = projectWorldXyzToScreenXy(
-        addXyz(
-          { ...originXyz, ...position },
-          { [worldAlongAxis]: i * blockSizePx.x },
-        ),
-        cameraQuarterAngle,
-      );
-      // don't cross past the corner shared with the other edge's strip:
-      const atSharedCorner = sharedCornerAtEnd ? i === tilesCount : i === 0;
+      const x = cornerXy.x + step.x * i;
+      const y = cornerXy.y + step.y * i + 1;
+      // each rect covers its block's cells, overhanging one cell towards the
+      // corner - except the corner rect, which must not cross into the other
+      // edge's strip:
       const g =
-        directionIndex === directionIndexXy8.right ?
-          new Graphics()
-            .rect(
-              screenXy.x - (atSharedCorner ? 0 : 8),
-              screenXy.y + 1,
-              8 * 3,
-              8,
-            )
-            .fill(colour)
-        : new Graphics()
-            .rect(
-              screenXy.x - 16,
-              screenXy.y + 1,
-              8 * (atSharedCorner ? 2 : 3),
-              8,
-            )
-            .fill(colour);
+        stepsRight ?
+          new Graphics().rect(i === 0 ? x : x - 8, y, 8 * 3, 8).fill(colour)
+        : new Graphics().rect(x - 16, y, 8 * (i === 0 ? 2 : 3), 8).fill(colour);
       edgeContainer.addChild(g);
     }
     container.addChild(edgeContainer);
@@ -719,10 +718,6 @@ export const floorAppearance: ItemAppearance<"floor", RenderOnceProps> =
           times: Partial<Xy>;
         }>;
 
-        // the two camera-near edges' layouts, as used by the edge sprites - the
-        // colour clash (uncolourised mode) is drawn from the same layout:
-        const nearEdges: NearFloorEdge[] = [];
-
         for (const { vector, position, times } of floorEdges) {
           // the edge's world direction rotated to how it appears, as a ring
           // index once here - the index keys the slot pick and the near-side
@@ -763,14 +758,6 @@ export const floorAppearance: ItemAppearance<"floor", RenderOnceProps> =
                   { [worldAlongAxis]: blockSizePx.x - overshootPx },
                 )
               : position;
-
-            nearEdges.push({
-              directionIndex: renderedDirectionIndex,
-              position: lipPosition,
-              worldAlongAxis,
-              tilesCount,
-              sharedCornerAtEnd: alongReversed,
-            });
 
             floorEdgeContainer.addChild(
               edgeSprites({
@@ -853,8 +840,9 @@ export const floorAppearance: ItemAppearance<"floor", RenderOnceProps> =
 
         if (spriteOption.uncolourised) {
           const colourClashContainer = createColourClash({
-            edges: nearEdges,
             room,
+            floorAabb: aabb,
+            drawnAabb,
             cameraQuarterAngle,
             filterCache,
           });

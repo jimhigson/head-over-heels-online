@@ -1,7 +1,10 @@
 import { expect, type Page } from "@playwright/test";
 
 import { type OriginalCampaignRoomId } from "../src/_generated/originalCampaign/OriginalCampaignRoomId";
+import { quarterMaskFaultRoomCampaign } from "../src/game/render/sortZ/__test__/quarterMaskFaultRoom";
+import { wallFloorSeamRoomCampaign } from "../src/game/render/sortZ/__test__/wallFloorSeamRoom";
 import { type ResolutionName } from "../src/originalGame";
+import { defaultEmulatedResolution } from "../src/store/slices/userSettings/defaultUserSettings";
 import { type SpriteOption } from "../src/store/slices/userSettings/userSettingsSlice";
 import { allItemsTestRoomCampaign } from "./fixtures/allItemsTestRoom";
 import { bootPlaytestCampaign } from "./testUtils/bootPlaytestCampaign";
@@ -18,6 +21,7 @@ import {
   exitCrownsDialog,
 } from "./testUtils/menuNavigation";
 import { setupE2ePage } from "./testUtils/pageSetup";
+import { projectDeviceType } from "./testUtils/projectDeviceType";
 import { relaySupabase } from "./testUtils/relaySupabase";
 import {
   roomScreenshotOptions,
@@ -43,14 +47,6 @@ restrictToCameraRotationProjects();
  * the real frame clock), so every frame is deterministic.
  */
 
-/**
- * the transition's stored progress is linear; smoothstep (hermiteEase with
- * zero start slope) is applied at render time. Invert it so the holds land on
- * exact swept angles
- */
-const progressForSweptFraction = (eased: number): number =>
-  0.5 - Math.sin(Math.asin(1 - 2 * eased) / 3);
-
 // the angles (degrees) swept from `startAngle` to `endAngle` every
 // `intervalDegrees`; the end angle is included unless the arc is a whole turn
 // back to the start (360° == 0°), which would repeat the first screenshot
@@ -67,7 +63,12 @@ function* angleRange(
   }
 }
 
-type SweepCampaign = "allItemsTestRoom" | "original" | "rotate-camera-test";
+type SweepCampaign =
+  | "allItemsTestRoom"
+  | "original"
+  | "quarterMaskFaultRoom"
+  | "rotate-camera-test"
+  | "wallFloorSeamRoom";
 
 /**
  * an infinitesimal step into a turn: far too small to move anything by a whole
@@ -114,6 +115,8 @@ type SweepCapture = {
  */
 type RoomsForCampaign<C extends SweepCampaign> =
   C extends "allItemsTestRoom" ? "allItemsTestRoom"
+  : C extends "wallFloorSeamRoom" ? "wallFloorSeamRoom"
+  : C extends "quarterMaskFaultRoom" ? "quarterMaskFaultRoom"
   : C extends "original" ? OriginalCampaignRoomId
   : string;
 
@@ -192,9 +195,31 @@ const sweepScenario = <C extends SweepCampaign>(
 
 const scenarios: readonly SweepScenario[] = [
   sweepScenario({
+    // wall/floor seam detects regressions in z-order of adjacent items
+    roomId: "wallFloorSeamRoom",
+    campaign: "wallFloorSeamRoom",
+    enterFrom: "$$startingRoom",
+    angles: [0, -20],
+    emulatedResolution: "zxSpectrum",
+    character: "head",
+  }),
+  sweepScenario({
+    // test case with masking that previously failed- regression protection
+    roomId: "quarterMaskFaultRoom",
+    campaign: "quarterMaskFaultRoom",
+    enterFrom: "$$startingRoom",
+    angles: [0, 20, 30, 35, 40, 44.999, 45.001, 50, 90],
+    emulatedResolution: "zxSpectrum",
+    character: "head",
+    // also debug ss - easier to grok errors
+    spriteOptions: [
+      { name: "BlockStack", uncolourised: false },
+      { name: "Debug", uncolourised: false },
+    ],
+  }),
+  sweepScenario({
     roomId: "blacktooth13",
     campaign: "original",
-    // entered through the door from adjacent blacktooth12:
     enterFrom: "blacktooth12",
     angles: [0, 20, 44.999, 45.001, 70, 90],
     emulatedResolution: "$$default",
@@ -203,7 +228,6 @@ const scenarios: readonly SweepScenario[] = [
   sweepScenario({
     roomId: "blacktooth56",
     campaign: "original",
-    // entered through the door from adjacent blacktooth55:
     enterFrom: "blacktooth55",
     angles: [180, 226],
     emulatedResolution: "$$default",
@@ -252,24 +276,18 @@ const scenarios: readonly SweepScenario[] = [
     captureTimesMs: [90, 170, 260],
   }),
   sweepScenario({
-    // a stacked hush-puppy pair (cyclic masked pair) that must stay carved and
-    // correctly projected through the whole turn - entered as heels since head
-    // would clear the hush puppies:
+    // stacked hush-puppy stairs (cyclic masked pair) that are tricky to stay
+    // mask-carved at all angles
     roomId: "hushpuppies",
     campaign: "rotate-camera-test",
     character: "heels",
-    // entered through the door from adjacent mirrors:
     enterFrom: "mirrors",
     angles: angleRange(0, 360, 18).toArray(),
     emulatedResolution: "$$default",
   }),
   sweepScenario({
-    // the demanding cycles room (a working draw-order cycle at the base angle,
-    // of multiplied blocks, plus the eight-barrier weave) swept at a dense 5°
-    // grid as the cyclic-masking guard through the whole turn. The nine fine
-    // angles inserted between 180 and 185 pin the found bugs where the
-    // toposort's severed-edge choice flips within that band (180.11/180.12 and
-    // 182.84/182.841 bracket the flips):
+    // cycles room - painter's algo's nightmare of multiple cyclic dependencies
+    // all over the place
     roomId: "cycles",
     campaign: "rotate-camera-test",
     // head's starting room, shown at spawn:
@@ -277,24 +295,46 @@ const scenarios: readonly SweepScenario[] = [
     angles: [
       0, 5, 10, 15, 20, 25, 30, 35, 40, 45, 50, 55, 60, 65, 70, 75, 80, 85, 90,
       95, 100, 105, 110, 115, 120, 125, 130, 135, 140, 145, 150, 155, 160, 165,
-      170, 175, 180, 180.11, 180.12, 181, 182.8, 182.84, 182.841, 182.85, 182.9,
-      183, 185, 190, 195, 200, 205, 210, 215, 220, 225, 230, 235, 240, 245, 250,
-      255, 260, 265, 270, 275, 280, 285, 290, 295, 300, 305, 310, 315, 320, 325,
-      330, 335, 340, 345, 350, 355,
+      170, 175, 180, 180.11, 180.12, 181,
+      // sometimes rendering breaks in this 1/100the of an angle:
+      182.84, 182.841,
+      // back to regular 5º:
+      185, 190, 195, 200, 205, 210, 215, 220, 225, 230, 235, 240, 245, 250, 255,
+      260, 265, 270, 275, 280, 285, 290, 295, 300, 305, 310, 315, 320, 325, 330,
+      335, 340, 345, 350, 355,
     ],
     emulatedResolution: "$$default",
     character: "head",
   }),
   sweepScenario({
-    // heels boots here with the bag pickup right above her and a portable
-    // block right below: the fast-forward drops the bag onto her (collected)
-    // and settles her stood on the block, so the pick-up-next highlight
-    // outline is showing; it also expires the pickup's floating text. 0 is
-    // the settled reference (outline correct); the epsilon angle pins the
-    // found bug where the outline mid-turn shades the block's whole square
-    // instead of outlining its pixels - at so slight an angle the two frames
-    // should differ only by a little mesh softening, making the broken
-    // outline the whole story of the diff:
+    // some highlighted angles with debug sprites
+    roomId: "cycles",
+    campaign: "rotate-camera-test",
+    // head's starting room, shown at spawn:
+    enterFrom: "$$startingRoom",
+    angles: [
+      150, 155,
+      // currently shows a slight error (floor showing through mask between items)
+      180,
+    ],
+    emulatedResolution: "$$default",
+    character: "head",
+    spriteOptions: [{ name: "Debug", uncolourised: false }],
+  }),
+  sweepScenario({
+    // cycles again, but uncolourised; detects regression for fixed bug: loss of
+    // tint of some sprites
+    roomId: "cycles",
+    campaign: "rotate-camera-test",
+    enterFrom: "$$startingRoom",
+    character: "head",
+    angles: [0, 90, 180, 270],
+    emulatedResolution: "$$default",
+    spriteOptions: [{ name: "BlockStack", uncolourised: true }],
+  }),
+  sweepScenario({
+    // heels boots here with the bag pickup right above, collects right away
+    // shows floating text
     roomId: "start",
     campaign: "rotate-camera-test",
     // heels' starting room, shown at spawn:
@@ -381,19 +421,26 @@ const scenarios: readonly SweepScenario[] = [
   sweepScenario({
     // the start room at its four settled angles, entered via lamp so it is
     // captured as a room entered with physics already frozen, rather than as
-    // the boot room the character was placed in while physics could still tick:
+    // the boot room the character was placed in while physics could still
+    // tick. Also captured uncolourised: the raised doors' legs and floating
+    // thresholds must render only legal zx-palette colours at every settled
+    // angle (an illegal shade means two tints multiplied together, eg a door
+    // leg tinted by the room colour twice):
     roomId: "start",
     campaign: "rotate-camera-test",
     enterFrom: "lamp",
     character: "head",
     angles: [0, 90, 180, 270],
     emulatedResolution: "$$default",
+    spriteOptions: [
+      { name: "BlockStack", uncolourised: false },
+      { name: "BlockStack", uncolourised: true },
+    ],
     maxDiffPixels: 1_000,
   }),
   sweepScenario({
     roomId: "blacktooth5",
     campaign: "original",
-    // entered through the door from adjacent blacktooth4:
     enterFrom: "blacktooth4",
     angles: [0, 90, 180, 270],
     emulatedResolution: "$$default",
@@ -411,12 +458,42 @@ const scenarios: readonly SweepScenario[] = [
     spriteOptions: [{ name: "BlockStack", uncolourised: true }],
     maxDiffPixels: 1_000,
   }),
+  sweepScenario({
+    // test for colour clash floor edge regression
+    roomId: "blacktooth39",
+    campaign: "original",
+    enterFrom: "finalroom",
+    character: "head",
+    angles: [0, 90, 270],
+    emulatedResolution: "$$default",
+    spriteOptions: [{ name: "BlockStack", uncolourised: true }],
+  }),
+  sweepScenario({
+    // settled angles
+    roomId: "blacktooth11",
+    campaign: "original",
+    enterFrom: "finalroom",
+    character: "head",
+    angles: [0, 90, 180, 270, 0],
+    emulatedResolution: "$$default",
+  }),
+  sweepScenario({
+    // hush puppy steps in cyclic draw orders
+    roomId: "blacktooth61",
+    campaign: "original",
+    enterFrom: "finalroom",
+    character: "heels",
+    angles: [
+      0, 90,
+      // previously failing angle:
+      19.44, 0,
+    ],
+    emulatedResolution: "$$default",
+  }),
   ...(["blacktooth15", "blacktooth1head", "blacktooth13"] as const).map(
     (roomId) =>
-      // the turn's start must be continuous: an infinitesimal step into a turn
-      // renders as the angle it left, both from the base angle and from an
-      // already-rotated one. These rooms are a rendering stress test for that -
-      // blacktooth1head in particular puts a character in shot:
+      // checks for very small angles from a settled angle - must be almost identical
+      // to the settled:
       sweepScenario({
         roomId,
         campaign: "original",
@@ -430,8 +507,7 @@ const scenarios: readonly SweepScenario[] = [
           ],
         },
         emulatedResolution: "$$default",
-        // the warp meshes soften edges even this far into a turn; a real
-        // discontinuity is many percent:
+        // expect a very small diff from the epsilon
         maxDiffPixelRatio: 0.02,
       }),
   ),
@@ -463,56 +539,18 @@ const rotateCameraTestCampaignUrl =
   "/?campaignName=rotate-camera-test&campaignAuthorUserId=2924c962-99f1-4dd2-9b9c-fef832dc991b&cheats=1&track=0";
 
 /**
- * hold the camera at an arbitrary angle (degrees anticlockwise from the base
- * view, any value - normalised into [0, 360) so negatives and past-a-full-turn
- * angles work, eg −40° == 320°): the settled quarter below the angle is set as
- * the transition's from-angle and a held transition towards the next quarter
- * carries the remainder
+ * put the camera at an arbitrary angle (degrees anticlockwise from the base
+ * view). The game speed is zero throughout these specs, so the transition the
+ * handle sets up never advances and the angle stays put for the screenshot
  */
 const holdCameraAtDegrees = async (page: Page, degrees: number) => {
-  const wrappedDegrees = ((degrees % 360) + 360) % 360;
-  const quarterIndex = Math.floor(wrappedDegrees / 90);
-  const remainderDegrees = wrappedDegrees - quarterIndex * 90;
-  const progress =
-    remainderDegrees === 0 ? undefined : (
-      progressForSweptFraction(remainderDegrees / 90)
-    );
-  await page.evaluate(
-    ({ quarterIndex, progress }) => {
-      const quarters = [
-        { x: 1, y: 0 },
-        { x: 0, y: 1 },
-        { x: -1, y: 0 },
-        { x: 0, y: -1 },
-      ];
-      const { gameState } = window._e2e_gamePageGameAi!;
-      if (progress === undefined) {
-        // exactly on a quarter - settle there with no transition:
-        gameState.targetCameraAngle = quarters[quarterIndex];
-        gameState.cameraTransition = undefined;
-        gameState._e2e_cameraTransitionHold = undefined;
-      } else {
-        gameState.targetCameraAngle = quarters[(quarterIndex + 1) % 4];
-        gameState.cameraTransition = {
-          fromAngle: quarters[quarterIndex],
-          // one anticlockwise quarter turn:
-          arc: Math.PI / 2,
-          progress,
-          durationMs: 500,
-          startSlope: 0,
-        };
-        gameState._e2e_cameraTransitionHold = progress;
-      }
-    },
-    { quarterIndex, progress },
-  );
+  await page.evaluate((degrees) => {
+    window.__e2e_holdCameraAtDegrees!(degrees);
+  }, degrees);
 };
 
 /**
- * swop to the wanted character via the e2e handle, which calls the swop mutator
- * directly - so it works at zero game speed, where the normal swop input (read
- * only inside the speed-scaled physics tick) never fires. A no-op when already
- * that character (so head, the usual boot default, is left alone)
+ * swop to the wanted character via the e2e handle
  */
 const switchToCharacter = async (page: Page, character: "head" | "heels") => {
   await page.evaluate((c) => {
@@ -528,11 +566,8 @@ const switchToCharacter = async (page: Page, character: "head" | "heels") => {
 };
 
 /**
- * put the current character into the swept room per {@link
- * SweepScenario.enterFrom}, so their position when captured is deterministic
- * rather than an artifact of navigation history. `campaignHashUrl` is the base
- * url whose `#<roomId>` hash drives a cheat level-select (unused for
- * "$$startingRoom", which navigates nowhere)
+ * put the current character into the a room, optionally specifying a room
+ * to enter from
  */
 const enterRoom = async (
   page: Page,
@@ -609,6 +644,18 @@ const bootScenario = async (page: Page, scenario: SweepScenario) => {
       allItemsTestRoomCampaign,
       emulatedResolutionPayload(scenario),
     );
+  } else if (scenario.campaign === "wallFloorSeamRoom") {
+    await bootPlaytestCampaign(
+      page,
+      wallFloorSeamRoomCampaign,
+      emulatedResolutionPayload(scenario),
+    );
+  } else if (scenario.campaign === "quarterMaskFaultRoom") {
+    await bootPlaytestCampaign(
+      page,
+      quarterMaskFaultRoomCampaign,
+      emulatedResolutionPayload(scenario),
+    );
   } else if (scenario.campaign === "rotate-camera-test") {
     if (process.env.E2E_RELAY_SUPABASE) {
       await relaySupabase(page);
@@ -646,54 +693,41 @@ const bootScenario = async (page: Page, scenario: SweepScenario) => {
   await page.waitForTimeout(500);
 };
 
-/**
- * the part of a capture's file name that identifies the room and the state it
- * is entered in - everything that does not vary within a scenario (see
- * {@link captureFileName})
- */
-const scenarioBaseName = ({
-  roomId,
-  character,
-  enterFrom,
-  emulatedResolution,
-}: SweepScenario): string =>
+const scenarioBaseName = (
+  { roomId, character, enterFrom, emulatedResolution }: SweepScenario,
+  projectName?: string,
+): string =>
   [
     roomId,
     character === "head" ? "" : `-${character}`,
     enterFrom === "$$startingRoom" ? ""
     : enterFrom === "$$final" ? "-from-final"
     : `-from-${enterFrom}`,
-    emulatedResolution === "$$default" ? "" : `-${emulatedResolution}`,
+    (
+      emulatedResolution === "$$default" ||
+      (projectName !== undefined &&
+        emulatedResolution ===
+          defaultEmulatedResolution(projectDeviceType(projectName)))
+    ) ?
+      ""
+    : `-${emulatedResolution}`,
   ].join("");
 
 /**
- * the screenshot file name for one captured frame. It is a pure function of
- * everything that affects what is drawn: the room, then every parameter that
- * is NOT at its default, always in this order:
+ * screenshot name maker, omits the segment for default values
  *
- * | parameter          | default (no suffix)   | suffix when set                |
- * | ------------------ | --------------------- | ------------------------------ |
- * | roomId             | -                     | the base name                  |
- * | character          | head                  | `-heels`                       |
- * | enterFrom          | "$$startingRoom"      | `-from-<room>` / `-from-final` |
- * | emulatedResolution | "$$default"           | `-<resolutionName>`            |
- * | spriteOption       | BlockStack colourised | `-uncolourised` / `-toppy`     |
- * | angle              | 0°                    | `-<degrees>deg`                |
- * | capture time       | 0ms                   | `-<milliseconds>ms`            |
- *
- * so two frames drawn from identical parameters name one file, and are
- * asserted against one baseline - which is the point: identical parameters
- * must produce an identical image. Playwright sanitises the `.` of a
- * fractional angle to a `-`, so 44.999° lands in `...-44-999deg.png`
+ * collisions between tests are fine - playwright will verify the image is the same
+ * (which it should be)
  */
 const captureFileName = (
   scenario: SweepScenario,
+  projectName: string,
   spriteOption: SpriteOption | undefined,
   captureTimeMs: number,
   { baselineDegrees }: SweepCapture,
 ): string =>
   [
-    scenarioBaseName(scenario),
+    scenarioBaseName(scenario, projectName),
     spriteOption === undefined ? "" : spriteOptionSuffix(spriteOption),
     baselineDegrees === 0 ? "" : `-${baselineDegrees}deg`,
     captureTimeMs === 0 ? "" : `-${captureTimeMs}ms`,
@@ -775,8 +809,6 @@ for (const scenario of scenarios) {
     test.setTimeout(360_000);
     await bootScenario(page, scenario);
 
-    // the sprite options to capture in - just the platform default when the
-    // scenario doesn't list any:
     const spriteOptions: ReadonlyArray<SpriteOption | undefined> =
       scenario.spriteOptions ?? [undefined];
 
@@ -818,7 +850,13 @@ for (const scenario of scenarios) {
           await expect
             .soft(page)
             .toHaveScreenshot(
-              captureFileName(scenario, spriteOption, captureTimeMs, capture),
+              captureFileName(
+                scenario,
+                testInfo.project.name,
+                spriteOption,
+                captureTimeMs,
+                capture,
+              ),
               screenshotOptionsForScenario(scenario, testInfo.project.name),
             );
         }

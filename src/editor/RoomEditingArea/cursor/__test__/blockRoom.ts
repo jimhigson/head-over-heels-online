@@ -98,7 +98,7 @@ export const renderBoxesForRoom = (
 ): RenderBoxes<EditorUnionOfAllItemInPlayTypes> => {
   const renderBoxes = new Map<
     EditorUnionOfAllItemInPlayTypes,
-    null | RenderBox
+    RenderBox | undefined
   >();
   for (const item of roomItemsIterable(room.items)) {
     renderBoxes.set(
@@ -107,7 +107,7 @@ export const renderBoxesForRoom = (
         item,
         cameraAngle,
         spritesheetMetas.BlockStack,
-      ) ?? null,
+      ),
     );
   }
   return renderBoxes;

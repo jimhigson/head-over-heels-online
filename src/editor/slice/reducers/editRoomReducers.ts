@@ -135,13 +135,11 @@ const roomAtVerticalNeighbour = (
 ): { roomId: EditorRoomId; subRoomId: string } | undefined => {
   const neighbourVector =
     direction === "above" ? unitVectors.up : unitVectors.down;
-  const targetSpec = [
-    ...roomGridPositions({
-      campaign: state.campaignInProgress,
-      roomId: room.id,
-      subRoomId,
-    }).keys(),
-  ].find(({ gridPosition }) => xyzEqual(gridPosition, neighbourVector));
+  const targetSpec = roomGridPositions({
+    campaign: state.campaignInProgress,
+    roomId: room.id,
+    subRoomId,
+  }).nodes.find(({ gridPosition }) => xyzEqual(gridPosition, neighbourVector));
 
   if (
     targetSpec === undefined ||

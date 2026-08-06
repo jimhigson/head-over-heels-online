@@ -6,18 +6,18 @@ import {
   type UnionOfAllItemInPlayTypes,
 } from "../../model/ItemInPlay";
 import { type RoomState } from "../../model/RoomState";
+import { type Graph } from "../../utils/graph/Graph";
 import { type MovedOrResizedItems } from "../mainLoop/progressGameState";
 import { type ItemRenderPipeline } from "./item/itemRender/createItemRenderer";
 import { type ItemLeafPixiRenderer } from "./item/itemRender/ItemPixiRenderer";
 import { type RenderBoxes } from "./renderBox/makeItemRenderBoxAtCameraAngle";
 import { type GeneralRenderContext } from "./room/RoomRenderContexts";
 import { type FilterCache } from "./room/RoomRenderer";
-import { type ZGraph } from "./sortZ/GraphEdges";
 
 export type ItemZGraph<
   RoomId extends string = string,
   RoomItemId extends string = string,
-> = ZGraph<UnionOfAllItemInPlayTypes<RoomId, RoomItemId>>;
+> = Graph<UnionOfAllItemInPlayTypes<RoomId, RoomItemId>>;
 
 /**
  * the context a leaf item renderer receives. The layer/render-box fields are
@@ -75,9 +75,7 @@ export type ItemRenderContext<T extends ItemInPlayType> =
      */
     itemPositionContainer?: Container;
     /**
-     * the (mutated in place) record of which items is in front of which,
-     * including what can't be applied due to cyclic dependencies
-     * - updated by the time the item renders
+     * Item graph of the parent room renderer
      */
     zEdges: ItemZGraph;
     /**

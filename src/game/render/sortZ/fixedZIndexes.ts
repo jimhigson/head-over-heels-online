@@ -41,7 +41,8 @@ export const effectiveFixedZIndex = (
 /**
  * whether the item takes part in draw-order sorting at this camera angle.
  * Items with a fixed z-index (including walls on hidden, camera-facing sides)
- * never do: they are excluded from the visual index and never compared
+ * never do: they are excluded from the z index computation (at the broad phase)
+ * and never compared
  */
 export const participatesInDrawOrder = (
   item: Parameters<typeof effectiveFixedZIndex>[0],

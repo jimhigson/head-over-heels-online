@@ -21,6 +21,11 @@ import {
   wallFaceHeightPx,
 } from "../../physics/mechanicsConstants";
 
+// SMELL: this is a big of a 'god' class that knows how to get the renderbox
+// for all items. Some kind of polymorphic, non-stateful OOP-lite representation of
+// object types could provide this information, plus appearance, plus (?) so that items
+// are the driver, not the predicate to a universal know-all-er
+
 // wall art overflows the top of the nominal face parallelogram: sampling every
 // wall tile's opaque pixels, the tallest tops (moonbase coil) reach this far
 // above the face top edge. The render box height must cover it or the cuboid
@@ -41,14 +46,13 @@ export type RenderBox = {
 };
 
 /**
- * per-item render boxes at a single camera angle. `null` means the box was
- * derived and the item deliberately has none (it renders true to its physical
- * aabb - the common case); a missing key means the item is not in the render
- * world, or was queried before the owner (the room renderer) reconciled boxes
- * for the frame - distinguishable from `null` so misses can be treated as the
- * programming errors they are rather than silently falling back to the aabb
+ * per-item render boxes at a single camera angle. `undefined` - whether stored
+ * against the item or absent from the map - means "render true to the physical
+ * aabb", which is the common case. The two are not distinguished on read; the
+ * owner (the room renderer) stores an explicit `undefined` so that `has` still
+ * tells it which items it has already derived for this angle
  */
-export type RenderBoxes<Item> = ReadonlyMap<Item, null | RenderBox>;
+export type RenderBoxes<Item> = ReadonlyMap<Item, RenderBox | undefined>;
 
 /**
  * whether a door (given its baked world-space facts) is in a hidden wall at
@@ -307,7 +311,7 @@ const floorRenderBox = (
  * and shadows use the integer physical position
  */
 export const floorDrawnOriginXyOffset = (
-  renderBox: null | RenderBox | undefined,
+  renderBox: RenderBox | undefined,
 ): Xyz =>
   renderBox?.renderAabbOffset === undefined ?
     originXyz

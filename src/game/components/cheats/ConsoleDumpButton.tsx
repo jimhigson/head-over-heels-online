@@ -3,37 +3,39 @@ import { type PropsWithChildren } from "preact/compat";
 import { Button } from "../../../ui/Button";
 
 export type ConsoleDumpButtonProps = PropsWithChildren<{
-  class?: string;
-  "data-test-id"?: string;
-  /** perform the dump: write to the console */
+  /** writes the dump to the console (and any window globals) */
   log: () => void;
-  /** the text to copy to the clipboard when the button is clicked */
+  /** the same dump as text, for the adjacent cpy button */
   copyText: () => string;
 }>;
 
 /**
- * a cheats-panel button that dumps some game internals: on click it writes to
- * the console (via {@link ConsoleDumpButtonProps.log}), and also copies the
- * text form to the clipboard for convenience.
+ * a "write to console" cheat: the main button logs, and a small paired "cpy"
+ * button puts the same dump on the clipboard as text instead
  */
 export const ConsoleDumpButton = ({
-  class: className = "flex-grow h-3",
-  "data-test-id": dataTestId,
   log,
   copyText,
   children,
 }: ConsoleDumpButtonProps) => (
-  <Button
-    class={className}
-    data-test-id={dataTestId}
-    onClick={(e) => {
-      log();
-      // clipboard can reject in an unfocused/insecure context - a copy failure
-      // must not swallow the console dump, so ignore it:
-      void navigator.clipboard?.writeText(copyText()).catch(() => {});
-      (e?.currentTarget as HTMLElement | undefined)?.blur();
-    }}
-  >
-    {children}
-  </Button>
+  <div class="flex flex-row basis-1/3 flex-grow">
+    <Button
+      class="flex-grow h-3"
+      onClick={(e) => {
+        log();
+        (e?.currentTarget as HTMLElement | undefined)?.blur();
+      }}
+    >
+      {children}
+    </Button>
+    <Button
+      class="h-3 bg-pastelBlue text-shadow zx:bg-zxCyan zx:text-zxBlack toppy:bg-toppyCool1 toppy:text-toppyGrey4"
+      onClick={(e) => {
+        void navigator.clipboard.writeText(copyText());
+        (e?.currentTarget as HTMLElement | undefined)?.blur();
+      }}
+    >
+      cpy
+    </Button>
+  </div>
 );

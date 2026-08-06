@@ -40,15 +40,17 @@ const itemDrawnBounds = (
   cameraAngle: Xy,
   renderBoxes: RenderBoxes<EditorUnionOfAllItemInPlayTypes>,
 ): ItemBounds | undefined => {
-  const renderBox = renderBoxes.get(item);
-
-  if (renderBox === undefined) {
+  if (!renderBoxes.has(item)) {
     // not in the render world (or asked for before the room renderer had
-    // reconciled its boxes) - nothing is drawn, so nothing to point at
+    // reconciled its boxes) - nothing is drawn, so nothing to point at.
+    // Membership is the only way to tell this from an item that is in the
+    // render world but needs no box, since both read back as undefined
     return undefined;
   }
 
-  if (renderBox === null) {
+  const renderBox = renderBoxes.get(item);
+
+  if (renderBox === undefined) {
     // no box was needed: the item draws true to its physical aabb. Hidden walls
     // are the exception - they get no box because they draw nothing at all, and
     // their physical aabb reaches up out of the room, which would otherwise

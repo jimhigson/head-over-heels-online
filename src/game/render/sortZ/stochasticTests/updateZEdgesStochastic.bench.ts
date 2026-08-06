@@ -1,6 +1,12 @@
 import { bench } from "vitest";
 
-import { frameCount, itemCount, movePercentage, runTest } from "./runTest";
+import {
+  frameCount,
+  itemCount,
+  movePercentage,
+  runTest,
+  sweptCameraAngleForFrame,
+} from "./runTest";
 
 /*
 There results can be confirmed to be giving identical results by using the sibling .test.ts
@@ -32,5 +38,20 @@ bench(
   },
   {
     iterations: 30, // increase number of iterations (default is 10)
+  },
+);
+
+// the camera-turn scenario: nothing moves in-world, θ sweeps ~1.5°/frame so
+// every item re-projects and the whole graph is re-derived from scratch each
+// frame - the per-frame workload of a live mid-turn sort
+bench(
+  `camera turn: all ${itemCount} items re-sorted, θ sweeping, ${frameCount} frames`,
+  () => {
+    runTest({
+      angleForFrame: sweptCameraAngleForFrame,
+    });
+  },
+  {
+    iterations: 30,
   },
 );

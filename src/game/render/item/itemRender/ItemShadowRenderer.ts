@@ -93,9 +93,9 @@ type ShadowCaster = SetRequired<
  * boxes (items that draw nothing, whose box exists only for draw-ordering)
  */
 const nonZeroSizeRenderAabb = (
-  renderBox: null | RenderBox | undefined,
+  renderBox: RenderBox | undefined,
 ): undefined | Xyz => {
-  if (renderBox === null || renderBox === undefined) {
+  if (renderBox === undefined) {
     return undefined;
   }
   const { renderAabb } = renderBox;

@@ -1,14 +1,15 @@
 import { describe, expect, test } from "vitest";
 
+import { Graph } from "../../../utils/graph/Graph";
+import { cameraAngleBase } from "../../../utils/vectors/cameraAngleVectors";
 import { collisionItemWithIndex } from "../../collision/aabbCollision";
 import { SpatialIndex } from "../../physics/gridSpace/SpatialIndex";
-import { populatedVisualIndex } from "./__test__/populatedVisualIndex";
+import { type RenderBox } from "../renderBox/makeItemRenderBoxAtCameraAngle";
+import { populatedBroadPhase } from "./__test__/populatedBroadPhase";
 import { type DrawOrderComparable } from "./DrawOrderComparable";
-import { type ZGraph } from "./GraphEdges";
-import { toposort } from "./toposort/toposort";
 import { updateZEdges } from "./updateZEdges";
 
-const noRenderBoxes = new Map<DrawOrderComparable, null>();
+const noRenderBoxes = new Map<DrawOrderComparable, RenderBox | undefined>();
 
 const makeItems = <T extends Record<string, DrawOrderComparable>>(
   itemDefs: T,
@@ -17,17 +18,30 @@ const makeItems = <T extends Record<string, DrawOrderComparable>>(
   items: itemDefs,
 });
 
-const edgeIds = (
-  edges: Map<DrawOrderComparable, Map<DrawOrderComparable, boolean>>,
-) => {
-  const result = new Map<string, Map<string, boolean>>();
-  for (const [behind, fronts] of edges) {
-    const frontMap = new Map<string, boolean>();
-    for (const [front, broken] of fronts) {
-      frontMap.set(front.id, broken);
-    }
-    result.set(behind.id, frontMap);
+/**
+ * the graph's edges as `"back->front"` strings in the graph's node order,
+ * with the broken ones marked - the shape the inline snapshots pin
+ */
+const edgeIds = (edges: Graph<DrawOrderComparable>): string[] => {
+  const result: string[] = [];
+  for (let i = 0; i < edges.nodeCount; i++) {
+    const behind = edges.nodeAt(i);
+    edges.forEachEdgeFrom(behind, (front, broken) => {
+      result.push(`${behind.id}->${front.id}${broken ? " [broken]" : ""}`);
+    });
   }
+  return result;
+};
+
+/** one node's outgoing edges as [front, broken] pairs */
+const edgesFrom = (
+  graph: Graph<DrawOrderComparable>,
+  item: DrawOrderComparable,
+): Array<[DrawOrderComparable, boolean]> => {
+  const result: Array<[DrawOrderComparable, boolean]> = [];
+  graph.forEachEdgeFrom(item, (front, broken) => {
+    result.push([front, broken]);
+  });
   return result;
 };
 
@@ -55,26 +69,20 @@ test("detects behind in x", () => {
     },
   });
 
-  const spatialIndex = populatedVisualIndex(set);
+  const broadPhase = populatedBroadPhase(set);
 
-  const edges: ZGraph<DrawOrderComparable> = new Map();
-  updateZEdges(set, spatialIndex, set, edges, noRenderBoxes);
+  const edges = new Graph<DrawOrderComparable>();
+  updateZEdges(set, broadPhase, edges, noRenderBoxes);
   // front => behind
   expect(edgeIds(edges)).toMatchInlineSnapshot(`
-    Map {
-      "2" => Map {
-        "1" => false,
-      },
-      "3" => Map {
-        "2" => false,
-      },
-      "4" => Map {
-        "3" => false,
-      },
-    }
+    [
+      "2->1",
+      "3->2",
+      "4->3",
+    ]
   `);
   // no cyclic dependencies
-  expect(() => toposort(edges)).not.toThrow();
+  expect(() => edges.topologicalSortInPlace()).not.toThrow();
 });
 
 test("detects behind in y", () => {
@@ -101,26 +109,20 @@ test("detects behind in y", () => {
     },
   });
 
-  const spatialIndex = populatedVisualIndex(set);
+  const broadPhase = populatedBroadPhase(set);
 
-  const relations: ZGraph<DrawOrderComparable> = new Map();
-  updateZEdges(set, spatialIndex, set, relations, noRenderBoxes);
+  const relations = new Graph<DrawOrderComparable>();
+  updateZEdges(set, broadPhase, relations, noRenderBoxes);
   // front => behind
   expect(edgeIds(relations)).toMatchInlineSnapshot(`
-    Map {
-      "2" => Map {
-        "1" => false,
-      },
-      "3" => Map {
-        "2" => false,
-      },
-      "4" => Map {
-        "3" => false,
-      },
-    }
+    [
+      "2->1",
+      "3->2",
+      "4->3",
+    ]
   `);
   // no cyclic dependencies
-  expect(() => toposort(relations)).not.toThrow();
+  expect(() => relations.topologicalSortInPlace()).not.toThrow();
 });
 
 test("detects behind in z (inverted from x and y - higher is in front)", () => {
@@ -147,27 +149,21 @@ test("detects behind in z (inverted from x and y - higher is in front)", () => {
     },
   });
 
-  const spatialIndex = populatedVisualIndex(set);
+  const broadPhase = populatedBroadPhase(set);
 
-  const relations: ZGraph<DrawOrderComparable> = new Map();
-  updateZEdges(set, spatialIndex, set, relations, noRenderBoxes);
+  const relations = new Graph<DrawOrderComparable>();
+  updateZEdges(set, broadPhase, relations, noRenderBoxes);
   // front => behind
   expect(edgeIds(relations)).toMatchInlineSnapshot(`
-    Map {
-      "1" => Map {
-        "2" => false,
-      },
-      "2" => Map {
-        "3" => false,
-      },
-      "3" => Map {
-        "4" => false,
-      },
-    }
+    [
+      "1->2",
+      "2->3",
+      "3->4",
+    ]
   `);
   // no cyclic dependencies
-  expect(() => toposort(relations)).not.toThrow();
-  toposort(relations);
+  expect(() => relations.topologicalSortInPlace()).not.toThrow();
+  relations.topologicalSortInPlace();
 });
 
 test("detects as in front if on top and set back while overlapping", () => {
@@ -184,20 +180,18 @@ test("detects as in front if on top and set back while overlapping", () => {
     },
   });
 
-  const spatialIndex = populatedVisualIndex(set);
+  const broadPhase = populatedBroadPhase(set);
 
-  const relations: ZGraph<DrawOrderComparable> = new Map();
-  updateZEdges(set, spatialIndex, set, relations, noRenderBoxes);
+  const relations = new Graph<DrawOrderComparable>();
+  updateZEdges(set, broadPhase, relations, noRenderBoxes);
   // front => behind - top in front of bottom:
   expect(edgeIds(relations)).toMatchInlineSnapshot(`
-    Map {
-      "bottom" => Map {
-        "top" => false,
-      },
-    }
+    [
+      "bottom->top",
+    ]
   `);
   // no cyclic dependencies
-  expect(() => toposort(relations)).not.toThrow();
+  expect(() => relations.topologicalSortInPlace()).not.toThrow();
 });
 
 test("detects a tall item is front of two smaller items", () => {
@@ -225,25 +219,21 @@ test("detects a tall item is front of two smaller items", () => {
     },
   });
 
-  const spatialIndex = populatedVisualIndex(set);
+  const broadPhase = populatedBroadPhase(set);
 
-  const relations: ZGraph<DrawOrderComparable> = new Map();
-  updateZEdges(set, spatialIndex, set, relations, noRenderBoxes);
+  const relations = new Graph<DrawOrderComparable>();
+  updateZEdges(set, broadPhase, relations, noRenderBoxes);
   expect(edgeIds(relations)).toMatchInlineSnapshot(`
-    Map {
-      "smallerTop" => Map {
-        "tallThinFront" => false,
-      },
-      "smallerBottom" => Map {
-        "tallThinFront" => false,
-      },
-    }
+    [
+      "smallerTop->tallThinFront",
+      "smallerBottom->tallThinFront",
+    ]
   `);
   // no cyclic dependencies
-  expect(() => toposort(relations)).not.toThrow();
+  expect(() => relations.topologicalSortInPlace()).not.toThrow();
 });
 
-test("incremental updates requiring both removal and addition of edges", () => {
+test("a rebuild after items move reflects their new positions", () => {
   const { set, items } = makeItems({
     1: {
       id: "1",
@@ -266,23 +256,17 @@ test("incremental updates requiring both removal and addition of edges", () => {
       state: { position: { x: 30, y: 0, z: 0 } },
     },
   });
-  const spatialIndex = populatedVisualIndex(set);
+  const broadPhase = populatedBroadPhase(set);
 
-  const edges: ZGraph<DrawOrderComparable> = new Map();
-  updateZEdges(set, spatialIndex, set, edges, noRenderBoxes);
+  const edges = new Graph<DrawOrderComparable>();
+  updateZEdges(set, broadPhase, edges, noRenderBoxes);
   // front => behind
   expect(edgeIds(edges)).toMatchInlineSnapshot(`
-    Map {
-      "2" => Map {
-        "1" => false,
-      },
-      "3" => Map {
-        "2" => false,
-      },
-      "4" => Map {
-        "3" => false,
-      },
-    }
+    [
+      "2->1",
+      "3->2",
+      "4->3",
+    ]
   `);
 
   // move item 1 to the left - it is now behind all others:
@@ -290,23 +274,18 @@ test("incremental updates requiring both removal and addition of edges", () => {
   // move item 2 far away in the sky - it is now not behind/in front of anything:
   items[2].state.position.z = 100;
 
-  const moved = new Set([items[1], items[2]]);
-  spatialIndex.updateManyItems(set, moved, noRenderBoxes);
-  updateZEdges(set, spatialIndex, moved, edges, noRenderBoxes);
+  broadPhase.updateManyItems(set, noRenderBoxes, cameraAngleBase);
+  updateZEdges(set, broadPhase, edges, noRenderBoxes);
 
   expect(edgeIds(edges)).toMatchInlineSnapshot(`
-    Map {
-      "4" => Map {
-        "3" => false,
-      },
-      "1" => Map {
-        "4" => false,
-      },
-    }
+    [
+      "1->4",
+      "4->3",
+    ]
   `);
 });
 
-test("incremental updates requiring removal of outbound and inbound edges", () => {
+test("an item moved clear of the others has no edges either way", () => {
   // set up three in a line visually away from us
   // so:       a -behind-> b -behind-> c
   // and:      a -behind-> c
@@ -327,21 +306,17 @@ test("incremental updates requiring removal of outbound and inbound edges", () =
       state: { position: { x: 20, y: 20, z: 0 } },
     },
   });
-  const spatialIndex = populatedVisualIndex(set);
+  const broadPhase = populatedBroadPhase(set);
 
-  const edges: ZGraph<DrawOrderComparable> = new Map();
-  updateZEdges(set, spatialIndex, set, edges, noRenderBoxes);
+  const edges = new Graph<DrawOrderComparable>();
+  updateZEdges(set, broadPhase, edges, noRenderBoxes);
   // front => behind
   expect(edgeIds(edges)).toMatchInlineSnapshot(`
-    Map {
-      "b" => Map {
-        "c" => false,
-      },
-      "a" => Map {
-        "c" => false,
-        "b" => false,
-      },
-    }
+    [
+      "b->c",
+      "a->c",
+      "a->b",
+    ]
   `);
 
   // move the middle item (b) out - this will need removal of edges both from b and
@@ -349,21 +324,18 @@ test("incremental updates requiring removal of outbound and inbound edges", () =
   items.b.state.position.z = 200;
   // move item 2 far away in the sky - it is now not behind/in front of anything:
 
-  const movedB = new Set([items.b]);
-  spatialIndex.updateManyItems(set, movedB, noRenderBoxes);
-  updateZEdges(set, spatialIndex, movedB, edges, noRenderBoxes);
+  broadPhase.updateManyItems(set, noRenderBoxes, cameraAngleBase);
+  updateZEdges(set, broadPhase, edges, noRenderBoxes);
 
   // b is gone - only a =behind-> c remains
   expect(edgeIds(edges)).toMatchInlineSnapshot(`
-    Map {
-      "a" => Map {
-        "c" => false,
-      },
-    }
+    [
+      "a->c",
+    ]
   `);
 });
 
-test("incremental updates can completely empty the graph", () => {
+test("a rebuild of items that no longer overlap yields no edges", () => {
   // set up three in a line visually away from us
   // so:       a -behind-> b -behind-> c
   const { set, items } = makeItems({
@@ -383,20 +355,16 @@ test("incremental updates can completely empty the graph", () => {
       state: { position: { x: 20, y: 20, z: 0 } },
     },
   });
-  const spatialIndex = populatedVisualIndex(set);
+  const broadPhase = populatedBroadPhase(set);
 
-  const edges: ZGraph<DrawOrderComparable> = new Map();
-  updateZEdges(set, spatialIndex, set, edges, noRenderBoxes);
+  const edges = new Graph<DrawOrderComparable>();
+  updateZEdges(set, broadPhase, edges, noRenderBoxes);
   // front => behind
   expect(edgeIds(edges)).toMatchInlineSnapshot(`
-    Map {
-      "b" => Map {
-        "c" => false,
-      },
-      "a" => Map {
-        "b" => false,
-      },
-    }
+    [
+      "b->c",
+      "a->b",
+    ]
   `);
 
   // move the middle item (b) out - this will need removal of edges both from b and
@@ -404,12 +372,11 @@ test("incremental updates can completely empty the graph", () => {
   items.b.state.position.z = 200;
   // move item 2 far away in the sky - it is now not behind/in front of anything:
 
-  const movedB = new Set([items.b]);
-  spatialIndex.updateManyItems(set, movedB, noRenderBoxes);
-  updateZEdges(set, spatialIndex, movedB, edges, noRenderBoxes);
+  broadPhase.updateManyItems(set, noRenderBoxes, cameraAngleBase);
+  updateZEdges(set, broadPhase, edges, noRenderBoxes);
 
   // b is gone - only a =behind-> c remains
-  expect(edgeIds(edges)).toMatchInlineSnapshot(`Map {}`);
+  expect(edgeIds(edges)).toMatchInlineSnapshot(`[]`);
 });
 
 describe("cyclic dependencies", () => {
@@ -449,11 +416,11 @@ describe("cyclic dependencies", () => {
       },
     });
 
-    const spatialIndex = populatedVisualIndex(set);
+    const broadPhase = populatedBroadPhase(set);
 
-    const relations: ZGraph<DrawOrderComparable> = new Map();
-    updateZEdges(set, spatialIndex, set, relations, noRenderBoxes);
-    expect(() => toposort(relations)).not.toThrow();
+    const relations = new Graph<DrawOrderComparable>();
+    updateZEdges(set, broadPhase, relations, noRenderBoxes);
+    expect(() => relations.topologicalSortInPlace()).not.toThrow();
   });
 
   test("found situation 2 - genuine cyclic dependency - not possible to render without splitting sprites up!", () => {
@@ -511,25 +478,25 @@ describe("cyclic dependencies", () => {
       expect(collisionItemWithIndex(i, index).toArray()).toEqual([]);
     }
 
-    const spatialIndex = populatedVisualIndex(set);
+    const broadPhase = populatedBroadPhase(set);
 
-    const relations: ZGraph<DrawOrderComparable> = new Map();
-    updateZEdges(set, spatialIndex, set, relations, noRenderBoxes);
+    const relations = new Graph<DrawOrderComparable>();
+    updateZEdges(set, broadPhase, relations, noRenderBoxes);
 
     // end result should should express:
     //  pushableBlock -behind-> pickup
     //  pickup -behind-> monster
     //  monster -behind-> pushableBlock
-    expect(relations.get(items.pushableBlock)?.entries().toArray()).toEqual([
+    expect(edgesFrom(relations, items.pushableBlock)).toEqual([
       [items.pickup, false],
     ]);
-    expect(relations.get(items.pickup)?.entries().toArray()).toEqual([
+    expect(edgesFrom(relations, items.pickup)).toEqual([
       [items.monster, false],
     ]);
-    expect(relations.get(items.monster)?.entries().toArray()).toEqual([
+    expect(edgesFrom(relations, items.monster)).toEqual([
       [items.pushableBlock, false],
     ]);
 
-    expect(() => toposort(relations)).not.toThrow();
+    expect(() => relations.topologicalSortInPlace()).not.toThrow();
   });
 });

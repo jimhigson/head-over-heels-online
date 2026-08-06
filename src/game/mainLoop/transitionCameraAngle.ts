@@ -19,15 +19,8 @@ export const hermiteEaseSlope = (t: number, startSlope: number): number =>
   startSlope * (3 * t ** 2 - 4 * t + 1) + (6 * t - 6 * t ** 2);
 
 /**
- * the continuous camera angle θ(t) to render at while a rotation is playing:
- * `fromAngle` swept along the transition's signed arc, eased. At progress 0
- * it is exactly `fromAngle`, at 1 exactly the arc's endpoint (the discrete
- * targetCameraAngle). The arc is carried on the transition rather than
- * derived from the endpoints, so the camera always turns the way the player
- * pressed - stacked same-direction taps sweep the long way round rather than
- * flipping to the shorter path. ONLY item positions/scroll may read this -
- * art/structure/sort keep reading the discrete endpoint angle (they cannot
- * handle a non-quarter angle).
+ * calculate the camera angle to use while transitioning between settled (quarter)
+ * angles.
  */
 export const transitionCameraAngle = (
   /**
