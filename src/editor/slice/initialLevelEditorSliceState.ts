@@ -1,7 +1,7 @@
 import { produce } from "immer";
 
 import { starterRoom } from "../../model/inPlaceMutators/starterRoom";
-import { cameraAngleBase } from "../../utils/vectors/rotateXy";
+import { cameraAngleBase } from "../../utils/vectors/cameraAngleVectors";
 import {
   type EditorCampaign,
   type EditorRoomId,

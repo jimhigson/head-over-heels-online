@@ -7,7 +7,7 @@ import {
 import { epsilon } from "../../../utils/epsilon";
 import { neverTime } from "../../../utils/neverTime";
 import { accelerateToSpeed2 } from "../../../utils/vectors/accelerateUpToSpeed";
-import { rotateXyzByInverseCameraAngle } from "../../../utils/vectors/rotateXy";
+import { rotateXyzByInverseCameraAngle } from "../../../utils/vectors/cameraAngleVectors";
 import {
   lengthXy,
   lengthXyz,

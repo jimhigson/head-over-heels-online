@@ -23,7 +23,7 @@ import { UniqueTextureSprite } from "./UniqueTextureSprite";
  * can be used as a less buggy version of cacheAsTexture - just creates a new sprite from any container,
  * which can be added to the scene instead of that container.
  */
-export const renderContainerToTexture = (
+export const bakeContainerToTexture = (
   pixiRenderer: Renderer,
   container: Container,
   /**
@@ -86,7 +86,7 @@ export const renderContainerToTexture = (
     });
   } catch (e) {
     throw new Error(
-      `renderContainerToTexture: failed to render to texture. Container:\n ${pixiContainerToString(container)}`,
+      `bakeContainerToTexture: failed to render to texture. Container:\n ${pixiContainerToString(container)}`,
       { cause: e },
     );
   }
@@ -108,7 +108,7 @@ export const renderContainerToSprite = (
   container: Container,
   reuseSprite?: UniqueTextureSprite,
   label?: string,
-  /** see {@link renderContainerToTexture}'s minimumSize */
+  /** see {@link bakeContainerToTexture}'s minimumSize */
   minimumSize?: Xy,
 ): UniqueTextureSprite => {
   const localBounds = container.getLocalBounds();
@@ -118,7 +118,7 @@ export const renderContainerToSprite = (
       reuseSprite.texture
     : undefined;
 
-  const texture = renderContainerToTexture(
+  const texture = bakeContainerToTexture(
     pixiRenderer,
     container,
     reuseTexture,
@@ -175,7 +175,7 @@ export const maybeRenderContainerToAnimatedSprite = <
         }
       }
 
-      return renderContainerToTexture(pixiRenderer, container);
+      return bakeContainerToTexture(pixiRenderer, container);
     })
     .toArray();
 

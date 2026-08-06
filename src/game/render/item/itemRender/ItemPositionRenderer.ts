@@ -2,7 +2,7 @@ import { Container } from "pixi.js";
 
 import { type ItemInPlayType } from "../../../../model/ItemInPlay";
 import { assignRoundedXy } from "../../../../utils/pixi/assignRoundedXy";
-import { isAtQuarterAngle } from "../../../../utils/vectors/rotateXy";
+import { isAtQuarterAngle } from "../../../../utils/vectors/cameraAngleVectors";
 import {
   type ItemRenderContext,
   type ItemTickContext,

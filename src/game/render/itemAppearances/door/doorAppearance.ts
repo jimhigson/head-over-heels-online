@@ -7,13 +7,13 @@ import { planetSpecificIfExists } from "../../../../sprites/planetSpecificIfExis
 import { type AppSpritesheetWithVariants } from "../../../../sprites/spritesheet/AppSpritesheet";
 import { selectMaybeCurrentCampaign } from "../../../../store/slices/gameMenus/gameMenusSelectors";
 import { store } from "../../../../store/store";
+import { renderContainerToSprite } from "../../../../utils/pixi/bakeContainerToSprite";
 import { iterateToContainer } from "../../../../utils/pixi/iterateToContainer";
-import { renderContainerToSprite } from "../../../../utils/pixi/renderContainerToSprite";
-import { spriteFlipXAtAngle } from "../../../../utils/vectors/resolveCameraRelativeVector";
+import { nearestQuarterAngle } from "../../../../utils/vectors/cameraAngleVectors";
 import {
   axisProjectsReversed,
-  nearestQuarterAngle,
-} from "../../../../utils/vectors/rotateXy";
+  spriteFlipXAtAngle,
+} from "../../../../utils/vectors/resolveCameraRelativeVector";
 import {
   addXy,
   alongAxisOfDirectionXy,

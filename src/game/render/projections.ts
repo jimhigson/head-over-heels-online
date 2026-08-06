@@ -1,12 +1,11 @@
 import { type Container } from "pixi.js";
 
-import { orthoPlaneForNormal } from "../../utils/vectors/orthoPlane";
 import {
   cameraAngleBase,
-  rotateXy,
-  rotateXyz,
   rotateXyzByInverseCameraAngle,
-} from "../../utils/vectors/rotateXy";
+} from "../../utils/vectors/cameraAngleVectors";
+import { orthoPlaneForNormal } from "../../utils/vectors/orthoPlane";
+import { rotateXy, rotateXyz } from "../../utils/vectors/rotateXy";
 import { addXyz, subXy, type Xy, type Xyz } from "../../utils/vectors/vectors";
 import { blockSizePx } from "../physics/mechanicsConstants";
 

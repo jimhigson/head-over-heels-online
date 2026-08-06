@@ -5,7 +5,7 @@ import {
   type ItemRenderExtents,
   type SpritesheetMetadata,
 } from "../../../sprites/spritesheet/spritesheetData/spritesheetMetaData";
-import { axisProjectsReversed } from "../../../utils/vectors/rotateXy";
+import { axisProjectsReversed } from "../../../utils/vectors/resolveCameraRelativeVector";
 import {
   type Aabb,
   alongAxisOfDirectionXy,

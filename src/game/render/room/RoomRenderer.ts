@@ -10,7 +10,7 @@ import { zxSpectrumColor } from "../../../originalGame";
 import { audioCtx } from "../../../sound/audioCtx";
 import { soundsFadeDurationSec } from "../../../sound/soundUtils/stopWithFade";
 import { defaultUserSettings } from "../../../store/slices/userSettings/defaultUserSettings";
-import { nearestQuarterAngle } from "../../../utils/vectors/rotateXy";
+import { nearestQuarterAngle } from "../../../utils/vectors/cameraAngleVectors";
 import { type Xy } from "../../../utils/vectors/vectors";
 import {
   type SceneGraphPhaseRecorder,

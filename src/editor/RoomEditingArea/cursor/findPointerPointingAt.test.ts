@@ -1,7 +1,7 @@
 import { describe, expect, test } from "vitest";
 
 import { blockSizePx } from "../../../game/physics/mechanicsConstants";
-import { allCameraAngles } from "../../../utils/vectors/rotateXy";
+import { quarterCameraAngles } from "../../../utils/vectors/cameraAngleVectors";
 import { type Xyz } from "../../../utils/vectors/vectors";
 import { type EditorRoomItemId } from "../../editorTypes";
 import {
@@ -68,7 +68,7 @@ describe("at the base camera angle", () => {
 });
 
 describe("at every camera angle", () => {
-  test.for(allCameraAngles)(
+  test.for(quarterCameraAngles)(
     "pointing at the top face gives the same physical result (camera angle $x,$y)",
     (cameraAngle) => {
       const { room, block } = blockRoom();
@@ -118,7 +118,7 @@ describe("at every camera angle", () => {
     },
   );
 
-  test.for(allCameraAngles)(
+  test.for(quarterCameraAngles)(
     "pointing at empty space finds nothing (camera angle $x,$y)",
     (cameraAngle) => {
       const { room } = blockRoom();

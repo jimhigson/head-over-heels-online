@@ -2,11 +2,9 @@ import { type AnimatedSprite, Container } from "pixi.js";
 
 import { type LightBeamEnd } from "../../../model/ItemStateMap";
 import { originalGameFrameDuration } from "../../../originalGame";
+import { nearestQuarterAngle } from "../../../utils/vectors/cameraAngleVectors";
 import { octantIndexOfDirection } from "../../../utils/vectors/octantIndexOfDirection" with { type: "macro" };
-import {
-  axisProjectsReversed,
-  nearestQuarterAngle,
-} from "../../../utils/vectors/rotateXy";
+import { axisProjectsReversed } from "../../../utils/vectors/resolveCameraRelativeVector";
 import {
   dominantAxisXy,
   perpendicularAxisXy,

@@ -1,11 +1,12 @@
 import { expect, test } from "vitest";
 
+import { quarterCameraAngles } from "./cameraAngleVectors";
 import {
   resolveSpriteDirectionIndexXy4,
   resolveSpriteDirectionIndexXy8,
   spriteFlipXAtAngle,
 } from "./resolveCameraRelativeVector";
-import { allCameraAngles, rotatedX, rotatedY } from "./rotateXy";
+import { rotatedX, rotatedY } from "./rotateXy";
 import { unitVectors } from "./unitVectors";
 import {
   type DirectionIndexXy4,
@@ -31,7 +32,7 @@ test.for(directionsXy4)(
   "xy4 sprite pick shows the apparent form of a %s-facing item at every quarter angle",
   (facingName) => {
     const facing = unitVectors[facingName];
-    for (const cameraAngle of allCameraAngles) {
+    for (const cameraAngle of quarterCameraAngles) {
       const rendered = resolveSpriteDirectionIndexXy4(
         facing,
         cameraAngle,
@@ -54,7 +55,7 @@ test.for(directionsXy8)(
   "xy8 sprite pick shows the apparent form of a %s-facing item at every quarter angle",
   (facingName) => {
     const facing = unitVectors[facingName];
-    for (const cameraAngle of allCameraAngles) {
+    for (const cameraAngle of quarterCameraAngles) {
       const rendered = resolveSpriteDirectionIndexXy8(
         facing,
         cameraAngle,

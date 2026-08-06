@@ -1,6 +1,6 @@
 import { expect, test } from "vitest";
 
-import { cameraAngleBase } from "../../../utils/vectors/rotateXy";
+import { cameraAngleBase } from "../../../utils/vectors/cameraAngleVectors";
 import { originXyz } from "../../../utils/vectors/vectors";
 import { projectAabbAxes } from "./projectAabbCorners";
 

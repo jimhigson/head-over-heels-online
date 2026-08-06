@@ -1,7 +1,7 @@
 import { describe, expect, test } from "vitest";
 
 import { projectWorldXyzToScreenXy } from "../../../game/render/projections";
-import { allCameraAngles } from "../../../utils/vectors/rotateXy";
+import { quarterCameraAngles } from "../../../utils/vectors/cameraAngleVectors";
 import { addXyz, type Xyz } from "../../../utils/vectors/vectors";
 import {
   apparentSilhouette,
@@ -66,7 +66,7 @@ describe("at the base camera angle", () => {
 });
 
 describe("at every camera angle", () => {
-  test.for(allCameraAngles)(
+  test.for(quarterCameraAngles)(
     "pointing at the projected top-far corner finds the physical corner (camera angle $x,$y)",
     (cameraAngle) => {
       const { block } = blockRoom();
@@ -81,7 +81,7 @@ describe("at every camera angle", () => {
     },
   );
 
-  test.for(allCameraAngles)(
+  test.for(quarterCameraAngles)(
     "the hidden back corner cannot be pointed at (camera angle $x,$y)",
     (cameraAngle) => {
       const { block } = blockRoom();

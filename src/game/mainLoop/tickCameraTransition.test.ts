@@ -1,6 +1,6 @@
 import { expect, test } from "vitest";
 
-import { cameraAngleBase } from "../../utils/vectors/rotateXy";
+import { cameraAngleBase } from "../../utils/vectors/cameraAngleVectors";
 import { crossProductXy, type Xy } from "../../utils/vectors/vectors";
 import {
   type CameraRotationDirection,

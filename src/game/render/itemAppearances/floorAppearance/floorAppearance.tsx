@@ -11,15 +11,15 @@ import { type AppSpritesheetWithVariants } from "../../../../sprites/spritesheet
 import { frac } from "../../../../utils/maths/maths";
 import { rangesOverlap } from "../../../../utils/maths/numberPairs";
 import { getAmbientSwoppedColour } from "../../../../utils/palette/palette";
-import { renderContainerToSprite } from "../../../../utils/pixi/renderContainerToSprite";
+import { renderContainerToSprite } from "../../../../utils/pixi/bakeContainerToSprite";
 import { type UniqueTextureSprite } from "../../../../utils/pixi/UniqueTextureSprite";
 import { type Subset } from "../../../../utils/Subset";
-import { spriteFlipXAtAngle } from "../../../../utils/vectors/resolveCameraRelativeVector";
+import { nearestQuarterAngle } from "../../../../utils/vectors/cameraAngleVectors";
 import {
   axisProjectsReversed,
-  nearestQuarterAngle,
-  rotateXy,
-} from "../../../../utils/vectors/rotateXy";
+  spriteFlipXAtAngle,
+} from "../../../../utils/vectors/resolveCameraRelativeVector";
+import { rotateXy } from "../../../../utils/vectors/rotateXy";
 import { unitVectors } from "../../../../utils/vectors/unitVectors";
 import {
   addXy,

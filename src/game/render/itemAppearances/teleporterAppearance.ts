@@ -3,9 +3,9 @@ import { variantTextureId } from "../../../sprites/spritesheet/variantTextureId"
 import {
   asReuseSprite,
   maybeRenderContainerToSprite,
-} from "../../../utils/pixi/renderContainerToSprite";
+} from "../../../utils/pixi/bakeContainerToSprite";
+import { nearestQuarterAngle } from "../../../utils/vectors/cameraAngleVectors";
 import { spriteFlipXAtAngle } from "../../../utils/vectors/resolveCameraRelativeVector";
-import { nearestQuarterAngle } from "../../../utils/vectors/rotateXy";
 import { type Xy } from "../../../utils/vectors/vectors";
 import { isPlayableItem } from "../../physics/itemPredicates";
 import { teleporterIsActive } from "../../physics/mechanics/teleporting";

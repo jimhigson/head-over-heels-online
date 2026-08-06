@@ -5,10 +5,8 @@ import { roomItemsIterable, type RoomState } from "../../../../model/RoomState";
 import { wallInPlayTimes } from "../../../../model/times";
 import { type AppSpritesheetWithVariants } from "../../../../sprites/spritesheet/AppSpritesheet";
 import { iterateToContainer } from "../../../../utils/pixi/iterateToContainer";
-import {
-  axisProjectsReversed,
-  rotateXy,
-} from "../../../../utils/vectors/rotateXy";
+import { axisProjectsReversed } from "../../../../utils/vectors/resolveCameraRelativeVector";
+import { rotateXy } from "../../../../utils/vectors/rotateXy";
 import {
   addXyz,
   dominantAxisXy,

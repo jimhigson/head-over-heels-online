@@ -4,10 +4,11 @@ import { isStoodOn } from "../../../model/StoodOnBy";
 import { type AppSpritesheetWithVariants } from "../../../sprites/spritesheet/AppSpritesheet";
 import { variantTextureId } from "../../../sprites/spritesheet/variantTextureId";
 import { neverTime } from "../../../utils/neverTime";
-import { maybeRenderContainerToAnimatedSprite } from "../../../utils/pixi/renderContainerToSprite";
+import { maybeRenderContainerToAnimatedSprite } from "../../../utils/pixi/bakeContainerToSprite";
+import { nearestQuarterAngle } from "../../../utils/vectors/cameraAngleVectors";
 import { octantIndexOfDirection } from "../../../utils/vectors/octantIndexOfDirection" with { type: "macro" };
 import { spriteFlipXAtAngle } from "../../../utils/vectors/resolveCameraRelativeVector";
-import { nearestQuarterAngle, rotateXy } from "../../../utils/vectors/rotateXy";
+import { rotateXy } from "../../../utils/vectors/rotateXy";
 import {
   axisIndexXy8,
   dominantAxisXy,

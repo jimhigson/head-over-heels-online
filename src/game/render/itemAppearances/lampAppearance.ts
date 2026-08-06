@@ -1,9 +1,9 @@
 import { variantTextureId } from "../../../sprites/spritesheet/variantTextureId";
+import { nearestQuarterAngle } from "../../../utils/vectors/cameraAngleVectors";
 import {
   resolveSpriteDirectionIndexXy4,
   spriteFlipXAtAngle,
 } from "../../../utils/vectors/resolveCameraRelativeVector";
-import { nearestQuarterAngle } from "../../../utils/vectors/rotateXy";
 import { type Xy, xyEqual } from "../../../utils/vectors/vectors";
 import { createSprite } from "../createSprite";
 import { type ItemAppearance } from "./ItemAppearance";

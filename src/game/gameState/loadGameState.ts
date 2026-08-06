@@ -15,7 +15,7 @@ import { store } from "../../store/store";
 import { badJsonClone } from "../../utils/badJsonClone";
 import { emptyObject } from "../../utils/empty";
 import { valuesIter } from "../../utils/entries";
-import { cameraAngleBase } from "../../utils/vectors/rotateXy";
+import { cameraAngleBase } from "../../utils/vectors/cameraAngleVectors";
 import {
   cheatRoomIdFromUrlHash,
   cheatsOn,
