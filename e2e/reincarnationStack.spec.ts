@@ -1,4 +1,4 @@
-import { expect, type Page, test } from "@playwright/test";
+import { expect, type Page } from "@playwright/test";
 
 import { type CharacterName } from "../src/model/modelTypes";
 import {
@@ -19,6 +19,7 @@ import {
   waitForDialog,
 } from "./testUtils/menuNavigation";
 import { setupE2ePage } from "./testUtils/pageSetup";
+import { test } from "./testUtils/test";
 
 type PlayerSnapshot = {
   character: CharacterName;

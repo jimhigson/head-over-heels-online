@@ -1,5 +1,6 @@
 import { type Application, Container, Rectangle, type Ticker } from "pixi.js";
 
+import { roomItemsIterable } from "../../model/RoomState";
 import { audioCtx } from "../../sound/audioCtx";
 import { ensureRoomSoundsLoaded } from "../../sound/ensureRoomSoundsLoaded";
 import { spritesheetMetaForOption } from "../../sprites/spritesheet/spritesheetData/spritesheetMetaData";
@@ -30,7 +31,8 @@ import { createSerialisableErrors } from "../../utils/redux/createSerialisableEr
 import { type Xy } from "../../utils/vectors/vectors";
 import { type GameState } from "../gameState/GameState";
 import { selectCurrentRoomState } from "../gameState/gameStateSelectors/selectCurrentRoomState";
-import { maxFps, maxSubTickDeltaMs } from "../physics/mechanicsConstants";
+import { isMonster } from "../physics/itemPredicates";
+import { maxSubTickDeltaMs } from "../physics/mechanicsConstants";
 import { ColourClashCircleEffectRenderer } from "../render/ColourClashCircleEffectRenderer";
 import { HudRenderer } from "../render/hud/HudRenderer";
 import { needsNewHudRenderer } from "../render/hud/needsNewHudRenderer";
@@ -241,7 +243,12 @@ export class MainLoop<RoomId extends string> {
     return existing;
   }
 
-  #tick = ({ deltaMS: tickerDeltaMS }: Ticker): void => {
+  // elapsedMS, not deltaMS: elapsedMS is the raw time since the last frame,
+  // while deltaMS has already been scaled by the ticker's speed. Taking the raw
+  // lets us apply gamespeed ourselves, which leaves the ticker's speed as a pure
+  // output - written for the animations to follow, never read back - so time
+  // handed to ticker.update() always reaches the physics intact
+  #tick = ({ elapsedMS }: Ticker): void => {
     const tickState = store.getState();
     const showFps = selectShowFps(tickState);
     const timingRecord = showFps ? loadedFrameTimingStats() : undefined;
@@ -277,10 +284,28 @@ export class MainLoop<RoomId extends string> {
       upscale: { upscale: tickUpscale },
     } = tickState;
 
-    tickGameSpeed(this.#app.ticker, tickState, this.#gameState);
-    // tickGameSpeed can only set for the next frame - is the current frame's speed should be zero
-    // but isn't, make sure one frame's worth of physics movement doesn't happen here:
-    const deltaMS = this.#app.ticker.speed === 0 ? 0 : tickerDeltaMS;
+    const gameSpeed = tickGameSpeed(tickState, this.#gameState);
+    // the ticker's minFPS is the slowest frame rate it will report time for.
+    // Similarly use it to cap our non-pixi deltaMS:
+    const maxStepMs = 1_000 / this.#app.ticker.minFPS;
+    const deltaMS = Math.min(elapsedMS, maxStepMs) * gameSpeed;
+
+    // set the ticker speed so Animated Sprites run at the right speed, otherwise
+    // we don't use the ticker's speed in our app:
+    this.#app.ticker.speed = gameSpeed;
+
+    if (import.meta.env.MODE === "visual-regression" && deltaMS !== 0) {
+      // screenshots are taken with the world frozen, so every advance of game
+      // time is either a deliberate fast-forward or the reason a capture came
+      // out non-deterministic. The e2e run forwards the browser console into
+      // its own log, so this is the record of what actually moved and when
+      // roomTime is the clock the simulation's own decisions key off (eg when a
+      // monster next turns), so it is what has to match between machines for a
+      // capture to match its baseline - log where this step starts from
+      console.log(
+        `[game-speed] physics advanced ${deltaMS}ms (elapsed ${elapsedMS}ms × gameSpeed ${gameSpeed}) from roomTime ${selectCurrentRoomState(this.#gameState)?.roomTime}`,
+      );
+    }
 
     const isPaused = selectIsPaused(tickState);
 
@@ -312,6 +337,26 @@ export class MainLoop<RoomId extends string> {
     const movedOrResizedItems =
       deltaMS === 0 ? emptySet : this.#physicsTicker(this.#gameState, deltaMS);
     timingRecord?.endPhysics();
+
+    if (import.meta.env.MODE === "visual-regression" && deltaMS !== 0) {
+      // where the movers actually are once the step has been applied: the
+      // clock agreeing between machines does not mean the world does, and a
+      // capture that differs by a monster's width is settled by comparing
+      // these rather than by reading pixels
+      const roomAfterStep = selectCurrentRoomState(this.#gameState);
+      if (roomAfterStep !== undefined) {
+        const movers: string[] = [];
+        for (const item of roomItemsIterable(roomAfterStep.items)) {
+          if (isMonster(item)) {
+            const { x, y, z } = item.state.position;
+            movers.push(`${item.id}@(${x},${y},${z})`);
+          }
+        }
+        console.log(
+          `[movers] roomTime ${roomAfterStep.roomTime}: ${movers.join(" ")}`,
+        );
+      }
+    }
 
     // read after the rotate-input read above, so a rotation input this frame
     // takes effect immediately:
@@ -446,7 +491,7 @@ export class MainLoop<RoomId extends string> {
       tickUpscale,
       tickOnScreenControls,
       cameraAngle,
-      this.#app.ticker.speed,
+      gameSpeed,
     );
 
     if (createNewHudRenderer) {
@@ -560,9 +605,6 @@ export class MainLoop<RoomId extends string> {
     }
 
     timingRecord?.tickDone();
-
-    // throttle framerate when paused to reduce CPU/GPU load (nothing is moving anyway)
-    this.#app.ticker.maxFPS = this.#app.ticker.speed === 0 ? 10 : maxFps;
   };
 
   start() {

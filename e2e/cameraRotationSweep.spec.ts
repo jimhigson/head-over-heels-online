@@ -1,4 +1,4 @@
-import { expect, type Page, test } from "@playwright/test";
+import { expect, type Page } from "@playwright/test";
 
 import { type OriginalCampaignRoomId } from "../src/_generated/originalCampaign/OriginalCampaignRoomId";
 import { type ResolutionName } from "../src/originalGame";
@@ -8,7 +8,7 @@ import { bootPlaytestCampaign } from "./testUtils/bootPlaytestCampaign";
 import {
   dispatchToStore,
   setZeroGameSpeed,
-  waitForGameState,
+  waitForGameReady,
   waitForRoomRenderEvent,
 } from "./testUtils/gameStateQueries";
 import { restrictToCameraRotationProjects } from "./testUtils/infrastructure";
@@ -24,6 +24,7 @@ import {
   spriteOptionSuffix,
 } from "./testUtils/screenshots";
 import { setSpriteOption } from "./testUtils/setSpriteOption";
+import { test } from "./testUtils/test";
 
 restrictToCameraRotationProjects();
 
@@ -613,7 +614,7 @@ const bootScenario = async (page: Page, scenario: SweepScenario) => {
       await relaySupabase(page);
     }
     await page.goto(rotateCameraTestCampaignUrl);
-    await waitForGameState(page);
+    await waitForGameReady(page);
     // zero the speed before playing on, so sprites are born frozen:
     await setZeroGameSpeed(page);
     await page.waitForSelector("[data-dialog-id=crowns]", { timeout: 15_000 });
@@ -628,7 +629,7 @@ const bootScenario = async (page: Page, scenario: SweepScenario) => {
     await page.goto(originalCampaignUrl);
     await clickPlayTheGame(page, "cameraRotationSweep");
     await clickOriginalCampaign(page, "cameraRotationSweep");
-    await waitForGameState(page);
+    await waitForGameReady(page);
     // zero the speed before playing on, so sprites are born frozen:
     await setZeroGameSpeed(page);
     await switchToCharacter(page, scenario.character);
@@ -810,10 +811,16 @@ for (const scenario of scenarios) {
           await freezeAnimations(page);
           await page.waitForTimeout(100);
 
-          await expect(page).toHaveScreenshot(
-            captureFileName(scenario, spriteOption, captureTimeMs, capture),
-            screenshotOptionsForScenario(scenario, testInfo.project.name),
-          );
+          // soft, so a scenario reports every capture that differs rather than
+          // stopping at the first: the captures run in ascending simulated
+          // time, so knowing whether the ones after a mismatch also differ is
+          // what separates a diverged simulation from a single bad frame
+          await expect
+            .soft(page)
+            .toHaveScreenshot(
+              captureFileName(scenario, spriteOption, captureTimeMs, capture),
+              screenshotOptionsForScenario(scenario, testInfo.project.name),
+            );
         }
       }
     }

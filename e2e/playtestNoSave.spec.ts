@@ -1,4 +1,4 @@
-import { expect, type Page, test } from "@playwright/test";
+import { expect, type Page } from "@playwright/test";
 
 import { loadCampaignFromDb } from "../src/db/campaign";
 import { campaignToDataParam } from "../src/db/campaignToDataParam";
@@ -11,6 +11,7 @@ import {
 } from "./testUtils/gameStateQueries";
 import { osSlowness } from "./testUtils/infrastructure";
 import { setupE2ePage } from "./testUtils/pageSetup";
+import { test } from "./testUtils/test";
 
 const getSavedGames = (page: Page) =>
   page.evaluate(() => {

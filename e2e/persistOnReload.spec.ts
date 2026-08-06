@@ -1,4 +1,4 @@
-import { expect, test } from "@playwright/test";
+import { expect } from "@playwright/test";
 
 import {
   jimAtBlockstackingUserId,
@@ -16,10 +16,7 @@ import {
   waitForGameState,
 } from "./testUtils/gameStateQueries";
 import { osSlowness } from "./testUtils/infrastructure";
-import {
-  formatProjectName,
-  forwardBrowserConsoleToNodeConsole,
-} from "./testUtils/logging";
+import { formatProjectName } from "./testUtils/logging";
 import {
   backToMainMenu,
   clickOriginalCampaign,
@@ -32,15 +29,12 @@ import {
   waitForDialog,
 } from "./testUtils/menuNavigation";
 import { setupE2ePage } from "./testUtils/pageSetup";
+import { test } from "./testUtils/test";
 
 test.describe("persistence across reload", () => {
   test.setTimeout(60_000 * osSlowness);
 
-  test.beforeEach(async ({ page }, testInfo) => {
-    forwardBrowserConsoleToNodeConsole(
-      page,
-      formatProjectName(testInfo.project.name),
-    );
+  test.beforeEach(async ({ page }) => {
     await setupE2ePage(page);
   });
 

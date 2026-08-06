@@ -1,5 +1,3 @@
-import { Ticker } from "pixi.js";
-
 import { type ItemInPlay } from "../../../model/ItemInPlay";
 import { playablesInRoom, type RoomState } from "../../../model/RoomState";
 import { selectHasAllPlanetCrowns } from "../../../store/slices/gameMenus/gameMenusSelectors";
@@ -340,18 +338,14 @@ const randomlyChangeDirection = <
     return notWalking;
   }
 
-  const {
-    shared: { speed: tickerSpeed },
-  } = Ticker;
-
   const roll = hashNumberToNumber0to1(itemHash + roomTime);
 
   const produceNewWalk =
     xyzEqual(walking, originXyz) ?
-      // standing on something but not walking - start walking (unless game speed is zero
-      // since this needs to be deterministic for the visual regression tests (and no time
-      // to turn around)
-      tickerSpeed !== 0
+      // standing on something but not walking - start walking, but only if any
+      // game time is passing at all: choosing a direction writes facing into
+      // the state, so a frozen world would still change what is drawn
+      deltaMS !== 0
       // change direction probabilistically, about once per second
       // of game time on average
     : roll < deltaMS / 1_000;
@@ -368,6 +362,18 @@ const randomlyChangeDirection = <
       Math.floor(hashNumberToNumber0to1(roll) * directionNames.length)
     ];
   const newDirectionUnitVector = unitVectors[newDirectionName];
+
+  if (import.meta.env.MODE === "visual-regression") {
+    // turning is the only stochastic decision a monster makes, and it is
+    // discrete - two machines agreeing on every input can still land either
+    // side of the threshold and part company permanently from that moment.
+    // Log the inputs, the moment, and the direction chosen, so a divergence
+    // can be traced to the exact item and roomTime rather than inferred from
+    // pixels
+    console.log(
+      `[monster-turn] ${itemWithMovement.id} at roomTime ${roomTime} now facing ${newDirectionName} (hash ${itemHash} roll ${roll} threshold ${deltaMS / 1_000})`,
+    );
+  }
 
   return {
     movementType: "vel",

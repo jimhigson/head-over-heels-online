@@ -1,4 +1,4 @@
-import { type Page, test } from "@playwright/test";
+import { type Page } from "@playwright/test";
 import chalk from "chalk";
 
 import { needRefreshMenuShown } from "../src/store/slices/gameMenus/gameMenusSlice";
@@ -9,7 +9,6 @@ import { osSlowness, retryWithRecovery } from "./testUtils/infrastructure";
 import {
   elapsed,
   formatProjectName,
-  forwardBrowserConsoleToNodeConsole,
   logSelectorExistence,
   logUpscale,
 } from "./testUtils/logging";
@@ -29,6 +28,7 @@ import {
   type VisitedDialogs,
 } from "./testUtils/screenshots";
 import { setSpriteOption } from "./testUtils/setSpriteOption";
+import { test } from "./testUtils/test";
 
 const traverseMenuDepthFirst = async (
   page: Page,
@@ -127,8 +127,6 @@ for (const spriteOption of enabledSpriteModes) {
 
       const formattedName = formatProjectName(testInfo.project.name);
 
-      forwardBrowserConsoleToNodeConsole(page, formattedName);
-
       console.log(`${formattedName} ${elapsed()} starting menu snapshot test`);
 
       const visited: VisitedDialogs = new Set();
@@ -209,7 +207,6 @@ for (const spriteOption of enabledSpriteModes) {
       test.setTimeout(testTimeout);
 
       const formattedName = formatProjectName(testInfo.project.name);
-      forwardBrowserConsoleToNodeConsole(page, formattedName);
 
       await page.goto("/?track=0");
       await waitForDialog(page, "mainMenu", { timeout: 5_000 * osSlowness });

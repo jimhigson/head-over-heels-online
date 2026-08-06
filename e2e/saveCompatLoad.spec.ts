@@ -1,4 +1,4 @@
-import { expect, test } from "@playwright/test";
+import { expect } from "@playwright/test";
 
 import { waitForGameState } from "./testUtils/gameStateQueries";
 import { osSlowness } from "./testUtils/infrastructure";
@@ -8,6 +8,7 @@ import {
   listSaveFixtures,
   seedCapturedLocalStorage,
 } from "./testUtils/saveFixtures";
+import { test } from "./testUtils/test";
 
 /**
  * proves the current version can load save games written by previous

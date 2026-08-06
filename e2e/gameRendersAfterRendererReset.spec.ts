@@ -1,9 +1,9 @@
-import { expect, test } from "@playwright/test";
+import { expect } from "@playwright/test";
 
 import { clickCheat } from "./testUtils/gameInteractions";
 import {
   setZeroGameSpeed,
-  waitForGameState,
+  waitForGameReady,
 } from "./testUtils/gameStateQueries";
 import { osSlowness } from "./testUtils/infrastructure";
 import { formatProjectName } from "./testUtils/logging";
@@ -17,6 +17,7 @@ import {
   waitForDialog,
 } from "./testUtils/menuNavigation";
 import { setupE2ePage } from "./testUtils/pageSetup";
+import { test } from "./testUtils/test";
 
 test.setTimeout(120_000 * osSlowness);
 
@@ -57,7 +58,7 @@ test("game renders correctly after quitting and starting another game", async ({
   // original campaign (the sequel needs the DB, which isn't always reachable):
   await clickPlayTheGame(page, formattedName);
   await clickOriginalCampaign(page, formattedName);
-  await waitForGameState(page);
+  await waitForGameReady(page);
   await exitCrownsDialog(page, formattedName);
 
   // freeze the game for a deterministic frame:
@@ -96,6 +97,7 @@ test("game renders correctly after losing and restoring the WebGL context", asyn
   await startCampaignViaMenu(page, testInfo.project.name, "originalGame");
 
   // freeze the game so the frame is deterministic across the context cycle:
+  await waitForGameReady(page);
   await setZeroGameSpeed(page);
   await page.waitForTimeout(1_000 * osSlowness);
 

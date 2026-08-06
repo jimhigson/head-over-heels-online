@@ -1,4 +1,4 @@
-import { expect, type Page, test } from "@playwright/test";
+import { expect, type Page } from "@playwright/test";
 
 import { clickCheat, loseAllLives } from "./testUtils/gameInteractions";
 import {
@@ -11,6 +11,7 @@ import {
   waitForDialog,
 } from "./testUtils/menuNavigation";
 import { setupE2ePage } from "./testUtils/pageSetup";
+import { test } from "./testUtils/test";
 
 /**
  * Hold a key down and poll a condition until it returns true (or timeout).

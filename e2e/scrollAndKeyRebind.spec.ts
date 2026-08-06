@@ -1,4 +1,4 @@
-import { expect, type Page, test } from "@playwright/test";
+import { expect, type Page } from "@playwright/test";
 
 import { dispatchKeyPress } from "./testUtils/gameInteractions";
 import { osSlowness } from "./testUtils/infrastructure";
@@ -12,6 +12,7 @@ import {
   waitForDialog,
 } from "./testUtils/menuNavigation";
 import { setupE2ePage } from "./testUtils/pageSetup";
+import { test } from "./testUtils/test";
 
 /**
  * Hold a key down for a duration before releasing — needed for movement

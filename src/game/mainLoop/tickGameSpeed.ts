@@ -1,5 +1,3 @@
-import { type Ticker } from "pixi.js";
-
 import { characterNames } from "../../model/modelTypes";
 import { selectGameSpeed } from "../../store/slices/gameMenus/gameMenusSelectors";
 import { type GameRootState } from "../../store/store";
@@ -31,11 +29,17 @@ const findDyingPlayable = (gameState: GameState) => {
   return undefined;
 };
 
+/**
+ * how fast the game world should run this frame, as a multiplier on real time:
+ * the player's chosen game speed:
+ *
+ * * 0 while a menu is open
+ * * slowed down towards zero while a death animation plays
+ */
 export const tickGameSpeed = (
-  ticker: Ticker,
   reduxState: GameRootState,
   gameState: GameState,
-): void => {
+): number => {
   const [topMenu] = reduxState.gameMenus.openMenus;
   const userGameSpeed = selectGameSpeed(reduxState);
 
@@ -45,12 +49,10 @@ export const tickGameSpeed = (
     if (dying !== undefined) {
       dying.item.state.expires = dying.room.roomTime;
     }
-    ticker.speed = userGameSpeed;
-    return;
+    return userGameSpeed;
   }
   if (topMenu.menuId !== "death") {
-    ticker.speed = 0;
-    return;
+    return 0;
   }
 
   if (dying !== undefined) {
@@ -58,10 +60,9 @@ export const tickGameSpeed = (
       (dying.item.state.expires! - dying.room.roomTime) / fadeInOrOutDuration;
 
     if (remainingFraction > deathAnimationFreezeThreshold) {
-      ticker.speed = userGameSpeed * 0.2 * remainingFraction;
-      return;
+      return userGameSpeed * 0.2 * remainingFraction;
     }
   }
 
-  ticker.speed = 0;
+  return 0;
 };

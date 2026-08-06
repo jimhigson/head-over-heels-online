@@ -6,7 +6,7 @@ import { type ResolutionName } from "../../src/originalGame";
 import {
   dispatchToStore,
   setZeroGameSpeed,
-  waitForGameState,
+  waitForGameReady,
 } from "./gameStateQueries";
 
 /**
@@ -46,6 +46,6 @@ export const bootPlaytestCampaign = async <RoomId extends string>(
     payload: emulatedResolution,
   });
   // playtest (data: url) mode skips the crowns intro dialog entirely:
-  await waitForGameState(page);
+  await waitForGameReady(page);
   await setZeroGameSpeed(page);
 };

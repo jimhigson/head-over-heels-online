@@ -1,4 +1,4 @@
-import { expect, test } from "@playwright/test";
+import { expect } from "@playwright/test";
 
 import { campaignToDataParam } from "../src/db/campaignToDataParam";
 import { type Campaign } from "../src/model/modelTypes";
@@ -8,9 +8,9 @@ import {
 } from "../src/store/slices/userSettings/userSettingsSlice";
 import { dispatchToStore } from "./testUtils/gameStateQueries";
 import { osSlowness } from "./testUtils/infrastructure";
-import { forwardBrowserConsoleToNodeConsole } from "./testUtils/logging";
 import { setupE2ePage } from "./testUtils/pageSetup";
 import { menuScreenshotOptions } from "./testUtils/screenshots";
+import { test } from "./testUtils/test";
 
 /**
  * A campaign with a room but no playable character (no head, no heels).
@@ -82,8 +82,6 @@ test("errorCaught dialog opens and reports a thrown exception", async ({
     "the errorCaught dialog snapshot is only baselined for chromium-desktop",
   );
   test.setTimeout(60_000 * osSlowness);
-
-  forwardBrowserConsoleToNodeConsole(page, "error-dialog");
 
   await page.goto(noPlayableCampaignUrl);
 
