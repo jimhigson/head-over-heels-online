@@ -1,4 +1,4 @@
-import { expect, test } from "@playwright/test";
+import { expect } from "@playwright/test";
 
 import { type ItemInPlay } from "../src/model/ItemInPlay";
 import {
@@ -15,6 +15,7 @@ import {
   waitForDialog,
 } from "./testUtils/menuNavigation";
 import { setupE2ePage } from "./testUtils/pageSetup";
+import { test } from "./testUtils/test";
 
 test.describe("life and death flows", () => {
   test.setTimeout(120_000 * osSlowness);

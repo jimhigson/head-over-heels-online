@@ -1,9 +1,7 @@
-import { test } from "@playwright/test";
-
 import { waitForAnyRoomRenderEvent } from "./testUtils/gameStateQueries";
-import { forwardBrowserConsoleToNodeConsole } from "./testUtils/logging";
 import { startGame } from "./testUtils/menuNavigation";
 import { setupE2ePage } from "./testUtils/pageSetup";
+import { test } from "./testUtils/test";
 
 const remakeSelector = "[data-menuitem_id=remake]";
 const errorDialogSelector = "[data-dialog-id=errorCaught]";
@@ -24,8 +22,6 @@ test("sequel campaign loads from cache after going offline", async ({
     "setOffline is only reliable in Chromium",
   );
   test.setTimeout(60_000);
-
-  forwardBrowserConsoleToNodeConsole(page, "offline-cache");
 
   // load the sequel campaign while online
   await startGame(page, "offline-cache", remakeSelector);

@@ -1,9 +1,10 @@
-import { expect, test } from "@playwright/test";
+import { expect } from "@playwright/test";
 import { createHash } from "crypto";
 
 import { type TextureId } from "../src/sprites/spritesheet/spritesheetData/makeSpritesheetData";
 import { progressLogHeader } from "./testUtils/logging";
 import { setupE2ePage } from "./testUtils/pageSetup";
+import { test } from "./testUtils/test";
 
 const sanitiseForFilename = (textureId: string): string => {
   return textureId

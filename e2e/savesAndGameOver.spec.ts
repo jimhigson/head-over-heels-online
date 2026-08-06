@@ -1,4 +1,4 @@
-import { expect, type Page, test } from "@playwright/test";
+import { expect, type Page } from "@playwright/test";
 
 import { clickCheat, loseAllLives } from "./testUtils/gameInteractions";
 import { osSlowness } from "./testUtils/infrastructure";
@@ -7,6 +7,7 @@ import {
   waitForDialog,
 } from "./testUtils/menuNavigation";
 import { setupE2ePage } from "./testUtils/pageSetup";
+import { test } from "./testUtils/test";
 
 /**
  * Read the snapshot of saves from the in-page redux store. Returns the keys

@@ -78,3 +78,35 @@ runs:
         if [[ "${{ inputs.project-option }}" == *"webkit"* ]] || [[ "${{ inputs.project-option }}" == *"safari"* ]]; then
           pnpm playwright install webkit
         fi
+
+    # headless chromium on linux picks its hinting/antialiasing by querying
+    # fontconfig at launch, and lands in one of two discrete rendering modes
+    # depending on what it gets back (see the comment on
+    # chromiumFontRenderingLaunchOptions in playwright.config.ts). A snapshot
+    # that differs by a whole pixel of text position is that query having
+    # answered differently on this runner, so record what it answers - without
+    # it the only evidence is the diff image, long after the runner is gone
+    - name: Report fontconfig state (diagnostic for text-position snapshot diffs)
+      if: runner.os == 'Linux'
+      shell: bash
+      # never fail the job for a diagnostic
+      continue-on-error: true
+      run: |
+        # whether this runner reused a warm browser cache or unpacked a fresh
+        # one is the only environmental asymmetry we have ever measured
+        # between a runner that reproduced the baselines and one that did not
+        echo "playwright browser cache hit: ${{ steps.playwright-cache.outputs.cache-hit || 'false' }}"
+        echo "fonts visible to fontconfig: $(fc-list | wc -l)"
+        echo "fontconfig cache dir: $(ls ~/.cache/fontconfig 2>/dev/null | wc -l) file(s)"
+        # the properties chromium reads; the generic family is what decides the
+        # defaults, since the game's own face is a webfont fontconfig never sees
+        for family in sans-serif monospace; do
+          echo "--- fc-match $family"
+          fc-match -v "$family" 2>/dev/null |
+            grep -E "^\s+(family|file|hintstyle|hinting|antialias|rgba|lcdfilter):" || true
+        done
+        # prove which binary actually launches, and that it is the pinned build
+        chromium="$(pnpm exec playwright cbr --help >/dev/null 2>&1; find ~/.cache/ms-playwright -name 'chrome' -type f 2>/dev/null | head -1)"
+        echo "chromium binary: ${chromium:-not found}"
+        [ -n "$chromium" ] && "$chromium" --version 2>/dev/null || true
+        echo "cpu: $(nproc) x $(grep -m1 'model name' /proc/cpuinfo 2>/dev/null | cut -d: -f2- | xargs || uname -m)"

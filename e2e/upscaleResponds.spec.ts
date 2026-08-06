@@ -1,7 +1,8 @@
-import { expect, type Page, test } from "@playwright/test";
+import { expect, type Page } from "@playwright/test";
 
 import { osSlowness } from "./testUtils/infrastructure";
 import { setupE2ePage } from "./testUtils/pageSetup";
+import { test } from "./testUtils/test";
 
 /**
  * Snapshot the upscale slice's computed upscale fields. The values that

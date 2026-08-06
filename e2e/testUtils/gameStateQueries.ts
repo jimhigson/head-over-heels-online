@@ -42,10 +42,10 @@ export const waitForGameState = async (page: Page) => {
  * wait for the game to be fully ready to drive: BOTH e2e hooks present - the
  * pixi application ({@link Window._e2e_pixiApplication}, put on window partway
  * through gameMain) and the game api ({@link Window._e2e_gamePageGameAi}, set
- * once gameMain returns). Helpers that touch the pixi app (eg setZeroGameSpeed's
- * ticker) must gate on this, not just game state, or a cold boot under
- * concurrent load races past. Also watches for the error dialog, as
- * {@link waitForGameState} does.
+ * once gameMain returns). Anything that reaches into the pixi app, or that
+ * needs a running game rather than merely a store to dispatch to, must gate on
+ * this.
+ * past. Also watches for the error dialog, as {@link waitForGameState} does.
  */
 export const waitForGameReady = async (page: Page) => {
   await page.waitForFunction(
@@ -243,24 +243,18 @@ export const waitForPlayableGrounded = (page: Page) =>
     { timeout: longTimeout },
   );
 
-export const setZeroGameSpeed = async (page: Page): Promise<boolean> => {
-  // the pixi app is put on window partway through the (slow, async) game boot;
-  // under concurrent load the boot lags, so wait for it rather than racing the
-  // `!` assertion below into an undefined - which otherwise throws
-  // "Cannot read properties of undefined (reading 'ticker')" on a cold boot:
-  await page.waitForFunction(
-    () => window._e2e_pixiApplication !== undefined,
-    undefined,
-    { timeout: longTimeout },
-  );
-  await page.evaluate(() => {
-    window._e2e_pixiApplication!.ticker.speed = 0;
-  });
-  return dispatchToStore(page, {
+/**
+ * freeze the game world by setting the player's game speed to zero - the game
+ * reads this every frame, so it is the only durable way to stop time; writing
+ * to the pixi ticker directly would be overwritten by the next frame.
+ *
+ * Gate on {@link waitForGameReady} first if there needs to be a game to freeze.
+ */
+export const setZeroGameSpeed = (page: Page): Promise<boolean> =>
+  dispatchToStore(page, {
     type: "userSettings/setGameSpeed",
     payload: 0,
   });
-};
 
 export const dispatchToStore = async (
   page: Page,

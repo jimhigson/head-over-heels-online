@@ -1,4 +1,4 @@
-import { expect, test } from "@playwright/test";
+import { expect } from "@playwright/test";
 
 import { dispatchKeyPress } from "./testUtils/gameInteractions";
 import { osSlowness } from "./testUtils/infrastructure";
@@ -7,6 +7,7 @@ import {
   waitForDialog,
 } from "./testUtils/menuNavigation";
 import { setupE2ePage } from "./testUtils/pageSetup";
+import { test } from "./testUtils/test";
 
 test.describe("main menu closability", () => {
   test.setTimeout(60_000 * osSlowness);

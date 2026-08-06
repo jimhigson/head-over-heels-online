@@ -53,6 +53,108 @@ export const enabledSpriteModes: SpriteOption[] = [
 // Track visited dialogs to avoid infinite loops and duplicates
 export type VisitedDialogs = Set<DialogId>;
 
+/**
+ * record how this page is actually laying text out, once it has rendered.
+ *
+ * Headless chromium on linux chooses its hinting from a fontconfig query at
+ * launch, and the two modes it can land in differ by a whole pixel of text
+ * position - far more than the anti-aliasing the snapshot tolerance is sized
+ * for. Which mode a run got is otherwise only visible by eye in a diff image
+ * downloaded after the fact, by which time the runner is gone; these numbers
+ * put it in the job's own log.
+ */
+const textLayoutLoggedFor = new WeakSet<Page>();
+
+export const logTextLayout = async (page: Page, logHeader: string) => {
+  // the answer cannot change within a page's life - the mode is fixed when the
+  // browser launches - so one line per page is all the evidence there is
+  if (textLayoutLoggedFor.has(page)) {
+    return;
+  }
+  textLayoutLoggedFor.add(page);
+
+  const measured = await page.evaluate(() => {
+    // a dialog when one is open (that is what the menu snapshots capture),
+    // otherwise the element carrying the upscale vars - both sit inside the
+    // wrapper that defines --scale, which document.body does not
+    const probe =
+      document.querySelector("dialog") ??
+      document.querySelector<HTMLElement>("[style*='--scale']") ??
+      document.body;
+    const probeStyle = getComputedStyle(probe);
+    const { fontSize, lineHeight, fontFamily } = probeStyle;
+    const { height, top } = probe.getBoundingClientRect();
+    return {
+      devicePixelRatio: window.devicePixelRatio,
+      viewport: `${window.innerWidth}x${window.innerHeight}`,
+      // --scale is set on a wrapper inside the app, not on the root, so it has
+      // to be read somewhere it is in scope
+      scale: probeStyle.getPropertyValue("--scale").trim(),
+      fontSize,
+      lineHeight,
+      fontFamily,
+      probeTop: top,
+      probeHeight: height,
+    };
+  });
+  console.log(
+    `${logHeader} ${elapsed()} [text-layout] ${JSON.stringify(measured)}`,
+  );
+};
+
+/**
+ * the detailed version, for a test that has already failed: every text line's
+ * position, and the font's own glyph metrics.
+ *
+ * A snapshot that differs by text position gives no clue in the log as to
+ * which lines moved, or whether the glyphs themselves are being measured
+ * differently. Line rects show the shift accumulating down the page; the
+ * canvas metrics fingerprint the hinting mode independently of any layout.
+ */
+export const logDetailedTextLayout = async (page: Page, logHeader: string) => {
+  const detail = await page.evaluate(() => {
+    const root = document.querySelector("dialog") ?? document.body;
+
+    const lines = Array.from(root.querySelectorAll("*"))
+      .filter((element) => (element.textContent ?? "").trim() !== "")
+      .slice(0, 40)
+      .map((element) => {
+        const { top, left, height } = element.getBoundingClientRect();
+        return `${top.toFixed(2)},${left.toFixed(2)},${height.toFixed(2)} ${(element.textContent ?? "").trim().slice(0, 24)}`;
+      });
+
+    // the same font the page is using, measured on a canvas: ascent/descent
+    // come from the rasteriser rather than from css, so they move with the
+    // hinting mode even when the css box does not
+    const { font } = getComputedStyle(root);
+    const context = document.createElement("canvas").getContext("2d");
+    const metrics =
+      context === null ? undefined : (
+        ((context.font = font), context.measureText("The game works on any"))
+      );
+
+    return {
+      font,
+      glyphMetrics:
+        metrics === undefined ? undefined : (
+          {
+            width: metrics.width,
+            ascent: metrics.actualBoundingBoxAscent,
+            descent: metrics.actualBoundingBoxDescent,
+          }
+        ),
+      lines,
+    };
+  });
+
+  console.log(
+    `${logHeader} ${elapsed()} [text-layout-detail] font=${detail.font} glyphs=${JSON.stringify(detail.glyphMetrics)}`,
+  );
+  for (const line of detail.lines) {
+    console.log(`${logHeader}   top,left,height ${line}`);
+  }
+};
+
 export const takeDialogScreenshot = async (
   page: Page,
   dialogId: DialogId,
@@ -107,6 +209,10 @@ export const takeScreenshot = async (
   spriteOption: SpriteOption,
   projectName: string,
 ) => {
+  // any spec that screenshots gets the text-layout evidence, without having to
+  // remember to ask for it (no-op after the first call for a given page)
+  await logTextLayout(page, logHeader);
+
   const menuItems = page
     .locator(
       `menu:not([role=menubar]) [${menuItemDataAttributeId}]:not([${menuItemDataAttributeHidden}='true']):not([${menuItemDataAttributeDisabled}='true'])`,

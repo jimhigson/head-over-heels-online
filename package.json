@@ -30,7 +30,6 @@
     "build:editor": "vite build --config vite.editor.config.ts --emptyOutDir",
     "clean:ci": "rm -rf dist node_modules",
     "build": "pnpm run \"/^build:(game|editor)$/\"",
-    "//check:build": "I don't know any way to check the build will pass other than running it:",
     "check:build:game": "pnpm build:game",
     "check:build:editor": "pnpm build:editor",
     "watch:type": "tsc --noEmit --watch --project ./tsconfig.app.json",

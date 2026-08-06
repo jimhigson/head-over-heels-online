@@ -1,4 +1,4 @@
-import { expect, type Page, test } from "@playwright/test";
+import { expect, type Page } from "@playwright/test";
 import chalk from "chalk";
 
 import { spriteOptionEquals } from "../src/store/slices/userSettings/spriteOptionEquals";
@@ -18,7 +18,6 @@ import {
   elapsed,
   formatDuration,
   formatProjectName,
-  forwardBrowserConsoleToNodeConsole,
   logUpscale,
 } from "./testUtils/logging";
 import {
@@ -38,6 +37,7 @@ import {
   testTimeout,
 } from "./testUtils/screenshots";
 import { setSpriteOption } from "./testUtils/setSpriteOption";
+import { test } from "./testUtils/test";
 
 const takeGameScreenshots = async (
   page: Page,
@@ -99,8 +99,6 @@ test.describe("Settings reflect in game", () => {
         enabledSpriteModes.filter((m) => !m.uncolourised)
       : enabledSpriteModes;
 
-    forwardBrowserConsoleToNodeConsole(page, formattedName);
-
     console.log(
       `${formattedName} ${elapsed()} starting settings-reflect-in-game test`,
     );
@@ -156,13 +154,11 @@ test.describe("Settings reflect in game", () => {
     await test.step("Freeze game for screenshots", async () => {
       await retryWithRecovery({
         async action(attempt) {
-          const gameApiFound = await page.evaluate(() => {
-            if (window._e2e_gamePageGameAi && window._e2e_pixiApplication) {
-              window._e2e_pixiApplication.ticker.maxFPS = 5;
-              return true;
-            }
-            return false;
-          });
+          const gameApiFound = await page.evaluate(
+            () =>
+              window._e2e_gamePageGameAi !== undefined &&
+              window._e2e_pixiApplication !== undefined,
+          );
 
           type ToggleUserSettingAction = ReturnType<typeof toggleUserSetting>;
 

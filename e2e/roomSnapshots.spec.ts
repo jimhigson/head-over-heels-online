@@ -1,4 +1,4 @@
-import { expect, type Page, test } from "@playwright/test";
+import { expect, type Page } from "@playwright/test";
 import chalk from "chalk";
 
 import { campaign } from "../src/_generated/originalCampaign/campaign";
@@ -26,7 +26,6 @@ import {
   elapsed,
   formatDuration,
   formatProjectName,
-  forwardBrowserConsoleToNodeConsole,
   logSelectorExistence,
   logUpscale,
   progressLogHeader,
@@ -42,6 +41,7 @@ import {
   spriteOptionSuffix,
 } from "./testUtils/screenshots";
 import { setSpriteOption } from "./testUtils/setSpriteOption";
+import { test } from "./testUtils/test";
 
 /**
  * Environment variables for controlling screenshot tests:
@@ -199,20 +199,13 @@ const gameRunsAtZeroSpeed = async (page: Page, projectName: string) => {
 
   await retryWithRecovery({
     async action(attempt) {
-      // gate on the game being fully booted (both e2e hooks present) before
-      // touching the pixi app or dispatching - a cold boot under concurrent
-      // load lags, and racing past here is what used to throw
-      // "Cannot read properties of undefined (reading 'ticker')":
+      // freeze the game as early as the store will accept the dispatch, so as
+      // little of the world as possible moves before it is stopped:
+      const successSetSpeed = await setZeroGameSpeed(page);
+
       await waitForGameReady(page);
 
-      // set the frame rate very low - this reduces how much cpu the tests need to run
-      await page.evaluate(() => {
-        window._e2e_pixiApplication!.ticker.maxFPS = 5;
-      });
-
       type ToggleUserSettingAction = ReturnType<typeof toggleUserSetting>;
-
-      const successSetSpeed = await setZeroGameSpeed(page);
 
       // turn off the crt filter (on by default)
       const successToggleCrtFilter = await dispatchToStore(page, {
@@ -285,8 +278,6 @@ test.describe("Room Visual Snapshots", () => {
 
       const formattedName = `${formatProjectName(testInfo.project.name)} (${testIndex})`;
       const screenshotOpts = roomScreenshotOptions(testInfo.project.name);
-
-      forwardBrowserConsoleToNodeConsole(page, formattedName);
 
       console.log(
         `${formattedName} ${elapsed()} starting test ${formattedName} `,
