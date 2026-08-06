@@ -1,36 +1,36 @@
 import { type UnionOfAllItemInPlayTypes } from "../../model/ItemInPlay";
-import { type Xyz } from "../../utils/vectors/vectors";
+import { type XyzBox } from "../../utils/vectors/vectors";
 import { type SpatialIndex } from "../physics/gridSpace/SpatialIndex";
 
-export type CollideableItem = Pick<UnionOfAllItemInPlayTypes, "aabb" | "id"> & {
-  state: { position: Xyz };
+export type CollideableItem = Pick<UnionOfAllItemInPlayTypes, "id"> & {
+  state: { box: Readonly<XyzBox> };
 };
 
 /**
- * Collision between two items. Version that takes positions and bounding boxes.
+ * Collision between two boxes.
  *
- * if items are *just* touching (bounding box max equal to other item's bb min)
- * it is considered a collision
+ * boxes that are *just* touching (one box's max equal to the other's min) do
+ * not collide - they have to overlap by some amount
  */
-export const collisionPosAndBb = (posA: Xyz, bbA: Xyz, posB: Xyz, bbB: Xyz) => {
+export const collisionBoxes = (a: Readonly<XyzBox>, b: Readonly<XyzBox>) => {
   return (
-    !(posA.x + bbA.x <= posB.x || posA.x >= posB.x + bbB.x) &&
-    !(posA.y + bbA.y <= posB.y || posA.y >= posB.y + bbB.y) &&
-    !(posA.z + bbA.z <= posB.z || posA.z >= posB.z + bbB.z)
+    !(a.x + a.xd <= b.x || a.x >= b.x + b.xd) &&
+    !(a.y + a.yd <= b.y || a.y >= b.y + b.yd) &&
+    !(a.z + a.zd <= b.z || a.z >= b.z + b.zd)
   );
 };
 
 /**
  * Collision between two items. Version that takes items.
  *
- * if items are *just* touching (bounding box max equal to other item's bb min)
- * it is considered a collision
+ * items that are *just* touching (one box's max equal to the other's min) do
+ * not collide - they have to overlap by some amount
  */
 export const collision2Items = (
-  { aabb: bbA, state: { position: posA } }: CollideableItem,
-  { aabb: bbB, state: { position: posB } }: CollideableItem,
+  { state: { box: boxA } }: CollideableItem,
+  { state: { box: boxB } }: CollideableItem,
 ) => {
-  return collisionPosAndBb(posA, bbA, posB, bbB);
+  return collisionBoxes(boxA, boxB);
 };
 
 /**

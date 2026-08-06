@@ -96,7 +96,7 @@ const dropCarriedItemIfAny = <RoomId extends string>(
     addItemToRoom({
       room,
       item: carrying,
-      atPosition: playableItem.state.position,
+      atPosition: playableItem.state.box,
     });
     heelsAbilities.carrying = null;
   }

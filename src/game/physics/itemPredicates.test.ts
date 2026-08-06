@@ -4,7 +4,7 @@ import { basicEmptyRoom } from "../../_testUtils/basicRoom";
 import { defaultItemProperties } from "../../model/defaultItemProperties";
 import { type UnionOfAllItemInPlayTypes } from "../../model/ItemInPlay";
 import { unitVectors } from "../../utils/vectors/unitVectors";
-import { originXyz } from "../../utils/vectors/vectors";
+import { boxWithSize, originXyz } from "../../utils/vectors/vectors";
 import { emptyRoomJsonDirectionalIndex } from "../gameState/loadRoom/buildRoomJsonDirectionalIndex";
 import { defaultBaseState } from "../gameState/loadRoom/itemDefaultStates";
 import { loadItemFromJson } from "../gameState/loadRoom/loadItemFromJson";
@@ -51,13 +51,12 @@ const horizontalPortal: UnionOfAllItemInPlayTypes = {
   type: "portal",
   hash: 0,
   id: "portal",
-  aabb: originXyz,
   config: {
     direction: unitVectors.towards,
     toRoom: "anyRoom",
     relativePoint: originXyz,
   },
-  state: { position: originXyz, ...defaultBaseState() },
+  state: { box: boxWithSize(originXyz, originXyz), ...defaultBaseState() },
 };
 
 const portalToBelow: UnionOfAllItemInPlayTypes = {
@@ -65,26 +64,24 @@ const portalToBelow: UnionOfAllItemInPlayTypes = {
   type: "portal",
   hash: 0,
   id: "portal",
-  aabb: originXyz,
   config: {
     direction: unitVectors.down,
     toRoom: "anyRoom",
     relativePoint: originXyz,
   },
-  state: { position: originXyz, ...defaultBaseState() },
+  state: { box: boxWithSize(originXyz, originXyz), ...defaultBaseState() },
 };
 const portalToAbove: UnionOfAllItemInPlayTypes = {
   ...defaultItemProperties,
   type: "portal",
   hash: 0,
   id: "portal",
-  aabb: originXyz,
   config: {
     direction: unitVectors.up,
     toRoom: "anyRoom",
     relativePoint: originXyz,
   },
-  state: { position: originXyz, ...defaultBaseState() },
+  state: { box: boxWithSize(originXyz, originXyz), ...defaultBaseState() },
 };
 
 describe("isSolid", () => {

@@ -124,8 +124,7 @@ export const beamItemsSnapshot = ({ room, lamp }: BeamScenario) => {
     .filter(isLightBeam)
     .map((b) => ({
       id: b.id,
-      position: b.state.position,
-      aabb: b.aabb,
+      box: b.state.box,
       direction: b.config.direction,
       end: b.state.end,
     }))

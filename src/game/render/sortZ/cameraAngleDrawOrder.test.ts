@@ -8,7 +8,7 @@ import {
   quarterTurnAnticlockwise,
   quarterTurnClockwise,
 } from "../../../utils/vectors/cameraAngleVectors";
-import { type Xy, type Xyz } from "../../../utils/vectors/vectors";
+import { type Xy, type XyzBox } from "../../../utils/vectors/vectors";
 import { projectWorldXyzToScreenXy } from "../projections";
 import { type RenderBox } from "../renderBox/makeItemRenderBoxAtCameraAngle";
 import { graphEdgeStrings } from "./__test__/graphEdgeStrings";
@@ -20,25 +20,16 @@ import { updateZEdges } from "./updateZEdges";
 // --- worldBoxToCameraSpace: hand-computed expectations, so this is not circular
 // with the implementation it is proving. Box is min-corner (0,0,0), extents (2,4,1).
 
-test.for<[Xy, { position: Xyz; aabb: Xyz }]>([
-  [
-    cameraAngleBase,
-    { position: { x: 0, y: 0, z: 0 }, aabb: { x: 2, y: 4, z: 1 } },
-  ],
-  [
-    quarterTurnAnticlockwise,
-    { position: { x: -4, y: 0, z: 0 }, aabb: { x: 4, y: 2, z: 1 } },
-  ],
-  [halfTurn, { position: { x: -2, y: -4, z: 0 }, aabb: { x: 2, y: 4, z: 1 } }],
-  [
-    quarterTurnClockwise,
-    { position: { x: 0, y: -2, z: 0 }, aabb: { x: 4, y: 2, z: 1 } },
-  ],
+test.for<[Xy, XyzBox]>([
+  [cameraAngleBase, { x: 0, y: 0, z: 0, xd: 2, yd: 4, zd: 1 }],
+  [quarterTurnAnticlockwise, { x: -4, y: 0, z: 0, xd: 4, yd: 2, zd: 1 }],
+  [halfTurn, { x: -2, y: -4, z: 0, xd: 2, yd: 4, zd: 1 }],
+  [quarterTurnClockwise, { x: 0, y: -2, z: 0, xd: 4, yd: 2, zd: 1 }],
 ])(
   "worldBoxToCameraSpace rotates the box for camera angle %o",
   ([angle, expected]) => {
     expect(
-      worldBoxToCameraSpace({ x: 0, y: 0, z: 0 }, { x: 2, y: 4, z: 1 }, angle),
+      worldBoxToCameraSpace({ x: 0, y: 0, z: 0, xd: 2, yd: 4, zd: 1 }, angle),
     ).toEqual(expected);
   },
 );
@@ -79,8 +70,7 @@ const makeScene = (): Set<TestItem> => {
       const z = Math.round(Math.sin(x * 1.3 + y * 0.7) * 2 + 2);
       items.add({
         id: `item-${i++}`,
-        state: { position: { x, y, z } },
-        aabb: { x: 1, y: 1, z: 1 },
+        state: { box: { x, y, z, xd: 1, yd: 1, zd: 1 } },
         fixedZIndex: undefined,
       });
     }
@@ -91,12 +81,10 @@ const makeScene = (): Set<TestItem> => {
 const bakeRotation = (scene: Set<TestItem>, cameraAngle: Xy): Set<TestItem> => {
   const baked = new Set<TestItem>();
   for (const item of scene) {
-    const { position, aabb } = worldBoxToCameraSpace(
-      item.state.position,
-      item.aabb,
-      cameraAngle,
-    );
-    baked.add({ ...item, state: { position }, aabb });
+    baked.add({
+      ...item,
+      state: { box: worldBoxToCameraSpace(item.state.box, cameraAngle) },
+    });
   }
   return baked;
 };

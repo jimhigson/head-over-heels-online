@@ -14,13 +14,11 @@ describe("collision1to1", () => {
       collision2Items(
         {
           id: "itemA",
-          state: { position: { x: 0, y: 0, z: 0 } },
-          aabb: { x: 1, y: 1, z: 1 },
+          state: { box: { x: 0, y: 0, z: 0, xd: 1, yd: 1, zd: 1 } },
         },
         {
           id: "itemB",
-          state: { position: { x: 0.5, y: 0, z: 0 } },
-          aabb: { x: 1, y: 1, z: 1 },
+          state: { box: { x: 0.5, y: 0, z: 0, xd: 1, yd: 1, zd: 1 } },
         },
       ),
     ).toBe(true);
@@ -31,13 +29,11 @@ describe("collision1to1", () => {
       collision2Items(
         {
           id: "itemA",
-          state: { position: { x: 0, y: 0, z: 0 } },
-          aabb: { x: 1, y: 1, z: 1 },
+          state: { box: { x: 0, y: 0, z: 0, xd: 1, yd: 1, zd: 1 } },
         },
         {
           id: "itemB",
-          state: { position: { x: 0, y: 0.5, z: 0 } },
-          aabb: { x: 1, y: 1, z: 1 },
+          state: { box: { x: 0, y: 0.5, z: 0, xd: 1, yd: 1, zd: 1 } },
         },
       ),
     ).toBe(true);
@@ -48,13 +44,11 @@ describe("collision1to1", () => {
       collision2Items(
         {
           id: "itemA",
-          state: { position: { x: 0, y: 0, z: 0 } },
-          aabb: { x: 1, y: 1, z: 1 },
+          state: { box: { x: 0, y: 0, z: 0, xd: 1, yd: 1, zd: 1 } },
         },
         {
           id: "itemB",
-          state: { position: { x: 0, y: 0, z: 0.5 } },
-          aabb: { x: 1, y: 1, z: 1 },
+          state: { box: { x: 0, y: 0, z: 0.5, xd: 1, yd: 1, zd: 1 } },
         },
       ),
     ).toBe(true);
@@ -66,35 +60,30 @@ describe("collisionItemWithIndex", () => {
     const subject: CollideableItem = {
       ...defaultItemProperties,
       id: "subject",
-      state: { position: { x: 0, y: 0, z: 0 } },
-      aabb: { x: 2, y: 1, z: 1 },
+      state: { box: { x: 0, y: 0, z: 0, xd: 2, yd: 1, zd: 1 } },
     };
 
     const colliding1: CollideableItem = {
       ...defaultItemProperties,
       id: "colliding1",
-      state: { position: { x: 1.9, y: 0, z: 0 } },
-      aabb: { x: 1, y: 1, z: 1 },
+      state: { box: { x: 1.9, y: 0, z: 0, xd: 1, yd: 1, zd: 1 } },
     };
     const colliding2: CollideableItem = {
       ...defaultItemProperties,
       id: "colliding2",
-      state: { position: { x: 0, y: 0.9, z: 0 } },
-      aabb: { x: 2, y: 1, z: 1 },
+      state: { box: { x: 0, y: 0.9, z: 0, xd: 2, yd: 1, zd: 1 } },
     };
 
     const nonColliding1: CollideableItem = {
       ...defaultItemProperties,
       id: "nonColliding1",
-      state: { position: { x: 0, y: 0, z: 1 } },
-      aabb: { x: 2, y: 1, z: 1 },
+      state: { box: { x: 0, y: 0, z: 1, xd: 2, yd: 1, zd: 1 } },
     };
 
     const nonColliding2: CollideableItem = {
       ...defaultItemProperties,
       id: "nonColliding2",
-      state: { position: { x: 2, y: 0, z: 0 } },
-      aabb: { x: 2, y: 1, z: 1 },
+      state: { box: { x: 2, y: 0, z: 0, xd: 2, yd: 1, zd: 1 } },
     };
 
     // Build a real spatial index for the test
@@ -118,21 +107,18 @@ describe("collisionItemWithIndex", () => {
     const subject: CollideableItem = {
       ...defaultItemProperties,
       id: "subject",
-      state: { position: { x: 0, y: 0, z: 0 } },
-      aabb: { x: 2, y: 1, z: 1 },
+      state: { box: { x: 0, y: 0, z: 0, xd: 2, yd: 1, zd: 1 } },
     };
 
     const colliding1: CollideableItem = {
       ...defaultItemProperties,
       id: "colliding1",
-      state: { position: { x: 1.9, y: 0, z: 0 } },
-      aabb: { x: 1, y: 1, z: 1 },
+      state: { box: { x: 1.9, y: 0, z: 0, xd: 1, yd: 1, zd: 1 } },
     };
     const colliding2: CollideableItem = {
       ...defaultItemProperties,
       id: "colliding2",
-      state: { position: { x: 0, y: 0.9, z: 0 } },
-      aabb: { x: 2, y: 1, z: 1 },
+      state: { box: { x: 0, y: 0.9, z: 0, xd: 2, yd: 1, zd: 1 } },
     };
 
     const index = new SpatialIndex<string, string, CollideableItem>([

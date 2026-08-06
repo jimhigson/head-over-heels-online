@@ -38,9 +38,8 @@ const generateItems = (count: number): Set<TestItem> => {
     items.add({
       id: `item-${i}`,
       state: {
-        position: { x, y, z },
+        box: { x, y, z, xd: 1, yd: 1, zd: 1 },
       },
-      aabb: { x: 1, y: 1, z: 1 },
       fixedZIndex: undefined,
     });
   }
@@ -132,7 +131,7 @@ export const runTest = (scenario: RunTestScenario = {}) => {
         if (i % stepSize === 0) {
           // move the item up
           const z = Math.round(Math.sin(i + f * 0.5) * 2.5 + 2.5);
-          item.state.position.z = z;
+          item.state.box = { ...item.state.box, z };
         }
         i++;
       }

@@ -265,7 +265,7 @@ test("heels can put down an item while pushing another item with a pickup on top
 
   //___ now: on floor ___
 
-  const { y: pushableStartY } = itemState(gameState, "pushable").position;
+  const { y: pushableStartY } = itemState(gameState, "pushable").box;
 
   // fell back to the floor - start running into the pushable block
   playGameThrough(gameState, {
@@ -273,7 +273,7 @@ test("heels can put down an item while pushing another item with a pickup on top
       mockInputStateTracker.mockDirectionPressed = "away";
     },
     until() {
-      return itemState(gameState, "pushable").position.y !== pushableStartY;
+      return itemState(gameState, "pushable").box.y !== pushableStartY;
     },
   });
 
@@ -527,7 +527,7 @@ test("if Heels loses life while carrying, the carried item is dropped", () => {
   });
 
   const portableBlockOriginalPosition =
-    gameState.characterRooms.head?.items.portable.state.position;
+    gameState.characterRooms.head?.items.portable.state.box;
 
   // head starts so switch to heels:
   playGameThrough(gameState, {
@@ -582,7 +582,7 @@ test("if Heels loses life while carrying, the carried item is dropped", () => {
   expect(selectCurrentRoomState(gameState)?.items?.portable).toBeDefined();
 
   // should not be in its original loading position (should be where heels died)
-  expect(
-    gameState.characterRooms.head?.items.portable.state.position,
-  ).not.toEqual(portableBlockOriginalPosition);
+  expect(gameState.characterRooms.head?.items.portable.state.box).not.toEqual(
+    portableBlockOriginalPosition,
+  );
 });

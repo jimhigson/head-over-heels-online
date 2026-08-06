@@ -7,23 +7,21 @@ import {
 import { type LightBeamEnd } from "../../../model/ItemStateMap";
 import { typePrefix } from "../../../model/json/typePrefix";
 import { reflectedFacingVector } from "../../../model/MirrorOrientation";
-import {
-  type Progression,
-  roomSpatialIndexKey,
-  type RoomState,
-} from "../../../model/RoomState";
+import { roomSpatialIndexKey, type RoomState } from "../../../model/RoomState";
 import { emptyArray } from "../../../utils/empty";
 import {
   type AxisXy,
+  boxWithSize,
   dominantAxisXy,
   perpendicularAxisXy,
   type Xyz,
-  xyzEqual,
+  type XyzBox,
+  xyzBoxEqual,
 } from "../../../utils/vectors/vectors";
 import { defaultBaseState } from "../../gameState/loadRoom/itemDefaultStates";
 import { addItemToRoom } from "../../gameState/mutators/addItemToRoom";
 import { deleteItemFromRoom } from "../../gameState/mutators/deleteItemFromRoom";
-import { updateItemPosition } from "../../gameState/mutators/updateItemPosition";
+import { updateItemBox } from "../../gameState/mutators/updateItemBox";
 import { isLightBeam, isMirror, isSolid } from "../itemPredicates";
 import { blockSizePx } from "../mechanicsConstants";
 
@@ -44,9 +42,8 @@ const idPrefix = typePrefix.lightBeam;
  */
 type BeamSegment = {
   direction: Xyz;
-  /** min corner of the segment's box */
-  position: Xyz;
-  aabb: Xyz;
+  /** the segment's world-space box */
+  box: XyzBox;
   end: LightBeamEnd;
 };
 
@@ -104,16 +101,14 @@ const castBeamRowSegments = <RoomId extends string, RoomItemId extends string>(
     const perpAxis = perpendicularAxisXy(axis);
     const sign = direction[axis];
 
-    const sourcePosition: Xyz = source.state.position;
+    const sourceBox = source.state.box;
     // the 8px cross-section, centred in the source's perpendicular footprint:
     const perpMin: number =
-      sourcePosition[perpAxis] +
-      (source.aabb[perpAxis] - lightBeamCrossSectionPx) / 2;
+      sourceBox[perpAxis] +
+      (sourceBox[`${perpAxis}d`] - lightBeamCrossSectionPx) / 2;
 
     const startPlane =
-      sign > 0 ?
-        sourcePosition[axis] + source.aabb[axis]
-      : sourcePosition[axis];
+      sign > 0 ? sourceBox[axis] + sourceBox[`${axis}d`] : sourceBox[axis];
 
     let nearestBlocker:
       undefined | UnionOfAllItemInPlayTypes<RoomId, RoomItemId>;
@@ -194,32 +189,28 @@ const castBeamRowSegments = <RoomId extends string, RoomItemId extends string>(
             if (!isSolid(item)) {
               continue;
             }
-            const itemPosition = item.state.position;
+            const itemBox = item.state.box;
             if (
               !bandsOverlapStrictly(
-                itemPosition[perpAxis],
-                itemPosition[perpAxis] + item.aabb[perpAxis],
+                itemBox[perpAxis],
+                itemBox[perpAxis] + itemBox[`${perpAxis}d`],
                 perpMin,
               ) ||
-              !bandsOverlapStrictly(
-                itemPosition.z,
-                itemPosition.z + item.aabb.z,
-                zMin,
-              )
+              !bandsOverlapStrictly(itemBox.z, itemBox.z + itemBox.zd, zMin)
             ) {
               continue;
             }
 
             const distance =
               sign > 0 ?
-                itemPosition[axis] - startPlane
-              : startPlane - (itemPosition[axis] + item.aabb[axis]);
+                itemBox[axis] - startPlane
+              : startPlane - (itemBox[axis] + itemBox[`${axis}d`]);
 
             // items entirely behind the start plane can't block:
             if (
               sign > 0 ?
-                itemPosition[axis] + item.aabb[axis] <= startPlane
-              : itemPosition[axis] >= startPlane
+                itemBox[axis] + itemBox[`${axis}d`] <= startPlane
+              : itemBox[axis] >= startPlane
             ) {
               continue;
             }
@@ -244,14 +235,14 @@ const castBeamRowSegments = <RoomId extends string, RoomItemId extends string>(
         nearestBlocker !== undefined &&
         isMirror(nearestBlocker) &&
         containsBand(
-          nearestBlocker.state.position[perpAxis],
-          nearestBlocker.state.position[perpAxis] +
-            nearestBlocker.aabb[perpAxis],
+          nearestBlocker.state.box[perpAxis],
+          nearestBlocker.state.box[perpAxis] +
+            nearestBlocker.state.box[`${perpAxis}d`],
           perpMin,
         ) &&
         containsBand(
-          nearestBlocker.state.position.z,
-          nearestBlocker.state.position.z + nearestBlocker.aabb.z,
+          nearestBlocker.state.box.z,
+          nearestBlocker.state.box.z + nearestBlocker.state.box.zd,
           zMin,
         )
       ) ?
@@ -267,12 +258,14 @@ const castBeamRowSegments = <RoomId extends string, RoomItemId extends string>(
       const along = sign > 0 ? startPlane : startPlane - nearestDistance;
       segments.push({
         direction,
-        position: {
-          x: axis === "x" ? along : perpMin,
-          y: axis === "y" ? along : perpMin,
-          z: zMin,
-        },
-        aabb: beamSegmentAabb(axis, nearestDistance),
+        box: boxWithSize(
+          {
+            x: axis === "x" ? along : perpMin,
+            y: axis === "y" ? along : perpMin,
+            z: zMin,
+          },
+          beamSegmentAabb(axis, nearestDistance),
+        ),
         end:
           reflectedDirection !== undefined ?
             turnOfReflection(direction, reflectedDirection)
@@ -307,7 +300,7 @@ export const castBeamSegments = <
 
   const segments: BeamSegment[] = [];
   for (let row = 0; row < lampTimesZ; row++) {
-    const rowBaseZ = lamp.state.position.z + row * blockSizePx.z;
+    const rowBaseZ = lamp.state.box.z + row * blockSizePx.z;
     const zMin = rowBaseZ + lightBeamLiftPx;
     castBeamRowSegments(lamp, room, zMin, segments);
   }
@@ -352,18 +345,12 @@ export const tickLampLightBeams = <
       cursorId = existing.state.next;
       existing.config.direction = segment.direction;
       existing.state.end = segment.end;
-      const aabbChanged = !xyzEqual(existing.aabb, segment.aabb);
-      if (aabbChanged) {
-        existing.aabb = segment.aabb;
-      }
-      if (!xyzEqual(existing.state.position, segment.position)) {
-        updateItemPosition(room, existing, segment.position);
-      } else if (aabbChanged) {
-        // a beam growing in its positive direction lengthens without its
-        // min corner moving
-        existing.state.movedOrResizedOnProgression =
-          ++room.progression as Progression;
-        room[roomSpatialIndexKey].updateItemSpatialIndex(existing);
+      // the beam is recast from scratch every tick, so a lamp shining at a
+      // static scene re-derives the identical segment box each time - only
+      // hand it on when it really differs, or the beam would count as moving
+      // on every tick and never let the room's render gates go quiet:
+      if (!xyzBoxEqual(existing.state.box, segment.box)) {
+        updateItemBox(room, existing, segment.box);
       }
       beam = existing;
     } else {
@@ -380,10 +367,9 @@ export const tickLampLightBeams = <
           direction: segment.direction,
           sourceItemId: lamp.id,
         },
-        aabb: segment.aabb,
         state: {
           ...defaultBaseState<RoomItemId>(),
-          position: segment.position,
+          box: segment.box,
           end: segment.end,
         },
         castsShadowWhileStoodOn: false,

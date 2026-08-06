@@ -1,14 +1,8 @@
-import {
-  type ItemInPlayType,
-  type UnionOfAllItemInPlayTypes,
-} from "../../model/ItemInPlay";
+import { type ItemInPlayType } from "../../model/ItemInPlay";
 import { dotProductXyz, type Xyz } from "../../utils/vectors/vectors";
+import { type CollideableItem } from "../collision/aabbCollision";
 
-export type SortableObstacle = Pick<
-  UnionOfAllItemInPlayTypes,
-  "aabb" | "id"
-> & {
-  state: { position: Xyz };
+export type SortableObstacle = CollideableItem & {
   type: ItemInPlayType;
 };
 
@@ -24,25 +18,39 @@ const conveyorOrderComparator = (
   b: ItemInPlay<"conveyor">,
 ) => {
   const aLeadsTo = addXyz(
-    a.state.position,
+    a.state.box,
     scaleXyz(unitVectors[a.config.direction], blockSizePx.w * a.config.count),
   );
 
   if (
-    xyzEqual(aLeadsTo, b.state.position) ||
-    xyzEqual(addXyz(aLeadsTo, blockSizeXyzPx), addXyz(b.state.position, b.aabb))
+    xyzEqual(aLeadsTo, b.state.box) ||
+    xyzEqual(
+      addXyz(aLeadsTo, blockSizeXyzPx),
+      addXyz(b.state.box, {
+        x: b.state.box.xd,
+        y: b.state.box.yd,
+        z: b.state.box.zd,
+      }),
+    )
   ) {
     return -1;
   }
 
   const bLeadsTo = addXyz(
-    b.state.position,
+    b.state.box,
     scaleXyz(unitVectors[b.config.direction], blockSizePx.w * b.config.count),
   );
 
   if (
-    xyzEqual(bLeadsTo, a.state.position) ||
-    xyzEqual(addXyz(bLeadsTo, blockSizeXyzPx), addXyz(a.state.position, a.aabb))
+    xyzEqual(bLeadsTo, a.state.box) ||
+    xyzEqual(
+      addXyz(bLeadsTo, blockSizeXyzPx),
+      addXyz(a.state.box, {
+        x: a.state.box.xd,
+        y: a.state.box.yd,
+        z: a.state.box.zd,
+      }),
+    )
   ) {
     return 1;
   }
@@ -58,16 +66,16 @@ const obstaclePointEarliestPointInVector = (
   return {
     x:
       vector.x > 0 ?
-        obstacle.state.position.x
-      : obstacle.state.position.x + obstacle.aabb.x,
+        obstacle.state.box.x
+      : obstacle.state.box.x + obstacle.state.box.xd,
     y:
       vector.y > 0 ?
-        obstacle.state.position.y
-      : obstacle.state.position.y + obstacle.aabb.y,
+        obstacle.state.box.y
+      : obstacle.state.box.y + obstacle.state.box.yd,
     z:
       vector.z > 0 ?
-        obstacle.state.position.z
-      : obstacle.state.position.z + obstacle.aabb.z,
+        obstacle.state.box.z
+      : obstacle.state.box.z + obstacle.state.box.zd,
   };
 };
 /**

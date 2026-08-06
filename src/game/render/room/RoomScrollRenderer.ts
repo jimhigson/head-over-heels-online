@@ -551,12 +551,12 @@ export class RoomScrollRenderer<
         toAngle,
       );
       const targetFrom = this.#targetRoomPosition(
-        playable.state.position,
+        playable.state.box,
         from,
         fromAngle,
       );
       const targetTo = this.#targetRoomPosition(
-        playable.state.position,
+        playable.state.box,
         to,
         toAngle,
       );
@@ -591,7 +591,7 @@ export class RoomScrollRenderer<
       }
 
       const targetRoomPositionWithScrolling = this.#targetRoomPosition(
-        playable.state.position,
+        playable.state.box,
         this.#geometry,
         cameraQuarterAngle,
       );

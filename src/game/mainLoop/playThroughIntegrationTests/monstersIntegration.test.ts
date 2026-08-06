@@ -89,7 +89,7 @@ test("monsters don't fall out of rooms via the doorways", () => {
   playGameThrough(gameState, { until: 10_000 });
 
   const monsterPosition =
-    gameState.characterRooms.heels?.items.monster.state.position;
+    gameState.characterRooms.heels?.items.monster.state.box;
   // test that the monster is still in the room:
   expect(monsterPosition?.z).toEqual(0); //didn't fall through the floor
   expect(monsterPosition?.y).toBeGreaterThan(0); //didn't leave through the door
@@ -136,7 +136,7 @@ test("activated:after-player-near", () => {
     },
   });
 
-  const monsterStartPosition = itemState(gameState, "monster").position;
+  const monsterStartPosition = itemState(gameState, "monster").box;
 
   // no input for a second to start:
   playGameThrough(gameState, {
@@ -144,9 +144,7 @@ test("activated:after-player-near", () => {
   });
 
   // should have stayed in the same place (player didn't go near)
-  expect(itemState(gameState, "monster").position).toEqual(
-    monsterStartPosition,
-  );
+  expect(itemState(gameState, "monster").box).toEqual(monsterStartPosition);
   expect(itemState<"monster">(gameState, "monster").activated).toBe(false);
 
   playGameThrough(gameState, {
@@ -154,10 +152,7 @@ test("activated:after-player-near", () => {
       mockInputStateTracker.mockDirectionPressed = "left";
     },
     until(gameState) {
-      const monsterStartPositionUpdated = itemState(
-        gameState,
-        "monster",
-      ).position;
+      const monsterStartPositionUpdated = itemState(gameState, "monster").box;
 
       // continue until the monster has woken up and moved because player passed near
       return !xyzEqual(monsterStartPosition, monsterStartPositionUpdated);

@@ -2,7 +2,7 @@ import { describe, expect, test } from "vitest";
 
 import { basicEmptyRoom } from "../../_testUtils/basicRoom";
 import { roomJsonItemsIterable } from "../../model/RoomJson";
-import { originXyz } from "../../utils/vectors/vectors";
+import { boxAt, originXyz } from "../../utils/vectors/vectors";
 import { buildRoomJsonDirectionalIndex } from "../gameState/loadRoom/buildRoomJsonDirectionalIndex";
 import { loadItemFromJson } from "../gameState/loadRoom/loadItemFromJson";
 import { type FreeItem } from "../physics/itemPredicates";
@@ -271,8 +271,11 @@ describe("spatiallyCheckStandingOn", () => {
       buildRoomJsonDirectionalIndex(roomJsonItemsIterable(roomJson)),
     );
 
-    playable.state.position = { x: 4.1, y: 0, z: 2 };
-    itemMaybeBeingStoodOn.state.position = { x: blockSizePx.x, y: 0, z: 0 };
+    playable.state.box = boxAt({ x: 4.1, y: 0, z: 2 }, playable.state.box);
+    itemMaybeBeingStoodOn.state.box = boxAt(
+      { x: blockSizePx.x, y: 0, z: 0 },
+      itemMaybeBeingStoodOn.state.box,
+    );
 
     const result = spatiallyCheckStandingOn(
       playable as FreeItem<string, string>,
@@ -306,18 +309,24 @@ describe("spatiallyCheckStandingOn", () => {
       buildRoomJsonDirectionalIndex(roomJsonItemsIterable(roomJson)),
     );
 
-    playable.state.position = {
-      // slightly overlapping in x (player is 12 wide)
-      x: 0.1,
-      y: 0,
-      // nowhere near the top of this item (which would be 12)
-      z: 3,
-    };
-    itemMaybeBeingStoodOn.state.position = {
-      x: 12,
-      y: 0,
-      z: 0,
-    };
+    playable.state.box = boxAt(
+      {
+        // slightly overlapping in x (player is 12 wide)
+        x: 0.1,
+        y: 0,
+        // nowhere near the top of this item (which would be 12)
+        z: 3,
+      },
+      playable.state.box,
+    );
+    itemMaybeBeingStoodOn.state.box = boxAt(
+      {
+        x: 12,
+        y: 0,
+        z: 0,
+      },
+      itemMaybeBeingStoodOn.state.box,
+    );
 
     const result = spatiallyCheckStandingOn(
       playable as FreeItem<string, string>,

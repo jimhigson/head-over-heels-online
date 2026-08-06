@@ -7,7 +7,6 @@ import { projectWorldXyzToScreenX } from "../game/render/projections";
 import { type ItemInPlayType } from "../model/ItemInPlay";
 import { roomItemsIterable } from "../model/RoomState";
 import { rotateXyz } from "../utils/vectors/rotateXy";
-import { addXyzInPlace, scaleXyzWriteInto } from "../utils/vectors/vectors";
 import { audioCtx } from "./audioCtx";
 import { type ItemSoundRenderContext } from "./ItemSoundRenderContext";
 import { type ItemSoundRenderer } from "./ItemSoundRenderer";
@@ -92,11 +91,11 @@ export class SoundPanRenderer<
     this.#childRenderer.tick(tickContext);
 
     const { item } = this.renderContext;
-    const itemState = item.state;
-    const itemCentrePosition = addXyzInPlace(
-      scaleXyzWriteInto(positionBuffer, item.aabb, 0.5),
-      itemState.position,
-    );
+    const { box } = item.state;
+    positionBuffer.x = box.x + box.xd / 2;
+    positionBuffer.y = box.y + box.yd / 2;
+    positionBuffer.z = box.z + box.zd / 2;
+    const itemCentrePosition = positionBuffer;
 
     const { cameraAngle } = this.renderContext.general;
 
@@ -122,10 +121,7 @@ export class SoundPanRenderer<
           ${soundPositionMinY},
           ${soundPositionMaxY},
         );
-        itemCentrePosition = addXyz(
-          itemState.position = ${JSON.stringify(itemState.position)},
-          scaleXyz(${JSON.stringify(item.aabb)}, 0.5),
-        )`,
+        itemCentrePosition = centre of ${JSON.stringify(item.state.box)}`,
       );
     }
 

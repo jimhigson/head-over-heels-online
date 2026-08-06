@@ -78,7 +78,7 @@ export const roundXyzProjection = (
 };
 
 const worldPositionOnFaceForScreenPosition = (
-  { state: { position }, aabb }: EditorUnionOfAllItemInPlayTypes,
+  { state: { box } }: EditorUnionOfAllItemInPlayTypes,
   // vector pointing to the face, from the middle of the item.
   // the face we are projecting onto is described by all vectors at a normal to
   // this vector
@@ -89,9 +89,9 @@ const worldPositionOnFaceForScreenPosition = (
   cameraAngle: Xy,
 ): Xyz => {
   const pointOnPlane = {
-    x: position.x + (plane.x < 0 ? 0 : aabb.x),
-    y: position.y + (plane.y < 0 ? 0 : aabb.y),
-    z: position.z + (plane.z < 0 ? 0 : aabb.z),
+    x: box.x + (plane.x < 0 ? 0 : box.xd),
+    y: box.y + (plane.y < 0 ? 0 : box.yd),
+    z: box.z + (plane.z < 0 ? 0 : box.zd),
   };
 
   const cursorWorldPosition = unprojectScreenXyToWorldXyzOnFace(

@@ -63,7 +63,7 @@ const rushTripThreshold = blockSizePx.x / 2;
 const rushTowardPlayerXy4 = <RoomId extends string, RoomItemId extends string>(
   {
     state: {
-      position,
+      box,
       vels: { walking },
     },
   }: ItemWithMovement<RoomId, RoomItemId>,
@@ -84,7 +84,7 @@ const rushTowardPlayerXy4 = <RoomId extends string, RoomItemId extends string>(
       continue;
     }
 
-    const vectorXyToPlayer = subXy(player.state.position, position);
+    const vectorXyToPlayer = subXy(player.state.box, box);
 
     if (Math.abs(vectorXyToPlayer.y) < rushTripThreshold) {
       return {
@@ -127,20 +127,17 @@ const turnTowardsPlayer = <RoomId extends string, RoomItemId extends string>(
   _deltaMS: number,
 ): MechanicResult<"monster", RoomId, RoomItemId> => {
   const {
-    state: { position, facing },
+    state: { box, facing },
   } = itemWithMovement;
 
-  const closestPlayable = findClosestPlayable(position, room);
+  const closestPlayable = findClosestPlayable(box, room);
 
   if (closestPlayable === undefined) {
     // no players in this room; stay still - not expecting this in normal play
     return unitMechanicalResult;
   }
 
-  const vectorXyToClosestPlayer = subXy(
-    closestPlayable?.state.position,
-    position,
-  );
+  const vectorXyToClosestPlayer = subXy(closestPlayable?.state.box, box);
 
   const newFacing =
     unitVectorsXy8Octants[
@@ -173,14 +170,14 @@ const walkAlongShortestAxisTowardsPlayer = <
   _deltaMS: number,
 ): MechanicResult<"monster", RoomId, RoomItemId> => {
   const {
-    state: { position, standingOnItemId, timeOfLastDirectionChange, facing },
+    state: { box, standingOnItemId, timeOfLastDirectionChange, facing },
   } = itemWithMovement;
 
   if (standingOnItemId === null) {
     return notWalking;
   }
 
-  const closestPlayable = findClosestPlayable(position, room);
+  const closestPlayable = findClosestPlayable(box, room);
 
   if (closestPlayable === undefined) {
     // no players in this room; stay still - not expecting this in normal play
@@ -192,10 +189,7 @@ const walkAlongShortestAxisTowardsPlayer = <
     return unitMechanicalResult;
   }
 
-  const vectorXyToClosestPlayer = subXy(
-    closestPlayable?.state.position,
-    position,
-  );
+  const vectorXyToClosestPlayer = subXy(closestPlayable?.state.box, box);
 
   // rule is: go along the axis of shortest distance towards the player, unless it is (close to) zero; then, go along the longer.
   const axisOfShortestDistance =
@@ -246,26 +240,26 @@ const walkTowardAnalogueIfInSquare = <
   opposite: boolean = false,
 ): MechanicResult<"monster", RoomId, RoomItemId> => {
   const {
-    state: { position: moverPosition, standingOnItemId },
+    state: { box: moverBox, standingOnItemId },
   } = itemWithMovement;
 
   if (standingOnItemId === null) {
     return notWalking;
   }
 
-  const closestPlayable = findClosestPlayable(moverPosition, room);
+  const closestPlayable = findClosestPlayable(moverBox, room);
 
   if (closestPlayable === undefined) {
     // no players in this room; stay still - not expecting this in normal play
     return notWalking;
   }
 
-  const playablePosition = closestPlayable.state.position;
+  const playableBox = closestPlayable.state.box;
 
-  const moverCentreX = moverPosition.x + itemWithMovement.aabb.x / 2;
-  const moverCentreY = moverPosition.y + itemWithMovement.aabb.y / 2;
-  const playerCentreX = playablePosition.x + closestPlayable.aabb.x / 2;
-  const playerCentreY = playablePosition.y + closestPlayable.aabb.y / 2;
+  const moverCentreX = moverBox.x + moverBox.xd / 2;
+  const moverCentreY = moverBox.y + moverBox.yd / 2;
+  const playerCentreX = playableBox.x + playableBox.xd / 2;
+  const playerCentreY = playableBox.y + playableBox.yd / 2;
 
   const maxDistance = blockSizePx.x * 3;
   const minDistance = 2;
@@ -283,10 +277,7 @@ const walkTowardAnalogueIfInSquare = <
     return notWalking;
   }
 
-  const vectorXyToClosestPlayer = subXy(
-    closestPlayable.state.position,
-    moverPosition,
-  );
+  const vectorXyToClosestPlayer = subXy(closestPlayable.state.box, moverBox);
 
   const monsterSpeed = speedForItem(itemWithMovement);
   // we allow movement here in arbitrary directions, not in the xy8 directions.
@@ -431,8 +422,7 @@ const handleMonsterTouchingItemByTurning = <
   {
     movingItem: itemWithMovement,
     touchedItem: {
-      state: { position: touchedItemPosition },
-      aabb: touchedItemAabb,
+      state: { box: touchedItemBox },
     },
     deltaMS,
     room: { roomTime },
@@ -441,12 +431,11 @@ const handleMonsterTouchingItemByTurning = <
 ) => {
   const {
     state: {
-      position,
+      box,
       vels: { walking },
       activated,
       facing,
     },
-    aabb,
     hash: itemHash,
   } = itemWithMovement;
 
@@ -460,7 +449,7 @@ const handleMonsterTouchingItemByTurning = <
     return;
   }
 
-  const m = mtv(position, aabb, touchedItemPosition, touchedItemAabb);
+  const m = mtv(box, touchedItemBox);
 
   // purely vertical touches don't change direction:
   if (m.x === 0 && m.y === 0) {

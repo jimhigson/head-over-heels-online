@@ -15,16 +15,19 @@ export const nearCornerOffsetWorldXyz = (
   item: UnionOfAllItemInPlayTypes,
   cameraAngle: Xy,
   /**
-   * the box whose footprint the anchored art covers - the physics aabb for
-   * most art, but callers whose art follows a different box (eg shadow casts
-   * matching a rendered box smaller than the physics box) pass that instead
+   * the size triple whose footprint the anchored art covers - the physical
+   * box's dimensions for most art, but callers whose art follows a different
+   * box (eg shadow casts matching a rendered box smaller than the physics
+   * box) pass that instead
    */
-  box: Xyz = item.aabb,
+  size?: Xyz,
 ): Xyz => {
   const times = getItemInPlayTimes(item);
+  const xSize = size?.x ?? item.state.box.xd;
+  const ySize = size?.y ?? item.state.box.yd;
   return {
-    x: cameraAngle.x + cameraAngle.y < 0 ? box.x / times.x : 0,
-    y: cameraAngle.x - cameraAngle.y < 0 ? box.y / times.y : 0,
+    x: cameraAngle.x + cameraAngle.y < 0 ? xSize / times.x : 0,
+    y: cameraAngle.x - cameraAngle.y < 0 ? ySize / times.y : 0,
     z: 0,
   };
 };

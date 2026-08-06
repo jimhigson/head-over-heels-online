@@ -61,13 +61,12 @@ export const pointerIntersectionFace = (
    *            V
    *           [bc]
    */
-  // using aabb, not renderAabb, so doors can be placed on walls above where they render
-  const { position } = item.state;
-  const { aabb } = item;
+  // using the physical box, not renderAabb, so doors can be placed on walls above where they render
+  const { box } = item.state;
 
-  const bottomCentre = projectApparentBottomCentre(position, aabb, cameraAngle);
-  const topLeft = projectApparentTopLeft(position, aabb, cameraAngle);
-  const topRight = projectApparentTopRight(position, aabb, cameraAngle);
+  const bottomCentre = projectApparentBottomCentre(box, cameraAngle);
+  const topLeft = projectApparentTopLeft(box, cameraAngle);
+  const topRight = projectApparentTopRight(box, cameraAngle);
 
   const aboveXLine = y < topLeft.y - (topLeft.x - x) / 2;
 

@@ -274,7 +274,7 @@ describe("emitted item position with offset", () => {
     const [emitted] = roomItemsIterable(room.items)
       .filter((item) => item.state.createdByEmitter === "emitter")
       .toArray();
-    return emitted?.state.position;
+    return emitted?.state.box;
   };
 
   test("emitted item with no offset appears centred on the emitter", () => {

@@ -8,6 +8,7 @@ import { octantIndexOfDirection } from "../../../utils/vectors/octantIndexOfDire
 import { unitVectors } from "../../../utils/vectors/unitVectors";
 import {
   addXyz,
+  boxWithSize,
   doorAlongAxis,
   originXyz,
   perpendicularAxisXy,
@@ -195,12 +196,14 @@ export function* loadDoor<RoomId extends string, RoomItemId extends string>(
       state: {
         ...defaultBaseState(),
         // the far post ends flush with the door's overall (2-block) span:
-        position: addXyz(framePartsOrigin, {
-          [alongWallAxis]: doorOverallWidthPx - doorPostWidthPx,
-        }),
+        box: boxWithSize(
+          addXyz(framePartsOrigin, {
+            [alongWallAxis]: doorOverallWidthPx - doorPostWidthPx,
+          }),
+          postAabb,
+        ),
         stoodOnBy: emptyObject as StoodOnBy<RoomItemId>,
       },
-      aabb: postAabb,
     },
   };
 
@@ -220,10 +223,9 @@ export function* loadDoor<RoomId extends string, RoomItemId extends string>(
       },
       state: {
         ...defaultBaseState(),
-        position: framePartsOrigin,
+        box: boxWithSize(framePartsOrigin, postAabb),
         stoodOnBy: emptyObject as StoodOnBy<RoomItemId>,
       },
-      aabb: postAabb,
     },
   };
 
@@ -247,20 +249,22 @@ export function* loadDoor<RoomId extends string, RoomItemId extends string>(
       state: {
         ...defaultBaseState(),
         // the physical top bar spans the gap between the (8px) posts:
-        position: addXyz(framePartsOrigin, {
-          [alongWallAxis]: doorPostWidthPx,
-          z: doorPortalHeight,
-        }),
+        box: boxWithSize(
+          addXyz(framePartsOrigin, {
+            [alongWallAxis]: doorPostWidthPx,
+            z: doorPortalHeight,
+          }),
+          addXyz(
+            {
+              [alongWallAxis]: doorOverallWidthPx - 2 * doorPostWidthPx,
+              [throughDoorAxis]: doorPostWidthInThroughDoorAxis,
+              z: doorPostHeightPx - doorPortalHeight,
+            } as Xyz,
+            doorTunnelAabbPx,
+          ),
+        ),
         stoodOnBy: emptyObject as StoodOnBy<RoomItemId>,
       },
-      aabb: addXyz(
-        {
-          [alongWallAxis]: doorOverallWidthPx - 2 * doorPostWidthPx,
-          [throughDoorAxis]: doorPostWidthInThroughDoorAxis,
-          z: doorPostHeightPx - doorPortalHeight,
-        } as Xyz,
-        doorTunnelAabbPx,
-      ),
       shadowCastTexture:
         alongWallAxis === "x" ? shadowDoorFrameTopX : shadowDoorFrameTopY,
       shadowOffset: {
@@ -286,18 +290,20 @@ export function* loadDoor<RoomId extends string, RoomItemId extends string>(
       renders: false,
       state: {
         ...defaultBaseState(),
-        position: addXyz(framePartsOrigin, {
-          z: doorPostHeightPx,
-        }),
+        box: boxWithSize(
+          addXyz(framePartsOrigin, {
+            z: doorPostHeightPx,
+          }),
+          addXyz(
+            blockXyzToFineXyz({
+              [alongWallAxis]: 2,
+              [throughDoorAxis]: doorTunnelLengthBlocks,
+            }),
+            { [throughDoorAxis]: doorPostWidthInThroughDoorAxis, z: veryHighZ },
+          ),
+        ),
         stoodOnBy: emptyObject as StoodOnBy<RoomItemId>,
       },
-      aabb: addXyz(
-        blockXyzToFineXyz({
-          [alongWallAxis]: 2,
-          [throughDoorAxis]: doorTunnelLengthBlocks,
-        }),
-        { [throughDoorAxis]: doorPostWidthInThroughDoorAxis, z: veryHighZ },
-      ),
       fixedZIndex: nonRenderingItemFixedZIndex,
     },
   };
@@ -324,33 +330,35 @@ export function* loadDoor<RoomId extends string, RoomItemId extends string>(
       fixedZIndex: nonRenderingItemFixedZIndex,
       state: {
         ...defaultBaseState(),
-        position: addXyz(
-          blockXyzToFineXyz(
-            addXyz(position, {
-              // set the portal back to the 'back' side of the door (looking from
-              // inside the room) so the character has to walk all the way to the
-              // other side of the frame to touch it. The tunnel term is fixed by
-              // the door's world direction; the embed term follows the wall
-              // setback:
-              [throughDoorAxis]:
-                (outIsNegative ? -doorTunnelLengthBlocks : 0.5) +
-                invisibleWallSetBackBlocks[throughDoorAxis],
-            }),
+        box: boxWithSize(
+          addXyz(
+            blockXyzToFineXyz(
+              addXyz(position, {
+                // set the portal back to the 'back' side of the door (looking from
+                // inside the room) so the character has to walk all the way to the
+                // other side of the frame to touch it. The tunnel term is fixed by
+                // the door's world direction; the embed term follows the wall
+                // setback:
+                [throughDoorAxis]:
+                  (outIsNegative ? -doorTunnelLengthBlocks : 0.5) +
+                  invisibleWallSetBackBlocks[throughDoorAxis],
+              }),
+            ),
+            { [alongWallAxis]: entryNearPostWidthPx },
           ),
-          { [alongWallAxis]: entryNearPostWidthPx },
+          {
+            [alongWallAxis]:
+              doorOverallWidthPx - entryNearPostWidthPx - entryFarPostWidthPx,
+            // portals get thickness for the same reason walls do -
+            // it makes it harder to push items such as enemies through
+            // them during collisions with a lot of overlap - ie, if items
+            // spawn on top of each other
+            [throughDoorAxis]: doorTunnelLengthPx,
+            z: doorPortalHeight,
+          } as Xyz,
         ),
         stoodOnBy: emptyObject as StoodOnBy<RoomItemId>,
       },
-      aabb: {
-        [alongWallAxis]:
-          doorOverallWidthPx - entryNearPostWidthPx - entryFarPostWidthPx,
-        // portals get thickness for the same reason walls do -
-        // it makes it harder to push items such as enemies through
-        // them during collisions with a lot of overlap - ie, if items
-        // spawn on top of each other
-        [throughDoorAxis]: doorTunnelLengthPx,
-        z: doorPortalHeight,
-      } as Xyz,
     },
   };
 
@@ -382,19 +390,21 @@ export function* loadDoor<RoomId extends string, RoomItemId extends string>(
         castsShadowWhileStoodOn: false,
         state: {
           ...defaultBaseState(),
-          position: {
-            ...framePartsOrigin,
-            z: floorZ * blockSizePx.z,
-          },
+          box: boxWithSize(
+            {
+              ...framePartsOrigin,
+              z: floorZ * blockSizePx.z,
+            },
+            addXyz(
+              blockXyzToFineXyz({
+                [alongWallAxis]: 2,
+                [throughDoorAxis]: 0.5,
+                z: legHeight,
+              }),
+              doorTunnelAabbPx,
+            ),
+          ),
         },
-        aabb: addXyz(
-          blockXyzToFineXyz({
-            [alongWallAxis]: 2,
-            [throughDoorAxis]: 0.5,
-            z: legHeight,
-          }),
-          doorTunnelAabbPx,
-        ),
         shadowOffset: {
           // bring shadows up to the top of the legs:
           z: legHeight * blockSizePx.z,
@@ -410,29 +420,31 @@ export function* loadDoor<RoomId extends string, RoomItemId extends string>(
     hash: 0,
     id: `${jsonItemId}/stopAutowalk` as RoomItemId,
     jsonItemId,
-    aabb: blockXyzToFineXyz({
-      [alongWallAxis]: 0.5,
-      [throughDoorAxis]: stopAutoWalkDepthBlocks,
-      z: 2,
-    } as Xyz),
     config: {},
     fixedZIndex: nonRenderingItemFixedZIndex,
     state: {
       ...defaultBaseState(),
-      position: blockXyzToFineXyz(
-        addXyz(
-          subXyz(
-            position,
-            scaleXyz(unitVectors[direction], autoWalkDistanceBlocks),
-            // positions are min-corners, so when walking into the room means
-            // travelling in the negative direction (away/left doors) the zone's
-            // position needs pulling back by its own depth:
-            outIsNegative ? originXyz : (
-              { [throughDoorAxis]: stopAutoWalkDepthBlocks }
+      box: boxWithSize(
+        blockXyzToFineXyz(
+          addXyz(
+            subXyz(
+              position,
+              scaleXyz(unitVectors[direction], autoWalkDistanceBlocks),
+              // positions are min-corners, so when walking into the room means
+              // travelling in the negative direction (away/left doors) the zone's
+              // position needs pulling back by its own depth:
+              outIsNegative ? originXyz : (
+                { [throughDoorAxis]: stopAutoWalkDepthBlocks }
+              ),
             ),
+            { [alongWallAxis]: 0.75 },
           ),
-          { [alongWallAxis]: 0.75 },
         ),
+        blockXyzToFineXyz({
+          [alongWallAxis]: 0.5,
+          [throughDoorAxis]: stopAutoWalkDepthBlocks,
+          z: 2,
+        } as Xyz),
       ),
       stoodOnBy: emptyObject as StoodOnBy<RoomItemId>,
     },

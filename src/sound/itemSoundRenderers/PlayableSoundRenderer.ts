@@ -138,7 +138,7 @@ export class PlayableSoundRenderer implements ItemSoundRenderer<CharacterName> {
         jumpStartZ,
         jumped,
         standingOnItemId,
-        position: { z: positionZ },
+        box: { z: positionZ },
         vels: {
           gravity: { z: velZ },
           walking,

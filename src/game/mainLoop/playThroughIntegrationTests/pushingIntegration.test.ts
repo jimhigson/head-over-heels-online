@@ -53,7 +53,7 @@ test("player pushes a block until reaching an obstruction", () => {
     until: 2_000,
   });
 
-  expect(itemState(gameState, "somethingToPush")?.position.y).toBe(
+  expect(itemState(gameState, "somethingToPush")?.box.y).toBe(
     // the edge of the block we are pushing into:
     blockSizePx.x * 3 +
       // a bit extra because the portable block does not fill up a full tile:
@@ -89,14 +89,14 @@ test("player can push a block diagonally", () => {
     until() {
       const portableBlockState = itemState(gameState, "somethingToPush")!;
       // continue until we have pushed it a couple of blocks distance (it started at 1)
-      return portableBlockState.position.x > blockSizePx.x * 3;
+      return portableBlockState.box.x > blockSizePx.x * 3;
     },
   });
 
   const portableBlockState = itemState(gameState, "somethingToPush")!;
   // diagonal movement means its x should still equal its y (withing 1px)
-  expect(portableBlockState.position.y).toEqual(
-    expect.closeTo(portableBlockState.position.x, 0),
+  expect(portableBlockState.box.y).toEqual(
+    expect.closeTo(portableBlockState.box.x, 0),
   );
 });
 
@@ -122,7 +122,7 @@ test("can push multiple blocks in a row", () => {
     until: 2_000,
   });
 
-  expect(itemState(gameState, "somethingToPush2")?.position.y).toBe(
+  expect(itemState(gameState, "somethingToPush2")?.box.y).toBe(
     // the edge of the block we are pushing into:
     blockSizePx.x * 3 +
       // a bit extra because the portable block does not fill up a full tile:
@@ -183,7 +183,7 @@ test("can not push a charging cyberman", () => {
     until: 2_000,
   });
 
-  expect(itemState(gameState, "cyberman")?.position.x).toBe(
+  expect(itemState(gameState, "cyberman")?.box.x).toBe(
     // the edge of the block we are pushing into:
     blockSizePx.x * 2 +
       // a bit extra because the portable block does not fill up a full tile:

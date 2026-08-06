@@ -39,11 +39,7 @@ export const debugPointerDecorateItemRenderer: DecorateItemMaybeRenderer = (
     }
     if (gameState && item.type === "lift") {
       const { roomJson } = room;
-      const subRoomId = findSubRoomForItem(
-        item.state.position,
-        "fine",
-        roomJson,
-      );
+      const subRoomId = findSubRoomForItem(item.state.box, "fine", roomJson);
       const subRooms = roomJson.meta?.subRooms;
       const holder =
         subRooms === undefined ? undefined
@@ -67,7 +63,7 @@ export const debugPointerDecorateItemRenderer: DecorateItemMaybeRenderer = (
       "\nstate (shallow copy):",
       { ...item.state },
       "\nposition",
-      `(${item.state.position.x}, ${item.state.position.y}, ${item.state.position.z})`,
+      `(${item.state.box.x}, ${item.state.box.y}, ${item.state.box.z})`,
       "\nstoodOnBy:",
       Object.keys(item.state.stoodOnBy),
       "\nstandingOn:",

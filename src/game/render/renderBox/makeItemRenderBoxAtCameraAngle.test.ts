@@ -8,7 +8,7 @@ import { makeItemRenderBoxAtCameraAngle } from "./makeItemRenderBoxAtCameraAngle
 // with base offset (-0.5,-0.5,0)
 const head = {
   type: "head" as "head",
-  aabb: { x: 12, y: 12, z: 12 },
+  state: { box: { x: 0, y: 0, z: 0, xd: 12, yd: 12, zd: 12 } },
 };
 
 test("no table entry means no render box (draws true to the physical aabb)", () => {
@@ -17,7 +17,7 @@ test("no table entry means no render box (draws true to the physical aabb)", () 
       {
         type: "block",
         config: { style: "organic" },
-        aabb: { x: 16, y: 16, z: 12 },
+        state: { box: { x: 0, y: 0, z: 0, xd: 16, yd: 16, zd: 12 } },
       },
       { x: 1, y: 0 },
       blockStackSpritesheetMeta,
@@ -63,7 +63,7 @@ test("times-multiplied items stretch the table's overdraw box over the repetitio
       {
         type: "conveyor",
         config: { times: { x: 3 } },
-        aabb: { x: 48, y: 16, z: 12 },
+        state: { box: { x: 0, y: 0, z: 0, xd: 48, yd: 16, zd: 12 } },
       },
       { x: 1, y: 0 },
       blockStackSpritesheetMeta,
@@ -77,7 +77,10 @@ test("times-multiplied items stretch the table's overdraw box over the repetitio
 test("blockers draw nothing: a zero-size render box", () => {
   expect(
     makeItemRenderBoxAtCameraAngle(
-      { type: "blocker", aabb: { x: 32, y: 24, z: 9_999 } },
+      {
+        type: "blocker",
+        state: { box: { x: 0, y: 0, z: 0, xd: 32, yd: 24, zd: 9_999 } },
+      },
       { x: 1, y: 0 },
       blockStackSpritesheetMeta,
     ),

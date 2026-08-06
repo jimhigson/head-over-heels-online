@@ -40,9 +40,13 @@ const reflectionSearchSize: Xy = {
 /** reusable pseudo-item for the index search, to avoid per-frame allocation */
 const reflectionSearchBuffer: WritableDeep<CollideableItem> = {
   id: "mirrorReflectionSearch",
-  state: { position: { x: 0, y: 0, z: 0 } },
-  aabb: { x: 0, y: 0, z: 0 },
+  state: { box: { x: 0, y: 0, z: 0, xd: 0, yd: 0, zd: 0 } },
 };
+
+// reused scratch triples for the footprint-extent projections, to avoid
+// per-frame allocation:
+const mirrorSizeScratch = { x: 0, y: 0, z: 0 };
+const itemSizeScratch = { x: 0, y: 0, z: 0 };
 
 /**
  * x+y (the axis normal to a 45° mirror) of how far into the mirror item the
@@ -149,7 +153,7 @@ export class ReflectionRenderers {
   tick(tickContext: ItemLeafTickContext) {
     const mirror = this.#mirror;
     const {
-      state: { position: mirrorPosition },
+      state: { box: mirrorBox },
       config: { times },
     } = mirror;
     const { cameraAngle } = this.#renderContext.general;
@@ -166,20 +170,23 @@ export class ReflectionRenderers {
     // covers both sides (the in-front test below drops the behind items); it
     // spans the mirror's full height - collisionItemWithIndex does the precise
     // x/y/z overlap:
-    reflectionSearchBuffer.state.position.x = mirrorPosition.x - searchSizeX;
-    reflectionSearchBuffer.state.position.y = mirrorPosition.y - searchSizeY;
-    reflectionSearchBuffer.state.position.z = mirrorPosition.z;
-    reflectionSearchBuffer.aabb.x = mirror.aabb.x + 2 * searchSizeX;
-    reflectionSearchBuffer.aabb.y = mirror.aabb.y + 2 * searchSizeY;
-    reflectionSearchBuffer.aabb.z = mirror.aabb.z;
+    reflectionSearchBuffer.state.box.x = mirrorBox.x - searchSizeX;
+    reflectionSearchBuffer.state.box.y = mirrorBox.y - searchSizeY;
+    reflectionSearchBuffer.state.box.z = mirrorBox.z;
+    reflectionSearchBuffer.state.box.xd = mirrorBox.xd + 2 * searchSizeX;
+    reflectionSearchBuffer.state.box.yd = mirrorBox.yd + 2 * searchSizeY;
+    reflectionSearchBuffer.state.box.zd = mirrorBox.zd;
 
     // the mirror's own extent on screen-x, used to skip items whose projection
     // has no screen-x overlap with it - their reflection would fall entirely
     // off the glass:
+    mirrorSizeScratch.x = mirrorBox.xd;
+    mirrorSizeScratch.y = mirrorBox.yd;
+    mirrorSizeScratch.z = mirrorBox.zd;
     const { left: mirrorScreenXMin, right: mirrorScreenXMax } =
       projectFootprintScreenXExtent(
-        mirrorPosition,
-        mirror.aabb,
+        mirrorBox,
+        mirrorSizeScratch,
         cameraQuarterAngle,
       );
 
@@ -209,15 +216,15 @@ export class ReflectionRenderers {
       this.#renderContext.room[roomSpatialIndexKey],
       isReflectedItemType,
     )) {
-      const itemPosition = item.state.position;
+      const itemPosition = item.state.box;
 
       // the reflection maths below is written for the camera-facing (screen
       // face-on) pane; in camera-frame coordinates that pane is always the
       // awayRight diagonal, whichever world orientation it is:
       const relativeToMirrorCam = rotateXy(
         {
-          x: itemPosition.x - mirrorPosition.x,
-          y: itemPosition.y - mirrorPosition.y,
+          x: itemPosition.x - mirrorBox.x,
+          y: itemPosition.y - mirrorBox.y,
         },
         cameraQuarterAngle,
       );
@@ -234,10 +241,13 @@ export class ReflectionRenderers {
       }
 
       // skip items that project entirely to one side of the mirror on screen-x:
+      itemSizeScratch.x = item.state.box.xd;
+      itemSizeScratch.y = item.state.box.yd;
+      itemSizeScratch.z = item.state.box.zd;
       const { left: itemScreenXMin, right: itemScreenXMax } =
         projectFootprintScreenXExtent(
           itemPosition,
-          item.aabb,
+          itemSizeScratch,
           cameraQuarterAngle,
         );
       if (
@@ -278,7 +288,7 @@ export class ReflectionRenderers {
        * place the reflection by projecting the item as its mirror image behind
        * the mirror's reflecting plane
        */
-      const posRelativeToMirrorZ = itemPosition.z - mirrorPosition.z;
+      const posRelativeToMirrorZ = itemPosition.z - mirrorBox.z;
 
       const manhattanDistanceNormalToReflectingPlane =
         reflectingPlaneInNormal +

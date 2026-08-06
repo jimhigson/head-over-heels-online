@@ -8,7 +8,7 @@ import {
   wholeShadowCastersCoverReceiver,
 } from "./wholeShadowCastersCoverReceiver";
 
-/** build a receiver footprint from a game-like position + size (its position + aabb) */
+/** build a receiver footprint from a game-like position + size */
 const footprint = (
   x: number,
   y: number,
@@ -16,8 +16,7 @@ const footprint = (
   h: number,
 ): CollideableItem => ({
   id: "test",
-  state: { position: { x, y, z: 0 } },
-  aabb: { x: w, y: h, z: 0 },
+  state: { box: { x, y, z: 0, xd: w, yd: h, zd: 0 } },
 });
 
 /**
@@ -33,8 +32,7 @@ const caster = (
   opts?: { shadowOffset?: Partial<Xyz>; castsWholeShadows?: boolean },
 ): Caster => ({
   id: "test",
-  state: { position: { x, y, z: 0 } },
-  aabb: { x: w, y: h, z: 0 },
+  state: { box: { x, y, z: 0, xd: w, yd: h, zd: 0 } },
   shadowOffset: opts?.shadowOffset,
   castsWholeShadows: opts?.castsWholeShadows ?? true,
 });

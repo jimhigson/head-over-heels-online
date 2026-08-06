@@ -28,16 +28,13 @@ import { updateZEdges } from "./updateZEdges";
 
 type FlipItem = DrawOrderComparable & { id: string };
 
-const unitCube = { x: 1, y: 1, z: 1 };
 const a: FlipItem = {
   id: "a",
-  state: { position: { x: 0, y: 0, z: 0 } },
-  aabb: unitCube,
+  state: { box: { x: 0, y: 0, z: 0, xd: 1, yd: 1, zd: 1 } },
 };
 const b: FlipItem = {
   id: "b",
-  state: { position: { x: 0.6, y: 0.4, z: 0 } },
-  aabb: unitCube,
+  state: { box: { x: 0.6, y: 0.4, z: 0, xd: 1, yd: 1, zd: 1 } },
 };
 
 const expectedFlipDegrees = (Math.atan(5 / 12) * (180 / Math.PI) + 180) / 2;

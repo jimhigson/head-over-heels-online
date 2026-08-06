@@ -337,12 +337,56 @@ export type Xyz = {
   y: number;
   z: number;
 };
+
+/**
+ * an axis-aligned box in world space: a position (the near corner - the
+ * fields of {@link Xyz}, so a box is assignable anywhere a position is
+ * expected) plus its dimensions along each axis (xd/yd/zd). Kept flat (not
+ * nested position/aabb objects) so the collision and render hot paths read
+ * all six numbers from a single object
+ */
+export type XyzBox = Xyz & {
+  xd: number;
+  yd: number;
+  zd: number;
+};
 export type AxisXy = "x" | "y";
 
 export const axesXy = ["x", "y"] as const;
 export const axesXyz = ["x", "y", "z"] as const;
 
 export type Aabb = Readonly<Xyz>;
+
+/** make a box at `position` with dimensions given by the size triple `size` */
+export const boxWithSize = (position: Xyz, size: Aabb): XyzBox => ({
+  x: position.x,
+  y: position.y,
+  z: position.z,
+  xd: size.x,
+  yd: size.y,
+  zd: size.z,
+});
+
+/** make a box at `position` with the dimensions of the existing box `sized` */
+export const boxAt = (position: Xyz, sized: Readonly<XyzBox>): XyzBox => ({
+  x: position.x,
+  y: position.y,
+  z: position.z,
+  xd: sized.xd,
+  yd: sized.yd,
+  zd: sized.zd,
+});
+
+export const xyzBoxEqual = (
+  a: Readonly<XyzBox>,
+  b: Readonly<XyzBox>,
+): boolean =>
+  a.x === b.x &&
+  a.y === b.y &&
+  a.z === b.z &&
+  a.xd === b.xd &&
+  a.yd === b.yd &&
+  a.zd === b.zd;
 
 /**
  * dot product - the component of one vector in the direction of another

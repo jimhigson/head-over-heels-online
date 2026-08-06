@@ -31,21 +31,15 @@ export const handleItemTouchingJoystick = <
 >) => {
   const {
     state: {
-      position: joystickPosition,
+      box: joystickBox,
       // use controls from state so it can be changed in-game:
       controls,
     },
-    aabb: joystickAabb,
   } = joystickItem;
 
   // calculate the vector of the joystick moving out of the moving item,
   // which is the direction the joystick is being pushed in
-  const m = mtv(
-    joystickPosition,
-    joystickAabb,
-    movingItem.state.position,
-    movingItem.aabb,
-  );
+  const m = mtv(joystickBox, movingItem.state.box);
 
   if (m.x === 0 && m.y === 0) {
     joystickItem.state.lastPushDirection = undefined;

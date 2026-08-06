@@ -70,7 +70,7 @@ test.for([
       inputState.mockNotPressing("fire");
     },
     until(gs) {
-      return itemState<"slidingDeadly">(gs, "spikyBall").position.y === 0;
+      return itemState<"slidingDeadly">(gs, "spikyBall").box.y === 0;
     },
   });
 });

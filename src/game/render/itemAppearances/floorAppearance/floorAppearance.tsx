@@ -108,7 +108,7 @@ const floorLeftRightCutOffMask = <
         position: floorNaturalPosition,
       },
     },
-    state: { position: floorPosition },
+    state: { box: floorBox },
   } = floorItem;
 
   // if (floorItem.id !== "floorCrossR") {
@@ -118,7 +118,7 @@ const floorLeftRightCutOffMask = <
   // the mask is drawn in the floor's content-local space, whose origin is
   // the floor's (integer) physical position:
   const offsetX = projectWorldXyzToScreenX(
-    subXy(originXyz, floorPosition),
+    subXy(originXyz, floorBox),
     cameraQuarterAngle,
   );
 
@@ -126,8 +126,7 @@ const floorLeftRightCutOffMask = <
     .filter(isWallOrDoorFrame)
     .filter((item) => {
       const {
-        state: { position },
-        aabb,
+        state: { box },
       } = item;
 
       const itemDirection = item.config.direction;
@@ -144,7 +143,7 @@ const floorLeftRightCutOffMask = <
         (farSide ? 1 : 0) * floorNaturalAabb[intoRoomAxis];
 
       const itemOrdOnIntoRoomAxis =
-        position[intoRoomAxis] + (farSide ? 0 : 1) * aabb[intoRoomAxis];
+        box[intoRoomAxis] + (farSide ? 0 : 1) * box[`${intoRoomAxis}d`];
 
       if (floorOrdOnIntoRoomAxis !== itemOrdOnIntoRoomAxis) {
         return false;
@@ -152,8 +151,8 @@ const floorLeftRightCutOffMask = <
 
       // they are aligned with an edge - now check if they overlap:
       const overlaps = rangesOverlap(
-        position[alongItemAxis],
-        position[alongItemAxis] + aabb[alongItemAxis],
+        box[alongItemAxis],
+        box[alongItemAxis] + box[`${alongItemAxis}d`],
         floorNaturalPosition[alongItemAxis],
         floorNaturalPosition[alongItemAxis] + floorNaturalAabb[alongItemAxis],
       );
@@ -163,10 +162,10 @@ const floorLeftRightCutOffMask = <
     .reduce(
       (acc, boundingItem) => {
         const {
-          aabb,
-          state: { position },
+          state: { box },
           config: { direction },
         } = boundingItem;
+        const physicalSize: Xyz = { x: box.xd, y: box.yd, z: box.zd };
         const nonRendering =
           effectiveFixedZIndex(boundingItem, cameraQuarterAngle) ===
           nonRenderingItemFixedZIndex;
@@ -181,18 +180,15 @@ const floorLeftRightCutOffMask = <
         if (nonRendering) {
           const faceAxis = dominantAxisXy(direction);
           const outIsNegative = isNegativeSideXy(direction);
-          visAabb = { ...aabb, [faceAxis]: 0 };
+          visAabb = { ...physicalSize, [faceAxis]: 0 };
           visPosition =
             outIsNegative ?
-              addXyz(position, { [faceAxis]: aabb[faceAxis] })
-            : position;
+              addXyz(box, { [faceAxis]: box[`${faceAxis}d`] })
+            : box;
         } else {
           const renderBox = renderBoxes?.get(boundingItem);
-          visAabb = renderBox?.renderAabb ?? aabb;
-          visPosition = addXyz(
-            position,
-            renderBox?.renderAabbOffset ?? originXyz,
-          );
+          visAabb = renderBox?.renderAabb ?? physicalSize;
+          visPosition = addXyz(box, renderBox?.renderAabbOffset ?? originXyz);
         }
 
         // which footprint corner projects screen-leftmost/rightmost depends
@@ -410,9 +406,9 @@ export const floorAppearance: ItemAppearance<"floor", RenderOnceProps> =
 
       const {
         config: floorConfig,
-        state: { position },
-        aabb,
+        state: { box },
       } = floorItem;
+      const physicalSize: Xyz = { x: box.xd, y: box.yd, z: box.zd };
 
       const { floorType, naturalFootprint } = floorConfig;
 
@@ -430,15 +426,14 @@ export const floorAppearance: ItemAppearance<"floor", RenderOnceProps> =
       // fraction lives only inside the drawn content, where the bake's
       // single rasterisation absorbs it; the anchor itself never leaves the
       // whole-pixel grid. Only the horizontal x/y extent comes from the box;
-      // z stays the physical floor thickness (aabb.z). The floor-edge layout
-      // below relies on this extent carrying the door fraction (matching the
-      // pre-refactor aabb):
+      // z stays the physical floor thickness (box.zd). The floor-edge layout
+      // below relies on this extent carrying the door fraction:
       const floorRenderBox = renderBoxes?.get(floorItem);
       const drawnMin = floorDrawnOriginXyOffset(floorRenderBox);
       const drawnAabb: Xyz = {
-        x: floorRenderBox?.renderAabb.x ?? aabb.x,
-        y: floorRenderBox?.renderAabb.y ?? aabb.y,
-        z: aabb.z,
+        x: floorRenderBox?.renderAabb.x ?? box.xd,
+        y: floorRenderBox?.renderAabb.y ?? box.yd,
+        z: box.zd,
       };
       const xMin = drawnMin.x;
       const xMax = drawnMin.x + drawnAabb.x;
@@ -446,19 +441,19 @@ export const floorAppearance: ItemAppearance<"floor", RenderOnceProps> =
       const yMax = drawnMin.y + drawnAabb.y;
 
       const tilesLeft = projectWorldXyzToScreenXy(
-        { x: xMax, y: yMin, z: aabb.z },
+        { x: xMax, y: yMin, z: box.zd },
         cameraQuarterAngle,
       );
       const tilesBottom = projectWorldXyzToScreenXy(
-        { x: xMin, y: yMin, z: aabb.z },
+        { x: xMin, y: yMin, z: box.zd },
         cameraQuarterAngle,
       );
       const tilesRight = projectWorldXyzToScreenXy(
-        { x: xMin, y: yMax, z: aabb.z },
+        { x: xMin, y: yMax, z: box.zd },
         cameraQuarterAngle,
       );
       const tilesTop = projectWorldXyzToScreenXy(
-        { x: xMax, y: yMax, z: aabb.z },
+        { x: xMax, y: yMax, z: box.zd },
         cameraQuarterAngle,
       );
 
@@ -535,7 +530,7 @@ export const floorAppearance: ItemAppearance<"floor", RenderOnceProps> =
         /* for deciding the offset of the floor tiles, only the towards/left (near side)
            doors count. Find how much we were offset by from the natural position when 
            the floor was loaded*/
-        const tileOffsetVector = subXy(naturalFootprint.position, position);
+        const tileOffsetVector = subXy(naturalFootprint.position, box);
 
         const tileOffsetBlocks = {
           x: frac(tileOffsetVector.x / blockSizePx.x),
@@ -588,7 +583,7 @@ export const floorAppearance: ItemAppearance<"floor", RenderOnceProps> =
           ),
           // origin of the floor is at the bottom of its thickness,
           // so adjust in y to bring to the top
-          { y: aabb.z },
+          { y: box.zd },
           // tilePosition in pixijs is relative to the top-left corner
           // of the tiling sprite, so we need to adjust it to be relative
           // to the left/towards/top corner of the floor
@@ -604,12 +599,7 @@ export const floorAppearance: ItemAppearance<"floor", RenderOnceProps> =
 
         if (spritesheetMeta.showFloorOverDraw) {
           tilesContainer.addChild(
-            renderFloorOverdraws(
-              position,
-              room,
-              spritesheet,
-              cameraQuarterAngle,
-            ),
+            renderFloorOverdraws(box, room, spritesheet, cameraQuarterAngle),
           );
         }
 
@@ -841,7 +831,7 @@ export const floorAppearance: ItemAppearance<"floor", RenderOnceProps> =
         if (spriteOption.uncolourised) {
           const colourClashContainer = createColourClash({
             room,
-            floorAabb: aabb,
+            floorAabb: physicalSize,
             drawnAabb,
             cameraQuarterAngle,
             filterCache,

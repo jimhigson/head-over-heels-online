@@ -78,10 +78,9 @@ test("a lamp shines a beam to the room wall", () => {
         sourceItemId: "lamp1",
       },
       state: expect.objectContaining({
-        position: { x: 32, y: 20, z: 2 },
+        box: { x: 32, y: 20, z: 2, xd: 96, yd: 8, zd: 8 },
         end: "terminus",
       }),
-      aabb: { x: 96, y: 8, z: 8 },
     }),
   );
 });
@@ -110,10 +109,9 @@ test("the beam is cast on room load, before any game time has passed", () => {
         sourceItemId: "lamp1",
       },
       state: expect.objectContaining({
-        position: { x: 32, y: 20, z: 2 },
+        box: { x: 32, y: 20, z: 2, xd: 96, yd: 8, zd: 8 },
         end: "terminus",
       }),
-      aabb: { x: 96, y: 8, z: 8 },
     }),
   );
 });
@@ -150,7 +148,11 @@ test("a solid block stops the beam", () => {
   const beams = beamsInRoom(gameState);
   expect(beams).toHaveLength(1);
   expect(beams).toContainEqual(
-    expect.objectContaining({ aabb: { x: 48, y: 8, z: 8 } }),
+    expect.objectContaining({
+      state: expect.objectContaining({
+        box: expect.objectContaining({ xd: 48, yd: 8, zd: 8 }),
+      }),
+    }),
   );
 });
 
@@ -170,7 +172,13 @@ test("the player's body blocks the beam, harmlessly", () => {
   expect(beams).toHaveLength(1);
   expect(beams).toContainEqual(
     expect.objectContaining({
-      aabb: { x: heelsState(gameState).position.x - 32, y: 8, z: 8 },
+      state: expect.objectContaining({
+        box: expect.objectContaining({
+          xd: heelsState(gameState).box.x - 32,
+          yd: 8,
+          zd: 8,
+        }),
+      }),
     }),
   );
   // standing in the light is harmless to the player:
@@ -208,10 +216,9 @@ test("a mirror reflects the beam 90° towards away", () => {
         sourceItemId: "lamp1",
       },
       state: expect.objectContaining({
-        position: { x: 84, y: 32, z: 2 },
+        box: { x: 84, y: 32, z: 2, xd: 8, yd: 96, zd: 8 },
         end: "terminus",
       }),
-      aabb: { x: 8, y: 96, z: 8 },
     }),
   );
   // the first segment ends at the mirror's near face at x=80, bending to its
@@ -228,10 +235,9 @@ test("a mirror reflects the beam 90° towards away", () => {
         sourceItemId: "lamp1",
       },
       state: expect.objectContaining({
-        position: { x: 32, y: 20, z: 2 },
+        box: { x: 32, y: 20, z: 2, xd: 48, yd: 8, zd: 8 },
         end: "reflect-left",
       }),
-      aabb: { x: 48, y: 8, z: 8 },
     }),
   );
 });
@@ -266,10 +272,9 @@ test("a mirror in the other orientation reflects the beam towards the camera", (
         sourceItemId: "lamp1",
       },
       state: expect.objectContaining({
-        position: { x: 32, y: 20, z: 2 },
+        box: { x: 32, y: 20, z: 2, xd: 48, yd: 8, zd: 8 },
         end: "reflect-right",
       }),
-      aabb: { x: 48, y: 8, z: 8 },
     }),
   );
   // the reflected beam runs towards the camera to the near wall:
@@ -284,10 +289,9 @@ test("a mirror in the other orientation reflects the beam towards the camera", (
         sourceItemId: "lamp1",
       },
       state: expect.objectContaining({
-        position: { x: 84, y: 0, z: 2 },
+        box: { x: 84, y: 0, z: 2, xd: 8, yd: 16, zd: 8 },
         end: "terminus",
       }),
-      aabb: { x: 8, y: 16, z: 8 },
     }),
   );
 });
@@ -327,10 +331,9 @@ test("two mirrors chain the beam through multiple reflections", () => {
         sourceItemId: "lamp1",
       },
       state: expect.objectContaining({
-        position: { x: 84, y: 32, z: 2 },
+        box: { x: 84, y: 32, z: 2, xd: 8, yd: 32, zd: 8 },
         end: "reflect-left",
       }),
-      aabb: { x: 8, y: 32, z: 8 },
     }),
   );
   // lamp -> mirror1: the first segment:
@@ -345,10 +348,9 @@ test("two mirrors chain the beam through multiple reflections", () => {
         sourceItemId: "lamp1",
       },
       state: expect.objectContaining({
-        position: { x: 32, y: 20, z: 2 },
+        box: { x: 32, y: 20, z: 2, xd: 48, yd: 8, zd: 8 },
         end: "reflect-left",
       }),
-      aabb: { x: 48, y: 8, z: 8 },
     }),
   );
   // mirror2 -> wall: the third segment leaves mirror2's right face at x=80,
@@ -364,10 +366,9 @@ test("two mirrors chain the beam through multiple reflections", () => {
         sourceItemId: "lamp1",
       },
       state: expect.objectContaining({
-        position: { x: 0, y: 68, z: 2 },
+        box: { x: 0, y: 68, z: 2, xd: 80, yd: 8, zd: 8 },
         end: "terminus",
       }),
-      aabb: { x: 80, y: 8, z: 8 },
     }),
   );
 });
@@ -420,10 +421,9 @@ test("colliding with a mirror rotates it, re-routing the light", () => {
         sourceItemId: "lamp1",
       },
       state: expect.objectContaining({
-        position: { x: 32, y: 20, z: 2 },
+        box: { x: 32, y: 20, z: 2, xd: 48, yd: 8, zd: 8 },
         end: "reflect-right",
       }),
-      aabb: { x: 48, y: 8, z: 8 },
     }),
   );
   expect(beams).toContainEqual(
@@ -437,10 +437,9 @@ test("colliding with a mirror rotates it, re-routing the light", () => {
         sourceItemId: "lamp1",
       },
       state: expect.objectContaining({
-        position: { x: 84, y: 0, z: 2 },
+        box: { x: 84, y: 0, z: 2, xd: 8, yd: 16, zd: 8 },
         end: "terminus",
       }),
-      aabb: { x: 8, y: 16, z: 8 },
     }),
   );
 });
@@ -469,7 +468,7 @@ test("monsters will not walk into the light", () => {
     frameCallbacks(gameState) {
       monsterMinX = Math.min(
         monsterMinX,
-        itemState<"monster">(gameState, "turtle").position.x,
+        itemState<"monster">(gameState, "turtle").box.x,
       );
     },
   });
@@ -516,7 +515,7 @@ test("a beam that has grown in place still blocks monsters at its new tip", () =
         turtleState.activated = true;
         turtleState.everActivated = true;
       }
-      monsterMinX = Math.min(monsterMinX, turtleState.position.x);
+      monsterMinX = Math.min(monsterMinX, turtleState.box.x);
     },
   });
 
@@ -549,7 +548,7 @@ test("monsters walk freely where the light would be when the lamp is off", () =>
     frameCallbacks(gameState) {
       monsterMinX = Math.min(
         monsterMinX,
-        itemState<"monster">(gameState, "turtle").position.x,
+        itemState<"monster">(gameState, "turtle").box.x,
       );
     },
   });
@@ -695,7 +694,7 @@ test.for([
       frameCallbacks(gameState) {
         monsterMinX = Math.min(
           monsterMinX,
-          itemState<"monster">(gameState, "turtle").position.x,
+          itemState<"monster">(gameState, "turtle").box.x,
         );
       },
     });
@@ -748,7 +747,7 @@ test.for([
       frameCallbacks(gameState) {
         monsterMinX = Math.min(
           monsterMinX,
-          itemState<"monster">(gameState, "turtle").position.x,
+          itemState<"monster">(gameState, "turtle").box.x,
         );
       },
     });
@@ -792,7 +791,7 @@ test("the reflected lower row of a partially-reflected tall beam blocks monsters
     frameCallbacks(gameState) {
       monsterMinY = Math.min(
         monsterMinY,
-        itemState<"monster">(gameState, "turtle").position.y,
+        itemState<"monster">(gameState, "turtle").box.y,
       );
     },
   });
@@ -855,7 +854,7 @@ test("a beam looped back through mirrors stops at its own lamp, not through it",
     frameCallbacks(gameState) {
       monsterMinY = Math.min(
         monsterMinY,
-        itemState<"monster">(gameState, "turtle").position.y,
+        itemState<"monster">(gameState, "turtle").box.y,
       );
     },
   });

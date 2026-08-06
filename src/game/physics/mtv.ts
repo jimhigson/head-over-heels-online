@@ -6,8 +6,9 @@ import {
   unitVector,
   type Xy,
   type Xyz,
+  type XyzBox,
 } from "../../utils/vectors/vectors";
-import { collisionPosAndBb } from "../collision/aabbCollision";
+import { collisionBoxes } from "../collision/aabbCollision";
 
 /**
  * zBias causes the sliding collision to slightly favour moving in z over x and y.
@@ -33,10 +34,8 @@ const zWeight = 0.5;
  * @returns The minimum translation vector along the constraint direction to separate the objects.
  */
 const mtvAlongVectorWriteInto = (
-  moverPosition: Xyz,
-  moverAabb: Xyz,
-  obstaclePosition: Xyz,
-  obstacleAabb: Xyz,
+  moverBox: Readonly<XyzBox>,
+  obstacleBox: Readonly<XyzBox>,
   vector: Xyz,
   writeInto: Partial<Xyz>,
 ): Xyz => {
@@ -50,9 +49,7 @@ const mtvAlongVectorWriteInto = (
   const direction = unitVector(vector);
 
   // First, check if objects are already separated
-  if (
-    !collisionPosAndBb(moverPosition, moverAabb, obstaclePosition, obstacleAabb)
-  ) {
+  if (!collisionBoxes(moverBox, obstacleBox)) {
     // write origin and return
     Object.assign(writeInto, originXyz);
     return writeInto as Xyz;
@@ -70,10 +67,10 @@ const mtvAlongVectorWriteInto = (
 
     if (Math.abs(dirComponent) < 0.000_1) {
       // No movement along this axis - check if already overlapping
-      const moverMin = moverPosition[axis];
-      const moverMax = moverPosition[axis] + moverAabb[axis];
-      const obstacleMin = obstaclePosition[axis];
-      const obstacleMax = obstaclePosition[axis] + obstacleAabb[axis];
+      const moverMin = moverBox[axis];
+      const moverMax = moverBox[axis] + moverBox[`${axis}d`];
+      const obstacleMin = obstacleBox[axis];
+      const obstacleMax = obstacleBox[axis] + obstacleBox[`${axis}d`];
 
       if (moverMax <= obstacleMin || moverMin >= obstacleMax) {
         // No overlap on this axis means no collision at all
@@ -86,10 +83,10 @@ const mtvAlongVectorWriteInto = (
 
     // Calculate t values where the boxes align on this axis
     // We want the range where they overlap
-    const obstacleMin = obstaclePosition[axis];
-    const obstacleMax = obstaclePosition[axis] + obstacleAabb[axis];
-    const moverMin = moverPosition[axis];
-    const moverMax = moverPosition[axis] + moverAabb[axis];
+    const obstacleMin = obstacleBox[axis];
+    const obstacleMax = obstacleBox[axis] + obstacleBox[`${axis}d`];
+    const moverMin = moverBox[axis];
+    const moverMax = moverBox[axis] + moverBox[`${axis}d`];
 
     // t values where edges align
     const t1 = (obstacleMin - moverMax) / dirComponent;
@@ -135,20 +132,11 @@ const mtvAlongVectorWriteInto = (
  * @see mtvAlongVectorWriteInto but returns a new object for the result
  */
 export const mtvAlongVector = (
-  moverPosition: Xyz,
-  moverAabb: Xyz,
-  obstaclePosition: Xyz,
-  obstacleAabb: Xyz,
+  moverBox: Readonly<XyzBox>,
+  obstacleBox: Readonly<XyzBox>,
   vector: Xyz,
 ): Xyz => {
-  return mtvAlongVectorWriteInto(
-    moverPosition,
-    moverAabb,
-    obstaclePosition,
-    obstacleAabb,
-    vector,
-    {},
-  );
+  return mtvAlongVectorWriteInto(moverBox, obstacleBox, vector, {});
 };
 
 /**
@@ -156,25 +144,23 @@ export const mtvAlongVector = (
  * Returns the shortest axis-aligned vector to push the mover out of the obstacle.
  */
 const mtvWriteInto = (
-  moverPosition: Xyz,
-  moverAabb: Xyz,
-  obstaclePosition: Xyz,
-  obstacleAabb: Xyz,
+  moverBox: Readonly<XyzBox>,
+  obstacleBox: Readonly<XyzBox>,
   writeInto: Partial<Xyz>,
 ): Xyz => {
-  const oXMin = obstaclePosition.x;
-  const oXMax = oXMin + obstacleAabb.x;
-  const oYMin = obstaclePosition.y;
-  const oYMax = oYMin + obstacleAabb.y;
-  const oZMin = obstaclePosition.z;
-  const oZMax = oZMin + obstacleAabb.z;
+  const oXMin = obstacleBox.x;
+  const oXMax = oXMin + obstacleBox.xd;
+  const oYMin = obstacleBox.y;
+  const oYMax = oYMin + obstacleBox.yd;
+  const oZMin = obstacleBox.z;
+  const oZMax = oZMin + obstacleBox.zd;
 
-  const mXMin = moverPosition.x;
-  const mXMax = mXMin + moverAabb.x;
-  const mYMin = moverPosition.y;
-  const mYMax = mYMin + moverAabb.y;
-  const mZMin = moverPosition.z;
-  const mZMax = mZMin + moverAabb.z;
+  const mXMin = moverBox.x;
+  const mXMax = mXMin + moverBox.xd;
+  const mYMin = moverBox.y;
+  const mYMax = mYMin + moverBox.yd;
+  const mZMin = moverBox.z;
+  const mZMax = mZMin + moverBox.zd;
 
   const dx1 = oXMax - mXMin; // Right overlap
   const dy1 = oYMax - mYMin; // Far overlap
@@ -221,39 +207,29 @@ const mtvWriteInto = (
  * Version that returns a new object for the result
  */
 export const mtv = (
-  moverPosition: Xyz,
-  moverAabb: Xyz,
-  obstaclePosition: Xyz,
-  obstacleAabb: Xyz,
+  moverBox: Readonly<XyzBox>,
+  obstacleBox: Readonly<XyzBox>,
 ): Xyz => {
-  return mtvWriteInto(
-    moverPosition,
-    moverAabb,
-    obstaclePosition,
-    obstacleAabb,
-    {},
-  );
+  return mtvWriteInto(moverBox, obstacleBox, {});
 };
 
 /**
  * @see mtvWriteInto in two dimensions.
  */
 const mtvWriteIntoXy = (
-  moverPosition: Xy,
-  moverAabb: Xy,
-  obstaclePosition: Xy,
-  obstacleAabb: Xy,
+  moverBox: Readonly<Pick<XyzBox, "x" | "xd" | "y" | "yd">>,
+  obstacleBox: Readonly<Pick<XyzBox, "x" | "xd" | "y" | "yd">>,
   writeInto: Partial<Xy>,
 ): Xy => {
-  const oXMin = obstaclePosition.x;
-  const oXMax = oXMin + obstacleAabb.x;
-  const oYMin = obstaclePosition.y;
-  const oYMax = oYMin + obstacleAabb.y;
+  const oXMin = obstacleBox.x;
+  const oXMax = oXMin + obstacleBox.xd;
+  const oYMin = obstacleBox.y;
+  const oYMax = oYMin + obstacleBox.yd;
 
-  const mXMin = moverPosition.x;
-  const mXMax = mXMin + moverAabb.x;
-  const mYMin = moverPosition.y;
-  const mYMax = mYMin + moverAabb.y;
+  const mXMin = moverBox.x;
+  const mXMax = mXMin + moverBox.xd;
+  const mYMin = moverBox.y;
+  const mYMax = mYMin + moverBox.yd;
 
   const dx1 = oXMax - mXMin;
   const dy1 = oYMax - mYMin;
@@ -277,16 +253,8 @@ const mtvWriteIntoXy = (
  * @see mtvWriteIntoXy but returns a new object for the result.
  */
 export const mtvXy = (
-  moverPosition: Xy,
-  moverAabb: Xy,
-  obstaclePosition: Xy,
-  obstacleAabb: Xy,
+  moverBox: Readonly<Pick<XyzBox, "x" | "xd" | "y" | "yd">>,
+  obstacleBox: Readonly<Pick<XyzBox, "x" | "xd" | "y" | "yd">>,
 ): Xy => {
-  return mtvWriteIntoXy(
-    moverPosition,
-    moverAabb,
-    obstaclePosition,
-    obstacleAabb,
-    {},
-  );
+  return mtvWriteIntoXy(moverBox, obstacleBox, {});
 };

@@ -102,7 +102,7 @@ test("when character walks into pickup that they are not eligible to collect, th
 
   // the pickup should have moved:
   const bagStartingX =
-    selectCurrentRoomState(gameState)!.items["bag"].state.position.x;
+    selectCurrentRoomState(gameState)!.items["bag"].state.box.x;
 
   playGameThrough(gameState, {
     setupInitialInput(inputState) {
@@ -117,7 +117,7 @@ test("when character walks into pickup that they are not eligible to collect, th
 
   // the pickup should have moved (been pushed):
   expect(
-    selectCurrentRoomState(gameState)?.items["bag"].state.position.x,
+    selectCurrentRoomState(gameState)?.items["bag"].state.box.x,
   ).toBeGreaterThan(bagStartingX);
 });
 

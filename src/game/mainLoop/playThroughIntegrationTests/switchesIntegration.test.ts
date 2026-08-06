@@ -256,13 +256,13 @@ describe("switching conveyors", () => {
         },
       });
 
-      const startPos = heelsState(gameState).position[axis];
+      const startPos = heelsState(gameState).box[axis];
 
       playGameThrough(gameState, {
         until: 500,
       });
 
-      const movedPositive = heelsState(gameState).position[axis] > startPos;
+      const movedPositive = heelsState(gameState).box[axis] > startPos;
       expect(movedPositive).toBe(positiveMovement);
 
       playGameThrough(gameState, {
@@ -274,8 +274,7 @@ describe("switching conveyors", () => {
         reverses ?
           unitVectors[reversedDirection][axis] > 0
         : unitVectors[direction][axis] > 0;
-      const finalMovedPositive =
-        heelsState(gameState).position[axis] > startPos;
+      const finalMovedPositive = heelsState(gameState).box[axis] > startPos;
       expect(finalMovedPositive).toBe(expectedPositive);
     },
   );

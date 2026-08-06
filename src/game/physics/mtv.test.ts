@@ -1,6 +1,7 @@
 import { describe, expect, test } from "vitest";
 
 import {
+  boxWithSize,
   dotProductXyz,
   lengthXyz,
   unitVector,
@@ -61,10 +62,8 @@ describe("mtvAlongVector", () => {
   test("overlapping items with x-axis constraint", () => {
     const unitCubeBB = { x: 1, y: 1, z: 1 };
     const result = mtvAlongVector(
-      { x: 0, y: 0, z: 0 },
-      unitCubeBB,
-      { x: 0.5, y: 0.5, z: 0 },
-      unitCubeBB,
+      boxWithSize({ x: 0, y: 0, z: 0 }, unitCubeBB),
+      boxWithSize({ x: 0.5, y: 0.5, z: 0 }, unitCubeBB),
       { x: 1, y: 0, z: 0 }, // Constrain to x-axis
     );
 
@@ -78,10 +77,8 @@ describe("mtvAlongVector", () => {
   test("overlapping items with y-axis constraint", () => {
     const unitCubeBB = { x: 1, y: 1, z: 1 };
     const result = mtvAlongVector(
-      { x: 0, y: 0, z: 0 },
-      unitCubeBB,
-      { x: 0.5, y: 0.5, z: 0 },
-      unitCubeBB,
+      boxWithSize({ x: 0, y: 0, z: 0 }, unitCubeBB),
+      boxWithSize({ x: 0.5, y: 0.5, z: 0 }, unitCubeBB),
       { x: 0, y: 1, z: 0 }, // Constrain to y-axis
     );
 
@@ -95,10 +92,8 @@ describe("mtvAlongVector", () => {
   test("overlapping items with z-axis constraint", () => {
     const unitCubeBB = { x: 1, y: 1, z: 1 };
     const result = mtvAlongVector(
-      { x: 0, y: 0, z: 0 },
-      unitCubeBB,
-      { x: 0.5, y: 0.5, z: 0.5 },
-      unitCubeBB,
+      boxWithSize({ x: 0, y: 0, z: 0 }, unitCubeBB),
+      boxWithSize({ x: 0.5, y: 0.5, z: 0.5 }, unitCubeBB),
       { x: 0, y: 0, z: 1 }, // Constrain to z-axis
     );
 
@@ -112,10 +107,8 @@ describe("mtvAlongVector", () => {
   test("overlapping items with diagonal constraint", () => {
     const unitCubeBB = { x: 1, y: 1, z: 1 };
     const result = mtvAlongVector(
-      { x: 0, y: 0, z: 0 },
-      unitCubeBB,
-      { x: 0.5, y: 0.5, z: 0 },
-      unitCubeBB,
+      boxWithSize({ x: 0, y: 0, z: 0 }, unitCubeBB),
+      boxWithSize({ x: 0.5, y: 0.5, z: 0 }, unitCubeBB),
       { x: 1, y: 1, z: 0 }, // Constrain to diagonal
     );
 
@@ -129,10 +122,8 @@ describe("mtvAlongVector", () => {
   test("non-overlapping items with constraint returns zero", () => {
     const unitCubeBB = { x: 1, y: 1, z: 1 };
     const result = mtvAlongVector(
-      { x: 0, y: 0, z: 0 },
-      unitCubeBB,
-      { x: 2, y: 2, z: 0 },
-      unitCubeBB,
+      boxWithSize({ x: 0, y: 0, z: 0 }, unitCubeBB),
+      boxWithSize({ x: 2, y: 2, z: 0 }, unitCubeBB),
       { x: 1, y: 0, z: 0 }, // Constrain to x-axis
     );
 
@@ -142,10 +133,8 @@ describe("mtvAlongVector", () => {
   test("constraint chooses positive direction when closer", () => {
     const unitCubeBB = { x: 1, y: 1, z: 1 };
     const result = mtvAlongVector(
-      { x: 0, y: 0, z: 0 },
-      unitCubeBB,
-      { x: -0.8, y: 0, z: 0 }, // Overlaps more on the left
-      unitCubeBB,
+      boxWithSize({ x: 0, y: 0, z: 0 }, unitCubeBB),
+      boxWithSize({ x: -0.8, y: 0, z: 0 }, unitCubeBB), // Overlaps more on the left
       { x: 1, y: 0, z: 0 }, // Constrain to x-axis
     );
 
@@ -157,10 +146,8 @@ describe("mtvAlongVector", () => {
   test("constraint chooses negative direction when closer", () => {
     const unitCubeBB = { x: 1, y: 1, z: 1 };
     const result = mtvAlongVector(
-      { x: 0, y: 0, z: 0 },
-      unitCubeBB,
-      { x: 0.8, y: 0, z: 0 }, // Overlaps by 0.2 on the left
-      unitCubeBB,
+      boxWithSize({ x: 0, y: 0, z: 0 }, unitCubeBB),
+      boxWithSize({ x: 0.8, y: 0, z: 0 }, unitCubeBB), // Overlaps by 0.2 on the left
       { x: 1, y: 0, z: 0 }, // Constrain to x-axis
     );
 
@@ -172,10 +159,8 @@ describe("mtvAlongVector", () => {
   test("3D diagonal constraint", () => {
     const unitCubeBB = { x: 1, y: 1, z: 1 };
     const result = mtvAlongVector(
-      { x: 0, y: 0, z: 0 },
-      unitCubeBB,
-      { x: 0.3, y: 0.3, z: 0.3 },
-      unitCubeBB,
+      boxWithSize({ x: 0, y: 0, z: 0 }, unitCubeBB),
+      boxWithSize({ x: 0.3, y: 0.3, z: 0.3 }, unitCubeBB),
       { x: 1, y: 1, z: 1 }, // Constrain to 3D diagonal
     );
 
@@ -188,10 +173,8 @@ describe("mtvAlongVector", () => {
   test("zero constraint vector returns zero MTV", () => {
     const unitCubeBB = { x: 1, y: 1, z: 1 };
     const result = mtvAlongVector(
-      { x: 0, y: 0, z: 0 },
-      unitCubeBB,
-      { x: 0.5, y: 0.5, z: 0 },
-      unitCubeBB,
+      boxWithSize({ x: 0, y: 0, z: 0 }, unitCubeBB),
+      boxWithSize({ x: 0.5, y: 0.5, z: 0 }, unitCubeBB),
       { x: 0, y: 0, z: 0 }, // Zero constraint vector
     );
 
@@ -201,10 +184,8 @@ describe("mtvAlongVector", () => {
   test("constraint with large overlap", () => {
     const unitCubeBB = { x: 1, y: 1, z: 1 };
     const result = mtvAlongVector(
-      { x: 0, y: 0, z: 0 },
-      unitCubeBB,
-      { x: 0.1, y: 0.1, z: 0 }, // Almost completely overlapping
-      unitCubeBB,
+      boxWithSize({ x: 0, y: 0, z: 0 }, unitCubeBB),
+      boxWithSize({ x: 0.1, y: 0.1, z: 0 }, unitCubeBB), // Almost completely overlapping
       { x: 1, y: 0, z: 0 }, // Constrain to x-axis
     );
 
@@ -216,10 +197,8 @@ describe("mtvAlongVector", () => {
   test("perpendicular constraint requires moving past the obstacle", () => {
     const unitCubeBB = { x: 1, y: 1, z: 1 };
     const result = mtvAlongVector(
-      { x: 0, y: 0, z: 0 },
-      unitCubeBB,
-      { x: 0, y: 0.5, z: 0 }, // Overlaps in y, aligned in x
-      unitCubeBB,
+      boxWithSize({ x: 0, y: 0, z: 0 }, unitCubeBB),
+      boxWithSize({ x: 0, y: 0.5, z: 0 }, unitCubeBB), // Overlaps in y, aligned in x
       { x: 1, y: 0, z: 0 }, // Constrain to x-axis (perpendicular to overlap)
     );
 
@@ -234,10 +213,8 @@ describe("mtv (not along vector)", () => {
   test("same-size overlapping items, overlapping slightly in y", () => {
     const unitCubeBB = { x: 1, y: 1, z: 1 };
     const result = mtv(
-      { x: 0, y: 0, z: 0 },
-      unitCubeBB,
-      { x: 0, y: 0.9, z: 0 },
-      unitCubeBB,
+      boxWithSize({ x: 0, y: 0, z: 0 }, unitCubeBB),
+      boxWithSize({ x: 0, y: 0.9, z: 0 }, unitCubeBB),
     );
 
     expect(result).toMatchObject({
@@ -250,10 +227,8 @@ describe("mtv (not along vector)", () => {
   test("two items not overlapping gives non-zero response", () => {
     const unitCubeBB = { x: 1, y: 1, z: 1 };
     const result = mtv(
-      { x: 0, y: 0, z: 0 },
-      unitCubeBB,
-      { x: 0, y: 5, z: 0 },
-      unitCubeBB,
+      boxWithSize({ x: 0, y: 0, z: 0 }, unitCubeBB),
+      boxWithSize({ x: 0, y: 5, z: 0 }, unitCubeBB),
     );
 
     expect(result).toMatchObject({
@@ -263,15 +238,12 @@ describe("mtv (not along vector)", () => {
     });
   });
 
-  test("standard MTV works as before", () => {
+  test("standard MTV chooses smallest axis-aligned separation", () => {
     const unitCubeBB = { x: 1, y: 1, z: 1 };
 
-    // Test that omitting the vector parameter still works
     const result = mtv(
-      { x: 0, y: 0, z: 0 },
-      unitCubeBB,
-      { x: 0.7, y: 0.8, z: 0 },
-      unitCubeBB,
+      boxWithSize({ x: 0, y: 0, z: 0 }, unitCubeBB),
+      boxWithSize({ x: 0.7, y: 0.8, z: 0 }, unitCubeBB),
     );
 
     // Should choose the smallest axis-aligned separation (y-axis with 0.2 overlap)
@@ -284,10 +256,8 @@ describe("mtv (not along vector)", () => {
     test("touching in y", () => {
       const unitCubeBB = { x: 1, y: 1, z: 1 };
       const result = mtv(
-        { x: 0, y: 0, z: 0 },
-        unitCubeBB,
-        { x: 0, y: 1, z: 0 },
-        unitCubeBB,
+        boxWithSize({ x: 0, y: 0, z: 0 }, unitCubeBB),
+        boxWithSize({ x: 0, y: 1, z: 0 }, unitCubeBB),
       );
 
       expect(result).toMatchObject({
@@ -299,10 +269,8 @@ describe("mtv (not along vector)", () => {
     test("touching in x", () => {
       const unitCubeBB = { x: 1, y: 1, z: 1 };
       const result = mtv(
-        { x: 0, y: 0, z: 0 },
-        unitCubeBB,
-        { x: 1, y: 0, z: 0 },
-        unitCubeBB,
+        boxWithSize({ x: 0, y: 0, z: 0 }, unitCubeBB),
+        boxWithSize({ x: 1, y: 0, z: 0 }, unitCubeBB),
       );
 
       expect(lengthXyz(result)).toBeCloseTo(0);
@@ -310,10 +278,8 @@ describe("mtv (not along vector)", () => {
     test("touching in z", () => {
       const unitCubeBB = { x: 1, y: 1, z: 1 };
       const result = mtv(
-        { x: 0, y: 0, z: 0 },
-        unitCubeBB,
-        { x: 0, y: 0, z: 1 },
-        unitCubeBB,
+        boxWithSize({ x: 0, y: 0, z: 0 }, unitCubeBB),
+        boxWithSize({ x: 0, y: 0, z: 1 }, unitCubeBB),
       );
 
       expect(lengthXyz(result)).toBeCloseTo(0);
@@ -322,10 +288,8 @@ describe("mtv (not along vector)", () => {
       // this only slightly touches near one corner:
       const unitCubeBB = { x: 1, y: 0.9, z: 1 };
       const result = mtv(
-        { x: 0, y: 0, z: 0 },
-        unitCubeBB,
-        { x: 0, y: 0, z: 1 },
-        unitCubeBB,
+        boxWithSize({ x: 0, y: 0, z: 0 }, unitCubeBB),
+        boxWithSize({ x: 0, y: 0, z: 1 }, unitCubeBB),
       );
 
       expect(lengthXyz(result)).toBeCloseTo(0);

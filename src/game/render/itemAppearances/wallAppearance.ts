@@ -1,4 +1,5 @@
 import { Container } from "pixi.js";
+import { type WritableDeep } from "type-fest";
 
 import { roomSpatialIndexKey } from "../../../model/RoomState";
 import { isAnimationId } from "../../../sprites/assertIsTextureId";
@@ -45,10 +46,9 @@ import {
 } from "../wallWindowSeeThrough";
 import { itemAppearanceRenderMemoised } from "./ItemAppearance";
 
-const sampleBuffer: CollideableItem = {
-  aabb: { x: 1, y: 1, z: veryHighZ },
+const sampleBuffer: WritableDeep<CollideableItem> = {
   id: "wallAppearanceSampleBuffer",
-  state: { position: { x: 0, y: 0, z: 0 } },
+  state: { box: { x: 0, y: 0, z: 0, xd: 1, yd: 1, zd: veryHighZ } },
 };
 
 export const wallAppearance = itemAppearanceRenderMemoised<"wall">(
@@ -196,14 +196,14 @@ export const wallAppearance = itemAppearanceRenderMemoised<"wall">(
           // agree on it):
           const endBlockX =
             alongAxis === "x" && alongReversed ?
-              item.state.position.x
-            : item.state.position.x + item.aabb.x - blockSizePx.x;
+              item.state.box.x
+            : item.state.box.x + item.state.box.xd - blockSizePx.x;
           const endBlockY =
             alongAxis === "y" && alongReversed ?
-              item.state.position.y
-            : item.state.position.y + item.aabb.y - blockSizePx.y;
-          sampleBuffer.state.position.x = endBlockX + cornerDiagonal.x;
-          sampleBuffer.state.position.y = endBlockY + cornerDiagonal.y;
+              item.state.box.y
+            : item.state.box.y + item.state.box.yd - blockSizePx.y;
+          sampleBuffer.state.box.x = endBlockX + cornerDiagonal.x;
+          sampleBuffer.state.box.y = endBlockY + cornerDiagonal.y;
 
           const wallCornerAtEndOfWall = !isEmpty(
             collisionItemWithIndex(sampleBuffer, spatialIndex, isWall),
@@ -258,7 +258,10 @@ export const wallAppearance = itemAppearanceRenderMemoised<"wall">(
     const roomFaceXy =
       isNegativeSideXy(direction) ?
         projectWorldXyzToScreenXy(
-          { [dominantAxisXy(direction)]: item.aabb[dominantAxisXy(direction)] },
+          {
+            [dominantAxisXy(direction)]:
+              item.state.box[`${dominantAxisXy(direction)}d`],
+          },
           cameraQuarterAngle,
         )
       : originXy;

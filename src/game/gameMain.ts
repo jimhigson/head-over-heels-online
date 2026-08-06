@@ -22,6 +22,7 @@ import { loadGameState } from "./gameState/loadGameState";
 import { changeCharacterRoom } from "./gameState/mutators/changeCharacterRoom";
 import { type SavedGame } from "./gameState/saving/SavedGameState";
 import { type InputStateTrackerInterface } from "./input/InputStateTracker";
+import { installE2eCurrentPlayableHandle } from "./mainLoop/installE2eCurrentPlayableHandle";
 import { installE2eFastForwardHandle } from "./mainLoop/installE2eFastForwardHandle";
 import { installE2eSwopCharacterHandle } from "./mainLoop/installE2eSwopCharacterHandle";
 import { MainLoop } from "./mainLoop/MainLoop";
@@ -140,6 +141,7 @@ export const gameMain = async <RoomId extends string>(
     window._e2e_pixiApplication = app;
     installE2eFastForwardHandle(app);
     installE2eSwopCharacterHandle(gameState);
+    installE2eCurrentPlayableHandle(gameState);
   }
 
   const loop = new MainLoop(app, gameState, spritesheets).start();

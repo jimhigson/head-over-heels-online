@@ -14,6 +14,10 @@ import { projectAabbAxes, type ProjectionOnAxes } from "./projectAabbCorners";
 // (single-threaded), so module-level is safe.
 const renderOffsetPos: Xyz = { x: 0, y: 0, z: 0 };
 
+// reused scratch for the physical size triple read out of the item's box when
+// it has no render box (same single-threaded safety as above):
+const physicalSizeScratch: Xyz = { x: 0, y: 0, z: 0 };
+
 // reused scratch the projection maths writes into before the values land in
 // the flat per-item storage:
 const projectionScratch = {} as ProjectionOnAxes;
@@ -191,18 +195,24 @@ export class DrawOrderBroadPhase<
   /** project one item's render box into its flat slots at the geometry angle */
   #projectItem(i: number, renderBox: RenderBox | undefined): void {
     const item = this.#items[i];
-    const { position } = item.state;
+    const { box } = item.state;
     const offset = renderBox?.renderAabbOffset;
     let worldPos: Xyz;
     if (offset === undefined) {
-      worldPos = position;
+      worldPos = box;
     } else {
-      renderOffsetPos.x = position.x + offset.x;
-      renderOffsetPos.y = position.y + offset.y;
-      renderOffsetPos.z = position.z + offset.z;
+      renderOffsetPos.x = box.x + offset.x;
+      renderOffsetPos.y = box.y + offset.y;
+      renderOffsetPos.z = box.z + offset.z;
       worldPos = renderOffsetPos;
     }
-    const bb = renderBox?.renderAabb ?? item.aabb;
+    let bb = renderBox?.renderAabb;
+    if (bb === undefined) {
+      physicalSizeScratch.x = box.xd;
+      physicalSizeScratch.y = box.yd;
+      physicalSizeScratch.z = box.zd;
+      bb = physicalSizeScratch;
+    }
 
     projectAabbAxes(projectionScratch, worldPos, bb, this.#geometryAngle);
     const o = i * 6;

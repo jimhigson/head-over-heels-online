@@ -1,5 +1,6 @@
 import { expect, type Page } from "@playwright/test";
 
+import { type PokeableNumber } from "../src/model/ItemStateMap";
 import { type CharacterName } from "../src/model/modelTypes";
 import {
   clickCheat,
@@ -24,7 +25,8 @@ import { test } from "./testUtils/test";
 type PlayerSnapshot = {
   character: CharacterName;
   room: string;
-  lives: number;
+  /** "infinite" when the infinite-lives poke is on */
+  lives: PokeableNumber;
 };
 
 /**
@@ -44,9 +46,11 @@ const getPlayerSnapshot = (page: Page): Promise<PlayerSnapshot> =>
     if (room === undefined) {
       throw new Error(`no room for current character ${character}`);
     }
-    const playerItem = gameState.characterRooms[character]?.items[character];
-    const lives = (playerItem as { state: { lives?: number } } | undefined)
-      ?.state?.lives;
+    const playableState = window.__e2e_currentPlayable?.()?.state;
+    const lives =
+      playableState !== undefined && "lives" in playableState ?
+        playableState.lives
+      : undefined;
     if (lives === undefined) {
       throw new Error(`no lives on player item for ${character}`);
     }

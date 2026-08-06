@@ -7,7 +7,7 @@ import {
 } from "../../../model/RoomState";
 import { objectEntriesIter } from "../../../utils/entries";
 import { unitVectors } from "../../../utils/vectors/unitVectors";
-import { addXyz } from "../../../utils/vectors/vectors";
+import { addXyz, boxWithSize } from "../../../utils/vectors/vectors";
 import { isFloor } from "../../physics/itemPredicates";
 import {
   blockSizePx,
@@ -138,13 +138,15 @@ export function* loadPortalsAboveAndBelow<
           },
           direction: unitVectors["down"],
         },
-        aabb: { x: maxX - minX, y: maxY - minY, z: portalThickness },
         state: {
           ...defaultBaseState(),
-          position: {
+          box: {
             x: minX,
             y: minY,
             z: portalToRoomBelowTop - portalThickness,
+            xd: maxX - minX,
+            yd: maxY - minY,
+            zd: portalThickness,
           },
         },
         renders: false,
@@ -173,12 +175,16 @@ export function* loadPortalsAboveAndBelow<
           },
           direction: unitVectors["up"],
         },
-        aabb: { x: maxX - minX, y: maxY - minY, z: portalThickness },
         state: {
           ...defaultBaseState(),
-          position: addXyz(
-            { x: minX, y: minY },
-            { z: blockSizePx.z * (roomJson.height ?? defaultRoomHeightBlocks) },
+          box: boxWithSize(
+            addXyz(
+              { x: minX, y: minY },
+              {
+                z: blockSizePx.z * (roomJson.height ?? defaultRoomHeightBlocks),
+              },
+            ),
+            { x: maxX - minX, y: maxY - minY, z: portalThickness },
           ),
         },
       },

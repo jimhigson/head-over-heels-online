@@ -10,17 +10,17 @@ export type PlayableEntryState = Pick<
   ItemState<CharacterName, string, string>,
   | "action"
   | "autoWalk"
+  | "box"
   | "facing"
   | "jumped"
   | "jumpStartZ"
-  | "position"
   | "teleporting"
   | "vels"
   | "visualFacingVector"
 >;
 export const entryState = ({
   state: {
-    position,
+    box,
     facing,
     autoWalk,
     action,
@@ -32,7 +32,7 @@ export const entryState = ({
   },
 }: PlayableItem): PlayableEntryState => {
   return {
-    position,
+    box,
     facing,
     autoWalk,
     action,

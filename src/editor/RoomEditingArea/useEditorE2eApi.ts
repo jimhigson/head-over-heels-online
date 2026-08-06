@@ -4,7 +4,7 @@ import { useEffect } from "preact/hooks";
 import { projectWorldXyzToScreenXy } from "../../game/render/projections";
 import { roomItemsIterable } from "../../model/RoomState";
 import { editorStore } from "../../store/store";
-import { type Xy, type Xyz } from "../../utils/vectors/vectors";
+import { type Xy, type Xyz, type XyzBox } from "../../utils/vectors/vectors";
 import {
   type EditorRoomItemId,
   type EditorRoomState,
@@ -21,8 +21,7 @@ export type EditorE2eItem = {
   jsonItemId: EditorRoomItemId | undefined;
   type: EditorUnionOfAllItemInPlayTypes["type"];
   /** in engine (world) pixels, not blocks */
-  position: Xyz;
-  aabb: Xyz;
+  box: Readonly<XyzBox>;
 };
 
 /**
@@ -53,8 +52,7 @@ const editorE2eItem = (
   id: item.id,
   jsonItemId: item.jsonItemId,
   type: item.type,
-  position: item.state.position,
-  aabb: item.aabb,
+  box: item.state.box,
 });
 
 export type UseEditorE2eApiParams = {

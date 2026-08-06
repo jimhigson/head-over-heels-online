@@ -69,13 +69,9 @@ export const pointerIntersectionCorner = (
         ),
     )
     .find((cornerVector) => {
-      const projectedCorner = projectCorner(
-        item.state.position,
-        // using aabb, not renderAabb, so doors can be placed on walls above where they render
-        item.aabb,
-        cornerVector,
-        cameraAngle,
-      );
+      // using the physical box, not renderAabb, so doors can be placed on walls above where they render
+      const { box } = item.state;
+      const projectedCorner = projectCorner(box, cornerVector, cameraAngle);
       const distanceToProjectedCorner = lengthXy(
         subXy(projectedCorner, { x, y }),
       );

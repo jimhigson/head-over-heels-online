@@ -1,6 +1,6 @@
 import { roomItemsIterable, type RoomState } from "../../model/RoomState";
 import { xyzSnapIfCloseToIntegers } from "../../utils/vectors/vectors";
-import { updateItemPosition } from "../gameState/mutators/updateItemPosition";
+import { updateItemPosition } from "../gameState/mutators/updateItemBox";
 
 /**
  * fix item positions where numbers should be integers but aren't quite
@@ -14,7 +14,7 @@ export const correctFloatingPointErrorsInRoom = <
   room: RoomState<RoomId, RoomItemId>,
 ) => {
   for (const item of roomItemsIterable(room.items)) {
-    const originalPosition = item.state.position;
+    const originalPosition = item.state.box;
     const maybeSnapped = xyzSnapIfCloseToIntegers(originalPosition);
     if (maybeSnapped !== originalPosition) {
       updateItemPosition(room, item, maybeSnapped);

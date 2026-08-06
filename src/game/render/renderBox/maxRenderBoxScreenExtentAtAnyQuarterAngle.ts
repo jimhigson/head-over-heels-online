@@ -25,10 +25,15 @@ export const maxRenderBoxScreenExtentAtAnyQuarterAngle = (
 ): Xy => {
   let width = 0;
   let height = 0;
+  const physicalSize = {
+    x: item.state.box.xd,
+    y: item.state.box.yd,
+    z: item.state.box.zd,
+  };
   for (const angle of quarterCameraAngles) {
     const box = makeItemRenderBoxAtCameraAngle(item, angle, spritesheetMeta);
     const { min, max } = boxProjectedExtent(
-      box?.renderAabb ?? item.aabb,
+      box?.renderAabb ?? physicalSize,
       box?.renderAabbOffset ?? originXyz,
       angle,
     );

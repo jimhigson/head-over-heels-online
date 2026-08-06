@@ -8,6 +8,7 @@ import { octantIndexOfDirection } from "../../../utils/vectors/octantIndexOfDire
 import { unitVectors } from "../../../utils/vectors/unitVectors";
 import {
   addXyz,
+  boxWithSize,
   doorAlongAxis,
   scaleXyz,
 } from "../../../utils/vectors/vectors";
@@ -96,10 +97,9 @@ export const loadWall = <RoomId extends string, RoomItemId extends string>(
     // the json direction name becomes a unit vector in-play (the json stays a
     // name):
     config: { ...jsonWall.config, direction: unitVectors[direction] },
-    aabb,
     state: {
       ...defaultBaseState(),
-      position: wallPosition,
+      box: boxWithSize(wallPosition, aabb),
       // walls can never be stood on:
       stoodOnBy: emptyObject as StoodOnBy<RoomItemId>,
     },

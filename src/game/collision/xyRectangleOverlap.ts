@@ -1,27 +1,25 @@
 import { type UnionOfAllItemInPlayTypes } from "../../model/ItemInPlay";
-import { type Xy } from "../../utils/vectors/vectors";
+import { type XyzBox } from "../../utils/vectors/vectors";
 
 const xyRectangleOverlapArea = (
-  pos1: Xy,
-  bb1: Xy,
-  pos2: Xy,
-  bb2: Xy,
+  box1: Readonly<XyzBox>,
+  box2: Readonly<XyzBox>,
 ): number => {
   const overlapX = Math.max(
     0,
-    Math.min(pos1.x + bb1.x, pos2.x + bb2.x) - Math.max(pos1.x, pos2.x),
+    Math.min(box1.x + box1.xd, box2.x + box2.xd) - Math.max(box1.x, box2.x),
   );
   const overlapY = Math.max(
     0,
-    Math.min(pos1.y + bb1.y, pos2.y + bb2.y) - Math.max(pos1.y, pos2.y),
+    Math.min(box1.y + box1.yd, box2.y + box2.yd) - Math.max(box1.y, box2.y),
   );
   return overlapX * overlapY;
 };
 
 /** 1 for completely overlapping, 0.1 for hardly overlapping, 0 for not at all as a proportion of the first item */
 export const itemXyOverlapArea = (
-  { state: { position: pos1 }, aabb: bb1 }: UnionOfAllItemInPlayTypes,
-  { state: { position: pos2 }, aabb: bb2 }: UnionOfAllItemInPlayTypes,
+  { state: { box: box1 } }: UnionOfAllItemInPlayTypes,
+  { state: { box: box2 } }: UnionOfAllItemInPlayTypes,
 ): number => {
-  return xyRectangleOverlapArea(pos1, bb1, pos2, bb2);
+  return xyRectangleOverlapArea(box1, box2);
 };

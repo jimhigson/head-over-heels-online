@@ -151,7 +151,7 @@ describe("walls, which are physically unbounded upwards", () => {
     cameraAngle: Xy,
   ) =>
     projectWorldXyzToScreenXy(
-      addXyz(wall.state.position, { x: 0, y: 0, z: 40 * blockSizePx.z }),
+      addXyz(wall.state.box, { x: 0, y: 0, z: 40 * blockSizePx.z }),
       cameraAngle,
     );
 

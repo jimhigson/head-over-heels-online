@@ -52,7 +52,7 @@ describe("conveyors", () => {
     } = selectCurrentRoomState(gameState)!;
     // heels should have moved on the conveyor, fallen off, and now be on the floor next to it:
     expect(heelsState(gameState).standingOnItemId).toEqual("floor");
-    expect(heelsState(gameState).position).toEqual({
+    expect(heelsState(gameState).box).toMatchObject({
       x: 1,
       y: blockSizePx.y,
       z: 0,
@@ -62,7 +62,7 @@ describe("conveyors", () => {
     expect(
       (portableBlock as ItemInPlay<"portableBlock">).state.standingOnItemId,
     ).toEqual("heels");
-    expect(portableBlock?.state.position).toEqual({
+    expect(portableBlock?.state.box).toMatchObject({
       x: 2,
       y: blockSizePx.y,
       z: blockSizePx.z,
@@ -104,8 +104,8 @@ describe("conveyors", () => {
 
     playGameThrough(gameState, { until: 500 });
 
-    const standardBlockY = itemState(gameState, "standardBlock").position.y;
-    const fastBlockY = itemState(gameState, "fastBlock").position.y;
+    const standardBlockY = itemState(gameState, "standardBlock").box.y;
+    const fastBlockY = itemState(gameState, "fastBlock").box.y;
 
     // the fast block should have moved further in +y than the standard one
     expect(fastBlockY).toBeGreaterThan(standardBlockY);
@@ -153,11 +153,14 @@ describe("conveyors", () => {
       until: 3_000,
     });
 
-    expect(heelsState(gameState).position).toMatchInlineSnapshot(`
+    expect(heelsState(gameState).box).toMatchInlineSnapshot(`
       {
         "x": 16,
+        "xd": 12,
         "y": 32,
+        "yd": 12,
         "z": 0,
+        "zd": 12,
       }
     `);
   });

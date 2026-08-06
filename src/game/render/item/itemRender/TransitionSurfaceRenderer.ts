@@ -280,7 +280,11 @@ export class TransitionSurfaceRenderer<
       // top slab), not its physical aabb (eg a floor's 3-block slab); fall back
       // to the aabb for items with no render box:
       const renderBox = this.renderContext.renderBoxes.get(item);
-      const dims = renderBox?.renderAabb ?? item.aabb;
+      const dims = renderBox?.renderAabb ?? {
+        x: item.state.box.xd,
+        y: item.state.box.yd,
+        z: item.state.box.zd,
+      };
       const offset = renderBox?.renderAabbOffset ?? originXyz;
 
       // Snapshot into a texture sized to the union of the box's projected extent
@@ -668,8 +672,8 @@ export class TransitionSurfaceRenderer<
       // items' surfaces are actually placed in this frame. The bake root
       // carries the front's own internal placement (near-corner offset etc),
       // so the position diff is the whole registration:
-      const frontPosition = frontItem.state.position;
-      const itemPosition = this.renderContext.item.state.position;
+      const frontPosition = frontItem.state.box;
+      const itemPosition = this.renderContext.item.state.box;
       curMaskingSprite.x =
         projectWorldXyzToScreenX(frontPosition, cameraAngle) -
         projectWorldXyzToScreenX(itemPosition, cameraAngle);

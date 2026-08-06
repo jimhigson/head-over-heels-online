@@ -18,7 +18,7 @@ import { playableLosesLife } from "../game/gameState/mutators/playableLosesLife"
 import { removeStandingOn } from "../game/gameState/mutators/standingOn/removeStandingOn";
 import { setStandingOnWithoutRemovingOldFirst } from "../game/gameState/mutators/standingOn/setStandingOnWithoutRemovingOldFirst";
 import { swopPlayables } from "../game/gameState/mutators/swopPlayables";
-import { updateItemPosition } from "../game/gameState/mutators/updateItemPosition";
+import { updateItemPosition } from "../game/gameState/mutators/updateItemBox";
 import { type PortableItemType } from "../game/physics/itemPredicates";
 import { blockSizePx } from "../game/physics/mechanicsConstants";
 import { type ItemInPlay } from "../model/ItemInPlay";
@@ -222,7 +222,7 @@ export const mutatorsTestHarness = () => {
       updateItemPosition(
         room,
         playableItem,
-        addXyz(sourcePortal.state.position, sourcePortal.config.relativePoint),
+        addXyz(sourcePortal.state.box, sourcePortal.config.relativePoint),
       );
 
       changeCharacterRoom({
@@ -249,7 +249,7 @@ export const mutatorsTestHarness = () => {
       updateItemPosition(
         headRoom!,
         headPlayable,
-        addXyz(heelsPlayable.state.position, {
+        addXyz(heelsPlayable.state.box, {
           z: blockSizePx.z,
         }),
       );
@@ -424,10 +424,10 @@ export const mutatorsTestHarness = () => {
       >;
 
       const expectedPosition = addXyz(
-        portal.state.position,
+        portal.state.box,
         portal.config.relativePoint,
       );
-      expect(playable.state.position).toEqual({
+      expect(playable.state.box).toMatchObject({
         x: expect.closeTo(expectedPosition.x),
         y: expect.closeTo(expectedPosition.y),
         z: expect.closeTo(expectedPosition.z),

@@ -84,8 +84,7 @@ export const roomRenderExtent = <
     if (item.type === "floor") {
       const {
         config: { naturalFootprint },
-        state: { position },
-        aabb,
+        state: { box },
       } = item;
       const renderBox = makeItemRenderBoxAtCameraAngle(
         item,
@@ -124,10 +123,14 @@ export const roomRenderExtent = <
       // the near (front/bottom) edge is the lowest of the extended render box's
       // surface-level corners - which one is lowest also depends on the angle:
       const extendedPosition = addXyz(
-        position,
+        box,
         renderBox?.renderAabbOffset ?? originXyz,
       );
-      const extendedAabb = renderBox?.renderAabb ?? aabb;
+      const extendedAabb = renderBox?.renderAabb ?? {
+        x: box.xd,
+        y: box.yd,
+        z: box.zd,
+      };
       for (const dx of [0, extendedAabb.x]) {
         for (const dy of [0, extendedAabb.y]) {
           const { y } = projectWorldXyzToScreenXy(
@@ -160,13 +163,17 @@ export const roomRenderExtent = <
           // lifts are a special case - use the top of their travel instead of
           // their starting position for rendering height estimation
           {
-            ...item.state.position,
+            ...item.state.box,
             z: item.config.top * blockSizePx.z,
           }
-        : item.state.position,
+        : item.state.box,
         itemRenderBox?.renderAabbOffset ?? originXyz,
       );
-      const itemAabb = itemRenderBox?.renderAabb ?? item.aabb ?? originXyz;
+      const itemAabb = itemRenderBox?.renderAabb ?? {
+        x: item.state.box.xd,
+        y: item.state.box.yd,
+        z: item.state.box.zd,
+      };
       // walls' render boxes extend above their nominal face to cover art
       // overdraw (the tallest tile tops); for layout estimation treat walls
       // as their layout height, so the overdraw doesn't read as empty space

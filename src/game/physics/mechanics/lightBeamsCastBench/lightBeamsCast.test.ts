@@ -18,6 +18,6 @@ test("the scenario casts independent per-row beams that reflect several times", 
   expect<boolean>(beams.length >= 5).toBe(true);
   // the 2-row-tall lamp casts a separate beam per row, at distinct heights -
   // the rows are never merged into one tall beam:
-  const zLevels = new Set(beams.map((b) => b.position.z));
+  const zLevels = new Set(beams.map((b) => b.box.z));
   expect<number>(zLevels.size).toBeGreaterThanOrEqual(2);
 });

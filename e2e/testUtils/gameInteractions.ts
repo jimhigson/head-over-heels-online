@@ -1,20 +1,19 @@
 import { type Page } from "@playwright/test";
 import chalk from "chalk";
 
+import { type PokeableNumber } from "../../src/model/ItemStateMap";
 import { getCurrentCharacter } from "./gameStateQueries";
 import { osSlowness, retryWithRecovery } from "./infrastructure";
 import { elapsed, formatProjectName } from "./logging";
 
-const getCurrentLives = (page: Page): Promise<number | undefined> =>
+/**
+ * the current playable's lives. head-over-heels holds one count per character
+ * rather than a single one, so it has no lives of its own
+ */
+const getCurrentLives = (page: Page): Promise<PokeableNumber | undefined> =>
   page.evaluate(() => {
-    const gameState = window._e2e_gamePageGameAi?.gameState;
-    if (!gameState) {
-      return undefined;
-    }
-    const character = gameState.currentCharacterName;
-    const playerItem = gameState.characterRooms[character]?.items[character];
-    return (playerItem as { state: { lives?: number } } | undefined)?.state
-      ?.lives;
+    const state = window.__e2e_currentPlayable?.()?.state;
+    return state !== undefined && "lives" in state ? state.lives : undefined;
   });
 
 const log = (message: string) =>

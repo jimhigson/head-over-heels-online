@@ -33,12 +33,12 @@ test("player respawns at entry position without losing a life after falling out 
 
   // heels should fall through the non-floor room:
   playGameThrough(gameState, {
-    until: (gameState) => heelsState(gameState).position.z < -2 * blockSizePx.z,
+    until: (gameState) => heelsState(gameState).box.z < -2 * blockSizePx.z,
   });
 
   // and then eventually be brough back without loss of life:
   playGameThrough(gameState, {
-    until: (gameState) => heelsState(gameState).position.z > -1,
+    until: (gameState) => heelsState(gameState).box.z > -1,
   });
 
   expect(heelsState(gameState).lives).toEqual(livesBefore);

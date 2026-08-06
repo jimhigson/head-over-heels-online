@@ -57,7 +57,7 @@ export const progressGameState = <
   const startingPositions = Object.fromEntries(
     iterateRoomItemEntries(room.items).map(([id, item]) => [
       id,
-      item.state.position,
+      item.state.box,
     ]),
   );
 

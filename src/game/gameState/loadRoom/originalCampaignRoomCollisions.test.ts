@@ -63,7 +63,7 @@ test.for(roomCases)(
           )
           .map(
             (col) =>
-              `${i.type} ${i.id} @${JSON.stringify(i.state.position)} #${JSON.stringify(i.aabb)} collides with ${col.type} ${col.id} @${JSON.stringify(col.state.position)} #${JSON.stringify(col.aabb)}`,
+              `${i.type} ${i.id} @${JSON.stringify(i.state.box)} collides with ${col.type} ${col.id} @${JSON.stringify(col.state.box)}`,
           ),
       )
       .toArray();

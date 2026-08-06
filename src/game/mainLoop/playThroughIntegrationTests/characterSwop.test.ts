@@ -53,8 +53,8 @@ test.for([
       },
     });
 
-    const heelsStartPosition = { ...heelsState(gameState).position };
-    const headStartPosition = { ...headState(gameState).position };
+    const heelsStartPosition = { ...heelsState(gameState).box };
+    const headStartPosition = { ...headState(gameState).box };
 
     playGameThrough(gameState, {
       setupInitialInput(mockInputStateTracker) {
@@ -78,7 +78,7 @@ test.for([
         z: 0,
       };
 
-      expect(headOverHeelsState(gameState).position).toEqual(
+      expect(headOverHeelsState(gameState).box).toMatchObject(
         midpointXyPosition,
       );
 
@@ -122,8 +122,8 @@ test("going into symbiosis with a block also on top of heels", () => {
     itemState<"portableBlock">(gameState, "portable").standingOnItemId,
   ).toEqual("heels");
 
-  const heelsStartPosition = { ...heelsState(gameState).position };
-  const headStartPosition = { ...headState(gameState).position };
+  const heelsStartPosition = { ...heelsState(gameState).box };
+  const headStartPosition = { ...headState(gameState).box };
 
   playGameThrough(gameState, {
     setupInitialInput(mockInputStateTracker) {
@@ -149,7 +149,7 @@ test("going into symbiosis with a block also on top of heels", () => {
     z: 0,
   };
 
-  expect(headOverHeelsState(gameState).position).toEqual(midpointXyPosition);
+  expect(headOverHeelsState(gameState).box).toMatchObject(midpointXyPosition);
 });
 test("going into symbiosis with a block on top of heels and requiring movement from Heel's initial position", () => {
   const gameState = setUpBasicGame({
@@ -212,7 +212,11 @@ test("going into symbiosis with a block on top of heels and requiring movement f
     },
   });
 
-  const heelsStartPosition = { ...heelsState(gameState).position };
+  const {
+    x: heelsStartX,
+    y: heelsStartY,
+    z: heelsStartZ,
+  } = heelsState(gameState).box;
 
   playGameThrough(gameState, {
     setupInitialInput(mockInputStateTracker) {
@@ -224,9 +228,11 @@ test("going into symbiosis with a block on top of heels and requiring movement f
   });
 
   // heels had to move too to get under Head this time:
-  expect(headOverHeelsState(gameState).position).not.toEqual(
-    heelsStartPosition,
-  );
+  expect(headOverHeelsState(gameState).box).not.toMatchObject({
+    x: heelsStartX,
+    y: heelsStartY,
+    z: heelsStartZ,
+  });
 });
 
 test("fails to go into symbiosis for an impossible case", () => {

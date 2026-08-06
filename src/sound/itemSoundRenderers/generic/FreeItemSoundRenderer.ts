@@ -143,7 +143,7 @@ export class FreeItemSoundRenderer implements ItemSoundRenderer<FreeItemTypes> {
     const {
       state: {
         standingOnItemId,
-        position: { z: positionZ },
+        box: { z: positionZ },
         vels: {
           gravity: { z: velZ },
         },

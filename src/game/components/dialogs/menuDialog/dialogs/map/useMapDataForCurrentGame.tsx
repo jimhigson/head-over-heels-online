@@ -52,7 +52,7 @@ export const useMapDataForCurrentGame = <
             curSubRoom = "*";
           } else {
             curSubRoom = findSubRoomForItem(
-              curCharacterItem.state.position,
+              curCharacterItem.state.box,
               "fine",
               curRoom.roomJson,
             );

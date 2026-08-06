@@ -4,12 +4,12 @@ import {
   roomSpatialIndexKey,
   type RoomState,
 } from "../../model/RoomState";
-import { type Xyz } from "../../utils/vectors/vectors";
+import { boxAt, type Xyz } from "../../utils/vectors/vectors";
 import {
   collisionItemWithIndex,
   hasCollisionItemWithIndex,
 } from "../collision/aabbCollision";
-import { updateItemPosition } from "../gameState/mutators/updateItemPosition";
+import { updateItemPosition } from "../gameState/mutators/updateItemBox";
 import { type FreeItem, isFreeItem, isSolid } from "../physics/itemPredicates";
 
 const logSnapping = 0;
@@ -31,7 +31,7 @@ export const snapFreeItemToPixelGrid = <
     return undefined;
   }
 
-  const { position } = item.state;
+  const { box: position } = item.state;
   const xyIsFractional =
     !Number.isInteger(position.x) || !Number.isInteger(position.y);
   const alsoSnapZ = !wasActedOnThisTick || !actedOnAt.actedInZ;
@@ -71,13 +71,7 @@ export const snapInactiveItemsToPixelGrid = <
 
     // eslint-disable-next-line @typescript-eslint/no-unused-expressions
     logSnapping &&
-      console.log(
-        "snapping",
-        item.id,
-        item.state.position,
-        "->",
-        snappedPosition,
-      );
+      console.log("snapping", item.id, item.state.box, "->", snappedPosition);
 
     const { id } = item;
 
@@ -86,8 +80,7 @@ export const snapInactiveItemsToPixelGrid = <
     ): boolean => i.id !== id && isSolid(i, item);
     const snappedCollideable = {
       id,
-      aabb: item.aabb,
-      state: { position: snappedPosition },
+      state: { box: boxAt(snappedPosition, item.state.box) },
     };
     const collidesAfterSnapping = hasCollisionItemWithIndex(
       snappedCollideable,

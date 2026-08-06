@@ -93,16 +93,16 @@ test("blacktooth11 loads a gated corner cube at every corner", () => {
       ({ hintShadowDirections }) =>
         hintShadowDirections!.includes(xDirection) &&
         hintShadowDirections!.includes(yDirection),
-    )!.state.position;
+    )!.state.box;
 
   const { right, towards, left, away } = unitVectors;
 
-  expect<Array<Xyz>>([
+  expect([
     positionForDirections(right, towards),
     positionForDirections(left, towards),
     positionForDirections(left, away),
     positionForDirections(right, away),
-  ]).toEqual<Array<Xyz>>([
+  ]).toMatchObject<Array<Xyz>>([
     { x: -12, y: -12, z: 0 },
     { x: 128, y: -12, z: 0 },
     { x: 128, y: 128, z: 0 },

@@ -5,7 +5,6 @@ import { characterNames } from "../../model/modelTypes";
 import { type RoomStateItems } from "../../model/RoomState";
 import { store } from "../../store/store";
 import { emptyArray } from "../../utils/empty";
-import { addXyz, scaleXyz } from "../../utils/vectors/vectors";
 import { type PlayableItem } from "../physics/itemPredicates";
 import { fadeInOrOutDuration } from "./animationTimings";
 import { ColourClashCircleEffectFilter } from "./filters/ColourClashCircleEffectFilter";
@@ -108,10 +107,12 @@ export class ColourClashCircleEffectRenderer<
   }
 
   #updateFilterCentreXy(currentPlayable: PlayableItem) {
-    const playableMidXyz = addXyz(
-      currentPlayable.state.position,
-      scaleXyz(currentPlayable.aabb, 0.5),
-    );
+    const { box } = currentPlayable.state;
+    const playableMidXyz = {
+      x: box.x + box.xd / 2,
+      y: box.y + box.yd / 2,
+      z: box.z + box.zd / 2,
+    };
 
     const {
       renderContext: {
