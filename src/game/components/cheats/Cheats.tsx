@@ -223,11 +223,20 @@ export type GoToRoomButtonProps<RoomId extends string> = {
   readonly roomId: RoomId;
 };
 
+/**
+ * the shortcuts below name rooms of the original campaign, so in any other
+ * campaign most of them do not exist - a button for a room that isn't there
+ * would throw out of the room change, taking the game down with it
+ */
 export const GoToRoomButton = <RoomId extends string>({
   gameApi,
   roomId,
   children,
 }: PropsWithChildren<GoToRoomButtonProps<RoomId>>) => {
+  if (gameApi.campaign.rooms[roomId] === undefined) {
+    return null;
+  }
+
   return (
     <Button
       data-test-id={`cheats-goto-room-${roomId}`}

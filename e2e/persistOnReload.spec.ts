@@ -5,6 +5,7 @@ import {
   sequelCampaignLocator,
 } from "../src/gameInfo";
 import {
+  changeToAnotherRoom,
   clickCheat,
   dismissHoldAfterReload,
   dispatchKeyPress,
@@ -70,7 +71,9 @@ test.describe("persistence across reload", () => {
     const otherCharacter = await getCurrentCharacter(page);
     expect(otherCharacter).not.toBe(startCharacter);
 
-    await clickCheat(page, "cheats-goto-room-finalroom");
+    // the cheats' room shortcuts name original-campaign rooms, which the sequel
+    // does not have - change to a room this campaign really contains:
+    await changeToAnotherRoom(page);
     await page.waitForTimeout(1_000 * osSlowness);
     const roomBeforeReload = await getCurrentRoomId(page);
 

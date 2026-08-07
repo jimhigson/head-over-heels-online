@@ -185,3 +185,49 @@ export const dismissHoldAfterReload = async (page: Page) => {
     .locator('[data-dialog-id="hold"]')
     .waitFor({ state: "detached", timeout: 5_000 * osSlowness });
 };
+
+/**
+ * change to any room of the loaded campaign other than the one the current
+ * character is in, and return its id. Unlike the cheats panel's room
+ * shortcuts, which name rooms of the original campaign, this works whatever
+ * campaign is loaded
+ */
+export const changeToAnotherRoom = async (page: Page): Promise<string> =>
+  page.evaluate(() => {
+    const gameApi = window._e2e_gamePageGameAi;
+    if (gameApi === undefined) {
+      throw new Error("no game api - the game has not finished loading");
+    }
+    const currentRoomId = gameApi.currentRoom?.id;
+    const otherRoomId = Object.keys(gameApi.campaign.rooms).find(
+      (roomId) => roomId !== currentRoomId,
+    );
+    if (otherRoomId === undefined) {
+      throw new Error("campaign has no room other than the current one");
+    }
+    gameApi.changeRoom(otherRoomId);
+    return otherRoomId;
+  });
+
+/**
+ * wait until the control options are actually listening for the key to assign.
+ *
+ * Entering assigning mode is two steps: the store records it synchronously,
+ * then a render later an effect subscribes to the ticker. Only a key pressed
+ * after that subscription counts - one already down when it happens reads as
+ * held rather than as a fresh press, and is never assigned. Preact flushes
+ * effects on a task after a frame, so waiting one frame is not enough to be
+ * sure the second step has happened.
+ */
+export const waitForAssigningInput = async (page: Page): Promise<void> => {
+  await page.waitForFunction(
+    () =>
+      window._e2e_store?.getState().userSettings.assigningInput !== undefined,
+  );
+  await page.evaluate(
+    () =>
+      new Promise<void>((resolve) => {
+        requestAnimationFrame(() => setTimeout(() => resolve(), 0));
+      }),
+  );
+};
