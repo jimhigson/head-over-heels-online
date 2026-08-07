@@ -42,3 +42,7 @@ snapshot-diff-viewer-artifact.html
 src-tauri/gen
 src-tauri/target
 .gitnexus
+
+# python bytecode caches (eg the guided-review skill scripts)
+__pycache__/
+*.pyc
