@@ -13,10 +13,11 @@ const emSpace = "\u2003";
 const menuLeaders = `${menuLeaderUnfocussedChar}${menuLeaderFocussedChar}${menuLeaderBackChar}`;
 
 const specimenText = `pack my box with five dozen liquor jugs
-PACK${emSpace}MY${emSpace}BOX${emSpace}WITH${emSpace}FIVE${emSpace}DOZEN${emSpace}LIQUOR${emSpace}JUGS${emSpace}0123456789
-?!.,;:/\\'\`‘’-=+_|%#@*^&<>()[]§©∞☰•★⚡⬅➡⬆⬇↖↗↘↙⏩⁌⁍⇧⌥⌘⎌⟳↻↺🛡♨🕹\uf1ff\ue709\uea78\uf50e\u{f10a9}\uf457\u{ff0e}${menuLeaders}`;
-
-const scaleFactors = [1, 2] as const;
+PACK${emSpace}MY${emSpace}BOX${emSpace}WITH${emSpace}FIVE${emSpace}DOZEN${emSpace}LIQUOR${emSpace}JUGS
+0123456789
+?!.,;:/\\'\`‘’-=+_|%#@*^&<>()[]§©∞☰•★⚡⬅➡⬆⬇↖↗↘↙⇧⌥⌘⎌⟳↻↺
+🛡♨🕹\uf1ff\ue709\uea78\uf50e\u{f10a9}\uf457\u{ff0e}${menuLeaders}
+https://blockstack.ing`;
 
 const colourClasses = [
   twClass("text-highlightBeige zx:text-zxYellow toppy:text-toppyWarm2"),
@@ -25,12 +26,14 @@ const colourClasses = [
   twClass("text-pastelBlue zx:text-zxCyan toppy:text-toppyCool1"),
 ];
 
-export const FontSpecimen = () => (
+export type FontSpecimenProps = { scale: number };
+
+export const FontSpecimen = ({ scale }: FontSpecimenProps) => (
   <div
     class="bg-pureBlack text-white p-1 w-full overflow-x-clip allow-select"
     data-font-specimen
   >
-    {scaleFactors.map((scaleFactor, scaleIndex) => (
+    {[scale, scale * 2].map((scaleFactor, scaleIndex) => (
       <CssVariables scaleFactor={scaleFactor} key={scaleFactor}>
         <div
           class={`text-multi-line whitespace-pre ${colourClasses[scaleIndex % colourClasses.length]}`}

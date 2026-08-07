@@ -434,12 +434,13 @@ class EditorAnnotationsRenderer<
     const {
       renderContext: {
         frontLayer,
-        general: { pixiRenderer },
+        general: { pixiRenderer, spritesheets },
       },
     } = this;
 
     const annotationContainer = new TextContainer({
       pixiRenderer,
+      resolution: spritesheets.bakeFactor,
       label: "EditorAnnotationTextContainer",
       outline: true,
       colour: tint,

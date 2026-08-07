@@ -21,10 +21,6 @@ jobs:
     runs-on: ubuntu-latest
     name: size
     env:
-      # one journey covers both apps from a single `pnpm build` (game into
-      # dist, editor into dist/editor): the game visit, then a startAgain
-      # cold-restarts the browser so the editor visit is measured from an
-      # empty cache with its own rows and total
       journey: |
         [
           { "startAgain": "game" },
@@ -37,6 +33,9 @@ jobs:
           { "row": "to game", "mark": "first-gameplay", "emoji": "🎮" },
           { "keys": "M" },
           { "row": "open map", "mark": "open map", "emoji": "🗺️" },
+          { "keys": "M" },
+          { "keys": "Y" },
+          { "row": "turn smoothing on", "mark": "smooth-ui-ready", "emoji": "✨" },
           { "startAgain": "editor" },
           { "goto": "/editor/" },
           { "row": "editor", "marks": ["editor-monaco-ready", "editor-map-ready"], "emoji": "🛠️" }
@@ -134,14 +133,8 @@ jobs:
           compression-level: 11
           ignore-url-patterns: '["supabase\\.co"]'
           minimum-change-threshold: 50
-          # each ref now builds both apps in one go, so allow longer than the
-          # action's 15-minute default before the whole-run watchdog fires
+          mark-timeout-ms: "20000"
           timeout-ms: "1800000"
-          # a normal PR compares vs main (its merge target), production (the
-          # last release) and the release before that. a release-please PR
-          # only bumps the build number over main, so a vs-main comparison is
-          # meaningless noise - it omits main and compares vs the two releases
-          # alone.
           base-refs: ${{ steps.base-refs.outputs.json }}
           journey: ${{ env.journey }}
       - uses: jimhigson/true-site-size@main
@@ -155,11 +148,8 @@ jobs:
           compression-level: 11
           ignore-url-patterns: '["supabase\\.co"]'
           minimum-change-threshold: 50
+          mark-timeout-ms: "20000"
           timeout-ms: "1800000"
-          # a push to main *is* main, so it only compares vs production (the
-          # last release) and the release before that
           base-refs: ${{ steps.base-refs.outputs.json }}
-          # on push, comment on the open release PR so its report reflects the
-          # merged code
           pr-number: ${{ steps.release-pr.outputs.number }}
           journey: ${{ env.journey }}

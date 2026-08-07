@@ -19,6 +19,7 @@ export const booleanActions = [
   "hold", // aka pause in modern games
   "cycleSprites",
   "toggleCrtFilter",
+  "toggleSmoothSprites",
   "cycleResolution",
   "toggleShowFps",
   "rotateCameraClockwise",
