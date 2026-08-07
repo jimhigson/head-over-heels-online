@@ -1,7 +1,8 @@
 import { type Renderer } from "pixi.js";
 
-import { editorStore } from "../../../store/store";
-import { selectEditorRoomRenderDimensions } from "../../slice/levelEditorSelectors";
+import { type Xy } from "../../../utils/vectors/vectors";
+import { type EditorRoomState } from "../../editorTypes";
+import { editorRoomRenderDimensions } from "../editorRoomRenderDimensions";
 import { type EditorViewport } from "./EditorViewport";
 
 /** breathing room around a fitted room, per side */
@@ -14,9 +15,11 @@ const fitMarginFraction = 0.1;
 export const fitRoomInView = (
   viewport: EditorViewport,
   renderer: Renderer,
+  roomState: EditorRoomState,
+  cameraAngle: Xy,
 ): void => {
   viewport.fitTo(
-    selectEditorRoomRenderDimensions(editorStore.getState()),
+    editorRoomRenderDimensions(roomState, cameraAngle),
     { x: renderer.screen.width, y: renderer.screen.height },
     fitMarginFraction,
   );

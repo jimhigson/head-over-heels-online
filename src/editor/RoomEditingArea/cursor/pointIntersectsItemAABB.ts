@@ -4,6 +4,7 @@ import {
   projectApparentTopLeft,
   projectApparentTopRight,
 } from "../../../game/render/sortZ/projectAabbCorners";
+import { isWallDirectionHiddenAtAngle } from "../../../model/json/WallJsonConfig";
 import {
   addXyz,
   originXyz,
@@ -13,31 +14,59 @@ import {
 import { type EditorUnionOfAllItemInPlayTypes } from "../../editorTypes";
 import { type Tool } from "../interactivity/Tool";
 
-const itemVisibleBounds = (
-  item: EditorUnionOfAllItemInPlayTypes,
-  tool: Tool,
-  allowOutsideRender: boolean,
-  renderBoxes: RenderBoxes<EditorUnionOfAllItemInPlayTypes>,
-): {
+type ItemBounds = {
   position: Xyz;
   aabb: Xyz;
-} => {
-  if (allowOutsideRender) {
-    // putting items on walls is a special case since we want to be able
-    // to point high on walls, above where they render
-    return {
-      position: item.state.position,
-      aabb: item.aabb,
-    };
+};
+
+/**
+ * the physical bounds of an item - what it occupies in the room, which for a
+ * wall is unbounded upwards so that nothing can be put outside the room over
+ * the top of it
+ */
+const itemPhysicalBounds = (
+  item: EditorUnionOfAllItemInPlayTypes,
+): ItemBounds => ({
+  position: item.state.position,
+  aabb: item.aabb,
+});
+
+/**
+ * the bounds an item draws into, or undefined when it draws nothing that can be
+ * pointed at
+ */
+const itemDrawnBounds = (
+  item: EditorUnionOfAllItemInPlayTypes,
+  cameraAngle: Xy,
+  renderBoxes: RenderBoxes<EditorUnionOfAllItemInPlayTypes>,
+): ItemBounds | undefined => {
+  const renderBox = renderBoxes.get(item);
+
+  if (renderBox === undefined) {
+    // not in the render world (or asked for before the room renderer had
+    // reconciled its boxes) - nothing is drawn, so nothing to point at
+    return undefined;
   }
 
-  const renderBox = renderBoxes.get(item);
+  if (renderBox === null) {
+    // no box was needed: the item draws true to its physical aabb. Hidden walls
+    // are the exception - they get no box because they draw nothing at all, and
+    // their physical aabb reaches up out of the room, which would otherwise
+    // swallow every pointer position above the room's floor
+    return (
+        item.type === "wall" &&
+          isWallDirectionHiddenAtAngle(item.config.direction, cameraAngle)
+      ) ?
+        undefined
+      : itemPhysicalBounds(item);
+  }
+
   return {
     position: addXyz(
       item.state.position,
-      renderBox?.renderAabbOffset ?? originXyz,
+      renderBox.renderAabbOffset ?? originXyz,
     ),
-    aabb: renderBox?.renderAabb ?? item.aabb,
+    aabb: renderBox.renderAabb,
   };
 };
 
@@ -101,6 +130,10 @@ export type PointerItemIntersection =
 export type PointerItemMaybeIntersection =
   "non-intersecting" | PointerItemIntersection;
 
+/**
+ * takes an item @param item and returns if/how the point given in
+ * @param pointerXy intersects it
+ */
 export const pointIntersectsItemAABB = (
   pointerXy: Xy,
   tool: Tool,
@@ -109,14 +142,17 @@ export const pointIntersectsItemAABB = (
   /** the drawn extents, from the editor's room renderer */
   renderBoxes: RenderBoxes<EditorUnionOfAllItemInPlayTypes>,
 ): PointerItemMaybeIntersection => {
-  const { position: renderPos, aabb: renderAabb } = itemVisibleBounds(
-    item,
-    tool,
-    false,
-    renderBoxes,
-  );
+  const drawnBounds = itemDrawnBounds(item, cameraAngle, renderBoxes);
 
-  if (pointIntersectsAABB(pointerXy, renderPos, renderAabb, cameraAngle)) {
+  if (
+    drawnBounds !== undefined &&
+    pointIntersectsAABB(
+      pointerXy,
+      drawnBounds.position,
+      drawnBounds.aabb,
+      cameraAngle,
+    )
+  ) {
     return "intersects-rendered";
   }
 
@@ -125,7 +161,7 @@ export const pointIntersectsItemAABB = (
   const allowOutsideRender = tool.type === "item" && item.type === "wall";
 
   if (allowOutsideRender) {
-    const { position, aabb } = itemVisibleBounds(item, tool, true, renderBoxes);
+    const { position, aabb } = itemPhysicalBounds(item);
     if (pointIntersectsAABB(pointerXy, position, aabb, cameraAngle)) {
       return "intersects-unrendered";
     }

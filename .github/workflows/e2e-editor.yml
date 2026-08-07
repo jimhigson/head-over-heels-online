@@ -1,0 +1,90 @@
+name: Editor E2E
+
+on:
+  pull_request:
+    branches: [main]
+
+jobs:
+  # mirror the e2e workflow's pattern: always run, but exit quickly when the
+  # paths governed by this workflow have not changed.
+  check-changes:
+    runs-on: ubuntu-24.04-arm
+    outputs:
+      should-run: ${{ steps.filter.outputs.editor-e2e-trigger-files }}
+    steps:
+      - uses: actions/checkout@v6
+      - uses: dorny/paths-filter@v4
+        id: filter
+        with:
+          list-files: "shell"
+          filters: |
+            editor-e2e-trigger-files:
+              - 'src/**'
+              - 'e2e/**'
+              - 'playwright.editor.config.ts'
+              - 'vite.editor.config.ts'
+              - 'pnpm-lock.yaml'
+              - '.github/workflows/e2e-editor.yml'
+
+  editor-e2e-tests:
+    name: Editor E2E
+    needs: check-changes
+    if: needs.check-changes.outputs.should-run == 'true'
+    runs-on: ubuntu-24.04-arm
+    steps:
+      - uses: actions/checkout@v6
+
+      - name: Install pnpm
+        uses: pnpm/action-setup@v5
+
+      - name: Use Node.js
+        uses: actions/setup-node@v6
+        with:
+          node-version-file: ".node-version"
+          cache: "pnpm"
+
+      - run: pnpm install
+
+      - name: Cache Playwright browsers
+        uses: actions/cache@v5
+        id: playwright-cache
+        with:
+          path: ~/.cache/ms-playwright
+          key: ${{ runner.os }}-${{ runner.arch }}-playwright-${{ hashFiles('**/pnpm-lock.yaml') }}
+
+      - name: Install Playwright browsers
+        run: pnpm playwright install chromium
+
+      # the editor's playwright config builds the editor (in visual-regression
+      # mode, which is what exposes the store and the editor's e2e api) and
+      # previews it as its own webServer - there is no separate build step
+      - name: Run editor Playwright tests
+        run: pnpm playwright test --config playwright.editor.config.ts
+
+      - name: Upload test results
+        uses: actions/upload-artifact@v7
+        if: failure()
+        with:
+          name: playwright-report-editor-e2e
+          path: |
+            playwright-report/
+            test-results/
+          retention-days: 7
+
+  editor-e2e-gate:
+    name: "Editor E2E Gate"
+    runs-on: ubuntu-24.04-arm
+    needs: [check-changes, editor-e2e-tests]
+    if: always()
+    steps:
+      - run: |
+          if [[ "${{ needs.check-changes.outputs.should-run }}" != "true" ]]; then
+            echo "Editor E2E skipped - not required"
+            exit 0
+          elif [[ "${{ needs.editor-e2e-tests.result }}" == "success" ]]; then
+            echo "Editor E2E tests passed"
+            exit 0
+          else
+            echo "Editor E2E tests failed"
+            exit 1
+          fi

@@ -8,7 +8,6 @@ import { useRegisterDecorateRoomRenderers } from "../../game/render/useRegisterD
 import { type EditorRoomRenderer } from "../editorTypes";
 import { makeEditorAnnotationsDecorateItemRenderer } from "../rendering/EditorAnnotationsRenderer";
 import { ItemContextMenu } from "./contextMenu/ItemContextMenu";
-import { EditorRoomStateProvider } from "./EditorRoomStateProvider";
 import { useRoomEditorInteractivity } from "./interactivity/useRoomEditorInteractivity";
 import { PixiApplicationProvider } from "./PixiApplicationProvider";
 import { RotateViewControls } from "./RotateViewControls";
@@ -83,9 +82,7 @@ const RoomEditingArea = () => {
   return (
     <PixiApplicationProvider>
       <EditorViewportProvider>
-        <EditorRoomStateProvider>
-          <RoomEditingAreaInner />
-        </EditorRoomStateProvider>
+        <RoomEditingAreaInner />
       </EditorViewportProvider>
     </PixiApplicationProvider>
   );

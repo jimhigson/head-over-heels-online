@@ -1,7 +1,9 @@
 import { ShowBoundingBoxSelect } from "../../game/debug/ShowBoundingBoxSelect";
-import { useEditorRoomState } from "../slice/levelEditorSelectorHooks";
+import { useGetEditorRoomState } from "../EditorRoomStateProvider";
 
 export const EditorShowBoundingBoxSelect = () => {
-  const roomState = useEditorRoomState();
-  return <ShowBoundingBoxSelect getCurrentRoomItems={() => roomState.items} />;
+  const getRoomState = useGetEditorRoomState();
+  return (
+    <ShowBoundingBoxSelect getCurrentRoomItems={() => getRoomState().items} />
+  );
 };

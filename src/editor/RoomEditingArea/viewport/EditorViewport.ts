@@ -1,7 +1,7 @@
 import { Container } from "pixi.js";
 
 import { type Xy } from "../../../utils/vectors/vectors";
-import { type RenderedRoomDimensions } from "../../slice/levelEditorSelectors";
+import { type RenderedRoomDimensions } from "../editorRoomRenderDimensions";
 
 // low enough that even very large rooms can still be fitted entirely in a
 // small pane:

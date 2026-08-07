@@ -5,6 +5,7 @@ import { roomItemsIterable } from "../../../model/RoomState";
 import { orthoPlaneForNormal } from "../../../utils/vectors/orthoPlane";
 import { type Xy, type Xyz } from "../../../utils/vectors/vectors";
 import {
+  type EditorRoomItemId,
   type EditorRoomRenderer,
   type EditorRoomState,
   type EditorUnionOfAllItemInPlayTypes,
@@ -114,7 +115,17 @@ const worldPositionOnFaceForScreenPosition = (
 /** get what is considered a pointable item for the given tool. Ie, what
  * can be pointed at and interacted with by the tool */
 const isPointableItemForTool =
-  (tool: Tool) => (item: EditorUnionOfAllItemInPlayTypes) => {
+  (tool: Tool, previewOnlyJsonItemIds: ReadonlySet<EditorRoomItemId>) =>
+  (item: EditorUnionOfAllItemInPlayTypes) => {
+    if (
+      item.jsonItemId !== undefined &&
+      previewOnlyJsonItemIds.has(item.jsonItemId)
+    ) {
+      // the tool's own preview is not a surface in the room - the pointer goes
+      // through it, onto whatever it is being previewed against
+      return false;
+    }
+
     const itemIsSolid = isSolid(item);
 
     if (tool.type === "item" && tool.item.type === "door") {
@@ -138,31 +149,41 @@ export const findPointerPointingAt = (
    * to point at
    */
   roomRenderer: Pick<EditorRoomRenderer, "renderBoxes"> | undefined,
+  /**
+   * items that are in the room only because they are being previewed as an
+   * addition - they are drawn, but can't be pointed at
+   */
+  previewOnlyJsonItemIds: ReadonlySet<EditorRoomItemId>,
 ): MaybePointingAtSomething => {
   if (roomRenderer === undefined) {
     return { roomId: room.id, scrXy, world: undefined };
   }
   const { renderBoxes } = roomRenderer;
 
-  const intersections = roomItemsIterable(room.items)
-    .filter(isPointableItemForTool(tool))
+  type IntersectionsArray = Array<
+    [EditorUnionOfAllItemInPlayTypes, PointerItemIntersection]
+  >;
+
+  const intersectionsArray: IntersectionsArray = roomItemsIterable(room.items)
+    .filter(isPointableItemForTool(tool, previewOnlyJsonItemIds))
     .map((item): [typeof item, PointerItemMaybeIntersection] => [
       item,
       pointIntersectsItemAABB(scrXy, tool, item, cameraAngle, renderBoxes),
     ])
     .filter(
+      // remove non-intersecting from the tuple array
       (tup): tup is [(typeof tup)[0], PointerItemIntersection] =>
         tup[1] !== "non-intersecting",
-    );
-
-  const intersectionsArray = Array.from(intersections);
+    )
+    .toArray();
 
   // find the item(s) that the mouse is over:
-  const itemPointingTo = frontItemFromPointerIntersections(
-    intersectionsArray,
-    cameraAngle,
-    renderBoxes,
-  );
+  const itemPointingTo: EditorUnionOfAllItemInPlayTypes | undefined =
+    frontItemFromPointerIntersections(
+      intersectionsArray,
+      cameraAngle,
+      renderBoxes,
+    );
 
   const roomId = room.id;
 

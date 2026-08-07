@@ -2,8 +2,8 @@ import { type Xy } from "../../utils/vectors/vectors";
 import { ToolbarButton } from "../toolbar/buttons/ToolbarButton";
 import { useProvidedPixiApplication } from "./PixiApplicationProvider";
 import { useEditorViewport } from "./viewport/EditorViewportProvider";
-import { fitRoomInView } from "./viewport/fitRoomInView";
 import { useEditorViewportZoom } from "./viewport/useEditorViewportZoom";
+import { useFitRoomInViewCallback } from "./viewport/useFitRoomInView";
 
 /** the discrete zooms the buttons step through (the wheel is continuous) */
 const zoomLadder = [0.5, 0.75, 1, 1.5, 2, 3, 4, 6, 8, 11, 16];
@@ -23,6 +23,7 @@ export const ZoomControls = () => {
   const viewport = useEditorViewport();
   const application = useProvidedPixiApplication();
   const zoom = useEditorViewportZoom();
+  const fitRoomInView = useFitRoomInViewCallback();
 
   const paneCentre = (): Xy => ({
     x: application.renderer.screen.width / 2,
@@ -65,9 +66,7 @@ export const ZoomControls = () => {
         class="bg-moss px-2"
         ariaLabel="Fit room in view"
         tooltipContent={`## fit\n\nzoom and pan the room to exactly fit the pane`}
-        onClick={() => {
-          fitRoomInView(viewport, application.renderer);
-        }}
+        onClick={fitRoomInView}
         shortcutKeys={["0"]}
       >
         <span class="text-single-line">Fit</span>

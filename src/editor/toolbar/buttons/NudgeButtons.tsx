@@ -10,13 +10,11 @@ import {
   unitXyz,
   type Xyz,
 } from "../../../utils/vectors/vectors";
+import { useGetEditorRoomState } from "../../EditorRoomStateProvider";
 import { type EditorJsonItemUnion } from "../../editorTypes";
 import { isRotatable, type RotationSense } from "../../itemRotation";
 import { itemMoveOrResizeWouldCollide } from "../../RoomEditingArea/cursor/editWouldCollide";
-import {
-  selectCurrentRoomJsonFromLevelEditorState,
-  selectEditorRoomState,
-} from "../../slice/levelEditorSelectors";
+import { selectCurrentRoomJsonFromLevelEditorState } from "../../slice/levelEditorSelectors";
 import {
   commitCurrentPreviewedEdits,
   moveOrResizeItemAsPreview,
@@ -69,6 +67,7 @@ const useRotate = (selectedItems: EditorJsonItemUnion[]) => {
 
 export const NudgeButtons = () => {
   const dispatch = useAppDispatch();
+  const getRoomState = useGetEditorRoomState();
 
   const selectedJsonItems = useEditorAppSelector((state) =>
     state.levelEditor.selectedJsonItemIds.map(
@@ -124,7 +123,7 @@ export const NudgeButtons = () => {
     (posVector: Xyz = originXyz, timesDelta?: Partial<Xyz>) =>
     () => {
       const levelEditorStoreState = editorStore.getState().levelEditor;
-      const roomState = selectEditorRoomState(editorStore.getState());
+      const roomState = getRoomState();
 
       const { gridResolution, selectedJsonItemIds: jsonItemIds } =
         levelEditorStoreState;

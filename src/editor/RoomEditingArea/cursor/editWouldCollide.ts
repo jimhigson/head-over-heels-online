@@ -158,10 +158,16 @@ export const addingItemWouldCollide = ({
   roomState,
   blockPosition,
   itemTool,
+  previewOnlyJsonItemIds,
 }: {
   roomState: EditorRoomState;
   blockPosition: Xyz;
   itemTool: ItemTool;
+  /**
+   * items in the room only because a previous position of this same tool is
+   * being previewed - the item being added can't collide with its own preview
+   */
+  previewOnlyJsonItemIds: ReadonlySet<EditorRoomItemId>;
 }) => {
   // load the modified version of the item from JSON:
   const directionalIndex = buildRoomJsonDirectionalIndex(
@@ -179,9 +185,16 @@ export const addingItemWouldCollide = ({
     // our new item may have some non-solid items, which are fine to collide (eg, stopAutowalk doors)
     .filter((i) => isSolid(i));
 
-  const collideableItemsForThisTool = Array.from(
-    collideableForItem(roomState, itemTool.type),
-  );
+  const collideableItemsForThisTool = collideableForItem(
+    roomState,
+    itemTool.type,
+  )
+    .filter(
+      (item) =>
+        item.jsonItemId === undefined ||
+        !previewOnlyJsonItemIds.has(item.jsonItemId),
+    )
+    .toArray();
 
   return newItems.some((loadedItem) => {
     const collisions = collision1toManyIter(

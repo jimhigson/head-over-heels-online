@@ -50,6 +50,9 @@ const chromiumFontRenderingLaunchOptions = {
 export default defineConfig<ScreenshotTestOptions>({
   testDir: "./e2e",
   testMatch: "**/*.spec.ts",
+  // the level editor is a separate app on a separate server - see
+  // playwright.editor.config.ts
+  testIgnore: "**/*.editor.spec.ts",
   fullyParallel: true,
   forbidOnly: !!process.env.CI,
   retries: 1,

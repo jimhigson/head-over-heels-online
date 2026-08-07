@@ -1,7 +1,10 @@
 import { describe, expect, test } from "vitest";
 
+import { blockSizePx } from "../../../game/physics/mechanicsConstants";
+import { projectWorldXyzToScreenXy } from "../../../game/render/projections";
 import { allCameraAngles } from "../../../utils/vectors/rotateXy";
-import { addXy } from "../../../utils/vectors/vectors";
+import { addXy, addXyz, type Xy } from "../../../utils/vectors/vectors";
+import { type EditorUnionOfAllItemInPlayTypes } from "../../editorTypes";
 import {
   apparentSilhouette,
   blockRoom,
@@ -10,6 +13,11 @@ import {
   renderBoxesForRoom,
   visibleSideFaces,
 } from "./__test__/blockRoom";
+import {
+  wallDrawnAtCameraAngle,
+  wallHiddenAtCameraAngle,
+  wallRoom,
+} from "./__test__/wallRoom";
 import { pointIntersectsItemAABB } from "./pointIntersectsItemAABB";
 
 const cameraAngleBase = { x: 1, y: 0 };
@@ -134,4 +142,44 @@ describe("at every camera angle", () => {
       }
     },
   );
+});
+
+describe("walls, which are physically unbounded upwards", () => {
+  /** high above the wall's base - inside its physical aabb, far outside its art */
+  const wellAboveTheWall = (
+    wall: EditorUnionOfAllItemInPlayTypes,
+    cameraAngle: Xy,
+  ) =>
+    projectWorldXyzToScreenXy(
+      addXyz(wall.state.position, { x: 0, y: 0, z: 40 * blockSizePx.z }),
+      cameraAngle,
+    );
+
+  test("a hidden wall is not pointed at, since it draws nothing", () => {
+    const { room, wall } = wallRoom();
+
+    expect(
+      pointIntersectsItemAABB(
+        wellAboveTheWall(wall, wallHiddenAtCameraAngle),
+        pointerTool,
+        wall,
+        wallHiddenAtCameraAngle,
+        renderBoxesForRoom(room, wallHiddenAtCameraAngle),
+      ),
+    ).toBe("non-intersecting");
+  });
+
+  test("a drawn wall is not pointed at above the height it draws to", () => {
+    const { room, wall } = wallRoom();
+
+    expect(
+      pointIntersectsItemAABB(
+        wellAboveTheWall(wall, wallDrawnAtCameraAngle),
+        pointerTool,
+        wall,
+        wallDrawnAtCameraAngle,
+        renderBoxesForRoom(room, wallDrawnAtCameraAngle),
+      ),
+    ).toBe("non-intersecting");
+  });
 });
