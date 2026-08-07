@@ -351,6 +351,7 @@ export type XyzBox = Xyz & {
   zd: number;
 };
 export type AxisXy = "x" | "y";
+export type AxisXyz = "z" | AxisXy;
 
 export const axesXy = ["x", "y"] as const;
 export const axesXyz = ["x", "y", "z"] as const;
@@ -387,6 +388,26 @@ export const xyzBoxEqual = (
   a.xd === b.xd &&
   a.yd === b.yd &&
   a.zd === b.zd;
+
+/**
+ * looks up an {@link XyzBox}'s size key for a given position axis - a
+ * constant-key alternative to building the key with a template string
+ * (`${axis}d`), which loses the JS engine's inline cache for the property
+ * access
+ */
+export const sizeAxes = {
+  x: "xd",
+  y: "yd",
+  z: "zd",
+} as const satisfies Record<AxisXyz, keyof XyzBox>;
+
+/** `box`'s size along `axis` */
+export const boxSizeOnAxis = (box: Readonly<XyzBox>, axis: AxisXyz): number =>
+  box[sizeAxes[axis]];
+
+/** `box`'s far (max) edge on `axis` - its near-corner position plus its size */
+export const boxMaxOnAxis = (box: Readonly<XyzBox>, axis: AxisXyz): number =>
+  box[axis] + box[sizeAxes[axis]];
 
 /**
  * dot product - the component of one vector in the direction of another

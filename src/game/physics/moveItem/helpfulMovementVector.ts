@@ -4,8 +4,11 @@ import { type UnionOfAllItemInPlayTypes } from "../../../model/ItemInPlay";
 import { roomSpatialIndexKey, type RoomState } from "../../../model/RoomState";
 import { epsilon, veryClose } from "../../../utils/epsilon";
 import {
+  boxMaxOnAxis,
+  boxSizeOnAxis,
   lengthXySquared,
   perpendicularAxisXy,
+  sizeAxes,
   subXyz,
   type Xyz,
 } from "../../../utils/vectors/vectors";
@@ -146,14 +149,15 @@ export const helpfulMovementVector = <
     subjectItem.state.box[movementAxis] +
     (originalPosDelta[movementAxis] < 0 ?
       -sensorProjectionLength
-    : subjectItem.state.box[`${movementAxis}d`]);
-  sensorBuffer.state.box[`${movementAxis}d`] = sensorProjectionLength;
+    : boxSizeOnAxis(subjectItem.state.box, movementAxis));
+  sensorBuffer.state.box[sizeAxes[movementAxis]] = sensorProjectionLength;
 
   const crossAxis = perpendicularAxisXy(movementAxis);
 
-  const sensorWidthPx = sensorWidth * subjectItem.state.box[`${crossAxis}d`];
+  const sensorWidthPx =
+    sensorWidth * boxSizeOnAxis(subjectItem.state.box, crossAxis);
 
-  sensorBuffer.state.box[`${crossAxis}d`] = sensorWidthPx;
+  sensorBuffer.state.box[sizeAxes[crossAxis]] = sensorWidthPx;
 
   // test negative direction in cross axis:
   sensorBuffer.state.box[crossAxis] = subjectItem.state.box[crossAxis];
@@ -206,9 +210,7 @@ export const helpfulMovementVector = <
 
   // switch sensorBuffer to test positive direction in cross axis:
   sensorBuffer.state.box[crossAxis] =
-    subjectItem.state.box[crossAxis] +
-    subjectItem.state.box[`${crossAxis}d`] -
-    sensorWidthPx;
+    boxMaxOnAxis(subjectItem.state.box, crossAxis) - sensorWidthPx;
 
   const slideScorePosSide: number = collisionItemWithIndex(
     sensorBuffer,
@@ -221,9 +223,7 @@ export const helpfulMovementVector = <
   }
 
   belowSensorBuffer.state.box[crossAxis] =
-    subjectItem.state.box[crossAxis] +
-    subjectItem.state.box[`${crossAxis}d`] -
-    1;
+    boxMaxOnAxis(subjectItem.state.box, crossAxis) - 1;
 
   const collidesPosSideBelow = hasCollisionItemWithIndex(
     belowSensorBuffer,

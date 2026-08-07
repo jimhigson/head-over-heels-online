@@ -11,6 +11,8 @@ import { roomSpatialIndexKey, type RoomState } from "../../../model/RoomState";
 import { emptyArray } from "../../../utils/empty";
 import {
   type AxisXy,
+  boxMaxOnAxis,
+  boxSizeOnAxis,
   boxWithSize,
   dominantAxisXy,
   perpendicularAxisXy,
@@ -105,10 +107,10 @@ const castBeamRowSegments = <RoomId extends string, RoomItemId extends string>(
     // the 8px cross-section, centred in the source's perpendicular footprint:
     const perpMin: number =
       sourceBox[perpAxis] +
-      (sourceBox[`${perpAxis}d`] - lightBeamCrossSectionPx) / 2;
+      (boxSizeOnAxis(sourceBox, perpAxis) - lightBeamCrossSectionPx) / 2;
 
     const startPlane =
-      sign > 0 ? sourceBox[axis] + sourceBox[`${axis}d`] : sourceBox[axis];
+      sign > 0 ? boxMaxOnAxis(sourceBox, axis) : sourceBox[axis];
 
     let nearestBlocker:
       undefined | UnionOfAllItemInPlayTypes<RoomId, RoomItemId>;
@@ -193,7 +195,7 @@ const castBeamRowSegments = <RoomId extends string, RoomItemId extends string>(
             if (
               !bandsOverlapStrictly(
                 itemBox[perpAxis],
-                itemBox[perpAxis] + itemBox[`${perpAxis}d`],
+                boxMaxOnAxis(itemBox, perpAxis),
                 perpMin,
               ) ||
               !bandsOverlapStrictly(itemBox.z, itemBox.z + itemBox.zd, zMin)
@@ -204,12 +206,12 @@ const castBeamRowSegments = <RoomId extends string, RoomItemId extends string>(
             const distance =
               sign > 0 ?
                 itemBox[axis] - startPlane
-              : startPlane - (itemBox[axis] + itemBox[`${axis}d`]);
+              : startPlane - boxMaxOnAxis(itemBox, axis);
 
             // items entirely behind the start plane can't block:
             if (
               sign > 0 ?
-                itemBox[axis] + itemBox[`${axis}d`] <= startPlane
+                boxMaxOnAxis(itemBox, axis) <= startPlane
               : itemBox[axis] >= startPlane
             ) {
               continue;
@@ -236,8 +238,7 @@ const castBeamRowSegments = <RoomId extends string, RoomItemId extends string>(
         isMirror(nearestBlocker) &&
         containsBand(
           nearestBlocker.state.box[perpAxis],
-          nearestBlocker.state.box[perpAxis] +
-            nearestBlocker.state.box[`${perpAxis}d`],
+          boxMaxOnAxis(nearestBlocker.state.box, perpAxis),
           perpMin,
         ) &&
         containsBand(

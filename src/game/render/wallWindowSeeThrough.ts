@@ -1,6 +1,6 @@
 import { type UnionOfAllItemInPlayTypes } from "../../model/ItemInPlay";
 import { type SceneryName, type Wall } from "../../sprites/planets";
-import { type AxisXy } from "../../utils/vectors/vectors";
+import { type AxisXy, boxMaxOnAxis } from "../../utils/vectors/vectors";
 import { isFloor } from "../physics/itemPredicates";
 import { type ItemZGraph } from "./ItemRenderContexts";
 
@@ -10,8 +10,8 @@ const overlapsOnAxis = (
   b: UnionOfAllItemInPlayTypes,
   axis: AxisXy,
 ): boolean =>
-  a.state.box[axis] < b.state.box[axis] + b.state.box[`${axis}d`] &&
-  a.state.box[axis] + a.state.box[`${axis}d`] > b.state.box[axis];
+  a.state.box[axis] < boxMaxOnAxis(b.state.box, axis) &&
+  boxMaxOnAxis(a.state.box, axis) > b.state.box[axis];
 
 /**
  * The test for if a moonbase wall should show a transparent window instead

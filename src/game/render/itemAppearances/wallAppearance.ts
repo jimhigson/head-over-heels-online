@@ -25,6 +25,7 @@ import {
   isNegativeSideXy,
   mirrorDirectionIndexXy4,
   originXy,
+  sizeAxes,
   type Xy,
 } from "../../../utils/vectors/vectors";
 import {
@@ -260,7 +261,7 @@ export const wallAppearance = itemAppearanceRenderMemoised<"wall">(
         projectWorldXyzToScreenXy(
           {
             [dominantAxisXy(direction)]:
-              item.state.box[`${dominantAxisXy(direction)}d`],
+              item.state.box[sizeAxes[dominantAxisXy(direction)]],
           },
           cameraQuarterAngle,
         )
