@@ -20,6 +20,15 @@ export const addUnloadListener: ListenForUnload =
       });
     }
   : async (callback) => {
+      // pagehide as well as beforeunload: browsers only fire beforeunload for a
+      // page the user has interacted with, so a navigation the page itself
+      // starts (or one from automation) can unload without it ever running.
+      // pagehide has no such condition, and also covers the page being frozen
+      // into the back/forward cache rather than torn down
       window.addEventListener("beforeunload", callback);
-      return () => window.removeEventListener("beforeunload", callback);
+      window.addEventListener("pagehide", callback);
+      return () => {
+        window.removeEventListener("beforeunload", callback);
+        window.removeEventListener("pagehide", callback);
+      };
     };
