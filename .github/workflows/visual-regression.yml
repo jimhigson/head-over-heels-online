@@ -68,6 +68,17 @@ jobs:
         # wrong from the logs
         run: pnpm build:game --mode visual-regression
 
+      # the cache above only saves this job from rebuilding; the build reaches the
+      # test jobs as an artifact, which cannot be evicted out from under them
+      - name: Upload game build
+        uses: actions/upload-artifact@v7
+        with:
+          name: game-build-visual-regression
+          path: dist/
+          # only needed by this run's own test jobs
+          retention-days: 1
+          if-no-files-found: error
+
   visual-tests:
     needs: [check-changes, build-game]
     if: needs.check-changes.outputs.should-run == 'true'

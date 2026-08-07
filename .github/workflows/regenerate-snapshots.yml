@@ -35,8 +35,8 @@ concurrency:
   cancel-in-progress: true
 
 jobs:
-  # build the game once and cache it, exactly as the visual-regression workflow does,
-  # so both regenerate runners restore the same asset rather than each building it
+  # build the game once, exactly as the visual-regression workflow does, so both
+  # regenerate runners take the same asset rather than each building it
   build-game:
     runs-on: ubuntu-24.04-arm
     steps:
@@ -67,6 +67,17 @@ jobs:
       - name: Build game
         if: steps.game-build-cache.outputs.cache-hit != 'true'
         run: pnpm build:game --mode visual-regression
+
+      # the cache above only saves this job from rebuilding; the build reaches the
+      # regenerate runners as an artifact, which cannot be evicted out from under them
+      - name: Upload game build
+        uses: actions/upload-artifact@v7
+        with:
+          name: game-build-visual-regression
+          path: dist/
+          # only needed by this run's own regenerate jobs
+          retention-days: 1
+          if-no-files-found: error
 
   regenerate:
     needs: build-game
@@ -161,7 +172,7 @@ jobs:
       - name: Download updated snapshots
         id: download
         continue-on-error: true
-        uses: actions/download-artifact@v7
+        uses: actions/download-artifact@v8
         with:
           pattern: updated-snapshots-*
           merge-multiple: true

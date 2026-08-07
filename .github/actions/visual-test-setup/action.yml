@@ -1,8 +1,9 @@
 name: Visual test setup
 description: >-
   Shared setup for Playwright visual-snapshot jobs: install dependencies,
-  restore the cached game build, and install the Playwright browsers implied by
-  the given project flags. Assumes the repository is already checked out.
+  download the game build produced by this run's build-game job, and install the
+  Playwright browsers implied by the given project flags. Assumes the repository
+  is already checked out.
 
 inputs:
   project-option:
@@ -28,12 +29,16 @@ runs:
       shell: bash
       run: pnpm install
 
-    - name: Restore game build cache
-      uses: actions/cache/restore@v5
+    # an artifact, not a cache: the tests cannot run at all without the build, and
+    # a cache is allowed to miss - entries are evicted whenever the repo is over
+    # its size limit, which silently leaves dist/ absent and fails every job here
+    # with "The directory dist does not exist". Artifacts are held for the run
+    # regardless of what else the repo is storing
+    - name: Download game build
+      uses: actions/download-artifact@v8
       with:
+        name: game-build-visual-regression
         path: dist/
-        key: game-build-visual-regression-${{ github.sha }}
-        enableCrossOsArchive: true
 
     - name: Cache Playwright browsers
       uses: actions/cache@v5
