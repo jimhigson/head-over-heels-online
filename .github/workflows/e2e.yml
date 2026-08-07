@@ -59,6 +59,17 @@ jobs:
         if: steps.game-build-cache.outputs.cache-hit != 'true'
         run: pnpm build:game --mode visual-regression
 
+      # the cache above only saves this job from rebuilding; the build reaches the
+      # test jobs as an artifact, which cannot be evicted out from under them
+      - name: Upload game build
+        uses: actions/upload-artifact@v7
+        with:
+          name: game-build-e2e
+          path: dist/
+          # only needed by this run's own test jobs
+          retention-days: 1
+          if-no-files-found: error
+
   e2e-tests:
     needs: [check-changes, build-game]
     if: needs.check-changes.outputs.should-run == 'true'
@@ -89,12 +100,15 @@ jobs:
 
       - run: pnpm install
 
-      - name: Restore game build cache
-        uses: actions/cache/restore@v5
+      # an artifact, not a cache: the tests cannot run at all without the build, and
+      # a cache is allowed to miss - entries are evicted whenever the repo is over
+      # its size limit, which silently leaves dist/ absent and fails every job here
+      # with "The directory dist does not exist"
+      - name: Download game build
+        uses: actions/download-artifact@v8
         with:
+          name: game-build-e2e
           path: dist/
-          key: game-build-visual-regression-${{ github.sha }}
-          enableCrossOsArchive: true
 
       - name: Cache Playwright browsers
         uses: actions/cache@v5
