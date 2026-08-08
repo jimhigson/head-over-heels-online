@@ -6,6 +6,7 @@ import { nearestQuarterAngle } from "../../../utils/vectors/cameraAngleVectors";
 import { octantIndexOfDirection } from "../../../utils/vectors/octantIndexOfDirection" with { type: "macro" };
 import { axisProjectsReversed } from "../../../utils/vectors/resolveCameraRelativeVector";
 import {
+  boxSizeOnAxis,
   dominantAxisXy,
   perpendicularAxisXy,
   rotateAxisXyByCameraAngle,
@@ -73,7 +74,7 @@ export const lightBeamAppearance: ItemAppearance<
   // the camera rotation has turned that into - which is what the sprite flip and
   // the tile projection below follow:
   const renderedAxis = rotateAxisXyByCameraAngle(axis, cameraQuarterAngle);
-  const lengthPx = box[`${axis}d`];
+  const lengthPx = boxSizeOnAxis(box, axis);
 
   // each tile's art extends from its anchor in the rendered axis's base screen
   // direction; when an axis of the beam projects reversed on screen the art

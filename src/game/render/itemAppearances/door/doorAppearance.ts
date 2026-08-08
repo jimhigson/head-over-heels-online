@@ -18,6 +18,7 @@ import {
   addXy,
   alongAxisOfDirectionXy,
   axisIndexXy8,
+  boxSizeOnAxis,
   isNegativeSideXy,
   originXy,
   perpendicularAxisXy,
@@ -154,7 +155,7 @@ const xyToTranslateToInsideOfRoom = (
 
   const roomEndCross =
     isNegativeSideXy(direction) ?
-      box[`${crossAxis}d`] - doorPostRenderedDepth
+      boxSizeOnAxis(box, crossAxis) - doorPostRenderedDepth
     : 0;
   const reversalShift = crossReversed ? doorPostRenderedDepth : 0;
 

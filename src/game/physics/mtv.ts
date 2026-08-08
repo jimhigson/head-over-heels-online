@@ -3,6 +3,7 @@ import {
   lengthXyz,
   originXyz,
   scaleXyzWriteInto,
+  sizeAxes,
   unitVector,
   type Xy,
   type Xyz,
@@ -63,14 +64,17 @@ const mtvAlongVectorWriteInto = (
 
   // For each axis, calculate the range of t where boxes overlap
   for (const axis of axesXyz) {
+    // this is a hot path: the size key is resolved once per axis and the
+    // boxes read directly, rather than through boxMaxOnAxis
+    const sizeAxis = sizeAxes[axis];
     const dirComponent = direction[axis];
 
     if (Math.abs(dirComponent) < 0.000_1) {
       // No movement along this axis - check if already overlapping
       const moverMin = moverBox[axis];
-      const moverMax = moverBox[axis] + moverBox[`${axis}d`];
+      const moverMax = moverBox[axis] + moverBox[sizeAxis];
       const obstacleMin = obstacleBox[axis];
-      const obstacleMax = obstacleBox[axis] + obstacleBox[`${axis}d`];
+      const obstacleMax = obstacleBox[axis] + obstacleBox[sizeAxis];
 
       if (moverMax <= obstacleMin || moverMin >= obstacleMax) {
         // No overlap on this axis means no collision at all
@@ -84,9 +88,9 @@ const mtvAlongVectorWriteInto = (
     // Calculate t values where the boxes align on this axis
     // We want the range where they overlap
     const obstacleMin = obstacleBox[axis];
-    const obstacleMax = obstacleBox[axis] + obstacleBox[`${axis}d`];
+    const obstacleMax = obstacleBox[axis] + obstacleBox[sizeAxis];
     const moverMin = moverBox[axis];
-    const moverMax = moverBox[axis] + moverBox[`${axis}d`];
+    const moverMax = moverBox[axis] + moverBox[sizeAxis];
 
     // t values where edges align
     const t1 = (obstacleMin - moverMax) / dirComponent;

@@ -13,6 +13,7 @@ import {
   isNegativeSideXy,
   originXyz,
   perpendicularAxisXy,
+  sizeAxes,
   subXyz,
   type Xy,
   type Xyz,
@@ -84,7 +85,7 @@ export const renderFloorOverdraws = (
         const anchorWorld = addXyz(
           subXyz(doorOrWallBox, floorPosition),
           outIsNegative ?
-            { [crossAxis]: doorOrWallBox[`${crossAxis}d`] }
+            { [crossAxis]: doorOrWallBox[sizeAxes[crossAxis]] }
           : originXyz,
           alongReversed ? { [alongAxis]: blockSizePx[alongAxis] } : originXyz,
         );

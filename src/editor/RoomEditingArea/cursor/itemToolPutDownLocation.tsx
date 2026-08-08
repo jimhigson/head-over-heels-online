@@ -8,6 +8,7 @@ import { epsilon } from "../../../utils/epsilon";
 import {
   addXyz,
   alongAxisOfDirectionXy,
+  boxMaxOnAxis,
   dominantAxisXy,
   type Xy,
   type Xyz,
@@ -61,10 +62,7 @@ export const itemToolPutDownLocation = (
     }
 
     const alongMin = wallBox[alongWallAxis];
-    const alongMax =
-      wallBox[alongWallAxis] +
-      wallBox[`${alongWallAxis}d`] -
-      doorOverallWidthPx;
+    const alongMax = boxMaxOnAxis(wallBox, alongWallAxis) - doorOverallWidthPx;
 
     const zMin = wallBox.z;
     const zMax =

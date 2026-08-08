@@ -27,6 +27,8 @@ import {
   alongAxisOfDirectionXy,
   axesXy,
   type AxisXy,
+  boxMaxOnAxis,
+  boxSizeOnAxis,
   type DirectionIndexXy4,
   directionIndexXy8,
   directionsXy8Octants,
@@ -35,6 +37,7 @@ import {
   nonZeroClosestDirectionIndexXy4,
   originXyz,
   perpendicularAxisXy,
+  sizeAxes,
   subXy,
   type Xy,
   type Xyz,
@@ -135,15 +138,15 @@ const floorLeftRightCutOffMask = <
       // axis along the item:
       const alongItemAxis = perpendicularAxisXy(intoRoomAxis);
       // will this item have to be on the positive or negative side of the axis?
-      // 1 for far, 0 for near
       const farSide = !isNegativeSideXy(itemDirection);
 
+      // the floor's far edge meets the item's near edge, and vice versa:
       const floorOrdOnIntoRoomAxis =
         floorNaturalPosition[intoRoomAxis] +
-        (farSide ? 1 : 0) * floorNaturalAabb[intoRoomAxis];
+        (farSide ? floorNaturalAabb[intoRoomAxis] : 0);
 
       const itemOrdOnIntoRoomAxis =
-        box[intoRoomAxis] + (farSide ? 0 : 1) * box[`${intoRoomAxis}d`];
+        box[intoRoomAxis] + (farSide ? 0 : boxSizeOnAxis(box, intoRoomAxis));
 
       if (floorOrdOnIntoRoomAxis !== itemOrdOnIntoRoomAxis) {
         return false;
@@ -152,7 +155,7 @@ const floorLeftRightCutOffMask = <
       // they are aligned with an edge - now check if they overlap:
       const overlaps = rangesOverlap(
         box[alongItemAxis],
-        box[alongItemAxis] + box[`${alongItemAxis}d`],
+        boxMaxOnAxis(box, alongItemAxis),
         floorNaturalPosition[alongItemAxis],
         floorNaturalPosition[alongItemAxis] + floorNaturalAabb[alongItemAxis],
       );
@@ -183,7 +186,7 @@ const floorLeftRightCutOffMask = <
           visAabb = { ...physicalSize, [faceAxis]: 0 };
           visPosition =
             outIsNegative ?
-              addXyz(box, { [faceAxis]: box[`${faceAxis}d`] })
+              addXyz(box, { [faceAxis]: box[sizeAxes[faceAxis]] })
             : box;
         } else {
           const renderBox = renderBoxes?.get(boundingItem);

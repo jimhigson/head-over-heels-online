@@ -13,6 +13,7 @@ import {
   isNegativeSideXy,
   originXyz,
   perpendicularAxisXy,
+  sizeAxes,
   type Xy,
   type Xyz,
   type XyzBox,
@@ -144,7 +145,7 @@ const wallRenderBox = (
 
   const renderAabb: Xyz = {
     ...originXyz,
-    [alongAxis]: item.state.box[`${alongAxis}d`],
+    [alongAxis]: item.state.box[sizeAxes[alongAxis]],
     z: wallRenderHeight,
   };
   // the wall draws on its room-side face: towards/right walls' boxes extend
