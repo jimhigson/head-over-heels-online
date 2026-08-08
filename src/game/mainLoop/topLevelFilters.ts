@@ -9,15 +9,15 @@ import {
   ScanlinesFilter,
   ScreenGeometryFilter,
   SharpenFilter,
-  SwitchOnFilter,
+  type SwitchOnFilter,
   VignetteFilter,
 } from "@blockstacking/jims-shaders";
 import { type Filter } from "pixi.js";
 
 import { type Upscale } from "../../store/slices/upscale/Upscale";
-import { defaultUserSettings } from "../../store/slices/userSettings/defaultUserSettings";
 import { type DisplaySettings } from "../../store/slices/userSettings/userSettingsSlice";
 import { noFilters } from "../render/filters/standardFilters";
+import { resolveCrtFilterEnabled } from "./resolveCrtFilterEnabled";
 
 // darken initially, then re-lighten at the end. This helps some detail
 // to be added into very light areas by compressing the dynamic range initially,
@@ -27,13 +27,18 @@ const inPipelineBrightness = 0.8;
 const brightnessIncrease = 1.2;
 
 export const topLevelFilters = (
-  { crtFilter: crtFilterDisplaySetting }: DisplaySettings,
+  displaySettings: DisplaySettings,
   upscale: Upscale,
+  /**
+   * the switch-on filter is owned by MainLoop, which decides whether the picture
+   * should play the coming-up-to-temperature effect again (a fresh instance),
+   * carry on an already-playing one (the same instance), or have none at all
+   * (undefined) - never constructed fresh in here, so that rebuilding the filter
+   * chain for unrelated reasons (eg a room change) can't restart the effect
+   */
+  switchOnFilter: SwitchOnFilter | undefined,
 ): Filter[] => {
-  const crtFilterEnabled =
-    crtFilterDisplaySetting ?? defaultUserSettings.displaySettings.crtFilter;
-
-  if (!crtFilterEnabled) {
+  if (!resolveCrtFilterEnabled(displaySettings)) {
     // this settings as false or undefined means no CRT filter
     return noFilters;
   }
@@ -92,9 +97,10 @@ export const topLevelFilters = (
 
     new RaiseBlackPointFilter({ blackPoint: 0.03 }),
 
-    // the tube coming up to temperature. Once it has, MainLoop takes this back out
-    // of the chain, so it costs nothing for the rest of the game
-    new SwitchOnFilter(),
+    // the tube coming up to temperature, only present while MainLoop is playing
+    // that effect - once it has finished, MainLoop takes it back out of the
+    // chain, so it costs nothing for the rest of the game
+    ...(switchOnFilter ? [switchOnFilter] : []),
 
     // cut to the shape of the screen before it is curved, so that the edge is already
     // faded and does not come out of the curve as a hard line

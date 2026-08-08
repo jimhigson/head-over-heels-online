@@ -56,6 +56,7 @@ import {
 import { registerDetailedFpsGlobal } from "./frameTiming/registerDetailedFpsGlobal";
 import { progressGameState } from "./progressGameState";
 import { progressWithSubTicks } from "./progressWithSubTicks";
+import { resolveCrtFilterEnabled } from "./resolveCrtFilterEnabled";
 import { rotateCameraIfInput } from "./rotateCameraIfInput";
 import { tickCameraTransition } from "./tickCameraTransition";
 import { tickGameSpeed } from "./tickGameSpeed";
@@ -129,7 +130,7 @@ export class MainLoop<RoomId extends string> {
         throw new Error("main loop with no starting room");
       }
 
-      this.#initTopLevelFilters();
+      this.#initTopLevelFilters(true);
     } catch (e) {
       this.#handleError(e);
       return;
@@ -148,7 +149,15 @@ export class MainLoop<RoomId extends string> {
    */
   #switchOnFilter: SwitchOnFilter | undefined;
 
-  #initTopLevelFilters() {
+  #initTopLevelFilters(
+    /**
+     * whether the tube should play its coming-up-to-temperature effect again -
+     * true only for the reasons that actually warrant it (starting the game,
+     * switching the CRT filter on, coming out of pause), not for every reason
+     * the filter chain gets rebuilt (eg an ordinary room change)
+     */
+    restartSwitchOn: boolean,
+  ) {
     const {
       userSettings: {
         userSettings: { displaySettings },
@@ -156,11 +165,23 @@ export class MainLoop<RoomId extends string> {
       upscale: { upscale },
     } = store.getState();
 
-    this.#topLevelFilters = topLevelFilters(displaySettings, upscale);
-    this.#app.stage.filters = this.#topLevelFilters;
-    this.#switchOnFilter = this.#topLevelFilters.find(
-      (filter): filter is SwitchOnFilter => filter instanceof SwitchOnFilter,
+    if (!resolveCrtFilterEnabled(displaySettings)) {
+      this.#switchOnFilter?.destroy();
+      this.#switchOnFilter = undefined;
+    } else if (restartSwitchOn) {
+      this.#switchOnFilter?.destroy();
+      this.#switchOnFilter = new SwitchOnFilter();
+    } else if (this.#switchOnFilter?.finished) {
+      this.#switchOnFilter.destroy();
+      this.#switchOnFilter = undefined;
+    }
+
+    this.#topLevelFilters = topLevelFilters(
+      displaySettings,
+      upscale,
+      this.#switchOnFilter,
     );
+    this.#app.stage.filters = this.#topLevelFilters;
   }
 
   #dropSwitchOnFilterWhenFinished() {
@@ -467,6 +488,19 @@ export class MainLoop<RoomId extends string> {
       this.#webGlContextRestored,
     );
 
+    // read before #syncGeneralRenderContext below overwrites them in place:
+    // wasPaused/wasCrtFilterEnabled are the values the room renderer was last
+    // built with, needed to tell "coming out of pause"/"switching the CRT on"
+    // apart from the many other reasons the filter chain gets rebuilt
+    const wasPaused = this.#generalRenderContext?.paused;
+    const wasCrtFilterEnabled =
+      this.#generalRenderContext !== undefined &&
+      resolveCrtFilterEnabled(this.#generalRenderContext.displaySettings);
+    const shouldRestartSwitchOn =
+      this.#roomRenderer === undefined || // starting the game
+      (wasPaused === true && !isPaused) || // coming out of pause
+      (!wasCrtFilterEnabled && resolveCrtFilterEnabled(tickDisplaySettings)); // switching the CRT filter on
+
     // a rebuild is fine mid-transition: the fresh renderer builds against the
     // discrete (nearest-quarter) angle like any renderer, and the playing
     // transition carries on over it - eg a turn continues through a door into
@@ -550,7 +584,7 @@ export class MainLoop<RoomId extends string> {
       }
 
       this.#tickRootContainer(tickUpscale);
-      this.#initTopLevelFilters();
+      this.#initTopLevelFilters(shouldRestartSwitchOn);
 
       // setting static boundsArea helps if a filter is put over the whole output container, since the bounds of the
       // container won't change. Eg, a lift going vertically up into a screen y-coord where previously nothing was
