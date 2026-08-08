@@ -19,7 +19,7 @@ const roomRight = projectWorldXyzToScreenXy(
 ).x;
 
 export const findMapBounds = <RoomId extends string>(
-  roomGridPositionSpecs: Array<RoomNode<RoomId>>,
+  roomGridPositionSpecs: ReadonlyArray<RoomNode<RoomId>>,
 ): Bounds => {
   return roomGridPositionSpecs.reduce<Bounds>(
     (ac, { gridPosition }) => {

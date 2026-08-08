@@ -1,7 +1,10 @@
 import { type RequiredDeep, type SimplifyDeep } from "type-fest";
 
 import { keyAssignmentPresets } from "../../../game/input/keyAssignmentPresets";
-import { detectDeviceType } from "../../../utils/detectEnv/detectDeviceType";
+import {
+  detectDeviceType,
+  type DeviceType,
+} from "../../../utils/detectEnv/detectDeviceType";
 import { type UserSettings } from "./userSettingsSlice";
 
 // like UserSettings but with less optionality:
@@ -10,6 +13,11 @@ type DefaultUserSettings = SimplifyDeep<
     RequiredDeep<Pick<UserSettings, "displaySettings" | "soundSettings">>
 >;
 
+export const defaultEmulatedResolution = (deviceType: DeviceType) => {
+  return deviceType === "mobile" ? "handheld" : "zxSpectrum";
+};
+
+const deviceType = detectDeviceType();
 export const defaultUserSettings: DefaultUserSettings = {
   inputAssignment: keyAssignmentPresets.Default.inputAssignment,
   pokesEnabled: {
@@ -25,15 +33,13 @@ export const defaultUserSettings: DefaultUserSettings = {
     // crt filters are distinctive look for the game,
     // but also maybe slow it down on older devices
     crtFilter: false,
-    emulatedResolution:
-      detectDeviceType() === "mobile" ? "handheld" : "zxSpectrum",
+    emulatedResolution: defaultEmulatedResolution(deviceType),
     sprites: { name: "BlockStack", uncolourised: false },
   },
 
   gameSpeed: 1.2,
   showFps: false,
-  onScreenControls:
-    detectDeviceType() === "mobile" || detectDeviceType() === "tablet",
+  onScreenControls: deviceType === "mobile" || deviceType === "tablet",
   inputDirectionMode: "8-way",
   directionsRelativeTo: "mixed",
 

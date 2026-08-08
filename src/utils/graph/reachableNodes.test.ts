@@ -1,13 +1,14 @@
 import { expect, test } from "vitest";
 
-import { type Graph } from "./Graph";
+import { Graph } from "./Graph";
 import { reachableNodes } from "./reachableNodes";
 
-const graph: Graph<string, number> = new Map([
-  ["a", new Map([["b", 1]])],
-  ["b", new Map([["c", 1]])],
-  ["x", new Map([["y", 1]])],
-]);
+const graph = new Graph<string>();
+graph.beginRebuild(["a", "b", "c", "x", "y"]);
+graph.addEdge("a", "b");
+graph.addEdge("b", "c");
+graph.addEdge("x", "y");
+graph.finalise();
 
 test("follows edges directionally from the seed", () => {
   expect(reachableNodes(graph, ["a"])).toEqual(new Set(["a", "b", "c"]));

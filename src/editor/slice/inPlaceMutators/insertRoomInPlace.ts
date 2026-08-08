@@ -147,13 +147,11 @@ export const insertRoomInPlace = (
     }
   }
 
-  const gridPositions = [
-    ...roomGridPositions({
-      campaign: state.campaignInProgress,
-      roomId: currentRoom.id,
-      subRoomId: selectCursorSubRoomId(state),
-    }).keys(),
-  ];
+  const gridPositions = roomGridPositions({
+    campaign: state.campaignInProgress,
+    roomId: currentRoom.id,
+    subRoomId: selectCursorSubRoomId(state),
+  }).nodes;
   const targetSpec = gridPositions.find(({ gridPosition }) =>
     xyzEqual(gridPosition, unitVectors[direction]),
   );

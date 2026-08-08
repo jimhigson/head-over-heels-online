@@ -7,7 +7,7 @@ import {
   type Xy,
 } from "../../../utils/vectors/vectors";
 import { type RenderBox } from "../renderBox/makeItemRenderBoxAtCameraAngle";
-import { populatedVisualIndex } from "./__test__/populatedVisualIndex";
+import { populatedBroadPhase } from "./__test__/populatedBroadPhase";
 import { worldBoxToCameraSpace } from "./__test__/worldBoxToCameraSpace";
 import { type DrawOrderComparable } from "./DrawOrderComparable";
 import { zComparator } from "./zComparator";
@@ -96,14 +96,14 @@ const orderAtCameraAngle = (
   const inverse = inverseAngle(atAngle);
   const a = rotateComparable(received, inverse);
   const b = rotateComparable(reference, inverse);
-  const renderBoxes = new Map<DrawOrderComparable, null | RenderBox>([
-    [a, a.renderBox ?? null],
-    [b, b.renderBox ?? null],
+  const renderBoxes = new Map<DrawOrderComparable, RenderBox | undefined>([
+    [a, a.renderBox],
+    [b, b.renderBox],
   ]);
   return zComparator(
     a,
     b,
-    populatedVisualIndex(new Set([a, b]), renderBoxes, atAngle),
+    populatedBroadPhase(new Set([a, b]), renderBoxes, atAngle),
     renderBoxes,
   );
 };

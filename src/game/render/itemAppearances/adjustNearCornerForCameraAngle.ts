@@ -6,7 +6,7 @@ import { type Xy, type Xyz } from "../../../utils/vectors/vectors";
 import { projectWorldXyzToScreenXyOnContainer } from "../projections";
 
 /**
- * the world-space vector from an item's origin to the (camera-closest) corner its
+ * the world-space vector from an item's origin to the (camera-closest-bottom) corner its
  * footprint sprite anchors at: one base cell (`aabb/times` per axis) from the origin,
  * on whichever axes the camera has reversed (`cos+sin<0` for x, `cos-sin<0` for y).
  * Zero at the base angle, where the near corner is the origin.

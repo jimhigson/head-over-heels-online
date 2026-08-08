@@ -572,7 +572,7 @@ const computeGridPositionLookup = (
     campaign: state.campaignInProgress,
     roomId,
     subRoomId,
-  }).keys();
+  }).nodes;
 
   const selectedSet = new Set(state.selectedRoomIds);
 

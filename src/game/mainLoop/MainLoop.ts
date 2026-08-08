@@ -321,9 +321,8 @@ export class MainLoop<RoomId extends string> {
 
     // the rotation advances on the game-speed-scaled clock, so slow-motion
     // (or a zero game speed) slows/freezes a rotation mid-turn for
-    // inspection; tests never rely on the transition playing out - they
-    // either jump straight to a camera angle or clamp the progress via
-    // _e2e_cameraTransitionHold:
+    // inspection; tests never rely on the transition playing out - they set
+    // the angle they want and run at zero speed, so it stays there:
     if (!isPaused) {
       rotateCameraIfInput(this.#gameState);
       tickCameraTransition(this.#gameState, deltaMS);

@@ -37,6 +37,6 @@ alphaThresholdFilter.matrix = [
   0, 0, 0, rampSlope, -rampSlope * inkAlphaThreshold,
 ];
 
-// applied while baking text off-screen via bakeContainerToTexture, so it must
+// applied while baking text off-screen via renderContainerToTexture, so it must
 // not be clipped to the screen viewport (which would crop the text):
 alphaThresholdFilter.clipToViewport = false;

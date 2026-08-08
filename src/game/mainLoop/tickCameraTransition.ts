@@ -29,7 +29,7 @@ export type CameraRotationDirection = "anticlockwise" | "clockwise";
  */
 export type CameraTransitionCarrier = Pick<
   GameState,
-  "_e2e_cameraTransitionHold" | "cameraTransition" | "targetCameraAngle"
+  "cameraTransition" | "targetCameraAngle"
 >;
 
 const rotationForDirection = {
@@ -127,9 +127,7 @@ export const currentQuarterCameraAngle = (
 /**
  * advance the active camera transition by one frame. Progress is linear time
  * (0→1 over the transition's `durationMs`); easing is applied at render time.
- * When {@link GameState._e2e_cameraTransitionHold} is set the progress is clamped
- * there and never completes (deterministic test screenshots). On completion
- * the transition is cleared.
+ * On completion the transition is cleared.
  *
  * Returns true while a transition is (still) active after this step - callers
  * use this to re-project every item's position.
@@ -141,17 +139,6 @@ export const tickCameraTransition = (
   const { cameraTransition } = gameState;
   if (cameraTransition === undefined) {
     return false;
-  }
-
-  // build-time gated like the api's _e2e_holdCameraTransition that sets the
-  // hold: statically false in production builds, so the whole clamp branch
-  // dead-code-eliminates out (dev is kept so unit tests can exercise it):
-  if (import.meta.env.DEV || import.meta.env.MODE === "visual-regression") {
-    const { _e2e_cameraTransitionHold } = gameState;
-    if (_e2e_cameraTransitionHold !== undefined) {
-      cameraTransition.progress = _e2e_cameraTransitionHold;
-      return true;
-    }
   }
 
   cameraTransition.progress += deltaMS / cameraTransition.durationMs;

@@ -807,13 +807,11 @@ describe("adding a door from a single-chunk room back to a multi-chunk room", ()
     const result = buildState();
     const { roomId, subRoomId } = selectCursorRoom(result);
 
-    const positions = [
-      ...roomGridPositions({
-        campaign: result.campaignInProgress,
-        roomId,
-        subRoomId,
-      }).keys(),
-    ];
+    const positions = roomGridPositions({
+      campaign: result.campaignInProgress,
+      roomId,
+      subRoomId,
+    }).nodes;
 
     expect(positions.length).toBeGreaterThan(0);
   });

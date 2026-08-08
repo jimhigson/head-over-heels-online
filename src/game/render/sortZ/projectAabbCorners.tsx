@@ -1,5 +1,4 @@
 import { cameraAngleBase } from "../../../utils/vectors/cameraAngleVectors";
-import { rotatedX, rotatedY } from "../../../utils/vectors/rotateXy";
 import { addXyz, type Xy, type Xyz } from "../../../utils/vectors/vectors";
 import { projectWorldXyzToScreenXy } from "../projections";
 
@@ -24,50 +23,6 @@ export type ProjectionOnAxes = {
  *                  \/
  *                  bc  ---bottom
  */
-
-// Individual corner projection functions
-export const projectBottomCentre = (
-  position: Xyz,
-  cameraAngle: Xy = cameraAngleBase,
-) => projectWorldXyzToScreenXy(position, cameraAngle);
-
-export const projectTopLeft = (
-  position: Xyz,
-  aabb: Xyz,
-  cameraAngle: Xy = cameraAngleBase,
-) =>
-  projectWorldXyzToScreenXy(
-    addXyz(position, { x: aabb.x, z: aabb.z }),
-    cameraAngle,
-  );
-
-export const projectTopRight = (
-  position: Xyz,
-  aabb: Xyz,
-  cameraAngle: Xy = cameraAngleBase,
-) =>
-  projectWorldXyzToScreenXy(
-    addXyz(position, { y: aabb.y, z: aabb.z }),
-    cameraAngle,
-  );
-
-export const projectC010 = (
-  position: Xyz,
-  aabb: Xyz,
-  cameraAngle: Xy = cameraAngleBase,
-) => projectWorldXyzToScreenXy(addXyz(position, { y: aabb.y }), cameraAngle);
-
-export const projectC100 = (
-  position: Xyz,
-  aabb: Xyz,
-  cameraAngle: Xy = cameraAngleBase,
-) => projectWorldXyzToScreenXy(addXyz(position, { x: aabb.x }), cameraAngle);
-
-export const projectC111 = (
-  position: Xyz,
-  aabb: Xyz,
-  cameraAngle: Xy = cameraAngleBase,
-) => projectWorldXyzToScreenXy(addXyz(position, aabb), cameraAngle);
 
 export const projectCorner = (
   position: Xyz,
@@ -186,12 +141,22 @@ export const apparentHiddenCornerVector = (cameraAngle: Xy): Xyz => {
  * The box's extent along the three on-screen axes, computed for the given camera
  * angle directly from the world box - no pre-rotated box.
  *
- * z is the rotation axis, so it is unchanged; the world x and y are rotated by the
- * camera angle (`rotatedX`/`rotatedY`). For our 90° camera turns those are a signed
- * axis pick, so the two opposite xy corners span the extreme. The 2:1 iso
- * projection (screen-x = rotY − rotX, screen-y = −(rotX + rotY)/2 − z) is then
- * applied here at the point of use. Computed as scalars rather than allocating an
- * `Xy` per corner, since this runs per item per frame.
+ * The projected silhouette of a world-axis-aligned box is a hexagon whose edges
+ * come from three direction families: the screen projections of world-x, world-y
+ * and world-z. With `c = cameraAngle.x`, `s = cameraAngle.y`, the three family
+ * functionals over world `(x, y, z)` are:
+ *
+ *   - z-family (the screen-x silhouette; constant along world-z):
+ *     `f_z = (s − c)·x + (c + s)·y`
+ *   - x-family (constant along world-x): `f_x = −y − (c − s)·z`
+ *   - y-family (constant along world-y): `f_y = −x − (c + s)·z`
+ *
+ * Each is linear over the box, so its extent is exact by interval arithmetic
+ * (every coefficient contributes its own extreme corner independently) - valid
+ * at ANY camera angle, not just the quarter turns. Two silhouettes at the same
+ * angle overlap iff their intervals overlap on all three family axes (exact
+ * SAT). Computed as scalars rather than allocating per corner, since this runs
+ * per item per frame.
  */
 export const projectAabbAxes = (
   writeInto: object,
@@ -199,6 +164,7 @@ export const projectAabbAxes = (
   aabb: Xyz,
   cameraAngle: Xy,
 ): ProjectionOnAxes => {
+  const { x: c, y: s } = cameraAngle;
   const x0 = position.x;
   const x1 = position.x + aabb.x;
   const y0 = position.y;
@@ -206,30 +172,27 @@ export const projectAabbAxes = (
   const z0 = position.z;
   const z1 = position.z + aabb.z;
 
-  const rotXLo = rotatedX(x0, y0, cameraAngle);
-  const rotXHi = rotatedX(x1, y1, cameraAngle);
-  const rotXMin = Math.min(rotXLo, rotXHi);
-  const rotXMax = Math.max(rotXLo, rotXHi);
-
-  const rotYLo = rotatedY(x0, y0, cameraAngle);
-  const rotYHi = rotatedY(x1, y1, cameraAngle);
-  const rotYMin = Math.min(rotYLo, rotYHi);
-  const rotYMax = Math.max(rotYLo, rotYHi);
+  /** f_z x coefficient; also f_x's z coefficient (`−(c − s)`) */
+  const kSC = s - c;
+  /** f_z y coefficient */
+  const kCS = c + s;
+  /** f_y z coefficient */
+  const kNegCS = -kCS;
 
   const writeIntoTyped = writeInto as ProjectionOnAxes;
 
-  /** the left/right silhouette on screen-x (= rotY − rotX) */
-  writeIntoTyped.zAxisProjectionMin = rotYMin - rotXMax;
-  writeIntoTyped.zAxisProjectionMax = rotYMax - rotXMin;
+  writeIntoTyped.zAxisProjectionMin =
+    (kSC > 0 ? kSC * x0 : kSC * x1) + (kCS > 0 ? kCS * y0 : kCS * y1);
+  writeIntoTyped.zAxisProjectionMax =
+    (kSC > 0 ? kSC * x1 : kSC * x0) + (kCS > 0 ? kCS * y1 : kCS * y0);
 
-  /** the C of the projected world-x sloped line (y = x/2 − c): c = −rotY − z;
-   * a greater c is projected higher (further depth and/or height) */
-  writeIntoTyped.xAxisProjectionMin = -rotYMax - z1;
-  writeIntoTyped.xAxisProjectionMax = -rotYMin - z0;
+  writeIntoTyped.xAxisProjectionMin = -y1 + (kSC > 0 ? kSC * z0 : kSC * z1);
+  writeIntoTyped.xAxisProjectionMax = -y0 + (kSC > 0 ? kSC * z1 : kSC * z0);
 
-  /** the C of the projected world-y sloped line (y = x/2 − c): c = −rotX − z */
-  writeIntoTyped.yAxisProjectionMin = -rotXMax - z1;
-  writeIntoTyped.yAxisProjectionMax = -rotXMin - z0;
+  writeIntoTyped.yAxisProjectionMin =
+    -x1 + (kNegCS > 0 ? kNegCS * z0 : kNegCS * z1);
+  writeIntoTyped.yAxisProjectionMax =
+    -x0 + (kNegCS > 0 ? kNegCS * z1 : kNegCS * z0);
 
   return writeIntoTyped;
 };

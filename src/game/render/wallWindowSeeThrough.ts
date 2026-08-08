@@ -14,35 +14,25 @@ const overlapsOnAxis = (
   a.state.position[axis] + a.aabb[axis] > b.state.position[axis];
 
 /**
- * Whether a wall occludes standable floor of its own room that lies behind it at
- * the current camera angle - ie there is more room to see through the wall to.
+ * The test for if a moonbase wall should show a transparent window instead
+ * of drawn scenery behind it:
  *
- * Read straight from the resolved z-graph (ground truth for what is drawn in front
- * of what): the wall is in front of a same-room standable floor item that it does
- * not run along the edge of. A wall stands just outside the floor it bounds, so it
- * overlaps that floor along its own length axis (`alongAxis`); the floor of another
- * part of the room, occluded diagonally, does not. Excluding the floor the wall
- * bounds is what tells a genuinely occluding wall (concave floor plan) apart from
- * an ordinary far wall, whose only behind-floor is the one it bounds.
+ * If the wall occludes a non-"none" floor behind it at
+ * the current camera angle - ie there is more room to see through the wall's window.
  */
 export const wallOccludesRoomFloorBehind = (
   wall: UnionOfAllItemInPlayTypes,
   alongAxis: AxisXy,
-  zEdges: ItemZGraph,
-): boolean => {
-  for (const [behind, fronts] of zEdges) {
-    if (
-      isFloor(behind) &&
-      behind.config.floorType === "standable" &&
-      fronts.has(wall) &&
+  zGraph: ItemZGraph,
+): boolean =>
+  zGraph.scanForEdgeToMatching(
+    wall,
+    (maybeBehindWall) =>
+      isFloor(maybeBehindWall) &&
+      maybeBehindWall.config.floorType !== "none" &&
       // not a floor this wall runs along the edge of (the floor it bounds):
-      !overlapsOnAxis(wall, behind, alongAxis)
-    ) {
-      return true;
-    }
-  }
-  return false;
-};
+      !overlapsOnAxis(wall, maybeBehindWall, alongAxis),
+  );
 
 /**
  * the see-through (clear) variant of a moonscape window tile, used when the wall

@@ -8,6 +8,7 @@
     "src/registerAppSW.ts",
     "src/editor/main.tsx",
     "src/game/gameMain.ts",
+    "src/game/gameState/mutators/__e2e_holdCameraAtDegrees.ts",
     "src/game/components/App.tsx",
     "src/store/store.ts",
     "src/editor/JsonRoomEditor/monaco-loader.ts",

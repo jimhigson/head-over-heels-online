@@ -1,5 +1,7 @@
 import { Application, TextureStyle, type WebGLRenderer } from "pixi.js";
 
+// installs window.__e2e_holdCameraAtDegrees (visual-regression builds only):
+import "./gameState/mutators/__e2e_holdCameraAtDegrees";
 import { type CampaignLocator } from "../model/modelTypes";
 import { loadSoundCategory } from "../sound/soundsLoader";
 import { Spritesheets } from "../sprites/spritesheet/Spritesheets";
@@ -23,7 +25,6 @@ import { type InputStateTrackerInterface } from "./input/InputStateTracker";
 import { installE2eFastForwardHandle } from "./mainLoop/installE2eFastForwardHandle";
 import { installE2eSwopCharacterHandle } from "./mainLoop/installE2eSwopCharacterHandle";
 import { MainLoop } from "./mainLoop/MainLoop";
-import { startCameraRotation } from "./mainLoop/tickCameraTransition";
 import { loadHudFont } from "./render/text/TextContainer";
 
 TextureStyle.defaultOptions.scaleMode = "nearest";
@@ -178,21 +179,6 @@ export const gameMain = async <RoomId extends string>(
     get gameState() {
       return gameState;
     },
-    _e2e_holdCameraTransition:
-      import.meta.env.MODE === "visual-regression" ?
-        (direction, progress) => {
-          // only start a rotation if none is held yet - repeat calls (eg a sweep
-          // sampling many progresses) just move the hold along the same turn,
-          // rather than retargeting a further quarter each call:
-          if (gameState.cameraTransition === undefined) {
-            startCameraRotation(gameState, direction);
-          }
-          if (gameState.cameraTransition !== undefined) {
-            gameState.cameraTransition.progress = progress;
-          }
-          gameState._e2e_cameraTransitionHold = progress;
-        }
-      : undefined,
     reincarnateFrom(savedGame: SavedGame<RoomId>) {
       loadGameState({
         campaign,

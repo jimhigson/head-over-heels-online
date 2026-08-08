@@ -5,18 +5,33 @@ import {
   rotateXyzByInverseCameraAngle,
 } from "../../utils/vectors/cameraAngleVectors";
 import { orthoPlaneForNormal } from "../../utils/vectors/orthoPlane";
-import { rotateXy, rotateXyz } from "../../utils/vectors/rotateXy";
+import {
+  rotatedX,
+  rotatedY,
+  rotateXy,
+  rotateXyz,
+} from "../../utils/vectors/rotateXy";
 import { addXyz, subXy, type Xy, type Xyz } from "../../utils/vectors/vectors";
 import { blockSizePx } from "../physics/mechanicsConstants";
 
-/* position on 2d screen for a given xyz in game-space 3d pixels */
+/**
+ * scalar sibling of {@link projectWorldXyzToScreenXy}'s x component, for hot
+ * paths to avoid allocating an `Xy`
+ */
 export const projectWorldXyzToScreenX = (
   { x: xw = 0, y: yw = 0 }: Partial<Xyz>,
   cameraAngle: Xy = cameraAngleBase,
-): number => {
-  const { x, y } = rotateXy({ x: xw, y: yw }, cameraAngle);
-  return y - x;
-};
+): number => rotatedY(xw, yw, cameraAngle) - rotatedX(xw, yw, cameraAngle);
+
+/**
+ * scalar sibling of {@link projectWorldXyzToScreenXy}'s y component, for hot
+ * paths to avoid allocating an `Xy`
+ */
+export const projectWorldXyzToScreenY = (
+  { x: xw = 0, y: yw = 0, z: zw = 0 }: Partial<Xyz>,
+  cameraAngle: Xy = cameraAngleBase,
+): number =>
+  -(rotatedX(xw, yw, cameraAngle) + rotatedY(xw, yw, cameraAngle)) / 2 - zw;
 
 /**
  * the screen-x range a footprint (position + aabb) spans when projected -

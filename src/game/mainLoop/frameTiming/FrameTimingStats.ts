@@ -17,7 +17,7 @@ export type PhaseStats = {
  */
 export const sceneGraphSubPhases = [
   "reconcileRenderBoxes",
-  "updateVisualIndex",
+  "updateBroadPhase",
   "updateZEdges",
   "toposort",
   "tickItems",
@@ -84,7 +84,7 @@ export class FrameTimingStats {
     };
   } = {
     reconcileRenderBoxes: { totalMs: 0, count: 0, maxMs: 0 },
-    updateVisualIndex: { totalMs: 0, count: 0, maxMs: 0 },
+    updateBroadPhase: { totalMs: 0, count: 0, maxMs: 0 },
     updateZEdges: { totalMs: 0, count: 0, maxMs: 0 },
     toposort: { totalMs: 0, count: 0, maxMs: 0 },
     tickItems: { totalMs: 0, count: 0, maxMs: 0 },
@@ -121,7 +121,7 @@ export class FrameTimingStats {
       updateSceneGraph: { avgMs: 0, maxMs: 0, percentage: 0 },
       updateSceneGraphSubPhases: {
         reconcileRenderBoxes: { avgMs: 0, maxMs: 0, percentage: 0 },
-        updateVisualIndex: { avgMs: 0, maxMs: 0, percentage: 0 },
+        updateBroadPhase: { avgMs: 0, maxMs: 0, percentage: 0 },
         updateZEdges: { avgMs: 0, maxMs: 0, percentage: 0 },
         toposort: { avgMs: 0, maxMs: 0, percentage: 0 },
         tickItems: { avgMs: 0, maxMs: 0, percentage: 0 },

@@ -1,7 +1,7 @@
 import { type AllUnionFields } from "type-fest";
 
 import { keysIter, objectEntriesIter } from "../../utils/entries";
-import { addEdge, type Graph } from "../../utils/graph/Graph";
+import { Graph } from "../../utils/graph/Graph";
 import { unitVectors } from "../../utils/vectors/unitVectors";
 import {
   addXyz,
@@ -450,18 +450,18 @@ export const roomGridPositions = <RoomId extends string>(
     }
   }
 
-  const graph: RoomGraph<RoomId> = new Map();
-  for (const node of state.nodeByKey.values()) {
-    if (!graph.has(node)) {
-      graph.set(node, new Map());
-    }
-  }
+  // every recorded relationship becomes its own edge: two cells can be joined
+  // in more than one way (say by a door and a teleporter), and each such link
+  // is separately drawable and separately checkable
+  const graph: RoomGraph<RoomId> = new Graph(true);
+  graph.beginRebuild(state.nodeByKey.values());
   for (const { from, to, edge } of state.rawEdges) {
     const fromNode = state.nodeByKey.get(from);
     const toNode = state.nodeByKey.get(to);
     if (fromNode !== undefined && toNode !== undefined) {
-      addEdge(graph, fromNode, toNode, edge);
+      graph.addAnnotatedEdge(fromNode, toNode, edge);
     }
   }
+  graph.finalise();
   return graph;
 };

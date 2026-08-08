@@ -49,13 +49,11 @@ const getDestinationRoom = ({
   autoAddRooms: boolean;
 }): EditorRoomJson | undefined => {
   const campaign = state.campaignInProgress;
-  const gridPositions = [
-    ...roomGridPositions({
-      campaign,
-      roomId: fromRoomJson.id,
-      subRoomId,
-    }).keys(),
-  ];
+  const gridPositions = roomGridPositions({
+    campaign,
+    roomId: fromRoomJson.id,
+    subRoomId,
+  }).nodes;
 
   const existingRoomGridPositionSpec = gridPositions.find(({ gridPosition }) =>
     xyzEqual(gridPosition, unitVectors[direction]),

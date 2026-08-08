@@ -34,7 +34,7 @@ export const mapGeometryVerifier: CampaignVerifier<MapGeometryIssue> = {
   *check(_campaign, graph) {
     // overlaps: cells sharing a grid position within their subgraph
     const byPosition = new Map<string, RoomNode<string>[]>();
-    for (const node of graph.keys()) {
+    for (const node of graph.nodes) {
       const key = `${node.subgraph}|${positionKey(node.gridPosition)}`;
       const cells = byPosition.get(key) ?? [];
       cells.push(node);
@@ -57,53 +57,56 @@ export const mapGeometryVerifier: CampaignVerifier<MapGeometryIssue> = {
     }
 
     // consistency: spatial edges must agree with the positions
-    for (const [from, edges] of graph) {
-      for (const [to, edge] of edges) {
-        if (edge.kind === "teleporter") {
-          continue;
-        }
-        const itemId = edge.viaItemId;
-        if (from.subgraph !== to.subgraph) {
-          yield {
-            severity: "error",
-            roomId: from.roomId,
-            ...(itemId !== undefined ? { itemId } : {}),
-            msg: `The ${edge.kind} link from ${cellLabel(from)} to ${cellLabel(to)} can't be placed adjacently - the two rooms end up in different parts of the map`,
-            fixable: false,
-            fixText: `Connect ${cellLabel(from)} and ${cellLabel(to)} into one consistent map layout`,
-            issueData: {
-              roomId: from.roomId,
-              ...(itemId !== undefined ? { itemId } : {}),
-            },
-            verifier: mapGeometryVerifier,
-          };
-          continue;
-        }
-        if (edge.vector === undefined) {
-          continue;
-        }
-        const expected = addXyz(from.gridPosition, edge.vector);
-        if (
-          expected.x === to.gridPosition.x &&
-          expected.y === to.gridPosition.y &&
-          expected.z === to.gridPosition.z
-        ) {
-          continue;
-        }
+    for (const {
+      from,
+      to,
+      annotation: edge,
+    } of graph.iterateAnnotatedEdges()) {
+      if (edge.kind === "teleporter") {
+        // teleporters impose no adjacency
+        continue;
+      }
+      const itemId = edge.viaItemId;
+      if (from.subgraph !== to.subgraph) {
         yield {
           severity: "error",
           roomId: from.roomId,
           ...(itemId !== undefined ? { itemId } : {}),
-          msg: `The ${edge.kind} link from ${cellLabel(from)} to ${cellLabel(to)} doesn't match where they sit on the map grid`,
+          msg: `The ${edge.kind} link from ${cellLabel(from)} to ${cellLabel(to)} can't be placed adjacently - the two rooms end up in different parts of the map`,
           fixable: false,
-          fixText: `Make ${cellLabel(from)} and ${cellLabel(to)} consistent on the map (their ${edge.kind} link disagrees with their grid positions)`,
+          fixText: `Connect ${cellLabel(from)} and ${cellLabel(to)} into one consistent map layout`,
           issueData: {
             roomId: from.roomId,
             ...(itemId !== undefined ? { itemId } : {}),
           },
           verifier: mapGeometryVerifier,
         };
+        continue;
       }
+      if (edge.vector === undefined) {
+        continue;
+      }
+      const expected = addXyz(from.gridPosition, edge.vector);
+      if (
+        expected.x === to.gridPosition.x &&
+        expected.y === to.gridPosition.y &&
+        expected.z === to.gridPosition.z
+      ) {
+        continue;
+      }
+      yield {
+        severity: "error",
+        roomId: from.roomId,
+        ...(itemId !== undefined ? { itemId } : {}),
+        msg: `The ${edge.kind} link from ${cellLabel(from)} to ${cellLabel(to)} doesn't match where they sit on the map grid`,
+        fixable: false,
+        fixText: `Make ${cellLabel(from)} and ${cellLabel(to)} consistent on the map (their ${edge.kind} link disagrees with their grid positions)`,
+        issueData: {
+          roomId: from.roomId,
+          ...(itemId !== undefined ? { itemId } : {}),
+        },
+        verifier: mapGeometryVerifier,
+      };
     }
   },
   fix() {

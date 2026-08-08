@@ -1,11 +1,14 @@
 import { Container } from "pixi.js";
 
-import { type ItemInPlayType } from "../../../../model/ItemInPlay";
+import {
+  type ItemInPlayType,
+  type UnionOfAllItemInPlayTypes,
+} from "../../../../model/ItemInPlay";
 import {
   isAtQuarterAngle,
   nearestQuarterAngle,
 } from "../../../../utils/vectors/cameraAngleVectors";
-import { type Xy } from "../../../../utils/vectors/vectors";
+import { originXy, type Xy } from "../../../../utils/vectors/vectors";
 import { hermiteEase } from "../../../mainLoop/transitionCameraAngle";
 import {
   adjustNearCornerForCameraAngle,
@@ -15,18 +18,55 @@ import {
   type ItemRenderContext,
   type ItemTickContext,
 } from "../../ItemRenderContexts";
-import { projectWorldXyzToScreenXy } from "../../projections";
+import {
+  projectWorldXyzToScreenX,
+  projectWorldXyzToScreenY,
+} from "../../projections";
 import { isCuboidWarpItem } from "./isCuboidWarpItem";
 import { type ItemChainPixiRenderer } from "./ItemPixiRenderer";
 import { itemTypesExemptFromNearCornerOffset } from "./itemTypesExemptFromNearCornerOffset";
 
 /**
- * Most items anchor their footprint sprite at the camera-nearest corner of their base cell,
- * which moves around the footprint as the camera rotates. The offset is applied to a
- * dedicated container wrapping all of the item's graphics (appearance and shadows alike),
- * so the shadows cast on the item move with the surface they fall on. Item renderers
- * survive camera-angle changes, so the offset is re-applied reactively when the renderer's
- * discrete angle changes mid-life (see {@link NearCornerOffsetRenderer}).
+ * the projected (screen px) near-corner offset at a point part-way through a
+ * camera rotation: eased between the from-angle's offset and the to-angle's.
+ * Every renderer that anchors to - or registers against - a non-warp item's
+ * drawn art mid-turn must use this SAME shared offset (the art's own anchor,
+ * and any cyclic-render carve baked from that art), or they drift apart by up
+ * to a base cell through the turn
+ */
+const transitionNearCornerOffsetXy = (
+  item: UnionOfAllItemInPlayTypes,
+  /**
+   * the continuous angle the turn started from (not necessarily a quarter -
+   * a mid-turn retarget re-anchors it)
+   */
+  fromAngle: Xy,
+  /** the quarter angle the turn eases towards */
+  toAngle: Xy,
+  /** eased progress 0..1 (hermiteEase of the transition's linear progress) */
+  eased: number,
+): Xy => {
+  if (itemTypesExemptFromNearCornerOffset.has(item.type)) {
+    return originXy;
+  }
+  const fromWorld = nearCornerOffsetWorldXyz(item, fromAngle);
+  const toWorld = nearCornerOffsetWorldXyz(item, toAngle);
+  const fromX = projectWorldXyzToScreenX(fromWorld, fromAngle);
+  const fromY = projectWorldXyzToScreenY(fromWorld, fromAngle);
+  const toX = projectWorldXyzToScreenX(toWorld, toAngle);
+  const toY = projectWorldXyzToScreenY(toWorld, toAngle);
+  return {
+    x: fromX + (toX - fromX) * eased,
+    y: fromY + (toY - fromY) * eased,
+  };
+};
+
+/**
+ * Most items anchor their footprint sprite at the camera-nearest corner of
+ * their base cell, which moves around the footprint as the camera rotates. At
+ * the default angle no adjustment is needed, but at any other angle we need to
+ * compensate so that the closest-bottom corner of the item again aligns with
+ * its closest-bottom position in space
  */
 const nearCornerOffsetGraphics = <T extends ItemInPlayType>(
   renderContext: ItemRenderContext<T>,
@@ -103,10 +143,7 @@ export class NearCornerOffsetRenderer<
    * from-angle's to the to-angle's, so both agree mid-turn and each lands on its
    * correct discrete value at its endpoint.
    */
-  #updateTransitionNearCornerOffset() {
-    if (this.#offsetContainer === undefined) {
-      return;
-    }
+  #updateTransitionNearCornerOffset(offsetContainer: Container) {
     const {
       item,
       general: { gameState },
@@ -115,52 +152,42 @@ export class NearCornerOffsetRenderer<
       return;
     }
     const { fromAngle, progress, startSlope } = gameState.cameraTransition;
-    const toAngle = gameState.targetCameraAngle;
-    const eased = hermiteEase(progress, startSlope);
-
-    const from = projectWorldXyzToScreenXy(
-      nearCornerOffsetWorldXyz(item, fromAngle),
+    const offset = transitionNearCornerOffsetXy(
+      item,
       fromAngle,
+      gameState.targetCameraAngle,
+      hermiteEase(progress, startSlope),
     );
-    const to = projectWorldXyzToScreenXy(
-      nearCornerOffsetWorldXyz(item, toAngle),
-      toAngle,
-    );
-    this.#offsetContainer.position.set(
-      from.x + (to.x - from.x) * eased,
-      from.y + (to.y - from.y) * eased,
-    );
+    offsetContainer.position.set(offset.x, offset.y);
   }
 
-  #updateOffset() {
+  #updateOffset(midRotation: boolean) {
     const {
       item,
       general: { cameraAngle },
     } = this.renderContext;
-    const cameraQuarterAngle = nearestQuarterAngle(cameraAngle);
-    const midRotation = !isAtQuarterAngle(cameraAngle);
 
     // boxy items mid-rotation are positioned by the cuboid warp (which drives
     // the discrete layer-angle offset directly), so leave the offset alone:
     if (midRotation && isCuboidWarpItem(item)) {
       return;
     }
-    if (this.#offsetContainer === undefined) {
+    const offsetContainer = this.#offsetContainer;
+    if (offsetContainer === undefined) {
       return;
     }
     if (midRotation) {
-      this.#updateTransitionNearCornerOffset();
-    } else if (
+      this.#updateTransitionNearCornerOffset(offsetContainer);
+      return;
+    }
+    const cameraQuarterAngle = nearestQuarterAngle(cameraAngle);
+    if (
       this.#appliedNearCornerAngle.x !== cameraQuarterAngle.x ||
       this.#appliedNearCornerAngle.y !== cameraQuarterAngle.y
     ) {
       // the discrete angle changed without a rotation driving the offset (an
       // instant angle change): re-anchor at the new near corner:
-      adjustNearCornerForCameraAngle(
-        item,
-        cameraQuarterAngle,
-        this.#offsetContainer,
-      );
+      adjustNearCornerForCameraAngle(item, cameraQuarterAngle, offsetContainer);
       this.#appliedNearCornerAngle = cameraQuarterAngle;
     }
   }
@@ -176,7 +203,7 @@ export class NearCornerOffsetRenderer<
       midRotation ||
       this.#tickedMidRotation
     ) {
-      this.#updateOffset();
+      this.#updateOffset(midRotation);
     }
     this.#tickedMidRotation = midRotation;
   }
