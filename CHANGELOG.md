@@ -1,5 +1,50 @@
 # Changelog
 
+## [27.0.0](https://github.com/jimhigson/head-over-heels-online/compare/v26.0.0...v27.0.0) (2026-08-08)
+
+
+### Features
+
+* animated transitions when switching camera angles ([#1009](https://github.com/jimhigson/head-over-heels-online/issues/1009)) ([95b8b53](https://github.com/jimhigson/head-over-heels-online/commit/95b8b53258403c7c9f4ea44c3582149680929d83))
+* camera rotation speed follows the game speed setting ([#1035](https://github.com/jimhigson/head-over-heels-online/issues/1035)) ([47158f1](https://github.com/jimhigson/head-over-heels-online/commit/47158f194039efff67e8936be41ce5c90682dc2e))
+* pixelated software mouse pointer ([#1047](https://github.com/jimhigson/head-over-heels-online/issues/1047)) ([231c37d](https://github.com/jimhigson/head-over-heels-online/commit/231c37dd498bbb2b06bf4507155aa613fc525b3c))
+
+
+### Bug Fixes
+
+* calculate z-order per-frame by continuous camera angle, fixes incorrect z-index during camera angle transitions ([#1049](https://github.com/jimhigson/head-over-heels-online/issues/1049)) ([61a65ff](https://github.com/jimhigson/head-over-heels-online/commit/61a65ffa9e3bcfe2f708f12a77f2688d3486653f))
+* cheats room shortcuts crash campaigns without those rooms ([#1066](https://github.com/jimhigson/head-over-heels-online/issues/1066)) ([27fb3c3](https://github.com/jimhigson/head-over-heels-online/commit/27fb3c346185130793d5cd4ded9a0b0631cc4788))
+* fix editor not picking what is pointed at correctly now that room renderer owns the render boxes ([#1061](https://github.com/jimhigson/head-over-heels-online/issues/1061)) ([a2e2e9e](https://github.com/jimhigson/head-over-heels-online/commit/a2e2e9eea50f5dc48417ad99e3941a4215e10db4))
+* floors render aligned with pixel grid ([#1022](https://github.com/jimhigson/head-over-heels-online/issues/1022)) ([4c4e4fc](https://github.com/jimhigson/head-over-heels-online/commit/4c4e4fcdfc001ec57a1c36808145caf98ed9260c))
+* misformed markdown in headings ([#1046](https://github.com/jimhigson/head-over-heels-online/issues/1046)) ([87dde34](https://github.com/jimhigson/head-over-heels-online/commit/87dde348fce30dd0856f1962797c898914afea6e))
+* mobile room vertical centring at rotated angles ([#1043](https://github.com/jimhigson/head-over-heels-online/issues/1043)) ([7621455](https://github.com/jimhigson/head-over-heels-online/commit/762145521c0f5424141c8090e20a5e81ec05298e))
+* pin chromium subpixel font positioning for deterministic CI text ([#1041](https://github.com/jimhigson/head-over-heels-online/issues/1041)) ([240188c](https://github.com/jimhigson/head-over-heels-online/commit/240188cabdb69d63680b94796a1216b85006793c))
+* quick keypresses ignored while a menu is open ([#1064](https://github.com/jimhigson/head-over-heels-online/issues/1064)) ([3daa7d1](https://github.com/jimhigson/head-over-heels-online/commit/3daa7d170d3b5ed1dafbc918f05e930278b99678))
+* save the game on pagehide as well as beforeunload ([#1065](https://github.com/jimhigson/head-over-heels-online/issues/1065)) ([50bcac0](https://github.com/jimhigson/head-over-heels-online/commit/50bcac0b7262839dc9215049a366e4d7eff60179))
+* send only scalar properties in umami events ([#992](https://github.com/jimhigson/head-over-heels-online/issues/992)) ([7230354](https://github.com/jimhigson/head-over-heels-online/commit/7230354d17e371e1dac739f05b19ebb226921958))
+* trace font glyphs as outlines with real counters, not rectangle lists ([#1024](https://github.com/jimhigson/head-over-heels-online/issues/1024)) ([c50e159](https://github.com/jimhigson/head-over-heels-online/commit/c50e15999e6148cf19575610bfe43f9a965e32d4))
+
+
+### Sprite Changes
+
+* world-fixed lighting via camera-angle flips ([#1018](https://github.com/jimhigson/head-over-heels-online/issues/1018)) ([e48b89c](https://github.com/jimhigson/head-over-heels-online/commit/e48b89cff60c5c58b63db3a19208c8f4a41a453d))
+
+
+### Miscellaneous
+
+* add guided-review skill ([#1048](https://github.com/jimhigson/head-over-heels-online/issues/1048)) ([7695542](https://github.com/jimhigson/head-over-heels-online/commit/769554271dc114714b0f37c1167922e93b94080f))
+* add skill for shepherding PRs ([#1013](https://github.com/jimhigson/head-over-heels-online/issues/1013)) ([1defe66](https://github.com/jimhigson/head-over-heels-online/commit/1defe66158bd27672827c7ec1d7a250cec64207e))
+* add to cheats menu ability to log z graph ([#1010](https://github.com/jimhigson/head-over-heels-online/issues/1010)) ([c4c8b00](https://github.com/jimhigson/head-over-heels-online/commit/c4c8b001ecf23d91c29c8f82775dde0c2db6a61d))
+* bump pnpm to 11.20.0 ([#1068](https://github.com/jimhigson/head-over-heels-online/issues/1068)) ([3904dd7](https://github.com/jimhigson/head-over-heels-online/commit/3904dd7ca8f4acf58cd3fe79c1cad651328b0f8c))
+* fix pre-commit hook SIGPIPE race in worktrees ([#1038](https://github.com/jimhigson/head-over-heels-online/issues/1038)) ([f97c46d](https://github.com/jimhigson/head-over-heels-online/commit/f97c46d2914c380d3c3dd8ea8863a0a806041527))
+* fix pre-commit pathspecs so nested files are linted ([#1054](https://github.com/jimhigson/head-over-heels-online/issues/1054)) ([e0b85cd](https://github.com/jimhigson/head-over-heels-online/commit/e0b85cd75b9d30b7981ba7f83931b6ebee0bb8d6))
+* guided-review skill serves an inline-diff reading order ([#1060](https://github.com/jimhigson/head-over-heels-online/issues/1060)) ([96e5cd5](https://github.com/jimhigson/head-over-heels-online/commit/96e5cd5aa7c603e2a39317665af8ec07d2c7ab5e))
+* pnpm dev opens tmux servers in a new window ([#991](https://github.com/jimhigson/head-over-heels-online/issues/991)) ([37784e8](https://github.com/jimhigson/head-over-heels-online/commit/37784e847965e0c556bde03c12e1a8a7f7f20410))
+* show branch and pr number on netlify deploy previews ([#1034](https://github.com/jimhigson/head-over-heels-online/issues/1034)) ([8c6710b](https://github.com/jimhigson/head-over-heels-online/commit/8c6710bd813b7e1e49a9285f86d66fe841cb920b))
+* snapshot diff report version chooser and typed viewer ([#1056](https://github.com/jimhigson/head-over-heels-online/issues/1056)) ([ba135b9](https://github.com/jimhigson/head-over-heels-online/commit/ba135b9fe2a89fe7ad007371cb1416dd0dba2308))
+* speed up pre-commit hook and upgrade linters ([#1029](https://github.com/jimhigson/head-over-heels-online/issues/1029)) ([c45584d](https://github.com/jimhigson/head-over-heels-online/commit/c45584d9d31de448efd71b4a5882ea66b0190d2c))
+* update several e2e snapshots ([#1014](https://github.com/jimhigson/head-over-heels-online/issues/1014)) ([9633477](https://github.com/jimhigson/head-over-heels-online/commit/963347775e6f5822127c8e0afb984b66d5de73ca))
+
 ## [26.0.0](https://github.com/jimhigson/head-over-heels-online/compare/v25.0.0...v26.0.0) (2026-07-07)
 
 
