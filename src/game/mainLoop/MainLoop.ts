@@ -170,7 +170,11 @@ export class MainLoop<RoomId extends string> {
       this.#switchOnFilter = undefined;
     } else if (restartSwitchOn) {
       this.#switchOnFilter?.destroy();
-      this.#switchOnFilter = new SwitchOnFilter();
+      this.#switchOnFilter = new SwitchOnFilter({
+        warmUpDelay: 200,
+        duration: 500,
+        overscan: 0.15,
+      });
     } else if (this.#switchOnFilter?.finished) {
       this.#switchOnFilter.destroy();
       this.#switchOnFilter = undefined;
