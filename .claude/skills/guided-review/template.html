@@ -1,0 +1,1782 @@
+<meta charset="utf-8" />
+<title>guided review</title>
+<style>
+  @font-face {
+    font-family: "BlockStack";
+    src: url("data:font/woff2;base64,FONT_B64") format("woff2");
+    font-weight: 400;
+    font-style: normal;
+    font-display: block;
+  }
+
+  /* tokens taken from the game's own palette:
+     src/_generated/palette/spritesheetPalette.json */
+  :root {
+    --paper: #f6f2f0;
+    --card: #ffffff;
+    --ink: #17201d;
+    --ink-soft: #4c5a55;
+    --ink-faint: #7c6e6c;
+    --rule: #ddd4cf;
+    --accent: #1366d0;
+    --accent-soft: #e2edfb;
+
+    --new: #1f6b52;
+    --new-bg: #e0f1ea;
+    --mod: #6e6400;
+    --mod-bg: #f3eec9;
+    --del: #864e39;
+    --del-bg: #f6e3db;
+
+    --add-edge: #2ea17c;
+    --add-bg: rgb(46 161 124 / 0.1);
+    --rm-edge: #e55f44;
+    --rm-bg: rgb(134 78 57 / 0.1);
+    --hunk: #6e6400;
+    --hunk-bg: rgb(173 158 0 / 0.1);
+
+    --shadow: 0 1px 2px rgb(23 32 29 / 0.05), 0 10px 26px rgb(23 32 29 / 0.05);
+
+    --display: "BlockStack", ui-monospace, monospace;
+    --body: system-ui, -apple-system, "Segoe UI", Roboto, sans-serif;
+    --mono: ui-monospace, SFMono-Regular, "SF Mono", Menlo, Consolas, monospace;
+
+    color-scheme: light;
+  }
+
+  @media (prefers-color-scheme: dark) {
+    :root {
+      --paper: #000000;
+      --card: #31413b;
+      --ink: #ffffff;
+      --ink-soft: #c0afa9;
+      --ink-faint: #9a8d8a;
+      --rule: #47584f;
+      --accent: #6cb5ff;
+      --accent-soft: #16303f;
+
+      --new: #3fdb8b;
+      --new-bg: #133227;
+      --mod: #f3eba9;
+      --mod-bg: #3a3418;
+      --del: #e55f44;
+      --del-bg: #3a2119;
+
+      --add-edge: #3fdb8b;
+      --add-bg: rgb(63 219 139 / 0.13);
+      --rm-edge: #e55f44;
+      --rm-bg: rgb(229 95 68 / 0.14);
+      --hunk: #f3eba9;
+      --hunk-bg: rgb(173 158 0 / 0.16);
+
+      --shadow: none;
+      color-scheme: dark;
+    }
+  }
+
+  :root[data-theme="dark"] {
+    --paper: #000000;
+    --card: #31413b;
+    --ink: #ffffff;
+    --ink-soft: #c0afa9;
+    --ink-faint: #9a8d8a;
+    --rule: #47584f;
+    --accent: #6cb5ff;
+    --accent-soft: #16303f;
+
+    --new: #3fdb8b;
+    --new-bg: #133227;
+    --mod: #f3eba9;
+    --mod-bg: #3a3418;
+    --del: #e55f44;
+    --del-bg: #3a2119;
+
+    --add-edge: #3fdb8b;
+    --add-bg: rgb(63 219 139 / 0.13);
+    --rm-edge: #e55f44;
+    --rm-bg: rgb(229 95 68 / 0.14);
+    --hunk: #f3eba9;
+    --hunk-bg: rgb(173 158 0 / 0.16);
+
+    --shadow: none;
+    color-scheme: dark;
+  }
+
+  :root[data-theme="light"] {
+    --paper: #f6f2f0;
+    --card: #ffffff;
+    --ink: #17201d;
+    --ink-soft: #4c5a55;
+    --ink-faint: #7c6e6c;
+    --rule: #ddd4cf;
+    --accent: #1366d0;
+    --accent-soft: #e2edfb;
+
+    --new: #1f6b52;
+    --new-bg: #e0f1ea;
+    --mod: #6e6400;
+    --mod-bg: #f3eec9;
+    --del: #864e39;
+    --del-bg: #f6e3db;
+
+    --add-edge: #2ea17c;
+    --add-bg: rgb(46 161 124 / 0.1);
+    --rm-edge: #e55f44;
+    --rm-bg: rgb(134 78 57 / 0.1);
+    --hunk: #6e6400;
+    --hunk-bg: rgb(173 158 0 / 0.1);
+
+    --shadow: 0 1px 2px rgb(23 32 29 / 0.05), 0 10px 26px rgb(23 32 29 / 0.05);
+    color-scheme: light;
+  }
+
+  * { box-sizing: border-box; }
+
+  body {
+    margin: 0;
+    background: var(--paper);
+    color: var(--ink);
+    font-family: var(--body);
+    font-size: 16px;
+    line-height: 1.55;
+    -webkit-text-size-adjust: 100%;
+  }
+
+  .shell {
+    max-width: 64rem;
+    margin: 0 auto;
+    padding: 0 1.25rem 5rem;
+  }
+
+  header.top {
+    position: sticky;
+    top: 0;
+    z-index: 10;
+    background: color-mix(in srgb, var(--paper) 90%, transparent);
+    backdrop-filter: blur(8px);
+    border-bottom: 1px solid var(--rule);
+  }
+
+  .top-inner {
+    max-width: 64rem;
+    margin: 0 auto;
+    padding: 0.7rem 1.25rem;
+    display: flex;
+    align-items: center;
+    gap: 0.75rem 1rem;
+    flex-wrap: wrap;
+  }
+
+  .top-title {
+    font-family: var(--display);
+    font-size: 16px;
+    letter-spacing: 0.02em;
+    margin: 0;
+    flex: 1 1 13rem;
+    line-height: 1.4;
+  }
+
+  .meter {
+    flex: 1 1 11rem;
+    display: flex;
+    align-items: center;
+    gap: 0.6rem;
+    min-width: 11rem;
+  }
+
+  .track {
+    flex: 1;
+    height: 8px;
+    background: var(--rule);
+    overflow: hidden;
+  }
+
+  .fill {
+    height: 100%;
+    width: 0%;
+    background: var(--accent);
+    transition: width 160ms ease-out;
+  }
+
+  .count {
+    font-family: var(--display);
+    font-size: 16px;
+    color: var(--ink-soft);
+    font-variant-numeric: tabular-nums;
+    white-space: nowrap;
+  }
+
+  .controls { display: flex; gap: 0.4rem; flex: none; }
+
+  button.control {
+    font-family: var(--body);
+    font-size: 0.78rem;
+    color: var(--ink-soft);
+    background: transparent;
+    border: 1px solid var(--rule);
+    padding: 0.3rem 0.55rem;
+    cursor: pointer;
+  }
+
+  button.control:hover { border-color: var(--accent); color: var(--accent); }
+  button.control:focus-visible { outline: 2px solid var(--accent); outline-offset: 2px; }
+
+  .intro {
+    padding: 3rem 0 2.25rem;
+    border-bottom: 1px solid var(--rule);
+    display: flex;
+    flex-direction: column;
+    gap: 1rem;
+  }
+
+  .eyebrow {
+    font-family: var(--display);
+    font-size: 16px;
+    color: var(--accent);
+    letter-spacing: 0.04em;
+    margin: 0;
+  }
+
+  h1 {
+    font-family: var(--display);
+    font-size: 32px;
+    line-height: 1.35;
+    margin: 0;
+    text-wrap: balance;
+    letter-spacing: 0.01em;
+  }
+
+  .lede {
+    margin: 0;
+    max-width: 62ch;
+    color: var(--ink-soft);
+    font-size: 1.02rem;
+  }
+
+  .facts {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 0.4rem 1.5rem;
+    font-size: 0.85rem;
+    color: var(--ink-faint);
+    margin: 0;
+    padding: 0;
+    list-style: none;
+  }
+
+  .facts code, .lede code, .note code {
+    font-family: var(--mono);
+    font-size: 0.88em;
+    background: var(--accent-soft);
+    color: var(--ink);
+    padding: 0.05em 0.32em;
+  }
+
+  main { display: flex; flex-direction: column; gap: 0.9rem; padding-top: 2rem; }
+
+  details.group {
+    background: var(--card);
+    border: 1px solid var(--rule);
+    box-shadow: var(--shadow);
+  }
+
+  details.group > summary {
+    display: flex;
+    align-items: center;
+    gap: 0.85rem;
+    padding: 1rem 1.1rem;
+    cursor: pointer;
+    list-style: none;
+    /* the group's heading stays put while its files scroll under it, so it is
+       always clear which part of the reading order you are in */
+    position: sticky;
+    top: var(--header-height, 3.2rem);
+    z-index: 5;
+    background: var(--card);
+    border-bottom: 1px solid transparent;
+  }
+
+  details.group[open] > summary { border-bottom-color: var(--rule); }
+
+  input.group-tick {
+    width: 1.05rem;
+    height: 1.05rem;
+    margin: 0;
+    accent-color: var(--accent);
+    cursor: pointer;
+    flex: none;
+  }
+
+  details.group > summary::-webkit-details-marker { display: none; }
+  summary:focus-visible { outline: 2px solid var(--accent); outline-offset: -2px; }
+
+  .step {
+    font-family: var(--display);
+    font-size: 16px;
+    color: var(--accent);
+    background: var(--accent-soft);
+    padding: 0.28rem 0.5rem 0.18rem;
+    line-height: 1;
+    flex: none;
+  }
+
+  .group-title {
+    font-weight: 620;
+    font-size: 1.06rem;
+    letter-spacing: -0.005em;
+    flex: 1;
+  }
+
+  .group-count {
+    font-size: 0.8rem;
+    color: var(--ink-faint);
+    font-variant-numeric: tabular-nums;
+    flex: none;
+  }
+
+  .group-body { padding: 0 1.1rem 0.5rem; }
+
+  .blurb {
+    margin: 0 0 0.9rem;
+    padding-left: calc(16px + 1.85rem);
+    max-width: 68ch;
+    color: var(--ink-soft);
+    font-size: 0.94rem;
+  }
+
+  .rows { display: flex; flex-direction: column; }
+
+  .row {
+    display: grid;
+    grid-template-columns: auto minmax(0, 1fr);
+    gap: 0.3rem 0.75rem;
+    padding: 0.75rem 0;
+    border-top: 1px solid var(--rule);
+  }
+
+  .row > input[type="checkbox"] {
+    grid-row: 1 / span 3;
+    width: 1.05rem;
+    height: 1.05rem;
+    margin: 0.25rem 0 0;
+    accent-color: var(--accent);
+    cursor: pointer;
+  }
+
+  .row-head {
+    display: flex;
+    align-items: center;
+    gap: 0.55rem;
+    flex-wrap: wrap;
+    min-width: 0;
+  }
+
+  .chip {
+    font-size: 0.66rem;
+    font-weight: 700;
+    letter-spacing: 0.06em;
+    text-transform: uppercase;
+    padding: 0.16rem 0.4rem;
+    flex: none;
+  }
+
+  .chip-A { color: var(--new); background: var(--new-bg); }
+  .chip-M { color: var(--mod); background: var(--mod-bg); }
+  .chip-D { color: var(--del); background: var(--del-bg); }
+
+  button.path {
+    font-family: var(--mono);
+    font-size: 0.83rem;
+    color: var(--ink);
+    background: none;
+    border: 0;
+    padding: 0;
+    cursor: copy;
+    text-align: left;
+    word-break: break-all;
+    border-bottom: 1px dashed var(--rule);
+  }
+
+  a.github {
+    font-size: 0.72rem;
+    color: var(--ink-faint);
+    text-decoration: none;
+    border-bottom: 1px solid transparent;
+    flex: none;
+  }
+
+  a.github:hover { color: var(--accent); border-bottom-color: var(--accent); }
+  a.github:focus-visible { outline: 2px solid var(--accent); outline-offset: 2px; }
+
+  button.path:hover { color: var(--accent); border-bottom-color: var(--accent); }
+  button.path:focus-visible { outline: 2px solid var(--accent); outline-offset: 2px; }
+  button.path.copied { color: var(--new); border-bottom-color: var(--new); }
+
+  .note {
+    margin: 0;
+    grid-column: 2;
+    max-width: 68ch;
+    font-size: 0.92rem;
+    color: var(--ink-soft);
+  }
+
+  .diff { grid-column: 2; margin-top: 0.35rem; }
+
+  button.diff-toggle {
+    display: inline-flex;
+    align-items: center;
+    gap: 0.5rem;
+    font-family: var(--body);
+    font-size: 0.78rem;
+    font-weight: 600;
+    color: var(--accent);
+    background: var(--accent-soft);
+    border: 1px solid transparent;
+    padding: 0.28rem 0.7rem;
+    cursor: pointer;
+    font-variant-numeric: tabular-nums;
+  }
+
+  button.diff-toggle::before { content: "▸"; font-size: 0.7rem; font-weight: 400; }
+  button.diff-toggle[aria-expanded="true"]::before { content: "▾"; }
+  button.diff-toggle:hover { border-color: var(--accent); }
+  button.diff-toggle:focus-visible { outline: 2px solid var(--accent); outline-offset: 2px; }
+
+  .diff-panel[hidden] { display: none; }
+
+  .stat-add { color: var(--add-edge); font-weight: 600; }
+  .stat-rm { color: var(--rm-edge); font-weight: 600; }
+
+  .diff-body {
+    overflow-x: auto;
+    border: 1px solid var(--rule);
+    border-left: 0;
+    background: color-mix(in srgb, var(--paper) 55%, var(--card));
+    margin-top: 0.35rem;
+  }
+
+  .diff-body pre {
+    margin: 0;
+    padding: 0.5rem 0;
+    font-family: var(--mono);
+    font-size: 0.76rem;
+    line-height: 1.55;
+    tab-size: 2;
+    white-space: pre;
+    min-width: max-content;
+  }
+
+  .dl {
+    display: block;
+    padding: 0 0.8rem 0 0.65rem;
+    border-left: 3px solid transparent;
+  }
+
+  .dl-add { background: var(--add-bg); border-left-color: var(--add-edge); }
+  .dl-rm { background: var(--rm-bg); border-left-color: var(--rm-edge); }
+  .dl-hunk {
+    background: var(--hunk-bg);
+    border-left-color: var(--hunk);
+    color: var(--hunk);
+    font-weight: 600;
+  }
+  .dl-meta { color: var(--ink-faint); font-style: italic; }
+
+  /* monaco hosts itself in here when it loads; the plain renderer above is
+     used when it doesn't (the artifact host's CSP blocks the cdn) */
+  .diff-monaco {
+    margin-top: 0.35rem;
+    border: 1px solid var(--rule);
+    height: 22rem;
+    max-height: 70vh;
+  }
+
+  .diff-monaco .monaco-editor .diffOverview { display: none; }
+
+  .editor-bar {
+    display: flex;
+    align-items: center;
+    gap: 0.6rem;
+    margin-top: 0.35rem;
+    font-size: 0.76rem;
+    color: var(--ink-faint);
+  }
+
+  .editor-bar .hint { flex: 1; }
+  .editor-bar .state-dirty { color: var(--mod); }
+  .editor-bar .state-saved { color: var(--new); }
+  .editor-bar .state-error { color: var(--del); }
+
+  button.save {
+    font-family: var(--body);
+    font-size: 0.76rem;
+    color: var(--accent);
+    background: var(--accent-soft);
+    border: 1px solid transparent;
+    padding: 0.22rem 0.6rem;
+    cursor: pointer;
+  }
+
+  button.save.revert { color: var(--del); background: var(--del-bg); }
+  button.save[disabled] { color: var(--ink-faint); background: transparent; cursor: default; }
+  button.save:not([disabled]):hover { border-color: var(--accent); }
+  button.save:focus-visible { outline: 2px solid var(--accent); outline-offset: 2px; }
+
+  /* a review note, living in a monaco view zone between two lines. view zones
+     paint below the editor's own text layer, so it has to be lifted for its
+     buttons to be clickable at all */
+  .note-zone {
+    position: relative;
+    z-index: 10;
+    display: flex;
+    flex-direction: column;
+    gap: 0.35rem;
+    padding: 0.5rem 0.6rem 0.6rem calc(3.5rem + 26px);
+    background: var(--accent-soft);
+    border-left: 3px solid var(--accent);
+    font-family: var(--body);
+  }
+
+  .note-zone textarea {
+    font-family: var(--body);
+    font-size: 0.85rem;
+    line-height: 1.45;
+    color: var(--ink);
+    background: var(--card);
+    border: 1px solid var(--rule);
+    padding: 0.35rem 0.45rem;
+    resize: none;
+    width: 100%;
+  }
+
+  .note-zone textarea:focus-visible { outline: 2px solid var(--accent); outline-offset: -1px; }
+
+  .note-zone .note-actions {
+    display: flex;
+    align-items: center;
+    gap: 0.4rem;
+    font-size: 0.72rem;
+  }
+
+  .note-zone .note-text {
+    margin: 0;
+    font-size: 0.9rem;
+    line-height: 1.4;
+    color: var(--ink);
+  }
+
+  .note-zone .note-stamp {
+    margin-left: auto;
+    font-size: 0.7rem;
+    color: var(--ink-faint);
+  }
+
+  .note-thread {
+    display: flex;
+    flex-direction: column;
+    gap: 0.3rem;
+    max-height: 9rem;
+    overflow-y: auto;
+  }
+
+  .note-message {
+    margin: 0;
+    font-size: 0.86rem;
+    line-height: 1.4;
+    color: var(--ink);
+  }
+
+  .note-who {
+    display: inline-block;
+    min-width: 3.4rem;
+    margin-right: 0.4rem;
+    font-size: 0.68rem;
+    font-weight: 700;
+    letter-spacing: 0.05em;
+    text-transform: uppercase;
+    color: var(--ink-faint);
+  }
+
+  .note-from-agent .note-who { color: var(--accent); }
+
+  /* the thread's last word is the reviewer's, so a reply is coming */
+  .note-pending {
+    display: flex;
+    align-items: center;
+    gap: 0.45rem;
+    font-size: 0.78rem;
+    color: var(--accent);
+  }
+
+  .note-pending .dots {
+    display: inline-flex;
+    gap: 3px;
+  }
+
+  .note-pending .dots i {
+    width: 5px;
+    height: 5px;
+    border-radius: 50%;
+    background: var(--accent);
+    animation: note-thinking 1.1s infinite ease-in-out;
+  }
+
+  .note-pending .dots i:nth-child(2) { animation-delay: 0.16s; }
+  .note-pending .dots i:nth-child(3) { animation-delay: 0.32s; }
+
+  @keyframes note-thinking {
+    0%, 70%, 100% { opacity: 0.25; transform: translateY(0); }
+    35% { opacity: 1; transform: translateY(-2px); }
+  }
+
+  @media (prefers-reduced-motion: reduce) {
+    .note-pending .dots i { animation: none; opacity: 0.7; }
+  }
+
+  #toasts {
+    position: fixed;
+    right: 1rem;
+    bottom: 1rem;
+    z-index: 40;
+    display: flex;
+    flex-direction: column;
+    gap: 0.5rem;
+    max-width: min(28rem, calc(100vw - 2rem));
+  }
+
+  .toast {
+    padding: 0.6rem 0.8rem;
+    font-size: 0.85rem;
+    line-height: 1.4;
+    color: var(--ink);
+    background: var(--card);
+    border: 1px solid var(--rule);
+    border-left: 3px solid var(--accent);
+    box-shadow: 0 6px 20px rgb(0 0 0 / 0.18);
+    transition: opacity 500ms ease-out;
+  }
+
+  .toast-done { border-left-color: var(--add-edge); }
+  .toast-warn { border-left-color: var(--rm-edge); }
+  .toast.leaving { opacity: 0; }
+
+  .note-zone button {
+    font-family: var(--body);
+    font-size: 0.72rem;
+    background: transparent;
+    border: 1px solid var(--rule);
+    color: var(--ink-soft);
+    padding: 0.15rem 0.45rem;
+    cursor: pointer;
+  }
+
+  .note-zone button:hover { border-color: var(--accent); color: var(--accent); }
+
+  .noted-line {
+    background: var(--accent-soft);
+  }
+
+  .noted-glyph::after {
+    content: "▌";
+    color: var(--accent);
+  }
+
+  .add-note-glyph {
+    cursor: pointer;
+  }
+
+  .add-note-glyph::after {
+    content: "+";
+    display: block;
+    margin-left: 2px;
+    width: 15px;
+    line-height: 15px;
+    text-align: center;
+    font-family: var(--body);
+    font-weight: 700;
+    font-size: 12px;
+    color: var(--card);
+    background: var(--accent);
+    border-radius: 2px;
+  }
+
+  .row:has(input:checked) .note,
+  .row:has(input:checked) .row-head { opacity: 0.45; }
+
+  footer {
+    margin-top: 2.5rem;
+    padding-top: 1.25rem;
+    border-top: 1px solid var(--rule);
+    color: var(--ink-faint);
+    font-size: 0.85rem;
+    max-width: 68ch;
+  }
+
+  @media (prefers-reduced-motion: reduce) {
+    * { transition: none !important; }
+  }
+
+  @media (max-width: 34rem) {
+    h1 { font-size: 16px; line-height: 1.5; }
+    .blurb { padding-left: 0; }
+  }
+</style>
+
+<header class="top">
+  <div class="top-inner">
+    <p class="top-title" id="headerTitle"></p>
+    <div class="meter">
+      <div class="track"><div class="fill" id="fill"></div></div>
+      <span class="count" id="count">0/0</span>
+    </div>
+    <div class="controls">
+      <button class="control" id="expand" type="button">Open all diffs</button>
+      <button class="control" id="collapse" type="button">Close all</button>
+      <button class="control" id="copyNotes" type="button">Copy notes</button>
+      <button class="control" id="handoff" type="button" hidden>Send notes to agent</button>
+      <button class="control" id="reset" type="button">Clear ticks</button>
+    </div>
+  </div>
+</header>
+
+<div class="shell">
+  <section class="intro">
+    <p class="eyebrow" id="eyebrow"></p>
+    <h1 id="title"></h1>
+    <p class="lede" id="lede"></p>
+    <ul class="facts" id="facts"></ul>
+  </section>
+
+  <main id="groups"></main>
+  <div id="toasts" aria-live="polite"></div>
+
+  <footer id="footer"></footer>
+</div>
+
+<!--REVIEW_SERVER-->
+<script type="application/json" id="payload">PAYLOAD_JSON</script>
+<script type="module">
+  const {
+    meta: META,
+    groups: GROUPS,
+    diffs: DIFFS,
+    sides: SIDES,
+    stats: STATS,
+    links: LINKS,
+  } = JSON.parse(document.getElementById("payload").textContent);
+
+  document.title = META.title;
+  document.getElementById("headerTitle").textContent = META.headerTitle ?? META.title;
+  document.getElementById("eyebrow").textContent = META.eyebrow ?? "reading order";
+  document.getElementById("title").textContent = META.title;
+  document.getElementById("lede").innerHTML = META.lede ?? "";
+  document.getElementById("footer").innerHTML = META.footer ?? "";
+
+  const STATUS_LABEL = { A: "New", M: "Modified", D: "Deleted", R: "Renamed" };
+  const STORAGE_KEY = "guidedReviewTicks";
+
+  const readTicks = () => {
+    try {
+      return new Set(JSON.parse(localStorage.getItem(STORAGE_KEY) ?? "[]"));
+    } catch {
+      return new Set();
+    }
+  };
+
+  let ticked = readTicks();
+
+  const saveTicks = () => {
+    try {
+      localStorage.setItem(STORAGE_KEY, JSON.stringify([...ticked]));
+    } catch {
+      /* storage unavailable - ticks just won't persist */
+    }
+  };
+
+  const total = GROUPS.reduce((sum, group) => sum + group.items.length, 0);
+  const fill = document.getElementById("fill");
+  const count = document.getElementById("count");
+
+  const updateMeter = () => {
+    const done = ticked.size;
+    count.textContent = `${done}/${total}`;
+    // a review with no files at all would divide by zero, giving a NaN width
+    fill.style.width = `${total === 0 ? 0 : (done / total) * 100}%`;
+  };
+
+  const copyPath = async (button, path) => {
+    try {
+      await navigator.clipboard.writeText(path);
+      button.classList.add("copied");
+      setTimeout(() => button.classList.remove("copied"), 900);
+    } catch {
+      /* clipboard blocked - the path is selectable anyway */
+    }
+  };
+
+  const diffLineClass = (line) => {
+    if (line.startsWith("@@")) return "dl dl-hunk";
+    if (line.startsWith("+")) return "dl dl-add";
+    if (line.startsWith("-")) return "dl dl-rm";
+    if (line.startsWith("…")) return "dl dl-meta";
+    return "dl";
+  };
+
+  /** the patch, rendered as coloured lines - the fallback when monaco is absent */
+  const renderPatch = (pre, path) => {
+    const fragment = document.createDocumentFragment();
+    for (const line of (DIFFS[path] ?? "").split("\n")) {
+      const span = document.createElement("span");
+      span.className = diffLineClass(line);
+      span.textContent = line === "" ? " " : line;
+      fragment.append(span);
+    }
+    pre.append(fragment);
+  };
+
+  const MONACO_VERSION = "0.52.2";
+  const MONACO_BASE = `https://cdn.jsdelivr.net/npm/monaco-editor@${MONACO_VERSION}/min/vs`;
+  const MONACO_TIMEOUT_MS = 6_000;
+
+  const LANGUAGES = {
+    ts: "typescript",
+    tsx: "typescript",
+    js: "javascript",
+    jsx: "javascript",
+    mjs: "javascript",
+    json: "json",
+    md: "markdown",
+    css: "css",
+    html: "html",
+    sh: "shell",
+    py: "python",
+    yml: "yaml",
+    yaml: "yaml",
+  };
+
+  const languageFor = (path) =>
+    LANGUAGES[path.split(".").pop().toLowerCase()] ?? "plaintext";
+
+  const pageIsDark = () => {
+    const stamped = document.documentElement.dataset.theme;
+    if (stamped === "dark") return true;
+    if (stamped === "light") return false;
+    return window.matchMedia("(prefers-color-scheme: dark)").matches;
+  };
+
+  /** monaco themes carrying the same palette as the rest of the page */
+  const defineReviewThemes = () => {
+    const shared = {
+      "editor.background": "#00000000",
+      "editorGutter.background": "#00000000",
+      "diffEditor.insertedTextBackground": "#2ea17c33",
+      "diffEditor.removedTextBackground": "#e55f4433",
+      "diffEditor.insertedLineBackground": "#2ea17c1f",
+      "diffEditor.removedLineBackground": "#e55f441f",
+    };
+    monaco.editor.defineTheme("review-light", {
+      base: "vs",
+      inherit: true,
+      rules: [],
+      colors: { ...shared, "editorLineNumber.foreground": "#7c6e6c" },
+    });
+    monaco.editor.defineTheme("review-dark", {
+      base: "vs-dark",
+      inherit: true,
+      rules: [],
+      colors: { ...shared, "editorLineNumber.foreground": "#9a8d8a" },
+    });
+  };
+
+  /** resolves to the monaco module, or undefined when it can't be had */
+  let monacoPromise;
+
+  const loadMonaco = () => {
+    if (monacoPromise !== undefined) {
+      return monacoPromise;
+    }
+    monacoPromise = new Promise((resolve, reject) => {
+      // cross-origin workers have to be bootstrapped through a blob that
+      // imports the real worker from the cdn. baseUrl is the directory *above*
+      // vs/, since the worker resolves module ids that already start with vs/
+      self.MonacoEnvironment = {
+        getWorkerUrl: () =>
+          URL.createObjectURL(
+            new Blob(
+              [
+                `self.MonacoEnvironment = { baseUrl: "${MONACO_BASE.replace(/\/vs$/, "/")}" };\n` +
+                  `importScripts("${MONACO_BASE}/base/worker/workerMain.js");`,
+              ],
+              { type: "text/javascript" },
+            ),
+          ),
+      };
+
+      const timeout = setTimeout(() => reject(new Error("monaco timed out")), MONACO_TIMEOUT_MS);
+      const script = document.createElement("script");
+      script.src = `${MONACO_BASE}/loader.js`;
+      script.addEventListener("error", () => {
+        clearTimeout(timeout);
+        reject(new Error("monaco could not be loaded"));
+      });
+      script.addEventListener("load", () => {
+        try {
+          window.require.config({ paths: { vs: MONACO_BASE } });
+          window.require(["vs/editor/editor.main"], () => {
+            clearTimeout(timeout);
+            // nothing here is edited against a real project, so the language
+            // services would only cost a multi-megabyte worker download to
+            // report errors this page isn't fixing
+            for (const defaults of [
+              monaco.languages.typescript.typescriptDefaults,
+              monaco.languages.typescript.javascriptDefaults,
+            ]) {
+              defaults.setDiagnosticsOptions({
+                noSemanticValidation: true,
+                noSyntacticValidation: true,
+                noSuggestionDiagnostics: true,
+              });
+              // ...and jsx has to be allowed, or every tag in a .tsx parses as
+              // a type assertion and the file fills with "'>' expected"
+              defaults.setCompilerOptions({
+                ...defaults.getCompilerOptions(),
+                jsx: monaco.languages.typescript.JsxEmit.Preserve,
+                allowJs: true,
+                allowNonTsExtensions: true,
+                target: monaco.languages.typescript.ScriptTarget.ESNext,
+              });
+            }
+            defineReviewThemes();
+            monaco.editor.setTheme(pageIsDark() ? "review-dark" : "review-light");
+            resolve(monaco);
+          });
+        } catch (error) {
+          clearTimeout(timeout);
+          reject(error);
+        }
+      });
+      document.head.append(script);
+    }).catch((error) => {
+      console.warn("falling back to the plain diff renderer:", error.message);
+      return undefined;
+    });
+    return monacoPromise;
+  };
+
+  const applyMonacoTheme = () => {
+    if (window.monaco !== undefined) {
+      monaco.editor.setTheme(pageIsDark() ? "review-dark" : "review-light");
+    }
+  };
+
+  window
+    .matchMedia("(prefers-color-scheme: dark)")
+    .addEventListener("change", applyMonacoTheme);
+  new MutationObserver(applyMonacoTheme).observe(document.documentElement, {
+    attributes: true,
+    attributeFilter: ["data-theme"],
+  });
+
+  /* ---- review notes -------------------------------------------------------
+     A note belongs to a line of the modified side. Served, they persist to a
+     json file beside the review; static, to localStorage. Either way they are
+     for this reading of this change - "Copy notes" lifts them out as markdown
+     for a PR comment or a follow-up prompt. */
+
+  const SERVER = window.__reviewServer;
+  const NOTES_KEY = `${STORAGE_KEY}:notes`;
+
+  let notes = {};
+  /** the diff editors currently on the page, so the poll below can update them */
+  const liveEditors = new Map();
+
+  const toast = (text, kind = "info") => {
+    const element = document.createElement("div");
+    element.className = `toast toast-${kind}`;
+    element.setAttribute("role", "status");
+    element.textContent = text;
+    document.getElementById("toasts").append(element);
+    setTimeout(() => element.classList.add("leaving"), 7_000);
+    setTimeout(() => element.remove(), 7_600);
+  };
+
+  const loadNotes = async () => {
+    if (SERVER === undefined) {
+      try {
+        notes = JSON.parse(localStorage.getItem(NOTES_KEY) ?? "{}");
+      } catch {
+        notes = {};
+      }
+      return;
+    }
+    const response = await fetch("/notes").catch(() => undefined);
+    notes = response?.ok ? await response.json() : {};
+  };
+
+  const saveNotes = async () => {
+    if (SERVER === undefined) {
+      try {
+        localStorage.setItem(NOTES_KEY, JSON.stringify(notes));
+      } catch {
+        /* storage unavailable - notes just won't persist */
+      }
+      return;
+    }
+    const response = await fetch("/notes", {
+      method: "POST",
+      headers: { "Content-Type": "application/json", "X-Review-Token": SERVER.token },
+      body: JSON.stringify(notes),
+    }).catch(() => undefined);
+
+    // silence here would be the worst kind: the note looks written and isn't
+    if (response?.ok !== true) {
+      toast(
+        response?.status === 403 ?
+          "note not saved — this page is older than the server. Reload it"
+        : "note not saved — the review server isn't answering",
+        "warn",
+      );
+    }
+  };
+
+  const notesFor = (path) => notes[path] ?? [];
+  const noteAt = (path, line) => notesFor(path).find((note) => note.line === line);
+
+  /** a note is a thread; the single-text shape it started as is its first message */
+  const messagesOf = (note) =>
+    note === undefined ? []
+    : note.messages ?? [{ from: "reviewer", text: note.text }];
+
+  const sayOnNote = (path, line, text) => {
+    if (text.trim() === "") {
+      return;
+    }
+    const existing = noteAt(path, line);
+    if (existing === undefined) {
+      notes[path] = [...notesFor(path), { line, messages: [{ from: "reviewer", text }] }].sort(
+        (a, b) => a.line - b.line,
+      );
+    } else {
+      existing.messages = [...messagesOf(existing), { from: "reviewer", text }];
+      delete existing.text;
+    }
+    saveNotes();
+  };
+
+  const removeNote = (path, line) => {
+    notes[path] = notesFor(path).filter((note) => note.line !== line);
+    if (notes[path].length === 0) {
+      delete notes[path];
+    }
+    saveNotes();
+  };
+
+  const notesAsMarkdown = () =>
+    Object.entries(notes)
+      .map(
+        ([path, forPath]) =>
+          `### ${path}\n` +
+          forPath
+            .map((note) =>
+              messagesOf(note)
+                .map((message, index) =>
+                  index === 0 ?
+                    `- L${note.line}: ${message.text}`
+                  : `  - ${message.from}: ${message.text}`,
+                )
+                .join("\n"),
+            )
+            .join("\n"),
+      )
+      .join("\n\n");
+
+  const noteButton = (text, onClick) => {
+    const button = document.createElement("button");
+    button.type = "button";
+    button.textContent = text;
+    button.addEventListener("click", onClick);
+    return button;
+  };
+
+  /**
+   * the note ui that sits in a view zone under its line: a textarea while it is
+   * being written, and a saved note afterwards - so pressing Save visibly does
+   * something
+   */
+  const awaitingReply = (messages) =>
+    SERVER !== undefined &&
+    messages.length > 0 &&
+    messages[messages.length - 1].from !== "agent";
+
+  /** what has been typed but not sent, so a redraw mid-sentence loses nothing */
+  const drafts = new Map();
+  /** the one line whose box should take the caret on this draw */
+  let focusLine;
+
+  const noteZone = (path, line, _isEditing, { done }) => {
+    const zone = document.createElement("div");
+    zone.className = "note-zone";
+    const messages = messagesOf(noteAt(path, line));
+    const draftKey = `${path}:${line}`;
+
+    // the conversation so far: what you asked for, what the agent said back
+    if (messages.length > 0) {
+      const thread = document.createElement("div");
+      thread.className = "note-thread";
+      for (const message of messages) {
+        const bubble = document.createElement("p");
+        bubble.className = `note-message note-from-${message.from}`;
+        const who = document.createElement("span");
+        who.className = "note-who";
+        who.textContent = message.from === "agent" ? "claude" : "you";
+        bubble.append(who, document.createTextNode(message.text));
+        thread.append(bubble);
+      }
+      if (awaitingReply(messages)) {
+        const pending = document.createElement("div");
+        pending.className = "note-pending";
+        const dots = document.createElement("span");
+        dots.className = "dots";
+        dots.innerHTML = "<i></i><i></i><i></i>";
+        const label = document.createElement("span");
+        label.textContent = "claude is on it — the reply lands here";
+        pending.append(dots, label);
+        thread.append(pending);
+      }
+      zone.append(thread);
+    }
+
+    const actions = document.createElement("div");
+    actions.className = "note-actions";
+
+    // the box is always open: replying is the point, not a mode you enter
+    const textarea = document.createElement("textarea");
+    textarea.rows = 2;
+    textarea.value = drafts.get(draftKey) ?? "";
+    textarea.placeholder =
+      messages.length === 0 ?
+        `note on line ${line} — ask for a change, or say what you think`
+      : "reply…";
+    textarea.addEventListener("input", () => drafts.set(draftKey, textarea.value));
+
+    const send = noteButton(messages.length === 0 ? "Save note" : "Send", () => {
+      sayOnNote(path, line, textarea.value);
+      drafts.delete(draftKey);
+      focusLine = line;
+      done();
+    });
+
+    actions.append(
+      send,
+      ...(messages.length === 0 ?
+        [
+          noteButton("Cancel", () => {
+            drafts.delete(draftKey);
+            done();
+          }),
+        ]
+      : [
+          noteButton("Delete", () => {
+            drafts.delete(draftKey);
+            removeNote(path, line);
+            done();
+          }),
+        ]),
+    );
+
+    const stamp = document.createElement("span");
+    stamp.className = "note-stamp";
+    stamp.textContent = `line ${line} · ⌘↵ sends`;
+    actions.append(stamp);
+
+    textarea.addEventListener("keydown", (event) => {
+      if (event.key === "Enter" && (event.metaKey || event.ctrlKey)) {
+        send.click();
+      }
+    });
+
+    zone.append(textarea, actions);
+    // only the box just opened takes the caret - a poll redrawing every zone
+    // must not steal it from wherever you are typing
+    if (focusLine === line) {
+      focusLine = undefined;
+      queueMicrotask(() => textarea.focus());
+    }
+    return zone;
+  };
+
+  /* ---- the diff editor ---------------------------------------------------- */
+
+  const renderMonacoDiff = (host, path, bar, setCounts) => {
+    const side = SIDES[path];
+    if (side === undefined) {
+      return false;
+    }
+    const language = languageFor(path);
+    const editor = monaco.editor.createDiffEditor(host, {
+      // served, the working copy is editable and can be written back
+      readOnly: SERVER === undefined,
+      originalEditable: false,
+      renderSideBySide: false,
+      automaticLayout: true,
+      glyphMargin: true,
+      minimap: { enabled: false },
+      scrollBeyondLastLine: false,
+      renderOverviewRuler: false,
+      fontSize: 12,
+      lineHeight: 18,
+      // unchanged stretches collapse to a foldable band, which is the whole
+      // reason for using an editor over a static patch
+      hideUnchangedRegions: { enabled: true, contextLineCount: 3, minimumLineCount: 4 },
+      // let the page keep scrolling when the pointer crosses an editor
+      scrollbar: { alwaysConsumeMouseWheel: false },
+    });
+    // the model's uri decides the typescript worker's script kind, so it has to
+    // carry the real extension - an extensionless uri parses .tsx as .ts
+    const modelFor = (content, side) =>
+      monaco.editor.createModel(
+        content,
+        language,
+        monaco.Uri.parse(`inmemory://review/${side}/${path}`),
+      );
+    const modified = modelFor(side.after, "modified");
+    editor.setModel({ original: modelFor(side.before, "original"), modified });
+
+    const modifiedEditor = editor.getModifiedEditor();
+
+    /* notes: a view zone under each noted line, plus a gutter mark */
+    let zoneIds = [];
+    let decorations = modifiedEditor.createDecorationsCollection([]);
+    let editing;
+
+    const drawNotes = () => {
+      const lines = new Set([
+        ...notesFor(path).map((note) => note.line),
+        ...(editing === undefined ? [] : [editing]),
+      ]);
+
+      modifiedEditor.changeViewZones((accessor) => {
+        for (const id of zoneIds) {
+          accessor.removeZone(id);
+        }
+        zoneIds = [...lines].map((line) => {
+          const isEditing = line === editing;
+          const said = messagesOf(noteAt(path, line)).length;
+          return accessor.addZone({
+            afterLineNumber: line,
+            // grows with the conversation, up to the thread's own scroll cap
+            heightInPx: Math.min(46 + said * 26, 190) + (isEditing ? 86 : 0),
+            // without this the editor eats the mousedown before the note's own
+            // controls ever see it
+            suppressMouseDown: false,
+            domNode: noteZone(path, line, isEditing, {
+              edit: (atLine) => {
+                editing = atLine;
+                drawNotes();
+              },
+              done: () => {
+                editing = undefined;
+                drawNotes();
+              },
+            }),
+          });
+        });
+      });
+
+      decorations.set(
+        notesFor(path).map((note) => ({
+          range: new monaco.Range(note.line, 1, note.line, 1),
+          options: {
+            isWholeLine: true,
+            className: "noted-line",
+            glyphMarginClassName: "noted-glyph",
+          },
+        })),
+      );
+    };
+
+    modifiedEditor.addAction({
+      id: "add-review-note",
+      label: "Add review note",
+      contextMenuGroupId: "navigation",
+      keybindings: [monaco.KeyMod.Alt | monaco.KeyCode.KeyN],
+      run: (instance) => {
+        editing = instance.getPosition().lineNumber;
+        drawNotes();
+      },
+    });
+
+    /* a + in the gutter of whichever line the mouse is on, so adding a note is
+       something you can see rather than something you have to know */
+    const hoverGlyph = modifiedEditor.createDecorationsCollection([]);
+    const markHoveredLine = (line) => {
+      hoverGlyph.set(
+        line === undefined || notesFor(path).some((note) => note.line === line) ?
+          []
+        : [
+            {
+              range: new monaco.Range(line, 1, line, 1),
+              options: {
+                glyphMarginClassName: "add-note-glyph",
+                glyphMarginHoverMessage: { value: "Add a review note (alt-N)" },
+              },
+            },
+          ],
+      );
+    };
+
+    modifiedEditor.onMouseMove((event) => markHoveredLine(event.target.position?.lineNumber));
+    modifiedEditor.onMouseLeave(() => markHoveredLine(undefined));
+    modifiedEditor.onMouseDown((event) => {
+      if (event.target.type === monaco.editor.MouseTargetType.GUTTER_GLYPH_MARGIN) {
+        editing = event.target.position.lineNumber;
+        drawNotes();
+      }
+    });
+
+    /* saving back to the working tree */
+    let sha = side.sha;
+    let dirty = false;
+    if (SERVER !== undefined) {
+      const button = document.createElement("button");
+      button.type = "button";
+      button.className = "save";
+      button.textContent = "Save";
+      button.disabled = true;
+
+      const revert = document.createElement("button");
+      revert.type = "button";
+      revert.className = "save revert";
+      revert.textContent = "Revert";
+      revert.title = "back to the content this review was built from";
+
+      const state = document.createElement("span");
+      const hint = document.createElement("span");
+      hint.className = "hint";
+      hint.textContent = "editable — hover a line and click + to add a note";
+      bar.append(hint, state, revert, button);
+
+      // puts the file back the way the review found it - but only in the
+      // editor, so nothing reaches disk without a deliberate Save
+      revert.addEventListener("click", () => {
+        modified.setValue(side.after);
+        state.className = "state-dirty";
+        state.textContent = "reverted — save to write it back";
+      });
+
+      modified.onDidChangeContent(() => {
+        dirty = true;
+        button.disabled = false;
+        state.className = "state-dirty";
+        state.textContent = "unsaved";
+      });
+
+      button.addEventListener("click", async () => {
+        button.disabled = true;
+        state.className = "";
+        state.textContent = "saving…";
+        const response = await fetch("/save", {
+          method: "POST",
+          headers: { "Content-Type": "application/json", "X-Review-Token": SERVER.token },
+          body: JSON.stringify({ path, content: modified.getValue(), sha }),
+        }).catch(() => undefined);
+
+        if (response?.ok) {
+          const result = await response.json();
+          sha = result.sha;
+          dirty = false;
+          setCounts(result.added, result.removed);
+          state.className = "state-saved";
+          state.textContent = `saved  +${result.added} −${result.removed}`;
+          return;
+        }
+        button.disabled = false;
+        state.className = "state-error";
+        state.textContent =
+          response?.status === 409 ?
+            "changed on disk — reload before saving"
+          : "save failed";
+      });
+    } else {
+      const hint = document.createElement("span");
+      hint.className = "hint";
+      hint.textContent = "read-only — hover a line and click + to add a note; serve.py makes this editable";
+      bar.append(hint);
+    }
+
+    editor.onDidUpdateDiff(() => {
+      const lines = modifiedEditor.getContentHeight() / 18;
+      const height = Math.min(Math.max(lines * 18 + 24, 120), window.innerHeight * 0.7);
+      host.style.height = `${Math.round(height)}px`;
+      editor.layout();
+    });
+
+    // the page follows the file: when an agent acts on a note the diff here
+    // catches up on its own, rather than going quietly out of date
+    liveEditors.set(path, {
+      sha: () => sha,
+      refreshNotes: drawNotes,
+      applyFromDisk: (file) => {
+        if (dirty) {
+          toast(`${path} changed on disk — Revert to load it`, "warn");
+          return;
+        }
+        modified.setValue(file.after);
+        sha = file.sha;
+        dirty = false;
+        setCounts(file.added, file.removed);
+      },
+    });
+
+    drawNotes();
+    return true;
+  };
+
+  /** each row's open/close, so the header's open-all and close-all can drive them */
+  const diffToggles = [];
+  let diffPanelId = 0;
+
+  const rowElement = (item, onTickChange) => {
+    const row = document.createElement("div");
+    row.className = "row";
+
+    const checkbox = document.createElement("input");
+    checkbox.type = "checkbox";
+    checkbox.checked = ticked.has(item.path);
+    checkbox.setAttribute("aria-label", `Read ${item.path}`);
+    checkbox.addEventListener("change", () => {
+      if (checkbox.checked) {
+        ticked.add(item.path);
+      } else {
+        ticked.delete(item.path);
+      }
+      saveTicks();
+      updateMeter();
+      onTickChange();
+    });
+
+    const head = document.createElement("div");
+    head.className = "row-head";
+
+    const chip = document.createElement("span");
+    chip.className = `chip chip-${item.status}`;
+    chip.textContent = STATUS_LABEL[item.status] ?? item.status;
+
+    const path = document.createElement("button");
+    path.type = "button";
+    path.className = "path";
+    path.textContent = item.path;
+    path.title = "Copy path";
+    path.addEventListener("click", () => copyPath(path, item.path));
+
+    head.append(chip, path);
+
+    const href = LINKS?.[item.path];
+    if (href !== undefined) {
+      const link = document.createElement("a");
+      link.className = "github";
+      link.href = href;
+      link.target = "_blank";
+      link.rel = "noreferrer";
+      link.textContent = "GitHub ↗";
+      head.append(link);
+    }
+
+    const note = document.createElement("p");
+    note.className = "note";
+    note.textContent = item.note;
+
+    const [added, removed] = STATS[item.path] ?? [0, 0];
+
+    const diff = document.createElement("div");
+    diff.className = "diff";
+
+    const toggle = document.createElement("button");
+    toggle.type = "button";
+    toggle.className = "diff-toggle";
+    toggle.setAttribute("aria-expanded", "false");
+    const label = document.createElement("span");
+    label.textContent = "Show diff";
+    const statAdd = document.createElement("span");
+    statAdd.className = "stat-add";
+    statAdd.textContent = `+${added}`;
+    const statRm = document.createElement("span");
+    statRm.className = "stat-rm";
+    statRm.textContent = `−${removed}`;
+    toggle.append(label, statAdd, statRm);
+
+    const panel = document.createElement("div");
+    panel.className = "diff-panel";
+    panel.hidden = true;
+    toggle.setAttribute("aria-controls", `diff-${diffPanelId++}`);
+    panel.id = toggle.getAttribute("aria-controls");
+
+    // rendered on first open, so dozens of diffs don't build up front
+    let rendered = false;
+
+    const setOpen = async (open) => {
+      panel.hidden = !open;
+      toggle.setAttribute("aria-expanded", String(open));
+      label.textContent = open ? "Hide diff" : "Show diff";
+      if (!open || rendered) {
+        return;
+      }
+      rendered = true;
+      const monacoModule = await loadMonaco();
+      const host = document.createElement("div");
+      host.className = "diff-monaco";
+      const bar = document.createElement("div");
+      bar.className = "editor-bar";
+      const setCounts = (added, removed) => {
+        statAdd.textContent = `+${added}`;
+        statRm.textContent = `−${removed}`;
+      };
+      if (monacoModule !== undefined && renderMonacoDiff(host, item.path, bar, setCounts)) {
+        panel.append(host, bar);
+        return;
+      }
+      const body = document.createElement("div");
+      body.className = "diff-body";
+      const pre = document.createElement("pre");
+      body.append(pre);
+      renderPatch(pre, item.path);
+      panel.append(body);
+    };
+
+    toggle.addEventListener("click", () => setOpen(panel.hidden));
+    diffToggles.push(setOpen);
+
+    diff.append(toggle, panel);
+    row.append(checkbox, head, note, diff);
+    return { row, checkbox };
+  };
+
+  const groupElement = (group, index) => {
+    const details = document.createElement("details");
+    details.className = "group";
+    details.open = true;
+
+    const summary = document.createElement("summary");
+
+    const groupTick = document.createElement("input");
+    groupTick.type = "checkbox";
+    groupTick.className = "group-tick";
+    groupTick.setAttribute("aria-label", `Tick every file in ${group.title}`);
+    // a summary toggles on any click inside it, so the tick has to keep its
+    // click to itself
+    groupTick.addEventListener("click", (event) => event.stopPropagation());
+
+    const step = document.createElement("span");
+    step.className = "step";
+    step.textContent = String(index + 1);
+
+    const title = document.createElement("span");
+    title.className = "group-title";
+    title.textContent = group.title;
+
+    const groupCount = document.createElement("span");
+    groupCount.className = "group-count";
+    groupCount.textContent = `${group.items.length} files`;
+
+    summary.append(groupTick, step, title, groupCount);
+
+    const body = document.createElement("div");
+    body.className = "group-body";
+
+    const blurb = document.createElement("p");
+    blurb.className = "blurb";
+    blurb.textContent = group.blurb;
+
+    const rows = document.createElement("div");
+    rows.className = "rows";
+
+    const rowChecks = [];
+    const refreshGroupTick = () => {
+      const done = rowChecks.filter((check) => check.checked).length;
+      groupTick.checked = done === rowChecks.length;
+      groupTick.indeterminate = done > 0 && done < rowChecks.length;
+    };
+
+    for (const item of group.items) {
+      const { row, checkbox } = rowElement(item, refreshGroupTick);
+      rowChecks.push(checkbox);
+      rows.append(row);
+    }
+
+    groupTick.addEventListener("change", () => {
+      for (const [position, checkbox] of rowChecks.entries()) {
+        checkbox.checked = groupTick.checked;
+        const { path } = group.items[position];
+        if (groupTick.checked) {
+          ticked.add(path);
+        } else {
+          ticked.delete(path);
+        }
+      }
+      saveTicks();
+      updateMeter();
+      refreshGroupTick();
+      // a group you have just declared read folds away, and comes back if you
+      // change your mind
+      details.open = !groupTick.checked;
+    });
+
+    refreshGroupTick();
+
+    body.append(blurb, rows);
+    details.append(summary, body);
+    return details;
+  };
+
+  await loadNotes();
+
+  const groupsElement = document.getElementById("groups");
+  GROUPS.forEach((group, index) => groupsElement.append(groupElement(group, index)));
+
+  const handoff = document.getElementById("handoff");
+  handoff.hidden = SERVER === undefined;
+  handoff.addEventListener("click", async () => {
+    const response = await fetch("/handoff", {
+      method: "POST",
+      headers: { "Content-Type": "application/json", "X-Review-Token": SERVER.token },
+      body: JSON.stringify(notes),
+    }).catch(() => undefined);
+    const result = response?.ok ? await response.json() : undefined;
+    handoff.textContent =
+      result === undefined ? "Send failed"
+      : result.count === 0 ? "No notes yet"
+      : `Sent ${result.count} — ask the agent to pick them up`;
+    setTimeout(() => {
+      handoff.textContent = "Send notes to agent";
+    }, 4_000);
+  });
+
+  document.getElementById("copyNotes").addEventListener("click", async (event) => {
+    const markdown = notesAsMarkdown();
+    const button = event.currentTarget;
+    if (markdown === "") {
+      button.textContent = "No notes yet";
+    } else {
+      await navigator.clipboard.writeText(markdown).catch(() => undefined);
+      button.textContent = "Notes copied";
+    }
+    setTimeout(() => {
+      button.textContent = "Copy notes";
+    }, 1_200);
+  });
+
+  const totals = Object.values(STATS).reduce(
+    ([added, removed], [a, r]) => [added + a, removed + r],
+    [0, 0],
+  );
+  const facts = [
+    `${total} files`,
+    `+${totals[0]} −${totals[1]} lines`,
+    ...(META.facts ?? []),
+  ];
+  document.getElementById("facts").innerHTML = facts
+    .map((fact) => `<li>${fact}</li>`)
+    .join("");
+
+  const setAllDiffs = (open) => {
+    for (const setOpen of diffToggles) {
+      setOpen(open);
+    }
+  };
+
+  document.getElementById("expand").addEventListener("click", () => setAllDiffs(true));
+  document.getElementById("collapse").addEventListener("click", () => setAllDiffs(false));
+
+  document.getElementById("reset").addEventListener("click", () => {
+    ticked = new Set();
+    saveTicks();
+    for (const checkbox of document.querySelectorAll('input[type="checkbox"]')) {
+      checkbox.checked = false;
+      checkbox.indeterminate = false;
+    }
+    updateMeter();
+  });
+
+  /* the page follows the working tree: an agent acting on a note shows up here
+     within a couple of seconds, in the diff and in the note's own thread */
+  const agentSaid = (state) =>
+    Object.entries(state.notes).flatMap(([path, forPath]) =>
+      forPath.flatMap((note) => {
+        const was = messagesOf(noteAt(path, note.line)).length;
+        return messagesOf(note)
+          .slice(was)
+          .filter((message) => message.from === "agent")
+          .map((message) => ({ path, line: note.line, message }));
+      }),
+    );
+
+  let missedPolls = 0;
+
+  const pollState = async () => {
+    const paths = [...liveEditors.keys()];
+    const response = await fetch("/state", {
+      method: "POST",
+      headers: { "Content-Type": "application/json", "X-Review-Token": SERVER.token },
+      body: JSON.stringify({ paths }),
+    }).catch(() => undefined);
+
+    if (response?.ok !== true) {
+      missedPolls += 1;
+      // the server can be restarted under an open tab; say so rather than
+      // going quietly inert, which looks exactly like "nothing is happening"
+      if (missedPolls === 3) {
+        toast("lost the review server — saves and notes won't land. Reload this page", "warn");
+      }
+      return;
+    }
+    if (missedPolls >= 3) {
+      toast("back in touch with the review server", "done");
+    }
+    missedPolls = 0;
+
+    const state = await response.json();
+
+    if (JSON.stringify(state.notes) !== JSON.stringify(notes)) {
+      for (const { path, line, message } of agentSaid(state)) {
+        toast(`${message.asking ? "claude asks" : "claude"} on ${path}:${line} — ${message.text}`);
+      }
+      notes = state.notes;
+      for (const editor of liveEditors.values()) {
+        editor.refreshNotes();
+      }
+    }
+
+    for (const [path, file] of Object.entries(state.files)) {
+      const editor = liveEditors.get(path);
+      if (editor !== undefined && file.sha !== editor.sha()) {
+        const fresh = await fetch("/file", {
+          method: "POST",
+          headers: { "Content-Type": "application/json", "X-Review-Token": SERVER.token },
+          body: JSON.stringify({ path }),
+        })
+          .then((result) => result.json())
+          .catch(() => undefined);
+        if (fresh !== undefined) {
+          editor.applyFromDisk(fresh);
+          toast(`${path} updated — diff refreshed`, "done");
+        }
+      }
+    }
+  };
+
+  if (SERVER !== undefined) {
+    setInterval(pollState, 2_000);
+  }
+
+  // the group headings stick below the page header, whatever height it wraps to
+  const header = document.querySelector("header.top");
+  const measureHeader = () =>
+    document.documentElement.style.setProperty(
+      "--header-height",
+      `${header.getBoundingClientRect().height}px`,
+    );
+  new ResizeObserver(measureHeader).observe(header);
+  measureHeader();
+
+  updateMeter();
+</script>
