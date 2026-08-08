@@ -16,6 +16,7 @@ import {
 } from "../../itemAppearances/adjustNearCornerForCameraAngle";
 import {
   type ItemRenderContext,
+  itemRenderingStale,
   type ItemTickContext,
 } from "../../ItemRenderContexts";
 import {
@@ -113,8 +114,6 @@ export class NearCornerOffsetRenderer<
    * construction; re-applied reactively when the discrete angle changes mid-life)
    */
   #appliedNearCornerAngle: Xy;
-  /** whether the last tick ran during a rotation - grants one settle update */
-  #tickedMidRotation = false;
 
   constructor(
     renderContext: ItemRenderContext<T>,
@@ -195,17 +194,11 @@ export class NearCornerOffsetRenderer<
   tick(tickContext: ItemTickContext) {
     this.#wrappedRenderer.tick(tickContext);
 
-    const midRotation = !isAtQuarterAngle(
-      this.renderContext.general.cameraAngle,
-    );
-    if (
-      tickContext.movedOrResizedItems.has(this.renderContext.item) ||
-      midRotation ||
-      this.#tickedMidRotation
-    ) {
-      this.#updateOffset(midRotation);
+    if (itemRenderingStale(this.renderContext.item, tickContext)) {
+      this.#updateOffset(
+        !isAtQuarterAngle(this.renderContext.general.cameraAngle),
+      );
     }
-    this.#tickedMidRotation = midRotation;
   }
 
   destroy(): void {

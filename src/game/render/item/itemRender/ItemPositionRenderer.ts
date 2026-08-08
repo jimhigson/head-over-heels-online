@@ -5,6 +5,7 @@ import { assignRoundedXy } from "../../../../utils/pixi/assignRoundedXy";
 import { isAtQuarterAngle } from "../../../../utils/vectors/cameraAngleVectors";
 import {
   type ItemRenderContext,
+  itemRenderingStale,
   type ItemTickContext,
 } from "../../ItemRenderContexts";
 import {
@@ -31,11 +32,6 @@ export class ItemPositionRenderer<
   output: Container;
   readonly renderContext: ItemRenderContext<T>;
   #wrappedRenderer: ItemChainPixiRenderer<T>;
-  /**
-   * whether the last tick ran during a rotation - grants one further update
-   * after a turn ends, snapping the item to its exact discrete-angle position
-   */
-  #tickedMidRotation = false;
 
   constructor(
     renderContext: ItemRenderContext<T>,
@@ -84,21 +80,9 @@ export class ItemPositionRenderer<
   tick(tickContext: ItemTickContext) {
     this.#wrappedRenderer.tick(tickContext);
 
-    const midRotation = !isAtQuarterAngle(
-      this.renderContext.general.cameraAngle,
-    );
-    if (
-      tickContext.movedOrResizedItems.has(this.renderContext.item) ||
-      // mid-rotation every item re-projects along the continuous θ(t),
-      // whether or not it moved in-world:
-      midRotation ||
-      // run once more after the render angle settles back onto a quarter angle:
-      // this snaps every item to its exact discrete-angle position:
-      this.#tickedMidRotation
-    ) {
+    if (itemRenderingStale(this.renderContext.item, tickContext)) {
       this.#updatePosition();
     }
-    this.#tickedMidRotation = midRotation;
   }
 
   destroy(): void {

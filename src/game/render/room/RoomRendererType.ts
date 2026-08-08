@@ -17,7 +17,7 @@ export type RoomRendererType<
   RoomItemId extends string,
 > = Renderer<
   RoomRenderContext<RoomId, RoomItemId>,
-  RoomTickContext<RoomId, RoomItemId>,
+  RoomTickContext,
   SetRequired<SoundAndGraphicsOutput, "graphics">
 >;
 
@@ -31,6 +31,6 @@ export type RoomRendererTypeInGameOnly<
   RoomItemId extends string,
 > = Renderer<
   RoomRenderContextInGame<RoomId, RoomItemId>,
-  RoomTickContext<RoomId, RoomItemId>,
+  RoomTickContext,
   SetRequired<SoundAndGraphicsOutput, "graphics">
 >;

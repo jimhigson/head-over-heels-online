@@ -2,6 +2,7 @@ import { type Xyz } from "../utils/vectors/vectors";
 import { type Disappear } from "./Disappear";
 import { type ItemInPlayType, type SwitchSetting } from "./ItemInPlay";
 import { type ItemStateMap } from "./ItemStateMap";
+import { type Progression } from "./RoomState";
 import { type StoodOnBy } from "./StoodOnBy";
 import { type TimedRelationWithOtherItemOnAxis } from "./TimedRelationWithOtherItem";
 
@@ -16,6 +17,15 @@ export type BaseItemState<RoomItemId extends string = string> = {
    * has a reference to it (like, we just created the vector object)
    */
   position: Readonly<Xyz>;
+
+  /**
+   * the {@link RoomState.progression} count when this item last moved,
+   * resized, or entered the room - consumers (rendering, sound) compare it
+   * against the progression they last handled to see whether the item has
+   * changed since. Backfilled to 0 for items loaded from saves that predate
+   * it
+   */
+  movedOrResizedOnProgression: Progression;
 
   /**
    * The item will be removed from the room after the room it is in has more than this roomTime.

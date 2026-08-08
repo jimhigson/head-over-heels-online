@@ -1,5 +1,8 @@
 import { type FreeItemTypes } from "../../../game/physics/itemPredicates";
-import { type ItemTickContext } from "../../../game/render/ItemRenderContexts";
+import {
+  itemMovedSinceRendered,
+  type ItemTickContext,
+} from "../../../game/render/ItemRenderContexts";
 import { keysIter } from "../../../utils/entries";
 import { isEmpty } from "../../../utils/iterators/isEmpty";
 import { neverTime } from "../../../utils/neverTime";
@@ -115,7 +118,7 @@ export class FreeItemSoundRenderer implements ItemSoundRenderer<FreeItemTypes> {
   }
 
   tick(
-    { lastRenderRoomTime, movedOrResizedItems }: ItemTickContext,
+    tickContext: ItemTickContext,
     /**
      * if given, the pushed sound will not play - this is because we can't distinguish between being
      * pushed and the item propelling itself, so if it is moving itself (and doing so makes a sound)
@@ -157,7 +160,7 @@ export class FreeItemSoundRenderer implements ItemSoundRenderer<FreeItemTypes> {
         // standing on something:
         standingOnItemId !== null &&
         // the thing we are standing on - we collided with since the room last rendered:
-        roomTimeCollidedWith > (lastRenderRoomTime ?? neverTime) &&
+        roomTimeCollidedWith > (tickContext.lastRenderRoomTime ?? neverTime) &&
         collidedWith[standingOnItemId];
 
       this.#standingOnBracketedSound(landed);
@@ -165,7 +168,7 @@ export class FreeItemSoundRenderer implements ItemSoundRenderer<FreeItemTypes> {
 
     if (this.#collisionBracketedSound !== undefined) {
       const collidedWithSomething =
-        roomTimeCollidedWith > (lastRenderRoomTime ?? neverTime) &&
+        roomTimeCollidedWith > (tickContext.lastRenderRoomTime ?? neverTime) &&
         !isEmpty(keysIter(collidedWith));
 
       this.#collisionBracketedSound(collidedWithSomething);
@@ -181,7 +184,7 @@ export class FreeItemSoundRenderer implements ItemSoundRenderer<FreeItemTypes> {
         standingOnItemId !== null &&
         playSoundStandingOnCheck(actedOnBy, standingOnItemId) &&
         // must be moving(!)
-        movedOrResizedItems.has(item);
+        itemMovedSinceRendered(item, tickContext);
 
       this.#pushedBracketedSound(beingPushed);
     }

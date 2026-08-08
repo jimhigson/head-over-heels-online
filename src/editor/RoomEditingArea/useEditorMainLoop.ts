@@ -2,8 +2,6 @@ import { Container, Graphics, type Renderer, Ticker } from "pixi.js";
 import { type RefObject } from "preact";
 import { useEffect } from "preact/hooks";
 
-import { type MovedOrResizedItems } from "../../game/mainLoop/progressGameState";
-import { isSpatial } from "../../game/physics/itemPredicates";
 import { type GeneralRenderContext } from "../../game/render/room/RoomRenderContexts";
 import { RoomRenderer } from "../../game/render/room/RoomRenderer";
 import { paletteBlockstack } from "../../sprites/palette/spritesheetPalette";
@@ -11,14 +9,11 @@ import { spritesheetMetas } from "../../sprites/spritesheet/spritesheetData/spri
 import { type Spritesheets } from "../../sprites/spritesheet/Spritesheets";
 import { type Upscale } from "../../store/slices/upscale/Upscale";
 import { store } from "../../store/store";
-import { valuesIter } from "../../utils/entries";
 import { useEditorRoomState } from "../EditorRoomStateProvider";
 import {
   type EditorRoomId,
-  type EditorRoomItemId,
   type EditorRoomRenderer,
   type EditorRoomState,
-  type EditorUnionOfAllItemInPlayTypes,
 } from "../editorTypes";
 import { selectEditorCameraAngle } from "../slice/levelEditorSlice";
 import { useEditorRoomRenderDimensions } from "./editorRoomRenderDimensions";
@@ -160,16 +155,8 @@ export const useEditorMainLoop = (
         console.warn("room renderer does not have the current room");
       }
 
-      const considerAllItemsHaveMoved: MovedOrResizedItems<
-        EditorRoomId,
-        EditorRoomItemId
-      > = new Set(
-        (
-          valuesIter(
-            roomState.items,
-          ) as IterableIterator<EditorUnionOfAllItemInPlayTypes>
-        ).filter(isSpatial),
-      );
+      // room doesn't have progression assigned, movedOrResizedOnProgression
+      // doesn't get set here - items are re-added on changes, so nothing ever needs to re-draw
 
       // some animations (ie, cyberman bob) depend on the roomTime
       // incrementing between frames
@@ -177,10 +164,6 @@ export const useEditorMainLoop = (
 
       roomRenderer.tick({
         deltaMS,
-        // TODO: probably needs this to be the real set of moved items, like a 'proper' main loop,
-        // or this might be fast enough given the level editor doesn't need to run as smoothly
-        // as the actual game
-        movedOrResizedItems: considerAllItemsHaveMoved,
         // no fps display in the editor - nothing records frame timings:
         timingRecord: undefined,
       });

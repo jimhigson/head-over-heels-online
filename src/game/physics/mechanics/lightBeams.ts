@@ -7,7 +7,11 @@ import {
 import { type LightBeamEnd } from "../../../model/ItemStateMap";
 import { typePrefix } from "../../../model/json/typePrefix";
 import { reflectedFacingVector } from "../../../model/MirrorOrientation";
-import { roomSpatialIndexKey, type RoomState } from "../../../model/RoomState";
+import {
+  type Progression,
+  roomSpatialIndexKey,
+  type RoomState,
+} from "../../../model/RoomState";
 import { emptyArray } from "../../../utils/empty";
 import {
   type AxisXy,
@@ -356,9 +360,9 @@ export const tickLampLightBeams = <
         updateItemPosition(room, existing, segment.position);
       } else if (aabbChanged) {
         // a beam growing in its positive direction lengthens without its
-        // min corner moving - the spatial index covers position+aabb, so
-        // it must be reindexed for aabb-only changes too, or the index
-        // under-covers the beam's new tip:
+        // min corner moving
+        existing.state.movedOrResizedOnProgression =
+          ++room.progression as Progression;
         room[roomSpatialIndexKey].updateItemSpatialIndex(existing);
       }
       beam = existing;

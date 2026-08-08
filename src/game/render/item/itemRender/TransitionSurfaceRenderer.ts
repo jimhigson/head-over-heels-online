@@ -29,6 +29,7 @@ import { redAsAlphaFilter } from "../../filters/redAsAlphaFilter";
 import { nearCornerOffsetWorldXyz } from "../../itemAppearances/adjustNearCornerForCameraAngle";
 import {
   type ItemRenderContext,
+  itemRenderingStale,
   type ItemTickContext,
 } from "../../ItemRenderContexts";
 import {
@@ -218,11 +219,6 @@ export class TransitionSurfaceRenderer<
    * mid-warp, so a mesh built for the old angle must be rebuilt
    */
   #cuboidMeshLayerAngle: undefined | Xy;
-  /**
-   * whether the last tick ran during a rotation - grants one further
-   * update after a turn ends (see the gate in {@link tick})
-   */
-  #tickedMidRotation = false;
 
   constructor(
     renderContext: ItemRenderContext<T>,
@@ -435,19 +431,7 @@ export class TransitionSurfaceRenderer<
   tick(tickContext: ItemTickContext) {
     this.#wrappedRenderer.tick(tickContext);
 
-    const midRotation = !isAtQuarterAngle(
-      this.renderContext.general.cameraAngle,
-    );
-
-    if (
-      tickContext.movedOrResizedItems.has(this.renderContext.item) ||
-      // mid-rotation every item re-projects along the continuous θ(t),
-      // whether or not it moved in-world:
-      midRotation ||
-      // run once more after the render angle settles back onto a quarter
-      // angle: this tears down any cuboid warp mesh (restoring the real art):
-      this.#tickedMidRotation
-    ) {
+    if (itemRenderingStale(this.renderContext.item, tickContext)) {
       this.#updateWarp();
     }
 
@@ -455,8 +439,6 @@ export class TransitionSurfaceRenderer<
     // surface the masks wrap; the fronts' surfaces are already updated for
     // this frame (broken fronts tick first):
     this.#tickMasks();
-
-    this.#tickedMidRotation = midRotation;
   }
 
   /**

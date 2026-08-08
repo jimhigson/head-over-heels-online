@@ -11,7 +11,6 @@ import {
 } from "../collision/aabbCollision";
 import { updateItemPosition } from "../gameState/mutators/updateItemPosition";
 import { type FreeItem, isFreeItem, isSolid } from "../physics/itemPredicates";
-import { type MovedOrResizedItems } from "./progressGameState";
 
 const logSnapping = 0;
 
@@ -60,11 +59,6 @@ export const snapInactiveItemsToPixelGrid = <
   RoomItemId extends string,
 >(
   room: RoomState<RoomId, RoomItemId>,
-  /**
-   * the items we already know moved - any that this function snaps
-   * will also be added to the set
-   */
-  movedOrResizedItems: MovedOrResizedItems<RoomId, RoomItemId>,
 ) => {
   for (const item of roomItemsIterable(room.items)) {
     if (!isFreeItem(item)) {
@@ -118,7 +112,7 @@ export const snapInactiveItemsToPixelGrid = <
       continue;
     }
 
+    // stamps the item as moved via the position-update funnel:
     updateItemPosition(room, item, snappedPosition);
-    movedOrResizedItems.add(item);
   }
 };

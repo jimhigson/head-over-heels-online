@@ -24,7 +24,6 @@ import {
   type SpriteOption,
 } from "../../store/slices/userSettings/userSettingsSlice";
 import { store } from "../../store/store";
-import { emptySet } from "../../utils/empty";
 import { validateSceneGraph } from "../../utils/pixi/validateSceneGraph";
 import { createSerialisableErrors } from "../../utils/redux/createSerialisableErrors";
 import { type Xy } from "../../utils/vectors/vectors";
@@ -331,8 +330,9 @@ export class MainLoop<RoomId extends string> {
     // note that progressing the game state can change/reload the room,
     // so we need to tick physics considering recreating the room renderer
     timingRecord?.startPhysics();
-    const movedOrResizedItems =
-      deltaMS === 0 ? emptySet : this.#physicsTicker(this.#gameState, deltaMS);
+    if (deltaMS !== 0) {
+      this.#physicsTicker(this.#gameState, deltaMS);
+    }
     timingRecord?.endPhysics();
 
     // read after the rotate-input read above, so a rotation input this frame
@@ -538,7 +538,7 @@ export class MainLoop<RoomId extends string> {
 
     // the room renderer runs even while paused
     if (this.#roomRenderer !== undefined) {
-      this.#roomRenderer.tick({ movedOrResizedItems, deltaMS, timingRecord });
+      this.#roomRenderer.tick({ deltaMS, timingRecord });
     }
 
     timingRecord?.endUpdateSceneGraph();

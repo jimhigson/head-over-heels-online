@@ -1,6 +1,7 @@
 import { type UnionOfAllItemInPlayTypes } from "../../../model/ItemInPlay";
 import { type RoomJson, roomJsonItemsIterable } from "../../../model/RoomJson";
 import {
+  type Progression,
   roomItemsIterable,
   roomSpatialIndexKey,
   type RoomState,
@@ -122,6 +123,7 @@ export const loadRoom = <RoomId extends string, RoomItemId extends string>({
     roomJson,
     items,
     roomTime: 0,
+    progression: 0 as Progression,
     [roomSpatialIndexKey]: spatialIndex,
   };
 
