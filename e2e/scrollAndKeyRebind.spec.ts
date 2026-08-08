@@ -1,6 +1,9 @@
 import { expect, type Page } from "@playwright/test";
 
-import { dispatchKeyPress } from "./testUtils/gameInteractions";
+import {
+  dispatchKeyPress,
+  waitForAssigningInput,
+} from "./testUtils/gameInteractions";
 import { osSlowness } from "./testUtils/infrastructure";
 import { formatProjectName } from "./testUtils/logging";
 import {
@@ -120,6 +123,7 @@ test.describe("key rebinding and scroll pickup", () => {
 
     await test.step("Rebind down to '6' via the assignment UI", async () => {
       await navigateToSubmenu(page, "down", formattedName);
+      await waitForAssigningInput(page);
       await dispatchKeyPress(page, "6", "Digit6");
       await page.waitForTimeout(200 * osSlowness);
       await dispatchKeyPress(page, "Escape", "Escape");
