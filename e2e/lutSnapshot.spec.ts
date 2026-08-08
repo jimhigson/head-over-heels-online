@@ -1,7 +1,8 @@
-import { expect, test } from "@playwright/test";
+import { expect } from "@playwright/test";
 
 import { progressLogHeader } from "./testUtils/logging";
 import { setupE2ePage } from "./testUtils/pageSetup";
+import { test } from "./testUtils/test";
 
 test.describe("LUT Texture Visualization", () => {
   test.beforeEach(async ({ page }) => {

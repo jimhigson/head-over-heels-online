@@ -1,4 +1,4 @@
-import { expect, test } from "@playwright/test";
+import { expect } from "@playwright/test";
 
 import { clickCheat, dispatchKeyPress } from "./testUtils/gameInteractions";
 import { getCurrentRoomId } from "./testUtils/gameStateQueries";
@@ -11,6 +11,7 @@ import {
   waitForDialog,
 } from "./testUtils/menuNavigation";
 import { setupE2ePage } from "./testUtils/pageSetup";
+import { test } from "./testUtils/test";
 
 test.describe("quit-game flow from in-game main menu", () => {
   test.setTimeout(60_000 * osSlowness);

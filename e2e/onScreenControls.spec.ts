@@ -1,4 +1,4 @@
-import { expect, test } from "@playwright/test";
+import { expect } from "@playwright/test";
 
 import {
   getPlayableZ,
@@ -11,6 +11,7 @@ import {
   withOnScreenButtonHeld,
 } from "./testUtils/onScreenControls";
 import { setupE2ePage } from "./testUtils/pageSetup";
+import { test } from "./testUtils/test";
 
 test.describe("on-screen control buttons drive the game in touch mode", () => {
   test.setTimeout(120_000 * osSlowness);

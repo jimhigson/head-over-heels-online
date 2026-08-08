@@ -1,9 +1,10 @@
-import { expect, type Page, test } from "@playwright/test";
+import { expect, type Page } from "@playwright/test";
 
 import { type CameraRotationDirection } from "../src/game/mainLoop/tickCameraTransition";
 import { dispatchKeyPress } from "./testUtils/gameInteractions";
 import {
   setZeroGameSpeed,
+  waitForGameReady,
   waitForRoomRenderEvent,
 } from "./testUtils/gameStateQueries";
 import { restrictToCameraRotationProjects } from "./testUtils/infrastructure";
@@ -14,6 +15,7 @@ import {
 } from "./testUtils/menuNavigation";
 import { setupE2ePage } from "./testUtils/pageSetup";
 import { roomScreenshotOptions } from "./testUtils/screenshots";
+import { test } from "./testUtils/test";
 
 restrictToCameraRotationProjects();
 
@@ -115,6 +117,7 @@ test("mid-return-turn draws the masked cyclic pair whole: blacktooth61", async (
     );
   }).toPass({ timeout: 20_000 });
 
+  await waitForGameReady(page);
   await setZeroGameSpeed(page);
 
   const renderEvent = waitForRoomRenderEvent(
@@ -169,6 +172,7 @@ for (const { room, character, turns } of identityCases) {
       }).toPass({ timeout: 20_000 });
     }
 
+    await waitForGameReady(page);
     await setZeroGameSpeed(page);
 
     const renderEvent = waitForRoomRenderEvent(

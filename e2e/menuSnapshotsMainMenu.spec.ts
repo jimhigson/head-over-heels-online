@@ -1,12 +1,9 @@
-import { test } from "@playwright/test";
-
 import { deploymentTypes } from "../src/utils/detectEnv/detectDeploymentType";
 import { type ScreenshotTestOptions } from "./ScreenshotTestOptions";
 import { osSlowness, retryWithRecovery } from "./testUtils/infrastructure";
 import {
   elapsed,
   formatProjectName,
-  forwardBrowserConsoleToNodeConsole,
   logSelectorExistence,
   logUpscale,
 } from "./testUtils/logging";
@@ -25,6 +22,7 @@ import {
   testTimeout,
 } from "./testUtils/screenshots";
 import { setSpriteOption } from "./testUtils/setSpriteOption";
+import { test } from "./testUtils/test";
 
 for (const spriteOption of enabledSpriteModes) {
   test.describe(`Menu Visual Snapshots ${JSON.stringify(spriteOption)}`, () => {
@@ -50,8 +48,6 @@ for (const spriteOption of enabledSpriteModes) {
         test.setTimeout(testTimeout);
 
         const formattedName = formatProjectName(testInfo.project.name);
-
-        forwardBrowserConsoleToNodeConsole(page, formattedName);
 
         await test.step("Navigate to home page with deployment override and wait for main menu", async () => {
           await retryWithRecovery({

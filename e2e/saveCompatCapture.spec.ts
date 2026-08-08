@@ -1,9 +1,9 @@
-import { test } from "@playwright/test";
 import { readFileSync } from "node:fs";
 
 import { captureSaveFixtures } from "./testUtils/captureSaveFixtures";
 import { osSlowness } from "./testUtils/infrastructure";
 import { setupE2ePage } from "./testUtils/pageSetup";
+import { test } from "./testUtils/test";
 
 /**
  * captures the current version's save-game fixtures into

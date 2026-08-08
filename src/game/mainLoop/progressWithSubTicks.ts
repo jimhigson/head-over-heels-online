@@ -1,5 +1,3 @@
-import { Ticker } from "pixi.js";
-
 import { type CharacterName } from "../../model/modelTypes";
 import { playablesInRoom, type RoomStateItems } from "../../model/RoomState";
 import { emptyObject } from "../../utils/empty";
@@ -57,12 +55,7 @@ export const progressWithSubTicks =
       }
     }
 
-    const tickerSpeed = Ticker.shared.speed;
-    const numberOfSubTicks =
-      // snapshot tests run at a gamespeed of 0 - in any case, at this speed nothing is happening
-      // so one tick is enough. Otherwise, it would run progressing at steps of the maxStepDeltaMs
-      // which at the reduced frame rate for snapshot tests is a lot of frames
-      tickerSpeed === 0 ? 1 : Math.max(1, Math.ceil(deltaMS / maxStepDeltaMs));
+    const numberOfSubTicks = Math.max(1, Math.ceil(deltaMS / maxStepDeltaMs));
 
     const stepDeltaMs = deltaMS / numberOfSubTicks;
 

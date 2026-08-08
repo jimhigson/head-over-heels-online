@@ -1,10 +1,11 @@
-import { expect, type Page, test } from "@playwright/test";
+import { expect, type Page } from "@playwright/test";
 
 import { allItemsTestRoomCampaign } from "./fixtures/allItemsTestRoom";
 import { bootPlaytestCampaign } from "./testUtils/bootPlaytestCampaign";
 import { setupE2ePage } from "./testUtils/pageSetup";
 import { roomScreenshotOptions } from "./testUtils/screenshots";
 import { setSpriteOption } from "./testUtils/setSpriteOption";
+import { test } from "./testUtils/test";
 
 /**
  * guards the doughnutted spritesheet variant's palette: a monster hit by a

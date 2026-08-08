@@ -1,4 +1,3 @@
-import { test } from "@playwright/test";
 import chalk from "chalk";
 
 import { type goToSubmenu } from "../src/store/slices/gameMenus/gameMenusSlice";
@@ -9,7 +8,6 @@ import { osSlowness, retryWithRecovery } from "./testUtils/infrastructure";
 import {
   elapsed,
   formatProjectName,
-  forwardBrowserConsoleToNodeConsole,
   logSelectorExistence,
   logUpscale,
 } from "./testUtils/logging";
@@ -28,6 +26,7 @@ import {
   testTimeout,
 } from "./testUtils/screenshots";
 import { setSpriteOption } from "./testUtils/setSpriteOption";
+import { test } from "./testUtils/test";
 
 for (const spriteOption of enabledSpriteModes) {
   test.describe(`Menu Visual Snapshots ${JSON.stringify(spriteOption)}`, () => {
@@ -47,8 +46,6 @@ for (const spriteOption of enabledSpriteModes) {
       test.setTimeout(testTimeout);
 
       const formattedName = formatProjectName(testInfo.project.name);
-
-      forwardBrowserConsoleToNodeConsole(page, formattedName);
 
       console.log(
         `${formattedName} ${elapsed()} starting in game dialogs snapshot test`,

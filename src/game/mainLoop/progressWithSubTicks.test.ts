@@ -1,4 +1,3 @@
-import { Ticker } from "pixi.js";
 import { afterEach, beforeEach, expect, test, vi } from "vitest";
 
 import { setUpBasicGame, type TestRoomId } from "../../_testUtils/basicRoom";
@@ -73,8 +72,6 @@ afterEach(() => {
 });
 
 test("calls progress only once if below maxStepDeltaMs", () => {
-  vi.spyOn(Ticker.shared, "speed", "get").mockReturnValue(1);
-
   const mockProgress = vi
     .fn<ProgressGameState<TestRoomId, string>>()
     .mockReturnValue(mockMovedOrResizedItemsSet(["a"]));
@@ -89,8 +86,6 @@ test("calls progress only once if below maxStepDeltaMs", () => {
 });
 
 test("splits into multiple steps and combines moved items", () => {
-  vi.spyOn(Ticker.shared, "speed", "get").mockReturnValue(1);
-
   const mockProgress = vi
     .fn<ProgressGameState<TestRoomId, string>>()
     .mockReturnValueOnce(mockMovedOrResizedItemsSet(["a"]))
@@ -108,8 +103,6 @@ test("splits into multiple steps and combines moved items", () => {
 });
 
 test("filters out items that are removed by the end of substeps", () => {
-  vi.spyOn(Ticker.shared, "speed", "get").mockReturnValue(1);
-
   const mockProgress = vi
     .fn<ProgressGameState<TestRoomId, string>>()
     .mockReturnValueOnce(mockMovedOrResizedItemsSet(["a"]))
@@ -125,8 +118,6 @@ test("filters out items that are removed by the end of substeps", () => {
 });
 
 test("handles fractional steps correctly", () => {
-  vi.spyOn(Ticker.shared, "speed", "get").mockReturnValue(1);
-
   const mockProgress = vi
     .fn<ProgressGameState<TestRoomId, string>>()
     .mockReturnValue(mockMovedOrResizedItemsSet(["a"]));
