@@ -3,6 +3,7 @@ import { describe, expect, test } from "vitest";
 import { blockSizePx } from "../../../game/physics/mechanicsConstants";
 import { allCameraAngles } from "../../../utils/vectors/rotateXy";
 import { type Xyz } from "../../../utils/vectors/vectors";
+import { type EditorRoomItemId } from "../../editorTypes";
 import {
   blockJsonItemId,
   blockPositionBlocks,
@@ -15,6 +16,9 @@ import {
 import { findPointerPointingAt } from "./findPointerPointingAt";
 
 const cameraAngleBase = { x: 1, y: 0 };
+
+/** these rooms have no uncommitted previews in them */
+const noPreviewedItems = new Set<EditorRoomItemId>();
 
 /** the world position expected when pointing at the centre of the block's top */
 const topFacePosition: Xyz = {
@@ -39,6 +43,7 @@ describe("at the base camera angle", () => {
         1,
         cameraAngleBase,
         roomRenderer,
+        noPreviewedItems,
       ).world,
     ).toMatchObject({
       itemId: blockJsonItemId,
@@ -56,6 +61,7 @@ describe("at the base camera angle", () => {
         1,
         cameraAngleBase,
         roomRenderer,
+        noPreviewedItems,
       ).world,
     ).toBeUndefined();
   });
@@ -75,6 +81,7 @@ describe("at every camera angle", () => {
           1,
           cameraAngle,
           { renderBoxes: renderBoxesForRoom(room, cameraAngle) },
+          noPreviewedItems,
         ).world,
       ).toMatchObject({
         itemId: blockJsonItemId,
@@ -101,6 +108,7 @@ describe("at every camera angle", () => {
             1,
             cameraAngle,
             roomRenderer,
+            noPreviewedItems,
           ).world,
         ).toMatchObject({
           itemId: blockJsonItemId,
@@ -122,6 +130,7 @@ describe("at every camera angle", () => {
           1,
           cameraAngle,
           { renderBoxes: renderBoxesForRoom(room, cameraAngle) },
+          noPreviewedItems,
         ).world,
       ).toBeUndefined();
     },

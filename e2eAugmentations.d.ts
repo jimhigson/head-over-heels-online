@@ -1,5 +1,6 @@
 import { type Application } from "pixi.js";
 
+import { type EditorE2eApi } from "./src/editor/RoomEditingArea/useEditorE2eApi";
 import { type GameApi } from "./src/game/GameApi";
 import { type ItemZGraph } from "./src/game/render/ItemRenderContexts";
 import { type IndividualCharacterName } from "./src/model/modelTypes";
@@ -11,6 +12,9 @@ declare global {
     _e2e_store?: AppStore;
     // put the gameApi on the window for e2e tests to use
     _e2e_gamePageGameAi?: GameApi<string>;
+    // the level editor's handle for e2e tests: converts world positions to page
+    // coordinates, and reports what the pointer resolved to
+    _e2e_editor?: EditorE2eApi;
     // put the pixi application on the window for e2e tests to use
     _e2e_pixiApplication?: Application;
     // the live draw-order graph of the most recently created room renderer,

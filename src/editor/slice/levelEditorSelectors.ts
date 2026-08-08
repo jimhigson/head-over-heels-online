@@ -1,65 +1,17 @@
 import { createSelector } from "@reduxjs/toolkit";
+import { produce } from "immer";
+import { type ValueOf } from "type-fest";
 
-import { roomRenderExtent } from "../../game/render/room/roomRenderExtent";
 import { roomVerticalLink } from "../../model/RoomJson";
-import { spritesheetMetas } from "../../sprites/spritesheet/spritesheetData/spritesheetMetaData";
 import { type EditorRootState } from "../../store/store";
+import { keysIter, objectEntriesIter } from "../../utils/entries";
 import {
   type EditorJsonItemUnion,
   type EditorRoomId,
   type EditorRoomItemId,
   type EditorRoomJson,
-  type EditorRoomState,
 } from "../editorTypes";
 import { type LevelEditorState } from "./levelEditorSlice";
-import { loadEditorRoom } from "./loadEditorRoom";
-
-const selectEditorCameraAngleFromRoot = (state: EditorRootState) =>
-  state.levelEditor.cameraAngle;
-
-/**
- * Selector that loads the current room state from the JSON. The room model is
- * camera-angle-free, so this only recomputes when the room JSON changes.
- */
-export const selectEditorRoomState = createSelector(
-  [
-    (state: EditorRootState) =>
-      selectCurrentRoomJsonFromLevelEditorState(state.levelEditor),
-  ],
-  (roomJson): EditorRoomState => loadEditorRoom(roomJson),
-);
-
-export type RenderedRoomDimensions = {
-  l: number;
-  r: number;
-  t: number;
-  b: number;
-  w: number;
-  h: number;
-};
-
-export const selectEditorRoomRenderDimensions = createSelector(
-  [selectEditorRoomState, selectEditorCameraAngleFromRoot],
-  (editorRoomStateWithPreviews, cameraAngle): RenderedRoomDimensions => {
-    const {
-      floors: { edgeLeftX: l, edgeRightX: r, bottomEdgeY: b },
-      allItems: { topEdgeY: t },
-    } = roomRenderExtent(
-      editorRoomStateWithPreviews,
-      spritesheetMetas.BlockStack,
-      cameraAngle,
-    );
-    // simplify to the x/y/w/h rectangle to inform the editor where the rendering is:
-    return {
-      l,
-      r,
-      w: r - l,
-      b,
-      t,
-      h: b - t,
-    };
-  },
-);
 
 export const selectCursorRoom = (state: LevelEditorState) => state.cursorRoom;
 
@@ -104,3 +56,97 @@ export const selectItemIsSelectedInLevelEditorState = (
   state: LevelEditorState,
   itemId: EditorRoomItemId,
 ) => state.selectedJsonItemIds.includes(itemId);
+
+/**
+ * the json ids of items that exist only as an uncommitted preview - ie, the
+ * item tool's ghost under the cursor, which the room is rendered with but which
+ * has not been added to the room proper. Previewed edits to items that already
+ * exist (a drag, a nudge) are not in here: those items are still part of the
+ * room, just in a different place
+ */
+export const selectPreviewOnlyJsonItemIds = createSelector(
+  [
+    (state: EditorRootState) => state.levelEditor.pendingEdits?.edits,
+    (state: EditorRootState) =>
+      selectCurrentRoomJsonFromLevelEditorState(state.levelEditor),
+  ],
+  (pendingEdits, committedRoomJson): ReadonlySet<EditorRoomItemId> =>
+    new Set(
+      keysIter(
+        (pendingEdits ?? {}) as Partial<Record<EditorRoomItemId, unknown>>,
+      ).filter(
+        (jsonItemId) => committedRoomJson.items[jsonItemId] === undefined,
+      ),
+    ),
+);
+
+/** the room the undo history is being scrubbed to, while hovering it */
+const selectHoveredUndoRoom = (
+  state: EditorRootState,
+): EditorRoomJson | undefined => {
+  const { hoveredUndoIndex, history } = state.levelEditor;
+  const roomId = selectCursorRoomId(state.levelEditor);
+  if (hoveredUndoIndex === 0) {
+    return undefined;
+  }
+  const roomHistory = history[roomId];
+  if (roomHistory === undefined) {
+    throw new Error(
+      `hoveredUndoIndex ${hoveredUndoIndex} but no history for room ${roomId}`,
+    );
+  }
+  if (hoveredUndoIndex > 0) {
+    const entry = roomHistory.undo[hoveredUndoIndex - 1];
+    if (entry === undefined) {
+      throw new Error(
+        `hoveredUndoIndex ${hoveredUndoIndex} out of bounds for undo stack of length ${roomHistory.undo.length}`,
+      );
+    }
+    return entry.room;
+  }
+  const entry = roomHistory.redo[-hoveredUndoIndex - 1];
+  if (entry === undefined) {
+    throw new Error(
+      `hoveredUndoIndex ${hoveredUndoIndex} out of bounds for redo stack of length ${roomHistory.redo.length}`,
+    );
+  }
+  return entry.room;
+};
+
+/**
+ * gets the current editing room json with temporary previews applied on
+ * top of it
+ */
+export const selectCurrentEditingRoomJsonWithPreviews = createSelector(
+  [
+    (state: EditorRootState) =>
+      selectCurrentRoomJsonFromLevelEditorState(state.levelEditor),
+    (state: EditorRootState) => state.levelEditor.pendingEdits?.edits,
+    selectHoveredUndoRoom,
+  ],
+  (roomJson, pendingEdits, hoveredUndoRoom): EditorRoomJson => {
+    if (hoveredUndoRoom !== undefined) {
+      return hoveredUndoRoom;
+    }
+
+    if (pendingEdits === undefined) {
+      return roomJson;
+    }
+
+    return produce(roomJson, (draftRoomJson) => {
+      const pendingEditsEntryIter = objectEntriesIter(
+        pendingEdits as Partial<
+          Record<EditorRoomItemId, ValueOf<typeof pendingEdits>>
+        >,
+      );
+
+      for (const [itemId, itemPreview] of pendingEditsEntryIter) {
+        if (itemPreview === null) {
+          delete draftRoomJson.items[itemId];
+        } else {
+          draftRoomJson.items[itemId] = itemPreview;
+        }
+      }
+    });
+  },
+);

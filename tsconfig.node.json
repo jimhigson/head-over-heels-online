@@ -12,6 +12,7 @@
   "include": [
     "vite.config.ts",
     "playwright.config.ts",
+    "playwright.editor.config.ts",
     "scripts",
     "src/iterableIterator-augmentation.d.ts"
   ]

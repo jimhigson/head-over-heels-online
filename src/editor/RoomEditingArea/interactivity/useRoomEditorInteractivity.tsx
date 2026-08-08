@@ -7,10 +7,11 @@ import { editorStore, store } from "../../../store/store";
 import { useMouseWheel } from "../../../ui/useMouseWheel";
 import { catchErrors } from "../../../utils/errors/errors";
 import { type Xyz } from "../../../utils/vectors/vectors";
+import { useGetEditorRoomState } from "../../EditorRoomStateProvider";
 import { type EditorRoomRenderer } from "../../editorTypes";
 import {
   selectCursorRoomId,
-  selectEditorRoomState,
+  selectPreviewOnlyJsonItemIds,
 } from "../../slice/levelEditorSelectors";
 import {
   changeDragInProgress,
@@ -20,6 +21,7 @@ import {
 import { findPointerPointingAt } from "../cursor/findPointerPointingAt";
 import { type MaybePointingAtSomething } from "../cursor/PointingAt";
 import { viewportMousePosition } from "../cursor/viewportMouse";
+import { useEditorE2eApi } from "../useEditorE2eApi";
 import { useEditorViewport } from "../viewport/EditorViewportProvider";
 import { type Tool } from "./Tool";
 import { EyeDropperToolHandler } from "./toolHandlers/EyeDropperToolHandler";
@@ -60,6 +62,9 @@ export const useRoomEditorInteractivity = (
   roomRendererRef: RefObject<EditorRoomRenderer | undefined>,
 ) => {
   const viewport = useEditorViewport();
+  // the same room instance the renderer draws, so its render boxes can be
+  // looked up by the items picking iterates:
+  const getRoomState = useGetEditorRoomState();
 
   const dispatch = useAppDispatch();
   const pointingAtRef = useRef<MaybePointingAtSomething | undefined>(undefined);
@@ -70,6 +75,8 @@ export const useRoomEditorInteractivity = (
   const dragAccVec = useRef<undefined | Xyz>(undefined);
   /* while a pan gesture is possible/happening, otherwise undefined */
   const panSessionRef = useRef<PanSession | undefined>(undefined);
+
+  useEditorE2eApi({ renderArea, viewport, getRoomState, pointingAtRef });
 
   // wheel zooming: one normalised wheel notch walks the zoom a quarter-step
   // along the wheelZoomStep grid, about the cursor:
@@ -137,7 +144,7 @@ export const useRoomEditorInteractivity = (
 
       // no point in re-running this effect when it changes so select it 'live':
       const storeState = editorStore.getState();
-      const roomState = selectEditorRoomState(storeState);
+      const roomState = getRoomState();
       const mouseXy = viewportMousePosition(viewport, mouseEvent);
 
       const tool = selectTool(storeState);
@@ -149,6 +156,7 @@ export const useRoomEditorInteractivity = (
         storeState.levelEditor.gridResolution,
         storeState.levelEditor.cameraAngle,
         roomRendererRef.current,
+        selectPreviewOnlyJsonItemIds(storeState),
       );
 
       // we don't care if just the xy of the mouse changed (if it didn't point at anything new),
@@ -200,7 +208,7 @@ export const useRoomEditorInteractivity = (
       }
 
       const storeState = editorStore.getState();
-      const roomState = selectEditorRoomState(storeState);
+      const roomState = getRoomState();
 
       if (roomState.id !== selectCursorRoomId(storeState.levelEditor)) {
         return;
@@ -220,6 +228,7 @@ export const useRoomEditorInteractivity = (
         storeState.levelEditor.gridResolution,
         storeState.levelEditor.cameraAngle,
         roomRendererRef.current,
+        selectPreviewOnlyJsonItemIds(storeState),
       );
 
       const isDragEnd = dragAccVec.current !== undefined;
@@ -273,7 +282,7 @@ export const useRoomEditorInteractivity = (
       }
 
       const storeState = editorStore.getState();
-      const roomState = selectEditorRoomState(storeState);
+      const roomState = getRoomState();
       const tool = selectTool(storeState);
 
       const handler = toolHandlers[tool.type] as ToolHandler<Tool>;
@@ -306,7 +315,7 @@ export const useRoomEditorInteractivity = (
       }
 
       const storeState = editorStore.getState();
-      const roomState = selectEditorRoomState(storeState);
+      const roomState = getRoomState();
       const mouseXy = viewportMousePosition(viewport, mouseEvent);
       const tool = selectTool(storeState);
 
@@ -317,6 +326,7 @@ export const useRoomEditorInteractivity = (
         storeState.levelEditor.gridResolution,
         storeState.levelEditor.cameraAngle,
         roomRendererRef.current,
+        selectPreviewOnlyJsonItemIds(storeState),
       );
       mouseDownPointingAtRef.current = pointingAt;
 
@@ -391,5 +401,5 @@ export const useRoomEditorInteractivity = (
       renderArea.removeEventListener("contextmenu", handleContextMenu);
       window.removeEventListener("keydown", handleKeyDown);
     };
-  }, [renderArea, dispatch, viewport, roomRendererRef]);
+  }, [renderArea, dispatch, viewport, roomRendererRef, getRoomState]);
 };

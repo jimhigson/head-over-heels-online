@@ -7,6 +7,7 @@ import {
   type EditorItemInPlayUnion,
   type EditorRoomId,
 } from "../../../editorTypes";
+import { selectPreviewOnlyJsonItemIds } from "../../../slice/levelEditorSelectors";
 import {
   applyItemTool,
   resetPreviewedEdits,
@@ -87,6 +88,7 @@ export class ItemToolHandler implements ToolHandler<
       roomState,
       blockPosition: putDownBlockPosition,
       itemTool: toolItem,
+      previewOnlyJsonItemIds: selectPreviewOnlyJsonItemIds(storeState),
     });
 
     if (collides) {

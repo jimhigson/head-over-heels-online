@@ -12,6 +12,7 @@ import { type Spritesheets } from "../../sprites/spritesheet/Spritesheets";
 import { type Upscale } from "../../store/slices/upscale/Upscale";
 import { store } from "../../store/store";
 import { valuesIter } from "../../utils/entries";
+import { useEditorRoomState } from "../EditorRoomStateProvider";
 import {
   type EditorRoomId,
   type EditorRoomItemId,
@@ -19,11 +20,8 @@ import {
   type EditorRoomState,
   type EditorUnionOfAllItemInPlayTypes,
 } from "../editorTypes";
-import {
-  useEditorRoomRenderDimensions,
-  useEditorRoomStateWithPreviews,
-} from "../slice/levelEditorSelectorHooks";
 import { selectEditorCameraAngle } from "../slice/levelEditorSlice";
+import { useEditorRoomRenderDimensions } from "./editorRoomRenderDimensions";
 import { useProvidedPixiApplication } from "./PixiApplicationProvider";
 import { roomEditingAreaMarginPx } from "./roomEditingAreaMarginPx";
 import { useEditorViewport } from "./viewport/EditorViewportProvider";
@@ -85,7 +83,7 @@ export const useEditorMainLoop = (
     throw new Error("this should never be falsey (typescript violation)");
   }
 
-  const currentEditingRoomState = useEditorRoomStateWithPreviews();
+  const currentEditingRoomState = useEditorRoomState();
   const roomRenderSize = useEditorRoomRenderDimensions();
 
   useEffect(() => {
