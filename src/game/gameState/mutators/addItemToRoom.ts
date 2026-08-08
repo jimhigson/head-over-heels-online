@@ -12,7 +12,7 @@ import {
   type RoomState,
 } from "../../../model/RoomState";
 import { emptyObject } from "../../../utils/empty";
-import { originXyz, type Xyz } from "../../../utils/vectors/vectors";
+import { boxAt, originXyz, type Xyz } from "../../../utils/vectors/vectors";
 import { isSpatial } from "../../physics/itemPredicates";
 import { type GameState } from "../GameState";
 import { buildRoomJsonDirectionalIndex } from "../loadRoom/buildRoomJsonDirectionalIndex";
@@ -83,7 +83,7 @@ export const addItemToRoom = <
   room.items[item.id] = item;
 
   if (atPosition !== undefined) {
-    item.state.position = atPosition;
+    item.state.box = boxAt(atPosition, item.state.box);
   }
 
   // entering the room is a progressing change - consumers comparing against

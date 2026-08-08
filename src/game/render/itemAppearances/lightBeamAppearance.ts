@@ -58,9 +58,8 @@ export const lightBeamAppearance: ItemAppearance<
 > = ({
   renderContext: {
     item: {
-      aabb,
       config: { direction },
-      state: { end },
+      state: { end, box },
     },
     room: { roomTime },
     general: { paused, spritesheets, cameraAngle },
@@ -74,7 +73,7 @@ export const lightBeamAppearance: ItemAppearance<
   // the camera rotation has turned that into - which is what the sprite flip and
   // the tile projection below follow:
   const renderedAxis = rotateAxisXyByCameraAngle(axis, cameraQuarterAngle);
-  const lengthPx = aabb[axis];
+  const lengthPx = box[`${axis}d`];
 
   // each tile's art extends from its anchor in the rendered axis's base screen
   // direction; when an axis of the beam projects reversed on screen the art

@@ -11,16 +11,14 @@ import { itemXyOverlapArea } from "./xyRectangleOverlap";
 // to run through the collision detection for standing on
 const itemAboveBuffer: WritableDeep<CollideableItem> = {
   state: {
-    position: {
+    box: {
       x: 0,
       y: 0,
       z: 0,
+      xd: 0,
+      yd: 0,
+      zd: 0,
     },
-  },
-  aabb: {
-    x: 0,
-    y: 0,
-    z: 0,
   },
   id: "itemMaybeStanding",
 };
@@ -28,16 +26,14 @@ const itemAboveBuffer: WritableDeep<CollideableItem> = {
 // just the zero-volume top of itemMaybeBeingStoodOn:
 const itemBelowBuffer: WritableDeep<CollideableItem> = {
   state: {
-    position: {
+    box: {
       x: 0,
       y: 0,
       z: 0,
+      xd: 0,
+      yd: 0,
+      zd: 0,
     },
-  },
-  aabb: {
-    x: 0,
-    y: 0,
-    z: 0,
   },
   id: "itemMaybeBeingStoodOn",
 };
@@ -81,22 +77,21 @@ export const spatiallyCheckStandingOn = <
 
   // copy values into the above buffer to make an object representing just hte very bottom
   // of the item above (epsilon tall):
-  itemAboveBuffer.state.position.x = itemMaybeStanding.state.position.x;
-  itemAboveBuffer.state.position.y = itemMaybeStanding.state.position.y;
-  itemAboveBuffer.state.position.z =
-    itemMaybeStanding.state.position.z - epsilon;
-  itemAboveBuffer.aabb.x = itemMaybeStanding.aabb.x;
-  itemAboveBuffer.aabb.y = itemMaybeStanding.aabb.y;
-  itemAboveBuffer.aabb.z = zOverlapAllowed + epsilon;
+  itemAboveBuffer.state.box.x = itemMaybeStanding.state.box.x;
+  itemAboveBuffer.state.box.y = itemMaybeStanding.state.box.y;
+  itemAboveBuffer.state.box.z = itemMaybeStanding.state.box.z - epsilon;
+  itemAboveBuffer.state.box.xd = itemMaybeStanding.state.box.xd;
+  itemAboveBuffer.state.box.yd = itemMaybeStanding.state.box.yd;
+  itemAboveBuffer.state.box.zd = zOverlapAllowed + epsilon;
 
   // zero-volume top of the below item:
-  itemBelowBuffer.state.position.x = itemMaybeBeingStoodOn.state.position.x;
-  itemBelowBuffer.state.position.y = itemMaybeBeingStoodOn.state.position.y;
-  itemBelowBuffer.state.position.z =
-    itemMaybeBeingStoodOn.state.position.z + itemMaybeBeingStoodOn.aabb.z;
-  itemBelowBuffer.aabb.x = itemMaybeBeingStoodOn.aabb.x;
-  itemBelowBuffer.aabb.y = itemMaybeBeingStoodOn.aabb.y;
-  itemBelowBuffer.aabb.z = 0; // zero volume
+  itemBelowBuffer.state.box.x = itemMaybeBeingStoodOn.state.box.x;
+  itemBelowBuffer.state.box.y = itemMaybeBeingStoodOn.state.box.y;
+  itemBelowBuffer.state.box.z =
+    itemMaybeBeingStoodOn.state.box.z + itemMaybeBeingStoodOn.state.box.zd;
+  itemBelowBuffer.state.box.xd = itemMaybeBeingStoodOn.state.box.xd;
+  itemBelowBuffer.state.box.yd = itemMaybeBeingStoodOn.state.box.yd;
+  itemBelowBuffer.state.box.zd = 0; // zero volume
 
   // check for collisions of a box representing just the top of one item
   // and just the bottom of the other

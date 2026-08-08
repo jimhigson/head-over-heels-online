@@ -10,21 +10,18 @@ import {
 const lowBlock = {
   type: "block" as ItemInPlayType,
   id: "lowBlock",
-  state: { position: { x: 1, y: 0, z: 0 } },
-  aabb: { x: 1, y: 1, z: 1 },
+  state: { box: { x: 1, y: 0, z: 0, xd: 1, yd: 1, zd: 1 } },
 };
 const blockTower = [
   {
     type: "block" as ItemInPlayType,
     id: "topBlock",
-    state: { position: { x: 0, y: 0, z: 2 } },
-    aabb: { x: 1, y: 1, z: 1 },
+    state: { box: { x: 0, y: 0, z: 2, xd: 1, yd: 1, zd: 1 } },
   },
   {
     type: "block" as ItemInPlayType,
     id: "midBlock",
-    state: { position: { x: 1, y: 0, z: 1 } },
-    aabb: { x: 1, y: 1, z: 1 },
+    state: { box: { x: 1, y: 0, z: 1, xd: 1, yd: 1, zd: 1 } },
   },
   lowBlock,
 ];
@@ -90,8 +87,7 @@ describe("blocks protext from monsters by colliding first", () => {
     {
       type: "monster",
       id: "monster",
-      state: { position: { x: 0, y: 0, z: 0 } }, // next to the low block
-      aabb: { x: 1, y: 1, z: 1 },
+      state: { box: { x: 0, y: 0, z: 0, xd: 1, yd: 1, zd: 1 } }, // next to the low block
     },
   ];
 

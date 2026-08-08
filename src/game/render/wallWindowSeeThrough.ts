@@ -10,8 +10,8 @@ const overlapsOnAxis = (
   b: UnionOfAllItemInPlayTypes,
   axis: AxisXy,
 ): boolean =>
-  a.state.position[axis] < b.state.position[axis] + b.aabb[axis] &&
-  a.state.position[axis] + a.aabb[axis] > b.state.position[axis];
+  a.state.box[axis] < b.state.box[axis] + b.state.box[`${axis}d`] &&
+  a.state.box[axis] + a.state.box[`${axis}d`] > b.state.box[axis];
 
 /**
  * The test for if a moonbase wall should show a transparent window instead

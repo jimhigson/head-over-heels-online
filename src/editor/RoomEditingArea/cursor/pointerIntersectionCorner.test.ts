@@ -2,7 +2,7 @@ import { describe, expect, test } from "vitest";
 
 import { projectWorldXyzToScreenXy } from "../../../game/render/projections";
 import { quarterCameraAngles } from "../../../utils/vectors/cameraAngleVectors";
-import { addXyz, type Xyz } from "../../../utils/vectors/vectors";
+import { addXyz, type Xyz, type XyzBox } from "../../../utils/vectors/vectors";
 import {
   apparentSilhouette,
   blockRoom,
@@ -12,17 +12,17 @@ import { pointerIntersectionCorner } from "./pointerIntersectionCorner";
 
 const cameraAngleBase = { x: 1, y: 0 };
 
-/** the projected screen position of one of the item's aabb corners */
+/** the projected screen position of one of the item's box corners */
 const projectItemCorner = (
-  item: { state: { position: Xyz }; aabb: Xyz },
+  { state: { box } }: { state: { box: XyzBox } },
   cornerVector: Xyz,
   cameraAngle: { x: number; y: number },
 ) =>
   projectWorldXyzToScreenXy(
-    addXyz(item.state.position, {
-      x: cornerVector.x * item.aabb.x,
-      y: cornerVector.y * item.aabb.y,
-      z: cornerVector.z * item.aabb.z,
+    addXyz(box, {
+      x: cornerVector.x * box.xd,
+      y: cornerVector.y * box.yd,
+      z: cornerVector.z * box.zd,
     }),
     cameraAngle,
   );

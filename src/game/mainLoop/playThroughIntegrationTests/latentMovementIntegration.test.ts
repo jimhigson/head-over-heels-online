@@ -36,20 +36,14 @@ test.each(testFrameRates)("%j Hz", (frameRate) => {
   });
 
   const yDeltaNow = () => {
-    const heelsNewPosition = heelsState(gameState).position;
-    const pushableBlockPosition = itemState(
-      gameState,
-      "pushableBlock",
-    )!.position;
+    const heelsNewPosition = heelsState(gameState).box;
+    const pushableBlockPosition = itemState(gameState, "pushableBlock")!.box;
 
     // the block should be slightly behind heels:
     return heelsNewPosition.y - pushableBlockPosition.y;
   };
   const pushableBlockZ = () => {
-    const pushableBlockPosition = itemState(
-      gameState,
-      "pushableBlock",
-    )!.position;
+    const pushableBlockPosition = itemState(gameState, "pushableBlock")!.box;
 
     // the block should be slightly behind heels:
     return pushableBlockPosition.z;

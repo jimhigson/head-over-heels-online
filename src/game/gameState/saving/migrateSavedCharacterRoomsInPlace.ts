@@ -9,9 +9,11 @@ import { valuesIter } from "../../../utils/entries";
 import { unitVectors } from "../../../utils/vectors/unitVectors";
 import {
   alongAxisOfDirectionXy,
+  boxWithSize,
   type Direction8Xyz,
   doorAlongAxis,
   type Xyz,
+  type XyzBox,
 } from "../../../utils/vectors/vectors";
 import { fineXyzToBlockXyz } from "../../render/projections";
 import { type SavedCharacterRooms } from "./SavedGameState";
@@ -49,17 +51,15 @@ type LegacyFloorConfig = Omit<
 
 /**
  * saves from before floors carried `doorExpandedSides` omit it, but the
- * physical door expansion is already baked into the saved floor's
- * position/aabb, so the expanded sides are recovered by comparing against the
- * natural footprint: expanding towards/right shifts the position while
- * away/left only grows the aabb (mirroring how loadFloor expands)
+ * physical door expansion is already baked into the saved floor's box, so the
+ * expanded sides are recovered by comparing against the natural footprint:
+ * expanding towards/right shifts the position while away/left only grows the
+ * dimensions (mirroring how loadFloor expands)
  */
 const migrateFloorConfigInPlace = (
   config: LegacyFloorConfig,
-  /** the floor's (possibly door-expanded) baked position */
-  position: Xyz,
-  /** the floor's (possibly door-expanded) baked aabb */
-  aabb: Xyz,
+  /** the floor's (possibly door-expanded) baked box */
+  box: Readonly<XyzBox>,
 ): void => {
   if (config.doorExpandedSides !== undefined) {
     // saves written when the sides were names normalise to vectors:
@@ -70,23 +70,57 @@ const migrateFloorConfigInPlace = (
   const { naturalFootprint } = config;
   const doorExpandedSides: Array<Xyz> = [];
 
-  const shiftX = naturalFootprint.position.x - position.x;
+  const shiftX = naturalFootprint.position.x - box.x;
   if (shiftX > 0) {
     doorExpandedSides.push(unitVectors.right);
   }
-  if (aabb.x - naturalFootprint.aabb.x > shiftX) {
+  if (box.xd - naturalFootprint.aabb.x > shiftX) {
     doorExpandedSides.push(unitVectors.left);
   }
 
-  const shiftY = naturalFootprint.position.y - position.y;
+  const shiftY = naturalFootprint.position.y - box.y;
   if (shiftY > 0) {
     doorExpandedSides.push(unitVectors.towards);
   }
-  if (aabb.y - naturalFootprint.aabb.y > shiftY) {
+  if (box.yd - naturalFootprint.aabb.y > shiftY) {
     doorExpandedSides.push(unitVectors.away);
   }
 
   config.doorExpandedSides = doorExpandedSides;
+};
+
+/**
+ * what an item looked like in saves from before the position and aabb were
+ * merged into the state box: the collision size on the item root, the
+ * position alone in state
+ */
+type LegacyBoxCarrier = {
+  aabb?: Xyz;
+  state: { box?: XyzBox; position?: Xyz };
+};
+
+/**
+ * saves from before `state.box` carried `state.position` + a root `aabb`;
+ * merge them into the box and drop the legacy fields
+ */
+const migrateItemBoxInPlace = (item: LegacyBoxCarrier): void => {
+  if (item.state.box === undefined) {
+    const maybePosition = item.state.position;
+    const maybeAabb = item.aabb;
+    if (
+      import.meta.env.DEV &&
+      (maybePosition === undefined || maybeAabb === undefined)
+    ) {
+      throw new Error(
+        "saved item has neither a state box nor a legacy position + aabb",
+      );
+    }
+    item.state.box = boxWithSize(maybePosition!, maybeAabb!);
+  }
+  // unconditionally, so a save written by an intermediate version that carried
+  // both shapes does not keep the legacy fields and write them back out:
+  delete item.state.position;
+  delete item.aabb;
 };
 
 /**
@@ -108,6 +142,7 @@ export const migrateSavedCharacterRoomsInPlace = <RoomId extends string>(
     room.progression ??= 0 as Progression;
 
     for (const item of roomItemsIterable(room.items)) {
+      migrateItemBoxInPlace(item as LegacyBoxCarrier);
       item.state.movedOrResizedOnProgression ??= 0 as Progression;
       if (item.hintShadowDirections !== undefined) {
         item.hintShadowDirections =
@@ -124,7 +159,7 @@ export const migrateSavedCharacterRoomsInPlace = <RoomId extends string>(
           migrateWallConfigInPlace(
             config,
             room.planet,
-            fineXyzToBlockXyz(item.state.position)[alongAxis],
+            fineXyzToBlockXyz(item.state.box)[alongAxis],
           );
           vectoriseInPlace(config, "direction");
           break;
@@ -132,8 +167,7 @@ export const migrateSavedCharacterRoomsInPlace = <RoomId extends string>(
         case "floor":
           migrateFloorConfigInPlace(
             item.config as LegacyFloorConfig,
-            item.state.position,
-            item.aabb,
+            item.state.box,
           );
           break;
         case "doorFrame":

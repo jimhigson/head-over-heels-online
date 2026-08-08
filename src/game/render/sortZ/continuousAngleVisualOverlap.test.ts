@@ -1,7 +1,7 @@
 import { expect, test } from "vitest";
 
 import { quarterCameraAngles } from "../../../utils/vectors/cameraAngleVectors";
-import { type Xy, type Xyz } from "../../../utils/vectors/vectors";
+import { boxWithSize, type Xy, type Xyz } from "../../../utils/vectors/vectors";
 import { makeLcg } from "./__test__/makeLcg";
 import { shapes } from "./__test__/shapes";
 import {
@@ -73,7 +73,11 @@ const oracleFamilyIntervals = (
   let zAxisProjectionMax = -Infinity;
 
   for (const cornerVector of cornerVectors) {
-    const screen = projectCorner(position, aabb, cornerVector, cameraAngle);
+    const screen = projectCorner(
+      boxWithSize(position, aabb),
+      cornerVector,
+      cameraAngle,
+    );
     const fZ = screen.x;
     const fX = nxX * screen.x + nxY * screen.y;
     const fY = nyX * screen.x + nyY * screen.y;

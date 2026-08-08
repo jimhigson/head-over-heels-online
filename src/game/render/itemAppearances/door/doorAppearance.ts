@@ -24,6 +24,7 @@ import {
   rotateAxisXyByCameraAngle,
   type Xy,
   type Xyz,
+  type XyzBox,
 } from "../../../../utils/vectors/vectors";
 import { blockSizePx } from "../../../physics/mechanicsConstants";
 import { createSprite } from "../../createSprite";
@@ -136,7 +137,7 @@ function* doorLegsGenerator<RoomId extends string, RoomItemId extends string>(
  */
 const xyToTranslateToInsideOfRoom = (
   direction: Xyz,
-  aabb: Xyz,
+  box: Readonly<XyzBox>,
   cameraQuarterAngle: Xy,
 ): Xy => {
   const axis = alongAxisOfDirectionXy(direction);
@@ -152,7 +153,9 @@ const xyToTranslateToInsideOfRoom = (
   const crossReversed = axisProjectsReversed(crossAxis, cameraQuarterAngle);
 
   const roomEndCross =
-    isNegativeSideXy(direction) ? aabb[crossAxis] - doorPostRenderedDepth : 0;
+    isNegativeSideXy(direction) ?
+      box[`${crossAxis}d`] - doorPostRenderedDepth
+    : 0;
   const reversalShift = crossReversed ? doorPostRenderedDepth : 0;
 
   return projectWorldXyzToScreenXy(
@@ -210,7 +213,7 @@ export const doorLegsAppearance: ItemAppearance<"doorLegs", RenderOnceProps> =
       const spriteXy = addXy(
         xyToTranslateToInsideOfRoom(
           item.config.direction,
-          item.aabb,
+          item.state.box,
           cameraQuarterAngle,
         ),
         alongShiftXy,
@@ -232,7 +235,6 @@ export const doorFrameAppearance: ItemAppearance<"doorFrame", RenderOnceProps> =
         item,
         item: {
           config: { direction, part, toRoom },
-          aabb,
         },
         room,
         general: { spritesheets, cameraAngle },
@@ -275,7 +277,7 @@ export const doorFrameAppearance: ItemAppearance<"doorFrame", RenderOnceProps> =
 
       const { x, y } = xyToTranslateToInsideOfRoom(
         direction,
-        aabb,
+        item.state.box,
         cameraQuarterAngle,
       );
 

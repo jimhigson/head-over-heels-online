@@ -29,8 +29,7 @@ const sensorProjectionLength = 0.1;
 /** a preallocated buffer to write sensors into, to avoid gc */
 const sensorBuffer: WritableDeep<CollideableItem> = {
   id: "sensor",
-  aabb: { x: 0, y: 0, z: 0 },
-  state: { position: { x: 0, y: 0, z: 0 } },
+  state: { box: { x: 0, y: 0, z: 0, xd: 0, yd: 0, zd: 0 } },
 };
 /**
  * a second preallocated buffer to write sensors into, to avoid gc, to use for checking after sliding aren't falling off
@@ -38,12 +37,17 @@ const sensorBuffer: WritableDeep<CollideableItem> = {
  */
 const belowSensorBuffer: WritableDeep<CollideableItem> = {
   id: "sensor",
-  aabb: {
-    x: sensorProjectionLength,
-    y: sensorProjectionLength,
-    z: sensorProjectionLength,
-  }, // this never changes from being an (almost) 1-cube
-  state: { position: { x: 0, y: 0, z: 0 } },
+  state: {
+    box: {
+      x: 0,
+      y: 0,
+      z: 0,
+      // the dimensions never change from being an (almost) 1-cube:
+      xd: sensorProjectionLength,
+      yd: sensorProjectionLength,
+      zd: sensorProjectionLength,
+    },
+  },
 };
 
 // how wide are the sensors, as proportion of the object being moved?
@@ -87,7 +91,7 @@ export const helpfulMovementVector = <
     return;
   }
 
-  const updatedPosition = subjectItem.state.position;
+  const updatedPosition = subjectItem.state.box;
 
   // if the item was 'trying' to move in x
   const unmovingInX = veryClose(originalPosDelta.x, 0);
@@ -116,15 +120,15 @@ export const helpfulMovementVector = <
   // positions in the xy plane:
 
   // z is easy - sensors are always full-height matching the item:
-  sensorBuffer.state.position.z = updatedPosition.z;
-  sensorBuffer.aabb.z =
+  sensorBuffer.state.box.z = updatedPosition.z;
+  sensorBuffer.state.box.zd =
     standingOnNothing ?
       // setting a very small sensor height while falling allows drifting into
       // smaller gaps when there's a barrier above and below. Eg, head jumping
       // through the disappeared barrier in #blacktooth14
       epsilon
       // sensor buffer equal height to the item that might be sliding
-    : subjectItem.aabb.z;
+    : subjectItem.state.box.zd;
 
   const movementAxis = unmovingInX ? "y" : "x";
 
@@ -138,22 +142,21 @@ export const helpfulMovementVector = <
       : sensorWidthWhileJumping
     : sensorWidthWhileStanding;
 
-  sensorBuffer.state.position[movementAxis] =
-    subjectItem.state.position[movementAxis] +
+  sensorBuffer.state.box[movementAxis] =
+    subjectItem.state.box[movementAxis] +
     (originalPosDelta[movementAxis] < 0 ?
       -sensorProjectionLength
-    : subjectItem.aabb[movementAxis]);
-  sensorBuffer.aabb[movementAxis] = sensorProjectionLength;
+    : subjectItem.state.box[`${movementAxis}d`]);
+  sensorBuffer.state.box[`${movementAxis}d`] = sensorProjectionLength;
 
   const crossAxis = perpendicularAxisXy(movementAxis);
 
-  const sensorWidthPx = sensorWidth * subjectItem.aabb[crossAxis];
+  const sensorWidthPx = sensorWidth * subjectItem.state.box[`${crossAxis}d`];
 
-  sensorBuffer.aabb[crossAxis] = sensorWidthPx;
+  sensorBuffer.state.box[`${crossAxis}d`] = sensorWidthPx;
 
   // test negative direction in cross axis:
-  sensorBuffer.state.position[crossAxis] =
-    subjectItem.state.position[crossAxis];
+  sensorBuffer.state.box[crossAxis] = subjectItem.state.box[crossAxis];
 
   // collisions with each sensor get a score:
   //  0: nothing there (hmv goes towards if other is non-zero)
@@ -186,13 +189,12 @@ export const helpfulMovementVector = <
 
   // check if there's something to slide onto in neg side (don't slide off a surface to fall off)
   // eg - the stairs in #moonbase30
-  belowSensorBuffer.state.position.z = subjectItem.state.position.z - 1;
+  belowSensorBuffer.state.box.z = subjectItem.state.box.z - 1;
   // this is wrongly positioned - needs to take into account the side of the object; sensorProjectionLength
   // is not 1 byt maybe belowsensor should be a sensorProjectionLength-cube (?)
-  belowSensorBuffer.state.position[movementAxis] =
-    sensorBuffer.state.position[movementAxis];
-  belowSensorBuffer.state.position[crossAxis] =
-    subjectItem.state.position[crossAxis];
+  belowSensorBuffer.state.box[movementAxis] =
+    sensorBuffer.state.box[movementAxis];
+  belowSensorBuffer.state.box[crossAxis] = subjectItem.state.box[crossAxis];
 
   const collidesNegSideBelow = hasCollisionItemWithIndex(
     belowSensorBuffer,
@@ -203,9 +205,9 @@ export const helpfulMovementVector = <
   const somewhereToSlideToOnNegSide = standingOnNothing || collidesNegSideBelow;
 
   // switch sensorBuffer to test positive direction in cross axis:
-  sensorBuffer.state.position[crossAxis] =
-    subjectItem.state.position[crossAxis] +
-    subjectItem.aabb[crossAxis] -
+  sensorBuffer.state.box[crossAxis] =
+    subjectItem.state.box[crossAxis] +
+    subjectItem.state.box[`${crossAxis}d`] -
     sensorWidthPx;
 
   const slideScorePosSide: number = collisionItemWithIndex(
@@ -218,8 +220,10 @@ export const helpfulMovementVector = <
     return;
   }
 
-  belowSensorBuffer.state.position[crossAxis] =
-    subjectItem.state.position[crossAxis] + subjectItem.aabb[crossAxis] - 1;
+  belowSensorBuffer.state.box[crossAxis] =
+    subjectItem.state.box[crossAxis] +
+    subjectItem.state.box[`${crossAxis}d`] -
+    1;
 
   const collidesPosSideBelow = hasCollisionItemWithIndex(
     belowSensorBuffer,

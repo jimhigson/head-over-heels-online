@@ -82,7 +82,7 @@ export const moveLift: Mechanic<"lift"> = <
       direction,
       bottom,
       top,
-      position: { z },
+      box: { z },
       vels,
     },
   }: ItemInPlay<"lift", RoomId, RoomItemId>,

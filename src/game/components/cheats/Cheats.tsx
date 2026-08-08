@@ -279,8 +279,8 @@ export const Cheats = <RoomId extends string>(_emptyProps: EmptyObject) => {
       config,
       // locate the item above the player
       position: {
-        ...playable.state.position,
-        z: playable.state.position.z + blockSizePx.z * 2,
+        ...playable.state.box,
+        z: playable.state.box.z + blockSizePx.z * 2,
       },
       additionalIdPart: `${summonedItemNumber++}`,
     });

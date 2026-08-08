@@ -5,6 +5,7 @@ import { valuesIter } from "../../../utils/entries";
 import { unitVectors } from "../../../utils/vectors/unitVectors";
 import {
   addXyz,
+  boxWithSize,
   type DirectionXy4,
   doorAlongAxis,
   type Xyz,
@@ -129,15 +130,18 @@ export function* maybeLoadExtraCornerShadow<
           hash: 0,
           state: {
             ...defaultBaseState<RoomItemId>(),
-            position: blockXyzToFineXyz({
-              x:
-                corner.x +
-                (unitVectors[xDirection].x > 0 ? 0 : -cubeSetbackBlocks),
-              y:
-                corner.y +
-                (unitVectors[yDirection].y > 0 ? 0 : -cubeSetbackBlocks),
-              z: 0,
-            }),
+            box: boxWithSize(
+              blockXyzToFineXyz({
+                x:
+                  corner.x +
+                  (unitVectors[xDirection].x > 0 ? 0 : -cubeSetbackBlocks),
+                y:
+                  corner.y +
+                  (unitVectors[yDirection].y > 0 ? 0 : -cubeSetbackBlocks),
+                z: 0,
+              }),
+              cubeSize,
+            ),
           },
           shadowCastTexture: {
             textureId: "shadow.wallCorner",
@@ -149,7 +153,6 @@ export function* maybeLoadExtraCornerShadow<
             unitVectors[yDirection],
           ],
           config: emptyObject,
-          aabb: cubeSize,
           fixedZIndex: nonRenderingItemFixedZIndex,
         };
       }

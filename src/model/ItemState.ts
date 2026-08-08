@@ -1,4 +1,4 @@
-import { type Xyz } from "../utils/vectors/vectors";
+import { type XyzBox } from "../utils/vectors/vectors";
 import { type Disappear } from "./Disappear";
 import { type ItemInPlayType, type SwitchSetting } from "./ItemInPlay";
 import { type ItemStateMap } from "./ItemStateMap";
@@ -8,15 +8,15 @@ import { type TimedRelationWithOtherItemOnAxis } from "./TimedRelationWithOtherI
 
 export type BaseItemState<RoomItemId extends string = string> = {
   /**
-   * this is owned by the item itself, which it can modify in-place if it
-   * wishes to avoid gc. Nothing else should keep a reference to this, since
-   * it can change at any time.
-   *
-   * However, because doing so is likely to create hard-to-find bugs, we also
-   * should not mutate this in-place, unless we are absolutely certain nobody else
-   * has a reference to it (like, we just created the vector object)
+   * the item's box in world space: position (near corner, x/y/z - assignable
+   * anywhere an {@link Xyz} position is expected) plus its collision
+   * dimensions (xd/yd/zd). Replaced wholesale (never mutated in place) via
+   * the updateItemBox/updateItemPosition funnels, which also stamp
+   * {@link movedOrResizedOnProgression} - nothing else should write it, and
+   * nothing should keep a reference to it since it can be replaced at any
+   * time
    */
-  position: Readonly<Xyz>;
+  box: Readonly<XyzBox>;
 
   /**
    * the {@link RoomState.progression} count when this item last moved,

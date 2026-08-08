@@ -42,7 +42,7 @@ const stepTowards = <RoomId extends string>(
   item: FreeItem<RoomId, string>,
   targetPosition: Xyz,
 ) => {
-  subXyzWriteInto(remainingVectorBuffer, targetPosition, item.state.position);
+  subXyzWriteInto(remainingVectorBuffer, targetPosition, item.state.box);
   const remainingDistance = lengthXyz(remainingVectorBuffer);
 
   if (remainingDistance < epsilon) {
@@ -88,18 +88,16 @@ export const swopFromUncombinedToCombinedPlayables = <RoomId extends string>(
 
   for (let i = 0; i < maxSymbiosisStepIterations; i++) {
     // step head towards heels:
-    addXyzWriteInto(targetBuffer, heels.state.position, { z: blockSizePx.z });
+    addXyzWriteInto(targetBuffer, heels.state.box, { z: blockSizePx.z });
     stepTowards(gameState, room, head, targetBuffer);
 
     // step heels towards head:
-    addXyzWriteInto(targetBuffer, head.state.position, {
+    addXyzWriteInto(targetBuffer, head.state.box, {
       z: -blockSizePx.z,
     });
     stepTowards(gameState, room, heels, targetBuffer);
 
-    if (
-      manhattanDistanceXy(head.state.position, heels.state.position) < epsilon
-    ) {
+    if (manhattanDistanceXy(head.state.box, heels.state.box) < epsilon) {
       aligned = true;
       break;
     }

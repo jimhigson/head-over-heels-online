@@ -57,11 +57,14 @@ test("can teleport to the next room (with `config.toPosition`)", () => {
     },
   });
 
-  expect(heelsState(gameState).position).toMatchInlineSnapshot(`
+  expect(heelsState(gameState).box).toMatchInlineSnapshot(`
     {
       "x": 65,
+      "xd": 12,
       "y": 65,
+      "yd": 12,
       "z": 36,
+      "zd": 12,
     }
   `);
 });
@@ -103,11 +106,14 @@ test("can teleport to the same room (with `config.toPosition`)", () => {
     },
   });
 
-  expect(heelsState(gameState).position).toMatchInlineSnapshot(`
+  expect(heelsState(gameState).box).toMatchInlineSnapshot(`
     {
       "x": 65,
+      "xd": 12,
       "y": 65,
+      "yd": 12,
       "z": 36,
+      "zd": 12,
     }
   `);
 });
@@ -149,11 +155,14 @@ test("can teleport to the same room (with empty config`)", () => {
     },
   });
 
-  expect(heelsState(gameState).position).toMatchInlineSnapshot(`
+  expect(heelsState(gameState).box).toMatchInlineSnapshot(`
     {
       "x": 65,
+      "xd": 12,
       "y": 65,
+      "yd": 12,
       "z": 36,
+      "zd": 12,
     }
   `);
 });
@@ -197,11 +206,14 @@ test("can teleport to the next room (with `config.toItemId`)", () => {
     },
   });
 
-  expect(heelsState(gameState).position).toMatchInlineSnapshot(`
+  expect(heelsState(gameState).box).toMatchInlineSnapshot(`
     {
       "x": 65,
+      "xd": 12,
       "y": 65,
+      "yd": 12,
       "z": 36,
+      "zd": 12,
     }
   `);
 });
@@ -245,11 +257,14 @@ test("can teleport to the next room (with `config.toItemId`) to a taller item th
     },
   });
 
-  expect(heelsState(gameState).position).toMatchInlineSnapshot(`
+  expect(heelsState(gameState).box).toMatchInlineSnapshot(`
     {
       "x": 65,
+      "xd": 12,
       "y": 65,
+      "yd": 12,
       "z": 144,
+      "zd": 12,
     }
   `);
 });
@@ -296,11 +311,14 @@ test("can teleport to the next room (with room specified only)", () => {
     },
   });
 
-  expect(heelsState(gameState).position).toMatchInlineSnapshot(`
+  expect(heelsState(gameState).box).toMatchInlineSnapshot(`
     {
       "x": 65,
+      "xd": 12,
       "y": 65,
+      "yd": 12,
       "z": 36,
+      "zd": 12,
     }
   `);
 });
@@ -349,11 +367,14 @@ test("teleporter can be inactive based on a store value", () => {
 
   // should not have teleported - we don't have the crown
   expect(gameState.characterRooms.heels?.id).toEqual("firstRoom");
-  expect(heelsState(gameState).position).toMatchInlineSnapshot(`
+  expect(heelsState(gameState).box).toMatchInlineSnapshot(`
     {
       "x": 1,
+      "xd": 12,
       "y": 0,
+      "yd": 12,
       "z": 12.958333333333348,
+      "zd": 12,
     }
   `);
 });
@@ -408,11 +429,14 @@ test("teleporter can be activated based on a store value", () => {
 
   // should have teleported
   expect(gameState.characterRooms.heels?.id).toEqual("secondRoom");
-  expect(heelsState(gameState).position).toMatchInlineSnapshot(`
+  expect(heelsState(gameState).box).toMatchInlineSnapshot(`
     {
       "x": 65,
+      "xd": 12,
       "y": 0,
+      "yd": 12,
       "z": 11.42777777777782,
+      "zd": 12,
     }
   `);
 });
@@ -540,18 +564,24 @@ test("teleporting to a portable teleporter while Heels is holding it brings Head
     },
   });
 
-  expect(headState(gameState).position).toMatchInlineSnapshot(`
+  expect(headState(gameState).box).toMatchInlineSnapshot(`
     {
       "x": 1,
+      "xd": 12,
       "y": 33,
+      "yd": 12,
       "z": 12,
+      "zd": 12,
     }
   `);
-  expect(heelsState(gameState).position).toMatchInlineSnapshot(`
+  expect(heelsState(gameState).box).toMatchInlineSnapshot(`
     {
       "x": 1,
+      "xd": 12,
       "y": 33,
+      "yd": 12,
       "z": 0,
+      "zd": 12,
     }
   `);
 });
@@ -631,11 +661,14 @@ test("Heels can carry a teleporter through a same-room teleporter", () => {
     type: "portableTeleporter",
   });
 
-  expect(heelsState(gameState).position).toMatchInlineSnapshot(`
+  expect(heelsState(gameState).box).toMatchInlineSnapshot(`
     {
       "x": 65,
+      "xd": 12,
       "y": 65,
+      "yd": 12,
       "z": 12,
+      "zd": 12,
     }
   `);
 });
@@ -660,7 +693,7 @@ test("teleporting when destination teleporter is missing leaves player in the sa
     secondRoomItems: {},
   });
 
-  const originalPosition = heelsState(gameState).position;
+  const originalPosition = heelsState(gameState).box;
 
   playGameThrough(gameState, {
     frameRate: { fps: [15] }, // keep frame rate low to reduce computation
@@ -675,7 +708,7 @@ test("teleporting when destination teleporter is missing leaves player in the sa
 
   // game should not have crashed; heels stays in the original room
   expect(gameState.characterRooms.heels?.id).toEqual("firstRoom");
-  expect(heelsState(gameState).position).toEqual(originalPosition);
+  expect(heelsState(gameState).box).toEqual(originalPosition);
 });
 
 test("intra-room teleport does not overwrite door entry state, so respawn after death is near the door", () => {
@@ -728,7 +761,7 @@ test("intra-room teleport does not overwrite door entry state, so respawn after 
   });
 
   // heels entered room 2 near the door (low y). The teleport destination is at high y.
-  const entryY = heelsState(gameState).position.y;
+  const entryY = heelsState(gameState).box.y;
   const startingLives = heelsState(gameState).lives as number;
 
   // walk away from the door onto the teleporter, teleport to deadly block, die
@@ -747,7 +780,7 @@ test("intra-room teleport does not overwrite door entry state, so respawn after 
   });
 
   // heels should have respawned at the door entry position, not the teleport destination
-  expect(heelsState(gameState).position.y).toBeLessThan(entryY + 1);
+  expect(heelsState(gameState).box.y).toBeLessThan(entryY + 1);
 });
 
 test.for([{ otherCharacterPresent: false }, { otherCharacterPresent: true }])(
@@ -875,11 +908,14 @@ test("teleporting clamps position so player doesn't overhang destination", () =>
     },
   });
 
-  expect(heelsState(gameState).position).toMatchInlineSnapshot(`
+  expect(heelsState(gameState).box).toMatchInlineSnapshot(`
     {
       "x": 68,
+      "xd": 12,
       "y": 68,
+      "yd": 12,
       "z": 12,
+      "zd": 12,
     }
   `);
 });
@@ -914,14 +950,12 @@ test("teleporter generates a companion help-text emitter", () => {
     type: "floatingText",
     config: { textLines: ["Press jump", "to teleport"], sway: true },
   });
-  expect(helpEmitter.state.position).toEqual({
+  expect(helpEmitter.state.box).toEqual({
     x: 0,
     y: 32,
     z: 12,
-  });
-  expect(helpEmitter.aabb).toEqual({
-    x: expect.closeTo(16),
-    y: expect.closeTo(16),
-    z: expect.closeTo(1.2),
+    xd: expect.closeTo(16),
+    yd: expect.closeTo(16),
+    zd: expect.closeTo(1.2),
   });
 });

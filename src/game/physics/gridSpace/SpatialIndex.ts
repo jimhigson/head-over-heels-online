@@ -1,5 +1,5 @@
 import { type UnionOfAllItemInPlayTypes } from "../../../model/ItemInPlay";
-import { addXyz, type Xyz } from "../../../utils/vectors/vectors";
+import { type XyzBox } from "../../../utils/vectors/vectors";
 import { blockSizePx } from "../mechanicsConstants";
 
 /** two cell coords packed into one 32-bit int (16 bits each) - see {@link makeCellKey} */
@@ -19,15 +19,14 @@ const decodeCellKey = (key: XyCellKey): { x: number; y: number } =>
   ({ x: key >> 16, y: (key << 16) >> 16 });
 
 /**
- * The shape an item needs to be indexed: a stable identity, a world position and
- * a bounding box.
+ * The shape an item needs to be indexed: a stable identity and a world box
+ * (position plus dimensions).
  */
 export type Indexable = {
   id: string;
   state: {
-    position: Xyz;
+    box: Readonly<XyzBox>;
   };
-  aabb: Xyz;
 };
 
 // these multiplications empirically give good performance in larger rooms.
@@ -95,20 +94,12 @@ export class SpatialIndex<
     }
   }
 
-  *#iterateCuboidCellKeys(
-    /** The position of the cuboid */
-    position: Xyz,
-    /** The size of the cuboid */
-    size: Xyz,
-  ): Generator<XyCellKey> {
-    const minCorner = position;
-    const maxCorner = addXyz(position, size);
-
+  *#iterateCuboidCellKeys(box: Readonly<XyzBox>): Generator<XyCellKey> {
     // Calculate which cells this cuboid occupies (only x,y)
-    const minCellX = Math.floor(minCorner.x / cellWidth);
-    const minCellY = Math.floor(minCorner.y / cellDepth);
-    const maxCellX = Math.floor(maxCorner.x / cellWidth);
-    const maxCellY = Math.floor(maxCorner.y / cellDepth);
+    const minCellX = Math.floor(box.x / cellWidth);
+    const minCellY = Math.floor(box.y / cellDepth);
+    const maxCellX = Math.floor((box.x + box.xd) / cellWidth);
+    const maxCellY = Math.floor((box.y + box.yd) / cellDepth);
 
     for (let x = minCellX; x <= maxCellX; x++) {
       for (let y = minCellY; y <= maxCellY; y++) {
@@ -212,10 +203,7 @@ export class SpatialIndex<
     if (this.#itemToCellKeys.has(item)) {
       throw new Error(`Item ${item.id} is already in the spatial index`);
     }
-    this.#addToCells(
-      item,
-      this.#iterateCuboidCellKeys(item.state.position, item.aabb),
-    );
+    this.#addToCells(item, this.#iterateCuboidCellKeys(item.state.box));
     this.#cuboidCellExtentDirty = true;
   }
 
@@ -233,10 +221,7 @@ export class SpatialIndex<
    * detection should work.
    */
   updateItemSpatialIndex(item: Item): void {
-    this.#moveToCells(
-      item,
-      this.#iterateCuboidCellKeys(item.state.position, item.aabb),
-    );
+    this.#moveToCells(item, this.#iterateCuboidCellKeys(item.state.box));
     this.#cuboidCellExtentDirty = true;
   }
 
@@ -295,16 +280,14 @@ export class SpatialIndex<
    * appears only once in the returned set.
    */
   getCuboidNeighbourhood(
-    /** The position of the cuboid to check */
-    position: Xyz,
-    /** The size of the cuboid to check */
-    size: Xyz,
+    /** The cuboid region (position + dimensions) to check */
+    box: Readonly<XyzBox>,
     /** Optional item to exclude from results (usually the querying item) */
     excludeItem?: Indexable,
   ): Set<Item> {
     const neighbours = new Set<Item>();
 
-    for (const cellKey of this.#iterateCuboidCellKeys(position, size)) {
+    for (const cellKey of this.#iterateCuboidCellKeys(box)) {
       const cell = this.#cells.get(cellKey);
       if (cell) {
         for (const neighbour of cell) {
@@ -323,7 +306,7 @@ export class SpatialIndex<
    * is no requirement for this item to actually be in the index itself.
    */
   getItemCuboidNeighbourhood(item: Indexable): Set<Item> {
-    return this.getCuboidNeighbourhood(item.state.position, item.aabb, item);
+    return this.getCuboidNeighbourhood(item.state.box, item);
   }
 
   /**

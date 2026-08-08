@@ -27,8 +27,7 @@ import { zComparator } from "./zComparator";
 const floor = {
   id: "f",
   type: "floor" as const,
-  state: { position: { x: 0, y: -8, z: -36 } },
-  aabb: { x: 128, y: 144, z: 36 },
+  state: { box: { x: 0, y: -8, z: -36, xd: 128, yd: 144, zd: 36 } },
   config: {
     floorType: "standable",
     scenery: "blacktooth",
@@ -45,22 +44,19 @@ const onFloor = [
   {
     id: "h",
     type: "hushPuppy" as const,
-    state: { position: { x: 0, y: 112, z: 0 } },
-    aabb: { x: 48, y: 16, z: 12 },
+    state: { box: { x: 0, y: 112, z: 0, xd: 48, yd: 16, zd: 12 } },
     config: { times: { x: 3 } },
   },
   {
     id: "h1",
     type: "hushPuppy" as const,
-    state: { position: { x: 16, y: 112, z: 12 } },
-    aabb: { x: 32, y: 16, z: 12 },
+    state: { box: { x: 16, y: 112, z: 12, xd: 32, yd: 16, zd: 12 } },
     config: { times: { x: 2 } },
   },
   {
     id: "d1/legs",
     type: "doorLegs" as const,
-    state: { position: { x: 16, y: 128, z: 0 } },
-    aabb: { x: 32, y: 24, z: 48 },
+    state: { box: { x: 16, y: 128, z: 0, xd: 32, yd: 24, zd: 48 } },
     config: {
       direction: "away",
       onFloorEdge: true,
@@ -72,8 +68,7 @@ const onFloor = [
   {
     id: "b",
     type: "block" as const,
-    state: { position: { x: 112, y: 80, z: 0 } },
-    aabb: { x: 16, y: 48, z: 12 },
+    state: { box: { x: 112, y: 80, z: 0, xd: 16, yd: 48, zd: 12 } },
     config: { style: "artificial", times: { y: 3 } },
   },
   // the raised door's frame posts, standing on the legs at z=48..96 on the
@@ -81,15 +76,13 @@ const onFloor = [
   {
     id: "d1/frameNear",
     type: "doorFrame" as const,
-    state: { position: { x: 16, y: 128, z: 48 } },
-    aabb: { x: 8, y: 24, z: 48 },
+    state: { box: { x: 16, y: 128, z: 48, xd: 8, yd: 24, zd: 48 } },
     config: { direction: "away", onFloorEdge: true, part: "near" },
   },
   {
     id: "d1/frameFar",
     type: "doorFrame" as const,
-    state: { position: { x: 40, y: 128, z: 48 } },
-    aabb: { x: 8, y: 24, z: 48 },
+    state: { box: { x: 40, y: 128, z: 48, xd: 8, yd: 24, zd: 48 } },
     config: { direction: "away", onFloorEdge: true, part: "far" },
   },
 ];

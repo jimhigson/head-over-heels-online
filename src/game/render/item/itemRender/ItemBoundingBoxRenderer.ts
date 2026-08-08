@@ -199,11 +199,12 @@ export class ItemBoundingBoxRenderer<
   #container: Container;
   #shown = false;
   /**
-   * the aabb reference last drawn, so the overlay can be redrawn when an
-   * item's bounding box changes. Items replace their aabb by reference when
-   * it changes (eg light beams), so reference inequality is a sound signal
+   * the dimensions last drawn, so the overlay can be redrawn when an item's
+   * bounding box changes size (eg light beams). Position changes replace the
+   * box object without resizing it, so the three d-fields are compared, not
+   * the reference
    */
-  #lastRenderedAabb: Aabb | undefined;
+  #lastRenderedSize: Aabb | undefined;
   /**
    * the camera angle last drawn, so the overlay redraws on rotation: the box shape and the
    * renderAabb's offset are both projected with the angle, and renderAabbOffset is re-derived
@@ -255,9 +256,11 @@ export class ItemBoundingBoxRenderer<
     this.#container.addChild(
       new Graphics({ label: "objectOrigin" }).circle(0, 0, 2).fill(color),
     );
+    const { box } = item.state;
+    const physicalSize: Aabb = { x: box.xd, y: box.yd, z: box.zd };
     this.#container.addChild(
       renderBB(
-        item.aabb,
+        physicalSize,
         color,
         cameraQuarterAngle,
         undefined,
@@ -295,8 +298,8 @@ export class ItemBoundingBoxRenderer<
       const { pixiRenderer } = this.renderContext.general;
       const lines = [
         `${item.id} ${item.type}`,
-        `at (${item.state.position.x}, ${item.state.position.y}, ${item.state.position.z})`,
-        `aabb (${item.aabb.x}, ${item.aabb.y}, ${item.aabb.z})`,
+        `at (${item.state.box.x}, ${item.state.box.y}, ${item.state.box.z})`,
+        `size (${item.state.box.xd}, ${item.state.box.yd}, ${item.state.box.zd})`,
       ];
       textNode = new Container({ label: "bbHoverInfo" });
       for (const [i, line] of lines.entries()) {
@@ -320,7 +323,7 @@ export class ItemBoundingBoxRenderer<
       textNode = undefined;
     });
 
-    this.#lastRenderedAabb = item.aabb;
+    this.#lastRenderedSize = physicalSize;
     this.#lastRenderedCameraAngle = cameraQuarterAngle;
   }
 
@@ -355,14 +358,18 @@ export class ItemBoundingBoxRenderer<
       return;
     }
 
-    // already showing: redraw if the bounding box changed (new aabb reference) or the
+    // already showing: redraw if the bounding box changed size or the
     // camera rotated (the box shape and the renderAabb offset are camera-dependent)
     const cameraQuarterAngle = nearestQuarterAngle(
       this.renderContext.general.cameraAngle,
     );
+    const { box } = this.renderContext.item.state;
     if (
       shouldShow &&
-      (this.renderContext.item.aabb !== this.#lastRenderedAabb ||
+      (this.#lastRenderedSize === undefined ||
+        box.xd !== this.#lastRenderedSize.x ||
+        box.yd !== this.#lastRenderedSize.y ||
+        box.zd !== this.#lastRenderedSize.z ||
         cameraQuarterAngle.x !== this.#lastRenderedCameraAngle?.x ||
         cameraQuarterAngle.y !== this.#lastRenderedCameraAngle?.y)
     ) {

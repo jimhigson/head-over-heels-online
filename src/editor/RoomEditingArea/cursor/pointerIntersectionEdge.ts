@@ -90,9 +90,8 @@ export const pointerIntersectionEdge = (
   _tool: Tool,
   cameraAngle: Xy,
 ): Plane | undefined => {
-  const { position } = item.state;
-  // using aabb, not renderAabb, so doors can be placed on walls above where they render
-  const { aabb } = item;
+  // using the physical box, not renderAabb, so doors can be placed on walls above where they render
+  const { box } = item.state;
 
   // the screen geometry (which lines the silhouette edges lie along) is fixed
   // relative to the camera, so classify using the apparent face, then map the
@@ -135,7 +134,7 @@ export const pointerIntersectionEdge = (
     // faces that share a vertical edge:
     const d = distancePointToLine2D(
       pointerXy,
-      projectApparentBottomCentre(position, aabb, cameraAngle),
+      projectApparentBottomCentre(box, cameraAngle),
       {
         x: 0,
         y: -1,
@@ -149,7 +148,7 @@ export const pointerIntersectionEdge = (
     // edge (2)
     const d = distancePointToLine2D(
       pointerXy,
-      projectApparentTopRight(position, aabb, cameraAngle),
+      projectApparentTopRight(box, cameraAngle),
       {
         x: 2,
         y: -1,
@@ -166,7 +165,7 @@ export const pointerIntersectionEdge = (
     // faces that share an edge:
     const d = distancePointToLine2D(
       pointerXy,
-      projectApparentTopLeft(position, aabb, cameraAngle),
+      projectApparentTopLeft(box, cameraAngle),
       {
         x: 2,
         y: 1,
@@ -179,7 +178,7 @@ export const pointerIntersectionEdge = (
 
   switch (true) {
     case isUp: {
-      const corner = projectApparentTop(position, aabb, cameraAngle);
+      const corner = projectApparentTop(box, cameraAngle);
       // edge (4)
       const d1 = distancePointToLine2D(pointerXy, corner, {
         x: 2,
@@ -200,7 +199,7 @@ export const pointerIntersectionEdge = (
     }
 
     case isTowards: {
-      const corner = projectApparentLeftBase(position, aabb, cameraAngle);
+      const corner = projectApparentLeftBase(box, cameraAngle);
       // edge (6)
       const d1 = distancePointToLine2D(pointerXy, corner, {
         x: 0,
@@ -221,7 +220,7 @@ export const pointerIntersectionEdge = (
     }
 
     case isRight: {
-      const corner = projectApparentRightBase(position, aabb, cameraAngle);
+      const corner = projectApparentRightBase(box, cameraAngle);
       // edge (8)
       const d1 = distancePointToLine2D(pointerXy, corner, {
         x: 0,

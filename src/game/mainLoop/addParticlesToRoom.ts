@@ -11,6 +11,7 @@ import {
 import {
   addXyz,
   axesXyz,
+  boxWithSize,
   lengthXyz,
   originXyz,
   type Xyz,
@@ -56,7 +57,6 @@ const createParticleItemInPlay = (
     hash,
     id: `particle.${forItemId}.${particlesAdded++}`,
     type: "particle",
-    aabb: originXyz,
     config: {
       forCharacter,
     },
@@ -68,7 +68,7 @@ const createParticleItemInPlay = (
         roomTime +
         particleLifetimeMs +
         hashNumberToNumber0to1(hash) * particleLifetimeMs,
-      position,
+      box: boxWithSize(position, originXyz),
     },
   };
 };
@@ -99,7 +99,7 @@ const addParticlesUnderPlayableItem = <
       x: xRoll * particlesSpread - particlesSpread / 2,
       y: yRoll * particlesSpread - particlesSpread / 2,
     }),
-    z: item.state.position.z,
+    z: item.state.box.z,
   };
 
   // we are moving, and we have fast steps - add particles
@@ -218,7 +218,7 @@ export const addParticlesAroundCrown = <
   const yRoll = hashNumberToNumber0to1(xRoll);
   const zRoll = hashNumberToNumber0to1(yRoll);
   const face = axesXyz[Math.floor(faceRoll * axesXyz.length)];
-  const particlePosition = addXyz(crown.state.position, {
+  const particlePosition = addXyz(crown.state.box, {
     x: face === "x" ? 0 : xRoll * blockSizePx.x,
     y: face === "y" ? 0 : yRoll * blockSizePx.y,
     z: face === "z" ? blockSizePx.z : zRoll * blockSizePx.z,

@@ -14,7 +14,7 @@ import { fadeInOrOutDuration } from "../../render/animationTimings";
 import { type GameState } from "../GameState";
 import { addItemFromJsonToRoom } from "./addItemToRoom";
 import { deleteItemFromRoom } from "./deleteItemFromRoom";
-import { updateItemPosition } from "./updateItemPosition";
+import { updateItemPosition } from "./updateItemBox";
 
 /**
  * remove an item (with bubbles)
@@ -78,19 +78,24 @@ export const makeItemFadeOut = <
 
         // Position bubble at the center of this segment
         const segmentCentre = addXyz(
-          touchedItem.state.position,
+          touchedItem.state.box,
           segmentOffset,
           touchedItemHalfAabb,
         );
 
         // and then give the true position:
+        const {
+          xd: bubblesXd,
+          yd: bubblesYd,
+          zd: bubblesZd,
+        } = bubblesItem.state.box;
         updateItemPosition(
           room,
           bubblesItem,
           subXyz(
             segmentCentre,
             // TODO: use subXyzInPlace once it is merged
-            scaleXyz(bubblesItem.aabb, 0.5),
+            scaleXyz({ x: bubblesXd, y: bubblesYd, z: bubblesZd }, 0.5),
           ),
         );
 

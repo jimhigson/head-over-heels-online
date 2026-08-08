@@ -34,22 +34,20 @@ import {
 import { teleporterIsActive } from "./teleporting";
 
 const jumpRefreshCollideBufferHeight = 0.1;
-const jumpRefreshCollideBuffer: CollideableItem = {
-  aabb: {
-    // x and y of playable
-    x: smallItemAabb.x,
-    y: smallItemAabb.y,
-    z: jumpRefreshCollideBufferHeight,
-  },
+const jumpRefreshCollideBuffer = {
   id: "jumpRefreshCollideBuffer",
   state: {
-    position: {
+    box: {
       x: 0,
       y: 0,
       z: 0,
+      // xd and yd of playable
+      xd: smallItemAabb.x,
+      yd: smallItemAabb.y,
+      zd: jumpRefreshCollideBufferHeight,
     },
   },
-};
+} satisfies CollideableItem;
 
 const jumpInitialVelocity = (apexZ: number) => {
   const fudgedApexZ = apexZ - jumpFudge;
@@ -119,7 +117,7 @@ const canRefreshJump = <RoomId extends string, RoomItemId extends string>(
     return false;
   }
   // must not have moved up from the jump start position:
-  if (playableItem.state.position.z !== playableItem.state.jumpStartZ) {
+  if (playableItem.state.box.z !== playableItem.state.jumpStartZ) {
     return false;
   }
   // must be moving up or trying to (not landing):
@@ -127,8 +125,8 @@ const canRefreshJump = <RoomId extends string, RoomItemId extends string>(
     return false;
   }
 
-  const bufferPosition = jumpRefreshCollideBuffer.state.position;
-  const playablePosition = playableItem.state.position;
+  const bufferPosition = jumpRefreshCollideBuffer.state.box;
+  const playablePosition = playableItem.state.box;
   bufferPosition.x = playablePosition.x;
   bufferPosition.y = playablePosition.y;
   bufferPosition.z = playablePosition.z - jumpRefreshCollideBufferHeight;
@@ -252,7 +250,7 @@ export const jumping: Mechanic<CharacterName> = <
           // a normal jump right off of a big jump, so we should also clear it here
         : { isBigJump: false }
       : {}),
-      jumpStartZ: playableItem.state.position.z,
+      jumpStartZ: playableItem.state.box.z,
     },
   };
 };

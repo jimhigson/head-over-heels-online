@@ -1,6 +1,6 @@
 import { type UnionOfAllItemInPlayTypes } from "../../../model/ItemInPlay";
 import { roomSpatialIndexKey, type RoomState } from "../../../model/RoomState";
-import { addXyz } from "../../../utils/vectors/vectors";
+import { addXyz, boxAt } from "../../../utils/vectors/vectors";
 import {
   type CollideableItem,
   collisionItemWithIndex,
@@ -62,13 +62,13 @@ export const puttingDown = <RoomId extends string, RoomItemId extends string>(
   }
 
   const {
-    state: { position: carrierPosition },
+    state: { box: carrierBox },
   } = carrier;
 
   addItemToRoom({
     room,
     item: carrying,
-    atPosition: carrierPosition,
+    atPosition: carrierBox,
   });
 
   // ⬇ player isn't standing on whatever they were standing on before
@@ -87,7 +87,7 @@ export const puttingDown = <RoomId extends string, RoomItemId extends string>(
     posDelta: {
       x: 0,
       y: 0,
-      z: carrying.aabb.z,
+      z: carrying.state.box.zd,
     },
     forceful: true,
     deltaMS,
@@ -113,9 +113,8 @@ export const checkSpaceAvailableToPutDown = <
 ) => {
   const proposedNewLocation: CollideableItem = {
     state: {
-      position: addXyz(item.state.position, { z: blockSizePx.z }),
+      box: boxAt(addXyz(item.state.box, { z: blockSizePx.z }), item.state.box),
     },
-    aabb: item.aabb,
     id: `item.id-proposedPutdownLocation`,
   };
 

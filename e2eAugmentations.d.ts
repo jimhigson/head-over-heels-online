@@ -2,7 +2,11 @@ import { type Application } from "pixi.js";
 
 import { type EditorE2eApi } from "./src/editor/RoomEditingArea/useEditorE2eApi";
 import { type GameApi } from "./src/game/GameApi";
-import { type IndividualCharacterName } from "./src/model/modelTypes";
+import { type PlayableItem } from "./src/game/physics/itemPredicates";
+import {
+  type CharacterName,
+  type IndividualCharacterName,
+} from "./src/model/modelTypes";
 import { type AppStore } from "./src/store/store";
 
 declare global {
@@ -31,5 +35,10 @@ declare global {
     // directly - usable while the game speed is zero, where the input-driven
     // swop (read only inside the speed-scaled physics tick) can never fire
     __e2e_swopCharacter?: (name: IndividualCharacterName) => void;
+    // the item the player is currently controlling, via the same selector the
+    // game itself uses - so specs querying it inside the browser don't walk the
+    // room's items themselves
+    __e2e_currentPlayable?: () =>
+      PlayableItem<CharacterName, string, string> | undefined;
   }
 }

@@ -3,7 +3,11 @@ import { type ItemInPlay } from "../../../model/ItemInPlay";
 import { type JsonItem } from "../../../model/json/JsonItem";
 import { keys, valuesIter } from "../../../utils/entries";
 import { unitVectors } from "../../../utils/vectors/unitVectors";
-import { addXyz, type DirectionXy4 } from "../../../utils/vectors/vectors";
+import {
+  addXyz,
+  boxWithSize,
+  type DirectionXy4,
+} from "../../../utils/vectors/vectors";
 import { fullBlockAabb } from "../../collision/boundingBoxes";
 import { multiplyBoundingBox } from "../../collision/multiplyBoundingBox";
 import { blockXyzToFineXyz } from "../../render/projections";
@@ -206,8 +210,6 @@ export const loadFloor = <RoomId extends string, RoomItemId extends string>(
         position: blockXyzToFineXyz(naturalPositionBlocks),
       },
     },
-    aabb: floorAabb,
-
     // unusual for a floor to cast a shadow, but could be raised somehow in the remake engine
     shadowCastTexture: shadowFullBlock,
 
@@ -218,7 +220,7 @@ export const loadFloor = <RoomId extends string, RoomItemId extends string>(
       ...defaultBaseState(),
       // lower the floor by one block, since its position in the json is relative to
       // it's top side
-      position: floorPosition,
+      box: boxWithSize(floorPosition, floorAabb),
     },
   };
 };

@@ -28,7 +28,7 @@ describe.each(individualCharacterNames)("%s", (which) => {
       },
     });
 
-    const initialPosition = { ...currentPlayableState(gameState).position };
+    const initialPosition = { ...currentPlayableState(gameState).box };
     const initialFacing = { ...currentPlayableState(gameState).facing };
 
     let frameCount = 0;
@@ -51,7 +51,7 @@ describe.each(individualCharacterNames)("%s", (which) => {
       until: 500,
     });
 
-    const finalPosition = currentPlayableState(gameState).position;
+    const finalPosition = currentPlayableState(gameState).box;
 
     // "towards" direction decreases y
     expect(finalPosition.x).toBe(initialPosition.x);
@@ -72,7 +72,7 @@ describe.each(individualCharacterNames)("%s", (which) => {
       },
     });
 
-    const initialPosition = { ...currentPlayableState(gameState).position };
+    const initialPosition = { ...currentPlayableState(gameState).box };
     const initialFacing = { ...currentPlayableState(gameState).facing };
 
     let frameCount = 0;
@@ -95,9 +95,7 @@ describe.each(individualCharacterNames)("%s", (which) => {
     });
 
     // should not have moved at all - only rotated
-    expect(currentPlayableState(gameState).position).toMatchObject(
-      initialPosition,
-    );
+    expect(currentPlayableState(gameState).box).toMatchObject(initialPosition);
     expect(currentPlayableState(gameState).facing).toMatchObject(
       unitVectors.right,
     );

@@ -1,5 +1,5 @@
 import { type ItemInPlayType } from "../../../model/ItemInPlay";
-import { type Aabb, type Xyz } from "../../../utils/vectors/vectors";
+import { type XyzBox } from "../../../utils/vectors/vectors";
 
 /**
  * the surface the draw-order machinery needs from an item - purely physical.
@@ -9,9 +9,8 @@ import { type Aabb, type Xyz } from "../../../utils/vectors/vectors";
  */
 export type DrawOrderComparable = {
   readonly id: string;
-  aabb: Aabb;
   fixedZIndex?: number;
   type?: ItemInPlayType;
   config?: unknown;
-  state: { position: Xyz };
+  state: { box: Readonly<XyzBox> };
 };

@@ -42,10 +42,10 @@ const isNear = <RoomId extends string, RoomItemId extends string>(
   itemB: UnionOfAllItemInPlayTypes<RoomId, RoomItemId>,
 ): boolean => {
   const {
-    state: { position: itemAPosition },
+    state: { box: itemAPosition },
   } = itemA;
   const {
-    state: { position: itemBPosition },
+    state: { box: itemBPosition },
   } = itemB;
 
   const inSquare =
@@ -77,7 +77,7 @@ const activateBasedOnProximityToPlayer = <
   }
 
   const closestPlayable = findClosestPlayable(
-    itemWithActivation.state.position,
+    itemWithActivation.state.box,
     room,
   );
 

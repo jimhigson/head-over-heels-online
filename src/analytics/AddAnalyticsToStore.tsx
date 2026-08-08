@@ -113,7 +113,7 @@ const useAddTrackingToStore = () => {
           : lostLife.match(action) ?
             {
               position: positionToString(
-                action.payload.characterLosingLifeItem.state.position,
+                action.payload.characterLosingLifeItem.state.box,
               ),
             }
           : errorCaught.match(action) ? { errorMessage: firstError?.message }

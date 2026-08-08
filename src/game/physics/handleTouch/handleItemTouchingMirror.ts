@@ -37,25 +37,19 @@ export const handleItemTouchingMirror = <
    * movement. Positive z-cross is a turn from +x towards +y, which reads
    * as clockwise on screen
    */
-  const mirrorPosition = mirrorItem.state.position;
-  const moverPosition = movingItem.state.position;
+  const mirrorBox = mirrorItem.state.box;
+  const moverBox = movingItem.state.box;
   const contactX =
-    (Math.max(mirrorPosition.x, moverPosition.x) +
-      Math.min(
-        mirrorPosition.x + mirrorItem.aabb.x,
-        moverPosition.x + movingItem.aabb.x,
-      )) /
+    (Math.max(mirrorBox.x, moverBox.x) +
+      Math.min(mirrorBox.x + mirrorBox.xd, moverBox.x + moverBox.xd)) /
     2;
   const contactY =
-    (Math.max(mirrorPosition.y, moverPosition.y) +
-      Math.min(
-        mirrorPosition.y + mirrorItem.aabb.y,
-        moverPosition.y + movingItem.aabb.y,
-      )) /
+    (Math.max(mirrorBox.y, moverBox.y) +
+      Math.min(mirrorBox.y + mirrorBox.yd, moverBox.y + moverBox.yd)) /
     2;
   const torqueZ =
-    (contactX - (mirrorPosition.x + mirrorItem.aabb.x / 2)) * movementVector.y -
-    (contactY - (mirrorPosition.y + mirrorItem.aabb.y / 2)) * movementVector.x;
+    (contactX - (mirrorBox.x + mirrorBox.xd / 2)) * movementVector.y -
+    (contactY - (mirrorBox.y + mirrorBox.yd / 2)) * movementVector.x;
 
   mirrorItem.state.orientation = flippedMirrorOrientation(
     mirrorItem.state.orientation,

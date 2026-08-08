@@ -61,8 +61,8 @@ export class ItemPositionRenderer<
 
     const roundTo = uncolourised ? 1 : gameEngineUpscale;
 
-    const screenX = projectWorldXyzToScreenX(item.state.position, cameraAngle);
-    const screenY = projectWorldXyzToScreenY(item.state.position, cameraAngle);
+    const screenX = projectWorldXyzToScreenX(item.state.box, cameraAngle);
+    const screenY = projectWorldXyzToScreenY(item.state.box, cameraAngle);
 
     // a render angle away from the canonical quarter angles means the camera is
     // mid-rotation: boxy items are drawn as a warped cuboid, so place the

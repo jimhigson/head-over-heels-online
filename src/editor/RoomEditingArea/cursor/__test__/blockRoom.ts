@@ -122,25 +122,24 @@ export const faceCentreWorld = (
   face: Xyz,
 ): Xyz => {
   const {
-    state: { position },
-    aabb,
+    state: { box },
   } = item;
   return {
     x:
-      position.x +
-      (face.x > 0 ? aabb.x
+      box.x +
+      (face.x > 0 ? box.xd
       : face.x < 0 ? 0
-      : aabb.x / 2),
+      : box.xd / 2),
     y:
-      position.y +
-      (face.y > 0 ? aabb.y
+      box.y +
+      (face.y > 0 ? box.yd
       : face.y < 0 ? 0
-      : aabb.y / 2),
+      : box.yd / 2),
     z:
-      position.z +
-      (face.z > 0 ? aabb.z
+      box.z +
+      (face.z > 0 ? box.zd
       : face.z < 0 ? 0
-      : aabb.z / 2),
+      : box.zd / 2),
   };
 };
 
@@ -181,19 +180,18 @@ export const apparentSilhouette = (
   cameraAngle: Xy,
 ): ApparentSilhouette => {
   const {
-    state: { position },
-    aabb,
+    state: { box },
   } = item;
 
   const cornersAt = (z: number): Array<SilhouetteCorner> =>
     [
       { x: 0, y: 0, z },
-      { x: aabb.x, y: 0, z },
-      { x: 0, y: aabb.y, z },
-      { x: aabb.x, y: aabb.y, z },
+      { x: box.xd, y: 0, z },
+      { x: 0, y: box.yd, z },
+      { x: box.xd, y: box.yd, z },
     ].map((offset) => ({
       offset,
-      scr: projectWorldXyzToScreenXy(addXyz(position, offset), cameraAngle),
+      scr: projectWorldXyzToScreenXy(addXyz(box, offset), cameraAngle),
     }));
 
   const pick = (
@@ -203,7 +201,7 @@ export const apparentSilhouette = (
     corners.reduce((best, corner) => (better(corner, best) ? corner : best));
 
   const base = cornersAt(0);
-  const top = cornersAt(aabb.z);
+  const top = cornersAt(box.zd);
 
   return {
     bottomCentre: pick(base, (a, b) => a.scr.y > b.scr.y).scr,

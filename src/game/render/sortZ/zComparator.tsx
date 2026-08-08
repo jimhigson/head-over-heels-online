@@ -7,7 +7,7 @@ import {
   rotatedYMaxOverRect,
   rotatedYMinOverRect,
 } from "../../../utils/vectors/rotatedOverRect";
-import { type Xyz } from "../../../utils/vectors/vectors";
+import { type Xyz, type XyzBox } from "../../../utils/vectors/vectors";
 import {
   type RenderBox,
   type RenderBoxes,
@@ -34,20 +34,33 @@ import {
 const aRenderScratch: Xyz = { x: 0, y: 0, z: 0 };
 const bRenderScratch: Xyz = { x: 0, y: 0, z: 0 };
 
+// reused scratch for each item's physical size triple (read out of its box)
+// when it has no render box; same aliasing rules as the position scratch:
+const aPhysicalSizeScratch: Xyz = { x: 0, y: 0, z: 0 };
+const bPhysicalSizeScratch: Xyz = { x: 0, y: 0, z: 0 };
+
 /** the world min-corner of an item's render box, using `scratch` if it has a render offset */
 const renderBoxWorldPos = (
   item: DrawOrderComparable,
   renderBox: RenderBox | undefined,
   scratch: Xyz,
 ): Xyz => {
-  const { position } = item.state;
+  const { box } = item.state;
   const offset = renderBox?.renderAabbOffset;
   if (offset === undefined) {
-    return position;
+    return box;
   }
-  scratch.x = position.x + offset.x;
-  scratch.y = position.y + offset.y;
-  scratch.z = position.z + offset.z;
+  scratch.x = box.x + offset.x;
+  scratch.y = box.y + offset.y;
+  scratch.z = box.z + offset.z;
+  return scratch;
+};
+
+/** an item's physical size triple, written into `scratch` from its box */
+const physicalSize = (box: Readonly<XyzBox>, scratch: Xyz): Xyz => {
+  scratch.x = box.xd;
+  scratch.y = box.yd;
+  scratch.z = box.zd;
   return scratch;
 };
 
@@ -96,9 +109,11 @@ export const zComparator = (
   const aRenderBox = renderBoxes.get(a);
   const bRenderBox = renderBoxes.get(b);
   const aRenderPos = renderBoxWorldPos(a, aRenderBox, aRenderScratch);
-  const aRenderBb = aRenderBox?.renderAabb ?? a.aabb;
+  const aRenderBb =
+    aRenderBox?.renderAabb ?? physicalSize(a.state.box, aPhysicalSizeScratch);
   const bRenderPos = renderBoxWorldPos(b, bRenderBox, bRenderScratch);
-  const bRenderBb = bRenderBox?.renderAabb ?? b.aabb;
+  const bRenderBb =
+    bRenderBox?.renderAabb ?? physicalSize(b.state.box, bPhysicalSizeScratch);
 
   const aProj = broadPhase.getItemAxesProjections(a)!;
   const bProj = broadPhase.getItemAxesProjections(b)!;
@@ -122,10 +137,10 @@ export const zComparator = (
         if (renderBBDifferentFromPhysical) {
           // if the render bbs are undecided, move onto the physical bbs:
           renderBBsOrder = zComparatorOfVisuallyOverlapping(
-            a.state.position,
-            a.aabb,
-            b.state.position,
-            b.aabb,
+            a.state.box,
+            physicalSize(a.state.box, aPhysicalSizeScratch),
+            b.state.box,
+            physicalSize(b.state.box, bPhysicalSizeScratch),
             geometryAngle,
           );
         }

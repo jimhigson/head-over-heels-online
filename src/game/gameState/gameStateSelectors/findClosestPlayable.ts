@@ -20,13 +20,13 @@ export const findClosestPlayable = <
     head === undefined ? undefined
     : playerDiedRecently(head) ? undefined
     : head.state.action === "death" ? undefined
-    : distanceSquaredXy(head.state.position, position);
+    : distanceSquaredXy(head.state.box, position);
 
   const heelsDistance =
     heels === undefined ? undefined
     : playerDiedRecently(heels) ? undefined
     : heels.state.action === "death" ? undefined
-    : distanceSquaredXy(heels.state.position, position);
+    : distanceSquaredXy(heels.state.box, position);
 
   return (
     headDistance === undefined ? heels

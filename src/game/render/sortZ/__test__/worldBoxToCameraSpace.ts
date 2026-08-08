@@ -1,5 +1,5 @@
 import { cameraAngleBase } from "../../../../utils/vectors/cameraAngleVectors";
-import { type Xy, type Xyz } from "../../../../utils/vectors/vectors";
+import { type Xy, type XyzBox } from "../../../../utils/vectors/vectors";
 
 /**
  * Test oracle (not used by production): rotate an axis-aligned world box about the
@@ -12,26 +12,21 @@ import { type Xy, type Xyz } from "../../../../utils/vectors/vectors";
  * projection (which never builds such a box) produces the same draw order.
  */
 export const worldBoxToCameraSpace = (
-  position: Xyz,
-  aabb: Xyz,
+  box: Readonly<XyzBox>,
   cameraAngle: Xy = cameraAngleBase,
-): { position: Xyz; aabb: Xyz } => {
+): XyzBox => {
   const { x: cos, y: sin } = cameraAngle;
   // the two opposite xy corners of the box, rotated about the vertical axis:
-  const corner0X = position.x * cos - position.y * sin;
-  const corner0Y = position.x * sin + position.y * cos;
-  const corner1X = (position.x + aabb.x) * cos - (position.y + aabb.y) * sin;
-  const corner1Y = (position.x + aabb.x) * sin + (position.y + aabb.y) * cos;
+  const corner0X = box.x * cos - box.y * sin;
+  const corner0Y = box.x * sin + box.y * cos;
+  const corner1X = (box.x + box.xd) * cos - (box.y + box.yd) * sin;
+  const corner1Y = (box.x + box.xd) * sin + (box.y + box.yd) * cos;
   return {
-    position: {
-      x: Math.min(corner0X, corner1X),
-      y: Math.min(corner0Y, corner1Y),
-      z: position.z,
-    },
-    aabb: {
-      x: Math.abs(corner1X - corner0X),
-      y: Math.abs(corner1Y - corner0Y),
-      z: aabb.z,
-    },
+    x: Math.min(corner0X, corner1X),
+    y: Math.min(corner0Y, corner1Y),
+    z: box.z,
+    xd: Math.abs(corner1X - corner0X),
+    yd: Math.abs(corner1Y - corner0Y),
+    zd: box.zd,
   };
 };

@@ -60,7 +60,7 @@ export const renderFloorOverdraws = (
         const {
           id,
           config: { direction },
-          state: { position: doorOrWallPosition },
+          state: { box: doorOrWallBox },
         } = item;
         const apparentDirection = rotateXy(direction, cameraQuarterAngle);
 
@@ -82,8 +82,10 @@ export const renderFloorOverdraws = (
         );
 
         const anchorWorld = addXyz(
-          subXyz(doorOrWallPosition, floorPosition),
-          outIsNegative ? { [crossAxis]: item.aabb[crossAxis] } : originXyz,
+          subXyz(doorOrWallBox, floorPosition),
+          outIsNegative ?
+            { [crossAxis]: doorOrWallBox[`${crossAxis}d`] }
+          : originXyz,
           alongReversed ? { [alongAxis]: blockSizePx[alongAxis] } : originXyz,
         );
 

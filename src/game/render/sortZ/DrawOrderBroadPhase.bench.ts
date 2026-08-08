@@ -25,8 +25,16 @@ const consumeCandidatePairs = <Item>(broadPhase: {
 
 type BenchItem = {
   id: string;
-  state: { position: { x: number; y: number; z: number } };
-  aabb: { x: number; y: number; z: number };
+  state: {
+    box: {
+      x: number;
+      y: number;
+      z: number;
+      xd: number;
+      yd: number;
+      zd: number;
+    };
+  };
 };
 
 type Scenario = {
@@ -99,17 +107,15 @@ const makeItems = ({ itemCount, roomBlocks }: Scenario): Set<BenchItem> => {
     items.add({
       id: `item-${i}`,
       state: {
-        position: {
+        box: {
           // on the block grid, anywhere the footprint fits inside the room:
           x: Math.floor(random() * (roomBlocks.x - shape.x)) * blockSizePx.x,
           y: Math.floor(random() * (roomBlocks.y - shape.y)) * blockSizePx.y,
           z: zLevelForIndex(i, itemCount) * blockSizePx.z,
+          xd: shape.x * blockSizePx.x,
+          yd: shape.y * blockSizePx.y,
+          zd: shape.z * blockSizePx.z,
         },
-      },
-      aabb: {
-        x: shape.x * blockSizePx.x,
-        y: shape.y * blockSizePx.y,
-        z: shape.z * blockSizePx.z,
       },
     });
   }
@@ -147,9 +153,9 @@ for (const scenario of scenarios) {
           ) {
             const item = itemsArray[i];
             // walk to a new spot on the floor grid (height level kept):
-            item.state.position.x =
+            item.state.box.x =
               Math.floor(random() * (roomBlocks.x - 1)) * blockSizePx.x;
-            item.state.position.y =
+            item.state.box.y =
               Math.floor(random() * (roomBlocks.y - 1)) * blockSizePx.y;
           }
 

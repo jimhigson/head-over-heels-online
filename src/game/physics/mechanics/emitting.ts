@@ -9,6 +9,7 @@ import {
 import { hashXyzToNumber0to1 } from "../../../utils/maths/hashing";
 import {
   addXyz,
+  boxAt,
   originXyz,
   productXyz,
   scaleXyz,
@@ -65,7 +66,7 @@ export const emitting = <RoomId extends string, RoomItemId extends string>(
   _deltaMS: number,
 ): undefined => {
   const { id: emitterId, state } = emitter;
-  const { lastEmittedAtRoomTime, quantityEmitted, position } = state;
+  const { lastEmittedAtRoomTime, quantityEmitted, box } = state;
 
   const { maximum } = state;
 
@@ -144,16 +145,23 @@ export const emitting = <RoomId extends string, RoomItemId extends string>(
           productXyz({ ...originXyz, ...emitter.config.offset }, blockSizePx)
         : originXyz;
 
-      newlyEmittedItem.state.position = subXyz(
-        addXyz(position, emitOffset),
-        scaleXyz(newlyEmittedItem.aabb, 0.5),
+      const emittedBox = newlyEmittedItem.state.box;
+      newlyEmittedItem.state.box = boxAt(
+        subXyz(
+          addXyz(box, emitOffset),
+          scaleXyz(
+            { x: emittedBox.xd, y: emittedBox.yd, z: emittedBox.zd },
+            0.5,
+          ),
+        ),
+        emittedBox,
       );
 
       // recompute the hash from the final position plus roomTime, so items
       // emitted from one emitter (all sharing a spawn position) don't start
       // their animations in sync:
       newlyEmittedItem.hash = hashXyzToNumber0to1(
-        newlyEmittedItem.state.position,
+        newlyEmittedItem.state.box,
         room.roomTime,
       );
 

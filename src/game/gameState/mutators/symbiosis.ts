@@ -3,7 +3,7 @@ import { type IndividualCharacterName } from "../../../model/modelTypes";
 import { emptyObject } from "../../../utils/empty";
 import { neverTime } from "../../../utils/neverTime";
 import { pick } from "../../../utils/pick";
-import { addXyz } from "../../../utils/vectors/vectors";
+import { addXyz, boxWithSize } from "../../../utils/vectors/vectors";
 import {
   headAabb,
   headOverHeelsAabb,
@@ -33,7 +33,6 @@ export const uncombinePlayablesFromSymbiosis = <
     hash: 0,
     ...defaultItemProperties,
     ...defaultPlayableRootAttributes,
-    aabb: headAabb,
     state: {
       ...defaultBaseState<RoomItemId>(),
       ...defaultFreeItemState<RoomItemId>(),
@@ -50,7 +49,10 @@ export const uncombinePlayablesFromSymbiosis = <
         "autoWalk",
         "teleporting",
       ),
-      position: addXyz(headOverHeels.state.position, { z: blockSizePx.z }),
+      box: boxWithSize(
+        addXyz(headOverHeels.state.box, { z: blockSizePx.z }),
+        headAabb,
+      ),
       switchedToAt: neverTime,
     },
   };
@@ -61,7 +63,6 @@ export const uncombinePlayablesFromSymbiosis = <
     hash: 0,
     ...defaultItemProperties,
     ...defaultPlayableRootAttributes,
-    aabb: heelsAabb,
     state: {
       ...defaultBaseState<RoomItemId>(),
       ...defaultFreeItemState<RoomItemId>(),
@@ -78,7 +79,7 @@ export const uncombinePlayablesFromSymbiosis = <
         "autoWalk",
         "teleporting",
       ),
-      position: addXyz(headOverHeels.state.position),
+      box: boxWithSize(headOverHeels.state.box, heelsAabb),
       switchedToAt: neverTime,
       isBigJump: false,
     },
@@ -115,12 +116,11 @@ export const combinePlayablesInSymbiosis = <
     shadowCastTexture: heels.shadowCastTexture,
     castsShadowWhileStoodOn: heels.castsShadowWhileStoodOn,
     config: emptyObject,
-    aabb: headOverHeelsAabb,
     state: {
       ...defaultBaseState<RoomItemId>(),
       ...defaultFreeItemState(),
       ...defaultCommonPlayableState(),
-      position: heels.state.position,
+      box: boxWithSize(heels.state.box, headOverHeelsAabb),
       action: "idle",
       jumped: false,
       teleporting: null,

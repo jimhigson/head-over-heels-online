@@ -1,16 +1,15 @@
 import { expect, test } from "vitest";
 
-import { type Xyz } from "../../../utils/vectors/vectors";
+import { boxWithSize, type Xyz } from "../../../utils/vectors/vectors";
 import { type Indexable, SpatialIndex } from "./SpatialIndex";
 
 const makeItem = (
   id: string,
   position: Xyz,
-  aabb: Xyz = { x: 12, y: 12, z: 12 } as Xyz,
+  size: Xyz = { x: 12, y: 12, z: 12 } as Xyz,
 ): Indexable => ({
   id,
-  state: { position },
-  aabb,
+  state: { box: boxWithSize(position, size) },
 });
 
 // cells are blockSizePx.x*2 = 32 world px wide/deep; placing an item at
@@ -105,7 +104,14 @@ test("getOccupiedCuboidCellExtent reflects adds, removal of an extreme, and move
   });
 
   // moving an item to a new cell updates the extent
-  a.state.position = { x: 200, y: 200, z: 0 } as Xyz; // cell (6,6)
+  a.state.box = boxWithSize(
+    { x: 200, y: 200, z: 0 } as Xyz,
+    {
+      x: 12,
+      y: 12,
+      z: 12,
+    } as Xyz,
+  ); // cell (6,6)
   idx.updateItemSpatialIndex(a);
   expect(idx.getOccupiedCuboidCellExtent()).toEqual({
     minCellX: 6,

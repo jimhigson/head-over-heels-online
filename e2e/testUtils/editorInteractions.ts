@@ -117,22 +117,22 @@ export const editorPointingAt = async (page: Page) =>
 
 /** the world-space centre of one face (a unit ± axis normal) of an item */
 export const faceCentreWorld = (
-  { position, aabb }: Pick<EditorE2eItem, "aabb" | "position">,
+  { box }: Pick<EditorE2eItem, "box">,
   face: Xyz,
 ): Xyz => ({
   x:
-    position.x +
-    (face.x > 0 ? aabb.x
+    box.x +
+    (face.x > 0 ? box.xd
     : face.x < 0 ? 0
-    : aabb.x / 2),
+    : box.xd / 2),
   y:
-    position.y +
-    (face.y > 0 ? aabb.y
+    box.y +
+    (face.y > 0 ? box.yd
     : face.y < 0 ? 0
-    : aabb.y / 2),
+    : box.yd / 2),
   z:
-    position.z +
-    (face.z > 0 ? aabb.z
+    box.z +
+    (face.z > 0 ? box.zd
     : face.z < 0 ? 0
-    : aabb.z / 2),
+    : box.zd / 2),
 });

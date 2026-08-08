@@ -75,14 +75,14 @@ describe("lifts", () => {
       }),
     );
     const heelsZPosPerFrame: Array<
-      PlayableItem<"heels", TestRoomId>["state"]["position"]["z"]
+      PlayableItem<"heels", TestRoomId>["state"]["box"]["z"]
     > = [];
 
     playGameThrough(gameState, {
       frameCallbacks(gameState) {
         // give a little time to fall onto the lift:
         if (gameState.gameTime > 200) {
-          heelsZPosPerFrame.push(heelsState(gameState).position.z);
+          heelsZPosPerFrame.push(heelsState(gameState).box.z);
         }
       },
       until: 5_000, // run for quite a long time
@@ -101,7 +101,7 @@ describe("lifts", () => {
 
     playGameThrough(gameState, {
       frameCallbacks(gameState) {
-        maxHeight = Math.max(maxHeight, heelsState(gameState).position.z);
+        maxHeight = Math.max(maxHeight, heelsState(gameState).box.z);
       },
       until: 5_000, // run for quite a long time
     });
@@ -137,9 +137,9 @@ describe("lifts", () => {
     });
 
     // lift is now stuck on top of the player
-    expect(itemState(gameState, "lift")?.position.z).toBe(12);
+    expect(itemState(gameState, "lift")?.box.z).toBe(12);
     // player hasn't moved
-    expect(heelsState(gameState).position.z).toBe(0);
+    expect(heelsState(gameState).box.z).toBe(0);
   });
 
   test("lift can take player to next room vertically", () => {
@@ -272,7 +272,7 @@ describe("lifts", () => {
       until: 5_000,
     });
 
-    expect(heelsState(gameState).position.z).toBe(blockSizePx.z * 2);
+    expect(heelsState(gameState).box.z).toBe(blockSizePx.z * 2);
     expect(heelsState(gameState).standingOnItemId).toEqual("lift");
   });
 
@@ -306,8 +306,8 @@ describe("lifts", () => {
       until: 1_000,
     });
 
-    expect(itemState(gameState, "lift")!.position.z).toBeCloseTo(0);
-    expect(heelsState(gameState).position.z).toEqual(blockSizePx.z * 2);
+    expect(itemState(gameState, "lift")!.box.z).toBeCloseTo(0);
+    expect(heelsState(gameState).box.z).toEqual(blockSizePx.z * 2);
     expect(heelsState(gameState).standingOnItemId).toEqual("heavyBlock");
   });
 });

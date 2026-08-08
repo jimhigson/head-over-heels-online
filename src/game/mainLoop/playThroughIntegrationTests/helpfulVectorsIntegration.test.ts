@@ -41,7 +41,7 @@ test("player slides at a normal to the input direction when partially overlappin
     },
   });
 
-  const startY = heelsState(gameState).position.y;
+  const startY = heelsState(gameState).box.y;
 
   playGameThrough(gameState, {
     setupInitialInput(mockInputStateTracker) {
@@ -49,12 +49,12 @@ test("player slides at a normal to the input direction when partially overlappin
     },
     until() {
       // reached the right wall, even though there was a block in the way:
-      return heelsState(gameState).position.x === 0;
+      return heelsState(gameState).box.x === 0;
     },
   });
 
   // slid on that block to change the y (at a normal to the direction of travel)
-  expect(heelsState(gameState).position.y).toBeGreaterThan(startY);
+  expect(heelsState(gameState).box.y).toBeGreaterThan(startY);
 });
 
 test.for([
@@ -102,7 +102,7 @@ test.for([
       },
     });
 
-    const startY = heelsState(gameState).position.y;
+    const startY = heelsState(gameState).box.y;
 
     playGameThrough(gameState, {
       setupInitialInput(mockInputStateTracker) {
@@ -112,7 +112,7 @@ test.for([
     });
 
     // did not slide in y - still at same ordinal:
-    expect(heelsState(gameState).position.y).toEqual(startY);
+    expect(heelsState(gameState).box.y).toEqual(startY);
   },
 );
 
@@ -143,8 +143,8 @@ test("player slides at a normal to the input direction after initially pushing a
     until() {
       // both heels and the thing they pushed made it to the wall:
       return (
-        heelsState(gameState).position.x === 0 &&
-        itemState(gameState, "soothingToPush").position.x === 0
+        heelsState(gameState).box.x === 0 &&
+        itemState(gameState, "soothingToPush").box.x === 0
       );
     },
   });
@@ -177,7 +177,7 @@ test("block pushed by player gets a helpful vector around an obstruction", () =>
     },
   });
 
-  const startY = itemState(gameState, "soothingToPushInto").position.y;
+  const startY = itemState(gameState, "soothingToPushInto").box.y;
 
   playGameThrough(gameState, {
     setupInitialInput(mockInputStateTracker) {
@@ -185,12 +185,12 @@ test("block pushed by player gets a helpful vector around an obstruction", () =>
     },
     until() {
       // pushed item reached the right wall, even though there was a block in the way:
-      return itemState(gameState, "soothingToPushInto").position.x === 0;
+      return itemState(gameState, "soothingToPushInto").box.x === 0;
     },
   });
 
   // slid on that block to change the y (at a normal to the direction of travel)
-  expect(itemState(gameState, "soothingToPushInto").position.y).toBeGreaterThan(
+  expect(itemState(gameState, "soothingToPushInto").box.y).toBeGreaterThan(
     startY,
   );
 });
@@ -224,7 +224,7 @@ test("player can move around a fixed block, into a pushable one", () => {
     },
   });
 
-  const initialHeelsY = heelsState(gameState).position.y;
+  const initialHeelsY = heelsState(gameState).box.y;
 
   playGameThrough(gameState, {
     setupInitialInput(mockInputStateTracker) {
@@ -234,13 +234,11 @@ test("player can move around a fixed block, into a pushable one", () => {
       // heels should not slide in -y direction while pushing the portableBlock
       // - this proves that hmvs are applied at the deepest point they are found
       // in the tree of recursive calls to moveItem
-      expect(heelsState(gameState).position.y).toBeGreaterThanOrEqual(
-        initialHeelsY,
-      );
+      expect(heelsState(gameState).box.y).toBeGreaterThanOrEqual(initialHeelsY);
     },
     until() {
       // pushed item reached the right wall, even though there was a block in the way:
-      return itemState(gameState, "portableBlock").position.x === 0;
+      return itemState(gameState, "portableBlock").box.x === 0;
     },
   });
 });
@@ -311,7 +309,7 @@ test.each([3.5, 3, 2.5])(
       },
       until() {
         // pushed item reached the right wall, even though there was a block in the way:
-        return headState(gameState).position.x === 0;
+        return headState(gameState).box.x === 0;
       },
     });
   },

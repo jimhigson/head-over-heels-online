@@ -53,7 +53,7 @@ import { saveGameThunk } from "../saving/saveGameThunk";
 import { addItemToRoom } from "./addItemToRoom";
 import { deleteItemFromRoom } from "./deleteItemFromRoom";
 import { removeHushPuppiesFromRoom } from "./removeHushPuppiesFromRoom";
-import { updateItemPosition } from "./updateItemPosition";
+import { updateItemPosition } from "./updateItemBox";
 
 const log = 0;
 
@@ -247,11 +247,12 @@ const findTeleporterDestinationPosition = <
   }
 
   const {
-    state: { position },
-    aabb: { x: destW, y: destD, z: destH },
+    state: {
+      box: { xd: destW, yd: destD, zd: destH, ...position },
+    },
   } = destinationItem;
 
-  const { x: playerW, y: playerD } = playableItem.aabb;
+  const { xd: playerW, yd: playerD } = playableItem.state.box;
 
   const unclamped = addXyz(
     position,
@@ -307,7 +308,7 @@ const backOffAndPushBack = <RoomId extends string, RoomItemId extends string>(
     toRoom,
     playableItem,
     addXyz(
-      playableItem.state.position,
+      playableItem.state.box,
       scaleXyz(portalDirectionXy, backOffAndPushLength),
     ),
   );
@@ -384,22 +385,23 @@ export function changeCharacterRoom<
     case "portal": {
       const {
         config: { relativePoint },
-        state: { position: portalPosition },
+        state: { box: portalPosition },
       } = sourceItem;
 
       positionRelativeToSourcePortal = subXyz(
-        playableItem.state.position,
+        playableItem.state.box,
         addXyz(portalPosition, relativePoint),
       );
       break;
     }
     case "teleport": {
       const {
-        state: { position: teleporterPosition },
-        aabb: { z: teleporterHeight },
+        state: {
+          box: { zd: teleporterHeight, ...teleporterPosition },
+        },
       } = sourceItem;
       positionRelativeToSourcePortal = subXyz(
-        playableItem.state.position,
+        playableItem.state.box,
         // should be relative to the top of the teleporter:
         addXyz(teleporterPosition, { z: teleporterHeight }),
       );
@@ -458,7 +460,7 @@ export function changeCharacterRoom<
       addItemToRoom({
         room: leavingRoom,
         item: carrying,
-        atPosition: playableItem.state.position,
+        atPosition: playableItem.state.box,
       });
       heelsAbilities.carrying = null;
     }
@@ -550,7 +552,7 @@ export function changeCharacterRoom<
       }
     } else {
       const newPosition = addXyz(
-        destinationPortal.state.position,
+        destinationPortal.state.box,
         destinationPortal.config.relativePoint,
         positionRelativeToSourcePortal,
         // an extra boost of one block when travelling up - this is because the room above won't have a floor
@@ -609,7 +611,7 @@ export function changeCharacterRoom<
             noSoundPan: false,
             gain: planet === "moonbase" ? 0.3 : 1,
           }),
-          atPosition: playableItem.state.position,
+          atPosition: playableItem.state.box,
         });
       }
     }
@@ -628,7 +630,7 @@ export function changeCharacterRoom<
         "character",
         playableItem.id,
         "at",
-        playableItem.state.position,
+        playableItem.state.box,
         "collides with (at least one; only first is shown) non-portal item:",
         collisionInDestinationRoom,
       );

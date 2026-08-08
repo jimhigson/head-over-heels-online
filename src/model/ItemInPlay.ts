@@ -4,7 +4,7 @@ import { type ItemTypeUnion } from "../_generated/types/ItemInPlayUnion";
 import { type ShadowCastSpriteOptions } from "../game/render/ShadowCastSpriteOptions";
 import { type BracketedSegmentOptions } from "../sound/soundUtils/createBracketedSound";
 import { type SceneryName } from "../sprites/planets";
-import { type Aabb, type Xy, type Xyz } from "../utils/vectors/vectors";
+import { type Xy, type Xyz } from "../utils/vectors/vectors";
 import { type ItemState } from "./ItemState";
 import { type ExitGameRoomId } from "./json/ItemConfigMap";
 import {
@@ -202,12 +202,6 @@ export type ItemInPlay<
   ScN extends SceneryName = SceneryName,
 > = {
   type: T;
-
-  /**
-   * the bounding box of this item for the sake of collision detection. This is not optional - ie, there
-   * are no non-collideable items
-   */
-  aabb: Aabb;
 
   /**
    * if we are coming from room json in a campaign, the id of the room json item

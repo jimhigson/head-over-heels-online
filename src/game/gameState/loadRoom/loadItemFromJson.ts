@@ -188,7 +188,7 @@ export function* loadItemFromJson<
       // eslint-disable-next-line @typescript-eslint/no-explicit-any -- this is very difficult to type correctly - can probably find a way to do it by creating restricted, but discriminatable unions
       let state: any;
       try {
-        state = initialState(jsonItem);
+        state = initialState(jsonItem, aabb);
       } catch (e: unknown) {
         throw new Error(
           `loadItemFromJson: error creating initial state for jsonItem ${JSON.stringify(jsonItem, null, 2)}`,
@@ -201,8 +201,7 @@ export function* loadItemFromJson<
       yield {
         ...jsonItem,
         ...defaultItemProperties,
-        aabb,
-        hash: hashXyzToNumber0to1(state.position),
+        hash: hashXyzToNumber0to1(state.box),
         id: `${jsonItemId}${itemIdSuffix}`,
         jsonItemId,
         fixedZIndex:

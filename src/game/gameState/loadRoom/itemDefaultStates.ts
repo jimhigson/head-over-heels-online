@@ -11,7 +11,12 @@ import { emptyObject } from "../../../utils/empty";
 import { neverTime } from "../../../utils/neverTime";
 import { omit } from "../../../utils/pick";
 import { unitVectors } from "../../../utils/vectors/unitVectors";
-import { originXyz, scaleXyz } from "../../../utils/vectors/vectors";
+import {
+  type Aabb,
+  boxWithSize,
+  originXyz,
+  scaleXyz,
+} from "../../../utils/vectors/vectors";
 import {
   freeItemTypes,
   portableItemTypes,
@@ -60,12 +65,16 @@ export const defaultFreeItemState = <RoomItemId extends string>() =>
     previousStandingOnItemId: null,
   }) as const satisfies Partial<FreeItemState<RoomItemId>>;
 
-export const initialState = (jsonItem: JsonItemUnion) => {
+export const initialState = (
+  jsonItem: JsonItemUnion,
+  /** the item's collision dimensions, for its state box */
+  aabb: Aabb,
+) => {
   const isFree = (freeItemTypes as JsonItemType[]).includes(jsonItem.type);
 
   return {
     ...defaultBaseState(),
-    position: positionCentredInBlock(jsonItem as JsonItemUnion),
+    box: boxWithSize(positionCentredInBlock(jsonItem as JsonItemUnion), aabb),
     ...(isFree ?
       ({
         ...defaultFreeItemState(),

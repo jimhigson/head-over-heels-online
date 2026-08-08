@@ -1,7 +1,12 @@
 import { expect, test } from "vitest";
 
 import { quarterCameraAngles } from "../../../utils/vectors/cameraAngleVectors";
-import { type Xy, type Xyz } from "../../../utils/vectors/vectors";
+import {
+  boxWithSize,
+  type Xy,
+  type Xyz,
+  type XyzBox,
+} from "../../../utils/vectors/vectors";
 import { type RenderBoxes } from "../renderBox/makeItemRenderBoxAtCameraAngle";
 import { geometryAngleAtQuarterOffset } from "./__test__/geometryAngleAtQuarterOffset";
 import { makeLcg } from "./__test__/makeLcg";
@@ -199,13 +204,11 @@ const makePairs = (pairCount: number): PinnedPair[] => {
       category: categoryNames[category],
       a: {
         id: `a${i}`,
-        state: { position: aPos },
-        aabb: aShape,
+        state: { box: boxWithSize(aPos, aShape) },
       },
       b: {
         id: `b${i}`,
-        state: { position: bPos },
-        aabb: bShape,
+        state: { box: boxWithSize(bPos, bShape) },
       },
     });
   }
@@ -215,6 +218,13 @@ const makePairs = (pairCount: number): PinnedPair[] => {
 const pairs = makePairs(324);
 
 const fmtXyz = ({ x, y, z }: Xyz) => `(${x},${y},${z})`;
+
+/** the physical size triple read out of a box */
+const sizeOf = ({ xd, yd, zd }: Readonly<XyzBox>): Xyz => ({
+  x: xd,
+  y: yd,
+  z: zd,
+});
 
 const collapseOverlapClass = (
   classification: VisuallyOverlapsReturn,
@@ -227,8 +237,10 @@ const decisionLine = (
   { pairId, a, b }: PinnedPair,
   cameraAngle: Xy,
 ): string => {
-  const aProj = projectAabbAxes({}, a.state.position, a.aabb, cameraAngle);
-  const bProj = projectAabbAxes({}, b.state.position, b.aabb, cameraAngle);
+  const aSize = sizeOf(a.state.box);
+  const bSize = sizeOf(b.state.box);
+  const aProj = projectAabbAxes({}, a.state.box, aSize, cameraAngle);
+  const bProj = projectAabbAxes({}, b.state.box, bSize, cameraAngle);
   const overlapClass = collapseOverlapClass(visuallyOverlaps(aProj, bProj));
 
   const renderBoxes: RenderBoxes<DrawOrderComparable> = new Map();
@@ -240,17 +252,17 @@ const decisionLine = (
   const cmpSign = Math.sign(zComparator(a, b, broadPhase, renderBoxes));
 
   const fine = zComparatorOfVisuallyOverlapping(
-    a.state.position,
-    a.aabb,
-    b.state.position,
-    b.aabb,
+    a.state.box,
+    aSize,
+    b.state.box,
+    bSize,
     cameraAngle,
   );
   const mtv = zComparatorOfVisuallyOverlappingByMtv(
-    a.state.position,
-    a.aabb,
-    b.state.position,
-    b.aabb,
+    a.state.box,
+    aSize,
+    b.state.box,
+    bSize,
     cameraAngle,
   );
 
@@ -262,7 +274,7 @@ test("generated pair geometry is stable", () => {
     pairs
       .map(
         ({ pairId, category, a, b }) =>
-          `${pairId} ${category} a@${fmtXyz(a.state.position)}+${fmtXyz(a.aabb)} b@${fmtXyz(b.state.position)}+${fmtXyz(b.aabb)}`,
+          `${pairId} ${category} a@${fmtXyz(a.state.box)}+${fmtXyz(sizeOf(a.state.box))} b@${fmtXyz(b.state.box)}+${fmtXyz(sizeOf(b.state.box))}`,
       )
       .join("\n"),
   ).toMatchSnapshot();

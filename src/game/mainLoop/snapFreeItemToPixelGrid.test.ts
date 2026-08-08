@@ -16,7 +16,7 @@ const createMockItem = ({
 }) =>
   ({
     state: {
-      position,
+      box: { ...position, xd: 0, yd: 0, zd: 0 },
       actedOnAt: {
         ...actedOnAt,
         by: {},

@@ -8,10 +8,12 @@ import { type RoomState } from "../../../model/RoomState";
 import { emptyObject } from "../../../utils/empty";
 import {
   addXyz,
+  boxWithSize,
   originXyz,
   scaleXyz,
   unitVector,
 } from "../../../utils/vectors/vectors";
+import { smallItemAabb } from "../../collision/boundingBoxes";
 import { type GameState } from "../../gameState/GameState";
 import { defaultBaseState } from "../../gameState/loadRoom/itemDefaultStates";
 import { shadowSmallRound } from "../../gameState/loadRoom/loadItemShadowCast";
@@ -41,7 +43,7 @@ export const firing = <RoomId extends string, RoomItemId extends string>(
 
   const { doughnuts, hasHooter } = headAbilities;
   const {
-    state: { position, facing },
+    state: { box, facing },
   } = firer;
 
   const direction = unitVector(facing);
@@ -62,10 +64,13 @@ export const firing = <RoomId extends string, RoomItemId extends string>(
       shadowCastTexture: shadowSmallRound,
       state: {
         ...defaultBaseState(),
-        position: addXyz(
-          position,
-          scaleXyz(direction, aheadStart),
-          firer.type === "headOverHeels" ? { z: blockSizePx.z } : originXyz,
+        box: boxWithSize(
+          addXyz(
+            box,
+            scaleXyz(direction, aheadStart),
+            firer.type === "headOverHeels" ? { z: blockSizePx.z } : originXyz,
+          ),
+          smallItemAabb,
         ),
         vels: {
           fired: scaleXyz(direction, moveSpeedPixPerMs.firedDoughnut),

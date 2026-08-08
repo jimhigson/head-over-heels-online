@@ -50,25 +50,17 @@ export const handleItemTouchingSlidingItem = <
   }
 
   const {
-    state: { position: slidingItemPosition },
-    aabb: slidingItemAabb,
+    state: { box: slidingItemBox },
   } = slidingItem;
 
   // the overlap mtv is the simple mtv required to get the pusher and pushee
   // to no longer overlap. Usually, but not always, this would be in the direction
   // of travel, but because of chain reactions it is possible for them to be orthogonal
-  const mtvOverlap = mtvXy(
-    touchingItem.state.position,
-    touchingItem.aabb,
-    slidingItemPosition,
-    slidingItemAabb,
-  );
+  const mtvOverlap = mtvXy(touchingItem.state.box, slidingItemBox);
 
   const slidingVector = mtvAlongVector(
-    touchingItem.state.position,
-    touchingItem.aabb,
-    slidingItemPosition,
-    slidingItemAabb,
+    touchingItem.state.box,
+    slidingItemBox,
     movementVector,
   );
   slidingVector.z = 0; // we don't slide in z
@@ -159,16 +151,10 @@ export const handleSlidingItemTouchingAnyItem = <
   }
 
   const {
-    state: { position: slidingItemPosition },
-    aabb: slidingItemAabb,
+    state: { box: slidingItemBox },
   } = slidingItem;
 
-  const m = mtv(
-    touchedItem.state.position,
-    touchedItem.aabb,
-    slidingItemPosition,
-    slidingItemAabb,
-  );
+  const m = mtv(touchedItem.state.box, slidingItemBox);
 
   // dot product > 0 means collision has a component in the direction
   // this item was sliding in

@@ -19,7 +19,7 @@ import {
 import { type GameState } from "../../gameState/GameState";
 import { removeStandingOn } from "../../gameState/mutators/standingOn/removeStandingOn";
 import { setStandingOnWithoutRemovingOldFirst } from "../../gameState/mutators/standingOn/setStandingOnWithoutRemovingOldFirst";
-import { updateItemPosition } from "../../gameState/mutators/updateItemPosition";
+import { updateItemPosition } from "../../gameState/mutators/updateItemBox";
 import { sortObstaclesAboutPriorityAndVector } from "../collisionsOrder";
 import { type handleItemsTouchingItems } from "../handleTouch/handleItemsTouchingItems";
 import {
@@ -121,7 +121,7 @@ export const moveItem = <RoomId extends string, RoomItemId extends string>({
   let causedHelpful = false;
 
   const {
-    state: { position: originalPosition },
+    state: { box: originalBox },
   } = subjectItem;
 
   if (log) {
@@ -130,9 +130,7 @@ export const moveItem = <RoomId extends string, RoomItemId extends string>({
       "on path",
       [...visited.values()],
       `💨 moving ${subjectItem.id} @`,
-      subjectItem.state.position,
-      `bb:`,
-      subjectItem.aabb,
+      subjectItem.state.box,
       `\n By:`,
       ...visualiseVectorForLogs(posDelta),
       onTouch ? "with touch handling callback" : "skipping touch handling",
@@ -140,7 +138,7 @@ export const moveItem = <RoomId extends string, RoomItemId extends string>({
   }
 
   // strategy is to move to the target position, then back off as needed
-  updateItemPosition(room, subjectItem, addXyz(originalPosition, posDelta));
+  updateItemPosition(room, subjectItem, addXyz(originalBox, posDelta));
 
   if (visited.size === 0) {
     // record 'first cause' acting on, directly from the mechanics.
@@ -196,9 +194,9 @@ export const moveItem = <RoomId extends string, RoomItemId extends string>({
       if (log) {
         console.log(
           `${subjectItem.id} @`,
-          subjectItem.state.position,
+          subjectItem.state.box,
           `❌💥 no longer colliding with ${collidedWithItem.id} @`,
-          collidedWithItem.state.position,
+          collidedWithItem.state.box,
           `after handling previous collisions`,
         );
       }
@@ -207,9 +205,9 @@ export const moveItem = <RoomId extends string, RoomItemId extends string>({
       if (log) {
         console.log(
           `${subjectItem.id} @`,
-          subjectItem.state.position,
+          subjectItem.state.box,
           `*is STILL* 💥 with ${collidedWithItem.id} @`,
-          collidedWithItem.state.position,
+          collidedWithItem.state.box,
           `after handling previous collisions`,
         );
       }
@@ -234,7 +232,7 @@ export const moveItem = <RoomId extends string, RoomItemId extends string>({
     onTouch?.({
       movingItem: subjectItem,
       touchedItem: collidedWithItem,
-      movementVector: subXyz(subjectItem.state.position, originalPosition),
+      movementVector: subXyz(subjectItem.state.box, originalBox),
       gameState,
       deltaMS,
       room,
@@ -285,7 +283,7 @@ export const moveItem = <RoomId extends string, RoomItemId extends string>({
       subjectItem,
       collidedWithItem,
       forceful,
-      originalPosition,
+      originalBox,
     );
 
     /**
@@ -296,12 +294,10 @@ export const moveItem = <RoomId extends string, RoomItemId extends string>({
     const wasAlreadyTouchingCollidedWithItem = veryClose(
       lengthXyz(
         mtv(
-          // look back to check with the original position, not the current, updated position
+          // look back to check with the original box, not the current, updated box
           // after the movement delta was applied:
-          originalPosition,
-          subjectItem.aabb,
-          collidedWithItem.state.position,
-          collidedWithItem.aabb,
+          originalBox,
+          collidedWithItem.state.box,
         ),
       ),
       // a zero mtv means we are already touching the item, but not intersecting it
@@ -333,7 +329,7 @@ export const moveItem = <RoomId extends string, RoomItemId extends string>({
         room,
         subjectItem,
         addXyz(
-          subjectItem.state.position,
+          subjectItem.state.box,
           backingOffMtv, // this would back off all the way out of the item
           // but we keep going some and stay partially inside
           forwardPushVector,
@@ -380,13 +376,8 @@ export const moveItem = <RoomId extends string, RoomItemId extends string>({
         room,
         subjectItem,
         addXyz(
-          subjectItem.state.position,
-          mtv(
-            subjectItem.state.position,
-            subjectItem.aabb,
-            collidedWithItem.state.position,
-            collidedWithItem.aabb,
-          ),
+          subjectItem.state.box,
+          mtv(subjectItem.state.box, collidedWithItem.state.box),
         ),
       );
     } else {
@@ -395,13 +386,13 @@ export const moveItem = <RoomId extends string, RoomItemId extends string>({
       updateItemPosition(
         room,
         subjectItem,
-        addXyz(subjectItem.state.position, backingOffMtv),
+        addXyz(subjectItem.state.box, backingOffMtv),
       );
 
       if (log) {
         console.log(
           `${subjectItem.id} can't push ${collidedWithItem.id} so simply backed off to`,
-          subjectItem.state.position,
+          subjectItem.state.box,
         );
       }
     }
@@ -454,13 +445,13 @@ export const moveItem = <RoomId extends string, RoomItemId extends string>({
       if (log) {
         console.log(
           `📝 recording to state: collision of ${subjectItem.id} with ${collidedWithItem.id}`,
-          "originalPosition:",
-          originalPosition,
+          "originalBox:",
+          originalBox,
           "->",
-          "newPosition:",
-          subjectItem.state.position,
+          "newBox:",
+          subjectItem.state.box,
           "delta",
-          subXyz(subjectItem.state.position, originalPosition),
+          subXyz(subjectItem.state.box, originalBox),
         );
       }
 
@@ -480,7 +471,7 @@ export const moveItem = <RoomId extends string, RoomItemId extends string>({
   ) {
     const hmv = helpfulMovementVector(
       subjectItem,
-      originalPosition,
+      originalBox,
       posDelta,
       deltaMS,
       room,

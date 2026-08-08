@@ -23,17 +23,15 @@ export const loadOutOfBoundsItem = <
   id: "outOfBounds" as RoomItemId,
   fixedZIndex: nonRenderingItemFixedZIndex,
   config: {},
-  aabb: {
-    x: boundsFloorXySize,
-    y: boundsFloorXySize,
-    z: blockSizePx.z,
-  },
   state: {
     ...defaultBaseState(),
-    position: {
+    box: {
       x: blockSizePx.x * -4,
       y: blockSizePx.x * -4,
       z: maximumBoundsDepth,
+      xd: boundsFloorXySize,
+      yd: boundsFloorXySize,
+      zd: blockSizePx.z,
     },
   },
 });

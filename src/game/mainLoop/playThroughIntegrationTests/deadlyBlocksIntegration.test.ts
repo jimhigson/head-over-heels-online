@@ -207,7 +207,7 @@ test("can't jump off of spikes during death animation", () => {
       if (hs.action === "death") {
         sawDeathAction = true;
         // should never go above one block of height during death anim:
-        expect(hs.position.z).toBe(12);
+        expect(hs.box.z).toBe(12);
         expect(hs.jumped).toBe(false);
       }
     },

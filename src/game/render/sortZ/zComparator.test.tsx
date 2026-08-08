@@ -2,9 +2,11 @@ import { describe, expect, test } from "vitest";
 
 import {
   addXyz,
+  boxWithSize,
   originXyz,
   subXyz,
   type Xy,
+  type Xyz,
 } from "../../../utils/vectors/vectors";
 import { type RenderBox } from "../renderBox/makeItemRenderBoxAtCameraAngle";
 import { populatedBroadPhase } from "./__test__/populatedBroadPhase";
@@ -50,25 +52,26 @@ type TestComparable = DrawOrderComparable & {
 
 /** rotate a comparable's physical and render boxes about the vertical (z) axis */
 const rotateComparable = (item: TestComparable, angle: Xy): TestComparable => {
-  const physical = worldBoxToCameraSpace(item.state.position, item.aabb, angle);
+  const physical = worldBoxToCameraSpace(item.state.box, angle);
   const rotated: TestComparable = {
     ...item,
-    state: { position: physical.position },
-    aabb: physical.aabb,
+    state: { box: physical },
   };
   if (item.renderBox === undefined) {
     return rotated;
   }
   const box = worldBoxToCameraSpace(
-    addXyz(item.state.position, item.renderBox.renderAabbOffset ?? originXyz),
-    item.renderBox.renderAabb,
+    boxWithSize(
+      addXyz(item.state.box, item.renderBox.renderAabbOffset ?? originXyz),
+      item.renderBox.renderAabb,
+    ),
     angle,
   );
   return {
     ...rotated,
     renderBox: {
-      renderAabb: box.aabb,
-      renderAabbOffset: subXyz(box.position, physical.position),
+      renderAabb: { x: box.xd, y: box.yd, z: box.zd },
+      renderAabbOffset: subXyz(box, physical),
     },
   };
 };
@@ -163,13 +166,11 @@ describe.each(cameraAngles)("viewed at camera ($x,$y)", (cameraAngle: Xy) => {
   test("zComparator detects behind in x", () => {
     const behind: DrawOrderComparable = {
       id: "b",
-      state: { position: { x: 1, y: 0, z: 0 } },
-      aabb: unitCube,
+      state: { box: boxWithSize({ x: 1, y: 0, z: 0 }, unitCube) },
     };
     const inFront: DrawOrderComparable = {
       id: "f",
-      state: { position: { x: 0, y: 0, z: 0 } },
-      aabb: unitCube,
+      state: { box: boxWithSize({ x: 0, y: 0, z: 0 }, unitCube) },
     };
 
     expect(behind).toBeBehind(inFront, { whenAtAngle: cameraAngle });
@@ -179,13 +180,11 @@ describe.each(cameraAngles)("viewed at camera ($x,$y)", (cameraAngle: Xy) => {
   test("zComparator detects behind in y", () => {
     const behind: DrawOrderComparable = {
       id: "b",
-      state: { position: { x: 0, y: 1, z: 0 } },
-      aabb: unitCube,
+      state: { box: boxWithSize({ x: 0, y: 1, z: 0 }, unitCube) },
     };
     const inFront: DrawOrderComparable = {
       id: "f",
-      state: { position: { x: 0, y: 0, z: 0 } },
-      aabb: unitCube,
+      state: { box: boxWithSize({ x: 0, y: 0, z: 0 }, unitCube) },
     };
 
     expect(behind).toBeBehind(inFront, { whenAtAngle: cameraAngle });
@@ -195,13 +194,11 @@ describe.each(cameraAngles)("viewed at camera ($x,$y)", (cameraAngle: Xy) => {
   test("zComparator detects on top in z", () => {
     const bottom: DrawOrderComparable = {
       id: "b",
-      state: { position: { x: 0, y: 0, z: 0 } },
-      aabb: unitCube,
+      state: { box: boxWithSize({ x: 0, y: 0, z: 0 }, unitCube) },
     };
     const top: DrawOrderComparable = {
       id: "f",
-      state: { position: { x: 0, y: 0, z: 1 } },
-      aabb: unitCube,
+      state: { box: boxWithSize({ x: 0, y: 0, z: 1 }, unitCube) },
     };
 
     expect(bottom).toBeBehind(top, { whenAtAngle: cameraAngle });
@@ -212,14 +209,12 @@ describe.each(cameraAngles)("viewed at camera ($x,$y)", (cameraAngle: Xy) => {
     test("high fixed z index on first item", () => {
       const bottom: DrawOrderComparable = {
         id: "b",
-        state: { position: { x: 0, y: 0, z: 0 } },
-        aabb: unitCube,
+        state: { box: boxWithSize({ x: 0, y: 0, z: 0 }, unitCube) },
         fixedZIndex: 100,
       };
       const top: DrawOrderComparable = {
         id: "f",
-        state: { position: { x: 0, y: 0, z: 1 } },
-        aabb: unitCube,
+        state: { box: boxWithSize({ x: 0, y: 0, z: 1 }, unitCube) },
       };
 
       expect(bottom).toHaveNoOrderPreferenceWith(top, {
@@ -232,13 +227,11 @@ describe.each(cameraAngles)("viewed at camera ($x,$y)", (cameraAngle: Xy) => {
     test("negative fixed z index on second item", () => {
       const bottom: DrawOrderComparable = {
         id: "b",
-        state: { position: { x: 0, y: 0, z: 0 } },
-        aabb: unitCube,
+        state: { box: boxWithSize({ x: 0, y: 0, z: 0 }, unitCube) },
       };
       const top: DrawOrderComparable = {
         id: "f",
-        state: { position: { x: 0, y: 0, z: 1 } },
-        aabb: unitCube,
+        state: { box: boxWithSize({ x: 0, y: 0, z: 1 }, unitCube) },
         fixedZIndex: -1,
       };
 
@@ -254,13 +247,11 @@ describe.each(cameraAngles)("viewed at camera ($x,$y)", (cameraAngle: Xy) => {
   test("zComparator gives no order preference for non-visually-overlapping diagonally left/right in x,y", () => {
     const right: DrawOrderComparable = {
       id: "b",
-      state: { position: { x: 0, y: 1, z: 0 } },
-      aabb: unitCube,
+      state: { box: boxWithSize({ x: 0, y: 1, z: 0 }, unitCube) },
     };
     const left: DrawOrderComparable = {
       id: "f",
-      state: { position: { x: 1, y: 0, z: 0 } },
-      aabb: unitCube,
+      state: { box: boxWithSize({ x: 1, y: 0, z: 0 }, unitCube) },
     };
 
     expect(right).toHaveNoOrderPreferenceWith(left, {
@@ -274,13 +265,11 @@ describe.each(cameraAngles)("viewed at camera ($x,$y)", (cameraAngle: Xy) => {
   test("zComparator order preference for slightly-visually-overlapping diagonally left/right in x,y (x-overlap)", () => {
     const right: DrawOrderComparable = {
       id: "b",
-      state: { position: { x: 0, y: 1, z: 0 } },
-      aabb: unitCube,
+      state: { box: boxWithSize({ x: 0, y: 1, z: 0 }, unitCube) },
     };
     const left: DrawOrderComparable = {
       id: "f",
-      state: { position: { x: 0.9, y: 0, z: 0 } },
-      aabb: unitCube,
+      state: { box: boxWithSize({ x: 0.9, y: 0, z: 0 }, unitCube) },
     };
 
     expect(right).toBeBehind(left, { whenAtAngle: cameraAngle });
@@ -290,13 +279,11 @@ describe.each(cameraAngles)("viewed at camera ($x,$y)", (cameraAngle: Xy) => {
   test("zComparator order preference for slightly-visually-overlapping diagonally left/right in x,y (y-overlap)", () => {
     const right: DrawOrderComparable = {
       id: "b",
-      state: { position: { x: 0, y: 0.9, z: 0 } },
-      aabb: unitCube,
+      state: { box: boxWithSize({ x: 0, y: 0.9, z: 0 }, unitCube) },
     };
     const left: DrawOrderComparable = {
       id: "f",
-      state: { position: { x: 1, y: 0, z: 0 } },
-      aabb: unitCube,
+      state: { box: boxWithSize({ x: 1, y: 0, z: 0 }, unitCube) },
     };
 
     expect(right).toBeInFrontOf(left, { whenAtAngle: cameraAngle });
@@ -308,13 +295,11 @@ describe.each(cameraAngles)("viewed at camera ($x,$y)", (cameraAngle: Xy) => {
 
     const wall: DrawOrderComparable = {
       id: "wall",
-      state: { position: { x: 1, y: 0, z: 1.1 } },
-      aabb: unitCube,
+      state: { box: boxWithSize({ x: 1, y: 0, z: 1.1 }, unitCube) },
     };
     const floor: DrawOrderComparable = {
       id: "floor",
-      state: { position: { x: 0, y: 0, z: 0 } },
-      aabb: unitCube,
+      state: { box: boxWithSize({ x: 0, y: 0, z: 0 }, unitCube) },
     };
 
     expect(wall).toHaveNoOrderPreferenceWith(floor, {
@@ -330,13 +315,11 @@ describe.each(cameraAngles)("viewed at camera ($x,$y)", (cameraAngle: Xy) => {
 
     const backTop: DrawOrderComparable = {
       id: "b",
-      state: { position: { x: 0.9, y: 0, z: 1 } },
-      aabb: unitCube,
+      state: { box: boxWithSize({ x: 0.9, y: 0, z: 1 }, unitCube) },
     };
     const frontLow: DrawOrderComparable = {
       id: "f",
-      state: { position: { x: 0, y: 0, z: 0 } },
-      aabb: unitCube,
+      state: { box: boxWithSize({ x: 0, y: 0, z: 0 }, unitCube) },
     };
 
     expect(backTop).toBeInFrontOf(frontLow, { whenAtAngle: cameraAngle });
@@ -349,13 +332,11 @@ describe.each(cameraAngles)("viewed at camera ($x,$y)", (cameraAngle: Xy) => {
 
       const backTop: DrawOrderComparable = {
         id: "b",
-        state: { position: { x: 1, y: 0, z: 0.9 } },
-        aabb: unitCube,
+        state: { box: boxWithSize({ x: 1, y: 0, z: 0.9 }, unitCube) },
       };
       const frontLow: DrawOrderComparable = {
         id: "f",
-        state: { position: { x: 0, y: 0, z: 0 } },
-        aabb: unitCube,
+        state: { box: boxWithSize({ x: 0, y: 0, z: 0 }, unitCube) },
       };
 
       expect(backTop).toBeBehind(frontLow, { whenAtAngle: cameraAngle });
@@ -367,13 +348,11 @@ describe.each(cameraAngles)("viewed at camera ($x,$y)", (cameraAngle: Xy) => {
 
       const wall: DrawOrderComparable = {
         id: "wall",
-        state: { position: { x: 0, y: 1, z: 1 } },
-        aabb: unitCube,
+        state: { box: boxWithSize({ x: 0, y: 1, z: 1 }, unitCube) },
       };
       const floor: DrawOrderComparable = {
         id: "floor",
-        state: { position: { x: 0, y: 0, z: 0 } },
-        aabb: unitCube,
+        state: { box: boxWithSize({ x: 0, y: 0, z: 0 }, unitCube) },
       };
 
       expect(wall).toBeInFrontOf(floor, { whenAtAngle: cameraAngle });
@@ -383,13 +362,13 @@ describe.each(cameraAngles)("viewed at camera ($x,$y)", (cameraAngle: Xy) => {
       // wall is in the middle of the floor, but its run along the floor's length is zero-length:
       const wall: DrawOrderComparable = {
         id: "wall",
-        state: { position: { x: 0.5, y: 1, z: 1 } },
-        aabb: { x: 0, y: 1, z: 1 },
+        state: {
+          box: boxWithSize({ x: 0.5, y: 1, z: 1 }, { x: 0, y: 1, z: 1 }),
+        },
       };
       const floor: DrawOrderComparable = {
         id: "floor",
-        state: { position: { x: 0, y: 0, z: 0 } },
-        aabb: unitCube,
+        state: { box: boxWithSize({ x: 0, y: 0, z: 0 }, unitCube) },
       };
 
       expect(wall).toHaveNoOrderPreferenceWith(floor, {
@@ -406,13 +385,11 @@ describe.each(cameraAngles)("viewed at camera ($x,$y)", (cameraAngle: Xy) => {
 
     const leftTop: DrawOrderComparable = {
       id: "b",
-      state: { position: { x: 0, y: 0.9, z: 1 } },
-      aabb: unitCube,
+      state: { box: boxWithSize({ x: 0, y: 0.9, z: 1 }, unitCube) },
     };
     const rightLow: DrawOrderComparable = {
       id: "f",
-      state: { position: { x: 0, y: 0, z: 0 } },
-      aabb: unitCube,
+      state: { box: boxWithSize({ x: 0, y: 0, z: 0 }, unitCube) },
     };
 
     expect(leftTop).toBeInFrontOf(rightLow, { whenAtAngle: cameraAngle });
@@ -425,13 +402,11 @@ describe.each(cameraAngles)("viewed at camera ($x,$y)", (cameraAngle: Xy) => {
 
       const leftTop: DrawOrderComparable = {
         id: "b",
-        state: { position: { x: 0, y: 1, z: 0.9 } },
-        aabb: unitCube,
+        state: { box: boxWithSize({ x: 0, y: 1, z: 0.9 }, unitCube) },
       };
       const rightLow: DrawOrderComparable = {
         id: "f",
-        state: { position: { x: 0, y: 0, z: 0 } },
-        aabb: unitCube,
+        state: { box: boxWithSize({ x: 0, y: 0, z: 0 }, unitCube) },
       };
 
       expect(leftTop).toBeBehind(rightLow, { whenAtAngle: cameraAngle });
@@ -443,13 +418,11 @@ describe.each(cameraAngles)("viewed at camera ($x,$y)", (cameraAngle: Xy) => {
 
       const wall: DrawOrderComparable = {
         id: "wall",
-        state: { position: { x: 1, y: 0, z: 1 } },
-        aabb: unitCube,
+        state: { box: boxWithSize({ x: 1, y: 0, z: 1 }, unitCube) },
       };
       const floor: DrawOrderComparable = {
         id: "floor",
-        state: { position: { x: 0, y: 0, z: 0 } },
-        aabb: unitCube,
+        state: { box: boxWithSize({ x: 0, y: 0, z: 0 }, unitCube) },
       };
 
       expect(wall).toBeInFrontOf(floor, { whenAtAngle: cameraAngle });
@@ -459,13 +432,13 @@ describe.each(cameraAngles)("viewed at camera ($x,$y)", (cameraAngle: Xy) => {
       // wall is in the middle of the floor, but its run along the floor's length is zero-length:
       const wall: DrawOrderComparable = {
         id: "wall",
-        state: { position: { x: 1, y: 0.5, z: 1 } },
-        aabb: { x: 1, y: 0, z: 1 },
+        state: {
+          box: boxWithSize({ x: 1, y: 0.5, z: 1 }, { x: 1, y: 0, z: 1 }),
+        },
       };
       const floor: DrawOrderComparable = {
         id: "floor",
-        state: { position: { x: 0, y: 0, z: 0 } },
-        aabb: unitCube,
+        state: { box: boxWithSize({ x: 0, y: 0, z: 0 }, unitCube) },
       };
 
       expect(wall).toHaveNoOrderPreferenceWith(floor, {
@@ -478,18 +451,18 @@ describe.each(cameraAngles)("viewed at camera ($x,$y)", (cameraAngle: Xy) => {
   });
 
   describe("overlapping renderAABBs", () => {
-    type AabbInfo = Pick<TestComparable, "aabb" | "renderBox">;
-    const awayOrTowardsWallAabbInfo: AabbInfo = {
-      aabb: { x: 8, y: 1, z: 4 },
+    type BoxInfo = Pick<TestComparable, "renderBox"> & { size: Xyz };
+    const awayOrTowardsWallBoxInfo: BoxInfo = {
+      size: { x: 8, y: 1, z: 4 },
     };
-    const leftOrRightWallAabbInfo: AabbInfo = {
-      aabb: { x: 1, y: 8, z: 4 },
+    const leftOrRightWallBoxInfo: BoxInfo = {
+      size: { x: 1, y: 8, z: 4 },
     };
-    const floorAabbInfo: AabbInfo = {
-      aabb: { x: 8, y: 8, z: 1 },
+    const floorBoxInfo: BoxInfo = {
+      size: { x: 8, y: 8, z: 1 },
     };
-    const headAabbInfo: AabbInfo = {
-      aabb: unitCube,
+    const headBoxInfo: BoxInfo = {
+      size: unitCube,
       // character renders slightly bigger than their aabb (on all sides):
       renderBox: {
         renderAabb: { x: 1.2, y: 1.2, z: 1.2 },
@@ -500,13 +473,14 @@ describe.each(cameraAngles)("viewed at camera ($x,$y)", (cameraAngle: Xy) => {
     test("character at far wall", () => {
       const awayWall: DrawOrderComparable = {
         id: "away-wall",
-        state: { position: { x: 0, y: 8, z: 0 } },
-        ...awayOrTowardsWallAabbInfo,
+        state: {
+          box: boxWithSize({ x: 0, y: 8, z: 0 }, awayOrTowardsWallBoxInfo.size),
+        },
       };
       const head: TestComparable = {
         id: "head",
-        state: { position: { x: 4, y: 7, z: 0 } },
-        ...headAabbInfo,
+        state: { box: boxWithSize({ x: 4, y: 7, z: 0 }, headBoxInfo.size) },
+        renderBox: headBoxInfo.renderBox,
       };
 
       expect(head).toBeInFrontOf(awayWall, { whenAtAngle: cameraAngle });
@@ -516,13 +490,17 @@ describe.each(cameraAngles)("viewed at camera ($x,$y)", (cameraAngle: Xy) => {
     test("character at near wall", () => {
       const nearWall: DrawOrderComparable = {
         id: "near-wall",
-        state: { position: { x: 0, y: -1, z: 0 } },
-        ...awayOrTowardsWallAabbInfo,
+        state: {
+          box: boxWithSize(
+            { x: 0, y: -1, z: 0 },
+            awayOrTowardsWallBoxInfo.size,
+          ),
+        },
       };
       const head: TestComparable = {
         id: "head",
-        state: { position: { x: 4, y: 0, z: 0 } },
-        ...headAabbInfo,
+        state: { box: boxWithSize({ x: 4, y: 0, z: 0 }, headBoxInfo.size) },
+        renderBox: headBoxInfo.renderBox,
       };
 
       expect(nearWall).toBeInFrontOf(head, { whenAtAngle: cameraAngle });
@@ -532,13 +510,14 @@ describe.each(cameraAngles)("viewed at camera ($x,$y)", (cameraAngle: Xy) => {
     test("character at right wall", () => {
       const rightWall: DrawOrderComparable = {
         id: "right-wall",
-        state: { position: { x: 8, y: 0, z: 0 } },
-        ...leftOrRightWallAabbInfo,
+        state: {
+          box: boxWithSize({ x: 8, y: 0, z: 0 }, leftOrRightWallBoxInfo.size),
+        },
       };
       const head: TestComparable = {
         id: "head",
-        state: { position: { x: 7, y: 4, z: 0 } },
-        ...headAabbInfo,
+        state: { box: boxWithSize({ x: 7, y: 4, z: 0 }, headBoxInfo.size) },
+        renderBox: headBoxInfo.renderBox,
       };
 
       expect(head).toBeInFrontOf(rightWall, { whenAtAngle: cameraAngle });
@@ -548,13 +527,14 @@ describe.each(cameraAngles)("viewed at camera ($x,$y)", (cameraAngle: Xy) => {
     test("character at left wall", () => {
       const leftWall: DrawOrderComparable = {
         id: "left-wall",
-        state: { position: { x: -1, y: 0, z: 0 } },
-        ...leftOrRightWallAabbInfo,
+        state: {
+          box: boxWithSize({ x: -1, y: 0, z: 0 }, leftOrRightWallBoxInfo.size),
+        },
       };
       const head: TestComparable = {
         id: "head",
-        state: { position: { x: 0, y: 4, z: 0 } },
-        ...headAabbInfo,
+        state: { box: boxWithSize({ x: 0, y: 4, z: 0 }, headBoxInfo.size) },
+        renderBox: headBoxInfo.renderBox,
       };
 
       expect(leftWall).toBeInFrontOf(head, { whenAtAngle: cameraAngle });
@@ -564,13 +544,12 @@ describe.each(cameraAngles)("viewed at camera ($x,$y)", (cameraAngle: Xy) => {
     test("character standing on floor", () => {
       const floor: DrawOrderComparable = {
         id: "floor",
-        state: { position: { x: 0, y: 0, z: -1 } },
-        ...floorAabbInfo,
+        state: { box: boxWithSize({ x: 0, y: 0, z: -1 }, floorBoxInfo.size) },
       };
       const head: TestComparable = {
         id: "head",
-        state: { position: { x: 4, y: 4, z: 0 } },
-        ...headAabbInfo,
+        state: { box: boxWithSize({ x: 4, y: 4, z: 0 }, headBoxInfo.size) },
+        renderBox: headBoxInfo.renderBox,
       };
 
       expect(head).toBeInFrontOf(floor, { whenAtAngle: cameraAngle });
@@ -582,17 +561,19 @@ describe.each(cameraAngles)("viewed at camera ($x,$y)", (cameraAngle: Xy) => {
     test("#bookworld1 adjacency anti-flicker", () => {
       const wall: TestComparable = {
         id: "wall@0,8,0",
-        aabb: { x: 128, y: 16, z: 9_999 },
         renderBox: {
           renderAabb: { x: 128, y: 0, z: 50 },
           renderAabbOffset: undefined,
         },
-        state: { position: { x: 0, y: 128, z: 0 } },
+        state: {
+          box: boxWithSize({ x: 0, y: 128, z: 0 }, { x: 128, y: 16, z: 9_999 }),
+        },
       };
       const block: DrawOrderComparable = {
         id: "extraLanding",
-        aabb: { x: 16, y: 16, z: 48 },
-        state: { position: { x: 0, y: 64, z: 0 } },
+        state: {
+          box: boxWithSize({ x: 0, y: 64, z: 0 }, { x: 16, y: 16, z: 48 }),
+        },
       };
 
       expect(block).toBeInFrontOf(wall, { whenAtAngle: cameraAngle });
@@ -602,21 +583,26 @@ describe.each(cameraAngles)("viewed at camera ($x,$y)", (cameraAngle: Xy) => {
     test("#bookworld7 door in front of floor", () => {
       const doorFrame: TestComparable = {
         id: "door@1,0,4/frameNear",
-        aabb: { x: 9, y: 24, z: 48 },
         renderBox: {
           renderAabb: { x: 9, y: 8, z: 48 },
           renderAabbOffset: { x: 0, y: 16, z: 0 },
         },
-        state: { position: { x: 16, y: -24, z: 48 } },
+        state: {
+          box: boxWithSize({ x: 16, y: -24, z: 48 }, { x: 9, y: 24, z: 48 }),
+        },
       };
       const floor: TestComparable = {
         id: "floor@0,0,0",
-        aabb: { x: 64, y: 144.32, z: 36 },
         renderBox: {
           renderAabb: { x: 64, y: 144.32, z: 10 },
           renderAabbOffset: { x: 0, y: 0, z: 26 },
         },
-        state: { position: { x: 0, y: -8, z: -36 } },
+        state: {
+          box: boxWithSize(
+            { x: 0, y: -8, z: -36 },
+            { x: 64, y: 144.32, z: 36 },
+          ),
+        },
       };
 
       expect(doorFrame).toBeInFrontOf(floor, { whenAtAngle: cameraAngle });
@@ -626,17 +612,19 @@ describe.each(cameraAngles)("viewed at camera ($x,$y)", (cameraAngle: Xy) => {
     test("#safari17fish bubbles after hush puppy vanish in front of tower", () => {
       const bubbles: TestComparable = {
         id: "bubbles",
-        aabb: { x: 12, y: 12, z: 12 },
-        state: { position: { x: 2, y: 66, z: 24 } },
+        state: {
+          box: boxWithSize({ x: 2, y: 66, z: 24 }, { x: 12, y: 12, z: 12 }),
+        },
       };
       const tower: TestComparable = {
         id: "b2",
-        aabb: { x: 27, y: 11, z: 36 },
         renderBox: {
           renderAabb: { x: 30, y: 14, z: 36 },
           renderAabbOffset: { x: 0, y: 0, z: 0 },
         },
-        state: { position: { x: 18, y: 114, z: 0 } },
+        state: {
+          box: boxWithSize({ x: 18, y: 114, z: 0 }, { x: 27, y: 11, z: 36 }),
+        },
       };
 
       expect(bubbles).toBeInFrontOf(tower, { whenAtAngle: cameraAngle });
@@ -646,21 +634,23 @@ describe.each(cameraAngles)("viewed at camera ($x,$y)", (cameraAngle: Xy) => {
     test("#penitentiary28 towards-side door legs in front of left-side wall", () => {
       const doorLegs: TestComparable = {
         id: "doorLegs",
-        aabb: { x: 32, y: 24, z: 48 },
         renderBox: {
           renderAabb: { x: 32, y: 8, z: 6 },
           renderAabbOffset: { x: 0, y: 16, z: 42 },
         },
-        state: { position: { x: 48, y: -24, z: 0 } },
+        state: {
+          box: boxWithSize({ x: 48, y: -24, z: 0 }, { x: 32, y: 24, z: 48 }),
+        },
       };
       const wall: TestComparable = {
         id: "wall",
-        aabb: { x: 16, y: 48, z: 9_999 },
         renderBox: {
           renderAabb: { x: 0, y: 48, z: 50 },
           renderAabbOffset: undefined,
         },
-        state: { position: { x: 128, y: 0, z: 0 } },
+        state: {
+          box: boxWithSize({ x: 128, y: 0, z: 0 }, { x: 16, y: 48, z: 9_999 }),
+        },
       };
 
       expect(doorLegs).toBeInFrontOf(wall, { whenAtAngle: cameraAngle });

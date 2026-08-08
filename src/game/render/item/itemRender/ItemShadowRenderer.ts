@@ -119,22 +119,20 @@ const castsShapedShadowOnTop = (
   cameraQuarterAngle: Xy,
 ) =>
   castsShadowWhileStoodOnAtAngle(caster, cameraQuarterAngle) ||
-  caster.state.position.z > receiver.state.position.z + receiver.aabb.z;
+  caster.state.box.z > receiver.state.box.z + receiver.state.box.zd;
 
 // Buffer to avoid allocating memory for the pseudo-item used to find shadow casters
 const spaceAboveSurfaceBuffer: WritableDeep<CollideableItem> = {
   id: "spaceAbove",
   state: {
-    position: {
+    box: {
       x: 0,
       y: 0,
       z: 0,
+      xd: 0,
+      yd: 0,
+      zd: veryHighZ,
     },
-  },
-  aabb: {
-    x: 0,
-    y: 0,
-    z: veryHighZ,
   },
 };
 
@@ -329,15 +327,15 @@ class ItemShadowRenderer<
     }
 
     const surfaceMoved = itemRenderingStale(item, itemTickContext);
-    const itemTop = item.state.position.z + item.aabb.z;
+    const itemTop = item.state.box.z + item.state.box.zd;
 
     // Values are copied into the buffer to avoid malloc/gc:
-    spaceAboveSurfaceBuffer.state.position.x = item.state.position.x;
-    spaceAboveSurfaceBuffer.state.position.y = item.state.position.y;
-    spaceAboveSurfaceBuffer.state.position.z = itemTop;
-    spaceAboveSurfaceBuffer.aabb.x = item.aabb.x;
-    spaceAboveSurfaceBuffer.aabb.y = item.aabb.y;
-    // z remains veryHighZ as set in the buffer initialization
+    spaceAboveSurfaceBuffer.state.box.x = item.state.box.x;
+    spaceAboveSurfaceBuffer.state.box.y = item.state.box.y;
+    spaceAboveSurfaceBuffer.state.box.z = itemTop;
+    spaceAboveSurfaceBuffer.state.box.xd = item.state.box.xd;
+    spaceAboveSurfaceBuffer.state.box.yd = item.state.box.yd;
+    // zd remains veryHighZ as set in the buffer initialization
 
     const castersAbove = new Set(
       collisionItemWithIndex(
@@ -466,9 +464,8 @@ class ItemShadowRenderer<
           // door tunnel but whose hint shadow covers only the threshold).
           // Items that draw nothing (zero-size render box, eg the corner
           // shadow cubes) still cast the shadow of their physical box, so
-          // anchor those by the aabb:
-          nonZeroSizeRenderAabb(this.renderContext.renderBoxes.get(caster)) ??
-            caster.aabb,
+          // those fall back to the physical dimensions (the undefined default):
+          nonZeroSizeRenderAabb(this.renderContext.renderBoxes.get(caster)),
         );
         const receiverNearCornerOffset =
           itemTypesExemptFromNearCornerOffset.has(item.type) ? originXy : (
@@ -477,17 +474,13 @@ class ItemShadowRenderer<
         const screenXy = projectWorldXyzToScreenXy(
           {
             ...addXy(
-              subXy(
-                caster.state.position,
-                item.state.position,
-                receiverNearCornerOffset,
-              ),
+              subXy(caster.state.box, item.state.box, receiverNearCornerOffset),
               // use just the xy part of the shadow offset to position the shadow on the surface:
               caster.shadowOffset ?? originXy,
               casterNearCornerOffset,
             ),
             // on the top of the item:
-            z: item.aabb.z,
+            z: item.state.box.zd,
           },
           cameraQuarterAngle,
         );
@@ -499,7 +492,7 @@ class ItemShadowRenderer<
           uncolourised ? 1 : gameEngineUpscale,
         );
 
-        //const zToCaster = casterItem.state.position.z - itemTop;
+        //const zToCaster = casterItem.state.box.z - itemTop;
         //shadowSprite.alpha = 1 - zToCaster / (blockSizePx.h * 8);
         // (shadowSprite.filters as [BlurFilter])[0].strength =
         //   zToCaster * blurPerZToCaster;

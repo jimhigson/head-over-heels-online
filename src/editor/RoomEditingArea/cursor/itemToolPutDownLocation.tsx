@@ -46,8 +46,7 @@ export const itemToolPutDownLocation = (
     }
     const {
       config: wallConfig,
-      aabb: wallAabb,
-      state: { position: wallPosition },
+      state: { box: wallBox },
     } = pointingAtItem;
 
     const currentWallTimes: Xy = completeTimesXy(wallInPlayTimes(wallConfig));
@@ -61,16 +60,16 @@ export const itemToolPutDownLocation = (
       return undefined; // wall not big enough for a door
     }
 
-    const alongMin = wallPosition[alongWallAxis];
+    const alongMin = wallBox[alongWallAxis];
     const alongMax =
-      wallPosition[alongWallAxis] +
-      wallAabb[alongWallAxis] -
+      wallBox[alongWallAxis] +
+      wallBox[`${alongWallAxis}d`] -
       doorOverallWidthPx;
 
-    const zMin = wallPosition.z;
+    const zMin = wallBox.z;
     const zMax =
       // door can't go over the top of the wall:
-      wallPosition.z + wallAabb.z - doorPostHeightPx;
+      wallBox.z + wallBox.zd - doorPostHeightPx;
 
     const clampedPosition = {
       [alongWallAxis]: Math.max(

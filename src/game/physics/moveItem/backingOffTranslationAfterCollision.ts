@@ -34,10 +34,8 @@ export const backingOffTranslationAfterCollision = <
   );
 
   const backingOffSimpleMtv = mtv(
-    subjectItem.state.position,
-    subjectItem.aabb,
-    collidedWithItem.state.position,
-    collidedWithItem.aabb,
+    subjectItem.state.box,
+    collidedWithItem.state.box,
   );
 
   // disable this branch to make pushing much more like the original game (only in four directions
@@ -55,7 +53,7 @@ export const backingOffTranslationAfterCollision = <
     // their forward travel since it keeps the projection with their mtv positive
     const subjectTravelReverseVector = subXyz(
       originalPosition,
-      subjectItem.state.position,
+      subjectItem.state.box,
     );
 
     const travelRevDistSquared = lengthXyzSquared(subjectTravelReverseVector);
@@ -81,10 +79,8 @@ export const backingOffTranslationAfterCollision = <
     // a little bit wider than 45° (which would be 0.5 here)
     if (backingOffProjectedOnMovementVectorMagnitude > 0.44) {
       return mtvAlongVector(
-        subjectItem.state.position,
-        subjectItem.aabb,
-        collidedWithItem.state.position,
-        collidedWithItem.aabb,
+        subjectItem.state.box,
+        collidedWithItem.state.box,
         // this doesn't apply along z - you can't 'push' upwards. Well, you can, but that's the
         // normal aabb mtvs
         subjectTravelReverseVector,

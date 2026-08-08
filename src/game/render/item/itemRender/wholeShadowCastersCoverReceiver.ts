@@ -1,6 +1,6 @@
 import { type UnionOfAllItemInPlayTypes } from "../../../../model/ItemInPlay";
 import { epsilon } from "../../../../utils/epsilon";
-import { type Xyz } from "../../../../utils/vectors/vectors";
+import { type XyzBox } from "../../../../utils/vectors/vectors";
 import { type CollideableItem } from "../../../collision/aabbCollision";
 
 /**
@@ -10,9 +10,9 @@ import { type CollideableItem } from "../../../collision/aabbCollision";
  */
 export type Caster = Pick<
   UnionOfAllItemInPlayTypes,
-  "aabb" | "castsWholeShadows" | "id" | "shadowOffset"
+  "castsWholeShadows" | "id" | "shadowOffset"
 > & {
-  state: { position: Xyz };
+  state: { box: Readonly<XyzBox> };
 };
 
 // scratch reused across calls to avoid per-frame allocation in the render loop. Safe as
@@ -43,10 +43,10 @@ const unionOfFootprintsCoversTarget = (
   coverers: readonly Caster[],
   count: number,
 ): boolean => {
-  const targetMinX = target.state.position.x;
-  const targetMinY = target.state.position.y;
-  const targetMaxX = targetMinX + target.aabb.x;
-  const targetMaxY = targetMinY + target.aabb.y;
+  const targetMinX = target.state.box.x;
+  const targetMinY = target.state.box.y;
+  const targetMaxX = targetMinX + target.state.box.xd;
+  const targetMaxY = targetMinY + target.state.box.yd;
 
   xEdges.length = 0;
   yEdges.length = 0;
@@ -63,12 +63,10 @@ const unionOfFootprintsCoversTarget = (
     const coverer = coverers[i];
     // the coverer's footprint falls where its shadow does - its position shifted by the xy
     // part of its shadowOffset:
-    const covererMinX =
-      coverer.state.position.x + (coverer.shadowOffset?.x ?? 0);
-    const covererMinY =
-      coverer.state.position.y + (coverer.shadowOffset?.y ?? 0);
-    const covererMaxX = covererMinX + coverer.aabb.x;
-    const covererMaxY = covererMinY + coverer.aabb.y;
+    const covererMinX = coverer.state.box.x + (coverer.shadowOffset?.x ?? 0);
+    const covererMinY = coverer.state.box.y + (coverer.shadowOffset?.y ?? 0);
+    const covererMaxX = covererMinX + coverer.state.box.xd;
+    const covererMaxY = covererMinY + coverer.state.box.yd;
 
     // only the part of the coverer within the target contributes to covering it:
     const clippedMinX = Math.max(covererMinX, targetMinX);
@@ -139,14 +137,14 @@ const unionOfFootprintsCoversTarget = (
       for (let k = 0; k < count; k++) {
         const coverer = coverers[k];
         const covererMinX =
-          coverer.state.position.x + (coverer.shadowOffset?.x ?? 0);
+          coverer.state.box.x + (coverer.shadowOffset?.x ?? 0);
         const covererMinY =
-          coverer.state.position.y + (coverer.shadowOffset?.y ?? 0);
+          coverer.state.box.y + (coverer.shadowOffset?.y ?? 0);
         if (
           midX > covererMinX &&
-          midX < covererMinX + coverer.aabb.x &&
+          midX < covererMinX + coverer.state.box.xd &&
           midY > covererMinY &&
-          midY < covererMinY + coverer.aabb.y
+          midY < covererMinY + coverer.state.box.yd
         ) {
           covered = true;
           break;

@@ -80,7 +80,7 @@ export const assignLatentMovementFromStandingOn = <
     }
 
     // work out how much we moved in this frame
-    const latentMovement = subXyz(moverItem.state.position, previousPosition);
+    const latentMovement = subXyz(moverItem.state.box, previousPosition);
 
     // latent movement is only horizontal - anything else, collisions and gravity can handle
     latentMovement.z = 0;

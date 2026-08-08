@@ -12,7 +12,7 @@ import { type PokesEnabled } from "../../../store/slices/userSettings/userSettin
 import { emptyObject } from "../../../utils/empty";
 import { neverTime } from "../../../utils/neverTime";
 import { unitVectors } from "../../../utils/vectors/unitVectors";
-import { originXyz } from "../../../utils/vectors/vectors";
+import { boxWithSize, originXyz } from "../../../utils/vectors/vectors";
 import { headAabb, heelsAabb } from "../../collision/boundingBoxes";
 import { type PlayableItem } from "../../physics/itemPredicates";
 import { originalGameStartingLives } from "../../physics/mechanicsConstants";
@@ -87,7 +87,6 @@ export const loadPlayer = <RoomId extends string, RoomItemId extends string>(
       hash: 0,
       ...defaultItemProperties,
       ...defaultPlayableRootAttributes,
-      aabb: headAabb,
       state: {
         ...defaultBaseState<RoomItemId>(),
         ...defaultFreeItemState(),
@@ -98,7 +97,7 @@ export const loadPlayer = <RoomId extends string, RoomItemId extends string>(
         fastStepsStartedAtDistance: neverTime,
         shieldCollectedAt: neverTime,
         doughnuts: infiniteDoughnuts ? "infinite" : 0,
-        position: positionCentredInBlock(jsonItem),
+        box: boxWithSize(positionCentredInBlock(jsonItem), headAabb),
         stoodOnUntilRoomTime: neverTime,
       },
     };
@@ -112,7 +111,6 @@ export const loadPlayer = <RoomId extends string, RoomItemId extends string>(
     hash: 0,
     ...defaultItemProperties,
     ...defaultPlayableRootAttributes,
-    aabb: heelsAabb,
     state: {
       ...defaultBaseState<RoomItemId>(),
       ...defaultFreeItemState(),
@@ -123,7 +121,7 @@ export const loadPlayer = <RoomId extends string, RoomItemId extends string>(
       bigJumps: 0,
       isBigJump: false,
       shieldCollectedAt: neverTime,
-      position: positionCentredInBlock(jsonItem),
+      box: boxWithSize(positionCentredInBlock(jsonItem), heelsAabb),
       stoodOnUntilRoomTime: neverTime,
     },
   };

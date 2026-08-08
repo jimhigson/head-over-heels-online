@@ -21,6 +21,7 @@ import {
 } from "../../../_testUtils/playGameThrough";
 import { testFrameRates } from "../../../_testUtils/testFrameRates";
 import { individualCharacterNames } from "../../../model/modelTypes";
+import { boxAt } from "../../../utils/vectors/vectors";
 import { smallItemAabb } from "../../collision/boundingBoxes";
 import {
   blockSizePx,
@@ -65,14 +66,12 @@ test.each(testFrameRates)(
       frameCallbacks: [
         function startJumpingSoonAfterTheStart(gameState) {
           const shouldPressJump =
-            gameState.gameTime > 100 && headState(gameState).position.z === 0;
+            gameState.gameTime > 100 && headState(gameState).box.z === 0;
 
           gameState.inputStateTracker.setMockPressing("jump", shouldPressJump);
 
           // since head gets into the gap, should not go past one block of height:
-          expect(headState(gameState).position.z).toBeLessThan(
-            blockSizePx.z + 1,
-          );
+          expect(headState(gameState).box.z).toBeLessThan(blockSizePx.z + 1);
         },
       ],
     });
@@ -172,7 +171,7 @@ test.each(testFrameRates)(
         },
       ],
     });
-    expect(headState(gameState).position.z).toBe(0);
+    expect(headState(gameState).box.z).toBe(0);
     expect(headState(gameState).standingOnItemId).toEqual("floor");
   },
 );
@@ -205,7 +204,7 @@ describe.each(testFrameRates)("max jump heights (%j)", (frameRate) => {
           },
           frameCallbacks(gameState, mockInputStateTracker) {
             const state = currentPlayableState(gameState);
-            maxFoundHeight = Math.max(maxFoundHeight, state.position.z);
+            maxFoundHeight = Math.max(maxFoundHeight, state.box.z);
 
             if (state.jumped) {
               // stop pressing jump once we are jumping:
@@ -263,7 +262,7 @@ describe.each(testFrameRates)("distance %j", (frameRate) => {
 
       expect(currentPlayableState(gameState).standingOnItemId).toEqual("floor");
 
-      const startX = currentPlayableState(gameState).position.x;
+      const startX = currentPlayableState(gameState).box.x;
 
       playGameThrough(gameState, {
         frameRate,
@@ -295,7 +294,7 @@ describe.each(testFrameRates)("distance %j", (frameRate) => {
         },
       });
 
-      const jumpDistance = currentPlayableState(gameState).position.x - startX;
+      const jumpDistance = currentPlayableState(gameState).box.x - startX;
 
       /* 
             Not so much allowable error, as FOUND error!
@@ -505,7 +504,7 @@ test.each(testFrameRates)(
         mockInputStateTracker.mockPressing("jump");
       },
       frameCallbacks(gameState) {
-        const newZ = itemState(gameState, "drum").position.z;
+        const newZ = itemState(gameState, "drum").box.z;
         highestItemZ = Math.max(highestItemZ, newZ);
       },
     });
@@ -585,7 +584,7 @@ describe("jump grace", () => {
           mockInputStateTracker.mockDirectionPressed = "towards";
         },
         until(gameState) {
-          const { position: playerPosition } = currentPlayableState(gameState);
+          const { box: playerPosition } = currentPlayableState(gameState);
 
           // got down or near the floor (ie, didn't levitate along the ceiling)
           return playerPosition.z < 1;
@@ -616,7 +615,7 @@ describe("jump grace", () => {
       until: 100,
     });
 
-    const startZ = currentPlayableState(gameState).position.z;
+    const startZ = currentPlayableState(gameState).box.z;
 
     playGameThrough(gameState, {
       setupInitialInput(mockInputStateTracker) {
@@ -624,7 +623,7 @@ describe("jump grace", () => {
         mockInputStateTracker.mockDirectionPressed = "right";
       },
       until(gameState) {
-        return currentPlayableState(gameState).position.z > startZ;
+        return currentPlayableState(gameState).box.z > startZ;
       },
     });
 
@@ -636,7 +635,7 @@ describe("jump grace", () => {
       until(gameState) {
         const state = currentPlayableState(gameState);
 
-        if (state.position.z < 2) {
+        if (state.box.z < 2) {
           throw new Error("shouldn't be on the floor");
         }
         return state.standingOnItemId === "top";
@@ -714,7 +713,7 @@ describe("jump grace", () => {
       until: 100,
     });
 
-    const startZ = currentPlayableState(gameState).position.z;
+    const startZ = currentPlayableState(gameState).box.z;
 
     playGameThrough(gameState, {
       setupInitialInput(mockInputStateTracker) {
@@ -722,7 +721,7 @@ describe("jump grace", () => {
         mockInputStateTracker.mockDirectionPressed = "right";
       },
       until(gameState) {
-        return currentPlayableState(gameState).position.z > startZ;
+        return currentPlayableState(gameState).box.z > startZ;
       },
     });
 
@@ -734,7 +733,7 @@ describe("jump grace", () => {
       until(gameState) {
         const state = currentPlayableState(gameState);
 
-        if (state.position.z < 2) {
+        if (state.box.z < 2) {
           throw new Error("shouldn't be on the floor");
         }
         return state.standingOnItemId === "topVolcano";
@@ -829,11 +828,14 @@ test("heels can't refresh-jump off a door's portal or stopAutowalk", () => {
   });
 
   // directly write in a position known to trigger this bug
-  heelsState(gameState).position = {
-    x: -4,
-    y: 44,
-    z: 12,
-  };
+  heelsState(gameState).box = boxAt(
+    {
+      x: -4,
+      y: 44,
+      z: 12,
+    },
+    heelsState(gameState).box,
+  );
 
   // face toward the door
   playGameThrough(gameState, {
@@ -852,7 +854,7 @@ test("heels can't refresh-jump off a door's portal or stopAutowalk", () => {
       mockInputStateTracker.mockPressing("jump");
     },
     frameCallbacks(gameState) {
-      const frameZ = heelsState(gameState).position.z;
+      const frameZ = heelsState(gameState).box.z;
       maxZ = Math.max(maxZ, frameZ);
     },
   });

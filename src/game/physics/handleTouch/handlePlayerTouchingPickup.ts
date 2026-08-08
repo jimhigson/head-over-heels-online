@@ -9,7 +9,7 @@ import {
   scrollRead,
 } from "../../../store/slices/gameInPlay/gameInPlaySlice";
 import { store } from "../../../store/store";
-import { addXyz, originXyz } from "../../../utils/vectors/vectors";
+import { addXyz, boxWithSize, originXyz } from "../../../utils/vectors/vectors";
 import {
   selectHeadAbilities,
   selectHeelsAbilities,
@@ -85,10 +85,13 @@ export const handlePlayerTouchingPickup = <
       id: `floatingText-${pickupId}` as RoomItemId,
       ...defaultItemProperties,
       fixedZIndex: floatingTextFixedZIndex, // high number ensures is always in front
-      aabb: originXyz, // zero-size per aabb
       state: {
         ...defaultBaseState(),
-        position: addXyz(pickupCentre, { z: blockSizePx.z / 2 }),
+        // zero-size box:
+        box: boxWithSize(
+          addXyz(pickupCentre, { z: blockSizePx.z / 2 }),
+          originXyz,
+        ),
         expires: roomTime + floatingTextLife,
       },
       config: {

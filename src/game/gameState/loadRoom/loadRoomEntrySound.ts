@@ -10,7 +10,11 @@ import {
   type RoomEntryTunesSetting,
   type UserSettings,
 } from "../../../store/slices/userSettings/userSettingsSlice";
-import { originXyz, type Xyz } from "../../../utils/vectors/vectors";
+import {
+  boxWithSize,
+  originXyz,
+  type Xyz,
+} from "../../../utils/vectors/vectors";
 import { blockXyzToFineXyz } from "../../render/projections";
 import { nonRenderingItemFixedZIndex } from "../../render/sortZ/fixedZIndexes";
 import { defaultBaseState } from "./itemDefaultStates";
@@ -126,11 +130,10 @@ export const createRoomEntrySound = <
       playbackRate,
     },
   },
-  aabb: originXyz,
   castsShadowWhileStoodOn: false,
   state: {
     ...defaultBaseState(),
-    position: roomEntrySoundPos,
+    box: boxWithSize(roomEntrySoundPos, originXyz),
     played: false,
   },
   noSoundPan,

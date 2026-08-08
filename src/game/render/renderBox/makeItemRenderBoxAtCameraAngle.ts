@@ -15,6 +15,7 @@ import {
   perpendicularAxisXy,
   type Xy,
   type Xyz,
+  type XyzBox,
 } from "../../../utils/vectors/vectors";
 import {
   blockSizePx,
@@ -98,7 +99,7 @@ const wallThicknessBlocks = 1;
  * item fields
  */
 export type RenderBoxableItem = {
-  aabb: Aabb;
+  state: { box: Readonly<XyzBox> };
   type?: ItemInPlayType;
   // the union of config fields the derivation needs; real items narrow by type
   config?: unknown;
@@ -143,7 +144,7 @@ const wallRenderBox = (
 
   const renderAabb: Xyz = {
     ...originXyz,
-    [alongAxis]: item.aabb[alongAxis],
+    [alongAxis]: item.state.box[`${alongAxis}d`],
     z: wallRenderHeight,
   };
   // the wall draws on its room-side face: towards/right walls' boxes extend
@@ -266,13 +267,13 @@ const floorRenderBox = (
   };
 
   const renderAabb: Xyz = {
-    x: item.aabb.x,
-    y: item.aabb.y,
+    x: item.state.box.xd,
+    y: item.state.box.yd,
     z: floorEdgeRenderThicknessPx,
   };
   const renderAabbOffset: Xyz = {
     ...originXyz,
-    z: item.aabb.z - floorEdgeRenderThicknessPx,
+    z: item.state.box.zd - floorEdgeRenderThicknessPx,
   };
 
   // the physical expansion is a clean 0.5 block on every door-expanded side;
@@ -336,7 +337,7 @@ const genericRenderBox = (
   if (extent === undefined) {
     return undefined;
   }
-  const { aabb } = item;
+  const { box } = item.state;
   const reversedX = cameraAngle.x + cameraAngle.y < 0;
   const reversedY = cameraAngle.x - cameraAngle.y < 0;
 
@@ -345,8 +346,8 @@ const genericRenderBox = (
     return {
       renderAabb: originXyz,
       renderAabbOffset: {
-        x: reversedX ? aabb.x : 0,
-        y: reversedY ? aabb.y : 0,
+        x: reversedX ? box.xd : 0,
+        y: reversedY ? box.yd : 0,
         z: 0,
       },
     };
@@ -356,15 +357,15 @@ const genericRenderBox = (
   // the deltas are margins on the physical box, so `times` repetition needs
   // no special handling - the aabb is already stretched over the repetition:
   const renderAabb: Aabb = {
-    x: aabb.x + xNeg + xPos,
-    y: aabb.y + yNeg + yPos,
-    z: aabb.z + zNeg + zPos,
+    x: box.xd + xNeg + xPos,
+    y: box.yd + yNeg + yPos,
+    z: box.zd + zNeg + zPos,
   };
   return {
     renderAabb,
     renderAabbOffset: {
-      x: -xNeg + (reversedX ? aabb.x - renderAabb.x : 0),
-      y: -yNeg + (reversedY ? aabb.y - renderAabb.y : 0),
+      x: -xNeg + (reversedX ? box.xd - renderAabb.x : 0),
+      y: -yNeg + (reversedY ? box.yd - renderAabb.y : 0),
       // 0 - normalises the IEEE -0 that a plain negation gives when zNeg is 0:
       z: 0 - zNeg,
     },

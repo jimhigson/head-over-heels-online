@@ -1,5 +1,10 @@
 import { cameraAngleBase } from "../../../utils/vectors/cameraAngleVectors";
-import { addXyz, type Xy, type Xyz } from "../../../utils/vectors/vectors";
+import {
+  addXyz,
+  type Xy,
+  type Xyz,
+  type XyzBox,
+} from "../../../utils/vectors/vectors";
 import { projectWorldXyzToScreenXy } from "../projections";
 
 export type ProjectionOnAxes = {
@@ -25,16 +30,15 @@ export type ProjectionOnAxes = {
  */
 
 export const projectCorner = (
-  position: Xyz,
-  aabb: Xyz,
+  box: Readonly<XyzBox>,
   cornerVector: Xyz,
   cameraAngle: Xy = cameraAngleBase,
 ) =>
   projectWorldXyzToScreenXy(
-    addXyz(position, {
-      x: cornerVector.x * aabb.x,
-      y: cornerVector.y * aabb.y,
-      z: cornerVector.z * aabb.z,
+    addXyz(box, {
+      x: cornerVector.x * box.xd,
+      y: cornerVector.y * box.yd,
+      z: cornerVector.z * box.zd,
     }),
     cameraAngle,
   );
@@ -72,60 +76,54 @@ export const worldCornerForCameraCorner = (
  */
 
 export const projectApparentBottomCentre = (
-  position: Xyz,
-  aabb: Xyz,
+  box: Readonly<XyzBox>,
   cameraAngle: Xy,
 ): Xy => {
   const { x, y } = worldCornerForCameraCorner(false, false, cameraAngle);
-  return projectCorner(position, aabb, { x, y, z: 0 }, cameraAngle);
+  return projectCorner(box, { x, y, z: 0 }, cameraAngle);
 };
 
 export const projectApparentTopLeft = (
-  position: Xyz,
-  aabb: Xyz,
+  box: Readonly<XyzBox>,
   cameraAngle: Xy,
 ): Xy => {
   const { x, y } = worldCornerForCameraCorner(true, false, cameraAngle);
-  return projectCorner(position, aabb, { x, y, z: 1 }, cameraAngle);
+  return projectCorner(box, { x, y, z: 1 }, cameraAngle);
 };
 
 export const projectApparentTopRight = (
-  position: Xyz,
-  aabb: Xyz,
+  box: Readonly<XyzBox>,
   cameraAngle: Xy,
 ): Xy => {
   const { x, y } = worldCornerForCameraCorner(false, true, cameraAngle);
-  return projectCorner(position, aabb, { x, y, z: 1 }, cameraAngle);
+  return projectCorner(box, { x, y, z: 1 }, cameraAngle);
 };
 
 /** the highest projected corner (the c111 corner at the base angle) */
 export const projectApparentTop = (
-  position: Xyz,
-  aabb: Xyz,
+  box: Readonly<XyzBox>,
   cameraAngle: Xy,
 ): Xy => {
   const { x, y } = worldCornerForCameraCorner(true, true, cameraAngle);
-  return projectCorner(position, aabb, { x, y, z: 1 }, cameraAngle);
+  return projectCorner(box, { x, y, z: 1 }, cameraAngle);
 };
 
 /** base-level corner below the apparent top-left (c100 at the base angle) */
 export const projectApparentLeftBase = (
-  position: Xyz,
-  aabb: Xyz,
+  box: Readonly<XyzBox>,
   cameraAngle: Xy,
 ): Xy => {
   const { x, y } = worldCornerForCameraCorner(true, false, cameraAngle);
-  return projectCorner(position, aabb, { x, y, z: 0 }, cameraAngle);
+  return projectCorner(box, { x, y, z: 0 }, cameraAngle);
 };
 
 /** base-level corner below the apparent top-right (c010 at the base angle) */
 export const projectApparentRightBase = (
-  position: Xyz,
-  aabb: Xyz,
+  box: Readonly<XyzBox>,
   cameraAngle: Xy,
 ): Xy => {
   const { x, y } = worldCornerForCameraCorner(false, true, cameraAngle);
-  return projectCorner(position, aabb, { x, y, z: 0 }, cameraAngle);
+  return projectCorner(box, { x, y, z: 0 }, cameraAngle);
 };
 
 /**
