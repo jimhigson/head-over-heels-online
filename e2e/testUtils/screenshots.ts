@@ -82,8 +82,28 @@ export const logTextLayout = async (page: Page, logHeader: string) => {
       document.querySelector<HTMLElement>("[style*='--scale']") ??
       document.body;
     const probeStyle = getComputedStyle(probe);
-    const { fontSize, lineHeight, fontFamily } = probeStyle;
+    const { fontSize, lineHeight, fontFamily, font } = probeStyle;
     const { height, top } = probe.getBoundingClientRect();
+
+    // the page's font measured on a canvas: these numbers come from the
+    // rasteriser, not from css, so they are the direct fingerprint of the
+    // hinting mode. fontBoundingBox* are what half-leading positions each
+    // text baseline from - if they differ between two runs, every line of
+    // text on the page sits 1px apart between those runs
+    const context = document.createElement("canvas").getContext("2d");
+    let glyphMetrics;
+    if (context !== null) {
+      context.font = font;
+      const metrics = context.measureText("The game works on any");
+      glyphMetrics = {
+        width: metrics.width,
+        inkAscent: metrics.actualBoundingBoxAscent,
+        inkDescent: metrics.actualBoundingBoxDescent,
+        fontAscent: metrics.fontBoundingBoxAscent,
+        fontDescent: metrics.fontBoundingBoxDescent,
+      };
+    }
+
     return {
       devicePixelRatio: window.devicePixelRatio,
       viewport: `${window.innerWidth}x${window.innerHeight}`,
@@ -93,6 +113,7 @@ export const logTextLayout = async (page: Page, logHeader: string) => {
       fontSize,
       lineHeight,
       fontFamily,
+      glyphMetrics,
       probeTop: top,
       probeHeight: height,
     };
