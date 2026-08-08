@@ -1,4 +1,4 @@
-import { rotateXyzByInverseCameraAngle } from "../../../utils/vectors/rotateXy";
+import { rotateXyzByInverseCameraAngle } from "../../../utils/vectors/cameraAngleVectors";
 import { unitVectors } from "../../../utils/vectors/unitVectors";
 import {
   type AxisXy,

@@ -1,26 +1,27 @@
 import { expect, test } from "vitest";
 
-import { cameraAngleBase, rotateXy, rotateXyz } from "./rotateXy";
+import { cameraAngleBase } from "./cameraAngleVectors";
+import { rotateXy, rotateXyz } from "./rotateXy";
 import { type Xy, type Xyz } from "./vectors";
 
 const quarterTurnAnticlockwise: Xy = { x: 0, y: 1 };
 const quarterTurnClockwise: Xy = { x: 0, y: -1 };
 
-test("the base angle leaves a vector unchanged", () => {
+test("rotating by the base angle leaves a vector unchanged", () => {
   expect<Xy>(rotateXy({ x: 3, y: 7 }, cameraAngleBase)).toEqual<Xy>({
     x: 3,
     y: 7,
   });
 });
 
-test("a quarter-turn anticlockwise maps (1,0) to (0,1)", () => {
+test("rotating by a quarter-turn anticlockwise maps (1,0) to (0,1)", () => {
   expect<Xy>(rotateXy({ x: 1, y: 0 }, quarterTurnAnticlockwise)).toEqual<Xy>({
     x: 0,
     y: 1,
   });
 });
 
-test("a quarter-turn clockwise maps (1,0) to (0,-1)", () => {
+test("rotating by a quarter-turn clockwise maps (1,0) to (0,-1)", () => {
   expect<Xy>(rotateXy({ x: 1, y: 0 }, quarterTurnClockwise)).toEqual<Xy>({
     x: 0,
     y: -1,

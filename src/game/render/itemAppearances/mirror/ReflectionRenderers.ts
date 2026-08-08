@@ -7,10 +7,8 @@ import {
   type UnionOfAllItemInPlayTypes,
 } from "../../../../model/ItemInPlay";
 import { roomSpatialIndexKey } from "../../../../model/RoomState";
-import {
-  nearestQuarterAngle,
-  rotateXy,
-} from "../../../../utils/vectors/rotateXy";
+import { nearestQuarterAngle } from "../../../../utils/vectors/cameraAngleVectors";
+import { rotateXy } from "../../../../utils/vectors/rotateXy";
 import { type Xy } from "../../../../utils/vectors/vectors";
 import {
   type CollideableItem,

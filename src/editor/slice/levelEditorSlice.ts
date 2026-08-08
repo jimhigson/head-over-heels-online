@@ -5,6 +5,8 @@ import { clearAllData } from "../../store/slices/clearAllData";
 import {
   quarterTurnAnticlockwise,
   quarterTurnClockwise,
+} from "../../utils/vectors/cameraAngleVectors";
+import {
   rotateXy,
   rotationVectorsByDirectionXy4,
 } from "../../utils/vectors/rotateXy";

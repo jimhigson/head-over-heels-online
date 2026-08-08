@@ -5,13 +5,13 @@ import {
   type UnionOfAllItemInPlayTypes,
 } from "../../../../model/ItemInPlay";
 import { emptySet } from "../../../../utils/empty";
+import { renderContainerToSprite } from "../../../../utils/pixi/bakeContainerToSprite";
 import { pixiContainerToString } from "../../../../utils/pixi/pixiContainerToString";
-import { renderContainerToSprite } from "../../../../utils/pixi/renderContainerToSprite";
 import { type UniqueTextureSprite } from "../../../../utils/pixi/UniqueTextureSprite";
 import {
   isAtQuarterAngle,
   nearestQuarterAngle,
-} from "../../../../utils/vectors/rotateXy";
+} from "../../../../utils/vectors/cameraAngleVectors";
 import {
   alongAxisOfDirectionXy,
   type AxisXy,

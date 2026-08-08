@@ -25,11 +25,13 @@
     "completionist",
     "consolidatability",
     "Consolidatable",
+    "cullable",
     "cyberman",
     "cybermen",
     "dalek",
     "daleks",
     "Deadzone",
+    "desync",
     "dissapearing",
     "donotreincarnate",
     "dougmencken",
@@ -156,7 +158,6 @@
     "zeroable"
   ],
   "js/ts.tsdk.path": "node_modules/typescript/lib",
-  "typescript.experimental.useTsgo": true,
   "cSpell.language": "en-GB,en-US",
   "window.commandCenter": false,
   "js/ts.preferences.importModuleSpecifier": "relative",
@@ -196,5 +197,6 @@
   "editor.defaultFormatter": "esbenp.prettier-vscode",
   "editor.codeActionsOnSave": {
     "source.fixAll.oxc": "always"
-  }
+  },
+  "js/ts.experimental.useTsgo": false
 }

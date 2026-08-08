@@ -3,7 +3,7 @@ import {
   projectApparentTopLeft,
   projectApparentTopRight,
 } from "../../../game/render/sortZ/projectAabbCorners";
-import { rotateXyzByInverseCameraAngle } from "../../../utils/vectors/rotateXy";
+import { rotateXyzByInverseCameraAngle } from "../../../utils/vectors/cameraAngleVectors";
 import { scaleXyz, type Xy, type Xyz } from "../../../utils/vectors/vectors";
 import { type EditorUnionOfAllItemInPlayTypes } from "../../editorTypes";
 import { type Tool } from "../interactivity/Tool";

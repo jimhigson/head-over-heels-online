@@ -1,12 +1,12 @@
 import { expect, test } from "vitest";
 
 import {
-  allCameraAngles,
   cameraAngleBase,
   halfTurn,
+  quarterCameraAngles,
   quarterTurnAnticlockwise,
   quarterTurnClockwise,
-} from "../../../utils/vectors/rotateXy";
+} from "../../../utils/vectors/cameraAngleVectors";
 import { type Xy, type Xyz } from "../../../utils/vectors/vectors";
 import { projectWorldXyzToScreenXy } from "../projections";
 import { populatedVisualIndex } from "./__test__/populatedVisualIndex";
@@ -109,7 +109,7 @@ const behindFrontIdPairs = (graph: ZGraph<TestItem>): Set<string> => {
   return pairs;
 };
 
-test.for(allCameraAngles)(
+test.for(quarterCameraAngles)(
   "draw order at camera angle %o matches the rotation baked into world coords",
   (cameraAngle) => {
     const scene = makeScene();

@@ -2,8 +2,8 @@ import {
   nearestQuarterAngle,
   quarterTurnAnticlockwise,
   quarterTurnClockwise,
-  rotateXy,
-} from "../../utils/vectors/rotateXy";
+} from "../../utils/vectors/cameraAngleVectors";
+import { rotateXy } from "../../utils/vectors/rotateXy";
 import { type Xy } from "../../utils/vectors/vectors";
 import { type GameState } from "../gameState/GameState";
 import {

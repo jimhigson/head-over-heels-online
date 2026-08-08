@@ -1,8 +1,5 @@
-import {
-  cameraAngleBase,
-  rotatedX,
-  rotatedY,
-} from "../../../utils/vectors/rotateXy";
+import { cameraAngleBase } from "../../../utils/vectors/cameraAngleVectors";
+import { rotatedX, rotatedY } from "../../../utils/vectors/rotateXy";
 import { addXyz, type Xy, type Xyz } from "../../../utils/vectors/vectors";
 import { projectWorldXyzToScreenXy } from "../projections";
 

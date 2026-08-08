@@ -10,7 +10,7 @@ import { assignRoundedXy } from "../../../utils/pixi/assignRoundedXy";
 import {
   isAtQuarterAngle,
   nearestQuarterAngle,
-} from "../../../utils/vectors/rotateXy";
+} from "../../../utils/vectors/cameraAngleVectors";
 import {
   addXy,
   addXyz,

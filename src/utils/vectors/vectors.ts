@@ -339,6 +339,7 @@ export type Xyz = {
 };
 export type AxisXy = "x" | "y";
 
+export const axesXy = ["x", "y"] as const;
 export const axesXyz = ["x", "y", "z"] as const;
 
 export type Aabb = Readonly<Xyz>;

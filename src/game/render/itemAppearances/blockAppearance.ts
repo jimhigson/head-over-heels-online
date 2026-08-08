@@ -7,13 +7,13 @@ import { variantTextureId } from "../../../sprites/spritesheet/variantTextureId"
 import {
   asReuseSprite,
   maybeRenderContainerToSprite,
-} from "../../../utils/pixi/renderContainerToSprite";
+} from "../../../utils/pixi/bakeContainerToSprite";
+import { nearestQuarterAngle } from "../../../utils/vectors/cameraAngleVectors";
 import {
   octantIndexOfDirection,
   type OctantIndexOfDirection,
 } from "../../../utils/vectors/octantIndexOfDirection" with { type: "macro" };
 import { spriteFlipXAtAngle } from "../../../utils/vectors/resolveCameraRelativeVector";
-import { nearestQuarterAngle } from "../../../utils/vectors/rotateXy";
 import { type Xy } from "../../../utils/vectors/vectors";
 import { createSprite } from "../createSprite";
 import { cameraQuarterAngleEqual, type ItemAppearance } from "./ItemAppearance";

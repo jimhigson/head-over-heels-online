@@ -14,7 +14,7 @@ import {
   hudCharTextureSize,
   hudLowercaseCharTextureSize,
 } from "../../../sprites/spritesheet/spritesheetData/textureSizes";
-import { renderContainerToTexture } from "../../../utils/pixi/renderContainerToSprite";
+import { bakeContainerToTexture } from "../../../utils/pixi/bakeContainerToSprite";
 import { alphaThresholdFilter } from "../filters/alphaThresholdFilter";
 import { OutlineFilter } from "../filters/OutlineFilter";
 
@@ -258,7 +258,7 @@ export class TextContainer extends Container {
       this.#renderCacheSprite.texture.destroy(true);
     }
 
-    this.#renderCacheSprite.texture = renderContainerToTexture(
+    this.#renderCacheSprite.texture = bakeContainerToTexture(
       this.#pixiRenderer,
       this.#renderToCacheContainer,
     );

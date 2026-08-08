@@ -1,6 +1,6 @@
 import { describe, expect, test } from "vitest";
 
-import { allCameraAngles } from "../../utils/vectors/rotateXy";
+import { quarterCameraAngles } from "../../utils/vectors/cameraAngleVectors";
 import { type Xyz } from "../../utils/vectors/vectors";
 import {
   projectWorldXyzToScreenXy,
@@ -137,7 +137,7 @@ describe("unprojectScreenXyToWorldXyzOnFace at every camera angle", () => {
   ];
 
   test.for(
-    allCameraAngles.flatMap((cameraAngle) =>
+    quarterCameraAngles.flatMap((cameraAngle) =>
       roundTripCases.map((roundTripCase) => ({
         cameraAngle,
         ...roundTripCase,

@@ -4,7 +4,7 @@ import { type ItemInPlayType } from "../../../../model/ItemInPlay";
 import {
   isAtQuarterAngle,
   nearestQuarterAngle,
-} from "../../../../utils/vectors/rotateXy";
+} from "../../../../utils/vectors/cameraAngleVectors";
 import { type Xy } from "../../../../utils/vectors/vectors";
 import { hermiteEase } from "../../../mainLoop/transitionCameraAngle";
 import {

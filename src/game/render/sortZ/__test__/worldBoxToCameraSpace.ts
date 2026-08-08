@@ -1,4 +1,4 @@
-import { cameraAngleBase } from "../../../../utils/vectors/rotateXy";
+import { cameraAngleBase } from "../../../../utils/vectors/cameraAngleVectors";
 import { type Xy, type Xyz } from "../../../../utils/vectors/vectors";
 
 /**

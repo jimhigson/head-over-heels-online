@@ -7,10 +7,8 @@ import {
   projectApparentTopRight,
 } from "../../../game/render/sortZ/projectAabbCorners";
 import { nonZero } from "../../../utils/epsilon";
-import {
-  rotateXyz,
-  rotateXyzByInverseCameraAngle,
-} from "../../../utils/vectors/rotateXy";
+import { rotateXyzByInverseCameraAngle } from "../../../utils/vectors/cameraAngleVectors";
+import { rotateXyz } from "../../../utils/vectors/rotateXy";
 import { type Plane, type Xy, type Xyz } from "../../../utils/vectors/vectors";
 import { type EditorUnionOfAllItemInPlayTypes } from "../../editorTypes";
 import { type Tool } from "../interactivity/Tool";

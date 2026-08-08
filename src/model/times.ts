@@ -88,23 +88,9 @@ export const getJsonItemTimes = (item: JsonItemUnion): Xyz => {
  * all items
  */
 export const getItemInPlayTimes = (item: UnionOfAllItemInPlayTypes): Xyz => {
-  const isMultipliedItemInPlay = (
-    item: UnionOfAllItemInPlayTypes,
-  ): item is UnionOfAllItemInPlayTypes & {
-    config: { times: Partial<Xyz> };
-  } => {
-    type ItemConfigMaybeWithMultiplication = {
-      times?: Partial<Xyz> | undefined;
-    };
-
-    return (
-      (item.config as ItemConfigMaybeWithMultiplication).times !== undefined
-    );
-  };
-
   return (
     item.type === "wall" ? completeTimesXyz(wallInPlayTimes(item.config))
-    : isMultipliedItemInPlay(item) ? completeTimesXyz(item.config.times)
+    : isMultipliedItem(item) ? completeTimesXyz(item.config.times)
     : unitXyz
   );
 };

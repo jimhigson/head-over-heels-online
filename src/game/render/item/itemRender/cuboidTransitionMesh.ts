@@ -188,7 +188,7 @@ export const createCuboidTransitionMesh = (
   layerAngle: Xy,
   /**
    * the pixel position of the item origin within `texture` - i.e. `-boundsMin`
-   * of the snapshotted container (see renderContainerToTexture).
+   * of the snapshotted container (see bakeContainerToTexture).
    */
   textureOriginOffset: Xy,
   /** the box the mesh warps, in world px (the item's render box, hugging the art) */

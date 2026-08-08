@@ -1,4 +1,4 @@
-import { cameraAngleBase } from "../../../../utils/vectors/rotateXy";
+import { cameraAngleBase } from "../../../../utils/vectors/cameraAngleVectors";
 import { type Xy } from "../../../../utils/vectors/vectors";
 import { type Indexable } from "../../../physics/gridSpace/CellIndex";
 import {
