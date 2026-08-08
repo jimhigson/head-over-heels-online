@@ -98,11 +98,6 @@ export class RoomRenderer<
 
   public readonly output: SetRequired<SoundAndGraphicsOutput, "graphics">;
   /**
-   * the roomTime when the renderer was last rendered - this can be useful when things
-   * happen in sub-ticks, to know if they are relevant to the current render (ie if
-   * they happened since the last render) */
-  #lastRenderRoomTime: number | undefined = undefined;
-  /**
    * the room's progression count as of the last render (undefined before the
    * first): items stamped after it have moved/resized/entered since this
    * renderer last saw them
@@ -372,7 +367,6 @@ export class RoomRenderer<
 
     const itemTickContext: ItemTickContext = {
       ...roomTickContext,
-      lastRenderRoomTime: this.#lastRenderRoomTime,
       renderedOnProgression: this.#renderedOnProgression,
       cameraAngleChanged,
     };
@@ -457,7 +451,7 @@ export class RoomRenderer<
   }
 
   get #everRendered() {
-    return this.#lastRenderRoomTime !== undefined;
+    return this.#renderedOnProgression !== undefined;
   }
 
   tick(givenTickContext: RoomTickContext) {
@@ -590,7 +584,6 @@ export class RoomRenderer<
     }
 
     this.#renderedOnProgression = room.progression;
-    this.#lastRenderRoomTime = this.renderContext.room.roomTime;
   }
 
   destroy() {
