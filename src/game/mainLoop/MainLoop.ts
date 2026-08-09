@@ -307,6 +307,11 @@ export class MainLoop<RoomId extends string> {
   // output - written for the animations to follow, never read back - so time
   // handed to ticker.update() always reaches the physics intact
   #tick = ({ elapsedMS }: Ticker): void => {
+    // undoes any hide from a CRT filter toggle skipping last frame's draw -
+    // done unconditionally and before any early return below, so the world
+    // never stays hidden longer than the one frame that toggle skipped
+    this.#mainContainer.visible = true;
+
     this.#dropSwitchOnFilterWhenFinished();
 
     const tickState = store.getState();
@@ -502,10 +507,17 @@ export class MainLoop<RoomId extends string> {
     const wasCrtFilterEnabled =
       this.#generalRenderContext !== undefined &&
       resolveCrtFilterEnabled(this.#generalRenderContext.displaySettings);
+    const crtFilterEnabled = resolveCrtFilterEnabled(tickDisplaySettings);
     const shouldRestartSwitchOn =
       this.#roomRenderer === undefined || // starting the game
       (wasPaused === true && !isPaused) || // coming out of pause
-      (!wasCrtFilterEnabled && resolveCrtFilterEnabled(tickDisplaySettings)); // switching the CRT filter on
+      (!wasCrtFilterEnabled && crtFilterEnabled); // switching the CRT filter on
+    // toggling the CRT filter either way swaps the whole top-level filter
+    // chain in mid-tick, which renders one incorrect frame - skip drawing
+    // that single frame rather than show it:
+    const crtFilterToggled =
+      this.#roomRenderer !== undefined &&
+      wasCrtFilterEnabled !== crtFilterEnabled;
 
     // a rebuild is fine mid-transition: the fresh renderer builds against the
     // discrete (nearest-quarter) angle like any renderer, and the playing
@@ -591,6 +603,10 @@ export class MainLoop<RoomId extends string> {
 
       this.#tickRootContainer(tickUpscale);
       this.#initTopLevelFilters(shouldRestartSwitchOn);
+
+      if (crtFilterToggled) {
+        this.#mainContainer.visible = false;
+      }
 
       // setting static boundsArea helps if a filter is put over the whole output container, since the bounds of the
       // container won't change. Eg, a lift going vertically up into a screen y-coord where previously nothing was
