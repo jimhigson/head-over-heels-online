@@ -35,7 +35,9 @@ import { validateSceneGraph } from "../../utils/pixi/validateSceneGraph";
 import { createSerialisableErrors } from "../../utils/redux/createSerialisableErrors";
 import { type Xy } from "../../utils/vectors/vectors";
 import { type GameState } from "../gameState/GameState";
+import { playerDiedRecently } from "../gameState/gameStateSelectors/playerDiedRecently";
 import { selectCurrentRoomState } from "../gameState/gameStateSelectors/selectCurrentRoomState";
+import { selectCurrentPlayableItem } from "../gameState/gameStateSelectors/selectPlayableItem";
 import { maxSubTickDeltaMs } from "../physics/mechanicsConstants";
 import { ColourClashCircleEffectRenderer } from "../render/ColourClashCircleEffectRenderer";
 import { noFilters } from "../render/filters/standardFilters";
@@ -68,6 +70,11 @@ registerDetailedFpsGlobal();
 const quarterTurnClockwise = Math.PI / 2;
 const pausedDimTint = 0x99_99_99;
 const noTint = 0xff_ff_ff;
+/**
+ * how long to hide the world for when the CRT filter is toggled, to ride out
+ * the single incorrect frame the filter chain swap renders
+ */
+const crtFilterToggleHideMs = 100;
 
 export class MainLoop<RoomId extends string> {
   #hudRenderer: HudRenderer<RoomId, string> | undefined;
@@ -97,6 +104,12 @@ export class MainLoop<RoomId extends string> {
     label: "MainLoop/mainContainer",
     children: [this.#worldContainer],
   });
+  /**
+   * set while #mainContainer is at zero opacity to ride out a CRT filter toggle
+   * - a performance.now() deadline rather than a single-frame flag, since frame
+   * duration varies and the toggle needs to stay hidden for a minimum real time
+   */
+  #hideMainContainerUntil: number | undefined;
 
   #app: Application;
   #gameState: GameState<RoomId>;
@@ -208,6 +221,11 @@ export class MainLoop<RoomId extends string> {
 
   #firstFrameMarked = false;
 
+  // last tick's playerDiedRecently, so a respawn (the false-to-true edge) can
+  // be told apart from every other tick of the post-respawn invulnerability
+  // window it stays true for:
+  #wasDiedRecently = false;
+
   // set when the canvas regains its WebGL context after a loss; the next tick
   // refetches the spritesheet image and re-bakes the variants, whose
   // RenderTextures died with the old WebGL context:
@@ -308,10 +326,16 @@ export class MainLoop<RoomId extends string> {
   // output - written for the animations to follow, never read back - so time
   // handed to ticker.update() always reaches the physics intact
   #tick = ({ elapsedMS }: Ticker): void => {
-    // undoes any hide from a CRT filter toggle skipping last frame's draw -
-    // done unconditionally and before any early return below, so the world
-    // never stays hidden longer than the one frame that toggle skipped
-    this.#mainContainer.visible = true;
+    // undoes the hide from a CRT filter toggle once its minimum time is up -
+    // checked unconditionally and before any early return below, so the world
+    // never stays hidden longer than that deadline
+    if (
+      this.#hideMainContainerUntil !== undefined &&
+      performance.now() >= this.#hideMainContainerUntil
+    ) {
+      this.#mainContainer.alpha = 1;
+      this.#hideMainContainerUntil = undefined;
+    }
 
     this.#dropSwitchOnFilterWhenFinished();
 
@@ -509,13 +533,31 @@ export class MainLoop<RoomId extends string> {
       this.#generalRenderContext !== undefined &&
       resolveCrtFilterEnabled(this.#generalRenderContext.displaySettings);
     const crtFilterEnabled = resolveCrtFilterEnabled(tickDisplaySettings);
+
+    // the same state that drives the post-respawn invulnerability flash marks
+    // a respawn - edge-detected the same way as wasPaused/wasCrtFilterEnabled
+    // above, since it stays true for the whole invulnerability window, not
+    // just the tick the player respawns on
+    const maybeCurrentPlayable = selectCurrentPlayableItem(this.#gameState);
+    if (import.meta.env.DEV && maybeCurrentPlayable === undefined) {
+      throw new Error(
+        "current playable was required here but was absent - selectCurrentPlayableItem " +
+          "should only be undefined once selectCurrentRoomState is too, which already " +
+          "returned from this tick above",
+      );
+    }
+    const diedRecently = playerDiedRecently(maybeCurrentPlayable!);
+    const justRespawned = diedRecently && !this.#wasDiedRecently;
+    this.#wasDiedRecently = diedRecently;
+
     const shouldRestartSwitchOn =
       this.#roomRenderer === undefined || // starting the game
       (wasPaused === true && !isPaused) || // coming out of pause
-      (!wasCrtFilterEnabled && crtFilterEnabled); // switching the CRT filter on
+      (!wasCrtFilterEnabled && crtFilterEnabled) || // switching the CRT filter on
+      justRespawned; // respawning after losing a life
     // toggling the CRT filter either way swaps the whole top-level filter
-    // chain in mid-tick, which renders one incorrect frame - skip drawing
-    // that single frame rather than show it:
+    // chain in mid-tick, which renders one incorrect frame - hide the world
+    // for crtFilterToggleHideMs rather than show it:
     const crtFilterToggled =
       this.#roomRenderer !== undefined &&
       wasCrtFilterEnabled !== crtFilterEnabled;
@@ -603,11 +645,6 @@ export class MainLoop<RoomId extends string> {
       }
 
       this.#tickRootContainer(tickUpscale);
-      this.#initTopLevelFilters(shouldRestartSwitchOn);
-
-      if (crtFilterToggled) {
-        this.#mainContainer.visible = false;
-      }
 
       // setting static boundsArea helps if a filter is put over the whole output container, since the bounds of the
       // container won't change. Eg, a lift going vertically up into a screen y-coord where previously nothing was
@@ -622,6 +659,23 @@ export class MainLoop<RoomId extends string> {
           tickUpscale.gameEngineScreenSize.x
         : tickUpscale.gameEngineScreenSize.y,
       );
+    }
+
+    if (
+      // most reasons the switch-on should restart also rebuild the room
+      // renderer anyway, but a respawn that reuses the same room object
+      // (two playables sharing a room, not in symbiosis) doesn't - the top
+      // level filters still need rebuilding on their own in that case:
+      createNewRoomRenderer ||
+      shouldRestartSwitchOn
+    ) {
+      this.#initTopLevelFilters(shouldRestartSwitchOn);
+
+      if (crtFilterToggled) {
+        this.#mainContainer.alpha = 0;
+        this.#hideMainContainerUntil =
+          performance.now() + crtFilterToggleHideMs;
+      }
     }
 
     // WebGL-context-loss recovery for this tick is done: the variants are
