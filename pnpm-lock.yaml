@@ -12,8 +12,8 @@ importers:
   .:
     dependencies:
       '@blockstacking/jims-shaders':
-        specifier: 0.5.0-next.1
-        version: 0.5.0-next.1(pixi.js@8.16.0(patch_hash=b688bcf058f1c96904d1fd6ecaa5fe3c51c627f430ea19aa0c808450155337fd))
+        specifier: 0.5.0-next.2
+        version: 0.5.0-next.2(pixi.js@8.16.0(patch_hash=b688bcf058f1c96904d1fd6ecaa5fe3c51c627f430ea19aa0c808450155337fd))
       '@github/mini-throttle':
         specifier: ^2.1.1
         version: 2.1.1
@@ -951,8 +951,8 @@ packages:
     resolution: {integrity: sha512-eY+Yn3dCqTGmyiq2QRU66lA5FL8lqqqvecHt0fF3uHONIa7ToYsaCiWV8lOKqAs0Rb2SjixiKFROngnulPtt2g==}
     engines: {node: ^22.18.0 || >=24.11.0}
 
-  '@blockstacking/jims-shaders@0.5.0-next.1':
-    resolution: {integrity: sha512-aebETgnHxPsigbbnTp9jJIk7a4UaFjyzV0Ixa2qE/W+VehhLmfrA4JUwOvFuvZhIgtzKfGwKrq6aVu3lIoWeBw==}
+  '@blockstacking/jims-shaders@0.5.0-next.2':
+    resolution: {integrity: sha512-rlgQOPDh3LhpZB/OqPexjwVu/o7Q8lq1jk7TWeX1bufsBBqf6B9+l309O1lrOoo2/xXMUD1NX7d/zAfAlhFDuw==}
     peerDependencies:
       pixi.js: ^8.0.0
 
@@ -6901,7 +6901,7 @@ snapshots:
       '@babel/helper-string-parser': 8.0.0
       '@babel/helper-validator-identifier': 8.0.4
 
-  '@blockstacking/jims-shaders@0.5.0-next.1(pixi.js@8.16.0(patch_hash=b688bcf058f1c96904d1fd6ecaa5fe3c51c627f430ea19aa0c808450155337fd))':
+  '@blockstacking/jims-shaders@0.5.0-next.2(pixi.js@8.16.0(patch_hash=b688bcf058f1c96904d1fd6ecaa5fe3c51c627f430ea19aa0c808450155337fd))':
     dependencies:
       pixi.js: 8.16.0(patch_hash=b688bcf058f1c96904d1fd6ecaa5fe3c51c627f430ea19aa0c808450155337fd)
 
