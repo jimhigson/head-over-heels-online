@@ -174,6 +174,7 @@ export class MainLoop<RoomId extends string> {
         warmUpDelay: 200,
         duration: 500,
         overscan: 0.15,
+        overshoot: 0.4,
       });
     } else if (this.#switchOnFilter?.finished) {
       this.#switchOnFilter.destroy();
