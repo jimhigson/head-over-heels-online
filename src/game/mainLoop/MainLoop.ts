@@ -176,6 +176,7 @@ export class MainLoop<RoomId extends string> {
         overscan: 0.15,
         overshoot: 0.4,
         scaleOvershoot: 0.08,
+        scaleSettleDuration: 250,
       });
     } else if (this.#switchOnFilter?.finished) {
       this.#switchOnFilter.destroy();
