@@ -1,4 +1,4 @@
-import { SwitchOnFilter } from "@blockstacking/jims-shaders";
+import { type SwitchOnFilter } from "@blockstacking/jims-shaders";
 import {
   type Application,
   Container,
@@ -56,6 +56,7 @@ import {
   loadFrameTimingStats,
 } from "./frameTiming/lazyFrameTimingStats";
 import { registerDetailedFpsGlobal } from "./frameTiming/registerDetailedFpsGlobal";
+import { loadCrtFilterLibrary } from "./loadCrtFilterLibrary";
 import { progressGameState } from "./progressGameState";
 import { progressWithSubTicks } from "./progressWithSubTicks";
 import { resolveCrtFilterEnabled } from "./resolveCrtFilterEnabled";
@@ -161,6 +162,12 @@ export class MainLoop<RoomId extends string> {
    * picture has finished coming up, since it does nothing to it after that
    */
   #switchOnFilter: SwitchOnFilter | undefined;
+  /**
+   * bumped on every #initTopLevelFilters call so a loadCrtFilterLibrary()
+   * resolution superseded by a later call (before it finished loading) can be
+   * told apart from the latest one and discarded rather than overwriting it
+   */
+  #topLevelFiltersRequestId = 0;
 
   #initTopLevelFilters(
     /**
@@ -178,30 +185,46 @@ export class MainLoop<RoomId extends string> {
       upscale: { upscale },
     } = store.getState();
 
+    const requestId = ++this.#topLevelFiltersRequestId;
+
     if (!resolveCrtFilterEnabled(displaySettings)) {
       this.#switchOnFilter?.destroy();
       this.#switchOnFilter = undefined;
-    } else if (restartSwitchOn) {
-      this.#switchOnFilter?.destroy();
-      this.#switchOnFilter = new SwitchOnFilter({
-        warmUpDelay: 0,
-        duration: 270,
-        overscan: 0.15,
-        overshoot: 0.4,
-        scaleOvershoot: 0.08,
-        scaleSettleDuration: 265,
-      });
-    } else if (this.#switchOnFilter?.finished) {
-      this.#switchOnFilter.destroy();
-      this.#switchOnFilter = undefined;
+      this.#topLevelFilters = noFilters;
+      this.#app.stage.filters = this.#topLevelFilters;
+      return;
     }
 
-    this.#topLevelFilters = topLevelFilters(
-      displaySettings,
-      upscale,
-      this.#switchOnFilter,
-    );
-    this.#app.stage.filters = this.#topLevelFilters;
+    // @blockstacking/jims-shaders is off the critical path - most players
+    // never turn the CRT filter on, so it's only fetched once one does:
+    loadCrtFilterLibrary().then(({ SwitchOnFilter, ...filterClasses }) => {
+      if (requestId !== this.#topLevelFiltersRequestId) {
+        // superseded by a later call while this one was loading:
+        return;
+      }
+
+      if (restartSwitchOn) {
+        this.#switchOnFilter?.destroy();
+        this.#switchOnFilter = new SwitchOnFilter({
+          warmUpDelay: 0,
+          duration: 270,
+          overscan: 0.15,
+          overshoot: 0.4,
+          scaleOvershoot: 0.08,
+          scaleSettleDuration: 265,
+        });
+      } else if (this.#switchOnFilter?.finished) {
+        this.#switchOnFilter.destroy();
+        this.#switchOnFilter = undefined;
+      }
+
+      this.#topLevelFilters = topLevelFilters(
+        filterClasses,
+        upscale,
+        this.#switchOnFilter,
+      );
+      this.#app.stage.filters = this.#topLevelFilters;
+    });
   }
 
   #dropSwitchOnFilterWhenFinished() {

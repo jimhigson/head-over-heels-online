@@ -1,23 +1,22 @@
+// type-only: erased at build time, so this doesn't pull the library into the
+// bundle - the classes themselves are lazily loaded by MainLoop
 import {
-  BloomFilter,
-  ColorAdjustmentFilter,
-  FlickerFilter,
-  NoiseFilter,
-  PhosphorMaskFilter,
-  RaiseBlackPointFilter,
-  RoundedCornersFilter,
-  ScanlinesFilter,
-  ScreenGeometryFilter,
-  SharpenFilter,
+  type BloomFilter,
+  type ColorAdjustmentFilter,
+  type FlickerFilter,
+  type NoiseFilter,
+  type PhosphorMaskFilter,
+  type RaiseBlackPointFilter,
+  type RoundedCornersFilter,
+  type ScanlinesFilter,
+  type ScreenGeometryFilter,
+  type SharpenFilter,
   type SwitchOnFilter,
-  VignetteFilter,
+  type VignetteFilter,
 } from "@blockstacking/jims-shaders";
 import { type Filter } from "pixi.js";
 
 import { type Upscale } from "../../store/slices/upscale/Upscale";
-import { type DisplaySettings } from "../../store/slices/userSettings/userSettingsSlice";
-import { noFilters } from "../render/filters/standardFilters";
-import { resolveCrtFilterEnabled } from "./resolveCrtFilterEnabled";
 
 // darken initially, then re-lighten at the end. This helps some detail
 // to be added into very light areas by compressing the dynamic range initially,
@@ -27,7 +26,24 @@ const inPipelineBrightness = 0.8;
 const brightnessIncrease = 1.2;
 
 export const topLevelFilters = (
-  displaySettings: DisplaySettings,
+  /**
+   * the filter classes from @blockstacking/jims-shaders, lazily loaded by
+   * MainLoop via loadCrtFilterLibrary so this library never enters the
+   * bundle for players who never turn the CRT filter on
+   */
+  filterClasses: {
+    BloomFilter: typeof BloomFilter;
+    ColorAdjustmentFilter: typeof ColorAdjustmentFilter;
+    FlickerFilter: typeof FlickerFilter;
+    NoiseFilter: typeof NoiseFilter;
+    PhosphorMaskFilter: typeof PhosphorMaskFilter;
+    RaiseBlackPointFilter: typeof RaiseBlackPointFilter;
+    RoundedCornersFilter: typeof RoundedCornersFilter;
+    ScanlinesFilter: typeof ScanlinesFilter;
+    ScreenGeometryFilter: typeof ScreenGeometryFilter;
+    SharpenFilter: typeof SharpenFilter;
+    VignetteFilter: typeof VignetteFilter;
+  },
   upscale: Upscale,
   /**
    * the switch-on filter is owned by MainLoop, which decides whether the picture
@@ -38,10 +54,19 @@ export const topLevelFilters = (
    */
   switchOnFilter: SwitchOnFilter | undefined,
 ): Filter[] => {
-  if (!resolveCrtFilterEnabled(displaySettings)) {
-    // this settings as false or undefined means no CRT filter
-    return noFilters;
-  }
+  const {
+    BloomFilter,
+    ColorAdjustmentFilter,
+    FlickerFilter,
+    NoiseFilter,
+    PhosphorMaskFilter,
+    RaiseBlackPointFilter,
+    RoundedCornersFilter,
+    ScanlinesFilter,
+    ScreenGeometryFilter,
+    SharpenFilter,
+    VignetteFilter,
+  } = filterClasses;
 
   return [
     new ColorAdjustmentFilter({
