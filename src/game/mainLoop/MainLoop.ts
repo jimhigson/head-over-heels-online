@@ -171,12 +171,12 @@ export class MainLoop<RoomId extends string> {
     } else if (restartSwitchOn) {
       this.#switchOnFilter?.destroy();
       this.#switchOnFilter = new SwitchOnFilter({
-        warmUpDelay: 90,
+        warmUpDelay: 0,
         duration: 270,
         overscan: 0.15,
         overshoot: 0.4,
         scaleOvershoot: 0.08,
-        scaleSettleDuration: 250,
+        scaleSettleDuration: 265,
       });
     } else if (this.#switchOnFilter?.finished) {
       this.#switchOnFilter.destroy();
