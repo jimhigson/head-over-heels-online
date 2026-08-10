@@ -1,11 +1,4 @@
-import { type SwitchOnFilter } from "@blockstacking/jims-shaders";
-import {
-  type Application,
-  Container,
-  type Filter,
-  Rectangle,
-  type Ticker,
-} from "pixi.js";
+import { type Application, Container, Rectangle, type Ticker } from "pixi.js";
 
 import { audioCtx } from "../../sound/audioCtx";
 import { ensureRoomSoundsLoaded } from "../../sound/ensureRoomSoundsLoaded";
@@ -35,12 +28,9 @@ import { validateSceneGraph } from "../../utils/pixi/validateSceneGraph";
 import { createSerialisableErrors } from "../../utils/redux/createSerialisableErrors";
 import { type Xy } from "../../utils/vectors/vectors";
 import { type GameState } from "../gameState/GameState";
-import { playerDiedRecently } from "../gameState/gameStateSelectors/playerDiedRecently";
 import { selectCurrentRoomState } from "../gameState/gameStateSelectors/selectCurrentRoomState";
-import { selectCurrentPlayableItem } from "../gameState/gameStateSelectors/selectPlayableItem";
 import { maxSubTickDeltaMs } from "../physics/mechanicsConstants";
 import { ColourClashCircleEffectRenderer } from "../render/ColourClashCircleEffectRenderer";
-import { noFilters } from "../render/filters/standardFilters";
 import { HudRenderer } from "../render/hud/HudRenderer";
 import { needsNewHudRenderer } from "../render/hud/needsNewHudRenderer";
 import { needsNewRoomRenderer } from "../render/room/needsNewRoomRenderer";
@@ -56,14 +46,12 @@ import {
   loadFrameTimingStats,
 } from "./frameTiming/lazyFrameTimingStats";
 import { registerDetailedFpsGlobal } from "./frameTiming/registerDetailedFpsGlobal";
-import { loadCrtFilterLibrary } from "./loadCrtFilterLibrary";
 import { progressGameState } from "./progressGameState";
 import { progressWithSubTicks } from "./progressWithSubTicks";
-import { resolveCrtFilterEnabled } from "./resolveCrtFilterEnabled";
 import { rotateCameraIfInput } from "./rotateCameraIfInput";
 import { tickCameraTransition } from "./tickCameraTransition";
 import { tickGameSpeed } from "./tickGameSpeed";
-import { topLevelFilters } from "./topLevelFilters";
+import { TopLevelFilterController } from "./TopLevelFilterController";
 import { transitionCameraAngle } from "./transitionCameraAngle";
 
 registerDetailedFpsGlobal();
@@ -71,11 +59,6 @@ registerDetailedFpsGlobal();
 const quarterTurnClockwise = Math.PI / 2;
 const pausedDimTint = 0x99_99_99;
 const noTint = 0xff_ff_ff;
-/**
- * how long to hide the world for when the CRT filter is toggled, to ride out
- * the single incorrect frame the filter chain swap renders
- */
-const crtFilterToggleHideMs = 100;
 
 export class MainLoop<RoomId extends string> {
   #hudRenderer: HudRenderer<RoomId, string> | undefined;
@@ -105,16 +88,11 @@ export class MainLoop<RoomId extends string> {
     label: "MainLoop/mainContainer",
     children: [this.#worldContainer],
   });
-  /**
-   * set while #mainContainer is at zero opacity to ride out a CRT filter toggle
-   * - a performance.now() deadline rather than a single-frame flag, since frame
-   * duration varies and the toggle needs to stay hidden for a minimum real time
-   */
-  #hideMainContainerUntil: number | undefined;
 
   #app: Application;
   #gameState: GameState<RoomId>;
   #spritesheets: Spritesheets;
+  #topLevelFilterController: TopLevelFilterController<RoomId>;
   /**
    * the single general render context, owned and mutated in place
    * here for use in both the room and hud renderers
@@ -130,6 +108,10 @@ export class MainLoop<RoomId extends string> {
     this.#app = app;
     this.#gameState = gameState;
     this.#spritesheets = spritesheets;
+    this.#topLevelFilterController = new TopLevelFilterController(
+      app.stage,
+      this.#mainContainer,
+    );
     try {
       const storeState = store.getState();
 
@@ -144,7 +126,12 @@ export class MainLoop<RoomId extends string> {
         throw new Error("main loop with no starting room");
       }
 
-      this.#initTopLevelFilters(true);
+      this.#topLevelFilterController.rebuild(
+        true,
+        { shouldRestart: true, toggled: false },
+        storeState.upscale.upscale,
+        storeState.userSettings.userSettings.displaySettings,
+      );
     } catch (e) {
       this.#handleError(e);
       return;
@@ -156,98 +143,7 @@ export class MainLoop<RoomId extends string> {
     store.dispatch(errorCaught(createSerialisableErrors(thrown)));
   }
 
-  #topLevelFilters: Filter[] = noFilters;
-  /**
-   * held onto only so that the switch-on can be taken back out of the chain once the
-   * picture has finished coming up, since it does nothing to it after that
-   */
-  #switchOnFilter: SwitchOnFilter | undefined;
-  /**
-   * bumped on every #initTopLevelFilters call so a loadCrtFilterLibrary()
-   * resolution superseded by a later call (before it finished loading) can be
-   * told apart from the latest one and discarded rather than overwriting it
-   */
-  #topLevelFiltersRequestId = 0;
-
-  #initTopLevelFilters(
-    /**
-     * whether the tube should play its coming-up-to-temperature effect again -
-     * true only for the reasons that actually warrant it (starting the game,
-     * switching the CRT filter on, coming out of pause), not for every reason
-     * the filter chain gets rebuilt (eg an ordinary room change)
-     */
-    restartSwitchOn: boolean,
-  ) {
-    const {
-      userSettings: {
-        userSettings: { displaySettings },
-      },
-      upscale: { upscale },
-    } = store.getState();
-
-    const requestId = ++this.#topLevelFiltersRequestId;
-
-    if (!resolveCrtFilterEnabled(displaySettings)) {
-      this.#switchOnFilter?.destroy();
-      this.#switchOnFilter = undefined;
-      this.#topLevelFilters = noFilters;
-      this.#app.stage.filters = this.#topLevelFilters;
-      return;
-    }
-
-    // @blockstacking/jims-shaders is off the critical path - most players
-    // never turn the CRT filter on, so it's only fetched once one does:
-    loadCrtFilterLibrary().then(({ SwitchOnFilter, ...filterClasses }) => {
-      if (requestId !== this.#topLevelFiltersRequestId) {
-        // superseded by a later call while this one was loading:
-        return;
-      }
-
-      if (restartSwitchOn) {
-        this.#switchOnFilter?.destroy();
-        this.#switchOnFilter = new SwitchOnFilter({
-          warmUpDelay: 0,
-          duration: 270,
-          overscan: 0.15,
-          overshoot: 0.4,
-          scaleOvershoot: 0.08,
-          scaleSettleDuration: 265,
-        });
-      } else if (this.#switchOnFilter?.finished) {
-        this.#switchOnFilter.destroy();
-        this.#switchOnFilter = undefined;
-      }
-
-      this.#topLevelFilters = topLevelFilters(
-        filterClasses,
-        upscale,
-        this.#switchOnFilter,
-      );
-      this.#app.stage.filters = this.#topLevelFilters;
-    });
-  }
-
-  #dropSwitchOnFilterWhenFinished() {
-    const switchOnFilter = this.#switchOnFilter;
-
-    if (switchOnFilter === undefined || !switchOnFilter.finished) {
-      return;
-    }
-
-    this.#topLevelFilters = this.#topLevelFilters.filter(
-      (filter) => filter !== switchOnFilter,
-    );
-    this.#app.stage.filters = this.#topLevelFilters;
-    this.#switchOnFilter = undefined;
-    switchOnFilter.destroy();
-  }
-
   #firstFrameMarked = false;
-
-  // last tick's playerDiedRecently, so a respawn (the false-to-true edge) can
-  // be told apart from every other tick of the post-respawn invulnerability
-  // window it stays true for:
-  #wasDiedRecently = false;
 
   // set when the canvas regains its WebGL context after a loss; the next tick
   // refetches the spritesheet image and re-bakes the variants, whose
@@ -349,18 +245,10 @@ export class MainLoop<RoomId extends string> {
   // output - written for the animations to follow, never read back - so time
   // handed to ticker.update() always reaches the physics intact
   #tick = ({ elapsedMS }: Ticker): void => {
-    // undoes the hide from a CRT filter toggle once its minimum time is up -
-    // checked unconditionally and before any early return below, so the world
-    // never stays hidden longer than that deadline
-    if (
-      this.#hideMainContainerUntil !== undefined &&
-      performance.now() >= this.#hideMainContainerUntil
-    ) {
-      this.#mainContainer.alpha = 1;
-      this.#hideMainContainerUntil = undefined;
-    }
-
-    this.#dropSwitchOnFilterWhenFinished();
+    // unconditional and before any early return below, so the CRT-toggle hide
+    // never stays applied longer than its deadline and a finished switch-on
+    // filter always gets dropped promptly:
+    this.#topLevelFilterController.tickStart();
 
     const tickState = store.getState();
     const showFps = selectShowFps(tickState);
@@ -547,43 +435,17 @@ export class MainLoop<RoomId extends string> {
       this.#webGlContextRestored,
     );
 
-    // read before #syncGeneralRenderContext below overwrites them in place:
-    // wasPaused/wasCrtFilterEnabled are the values the room renderer was last
-    // built with, needed to tell "coming out of pause"/"switching the CRT on"
-    // apart from the many other reasons the filter chain gets rebuilt
-    const wasPaused = this.#generalRenderContext?.paused;
-    const wasCrtFilterEnabled =
-      this.#generalRenderContext !== undefined &&
-      resolveCrtFilterEnabled(this.#generalRenderContext.displaySettings);
-    const crtFilterEnabled = resolveCrtFilterEnabled(tickDisplaySettings);
-
-    // the same state that drives the post-respawn invulnerability flash marks
-    // a respawn - edge-detected the same way as wasPaused/wasCrtFilterEnabled
-    // above, since it stays true for the whole invulnerability window, not
-    // just the tick the player respawns on
-    const maybeCurrentPlayable = selectCurrentPlayableItem(this.#gameState);
-    if (import.meta.env.DEV && maybeCurrentPlayable === undefined) {
-      throw new Error(
-        "current playable was required here but was absent - selectCurrentPlayableItem " +
-          "should only be undefined once selectCurrentRoomState is too, which already " +
-          "returned from this tick above",
-      );
-    }
-    const diedRecently = playerDiedRecently(maybeCurrentPlayable!);
-    const justRespawned = diedRecently && !this.#wasDiedRecently;
-    this.#wasDiedRecently = diedRecently;
-
-    const shouldRestartSwitchOn =
-      this.#roomRenderer === undefined || // starting the game
-      (wasPaused === true && !isPaused) || // coming out of pause
-      (!wasCrtFilterEnabled && crtFilterEnabled) || // switching the CRT filter on
-      justRespawned; // respawning after losing a life
-    // toggling the CRT filter either way swaps the whole top-level filter
-    // chain in mid-tick, which renders one incorrect frame - hide the world
-    // for crtFilterToggleHideMs rather than show it:
-    const crtFilterToggled =
-      this.#roomRenderer !== undefined &&
-      wasCrtFilterEnabled !== crtFilterEnabled;
+    // read before #syncGeneralRenderContext below overwrites the shared
+    // render context in place - the comparisons inside decide() need the
+    // room renderer's last-built values, not this tick's new ones
+    const topLevelFilterDecision = this.#topLevelFilterController.decide(
+      this.#gameState,
+      isPaused,
+      tickDisplaySettings,
+      this.#generalRenderContext?.paused,
+      this.#generalRenderContext?.displaySettings,
+      this.#roomRenderer !== undefined,
+    );
 
     // a rebuild is fine mid-transition: the fresh renderer builds against the
     // discrete (nearest-quarter) angle like any renderer, and the playing
@@ -684,22 +546,16 @@ export class MainLoop<RoomId extends string> {
       );
     }
 
-    if (
-      // most reasons the switch-on should restart also rebuild the room
-      // renderer anyway, but a respawn that reuses the same room object
-      // (two playables sharing a room, not in symbiosis) doesn't - the top
-      // level filters still need rebuilding on their own in that case:
-      createNewRoomRenderer ||
-      shouldRestartSwitchOn
-    ) {
-      this.#initTopLevelFilters(shouldRestartSwitchOn);
-
-      if (crtFilterToggled) {
-        this.#mainContainer.alpha = 0;
-        this.#hideMainContainerUntil =
-          performance.now() + crtFilterToggleHideMs;
-      }
-    }
+    // most reasons the switch-on should restart also rebuild the room
+    // renderer anyway, but a respawn that reuses the same room object (two
+    // playables sharing a room, not in symbiosis) doesn't - rebuild() takes
+    // createNewRoomRenderer so it can still act on its own in that case:
+    this.#topLevelFilterController.rebuild(
+      createNewRoomRenderer,
+      topLevelFilterDecision,
+      tickUpscale,
+      tickDisplaySettings,
+    );
 
     // WebGL-context-loss recovery for this tick is done: the variants are
     // re-baked and the hud/room renderers recreated, so they no longer reference
