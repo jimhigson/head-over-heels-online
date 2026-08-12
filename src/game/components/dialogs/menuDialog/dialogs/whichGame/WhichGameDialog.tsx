@@ -19,6 +19,7 @@ import {
 import { MenuItem } from "../../MenuItem";
 import { MenuItems } from "../../MenuItems";
 import { DialogTitleBar } from "../DialogTitleBar";
+import { mainMenuDialogColourClasses } from "../mainMenu/mainMenuDialogColourClasses";
 
 export const WhichGameDialog = (_emptyProps: EmptyObject) => {
   const spriteClassname = usePlayableTailwindSpriteClassname();
@@ -26,7 +27,7 @@ export const WhichGameDialog = (_emptyProps: EmptyObject) => {
     <DialogPortal>
       <Dialog
         fullScreen
-        class="bg-metallicBlueHalfbrite zx:text-zxCyan toppy:text-toppyWarm3 text-highlightBeige selectedMenuItem:text-white toppy:selectedMenuItem:text-toppyWarm1 zx:bg-zxRed toppy:bg-toppyCool4 gap-y-2 resHandheld:gap-y-1 py-0 gap-y-0"
+        class={`${mainMenuDialogColourClasses} zx:text-zxCyan toppy:text-toppyWarm3 text-highlightBeige selectedMenuItem:text-white toppy:selectedMenuItem:text-toppyWarm1 gap-y-2 resHandheld:gap-y-1 py-0 gap-y-0`}
         dialogId="whichGame"
       >
         <DialogTitleBar path={["Select which game"]} class="mobile:px-4 pt-1" />

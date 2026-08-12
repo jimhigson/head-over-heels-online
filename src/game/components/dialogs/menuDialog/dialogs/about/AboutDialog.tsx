@@ -14,13 +14,14 @@ import { MenuItem } from "../../MenuItem";
 import { MenuItems } from "../../MenuItems";
 import { useCustomTextLeader } from "../CustomTextLeader";
 import { DialogTitleBar } from "../DialogTitleBar";
+import { mainMenuDialogColourClasses } from "../mainMenu/mainMenuDialogColourClasses";
 
 export const AboutDialog = (_emptyProps: EmptyObject) => {
   return (
     <DialogPortal>
       <Border class="bg-metallicBlue zx:bg-zxRed toppy:bg-toppyCool3" />
       <Dialog
-        class="bg-metallicBlueHalfbrite zx:bg-zxRed toppy:bg-toppyCool4 text-highlightBeige zx:text-zxCyan toppy:text-toppyWarm3 selectedMenuItem:text-white toppy:selectedMenuItem:text-toppyWarm1 gap-y-0 justify-center"
+        class={`${mainMenuDialogColourClasses} text-highlightBeige zx:text-zxCyan toppy:text-toppyWarm3 selectedMenuItem:text-white toppy:selectedMenuItem:text-toppyWarm1 gap-y-0 justify-center`}
         dialogId="about"
       >
         <DialogTitleBar class="pl-1" />

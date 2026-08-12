@@ -16,6 +16,7 @@ import { spriteLeaderClasses } from "../../../dialogClasses";
 import { MenuItem } from "../../MenuItem";
 import { MenuItems } from "../../MenuItems";
 import { reincarnateSelected } from "../offerReincarnation/OfferReincarnationDialog";
+import { quitGameConfirmDialogColourClasses } from "./quitGameConfirmDialogColourClasses";
 
 const hintClassName =
   "zx:[--markdown-strong-colour:var(--colour-zxYellow)] toppy:[--markdown-strong-colour:var(--colour-toppyWarm1)]";
@@ -67,7 +68,7 @@ export const QuitGameConfirmDialog = () => {
     <DialogPortal>
       <Border class="bg-midRed zx:bg-zxYellowDimmed toppy:bg-toppyPink2" />
       <Dialog
-        class="bg-white zx:bg-zxRedDimmed toppy:bg-toppyWarm6 px-1"
+        class={`${quitGameConfirmDialogColourClasses} px-1`}
         dialogId="quitGameConfirm"
       >
         <div class="flex flex-col gap-y-2 mt-1 items-center h-full">

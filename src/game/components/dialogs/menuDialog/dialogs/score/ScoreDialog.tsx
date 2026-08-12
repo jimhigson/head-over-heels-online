@@ -17,6 +17,7 @@ import { ColourCycleText } from "../../../../ColourCycleText";
 import { BackMenuItem } from "../../BackMenuItem";
 import { MenuItems } from "../../MenuItems";
 import { mainMenuCycle } from "../mainMenu/mainMenuCycle";
+import { mainMenuDialogColourClasses } from "../mainMenu/mainMenuDialogColourClasses";
 import { MainMenuHeading } from "../mainMenu/MainMenuHeading";
 
 const ORIGINAL_GAME_MAX_SCORE = 94_000;
@@ -125,7 +126,7 @@ export const ScoreDialog = () => {
     <DialogPortal>
       <Border class="bg-metallicBlue zx:bg-zxCyan toppy:bg-toppyCool3" />
       <Dialog
-        class="bg-metallicBlueHalfbrite zx:bg-zxRed toppy:bg-toppyCool4 w-zx h-full flex flex-col"
+        class={`${mainMenuDialogColourClasses} w-zx h-full flex flex-col`}
         onClick={useDispatchActionCallback(backToParentMenu)}
         dialogId="score"
       >

@@ -8,6 +8,7 @@ import { mainMenuScrollClasses } from "../../../dialogClasses";
 import { MenuItem } from "../../MenuItem";
 import { MenuItems } from "../../MenuItems";
 import { DialogTitleBar } from "../DialogTitleBar";
+import { mainMenuDialogColourClasses } from "../mainMenu/mainMenuDialogColourClasses";
 
 const introMarkdown = `The game works on *any modern web browser*: phone, desktop, or tablet, including offline.
 
@@ -19,7 +20,7 @@ export const InstallDialog = (_emptyProps: EmptyObject) => {
     <DialogPortal>
       <Border class="bg-metallicBlue zx:bg-zxRed toppy:bg-toppyCool3" />
       <Dialog
-        class="bg-metallicBlueHalfbrite zx:bg-zxRed toppy:bg-toppyCool4 text-highlightBeige zx:text-zxCyan toppy:text-toppyWarm3 selectedMenuItem:text-white toppy:selectedMenuItem:text-toppyWarm1 justify-center"
+        class={`${mainMenuDialogColourClasses} text-highlightBeige zx:text-zxCyan toppy:text-toppyWarm3 selectedMenuItem:text-white toppy:selectedMenuItem:text-toppyWarm1 justify-center`}
         dialogId="installGuide"
       >
         <DialogTitleBar class="pl-1" path={["Install instructions"]} />

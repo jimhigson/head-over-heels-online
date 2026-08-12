@@ -7,6 +7,7 @@ import { DialogPortal } from "../../../../../../ui/DialogPortal";
 import { NonIdealState } from "../../../../../../ui/NonIdealState";
 import { SpinnerHead } from "../../../../../../ui/Spinner";
 import { DialogTitleBar } from "../DialogTitleBar";
+import { mainMenuDialogColourClasses } from "../mainMenu/mainMenuDialogColourClasses";
 import { CampaignListContent } from "./CampaignListContent";
 
 export const CommunityGamesDialog = (_emptyProps: EmptyObject) => {
@@ -22,7 +23,7 @@ export const CommunityGamesDialog = (_emptyProps: EmptyObject) => {
     <DialogPortal>
       <Dialog
         fullScreen
-        class="bg-metallicBlueHalfbrite text-highlightBeige zx:text-zxCyan toppy:text-toppyWarm3 selectedMenuItem:text-white toppy:selectedMenuItem:text-toppyWarm1 zx:bg-zxRed toppy:bg-toppyCool4 gap-y-2 resHandheld:gap-y-1"
+        class={`${mainMenuDialogColourClasses} text-highlightBeige zx:text-zxCyan toppy:text-toppyWarm3 selectedMenuItem:text-white toppy:selectedMenuItem:text-toppyWarm1 gap-y-2 resHandheld:gap-y-1`}
         dialogId="communityGames"
       >
         <DialogTitleBar path={["Play", "Community"]} class="mobile:px-4" />

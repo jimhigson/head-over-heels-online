@@ -8,6 +8,7 @@ import { BlockyMarkdown } from "../../../../BlockyMarkdown";
 import { MenuItem } from "../../MenuItem";
 import { MenuItems } from "../../MenuItems";
 import { DialogTitleBar } from "../DialogTitleBar";
+import { sureWantEditorDialogColourClasses } from "./sureWantEditorDialogColourClasses";
 
 const blurbMarkdown = `The Blockstacking Head over Heels level editor
 
@@ -27,7 +28,7 @@ export const SureWantEditorDialog = () => {
         onClick={useDispatchActionCallback(backToParentMenu)}
       />
       <Dialog
-        class="bg-shadowHalfbrite zx:bg-zxBlack toppy:bg-toppyGrey3 px-1 py-1 selectedMenuItem:text-metallicBlue toppy:selectedMenuItem:text-toppyCool2"
+        class={`${sureWantEditorDialogColourClasses} px-1 py-1 selectedMenuItem:text-metallicBlue toppy:selectedMenuItem:text-toppyCool2`}
         dialogId="sureWantEditor"
       >
         <DialogTitleBar class="pl-0 text-midGrey" path={["Hoh-Ed"]} />

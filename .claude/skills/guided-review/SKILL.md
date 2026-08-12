@@ -217,6 +217,7 @@ Write one json file — the whole of your output:
       "title": "group name",
       "blurb": "one sentence on why this group sits here",
       "items": [{ "path": "src/…", "status": "M", "note": "2-4 sentences" }]
+      // blurb and note both take html too - <code> especially
     }
   ]
 }

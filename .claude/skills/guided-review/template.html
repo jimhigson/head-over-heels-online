@@ -264,7 +264,7 @@
     list-style: none;
   }
 
-  .facts code, .lede code, .note code {
+  .facts code, .lede code, .note code, .blurb code {
     font-family: var(--mono);
     font-size: 0.88em;
     background: var(--accent-soft);
@@ -1484,7 +1484,8 @@
 
     const note = document.createElement("p");
     note.className = "note";
-    note.textContent = item.note;
+    // html, like the lede and the group blurbs - notes lean on <code> heavily
+    note.innerHTML = item.note ?? "";
 
     const [added, removed] = STATS[item.path] ?? [0, 0];
 
@@ -1585,7 +1586,7 @@
 
     const blurb = document.createElement("p");
     blurb.className = "blurb";
-    blurb.textContent = group.blurb;
+    blurb.innerHTML = group.blurb ?? "";
 
     const rows = document.createElement("div");
     rows.className = "rows";

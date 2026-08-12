@@ -28,6 +28,7 @@ import { useMaybeGameApi } from "../../../../GameApiContext";
 import { MenuItem } from "../../MenuItem";
 import { useCustomTextLeader } from "../CustomTextLeader";
 import { GitRepoInfo } from "./GitRepoInfo";
+import { mainMenuDialogColourClasses } from "./mainMenuDialogColourClasses";
 import { MainMenuFooter } from "./MainMenuFooter";
 import { MainMenuHeading } from "./MainMenuHeading";
 import { MaybeTwoColumnMenuitems } from "./MaybeTwoColumnMenuitems";
@@ -207,7 +208,7 @@ export const MainMenuDialog = (_emptyProps: EmptyObject) => {
     <DialogPortal>
       <Border class="bg-metallicBlueHalfbrite zx:bg-zxRed toppy:bg-toppyCool4" />
       <Dialog
-        class="bg-metallicBlueHalfbrite zx:bg-zxRed toppy:bg-toppyCool4 gap-y-0 pt-0 pb-oneScaledPix resHandheld:w-30"
+        class={`${mainMenuDialogColourClasses} gap-y-0 pt-0 pb-oneScaledPix resHandheld:w-30`}
         dialogId="mainMenu"
       >
         <MainMenuHeading

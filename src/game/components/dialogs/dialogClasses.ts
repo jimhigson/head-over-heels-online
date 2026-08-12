@@ -1,7 +1,8 @@
 import { twClass } from "../../../utils/twClass" with { type: "macro" };
+import { optionsDialogColourClasses } from "./menuDialog/dialogs/optionsDialogColourClasses";
 
 export const optionsDialogClasses =
-  "bg-white zx:bg-zxWhite toppy:bg-toppyCool1 py-0 gap-y-0 " +
+  `${optionsDialogColourClasses} py-0 gap-y-0 ` +
   "text-metallicBlueHalfbrite zx:text-zxBlue toppy:text-toppyCool3 " +
   "disabledMenuItem:text-midGrey zx:disabledMenuItem:text-zxYellow toppy:disabledMenuItem:text-toppyGrey2 " +
   "selectedMenuItem:text-metallicBlue zx:selectedMenuItem:text-zxGreen toppy:selectedMenuItem:text-toppyCool4 " +
