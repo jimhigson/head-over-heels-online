@@ -33,6 +33,29 @@ export const bootPlaytestCampaign = async <RoomId extends string>(
     cheats: "1",
     track: "0",
   });
+
+  // Freeze the game in-page, the instant the store exists, and keep re-asserting
+  // zero speed until the game is ready. Dispatching from the node side instead
+  // (waitForFunction + dispatchToStore) costs a round-trip, during which the
+  // main loop can run a few physics ticks - so the "frozen" starting state lands
+  // at a wall-clock-variable roomTime rather than 0. That variance is invisible
+  // in sparse rooms but, in a room full of fast monsters that are then
+  // fast-forwarded, becomes a non-deterministic pixel difference (worse on
+  // slower CI). Doing it in-page pins roomTime at 0 deterministically on every
+  // platform. The context starts with empty localStorage, so there is no
+  // persisted speed to rehydrate over this.
+  await page.addInitScript(() => {
+    const interval = setInterval(() => {
+      window._e2e_store?.dispatch({
+        type: "userSettings/setGameSpeed",
+        payload: 0,
+      });
+      if (window._e2e_gamePageGameAi !== undefined) {
+        clearInterval(interval);
+      }
+    }, 0);
+  });
+
   await page.goto(`/?${params.toString()}`);
   await page.waitForFunction(() => window._e2e_store !== undefined, {
     timeout: 30_000,
