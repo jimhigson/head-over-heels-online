@@ -11,9 +11,10 @@ import { dispatchKeyPress } from "./testUtils/gameInteractions";
 import {
   dispatchToStore,
   setZeroGameSpeed,
+  waitForGameReady,
   waitForGameState,
 } from "./testUtils/gameStateQueries";
-import { osSlowness, retryWithRecovery } from "./testUtils/infrastructure";
+import { osSlowness } from "./testUtils/infrastructure";
 import {
   elapsed,
   formatDuration,
@@ -29,6 +30,7 @@ import {
   openInGameMainMenu,
   waitForDialog,
 } from "./testUtils/menuNavigation";
+import { onScreenButtonClientCentre } from "./testUtils/onScreenControls";
 import { setupE2ePage } from "./testUtils/pageSetup";
 import {
   enabledSpriteModes,
@@ -105,21 +107,8 @@ test.describe("Settings reflect in game", () => {
 
     // navigate to main menu
     await test.step("Navigate to main menu", async () => {
-      await retryWithRecovery({
-        async action() {
-          await page.goto("/?cheats=1&track=0");
-          await waitForDialog(page, "mainMenu", {
-            timeout: 5_000 * osSlowness,
-          });
-        },
-        async recovery() {
-          await page.reload();
-        },
-        logHeader: formattedName,
-        actionDescription: "navigate to main menu",
-        page,
-        screenshotPrefix: "settings-initial-nav",
-      });
+      await page.goto("/?cheats=1&track=0");
+      await waitForDialog(page, "mainMenu");
     });
 
     // enable infinite lives and doughnuts pokes before starting the game
@@ -129,13 +118,11 @@ test.describe("Settings reflect in game", () => {
 
       console.log(`${formattedName} ${elapsed()}: toggling infinite lives ON`);
       await page.click('[data-menuitem_id="livesModel"]');
-      await page.waitForTimeout(300 * osSlowness);
 
       console.log(
         `${formattedName} ${elapsed()}: toggling infinite doughnuts ON`,
       );
       await page.click('[data-menuitem_id="infiniteDoughnutsPoke"]');
-      await page.waitForTimeout(300 * osSlowness);
 
       await backToMainMenu(page, projectName);
     });
@@ -152,45 +139,23 @@ test.describe("Settings reflect in game", () => {
 
     // freeze game for deterministic screenshots
     await test.step("Freeze game for screenshots", async () => {
-      await retryWithRecovery({
-        async action(attempt) {
-          const gameApiFound = await page.evaluate(
-            () =>
-              window._e2e_gamePageGameAi !== undefined &&
-              window._e2e_pixiApplication !== undefined,
-          );
+      // wait until the game is actually ready before freezing it, rather than
+      // retrying until the api appears:
+      await waitForGameReady(page);
 
-          type ToggleUserSettingAction = ReturnType<typeof toggleUserSetting>;
+      type ToggleUserSettingAction = ReturnType<typeof toggleUserSetting>;
 
-          const successSetSpeed = await setZeroGameSpeed(page);
+      const successSetSpeed = await setZeroGameSpeed(page);
+      const successToggleCrtFilter = await dispatchToStore(page, {
+        type: "userSettings/toggleUserSetting",
+        payload: { path: "displaySettings.crtFilter", value: false },
+      } satisfies ToggleUserSettingAction);
 
-          const successToggleCrtFilter = await dispatchToStore(page, {
-            type: "userSettings/toggleUserSetting",
-            payload: { path: "displaySettings.crtFilter", value: false },
-          } satisfies ToggleUserSettingAction);
+      if (!successSetSpeed || !successToggleCrtFilter) {
+        throw new Error("could not set zero game speed / toggle crt filter");
+      }
 
-          if (!gameApiFound || !successSetSpeed || !successToggleCrtFilter) {
-            await page
-              .screenshot({
-                path: `test-results/settings-freeze-${projectName}-attempt-${attempt}.png`,
-                fullPage: true,
-              })
-              .catch(() => {});
-            throw new Error("gameApi not found on window");
-          }
-
-          console.log(
-            `${formattedName} ${elapsed()}: game frozen at zero speed`,
-          );
-        },
-        async recovery() {
-          await page.waitForTimeout(2_000);
-        },
-        logHeader: formattedName,
-        actionDescription: "freeze game for screenshots",
-        page,
-        screenshotPrefix: `settings-freeze-${projectName}`,
-      });
+      console.log(`${formattedName} ${elapsed()}: game frozen at zero speed`);
     });
 
     // first set of screenshots: pokes enabled
@@ -216,12 +181,14 @@ test.describe("Settings reflect in game", () => {
         `${formattedName} ${elapsed()}: toggling on-screen controls ON`,
       );
       await page.click('[data-menuitem_id="onScreenControls"]');
-      await page.waitForTimeout(300 * osSlowness);
 
       await backToMainMenu(page, projectName);
       await dispatchKeyPress(page, "Escape", "Escape");
       await waitForDialog(page, "mainMenu", { state: "detached" });
-      await page.waitForTimeout(500 * osSlowness);
+
+      // wait until the HUD has actually rebuilt with an on-screen control button
+      // hit-testable, rather than guessing a settle time before screenshotting:
+      await onScreenButtonClientCentre(page, "jump");
     });
 
     // second set of screenshots: on-screen controls visible

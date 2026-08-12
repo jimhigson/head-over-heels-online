@@ -14,7 +14,7 @@ import {
   menuItemDataAttributeId,
 } from "../../src/game/components/dialogs/menuDialog/dialogs/menus/menuItemDataAttributes";
 import { type SpriteOption } from "../../src/store/slices/userSettings/userSettingsSlice";
-import { osSlowness, retryWithRecovery } from "./infrastructure";
+import { osSlowness } from "./infrastructure";
 import { elapsed, formatDuration } from "./logging";
 
 export const testTimeout = (process.env.CI ? 600_000 : 120_000) * osSlowness;
@@ -195,20 +195,14 @@ export const takeDialogScreenshot = async (
       `${logHeader} ${elapsed()} Taking screenshot for dialog: ${chalk.cyan(dialogId)}`,
     );
 
-    await retryWithRecovery({
-      async action() {
-        await page.waitForSelector(`dialog[data-dialog-id="${dialogId}"]`, {
-          timeout: 5_000 * osSlowness,
-        });
-        await page
-          .getByRole("status")
-          .waitFor({ state: "detached", timeout: 5_000 * osSlowness });
-      },
-      logHeader,
-      actionDescription: `wait for dialog ${dialogId} without spinner`,
-      page,
-      screenshotPrefix: `wait-no-spinner-${dialogId}`,
+    // wait for the dialog, then for any loading spinner (role=status) to leave,
+    // so the screenshot is of the settled dialog rather than mid-load:
+    await page.waitForSelector(`dialog[data-dialog-id="${dialogId}"]`, {
+      timeout: 15_000 * osSlowness,
     });
+    await page
+      .getByRole("status")
+      .waitFor({ state: "detached", timeout: 15_000 * osSlowness });
 
     await takeScreenshot(
       page,

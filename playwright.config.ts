@@ -55,11 +55,14 @@ export default defineConfig<ScreenshotTestOptions>({
   testIgnore: "**/*.editor.spec.ts",
   fullyParallel: true,
   forbidOnly: !!process.env.CI,
-  retries: 1,
+  // no retries at any level: a test must wait for the correct state rather than
+  // rely on a re-run to paper over non-determinism. A genuine rare
+  // browser/runner failure failing CI is the accepted cost.
+  retries: 0,
   reporter: "html",
   use: {
     baseURL: `http://localhost:${webserverPort}`,
-    trace: "on-first-retry",
+    trace: "retain-on-failure",
     screenshot: "only-on-failure",
   },
   snapshotPathTemplate:

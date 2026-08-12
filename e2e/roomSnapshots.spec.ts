@@ -11,17 +11,14 @@ import {
 import { keys } from "../src/utils/entries";
 import { type ScreenshotTestOptions } from "./ScreenshotTestOptions";
 import {
+  captureE2eCursor,
   dispatchToStore,
   maximumWaitForStep,
   setZeroGameSpeed,
   waitForGameReady,
   waitForRoomRenderEvent,
 } from "./testUtils/gameStateQueries";
-import {
-  osSlowness,
-  resolveRoomIds,
-  retryWithRecovery,
-} from "./testUtils/infrastructure";
+import { osSlowness, resolveRoomIds } from "./testUtils/infrastructure";
 import {
   elapsed,
   formatDuration,
@@ -62,8 +59,6 @@ import { test } from "./testUtils/test";
  */
 
 const timeoutPerRoom = (process.env.CI ? 40_000 : 15_000) * osSlowness;
-const maxTriesToLoadRoom = 3;
-const maxScreenshotAttempts = 3;
 
 const campaignRoomIds = keys(campaign.rooms);
 
@@ -197,45 +192,27 @@ const startOriginalGame = async (page: Page, projectName: string) => {
 const gameRunsAtZeroSpeed = async (page: Page, projectName: string) => {
   const formattedName = formatProjectName(projectName);
 
-  await retryWithRecovery({
-    async action(attempt) {
-      // freeze the game as early as the store will accept the dispatch, so as
-      // little of the world as possible moves before it is stopped:
-      const successSetSpeed = await setZeroGameSpeed(page);
+  // the store is put on the window at module load, so wait for it before
+  // dispatching, then freeze the game as early as possible so as little of the
+  // world as possible moves before it is stopped:
+  await page.waitForFunction(() => window._e2e_store !== undefined);
+  const successSetSpeed = await setZeroGameSpeed(page);
 
-      await waitForGameReady(page);
+  await waitForGameReady(page);
 
-      type ToggleUserSettingAction = ReturnType<typeof toggleUserSetting>;
+  type ToggleUserSettingAction = ReturnType<typeof toggleUserSetting>;
 
-      // turn off the crt filter (on by default)
-      const successToggleCrtFilter = await dispatchToStore(page, {
-        type: "userSettings/toggleUserSetting",
-        payload: { path: "displaySettings.crtFilter", value: false },
-      } satisfies ToggleUserSettingAction);
+  // turn off the crt filter (on by default)
+  const successToggleCrtFilter = await dispatchToStore(page, {
+    type: "userSettings/toggleUserSetting",
+    payload: { path: "displaySettings.crtFilter", value: false },
+  } satisfies ToggleUserSettingAction);
 
-      if (!successSetSpeed || !successToggleCrtFilter) {
-        await page
-          .screenshot({
-            path: `test-results/game-runs-zero-speed-${projectName}-attempt-${attempt}-set-speed-failed.png`,
-            fullPage: true,
-          })
-          .catch(() => {});
-        throw new Error(`could not set zero game speed / toggle crt filter`);
-      }
+  if (!successSetSpeed || !successToggleCrtFilter) {
+    throw new Error(`could not set zero game speed / toggle crt filter`);
+  }
 
-      console.log(
-        `${formattedName} ${elapsed()}: Set game speed to 0 via gameApi`,
-      );
-    },
-    async recovery() {
-      // Wait a bit for the game to initialize
-      await page.waitForTimeout(2_000);
-    },
-    logHeader: formattedName,
-    actionDescription: "set game speed to zero",
-    page,
-    screenshotPrefix: `speed-${projectName}`,
-  });
+  console.log(`${formattedName} ${elapsed()}: Set game speed to 0 via gameApi`);
 };
 
 test.describe.configure({ mode: "parallel" });
@@ -336,14 +313,6 @@ test.describe("Room Visual Snapshots", () => {
         logHeader: string,
         targetRoomId: OriginalCampaignRoomId,
         ensureComingFromPrevious: boolean = true,
-        /**
-         * when given, the sprite option is bounced to a different spritesheet
-         * and back while in the previous room, before entering the target. This
-         * forces a full reload of the base spritesheet (loadImage + buildOriginal),
-         * which only happens when the spritesheet *name* changes - re-entering the
-         * same room with an unchanged option reuses the (possibly corrupt) base.
-         */
-        reloadSpriteOption?: SpriteOption,
       ) => {
         // first, check we are coming from the sequentially previous room, to keep the door we enter consistent:
         if (ensureComingFromPrevious) {
@@ -363,55 +332,17 @@ test.describe("Room Visual Snapshots", () => {
           }
         }
 
-        if (reloadSpriteOption !== undefined) {
-          // bounce to a spritesheet with a different name (the only change that
-          // re-runs loadImage + buildOriginal) and back, to rebuild the base:
-          const otherSpriteOption: SpriteOption =
-            reloadSpriteOption.name === "Toppy" ?
-              { name: "BlockStack", uncolourised: false }
-            : { name: "Toppy", uncolourised: false };
-          console.log(
-            `${logHeader} ${elapsed()} bouncing sprite option ${chalk.cyan(reloadSpriteOption.name)} → ${chalk.cyan(otherSpriteOption.name)} → ${chalk.cyan(reloadSpriteOption.name)} to reload base spritesheet`,
-          );
-          await setSpriteOption(page, logHeader, otherSpriteOption);
-          await setSpriteOption(page, logHeader, reloadSpriteOption);
-        }
+        console.log(
+          `${logHeader} ${elapsed()} Navigating to room: ${chalk.cyan(targetRoomId)}`,
+        );
 
-        await retryWithRecovery({
-          async action(attempt) {
-            console.log(
-              `${logHeader} ${elapsed()} Navigating to room: ${chalk.cyan(targetRoomId)}`,
-            );
-
-            // Screenshot before navigation
-            await page
-              .screenshot({
-                path: `test-results/room-${testInfo.project.name}-${targetRoomId}-attempt-${attempt}-before-nav.png`,
-                fullPage: false,
-              })
-              .catch(() => {});
-
-            const renderEventPromise = waitForRoomRenderEvent(
-              page,
-              targetRoomId,
-              logHeader,
-            );
-            await page.goto(`/?cheats=1&track=0#${targetRoomId}`);
-            await renderEventPromise;
-            charactersCurrentRoomId = targetRoomId;
-          },
-          async recovery() {
-            // Navigate somewhere else so we can come back again and have another chance
-            // to catch the event:
-            await page.goto(`/?cheats=1&track=0#finalroom`);
-            await page.waitForTimeout(500);
-          },
-          maxAttempts: maxTriesToLoadRoom,
-          logHeader,
-          actionDescription: `load room ${chalk.cyan(targetRoomId)}`,
-          page,
-          screenshotPrefix: `room-${testInfo.project.name}-${targetRoomId}`,
-        });
+        // capture the bus cursor before navigating, so the room's render event is
+        // matched from the buffer even if it fires before the wait is set up -
+        // this is the race the old retry papered over:
+        const afterId = await captureE2eCursor(page);
+        await page.goto(`/?cheats=1&track=0#${targetRoomId}`);
+        await waitForRoomRenderEvent(page, targetRoomId, afterId, logHeader);
+        charactersCurrentRoomId = targetRoomId;
       };
 
       let currentSpriteOption: SpriteOption | undefined;
@@ -445,51 +376,22 @@ test.describe("Room Visual Snapshots", () => {
             const suffix = spriteOptionSuffix(spriteOption);
             const screenshotName = `${roomId}${suffix}.png`;
 
-            // github free runners are slow:
-            const assertion = expect.configure({
-              timeout: 15_000 * osSlowness,
-            });
+            console.log(
+              `${logHeader} ${elapsed()} Taking screenshot for room: ${chalk.cyan(roomId)} ${JSON.stringify(spriteOption)} at ${chalk.cyan(screenshotName)}`,
+            );
+            const screenshotStart = performance.now();
 
-            // the spritesheet rebuild occasionally produces a wrong sheet. The
-            // corruption can be in the base spritesheet, which re-entering the
-            // same room does not rebuild (only a name change reloads the base),
-            // so on a mismatch we re-enter the room *and* bounce the sprite
-            // option to a different sheet and back to force a full base reload.
-            // Non-final attempts assert hard so a mismatch throws and we can
-            // recover; the final attempt is soft so a genuine baseline change is
-            // reported without aborting the remaining rooms.
-            for (let attempt = 0; attempt < maxScreenshotAttempts; attempt++) {
-              const lastAttempt = attempt === maxScreenshotAttempts - 1;
-              console.log(
-                `${logHeader} ${elapsed()} Taking screenshot for room: ${chalk.cyan(roomId)} ${JSON.stringify(spriteOption)} at ${chalk.cyan(screenshotName)} (attempt ${attempt}/${maxScreenshotAttempts - 1})`,
-              );
-              const screenshotStart = performance.now();
+            // soft so a genuine baseline change is reported without aborting the
+            // remaining rooms. github free runners are slow, hence the timeout:
+            await expect
+              .configure({ timeout: 15_000 * osSlowness })
+              .soft(page)
+              .toHaveScreenshot(screenshotName, screenshotOpts);
 
-              try {
-                await (
-                  lastAttempt ?
-                    assertion.soft(page)
-                  : assertion(page)).toHaveScreenshot(
-                  screenshotName,
-                  screenshotOpts,
-                );
-                console.log(
-                  `${logHeader} ${elapsed()} ...screenshot took`,
-                  chalk.yellow(
-                    formatDuration(performance.now() - screenshotStart),
-                  ),
-                );
-                break;
-              } catch (error) {
-                console.log(
-                  `${logHeader} ${elapsed()} ${chalk.red(`screenshot mismatch on attempt ${attempt}`)} - re-entering room and bouncing sprite option to rebuild spritesheet: ${error}`,
-                );
-                // re-enter via the previous room (keeping the entry door
-                // consistent) and bounce the sprite option to force a full base
-                // spritesheet reload before re-entering the target room:
-                await navigateToRoom(logHeader, roomId, true, spriteOption);
-              }
-            }
+            console.log(
+              `${logHeader} ${elapsed()} ...screenshot took`,
+              chalk.yellow(formatDuration(performance.now() - screenshotStart)),
+            );
           }
         });
         charactersCurrentRoomId = roomId;

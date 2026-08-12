@@ -44,9 +44,14 @@ test.describe("save lifecycle around game over", () => {
   }, testInfo) => {
     await test.step("Start original campaign and force a save", async () => {
       await startCampaignViaMenu(page, testInfo.project.name, "originalGame");
-      // changing room dispatches a save, ensuring one exists before game-over
+      // changing room dispatches a save, ensuring one exists before game-over -
+      // wait for that save to actually be written rather than guessing a delay:
       await clickCheat(page, "cheats-goto-room-egyptus1");
-      await page.waitForTimeout(1_000 * osSlowness);
+      await page.waitForFunction(
+        () =>
+          Object.keys(window._e2e_store?.getState().savedGames.saves ?? {})
+            .length === 1,
+      );
     });
 
     await test.step("Confirm a save was written for the original campaign", async () => {

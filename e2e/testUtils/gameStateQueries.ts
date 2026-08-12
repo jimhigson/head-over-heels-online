@@ -5,7 +5,7 @@ import { type CharacterName } from "../../src/model/modelTypes";
 import { type SpriteOption } from "../../src/store/slices/userSettings/userSettingsSlice";
 import { type AppDispatch } from "../../src/store/store";
 import { osSlowness } from "./infrastructure";
-import { elapsed, formatDuration } from "./logging";
+import { elapsed } from "./logging";
 
 const longTimeout = 30_000 * osSlowness;
 
@@ -68,47 +68,60 @@ export const waitForGameReady = async (page: Page) => {
   }
 };
 
+/**
+ * capture the event-bus cursor - a bookmark for "now". Pass the value to a
+ * subsequent `waitFor*` call's `afterId` so an event that fires between this
+ * capture and the wait being set up is still matched (from the bus's buffer)
+ * rather than missed. Capture it *before* triggering the action that causes the
+ * event (eg before `page.goto`). Returns 0 when the bus does not yet exist,
+ * which correctly means "match from the very first event".
+ */
+export const captureE2eCursor = (page: Page): Promise<number> =>
+  page.evaluate(() => window.__e2e_events?.cursor() ?? 0);
+
+/**
+ * wait until the given room renders its first frame, matching against the
+ * {@link E2eEventBus} rather than a live DOM/window listener - so a render that
+ * happened between {@link captureE2eCursor} and this call (eg while `page.goto`
+ * was in flight) is still caught from the buffer. Ignores other rooms' renders:
+ * during a finalroom→target navigation finalroom renders first.
+ */
 export const waitForRoomRenderEvent = async (
   page: Page,
   expectedRoomId: string,
+  afterId: number,
   logHeader?: string,
 ): Promise<void> => {
-  // the timeout lives inside the browser so the listener is always removed,
-  // whether the event arrives or we time out (false). Wait for the SPECIFIC
-  // expected room and ignore any other room's render in the meantime - during a
-  // finalroom→target navigation finalroom renders first, and catching that
-  // (rather than the target) is a race that fails spuriously under load:
-  const found = await page.evaluate(
-    ({ timeoutMs, wantRoomId }) =>
-      new Promise<boolean>((resolve) => {
-        const handler = (event: Event) => {
-          const { roomId } = (event as CustomEvent).detail;
-          if (roomId !== wantRoomId) {
+  await page.evaluate(
+    ({ wantRoomId, afterId, timeoutMs }) =>
+      new Promise<void>((resolve, reject) => {
+        const deadline = performance.now() + timeoutMs;
+        const attach = () => {
+          const bus = window.__e2e_events;
+          if (bus === undefined) {
+            if (performance.now() > deadline) {
+              reject(new Error("e2e event bus never appeared on window"));
+              return;
+            }
+            requestAnimationFrame(attach);
             return;
           }
-          window.removeEventListener("_e2e_firstRenderOfRoom", handler);
-          resolve(true);
+          bus
+            .waitFor("firstRenderOfRoom", {
+              afterId,
+              timeoutMs,
+              match: (detail) => detail.roomId === wantRoomId,
+            })
+            .then(() => resolve(), reject);
         };
-        window.addEventListener("_e2e_firstRenderOfRoom", handler);
-        // on timeout, remove the listener and resolve false; if a matching event
-        // already fired this resolve is an ignored no-op:
-        setTimeout(() => {
-          window.removeEventListener("_e2e_firstRenderOfRoom", handler);
-          resolve(false);
-        }, timeoutMs);
+        attach();
       }),
-    { timeoutMs: maximumWaitForStep, wantRoomId: expectedRoomId },
+    { wantRoomId: expectedRoomId, afterId, timeoutMs: maximumWaitForStep },
   );
-
-  if (!found) {
-    throw new Error(
-      `Timeout waiting for _e2e_firstRenderOfRoom event ${expectedRoomId} after ${formatDuration(maximumWaitForStep)}`,
-    );
-  }
 
   if (logHeader !== undefined) {
     console.log(
-      `${logHeader} ${elapsed()} received _e2e_firstRenderOfRoom for ${chalk.cyan(expectedRoomId)}`,
+      `${logHeader} ${elapsed()} received firstRenderOfRoom for ${chalk.cyan(expectedRoomId)}`,
     );
   }
 };
@@ -116,83 +129,76 @@ export const waitForRoomRenderEvent = async (
 /**
  * wait until a rendered frame actually reflects the given sprite option, rather
  * than guessing with a fixed delay after dispatching the option change. The
- * engine fires `_e2e_spriteOptionRendered` every frame (in visual-regression mode)
- * carrying the option that frame was rendered with.
+ * engine emits `spriteOptionRendered` every frame (in visual-regression mode)
+ * carrying the option that frame was rendered with. Pass an `afterId` captured
+ * before the option was dispatched so a matching frame is never missed.
  */
 export const waitForSpriteOptionRenderEvent = async (
   page: Page,
   spriteOption: SpriteOption,
+  afterId: number,
   logHeader?: string,
 ): Promise<void> => {
-  // the timeout lives inside the browser so the per-frame listener is always
-  // removed, whether the matching frame is rendered (true) or we time out (false):
-  const matched = await page.evaluate(
-    ({ expected, timeoutMs }) =>
-      new Promise<boolean>((resolve) => {
-        const handler = (event: Event) => {
-          const { spriteOption } = (event as CustomEvent).detail as {
-            spriteOption: { name: string; uncolourised: boolean };
-          };
-          if (
-            spriteOption.name === expected.name &&
-            spriteOption.uncolourised === expected.uncolourised
-          ) {
-            window.removeEventListener("_e2e_spriteOptionRendered", handler);
-            resolve(true);
+  await page.evaluate(
+    ({ expected, afterId, timeoutMs }) =>
+      new Promise<void>((resolve, reject) => {
+        const deadline = performance.now() + timeoutMs;
+        const attach = () => {
+          const bus = window.__e2e_events;
+          if (bus === undefined) {
+            if (performance.now() > deadline) {
+              reject(new Error("e2e event bus never appeared on window"));
+              return;
+            }
+            requestAnimationFrame(attach);
+            return;
           }
+          bus
+            .waitFor("spriteOptionRendered", {
+              afterId,
+              timeoutMs,
+              match: (detail) =>
+                detail.spriteOption.name === expected.name &&
+                detail.spriteOption.uncolourised === expected.uncolourised,
+            })
+            .then(() => resolve(), reject);
         };
-        window.addEventListener("_e2e_spriteOptionRendered", handler);
-        // on timeout, remove the per-frame listener and resolve false; if a
-        // matching frame already resolved true this is an ignored no-op:
-        setTimeout(() => {
-          window.removeEventListener("_e2e_spriteOptionRendered", handler);
-          resolve(false);
-        }, timeoutMs);
+        attach();
       }),
-    { expected: spriteOption, timeoutMs: maximumWaitForStep },
+    { expected: spriteOption, afterId, timeoutMs: maximumWaitForStep },
   );
-
-  if (!matched) {
-    throw new Error(
-      `Timeout waiting for _e2e_spriteOptionRendered event (${spriteOption.name}, uncolourised: ${spriteOption.uncolourised}) after ${formatDuration(maximumWaitForStep)}`,
-    );
-  }
 
   if (logHeader !== undefined) {
     console.log(
-      `${logHeader} ${elapsed()} received _e2e_spriteOptionRendered for ${chalk.cyan(spriteOption.name)} (uncolourised: ${spriteOption.uncolourised})`,
+      `${logHeader} ${elapsed()} received spriteOptionRendered for ${chalk.cyan(spriteOption.name)} (uncolourised: ${spriteOption.uncolourised})`,
     );
   }
 };
 
 /** wait for any room to render, returning the room id */
-export const waitForAnyRoomRenderEvent = async (page: Page): Promise<string> =>
-  Promise.race([
-    page.evaluate(
-      () =>
-        new Promise<string>((resolve) => {
-          window.addEventListener(
-            "_e2e_firstRenderOfRoom",
-            (event) => {
-              const { roomId } = (event as CustomEvent).detail;
-              resolve(roomId);
-            },
-            { once: true },
-          );
-        }),
-    ),
-    new Promise<never>((_, reject) =>
-      setTimeout(
-        () =>
-          reject(
-            new Error(
-              `Timeout waiting for _e2e_firstRenderOfRoom event after ${formatDuration(maximumWaitForStep)}`,
-            ),
-          ),
-        maximumWaitForStep,
-      ),
-    ),
-  ]);
+export const waitForAnyRoomRenderEvent = (page: Page): Promise<string> =>
+  page.evaluate(
+    ({ timeoutMs }) =>
+      new Promise<string>((resolve, reject) => {
+        const deadline = performance.now() + timeoutMs;
+        const attach = () => {
+          const bus = window.__e2e_events;
+          if (bus === undefined) {
+            if (performance.now() > deadline) {
+              reject(new Error("e2e event bus never appeared on window"));
+              return;
+            }
+            requestAnimationFrame(attach);
+            return;
+          }
+          bus
+            .waitFor("firstRenderOfRoom", { afterId: 0, timeoutMs })
+            .then((detail) => resolve(detail.roomId), reject);
+        };
+        attach();
+      }),
+    { timeoutMs: maximumWaitForStep },
+  );
 
 export const getCurrentCharacter = async (
   page: Page,
@@ -215,12 +221,54 @@ export const getCurrentRoomId = async (
 export const getPlayableZ = (page: Page): Promise<number | undefined> =>
   page.evaluate(() => window.__e2e_currentPlayable?.()?.state.box.z);
 
+/**
+ * wait until there is a current playable - ie a controllable character exists in
+ * the current room. A deterministic replacement for "wait a beat after starting
+ * the game" before driving the character or summoning via cheats.
+ */
+export const waitForCurrentPlayable = (page: Page) =>
+  page.waitForFunction(
+    () => window.__e2e_currentPlayable?.() != null,
+    undefined,
+    {
+      timeout: longTimeout,
+    },
+  );
+
 /** wait until the current playable is resting on something (ie, not falling or mid-jump) */
 export const waitForPlayableGrounded = (page: Page) =>
   page.waitForFunction(
     () => window.__e2e_currentPlayable?.()?.state.standingOnItemId != null,
     undefined,
     { timeout: longTimeout },
+  );
+
+/**
+ * wait for `count` animation frames to pass. The game's main loop is driven by
+ * the pixi ticker (itself rAF-driven), so this is a frame-accurate replacement
+ * for a fixed delay where a step needs the loop to have ticked - eg so a key
+ * release is read by a tick before the next press, or a dispatched action has
+ * been rendered - without guessing a wall-clock duration.
+ */
+export const waitForAnimationFrames = (
+  page: Page,
+  count: number = 2,
+): Promise<void> =>
+  page.evaluate(
+    (frames) =>
+      new Promise<void>((resolve) => {
+        let remaining = frames;
+        const step = () => {
+          remaining -= 1;
+          if (remaining <= 0) {
+            resolve();
+          } else {
+            requestAnimationFrame(step);
+          }
+        };
+        requestAnimationFrame(step);
+      }),
+    count,
   );
 
 /**

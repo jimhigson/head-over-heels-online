@@ -2,8 +2,11 @@ import { type Page } from "@playwright/test";
 import chalk from "chalk";
 
 import { type PokeableNumber } from "../../src/model/ItemStateMap";
-import { getCurrentCharacter } from "./gameStateQueries";
-import { osSlowness, retryWithRecovery } from "./infrastructure";
+import {
+  getCurrentCharacter,
+  waitForCurrentPlayable,
+} from "./gameStateQueries";
+import { osSlowness } from "./infrastructure";
 import { elapsed, formatProjectName } from "./logging";
 
 /**
@@ -100,40 +103,47 @@ export const clickCheat = async (page: Page, testId: string) => {
  * If an end-of-game dialog appears, return undefined (game over).
  */
 export const loseOneLife = async (page: Page): Promise<string | undefined> => {
-  const deadline = Date.now() + 30_000 * osSlowness;
-  let summoned = false;
-  while (Date.now() < deadline) {
-    const gameOverShown = await page
-      .locator(
-        '[data-dialog-id="offerReincarnation"], [data-dialog-id="score"]',
-      )
-      .first()
-      .isVisible()
-      .catch(() => false);
-    if (gameOverShown) {
-      return undefined;
-    }
-    const deathDialog = page.locator('[data-dialog-id="death"]');
-    if (await deathDialog.isVisible().catch(() => false)) {
-      const dialogTextContents = await deathDialog.allTextContents();
-      const dialogText = dialogTextContents
-        .join(" ")
-        .replace(/\s+/g, " ")
-        .trim();
-      log(`death dialog text: "${dialogText}"`);
-      log("dismissing death dialog");
-      await dispatchKeyPress(page, " ", "Space");
-      await page.waitForTimeout(500 * osSlowness);
-      return dialogText;
-    }
-    if (!summoned) {
-      summoned = true;
-      // short wait in case engine needs to switch chars:
-      await page.waitForTimeout(1_000 * osSlowness);
-      log(`lives=${await getCurrentLives(page)} → summon guardian`);
-      await clickCheat(page, "cheats-summon-monster-emperorsGuardian");
-    }
-    await page.waitForTimeout(500 * osSlowness);
+  const gameOverDialog = page
+    .locator('[data-dialog-id="offerReincarnation"], [data-dialog-id="score"]')
+    .first();
+  const deathDialog = page.locator('[data-dialog-id="death"]');
+
+  // already at game over?
+  if (await gameOverDialog.isVisible().catch(() => false)) {
+    return undefined;
+  }
+
+  // wait until a character is controllable (the engine may still be switching
+  // chars after a previous death), then summon a homing guardian:
+  await waitForCurrentPlayable(page);
+  log(`lives=${await getCurrentLives(page)} → summon guardian`);
+  await clickCheat(page, "cheats-summon-monster-emperorsGuardian");
+
+  // the guardian homes onto the player, so wait for the death or a game-over
+  // dialog to appear rather than polling on a timer. Whichever comes first wins;
+  // the timeout allows for the post-death invulnerability window to expire so a
+  // later guardian hit lands:
+  await Promise.race([
+    deathDialog.waitFor({ state: "visible", timeout: 30_000 * osSlowness }),
+    gameOverDialog.waitFor({ state: "visible", timeout: 30_000 * osSlowness }),
+  ]).catch(() => {});
+
+  if (await gameOverDialog.isVisible().catch(() => false)) {
+    return undefined;
+  }
+  if (await deathDialog.isVisible().catch(() => false)) {
+    const dialogText = (await deathDialog.allTextContents())
+      .join(" ")
+      .replace(/\s+/g, " ")
+      .trim();
+    log(`death dialog text: "${dialogText}"`);
+    log("dismissing death dialog");
+    await dispatchKeyPress(page, " ", "Space");
+    await deathDialog.waitFor({
+      state: "detached",
+      timeout: 5_000 * osSlowness,
+    });
+    return dialogText;
   }
   throw new Error("timed out waiting for death or game over");
 };
@@ -156,22 +166,18 @@ export const switchCharacter = async (
   projectName: string,
 ): Promise<void> => {
   const startCharacter = await getCurrentCharacter(page);
-  await retryWithRecovery({
-    async action() {
-      await dispatchKeyPress(page, "Enter", "Enter");
-      await page.waitForFunction(
-        (start) =>
-          window._e2e_gamePageGameAi?.gameState.currentCharacterName !== start,
-        startCharacter,
-        { timeout: 2_000 * osSlowness },
-      );
-    },
-    maxAttempts: 5,
-    logHeader: formatProjectName(projectName),
-    actionDescription: "switch character via Enter",
-    page,
-    screenshotPrefix: `switch-char-${projectName}`,
-  });
+  console.log(
+    `${formatProjectName(projectName)} ${elapsed()}: switching character via Enter (from ${startCharacter})`,
+  );
+  await dispatchKeyPress(page, "Enter", "Enter");
+  // wait for the switch to actually land rather than retrying the press - a
+  // dropped press is a real input bug, not something to paper over:
+  await page.waitForFunction(
+    (start) =>
+      window._e2e_gamePageGameAi?.gameState.currentCharacterName !== start,
+    startCharacter,
+    { timeout: 15_000 * osSlowness },
+  );
 };
 
 /** After reloading while a game is running, the game restarts paused. Wait for the hold dialog then press P to unpause. */

@@ -41,6 +41,7 @@ import {
 import { RoomRenderer } from "../render/room/RoomRenderer";
 import { type RoomRendererType } from "../render/room/RoomRendererType";
 import { RoomScrollRenderer } from "../render/room/RoomScrollRenderer";
+import { emitE2eEvent } from "./e2eEventBus";
 import {
   loadedFrameTimingStats,
   loadFrameTimingStats,
@@ -562,20 +563,14 @@ export class MainLoop<RoomId extends string> {
       }
       if (import.meta.env.MODE === "visual-regression") {
         if (createNewRoomRenderer && tickEndRoom) {
-          window.dispatchEvent(
-            new CustomEvent("_e2e_firstRenderOfRoom", {
-              detail: { roomId: tickEndRoom.id },
-            }),
-          );
+          emitE2eEvent("firstRenderOfRoom", { roomId: tickEndRoom.id });
         }
         // the sprite option that this rendered frame actually reflects - lets
         // playwright wait for a sprite option change to land in the output rather
         // than guessing with a fixed delay:
-        window.dispatchEvent(
-          new CustomEvent("_e2e_spriteOptionRendered", {
-            detail: { spriteOption: tickSpriteOption },
-          }),
-        );
+        emitE2eEvent("spriteOptionRendered", {
+          spriteOption: tickSpriteOption,
+        });
       }
     } catch (e) {
       throw new Error("Error in Pixi.js app.render()", { cause: e });

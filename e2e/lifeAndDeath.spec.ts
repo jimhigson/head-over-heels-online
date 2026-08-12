@@ -8,7 +8,10 @@ import {
   loseAllLives,
   loseOneLife,
 } from "./testUtils/gameInteractions";
-import { getCurrentRoomId } from "./testUtils/gameStateQueries";
+import {
+  getCurrentRoomId,
+  waitForPlayableGrounded,
+} from "./testUtils/gameStateQueries";
 import { osSlowness } from "./testUtils/infrastructure";
 import {
   startCampaignViaMenu,
@@ -68,13 +71,18 @@ test.describe("life and death flows", () => {
     );
     await roomItem.scrollIntoViewIfNeeded();
     await roomItem.click();
-    await page.waitForTimeout(1_000 * osSlowness);
+    // wait for the room change to land rather than guessing a delay:
+    await page.waitForFunction(() => {
+      const state = window._e2e_gamePageGameAi?.gameState;
+      return (
+        state?.characterRooms[state.currentCharacterName]?.id ===
+        "penitentiary22"
+      );
+    });
     await openButton.click();
     await cheatsMenu.waitFor({ state: "hidden" });
-    await page.waitForTimeout(1_000 * osSlowness);
 
     await clickCheat(page, "cheats-summon-character-head");
-    await page.waitForTimeout(1_000 * osSlowness);
 
     await page.waitForFunction(
       () => {
@@ -90,9 +98,7 @@ test.describe("life and death flows", () => {
       { timeout: 15_000 * osSlowness },
     );
 
-    await page.waitForTimeout(3_000);
-
-    // switch to symbiosis:
+    // switch to symbiosis (head is already resting on heels, per the wait above):
     await dispatchKeyPress(page, "Enter", "Enter");
     await page.waitForFunction(
       () =>
@@ -107,7 +113,9 @@ test.describe("life and death flows", () => {
       ["ArrowDown", "ArrowLeft"],
       1_000 * osSlowness,
     );
-    await page.waitForTimeout(10_000 * osSlowness);
+    // wait for the merged character to come to rest after moving, rather than
+    // guessing a settle time:
+    await waitForPlayableGrounded(page);
 
     const mobile = testInfo.project.name.includes("mobile");
     const messages = await loseAllLives(page);
@@ -136,7 +144,13 @@ test.describe("life and death flows", () => {
   }, testInfo) => {
     await startCampaignViaMenu(page, testInfo.project.name, "originalGame");
     await clickCheat(page, "cheats-summon-reincarnation");
-    await page.waitForTimeout(2_000 * osSlowness);
+    // wait for the fish to be eaten (reincarnation point recorded) rather than
+    // guessing a delay:
+    await page.waitForFunction(
+      () =>
+        window._e2e_store?.getState().gameInPlay.gameInPlay
+          .reincarnationPoint !== undefined,
+    );
 
     await loseAllLives(page);
     await waitForDialog(page, "score");
@@ -152,9 +166,20 @@ test.describe("life and death flows", () => {
   }, testInfo) => {
     await startCampaignViaMenu(page, testInfo.project.name, "originalGame");
     await clickCheat(page, "cheats-goto-room-egyptus1");
-    await page.waitForTimeout(1_000 * osSlowness);
+    await page.waitForFunction(() => {
+      const state = window._e2e_gamePageGameAi?.gameState;
+      return (
+        state?.characterRooms[state.currentCharacterName]?.id === "egyptus1"
+      );
+    });
     await clickCheat(page, "cheats-summon-reincarnation");
-    await page.waitForTimeout(2_000 * osSlowness);
+    // wait for the fish to be eaten (reincarnation point recorded) rather than
+    // guessing a delay:
+    await page.waitForFunction(
+      () =>
+        window._e2e_store?.getState().gameInPlay.gameInPlay
+          .reincarnationPoint !== undefined,
+    );
 
     await loseAllLives(page);
     await waitForDialog(page, "score");
@@ -176,7 +201,13 @@ test.describe("life and death flows", () => {
   }, testInfo) => {
     await startCampaignViaMenu(page, testInfo.project.name, "remake");
     await clickCheat(page, "cheats-summon-reincarnation");
-    await page.waitForTimeout(2_000 * osSlowness);
+    // wait for the fish to be eaten (reincarnation point recorded) rather than
+    // guessing a delay:
+    await page.waitForFunction(
+      () =>
+        window._e2e_store?.getState().gameInPlay.gameInPlay
+          .reincarnationPoint !== undefined,
+    );
 
     await loseAllLives(page);
     await waitForDialog(page, "score");

@@ -2,6 +2,7 @@ import { type Application } from "pixi.js";
 
 import { type EditorE2eApi } from "./src/editor/RoomEditingArea/useEditorE2eApi";
 import { type GameApi } from "./src/game/GameApi";
+import { type E2eEventBus } from "./src/game/mainLoop/e2eEventBus";
 import { type PlayableItem } from "./src/game/physics/itemPredicates";
 import {
   type CharacterName,
@@ -20,6 +21,9 @@ declare global {
     _e2e_editor?: EditorE2eApi;
     // put the pixi application on the window for e2e tests to use
     _e2e_pixiApplication?: Application;
+    // event bus the game emits into (visual-regression builds only); tests
+    // capture a cursor then waitFor a named event, race-free - see e2eEventBus.ts
+    __e2e_events?: E2eEventBus;
     // always set (not just in visual-regression builds) for pixi devtools;
     // e2e tests walk its stage to read render-world ground truth
     __PIXI_APP__?: Application;

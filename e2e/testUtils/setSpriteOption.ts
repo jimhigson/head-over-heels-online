@@ -5,10 +5,10 @@ import {
   type SpriteOption,
 } from "../../src/store/slices/userSettings/userSettingsSlice";
 import {
+  captureE2eCursor,
   dispatchToStore,
   waitForSpriteOptionRenderEvent,
 } from "./gameStateQueries";
-import { osSlowness, retryWithRecovery } from "./infrastructure";
 import { elapsed } from "./logging";
 
 export const setSpriteOption = async (
@@ -16,46 +16,48 @@ export const setSpriteOption = async (
   formattedName: string,
   spriteOption: SpriteOption,
 ) => {
-  await retryWithRecovery({
-    async action() {
-      console.log(
-        `${formattedName} ${elapsed()}: setting sprite option to ${spriteOption.name} (uncolourised: ${spriteOption.uncolourised})`,
-      );
+  console.log(
+    `${formattedName} ${elapsed()}: setting sprite option to ${spriteOption.name} (uncolourised: ${spriteOption.uncolourised})`,
+  );
 
-      type SetSpritesOption = ReturnType<typeof setSpritesOption>;
-      const success = await dispatchToStore(page, {
-        type: "userSettings/setSpritesOption",
-        payload: spriteOption,
-      } satisfies SetSpritesOption);
+  // capture the bus cursor before dispatching, so the frame that first reflects
+  // the new option is matched even if it renders before the wait is set up:
+  const afterId = await captureE2eCursor(page);
 
-      if (!success) {
-        throw new Error(
-          `Failed to dispatch to store - setting sprite option to ${spriteOption.name}`,
-        );
-      }
+  type SetSpritesOption = ReturnType<typeof setSpritesOption>;
+  const dispatched = await dispatchToStore(page, {
+    type: "userSettings/setSpritesOption",
+    payload: spriteOption,
+  } satisfies SetSpritesOption);
 
-      // _e2e_spriteOptionRendered is only emitted by the game's main loop, so it
-      // only fires when a game is running. In-game, wait until a rendered frame
-      // actually reflects the new option (covers the async spritesheet load when
-      // switching to/from Toppy). With no running loop (eg at the main menu or a
-      // standalone dialog) the event never comes, so just let a frame pass:
-      const gameLoopRunning = await page.evaluate(
-        () => window._e2e_gamePageGameAi !== undefined,
-      );
-      if (gameLoopRunning) {
-        await waitForSpriteOptionRenderEvent(page, spriteOption, formattedName);
-      } else {
-        await page.waitForTimeout(100 * osSlowness);
-      }
-    },
-    async recovery() {
-      console.log(
-        `${formattedName} ${elapsed()}: Retrying to set sprite option`,
-      );
-    },
-    logHeader: formattedName,
-    actionDescription: "Change sprite option",
-    page,
-    screenshotPrefix: `sprite-option-${spriteOption.name}-${spriteOption.uncolourised}`,
-  });
+  if (!dispatched) {
+    throw new Error(
+      `Failed to dispatch to store - setting sprite option to ${spriteOption.name}`,
+    );
+  }
+
+  // spriteOptionRendered is only emitted by the game's main loop, so it only
+  // fires when a game is running. In-game, wait until a rendered frame actually
+  // reflects the new option (covers the async spritesheet load when switching
+  // to/from Toppy). With no running loop (eg at the main menu or a standalone
+  // dialog) the event never comes, so instead wait for the next painted frame:
+  const gameLoopRunning = await page.evaluate(
+    () => window._e2e_gamePageGameAi !== undefined,
+  );
+  if (gameLoopRunning) {
+    await waitForSpriteOptionRenderEvent(
+      page,
+      spriteOption,
+      afterId,
+      formattedName,
+    );
+  } else {
+    // wait for two animation frames so the option's re-render has been painted
+    await page.evaluate(
+      () =>
+        new Promise<void>((resolve) => {
+          requestAnimationFrame(() => requestAnimationFrame(() => resolve()));
+        }),
+    );
+  }
 };

@@ -57,6 +57,22 @@ const getPlayerSnapshot = (page: Page): Promise<PlayerSnapshot> =>
     return { character, room, lives };
   });
 
+const currentLives = (page: Page): Promise<PokeableNumber | undefined> =>
+  page.evaluate(() => {
+    const st = window.__e2e_currentPlayable?.()?.state;
+    return st !== undefined && "lives" in st ? st.lives : undefined;
+  });
+
+/** the current reincarnation-point stack, JSON-encoded, so a wait can detect it
+ * changing when a fish is eaten (a new point is pushed on top) */
+const reincarnationPointJson = (page: Page): Promise<string> =>
+  page.evaluate(() =>
+    JSON.stringify(
+      window._e2e_store?.getState().gameInPlay.gameInPlay.reincarnationPoint ??
+        null,
+    ),
+  );
+
 /**
  * Open the score dialog via main menu → "View progress", read the
  * `data-rooms-explored` attribute, and back out to the game by Escaping
@@ -82,11 +98,16 @@ const readRoomsExploredCount = async (
   // at any time, so we keep popping until `[data-dialog-id]` matches
   // nothing.
   for (let i = 0; i < 5; i++) {
-    if ((await page.locator("[data-dialog-id]").count()) === 0) {
+    const topDialog = page.locator("[data-dialog-id]").first();
+    if ((await topDialog.count()) === 0) {
       break;
     }
+    const topDialogId = await topDialog.getAttribute("data-dialog-id");
     await dispatchKeyPress(page, "Escape", "Escape");
-    await page.waitForTimeout(300 * osSlowness);
+    // wait for this dialog to actually close before popping the next:
+    await page
+      .locator(`[data-dialog-id="${topDialogId}"]`)
+      .waitFor({ state: "detached", timeout: 5_000 * osSlowness });
   }
   return count;
 };
@@ -113,12 +134,34 @@ test.describe("reincarnation points stack across multiple fish", () => {
       await switchCharacter(page, testInfo.project.name);
       expect(await getCurrentCharacter(page)).toBe("heels");
       await clickCheat(page, "cheats-goto-room-egyptus1");
-      await page.waitForTimeout(1_000 * osSlowness);
+      await page.waitForFunction((roomId) => {
+        const state = window._e2e_gamePageGameAi?.gameState;
+        return state?.characterRooms[state.currentCharacterName]?.id === roomId;
+      }, "egyptus1");
       expect(await getCurrentRoomId(page)).toBe("egyptus1");
+      const livesBefore = await currentLives(page);
       await clickCheat(page, "cheats-summon-extra-life");
-      await page.waitForTimeout(1_500 * osSlowness);
+      // wait for the extra life to be collected (lives increased) rather than
+      // guessing a delay:
+      await page.waitForFunction((before) => {
+        const st = window.__e2e_currentPlayable?.()?.state;
+        const lives = st !== undefined && "lives" in st ? st.lives : undefined;
+        return typeof lives === "number" && typeof before === "number" ?
+            lives > before
+          : lives !== before;
+      }, livesBefore);
+      const reincarnationBefore = await reincarnationPointJson(page);
       await clickCheat(page, "cheats-summon-reincarnation");
-      await page.waitForTimeout(2_000 * osSlowness);
+      // wait for the fish to be eaten (a new reincarnation point pushed) rather
+      // than guessing a delay:
+      await page.waitForFunction(
+        (before) =>
+          JSON.stringify(
+            window._e2e_store?.getState().gameInPlay.gameInPlay
+              .reincarnationPoint ?? null,
+          ) !== before,
+        reincarnationBefore,
+      );
       snapshotAtFishA = await getPlayerSnapshot(page);
       expect(snapshotAtFishA.character).toBe("heels");
       expect(snapshotAtFishA.room).toBe("egyptus1");
@@ -133,12 +176,34 @@ test.describe("reincarnation points stack across multiple fish", () => {
       await switchCharacter(page, testInfo.project.name);
       expect(await getCurrentCharacter(page)).toBe("head");
       await clickCheat(page, "cheats-goto-room-moonbase1");
-      await page.waitForTimeout(1_000 * osSlowness);
+      await page.waitForFunction((roomId) => {
+        const state = window._e2e_gamePageGameAi?.gameState;
+        return state?.characterRooms[state.currentCharacterName]?.id === roomId;
+      }, "moonbase1");
       expect(await getCurrentRoomId(page)).toBe("moonbase1");
+      const livesBefore = await currentLives(page);
       await clickCheat(page, "cheats-summon-extra-life");
-      await page.waitForTimeout(1_500 * osSlowness);
+      // wait for the extra life to be collected (lives increased) rather than
+      // guessing a delay:
+      await page.waitForFunction((before) => {
+        const st = window.__e2e_currentPlayable?.()?.state;
+        const lives = st !== undefined && "lives" in st ? st.lives : undefined;
+        return typeof lives === "number" && typeof before === "number" ?
+            lives > before
+          : lives !== before;
+      }, livesBefore);
+      const reincarnationBefore = await reincarnationPointJson(page);
       await clickCheat(page, "cheats-summon-reincarnation");
-      await page.waitForTimeout(2_000 * osSlowness);
+      // wait for the fish to be eaten (a new reincarnation point pushed) rather
+      // than guessing a delay:
+      await page.waitForFunction(
+        (before) =>
+          JSON.stringify(
+            window._e2e_store?.getState().gameInPlay.gameInPlay
+              .reincarnationPoint ?? null,
+          ) !== before,
+        reincarnationBefore,
+      );
       snapshotAtFishB = await getPlayerSnapshot(page);
       expect(snapshotAtFishB.character).toBe("head");
       expect(snapshotAtFishB.room).toBe("moonbase1");
@@ -148,12 +213,34 @@ test.describe("reincarnation points stack across multiple fish", () => {
       await switchCharacter(page, testInfo.project.name);
       expect(await getCurrentCharacter(page)).toBe("heels");
       await clickCheat(page, "cheats-goto-room-penitentiary1");
-      await page.waitForTimeout(1_000 * osSlowness);
+      await page.waitForFunction((roomId) => {
+        const state = window._e2e_gamePageGameAi?.gameState;
+        return state?.characterRooms[state.currentCharacterName]?.id === roomId;
+      }, "penitentiary1");
       expect(await getCurrentRoomId(page)).toBe("penitentiary1");
+      const livesBefore = await currentLives(page);
       await clickCheat(page, "cheats-summon-extra-life");
-      await page.waitForTimeout(1_500 * osSlowness);
+      // wait for the extra life to be collected (lives increased) rather than
+      // guessing a delay:
+      await page.waitForFunction((before) => {
+        const st = window.__e2e_currentPlayable?.()?.state;
+        const lives = st !== undefined && "lives" in st ? st.lives : undefined;
+        return typeof lives === "number" && typeof before === "number" ?
+            lives > before
+          : lives !== before;
+      }, livesBefore);
+      const reincarnationBefore = await reincarnationPointJson(page);
       await clickCheat(page, "cheats-summon-reincarnation");
-      await page.waitForTimeout(2_000 * osSlowness);
+      // wait for the fish to be eaten (a new reincarnation point pushed) rather
+      // than guessing a delay:
+      await page.waitForFunction(
+        (before) =>
+          JSON.stringify(
+            window._e2e_store?.getState().gameInPlay.gameInPlay
+              .reincarnationPoint ?? null,
+          ) !== before,
+        reincarnationBefore,
+      );
       snapshotAtFishC = await getPlayerSnapshot(page);
       expect(snapshotAtFishC.character).toBe("heels");
       expect(snapshotAtFishC.room).toBe("penitentiary1");
@@ -162,7 +249,10 @@ test.describe("reincarnation points stack across multiple fish", () => {
     await test.step("Swop to head and walk to room D (safari1) — no fish here", async () => {
       await switchCharacter(page, testInfo.project.name);
       await clickCheat(page, "cheats-goto-room-safari1");
-      await page.waitForTimeout(1_000 * osSlowness);
+      await page.waitForFunction((roomId) => {
+        const state = window._e2e_gamePageGameAi?.gameState;
+        return state?.characterRooms[state.currentCharacterName]?.id === roomId;
+      }, "safari1");
       expect(await getCurrentRoomId(page)).toBe("safari1");
     });
 

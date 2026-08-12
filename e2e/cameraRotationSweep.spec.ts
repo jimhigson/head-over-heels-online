@@ -9,8 +9,10 @@ import { type SpriteOption } from "../src/store/slices/userSettings/userSettings
 import { allItemsTestRoomCampaign } from "./fixtures/allItemsTestRoom";
 import { bootPlaytestCampaign } from "./testUtils/bootPlaytestCampaign";
 import {
+  captureE2eCursor,
   dispatchToStore,
   setZeroGameSpeed,
+  waitForAnimationFrames,
   waitForGameReady,
   waitForRoomRenderEvent,
 } from "./testUtils/gameStateQueries";
@@ -583,13 +585,9 @@ const enterRoom = async (
     });
 
   const levelSelectTo = async (room: string) => {
-    const renderEvent = waitForRoomRenderEvent(
-      page,
-      room,
-      "cameraRotationSweep",
-    );
+    const afterId = await captureE2eCursor(page);
     await page.goto(`${campaignHashUrl}#${room}`);
-    await renderEvent;
+    await waitForRoomRenderEvent(page, room, afterId, "cameraRotationSweep");
   };
 
   if (enterFrom === "$$startingRoom") {
@@ -690,7 +688,8 @@ const bootScenario = async (page: Page, scenario: SweepScenario) => {
 
   await enterRoom(page, scenario, campaignHashUrl);
 
-  await page.waitForTimeout(500);
+  // let the entered room render a couple of frames before capturing begins:
+  await waitForAnimationFrames(page, 2);
 };
 
 const scenarioBaseName = (
@@ -827,21 +826,23 @@ for (const scenario of scenarios) {
             captureTimeMs - advancedMs,
           );
           advancedMs = captureTimeMs;
-          // a real tick delivers the fast-forward's moved items to the
+          // a real render tick delivers the fast-forward's moved items to the
           // renderers:
-          await page.waitForTimeout(300);
+          await waitForAnimationFrames(page, 2);
         }
         await freezeAnimations(page);
 
         for (const capture of capturesForScenario(scenario)) {
           await holdCameraAtDegrees(page, capture.degrees);
-          // let the held frame re-project and the blended scroll settle:
-          await page.waitForTimeout(600);
+          // let the held frame re-project over a few render ticks (the blended
+          // scroll converges deterministically; the screenshot assertion below
+          // also retries until the frame is stable):
+          await waitForAnimationFrames(page, 4);
           // sprites recreated since the last freeze (eg by the quarter-flip
           // renderer rebuild) started at frame 0, but stop them anyway so
           // nothing is mid-animation when captured:
           await freezeAnimations(page);
-          await page.waitForTimeout(100);
+          await waitForAnimationFrames(page, 2);
 
           // soft, so a scenario reports every capture that differs rather than
           // stopping at the first: the captures run in ascending simulated

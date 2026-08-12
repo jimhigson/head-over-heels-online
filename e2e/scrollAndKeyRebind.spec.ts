@@ -4,6 +4,7 @@ import {
   dispatchKeyPress,
   waitForAssigningInput,
 } from "./testUtils/gameInteractions";
+import { waitForCurrentPlayable } from "./testUtils/gameStateQueries";
 import { osSlowness } from "./testUtils/infrastructure";
 import { formatProjectName } from "./testUtils/logging";
 import {
@@ -82,8 +83,8 @@ const walkOntoStartingScroll = async (
   towardsKey: string,
   towardsCode: string,
 ) => {
-  // give the game a beat to start running before dispatching keys
-  await page.waitForTimeout(500 * osSlowness);
+  // wait until a character is controllable before dispatching movement keys
+  await waitForCurrentPlayable(page);
 
   await holdKey(page, towardsKey, towardsCode, 4_000 * osSlowness);
 
@@ -125,9 +126,16 @@ test.describe("key rebinding and scroll pickup", () => {
       await navigateToSubmenu(page, "down", formattedName);
       await waitForAssigningInput(page);
       await dispatchKeyPress(page, "6", "Digit6");
-      await page.waitForTimeout(200 * osSlowness);
       await dispatchKeyPress(page, "Escape", "Escape");
-      await page.waitForTimeout(200 * osSlowness);
+      // wait for the rebind to land in the store rather than guessing a delay:
+      await page.waitForFunction(() => {
+        const { inputAssignment } =
+          window._e2e_store?.getState().userSettings.userSettings ?? {};
+        return (
+          inputAssignment?.presses.towards.keys.length === 1 &&
+          inputAssignment.presses.towards.keys[0] === "6"
+        );
+      });
 
       // a custom rebind replaces the action's key list outright
       expect(await getTowardsKeys(page)).toEqual(["6"]);

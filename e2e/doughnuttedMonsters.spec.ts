@@ -2,6 +2,7 @@ import { expect, type Page } from "@playwright/test";
 
 import { allItemsTestRoomCampaign } from "./fixtures/allItemsTestRoom";
 import { bootPlaytestCampaign } from "./testUtils/bootPlaytestCampaign";
+import { waitForAnimationFrames } from "./testUtils/gameStateQueries";
 import { setupE2ePage } from "./testUtils/pageSetup";
 import { roomScreenshotOptions } from "./testUtils/screenshots";
 import { setSpriteOption } from "./testUtils/setSpriteOption";
@@ -49,8 +50,9 @@ test("doughnutted monsters render with the doughnutted palette", async ({
   await bootPlaytestCampaign(page, allItemsTestRoomCampaign, "amigaHiResPal");
 
   await doughnutAllMonsters(page);
-  // let the frozen frame re-render with the mutated state:
-  await page.waitForTimeout(600);
+  // let the frozen frame re-render with the mutated state (the screenshot
+  // assertion below also retries until the frame is stable):
+  await waitForAnimationFrames(page, 2);
 
   await expect(page).toHaveScreenshot(
     "allItemsTestRoom-doughnutted.png",
@@ -63,7 +65,6 @@ test("doughnutted monsters render with the doughnutted palette", async ({
     name: "Toppy",
     uncolourised: false,
   });
-  await page.waitForTimeout(600);
 
   await expect(page).toHaveScreenshot(
     "allItemsTestRoom-doughnutted-toppy.png",
@@ -77,7 +78,6 @@ test("doughnutted monsters render with the doughnutted palette", async ({
     name: "BlockStack",
     uncolourised: true,
   });
-  await page.waitForTimeout(600);
 
   await expect(page).toHaveScreenshot(
     "allItemsTestRoom-doughnutted-uncolourised.png",

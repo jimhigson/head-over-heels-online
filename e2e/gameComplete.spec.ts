@@ -1,10 +1,7 @@
 import { expect, type Page } from "@playwright/test";
 
 import { clickCheat, loseAllLives } from "./testUtils/gameInteractions";
-import {
-  getCurrentCharacter,
-  getCurrentRoomId,
-} from "./testUtils/gameStateQueries";
+import { getCurrentRoomId } from "./testUtils/gameStateQueries";
 import { osSlowness } from "./testUtils/infrastructure";
 import {
   startCampaignViaMenu,
@@ -24,7 +21,8 @@ const holdKeyUntil = async (
   page: Page,
   key: string,
   code: string,
-  condition: () => Promise<boolean>,
+  /** a browser-side predicate polled (in-page) until it returns true */
+  condition: () => boolean,
   timeoutMs: number,
 ) => {
   await page.evaluate(
@@ -34,14 +32,9 @@ const holdKeyUntil = async (
     { key, code },
   );
   try {
-    const deadline = Date.now() + timeoutMs;
-    while (Date.now() < deadline) {
-      if (await condition()) {
-        return;
-      }
-      await page.waitForTimeout(200);
-    }
-    throw new Error(`holdKeyUntil(${key}) timed out after ${timeoutMs}ms`);
+    // waitForFunction polls the predicate in-page as fast as the browser allows,
+    // resolving as soon as the observable effect has happened - no fixed poll gap
+    await page.waitForFunction(condition, undefined, { timeout: timeoutMs });
   } finally {
     await page.evaluate(
       ({ key, code }) => {
@@ -66,7 +59,12 @@ test.describe("game completion - both characters reach freedom", () => {
 
     await test.step("Teleport head to the final room", async () => {
       await clickCheat(page, "cheats-goto-room-finalroom");
-      await page.waitForTimeout(1_000 * osSlowness);
+      await page.waitForFunction(() => {
+        const state = window._e2e_gamePageGameAi?.gameState;
+        return (
+          state?.characterRooms[state.currentCharacterName]?.id === "finalroom"
+        );
+      });
       expect(await getCurrentRoomId(page)).toBe("finalroom");
     });
 
@@ -78,14 +76,21 @@ test.describe("game completion - both characters reach freedom", () => {
         page,
         "ArrowUp",
         "ArrowUp",
-        async () => (await getCurrentCharacter(page)) === "heels",
+        () =>
+          window._e2e_gamePageGameAi?.gameState.currentCharacterName ===
+          "heels",
         15_000 * osSlowness,
       );
     });
 
     await test.step("Teleport heels to the final room", async () => {
       await clickCheat(page, "cheats-goto-room-finalroom");
-      await page.waitForTimeout(1_000 * osSlowness);
+      await page.waitForFunction(() => {
+        const state = window._e2e_gamePageGameAi?.gameState;
+        return (
+          state?.characterRooms[state.currentCharacterName]?.id === "finalroom"
+        );
+      });
       expect(await getCurrentRoomId(page)).toBe("finalroom");
     });
 
@@ -96,8 +101,7 @@ test.describe("game completion - both characters reach freedom", () => {
         page,
         "ArrowUp",
         "ArrowUp",
-        async () =>
-          (await page.locator('[data-dialog-id="score"]').count()) > 0,
+        () => document.querySelector('[data-dialog-id="score"]') !== null,
         15_000 * osSlowness,
       );
       await waitForDialog(page, "score");
@@ -116,7 +120,12 @@ test.describe("game completion - both characters reach freedom", () => {
 
     await test.step("Teleport head to the final room", async () => {
       await clickCheat(page, "cheats-goto-room-finalroom");
-      await page.waitForTimeout(1_000 * osSlowness);
+      await page.waitForFunction(() => {
+        const state = window._e2e_gamePageGameAi?.gameState;
+        return (
+          state?.characterRooms[state.currentCharacterName]?.id === "finalroom"
+        );
+      });
       expect(await getCurrentRoomId(page)).toBe("finalroom");
     });
 
@@ -125,7 +134,9 @@ test.describe("game completion - both characters reach freedom", () => {
         page,
         "ArrowUp",
         "ArrowUp",
-        async () => (await getCurrentCharacter(page)) === "heels",
+        () =>
+          window._e2e_gamePageGameAi?.gameState.currentCharacterName ===
+          "heels",
         15_000 * osSlowness,
       );
     });

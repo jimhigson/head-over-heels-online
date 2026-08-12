@@ -80,7 +80,12 @@ test.describe("playtest mode does not persist saves", () => {
       // that helper checks isInPlaytestMode() and no-ops.
       const startCharacter = await getCurrentCharacter(page);
       await dispatchKeyPress(page, "Enter", "Enter");
-      await page.waitForTimeout(500 * osSlowness);
+      // wait for the swop to actually land rather than guessing a delay:
+      await page.waitForFunction(
+        (start) =>
+          window._e2e_gamePageGameAi?.gameState.currentCharacterName !== start,
+        startCharacter,
+      );
       expect(await getCurrentCharacter(page)).not.toBe(startCharacter);
     });
 

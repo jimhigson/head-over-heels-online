@@ -3,6 +3,7 @@ import { expect } from "@playwright/test";
 import { clickCheat } from "./testUtils/gameInteractions";
 import {
   setZeroGameSpeed,
+  waitForAnimationFrames,
   waitForGameReady,
 } from "./testUtils/gameStateQueries";
 import { osSlowness } from "./testUtils/infrastructure";
@@ -63,14 +64,16 @@ test("game renders correctly after quitting and starting another game", async ({
 
   // freeze the game for a deterministic frame:
   await setZeroGameSpeed(page);
-  await page.waitForTimeout(1_000 * osSlowness);
 
   // compare the bottom HUD strip - it holds the baked text/number glyphs and
-  // excludes the animated player in the centre of the screen:
+  // excludes the animated player in the centre of the screen. The screenshot
+  // assertion retries until the render is stable and matches, so no fixed wait
+  // is needed for the fresh renderer to settle:
   await expect(page).toHaveScreenshot("game-renders-after-restart.png", {
     scale: "css",
     threshold: 0.1,
     maxDiffPixelRatio: 0.01,
+    timeout: 15_000 * osSlowness,
   });
 });
 
@@ -99,19 +102,20 @@ test("game renders correctly after losing and restoring the WebGL context", asyn
   // freeze the game so the frame is deterministic across the context cycle:
   await waitForGameReady(page);
   await setZeroGameSpeed(page);
-  await page.waitForTimeout(1_000 * osSlowness);
+  // let a frame render at zero speed so the frozen frame is settled:
+  await waitForAnimationFrames(page);
 
   // lose the WebGL context (the button restores it 100ms later) - this kills
   // every baked RenderTexture, which the main loop must re-bake and rewire into
   // freshly recreated room/hud renderers:
   await clickCheat(page, "cheats-lose-gl-context");
 
-  // allow the restore + re-bake + renderer recreation to settle:
-  await page.waitForTimeout(1_000 * osSlowness);
-
+  // the screenshot assertion retries until the render is stable and matches, so
+  // it waits out the restore + re-bake + renderer recreation on its own:
   await expect(page).toHaveScreenshot("game-renders-after-context-loss.png", {
     scale: "css",
     threshold: 0.1,
     maxDiffPixelRatio: 0.01,
+    timeout: 15_000 * osSlowness,
   });
 });
