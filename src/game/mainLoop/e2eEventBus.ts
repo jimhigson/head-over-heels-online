@@ -6,8 +6,6 @@ import { type SpriteOption } from "../../store/slices/userSettings/userSettingsS
  * spec a precise signal to wait for instead of a fixed delay.
  */
 export type E2eEventMap = {
-  /** a room has rendered its first frame; carries the room that rendered */
-  firstRenderOfRoom: { roomId: string };
   /** a frame was rendered reflecting the given sprite option */
   spriteOptionRendered: { spriteOption: SpriteOption };
 };

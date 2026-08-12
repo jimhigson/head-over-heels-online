@@ -11,12 +11,11 @@ import {
 import { keys } from "../src/utils/entries";
 import { type ScreenshotTestOptions } from "./ScreenshotTestOptions";
 import {
-  captureE2eCursor,
   dispatchToStore,
   maximumWaitForStep,
   setZeroGameSpeed,
   waitForGameReady,
-  waitForRoomRenderEvent,
+  waitForRoomToRender,
 } from "./testUtils/gameStateQueries";
 import { osSlowness, resolveRoomIds } from "./testUtils/infrastructure";
 import {
@@ -336,12 +335,8 @@ test.describe("Room Visual Snapshots", () => {
           `${logHeader} ${elapsed()} Navigating to room: ${chalk.cyan(targetRoomId)}`,
         );
 
-        // capture the bus cursor before navigating, so the room's render event is
-        // matched from the buffer even if it fires before the wait is set up -
-        // this is the race the old retry papered over:
-        const afterId = await captureE2eCursor(page);
         await page.goto(`/?cheats=1&track=0#${targetRoomId}`);
-        await waitForRoomRenderEvent(page, targetRoomId, afterId, logHeader);
+        await waitForRoomToRender(page, targetRoomId, logHeader);
         charactersCurrentRoomId = targetRoomId;
       };
 

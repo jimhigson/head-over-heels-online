@@ -2,7 +2,7 @@ import { expect } from "@playwright/test";
 
 import {
   waitForAnimationFrames,
-  waitForAnyRoomRenderEvent,
+  waitForAnyRoomToRender,
   waitForGameState,
 } from "./testUtils/gameStateQueries";
 import { osSlowness } from "./testUtils/infrastructure";
@@ -50,7 +50,7 @@ test.describe("save games from previous versions load in the current version", (
       // often only throw once their item gets a frame, not during the load
       // itself - so wait for the restored room to actually render, then let a
       // few more frames pass so animated items cycle, before checking:
-      await waitForAnyRoomRenderEvent(page);
+      await waitForAnyRoomToRender(page);
       await waitForAnimationFrames(page, 15);
       if ((await page.locator('[data-dialog-id="errorCaught"]').count()) > 0) {
         const errorReport = await page

@@ -80,48 +80,45 @@ export const captureE2eCursor = (page: Page): Promise<number> =>
   page.evaluate(() => window.__e2e_events?.cursor() ?? 0);
 
 /**
- * wait until the given room renders its first frame, matching against the
- * {@link E2eEventBus} rather than a live DOM/window listener - so a render that
- * happened between {@link captureE2eCursor} and this call (eg while `page.goto`
- * was in flight) is still caught from the buffer. Ignores other rooms' renders:
- * during a finalroom→target navigation finalroom renders first.
+ * wait until the game is showing the given room. This gates on the game's own
+ * `currentRoom.id` - a level-triggered condition (it stays true once reached),
+ * so it cannot be missed by timing and survives a full-document reload, unlike
+ * an edge-triggered render event. A `page.goto('#room')` may either reload the
+ * document or drive an in-place `changeRoom` via the hashchange router; both end
+ * with the target room current, and this waits for exactly that. Also watches
+ * the error dialog (as {@link waitForGameState} does) so a load failure surfaces
+ * at once rather than sitting behind this wait until it times out.
  */
-export const waitForRoomRenderEvent = async (
+export const waitForRoomToRender = async (
   page: Page,
   expectedRoomId: string,
-  afterId: number,
   logHeader?: string,
 ): Promise<void> => {
-  await page.evaluate(
-    ({ wantRoomId, afterId, timeoutMs }) =>
-      new Promise<void>((resolve, reject) => {
-        const deadline = performance.now() + timeoutMs;
-        const attach = () => {
-          const bus = window.__e2e_events;
-          if (bus === undefined) {
-            if (performance.now() > deadline) {
-              reject(new Error("e2e event bus never appeared on window"));
-              return;
-            }
-            requestAnimationFrame(attach);
-            return;
-          }
-          bus
-            .waitFor("firstRenderOfRoom", {
-              afterId,
-              timeoutMs,
-              match: (detail) => detail.roomId === wantRoomId,
-            })
-            .then(() => resolve(), reject);
-        };
-        attach();
-      }),
-    { wantRoomId: expectedRoomId, afterId, timeoutMs: maximumWaitForStep },
+  await page.waitForFunction(
+    (wantRoomId) =>
+      window._e2e_gamePageGameAi?.currentRoom?.id === wantRoomId ||
+      document.querySelector('[data-dialog-id="errorCaught"]') !== null,
+    expectedRoomId,
+    { timeout: longTimeout },
   );
+
+  if ((await page.locator('[data-dialog-id="errorCaught"]').count()) > 0) {
+    const errorReport = await page
+      .locator('[data-test-id="error-report"]')
+      .textContent()
+      .catch(() => "(could not read the error report)");
+    throw new Error(
+      `error dialog shown while waiting for room "${expectedRoomId}":\n${errorReport}`,
+    );
+  }
+
+  // the room is current; let the main loop tick so the room renderer has built
+  // and drawn it before any screenshot is taken:
+  await waitForAnimationFrames(page, 2);
 
   if (logHeader !== undefined) {
     console.log(
-      `${logHeader} ${elapsed()} received firstRenderOfRoom for ${chalk.cyan(expectedRoomId)}`,
+      `${logHeader} ${elapsed()} room now showing: ${chalk.cyan(expectedRoomId)}`,
     );
   }
 };
@@ -175,30 +172,35 @@ export const waitForSpriteOptionRenderEvent = async (
   }
 };
 
-/** wait for any room to render, returning the room id */
-export const waitForAnyRoomRenderEvent = (page: Page): Promise<string> =>
-  page.evaluate(
+/**
+ * wait until the game is showing some room, returning its id. Level-triggered on
+ * the game's own `currentRoom.id`, so it resolves as soon as a room is current
+ * (surviving a reload) rather than needing to catch a one-shot render event.
+ */
+export const waitForAnyRoomToRender = async (page: Page): Promise<string> => {
+  const roomId = await page.evaluate(
     ({ timeoutMs }) =>
       new Promise<string>((resolve, reject) => {
         const deadline = performance.now() + timeoutMs;
-        const attach = () => {
-          const bus = window.__e2e_events;
-          if (bus === undefined) {
-            if (performance.now() > deadline) {
-              reject(new Error("e2e event bus never appeared on window"));
-              return;
-            }
-            requestAnimationFrame(attach);
+        const poll = () => {
+          const currentRoomId = window._e2e_gamePageGameAi?.currentRoom?.id;
+          if (currentRoomId !== undefined) {
+            resolve(currentRoomId);
             return;
           }
-          bus
-            .waitFor("firstRenderOfRoom", { afterId: 0, timeoutMs })
-            .then((detail) => resolve(detail.roomId), reject);
+          if (performance.now() > deadline) {
+            reject(new Error("no room became current before the timeout"));
+            return;
+          }
+          requestAnimationFrame(poll);
         };
-        attach();
+        poll();
       }),
     { timeoutMs: maximumWaitForStep },
   );
+  await waitForAnimationFrames(page, 2);
+  return roomId;
+};
 
 export const getCurrentCharacter = async (
   page: Page,

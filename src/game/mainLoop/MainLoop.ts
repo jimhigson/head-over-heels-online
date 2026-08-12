@@ -562,9 +562,6 @@ export class MainLoop<RoomId extends string> {
         performance.mark("first-gameplay");
       }
       if (import.meta.env.MODE === "visual-regression") {
-        if (createNewRoomRenderer && tickEndRoom) {
-          emitE2eEvent("firstRenderOfRoom", { roomId: tickEndRoom.id });
-        }
         // the sprite option that this rendered frame actually reflects - lets
         // playwright wait for a sprite option change to land in the output rather
         // than guessing with a fixed delay:

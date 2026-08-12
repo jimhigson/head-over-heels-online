@@ -9,11 +9,10 @@ import { type SpriteOption } from "../src/store/slices/userSettings/userSettings
 import { allItemsTestRoomCampaign } from "./fixtures/allItemsTestRoom";
 import { bootPlaytestCampaign } from "./testUtils/bootPlaytestCampaign";
 import {
-  captureE2eCursor,
   dispatchToStore,
   setZeroGameSpeed,
   waitForGameReady,
-  waitForRoomRenderEvent,
+  waitForRoomToRender,
 } from "./testUtils/gameStateQueries";
 import { restrictToCameraRotationProjects } from "./testUtils/infrastructure";
 import {
@@ -584,9 +583,8 @@ const enterRoom = async (
     });
 
   const levelSelectTo = async (room: string) => {
-    const afterId = await captureE2eCursor(page);
     await page.goto(`${campaignHashUrl}#${room}`);
-    await waitForRoomRenderEvent(page, room, afterId, "cameraRotationSweep");
+    await waitForRoomToRender(page, room, "cameraRotationSweep");
   };
 
   if (enterFrom === "$$startingRoom") {
