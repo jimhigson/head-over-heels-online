@@ -14,6 +14,7 @@ import { MenuItem } from "../MenuItem";
 import { MenuItems } from "../MenuItems";
 import { MenuItemSeparator } from "../MenuItemSeparator";
 import { DialogTitleBar } from "./DialogTitleBar";
+import { markdownDialogColourClasses } from "./markdownDialogColourClasses";
 
 const MarkdownMenuItem = ({ pageName }: { pageName: ManualPageName }) => {
   const pageContent = manualPages[pageName];
@@ -45,7 +46,7 @@ const ReadTheManualDialog = () => {
       <Dialog
         tall
         class={
-          "bg-highlightBeige zx:bg-zxCyanDimmed toppy:bg-toppyCool1 max-h-min " +
+          `${markdownDialogColourClasses} max-h-min ` +
           `text-redShadow zx:text-zxWhite toppy:text-toppyCool4 !gap-y-0 py-0 ` +
           "selectedMenuItem:text-shadow zx:selectedMenuItem:text-zxBlack toppy:selectedMenuItem:text-toppyBlack "
         }

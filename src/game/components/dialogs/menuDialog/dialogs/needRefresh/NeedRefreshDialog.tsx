@@ -8,6 +8,7 @@ import { DialogPortal } from "../../../../../../ui/DialogPortal";
 import { BlockyMarkdown } from "../../../../BlockyMarkdown";
 import { MenuItem } from "../../MenuItem";
 import { MenuItems } from "../../MenuItems";
+import { needRefreshDialogColourClasses } from "./needRefreshDialogColourClasses";
 
 const NeedRefreshDialog = () => {
   return (
@@ -17,7 +18,7 @@ const NeedRefreshDialog = () => {
         onClick={useDispatchActionCallback(backToParentMenu)}
       />
       <Dialog
-        class="bg-metallicBlueHalfbrite zx:bg-zxBlack toppy:bg-toppyCool4 px-1 py-1 w-max max-w-24"
+        class={`${needRefreshDialogColourClasses} px-1 py-1 w-max max-w-24`}
         dialogId="needRefresh"
         small
       >

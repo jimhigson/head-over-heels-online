@@ -14,6 +14,7 @@ import { BlockyMarkdown } from "../../../../BlockyMarkdown";
 import { useGameApi } from "../../../../GameApiContext";
 import { MenuItem } from "../../MenuItem";
 import { MenuItems } from "../../MenuItems";
+import { offerReincarnationDialogColourClasses } from "./offerReincarnationDialogColourClasses";
 
 export const reincarnateSelected = (gameApi: GameApi<string>) => {
   const savedGame = store.getState().gameInPlay.gameInPlay.reincarnationPoint!;
@@ -39,7 +40,7 @@ export const OfferReincarnationDialog = () => {
     <DialogPortal>
       <Border class="bg-midRed zx:bg-zxYellow toppy:bg-toppyPink2" />
       <Dialog
-        class="bg-white zx:bg-zxRed toppy:bg-toppyWarm6 px-1"
+        class={`${offerReincarnationDialogColourClasses} px-1`}
         dialogId="offerReincarnation"
       >
         <span class="text-double-height mt-1 mb-2 resHandheld:mt-0 text-redShadow zx:text-zxWhite toppy:text-toppyWarm1">

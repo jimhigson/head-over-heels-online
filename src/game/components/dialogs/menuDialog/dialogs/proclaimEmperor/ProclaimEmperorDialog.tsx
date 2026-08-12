@@ -10,6 +10,7 @@ import { DialogPortal } from "../../../../../../ui/DialogPortal";
 import { ColourCycleText } from "../../../../ColourCycleText";
 import { BackMenuItem } from "../../BackMenuItem";
 import { MenuItems } from "../../MenuItems";
+import { proclaimEmperorDialogColourClasses } from "./proclaimEmperorDialogColourClasses";
 
 const crownClass = `sprite ${"texture-crown_blacktooth" satisfies TextureTailwindClass} ${"zx:texture-crown_uncolourised" satisfies TextureTailwindClass} zx:sprite-tinted zx:text-zxYellow toppy:text-toppyWarm1`;
 
@@ -18,7 +19,7 @@ export const ProclaimEmperorDialog = () => {
     <DialogPortal>
       <Border class="bg-pureBlack zx:bg-zxBlack toppy:bg-toppyBlack" />
       <Dialog
-        class="bg-pureBlack w-zx h-full block p-0"
+        class={`${proclaimEmperorDialogColourClasses} w-zx h-full block p-0`}
         onClick={useDispatchActionCallback(backToParentMenu)}
         dialogId="proclaimEmperor"
       >

@@ -1,95 +1,31 @@
-import { useEffect, useRef, useState } from "preact/hooks";
+import { useRef, useState } from "preact/hooks";
 
 import { type IndividualCharacterName } from "../../../../../../model/modelTypes";
 import { type TextureTailwindClass } from "../../../../../../sprites/spritesheet/spritesheetData/TextureTailwindClass";
+import { useFacingTowardsPointer } from "../../../../../../ui/useFacingTowardsPointer";
 import { PlayAudio } from "../../../../../../utils/sound/PlayAudio";
-import {
-  type DirectionXy8,
-  vectorClosestDirectionXy8,
-} from "../../../../../../utils/vectors/vectors";
-import { rotateInputVector45 } from "../../../../../input/analogueControlAdjustments";
+import { type DirectionXy8 } from "../../../../../../utils/vectors/vectors";
 import { usePlayableTailwindSpriteClassname } from "../../../../tailwindSprites/playableTailwindSpriteClassname";
 
 const walkGain = 0.8;
 
-const getDirectionFromMousePosition = (
-  element: HTMLElement,
-  mouseX: number,
-  mouseY: number,
-): DirectionXy8 | undefined => {
-  const rect = element.getBoundingClientRect();
-  const centerX = rect.left + rect.width / 2;
-  const centerY = rect.top + rect.height / 2;
-
-  const dx = centerX - mouseX;
-  const dy = centerY - mouseY;
-
-  // Screen space vector from sprite to mouse
-  const screenDelta = { x: dx, y: dy, z: 0 };
-
-  // Rotate from screen space to isometric game space
-  const isometricDelta = rotateInputVector45(screenDelta);
-
-  // Get the direction in game space
-  const direction = vectorClosestDirectionXy8(isometricDelta);
-
-  return direction;
+export type CharacterSpriteProps = {
+  character: IndividualCharacterName;
+  defaultFacing: DirectionXy8;
+  class?: string;
 };
 
 export const CharacterSprite = ({
   character,
   defaultFacing,
   class: className = "",
-}: {
-  character: IndividualCharacterName;
-  defaultFacing: DirectionXy8;
-  class?: string;
-}) => {
-  const [facing, setFacing] = useState<DirectionXy8>(defaultFacing);
+}: CharacterSpriteProps) => {
   const [isHovered, setIsHovered] = useState(false);
   const spriteClassname = usePlayableTailwindSpriteClassname();
 
   const spriteRef = useRef<HTMLDivElement>(null);
+  const facing = useFacingTowardsPointer(spriteRef, defaultFacing);
 
-  useEffect(() => {
-    const handleMouseMove = (e: MouseEvent) => {
-      // Update facing direction
-      if (spriteRef.current) {
-        setFacing(
-          getDirectionFromMousePosition(
-            spriteRef.current,
-            e.clientX,
-            e.clientY,
-          ) || "right",
-        );
-      }
-    };
-
-    const handleMouseLeave = () => {
-      // Reset to original position
-      setFacing(defaultFacing);
-      setIsHovered(false);
-    };
-
-    window.addEventListener("mousemove", handleMouseMove);
-    document.addEventListener("mouseleave", handleMouseLeave);
-
-    return () => {
-      window.removeEventListener("mousemove", handleMouseMove);
-      document.removeEventListener("mouseleave", handleMouseLeave);
-    };
-  }, [defaultFacing, character]);
-
-  // Handle hover state
-  const handleMouseEnter = () => {
-    setIsHovered(true);
-  };
-
-  const handleMouseLeaveSprite = () => {
-    setIsHovered(false);
-  };
-
-  // Calculate action based on hover state
   const action: "idle" | "walking" = isHovered ? "walking" : "idle";
 
   const spriteClassName = spriteClassname({
@@ -102,8 +38,8 @@ export const CharacterSprite = ({
     <div
       ref={spriteRef}
       class={`relative ${className}`}
-      onMouseEnter={handleMouseEnter}
-      onMouseLeave={handleMouseLeaveSprite}
+      onMouseEnter={() => setIsHovered(true)}
+      onMouseLeave={() => setIsHovered(false)}
     >
       {action === "walking" && (
         <PlayAudio soundId={`${character}Walk`} loop volume={walkGain} />

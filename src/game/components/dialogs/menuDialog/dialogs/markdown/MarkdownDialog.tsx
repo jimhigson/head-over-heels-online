@@ -13,6 +13,7 @@ import { DialogPortal } from "../../../../../../ui/DialogPortal";
 import { BlockyMarkdown } from "../../../../BlockyMarkdown";
 import { type DialogId } from "../../DialogId";
 import { DialogTitleBar } from "../DialogTitleBar";
+import { markdownDialogColourClasses } from "../markdownDialogColourClasses";
 import { useScrollingFromInput } from "../useScrollingFromInput";
 
 const MarkdownDialog = (
@@ -55,7 +56,7 @@ const MarkdownDialog = (
       <Dialog
         tall={!isTopLevelMenu}
         class={
-          "bg-highlightBeige zx:bg-zxCyanDimmed toppy:bg-toppyCool1 " +
+          `${markdownDialogColourClasses} ` +
           `text-shadow zx:text-zxWhite toppy:text-toppyCool4 !gap-y-0 py-0 ` +
           "selectedMenuItem:text-shadow zx:selectedMenuItem:text-zxBlack toppy:selectedMenuItem:text-toppyBlack"
         }

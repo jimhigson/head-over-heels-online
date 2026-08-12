@@ -12,6 +12,7 @@ import { useScrollingFromInput } from "../useScrollingFromInput";
 import { createClickableRoomBehaviour } from "./createClickableRoomBehaviour";
 import { MapSvg } from "./Map.svg";
 import { getMapColoursClass } from "./mapColours";
+import { mapDialogColourClasses } from "./mapDialogColourClasses";
 import { MapRoomTooltipBehaviour } from "./MapRoomTooltipBehaviour";
 import { useMapDataForCurrentGame } from "./useMapDataForCurrentGame";
 import { useAllowCharacterSwopping } from "./useTickingCurrentCharacterName";
@@ -64,7 +65,7 @@ const MapDialog = <RoomId extends string>() => {
       <Dialog
         ref={mapContainerRef}
         fullScreen
-        class={`bg-white zx:bg-zxBlack toppy:bg-toppyBlack pr-0 p-0 mobile:pl-0 justify-center ${mapColourClasses.containerClassName}`}
+        class={`${mapDialogColourClasses} pr-0 p-0 mobile:pl-0 justify-center ${mapColourClasses.containerClassName}`}
         onClick={useDispatchActionCallback(backToParentMenu)}
         dialogId="map"
       >
