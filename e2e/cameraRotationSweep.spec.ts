@@ -9,6 +9,7 @@ import { type SpriteOption } from "../src/store/slices/userSettings/userSettings
 import { allItemsTestRoomCampaign } from "./fixtures/allItemsTestRoom";
 import { bootPlaytestCampaign } from "./testUtils/bootPlaytestCampaign";
 import {
+  changeRoomViaApi,
   dispatchToStore,
   setZeroGameSpeed,
   waitForGameReady,
@@ -569,11 +570,7 @@ const switchToCharacter = async (page: Page, character: "head" | "heels") => {
  * put the current character into the a room, optionally specifying a room
  * to enter from
  */
-const enterRoom = async (
-  page: Page,
-  scenario: SweepScenario,
-  campaignHashUrl: string,
-) => {
+const enterRoom = async (page: Page, scenario: SweepScenario) => {
   const { roomId, enterFrom } = scenario;
 
   const currentRoom = () =>
@@ -583,7 +580,7 @@ const enterRoom = async (
     });
 
   const levelSelectTo = async (room: string) => {
-    await page.goto(`${campaignHashUrl}#${room}`);
+    await changeRoomViaApi(page, room);
     await waitForRoomToRender(page, room, "cameraRotationSweep");
   };
 
@@ -630,9 +627,7 @@ const bootScenario = async (page: Page, scenario: SweepScenario) => {
   // frozen at its deterministic start frame rather than caught mid-animation
   // (matching roomSnapshots.spec). Character selection and navigation then
   // happen at zero speed, and enterRoom does the deterministic per-scenario
-  // entry. campaignHashUrl is the base url whose #room hash drives level-select
-  // (empty for the single-room inline campaign):
-  let campaignHashUrl = "";
+  // entry (level-selecting via the game api, not the url):
   if (scenario.campaign === "allItemsTestRoom") {
     await bootPlaytestCampaign(
       page,
@@ -666,7 +661,6 @@ const bootScenario = async (page: Page, scenario: SweepScenario) => {
       type: "userSettings/setEmulatedResolution",
       payload: emulatedResolutionPayload(scenario),
     });
-    campaignHashUrl = rotateCameraTestCampaignUrl;
   } else {
     await page.goto(originalCampaignUrl);
     await clickPlayTheGame(page, "cameraRotationSweep");
@@ -680,10 +674,9 @@ const bootScenario = async (page: Page, scenario: SweepScenario) => {
       payload: emulatedResolutionPayload(scenario),
     });
     await exitCrownsDialog(page, "cameraRotationSweep");
-    campaignHashUrl = originalCampaignUrl;
   }
 
-  await enterRoom(page, scenario, campaignHashUrl);
+  await enterRoom(page, scenario);
 
   await page.waitForTimeout(500);
 };

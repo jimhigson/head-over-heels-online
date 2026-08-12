@@ -80,14 +80,41 @@ export const captureE2eCursor = (page: Page): Promise<number> =>
   page.evaluate(() => window.__e2e_events?.cursor() ?? 0);
 
 /**
+ * drive the game to show a room by calling the game api's `changeRoom` directly,
+ * rather than navigating `window.location.hash`. The in-game hash router only
+ * reacts to `hashchange`, never to the hash a document already loaded with - so
+ * if a `page.goto('#room')` commits a fresh document (a reload) the room arrives
+ * as an initial hash, no `hashchange` fires, and the game stays on its default
+ * room. Calling `changeRoom` is exactly what the hash router does on a change,
+ * but immune to that reload race and to any lost `hashchange`. Gate on the game
+ * being ready first (the caller has already started the game).
+ */
+export const changeRoomViaApi = async (
+  page: Page,
+  roomId: string,
+): Promise<void> => {
+  await page.waitForFunction(
+    () => window._e2e_gamePageGameAi !== undefined,
+    undefined,
+    { timeout: longTimeout },
+  );
+  await page.evaluate((id) => {
+    const gameApi = window._e2e_gamePageGameAi;
+    if (gameApi === undefined) {
+      throw new Error("game api not on window - cannot change room");
+    }
+    gameApi.changeRoom(id);
+  }, roomId);
+};
+
+/**
  * wait until the game is showing the given room. This gates on the game's own
  * `currentRoom.id` - a level-triggered condition (it stays true once reached),
  * so it cannot be missed by timing and survives a full-document reload, unlike
- * an edge-triggered render event. A `page.goto('#room')` may either reload the
- * document or drive an in-place `changeRoom` via the hashchange router; both end
- * with the target room current, and this waits for exactly that. Also watches
- * the error dialog (as {@link waitForGameState} does) so a load failure surfaces
- * at once rather than sitting behind this wait until it times out.
+ * an edge-triggered render event. Pair it with {@link changeRoomViaApi}, which
+ * sets that room current. Also watches the error dialog (as
+ * {@link waitForGameState} does) so a load failure surfaces at once rather than
+ * sitting behind this wait until it times out.
  */
 export const waitForRoomToRender = async (
   page: Page,

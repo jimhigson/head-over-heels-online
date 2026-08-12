@@ -11,6 +11,7 @@ import {
 import { keys } from "../src/utils/entries";
 import { type ScreenshotTestOptions } from "./ScreenshotTestOptions";
 import {
+  changeRoomViaApi,
   dispatchToStore,
   maximumWaitForStep,
   setZeroGameSpeed,
@@ -335,7 +336,7 @@ test.describe("Room Visual Snapshots", () => {
           `${logHeader} ${elapsed()} Navigating to room: ${chalk.cyan(targetRoomId)}`,
         );
 
-        await page.goto(`/?cheats=1&track=0#${targetRoomId}`);
+        await changeRoomViaApi(page, targetRoomId);
         await waitForRoomToRender(page, targetRoomId, logHeader);
         charactersCurrentRoomId = targetRoomId;
       };
