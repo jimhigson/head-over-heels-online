@@ -53,12 +53,12 @@ test.describe("persistence across reload", () => {
     );
     expect(await getCurrentCharacter(page)).toBe("heels");
 
-    await clickCheat(page, "cheats-goto-room-    ");
+    await clickCheat(page, "cheats-goto-room-egyptus1");
     await page.waitForFunction((roomId) => {
       const state = window._e2e_gamePageGameAi?.gameState;
       return state?.characterRooms[state.currentCharacterName]?.id === roomId;
-    }, "    ");
-    expect(await getCurrentRoomId(page)).toBe("    ");
+    }, "egyptus1");
+    expect(await getCurrentRoomId(page)).toBe("egyptus1");
 
     await page.reload();
     await waitForGameState(page);
@@ -286,12 +286,12 @@ test.describe("persistence across reload", () => {
     });
 
     await test.step("Move to a second room before eating the fish", async () => {
-      await clickCheat(page, "cheats-goto-room-      ");
+      await clickCheat(page, "cheats-goto-room-egyptus1");
       await page.waitForFunction((roomId) => {
         const state = window._e2e_gamePageGameAi?.gameState;
         return state?.characterRooms[state.currentCharacterName]?.id === roomId;
-      }, "      ");
-      expect(await getCurrentRoomId(page)).toBe("      ");
+      }, "egyptus1");
+      expect(await getCurrentRoomId(page)).toBe("egyptus1");
     });
 
     let fishRoom: string | undefined;
@@ -307,12 +307,12 @@ test.describe("persistence across reload", () => {
     });
 
     await test.step("Jump to a different planet (Penitentiary)", async () => {
-      await clickCheat(page, "cheats-goto-room-      ");
+      await clickCheat(page, "cheats-goto-room-penitentiary1");
       await page.waitForFunction((roomId) => {
         const state = window._e2e_gamePageGameAi?.gameState;
         return state?.characterRooms[state.currentCharacterName]?.id === roomId;
-      }, "      ");
-      expect(await getCurrentRoomId(page)).toBe("      ");
+      }, "penitentiary1");
+      expect(await getCurrentRoomId(page)).toBe("penitentiary1");
     });
 
     await test.step("Reload and dismiss the hold dialog", async () => {

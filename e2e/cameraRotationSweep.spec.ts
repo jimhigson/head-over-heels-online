@@ -12,7 +12,6 @@ import {
   captureE2eCursor,
   dispatchToStore,
   setZeroGameSpeed,
-  waitForAnimationFrames,
   waitForGameReady,
   waitForRoomRenderEvent,
 } from "./testUtils/gameStateQueries";
@@ -688,8 +687,7 @@ const bootScenario = async (page: Page, scenario: SweepScenario) => {
 
   await enterRoom(page, scenario, campaignHashUrl);
 
-  // let the entered room render a couple of frames before capturing begins:
-  await waitForAnimationFrames(page, 2);
+  await page.waitForTimeout(500);
 };
 
 const scenarioBaseName = (
@@ -826,23 +824,27 @@ for (const scenario of scenarios) {
             captureTimeMs - advancedMs,
           );
           advancedMs = captureTimeMs;
-          // a real render tick delivers the fast-forward's moved items to the
-          // renderers:
-          await waitForAnimationFrames(page, 2);
+          // a real tick delivers the fast-forward's moved items to the
+          // renderers. This is a screenshot-baseline-critical settle: the
+          // committed baselines were captured with this exact wait, and the
+          // rendered moment (scroll blend, animation phase) varies with it, so
+          // it is deliberately wall-clock rather than frame- or event-based:
+          await page.waitForTimeout(300);
         }
         await freezeAnimations(page);
 
         for (const capture of capturesForScenario(scenario)) {
           await holdCameraAtDegrees(page, capture.degrees);
-          // let the held frame re-project over a few render ticks (the blended
-          // scroll converges deterministically; the screenshot assertion below
-          // also retries until the frame is stable):
-          await waitForAnimationFrames(page, 4);
+          // let the held frame re-project and the blended scroll settle. Like
+          // the fast-forward wait above, this is baseline-critical: the exact
+          // settle duration is baked into the committed screenshots, so it stays
+          // wall-clock rather than frame-based:
+          await page.waitForTimeout(600);
           // sprites recreated since the last freeze (eg by the quarter-flip
           // renderer rebuild) started at frame 0, but stop them anyway so
           // nothing is mid-animation when captured:
           await freezeAnimations(page);
-          await waitForAnimationFrames(page, 2);
+          await page.waitForTimeout(100);
 
           // soft, so a scenario reports every capture that differs rather than
           // stopping at the first: the captures run in ascending simulated

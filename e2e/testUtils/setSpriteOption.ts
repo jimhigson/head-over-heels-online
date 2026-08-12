@@ -7,8 +7,10 @@ import {
 import {
   captureE2eCursor,
   dispatchToStore,
+  waitForAnimationFrames,
   waitForSpriteOptionRenderEvent,
 } from "./gameStateQueries";
+import { osSlowness } from "./infrastructure";
 import { elapsed } from "./logging";
 
 export const setSpriteOption = async (
@@ -52,12 +54,15 @@ export const setSpriteOption = async (
       formattedName,
     );
   } else {
-    // wait for two animation frames so the option's re-render has been painted
-    await page.evaluate(
-      () =>
-        new Promise<void>((resolve) => {
-          requestAnimationFrame(() => requestAnimationFrame(() => resolve()));
-        }),
-    );
+    // No game loop (main menu / standalone dialog): switching sprite option can
+    // trigger an async spritesheet load, shown by the striped loading border
+    // (driven by assetsLoadingCount via a Suspense fallback, mounted a couple of
+    // frames after the dispatch). Let those frames pass so the border appears if
+    // a load is needed, then wait for it to leave - so a screenshot is never
+    // taken mid-load:
+    await waitForAnimationFrames(page, 3);
+    await page
+      .locator(".loading-border")
+      .waitFor({ state: "detached", timeout: 30_000 * osSlowness });
   }
 };

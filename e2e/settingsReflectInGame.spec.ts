@@ -11,6 +11,7 @@ import { dispatchKeyPress } from "./testUtils/gameInteractions";
 import {
   dispatchToStore,
   setZeroGameSpeed,
+  waitForAnimationFrames,
   waitForGameReady,
   waitForGameState,
 } from "./testUtils/gameStateQueries";
@@ -30,7 +31,6 @@ import {
   openInGameMainMenu,
   waitForDialog,
 } from "./testUtils/menuNavigation";
-import { onScreenButtonClientCentre } from "./testUtils/onScreenControls";
 import { setupE2ePage } from "./testUtils/pageSetup";
 import {
   enabledSpriteModes,
@@ -186,9 +186,13 @@ test.describe("Settings reflect in game", () => {
       await dispatchKeyPress(page, "Escape", "Escape");
       await waitForDialog(page, "mainMenu", { state: "detached" });
 
-      // wait until the HUD has actually rebuilt with an on-screen control button
-      // hit-testable, rather than guessing a settle time before screenshotting:
-      await onScreenButtonClientCentre(page, "jump");
+      // let the HUD rebuild over a few render frames after the on-screen-controls
+      // toggle (the game renders every frame even while frozen at zero speed, so
+      // this settles deterministically rather than on a fixed wall-clock delay).
+      // The toggle flips whatever the platform default is - controls default on
+      // for mobile, off for desktop - so this captures the post-toggle state
+      // either way; the screenshots below are soft:
+      await waitForAnimationFrames(page, 5);
     });
 
     // second set of screenshots: on-screen controls visible
