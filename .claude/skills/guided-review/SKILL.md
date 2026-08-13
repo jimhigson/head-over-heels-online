@@ -249,9 +249,26 @@ in group 4" are all exactly right in a review and would all be wrong in the
 source. Say what changed and why, not just what the code now does — the code
 is on screen next to the note, and repeating it wastes the reader's attention.
 
-## 8. Serve it — this is the deliverable
+## 8. Deliver it — serve when reachable, send a file when not
+
+**First decide which mode you are in, from the `REACHABLE_FROM_INTERNET`
+environment variable** (`echo "${REACHABLE_FROM_INTERNET:-unset}"`):
+
+- **truthy** (`1`/`true`/any non-empty value) — you are on a machine the
+  reviewer can open a `127.0.0.1` port on. **Serve**, exactly as this section
+  describes: it is the richest form — editable diffs that save back to the
+  working tree, and a live notes channel you act on as they are written.
+- **unset or falsy** — you are somewhere the reviewer cannot reach a local
+  port (the cloud sandbox is the usual case; a served URL there is dead on
+  arrival). Do **not** serve. Switch to **non-reachable mode** below: the
+  built `review.html` is already a single file that reads
+  `window.__reviewServer` and behaves accordingly, so hand it over as-is.
+
+Everything from here to "Publishing" is the **reachable** path. Skip it in
+non-reachable mode and jump to "### Non-reachable mode".
 
 ```bash
+# reachable mode only:
 python3 .claude/skills/guided-review/serve.py --html <scratchpad>/review.html --repo . --open
 ```
 
@@ -329,12 +346,38 @@ Both are Monaco-only: without the CDN there is no editor to hang them off.
 Any static server (`vite preview`, `python3 -m http.server`) will serve the
 page for reading, but only `serve.py` answers `/save` and `/notes`.
 
+### Non-reachable mode (sandbox): send the file as-is
+
+When `REACHABLE_FROM_INTERNET` is unset/falsy, the built `review.html` is
+already a **single self-contained file** (font inlined, every diff and
+before/after embedded, Monaco pulled from the CDN at runtime) that **branches
+at runtime** on `window.__reviewServer`: only `serve.py` injects that, so
+opened directly the page is cleanly read-only — the per-line note-authoring
+UI never wires up (no gutter `+` glyph, no `alt-N`/context-menu action, no
+view zones), and Save/Revert/"Send notes to agent" stay hidden. Everything
+else works the same as served: reading order, groups, blurbs, per-file notes
+*text*, status chips, path/GitHub links, the Monaco diffs (with the plain
+fallback for offline/CSP), and the checkboxes + progress bar. There is
+nothing to strip and **no separate file to build** — `build.py` in step 7
+already produced the finished HTML, and this mode delivers exactly that.
+**Do not `vite build` anything** — the page is not a vite/node project.
+
+Deliver `<scratchpad>/review.html` to the reviewer:
+
+- **`SendUserFile`** (`display: "render"`) is the default — they open it
+  locally, get the full Monaco editor from the CDN, and tick their way
+  through read-only. If they want to leave you feedback they paste it into
+  the chat.
+- **`Artifact`** instead when they want a **shareable link** for a teammate
+  (see Publishing) — a hosted page rather than a file.
+
 ### Publishing, only when a port isn't an option
 
 Reach for `Artifact` **only** where a local port can't be opened or reached —
-a cloud sandbox, or a reviewer on another machine. Then publish `--out` with a
-topic-fitting favicon and a one-sentence `description`; re-publishing the same
-path keeps the URL.
+a cloud sandbox, or a reviewer on another machine. Then publish
+`review.html` directly (it is already read-only without a server behind it)
+with a topic-fitting favicon and a one-sentence `description`; re-publishing
+the same path keeps the URL.
 
 Know what is given up: the artifact host's CSP allows same-origin connections
 only, so a published page cannot reach `127.0.0.1` (nor any tunnel — the block
@@ -427,8 +470,8 @@ sizes. Body text stays in a system stack; paths and diffs in
   windows-1252 and every dash and arrow in the prose turns to mojibake.
 - Served, each editor also carries Revert (restore the build-time content into
   the buffer, never straight to disk) and the header carries "Send notes to
-  agent"; both are hidden in the static build, where there is nothing to write
-  to.
+  agent"; both are hidden when opened without a server, where there is
+  nothing to write to.
 - **Two settings make `.tsx` legible**, and without either the file fills with
   `'>' expected`: `jsx: JsxEmit.Preserve` in the typescript defaults' compiler
   options, and model URIs that carry the real path — TypeScript picks its
@@ -470,6 +513,10 @@ sizes. Body text stays in a system stack; paths and diffs in
   Their contents also sit inside an `aria-hidden` subtree, so the note UI is
   mouse/keyboard-driven and not reachable by role queries.
 - The page adapts to `window.__reviewServer`, which only `serve.py` injects
-  (into the `<!--REVIEW_SERVER-->` marker). Keep that marker in the template
-  and keep both branches working — static publishing is the shareable form,
-  serving is the working form.
+  (into the `<!--REVIEW_SERVER-->` marker). It gates the whole
+  note-authoring/collaboration surface, not just Save/Revert/handoff: the
+  gutter `+` glyph, the `alt-N`/context-menu action, and the view-zone note
+  editors only wire up when it is present, so an opened-without-a-server page
+  is fully read-only. Keep that marker in the template and keep both branches
+  working — the same file serves both the shareable, standalone form and the
+  working, served form.

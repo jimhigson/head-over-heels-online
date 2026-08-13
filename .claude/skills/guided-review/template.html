@@ -712,6 +712,20 @@
     max-width: 68ch;
   }
 
+  .callout {
+    max-width: 68ch;
+    margin: 1.25rem 0 0;
+    padding: 0.7rem 0.9rem;
+    border: 1px solid var(--mod);
+    border-left-width: 3px;
+    border-radius: 3px;
+    background: var(--mod-bg);
+    color: var(--ink-soft);
+    font-size: 0.9rem;
+    line-height: 1.5;
+  }
+  .callout strong { color: var(--ink); }
+
   @media (prefers-reduced-motion: reduce) {
     * { transition: none !important; }
   }
@@ -745,6 +759,12 @@
     <h1 id="title"></h1>
     <p class="lede" id="lede"></p>
     <ul class="facts" id="facts"></ul>
+    <div class="callout" id="sandboxNote" hidden>
+      <strong>Read-only build.</strong> This review was generated in a sandbox,
+      so there is no live agent behind this page — leaving in-page notes and
+      chatting back to the agent are not possible here. Read and tick through;
+      to send feedback, paste it into your chat with the agent.
+    </div>
   </section>
 
   <main id="groups"></main>
@@ -984,7 +1004,7 @@
      for a PR comment or a follow-up prompt. */
 
   const SERVER = window.__reviewServer;
-  const NOTES_KEY = `${STORAGE_KEY}:notes`;
+  document.getElementById("sandboxNote").hidden = SERVER !== undefined;
 
   let notes = {};
   /** the diff editors currently on the page, so the poll below can update them */
@@ -1000,13 +1020,11 @@
     setTimeout(() => element.remove(), 7_600);
   };
 
+  // note authoring/collaboration is server-only: with no serve.py behind it
+  // there is nowhere for a note to go, so standalone opens stay read-only
+  // rather than growing a silent, unshareable localStorage-only note store
   const loadNotes = async () => {
     if (SERVER === undefined) {
-      try {
-        notes = JSON.parse(localStorage.getItem(NOTES_KEY) ?? "{}");
-      } catch {
-        notes = {};
-      }
       return;
     }
     const response = await fetch("/notes").catch(() => undefined);
@@ -1015,11 +1033,6 @@
 
   const saveNotes = async () => {
     if (SERVER === undefined) {
-      try {
-        localStorage.setItem(NOTES_KEY, JSON.stringify(notes));
-      } catch {
-        /* storage unavailable - notes just won't persist */
-      }
       return;
     }
     const response = await fetch("/notes", {
@@ -1244,100 +1257,106 @@
 
     const modifiedEditor = editor.getModifiedEditor();
 
-    /* notes: a view zone under each noted line, plus a gutter mark */
-    let zoneIds = [];
-    let decorations = modifiedEditor.createDecorationsCollection([]);
-    let editing;
-
-    const drawNotes = () => {
-      const lines = new Set([
-        ...notesFor(path).map((note) => note.line),
-        ...(editing === undefined ? [] : [editing]),
-      ]);
-
-      modifiedEditor.changeViewZones((accessor) => {
-        for (const id of zoneIds) {
-          accessor.removeZone(id);
-        }
-        zoneIds = [...lines].map((line) => {
-          const isEditing = line === editing;
-          const said = messagesOf(noteAt(path, line)).length;
-          return accessor.addZone({
-            afterLineNumber: line,
-            // grows with the conversation, up to the thread's own scroll cap
-            heightInPx: Math.min(46 + said * 26, 190) + (isEditing ? 86 : 0),
-            // without this the editor eats the mousedown before the note's own
-            // controls ever see it
-            suppressMouseDown: false,
-            domNode: noteZone(path, line, isEditing, {
-              edit: (atLine) => {
-                editing = atLine;
-                drawNotes();
-              },
-              done: () => {
-                editing = undefined;
-                drawNotes();
-              },
-            }),
-          });
-        });
-      });
-
-      decorations.set(
-        notesFor(path).map((note) => ({
-          range: new monaco.Range(note.line, 1, note.line, 1),
-          options: {
-            isWholeLine: true,
-            className: "noted-line",
-            glyphMarginClassName: "noted-glyph",
-          },
-        })),
-      );
-    };
-
-    modifiedEditor.addAction({
-      id: "add-review-note",
-      label: "Add review note",
-      contextMenuGroupId: "navigation",
-      keybindings: [monaco.KeyMod.Alt | monaco.KeyCode.KeyN],
-      run: (instance) => {
-        editing = instance.getPosition().lineNumber;
-        drawNotes();
-      },
-    });
-
-    /* a + in the gutter of whichever line the mouse is on, so adding a note is
-       something you can see rather than something you have to know */
-    const hoverGlyph = modifiedEditor.createDecorationsCollection([]);
-    const markHoveredLine = (line) => {
-      hoverGlyph.set(
-        line === undefined || notesFor(path).some((note) => note.line === line) ?
-          []
-        : [
-            {
-              range: new monaco.Range(line, 1, line, 1),
-              options: {
-                glyphMarginClassName: "add-note-glyph",
-                glyphMarginHoverMessage: { value: "Add a review note (alt-N)" },
-              },
-            },
-          ],
-      );
-    };
-
-    modifiedEditor.onMouseMove((event) => markHoveredLine(event.target.position?.lineNumber));
-    modifiedEditor.onMouseLeave(() => markHoveredLine(undefined));
-    modifiedEditor.onMouseDown((event) => {
-      if (event.target.type === monaco.editor.MouseTargetType.GUTTER_GLYPH_MARGIN) {
-        editing = event.target.position.lineNumber;
-        drawNotes();
-      }
-    });
-
     /* saving back to the working tree */
     let sha = side.sha;
     let dirty = false;
+
+    // note authoring/collaboration (view zones, the gutter "+" glyph, the
+    // alt-N/context-menu action, save/revert, and the live-file poll) only
+    // make sense with serve.py behind the page to persist and relay them -
+    // without a server they'd be dead controls, so standalone opens stay
+    // read-only and none of this wiring runs at all
     if (SERVER !== undefined) {
+      /* notes: a view zone under each noted line, plus a gutter mark */
+      let zoneIds = [];
+      let decorations = modifiedEditor.createDecorationsCollection([]);
+      let editing;
+
+      const drawNotes = () => {
+        const lines = new Set([
+          ...notesFor(path).map((note) => note.line),
+          ...(editing === undefined ? [] : [editing]),
+        ]);
+
+        modifiedEditor.changeViewZones((accessor) => {
+          for (const id of zoneIds) {
+            accessor.removeZone(id);
+          }
+          zoneIds = [...lines].map((line) => {
+            const isEditing = line === editing;
+            const said = messagesOf(noteAt(path, line)).length;
+            return accessor.addZone({
+              afterLineNumber: line,
+              // grows with the conversation, up to the thread's own scroll cap
+              heightInPx: Math.min(46 + said * 26, 190) + (isEditing ? 86 : 0),
+              // without this the editor eats the mousedown before the note's own
+              // controls ever see it
+              suppressMouseDown: false,
+              domNode: noteZone(path, line, isEditing, {
+                edit: (atLine) => {
+                  editing = atLine;
+                  drawNotes();
+                },
+                done: () => {
+                  editing = undefined;
+                  drawNotes();
+                },
+              }),
+            });
+          });
+        });
+
+        decorations.set(
+          notesFor(path).map((note) => ({
+            range: new monaco.Range(note.line, 1, note.line, 1),
+            options: {
+              isWholeLine: true,
+              className: "noted-line",
+              glyphMarginClassName: "noted-glyph",
+            },
+          })),
+        );
+      };
+
+      modifiedEditor.addAction({
+        id: "add-review-note",
+        label: "Add review note",
+        contextMenuGroupId: "navigation",
+        keybindings: [monaco.KeyMod.Alt | monaco.KeyCode.KeyN],
+        run: (instance) => {
+          editing = instance.getPosition().lineNumber;
+          drawNotes();
+        },
+      });
+
+      /* a + in the gutter of whichever line the mouse is on, so adding a note
+         is something you can see rather than something you have to know */
+      const hoverGlyph = modifiedEditor.createDecorationsCollection([]);
+      const markHoveredLine = (line) => {
+        hoverGlyph.set(
+          line === undefined || notesFor(path).some((note) => note.line === line) ?
+            []
+          : [
+              {
+                range: new monaco.Range(line, 1, line, 1),
+                options: {
+                  glyphMarginClassName: "add-note-glyph",
+                  glyphMarginHoverMessage: { value: "Add a review note (alt-N)" },
+                },
+              },
+            ],
+        );
+      };
+
+      modifiedEditor.onMouseMove((event) => markHoveredLine(event.target.position?.lineNumber));
+      modifiedEditor.onMouseLeave(() => markHoveredLine(undefined));
+      modifiedEditor.onMouseDown((event) => {
+        if (event.target.type === monaco.editor.MouseTargetType.GUTTER_GLYPH_MARGIN) {
+          editing = event.target.position.lineNumber;
+          drawNotes();
+        }
+      });
+
       const button = document.createElement("button");
       button.type = "button";
       button.className = "save";
@@ -1397,10 +1416,29 @@
             "changed on disk — reload before saving"
           : "save failed";
       });
+
+      // the page follows the file: when an agent acts on a note the diff here
+      // catches up on its own, rather than going quietly out of date
+      liveEditors.set(path, {
+        sha: () => sha,
+        refreshNotes: drawNotes,
+        applyFromDisk: (file) => {
+          if (dirty) {
+            toast(`${path} changed on disk — Revert to load it`, "warn");
+            return;
+          }
+          modified.setValue(file.after);
+          sha = file.sha;
+          dirty = false;
+          setCounts(file.added, file.removed);
+        },
+      });
+
+      drawNotes();
     } else {
       const hint = document.createElement("span");
       hint.className = "hint";
-      hint.textContent = "read-only — hover a line and click + to add a note; serve.py makes this editable";
+      hint.textContent = "read-only — open with serve.py to edit and leave review notes";
       bar.append(hint);
     }
 
@@ -1411,24 +1449,6 @@
       editor.layout();
     });
 
-    // the page follows the file: when an agent acts on a note the diff here
-    // catches up on its own, rather than going quietly out of date
-    liveEditors.set(path, {
-      sha: () => sha,
-      refreshNotes: drawNotes,
-      applyFromDisk: (file) => {
-        if (dirty) {
-          toast(`${path} changed on disk — Revert to load it`, "warn");
-          return;
-        }
-        modified.setValue(file.after);
-        sha = file.sha;
-        dirty = false;
-        setCounts(file.added, file.removed);
-      },
-    });
-
-    drawNotes();
     return true;
   };
 
