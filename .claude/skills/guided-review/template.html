@@ -132,6 +132,10 @@
 
   * { box-sizing: border-box; }
 
+  /* .row-body and the group bodies are flex/grid containers, whose display
+     would otherwise win over the hidden attribute */
+  [hidden] { display: none !important; }
+
   body {
     margin: 0;
     background: var(--paper);
@@ -142,23 +146,29 @@
     -webkit-text-size-adjust: 100%;
   }
 
+  .layout { display: flex; align-items: flex-start; }
+
   .shell {
+    flex: 1 1 auto;
+    min-width: 0;
     max-width: 64rem;
     margin: 0 auto;
-    padding: 0 1.25rem 5rem;
+    /* the trailing space is scroll range, below the footer: without it the last
+       files can never reach the top of the viewport, and a jump from the
+       contents to one of them barely moves the page */
+    padding: 0 1.25rem max(5rem, 45vh);
   }
 
   header.top {
     position: sticky;
     top: 0;
-    z-index: 10;
+    z-index: 20;
     background: color-mix(in srgb, var(--paper) 90%, transparent);
     backdrop-filter: blur(8px);
     border-bottom: 1px solid var(--rule);
   }
 
   .top-inner {
-    max-width: 64rem;
     margin: 0 auto;
     padding: 0.7rem 1.25rem;
     display: flex;
@@ -193,7 +203,6 @@
 
   .fill {
     height: 100%;
-    width: 0%;
     background: var(--accent);
     transition: width 160ms ease-out;
   }
@@ -206,7 +215,7 @@
     white-space: nowrap;
   }
 
-  .controls { display: flex; gap: 0.4rem; flex: none; }
+  .controls { display: flex; gap: 0.4rem; flex: none; flex-wrap: wrap; }
 
   button.control {
     font-family: var(--body);
@@ -220,6 +229,166 @@
 
   button.control:hover { border-color: var(--accent); color: var(--accent); }
   button.control:focus-visible { outline: 2px solid var(--accent); outline-offset: 2px; }
+  button.control[aria-pressed="true"] { color: var(--accent); border-color: var(--accent); }
+
+  /* ---- contents sidebar --------------------------------------------------
+     the whole reading order at a glance, ticked in step with the main pane */
+
+  .sidebar {
+    position: sticky;
+    top: var(--header-height, 3.2rem);
+    flex: 0 0 17rem;
+    align-self: flex-start;
+    max-height: calc(100vh - var(--header-height, 3.2rem));
+    overflow-y: auto;
+    overscroll-behavior: contain;
+    border-right: 1px solid var(--rule);
+    padding: 0.9rem 0.5rem 4rem 0.9rem;
+  }
+
+  .sidebar-title {
+    font-family: var(--display);
+    font-size: 16px;
+    color: var(--ink-faint);
+    margin: 0 0 0.6rem;
+  }
+
+  ol.tree, ul.tree-files { list-style: none; margin: 0; padding: 0; }
+
+  .tree { font-size: 0.84rem; }
+  .tree-group + .tree-group { margin-top: 0.55rem; }
+
+  .tree-group-head {
+    display: flex;
+    align-items: center;
+    gap: 0.4rem;
+    padding: 0.2rem 0.25rem;
+    position: sticky;
+    top: 0;
+    background: var(--paper);
+    z-index: 1;
+  }
+
+  .tree-step {
+    font-family: var(--display);
+    font-size: 16px;
+    color: var(--accent);
+    line-height: 1;
+    flex: none;
+  }
+
+  button.tree-group-title {
+    flex: 1 1 auto;
+    min-width: 0;
+    font: inherit;
+    font-weight: 650;
+    color: var(--ink);
+    background: none;
+    border: 0;
+    padding: 0;
+    text-align: left;
+    cursor: pointer;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    white-space: nowrap;
+  }
+
+  button.tree-group-title:hover { color: var(--accent); }
+
+  .tree-count {
+    flex: none;
+    font-size: 0.7rem;
+    color: var(--ink-faint);
+    font-variant-numeric: tabular-nums;
+  }
+
+  ul.tree-files {
+    margin: 0.15rem 0 0 0.45rem;
+    padding-left: 0.5rem;
+    border-left: 1px solid var(--rule);
+  }
+
+  .tree-file {
+    display: flex;
+    align-items: center;
+    gap: 0.35rem;
+    padding: 0.1rem 0.25rem;
+    border-left: 2px solid transparent;
+  }
+
+  .tree-file.is-active {
+    background: var(--accent-soft);
+    border-left-color: var(--accent);
+  }
+
+  button.tree-file-link {
+    display: flex;
+    align-items: baseline;
+    gap: 0.3rem;
+    flex: 1 1 auto;
+    min-width: 0;
+    font: inherit;
+    background: none;
+    border: 0;
+    padding: 0;
+    text-align: left;
+    cursor: pointer;
+    color: var(--ink);
+  }
+
+  button.tree-file-link:hover .tree-base { color: var(--accent); }
+  button.tree-file-link:focus-visible { outline: 2px solid var(--accent); outline-offset: 1px; }
+
+  .tree-base {
+    font-family: var(--mono);
+    font-size: 0.76rem;
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    /* the name is what the eye lands on, so it gives up its width last */
+    flex: 0 1 auto;
+  }
+
+  .tree-dir {
+    font-size: 0.68rem;
+    color: var(--ink-faint);
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    flex: 0 100 auto;
+    min-width: 0;
+    /* ellipsis at the *start*: the directory nearest the file is the half
+       worth keeping */
+    direction: rtl;
+    text-align: left;
+  }
+
+  /* ...but the path itself is ltr, or bidi moves its leading "." to the end */
+  .tree-dir > span { direction: ltr; unicode-bidi: embed; }
+
+  .tree-file.is-ticked { opacity: 0.5; }
+  .tree-file.is-ticked .tree-base { text-decoration: line-through; }
+
+  .note-count {
+    flex: none;
+    font-size: 0.66rem;
+    font-weight: 700;
+    color: var(--accent);
+    background: var(--accent-soft);
+    padding: 0 0.3rem;
+    line-height: 1.4;
+  }
+
+  input.tick {
+    width: 0.95rem;
+    height: 0.95rem;
+    margin: 0;
+    accent-color: var(--accent);
+    cursor: pointer;
+    flex: none;
+  }
+
+  input.tick.small { width: 0.8rem; height: 0.8rem; }
 
   .intro {
     padding: 3rem 0 2.25rem;
@@ -274,19 +443,18 @@
 
   main { display: flex; flex-direction: column; gap: 0.9rem; padding-top: 2rem; }
 
-  details.group {
+  section.group {
     background: var(--card);
     border: 1px solid var(--rule);
     box-shadow: var(--shadow);
   }
 
-  details.group > summary {
+  .group-head {
     display: flex;
     align-items: center;
     gap: 0.85rem;
     padding: 1rem 1.1rem;
     cursor: pointer;
-    list-style: none;
     /* the group's heading stays put while its files scroll under it, so it is
        always clear which part of the reading order you are in */
     position: sticky;
@@ -296,19 +464,7 @@
     border-bottom: 1px solid transparent;
   }
 
-  details.group[open] > summary { border-bottom-color: var(--rule); }
-
-  input.group-tick {
-    width: 1.05rem;
-    height: 1.05rem;
-    margin: 0;
-    accent-color: var(--accent);
-    cursor: pointer;
-    flex: none;
-  }
-
-  details.group > summary::-webkit-details-marker { display: none; }
-  summary:focus-visible { outline: 2px solid var(--accent); outline-offset: -2px; }
+  section.group.is-open > .group-head { border-bottom-color: var(--rule); }
 
   .step {
     font-family: var(--display);
@@ -334,6 +490,20 @@
     flex: none;
   }
 
+  button.caret {
+    font-family: var(--body);
+    font-size: 0.7rem;
+    color: var(--ink-faint);
+    background: none;
+    border: 0;
+    padding: 0.1rem 0.25rem;
+    cursor: pointer;
+    flex: none;
+  }
+
+  button.caret:hover { color: var(--accent); }
+  button.caret:focus-visible { outline: 2px solid var(--accent); outline-offset: 2px; }
+
   .group-body { padding: 0 1.1rem 0.5rem; }
 
   .blurb {
@@ -347,28 +517,29 @@
   .rows { display: flex; flex-direction: column; }
 
   .row {
-    display: grid;
-    grid-template-columns: auto minmax(0, 1fr);
-    gap: 0.3rem 0.75rem;
-    padding: 0.75rem 0;
     border-top: 1px solid var(--rule);
-  }
-
-  .row > input[type="checkbox"] {
-    grid-row: 1 / span 3;
-    width: 1.05rem;
-    height: 1.05rem;
-    margin: 0.25rem 0 0;
-    accent-color: var(--accent);
-    cursor: pointer;
+    /* scrolled to from the sidebar: clear the page header and the group's own
+       sticky heading */
+    scroll-margin-top: calc(var(--header-height, 3.2rem) + 3.6rem);
   }
 
   .row-head {
     display: flex;
     align-items: center;
     gap: 0.55rem;
-    flex-wrap: wrap;
+    padding: 0.6rem 0;
     min-width: 0;
+    cursor: pointer;
+  }
+
+  .row.is-ticked .row-head { opacity: 0.45; }
+  .row-head:hover .caret { color: var(--accent); }
+
+  .row-body {
+    display: flex;
+    flex-direction: column;
+    gap: 0.35rem;
+    padding: 0 0 0.85rem 1.6rem;
   }
 
   .chip {
@@ -383,6 +554,7 @@
   .chip-A { color: var(--new); background: var(--new-bg); }
   .chip-M { color: var(--mod); background: var(--mod-bg); }
   .chip-D { color: var(--del); background: var(--del-bg); }
+  .chip-R { color: var(--accent); background: var(--accent-soft); }
 
   button.path {
     font-family: var(--mono);
@@ -395,6 +567,7 @@
     text-align: left;
     word-break: break-all;
     border-bottom: 1px dashed var(--rule);
+    min-width: 0;
   }
 
   a.github {
@@ -412,15 +585,22 @@
   button.path:focus-visible { outline: 2px solid var(--accent); outline-offset: 2px; }
   button.path.copied { color: var(--new); border-bottom-color: var(--new); }
 
+  .row-stat {
+    margin-left: auto;
+    flex: none;
+    font-size: 0.74rem;
+    font-variant-numeric: tabular-nums;
+    white-space: nowrap;
+  }
+
   .note {
     margin: 0;
-    grid-column: 2;
     max-width: 68ch;
     font-size: 0.92rem;
     color: var(--ink-soft);
   }
 
-  .diff { grid-column: 2; margin-top: 0.35rem; }
+  .diff { margin-top: 0.35rem; }
 
   button.diff-toggle {
     display: inline-flex;
@@ -441,8 +621,6 @@
   button.diff-toggle[aria-expanded="true"]::before { content: "▾"; }
   button.diff-toggle:hover { border-color: var(--accent); }
   button.diff-toggle:focus-visible { outline: 2px solid var(--accent); outline-offset: 2px; }
-
-  .diff-panel[hidden] { display: none; }
 
   .stat-add { color: var(--add-edge); font-weight: 600; }
   .stat-rm { color: var(--rm-edge); font-weight: 600; }
@@ -558,13 +736,6 @@
     font-size: 0.72rem;
   }
 
-  .note-zone .note-text {
-    margin: 0;
-    font-size: 0.9rem;
-    line-height: 1.4;
-    color: var(--ink);
-  }
-
   .note-zone .note-stamp {
     margin-left: auto;
     font-size: 0.7rem;
@@ -633,7 +804,7 @@
     .note-pending .dots i { animation: none; opacity: 0.7; }
   }
 
-  #toasts {
+  .toasts {
     position: fixed;
     right: 1rem;
     bottom: 1rem;
@@ -700,9 +871,6 @@
     border-radius: 2px;
   }
 
-  .row:has(input:checked) .note,
-  .row:has(input:checked) .row-head { opacity: 0.45; }
-
   footer {
     margin-top: 2.5rem;
     padding-top: 1.25rem;
@@ -730,53 +898,46 @@
     * { transition: none !important; }
   }
 
+  /* narrow enough that a permanent sidebar would crowd the diffs out; it
+     becomes an overlay opened from the header instead */
+  @media (max-width: 60rem) {
+    .sidebar {
+      position: fixed;
+      top: var(--header-height, 3.2rem);
+      left: 0;
+      bottom: 0;
+      z-index: 15;
+      width: min(20rem, 82vw);
+      max-height: none;
+      background: var(--paper);
+      box-shadow: 0 0 40px rgb(0 0 0 / 0.25);
+    }
+  }
+
   @media (max-width: 34rem) {
     h1 { font-size: 16px; line-height: 1.5; }
     .blurb { padding-left: 0; }
   }
 </style>
 
-<header class="top">
-  <div class="top-inner">
-    <p class="top-title" id="headerTitle"></p>
-    <div class="meter">
-      <div class="track"><div class="fill" id="fill"></div></div>
-      <span class="count" id="count">0/0</span>
-    </div>
-    <div class="controls">
-      <button class="control" id="expand" type="button">Open all diffs</button>
-      <button class="control" id="collapse" type="button">Close all</button>
-      <button class="control" id="copyNotes" type="button">Copy notes</button>
-      <button class="control" id="handoff" type="button" hidden>Send notes to agent</button>
-      <button class="control" id="reset" type="button">Clear ticks</button>
-    </div>
-  </div>
-</header>
+<script>PREACT_JS</script>
 
-<div class="shell">
-  <section class="intro">
-    <p class="eyebrow" id="eyebrow"></p>
-    <h1 id="title"></h1>
-    <p class="lede" id="lede"></p>
-    <ul class="facts" id="facts"></ul>
-    <div class="callout" id="sandboxNote" hidden>
-      <strong>Read-only build.</strong> This review was generated in a sandbox,
-      so there is no live agent behind this page — leaving in-page notes and
-      chatting back to the agent are not possible here. Read and tick through;
-      to send feedback, paste it into your chat with the agent.
-    </div>
-  </section>
-
-  <main id="groups"></main>
-  <div id="toasts" aria-live="polite"></div>
-
-  <footer id="footer"></footer>
-</div>
+<div id="app"></div>
 
 <!--REVIEW_SERVER-->
 <script type="application/json" id="payload">PAYLOAD_JSON</script>
 <script type="module">
   const {
+    html,
+    render,
+    useState,
+    useEffect,
+    useLayoutEffect,
+    useRef,
+  } = htmPreact;
+
+  const {
+    id: REVIEW_ID,
     meta: META,
     groups: GROUPS,
     diffs: DIFFS,
@@ -786,16 +947,77 @@
   } = JSON.parse(document.getElementById("payload").textContent);
 
   document.title = META.title;
-  document.getElementById("headerTitle").textContent = META.headerTitle ?? META.title;
-  document.getElementById("eyebrow").textContent = META.eyebrow ?? "reading order";
-  document.getElementById("title").textContent = META.title;
-  document.getElementById("lede").innerHTML = META.lede ?? "";
-  document.getElementById("footer").innerHTML = META.footer ?? "";
 
   const STATUS_LABEL = { A: "New", M: "Modified", D: "Deleted", R: "Renamed" };
-  const STORAGE_KEY = "guidedReviewTicks";
+  // keyed by review: without it every review served on this port would inherit
+  // the last one's ticks
+  const STORAGE_KEY = `guidedReviewTicks:${REVIEW_ID}`;
+  const SERVER = window.__reviewServer;
 
-  const readTicks = () => {
+  /** every file in reading order, carrying where it sits in the document */
+  const FILES = GROUPS.flatMap((group, groupIndex) =>
+    group.items.map((item, itemIndex) => ({
+      ...item,
+      groupIndex,
+      id: `${groupIndex}-${itemIndex}`,
+    })),
+  );
+  const TOTAL = FILES.length;
+
+  /* ---- a store the imperative side can share with the component tree ------
+     monaco's view zones and the server poll live outside preact - they push
+     into these, and anything rendered from them re-renders */
+
+  const makeStore = (initial) => {
+    let value = initial;
+    const listeners = new Set();
+    return {
+      get: () => value,
+      set: (next) => {
+        value = next;
+        for (const listener of listeners) {
+          listener();
+        }
+      },
+      subscribe: (listener) => {
+        listeners.add(listener);
+        return () => listeners.delete(listener);
+      },
+    };
+  };
+
+  const useStore = (store) => {
+    const [, bump] = useState(0);
+    useEffect(() => store.subscribe(() => bump((version) => version + 1)), [store]);
+    return store.get();
+  };
+
+  const notesStore = makeStore({});
+  const toastStore = makeStore([]);
+
+  let lastToastId = 0;
+
+  const toast = (text, kind = "info") => {
+    const id = (lastToastId += 1);
+    toastStore.set([...toastStore.get(), { id, text, kind, leaving: false }]);
+    setTimeout(
+      () =>
+        toastStore.set(
+          toastStore.get().map((entry) => (entry.id === id ? { ...entry, leaving: true } : entry)),
+        ),
+      7_000,
+    );
+    setTimeout(() => toastStore.set(toastStore.get().filter((entry) => entry.id !== id)), 7_600);
+  };
+
+  /* ---- ticks --------------------------------------------------------------
+     Served, what has been read is the review's own file - so it survives a
+     rebuild into another scratchpad or onto another port, two tabs on the same
+     review agree, and the agent can see how far the reading has got. Without a
+     server there is nowhere to write, and localStorage keyed by review id is
+     the whole of it. */
+
+  const localTicks = () => {
     try {
       return new Set(JSON.parse(localStorage.getItem(STORAGE_KEY) ?? "[]"));
     } catch {
@@ -803,56 +1025,161 @@
     }
   };
 
-  let ticked = readTicks();
+  const loadTicks = async () => {
+    if (SERVER === undefined) {
+      return localTicks();
+    }
+    const response = await fetch("/ticks").catch(() => undefined);
+    return new Set(response?.ok ? (await response.json()).ticked : []);
+  };
 
-  const saveTicks = () => {
-    try {
-      localStorage.setItem(STORAGE_KEY, JSON.stringify([...ticked]));
-    } catch {
-      /* storage unavailable - ticks just won't persist */
+  /** ticks the page has taken from the file, so the poll can tell a change made
+      somewhere else from the echo of one made here */
+  const adoptTicks = makeStore(new Set());
+  const ticksSignature = (ticked) => JSON.stringify([...ticked].sort());
+  let lastFromServer = "[]";
+
+  /** while a write is in flight the page is ahead of the file, so the poll
+      must not hand it back what it is in the middle of replacing */
+  let ticksInFlight = 0;
+  let queuedTicks;
+
+  const postTicks = async () => {
+    const ticked = queuedTicks;
+    queuedTicks = undefined;
+    const response = await fetch("/ticks", {
+      method: "POST",
+      headers: { "Content-Type": "application/json", "X-Review-Token": SERVER.token },
+      body: JSON.stringify({ ticked: [...ticked] }),
+    }).catch(() => undefined);
+    ticksInFlight -= 1;
+    if (response?.ok !== true) {
+      toast("ticks not saved — the review server isn't answering", "warn");
+      return;
+    }
+    lastFromServer = ticksSignature(ticked);
+  };
+
+  const saveTicks = (ticked) => {
+    if (SERVER === undefined) {
+      try {
+        localStorage.setItem(STORAGE_KEY, JSON.stringify([...ticked]));
+      } catch {
+        /* storage unavailable - ticks just won't persist */
+      }
+      return;
+    }
+    // ticking a whole group is one state change but many clicks are not, so
+    // the writes are coalesced rather than one per checkbox
+    const first = queuedTicks === undefined;
+    queuedTicks = ticked;
+    if (first) {
+      ticksInFlight += 1;
+      setTimeout(postTicks, 250);
     }
   };
 
-  const total = GROUPS.reduce((sum, group) => sum + group.items.length, 0);
-  const fill = document.getElementById("fill");
-  const count = document.getElementById("count");
-
-  const updateMeter = () => {
-    const done = ticked.size;
-    count.textContent = `${done}/${total}`;
-    // a review with no files at all would divide by zero, giving a NaN width
-    fill.style.width = `${total === 0 ? 0 : (done / total) * 100}%`;
+  const withMembership = (set, key, member) => {
+    const next = new Set(set);
+    if (member) {
+      next.add(key);
+    } else {
+      next.delete(key);
+    }
+    return next;
   };
 
-  const copyPath = async (button, path) => {
-    try {
-      await navigator.clipboard.writeText(path);
-      button.classList.add("copied");
-      setTimeout(() => button.classList.remove("copied"), 900);
-    } catch {
-      /* clipboard blocked - the path is selectable anyway */
+  /* ---- review notes -------------------------------------------------------
+     A note belongs to a line of the modified side, and is a thread: what you
+     asked for, and what the agent said back. Served, they persist to a json
+     file beside the review; without a server there is nowhere for them to go,
+     so the whole note-authoring surface stays off. */
+
+  const notesFor = (path) => notesStore.get()[path] ?? [];
+  const noteAt = (path, line) => notesFor(path).find((note) => note.line === line);
+
+  /** the single-text shape a note started as reads as its first message */
+  const messagesOf = (note) =>
+    note === undefined ? []
+    : note.messages ?? [{ from: "reviewer", text: note.text }];
+
+  const loadNotes = async () => {
+    if (SERVER === undefined) {
+      return;
+    }
+    const response = await fetch("/notes").catch(() => undefined);
+    notesStore.set(response?.ok ? await response.json() : {});
+  };
+
+  const saveNotes = async () => {
+    if (SERVER === undefined) {
+      return;
+    }
+    const response = await fetch("/notes", {
+      method: "POST",
+      headers: { "Content-Type": "application/json", "X-Review-Token": SERVER.token },
+      body: JSON.stringify(notesStore.get()),
+    }).catch(() => undefined);
+
+    // silence here would be the worst kind: the note looks written and isn't
+    if (response?.ok !== true) {
+      toast(
+        response?.status === 403 ?
+          "note not saved — this page is older than the server. Reload it"
+        : "note not saved — the review server isn't answering",
+        "warn",
+      );
     }
   };
 
-  const diffLineClass = (line) => {
-    if (line.startsWith("@@")) return "dl dl-hunk";
-    if (line.startsWith("+")) return "dl dl-add";
-    if (line.startsWith("-")) return "dl dl-rm";
-    if (line.startsWith("…")) return "dl dl-meta";
-    return "dl";
+  const sayOnNote = (path, line, text) => {
+    if (text.trim() === "") {
+      return;
+    }
+    const forPath = notesFor(path);
+    const said = { from: "reviewer", text };
+    const updated =
+      noteAt(path, line) === undefined ?
+        [...forPath, { line, messages: [said] }].sort((a, b) => a.line - b.line)
+      : forPath.map((note) =>
+          note.line === line ? { line, messages: [...messagesOf(note), said] } : note,
+        );
+    notesStore.set({ ...notesStore.get(), [path]: updated });
+    saveNotes();
   };
 
-  /** the patch, rendered as coloured lines - the fallback when monaco is absent */
-  const renderPatch = (pre, path) => {
-    const fragment = document.createDocumentFragment();
-    for (const line of (DIFFS[path] ?? "").split("\n")) {
-      const span = document.createElement("span");
-      span.className = diffLineClass(line);
-      span.textContent = line === "" ? " " : line;
-      fragment.append(span);
+  const removeNote = (path, line) => {
+    const remaining = notesFor(path).filter((note) => note.line !== line);
+    const next = { ...notesStore.get() };
+    if (remaining.length === 0) {
+      delete next[path];
+    } else {
+      next[path] = remaining;
     }
-    pre.append(fragment);
+    notesStore.set(next);
+    saveNotes();
   };
+
+  const notesAsMarkdown = () =>
+    Object.entries(notesStore.get())
+      .map(
+        ([path, forPath]) =>
+          `### ${path}\n` +
+          forPath
+            .map((note) =>
+              messagesOf(note)
+                .map((message, index) =>
+                  index === 0 ?
+                    `- L${note.line}: ${message.text}`
+                  : `  - ${message.from}: ${message.text}`,
+                )
+                .join("\n"),
+            )
+            .join("\n"),
+      )
+      .join("\n\n");
+
+  /* ---- monaco ------------------------------------------------------------- */
 
   const MONACO_VERSION = "0.52.2";
   const MONACO_BASE = `https://cdn.jsdelivr.net/npm/monaco-editor@${MONACO_VERSION}/min/vs`;
@@ -997,125 +1324,16 @@
     attributeFilter: ["data-theme"],
   });
 
-  /* ---- review notes -------------------------------------------------------
-     A note belongs to a line of the modified side. Served, they persist to a
-     json file beside the review; static, to localStorage. Either way they are
-     for this reading of this change - "Copy notes" lifts them out as markdown
-     for a PR comment or a follow-up prompt. */
-
-  const SERVER = window.__reviewServer;
-  document.getElementById("sandboxNote").hidden = SERVER !== undefined;
-
-  let notes = {};
   /** the diff editors currently on the page, so the poll below can update them */
   const liveEditors = new Map();
+  /** every rendered file row, so the sidebar can scroll to one by id */
+  const rowNodes = new Map();
+  /** while a click from the sidebar is still travelling, that file is the
+      current one - whatever the rows crossing the viewport say on the way */
+  let followScrollAfter = 0;
 
-  const toast = (text, kind = "info") => {
-    const element = document.createElement("div");
-    element.className = `toast toast-${kind}`;
-    element.setAttribute("role", "status");
-    element.textContent = text;
-    document.getElementById("toasts").append(element);
-    setTimeout(() => element.classList.add("leaving"), 7_000);
-    setTimeout(() => element.remove(), 7_600);
-  };
+  /* ---- components --------------------------------------------------------- */
 
-  // note authoring/collaboration is server-only: with no serve.py behind it
-  // there is nowhere for a note to go, so standalone opens stay read-only
-  // rather than growing a silent, unshareable localStorage-only note store
-  const loadNotes = async () => {
-    if (SERVER === undefined) {
-      return;
-    }
-    const response = await fetch("/notes").catch(() => undefined);
-    notes = response?.ok ? await response.json() : {};
-  };
-
-  const saveNotes = async () => {
-    if (SERVER === undefined) {
-      return;
-    }
-    const response = await fetch("/notes", {
-      method: "POST",
-      headers: { "Content-Type": "application/json", "X-Review-Token": SERVER.token },
-      body: JSON.stringify(notes),
-    }).catch(() => undefined);
-
-    // silence here would be the worst kind: the note looks written and isn't
-    if (response?.ok !== true) {
-      toast(
-        response?.status === 403 ?
-          "note not saved — this page is older than the server. Reload it"
-        : "note not saved — the review server isn't answering",
-        "warn",
-      );
-    }
-  };
-
-  const notesFor = (path) => notes[path] ?? [];
-  const noteAt = (path, line) => notesFor(path).find((note) => note.line === line);
-
-  /** a note is a thread; the single-text shape it started as is its first message */
-  const messagesOf = (note) =>
-    note === undefined ? []
-    : note.messages ?? [{ from: "reviewer", text: note.text }];
-
-  const sayOnNote = (path, line, text) => {
-    if (text.trim() === "") {
-      return;
-    }
-    const existing = noteAt(path, line);
-    if (existing === undefined) {
-      notes[path] = [...notesFor(path), { line, messages: [{ from: "reviewer", text }] }].sort(
-        (a, b) => a.line - b.line,
-      );
-    } else {
-      existing.messages = [...messagesOf(existing), { from: "reviewer", text }];
-      delete existing.text;
-    }
-    saveNotes();
-  };
-
-  const removeNote = (path, line) => {
-    notes[path] = notesFor(path).filter((note) => note.line !== line);
-    if (notes[path].length === 0) {
-      delete notes[path];
-    }
-    saveNotes();
-  };
-
-  const notesAsMarkdown = () =>
-    Object.entries(notes)
-      .map(
-        ([path, forPath]) =>
-          `### ${path}\n` +
-          forPath
-            .map((note) =>
-              messagesOf(note)
-                .map((message, index) =>
-                  index === 0 ?
-                    `- L${note.line}: ${message.text}`
-                  : `  - ${message.from}: ${message.text}`,
-                )
-                .join("\n"),
-            )
-            .join("\n"),
-      )
-      .join("\n\n");
-
-  const noteButton = (text, onClick) => {
-    const button = document.createElement("button");
-    button.type = "button";
-    button.textContent = text;
-    button.addEventListener("click", onClick);
-    return button;
-  };
-
-  /**
-   * the note ui that sits in a view zone under its line: a textarea while it is
-   * being written, and a saved note afterwards - so pressing Save visibly does
-   * something
-   */
   const awaitingReply = (messages) =>
     SERVER !== undefined &&
     messages.length > 0 &&
@@ -1126,105 +1344,150 @@
   /** the one line whose box should take the caret on this draw */
   let focusLine;
 
-  const noteZone = (path, line, _isEditing, { done }) => {
-    const zone = document.createElement("div");
-    zone.className = "note-zone";
+  /**
+   * the note ui that sits in a monaco view zone under its line: the thread so
+   * far, and a box that is always open, because replying is the point rather
+   * than a mode you have to enter
+   */
+  const NoteZone = ({ path, line, done }) => {
+    useStore(notesStore);
     const messages = messagesOf(noteAt(path, line));
     const draftKey = `${path}:${line}`;
+    const [draft, setDraft] = useState(drafts.get(draftKey) ?? "");
+    const textareaRef = useRef(null);
 
-    // the conversation so far: what you asked for, what the agent said back
-    if (messages.length > 0) {
-      const thread = document.createElement("div");
-      thread.className = "note-thread";
-      for (const message of messages) {
-        const bubble = document.createElement("p");
-        bubble.className = `note-message note-from-${message.from}`;
-        const who = document.createElement("span");
-        who.className = "note-who";
-        who.textContent = message.from === "agent" ? "claude" : "you";
-        bubble.append(who, document.createTextNode(message.text));
-        thread.append(bubble);
+    // only the box just opened takes the caret - a poll redrawing every zone
+    // must not steal it from wherever you are typing
+    useLayoutEffect(() => {
+      if (focusLine !== line) {
+        return;
       }
-      if (awaitingReply(messages)) {
-        const pending = document.createElement("div");
-        pending.className = "note-pending";
-        const dots = document.createElement("span");
-        dots.className = "dots";
-        dots.innerHTML = "<i></i><i></i><i></i>";
-        const label = document.createElement("span");
-        label.textContent = "claude is on it — the reply lands here";
-        pending.append(dots, label);
-        thread.append(pending);
-      }
-      zone.append(thread);
-    }
+      focusLine = undefined;
+      // monaco puts a zone's dom into the document on its own render frame,
+      // not when the zone is added, and focusing an element that is not in the
+      // document yet does nothing at all - so ask until it takes
+      let attempts = 0;
+      const takeCaret = () => {
+        const textarea = textareaRef.current;
+        if (textarea === null) {
+          return;
+        }
+        textarea.focus();
+        if (document.activeElement !== textarea && (attempts += 1) < 10) {
+          requestAnimationFrame(takeCaret);
+        }
+      };
+      takeCaret();
+    }, [line]);
 
-    const actions = document.createElement("div");
-    actions.className = "note-actions";
-
-    // the box is always open: replying is the point, not a mode you enter
-    const textarea = document.createElement("textarea");
-    textarea.rows = 2;
-    textarea.value = drafts.get(draftKey) ?? "";
-    textarea.placeholder =
-      messages.length === 0 ?
-        `note on line ${line} — ask for a change, or say what you think`
-      : "reply…";
-    textarea.addEventListener("input", () => drafts.set(draftKey, textarea.value));
-
-    const send = noteButton(messages.length === 0 ? "Save note" : "Send", () => {
-      sayOnNote(path, line, textarea.value);
+    const send = () => {
+      sayOnNote(path, line, draft);
       drafts.delete(draftKey);
       focusLine = line;
       done();
-    });
+    };
 
-    actions.append(
-      send,
-      ...(messages.length === 0 ?
-        [
-          noteButton("Cancel", () => {
-            drafts.delete(draftKey);
-            done();
-          }),
-        ]
-      : [
-          noteButton("Delete", () => {
-            drafts.delete(draftKey);
-            removeNote(path, line);
-            done();
-          }),
-        ]),
-    );
+    const type = (value) => {
+      drafts.set(draftKey, value);
+      setDraft(value);
+    };
 
-    const stamp = document.createElement("span");
-    stamp.className = "note-stamp";
-    stamp.textContent = `line ${line} · ⌘↵ sends`;
-    actions.append(stamp);
+    // the zone's own dom node belongs to monaco, which writes an inline display
+    // onto it - so the layout lives on a wrapper of ours inside it
+    return html`<div class="note-zone">
+      ${messages.length > 0 &&
+      html`<div class="note-thread">
+        ${messages.map(
+          (message, index) => html`
+            <p class="note-message note-from-${message.from}" key=${index}>
+              <span class="note-who">${message.from === "agent" ? "claude" : "you"}</span>
+              ${message.text}
+            </p>
+          `,
+        )}
+        ${awaitingReply(messages) &&
+        html`<div class="note-pending">
+          <span class="dots"><i /><i /><i /></span>
+          <span>claude is on it — the reply lands here</span>
+        </div>`}
+      </div>`}
 
-    textarea.addEventListener("keydown", (event) => {
-      if (event.key === "Enter" && (event.metaKey || event.ctrlKey)) {
-        send.click();
-      }
-    });
+      <textarea
+        ref=${textareaRef}
+        rows="2"
+        value=${draft}
+        placeholder=${messages.length === 0 ?
+          `note on line ${line} — ask for a change, or say what you think`
+        : "reply…"}
+        onInput=${(event) => type(event.currentTarget.value)}
+        onKeyDown=${(event) => {
+          if (event.key === "Enter" && (event.metaKey || event.ctrlKey)) {
+            send();
+          }
+        }}
+      />
 
-    zone.append(textarea, actions);
-    // only the box just opened takes the caret - a poll redrawing every zone
-    // must not steal it from wherever you are typing
-    if (focusLine === line) {
-      focusLine = undefined;
-      queueMicrotask(() => textarea.focus());
-    }
-    return zone;
+      <div class="note-actions">
+        <button type="button" onClick=${send}>
+          ${messages.length === 0 ? "Save note" : "Send"}
+        </button>
+        ${messages.length === 0 ?
+          html`<button
+            type="button"
+            onClick=${() => {
+              drafts.delete(draftKey);
+              done();
+            }}
+          >
+            Cancel
+          </button>`
+        : html`<button
+            type="button"
+            onClick=${() => {
+              drafts.delete(draftKey);
+              removeNote(path, line);
+              done();
+            }}
+          >
+            Delete
+          </button>`}
+        <span class="note-stamp">line ${line} · ⌘↵ sends</span>
+      </div>
+    </div>`;
   };
 
-  /* ---- the diff editor ---------------------------------------------------- */
+  /** the patch, rendered as coloured lines - the fallback when monaco is absent */
+  const diffLineClass = (line) => {
+    if (line.startsWith("@@")) return "dl dl-hunk";
+    if (line.startsWith("+")) return "dl dl-add";
+    if (line.startsWith("-")) return "dl dl-rm";
+    if (line.startsWith("…")) return "dl dl-meta";
+    return "dl";
+  };
 
-  const renderMonacoDiff = (host, path, bar, setCounts) => {
+  // the lines are the pre's only children: any literal whitespace in the
+  // template around them would print as part of the patch
+  const PatchDiff = ({ path }) =>
+    html`<div class="diff-body">
+      <pre>
+        ${(DIFFS[path] ?? "")
+          .split("\n")
+          .map(
+            (line, index) =>
+              html`<span class=${diffLineClass(line)} key=${index}>
+                ${line === "" ? " " : line}
+              </span>`,
+          )}
+      </pre>
+    </div>`;
+
+  /**
+   * creates the monaco diff editor for one file and everything hung off it:
+   * saving back to the working tree, and the note zones. Imperative by nature -
+   * monaco owns this dom - and reports back through the setters it is given
+   */
+  const createDiffEditor = (host, path, { setCounts, setDirty, setStatus }) => {
     const side = SIDES[path];
-    if (side === undefined) {
-      return false;
-    }
     const language = languageFor(path);
     const editor = monaco.editor.createDiffEditor(host, {
       // served, the working copy is editable and can be written back
@@ -1246,18 +1509,18 @@
     });
     // the model's uri decides the typescript worker's script kind, so it has to
     // carry the real extension - an extensionless uri parses .tsx as .ts
-    const modelFor = (content, side) =>
+    const modelFor = (content, which) =>
       monaco.editor.createModel(
         content,
         language,
-        monaco.Uri.parse(`inmemory://review/${side}/${path}`),
+        monaco.Uri.parse(`inmemory://review/${which}/${path}`),
       );
+    const original = modelFor(side.before, "original");
     const modified = modelFor(side.after, "modified");
-    editor.setModel({ original: modelFor(side.before, "original"), modified });
+    editor.setModel({ original, modified });
 
     const modifiedEditor = editor.getModifiedEditor();
 
-    /* saving back to the working tree */
     let sha = side.sha;
     let dirty = false;
 
@@ -1267,9 +1530,8 @@
     // without a server they'd be dead controls, so standalone opens stay
     // read-only and none of this wiring runs at all
     if (SERVER !== undefined) {
-      /* notes: a view zone under each noted line, plus a gutter mark */
       let zoneIds = [];
-      let decorations = modifiedEditor.createDecorationsCollection([]);
+      const decorations = modifiedEditor.createDecorationsCollection([]);
       let editing;
 
       const drawNotes = () => {
@@ -1285,6 +1547,18 @@
           zoneIds = [...lines].map((line) => {
             const isEditing = line === editing;
             const said = messagesOf(noteAt(path, line)).length;
+            const domNode = document.createElement("div");
+            render(
+              html`<${NoteZone}
+                path=${path}
+                line=${line}
+                done=${() => {
+                  editing = undefined;
+                  drawNotes();
+                }}
+              />`,
+              domNode,
+            );
             return accessor.addZone({
               afterLineNumber: line,
               // grows with the conversation, up to the thread's own scroll cap
@@ -1292,16 +1566,7 @@
               // without this the editor eats the mousedown before the note's own
               // controls ever see it
               suppressMouseDown: false,
-              domNode: noteZone(path, line, isEditing, {
-                edit: (atLine) => {
-                  editing = atLine;
-                  drawNotes();
-                },
-                done: () => {
-                  editing = undefined;
-                  drawNotes();
-                },
-              }),
+              domNode,
             });
           });
         });
@@ -1325,6 +1590,7 @@
         keybindings: [monaco.KeyMod.Alt | monaco.KeyCode.KeyN],
         run: (instance) => {
           editing = instance.getPosition().lineNumber;
+          focusLine = editing;
           drawNotes();
         },
       });
@@ -1353,68 +1619,15 @@
       modifiedEditor.onMouseDown((event) => {
         if (event.target.type === monaco.editor.MouseTargetType.GUTTER_GLYPH_MARGIN) {
           editing = event.target.position.lineNumber;
+          focusLine = editing;
           drawNotes();
         }
       });
 
-      const button = document.createElement("button");
-      button.type = "button";
-      button.className = "save";
-      button.textContent = "Save";
-      button.disabled = true;
-
-      const revert = document.createElement("button");
-      revert.type = "button";
-      revert.className = "save revert";
-      revert.textContent = "Revert";
-      revert.title = "back to the content this review was built from";
-
-      const state = document.createElement("span");
-      const hint = document.createElement("span");
-      hint.className = "hint";
-      hint.textContent = "editable — hover a line and click + to add a note";
-      bar.append(hint, state, revert, button);
-
-      // puts the file back the way the review found it - but only in the
-      // editor, so nothing reaches disk without a deliberate Save
-      revert.addEventListener("click", () => {
-        modified.setValue(side.after);
-        state.className = "state-dirty";
-        state.textContent = "reverted — save to write it back";
-      });
-
       modified.onDidChangeContent(() => {
         dirty = true;
-        button.disabled = false;
-        state.className = "state-dirty";
-        state.textContent = "unsaved";
-      });
-
-      button.addEventListener("click", async () => {
-        button.disabled = true;
-        state.className = "";
-        state.textContent = "saving…";
-        const response = await fetch("/save", {
-          method: "POST",
-          headers: { "Content-Type": "application/json", "X-Review-Token": SERVER.token },
-          body: JSON.stringify({ path, content: modified.getValue(), sha }),
-        }).catch(() => undefined);
-
-        if (response?.ok) {
-          const result = await response.json();
-          sha = result.sha;
-          dirty = false;
-          setCounts(result.added, result.removed);
-          state.className = "state-saved";
-          state.textContent = `saved  +${result.added} −${result.removed}`;
-          return;
-        }
-        button.disabled = false;
-        state.className = "state-error";
-        state.textContent =
-          response?.status === 409 ?
-            "changed on disk — reload before saving"
-          : "save failed";
+        setDirty(true);
+        setStatus({ kind: "state-dirty", text: "unsaved" });
       });
 
       // the page follows the file: when an agent acts on a note the diff here
@@ -1429,17 +1642,12 @@
           }
           modified.setValue(file.after);
           sha = file.sha;
-          dirty = false;
-          setCounts(file.added, file.removed);
+          setDirty(false);
+          setCounts([file.added, file.removed]);
         },
       });
 
       drawNotes();
-    } else {
-      const hint = document.createElement("span");
-      hint.className = "hint";
-      hint.textContent = "read-only — open with serve.py to edit and leave review notes";
-      bar.append(hint);
     }
 
     editor.onDidUpdateDiff(() => {
@@ -1449,277 +1657,682 @@
       editor.layout();
     });
 
-    return true;
-  };
+    return {
+      dispose: () => {
+        liveEditors.delete(path);
+        editor.dispose();
+        original.dispose();
+        modified.dispose();
+      },
+      // puts the file back the way the review found it - but only in the
+      // editor, so nothing reaches disk without a deliberate Save
+      revert: () => {
+        modified.setValue(side.after);
+        setStatus({ kind: "state-dirty", text: "reverted — save to write it back" });
+      },
+      save: async () => {
+        setStatus({ kind: "", text: "saving…" });
+        const response = await fetch("/save", {
+          method: "POST",
+          headers: { "Content-Type": "application/json", "X-Review-Token": SERVER.token },
+          body: JSON.stringify({ path, content: modified.getValue(), sha }),
+        }).catch(() => undefined);
 
-  /** each row's open/close, so the header's open-all and close-all can drive them */
-  const diffToggles = [];
-  let diffPanelId = 0;
-
-  const rowElement = (item, onTickChange) => {
-    const row = document.createElement("div");
-    row.className = "row";
-
-    const checkbox = document.createElement("input");
-    checkbox.type = "checkbox";
-    checkbox.checked = ticked.has(item.path);
-    checkbox.setAttribute("aria-label", `Read ${item.path}`);
-    checkbox.addEventListener("change", () => {
-      if (checkbox.checked) {
-        ticked.add(item.path);
-      } else {
-        ticked.delete(item.path);
-      }
-      saveTicks();
-      updateMeter();
-      onTickChange();
-    });
-
-    const head = document.createElement("div");
-    head.className = "row-head";
-
-    const chip = document.createElement("span");
-    chip.className = `chip chip-${item.status}`;
-    chip.textContent = STATUS_LABEL[item.status] ?? item.status;
-
-    const path = document.createElement("button");
-    path.type = "button";
-    path.className = "path";
-    path.textContent = item.path;
-    path.title = "Copy path";
-    path.addEventListener("click", () => copyPath(path, item.path));
-
-    head.append(chip, path);
-
-    const href = LINKS?.[item.path];
-    if (href !== undefined) {
-      const link = document.createElement("a");
-      link.className = "github";
-      link.href = href;
-      link.target = "_blank";
-      link.rel = "noreferrer";
-      link.textContent = "GitHub ↗";
-      head.append(link);
-    }
-
-    const note = document.createElement("p");
-    note.className = "note";
-    // html, like the lede and the group blurbs - notes lean on <code> heavily
-    note.innerHTML = item.note ?? "";
-
-    const [added, removed] = STATS[item.path] ?? [0, 0];
-
-    const diff = document.createElement("div");
-    diff.className = "diff";
-
-    const toggle = document.createElement("button");
-    toggle.type = "button";
-    toggle.className = "diff-toggle";
-    toggle.setAttribute("aria-expanded", "false");
-    const label = document.createElement("span");
-    label.textContent = "Show diff";
-    const statAdd = document.createElement("span");
-    statAdd.className = "stat-add";
-    statAdd.textContent = `+${added}`;
-    const statRm = document.createElement("span");
-    statRm.className = "stat-rm";
-    statRm.textContent = `−${removed}`;
-    toggle.append(label, statAdd, statRm);
-
-    const panel = document.createElement("div");
-    panel.className = "diff-panel";
-    panel.hidden = true;
-    toggle.setAttribute("aria-controls", `diff-${diffPanelId++}`);
-    panel.id = toggle.getAttribute("aria-controls");
-
-    // rendered on first open, so dozens of diffs don't build up front
-    let rendered = false;
-
-    const setOpen = async (open) => {
-      panel.hidden = !open;
-      toggle.setAttribute("aria-expanded", String(open));
-      label.textContent = open ? "Hide diff" : "Show diff";
-      if (!open || rendered) {
-        return;
-      }
-      rendered = true;
-      const monacoModule = await loadMonaco();
-      const host = document.createElement("div");
-      host.className = "diff-monaco";
-      const bar = document.createElement("div");
-      bar.className = "editor-bar";
-      const setCounts = (added, removed) => {
-        statAdd.textContent = `+${added}`;
-        statRm.textContent = `−${removed}`;
-      };
-      if (monacoModule !== undefined && renderMonacoDiff(host, item.path, bar, setCounts)) {
-        panel.append(host, bar);
-        return;
-      }
-      const body = document.createElement("div");
-      body.className = "diff-body";
-      const pre = document.createElement("pre");
-      body.append(pre);
-      renderPatch(pre, item.path);
-      panel.append(body);
-    };
-
-    toggle.addEventListener("click", () => setOpen(panel.hidden));
-    diffToggles.push(setOpen);
-
-    diff.append(toggle, panel);
-    row.append(checkbox, head, note, diff);
-    return { row, checkbox };
-  };
-
-  const groupElement = (group, index) => {
-    const details = document.createElement("details");
-    details.className = "group";
-    details.open = true;
-
-    const summary = document.createElement("summary");
-
-    const groupTick = document.createElement("input");
-    groupTick.type = "checkbox";
-    groupTick.className = "group-tick";
-    groupTick.setAttribute("aria-label", `Tick every file in ${group.title}`);
-    // a summary toggles on any click inside it, so the tick has to keep its
-    // click to itself
-    groupTick.addEventListener("click", (event) => event.stopPropagation());
-
-    const step = document.createElement("span");
-    step.className = "step";
-    step.textContent = String(index + 1);
-
-    const title = document.createElement("span");
-    title.className = "group-title";
-    title.textContent = group.title;
-
-    const groupCount = document.createElement("span");
-    groupCount.className = "group-count";
-    groupCount.textContent = `${group.items.length} files`;
-
-    summary.append(groupTick, step, title, groupCount);
-
-    const body = document.createElement("div");
-    body.className = "group-body";
-
-    const blurb = document.createElement("p");
-    blurb.className = "blurb";
-    blurb.innerHTML = group.blurb ?? "";
-
-    const rows = document.createElement("div");
-    rows.className = "rows";
-
-    const rowChecks = [];
-    const refreshGroupTick = () => {
-      const done = rowChecks.filter((check) => check.checked).length;
-      groupTick.checked = done === rowChecks.length;
-      groupTick.indeterminate = done > 0 && done < rowChecks.length;
-    };
-
-    for (const item of group.items) {
-      const { row, checkbox } = rowElement(item, refreshGroupTick);
-      rowChecks.push(checkbox);
-      rows.append(row);
-    }
-
-    groupTick.addEventListener("change", () => {
-      for (const [position, checkbox] of rowChecks.entries()) {
-        checkbox.checked = groupTick.checked;
-        const { path } = group.items[position];
-        if (groupTick.checked) {
-          ticked.add(path);
-        } else {
-          ticked.delete(path);
+        if (response?.ok) {
+          const result = await response.json();
+          sha = result.sha;
+          dirty = false;
+          setDirty(false);
+          setCounts([result.added, result.removed]);
+          setStatus({ kind: "state-saved", text: `saved  +${result.added} −${result.removed}` });
+          return;
         }
+        setStatus({
+          kind: "state-error",
+          text: response?.status === 409 ? "changed on disk — reload before saving" : "save failed",
+        });
+      },
+    };
+  };
+
+  const MonacoDiff = ({ path, setCounts }) => {
+    const hostRef = useRef(null);
+    const controls = useRef(undefined);
+    const [fallback, setFallback] = useState(false);
+    const [dirty, setDirty] = useState(false);
+    const [status, setStatus] = useState({ kind: "", text: "" });
+
+    useEffect(() => {
+      let live = true;
+      loadMonaco().then((monacoModule) => {
+        if (!live) {
+          return;
+        }
+        if (monacoModule === undefined || SIDES[path] === undefined) {
+          setFallback(true);
+          return;
+        }
+        controls.current = createDiffEditor(hostRef.current, path, {
+          setCounts,
+          setDirty,
+          setStatus,
+        });
+      });
+      return () => {
+        live = false;
+        controls.current?.dispose();
+        controls.current = undefined;
+      };
+    }, [path, setCounts]);
+
+    if (fallback) {
+      return html`<${PatchDiff} path=${path} />`;
+    }
+
+    return html`
+      <div class="diff-monaco" ref=${hostRef} />
+      <div class="editor-bar">
+        <span class="hint">
+          ${SERVER === undefined ?
+            "read-only — open with serve.py to edit and leave review notes"
+          : "editable — hover a line and click + to add a note"}
+        </span>
+        <span class=${status.kind}>${status.text}</span>
+        ${SERVER !== undefined &&
+        html`<button
+          type="button"
+          class="save revert"
+          title="back to the content this review was built from"
+          onClick=${() => controls.current?.revert()}
+        >
+          Revert
+        </button>`}
+        ${SERVER !== undefined &&
+        html`<button
+          type="button"
+          class="save"
+          disabled=${!dirty}
+          onClick=${() => controls.current?.save()}
+        >
+          Save
+        </button>`}
+      </div>
+    `;
+  };
+
+  const Row = ({ file, ticked, collapsed, diffOpen, active, onTick, onCollapse, onDiff }) => {
+    const [counts, setCounts] = useState(STATS[file.path] ?? [0, 0]);
+    const [copied, setCopied] = useState(false);
+    // opening a diff mounts its editor; closing only hides it, so an unsaved
+    // edit survives the file being ticked away and reopened
+    const [mounted, setMounted] = useState(false);
+    const notes = useStore(notesStore)[file.path] ?? [];
+    const nodeRef = useRef(null);
+
+    // the sidebar scrolls to these, and the app watches them to know which file
+    // is being read
+    useEffect(() => {
+      nodeRef.current.dataset.rowId = file.id;
+      rowNodes.set(file.id, nodeRef.current);
+      return () => rowNodes.delete(file.id);
+    }, [file.id]);
+
+    useEffect(() => {
+      if (diffOpen) {
+        setMounted(true);
       }
-      saveTicks();
-      updateMeter();
-      refreshGroupTick();
-      // a group you have just declared read folds away, and comes back if you
-      // change your mind
-      details.open = !groupTick.checked;
-    });
+    }, [diffOpen]);
 
-    refreshGroupTick();
+    const copyPath = async () => {
+      try {
+        await navigator.clipboard.writeText(file.path);
+        setCopied(true);
+        setTimeout(() => setCopied(false), 900);
+      } catch {
+        /* clipboard blocked - the path is selectable anyway */
+      }
+    };
 
-    body.append(blurb, rows);
-    details.append(summary, body);
-    return details;
+    const [added, removed] = counts;
+    const href = LINKS?.[file.path];
+
+    return html`
+      <div
+        class="row ${ticked ? "is-ticked" : ""} ${active ? "is-active" : ""}"
+        ref=${nodeRef}
+        data-path=${file.path}
+      >
+        <div class="row-head" onClick=${() => onCollapse(!collapsed)}>
+          <input
+            class="tick"
+            type="checkbox"
+            checked=${ticked}
+            aria-label=${`Read ${file.path}`}
+            onClick=${(event) => event.stopPropagation()}
+            onChange=${(event) => onTick(event.currentTarget.checked)}
+          />
+          <span class="chip chip-${file.status}">
+            ${STATUS_LABEL[file.status] ?? file.status}
+          </span>
+          <button
+            type="button"
+            class="path ${copied ? "copied" : ""}"
+            title="Copy path"
+            onClick=${(event) => {
+              event.stopPropagation();
+              copyPath();
+            }}
+          >
+            ${file.path}
+          </button>
+          ${href !== undefined &&
+          html`<a
+            class="github"
+            href=${href}
+            target="_blank"
+            rel="noreferrer"
+            onClick=${(event) => event.stopPropagation()}
+          >
+            GitHub ↗
+          </a>`}
+          ${notes.length > 0 && html`<span class="note-count">${notes.length}</span>`}
+          <span class="row-stat">
+            <span class="stat-add">+${added}</span> <span class="stat-rm">−${removed}</span>
+          </span>
+          <button
+            type="button"
+            class="caret"
+            aria-expanded=${String(!collapsed)}
+            aria-label=${collapsed ? "Expand this file" : "Collapse this file"}
+            onClick=${(event) => {
+              event.stopPropagation();
+              onCollapse(!collapsed);
+            }}
+          >
+            ${collapsed ? "▸" : "▾"}
+          </button>
+        </div>
+
+        <div class="row-body" hidden=${collapsed}>
+          <p class="note" dangerouslySetInnerHTML=${{ __html: file.note ?? "" }} />
+          <div class="diff">
+            <button
+              type="button"
+              class="diff-toggle"
+              aria-expanded=${String(diffOpen)}
+              onClick=${() => onDiff(!diffOpen)}
+            >
+              <span>${diffOpen ? "Hide diff" : "Show diff"}</span>
+            </button>
+            ${mounted &&
+            html`<div hidden=${!diffOpen}>
+              <${MonacoDiff} path=${file.path} setCounts=${setCounts} />
+            </div>`}
+          </div>
+        </div>
+      </div>
+    `;
+  };
+
+  const Group = ({ group, index, files, open, state }) => {
+    const done = files.filter((file) => state.ticked.has(file.path)).length;
+
+    return html`
+      <section class="group ${open ? "is-open" : ""}">
+        <div class="group-head" onClick=${() => state.openGroup(index, !open)}>
+          <input
+            class="tick"
+            type="checkbox"
+            checked=${done === files.length}
+            indeterminate=${done > 0 && done < files.length}
+            aria-label=${`Tick every file in ${group.title}`}
+            onClick=${(event) => event.stopPropagation()}
+            onChange=${(event) => state.tickGroup(index, event.currentTarget.checked)}
+          />
+          <span class="step">${index + 1}</span>
+          <span class="group-title">${group.title}</span>
+          <span class="group-count">${done}/${files.length} files</span>
+          <button
+            type="button"
+            class="caret"
+            aria-expanded=${String(open)}
+            aria-label=${open ? "Collapse this group" : "Expand this group"}
+            onClick=${(event) => {
+              event.stopPropagation();
+              state.openGroup(index, !open);
+            }}
+          >
+            ${open ? "▾" : "▸"}
+          </button>
+        </div>
+
+        <div class="group-body" hidden=${!open}>
+          <p class="blurb" dangerouslySetInnerHTML=${{ __html: group.blurb ?? "" }} />
+          <div class="rows">
+            ${files.map(
+              (file) => html`
+                <${Row}
+                  key=${file.id}
+                  file=${file}
+                  ticked=${state.ticked.has(file.path)}
+                  collapsed=${state.collapsed.has(file.id)}
+                  diffOpen=${state.openDiffs.has(file.id)}
+                  active=${state.activeId === file.id}
+                  onTick=${(on) => state.tickFile(file, on)}
+                  onCollapse=${(on) => state.collapseFile(file.id, on)}
+                  onDiff=${(on) => state.openDiff(file.id, on)}
+                />
+              `,
+            )}
+          </div>
+        </div>
+      </section>
+    `;
+  };
+
+  const basename = (path) => path.slice(path.lastIndexOf("/") + 1);
+  const dirname = (path) => (path.includes("/") ? path.slice(0, path.lastIndexOf("/")) : "");
+
+  /** narrow enough that the contents overlays the reading rather than sitting
+      beside it - so it starts closed, and closes again once it has been used */
+  const contentsWouldOverlay = () => window.matchMedia("(max-width: 60rem)").matches;
+
+  const Sidebar = ({ state }) => {
+    const notes = useStore(notesStore);
+
+    return html`
+      <aside class="sidebar" id="contents" aria-label="Contents">
+        <p class="sidebar-title">contents</p>
+        <nav>
+          <ol class="tree">
+            ${GROUPS.map((group, index) => {
+              const files = FILES.filter((file) => file.groupIndex === index);
+              const done = files.filter((file) => state.ticked.has(file.path)).length;
+              return html`
+                <li class="tree-group" key=${index}>
+                  <div class="tree-group-head">
+                    <input
+                      class="tick small"
+                      type="checkbox"
+                      checked=${done === files.length}
+                      indeterminate=${done > 0 && done < files.length}
+                      aria-label=${`Tick every file in ${group.title}`}
+                      onChange=${(event) => state.tickGroup(index, event.currentTarget.checked)}
+                    />
+                    <span class="tree-step">${index + 1}</span>
+                    <button
+                      type="button"
+                      class="tree-group-title"
+                      title=${group.title}
+                      onClick=${() => state.goTo(files[0])}
+                    >
+                      ${group.title}
+                    </button>
+                    <span class="tree-count">${done}/${files.length}</span>
+                  </div>
+                  <ul class="tree-files">
+                    ${files.map((file) => {
+                      const ticked = state.ticked.has(file.path);
+                      const noted = (notes[file.path] ?? []).length;
+                      return html`
+                        <li
+                          class="tree-file ${ticked ? "is-ticked" : ""} ${
+                            state.activeId === file.id ? "is-active" : ""
+                          }"
+                          key=${file.id}
+                        >
+                          <input
+                            class="tick small"
+                            type="checkbox"
+                            checked=${ticked}
+                            aria-label=${`Read ${file.path}`}
+                            onChange=${(event) => state.tickFile(file, event.currentTarget.checked)}
+                          />
+                          <button
+                            type="button"
+                            class="tree-file-link"
+                            title=${file.path}
+                            onClick=${() => state.goTo(file)}
+                          >
+                            <span class="tree-base">${basename(file.path)}</span>
+                            <span class="tree-dir"><span>${dirname(file.path)}</span></span>
+                          </button>
+                          ${noted > 0 && html`<span class="note-count">${noted}</span>`}
+                        </li>
+                      `;
+                    })}
+                  </ul>
+                </li>
+              `;
+            })}
+          </ol>
+        </nav>
+      </aside>
+    `;
+  };
+
+  const Toasts = () => {
+    const toasts = useStore(toastStore);
+    return html`
+      <div class="toasts" aria-live="polite">
+        ${toasts.map(
+          (entry) => html`
+            <div
+              class="toast toast-${entry.kind} ${entry.leaving ? "leaving" : ""}"
+              role="status"
+              key=${entry.id}
+            >
+              ${entry.text}
+            </div>
+          `,
+        )}
+      </div>
+    `;
+  };
+
+  const Header = ({ state }) => {
+    const [copyLabel, setCopyLabel] = useState("Copy notes");
+    const [handoffLabel, setHandoffLabel] = useState("Send notes to agent");
+    const headerRef = useRef(null);
+
+    // the sidebar and the group headings stick below this header, whatever
+    // height its controls wrap to
+    useLayoutEffect(() => {
+      const measure = () =>
+        document.documentElement.style.setProperty(
+          "--header-height",
+          `${headerRef.current.getBoundingClientRect().height}px`,
+        );
+      const observer = new ResizeObserver(measure);
+      observer.observe(headerRef.current);
+      measure();
+      return () => observer.disconnect();
+    }, []);
+
+    const copyNotes = async () => {
+      const markdown = notesAsMarkdown();
+      if (markdown === "") {
+        setCopyLabel("No notes yet");
+      } else {
+        await navigator.clipboard.writeText(markdown).catch(() => undefined);
+        setCopyLabel("Notes copied");
+      }
+      setTimeout(() => setCopyLabel("Copy notes"), 1_200);
+    };
+
+    const handOff = async () => {
+      const response = await fetch("/handoff", {
+        method: "POST",
+        headers: { "Content-Type": "application/json", "X-Review-Token": SERVER.token },
+        body: JSON.stringify(notesStore.get()),
+      }).catch(() => undefined);
+      const result = response?.ok ? await response.json() : undefined;
+      setHandoffLabel(
+        result === undefined ? "Send failed"
+        : result.count === 0 ? "No notes yet"
+        : `Sent ${result.count} — ask the agent to pick them up`,
+      );
+      setTimeout(() => setHandoffLabel("Send notes to agent"), 4_000);
+    };
+
+    const done = state.ticked.size;
+
+    return html`
+      <header class="top" ref=${headerRef}>
+        <div class="top-inner">
+          <p class="top-title">${META.headerTitle ?? META.title}</p>
+          <div class="meter">
+            <div class="track">
+              <div
+                class="fill"
+                style=${`width: ${TOTAL === 0 ? 0 : (done / TOTAL) * 100}%`}
+              />
+            </div>
+            <span class="count">${done}/${TOTAL}</span>
+          </div>
+          <div class="controls">
+            <button
+              class="control"
+              type="button"
+              aria-pressed=${String(state.showContents)}
+              aria-controls="contents"
+              onClick=${() => state.setShowContents(!state.showContents)}
+            >
+              Contents
+            </button>
+            <button class="control" type="button" onClick=${() => state.setAllDiffs(true)}>
+              Open all diffs
+            </button>
+            <button class="control" type="button" onClick=${() => state.setAllDiffs(false)}>
+              Close all
+            </button>
+            <button class="control" type="button" onClick=${copyNotes}>${copyLabel}</button>
+            ${SERVER !== undefined &&
+            html`<button class="control" type="button" onClick=${handOff}>
+              ${handoffLabel}
+            </button>`}
+            <button class="control" type="button" onClick=${state.clearTicks}>Clear ticks</button>
+          </div>
+        </div>
+      </header>
+    `;
+  };
+
+  const Intro = () => {
+    const totals = Object.values(STATS).reduce(
+      ([added, removed], [a, r]) => [added + a, removed + r],
+      [0, 0],
+    );
+    const facts = [`${TOTAL} files`, `+${totals[0]} −${totals[1]} lines`, ...(META.facts ?? [])];
+
+    return html`
+      <section class="intro">
+        <p class="eyebrow">${META.eyebrow ?? "reading order"}</p>
+        <h1>${META.title}</h1>
+        <p class="lede" dangerouslySetInnerHTML=${{ __html: META.lede ?? "" }} />
+        <ul class="facts">
+          ${facts.map(
+            (fact, index) => html`<li key=${index} dangerouslySetInnerHTML=${{ __html: fact }} />`,
+          )}
+        </ul>
+        ${SERVER === undefined &&
+        html`<div class="callout">
+          <strong>Read-only build.</strong> This review was generated in a sandbox, so there is no
+          live agent behind this page — leaving in-page notes and chatting back to the agent are not
+          possible here. Read and tick through; to send feedback, paste it into your chat with the
+          agent.
+        </div>`}
+      </section>
+    `;
+  };
+
+  /* ---- the app ------------------------------------------------------------ */
+
+  const App = () => {
+    const [ticked, setTicked] = useState(INITIAL_TICKS);
+    // a file already read loads folded away, so a reload picks up where the
+    // reading did rather than reopening everything
+    const [collapsed, setCollapsed] = useState(
+      () => new Set(FILES.filter((file) => ticked.has(file.path)).map((file) => file.id)),
+    );
+    const [closedGroups, setClosedGroups] = useState(
+      () =>
+        new Set(
+          GROUPS.map((group, index) => index).filter((index) =>
+            FILES.filter((file) => file.groupIndex === index).every((file) =>
+              ticked.has(file.path),
+            ),
+          ),
+        ),
+    );
+    const [openDiffs, setOpenDiffs] = useState(() => new Set());
+    const [showContents, setShowContents] = useState(() => !contentsWouldOverlay());
+    const [activeId, setActiveId] = useState(FILES[0]?.id);
+    const [scrollTo, setScrollTo] = useState(undefined);
+    const loaded = useRef(false);
+
+    useEffect(() => {
+      // the first run is the state that was just read back, and writing it
+      // straight out again would only race the poll with itself
+      if (loaded.current) {
+        saveTicks(ticked);
+      }
+      loaded.current = true;
+    }, [ticked]);
+
+    // another tab on this review moving the file on under us: take its ticks,
+    // and fold away whatever it has read since - but never unfold anything, or
+    // it would reopen files deliberately folded here
+    useEffect(
+      () =>
+        adoptTicks.subscribe(() => {
+          const fresh = adoptTicks.get();
+          setTicked(fresh);
+          setCollapsed((folded) =>
+            FILES.reduce(
+              (set, file) =>
+                fresh.has(file.path) && !ticked.has(file.path) ?
+                  withMembership(set, file.id, true)
+                : set,
+              folded,
+            ),
+          );
+        }),
+      [ticked],
+    );
+
+    const tickFile = (file, on) => {
+      setTicked((previous) => withMembership(previous, file.path, on));
+      // reading a file folds it away; changing your mind brings it back
+      setCollapsed((previous) => withMembership(previous, file.id, on));
+    };
+
+    const tickGroup = (index, on) => {
+      const files = FILES.filter((file) => file.groupIndex === index);
+      setTicked((previous) =>
+        files.reduce((set, file) => withMembership(set, file.path, on), previous),
+      );
+      setCollapsed((previous) =>
+        files.reduce((set, file) => withMembership(set, file.id, on), previous),
+      );
+      setClosedGroups((previous) => withMembership(previous, index, on));
+    };
+
+    const goTo = (file) => {
+      if (file === undefined) {
+        return;
+      }
+      setClosedGroups((previous) => withMembership(previous, file.groupIndex, false));
+      setCollapsed((previous) => withMembership(previous, file.id, false));
+      setActiveId(file.id);
+      setScrollTo(file.id);
+      followScrollAfter = performance.now() + 1_000;
+      if (contentsWouldOverlay()) {
+        setShowContents(false);
+      }
+    };
+
+    // scrolling waits for the render that opened whatever the file was inside
+    useEffect(() => {
+      if (scrollTo === undefined) {
+        return;
+      }
+      rowNodes.get(scrollTo)?.scrollIntoView({ block: "start", behavior: "smooth" });
+      setScrollTo(undefined);
+    }, [scrollTo]);
+
+    /* which file the reader is on, so the sidebar tracks the main pane */
+    useEffect(() => {
+      const order = FILES.map((file) => file.id);
+      const inView = new Set();
+      const observer = new IntersectionObserver(
+        (entries) => {
+          for (const entry of entries) {
+            if (entry.isIntersecting) {
+              inView.add(entry.target.dataset.rowId);
+            } else {
+              inView.delete(entry.target.dataset.rowId);
+            }
+          }
+          const first = order.find((id) => inView.has(id));
+          if (first !== undefined && performance.now() > followScrollAfter) {
+            setActiveId(first);
+          }
+        },
+        // only the top band of the viewport counts as "where you are"
+        { rootMargin: "-25% 0px -60% 0px" },
+      );
+      for (const node of rowNodes.values()) {
+        observer.observe(node);
+      }
+      return () => observer.disconnect();
+    }, []);
+
+    const state = {
+      ticked,
+      collapsed,
+      openDiffs,
+      activeId,
+      showContents,
+      setShowContents,
+      tickFile,
+      tickGroup,
+      goTo,
+      collapseFile: (id, on) => setCollapsed((previous) => withMembership(previous, id, on)),
+      openGroup: (index, on) => setClosedGroups((previous) => withMembership(previous, index, !on)),
+      openDiff: (id, on) => setOpenDiffs((previous) => withMembership(previous, id, on)),
+      // one control for the whole page: everything open to read, or everything
+      // folded back to the bare reading order
+      setAllDiffs: (on) => {
+        setOpenDiffs(on ? new Set(FILES.map((file) => file.id)) : new Set());
+        setCollapsed(on ? new Set() : new Set(FILES.map((file) => file.id)));
+        if (on) {
+          setClosedGroups(new Set());
+        }
+      },
+      clearTicks: () => {
+        setTicked(new Set());
+        setCollapsed(new Set());
+        setClosedGroups(new Set());
+      },
+    };
+
+    return html`
+      <${Header} state=${state} />
+      <div class="layout">
+        ${showContents && html`<${Sidebar} state=${state} />`}
+        <div class="shell">
+          <${Intro} />
+          <main>
+            ${GROUPS.map(
+              (group, index) => html`
+                <${Group}
+                  key=${index}
+                  group=${group}
+                  index=${index}
+                  files=${FILES.filter((file) => file.groupIndex === index)}
+                  open=${!closedGroups.has(index)}
+                  state=${state}
+                />
+              `,
+            )}
+          </main>
+          <footer dangerouslySetInnerHTML=${{ __html: META.footer ?? "" }} />
+        </div>
+      </div>
+      <${Toasts} />
+    `;
   };
 
   await loadNotes();
+  const INITIAL_TICKS = await loadTicks();
+  lastFromServer = ticksSignature(INITIAL_TICKS);
+  render(html`<${App} />`, document.getElementById("app"));
 
-  const groupsElement = document.getElementById("groups");
-  GROUPS.forEach((group, index) => groupsElement.append(groupElement(group, index)));
+  /* ---- the page follows the working tree ----------------------------------
+     an agent acting on a note shows up here within a couple of seconds, in the
+     diff and in the note's own thread */
 
-  const handoff = document.getElementById("handoff");
-  handoff.hidden = SERVER === undefined;
-  handoff.addEventListener("click", async () => {
-    const response = await fetch("/handoff", {
-      method: "POST",
-      headers: { "Content-Type": "application/json", "X-Review-Token": SERVER.token },
-      body: JSON.stringify(notes),
-    }).catch(() => undefined);
-    const result = response?.ok ? await response.json() : undefined;
-    handoff.textContent =
-      result === undefined ? "Send failed"
-      : result.count === 0 ? "No notes yet"
-      : `Sent ${result.count} — ask the agent to pick them up`;
-    setTimeout(() => {
-      handoff.textContent = "Send notes to agent";
-    }, 4_000);
-  });
-
-  document.getElementById("copyNotes").addEventListener("click", async (event) => {
-    const markdown = notesAsMarkdown();
-    const button = event.currentTarget;
-    if (markdown === "") {
-      button.textContent = "No notes yet";
-    } else {
-      await navigator.clipboard.writeText(markdown).catch(() => undefined);
-      button.textContent = "Notes copied";
-    }
-    setTimeout(() => {
-      button.textContent = "Copy notes";
-    }, 1_200);
-  });
-
-  const totals = Object.values(STATS).reduce(
-    ([added, removed], [a, r]) => [added + a, removed + r],
-    [0, 0],
-  );
-  const facts = [
-    `${total} files`,
-    `+${totals[0]} −${totals[1]} lines`,
-    ...(META.facts ?? []),
-  ];
-  document.getElementById("facts").innerHTML = facts
-    .map((fact) => `<li>${fact}</li>`)
-    .join("");
-
-  const setAllDiffs = (open) => {
-    for (const setOpen of diffToggles) {
-      setOpen(open);
-    }
-  };
-
-  document.getElementById("expand").addEventListener("click", () => setAllDiffs(true));
-  document.getElementById("collapse").addEventListener("click", () => setAllDiffs(false));
-
-  document.getElementById("reset").addEventListener("click", () => {
-    ticked = new Set();
-    saveTicks();
-    for (const checkbox of document.querySelectorAll('input[type="checkbox"]')) {
-      checkbox.checked = false;
-      checkbox.indeterminate = false;
-    }
-    updateMeter();
-  });
-
-  /* the page follows the working tree: an agent acting on a note shows up here
-     within a couple of seconds, in the diff and in the note's own thread */
   const agentSaid = (state) =>
     Object.entries(state.notes).flatMap(([path, forPath]) =>
       forPath.flatMap((note) => {
@@ -1757,11 +2370,19 @@
 
     const state = await response.json();
 
-    if (JSON.stringify(state.notes) !== JSON.stringify(notes)) {
+    // a tick made in another tab on this review; while this one has a write in
+    // flight the file is the stale side, so leave it alone
+    const incoming = ticksSignature(state.ticked ?? []);
+    if (incoming !== lastFromServer && ticksInFlight === 0) {
+      lastFromServer = incoming;
+      adoptTicks.set(new Set(state.ticked));
+    }
+
+    if (JSON.stringify(state.notes) !== JSON.stringify(notesStore.get())) {
       for (const { path, line, message } of agentSaid(state)) {
         toast(`${message.asking ? "claude asks" : "claude"} on ${path}:${line} — ${message.text}`);
       }
-      notes = state.notes;
+      notesStore.set(state.notes);
       for (const editor of liveEditors.values()) {
         editor.refreshNotes();
       }
@@ -1788,16 +2409,4 @@
   if (SERVER !== undefined) {
     setInterval(pollState, 2_000);
   }
-
-  // the group headings stick below the page header, whatever height it wraps to
-  const header = document.querySelector("header.top");
-  const measureHeader = () =>
-    document.documentElement.style.setProperty(
-      "--header-height",
-      `${header.getBoundingClientRect().height}px`,
-    );
-  new ResizeObserver(measureHeader).observe(header);
-  measureHeader();
-
-  updateMeter();
 </script>

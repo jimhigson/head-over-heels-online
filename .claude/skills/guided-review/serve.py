@@ -1,12 +1,19 @@
 #!/usr/bin/env python3
-"""Serve a built guided review, with save-back and note persistence.
+"""Serve a built guided review, with save-back, note and tick persistence.
 
 The page build.py writes is static and read-only. Served through here it gains
-two things: the modified side of each Monaco diff becomes editable with a Save
-button that writes to the working tree, and review notes persist to a json file
-beside the html instead of localStorage.
+three things: the modified side of each Monaco diff becomes editable with a Save
+button that writes to the working tree, and review notes and ticks persist to
+json files instead of localStorage.
 
     serve.py --html <scratchpad>/review.html [--repo .] [--port 0] [--open]
+
+Those files live in a directory named after the review's id (which build.py
+derives from what is being reviewed and embeds in the page), beside the html:
+
+    <scratchpad>/<review id>/{ticks.json, notes.json, notes.md, token}
+
+so rebuilding the same review anywhere picks up the progress it already has.
 
 Localhost only, and every write is gated on a token minted at startup plus the
 sha256 the page was built from - a file that moved on disk since then is a 409,
@@ -16,6 +23,7 @@ not a silent clobber.
 import argparse
 import hashlib
 import json
+import re
 import secrets
 import subprocess
 import sys
@@ -24,6 +32,7 @@ from http.server import BaseHTTPRequestHandler, ThreadingHTTPServer
 from pathlib import Path
 
 MARKER = "<!--REVIEW_SERVER-->"
+PAYLOAD = re.compile(r'<script type="application/json" id="payload">(?P<json>.*?)</script>', re.S)
 
 
 def parse_args() -> argparse.Namespace:
@@ -45,10 +54,26 @@ class Review:
     def __init__(self, html: Path, repo: Path) -> None:
         self.html = html
         self.repo = repo.resolve()
-        self.notes = html.with_suffix(".notes.json")
-        self.notes_markdown = html.with_suffix(".notes.md")
-        self.token = self.stable_token(html.with_suffix(".token"))
+        self.store = self.store_dir(html)
+        self.store.mkdir(parents=True, exist_ok=True)
+        self.notes = self.store / "notes.json"
+        self.notes_markdown = self.store / "notes.md"
+        self.ticks = self.store / "ticks.json"
+        self.token = self.stable_token(self.store / "token")
         self.seen = flatten(self.read_notes())
+
+    @staticmethod
+    def store_dir(html: Path) -> Path:
+        """where this review keeps everything that isn't the page itself.
+
+        Named by the review's own id, read back out of the payload build.py
+        embedded - so the same review rebuilt into a different scratchpad still
+        finds the ticks and notes it already has"""
+        found = PAYLOAD.search(html.read_text(encoding="utf-8"))
+        identifier = None if found is None else json.loads(found.group("json")).get("id")
+        if identifier is None:
+            raise SystemExit(f"{html} carries no review id - rebuild it with the current build.py")
+        return html.parent / identifier
 
     @staticmethod
     def stable_token(token_file: Path) -> str:
@@ -107,6 +132,18 @@ class Review:
         if len(counts) >= 2 and counts[0].isdigit():
             return {"added": int(counts[0]), "removed": int(counts[1])}
         return {"added": 0, "removed": 0}
+
+    def read_ticks(self) -> list:
+        """the paths read so far. Same tolerance as the notes: a half-written or
+        hand-edited file must not take the server down mid-review"""
+        try:
+            read = json.loads(self.ticks.read_text(encoding="utf-8")) if self.ticks.is_file() else []
+        except json.JSONDecodeError:
+            return []
+        return read if isinstance(read, list) else []
+
+    def write_ticks(self, ticked: list) -> None:
+        self.ticks.write_text(json.dumps(ticked, indent=2), encoding="utf-8")
 
     def read_notes(self) -> dict:
         # requests are served concurrently, so the notes file can be read while
@@ -207,7 +244,7 @@ def make_handler(review: Review) -> type[BaseHTTPRequestHandler]:
 
         def log_message(self, fmt: str, *args) -> None:  # quieter than the default
             # /state is polled every couple of seconds; logging it buries everything else
-            if self.path not in ("/notes", "/state"):
+            if self.path not in ("/notes", "/ticks", "/state"):
                 print(f"  {self.command} {self.path} → {args[1] if len(args) > 1 else ''}")
 
         def respond(self, status: int, body: bytes, content_type: str) -> None:
@@ -228,6 +265,8 @@ def make_handler(review: Review) -> type[BaseHTTPRequestHandler]:
                 self.respond(200, review.page(), "text/html; charset=utf-8")
             elif self.path == "/notes":
                 self.json_response(200, review.read_notes())
+            elif self.path == "/ticks":
+                self.json_response(200, {"ticked": review.read_ticks()})
             else:
                 self.json_response(404, {"error": "not found"})
 
@@ -263,6 +302,9 @@ def make_handler(review: Review) -> type[BaseHTTPRequestHandler]:
             elif self.path == "/notes":
                 review.write_notes(body)
                 self.json_response(200, {"ok": True})
+            elif self.path == "/ticks":
+                review.write_ticks(body.get("ticked", []))
+                self.json_response(200, {"ok": True})
             elif self.path == "/handoff":
                 self.json_response(200, {"count": review.hand_off(body)})
             elif self.path == "/state":
@@ -272,6 +314,7 @@ def make_handler(review: Review) -> type[BaseHTTPRequestHandler]:
                     200,
                     {
                         "notes": review.read_notes(),
+                        "ticked": review.read_ticks(),
                         "files": review.file_state(body.get("paths", [])),
                     },
                 )
@@ -295,6 +338,7 @@ def main() -> None:
 
     print(f"guided review on {url}")
     print(f"  editing {review.repo}")
+    print(f"  ticks   {review.ticks}")
     print(f"  notes   {review.notes_markdown}")
     print("  notes appear below as they are written; 'Send notes to agent' prints them all")
     print("  ctrl-c to stop", flush=True)

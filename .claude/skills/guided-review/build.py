@@ -26,12 +26,22 @@ import json
 import re
 import subprocess
 import sys
+import urllib.request
 from pathlib import Path
 
 SKILL_DIR = Path(__file__).resolve().parent
 DEFAULT_TEMPLATE = SKILL_DIR / "template.html"
 # this repo's own pixel font, used for the display role - harmless if absent
 DEFAULT_FONT = Path("src/_generated/font/blockstack-head-over-heels.woff2")
+
+# preact + hooks + htm in one umd bundle (~13KB), which the page's ui is built
+# from. It is inlined rather than pulled at runtime: the review has to keep
+# working opened as a file and published as an artifact, and both of those cut
+# the page off from any cdn - unlike monaco, which the page can do without, a
+# missing ui runtime would leave nothing on screen at all
+PREACT_VERSION = "3.1.1"
+PREACT_URL = f"https://cdn.jsdelivr.net/npm/htm@{PREACT_VERSION}/preact/standalone.umd.js"
+PREACT_VENDORED = SKILL_DIR / "vendor" / "htm-preact-standalone.umd.js"
 
 
 def parse_args() -> argparse.Namespace:
@@ -51,6 +61,14 @@ def parse_args() -> argparse.Namespace:
         ),
     )
     parser.add_argument("--repo", type=Path, default=None, help="repo root (default: git toplevel)")
+    parser.add_argument(
+        "--id",
+        help=(
+            "names the directory a served review keeps its ticks and notes in. "
+            "Derived from the repo and what is being reviewed when omitted, so "
+            "rebuilding the same review picks its progress back up"
+        ),
+    )
     parser.add_argument("--template", type=Path, default=DEFAULT_TEMPLATE)
     parser.add_argument("--font", type=Path, default=None, help="woff2 to inline as the display face")
     parser.add_argument("--max-diff-lines", type=int, default=400)
@@ -113,6 +131,48 @@ def sides_for(repo: Path, args: argparse.Namespace, path: str) -> dict[str, str]
 
 def sha256(text: str) -> str:
     return hashlib.sha256(text.encode("utf-8")).hexdigest()
+
+
+def preact_runtime() -> str:
+    """the vendored ui runtime, fetched from the cdn the first time it is wanted"""
+    if not PREACT_VENDORED.is_file():
+        print(f"fetching {PREACT_URL}")
+        PREACT_VENDORED.parent.mkdir(parents=True, exist_ok=True)
+        with urllib.request.urlopen(PREACT_URL, timeout=30) as response:
+            PREACT_VENDORED.write_bytes(response.read())
+    return PREACT_VENDORED.read_text(encoding="utf-8")
+
+
+def slug(text: str) -> str:
+    return re.sub(r"[^a-z0-9]+", "-", text.lower()).strip("-")[:40]
+
+
+def review_id(repo: Path, args: argparse.Namespace) -> str:
+    """what this review *is*, as a directory name.
+
+    Derived from the scope rather than from where the html happens to be
+    written, so the same review rebuilt tomorrow - a fresh scratchpad, another
+    port - finds the ticks and notes it already has. The scope deliberately
+    excludes the file list: a pr picking up another commit is still that pr,
+    and the reader's progress through it should survive"""
+    if args.id:
+        return args.id
+
+    if args.mode == "commit":
+        scope = f"commit-{args.ref}"
+    elif args.mode == "pr":
+        scope = f"pr-{args.pr}" if args.pr else f"pr-{args.base}-{args.head}"
+    else:
+        scope = f"worktree-{git(repo, 'rev-parse', '--abbrev-ref', 'HEAD').strip()}"
+
+    # the repository, not this checkout of it: a pr reviewed from a worktree and
+    # from the main checkout is the same review, and should resume as one
+    common = git(repo, "rev-parse", "--path-format=absolute", "--git-common-dir").strip()
+    home = Path(common).parent if common else repo.resolve()
+
+    # the hash disambiguates two repos of the same name; the readable half is
+    # for whoever is looking at the directory
+    return f"{slug(home.name)}-{slug(scope)}-{sha256(f'{home}|{scope}')[:8]}"
 
 
 def web_url(repo: Path, args: argparse.Namespace) -> str | None:
@@ -207,8 +267,10 @@ def main() -> None:
     font_path = args.font or (repo / DEFAULT_FONT)
     font = base64.b64encode(font_path.read_bytes()).decode() if font_path.is_file() else ""
 
+    identifier = review_id(repo, args)
     payload = json.dumps(
         {
+            "id": identifier,
             "meta": meta,
             "groups": groups,
             "diffs": diffs,
@@ -217,12 +279,18 @@ def main() -> None:
             "links": links,
         }
     )
-    # a literal </script> inside a diff would close the block early; \/ is a
-    # valid json escape, so the parser undoes this for free
-    payload = payload.replace("</", "<\\/")
+    # no literal `<` reaches the document: `</script>` would close the block
+    # early, and a reviewed file that quotes serve.py's `<!--REVIEW_SERVER-->`
+    # marker would otherwise have a script injected into the middle of the
+    # payload. < is a valid json escape, so the parser undoes this for free
+    payload = payload.replace("<", "\\u003c")
 
     html = args.template.read_text(encoding="utf-8")
-    for placeholder, value in (("FONT_B64", font), ("PAYLOAD_JSON", payload)):
+    for placeholder, value in (
+        ("FONT_B64", font),
+        ("PREACT_JS", preact_runtime()),
+        ("PAYLOAD_JSON", payload),
+    ):
         if placeholder not in html:
             raise SystemExit(f"template is missing the {placeholder} placeholder")
         html = html.replace(placeholder, value)
@@ -234,6 +302,7 @@ def main() -> None:
     print(f"{len(diffs)} files  +{total_added} −{total_removed}")
     print(f"wrote {args.out}  ({len(html.encode()) / 1024:.0f} KiB)")
     print(f"links   {forge if forge is not None else 'none (nothing to link to)'}")
+    print(f"id      {identifier}  (ticks and notes live in a directory of this name)")
     if empty:
         print(f"warning: no diff found for {len(empty)} file(s):", file=sys.stderr)
         for path in empty:
