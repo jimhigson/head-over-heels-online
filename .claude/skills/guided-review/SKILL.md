@@ -9,8 +9,9 @@ Produces a single HTML page, **served locally**: a reading order over every
 non-binary file in a commit/PR/working tree, grouped by theme (not a strict
 topological sort — group similar work together even where that means bending
 dependency order), with a short note per file, that file's **diff embedded
-inline**, and a checkbox that persists via localStorage. The page is the whole
-review: nothing has to be opened elsewhere to read the change.
+inline**, and a checkbox whose state persists — to the review's own file when
+served, so you can read it too. The page is the whole review: nothing has to be
+opened elsewhere to read the change.
 
 Serve it (step 8) rather than publishing it. A served page can be edited and
 saved back to the working tree and can keep its notes in a file; a published
@@ -29,8 +30,9 @@ part needing judgement is the middle one:
 | `resolvePr.sh` | a PR number/branch/url → the local refs to diff, fetched (forks included) |
 | `changedFiles.sh` | the scope's file list as `STATUS<TAB>PATH`, binaries dropped |
 | *(you)* | author a groups json: the grouping, the order, the per-file notes |
-| `build.py` | collects every diff *and* each file's whole before/after, strips/truncates/escapes, computes GitHub anchors, inlines the font, writes the finished HTML |
-| `template.html` | the page itself — palette, layout, diff rendering, notes, checkboxes |
+| `build.py` | collects every diff *and* each file's whole before/after, strips/truncates/escapes, computes GitHub anchors, inlines the font and the ui runtime, writes the finished HTML |
+| `template.html` | the page itself — a preact app: palette, layout, contents sidebar, diff rendering, notes, checkboxes |
+| `vendor/` | the preact+htm bundle `build.py` inlines; fetched from the cdn once and kept |
 | `serve.py` | serves the built page — how a review is normally delivered; its editors become editable and save back to the working tree |
 | `awaitNotes.py` | blocks until the reviewer writes a note, so you come back and act on it while they are still reading |
 | `reply.py` | answers a note in its own thread — what you did, or the one question you need answered |
@@ -274,7 +276,7 @@ python3 .claude/skills/guided-review/serve.py --html <scratchpad>/review.html --
 
 It prints a `http://127.0.0.1:<port>/` — hand that over as the review. Run it
 in the background so the session isn't blocked, and say which port it's on.
-Serving buys two things a file (or a published page) can't have:
+Serving buys three things a file (or a published page) can't have:
 
 - **Editable diffs.** The modified side of each Monaco editor becomes writable
   and grows Save and Revert. Every save carries the sha256 the page was built
@@ -284,9 +286,22 @@ Serving buys two things a file (or a published page) can't have:
   editor only*, leaving it dirty — nothing reaches disk without a deliberate
   Save, so a mis-click costs nothing.
 - **Notes that persist.** `alt-N` (or the editor's context menu) opens a note
-  on the current line; served, notes go to `<review>.notes.json` and a
-  markdown twin `<review>.notes.md` beside the html, so they survive a
-  rebuild. "Copy notes" lifts them out for a PR comment.
+  on the current line; served, notes go to `<store>/notes.json` and a markdown
+  twin `<store>/notes.md`, so they survive a rebuild. "Copy notes" lifts them
+  out for a PR comment.
+- **Ticks that are a file, not a browser.** What has been read goes to
+  `<store>/ticks.json` — so it survives a rebuild into a different scratchpad
+  or onto a different port, two tabs on one review agree, and **you can read
+  how far the reading has got** (`cat <store>/ticks.json`) rather than having
+  to ask. Unserved, ticks fall back to localStorage keyed by review id.
+
+`<store>` is `<the html's directory>/<review id>/`, and holds all four of
+`ticks.json`, `notes.json`, `notes.md` and `token`. `serve.py` prints it at
+startup, and `build.py` prints the id it derived. The id comes from the repo
+and *what* is being reviewed (the commit, the pr number, the branch for a
+working tree) rather than from where the html was written, so the same review
+rebuilt tomorrow resumes; `--id` overrides it when two reviews of one scope
+need to stay apart.
 
 ### Act on notes as they are written
 
@@ -302,7 +317,7 @@ When a note arrives, one of two things happens:
   in the thread:
 
   ```bash
-  python3 .claude/skills/guided-review/reply.py --notes <review>.notes.json \
+  python3 .claude/skills/guided-review/reply.py --notes <store>/notes.json \
     --path src/ui/useStableValue.ts --line 7 \
     --text "moved to src/util/preact/useStableValue.ts, import sites updated"
   ```
@@ -325,7 +340,7 @@ Three ways notes reach you, in order of usefulness:
 
 ```bash
 # blocks until a note is written, then prints it and exits - run in the background
-python3 .claude/skills/guided-review/awaitNotes.py --notes <review>.notes.json
+python3 .claude/skills/guided-review/awaitNotes.py --notes <store>/notes.json
 ```
 
 - `awaitNotes.py` finishing is what brings you back into the conversation. Run
@@ -336,7 +351,7 @@ python3 .claude/skills/guided-review/awaitNotes.py --notes <review>.notes.json
   `note <path>:<line> <text>`.
 - "Send notes to agent" in the header prints the lot between
   `=== N review note(s) handed off ===` markers and rewrites
-  `<review>.notes.md` — the reviewer's "I'm done, over to you" signal. Tell
+  `<store>/notes.md` — the reviewer's "I'm done, over to you" signal. Tell
   them it is there.
 
 If a note is ambiguous, ask about that one note rather than stopping the
@@ -349,15 +364,16 @@ page for reading, but only `serve.py` answers `/save` and `/notes`.
 ### Non-reachable mode (sandbox): send the file as-is
 
 When `REACHABLE_FROM_INTERNET` is unset/falsy, the built `review.html` is
-already a **single self-contained file** (font inlined, every diff and
-before/after embedded, Monaco pulled from the CDN at runtime) that **branches
-at runtime** on `window.__reviewServer`: only `serve.py` injects that, so
-opened directly the page is cleanly read-only — the per-line note-authoring
-UI never wires up (no gutter `+` glyph, no `alt-N`/context-menu action, no
-view zones), and Save/Revert/"Send notes to agent" stay hidden. Everything
-else works the same as served: reading order, groups, blurbs, per-file notes
-*text*, status chips, path/GitHub links, the Monaco diffs (with the plain
-fallback for offline/CSP), and the checkboxes + progress bar. There is
+already a **single self-contained file** (font and ui runtime inlined, every
+diff and before/after embedded, Monaco pulled from the CDN at runtime) that
+**branches at runtime** on `window.__reviewServer`: only `serve.py` injects
+that, so opened directly the page is cleanly read-only — the per-line
+note-authoring UI never wires up (no gutter `+` glyph, no `alt-N`/context-menu
+action, no view zones), and Save/Revert/"Send notes to agent" stay hidden.
+Everything else works the same as served: reading order, groups, blurbs, the
+contents sidebar, per-file notes *text*, status chips, path/GitHub links, the
+Monaco diffs (with the plain fallback for offline/CSP), and the ticks,
+per-file folding + progress bar. There is
 nothing to strip and **no separate file to build** — `build.py` in step 7
 already produced the finished HTML, and this mode delivers exactly that.
 **Do not `vite build` anything** — the page is not a vite/node project.
@@ -389,12 +405,38 @@ diffs render through the plain fallback.
 ## 9. Changing the page itself
 
 Only when the page needs to look or behave differently — otherwise skip this
-section entirely. Edit `template.html` (it takes two placeholders,
-`FONT_B64` and `PAYLOAD_JSON`, and reads
-`{meta, groups, diffs, stats, links}` out of the payload) so every future
+section entirely. Edit `template.html` (it takes three placeholders,
+`FONT_B64`, `PREACT_JS` and `PAYLOAD_JSON`, and reads
+`{meta, groups, diffs, sides, stats, links}` out of the payload) so every future
 review inherits the change. Load the `artifact-design` skill before doing so.
 This is a utilitarian reference tool, not an editorial page — polished
 typographic hierarchy and a real (small) palette, no hero, no flourish.
+
+### It is a preact app
+
+The page's ui is preact + htm (tagged-template JSX, no build step), from the
+`htm/preact/standalone` umd bundle **inlined by `build.py`** out of
+`vendor/`, which it fetches from jsdelivr the first time it is missing. Inlined
+rather than pulled at runtime because a review has to keep working opened as a
+file and published as an artifact, and both cut the page off from any cdn:
+monaco degrades to the plain patch renderer there, but a missing ui runtime
+would leave nothing on screen at all. `htmPreact` is a global; the module
+script destructures `html`/`render`/the hooks out of it.
+
+Two shapes carry state between the parts:
+
+- **`App` owns the reading state** — `ticked`, `collapsed`, `closedGroups`,
+  `openDiffs`, `activeId` — and hands one `state` object down to the header,
+  the sidebar and the groups. That single object is why a tick in the sidebar
+  and a tick on a row are the same tick; don't add a second copy anywhere.
+- **`makeStore`/`useStore`** for the things the *imperative* side owns — notes
+  (written from monaco view zones and the server poll) and toasts. Anything
+  rendered from `notesStore` re-renders when a note lands, which is how the
+  note counts appear in both the sidebar and the row heads.
+
+Monaco stays imperative — it owns its dom. `createDiffEditor` builds one
+editor and reports back through the setters `MonacoDiff` passes it, and note
+zones are preact trees `render`ed into the zone's dom node.
 
 ### Palette: use the game's own
 
@@ -430,23 +472,37 @@ sizes. Body text stays in a system stack; paths and diffs in
 
 ### What the template already does — preserve it if you edit
 
-- Sticky header: live progress bar and checked/total count, open-all-diffs,
-  close-all, clear-ticks.
-- Each group a `<details>` open by default, with a reading-order number (real
-  structure here, unlike decorative 01/02/03 markers elsewhere), the blurb,
-  and its file rows. Its heading is **sticky** under the page header (which is
-  measured, so it survives the controls wrapping), and carries a checkbox that
-  ticks the whole group, shows indeterminate when it is part-read, and folds
-  the group away when ticked (unticking brings it back). That checkbox has to
-  `stopPropagation`, or the summary's own toggle would fight it.
-- Each row: a checkbox persisted to `localStorage` keyed by path, a status
-  chip, the path as a copy-to-clipboard button (plus a "GitHub ↗" link when
-  `--github` was passed), the note, and a **Show diff / Hide diff button**
-  carrying `+N −M` over a panel that starts closed — a real button, because
-  the reading order has to stay scannable and the diff is an action taken when
-  the reader arrives at that file.
+- Sticky header: live progress bar and checked/total count, the Contents
+  toggle, open-everything, close-everything, clear-ticks.
+- **A contents sidebar**, sticky beside the reading order: every group and
+  every file as a tree, each with its own checkbox and `done/total`, the file
+  ticks and the row ticks being the same state. Clicking a file opens its
+  group and the file itself and scrolls to it; a scroll-spy keeps the file
+  being read highlighted, suppressed for a second after a click so an explicit
+  jump isn't overruled by the rows it travelled past. Under 60rem it becomes
+  an overlay that starts closed and closes again once used.
+- Each group opens by default, with a reading-order number (real structure
+  here, unlike decorative 01/02/03 markers elsewhere), the blurb, and its file
+  rows. Its heading is **sticky** under the page header (which is measured, so
+  it survives the controls wrapping), and carries a checkbox that ticks the
+  whole group, shows indeterminate when it is part-read, and folds the group
+  away when ticked (unticking brings it back). That checkbox has to
+  `stopPropagation`, or the heading's own toggle would fight it.
+- Each row: a checkbox keyed by path — persisted to `<store>/ticks.json` when
+  served and to `localStorage` (keyed by review id) when not, loaded before the
+  first render either way, coalesced so ticking a group is one write, and
+  re-read from the poll so a second tab agrees — a status chip, the path as a copy-to-clipboard button (plus a "GitHub ↗" link when
+  `--github` was passed), its `+N −M`, and a caret. **Ticking a file folds it
+  away** (unticking opens it again), so the page collapses towards the bare
+  reading order as it is read, and a reload comes back folded exactly where
+  the reading got to. The folded part holds the note and a **Show diff / Hide
+  diff button** over a panel that starts closed — a real button, because the
+  reading order has to stay scannable and the diff is an action taken when the
+  reader arrives at that file.
 - Diffs render lazily on first open (dozens of them would otherwise all build
-  up front) into a **Monaco diff editor**, loaded from jsdelivr: syntax
+  up front) and then **stay mounted, hidden**, when closed or folded away —
+  disposing them would throw away unsaved edits every time a file was ticked.
+  They render into a **Monaco diff editor**, loaded from jsdelivr: syntax
   highlighting per file extension, an inline (unified) view, and
   `hideUnchangedRegions` so long files collapse to their changed parts — the
   reason for using an editor rather than a static patch. It is read-only, its
@@ -506,11 +562,17 @@ sizes. Body text stays in a system stack; paths and diffs in
   and the next request on that keep-alive connection is parsed starting halfway
   through it — which surfaces as a baffling `400 Bad request syntax` naming
   your own note text.
-- Notes live in Monaco view zones. Two things about zones are easy to lose:
+- Notes live in Monaco view zones. Four things about zones are easy to lose:
   they paint *below* the editor's text layer (so the note needs
-  `position: relative; z-index`, or its buttons are unclickable), and they
-  need `suppressMouseDown: false` or the editor eats the mousedown first.
-  Their contents also sit inside an `aria-hidden` subtree, so the note UI is
+  `position: relative; z-index`, or its buttons are unclickable); they need
+  `suppressMouseDown: false` or the editor eats the mousedown first; monaco
+  writes an inline `display` onto the zone's own dom node, so the note's
+  layout has to live on a wrapper *inside* it; and monaco puts that node into
+  the document on its own render frame rather than when the zone is added, so
+  focusing the new note's box has to be retried across frames until it takes
+  (a zone inside a folded unchanged region never will — it is `display: none`,
+  and an element that isn't displayed cannot be focused).
+  Zone contents also sit inside an `aria-hidden` subtree, so the note UI is
   mouse/keyboard-driven and not reachable by role queries.
 - The page adapts to `window.__reviewServer`, which only `serve.py` injects
   (into the `<!--REVIEW_SERVER-->` marker). It gates the whole
