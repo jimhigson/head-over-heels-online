@@ -6,7 +6,7 @@
 #   resolvePr.sh https://github.com/owner/repo/pull/34
 #
 # Prints json: { number, title, url, base, head } where base/head are local refs
-# ready for `changedFiles.sh pr <base> <head>` and `build.py --base/--head`.
+# ready for `changedFiles.sh pr <base> <head>` and `build.ts --base/--head`.
 # The head is fetched from refs/pull/<n>/head, so PRs from forks work the same
 # as PRs from branches on the origin.
 set -euo pipefail

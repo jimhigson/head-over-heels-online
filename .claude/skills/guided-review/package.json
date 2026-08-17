@@ -1,0 +1,20 @@
+{
+  "name": "guided-review",
+  "private": true,
+  "type": "module",
+  "description": "builds and serves a guided review page; self-contained, with no tie to whichever repo is being reviewed",
+  "scripts": {
+    "build": "node build.ts",
+    "serve": "node serve.ts",
+    "check:type": "tsc --noEmit"
+  },
+  "dependencies": {
+    "preact": "11.0.0-beta.1",
+    "react-resizable-panels": "^3.0.6"
+  },
+  "devDependencies": {
+    "@types/node": "^24.0.0",
+    "typescript": "^5.9.2",
+    "vite": "^8.0.13"
+  }
+}
