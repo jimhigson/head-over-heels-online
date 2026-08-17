@@ -2,12 +2,17 @@ import { useState } from "preact/hooks";
 
 import { CssVariables } from "../../game/components/CssVariables";
 import { typedURLSearchParams } from "../../options/queryParams";
+import { useUniversalKeys } from "../../store/storeFlow/useUniversalKeys";
 import { SpritesPageContent } from "./SpritesPageContent";
 import { SpritesPageToolbar } from "./SpritesPageToolbar";
 
 const defaultScale = 2;
 
 export const SpritesPage = () => {
+  // so display shortcuts (eg toggle smooth sprites, CRT) can be tried
+  // directly from this page while previewing their effect:
+  useUniversalKeys();
+
   const scaleParam = typedURLSearchParams().get("scale");
   const [scale, setScale] = useState(
     scaleParam ? Number(scaleParam) : defaultScale,

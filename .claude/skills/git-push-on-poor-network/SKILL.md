@@ -3,6 +3,40 @@ name: git-push-on-poor-network
 description: Push to GitHub over restricted/captive wifi (in-flight, hotel) that kills large HTTPS uploads with HTTP 408. Use when git push fails with "RPC failed; HTTP 408 curl 22" / "unexpected disconnect while reading sideband packet" but small transfers and browsing work. Also use if the user tells you they are on a flight or any other kind of degraded network, or you notice a high packet loss and need to push to git
 ---
 
+## Stacked PRs: check commit ownership before touching ANYTHING
+
+This repo uses stacked PRs (gh-stack). A branch's local history routinely
+includes commits that already belong to an **earlier, separately-pushed PR**
+in the stack. Such a commit looks "unpushed" (it's not on *this* branch's
+remote-tracking ref, and the branch may show as diverged/ahead of
+`origin/main`) but is NOT yours to touch — it is already published under a
+different branch name, and other people's review/CI may point at it.
+
+**Doing anything at all to a commit owned by another PR in the stack —
+amending, rebasing onto a recompressed version, squashing, reordering — is
+STRICTLY FORBIDDEN.** This applies even when the rewrite would be lossless
+(e.g. recompressing an image inside it): rewriting it still changes its SHA
+and abandons the one on origin, orphaning that PR's branch/review.
+
+**Before running anything else in this skill, check every non-tip commit you
+are about to touch:**
+
+```sh
+git branch -r --contains <sha>
+```
+
+- Any branch listed other than the one you're currently working on → that
+  commit belongs to another PR in the stack. Leave it, and everything before
+  it in history, completely alone. Only recompress/amend/seed blobs that are
+  genuinely new in commits *after* it.
+- Nothing listed → the commit has never been pushed under any name and is
+  safe to amend (per the recompression rules below).
+
+Do not infer "unpushed" from `git log <branch> vs origin/<branch>` alone —
+that only tells you the commit isn't on *this* ref, not that it isn't on
+*any* ref. Run the `git branch -r --contains` check per-commit, every time,
+before starting.
+
 ## Failure signature
 
 ```
@@ -100,19 +134,35 @@ are already part of an unpushed commit.** A new commit leaves the old
 blob reachable via the tip — git has to send both, which is worse than not
 recompressing at all. `git reset --soft HEAD~1 && git commit --amend
 --no-edit` (or just `commit --amend` directly if the files were already
-part of that commit) collapses history back to one blob per file. This is
-only safe because the commit being amended was never successfully pushed —
-never amend a commit that's already on the remote.
+part of that commit) collapses history back to one blob per file.
+
+This is only safe because the commit being amended was never successfully
+pushed **under any ref** — before amending, run the ownership check from
+"Stacked PRs" above (`git branch -r --contains <sha>`) on that exact commit.
+If it's the branch tip and the check returns nothing, proceed. If the branch
+has multiple unpushed-looking commits, check each one individually — do not
+assume the whole run of commits ahead of `origin/main` is fair game; in a
+stacked-PR branch it usually isn't, and only the newest commit(s) are
+actually this PR's own work.
 
 Only recompress files whose current committed content isn't already fully
-on the remote (already covered by an earlier successful push, or already
-seeded via tags below) — recompressing those just creates new bytes that
-have to be sent for no benefit the remote didn't already have covered:
+on the remote. Two things can make that true, check both:
 
-```sh
-git ls-remote origin 'refs/tags/seed-*' | awk '{print $1}' > /tmp/seeded_shas.txt
-git rev-parse HEAD:path/to/file.png   # compare against /tmp/seeded_shas.txt
-```
+1. **Seeded via tags already** (from a prior/resumed run of this skill):
+   ```sh
+   git ls-remote origin 'refs/tags/seed-*' | awk '{print $1}' > /tmp/seeded_shas.txt
+   git rev-parse HEAD:path/to/file.png   # compare against /tmp/seeded_shas.txt
+   ```
+2. **Already pushed under a different commit/branch entirely** (the stacked-PR
+   case): the file's blob SHA may already be reachable from another remote
+   branch even though the commit introducing it here has a different SHA
+   (e.g. after a rebase). Diff against that specific remote commit, not just
+   the merge-base, to find out what's actually new:
+   ```sh
+   git diff <known-pushed-sibling-commit> <this-commit> --stat -- '*.png'
+   ```
+   An empty/no-binary-change result means the content is already on origin
+   under the sibling ref — do not recompress or re-touch it here.
 
 ## Pitfall: don't silence stderr, don't renumber tags from 0
 

@@ -1,4 +1,8 @@
-import { expect, type Page } from "@playwright/test";
+import {
+  expect,
+  type Page,
+  type PageAssertionsToHaveScreenshotOptions,
+} from "@playwright/test";
 
 import { type OriginalCampaignRoomId } from "../src/_generated/originalCampaign/OriginalCampaignRoomId";
 import { quarterMaskFaultRoomCampaign } from "../src/game/render/sortZ/__test__/quarterMaskFaultRoom";
@@ -8,6 +12,7 @@ import { defaultEmulatedResolution } from "../src/store/slices/userSettings/defa
 import { type SpriteOption } from "../src/store/slices/userSettings/userSettingsSlice";
 import { allItemsTestRoomCampaign } from "./fixtures/allItemsTestRoom";
 import { bootPlaytestCampaign } from "./testUtils/bootPlaytestCampaign";
+import { enableSmoothSprites } from "./testUtils/enableSmoothSprites";
 import {
   captureE2eCursor,
   changeRoomViaApi,
@@ -28,6 +33,7 @@ import { projectDeviceType } from "./testUtils/projectDeviceType";
 import { relaySupabase } from "./testUtils/relaySupabase";
 import {
   roomScreenshotOptions,
+  smoothedHudTextMaxDiffPixelRatio,
   spriteOptionSuffix,
 } from "./testUtils/screenshots";
 import { setSpriteOption } from "./testUtils/setSpriteOption";
@@ -170,19 +176,15 @@ type SweepScenario<C extends SweepCampaign = SweepCampaign> = {
    * rendering of the alternate sheets/modes
    */
   spriteOptions?: SpriteOption[];
+
   /**
-   * how many pixels may differ from the baseline, loosening the shared
-   * room-screenshot budget (zero) for scenarios whose frames legitimately
-   * jitter by a handful of pixels
+   * turns on upscaled smooth sprites
    */
-  maxDiffPixels?: number;
-  /**
-   * what fraction of pixels may differ from the baseline. Replaces the
-   * pixel-count budget, for frames compared against each other rather than
-   * against a pinned image - the warp meshes soften edges, so a proportional
-   * budget absorbs that while a real discontinuity (many percent) still fails
-   */
-  maxDiffPixelRatio?: number;
+  smoothSprites?: boolean;
+
+  /** playwright snapshot settings */
+  screenshotOptions?: Partial<PageAssertionsToHaveScreenshotOptions>;
+
   /** which frames to screenshot, and how the camera reaches them */
   angles: SweepAngles;
 };
@@ -366,7 +368,7 @@ const scenarios: readonly SweepScenario[] = [
     // within the scroll-ease dead-zone, pixelate-filter texture rounding).
     // Allow that small jitter while still catching real regressions - a
     // misaligned item or an un-warped floor differs by thousands of pixels:
-    maxDiffPixels: 600,
+    screenshotOptions: { maxDiffPixels: 600 },
   }),
   sweepScenario({
     // lamps and their light beams (tile layout, terminus, mirrors' beam
@@ -383,7 +385,7 @@ const scenarios: readonly SweepScenario[] = [
     // is zeroed (eg when it spawns on a conveyor), which reads as a
     // sprite-sized diff. Real regressions in what these rooms guard (item
     // placement, door/mirror structure) are thousands of pixels:
-    maxDiffPixels: 1_000,
+    screenshotOptions: { maxDiffPixels: 1_000 },
   }),
   sweepScenario({
     // doors on all four sides at z=0 (post widths, top frame placement,
@@ -395,7 +397,7 @@ const scenarios: readonly SweepScenario[] = [
     angles: [0, 90, 180, 270],
     emulatedResolution: "$$default",
     spriteOptions: [{ name: "BlockStack", uncolourised: false }],
-    maxDiffPixels: 1_000,
+    screenshotOptions: { maxDiffPixels: 1_000 },
   }),
   sweepScenario({
     // doors on all four sides raised up high (legs, floating thresholds and
@@ -407,7 +409,7 @@ const scenarios: readonly SweepScenario[] = [
     angles: [0, 90, 180, 270],
     emulatedResolution: "$$default",
     spriteOptions: [{ name: "BlockStack", uncolourised: false }],
-    maxDiffPixels: 1_000,
+    screenshotOptions: { maxDiffPixels: 1_000 },
   }),
   sweepScenario({
     // both mirror orientations with adjacent items (face-on pane flipping with
@@ -419,7 +421,7 @@ const scenarios: readonly SweepScenario[] = [
     angles: [0, 90, 180, 270],
     emulatedResolution: "$$default",
     spriteOptions: [{ name: "BlockStack", uncolourised: false }],
-    maxDiffPixels: 1_000,
+    screenshotOptions: { maxDiffPixels: 1_000 },
   }),
   sweepScenario({
     // the start room at its four settled angles, entered via lamp so it is
@@ -439,7 +441,7 @@ const scenarios: readonly SweepScenario[] = [
       { name: "BlockStack", uncolourised: false },
       { name: "BlockStack", uncolourised: true },
     ],
-    maxDiffPixels: 1_000,
+    screenshotOptions: { maxDiffPixels: 1_000 },
   }),
   sweepScenario({
     roomId: "blacktooth5",
@@ -459,7 +461,7 @@ const scenarios: readonly SweepScenario[] = [
     angles: [0, 90, 180, 270],
     emulatedResolution: "$$default",
     spriteOptions: [{ name: "BlockStack", uncolourised: true }],
-    maxDiffPixels: 1_000,
+    screenshotOptions: { maxDiffPixels: 1_000 },
   }),
   sweepScenario({
     // test for colour clash floor edge regression
@@ -493,6 +495,51 @@ const scenarios: readonly SweepScenario[] = [
     ],
     emulatedResolution: "$$default",
   }),
+  // the smooth-sprites (cleanEdge upscaled) rendering across three sceneries
+  // the suite does not otherwise sweep, each at the base and one rotated
+  // settled angle:
+  sweepScenario({
+    roomId: "bookworld28",
+    campaign: "original",
+    // entered through the door from adjacent bookworld27:
+    enterFrom: "bookworld27",
+    character: "head",
+    angles: [0, 90],
+    emulatedResolution: "$$default",
+    smoothSprites: true,
+    screenshotOptions: {
+      maxDiffPixels: undefined,
+      maxDiffPixelRatio: smoothedHudTextMaxDiffPixelRatio,
+    },
+  }),
+  sweepScenario({
+    roomId: "moonbase1",
+    campaign: "original",
+    // entered through the door from adjacent moonbase2:
+    enterFrom: "moonbase2",
+    character: "head",
+    angles: [0, 90],
+    emulatedResolution: "$$default",
+    smoothSprites: true,
+    screenshotOptions: {
+      maxDiffPixels: undefined,
+      maxDiffPixelRatio: smoothedHudTextMaxDiffPixelRatio,
+    },
+  }),
+  sweepScenario({
+    roomId: "penitentiary18fish",
+    campaign: "original",
+    // entered through the door from adjacent penitentiary17:
+    enterFrom: "penitentiary17",
+    character: "head",
+    angles: [0, 90],
+    emulatedResolution: "$$default",
+    smoothSprites: true,
+    screenshotOptions: {
+      maxDiffPixels: undefined,
+      maxDiffPixelRatio: smoothedHudTextMaxDiffPixelRatio,
+    },
+  }),
   ...(["blacktooth15", "blacktooth1head", "blacktooth13"] as const).map(
     (roomId) =>
       // checks for very small angles from a settled angle - must be almost identical
@@ -511,7 +558,10 @@ const scenarios: readonly SweepScenario[] = [
         },
         emulatedResolution: "$$default",
         // expect a very small diff from the epsilon
-        maxDiffPixelRatio: 0.02,
+        screenshotOptions: {
+          maxDiffPixels: undefined,
+          maxDiffPixelRatio: 0.02,
+        },
       }),
   ),
 ];
@@ -679,10 +729,27 @@ const bootScenario = async (page: Page, scenario: SweepScenario) => {
   }
 
   await enterRoom(page, scenario);
+
+  if (scenario.smoothSprites) {
+    // set after entering so the upscaled-sheet wait inside is satisfied by the
+    // swept room's own stage, not a boot room passed through:
+    await enableSmoothSprites(page);
+  }
 };
 
+/**
+ * the part of a capture's file name that identifies the room and the state it
+ * is entered in - everything that does not vary within a scenario (see
+ * {@link captureFileName})
+ */
 const scenarioBaseName = (
-  { roomId, character, enterFrom, emulatedResolution }: SweepScenario,
+  {
+    roomId,
+    character,
+    enterFrom,
+    emulatedResolution,
+    smoothSprites,
+  }: SweepScenario,
   projectName?: string,
 ): string =>
   [
@@ -699,13 +766,27 @@ const scenarioBaseName = (
     ) ?
       ""
     : `-${emulatedResolution}`,
+    smoothSprites ? "-smooth" : "",
   ].join("");
 
 /**
  * screenshot name maker, omits the segment for default values
  *
- * collisions between tests are fine - playwright will verify the image is the same
- * (which it should be)
+ * | parameter          | default (no suffix)   | suffix when set                |
+ * | ------------------ | --------------------- | ------------------------------ |
+ * | roomId             | -                     | the base name                  |
+ * | character          | head                  | `-heels`                       |
+ * | enterFrom          | "$$startingRoom"      | `-from-<room>` / `-from-final` |
+ * | emulatedResolution | "$$default"           | `-<resolutionName>`            |
+ * | smoothSprites      | false                 | `-smooth`                      |
+ * | spriteOption       | BlockStack colourised | `-uncolourised` / `-toppy`     |
+ * | angle              | 0°                    | `-<degrees>deg`                |
+ * | capture time       | 0ms                   | `-<milliseconds>ms`            |
+ *
+ * so two frames drawn from identical parameters name one file, and are
+ * asserted against one baseline - which is the point: identical parameters
+ * must produce an identical image. Playwright sanitises the `.` of a
+ * fractional angle to a `-`, so 44.999° lands in `...-44-999deg.png`
  */
 const captureFileName = (
   scenario: SweepScenario,
@@ -751,27 +832,19 @@ const scenarioAxes = (scenario: SweepScenario): string => {
 const screenshotOptionsForScenario = (
   scenario: SweepScenario,
   projectName: string,
-) => {
-  const options = roomScreenshotOptions(projectName);
-  if (scenario.maxDiffPixelRatio !== undefined) {
-    // a proportional budget replaces the pixel-count one rather than adding to
-    // it - leaving both set would keep the stricter of the two:
-    return {
-      ...options,
-      maxDiffPixels: undefined,
-      maxDiffPixelRatio: scenario.maxDiffPixelRatio,
-    };
-  }
-  return scenario.maxDiffPixels === undefined ?
-      options
-    : { ...options, maxDiffPixels: scenario.maxDiffPixels };
-};
+) => ({
+  ...roomScreenshotOptions(projectName),
+  ...scenario.screenshotOptions,
+});
 
 for (const scenario of scenarios) {
   test(`camera angles render deterministically: ${scenarioBaseName(scenario)} (${scenarioAxes(scenario)})`, async ({
     page,
   }, testInfo) => {
-    test.setTimeout(360_000);
+    // smooth-sprites scenarios need longer: software-rendered environments
+    // (SwiftShader in CI or a sandbox) are very slow to compile the cleanEdge
+    // shader on first bake:
+    test.setTimeout(scenario.smoothSprites ? 600_000 : 360_000);
     await bootScenario(page, scenario);
 
     const spriteOptions: ReadonlyArray<SpriteOption | undefined> =

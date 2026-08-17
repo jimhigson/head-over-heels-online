@@ -1,6 +1,7 @@
 import {
   Container,
   Graphics,
+  ImageSource,
   Rectangle,
   type Renderer,
   RenderTexture,
@@ -12,6 +13,8 @@ import {
 import blockStackSpritesheetUrl from "../../../gfx/sprites.webp";
 import debugSpritesheetUrl from "../../../gfx/spritesDebug.webp";
 import toppySpritesheetUrl from "../../../gfx/spritesToppy.webp";
+import { type bakeCleanEdgeTexture } from "../../game/render/filters/cleanEdge/bakeCleanEdgeTexture";
+import { importBakeCleanEdgeTextureOnce } from "../../game/render/filters/cleanEdge/bakeCleanEdgeTexture.import";
 import { invertRedToAlphaFilter } from "../../game/render/filters/shadows/invertRedToAlphaFilter";
 import { type ZxSpectrumRoomColour } from "../../originalGame";
 import { selectSpritesheetOverrideBlobUrl } from "../../store/slices/spritesheetOverrideSlice";
@@ -30,6 +33,11 @@ import {
   withVariantsBaked,
 } from "./AppSpritesheet";
 import { buildRoomSheet } from "./buildRoomSheet";
+import {
+  composeUpscaleSheet,
+  type FrameRect,
+  withRepackedRects,
+} from "./composeUpscaleSheet";
 import { makeSpritesheetData } from "./spritesheetData/makeSpritesheetData";
 import {
   type SpritesheetMetadata,
@@ -52,6 +60,25 @@ export class Spritesheets {
   #loadImageAbortController: AbortController | undefined;
   #spriteOptionName: SpriteOptionName | undefined;
   /**
+   * the decoded source image the original sheet was baked from - retained
+   * (cpu-side only) so the original can be re-baked at a different cleanEdge
+   * bake factor without re-fetching. undefined when running under node
+   * (Texture.EMPTY)
+   */
+  #sourceImage: HTMLImageElement | undefined;
+  /**
+   * the cleanEdge upscale factor baked into {@link #originalSpritesheet} (and
+   * so inherited by the room sheet baked from it). 1 = the plain unprocessed
+   * sheet
+   */
+  #bakeFactor = 1;
+  /**
+   * the cleanEdge bake, once {@link loadBakeModule} has fetched it. Only a
+   * factor above 1 needs it, so it stays out of the graph of a player who
+   * never turns smoothing on
+   */
+  #bakeCleanEdgeTexture: typeof bakeCleanEdgeTexture | undefined;
+  /**
    * the pristine GPU source: the loaded image with the shadow preprocess baked
    * in, never room-swopped. Built by loadImage (the raw decoded texture is
    * discarded immediately after)
@@ -68,9 +95,92 @@ export class Spritesheets {
    * rooms.
    */
   #currentSheetTarget: RenderTexture | undefined;
+  /**
+   * where each frame's art sits in {@link #originalSpritesheet}, when the
+   * sheet it was baked from was composed for the upscale rather than taken
+   * straight from the authored image
+   */
+  #frameOverrides: ReadonlyMap<string, FrameRect> | undefined;
 
   isTextureLoaded(spriteOptionName: SpriteOptionName): boolean {
     return this.#spriteOptionName === spriteOptionName;
+  }
+
+  get bakeFactor(): number {
+    return this.#bakeFactor;
+  }
+
+  /**
+   * whether {@link loadBakeModule} has resolved, so a sheet can be baked at a
+   * factor above 1
+   */
+  get isBakeModuleLoaded(): boolean {
+    return this.#bakeCleanEdgeTexture !== undefined;
+  }
+
+  /**
+   * fetch the cleanEdge bake, which only an upscaled sheet needs - so a player
+   * who leaves smoothing off never downloads it. Must have resolved before
+   * {@link rebuild} is called with a factor above 1.
+   */
+  async loadBakeModule(): Promise<void> {
+    ({ bakeCleanEdgeTexture: this.#bakeCleanEdgeTexture } =
+      await importBakeCleanEdgeTextureOnce());
+  }
+
+  /**
+   * replace {@link #originalSpritesheet} with one baked from the retained
+   * source image at the given cleanEdge bake factor: the frames are composed
+   * into a layout of our own, with aprons around the tiled ones, then that
+   * sheet is cleanEdge-upscaled (into a texture whose backing store is
+   * `bakeFactor` times its logical size) before the shadow preprocess bakes
+   * over it
+   */
+  #rebakeOriginalAtFactor(pixiRenderer: Renderer, bakeFactor: number): void {
+    if (import.meta.env.DEV && this.#sourceImage === undefined) {
+      throw new Error("cannot re-bake the original sheet before image load");
+    }
+    if (
+      import.meta.env.DEV &&
+      bakeFactor !== 1 &&
+      this.#bakeCleanEdgeTexture === undefined
+    ) {
+      throw new Error(
+        "cannot bake above 1x before loadBakeModule() has resolved",
+      );
+    }
+    const rawTexture = new Texture({
+      source: new ImageSource({ resource: this.#sourceImage! }),
+    });
+    // the composition only matters to the upscale, which is what reads across
+    // a frame's edges - the plain sheet is already right at 1x
+    const repacked =
+      bakeFactor === 1 ? undefined : (
+        composeUpscaleSheet(
+          pixiRenderer,
+          rawTexture,
+          makeSpritesheetData(spritesheetMetas[this.#spriteOptionName!]).frames,
+        )
+      );
+    const sheetToBake = repacked?.texture ?? rawTexture;
+    const baseTexture =
+      bakeFactor === 1 ? rawTexture : (
+        this.#bakeCleanEdgeTexture!(pixiRenderer, sheetToBake, bakeFactor)
+      );
+    destroySpritesheet(this.#originalSpritesheet);
+    this.#originalSpritesheet = this.#buildOriginal(
+      pixiRenderer,
+      this.#spriteOptionName!,
+      baseTexture,
+      repacked?.frameOverrides,
+    );
+    baseTexture.destroy(true);
+    repacked?.texture.destroy(true);
+    if (baseTexture !== rawTexture) {
+      rawTexture.destroy(true);
+    }
+    this.#bakeFactor = bakeFactor;
+    this.#frameOverrides = repacked?.frameOverrides;
   }
 
   rebuild(
@@ -78,11 +188,27 @@ export class Spritesheets {
     roomScenery: SceneryName,
     roomColor: ZxSpectrumRoomColour,
     spriteOption: SpriteOption,
-  ): void {
+    /**
+     * cleanEdge upscale factor to bake into the original sheet (and so the
+     * room sheet); 1 = no cleanEdge processing
+     */
+    bakeFactor: number,
+    /**
+     * @returns whether the original spritesheet instance was recreated -
+     * consumers holding sprites built from it (eg the hud) must be rebuilt
+     * when it was
+     */
+  ): boolean {
     if (this.#originalSpritesheet?.spriteOptionName !== spriteOption.name) {
       throw new Error(
         `rebuild() requires loadImage() to have built the original sheet for "${spriteOption.name}" first`,
       );
+    }
+
+    const originalRebuilt =
+      this.#sourceImage !== undefined && bakeFactor !== this.#bakeFactor;
+    if (originalRebuilt) {
+      this.#rebakeOriginalAtFactor(pixiRenderer, bakeFactor);
     }
 
     const orig = this.#originalSpritesheet;
@@ -108,12 +234,15 @@ export class Spritesheets {
       },
       bt,
       this.#currentSheetTarget,
+      this.#frameOverrides,
     );
 
     this.#currentSpritesheet = built.sheet;
     this.#currentSheetTarget = built.target;
 
     bt.destroy();
+
+    return originalRebuilt;
   }
 
   get originalSpritesheet(): AppSpritesheetWithVariants {
@@ -194,7 +323,8 @@ export class Spritesheets {
 
       // bake the pristine original sheet immediately, then discard the raw
       // decoded texture - the original is the only full-image copy kept on
-      // the GPU:
+      // the GPU (the decoded image itself is retained cpu-side, so the
+      // original can later be re-baked at a different cleanEdge factor):
       const decodedTexture = Texture.from(img);
       destroySpritesheet(this.#originalSpritesheet);
       this.#originalSpritesheet = this.#buildOriginal(
@@ -203,6 +333,9 @@ export class Spritesheets {
         decodedTexture,
       );
       decodedTexture.destroy(true);
+      this.#sourceImage = img;
+      this.#bakeFactor = 1;
+      this.#frameOverrides = undefined;
       this.#spriteOptionName = spriteOptionName;
       this.#loadImageAbortController = undefined;
     } catch (e) {
@@ -219,6 +352,9 @@ export class Spritesheets {
           spriteOptionName,
           Texture.EMPTY,
         );
+        this.#sourceImage = undefined;
+        this.#bakeFactor = 1;
+        this.#frameOverrides = undefined;
         this.#spriteOptionName = spriteOptionName;
         this.#loadImageAbortController = undefined;
       } else {
@@ -237,10 +373,22 @@ export class Spritesheets {
     pixiRenderer: Renderer,
     spriteOptionName: SpriteOptionName,
     decodedTexture: Texture,
+    /**
+     * where each frame's art lives, when the sheet being built has been
+     * composed for the upscale rather than taken straight from the authored
+     * image
+     */
+    frameOverrides?: ReadonlyMap<string, FrameRect>,
   ): AppSpritesheetWithVariants {
     const spritesheetMeta = spritesheetMetas[spriteOptionName];
+    const rawSheetData = makeSpritesheetData(spritesheetMeta);
     const spriteSheetData: AppSpritesheetDataWithVariants =
-      makeSpritesheetData(spritesheetMeta);
+      frameOverrides === undefined ? rawSheetData : (
+        {
+          ...rawSheetData,
+          frames: withRepackedRects(rawSheetData.frames, frameOverrides),
+        }
+      );
 
     if (decodedTexture.width === 0) {
       // running under node with no real image (Texture.EMPTY): a sheet over
@@ -257,6 +405,9 @@ export class Spritesheets {
     const processedTexture = RenderTexture.create({
       width: decodedTexture.width,
       height: decodedTexture.height,
+      // carry the cleanEdge-baked backing store size through to the
+      // processed sheet (width/height above are in logical 1x units):
+      resolution: decodedTexture.source.resolution,
     });
 
     // copy the raw sheet unchanged...
@@ -311,6 +462,10 @@ export class Spritesheets {
       processedTexture,
       spriteSheetData,
     ) as AppSpritesheet;
+    // pixi's Spritesheet applies the sheet data's meta.scale (1) to the
+    // texture source, wiping any cleanEdge bake resolution - restore it
+    // before parsing so frame UVs are computed against the logical 1x size:
+    spriteSheet.textureSource.resolution = decodedTexture.source.resolution;
     spriteSheet.parseSync();
     spriteSheet.textureSource.scaleMode = "nearest";
     spriteSheet.spriteOptionName = spriteOptionName;
@@ -330,14 +485,17 @@ export class Spritesheets {
   /**
    * Throw away every baked RenderTexture (the original and the current
    * sheet). Used after a WebGL context loss: the restored WebGL context has
-   * no backing for the old RenderTextures. With no raw image kept, the sprite
-   * option is also reset so the main loop's isTextureLoaded check refetches
-   * via loadImage, which re-bakes the original.
+   * no backing for the old RenderTextures. The sprite option (and retained
+   * source image) is also reset so the main loop's isTextureLoaded check
+   * refetches via loadImage, which re-bakes the original.
    */
   invalidateBakedTextures() {
     destroySpritesheet(this.#originalSpritesheet);
     this.#originalSpritesheet = undefined;
     this.#spriteOptionName = undefined;
+    this.#sourceImage = undefined;
+    this.#bakeFactor = 1;
+    this.#frameOverrides = undefined;
     this.#destroyCurrentSheet();
   }
 
@@ -353,6 +511,9 @@ export class Spritesheets {
     this.#loadImageAbortController?.abort();
     this.#loadImageAbortController = undefined;
     this.#spriteOptionName = undefined;
+    this.#sourceImage = undefined;
+    this.#bakeFactor = 1;
+    this.#frameOverrides = undefined;
     destroySpritesheet(this.#originalSpritesheet);
     this.#originalSpritesheet = undefined;
     this.#destroyCurrentSheet();

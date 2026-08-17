@@ -33,6 +33,7 @@ import { type GameState } from "../gameState/GameState";
 import { selectCurrentRoomState } from "../gameState/gameStateSelectors/selectCurrentRoomState";
 import { maxSubTickDeltaMs } from "../physics/mechanicsConstants";
 import { ColourClashCircleEffectRenderer } from "../render/ColourClashCircleEffectRenderer";
+import { selectCleanEdgeBakeFactor } from "../render/filters/cleanEdge/selectCleanEdgeBakeFactor";
 import { HudRenderer } from "../render/hud/HudRenderer";
 import { needsNewHudRenderer } from "../render/hud/needsNewHudRenderer";
 import { needsNewRoomRenderer } from "../render/room/needsNewRoomRenderer";
@@ -43,6 +44,11 @@ import {
 import { RoomRenderer } from "../render/room/RoomRenderer";
 import { type RoomRendererType } from "../render/room/RoomRendererType";
 import { RoomScrollRenderer } from "../render/room/RoomScrollRenderer";
+import {
+  isUiFontLoaded,
+  loadHudFont,
+  uiFontVariantAtResolution,
+} from "../render/text/uiFont";
 import { E2EEventBus } from "./E2EEventBus";
 import {
   loadedFrameTimingStats,
@@ -81,6 +87,20 @@ export class MainLoop<RoomId extends string> {
    * resumes on the next tick
    */
   #spritesheetLoadPromise: Promise<void> | undefined;
+
+  /**
+   * the hud rasterises its text synchronously from a web font, so the variant
+   * this tick's bake factor calls for must be registered before any renderer
+   * is built. Held like the spritesheet load: rendering pauses until it lands
+   */
+  #hudFontLoadPromise: Promise<void> | undefined;
+
+  /**
+   * the cleanEdge bake is fetched only once a tick actually asks for an
+   * upscaled sheet. Held like the spritesheet load: the rebuild waits for the
+   * next tick rather than the sheet being built unsmoothed in the meantime
+   */
+  #bakeModuleLoadPromise: Promise<void> | undefined;
 
   /**
    * any load-sound-on-room-load sounds that are in the room:
@@ -153,6 +173,14 @@ export class MainLoop<RoomId extends string> {
   // refetches the spritesheet image and re-bakes the variants, whose
   // RenderTextures died with the old WebGL context:
   #webGlContextRestored = false;
+
+  // set when a variants rebuild recreated the original spritesheet - sprites
+  // built from it (eg the hud's) hold destroyed textures, so their renderer
+  // must be recreated. Held (rather than a per-tick local) because a tick can
+  // rebuild and then skip rendering while it waits on another asset, leaving
+  // the recreation owed to a later tick:
+  #originalSheetRebuilt = false;
+
   #onWebGlContextRestored = () => {
     this.#webGlContextRestored = true;
     // every baked RenderTexture died with the old context - dropping them also
@@ -175,6 +203,8 @@ export class MainLoop<RoomId extends string> {
       () => {
         const suspended =
           this.#spritesheetLoadPromise !== undefined ||
+          this.#hudFontLoadPromise !== undefined ||
+          this.#bakeModuleLoadPromise !== undefined ||
           this.#roomSoundsLoadPromise !== undefined;
 
         if (suspended === this.#renderingSuspended) {
@@ -350,6 +380,32 @@ export class MainLoop<RoomId extends string> {
     this.#mainContainer.tint =
       isPaused && !tickSpriteOption.uncolourised ? pausedDimTint : noTint;
 
+    const tickBakeFactor = selectCleanEdgeBakeFactor(tickState);
+
+    const tickHudFontVariant = uiFontVariantAtResolution(tickBakeFactor);
+    if (
+      !isUiFontLoaded(tickHudFontVariant) &&
+      this.#hudFontLoadPromise === undefined
+    ) {
+      this.#hudFontLoadPromise = loadHudFont(tickHudFontVariant)
+        .then(() => {
+          this.#hudFontLoadPromise = undefined;
+          // oxlint-disable-next-line no-unused-expressions
+          import.meta.env.MODE === "visual-regression" &&
+            this.#__e2e_announceRenderingSuspension!();
+        })
+        .catch((e) => {
+          this.#hudFontLoadPromise = undefined;
+          // oxlint-disable-next-line no-unused-expressions
+          import.meta.env.MODE === "visual-regression" &&
+            this.#__e2e_announceRenderingSuspension!();
+          this.#handleError(e);
+        });
+      // oxlint-disable-next-line no-unused-expressions
+      import.meta.env.MODE === "visual-regression" &&
+        this.#__e2e_announceRenderingSuspension!();
+    }
+
     // the rotation advances on the game-speed-scaled clock, so slow-motion
     // (or a zero game speed) slows/freezes a rotation mid-turn for
     // inspection; tests never rely on the transition playing out - they set
@@ -387,13 +443,15 @@ export class MainLoop<RoomId extends string> {
     const spritesheetVariantsStale =
       (roomChanged ||
         this.#webGlContextRestored ||
+        this.#spritesheets.bakeFactor !== tickBakeFactor ||
         (this.#roomRenderer !== undefined &&
           !spriteOptionEquals(
             tickSpriteOption,
             this.#roomRenderer.renderContext.general.spriteOption,
           ))) &&
       tickEndRoom !== undefined &&
-      this.#spritesheetLoadPromise === undefined;
+      this.#spritesheetLoadPromise === undefined &&
+      this.#bakeModuleLoadPromise === undefined;
 
     if (spritesheetVariantsStale) {
       if (!this.#spritesheets.isTextureLoaded(tickSpriteOption.name)) {
@@ -415,13 +473,36 @@ export class MainLoop<RoomId extends string> {
         // oxlint-disable-next-line no-unused-expressions
         import.meta.env.MODE === "visual-regression" &&
           this.#__e2e_announceRenderingSuspension!();
+      } else if (
+        tickBakeFactor !== 1 &&
+        !this.#spritesheets.isBakeModuleLoaded
+      ) {
+        this.#bakeModuleLoadPromise = this.#spritesheets
+          .loadBakeModule()
+          .then(() => {
+            this.#bakeModuleLoadPromise = undefined;
+            // oxlint-disable-next-line no-unused-expressions
+            import.meta.env.MODE === "visual-regression" &&
+              this.#__e2e_announceRenderingSuspension!();
+          })
+          .catch((e) => {
+            this.#bakeModuleLoadPromise = undefined;
+            // oxlint-disable-next-line no-unused-expressions
+            import.meta.env.MODE === "visual-regression" &&
+              this.#__e2e_announceRenderingSuspension!();
+            this.#handleError(e);
+          });
+        // oxlint-disable-next-line no-unused-expressions
+        import.meta.env.MODE === "visual-regression" &&
+          this.#__e2e_announceRenderingSuspension!();
       } else {
         const rebuildStartMs = performance.now();
-        this.#spritesheets.rebuild(
+        this.#originalSheetRebuilt ||= this.#spritesheets.rebuild(
           this.#app.renderer,
           tickEndRoom.planet,
           tickEndRoom.color,
           tickSpriteOption,
+          tickBakeFactor,
         );
         timingRecord?.recordSpritesheetRebuild(
           performance.now() - rebuildStartMs,
@@ -461,9 +542,12 @@ export class MainLoop<RoomId extends string> {
 
     if (
       this.#spritesheetLoadPromise !== undefined ||
+      this.#hudFontLoadPromise !== undefined ||
+      this.#bakeModuleLoadPromise !== undefined ||
       this.#roomSoundsLoadPromise !== undefined
     ) {
-      // still loading a spritesheet or the room's sounds — skip rendering
+      // still loading a spritesheet, the hud font, the cleanEdge bake or the
+      // room's sounds — skip rendering
       return;
     }
 
@@ -479,6 +563,7 @@ export class MainLoop<RoomId extends string> {
       tickInputDirectionMode,
       tickUpscale,
       this.#webGlContextRestored,
+      this.#originalSheetRebuilt,
     );
 
     // a rebuild is fine mid-transition: the fresh renderer builds against the
@@ -581,10 +666,11 @@ export class MainLoop<RoomId extends string> {
       );
     }
 
-    // WebGL-context-loss recovery for this tick is done: the variants are
-    // re-baked and the hud/room renderers recreated, so they no longer reference
-    // the dead textures - clear the flag:
+    // both recoveries are done for this tick: the variants are re-baked and the
+    // hud/room renderers recreated, so nothing still references textures that
+    // died with the old WebGL context or the previous original sheet:
     this.#webGlContextRestored = false;
+    this.#originalSheetRebuilt = false;
 
     // the room renderer runs even while paused
     if (this.#roomRenderer !== undefined) {
@@ -617,6 +703,7 @@ export class MainLoop<RoomId extends string> {
           roomId: tickEndRoom.id,
           spriteOption: tickSpriteOption,
           cameraAngle,
+          bakeFactor: this.#spritesheets.bakeFactor,
         });
       }
     } catch (e) {
