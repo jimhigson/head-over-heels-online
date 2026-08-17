@@ -19,10 +19,8 @@ test.describe("LUT Texture Visualization", () => {
     // Wait for the LUT display div to appear
     await page.waitForSelector(".e2e-snapshot-target", { timeout: 5_000 });
 
-    // Give it a moment to fully load
-    await page.waitForTimeout(500);
-
-    // Take a screenshot of the LUT texture
+    // the screenshot assertion retries until the render is stable and matches,
+    // so it waits out the LUT texture finishing rendering on its own:
     await expect(page).toHaveScreenshot("lut-texture.png", {
       fullPage: true,
       animations: "disabled",

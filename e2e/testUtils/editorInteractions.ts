@@ -10,6 +10,23 @@ import {
 } from "../../src/utils/vectors/vectors";
 
 /**
+ * draw an editor frame without moving any clock on.
+ *
+ * The editor is built for e2e in the same mode the game is, so its clock is
+ * driven from here too: it renders when this asks it to and at no other time
+ */
+export const paintEditorFrame = (page: Page): Promise<void> =>
+  page.evaluate(() => {
+    const advanceTime = window.__e2e_advanceTime;
+    if (advanceTime === undefined) {
+      throw new Error(
+        "__e2e_advanceTime is not on the window - is this a visual-regression build?",
+      );
+    }
+    advanceTime(0);
+  });
+
+/**
  * open the editor and wait until it is ready to be pointed at: the room is
  * loaded, rendered, and fitted in the pane
  */
@@ -26,6 +43,9 @@ export const openEditor = async (page: Page): Promise<void> => {
 /** fit the room to the pane, so that all of it can be pointed at */
 export const fitRoomInView = async (page: Page): Promise<void> => {
   await page.getByRole("button", { name: "Fit room in view" }).click();
+  // pixi routes a pointer to whatever it last drew, so nothing can be pointed
+  // at - or clicked - until the room has been drawn once at this fitting
+  await paintEditorFrame(page);
 };
 
 export const rotateEditorViewTo = async (
@@ -39,6 +59,9 @@ export const rotateEditorViewTo = async (
       payload: direction,
     });
   }, awayAppearsAs);
+  // the turn is drawn on a frame; until one is asked for, the room on screen -
+  // and so what a pointer would hit - is still at the old angle
+  await paintEditorFrame(page);
 };
 
 const editorSliceState = (page: Page) =>
@@ -85,6 +108,9 @@ export const pointAtWorldPosition = async (
     worldPosition,
   );
   await page.mouse.move(clientXy.x, clientXy.y);
+  // what the pointer resolved to is worked out as the editor draws, so the
+  // move is not answered until a frame has been asked for
+  await paintEditorFrame(page);
 };
 
 /** choose a tool from the toolbar, by the tool button's accessible name */
@@ -109,6 +135,8 @@ export const placeItemAtWorldPosition = async (
   await pointAtWorldPosition(page, worldPosition);
   await page.mouse.down();
   await page.mouse.up();
+  // draw what the click did, so the room it left behind is the one read back
+  await paintEditorFrame(page);
 };
 
 /** what the editor's pointer resolved to, as of the last mouse move */

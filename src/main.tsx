@@ -4,9 +4,16 @@ import "./index.css";
 import { Suspense } from "preact/compat";
 
 import { importAppOnce } from "./game/components/App.import";
+import { installE2eAdvanceTimeHandle } from "./game/mainLoop/installE2eAdvanceTimeHandle";
 import { Dialog } from "./ui/Dialog";
 import { LoadingBorder } from "./ui/LoadingBorder";
 import { importOnceForReactSuspense } from "./utils/importOnce";
+
+if (import.meta.env.MODE === "visual-regression") {
+  // during e2e tests, nothing ticks unles the test progresses time,
+  // this needs to be done before anything renders:
+  installE2eAdvanceTimeHandle();
+}
 
 if (!import.meta.env.TAURI_ENV_PLATFORM) {
   import("./registerAppSW");

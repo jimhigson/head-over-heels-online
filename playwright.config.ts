@@ -44,7 +44,13 @@ if (isRootPlaywrightProcess) {
  * baselines - see https://chromium.googlesource.com/chromium/src/+/e1b855d4545dc4fff19cee500d7ce105126f3bd2
  */
 const chromiumFontRenderingLaunchOptions = {
-  args: ["--disable-font-subpixel-positioning"],
+  args: [
+    // fix *where* glyphs are placed, but not how they are rasterised or measured
+    "--disable-font-subpixel-positioning",
+    // fix the rasterisation of the fonts:
+    "--font-render-hinting=full",
+    "--disable-lcd-text",
+  ],
 };
 
 export default defineConfig<ScreenshotTestOptions>({
@@ -55,11 +61,13 @@ export default defineConfig<ScreenshotTestOptions>({
   testIgnore: "**/*.editor.spec.ts",
   fullyParallel: true,
   forbidOnly: !!process.env.CI,
-  retries: 1,
+  // no retries: tests must be deterministic, determinism failure is
+  // a real failure
+  retries: 0,
   reporter: "html",
   use: {
     baseURL: `http://localhost:${webserverPort}`,
-    trace: "on-first-retry",
+    trace: "retain-on-failure",
     screenshot: "only-on-failure",
   },
   snapshotPathTemplate:

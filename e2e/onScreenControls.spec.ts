@@ -4,12 +4,12 @@ import {
   getPlayableZ,
   waitForPlayableGrounded,
 } from "./testUtils/gameStateQueries";
-import { osSlowness } from "./testUtils/infrastructure";
 import { startCampaignViaMenu } from "./testUtils/menuNavigation";
 import {
   enableOnScreenControls,
   withOnScreenButtonHeld,
 } from "./testUtils/onScreenControls";
+import { osSlowness } from "./testUtils/osSlowness";
 import { setupE2ePage } from "./testUtils/pageSetup";
 import { test } from "./testUtils/test";
 

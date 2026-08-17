@@ -1,0 +1,11 @@
+{
+  "version": 1,
+  "skills": {
+    "guided-review": {
+      "source": "jimhigson/guided-review",
+      "sourceType": "github",
+      "skillPath": ".claude/skills/guided-review/SKILL.md",
+      "computedHash": "f3e863c822bfc6bf931346fcaf467c917bce244dcf25067dcacb140a61c9b9a9"
+    }
+  }
+}

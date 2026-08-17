@@ -13,6 +13,9 @@ export default defineConfig({
       "build",
       ".claude/worktrees",
     ],
-    setupFiles: ["src/_testUtils/stubLocalStorage.ts"],
+    setupFiles: [
+      "src/_testUtils/stubLocalStorage.ts",
+      "src/_testUtils/installAppTickerForTests.ts",
+    ],
   },
 });

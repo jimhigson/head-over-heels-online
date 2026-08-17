@@ -87,9 +87,18 @@ jobs:
                 --jq 'map(select(.headRefName | startswith("release-please--")))[0].number // empty')
           echo "number=$n" >> "$GITHUB_OUTPUT"
       # act only: the sandbox checkout's origin points at an unreachable local
-      # git proxy; the in-container base-ref fetch needs the public URL
+      # git proxy; the in-container base-ref fetch needs the public URL.
+      # Tolerates there being no usable repository at all: running act from a
+      # git worktree gives the container a `.git` file whose gitdir is outside
+      # it, and no clone of it succeeds - the action then reports the head size
+      # alone, which is still worth having
       - if: ${{ env.ACT }}
-        run: git remote set-url origin https://github.com/jimhigson/head-over-heels-online
+        run: |
+          if git rev-parse --git-dir >/dev/null 2>&1; then
+            git remote set-url origin https://github.com/jimhigson/head-over-heels-online
+          else
+            echo "no usable git repository - base comparison will be skipped"
+          fi
       # the release before the current production tag, for a third historical
       # comparison point (production's own size delta at the last release).
       # Skipped under act: `gh release list` needs a real token

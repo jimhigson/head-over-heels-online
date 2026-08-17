@@ -6,6 +6,8 @@ import {
 import { type DirectionsRelativeToMode } from "../../store/slices/userSettings/directionsRelativeToModes";
 import { store } from "../../store/store";
 import { emptyArray } from "../../utils/empty";
+import { updatePriority } from "../../utils/ticker/AppTicker";
+import { appTicker } from "../../utils/ticker/appTickerInstance";
 import { unitVectors } from "../../utils/vectors/unitVectors";
 import {
   addXyz,
@@ -197,11 +199,6 @@ const maybeRotate45InPlace = (shouldRotate: boolean, v: Xyz) =>
  */
 export type TickFn = (tick: { lastTime: number }) => void;
 
-export type InputTicker = {
-  start(fn: TickFn): void;
-  stop(fn: TickFn): void;
-};
-
 export class InputStateTracker {
   /**
    * snapshot of the input this frame, the previous frame, and going back as
@@ -231,17 +228,14 @@ export class InputStateTracker {
   #actionsHandled: Map<BooleanAction, number> = new Map();
 
   #keyboardStateMap: KeyboardStateMap;
-  #ticker: InputTicker;
   readonly hudInputState: HudInputState;
 
   constructor(
     keyboardStateMap: KeyboardStateMap,
     hudInputState: HudInputState,
-    ticker: InputTicker,
   ) {
     this.#keyboardStateMap = keyboardStateMap;
     this.hudInputState = hudInputState;
-    this.#ticker = ticker;
   }
 
   /**
@@ -667,10 +661,12 @@ export class InputStateTracker {
   }
 
   startTicking() {
-    this.#ticker.start(this.#tick);
+    // at interaction priority, which runs before the main loop - so what the
+    // world reads each frame is the snapshot taken at the top of that frame
+    appTicker.add(this.#tick, undefined, updatePriority.interaction);
   }
   stopTicking() {
-    this.#ticker.stop(this.#tick);
+    appTicker.remove(this.#tick);
   }
 }
 

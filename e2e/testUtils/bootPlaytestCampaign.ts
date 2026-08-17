@@ -5,6 +5,7 @@ import { type Campaign } from "../../src/model/modelTypes";
 import { type ResolutionName } from "../../src/originalGame";
 import {
   dispatchToStore,
+  paintRenderedFrame,
   setZeroGameSpeed,
   waitForGameReady,
 } from "./gameStateQueries";
@@ -33,6 +34,34 @@ export const bootPlaytestCampaign = async <RoomId extends string>(
     cheats: "1",
     track: "0",
   });
+
+  // Freeze the game before its very first physics tick, race-free. store.ts
+  // publishes the store to `window._e2e_store` synchronously at module-eval,
+  // before the main loop is even created; intercepting that assignment and
+  // dispatching zero game speed inside it guarantees the loop reads speed zero
+  // on its first tick. A polling approach (setInterval/setTimeout) can lose this
+  // race: its callback is a macrotask that gets starved while boot does heavy
+  // synchronous work, so the ticker's first rAF frame can run first and advance
+  // roomTime by a wall-clock-variable amount. That variance is invisible in
+  // sparse rooms but, in a room full of fast monsters that are then
+  // fast-forwarded, becomes a non-deterministic pixel difference (worse under CI
+  // load). The context starts with empty localStorage, so nothing rehydrates a
+  // non-zero speed over this.
+  await page.addInitScript(() => {
+    let heldStore: typeof window._e2e_store;
+    Object.defineProperty(window, "_e2e_store", {
+      configurable: true,
+      get: () => heldStore,
+      set(newStore: typeof window._e2e_store) {
+        heldStore = newStore;
+        newStore?.dispatch({
+          type: "userSettings/setGameSpeed",
+          payload: 0,
+        });
+      },
+    });
+  });
+
   await page.goto(`/?${params.toString()}`);
   await page.waitForFunction(() => window._e2e_store !== undefined, {
     timeout: 30_000,
@@ -48,4 +77,8 @@ export const bootPlaytestCampaign = async <RoomId extends string>(
   // playtest (data: url) mode skips the crowns intro dialog entirely:
   await waitForGameReady(page);
   await setZeroGameSpeed(page);
+  // nothing paints on its own in an e2e build - draw the first frame. The
+  // campaign's spritesheet is still baking at this point, so this is the drawn
+  // frame rather than any frame:
+  await paintRenderedFrame(page);
 };

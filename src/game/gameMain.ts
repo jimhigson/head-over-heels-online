@@ -22,8 +22,9 @@ import { loadGameState } from "./gameState/loadGameState";
 import { changeCharacterRoom } from "./gameState/mutators/changeCharacterRoom";
 import { type SavedGame } from "./gameState/saving/SavedGameState";
 import { type InputStateTrackerInterface } from "./input/InputStateTracker";
+import { e2eInstrumentGameState } from "./mainLoop/e2eInstrumentGameState";
+import { installAppTickerAsPixiShared } from "./mainLoop/installAppTickerAsPixiShared";
 import { installE2eCurrentPlayableHandle } from "./mainLoop/installE2eCurrentPlayableHandle";
-import { installE2eFastForwardHandle } from "./mainLoop/installE2eFastForwardHandle";
 import { installE2eSwopCharacterHandle } from "./mainLoop/installE2eSwopCharacterHandle";
 import { MainLoop } from "./mainLoop/MainLoop";
 import { loadHudFont } from "./render/text/TextContainer";
@@ -38,6 +39,9 @@ export const gameMain = async <RoomId extends string>(
   campaignLocator: CampaignLocator,
   inputStateTracker: InputStateTrackerInterface,
 ): Promise<GameApi<RoomId>> => {
+  // install our own ticker before pixi.init uses the standard one
+  installAppTickerAsPixiShared();
+
   const app = new Application<WebGLRenderer>();
   // the spritesheet variants are owned by game main, when the game is torn down they are
   // destroyed along with the Pixi Application that they belong to. This prevents the reuse of
@@ -139,9 +143,9 @@ export const gameMain = async <RoomId extends string>(
     // speed - where the input-driven swop, read only inside the physics tick,
     // never fires:
     window._e2e_pixiApplication = app;
-    installE2eFastForwardHandle(app);
     installE2eSwopCharacterHandle(gameState);
     installE2eCurrentPlayableHandle(gameState);
+    e2eInstrumentGameState(gameState);
   }
 
   const loop = new MainLoop(app, gameState, spritesheets).start();

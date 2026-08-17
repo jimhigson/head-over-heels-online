@@ -44,3 +44,11 @@ __pycache__/
 *.pyc
 
 .scratch
+
+# pnpm's content-addressable store, when it lands inside the worktree
+.pnpm-store/
+
+# npx skills-managed skill content (see skills-lock.json) - installed by
+# `npx skills add`, not git-tracked source
+.agents/
+.claude/skills/guided-review

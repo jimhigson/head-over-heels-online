@@ -459,7 +459,21 @@ const handleMonsterTouchingItemByTurning = <
   const turnRoll = hashNumberToNumber0to1(itemHash + roomTime);
 
   const newWalking = turnedVector(walking, m, turnStrategy, turnRoll);
-  itemWithMovement.state.vels.walking = newWalking;
+
+  const newFacingUnscaled =
+    newWalking === undefined ?
+      // calc facing vector separately from walk, since walk can be (0,0,0) - usually if the item
+      // is falling:
+      turnedVector(facing, m, turnStrategy, turnRoll)
+    : unitVector(newWalking);
+
+  if (newFacingUnscaled === undefined) {
+    // there is no direction to turn to - the touch does not block the way
+    // ahead. Keep walking and facing as they are
+    return;
+  }
+
+  itemWithMovement.state.vels.walking = newWalking ?? originXyz;
 
   const facingMaybeReverse =
     (
@@ -472,11 +486,7 @@ const handleMonsterTouchingItemByTurning = <
     : 1;
 
   itemWithMovement.state.facing = scaleXyz(
-    xyEqual(newWalking, originXy) ?
-      // calc facing vector separately from walk, since walk can be (0,0,0) - usually if the item
-      // is falling:
-      turnedVector(facing, m, turnStrategy, turnRoll)
-    : unitVector(newWalking),
+    newFacingUnscaled,
     facingMaybeReverse,
   );
 

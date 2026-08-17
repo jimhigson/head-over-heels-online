@@ -7,7 +7,7 @@ import {
   type SpriteOption,
 } from "../src/store/slices/userSettings/userSettingsSlice";
 import { dispatchToStore } from "./testUtils/gameStateQueries";
-import { osSlowness } from "./testUtils/infrastructure";
+import { osSlowness } from "./testUtils/osSlowness";
 import { setupE2ePage } from "./testUtils/pageSetup";
 import { menuScreenshotOptions } from "./testUtils/screenshots";
 import { test } from "./testUtils/test";
