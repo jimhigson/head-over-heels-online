@@ -6,7 +6,7 @@
 #   changedFiles.sh pr <base-ref> <head-ref>      # eg origin/main origin/my-branch
 #
 # STATUS is git's own: A (added/untracked) M D R###. Feed the output straight
-# into the groups json you author for build.py.
+# into the groups json you author for build.ts.
 set -euo pipefail
 
 mode="${1:?usage: changedFiles.sh worktree|commit <sha>|pr <base> <head>}"

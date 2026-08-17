@@ -1,0 +1,4 @@
+# this directory is its own workspace root, not a package of whatever repo it
+# is sitting inside. Without it pnpm walks up, finds the reviewed repo's
+# workspace, and either refuses to install here or installs into that repo
+packages: []

@@ -22,24 +22,36 @@ no way to open a local port — a sandbox, or someone else's machine.
 Use when a change is large enough (dozens of files) that reading it in
 diff/alphabetical order would lose the thread.
 
-**Almost all of this is scripted.** The skill ships three files, and the only
-part needing judgement is the middle one:
+**Almost all of this is scripted.** The only part needing judgement is the one
+in the middle:
 
 | file | does |
 | --- | --- |
 | `resolvePr.sh` | a PR number/branch/url → the local refs to diff, fetched (forks included) |
 | `changedFiles.sh` | the scope's file list as `STATUS<TAB>PATH`, binaries dropped |
 | *(you)* | author a groups json: the grouping, the order, the per-file notes |
-| `build.py` | collects every diff *and* each file's whole before/after, strips/truncates/escapes, computes GitHub anchors, inlines the font and the ui runtime, writes the finished HTML |
-| `template.html` | the page itself — a preact app: palette, layout, contents sidebar, diff rendering, notes, checkboxes |
-| `vendor/` | the preact+htm bundle `build.py` inlines; fetched from the cdn once and kept |
-| `serve.py` | serves the built page — how a review is normally delivered; its editors become editable and save back to the working tree |
-| `awaitNotes.py` | blocks until the reviewer writes a note, so you come back and act on it while they are still reading |
-| `reply.py` | answers a note in its own thread — what you did, or the one question you need answered |
+| `build.ts` | collects every diff *and* each file's whole before/after, strips/truncates/escapes, computes GitHub anchors, inlines the font and the built ui, writes the finished HTML |
+| `src/` | the page itself — a preact app in tsx: palette, layout, contents sidebar, diff rendering, notes, checkboxes |
+| `buildPage.ts` | bundles `src/` to the one script and one stylesheet `build.ts` inlines |
+| `serve.ts` | serves the built page — how a review is normally delivered; its editors become editable and save back to the working tree |
+| `awaitNotes.ts` | blocks until the reviewer writes a note, so you come back and act on it while they are still reading |
+| `reply.ts` | answers a note in its own thread — what you did, or the one question you need answered |
 
 Read the scripts' own `--help`/header comments rather than re-deriving what
 they do. Don't hand-assemble HTML or paste diff text; if the page needs a
-change, change `template.html` so the next review gets it too.
+change, change `src/` so the next review gets it too.
+
+Everything runs on node, against **this directory's own** `package.json` — not
+the reviewed repo's, which may have no node in it at all. The first build in a
+fresh checkout installs it:
+
+```bash
+cd .claude/skills/guided-review && pnpm install --ignore-workspace
+```
+
+`--ignore-workspace` and the local `pnpm-workspace.yaml` both stop pnpm from
+walking up and treating the skill as a package of whatever repo it is sitting
+in. `node_modules/` is build state and is gitignored.
 
 ## 1. Pick the scope: commit, PR, or working tree
 
@@ -78,7 +90,7 @@ git status -sb && git log --oneline origin/main..HEAD  # to detect working-tree 
 `resolvePr.sh` prints `{number, title, url, base, head}`. The head comes from
 `refs/pull/<n>/head`, so a PR from a fork resolves exactly like one from a
 branch on the origin. Pass its `base`/`head` to everything downstream, and its
-`number` to `build.py --pr` so the per-file links land on the right page.
+`number` to `build.ts --pr` so the per-file links land on the right page.
 
 For whole-PR mode, every following step's "the diff" means the three-dot
 range `<base>...<head>` (merge-base diff — matches what GitHub shows), never
@@ -104,11 +116,11 @@ untracked `??` to `A`, and drops binaries (images, fonts, audio, archives),
 which have no readable diff.
 
 Keep the status column per file — it drives the New/Modified/Deleted/Renamed
-badge, and tells `build.py` which files need diffing against `/dev/null`.
+badge, and tells `build.ts` which files need diffing against `/dev/null`.
 
 ## 3. Per-file links to the forge
 
-`build.py` derives these from the `origin` remote, so there is normally
+`build.ts` derives these from the `origin` remote, so there is normally
 nothing to do: with `--pr <n>` it links each file into that PR's Files-changed
 tab, otherwise `commit/<sha>` or `compare/<base>...<head>`, anchored with
 `#diff-<sha256hex(path)>` — GitHub's own scheme (the path exactly as git
@@ -124,7 +136,7 @@ It prints the base url it settled on.
 The link is a secondary affordance — a small "GitHub ↗" beside the path, for
 leaving a review comment — since the diff itself is in the page.
 
-## 4. Diff capture is `build.py`'s job
+## 4. Diff capture is `build.ts`'s job
 
 It runs the right command per file for the mode (`git show`, three-dot
 `git diff`, or `--no-index /dev/null` for untracked files), strips everything
@@ -228,7 +240,7 @@ Write one json file — the whole of your output:
 The file and line counts are computed — don't put them in `facts`. Then:
 
 ```bash
-python3 .claude/skills/guided-review/build.py \
+node .claude/skills/guided-review/build.ts \
   --groups <scratchpad>/review.json \
   --out <scratchpad>/review.html \
   --mode worktree
@@ -237,7 +249,7 @@ python3 .claude/skills/guided-review/build.py \
 ```
 
 Then serve it (step 8) and hand over that URL. Rebuild and refresh to iterate;
-`build.py` overwrites in place, so the server keeps serving the newest build
+`build.ts` overwrites in place, so the server keeps serving the newest build
 without restarting.
 
 ### Writing the notes
@@ -271,7 +283,7 @@ non-reachable mode and jump to "### Non-reachable mode".
 
 ```bash
 # reachable mode only:
-python3 .claude/skills/guided-review/serve.py --html <scratchpad>/review.html --repo . --open
+node .claude/skills/guided-review/serve.ts --html <scratchpad>/review.html --repo . --open
 ```
 
 It prints a `http://127.0.0.1:<port>/` — hand that over as the review. Run it
@@ -296,8 +308,8 @@ Serving buys three things a file (or a published page) can't have:
   to ask. Unserved, ticks fall back to localStorage keyed by review id.
 
 `<store>` is `<the html's directory>/<review id>/`, and holds all four of
-`ticks.json`, `notes.json`, `notes.md` and `token`. `serve.py` prints it at
-startup, and `build.py` prints the id it derived. The id comes from the repo
+`ticks.json`, `notes.json`, `notes.md` and `token`. `serve.ts` prints it at
+startup, and `build.ts` prints the id it derived. The id comes from the repo
 and *what* is being reviewed (the commit, the pr number, the branch for a
 working tree) rather than from where the html was written, so the same review
 rebuilt tomorrow resumes; `--id` overrides it when two reviews of one scope
@@ -317,7 +329,7 @@ When a note arrives, one of two things happens:
   in the thread:
 
   ```bash
-  python3 .claude/skills/guided-review/reply.py --notes <store>/notes.json \
+  node .claude/skills/guided-review/reply.ts --notes <store>/notes.json \
     --path src/ui/useStableValue.ts --line 7 \
     --text "moved to src/util/preact/useStableValue.ts, import sites updated"
   ```
@@ -329,7 +341,7 @@ When a note arrives, one of two things happens:
 
 - **It needs discussion** — ask *in the thread*, with `--asking`, and keep it
   to the one question that unblocks you. The reviewer types their answer into
-  the same box and it comes back to you through `awaitNotes.py`. Only after
+  the same box and it comes back to you through `awaitNotes.ts`. Only after
   that do you edit. Don't stop the review to ask in the terminal: they are
   reading the page, not the chat.
 
@@ -340,11 +352,11 @@ Three ways notes reach you, in order of usefulness:
 
 ```bash
 # blocks until a note is written, then prints it and exits - run in the background
-python3 .claude/skills/guided-review/awaitNotes.py --notes <store>/notes.json
+node .claude/skills/guided-review/awaitNotes.ts --notes <store>/notes.json
 ```
 
-- `awaitNotes.py` finishing is what brings you back into the conversation. Run
-  it in the background right after `serve.py`; when it returns, act on what it
+- `awaitNotes.ts` finishing is what brings you back into the conversation. Run
+  it in the background right after `serve.ts`; when it returns, act on what it
   printed, then run it again. It exits with "no new notes" after `--timeout`
   (default 30 min), so re-arm it then too.
 - Every note also prints live in the server's own output:
@@ -358,25 +370,24 @@ If a note is ambiguous, ask about that one note rather than stopping the
 review; the page keeps working while you talk.
 
 Both are Monaco-only: without the CDN there is no editor to hang them off.
-Any static server (`vite preview`, `python3 -m http.server`) will serve the
-page for reading, but only `serve.py` answers `/save` and `/notes`.
+Any static server will serve the page for reading, but only `serve.ts` answers
+`/save` and `/notes`.
 
 ### Non-reachable mode (sandbox): send the file as-is
 
 When `REACHABLE_FROM_INTERNET` is unset/falsy, the built `review.html` is
 already a **single self-contained file** (font and ui runtime inlined, every
 diff and before/after embedded, Monaco pulled from the CDN at runtime) that
-**branches at runtime** on `window.__reviewServer`: only `serve.py` injects
+**branches at runtime** on `window.__reviewServer`: only `serve.ts` injects
 that, so opened directly the page is cleanly read-only — the per-line
 note-authoring UI never wires up (no gutter `+` glyph, no `alt-N`/context-menu
 action, no view zones), and Save/Revert/"Send notes to agent" stay hidden.
 Everything else works the same as served: reading order, groups, blurbs, the
-contents sidebar, per-file notes *text*, status chips, path/GitHub links, the
-Monaco diffs (with the plain fallback for offline/CSP), and the ticks,
-per-file folding + progress bar. There is
-nothing to strip and **no separate file to build** — `build.py` in step 7
-already produced the finished HTML, and this mode delivers exactly that.
-**Do not `vite build` anything** — the page is not a vite/node project.
+contents sidebar and its draggable split, per-file notes *text*, status chips,
+path/GitHub links, the Monaco diffs (with the plain fallback for offline/CSP),
+and the ticks, per-file folding + progress bar. There is nothing to strip and
+**no second build** — `build.ts` in step 7 already bundled the page and wrote
+the finished HTML, and this mode delivers exactly that file.
 
 Deliver `<scratchpad>/review.html` to the reviewer:
 
@@ -405,23 +416,32 @@ diffs render through the plain fallback.
 ## 9. Changing the page itself
 
 Only when the page needs to look or behave differently — otherwise skip this
-section entirely. Edit `template.html` (it takes three placeholders,
-`FONT_B64`, `PREACT_JS` and `PAYLOAD_JSON`, and reads
-`{meta, groups, diffs, sides, stats, links}` out of the payload) so every future
-review inherits the change. Load the `artifact-design` skill before doing so.
-This is a utilitarian reference tool, not an editorial page — polished
-typographic hierarchy and a real (small) palette, no hero, no flourish.
+section entirely. Edit `src/` so every future review inherits the change. Load
+the `artifact-design` skill before doing so. This is a utilitarian reference
+tool, not an editorial page — polished typographic hierarchy and a real (small)
+palette, no hero, no flourish.
 
-### It is a preact app
+### It is a preact app, built by vite
 
-The page's ui is preact + htm (tagged-template JSX, no build step), from the
-`htm/preact/standalone` umd bundle **inlined by `build.py`** out of
-`vendor/`, which it fetches from jsdelivr the first time it is missing. Inlined
-rather than pulled at runtime because a review has to keep working opened as a
-file and published as an artifact, and both cut the page off from any cdn:
-monaco degrades to the plain patch renderer there, but a missing ui runtime
-would leave nothing on screen at all. `htmPreact` is a global; the module
-script destructures `html`/`render`/the hooks out of it.
+`src/` is a normal preact + tsx app on preact 11, bundled by `buildPage.ts`
+(vite, library mode, `write: false`) into **one es module and one stylesheet as
+strings**, which `build.ts` inlines into the page along with the font and the
+payload json. Nothing is fetched at runtime but monaco: a review has to keep
+working opened as a file and published as an artifact, and both cut the page
+off from any cdn — monaco degrades to the plain patch renderer there, but a
+missing ui would leave nothing on screen at all.
+
+- `pnpm exec tsc --noEmit` in the skill directory typechecks it; the whole
+  app is typed, including a hand-written description of the parts of monaco's
+  api the page uses (`src/monacoApi.ts`), since monaco arrives as a cdn global
+  rather than a package.
+- The page is assembled in `build.ts`'s `page()`: charset, `<style>`, `#app`,
+  the `<!--REVIEW_SERVER-->` marker, the payload, the module script. Every `<`
+  in the payload is escaped to `\u003c` — a valid json escape the parser undoes
+  for free — so a reviewed file quoting that marker, or a closing script tag,
+  cannot break out of the block it is sitting in.
+- `src/page.css` carries the whole stylesheet, with `FONT_B64` the one
+  placeholder `build.ts` fills in.
 
 Two shapes carry state between the parts:
 
@@ -430,9 +450,10 @@ Two shapes carry state between the parts:
   the sidebar and the groups. That single object is why a tick in the sidebar
   and a tick on a row are the same tick; don't add a second copy anywhere.
 - **`makeStore`/`useStore`** for the things the *imperative* side owns — notes
-  (written from monaco view zones and the server poll) and toasts. Anything
-  rendered from `notesStore` re-renders when a note lands, which is how the
-  note counts appear in both the sidebar and the row heads.
+  (written from monaco view zones and the server poll), toasts, and the
+  inline/side-by-side choice (read by every monaco editor, mounted or not).
+  Anything rendered from `notesStore` re-renders when a note lands, which is
+  how the note counts appear in both the sidebar and the row heads.
 
 Monaco stays imperative — it owns its dom. `createDiffEditor` builds one
 editor and reports back through the setters `MonacoDiff` passes it, and note
@@ -470,10 +491,11 @@ only (page title, step badges, the progress readout) at integer pixel
 sizes. Body text stays in a system stack; paths and diffs in
 `ui-monospace`.
 
-### What the template already does — preserve it if you edit
+### What the page already does — preserve it if you edit
 
 - Sticky header: live progress bar and checked/total count, the Contents
-  toggle, open-everything, close-everything, clear-ticks.
+  toggle, open-everything, close-everything, clear-ticks, and a **Diffs
+  select** (inline / side by side).
 - **A contents sidebar**, sticky beside the reading order: every group and
   every file as a tree, each with its own checkbox and `done/total`, the file
   ticks and the row ticks being the same state. Clicking a file opens its
@@ -481,6 +503,23 @@ sizes. Body text stays in a system stack; paths and diffs in
   being read highlighted, suppressed for a second after a click so an explicit
   jump isn't overruled by the rows it travelled past. Under 60rem it becomes
   an overlay that starts closed and closes again once used.
+- **The split between the two is draggable**, from `react-resizable-panels`
+  (a react library, reached through `preact/compat` — `resolve.alias` in
+  `buildPage.ts` and matching `paths` in `tsconfig.json` mean one preact
+  renders both it and the page; two copies would leave its hooks with no
+  renderer). Its three components take `className`, not `class`. The width
+  persists under `autoSaveId`, per reader rather than per review.
+  - `Layout` renders the `PanelGroup` **only in the docked case**. Overlaid
+    (under 60rem) or with the contents closed there is nothing to divide, so
+    it renders the plain flex `.layout` instead, and the same 60rem threshold
+    drives the markup (`useContentsOverlays`) and the stylesheet.
+  - The panels must not become scroll containers or the page would stop
+    scrolling as one document: the group is `height: auto`, both panes are
+    `overflow: visible`, and the handle is a full-height grab strip drawing
+    the rule that used to be the sidebar's `border-right`.
+  - Switching between the two layouts **remounts every row**, so the
+    scroll-spy observer lives in `rowNodes.ts` and observes rows as they
+    register rather than once at app mount.
 - Each group opens by default, with a reading-order number (real structure
   here, unlike decorative 01/02/03 markers elsewhere), the blurb, and its file
   rows. Its heading is **sticky** under the page header (which is measured, so
@@ -503,13 +542,20 @@ sizes. Body text stays in a system stack; paths and diffs in
   up front) and then **stay mounted, hidden**, when closed or folded away —
   disposing them would throw away unsaved edits every time a file was ticked.
   They render into a **Monaco diff editor**, loaded from jsdelivr: syntax
-  highlighting per file extension, an inline (unified) view, and
-  `hideUnchangedRegions` so long files collapse to their changed parts — the
-  reason for using an editor rather than a static patch. It is read-only, its
-  language services' diagnostics are off (nothing here is being fixed, and it
-  saves a multi-megabyte worker), its themes carry the page's own palette, and
+  highlighting per file extension, and `hideUnchangedRegions` so long files
+  collapse to their changed parts — the reason for using an editor rather than
+  a static patch. It is read-only, its language services' diagnostics are off
+  (nothing here is being fixed, and it saves a multi-megabyte worker), its
+  themes carry the page's own palette, and
   `scrollbar.alwaysConsumeMouseWheel: false` keeps the page scrolling when the
   pointer crosses an editor.
+- **Inline or side by side** is the header's Diffs select, applied to every
+  editor at once — `diffViewStore` is read when an editor is built and
+  subscribed to for the ones already on screen, and remembered in
+  localStorage per reader. Side by side needs asking for **twice**:
+  `renderSideBySide: true` alone does nothing in a pane this narrow, because
+  monaco's `useInlineViewWhenSpaceIsLimited` drops back to the inline view
+  below ~900px on its own. Both go in `sideBySideOptions`.
 - **The CDN fails gracefully.** Offline, or published (where the host's CSP
   blocks external scripts), Monaco never arrives; the loader rejects on
   `error` or a 6s timeout and every diff renders through the plain fallback
@@ -521,9 +567,9 @@ sizes. Body text stays in a system stack; paths and diffs in
 - Both themes via the artifact-design token pattern: `:root`, the
   `prefers-color-scheme` media query, and both `data-theme` overrides. Monaco
   is re-themed from both signals.
-- `<meta charset="utf-8">` is the first line of the template, and `build.py`
-  reads and writes utf-8 explicitly — without both, `file://` opens guess
-  windows-1252 and every dash and arrow in the prose turns to mojibake.
+- `<meta charset="utf-8">` is the first line the page is assembled from, and
+  `build.ts` reads and writes utf-8 explicitly — without both, `file://` opens
+  guess windows-1252 and every dash and arrow in the prose turns to mojibake.
 - Served, each editor also carries Revert (restore the build-time content into
   the buffer, never straight to disk) and the header carries "Send notes to
   agent"; both are hidden when opened without a server, where there is
@@ -540,7 +586,7 @@ sizes. Body text stays in a system stack; paths and diffs in
 - A note is a **thread**, not a string: `{line, messages: [{from, text}]}`,
   with the original single-`text` shape read as its first message. The zone
   shows the conversation and a Reply box; the agent's side arrives through
-  `reply.py`. Everything that reads notes must tolerate both shapes and a
+  `reply.ts`. Everything that reads notes must tolerate both shapes and a
   half-written file — a note file is written while it is being read.
 - A note zone has two states: a textarea while it is being written or replied
   to, then the thread with Reply/Delete. Without that change of state, saving
@@ -550,9 +596,9 @@ sizes. Body text stays in a system stack; paths and diffs in
   that editor has unsaved edits, which win), its counts update, and a toast
   fires; new agent messages toast too. That is how an edit you make in
   response to a note shows up without anyone reloading anything.
-- `serve.py` sets `sys.stdout.reconfigure(line_buffering=True)`: run in the
-  background its stdout is a pipe, which python block-buffers, so notes and
-  request lines would sit unseen in the buffer until it exited.
+- `serve.ts` answers `/favicon.ico` with a 204: the browser asks unprompted,
+  and a 404 would put an error in the console of every review for something
+  the page never wanted.
 - The write token is **stored beside the review and reused across restarts**.
   It exists only to stop another page in the browser posting to the port behind
   the reviewer's back; minting a fresh one per run would silently break every
@@ -574,7 +620,7 @@ sizes. Body text stays in a system stack; paths and diffs in
   and an element that isn't displayed cannot be focused).
   Zone contents also sit inside an `aria-hidden` subtree, so the note UI is
   mouse/keyboard-driven and not reachable by role queries.
-- The page adapts to `window.__reviewServer`, which only `serve.py` injects
+- The page adapts to `window.__reviewServer`, which only `serve.ts` injects
   (into the `<!--REVIEW_SERVER-->` marker). It gates the whole
   note-authoring/collaboration surface, not just Save/Revert/handoff: the
   gutter `+` glyph, the `alt-N`/context-menu action, and the view-zone note
