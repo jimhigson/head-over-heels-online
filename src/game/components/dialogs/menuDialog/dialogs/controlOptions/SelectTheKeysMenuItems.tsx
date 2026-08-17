@@ -393,6 +393,26 @@ export const SelectTheKeysMenuItems = () => {
           />
         }
       />
+      <MenuItem
+        id="toggleSmoothSprites"
+        label={
+          <span class="inline-block w-6 text-multi-line">
+            Toggle smooth sprites
+          </span>
+        }
+        valueElement={
+          <SelectKeysMenuAssignmentValue action="toggleSmoothSprites" />
+        }
+        onSelect={useDispatchActionCallback(
+          assignInputStart,
+          "toggleSmoothSprites",
+        )}
+        leader={
+          <span
+            class={`${spriteLeaderClasses} ${"texture-switch_left" satisfies TextureTailwindClass} sprites-normal-height`}
+          />
+        }
+      />
     </>
   );
 };

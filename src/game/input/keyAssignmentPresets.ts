@@ -76,6 +76,7 @@ const standardKeyAssignment = {
     // f11 clashes with macos defaults, and browser fullscreen!
     // f12 is taken in chrome/firefox - opens dev tools
     toggleCrtFilter: { keys: ["F8", "T"] },
+    toggleSmoothSprites: { keys: ["Y"] },
     toggleShowFps: { keys: ["F9"] },
     cycleSprites: { keys: ["F10"] },
     cycleResolution: { keys: ["0"] },

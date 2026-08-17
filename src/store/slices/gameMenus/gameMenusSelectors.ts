@@ -110,6 +110,9 @@ export const useSpritesOption = () => useAppSelector(selectSpritesOption);
 
 export const useIsUncolourised = () => useAppSelector(selectIsUncolourised);
 export const selectIsCrtFilter = selectUserSetting("displaySettings.crtFilter");
+export const selectIsSmoothSprites = selectUserSetting(
+  "displaySettings.smoothSprites",
+);
 export const selectIsInfiniteLivesPoke = selectUserSetting(
   "pokesEnabled.infiniteLives",
 );

@@ -8,6 +8,8 @@ export type E2EEventBusPayloadMap = {
     roomId: string;
     spriteOption: SpriteOption;
     cameraAngle: Xy;
+    /** 1 = the plain art, above 1 = drawn from a upscaled sheet */
+    bakedUpscaleFactor: number;
   };
   /** ticks stopped drawing anything, whatever they are waiting on */
   renderingSuspended: undefined;

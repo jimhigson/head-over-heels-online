@@ -201,6 +201,12 @@ test("MAME assignment", () => {
               "F9",
             ],
           },
+          "toggleSmoothSprites": {
+            "gamepadButtons": [],
+            "keys": [
+              "Y",
+            ],
+          },
           "towards": {
             "gamepadButtons": [],
             "keys": [
@@ -449,6 +455,12 @@ test("Default assignment", () => {
             "gamepadButtons": [],
             "keys": [
               "F9",
+            ],
+          },
+          "toggleSmoothSprites": {
+            "gamepadButtons": [],
+            "keys": [
+              "Y",
             ],
           },
           "towards": {

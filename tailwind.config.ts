@@ -4,6 +4,7 @@ import { type Config } from "tailwindcss";
 import { resolutions } from "./src/originalGame";
 import { anchorPopovers } from "./src/tailwind/plugins/anchorPopovers";
 import { fallbackColourVariables } from "./src/tailwind/plugins/fallbackColourVariables";
+import { gameCursorNone } from "./src/tailwind/plugins/gameCursorNone";
 import { spritesTailwindPlugin } from "./src/tailwind/plugins/spritesTailwindPlugin";
 import { coloursCssVariables } from "./src/tailwind/tailwindColours";
 
@@ -96,6 +97,13 @@ export default {
           "./index.html",
           "./src/*.{js,ts,jsx,tsx,md}",
           "./src/!(editor)/**/*.{js,ts,jsx,tsx,md}",
+        ]
+      : process.env.TAILWIND_APP === "fontEditor" ?
+        [
+          "./scripts/font/editor/**/*.{ts,tsx,html}",
+          // the font editor borrows src/ui's components, which carry their
+          // own classes
+          "./src/ui/**/*.{ts,tsx}",
         ]
       : ["./index.html", "./src/**/*.{js,ts,jsx,tsx,md}"],
     extract: {
@@ -229,6 +237,7 @@ export default {
   plugins: [
     anchorPopovers,
     fallbackColourVariables,
+    gameCursorNone,
     spritesTailwindPlugin,
     scrollbar({ preferredStrategy: "pseudoelements", nocompatible: true }),
   ],

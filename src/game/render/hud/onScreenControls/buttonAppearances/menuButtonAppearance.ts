@@ -25,6 +25,7 @@ export const menuButtonAppearance: ButtonAppearance<
 
   const output = new TextContainer({
     pixiRenderer: general.pixiRenderer,
+    resolution: general.spritesheets.bakedUpscaleFactor,
     label: "menuText",
     outline: true,
     doubleHeight: true,

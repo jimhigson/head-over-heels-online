@@ -1,6 +1,7 @@
 import { useAppSelector } from "../../../../../../store/hooks";
 import {
   selectIsCrtFilter,
+  selectIsSmoothSprites,
   selectShowFps,
 } from "../../../../../../store/slices/gameMenus/gameMenusSelectors";
 import { toggleUserSetting } from "../../../../../../store/slices/userSettings/userSettingsSlice";
@@ -21,9 +22,9 @@ import { DialogTitleBar } from "../DialogTitleBar";
 import { FullscreenMenuItem } from "./FullscreenMenuItem";
 import { SpritesOptionMenuItem } from "./SpritesOptionMenuItem";
 
-const crtEffectMarkdown = `Here for the nostalgia?
+const crtEffectMarkdown = `Your fancy new screen like 1987 again.`;
 
-Make your fancy new screen look like it’s 1987 again.`;
+const smoothSpritesMarkdown = `Upset pixel artists making it look hi-res`;
 
 export const DisplayOptionsDialog = () => {
   return (
@@ -35,7 +36,17 @@ export const DisplayOptionsDialog = () => {
             // keep inline (not deploymentType()) to allow tree-shaking
             import.meta.env.TAURI_ENV_PLATFORM && <FullscreenMenuItem />
           }
+          <div class="col-span-3">
+            <h2 class="text-midRed zx:text-zxBlue toppy:text-toppyPink2 pt-1 text-double-height">
+              Artwork
+            </h2>
+          </div>
           <SpritesOptionMenuItem />
+          <div class="col-span-3">
+            <h2 class="text-midRed zx:text-zxBlue toppy:text-toppyPink2 pt-1 text-double-height">
+              Filters
+            </h2>
+          </div>
           <MenuItem
             doubleHeight
             id="crtFilter"
@@ -74,8 +85,34 @@ export const DisplayOptionsDialog = () => {
           />
           <MenuItem
             doubleHeight
+            id="smoothSprites"
+            verticalAlignItemsCentre
+            label="Smooth Sprites"
+            valueElement={
+              <Switch
+                class="ml-auto"
+                value={useAppSelector(selectIsSmoothSprites)}
+              />
+            }
+            onSelect={useDispatchActionCallback(toggleUserSetting, {
+              path: "displaySettings.smoothSprites",
+            })}
+            hint={
+              <BlockyMarkdown
+                class={optionsHintMarkdownClassname}
+                markdown={smoothSpritesMarkdown}
+              />
+            }
+          />
+          <div class="col-span-3">
+            <h2 class="text-midRed zx:text-zxBlue toppy:text-toppyPink2 pt-1 text-double-height">
+              Game
+            </h2>
+          </div>
+          <MenuItem
+            doubleHeight
             id="emulatedResolution"
-            label="Emulated Resolution"
+            label="Emulated Resolution..."
             subMenuId="emulatedResolution"
             verticalAlignItemsCentre
             hint={
@@ -99,7 +136,7 @@ export const DisplayOptionsDialog = () => {
             hint={
               <BlockyMarkdown
                 class={optionsHintMarkdownClassname}
-                markdown={`Frames per second shown during gameplay.`}
+                markdown={`Frames per second shown during gameplay`}
               />
             }
           />

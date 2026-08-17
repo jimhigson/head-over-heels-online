@@ -157,6 +157,10 @@ it("combines two partial input assignments without duplicates", () => {
         gamepadButtons: [],
         keys: [],
       },
+      toggleSmoothSprites: {
+        gamepadButtons: [],
+        keys: [],
+      },
       toggleShowFps: {
         gamepadButtons: [],
         keys: [],
@@ -342,6 +346,10 @@ it("combines two partial input with duplicates by later values overriding earlie
         keys: [],
       },
       toggleCrtFilter: {
+        gamepadButtons: [],
+        keys: [],
+      },
+      toggleSmoothSprites: {
         gamepadButtons: [],
         keys: [],
       },

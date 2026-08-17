@@ -1,0 +1,1200 @@
+{
+  "1": {
+    "pixelRules": {
+      "0,0": {
+        "chamferStepTopLeft": {
+          "on": true,
+          "options": { "scale": "areaPreserving" }
+        }
+      }
+    }
+  },
+  "2": {
+    "vectorMode": false,
+    "disabledRules": ["roundedCornerBottomRight"],
+    "pixelRules": {
+      "6,0": { "inkCornerTopRight": { "on": true } },
+      "0,2": {
+        "singleChamferSubBottomLeft": { "on": false },
+        "singleChamferSubBottomRight": { "on": false }
+      },
+      "1,3": {
+        "staircase1to1InkRightStepLeftjunctionEnd": { "on": false },
+        "staircase1to1InkRightStepLeftmiddle": { "on": false },
+        "singleChamferSubTopLeft": { "on": true }
+      },
+      "0,4": { "singleChamferSubTopLeft": { "on": true } },
+      "1,2": {
+        "uValleyAddUp": { "on": false },
+        "uValleyAddDown": { "on": true }
+      },
+      "0,0": {
+        "singleChamferSubTopLeft": { "on": false },
+        "inkCornerTopLeft": { "on": true }
+      },
+      "6,3": {
+        "waistedCorner": { "on": false },
+        "singleChamferAddTopLeft": { "on": true }
+      },
+      "5,4": { "singleChamferAddTopLeft": { "on": true } }
+    }
+  },
+  "3": {
+    "pixelRules": {
+      "6,0": { "inkCornerTopRight": { "on": true } },
+      "6,7": { "inkCornerBottomRight": { "on": true } },
+      "2,2": { "uValleySubLeft": { "on": false } },
+      "2,5": { "uValleySubLeft": { "on": false } },
+      "1,5": { "uValleyAddLeft": { "on": true } },
+      "1,2": { "uValleyAddLeft": { "on": true } }
+    }
+  },
+  "4": { "disabledRules": ["roundedCornerBottomRight"] },
+  "5": {
+    "pixelRules": {
+      "2,5": { "uValleyAddLeft": { "on": true } },
+      "6,3": { "inkCornerTopRight": { "on": true } }
+    }
+  },
+  "6": {
+    "vectorMode": false,
+    "disabledRules": ["isolatedHole"],
+    "pixelRules": {
+      "0,7": { "inkCornerBottomLeft": { "on": true } },
+      "6,7": { "inkCornerBottomRight": { "on": true } },
+      "0,0": { "inkCornerTopLeft": { "on": true } },
+      "6,3": { "inkCornerTopRight": { "on": true } },
+      "3,5": { "isolatedHole": { "on": true } },
+      "5,2": { "uValleyAddRight": { "on": false } },
+      "4,2": { "uValleySubRight": { "on": true } }
+    }
+  },
+  "7": {
+    "pixelRules": {
+      "1,4": {
+        "staircase1to2InkRightStepLeftmiddle": {
+          "options": { "curveEnd": "atCorner" }
+        }
+      },
+      "6,1": { "staircase1to2InkLeftStepLeftstart": { "on": false } },
+      "5,2": {
+        "staircase1to2InkLeftStepLeftmiddle": { "options": { "slope": "add" } }
+      },
+      "3,7": {
+        "staircase1to2InkLeftStepLeftend": {
+          "options": { "curveEnd": "atSlopeChange" }
+        }
+      }
+    }
+  },
+  "8": {
+    "vectorMode": false,
+    "disabledRules": ["isolatedHole"],
+    "pixelRules": {
+      "6,0": { "inkCornerTopRight": { "on": true } },
+      "0,0": { "inkCornerTopLeft": { "on": true } },
+      "0,7": { "inkCornerBottomLeft": { "on": true } },
+      "6,7": { "inkCornerBottomRight": { "on": true } },
+      "3,2": { "isolatedHole": { "on": true } },
+      "3,5": { "isolatedHole": { "on": true } }
+    }
+  },
+  "9": {
+    "vectorMode": false,
+    "disabledRules": ["isolatedHole"],
+    "pixelRules": {
+      "6,7": { "inkCornerBottomRight": { "on": true } },
+      "6,0": { "inkCornerTopRight": { "on": true } },
+      "0,0": { "inkCornerTopLeft": { "on": true } },
+      "0,4": { "inkCornerBottomLeft": { "on": true } },
+      "3,2": { "isolatedHole": { "on": true } },
+      "2,5": { "uValleyAddLeft": { "on": false } },
+      "3,5": { "uValleySubLeft": { "on": true } }
+    }
+  },
+  "↖": {
+    "vectorMode": true,
+    "shapes": [
+      {
+        "type": "contour",
+        "points": [
+          [0, 0],
+          [5, 0],
+          [5.5, 0.5],
+          [4.5, 1.5],
+          [7, 4],
+          [4, 7],
+          [1.5, 4.5],
+          [0.5, 5.5],
+          [0, 5]
+        ],
+        "curves": [],
+        "corners": {}
+      }
+    ],
+    "artHash": "3c311621"
+  },
+  "↗": {
+    "vectorMode": true,
+    "shapes": [
+      {
+        "type": "contour",
+        "points": [
+          [7, 5],
+          [6.5, 5.5],
+          [5.5, 4.5],
+          [3, 7],
+          [0, 4],
+          [2.5, 1.5],
+          [1.5, 0.5],
+          [2, 0],
+          [7, 0]
+        ],
+        "curves": [],
+        "corners": {}
+      }
+    ],
+    "artHash": "42bd6cb5"
+  },
+  "↘": {
+    "vectorMode": true,
+    "shapes": [
+      {
+        "type": "contour",
+        "points": [
+          [7, 8],
+          [2, 8],
+          [1.5, 7.5],
+          [2.5, 6.5],
+          [0, 4],
+          [3, 1],
+          [5.5, 3.5],
+          [6.5, 2.5],
+          [7, 3]
+        ],
+        "curves": [],
+        "corners": {}
+      }
+    ],
+    "artHash": "d85a4bd1"
+  },
+  "↙": {
+    "vectorMode": true,
+    "shapes": [
+      {
+        "type": "contour",
+        "points": [
+          [0, 3],
+          [0.5, 2.5],
+          [1.5, 3.5],
+          [4, 1],
+          [7, 4],
+          [4.5, 6.5],
+          [5.5, 7.5],
+          [5, 8],
+          [0, 8]
+        ],
+        "curves": [],
+        "corners": {}
+      }
+    ],
+    "artHash": "c9173915"
+  },
+  "<": {
+    "vectorMode": true,
+    "shapes": [
+      {
+        "type": "contour",
+        "points": [
+          [1, 5],
+          [1, 3],
+          [4, 0],
+          [7, 0],
+          [7, 2],
+          [5, 4],
+          [7, 6],
+          [7, 8],
+          [4, 8]
+        ],
+        "curves": [],
+        "corners": {}
+      }
+    ],
+    "artHash": "7340e51b"
+  },
+  ">": {
+    "vectorMode": true,
+    "shapes": [
+      {
+        "type": "contour",
+        "points": [
+          [6, 5],
+          [6, 3],
+          [3, 0],
+          [0, 0],
+          [0, 2],
+          [2, 4],
+          [0, 6],
+          [0, 8],
+          [3, 8]
+        ],
+        "curves": [],
+        "corners": {}
+      }
+    ],
+    "artHash": "ac3a467b"
+  },
+  "/": {
+    "vectorMode": true,
+    "shapes": [
+      {
+        "type": "contour",
+        "points": [
+          [0, 8],
+          [0, 7],
+          [3.5, 0],
+          [6, 0],
+          [6, 1],
+          [2.5, 8]
+        ]
+      }
+    ]
+  },
+  "\\": {
+    "vectorMode": true,
+    "shapes": [
+      {
+        "type": "contour",
+        "points": [
+          [6, 8],
+          [3.5, 8],
+          [0, 1],
+          [0, 0],
+          [2.5, 0],
+          [6, 7]
+        ]
+      }
+    ]
+  },
+  "e": { "pixelRules": { "6,7": { "waistedCorner": { "on": true } } } },
+  "q": {
+    "pixelRules": {
+      "7,9": {
+        "waistedCorner": { "on": false, "options": { "cut": "diagonal" } }
+      },
+      "7,8": { "singleChamferSubBottomRight": { "on": true } },
+      "6,9": {
+        "inkCornerBottomRight": { "on": false },
+        "staircaseFlat1to2InkLeftStepLeftmergedStart": { "on": false },
+        "singleChamferSubBottomRight": { "on": true }
+      }
+    }
+  },
+  "R": {
+    "pixelRules": {
+      "3,7": { "notchOpensDown": { "options": { "shape": "wedgeSquareLow" } } },
+      "6,0": { "inkCornerTopRight": { "on": true } }
+    }
+  },
+  "Y": {
+    "pixelRules": {
+      "0,4": {
+        "chamferStepBottomLeft": {
+          "on": true,
+          "options": { "scale": "fitInPixel" }
+        }
+      },
+      "6,4": {
+        "chamferStepBottomRight": {
+          "on": true,
+          "options": { "scale": "fitInPixel" }
+        }
+      }
+    }
+  },
+  ",": {
+    "disabledRules": [
+      "notchOpensRight",
+      "notchOpensLeft",
+      "notchOpensUp",
+      "notchOpensDown"
+    ]
+  },
+  ";": {
+    "disabledRules": [
+      "notchOpensRight",
+      "notchOpensLeft",
+      "notchOpensUp",
+      "notchOpensDown"
+    ]
+  },
+  "‘": {
+    "disabledRules": [
+      "notchOpensRight",
+      "notchOpensLeft",
+      "notchOpensUp",
+      "notchOpensDown"
+    ]
+  },
+  "’": {
+    "disabledRules": [
+      "notchOpensRight",
+      "notchOpensLeft",
+      "notchOpensUp",
+      "notchOpensDown"
+    ]
+  },
+  "🛡": {
+    "disabledRules": [
+      "notchOpensRight",
+      "notchOpensLeft",
+      "notchOpensUp",
+      "notchOpensDown"
+    ],
+    "pixelRules": {
+      "6,0": { "inkCornerTopRight": { "on": true } },
+      "0,0": { "inkCornerTopLeft": { "on": true } }
+    }
+  },
+  "#": {
+    "vectorMode": false,
+    "disabledRules": [
+      "roundedCornerTopLeft",
+      "roundedCornerTopRight",
+      "roundedCornerBottomLeft",
+      "roundedCornerBottomRight",
+      "notchOpensRight",
+      "notchOpensLeft",
+      "notchOpensUp",
+      "notchOpensDown",
+      "isolatedHole"
+    ]
+  },
+  "*": {
+    "vectorMode": false,
+    "disabledRules": [
+      "notchOpensRight",
+      "notchOpensLeft",
+      "notchOpensUp",
+      "notchOpensDown",
+      "roundedCornerTopLeft",
+      "roundedCornerTopRight",
+      "roundedCornerBottomLeft",
+      "roundedCornerBottomRight"
+    ],
+    "pixelRules": {
+      "0,5": {
+        "notchOpensLeft": {
+          "on": true,
+          "options": { "shape": "wedgeSquareLow" }
+        }
+      },
+      "2,6": { "staircase1to1InkLeftStepLeftmergedStart": { "on": true } },
+      "4,6": { "staircase1to1InkRightStepRightmergedStart": { "on": true } },
+      "4,1": {
+        "staircase1to1InkRightStepLeftshortJunctionEnd": { "on": true }
+      },
+      "2,1": {
+        "staircase1to1InkLeftStepRightshortJunctionEnd": { "on": true }
+      },
+      "0,2": {
+        "notchOpensLeft": {
+          "on": true,
+          "options": { "shape": "wedgeSquareHigh" }
+        }
+      },
+      "6,2": {
+        "notchOpensRight": {
+          "on": true,
+          "options": { "shape": "wedgeSquareHigh" }
+        }
+      },
+      "6,5": {
+        "notchOpensRight": {
+          "on": true,
+          "options": { "shape": "wedgeSquareLow" }
+        }
+      }
+    }
+  },
+  "^": {
+    "vectorMode": false,
+    "disabledRules": ["roundedCornerTopLeft", "roundedCornerTopRight"]
+  },
+  "@": {
+    "vectorMode": false,
+    "pixelRules": {
+      "3,5": { "notchOpensDown": { "options": { "shape": "v" } } },
+      "6,0": {
+        "singleChamferSubTopRight": { "on": false },
+        "inkCornerTopRight": { "on": true }
+      },
+      "0,0": { "inkCornerTopLeft": { "on": true } },
+      "0,7": { "inkCornerBottomLeft": { "on": true } },
+      "2,2": { "singleChamferSubTopLeft": { "on": true } },
+      "4,2": { "singleChamferSubTopRight": { "on": true } }
+    },
+    "disabledRules": ["notchOpensDown", "isolatedHole"]
+  },
+  "&": {
+    "pixelRules": {
+      "0,3": { "inkCornerTopLeft": { "on": true } },
+      "1,0": { "inkCornerTopLeft": { "on": true } },
+      "5,0": { "inkCornerTopRight": { "on": true } },
+      "0,7": { "inkCornerBottomLeft": { "on": true } }
+    }
+  },
+  "A": {
+    "vectorMode": false,
+    "pixelRules": {
+      "3,2": {
+        "isolatedHole": {
+          "options": { "corners": "allRound", "scale": "fitInPixel" },
+          "on": true
+        }
+      },
+      "6,0": {
+        "singleChamferSubTopRight": { "on": false },
+        "inkCornerTopRight": { "on": true }
+      },
+      "0,0": {
+        "singleChamferSubTopLeft": { "on": false },
+        "inkCornerTopLeft": { "on": true }
+      }
+    },
+    "disabledRules": ["isolatedHole"]
+  },
+  "B": {
+    "pixelRules": {
+      "6,0": {
+        "singleChamferSubTopRight": { "on": false },
+        "inkCornerTopRight": { "on": true }
+      },
+      "6,7": { "inkCornerBottomRight": { "on": true } },
+      "4,5": {
+        "verticalSlotHole": { "options": { "scale": "areaPreserving" } }
+      }
+    }
+  },
+  "P": {
+    "pixelRules": {
+      "6,4": { "inkCornerBottomRight": { "on": true } },
+      "6,0": { "inkCornerTopRight": { "on": true } },
+      "3,2": {
+        "isolatedHole": { "on": true, "options": { "corners": "allRound" } }
+      }
+    }
+  },
+  "Q": {
+    "vectorMode": false,
+    "disabledRules": ["verticalSlotHole"],
+    "pixelRules": {
+      "5,0": { "inkCornerTopRight": { "on": true } },
+      "0,0": { "inkCornerTopLeft": { "on": true } },
+      "0,7": { "inkCornerBottomLeft": { "on": true } },
+      "3,3": { "verticalSlotHole": { "on": true } }
+    }
+  },
+  "k": {
+    "vectorMode": false,
+    "pixelRules": {
+      "4,2": {
+        "inkCornerTopLeft": { "on": true, "options": { "cut": "chamfer" } }
+      },
+      "4,6": { "staircase1to1InkRightStepRightmergedStart": { "on": true } }
+    },
+    "disabledRules": ["roundedCornerBottomLeft"]
+  },
+  "⌘": { "vectorMode": false, "disabledRules": ["isolatedHole"] },
+  "§": { "vectorMode": false, "disabledRules": ["squareHole"] },
+  "s": {
+    "pixelRules": {
+      "0,6": {
+        "inkCornerTopLeft": { "on": false, "options": { "cut": "chamfer" } }
+      },
+      "0,5": {
+        "notchOpensLeft": {
+          "options": { "shape": "wedgeSquareHigh" },
+          "on": false
+        },
+        "uValleyAddLeft": { "on": false },
+        "singleChamferAddTopRight": { "on": true }
+      },
+      "4,4": {
+        "notchOpensRight": {
+          "options": { "shape": "wedgeSquareLow" },
+          "on": false
+        },
+        "singleChamferAddTopLeft": { "on": false },
+        "uValleyAddRight": { "on": true },
+        "singleChamferAddBottomLeft": { "on": true }
+      },
+      "0,4": { "inkCornerBottomLeft": { "on": false } }
+    }
+  },
+  "z": {
+    "pixelRules": {
+      "0,4": { "notchOpensLeft": { "options": { "shape": "wedgeSquareLow" } } },
+      "4,4": {
+        "roundedCornerBottomRight": { "on": false },
+        "waistedCorner": { "on": true },
+        "chamferStepBottomRight": { "on": true }
+      },
+      "2,5": {
+        "staircase1to1InkLeftStepLeftshortJunctionEnd": {
+          "on": true,
+          "options": { "runEnd": "halfTread" }
+        }
+      },
+      "4,3": {
+        "staircase1to1InkLeftStepLeftshortJunctionStart": {
+          "on": true,
+          "options": { "runEnd": "halfTread" }
+        }
+      }
+    }
+  },
+  "": {
+    "pixelRules": {
+      "9,1": {
+        "chamferStepBottomRight": { "on": true },
+        "waistedCorner": { "on": true }
+      }
+    }
+  },
+  "`": {
+    "vectorMode": false,
+    "disabledRules": ["roundedCornerTopRight", "roundedCornerBottomLeft"],
+    "pixelRules": {
+      "4,1": {
+        "chamferStepTopRight": {
+          "on": true,
+          "options": { "scale": "fitInPixel" }
+        }
+      },
+      "3,0": {
+        "chamferStepTopRight": {
+          "on": true,
+          "options": { "scale": "fitInPixel" }
+        }
+      },
+      "3,3": {
+        "inkCornerBottomLeft": { "on": false },
+        "staircase1to1InkRightStepRightend": {
+          "options": { "tip": "keepAngle" }
+        }
+      }
+    }
+  },
+  "": {
+    "vectorMode": false,
+    "disabledRules": ["roundedCornerTopLeft", "roundedCornerBottomRight"],
+    "pixelRules": {
+      "11,5": {
+        "chamferStepBottomRight": { "on": true },
+        "singleChamferAddTopLeft": { "on": false }
+      },
+      "7,4": { "notchOpensUp": { "options": { "shape": "wedgeSquareLow" } } },
+      "7,6": {
+        "chamferStepBottomRight": {
+          "on": true,
+          "options": { "scale": "fitInPixel" }
+        }
+      },
+      "6,7": {
+        "chamferStepBottomRight": {
+          "on": true,
+          "options": { "scale": "fitInPixel" }
+        }
+      },
+      "5,0": { "staircase1to1InkRightStepLeftstart": { "on": false } },
+      "4,1": {
+        "staircase1to1InkRightStepLeftjunctionEnd": { "on": false },
+        "staircase1to1InkRightStepLeftmiddle": { "on": false }
+      },
+      "4,0": { "singleChamferAddBottomRight": { "on": true } },
+      "3,1": { "singleChamferAddBottomRight": { "on": true } }
+    }
+  },
+  "★": {
+    "vectorMode": true,
+    "disabledRules": ["roundedCornerTopLeft", "roundedCornerTopRight"],
+    "shapes": [
+      {
+        "type": "contour",
+        "points": [
+          [4, 0],
+          [5.25, 2.5],
+          [8.5, 2.5],
+          [6.166666666666667, 4.333333333333333],
+          [8, 8],
+          [4, 6],
+          [0, 8],
+          [1.8333333333333333, 4.333333333333333],
+          [-0.5, 2.5],
+          [2.75, 2.5]
+        ],
+        "corners": {
+          "0": { "type": "round", "radiusPx": 0.35 },
+          "2": { "type": "round", "radiusPx": 0.35 },
+          "4": { "type": "round", "radiusPx": 0.35 },
+          "6": { "type": "round", "radiusPx": 0.35 },
+          "8": { "type": "round", "radiusPx": 0.35 }
+        }
+      }
+    ],
+    "artHash": "c73e6c79"
+  },
+  "": {
+    "vectorMode": false,
+    "disabledRules": ["roundedCornerTopLeft", "roundedCornerBottomLeft"],
+    "pixelRules": {
+      "0,4": {
+        "staircase1to1InkRightStepRightshortJunctionStart": {
+          "on": true,
+          "options": { "tip": "keepAngle", "runEnd": "halfTread" }
+        }
+      },
+      "0,3": {
+        "staircase1to1InkRightStepLeftshortJunctionEnd": { "on": true }
+      },
+      "3,5": { "inkCornerTopRight": { "on": true } },
+      "3,2": { "inkCornerBottomRight": { "on": true } },
+      "7,2": { "inkCornerBottomRight": { "on": true } },
+      "7,5": { "inkCornerTopRight": { "on": true } },
+      "11,2": { "inkCornerBottomRight": { "on": true } },
+      "11,5": { "inkCornerTopRight": { "on": true } },
+      "15,2": { "inkCornerBottomRight": { "on": true } },
+      "15,5": { "inkCornerTopRight": { "on": true } },
+      "4,4": {
+        "staircase1to1InkRightStepRightshortJunctionStart": {
+          "on": true,
+          "options": { "runEnd": "halfTread" }
+        }
+      },
+      "4,3": {
+        "staircase1to1InkRightStepLeftshortJunctionEnd": {
+          "on": true,
+          "options": { "runEnd": "halfTread" }
+        }
+      },
+      "8,3": {
+        "staircase1to1InkRightStepLeftshortJunctionEnd": {
+          "on": true,
+          "options": { "runEnd": "halfTread" }
+        }
+      },
+      "8,4": {
+        "staircase1to1InkRightStepRightmergedStart": {
+          "on": true,
+          "options": { "runEnd": "halfTread" }
+        }
+      },
+      "12,3": {
+        "staircase1to1InkRightStepLeftshortJunctionEnd": {
+          "on": true,
+          "options": { "runEnd": "halfTread" }
+        }
+      },
+      "12,4": {
+        "staircase1to1InkRightStepRightmergedStart": {
+          "on": true,
+          "options": { "runEnd": "halfTread" }
+        }
+      }
+    }
+  },
+  "∞": {
+    "pixelRules": {
+      "5,4": {
+        "staircase1to1InkRightStepLeftshortJunctionEnd": {
+          "on": true,
+          "options": { "runEnd": "halfTread" }
+        }
+      },
+      "9,3": { "staircase1to1InkLeftStepLeftmergedStart": { "on": true } },
+      "9,5": {
+        "staircaseFlat1to2InkRightStepLeftshortJunctionEnd": {
+          "options": { "tip": "halfTread" }
+        }
+      },
+      "8,6": {
+        "apexPointsLeft": { "on": true, "options": { "carryInto": "above" } }
+      },
+      "6,1": {
+        "apexPointsRight": { "on": true, "options": { "carryInto": "below" } }
+      }
+    }
+  },
+  "": {
+    "pixelRules": {
+      "10,3": { "squareHole": { "options": { "scale": "fitInPixel" } } },
+      "5,3": { "squareHole": { "options": { "scale": "fitInPixel" } } },
+      "2,0": { "singleChamferSubTopLeft": { "on": true } },
+      "5,0": { "singleChamferSubTopRight": { "on": false } },
+      "9,0": { "singleChamferSubTopLeft": { "on": false } },
+      "12,0": { "singleChamferSubTopRight": { "on": true } },
+      "5,6": { "singleChamferSubBottomLeft": { "on": true } },
+      "9,6": { "singleChamferSubBottomRight": { "on": true } }
+    }
+  },
+  "K": {
+    "vectorMode": false,
+    "disabledRules": ["roundedCornerTopLeft", "roundedCornerBottomLeft"],
+    "pixelRules": {
+      "4,1": {
+        "staircase1to1InkRightStepLeftshortJunctionEnd": {
+          "on": true,
+          "options": { "runEnd": "halfTread" }
+        }
+      },
+      "4,6": { "staircase1to1InkRightStepRightmergedStart": { "on": true } },
+      "6,4": { "chamferStepTopRight": { "on": true } },
+      "6,3": { "chamferStepBottomRight": { "on": true } }
+    }
+  },
+  "Z": {
+    "vectorMode": false,
+    "disabledRules": ["roundedCornerTopLeft", "roundedCornerBottomRight"],
+    "pixelRules": {
+      "2,3": {
+        "staircase1to1InkRightStepLeftmergedStart": {
+          "on": true,
+          "options": { "runEnd": "noFurther" }
+        }
+      },
+      "5,3": {
+        "staircase1to1InkLeftStepLeftmergedStart": {
+          "on": true,
+          "options": { "runEnd": "noFurther" }
+        }
+      },
+      "4,4": { "staircase1to1InkLeftStepLeftshortJunctionEnd": { "on": true } },
+      "1,4": { "staircase1to1InkRightStepLeftjunctionEnd": {} },
+      "6,2": {
+        "inkCornerBottomRight": {
+          "on": false,
+          "options": { "cut": "chamfer" }
+        },
+        "staircase1to2InkLeftStepLeftmergedStart": { "on": false },
+        "staircase1to1InkLeftStepLeftmergedStart": { "on": false },
+        "staircase1to1InkLeftStepLeftshortJunctionStart": { "on": true }
+      }
+    }
+  },
+  "D": {
+    "pixelRules": {
+      "3,3": { "verticalSlotHole": { "options": { "corners": "roundRight" } } }
+    }
+  },
+  "X": {
+    "pixelRules": {
+      "0,5": {
+        "inkCornerTopLeft": { "on": true, "options": { "cut": "chamfer" } }
+      },
+      "6,5": {
+        "inkCornerTopRight": { "on": true, "options": { "cut": "chamfer" } }
+      },
+      "6,2": {
+        "inkCornerBottomRight": { "on": true, "options": { "cut": "chamfer" } }
+      },
+      "0,2": {
+        "inkCornerBottomLeft": { "on": true, "options": { "cut": "chamfer" } }
+      }
+    }
+  },
+  "⌥": {
+    "pixelRules": {
+      "1,4": { "chamferStepBottomLeft": { "on": false } },
+      "2,5": { "staircase1to2InkRightStepRightmergedStart": { "on": true } },
+      "5,5": { "chamferStepTopRight": { "on": false } },
+      "4,4": {
+        "staircase1to2InkLeftStepRightshortJunctionEnd": {
+          "on": true,
+          "options": { "runEnd": "halfTread" }
+        }
+      }
+    }
+  },
+  "": {
+    "vectorMode": false,
+    "pixelRules": {
+      "4,6": {
+        "chamferStepBottomLeft": {
+          "on": true,
+          "options": { "scale": "fitInPixel" }
+        }
+      },
+      "5,7": { "inkCornerBottomLeft": { "on": true } },
+      "9,7": { "inkCornerBottomRight": { "on": true } },
+      "10,6": {
+        "chamferStepBottomRight": {
+          "on": true,
+          "options": { "scale": "fitInPixel" }
+        }
+      },
+      "9,3": {
+        "chamferStepBottomRight": { "on": false },
+        "singleChamferAddTopLeft": { "on": true }
+      },
+      "4,2": { "roundedCornerTopLeft": { "on": false } },
+      "5,2": { "inkCornerTopLeft": { "on": true } },
+      "7,0": { "singleChamferAddBottomRight": { "on": true } },
+      "8,0": {
+        "staircase1to1InkRightStepLeftstart": { "on": false },
+        "staircase1to1InkLeftStepLeftstart": { "on": false }
+      },
+      "4,3": { "singleChamferSubTopLeft": { "on": true } },
+      "10,5": { "singleChamferSubTopRight": { "on": true } },
+      "8,2": { "singleChamferSubTopLeft": { "on": false } },
+      "6,2": { "singleChamferSubTopRight": { "on": false } },
+      "7,2": { "valleyPoint": { "on": true } }
+    },
+    "disabledRules": ["roundedCornerTopLeft"]
+  },
+  "⚡": {
+    "vectorMode": true,
+    "shapes": [
+      {
+        "type": "contour",
+        "points": [
+          [0, 0],
+          [1, 0],
+          [6, 2.5],
+          [5, 3.5],
+          [8, 6.5],
+          [7, 6.5],
+          [2, 4],
+          [3, 3]
+        ]
+      }
+    ],
+    "artHash": "2a92083d"
+  },
+  "": {
+    "vectorMode": false,
+    "disabledRules": ["roundedCornerTopRight", "roundedCornerBottomRight"],
+    "pixelRules": {
+      "3,3": {
+        "staircase1to1InkLeftStepRightshortJunctionEnd": { "on": true }
+      },
+      "3,4": {
+        "staircase1to1InkLeftStepLeftshortJunctionStart": { "on": true }
+      },
+      "7,3": {
+        "staircase1to1InkLeftStepRightshortJunctionEnd": { "on": true }
+      },
+      "7,4": {
+        "staircase1to1InkLeftStepLeftshortJunctionStart": { "on": true }
+      },
+      "11,3": {
+        "staircase1to1InkLeftStepRightshortJunctionEnd": { "on": true }
+      },
+      "11,4": {
+        "staircase1to1InkLeftStepLeftshortJunctionStart": { "on": true }
+      },
+      "15,3": {
+        "staircase1to1InkLeftStepRightshortJunctionEnd": { "on": true }
+      },
+      "15,4": {
+        "staircase1to1InkLeftStepLeftshortJunctionStart": { "on": true }
+      },
+      "12,5": {
+        "staircase1to1InkRightStepLeftshortJunctionEnd": { "on": false },
+        "inkCornerTopLeft": { "on": true }
+      },
+      "12,2": { "inkCornerBottomLeft": { "on": true } },
+      "8,2": { "inkCornerBottomLeft": { "on": true } },
+      "8,5": { "inkCornerTopLeft": { "on": true } },
+      "4,2": { "inkCornerBottomLeft": { "on": true } },
+      "4,5": { "inkCornerTopLeft": { "on": true } },
+      "0,5": { "inkCornerTopLeft": { "on": true } },
+      "0,2": { "inkCornerBottomLeft": { "on": true } },
+      "0,7": {
+        "staircase1to1InkLeftStepLeftend": { "options": { "tip": "keepAngle" } }
+      }
+    }
+  },
+  "⇧": {
+    "vectorMode": true,
+    "shapes": [
+      {
+        "type": "contour",
+        "points": [
+          [7, 5],
+          [6, 5],
+          [6, 8],
+          [1, 8],
+          [1, 5],
+          [0, 5],
+          [0, 4.5],
+          [3.5, 1],
+          [7, 4.5]
+        ]
+      },
+      {
+        "type": "contour",
+        "points": [
+          [2, 7],
+          [5, 7],
+          [5, 4],
+          [2, 4]
+        ]
+      },
+      {
+        "type": "contour",
+        "points": [
+          [5, 4],
+          [3.5, 2.5],
+          [2, 4]
+        ]
+      }
+    ],
+    "artHash": "14e07f4e"
+  },
+  "%": {
+    "vectorMode": true,
+    "shapes": [
+      {
+        "type": "contour",
+        "points": [
+          [2, 0],
+          [2, 2],
+          [0, 2],
+          [0, 0]
+        ]
+      },
+      {
+        "type": "contour",
+        "points": [
+          [6.5, 0],
+          [6.5, 1],
+          [3, 8],
+          [0.5, 8],
+          [0.5, 7],
+          [4, 0]
+        ],
+        "curves": [],
+        "corners": {}
+      },
+      {
+        "type": "contour",
+        "points": [
+          [7, 6],
+          [7, 8],
+          [5, 8],
+          [5, 6]
+        ]
+      }
+    ],
+    "artHash": "9c0eb9a5"
+  },
+  "v": {
+    "vectorMode": false,
+    "shapes": [
+      {
+        "type": "contour",
+        "points": [
+          [0, 2],
+          [3, 2],
+          [3, 4],
+          [3.5, 5],
+          [4, 4],
+          [4, 2],
+          [7, 2],
+          [7, 3],
+          [4.5, 8],
+          [2.5, 8],
+          [0, 3]
+        ],
+        "curves": [],
+        "corners": {}
+      }
+    ],
+    "artHash": "387b81a0",
+    "pixelRules": { "3,4": { "valleyPoint": { "on": true } } }
+  },
+  "V": { "pixelRules": { "3,3": { "valleyPoint": { "on": true } } } },
+  "W": { "pixelRules": { "2,1": { "valleyPoint": { "on": false } } } },
+  "🕹": {
+    "vectorMode": false,
+    "pixelRules": {
+      "3,2": { "staircase1to2InkRightStepRightmergedStart": { "on": true } },
+      "5,2": { "staircase1to2InkLeftStepLeftmergedStart": { "on": true } },
+      "6,6": { "singleChamferSubTopRight": { "on": true } }
+    },
+    "disabledRules": ["roundedCornerTopLeft"]
+  },
+  "": {
+    "vectorMode": false,
+    "pixelRules": {
+      "3,7": { "singleChamferAddTopRight": { "on": true } },
+      "3,1": { "singleChamferAddBottomRight": { "on": true } },
+      "4,0": { "singleChamferAddBottomRight": { "on": true } },
+      "6,1": { "singleChamferSubBottomLeft": { "on": false } },
+      "5,1": { "singleChamferAddTopRight": { "on": true } },
+      "9,1": { "singleChamferAddTopLeft": { "on": true } },
+      "9,4": { "singleChamferAddBottomRight": { "on": true } },
+      "5,4": { "singleChamferAddBottomLeft": { "on": true } },
+      "10,0": { "singleChamferAddBottomLeft": { "on": true } },
+      "11,1": { "singleChamferAddBottomLeft": { "on": true } },
+      "3,6": { "singleChamferSubTopRight": { "on": true } },
+      "4,7": {
+        "singleChamferSubBottomLeft": { "on": false },
+        "singleChamferSubTopRight": { "on": true }
+      },
+      "4,6": {
+        "singleChamferAddBottomLeft": { "on": false },
+        "singleChamferAddBottomRight": { "on": false },
+        "singleChamferAddTopRight": { "on": true }
+      }
+    },
+    "disabledRules": [
+      "staircase1to2InkRightStepRightmiddle",
+      "staircase1to2InkRightStepRightstart",
+      "staircase1to1InkLeftStepLeftmiddle",
+      "staircase1to1InkLeftStepLeftstart",
+      "staircase1to1InkLeftStepLeftend"
+    ]
+  },
+  "": {
+    "vectorMode": false,
+    "disabledRules": [
+      "staircase1to1InkRightStepRightmiddle",
+      "staircase1to1InkRightStepRightend",
+      "staircase1to1InkLeftStepLeftmiddle",
+      "staircase1to1InkLeftStepLeftstart"
+    ],
+    "pixelRules": {
+      "3,4": { "singleChamferAddTopRight": { "on": true } },
+      "2,3": { "singleChamferAddTopRight": { "on": true } },
+      "5,4": { "singleChamferAddTopLeft": { "on": true } },
+      "6,3": { "singleChamferAddTopLeft": { "on": true } }
+    }
+  },
+  "": {
+    "pixelRules": {
+      "2,0": { "singleChamferAddBottomRight": { "on": true } },
+      "1,1": { "singleChamferAddBottomRight": { "on": true } },
+      "4,0": { "singleChamferAddBottomLeft": { "on": true } },
+      "5,1": { "singleChamferAddBottomLeft": { "on": true } }
+    }
+  },
+  "♨": {
+    "vectorMode": true,
+    "shapes": [
+      {
+        "type": "contour",
+        "points": [
+          [5, 0],
+          [6, 0],
+          [7, 1],
+          [7.5, 2],
+          [7.5, 3],
+          [6, 4.5],
+          [5, 5],
+          [3, 5],
+          [2, 4.5],
+          [1, 3.5],
+          [1, 3],
+          [2, 2],
+          [3, 1.5],
+          [4.5, 1.5],
+          [5, 2.5],
+          [3, 2.5],
+          [2.5, 3],
+          [2.5, 3.5],
+          [3, 4],
+          [4.5, 4],
+          [5.5, 3.5],
+          [6, 3],
+          [6, 1.5],
+          [5, 1]
+        ],
+        "curves": [],
+        "corners": {}
+      },
+      {
+        "type": "contour",
+        "points": [
+          [5, 6],
+          [6, 5.5],
+          [7, 4.5],
+          [7.5, 5],
+          [6, 6.5],
+          [5, 7],
+          [3, 7],
+          [2, 6.5],
+          [1, 5.5],
+          [1, 4.5],
+          [2, 5.5],
+          [3, 6]
+        ],
+        "curves": [],
+        "corners": {}
+      }
+    ],
+    "artHash": "84af3fc9"
+  },
+  "C": {
+    "pixelRules": {
+      "0,0": { "inkCornerTopLeft": { "on": true } },
+      "0,7": { "inkCornerBottomLeft": { "on": true } }
+    }
+  },
+  "G": {
+    "pixelRules": {
+      "0,0": { "inkCornerTopLeft": { "on": true } },
+      "0,7": { "inkCornerBottomLeft": { "on": true } }
+    }
+  },
+  "J": {
+    "pixelRules": {
+      "0,7": { "inkCornerBottomLeft": { "on": true } },
+      "6,7": { "inkCornerBottomRight": { "on": true } }
+    }
+  },
+  "S": {
+    "pixelRules": {
+      "0,0": { "inkCornerTopLeft": { "on": true } },
+      "6,7": { "inkCornerBottomRight": { "on": true } },
+      "6,3": { "inkCornerTopRight": { "on": true } },
+      "0,4": { "inkCornerBottomLeft": { "on": true } },
+      "5,2": { "uValleyAddRight": { "on": false } },
+      "1,5": { "uValleyAddLeft": { "on": false } },
+      "2,5": { "uValleySubLeft": { "on": true } },
+      "4,2": { "uValleySubRight": { "on": true } }
+    }
+  },
+  "U": {
+    "pixelRules": {
+      "0,7": { "inkCornerBottomLeft": { "on": true } },
+      "6,7": { "inkCornerBottomRight": { "on": true } },
+      "3,4": { "uValleySubUp": { "on": false } },
+      "3,3": { "uValleyAddUp": { "on": true } }
+    }
+  },
+  "O": {
+    "pixelRules": {
+      "6,0": { "inkCornerTopRight": { "on": true } },
+      "6,7": { "inkCornerBottomRight": { "on": true } },
+      "0,7": { "inkCornerBottomLeft": { "on": true } },
+      "0,0": { "inkCornerTopLeft": { "on": true } }
+    }
+  },
+  "N": {
+    "pixelRules": {
+      "6,7": { "singleChamferSubBottomRight": { "on": false } },
+      "2,6": { "singleChamferAddTopRight": { "on": true } },
+      "3,7": { "singleChamferSubBottomLeft": { "on": true } },
+      "3,0": { "singleChamferSubTopRight": { "on": true } },
+      "4,1": { "singleChamferAddBottomLeft": { "on": true } }
+    }
+  },
+  "?": {
+    "pixelRules": {
+      "2,2": { "uValleySubLeft": { "on": false } },
+      "1,2": { "uValleyAddLeft": { "on": true } }
+    }
+  }
+}
