@@ -1,6 +1,10 @@
-import { expect, type Page } from "@playwright/test";
+import { expect } from "@playwright/test";
 
-import { clickCheat, loseAllLives } from "./testUtils/gameInteractions";
+import {
+  clickCheat,
+  holdKeysUntil,
+  loseAllLives,
+} from "./testUtils/gameInteractions";
 import {
   getCurrentCharacter,
   getCurrentRoomId,
@@ -12,45 +16,6 @@ import {
 } from "./testUtils/menuNavigation";
 import { setupE2ePage } from "./testUtils/pageSetup";
 import { test } from "./testUtils/test";
-
-/**
- * Hold a key down and poll a condition until it returns true (or timeout).
- * Releases the key on exit either way. Used in flows where we don't know
- * exactly how long movement takes — e.g. walking a character through a
- * portal — and want the test to release as soon as the observable effect
- * has happened rather than wait a fixed duration.
- */
-const holdKeyUntil = async (
-  page: Page,
-  key: string,
-  code: string,
-  condition: () => Promise<boolean>,
-  timeoutMs: number,
-) => {
-  await page.evaluate(
-    ({ key, code }) => {
-      window.dispatchEvent(new KeyboardEvent("keydown", { key, code }));
-    },
-    { key, code },
-  );
-  try {
-    const deadline = Date.now() + timeoutMs;
-    while (Date.now() < deadline) {
-      if (await condition()) {
-        return;
-      }
-      await page.waitForTimeout(200);
-    }
-    throw new Error(`holdKeyUntil(${key}) timed out after ${timeoutMs}ms`);
-  } finally {
-    await page.evaluate(
-      ({ key, code }) => {
-        window.dispatchEvent(new KeyboardEvent("keyup", { key, code }));
-      },
-      { key, code },
-    );
-  }
-};
 
 test.describe("game completion - both characters reach freedom", () => {
   test.setTimeout(60_000 * osSlowness);
@@ -66,7 +31,12 @@ test.describe("game completion - both characters reach freedom", () => {
 
     await test.step("Teleport head to the final room", async () => {
       await clickCheat(page, "cheats-goto-room-finalroom");
-      await page.waitForTimeout(1_000 * osSlowness);
+      await page.waitForFunction(() => {
+        const state = window._e2e_gamePageGameAi?.gameState;
+        return (
+          state?.characterRooms[state.currentCharacterName]?.id === "finalroom"
+        );
+      });
       expect(await getCurrentRoomId(page)).toBe("finalroom");
     });
 
@@ -74,31 +44,29 @@ test.describe("game completion - both characters reach freedom", () => {
       // head walks north into the portal → handlePlayerTouchingPortal fires
       // characterReachesFreedom("head") and swops the active character to
       // heels (still in their starting room).
-      await holdKeyUntil(
+      await holdKeysUntil(
         page,
-        "ArrowUp",
-        "ArrowUp",
+        [{ key: "ArrowUp", code: "ArrowUp" }],
         async () => (await getCurrentCharacter(page)) === "heels",
-        15_000 * osSlowness,
       );
     });
 
     await test.step("Teleport heels to the final room", async () => {
       await clickCheat(page, "cheats-goto-room-finalroom");
-      await page.waitForTimeout(1_000 * osSlowness);
+      await page.waitForFunction(() => {
+        const state = window._e2e_gamePageGameAi?.gameState;
+        return (
+          state?.characterRooms[state.currentCharacterName]?.id === "finalroom"
+        );
+      });
       expect(await getCurrentRoomId(page)).toBe("finalroom");
     });
 
     await test.step("Hold ArrowUp until heels exits and the score dialog appears", async () => {
       // heels walks into the portal → characterReachesFreedom("heels") →
       // no other character playing → gameOver listener opens [score, mainMenu].
-      await holdKeyUntil(
-        page,
-        "ArrowUp",
-        "ArrowUp",
-        async () =>
-          (await page.locator('[data-dialog-id="score"]').count()) > 0,
-        15_000 * osSlowness,
+      await holdKeysUntil(page, [{ key: "ArrowUp", code: "ArrowUp" }], () =>
+        page.locator('[data-dialog-id="score"]').isVisible(),
       );
       await waitForDialog(page, "score");
     });
@@ -116,17 +84,20 @@ test.describe("game completion - both characters reach freedom", () => {
 
     await test.step("Teleport head to the final room", async () => {
       await clickCheat(page, "cheats-goto-room-finalroom");
-      await page.waitForTimeout(1_000 * osSlowness);
+      await page.waitForFunction(() => {
+        const state = window._e2e_gamePageGameAi?.gameState;
+        return (
+          state?.characterRooms[state.currentCharacterName]?.id === "finalroom"
+        );
+      });
       expect(await getCurrentRoomId(page)).toBe("finalroom");
     });
 
     await test.step("Hold ArrowUp until head exits and heels becomes the active character", async () => {
-      await holdKeyUntil(
+      await holdKeysUntil(
         page,
-        "ArrowUp",
-        "ArrowUp",
+        [{ key: "ArrowUp", code: "ArrowUp" }],
         async () => (await getCurrentCharacter(page)) === "heels",
-        15_000 * osSlowness,
       );
     });
 

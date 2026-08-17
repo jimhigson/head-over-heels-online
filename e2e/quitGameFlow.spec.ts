@@ -1,5 +1,6 @@
 import { expect } from "@playwright/test";
 
+import { advanceUntilInPage } from "./testUtils/advanceGameTime";
 import { clickCheat, dispatchKeyPress } from "./testUtils/gameInteractions";
 import { getCurrentRoomId } from "./testUtils/gameStateQueries";
 import { osSlowness } from "./testUtils/infrastructure";
@@ -29,7 +30,15 @@ test.describe("quit-game flow from in-game main menu", () => {
 
     await test.step("Eat a reincarnation fish to set the reincarnation point", async () => {
       await clickCheat(page, "cheats-summon-reincarnation");
-      await page.waitForTimeout(2_000 * osSlowness);
+      // wait for the fish to actually be eaten - ie the reincarnation point is
+      // recorded in the store - rather than guessing how long that takes:
+      await advanceUntilInPage(
+        page,
+        () =>
+          window._e2e_store?.getState().gameInPlay.gameInPlay
+            .reincarnationPoint !== undefined,
+        "the fish to be eaten",
+      );
     });
 
     const fishRoom = await getCurrentRoomId(page);
@@ -37,7 +46,13 @@ test.describe("quit-game flow from in-game main menu", () => {
 
     await test.step("Move to a different room", async () => {
       await clickCheat(page, "cheats-goto-room-egyptus1");
-      await page.waitForTimeout(1_000 * osSlowness);
+      // wait for the room change to land rather than guessing a delay:
+      await page.waitForFunction(() => {
+        const state = window._e2e_gamePageGameAi?.gameState;
+        return (
+          state?.characterRooms[state.currentCharacterName]?.id === "egyptus1"
+        );
+      });
       expect(await getCurrentRoomId(page)).toBe("egyptus1");
     });
 

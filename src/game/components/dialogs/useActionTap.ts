@@ -1,6 +1,6 @@
-import { Ticker } from "pixi.js";
-import { useEffect, useMemo } from "preact/hooks";
+import { useLayoutEffect, useMemo } from "preact/hooks";
 
+import { appClock } from "../../../utils/ticker/appClock";
 import { type DirectionXy4 } from "../../../utils/vectors/vectors";
 import { type BooleanAction } from "../../input/actions";
 import { type InputPress } from "../../input/InputAssignment";
@@ -32,7 +32,11 @@ export const useActionTap = ({
 
   const inputStateTracker = useInputStateTracker();
 
-  useEffect(() => {
+  // useLayoutEffect (not useEffect) means that the key listening
+  // is live on the first rendering to the dom. Otherwise, e2e
+  // (and maybe a *very* fast user) can hit a key to dismiss and
+  // the listener is not yet armed
+  useLayoutEffect(() => {
     if (disabled) {
       return;
     }
@@ -54,9 +58,9 @@ export const useActionTap = ({
       }
     };
 
-    Ticker.shared.add(callHandlerIfActionTapped);
+    appClock.add(callHandlerIfActionTapped);
     return () => {
-      Ticker.shared.remove(callHandlerIfActionTapped);
+      appClock.remove(callHandlerIfActionTapped);
     };
   }, [actions, disabled, inputStateTracker, handler]);
 };
@@ -75,7 +79,7 @@ export const useInputTap = ({
 }: UseInputPressesProps) => {
   const inputStateTracker = useInputStateTracker();
 
-  useEffect(() => {
+  useLayoutEffect(() => {
     if (disabled) {
       return;
     }
@@ -91,9 +95,9 @@ export const useInputTap = ({
       }
     };
 
-    Ticker.shared.add(check);
+    appClock.add(check);
     return () => {
-      Ticker.shared.remove(check);
+      appClock.remove(check);
     };
   }, [disabled, handler, inputStateTracker]);
 };
