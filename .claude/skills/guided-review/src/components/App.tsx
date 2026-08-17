@@ -1,6 +1,6 @@
 import { useEffect, useRef, useState } from "preact/hooks";
 
-import { files, filesInGroup, groups, meta } from "../payload.ts";
+import { files, filesInGroup, groups, images, meta } from "../payload.ts";
 import { type ReadingState } from "../readingState.ts";
 import { type ReviewFile } from "../ReviewPayload.ts";
 import { holdActiveFile, scrollToRow, watchRows } from "../rowNodes.ts";
@@ -28,7 +28,10 @@ export const App = ({ initialTicks }: AppProps) => {
           .filter((index) => filesInGroup(index).every((file) => ticked.has(file.path))),
       ),
   );
-  const [openDiffs, setOpenDiffs] = useState(() => new Set<string>());
+  // image rows open without a click - seeing the image IS reading the row
+  const [openDiffs, setOpenDiffs] = useState(
+    () => new Set(files.filter((file) => images[file.path] !== undefined).map((file) => file.id)),
+  );
   const [showContents, setShowContents] = useState(() => !contentsWouldOverlay());
   const [activeId, setActiveId] = useState(files[0]?.id);
   const [scrollTo, setScrollTo] = useState<string | undefined>(undefined);

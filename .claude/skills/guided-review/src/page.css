@@ -6,6 +6,31 @@
   font-display: block;
 }
 
+/* bootstrap-icons, inlined from the skill's own install */
+@font-face {
+  font-family: "bootstrap-icons";
+  src: url("data:font/woff2;base64,ICONFONT_B64") format("woff2");
+  font-weight: 400;
+  font-style: normal;
+  font-display: block;
+}
+
+.file-icon {
+  font-family: "bootstrap-icons";
+  font-style: normal;
+  font-size: 0.78rem;
+  line-height: 1;
+  color: var(--ink-faint);
+  flex: none;
+}
+
+/* codepoints from the pinned bootstrap-icons release; colour says the kind
+   at a glance - images in the moss the Modified chip wears, code in accent */
+.file-icon-image::before { content: "\f36d"; } /* bi-file-earmark-image */
+.file-icon-text::before { content: "\f362"; } /* bi-file-earmark-code */
+.file-icon-image { color: var(--mod); }
+.file-icon-text { color: var(--accent); }
+
 /* tokens taken from the game's own palette:
    src/_generated/palette/spritesheetPalette.json */
 :root {
@@ -684,43 +709,7 @@ button.diff-toggle:focus-visible { outline: 2px solid var(--accent); outline-off
 .stat-add { color: var(--add-edge); font-weight: 600; }
 .stat-rm { color: var(--rm-edge); font-weight: 600; }
 
-.diff-body {
-  overflow-x: auto;
-  border: 1px solid var(--rule);
-  border-left: 0;
-  background: color-mix(in srgb, var(--paper) 55%, var(--card));
-  margin-top: 0.35rem;
-}
-
-.diff-body pre {
-  margin: 0;
-  padding: 0.5rem 0;
-  font-family: var(--mono);
-  font-size: 0.76rem;
-  line-height: 1.55;
-  tab-size: 2;
-  white-space: pre;
-  min-width: max-content;
-}
-
-.dl {
-  display: block;
-  padding: 0 0.8rem 0 0.65rem;
-  border-left: 3px solid transparent;
-}
-
-.dl-add { background: var(--add-bg); border-left-color: var(--add-edge); }
-.dl-rm { background: var(--rm-bg); border-left-color: var(--rm-edge); }
-.dl-hunk {
-  background: var(--hunk-bg);
-  border-left-color: var(--hunk);
-  color: var(--hunk);
-  font-weight: 600;
-}
-.dl-meta { color: var(--ink-faint); font-style: italic; }
-
-/* monaco hosts itself in here when it loads; the plain renderer above is
-   used when it doesn't (the artifact host's CSP blocks the cdn) */
+/* monaco hosts itself in here, served from the review server's own install */
 .diff-monaco {
   margin-top: 0.35rem;
   border: 1px solid var(--rule);
@@ -729,6 +718,36 @@ button.diff-toggle:focus-visible { outline: 2px solid var(--accent); outline-off
 }
 
 .diff-monaco .monaco-editor .diffOverview { display: none; }
+
+/* a dependency failing is shown as the failure it is, in the diff's place */
+.diff-error {
+  margin: 0.35rem 0 0;
+  padding: 0.6rem 0.8rem;
+  border: 1px solid var(--del);
+  border-left-width: 3px;
+  background: var(--del-bg);
+  color: var(--ink);
+  font-size: 0.85rem;
+}
+
+.diff-missing {
+  margin: 0.35rem 0 0;
+  padding: 0.5rem 0.7rem;
+  border: 1px dashed var(--rule);
+  color: var(--ink-faint);
+  font-size: 0.85rem;
+}
+
+.offline-chip {
+  font-size: 0.7rem;
+  font-weight: 700;
+  letter-spacing: 0.05em;
+  text-transform: uppercase;
+  color: var(--mod);
+  background: var(--mod-bg);
+  padding: 0.16rem 0.45rem;
+  flex: none;
+}
 
 .editor-bar {
   display: flex;
@@ -977,3 +996,285 @@ footer {
   h1 { font-size: 16px; line-height: 1.5; }
   .blurb { padding-left: 0; }
 }
+
+/* ---- image rows ---------------------------------------------------------
+   an image file's panel: version chooser, mode strip, and the pan/zoom stage.
+   The diff convention is magenta-on-transparent, the same in both themes. */
+
+.img-diff {
+  margin-top: 0.35rem;
+  border: 1px solid var(--rule);
+  background: var(--card);
+}
+
+.img-toolbar {
+  display: flex;
+  align-items: center;
+  flex-wrap: wrap;
+  gap: 0.5rem 0.8rem;
+  padding: 0.5rem 0.6rem;
+  border-bottom: 1px solid var(--rule);
+}
+
+.img-chooser {
+  border-collapse: collapse;
+  font-size: 0.7rem;
+  line-height: 1;
+}
+
+.img-chooser td, .img-chooser th {
+  padding: 0;
+  text-align: center;
+  font-weight: normal;
+}
+
+.img-side {
+  color: var(--ink-faint);
+  font-size: 0.64rem;
+  letter-spacing: 0.04em;
+  padding-right: 0.3rem !important;
+  text-align: right !important;
+}
+
+.img-version-label {
+  font-family: var(--mono);
+  font-size: 0.72rem;
+  padding: 0.1rem 0.3rem !important;
+  color: var(--ink);
+}
+
+.img-version-label.is-duplicate { color: var(--ink-faint); }
+
+.img-radio {
+  width: 0.9rem;
+  height: 0.9rem;
+  margin: 0.1rem 0;
+  accent-color: var(--accent);
+  cursor: pointer;
+}
+
+.img-radio:disabled { opacity: 0.3; cursor: default; }
+
+.img-modes { display: flex; gap: 0.25rem; }
+
+button.control.is-active {
+  color: var(--accent);
+  border-color: var(--accent);
+  background: var(--accent-soft);
+}
+
+button.control:disabled {
+  opacity: 0.4;
+  cursor: default;
+  border-color: var(--rule);
+  color: var(--ink-faint);
+}
+
+.img-overlay {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.3rem;
+  font-size: 0.78rem;
+  color: var(--ink-soft);
+  cursor: pointer;
+}
+
+.img-overlay input {
+  width: 0.9rem;
+  height: 0.9rem;
+  margin: 0;
+  accent-color: var(--accent);
+}
+
+.img-readout {
+  margin-left: auto;
+  font-family: var(--mono);
+  font-size: 0.72rem;
+  color: var(--ink-faint);
+  white-space: nowrap;
+  font-variant-numeric: tabular-nums;
+}
+
+.img-viewport {
+  position: relative;
+  overflow: hidden;
+  touch-action: none;
+  cursor: grab;
+  user-select: none;
+  height: 18rem;
+  background: repeating-conic-gradient(
+      color-mix(in srgb, var(--paper) 60%, var(--card)) 0% 25%,
+      var(--card) 0% 50%
+    )
+    50% / 20px 20px;
+}
+
+.img-viewport:active { cursor: grabbing; }
+
+.img-stage {
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100%;
+  transform-origin: 0 0;
+  will-change: transform;
+}
+
+.img-layer {
+  position: absolute;
+  inset: 0;
+  width: 100%;
+  height: 100%;
+  image-rendering: pixelated;
+  user-select: none;
+  -webkit-user-drag: none;
+  -webkit-touch-callout: none;
+}
+
+.img-layer-to { z-index: 1; }
+.img-layer-from { z-index: 2; }
+.img-layer-diff { z-index: 3; }
+
+.img-divider {
+  position: absolute;
+  top: 0;
+  bottom: 0;
+  width: 2px;
+  background: #ff2fd0;
+  z-index: 4;
+  pointer-events: none;
+}
+
+/* which version is on which side, read down the divider itself: each label is
+   centred on its own edge of the line, then nudged half its height clear of it
+   so the two rotated boxes sit flush without overlapping */
+.img-swipe-label {
+  position: absolute;
+  top: 50%;
+  background: #ff2fd0;
+  color: #000;
+  font-family: var(--mono);
+  font-size: 0.7rem;
+  line-height: 1;
+  padding: 0.2em 0.4em;
+  white-space: nowrap;
+}
+
+.img-swipe-left {
+  left: 0;
+  transform: translate(calc(-50% - 0.7em), -50%) rotate(-90deg);
+}
+
+.img-swipe-right {
+  left: 100%;
+  transform: translate(calc(-50% + 0.7em), -50%) rotate(-90deg);
+}
+
+.img-hint {
+  margin: 0;
+  padding: 0.3rem 0.6rem;
+  font-size: 0.7rem;
+  color: var(--ink-faint);
+}
+
+.img-note-line { font-family: var(--mono); font-size: 0.78rem; }
+
+.img-omitted {
+  margin: 0.35rem 0 0;
+  padding: 0.5rem 0.7rem;
+  border: 1px dashed var(--rule);
+  color: var(--ink-faint);
+  font-size: 0.85rem;
+}
+
+button.control.img-add-note { align-self: flex-start; }
+
+/* the note zone was styled for monaco's gutter; standing alone under an image
+   it keeps its own left edge instead */
+.image-note .note-zone { padding-left: 0.6rem; }
+
+/* ---- the PR-stack bar ---------------------------------------------------
+   only present when the reviewed PR sits in a stack; lives inside the sticky
+   header, so the measured --header-height covers it */
+
+.stack-bar {
+  display: flex;
+  align-items: center;
+  gap: 0.45rem;
+  padding: 0.3rem 1.25rem;
+  border-bottom: 1px solid var(--rule);
+  overflow-x: auto;
+  white-space: nowrap;
+  scrollbar-width: none;
+}
+
+.stack-label {
+  font-family: var(--display);
+  font-size: 16px;
+  color: var(--ink-faint);
+  flex: none;
+}
+
+.stack-step {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.45rem;
+  flex: none;
+}
+
+.stack-arrow { color: var(--ink-faint); font-size: 0.75rem; }
+
+.stack-pr {
+  display: inline-flex;
+  align-items: baseline;
+  gap: 0.35rem;
+  padding: 0.12rem 0.5rem;
+  border: 1px solid var(--rule);
+  font-size: 0.76rem;
+  font-family: var(--body);
+  color: var(--ink-soft);
+  background: transparent;
+  text-decoration: none;
+  cursor: pointer;
+}
+
+span.stack-pr.is-current { cursor: default; }
+
+a.stack-pr:hover, button.stack-pr:hover { border-color: var(--accent); color: var(--accent); }
+a.stack-pr:focus-visible, button.stack-pr:focus-visible {
+  outline: 2px solid var(--accent);
+  outline-offset: 2px;
+}
+
+.stack-pr.is-unreviewed { opacity: 0.65; }
+
+.stack-awaiting {
+  font-size: 0.62rem;
+  font-weight: 700;
+  letter-spacing: 0.05em;
+  text-transform: uppercase;
+  color: var(--mod);
+  background: var(--mod-bg);
+  padding: 0 0.3rem;
+  align-self: center;
+}
+
+.stack-pr.is-current {
+  color: var(--accent);
+  background: var(--accent-soft);
+  border-color: var(--accent);
+}
+
+.stack-number {
+  font-family: var(--mono);
+  font-variant-numeric: tabular-nums;
+  flex: none;
+}
+
+.stack-title {
+  max-width: 22ch;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+
+.stack-forge { font-size: 0.7rem; color: var(--ink-faint); }

@@ -7,13 +7,15 @@
 import { reviewId, server } from "./payload.ts";
 import { makeStore, toast } from "./stores.ts";
 
-// keyed by review: without it every review served on this port would inherit
-// the last one's ticks
-const storageKey = `guidedReviewTicks:${reviewId}`;
+// keyed by review: without it every review served on this port - or carried
+// in one stack page - would inherit another's ticks
+const storageKey = (): string => `guidedReviewTicks:${reviewId}`;
+
+const ticksUrl = (): string => `/ticks?review=${encodeURIComponent(reviewId)}`;
 
 const localTicks = (): Set<string> => {
   try {
-    return new Set(JSON.parse(localStorage.getItem(storageKey) ?? "[]") as string[]);
+    return new Set(JSON.parse(localStorage.getItem(storageKey()) ?? "[]") as string[]);
   } catch {
     return new Set();
   }
@@ -23,7 +25,7 @@ export const loadTicks = async (): Promise<Set<string>> => {
   if (server === undefined) {
     return localTicks();
   }
-  const response = await fetch("/ticks").catch(() => undefined);
+  const response = await fetch(ticksUrl()).catch(() => undefined);
   return new Set(
     response?.ok === true ? ((await response.json()) as { ticked: string[] }).ticked : [],
   );
@@ -54,7 +56,7 @@ export const ticksAreInFlight = (): boolean => ticksInFlight > 0;
 const postTicks = async (): Promise<void> => {
   const ticked = queuedTicks ?? new Set<string>();
   queuedTicks = undefined;
-  const response = await fetch("/ticks", {
+  const response = await fetch(ticksUrl(), {
     method: "POST",
     headers: { "Content-Type": "application/json", "X-Review-Token": server?.token ?? "" },
     body: JSON.stringify({ ticked: [...ticked] }),
@@ -70,7 +72,7 @@ const postTicks = async (): Promise<void> => {
 export const saveTicks = (ticked: Set<string>): void => {
   if (server === undefined) {
     try {
-      localStorage.setItem(storageKey, JSON.stringify([...ticked]));
+      localStorage.setItem(storageKey(), JSON.stringify([...ticked]));
     } catch {
       /* storage unavailable - ticks just won't persist */
     }

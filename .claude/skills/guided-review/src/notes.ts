@@ -3,8 +3,11 @@
    beside the review; without a server there is nowhere for them to go, so the
    whole note-authoring surface stays off. */
 
-import { server } from "./payload.ts";
+import { reviewId, server } from "./payload.ts";
 import { makeStore, toast } from "./stores.ts";
+
+/** notes belong to one review of the page - the server routes on this */
+const notesUrl = (): string => `/notes?review=${encodeURIComponent(reviewId)}`;
 
 export type NoteMessage = {
   from: "agent" | "reviewer";
@@ -38,7 +41,7 @@ export const loadNotes = async (): Promise<void> => {
   if (server === undefined) {
     return;
   }
-  const response = await fetch("/notes").catch(() => undefined);
+  const response = await fetch(notesUrl()).catch(() => undefined);
   notesStore.set(response?.ok === true ? ((await response.json()) as Notes) : {});
 };
 
@@ -46,7 +49,7 @@ export const saveNotes = async (): Promise<void> => {
   if (server === undefined) {
     return;
   }
-  const response = await fetch("/notes", {
+  const response = await fetch(notesUrl(), {
     method: "POST",
     headers: { "Content-Type": "application/json", "X-Review-Token": server.token },
     body: JSON.stringify(notesStore.get()),

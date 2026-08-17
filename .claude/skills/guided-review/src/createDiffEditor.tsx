@@ -10,7 +10,7 @@ import { liveEditors } from "./liveEditors.ts";
 import { type MonacoApi, type MonacoTextModel } from "./monacoApi.ts";
 import { languageFor } from "./monacoLoader.ts";
 import { messagesOf, noteAt, notesFor } from "./notes.ts";
-import { server, sides } from "./payload.ts";
+import { activeReviewIsEditable, reviewId, server, sides } from "./payload.ts";
 import { toast } from "./stores.ts";
 
 export type EditorStatus = { kind: string; text: string };
@@ -45,9 +45,11 @@ export const createDiffEditor = (
     throw new Error(`${path} has no before/after sides to diff`);
   }
   const language = languageFor(path);
+  // only the review matching the served checkout can write back; in a stack
+  // page the other reviews' editors read only, though their notes still work
+  const editable = activeReviewIsEditable();
   const editor = monaco.editor.createDiffEditor(host, {
-    // served, the working copy is editable and can be written back
-    readOnly: server === undefined,
+    readOnly: !editable,
     originalEditable: false,
     ...sideBySideOptions(diffViewStore.get()),
     automaticLayout: true,
@@ -186,15 +188,18 @@ export const createDiffEditor = (
       }
     });
 
-    modified.onDidChangeContent(() => {
-      dirty = true;
-      setDirty(true);
-      setStatus({ kind: "state-dirty", text: "unsaved" });
-    });
+    if (editable) {
+      modified.onDidChangeContent(() => {
+        dirty = true;
+        setDirty(true);
+        setStatus({ kind: "state-dirty", text: "unsaved" });
+      });
+    }
 
     liveEditors.set(path, {
       sha: () => sha,
       refreshNotes: drawNotes,
+      isDirty: () => dirty,
       applyFromDisk(file) {
         if (dirty) {
           toast(`${path} changed on disk — Revert to load it`, "warn");
@@ -241,7 +246,7 @@ export const createDiffEditor = (
     },
     async save() {
       setStatus({ kind: "", text: "saving…" });
-      const response = await fetch("/save", {
+      const response = await fetch(`/save?review=${encodeURIComponent(reviewId)}`, {
         method: "POST",
         headers: { "Content-Type": "application/json", "X-Review-Token": server?.token ?? "" },
         body: JSON.stringify({ path, content: modified.getValue(), sha }),

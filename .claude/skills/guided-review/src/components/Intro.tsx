@@ -1,4 +1,4 @@
-import { meta, server, stats, total } from "../payload.ts";
+import { images, meta, server, stats, total } from "../payload.ts";
 
 export const Intro = () => {
   const [added, removed] = Object.values(stats).reduce(
@@ -8,7 +8,13 @@ export const Intro = () => {
     ],
     [0, 0],
   );
-  const facts = [`${total} files`, `+${added} −${removed} lines`, ...(meta.facts ?? [])];
+  const imageCount = Object.keys(images).length;
+  const facts = [
+    `${total} files`,
+    ...(imageCount > 0 ? [`${imageCount} image${imageCount === 1 ? "" : "s"}`] : []),
+    `+${added} −${removed} lines`,
+    ...(meta.facts ?? []),
+  ];
 
   return (
     <section class="intro">

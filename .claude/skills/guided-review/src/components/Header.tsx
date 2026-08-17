@@ -2,9 +2,11 @@ import { useLayoutEffect, useRef, useState } from "preact/hooks";
 
 import { type DiffView, diffViewStore, setDiffView } from "../diffView.ts";
 import { notesAsMarkdown, notesStore } from "../notes.ts";
+import { offlineStore } from "../offline.ts";
 import { meta, server, total } from "../payload.ts";
 import { type ReadingState } from "../readingState.ts";
 import { useStore } from "../stores.ts";
+import { StackBar } from "./StackBar.tsx";
 
 export type HeaderProps = { state: ReadingState };
 
@@ -13,6 +15,7 @@ export const Header = ({ state }: HeaderProps) => {
   const [handoffLabel, setHandoffLabel] = useState("Send notes to agent");
   const headerRef = useRef<HTMLElement>(null);
   const diffView = useStore(diffViewStore);
+  const offline = useStore(offlineStore);
 
   // the contents and the group headings stick below this header, whatever
   // height its controls wrap to
@@ -63,8 +66,17 @@ export const Header = ({ state }: HeaderProps) => {
 
   return (
     <header class="top" ref={headerRef}>
+      <StackBar />
       <div class="top-inner">
         <p class="top-title">{meta.headerTitle ?? meta.title}</p>
+        {offline && (
+          <span
+            class="offline-chip"
+            title="no network — the review server is local, so everything keeps working; notes queue here for the agent to pick up later"
+          >
+            offline — notes queue locally
+          </span>
+        )}
         <div class="meter">
           <div class="track">
             <div class="fill" style={`width: ${total === 0 ? 0 : (done / total) * 100}%`} />

@@ -13,6 +13,8 @@ export type LiveEditor = {
   sha: () => string;
   refreshNotes: () => void;
   applyFromDisk: (file: FileFromDisk) => void;
+  /** unsaved edits - a review switch would lose them, so it asks first */
+  isDirty: () => boolean;
 };
 
 export const liveEditors = new Map<string, LiveEditor>();

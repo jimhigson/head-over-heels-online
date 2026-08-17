@@ -1,15 +1,16 @@
 ---
 name: guided-review
-description: Build an ordered, locally-served HTML reading order for a large commit, PR or working tree, grouped by theme, with each file's diff inline in an editable Monaco editor and per-line review notes. Use when a commit/PR is too large to read file-by-file in git-log order and the user wants a guided path through it.
+description: Build an ordered, locally-served HTML reading order for a large commit, PR or working tree, grouped by theme, with each file's diff inline in an editable Monaco editor, per-line review notes, and a pan/zoom compare viewer for changed images. Use when a commit/PR is too large to read file-by-file in git-log order and the user wants a guided path through it, or to review changed Playwright screenshot baselines / any image diffs visually (the scripted snapshots-only mode needs no authoring at all).
 ---
 
 # Guided review
 
 Produces a single HTML page, **served locally**: a reading order over every
-non-binary file in a commit/PR/working tree, grouped by theme (not a strict
+file in a commit/PR/working tree, grouped by theme (not a strict
 topological sort — group similar work together even where that means bending
 dependency order), with a short note per file, that file's **diff embedded
-inline**, and a checkbox whose state persists — to the review's own file when
+inline** — an editable Monaco editor for text, a pan/zoom compare viewer for
+images — and a checkbox whose state persists — to the review's own file when
 served, so you can read it too. The page is the whole review: nothing has to be
 opened elsewhere to read the change.
 
@@ -28,10 +29,13 @@ in the middle:
 | file | does |
 | --- | --- |
 | `resolvePr.sh` | a PR number/branch/url → the local refs to diff, fetched (forks included) |
-| `changedFiles.sh` | the scope's file list as `STATUS<TAB>PATH`, binaries dropped |
+| `resolveStack.ts` | the same target → the whole PR stack it belongs to, for the page's stack bar |
+| `buildStack.ts` | every authored review of a stack (one groups json per PR, from however many agents) → ONE page with an in-place review switcher |
+| `changedFiles.sh` | the scope's file list as `STATUS<TAB>PATH`, binaries dropped — except raster images, which get compare viewers |
 | *(you)* | author a groups json: the grouping, the order, the per-file notes |
-| `build.ts` | collects every diff *and* each file's whole before/after, strips/truncates/escapes, computes GitHub anchors, inlines the font and the built ui, writes the finished HTML |
-| `src/` | the page itself — a preact app in tsx: palette, layout, contents sidebar, diff rendering, notes, checkboxes |
+| `snapshotGroups.ts` | *or*, for a snapshots-only review, generates that json mechanically — no authoring step at all |
+| `build.ts` | collects every diff *and* each file's whole before/after, strips/truncates/escapes, captures every version of each changed image, computes GitHub anchors, inlines the font and the built ui, writes the finished HTML |
+| `src/` | the page itself — a preact app in tsx: palette, layout, contents sidebar, diff rendering, the image compare viewer, notes, checkboxes |
 | `buildPage.ts` | bundles `src/` to the one script and one stylesheet `build.ts` inlines |
 | `serve.ts` | serves the built page — how a review is normally delivered; its editors become editable and save back to the working tree |
 | `awaitNotes.ts` | blocks until the reviewer writes a note, so you come back and act on it while they are still reading |
@@ -42,8 +46,9 @@ they do. Don't hand-assemble HTML or paste diff text; if the page needs a
 change, change `src/` so the next review gets it too.
 
 Everything runs on node, against **this directory's own** `package.json` — not
-the reviewed repo's, which may have no node in it at all. The first build in a
-fresh checkout installs it:
+the reviewed repo's, which may have no node in it at all. The install also
+brings `monaco-editor`, which `serve.ts` serves to the page and will not start
+without. The first build in a fresh checkout installs it:
 
 ```bash
 cd .claude/skills/guided-review && pnpm install --ignore-workspace
@@ -101,6 +106,62 @@ Starting from a SHA, it is worth checking whether a PR covers it
 if one does, review the PR rather than the commit, since that is what a
 reviewer is being asked about.
 
+### PR stacks
+
+In whole-PR mode, also check whether the PR sits in a **stack** (a chain of
+open PRs each based on the head branch of the one below):
+
+```bash
+node .claude/skills/guided-review/resolveStack.ts 34 > stack.json
+```
+
+It prints `{current, entries}` in stack order (trunk end first) and says on
+stderr whether a stack was found. One entry → forget it, nothing changes. Two
+or more → the page can carry the stack, in either of two shapes:
+
+- **Reviewing just your PR**: `build.ts --stack stack.json` as normal. The
+  page grows a bar along the top: the whole chain, this PR highlighted,
+  unreviewed siblings greyed with a forge ↗ link. (The diff range needs no
+  special handling — a mid-stack PR's base *is* the stack-parent's head, so
+  `resolvePr.sh` already diffs exactly what GitHub shows.)
+- **The whole stack in one page**: make a **stack directory** and build with
+  `buildStack.ts`. The directory is the coordination point between however
+  many agents contribute, one file per PR so nobody ever writes over anyone:
+
+  ```
+  <stackDir>/stack.json             resolveStack.ts output
+  <stackDir>/<pr>.groups.json       that PR's authored groups, one author each
+  <stackDir>/<pr>.instructions.md   optional: a request for another agent to
+                                    author the groups json above
+  node .claude/skills/guided-review/buildStack.ts --dir <stackDir> --out review.html [--current <pr>]
+  ```
+
+  Put the directory somewhere every contributing agent can find from any
+  worktree of the repo — the convention is
+  `$(git rev-parse --path-format=absolute --git-common-dir)/guided-review/stack-<trunk-most pr>`.
+  `buildStack.ts` fetches each PR from `refs/pull/<n>/head`, diffs each
+  mid-stack PR against the fetched head below it, and writes ONE page: every
+  authored review switchable from the bar, siblings without a groups json
+  shown greyed (marked *awaiting review* when an instructions file exists).
+  **Contributing is: write your PR's groups json into the directory and
+  re-run the build** — the serving process re-reads the html and creates the
+  new review's store without restarting, so the reviewer just reloads.
+
+**Admit what you have not read.** The agent starting a stack review has
+usually only studied its own PR. Say so, and offer the two ways to fill the
+rest in: dispatch reading agents to author a sibling's groups json now, or
+write `<pr>.instructions.md` (scope, refs, where to put the json, how to
+rebuild) for the agent that owns that PR — its author will write better notes
+than a cold reader. Never silently author a shallow review of a PR you
+haven't read.
+
+**One review per page is editable**: the one whose head branch the served
+`--repo` checkout has on disk (`serve.ts` matches and tells the page). The
+others' Monaco editors are read-only, but their notes, replies and ticks work
+in full — each review has its own `notes.json`/`ticks.json` under its own id,
+so `awaitNotes.ts`/`reply.ts` point at whichever review's store the note
+belongs to.
+
 ## 2. Get the exact file list and status
 
 ```bash
@@ -112,8 +173,9 @@ reviewer is being asked about.
 It prints `STATUS<TAB>PATH`, uses the three-dot range for PR mode (diffing
 against the merge base, matching GitHub's view — two-dot would drag in
 unrelated commits that landed on the base branch since the fork), maps
-untracked `??` to `A`, and drops binaries (images, fonts, audio, archives),
-which have no readable diff.
+untracked `??` to `A`, and drops binaries with no reviewable diff (fonts,
+audio, archives). Raster images (png/jpg/gif/webp/avif) stay in the list:
+`build.ts` gives each one a compare viewer instead of a text diff.
 
 Keep the status column per file — it drives the New/Modified/Deleted/Renamed
 badge, and tells `build.ts` which files need diffing against `/dev/null`.
@@ -139,21 +201,28 @@ leaving a review comment — since the diff itself is in the page.
 ## 4. Diff capture is `build.ts`'s job
 
 It runs the right command per file for the mode (`git show`, three-dot
-`git diff`, or `--no-index /dev/null` for untracked files), strips everything
-before the first `@@` hunk, counts `+`/`−`, truncates past
-`--max-diff-lines` (default 400) with a note saying how many lines were
-dropped, escapes for HTML, and neutralises any literal `</script>` inside a
-diff. It prints the file count, line totals and the finished size — a few
-hundred KiB is normal; if it runs to megabytes something belongs in
-`--max-diff-lines`/`--max-side-lines` territory, and it must stay under 16MB
-if it is ever going to be published — and warns on any file whose diff came
-back empty (usually a stale path in your groups json).
+`git diff`, or `--no-index /dev/null` for untracked files) to count `+`/`−`
+and to warn on any file whose diff came back empty (usually a stale path in
+your groups json), and prints the file count, line totals and the finished
+size — a couple of MB is normal with images; if it balloons, something
+belongs in `--max-side-lines`/`--max-images` territory.
 
-It also captures each file's **whole before and after** (`git show <rev>:<path>`
-either side, the working copy for the "after" in working-tree mode), which is
-what the page's Monaco diff editor works from — it computes and folds the diff
-itself rather than being handed a patch. Files longer than `--max-side-lines`
-(default 2000) keep only their patch, and fall back to the plain renderer.
+What the page renders from is each file's **whole before and after**
+(`git show <rev>:<path>` either side, the working copy for the "after" in
+working-tree mode) — Monaco computes and folds the diff itself rather than
+being handed a patch. Files longer than `--max-side-lines` (default 2000)
+are not embedded; their row says so and points at the file in the tree.
+
+**Image files get versions, not sides.** For each raster image in the groups,
+`build.ts` captures its bytes at every ref worth comparing — always
+**production** (the latest release tag), then per mode: a pr's **base** and
+**branch**, a commit's **parent** and **commit**, or a working tree's
+**head/stage/working** — dedupes byte-identical versions, and embeds them as
+one inert json block per image (so the payload itself never carries image
+data). The page's viewer can then compare any pair, not just the pair the
+review was built around. `--max-images` (default 100) caps how many images are
+embedded; rows past it still appear, marked as left out. All comparison
+happens in the page — there is no image tooling dependency here.
 
 Generated files and lockfiles are worth leaving out of the groups json
 entirely, or giving a row and a note without reading their body.
@@ -167,6 +236,12 @@ burns context that's better spent on synthesis. Split the file list into
 group the reading order, not arbitrarily) and dispatch one background
 `Agent` (general-purpose, `run_in_background: true`) per chunk, in a single
 message so they run concurrently.
+
+**Leave image files out of every agent's chunk.** Reading pixels is expensive
+for an agent and worthless to the reviewer, who sees the diff at a glance in
+the viewer; the page also computes each image's %-of-pixels-changed line
+itself. Give an image a row (grouped where it belongs) and at most a note on
+*why* it changed, never a description of what it looks like.
 
 Skip this step when you already have the change in context — eg you wrote
 it in this session. Re-deriving what you already know costs more than it
@@ -248,6 +323,24 @@ node .claude/skills/guided-review/build.ts \
   # a pr:      --mode pr --base <base> --head <head> --pr <n>   (refs from resolvePr.sh)
 ```
 
+### Snapshots-only reviews are fully scripted
+
+When the ask is "review the changed screenshot baselines" rather than a whole
+change, skip authoring entirely — `snapshotGroups.ts` writes the groups json
+itself (groups = snapshot directories, alphabetical, no notes: the page
+computes each image's %-changed line):
+
+```bash
+node .claude/skills/guided-review/snapshotGroups.ts --mode worktree --out <scratchpad>/groups.json
+# or --mode pr --base <base> --head <head>, --mode commit --ref <sha>
+# --glob 'e2e/*-snapshots' bounds what counts as a baseline (that is its default)
+node .claude/skills/guided-review/build.ts --groups <scratchpad>/groups.json \
+  --out <scratchpad>/snapshots.html --mode <same mode and refs>
+```
+
+Then serve as normal. This is the drop-in for "regenerated the baselines — are
+the diffs right?", including reading on a phone.
+
 Then serve it (step 8) and hand over that URL. Rebuild and refresh to iterate;
 `build.ts` overwrites in place, so the server keeps serving the newest build
 without restarting.
@@ -262,6 +355,11 @@ load the room a second time", "was a bare pair of refs", "the fix that follows
 in group 4" are all exactly right in a review and would all be wrong in the
 source. Say what changed and why, not just what the code now does — the code
 is on screen next to the note, and repeating it wastes the reader's attention.
+
+Image rows mostly need **no authored note at all**: the page adds a mechanical
+`WxH — N% of pixels differ` line under each one, and the viewer shows the
+change better than words can. Write a note only when the *reason* for the
+change isn't obvious from the surrounding groups.
 
 ## 8. Deliver it — serve when reachable, send a file when not
 
@@ -285,6 +383,13 @@ non-reachable mode and jump to "### Non-reachable mode".
 # reachable mode only:
 node .claude/skills/guided-review/serve.ts --html <scratchpad>/review.html --repo . --open
 ```
+
+`--repo` must be a checkout **of the reviewed head** — in pr mode, the branch's
+own worktree, not wherever you happen to be running from. It is where saves
+and notes-driven edits land, and the live-file poll compares open editors
+against its disk. In a stack page, whichever carried review's head branch the
+checkout has is the editable one; the server works this out itself and the
+others degrade safely to read-only-with-notes.
 
 It prints a `http://127.0.0.1:<port>/` — hand that over as the review. Run it
 in the background so the session isn't blocked, and say which port it's on.
@@ -369,32 +474,36 @@ node .claude/skills/guided-review/awaitNotes.ts --notes <store>/notes.json
 If a note is ambiguous, ask about that one note rather than stopping the
 review; the page keeps working while you talk.
 
-Both are Monaco-only: without the CDN there is no editor to hang them off.
-Any static server will serve the page for reading, but only `serve.ts` answers
-`/save` and `/notes`.
+Both are Monaco-only, and **Monaco comes from `serve.ts` itself** — it serves
+its own `monaco-editor` install at `/vs` and refuses to start without it, so a
+served review works fully offline (the page shows an *offline — notes queue
+locally* chip and note threads say an agent will pick them up later, but
+nothing stops working). Any static server will serve the page for reading,
+but only `serve.ts` answers `/vs`, `/save` and `/notes`.
 
 ### Non-reachable mode (sandbox): send the file as-is
 
 When `REACHABLE_FROM_INTERNET` is unset/falsy, the built `review.html` is
 already a **single self-contained file** (font and ui runtime inlined, every
-diff and before/after embedded, Monaco pulled from the CDN at runtime) that
-**branches at runtime** on `window.__reviewServer`: only `serve.ts` injects
-that, so opened directly the page is cleanly read-only — the per-line
-note-authoring UI never wires up (no gutter `+` glyph, no `alt-N`/context-menu
-action, no view zones), and Save/Revert/"Send notes to agent" stay hidden.
-Everything else works the same as served: reading order, groups, blurbs, the
-contents sidebar and its draggable split, per-file notes *text*, status chips,
-path/GitHub links, the Monaco diffs (with the plain fallback for offline/CSP),
-and the ticks, per-file folding + progress bar. There is nothing to strip and
-**no second build** — `build.ts` in step 7 already bundled the page and wrote
-the finished HTML, and this mode delivers exactly that file.
+before/after and image embedded) that **branches at runtime** on
+`window.__reviewServer`: only `serve.ts` injects that, so opened directly the
+page is cleanly read-only — the per-line note-authoring UI never wires up (no
+gutter `+` glyph, no `alt-N`/context-menu action, no view zones), and
+Save/Revert/"Send notes to agent" stay hidden. **Code rows have no diffs
+without a server**: Monaco is a dependency served only by `serve.ts`, and an
+unserved code row states that plainly rather than degrading. Everything else
+works: reading order, groups, blurbs, the contents sidebar and its draggable
+split, per-file notes *text*, status chips, path/GitHub links, the image
+compare viewers and their %-changed lines, and the ticks, per-file folding +
+progress bar. There is nothing to strip and **no second build** — `build.ts`
+in step 7 already bundled the page and wrote the finished HTML, and this mode
+delivers exactly that file.
 
 Deliver `<scratchpad>/review.html` to the reviewer:
 
 - **`SendUserFile`** (`display: "render"`) is the default — they open it
-  locally, get the full Monaco editor from the CDN, and tick their way
-  through read-only. If they want to leave you feedback they paste it into
-  the chat.
+  locally and tick through read-only (images in full; code rows say to serve
+  for diffs). If they want to leave you feedback they paste it into the chat.
 - **`Artifact`** instead when they want a **shareable link** for a teammate
   (see Publishing) — a hosted page rather than a file.
 
@@ -409,9 +518,10 @@ the same path keeps the URL.
 Know what is given up: the artifact host's CSP allows same-origin connections
 only, so a published page cannot reach `127.0.0.1` (nor any tunnel — the block
 is `connect-src`, not the scheme, and Chrome's private-network rules would
-refuse it besides). It is read-only by construction: no saving, and notes fall
-back to that browser's localStorage. It also can't load Monaco from the CDN, so
-diffs render through the plain fallback.
+refuse it besides). It is read-only by construction: no saving, notes fall
+back to that browser's localStorage, and code rows have no diffs (Monaco only
+comes from `serve.ts`) — a published review is for its prose, groups and
+images.
 
 ## 9. Changing the page itself
 
@@ -426,15 +536,15 @@ palette, no hero, no flourish.
 `src/` is a normal preact + tsx app on preact 11, bundled by `buildPage.ts`
 (vite, library mode, `write: false`) into **one es module and one stylesheet as
 strings**, which `build.ts` inlines into the page along with the font and the
-payload json. Nothing is fetched at runtime but monaco: a review has to keep
-working opened as a file and published as an artifact, and both cut the page
-off from any cdn — monaco degrades to the plain patch renderer there, but a
-missing ui would leave nothing on screen at all.
+payload json. Nothing is fetched at runtime but monaco, which comes only from
+`serve.ts`'s own install at `/vs` — no cdn, no fallback renderer: a missing
+monaco is reported as the failure it is, and an unserved page's code rows say
+to serve the review.
 
 - `pnpm exec tsc --noEmit` in the skill directory typechecks it; the whole
   app is typed, including a hand-written description of the parts of monaco's
-  api the page uses (`src/monacoApi.ts`), since monaco arrives as a cdn global
-  rather than a package.
+  api the page uses (`src/monacoApi.ts`), since monaco arrives as a script
+  global rather than a bundled import.
 - The page is assembled in `build.ts`'s `page()`: charset, `<style>`, `#app`,
   the `<!--REVIEW_SERVER-->` marker, the payload, the module script. Every `<`
   in the payload is escaped to `\u003c` — a valid json escape the parser undoes
@@ -496,6 +606,16 @@ sizes. Body text stays in a system stack; paths and diffs in
 - Sticky header: live progress bar and checked/total count, the Contents
   toggle, open-everything, close-everything, clear-ticks, and a **Diffs
   select** (inline / side by side).
+- **A stack bar above the header row**, only when the shell knows a 2+-entry
+  stack: every PR of the chain in order, the active review highlighted. A
+  sibling the page carries is a button that **switches the whole page to that
+  review in place** — `selectReview` reparses its inert payload block and the
+  App remounts keyed by review, reloading that review's own notes and ticks
+  and restarting the image sweep; a switch away from unsaved editor changes
+  asks first. A sibling with no review is greyed with a forge ↗ link, plus an
+  *awaiting review* chip when an instructions file was left for its agent.
+  The bar lives inside `header.top`, so the measured `--header-height` — and
+  everything sticky under it — already accounts for it.
 - **A contents sidebar**, sticky beside the reading order: every group and
   every file as a tree, each with its own checkbox and `done/total`, the file
   ticks and the row ticks being the same state. Clicking a file opens its
@@ -549,6 +669,36 @@ sizes. Body text stays in a system stack; paths and diffs in
   themes carry the page's own palette, and
   `scrollbar.alwaysConsumeMouseWheel: false` keeps the page scrolling when the
   pointer crosses an editor.
+- **Image rows open a compare viewer instead of Monaco.** Its toolbar is a
+  version chooser (one column per captured version — production/main/branch
+  etc — radios above the labels pick the "from" side, below pick "to"; a
+  version can't be both sides at once; byte-identical columns are greyed with
+  a tooltip), a ⇄ swap, the mode strip **from | to | diff | swipe**, an
+  **overlay** checkbox that composites the magenta diff over the single
+  version showing (from/to only — diff mode IS the overlay and swipe already
+  shows the pair, so it disables there), **zoom diff** (frames the diff's bounding box),
+  **fit**, and a px/% readout. Diffs are computed in the page via canvas —
+  magenta on transparent over the union extent, out-of-bounds pixels counted
+  as differing — and memoised per pair.
+- **The viewer's stage pans and zooms freely.** Pointer drag pans (in swipe
+  mode a drag starting within 24px of the divider moves the divider instead —
+  anywhere else still pans); two-finger pinch zooms; double-tap resets to fit;
+  ctrl/⌘-wheel zooms at the cursor (macOS trackpad pinch arrives exactly so);
+  other wheel input is split by heuristic — line/page deltas or coarse
+  single-axis pixel steps read as a mouse wheel and zoom, fine or two-axis
+  deltas read as a trackpad and pan, with a 400ms momentum window so a flick's
+  tail can't flip to zooming. The wheel listener is non-passive on a
+  `touch-action: none` viewport, or none of that could preventDefault.
+- **Each image row carries a mechanical summary line** — `WxH — N% of pixels
+  differ (Npx)` — computed by a background sweep after first paint, one image
+  at a time, its pixel data released as it moves on. Image bytes live in one
+  inert `<script type="application/json">` block per image, parsed only when
+  that row needs them — the payload and the executable script stay small,
+  which is what keeps phone webviews rendering the page at all.
+- **Image notes are file-anchored.** No lines to hang a note on, so a served
+  image row has an Add note button opening the same thread UI as a line note,
+  stored at line 0; `reply.ts --line 0` answers it and the markdown twin shows
+  it as `L0`.
 - **Inline or side by side** is the header's Diffs select, applied to every
   editor at once — `diffViewStore` is read when an editor is built and
   subscribed to for the ones already on screen, and remembered in
@@ -556,14 +706,15 @@ sizes. Body text stays in a system stack; paths and diffs in
   `renderSideBySide: true` alone does nothing in a pane this narrow, because
   monaco's `useInlineViewWhenSpaceIsLimited` drops back to the inline view
   below ~900px on its own. Both go in `sideBySideOptions`.
-- **The CDN fails gracefully.** Offline, or published (where the host's CSP
-  blocks external scripts), Monaco never arrives; the loader rejects on
-  `error` or a 6s timeout and every diff renders through the plain fallback
-  instead — a `<pre>` in its own `overflow-x: auto` container,
-  coloured per line off the first character with a left border *and* a
-  low-alpha background so lines stay distinguishable in both themes and for
-  colour-blind readers. Locally-opened builds get the full editor. Don't
-  "fix" one of these paths by deleting the other.
+- **Monaco is a dependency, not an enhancement.** It is served only from the
+  review server's own `monaco-editor` install at `/vs` (which is why served
+  reviews work fully offline); `serve.ts` refuses to start without it. There
+  is no cdn and no plain-text fallback renderer — a load failure renders as
+  an error block in the diff's place, and a page opened without a server says
+  its code rows need one. An **offline chip** appears in the header when the
+  network goes (with note threads switching to "an agent will pick this up
+  later") — notes always persisted server-side, so offline only changes the
+  messaging, not the behaviour.
 - Both themes via the artifact-design token pattern: `:root`, the
   `prefers-color-scheme` media query, and both `data-theme` overrides. Monaco
   is re-themed from both signals.

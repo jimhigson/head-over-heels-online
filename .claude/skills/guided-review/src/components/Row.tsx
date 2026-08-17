@@ -1,11 +1,29 @@
 import { useEffect, useRef, useState } from "preact/hooks";
 
+import { ImagePanel } from "../imageDiff/ImageDiff.tsx";
+import { ImageFileNote } from "../imageDiff/ImageFileNote.tsx";
+import { imageStatsStore, mechanicalNote } from "../imageDiff/imageStats.ts";
 import { notesStore } from "../notes.ts";
-import { links, stats, statusLabel } from "../payload.ts";
-import { type ReviewFile } from "../ReviewPayload.ts";
+import { images, links, stats, statusLabel } from "../payload.ts";
+import { type ImageRow, type ReviewFile } from "../ReviewPayload.ts";
 import { registerRow, unregisterRow } from "../rowNodes.ts";
 import { useStore } from "../stores.ts";
 import { MonacoDiff } from "./MonacoDiff.tsx";
+
+const formatBytes = (bytes: number): string =>
+  bytes < 1_024 ? `${bytes} B` : `${(bytes / 1_024).toFixed(1)} KiB`;
+
+/** what an image row shows where a text row shows +N −M */
+const imageByteStat = (imageRow: ImageRow): string => {
+  const from = imageRow.versions[imageRow.from];
+  const to = imageRow.versions[imageRow.to];
+  if (to === undefined) {
+    return "";
+  }
+  return from === undefined || from === to ?
+      formatBytes(to.bytes)
+    : `${formatBytes(from.bytes)} → ${formatBytes(to.bytes)}`;
+};
 
 export type RowProps = {
   file: ReviewFile;
@@ -34,6 +52,8 @@ export const Row = ({
   // survives the file being ticked away and reopened
   const [mounted, setMounted] = useState(false);
   const notes = useStore(notesStore)[file.path] ?? [];
+  const imageRow = images[file.path];
+  const imageStats = useStore(imageStatsStore)[file.path];
   const nodeRef = useRef<HTMLDivElement>(null);
 
   // the contents scrolls to these, and the app watches them to know which file
@@ -105,9 +125,12 @@ export const Row = ({
           </a>
         )}
         {notes.length > 0 && <span class="note-count">{notes.length}</span>}
-        <span class="row-stat">
-          <span class="stat-add">+{added}</span> <span class="stat-rm">−{removed}</span>
-        </span>
+        {imageRow !== undefined ?
+          <span class="row-stat">{imageByteStat(imageRow)}</span>
+        : <span class="row-stat">
+            <span class="stat-add">+{added}</span> <span class="stat-rm">−{removed}</span>
+          </span>
+        }
         <button
           type="button"
           class="caret"
@@ -124,6 +147,9 @@ export const Row = ({
 
       <div class="row-body" hidden={collapsed}>
         <p class="note" dangerouslySetInnerHTML={{ __html: file.note ?? "" }} />
+        {imageRow !== undefined && imageStats !== undefined && (
+          <p class="note img-note-line">{mechanicalNote(imageStats)}</p>
+        )}
         <div class="diff">
           <button
             type="button"
@@ -131,14 +157,24 @@ export const Row = ({
             aria-expanded={diffOpen}
             onClick={() => onDiff(!diffOpen)}
           >
-            <span>{diffOpen ? "Hide diff" : "Show diff"}</span>
+            <span>
+              {imageRow !== undefined ?
+                diffOpen ? "Hide image"
+                : "Show image"
+              : diffOpen ?
+                "Hide diff"
+              : "Show diff"}
+            </span>
           </button>
           {mounted && (
             <div hidden={!diffOpen}>
-              <MonacoDiff path={file.path} setCounts={setCounts} />
+              {imageRow !== undefined ?
+                <ImagePanel path={file.path} row={imageRow} />
+              : <MonacoDiff path={file.path} setCounts={setCounts} />}
             </div>
           )}
         </div>
+        {imageRow !== undefined && <ImageFileNote path={file.path} />}
       </div>
     </div>
   );
