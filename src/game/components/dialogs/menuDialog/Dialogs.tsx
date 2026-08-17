@@ -57,8 +57,14 @@ export const Dialogs = (_emptyProps: EmptyObject) => {
     // no dialog to load
     return null;
   }
-  if (!areSoundsLoaded) {
-    // is a dialog to load but we are still loading the sounds
+  if (
+    !areSoundsLoaded &&
+    // make an exception for the error dialog - want to show errors even if
+    // sounds fail to load and/or are still loading:
+    topOpenMenu.menuId !== "errorCaught"
+  ) {
+    // is a dialog to show but we are still loading the sounds so wait until
+    // they are ready
     return <AssetLoading />;
   }
 

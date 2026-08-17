@@ -23,6 +23,7 @@ import {
   type AppSpritesheetWithVariants,
   withVariantsBaked,
 } from "./AppSpritesheet";
+import { type FrameRect } from "./composeSpritesheetForUpscale";
 import { reifyTextureIds } from "./reifyTextureIds";
 import { reuseOrCreateSheetTarget } from "./reuseOrCreateSheetTarget";
 import { roomSpritesheetTextureSwops } from "./roomSpritesheetTextureSwops";
@@ -45,6 +46,7 @@ import {
   stripGroupOf,
   stripGroupPasses,
 } from "./variantSwopRecipes";
+import { withRepackedRects } from "./withRepackedRects";
 
 const blitKey = "blit";
 const shadowBlitKey = "shadow:blit";
@@ -79,12 +81,26 @@ export const buildRoomSheet = (
   baseTexture: Texture,
   /** the previous room sheet's texture, re-baked into */
   previousTarget: RenderTexture | undefined,
+  /**
+   * where each frame's art lives in the base texture, when that sheet was
+   * composed for the upscale rather than taken straight from the authored
+   * image - the composition lays the frames out afresh, so without these the
+   * bake would read every one of them from the wrong place
+   */
+  repackedFrameRects?: ReadonlyMap<string, FrameRect>,
 ): { sheet: AppSpritesheetWithVariants; target: RenderTexture } => {
   const { pixiRenderer, spriteOption, spritesheetMetaData } = context;
   const { name: spriteOptionName, uncolourised } = spriteOption;
 
   const meta = spritesheetMetas[spriteOptionName];
-  const data = makeSpritesheetData(meta);
+  const rawData = makeSpritesheetData(meta);
+  const data: AppSpritesheetDataWithVariants =
+    repackedFrameRects === undefined ? rawData : (
+      {
+        ...rawData,
+        frames: withRepackedRects(rawData.frames, repackedFrameRects),
+      }
+    );
 
   const { ambient, textureSpecific = [] } =
     uncolourised ?
@@ -159,7 +175,16 @@ export const buildRoomSheet = (
   }
   const packedData: AppSpritesheetDataWithVariants = { ...data, frames };
 
-  const target = reuseOrCreateSheetTarget(previousTarget, pack.height);
+  // any upscale baked into the original sheet is carried through to
+  // the room sheet: the bake's blits and filter passes all run at this
+  // backing-store resolution over the same logical layout
+  const spritesheetUpscale = baseTexture.source.resolution;
+
+  const target = reuseOrCreateSheetTarget(
+    previousTarget,
+    pack.height,
+    spritesheetUpscale,
+  );
 
   // shared (destroyed once, after all groups): the ambient and texture-specific
   // palette swops, reused by every base recipe that references them
@@ -272,6 +297,10 @@ export const buildRoomSheet = (
   }
 
   const sheet = new Spritesheet(target, packedData) as AppSpritesheet;
+  // pixi's Spritesheet applies the sheet data's meta.scale (1) to the texture
+  // source, wiping any bake resolution - restore it before parsing
+  // so frame UVs are computed against the logical 1x size:
+  sheet.textureSource.resolution = spritesheetUpscale;
   sheet.parseSync();
   sheet.textureSource.scaleMode = "nearest";
   sheet.spriteOptionName = spriteOptionName;

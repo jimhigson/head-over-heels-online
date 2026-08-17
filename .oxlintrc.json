@@ -11,7 +11,7 @@
     "dist/**",
     "src/_generated/**",
     "package.json",
-    "vite.config.ts.*",
+    "**/vite*.config.ts.*",
     "dev-dist/**",
     ".vite/**",
     "src-tauri/target/**"

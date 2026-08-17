@@ -66,11 +66,7 @@ export const SpriteTile = ({ textureId, frame, scale }: SpriteTileProps) => {
       </div>
       {/* take up space to keep the text at the bottom: */}
       <div class="flex-grow" />
-      <SpriteName name={textureId} />
-
-      <div class="text-lightGrey zx:text-zxWhiteDimmed toppy:text-toppyGrey1">
-        {frame.w}&nbsp;x&nbsp;{frame.h}
-      </div>
+      <SpriteName name={textureId} size={{ width: frame.w, height: frame.h }} />
 
       {frame.pivot ?
         <div class="text-midRed zx:text-zxRed toppy:text-toppyPink2 zx:bg-zxBlack toppy:bg-toppyBlack">

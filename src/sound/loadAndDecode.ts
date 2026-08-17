@@ -8,7 +8,13 @@ export const loadAndDecode = (url: string): Promise<AudioBuffer> => {
     return cached;
   }
 
-  const promise = fetchAndDecode(url);
+  // a failed load is forgotten so a later call can try again - the promise is
+  // cached before it settles, so it would otherwise be handed back rejected
+  // for the life of the page
+  const promise = fetchAndDecode(url).catch((error: unknown) => {
+    cache.delete(url);
+    throw error;
+  });
   cache.set(url, promise);
   return promise;
 };
@@ -18,26 +24,16 @@ const fetchAndDecode = async (url: string): Promise<AudioBuffer> => {
     // silent stub - snapshots never need audible sound, and decoding depends
     // on codecs that automated browsers may not have (webkit's decodeAudioData
     // never settles without them, hanging anything gated on sound loading)
-    return audioCtx.createBuffer(2, 1, audioCtx.sampleRate);
-  }
-  try {
-    return await audioCtx.decodeAudioData(
-      await (await fetch(url)).arrayBuffer(),
-    );
-  } catch (error) {
-    // Only suppress error if running in Playwright/automated browser
-    if (navigator.webdriver === true) {
-      // Playwright's Chromium doesn't include MP3/AAC codecs due to licensing restrictions
-      // See: https://github.com/microsoft/playwright/issues/30409
-      // and: https://stackoverflow.com/questions/8033495/chromium-embedded-framework-mp3-support
-      console.warn(
-        `Audio decode failed for ${url} - running in automated browser`,
-        error,
-      );
-      // Return a minimal silent AudioBuffer instead of null
+    try {
       return audioCtx.createBuffer(2, 1, audioCtx.sampleRate);
+    } catch (e) {
+      throw new Error(
+        `Problem creating fake audio buffer for visual regression with:
+            audioCtx.sampleRate = ${audioCtx.sampleRate}
+            audioCtx.state = ${JSON.stringify(audioCtx.state)}`,
+        { cause: e },
+      );
     }
-    cache.delete(url);
-    throw error; // Re-throw in normal browsers
   }
+  return audioCtx.decodeAudioData(await (await fetch(url)).arrayBuffer());
 };

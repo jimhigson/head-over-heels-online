@@ -1,6 +1,5 @@
 import { twMerge } from "tailwind-merge";
 
-import { menuLeaderBackChar } from "../../../../../sprites/spritesheet/spritesheetData/hudChars";
 import { backToParentMenu } from "../../../../../store/slices/gameMenus/gameMenusSlice";
 import { useDispatchActionCallback } from "../../../../../store/useDispatchActionCallback";
 import { useMenuItem } from "./menus/useMenuItem";
@@ -31,7 +30,7 @@ export const MobileStyleBackButton = ({
       data-to-parent-menu={true}
       ref={ref}
     >
-      <span class="text-double-height">{menuLeaderBackChar}</span>
+      <span class="text-double-height">{"<<"}</span>
       <span class="text-double-height">Back</span>
     </div>
   );

@@ -1,8 +1,5 @@
 import { uppercaseCharReplacement } from "../../src/sprites/escapeCharForTailwind";
 import {
-  menuLeaderBackChar,
-  menuLeaderFocussedChar,
-  menuLeaderUnfocussedChar,
   nerdFontAppleChar,
   nerdFontDiscordChar,
   nerdFontGithubChar,
@@ -14,6 +11,11 @@ import {
   hudLowercaseCharTextureSize,
 } from "../../src/sprites/spritesheet/spritesheetData/textureSizes";
 import { type Xy } from "../../src/utils/vectors/vectors";
+import {
+  menuLeaderBackChar,
+  menuLeaderFocussedChar,
+  menuLeaderUnfocussedChar,
+} from "./menuLeaderChars";
 
 const chromePwaInstall = ""; // \uea78
 const iosMacShare = ""; // \uf50e;
@@ -162,13 +164,12 @@ const row3 = [
   "]",
   "<",
   ">",
-  // choose some arbitrary but fairly common keys for the menu items,
-  // selected to be unlikely to be used for either game controls or to
-  // appear in scroll markdown
-  "⏩",
-  "⁌",
-  "⁍",
-  // currently unused
+  // currently unused. Named rather than deleted: a row's frames are walked
+  // left to right from its start, so dropping an entry would slide every
+  // later glyph in the row onto the wrong cell of the sheet
+  "FastForward",
+  "BulletLeader",
+  "BulletLeaderMirrored",
   "EnterFullscreen",
   "ExitFullscreen",
   "☰", // the menu "hamburger" icon

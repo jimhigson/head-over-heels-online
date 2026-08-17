@@ -201,6 +201,12 @@ test("MAME assignment", () => {
               "F9",
             ],
           },
+          "toggleUpscaledSprites": {
+            "gamepadButtons": [],
+            "keys": [
+              "Y",
+            ],
+          },
           "towards": {
             "gamepadButtons": [],
             "keys": [
@@ -449,6 +455,12 @@ test("Default assignment", () => {
             "gamepadButtons": [],
             "keys": [
               "F9",
+            ],
+          },
+          "toggleUpscaledSprites": {
+            "gamepadButtons": [],
+            "keys": [
+              "Y",
             ],
           },
           "towards": {

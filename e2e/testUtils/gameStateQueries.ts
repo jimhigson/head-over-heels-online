@@ -24,6 +24,47 @@ const maxConsecutiveRenderHolds = 10;
 export const maximumWaitForStep = 15_000 * osSlowness;
 
 /**
+ * an error the game caught, read from the dom when the dialog rendered and
+ * from the store when it did not - the dialog is html, so a failure early
+ * enough (or one that stops the page rendering at all) leaves the store as the
+ * only place the error can be read from
+ */
+const errorCaughtReport = async (page: Page): Promise<string | undefined> => {
+  if ((await page.locator('[data-dialog-id="errorCaught"]').count()) > 0) {
+    const text = await page
+      .locator('[data-test-id="error-report"]')
+      .textContent()
+      .catch(() => "(could not read the error report)");
+    return text ?? "(the error report was empty)";
+  }
+  return page.evaluate(() => {
+    const errorMenu = window._e2e_store
+      ?.getState()
+      .gameMenus.openMenus.find(
+        (openMenu) => openMenu.menuId === "errorCaught",
+      );
+    if (errorMenu === undefined) {
+      return undefined;
+    }
+    const errors = errorMenu.menuParam as Array<{
+      message: string;
+      stack?: string;
+    }>;
+    return `(from the store - the dialog did not render)\n${errors
+      .map((error) => `${error.message}\n${error.stack ?? ""}`)
+      .join("\ncaused by: ")}`;
+  });
+};
+
+/** throws with the caught error's text, if the game caught one */
+const throwIfErrorCaught = async (page: Page, whileDoing: string) => {
+  const report = await errorCaughtReport(page);
+  if (report !== undefined) {
+    throw new Error(`error dialog shown while ${whileDoing}:\n${report}`);
+  }
+};
+
+/**
  * wait for the game state to appear on the page. Also watches for the
  * error-caught dialog: `page.addLocatorHandler` (which setupE2ePage uses to
  * fail on the dialog) only fires during actionability-checked operations, and
@@ -34,20 +75,18 @@ export const waitForGameState = async (page: Page) => {
   await page.waitForFunction(
     () =>
       window._e2e_gamePageGameAi?.gameState !== undefined ||
-      document.querySelector('[data-dialog-id="errorCaught"]') !== null,
+      document.querySelector('[data-dialog-id="errorCaught"]') !== null ||
+      (window._e2e_store
+        ?.getState()
+        .gameMenus.openMenus.some(
+          (openMenu) => openMenu.menuId === "errorCaught",
+        ) ??
+        false),
     undefined,
     { timeout: longTimeout },
   );
 
-  if ((await page.locator('[data-dialog-id="errorCaught"]').count()) > 0) {
-    const errorReport = await page
-      .locator('[data-test-id="error-report"]')
-      .textContent()
-      .catch(() => "(could not read the error report)");
-    throw new Error(
-      `error dialog shown while waiting for game state:\n${errorReport}`,
-    );
-  }
+  await throwIfErrorCaught(page, "waiting for game state");
 };
 
 /**
@@ -97,7 +136,13 @@ export const waitForGameReady = async (page: Page) => {
       () =>
         (window._e2e_gamePageGameAi?.gameState !== undefined &&
           window._e2e_pixiApplication !== undefined) ||
-        document.querySelector('[data-dialog-id="errorCaught"]') !== null,
+        document.querySelector('[data-dialog-id="errorCaught"]') !== null ||
+        (window._e2e_store
+          ?.getState()
+          .gameMenus.openMenus.some(
+            (openMenu) => openMenu.menuId === "errorCaught",
+          ) ??
+          false),
       undefined,
       { timeout: longTimeout },
     );
@@ -112,15 +157,7 @@ export const waitForGameReady = async (page: Page) => {
     );
   }
 
-  if ((await page.locator('[data-dialog-id="errorCaught"]').count()) > 0) {
-    const errorReport = await page
-      .locator('[data-test-id="error-report"]')
-      .textContent()
-      .catch(() => "(could not read the error report)");
-    throw new Error(
-      `error dialog shown while waiting for game to be ready:\n${errorReport}`,
-    );
-  }
+  await throwIfErrorCaught(page, "waiting for the game to be ready");
 };
 
 /**
@@ -183,20 +220,18 @@ export const waitForRoomToRender = async (
   await page.waitForFunction(
     (wantRoomId) =>
       window._e2e_gamePageGameAi?.currentRoom?.id === wantRoomId ||
-      document.querySelector('[data-dialog-id="errorCaught"]') !== null,
+      document.querySelector('[data-dialog-id="errorCaught"]') !== null ||
+      (window._e2e_store
+        ?.getState()
+        .gameMenus.openMenus.some(
+          (openMenu) => openMenu.menuId === "errorCaught",
+        ) ??
+        false),
     expectedRoomId,
     { timeout: longTimeout },
   );
 
-  if ((await page.locator('[data-dialog-id="errorCaught"]').count()) > 0) {
-    const errorReport = await page
-      .locator('[data-test-id="error-report"]')
-      .textContent()
-      .catch(() => "(could not read the error report)");
-    throw new Error(
-      `error dialog shown while waiting for room "${expectedRoomId}":\n${errorReport}`,
-    );
-  }
+  await throwIfErrorCaught(page, `waiting for room "${expectedRoomId}"`);
 
   // the room being current only means the state changed; wait for a frame that
   // actually drew it, so the renderer has built it before anything is captured:
