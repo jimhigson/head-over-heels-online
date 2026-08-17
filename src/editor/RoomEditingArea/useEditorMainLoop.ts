@@ -1,4 +1,4 @@
-import { Container, Graphics, type Renderer, Ticker } from "pixi.js";
+import { Container, Graphics, type Renderer } from "pixi.js";
 import { type RefObject } from "preact";
 import { useEffect } from "preact/hooks";
 
@@ -9,6 +9,8 @@ import { spritesheetMetas } from "../../sprites/spritesheet/spritesheetData/spri
 import { type Spritesheets } from "../../sprites/spritesheet/Spritesheets";
 import { type Upscale } from "../../store/slices/upscale/Upscale";
 import { store } from "../../store/store";
+import { appClock } from "../../utils/ticker/appClock";
+import { type AppTicker } from "../../utils/ticker/AppTicker";
 import { useEditorRoomState } from "../EditorRoomStateProvider";
 import {
   type EditorRoomId,
@@ -106,7 +108,7 @@ export const useEditorMainLoop = (
 
     let spritesheetLoadStarted = false;
 
-    const tick = ({ deltaMS }: Ticker) => {
+    const tick = ({ deltaMS }: AppTicker) => {
       if (!spritesheets.isTextureLoaded("BlockStack")) {
         if (!spritesheetLoadStarted) {
           spritesheetLoadStarted = true;
@@ -170,10 +172,10 @@ export const useEditorMainLoop = (
       pixiApp.render();
     };
 
-    Ticker.shared.add(tick);
+    appClock.add(tick);
 
     return () => {
-      Ticker.shared.remove(tick);
+      appClock.remove(tick);
       roomRenderer?.destroy();
       roomRendererRef.current = undefined;
       viewport.container.removeChild(backdrop, roomContainer);

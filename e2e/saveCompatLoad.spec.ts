@@ -1,6 +1,9 @@
 import { expect } from "@playwright/test";
 
-import { waitForGameState } from "./testUtils/gameStateQueries";
+import {
+  waitForAnyRoomToRender,
+  waitForGameState,
+} from "./testUtils/gameStateQueries";
 import { osSlowness } from "./testUtils/infrastructure";
 import { setupE2ePage } from "./testUtils/pageSetup";
 import {
@@ -42,10 +45,11 @@ test.describe("save games from previous versions load in the current version", (
       // throws if the error dialog is shown instead of the game starting:
       await waitForGameState(page);
 
-      // let the game tick for a while: errors from the loaded rooms (eg a
-      // renderer choking on an old format) often only throw once their item
-      // gets a frame, not during the load itself:
-      await page.waitForTimeout(2_000);
+      // errors from the loaded rooms (eg a renderer choking on an old format)
+      // often only throw once their item gets a frame, not during the load
+      // itself - and every item is drawn every frame, so a single drawn frame
+      // of the restored room has already exercised all of them:
+      await waitForAnyRoomToRender(page);
       if ((await page.locator('[data-dialog-id="errorCaught"]').count()) > 0) {
         const errorReport = await page
           .locator('[data-test-id="error-report"]')

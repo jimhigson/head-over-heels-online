@@ -1,16 +1,17 @@
 import { expect } from "@playwright/test";
 
 import { clickCheat } from "./testUtils/gameInteractions";
+import { waitForCurrentPlayable } from "./testUtils/gameStateQueries";
 import { osSlowness } from "./testUtils/infrastructure";
 import { formatProjectName } from "./testUtils/logging";
 import {
+  advanceUntilDialog,
   backToMainMenu,
   clickOriginalCampaign,
   clickPlayTheGame,
   exitCrownsDialog,
   navigateToSubmenu,
   startCampaignViaMenu,
-  waitForDialog,
 } from "./testUtils/menuNavigation";
 import { setupE2ePage } from "./testUtils/pageSetup";
 import { test } from "./testUtils/test";
@@ -26,10 +27,10 @@ test.describe("crowns dialog correctness", () => {
     page,
   }, testInfo) => {
     await startCampaignViaMenu(page, testInfo.project.name, "originalGame");
-    await page.waitForTimeout(1_000 * osSlowness);
+    await waitForCurrentPlayable(page);
     await clickCheat(page, "cheats-summon-crown-blacktooth");
 
-    await waitForDialog(page, "crowns");
+    await advanceUntilDialog(page, "crowns");
     await expect(
       page.locator(
         '[data-dialog-id="crowns"] [data-test-playing-sound="intro"]',
@@ -67,9 +68,9 @@ test.describe("crowns dialog correctness", () => {
       .locator('[data-dialog-id="crowns"]')
       .waitFor({ state: "detached" });
 
-    await page.waitForTimeout(1_000 * osSlowness);
+    await waitForCurrentPlayable(page);
     await clickCheat(page, "cheats-summon-crown-blacktooth");
-    await waitForDialog(page, "crowns");
+    await advanceUntilDialog(page, "crowns");
     await expect(
       page.locator(
         '[data-dialog-id="crowns"] [data-test-playing-sound="intro"]',
@@ -83,7 +84,7 @@ test.describe("crowns dialog correctness", () => {
     const formattedName = formatProjectName(testInfo.project.name);
 
     await startCampaignViaMenu(page, testInfo.project.name, "originalGame");
-    await page.waitForTimeout(1_000 * osSlowness);
+    await waitForCurrentPlayable(page);
 
     const planets = [
       "blacktooth",
@@ -97,9 +98,9 @@ test.describe("crowns dialog correctness", () => {
       await clickCheat(page, `cheats-summon-crown-${planet}`);
       if (planet === lastPlanet) {
         // the final crown stacks proclaimEmperor on top of crowns
-        await waitForDialog(page, "proclaimEmperor");
+        await advanceUntilDialog(page, "proclaimEmperor");
       } else {
-        await waitForDialog(page, "crowns");
+        await advanceUntilDialog(page, "crowns");
         await exitCrownsDialog(page, formattedName);
         await page
           .locator('[data-dialog-id="crowns"]')
@@ -112,7 +113,7 @@ test.describe("crowns dialog correctness", () => {
       .locator('[data-dialog-id="proclaimEmperor"]')
       .waitFor({ state: "detached" });
 
-    await waitForDialog(page, "crowns");
+    await advanceUntilDialog(page, "crowns");
     for (const planet of planets) {
       await expect(
         page.locator(`[data-test-id="crown-${planet}"]`),

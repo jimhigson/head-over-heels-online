@@ -1,5 +1,4 @@
-import { type Page, test } from "@playwright/test";
-import chalk from "chalk";
+import { test } from "@playwright/test";
 
 import {
   type JsonItemType,
@@ -7,7 +6,6 @@ import {
 } from "../../src/model/json/JsonItem";
 import { type Campaign } from "../../src/model/modelTypes";
 import { entries } from "../../src/utils/entries";
-import { elapsed, formatDuration } from "./logging";
 
 // CI is slower, needs more time, even on arm64 runners (fastest on github).
 // Windows is even slower (on the Github runners at least).
@@ -38,79 +36,6 @@ export const restrictToCameraRotationProjects = (): void => {
       `camera-rotation snapshots are not browser-specific; run only on ${projectNames.join(", ")}`,
     );
   });
-};
-
-export const retryWithRecovery = async <T>({
-  action,
-  recovery,
-  maxAttempts = 5,
-  logHeader,
-  actionDescription,
-  page,
-  screenshotPrefix,
-}: {
-  action: (attempt: number) => Promise<T>;
-  recovery?: (attempt: number) => Promise<void>;
-  maxAttempts?: number;
-  logHeader: string;
-  actionDescription: string;
-  page: Page;
-  screenshotPrefix: string;
-}): Promise<T> => {
-  for (let attempt = 0; attempt < maxAttempts; attempt++) {
-    console.log(
-      `${logHeader} ${elapsed()} Attempting ${actionDescription} (attempt ${attempt}/${maxAttempts - 1})...`,
-    );
-
-    const startTime = performance.now();
-    try {
-      const result = await action(attempt);
-      console.log(
-        `${logHeader} ${elapsed()} ... succeeded after`,
-        chalk.yellow(formatDuration(performance.now() - startTime)),
-      );
-      return result;
-    } catch (error) {
-      console.log(
-        `${logHeader} ${elapsed()} ${chalk.red(`Failed on attempt ${attempt}`)}: ${error}`,
-      );
-
-      // Take a screenshot on failure
-      const screenshotPath = `test-results/${screenshotPrefix}-attempt-${attempt}-failed.png`;
-      console.log(
-        `${logHeader} ${elapsed()} Saving screenshot to ${screenshotPath}`,
-      );
-      await page
-        .screenshot({
-          path: screenshotPath,
-          fullPage: false,
-        })
-        .catch((screenshotError) => {
-          console.log(
-            `${logHeader} ${elapsed()} Failed to save screenshot: ${screenshotError}`,
-          );
-        });
-
-      if (attempt < maxAttempts - 1) {
-        await page.waitForTimeout(500 * osSlowness);
-        if (recovery) {
-          await recovery(attempt);
-        }
-      } else {
-        const errorDialogText = await page
-          .locator('[data-test-id="error-report"]')
-          .textContent()
-          .catch(() => undefined);
-        throw new Error(
-          `Failed ${actionDescription} after ${maxAttempts} attempts: ${error}${
-            errorDialogText ? `\nin-game error dialog:\n${errorDialogText}` : ""
-          }`,
-        );
-      }
-    }
-  }
-
-  throw new Error(`Failed ${actionDescription} after ${maxAttempts} attempts`);
 };
 
 /** Resolves which room IDs to include based on filter parameters. */

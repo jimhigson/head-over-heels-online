@@ -175,17 +175,6 @@ and we trust that to pre-load in the service worker for us, so the actual game e
  * do not use bare `PropsWithChildren` — its default type param is `unknown`, which silently widens props. If a component takes no props beyond `children`, write `PropsWithChildren<EmptyObject>` (importing `EmptyObject` from `type-fest`). Otherwise pass the actual props type as the generic.
  * extract a named props type for components rather than writing the shape inline at the destructure site. Name it `<ComponentName>Props` and export it. Eg `type FooProps = { ... }; export const Foo = ({ x }: FooProps) => ...` — not `export const Foo = ({ x }: { x: number }) => ...`.
  * do not add an import, save, and then later add code  that uses it. The linter will remove the imports.
- * do not add comments that only explain things that are obvious from the line they are documenting. For example, do not do this - these comments are redundant - I would rather no docs than this useless docs:
- ```ts
- // load the file
- loadFile('path);
- ```
- ```ts
-   /**
-   * Sets the block size
-   */
-  set blockSize(value: number) {
-```
  * when using regex, use named captures where it makes the intent clearer (over array indexes in the match object)
  * use double-quotes for js strings unless templates or strings containing double quotes
  * use arrow functions when defining new functions, other than where this isn't possible, for example when making generators
@@ -325,12 +314,50 @@ throw new Error(
 * do not write partial refactors of types to convert back to an older, dead, format for convenience. Once we are committed to a refactor in types we have a strong preference to completing it, not implementing it in some places with bridges to places that are hacked to still use the old types. This includes not converting back to old formats so test assertions
 don't have to change, or so snapshots don't have to regenerate. Once a type is refactored away from, no echos of it should exist in the code
 
-* all instructions and explanations that can be presented as bullet points should be
-* all data that can be shown as a table should be
-* avoid pleasantries such as "hope that helps", telling me "that's a great observation" etc. To the point and factual such as "I did x" or "that's correct" is preferable
-* Matter-of-fact tone for errors. Never use "Uh oh," "Oh no," or "There seems to be a problem." State cause and fix. Bad: "Uh oh, the test is failing. There seems to be an issue..." Good: "Test fails at auth.spec.ts:42: expected 200, got 401. Cause: missing auth header. Fix: add Authorization: Bearer ${token} to the request."
-
 * prefer variable names that are on the longer side if doing so makes them more descriptive; where there is only one instance of a const, let, or param, it is usually best for the name to be different from the type. Eg: `const zDrawOrder: ZDrawOrder` NOT: `const order: ZDrawOrder`. When reading from a collection, prefer the single version of the collection's name, ie `for( let shadowSprite of shadowSprites)` NOT: `for( let sprite of shadowSprites)`
+
+### Comments 
+ * do not add comments that only explain things that are obvious from the line they are documenting. For example, do not do this - these comments are redundant - I would rather no docs than this useless docs:
+ ```ts
+ // load the file
+ loadFile('path);
+ ```
+ ```ts
+   /**
+   * Sets the block size
+   */
+  set blockSize(value: number) {
+```
+ * no single comment of more than 15 words is allowed. This is a sign that too much is being
+ documented in one place.
+ * comment on the single line that it applies to, placed precisely: eg: DO THIS:
+```ts
+// heaviness depends on material
+const isHeavy = (...)
+if( isHeavy ) {
+    // block heavy so moves slowly
+    // ...
+} else {
+    // light, move quickly
+    // ...
+}
+```
+
+ do NOT write like this:
+
+ ```ts
+// heaviness depends on material
+// heavy blocks move slowly
+// light blocks move quickly
+const isHeavy = (...)  
+if( isHeavy ) {
+  // ...
+} else {
+  // ...
+}
+```
+ * comments should never explain implementation details of other code. All comments should treat all
+ other code is a black box with only its public interface known
 
 ### No preamble, no recap, no closing pleasantries
 
@@ -339,6 +366,28 @@ Forbidden openers: "Great question," "Let me...", "I'll...", "Sure!", "Looking a
 Forbidden closers: "Let me know if you need anything else," "Hope this helps," "Happy to clarify," "Feel free to ask."
 
 Start with the answer. End when the answer is done.
+
+### Response length
+
+Notice that conversations need to happen in many short messages, not short questions with essays as a response. Any response over 2 paragraphs is banned. One sentence responses are ALWAYS preferable to two - assume I will ask for clarification when I want it.
+
+Data presented in a table is ok, of unlimited size, but don't force non-tabular data into a table to breask this limit
+
+Always say less and let me ask for more, never give more up-front.
+
+Bullet points of upt ot 10 words each are preferable to bulky prose
+
+* shorter answers are always preferable. One sentence is great, two are ok, three is acceptable but a bit much. If I ask a one sentence question, I'm not looking for several paragraphs in reply unless I'm asking to be detailed.
+* ~5 one-sentence bullet points (up to 10 words each) is a great response message, use that whenever possible
+
+* give short responses to short questions - anything that can be said in one sentence is preferable, follow-up and additional detail is better asked for than given up-front
+
+* there is very rarely any response that betters a one-sentence response, unless the user asked for "in detail" or "in depth", Exceptions exist for very complex questions, but more than 3 sentences in response is almost always a mistake. The user will ask for more detailed follow-up if they want it, do not give large text up-front. One word responses are GREAT, where suitable, ie a yes/no question.
+
+* all instructions and explanations that can be presented as bullet points should be
+* all data that can be shown as a table should be
+* avoid pleasantries such as "hope that helps", telling me "that's a great observation" etc. To the point and factual such as "I did x" or "that's correct" is preferable
+* Matter-of-fact tone for errors. Never use "Uh oh," "Oh no," or "There seems to be a problem." State cause and fix. Bad: "Uh oh, the test is failing. There seems to be an issue..." Good: "Test fails at auth.spec.ts:42: expected 200, got 401. Cause: missing auth header. Fix: add Authorization: Bearer ${token} to the request."
 
 ### No guessing
 
@@ -382,7 +431,17 @@ Never padd off a test as 'flaky' as an excuse - a 'flaky' test is a broken test.
 
  * screenshot specs freeze physics by calling `setZeroGameSpeed` as soon as the game api exists (while the crowns dialog still covers the game, before any navigation), then hash-navigate into the room being captured - so it is entered with nothing having moved and the capture is deterministic.
 
- * all snapshots are created to date on macos, but match close enough on runners on various OSes in github runners; text rendering differences are the main source of pixel difference on screenshots with html content, on screenshots with webgl content only the diffs are much tighter
+ * all snapshots are created to date on macos, but match within tolerance on github runners. 
+ WebGL rendered content has zero or near-zero pixel differences allowed. Rendered html has a 
+ higher tolerance due to text rendering differences. However, in HTML content, text rendering 
+ is still expected to be deterministic - a test that breaks due to pixel rendering of fonts is 
+ STILL broken, and this STILL should be deterministic - new failures on the same github container 
+ image almost certainly are new bugs, do NOT dismiss as "just pixel rendering differences" - 
+ this should be investigated like any other bug. If the VR test passed previously on the same 
+ container, but then fails, even if it is only font rendering differences, that is a failure of 
+ determinism, since the environment provided by the container should be identical. Browser or OS 
+ updates in github runners are very rare, but an acceptable explanation if they can be proven to 
+ be the case.
 
 
 ## Vite
@@ -409,7 +468,7 @@ No not use `npx`, use `pnpm`. Do not call `pnpm vitest` directly, call `pnpm che
 * **verifying rendering: prefer inspecting the Pixi tree over reading screenshots.** A screenshot is one useful tool, but an LLM agent's ability to tell exactly which sprite/frame/texture is on screen from a screenshot is unreliable (frames can look nearly identical). When the question is "which texture/tile/frame is being drawn", "is this item in the tree", "what is its position/tint/visibility", walk `window.__PIXI_APP__.stage` (or the specific container) and read the actual `label`/`texture`/`textureId`/`position`/`visible` - that is ground truth, not a visual guess. Reach for a screenshot only for holistic "does it look right overall" checks, and even then confirm specifics against the tree. The same applies to derived render decisions (eg which walls the see-through rule fired on): dump the predicate/graph output, don't eyeball the pixels.
 * the redux store is only put on `window._e2e_store` (and the game api on `window._e2e_gamePageGameAi`, pixi app on `window.__PIXI_APP__`) when built in **visual-regression mode** - eg `pnpm exec vite build --mode visual-regression` then `pnpm exec vite preview` (a normal `pnpm build:game` / dev server does NOT expose them). See `import.meta.env.MODE === "visual-regression"` in `store.ts`/`gameMain.ts`.
 * to set game/debug state from automation, dispatch plain actions to `window._e2e_store` (eg `userSettings/setShowBoundingBoxType` with `{ itemType, value: true }`).
-* **visual-regression builds log every non-zero physics advance** - the main loop prints `[game-speed] physics advanced <deltaMS>ms (elapsed <elapsedMS>ms × gameSpeed <n>)` whenever game time moves. Screenshots are captured with the world frozen at game speed zero, so any such line is either a deliberate `__e2e_fastForwardMs` jump or the explanation for a capture that differs from its baseline - read them first when a snapshot shows an item in an unexpected position.
+* **visual-regression builds log every non-zero physics advance** - the main loop prints `[game-speed] physics advanced <deltaMS>ms (elapsed <elapsedMS>ms × gameSpeed <n>)` whenever game time moves. Screenshots are captured with the world frozen at game speed zero, so any such line is either a deliberate `__e2e_advanceTime` jump or the explanation for a capture that differs from its baseline - read them first when a snapshot shows an item in an unexpected position.
 * **the Debug spritesheet: use this when debugging rendering issues** (sprite/shadow placement, alignment, which sprite is drawn where). Every sprite renders flattened to a per-sprite block colour with its texture id written in its centre in a 3×5 pixel font; floors are pure white (so shadows land visibly); playables/characters are their whole frame rectangle; shadows render as normal shadow art. It is an ordinary committed spritesheet image (`gfx/spritesDebug.webp`, sharing BlockStack's frame layout - see `debugSpritesheetMeta`) loaded like any other sheet; since its meta declares no swops, no variants are built from it (variants exist per sheet only where the meta declares their swops), so what you see on screen is exactly the sheet's pixels. Enable via the cheats panel's *debug rendering* row ("sprites:" select, which offers all sprite options including "Debug"), by cycling with F10 (Debug joins the cycle only while cheats are on - see `cycleSpritesOptionThunk`), or from automation: `_e2e_store.dispatch({ type: "userSettings/setSpritesOption", payload: { name: "Debug", uncolourised: false } })`. It is cheats-only (`debug` on its meta), deliberately excluded from the normal display menus.
 * when fixing bugs, ALWAYS offer to reproduce in-game first, either in tests or by driving the browser, THEN fix it. If validated by tests, validate right away, if that is not possible OFFER to validate in a real browser
 * the bounding-box (and pointer-debug) item-renderer decorators are only registered while the **Cheats panel is mounted** (`useRegisterDecorateItemRenderers` lives inside the `Cheats` component, rendered when `debug.cheatsOn` is true, ie via `?cheats=1`). Setting `showBoundingBoxTypes` alone does nothing if the panel never mounted. `LazyCheats` mounts async, and the decorator only wraps item renderers created *after* it registers - so wait for the panel to mount, then dispatch, then allow time for items to be (re)created (light-beam renderers recast frequently, so they pick up the decorator on their own).
@@ -429,9 +488,6 @@ No not use `npx`, use `pnpm`. Do not call `pnpm vitest` directly, call `pnpm che
 
 ## Attitude
 
-* shorter answers are always preferable. One sentence is great, two are ok, three is acceptable but a bit much. If I ask a one sentence question, I'm not looking for several paragraphs in reply unless I'm asking to be detailed.
-* ~5 one-sentence bullet points (up to 10 words each) is a great response message, use that whenever possible
-
 * If I make mistakes, or I suggest something that sounds incorrect, for example, I give a reason for something
 failing that seems unlikely, please point this out frankly rather than trying to be too agreeable.
 
@@ -448,10 +504,6 @@ failing that seems unlikely, please point this out frankly rather than trying to
 * Do not claim to have fixed something or say something like "this works now" if you cannot possibly know that it has worked. Ie, if you can't see the visual output of a browser, do not claim that an image is "perfect" - this is annoying and untrue. Say only what you can actually verify.
 
 * do not assume questions are statements of value. If I say 'why are you doing x', do not assume I'm saying that x is a poor choice, simply and only answer what was asked.
-
-* give short responses to short questions - anything that can be said in one sentence is preferable, follow-up and additional detail is better asked for than given up-front
-
-* there is very rarely any response that betters a one-sentence response, unless the user asked for "in detail" or "in depth", Exceptions exist for very complex questions, but more than 3 sentences in response is almost always a mistake. The user will ask for more detailed follow-up if they want it, do not give large text up-front. One word responses are GREAT, where suitable, ie a yes/no question.
 
 * NEVER do work in response to a question, this is ALWAYS a request for a response, NEVER a request to do work. NEVER do work in this case, even if it sounds like it could be a request. If a message contains both an instruction and a question, NEVER do work, this is to be taken as a question overall.
 
