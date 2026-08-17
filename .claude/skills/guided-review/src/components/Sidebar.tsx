@@ -1,3 +1,4 @@
+import { isImagePath } from "../imagePaths.ts";
 import { notesStore } from "../notes.ts";
 import { filesInGroup, groups } from "../payload.ts";
 import { type ReadingState } from "../readingState.ts";
@@ -68,6 +69,10 @@ export const Sidebar = ({ state }: SidebarProps) => {
                           title={file.path}
                           onClick={() => state.goTo(file)}
                         >
+                          <span
+                            class={`file-icon ${isImagePath(file.path) ? "file-icon-image" : "file-icon-text"}`}
+                            aria-hidden="true"
+                          />
                           <span class="tree-base">{basename(file.path)}</span>
                           <span class="tree-dir">
                             <span>{dirname(file.path)}</span>

@@ -1,10 +1,12 @@
 import { render } from "preact";
 
 import { App } from "./components/App.tsx";
+import { imageStatsStore, startImageStatsSweep } from "./imageDiff/imageStats.ts";
 import { liveEditors } from "./liveEditors.ts";
 import { followPageTheme } from "./monacoLoader.ts";
 import { loadNotes, messagesOf, type Note, noteAt, type Notes, notesStore } from "./notes.ts";
-import { meta, server } from "./payload.ts";
+import { activeReviewIsEditable, meta, reviewId, selectReview, server } from "./payload.ts";
+import { setReviewSwitcher } from "./reviewSwitch.ts";
 import { toast } from "./stores.ts";
 import {
   adoptTicks,
@@ -39,12 +41,15 @@ const agentSaid = (state: ServerState) =>
 
 let missedPolls = 0;
 
+const reviewQuery = (): string => `?review=${encodeURIComponent(reviewId)}`;
+
 const pollState = async (): Promise<void> => {
   if (server === undefined) {
     return;
   }
-  const paths = [...liveEditors.keys()];
-  const response = await fetch("/state", {
+  // file-content sync only applies to the review the served checkout can edit
+  const paths = activeReviewIsEditable() ? [...liveEditors.keys()] : [];
+  const response = await fetch(`/state${reviewQuery()}`, {
     method: "POST",
     headers: { "Content-Type": "application/json", "X-Review-Token": server.token },
     body: JSON.stringify({ paths }),
@@ -87,7 +92,7 @@ const pollState = async (): Promise<void> => {
   for (const [path, file] of Object.entries(state.files)) {
     const editor = liveEditors.get(path);
     if (editor !== undefined && file.sha !== editor.sha()) {
-      const fresh = await fetch("/file", {
+      const fresh = await fetch(`/file${reviewQuery()}`, {
         method: "POST",
         headers: { "Content-Type": "application/json", "X-Review-Token": server.token },
         body: JSON.stringify({ path }),
@@ -102,20 +107,48 @@ const pollState = async (): Promise<void> => {
   }
 };
 
-const main = async (): Promise<void> => {
+const mountApp = (root: HTMLElement, initialTicks: Set<string>): void => {
   document.title = meta.title;
+  // keyed by review: switching remounts the whole tree, so every component
+  // re-reads payload.ts's live bindings
+  render(<App key={reviewId} initialTicks={initialTicks} />, root);
+};
 
+const main = async (): Promise<void> => {
   followPageTheme();
-
-  await loadNotes();
-  const initialTicks = await loadTicks();
-  setLastFromServer(ticksSignature(initialTicks));
 
   const root = document.getElementById("app");
   if (root === null) {
     throw new Error("the page has no #app to render into");
   }
-  render(<App initialTicks={initialTicks} />, root);
+
+  const switchTo = async (number: number): Promise<void> => {
+    const dirty = [...liveEditors.values()].some((editor) => editor.isDirty());
+    if (
+      dirty &&
+      !window.confirm("This review has unsaved edits, lost on switching. Switch anyway?")
+    ) {
+      return;
+    }
+    selectReview(number);
+    imageStatsStore.set({});
+    await loadNotes();
+    const ticks = await loadTicks();
+    setLastFromServer(ticksSignature(ticks));
+    mountApp(root, ticks);
+    startImageStatsSweep();
+  };
+  setReviewSwitcher((number) => {
+    switchTo(number);
+  });
+
+  await loadNotes();
+  const initialTicks = await loadTicks();
+  setLastFromServer(ticksSignature(initialTicks));
+  mountApp(root, initialTicks);
+
+  // the %-of-pixels summaries fill in behind the first paint
+  startImageStatsSweep();
 
   if (server !== undefined) {
     setInterval(pollState, 2_000);

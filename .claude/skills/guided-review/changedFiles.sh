@@ -1,5 +1,7 @@
 #!/usr/bin/env bash
-# List the files in a review's scope as `STATUS<TAB>PATH`, binaries excluded.
+# List the files in a review's scope as `STATUS<TAB>PATH`, binaries excluded -
+# except raster images (png/jpg/gif/webp/avif), which build.ts can diff
+# visually and so stay in the list.
 #
 #   changedFiles.sh worktree
 #   changedFiles.sh commit <sha>
@@ -11,7 +13,7 @@ set -euo pipefail
 
 mode="${1:?usage: changedFiles.sh worktree|commit <sha>|pr <base> <head>}"
 
-binary_extensions='\.(png|jpe?g|gif|webp|avif|ico|icns|woff2?|ttf|otf|eot|mp3|opus|ogg|wav|m4a|mp4|webm|mov|pdf|zip|gz|br|bin|wasm)$'
+binary_extensions='\.(ico|icns|woff2?|ttf|otf|eot|mp3|opus|ogg|wav|m4a|mp4|webm|mov|pdf|zip|gz|br|bin|wasm)$'
 
 case "$mode" in
   worktree)

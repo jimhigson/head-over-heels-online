@@ -1,11 +1,10 @@
-/* Monaco comes from a cdn, and is allowed not to arrive. Opened as a file with
-   no network, or published where a csp blocks external scripts, the loader
-   rejects and every diff renders through the plain patch renderer instead. */
+/* Monaco comes from the review server's own monaco-editor install (/vs) -
+   nowhere else. It is a dependency, not an enhancement: served with the
+   install missing is a server startup failure, and a page opened without a
+   server has no code diffs and says so. Works fully offline. */
 
 import { type MonacoApi } from "./monacoApi.ts";
 
-const monacoVersion = "0.52.2";
-const monacoBase = `https://cdn.jsdelivr.net/npm/monaco-editor@${monacoVersion}/min/vs`;
 const monacoTimeoutMs = 6_000;
 
 const languages: Record<string, string> = {
@@ -87,36 +86,36 @@ const quietenLanguageServices = (monaco: MonacoApi): void => {
   }
 };
 
-/** resolves to the monaco module, or undefined when it can't be had */
-let monacoPromise: Promise<MonacoApi | undefined> | undefined;
+let monacoPromise: Promise<MonacoApi> | undefined;
 
-export const loadMonaco = (): Promise<MonacoApi | undefined> => {
-  if (monacoPromise !== undefined) {
-    return monacoPromise;
-  }
-  monacoPromise = new Promise<MonacoApi>((resolve, reject) => {
-    // cross-origin workers have to be bootstrapped through a blob that imports
-    // the real worker from the cdn. baseUrl is the directory *above* vs/, since
-    // the worker resolves module ids that already start with vs/
+const loadFromBase = (base: string): Promise<MonacoApi> =>
+  new Promise<MonacoApi>((resolve, reject) => {
+    // workers have to be bootstrapped through a blob that imports the real
+    // worker from its base. baseUrl is the directory *above* vs/, since the
+    // worker resolves module ids that already start with vs/
     window.MonacoEnvironment = {
       getWorkerUrl: () =>
         URL.createObjectURL(
           new Blob(
             [
-              `self.MonacoEnvironment = { baseUrl: "${monacoBase.replace(/\/vs$/, "/")}" };\n` +
-                `importScripts("${monacoBase}/base/worker/workerMain.js");`,
+              `self.MonacoEnvironment = { baseUrl: "${base.replace(/\/vs$/, "/")}" };\n` +
+                `importScripts("${base}/base/worker/workerMain.js");`,
             ],
             { type: "text/javascript" },
           ),
         ),
     };
 
-    const timeout = setTimeout(() => reject(new Error("monaco timed out")), monacoTimeoutMs);
     const script = document.createElement("script");
-    script.src = `${monacoBase}/loader.js`;
+    const timeout = setTimeout(() => {
+      script.remove();
+      reject(new Error(`monaco timed out from ${base}`));
+    }, monacoTimeoutMs);
+    script.src = `${base}/loader.js`;
     script.addEventListener("error", () => {
       clearTimeout(timeout);
-      reject(new Error("monaco could not be loaded"));
+      script.remove();
+      reject(new Error(`monaco could not be loaded from ${base}`));
     });
     script.addEventListener("load", () => {
       try {
@@ -124,7 +123,7 @@ export const loadMonaco = (): Promise<MonacoApi | undefined> => {
         if (loader === undefined) {
           throw new Error("monaco's loader did not define require");
         }
-        loader.config({ paths: { vs: monacoBase } });
+        loader.config({ paths: { vs: base } });
         loader(["vs/editor/editor.main"], () => {
           clearTimeout(timeout);
           const {monaco} = window;
@@ -143,10 +142,23 @@ export const loadMonaco = (): Promise<MonacoApi | undefined> => {
       }
     });
     document.head.append(script);
-  }).catch((error: Error) => {
-    console.warn("falling back to the plain diff renderer:", error.message);
-    return undefined;
   });
+
+/** rejects when monaco can't be had - a failure to show, never to paper over */
+export const loadMonaco = (): Promise<MonacoApi> => {
+  if (monacoPromise !== undefined) {
+    return monacoPromise;
+  }
+  if (window.__reviewServer === undefined) {
+    monacoPromise = Promise.reject(
+      new Error("code diffs need the review server - open this review through serve.ts"),
+    );
+  } else {
+    monacoPromise = loadFromBase(new URL("/vs", location.href).toString());
+  }
+  // the memoised rejection is consumed by many editors; without a standing
+  // handler every one after the first would log an unhandled-rejection error
+  monacoPromise.catch(() => {});
   return monacoPromise;
 };
 

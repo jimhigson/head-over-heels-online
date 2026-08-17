@@ -8,6 +8,7 @@ import {
   removeNote,
   sayOnNote,
 } from "../notes.ts";
+import { offlineStore } from "../offline.ts";
 import { useStore } from "../stores.ts";
 
 /** what has been typed but not sent, so a redraw mid-sentence loses nothing */
@@ -34,6 +35,7 @@ export type NoteZoneProps = {
  */
 export const NoteZone = ({ path, line, done }: NoteZoneProps) => {
   useStore(notesStore);
+  const offline = useStore(offlineStore);
   const messages = messagesOf(noteAt(path, line));
   const draftKey = `${path}:${line}`;
   const [draft, setDraft] = useState(drafts.get(draftKey) ?? "");
@@ -87,16 +89,19 @@ export const NoteZone = ({ path, line, done }: NoteZoneProps) => {
               {message.text}
             </p>
           ))}
-          {awaitingReply(messages) && (
-            <div class="note-pending">
-              <span class="dots">
-                <i />
-                <i />
-                <i />
-              </span>
-              <span>the agent is on it — the reply lands here</span>
-            </div>
-          )}
+          {awaitingReply(messages) &&
+            (offline ?
+              <div class="note-pending">
+                <span>saved locally — an agent will pick this up later</span>
+              </div>
+            : <div class="note-pending">
+                <span class="dots">
+                  <i />
+                  <i />
+                  <i />
+                </span>
+                <span>the agent is on it — the reply lands here</span>
+              </div>)}
         </div>
       )}
 
@@ -105,9 +110,10 @@ export const NoteZone = ({ path, line, done }: NoteZoneProps) => {
         rows={2}
         value={draft}
         placeholder={
-          messages.length === 0 ?
-            `note on line ${line} — ask for a change, or say what you think`
-          : "reply…"
+          messages.length > 0 ? "reply…"
+            // line 0 is a whole-file note: images have no lines to note on
+          : line === 0 ? "note on this file — ask for a change, or say what you think"
+          : `note on line ${line} — ask for a change, or say what you think`
         }
         onInput={(event) => type(event.currentTarget.value)}
         onKeyDown={(event) => {
@@ -142,7 +148,9 @@ export const NoteZone = ({ path, line, done }: NoteZoneProps) => {
             Delete
           </button>
         }
-        <span class="note-stamp">line {line} · ⌘↵ sends</span>
+        <span class="note-stamp">
+          {line === 0 ? "whole file" : `line ${line}`} · ⌘↵ sends
+        </span>
       </div>
     </div>
   );

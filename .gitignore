@@ -35,10 +35,6 @@ test-results/
 
 build-stats*.html
 
-# scratch output of scripts/snapshot-diff-report/generate-report.sh
-snapshot-diff-report.html
-snapshot-diff-viewer-artifact.html
-
 src-tauri/gen
 src-tauri/target
 .gitnexus
