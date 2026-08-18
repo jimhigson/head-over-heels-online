@@ -7,26 +7,31 @@ import { attachImageGestures, type ImageGestures } from "./imageGestures.ts";
 import { type ChooserSide, VersionChooser } from "./VersionChooser.tsx";
 
 /** how the chosen pair of versions is put on screen */
-type ImageMode = "diff" | "from" | "swipe" | "to";
+type ImageMode = "diff" | "flick" | "from" | "swipe" | "to";
 
-const imageModes = ["from", "to", "diff", "swipe"] as const;
+const imageModes = ["from", "to", "diff", "swipe", "flick"] as const;
 
 /** modes needing two distinct versions to show anything */
-const isPairMode = (mode: ImageMode): boolean => mode === "diff" || mode === "swipe";
+const isPairMode = (mode: ImageMode): boolean =>
+  mode === "diff" || mode === "swipe" || mode === "flick";
+
+/** how fast flick mode alternates between the two versions */
+const flickIntervalMs = 600;
 
 export type ImageDiffProps = { path: string; row: ImageRow };
 
 /**
  * One image file's comparison panel: the version chooser, the mode strip
- * (from | to | diff | swipe, plus the diff overlay), and the pan/zoom stage.
- * The diff itself is computed here in the page, so any pair of versions can be
- * compared, not only the pair the review was built around.
+ * (from | to | diff | swipe | flick, plus the diff overlay), and the pan/zoom
+ * stage. The diff itself is computed here in the page, so any pair of
+ * versions can be compared, not only the pair the review was built around.
  */
 export const ImageDiff = ({ path, row }: ImageDiffProps) => {
   const [fromIndex, setFromIndex] = useState(row.from);
   const [toIndex, setToIndex] = useState(row.to);
   const [mode, setMode] = useState<ImageMode>("to");
   const [overlay, setOverlay] = useState(false);
+  const [flickShowing, setFlickShowing] = useState<ChooserSide>("to");
   const [diffState, setDiffState] = useState<
     { key: string; render: ImageDiffRender } | undefined
   >(undefined);
@@ -98,6 +103,19 @@ export const ImageDiff = ({ path, row }: ImageDiffProps) => {
     if (fromLayer !== null) {
       fromLayer.style.clipPath = "";
     }
+  }, [mode]);
+
+  // flick alternates the two layers on a timer rather than showing both at
+  // once, so a real difference reads as motion instead of a static overlay
+  useEffect(() => {
+    if (mode !== "flick") {
+      return;
+    }
+    setFlickShowing("to");
+    const timer = setInterval(() => {
+      setFlickShowing((showing) => (showing === "to" ? "from" : "to"));
+    }, flickIntervalMs);
+    return () => clearInterval(timer);
   }, [mode]);
 
   const fromBlob = fromVersion?.blob;
@@ -174,14 +192,18 @@ export const ImageDiff = ({ path, row }: ImageDiffProps) => {
     }
   };
 
-  const showFromLayer = mode === "from" || mode === "swipe";
-  const showToLayer = mode === "to" || mode === "swipe";
+  const showFromLayer =
+    mode === "from" || mode === "swipe" || (mode === "flick" && flickShowing === "from");
+  const showToLayer =
+    mode === "to" || mode === "swipe" || (mode === "flick" && flickShowing === "to");
   const showDiffLayer =
     diffReady && (mode === "diff" || (overlay && overlayApplies && fromIndex !== toIndex));
 
   const readout =
     diffReady && (mode === "diff" || (overlay && overlayApplies)) ?
       `${diffState.render.count.toLocaleString("en-GB")}px · ${((diffState.render.count / diffState.render.total) * 100).toFixed(diffState.render.count === 0 ? 0 : 2)}%`
+    : mode === "flick" ?
+      (flickShowing === "to" ? toVersion.label : fromVersion.label)
     : "";
 
   return (
@@ -284,6 +306,7 @@ export const ImageDiff = ({ path, row }: ImageDiffProps) => {
       <p class="img-hint">
         drag to pan · pinch or ctrl-scroll to zoom · double-tap to fit
         {mode === "swipe" ? " · drag the line to sweep" : ""}
+        {mode === "flick" ? ` · flicking from/to every ${flickIntervalMs}ms` : ""}
       </p>
     </div>
   );

@@ -673,13 +673,16 @@ sizes. Body text stays in a system stack; paths and diffs in
   version chooser (one column per captured version — production/main/branch
   etc — radios above the labels pick the "from" side, below pick "to"; a
   version can't be both sides at once; byte-identical columns are greyed with
-  a tooltip), a ⇄ swap, the mode strip **from | to | diff | swipe**, an
-  **overlay** checkbox that composites the magenta diff over the single
+  a tooltip), a ⇄ swap, the mode strip **from | to | diff | swipe | flick**,
+  an **overlay** checkbox that composites the magenta diff over the single
   version showing (from/to only — diff mode IS the overlay and swipe already
   shows the pair, so it disables there), **zoom diff** (frames the diff's bounding box),
-  **fit**, and a px/% readout. Diffs are computed in the page via canvas —
-  magenta on transparent over the union extent, out-of-bounds pixels counted
-  as differing — and memoised per pair.
+  **fit**, and a px/% readout (the version label currently on screen, in
+  flick mode). **Flick** alternates the from/to layers every 600ms instead of
+  showing both at once — a real difference reads as motion, easier to catch
+  than a static overlay for small or subtle diffs. Diffs are computed in the
+  page via canvas — magenta on transparent over the union extent,
+  out-of-bounds pixels counted as differing — and memoised per pair.
 - **The viewer's stage pans and zooms freely.** Pointer drag pans (in swipe
   mode a drag starting within 24px of the divider moves the divider instead —
   anywhere else still pans); two-finger pinch zooms; double-tap resets to fit;
