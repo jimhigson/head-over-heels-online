@@ -18,7 +18,7 @@
 .file-icon {
   font-family: "bootstrap-icons";
   font-style: normal;
-  font-size: 0.78rem;
+  font-size: 1rem;
   line-height: 1;
   color: var(--ink-faint);
   flex: none;
@@ -241,7 +241,7 @@ header.top {
 
 button.control {
   font-family: var(--body);
-  font-size: 0.78rem;
+  font-size: 1rem;
   color: var(--ink-soft);
   background: transparent;
   border: 1px solid var(--rule);
@@ -259,7 +259,7 @@ label.control.select {
   align-items: center;
   gap: 0.35rem;
   font-family: var(--body);
-  font-size: 0.78rem;
+  font-size: 1rem;
   color: var(--ink-soft);
   border: 1px solid var(--rule);
   padding: 0.3rem 0.4rem 0.3rem 0.55rem;
@@ -271,7 +271,7 @@ label.control.select:focus-within { outline: 2px solid var(--accent); outline-of
 
 label.control.select select {
   font-family: var(--body);
-  font-size: 0.78rem;
+  font-size: 1rem;
   color: inherit;
   background: transparent;
   border: 0;
@@ -330,16 +330,31 @@ label.control.select select:focus-visible { outline: none; }
 
 .split:focus-visible { outline: none; }
 
+.sidebar-head {
+  display: flex;
+  flex-direction: column;
+  align-items: stretch;
+  gap: 0.5rem;
+  margin: 0 0 0.6rem;
+}
+
 .sidebar-title {
   font-family: var(--display);
   font-size: 16px;
   color: var(--ink-faint);
-  margin: 0 0 0.6rem;
+  margin: 0;
 }
 
-ol.tree, ul.tree-files { list-style: none; margin: 0; padding: 0; }
+.sidebar-head label.control.select { justify-content: space-between; }
 
-.tree { font-size: 0.84rem; }
+ol.tree, ul.tree-files, ul.fs-tree, ul.fs-dir-children, ul.tree-flat {
+  list-style: none;
+  margin: 0;
+  padding: 0;
+}
+
+.tree { font-size: 1rem; }
+.tree-flat > .tree-file + .tree-file { margin-top: 0.05rem; }
 .tree-group + .tree-group { margin-top: 0.55rem; }
 
 .tree-group-head {
@@ -353,19 +368,12 @@ ol.tree, ul.tree-files { list-style: none; margin: 0; padding: 0; }
   z-index: 1;
 }
 
-.tree-step {
-  font-family: var(--display);
-  font-size: 16px;
-  color: var(--accent);
-  line-height: 1;
-  flex: none;
-}
-
 button.tree-group-title {
   flex: 1 1 auto;
   min-width: 0;
-  font: inherit;
-  font-weight: 650;
+  font-family: var(--display);
+  font-size: 1rem;
+  letter-spacing: 0.01em;
   color: var(--ink);
   background: none;
   border: 0;
@@ -381,7 +389,7 @@ button.tree-group-title:hover { color: var(--accent); }
 
 .tree-count {
   flex: none;
-  font-size: 0.7rem;
+  font-size: 1rem;
   color: var(--ink-faint);
   font-variant-numeric: tabular-nums;
 }
@@ -425,7 +433,7 @@ button.tree-file-link:focus-visible { outline: 2px solid var(--accent); outline-
 
 .tree-base {
   font-family: var(--mono);
-  font-size: 0.76rem;
+  font-size: 1rem;
   white-space: nowrap;
   overflow: hidden;
   text-overflow: ellipsis;
@@ -434,7 +442,7 @@ button.tree-file-link:focus-visible { outline: 2px solid var(--accent); outline-
 }
 
 .tree-dir {
-  font-size: 0.68rem;
+  font-size: 1rem;
   color: var(--ink-faint);
   white-space: nowrap;
   overflow: hidden;
@@ -453,9 +461,62 @@ button.tree-file-link:focus-visible { outline: 2px solid var(--accent); outline-
 .tree-file.is-ticked { opacity: 0.5; }
 .tree-file.is-ticked .tree-base { text-decoration: line-through; }
 
+/* ---- fs tree -------------------------------------------------------------
+   the same files, nested by directory - an alternative to the guided order */
+
+.fs-tree > .fs-dir + .fs-dir,
+.fs-tree > .tree-file + .tree-file { margin-top: 0.05rem; }
+
+.fs-dir-head {
+  display: flex;
+  align-items: center;
+  gap: 0.35rem;
+  padding: 0.1rem 0.25rem;
+}
+
+button.fs-dir-toggle {
+  flex: 1 1 auto;
+  min-width: 0;
+  display: flex;
+  align-items: center;
+  gap: 0.3rem;
+  font: inherit;
+  background: none;
+  border: 0;
+  padding: 0;
+  text-align: left;
+  cursor: pointer;
+  color: var(--ink);
+}
+
+button.fs-dir-toggle:hover .fs-dir-name { color: var(--accent); }
+button.fs-dir-toggle:focus-visible { outline: 2px solid var(--accent); outline-offset: 1px; }
+
+.fs-dir-caret {
+  flex: none;
+  color: var(--ink-faint);
+  font-size: 1rem;
+  width: 0.9rem;
+}
+
+.fs-dir-name {
+  font-family: var(--mono);
+  font-size: 1rem;
+  font-weight: 650;
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+
+ul.fs-dir-children {
+  margin: 0.1rem 0 0.2rem 0.55rem;
+  padding-left: 0.5rem;
+  border-left: 1px solid var(--rule);
+}
+
 .note-count {
   flex: none;
-  font-size: 0.66rem;
+  font-size: 1rem;
   font-weight: 700;
   color: var(--accent);
   background: var(--accent-soft);
@@ -510,7 +571,7 @@ h1 {
   display: flex;
   flex-wrap: wrap;
   gap: 0.4rem 1.5rem;
-  font-size: 0.85rem;
+  font-size: 1rem;
   color: var(--ink-faint);
   margin: 0;
   padding: 0;
@@ -519,7 +580,7 @@ h1 {
 
 .facts code, .lede code, .note code, .blurb code {
   font-family: var(--mono);
-  font-size: 0.88em;
+  font-size: 1em;
   background: var(--accent-soft);
   color: var(--ink);
   padding: 0.05em 0.32em;
@@ -550,25 +611,15 @@ section.group {
 
 section.group.is-open > .group-head { border-bottom-color: var(--rule); }
 
-.step {
-  font-family: var(--display);
-  font-size: 16px;
-  color: var(--accent);
-  background: var(--accent-soft);
-  padding: 0.28rem 0.5rem 0.18rem;
-  line-height: 1;
-  flex: none;
-}
-
 .group-title {
-  font-weight: 620;
-  font-size: 1.06rem;
-  letter-spacing: -0.005em;
+  font-family: var(--display);
+  font-size: 18px;
+  letter-spacing: 0.01em;
   flex: 1;
 }
 
 .group-count {
-  font-size: 0.8rem;
+  font-size: 1rem;
   color: var(--ink-faint);
   font-variant-numeric: tabular-nums;
   flex: none;
@@ -576,7 +627,7 @@ section.group.is-open > .group-head { border-bottom-color: var(--rule); }
 
 button.caret {
   font-family: var(--body);
-  font-size: 0.7rem;
+  font-size: 1rem;
   color: var(--ink-faint);
   background: none;
   border: 0;
@@ -595,7 +646,7 @@ button.caret:focus-visible { outline: 2px solid var(--accent); outline-offset: 2
   padding-left: calc(16px + 1.85rem);
   max-width: 68ch;
   color: var(--ink-soft);
-  font-size: 0.94rem;
+  font-size: 1rem;
 }
 
 .rows { display: flex; flex-direction: column; }
@@ -627,7 +678,7 @@ button.caret:focus-visible { outline: 2px solid var(--accent); outline-offset: 2
 }
 
 .chip {
-  font-size: 0.66rem;
+  font-size: 1rem;
   font-weight: 700;
   letter-spacing: 0.06em;
   text-transform: uppercase;
@@ -640,9 +691,44 @@ button.caret:focus-visible { outline: 2px solid var(--accent); outline-offset: 2
 .chip-D { color: var(--del); background: var(--del-bg); }
 .chip-R { color: var(--accent); background: var(--accent-soft); }
 
+/* the contents tree has no room for a full word, so the chip shrinks to the
+   status letter plus a solid block for how much reading it costs - same font
+   as the full-word chip above, just boxed to a fixed width so every chip in
+   a column lines up */
+.chip.chip-small {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  gap: 1px;
+  font-size: 16px;
+  line-height: 1;
+  padding: 0;
+  width: 3.4ch;
+}
+
+/* the block: a sliver for a small change, a full block for a big one,
+   coloured for which direction - green for added, red for removed. An image
+   has no added/removed split, so its one block takes the t-shirt size
+   scale's own colour instead, plain for a quick look through the palette's
+   warmer tones, ending in the same red the diff view uses for removed lines */
+.chip-bar {
+  font-family: var(--mono);
+  font-style: normal;
+  line-height: 1;
+}
+
+.chip-bar-added { color: var(--add-edge); }
+.chip-bar-removed { color: var(--rm-edge); }
+
+.size-T { color: var(--ink-faint); }
+.size-S { color: var(--accent); }
+.size-M { color: var(--mod); }
+.size-L { color: var(--del); }
+.size-H { color: var(--rm-edge); }
+
 button.path {
   font-family: var(--mono);
-  font-size: 0.83rem;
+  font-size: 1rem;
   color: var(--ink);
   background: none;
   border: 0;
@@ -655,7 +741,7 @@ button.path {
 }
 
 a.github {
-  font-size: 0.72rem;
+  font-size: 1rem;
   color: var(--ink-faint);
   text-decoration: none;
   border-bottom: 1px solid transparent;
@@ -672,7 +758,7 @@ button.path.copied { color: var(--new); border-bottom-color: var(--new); }
 .row-stat {
   margin-left: auto;
   flex: none;
-  font-size: 0.74rem;
+  font-size: 1rem;
   font-variant-numeric: tabular-nums;
   white-space: nowrap;
 }
@@ -680,7 +766,7 @@ button.path.copied { color: var(--new); border-bottom-color: var(--new); }
 .note {
   margin: 0;
   max-width: 68ch;
-  font-size: 0.92rem;
+  font-size: 1rem;
   color: var(--ink-soft);
 }
 
@@ -691,7 +777,7 @@ button.diff-toggle {
   align-items: center;
   gap: 0.5rem;
   font-family: var(--body);
-  font-size: 0.78rem;
+  font-size: 1rem;
   font-weight: 600;
   color: var(--accent);
   background: var(--accent-soft);
@@ -701,7 +787,7 @@ button.diff-toggle {
   font-variant-numeric: tabular-nums;
 }
 
-button.diff-toggle::before { content: "▸"; font-size: 0.7rem; font-weight: 400; }
+button.diff-toggle::before { content: "▸"; font-size: 1rem; font-weight: 400; }
 button.diff-toggle[aria-expanded="true"]::before { content: "▾"; }
 button.diff-toggle:hover { border-color: var(--accent); }
 button.diff-toggle:focus-visible { outline: 2px solid var(--accent); outline-offset: 2px; }
@@ -727,7 +813,7 @@ button.diff-toggle:focus-visible { outline: 2px solid var(--accent); outline-off
   border-left-width: 3px;
   background: var(--del-bg);
   color: var(--ink);
-  font-size: 0.85rem;
+  font-size: 1rem;
 }
 
 .diff-missing {
@@ -735,11 +821,11 @@ button.diff-toggle:focus-visible { outline: 2px solid var(--accent); outline-off
   padding: 0.5rem 0.7rem;
   border: 1px dashed var(--rule);
   color: var(--ink-faint);
-  font-size: 0.85rem;
+  font-size: 1rem;
 }
 
 .offline-chip {
-  font-size: 0.7rem;
+  font-size: 1rem;
   font-weight: 700;
   letter-spacing: 0.05em;
   text-transform: uppercase;
@@ -754,7 +840,7 @@ button.diff-toggle:focus-visible { outline: 2px solid var(--accent); outline-off
   align-items: center;
   gap: 0.6rem;
   margin-top: 0.35rem;
-  font-size: 0.76rem;
+  font-size: 1rem;
   color: var(--ink-faint);
 }
 
@@ -765,7 +851,7 @@ button.diff-toggle:focus-visible { outline: 2px solid var(--accent); outline-off
 
 button.save {
   font-family: var(--body);
-  font-size: 0.76rem;
+  font-size: 1rem;
   color: var(--accent);
   background: var(--accent-soft);
   border: 1px solid transparent;
@@ -795,7 +881,7 @@ button.save:focus-visible { outline: 2px solid var(--accent); outline-offset: 2p
 
 .note-zone textarea {
   font-family: var(--body);
-  font-size: 0.85rem;
+  font-size: 1rem;
   line-height: 1.45;
   color: var(--ink);
   background: var(--card);
@@ -811,12 +897,12 @@ button.save:focus-visible { outline: 2px solid var(--accent); outline-offset: 2p
   display: flex;
   align-items: center;
   gap: 0.4rem;
-  font-size: 0.72rem;
+  font-size: 1rem;
 }
 
 .note-zone .note-stamp {
   margin-left: auto;
-  font-size: 0.7rem;
+  font-size: 1rem;
   color: var(--ink-faint);
 }
 
@@ -830,7 +916,7 @@ button.save:focus-visible { outline: 2px solid var(--accent); outline-offset: 2p
 
 .note-message {
   margin: 0;
-  font-size: 0.86rem;
+  font-size: 1rem;
   line-height: 1.4;
   color: var(--ink);
 }
@@ -839,7 +925,7 @@ button.save:focus-visible { outline: 2px solid var(--accent); outline-offset: 2p
   display: inline-block;
   min-width: 3.4rem;
   margin-right: 0.4rem;
-  font-size: 0.68rem;
+  font-size: 1rem;
   font-weight: 700;
   letter-spacing: 0.05em;
   text-transform: uppercase;
@@ -853,7 +939,7 @@ button.save:focus-visible { outline: 2px solid var(--accent); outline-offset: 2p
   display: flex;
   align-items: center;
   gap: 0.45rem;
-  font-size: 0.78rem;
+  font-size: 1rem;
   color: var(--accent);
 }
 
@@ -895,7 +981,7 @@ button.save:focus-visible { outline: 2px solid var(--accent); outline-offset: 2p
 
 .toast {
   padding: 0.6rem 0.8rem;
-  font-size: 0.85rem;
+  font-size: 1rem;
   line-height: 1.4;
   color: var(--ink);
   background: var(--card);
@@ -911,7 +997,7 @@ button.save:focus-visible { outline: 2px solid var(--accent); outline-offset: 2p
 
 .note-zone button {
   font-family: var(--body);
-  font-size: 0.72rem;
+  font-size: 1rem;
   background: transparent;
   border: 1px solid var(--rule);
   color: var(--ink-soft);
@@ -954,7 +1040,7 @@ footer {
   padding-top: 1.25rem;
   border-top: 1px solid var(--rule);
   color: var(--ink-faint);
-  font-size: 0.85rem;
+  font-size: 1rem;
   max-width: 68ch;
 }
 
@@ -967,7 +1053,7 @@ footer {
   border-radius: 3px;
   background: var(--mod-bg);
   color: var(--ink-soft);
-  font-size: 0.9rem;
+  font-size: 1rem;
   line-height: 1.5;
 }
 .callout strong { color: var(--ink); }
@@ -1018,7 +1104,7 @@ footer {
 
 .img-chooser {
   border-collapse: collapse;
-  font-size: 0.7rem;
+  font-size: 1rem;
   line-height: 1;
 }
 
@@ -1030,7 +1116,7 @@ footer {
 
 .img-side {
   color: var(--ink-faint);
-  font-size: 0.64rem;
+  font-size: 1rem;
   letter-spacing: 0.04em;
   padding-right: 0.3rem !important;
   text-align: right !important;
@@ -1038,7 +1124,7 @@ footer {
 
 .img-version-label {
   font-family: var(--mono);
-  font-size: 0.72rem;
+  font-size: 1rem;
   padding: 0.1rem 0.3rem !important;
   color: var(--ink);
 }
@@ -1074,7 +1160,7 @@ button.control:disabled {
   display: inline-flex;
   align-items: center;
   gap: 0.3rem;
-  font-size: 0.78rem;
+  font-size: 1rem;
   color: var(--ink-soft);
   cursor: pointer;
 }
@@ -1089,7 +1175,7 @@ button.control:disabled {
 .img-readout {
   margin-left: auto;
   font-family: var(--mono);
-  font-size: 0.72rem;
+  font-size: 1rem;
   color: var(--ink-faint);
   white-space: nowrap;
   font-variant-numeric: tabular-nums;
@@ -1154,7 +1240,7 @@ button.control:disabled {
   background: #ff2fd0;
   color: #000;
   font-family: var(--mono);
-  font-size: 0.7rem;
+  font-size: 1rem;
   line-height: 1;
   padding: 0.2em 0.4em;
   white-space: nowrap;
@@ -1173,18 +1259,18 @@ button.control:disabled {
 .img-hint {
   margin: 0;
   padding: 0.3rem 0.6rem;
-  font-size: 0.7rem;
+  font-size: 1rem;
   color: var(--ink-faint);
 }
 
-.img-note-line { font-family: var(--mono); font-size: 0.78rem; }
+.img-note-line { font-family: var(--mono); font-size: 1rem; }
 
 .img-omitted {
   margin: 0.35rem 0 0;
   padding: 0.5rem 0.7rem;
   border: 1px dashed var(--rule);
   color: var(--ink-faint);
-  font-size: 0.85rem;
+  font-size: 1rem;
 }
 
 button.control.img-add-note { align-self: flex-start; }
@@ -1222,7 +1308,7 @@ button.control.img-add-note { align-self: flex-start; }
   flex: none;
 }
 
-.stack-arrow { color: var(--ink-faint); font-size: 0.75rem; }
+.stack-arrow { color: var(--ink-faint); font-size: 1rem; }
 
 .stack-pr {
   display: inline-flex;
@@ -1230,7 +1316,7 @@ button.control.img-add-note { align-self: flex-start; }
   gap: 0.35rem;
   padding: 0.12rem 0.5rem;
   border: 1px solid var(--rule);
-  font-size: 0.76rem;
+  font-size: 1rem;
   font-family: var(--body);
   color: var(--ink-soft);
   background: transparent;
@@ -1249,7 +1335,7 @@ a.stack-pr:focus-visible, button.stack-pr:focus-visible {
 .stack-pr.is-unreviewed { opacity: 0.65; }
 
 .stack-awaiting {
-  font-size: 0.62rem;
+  font-size: 1rem;
   font-weight: 700;
   letter-spacing: 0.05em;
   text-transform: uppercase;
@@ -1277,4 +1363,4 @@ a.stack-pr:focus-visible, button.stack-pr:focus-visible {
   text-overflow: ellipsis;
 }
 
-.stack-forge { font-size: 0.7rem; color: var(--ink-faint); }
+.stack-forge { font-size: 1rem; color: var(--ink-faint); }

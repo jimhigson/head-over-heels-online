@@ -25,8 +25,9 @@ export const Group = ({ group, index, files, open, state }: GroupProps) => {
           onClick={(event) => event.stopPropagation()}
           onChange={(event) => state.tickGroup(index, event.currentTarget.checked)}
         />
-        <span class="step">{index + 1}</span>
-        <span class="group-title">{group.title}</span>
+        <span class="group-title">
+          Chapter {index + 1}: {group.title}
+        </span>
         <span class="group-count">
           {done}/{files.length} files
         </span>
