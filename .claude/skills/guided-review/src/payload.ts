@@ -67,8 +67,11 @@ selectReview(shell.current);
 export const activeReviewIsEditable = (): boolean =>
   server !== undefined && server.editableReviewId === reviewId;
 
+/** git's own words for its diff status letters (eg `git diff --diff-filter`) -
+    so the single-letter chip and the full-word chip always agree, since the
+    letter is just this word's initial */
 export const statusLabel: Record<string, string> = {
-  A: "New",
+  A: "Added",
   M: "Modified",
   D: "Deleted",
   R: "Renamed",
