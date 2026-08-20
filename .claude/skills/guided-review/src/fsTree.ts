@@ -69,7 +69,7 @@ const collapseChain = (node: FsTreeNode): FsTreeNode => {
   if (node.type === "file") {
     return node;
   }
-  let name = node.name;
+  let { name } = node;
   let current = node;
   while (current.children.length === 1) {
     const only = current.children.find((child) => child.type === "dir");

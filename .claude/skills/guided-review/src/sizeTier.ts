@@ -5,7 +5,7 @@
    Unicode block character rather than a letter, growing from a sliver to a
    full block as T(iny) rises to H(uge). */
 
-export type SizeTier = "T" | "S" | "M" | "L" | "H";
+export type SizeTier = "H" | "L" | "M" | "S" | "T";
 
 export const sizeTierOfLines = (lines: number): SizeTier =>
   lines <= 3 ? "T"

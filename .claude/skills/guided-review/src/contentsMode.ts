@@ -4,11 +4,11 @@
 
 import { makeStore } from "./stores.ts";
 
-export type ContentsMode = "guided" | "tree" | "size";
+export type ContentsMode = "guided" | "size" | "tree";
 
 const storageKey = "guidedReviewContentsMode";
 
-const isContentsMode = (value: string | null): value is ContentsMode =>
+const isContentsMode = (value: null | string): value is ContentsMode =>
   value === "tree" || value === "size";
 
 const remembered = (): ContentsMode => {
