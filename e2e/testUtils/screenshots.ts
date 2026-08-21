@@ -399,6 +399,9 @@ const supportsP3ColourSpace = (projectName: string): boolean => {
   return !name.includes("webkit") && !name.includes("safari");
 };
 
+// TextContainer rendering for hud differs slightly between OSes
+export const smoothedHudTextMaxDiffPixelRatio = 0.001_2;
+
 /** options for in-game canvas screenshots (room snapshots) — zero diff pixels allowed */
 export const roomScreenshotOptions = (
   projectName: string,

@@ -61,6 +61,11 @@ export type SpriteOption = {
 export type DisplaySettings = {
   emulatedResolution?: ResolutionName;
   crtFilter?: boolean;
+  /**
+   * upscale the spritesheet with the cleanEdge algorithm, redrawing sprite
+   * edges and slopes smoothly at the screen's resolution
+   */
+  smoothSprites?: boolean;
   showBoundingBoxTypes?: ItemInPlayType[];
   showRoomScrollBounds?: boolean;
   showShadowMasks?: boolean;

@@ -30,7 +30,7 @@ export const SpritesPageContent = ({
   return (
     <div class="e2e-snapshot-target">
       <PaletteSwatch />
-      <FontSpecimen />
+      <FontSpecimen scale={scale} />
       <SpritesheetImage spriteFilter={spriteFilter} />
       <h1
         id="animations"

@@ -43,6 +43,10 @@ src-tauri/target
 __pycache__/
 *.pyc
 
+# python toolchain for scripts/genFont.ts (pnpm gen:font)
+scripts/font/.venv
+
+# local scratch space for one-off probes and screenshots
 .scratch
 
 # pnpm's content-addressable store, when it lands inside the worktree

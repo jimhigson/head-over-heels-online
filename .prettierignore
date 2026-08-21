@@ -15,8 +15,9 @@ hohjs.code-workspace
 .claude
 e2e/*-snapshots
 src-tauri/target
-# generated font manifest - reformatting it would defeat genFont's change detection
+# generated font manifests - reformatting them would defeat genFont's change detection
 src/_generated/font/manifest.json
+src/_generated/font/manifest-smooth.json
 src/_generated/db.d.ts
 # columnar original-campaign blob - must stay minified (it ships to clients as-is)
 src/_generated/originalCampaign/campaign.columnar.json

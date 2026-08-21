@@ -5,6 +5,7 @@ import {
   RenderTexture,
   Sprite,
   type Texture,
+  TilingSprite,
 } from "pixi.js";
 
 import {
@@ -18,6 +19,22 @@ import { type Xy } from "../vectors/vectors";
 import { pixiContainerToString } from "./pixiContainerToString";
 import { UniqueTextureAnimatedSprite } from "./UniqueTextureAnimatedSprite";
 import { UniqueTextureSprite } from "./UniqueTextureSprite";
+
+/**
+ * the highest texture-source resolution of any sprite under `container` - the
+ * resolution a bake of the container must have to keep that detail (eg
+ * cleanEdge-upscaled sheets have resolution > 1)
+ */
+const maxTextureResolution = (container: Container): number => {
+  let max =
+    container instanceof Sprite || container instanceof TilingSprite ?
+      container.texture.source.resolution
+    : 1;
+  for (const child of container.children) {
+    max = Math.max(max, maxTextureResolution(child));
+  }
+  return max;
+};
 
 /**
  * can be used as a less buggy version of pixi.js cacheAsTexture - just creates
@@ -47,6 +64,13 @@ export const bakeContainerToTexture = (
    * texture serves every variant via the reuse path
    */
   minimumSize?: Xy,
+  /**
+   * backing-store scale for the bake; when not given, derived from the
+   * highest-resolution sprite in the container. Pass explicitly for
+   * sprite-less content (eg vector Graphics masks) that should match a
+   * cleanEdge-upscaled bake it will be composed/masked with
+   */
+  explicitResolution?: number,
 ): Texture => {
   const localBounds = container.getLocalBounds();
 
@@ -62,9 +86,15 @@ export const bakeContainerToTexture = (
   const width = Math.ceil(localBounds.maxX - shiftX);
   const height = Math.ceil(localBounds.maxY - shiftY);
 
+  // bake at the resolution of the sprites being composed, so a
+  // cleanEdge-upscaled sheet isn't flattened back to 1x by the bake:
+  const resolution = explicitResolution ?? maxTextureResolution(container);
+
   const canReuse =
     reuseTexture !== undefined ?
-      reuseTexture.width >= width && reuseTexture.height >= height
+      reuseTexture.width >= width &&
+      reuseTexture.height >= height &&
+      reuseTexture.source.resolution === resolution
     : false;
 
   const renderTexture =
@@ -73,6 +103,7 @@ export const bakeContainerToTexture = (
     : RenderTexture.create({
         width: Math.max(width, minimumSize?.x ?? 0),
         height: Math.max(height, minimumSize?.y ?? 0),
+        resolution,
         antialias: false, // Disable for mask textures (performance)
         autoGenerateMipmaps: false,
       });
@@ -123,6 +154,8 @@ export const renderContainerToSprite = (
   label?: string,
   /** see {@link bakeContainerToTexture}'s minimumSize */
   minimumSize?: Xy,
+  /** see {@link renderContainerToTexture}'s explicitResolution */
+  explicitResolution?: number,
 ): UniqueTextureSprite => {
   const localBounds = container.getLocalBounds();
 
@@ -136,6 +169,7 @@ export const renderContainerToSprite = (
     container,
     reuseTexture,
     minimumSize,
+    explicitResolution,
   );
 
   const sprite = reuseSprite ? reuseSprite : new UniqueTextureSprite();

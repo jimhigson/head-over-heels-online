@@ -20,7 +20,6 @@ const spritesOptionExampleSprites = [
   "texture-whiteRabbit_extra-life" satisfies TextureTailwindClass,
   "texture-drum" satisfies TextureTailwindClass,
   "texture-charles_d6" satisfies TextureTailwindClass,
-  "texture-animated-switch" satisfies AnimatedTextureTailwindClass,
 ];
 const spritesOptionExampleSpritesMarkdown = spritesOptionExampleSprites
   .map((t) => `![](${t})`)
