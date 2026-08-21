@@ -1,6 +1,7 @@
 import { useMemo } from "preact/hooks";
 
 import { zxSpectrumFrameRate } from "../../../../../../originalGame";
+import { animationIsUniformlyFlipped } from "../../../../../../sprites/css/spriteCss";
 import { type AppSpritesheetData } from "../../../../../../sprites/spritesheet/AppSpritesheet";
 import { type AppSpriteFrame } from "../../../../../../sprites/spritesheet/spritesheetData/AppSpriteFrame";
 import { spritesheetSize } from "../../../../../../sprites/spritesheet/spritesheetData/makeBaseSpritesheetData";
@@ -14,7 +15,6 @@ import {
   type TextureTailwindClass,
 } from "../../../../../../sprites/spritesheet/spritesheetData/TextureTailwindClass";
 import { useCurrentSpritesheetData } from "../../../../../../store/slices/gameMenus/gameMenusSelectors";
-import { animationIsUniformlyFlipped } from "../../../../../../tailwind/plugins/spriteCss";
 import { keys } from "../../../../../../utils/entries";
 import { sanitiseForClassName } from "../../../../tailwindSprites/SanitiseForClassName";
 import { ScrollIntoView } from "./ScrollIntoView";

@@ -1,8 +1,12 @@
 import { type PropsWithChildren } from "preact/compat";
 import { type EmptyObject } from "type-fest";
 
+import { useSpriteStylesheet } from "../../sprites/css/useSpriteStylesheet";
 import { useAppSelector } from "../../store/hooks";
-import { selectSpritesOption } from "../../store/slices/gameMenus/gameMenusSelectors";
+import {
+  selectSpritesOption,
+  useCurrentSpritesheetData,
+} from "../../store/slices/gameMenus/gameMenusSelectors";
 import { selectSpritesheetOverrideBlobUrl } from "../../store/slices/spritesheetOverrideSlice";
 
 declare module "preact" {
@@ -20,11 +24,15 @@ declare module "preact" {
  * `set-spritesheet-vars` / `toppy-spritesheet` / `blockstack-spritesheet`
  * classnames with values from the user-settings slice (currently selected
  * sprites option) and the spritesheet-override slice (optional blob URL).
+ *
+ * Also adopts the current spritesheet's `.texture-*` crop stylesheet into the
+ * document, since the crops are a property of the selected sheet too.
  */
 export const CssSpritesVariables = ({
   children,
 }: PropsWithChildren<EmptyObject>) => {
   const spritesOption = useAppSelector(selectSpritesOption);
+  useSpriteStylesheet(useCurrentSpritesheetData());
   const overrideBlobUrl =
     import.meta.env.VITE_APP === "editor" ?
       undefined

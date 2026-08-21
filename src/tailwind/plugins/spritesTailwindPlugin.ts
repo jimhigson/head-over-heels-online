@@ -5,73 +5,14 @@ import { type CSSRuleObject } from "tailwindcss/types/config";
 import spritesheetPalette from "../../_generated/palette/spritesheetPalette.json" with { type: "json" };
 import toppyPalette from "../../_generated/palette/spritesheetToppyPalette.json" with { type: "json" };
 import { editorUiScale } from "../../editor/editorUiScale";
-import { sanitiseForClassName } from "../../game/components/tailwindSprites/SanitiseForClassName";
 import { zxSpectrumColors } from "../../originalGame";
-import { makeBaseSpritesheetData } from "../../sprites/spritesheet/spritesheetData/makeBaseSpritesheetData";
-import {
-  type BaseTextureId,
-  type FramesWithSpeed,
-} from "../../sprites/spritesheet/spritesheetData/makeSpritesheetData";
-import { spritesheetMetas } from "../../sprites/spritesheet/spritesheetData/spritesheetMetaData";
 import { halfbriteHex } from "../../utils/colour/halfbrite";
-import {
-  entries,
-  fromAllEntries,
-  objectEntriesIter,
-} from "../../utils/entries";
-import {
-  animatedSpriteIndirectCssVars,
-  animatedSpriteSpecificCssVars,
-  animationCssVarValues,
-  keyframesForAnimatedSprite,
-  spriteSpecificCssVars,
-} from "./spriteCss";
 
 const spritesheetSize = imageSize("gfx/sprites.webp");
 
 // https://tailwindcss.com/docs/plugins
 export const spritesTailwindPlugin = plugin(
-  ({ addUtilities, addBase, addVariant, e }) => {
-    /**
-     * A full version of the spritesheet data with every possible sprite loaded. So tailwind thinks every possible
-     * textureId exists. postcss can cut them down from there to what's actually used
-     */
-    const fullSpritesheetData = makeBaseSpritesheetData({
-      playable: {
-        head: {},
-        heels: {},
-      },
-    });
-
-    const perSheetData = fromAllEntries(
-      entries(spritesheetMetas).map(
-        ([name, meta]) => [name, makeBaseSpritesheetData(meta)] as const,
-      ),
-    );
-
-    const animationsAreEqual = (
-      a: FramesWithSpeed<BaseTextureId[]>,
-      b: FramesWithSpeed<BaseTextureId[]>,
-    ) =>
-      a.length === b.length &&
-      a.animationSpeed === b.animationSpeed &&
-      a.every((frame, i) => frame === b[i]);
-
-    // an animation whose frames are copyFrom copies has the same frame ids in
-    // both sheets but different on-sheet coords (the copy is aliased to its
-    // source's region), so it must not take the "shared" path that reads coords
-    // from the override-less fullSpritesheetData
-    const animationUsesCopyFrom = (
-      frames: FramesWithSpeed<BaseTextureId[]> | undefined,
-      sheetName: keyof typeof spritesheetMetas,
-    ) =>
-      frames?.some(
-        (f) =>
-          spritesheetMetas[sheetName].overrides?.[f]?.copyFrom !== undefined,
-      ) ?? false;
-
-    const sanitiseId = (id: string) => e(sanitiseForClassName(id));
-
+  ({ addUtilities, addBase, addVariant }) => {
     const base: CSSRuleObject = {};
 
     // the HUD font, its native 8px-cell size, and single-line leading apply
@@ -89,16 +30,11 @@ export const spritesTailwindPlugin = plugin(
       [`${type}Size`]: `calc(var(--spritesheetW) * var(--totalScale) * 1px) calc(var(--spritesheetH) * var(--totalScale) * var(--doubleHeight, 1) * 1px)`,
     });
 
-    const bugFrame =
-      fullSpritesheetData.frames["thisIsABug" as BaseTextureId].frame;
-
     const utilities: CSSRuleObject = {
+      // the crop vars (--x/--y/--w/--h) come from the runtime-generated
+      // sprite stylesheet (spriteCssText), adopted per selected spritesheet
       ".sprite": {
         "--totalScale": `calc(var(--scale, 1) * var(--sprite-scale, 1))`,
-        "--x": `${bugFrame.x}`,
-        "--y": `${bugFrame.y}`,
-        "--w": `${bugFrame.w}`,
-        "--h": `${bugFrame.h}`,
         display: "inline-block",
         width: `calc(var(--w) * var(--totalScale) * 1px)`,
         height: `calc(var(--h) * var(--totalScale) * var(--doubleHeight, 1) * 1px)`,
@@ -393,243 +329,6 @@ export const spritesTailwindPlugin = plugin(
         "--c2": halfbriteHex(toppyPalette.warm2),
       },
     };
-
-    for (const [
-      textureId,
-      {
-        frame: { h, w, x, y },
-      },
-    ] of objectEntriesIter(fullSpritesheetData.frames)) {
-      utilities[`.texture-${sanitiseId(textureId)}`] = spriteSpecificCssVars(
-        w,
-        h,
-        x,
-        y,
-        false,
-        fullSpritesheetData,
-      );
-    }
-
-    type AnimationsRecord = Record<string, FramesWithSpeed<BaseTextureId[]>>;
-    const blockStackAnimations = perSheetData.BlockStack!
-      .animations as AnimationsRecord;
-    const toppyAnimations = perSheetData.Toppy!.animations as AnimationsRecord;
-    const allAnimationNames = new Set([
-      ...Object.keys(blockStackAnimations),
-      ...Object.keys(toppyAnimations),
-    ]);
-
-    const blockStackVars: CSSRuleObject = {};
-    const toppyVars: CSSRuleObject = {};
-
-    for (const animationName of allAnimationNames) {
-      const bsFrames = blockStackAnimations[animationName];
-      const toppyFrames = toppyAnimations[animationName];
-
-      const shared =
-        bsFrames &&
-        toppyFrames &&
-        animationsAreEqual(bsFrames, toppyFrames) &&
-        !animationUsesCopyFrom(bsFrames, "BlockStack") &&
-        !animationUsesCopyFrom(toppyFrames, "Toppy");
-
-      const emitUtilities = (
-        frames: FramesWithSpeed<BaseTextureId[]>,
-        cssVarsFn: (
-          ...args: Parameters<typeof animatedSpriteSpecificCssVars>
-        ) => CSSRuleObject,
-      ) => {
-        utilities[`.texture-animated-${sanitiseId(animationName)}`] = cssVarsFn(
-          animationName,
-          sanitiseId,
-          frames,
-          fullSpritesheetData,
-        );
-        utilities[`.texture-animated-reversed-${sanitiseId(animationName)}`] =
-          cssVarsFn(
-            animationName,
-            sanitiseId,
-            frames,
-            fullSpritesheetData,
-            true,
-          );
-      };
-
-      const assignKeyframesToUtility = (
-        frames: FramesWithSpeed<BaseTextureId[]>,
-        spritesheetData: ReturnType<typeof makeBaseSpritesheetData>,
-        keyframePrefix = "",
-        elideOverride?: { x?: boolean; y?: boolean },
-      ) => {
-        const normalUtility = utilities[
-          `.texture-animated-${sanitiseId(animationName)}`
-        ] as object;
-        Object.assign(
-          normalUtility,
-          keyframesForAnimatedSprite(
-            animationName,
-            sanitiseId,
-            frames,
-            spritesheetData,
-            keyframePrefix,
-            elideOverride,
-          ),
-        );
-      };
-
-      if (shared) {
-        // identical in both spritesheets — direct animation shorthand, no CSS vars
-        emitUtilities(bsFrames, animatedSpriteSpecificCssVars);
-        assignKeyframesToUtility(bsFrames, fullSpritesheetData);
-      } else {
-        // differing or exclusive — use CSS variable indirection
-        const referenceFrames = bsFrames ?? toppyFrames;
-        emitUtilities(referenceFrames, animatedSpriteIndirectCssVars);
-
-        // the base utility class has --x/--y from the reference frames' first frame
-        // in fullSpritesheetData. For spritesheets where the first frame is at a
-        // different position, emit an override so that static rendering (eg,
-        // Playwright with animations disabled) shows the correct fallback frame.
-        const baseUtility = utilities[
-          `.texture-animated-${sanitiseId(animationName)}`
-        ] as Record<string, string>;
-        const baseFallbackX = baseUtility["--x"];
-        const baseFallbackY = baseUtility["--y"];
-
-        // --x / --y can be elided from every keyframe step only when all frames
-        // in every sheet variant agree on a single value. The reversed utility
-        // class is only emitted once (no per-sheet override), so each sheet's
-        // keyframe needs to be safe against the reference sheet's fallback too.
-        const variantFrameXYs: { x: number; y: number }[] = [];
-        for (const [frames, sheetData] of [
-          [bsFrames, perSheetData.BlockStack] as const,
-          [toppyFrames, perSheetData.Toppy] as const,
-        ]) {
-          if (!frames || !sheetData) {
-            continue;
-          }
-          for (const id of frames) {
-            const frame = sheetData.frames[id];
-            if (frame) {
-              variantFrameXYs.push(frame.frame);
-            }
-          }
-        }
-        const [firstVariantFrame] = variantFrameXYs;
-        const elideAcrossSheets = firstVariantFrame && {
-          x: variantFrameXYs.every((f) => f.x === firstVariantFrame.x),
-          y: variantFrameXYs.every((f) => f.y === firstVariantFrame.y),
-        };
-
-        const sheetAnimationVariation = (
-          frames: FramesWithSpeed<BaseTextureId[]> | undefined,
-          sheetData: ReturnType<typeof makeBaseSpritesheetData>,
-          sheetPrefix: string,
-        ): Record<string, unknown> => {
-          if (frames === undefined) {
-            return {};
-          }
-
-          assignKeyframesToUtility(
-            frames,
-            sheetData,
-            sheetPrefix,
-            elideAcrossSheets || undefined,
-          );
-
-          const result: Record<string, unknown> = animationCssVarValues(
-            animationName,
-            sanitiseId,
-            frames,
-            sheetData,
-            sheetPrefix,
-          );
-
-          const fallback = sheetData.frames[frames[0]];
-          if (fallback) {
-            const overrides: Record<string, string> = {};
-            if (`${fallback.frame.x}` !== baseFallbackX) {
-              overrides["--x"] = `${fallback.frame.x}`;
-            }
-            if (`${fallback.frame.y}` !== baseFallbackY) {
-              overrides["--y"] = `${fallback.frame.y}`;
-            }
-            if (Object.keys(overrides).length > 0) {
-              result[`& .texture-animated-${sanitiseId(animationName)}`] =
-                overrides;
-            }
-          }
-
-          return result;
-        };
-
-        Object.assign(
-          blockStackVars,
-          sheetAnimationVariation(
-            bsFrames,
-            perSheetData.BlockStack,
-            "blockstack-",
-          ),
-        );
-        Object.assign(
-          toppyVars,
-          sheetAnimationVariation(toppyFrames, perSheetData.Toppy, "toppy-"),
-        );
-      }
-    }
-
-    Object.assign(
-      utilities[".blockstack-spritesheet"] as object,
-      blockStackVars,
-    );
-    Object.assign(utilities[".toppy-spritesheet"] as object, toppyVars);
-
-    // copyFrom: a copy has no pixels of its own on the sheet (its own region is
-    // blanked to transparent), so under its sheet's ancestor class redirect the
-    // crop to the source region and mirror it for flipX copies. The override-less
-    // base `.texture-*` class keeps the copy's own coords, used by sheets (eg
-    // BlockStack) that have real art there and don't declare the copy.
-    for (const [sheetName, meta] of entries(spritesheetMetas)) {
-      const { overrides } = meta;
-      if (overrides === undefined) {
-        continue;
-      }
-      const sheetData = perSheetData[sheetName];
-      if (sheetData === undefined) {
-        continue;
-      }
-      const ancestor = utilities[
-        sheetName === "Toppy" ? ".toppy-spritesheet" : ".blockstack-spritesheet"
-      ] as Record<string, CSSRuleObject>;
-
-      for (const [copyId, override] of objectEntriesIter(overrides)) {
-        const copyFrom = override?.copyFrom;
-        if (copyFrom === undefined || sheetData.frames[copyId] === undefined) {
-          continue;
-        }
-        const { frame } = sheetData.frames[copyId];
-        const selector = `& .texture-${sanitiseId(copyId)}`;
-        ancestor[selector] = {
-          ...ancestor[selector],
-          "--x": `${frame.x}`,
-          "--y": `${frame.y}`,
-          ...(copyFrom.flipX === true && { "--flip": "-1" }),
-        };
-      }
-
-      // animations built entirely of flipped copies need the mirror on their
-      // animated element too; the per-frame crop is already redirected via the
-      // per-sheet keyframes forced by animationUsesCopyFrom
-      for (const [animId, frames] of objectEntriesIter(sheetData.animations)) {
-        if (!frames.every((f) => overrides[f]?.copyFrom?.flipX === true)) {
-          continue;
-        }
-        for (const prefix of ["", "reversed-"]) {
-          const selector = `& .texture-animated-${prefix}${sanitiseId(animId)}`;
-          ancestor[selector] = { ...ancestor[selector], "--flip": "-1" };
-        }
-      }
-    }
 
     utilities[".sprite-play-once"] = {
       animationIterationCount: "1",

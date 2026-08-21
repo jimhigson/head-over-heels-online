@@ -3,6 +3,13 @@ import { useEffect, useMemo, useRef, useState } from "preact/hooks";
 
 import { BlockyMarkdown } from "../../game/components/BlockyMarkdown";
 import { sanitiseForClassName } from "../../game/components/tailwindSprites/SanitiseForClassName";
+import { keyframesToCss } from "../../sprites/css/keyframesToCss";
+import {
+  animatedSpriteSpecificCssVars,
+  animationIsUniformlyFlipped,
+  keyframesForAnimatedSprite,
+  spriteSpecificCssVars,
+} from "../../sprites/css/spriteCss";
 import { type AppSpriteFrame } from "../../sprites/spritesheet/spritesheetData/AppSpriteFrame";
 import {
   type BaseTextureId,
@@ -12,16 +19,9 @@ import {
   useCurrentSpritesheetData,
   useSpritesOption,
 } from "../../store/slices/gameMenus/gameMenusSelectors";
-import {
-  animatedSpriteSpecificCssVars,
-  animationIsUniformlyFlipped,
-  keyframesForAnimatedSprite,
-  spriteSpecificCssVars,
-} from "../../tailwind/plugins/spriteCss";
 import { useTip } from "../../ui/tip/useTip";
 import { entries } from "../../utils/entries";
 import { type Xy } from "../../utils/vectors/vectors";
-import { keyframesToCss } from "./keyframesToCss";
 
 const xRelative = (value: number) =>
   `calc(${value} / var(--spritesheetW) * 100%)`;

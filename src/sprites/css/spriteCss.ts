@@ -1,16 +1,16 @@
 import { zxSpectrumFrameRate } from "../../originalGame";
-import { type AppSpritesheetData } from "../../sprites/spritesheet/AppSpritesheet";
-import { type AppSpriteFrame } from "../../sprites/spritesheet/spritesheetData/AppSpriteFrame";
+import { type AppSpritesheetData } from "../spritesheet/AppSpritesheet";
+import { type AppSpriteFrame } from "../spritesheet/spritesheetData/AppSpriteFrame";
 import {
   type BaseTextureId,
   type FramesWithSpeed,
-} from "../../sprites/spritesheet/spritesheetData/makeSpritesheetData";
+} from "../spritesheet/spritesheetData/makeSpritesheetData";
 
 type Sanitise = (s: string) => string;
 
 const atMost1dp = (n: number): number => parseFloat(n.toFixed(1));
 
-const defaultTextureId: BaseTextureId = "thisIsABug";
+export const defaultTextureId: BaseTextureId = "thisIsABug";
 
 /**
  * The defaultTextureId sprite's dims are set as `--w`/`--h` defaults on `.sprite`,
@@ -19,7 +19,7 @@ const defaultTextureId: BaseTextureId = "thisIsABug";
  * their size matches — sprites of the same size as the bug inherit from the
  * base class.
  */
-const defaultSpriteDims = (
+export const defaultSpriteDims = (
   spritesheetData: AppSpritesheetData,
 ): { w: number; h: number } => {
   const { w, h } = spritesheetData.frames[defaultTextureId].frame;
@@ -38,13 +38,12 @@ const dimVars = (
 /**
  * Returns the CSS vars for a single sprite frame.
  *
- * When `spritesheetData` is provided (tailwind-plugin usage, compiling the
- * shared `.texture-*` stylesheet), `--w` / `--h` are elided if the sprite is
- * the same size as the bug-sprite default set on `.sprite` — shrinking the
- * generated CSS. When it's omitted (in-app inline-style usage in components
- * like SpriteTile / SpritesheetImage, which don't need to optimise for
- * bytes), `--w` / `--h` are always emitted so the caller doesn't have to
- * thread the spritesheet data down.
+ * When `spritesheetData` is provided (building the shared `.texture-*`
+ * stylesheet), `--w` / `--h` are elided if the sprite is the same size as the
+ * bug-sprite default set on `.sprite` — shrinking the generated CSS. When it's
+ * omitted (inline-style usage in components like SpriteTile /
+ * SpritesheetImage, which style one element each), `--w` / `--h` are always
+ * emitted so the caller doesn't have to thread the spritesheet data down.
  */
 export const spriteSpecificCssVars = (
   w: number,
@@ -128,63 +127,6 @@ export const animatedSpriteSpecificCssVars = (
 };
 
 /**
- * Returns CSS vars with a single `animation` shorthand referencing a CSS custom property.
- * Used by the tailwind plugin for differing/exclusive animations where the full animation
- * value varies by spritesheet.
- */
-export const animatedSpriteIndirectCssVars = (
-  animationName: string,
-  sanitise: Sanitise,
-  frames: FramesWithSpeed<BaseTextureId[]>,
-  spritesheetData: AppSpritesheetData,
-  reversed = false,
-) => {
-  const { fallbackFrame, maxW, maxH } = computeAnimationBase(
-    animationName,
-    frames,
-    spritesheetData,
-    reversed,
-  );
-
-  const varSuffix = sanitise(animationName);
-
-  return {
-    ...dimVars(maxW, maxH, defaultSpriteDims(spritesheetData)),
-    "--x": `${fallbackFrame.frame.x}`,
-    "--y": `${fallbackFrame.frame.y}`,
-    animation: `var(--anim-${varSuffix})`,
-    ...(reversed && { animationDirection: "reverse" }),
-  };
-};
-
-/**
- * Returns the CSS variable assignments for a specific spritesheet's animation.
- * These are set on ancestor classes like `.blockstack-spritesheet` or `.toppy-spritesheet`.
- */
-export const animationCssVarValues = (
-  animationName: string,
-  sanitise: Sanitise,
-  frames: FramesWithSpeed<BaseTextureId[]>,
-  spritesheetData: AppSpritesheetData,
-  /** prefix for the @keyframes name, e.g. "blockstack-" */
-  keyframePrefix = "",
-) => {
-  const { animationDuration, frameCount } = computeAnimationBase(
-    animationName,
-    frames,
-    spritesheetData,
-    false,
-  );
-
-  const varSuffix = sanitise(animationName);
-  const keyframeName = `sprite-animation-${keyframePrefix}${sanitise(animationName)}`;
-
-  return {
-    [`--anim-${varSuffix}`]: `${keyframeName} ${animationDuration}s steps(${frameCount}, end) infinite`,
-  };
-};
-
-/**
  * True when every frame of the animation is a horizontally flipped copy, so a
  * single element-level mirror (`.sprite-flip-x`) is enough. Mixed animations
  * instead carry per-frame `--flip` in their keyframes, and unflipped ones need
@@ -205,15 +147,6 @@ export const keyframesForAnimatedSprite = (
   sanitise: Sanitise,
   frames: FramesWithSpeed<BaseTextureId[]>,
   spritesheetData: AppSpritesheetData,
-  /** prefix for the @keyframes name, e.g. "blockstack-" */
-  keyframePrefix = "",
-  /**
-   * When the caller knows `--x` / `--y` are safe to elide from every step
-   * (e.g. all sheet variants agree on a single value), override the default
-   * per-sheet check. Used for sheet-specific variants where the non-reversed
-   * and reversed utility classes may have different fallback values.
-   */
-  elideOverride?: { x?: boolean; y?: boolean },
 ) => {
   // When an animation lives on one spritesheet row/column, --x or --y is
   // constant across all frames. That value is already set on the utility class
@@ -221,13 +154,8 @@ export const keyframesForAnimatedSprite = (
   // value will apply during animation.
   const frameXYs = frames.map((f) => spritesheetData.frames[f].frame);
   const [firstFrame] = frameXYs;
-  const isShared = keyframePrefix === "";
-  const omitX =
-    elideOverride?.x ??
-    (isShared && frameXYs.every((f) => f.x === firstFrame.x));
-  const omitY =
-    elideOverride?.y ??
-    (isShared && frameXYs.every((f) => f.y === firstFrame.y));
+  const omitX = frameXYs.every((f) => f.x === firstFrame.x);
+  const omitY = frameXYs.every((f) => f.y === firstFrame.y);
 
   // an animation that mixes flipped and unflipped copies can't be mirrored with
   // a single element-level transform, so it emits --flip per frame in its
@@ -285,7 +213,7 @@ export const keyframesForAnimatedSprite = (
   }
 
   return {
-    [`@keyframes sprite-animation-${keyframePrefix}${sanitise(animationName)}`]:
+    [`@keyframes sprite-animation-${sanitise(animationName)}`]:
       Object.fromEntries(entries),
   };
 };

@@ -1,19 +1,19 @@
 import { useEffect, useRef } from "preact/hooks";
 
 import { sanitiseForClassName } from "../../game/components/tailwindSprites/SanitiseForClassName";
+import { keyframesToCss } from "../../sprites/css/keyframesToCss";
+import {
+  animatedSpriteSpecificCssVars,
+  animationIsUniformlyFlipped,
+  keyframesForAnimatedSprite,
+} from "../../sprites/css/spriteCss";
 import { type AppSpritesheetData } from "../../sprites/spritesheet/AppSpritesheet";
 import {
   type BaseTextureId,
   type FramesWithSpeed,
 } from "../../sprites/spritesheet/spritesheetData/makeSpritesheetData";
 import { useSpritesOption } from "../../store/slices/gameMenus/gameMenusSelectors";
-import {
-  animatedSpriteSpecificCssVars,
-  animationIsUniformlyFlipped,
-  keyframesForAnimatedSprite,
-} from "../../tailwind/plugins/spriteCss";
 import { useTip } from "../../ui/tip/useTip";
-import { keyframesToCss } from "./keyframesToCss";
 import { SpriteName } from "./SpriteName";
 
 export type AnimationTileProps = {

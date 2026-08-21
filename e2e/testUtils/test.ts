@@ -4,6 +4,7 @@ import {
   formatProjectName,
   forwardBrowserConsoleToNodeConsole,
 } from "./logging";
+import { relaySupabase } from "./relaySupabase";
 import { logDetailedTextLayout, logTextLayout } from "./screenshots";
 
 /**
@@ -19,7 +20,23 @@ import { logDetailedTextLayout, logTextLayout } from "./screenshots";
  * forwarding, since there is no playwright hook that reaches tests built on a
  * different `test` object.
  */
-export const test = playwrightTest.extend<{ forwardBrowserConsole: void }>({
+export const test = playwrightTest.extend<{
+  forwardBrowserConsole: void;
+  relaySupabaseWhenEnabled: void;
+}>({
+  // sandboxes whose egress proxy resets the browser's own TLS to supabase can
+  // opt every spec into the node-side relay with E2E_RELAY_SUPABASE=1; unset
+  // (eg CI) this fixture does nothing and the browser talks to supabase
+  // directly
+  relaySupabaseWhenEnabled: [
+    async ({ page }, use) => {
+      if (process.env.E2E_RELAY_SUPABASE) {
+        await relaySupabase(page);
+      }
+      await use();
+    },
+    { auto: true },
+  ],
   forwardBrowserConsole: [
     async ({ page }, use, testInfo) => {
       const logHeader = formatProjectName(testInfo.project.name);
