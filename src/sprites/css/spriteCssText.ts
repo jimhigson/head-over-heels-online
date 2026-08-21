@@ -82,7 +82,7 @@ export const spriteCssText = (spritesheetData: AppSpritesheetData): string => {
   const { w, h } = defaultSpriteDims(spritesheetData);
   const { x, y } = spritesheetData.frames[defaultTextureId].frame;
 
-  // a bare `.sprite` with no `.texture-*` shows the bug sprite as a visible
+  // a bare `.sprite` with no `.texture-*` shows the this-is-a-bug-sprite as a visible
   // "something is broken" indicator, and is the default every per-texture rule
   // elides its matching values against - so it must come first
   const chunks = [

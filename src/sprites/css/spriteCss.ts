@@ -14,7 +14,7 @@ export const defaultTextureId: BaseTextureId = "thisIsABug";
 
 /**
  * The defaultTextureId sprite's dims are set as `--w`/`--h` defaults on `.sprite`,
- * so a bare `.sprite` with no `.texture-*` renders the bug sprite as a visible
+ * so a bare `.sprite` with no `.texture-*` renders the this-is-a-bug-sprite as a visible
  * "something is broken" indicator. Per-texture rules omit these vars when
  * their size matches — sprites of the same size as the bug inherit from the
  * base class.
@@ -40,7 +40,7 @@ const dimVars = (
  *
  * When `spritesheetData` is provided (building the shared `.texture-*`
  * stylesheet), `--w` / `--h` are elided if the sprite is the same size as the
- * bug-sprite default set on `.sprite` — shrinking the generated CSS. When it's
+ * this-is-a-bug-sprite default set on `.sprite` — shrinking the generated CSS. When it's
  * omitted (inline-style usage in components like SpriteTile /
  * SpritesheetImage, which style one element each), `--w` / `--h` are always
  * emitted so the caller doesn't have to thread the spritesheet data down.

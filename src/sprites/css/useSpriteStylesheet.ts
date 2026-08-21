@@ -47,7 +47,7 @@ const releaseSheet = (spritesheetData: AppSpritesheetData) => {
  *
  * A layout effect, not an effect: the rules have to be in the document before
  * the sprites needing them are painted, or every sprite flashes as the
- * bug-sprite crop the `.sprite` utility defaults to.
+ * this-is-a-bug-sprite crop the `.sprite` utility defaults to.
  */
 export const useSpriteStylesheet = (spritesheetData: AppSpritesheetData) => {
   useLayoutEffect(() => {
