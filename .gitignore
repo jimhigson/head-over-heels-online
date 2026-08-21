@@ -44,3 +44,6 @@ __pycache__/
 *.pyc
 
 .scratch
+
+# pnpm's content-addressable store, when it lands inside the worktree
+.pnpm-store/

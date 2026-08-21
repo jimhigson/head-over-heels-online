@@ -1,4 +1,4 @@
-import { waitForAnyRoomRenderEvent } from "./testUtils/gameStateQueries";
+import { waitForAnyRoomToRender } from "./testUtils/gameStateQueries";
 import { startGame } from "./testUtils/menuNavigation";
 import { setupE2ePage } from "./testUtils/pageSetup";
 import { test } from "./testUtils/test";
@@ -25,7 +25,7 @@ test("sequel campaign loads from cache after going offline", async ({
 
   // load the sequel campaign while online
   await startGame(page, "offline-cache", remakeSelector);
-  const roomId = await waitForAnyRoomRenderEvent(page);
+  const roomId = await waitForAnyRoomToRender(page);
   console.log(`offline-cache: first room rendered: ${roomId}`);
 
   // go offline and reload — assets served by service worker,
@@ -36,7 +36,7 @@ test("sequel campaign loads from cache after going offline", async ({
   // the game should auto-resume into the same campaign via persisted redux state.
   // Race the room render against the error dialog so we fail fast if caching didn't work
   await Promise.race([
-    waitForAnyRoomRenderEvent(page).then((roomIdAfterReload) =>
+    waitForAnyRoomToRender(page).then((roomIdAfterReload) =>
       console.log(
         `offline-cache: room rendered after offline reload: ${roomIdAfterReload}`,
       ),

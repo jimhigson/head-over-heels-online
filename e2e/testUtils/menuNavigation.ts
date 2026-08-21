@@ -2,13 +2,11 @@ import { expect, type Page, test } from "@playwright/test";
 import chalk from "chalk";
 
 import { type DialogId } from "../../src/game/components/dialogs/menuDialog/DialogId";
+import { spriteOptionValues } from "../../src/sprites/spritesheet/spritesheetData/spritesheetMetaData";
+import { advanceUntil, whilePainting } from "./advanceGameTime";
 import { dispatchKeyPress } from "./gameInteractions";
 import { maximumWaitForStep, waitForGameState } from "./gameStateQueries";
-import {
-  osSlowness,
-  retryWithRecovery,
-  slownessForHumanObserver,
-} from "./infrastructure";
+import { osSlowness } from "./infrastructure";
 import {
   elapsed,
   formatDuration,
@@ -131,7 +129,9 @@ export const setSkinViaMenus = async (
   await page.locator('[data-dialog-id="displayOptions"]').waitFor();
 
   const skinItem = page.locator('[data-menuitem_id="spritesOption"]');
-  for (let i = 0; i < 4; i++) {
+  // the menu item cycles through the options it offers, so clicking it once per
+  // option is enough to reach any of them from wherever it currently sits:
+  for (let clicks = 0; clicks < spriteOptionValues.length; clicks++) {
     if ((await skinItem.textContent())?.includes(targetLabel)) {
       return;
     }
@@ -140,18 +140,34 @@ export const setSkinViaMenus = async (
   expect((await skinItem.textContent()) ?? "").toContain(targetLabel);
 };
 
-/** Back out of any open submenus until the main menu is reached. */
+/**
+ * Back out of any open submenus until the main menu is reached.
+ *
+ * Each step waits for the dialog to actually change before the next, so this is
+ * popping a stack of known depth rather than clicking hopefully: it only goes
+ * round again because there is still a submenu above the main menu, never
+ * because a click might not have worked. If backing out stops making progress
+ * it throws, rather than returning quietly and leaving the caller to fail
+ * somewhere else with an error that does not name this as the cause.
+ */
 export const backToMainMenu = async (page: Page, projectName: string) => {
   const formattedName = formatProjectName(projectName);
-  for (let i = 0; i < 5; i++) {
-    if (
-      await page
-        .locator('[data-dialog-id="mainMenu"]')
-        .isVisible()
-        .catch(() => false)
-    ) {
-      return;
+  const mainMenu = page.locator('[data-dialog-id="mainMenu"]');
+  const seenDialogIds: DialogId[] = [];
+
+  while (!(await mainMenu.isVisible().catch(() => false))) {
+    const dialogId = await getCurrentDialogId(page);
+    if (dialogId === null) {
+      throw new Error(
+        `no dialog is open, so there is nothing to back out of, but the main menu never appeared (backed out of: ${seenDialogIds.join(" → ") || "nothing"})`,
+      );
     }
+    if (seenDialogIds.includes(dialogId)) {
+      throw new Error(
+        `backing out returned to the "${dialogId}" dialog instead of reaching the main menu (backed out of: ${seenDialogIds.join(" → ")})`,
+      );
+    }
+    seenDialogIds.push(dialogId);
     await clickBackButton(page, formattedName);
   }
 };
@@ -161,214 +177,122 @@ export const navigateToSubmenu = async (
   menuItemId: string,
   logHeader: string,
 ) => {
-  await retryWithRecovery({
-    async action() {
-      console.log(
-        `${logHeader} ${elapsed()}: Clicking menu item: ${chalk.cyan(menuItemId)}`,
-      );
+  console.log(
+    `${logHeader} ${elapsed()}: Clicking menu item: ${chalk.cyan(menuItemId)}`,
+  );
 
-      const selector = `[data-menuitem_id="${menuItemId}"]`;
-      await logSelectorExistence(page, selector, logHeader);
-
-      // small pause so the menu item is visibly highlighted before the click
-      // when watching tests run in headed mode
-      await page.waitForTimeout(slownessForHumanObserver());
-      await page.click(selector);
-    },
-    logHeader,
-    actionDescription: `click menu item ${menuItemId}`,
-    page,
-    screenshotPrefix: `click-${menuItemId}`,
-  });
+  const selector = `[data-menuitem_id="${menuItemId}"]`;
+  // playwright's click auto-waits for the item to be visible, stable and
+  // enabled, so no retry is needed - a genuinely missing item is a real failure
+  await page.click(selector);
 };
 
 export const clickBackButton = async (page: Page, logHeader: string) => {
-  await retryWithRecovery({
-    async action() {
-      console.log(`${logHeader} ${elapsed()}: Clicking back button`);
+  console.log(`${logHeader} ${elapsed()}: Clicking back button`);
 
-      const backSelector = "[data-to-parent-menu='true']";
-      const backButtonExists = await page.locator(backSelector).count();
+  // the dialog currently on top, so we can wait for it to actually change:
+  const dialogBefore = await getCurrentDialogId(page);
 
-      if (backButtonExists > 0) {
-        await page.click(backSelector);
-        await page.waitForTimeout(500);
-      } else {
-        // If no back button, press Escape
-        await page.keyboard.press("Escape");
-        await page.waitForTimeout(500);
-      }
-    },
-    logHeader,
-    actionDescription: "click back button",
-    page,
-    screenshotPrefix: "click-back",
-  });
+  const backSelector = "[data-to-parent-menu='true']";
+  if ((await page.locator(backSelector).count()) > 0) {
+    await page.click(backSelector);
+  } else {
+    // no back button - press Escape to leave the dialog
+    await page.keyboard.press("Escape");
+  }
+
+  // wait for the top dialog to change (or disappear) rather than guessing a
+  // fixed settle time - the menu transition is what the next step depends on:
+  await page.waitForFunction(
+    (previous) =>
+      document
+        .querySelector("[data-dialog-id]")
+        ?.getAttribute("data-dialog-id") !== previous,
+    dialogBefore,
+    { timeout: longTimeout },
+  );
 };
 
 export const clickPlayTheGame = async (page: Page, logHeader: string) => {
   await test.step("Click Play The Game", async () => {
-    await retryWithRecovery({
-      async action() {
-        const playGameSelector = "[data-menuitem_id=playGame]";
-        console.log(`${logHeader} ${elapsed()}: Clicking Play The Game`);
-        await logSelectorExistence(page, playGameSelector, logHeader);
-        await page.click(playGameSelector);
-        await page.waitForTimeout(500);
-      },
-      logHeader,
-      actionDescription: "click Play The Game",
-      page,
-      screenshotPrefix: "crowns-play-game",
-    });
+    console.log(`${logHeader} ${elapsed()}: Clicking Play The Game`);
+    // the campaign-select menu item the next step clicks auto-waits, so this
+    // click just needs to land - playwright auto-waits for actionability:
+    await page.click(playGameMenuItemSelector);
   });
 };
 
 export const clickOriginalCampaign = async (page: Page, logHeader: string) => {
   await test.step("Click Original Campaign", async () => {
-    await retryWithRecovery({
-      async action() {
-        const originalGameSelector = "[data-menuitem_id=originalGame]";
-        console.log(`${logHeader} ${elapsed()}: Clicking Original Campaign`);
-        await logSelectorExistence(page, originalGameSelector, logHeader);
-        await page.click(originalGameSelector);
-        await page.waitForTimeout(500);
-      },
-      logHeader,
-      actionDescription: "click Original Campaign",
-      page,
-      screenshotPrefix: "crowns-original-game",
-    });
+    console.log(`${logHeader} ${elapsed()}: Clicking Original Campaign`);
+    await page.click("[data-menuitem_id=originalGame]");
   });
+};
+
+/**
+ * wait for a dialog the *world* has to open - collecting a crown, walking onto
+ * a scroll - by stepping game time until it is there. {@link waitForDialog}
+ * only paints, which is right for a dialog the app opens on its own but leaves
+ * a frozen world waiting for something that will never happen
+ */
+export const advanceUntilDialog = async (
+  page: Page,
+  dialogId: DialogId | string,
+): Promise<void> => {
+  const dialog = page.locator(`[data-dialog-id="${dialogId}"]`);
+  const opened = await advanceUntil(page, () =>
+    dialog.isVisible().catch(() => false),
+  );
+  if (!opened) {
+    throw new Error(
+      `timed out advancing until the "${dialogId}" dialog opened`,
+    );
+  }
 };
 
 const crownsDialogSelector = "[data-dialog-id=crowns]";
 
+/**
+ * dismiss the crowns dialog, which opens whenever a new game starts. It shows a
+ * LOADING banner ({@link role}=status) while the game loads and only becomes
+ * clickable once loading is done, so wait for the banner to leave before
+ * clicking - clicking while it still loads is ignored.
+ */
 export const exitCrownsDialog = async (page: Page, logHeader: string) => {
   await test.step("Exit crowns dialog", async () => {
-    await retryWithRecovery({
-      async action(attempt) {
-        const isRetry = attempt > 0;
-        let cancelled = false;
+    const crownsDialog = page.locator(crownsDialogSelector);
 
-        await Promise.race([
-          (async () => {
-            if (isRetry) {
-              const stepStart = performance.now();
-              await page
-                .screenshot({
-                  path: `test-results/crowns-attempt-${attempt}-before-check.png`,
-                  fullPage: false,
-                })
-                .catch(() => {});
-              console.log(
-                `${logHeader} ${elapsed()}: screenshot (before-check) took ${formatDuration(performance.now() - stepStart)}`,
-              );
-              if (cancelled) {
-                return;
-              }
-            }
-
-            const crownsDialogVisible = await page
-              .locator(crownsDialogSelector)
-              .isVisible()
-              .catch(() => false);
-            if (cancelled) {
-              return;
-            }
-
-            if (crownsDialogVisible) {
-              console.log(
-                `${logHeader} ${elapsed()}: exiting crowns dialog...`,
-              );
-
-              if (isRetry) {
-                const stepStart = performance.now();
-                await page
-                  .screenshot({
-                    path: `test-results/crowns-attempt-${attempt}-before-click.png`,
-                    fullPage: false,
-                  })
-                  .catch(() => {});
-                console.log(
-                  `${logHeader} ${elapsed()}: screenshot (before-click) took ${formatDuration(performance.now() - stepStart)}`,
-                );
-                if (cancelled) {
-                  return;
-                }
-
-                await logSelectorExistence(
-                  page,
-                  crownsDialogSelector,
-                  logHeader,
-                );
-              }
-
-              await page.click(crownsDialogSelector);
-              console.log(`${logHeader} ${elapsed()}: crowns dialog closed`);
-            } else {
-              if (isRetry) {
-                const stepStart = performance.now();
-                await page
-                  .screenshot({
-                    path: `test-results/crowns-attempt-${attempt}-already-closed.png`,
-                    fullPage: false,
-                  })
-                  .catch(() => {});
-                console.log(
-                  `${logHeader} ${elapsed()}: screenshot (already-closed) took ${formatDuration(performance.now() - stepStart)}`,
-                );
-                if (cancelled) {
-                  return;
-                }
-              }
-
-              console.log(
-                `${logHeader} ${elapsed()}: crowns dialog not shown, continuing...`,
-              );
-            }
-          })(),
-          new Promise<never>((_, reject) =>
-            setTimeout(() => {
-              cancelled = true;
-              return reject(
-                new Error(
-                  `Timeout exiting crowns dialog after ${formatDuration(maximumWaitForStep)}`,
-                ),
-              );
-            }, maximumWaitForStep),
-          ),
-        ]);
-      },
-      logHeader,
-      actionDescription: "exit crowns dialog",
+    await whilePainting(
       page,
-      screenshotPrefix: "exit-crowns",
-    });
+      crownsDialog.waitFor({ state: "visible", timeout: longTimeout }),
+    );
+    // the LOADING banner (role=status) is present only while the game loads;
+    // wait for it to leave so the dialog's onClick is wired up:
+    await whilePainting(
+      page,
+      crownsDialog
+        .locator('[role="status"]')
+        .waitFor({ state: "detached", timeout: longTimeout }),
+    );
+
+    console.log(`${logHeader} ${elapsed()}: dismissing crowns dialog`);
+    await crownsDialog.click();
+    await whilePainting(
+      page,
+      crownsDialog.waitFor({ state: "detached", timeout: longTimeout }),
+    );
   });
 };
 
 export const openInGameMainMenu = async (page: Page, logHeader: string) => {
   await test.step("Open in-game main menu", async () => {
-    await retryWithRecovery({
-      async action() {
-        console.log(
-          `${logHeader} ${elapsed()}: Pressing Escape to open in-game main menu`,
-        );
-        await dispatchKeyPress(page, "Escape", "Escape");
-        await page.waitForTimeout(500);
-
-        const inGameMainMenuSelector = "[data-dialog-id=mainMenu]";
-        await page.waitForSelector(inGameMainMenuSelector, {
-          timeout: 5_000 * osSlowness,
-        });
-        await logSelectorExistence(page, inGameMainMenuSelector, logHeader);
-      },
-      logHeader,
-      actionDescription: "open in-game main menu",
-      page,
-      screenshotPrefix: "open-ingame-main-menu",
-    });
+    console.log(
+      `${logHeader} ${elapsed()}: Pressing Escape to open in-game main menu`,
+    );
+    await dispatchKeyPress(page, "Escape", "Escape");
+    await page
+      .locator("[data-dialog-id=mainMenu]")
+      .waitFor({ state: "visible", timeout: longTimeout });
   });
 };
 
@@ -384,9 +308,10 @@ export const waitForDialog = async (
     timeout?: number;
   } = {},
 ) => {
-  await page
-    .locator(`[data-dialog-id="${dialogId}"]`)
-    .waitFor({ state, timeout });
+  await whilePainting(
+    page,
+    page.locator(`[data-dialog-id="${dialogId}"]`).waitFor({ state, timeout }),
+  );
   if (state === "visible" || state === "attached") {
     // the Suspense fallback dialog carries no data-dialog-id, so the wait
     // above already proves the lazy chunk loaded; this additionally waits for

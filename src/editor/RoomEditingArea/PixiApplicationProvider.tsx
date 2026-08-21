@@ -4,6 +4,7 @@ import { type PropsWithChildren } from "preact/compat";
 import { useContext, useEffect, useState } from "preact/hooks";
 import { type EmptyObject } from "type-fest";
 
+import { installAppTickerAsPixiShared } from "../../game/mainLoop/installAppTickerAsPixiShared";
 import { stopAppAutoRendering } from "../../utils/pixi/stopAppAutoRendering";
 
 const PixiApplicationContext = createContext<Application>(
@@ -20,6 +21,10 @@ export const PixiApplicationProvider = ({
 
   useEffect(() => {
     //let unmounted = false;
+    // before init, which reads Ticker.shared and would otherwise create pixi's
+    // own ticker rather than taking ours:
+    installAppTickerAsPixiShared();
+
     const appThisEffect = new Application();
 
     appThisEffect

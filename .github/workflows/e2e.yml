@@ -78,13 +78,19 @@ jobs:
       fail-fast: false
       matrix:
         include:
-          # 3 groups of ~8 tests each, batched roughly by domain
-          - suite: persistence
-            pattern: "persistOnReload offlineCampaignCache saveCompatLoad"
-          - suite: endgame
-            pattern: "lifeAndDeath savesAndGameOver quitGameFlow gameComplete reincarnationStack gameRendersAfterRestart"
-          - suite: gameplayAndMenus
-            pattern: "crownsDialogs scrollAndKeyRebind mainMenuClosability playtestNoSave"
+          # every spec not in the visual-regression matrix appears in exactly
+          # one group here (saveCompatCapture excepted - a fixture-capture tool,
+          # not a test), so nothing can silently drift with no CI running it.
+          # Grouped by domain, balanced by measured runtime; lifeAndDeath is a
+          # group alone because it is the slowest single file
+          - suite: lives
+            pattern: "lifeAndDeath"
+          - suite: saves
+            pattern: "saveCompatLoad savesAndGameOver"
+          - suite: gameLifecycle
+            pattern: "persistOnReload reincarnationStack gameComplete quitGameFlow offlineCampaignCache"
+          - suite: menusAndRendering
+            pattern: "crownsDialogs upscaleResponds onScreenControls mainMenuClosability gameRendersAfterRendererReset scrollAndKeyRebind playtestNoSave doughnuttedMonsters errorDialogSnapshot"
     name: E2E ${{ matrix.suite }}
     steps:
       - uses: actions/checkout@v6

@@ -1,5 +1,9 @@
-import { type Xyz } from "../../../utils/vectors/vectors";
+import { originXy, xyEqual, type Xyz } from "../../../utils/vectors/vectors";
 
+/**
+ * the direction to turn to on being touched; `undefined` if the strategy has no
+ * turn to give
+ */
 export const turnedVector = (
   walkVector: Xyz,
   mtv: Xyz,
@@ -11,7 +15,12 @@ export const turnedVector = (
    * strategies
    */
   turnRoll: number,
-): Xyz => {
+): undefined | Xyz => {
+  // can't turn if not already moving
+  if (xyEqual(walkVector, originXy)) {
+    return undefined;
+  }
+
   switch (strategy) {
     case "opposite":
       return {
@@ -33,6 +42,12 @@ export const turnedVector = (
       };
     case "perpendicular-or-reverse":
     case "perpendicular": {
+      const intoSurface = mtv.x === 0 ? walkVector.y : walkVector.x;
+      if (intoSurface === 0) {
+        // touch is perpendicular to the direction of travel, does not block, do not turn
+        return undefined;
+      }
+
       const turnSign = turnRoll < 0.5 ? -1 : 1;
       return {
         x: mtv.x === 0 ? turnSign * walkVector.y : 0,
