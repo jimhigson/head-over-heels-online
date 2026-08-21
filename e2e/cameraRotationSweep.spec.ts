@@ -22,7 +22,6 @@ import {
 } from "./testUtils/menuNavigation";
 import { setupE2ePage } from "./testUtils/pageSetup";
 import { projectDeviceType } from "./testUtils/projectDeviceType";
-import { relaySupabase } from "./testUtils/relaySupabase";
 import {
   roomScreenshotOptions,
   spriteOptionSuffix,
@@ -657,9 +656,6 @@ const bootScenario = async (page: Page, scenario: SweepScenario) => {
       emulatedResolutionPayload(scenario),
     );
   } else if (scenario.campaign === "rotate-camera-test") {
-    if (process.env.E2E_RELAY_SUPABASE) {
-      await relaySupabase(page);
-    }
     await page.goto(rotateCameraTestCampaignUrl);
     await waitForGameReady(page);
     // zero the speed before playing on, so sprites are born frozen:
