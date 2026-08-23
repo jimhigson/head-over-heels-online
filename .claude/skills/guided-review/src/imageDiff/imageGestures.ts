@@ -3,10 +3,13 @@
  * Pointer events carry mouse and touch alike: a drag pans (or moves the swipe
  * divider when the swipe comparison is showing and the drag starts near it),
  * two fingers pinch-zoom, a double tap resets to fit. Wheel events are split
- * by a device heuristic: line/page deltas and coarse single-axis pixel deltas
- * read as a real mouse wheel and zoom at the cursor; fine or two-axis deltas
- * read as a trackpad and pan. ctrl/⌘-wheel always zooms - macOS delivers
- * trackpad pinch exactly that way.
+ * by a device heuristic: a mechanical wheel can only ever turn on one axis,
+ * so any horizontal delta at all is trackpad input and pans; a purely
+ * vertical delta is a real wheel and zooms at the cursor - deltaY's magnitude
+ * can't be trusted for this on its own, since macOS smooths even a plain
+ * wheel mouse into small deltas indistinguishable from a trackpad's. Line/
+ * page-mode deltas only ever come from a real wheel too. ctrl/⌘-wheel always
+ * zooms - macOS delivers trackpad pinch exactly that way.
  */
 
 type Point = { x: number; y: number };
@@ -256,8 +259,7 @@ export const attachImageGestures = ({
   viewport.addEventListener("pointerup", endPointer, { signal });
   viewport.addEventListener("pointercancel", endPointer, { signal });
 
-  const looksLikeTrackpad = (event: WheelEvent): boolean =>
-    event.deltaX !== 0 || !Number.isInteger(event.deltaY) || Math.abs(event.deltaY) < 50;
+  const looksLikeTrackpad = (event: WheelEvent): boolean => event.deltaX !== 0;
 
   viewport.addEventListener(
     "wheel",

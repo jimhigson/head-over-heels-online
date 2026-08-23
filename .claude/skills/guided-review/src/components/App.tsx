@@ -5,6 +5,7 @@ import { type ReadingState } from "../readingState.ts";
 import { type ReviewFile } from "../ReviewPayload.ts";
 import { holdActiveFile, scrollToRow, watchRows } from "../rowNodes.ts";
 import { adoptTicks, saveTicks, withMembership } from "../ticks.ts";
+import { filePathFromUrl, recordFileInUrl } from "../urlState.ts";
 import { Group } from "./Group.tsx";
 import { Header } from "./Header.tsx";
 import { Intro } from "./Intro.tsx";
@@ -14,18 +15,31 @@ import { Toasts } from "./Toasts.tsx";
 export type AppProps = { initialTicks: Set<string> };
 
 export const App = ({ initialTicks }: AppProps) => {
+  // the file a url or a reload asks to land back on - never folded away or
+  // hidden behind a closed group, whatever ticked/read state says otherwise
+  const restoredFile = files.find((file) => file.path === filePathFromUrl());
+
   const [ticked, setTicked] = useState(initialTicks);
   // a file already read loads folded away, so a reload picks up where the
   // reading did rather than reopening everything
   const [collapsed, setCollapsed] = useState(
-    () => new Set(files.filter((file) => ticked.has(file.path)).map((file) => file.id)),
+    () =>
+      new Set(
+        files
+          .filter((file) => ticked.has(file.path) && file.id !== restoredFile?.id)
+          .map((file) => file.id),
+      ),
   );
   const [closedGroups, setClosedGroups] = useState(
     () =>
       new Set(
         groups
           .map((_group, index) => index)
-          .filter((index) => filesInGroup(index).every((file) => ticked.has(file.path))),
+          .filter(
+            (index) =>
+              index !== restoredFile?.groupIndex &&
+              filesInGroup(index).every((file) => ticked.has(file.path)),
+          ),
       ),
   );
   // image rows open without a click - seeing the image IS reading the row
@@ -33,8 +47,8 @@ export const App = ({ initialTicks }: AppProps) => {
     () => new Set(files.filter((file) => images[file.path] !== undefined).map((file) => file.id)),
   );
   const [showContents, setShowContents] = useState(() => !contentsWouldOverlay());
-  const [activeId, setActiveId] = useState(files[0]?.id);
-  const [scrollTo, setScrollTo] = useState<string | undefined>(undefined);
+  const [activeId, setActiveId] = useState(restoredFile?.id ?? files[0]?.id);
+  const [scrollTo, setScrollTo] = useState<string | undefined>(() => restoredFile?.id);
   const loaded = useRef(false);
   const overlays = useContentsOverlays();
 
@@ -93,17 +107,19 @@ export const App = ({ initialTicks }: AppProps) => {
     setCollapsed((previous) => withMembership(previous, file.id, false));
     setActiveId(file.id);
     setScrollTo(file.id);
-    holdActiveFile(1_000);
     if (contentsWouldOverlay()) {
       setShowContents(false);
     }
   };
 
-  // scrolling waits for the render that opened whatever the file was inside
+  // scrolling waits for the render that opened whatever the file was inside.
+  // Held so the file just scrolled to is the active one for a moment, whether
+  // this scroll came from a click or - on mount - a restored url
   useEffect(() => {
     if (scrollTo === undefined) {
       return;
     }
+    holdActiveFile(1_000);
     scrollToRow(scrollTo);
     setScrollTo(undefined);
   }, [scrollTo]);
@@ -117,6 +133,15 @@ export const App = ({ initialTicks }: AppProps) => {
       ),
     [],
   );
+
+  // keeps the url pointed at whatever file is active, whether that came from
+  // a click or from scrolling past it, so a reload lands back here
+  useEffect(() => {
+    const active = files.find((file) => file.id === activeId);
+    if (active !== undefined) {
+      recordFileInUrl(active.path);
+    }
+  }, [activeId]);
 
   const state: ReadingState = {
     ticked,

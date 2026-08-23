@@ -6,12 +6,12 @@ import { render } from "preact";
 
 import { focusNoteOnLine, NoteZone } from "./components/NoteZone.tsx";
 import { type DiffView, diffViewStore, showsBothSides } from "./diffView.ts";
-import { liveEditors } from "./liveEditors.ts";
+import { notifyDiskConflict } from "./diskConflict.ts";
+import { type FileFromDisk, liveEditors } from "./liveEditors.ts";
 import { type MonacoApi, type MonacoTextModel } from "./monacoApi.ts";
 import { languageFor } from "./monacoLoader.ts";
 import { messagesOf, noteAt, notesFor } from "./notes.ts";
 import { activeReviewIsEditable, reviewId, server, sides } from "./payload.ts";
-import { toast } from "./stores.ts";
 
 export type EditorStatus = { kind: string; text: string };
 
@@ -82,6 +82,57 @@ export const createDiffEditor = (
 
   let {sha} = side;
   let dirty = false;
+  let saveTimer: ReturnType<typeof setTimeout> | undefined;
+
+  const applyFromDisk = (file: FileFromDisk): void => {
+    modified.setValue(file.after);
+    ({ sha } = file);
+    dirty = false;
+    setDirty(false);
+    setCounts([file.added, file.removed]);
+  };
+
+  const fetchFresh = async (): Promise<FileFromDisk | undefined> =>
+    fetch(`/file?review=${encodeURIComponent(reviewId)}`, {
+      method: "POST",
+      headers: { "Content-Type": "application/json", "X-Review-Token": server?.token ?? "" },
+      body: JSON.stringify({ path }),
+    })
+      .then((result) => result.json() as Promise<FileFromDisk>)
+      .catch(() => undefined);
+
+  const writeToDisk = async (): Promise<void> => {
+    setStatus({ kind: "", text: "saving…" });
+    const response = await fetch(`/save?review=${encodeURIComponent(reviewId)}`, {
+      method: "POST",
+      headers: { "Content-Type": "application/json", "X-Review-Token": server?.token ?? "" },
+      body: JSON.stringify({ path, content: modified.getValue(), sha }),
+    }).catch(() => undefined);
+
+    if (response?.ok === true) {
+      const result = (await response.json()) as { sha: string; added: number; removed: number };
+      ({ sha } = result);
+      dirty = false;
+      setDirty(false);
+      setCounts([result.added, result.removed]);
+      setStatus({ kind: "state-saved", text: `saved  +${result.added} −${result.removed}` });
+      return;
+    }
+    if (response?.status === 409) {
+      setStatus({ kind: "state-error", text: "changed on disk" });
+      const fresh = await fetchFresh();
+      if (fresh !== undefined) {
+        notifyDiskConflict(path, fresh, { applyFromDisk, overwriteDiskWith });
+      }
+      return;
+    }
+    setStatus({ kind: "state-error", text: "save failed" });
+  };
+
+  const overwriteDiskWith = (file: FileFromDisk): void => {
+    ({ sha } = file);
+    writeToDisk();
+  };
 
   // note authoring/collaboration (view zones, the gutter "+" glyph, the
   // alt-N/context-menu action, save/revert, and the live-file poll) only make
@@ -189,10 +240,14 @@ export const createDiffEditor = (
     });
 
     if (editable) {
+      // synced almost as soon as it's typed, rather than sitting unsaved until
+      // a deliberate Save that's easy to forget
       modified.onDidChangeContent(() => {
         dirty = true;
         setDirty(true);
         setStatus({ kind: "state-dirty", text: "unsaved" });
+        clearTimeout(saveTimer);
+        saveTimer = setTimeout(writeToDisk, 500);
       });
     }
 
@@ -200,16 +255,8 @@ export const createDiffEditor = (
       sha: () => sha,
       refreshNotes: drawNotes,
       isDirty: () => dirty,
-      applyFromDisk(file) {
-        if (dirty) {
-          toast(`${path} changed on disk — Revert to load it`, "warn");
-          return;
-        }
-        modified.setValue(file.after);
-        ({ sha } = file);
-        setDirty(false);
-        setCounts([file.added, file.removed]);
-      },
+      applyFromDisk,
+      overwriteDiskWith,
     });
 
     drawNotes();
@@ -233,38 +280,18 @@ export const createDiffEditor = (
   return {
     dispose() {
       stopFollowingView();
+      clearTimeout(saveTimer);
       liveEditors.delete(path);
       editor.dispose();
       original.dispose();
       modified.dispose();
     },
-    // puts the file back the way the review found it - but only in the editor,
-    // so nothing reaches disk without a deliberate Save
+    // puts the file back the way the review found it - like any other edit,
+    // that then syncs to disk on its own shortly after
     revert() {
       modified.setValue(side.after);
-      setStatus({ kind: "state-dirty", text: "reverted — save to write it back" });
+      setStatus({ kind: "state-dirty", text: "reverted" });
     },
-    async save() {
-      setStatus({ kind: "", text: "saving…" });
-      const response = await fetch(`/save?review=${encodeURIComponent(reviewId)}`, {
-        method: "POST",
-        headers: { "Content-Type": "application/json", "X-Review-Token": server?.token ?? "" },
-        body: JSON.stringify({ path, content: modified.getValue(), sha }),
-      }).catch(() => undefined);
-
-      if (response?.ok === true) {
-        const result = (await response.json()) as { sha: string; added: number; removed: number };
-        ({ sha } = result);
-        dirty = false;
-        setDirty(false);
-        setCounts([result.added, result.removed]);
-        setStatus({ kind: "state-saved", text: `saved  +${result.added} −${result.removed}` });
-        return;
-      }
-      setStatus({
-        kind: "state-error",
-        text: response?.status === 409 ? "changed on disk — reload before saving" : "save failed",
-      });
-    },
+    save: writeToDisk,
   };
 };

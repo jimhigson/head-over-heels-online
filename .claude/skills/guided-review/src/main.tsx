@@ -1,13 +1,14 @@
 import { render } from "preact";
 
 import { App } from "./components/App.tsx";
+import { notifyDiskConflict } from "./diskConflict.ts";
 import { imageStatsStore, startImageStatsSweep } from "./imageDiff/imageStats.ts";
-import { liveEditors } from "./liveEditors.ts";
+import { type FileFromDisk, liveEditors } from "./liveEditors.ts";
 import { followPageTheme } from "./monacoLoader.ts";
 import { loadNotes, messagesOf, type Note, noteAt, type Notes, notesStore } from "./notes.ts";
 import { activeReviewIsEditable, meta, reviewId, selectReview, server } from "./payload.ts";
 import { setReviewSwitcher } from "./reviewSwitch.ts";
-import { toast } from "./stores.ts";
+import { toast, toastFileUpdated } from "./stores.ts";
 import {
   adoptTicks,
   getLastFromServer,
@@ -91,19 +92,25 @@ const pollState = async (): Promise<void> => {
 
   for (const [path, file] of Object.entries(state.files)) {
     const editor = liveEditors.get(path);
-    if (editor !== undefined && file.sha !== editor.sha()) {
-      const fresh = await fetch(`/file${reviewQuery()}`, {
-        method: "POST",
-        headers: { "Content-Type": "application/json", "X-Review-Token": server.token },
-        body: JSON.stringify({ path }),
-      })
-        .then((result) => result.json() as Promise<{ after: string; sha: string; added: number; removed: number }>)
-        .catch(() => undefined);
-      if (fresh !== undefined) {
-        editor.applyFromDisk(fresh);
-        toast(`${path} updated — diff refreshed`, "done");
-      }
+    if (editor === undefined || file.sha === editor.sha()) {
+      continue;
     }
+    const fresh = await fetch(`/file${reviewQuery()}`, {
+      method: "POST",
+      headers: { "Content-Type": "application/json", "X-Review-Token": server.token },
+      body: JSON.stringify({ path }),
+    })
+      .then((result) => result.json() as Promise<FileFromDisk>)
+      .catch(() => undefined);
+    if (fresh === undefined) {
+      continue;
+    }
+    if (editor.isDirty()) {
+      notifyDiskConflict(path, fresh, editor);
+      continue;
+    }
+    editor.applyFromDisk(fresh);
+    toastFileUpdated(path);
   }
 };
 

@@ -13,6 +13,7 @@ import {
   type ReviewShell,
   type ShellReview,
 } from "./ReviewPayload.ts";
+import { recordReviewInUrl, reviewNumberFromUrl } from "./urlState.ts";
 
 const parseBlock = <Parsed,>(elementId: string): Parsed => {
   const element = document.getElementById(elementId);
@@ -59,9 +60,25 @@ export const selectReview = (number: number): void => {
     })),
   );
   total = files.length;
+  recordReviewInUrl(number);
 };
 
-selectReview(shell.current);
+const isCarried = (number: number): boolean =>
+  shell.reviews.find((review) => review.number === number)?.block !== undefined;
+
+// a url naming a carried pr wins - it's what a reload or a shared link asks
+// for. Otherwise stacks read base-first; shell.current is just the build's
+// anchor PR
+const initialReviewNumber = (): number => {
+  const requested = reviewNumberFromUrl();
+  if (requested !== undefined && isCarried(requested)) {
+    return requested;
+  }
+  const [base] = shell.reviews;
+  return base !== undefined && base.block !== undefined ? base.number : shell.current;
+};
+
+selectReview(initialReviewNumber());
 
 /** whether the active review's editors may write to the served checkout */
 export const activeReviewIsEditable = (): boolean =>
