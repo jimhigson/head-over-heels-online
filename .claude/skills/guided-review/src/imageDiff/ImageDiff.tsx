@@ -18,6 +18,22 @@ const isPairMode = (mode: ImageMode): boolean =>
 /** how fast flick mode alternates between the two versions */
 const flickIntervalMs = 600;
 
+/** how fast the diff overlay cycles its highlight colour */
+const overlayColourIntervalMs = 250;
+
+// every combination of red/green/blue fully on or off - cycling through all
+// eight keeps the highlight visible against whatever is underneath it
+const overlayColours = [
+  "#000000",
+  "#0000ff",
+  "#00ff00",
+  "#00ffff",
+  "#ff0000",
+  "#ff00ff",
+  "#ffff00",
+  "#ffffff",
+] as const;
+
 export type ImageDiffProps = { path: string; row: ImageRow };
 
 /**
@@ -32,6 +48,7 @@ export const ImageDiff = ({ path, row }: ImageDiffProps) => {
   const [mode, setMode] = useState<ImageMode>("to");
   const [overlay, setOverlay] = useState(false);
   const [flickShowing, setFlickShowing] = useState<ChooserSide>("to");
+  const [overlayColourIndex, setOverlayColourIndex] = useState(0);
   const [diffState, setDiffState] = useState<
     { key: string; render: ImageDiffRender } | undefined
   >(undefined);
@@ -134,6 +151,17 @@ export const ImageDiff = ({ path, row }: ImageDiffProps) => {
   const diffWanted = (mode === "diff" || (overlay && overlayApplies)) && fromIndex !== toIndex;
 
   useEffect(() => {
+    if (!diffWanted) {
+      return;
+    }
+    setOverlayColourIndex(0);
+    const timer = setInterval(() => {
+      setOverlayColourIndex((index) => (index + 1) % overlayColours.length);
+    }, overlayColourIntervalMs);
+    return () => clearInterval(timer);
+  }, [diffWanted]);
+
+  useEffect(() => {
     if (!diffWanted || diffKey === "") {
       return;
     }
@@ -160,23 +188,20 @@ export const ImageDiff = ({ path, row }: ImageDiffProps) => {
   const comparable = versions.length > 1;
   const diffReady = diffState !== undefined && diffState.key === diffKey;
 
+  // from always precedes to - an earlier-to-later comparison is the only one
+  // that reads sensibly against "added"/"removed" language elsewhere
   const pick = (side: ChooserSide, index: number) => {
     if (side === "from") {
-      if (index === toIndex) {
+      if (index >= toIndex) {
         return;
       }
       setFromIndex(index);
     } else {
-      if (index === fromIndex) {
+      if (index <= fromIndex) {
         return;
       }
       setToIndex(index);
     }
-  };
-
-  const swap = () => {
-    setFromIndex(toIndex);
-    setToIndex(fromIndex);
   };
 
   const zoomToDiff = async () => {
@@ -210,16 +235,6 @@ export const ImageDiff = ({ path, row }: ImageDiffProps) => {
     <div class="img-diff">
       <div class="img-toolbar">
         <VersionChooser versions={versions} from={fromIndex} to={toIndex} onPick={pick} />
-        <button
-          type="button"
-          class="control img-swap"
-          title="swap from and to"
-          aria-label="swap from and to"
-          disabled={!comparable}
-          onClick={swap}
-        >
-          ⇄
-        </button>
         <div class="img-modes" role="group" aria-label="How the pair is shown">
           {imageModes.map((candidate) => (
             <button
@@ -240,16 +255,16 @@ export const ImageDiff = ({ path, row }: ImageDiffProps) => {
               {candidate}
             </button>
           ))}
-        </div>
-        <label class="img-overlay">
-          <input
-            type="checkbox"
-            checked={overlay}
+          <button
+            type="button"
+            class={`control img-mode ${overlay ? "is-active" : ""}`}
             disabled={!comparable || !overlayApplies}
-            onChange={(event) => setOverlay(event.currentTarget.checked)}
-          />
-          overlay
-        </label>
+            aria-pressed={overlay}
+            onClick={() => setOverlay(!overlay)}
+          >
+            overlay
+          </button>
+        </div>
         <button
           type="button"
           class="control"
@@ -285,12 +300,15 @@ export const ImageDiff = ({ path, row }: ImageDiffProps) => {
             draggable={false}
             style={{ display: showFromLayer ? "block" : "none" }}
           />
-          <img
+          <div
             class="img-layer img-layer-diff"
-            src={diffReady ? diffState.render.dataUri : undefined}
-            alt="differing pixels"
-            draggable={false}
-            style={{ display: showDiffLayer ? "block" : "none" }}
+            aria-hidden="true"
+            style={{
+              display: showDiffLayer ? "block" : "none",
+              backgroundColor: overlayColours[overlayColourIndex],
+              maskImage: diffReady ? `url(${diffState.render.dataUri})` : "none",
+              WebkitMaskImage: diffReady ? `url(${diffState.render.dataUri})` : "none",
+            }}
           />
           <div
             class="img-divider"

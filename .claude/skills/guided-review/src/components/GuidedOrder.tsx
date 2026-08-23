@@ -1,4 +1,5 @@
 import { notesStore } from "../notes.ts";
+import { runsByPath } from "../pathRuns.ts";
 import { filesInGroup, groups } from "../payload.ts";
 import { type ReadingState } from "../readingState.ts";
 import { useStore } from "../stores.ts";
@@ -40,15 +41,22 @@ export const GuidedOrder = ({ state }: GuidedOrderProps) => {
               </span>
             </div>
             <ul class="tree-files">
-              {files.map((file) => (
-                <TreeFileRow
-                  key={file.id}
-                  file={file}
-                  state={state}
-                  noted={(notes[file.path] ?? []).length}
-                  showDir
-                />
-              ))}
+              {runsByPath(files).flatMap((run, runIndex) => [
+                run.path === "" ? null : (
+                  <li class="tree-path-heading" title={run.path} key={`path-${runIndex}`}>
+                    <span>{run.path}/</span>
+                  </li>
+                ),
+                ...run.files.map((file) => (
+                  <TreeFileRow
+                    key={file.id}
+                    file={file}
+                    state={state}
+                    noted={(notes[file.path] ?? []).length}
+                    showDir={false}
+                  />
+                )),
+              ])}
             </ul>
           </li>
         );

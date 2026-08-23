@@ -7,15 +7,19 @@
 
 export type SizeTier = "H" | "L" | "M" | "S" | "T";
 
-export const sizeTierOfLines = (lines: number): SizeTier =>
-  lines <= 3 ? "T"
+// zero is its own case - a side with no changes gets no bar at all, rather
+// than the sliver a genuinely tiny change gets
+export const sizeTierOfLines = (lines: number): SizeTier | undefined =>
+  lines === 0 ? undefined
+  : lines <= 3 ? "T"
   : lines <= 10 ? "S"
   : lines <= 32 ? "M"
   : lines <= 100 ? "L"
   : "H";
 
-export const sizeTierOfImagePercent = (percent: number): SizeTier =>
-  percent <= 1.5 ? "T"
+export const sizeTierOfImagePercent = (percent: number): SizeTier | undefined =>
+  percent === 0 ? undefined
+  : percent <= 1.5 ? "T"
   : percent <= 3.3 ? "S"
   : percent <= 10 ? "M"
   : percent <= 20 ? "L"
@@ -28,3 +32,7 @@ export const blockOfTier: Record<SizeTier, string> = {
   L: "▇",
   H: "█",
 };
+
+// a plain space collapses away as trimmable whitespace when it's a bar's only
+// content; a non-breaking space doesn't, and is the same monospace cell width
+export const emptyTierGlyph = " ";

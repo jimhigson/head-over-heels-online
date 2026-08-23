@@ -16,42 +16,44 @@ export type VersionChooserProps = {
 
 /**
  * The version chooser: a table with a column per version, radios above the
- * labels picking the "from" side and radios below picking the "to" side. A
- * version can never be both sides at once, so whichever column one side holds
- * has its radio on the other side disabled; the pair reverses with the swap
- * button instead. Labels of versions byte-identical to an earlier column are
- * greyed, so comparisons guaranteed empty are visible up front.
+ * labels picking the "from" side and radios below picking the "to" side. From
+ * must precede to, so a column past the other side's radio is disabled there
+ * - there's no swap, reversing the pair is never a valid choice. With only
+ * two versions there is only one possible pair, so nothing to choose: the
+ * chooser shows nothing at all. Labels of versions byte-identical to an
+ * earlier column are greyed, so comparisons guaranteed empty are visible up
+ * front.
  */
 export const VersionChooser = ({ versions, from, to, onPick }: VersionChooserProps) => {
   const radioGroupId = useId();
+
+  if (versions.length < 3) {
+    return null;
+  }
 
   const duplicateOf = (index: number): string | undefined =>
     versions
       .slice(0, index)
       .find((earlier) => earlier.blob === versions[index]?.blob)?.label;
 
-  const radioRow = (side: ChooserSide) => {
-    const own = side === "from" ? from : to;
-    const other = side === "from" ? to : from;
-    return (
-      <tr>
-        <td class="img-side">{side}</td>
-        {versions.map((version, index) => (
-          <td key={index}>
-            <input
-              type="radio"
-              class="img-radio"
-              name={`${radioGroupId}-${side}`}
-              checked={index === own}
-              disabled={index === other && versions.length > 1}
-              aria-label={`compare ${side} ${version.label}`}
-              onChange={() => onPick(side, index)}
-            />
-          </td>
-        ))}
-      </tr>
-    );
-  };
+  const radioRow = (side: ChooserSide) => (
+    <tr>
+      <td class="img-side">{side}</td>
+      {versions.map((version, index) => (
+        <td key={index}>
+          <input
+            type="radio"
+            class="img-radio"
+            name={`${radioGroupId}-${side}`}
+            checked={index === (side === "from" ? from : to)}
+            disabled={side === "from" ? index >= to : index <= from}
+            aria-label={`compare ${side} ${version.label}`}
+            onChange={() => onPick(side, index)}
+          />
+        </td>
+      ))}
+    </tr>
+  );
 
   return (
     <table class="img-chooser">

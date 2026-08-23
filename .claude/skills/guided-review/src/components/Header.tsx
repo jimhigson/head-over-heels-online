@@ -66,7 +66,7 @@ export const Header = ({ state }: HeaderProps) => {
 
   return (
     <header class="top" ref={headerRef}>
-      <StackBar />
+      <StackBar state={state} />
       <div class="top-inner">
         <p class="top-title">{meta.headerTitle ?? meta.title}</p>
         {offline && (

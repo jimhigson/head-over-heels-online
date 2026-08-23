@@ -1,4 +1,4 @@
-import { toastStore, useStore } from "../stores.ts";
+import { dismissToast, toastStore, useStore } from "../stores.ts";
 
 export const Toasts = () => {
   const toasts = useStore(toastStore);
@@ -10,7 +10,23 @@ export const Toasts = () => {
           role="status"
           key={entry.id}
         >
-          {entry.text}
+          <p class="toast-text">{entry.text}</p>
+          {entry.actions !== undefined && entry.actions.length > 0 && (
+            <div class="toast-actions">
+              {entry.actions.map((action) => (
+                <button
+                  type="button"
+                  key={action.label}
+                  onClick={() => {
+                    action.onClick();
+                    dismissToast(entry.id);
+                  }}
+                >
+                  {action.label}
+                </button>
+              ))}
+            </div>
+          )}
         </div>
       ))}
     </div>

@@ -40,6 +40,7 @@ export const NoteZone = ({ path, line, done }: NoteZoneProps) => {
   const draftKey = `${path}:${line}`;
   const [draft, setDraft] = useState(drafts.get(draftKey) ?? "");
   const textareaRef = useRef<HTMLTextAreaElement>(null);
+  const threadRef = useRef<HTMLDivElement>(null);
 
   // only the box just opened takes the caret - a poll redrawing every zone must
   // not steal it from wherever you are typing
@@ -65,6 +66,28 @@ export const NoteZone = ({ path, line, done }: NoteZoneProps) => {
     takeCaret();
   }, [line]);
 
+  // keeps the newest message in view rather than leaving the reader scrolled
+  // up at whatever line the thread happened to open on. Same caveat as the
+  // caret above: monaco hasn't laid this zone's dom out yet on this render
+  // frame (it isn't in the document yet, or is still display: none while
+  // monaco moves it there), so scrollHeight reads as 0 until it is - ask
+  // again across frames until the thread actually has a height to scroll
+  useLayoutEffect(() => {
+    let attempts = 0;
+    const scrollToBottom = () => {
+      const thread = threadRef.current;
+      if (thread === null) {
+        return;
+      }
+      if (thread.clientHeight === 0 && (attempts += 1) < 10) {
+        requestAnimationFrame(scrollToBottom);
+        return;
+      }
+      thread.scrollTop = thread.scrollHeight;
+    };
+    scrollToBottom();
+  }, [messages.length]);
+
   const send = () => {
     sayOnNote(path, line, draft);
     drafts.delete(draftKey);
@@ -82,7 +105,19 @@ export const NoteZone = ({ path, line, done }: NoteZoneProps) => {
   return (
     <div class="note-zone">
       {messages.length > 0 && (
-        <div class="note-thread">
+        <div
+          class="note-thread"
+          ref={threadRef}
+          onWheel={(event) => {
+            const thread = event.currentTarget;
+            // only trap it when there's actually somewhere for it to go - a
+            // short thread with nothing to scroll leaves the wheel for the
+            // editor underneath, same as before
+            if (thread.scrollHeight > thread.clientHeight) {
+              event.stopPropagation();
+            }
+          }}
+        >
           {messages.map((message, index) => (
             <p class={`note-message note-from-${message.from}`} key={index}>
               <span class="note-who">{message.from === "agent" ? "agent" : "you"}</span>

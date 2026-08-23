@@ -49,7 +49,8 @@ const rgbaOf = (image: HTMLImageElement): Uint8ClampedArray => {
 
 /**
  * one pass over the union extent: counts and bounds the differing pixels, and
- * paints them magenta into `paintInto` when a diff image is wanted too
+ * paints them opaque white into `paintInto` when a diff image is wanted too -
+ * a stencil the overlay recolours in css, not a fixed-colour image
  */
 const comparePixels = (
   imageA: HTMLImageElement,
@@ -91,7 +92,7 @@ const comparePixels = (
         if (paintInto !== undefined) {
           const offsetOut = (y * unionWidth + x) * 4;
           paintInto.data[offsetOut] = 255;
-          paintInto.data[offsetOut + 1] = 0;
+          paintInto.data[offsetOut + 1] = 255;
           paintInto.data[offsetOut + 2] = 255;
           paintInto.data[offsetOut + 3] = 255;
         }
@@ -134,13 +135,14 @@ export const computeImageDiffStats = async (
 };
 
 export type ImageDiffRender = ImageDiffStats & {
-  /** magenta-on-transparent image of the differing pixels */
+  /** white-on-transparent stencil of the differing pixels, recoloured by
+      whatever css masks it in */
   dataUri: string;
 };
 
 const renderCache = new Map<string, Promise<ImageDiffRender>>();
 
-/** the magenta diff image of a pair, memoised per row and unordered pair */
+/** the white-stencil diff image of a pair, memoised per row and unordered pair */
 export const renderImageDiff = (
   /** cache key naming the row and pair, eg `${path}|2|4` with indexes sorted */
   cacheKey: string,

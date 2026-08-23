@@ -1,7 +1,7 @@
 import { imageStatsStore } from "../imageDiff/imageStats.ts";
 import { isImagePath } from "../imagePaths.ts";
 import { stats, statusLabel } from "../payload.ts";
-import { blockOfTier, sizeTierOfImagePercent, sizeTierOfLines } from "../sizeTier.ts";
+import { blockOfTier, emptyTierGlyph, sizeTierOfImagePercent, sizeTierOfLines } from "../sizeTier.ts";
 import { useStore } from "../stores.ts";
 
 export type FileStatusChipProps = { path: string; status: string };
@@ -42,10 +42,10 @@ export const FileStatusChip = ({ path, status }: FileStatusChipProps) => {
     <span class={`chip chip-small chip-${status}`} title={`${label} — +${added} −${removed}`}>
       <span class="chip-letter">{status}</span>
       <span class="chip-bar chip-bar-added" aria-hidden="true">
-        {blockOfTier[addedTier]}
+        {addedTier === undefined ? emptyTierGlyph : blockOfTier[addedTier]}
       </span>
       <span class="chip-bar chip-bar-removed" aria-hidden="true">
-        {blockOfTier[removedTier]}
+        {removedTier === undefined ? emptyTierGlyph : blockOfTier[removedTier]}
       </span>
     </span>
   );

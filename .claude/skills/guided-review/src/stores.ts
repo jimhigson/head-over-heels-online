@@ -38,26 +38,92 @@ export const useStore = <T,>(store: Store<T>): T => {
 
 export type ToastKind = "done" | "info" | "warn";
 
+export type ToastAction = { label: string; onClick: () => void };
+
 export type Toast = {
   id: number;
   text: string;
   kind: ToastKind;
   leaving: boolean;
+  actions?: ToastAction[];
 };
 
 export const toastStore = makeStore<Toast[]>([]);
 
 let lastToastId = 0;
 
-export const toast = (text: string, kind: ToastKind = "info"): void => {
-  const id = (lastToastId += 1);
-  toastStore.set([...toastStore.get(), { id, text, kind, leaving: false }]);
-  setTimeout(
-    () =>
-      toastStore.set(
-        toastStore.get().map((entry) => (entry.id === id ? { ...entry, leaving: true } : entry)),
-      ),
-    7_000,
+const hideToast = (id: number): void => {
+  toastStore.set(
+    toastStore.get().map((entry) => (entry.id === id ? { ...entry, leaving: true } : entry)),
   );
-  setTimeout(() => toastStore.set(toastStore.get().filter((entry) => entry.id !== id)), 7_600);
+};
+
+const removeToast = (id: number): void => {
+  toastStore.set(toastStore.get().filter((entry) => entry.id !== id));
+};
+
+/** dismiss immediately - what an action button does with its own toast, so it
+    doesn't linger after being acted on */
+export const dismissToast = (id: number): void => {
+  removeToast(id);
+};
+
+type DismissTimers = { hideTimer: ReturnType<typeof setTimeout>; removeTimer: ReturnType<typeof setTimeout> };
+
+const scheduleAutoDismiss = (id: number, onRemoved?: () => void): DismissTimers => ({
+  hideTimer: setTimeout(() => hideToast(id), 7_000),
+  removeTimer: setTimeout(() => {
+    removeToast(id);
+    onRemoved?.();
+  }, 7_600),
+});
+
+/** a toast carrying actions asks for a decision, so it waits for one rather
+    than vanishing on the usual timer */
+export const toast = (text: string, kind: ToastKind = "info", actions?: ToastAction[]): void => {
+  const id = (lastToastId += 1);
+  toastStore.set([...toastStore.get(), { id, text, kind, leaving: false, actions }]);
+  if (actions === undefined || actions.length === 0) {
+    scheduleAutoDismiss(id);
+  }
+};
+
+/* "path updated" coalesces repeats for the same path into a running count -
+   an agent iterating on a fix can save the same file several times in a few
+   seconds, and a fresh toast per save reads as spam rather than signal. Each
+   new occurrence cancels the previous dismiss timers so the toast keeps
+   resetting its own clock instead of vanishing mid-flurry. */
+const fileUpdateToasts = new Map<string, { id: number; count: number } & DismissTimers>();
+
+export const toastFileUpdated = (path: string): void => {
+  const existing = fileUpdateToasts.get(path);
+  const count = (existing?.count ?? 0) + 1;
+  const text =
+    count === 1 ?
+      `${path} updated — diff refreshed`
+    : `${path} updated ${count} times — diff refreshed`;
+
+  if (existing !== undefined) {
+    clearTimeout(existing.hideTimer);
+    clearTimeout(existing.removeTimer);
+    toastStore.set(
+      toastStore
+        .get()
+        .map((entry) => (entry.id === existing.id ? { ...entry, text, leaving: false } : entry)),
+    );
+    fileUpdateToasts.set(path, {
+      id: existing.id,
+      count,
+      ...scheduleAutoDismiss(existing.id, () => fileUpdateToasts.delete(path)),
+    });
+    return;
+  }
+
+  const id = (lastToastId += 1);
+  toastStore.set([...toastStore.get(), { id, text, kind: "done", leaving: false }]);
+  fileUpdateToasts.set(path, {
+    id,
+    count,
+    ...scheduleAutoDismiss(id, () => fileUpdateToasts.delete(path)),
+  });
 };

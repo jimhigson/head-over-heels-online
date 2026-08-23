@@ -12,7 +12,13 @@ export type FileFromDisk = {
 export type LiveEditor = {
   sha: () => string;
   refreshNotes: () => void;
+  /** loads disk content into the editor unconditionally - the caller decides
+      whether discarding any unsaved edit is the right call first */
   applyFromDisk: (file: FileFromDisk) => void;
+  /** writes the editor's current (possibly unsaved) content to disk, adopting
+      the given file's sha as the base - how the reader's edit wins over a
+      conflicting change made elsewhere */
+  overwriteDiskWith: (file: FileFromDisk) => void;
   /** unsaved edits - a review switch would lose them, so it asks first */
   isDirty: () => boolean;
 };

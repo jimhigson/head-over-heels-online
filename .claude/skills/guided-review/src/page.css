@@ -302,7 +302,7 @@ label.control.select select:focus-visible { outline: none; }
 .split {
   position: relative;
   flex: none;
-  width: 0.55rem;
+  width: 0.8em;
   cursor: col-resize;
   background: transparent;
   border: none;
@@ -315,16 +315,15 @@ label.control.select select:focus-visible { outline: none; }
   top: 0;
   bottom: 0;
   left: 50%;
-  width: 1px;
+  width: 0.8em;
   transform: translateX(-50%);
   background: var(--rule);
-  transition: background-color 120ms ease-out, width 120ms ease-out;
+  transition: background-color 120ms ease-out;
 }
 
 .split:hover::before,
 .split:focus-visible::before,
 .split[data-resize-handle-state="drag"]::before {
-  width: 3px;
   background: var(--accent);
 }
 
@@ -457,6 +456,26 @@ button.tree-file-link:focus-visible { outline: 2px solid var(--accent); outline-
 
 /* ...but the path itself is ltr, or bidi moves its leading "." to the end */
 .tree-dir > span { direction: ltr; unicode-bidi: embed; }
+
+/* stated once above a contiguous run of files sharing a directory, rather
+   than repeated on every one of them */
+.tree-path-heading {
+  font-family: var(--mono);
+  font-size: 1rem;
+  color: var(--ink-faint);
+  padding: 0.35rem 0.25rem 0.05rem;
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  /* ellipsis at the *start*, same trick as .tree-dir: the segment nearest
+     the files below is the half worth keeping when it doesn't all fit */
+  direction: rtl;
+  text-align: left;
+}
+
+.tree-path-heading > span { direction: ltr; unicode-bidi: embed; }
+
+.tree-path-heading:first-child { padding-top: 0.1rem; }
 
 .tree-file.is-ticked { opacity: 0.5; }
 .tree-file.is-ticked .tree-base { text-decoration: line-through; }
@@ -995,6 +1014,26 @@ button.save:focus-visible { outline: 2px solid var(--accent); outline-offset: 2p
 .toast-warn { border-left-color: var(--rm-edge); }
 .toast.leaving { opacity: 0; }
 
+.toast-text { margin: 0; }
+
+.toast-actions {
+  display: flex;
+  gap: 0.4rem;
+  margin-top: 0.5rem;
+}
+
+.toast-actions button {
+  font-family: var(--body);
+  font-size: 1rem;
+  background: transparent;
+  border: 1px solid var(--rule);
+  color: var(--ink-soft);
+  padding: 0.15rem 0.45rem;
+  cursor: pointer;
+}
+
+.toast-actions button:hover { border-color: var(--accent); color: var(--accent); }
+
 .note-zone button {
   font-family: var(--body);
   font-size: 1rem;
@@ -1156,22 +1195,6 @@ button.control:disabled {
   color: var(--ink-faint);
 }
 
-.img-overlay {
-  display: inline-flex;
-  align-items: center;
-  gap: 0.3rem;
-  font-size: 1rem;
-  color: var(--ink-soft);
-  cursor: pointer;
-}
-
-.img-overlay input {
-  width: 0.9rem;
-  height: 0.9rem;
-  margin: 0;
-  accent-color: var(--accent);
-}
-
 .img-readout {
   margin-left: auto;
   font-family: var(--mono);
@@ -1219,7 +1242,16 @@ button.control:disabled {
 
 .img-layer-to { z-index: 1; }
 .img-layer-from { z-index: 2; }
-.img-layer-diff { z-index: 3; }
+
+/* a plain div, not an img: its colour comes from background-color, and the
+   diff bitmap only masks which pixels of that colour show through */
+.img-layer-diff {
+  z-index: 3;
+  -webkit-mask-repeat: no-repeat;
+  mask-repeat: no-repeat;
+  -webkit-mask-size: 100% 100%;
+  mask-size: 100% 100%;
+}
 
 .img-divider {
   position: absolute;
@@ -1323,6 +1355,8 @@ button.control.img-add-note { align-self: flex-start; }
   text-decoration: none;
   cursor: pointer;
 }
+
+.stack-pr input.tick { align-self: center; }
 
 span.stack-pr.is-current { cursor: default; }
 
