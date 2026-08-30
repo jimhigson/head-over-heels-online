@@ -44,7 +44,7 @@ const defineReviewThemes = (monaco: MonacoApi): void => {
     "editorGutter.background": "#00000000",
     "diffEditor.insertedTextBackground": "#2ea17c33",
     "diffEditor.removedTextBackground": "#e55f4433",
-    "diffEditor.insertedLineBackground": "#2ea17c1f",
+    "diffEditor.insertedLineBackground": "#17503e",
     "diffEditor.removedLineBackground": "#e55f441f",
   };
   monaco.editor.defineTheme("review-light", {
