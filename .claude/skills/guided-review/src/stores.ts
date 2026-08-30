@@ -79,13 +79,15 @@ const scheduleAutoDismiss = (id: number, onRemoved?: () => void): DismissTimers 
 });
 
 /** a toast carrying actions asks for a decision, so it waits for one rather
-    than vanishing on the usual timer */
-export const toast = (text: string, kind: ToastKind = "info", actions?: ToastAction[]): void => {
+    than vanishing on the usual timer. Returns the new toast's id, for a
+    caller that wants to replace or dismiss it later */
+export const toast = (text: string, kind: ToastKind = "info", actions?: ToastAction[]): number => {
   const id = (lastToastId += 1);
   toastStore.set([...toastStore.get(), { id, text, kind, leaving: false, actions }]);
   if (actions === undefined || actions.length === 0) {
     scheduleAutoDismiss(id);
   }
+  return id;
 };
 
 /* "path updated" coalesces repeats for the same path into a running count -

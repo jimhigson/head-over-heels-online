@@ -7,6 +7,7 @@ import { render } from "preact";
 import { focusNoteOnLine, NoteZone } from "./components/NoteZone.tsx";
 import { type DiffView, diffViewStore, showsBothSides } from "./diffView.ts";
 import { notifyDiskConflict } from "./diskConflict.ts";
+import { fetchFileFromDisk } from "./fileSync.ts";
 import { type FileFromDisk, liveEditors } from "./liveEditors.ts";
 import { type MonacoApi, type MonacoTextModel } from "./monacoApi.ts";
 import { languageFor } from "./monacoLoader.ts";
@@ -92,15 +93,6 @@ export const createDiffEditor = (
     setCounts([file.added, file.removed]);
   };
 
-  const fetchFresh = async (): Promise<FileFromDisk | undefined> =>
-    fetch(`/file?review=${encodeURIComponent(reviewId)}`, {
-      method: "POST",
-      headers: { "Content-Type": "application/json", "X-Review-Token": server?.token ?? "" },
-      body: JSON.stringify({ path }),
-    })
-      .then((result) => result.json() as Promise<FileFromDisk>)
-      .catch(() => undefined);
-
   const writeToDisk = async (): Promise<void> => {
     setStatus({ kind: "", text: "saving…" });
     const response = await fetch(`/save?review=${encodeURIComponent(reviewId)}`, {
@@ -120,7 +112,7 @@ export const createDiffEditor = (
     }
     if (response?.status === 409) {
       setStatus({ kind: "state-error", text: "changed on disk" });
-      const fresh = await fetchFresh();
+      const fresh = await fetchFileFromDisk(path);
       if (fresh !== undefined) {
         notifyDiskConflict(path, fresh, { applyFromDisk, overwriteDiskWith });
       }
