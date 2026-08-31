@@ -26,7 +26,8 @@ import "./page.css";
 type ServerState = {
   notes: Notes;
   ticked: string[];
-  files: Record<string, { sha: string; added: number; removed: number }>;
+  /** path -> the sha its content currently hashes to on disk */
+  files: Record<string, string>;
 };
 
 const agentSaid = (state: ServerState) =>

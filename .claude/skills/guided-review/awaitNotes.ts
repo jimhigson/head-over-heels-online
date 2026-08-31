@@ -6,14 +6,14 @@
  * - without this, notes sit in a file nobody is looking at until someone thinks
  * to check.
  *
- *   node awaitNotes.ts --notes <review>/notes.json [--timeout 1800] [--poll 0.5]
+ *   node awaitNotes.ts --notes <review>/notes.json [--timeout 1800]
  *
  * Exits 0 either way: with the new notes as markdown on stdout, or with
  * "no new notes" if it timed out. Re-run it after acting to wait for the next.
  */
 
+import chokidar from "chokidar";
 import { existsSync, readFileSync } from "node:fs";
-import { setTimeout as sleep } from "node:timers/promises";
 import { parseArgs } from "node:util";
 
 type NoteMessage = { from?: string; text?: string };
@@ -24,18 +24,16 @@ const { values } = parseArgs({
   options: {
     notes: { type: "string" },
     timeout: { type: "string", default: "1800" },
-    poll: { type: "string", default: "0.5" },
   },
 });
 
 if (values.notes === undefined) {
-  console.log("awaitNotes.ts --notes <review>/notes.json [--timeout 1800] [--poll 0.5]");
+  console.log("awaitNotes.ts --notes <review>/notes.json [--timeout 1800]");
   process.exit(1);
 }
 
 const notesFile = values.notes;
 const timeoutMs = Number(values.timeout) * 1_000;
-const pollMs = Number(values.poll) * 1_000;
 
 const read = (): Notes => {
   if (!existsSync(notesFile)) {
@@ -44,7 +42,7 @@ const read = (): Notes => {
   try {
     return JSON.parse(readFileSync(notesFile, "utf8")) as Notes;
   } catch {
-    // caught mid-write; the next poll will see it whole
+    // caught mid-write; the next change event will see it whole
     return {};
   }
 };
@@ -73,15 +71,28 @@ const flatten = (notes: Notes): Map<string, string> => {
   );
 };
 
-const before = flatten(read());
-const deadline = performance.now() + timeoutMs;
+const main = async (): Promise<void> => {
+  const before = flatten(read());
 
-while (performance.now() < deadline) {
-  await sleep(pollMs);
-  const now = flatten(read());
-  // a changed note counts as new: the reviewer edited it to say more. A thread
-  // the agent started on its own has nothing of theirs in it and is not news
-  const fresh = [...now].filter(([key, text]) => text !== "" && before.get(key) !== text);
+  // a changed note counts as new: the reviewer edited it to say more. A
+  // thread the agent started on its own has nothing of theirs in it and is
+  // not news
+  const freshNotesIn = (notes: Notes): [string, string][] =>
+    [...flatten(notes)].filter(([key, text]) => text !== "" && before.get(key) !== text);
+
+  const watcher = chokidar.watch(notesFile);
+  const fresh = await new Promise<[string, string][]>((resolve) => {
+    const timer = setTimeout(() => resolve([]), timeoutMs);
+    watcher.on("all", () => {
+      const found = freshNotesIn(read());
+      if (found.length > 0) {
+        clearTimeout(timer);
+        resolve(found);
+      }
+    });
+  });
+  await watcher.close();
+
   if (fresh.length > 0) {
     console.log(`${fresh.length} new review note(s):\n`);
     for (const [where, text] of fresh.sort(([left], [right]) => (left < right ? -1 : 1))) {
@@ -90,6 +101,11 @@ while (performance.now() < deadline) {
     console.log("\nact on these now, then wait again.");
     process.exit(0);
   }
-}
 
-console.log("no new notes");
+  console.log("no new notes");
+};
+
+main().catch((error: unknown) => {
+  console.error(error);
+  process.exit(1);
+});

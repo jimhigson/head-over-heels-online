@@ -9,6 +9,7 @@
     "check:type": "tsc --noEmit"
   },
   "dependencies": {
+    "chokidar": "^5.0.0",
     "preact": "11.0.0-beta.1",
     "react-resizable-panels": "^3.0.6"
   },
