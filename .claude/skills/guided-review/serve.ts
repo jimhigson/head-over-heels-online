@@ -362,27 +362,33 @@ class ReviewPage {
   }
 
   lineCounts(path: string): { added: number; removed: number } {
-    const numstat = (...args: string[]): string[] => {
+    const run = (...args: string[]): string => {
       try {
-        return execFileSync("git", ["diff", "--numstat", ...args], {
+        return execFileSync("git", args, {
           cwd: this.repo,
           encoding: "utf8",
           stdio: ["ignore", "pipe", "ignore"],
-        }).split(/\s+/);
+        });
       } catch (error) {
         const failure = error as { stdout?: string };
-        return (failure.stdout ?? "").split(/\s+/);
+        return failure.stdout ?? "";
       }
     };
 
-    // an untracked file has nothing to diff against but /dev/null
-    const first = numstat("--", path);
-    const parts = first[0] === "" ? numstat("--no-index", "--", "/dev/null", path) : first;
-    const [added, removed] = parts;
-    if (added !== undefined && /^\d+$/.test(added) && removed !== undefined) {
-      return { added: Number(added), removed: Number(removed) };
-    }
-    return { added: 0, removed: 0 };
+    // a diff empty because nothing changed and a diff empty because the path
+    // is untracked look identical - ls-files tells them apart, so an
+    // unchanged tracked file doesn't get diffed against /dev/null and come
+    // back as entirely added
+    const tracked = run("ls-files", "--error-unmatch", "--", path).trim() !== "";
+    const numstat =
+      tracked ?
+        run("diff", "--numstat", "--", path)
+      : run("diff", "--numstat", "--no-index", "--", "/dev/null", path);
+
+    const [added, removed] = numstat.split(/\s+/);
+    return added !== undefined && /^\d+$/.test(added) && removed !== undefined ?
+        { added: Number(added), removed: Number(removed) }
+      : { added: 0, removed: 0 };
   }
 
   save(path: string, content: string, baseSha: string): { sha: string; added: number; removed: number } {
@@ -397,15 +403,17 @@ class ReviewPage {
     return { sha: sha256(content), ...this.lineCounts(path) };
   }
 
-  /** what the page needs to notice that a file changed under it */
-  fileState(paths: string[]): Record<string, { sha: string; added: number; removed: number }> {
-    const state: Record<string, { sha: string; added: number; removed: number }> = {};
+  /** what the page needs to notice that a file changed under it: just the
+      sha, hashed straight from disk with no git subprocess - the poll asks
+      about every tracked path every tick, so this has to stay cheap
+      regardless of how large the review is. Line counts are only ever
+      wanted for a path whose sha has actually moved, which goes through
+      fileContent() instead - never for the bulk poll */
+  fileState(paths: string[]): Record<string, string> {
+    const state: Record<string, string> = {};
     for (const path of paths) {
       try {
-        state[path] = {
-          sha: sha256(ReviewStore.read(this.resolveInRepo(path))),
-          ...this.lineCounts(path),
-        };
+        state[path] = sha256(ReviewStore.read(this.resolveInRepo(path)));
       } catch {
         // outside the repo: not this review's file to report on
       }

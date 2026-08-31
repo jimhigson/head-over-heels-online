@@ -27,13 +27,11 @@ export const fetchFileFromDisk = (path: string): Promise<FileFromDisk | undefine
     .catch(() => undefined);
 };
 
-export const reconcileFiles = async (
-  onDisk: Record<string, { sha: string; added: number; removed: number }>,
-): Promise<void> => {
-  for (const [path, file] of Object.entries(onDisk)) {
+export const reconcileFiles = async (onDisk: Record<string, string>): Promise<void> => {
+  for (const [path, diskSha] of Object.entries(onDisk)) {
     const editor = liveEditors.get(path);
     const knownSha = editor?.sha() ?? sides[path]?.sha;
-    if (knownSha === undefined || file.sha === knownSha) {
+    if (knownSha === undefined || diskSha === knownSha) {
       continue;
     }
     const fresh = await fetchFileFromDisk(path);

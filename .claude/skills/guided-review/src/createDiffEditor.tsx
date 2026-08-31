@@ -87,9 +87,15 @@ export const createDiffEditor = (
 
   const applyFromDisk = (file: FileFromDisk): void => {
     modified.setValue(file.after);
+    // setValue fires onDidChangeContent same as a real edit would, arming the
+    // autosave timer and marking "unsaved" below - this content came from
+    // disk already, so both need clearing rather than a pointless write-back
+    // racing whatever edit lands in the next 500ms
+    clearTimeout(saveTimer);
     ({ sha } = file);
     dirty = false;
     setDirty(false);
+    setStatus({ kind: "", text: "" });
     setCounts([file.added, file.removed]);
   };
 
