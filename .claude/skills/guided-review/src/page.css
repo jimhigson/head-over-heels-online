@@ -1,11 +1,3 @@
-@font-face {
-  font-family: "BlockStack";
-  src: url("data:font/woff2;base64,FONT_B64") format("woff2");
-  font-weight: 400;
-  font-style: normal;
-  font-display: block;
-}
-
 /* bootstrap-icons, inlined from the skill's own install */
 @font-face {
   font-family: "bootstrap-icons";
@@ -31,35 +23,39 @@
 .file-icon-image { color: var(--mod); }
 .file-icon-text { color: var(--accent); }
 
-/* tokens taken from the game's own palette:
-   src/_generated/palette/spritesheetPalette.json */
-:root {
-  --paper: #f6f2f0;
-  --card: #ffffff;
-  --ink: #17201d;
-  --ink-soft: #4c5a55;
-  --ink-faint: #7c6e6c;
-  --rule: #ddd4cf;
-  --accent: #1366d0;
-  --accent-soft: #e2edfb;
+/* VS Code's own default theme (2026 Dark / 2026 Light, the theme shipped as
+   default since 1.113) - every value below is read straight off
+   extensions/theme-defaults/themes/2026-{dark,light}.json in microsoft/vscode,
+   keyed by the editor/workbench colour it was taken from */
+:root, :root[data-theme="light"] {
+  --paper: #ffffff; /* editor.background */
+  --card: #fafafd; /* sideBar.background */
+  --control-bg: #eaeaea; /* checkbox.background */
+  --rule: #f0f1f2; /* panel.border / sideBar.border */
 
-  --new: #1f6b52;
-  --new-bg: #e0f1ea;
-  --mod: #6e6400;
-  --mod-bg: #f3eec9;
-  --del: #864e39;
-  --del-bg: #f6e3db;
+  --ink: #202020; /* editor.foreground */
+  --ink-soft: #606060; /* descriptionForeground */
+  --ink-faint: #bbbbbb; /* disabledForeground */
 
-  --add-edge: #2ea17c;
-  --add-bg: rgb(46 161 124 / 0.1);
-  --rm-edge: #e55f44;
-  --rm-bg: rgb(134 78 57 / 0.1);
-  --hunk: #6e6400;
-  --hunk-bg: rgb(173 158 0 / 0.1);
+  --accent: #0069cc; /* button.background */
+  --accent-hover: #0063c1; /* button.hoverBackground */
+  --accent-ink: #ffffff; /* button.foreground */
+  --accent-soft: rgb(0 0 0 / 0.08); /* list.hoverBackground */
+  --accent-selected: rgb(0 0 0 / 0.14); /* list.activeSelectionBackground */
 
-  --shadow: 0 1px 2px rgb(23 32 29 / 0.05), 0 10px 26px rgb(23 32 29 / 0.05);
+  --new: #587c0c; /* editorGutter.addedBackground */
+  --new-bg: rgb(88 124 12 / 0.15); /* diffEditor.insertedTextBackground */
+  --mod: #b69500; /* notificationsWarningIcon.foreground */
+  --mod-bg: rgb(182 149 0 / 0.25); /* gauge.warningBackground */
+  --del: #ad0707; /* editorGutter.deletedBackground */
+  --del-bg: rgb(173 7 7 / 0.15); /* diffEditor.removedTextBackground */
 
-  --display: "BlockStack", ui-monospace, monospace;
+  --add-edge: var(--new);
+  --rm-edge: var(--del);
+
+  /* VS Code's own workbench has no separate display face either - headings
+     are the same system font, told apart by size and weight alone */
+  --display: system-ui, -apple-system, "Segoe UI", Roboto, sans-serif;
   --body: system-ui, -apple-system, "Segoe UI", Roboto, sans-serif;
   --mono: ui-monospace, SFMono-Regular, "SF Mono", Menlo, Consolas, monospace;
 
@@ -68,88 +64,62 @@
 
 @media (prefers-color-scheme: dark) {
   :root {
-    --paper: #000000;
-    --card: #31413b;
-    --ink: #ffffff;
-    --ink-soft: #c0afa9;
-    --ink-faint: #9a8d8a;
-    --rule: #47584f;
-    --accent: #6cb5ff;
-    --accent-soft: #16303f;
+    --paper: #121314; /* editor.background */
+    --card: #191a1b; /* sideBar.background */
+    --control-bg: #242526; /* checkbox.background */
+    --rule: #2a2b2c; /* panel.border / sideBar.border */
 
-    --new: #3fdb8b;
-    --new-bg: #133227;
-    --mod: #f3eba9;
-    --mod-bg: #3a3418;
-    --del: #e55f44;
-    --del-bg: #3a2119;
+    --ink: #bbbebf; /* editor.foreground */
+    --ink-soft: #8c8c8c; /* descriptionForeground */
+    --ink-faint: #555555; /* disabledForeground */
 
-    --add-edge: #3fdb8b;
-    --add-bg: rgb(63 219 139 / 0.13);
-    --rm-edge: #e55f44;
-    --rm-bg: rgb(229 95 68 / 0.14);
-    --hunk: #f3eba9;
-    --hunk-bg: rgb(173 158 0 / 0.16);
+    --accent: #297aa0; /* button.background */
+    --accent-hover: #2b7da3; /* button.hoverBackground */
+    --accent-ink: #ffffff; /* button.foreground */
+    --accent-soft: rgb(255 255 255 / 0.08); /* list.hoverBackground */
+    --accent-selected: rgb(255 255 255 / 0.13); /* list.activeSelectionBackground */
 
-    --shadow: none;
+    --new: #72c892; /* editorGutter.addedBackground */
+    --new-bg: rgb(87 171 90 / 0.3); /* diffEditor.insertedTextBackground */
+    --mod: #cca700; /* notificationsWarningIcon.foreground */
+    --mod-bg: rgb(227 185 126 / 0.3); /* gauge.warningBackground */
+    --del: #f28772; /* editorGutter.deletedBackground */
+    --del-bg: rgb(244 112 103 / 0.3); /* diffEditor.removedTextBackground */
+
+    --add-edge: var(--new);
+    --rm-edge: var(--del);
+
     color-scheme: dark;
   }
 }
 
 :root[data-theme="dark"] {
-  --paper: #000000;
-  --card: #31413b;
-  --ink: #ffffff;
-  --ink-soft: #c0afa9;
-  --ink-faint: #9a8d8a;
-  --rule: #47584f;
-  --accent: #6cb5ff;
-  --accent-soft: #16303f;
+  --paper: #121314;
+  --card: #191a1b;
+  --control-bg: #242526;
+  --rule: #2a2b2c;
 
-  --new: #3fdb8b;
-  --new-bg: #133227;
-  --mod: #f3eba9;
-  --mod-bg: #3a3418;
-  --del: #e55f44;
-  --del-bg: #3a2119;
+  --ink: #bbbebf;
+  --ink-soft: #8c8c8c;
+  --ink-faint: #555555;
 
-  --add-edge: #3fdb8b;
-  --add-bg: rgb(63 219 139 / 0.13);
-  --rm-edge: #e55f44;
-  --rm-bg: rgb(229 95 68 / 0.14);
-  --hunk: #f3eba9;
-  --hunk-bg: rgb(173 158 0 / 0.16);
+  --accent: #297aa0;
+  --accent-hover: #2b7da3;
+  --accent-ink: #ffffff;
+  --accent-soft: rgb(255 255 255 / 0.08);
+  --accent-selected: rgb(255 255 255 / 0.13);
 
-  --shadow: none;
+  --new: #72c892;
+  --new-bg: rgb(87 171 90 / 0.3);
+  --mod: #cca700;
+  --mod-bg: rgb(227 185 126 / 0.3);
+  --del: #f28772;
+  --del-bg: rgb(244 112 103 / 0.3);
+
+  --add-edge: var(--new);
+  --rm-edge: var(--del);
+
   color-scheme: dark;
-}
-
-:root[data-theme="light"] {
-  --paper: #f6f2f0;
-  --card: #ffffff;
-  --ink: #17201d;
-  --ink-soft: #4c5a55;
-  --ink-faint: #7c6e6c;
-  --rule: #ddd4cf;
-  --accent: #1366d0;
-  --accent-soft: #e2edfb;
-
-  --new: #1f6b52;
-  --new-bg: #e0f1ea;
-  --mod: #6e6400;
-  --mod-bg: #f3eec9;
-  --del: #864e39;
-  --del-bg: #f6e3db;
-
-  --add-edge: #2ea17c;
-  --add-bg: rgb(46 161 124 / 0.1);
-  --rm-edge: #e55f44;
-  --rm-bg: rgb(134 78 57 / 0.1);
-  --hunk: #6e6400;
-  --hunk-bg: rgb(173 158 0 / 0.1);
-
-  --shadow: 0 1px 2px rgb(23 32 29 / 0.05), 0 10px 26px rgb(23 32 29 / 0.05);
-  color-scheme: light;
 }
 
 * { box-sizing: border-box; }
@@ -185,8 +155,7 @@ header.top {
   position: sticky;
   top: 0;
   z-index: 20;
-  background: color-mix(in srgb, var(--paper) 90%, transparent);
-  backdrop-filter: blur(8px);
+  background: var(--card);
   border-bottom: 1px solid var(--rule);
 }
 
@@ -239,19 +208,39 @@ header.top {
 
 .controls { display: flex; gap: 0.4rem; flex: none; flex-wrap: wrap; }
 
+/* links out to the game itself - the icon is the only promotion this page
+   does, so it stays modest: no border, just a hover brighten */
+.brand-link {
+  flex: none;
+  margin-left: auto;
+  display: flex;
+  align-items: center;
+  opacity: 0.7;
+}
+
+.brand-link:hover, .brand-link:focus-visible { opacity: 1; }
+.brand-link:focus-visible { outline: 2px solid var(--accent); outline-offset: 2px; }
+
+.brand-icon { display: block; image-rendering: pixelated; }
+
 button.control {
   font-family: var(--body);
   font-size: 1rem;
-  color: var(--ink-soft);
-  background: transparent;
+  color: var(--ink);
+  background: var(--control-bg);
   border: 1px solid var(--rule);
   padding: 0.3rem 0.55rem;
   cursor: pointer;
 }
 
-button.control:hover { border-color: var(--accent); color: var(--accent); }
+button.control:hover { background: var(--accent-soft); border-color: var(--accent); }
 button.control:focus-visible { outline: 2px solid var(--accent); outline-offset: 2px; }
-button.control[aria-pressed="true"] { color: var(--accent); border-color: var(--accent); }
+button.control[aria-pressed="true"] {
+  background: var(--accent);
+  border-color: var(--accent);
+  color: var(--accent-ink);
+}
+button.control[aria-pressed="true"]:hover { background: var(--accent-hover); border-color: var(--accent-hover); }
 
 /* how every diff is drawn, in the same shape as its neighbouring buttons */
 label.control.select {
@@ -260,16 +249,24 @@ label.control.select {
   gap: 0.35rem;
   font-family: var(--body);
   font-size: 1rem;
-  color: var(--ink-soft);
+  color: var(--ink);
+  background: var(--control-bg);
   border: 1px solid var(--rule);
   padding: 0.3rem 0.4rem 0.3rem 0.55rem;
   cursor: pointer;
 }
 
-label.control.select:hover { border-color: var(--accent); color: var(--accent); }
+label.control.select:hover { background: var(--accent-soft); border-color: var(--accent); }
 label.control.select:focus-within { outline: 2px solid var(--accent); outline-offset: 2px; }
 
+/* a plain triangle stands in for the native dropdown arrow lost below to
+   appearance: none */
+label.control.select::after { content: "▾"; color: var(--ink-faint); pointer-events: none; }
+
 label.control.select select {
+  /* native selects paint their own OS chrome (a bordered box, its own
+     dropdown arrow) that isn't reachable through border/outline at all */
+  appearance: none;
   font-family: var(--body);
   font-size: 1rem;
   color: inherit;
@@ -291,7 +288,10 @@ label.control.select select:focus-visible { outline: none; }
   max-height: calc(100vh - var(--header-height, 3.2rem));
   overflow-y: auto;
   overscroll-behavior: contain;
-  padding: 0.9rem 0.5rem 4rem 0.9rem;
+  /* no top padding: that's on .sidebar-head instead, so its own sticky box
+     paints over the space rather than leaving a gap the scrolled tree
+     underneath can show through */
+  padding: 0 0.5rem 4rem 0.9rem;
 }
 
 /* ---- the split between contents and reading order ----------------------
@@ -329,12 +329,21 @@ label.control.select select:focus-visible { outline: none; }
 
 .split:focus-visible { outline: none; }
 
+/* stays in view over the tree scrolling beneath it - the sidebar is its own
+   scroll container, so top:0 already pins it flush at the sidebar's own
+   padding edge with no gap above it, the same way .tree-group-head already
+   sticks within this same container below */
 .sidebar-head {
   display: flex;
   flex-direction: column;
   align-items: stretch;
   gap: 0.5rem;
   margin: 0 0 0.6rem;
+  padding-top: 0.9rem;
+  position: sticky;
+  top: 0;
+  z-index: 2;
+  background: var(--paper);
 }
 
 .sidebar-title {
@@ -361,8 +370,9 @@ ol.tree, ul.tree-files, ul.fs-tree, ul.fs-dir-children, ul.tree-flat {
   align-items: center;
   gap: 0.4rem;
   padding: 0.2rem 0.25rem;
+  /* nests below the sidebar's own sticky head */
   position: sticky;
-  top: 0;
+  top: calc(5.23rem - 2px);
   background: var(--paper);
   z-index: 1;
 }
@@ -408,7 +418,7 @@ ul.tree-files {
 }
 
 .tree-file.is-active {
-  background: var(--accent-soft);
+  background: var(--accent-selected);
   border-left-color: var(--accent);
 }
 
@@ -477,7 +487,10 @@ button.tree-file-link:focus-visible { outline: 2px solid var(--accent); outline-
 
 .tree-path-heading:first-child { padding-top: 0.1rem; }
 
-.tree-file.is-ticked { opacity: 0.5; }
+/* read already - opacity, not a colour change: the status chip and note
+   count both set their own explicit colour, which a colour override
+   wouldn't reach, but a fade dims regardless */
+.tree-file.is-ticked { opacity: 0.55; }
 .tree-file.is-ticked .tree-base { text-decoration: line-through; }
 
 /* ---- fs tree -------------------------------------------------------------
@@ -543,13 +556,31 @@ ul.fs-dir-children {
   line-height: 1.4;
 }
 
+/* native checkboxes paint their own OS chrome that isn't reachable through
+   the border/outline properties at all - appearance:none drops it, redrawn
+   in the same shape VS Code itself uses for its own checkboxes: a bordered
+   box, filled solid on check, with a drawn checkmark rather than the
+   platform's own */
 input.tick {
+  appearance: none;
   width: 0.95rem;
   height: 0.95rem;
   margin: 0;
-  accent-color: var(--accent);
+  background: var(--control-bg);
+  border: 1px solid var(--ink-faint);
   cursor: pointer;
   flex: none;
+  display: grid;
+  place-content: center;
+}
+
+input.tick:checked { background: var(--accent); border-color: var(--accent); }
+
+input.tick:checked::after {
+  content: "✓";
+  color: var(--accent-ink);
+  font-size: 0.72em;
+  line-height: 1;
 }
 
 input.tick.small { width: 0.8rem; height: 0.8rem; }
@@ -600,7 +631,7 @@ h1 {
 .facts code, .lede code, .note code, .blurb code {
   font-family: var(--mono);
   font-size: 1em;
-  background: var(--accent-soft);
+  background: var(--control-bg);
   color: var(--ink);
   padding: 0.05em 0.32em;
 }
@@ -610,7 +641,6 @@ main { display: flex; flex-direction: column; gap: 0.9rem; padding-top: 2rem; }
 section.group {
   background: var(--card);
   border: 1px solid var(--rule);
-  box-shadow: var(--shadow);
 }
 
 .group-head {
@@ -681,12 +711,27 @@ button.caret:focus-visible { outline: 2px solid var(--accent); outline-offset: 2
   display: flex;
   align-items: center;
   gap: 0.55rem;
-  padding: 0.6rem 0;
+  /* the group body insets its contents by 1.1rem; pulled back out here by the
+     negative margin so the background spans the full card, with matching
+     padding put back so the checkbox/text/caret land exactly where they were */
+  margin: 0 -1.1rem;
+  padding: 0.6rem 1.1rem;
   min-width: 0;
   cursor: pointer;
+  /* nests below the group's own sticky heading, so the file being read stays
+     named and tickable without scrolling back up through its diff */
+  position: sticky;
+  top: calc(var(--header-height, 3.2rem) + 3.9rem - 2px);
+  z-index: 4;
+  /* one step up from the card underneath it - the same "list row" surface
+     VS Code hovers a list item to */
+  background: var(--control-bg);
 }
 
-.row.is-ticked .row-head { opacity: 0.45; }
+/* read already - opacity, not a colour change: the chip, path and stats
+   inside all set their own explicit colour, which a colour override on the
+   row wouldn't reach, but a fade dims regardless */
+.row.is-ticked .row-head { opacity: 0.55; }
 .row-head:hover .caret { color: var(--accent); }
 
 .row-body {
@@ -828,8 +873,7 @@ button.diff-toggle:focus-visible { outline: 2px solid var(--accent); outline-off
 .diff-error {
   margin: 0.35rem 0 0;
   padding: 0.6rem 0.8rem;
-  border: 1px solid var(--del);
-  border-left-width: 3px;
+  border-left: 3px solid var(--del);
   background: var(--del-bg);
   color: var(--ink);
   font-size: 1rem;
@@ -881,6 +925,7 @@ button.save {
 button.save.revert { color: var(--del); background: var(--del-bg); }
 button.save[disabled] { color: var(--ink-faint); background: transparent; cursor: default; }
 button.save:not([disabled]):hover { border-color: var(--accent); }
+button.save.revert:not([disabled]):hover { border-color: var(--del); }
 button.save:focus-visible { outline: 2px solid var(--accent); outline-offset: 2px; }
 
 /* a review note, living in a monaco view zone between two lines. view zones
@@ -1025,26 +1070,26 @@ button.save:focus-visible { outline: 2px solid var(--accent); outline-offset: 2p
 .toast-actions button {
   font-family: var(--body);
   font-size: 1rem;
-  background: transparent;
+  background: var(--control-bg);
   border: 1px solid var(--rule);
-  color: var(--ink-soft);
+  color: var(--ink);
   padding: 0.15rem 0.45rem;
   cursor: pointer;
 }
 
-.toast-actions button:hover { border-color: var(--accent); color: var(--accent); }
+.toast-actions button:hover { border-color: var(--accent); }
 
 .note-zone button {
   font-family: var(--body);
   font-size: 1rem;
-  background: transparent;
+  background: var(--control-bg);
   border: 1px solid var(--rule);
-  color: var(--ink-soft);
+  color: var(--ink);
   padding: 0.15rem 0.45rem;
   cursor: pointer;
 }
 
-.note-zone button:hover { border-color: var(--accent); color: var(--accent); }
+.note-zone button:hover { border-color: var(--accent); }
 
 .noted-line {
   background: var(--accent-soft);
@@ -1069,7 +1114,7 @@ button.save:focus-visible { outline: 2px solid var(--accent); outline-offset: 2p
   font-family: var(--body);
   font-weight: 700;
   font-size: 12px;
-  color: var(--card);
+  color: var(--accent-ink);
   background: var(--accent);
   border-radius: 2px;
 }
@@ -1087,9 +1132,7 @@ footer {
   max-width: 68ch;
   margin: 1.25rem 0 0;
   padding: 0.7rem 0.9rem;
-  border: 1px solid var(--mod);
-  border-left-width: 3px;
-  border-radius: 3px;
+  border-left: 3px solid var(--mod);
   background: var(--mod-bg);
   color: var(--ink-soft);
   font-size: 1rem;
@@ -1112,7 +1155,7 @@ footer {
     z-index: 15;
     width: min(20rem, 82vw);
     max-height: none;
-    background: var(--paper);
+    background: var(--card);
     box-shadow: 0 0 40px rgb(0 0 0 / 0.25);
   }
 }
@@ -1124,7 +1167,9 @@ footer {
 
 /* ---- image rows ---------------------------------------------------------
    an image file's panel: version chooser, mode strip, and the pan/zoom stage.
-   The diff convention is magenta-on-transparent, the same in both themes. */
+   The diff convention is magenta-on-transparent, the same in both themes -
+   a fixed colour outside the VS Code palette, since it must read the same
+   over arbitrary image content in either theme. */
 
 .img-diff {
   margin-top: 0.35rem;
@@ -1170,29 +1215,32 @@ footer {
 
 .img-version-label.is-duplicate { color: var(--ink-faint); }
 
+/* same native-chrome problem as input.tick, same fix */
 .img-radio {
+  appearance: none;
   width: 0.9rem;
   height: 0.9rem;
   margin: 0.1rem 0;
-  accent-color: var(--accent);
+  background: var(--control-bg);
+  border: 1px solid var(--ink-faint);
   cursor: pointer;
 }
 
-.img-radio:disabled { opacity: 0.3; cursor: default; }
+.img-radio:checked { background: var(--accent); border-color: var(--accent); }
+.img-radio:disabled { opacity: 0.4; cursor: default; }
 
 .img-modes { display: flex; gap: 0.25rem; }
 
 button.control.is-active {
-  color: var(--accent);
+  color: var(--accent-ink);
+  background: var(--accent);
   border-color: var(--accent);
-  background: var(--accent-soft);
 }
+button.control.is-active:hover { background: var(--accent-hover); border-color: var(--accent-hover); }
 
 button.control:disabled {
   opacity: 0.4;
   cursor: default;
-  border-color: var(--rule);
-  color: var(--ink-faint);
 }
 
 .img-readout {
@@ -1211,11 +1259,7 @@ button.control:disabled {
   cursor: grab;
   user-select: none;
   height: 18rem;
-  background: repeating-conic-gradient(
-      color-mix(in srgb, var(--paper) 60%, var(--card)) 0% 25%,
-      var(--card) 0% 50%
-    )
-    50% / 20px 20px;
+  background: repeating-conic-gradient(var(--paper) 0% 25%, var(--card) 0% 50%) 50% / 20px 20px;
 }
 
 .img-viewport:active { cursor: grabbing; }
@@ -1350,8 +1394,8 @@ button.control.img-add-note { align-self: flex-start; }
   border: 1px solid var(--rule);
   font-size: 1rem;
   font-family: var(--body);
-  color: var(--ink-soft);
-  background: transparent;
+  color: var(--ink);
+  background: var(--control-bg);
   text-decoration: none;
   cursor: pointer;
 }
@@ -1360,7 +1404,7 @@ button.control.img-add-note { align-self: flex-start; }
 
 span.stack-pr.is-current { cursor: default; }
 
-a.stack-pr:hover, button.stack-pr:hover { border-color: var(--accent); color: var(--accent); }
+a.stack-pr:hover, button.stack-pr:hover { border-color: var(--accent); }
 a.stack-pr:focus-visible, button.stack-pr:focus-visible {
   outline: 2px solid var(--accent);
   outline-offset: 2px;
@@ -1380,8 +1424,8 @@ a.stack-pr:focus-visible, button.stack-pr:focus-visible {
 }
 
 .stack-pr.is-current {
-  color: var(--accent);
-  background: var(--accent-soft);
+  color: var(--accent-ink);
+  background: var(--accent);
   border-color: var(--accent);
 }
 

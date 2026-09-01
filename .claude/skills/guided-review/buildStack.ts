@@ -2,7 +2,7 @@
 /* Build ONE page holding the guided reviews of a whole PR stack.
  *
  *   node buildStack.ts --dir <stackDir> --out <review.html> [--current <pr>]
- *                      [--repo <dir>] [--font <woff2>]
+ *                      [--repo <dir>]
  *                      [--max-diff-lines <n>] [--max-side-lines <n>] [--max-images <n>]
  *
  * The stack directory is the coordination point between however many agents
@@ -47,7 +47,6 @@ const { values } = parseArgs({
     out: { type: "string" },
     current: { type: "string" },
     repo: { type: "string" },
-    font: { type: "string" },
     "max-side-lines": { type: "string", default: "2000" },
     "max-images": { type: "string", default: "100" },
   },
@@ -55,7 +54,7 @@ const { values } = parseArgs({
 
 if (values.dir === undefined || values.out === undefined) {
   console.log(
-    "buildStack.ts --dir <stackDir> --out <review.html> [--current <pr>] [--repo <dir>] [--font <woff2>]",
+    "buildStack.ts --dir <stackDir> --out <review.html> [--current <pr>] [--repo <dir>]",
   );
   process.exit(1);
 }
@@ -132,7 +131,12 @@ const main = async (): Promise<void> => {
       `img-${entry.number}`,
     );
 
-    reviews.push({ ...bare, block: reviewBlockId(entry.number), reviewId: collected.payload.id });
+    reviews.push({
+      ...bare,
+      block: reviewBlockId(entry.number),
+      reviewId: collected.payload.id,
+      baseSha: collected.baseSha,
+    });
     reviewBlocks.push(
       jsonBlock(reviewBlockId(entry.number), collected.payload),
       ...collected.imageBlocks,
@@ -160,7 +164,7 @@ const main = async (): Promise<void> => {
 
   const shell: ReviewShell = { reviews, current };
   const { script, css } = await buildPage();
-  const html = page(shell, reviewBlocks, script, finishCss(css, repo, values.font));
+  const html = page(shell, reviewBlocks, script, finishCss(css));
   writeFileSync(outPath, html, "utf8");
 
   console.log(

@@ -569,37 +569,40 @@ Monaco stays imperative — it owns its dom. `createDiffEditor` builds one
 editor and reports back through the setters `MonacoDiff` passes it, and note
 zones are preact trees `render`ed into the zone's dom node.
 
-### Palette: use the game's own
+### Palette: VS Code's own default theme
 
-This project has a palette; use it rather than inventing one. The values
-live in `src/_generated/palette/spritesheetPalette.json` (read it — it is
-generated, so treat the file as the source of truth over the values quoted
-here) and are exposed to the app as `paletteBlockstack`:
+This is a code review tool; it borrows its palette from the tool developers
+already read diffs in all day, rather than inventing one. Every colour
+traces to a key in VS Code's own default theme - 2026 Dark / 2026 Light,
+shipped as default since 1.113 - read straight from
+`extensions/theme-defaults/themes/2026-{dark,light}.json` in
+microsoft/vscode:
 
-| name | hex | use in the review page |
+| token | source key | use in the review page |
 | --- | --- | --- |
-| `pureBlack` | `#000000` | dark-theme page ground |
-| `shadow` | `#31413B` | dark-theme card ground, rules |
-| `midGrey` | `#7C6E6C` | muted body text |
-| `lightGrey` | `#C0AFA9` | light-theme rules, dark-theme body text |
-| `white` | `#FFFFFF` | light-theme card ground |
-| `metallicBlue` | `#1366D0` | light-theme accent: progress, links, step badges |
-| `pastelBlue` | `#6CB5FF` | dark-theme accent |
-| `moss` | `#AD9E00` | Modified chip; hunk headers |
-| `replaceDark` / `replaceLight` | `#2EA17C` / `#3FDB8B` | New chip; added diff lines |
-| `redShadow` / `midRed` | `#864E39` / `#E55F44` | Deleted chip; removed diff lines |
-| `highlightBeige` | `#FFD097` | reserve for one emphasis, if anything needs it |
+| `--paper` | `editor.background` | page ground |
+| `--card` | `sideBar.background` | chapter cards, header, toasts |
+| `--control-bg` | `checkbox.background` | neutral button/checkbox fill |
+| `--rule` | `panel.border` / `sideBar.border` | dividers |
+| `--ink` / `--ink-soft` / `--ink-faint` | `editor.foreground` / `descriptionForeground` / `disabledForeground` | text hierarchy |
+| `--accent` / `--accent-hover` | `button.background` / `button.hoverBackground` | links, primary actions |
+| `--accent-ink` | `button.foreground` | text on a solid `--accent` fill |
+| `--new` / `--del` | `editorGutter.addedBackground` / `deletedBackground` | New/Deleted chip text, diff stats |
+| `--mod` | `notificationsWarningIcon.foreground` | Modified chip text |
+| `--new-bg` / `--mod-bg` / `--del-bg` | `diffEditor.insertedTextBackground` / gauge/warning tint / `removedTextBackground` | chip and callout fills, all translucent - VS Code's own colours lean on alpha throughout, so this palette does too |
 
-Take the light-theme page ground as white or a very slightly warm tint of
-`lightGrey`, not a cream. Semantic status colour (New/Modified/Deleted)
-stays distinct from the accent hue.
+`page.css`'s own `:root` block carries the full, current set of tokens as
+comments alongside each value - read that over this table if they disagree,
+the table is a summary. Borders are back (VS Code's own UI uses them
+throughout); the page's own monaco diff theme (`monacoLoader.ts`) pulls the
+same values for `editor.background`/`diffEditor.*`/`editorLineNumber.foreground`,
+so a diff on this page looks like a diff in VS Code itself.
 
-The game's own pixel font is 4KB at
-`src/_generated/font/blockstack-head-over-heels.woff2` — inline it as a
-`@font-face` data URI (`base64 -i <path>`) and use it for the display role
-only (page title, step badges, the progress readout) at integer pixel
-sizes. Body text stays in a system stack; paths and diffs in
-`ui-monospace`.
+There is no custom webfont: `--display` and `--body` are both the plain
+system stack (`system-ui, -apple-system, "Segoe UI", Roboto, sans-serif`),
+matching VS Code's own workbench, which doesn't have a separate display face
+either - headings are told apart by size and weight, not typeface. Paths and
+diffs stay in `ui-monospace`.
 
 ### What the page already does — preserve it if you edit
 

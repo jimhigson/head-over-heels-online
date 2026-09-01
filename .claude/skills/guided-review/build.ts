@@ -4,8 +4,8 @@
  * The only part of a guided review that needs judgement is the grouping and the
  * per-file notes; everything else - collecting diffs, capturing image versions,
  * stripping headers, counting lines, computing github anchors, inlining the
- * font and the ui - is mechanical and happens here (via reviewAssembly.ts,
- * which buildStack.ts shares to put a whole PR stack in one page).
+ * ui - is mechanical and happens here (via reviewAssembly.ts, which
+ * buildStack.ts shares to put a whole PR stack in one page).
  *
  *   node build.ts --groups review.json --out review.html --mode worktree
  *   node build.ts --groups review.json --out review.html --mode commit --ref <sha> \
@@ -42,7 +42,6 @@ type Options = ReviewOptions & {
   groups: string;
   out: string;
   repo?: string;
-  font?: string;
   stack?: string;
 };
 
@@ -57,7 +56,6 @@ const usage = (): never => {
       "  --github <url>|none        base url for those links (derived from origin otherwise)",
       "  --repo <dir>               repo root (default: git toplevel)",
       "  --id <name>                names the directory a served review keeps ticks and notes in",
-      "  --font <woff2>             inlined as the display face",
       "  --max-side-lines <n>       longer files aren't embedded, their row says so (default 2000)",
       "  --max-images <n>           image files embedded with their versions (default 100)",
     ].join("\n"),
@@ -78,7 +76,6 @@ const parseOptions = (): Options => {
       github: { type: "string" },
       repo: { type: "string" },
       id: { type: "string" },
-      font: { type: "string" },
       stack: { type: "string" },
       "max-side-lines": { type: "string", default: "2000" },
       "max-images": { type: "string", default: "100" },
@@ -114,7 +111,6 @@ const parseOptions = (): Options => {
     github: values.github,
     repo: values.repo,
     id: values.id,
-    font: values.font,
     stack: values.stack,
     maxSideLines: Number(values["max-side-lines"]),
     maxImages: Number(values["max-images"]),
@@ -125,7 +121,12 @@ const parseOptions = (): Options => {
  * every review the page should know about: this one (carried), and - when a
  * stack file names 2+ PRs - its siblings, carried or not
  */
-const shellFor = (options: Options, collectedId: string, title: string): ReviewShell => {
+const shellFor = (
+  options: Options,
+  collectedId: string,
+  title: string,
+  baseSha: string,
+): ReviewShell => {
   const prNumber = options.pr === undefined ? 0 : Number(options.pr);
   const own: ShellReview = {
     number: prNumber,
@@ -133,6 +134,7 @@ const shellFor = (options: Options, collectedId: string, title: string): ReviewS
     url: "",
     block: reviewBlockId(prNumber),
     reviewId: collectedId,
+    baseSha,
     ...(options.mode === "pr" && options.head !== undefined ?
       { head: shortRef(options.head) }
     : {}),
@@ -166,15 +168,15 @@ const main = async (): Promise<void> => {
     authored,
     `img-${options.pr ?? "0"}`,
   );
-  const { payload, imageBlocks, forge, empty, imageBytes, imagesOmitted } = collected;
+  const { payload, imageBlocks, forge, empty, imageBytes, imagesOmitted, baseSha } = collected;
 
-  const shell = shellFor(options, payload.id, payload.meta.title);
+  const shell = shellFor(options, payload.id, payload.meta.title, baseSha);
   const { script, css } = await buildPage();
   const html = page(
     shell,
     [jsonBlock(reviewBlockId(shell.current), payload), ...imageBlocks],
     script,
-    finishCss(css, repo, options.font),
+    finishCss(css),
   );
 
   writeFileSync(options.out, html, "utf8");
