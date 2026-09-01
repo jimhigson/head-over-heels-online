@@ -1,11 +1,13 @@
 import { useLayoutEffect, useRef, useState } from "preact/hooks";
 
 import { type DiffView, diffViewStore, setDiffView } from "../diffView.ts";
+import faviconUrl from "../favicon.png";
 import { notesAsMarkdown, notesStore } from "../notes.ts";
 import { offlineStore } from "../offline.ts";
 import { meta, server, total } from "../payload.ts";
 import { type ReadingState } from "../readingState.ts";
 import { useStore } from "../stores.ts";
+import { setTheme, type Theme, themeStore } from "../theme.ts";
 import { StackBar } from "./StackBar.tsx";
 
 export type HeaderProps = { state: ReadingState };
@@ -15,6 +17,7 @@ export const Header = ({ state }: HeaderProps) => {
   const [handoffLabel, setHandoffLabel] = useState("Send notes to agent");
   const headerRef = useRef<HTMLElement>(null);
   const diffView = useStore(diffViewStore);
+  const theme = useStore(themeStore);
   const offline = useStore(offlineStore);
 
   // the contents and the group headings stick below this header, whatever
@@ -112,6 +115,18 @@ export const Header = ({ state }: HeaderProps) => {
               <option value="sideBySide">side by side</option>
             </select>
           </label>
+          <label class="control select">
+            <span>Theme</span>
+            <select
+              value={theme}
+              aria-label="Colour theme"
+              onChange={(event) => setTheme(event.currentTarget.value as Theme)}
+            >
+              <option value="system">system</option>
+              <option value="light">light</option>
+              <option value="dark">dark</option>
+            </select>
+          </label>
           <button class="control" type="button" onClick={copyNotes}>
             {copyLabel}
           </button>
@@ -124,6 +139,15 @@ export const Header = ({ state }: HeaderProps) => {
             Clear ticks
           </button>
         </div>
+        <a
+          class="brand-link"
+          href="https://blockstack.ing"
+          target="_blank"
+          rel="noreferrer"
+          title="Head over Heels Online"
+        >
+          <img class="brand-icon" src={faviconUrl} alt="Head over Heels Online" width={24} height={21} />
+        </a>
       </div>
     </header>
   );

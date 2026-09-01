@@ -52,6 +52,7 @@ type ShellReview = {
   number: number;
   head?: string;
   reviewId?: string;
+  baseSha?: string;
 };
 
 const marker = "<!--REVIEW_SERVER-->";
@@ -170,14 +171,19 @@ class ReviewStore {
   id: string;
   /** how this review is named in the server's own output */
   label: string;
+  /** the commit this review's diff is measured from - live line counts diff
+      against this, never the working checkout's index, so they always read
+      against the same base the review itself does */
+  baseSha: string;
   notesFile: string;
   notesMarkdown: string;
   ticksFile: string;
   #seen: Set<string>;
 
-  constructor(htmlDir: string, id: string, label: string) {
+  constructor(htmlDir: string, id: string, label: string, baseSha: string) {
     this.id = id;
     this.label = label;
+    this.baseSha = baseSha;
     const dir = join(htmlDir, id);
     mkdirSync(dir, { recursive: true });
     this.notesFile = join(dir, "notes.json");
@@ -299,7 +305,14 @@ class ReviewPage {
       if (!this.#stores.has(review.reviewId)) {
         this.#stores.set(
           review.reviewId,
-          new ReviewStore(dirname(this.html), review.reviewId, labelled ? `#${review.number}` : ""),
+          new ReviewStore(
+            dirname(this.html),
+            review.reviewId,
+            labelled ? `#${review.number}` : "",
+            // a page built before baseSha existed falls back to HEAD - the old,
+            // less exact comparison, rather than failing to serve at all
+            review.baseSha ?? "HEAD",
+          ),
         );
       }
     }
@@ -361,7 +374,13 @@ class ReviewPage {
     return candidate;
   }
 
-  lineCounts(path: string): { added: number; removed: number } {
+  /** always against the review's own base commit, never the working
+      checkout's index - a file already committed on this branch (eg one this
+      review itself adds) is a normal, whole-file addition measured from
+      there. A path never committed at all - a fresh worktree-mode addition -
+      is invisible to `git diff <ref>` regardless of the ref, so that one
+      case alone still falls back to diffing it against nothing */
+  lineCounts(path: string, reviewBaseSha: string): { added: number; removed: number } {
     const run = (...args: string[]): string => {
       try {
         return execFileSync("git", args, {
@@ -375,14 +394,10 @@ class ReviewPage {
       }
     };
 
-    // a diff empty because nothing changed and a diff empty because the path
-    // is untracked look identical - ls-files tells them apart, so an
-    // unchanged tracked file doesn't get diffed against /dev/null and come
-    // back as entirely added
     const tracked = run("ls-files", "--error-unmatch", "--", path).trim() !== "";
     const numstat =
       tracked ?
-        run("diff", "--numstat", "--", path)
+        run("diff", "--numstat", reviewBaseSha, "--", path)
       : run("diff", "--numstat", "--no-index", "--", "/dev/null", path);
 
     const [added, removed] = numstat.split(/\s+/);
@@ -391,7 +406,12 @@ class ReviewPage {
       : { added: 0, removed: 0 };
   }
 
-  save(path: string, content: string, baseSha: string): { sha: string; added: number; removed: number } {
+  save(
+    path: string,
+    content: string,
+    baseSha: string,
+    reviewBaseSha: string,
+  ): { sha: string; added: number; removed: number } {
     const target = this.resolveInRepo(path);
     if (sha256(ReviewStore.read(target)) !== baseSha) {
       throw Object.assign(
@@ -400,7 +420,7 @@ class ReviewPage {
       );
     }
     writeFileSync(target, content, "utf8");
-    return { sha: sha256(content), ...this.lineCounts(path) };
+    return { sha: sha256(content), ...this.lineCounts(path, reviewBaseSha) };
   }
 
   /** what the page needs to notice that a file changed under it: just the
@@ -421,9 +441,12 @@ class ReviewPage {
     return state;
   }
 
-  fileContent(path: string): { after: string; sha: string; added: number; removed: number } {
+  fileContent(
+    path: string,
+    reviewBaseSha: string,
+  ): { after: string; sha: string; added: number; removed: number } {
     const content = ReviewStore.read(this.resolveInRepo(path));
-    return { after: content, sha: sha256(content), ...this.lineCounts(path) };
+    return { after: content, sha: sha256(content), ...this.lineCounts(path, reviewBaseSha) };
   }
 }
 
@@ -515,6 +538,7 @@ const handlePost = (
         body.path as string,
         body.content as string,
         body.sha as string,
+        store.baseSha,
       );
       console.log(`  saved ${body.path as string}`);
       respondJson(response, 200, result);
@@ -556,7 +580,7 @@ const handlePost = (
       });
       return;
     }
-    respondJson(response, 200, reviewPage.fileContent(body.path as string));
+    respondJson(response, 200, reviewPage.fileContent(body.path as string, store.baseSha));
     return;
   }
   respondJson(response, 404, { error: "not found" });

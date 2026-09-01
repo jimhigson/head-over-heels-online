@@ -19,9 +19,6 @@ import {
   type ReviewShell,
 } from "./src/ReviewPayload.ts";
 
-/** the reviewed repo's own pixel font, if it has one - harmless if absent */
-export const defaultFont = "src/_generated/font/blockstack-head-over-heels.woff2";
-
 export type Mode = "commit" | "pr" | "worktree";
 
 /** what collecting one review needs to know; build.ts's CLI maps onto this */
@@ -227,6 +224,17 @@ const imageRowFor = (
   return { row: { block: blockId, versions, from, to }, blobs };
 };
 
+/** the commit this review's diff is measured from, pinned to a sha so a
+    served page's live "did this change" check stays anchored to it even as
+    the ref it came from (eg a branch) moves on */
+const resolveBaseSha = (repo: string, options: ReviewOptions): string => {
+  const ref =
+    options.mode === "commit" ? `${options.ref}^`
+    : options.mode === "pr" ? (options.base ?? "")
+    : "HEAD";
+  return git(repo, "rev-parse", ref).trim();
+};
+
 const diffFor = (repo: string, options: ReviewOptions, path: string, status: string): string => {
   if (options.mode === "commit") {
     return git(repo, "show", options.ref ?? "", "--", path);
@@ -378,6 +386,8 @@ export type CollectedReview = {
   empty: string[];
   imageBytes: number;
   imagesOmitted: number;
+  /** the commit this review's diff is measured from - see resolveBaseSha */
+  baseSha: string;
 };
 
 /** every mechanical part of one review: diffs, sides, stats, links, images */
@@ -465,6 +475,7 @@ export const collectReview = (
     empty,
     imageBytes,
     imagesOmitted,
+    baseSha: resolveBaseSha(repo, options),
   };
 };
 
@@ -504,11 +515,6 @@ export const page = (
 /** the block element id a carried review's payload lives at */
 export const reviewBlockId = (number: number): string => `review-${number}`;
 
-export const readFont = (repo: string, fontOption: string | undefined): string => {
-  const fontPath = fontOption ?? join(repo, defaultFont);
-  return existsSync(fontPath) ? readFileSync(fontPath).toString("base64") : "";
-};
-
 /** the contents tree's file-type icons come from this skill's own
     bootstrap-icons install - a dependency, so its absence is a build failure */
 export const readIconFont = (): string => {
@@ -528,6 +534,5 @@ export const readIconFont = (): string => {
   return readFileSync(iconFontPath).toString("base64");
 };
 
-/** fills both font placeholders the stylesheet carries */
-export const finishCss = (css: string, repo: string, fontOption: string | undefined): string =>
-  css.replace("FONT_B64", readFont(repo, fontOption)).replace("ICONFONT_B64", readIconFont());
+/** fills the icon-font placeholder the stylesheet carries */
+export const finishCss = (css: string): string => css.replace("ICONFONT_B64", readIconFont());

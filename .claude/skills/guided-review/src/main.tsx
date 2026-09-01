@@ -9,6 +9,9 @@ import { loadNotes, messagesOf, type Note, noteAt, type Notes, notesStore } from
 import { activeReviewIsEditable, meta, reviewId, selectReview, server } from "./payload.ts";
 import { setReviewSwitcher } from "./reviewSwitch.ts";
 import { toast } from "./stores.ts";
+// applies the remembered theme as a side effect of import, ahead of the
+// first render
+import "./theme.ts";
 import {
   adoptTicks,
   getLastFromServer,

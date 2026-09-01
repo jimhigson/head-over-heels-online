@@ -37,27 +37,36 @@ export const pageIsDark = (): boolean => {
   return window.matchMedia("(prefers-color-scheme: dark)").matches;
 };
 
-/** monaco themes carrying the same palette as the rest of the page */
+/** monaco themes carrying the same palette as the rest of the page - both
+    read straight from VS Code's own default theme (2026 Light / 2026 Dark,
+    extensions/theme-defaults/themes/2026-{light,dark}.json in
+    microsoft/vscode), so a diff here looks like a diff in VS Code itself */
 const defineReviewThemes = (monaco: MonacoApi): void => {
-  const shared = {
-    "editor.background": "#00000000",
-    "editorGutter.background": "#00000000",
-    "diffEditor.insertedTextBackground": "#17503e",
-    "diffEditor.removedTextBackground": "#722f22",
-    "diffEditor.insertedLineBackground": "#17503e",
-    "diffEditor.removedLineBackground": "#722f22",
-  };
   monaco.editor.defineTheme("review-light", {
     base: "vs",
     inherit: true,
     rules: [],
-    colors: { ...shared, "editorLineNumber.foreground": "#7c6e6c" },
+    colors: {
+      "editor.background": "#ffffff",
+      "editorGutter.background": "#ffffff",
+      "diffEditor.insertedTextBackground": "#587c0c26",
+      "diffEditor.removedTextBackground": "#ad070726",
+      "editorLineNumber.foreground": "#606060",
+    },
   });
   monaco.editor.defineTheme("review-dark", {
     base: "vs-dark",
     inherit: true,
     rules: [],
-    colors: { ...shared, "editorLineNumber.foreground": "#9a8d8a" },
+    colors: {
+      "editor.background": "#121314",
+      "editorGutter.background": "#121314",
+      "diffEditor.insertedTextBackground": "#57ab5a4d",
+      "diffEditor.insertedLineBackground": "#347d3926",
+      "diffEditor.removedTextBackground": "#f470674d",
+      "diffEditor.removedLineBackground": "#c93c3726",
+      "editorLineNumber.foreground": "#858889",
+    },
   });
 };
 

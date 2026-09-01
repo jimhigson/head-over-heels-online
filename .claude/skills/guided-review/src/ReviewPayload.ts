@@ -92,6 +92,12 @@ export type ShellReview = {
   reviewId?: string;
   /** head branch name, so the server can tell which review edits its checkout */
   head?: string;
+  /** the commit this review's diff is measured from - a served page's live
+      "did this change" line counts diff against this, not the working
+      checkout's index, so they read against the same base the review itself
+      does regardless of what else has since been committed there. Absent for
+      an uncarried stack sibling, or a page built before this existed */
+  baseSha?: string;
   /** an instructions file in the stack directory awaits a contributing agent */
   awaitingContribution?: boolean;
 };
