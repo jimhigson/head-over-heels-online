@@ -141,6 +141,11 @@ jobs:
           - { os: ubuntu-24.04-arm, suite: cameraRotationSweep, projectOption: --project chromium-desktop }
           - { os: macos-latest, suite: cameraRotationSweep, projectOption: --project mobile-safari }
 
+          # SMOOTH SPRITES - the same two runners as the sweep above, which is
+          # where these captures' baselines were taken
+          - { os: ubuntu-24.04-arm, suite: smoothSprites, projectOption: --project chromium-desktop }
+          - { os: macos-latest, suite: smoothSprites, projectOption: --project mobile-safari }
+
           # LUT SNAPSHOTS - single batch per os/browser combo
           # chromium/mobile-chrome on Linux, webkit/mobile-safari on macOS:
           - { os: ubuntu-24.04-arm, suite: lutSnapshot, projectOption: "--project chromium-desktop --project mobile-chrome" }
@@ -170,6 +175,12 @@ jobs:
 
           # SPRITES - single batch, chromium-desktop only on Linux
           - { os: ubuntu-24.04-arm, suite: spritesPage, projectOption: --project chromium-desktop }
+
+          # MAIN MENU AT NATIVE SIZE - one capture per browser at that browser's
+          # own device size, so unlike the suites above every project is wanted:
+          # chromium/mobile-chrome on Linux, webkit/mobile-safari on macOS
+          - { os: ubuntu-24.04-arm, suite: mainMenuNativeSize, projectOption: "--project chromium-desktop --project mobile-chrome" }
+          - { os: macos-latest, suite: mainMenuNativeSize, projectOption: "--project webkit-desktop --project mobile-safari" }
     # name is super-compressed to fit on the github UI with enough info to identify what's being run
     name: >-
       ${{
@@ -179,6 +190,8 @@ jobs:
         || matrix.suite == 'menuSnapshotsMainMenu' && format('MnuMain {0}', contains(matrix.os, 'windows') && 'Win' || contains(matrix.os, 'macos') && 'Mac' || 'Lnx')
         || matrix.suite == 'settingsReflectInGame' && 'Settings'
         || matrix.suite == 'spritesPage' && 'Sprites'
+        || matrix.suite == 'mainMenuNativeSize' && format('NativeSize {0}', contains(matrix.os, 'macos') && 'Mac' || 'Lnx')
+        || matrix.suite == 'smoothSprites' && format('Smooth {0}', contains(matrix.os, 'macos') && 'Mac' || 'Lnx')
         || matrix.suite == 'cameraRotationSweep' && format('Sweep {0}', contains(matrix.os, 'macos') && 'Mac' || 'Lnx')
         || matrix.suite == '' && format('All:{0}',
             contains(matrix.projectOption, 'mobile-safari-portrait') && 'mobile-safari-portrait'

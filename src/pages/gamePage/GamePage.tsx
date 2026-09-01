@@ -137,6 +137,16 @@ export const GamePage = () => {
 
   const canvasInlineStyle = useCanvasInlineStyle();
 
+  // SoftwarePointer draws its own pointer sprite in place of the os cursor -
+  // portalled to document.body, so the hiding class goes on body too, only
+  // while this page (the only place SoftwarePointer is rendered) is mounted
+  useEffect(() => {
+    document.body.classList.add("game-cursor-none");
+    return () => {
+      document.body.classList.remove("game-cursor-none");
+    };
+  }, []);
+
   usePageAsAnApp();
   useUpdateUpscaleWhenElementResizes(undefined, renderSizingArea ?? undefined);
   useUpdateUpscaleOnDisplaySettingsChange(

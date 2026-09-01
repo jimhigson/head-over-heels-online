@@ -1,4 +1,5 @@
 import { type Upscale } from "../../../store/slices/upscale/Upscale";
+import { spriteOptionEquals } from "../../../store/slices/userSettings/spriteOptionEquals";
 import {
   type InputDirectionMode,
   type SpriteOption,
@@ -20,10 +21,24 @@ export const needsNewHudRenderer = <
    * so it must be rebuilt to pick up the re-baked ones
    */
   webGlContextRestored: boolean,
+  /**
+   * the original spritesheet instance has been recreated (eg at a new
+   * cleanEdge bake factor) since the renderer was built - its glyph sprites
+   * reference textures destroyed with the old sheet, and its text is
+   * rasterised for the old bake factor
+   */
+  originalSheetRebuilt: boolean,
 ): boolean =>
   renderer === undefined ||
   webGlContextRestored ||
-  renderer.renderContext.general.spriteOption !== spriteOption ||
+  originalSheetRebuilt ||
+  // compared by value: the option the tick renders under is derived (a paused
+  // tick renders a sheet-supporting option uncolourised), so an equal option
+  // arrives as a fresh object on every tick it is derived on
+  !spriteOptionEquals(
+    renderer.renderContext.general.spriteOption,
+    spriteOption,
+  ) ||
   renderer.renderContext.general.onScreenControls !== onScreenControls ||
   renderer.renderContext.inputDirectionMode !== inputDirectionMode ||
   // invalidate on changing landscape/portrait since on-screen controls need this

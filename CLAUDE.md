@@ -83,6 +83,9 @@ a community-contributed campagin made using the level editor
 * campaigns are columnar-encoded (`src/columnar/`) before storage: items are grouped by type and each field becomes one array, which compresses far better than row json. `compressCampaignObject`/`decompressCampaignObject` wrap this + gzip+base64 for the db; legacy non-columnar db rows (no `_enc` marker) still load
 * the original campaign blob is `gen:rooms` output (`campaign.columnar.json`); `loadOriginalCampaign` loads the plain ts in dev and the blob+decoder in prod
 * the encoder must stay editor/build-only (never in the game bundle); decoder is shared
+
+
+### Serving the game
 * serving: static assets come from cloudflare r2, pre-compressed at brotli-11 at rest (`Content-Encoding: br`), not compressed on the fly — so stored size == wire size
 
 ## Preact / React
@@ -315,6 +318,21 @@ throw new Error(
 don't have to change, or so snapshots don't have to regenerate. Once a type is refactored away from, no echos of it should exist in the code
 
 * prefer variable names that are on the longer side if doing so makes them more descriptive; where there is only one instance of a const, let, or param, it is usually best for the name to be different from the type. Eg: `const zDrawOrder: ZDrawOrder` NOT: `const order: ZDrawOrder`. When reading from a collection, prefer the single version of the collection's name, ie `for( let shadowSprite of shadowSprites)` NOT: `for( let sprite of shadowSprites)`
+## Comms style
+
+The following are banned as wastes of output tokens: 
+
+* Commentary that doesn't get instantly to the point
+* Responses over 5 sentences long, not including tables
+* "the ground truth..." - just say "ok" or, better yet, nothing at all
+* "that's the clearest framing all night" - boring, wordy, not clear or plain
+* "smoking gun" - use plain, simple language that is to the point without ceremony
+* "Let me measure rather than assert" - just measure then
+* all apologies 
+* follow-up work suggestions at the end of a message, unless I ask for it, unless the signal is very strong that this is a logical next step to our work
+* bullet points more than 6 points long - just say "and more if important" or better yet noting if not important, I probably stopped reading by now anyway
+* writing long-winded justifications for bad work, just say "it's junk" and move on
+* "on its final lap" - there are no laps in writing software, just say "nearly done" or something else not so lame
 
 ### Comments 
  * do not add comments that only explain things that are obvious from the line they are documenting. For example, do not do this - these comments are redundant - I would rather no docs than this useless docs:
@@ -450,6 +468,21 @@ Never padd off a test as 'flaky' as an excuse - a 'flaky' test is a broken test.
 * the editor vite starts in a different dir, as given by the package.json file
 * whenever starting a server (`dev`/`preview`), check which port it actually started on (read its stdout) before trying to connect - if the default port is already in use, vite silently falls through to the next free port, so don't assume the port
 
+### Chunking, and how to lose 200kB by accident
+* there is no manual chunking - rolldown decides. Anything reachable from two or more lazy chunks is promoted into the shared `store` chunk, which loads on the cold path to the main menu. So making a heavy library reachable from a second place costs its whole weight up front, even when every import of it is dynamic
+* **destructure a dynamic import at its own `await`**. Passing `import()` through `Promise.all` and array-destructuring the result keeps the namespace object whole, so nothing can be shaken out of it and the entire library lands in the shared chunk:
+```ts
+// bad - pulls all of pixi into the cold path (~200kB brotli)
+const [{ Texture }, { thing }] = await Promise.all([
+  import("pixi.js"),
+  import("./thing"),
+]);
+// good
+const { Texture } = await import("pixi.js");
+const { thing } = await import("./thing");
+```
+* measure before and after with `scripts/act-true-site-size.sh`, which runs the real `true-site-size` workflow locally under `act` against the working tree. `pnpm build:game` also writes `build-stats.html` (rollup-plugin-visualizer); its embedded `const data = {...}` gives per-module brotli sizes and `moduleParts` says which chunk each module landed in, which is how to tell what moved
+
 ## Running
 
 Before running any commands, ensure you have the correct node version by running `eval "$(fnm env)" && fnm use`.
@@ -525,6 +558,12 @@ failing that seems unlikely, please point this out frankly rather than trying to
 # Using Pixi
 * Do not tell me what pixi v7 would do. I know it is still quite popular, but I don't use it so it is irrelevant. Also, be careful not to write code for v7, bearing in mind that you may have seen a lot of examples that use v7 and earlier since it is still quite popular
 * When reading pixi docs, check that the docs relate to v8.x and ignore if they are for an earlier version. On pixijs.com you can often tell by looking at the URL
+
+## The pixi patch — this build is webgl-only
+* `patches/pixi.js.patch` (wired via `patchedDependencies` in `pnpm-workspace.yaml`) rewrites `autoDetectRenderer` to always construct `WebGLRenderer`, imported statically, and strips the side-effect `init` imports for accessibility, graphics, text, bitmap text, nine-slice and tiling sprites, plus the wgsl/`GpuProgram` half of the shaders
+* the point is tree-shaking: with one named renderer the webgpu and canvas backends drop out entirely. It also dodges a rolldown chunking bug that put shared modules (eg `Graphics`) inside never-loaded renderer chunks, forcing an eager download
+* so `autoDetectRenderer` is safe to call — it resolves to webgl at build time — but prefer `new WebGLRenderer()` at new call sites: it says what we mean without depending on the patch
+* we do NOT support multiple renderers. Don't add code that could select webgpu or canvas
 
 # html layout
 * the whole html part of the layout engine is for menus and dialogs. These are scaled dynamically

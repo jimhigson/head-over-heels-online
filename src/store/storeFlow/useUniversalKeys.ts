@@ -91,6 +91,14 @@ export const useUniversalKeys = () => {
   });
 
   useActionTap({
+    action: "toggleSmoothSprites",
+    handler: useDispatchActionCallback(toggleUserSetting, {
+      path: "displaySettings.smoothSprites",
+    }),
+    disabled: assigningKeys,
+  });
+
+  useActionTap({
     action: "cycleResolution",
     handler: useDispatchActionCallback(
       setEmulatedResolution,

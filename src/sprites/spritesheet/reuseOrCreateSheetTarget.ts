@@ -18,6 +18,11 @@ export const reuseOrCreateSheetTarget = (
   previousTarget: RenderTexture | undefined,
   /** total rows the packed layout uses, from y=0 */
   requiredHeight: number,
+  /**
+   * backing-store scale of the bake (the sheet's logical size times this);
+   * a previous target at a different resolution cannot be reused
+   */
+  resolution: number,
 ): RenderTexture => {
   if (import.meta.env.DEV && requiredHeight > sheetTargetHeight) {
     throw new Error(
@@ -25,13 +30,19 @@ export const reuseOrCreateSheetTarget = (
     );
   }
 
-  return (
-    previousTarget ??
-    RenderTexture.create({
-      width: spritesheetSize.w,
-      height: sheetTargetHeight,
-      antialias: false,
-      autoGenerateMipmaps: false,
-    })
-  );
+  if (
+    previousTarget !== undefined &&
+    previousTarget.source.resolution === resolution
+  ) {
+    return previousTarget;
+  }
+  previousTarget?.destroy(true);
+
+  return RenderTexture.create({
+    width: spritesheetSize.w,
+    height: sheetTargetHeight,
+    resolution,
+    antialias: false,
+    autoGenerateMipmaps: false,
+  });
 };

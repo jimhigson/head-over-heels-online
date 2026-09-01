@@ -211,6 +211,7 @@ export class HudRenderer<
         sprite: this.#createCharacterSprite("head"),
         livesText: new TextContainer({
           pixiRenderer: general.pixiRenderer,
+          resolution: general.spritesheets.bakeFactor,
           label: "headLives",
           doubleHeight: true,
           outline: true,
@@ -242,6 +243,7 @@ export class HudRenderer<
         sprite: this.#createCharacterSprite("heels"),
         livesText: new TextContainer({
           pixiRenderer: general.pixiRenderer,
+          resolution: general.spritesheets.bakeFactor,
           label: "heelsLives",
           doubleHeight: true,
           outline: true,
@@ -485,6 +487,7 @@ export class HudRenderer<
         })
       : new TextContainer({
           pixiRenderer: this.renderContext.general.pixiRenderer,
+          resolution: this.renderContext.general.spritesheets.bakeFactor,
           text: iconSource.glyph,
           y: 8,
         });
@@ -493,6 +496,7 @@ export class HudRenderer<
     const x = hudCharTextureSize.w / 2;
     const text = new TextContainer({
       pixiRenderer: this.renderContext.general.pixiRenderer,
+      resolution: this.renderContext.general.spritesheets.bakeFactor,
       outline: outline === "text-only",
       y: textOnTop ? 0 : 16,
       x,
