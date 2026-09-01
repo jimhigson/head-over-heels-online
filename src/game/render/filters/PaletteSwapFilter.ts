@@ -69,7 +69,7 @@ export class PaletteSwapFilter extends Filter {
    * Destroys this filter and its LUT texture
    * @param destroyOptions - @see Filter.destroy
    */
-  destroy(
+  override destroy(
     /** true to destroy all */
     destroyOptions?:
       | {

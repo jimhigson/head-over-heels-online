@@ -8,7 +8,7 @@ export class UniqueTextureAnimatedSprite extends AnimatedSprite {
   /**
    * Destroys this sprite and always destroys its textures
    */
-  destroy(options?: DestroyOptions): void {
+  override destroy(options?: DestroyOptions): void {
     // Collect RenderTextures before destroying - these need manual cleanup
     const renderTextures = this.textures
       .map((frame) => ("texture" in frame ? frame.texture : frame))
