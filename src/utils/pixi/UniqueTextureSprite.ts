@@ -14,7 +14,7 @@ export class UniqueTextureSprite extends Sprite {
   /**
    * Destroys this sprite and always destroys its texture
    */
-  destroy(options?: DestroyOptions): void {
+  override destroy(options?: DestroyOptions): void {
     // Pixi.js (v8.8.1)
     //    node_modules/.pnpm/pixi.js@8.8.1/node_modules/pixi.js/lib/scene/sprite/Sprite.mjs:117
     //    this._texture.destroy(destroyTextureSource);

@@ -17,12 +17,12 @@ export class DispatchingErrorBoundary extends Component<
     this.state = { hasError: false };
   }
 
-  static getDerivedStateFromError() {
+  static override getDerivedStateFromError() {
     // TODO: are state updates even needed since it doesn't change the rendering?
     return { hasError: true };
   }
 
-  componentDidCatch(error: Error, _info: ErrorInfo) {
+  override componentDidCatch(error: Error, _info: ErrorInfo) {
     console.error("Error caught in DispatchingErrorBoundary:", error);
     store.dispatch(errorCaught(createSerialisableErrors(error)));
   }

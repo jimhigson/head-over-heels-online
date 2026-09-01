@@ -39,15 +39,15 @@ export class EditorErrorBoundary extends Component<
     this.state = { errors: undefined };
   }
 
-  static getDerivedStateFromError(error: Error) {
+  static override getDerivedStateFromError(error: Error) {
     return { errors: createSerialisableErrors(error) };
   }
 
-  componentDidCatch(error: Error, _info: ErrorInfo) {
+  override componentDidCatch(error: Error, _info: ErrorInfo) {
     console.error("Error caught in EditorErrorBoundary:", error);
   }
 
-  componentDidUpdate(
+  override componentDidUpdate(
     _prevProps: EditorErrorBoundaryProps,
     prevState: EditorErrorBoundaryState,
   ) {
@@ -58,7 +58,7 @@ export class EditorErrorBoundary extends Component<
     }
   }
 
-  componentWillUnmount() {
+  override componentWillUnmount() {
     this.#stopListening();
   }
 
