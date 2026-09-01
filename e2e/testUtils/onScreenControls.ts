@@ -1,6 +1,7 @@
 import { type Page } from "@playwright/test";
 
 import { type ButtonId } from "../../src/game/render/hud/HudButtonRenderer";
+import { fastForwardGameTime, whilePainting } from "./advanceGameTime";
 import { dispatchToStore } from "./gameStateQueries";
 import { osSlowness } from "./infrastructure";
 
@@ -46,123 +47,142 @@ export const onScreenButtonClientCentre = async (
   page: Page,
   which: ButtonId,
 ): Promise<{ x: number; y: number }> => {
-  const handle = await page.waitForFunction(
-    (label) => {
-      type PixiNode = {
-        label?: null | string;
-        eventMode?: string;
-        parent?: null | PixiNode;
-        children?: PixiNode[];
-        getBounds: () => {
-          minX: number;
-          minY: number;
-          maxX: number;
-          maxY: number;
+  // painted while polling: the HUD is only built and positioned by a tick, and
+  // in an e2e build no tick happens unless this asks for one
+  const handle = await whilePainting(
+    page,
+    page.waitForFunction(
+      (label) => {
+        type PixiNode = {
+          label?: null | string;
+          eventMode?: string;
+          parent?: null | PixiNode;
+          children?: PixiNode[];
+          getBounds: () => {
+            minX: number;
+            minY: number;
+            maxX: number;
+            maxY: number;
+          };
         };
-      };
-      type PixiApp = {
-        stage: PixiNode;
-        canvas: HTMLCanvasElement;
-        renderer: {
-          screen: { width: number; height: number };
-          events: {
-            rootBoundary: {
-              hitTest: (x: number, y: number) => null | PixiNode;
+        type PixiApp = {
+          stage: PixiNode;
+          canvas: HTMLCanvasElement;
+          renderer: {
+            screen: { width: number; height: number };
+            lastObjectRendered: PixiNode | undefined;
+            events: {
+              rootBoundary: {
+                rootTarget: PixiNode | undefined;
+                hitTest: (x: number, y: number) => null | PixiNode;
+              };
             };
           };
         };
-      };
 
-      const app = window._e2e_pixiApplication as unknown as PixiApp | undefined;
-      if (!app) {
-        return null;
-      }
-
-      const findByLabel = (
-        container: PixiNode,
-        target: string,
-      ): null | PixiNode => {
-        if (container.label === target) {
-          return container;
+        const app = window._e2e_pixiApplication as unknown as
+          PixiApp | undefined;
+        if (!app) {
+          return null;
         }
-        for (const child of container.children ?? []) {
-          const found = findByLabel(child, target);
-          if (found) {
-            return found;
+
+        const findByLabel = (
+          container: PixiNode,
+          target: string,
+        ): null | PixiNode => {
+          if (container.label === target) {
+            return container;
           }
-        }
-        return null;
-      };
-
-      const isSelfOrAncestor = (
-        node: null | PixiNode | undefined,
-        maybeAncestor: PixiNode,
-      ): boolean => {
-        for (let n = node; n; n = n.parent) {
-          if (n === maybeAncestor) {
-            return true;
+          for (const child of container.children ?? []) {
+            const found = findByLabel(child, target);
+            if (found) {
+              return found;
+            }
           }
+          return null;
+        };
+
+        const isSelfOrAncestor = (
+          node: null | PixiNode | undefined,
+          maybeAncestor: PixiNode,
+        ): boolean => {
+          for (let n = node; n; n = n.parent) {
+            if (n === maybeAncestor) {
+              return true;
+            }
+          }
+          return false;
+        };
+
+        const content = findByLabel(app.stage, label);
+        if (!content) {
+          return null;
         }
-        return false;
-      };
 
-      const content = findByLabel(app.stage, label);
-      if (!content) {
-        return null;
-      }
+        // the interactive button is the nearest ancestor pixi will hit-test
+        // (its handlers live there); the content sits passively inside it
+        let interactive: null | PixiNode | undefined = content;
+        while (interactive && interactive.eventMode !== "static") {
+          interactive = interactive.parent;
+        }
+        if (!interactive) {
+          // not yet wired up for input
+          return null;
+        }
 
-      // the interactive button is the nearest ancestor pixi will hit-test
-      // (its handlers live there); the content sits passively inside it
-      let interactive: null | PixiNode | undefined = content;
-      while (interactive && interactive.eventMode !== "static") {
-        interactive = interactive.parent;
-      }
-      if (!interactive) {
-        // not yet wired up for input
-        return null;
-      }
+        const bounds = content.getBounds();
+        const globalX = (bounds.minX + bounds.maxX) / 2;
+        const globalY = (bounds.minY + bounds.maxY) / 2;
 
-      const bounds = content.getBounds();
-      const globalX = (bounds.minX + bounds.maxX) / 2;
-      const globalY = (bounds.minY + bounds.maxY) / 2;
+        // the decisive readiness check: pixi must route a pointer at this point
+        // to our button. Fails while the button is unpositioned, hidden, or
+        // covered by another container, so we never click prematurely.
+        // pixi roots its event boundary only when it handles a pointer event of
+        // its own, so a hit test before the first one has no tree to walk.
+        // Root it at whatever was last drawn - exactly what pixi does itself
+        // whenever a pointer reaches the canvas
+        const { lastObjectRendered } = app.renderer;
+        if (!lastObjectRendered) {
+          // nothing has been drawn, so there is nothing to hit yet
+          return null;
+        }
+        app.renderer.events.rootBoundary.rootTarget = lastObjectRendered;
 
-      // the decisive readiness check: pixi must route a pointer at this point
-      // to our button. Fails while the button is unpositioned, hidden, or
-      // covered by another container, so we never click prematurely.
-      const hit = app.renderer.events.rootBoundary.hitTest(globalX, globalY);
-      if (!isSelfOrAncestor(hit, interactive)) {
-        return null;
-      }
+        const hit = app.renderer.events.rootBoundary.hitTest(globalX, globalY);
+        if (!isSelfOrAncestor(hit, interactive)) {
+          return null;
+        }
 
-      const rect = app.canvas.getBoundingClientRect();
-      const scaleX = rect.width / app.renderer.screen.width;
-      const scaleY = rect.height / app.renderer.screen.height;
-      const centre = {
-        x: rect.left + globalX * scaleX,
-        y: rect.top + globalY * scaleY,
-      };
+        const rect = app.canvas.getBoundingClientRect();
+        const scaleX = rect.width / app.renderer.screen.width;
+        const scaleY = rect.height / app.renderer.screen.height;
+        const centre = {
+          x: rect.left + globalX * scaleX,
+          y: rect.top + globalY * scaleY,
+        };
 
-      // also require the position to be stable across two polls: a button is
-      // briefly at its default (0,0) before the first HUD tick moves it, and
-      // we must not click the stale spot.
-      const cacheKey = `__e2eButtonCentre_${label}`;
-      const cache = window as unknown as Record<
-        string,
-        { x: number; y: number } | undefined
-      >;
-      const previous = cache[cacheKey];
-      cache[cacheKey] = centre;
-      if (
-        previous === undefined ||
-        Math.abs(previous.x - centre.x) > 0.5 ||
-        Math.abs(previous.y - centre.y) > 0.5
-      ) {
-        return null;
-      }
-      return centre;
-    },
-    buttonContentLabel[which],
-    { timeout: 15_000 * osSlowness, polling: "raf" },
+        // also require the position to be stable across two polls: a button is
+        // briefly at its default (0,0) before the first HUD tick moves it, and
+        // we must not click the stale spot.
+        const cacheKey = `__e2eButtonCentre_${label}`;
+        const cache = window as unknown as Record<
+          string,
+          { x: number; y: number } | undefined
+        >;
+        const previous = cache[cacheKey];
+        cache[cacheKey] = centre;
+        if (
+          previous === undefined ||
+          Math.abs(previous.x - centre.x) > 0.5 ||
+          Math.abs(previous.y - centre.y) > 0.5
+        ) {
+          return null;
+        }
+        return centre;
+      },
+      buttonContentLabel[which],
+      { timeout: 15_000 * osSlowness, polling: "raf" },
+    ),
   );
   // waitForFunction only resolves once the predicate returns a truthy value,
   // so the handle never wraps the null branch here
@@ -187,6 +207,9 @@ export const withOnScreenButtonHeld = async (
   await page.mouse.move(x, y);
   await page.mouse.down();
   try {
+    // the press is read inside a tick, and game time only passes when asked
+    // for - so hold it across an advance rather than merely in wall-clock:
+    await fastForwardGameTime(page, 250);
     await whileHeld();
   } finally {
     await page.mouse.up();

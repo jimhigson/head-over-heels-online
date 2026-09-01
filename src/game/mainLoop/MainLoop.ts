@@ -1,4 +1,4 @@
-import { type Application, Container, Rectangle, type Ticker } from "pixi.js";
+import { type Application, Container, Rectangle } from "pixi.js";
 
 import { audioCtx } from "../../sound/audioCtx";
 import { ensureRoomSoundsLoaded } from "../../sound/ensureRoomSoundsLoaded";
@@ -26,6 +26,8 @@ import {
 import { store } from "../../store/store";
 import { validateSceneGraph } from "../../utils/pixi/validateSceneGraph";
 import { createSerialisableErrors } from "../../utils/redux/createSerialisableErrors";
+import { appClock } from "../../utils/ticker/appClock";
+import { type AppTicker } from "../../utils/ticker/AppTicker";
 import { type Xy } from "../../utils/vectors/vectors";
 import { type GameState } from "../gameState/GameState";
 import { selectCurrentRoomState } from "../gameState/gameStateSelectors/selectCurrentRoomState";
@@ -41,6 +43,7 @@ import {
 import { RoomRenderer } from "../render/room/RoomRenderer";
 import { type RoomRendererType } from "../render/room/RoomRendererType";
 import { RoomScrollRenderer } from "../render/room/RoomScrollRenderer";
+import { E2EEventBus } from "./E2EEventBus";
 import {
   loadedFrameTimingStats,
   loadFrameTimingStats,
@@ -158,7 +161,36 @@ export class MainLoop<RoomId extends string> {
     this.#spritesheets.invalidateBakedTextures();
   };
 
-  #tickAndCatch = (ticker: Ticker): void => {
+  /** whether ticks are currently returning without drawing */
+  #renderingSuspended = false;
+
+  /**
+   * say whether ticks are drawing, whenever that changes. Announced from
+   * wherever a hold is taken or released rather than from the tick, so it is
+   * known as soon as it is true - a suspended loop has no next tick to say it
+   * in, and a resumed one has not drawn yet
+   */
+  #__e2e_announceRenderingSuspension =
+    import.meta.env.MODE === "visual-regression" ?
+      () => {
+        const suspended =
+          this.#spritesheetLoadPromise !== undefined ||
+          this.#roomSoundsLoadPromise !== undefined;
+
+        if (suspended === this.#renderingSuspended) {
+          return;
+        }
+        this.#renderingSuspended = suspended;
+        E2EEventBus.emit(
+          suspended ? "renderingSuspended" : "renderingResumed",
+          {},
+        );
+      }
+      // nothing to announce outside a build a test drives: gated here rather
+      // than inside, so the body - and the bus it reaches for - is not built
+    : undefined;
+
+  #tickAndCatch = (ticker: AppTicker): void => {
     try {
       this.#tick(ticker);
     } catch (thrown) {
@@ -245,7 +277,7 @@ export class MainLoop<RoomId extends string> {
   // lets us apply gamespeed ourselves, which leaves the ticker's speed as a pure
   // output - written for the animations to follow, never read back - so time
   // handed to ticker.update() always reaches the physics intact
-  #tick = ({ elapsedMS }: Ticker): void => {
+  #tick = ({ elapsedMS }: AppTicker): void => {
     const tickState = store.getState();
     const showFps = selectShowFps(tickState);
     const timingRecord = showFps ? loadedFrameTimingStats() : undefined;
@@ -369,11 +401,20 @@ export class MainLoop<RoomId extends string> {
           .loadImage(this.#app.renderer, tickSpriteOption.name)
           .then(() => {
             this.#spritesheetLoadPromise = undefined;
+            // oxlint-disable-next-line no-unused-expressions
+            import.meta.env.MODE === "visual-regression" &&
+              this.#__e2e_announceRenderingSuspension!();
           })
           .catch((e) => {
             this.#spritesheetLoadPromise = undefined;
+            // oxlint-disable-next-line no-unused-expressions
+            import.meta.env.MODE === "visual-regression" &&
+              this.#__e2e_announceRenderingSuspension!();
             this.#handleError(e);
           });
+        // oxlint-disable-next-line no-unused-expressions
+        import.meta.env.MODE === "visual-regression" &&
+          this.#__e2e_announceRenderingSuspension!();
       } else {
         const rebuildStartMs = performance.now();
         this.#spritesheets.rebuild(
@@ -401,11 +442,20 @@ export class MainLoop<RoomId extends string> {
         this.#roomSoundsLoadPromise = roomSoundsPromise
           .then(() => {
             this.#roomSoundsLoadPromise = undefined;
+            // oxlint-disable-next-line no-unused-expressions
+            import.meta.env.MODE === "visual-regression" &&
+              this.#__e2e_announceRenderingSuspension!();
           })
           .catch((e) => {
             this.#roomSoundsLoadPromise = undefined;
+            // oxlint-disable-next-line no-unused-expressions
+            import.meta.env.MODE === "visual-regression" &&
+              this.#__e2e_announceRenderingSuspension!();
             this.#handleError(e);
           });
+        // oxlint-disable-next-line no-unused-expressions
+        import.meta.env.MODE === "visual-regression" &&
+          this.#__e2e_announceRenderingSuspension!();
       }
     }
 
@@ -561,21 +611,13 @@ export class MainLoop<RoomId extends string> {
         performance.mark("first-gameplay");
       }
       if (import.meta.env.MODE === "visual-regression") {
-        if (createNewRoomRenderer && tickEndRoom) {
-          window.dispatchEvent(
-            new CustomEvent("_e2e_firstRenderOfRoom", {
-              detail: { roomId: tickEndRoom.id },
-            }),
-          );
-        }
-        // the sprite option that this rendered frame actually reflects - lets
-        // playwright wait for a sprite option change to land in the output rather
-        // than guessing with a fixed delay:
-        window.dispatchEvent(
-          new CustomEvent("_e2e_spriteOptionRendered", {
-            detail: { spriteOption: tickSpriteOption },
-          }),
-        );
+        // what this frame actually reflects - lets playwright wait for a change
+        // to land in the output rather than guessing with a fixed delay:
+        E2EEventBus.emit("frameRendered", {
+          roomId: tickEndRoom.id,
+          spriteOption: tickSpriteOption,
+          cameraAngle,
+        });
       }
     } catch (e) {
       throw new Error("Error in Pixi.js app.render()", { cause: e });
@@ -589,7 +631,7 @@ export class MainLoop<RoomId extends string> {
       "webglcontextrestored",
       this.#onWebGlContextRestored,
     );
-    this.#app.ticker.add(this.#tickAndCatch);
+    appClock.add(this.#tickAndCatch);
     return this;
   }
   stop() {
@@ -602,6 +644,6 @@ export class MainLoop<RoomId extends string> {
     this.#roomRenderer?.destroy();
     this.#roomRenderer = undefined;
     this.#hudRenderer?.destroy();
-    this.#app.ticker.remove(this.#tickAndCatch);
+    appClock.remove(this.#tickAndCatch);
   }
 }

@@ -1,5 +1,6 @@
 import { expect } from "@playwright/test";
 
+import { paintFrame } from "./testUtils/advanceGameTime";
 import { dispatchKeyPress } from "./testUtils/gameInteractions";
 import { osSlowness } from "./testUtils/infrastructure";
 import {
@@ -26,7 +27,9 @@ test.describe("main menu closability", () => {
 
     await test.step("Press Escape; main menu must remain visible", async () => {
       await dispatchKeyPress(page, "Escape", "Escape");
-      await page.waitForTimeout(500 * osSlowness);
+      // let the game loop tick so any (incorrect) close would have happened,
+      // then assert the menu is still there:
+      await paintFrame(page);
       await expect(page.locator('[data-dialog-id="mainMenu"]')).toBeVisible();
     });
   });
@@ -36,23 +39,19 @@ test.describe("main menu closability", () => {
   }, testInfo) => {
     await test.step("Start original campaign", async () => {
       await startCampaignViaMenu(page, testInfo.project.name, "originalGame");
-      await page.waitForTimeout(500 * osSlowness);
     });
 
     await test.step("Press Escape — main menu opens", async () => {
       await dispatchKeyPress(page, "Escape", "Escape");
-      await waitForDialog(page, "mainMenu", { timeout: 5_000 * osSlowness });
+      await waitForDialog(page, "mainMenu");
     });
 
     await test.step("Press Escape again — main menu closes", async () => {
-      // small pause: the input tracker needs a beat to release the previous
-      // Escape tap before the next press counts as a fresh tap
-      await page.waitForTimeout(500 * osSlowness);
+      // let a tick pass so the input tracker releases the previous Escape tap
+      // before the next press counts as a fresh tap
+      await paintFrame(page);
       await dispatchKeyPress(page, "Escape", "Escape");
-      await waitForDialog(page, "mainMenu", {
-        state: "detached",
-        timeout: 5_000 * osSlowness,
-      });
+      await waitForDialog(page, "mainMenu", { state: "detached" });
     });
   });
 });

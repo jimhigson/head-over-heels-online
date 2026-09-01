@@ -2,8 +2,21 @@ import { type Page } from "@playwright/test";
 import chalk from "chalk";
 
 import { type PokeableNumber } from "../../src/model/ItemStateMap";
-import { getCurrentCharacter } from "./gameStateQueries";
-import { osSlowness, retryWithRecovery } from "./infrastructure";
+import { defaultUserSettings } from "../../src/store/slices/userSettings/defaultUserSettings";
+import {
+  advanceUntil,
+  fastForwardGameTime,
+  isGameMenuOpen,
+  paintFrame,
+  settleInput,
+} from "./advanceGameTime";
+import {
+  captureE2eCursor,
+  dispatchToStore,
+  getCurrentCharacter,
+  waitForCharacterToChangeFrom,
+} from "./gameStateQueries";
+import { osSlowness } from "./infrastructure";
 import { elapsed, formatProjectName } from "./logging";
 
 /**
@@ -19,7 +32,14 @@ const getCurrentLives = (page: Page): Promise<PokeableNumber | undefined> =>
 const log = (message: string) =>
   console.log(`${chalk.cyan("loseAllLives")} ${elapsed()} ${message}`);
 
-/** dispatches key presses in a way that our special key handling can pick up (@see keyboardState) */
+/**
+ * press a key and let a tick read it, then release - all in one evaluate.
+ *
+ * Nothing ticks on its own in an e2e build, so a press has to carry its own
+ * advance: without one the key goes down and up with no tick between, and
+ * nothing - menu or world - ever sees it. Atomic because a tick counts a press
+ * as a tap only when it was down and wasn't on the tick before
+ */
 export const dispatchKeyPress = async (
   page: Page,
   /**
@@ -33,35 +53,149 @@ export const dispatchKeyPress = async (
 ) => {
   await page.evaluate(
     ({ key, code }) => {
+      const advanceTime = window.__e2e_advanceTime;
+      if (advanceTime === undefined) {
+        throw new Error(
+          "__e2e_advanceTime is not on the window - is this a visual-regression build?",
+        );
+      }
       window.dispatchEvent(new KeyboardEvent("keydown", { key, code }));
-    },
-    { key, code },
-  );
-  await page.waitForTimeout(100);
-  await page.evaluate(
-    ({ key, code }) => {
+      // only a frame worth some time acts on the press - a frame of none runs
+      // no physics at all, so the key would go down and up unnoticed
+      advanceTime(250);
       window.dispatchEvent(new KeyboardEvent("keyup", { key, code }));
     },
     { key, code },
   );
 };
 
+export type HeldKey = { key: string; code: string };
+
+const setKeysHeld = (
+  page: Page,
+  keys: ReadonlyArray<HeldKey>,
+  held: boolean,
+): Promise<void> =>
+  page.evaluate(
+    ({ keys, held }) => {
+      for (const { key, code } of keys) {
+        window.dispatchEvent(
+          new KeyboardEvent(held ? "keydown" : "keyup", { key, code }),
+        );
+      }
+    },
+    { keys, held },
+  );
+
+/**
+ * freeze the world, run `heldDown` with it stopped, then restore the speed it
+ * was running at.
+ *
+ * Driving the game in fast-forwarded steps only gives a deterministic result if
+ * the game is not *also* running in real time between those steps: otherwise
+ * the character keeps walking, and a dialog can open, in the gaps between the
+ * test's round-trips - gaps that stretch under load, which is where this goes
+ * wrong first. Frozen, nothing happens except the steps this asks for.
+ */
+const whileFrozen = async (page: Page, heldDown: () => Promise<void>) => {
+  const speedBefore =
+    (await page.evaluate(
+      () => window._e2e_store?.getState().userSettings.userSettings.gameSpeed,
+    )) ?? defaultUserSettings.gameSpeed;
+
+  await dispatchToStore(page, {
+    type: "userSettings/setGameSpeed",
+    payload: 0,
+  });
+  try {
+    await heldDown();
+  } finally {
+    await dispatchToStore(page, {
+      type: "userSettings/setGameSpeed",
+      payload: speedBefore,
+    });
+  }
+};
+
+/**
+ * hold keys down for a duration of *game* time, then release them.
+ *
+ * The duration is fast-forwarded rather than waited out in wall-clock: how far
+ * a character travels is a function of game time, so holding for real seconds
+ * makes the distance depend on how fast the machine happened to run. The jump
+ * is sub-stepped exactly as normal play is, with the keys held throughout, so
+ * the same press covers the same ground on every run.
+ */
 export const holdKeysForDuration = async (
   page: Page,
-  keys: string[],
+  keys: ReadonlyArray<HeldKey>,
   durationMs: number,
 ) => {
-  await page.evaluate((keys) => {
-    for (const key of keys) {
-      window.dispatchEvent(new KeyboardEvent("keydown", { key, code: key }));
+  await whileFrozen(page, async () => {
+    await setKeysHeld(page, keys, true);
+    await settleInput(page);
+    await fastForwardGameTime(page, durationMs);
+    await setKeysHeld(page, keys, false);
+  });
+};
+
+/**
+ * hold keys down until something has happened, advancing *game* time in steps
+ * rather than waiting in wall-clock, then release them.
+ *
+ * Where a walk is "far enough to reach x", holding for a fixed duration is a
+ * guess at how long that takes - one that has to be re-tuned whenever the speed
+ * or the distance changes, and that says nothing about having arrived. This
+ * instead walks until the thing being walked to is true, so the test states its
+ * own goal, and `maxMs` is only a budget for giving up.
+ */
+export const holdKeysUntil = async (
+  page: Page,
+  keys: ReadonlyArray<HeldKey>,
+  arrived: () => Promise<boolean>,
+  { stepMs = 250, maxMs = 20_000 }: { stepMs?: number; maxMs?: number } = {},
+) => {
+  await whileFrozen(page, () =>
+    holdKeysUntilFrozen(page, keys, arrived, { stepMs, maxMs }),
+  );
+};
+
+const holdKeysUntilFrozen = async (
+  page: Page,
+  keys: ReadonlyArray<HeldKey>,
+  arrived: () => Promise<boolean>,
+  { stepMs, maxMs }: { stepMs: number; maxMs: number },
+) => {
+  await setKeysHeld(page, keys, true);
+  await settleInput(page);
+  try {
+    for (let elapsedMs = 0; elapsedMs < maxMs; elapsedMs += stepMs) {
+      if (await arrived()) {
+        return;
+      }
+      if (await isGameMenuOpen(page)) {
+        // a menu covers the game, so no further walking can happen however long
+        // this keeps stepping - and arriving is often *what opened it* (walking
+        // onto a scroll). Stop advancing and let the final check below decide,
+        // once the dialog it opened has had a frame to render.
+        break;
+      }
+      await fastForwardGameTime(page, stepMs);
+      if (await arrived()) {
+        return;
+      }
     }
-  }, keys);
-  await page.waitForTimeout(durationMs);
-  await page.evaluate((keys) => {
-    for (const key of keys) {
-      window.dispatchEvent(new KeyboardEvent("keyup", { key, code: key }));
+
+    await paintFrame(page);
+    if (await arrived()) {
+      return;
     }
-  }, keys);
+    throw new Error(
+      `held ${keys.map(({ key }) => key).join("+")} for up to ${maxMs}ms of game time without arriving`,
+    );
+  } finally {
+    await setKeysHeld(page, keys, false);
+  }
 };
 
 /**
@@ -69,6 +203,20 @@ export const holdKeysForDuration = async (
  * visibility, so only click the trigger when the menu isn't currently open.
  */
 export const clickCheat = async (page: Page, testId: string) => {
+  // let the character come to rest first: a summoned pickup lands where they
+  // are, so summoning while they are still walking into the room leaves it
+  // behind them, to be walked away from rather than collected
+  await advanceUntil(page, () =>
+    page.evaluate(() => {
+      const playable = window.__e2e_currentPlayable?.();
+      return playable === undefined || playable.state.standingOnItemId !== null;
+    }),
+  );
+
+  await openCheatsAndClick(page, testId);
+};
+
+const openCheatsAndClick = async (page: Page, testId: string) => {
   const openButton = page.locator('[data-test-id="cheats-open-button"]');
   const menu = page.locator('[data-test-id="cheats-menu"]');
   if (!(await menu.isVisible())) {
@@ -80,68 +228,100 @@ export const clickCheat = async (page: Page, testId: string) => {
   await menu.waitFor({ state: "hidden" });
 };
 
-/**
- * Repeatedly summon emperor's guardians until all lives are lost. The
- * guardian homes onto the player so contact is reliable.
- *
- * Game speed is left at normal — the sped-up cheat puts extra load
- * on the engine for no test-time benefit (waitForTimeout is wall
- * clock either way).
- *
- * One guardian per life: the room resets after each death, wiping out
- * any previously-summoned monsters, so summoning a batch up front is
- * pointless. Wait 1.5s between summons to match the engine's
- * `afterDeathInvulnerabilityTime` so the next guardian can land a hit
- * once the post-death invincibility window has expired.
- */
+const summonGuardian = (page: Page) =>
+  clickCheat(page, "cheats-summon-monster-emperorsGuardian");
+
+/** is there a guardian in the room to home in on the player? */
+const roomHasGuardian = (page: Page): Promise<boolean> =>
+  page.evaluate(() =>
+    Object.values(window._e2e_gamePageGameAi?.currentRoom?.items ?? {}).some(
+      (item) =>
+        item.type === "monster" &&
+        (item.config as { which?: string }).which === "emperorsGuardian",
+    ),
+  );
+
 /**
  * Summon a guardian and wait for either a death dialog or an end-of-game
  * dialog. If a death dialog appears, dismiss it and return the sr-only text.
  * If an end-of-game dialog appears, return undefined (game over).
  */
 export const loseOneLife = async (page: Page): Promise<string | undefined> => {
-  const deadline = Date.now() + 30_000 * osSlowness;
-  let summoned = false;
-  while (Date.now() < deadline) {
-    const gameOverShown = await page
-      .locator(
-        '[data-dialog-id="offerReincarnation"], [data-dialog-id="score"]',
-      )
-      .first()
-      .isVisible()
-      .catch(() => false);
-    if (gameOverShown) {
-      return undefined;
-    }
-    const deathDialog = page.locator('[data-dialog-id="death"]');
-    if (await deathDialog.isVisible().catch(() => false)) {
-      const dialogTextContents = await deathDialog.allTextContents();
-      const dialogText = dialogTextContents
-        .join(" ")
-        .replace(/\s+/g, " ")
-        .trim();
-      log(`death dialog text: "${dialogText}"`);
-      log("dismissing death dialog");
-      await dispatchKeyPress(page, " ", "Space");
-      await page.waitForTimeout(500 * osSlowness);
-      return dialogText;
-    }
-    if (!summoned) {
-      summoned = true;
-      // short wait in case engine needs to switch chars:
-      await page.waitForTimeout(1_000 * osSlowness);
-      log(`lives=${await getCurrentLives(page)} → summon guardian`);
-      await clickCheat(page, "cheats-summon-monster-emperorsGuardian");
-    }
-    await page.waitForTimeout(500 * osSlowness);
+  const gameOverDialog = page
+    .locator('[data-dialog-id="offerReincarnation"], [data-dialog-id="score"]')
+    .first();
+  const deathDialog = page.locator('[data-dialog-id="death"]');
+
+  // already at game over?
+  if (await gameOverDialog.isVisible().catch(() => false)) {
+    return undefined;
+  }
+
+  // wait for a character to be controllable before summoning anything for it to
+  // home in on. That takes game time, which only passes when asked for:
+  const controllable = await advanceUntil(page, () =>
+    page.evaluate(() => window.__e2e_currentPlayable?.() !== undefined),
+  );
+  if (!controllable) {
+    throw new Error("no character became controllable to summon a guardian at");
+  }
+  log(`lives=${await getCurrentLives(page)} → summon guardian`);
+  await summonGuardian(page);
+
+  // the guardian homes onto the player, which takes game time - and game time
+  // only passes when asked for. Re-summon whenever the room has no guardian:
+  // the respawn from the previous death completes a tick or two into this wait
+  // and reloads the room, taking any guardian summoned before it with it
+  await advanceUntil(
+    page,
+    async () => {
+      if (
+        (await deathDialog.isVisible().catch(() => false)) ||
+        (await gameOverDialog.isVisible().catch(() => false))
+      ) {
+        return true;
+      }
+      if (!(await roomHasGuardian(page))) {
+        await summonGuardian(page);
+      }
+      return false;
+    },
+    { maxMs: 30_000 },
+  );
+
+  if (await gameOverDialog.isVisible().catch(() => false)) {
+    return undefined;
+  }
+  if (await deathDialog.isVisible().catch(() => false)) {
+    const dialogText = (await deathDialog.allTextContents())
+      .join(" ")
+      .replace(/\s+/g, " ")
+      .trim();
+    log(`death dialog text: "${dialogText}"`);
+    log("dismissing death dialog");
+    await dispatchKeyPress(page, " ", "Space");
+    await deathDialog.waitFor({
+      state: "detached",
+      timeout: 5_000 * osSlowness,
+    });
+    return dialogText;
   }
   throw new Error("timed out waiting for death or game over");
 };
 
+/**
+ * Repeatedly summon emperor's guardians until all lives are lost, collecting
+ * each death message. The guardian homes onto the player, so contact is
+ * reliable; one is summoned per life, since the room resets after each death
+ * and wipes out any previously-summoned monsters.
+ */
 export const loseAllLives = async (page: Page): Promise<string[]> => {
   const collectedMessages: string[] = [];
-  const deadline = Date.now() + 60_000 * osSlowness;
-  while (Date.now() < deadline) {
+  // bounded by deaths rather than by wall-clock: how long this takes depends on
+  // how fast the machine drives the steps, but how many lives there are to lose
+  // does not. Comfortably over the 13 a two-character game takes
+  const mostDeathsAGameCanHave = 40;
+  for (let death = 0; death < mostDeathsAGameCanHave; death++) {
     const message = await loseOneLife(page);
     if (message === undefined) {
       return collectedMessages;
@@ -156,22 +336,16 @@ export const switchCharacter = async (
   projectName: string,
 ): Promise<void> => {
   const startCharacter = await getCurrentCharacter(page);
-  await retryWithRecovery({
-    async action() {
-      await dispatchKeyPress(page, "Enter", "Enter");
-      await page.waitForFunction(
-        (start) =>
-          window._e2e_gamePageGameAi?.gameState.currentCharacterName !== start,
-        startCharacter,
-        { timeout: 2_000 * osSlowness },
-      );
-    },
-    maxAttempts: 5,
-    logHeader: formatProjectName(projectName),
-    actionDescription: "switch character via Enter",
-    page,
-    screenshotPrefix: `switch-char-${projectName}`,
-  });
+  console.log(
+    `${formatProjectName(projectName)} ${elapsed()}: switching character via Enter (from ${startCharacter})`,
+  );
+  // captured before the press, so the change is matched from the bus even if it
+  // lands before the wait is set up:
+  const afterId = await captureE2eCursor(page);
+  await dispatchKeyPress(page, "Enter", "Enter");
+  // wait for the switch to actually land rather than retrying the press - a
+  // dropped press is a real input bug, not something to paper over:
+  await waitForCharacterToChangeFrom(page, startCharacter, afterId);
 };
 
 /** After reloading while a game is running, the game restarts paused. Wait for the hold dialog then press P to unpause. */

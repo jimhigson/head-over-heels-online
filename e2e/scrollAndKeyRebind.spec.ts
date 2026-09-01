@@ -2,8 +2,10 @@ import { expect, type Page } from "@playwright/test";
 
 import {
   dispatchKeyPress,
+  holdKeysUntil,
   waitForAssigningInput,
 } from "./testUtils/gameInteractions";
+import { waitForCurrentPlayable } from "./testUtils/gameStateQueries";
 import { osSlowness } from "./testUtils/infrastructure";
 import { formatProjectName } from "./testUtils/logging";
 import {
@@ -16,31 +18,6 @@ import {
 } from "./testUtils/menuNavigation";
 import { setupE2ePage } from "./testUtils/pageSetup";
 import { test } from "./testUtils/test";
-
-/**
- * Hold a key down for a duration before releasing — needed for movement
- * since {@link dispatchKeyPress} only holds for ~100ms.
- */
-const holdKey = async (
-  page: Page,
-  key: string,
-  code: string,
-  durationMs: number,
-) => {
-  await page.evaluate(
-    ({ key, code }) => {
-      window.dispatchEvent(new KeyboardEvent("keydown", { key, code }));
-    },
-    { key, code },
-  );
-  await page.waitForTimeout(durationMs);
-  await page.evaluate(
-    ({ key, code }) => {
-      window.dispatchEvent(new KeyboardEvent("keyup", { key, code }));
-    },
-    { key, code },
-  );
-};
 
 const getTowardsKeys = (page: Page) =>
   page.evaluate(() => {
@@ -74,22 +51,25 @@ const startOriginalAndExitCrowns = async (
 
 /**
  * Walk the player south from the spawn point in blacktooth1head onto the
- * scroll pickup at (3, 0, 0). Holds the supplied "towards" key long enough
- * for the player to cross the ~2.5 squares of distance.
+ * scroll pickup at (3, 0, 0), by holding the supplied "towards" key until the
+ * scroll opens - which is also what proves the key is bound to walking south.
  */
 const walkOntoStartingScroll = async (
   page: Page,
   towardsKey: string,
   towardsCode: string,
 ) => {
-  // give the game a beat to start running before dispatching keys
-  await page.waitForTimeout(500 * osSlowness);
+  // wait until a character is controllable before dispatching movement keys
+  await waitForCurrentPlayable(page);
 
-  await holdKey(page, towardsKey, towardsCode, 4_000 * osSlowness);
-
-  await waitForDialog(page, "markdown/cuddlyStuffedWhiteRabbits", {
-    timeout: 10_000 * osSlowness,
-  });
+  // walk until the scroll is reached, rather than for a guessed duration - and
+  // in game time, so it walks the same distance on every machine:
+  const scroll = page.locator(
+    '[data-dialog-id="markdown/cuddlyStuffedWhiteRabbits"]',
+  );
+  await holdKeysUntil(page, [{ key: towardsKey, code: towardsCode }], () =>
+    scroll.isVisible(),
+  );
 
   // scrolls have no focusable menu items — exit with Escape
   await dispatchKeyPress(page, "Escape", "Escape");
@@ -125,9 +105,16 @@ test.describe("key rebinding and scroll pickup", () => {
       await navigateToSubmenu(page, "down", formattedName);
       await waitForAssigningInput(page);
       await dispatchKeyPress(page, "6", "Digit6");
-      await page.waitForTimeout(200 * osSlowness);
       await dispatchKeyPress(page, "Escape", "Escape");
-      await page.waitForTimeout(200 * osSlowness);
+      // wait for the rebind to land in the store rather than guessing a delay:
+      await page.waitForFunction(() => {
+        const { inputAssignment } =
+          window._e2e_store?.getState().userSettings.userSettings ?? {};
+        return (
+          inputAssignment?.presses.towards.keys.length === 1 &&
+          inputAssignment.presses.towards.keys[0] === "6"
+        );
+      });
 
       // a custom rebind replaces the action's key list outright
       expect(await getTowardsKeys(page)).toEqual(["6"]);

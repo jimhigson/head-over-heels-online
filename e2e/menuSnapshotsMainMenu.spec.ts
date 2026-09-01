@@ -1,12 +1,6 @@
 import { deploymentTypes } from "../src/utils/detectEnv/detectDeploymentType";
 import { type ScreenshotTestOptions } from "./ScreenshotTestOptions";
-import { osSlowness, retryWithRecovery } from "./testUtils/infrastructure";
-import {
-  elapsed,
-  formatProjectName,
-  logSelectorExistence,
-  logUpscale,
-} from "./testUtils/logging";
+import { elapsed, formatProjectName, logUpscale } from "./testUtils/logging";
 import {
   clickOriginalCampaign,
   clickPlayTheGame,
@@ -50,35 +44,11 @@ for (const spriteOption of enabledSpriteModes) {
         const formattedName = formatProjectName(testInfo.project.name);
 
         await test.step("Navigate to home page with deployment override and wait for main menu", async () => {
-          await retryWithRecovery({
-            async action() {
-              console.log(
-                `${formattedName} ${elapsed()}: Navigating to / with deployment=${deploymentType}`,
-              );
-              await page.goto(`/?track=0&deployment=${deploymentType}`);
-
-              await waitForDialog(page, "mainMenu", {
-                timeout: 5_000 * osSlowness,
-              });
-              await logSelectorExistence(
-                page,
-                '[data-dialog-id="mainMenu"]',
-                formattedName,
-              );
-
-              await page.waitForTimeout(500);
-            },
-            async recovery() {
-              console.log(
-                `${formattedName} ${elapsed()}: Retrying navigation with page reload`,
-              );
-              await page.reload();
-            },
-            logHeader: formattedName,
-            actionDescription: `navigate with deployment=${deploymentType}`,
-            page,
-            screenshotPrefix: `${deploymentType}-navigation`,
-          });
+          console.log(
+            `${formattedName} ${elapsed()}: Navigating to / with deployment=${deploymentType}`,
+          );
+          await page.goto(`/?track=0&deployment=${deploymentType}`);
+          await waitForDialog(page, "mainMenu");
         });
 
         await logUpscale(page, formattedName);

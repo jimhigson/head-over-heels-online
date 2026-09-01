@@ -9,10 +9,13 @@ import { type SpriteOption } from "../src/store/slices/userSettings/userSettings
 import { allItemsTestRoomCampaign } from "./fixtures/allItemsTestRoom";
 import { bootPlaytestCampaign } from "./testUtils/bootPlaytestCampaign";
 import {
+  captureE2eCursor,
+  changeRoomViaApi,
   dispatchToStore,
   setZeroGameSpeed,
+  waitForCameraAngleRendered,
   waitForGameReady,
-  waitForRoomRenderEvent,
+  waitForRoomToRender,
 } from "./testUtils/gameStateQueries";
 import { restrictToCameraRotationProjects } from "./testUtils/infrastructure";
 import {
@@ -154,7 +157,7 @@ type SweepScenario<C extends SweepCampaign = SweepCampaign> = {
   emulatedResolution: "$$default" | ResolutionName;
   /**
    * cumulative simulated times (ms) to capture at: the game is fast-forwarded
-   * (via window.__e2e_fastForwardMs, while the game speed stays zero) to each
+   * (via window.__e2e_advanceTime, while the game speed stays zero) to each
    * time in turn, capturing every angle at each - so a scenario's setup plays
    * out deterministically (items falling, pickups collected, floating text
    * expiring) across the captures. Omitted, the room is captured as entered
@@ -568,11 +571,7 @@ const switchToCharacter = async (page: Page, character: "head" | "heels") => {
  * put the current character into the a room, optionally specifying a room
  * to enter from
  */
-const enterRoom = async (
-  page: Page,
-  scenario: SweepScenario,
-  campaignHashUrl: string,
-) => {
+const enterRoom = async (page: Page, scenario: SweepScenario) => {
   const { roomId, enterFrom } = scenario;
 
   const currentRoom = () =>
@@ -582,13 +581,8 @@ const enterRoom = async (
     });
 
   const levelSelectTo = async (room: string) => {
-    const renderEvent = waitForRoomRenderEvent(
-      page,
-      room,
-      "cameraRotationSweep",
-    );
-    await page.goto(`${campaignHashUrl}#${room}`);
-    await renderEvent;
+    await changeRoomViaApi(page, room);
+    await waitForRoomToRender(page, room, "cameraRotationSweep");
   };
 
   if (enterFrom === "$$startingRoom") {
@@ -634,9 +628,7 @@ const bootScenario = async (page: Page, scenario: SweepScenario) => {
   // frozen at its deterministic start frame rather than caught mid-animation
   // (matching roomSnapshots.spec). Character selection and navigation then
   // happen at zero speed, and enterRoom does the deterministic per-scenario
-  // entry. campaignHashUrl is the base url whose #room hash drives level-select
-  // (empty for the single-room inline campaign):
-  let campaignHashUrl = "";
+  // entry (level-selecting via the game api, not the url):
   if (scenario.campaign === "allItemsTestRoom") {
     await bootPlaytestCampaign(
       page,
@@ -667,7 +659,6 @@ const bootScenario = async (page: Page, scenario: SweepScenario) => {
       type: "userSettings/setEmulatedResolution",
       payload: emulatedResolutionPayload(scenario),
     });
-    campaignHashUrl = rotateCameraTestCampaignUrl;
   } else {
     await page.goto(originalCampaignUrl);
     await clickPlayTheGame(page, "cameraRotationSweep");
@@ -681,12 +672,9 @@ const bootScenario = async (page: Page, scenario: SweepScenario) => {
       payload: emulatedResolutionPayload(scenario),
     });
     await exitCrownsDialog(page, "cameraRotationSweep");
-    campaignHashUrl = originalCampaignUrl;
   }
 
-  await enterRoom(page, scenario, campaignHashUrl);
-
-  await page.waitForTimeout(500);
+  await enterRoom(page, scenario);
 };
 
 const scenarioBaseName = (
@@ -775,29 +763,6 @@ const screenshotOptionsForScenario = (
     : { ...options, maxDiffPixels: scenario.maxDiffPixels };
 };
 
-/**
- * stop every sprite animation at frame 0. Animations advance on the real
- * ticker even at zero game speed, and a cuboid-warp snapshot latches whichever
- * frame is showing when the warp starts - so without this, mask-heavy rooms'
- * mid-turn captures vary run-to-run with boot timing. Sprites recreated by a
- * renderer rebuild start at frame 0 anyway, so re-freezing after each hold
- * keeps everything deterministic
- */
-const freezeAnimations = (page: Page) =>
-  page.evaluate(() => {
-    type AnyNode = {
-      children?: AnyNode[];
-      gotoAndStop?: (frame: number) => void;
-    };
-    const walk = (node: AnyNode) => {
-      node.gotoAndStop?.(0);
-      for (const child of node.children ?? []) {
-        walk(child);
-      }
-    };
-    walk(window.__PIXI_APP__!.stage as unknown as AnyNode);
-  });
-
 for (const scenario of scenarios) {
   test(`camera angles render deterministically: ${scenarioBaseName(scenario)} (${scenarioAxes(scenario)})`, async ({
     page,
@@ -819,25 +784,18 @@ for (const scenario of scenarios) {
       for (const captureTimeMs of scenario.captureTimesMs ?? [0]) {
         if (captureTimeMs > 0) {
           await page.evaluate(
-            (ms) => window.__e2e_fastForwardMs!(ms),
+            (ms) => window.__e2e_advanceTime!(ms),
             captureTimeMs - advancedMs,
           );
           advancedMs = captureTimeMs;
-          // a real tick delivers the fast-forward's moved items to the
-          // renderers:
-          await page.waitForTimeout(300);
         }
-        await freezeAnimations(page);
 
         for (const capture of capturesForScenario(scenario)) {
+          // capture the cursor before holding, so the frame that first renders
+          // at this angle is matched even if it lands before the wait is set up:
+          const heldAfterId = await captureE2eCursor(page);
           await holdCameraAtDegrees(page, capture.degrees);
-          // let the held frame re-project and the blended scroll settle:
-          await page.waitForTimeout(600);
-          // sprites recreated since the last freeze (eg by the quarter-flip
-          // renderer rebuild) started at frame 0, but stop them anyway so
-          // nothing is mid-animation when captured:
-          await freezeAnimations(page);
-          await page.waitForTimeout(100);
+          await waitForCameraAngleRendered(page, capture.degrees, heldAfterId);
 
           // soft, so a scenario reports every capture that differs rather than
           // stopping at the first: the captures run in ascending simulated

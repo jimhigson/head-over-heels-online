@@ -4,9 +4,16 @@ import "./index.css";
 import { Suspense } from "preact/compat";
 
 import { importAppOnce } from "./game/components/App.import";
+import { installE2eAdvanceTimeHandle } from "./game/mainLoop/installE2eAdvanceTimeHandle";
 import { Dialog } from "./ui/Dialog";
 import { LoadingBorder } from "./ui/LoadingBorder";
 import { importOnceForReactSuspense } from "./utils/importOnce";
+
+if (import.meta.env.MODE === "visual-regression") {
+  // before anything renders: in these builds nothing ticks unless a test says
+  // so, menus included
+  installE2eAdvanceTimeHandle();
+}
 
 if (!import.meta.env.TAURI_ENV_PLATFORM) {
   import("./registerAppSW");

@@ -14,7 +14,7 @@ import {
   menuItemDataAttributeId,
 } from "../../src/game/components/dialogs/menuDialog/dialogs/menus/menuItemDataAttributes";
 import { type SpriteOption } from "../../src/store/slices/userSettings/userSettingsSlice";
-import { osSlowness, retryWithRecovery } from "./infrastructure";
+import { osSlowness } from "./infrastructure";
 import { elapsed, formatDuration } from "./logging";
 
 export const testTimeout = (process.env.CI ? 600_000 : 120_000) * osSlowness;
@@ -105,9 +105,38 @@ export const logTextLayout = async (page: Page, logHeader: string) => {
       };
     }
 
+    // what this runner actually is. Glyph metrics come from FreeType on the
+    // CPU, so the GPU cannot move text - but a runner difference of any kind is
+    // the first thing suspected when two supposedly identical machines render
+    // differently, and it can only be ruled in or out if it was recorded at the
+    // time. The browser build matters for the same reason: a runner image that
+    // ships a newer chromium is a real explanation, where "flaky" is not.
+    //
+    // Read from the game's own WebGL context rather than creating one to probe
+    // with: webkit rations live contexts per page, and a probe context can cost
+    // the game its own - pixi's renderer then fails to initialise and the game
+    // crashes. When the game (or its gl context) is not up yet, go without
+    const gl = (
+      window.__PIXI_APP__?.renderer as
+        { gl?: WebGLRenderingContext } | undefined
+    )?.gl;
+    const debugInfo = gl?.getExtension("WEBGL_debug_renderer_info");
+    const renderer =
+      gl === undefined || debugInfo === null || debugInfo === undefined ?
+        undefined
+      : {
+          vendor: gl.getParameter(debugInfo.UNMASKED_VENDOR_WEBGL) as string,
+          renderer: gl.getParameter(
+            debugInfo.UNMASKED_RENDERER_WEBGL,
+          ) as string,
+        };
+
     return {
       devicePixelRatio: window.devicePixelRatio,
       viewport: `${window.innerWidth}x${window.innerHeight}`,
+      cores: navigator.hardwareConcurrency,
+      browser: navigator.userAgent.replace(/^.*?(Chrome|Version)\//, "$1/"),
+      renderer,
       // --scale is set on a wrapper inside the app, not on the root, so it has
       // to be read somewhere it is in scope
       scale: probeStyle.getPropertyValue("--scale").trim(),
@@ -177,6 +206,79 @@ export const logDetailedTextLayout = async (page: Page, logHeader: string) => {
   }
 };
 
+/**
+ * the geometry of what a dialog screenshot is about to capture, logged for
+ * every capture rather than only after a failure.
+ *
+ * {@link logDetailedTextLayout} runs once, after a test has finished - by which
+ * point a spec that captures many dialogs has long since left the one that
+ * failed, so it can never describe it. A text shift shows up as a snapshot
+ * mismatch, and to explain one we need to know where the text *was* at the
+ * moment those pixels were read: the box of each line, and whether any of them
+ * sits off the pixel grid. This font renders crisply only on whole pixels, so a
+ * fractional top or left is the difference between a clean capture and one
+ * where every glyph is blended - and the value that is fractional names what
+ * moved.
+ */
+const logCaptureGeometry = async (
+  page: Page,
+  dialogId: DialogId,
+  logHeader: string,
+) => {
+  const geometry = await page.evaluate((id) => {
+    const dialog =
+      document.querySelector(`dialog[data-dialog-id="${id}"]`) ??
+      document.querySelector("dialog");
+    if (dialog === null) {
+      return undefined;
+    }
+    const { top, left, width, height } = dialog.getBoundingClientRect();
+
+    // leaf elements only: their boxes are the text lines themselves, where a
+    // parent's box would just be the sum of its children
+    const lineBoxes = Array.from(dialog.querySelectorAll("*"))
+      .filter(
+        (element) =>
+          element.childElementCount === 0 &&
+          (element.textContent ?? "").trim() !== "",
+      )
+      .map((element) => {
+        const box = element.getBoundingClientRect();
+        return { top: box.top, left: box.left, height: box.height };
+      });
+
+    const offGrid = lineBoxes.filter(
+      ({ top, left }) => !Number.isInteger(top) || !Number.isInteger(left),
+    );
+
+    const style = getComputedStyle(dialog);
+    // the direct children are the flex items the dialog centres: their heights
+    // against the space available say whether a shift came from one of them
+    // growing, or from free space being redistributed around them
+    const children = Array.from(dialog.children).map((child) => {
+      const box = child.getBoundingClientRect();
+      return { top: box.top, height: box.height };
+    });
+
+    return {
+      dialog: [top, left, width, height],
+      justify: style.justifyContent,
+      gap: style.rowGap,
+      children,
+      fonts: document.fonts.status,
+      lines: lineBoxes.length,
+      // the first few tops locate a whole-pixel shift; offGrid catches the
+      // fractional placement that makes the text blur
+      firstTops: lineBoxes.slice(0, 4).map(({ top }) => top),
+      offGrid: offGrid.slice(0, 4),
+    };
+  }, dialogId);
+
+  console.log(
+    `${logHeader} [capture-geometry] ${dialogId} ${JSON.stringify(geometry)}`,
+  );
+};
+
 export const takeDialogScreenshot = async (
   page: Page,
   dialogId: DialogId,
@@ -195,20 +297,16 @@ export const takeDialogScreenshot = async (
       `${logHeader} ${elapsed()} Taking screenshot for dialog: ${chalk.cyan(dialogId)}`,
     );
 
-    await retryWithRecovery({
-      async action() {
-        await page.waitForSelector(`dialog[data-dialog-id="${dialogId}"]`, {
-          timeout: 5_000 * osSlowness,
-        });
-        await page
-          .getByRole("status")
-          .waitFor({ state: "detached", timeout: 5_000 * osSlowness });
-      },
-      logHeader,
-      actionDescription: `wait for dialog ${dialogId} without spinner`,
-      page,
-      screenshotPrefix: `wait-no-spinner-${dialogId}`,
+    // wait for the dialog, then for any loading spinner (role=status) to leave,
+    // so the screenshot is of the settled dialog rather than mid-load:
+    await page.waitForSelector(`dialog[data-dialog-id="${dialogId}"]`, {
+      timeout: 15_000 * osSlowness,
     });
+    await page
+      .getByRole("status")
+      .waitFor({ state: "detached", timeout: 15_000 * osSlowness });
+
+    await logCaptureGeometry(page, dialogId, logHeader);
 
     await takeScreenshot(
       page,
