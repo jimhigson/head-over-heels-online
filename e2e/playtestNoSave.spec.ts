@@ -6,7 +6,9 @@ import { postgrestDb } from "../src/db/postgrestDb";
 import { jimAtBlockstackingUserId } from "../src/gameInfo";
 import { dispatchKeyPress } from "./testUtils/gameInteractions";
 import {
+  captureE2eCursor,
   getCurrentCharacter,
+  waitForCharacterToChangeFrom,
   waitForGameState,
 } from "./testUtils/gameStateQueries";
 import { osSlowness } from "./testUtils/infrastructure";
@@ -79,8 +81,10 @@ test.describe("playtest mode does not persist saves", () => {
       // swopPlayables always dispatches dispatchSaveGame; in playtest mode
       // that helper checks isInPlaytestMode() and no-ops.
       const startCharacter = await getCurrentCharacter(page);
+      const afterId = await captureE2eCursor(page);
       await dispatchKeyPress(page, "Enter", "Enter");
-      await page.waitForTimeout(500 * osSlowness);
+      // wait for the swop to actually land rather than guessing a delay:
+      await waitForCharacterToChangeFrom(page, startCharacter, afterId);
       expect(await getCurrentCharacter(page)).not.toBe(startCharacter);
     });
 

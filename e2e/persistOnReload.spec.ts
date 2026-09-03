@@ -4,6 +4,7 @@ import {
   jimAtBlockstackingUserId,
   sequelCampaignLocator,
 } from "../src/gameInfo";
+import { advanceUntilInPage } from "./testUtils/advanceGameTime";
 import {
   changeToAnotherRoom,
   clickCheat,
@@ -12,13 +13,19 @@ import {
   switchCharacter,
 } from "./testUtils/gameInteractions";
 import {
+  captureE2eCursor,
   getCurrentCharacter,
   getCurrentRoomId,
+  waitForCharacterToBecome,
+  waitForCharacterToChangeFrom,
+  waitForCurrentPlayable,
   waitForGameState,
+  waitForPlayableGrounded,
 } from "./testUtils/gameStateQueries";
 import { osSlowness } from "./testUtils/infrastructure";
 import { formatProjectName } from "./testUtils/logging";
 import {
+  advanceUntilDialog,
   backToMainMenu,
   clickOriginalCampaign,
   clickPlayTheGame,
@@ -44,13 +51,17 @@ test.describe("persistence across reload", () => {
   }, testInfo) => {
     await startCampaignViaMenu(page, testInfo.project.name, "originalGame");
 
-    await page.waitForTimeout(1_000 * osSlowness);
+    await waitForCurrentPlayable(page);
+    const afterId = await captureE2eCursor(page);
     await dispatchKeyPress(page, "Enter", "Enter");
-    await page.waitForTimeout(500 * osSlowness);
+    await waitForCharacterToBecome(page, "heels", afterId);
     expect(await getCurrentCharacter(page)).toBe("heels");
 
     await clickCheat(page, "cheats-goto-room-egyptus1");
-    await page.waitForTimeout(1_000 * osSlowness);
+    await page.waitForFunction((roomId) => {
+      const state = window._e2e_gamePageGameAi?.gameState;
+      return state?.characterRooms[state.currentCharacterName]?.id === roomId;
+    }, "egyptus1");
     expect(await getCurrentRoomId(page)).toBe("egyptus1");
 
     await page.reload();
@@ -64,17 +75,21 @@ test.describe("persistence across reload", () => {
   }, testInfo) => {
     await startCampaignViaMenu(page, testInfo.project.name, "remake");
 
-    await page.waitForTimeout(1_000 * osSlowness);
+    await waitForCurrentPlayable(page);
     const startCharacter = await getCurrentCharacter(page);
+    const afterId = await captureE2eCursor(page);
     await dispatchKeyPress(page, "Enter", "Enter");
-    await page.waitForTimeout(500 * osSlowness);
+    await waitForCharacterToChangeFrom(page, startCharacter, afterId);
     const otherCharacter = await getCurrentCharacter(page);
     expect(otherCharacter).not.toBe(startCharacter);
 
     // the cheats' room shortcuts name original-campaign rooms, which the sequel
     // does not have - change to a room this campaign really contains:
-    await changeToAnotherRoom(page);
-    await page.waitForTimeout(1_000 * osSlowness);
+    const otherRoomId = await changeToAnotherRoom(page);
+    await page.waitForFunction((id) => {
+      const state = window._e2e_gamePageGameAi?.gameState;
+      return state?.characterRooms[state.currentCharacterName]?.id === id;
+    }, otherRoomId);
     const roomBeforeReload = await getCurrentRoomId(page);
 
     await page.reload();
@@ -102,7 +117,7 @@ test.describe("persistence across reload", () => {
       .locator('[data-dialog-id="crowns"]')
       .waitFor({ state: "detached" });
 
-    await page.waitForTimeout(1_000 * osSlowness);
+    await waitForCurrentPlayable(page);
     await page.reload();
     await waitForGameState(page);
 
@@ -123,9 +138,9 @@ test.describe("persistence across reload", () => {
     const formattedName = formatProjectName(testInfo.project.name);
 
     await startCampaignViaMenu(page, testInfo.project.name, "originalGame");
-    await page.waitForTimeout(1_000 * osSlowness);
+    await waitForCurrentPlayable(page);
     await clickCheat(page, "cheats-summon-crown-egyptus");
-    await waitForDialog(page, "crowns");
+    await advanceUntilDialog(page, "crowns");
     await expect(
       page.locator('[data-test-id="crown-egyptus"]'),
     ).toHaveAttribute("data-collected", "true");
@@ -273,21 +288,36 @@ test.describe("persistence across reload", () => {
 
     await test.step("Move to a second room before eating the fish", async () => {
       await clickCheat(page, "cheats-goto-room-egyptus1");
-      await page.waitForTimeout(1_000 * osSlowness);
+      await page.waitForFunction((roomId) => {
+        const state = window._e2e_gamePageGameAi?.gameState;
+        return state?.characterRooms[state.currentCharacterName]?.id === roomId;
+      }, "egyptus1");
       expect(await getCurrentRoomId(page)).toBe("egyptus1");
     });
 
     let fishRoom: string | undefined;
     await test.step("Eat a reincarnation fish; saveGameThunk fires on pickup", async () => {
+      // let the entry into the room finish first: the fish is summoned where
+      // the character is, so summoning mid-walk leaves it behind them
+      await waitForPlayableGrounded(page);
       await clickCheat(page, "cheats-summon-reincarnation");
-      await page.waitForTimeout(2_000 * osSlowness);
+      await advanceUntilInPage(
+        page,
+        () =>
+          window._e2e_store?.getState().gameInPlay.gameInPlay
+            .reincarnationPoint !== undefined,
+        "the fish to be eaten",
+      );
       fishRoom = await getCurrentRoomId(page);
       expect(fishRoom).toBe("egyptus1");
     });
 
     await test.step("Jump to a different planet (Penitentiary)", async () => {
       await clickCheat(page, "cheats-goto-room-penitentiary1");
-      await page.waitForTimeout(1_000 * osSlowness);
+      await page.waitForFunction((roomId) => {
+        const state = window._e2e_gamePageGameAi?.gameState;
+        return state?.characterRooms[state.currentCharacterName]?.id === roomId;
+      }, "penitentiary1");
       expect(await getCurrentRoomId(page)).toBe("penitentiary1");
     });
 

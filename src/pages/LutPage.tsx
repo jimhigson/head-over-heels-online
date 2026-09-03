@@ -1,6 +1,7 @@
 import { Application, type Texture } from "pixi.js";
 import { useEffect, useState } from "preact/hooks";
 
+import { installAppTickerAsPixiShared } from "../game/mainLoop/installAppTickerAsPixiShared";
 import { blockstackToSpectrumLut } from "../game/render/filters/lutTexture/stdLuts/blockstackToSpectrumLut";
 import { deathLutForSpriteOption } from "../game/render/filters/lutTexture/stdLuts/lutForSpriteOption";
 import { paletteQuantisationLut } from "../game/render/filters/lutTexture/stdLuts/paletteQuantisationLut";
@@ -33,10 +34,16 @@ const SingleLutDisplay = ({ texture }: SingleLutDisplayProps) => {
     let unmounted = false;
 
     const extractTexture = async () => {
+      // this page only extracts a texture, but pixi gives every Application a
+      // ticker regardless - point it at the app's one rather than letting pixi
+      // build its own:
+      installAppTickerAsPixiShared();
+
       const app = new Application();
       await app.init({
         width: lutDisplaySize,
         height: lutDisplaySize,
+        sharedTicker: true,
       });
 
       if (unmounted) {

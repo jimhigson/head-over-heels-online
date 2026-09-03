@@ -5,13 +5,8 @@ import { needRefreshMenuShown } from "../src/store/slices/gameMenus/gameMenusSli
 import { type SpriteOption } from "../src/store/slices/userSettings/userSettingsSlice";
 import { type ScreenshotTestOptions } from "./ScreenshotTestOptions";
 import { dispatchToStore } from "./testUtils/gameStateQueries";
-import { osSlowness, retryWithRecovery } from "./testUtils/infrastructure";
-import {
-  elapsed,
-  formatProjectName,
-  logSelectorExistence,
-  logUpscale,
-} from "./testUtils/logging";
+import { osSlowness } from "./testUtils/infrastructure";
+import { elapsed, formatProjectName, logUpscale } from "./testUtils/logging";
 import {
   clickBackButton,
   getCurrentDialogId,
@@ -133,35 +128,10 @@ for (const spriteOption of enabledSpriteModes) {
       const visited: VisitedDialogs = new Set();
 
       await test.step("Navigate to home page and wait for main menu", async () => {
-        await retryWithRecovery({
-          async action() {
-            console.log(`${formattedName} ${elapsed()}: Navigating to /`);
-            await page.goto("/?track=0");
-
-            // Wait for main menu to appear (it opens automatically)
-            await waitForDialog(page, "mainMenu", {
-              timeout: 5_000 * osSlowness,
-            });
-            await logSelectorExistence(
-              page,
-              '[data-dialog-id="mainMenu"]',
-              formattedName,
-            );
-
-            await page.waitForTimeout(500);
-          },
-          async recovery() {
-            // Reload the page on failure
-            console.log(
-              `${formattedName} ${elapsed()}: Retrying navigation with page reload`,
-            );
-            await page.reload();
-          },
-          logHeader: formattedName,
-          actionDescription: "navigate to home page and wait for main menu",
-          page,
-          screenshotPrefix: "initial-navigation",
-        });
+        console.log(`${formattedName} ${elapsed()}: Navigating to /`);
+        await page.goto("/?track=0");
+        // the main menu opens automatically once loaded
+        await waitForDialog(page, "mainMenu");
       });
 
       await logUpscale(page, formattedName);
