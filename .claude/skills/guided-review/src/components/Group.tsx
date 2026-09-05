@@ -41,7 +41,7 @@ export const Group = ({ group, index, files, open, state }: GroupProps) => {
             state.openGroup(index, !open);
           }}
         >
-          {open ? "▾" : "▸"}
+          {open ? "" : ""}
         </button>
       </div>
 

@@ -1,13 +1,13 @@
 import { useLayoutEffect, useRef, useState } from "preact/hooks";
 
-import { type DiffView, diffViewStore, setDiffView } from "../diffView.ts";
+import { diffViewStore, setDiffView } from "../diffView.ts";
 import faviconUrl from "../favicon.png";
 import { notesAsMarkdown, notesStore } from "../notes.ts";
 import { offlineStore } from "../offline.ts";
 import { meta, server, total } from "../payload.ts";
 import { type ReadingState } from "../readingState.ts";
 import { useStore } from "../stores.ts";
-import { setTheme, type Theme, themeStore } from "../theme.ts";
+import { setTheme, themeStore } from "../theme.ts";
 import { StackBar } from "./StackBar.tsx";
 
 export type HeaderProps = { state: ReadingState };
@@ -104,29 +104,28 @@ export const Header = ({ state }: HeaderProps) => {
           <button class="control" type="button" onClick={() => state.setAllDiffs(false)}>
             Close all
           </button>
-          <label class="control select">
-            <span>Diffs</span>
-            <select
-              value={diffView}
-              aria-label="How every diff is shown"
-              onChange={(event) => setDiffView(event.currentTarget.value as DiffView)}
+          <div class="control-group" role="group" aria-label="How every diff is shown">
+            <button
+              type="button"
+              class="control segment"
+              aria-pressed={diffView === "inline"}
+              aria-label="Inline"
+              title="Inline"
+              onClick={() => setDiffView("inline")}
             >
-              <option value="inline">inline</option>
-              <option value="sideBySide">side by side</option>
-            </select>
-          </label>
-          <label class="control select">
-            <span>Theme</span>
-            <select
-              value={theme}
-              aria-label="Colour theme"
-              onChange={(event) => setTheme(event.currentTarget.value as Theme)}
+              {""}
+            </button>
+            <button
+              type="button"
+              class="control segment"
+              aria-pressed={diffView === "sideBySide"}
+              aria-label="Side by side"
+              title="Side by side"
+              onClick={() => setDiffView("sideBySide")}
             >
-              <option value="system">system</option>
-              <option value="light">light</option>
-              <option value="dark">dark</option>
-            </select>
-          </label>
+              {""}
+            </button>
+          </div>
           <button class="control" type="button" onClick={copyNotes}>
             {copyLabel}
           </button>
@@ -139,6 +138,28 @@ export const Header = ({ state }: HeaderProps) => {
             Clear ticks
           </button>
         </div>
+        <div class="control-group theme-switcher" role="group" aria-label="Colour theme">
+          <button
+            type="button"
+            class="control segment"
+            aria-pressed={theme === "light"}
+            aria-label="Light"
+            title="Light"
+            onClick={() => setTheme("light")}
+          >
+            {""}
+          </button>
+          <button
+            type="button"
+            class="control segment"
+            aria-pressed={theme === "dark"}
+            aria-label="Dark"
+            title="Dark"
+            onClick={() => setTheme("dark")}
+          >
+            {""}
+          </button>
+        </div>
         <a
           class="brand-link"
           href="https://blockstack.ing"
@@ -146,7 +167,7 @@ export const Header = ({ state }: HeaderProps) => {
           rel="noreferrer"
           title="Head over Heels Online"
         >
-          <img class="brand-icon" src={faviconUrl} alt="Head over Heels Online" width={24} height={21} />
+          <img class="brand-icon" src={faviconUrl} alt="Head over Heels Online" width={24} height={24} />
         </a>
       </div>
     </header>

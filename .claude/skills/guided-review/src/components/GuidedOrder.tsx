@@ -56,7 +56,7 @@ export const GuidedOrder = ({ state }: GuidedOrderProps) => {
                   setOpenOverride((previous) => new Map(previous).set(index, !open))
                 }
               >
-                {open ? "▾" : "▸"}
+                {open ? "" : ""}
               </button>
             </div>
             {open && (

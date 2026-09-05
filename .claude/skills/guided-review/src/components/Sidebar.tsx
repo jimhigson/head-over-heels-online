@@ -23,7 +23,6 @@ export const Sidebar = ({ state }: SidebarProps) => {
   return (
     <aside class="sidebar" id="contents" aria-label="Contents">
       <div class="sidebar-head">
-        <p class="sidebar-title">contents</p>
         <label class="control select">
           <span>view</span>
           <select

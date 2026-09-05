@@ -4,7 +4,7 @@ import { ImagePanel } from "../imageDiff/ImageDiff.tsx";
 import { ImageFileNote } from "../imageDiff/ImageFileNote.tsx";
 import { imageStatsStore, mechanicalNote } from "../imageDiff/imageStats.ts";
 import { notesStore } from "../notes.ts";
-import { images, links, stats, statusLabel } from "../payload.ts";
+import { images, links, repoRoot, stats, statusLabel } from "../payload.ts";
 import { type ImageRow, type ReviewFile } from "../ReviewPayload.ts";
 import { registerRow, unregisterRow } from "../rowNodes.ts";
 import { useStore } from "../stores.ts";
@@ -113,6 +113,16 @@ export const Row = ({
         >
           {file.path}
         </button>
+        <button
+          type="button"
+          class={`copy-path ${copied ? "copied" : ""}`}
+          aria-label={`Copy path: ${file.path}`}
+          title="Copy path"
+          onClick={(event) => {
+            event.stopPropagation();
+            copyPath();
+          }}
+        />
         {href !== undefined && (
           <a
             class="github"
@@ -124,13 +134,14 @@ export const Row = ({
             GitHub ↗
           </a>
         )}
+        <a
+          class="vscode"
+          href={`vscode://file/${repoRoot}/${file.path}`}
+          onClick={(event) => event.stopPropagation()}
+        >
+          VS Code ↗
+        </a>
         {notes.length > 0 && <span class="note-count">{notes.length}</span>}
-        {imageRow !== undefined ?
-          <span class="row-stat">{imageByteStat(imageRow)}</span>
-        : <span class="row-stat">
-            <span class="stat-add">+{added}</span> <span class="stat-rm">−{removed}</span>
-          </span>
-        }
         <button
           type="button"
           class="caret"
@@ -141,12 +152,20 @@ export const Row = ({
             onCollapse(!collapsed);
           }}
         >
-          {collapsed ? "▸" : "▾"}
+          {collapsed ? "" : ""}
         </button>
       </div>
 
       <div class="row-body" hidden={collapsed}>
-        <p class="note" dangerouslySetInnerHTML={{ __html: file.note ?? "" }} />
+        <div class="row-summary">
+          {imageRow !== undefined ?
+            <span class="row-stat">{imageByteStat(imageRow)}</span>
+          : <span class="row-stat">
+              <span class="stat-add">+{added}</span> <span class="stat-rm">−{removed}</span>
+            </span>
+          }
+          <p class="note" dangerouslySetInnerHTML={{ __html: file.note ?? "" }} />
+        </div>
         {imageRow !== undefined && imageStats !== undefined && (
           <p class="note img-note-line">{mechanicalNote(imageStats)}</p>
         )}
