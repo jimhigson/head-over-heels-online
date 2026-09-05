@@ -44,6 +44,7 @@ export let sides: ReviewPayload["sides"];
 export let stats: ReviewPayload["stats"];
 export let links: ReviewPayload["links"];
 export let images: ReviewPayload["images"];
+export let repoRoot: ReviewPayload["repoRoot"];
 export let files: ReviewFile[];
 export let total: number;
 
@@ -51,7 +52,7 @@ export const selectReview = (number: number): void => {
   const { review, block } = carriedReview(number);
   activeReview = review;
   payload = parseBlock<ReviewPayload>(block);
-  ({ id: reviewId, meta, groups, sides, stats, links, images } = payload);
+  ({ id: reviewId, meta, groups, sides, stats, links, images, repoRoot } = payload);
   files = groups.flatMap((group, groupIndex) =>
     group.items.map((item, itemIndex) => ({
       ...item,

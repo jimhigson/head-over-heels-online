@@ -143,7 +143,6 @@ body {
 .shell {
   flex: 1 1 auto;
   min-width: 0;
-  max-width: 64rem;
   margin: 0 auto;
   /* the trailing space is scroll range, below the footer: without it the last
      files can never reach the top of the viewport, and a jump from the
@@ -212,7 +211,6 @@ header.top {
    does, so it stays modest: no border, just a hover brighten */
 .brand-link {
   flex: none;
-  margin-left: auto;
   display: flex;
   align-items: center;
   opacity: 0.7;
@@ -277,6 +275,20 @@ label.control.select select {
 }
 
 label.control.select select:focus-visible { outline: none; }
+
+/* a mutually-exclusive set of icon buttons standing in for a native select -
+   its open popup can't be styled to pick up this skill's icon font at all */
+.control-group { display: inline-flex; gap: 0.15rem; flex: none; }
+
+button.control.segment {
+  font-family: "bootstrap-icons";
+  font-size: 1.2rem;
+  line-height: 1;
+}
+
+/* the only right-aligned control, so it and the brand icon after it sit
+   together in the page's top-right corner */
+.theme-switcher { margin-left: auto; }
 
 /* ---- contents sidebar --------------------------------------------------
    the whole reading order at a glance, ticked in step with the main pane */
@@ -344,13 +356,6 @@ label.control.select select:focus-visible { outline: none; }
   top: 0;
   z-index: 2;
   background: var(--paper);
-}
-
-.sidebar-title {
-  font-family: var(--display);
-  font-size: 16px;
-  color: var(--ink-faint);
-  margin: 0;
 }
 
 .sidebar-head label.control.select { justify-content: space-between; }
@@ -526,8 +531,9 @@ button.fs-dir-toggle:focus-visible { outline: 2px solid var(--accent); outline-o
 
 .fs-dir-caret {
   flex: none;
+  font-family: "bootstrap-icons";
   color: var(--ink-faint);
-  font-size: 1rem;
+  font-size: 1.3rem;
   width: 0.9rem;
 }
 
@@ -675,8 +681,8 @@ section.group.is-open > .group-head { border-bottom-color: var(--rule); }
 }
 
 button.caret {
-  font-family: var(--body);
-  font-size: 1rem;
+  font-family: "bootstrap-icons";
+  font-size: 1.3rem;
   color: var(--ink-faint);
   background: none;
   border: 0;
@@ -815,13 +821,48 @@ a.github {
 a.github:hover { color: var(--accent); border-bottom-color: var(--accent); }
 a.github:focus-visible { outline: 2px solid var(--accent); outline-offset: 2px; }
 
+a.vscode {
+  font-size: 1rem;
+  color: var(--ink-faint);
+  text-decoration: none;
+  border-bottom: 1px solid transparent;
+  flex: none;
+}
+
+a.vscode:hover { color: var(--accent); border-bottom-color: var(--accent); }
+a.vscode:focus-visible { outline: 2px solid var(--accent); outline-offset: 2px; }
+
 button.path:hover { color: var(--accent); border-bottom-color: var(--accent); }
 button.path:focus-visible { outline: 2px solid var(--accent); outline-offset: 2px; }
 button.path.copied { color: var(--new); border-bottom-color: var(--new); }
 
-.row-stat {
-  margin-left: auto;
+button.copy-path {
+  font-family: "bootstrap-icons";
+  font-style: normal;
+  font-size: 1rem;
+  line-height: 1;
+  color: var(--ink-faint);
+  background: none;
+  border: 0;
+  padding: 0;
+  cursor: pointer;
   flex: none;
+}
+
+button.copy-path::before { content: "\f290"; } /* bi-clipboard */
+button.copy-path:hover { color: var(--accent); }
+button.copy-path:focus-visible { outline: 2px solid var(--accent); outline-offset: 2px; }
+button.copy-path.copied { color: var(--new); }
+
+/* flow-root, not the row-body flex column above: floats have no effect on
+   a flex item, and this needs one so .row-stat can float past .note's own
+   max-width, out to this row's full (unrestricted) width, without leaking
+   into .diff below */
+.row-summary { display: flow-root; }
+
+.row-stat {
+  float: right;
+  margin-left: 1rem;
   font-size: 1rem;
   font-variant-numeric: tabular-nums;
   white-space: nowrap;
@@ -851,8 +892,13 @@ button.diff-toggle {
   font-variant-numeric: tabular-nums;
 }
 
-button.diff-toggle::before { content: "▸"; font-size: 1rem; font-weight: 400; }
-button.diff-toggle[aria-expanded="true"]::before { content: "▾"; }
+button.diff-toggle::before {
+  content: "\f231";
+  font-family: "bootstrap-icons";
+  font-size: 1.2rem;
+  font-weight: 400;
+}
+button.diff-toggle[aria-expanded="true"]::before { content: "\f229"; }
 button.diff-toggle:hover { border-color: var(--accent); }
 button.diff-toggle:focus-visible { outline: 2px solid var(--accent); outline-offset: 2px; }
 

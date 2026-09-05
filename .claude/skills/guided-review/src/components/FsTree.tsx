@@ -60,7 +60,7 @@ export const FsTree = ({ state }: FsTreeProps) => {
             onClick={() => setCollapsedDirs((previous) => withMembership(previous, node.path, open))}
           >
             <span class="fs-dir-caret" aria-hidden="true">
-              {open ? "▾" : "▸"}
+              {open ? "" : ""}
             </span>
             <span class="fs-dir-name">{node.name}</span>
           </button>

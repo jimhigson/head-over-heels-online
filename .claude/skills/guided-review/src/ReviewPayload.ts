@@ -75,6 +75,9 @@ export type ReviewPayload = {
   stats: Record<string, [number, number]>;
   links: Record<string, string>;
   images: Record<string, ImageRow>;
+  /** absolute path to the repo checkout this review was built from, so a
+      file's row can link to a local editor (eg vscode://file/...) */
+  repoRoot: string;
 };
 
 /**

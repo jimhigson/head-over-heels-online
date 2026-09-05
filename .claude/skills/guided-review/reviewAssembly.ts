@@ -469,7 +469,16 @@ export const collectReview = (
   }
 
   return {
-    payload: { id: reviewId(repo, options), meta, groups, sides, stats, links, images },
+    payload: {
+      id: reviewId(repo, options),
+      meta,
+      groups,
+      sides,
+      stats,
+      links,
+      images,
+      repoRoot: resolve(repo),
+    },
     imageBlocks,
     forge,
     empty,
