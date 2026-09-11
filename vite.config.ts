@@ -194,6 +194,10 @@ export default defineConfig(({ mode: _mode }) => {
       alias: {
         gfx: path.resolve(__dirname, "./gfx"),
       },
+      // a linked dependency resolves its peers from its own directory, which for pixi
+      // would pull in a second copy - and an unpatched one - alongside ours, breaking
+      // every instanceof between them. This holds all of them to the copy installed here
+      dedupe: ["pixi.js"],
     },
 
     server: {

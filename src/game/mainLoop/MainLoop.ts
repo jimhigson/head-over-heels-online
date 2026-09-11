@@ -51,7 +51,7 @@ import { progressWithSubTicks } from "./progressWithSubTicks";
 import { rotateCameraIfInput } from "./rotateCameraIfInput";
 import { tickCameraTransition } from "./tickCameraTransition";
 import { tickGameSpeed } from "./tickGameSpeed";
-import { topLevelFilters } from "./topLevelFilters";
+import { TopLevelFilterController } from "./TopLevelFilterController";
 import { transitionCameraAngle } from "./transitionCameraAngle";
 
 registerDetailedFpsGlobal();
@@ -92,6 +92,7 @@ export class MainLoop<RoomId extends string> {
   #app: Application;
   #gameState: GameState<RoomId>;
   #spritesheets: Spritesheets;
+  #topLevelFilterController: TopLevelFilterController<RoomId>;
   /**
    * the single general render context, owned and mutated in place
    * here for use in both the room and hud renderers
@@ -107,6 +108,10 @@ export class MainLoop<RoomId extends string> {
     this.#app = app;
     this.#gameState = gameState;
     this.#spritesheets = spritesheets;
+    this.#topLevelFilterController = new TopLevelFilterController(
+      app.stage,
+      this.#mainContainer,
+    );
     try {
       const storeState = store.getState();
 
@@ -121,7 +126,12 @@ export class MainLoop<RoomId extends string> {
         throw new Error("main loop with no starting room");
       }
 
-      this.#initTopLevelFilters();
+      this.#topLevelFilterController.rebuild(
+        true,
+        { shouldRestart: true, toggled: false },
+        storeState.upscale.upscale,
+        storeState.userSettings.userSettings.displaySettings,
+      );
     } catch (e) {
       this.#handleError(e);
       return;
@@ -131,17 +141,6 @@ export class MainLoop<RoomId extends string> {
   #handleError(thrown: unknown) {
     console.error(thrown);
     store.dispatch(errorCaught(createSerialisableErrors(thrown)));
-  }
-
-  #initTopLevelFilters() {
-    const {
-      userSettings: {
-        userSettings: { displaySettings },
-      },
-      upscale: { upscale },
-    } = store.getState();
-
-    this.#app.stage.filters = topLevelFilters(displaySettings, upscale);
   }
 
   #firstFrameMarked = false;
@@ -246,6 +245,11 @@ export class MainLoop<RoomId extends string> {
   // output - written for the animations to follow, never read back - so time
   // handed to ticker.update() always reaches the physics intact
   #tick = ({ elapsedMS }: Ticker): void => {
+    // unconditional and before any early return below, so the CRT-toggle hide
+    // never stays applied longer than its deadline and a finished switch-on
+    // filter always gets dropped promptly:
+    this.#topLevelFilterController.tickStart();
+
     const tickState = store.getState();
     const showFps = selectShowFps(tickState);
     const timingRecord = showFps ? loadedFrameTimingStats() : undefined;
@@ -431,6 +435,18 @@ export class MainLoop<RoomId extends string> {
       this.#webGlContextRestored,
     );
 
+    // read before #syncGeneralRenderContext below overwrites the shared
+    // render context in place - the comparisons inside decide() need the
+    // room renderer's last-built values, not this tick's new ones
+    const topLevelFilterDecision = this.#topLevelFilterController.decide(
+      this.#gameState,
+      isPaused,
+      tickDisplaySettings,
+      this.#generalRenderContext?.paused,
+      this.#generalRenderContext?.displaySettings,
+      this.#roomRenderer !== undefined,
+    );
+
     // a rebuild is fine mid-transition: the fresh renderer builds against the
     // discrete (nearest-quarter) angle like any renderer, and the playing
     // transition carries on over it - eg a turn continues through a door into
@@ -514,7 +530,6 @@ export class MainLoop<RoomId extends string> {
       }
 
       this.#tickRootContainer(tickUpscale);
-      this.#initTopLevelFilters();
 
       // setting static boundsArea helps if a filter is put over the whole output container, since the bounds of the
       // container won't change. Eg, a lift going vertically up into a screen y-coord where previously nothing was
@@ -530,6 +545,17 @@ export class MainLoop<RoomId extends string> {
         : tickUpscale.gameEngineScreenSize.y,
       );
     }
+
+    // most reasons the switch-on should restart also rebuild the room
+    // renderer anyway, but a respawn that reuses the same room object (two
+    // playables sharing a room, not in symbiosis) doesn't - rebuild() takes
+    // createNewRoomRenderer so it can still act on its own in that case:
+    this.#topLevelFilterController.rebuild(
+      createNewRoomRenderer,
+      topLevelFilterDecision,
+      tickUpscale,
+      tickDisplaySettings,
+    );
 
     // WebGL-context-loss recovery for this tick is done: the variants are
     // re-baked and the hud/room renderers recreated, so they no longer reference
