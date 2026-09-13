@@ -12,16 +12,16 @@ silence. Everything here was learned by root-causing real CI failures after
 the retries came off. **Do not add retries, waits, or looser tolerances** -
 find the mechanism. Every failure so far has had one.
 
-## The determinism architecture (what already keeps runs identical)
+## The determinism architecture
 
-| Concern | Mechanism | Where |
-| --- | --- | --- |
-| Boot must not run physics before freezing | `setGameSpeed(0)` dispatched synchronously inside a `window._e2e_store` property-setter hook, before the first tick | `e2e/testUtils/bootPlaytestCampaign.ts` |
-| Room navigation | `gameApi.changeRoom` directly (never `page.goto('#room')` - the hash router ignores a document's *initial* hash, so a reload strands the game in its default room) + level-triggered wait on `currentRoom.id`, then a `frameRendered` for that room | `changeRoomViaApi` / `waitForRoomToRender` in `e2e/testUtils/gameStateQueries.ts` |
-| Waiting on trace-less moments | `E2eEventBus` on `window.__e2e_events` (visual-regression builds): per-name 512-entry log + `cursor()`/`waitFor(afterId)` so an event that fired before the wait attached is still matched. Events: `frameRendered` {roomId, spriteOption, cameraAngleDegrees}, `characterChanged` | `src/game/mainLoop/E2eEventBus.ts`; emits in `MainLoop.ts` and `setCurrentCharacterName.ts` |
-| Advancing game time | `__e2e_advanceTime` - bit-exact: `ticker.lastTime = 0; ticker.update(jumpMs)`. Never wall-clock waits | `src/game/mainLoop/installE2eFastForwardHandle.ts` |
-| Key input | `dispatchKeyPress`: keydown + bus-cursor capture in ONE `page.evaluate`, then wait for a `frameRendered` past that cursor before keyup (proof a tick read the key). Holds: `holdKeysForDuration`/`holdKeysUntil` advance *game* time inside `whileFrozen` (speed 0 around the steps, so real time cannot interleave) | `e2e/testUtils/gameInteractions.ts` |
-| Everything else | level-triggered `waitForFunction` on store/game state, or DOM waits - never frame counts, never sleeps | throughout `e2e/` |
+The app has no clock of its own in these builds: a `TestDrivenAppTicker` moves
+only when the test calls `window.__e2e_advanceTime(ms)`, so nothing ticks,
+animates or draws unless a spec asks it to. Waits are on store state or on the
+event bus, never on the wall clock.
+
+**Load the `write-e2e` skill for the model in full** - the helpers, the bus and
+the cursor pattern, what each channel is for. It is what a fix has to be written
+against.
 
 If a change reintroduces `waitForTimeout`, frame-count waits, retry loops, or
 hammer-until-visible loops, it is regression - the suite has none.
@@ -38,6 +38,10 @@ the fixture in `e2e/testUtils/test.ts` (specs must import `test` from there).
 | `[text-layout]` | once per page | font/glyph metrics from the rasteriser, `--scale`, viewport, plus runner fingerprint: cores, browser build, GPU (read from the game's own GL context - never create a probe context, webkit rations them and pixi's init dies) |
 | `[capture-geometry]` | every dialog screenshot | dialog box, flex children boxes, `fonts.status`, first line-box tops, any line off the pixel grid - answers "was the text where the baseline expects, at the moment of capture" |
 | `[text-layout-detail]` | after a failed test | per-line positions (usually too late - the spec has moved on; prefer capture-geometry) |
+| `[db]` | every db load, started and settled | a `started` with no `loaded in` is a request that never came back - the campaign it names is what the boot was waiting on |
+| `[request failed]` / `[http 4xx]` | as they happen | a request the browser gave up on, or a response that errored (a 4xx is not a failure to the browser, so nothing else reports it) |
+| `N request(s) still in flight` | after a failed test | what was outstanding at the moment of failure, oldest first - names a stall, which leaves no other trace |
+| `the game never became ready to drive - …` | `waitForGameReady` timing out | boot state: both e2e hooks, assets loading count, every campaign query's status, open menus, url |
 
 Getting CI evidence:
 
@@ -57,8 +61,10 @@ channels.
 | Signature | Root cause | Fix |
 | --- | --- | --- |
 | `timed out waiting for e2e event "firstRenderOfRoom"` (webkit) | event bus is per-document; `page.goto('#room')` sometimes reloads, resetting the bus and skipping `hashchange` routing | room waits became level-triggered on `currentRoom.id`; nav via `changeRoomViaApi`; the event was deleted |
-| One character/monster sprite differs in a fast-forwarded snapshot (CamRot) | boot-freeze race: `setInterval` freeze is a starvable macrotask, ticker ran physics first at wall-clock-variable delta | freeze via `_e2e_store` setter hook, synchronous before first tick |
-| Same, after the boot fix; turn logs show roomTimes like `9.000000000000046` vs `9` between attempts | fast-forward computed elapsed as `(lastTime + jump) − lastTime`: rounding depends on wall-clock lastTime; roomTime drift changes every `hash(itemHash + roomTime)` turn decision | `ticker.lastTime = 0; ticker.update(jumpMs)` - elapsed bit-exact |
+| One character/monster sprite differs in a fast-forwarded snapshot (Sweep) | boot-freeze race: `setInterval` freeze is a starvable macrotask, ticker ran physics first at wall-clock-variable delta | freeze via `_e2e_store` setter hook, synchronous before first tick |
+| Same, after the boot fix; turn logs show roomTimes like `9.000000000000046` vs `9` between attempts | fast-forward computed elapsed as `(lastTime + jump) − lastTime`: rounding depends on wall-clock lastTime; roomTime drift changes every `hash(itemHash + roomTime)` turn decision | `TestDrivenAppTicker.advance(ms)` sets the step's elapsed/delta directly, so a jump is exactly the ms asked for |
+| A dialog's first keypress is dropped, on CI only | the tap listener was armed in a `useEffect`, so the dialog's DOM existed for a tick before anything listened | `useLayoutEffect` in `useActionTap.ts` - armed in the same commit as the DOM |
+| `waitForGameReady` times out at 45s with no error dialog (one boot of many, mobile-safari) | a supabase request stalled rather than failed; nothing timed it out, so the load never rejected and no error was ever shown | 10s `AbortSignal.timeout` on the supabase client, so a stall becomes a rejection the app reports |
 | `zero-length vector given where a non-zero direction vector is required`, errorCaught mid-test | real game bug: perpendicular turn strategies degenerate to (0,0,0) when the mtv is perpendicular to travel (side-scrape); zero stored as monster `facing`; xy4 renderer asserts | side-scrape is a no-op turn (`movement.ts`); pinning test `handleMonsterTouchingItemByTurning.test.ts` |
 | Menu never opens after Escape; 45s `waitFor` timeout (webkit/mac) | `dispatchKeyPress` captured the bus cursor in a separate round-trip before keydown; a frame in the gap satisfied the wait; keyup before any tick read the key - press swallowed | keydown + cursor capture atomic in one evaluate |
 | `null is not an object (gl.getShaderPrecisionFormat...)`, game crashes at boot (webkit/iOS) | diagnostic probe created an extra WebGL context; webkit starves pixi's | fingerprint reads `__PIXI_APP__.renderer.gl`, never creates a context |
