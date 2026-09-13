@@ -4,13 +4,7 @@ import { type goToSubmenu } from "../src/store/slices/gameMenus/gameMenusSlice";
 import { type ScreenshotTestOptions } from "./ScreenshotTestOptions";
 import { dispatchKeyPress } from "./testUtils/gameInteractions";
 import { dispatchToStore } from "./testUtils/gameStateQueries";
-import { osSlowness, retryWithRecovery } from "./testUtils/infrastructure";
-import {
-  elapsed,
-  formatProjectName,
-  logSelectorExistence,
-  logUpscale,
-} from "./testUtils/logging";
+import { elapsed, formatProjectName, logUpscale } from "./testUtils/logging";
 import {
   clickOriginalCampaign,
   clickPlayTheGame,
@@ -52,29 +46,10 @@ for (const spriteOption of enabledSpriteModes) {
       );
 
       await test.step("Navigate to home page and wait for main menu", async () => {
-        await retryWithRecovery({
-          async action() {
-            console.log(`${formattedName} ${elapsed()}: Navigating to /`);
-            await page.goto("/?track=0");
-
-            // Wait for main menu to appear
-            await waitForDialog(page, "mainMenu", {
-              timeout: 5_000 * osSlowness,
-            });
-
-            await page.waitForTimeout(500);
-          },
-          async recovery() {
-            console.log(
-              `${formattedName} ${elapsed()}: Retrying navigation with page reload`,
-            );
-            await page.reload();
-          },
-          logHeader: formattedName,
-          actionDescription: "navigate to home page",
-          page,
-          screenshotPrefix: "crowns-initial-navigation",
-        });
+        console.log(`${formattedName} ${elapsed()}: Navigating to /`);
+        await page.goto("/?track=0");
+        // the main menu opens automatically once loaded
+        await waitForDialog(page, "mainMenu");
       });
 
       await logUpscale(page, formattedName);
@@ -87,291 +62,144 @@ for (const spriteOption of enabledSpriteModes) {
       await clickOriginalCampaign(page, formattedName);
 
       await test.step("Screenshot: crowns", async () => {
-        await retryWithRecovery({
-          async action() {
-            console.log(
-              `${formattedName} ${elapsed()}: Waiting for crowns dialog`,
-            );
-            await waitForDialog(page, "crowns", {
-              timeout: 5_000 * osSlowness,
-            });
-            await logSelectorExistence(
-              page,
-              '[data-dialog-id="crowns"]',
-              formattedName,
-            );
-
-            await page.waitForTimeout(500);
-
-            console.log(
-              `${formattedName} ${elapsed()} Taking screenshot for dialog: ${chalk.cyan("crowns")}`,
-            );
-            await takeScreenshot(
-              page,
-              `crowns${spriteOptionSuffix(spriteOption)}`,
-              formattedName,
-              spriteOption,
-              testInfo.project.name,
-            );
-          },
-          logHeader: formattedName,
-          actionDescription: "take crowns dialog screenshot",
+        console.log(`${formattedName} ${elapsed()}: Waiting for crowns dialog`);
+        // waitForDialog also waits for the LOADING banner (role=status) to leave
+        await waitForDialog(page, "crowns");
+        console.log(
+          `${formattedName} ${elapsed()} Taking screenshot for dialog: ${chalk.cyan("crowns")}`,
+        );
+        await takeScreenshot(
           page,
-          screenshotPrefix: "crowns-screenshot",
-        });
+          `crowns${spriteOptionSuffix(spriteOption)}`,
+          formattedName,
+          spriteOption,
+          testInfo.project.name,
+        );
       });
 
       await exitCrownsDialog(page, formattedName);
 
       await test.step("Open map dialog", async () => {
-        await retryWithRecovery({
-          async action() {
-            console.log(
-              `${formattedName} ${elapsed()}: Clicking canvas and pressing M to open map`,
-            );
-            await page.waitForTimeout(500);
-
-            // Click the canvas to activate it and give it focus
-            const canvas = page.locator("canvas").first();
-            await canvas.click();
-            await page.waitForTimeout(200);
-
-            await dispatchKeyPress(page, "m", "KeyM");
-            await page.waitForTimeout(500);
-
-            await waitForDialog(page, "map", { timeout: 5_000 * osSlowness });
-            await logSelectorExistence(
-              page,
-              '[data-dialog-id="map"]',
-              formattedName,
-            );
-          },
-          logHeader: formattedName,
-          actionDescription: "open map dialog",
-          page,
-          screenshotPrefix: "open-map",
-        });
+        console.log(
+          `${formattedName} ${elapsed()}: Clicking canvas and pressing M to open map`,
+        );
+        // focus the game canvas so the key reaches the game, then open the map
+        await page.locator("canvas").first().click();
+        await dispatchKeyPress(page, "m", "KeyM");
+        await waitForDialog(page, "map");
       });
 
       await test.step("Screenshot: map", async () => {
-        await retryWithRecovery({
-          async action() {
-            console.log(
-              `${formattedName} ${elapsed()} Taking screenshot for dialog: ${chalk.cyan("map")}`,
-            );
-            await takeScreenshot(
-              page,
-              `map${spriteOptionSuffix(spriteOption)}`,
-              formattedName,
-              spriteOption,
-              testInfo.project.name,
-            );
-          },
-          logHeader: formattedName,
-          actionDescription: "take map dialog screenshot",
+        console.log(
+          `${formattedName} ${elapsed()} Taking screenshot for dialog: ${chalk.cyan("map")}`,
+        );
+        await takeScreenshot(
           page,
-          screenshotPrefix: "map-screenshot",
-        });
+          `map${spriteOptionSuffix(spriteOption)}`,
+          formattedName,
+          spriteOption,
+          testInfo.project.name,
+        );
       });
 
       await test.step("Exit map dialog", async () => {
-        await retryWithRecovery({
-          async action() {
-            console.log(
-              `${formattedName} ${elapsed()}: Pressing Escape to exit map`,
-            );
-            await dispatchKeyPress(page, "Escape", "Escape");
-
-            // Wait for the map dialog to disappear
-            await waitForDialog(page, "map", {
-              state: "detached",
-              timeout: 5_000 * osSlowness,
-            });
-            await page.waitForTimeout(500);
-          },
-          logHeader: formattedName,
-          actionDescription: "exit map dialog",
-          page,
-          screenshotPrefix: "exit-map",
-        });
+        console.log(
+          `${formattedName} ${elapsed()}: Pressing Escape to exit map`,
+        );
+        await dispatchKeyPress(page, "Escape", "Escape");
+        await waitForDialog(page, "map", { state: "detached" });
       });
 
       await test.step("Open hold dialog", async () => {
-        await retryWithRecovery({
-          async action() {
-            console.log(
-              `${formattedName} ${elapsed()}: Clicking canvas and pressing P to open hold`,
-            );
-            await page.waitForTimeout(500);
-
-            const canvas = page.locator("canvas").first();
-            await canvas.click();
-            await page.waitForTimeout(200);
-
-            await dispatchKeyPress(page, "p", "KeyP");
-            await page.waitForTimeout(500);
-
-            await waitForDialog(page, "hold", { timeout: 5_000 * osSlowness });
-            await logSelectorExistence(
-              page,
-              '[data-dialog-id="hold"]',
-              formattedName,
-            );
-          },
-          logHeader: formattedName,
-          actionDescription: "open hold dialog",
-          page,
-          screenshotPrefix: "open-hold",
-        });
+        console.log(
+          `${formattedName} ${elapsed()}: Clicking canvas and pressing P to open hold`,
+        );
+        await page.locator("canvas").first().click();
+        await dispatchKeyPress(page, "p", "KeyP");
+        await waitForDialog(page, "hold");
       });
 
       await test.step("Screenshot: hold", async () => {
-        await retryWithRecovery({
-          async action() {
-            console.log(
-              `${formattedName} ${elapsed()} Taking screenshot for dialog: ${chalk.cyan("hold")}`,
-            );
-            await takeScreenshot(
-              page,
-              `hold${spriteOptionSuffix(spriteOption)}`,
-              formattedName,
-              spriteOption,
-              testInfo.project.name,
-            );
-          },
-          logHeader: formattedName,
-          actionDescription: "take hold dialog screenshot",
+        console.log(
+          `${formattedName} ${elapsed()} Taking screenshot for dialog: ${chalk.cyan("hold")}`,
+        );
+        await takeScreenshot(
           page,
-          screenshotPrefix: "hold-screenshot",
-        });
+          `hold${spriteOptionSuffix(spriteOption)}`,
+          formattedName,
+          spriteOption,
+          testInfo.project.name,
+        );
       });
 
       await test.step("Exit hold dialog", async () => {
-        await retryWithRecovery({
-          async action() {
-            console.log(
-              `${formattedName} ${elapsed()}: Pressing P to exit hold`,
-            );
-            await dispatchKeyPress(page, "p", "KeyP");
-
-            await waitForDialog(page, "hold", {
-              state: "detached",
-              timeout: 5_000 * osSlowness,
-            });
-            await page.waitForTimeout(500);
-          },
-          logHeader: formattedName,
-          actionDescription: "exit hold dialog",
-          page,
-          screenshotPrefix: "exit-hold",
-        });
+        console.log(`${formattedName} ${elapsed()}: Pressing P to exit hold`);
+        await dispatchKeyPress(page, "p", "KeyP");
+        await waitForDialog(page, "hold", { state: "detached" });
       });
 
       await openInGameMainMenu(page, formattedName);
 
       await test.step("Screenshot: main-inGame", async () => {
-        await retryWithRecovery({
-          async action() {
-            console.log(
-              `${formattedName} ${elapsed()} Taking screenshot for dialog: ${chalk.cyan("main-inGame")}`,
-            );
-            await takeScreenshot(
-              page,
-              `main-inGame${spriteOptionSuffix(spriteOption)}`,
-              formattedName,
-              spriteOption,
-              testInfo.project.name,
-            );
-          },
-          logHeader: formattedName,
-          actionDescription: "take in-game main menu screenshot",
+        console.log(
+          `${formattedName} ${elapsed()} Taking screenshot for dialog: ${chalk.cyan("main-inGame")}`,
+        );
+        await takeScreenshot(
           page,
-          screenshotPrefix: "main-inGame-screenshot",
-        });
+          `main-inGame${spriteOptionSuffix(spriteOption)}`,
+          formattedName,
+          spriteOption,
+          testInfo.project.name,
+        );
       });
 
       await test.step("Click progress so far", async () => {
-        await retryWithRecovery({
-          async action() {
-            const progressSelector = "[data-menuitem_id=viewCrowns]";
-            console.log(
-              `${formattedName} ${elapsed()}: Clicking progress so far`,
-            );
-            await logSelectorExistence(page, progressSelector, formattedName);
-            await page.click(progressSelector);
-            await page.waitForTimeout(500);
-
-            await waitForDialog(page, "score", {
-              timeout: 5_000 * osSlowness,
-            });
-            await logSelectorExistence(
-              page,
-              '[data-dialog-id="score"]',
-              formattedName,
-            );
-          },
-          logHeader: formattedName,
-          actionDescription: "click progress so far",
-          page,
-          screenshotPrefix: "click-progress",
-        });
+        console.log(`${formattedName} ${elapsed()}: Clicking progress so far`);
+        await page.click("[data-menuitem_id=viewCrowns]");
+        await waitForDialog(page, "score");
       });
 
       await test.step("Screenshot: score", async () => {
-        await retryWithRecovery({
-          async action() {
-            console.log(
-              `${formattedName} ${elapsed()} Taking screenshot for dialog: ${chalk.cyan("score")}`,
-            );
-            await takeScreenshot(
-              page,
-              `score${spriteOptionSuffix(spriteOption)}`,
-              formattedName,
-              spriteOption,
-              testInfo.project.name,
-            );
-          },
-          logHeader: formattedName,
-          actionDescription: "take score dialog screenshot",
+        console.log(
+          `${formattedName} ${elapsed()} Taking screenshot for dialog: ${chalk.cyan("score")}`,
+        );
+        await takeScreenshot(
           page,
-          screenshotPrefix: "score-screenshot",
-        });
+          `score${spriteOptionSuffix(spriteOption)}`,
+          formattedName,
+          spriteOption,
+          testInfo.project.name,
+        );
       });
 
       await test.step("Screenshot: proclaim emperor", async () => {
         type GoToSubMenuAction = ReturnType<typeof goToSubmenu>;
 
-        await retryWithRecovery({
-          async action() {
-            // we need to do this one directly since there's no easy way to
-            // get to it other than collecting all the crowns:
-            const successShowProclaimEmperor = await dispatchToStore(page, {
-              type: "gameMenus/goToSubmenu",
-              payload: "proclaimEmperor",
-            } satisfies GoToSubMenuAction);
+        // no easy way to reach this other than collecting all the crowns, so
+        // dispatch the navigation directly:
+        const shownProclaimEmperor = await dispatchToStore(page, {
+          type: "gameMenus/goToSubmenu",
+          payload: "proclaimEmperor",
+        } satisfies GoToSubMenuAction);
 
-            if (!successShowProclaimEmperor) {
-              throw new Error(
-                "Failed to open proclaim emperor dialog for screenshot",
-              );
-            }
+        if (!shownProclaimEmperor) {
+          throw new Error(
+            "Failed to open proclaim emperor dialog for screenshot",
+          );
+        }
 
-            console.log(
-              `${formattedName} ${elapsed()} Taking screenshot for dialog: ${chalk.cyan("proclaimEmperor")}`,
-            );
-            await takeScreenshot(
-              page,
-              `proclaimEmperor${spriteOptionSuffix(spriteOption)}`,
-              formattedName,
-              spriteOption,
-              testInfo.project.name,
-            );
-          },
-          logHeader: formattedName,
-          actionDescription: "take proclaimEmperor dialog screenshot",
+        await waitForDialog(page, "proclaimEmperor");
+
+        console.log(
+          `${formattedName} ${elapsed()} Taking screenshot for dialog: ${chalk.cyan("proclaimEmperor")}`,
+        );
+        await takeScreenshot(
           page,
-          screenshotPrefix: "proclaimEmperor-screenshot",
-        });
+          `proclaimEmperor${spriteOptionSuffix(spriteOption)}`,
+          formattedName,
+          spriteOption,
+          testInfo.project.name,
+        );
       });
 
       console.log(`${formattedName} ${elapsed()}: ✓ Captured in game dialogs`);

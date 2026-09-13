@@ -1,7 +1,7 @@
-import { Ticker } from "pixi.js";
 import { useEffect, useState } from "preact/hooks";
 
 import { type CharacterName } from "../../../../../../model/modelTypes";
+import { appTicker } from "../../../../../../utils/ticker/appTickerInstance";
 import { swopPlayablesIfInput } from "../../../../../mainLoop/swopPlayablesIfInput";
 import { useGameApi } from "../../../../GameApiContext";
 
@@ -23,9 +23,9 @@ export const useTickingCurrentCharacterName = <RoomId extends string>() => {
     const syncCharacterNameToState = () => {
       setCurrentCharacterName(gameApi.gameState.currentCharacterName);
     };
-    Ticker.shared.add(syncCharacterNameToState);
+    appTicker.add(syncCharacterNameToState);
     return () => {
-      Ticker.shared.remove(syncCharacterNameToState);
+      appTicker.remove(syncCharacterNameToState);
     };
   }, [gameApi.gameState]);
 
@@ -43,9 +43,9 @@ export const useAllowCharacterSwopping = () => {
     const maybeSwopOnThisTick = () => {
       swopPlayablesIfInput(gameApi.gameState);
     };
-    Ticker.shared.add(maybeSwopOnThisTick);
+    appTicker.add(maybeSwopOnThisTick);
     return () => {
-      Ticker.shared.remove(maybeSwopOnThisTick);
+      appTicker.remove(maybeSwopOnThisTick);
     };
   }, [gameApi.gameState]);
 };

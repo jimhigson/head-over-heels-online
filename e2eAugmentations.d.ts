@@ -2,6 +2,7 @@ import { type Application } from "pixi.js";
 
 import { type EditorE2eApi } from "./src/editor/RoomEditingArea/useEditorE2eApi";
 import { type GameApi } from "./src/game/GameApi";
+import { type E2EEventBus } from "./src/game/mainLoop/E2EEventBus";
 import { type PlayableItem } from "./src/game/physics/itemPredicates";
 import {
   type CharacterName,
@@ -20,6 +21,9 @@ declare global {
     _e2e_editor?: EditorE2eApi;
     // put the pixi application on the window for e2e tests to use
     _e2e_pixiApplication?: Application;
+    // event bus the game emits into (visual-regression builds only); tests
+    // capture a cursor then waitFor a named event, race-free - see E2EEventBus.ts
+    __e2e_events?: E2EEventBus;
     // always set (not just in visual-regression builds) for pixi devtools;
     // e2e tests walk its stage to read render-world ground truth
     __PIXI_APP__?: Application;
@@ -30,7 +34,7 @@ declare global {
     // burst, independent of the ticker - usable while the game speed is zero
     // to play out a scenario setup (falling items, expiring floating text)
     // deterministically.
-    __e2e_fastForwardMs?: (ms: number) => void;
+    __e2e_advanceTime?: (ms: number) => void;
     // swop the active character to a named one (head/heels) via the swop mutator
     // directly - usable while the game speed is zero, where the input-driven
     // swop (read only inside the speed-scaled physics tick) can never fire

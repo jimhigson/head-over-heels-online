@@ -1,12 +1,12 @@
 import { createContext } from "preact";
 import { type PropsWithChildren } from "preact/compat";
 import { useContext, useEffect, useState } from "preact/hooks";
+import { type EmptyObject } from "type-fest";
 
 import { createEmptyHudInputState } from "./hudInputState";
 import {
   InputStateTracker,
   type InputStateTrackerInterface,
-  type InputTicker,
 } from "./InputStateTracker";
 import {
   createEmptyKeyboardState,
@@ -17,18 +17,12 @@ import {
 const InputStateTrackerContext =
   createContext<InputStateTrackerInterface | null>(null);
 
-export type InputStateProviderProps = PropsWithChildren<{
-  ticker: InputTicker;
-}>;
+export type InputStateProviderProps = PropsWithChildren<EmptyObject>;
 
-export const InputStateProvider = ({
-  children,
-  ticker,
-}: InputStateProviderProps) => {
+export const InputStateProvider = ({ children }: InputStateProviderProps) => {
   const [keyboardState] = useState<KeyboardStateMap>(createEmptyKeyboardState);
   const [inputStateTracker] = useState<InputStateTrackerInterface>(
-    () =>
-      new InputStateTracker(keyboardState, createEmptyHudInputState(), ticker),
+    () => new InputStateTracker(keyboardState, createEmptyHudInputState()),
   );
 
   useEffect(() => {

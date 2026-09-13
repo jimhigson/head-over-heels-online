@@ -1,7 +1,7 @@
 import { expect, test } from "vitest";
 
 import { type Campaign } from "../src/model/modelTypes";
-import { resolveRoomIds } from "./testUtils/infrastructure";
+import { resolveRoomIds } from "./resolveRoomIds";
 
 type TestRoomId =
   | "blacktooth1"

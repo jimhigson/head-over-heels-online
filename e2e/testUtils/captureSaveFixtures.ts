@@ -91,13 +91,13 @@ export const captureSaveFixtures = async (
   // clicks while still settling, so click until it closes:
   const crowns = page.locator('[data-dialog-id="crowns"]');
   await crowns.waitFor({ state: "visible", timeout: 30_000 });
-  for (let attempt = 0; attempt < 10; attempt++) {
-    if (!(await crowns.isVisible().catch(() => false))) {
-      break;
-    }
-    await crowns.click({ timeout: 5_000 }).catch(() => {});
-    await page.waitForTimeout(500);
-  }
+  // the crowns dialog ignores clicks while still loading (its LOADING banner,
+  // role=status, is present); wait for that to leave, then a single click closes
+  // it:
+  await crowns
+    .locator('[role="status"]')
+    .waitFor({ state: "detached", timeout: 30_000 });
+  await crowns.click({ timeout: 5_000 });
   await crowns.waitFor({ state: "detached", timeout: 10_000 });
 
   await page.waitForFunction(

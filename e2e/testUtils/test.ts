@@ -6,6 +6,7 @@ import {
 } from "./logging";
 import { relaySupabase } from "./relaySupabase";
 import { logDetailedTextLayout, logTextLayout } from "./screenshots";
+import { trackNetwork } from "./trackNetwork";
 
 /**
  * the `test` every spec should import, in place of the one from
@@ -41,7 +42,15 @@ export const test = playwrightTest.extend<{
     async ({ page }, use, testInfo) => {
       const logHeader = formatProjectName(testInfo.project.name);
       forwardBrowserConsoleToNodeConsole(page, logHeader);
+      const network = trackNetwork(page, logHeader);
       await use();
+      if (testInfo.status !== testInfo.expectedStatus) {
+        // a request that never came back is invisible in every other record of
+        // the run, and is exactly what a test that timed out waiting for the
+        // app to finish loading was stuck on. Reads only node-side bookkeeping,
+        // so it works even for a test that took its page down with it
+        network.logRequestsStillInFlight();
+      }
       // after the test, while the page is still open: headless chromium picks
       // its text hinting when it launches, and the mode it lands in shifts
       // text by a whole pixel - enough to fail a snapshot on its own. Recording

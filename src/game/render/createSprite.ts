@@ -6,7 +6,6 @@ import {
   Sprite,
   type SpritesheetFrameData,
   Texture,
-  Ticker,
 } from "pixi.js";
 
 import { completeTimesXyz } from "../../model/times";
@@ -18,6 +17,7 @@ import {
   type TextureId,
 } from "../../sprites/spritesheet/spritesheetData/makeSpritesheetData";
 import { phaseForSubItem } from "../../utils/maths/hashing";
+import { appTicker } from "../../utils/ticker/appTickerInstance";
 import { lengthXyz, type Xy, type Xyz } from "../../utils/vectors/vectors";
 import { projectBlockXyzToScreenXy } from "./projections";
 
@@ -292,7 +292,7 @@ export const animationSpeed = (
   spritesheet: AppSpritesheetWithVariants,
   paused: boolean = false,
 ) => {
-  const tickerSpeed = Ticker.shared.speed;
+  const tickerSpeed = appTicker.speed;
 
   const animationSpeedModifier =
     paused || tickerSpeed === 0 ?

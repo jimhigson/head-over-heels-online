@@ -10,7 +10,6 @@ import { store } from "../../store/store.ts";
 import { SpinnerHead } from "../../ui/Spinner.tsx";
 import { handleGameBoot } from "../handleGameBoot.ts";
 import { InputStateProvider } from "../input/InputStateProvider.tsx";
-import { pixiInputTicker } from "../input/pixiInputTicker.ts";
 import { CssVariables } from "./CssVariables.tsx";
 import { NotFound404Page } from "./NotFound404Page.tsx";
 import { Route } from "./router/Route.tsx";
@@ -35,7 +34,7 @@ const AppInner = () => {
     <Switch>
       <Route path="/">
         <CssVariables>
-          <InputStateProvider ticker={pixiInputTicker}>
+          <InputStateProvider>
             <GamePage />
           </InputStateProvider>
         </CssVariables>

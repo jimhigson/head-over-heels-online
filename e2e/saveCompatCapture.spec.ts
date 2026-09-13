@@ -1,7 +1,7 @@
 import { readFileSync } from "node:fs";
 
 import { captureSaveFixtures } from "./testUtils/captureSaveFixtures";
-import { osSlowness } from "./testUtils/infrastructure";
+import { osSlowness } from "./testUtils/osSlowness";
 import { setupE2ePage } from "./testUtils/pageSetup";
 import { test } from "./testUtils/test";
 

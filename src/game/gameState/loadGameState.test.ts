@@ -56,10 +56,7 @@ test("if there is a saved game with both characters in the same room, only load 
 
   const loadedGameState = loadGameState({
     campaign,
-    inputStateTracker: new InputStateTracker(new Map(), {} as HudInputState, {
-      start() {},
-      stop(_fn) {},
-    }),
+    inputStateTracker: new InputStateTracker(new Map(), {} as HudInputState),
     savedGame: {
       gameInPlay: {
         planetsLiberated: noPlanetsLiberated,
