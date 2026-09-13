@@ -1,5 +1,21 @@
 # Changelog
 
+## [28.0.0](https://github.com/jimhigson/head-over-heels-online/compare/v27.0.0...v28.0.0) (2026-09-13)
+
+
+### Bug Fixes
+
+* guided-review poll freeze, spurious autosave, remaining colours ([#1090](https://github.com/jimhigson/head-over-heels-online/issues/1090)) ([cc57c28](https://github.com/jimhigson/head-over-heels-online/commit/cc57c288982899c2e1d5e1b1d7d80ccc20717418))
+* guided-review syncs closed panels too ([#1088](https://github.com/jimhigson/head-over-heels-online/issues/1088)) ([f71bbc8](https://github.com/jimhigson/head-over-heels-online/commit/f71bbc888ecb0a178a390771ecb224ba4fca7510))
+
+
+### Miscellaneous
+
+* guided-review icon controls, vscode link, copy path ([#1093](https://github.com/jimhigson/head-over-heels-online/issues/1093)) ([71f906f](https://github.com/jimhigson/head-over-heels-online/commit/71f906fd8f0f5dceeb16184b22d1384c1b0b507d))
+* guided-review vscode palette, generic font, sticky sidebar ([#1091](https://github.com/jimhigson/head-over-heels-online/issues/1091)) ([7488677](https://github.com/jimhigson/head-over-heels-online/commit/7488677d9a9eb5485e5933cae5704ad32fe7df5a))
+* remove guided-review skill, now its own repo ([#1094](https://github.com/jimhigson/head-over-heels-online/issues/1094)) ([0155784](https://github.com/jimhigson/head-over-heels-online/commit/01557845efb039ac2960ba24431f4876f08fc45f))
+* write-e2e skill, with debug-e2e pointing at it ([#1095](https://github.com/jimhigson/head-over-heels-online/issues/1095)) ([c7cb1f7](https://github.com/jimhigson/head-over-heels-online/commit/c7cb1f77bbc553e45acb82018227fb5c3b2fad71))
+
 ## [27.0.0](https://github.com/jimhigson/head-over-heels-online/compare/v26.0.0...v27.0.0) (2026-08-23)
 
 
