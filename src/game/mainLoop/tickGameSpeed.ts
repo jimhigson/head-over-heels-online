@@ -8,6 +8,13 @@ import { fadeInOrOutDuration } from "../render/animationTimings";
 
 const deathAnimationFreezeThreshold = 0.1;
 
+/**
+ * how much of the death fade plays before the world freezes, in game-speed-scaled
+ * ms. The last sliver is never reached, so this is the animation's visible span
+ */
+export const deathAnimationVisibleDuration =
+  fadeInOrOutDuration * (1 - deathAnimationFreezeThreshold);
+
 const findDyingPlayable = (gameState: GameState) => {
   const room = selectCurrentRoomState(gameState);
   if (room === undefined) {

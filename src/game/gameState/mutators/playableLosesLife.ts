@@ -442,6 +442,9 @@ export const playableLosesLife = <RoomId extends string>(
   gameState: GameState<RoomId>,
   characterLosingLifeItem: PlayableItem<CharacterName, RoomId>,
 ) => {
+  // a death cut short leaves the camera part-swept - settle it on the angle the
+  // reloaded room is entered at:
+  gameState.cameraTransition = undefined;
   playableLosesLifeImpl(gameState, characterLosingLifeItem, -1);
 };
 /**
