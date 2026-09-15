@@ -7,7 +7,6 @@ import {
   type CameraTransitionCarrier,
   cameraTransitionDurationMs,
   startCameraRotation,
-  startCameraSpin,
   tickCameraTransition,
 } from "./tickCameraTransition";
 import { transitionCameraAngle } from "./transitionCameraAngle";
@@ -302,66 +301,4 @@ test("stacked taps mid-turn accumulate the remaining arc in the pressed directio
   expect(gs.cameraTransition?.arc).toBeCloseTo(
     Math.PI / 4 + Math.PI / 2 + Math.PI / 2,
   );
-});
-
-/** a quarter turn, over roughly the span the death fade is visible for */
-const spinQuarterTurns = 1;
-const spinDurationMs = 648;
-
-test("a spin settles on the quarter angle it sweeps to", () => {
-  const gs = baseCarrier();
-  startCameraSpin(gs, spinQuarterTurns, spinDurationMs);
-  expect<Xy>(gs.targetCameraAngle).toEqual<Xy>(clockwise);
-});
-
-test("a whole revolution of quarters settles back where it started", () => {
-  const gs = baseCarrier();
-  startCameraSpin(gs, 4, spinDurationMs);
-  expect<Xy>(gs.targetCameraAngle).toEqual<Xy>(base);
-});
-
-test("a spin sweeps the quarters it is asked for", () => {
-  const gs = baseCarrier();
-  startCameraSpin(gs, spinQuarterTurns, spinDurationMs);
-  expect(gs.cameraTransition?.arc).toBeCloseTo(
-    (-spinQuarterTurns * Math.PI) / 2,
-  );
-});
-
-test("a spin sweeps over the duration it is given", () => {
-  const gs = baseCarrier();
-  startCameraSpin(gs, spinQuarterTurns, spinDurationMs);
-  expect(gs.cameraTransition?.durationMs).toBe(spinDurationMs);
-});
-
-test("a spin folds in a quarter turn still in flight", () => {
-  const gs = baseCarrier();
-  startCameraRotation(gs, "clockwise");
-  tickCameraTransition(gs, cameraTransitionDurationMs / 2);
-  // 45° of the quarter is still to sweep, and the spin stacks onto it:
-  startCameraSpin(gs, spinQuarterTurns, spinDurationMs);
-  expect(gs.cameraTransition?.arc).toBeCloseTo(
-    -Math.PI / 4 - (spinQuarterTurns * Math.PI) / 2,
-  );
-});
-
-test("a spin started mid-turn arrives at its own settled angle", () => {
-  const gs = baseCarrier();
-  startCameraRotation(gs, "clockwise");
-  tickCameraTransition(gs, cameraTransitionDurationMs / 2);
-  startCameraSpin(gs, spinQuarterTurns, spinDurationMs);
-  // stop a frame short, while the continuous angle is still rendered:
-  tickCameraTransition(gs, spinDurationMs - 1);
-  const { x, y } = renderedAngle(gs);
-  expect({ x, y }).toEqual({
-    x: expect.closeTo(-1, 3),
-    y: expect.closeTo(0, 3),
-  });
-});
-
-test("a spin completes rather than running on", () => {
-  const gs = baseCarrier();
-  startCameraSpin(gs, spinQuarterTurns, spinDurationMs);
-  tickCameraTransition(gs, spinDurationMs);
-  expect(gs.cameraTransition).toBeUndefined();
 });

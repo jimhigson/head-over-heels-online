@@ -11,19 +11,10 @@ import { playerDiedRecently } from "../../gameState/gameStateSelectors/playerDie
 import { playableHasShield } from "../../gameState/gameStateSelectors/selectPickupAbilities";
 import { selectPlayableItem } from "../../gameState/gameStateSelectors/selectPlayableItem";
 import { saveGameThunk } from "../../gameState/saving/saveGameThunk";
-import { startCameraSpin } from "../../mainLoop/tickCameraTransition";
-import { deathAnimationVisibleDuration } from "../../mainLoop/tickGameSpeed";
 import { isHeadOverHeels } from "../../physics/itemPredicates";
 import { fadeInOrOutDuration } from "../../render/animationTimings";
 import { type DeadlyItemType, type PlayableItem } from "../itemPredicates";
 import { type ItemTouchEvent } from "./ItemTouchEvent";
-
-/**
- * quarter turns the camera sweeps while the death fade plays. The spin runs on
- * the game clock, which the death slows asymptotically towards a standstill, so
- * the sweep eases off to a crawl as the world settles
- */
-const deathCameraSpinQuarterTurns = 1;
 
 const gatherLivesInfo = <RoomId extends string>(
   playableItem: PlayableItem<CharacterName, RoomId>,
@@ -79,14 +70,6 @@ export function handlePlayerTouchingDeadly<
 
   playableItem.state.action = "death";
   playableItem.state.expires = roomTime + fadeInOrOutDuration;
-
-  // sweeps for exactly as long as the fade is visible, so the camera comes to
-  // rest on the frame the world freezes on:
-  startCameraSpin(
-    gameState,
-    deathCameraSpinQuarterTurns,
-    deathAnimationVisibleDuration,
-  );
 
   store.dispatch(
     lostLife({
