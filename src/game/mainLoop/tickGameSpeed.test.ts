@@ -8,7 +8,9 @@ import { resetStore } from "../../_testUtils/initStoreForTests";
 import { type GameStateWithMockInput } from "../../_testUtils/MockInputStateTracker";
 import { closeAllMenus } from "../../store/slices/gameMenus/gameMenusSlice";
 import { store } from "../../store/store";
+import { type Xy } from "../../utils/vectors/vectors";
 import { selectCurrentRoomState } from "../gameState/gameStateSelectors/selectCurrentRoomState";
+import { selectPlayableItem } from "../gameState/gameStateSelectors/selectPlayableItem";
 import { maxSubTickDeltaMs } from "../physics/mechanicsConstants";
 import { progressGameState } from "./progressGameState";
 import { progressWithSubTicks } from "./progressWithSubTicks";
@@ -75,7 +77,7 @@ const deathFractionWhenSpinFinished = (
 
     if (
       deathStartedAtRoomTime === undefined &&
-      room.items.head?.state.action === "death"
+      selectPlayableItem(gameState, "head")?.state.action === "death"
     ) {
       deathStartedAtRoomTime = room.roomTime;
     }
@@ -87,19 +89,20 @@ const deathFractionWhenSpinFinished = (
 test("dying starts the camera spinning", () => {
   const gameState = gameWithPlayerOverAVolcano();
   const ticker = progressWithSubTicks(progressGameState, maxSubTickDeltaMs);
-  while (
-    selectCurrentRoomState(gameState)?.items.head?.state.action !== "death"
-  ) {
+  while (selectPlayableItem(gameState, "head")?.state.action !== "death") {
     ticker(gameState, 1_000 / 60);
   }
   expect(gameState.cameraTransition).toBeDefined();
 });
 
-test("the spin settles back on the angle the room is played at", () => {
+test("dying turns the settled camera angle a quarter", () => {
   const gameState = gameWithPlayerOverAVolcano();
   const before = gameState.targetCameraAngle;
   deathFractionWhenSpinFinished(gameState);
-  expect(gameState.targetCameraAngle).toBe(before);
+  expect(gameState.targetCameraAngle).toEqual<Xy>({
+    x: before.y,
+    y: -before.x,
+  });
 });
 
 test("the spin lasts the whole death, finishing as the world freezes", () => {

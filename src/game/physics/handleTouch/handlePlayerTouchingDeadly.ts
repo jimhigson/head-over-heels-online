@@ -19,11 +19,11 @@ import { type DeadlyItemType, type PlayableItem } from "../itemPredicates";
 import { type ItemTouchEvent } from "./ItemTouchEvent";
 
 /**
- * whole revolutions the camera spins while the death fade plays. The spin runs
- * on the game clock, which the death slows asymptotically towards a standstill,
- * so the turns are quick at first and crawl as the world settles
+ * quarter turns the camera sweeps while the death fade plays. The spin runs on
+ * the game clock, which the death slows asymptotically towards a standstill, so
+ * the sweep eases off to a crawl as the world settles
  */
-const deathCameraSpinTurns = 3;
+const deathCameraSpinQuarterTurns = 1;
 
 const gatherLivesInfo = <RoomId extends string>(
   playableItem: PlayableItem<CharacterName, RoomId>,
@@ -84,7 +84,7 @@ export function handlePlayerTouchingDeadly<
   // rest on the frame the world freezes on:
   startCameraSpin(
     gameState,
-    deathCameraSpinTurns,
+    deathCameraSpinQuarterTurns,
     deathAnimationVisibleDuration,
   );
 

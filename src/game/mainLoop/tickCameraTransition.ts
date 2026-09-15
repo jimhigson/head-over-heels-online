@@ -116,24 +116,32 @@ export const startCameraRotation = (
 };
 
 /**
- * begin a free spin that sweeps `turns` whole revolutions and settles back on
- * {@link CameraTransitionCarrier.targetCameraAngle} - a turn already in flight
- * is folded in, so the spin ends on the settled quarter angle either way.
+ * begin a clockwise spin of `quarterTurns` quarters over `durationMs`, ending
+ * on the quarter angle that many quarters round - a multiple of four lands back
+ * where it started. A turn already in flight is folded in, so the spin ends on
+ * a settled quarter angle either way.
  *
- * Whole revolutions only: consumers that interpolate a transition read its
- * endpoint as the target angle, so a spin that landed elsewhere would render
- * against the wrong endpoint.
+ * Quarters only: consumers that interpolate a transition read its endpoint as
+ * the target angle, so a spin landing off-quarter would render against an angle
+ * the rest of the room never settles on.
  */
 export const startCameraSpin = (
   gameState: CameraTransitionCarrier,
-  turns: number,
+  quarterTurns: number,
   /** how long the spin sweeps for, in game-speed-scaled ms */
   durationMs: number,
 ) => {
   const { fromAngle, remainingArc, angularVelocity } =
     cameraMotionNow(gameState);
 
-  const arc = remainingArc - turns * 2 * Math.PI;
+  // rotated a quarter at a time so the settled angle stays exactly axis-aligned:
+  let target = gameState.targetCameraAngle;
+  for (let quarter = 0; quarter < quarterTurns; quarter++) {
+    target = rotateXy(target, quarterTurnClockwise);
+  }
+  gameState.targetCameraAngle = target;
+
+  const arc = remainingArc - quarterTurns * halfPi;
 
   gameState.cameraTransition = {
     fromAngle,
