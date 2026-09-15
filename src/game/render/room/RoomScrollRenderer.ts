@@ -8,6 +8,7 @@ import { epsilon } from "../../../utils/epsilon";
 import { neverTime } from "../../../utils/neverTime";
 import { assignRoundedXy } from "../../../utils/pixi/assignRoundedXy";
 import {
+  bracketingQuarterAngles,
   isAtQuarterAngle,
   nearestQuarterAngle,
 } from "../../../utils/vectors/cameraAngleVectors";
@@ -15,6 +16,7 @@ import {
   addXy,
   addXyz,
   lengthXySquared,
+  originXy,
   scaleXy,
   scaleXyz,
   subXy,
@@ -23,7 +25,7 @@ import {
   type Xyz,
 } from "../../../utils/vectors/vectors";
 import { selectCurrentPlayableItem } from "../../gameState/gameStateSelectors/selectPlayableItem";
-import { hermiteEase } from "../../mainLoop/transitionCameraAngle";
+import { deathCameraEffect } from "../deathCameraEffect";
 import { projectWorldXyzToScreenXy } from "../projections";
 import { type SoundAndGraphicsOutput } from "../SoundAndGraphicsOutput";
 import {
@@ -214,6 +216,8 @@ export class RoomScrollRenderer<
   #curScroll: Xy = { x: 0, y: 0 };
   /** the user's input into looking around */
   #lookOffset: Xy = { x: 0, y: 0 };
+  /** pulls the room towards centring a dying character - see {@link deathCameraEffect} */
+  #deathCentringOffset: Xy = { x: 0, y: 0 };
   #lastLookTime: number = neverTime;
 
   #everRendered: boolean = false;
@@ -407,6 +411,38 @@ export class RoomScrollRenderer<
     return { x, y };
   }
 
+  /**
+   * a dying character is drawn towards the middle of the screen, whether or not
+   * the room scrolls - carried as an offset so the room's own scroll is left
+   * where it is and comes back untouched once the death is over
+   */
+  #updateDeathCentringOffset(playablePosition: Xyz) {
+    const {
+      general: {
+        gameState,
+        cameraAngle,
+        upscale: { gameEngineScreenSize },
+      },
+    } = this.renderContext;
+
+    const { centringFraction } = deathCameraEffect(gameState);
+
+    if (centringFraction === 0) {
+      this.#deathCentringOffset = originXy;
+      return;
+    }
+
+    const centredScroll = subXy(
+      scaleXy(gameEngineScreenSize, 0.5),
+      projectWorldXyzToScreenXy(playablePosition, cameraAngle),
+    );
+
+    this.#deathCentringOffset = scaleXy(
+      subXy(centredScroll, this.#curScroll),
+      centringFraction,
+    );
+  }
+
   #updateOutputXy() {
     const {
       general: {
@@ -416,7 +452,11 @@ export class RoomScrollRenderer<
     const scroll = this.#curScroll;
     const outputGraphics = this.output.graphics;
 
-    const xyPlusLook = addXy(scroll, this.#lookOffset);
+    const xyPlusLook = addXy(
+      scroll,
+      this.#lookOffset,
+      this.#deathCentringOffset,
+    );
 
     assignRoundedXy(
       outputGraphics,
@@ -537,15 +577,22 @@ export class RoomScrollRenderer<
       return;
     }
 
+    this.#updateDeathCentringOffset(playable.state.box);
+
     const { cameraTransition } = gameState;
-    if (cameraTransition !== undefined && !isAtQuarterAngle(cameraAngle)) {
+    if (!isAtQuarterAngle(cameraAngle)) {
       // interpolate the container's scroll between the two discrete-angle targets,
       // so the from-angle and to-angle renderers land on the identical offset at
       // the midpoint hand-over (no whole-room snap) and the room tracks the item
-      // warps smoothly through the turn. Set directly rather than eased: the eased
-      // progress already smooths it, and both renderers must agree frame-for-frame.
-      const { fromAngle } = cameraTransition;
-      const toAngle = gameState.targetCameraAngle;
+      // warps smoothly through the turn. The blend is read off the angle itself,
+      // so the room follows any continuous angle - not only one a rotation is
+      // driving. Set directly rather than eased: both renderers must agree
+      // frame-for-frame.
+      const {
+        from: fromAngle,
+        to: toAngle,
+        fraction,
+      } = bracketingQuarterAngles(cameraAngle);
       const { from, to } = this.#transitionEndpointGeometries(
         fromAngle,
         toAngle,
@@ -560,13 +607,9 @@ export class RoomScrollRenderer<
         to,
         toAngle,
       );
-      const eased = hermiteEase(
-        cameraTransition.progress,
-        cameraTransition.startSlope,
-      );
       this.#curScroll = {
-        x: targetFrom.x + (targetTo.x - targetFrom.x) * eased,
-        y: targetFrom.y + (targetTo.y - targetFrom.y) * eased,
+        x: targetFrom.x + (targetTo.x - targetFrom.x) * fraction,
+        y: targetFrom.y + (targetTo.y - targetFrom.y) * fraction,
       };
     } else {
       this.#transitionGeometries = undefined;

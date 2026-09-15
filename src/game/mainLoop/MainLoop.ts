@@ -34,7 +34,7 @@ import { type GameState } from "../gameState/GameState";
 import { selectCurrentRoomState } from "../gameState/gameStateSelectors/selectCurrentRoomState";
 import { maxSubTickDeltaMs } from "../physics/mechanicsConstants";
 import { ColourClashCircleEffectRenderer } from "../render/ColourClashCircleEffectRenderer";
-import { deathCameraSpinRadians } from "../render/deathCameraSpinRadians";
+import { deathCameraEffect } from "../render/deathCameraEffect";
 import { HudRenderer } from "../render/hud/HudRenderer";
 import { needsNewHudRenderer } from "../render/hud/needsNewHudRenderer";
 import { needsNewRoomRenderer } from "../render/room/needsNewRoomRenderer";
@@ -513,7 +513,7 @@ export class MainLoop<RoomId extends string> {
 
     // a death swings the drawn angle off the played one and back again, so it
     // is applied here rather than to any angle the model can see:
-    const deathSpin = deathCameraSpinRadians(this.#gameState);
+    const { spinRadians: deathSpin } = deathCameraEffect(this.#gameState);
     const cameraAngle =
       deathSpin === 0 ? turnedCameraAngle : (
         rotateXy(turnedCameraAngle, {

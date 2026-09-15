@@ -13,7 +13,7 @@ import { progressGameState } from "../mainLoop/progressGameState";
 import { progressWithSubTicks } from "../mainLoop/progressWithSubTicks";
 import { tickGameSpeed } from "../mainLoop/tickGameSpeed";
 import { maxSubTickDeltaMs } from "../physics/mechanicsConstants";
-import { deathCameraSpinRadians } from "./deathCameraSpinRadians";
+import { deathCameraEffect } from "./deathCameraEffect";
 
 beforeEach(() => {
   resetStore();
@@ -71,18 +71,18 @@ const isDying = (gameState: GameStateWithMockInput) =>
 
 test("nobody dying leaves the drawn angle alone", () => {
   const gameState = gameWithPlayerOverAVolcano();
-  expect(deathCameraSpinRadians(gameState)).toBe(0);
+  expect(deathCameraEffect(gameState).spinRadians).toBe(0);
 });
 
 test("the swing grows as the death plays", () => {
   const gameState = gameWithPlayerOverAVolcano();
   playFramesUntil(gameState, isDying);
-  const atDeath = deathCameraSpinRadians(gameState);
+  const atDeath = deathCameraEffect(gameState).spinRadians;
   playFramesUntil(
     gameState,
     (gs) => tickGameSpeed(store.getState(), gs) === 0 || !isDying(gs),
   );
-  expect(Math.abs(deathCameraSpinRadians(gameState))).toBeGreaterThan(
+  expect(Math.abs(deathCameraEffect(gameState).spinRadians)).toBeGreaterThan(
     Math.abs(atDeath),
   );
 });
@@ -94,7 +94,7 @@ test("the swing reaches a quarter turn by the time the world freezes", () => {
     gameState,
     (gs) => tickGameSpeed(store.getState(), gs) === 0 || !isDying(gs),
   );
-  expect(deathCameraSpinRadians(gameState)).toBeCloseTo(-Math.PI / 2, 1);
+  expect(deathCameraEffect(gameState).spinRadians).toBeCloseTo(-Math.PI / 2, 1);
 });
 
 test("the swing unwinds to nothing once the character is playing again", () => {
@@ -109,5 +109,5 @@ test("the swing unwinds to nothing once the character is playing again", () => {
   store.dispatch(closeAllMenus());
   playFramesUntil(gameState, (gs) => !isDying(gs));
 
-  expect(deathCameraSpinRadians(gameState)).toBe(0);
+  expect(deathCameraEffect(gameState).spinRadians).toBe(0);
 });

@@ -8,7 +8,9 @@ import { selectCurrentRoomState } from "./selectCurrentRoomState";
  * the room it is in and the room time the fade ends at - `undefined` when nobody
  * is mid-death
  */
-export const findDyingPlayable = (gameState: GameState) => {
+export const findDyingPlayable = (
+  gameState: Pick<GameState, "characterRooms" | "currentCharacterName">,
+) => {
   const room = selectCurrentRoomState(gameState);
   if (room === undefined) {
     return undefined;
