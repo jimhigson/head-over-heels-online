@@ -28,11 +28,13 @@ import { validateSceneGraph } from "../../utils/pixi/validateSceneGraph";
 import { createSerialisableErrors } from "../../utils/redux/createSerialisableErrors";
 import { type AppTicker } from "../../utils/ticker/AppTicker";
 import { appTicker } from "../../utils/ticker/appTickerInstance";
+import { rotateXy } from "../../utils/vectors/rotateXy";
 import { type Xy } from "../../utils/vectors/vectors";
 import { type GameState } from "../gameState/GameState";
 import { selectCurrentRoomState } from "../gameState/gameStateSelectors/selectCurrentRoomState";
 import { maxSubTickDeltaMs } from "../physics/mechanicsConstants";
 import { ColourClashCircleEffectRenderer } from "../render/ColourClashCircleEffectRenderer";
+import { deathCameraSpinRadians } from "../render/deathCameraSpinRadians";
 import { HudRenderer } from "../render/hud/HudRenderer";
 import { needsNewHudRenderer } from "../render/hud/needsNewHudRenderer";
 import { needsNewRoomRenderer } from "../render/room/needsNewRoomRenderer";
@@ -499,7 +501,7 @@ export class MainLoop<RoomId extends string> {
     const { cameraTransition } = this.#gameState;
 
     // continuous θ(t) angle while a rotation animates, settled quarter-angle otherwise:
-    const cameraAngle =
+    const turnedCameraAngle =
       cameraTransition === undefined ? tickCameraAngle : (
         transitionCameraAngle(
           cameraTransition.fromAngle,
@@ -507,6 +509,17 @@ export class MainLoop<RoomId extends string> {
           cameraTransition.progress,
           cameraTransition.startSlope,
         )
+      );
+
+    // a death swings the drawn angle off the played one and back again, so it
+    // is applied here rather than to any angle the model can see:
+    const deathSpin = deathCameraSpinRadians(this.#gameState);
+    const cameraAngle =
+      deathSpin === 0 ? turnedCameraAngle : (
+        rotateXy(turnedCameraAngle, {
+          x: Math.cos(deathSpin),
+          y: Math.sin(deathSpin),
+        })
       );
 
     const general = this.#syncGeneralRenderContext(

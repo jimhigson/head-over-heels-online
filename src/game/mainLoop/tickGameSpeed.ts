@@ -1,33 +1,17 @@
-import { characterNames } from "../../model/modelTypes";
 import { selectGameSpeed } from "../../store/slices/gameMenus/gameMenusSelectors";
 import { type GameRootState } from "../../store/store";
 import { type GameState } from "../gameState/GameState";
-import { selectCurrentRoomState } from "../gameState/gameStateSelectors/selectCurrentRoomState";
-import { type PlayableItem } from "../physics/itemPredicates";
+import { findDyingPlayable } from "../gameState/gameStateSelectors/findDyingPlayable";
 import { fadeInOrOutDuration } from "../render/animationTimings";
 
 const deathAnimationFreezeThreshold = 0.1;
 
-const findDyingPlayable = (gameState: GameState) => {
-  const room = selectCurrentRoomState(gameState);
-  if (room === undefined) {
-    return undefined;
-  }
-
-  for (const name of characterNames) {
-    const item = room.items[name] as PlayableItem | undefined;
-    if (
-      item !== undefined &&
-      item.state.action === "death" &&
-      item.state.expires !== null &&
-      item.state.expires > room.roomTime
-    ) {
-      return { item, room };
-    }
-  }
-
-  return undefined;
-};
+/**
+ * how much of the death fade plays before the world freezes, in game-speed-scaled
+ * ms. The last sliver is never reached, so this is the animation's visible span
+ */
+export const deathAnimationVisibleDuration =
+  fadeInOrOutDuration * (1 - deathAnimationFreezeThreshold);
 
 /**
  * how fast the game world should run this frame, as a multiplier on real time:
@@ -57,7 +41,7 @@ export const tickGameSpeed = (
 
   if (dying !== undefined) {
     const remainingFraction =
-      (dying.item.state.expires! - dying.room.roomTime) / fadeInOrOutDuration;
+      (dying.expires - dying.room.roomTime) / fadeInOrOutDuration;
 
     if (remainingFraction > deathAnimationFreezeThreshold) {
       return userGameSpeed * 0.2 * remainingFraction;
