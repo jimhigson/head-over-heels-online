@@ -1,0 +1,7 @@
+# Netlify's build image ignores package.json's packageManager field: it runs
+# `corepack prepare pnpm@$PNPM_VERSION --activate` and then `pnpm install`.
+# Its default pnpm predates 11.10.0, which is the first version able to link
+# pnpm 12's native `@pnpm/exe.*` binaries, so without this it fails to switch
+# to the pinned version and the deploy dies before installing anything.
+[build.environment]
+  PNPM_VERSION = "12.1.0"
