@@ -28,11 +28,18 @@ import { validateSceneGraph } from "../../utils/pixi/validateSceneGraph";
 import { createSerialisableErrors } from "../../utils/redux/createSerialisableErrors";
 import { type AppTicker } from "../../utils/ticker/AppTicker";
 import { appTicker } from "../../utils/ticker/appTickerInstance";
+import { rotateXy } from "../../utils/vectors/rotateXy";
 import { type Xy } from "../../utils/vectors/vectors";
 import { type GameState } from "../gameState/GameState";
+import { findDyingPlayable } from "../gameState/gameStateSelectors/findDyingPlayable";
 import { selectCurrentRoomState } from "../gameState/gameStateSelectors/selectCurrentRoomState";
 import { maxSubTickDeltaMs } from "../physics/mechanicsConstants";
 import { ColourClashCircleEffectRenderer } from "../render/ColourClashCircleEffectRenderer";
+import {
+  deathCameraEffect,
+  type DeathCameraEffect,
+  noDeathCameraEffect,
+} from "../render/deathCameraEffect";
 import { HudRenderer } from "../render/hud/HudRenderer";
 import { needsNewHudRenderer } from "../render/hud/needsNewHudRenderer";
 import { needsNewRoomRenderer } from "../render/room/needsNewRoomRenderer";
@@ -173,6 +180,9 @@ export class MainLoop<RoomId extends string> {
    * known as soon as it is true - a suspended loop has no next tick to say it
    * in, and a resumed one has not drawn yet
    */
+  /** real ms the current death has been playing for; zero when nobody is dying */
+  #realMsDying = 0;
+
   #__e2e_announceRenderingSuspension =
     import.meta.env.MODE === "visual-regression" ?
       () => {
@@ -235,6 +245,7 @@ export class MainLoop<RoomId extends string> {
     cameraAngle: Xy,
     /** game-speed multiplier - <1 for slow-mo, 0 while paused */
     speedCoefficient: number,
+    deathCameraEffectThisFrame: DeathCameraEffect,
   ): InGameGeneralRenderContext<RoomId> {
     const existing = this.#generalRenderContext;
 
@@ -252,6 +263,7 @@ export class MainLoop<RoomId extends string> {
         onScreenControls,
         cameraAngle,
         speedCoefficient,
+        deathCameraEffect: deathCameraEffectThisFrame,
       };
       this.#generalRenderContext = created;
       return created;
@@ -269,6 +281,7 @@ export class MainLoop<RoomId extends string> {
 
     existing.cameraAngle = cameraAngle;
     existing.speedCoefficient = speedCoefficient;
+    existing.deathCameraEffect = deathCameraEffectThisFrame;
     return existing;
   }
 
@@ -499,7 +512,7 @@ export class MainLoop<RoomId extends string> {
     const { cameraTransition } = this.#gameState;
 
     // continuous θ(t) angle while a rotation animates, settled quarter-angle otherwise:
-    const cameraAngle =
+    const turnedCameraAngle =
       cameraTransition === undefined ? tickCameraAngle : (
         transitionCameraAngle(
           cameraTransition.fromAngle,
@@ -507,6 +520,26 @@ export class MainLoop<RoomId extends string> {
           cameraTransition.progress,
           cameraTransition.startSlope,
         )
+      );
+
+    // the death swing runs on real time, so it keeps turning while the death
+    // holds the world still; it is applied to the drawn angle only, never to
+    // any angle the model can see:
+    this.#realMsDying =
+      findDyingPlayable(this.#gameState) === undefined ? 0 : (
+        this.#realMsDying + Math.min(elapsedMS, maxStepMs)
+      );
+    const deathEffect =
+      this.#realMsDying === 0 ?
+        noDeathCameraEffect
+      : deathCameraEffect(this.#realMsDying);
+    const { spinRadians: deathSpin } = deathEffect;
+    const cameraAngle =
+      deathSpin === 0 ? turnedCameraAngle : (
+        rotateXy(turnedCameraAngle, {
+          x: Math.cos(deathSpin),
+          y: Math.sin(deathSpin),
+        })
       );
 
     const general = this.#syncGeneralRenderContext(
@@ -519,6 +552,7 @@ export class MainLoop<RoomId extends string> {
       tickOnScreenControls,
       cameraAngle,
       gameSpeed,
+      deathEffect,
     );
 
     if (createNewHudRenderer) {

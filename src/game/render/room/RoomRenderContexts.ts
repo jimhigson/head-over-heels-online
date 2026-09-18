@@ -13,6 +13,7 @@ import {
 import { type Xy } from "../../../utils/vectors/vectors";
 import { type GameState } from "../../gameState/GameState";
 import { type SceneGraphPhaseRecorder } from "../../mainLoop/frameTiming/FrameTimingStats";
+import { type DeathCameraEffect } from "../deathCameraEffect";
 
 /**
  * some context that most renderers need, to be composed into their contexts
@@ -46,6 +47,8 @@ export type GeneralRenderContext<RoomId extends string> = {
   onScreenControls: boolean;
   /** game speed multiplier for the current frame — 0 when paused, <1 during slow-motion (e.g. death animation) */
   speedCoefficient: number;
+  /** how a death in progress moves the camera off where it would otherwise be */
+  deathCameraEffect: DeathCameraEffect;
   spritesheets: Spritesheets;
 };
 

@@ -80,3 +80,25 @@ export const rotateXyzByInverseCameraAngle = (v: Xyz, cameraAngle: Xy): Xyz => {
     z: v.z,
   };
 };
+
+/**
+ * the two quarter-turn angles a continuous render angle lies between, and how
+ * far it is from the first to the second (0..1). At a quarter angle exactly,
+ * `from` is that angle and the fraction is zero.
+ *
+ * Lets a renderer blend between its two nearest settled-angle geometries from
+ * the angle alone, so it follows any continuous angle rather than only one that
+ * arrives with a rotation attached.
+ */
+export const bracketingQuarterAngles = (
+  angle: Xy,
+): { from: Xy; to: Xy; fraction: number } => {
+  const quarters = (Math.atan2(angle.y, angle.x) / (Math.PI / 2) + 4) % 4;
+  const fromIndex = Math.floor(quarters);
+
+  return {
+    from: quarterCameraAngles[fromIndex % 4],
+    to: quarterCameraAngles[(fromIndex + 1) % 4],
+    fraction: quarters - fromIndex,
+  };
+};

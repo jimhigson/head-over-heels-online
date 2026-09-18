@@ -1,6 +1,7 @@
 import { autoDetectRenderer, Rectangle, type Renderer } from "pixi.js";
 
 import { loadRoom } from "../../game/gameState/loadRoom/loadRoom";
+import { noDeathCameraEffect } from "../../game/render/deathCameraEffect";
 import { type GeneralRenderContext } from "../../game/render/room/RoomRenderContexts";
 import { RoomRenderer } from "../../game/render/room/RoomRenderer";
 import { roomRenderExtent } from "../../game/render/room/roomRenderExtent";
@@ -80,6 +81,7 @@ export const renderRoomPreviewImage = async (
   ssv.rebuild(renderer, room.planet, room.color, blockStackSpriteOption);
 
   const general: GeneralRenderContext<EditorRoomId> = {
+    deathCameraEffect: noDeathCameraEffect,
     displaySettings: { emulatedResolution: "amigaLowResPal" },
     soundSettings: { mute: true },
     pixiRenderer: renderer,

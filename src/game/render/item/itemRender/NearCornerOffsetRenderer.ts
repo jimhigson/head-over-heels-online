@@ -5,11 +5,11 @@ import {
   type UnionOfAllItemInPlayTypes,
 } from "../../../../model/ItemInPlay";
 import {
+  bracketingQuarterAngles,
   isAtQuarterAngle,
   nearestQuarterAngle,
 } from "../../../../utils/vectors/cameraAngleVectors";
 import { originXy, type Xy } from "../../../../utils/vectors/vectors";
-import { hermiteEase } from "../../../mainLoop/transitionCameraAngle";
 import {
   adjustNearCornerForCameraAngle,
   nearCornerOffsetWorldXyz,
@@ -44,7 +44,7 @@ const transitionNearCornerOffsetXy = (
   fromAngle: Xy,
   /** the quarter angle the turn eases towards */
   toAngle: Xy,
-  /** eased progress 0..1 (hermiteEase of the transition's linear progress) */
+  /** how far from `fromAngle` to `toAngle` the render angle is, 0..1 */
   eased: number,
 ): Xy => {
   if (itemTypesExemptFromNearCornerOffset.has(item.type)) {
@@ -145,18 +145,13 @@ export class NearCornerOffsetRenderer<
   #updateTransitionNearCornerOffset(offsetContainer: Container) {
     const {
       item,
-      general: { gameState },
+      general: { cameraAngle },
     } = this.renderContext;
-    if (gameState === undefined || gameState.cameraTransition === undefined) {
-      return;
-    }
-    const { fromAngle, progress, startSlope } = gameState.cameraTransition;
-    const offset = transitionNearCornerOffsetXy(
-      item,
-      fromAngle,
-      gameState.targetCameraAngle,
-      hermiteEase(progress, startSlope),
-    );
+
+    // read off the angle itself, so the offset follows any continuous angle -
+    // not only one a rotation is driving:
+    const { from, to, fraction } = bracketingQuarterAngles(cameraAngle);
+    const offset = transitionNearCornerOffsetXy(item, from, to, fraction);
     offsetContainer.position.set(offset.x, offset.y);
   }
 
