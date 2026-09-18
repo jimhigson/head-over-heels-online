@@ -87,14 +87,19 @@ test("the swing grows as the death plays", () => {
   );
 });
 
-test("the swing reaches a quarter turn by the time the world freezes", () => {
+test("the swing eases in - it covers less ground in its first ms than its next", () => {
   const gameState = gameWithPlayerOverAVolcano();
   playFramesUntil(gameState, isDying);
-  playFramesUntil(
-    gameState,
-    (gs) => tickGameSpeed(store.getState(), gs) === 0 || !isDying(gs),
-  );
-  expect(deathCameraEffect(gameState).spinRadians).toBeCloseTo(-Math.PI / 2, 1);
+
+  const swungOver = (gameMs: number) => {
+    const before = deathCameraEffect(gameState).spinRadians;
+    const startedAt = gameState.gameTime;
+    playFramesUntil(gameState, (gs) => gs.gameTime > startedAt + gameMs);
+    return Math.abs(deathCameraEffect(gameState).spinRadians - before);
+  };
+
+  const first = swungOver(100);
+  expect(swungOver(100)).toBeGreaterThan(first);
 });
 
 test("the swing unwinds to nothing once the character is playing again", () => {

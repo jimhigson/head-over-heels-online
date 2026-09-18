@@ -4,10 +4,33 @@ import { deathAnimationVisibleDuration } from "../mainLoop/tickGameSpeed";
 import { fadeInOrOutDuration } from "./animationTimings";
 
 /**
- * how far the camera swings over a whole death fade, in radians. A quarter turn
- * reads as a lurch without disorienting
+ * how fast the camera swings once up to speed, in radians per game-speed-scaled
+ * ms. Negative is clockwise
  */
-const deathCameraSpinArc = -Math.PI / 2;
+const deathCameraSpinRate = -Math.PI / 2 / deathAnimationVisibleDuration / 2;
+
+/**
+ * how long the swing takes to come up to speed, in game-speed-scaled ms - about
+ * a second of real time, since the death clock starts near a fifth of normal
+ */
+const deathCameraSpinEaseInMs = 200;
+
+/**
+ * the swing's smoothstep ease-in, integrated: how many ms' worth of full-speed
+ * swing has been travelled `fraction` of the way through the ease-in
+ */
+const easedInMsFraction = (fraction: number) =>
+  fraction ** 3 - fraction ** 4 / 2;
+
+/**
+ * the ms of full-speed swing travelled by `elapsed` - the ease-in spends its
+ * first {@link deathCameraSpinEaseInMs} covering only half that much ground
+ */
+const swungMs = (elapsed: number) =>
+  elapsed < deathCameraSpinEaseInMs ?
+    deathCameraSpinEaseInMs *
+    easedInMsFraction(elapsed / deathCameraSpinEaseInMs)
+  : elapsed - deathCameraSpinEaseInMs / 2;
 
 /** the effect a death has on where the camera is placed, while one plays */
 export type DeathCameraEffect = {
@@ -44,7 +67,7 @@ export const deathCameraEffect = (
   const progress = Math.min(1, elapsed / deathAnimationVisibleDuration);
 
   return {
-    spinRadians: progress * deathCameraSpinArc,
+    spinRadians: swungMs(elapsed) * deathCameraSpinRate,
     centringFraction: progress,
   };
 };
