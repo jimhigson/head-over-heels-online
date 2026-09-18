@@ -1,11 +1,11 @@
 /**
- * how fast the camera swings once up to speed, in radians per real ms - twelve
+ * how fast the camera swings once up to speed, in radians per real ms - six
  * degrees a second. Negative is clockwise
  */
-const deathCameraSpinRate = (-12 * (Math.PI / 180)) / 1_000;
+const deathCameraSpinRate = (-6 * (Math.PI / 180)) / 1_000;
 
 /** how long the swing takes to come up to speed, in real ms */
-const deathCameraSpinEaseInMs = 1_000;
+const deathCameraSpinEaseInMs = 2_500;
 
 /** how long the room takes to settle on the dying character, in real ms */
 const deathCameraCentringMs = 1_500;
