@@ -2,6 +2,7 @@ import { Container, Graphics, type Renderer } from "pixi.js";
 import { type RefObject } from "preact";
 import { useEffect } from "preact/hooks";
 
+import { noDeathCameraEffect } from "../../game/render/deathCameraEffect";
 import { type GeneralRenderContext } from "../../game/render/room/RoomRenderContexts";
 import { RoomRenderer } from "../../game/render/room/RoomRenderer";
 import { paletteBlockstack } from "../../sprites/palette/spritesheetPalette";
@@ -42,6 +43,7 @@ const editorGeneralRenderContext = (
   pixiRenderer: Renderer,
   spritesheets: Spritesheets,
 ): GeneralRenderContext<EditorRoomId> => ({
+  deathCameraEffect: noDeathCameraEffect,
   displaySettings: {
     emulatedResolution: "amigaLowResPal",
   },

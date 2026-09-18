@@ -25,7 +25,6 @@ import {
   type Xyz,
 } from "../../../utils/vectors/vectors";
 import { selectCurrentPlayableItem } from "../../gameState/gameStateSelectors/selectPlayableItem";
-import { deathCameraEffect } from "../deathCameraEffect";
 import { projectWorldXyzToScreenXy } from "../projections";
 import { type SoundAndGraphicsOutput } from "../SoundAndGraphicsOutput";
 import {
@@ -419,13 +418,11 @@ export class RoomScrollRenderer<
   #updateDeathCentringOffset(playablePosition: Xyz) {
     const {
       general: {
-        gameState,
         cameraAngle,
+        deathCameraEffect: { centringFraction },
         upscale: { gameEngineScreenSize },
       },
     } = this.renderContext;
-
-    const { centringFraction } = deathCameraEffect(gameState);
 
     if (centringFraction === 0) {
       this.#deathCentringOffset = originXy;

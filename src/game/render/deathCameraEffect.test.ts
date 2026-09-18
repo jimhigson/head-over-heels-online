@@ -1,118 +1,32 @@
-import { beforeEach, expect, test, vi } from "vitest";
-vi.mock("../../sprites/samplePalette", () => ({
-  spritesheetPalette: vi.fn().mockReturnValue({}),
-}));
+import { expect, test } from "vitest";
 
-import { setUpBasicGame } from "../../_testUtils/basicRoom";
-import { resetStore } from "../../_testUtils/initStoreForTests";
-import { type GameStateWithMockInput } from "../../_testUtils/MockInputStateTracker";
-import { closeAllMenus } from "../../store/slices/gameMenus/gameMenusSlice";
-import { store } from "../../store/store";
-import { selectPlayableItem } from "../gameState/gameStateSelectors/selectPlayableItem";
-import { progressGameState } from "../mainLoop/progressGameState";
-import { progressWithSubTicks } from "../mainLoop/progressWithSubTicks";
-import { tickGameSpeed } from "../mainLoop/tickGameSpeed";
-import { maxSubTickDeltaMs } from "../physics/mechanicsConstants";
-import { deathCameraEffect } from "./deathCameraEffect";
+import { deathCameraEffect, noDeathCameraEffect } from "./deathCameraEffect";
 
-beforeEach(() => {
-  resetStore();
+const degrees = (realMs: number) =>
+  (deathCameraEffect(realMs).spinRadians * 180) / Math.PI;
+
+test("the swing has not moved at the instant of death", () => {
+  // closeTo, not toBe: a negative rate times zero gives -0
+  expect(degrees(0)).toBeCloseTo(0);
 });
 
-const gameWithPlayerOverAVolcano = (): GameStateWithMockInput => {
-  const gameState = setUpBasicGame({
-    firstRoomItems: {
-      head: {
-        type: "player",
-        position: { x: 0, y: 0, z: 2 },
-        config: { which: "head" },
-      },
-      deadlyBlock: {
-        type: "deadlyBlock",
-        position: { x: 0, y: 0, z: 0 },
-        config: { style: "volcano" },
-      },
-    },
-  });
-
-  // a new game opens the crowns dialog over the room, which holds the world at
-  // a standstill - dismiss it so play (and so the death) can begin:
-  store.dispatch(closeAllMenus());
-
-  return gameState;
-};
-
-/**
- * run frames the way the main loop does, until `until` says to stop - the world
- * advances on the game-speed-scaled delta, which the death slows towards a
- * standstill
- */
-const playFramesUntil = (
-  gameState: GameStateWithMockInput,
-  until: (gameState: GameStateWithMockInput) => boolean,
-) => {
-  const ticker = progressWithSubTicks(progressGameState, maxSubTickDeltaMs);
-
-  for (let frame = 0; frame < 100_000; frame++) {
-    if (until(gameState)) {
-      return;
-    }
-    ticker(
-      gameState,
-      (1_000 / 60) * tickGameSpeed(store.getState(), gameState),
-    );
-  }
-
-  throw new Error("the game never reached the state the test waited for");
-};
-
-const isDying = (gameState: GameStateWithMockInput) =>
-  selectPlayableItem(gameState, "head")?.state.action === "death";
-
-test("nobody dying leaves the drawn angle alone", () => {
-  const gameState = gameWithPlayerOverAVolcano();
-  expect(deathCameraEffect(gameState).spinRadians).toBe(0);
+test("the swing eases in - its first 200ms cover less than its next 200ms", () => {
+  expect(degrees(200)).toBeGreaterThan(degrees(400) - degrees(200));
 });
 
-test("the swing grows as the death plays", () => {
-  const gameState = gameWithPlayerOverAVolcano();
-  playFramesUntil(gameState, isDying);
-  const atDeath = deathCameraEffect(gameState).spinRadians;
-  playFramesUntil(
-    gameState,
-    (gs) => tickGameSpeed(store.getState(), gs) === 0 || !isDying(gs),
-  );
-  expect(Math.abs(deathCameraEffect(gameState).spinRadians)).toBeGreaterThan(
-    Math.abs(atDeath),
-  );
+test("the swing is up to its steady rate a second in", () => {
+  // twelve degrees per second, measured over a second well past the ease-in:
+  expect(degrees(4_000) - degrees(3_000)).toBeCloseTo(-12, 1);
 });
 
-test("the swing eases in - it covers less ground in its first ms than its next", () => {
-  const gameState = gameWithPlayerOverAVolcano();
-  playFramesUntil(gameState, isDying);
-
-  const swungOver = (gameMs: number) => {
-    const before = deathCameraEffect(gameState).spinRadians;
-    const startedAt = gameState.gameTime;
-    playFramesUntil(gameState, (gs) => gs.gameTime > startedAt + gameMs);
-    return Math.abs(deathCameraEffect(gameState).spinRadians - before);
-  };
-
-  const first = swungOver(100);
-  expect(swungOver(100)).toBeGreaterThan(first);
+test("the swing keeps turning however long the death lasts", () => {
+  expect(degrees(120_000)).toBeCloseTo(-12 * 120 + 6, 0);
 });
 
-test("the swing unwinds to nothing once the character is playing again", () => {
-  const gameState = gameWithPlayerOverAVolcano();
-  playFramesUntil(gameState, isDying);
-  playFramesUntil(
-    gameState,
-    (gs) => tickGameSpeed(store.getState(), gs) === 0 || !isDying(gs),
-  );
+test("the room settles on the dying character and stays there", () => {
+  expect(deathCameraEffect(60_000).centringFraction).toBe(1);
+});
 
-  // dismissing the death dialog ends the fade and puts the character back:
-  store.dispatch(closeAllMenus());
-  playFramesUntil(gameState, (gs) => !isDying(gs));
-
-  expect(deathCameraEffect(gameState).spinRadians).toBe(0);
+test("nobody dying leaves the camera exactly where it was", () => {
+  expect(noDeathCameraEffect).toEqual({ spinRadians: 0, centringFraction: 0 });
 });
