@@ -327,6 +327,9 @@ export class TransitionSurfaceRenderer<
         width: Math.max(1, Math.ceil(unionMaxX + originX)),
         height: Math.max(1, Math.ceil(unionMaxY + originY)),
         antialias: false,
+        // snapshot at the sheet's baked upscale factor so smooth-sprites
+        // art doesn't drop to 1x detail during the rotation transition:
+        resolution: this.renderContext.general.spritesheets.spritesheetUpscale,
       });
       this.#cuboidSnapshotTexture = texture;
       // position for the snapshot so the art's origin lands on (artShift). The
@@ -560,6 +563,7 @@ export class TransitionSurfaceRenderer<
     const sprite = renderContainerToSprite(
       this.renderContext.general.pixiRenderer,
       container,
+      undefined,
       reuseSprite,
       label,
     );

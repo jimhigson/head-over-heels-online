@@ -12,8 +12,8 @@ import { captureSaveFixtures } from "../e2e/testUtils/captureSaveFixtures";
  * To capture from an old tag:
  *
  *   git worktree add /tmp/hoh-v22 v22.0.0
- *   cd /tmp/hoh-v22 && pnpm install && pnpm exec vite build --mode visual-regression
- *   pnpm exec vite preview --port 4222 &
+ *   cd /tmp/hoh-v22 && pnpm install && pnpm exec vite build --config vite.game.config.ts --mode visual-regression
+ *   pnpm exec vite preview --config vite.game.config.ts --port 4222 &
  *   cd - && pnpm tsx scripts/captureSavesFromBuild.ts --baseUrl=http://localhost:4222 --version=22.0.0
  *
  * (the build must expose the e2e window globals: v23+ needs

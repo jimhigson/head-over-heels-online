@@ -77,7 +77,7 @@ export const renderRoomPreviewImage = async (
     userSettings: emptyUserSettings,
   });
 
-  ssv.rebuild(renderer, room.planet, room.color, blockStackSpriteOption);
+  ssv.rebuild(renderer, room.planet, room.color, blockStackSpriteOption, 1);
 
   const general: GeneralRenderContext<EditorRoomId> = {
     displaySettings: { emulatedResolution: "amigaLowResPal" },

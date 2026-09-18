@@ -1,0 +1,19 @@
+{
+  /*
+   * The font editor is a browser app living under scripts/, so it needs the
+   * app config's DOM lib and preact jsx, plus node types for its own vite
+   * config and dev-server middleware
+   */
+  "extends": "../../../tsconfig.app.json",
+  "compilerOptions": {
+    "types": ["umami", "node", "vite/client"]
+  },
+  "include": [
+    "**/*.ts",
+    "**/*.tsx",
+    "../geometry",
+    "../*.ts",
+    "../../../src",
+    "../../../e2eAugmentations.d.ts"
+  ]
+}

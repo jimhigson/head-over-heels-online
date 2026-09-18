@@ -1,11 +1,13 @@
 import preact from "@preact/preset-vite";
 import path from "node:path";
 import { visualizer } from "rollup-plugin-visualizer";
+import tailwindcss from "tailwindcss";
 import Macros from "unplugin-macros/vite";
 import { defineConfig, loadEnv, type PluginOption } from "vite";
 import glsl from "vite-plugin-glsl";
 
 import { hmrOnlyPreact } from "./hmrOnlyPreact";
+import { postcssPruneUnused } from "./postcssPruneUnused";
 import { devFakeAuthPlugin } from "./scripts/fakeDb/devFakeAuthPlugin";
 
 /**
@@ -72,6 +74,17 @@ export default defineConfig(({ mode: _mode }) => {
 
     // Use the root public directory for static assets
     publicDir: path.resolve(__dirname, "public"),
+
+    css: {
+      postcss: {
+        plugins: [
+          tailwindcss({
+            config: path.resolve(__dirname, "tailwind.editor.config.ts"),
+          }),
+          postcssPruneUnused(),
+        ],
+      },
+    },
 
     plugins: [
       Macros(),

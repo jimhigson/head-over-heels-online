@@ -1,9 +1,3 @@
-import {
-  menuLeaderBackChar,
-  menuLeaderFocussedChar,
-  menuLeaderUnfocussedChar,
-} from "../../../../../sprites/spritesheet/spritesheetData/hudChars";
-
 export const StandardMenuItemLeader = ({
   isBack = false,
   focussed = false,
@@ -19,9 +13,9 @@ export const StandardMenuItemLeader = ({
   // variant; only the focussed glyph has a dedicated reversed (back) char
   const glyphs =
     focussed ?
-      isBack ? menuLeaderBackChar
-      : menuLeaderFocussedChar
-    : menuLeaderUnfocussedChar;
+      isBack ? "<<"
+      : ">>"
+    : "^^";
   return (
     <span
       class={

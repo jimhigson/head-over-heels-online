@@ -150,6 +150,10 @@ export const loadSoundCategory = (
   return Promise.all(missing.map(loadSound)).then(() => undefined);
 };
 
+/** whether a sound is loaded and can be played right now */
+export const isSoundLoaded = (soundId: ExportedSoundId): boolean =>
+  loadedSounds[soundId] !== undefined;
+
 /**
  * sync function to get a previously loaded sound, or throws an error if not yet loaded
  */

@@ -55,6 +55,14 @@ export const SoftwarePointer = (_emptyProps: EmptyObject) => {
     }
   }, []);
 
+  // hide the os cursor while this one is drawn in its place
+  useEffect(() => {
+    document.body.classList.add("hide-os-cursor");
+    return () => {
+      document.body.classList.remove("hide-os-cursor");
+    };
+  }, []);
+
   const pointerActive = usePointerActive();
 
   // tracks and draws the mouse only while it is in use - the sampling loop and

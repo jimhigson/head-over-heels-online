@@ -31,20 +31,18 @@ const gameUrl = `http://localhost:${gamePort}/`;
 // in dev mode the editor is served from the /editor/ base path
 const editorUrl = `http://localhost:${editorPort}/editor/`;
 
-const gameNodeArgs = [
-  "--max_http_header_size=128000",
-  "node_modules/vite/bin/vite",
+// the package scripts own which vite config (and node flags) each server
+// needs; this only adds the port it allocated
+const gamePnpmArgs = [
+  "dev:game",
   "--port",
   String(gamePort),
   "--strictPort",
   ...extraArgs,
 ];
 
-const editorViteArgs = [
-  "--config",
-  "vite.editor.config.ts",
-  "--mode",
-  "development",
+const editorPnpmArgs = [
+  "dev:editor",
   "--port",
   String(editorPort),
   "--strictPort",
@@ -80,7 +78,7 @@ const runInNewTmuxWindow = async () => {
     "hoh dev",
     "-e",
     `VITE_EDITOR_URL=${editorUrl}`,
-    `printf '\\033[1;32mGAME\\033[0m\\n'; node ${[...gameNodeArgs, ...noClear].map(shellQuote).join(" ")}; tmux wait-for -S ${doneChannel}`,
+    `printf '\\033[1;32mGAME\\033[0m\\n'; pnpm ${[...gamePnpmArgs, ...noClear].map(shellQuote).join(" ")}; tmux wait-for -S ${doneChannel}`,
   ]);
 
   // split that window for the editor
@@ -94,7 +92,7 @@ const runInNewTmuxWindow = async () => {
     "#{pane_id}",
     "-e",
     `VITE_GAME_URL=${gameUrl}`,
-    `printf '\\033[1;35mEDITOR\\033[0m\\n'; pnpm exec vite ${[...editorViteArgs, ...noClear].map(shellQuote).join(" ")}`,
+    `printf '\\033[1;35mEDITOR\\033[0m\\n'; pnpm ${[...editorPnpmArgs, ...noClear].map(shellQuote).join(" ")}`,
   ]);
 
   // hand the teardown to the tmux server: this backgrounded shell waits for
@@ -131,10 +129,10 @@ const runSplitInTmux = async () => {
     "#{pane_id}",
     "-e",
     `VITE_GAME_URL=${gameUrl}`,
-    `printf '\\033[1;35mEDITOR\\033[0m\\n'; pnpm exec vite ${[...editorViteArgs, ...noClear].map(shellQuote).join(" ")}`,
+    `printf '\\033[1;35mEDITOR\\033[0m\\n'; pnpm ${[...editorPnpmArgs, ...noClear].map(shellQuote).join(" ")}`,
   ]);
 
-  const gameResult = await execa("node", [...gameNodeArgs, ...noClear], {
+  const gameResult = await execa("pnpm", [...gamePnpmArgs, ...noClear], {
     stdio: "inherit",
     env: { VITE_EDITOR_URL: editorUrl },
     reject: false,
@@ -147,14 +145,13 @@ const runSplitInTmux = async () => {
 
 /** both servers in this terminal, output interleaved */
 const runInterleaved = async () => {
-  const game = execa("node", gameNodeArgs, {
+  const game = execa("pnpm", gamePnpmArgs, {
     stdio: "inherit",
     env: { VITE_EDITOR_URL: editorUrl },
     reject: false,
   });
 
-  const editor = execa("vite", editorViteArgs, {
-    preferLocal: true,
+  const editor = execa("pnpm", editorPnpmArgs, {
     stdio: "inherit",
     env: { VITE_GAME_URL: gameUrl },
     reject: false,

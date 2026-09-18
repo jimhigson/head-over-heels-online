@@ -40,3 +40,8 @@ alphaThresholdFilter.matrix = [
 // applied while baking text off-screen via renderContainerToTexture, so it must
 // not be clipped to the screen viewport (which would crop the text):
 alphaThresholdFilter.clipToViewport = false;
+
+// run the pass at the render target's resolution (pixi's default is a fixed 1):
+// text rasterised into a larger backing store keeps it, instead of being
+// flattened to 1x before the ink is even binarised
+alphaThresholdFilter.resolution = "inherit";

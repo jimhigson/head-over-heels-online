@@ -1,6 +1,6 @@
 import { type PartialDeep } from "type-fest";
 
-import { allActions } from "./actions";
+import { booleanActions } from "./actions";
 import { emptyInputAssignment } from "./emptyInputAssignment";
 import { type InputAssignment } from "./InputAssignment";
 import { type Key } from "./keys";
@@ -33,7 +33,7 @@ export function combineInputAssignments(
       const alreadyClaimedRadialAxes = new Set<number>(claimedRadialAxes);
 
       // Process presses
-      for (const action of allActions) {
+      for (const action of booleanActions) {
         const currentKeys = curAssignment?.presses?.[action]?.keys ?? [];
         const currentButtons =
           curAssignment?.presses?.[action]?.gamepadButtons ?? [];

@@ -1,5 +1,6 @@
 import { type ExportedSoundId } from "../../../_generated/sfxdex/sfx";
 import { audioCtx } from "../../../sound/audioCtx";
+import { isSoundLoaded } from "../../../sound/soundsLoader";
 import { connectWithGain } from "../../../sound/soundUtils/connectWithGain";
 import { createAudioNode } from "../../../sound/soundUtils/createAudioNode";
 import { detectDeviceType } from "../../../utils/detectEnv/detectDeviceType";
@@ -26,8 +27,11 @@ export const playMenuSoundsOnStoreChanges = () => {
     }
     lastPlayTime = now;
 
-    // assumes the sound is loaded - loadedSound (inside createAudioNode) throws
-    // if it isn't yet
+    if (!isSoundLoaded(soundId)) {
+      // a menu sound is not worth playing late, and createAudioNode throws on
+      // a sound that has not loaded yet
+      return;
+    }
     const source = createAudioNode(soundId);
     connectWithGain(source, { soundId, gain: volume }, audioCtx.destination);
   };

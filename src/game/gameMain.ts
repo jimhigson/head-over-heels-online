@@ -27,7 +27,8 @@ import { installAppTickerAsPixiShared } from "./mainLoop/installAppTickerAsPixiS
 import { installE2eCurrentPlayableHandle } from "./mainLoop/installE2eCurrentPlayableHandle";
 import { installE2eSwopCharacterHandle } from "./mainLoop/installE2eSwopCharacterHandle";
 import { MainLoop } from "./mainLoop/MainLoop";
-import { loadHudFont } from "./render/text/TextContainer";
+import { selectSpritesheetUpscale } from "./render/filters/upscale/selectSpritesheetUpscale";
+import { loadHudFont, uiFontVariantAtResolution } from "./render/text/uiFont";
 
 TextureStyle.defaultOptions.scaleMode = "nearest";
 
@@ -52,9 +53,11 @@ export const gameMain = async <RoomId extends string>(
   const [campaignResult] = await Promise.all([
     loadCampaignFromApi<RoomId>(campaignLocator),
     loadSoundCategory("requiredForGameplay"),
-    // TextContainer rasterises strings with canvas 2d, which would silently draw
-    // with a fallback font if the web font hadn't loaded yet:
-    loadHudFont(),
+    // make sure the game waits on the fonts being loaded so it doesn't fall back
+    // to a default browser font
+    loadHudFont(
+      uiFontVariantAtResolution(selectSpritesheetUpscale(store.getState())),
+    ),
     app.init({
       background: "#000000",
       // run on the shared ticker to keep in sync with the input state tracker

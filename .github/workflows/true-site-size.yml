@@ -37,6 +37,9 @@ jobs:
           { "row": "to game", "mark": "first-gameplay", "emoji": "🎮" },
           { "keys": "M" },
           { "row": "open map", "mark": "open map", "emoji": "🗺️" },
+          { "keys": "M" },
+          { "keys": "Y" },
+          { "row": "turn smoothing on", "mark": "smooth-ui-ready", "emoji": "✨" },
           { "startAgain": "editor" },
           { "goto": "/editor/" },
           { "row": "editor", "marks": ["editor-monaco-ready", "editor-map-ready"], "emoji": "🛠️" }
@@ -143,6 +146,7 @@ jobs:
           compression-level: 11
           ignore-url-patterns: '["supabase\\.co"]'
           minimum-change-threshold: 50
+          mark-timeout-ms: "20000"
           # each ref now builds both apps in one go, so allow longer than the
           # action's 15-minute default before the whole-run watchdog fires
           timeout-ms: "1800000"
@@ -164,6 +168,9 @@ jobs:
           compression-level: 11
           ignore-url-patterns: '["supabase\\.co"]'
           minimum-change-threshold: 50
+          mark-timeout-ms: "20000"
+          # each ref now builds both apps in one go, so allow longer than the
+          # action's 15-minute default before the whole-run watchdog fires
           timeout-ms: "1800000"
           # a push to main *is* main, so it only compares vs production (the
           # last release) and the release before that

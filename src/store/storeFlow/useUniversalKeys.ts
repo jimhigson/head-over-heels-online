@@ -91,6 +91,14 @@ export const useUniversalKeys = () => {
   });
 
   useActionTap({
+    action: "toggleUpscaledSprites",
+    handler: useDispatchActionCallback(toggleUserSetting, {
+      path: "displaySettings.upscaledSprites",
+    }),
+    disabled: assigningKeys,
+  });
+
+  useActionTap({
     action: "cycleResolution",
     handler: useDispatchActionCallback(
       setEmulatedResolution,

@@ -10,7 +10,14 @@
     "types": ["umami", "node"]
   },
   "include": [
-    "vite.config.ts",
+    "vite.game.config.ts",
+    "vite.editor.config.ts",
+    "tailwind.base.config.ts",
+    "tailwind.game.config.ts",
+    "tailwind.editor.config.ts",
+    "tailwind.fonted.config.ts",
+    "postcssPruneUnused.ts",
+    "hmrOnlyPreact.ts",
     "playwright.config.ts",
     "playwright.editor.config.ts",
     "scripts",
