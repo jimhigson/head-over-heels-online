@@ -4,28 +4,30 @@
  */
 const deathCameraSpinRate = (-6 * (Math.PI / 180)) / 1_000;
 
-/** how long the swing takes to come up to speed, in real ms */
-const deathCameraSpinEaseInMs = 2_500;
+/**
+ * how long the camera takes to come up to speed, in real ms - shared by the
+ * swing and the centring so the two arrive together
+ */
+const deathCameraEaseInMs = 2_500;
 
-/** how long the room takes to settle on the dying character, in real ms */
-const deathCameraCentringMs = 1_500;
+/** smoothstep: eases away from 0 and into 1, still at both ends */
+const easeIn = (fraction: number) => fraction ** 2 * (3 - 2 * fraction);
 
 /**
- * the swing's smoothstep ease-in, integrated: the fraction of a full-speed ms
- * travelled `fraction` of the way through the ease-in
+ * {@link easeIn} integrated: the fraction of a full-speed ms travelled
+ * `fraction` of the way through the ease-in
  */
 const easedInMsFraction = (fraction: number) =>
   fraction ** 3 - fraction ** 4 / 2;
 
 /**
  * the ms of full-speed swing travelled by `realMs` - the ease-in spends its
- * first {@link deathCameraSpinEaseInMs} covering only half that much ground
+ * first {@link deathCameraEaseInMs} covering only half that much ground
  */
 const swungMs = (realMs: number) =>
-  realMs < deathCameraSpinEaseInMs ?
-    deathCameraSpinEaseInMs *
-    easedInMsFraction(realMs / deathCameraSpinEaseInMs)
-  : realMs - deathCameraSpinEaseInMs / 2;
+  realMs < deathCameraEaseInMs ?
+    deathCameraEaseInMs * easedInMsFraction(realMs / deathCameraEaseInMs)
+  : realMs - deathCameraEaseInMs / 2;
 
 /** the effect a death has on where the camera is placed, while one plays */
 export type DeathCameraEffect = {
@@ -60,8 +62,7 @@ export const deathCameraEffect = (
   realMsSinceDeathStarted: number,
 ): DeathCameraEffect => ({
   spinRadians: swungMs(realMsSinceDeathStarted) * deathCameraSpinRate,
-  centringFraction: Math.min(
-    1,
-    realMsSinceDeathStarted / deathCameraCentringMs,
+  centringFraction: easeIn(
+    Math.min(1, realMsSinceDeathStarted / deathCameraEaseInMs),
   ),
 });

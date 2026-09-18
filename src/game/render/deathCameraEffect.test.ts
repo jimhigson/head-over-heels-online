@@ -28,6 +28,17 @@ test("the room settles on the dying character and stays there", () => {
   expect(deathCameraEffect(60_000).centringFraction).toBe(1);
 });
 
+test("the centring eases in rather than ramping straight to the character", () => {
+  // a quarter of the way through the ease-in, a straight ramp would be at 0.25:
+  expect(deathCameraEffect(625).centringFraction).toBeLessThan(0.2);
+});
+
+test("the centring and the swing come up to speed together", () => {
+  // both are done easing at the shared ease-in, so centring is complete when
+  // the swing reaches its steady rate:
+  expect(deathCameraEffect(2_500).centringFraction).toBeCloseTo(1);
+});
+
 test("nobody dying leaves the camera exactly where it was", () => {
   expect(noDeathCameraEffect).toEqual({ spinRadians: 0, centringFraction: 0 });
 });
