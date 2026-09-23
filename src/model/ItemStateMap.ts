@@ -163,6 +163,13 @@ export type PlayableState<RoomItemId extends string> =
     jumpStartZ: number;
 
     teleporting: null | PlayableTeleportingState;
+
+    /**
+     * firing/picking up was last tried to be used at this time (and failed)
+     * set to the leading edge of when the input was made (not continually
+     * re-written during holding of an action button/key)
+     */
+    abilityFailedToUseAtGameTime?: number;
   };
 
 // we can't rely on Number.POSITIVE_INFINITY in the state because it's not JSON serializable

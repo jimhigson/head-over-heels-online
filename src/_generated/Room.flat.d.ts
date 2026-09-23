@@ -1719,6 +1719,7 @@ export type RoomJsonSchema = {
             | "toasterPopUp"
             | "toasterPushDown"
             | "uhOh"
+            | "useItemFail"
             | null;
         };
       }

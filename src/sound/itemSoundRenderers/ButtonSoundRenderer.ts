@@ -1,7 +1,10 @@
 import { audioCtx } from "../audioCtx";
 import { type ItemSoundRenderContext } from "../ItemSoundRenderContext";
 import { type ItemSoundRenderer } from "../ItemSoundRenderer";
-import { createAudioNode } from "../soundUtils/createAudioNode";
+import {
+  type BracketedSound,
+  createBracketedSound,
+} from "../soundUtils/createBracketedSound";
 
 export class ButtonSoundRenderer implements ItemSoundRenderer<"button"> {
   public readonly output: GainNode = audioCtx.createGain();
@@ -9,13 +12,20 @@ export class ButtonSoundRenderer implements ItemSoundRenderer<"button"> {
   // add the walking buffer sources to here to play them
   #channelNode: GainNode = audioCtx.createGain();
 
-  #currentPressed: boolean | undefined = undefined;
+  #pressedBracketedSound: BracketedSound;
 
   readonly renderContext: ItemSoundRenderContext<"button">;
 
   constructor(renderContext: ItemSoundRenderContext<"button">) {
     this.renderContext = renderContext;
     this.#channelNode.connect(this.output);
+    this.#pressedBracketedSound = createBracketedSound(
+      {
+        start: { soundId: "buttonOn" },
+        stop: { soundId: "buttonOff" },
+      },
+      this.#channelNode,
+    );
   }
 
   tick() {
@@ -27,16 +37,7 @@ export class ButtonSoundRenderer implements ItemSoundRenderer<"button"> {
       },
     } = this;
 
-    if (
-      this.#currentPressed !== undefined &&
-      this.#currentPressed !== pressed
-    ) {
-      createAudioNode({
-        soundId: pressed ? "buttonOn" : "buttonOff",
-        connectTo: this.#channelNode,
-      });
-    }
-    this.#currentPressed = pressed;
+    this.#pressedBracketedSound(pressed);
   }
 
   destroy(): void {}

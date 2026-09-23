@@ -1,4 +1,5 @@
 import { type UnionOfAllItemInPlayTypes } from "../../../model/ItemInPlay";
+import { type CharacterName } from "../../../model/modelTypes";
 import { roomSpatialIndexKey, type RoomState } from "../../../model/RoomState";
 import { addXyz, boxAt } from "../../../utils/vectors/vectors";
 import {
@@ -11,7 +12,12 @@ import { removeStandingOn } from "../../gameState/mutators/standingOn/removeStan
 import { setStandingOnWithoutRemovingOldFirst } from "../../gameState/mutators/standingOn/setStandingOnWithoutRemovingOldFirst";
 import { type SpatialIndex } from "../gridSpace/SpatialIndex";
 import { handleItemsTouchingItems } from "../handleTouch/handleItemsTouchingItems";
-import { isFreeItem, isSolid, type PlayableItem } from "../itemPredicates";
+import {
+  isCarrier,
+  isFreeItem,
+  isSolid,
+  type PlayableItem,
+} from "../itemPredicates";
 import { blockSizePx } from "../mechanicsConstants";
 import { moveItem } from "../moveItem/moveItem";
 
@@ -26,11 +32,21 @@ export const carryingInputLatchDuration = 350;
  * for Heels/Hoh putting items down from the bag back into the room
  */
 export const puttingDown = <RoomId extends string, RoomItemId extends string>(
-  carrier: PlayableItem<"headOverHeels" | "heels", RoomId, RoomItemId>,
+  carrier: PlayableItem<CharacterName, RoomId, RoomItemId>,
   room: RoomState<RoomId, RoomItemId>,
   gameState: GameState<RoomId>,
   deltaMS: number,
 ): undefined => {
+  const { inputStateTracker } = gameState;
+
+  const carryActionPress = inputStateTracker.currentActionPress("carry");
+  if (!isCarrier(carrier)) {
+    if (carryActionPress === "tap") {
+      carrier.state.abilityFailedToUseAtGameTime = gameState.gameTime;
+    }
+    return;
+  }
+
   const heelsAbilities =
     carrier.type === "heels" ? carrier.state : carrier.state.heels;
 
@@ -41,10 +57,7 @@ export const puttingDown = <RoomId extends string, RoomItemId extends string>(
     return;
   }
 
-  const { inputStateTracker } = gameState;
-
-  const currentCarryPress = inputStateTracker.currentActionPress("carry");
-  const hasCarryInput = currentCarryPress !== "released";
+  const hasCarryInput = carryActionPress !== "released";
 
   if (!hasCarryInput) {
     return;
@@ -53,11 +66,18 @@ export const puttingDown = <RoomId extends string, RoomItemId extends string>(
   // trying to put down
   if (carrier.state.standingOnItemId === null) {
     // can't put down mid-air
+    // TODO: might be cooler if you could!
+    if (carryActionPress === "tap") {
+      carrier.state.abilityFailedToUseAtGameTime = gameState.gameTime;
+    }
     return;
   }
 
   // check if there is space above heels (and any items standing on heels):
   if (!checkSpaceAvailableToPutDown(carrier, room[roomSpatialIndexKey])) {
+    if (carryActionPress === "tap") {
+      carrier.state.abilityFailedToUseAtGameTime = gameState.gameTime;
+    }
     return;
   }
 

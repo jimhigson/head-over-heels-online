@@ -143,7 +143,11 @@ export const createBracketedSound = <Value = boolean>(
         // time as the loop, without stopping the loop
         if (change !== undefined) {
           const changeSound = createAudioNode({ ...change });
-          currentGain = connectWithGain(changeSound, change, connectTo);
+          const changeGain = connectWithGain(changeSound, change, connectTo);
+          changeSound.onended = () => {
+            changeSound.disconnect();
+            changeGain.disconnect();
+          };
         }
       }
     }

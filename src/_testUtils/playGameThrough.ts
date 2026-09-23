@@ -30,10 +30,14 @@ export const playGameThrough = (
   gameState: GameStateWithMockInput,
   {
     frameRate = defaultFps,
-    until = 1_000,
+    // by default, play for 1s
+    until = gameState.gameTime + 1_000,
     frameCallbacks = [],
     setupInitialInput = () => {},
-  }: PlayGameThroughOptions = { frameRate: defaultFps, until: 1_000 },
+  }: PlayGameThroughOptions = {
+    frameRate: defaultFps,
+    until: gameState.gameTime + 1_000,
+  },
 ) => {
   const frameRateIter = cycle(frameRate.fps);
   const ticker = progressWithSubTicks(progressGameState, maxSubTickDeltaMs);

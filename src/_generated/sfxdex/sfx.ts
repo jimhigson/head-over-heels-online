@@ -78,6 +78,7 @@ import teleportWarningSirenSoundUrl from "./sfx/teleportWarningSiren.opus";
 import toasterPopUpSoundUrl from "./sfx/toasterPopUp.opus";
 import toasterPushDownSoundUrl from "./sfx/toasterPushDown.opus";
 import uhOhSoundUrl from "./sfx/uhOh.opus";
+import useItemFailSoundUrl from "./sfx/useItemFail.opus";
 
 export { activateSoundUrl };
 export { ballHitSoundUrl };
@@ -157,6 +158,7 @@ export { teleportWarningSirenSoundUrl };
 export { toasterPopUpSoundUrl };
 export { toasterPushDownSoundUrl };
 export { uhOhSoundUrl };
+export { useItemFailSoundUrl };
 
 export const exportedSfxUrls = {
   activate: activateSoundUrl,
@@ -237,6 +239,7 @@ export const exportedSfxUrls = {
   toasterPopUp: toasterPopUpSoundUrl,
   toasterPushDown: toasterPushDownSoundUrl,
   uhOh: uhOhSoundUrl,
+  useItemFail: useItemFailSoundUrl,
 };
 
 export type ExportedSoundId = keyof typeof exportedSfxUrls;

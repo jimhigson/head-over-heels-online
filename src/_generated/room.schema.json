@@ -891,6 +891,7 @@
                           "toasterPopUp",
                           "toasterPushDown",
                           "uhOh",
+                          "useItemFail",
                           null
                         ],
                         "type": ["string", "null"]
