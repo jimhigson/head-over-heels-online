@@ -10,6 +10,7 @@ import { type ItemSoundRenderContext } from "../ItemSoundRenderContext";
 import { type ItemSoundRenderer } from "../ItemSoundRenderer";
 import { createAudioNode } from "../soundUtils/createAudioNode";
 import {
+  type BracketedSegmentOptions,
   type BracketedSound,
   createBracketedSound,
 } from "../soundUtils/createBracketedSound";
@@ -18,7 +19,12 @@ import { FreeItemSoundRenderer } from "./generic/FreeItemSoundRenderer";
 const walkGain = 0.1;
 const fallGain = 0.3;
 const carryGain = 1.2;
+const failureToUseGain = 0.5;
 const jumpGain = 0.3;
+
+const failureToUseSoundOptions: BracketedSegmentOptions = {
+  soundId: "useItemFail",
+};
 
 export class PlayableSoundRenderer implements ItemSoundRenderer<CharacterName> {
   public readonly output: GainNode = audioCtx.createGain();
@@ -30,6 +36,7 @@ export class PlayableSoundRenderer implements ItemSoundRenderer<CharacterName> {
   #deathBracketedSound: BracketedSound;
 
   #carryChannel: GainNode = audioCtx.createGain();
+  #failureToUseChannel: GainNode = audioCtx.createGain();
   #carryBracketedSound = createBracketedSound(
     {
       start: {
@@ -49,6 +56,12 @@ export class PlayableSoundRenderer implements ItemSoundRenderer<CharacterName> {
   #highlightedCharacterBracketedSound: BracketedSound;
 
   #currentTeleportingPhase: "in" | "out" | null = null;
+
+  /**
+   * driven by the abilityFailedToUseAtGameTime stamp - every new stamp value is
+   * a new failed use
+   */
+  #failureToUseBracketedSound: BracketedSound<number | undefined>;
 
   readonly renderContext: ItemSoundRenderContext<CharacterName>;
 
@@ -94,6 +107,9 @@ export class PlayableSoundRenderer implements ItemSoundRenderer<CharacterName> {
     this.#carryChannel.gain.value = carryGain;
     this.#carryChannel.connect(this.output);
 
+    this.#failureToUseChannel.gain.value = failureToUseGain;
+    this.#failureToUseChannel.connect(this.output);
+
     this.#jumpBracketedSound = createBracketedSound(
       {
         start: {
@@ -111,6 +127,15 @@ export class PlayableSoundRenderer implements ItemSoundRenderer<CharacterName> {
     this.#deathBracketedSound = createBracketedSound(
       { start: { soundId: "uhOh" } },
       this.output,
+    );
+
+    this.#failureToUseBracketedSound = createBracketedSound<number | undefined>(
+      {
+        // the first failure is a start (no previous stamp), later ones are changes:
+        start: failureToUseSoundOptions,
+        change: failureToUseSoundOptions,
+      },
+      this.#failureToUseChannel,
     );
 
     this.#freeItemSoundRenderer = new FreeItemSoundRenderer(renderContext, {
@@ -138,6 +163,7 @@ export class PlayableSoundRenderer implements ItemSoundRenderer<CharacterName> {
         jumpStartZ,
         jumped,
         standingOnItemId,
+        abilityFailedToUseAtGameTime,
         box: { z: positionZ },
         vels: {
           gravity: { z: velZ },
@@ -197,6 +223,8 @@ export class PlayableSoundRenderer implements ItemSoundRenderer<CharacterName> {
     }
 
     this.#currentTeleportingPhase = teleportingPhase;
+
+    this.#failureToUseBracketedSound(abilityFailedToUseAtGameTime);
 
     this.#freeItemSoundRenderer.tick(
       tickContext,

@@ -148,7 +148,7 @@ export class FreeItemSoundRenderer implements ItemSoundRenderer<FreeItemTypes> {
           gravity: { z: velZ },
         },
         actedOnAt: { roomTime: roomTimeActedOn, actedInXY, by: actedOnBy },
-        collidedWith: { roomTime: roomTimeCollidedWith, by: collidedWith },
+        collidedWith: { roomTime: itemRoomTimeCollidedWith, by: collidedWith },
       },
     } = item;
 
@@ -164,8 +164,8 @@ export class FreeItemSoundRenderer implements ItemSoundRenderer<FreeItemTypes> {
     }
 
     const collidedSinceLastTick =
-      roomTimeCollidedWith !== this.#seenCollidedWithRoomTime;
-    this.#seenCollidedWithRoomTime = roomTimeCollidedWith;
+      itemRoomTimeCollidedWith !== this.#seenCollidedWithRoomTime;
+    this.#seenCollidedWithRoomTime = itemRoomTimeCollidedWith;
 
     if (this.#standingOnBracketedSound !== undefined) {
       const landed =

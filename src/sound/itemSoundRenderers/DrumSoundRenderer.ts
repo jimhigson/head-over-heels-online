@@ -3,19 +3,26 @@ import { isStoodOn } from "../../model/StoodOnBy";
 import { audioCtx } from "../audioCtx";
 import { type ItemSoundRenderContext } from "../ItemSoundRenderContext";
 import { type ItemSoundRenderer } from "../ItemSoundRenderer";
-import { createAudioNode } from "../soundUtils/createAudioNode";
+import {
+  type BracketedSound,
+  createBracketedSound,
+} from "../soundUtils/createBracketedSound";
 import { FreeItemSoundRenderer } from "./generic/FreeItemSoundRenderer";
 
 export class DrumSoundRenderer implements ItemSoundRenderer<"portableBlock"> {
   public readonly output: GainNode = audioCtx.createGain();
 
   #freeItemSoundRenderer: FreeItemSoundRenderer;
-  #currentlyStoodOn = false;
+  #stoodOnBracketedSound: BracketedSound;
 
   readonly renderContext: ItemSoundRenderContext<"portableBlock">;
 
   constructor(renderContext: ItemSoundRenderContext<"portableBlock">) {
     this.renderContext = renderContext;
+    this.#stoodOnBracketedSound = createBracketedSound(
+      { start: { soundId: "drum" } },
+      this.output,
+    );
     this.#freeItemSoundRenderer = new FreeItemSoundRenderer(renderContext, {
       standingOn: { soundId: "drum" },
     });
@@ -31,16 +38,7 @@ export class DrumSoundRenderer implements ItemSoundRenderer<"portableBlock"> {
       },
     } = this;
 
-    const stoodOn = isStoodOn(stoodOnBy);
-
-    if (!this.#currentlyStoodOn && stoodOn) {
-      createAudioNode({
-        soundId: "drum",
-        connectTo: this.output,
-      });
-    }
-
-    this.#currentlyStoodOn = stoodOn;
+    this.#stoodOnBracketedSound(isStoodOn(stoodOnBy));
 
     this.#freeItemSoundRenderer.tick(tickContext);
   }

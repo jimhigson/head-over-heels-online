@@ -4,6 +4,7 @@ import {
   addPokeableNumbers,
   pokeableToNumber,
 } from "../../../model/ItemStateMap";
+import { type CharacterName } from "../../../model/modelTypes";
 import { type RoomState } from "../../../model/RoomState";
 import { emptyObject } from "../../../utils/empty";
 import {
@@ -18,26 +19,34 @@ import { type GameState } from "../../gameState/GameState";
 import { defaultBaseState } from "../../gameState/loadRoom/itemDefaultStates";
 import { shadowSmallRound } from "../../gameState/loadRoom/loadItemShadowCast";
 import { addItemToRoom } from "../../gameState/mutators/addItemToRoom";
-import { type PlayableItem } from "../itemPredicates";
-import { blockSizePx, moveSpeedPixPerMs } from "../mechanicsConstants";
+import { isFirer, type PlayableItem } from "../itemPredicates";
+import {
+  blockSizePx,
+  doughnutsAutofireRate,
+  moveSpeedPixPerMs,
+} from "../mechanicsConstants";
 
 /**
  * how far ahead of head the doughnuts start.
  */
 const aheadStart = blockSizePx.x * 0.75;
 
-/**
- * if fire is press and held, how long until we next fire?
- */
-const autofireRate = 500;
-
 export const firing = <RoomId extends string, RoomItemId extends string>(
-  firer: PlayableItem<"head" | "headOverHeels", RoomId, RoomItemId>,
+  firer: PlayableItem<CharacterName, RoomId, RoomItemId>,
   room: RoomState<RoomId, RoomItemId>,
   gameState: GameState<RoomId>,
   _deltaMS: number,
 ): undefined => {
   const { inputStateTracker } = gameState;
+
+  const fireActionPress = inputStateTracker.currentActionPress("fire");
+
+  if (!isFirer(firer)) {
+    if (fireActionPress === "tap") {
+      firer.state.abilityFailedToUseAtGameTime = gameState.gameTime;
+    }
+    return;
+  }
 
   const headAbilities = firer.type === "head" ? firer.state : firer.state.head;
 
@@ -48,11 +57,16 @@ export const firing = <RoomId extends string, RoomItemId extends string>(
 
   const direction = unitVector(facing);
 
-  if (
-    inputStateTracker.currentActionPress("fire") !== "released" &&
-    hasHooter &&
-    pokeableToNumber(doughnuts) > 0
-  ) {
+  if (fireActionPress !== "released") {
+    const successful = hasHooter && pokeableToNumber(doughnuts) > 0;
+
+    if (!successful) {
+      if (fireActionPress === "tap") {
+        firer.state.abilityFailedToUseAtGameTime = gameState.gameTime;
+      }
+      return;
+    }
+
     const firedDoughnut: ItemInPlay<"firedDoughnut", RoomId, RoomItemId> = {
       type: "firedDoughnut",
       ...defaultItemProperties,
@@ -85,6 +99,6 @@ export const firing = <RoomId extends string, RoomItemId extends string>(
     });
 
     headAbilities.doughnuts = addPokeableNumbers(headAbilities.doughnuts, -1);
-    inputStateTracker.inputWasHandled("fire", autofireRate);
+    inputStateTracker.inputWasHandled("fire", doughnutsAutofireRate);
   }
 };

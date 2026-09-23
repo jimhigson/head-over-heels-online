@@ -69,6 +69,7 @@ const soundCategories = {
     "toasterPopUp",
     "toasterPushDown",
     "uhOh",
+    "useItemFail",
   ],
   loadForMenus: [
     "headWalk",

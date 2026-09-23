@@ -1,5 +1,6 @@
 import { type UnionOfAllItemInPlayTypes } from "../../../model/ItemInPlay";
 import { type HeelsAbilities } from "../../../model/ItemStateMap";
+import { type CharacterName } from "../../../model/modelTypes";
 import { roomItemsIterable, type RoomState } from "../../../model/RoomState";
 import { getEffectivelyStandingOnItemIdForPlayable } from "../../../model/stoodOnItemsLookup";
 import { findStandingOnWithHighestPriorityAndMostOverlap } from "../../collision/checkStandingOn";
@@ -7,6 +8,7 @@ import { type GameState } from "../../gameState/GameState";
 import { playableHasShield } from "../../gameState/gameStateSelectors/selectPickupAbilities";
 import { deleteItemFromRoom } from "../../gameState/mutators/deleteItemFromRoom";
 import {
+  isCarrier,
   isDeadly,
   isPortable,
   type PlayableItem,
@@ -18,10 +20,15 @@ import { carryingInputLatchDuration } from "./puttingDown";
  * walking, but also gliding and changing direction mid-air
  */
 export const pickingUp = <RoomId extends string, RoomItemId extends string>(
-  carrier: PlayableItem<"headOverHeels" | "heels", RoomId, RoomItemId>,
+  carrier: PlayableItem<CharacterName, RoomId, RoomItemId>,
   room: RoomState<RoomId, RoomItemId>,
   gameState: GameState<RoomId>,
 ): undefined => {
+  if (!isCarrier(carrier)) {
+    // don't set abilityFailedToUseAtGameTime, putting down will set this
+    return;
+  }
+
   const { inputStateTracker } = gameState;
 
   const heelsAbilities =
@@ -29,17 +36,28 @@ export const pickingUp = <RoomId extends string, RoomItemId extends string>(
 
   const { carrying, hasBag } = heelsAbilities;
 
+  const carryActionPress = inputStateTracker.currentActionPress("carry");
+  const hasCarryInput = carryActionPress !== "released";
+
   if (!hasBag) {
+    if (carryActionPress === "tap") {
+      carrier.state.abilityFailedToUseAtGameTime = gameState.gameTime;
+    }
     return;
   }
 
-  const portableRoomItemsIter = roomItemsIterable(room.items).filter(
-    isPortable,
-  );
+  // work out the item to pick up before handling input, since we need to set the
+  // wouldPickUpNext flag (for highlighting the item) even if the user isn't currently
+  // trying to pick up anything:
   const itemToPickup =
     carrying === null ? findItemToPickup(carrier, room) : undefined;
 
-  // update marking items as the next to pick up, for the sake of the green outline:
+  // update marking items as the next to pick up
+  // SMELL: this is creating a new iterator every frame just to clear the old
+  // wouldPickUpNext flags
+  const portableRoomItemsIter = roomItemsIterable(room.items).filter(
+    isPortable,
+  );
   for (const portableItem of portableRoomItemsIter) {
     portableItem.state.wouldPickUpNext = false;
   }
@@ -47,16 +65,17 @@ export const pickingUp = <RoomId extends string, RoomItemId extends string>(
     itemToPickup.state.wouldPickUpNext = true;
   }
 
-  const currentCarryPress = inputStateTracker.currentActionPress("carry");
-  const hasCarryInput = currentCarryPress !== "released";
-
   if (!hasCarryInput) {
     return;
   }
 
   // trying to pick up
   if (itemToPickup === undefined) {
-    // nothing to pick up
+    // nothing to pick up (or already carrying)
+    if (carrying === null && carryActionPress === "tap") {
+      // not carrying so an actual failure to pick up, not a failure to put down
+      carrier.state.abilityFailedToUseAtGameTime = gameState.gameTime;
+    }
     return;
   }
 

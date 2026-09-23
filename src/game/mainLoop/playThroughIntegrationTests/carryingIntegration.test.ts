@@ -12,6 +12,7 @@ import {
   type TestRoomId,
 } from "../../../_testUtils/basicRoom";
 import {
+  headState,
   heelsState,
   item,
   itemState,
@@ -20,6 +21,7 @@ import { resetStore } from "../../../_testUtils/initStoreForTests";
 import { playGameThrough } from "../../../_testUtils/playGameThrough";
 import { type JsonItemUnion } from "../../../model/json/JsonItem";
 import { selectCurrentRoomState } from "../../gameState/gameStateSelectors/selectCurrentRoomState";
+import { blockSizePx } from "../../physics/mechanicsConstants";
 
 beforeEach(() => {
   resetStore();
@@ -193,6 +195,8 @@ test.for<{
       heels: true,
     });
     expect(heelsState(gameState).standingOnItemId).toEqual("testItem");
+    // every use of the bag succeeded, so no failure was recorded:
+    expect(heelsState(gameState).abilityFailedToUseAtGameTime).toBeUndefined();
   },
 );
 
@@ -584,5 +588,224 @@ test("if Heels loses life while carrying, the carried item is dropped", () => {
   // should not be in its original loading position (should be where heels died)
   expect(gameState.characterRooms.head?.items.portable.state.box).not.toEqual(
     portableBlockOriginalPosition,
+  );
+});
+
+test("heels taps carry with no bag and fails to use the ability", () => {
+  const gameState = setUpBasicGame({
+    firstRoomItems: {
+      heels: {
+        type: "player",
+        position: { x: 5, y: 5, z: 0 },
+        config: {
+          which: "heels",
+        },
+      },
+    },
+  });
+
+  gameState.inputStateTracker.mockPressing("carry");
+  playGameThrough(gameState);
+
+  expect(heelsState(gameState).abilityFailedToUseAtGameTime).toBeCloseTo(
+    // one frame in at 60fps default rate:
+    1_000 / 60,
+  );
+});
+
+test("heels taps carry with nothing to pick up and fails to use the ability", () => {
+  const gameState = setUpBasicGame({
+    firstRoomItems: {
+      heels: {
+        type: "player",
+        position: { x: 5, y: 5, z: 1 },
+        config: {
+          which: "heels",
+        },
+      },
+      bag: {
+        type: "pickup",
+        position: { x: 5, y: 5, z: 0 },
+        config: {
+          gives: "bag",
+        },
+      },
+    },
+  });
+
+  playGameThrough(gameState, {
+    until: (gameState) => heelsState(gameState).hasBag,
+  });
+
+  const carryStartTime = gameState.gameTime;
+  gameState.inputStateTracker.mockPressing("carry");
+  playGameThrough(gameState);
+
+  expect(heelsState(gameState).abilityFailedToUseAtGameTime).toBeCloseTo(
+    // one frame in at 60fps default rate:
+    carryStartTime + 1_000 / 60,
+  );
+});
+
+test("heels taps carry mid-air and fails to put down", () => {
+  const gameState = setUpBasicGame({
+    firstRoomItems: {
+      heels: {
+        type: "player",
+        position: { x: 5, y: 5, z: 2 },
+        config: {
+          which: "heels",
+        },
+      },
+      bag: {
+        type: "pickup",
+        position: { x: 5, y: 5, z: 1 },
+        config: {
+          gives: "bag",
+        },
+      },
+      portable: {
+        type: "portableBlock",
+        position: { x: 5, y: 5, z: 0 },
+        config: {
+          style: "cube",
+        },
+      },
+    },
+  });
+
+  // pick up the cube from standing on it:
+  playGameThrough(gameState, {
+    frameCallbacks(gameState) {
+      const hs = heelsState(gameState);
+      if (hs.standingOnItemId === "portable" && hs.carrying === null) {
+        gameState.inputStateTracker.mockPressing("carry");
+      }
+    },
+    until: (gameState) => heelsState(gameState).carrying !== null,
+  });
+
+  // land on the floor, so the carry press is released for long enough to be a
+  // new press when it comes again:
+  playGameThrough(gameState, {
+    setupInitialInput(mockInputStateTracker) {
+      mockInputStateTracker.mockNotPressing("carry");
+    },
+    until: (gameState) => heelsState(gameState).standingOnItemId === "floor",
+  });
+
+  // jump, so that putting down is not possible:
+  playGameThrough(gameState, {
+    setupInitialInput(mockInputStateTracker) {
+      mockInputStateTracker.mockPressing("jump");
+    },
+    until: (gameState) => heelsState(gameState).standingOnItemId === null,
+  });
+
+  const carryStartTime = gameState.gameTime;
+  gameState.inputStateTracker.mockPressing("carry");
+  playGameThrough(gameState);
+
+  expect(heelsState(gameState).abilityFailedToUseAtGameTime).toBeCloseTo(
+    // one frame in at 60fps default rate:
+    carryStartTime + 1_000 / 60,
+  );
+});
+
+test("heels taps carry under a ceiling and fails to put down", () => {
+  const gameState = setUpBasicGame({
+    firstRoomItems: {
+      heels: {
+        type: "player",
+        position: { x: 4, y: 5, z: 2 },
+        config: {
+          which: "heels",
+        },
+      },
+      bag: {
+        type: "pickup",
+        position: { x: 4, y: 5, z: 1 },
+        config: {
+          gives: "bag",
+        },
+      },
+      portable: {
+        type: "portableBlock",
+        position: { x: 4, y: 5, z: 0 },
+        config: {
+          style: "cube",
+        },
+      },
+      // heels is exactly one block tall, so she fits below this but the cube
+      // cannot be put down here:
+      ceiling: {
+        type: "block",
+        position: { x: 5, y: 5, z: 1 },
+        config: {
+          style: "organic",
+        },
+      },
+    },
+  });
+
+  // pick up the cube from standing on it:
+  playGameThrough(gameState, {
+    frameCallbacks(gameState) {
+      const hs = heelsState(gameState);
+      if (hs.standingOnItemId === "portable" && hs.carrying === null) {
+        gameState.inputStateTracker.mockPressing("carry");
+      }
+    },
+    until: (gameState) => heelsState(gameState).carrying !== null,
+  });
+
+  // walk in the +x direction, under the ceiling block:
+  playGameThrough(gameState, {
+    setupInitialInput(mockInputStateTracker) {
+      mockInputStateTracker.mockNotPressing("carry");
+      mockInputStateTracker.mockDirectionPressed = "left";
+    },
+    until: (gameState) => heelsState(gameState).box.x >= 5 * blockSizePx.x,
+  });
+
+  playGameThrough(gameState, {
+    setupInitialInput(mockInputStateTracker) {
+      mockInputStateTracker.mockDirectionPressed = undefined;
+    },
+    until: gameState.gameTime + 100,
+  });
+
+  const carryStartTime = gameState.gameTime;
+  gameState.inputStateTracker.mockPressing("carry");
+  playGameThrough(gameState);
+
+  // still holding the cube - so the failure was for want of space, not for
+  // being mid-air:
+  expect(heelsState(gameState).carrying).not.toBeNull();
+  expect(heelsState(gameState).abilityFailedToUseAtGameTime).toBeCloseTo(
+    // one frame in at 60fps default rate:
+    carryStartTime + 1_000 / 60,
+  );
+});
+
+test("head taps carry and fails to use the ability", () => {
+  const gameState = setUpBasicGame({
+    firstRoomItems: {
+      head: {
+        type: "player",
+        position: { x: 5, y: 5, z: 0 },
+        config: {
+          which: "head",
+        },
+      },
+    },
+  });
+
+  gameState.inputStateTracker.mockPressing("carry");
+  playGameThrough(gameState);
+
+  expect(headState(gameState).abilityFailedToUseAtGameTime).toBeCloseTo(
+    // one frame in at 60fps default rate:
+    1_000 / 60,
   );
 });

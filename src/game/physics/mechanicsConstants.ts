@@ -218,3 +218,9 @@ export const switchMinTimeBetweenToggleMs = 100;
  * to accelerate up to full speed again
  */
 export const walkResumeGraceTime = 120;
+
+/**
+ * For Head - if fire is press and held, how long until we next fire?
+ * Limit not applied to repeatedly hitting the key
+ */
+export const doughnutsAutofireRate = 500;

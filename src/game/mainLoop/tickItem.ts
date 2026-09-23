@@ -19,12 +19,10 @@ import { handlePlayerTouchingDeadly } from "../physics/handleTouch/handlePlayerT
 import { handlePlayerTouchingPickup } from "../physics/handleTouch/handlePlayerTouchingPickup";
 import {
   isButton,
-  isCarrier,
   isCrown,
   isDeadly,
   isEmitter,
   isFiredDoughnut,
-  isFirer,
   isFreeItem,
   isLamp,
   isLift,
@@ -107,13 +105,9 @@ function* itemMechanicResultGen<
 
     // user controls:
     if (item.id === gameState.currentCharacterName) {
-      const itemIsCarrier = isCarrier(item);
-
       // putting down before jumping means that have a chance to
       // put down a spring and then jump off of it:
-      if (itemIsCarrier) {
-        puttingDown(item, room, gameState, deltaMS);
-      }
+      puttingDown(item, room, gameState, deltaMS);
 
       yield jumping(item, room, gameState, deltaMS) as MechanicResult<
         T,
@@ -122,13 +116,9 @@ function* itemMechanicResultGen<
       >;
 
       // picking up after jumping means have time to jump off a spring while
-      // instantly picking it up:
-      if (itemIsCarrier) {
-        pickingUp(item, room, gameState);
-      }
-      if (isFirer(item)) {
-        firing(item, room, gameState, deltaMS);
-      }
+      // instantly (same tick) picking it up:
+      pickingUp(item, room, gameState);
+      firing(item, room, gameState, deltaMS);
     }
   } else if (isLift(item)) {
     yield moveLift(item, room, gameState, deltaMS) as MechanicResult<
