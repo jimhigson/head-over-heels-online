@@ -1,10 +1,12 @@
 import { expect, type Page } from "@playwright/test";
 
+import { type ButtonMode } from "../../src/editor/EditorMap/EditorMapInsertButtonDecorator";
 import { type EditorRoomJson } from "../../src/editor/editorTypes";
 import { type EditorE2eItem } from "../../src/editor/RoomEditingArea/useEditorE2eApi";
 import { type EditorRootState } from "../../src/store/store";
 import {
   type DirectionXy4,
+  type DirectionXyz4,
   type Xy,
   type Xyz,
 } from "../../src/utils/vectors/vectors";
@@ -164,3 +166,33 @@ export const faceCentreWorld = (
     : face.z < 0 ? 0
     : box.zd / 2),
 });
+
+/** click one of the map's buttons around the current room */
+export const clickMapRoomButton = async (
+  page: Page,
+  direction: DirectionXyz4,
+  mode: ButtonMode,
+): Promise<void> => {
+  await page
+    .locator(`a[data-direction="${direction}"][data-mode="${mode}"]`)
+    .click();
+};
+
+/**
+ * put the mouse over a room on the editor's map, towards its floor's
+ * right-hand corner
+ */
+export const hoverMapRoom = async (
+  page: Page,
+  roomId: string,
+): Promise<void> => {
+  const roomFloor = page.locator(`[data-room-click^="${roomId}/"]`);
+  const floorBox = await roomFloor.boundingBox();
+  if (floorBox === null) {
+    throw new Error(`room ${roomId} is not on the map`);
+  }
+  // off-centre, since a room adjacent to the current one can sit under its buttons
+  await roomFloor.hover({
+    position: { x: floorBox.width * 0.75, y: floorBox.height * 0.7 },
+  });
+};
