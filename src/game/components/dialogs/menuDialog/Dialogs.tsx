@@ -8,7 +8,6 @@ import { AssetLoading } from "../../../../store/slices/assetsLoading/AssetLoadin
 import { Dialog } from "../../../../ui/Dialog";
 import { type DialogId } from "./DialogId";
 import { LazyAboutDialog } from "./dialogs/about/AboutDialog.lazy";
-import { LazyCheatsCmdKDialog } from "./dialogs/cmdK/CheatsCmdKDialog.lazy";
 import { LazyCommunityGamesDialog } from "./dialogs/communityGames/CommunityGamesDialog.lazy";
 import { LazyControlOptionsDialog } from "./dialogs/controlOptions/ControlOptionsDialog.lazy";
 import { CrownsDialog } from "./dialogs/crowns/CrownsDialog";
@@ -98,7 +97,8 @@ export const Dialogs = (_emptyProps: EmptyObject) => {
     case "about":
       return <LazyAboutDialog />;
     case "cmdk":
-      return <LazyCheatsCmdKDialog />;
+      // rendered by the cheats, which only exist while cheating
+      return null;
     case "communityGames":
       return <LazyCommunityGamesDialog />;
     case "death":

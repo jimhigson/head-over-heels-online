@@ -45,6 +45,7 @@ import { subRoomBoundariesDecorateRoomRenderer } from "../../render/room/subRoom
 import { useRegisterDecorateItemRenderers } from "../../render/useRegisterDecorateItemRenderers";
 import { useRegisterDecorateRoomRenderers } from "../../render/useRegisterDecorateRoomRenderers";
 import { CssVariables } from "../CssVariables";
+import { CheatsCmdKDialog } from "../dialogs/menuDialog/dialogs/cmdK/CheatsCmdKDialog";
 import { useGameApi } from "../GameApiContext";
 import { usePlayableTailwindSpriteClassname } from "../tailwindSprites/playableTailwindSpriteClassname";
 import { ConsoleDumpButton } from "./ConsoleDumpButton";
@@ -269,9 +270,13 @@ export const Cheats = <RoomId extends string>(_emptyProps: EmptyObject) => {
   );
 
   const [open, setOpen] = useState(false);
+  const isCmdKOpen = useAppSelector(
+    (state) => state.gameMenus.openMenus.at(0)?.menuId === "cmdk",
+  );
 
   return (
     <>
+      {isCmdKOpen && <CheatsCmdKDialog />}
       <button
         type="button"
         data-test-id="cheats-open-button"

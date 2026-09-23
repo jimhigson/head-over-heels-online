@@ -62,5 +62,3 @@ export const CheatsCmdKDialog = <RoomId extends string>() => {
     </DialogPortal>
   );
 };
-
-export default CheatsCmdKDialog;
