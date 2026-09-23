@@ -261,6 +261,9 @@ importers:
       wawoff2:
         specifier: ^2.0.1
         version: 2.0.1
+      webmcp-types:
+        specifier: ^0.1.9
+        version: 0.1.9
       workbox-window:
         specifier: ^7.4.1
         version: 7.4.1
@@ -5679,6 +5682,9 @@ packages:
 
   webidl-conversions@4.0.2:
     resolution: {integrity: sha512-YQ+BmxuTgd6UXZW3+ICGfyqRyHXVlD5GtQr5+qjiNW7bF0cqrzX500HVXPBOvgXb5YnzDd+h0zqyv61KUD7+Sg==}
+
+  webmcp-types@0.1.9:
+    resolution: {integrity: sha512-ibdkppgRDkQ/nvH541YS48kVt96OiuDr+d9JHnirAtI5k0coaFdo2QqCipbXyfwrteDC6xXwPoUGC9uS5ZGwfw==}
 
   webpack-virtual-modules@0.6.2:
     resolution: {integrity: sha512-66/V2i5hQanC51vBQKPH4aI8NMAcBW59FVBs+rC7eGHupMyfn34q7rZIE+ETlJ+XTevqfUhVVBgSUNSW2flEUQ==}
@@ -11253,6 +11259,8 @@ snapshots:
       defaults: 1.0.4
 
   webidl-conversions@4.0.2: {}
+
+  webmcp-types@0.1.9: {}
 
   webpack-virtual-modules@0.6.2: {}
 

@@ -4,6 +4,8 @@ import { type DeviceType } from "../utils/detectEnv/detectDeviceType";
 /** strong-typing for query params used in the game or editor */
 type AllowedQueryParams = {
   cheats: "1" | null;
+  // expose debugging tools to agents via webmcp
+  mcp: "1" | null;
   playAsHeels: "1" | null;
   campaignName: null | string;
   campaignAuthorUserId: null | string;
