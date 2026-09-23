@@ -5,6 +5,7 @@ import {
   type ItemInPlayType,
   type UnionOfAllItemInPlayTypes,
 } from "../../model/ItemInPlay";
+import { type JsonItemType } from "../../model/json/JsonItem";
 import { type MonsterWhich } from "../../model/json/MonsterJsonConfig";
 import { type CharacterName, characterNames } from "../../model/modelTypes";
 import { type SceneryName } from "../../sprites/planets";
@@ -236,6 +237,11 @@ export const freeItemTypes = [
 ] as const satisfies ItemInPlayType[];
 
 export type FreeItemTypes = (typeof freeItemTypes)[number];
+
+/** true for item types (json or in-play) that are free items when in play */
+export const isFreeItemType = (
+  type: ItemInPlayType | JsonItemType,
+): type is FreeItemTypes => (freeItemTypes as string[]).includes(type);
 
 export type FreeItem<
   RoomId extends string,

@@ -2,6 +2,7 @@ import { type MarkdownPageName } from "../../../../manual/pages";
 
 export type DialogId =
   | "about"
+  | "cmdk"
   | "communityGames"
   | "controlOptions"
   | "crowns"

@@ -118,6 +118,9 @@ export const tailwindBaseConfig = {
       ...blockMultiples,
       selectKeysIndent: "calc(var(--block) * 11)",
     },
+    // no size-based font sizes (text-sm etc) - they are absolute px, so they
+    // don't scale with --scale. Text sizing is via the plugin's utilities
+    fontSize: {},
     lineHeight: {
       none: "0",
       multilineText: "calc(var(--block) + (var(--scale) * 1px))",

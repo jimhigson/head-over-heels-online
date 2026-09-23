@@ -12,7 +12,7 @@ export const CommandList = ({
     <div
       ref={listRef}
       role="listbox"
-      class={cn("max-h-[300px] overflow-y-auto overflow-x-hidden", className)}
+      class={cn("overflow-y-auto overflow-x-hidden flex-grow", className)}
       {...props}
     />
   );
