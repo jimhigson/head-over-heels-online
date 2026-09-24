@@ -13,7 +13,7 @@ import { valuesIter } from "../../utils/entries";
 import { unitVectors } from "../../utils/vectors/unitVectors";
 import {
   addXyz,
-  type Direction8Xyz,
+  type DirectionXyz4,
   xyzEqual,
 } from "../../utils/vectors/vectors";
 import { type EditorRoomId } from "../editorTypes";
@@ -26,26 +26,14 @@ const zOutwardOffset = 44;
 
 const centre = projectWorldXyzToScreenXy({ x: half, y: half });
 
-type InsertDirection =
-  "above" | "away" | "below" | "left" | "right" | "towards";
-
-const allDirections: InsertDirection[] = [
+const allDirections: DirectionXyz4[] = [
   "left",
   "right",
   "away",
   "towards",
-  "above",
-  "below",
+  "up",
+  "down",
 ];
-
-const directionToUnitVector: Record<InsertDirection, Direction8Xyz> = {
-  left: "left",
-  right: "right",
-  away: "away",
-  towards: "towards",
-  above: "up",
-  below: "down",
-};
 
 const rightOff = projectWorldXyzToScreenXy({ x: -xyOutwardOffset });
 const leftOff = projectWorldXyzToScreenXy({ x: xyOutwardOffset });
@@ -54,13 +42,13 @@ const awayOff = projectWorldXyzToScreenXy({ y: xyOutwardOffset });
 const aboveOff = projectWorldXyzToScreenXy({ z: zOutwardOffset });
 const belowOff = projectWorldXyzToScreenXy({ z: -zOutwardOffset });
 
-const screenPositions: Record<InsertDirection, { x: number; y: number }> = {
+const screenPositions: Record<DirectionXyz4, { x: number; y: number }> = {
   right: { x: centre.x + rightOff.x, y: centre.y + rightOff.y },
   left: { x: centre.x + leftOff.x, y: centre.y + leftOff.y },
   towards: { x: centre.x + towardsOff.x, y: centre.y + towardsOff.y },
   away: { x: centre.x + awayOff.x, y: centre.y + awayOff.y },
-  above: { x: centre.x + aboveOff.x, y: centre.y + aboveOff.y },
-  below: { x: centre.x + belowOff.x, y: centre.y + belowOff.y },
+  up: { x: centre.x + aboveOff.x, y: centre.y + aboveOff.y },
+  down: { x: centre.x + belowOff.x, y: centre.y + belowOff.y },
 };
 
 const isXyConnected = (
@@ -69,7 +57,7 @@ const isXyConnected = (
 ): boolean => boundaries[direction] === "doorway";
 
 const hasRoomAtTarget = (
-  direction: InsertDirection,
+  direction: DirectionXyz4,
   roomId: EditorRoomId,
   subRoomId: string,
   allGridPositions: SortedObjectOfRoomGridPositionSpecs<EditorRoomId>,
@@ -83,7 +71,7 @@ const hasRoomAtTarget = (
 
   const targetPosition = addXyz(
     currentSpec.gridPosition,
-    unitVectors[directionToUnitVector[direction]],
+    unitVectors[direction],
   );
   return valuesIter(allGridPositions).some(
     (spec) =>
@@ -91,7 +79,7 @@ const hasRoomAtTarget = (
   );
 };
 
-type ButtonMode = "add" | "door" | "floor" | "insert";
+export type ButtonMode = "add" | "door" | "floor" | "insert";
 
 const getXyButtonMode = (
   direction: "away" | "left" | "right" | "towards",
@@ -110,7 +98,7 @@ const getXyButtonMode = (
 };
 
 const getZButtonMode = (
-  direction: "above" | "below",
+  direction: "down" | "up",
   hasRoomVertically: boolean,
   roomId: EditorRoomId,
   subRoomId: string,
@@ -132,19 +120,16 @@ const buttonLabels: Record<ButtonMode, string> = {
   add: "+",
 };
 
-const directionNames: Record<InsertDirection, string> = {
+const directionNames: Record<DirectionXyz4, string> = {
   left: "**↖** *left* of",
   right: "**↘** *right* of",
   away: "**↗** *behind*",
   towards: "**↙** *in front* of",
-  above: "**⬆** *above*",
-  below: "**⬇** *below*",
+  up: "**⬆** *above*",
+  down: "**⬇** *below*",
 };
 
-const tooltipForMode = (
-  mode: ButtonMode,
-  direction: InsertDirection,
-): string => {
+const tooltipForMode = (mode: ButtonMode, direction: DirectionXyz4): string => {
   const where = directionNames[direction];
   switch (mode) {
     case "add":
@@ -152,7 +137,7 @@ const tooltipForMode = (
     case "door":
       return `Add a *door* to join these rooms`;
     case "floor":
-      return direction === "above" ?
+      return direction === "up" ?
           `Remove the *floor above*`
         : `Remove the *floor*`;
     case "insert":
@@ -160,7 +145,7 @@ const tooltipForMode = (
   }
 };
 
-const dispatchForDirection = (direction: InsertDirection) => {
+const dispatchForDirection = (direction: DirectionXyz4) => {
   switch (direction) {
     case "left":
     case "right":
@@ -168,9 +153,14 @@ const dispatchForDirection = (direction: InsertDirection) => {
     case "towards":
       editorStore.dispatch(insertRoom({ direction }));
       break;
-    case "above":
-    case "below":
-      editorStore.dispatch(setRoomAboveOrBelow({ direction, createNew: true }));
+    case "up":
+    case "down":
+      editorStore.dispatch(
+        setRoomAboveOrBelow({
+          direction: direction === "up" ? "above" : "below",
+          createNew: true,
+        }),
+      );
       break;
   }
 };
@@ -184,7 +174,8 @@ const buttonFontSize = 16;
 type InsertButtonProps = {
   x: number;
   y: number;
-  label: string;
+  direction: DirectionXyz4;
+  mode: ButtonMode;
   tooltipContent: ComponentChildren;
   onClick: () => void;
 };
@@ -192,7 +183,8 @@ type InsertButtonProps = {
 const InsertButton = ({
   x,
   y,
-  label,
+  direction,
+  mode,
   tooltipContent,
   onClick,
 }: InsertButtonProps) => {
@@ -203,6 +195,8 @@ const InsertButton = ({
       <a
         href="#"
         interestfor={interestfor}
+        data-direction={direction}
+        data-mode={mode}
         tabIndex={-1}
         class="group cursor-pointer outline-none"
         onClick={(e) => {
@@ -231,7 +225,7 @@ const InsertButton = ({
           dominantBaseline="central"
           class="zx:group-hover:fill-zxBlack toppy:group-hover:fill-toppyBlack translate-x-oneScaledPix group-active:translate-y-oneScaledPix"
         >
-          {label}
+          {buttonLabels[mode]}
         </text>
       </a>
       {tip}
@@ -265,7 +259,7 @@ const EditorMapInsertButtonDecorator = ({
     return null;
   }
 
-  const getModeForDirection = (direction: InsertDirection): ButtonMode => {
+  const getModeForDirection = (direction: DirectionXyz4): ButtonMode => {
     switch (direction) {
       case "left":
       case "right":
@@ -278,7 +272,7 @@ const EditorMapInsertButtonDecorator = ({
           subRoomId,
           allGridPositions,
         );
-      case "above":
+      case "up":
         return getZButtonMode(
           direction,
           hasRoomAbove,
@@ -286,7 +280,7 @@ const EditorMapInsertButtonDecorator = ({
           subRoomId,
           allGridPositions,
         );
-      case "below":
+      case "down":
         return getZButtonMode(
           direction,
           hasRoomBelow,
@@ -304,8 +298,8 @@ const EditorMapInsertButtonDecorator = ({
       case "away":
       case "towards":
         return boundaries[direction] !== "open";
-      case "above":
-      case "below":
+      case "up":
+      case "down":
         return true;
     }
   });
@@ -321,7 +315,8 @@ const EditorMapInsertButtonDecorator = ({
             key={direction}
             x={x}
             y={y}
-            label={buttonLabels[mode]}
+            direction={direction}
+            mode={mode}
             tooltipContent={tooltipForMode(mode, direction)}
             onClick={() => dispatchForDirection(direction)}
           />
