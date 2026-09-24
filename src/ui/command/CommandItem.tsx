@@ -44,7 +44,7 @@ export const CommandItem = ({
         }
       }}
       class={cn(
-        "command-colours relative flex cursor-default select-none items-center text-sm outline-none data-[disabled=true]:pointer-events-none data-[disabled=true]:opacity-50",
+        "command-colours relative flex cursor-default select-none items-center outline-none data-[disabled=true]:pointer-events-none data-[disabled=true]:opacity-50",
         className,
       )}
       {...props}

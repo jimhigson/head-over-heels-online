@@ -105,7 +105,7 @@ export const Select = <Value extends string>(props: SelectProps<Value>) => {
           {props.disableCommandInput === true ? null : (
             <CommandInput autoFocus placeholder={props.placeholder} />
           )}
-          <CommandList>
+          <CommandList class="max-h-18">
             <CommandEmpty>
               <span>Nothing found</span>
             </CommandEmpty>

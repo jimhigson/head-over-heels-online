@@ -7,10 +7,8 @@ import {
 } from "../../sprites/spritesheet/spritesheetData/TextureTailwindClass";
 import { emptyArray, emptyObject } from "../../utils/empty";
 import { twClass } from "../../utils/twClass" with { type: "macro" };
-import {
-  type LevelEditorState,
-  selectCurrentEditingRoomJson,
-} from "../slice/levelEditorSlice";
+import { selectCurrentRoomJsonFromLevelEditorState } from "../slice/levelEditorSelectors";
+import { type LevelEditorState } from "../slice/levelEditorSlice";
 import {
   DissapearingItemToolbarIcon,
   LabelledToolbarIcon,
@@ -1013,7 +1011,7 @@ stand around not doing much`,
     ),
   },
   wall(state: LevelEditorState) {
-    const scenery = selectCurrentEditingRoomJson({ levelEditor: state }).planet;
+    const scenery = selectCurrentRoomJsonFromLevelEditorState(state).planet;
 
     const textureClassname =
       scenery === "blacktooth" ?
@@ -1049,7 +1047,10 @@ stand around not doing much`,
     };
   },
 } as const satisfies {
-  [s in string]:
-    | ((state: LevelEditorState) => ItemToolButtonProps<JsonItemType>)
-    | ItemToolButtonProps<JsonItemType>;
+  [s in string]: ButtonDefinition;
 };
+
+/** a toolbar item button, or one that depends on the editor's state */
+export type ButtonDefinition =
+  | ((state: LevelEditorState) => ItemToolButtonProps<JsonItemType>)
+  | ItemToolButtonProps<JsonItemType>;

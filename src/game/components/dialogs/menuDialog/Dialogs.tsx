@@ -96,6 +96,9 @@ export const Dialogs = (_emptyProps: EmptyObject) => {
   switch (topOpenMenu.menuId) {
     case "about":
       return <LazyAboutDialog />;
+    case "cmdk":
+      // rendered by the cheats, which only exist while cheating
+      return null;
     case "communityGames":
       return <LazyCommunityGamesDialog />;
     case "death":

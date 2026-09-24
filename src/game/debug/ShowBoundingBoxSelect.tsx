@@ -110,7 +110,7 @@ export const ShowBoundingBoxSelect = ({
       <PopoverPanel id={popoverId} open={open} onOpenChange={handleOpenChange}>
         <Command class="w-24">
           <CommandInput autoFocus placeholder="filter types..." />
-          <CommandList>
+          <CommandList class="max-h-18">
             <CommandGroup>
               <CommandItem
                 value="__room-scroll-bounds__"

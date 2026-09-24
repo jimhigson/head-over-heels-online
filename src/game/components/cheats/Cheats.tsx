@@ -20,13 +20,16 @@ import {
 } from "../../../sprites/spritesheet/spritesheetData/TextureTailwindClass";
 import { useAppDispatch, useAppSelector } from "../../../store/hooks";
 import { useShowShadowMasks } from "../../../store/slices/gameMenus/gameMenusSelectors";
+import { cmdKPressed } from "../../../store/slices/gameMenus/gameMenusSlice";
 import { type SelectableGameSpeeds } from "../../../store/slices/userSettings/selectableGameSpeeds";
 import {
   setGameSpeed,
   setShowShadowMasks,
 } from "../../../store/slices/userSettings/userSettingsSlice";
+import { useDispatchActionCallback } from "../../../store/useDispatchActionCallback";
 import { Button } from "../../../ui/Button";
 import { Switch } from "../../../ui/Switch";
+import { useKeyboardShortcut } from "../../../ui/useKeyboardShortcut";
 import { ShowBoundingBoxSelect } from "../../debug/ShowBoundingBoxSelect";
 import { type GameApi } from "../../GameApi";
 import { selectCurrentRoomState } from "../../gameState/gameStateSelectors/selectCurrentRoomState";
@@ -34,21 +37,21 @@ import {
   selectCurrentPlayableItem,
   selectPlayableItem,
 } from "../../gameState/gameStateSelectors/selectPlayableItem";
-import { addItemFromJsonToRoom } from "../../gameState/mutators/addItemToRoom";
 import { changeCharacterRoom } from "../../gameState/mutators/changeCharacterRoom";
 import { swopFromUncombinedToCombinedPlayables } from "../../gameState/mutators/swopPlayables";
-import { blockSizePx } from "../../physics/mechanicsConstants";
 import { boundingBoxDecorateItemRenderer } from "../../render/item/itemRender/boundingBoxDecorateItemRenderer";
 import { debugPointerDecorateItemRenderer } from "../../render/item/itemRender/debugPointerDecorateItemRenderer";
 import { subRoomBoundariesDecorateRoomRenderer } from "../../render/room/subRoomBoundariesDecorateRoomRenderer";
 import { useRegisterDecorateItemRenderers } from "../../render/useRegisterDecorateItemRenderers";
 import { useRegisterDecorateRoomRenderers } from "../../render/useRegisterDecorateRoomRenderers";
 import { CssVariables } from "../CssVariables";
+import { CheatsCmdKDialog } from "../dialogs/menuDialog/dialogs/cmdK/CheatsCmdKDialog";
 import { useGameApi } from "../GameApiContext";
 import { usePlayableTailwindSpriteClassname } from "../tailwindSprites/playableTailwindSpriteClassname";
 import { ConsoleDumpButton } from "./ConsoleDumpButton";
 import { GameApiConnectedRoomSelect } from "./GameApiConnectedRoomSelect";
 import { jsonStringifySafe } from "./jsonStringifySafe";
+import { summonItemAbovePlayable } from "./summonItemAbovePlayable";
 import { useLevelSelectByUrlHash } from "./useLevelSelectByUrlHash";
 
 interface SpeedButtonProps {
@@ -237,8 +240,6 @@ const Heading = ({ children }: { children: string }) => {
   return <h4 class="bg-redShadow zx:bg-zxMagenta pl-1">{children}</h4>;
 };
 
-let summonedItemNumber = 0;
-
 const cheatsDecorators = [
   boundingBoxDecorateItemRenderer,
   debugPointerDecorateItemRenderer,
@@ -260,36 +261,22 @@ export const Cheats = <RoomId extends string>(_emptyProps: EmptyObject) => {
   const summonItem = <T extends JsonItemType>(
     itemType: T,
     config: JsonItemConfig<T, RoomId>,
-  ) => {
-    const { gameState } = gameApi;
-    const playable = selectCurrentPlayableItem(gameState);
-    if (playable === undefined) {
-      // probably can't click this button when there is no playable (game over)
-      // but protect anyway
-      return;
-    }
-    const room = selectCurrentRoomState(gameState);
-    if (room === undefined) {
-      return;
-    }
-    addItemFromJsonToRoom({
-      gameState,
-      room,
-      itemType,
-      config,
-      // locate the item above the player
-      position: {
-        ...playable.state.box,
-        z: playable.state.box.z + blockSizePx.z * 2,
-      },
-      additionalIdPart: `${summonedItemNumber++}`,
-    });
-  };
+  ) => summonItemAbovePlayable(gameApi, itemType, config);
+
+  useKeyboardShortcut(
+    ["^K", "⌘K"],
+    false,
+    useDispatchActionCallback(cmdKPressed),
+  );
 
   const [open, setOpen] = useState(false);
+  const isCmdKOpen = useAppSelector(
+    (state) => state.gameMenus.openMenus.at(0)?.menuId === "cmdk",
+  );
 
   return (
     <>
+      {isCmdKOpen && <CheatsCmdKDialog />}
       <button
         type="button"
         data-test-id="cheats-open-button"
@@ -380,6 +367,16 @@ export const Cheats = <RoomId extends string>(_emptyProps: EmptyObject) => {
             </div>
             <Heading>summon item:</Heading>
             <div class="flex flex-row items-center flex-wrap">
+              <Button
+                data-test-id="cheats-summon-cmdk"
+                class={cheatsButtonClasses}
+                onClick={(e) => {
+                  dispatch(cmdKPressed());
+                  (e?.currentTarget as HTMLElement | undefined)?.blur();
+                }}
+              >
+                <span class="text-single-line">⌘K</span>
+              </Button>
               <Button
                 data-test-id="cheats-summon-portableBlock-cube"
                 class={cheatsButtonClasses}

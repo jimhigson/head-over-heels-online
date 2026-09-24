@@ -72,7 +72,7 @@ export const ContextMenu = ({
           {header !== undefined && (
             <div class="border-b px-1 pb-1">{header}</div>
           )}
-          <CommandList>{children}</CommandList>
+          <CommandList class="max-h-18">{children}</CommandList>
         </Command>
       </div>
     </CssVariables>

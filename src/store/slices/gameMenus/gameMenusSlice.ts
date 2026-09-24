@@ -230,6 +230,21 @@ export const gameMenusSlice = createSlice({
         state.openMenus = [mapMenu];
       }
     },
+    cmdKPressed(state) {
+      if (state.openMenus.at(0)?.menuId === "cmdk") {
+        const [, ...tail] = state.openMenus;
+        state.openMenus = tail;
+      } else {
+        state.openMenus = [
+          {
+            menuId: "cmdk",
+            scrollableSelection: false,
+            menuParam: emptyObject,
+          },
+          ...state.openMenus,
+        ];
+      }
+    },
     errorCaught(
       state,
       { payload: error }: PayloadAction<Array<SerialisableError>>,
@@ -455,6 +470,7 @@ export const gameMenusSlice = createSlice({
 export const {
   backToParentMenu,
   closeAllMenus,
+  cmdKPressed,
   crownsMenuShown,
   deathDialogShown,
   errorCaught,

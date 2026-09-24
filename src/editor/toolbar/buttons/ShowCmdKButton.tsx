@@ -2,86 +2,25 @@ import { useState } from "preact/hooks";
 
 import { store, useEditorAppSelector } from "../../../store/store";
 import { Border } from "../../../ui/Border";
-import { Command } from "../../../ui/command/Command";
-import { CommandEmpty } from "../../../ui/command/CommandEmpty";
-import { CommandGroup } from "../../../ui/command/CommandGroup";
-import { CommandInput } from "../../../ui/command/CommandInput";
-import { CommandItem } from "../../../ui/command/CommandItem";
-import { CommandList } from "../../../ui/command/CommandList";
-import { CommandMatch } from "../../../ui/command/CommandMatch";
 import { Dialog } from "../../../ui/Dialog";
 import { DialogPortal } from "../../../ui/DialogPortal";
-import { keys } from "../../../utils/entries";
 import {
   selectCmdKSearch,
   setCmdKSearch,
   setTool,
 } from "../../slice/levelEditorSlice";
-import { buttonDefinitions } from "../buttonDefinitions";
-import { buttonSizeClassNames } from "../buttonSizeClassNames";
+import { type ButtonDefinition } from "../buttonDefinitions";
+import { CmdKContents } from "../CmdKContents";
 import { ToolbarButton } from "./ToolbarButton";
 
-const buttonKeys = keys(buttonDefinitions).sort();
-
-const CmdKDialogContents = ({
-  onSelect,
-  onClose,
-}: {
-  onSelect: () => void;
-  onClose: () => void;
-}) => {
-  const search = useEditorAppSelector(selectCmdKSearch);
-  return (
-    <Command
-      class="h-full text-white"
-      onClose={onClose}
-      search={search}
-      onSearchChange={(value) => store.dispatch(setCmdKSearch(value))}
-    >
-      <CommandInput autoFocus placeholder="Search items..." />
-      <CommandList class="max-h-none scrollbar scrollbar-w-1 scrollbar-thumb-lightGrey">
-        <CommandEmpty>
-          <span class="text-single-line">Nothing found</span>
-        </CommandEmpty>
-        <CommandGroup>
-          {buttonKeys.map((key) => {
-            const definition = buttonDefinitions[key];
-            const props =
-              typeof definition === "function" ?
-                definition(store.getState().levelEditor!)
-              : definition;
-            return (
-              <CommandItem
-                key={key}
-                // search both the human label and the dotted key, so category
-                // terms like "monster" still match while the label is what shows
-                value={`${props.ariaLabel} ${key}`}
-                onSelect={() => {
-                  store.dispatch(
-                    setTool({ type: "item", item: props.itemTool }),
-                  );
-                  onSelect();
-                }}
-                class="px-1"
-              >
-                {/* div copies the form of the <button> in ToolbarButton without actually being a button: */}
-                <div
-                  class={`${buttonSizeClassNames} active:pt-oneScaledPix gap-0 inline-flex overflow-hidden`}
-                >
-                  {props.children}
-                </div>
-                <CommandMatch class="ml-1" text={props.ariaLabel} />
-              </CommandItem>
-            );
-          })}
-        </CommandGroup>
-      </CommandList>
-    </Command>
-  );
-};
+const resolveEntryForEditor = (buttonDefinition: ButtonDefinition) =>
+  typeof buttonDefinition === "function" ?
+    buttonDefinition(store.getState().levelEditor!)
+  : buttonDefinition;
 
 export const ShowCmdKButton = () => {
   const [open, setOpen] = useState(false);
+  const search = useEditorAppSelector(selectCmdKSearch);
 
   return (
     <>
@@ -99,9 +38,15 @@ export const ShowCmdKButton = () => {
           {/* stop window-level shortcuts catching our keypresses that match their shortcuts */}
           <div class="contents no-keyboard-shortcuts">
             <Dialog wide class="scale-editor p-1 bg-metallicBlueHalfbrite">
-              <CmdKDialogContents
-                onSelect={() => setOpen(false)}
+              <CmdKContents
+                resolveEntry={resolveEntryForEditor}
+                onSelect={(itemTool) => {
+                  store.dispatch(setTool({ type: "item", item: itemTool }));
+                  setOpen(false);
+                }}
                 onClose={() => setOpen(false)}
+                search={search}
+                onSearchChange={(value) => store.dispatch(setCmdKSearch(value))}
               />
             </Dialog>
           </div>
