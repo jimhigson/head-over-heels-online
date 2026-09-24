@@ -12,6 +12,7 @@ import { GameApiProvider } from "../../game/components/GameApiContext.tsx";
 import { type GameApi } from "../../game/GameApi.tsx";
 import { importGameMainOnce } from "../../game/gameMain.import.ts";
 import { useInputStateTracker } from "../../game/input/InputStateProvider.tsx";
+import { typedURLSearchParams } from "../../options/queryParams.ts";
 import { useAppSelector } from "../../store/hooks.ts";
 import { withLoadingCaptured } from "../../store/slices/assetsLoading/assetsLoadingSlice.ts";
 import {
@@ -34,9 +35,15 @@ import {
   useCanvasInlineStyle,
   useMaybeRotated,
 } from "../../utils/scaledRendering/useCanvasInlineStyle.tsx";
+import { importWebMcpTools } from "../../webMcp/WebMcpTools.import.ts";
 import { usePageAsAnApp } from "./usePageAsAnApp.tsx";
 
 const LazyCheats = lazy(importCheats) as typeof Cheats;
+// debugging only, so never in production builds
+const LazyWebMcpTools =
+  import.meta.env.DEV && typedURLSearchParams().get("mcp") === "1" ?
+    lazy(importWebMcpTools)
+  : undefined;
 
 const useCreateGameApi = (): GameApi<string> | undefined => {
   const [gameApi, setGameApi] = useState<GameApi<string> | undefined>();
@@ -198,6 +205,11 @@ export const GamePage = () => {
         {gameApi && cheatsOn && (
           <Suspense fallback={null}>
             <LazyCheats />
+          </Suspense>
+        )}
+        {LazyWebMcpTools && (
+          <Suspense fallback={null}>
+            <LazyWebMcpTools />
           </Suspense>
         )}
       </GameApiProvider>
