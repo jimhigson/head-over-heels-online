@@ -11,8 +11,10 @@ import { Dialogs } from "../../game/components/dialogs/menuDialog/Dialogs.tsx";
 import { GameApiProvider } from "../../game/components/GameApiContext.tsx";
 import { type GameApi } from "../../game/GameApi.tsx";
 import { importGameMainOnce } from "../../game/gameMain.import.ts";
-import { useInputStateTracker } from "../../game/input/InputStateProvider.tsx";
-import { typedURLSearchParams } from "../../options/queryParams.ts";
+import {
+  useInputStateTracker,
+  usePointerTracker,
+} from "../../game/input/InputStateProvider.tsx";
 import { useAppSelector } from "../../store/hooks.ts";
 import { withLoadingCaptured } from "../../store/slices/assetsLoading/assetsLoadingSlice.ts";
 import {
@@ -28,7 +30,7 @@ import { useUpdateUpscaleOnDisplaySettingsChange } from "../../store/slices/upsc
 import { useUpdateUpscaleWhenElementResizes } from "../../store/slices/upscale/useUpdateUpscaleWhenElementResizes.ts";
 import { store } from "../../store/store.ts";
 import { ConnectInputToStore } from "../../store/storeFlow/ConnectInputToStore.tsx";
-import { SoftwarePointer } from "../../ui/SoftwarePointer.tsx";
+import { SoftwarePointerDomRenderer } from "../../ui/SoftwarePointerDomRenderer.tsx";
 import { DispatchingErrorBoundary } from "../../utils/preact/DispatchingErrorBoundary.tsx";
 import { createSerialisableErrors } from "../../utils/redux/createSerialisableErrors.ts";
 import {
@@ -41,9 +43,7 @@ import { usePageAsAnApp } from "./usePageAsAnApp.tsx";
 const LazyCheats = lazy(importCheats) as typeof Cheats;
 // debugging only, so never in production builds
 const LazyWebMcpTools =
-  import.meta.env.DEV && typedURLSearchParams().get("mcp") === "1" ?
-    lazy(importWebMcpTools)
-  : undefined;
+  import.meta.env.DEV ? lazy(importWebMcpTools) : undefined;
 
 const useCreateGameApi = (): GameApi<string> | undefined => {
   const [gameApi, setGameApi] = useState<GameApi<string> | undefined>();
@@ -55,6 +55,7 @@ const useCreateGameApi = (): GameApi<string> | undefined => {
     shallowEqual,
   );
   const inputState = useInputStateTracker();
+  const pointerTracker = usePointerTracker();
 
   useEffect(() => {
     if (!isGameRunning) {
@@ -84,7 +85,7 @@ const useCreateGameApi = (): GameApi<string> | undefined => {
         thisEffectGameApi = await store.dispatch(
           withLoadingCaptured(async () => {
             const gameMain = (await importGameMainOnce()).default;
-            return gameMain(currentCampaignLocator, inputState);
+            return gameMain(currentCampaignLocator, inputState, pointerTracker);
           }),
         );
 
@@ -119,7 +120,7 @@ const useCreateGameApi = (): GameApi<string> | undefined => {
       thisEffectGameApi?.stop();
       thisEffectCancelled = true;
     };
-  }, [isGameRunning, inputState, currentCampaignLocator]);
+  }, [isGameRunning, inputState, pointerTracker, currentCampaignLocator]);
 
   return gameApi;
 };
@@ -172,7 +173,7 @@ export const GamePage = () => {
       {/* retro, non-system pointer - rendering as HTML gives more control such as allowing
           it to warp with the screen in html-in-canvas mode, and also restricting its FPS
       */}
-      <SoftwarePointer />
+      <SoftwarePointerDomRenderer />
       {/* 👇👇 where the magic happens - the element the game plays in! 👇👇 */}
       {/* the sizing area fills the real screen via css; its measured size drives
           the upscale, so the backdrop covers the whole screen even if the

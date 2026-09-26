@@ -110,6 +110,16 @@ export const useSpritesOption = () => useAppSelector(selectSpritesOption);
 
 export const useIsUncolourised = () => useAppSelector(selectIsUncolourised);
 export const selectIsCrtFilter = selectUserSetting("displaySettings.crtFilter");
+
+/**
+ * whether the mouse pointer is drawn on the television, inside the CRT effect,
+ * rather than over the page - only while playing with the CRT filter on, and
+ * with nothing to click over the top (the pause dialog has nothing to click)
+ */
+export const selectIsPointerOnTube = (state: GameRootState): boolean =>
+  state.gameInPlay.gameRunning &&
+  selectIsCrtFilter(state) &&
+  state.gameMenus.openMenus.every(({ menuId }) => menuId === "hold");
 export const selectIsUpscaledSprites = selectUserSetting(
   "displaySettings.upscaledSprites",
 );

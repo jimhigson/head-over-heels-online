@@ -12,8 +12,8 @@ importers:
   .:
     dependencies:
       '@blockstacking/jims-shaders':
-        specifier: ^0.4.5
-        version: 0.4.5(pixi.js@8.16.0(patch_hash=f826773b254612b58c4a67990b588c16a8ce5a37a265617833cc955eda633028))
+        specifier: 2.0.0
+        version: 2.0.0(pixi.js@8.16.0(patch_hash=f826773b254612b58c4a67990b588c16a8ce5a37a265617833cc955eda633028))
       '@github/mini-throttle':
         specifier: ^2.1.1
         version: 2.1.1
@@ -957,8 +957,8 @@ packages:
     resolution: {integrity: sha512-eY+Yn3dCqTGmyiq2QRU66lA5FL8lqqqvecHt0fF3uHONIa7ToYsaCiWV8lOKqAs0Rb2SjixiKFROngnulPtt2g==}
     engines: {node: ^22.18.0 || >=24.11.0}
 
-  '@blockstacking/jims-shaders@0.4.5':
-    resolution: {integrity: sha512-cxLvmOOMJwwPZ3WqC4hE3NycfUtbD22Try/NQSUdbLWzCCXl6HqvYP9d/A82gMDWZ48kB6wZC5/SZQkHor/o5g==}
+  '@blockstacking/jims-shaders@2.0.0':
+    resolution: {integrity: sha512-2rTuOaIs6lFsj8ozfFHa0oOAQeRQkRzAi3vG39StRi7m8GMIe87DP1KZM6kfROti7fqcOl5JkPzTkaZ2d14hQw==}
     peerDependencies:
       pixi.js: ^8.0.0
 
@@ -3544,7 +3544,7 @@ packages:
     resolution: {integrity: sha512-6kZKyUajlDuqlHKVX1w7gyslj9MPIXzIFiz/rGu35uC1wMi+kMhQwGhl4lt9unC9Vb9INnY9Z3/ZA3+FhASLaw==}
 
   dougmencken_HeadOverHeels@https://codeload.github.com/dougmencken/HeadOverHeels/tar.gz/08aee0cb050405dc23d95bf288631452bec28c9f:
-    resolution: {gitHosted: true, tarball: https://codeload.github.com/dougmencken/HeadOverHeels/tar.gz/08aee0cb050405dc23d95bf288631452bec28c9f}
+    resolution: {gitHosted: true, integrity: sha512-Dh5e7fatalMJjVZXCsLpumdBEymDAg/nJwWZvpv3zThv9ulloakDXI3Ws3kvIIntq7LxTSW6NI/JJPbgNEZcVw==, tarball: https://codeload.github.com/dougmencken/HeadOverHeels/tar.gz/08aee0cb050405dc23d95bf288631452bec28c9f}
     version: 0.0.0
 
   dpdm@3.14.0:
@@ -3681,6 +3681,7 @@ packages:
   eslint@9.22.0:
     resolution: {integrity: sha512-9V/QURhsRN40xuHXWjV64yvrzMjcz7ZyNoF2jJFmy9j/SLk0u1OLSZgXi28MrXjymnjEGSR80WCdab3RGMDveQ==}
     engines: {node: ^18.18.0 || ^20.9.0 || >=21.1.0}
+    deprecated: This version is no longer supported. Please see https://eslint.org/version-support for other options.
     hasBin: true
     peerDependencies:
       jiti: '*'
@@ -6901,7 +6902,7 @@ snapshots:
       '@babel/helper-string-parser': 8.0.0
       '@babel/helper-validator-identifier': 8.0.4
 
-  '@blockstacking/jims-shaders@0.4.5(pixi.js@8.16.0(patch_hash=f826773b254612b58c4a67990b588c16a8ce5a37a265617833cc955eda633028))':
+  '@blockstacking/jims-shaders@2.0.0(pixi.js@8.16.0(patch_hash=f826773b254612b58c4a67990b588c16a8ce5a37a265617833cc955eda633028))':
     dependencies:
       pixi.js: 8.16.0(patch_hash=f826773b254612b58c4a67990b588c16a8ce5a37a265617833cc955eda633028)
 
