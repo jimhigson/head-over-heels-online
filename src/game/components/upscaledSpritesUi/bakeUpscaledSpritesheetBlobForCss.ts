@@ -4,6 +4,33 @@ import { installAppTickerAsPixiShared } from "../../mainLoop/installAppTickerAsP
 import { bakeUpscaledSpritesheetTexture } from "../../render/filters/upscale/bakeUpscaledSpritesheetTexture";
 
 /**
+ * the normal spritesheet is deliberately over-saturated by putting into p3 without
+ * adjusting the values - do the same for the upscaled spritesheet
+ */
+const asDisplayP3Canvas = (
+  canvas: ReturnType<WebGLRenderer["extract"]["canvas"]>,
+): OffscreenCanvas => {
+  const { width, height } = canvas;
+  const srgbContext = canvas.getContext("2d");
+  if (srgbContext === null) {
+    throw new Error("upscale ui bake: extracted canvas has no 2d context");
+  }
+  const srgbPixels = srgbContext.getImageData(0, 0, width, height);
+  const p3Canvas = new OffscreenCanvas(width, height);
+  const p3Context = p3Canvas.getContext("2d", { colorSpace: "display-p3" });
+  if (p3Context === null) {
+    throw new Error("upscale ui bake: cannot make a display-p3 canvas");
+  }
+  // the same numbers, reinterpreted as p3 rather than converted to it:
+  p3Context.putImageData(
+    new ImageData(srgbPixels.data, width, height, { colorSpace: "display-p3" }),
+    0,
+    0,
+  );
+  return p3Canvas;
+};
+
+/**
  * Upscale a spritesheet the same way as in-game, but for css sprites
  *
  * @returns a png blob of the upscaled image, `factor` times the source size
@@ -46,24 +73,8 @@ export const bakeUpscaledSpritesheetBlobForCss = async (
       factor,
     );
     try {
-      const canvas = renderer.extract.canvas(baked);
-      const blob =
-        canvas.convertToBlob !== undefined ?
-          await canvas.convertToBlob({ type: "image/png" })
-        : await new Promise<Blob>((resolve, reject) => {
-            if (canvas.toBlob === undefined) {
-              reject(new Error("upscale ui bake: canvas cannot make a blob"));
-              return;
-            }
-            canvas.toBlob((made) => {
-              if (made === null) {
-                reject(new Error("upscale ui bake: canvas made no blob"));
-                return;
-              }
-              resolve(made);
-            }, "image/png");
-          });
-      return blob;
+      const canvas = asDisplayP3Canvas(renderer.extract.canvas(baked));
+      return await canvas.convertToBlob({ type: "image/png" });
     } finally {
       baked.destroy(true);
     }
