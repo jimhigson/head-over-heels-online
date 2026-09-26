@@ -22,6 +22,7 @@ import { loadGameState } from "./gameState/loadGameState";
 import { changeCharacterRoom } from "./gameState/mutators/changeCharacterRoom";
 import { type SavedGame } from "./gameState/saving/SavedGameState";
 import { type InputStateTrackerInterface } from "./input/InputStateTracker";
+import { type PointerTracker } from "./input/PointerTracker";
 import { e2eInstrumentGameState } from "./mainLoop/e2eInstrumentGameState";
 import { installAppTickerAsPixiShared } from "./mainLoop/installAppTickerAsPixiShared";
 import { installE2eCurrentPlayableHandle } from "./mainLoop/installE2eCurrentPlayableHandle";
@@ -39,6 +40,7 @@ TextureStyle.defaultOptions.scaleMode = "nearest";
 export const gameMain = async <RoomId extends string>(
   campaignLocator: CampaignLocator,
   inputStateTracker: InputStateTrackerInterface,
+  pointerTracker: PointerTracker,
 ): Promise<GameApi<RoomId>> => {
   // install our own ticker before pixi.init uses the standard one
   installAppTickerAsPixiShared();
@@ -151,7 +153,12 @@ export const gameMain = async <RoomId extends string>(
     e2eInstrumentGameState(gameState);
   }
 
-  const loop = new MainLoop(app, gameState, spritesheets).start();
+  const loop = new MainLoop(
+    app,
+    gameState,
+    spritesheets,
+    pointerTracker,
+  ).start();
 
   return {
     campaign,

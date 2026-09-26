@@ -70,7 +70,7 @@ export const GitRepoInfo = () => {
           )}
         </a>
         {(import.meta.env.DEV || prNumber !== undefined) && (
-          <span class="text-single-line screenshot-mask mr-1 inline-block max-w-24 whitespace-nowrap bg-pastelBlueHalfbrite text-metallicBlueHalfbrite zx:text-zxCyan zx:bg-zxBlack toppy:bg-toppyCool3">
+          <span class="text-single-line ml-1 screenshot-mask mr-1 inline-block max-w-24 whitespace-nowrap text-pastelBlueHalfbrite zx:text-zxBlack">
             {" "}
             {prNumber !== undefined && (
               <a

@@ -1,4 +1,4 @@
-import { test as playwrightTest } from "@playwright/test";
+import { type Page, test as playwrightTest } from "@playwright/test";
 
 import {
   formatProjectName,
@@ -7,6 +7,20 @@ import {
 import { relaySupabase } from "./relaySupabase";
 import { logDetailedTextLayout, logTextLayout } from "./screenshots";
 import { trackNetwork } from "./trackNetwork";
+
+/**
+ * throws if the page is not a visual-regression build
+ */
+const assertVisualRegressionBuild = async (page: Page) => {
+  const isVisualRegressionBuild = await page.evaluate(
+    () => window._e2e_store !== undefined,
+  );
+  if (!isVisualRegressionBuild) {
+    throw new Error(
+      `${page.url()} is not a visual-regression build (no window._e2e_store) - rebuild with --mode visual-regression`,
+    );
+  }
+};
 
 /**
  * the `test` every spec should import, in place of the one from
@@ -25,6 +39,16 @@ export const test = playwrightTest.extend<{
   forwardBrowserConsole: void;
   relaySupabaseWhenEnabled: void;
 }>({
+  // check browser hit a visual-regression build
+  async page({ page }, provide) {
+    const goto = page.goto.bind(page);
+    page.goto = async (...args: Parameters<Page["goto"]>) => {
+      const response = await goto(...args);
+      await assertVisualRegressionBuild(page);
+      return response;
+    };
+    await provide(page);
+  },
   // sandboxes whose egress proxy resets the browser's own TLS to supabase can
   // opt every spec into the node-side relay with E2E_RELAY_SUPABASE=1; unset
   // (eg CI) this fixture does nothing and the browser talks to supabase
