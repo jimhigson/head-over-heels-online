@@ -1,5 +1,11 @@
 import { type CornerName } from "./corners";
-import { baselineFromTop, cellCentre, type Contour, px } from "./fontUnits";
+import {
+  baselineFromTop,
+  cellCentre,
+  type Contour,
+  px,
+  twiceSignedArea,
+} from "./fontUnits";
 
 /**
  * a cell claimed by a circle-drawing kernel rule renders as a ring of this
@@ -370,4 +376,66 @@ export const chamferCornerCut = (
     (col + dx) * px,
     baselineFromTop * px - (row + dy) * px,
   ]);
+};
+
+/** how far each rounded shoulder of a notch reaches along its two edges, in pixels */
+const notchShoulderPx = 0.5;
+
+/**
+ * the ink taken out of a filled-in bite to recut it as a V whose two
+ * shoulders curve into the edge rather than meeting it at a corner. The V's
+ * mouth is two cells wide and its point one cell in. Wound anticlockwise in
+ * y-up space, so non-zero fill subtracts it
+ */
+export const roundedNotchCut = (
+  col: number,
+  row: number,
+  opens: "down" | "left" | "right" | "up",
+): Contour => {
+  const sideways = opens === "left" || opens === "right";
+  // the edge is the side of the cell the bite opens towards
+  const mouth = opens === "right" || opens === "down" ? 1 : 0;
+  const inwards = mouth === 1 ? -1 : 1;
+  const alongDiagonal = notchShoulderPx / Math.SQRT2;
+  const at = (across: number, along: number): [number, number] =>
+    sideways ?
+      [(col + across) * px, baselineFromTop * px - (row + along) * px]
+    : [(col + along) * px, baselineFromTop * px - (row + across) * px];
+  const onCurve: Array<[number, number]> = [
+    at(mouth, -0.5 - notchShoulderPx),
+    at(mouth + inwards * alongDiagonal, -0.5 + alongDiagonal),
+    at(1 - mouth, 0.5),
+    at(mouth + inwards * alongDiagonal, 1.5 - alongDiagonal),
+    at(mouth, 1.5 + notchShoulderPx),
+  ];
+  const [edgeTop, diagonalTop, apex, diagonalBottom, edgeBottom] = onCurve;
+  // each shoulder's control sits on the corner the square V would have had
+  const contour: Contour = [
+    edgeTop,
+    [...at(mouth, -0.5), 0],
+    diagonalTop,
+    apex,
+    diagonalBottom,
+    [...at(mouth, 1.5), 0],
+    edgeBottom,
+  ];
+  return twiceSignedArea(onCurve) > 0 ? contour : contour.toReversed();
+};
+
+/**
+ * the ink taken out of the foot of a vertical right edge to sweep it into
+ * the 45 degree step below. One curve runs from the claimed cell's
+ * bottom-left at 45 degrees to the top-right of the cell above, arriving
+ * vertical. Wound anticlockwise in y-up space, so non-zero fill subtracts it
+ */
+export const diagonalSweepCut = (col: number, row: number): Contour => {
+  const at = (x: number, y: number): [number, number] => [
+    (col + x) * px,
+    baselineFromTop * px - (row + y) * px,
+  ];
+  const onCurve: Array<[number, number]> = [at(0, 1), at(1, -1), at(1, 1)];
+  const [start, end, corner] = onCurve;
+  // the control is where the 45 degree line meets the vertical edge
+  const contour: Contour = [start, [...at(1, 0), 0], end, corner];
+  return twiceSignedArea(onCurve) > 0 ? contour : contour.toReversed();
 };

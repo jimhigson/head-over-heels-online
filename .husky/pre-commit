@@ -57,4 +57,36 @@ if [ -n "$(find "$tmp" -type f -print -quit)" ]; then
   git-format-staged --formatter 'if [ -f "'"$tmp"'/{}" ]; then cat >/dev/null; cat "'"$tmp"'/{}"; else cat; fi' "$@"
 fi
 
+# losslessly recompress staged playwright baselines, as a palette where colours allow
+snapshots=$(git diff --cached --name-only --diff-filter=ACMR -- '*-snapshots/*.png')
+if [ -n "$snapshots" ]; then
+  if ! command -v oxipng >/dev/null 2>&1; then
+    echo "pre-commit: oxipng is needed to recompress snapshots (brew install oxipng)" >&2
+    exit 1
+  fi
+  snapshotCount=$(printf '%s\n' "$snapshots" | wc -l | tr -d ' ')
+  echo "oxipng: recompressing $snapshotCount snapshot(s)"
+  pngTmp=$(mktemp -d "$PWD/.precommit-png-XXXXXX")
+  trap 'rm -rf "$tmp" "$pngTmp"' EXIT
+  # the staged blobs are recompressed, not the worktree, so partial staging holds
+  printf '%s\n' "$snapshots" | git checkout-index --prefix="$pngTmp/" --stdin
+  # not --quiet: oxipng's line per file is the progress
+  oxipng --opt 2 --strip safe --recursive "$pngTmp"
+  echo "oxipng: staging $snapshotCount snapshot(s)"
+  # one git call per step for the whole batch, never one per file
+  printf '%s\n' "$snapshots" > "$pngTmp/snapshots.txt"
+  # the worktree only takes the recompressed copy when it holds nothing unstaged
+  git diff --name-only -- '*-snapshots/*.png' > "$pngTmp/unstaged.txt"
+  grep -vxF -f "$pngTmp/unstaged.txt" "$pngTmp/snapshots.txt" > "$pngTmp/clean.txt" || true
+  ( cd "$pngTmp" && tar -cf - -T clean.txt ) | tar -xf -
+  sed "s#^#$pngTmp/#" "$pngTmp/snapshots.txt" \
+    | git hash-object -w --stdin-paths > "$pngTmp/blobs.txt"
+  git ls-files --stage -- '*-snapshots/*.png' > "$pngTmp/modes.txt"
+  # each path keeps its mode, and takes the recompressed blob
+  paste "$pngTmp/blobs.txt" "$pngTmp/snapshots.txt" \
+    | awk -F'\t' 'NR == FNR { split($1, entry, " "); mode[$2] = entry[1]; next }
+        { print mode[$2] " " $1 "\t" $2 }' "$pngTmp/modes.txt" - \
+    | git update-index --index-info
+fi
+
 echo ...pre-commit done

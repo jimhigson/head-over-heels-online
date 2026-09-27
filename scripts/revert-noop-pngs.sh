@@ -71,7 +71,7 @@ revert_noop_images() {
     local tmpdir
     tmpdir="$(mktemp -d /tmp/noop-png-XXXXXX)"
 
-    local relpath filepath baseline_img baseline_label ae_count ae_int
+    local relpath filepath baseline_img baseline_label ae_count
     for relpath in "${dirty_images[@]}"; do
         filepath="${repo_root}/${relpath}"
 
@@ -108,16 +108,14 @@ revert_noop_images() {
             continue
         fi
 
-        # Truncate any decimal (AE can return "0" or "0.0")
-        ae_int="${ae_count%%.*}"
-
-        if [[ "$ae_int" -eq 0 ]]; then
+        # AE can be fractional (eg "0.958824" for 2 changed pixels), so only an exact zero is identical
+        if [[ "$ae_count" =~ ^0+([.]0+)?$ ]]; then
             echo "  REVERT vs ${baseline_label} (pixels identical): ${relpath}"
             # Restore the index version to the worktree (preserves staging)
             git -C "$repo_root" checkout -- "$relpath"
             ((reverted++)) || true
         else
-            echo "  KEEP   (${ae_int} pixels differ): ${relpath}"
+            echo "  KEEP   (AE ${ae_count}): ${relpath}"
             ((changed++)) || true
         fi
     done

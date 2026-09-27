@@ -7,12 +7,12 @@ import {
   artHashOf,
   type GlyphOverrides,
   type PixelKey,
-  type PixelRuleSetting,
   type VectorShape,
 } from "../geometry/glyphOverrides";
 import { charLabel } from "./charLabel";
 import { CharStrip } from "./CharStrip";
 import { GlyphView, type Selection } from "./GlyphView";
+import { PixelPalette } from "./PixelPalette";
 import { RulePanel } from "./RulePanel";
 import { seedShapes } from "./seedShapes";
 import { useGlyphs, usePixelRules } from "./useGlyphs";
@@ -139,38 +139,6 @@ export const FontEditor = () => {
     setPixel(undefined);
     setStatus(`${char} reverted - every setting for it dropped`);
   };
-
-  /**
-   * change what one cell says about some rules. A setting that says nothing -
-   * inheriting, with no mode chosen - is removed rather than written out, so
-   * the file holds only what was decided
-   */
-  const changePixelRules = (
-    cell: PixelKey,
-    ruleNames: readonly string[],
-    change: (was: PixelRuleSetting) => PixelRuleSetting,
-  ) =>
-    changeOverride((was) => {
-      const forCell = { ...(was?.pixelRules?.[cell] ?? {}) };
-      for (const name of ruleNames) {
-        const next = change(forCell[name] ?? {});
-        if (
-          next.on === undefined &&
-          Object.keys(next.options ?? {}).length === 0
-        ) {
-          delete forCell[name];
-        } else {
-          forCell[name] = next;
-        }
-      }
-      const pixelRules = { ...(was?.pixelRules ?? {}) };
-      if (Object.keys(forCell).length === 0) {
-        delete pixelRules[cell];
-      } else {
-        pixelRules[cell] = forCell;
-      }
-      return { ...was, pixelRules };
-    });
 
   const save = async () => {
     setBusy(true);
@@ -370,26 +338,19 @@ export const FontEditor = () => {
                 onShapesChange={setShapes}
                 onSelect={setSelection}
               />
-            : <RulePanel
+            : pixel === undefined ?
+              <RulePanel
+                glyph={glyph}
+                override={override}
+                pixelRules={pixelRules}
+                onToggleForChar={toggleRules}
+              />
+            : <PixelPalette
                 glyph={glyph}
                 override={override}
                 pixelRules={pixelRules}
                 pixel={pixel}
-                onToggleForChar={toggleRules}
-                onSetForPixel={(ruleNames, setting) =>
-                  pixel !== undefined &&
-                  changePixelRules(pixel, ruleNames, (was) => ({
-                    ...was,
-                    on: setting === "inherit" ? undefined : setting === "on",
-                  }))
-                }
-                onSetChoiceForPixel={(ruleName, optionName, choice) =>
-                  pixel !== undefined &&
-                  changePixelRules(pixel, [ruleName], (was) => ({
-                    ...was,
-                    options: { ...was.options, [optionName]: choice },
-                  }))
-                }
+                onChoose={(next) => changeOverride(() => next)}
               />
             }
           </aside>

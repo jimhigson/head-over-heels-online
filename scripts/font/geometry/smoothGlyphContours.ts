@@ -18,9 +18,11 @@ import {
 import {
   chamferCornerCut,
   chamferStepCut,
+  diagonalSweepCut,
   halfDiscCut,
   halfDiscFill,
   roundedCornerContour,
+  roundedNotchCut,
 } from "./kernelShapes";
 import { diagonalRuns, dropCollinear, straightenRuns } from "./straightenRuns";
 import { traceBitmapToLoops } from "./traceSmoothContours";
@@ -175,6 +177,23 @@ export const smoothGlyphContours = (
           across * px,
           baselineFromTop * px - down * px,
         ];
+        if (choices.slope === "diagonal") {
+          // 45 degree sides reach the cell's edges halfway up, then run
+          // straight up them
+          shapes.push(
+            wound(
+              [
+                at(x, y),
+                at(x + 1, y),
+                at(x + 1, y + 0.5),
+                at(x + 0.5, y + 1),
+                at(x, y + 0.5),
+              ],
+              false,
+            ),
+          );
+          break;
+        }
         shapes.push(wound([at(x, y), at(x + 1, y), at(x + 0.5, y + 1)], false));
         break;
       }
@@ -260,6 +279,16 @@ export const smoothGlyphContours = (
         }
         break;
       }
+      case "roundedNotch":
+        // the bite is filled in so the edge traces straight, then recut
+        carved[y][x] = true;
+        shapes.push(roundedNotchCut(x, y, rule.action.opens));
+        break;
+      case "diagonalSweep":
+        // the step is filled in so the edge traces straight, then recut
+        carved[y][x] = true;
+        shapes.push(diagonalSweepCut(x, y));
+        break;
       case "singleChamferSub":
         // the cell is already ink, so there is nothing to fill first: half of
         // it is simply taken away along the diagonal
@@ -270,13 +299,29 @@ export const smoothGlyphContours = (
         // cell is added on its own, bridging the two neighbours it touches
         shapes.push(wound(chamferCornerCut(x, y, rule.action.corner), true));
         break;
+      case "singleRoundedAdd":
+        // the rounding a corner cut would take out, reversed so it adds ink
+        shapes.push(
+          roundedCornerContour(
+            x,
+            y,
+            rule.action.corner,
+            choices.radius === "half" ? 0.5 : 1,
+          ).reverse(),
+        );
+        break;
       case "inkCorner":
         // no fill first - the cell is already ink, and the corner is simply
         // taken off it. Both cuts stay inside the cell, so a corner that was
         // never a bitten-out square does not eat into its neighbours
         shapes.push(
           choices.cut === "round" ?
-            roundedCornerContour(x, y, rule.action.corner, 1)
+            roundedCornerContour(
+              x,
+              y,
+              rule.action.corner,
+              choices.radius === "half" ? 0.5 : 1,
+            )
           : wound(chamferCornerCut(x, y, rule.action.corner), false),
         );
         break;
@@ -285,6 +330,11 @@ export const smoothGlyphContours = (
         // angle, then take the rounding back out of it
         carved[y][x] = true;
         shapes.push(roundedCornerContour(x, y, rule.action.corner));
+        break;
+      case "roundedCornerInPixel":
+        // a one-pixel radius keeps the rounding out of the neighbouring cells
+        carved[y][x] = true;
+        shapes.push(roundedCornerContour(x, y, rule.action.corner, 1));
         break;
       case "chamferCorner":
         // fill the cut corner in, then cut it back at 45 degrees: the half of
