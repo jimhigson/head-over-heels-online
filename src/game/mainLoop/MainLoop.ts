@@ -7,6 +7,7 @@ import { type Spritesheets } from "../../sprites/spritesheet/Spritesheets";
 import {
   selectInputDirectionMode,
   selectIsPaused,
+  selectIsPointerOnTube,
   selectShouldRenderOnScreenControls,
   selectShowFps,
   selectSpritesOption,
@@ -31,11 +32,13 @@ import { appTicker } from "../../utils/ticker/appTickerInstance";
 import { type Xy } from "../../utils/vectors/vectors";
 import { type GameState } from "../gameState/GameState";
 import { selectCurrentRoomState } from "../gameState/gameStateSelectors/selectCurrentRoomState";
+import { type PointerTracker } from "../input/PointerTracker";
 import { maxSubTickDeltaMs } from "../physics/mechanicsConstants";
 import { ColourClashCircleEffectRenderer } from "../render/ColourClashCircleEffectRenderer";
 import { selectSpritesheetUpscale } from "../render/filters/upscale/selectSpritesheetUpscale";
 import { HudRenderer } from "../render/hud/HudRenderer";
 import { needsNewHudRenderer } from "../render/hud/needsNewHudRenderer";
+import { SoftwarePointerPixiRenderer } from "../render/pointer/SoftwarePointerPixiRenderer";
 import { needsNewRoomRenderer } from "../render/room/needsNewRoomRenderer";
 import {
   type InGameGeneralRenderContext,
@@ -49,6 +52,7 @@ import {
   loadHudFont,
   uiFontVariantAtResolution,
 } from "../render/text/uiFont";
+import { CrtEffectContainer } from "./CrtEffectContainer";
 import { E2EEventBus } from "./E2EEventBus";
 import {
   loadedFrameTimingStats,
@@ -60,7 +64,6 @@ import { progressWithSubTicks } from "./progressWithSubTicks";
 import { rotateCameraIfInput } from "./rotateCameraIfInput";
 import { tickCameraTransition } from "./tickCameraTransition";
 import { tickGameSpeed } from "./tickGameSpeed";
-import { topLevelFilters } from "./topLevelFilters";
 import { transitionCameraAngle } from "./transitionCameraAngle";
 
 registerDetailedFpsGlobal();
@@ -115,6 +118,10 @@ export class MainLoop<RoomId extends string> {
   #app: Application;
   #gameState: GameState<RoomId>;
   #spritesheets: Spritesheets;
+  #crtEffectContainer: CrtEffectContainer<RoomId>;
+  #pointerTracker: PointerTracker;
+  /** rebuilt whenever the hud renderer is, since both draw from the same spritesheet */
+  #softwarePointerRenderer: SoftwarePointerPixiRenderer | undefined;
   /**
    * the single general render context, owned and mutated in place
    * here for use in both the room and hud renderers
@@ -126,17 +133,23 @@ export class MainLoop<RoomId extends string> {
     app: Application,
     gameState: GameState<RoomId>,
     spritesheets: Spritesheets,
+    pointerTracker: PointerTracker,
   ) {
     this.#app = app;
     this.#gameState = gameState;
     this.#spritesheets = spritesheets;
+    this.#pointerTracker = pointerTracker;
+    this.#crtEffectContainer = new CrtEffectContainer(
+      app.stage,
+      this.#mainContainer,
+    );
     try {
       const storeState = store.getState();
 
       const gameEngineUpscale = selectGameEngineUpscale(storeState);
 
       this.#worldSound.connect(audioCtx.destination);
-      app.stage.addChild(this.#mainContainer);
+      app.stage.addChild(this.#crtEffectContainer);
       app.stage.scale = gameEngineUpscale;
 
       const startingRoom = selectCurrentRoomState(gameState);
@@ -144,7 +157,12 @@ export class MainLoop<RoomId extends string> {
         throw new Error("main loop with no starting room");
       }
 
-      this.#initTopLevelFilters();
+      this.#crtEffectContainer.rebuild(
+        true,
+        { shouldRestart: true, toggled: false },
+        storeState.upscale.upscale,
+        storeState.userSettings.userSettings.displaySettings,
+      );
     } catch (e) {
       this.#handleError(e);
       return;
@@ -154,17 +172,6 @@ export class MainLoop<RoomId extends string> {
   #handleError(thrown: unknown) {
     console.error(thrown);
     store.dispatch(errorCaught(createSerialisableErrors(thrown)));
-  }
-
-  #initTopLevelFilters() {
-    const {
-      userSettings: {
-        userSettings: { displaySettings },
-      },
-      upscale: { upscale },
-    } = store.getState();
-
-    this.#app.stage.filters = topLevelFilters(displaySettings, upscale);
   }
 
   #firstFrameMarked = false;
@@ -308,6 +315,11 @@ export class MainLoop<RoomId extends string> {
   // output - written for the animations to follow, never read back - so time
   // handed to ticker.update() always reaches the physics intact
   #tick = ({ elapsedMS }: AppTicker): void => {
+    // unconditional and before any early return below, so the CRT-toggle hide
+    // never stays applied longer than its deadline and a finished switch-on
+    // filter always gets dropped promptly:
+    this.#crtEffectContainer.tickStart();
+
     const tickState = store.getState();
     const showFps = selectShowFps(tickState);
     const timingRecord = showFps ? loadedFrameTimingStats() : undefined;
@@ -568,6 +580,16 @@ export class MainLoop<RoomId extends string> {
       this.#originalSheetRebuilt,
     );
 
+    // read before #syncGeneralRenderContext below overwrites the shared
+    // render context in place - the comparisons inside decide() need the
+    // room renderer's last-built values, not this tick's new ones
+    const crtEffectDecision = this.#crtEffectContainer.decide(
+      this.#gameState,
+      tickDisplaySettings,
+      this.#generalRenderContext?.displaySettings,
+      this.#roomRenderer !== undefined,
+    );
+
     // a rebuild is fine mid-transition: the fresh renderer builds against the
     // discrete (nearest-quarter) angle like any renderer, and the playing
     // transition carries on over it - eg a turn continues through a door into
@@ -617,12 +639,26 @@ export class MainLoop<RoomId extends string> {
       this.#mainContainer.addChild(this.#hudRenderer.output);
     }
 
+    if (createNewRoomRenderer) {
+      // pointer uses textures from the palette swopped room's sheet, which gets rebuilt when room changes,
+      // simplest solution is to remake it:
+      this.#softwarePointerRenderer?.destroy();
+      this.#softwarePointerRenderer = new SoftwarePointerPixiRenderer(
+        this.#pointerTracker,
+        general.pixiRenderer,
+        general.spritesheets,
+      );
+      // on top of the picture, but outside its squash - drawn exactly where hits land
+      this.#crtEffectContainer.addChild(this.#softwarePointerRenderer.output);
+    }
+
     this.#hudRenderer!.tick({
       screenSize: tickUpscale.gameEngineScreenSize,
       deltaMS,
       room: tickEndRoom,
       freeCharacters: tickFreeCharacters,
     });
+    this.#softwarePointerRenderer!.tick(selectIsPointerOnTube(tickState));
     timingRecord?.endHudUpdate();
 
     if (
@@ -651,7 +687,6 @@ export class MainLoop<RoomId extends string> {
       }
 
       this.#tickRootContainer(tickUpscale);
-      this.#initTopLevelFilters();
 
       // setting static boundsArea helps if a filter is put over the whole output container, since the bounds of the
       // container won't change. Eg, a lift going vertically up into a screen y-coord where previously nothing was
@@ -667,6 +702,19 @@ export class MainLoop<RoomId extends string> {
         : tickUpscale.gameEngineScreenSize.y,
       );
     }
+
+    this.#crtEffectContainer.tickPixelAspect(tickUpscale, tickDisplaySettings);
+
+    // most reasons the switch-on should restart also rebuild the room
+    // renderer anyway, but a respawn that reuses the same room object (two
+    // playables sharing a room, not in symbiosis) doesn't - rebuild() takes
+    // createNewRoomRenderer so it can still act on its own in that case:
+    this.#crtEffectContainer.rebuild(
+      createNewRoomRenderer,
+      crtEffectDecision,
+      tickUpscale,
+      tickDisplaySettings,
+    );
 
     // both recoveries are done for this tick: the variants are re-baked and the
     // hud/room renderers recreated, so nothing still references textures that
@@ -728,11 +776,12 @@ export class MainLoop<RoomId extends string> {
       "webglcontextrestored",
       this.#onWebGlContextRestored,
     );
-    this.#app.stage.removeChild(this.#mainContainer);
+    this.#app.stage.removeChild(this.#crtEffectContainer);
     this.#worldSound.disconnect();
     this.#roomRenderer?.destroy();
     this.#roomRenderer = undefined;
     this.#hudRenderer?.destroy();
+    this.#softwarePointerRenderer?.destroy();
     appTicker.remove(this.#tickAndCatch);
   }
 }
