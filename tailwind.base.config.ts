@@ -96,17 +96,7 @@ export const tailwindBaseConfig = {
     optimizeUniversalDefaults: true,
   },
 
-  safelist: [
-    {
-      // playable character animations are referenced dynamically via playableTailwindSpriteClassname
-      pattern: /texture-animated-(head|heels)_(walking|idle)_/,
-      variants: ["selectedMenuItem", "activated"],
-    },
-    {
-      // playable character static textures referenced dynamically
-      pattern: /texture-(head|heels)_(walking|standing|blinking)_/,
-    },
-  ],
+  safelist: [],
   theme: {
     colors: coloursCssVariables,
     spacing: {

@@ -30,7 +30,7 @@ export const ShowCmdKButton = () => {
         shortcutKeys={["^K", "⌘K"]}
         tooltipContent={"## Cmd-K menu\nFast access to most items"}
       >
-        <span class="relative text-single-line">CMD</span>
+        <span class="relative text-single-line">⌘K</span>
       </ToolbarButton>
       {open && (
         <DialogPortal>

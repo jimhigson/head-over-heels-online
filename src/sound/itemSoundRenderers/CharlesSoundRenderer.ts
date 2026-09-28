@@ -7,10 +7,7 @@ import {
   type ItemSoundRenderer,
   type ItemSoundRendererConstructableClass,
 } from "../ItemSoundRenderer";
-import {
-  type BracketedSound,
-  createBracketedSound,
-} from "../soundUtils/createBracketedSound";
+import { BracketedSound } from "../soundUtils/BracketedSound";
 import { activationBracketedSoundOptions } from "./generic/activationBracketedSoundOptions";
 import { FreeItemSoundRenderer } from "./generic/FreeItemSoundRenderer";
 
@@ -20,7 +17,7 @@ export class CharlesSoundRenderer implements ItemSoundRenderer<"charles"> {
   // add the walking buffer sources to here to play them
   #servoChannel: GainNode = audioCtx.createGain();
 
-  #servoBracketed = createBracketedSound(
+  #servoBracketed = new BracketedSound(
     {
       start: { soundId: "servoStart", playbackRate: 1 },
       loop: { soundId: "servoLoop", playbackRate: 1 },
@@ -39,7 +36,7 @@ export class CharlesSoundRenderer implements ItemSoundRenderer<"charles"> {
     this.renderContext = renderContext;
     this.#servoChannel.connect(this.output);
     this.#servoChannel.gain.value = 0.5;
-    this.#activatedBracketed = createBracketedSound(
+    this.#activatedBracketed = new BracketedSound(
       activationBracketedSoundOptions,
       this.output,
     );
@@ -67,16 +64,15 @@ export class CharlesSoundRenderer implements ItemSoundRenderer<"charles"> {
       roomTime === roomTimeActedOn &&
       keysIter(by).some((id) => isJoystick(items[id]));
 
-    this.#servoBracketed(controlledByJoystick);
-    this.#activatedBracketed(item.state.activated ?? true);
+    this.#servoBracketed.tick(controlledByJoystick);
+    this.#activatedBracketed.tick(item.state.activated ?? true);
 
     this.#freeItemSoundRenderer.tick(tickContext, controlledByJoystick);
   }
 
   destroy(): void {
-    this.#servoBracketed(false);
-    // don't call #activatedBracketed(false) here — that would play the
-    // deactivation sound when leaving the room, not a real deactivation
+    this.#servoBracketed.destroy();
+    this.#activatedBracketed.destroy();
     this.#freeItemSoundRenderer.destroy();
   }
 }

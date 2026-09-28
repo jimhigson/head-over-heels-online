@@ -51,7 +51,7 @@ export const SaveAndLoadButtons = () => {
           class="!bg-moss !text-white"
         >
           <span class="relative leading-none text-single-line">
-            {`v${savedVersion}`}
+            {`${savedVersion}`}
           </span>
         </ToolbarButton>
       : <MenuButton

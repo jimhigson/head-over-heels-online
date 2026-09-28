@@ -2,12 +2,12 @@ import { type ItemTickContext } from "../../game/render/ItemRenderContexts";
 import { audioCtx } from "../audioCtx";
 import { type ItemSoundRenderContext } from "../ItemSoundRenderContext";
 import { type ItemSoundRenderer } from "../ItemSoundRenderer";
-import { createBracketedSound } from "../soundUtils/createBracketedSound";
+import { BracketedSound } from "../soundUtils/BracketedSound";
 
 export class ToasterSoundRenderer implements ItemSoundRenderer<"deadlyBlock"> {
   public readonly output: GainNode = audioCtx.createGain();
 
-  #bracketed = createBracketedSound(
+  #bracketed = new BracketedSound(
     {
       start: { soundId: "toasterPushDown" },
       stop: { soundId: "toasterPopUp" },
@@ -23,10 +23,10 @@ export class ToasterSoundRenderer implements ItemSoundRenderer<"deadlyBlock"> {
   }
 
   tick(_tickContext: ItemTickContext) {
-    this.#bracketed(!this.renderContext.item.state.disabled);
+    this.#bracketed.tick(!this.renderContext.item.state.disabled);
   }
 
   destroy(): void {
-    //this.#bracketed(false);
+    this.#bracketed.destroy();
   }
 }
