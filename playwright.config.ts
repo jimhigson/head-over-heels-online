@@ -1,6 +1,8 @@
 import { defineConfig, devices } from "@playwright/test";
 import getPort from "get-port";
 import { produce } from "immer";
+import { tmpdir } from "node:os";
+import path from "node:path";
 
 import { type ScreenshotTestOptions } from "./e2e/ScreenshotTestOptions";
 
@@ -11,6 +13,16 @@ const desktopSize = {
   // this is also smaller than real phones, so that we get smaller screenshot files on disc
   viewport: { width: 512, height: 384 },
   deviceScaleFactor: 1,
+};
+// macOS 27 denies Firefox's shared app-data dir to terminal-launched processes:
+// https://github.com/microsoft/playwright/issues/42768
+const firefoxAppDataDir = path.join(tmpdir(), "playwright-firefox-app-data");
+const firefoxLaunchOptions = {
+  env: {
+    ...process.env,
+    MOZ_APP_DATA: firefoxAppDataDir,
+    MOZ_LOCAL_APP_DATA: firefoxAppDataDir,
+  },
 };
 const phoneSize = {
   // again, results in 2x upscale for the game area, but in an aspect ratio more plausible for a phone,
@@ -87,6 +99,7 @@ export default defineConfig<ScreenshotTestOptions>({
       use: {
         ...devices["Desktop Firefox"],
         ...desktopSize,
+        launchOptions: firefoxLaunchOptions,
       },
     },
     {

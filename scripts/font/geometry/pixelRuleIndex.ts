@@ -18,6 +18,32 @@ export type PixelRules = {
 
 const emptyRules: PixelRules = { applied: [], couldApply: [] };
 
+/** every cell a match's shape reaches into, in bitmap cell coords */
+export const reachedCellsOf = (match: KernelMatch): Array<[number, number]> => {
+  const { rule, x, y } = match;
+  const [[anchorX, anchorY]] = rule.activeSite;
+  return [
+    ...activeCellsOf(match),
+    ...(rule.alsoClaims ?? []).map(([claimX, claimY]): [number, number] => [
+      x - anchorX + claimX,
+      y - anchorY + claimY,
+    ]),
+  ];
+};
+
+/** the cells a match redraws as its own, in bitmap cell coords */
+export const activeCellsOf = ({
+  rule,
+  x,
+  y,
+}: KernelMatch): Array<[number, number]> => {
+  const [[anchorX, anchorY]] = rule.activeSite;
+  return rule.activeSite.map(([siteX, siteY]) => [
+    x - anchorX + siteX,
+    y - anchorY + siteY,
+  ]);
+};
+
 /**
  * Which rules bear on each cell of a glyph.
  *
@@ -55,10 +81,9 @@ export const pixelRuleIndex = (
     }
   }
 
-  for (const { rule, x, y } of matches) {
-    const [[anchorX, anchorY]] = rule.activeSite;
-    for (const [siteX, siteY] of rule.activeSite) {
-      at(x - anchorX + siteX, y - anchorY + siteY).applied.push(rule.name);
+  for (const match of matches) {
+    for (const [cellX, cellY] of activeCellsOf(match)) {
+      at(cellX, cellY).applied.push(match.rule.name);
     }
   }
 

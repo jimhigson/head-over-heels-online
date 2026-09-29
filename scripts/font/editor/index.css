@@ -260,22 +260,39 @@ body {
   max-width: 260px;
 }
 
-.editor-rule-option {
-  align-items: center;
-  padding-left: 26px;
-}
-.editor-rule-option-trigger {
-  flex: 1;
-  min-width: 0;
-  justify-content: space-between;
+.editor-palette {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 6px;
 }
 
-.editor-choice-preview {
-  flex: none;
-  display: block;
-}
-.editor-choice-item {
+.editor-palette-tile {
   display: flex;
+  flex-direction: column;
   align-items: center;
-  gap: 6px;
+  gap: 2px;
+  padding: 3px;
+  background: none;
+  border: 2px solid transparent;
+  color: inherit;
+  font: inherit;
+  cursor: pointer;
+}
+.editor-palette-tile:hover {
+  border-color: #7ea8ff;
+}
+.editor-palette-tile[data-current="true"] {
+  border-color: #ffe94b;
+}
+/* a choice a neighbour's shape blocks here - shown, but greyed */
+.editor-palette-tile[data-inert="true"] {
+  opacity: 0.4;
+}
+
+.editor-palette-label {
+  max-width: 70px;
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  font-size: 10px;
 }

@@ -28,14 +28,6 @@ export const settingAt = (
   );
 };
 
-export const choiceAt = (
-  override: GlyphOverride | undefined,
-  cell: PixelKey,
-  ruleName: string,
-  optionName: string,
-): string | undefined =>
-  settingObjectAt(override, cell, ruleName)?.options?.[optionName];
-
 /**
  * whether a rule applies to a character as a whole, ignoring anything said
  * about individual pixels. Every reason a character sits a rule out is an

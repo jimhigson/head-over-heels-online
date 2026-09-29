@@ -11,7 +11,7 @@
   },
   "2": {
     "vectorMode": false,
-    "disabledRules": ["roundedCornerBottomRight"],
+    "disabledRules": ["roundedCornerBottomRight", "roundedNotchOpensLeft"],
     "pixelRules": {
       "6,0": { "inkCornerTopRight": { "on": true } },
       "0,2": {
@@ -34,26 +34,35 @@
       },
       "6,3": {
         "waistedCorner": { "on": false },
-        "singleChamferAddTopLeft": { "on": true }
+        "singleChamferAddTopLeft": { "on": false },
+        "diagonalSweepRight": { "on": true }
       },
       "5,4": { "singleChamferAddTopLeft": { "on": true } }
     }
   },
   "3": {
     "pixelRules": {
-      "6,0": { "inkCornerTopRight": { "on": true } },
-      "6,7": { "inkCornerBottomRight": { "on": true } },
       "2,2": { "uValleySubLeft": { "on": false } },
       "2,5": { "uValleySubLeft": { "on": false } },
-      "1,5": { "uValleyAddLeft": { "on": true } },
-      "1,2": { "uValleyAddLeft": { "on": true } }
+      "6,7": { "inkCornerBottomRight": { "on": true } },
+      "6,0": { "inkCornerTopRight": { "on": true } },
+      "1,2": {
+        "singleRoundedAddTopRight": { "options": { "radius": "half" } },
+        "uValleyAddLeft": { "on": true }
+      },
+      "1,5": {
+        "singleRoundedAddBottomRight": { "options": { "radius": "half" } },
+        "uValleyAddLeft": { "on": true }
+      }
     }
   },
   "4": { "disabledRules": ["roundedCornerBottomRight"] },
   "5": {
     "pixelRules": {
       "2,5": { "uValleyAddLeft": { "on": true } },
-      "6,3": { "inkCornerTopRight": { "on": true } }
+      "6,3": {
+        "inkCornerTopRight": { "on": true, "options": { "radius": "half" } }
+      }
     }
   },
   "6": {
@@ -63,10 +72,20 @@
       "0,7": { "inkCornerBottomLeft": { "on": true } },
       "6,7": { "inkCornerBottomRight": { "on": true } },
       "0,0": { "inkCornerTopLeft": { "on": true } },
-      "6,3": { "inkCornerTopRight": { "on": true } },
-      "3,5": { "isolatedHole": { "on": true } },
-      "5,2": { "uValleyAddRight": { "on": false } },
-      "4,2": { "uValleySubRight": { "on": true } }
+      "6,3": {
+        "inkCornerTopRight": { "on": true, "options": { "radius": "half" } }
+      },
+      "3,5": {
+        "isolatedHole": { "on": true, "options": { "corners": "allRound" } }
+      },
+      "5,2": {
+        "uValleyAddRight": { "on": false },
+        "singleRoundedAddTopLeft": {
+          "on": true,
+          "options": { "radius": "half" }
+        },
+        "singleChamferAddTopLeft": { "on": false }
+      }
     }
   },
   "7": {
@@ -107,9 +126,15 @@
       "6,0": { "inkCornerTopRight": { "on": true } },
       "0,0": { "inkCornerTopLeft": { "on": true } },
       "0,4": { "inkCornerBottomLeft": { "on": true } },
-      "3,2": { "isolatedHole": { "on": true } },
-      "2,5": { "uValleyAddLeft": { "on": false } },
-      "3,5": { "uValleySubLeft": { "on": true } }
+      "3,2": {
+        "isolatedHole": { "on": true, "options": { "corners": "allRound" } }
+      },
+      "2,5": {
+        "singleRoundedAddBottomRight": {
+          "on": true,
+          "options": { "radius": "half" }
+        }
+      }
     }
   },
   "↖": {
@@ -276,7 +301,23 @@
       }
     ]
   },
-  "e": { "pixelRules": { "6,7": { "waistedCorner": { "on": true } } } },
+  "e": {
+    "pixelRules": {
+      "6,7": { "waistedCorner": { "on": true } },
+      "4,5": {
+        "singleRoundedAddBottomLeft": {
+          "on": true,
+          "options": { "radius": "half" }
+        }
+      },
+      "6,4": {
+        "inkCornerBottomRight": {
+          "on": true,
+          "options": { "cut": "round", "radius": "half" }
+        }
+      }
+    }
+  },
   "q": {
     "pixelRules": {
       "7,9": {
@@ -287,14 +328,18 @@
         "inkCornerBottomRight": { "on": false },
         "staircaseFlat1to2InkLeftStepLeftmergedStart": { "on": false },
         "singleChamferSubBottomRight": { "on": true }
-      }
+      },
+      "3,4": { "isolatedHole": { "options": { "corners": "roundLeft" } } }
     }
   },
   "R": {
+    "vectorMode": false,
     "pixelRules": {
       "3,7": { "notchOpensDown": { "options": { "shape": "wedgeSquareLow" } } },
-      "6,0": { "inkCornerTopRight": { "on": true } }
-    }
+      "6,0": { "inkCornerTopRight": { "on": true } },
+      "3,2": { "isolatedHole": { "options": { "corners": "roundRight" } } }
+    },
+    "disabledRules": []
   },
   "Y": {
     "pixelRules": {
@@ -309,6 +354,9 @@
           "on": true,
           "options": { "scale": "fitInPixel" }
         }
+      },
+      "3,1": {
+        "valleyPoint": { "on": true, "options": { "slope": "diagonal" } }
       }
     }
   },
@@ -318,7 +366,15 @@
       "notchOpensLeft",
       "notchOpensUp",
       "notchOpensDown"
-    ]
+    ],
+    "pixelRules": {
+      "0,8": {
+        "singleRoundedAddBottomRight": {
+          "on": true,
+          "options": { "radius": "half" }
+        }
+      }
+    }
   },
   ";": {
     "disabledRules": [
@@ -326,7 +382,15 @@
       "notchOpensLeft",
       "notchOpensUp",
       "notchOpensDown"
-    ]
+    ],
+    "pixelRules": {
+      "0,8": {
+        "singleRoundedAddBottomRight": {
+          "on": true,
+          "options": { "radius": "half" }
+        }
+      }
+    }
   },
   "‘": {
     "disabledRules": [
@@ -334,7 +398,15 @@
       "notchOpensLeft",
       "notchOpensUp",
       "notchOpensDown"
-    ]
+    ],
+    "pixelRules": {
+      "2,2": {
+        "singleRoundedAddBottomLeft": {
+          "on": true,
+          "options": { "radius": "half" }
+        }
+      }
+    }
   },
   "’": {
     "disabledRules": [
@@ -342,14 +414,25 @@
       "notchOpensLeft",
       "notchOpensUp",
       "notchOpensDown"
-    ]
+    ],
+    "pixelRules": {
+      "0,2": {
+        "singleRoundedAddBottomRight": {
+          "on": true,
+          "options": { "radius": "half" }
+        }
+      }
+    }
   },
   "🛡": {
+    "vectorMode": false,
     "disabledRules": [
       "notchOpensRight",
       "notchOpensLeft",
       "notchOpensUp",
-      "notchOpensDown"
+      "notchOpensDown",
+      "roundedNotchOpensRight",
+      "roundedNotchOpensLeft"
     ],
     "pixelRules": {
       "6,0": { "inkCornerTopRight": { "on": true } },
@@ -367,7 +450,9 @@
       "notchOpensLeft",
       "notchOpensUp",
       "notchOpensDown",
-      "isolatedHole"
+      "isolatedHole",
+      "roundedNotchOpensRight",
+      "roundedNotchOpensLeft"
     ]
   },
   "*": {
@@ -385,9 +470,10 @@
     "pixelRules": {
       "0,5": {
         "notchOpensLeft": {
-          "on": true,
-          "options": { "shape": "wedgeSquareLow" }
-        }
+          "options": { "shape": "wedgeSquareLow" },
+          "on": true
+        },
+        "roundedNotchOpensLeft": { "on": false }
       },
       "2,6": { "staircase1to1InkLeftStepLeftmergedStart": { "on": true } },
       "4,6": { "staircase1to1InkRightStepRightmergedStart": { "on": true } },
@@ -399,21 +485,24 @@
       },
       "0,2": {
         "notchOpensLeft": {
-          "on": true,
-          "options": { "shape": "wedgeSquareHigh" }
-        }
+          "options": { "shape": "wedgeSquareHigh" },
+          "on": true
+        },
+        "roundedNotchOpensLeft": { "on": false }
       },
       "6,2": {
         "notchOpensRight": {
-          "on": true,
-          "options": { "shape": "wedgeSquareHigh" }
-        }
+          "options": { "shape": "wedgeSquareHigh" },
+          "on": true
+        },
+        "roundedNotchOpensRight": { "on": false }
       },
       "6,5": {
         "notchOpensRight": {
-          "on": true,
-          "options": { "shape": "wedgeSquareLow" }
-        }
+          "options": { "shape": "wedgeSquareLow" },
+          "on": true
+        },
+        "roundedNotchOpensRight": { "on": false }
       }
     }
   },
@@ -432,24 +521,57 @@
       "0,0": { "inkCornerTopLeft": { "on": true } },
       "0,7": { "inkCornerBottomLeft": { "on": true } },
       "2,2": { "singleChamferSubTopLeft": { "on": true } },
-      "4,2": { "singleChamferSubTopRight": { "on": true } }
+      "4,2": { "singleChamferSubTopRight": { "on": true } },
+      "1,1": {
+        "singleRoundedAddTopLeft": {
+          "on": true,
+          "options": { "radius": "half" }
+        }
+      },
+      "5,1": {
+        "singleRoundedAddTopRight": {
+          "on": true,
+          "options": { "radius": "half" }
+        }
+      },
+      "1,6": {
+        "singleRoundedAddBottomLeft": {
+          "on": true,
+          "options": { "radius": "half" }
+        }
+      },
+      "6,5": { "inkCornerBottomRight": { "on": true } },
+      "5,4": {
+        "singleRoundedAddBottomRight": {
+          "on": true,
+          "options": { "radius": "half" }
+        }
+      }
     },
     "disabledRules": ["notchOpensDown", "isolatedHole"]
   },
   "&": {
+    "vectorMode": false,
     "pixelRules": {
       "0,3": { "inkCornerTopLeft": { "on": true } },
       "1,0": { "inkCornerTopLeft": { "on": true } },
       "5,0": { "inkCornerTopRight": { "on": true } },
-      "0,7": { "inkCornerBottomLeft": { "on": true } }
-    }
+      "0,7": { "inkCornerBottomLeft": { "on": true } },
+      "6,1": {
+        "singleRoundedAddBottomRight": {
+          "on": true,
+          "options": { "radius": "half" }
+        }
+      }
+    },
+    "disabledRules": []
   },
   "A": {
     "vectorMode": false,
     "pixelRules": {
       "3,2": {
         "isolatedHole": {
-          "options": { "corners": "allRound", "scale": "fitInPixel" },
+          "options": { "corners": "roundTop", "scale": "fitInPixel" },
           "on": true
         }
       },
@@ -472,8 +594,11 @@
       },
       "6,7": { "inkCornerBottomRight": { "on": true } },
       "4,5": {
-        "verticalSlotHole": { "options": { "scale": "areaPreserving" } }
-      }
+        "verticalSlotHole": {
+          "options": { "scale": "areaPreserving", "corners": "roundRight" }
+        }
+      },
+      "4,1": { "uValleyAddLeft": { "on": true } }
     }
   },
   "P": {
@@ -481,7 +606,7 @@
       "6,4": { "inkCornerBottomRight": { "on": true } },
       "6,0": { "inkCornerTopRight": { "on": true } },
       "3,2": {
-        "isolatedHole": { "on": true, "options": { "corners": "allRound" } }
+        "isolatedHole": { "on": true, "options": { "corners": "roundRight" } }
       }
     }
   },
@@ -501,7 +626,8 @@
       "4,2": {
         "inkCornerTopLeft": { "on": true, "options": { "cut": "chamfer" } }
       },
-      "4,6": { "staircase1to1InkRightStepRightmergedStart": { "on": true } }
+      "4,6": { "staircase1to1InkRightStepRightmergedStart": { "on": true } },
+      "6,4": { "roundedNotchOpensRight": { "on": true } }
     },
     "disabledRules": ["roundedCornerBottomLeft"]
   },
@@ -533,6 +659,7 @@
     }
   },
   "z": {
+    "vectorMode": false,
     "pixelRules": {
       "0,4": { "notchOpensLeft": { "options": { "shape": "wedgeSquareLow" } } },
       "4,4": {
@@ -552,13 +679,32 @@
           "options": { "runEnd": "halfTread" }
         }
       }
-    }
+    },
+    "disabledRules": ["roundedNotchOpensLeft"]
   },
   "": {
     "pixelRules": {
       "9,1": {
         "chamferStepBottomRight": { "on": true },
         "waistedCorner": { "on": true }
+      },
+      "7,5": {
+        "singleRoundedAddBottomLeft": {
+          "on": true,
+          "options": { "radius": "half" }
+        }
+      },
+      "8,5": {
+        "singleRoundedAddBottomRight": {
+          "on": true,
+          "options": { "radius": "half" }
+        }
+      },
+      "7,2": {
+        "singleRoundedAddTopLeft": {
+          "on": true,
+          "options": { "radius": "half" }
+        }
       }
     }
   },
@@ -723,6 +869,30 @@
       },
       "6,1": {
         "apexPointsRight": { "on": true, "options": { "carryInto": "below" } }
+      },
+      "3,3": {
+        "singleRoundedAddTopLeft": {
+          "on": true,
+          "options": { "radius": "half" }
+        }
+      },
+      "3,4": {
+        "singleRoundedAddBottomLeft": {
+          "on": true,
+          "options": { "radius": "half" }
+        }
+      },
+      "11,3": {
+        "singleRoundedAddTopRight": {
+          "on": true,
+          "options": { "radius": "half" }
+        }
+      },
+      "11,4": {
+        "singleRoundedAddBottomRight": {
+          "on": true,
+          "options": { "radius": "half" }
+        }
       }
     }
   },
@@ -735,7 +905,19 @@
       "9,0": { "singleChamferSubTopLeft": { "on": false } },
       "12,0": { "singleChamferSubTopRight": { "on": true } },
       "5,6": { "singleChamferSubBottomLeft": { "on": true } },
-      "9,6": { "singleChamferSubBottomRight": { "on": true } }
+      "9,6": { "singleChamferSubBottomRight": { "on": true } },
+      "3,6": {
+        "singleRoundedAddBottomLeft": {
+          "on": true,
+          "options": { "radius": "half" }
+        }
+      },
+      "11,6": {
+        "singleRoundedAddBottomRight": {
+          "on": true,
+          "options": { "radius": "half" }
+        }
+      }
     }
   },
   "K": {
@@ -1012,10 +1194,19 @@
       }
     ],
     "artHash": "387b81a0",
-    "pixelRules": { "3,4": { "valleyPoint": { "on": true } } }
+    "pixelRules": {
+      "3,4": { "valleyPoint": { "on": true }, "uValleySubUp": { "on": false } },
+      "3,3": { "valleyPoint": { "on": true } }
+    }
   },
   "V": { "pixelRules": { "3,3": { "valleyPoint": { "on": true } } } },
-  "W": { "pixelRules": { "2,1": { "valleyPoint": { "on": false } } } },
+  "W": {
+    "pixelRules": {
+      "2,1": { "valleyPoint": { "on": false } },
+      "3,7": { "roundedNotchOpensDown": { "on": true } }
+    }
+  },
+  "M": { "pixelRules": { "3,0": { "roundedNotchOpensUp": { "on": true } } } },
   "🕹": {
     "vectorMode": false,
     "pixelRules": {
@@ -1139,19 +1330,45 @@
   "C": {
     "pixelRules": {
       "0,0": { "inkCornerTopLeft": { "on": true } },
-      "0,7": { "inkCornerBottomLeft": { "on": true } }
+      "0,7": { "inkCornerBottomLeft": { "on": true } },
+      "5,3": {
+        "singleRoundedAddTopLeft": {
+          "on": true,
+          "options": { "radius": "half" }
+        }
+      },
+      "5,4": {
+        "singleRoundedAddBottomLeft": {
+          "on": true,
+          "options": { "radius": "half" }
+        }
+      }
     }
   },
   "G": {
     "pixelRules": {
       "0,0": { "inkCornerTopLeft": { "on": true } },
-      "0,7": { "inkCornerBottomLeft": { "on": true } }
+      "0,7": { "inkCornerBottomLeft": { "on": true } },
+      "4,3": {
+        "singleRoundedAddTopLeft": {
+          "on": true,
+          "options": { "radius": "half" }
+        }
+      },
+      "4,4": {
+        "singleRoundedAddBottomRight": { "options": { "radius": "half" } },
+        "singleRoundedAddBottomLeft": {
+          "options": { "radius": "half" },
+          "on": true
+        }
+      }
     }
   },
   "J": {
     "pixelRules": {
       "0,7": { "inkCornerBottomLeft": { "on": true } },
-      "6,7": { "inkCornerBottomRight": { "on": true } }
+      "6,7": { "inkCornerBottomRight": { "on": true } },
+      "2,5": { "uValleyAddUp": { "on": true } }
     }
   },
   "S": {
@@ -1195,6 +1412,235 @@
     "pixelRules": {
       "2,2": { "uValleySubLeft": { "on": false } },
       "1,2": { "uValleyAddLeft": { "on": true } }
+    }
+  },
+  "a": {
+    "pixelRules": {
+      "4,7": { "looseRoundedCornerInPixelBottomRight": { "on": true } },
+      "3,4": { "isolatedHole": { "options": { "corners": "allRound" } } }
+    }
+  },
+  "(": {
+    "vectorMode": true,
+    "shapes": [
+      {
+        "type": "contour",
+        "points": [
+          [7, 0],
+          [7, 2],
+          [5, 2],
+          [5, 6],
+          [7, 6],
+          [7, 8],
+          [2, 8],
+          [0, 8],
+          [0, 6],
+          [0, 2],
+          [0, 0],
+          [2, 0]
+        ],
+        "corners": { "7": "round", "10": "round" }
+      }
+    ],
+    "artHash": "dff43ba5"
+  },
+  ")": {
+    "vectorMode": true,
+    "shapes": [
+      {
+        "type": "contour",
+        "points": [
+          [5, 0],
+          [7, 0],
+          [7, 2],
+          [7, 6],
+          [7, 8],
+          [5, 8],
+          [0, 8],
+          [0, 6],
+          [2, 6],
+          [2, 2],
+          [0, 2],
+          [0, 0]
+        ],
+        "corners": { "1": "round", "4": "round" }
+      }
+    ],
+    "artHash": "0890c5a5"
+  },
+  "g": {
+    "pixelRules": {
+      "3,4": { "isolatedHole": { "options": { "corners": "allRound" } } },
+      "3,7": {
+        "singleRoundedAddBottomRight": {
+          "on": true,
+          "options": { "radius": "half" }
+        }
+      }
+    }
+  },
+  "p": {
+    "pixelRules": {
+      "3,4": {
+        "isolatedHole": {
+          "options": { "corners": "roundRight", "scale": "areaPreserving" }
+        }
+      }
+    }
+  },
+  "b": {
+    "pixelRules": {
+      "3,4": { "isolatedHole": { "options": { "corners": "roundRight" } } }
+    }
+  },
+  "d": {
+    "pixelRules": {
+      "3,4": { "isolatedHole": { "options": { "corners": "roundLeft" } } }
+    }
+  },
+  "y": {
+    "pixelRules": {
+      "3,4": {
+        "looseRoundedCornerTopRight": { "on": false },
+        "looseRoundedCornerInPixelTopRight": { "on": false },
+        "singleRoundedAddBottomLeft": {
+          "on": true,
+          "options": { "radius": "half" }
+        }
+      },
+      "3,7": {
+        "singleRoundedAddBottomRight": {
+          "on": true,
+          "options": { "radius": "half" }
+        }
+      }
+    }
+  },
+  "n": {
+    "pixelRules": {
+      "3,4": {
+        "singleRoundedAddTopRight": {
+          "on": true,
+          "options": { "radius": "half" }
+        }
+      }
+    }
+  },
+  "f": {
+    "pixelRules": {
+      "3,3": {
+        "singleRoundedAddTopLeft": {
+          "on": true,
+          "options": { "radius": "half" }
+        }
+      }
+    }
+  },
+  "h": {
+    "pixelRules": {
+      "3,5": {
+        "singleRoundedAddTopRight": {
+          "on": true,
+          "options": { "radius": "half" }
+        }
+      }
+    }
+  },
+  "c": {
+    "pixelRules": {
+      "3,4": { "uValleySubRight": { "on": false } },
+      "4,4": { "uValleyAddRight": { "on": true } }
+    }
+  },
+  "r": {
+    "pixelRules": {
+      "3,5": {
+        "singleRoundedAddTopLeft": {
+          "on": true,
+          "options": { "radius": "half" }
+        }
+      }
+    }
+  },
+  "t": {
+    "pixelRules": {
+      "3,4": {
+        "singleRoundedAddBottomLeft": {
+          "on": true,
+          "options": { "radius": "half" }
+        }
+      }
+    }
+  },
+  "u": {
+    "pixelRules": {
+      "3,5": { "uValleySubUp": { "on": false } },
+      "3,4": { "uValleyAddUp": { "on": true } }
+    }
+  },
+  "w": {
+    "pixelRules": {
+      "5,4": { "valleyPoint": { "on": false } },
+      "4,7": { "roundedNotchOpensDown": { "on": true } }
+    }
+  },
+  "m": { "pixelRules": { "4,2": { "roundedNotchOpensUp": { "on": true } } } },
+  "x": {
+    "pixelRules": {
+      "3,2": { "roundedNotchOpensUp": { "on": true } },
+      "3,7": { "roundedNotchOpensDown": { "on": true } }
+    }
+  },
+  "↻": {
+    "pixelRules": {
+      "5,3": { "singleRoundedAddTopRight": { "on": true } },
+      "5,5": { "singleRoundedAddBottomRight": { "on": true } }
+    }
+  },
+  "↺": {
+    "pixelRules": {
+      "2,5": { "singleRoundedAddBottomLeft": { "on": true } },
+      "2,3": { "singleRoundedAddTopLeft": { "on": true } }
+    }
+  },
+  "⎌": {
+    "pixelRules": {
+      "4,5": {
+        "singleRoundedAddTopRight": {
+          "on": true,
+          "options": { "radius": "half" }
+        }
+      }
+    }
+  },
+  "⟳": {
+    "pixelRules": {
+      "3,5": {
+        "singleRoundedAddTopLeft": {
+          "on": true,
+          "options": { "radius": "half" }
+        }
+      }
+    }
+  },
+  "j": {
+    "pixelRules": {
+      "0,7": {
+        "singleRoundedAddBottomRight": {
+          "on": true,
+          "options": { "radius": "half" }
+        }
+      }
+    }
+  },
+  "l": {
+    "pixelRules": {
+      "3,4": {
+        "singleRoundedAddBottomLeft": {
+          "on": true,
+          "options": { "radius": "half" }
+        }
+      }
     }
   }
 }

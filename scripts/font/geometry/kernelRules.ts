@@ -37,6 +37,11 @@ export type KernelRuleAction =
    */
   | { type: "roundedCorner"; corner: CornerName }
   /**
+   * the claimed cell is clear, with ink on the two sides away from `corner`.
+   * It is filled and rounded at `corner` by a quarter circle within the cell
+   */
+  | { type: "roundedCornerInPixel"; corner: CornerName }
+  /**
    * the claimed cells are one tread of a staircase - one cell across for
    * every `treadHeight` down. The square step is recut as the straight line
    * the staircase approximates, which passes through the tread's middle
@@ -103,6 +108,16 @@ export type KernelRuleAction =
    */
   | { type: "notch"; opens: "down" | "left" | "right" | "up" }
   /**
+   * as a V notch, but with the V's two shoulders curved into the vertical
+   * edge rather than meeting it at a corner
+   */
+  | { type: "roundedNotch"; opens: "down" | "left" | "right" | "up" }
+  /**
+   * the claimed cells are a clear step cell and the ink above it, where a
+   * vertical right edge meets a 45 degree edge. One curve sweeps between them
+   */
+  | { type: "diagonalSweep" }
+  /**
    * the claimed cell is a square step in a pair of edges - the shoulder above
    * a '1' flag, the underside of a 'Y' arm where it meets the stem, the
    * corner of a 'P' bowl. What the 45 degree line does there is the rule's
@@ -134,6 +149,11 @@ export type KernelRuleAction =
    * neighbours across the gap between them
    */
   | { type: "singleChamferAdd"; corner: CornerName }
+  /**
+   * as singleChamferAdd, but the ink added is a concave quarter-circle
+   * fillet within the cell rather than a half cell
+   */
+  | { type: "singleRoundedAdd"; corner: CornerName }
   /**
    * a one-cell bite recut as a half circle the width of the pixel, so the
    * surface dips in one round scoop rather than stepping in and out. The
@@ -350,6 +370,16 @@ export const scaleOption: KernelRuleOption = {
   ],
 };
 
+/** how far a rounding kept inside one cell reaches along the cell's edges */
+export const inPixelRadiusOption: KernelRuleOption = {
+  name: "radius",
+  description: "how far the rounding reaches along each edge",
+  choices: [
+    { name: "full", description: "the whole cell" },
+    { name: "half", description: "half the cell" },
+  ],
+};
+
 /** which of a shape's four corners are rounded, in every combination */
 export const cornersOption: KernelRuleOption = {
   name: "corners",
@@ -414,6 +444,51 @@ const notchRules: readonly KernelRule[] = (
   pattern,
   activeSite: [[1, 1]],
   action: { type: "notch", opens },
+}));
+
+/**
+ * A one-cell bite in a vertical edge recut as a V with rounded shoulders -
+ * the waist of a 'B'. The column outside the bite must be clear only beside
+ * the bite and its two neighbours, so the edge need not run on beyond them
+ */
+const roundedNotchRules: readonly KernelRule[] = (
+  [
+    { opens: "right", pattern: ["?#.", "#..", "?#."] },
+    { opens: "left", pattern: [".#?", "..#", ".#?"] },
+  ] as const
+).map(({ opens, pattern }): KernelRule => ({
+  name: `roundedNotchOpens${opens[0].toUpperCase()}${opens.slice(1)}`,
+  pattern,
+  activeSite: [[1, 1]],
+  // the shoulders curve across the whole height of the cells above and below
+  alsoClaims: [
+    [1, 0],
+    [1, 2],
+  ],
+  action: { type: "roundedNotch", opens },
+}));
+
+/**
+ * The rounded notch turned a quarter, for a bite in a horizontal edge - the
+ * crotch of an 'm' or 'w'. Off until switched on: the shape is common, and
+ * only some glyphs want it rounded
+ */
+const roundedVerticalNotchRules: readonly KernelRule[] = (
+  [
+    { opens: "down", pattern: ["?#?", "#.#", "..."] },
+    { opens: "up", pattern: ["...", "#.#", "?#?"] },
+  ] as const
+).map(({ opens, pattern }): KernelRule => ({
+  name: `roundedNotchOpens${opens[0].toUpperCase()}${opens.slice(1)}`,
+  defaultOff: true,
+  pattern,
+  activeSite: [[1, 1]],
+  // the shoulders curve across the whole width of the cells either side
+  alsoClaims: [
+    [0, 1],
+    [2, 1],
+  ],
+  action: { type: "roundedNotch", opens },
 }));
 
 /**
@@ -523,6 +598,14 @@ const singleChamferRules: readonly KernelRule[] = (
     activeSite: [addSite],
     action: { type: "singleChamferAdd", corner },
   },
+  {
+    name: `singleRoundedAdd${corner[0].toUpperCase()}${corner.slice(1)}`,
+    defaultOff: true,
+    options: [inPixelRadiusOption],
+    pattern: add,
+    activeSite: [addSite],
+    action: { type: "singleRoundedAdd", corner },
+  },
 ]);
 
 /**
@@ -600,6 +683,19 @@ const valleyRule: KernelRule = {
   // surface - which is every bowl in the font - so this is offered at the
   // cell rather than taken wherever the two rows happen to line up
   defaultOff: true,
+  options: [
+    {
+      name: "slope",
+      description: "how steeply the V's sides run down to its point",
+      choices: [
+        { name: "steep", description: "from the bitten cell's corners, 1:2" },
+        {
+          name: "diagonal",
+          description: "at 45° for the lower half, then straight up the cell",
+        },
+      ],
+    },
+  ],
   pattern: ["#.#", "###"],
   // the bitten cell itself: it is what gets filled in and recut
   activeSite: [[1, 0]],
@@ -929,7 +1025,10 @@ export const kernelRules: readonly KernelRule[] = [
   // a single cell bitten out of an otherwise straight edge - the waist of a
   // 'k', the four bites of an 'x', and one each in 'w' and 'B'. The column or
   // row just outside the edge has to be clear for the whole height of the
-  // pattern, which is what makes the edge straight either side of the bite
+  // pattern, which is what makes the edge straight either side of the bite.
+  // The rounded sideways notches come first, so they take those bites
+  ...roundedNotchRules,
+  ...roundedVerticalNotchRules,
   ...notchRules,
   // a lone cell standing proud of a straight edge, brought to a point
   ...apexRules,
@@ -1038,6 +1137,47 @@ export const kernelRules: readonly KernelRule[] = [
     ],
     action: { type: "roundedCorner", corner: "bottomRight" },
   },
+  // the rounded corners read from only the corner's own 2×2 - eg the gap
+  // between the legs of an 'a'. Off until switched on: without the clear
+  // row and column beyond, the rounding may cut a slit against other ink
+  ...(["topLeft", "topRight", "bottomLeft", "bottomRight"] as const).flatMap(
+    (corner): KernelRule[] => {
+      const top = corner.startsWith("top");
+      const left = corner.endsWith("Left");
+      const siteX = left ? 0 : 1;
+      const siteY = top ? 0 : 1;
+      // the directions from the corner cell towards the ink
+      const inkX = left ? 1 : -1;
+      const inkY = top ? 1 : -1;
+      const inkRow = "##";
+      const cornerRow = left ? ".#" : "#.";
+      const pattern = top ? [cornerRow, inkRow] : [inkRow, cornerRow];
+      const cornerName = `${corner[0].toUpperCase()}${corner.slice(1)}`;
+      return [
+        {
+          name: `looseRoundedCorner${cornerName}`,
+          defaultOff: true,
+          pattern,
+          activeSite: [[siteX, siteY]],
+          alsoClaims: [
+            [siteX + inkX, siteY],
+            [siteX + 2 * inkX, siteY],
+            [siteX, siteY + inkY],
+            [siteX, siteY + 2 * inkY],
+          ],
+          action: { type: "roundedCorner", corner },
+        },
+        {
+          // the same corner kept within its own cell, leaving neighbours free
+          name: `looseRoundedCornerInPixel${cornerName}`,
+          defaultOff: true,
+          pattern,
+          activeSite: [[siteX, siteY]],
+          action: { type: "roundedCornerInPixel", corner },
+        },
+      ];
+    },
+  ),
   // a square step in a pair of edges, cut back to one 45 degree line. Off
   // until switched on: whether a step is a corner that should stay square or
   // a shoulder that should ramp is a matter of what the letter is doing,
@@ -1072,6 +1212,7 @@ export const kernelRules: readonly KernelRule[] = [
             { name: "chamfer", description: "straight across the cell at 45°" },
           ],
         },
+        inPixelRadiusOption,
       ],
       pattern: [
         corner.startsWith("top") ? "?.?" : "?#?",
@@ -1082,6 +1223,19 @@ export const kernelRules: readonly KernelRule[] = [
       action: { type: "inkCorner", corner },
     }),
   ),
+  // a vertical right edge curving into a 45 degree step - the neck of a
+  // '2'. Off until switched on: the step is too common a shape
+  {
+    name: "diagonalSweepRight",
+    defaultOff: true,
+    pattern: ["###", "###", "##.", "#.?"],
+    // the clear step cell is filled, and the curve cut up into the ink above
+    activeSite: [
+      [2, 2],
+      [2, 1],
+    ],
+    action: { type: "diagonalSweep" },
+  },
   // an outer corner whose edge does not carry on upwards - the corner under
   // the waist of an 'e', the outer corner of a 'q' tail. Too ordinary a shape
   // to treat wherever it occurs, so it is off until switched on at a cell

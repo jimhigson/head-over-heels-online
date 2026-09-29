@@ -1,18 +1,9 @@
 import { useState } from "preact/hooks";
 
-import { CommandItem } from "../../../src/ui/command/CommandItem";
-import { CommandMatch } from "../../../src/ui/command/CommandMatch";
-import { Select } from "../../../src/ui/Select";
-import { Switch, SwitchN } from "../../../src/ui/Switch";
+import { Switch } from "../../../src/ui/Switch";
 import { type GlyphOverride, type PixelKey } from "../geometry/glyphOverrides";
-import { type RuleChoices, ruleNamed } from "../geometry/kernelRules";
-import { type PixelRules, rulesAt } from "../geometry/pixelRuleIndex";
-import {
-  allowedAcrossChar,
-  choiceAt,
-  type RuleSetting,
-  settingAt,
-} from "../geometry/ruleEnablement";
+import { ruleNamed } from "../geometry/kernelRules";
+import { type PixelRules } from "../geometry/pixelRuleIndex";
 import {
   type RuleBranch,
   ruleLabel,
@@ -20,7 +11,6 @@ import {
   ruleTree,
 } from "../geometry/ruleTree";
 import { charLabel } from "./charLabel";
-import { ChoicePreview } from "./ChoicePreview";
 import { KernelShape } from "./KernelShape";
 import { type EditorGlyph } from "./useGlyphs";
 
@@ -29,19 +19,9 @@ export type RulePanelProps = {
   override: GlyphOverride | undefined;
   /** which rules bear on which of this character's cells */
   pixelRules: Map<PixelKey, PixelRules>;
-  /** the cell being edited, or undefined to edit the character as a whole */
-  pixel: PixelKey | undefined;
   /** turn a whole set of rules on, or off if any of them is currently on */
   onToggleForChar: (ruleNames: readonly string[]) => void;
-  onSetForPixel: (ruleNames: readonly string[], setting: RuleSetting) => void;
-  onSetChoiceForPixel: (
-    ruleName: string,
-    optionName: string,
-    choice: string,
-  ) => void;
 };
-
-const settings = ["inherit", "on", "off"] as const satisfies RuleSetting[];
 
 const tipFor = (ruleName: string) => {
   const rule = ruleNamed(ruleName);
@@ -58,111 +38,33 @@ type RuleSwitchProps = {
 };
 
 /**
- * one rule, or a whole branch of them, as it applies wherever the panel is
- * pointed: a plain on/off for the character, or inherit/on/off for a single
- * pixel, where saying nothing is the usual answer.
+ * one rule, or a whole branch of them, switched on or off for the character.
  *
  * A rule that is off until switched on has no character-wide setting to show -
- * switching it on is something said about a place, not about a glyph - so at
- * character scope it says so rather than offering a switch that could only
- * ever read off.
+ * switching it on is something said about a place, not about a glyph - so it
+ * says so rather than offering a switch that could only ever read off.
  */
 const RuleSwitch = ({ ruleNames, label, shown, panel }: RuleSwitchProps) => {
-  const {
-    override,
-    pixel,
-    onToggleForChar,
-    onSetForPixel,
-    onSetChoiceForPixel,
-  } = panel;
+  const { override, onToggleForChar } = panel;
   const [firstRule] = ruleNames;
-  const tooltipContent = ruleNames.length === 1 ? tipFor(firstRule) : undefined;
 
-  if (pixel === undefined) {
-    if (ruleNames.every((name) => ruleNamed(name)?.defaultOff === true)) {
-      return (
-        <span class="editor-note editor-rule-note">{shown} per pixel only</span>
-      );
-    }
-    const anyOff = ruleNames.some((name) =>
-      (override?.disabledRules ?? []).includes(name),
-    );
+  if (ruleNames.every((name) => ruleNamed(name)?.defaultOff === true)) {
     return (
-      <Switch
-        class="editor-rule"
-        value={!anyOff}
-        ariaLabel={label}
-        label={shown}
-        tooltipContent={tooltipContent}
-        onChange={() => onToggleForChar(ruleNames)}
-      />
+      <span class="editor-note editor-rule-note">{shown} per pixel only</span>
     );
   }
-
-  const each = ruleNames.map((name) => settingAt(override, pixel, name));
-  const common =
-    each.every((setting) => setting === each[0]) ? each[0] : "inherit";
-  // a rule's options are answered below its switch, but only for a single
-  // rule and only where the rule actually applies here - there is nothing to
-  // choose about a rule that is not going to draw
-  const rule = ruleNames.length === 1 ? ruleNamed(firstRule) : undefined;
-  const applies =
-    common === "on" ||
-    (common === "inherit" && allowedAcrossChar(override, firstRule));
-  const options = applies ? rule?.options : undefined;
-  const chosen = (option: {
-    name: string;
-    choices: readonly { name: string }[];
-  }) =>
-    choiceAt(override, pixel, firstRule, option.name) ?? option.choices[0].name;
-  // every option answered, so a preview of one shows the others as they are
-  const answered: RuleChoices = Object.fromEntries(
-    (rule?.options ?? []).map((option) => [option.name, chosen(option)]),
+  const anyOff = ruleNames.some((name) =>
+    (override?.disabledRules ?? []).includes(name),
   );
-
   return (
-    <>
-      <SwitchN
-        class="editor-rule"
-        value={common}
-        values={settings}
-        ariaLabel={label}
-        label={shown}
-        tooltipContent={tooltipContent}
-        onChange={(setting) => onSetForPixel(ruleNames, setting)}
-      />
-      {options?.map((option) => (
-        <div key={option.name} class="editor-rule editor-rule-option">
-          <span class="editor-note">{option.name}</span>
-          <Select
-            value={chosen(option)}
-            values={option.choices.map(({ name }) => name)}
-            disableCommandInput
-            triggerButtonClassName="editor-rule-option-trigger"
-            // closed, the name alone: a preview squeezed into the row is too
-            // small to read, and the pictures are there for choosing between,
-            // which is what the open list does
-            triggerButtonLabel={chosen(option)}
-            OptionCommandItem={({ itemValue, onSelect: pick }) => (
-              <CommandItem value={itemValue} onSelect={pick} class="px-1">
-                <span class="editor-choice-item">
-                  {rule !== undefined && (
-                    <ChoicePreview
-                      rule={rule}
-                      choices={{ ...answered, [option.name]: itemValue }}
-                    />
-                  )}
-                  <CommandMatch text={itemValue} />
-                </span>
-              </CommandItem>
-            )}
-            onSelect={(choice) =>
-              onSetChoiceForPixel(firstRule, option.name, choice)
-            }
-          />
-        </div>
-      ))}
-    </>
+    <Switch
+      class="editor-rule"
+      value={!anyOff}
+      ariaLabel={label}
+      label={shown}
+      tooltipContent={ruleNames.length === 1 ? tipFor(firstRule) : undefined}
+      onChange={() => onToggleForChar(ruleNames)}
+    />
   );
 };
 
@@ -250,34 +152,26 @@ const Branch = ({
  * rule does and whether it fired. A rule that fires where it should not is
  * turned off here rather than by naming the character in the rule table, so
  * the exceptions live with the character they belong to.
- *
- * With a pixel picked, the panel is about that cell instead, and shows only
- * the rules whose pattern could ever reach it - the rest could do nothing
- * there however they were set.
  */
 export const RulePanel = (panel: RulePanelProps) => {
-  const { glyph, pixel, pixelRules } = panel;
+  const { glyph, pixelRules } = panel;
   const firedCounts = new Map<string, number>();
   for (const { rule } of glyph.outline.matches) {
     firedCounts.set(rule.name, (firedCounts.get(rule.name) ?? 0) + 1);
   }
 
   // a rule whose pattern lands nowhere on this character can do nothing to it
-  // however it is set, so it is left out entirely - of the whole character's
-  // list, and of a single cell's
+  // however it is set, so it is left out entirely
   const bearing = new Set(
-    (pixel === undefined ?
-      [...pixelRules.values()]
-    : [rulesAt(pixelRules, pixel)]
-    ).flatMap(({ applied, couldApply }) => [...applied, ...couldApply]),
+    pixelRules
+      .values()
+      .flatMap(({ applied, couldApply }) => [...applied, ...couldApply]),
   );
 
   return (
     <div class="editor-column">
       <p class="editor-note">
-        {pixel === undefined ?
-          `char ${charLabel(glyph.char)} — only the rules that reach it`
-        : `pixel (${pixel}) — only the rules that could reach it`}
+        char {charLabel(glyph.char)} — only the rules that reach it
       </p>
       {ruleTree(glyph.char).map((branch) => (
         <Branch
