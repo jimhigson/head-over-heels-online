@@ -198,5 +198,6 @@
   "editor.codeActionsOnSave": {
     "source.fixAll.oxc": "always"
   },
-  "js/ts.experimental.useTsgo": false
+  "js/ts.experimental.useTsgo": false,
+  "tailwindCSS.experimental.configFile": "tailwind.game.config.ts"
 }

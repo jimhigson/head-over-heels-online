@@ -4,7 +4,7 @@ import { useEditorAppSelector } from "../../../store/store";
 import { ContextMenuItem } from "../../../ui/command/ContextMenuItem";
 import {
   explodeSelectedItems,
-  selectCurrentEditingRoomJson,
+  selectCurrentCommittedRoomJson,
   selectSelectedJsonItemIds,
 } from "../../slice/levelEditorSlice";
 
@@ -15,7 +15,7 @@ import {
 export const ExplodeMenuItem = () => {
   const dispatch = useAppDispatch();
   const selectedJsonItemIds = useEditorAppSelector(selectSelectedJsonItemIds);
-  const roomJson = useEditorAppSelector(selectCurrentEditingRoomJson);
+  const roomJson = useEditorAppSelector(selectCurrentCommittedRoomJson);
 
   const selectedItems = selectedJsonItemIds
     .map((id) => roomJson.items[id])

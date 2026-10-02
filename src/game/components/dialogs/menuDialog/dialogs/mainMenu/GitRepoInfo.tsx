@@ -1,9 +1,6 @@
 import { useEffect } from "preact/hooks";
 
-import {
-  version as deployedVersion,
-  repository,
-} from "../../../../../../../package.json";
+import { buildInfo, parseMajorVersion } from "../../../../../../buildInfo";
 import { nerdFontGithubChar } from "../../../../../../sprites/spritesheet/spritesheetData/hudChars";
 import { useAppSelector } from "../../../../../../store/hooks";
 import { selectShouldRenderOnScreenControls } from "../../../../../../store/slices/gameMenus/gameMenusSelectors";
@@ -12,12 +9,7 @@ import { cn } from "../../../../../../ui/cn";
 import { linkOpenExternalClickHandler } from "../../../../../../utils/tauri/openExternalLink";
 import { usePointerActive } from "../../../../../input/usePointerActive";
 
-const parseMajorRegex = /v?(?<major>\d+)\./;
-const parseMajor = (version: string): number | undefined => {
-  const str = version.match(parseMajorRegex)?.groups?.major;
-  return str ? parseInt(str) : undefined;
-};
-const deployedMajor = parseMajor(deployedVersion)!;
+const { version: deployedVersion, majorVersion: deployedMajor } = buildInfo;
 
 export const GitRepoInfo = () => {
   const { data: latestRelease } = useGetLatestReleaseQuery();
@@ -27,11 +19,12 @@ export const GitRepoInfo = () => {
   const onScreenControls = useAppSelector(selectShouldRenderOnScreenControls);
   const shown = onScreenControls || pointerActive;
 
-  const prNumber = import.meta.env.VITE_GIT_PR_NUMBER;
+  const { prNumber, prUrl, gitBranch, releasesUrl, repositoryUrl, isDevBuild } =
+    buildInfo;
 
   const latestTag = latestRelease?.tag_name;
   const latestMajor =
-    latestTag === undefined ? undefined : parseMajor(latestTag);
+    latestTag === undefined ? undefined : parseMajorVersion(latestTag);
   const isOutdated =
     latestMajor === undefined ? undefined : latestMajor > deployedMajor;
 
@@ -52,7 +45,7 @@ export const GitRepoInfo = () => {
     >
       <span>
         <a
-          href={`${repository.url}/releases`}
+          href={releasesUrl}
           target="_blank"
           onClick={linkOpenExternalClickHandler}
           class="bitmap-text-link bg-pastelBlueHalfbrite text-metallicBlueHalfbrite zx:bg-zxBlack toppy:bg-toppyCool3"
@@ -69,12 +62,12 @@ export const GitRepoInfo = () => {
             </span>
           )}
         </a>
-        {(import.meta.env.DEV || prNumber !== undefined) && (
+        {(isDevBuild || prNumber !== undefined) && (
           <span class="text-single-line ml-1 screenshot-mask mr-1 inline-block max-w-24 whitespace-nowrap text-pastelBlueHalfbrite zx:text-zxBlack">
             {" "}
             {prNumber !== undefined && (
               <a
-                href={`${repository.url}/pull/${prNumber}`}
+                href={prUrl}
                 target="_blank"
                 onClick={linkOpenExternalClickHandler}
                 class="bitmap-text-link"
@@ -82,12 +75,12 @@ export const GitRepoInfo = () => {
                 {`#${prNumber} `}
               </a>
             )}
-            {import.meta.env.VITE_GIT_BRANCH}
+            {gitBranch}
           </span>
         )}
       </span>
       <a
-        href={repository.url}
+        href={repositoryUrl}
         onClick={linkOpenExternalClickHandler}
         target="_blank"
         class="bitmap-text-link zx:bg-zxBlack toppy:bg-toppyCool3 bg-metallicBlue pl-1"

@@ -2,7 +2,7 @@ import { store } from "../../../../store/store";
 import { setTool } from "../../../slice/levelEditorSlice";
 import { dispatchHoveredOnChangedIfNeeded } from "../dispatchHoveredOnChangedIfNeeded";
 import { itemsAreLocked } from "../itemsAreLocked";
-import { jsonItemAndIdForInPlayItemId } from "../jsonItemAndIdForInPlayItemId";
+import { jsonItemAndIdForInPlayItem } from "../jsonItemAndIdForInPlayItem";
 import { type Tool } from "../Tool";
 import {
   type MouseDownParams,
@@ -47,7 +47,7 @@ export class EyeDropperToolHandler implements ToolHandler<
       return;
     }
 
-    const asJson = jsonItemAndIdForInPlayItemId(storeState, roomState, itemId);
+    const asJson = jsonItemAndIdForInPlayItem(storeState, clickedOnItem);
     if (asJson === undefined) {
       return;
     }

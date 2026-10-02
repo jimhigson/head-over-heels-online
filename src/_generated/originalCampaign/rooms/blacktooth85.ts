@@ -116,6 +116,16 @@ export const room = inferRoomJson({
       position: { x: 8, y: 0, z: 0 },
       type: "wall",
     },
+    w3: {
+      config: { direction: "towards", tiles: ["plain", "plain", "armour"] },
+      position: { x: 0, y: 0, z: 0 },
+      type: "wall",
+    },
+    w4: {
+      config: { direction: "towards", tiles: ["armour", "plain", "plain"] },
+      position: { x: 5, y: 0, z: 0 },
+      type: "wall",
+    },
   },
   planet: "blacktooth",
 }) satisfies RoomJson<OriginalCampaignRoomId, string, "blacktooth">;

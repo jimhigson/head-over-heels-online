@@ -42,7 +42,8 @@ export const useCampaignIsStale = (): CampaignStaleness => {
       }
     : skipToken;
 
-  const { data: latest } = useGetLatestCampaignVersionQuery(queryArg);
+  // currentData, not data: data keeps the previous campaign's result after switching
+  const { currentData: latest } = useGetLatestCampaignVersionQuery(queryArg);
 
   return {
     isStale: latest !== undefined && latest > currentCampaignVersion,

@@ -1,6 +1,6 @@
 import { type ComponentChildren } from "preact";
 import { createPortal } from "preact/compat";
-import { useEffect, useRef } from "preact/hooks";
+import { useEffect, useRef, useState } from "preact/hooks";
 
 import { BlockyMarkdown } from "../../game/components/BlockyMarkdown";
 import { CssVariables } from "../../game/components/CssVariables";
@@ -47,6 +47,20 @@ export const Tip = ({
   children,
 }: TipProps) => {
   const ref = useRef<HTMLDivElement>(null);
+  // contents render only while shown, so closed tips cost nothing:
+  const [isOpen, setIsOpen] = useState(false);
+
+  useEffect(() => {
+    // listen for the DOM 'toggle' event so that tooltip contents can be shown only
+    // while this Tip is open:
+    const el = ref.current;
+    if (el === null) {
+      return;
+    }
+    const handleToggle = (e: ToggleEvent) => setIsOpen(e.newState === "open");
+    el.addEventListener("toggle", handleToggle);
+    return () => el.removeEventListener("toggle", handleToggle);
+  }, []);
 
   useEffect(() => {
     if (!svgInvoker) {
@@ -80,7 +94,11 @@ export const Tip = ({
           svgInvoker ? "tip-svg-invoker" : "tip",
         )}
       >
-        {typeof children === "string" ?
+        {!isOpen ?
+          // not open - skip rendering contents - this also skips rendering room previews in the
+          // editor, which is a huge performance advantage to not have to pre-render every room
+          null
+        : typeof children === "string" ?
           <div class="max-w-16">
             <BlockyMarkdown markdown={children} />
           </div>

@@ -1,14 +1,14 @@
 import { produce } from "immer";
 
-import { exitGameRoomId } from "../../ItemConfigMap";
 import { type CampaignVerifier } from "../CampaignVerification";
 import {
   allTeleporters,
-  teleportersInRoom,
-  teleporterTargetRoom,
+  type TeleporterConfig,
+  teleporterLanding,
   teleporterToItemId,
 } from "../helpers/teleporterTarget";
 import {
+  type VerificationCampaign,
   type VerificationRoomId,
   type VerificationRoomItemId,
 } from "../verificationTypes";
@@ -18,6 +18,21 @@ type TeleporterTargetInvalid = {
   teleporterId: VerificationRoomItemId;
   targetRoom: VerificationRoomId;
   toItemId: string;
+};
+
+/** whether the teleporter would still land somewhere without its toItemId */
+const landsWithoutToItemId = (
+  campaign: VerificationCampaign,
+  roomId: VerificationRoomId,
+  teleporterId: VerificationRoomItemId,
+  config: TeleporterConfig,
+): boolean => {
+  // only the destination, so it lands by default:
+  const destinationOnly = { toRoom: config.toRoom };
+  return (
+    teleporterLanding(campaign, roomId, teleporterId, destinationOnly)?.landing
+      .type === "item"
+  );
 };
 
 /**
@@ -33,17 +48,27 @@ export const teleporterTargetInvalidVerifier: CampaignVerifier<TeleporterTargetI
         campaign,
       )) {
         const toItemId = teleporterToItemId(teleporter.config);
-        if (toItemId === undefined) {
+        const target = teleporterLanding(
+          campaign,
+          roomId,
+          teleporterId,
+          teleporter.config,
+        );
+        if (
+          toItemId === undefined ||
+          target === undefined ||
+          target.landing.type !== "unresolvable" ||
+          target.landing.reason !== "missingItem"
+        ) {
           continue;
         }
-        const targetRoom = teleporterTargetRoom(roomId, teleporter.config);
-        if (targetRoom === exitGameRoomId || !(targetRoom in campaign.rooms)) {
-          continue;
-        }
-        if (toItemId in campaign.rooms[targetRoom].items) {
-          continue;
-        }
-        const lone = teleportersInRoom(campaign, targetRoom).length === 1;
+        const { targetRoom } = target;
+        const lone = landsWithoutToItemId(
+          campaign,
+          roomId,
+          teleporterId,
+          teleporter.config,
+        );
         yield {
           severity: "error",
           roomId,
@@ -60,23 +85,25 @@ export const teleporterTargetInvalidVerifier: CampaignVerifier<TeleporterTargetI
       }
     },
     fix(campaign, { roomId, teleporterId, targetRoom, toItemId }) {
+      const teleporter = campaign.rooms[roomId].items[teleporterId];
       if (
+        teleporter.type !== "teleporter" ||
         !(targetRoom in campaign.rooms) ||
         toItemId in campaign.rooms[targetRoom].items ||
-        teleportersInRoom(campaign, targetRoom).length !== 1
+        !landsWithoutToItemId(campaign, roomId, teleporterId, teleporter.config)
       ) {
         throw new Error(
           `cannot auto-fix teleporter ‘${teleporterId}’ in ‘${roomId}’: its target isn't unambiguous`,
         );
       }
       return produce(campaign, (draft) => {
-        const teleporter = draft.rooms[roomId].items[teleporterId];
+        const draftTeleporter = draft.rooms[roomId].items[teleporterId];
         if (
-          (teleporter.type === "teleporter" ||
-            teleporter.type === "portableTeleporter") &&
-          "toItemId" in teleporter.config
+          (draftTeleporter.type === "teleporter" ||
+            draftTeleporter.type === "portableTeleporter") &&
+          "toItemId" in draftTeleporter.config
         ) {
-          delete teleporter.config.toItemId;
+          delete draftTeleporter.config.toItemId;
         }
       });
     },

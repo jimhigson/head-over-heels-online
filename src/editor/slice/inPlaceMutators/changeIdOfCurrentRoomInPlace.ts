@@ -9,7 +9,7 @@ import {
 } from "../../../model/RoomJson";
 import { valuesIter } from "../../../utils/entries";
 import {
-  selectCurrentRoomJsonFromLevelEditorState,
+  selectCurrentCommittedRoomJsonFromLevelEditorState,
   selectCursorRoomId,
 } from "../levelEditorSelectors";
 
@@ -18,7 +18,7 @@ export const changeIdOfCurrentRoomInPlace = (
   newRoomId: EditorRoomId,
 ) => {
   const prevRoomId = selectCursorRoomId(state);
-  const prevRoom = selectCurrentRoomJsonFromLevelEditorState(state);
+  const prevRoom = selectCurrentCommittedRoomJsonFromLevelEditorState(state);
 
   for (const room of valuesIter(state.campaignInProgress.rooms)) {
     // update any doors and teleporters that reference the old room id

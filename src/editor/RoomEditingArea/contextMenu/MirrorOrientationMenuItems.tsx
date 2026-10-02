@@ -6,7 +6,7 @@ import { useAppDispatch } from "../../../store/hooks";
 import { useEditorAppSelector } from "../../../store/store";
 import { ContextMenuItem } from "../../../ui/command/ContextMenuItem";
 import {
-  selectCurrentEditingRoomJson,
+  selectCurrentCommittedRoomJson,
   selectSelectedJsonItemIds,
   setSelectedItemsMirrorOrientation,
 } from "../../slice/levelEditorSlice";
@@ -27,7 +27,7 @@ const orientationGlyph = {
 export const MirrorOrientationMenuItems = () => {
   const dispatch = useAppDispatch();
   const selectedJsonItemIds = useEditorAppSelector(selectSelectedJsonItemIds);
-  const roomJson = useEditorAppSelector(selectCurrentEditingRoomJson);
+  const roomJson = useEditorAppSelector(selectCurrentCommittedRoomJson);
 
   const items = selectedJsonItemIds
     .map((id) => roomJson.items[id])

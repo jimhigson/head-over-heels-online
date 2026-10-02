@@ -25,4 +25,8 @@ const loadRoomDefaultOptions = {
  * derived at render time, so no re-derivation is needed per view angle.
  */
 export const loadEditorRoom = (roomJson: EditorRoomJson): EditorRoomState =>
-  loadRoom({ roomJson, ...loadRoomDefaultOptions });
+  // Object.assign keeps typechecking working since no casts needed:
+  Object.assign(loadRoom({ roomJson, ...loadRoomDefaultOptions }), {
+    // freshly loaded, so there is no preview yet:
+    itemsOverriddenByPreview: {},
+  });

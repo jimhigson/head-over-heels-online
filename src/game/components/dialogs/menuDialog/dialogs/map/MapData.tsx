@@ -22,6 +22,20 @@ export type MapDataError = {
   errors: Array<string>;
 };
 
+/**
+ * Maps can have multiple areas that are not positioned to each other - this is one
+ * of those areas
+ */
+export type MapArea<RoomId extends string> = {
+  mapBounds: Bounds;
+  gridPositions: SortedObjectOfRoomGridPositionSpecs<RoomId>;
+  /**
+   * the notable items (and their icon positions) per map cell, computed once so
+   * the room renderer and behaviours draw to the same positions
+   */
+  notableItemsByCell?: NotableItemsByCell<RoomId>;
+};
+
 export type MapData<RoomId extends string> = {
   isError: false;
   campaign: OptionallyNamedCampaign<RoomId>;
@@ -29,19 +43,15 @@ export type MapData<RoomId extends string> = {
   currentCharacterName: CharacterName;
   curRoomId: RoomId | undefined;
   curSubRoomId: string | undefined;
-  gridPositions: SortedObjectOfRoomGridPositionSpecs<RoomId>;
-  mapBounds: Bounds;
   pickupsCollected: PickupsCollected<RoomId>;
   roomsExplored: Record<RoomId, true>;
   curRoomScenery?: SceneryName;
+
   /**
    * teleporter links between rooms on the map, scraped while resolving geometry.
    * optional since only the editor populates it
    */
   teleporterLinks?: TeleporterLink<RoomId>[];
-  /**
-   * the notable items (and their icon positions) per map cell, computed once so
-   * the room renderer and behaviours draw to the same positions
-   */
-  notableItemsByCell?: NotableItemsByCell<RoomId>;
+
+  areas: Array<MapArea<RoomId>>;
 };

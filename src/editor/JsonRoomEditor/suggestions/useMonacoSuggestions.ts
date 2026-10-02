@@ -2,7 +2,7 @@ import { findNodeAtOffset, getLocation, parseTree } from "jsonc-parser";
 import { useEffect } from "preact/hooks";
 
 import { editorStore } from "../../../store/store";
-import { selectCurrentEditingRoomJson } from "../../slice/levelEditorSlice";
+import { selectCurrentCommittedRoomJson } from "../../slice/levelEditorSlice";
 import { useLoadMonaco } from "../useLoadMonaco";
 import { getNodeAncestors } from "./getNodeAncestors";
 import { suggestionPatterns } from "./suggestionPatterns";
@@ -51,7 +51,7 @@ export const useMonacoSuggestions = () => {
           const storeState = editorStore.getState();
 
           // Get suggestions from the matched pattern's callback
-          const currentRoomJson = selectCurrentEditingRoomJson(storeState);
+          const currentRoomJson = selectCurrentCommittedRoomJson(storeState);
           const suggestionStrings = suggestionGenerator(
             storeState,
             currentRoomJson,

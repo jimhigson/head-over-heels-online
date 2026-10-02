@@ -54,8 +54,9 @@ import {
 import { resizeTimesAndPosition } from "../../resizeTimesAndPosition";
 import { dispatchHoveredOnChangedIfNeeded } from "../dispatchHoveredOnChangedIfNeeded";
 import { itemsAreLocked } from "../itemsAreLocked";
-import { jsonItemAndIdForInPlayItemId } from "../jsonItemAndIdForInPlayItemId";
+import { jsonItemAndIdForInPlayItem } from "../jsonItemAndIdForInPlayItem";
 import { type Tool } from "../Tool";
+import { findItemInPlayForPicking } from "./ItemToolHandler";
 import {
   type MouseDownParams,
   type MouseLeaveParams,
@@ -84,7 +85,10 @@ const getJsonItemIdsToUseForPointingAt = (
     return emptyArray;
   }
 
-  const mouseDownJsonItemId = roomState.items[mouseDownItemInPlayId].jsonItemId;
+  const mouseDownJsonItemId = findItemInPlayForPicking(
+    roomState,
+    mouseDownItemInPlayId,
+  )?.jsonItemId;
 
   if (mouseDownJsonItemId === undefined) {
     // item not in the room - this shouldn't normally happen
@@ -336,10 +340,12 @@ export class PointerToolHandler implements ToolHandler<
       //     ↘ ┌-┐
       //       └-┘
       //
-      const [, mouseDownJsonItem] = jsonItemAndIdForInPlayItemId(
+      const [, mouseDownJsonItem] = jsonItemAndIdForInPlayItem(
         storeState,
-        roomState,
-        mouseDownPointingAtRef.current!.world!.itemId,
+        findItemInPlayForPicking(
+          roomState,
+          mouseDownPointingAtRef.current!.world!.itemId,
+        ),
       )!;
       ({ timesDelta, positionDelta } = resizeTimesAndPosition({
         // in case there are multiple, the changes are calculated on the item the (single) item
@@ -392,7 +398,7 @@ export class PointerToolHandler implements ToolHandler<
       const clickedOnItem =
         pointingAt.world === undefined ?
           undefined
-        : roomState.items[pointingAt.world.itemId];
+        : findItemInPlayForPicking(roomState, pointingAt.world.itemId);
 
       if (
         clickedOnItem?.jsonItemId === undefined ||

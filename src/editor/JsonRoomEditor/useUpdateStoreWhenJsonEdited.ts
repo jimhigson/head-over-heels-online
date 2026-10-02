@@ -8,7 +8,7 @@ import { useMemo } from "preact/hooks";
 import roomSchema from "../../_generated/room.schema.json";
 import { editorStore, store } from "../../store/store";
 import { type EditorRoomJson } from "../editorTypes";
-import { selectCurrentRoomJsonFromLevelEditorState } from "../slice/levelEditorSelectors";
+import { selectCurrentCommittedRoomJsonFromLevelEditorState } from "../slice/levelEditorSelectors";
 import { roomJsonEdited } from "../slice/levelEditorSlice";
 import { fixJson } from "./fixJson";
 
@@ -42,7 +42,7 @@ export const useUpdateStoreWhenJsonEdited = (
       (text: string | undefined, _ev: editor.IModelContentChangedEvent) => {
         const levelEditorState = editorStore.getState().levelEditor;
         const roomJson =
-          selectCurrentRoomJsonFromLevelEditorState(levelEditorState);
+          selectCurrentCommittedRoomJsonFromLevelEditorState(levelEditorState);
 
         if (text === undefined || !editor) {
           return;

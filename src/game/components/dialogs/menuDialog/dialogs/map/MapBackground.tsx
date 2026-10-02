@@ -17,30 +17,39 @@ const sceneryToMapTitle: Record<SceneryName, string> = {
 };
 
 export type MapBackgroundProps<RoomId extends string> = MapData<RoomId> & {
-  curRoomId: RoomId;
+  /** which of the map's areas is drawn */
+  areaIndex: number;
+  /** the room whose planet the background shows */
+  backgroundRoomId: RoomId;
   containerWidth: number;
 };
 
 export const MapBackground = <RoomId extends string>(
   props: MapBackgroundProps<RoomId>,
 ) => {
-  const { campaign, curRoomId } = props;
+  const { campaign, backgroundRoomId, areas, areaIndex, containerWidth } =
+    props;
 
   const isMainMapForOriginalCampaign =
     campaign.locator.userId === originalUserId &&
     !["penitentiary", "bookworld", "egyptus", "safari"].includes(
-      campaign.rooms[curRoomId].planet,
+      campaign.rooms[backgroundRoomId].planet,
     );
 
   const mapColours = getMapColoursClass(props.curRoomScenery);
 
   if (isMainMapForOriginalCampaign) {
-    return <OriginalCampaignMainMapBackground {...props} />;
+    return (
+      <OriginalCampaignMainMapBackground
+        area={areas[areaIndex]}
+        containerWidth={containerWidth}
+      />
+    );
   }
   // simple case of a map background representing a single planet:
   return (
     <MapBackgroundSection
-      mapTitle={sceneryToMapTitle[campaign.rooms[curRoomId].planet]}
+      mapTitle={sceneryToMapTitle[campaign.rooms[backgroundRoomId].planet]}
       class={mapColours.bgClassName}
     />
   );

@@ -38,7 +38,7 @@ import { changeIdOfCurrentRoomInPlace } from "../inPlaceMutators/changeIdOfCurre
 import { consolidateCurrentRoomInPlace } from "../inPlaceMutators/consolidateCurrentRoomInPlace";
 import { deleteItemInPlace } from "../inPlaceMutators/deleteItemInPlace";
 import {
-  selectCurrentRoomJsonFromLevelEditorState,
+  selectCurrentCommittedRoomJsonFromLevelEditorState,
   selectCursorRoomId,
   selectCursorSubRoomId,
   selectRoomFromLevelEditorState,
@@ -367,7 +367,7 @@ export const editRoomReducers = {
     // the wrapped type. Since the normal type isn't readonly, this wrapping isn't needed anyway
     const state = _state as LevelEditorState;
 
-    const roomJson = selectCurrentRoomJsonFromLevelEditorState(state);
+    const roomJson = selectCurrentCommittedRoomJsonFromLevelEditorState(state);
 
     const items: UndoItemEntry[] = state.selectedJsonItemIds.map((id) => [
       id,
@@ -399,7 +399,7 @@ export const editRoomReducers = {
     // the wrapped type. Since the normal type isn't readonly, this wrapping isn't needed anyway
     const state = _state as LevelEditorState;
 
-    const roomJson = selectCurrentRoomJsonFromLevelEditorState(state);
+    const roomJson = selectCurrentCommittedRoomJsonFromLevelEditorState(state);
 
     pushUndoInPlace(state, { kind: "clearRoom" }, timestamp);
 
@@ -432,7 +432,8 @@ export const editRoomReducers = {
     const reverseDirection: VerticalLinkDirection =
       direction === "above" ? "below" : "above";
 
-    const currentRoomJson = selectCurrentRoomJsonFromLevelEditorState(state);
+    const currentRoomJson =
+      selectCurrentCommittedRoomJsonFromLevelEditorState(state);
     const currentSubRoomId = selectCursorSubRoomId(state);
 
     const previouslyLinkedRoomId = roomVerticalLink(

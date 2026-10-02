@@ -7,7 +7,7 @@ import {
 } from "../../sprites/spritesheet/spritesheetData/TextureTailwindClass";
 import { emptyArray, emptyObject } from "../../utils/empty";
 import { twClass } from "../../utils/twClass" with { type: "macro" };
-import { selectCurrentRoomJsonFromLevelEditorState } from "../slice/levelEditorSelectors";
+import { selectCurrentCommittedRoomJsonFromLevelEditorState } from "../slice/levelEditorSelectors";
 import { type LevelEditorState } from "../slice/levelEditorSlice";
 import {
   DissapearingItemToolbarIcon,
@@ -1011,7 +1011,8 @@ stand around not doing much`,
     ),
   },
   wall(state: LevelEditorState) {
-    const scenery = selectCurrentRoomJsonFromLevelEditorState(state).planet;
+    const scenery =
+      selectCurrentCommittedRoomJsonFromLevelEditorState(state).planet;
 
     const textureClassname =
       scenery === "blacktooth" ?

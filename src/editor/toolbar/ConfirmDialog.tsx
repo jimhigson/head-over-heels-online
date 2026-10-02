@@ -35,7 +35,8 @@ export const ConfirmDialog = ({
 
   return (
     <DialogPortal>
-      <Border class="scale-editor bg-checkerboard-stifled-alphas" />
+      {/* at dialog z index, so it also covers any dialog this was opened over: */}
+      <Border class="scale-editor !z-dialog" scrim />
       <div class="contents no-keyboard-shortcuts">
         <Dialog ref={dialogRef} wide class="scale-editor p-1 !h-min">
           <div class="text-white bg-midRed text-center py-half">

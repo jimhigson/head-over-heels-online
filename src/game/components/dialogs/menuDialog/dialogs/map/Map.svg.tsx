@@ -10,9 +10,10 @@ import {
 import { getRoomItem } from "../../../../../../model/RoomState";
 import { type CharacterRooms } from "../../../../../gameState/GameState";
 import { type PlayableItem } from "../../../../../physics/itemPredicates";
+import { lowestRoomIdOfArea } from "./lowestRoomIdOfArea";
 import { MapBackground } from "./MapBackground";
 import { mapSvgMarginX, mapSvgMarginY } from "./mapConstants";
-import { type MapData } from "./MapData";
+import { type MapArea, type MapData } from "./MapData";
 import { RoomSvg } from "./Room.svg";
 import {
   type PostfixRoomDecoratorComponent,
@@ -25,6 +26,8 @@ import { ScrollIntoView } from "./ScrollIntoView";
 import { translateXyz } from "./svgHelpers";
 
 export type MapSvgProps<RoomId extends string> = MapData<RoomId> & {
+  /** which of the map's areas to draw */
+  areaIndex?: number;
   containerWidth?: number;
   onPlayableClick?: (name: IndividualCharacterName) => void;
   behaviours?: RoomBehaviourComponent<RoomId>[];
@@ -71,8 +74,9 @@ const selectPlayableItemInRoomAndSubroom = <
 type MapDecoratorLayerProps<RoomId extends string> = {
   decorators: FunctionComponent<RoomDecoratorProps<RoomId>>[];
   transform: string;
-  orderedPositions: ValueOf<MapSvgProps<RoomId>["gridPositions"]>[];
+  orderedPositions: ValueOf<MapArea<RoomId>["gridPositions"]>[];
   mapData: MapSvgProps<RoomId>;
+  areaIndex: number;
 };
 
 /**
@@ -84,8 +88,10 @@ const MapDecoratorLayer = <RoomId extends string>({
   transform,
   orderedPositions,
   mapData,
+  areaIndex,
 }: MapDecoratorLayerProps<RoomId>) => {
-  const { gridPositions, curRoomId, curSubRoomId, selectedRoomIds } = mapData;
+  const { curRoomId, curSubRoomId, selectedRoomIds } = mapData;
+  const { gridPositions } = mapData.areas[areaIndex];
 
   return (
     <>
@@ -109,6 +115,7 @@ const MapDecoratorLayer = <RoomId extends string>({
                   isSelected={isSelected}
                   allGridPositions={gridPositions}
                   mapData={mapData}
+                  areaIndex={areaIndex}
                 />
               </Suspense>
             );
@@ -122,11 +129,10 @@ const MapDecoratorLayer = <RoomId extends string>({
 export const MapSvg = <RoomId extends string>(props: MapSvgProps<RoomId>) => {
   const {
     campaign,
-    notableItemsByCell,
-    gridPositions,
+    areas,
+    areaIndex = 0,
     currentCharacterName,
     characterRooms,
-    mapBounds,
     containerWidth,
     roomsExplored,
     onPlayableClick,
@@ -136,6 +142,7 @@ export const MapSvg = <RoomId extends string>(props: MapSvgProps<RoomId>) => {
     postfixDecorators,
     selectedRoomIds,
   } = props;
+  const { notableItemsByCell, gridPositions, mapBounds } = areas[areaIndex];
 
   if (containerWidth === undefined) {
     // until the container width is known, don't render anything. This prop is optional
@@ -153,6 +160,15 @@ export const MapSvg = <RoomId extends string>(props: MapSvgProps<RoomId>) => {
 
   const gridTransform = `translate(${-mapBounds.l + mapSvgMarginX + (containerWidth - contentW) / 2},${-mapBounds.t + mapSvgMarginY})`;
 
+  // the map's background (the planet artwork and title) normally comes from
+  // the current room's planet. If the area being shown doesn't contain the
+  // current room (eg after paging to another area with < >), the background
+  // uses the planet of that area's first room (lowest room id) instead:
+  const backgroundRoomId =
+    curRoomId === undefined ? undefined
+    : orderedPositions.some(({ roomId }) => roomId === curRoomId) ? curRoomId
+    : lowestRoomIdOfArea(gridPositions);
+
   return (
     <svg
       class={"w-full"}
@@ -163,10 +179,11 @@ export const MapSvg = <RoomId extends string>(props: MapSvgProps<RoomId>) => {
       strokeLinecap="round"
       strokeLinejoin="round"
     >
-      {curRoomId === undefined ? null : (
+      {backgroundRoomId === undefined ? null : (
         <MapBackground<RoomId>
           {...props}
-          curRoomId={curRoomId}
+          backgroundRoomId={backgroundRoomId}
+          areaIndex={areaIndex}
           containerWidth={containerWidth}
         />
       )}
@@ -176,6 +193,7 @@ export const MapSvg = <RoomId extends string>(props: MapSvgProps<RoomId>) => {
           transform={gridTransform}
           orderedPositions={orderedPositions}
           mapData={props}
+          areaIndex={areaIndex}
         />
       )}
       <g transform={gridTransform}>
@@ -233,6 +251,7 @@ export const MapSvg = <RoomId extends string>(props: MapSvgProps<RoomId>) => {
           transform={gridTransform}
           orderedPositions={orderedPositions}
           mapData={props}
+          areaIndex={areaIndex}
         />
       )}
     </svg>

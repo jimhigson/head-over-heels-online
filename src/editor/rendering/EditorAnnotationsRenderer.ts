@@ -61,9 +61,9 @@ const makeEditorOutlineFilters = (
   viewport: EditorViewport,
 ): EditorOutlineFilters => {
   // the outline is always exactly one game pixel, aligned to the sprite's own
-  // pixel grid: width stays 1 and the filter's *resolution* tracks the inverse
-  // of the zoom, so it rasterises the item at one texel per game pixel, dilates
-  // by one texel, and nearest-upscales back to the screen blocky:
+  // pixel grid: the filter's *resolution* tracks the inverse of the zoom, so it
+  // rasterises the item at one texel per game pixel, dilates by one texel, and
+  // nearest-upscales back to the screen blocky:
   const filters: EditorOutlineFilters = {
     pointerHover: new OutlineFilter({
       color: paletteBlockstack.highlightBeige,
@@ -89,9 +89,8 @@ const makeEditorOutlineFilters = (
     const { zoom } = viewport;
     for (const filter of valuesIter(filters)) {
       filter.resolution = 1 / zoom;
-      // the one-game-pixel outline needs one game pixel of clearance, in
-      // screen pixels (pixi truncates padding to an integer):
-      filter.padding = Math.ceil(zoom);
+      // width is in screen pixels, so one game pixel is `zoom` of them:
+      filter.width = zoom;
     }
   };
   viewport.onChange(trackZoom);

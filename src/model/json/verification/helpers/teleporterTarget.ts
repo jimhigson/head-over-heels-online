@@ -2,6 +2,10 @@ import { entries } from "../../../../utils/entries";
 import { iterateRoomJsonItemsWithIds } from "../../../RoomJson";
 import { type ExitGameRoomId, exitGameRoomId } from "../../ItemConfigMap";
 import {
+  resolveTeleporterLanding,
+  type TeleporterLanding,
+} from "../../resolveTeleporterLanding";
+import {
   type VerificationCampaign,
   type VerificationJsonItem,
   type VerificationRoomId,
@@ -60,4 +64,35 @@ export const teleportersInRoom = (
   )
     .map(([id]) => id as VerificationRoomItemId)
     .toArray();
+};
+
+/**
+ * where a teleporter lands in its destination room, or undefined when it
+ * leaves the game or its destination isn't a room in the campaign
+ */
+export const teleporterLanding = (
+  campaign: VerificationCampaign,
+  fromRoom: VerificationRoomId,
+  teleporterId: VerificationRoomItemId,
+  config: TeleporterConfig,
+):
+  | {
+      targetRoom: VerificationRoomId;
+      landing: TeleporterLanding<VerificationRoomItemId>;
+    }
+  | undefined => {
+  const targetRoom = teleporterTargetRoom(fromRoom, config);
+  if (targetRoom === exitGameRoomId || !(targetRoom in campaign.rooms)) {
+    return undefined;
+  }
+  const { items } = campaign.rooms[targetRoom];
+  return {
+    targetRoom,
+    landing: resolveTeleporterLanding(
+      config,
+      teleportersInRoom(campaign, targetRoom),
+      (itemId): itemId is VerificationRoomItemId => itemId in items,
+      targetRoom === fromRoom ? teleporterId : undefined,
+    ),
+  };
 };

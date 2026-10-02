@@ -14,6 +14,8 @@ export type RoomDecoratorProps<RoomId extends string> = {
   allGridPositions: SortedObjectOfRoomGridPositionSpecs<RoomId>;
   /** the whole map data, so decorators can read any geometry/linking they need */
   mapData: MapData<RoomId>;
+  /** which of `mapData`'s areas is drawn */
+  areaIndex: number;
 };
 
 export type RoomBehaviourProps<RoomId extends string> = {

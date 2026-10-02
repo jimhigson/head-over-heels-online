@@ -10,7 +10,7 @@ import {
   useEditorAppSelector,
 } from "../../store/store";
 import { selectCursorRoomId } from "../slice/levelEditorSelectors";
-import { selectCurrentEditingRoomJson } from "../slice/levelEditorSlice";
+import { selectCurrentCommittedRoomJson } from "../slice/levelEditorSlice";
 import { useLoadMonaco } from "./useLoadMonaco";
 
 const updateTextNow = (
@@ -22,7 +22,7 @@ const updateTextNow = (
     return;
   }
 
-  const roomJson = selectCurrentEditingRoomJson(state);
+  const roomJson = selectCurrentCommittedRoomJson(state);
   const currentlyEditingRoomId = selectCursorRoomId(state.levelEditor);
 
   if (roomJson === undefined || !currentlyEditingRoomId) {
@@ -108,7 +108,7 @@ const useUpdateTextWhenJsonChangesInSameRoom = (
   editor: editor.IStandaloneCodeEditor | null,
   monaco: null | typeof Monaco,
 ) => {
-  const currentRoomJson = useEditorAppSelector(selectCurrentEditingRoomJson);
+  const currentRoomJson = useEditorAppSelector(selectCurrentCommittedRoomJson);
   const currentlyEditingRoomId = useEditorAppSelector((state) =>
     selectCursorRoomId(state.levelEditor),
   );
@@ -167,14 +167,14 @@ const useCreateDocumentsInMonacoWhenCurrentRoomChanges = (
     if (!existingModel) {
       // Create a new model for this room
       const state = editorStore.getState();
-      const roomJson = selectCurrentEditingRoomJson(state);
+      const roomJson = selectCurrentCommittedRoomJson(state);
       const content = roomJson ? JSON.stringify(roomJson, null, 2) : "";
 
       monaco.editor.createModel(content, "json", modelUri);
     } else {
       // Update existing model's content
       const state = editorStore.getState();
-      const roomJson = selectCurrentEditingRoomJson(state);
+      const roomJson = selectCurrentCommittedRoomJson(state);
       const content = roomJson ? JSON.stringify(roomJson, null, 2) : "";
 
       existingModel.setValue(content);

@@ -7,7 +7,7 @@ import { type Xy } from "../../../utils/vectors/vectors";
 import {
   closeItemContextMenu,
   selectContextMenuXy,
-  selectCurrentEditingRoomJson,
+  selectCurrentCommittedRoomJson,
   selectSelectedJsonItemIds,
 } from "../../slice/levelEditorSlice";
 import { useEditorViewport } from "../viewport/EditorViewportProvider";
@@ -15,11 +15,13 @@ import { ActivationMenuItems } from "./ActivationMenuItems";
 import { CoalesceMenuItem } from "./CoalesceMenuItem";
 import { DeleteMenuItem } from "./DeleteMenuItem";
 import { DisappearingMenuItems } from "./DisappearingMenuItems";
+import { DoorGameEndMenuItem } from "./DoorGameEndMenuItem";
 import { DuplicateMenuItem } from "./DuplicateMenuItem";
 import { ExplodeMenuItem } from "./ExplodeMenuItem";
 import { MirrorOrientationMenuItems } from "./MirrorOrientationMenuItems";
 import { MonsterMovementMenuItems } from "./MonsterMovementMenuItems";
 import { StartDirectionMenuItems } from "./StartDirectionMenuItems";
+import { TeleporterDestinationMenuItem } from "./TeleporterDestinationMenuItem";
 
 /**
  * label summarising the current selection, eg "2 block" when all the same type,
@@ -45,7 +47,7 @@ export const ItemContextMenu = ({ renderArea }: ItemContextMenuProps) => {
   const contextMenuXy = useEditorAppSelector(selectContextMenuXy);
   const viewport = useEditorViewport();
   const selectedJsonItemIds = useEditorAppSelector(selectSelectedJsonItemIds);
-  const roomJson = useEditorAppSelector(selectCurrentEditingRoomJson);
+  const roomJson = useEditorAppSelector(selectCurrentCommittedRoomJson);
 
   const close = useCallback(() => dispatch(closeItemContextMenu()), [dispatch]);
 
@@ -86,6 +88,8 @@ export const ItemContextMenu = ({ renderArea }: ItemContextMenuProps) => {
       <ActivationMenuItems />
       <DisappearingMenuItems />
       <MonsterMovementMenuItems />
+      <TeleporterDestinationMenuItem />
+      <DoorGameEndMenuItem />
       <StartDirectionMenuItems />
       <MirrorOrientationMenuItems />
     </ContextMenu>

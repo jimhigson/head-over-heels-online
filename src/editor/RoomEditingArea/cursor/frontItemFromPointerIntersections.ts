@@ -13,6 +13,15 @@ const isFixedZIndexItem = (
 ): i is SetRequired<EditorUnionOfAllItemInPlayTypes, "fixedZIndex"> =>
   i.fixedZIndex !== undefined;
 
+const intersectionPrecedence = [
+  // rendered are highest:
+  "intersects-rendered",
+  // then what the preview overrode (so the pointer stays on
+  "intersects-overridden-by-preview",
+  // then everything else unrendered
+  "intersects-unrendered",
+] as const satisfies PointerItemIntersection[];
+
 export const frontItemFromPointerIntersections = (
   intersections: Array<
     [EditorUnionOfAllItemInPlayTypes, PointerItemIntersection]
@@ -21,19 +30,17 @@ export const frontItemFromPointerIntersections = (
   /** the drawn extents, from the editor's room renderer */
   renderBoxes: RenderBoxes<EditorUnionOfAllItemInPlayTypes>,
 ): EditorUnionOfAllItemInPlayTypes | undefined => {
-  const someIntersectRendered = intersections.some(
-    ([, int]) => int === "intersects-rendered",
+  // find the highest-precedence kind of intersection that appears in the intersections list,
+  // only this intersection type will be considered
+  const highestPrecedenceIntersectionType = intersectionPrecedence.find(
+    (intersection) => intersections.some(([, int]) => int === intersection),
   );
 
-  const items =
-    someIntersectRendered ?
-      // if any items are intersecting rendered, throw out all that are intersecting
-      // non-rendered (rendered takes precedence)
-      intersections
-        .filter(([, int]) => int === "intersects-rendered")
-        .map(([item]) => item)
-      // all are intersecting non-rendered, so consider order amongst all the non-rendered items:
-    : intersections.map(([item]) => item);
+  // filter out intersections that are not of the highest precedence type that we
+  // have available to choose from:
+  const items = intersections
+    .filter(([, int]) => int === highestPrecedenceIntersectionType)
+    .map(([item]) => item);
 
   if (items.every(isFixedZIndexItem)) {
     // all items have fixed z-index (don't work in topographic sort) - return

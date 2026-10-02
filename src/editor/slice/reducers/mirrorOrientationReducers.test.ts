@@ -6,7 +6,7 @@ import {
   type EditorJsonItemUnion,
   type EditorRoomItemId,
 } from "../../editorTypes";
-import { selectCurrentRoomJsonFromLevelEditorState } from "../levelEditorSelectors";
+import { selectCurrentCommittedRoomJsonFromLevelEditorState } from "../levelEditorSelectors";
 import {
   type LevelEditorState,
   setSelectedItemsInRoom,
@@ -28,7 +28,7 @@ const setOrientation = (
   item: EditorJsonItemUnion,
   orientation: MirrorOrientation,
 ): EditorJsonItemUnion =>
-  selectCurrentRoomJsonFromLevelEditorState(
+  selectCurrentCommittedRoomJsonFromLevelEditorState(
     reduceLevelEditorActions(
       stateWithItem(item),
       setSelectedItemsInRoom({ jsonItemIds: ["i" as EditorRoomItemId] }),

@@ -4,12 +4,39 @@
     "path": "/items/w5"
   },
   {
-    "op": "remove",
-    "path": "/items/w4"
+    "op": "replace",
+    "path": "/items/w4/position/x",
+    "value": 5
   },
   {
-    "op": "remove",
-    "path": "/items/w3"
+    "op": "replace",
+    "path": "/items/w4/config/tiles/1",
+    "value": "plain"
+  },
+  {
+    "op": "replace",
+    "path": "/items/w4/config/tiles/0",
+    "value": "armour"
+  },
+  {
+    "op": "replace",
+    "path": "/items/w4/config/direction",
+    "value": "towards"
+  },
+  {
+    "op": "replace",
+    "path": "/items/w3/position/x",
+    "value": 0
+  },
+  {
+    "op": "replace",
+    "path": "/items/w3/config/tiles/2",
+    "value": "armour"
+  },
+  {
+    "op": "replace",
+    "path": "/items/w3/config/tiles/0",
+    "value": "plain"
   },
   {
     "op": "replace",

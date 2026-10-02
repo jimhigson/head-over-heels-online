@@ -1,12 +1,10 @@
 import { produce } from "immer";
 
-import { exitGameRoomId } from "../../ItemConfigMap";
 import { type CampaignVerifier } from "../CampaignVerification";
 import {
   allTeleporters,
   type TeleporterConfig,
-  teleportersInRoom,
-  teleporterTargetRoom,
+  teleporterLanding,
   teleporterToItemId,
 } from "../helpers/teleporterTarget";
 import {
@@ -28,19 +26,24 @@ type RedundantTeleporterItem = {
 const redundantTarget = (
   campaign: VerificationCampaign,
   fromRoom: VerificationRoomId,
+  teleporterId: VerificationRoomItemId,
   config: TeleporterConfig,
 ): undefined | VerificationRoomId => {
   const toItemId = teleporterToItemId(config);
   if (toItemId === undefined) {
     return undefined;
   }
-  const targetRoom = teleporterTargetRoom(fromRoom, config);
-  if (targetRoom === exitGameRoomId || !(targetRoom in campaign.rooms)) {
-    return undefined;
-  }
-  const teleporters = teleportersInRoom(campaign, targetRoom);
-  const [only] = teleporters;
-  return teleporters.length === 1 && only === toItemId ? targetRoom : undefined;
+  // only the destination, so it lands by default:
+  const destinationOnly = { toRoom: config.toRoom };
+  const target = teleporterLanding(
+    campaign,
+    fromRoom,
+    teleporterId,
+    destinationOnly,
+  );
+  return target?.landing.type === "item" && target.landing.itemId === toItemId ?
+      target.targetRoom
+    : undefined;
 };
 
 /** A8: a teleporter `toItemId` that just names the destination's only teleporter */
@@ -51,7 +54,12 @@ export const redundantTeleporterItemVerifier: CampaignVerifier<RedundantTeleport
       for (const { roomId, teleporterId, teleporter } of allTeleporters(
         campaign,
       )) {
-        const targetRoom = redundantTarget(campaign, roomId, teleporter.config);
+        const targetRoom = redundantTarget(
+          campaign,
+          roomId,
+          teleporterId,
+          teleporter.config,
+        );
         if (targetRoom === undefined) {
           continue;
         }
@@ -71,7 +79,8 @@ export const redundantTeleporterItemVerifier: CampaignVerifier<RedundantTeleport
       const teleporter = campaign.rooms[roomId].items[teleporterId];
       if (
         teleporter.type !== "teleporter" ||
-        redundantTarget(campaign, roomId, teleporter.config) === undefined
+        redundantTarget(campaign, roomId, teleporterId, teleporter.config) ===
+          undefined
       ) {
         throw new Error(
           `cannot auto-fix teleporter ‘${teleporterId}’ in ‘${roomId}’: its toItemId isn't redundant`,

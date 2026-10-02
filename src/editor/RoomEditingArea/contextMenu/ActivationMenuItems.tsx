@@ -7,7 +7,7 @@ import {
   type ActivationState,
 } from "../../itemActivation";
 import {
-  selectCurrentEditingRoomJson,
+  selectCurrentCommittedRoomJson,
   selectSelectedJsonItemIds,
   setSelectedItemsActivation,
 } from "../../slice/levelEditorSlice";
@@ -29,7 +29,7 @@ const activationStates = [
 export const ActivationMenuItems = () => {
   const dispatch = useAppDispatch();
   const selectedJsonItemIds = useEditorAppSelector(selectSelectedJsonItemIds);
-  const roomJson = useEditorAppSelector(selectCurrentEditingRoomJson);
+  const roomJson = useEditorAppSelector(selectCurrentCommittedRoomJson);
 
   const items = selectedJsonItemIds
     .map((id) => roomJson.items[id])

@@ -2,16 +2,19 @@ import { type EditorRootState } from "../../../store/store";
 import {
   type EditorJsonItemUnion,
   type EditorRoomItemId,
-  type EditorRoomState,
+  type EditorUnionOfAllItemInPlayTypes,
 } from "../../editorTypes";
 import { selectItemInLevelEditorState } from "../../slice/levelEditorSelectors";
 
-export const jsonItemAndIdForInPlayItemId = (
+/**
+ * for a given in-play item, do the reverse-lookup back to the entry of the json
+ * item it came from
+ */
+export const jsonItemAndIdForInPlayItem = (
   { levelEditor: levelEditorState }: EditorRootState,
-  roomState: EditorRoomState,
-  itemId: EditorRoomItemId,
+  inPlayItem: EditorUnionOfAllItemInPlayTypes | undefined,
 ): [EditorRoomItemId, EditorJsonItemUnion] | undefined => {
-  const jsonItemId = roomState.items[itemId]?.jsonItemId;
+  const jsonItemId = inPlayItem?.jsonItemId;
   if (jsonItemId === undefined) {
     return undefined;
   }

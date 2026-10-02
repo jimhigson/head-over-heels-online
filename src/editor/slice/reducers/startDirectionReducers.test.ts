@@ -2,7 +2,7 @@ import { produce } from "immer";
 import { expect, test } from "vitest";
 
 import { type EditorRoomItemId } from "../../editorTypes";
-import { selectCurrentRoomJsonFromLevelEditorState } from "../levelEditorSelectors";
+import { selectCurrentCommittedRoomJsonFromLevelEditorState } from "../levelEditorSelectors";
 import {
   setSelectedItemsInRoom,
   setSelectedItemsStartDirection,
@@ -39,7 +39,7 @@ const platformPlayerAndBlock = produce(
   },
 );
 
-const setDirection = selectCurrentRoomJsonFromLevelEditorState(
+const setDirection = selectCurrentCommittedRoomJsonFromLevelEditorState(
   reduceLevelEditorActions(
     platformPlayerAndBlock,
     setSelectedItemsInRoom({
@@ -73,7 +73,7 @@ test("leaves items without a start direction untouched", () => {
   });
 });
 
-const lampSetDirection = selectCurrentRoomJsonFromLevelEditorState(
+const lampSetDirection = selectCurrentCommittedRoomJsonFromLevelEditorState(
   reduceLevelEditorActions(
     produce(editorStateWithOneRoomWithNoItems, (draft) => {
       draft.campaignInProgress.rooms[testRoomId].items[

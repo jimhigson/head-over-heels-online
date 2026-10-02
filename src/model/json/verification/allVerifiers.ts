@@ -1,4 +1,5 @@
 import { missingCrownVerifier } from "./campaign/missingCrownVerifier";
+import { missingExitVerifier } from "./campaign/missingExitVerifier";
 import { missingPlayerStartVerifier } from "./campaign/missingPlayerStartVerifier";
 import { schemaComplianceVerifier } from "./campaign/schemaComplianceVerifier";
 import { unreachableRoomVerifier } from "./campaign/unreachableRoomVerifier";
@@ -26,6 +27,8 @@ import { verticalLinkBadSubRoomVerifier } from "./subRooms/verticalLinkBadSubRoo
 import { verticalLinkCollisionVerifier } from "./subRooms/verticalLinkCollisionVerifier";
 import { verticalLinkOneWayVerifier } from "./subRooms/verticalLinkOneWayVerifier";
 import { redundantTeleporterItemVerifier } from "./teleporters/redundantTeleporterItemVerifier";
+import { teleporterLandingUnresolvableVerifier } from "./teleporters/teleporterLandingUnresolvableVerifier";
+import { teleporterRoomMissingVerifier } from "./teleporters/teleporterRoomMissingVerifier";
 import { teleporterTargetInvalidVerifier } from "./teleporters/teleporterTargetInvalidVerifier";
 
 /**
@@ -42,7 +45,9 @@ export const allVerifiers: CampaignVerifier<unknown>[] = [
   doorDirectionMismatchVerifier,
   doorTwoWayLinkVerifier,
   doorToSameRoomVerifier,
+  teleporterRoomMissingVerifier,
   teleporterTargetInvalidVerifier,
+  teleporterLandingUnresolvableVerifier,
   redundantToDoorVerifier,
   redundantToSubRoomVerifier,
   redundantTeleporterItemVerifier,
@@ -61,6 +66,7 @@ export const allVerifiers: CampaignVerifier<unknown>[] = [
   unreachableRoomVerifier,
   mapGeometryVerifier,
   missingPlayerStartVerifier,
+  missingExitVerifier,
   missingCrownVerifier,
   schemaComplianceVerifier,
 ];

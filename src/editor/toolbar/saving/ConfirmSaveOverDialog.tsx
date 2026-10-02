@@ -24,7 +24,7 @@ export const ConfirmSaveOverDialog = ({
 }: ConfirmSaveOverDialogProps) => {
   return (
     <DialogPortal>
-      <Border class="scale-editor bg-checkerboard-stifled-alphas" />
+      <Border class="scale-editor" scrim />
       <div class="contents no-keyboard-shortcuts">
         <Dialog
           small

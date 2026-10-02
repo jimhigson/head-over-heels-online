@@ -95,7 +95,7 @@ export const SaveAsDialog = ({
 
   return (
     <DialogPortal>
-      <Border class="scale-editor bg-checkerboard-stifled-alphas" />
+      <Border class="scale-editor" scrim />
       {/* stop window-level shortcuts catching our keypresses that match their shortcuts */}
       <div class="contents no-keyboard-shortcuts">
         <Dialog

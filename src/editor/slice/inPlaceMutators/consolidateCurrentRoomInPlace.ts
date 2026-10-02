@@ -2,7 +2,7 @@ import { consolidateItemsMap } from "../../../consolidateItems/consolidateItems"
 import { reconsolidateItems } from "../../../consolidateItems/reconsolidateItems";
 import { makeToasterConsolidationPredicate } from "../../../consolidateItems/toasterConsolidationPredicate";
 import { type EditorJsonItemUnion } from "../../editorTypes";
-import { selectCurrentRoomJsonFromLevelEditorState } from "../levelEditorSelectors";
+import { selectCurrentCommittedRoomJsonFromLevelEditorState } from "../levelEditorSelectors";
 import { type LevelEditorState } from "../levelEditorSlice";
 import { clearContextMenuXyInPlace } from "../reducers/contextMenuReducers";
 
@@ -10,7 +10,7 @@ export const consolidateCurrentRoomInPlace = (
   levelEditorSliceState: LevelEditorState,
   considerItem?: (item: EditorJsonItemUnion) => boolean,
 ) => {
-  const currentRoom = selectCurrentRoomJsonFromLevelEditorState(
+  const currentRoom = selectCurrentCommittedRoomJsonFromLevelEditorState(
     levelEditorSliceState,
   );
   const toasterPredicate = makeToasterConsolidationPredicate(currentRoom.items);

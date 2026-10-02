@@ -2,7 +2,7 @@ import { useAppDispatch } from "../../../store/hooks";
 import { useEditorAppSelector } from "../../../store/store";
 import { ContextMenuItem } from "../../../ui/command/ContextMenuItem";
 import {
-  selectCurrentEditingRoomJson,
+  selectCurrentCommittedRoomJson,
   selectSelectedJsonItemIds,
   setTool,
 } from "../../slice/levelEditorSlice";
@@ -14,7 +14,7 @@ import {
 export const DuplicateMenuItem = () => {
   const dispatch = useAppDispatch();
   const selectedJsonItemIds = useEditorAppSelector(selectSelectedJsonItemIds);
-  const roomJson = useEditorAppSelector(selectCurrentEditingRoomJson);
+  const roomJson = useEditorAppSelector(selectCurrentCommittedRoomJson);
 
   if (selectedJsonItemIds.length !== 1) {
     return null;

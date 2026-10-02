@@ -10,7 +10,7 @@ import { emptyObject } from "../../../utils/empty";
 import { type EditorRoomId, type EditorRoomJson } from "../../editorTypes";
 import { changeIdOfCurrentRoomInPlace } from "../inPlaceMutators/changeIdOfCurrentRoomInPlace";
 import {
-  selectCurrentRoomJsonFromLevelEditorState,
+  selectCurrentCommittedRoomJsonFromLevelEditorState,
   selectCursorRoomId,
 } from "../levelEditorSelectors";
 import { type LevelEditorState } from "../levelEditorSlice";
@@ -40,7 +40,9 @@ const roomHistory = (state: LevelEditorState): RoomUndoHistory => {
 };
 
 export const snapshotRoomForUndo = (state: LevelEditorState): EditorRoomJson =>
-  structuredClone(current(selectCurrentRoomJsonFromLevelEditorState(state)));
+  structuredClone(
+    current(selectCurrentCommittedRoomJsonFromLevelEditorState(state)),
+  );
 
 export const pushUndoInPlace = (
   state: LevelEditorState,

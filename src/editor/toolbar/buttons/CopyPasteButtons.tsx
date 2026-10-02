@@ -3,7 +3,7 @@ import { produce } from "immer";
 import { useAppDispatch } from "../../../store/hooks";
 import { editorStore, useEditorAppSelector } from "../../../store/store";
 import { pick } from "../../../utils/pick";
-import { selectCurrentRoomJsonFromLevelEditorState } from "../../slice/levelEditorSelectors";
+import { selectCurrentCommittedRoomJsonFromLevelEditorState } from "../../slice/levelEditorSelectors";
 import { roomJsonEdited } from "../../slice/levelEditorSlice";
 import { type UndoDescription } from "../../slice/reducers/undoDescription";
 import { ToolbarButton } from "./ToolbarButton";
@@ -26,7 +26,7 @@ export const CopyPasteButtons = () => {
 
           const { selectedJsonItemIds } = storeState;
           const currentRoomJson =
-            selectCurrentRoomJsonFromLevelEditorState(storeState);
+            selectCurrentCommittedRoomJsonFromLevelEditorState(storeState);
 
           const selectedItemMap = pick(
             currentRoomJson.items,
@@ -58,7 +58,7 @@ export const CopyPasteButtons = () => {
 
             const storeState = editorStore.getState().levelEditor;
             const currentRoomJson =
-              selectCurrentRoomJsonFromLevelEditorState(storeState);
+              selectCurrentCommittedRoomJsonFromLevelEditorState(storeState);
 
             const updatedRoom = produce(currentRoomJson, (draft) => {
               Object.assign(draft.items, clipboardItems);

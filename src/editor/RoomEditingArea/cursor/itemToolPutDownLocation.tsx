@@ -13,20 +13,37 @@ import {
   type Xy,
   type Xyz,
 } from "../../../utils/vectors/vectors";
-import { type EditorRoomState } from "../../editorTypes";
+import { type EditorUnionOfAllItemInPlayTypes } from "../../editorTypes";
 import { type ItemTool } from "../interactivity/Tool";
 import { type PointingAtItem } from "./PointingAt";
 
+/**
+ * where, in blocks, the item tool would put its item down, given what the
+ * pointer is on:
+ *
+ * - on a top face: at the pointed-at position, sitting on the item
+ * - a door on a wall: inside the wall, kept within its length and below its top
+ * - any other side face: one block out from that face, so not inside the item
+ *
+ * undefined only when not possible to put the item down:
+ *
+ * - if the door tool, a location where a door can't go
+ *   (not pointing at a wall, or the wall is too short)
+ * - for other item tools, never returns undefined, since it doesn't check
+ *   there is space for the item
+ */
 export const itemToolPutDownLocation = (
+  /** where the pointer is, on which face of {@link pointingAtItem} */
   pointingAt: PointingAtItem,
-  roomState: EditorRoomState,
+  /** the in-play item {@link pointingAt} points at */
+  pointingAtItem: EditorUnionOfAllItemInPlayTypes,
+  /** the item the tool is placing */
   itemTool: ItemTool,
 ): undefined | Xyz => {
   const {
     world: {
       onItem: { face: pointingAtFace },
       position: pointingAtPosition,
-      itemId: pointingAtItemId,
     },
   } = pointingAt;
 
@@ -41,7 +58,6 @@ export const itemToolPutDownLocation = (
     // other items would be:
     itemTool.type === "door"
   ) {
-    const pointingAtItem = roomState.items[pointingAtItemId];
     if (pointingAtItem.type !== "wall") {
       return undefined;
     }

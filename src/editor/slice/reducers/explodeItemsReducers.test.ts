@@ -2,7 +2,7 @@ import { produce } from "immer";
 import { expect, test } from "vitest";
 
 import { type EditorRoomItemId } from "../../editorTypes";
-import { selectCurrentRoomJsonFromLevelEditorState } from "../levelEditorSelectors";
+import { selectCurrentCommittedRoomJsonFromLevelEditorState } from "../levelEditorSelectors";
 import {
   explodeSelectedItems,
   openItemContextMenu,
@@ -33,20 +33,20 @@ const explodeBlock = reduceLevelEditorActions(
 );
 
 test("explodes a multiplied block into its separate single parts", () => {
-  expect(selectCurrentRoomJsonFromLevelEditorState(explodeBlock).items).toEqual(
-    {
-      bm: {
-        type: "block",
-        config: { style: "artificial" },
-        position: { x: 0, y: 0, z: 0 },
-      },
-      bm1: {
-        type: "block",
-        config: { style: "artificial" },
-        position: { x: 1, y: 0, z: 0 },
-      },
+  expect(
+    selectCurrentCommittedRoomJsonFromLevelEditorState(explodeBlock).items,
+  ).toEqual({
+    bm: {
+      type: "block",
+      config: { style: "artificial" },
+      position: { x: 0, y: 0, z: 0 },
     },
-  );
+    bm1: {
+      type: "block",
+      config: { style: "artificial" },
+      position: { x: 1, y: 0, z: 0 },
+    },
+  });
 });
 
 test("turns off auto-coalesce so the parts do not re-join", () => {
@@ -69,7 +69,7 @@ const explodeWall = reduceLevelEditorActions(
 
 test("explodes a tiled away-wall into one single-tile wall per tile", () => {
   const walls = Object.values(
-    selectCurrentRoomJsonFromLevelEditorState(explodeWall).items,
+    selectCurrentCommittedRoomJsonFromLevelEditorState(explodeWall).items,
   );
 
   expect(

@@ -6,6 +6,10 @@ import {
   type UnionOfAllItemInPlayTypes,
 } from "../../../model/ItemInPlay";
 import {
+  resolveTeleporterLanding,
+  type UnresolvableLandingReason,
+} from "../../../model/json/resolveTeleporterLanding";
+import {
   type CharacterName,
   type IndividualCharacterName,
   otherIndividualCharacterName,
@@ -158,6 +162,36 @@ const findDestinationPortal = <
   }
 };
 
+type DestinationItem<RoomId extends string, RoomItemId extends string> =
+  undefined | UnionOfAllItemInPlayTypes<RoomId, RoomItemId>;
+
+/**
+ * Heels, if carrying the teleporter that couldn't be found in the room, since
+ * a carried item isn't in the room's items
+ */
+const heelsCarryingLandingTeleporter = <
+  RoomId extends string,
+  RoomItemId extends string,
+>(
+  toRoom: RoomState<RoomId, RoomItemId>,
+  reason: UnresolvableLandingReason,
+  toItemId: string | undefined,
+): DestinationItem<RoomId, RoomItemId> => {
+  if (reason === "ambiguous") {
+    return undefined;
+  }
+  const heels = toRoom.items["heels" as RoomItemId] as
+    PlayableItem<"heels", RoomId, RoomItemId> | undefined;
+  if (heels === undefined || heels.state.carrying === null) {
+    return undefined;
+  }
+  const carryingLanding =
+    reason === "missingItem" ?
+      heels.state.carrying.id === toItemId
+    : heels.state.carrying.type === "portableTeleporter";
+  return carryingLanding ? heels : undefined;
+};
+
 const findTeleporterDestinationPosition = <
   RoomId extends string,
   RoomItemId extends string,
@@ -172,77 +206,31 @@ const findTeleporterDestinationPosition = <
 
   const s = state as AllUnionFields<typeof state>;
 
-  if (s.toPosition !== undefined) {
+  const landing = resolveTeleporterLanding<RoomItemId>(
+    s,
+    roomItemsIterable(toRoom.items)
+      .filter(isTeleporter)
+      .map(({ id }) => id),
+    (itemId): itemId is RoomItemId => itemId in toRoom.items,
+    toRoom.items[sourceItem.id] === sourceItem ? sourceItem.id : undefined,
+  );
+
+  if (landing.type === "position") {
     return addXyz(
-      blockXyzToFineXyz(s.toPosition),
+      blockXyzToFineXyz(landing.position),
       positionRelativeToSourcePortal,
     );
   }
 
-  type DestinationItem =
-    undefined | UnionOfAllItemInPlayTypes<RoomId, RoomItemId>;
-
-  let destinationItem: DestinationItem;
-
-  if (s.toItemId !== undefined) {
-    destinationItem = toRoom.items[s.toItemId as RoomItemId];
-
-    if (destinationItem === undefined) {
-      // still one last change to find - maybe the room has Heels in it and heels is carrying a portable
-      // teleporter:
-      const heels = toRoom.items["heels" as RoomItemId] as
-        PlayableItem<"heels", RoomId, RoomItemId> | undefined;
-      if (
-        heels !== undefined &&
-        heels.state.carrying !== null &&
-        heels.state.carrying.id === s.toItemId
-      ) {
-        destinationItem = heels;
-      }
-    }
-
-    if (destinationItem === undefined) {
-      console.warn(
-        `no item with id ${s.toItemId} in destination room ${toRoom.id}`,
-      );
-      return undefined;
-    }
-  }
+  const destinationItem: DestinationItem<RoomId, RoomItemId> =
+    landing.type === "item" ?
+      toRoom.items[landing.itemId]
+    : heelsCarryingLandingTeleporter(toRoom, landing.reason, s.toItemId);
 
   if (destinationItem === undefined) {
-    for (const teleporter of roomItemsIterable(toRoom.items).filter(
-      isTeleporter,
-    )) {
-      if (teleporter === sourceItem) {
-        // don't find the teleporter if it is the sourceItem
-        continue;
-      }
-      if (destinationItem === undefined) {
-        destinationItem = teleporter;
-      } else {
-        console.warn(
-          `no \`config.toPosition\` or \`config.toItemId\` given and multiple teleporters in destination room ${toRoom.id}`,
-        );
-        return undefined;
-      }
-    }
-    if (destinationItem === undefined) {
-      // still one last change to find - maybe the room has Heels in it and heels is carrying a portable
-      // teleporter:
-      const heels = toRoom.items["heels" as RoomItemId] as
-        PlayableItem<"heels", RoomId, RoomItemId> | undefined;
-      if (
-        heels !== undefined &&
-        heels.state.carrying !== null &&
-        heels.state.carrying.type === "portableTeleporter"
-      ) {
-        destinationItem = heels;
-      }
-    }
-  }
-
-  if (destinationItem === undefined) {
-    console.warn(`no teleporters in destination room ${toRoom.id}`);
+    console.warn(
+      `teleporter ${sourceItem.id} can't land in destination room ${toRoom.id}`,
+    );
     return undefined;
   }
 
