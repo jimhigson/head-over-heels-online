@@ -47,25 +47,20 @@ const isBetter = (a: Match, b: Match): boolean => {
 };
 
 /**
- * Finds the indices of `text` (matched case-insensitively) that align `query`
- * as a subsequence, preferring the alignment with the fewest, longest
- * contiguous runs and then the most word-boundary starts. Returns `null` when
- * `query` is empty or isn't a subsequence of `text`.
- *
- * Used both to decide whether a command item is visible (a non-null result
- * means it matches the search) and to drive the highlight (the returned
- * indices). O(n²·m) over short identifiers, which is ample here.
+ * The best alignment of `query` as a subsequence of `text` (case-insensitive),
+ * or undefined when `query` is empty or isn't a subsequence of `text`.
+ * O(n²·m) over short identifiers, which is ample here.
  */
-export const fuzzyMatch = (text: string, query: string): null | number[] => {
+const bestMatch = (text: string, query: string): Match | undefined => {
   if (query === "") {
-    return null;
+    return undefined;
   }
   const lowerText = text.toLowerCase();
   const lowerQuery = query.toLowerCase();
   const n = lowerText.length;
   const m = lowerQuery.length;
   if (m > n) {
-    return null;
+    return undefined;
   }
 
   // row[i] = best alignment of the query characters so far whose last matched
@@ -119,5 +114,25 @@ export const fuzzyMatch = (text: string, query: string): null | number[] => {
       result = match;
     }
   }
-  return result?.indices ?? null;
+  return result;
+};
+
+/**
+ * Finds the indices of `text` (matched case-insensitively) that align `query`
+ * as a subsequence, preferring the alignment with the fewest, longest
+ * contiguous runs and then the most word-boundary starts. Returns `null` when
+ * `query` is empty or isn't a subsequence of `text`. Drives the highlight.
+ */
+export const fuzzyMatch = (text: string, query: string): null | number[] =>
+  bestMatch(text, query)?.indices ?? null;
+
+/**
+ * How well `query` matches `text`, lower ranking first in the same order as
+ * `isBetter`; `null` when it doesn't match at all
+ */
+export const fuzzyMatchRank = (text: string, query: string): null | number => {
+  const match = bestMatch(text, query);
+  return match === undefined ? null : (
+      match.runs * 1_000_000 - match.boundaries * 1_000 + match.firstIndex
+    );
 };

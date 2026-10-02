@@ -11,7 +11,7 @@ import { selectCurrentRoomState } from "../../../../../gameState/gameStateSelect
 import { findStartingRoomsInCampaign } from "../../../../../gameState/loadGameState";
 import { useGameApi } from "../../../../GameApiContext";
 import { findMapBounds } from "./findMapBounds";
-import { type MapData } from "./MapData";
+import { type MapArea, type MapData } from "./MapData";
 import { computeNotableItemsByCell } from "./notableItemsByCell";
 import { useTickingCurrentCharacterName } from "./useTickingCurrentCharacterName";
 
@@ -65,18 +65,24 @@ export const useMapDataForCurrentGame = <
         roomId: centreRoomId,
         subRoomId: curSubRoom,
       }).nodes;
-      const sortedObjectOfPositions = sortRoomGridPositions(positions);
+      const sortedPositions = sortRoomGridPositions(positions);
 
       return {
-        mapBounds: findMapBounds(positions),
         curRoomId: curRoom?.roomJson.id,
         curSubRoomId: undefined,
-        gridPositions: sortedObjectOfPositions,
-        notableItemsByCell: computeNotableItemsByCell(
-          sortedObjectOfPositions,
-          campaign,
-          gameState.pickupsCollected,
-        ),
+        // in-game, the map only shows the area the current room is in, don't calc
+        // any others since they won't be used:
+        areas: [
+          {
+            mapBounds: findMapBounds(positions),
+            gridPositions: sortedPositions,
+            notableItemsByCell: computeNotableItemsByCell(
+              sortedPositions,
+              campaign,
+              gameState.pickupsCollected,
+            ),
+          } satisfies MapArea<RoomId>,
+        ],
         currentCharacterName,
         pickupsCollected: gameState.pickupsCollected,
         characterRooms: gameState.characterRooms,

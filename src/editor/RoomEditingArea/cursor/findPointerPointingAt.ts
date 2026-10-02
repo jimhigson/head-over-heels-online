@@ -136,25 +136,35 @@ const isPointableItemForTool =
     // for everything else, no special rules
     return itemIsSolid;
   };
-export const findPointerPointingAt = (
-  scrXy: Xy,
-  room: EditorRoomState,
-  tool: Tool,
-  gridResolution: GridResolution,
-  cameraAngle: Xy,
+export type FindPointerPointingAtOptions = {
+  scrXy: Xy;
+  room: EditorRoomState;
+  tool: Tool;
+  gridResolution: GridResolution;
+  cameraAngle: Xy;
   /**
    * the editor's current room renderer, whose render boxes (drawn extents)
    * picking selects by. Undefined = no renderer exists yet (first load, or
    * between renderer swaps), so nothing has been drawn and there is nothing
    * to point at
    */
-  roomRenderer: Pick<EditorRoomRenderer, "renderBoxes"> | undefined,
+  roomRenderer: Pick<EditorRoomRenderer, "renderBoxes"> | undefined;
   /**
    * items that are in the room only because they are being previewed as an
    * addition - they are drawn, but can't be pointed at
    */
-  previewOnlyJsonItemIds: ReadonlySet<EditorRoomItemId>,
-): MaybePointingAtSomething => {
+  previewOnlyJsonItemIds: ReadonlySet<EditorRoomItemId>;
+};
+
+export const findPointerPointingAt = ({
+  scrXy,
+  room,
+  tool,
+  gridResolution,
+  cameraAngle,
+  roomRenderer,
+  previewOnlyJsonItemIds,
+}: FindPointerPointingAtOptions): MaybePointingAtSomething => {
   if (roomRenderer === undefined) {
     return { roomId: room.id, scrXy, world: undefined };
   }
@@ -164,18 +174,45 @@ export const findPointerPointingAt = (
     [EditorUnionOfAllItemInPlayTypes, PointerItemIntersection]
   >;
 
-  const intersectionsArray: IntersectionsArray = roomItemsIterable(room.items)
-    .filter(isPointableItemForTool(tool, previewOnlyJsonItemIds))
+  const isPointable = isPointableItemForTool(tool, previewOnlyJsonItemIds);
+  const intersectionOf = (item: EditorUnionOfAllItemInPlayTypes) =>
+    pointIntersectsItemAABB(scrXy, tool, item, cameraAngle, renderBoxes);
+
+  // what the preview was built against is picked, not its previewed version:
+  const overriddenItems = roomItemsIterable(room.itemsOverriddenByPreview)
+    .filter(isPointable)
+    .toArray();
+  const overriddenJsonItemIds = new Set(
+    overriddenItems.map(({ jsonItemId }) => jsonItemId),
+  );
+
+  const roomIntersections = roomItemsIterable(room.items)
+    .filter(
+      (item) =>
+        isPointable(item) && !overriddenJsonItemIds.has(item.jsonItemId),
+    )
     .map((item): [typeof item, PointerItemMaybeIntersection] => [
       item,
-      pointIntersectsItemAABB(scrXy, tool, item, cameraAngle, renderBoxes),
+      intersectionOf(item),
     ])
+    .toArray();
+
+  const overriddenByPreviewIntersections = overriddenItems.map(
+    (item): [typeof item, PointerItemMaybeIntersection] => [
+      item,
+      intersectionOf(item) === "non-intersecting" ? "non-intersecting" : (
+        "intersects-overridden-by-preview"
+      ),
+    ],
+  );
+
+  const intersectionsArray: IntersectionsArray = roomIntersections
+    .concat(overriddenByPreviewIntersections)
     .filter(
       // remove non-intersecting from the tuple array
       (tup): tup is [(typeof tup)[0], PointerItemIntersection] =>
         tup[1] !== "non-intersecting",
-    )
-    .toArray();
+    );
 
   // find the item(s) that the mouse is over:
   const itemPointingTo: EditorUnionOfAllItemInPlayTypes | undefined =

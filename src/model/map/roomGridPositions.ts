@@ -15,7 +15,8 @@ import {
   type Xyz,
 } from "../../utils/vectors/vectors";
 import { exitGameRoomId } from "../json/ItemConfigMap";
-import { type JsonItem, type JsonItemUnion } from "../json/JsonItem";
+import { type JsonItem } from "../json/JsonItem";
+import { resolveTeleporterLanding } from "../json/resolveTeleporterLanding";
 import { type Campaign } from "../modelTypes";
 import {
   isWholeRoomSubRooms,
@@ -86,56 +87,44 @@ type FlatTeleporterConfig<RoomId extends string> = AllUnionFields<
 type TeleporterTargetEndpoint = { subRoomId: string; itemId?: string };
 
 /**
- * which sub-room (and which item) of the target room does this teleporter land
- * on? A json-side, read-only echo of `findTeleporterDestinationPosition` (in
- * changeCharacterRoom.ts): land on the configured position/item, else on the
- * single teleporter in the target room.
+ * which sub-room (and which item) of the target room does this teleporter
+ * land on? Undefined when it has nowhere to land
  */
 const findTargetEndpoint = <RoomId extends string>(
   config: FlatTeleporterConfig<RoomId>,
   targetRoom: RoomJson<RoomId, string>,
+  /** the teleporter being used, when it lands in its own room */
+  sourceItemIdInTarget: string | undefined,
 ): TeleporterTargetEndpoint | undefined => {
-  if (config.toPosition !== undefined) {
-    return {
-      subRoomId: findSubRoomForItem(config.toPosition, "block", targetRoom),
-    };
-  }
-
-  if (config.toItemId !== undefined) {
-    const targetItem = targetRoom.items[config.toItemId];
-    return targetItem === undefined ? undefined : (
-        {
-          subRoomId: findSubRoomForItem(
-            targetItem.position,
-            "block",
-            targetRoom,
-          ),
-          itemId: config.toItemId,
-        }
-      );
-  }
-
-  // no explicit target: land on the single teleporter in the target room
-  let lone: [string, JsonItemUnion<RoomId, string>] | undefined;
-  for (const entry of iterateRoomJsonItemsWithIds(
-    targetRoom.items,
-    "teleporter",
-    "portableTeleporter",
-  )) {
-    if (lone !== undefined) {
-      // ambiguous - more than one teleporter and no explicit target
+  const landing = resolveTeleporterLanding(
+    config,
+    iterateRoomJsonItemsWithIds(
+      targetRoom.items,
+      "teleporter",
+      "portableTeleporter",
+    ).map(([teleporterId]) => teleporterId),
+    (itemId): itemId is string => itemId in targetRoom.items,
+    sourceItemIdInTarget,
+  );
+  switch (landing.type) {
+    case "position":
+      return {
+        subRoomId: findSubRoomForItem(landing.position, "block", targetRoom),
+      };
+    case "item":
+      return {
+        subRoomId: findSubRoomForItem(
+          targetRoom.items[landing.itemId].position,
+          "block",
+          targetRoom,
+        ),
+        itemId: landing.itemId,
+      };
+    case "unresolvable":
       return undefined;
-    }
-    lone = entry;
+    default:
+      landing satisfies never;
   }
-  if (lone === undefined) {
-    return undefined;
-  }
-  const [loneId, loneItem] = lone;
-  return {
-    subRoomId: findSubRoomForItem(loneItem.position, "block", targetRoom),
-    itemId: loneId,
-  };
 };
 
 const getBoundary = (
@@ -403,7 +392,11 @@ const visit = <RoomId extends string>(
     if (targetRoom === undefined) {
       continue;
     }
-    const target = findTargetEndpoint(config, targetRoom);
+    const target = findTargetEndpoint(
+      config,
+      targetRoom,
+      targetRoomId === roomIdIn ? teleporterId : undefined,
+    );
     if (target === undefined) {
       continue;
     }

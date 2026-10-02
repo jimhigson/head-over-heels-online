@@ -6,6 +6,9 @@ import { nonZeroVectorClosestDirectionXy4 } from "../../../../utils/vectors/vect
 import {
   type EditorItemInPlayUnion,
   type EditorRoomId,
+  type EditorRoomItemId,
+  type EditorRoomState,
+  type EditorUnionOfAllItemInPlayTypes,
 } from "../../../editorTypes";
 import { selectPreviewOnlyJsonItemIds } from "../../../slice/levelEditorSelectors";
 import {
@@ -15,7 +18,7 @@ import {
 } from "../../../slice/levelEditorSlice";
 import { addingItemWouldCollide } from "../../cursor/editWouldCollide";
 import { itemToolPutDownLocation } from "../../cursor/itemToolPutDownLocation";
-import { jsonItemAndIdForInPlayItemId } from "../jsonItemAndIdForInPlayItemId";
+import { jsonItemAndIdForInPlayItem } from "../jsonItemAndIdForInPlayItem";
 import { type Tool } from "../Tool";
 import {
   type MouseDownParams,
@@ -48,19 +51,19 @@ export class ItemToolHandler implements ToolHandler<
       return;
     }
 
-    const asJson = jsonItemAndIdForInPlayItemId(
-      storeState,
+    const pointingAtItem = findItemInPlayForPicking(
       roomState,
       pointingAt.world.itemId,
     );
-    if (asJson === undefined) {
+    const asJson = jsonItemAndIdForInPlayItem(storeState, pointingAtItem);
+    if (pointingAtItem === undefined || asJson === undefined) {
       return;
     }
     const [, jsonItem] = asJson;
 
     const putDownBlockPosition = itemToolPutDownLocation(
       pointingAt,
-      roomState,
+      pointingAtItem,
       tool.item,
     );
 
@@ -75,9 +78,7 @@ export class ItemToolHandler implements ToolHandler<
     const toolItem =
       item.type === "door" ?
         produce(item, (draft) => {
-          const wall = roomState.items[
-            pointingAt.world.itemId
-          ] as EditorItemInPlayUnion<"wall">;
+          const wall = pointingAtItem as EditorItemInPlayUnion<"wall">;
           (draft.config as DoorConfig<EditorRoomId>).direction =
             nonZeroVectorClosestDirectionXy4(wall.config.direction);
         })
@@ -123,19 +124,19 @@ export class ItemToolHandler implements ToolHandler<
       return;
     }
 
-    const asJson = jsonItemAndIdForInPlayItemId(
-      storeState,
+    const pointingAtItem = findItemInPlayForPicking(
       roomState,
       pointingAt.world.itemId,
     );
-    if (asJson === undefined) {
+    const asJson = jsonItemAndIdForInPlayItem(storeState, pointingAtItem);
+    if (pointingAtItem === undefined || asJson === undefined) {
       return;
     }
     const [, jsonItem] = asJson;
 
     const putDownBlockPosition = itemToolPutDownLocation(
       pointingAt,
-      roomState,
+      pointingAtItem,
       tool.item,
     );
 
@@ -166,3 +167,16 @@ export class ItemToolHandler implements ToolHandler<
     dispatch(resetPreviewedEdits());
   }
 }
+/**
+ * find the in-play item that a picked (pointed-at) item id refers to.
+ *
+ * Usually this is just the item in the room. But when the current preview has
+ * changed or removed that item (eg a door preview cutting into a wall), picking
+ * points at the item as it was committed, not as previewed, so that is what
+ * this returns - taken from the room's `itemsOverriddenByPreview`.
+ */
+export const findItemInPlayForPicking = (
+  roomState: EditorRoomState,
+  itemId: EditorRoomItemId,
+): EditorUnionOfAllItemInPlayTypes | undefined =>
+  roomState.itemsOverriddenByPreview[itemId] ?? roomState.items[itemId];

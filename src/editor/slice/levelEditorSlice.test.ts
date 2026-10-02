@@ -13,7 +13,7 @@ import {
   type LevelEditorState,
   redo,
   roomJsonEdited,
-  selectCurrentEditingRoomJson,
+  selectCurrentCommittedRoomJson,
   setSelectedItemsInRoom,
   setTool,
   undo,
@@ -69,7 +69,7 @@ describe(// concerns of the slice that don't fit into any particular *Reducers.t
 
     // find the item we just added:
     const [addedBlockId] = iterateRoomJsonItemsWithIds(
-      selectCurrentEditingRoomJson({ levelEditor: state2 }).items,
+      selectCurrentCommittedRoomJson({ levelEditor: state2 }).items,
     ).find(([, item]) => item.type === "block")!;
 
     const a2 = setSelectedItemsInRoom({
@@ -86,7 +86,7 @@ describe(// concerns of the slice that don't fit into any particular *Reducers.t
     const state4 = reduce(state3, a3);
 
     const state4HasBlock = iterateRoomJsonItemsWithIds(
-      selectCurrentEditingRoomJson({ levelEditor: state4 }).items,
+      selectCurrentCommittedRoomJson({ levelEditor: state4 }).items,
     ).some(([, item]) => item.type === "block")!;
 
     expect(state4HasBlock).toBe(false);
@@ -209,7 +209,7 @@ describe(// concerns of the slice that don't fit into any particular *Reducers.t
     );
 
     const [addedBlockId] = iterateRoomJsonItemsWithIds(
-      selectCurrentEditingRoomJson({ levelEditor: state2 }).items,
+      selectCurrentCommittedRoomJson({ levelEditor: state2 }).items,
     ).find(([, item]) => item.type === "block")!;
 
     const state3 = reduce(

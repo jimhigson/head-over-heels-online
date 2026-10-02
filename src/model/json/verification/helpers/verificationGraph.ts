@@ -8,7 +8,7 @@ import { type VerificationCampaign } from "../verificationTypes";
 
 /**
  * the whole-campaign room graph the verifiers run against: positions for every
- * room (`totalGraph`) plus the typed edges between them. Built once per campaign
+ * room (`totalGraph`) plus the edges with types between them. Built once per campaign
  * and handed to every verifier.
  */
 export const verificationGraph = (

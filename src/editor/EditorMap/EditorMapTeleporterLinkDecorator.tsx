@@ -94,8 +94,10 @@ const EditorMapTeleporterLinkDecorator = ({
   roomId,
   subRoomId,
   mapData,
+  areaIndex,
 }: RoomDecoratorProps<EditorRoomId>) => {
-  const { gridPositions, teleporterLinks, notableItemsByCell } = mapData;
+  const { teleporterLinks } = mapData;
+  const { gridPositions, notableItemsByCell } = mapData.areas[areaIndex];
 
   if (teleporterLinks === undefined) {
     return null;

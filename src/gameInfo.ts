@@ -30,6 +30,6 @@ export const sequelCampaignLocator: CampaignLocator = {
   // for non-release versions, this should match the number of the *next* release, so that any json format changes can appear
   // in the db at the next release version, without breaking compatibility with the current released version. After release,
   // the version number is incremented and will match this value again.
-  campaignName: "sequel_26",
+  campaignName: "sequel_28",
   version: -1,
 };

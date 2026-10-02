@@ -1,4 +1,5 @@
 import { roomItemsIterable } from "../../../../model/RoomState";
+import { entries } from "../../../../utils/entries";
 import {
   type EditorRoomId,
   type EditorRoomItemId,
@@ -52,4 +53,45 @@ export const wallRoom = (): {
     throw new Error("fixture room has no wall");
   }
   return { room, wall };
+};
+
+/**
+ * load a room of walls all on the room's "right" side, starting at the room's
+ * origin - so they overlap wherever their lengths do
+ */
+export const rightWallsRoom = (
+  /** how many tiles long each wall is, by its json id */
+  tileCounts: Record<string, number>,
+): EditorRoomState => {
+  const items: Record<string, unknown> = {};
+  for (const [jsonItemId, tileCount] of entries(tileCounts)) {
+    items[jsonItemId] = {
+      type: "wall",
+      position: { x: 0, y: 0, z: 0 },
+      config: {
+        direction: "right",
+        tiles: new Array<string>(tileCount).fill("plain"),
+      },
+    };
+  }
+  return loadEditorRoom({
+    id: "testRoom" as EditorRoomId,
+    planet: "blacktooth",
+    color: { hue: "cyan", shade: "dimmed" },
+    items,
+  } as EditorRoomJson);
+};
+
+/** the in-play item loaded from the given json id */
+export const inPlayItemForJsonItemId = (
+  room: EditorRoomState,
+  jsonItemId: string,
+): EditorUnionOfAllItemInPlayTypes => {
+  const item = roomItemsIterable(room.items).find(
+    (i) => i.jsonItemId === jsonItemId,
+  );
+  if (item === undefined) {
+    throw new Error(`fixture room has no item from json id ${jsonItemId}`);
+  }
+  return item;
 };

@@ -1,9 +1,8 @@
 import { createSelector } from "@reduxjs/toolkit";
 
-import { allVerifiers } from "../../model/json/verification/allVerifiers";
 import { type CampaignVerificationIssue } from "../../model/json/verification/CampaignVerification";
-import { verificationGraph } from "../../model/json/verification/helpers/verificationGraph";
 import { type VerificationCampaign } from "../../model/json/verification/verificationTypes";
+import { verifyCampaign } from "../../model/json/verification/verifyCampaign";
 import { useEditorAppSelector } from "../../store/store";
 import { selectCurrentCampaignInProgress } from "../slice/levelEditorSlice";
 
@@ -18,17 +17,11 @@ export type VerificationResult = CampaignVerificationIssue<unknown>[];
  * verification is fairly expensive (it walks the whole campaign), so memoise on
  * the campaign reference - it only recomputes when the campaign actually changes
  */
-const selectVerification = createSelector(
+export const selectVerification = createSelector(
   [selectCurrentCampaignInProgress],
-  (campaign): VerificationResult => {
+  (campaign): VerificationResult =>
     // the verifiers work on plain-string ids; erase the editor's branded ids
-    const verificationCampaign = campaign as VerificationCampaign;
-    // the room graph is expensive; build it once and hand it to every verifier
-    const graph = verificationGraph(verificationCampaign);
-    return allVerifiers.flatMap((verifier) =>
-      verifier.check(verificationCampaign, graph).toArray(),
-    );
-  },
+    verifyCampaign(campaign as VerificationCampaign),
 );
 
 export const useVerifyCampaign = (): VerificationResult =>

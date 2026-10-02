@@ -4,7 +4,7 @@ import { ContextMenuItem } from "../../../ui/command/ContextMenuItem";
 import { type DirectionXy8 } from "../../../utils/vectors/vectors";
 import { directionForItem } from "../../itemDirection";
 import {
-  selectCurrentEditingRoomJson,
+  selectCurrentCommittedRoomJson,
   selectSelectedJsonItemIds,
   setSelectedItemsStartDirection,
 } from "../../slice/levelEditorSlice";
@@ -35,7 +35,7 @@ const directionLabel = (direction: DirectionXy8): string =>
 export const StartDirectionMenuItems = () => {
   const dispatch = useAppDispatch();
   const selectedJsonItemIds = useEditorAppSelector(selectSelectedJsonItemIds);
-  const roomJson = useEditorAppSelector(selectCurrentEditingRoomJson);
+  const roomJson = useEditorAppSelector(selectCurrentCommittedRoomJson);
 
   const items = selectedJsonItemIds
     .map((id) => roomJson.items[id])

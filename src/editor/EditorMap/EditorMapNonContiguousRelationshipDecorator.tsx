@@ -27,8 +27,10 @@ const EditorMapNonContiguousRelationshipDecorator = ({
   roomId,
   subRoomId,
   mapData,
+  areaIndex,
 }: RoomDecoratorProps<EditorRoomId>) => {
-  const { campaign, gridPositions } = mapData;
+  const { campaign } = mapData;
+  const { gridPositions } = mapData.areas[areaIndex];
 
   // the relationship lives on the sub-room, so only the cell that owns it draws
   const relationship = roomNonContiguousRelationship(

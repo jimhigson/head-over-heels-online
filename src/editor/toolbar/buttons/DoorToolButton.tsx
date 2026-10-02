@@ -11,7 +11,7 @@ import {
   type ItemTool,
 } from "../../RoomEditingArea/interactivity/Tool";
 import {
-  selectCurrentEditingRoomJson,
+  selectCurrentCommittedRoomJson,
   setTool,
 } from "../../slice/levelEditorSlice";
 import { buttonSpriteRevertColourClasses } from "../buttonSizeClassNames";
@@ -33,7 +33,7 @@ function doorItemTool(autoAddRoom: boolean): ItemTool {
 export const DoorToolButton = () => {
   const [autoAddRoom, setAutoAddRoom] = useState(true);
   const scenery = useEditorAppSelector(
-    (state) => selectCurrentEditingRoomJson(state).planet,
+    (state) => selectCurrentCommittedRoomJson(state).planet,
   );
 
   const textureClassname =

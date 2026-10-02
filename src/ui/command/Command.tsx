@@ -19,6 +19,21 @@ export type CommandProps = Omit<
 };
 
 /**
+ * the items shown in a list, in visual positions (top to bottom as laid out) - which can differ
+ * from DOM order, since items are ranked with css `order` - we need these to handle keyboard
+ * shortcuts on the items so that keys match visual order
+ */
+const visibleItems = (
+  /** the element the items are rendered inside */
+  list: HTMLElement | null,
+): HTMLElement[] =>
+  list === null ?
+    []
+  : [...list.querySelectorAll<HTMLElement>("[data-command-item]")].sort(
+      (a, b) => a.getBoundingClientRect().top - b.getBoundingClientRect().top,
+    );
+
+/**
  * A filterable, keyboard-navigable list. Items are composed as children
  * (`CommandItem`); each filters itself out when it doesn't match the search.
  * The visible items are read from the DOM, so no item registry is needed.
@@ -48,21 +63,12 @@ export const Command = ({
     onSearchChange?.(next);
   };
 
-  const visibleItems = () => [
-    ...(listRef.current?.querySelectorAll<HTMLElement>("[data-command-item]") ??
-      []),
-  ];
-
   // keep the result count and the highlighted item in step with what is
   // actually visible after filtering. The filter is driven by `search`, so
   // recompute whenever it (or the active item) changes; the setStates bail out
   // when unchanged, so this can't loop.
   useLayoutEffect(() => {
-    const items = [
-      ...(listRef.current?.querySelectorAll<HTMLElement>(
-        "[data-command-item]",
-      ) ?? []),
-    ];
+    const items = visibleItems(listRef.current);
     setResultCount(items.length);
     const values = items.map((item) => item.dataset.value);
     if (activeValue === undefined || !values.includes(activeValue)) {
@@ -88,7 +94,7 @@ export const Command = ({
       onClose?.();
       return;
     }
-    const items = visibleItems();
+    const items = visibleItems(listRef.current);
     if (items.length === 0) {
       return;
     }

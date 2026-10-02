@@ -8,7 +8,7 @@ import { keys } from "../../../utils/entries";
 import { type EditorRoomJsonItems } from "../../editorTypes";
 import {
   coalesceSelectedItems,
-  selectCurrentEditingRoomJson,
+  selectCurrentCommittedRoomJson,
   selectSelectedJsonItemIds,
 } from "../../slice/levelEditorSlice";
 
@@ -21,7 +21,7 @@ import {
 export const CoalesceMenuItem = () => {
   const dispatch = useAppDispatch();
   const selectedJsonItemIds = useEditorAppSelector(selectSelectedJsonItemIds);
-  const roomJson = useEditorAppSelector(selectCurrentEditingRoomJson);
+  const roomJson = useEditorAppSelector(selectCurrentCommittedRoomJson);
 
   const canCoalesce = useMemo(() => {
     const selectedById = Object.fromEntries(

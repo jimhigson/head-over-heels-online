@@ -48,7 +48,7 @@ export const SaveFailedDialog = ({
 
   return (
     <DialogPortal>
-      <Border class="scale-editor bg-checkerboard-stifled-alphas" />
+      <Border class="scale-editor" scrim />
       <div class="contents no-keyboard-shortcuts">
         <Dialog small ariaLabel="Save failed" class="scale-editor p-1 !h-min">
           <DialogHeader>Save failed</DialogHeader>

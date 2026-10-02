@@ -16,7 +16,7 @@ import {
   type OptionallyNamedCampaign,
 } from "../model/modelTypes";
 import { type RoomJson, type RoomJsonItems } from "../model/RoomJson";
-import { type RoomState } from "../model/RoomState";
+import { type RoomState, type RoomStateItems } from "../model/RoomState";
 
 export type NamedEditorCampaign = Campaign<EditorRoomId>;
 
@@ -33,7 +33,20 @@ export type EditorRoomItemId<ItemId extends string = string> = Tagged<
   "EditorRoomItemId"
 >;
 
-export type EditorRoomState = RoomState<EditorRoomId, EditorRoomItemId>;
+export type EditorRoomState = RoomState<EditorRoomId, EditorRoomItemId> & {
+  /**
+   * Extra field on room state that is editor-only - records the items that have been replaced
+   * by preview items.
+   *
+   * The normal .items in the editor contains previewed edits, which is what the room renderer
+   * will see, this provides the extra data to the editor of which is really 'real'
+   */
+  itemsOverriddenByPreview: EditorRoomStateItems;
+};
+export type EditorRoomStateItems = RoomStateItems<
+  EditorRoomId,
+  EditorRoomItemId
+>;
 export type EditorRoomJson = RoomJson<EditorRoomId, EditorRoomItemId>;
 export type EditorRoomJsonItems = RoomJsonItems<EditorRoomItemId, EditorRoomId>;
 export type EditorJsonItemUnion = JsonItemUnion<EditorRoomId, EditorRoomItemId>;

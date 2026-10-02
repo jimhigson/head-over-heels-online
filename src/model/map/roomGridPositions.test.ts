@@ -4503,11 +4503,7 @@ test("teleporter with toItemId resolves to that item", () => {
       from: { roomId: "a", subRoomId: "*", itemId: "tp_a" },
       to: { roomId: "b", subRoomId: "*", itemId: "tp_b" },
     },
-    // tp_b has no target, so it resolves to the only teleporter in its room (itself)
-    {
-      from: { roomId: "b", subRoomId: "*", itemId: "tp_b" },
-      to: { roomId: "b", subRoomId: "*", itemId: "tp_b" },
-    },
+    // tp_b goes nowhere: it never lands on itself, and is its room's only teleporter
   ]);
 });
 
@@ -4537,11 +4533,7 @@ test("teleporter with only toRoom resolves to the single teleporter in the desti
       from: { roomId: "a", subRoomId: "*", itemId: "tp_a" },
       to: { roomId: "b", subRoomId: "*", itemId: "only_tp" },
     },
-    // only_tp has no target, so it resolves to the only teleporter in its room (itself)
-    {
-      from: { roomId: "b", subRoomId: "*", itemId: "only_tp" },
-      to: { roomId: "b", subRoomId: "*", itemId: "only_tp" },
-    },
+    // only_tp goes nowhere: it never lands on itself, and is its room's only teleporter
   ]);
 });
 
@@ -4570,7 +4562,7 @@ test("teleporter to a room with multiple teleporters and no explicit target is d
         }),
       },
       "a",
-    ),
+    ).filter(({ from }) => from.itemId === "tp_a"),
   ).toEqual<TeleporterLink<string>[]>([]);
 });
 
@@ -4591,7 +4583,38 @@ test("teleporter to the exit-game room is ignored", () => {
   ).toEqual<TeleporterLink<string>[]>([]);
 });
 
-test("a same-room teleporter is recorded while gathering (it is filtered only at render)", () => {
+test("a same-room teleporter lands on its room's other teleporter", () => {
+  expect(
+    collectTeleporterLinks(
+      {
+        a: testRoom("a", {
+          tp_a: {
+            type: "teleporter",
+            position: { x: 0, y: 0, z: 0 },
+            config: { toItemId: "tp_a2" },
+          },
+          tp_a2: {
+            type: "teleporter",
+            position: { x: 2, y: 2, z: 0 },
+            config: {},
+          },
+        }),
+      },
+      "a",
+    ),
+  ).toEqual<TeleporterLink<string>[]>([
+    {
+      from: { roomId: "a", subRoomId: "*", itemId: "tp_a" },
+      to: { roomId: "a", subRoomId: "*", itemId: "tp_a2" },
+    },
+    {
+      from: { roomId: "a", subRoomId: "*", itemId: "tp_a2" },
+      to: { roomId: "a", subRoomId: "*", itemId: "tp_a" },
+    },
+  ]);
+});
+
+test("a lone same-room teleporter has nowhere to land, so has no link", () => {
   expect(
     collectTeleporterLinks(
       {
@@ -4605,12 +4628,7 @@ test("a same-room teleporter is recorded while gathering (it is filtered only at
       },
       "a",
     ),
-  ).toEqual<TeleporterLink<string>[]>([
-    {
-      from: { roomId: "a", subRoomId: "*", itemId: "tp_a" },
-      to: { roomId: "a", subRoomId: "*", itemId: "tp_a" },
-    },
-  ]);
+  ).toEqual<TeleporterLink<string>[]>([]);
 });
 
 test("a mutual teleporter pair yields a link in each direction", () => {

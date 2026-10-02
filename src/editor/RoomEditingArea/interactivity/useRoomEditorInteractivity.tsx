@@ -21,6 +21,7 @@ import {
 import { findPointerPointingAt } from "../cursor/findPointerPointingAt";
 import { type MaybePointingAtSomething } from "../cursor/PointingAt";
 import { viewportMousePosition } from "../cursor/viewportMouse";
+import { useProvidedPixiApplication } from "../PixiApplicationProvider";
 import { useEditorE2eApi } from "../useEditorE2eApi";
 import { useEditorViewport } from "../viewport/EditorViewportProvider";
 import { type Tool } from "./Tool";
@@ -62,6 +63,7 @@ export const useRoomEditorInteractivity = (
   roomRendererRef: RefObject<EditorRoomRenderer | undefined>,
 ) => {
   const viewport = useEditorViewport();
+  const pixiApplication = useProvidedPixiApplication();
   // the same room instance the renderer draws, so its render boxes can be
   // looked up by the items picking iterates:
   const getRoomState = useGetEditorRoomState();
@@ -149,15 +151,15 @@ export const useRoomEditorInteractivity = (
 
       const tool = selectTool(storeState);
 
-      const pointingAt = findPointerPointingAt(
-        mouseXy,
-        roomState,
+      const pointingAt = findPointerPointingAt({
+        scrXy: mouseXy,
+        room: roomState,
         tool,
-        storeState.levelEditor.gridResolution,
-        storeState.levelEditor.cameraAngle,
-        roomRendererRef.current,
-        selectPreviewOnlyJsonItemIds(storeState),
-      );
+        gridResolution: storeState.levelEditor.gridResolution,
+        cameraAngle: storeState.levelEditor.cameraAngle,
+        roomRenderer: roomRendererRef.current,
+        previewOnlyJsonItemIds: selectPreviewOnlyJsonItemIds(storeState),
+      });
 
       // we don't care if just the xy of the mouse changed (if it didn't point at anything new),
       // only if the pointing-at-in-world changed:
@@ -221,15 +223,15 @@ export const useRoomEditorInteractivity = (
 
       // get a fresh PointingAt - the one in the ref could be pointing
       // at a previous room if we just switched
-      const pointingAt = findPointerPointingAt(
-        mouseXy,
-        roomState,
+      const pointingAt = findPointerPointingAt({
+        scrXy: mouseXy,
+        room: roomState,
         tool,
-        storeState.levelEditor.gridResolution,
-        storeState.levelEditor.cameraAngle,
-        roomRendererRef.current,
-        selectPreviewOnlyJsonItemIds(storeState),
-      );
+        gridResolution: storeState.levelEditor.gridResolution,
+        cameraAngle: storeState.levelEditor.cameraAngle,
+        roomRenderer: roomRendererRef.current,
+        previewOnlyJsonItemIds: selectPreviewOnlyJsonItemIds(storeState),
+      });
 
       const isDragEnd = dragAccVec.current !== undefined;
 
@@ -298,8 +300,10 @@ export const useRoomEditorInteractivity = (
       if (mouseEvent.button === 0 || mouseEvent.button === 1) {
         // capture so drags/pans keep receiving pointer events after the
         // cursor leaves the pane - dragging out and back in continues the
-        // gesture, and the release is seen wherever it happens:
-        renderArea.setPointerCapture(mouseEvent.pointerId);
+        // gesture, and the release is seen wherever it happens. Captured on
+        // pixi's canvas so pixi still sees the release as on its canvas, and
+        // fires clicks on its own objects (eg annotations):
+        pixiApplication.canvas.setPointerCapture(mouseEvent.pointerId);
       }
 
       if (mouseEvent.button === 1) {
@@ -319,15 +323,15 @@ export const useRoomEditorInteractivity = (
       const mouseXy = viewportMousePosition(viewport, mouseEvent);
       const tool = selectTool(storeState);
 
-      const pointingAt = findPointerPointingAt(
-        mouseXy,
-        roomState,
+      const pointingAt = findPointerPointingAt({
+        scrXy: mouseXy,
+        room: roomState,
         tool,
-        storeState.levelEditor.gridResolution,
-        storeState.levelEditor.cameraAngle,
-        roomRendererRef.current,
-        selectPreviewOnlyJsonItemIds(storeState),
-      );
+        gridResolution: storeState.levelEditor.gridResolution,
+        cameraAngle: storeState.levelEditor.cameraAngle,
+        roomRenderer: roomRendererRef.current,
+        previewOnlyJsonItemIds: selectPreviewOnlyJsonItemIds(storeState),
+      });
       mouseDownPointingAtRef.current = pointingAt;
 
       const handler = toolHandlers[tool.type] as ToolHandler<Tool>;
@@ -401,5 +405,12 @@ export const useRoomEditorInteractivity = (
       renderArea.removeEventListener("contextmenu", handleContextMenu);
       window.removeEventListener("keydown", handleKeyDown);
     };
-  }, [renderArea, dispatch, viewport, roomRendererRef, getRoomState]);
+  }, [
+    renderArea,
+    dispatch,
+    viewport,
+    roomRendererRef,
+    getRoomState,
+    pixiApplication,
+  ]);
 };

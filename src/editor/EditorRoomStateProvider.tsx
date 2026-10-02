@@ -22,10 +22,8 @@ import {
   type EditorRoomState,
   type EditorUnionOfAllItemInPlayTypes,
 } from "./editorTypes";
-import {
-  selectCurrentEditingRoomJsonWithPreviews,
-  selectCurrentRoomJsonFromLevelEditorState,
-} from "./slice/levelEditorSelectors";
+import { selectCurrentEditingRoomJsonWithPreviews } from "./slice/levelEditorSelectors";
+import { selectCurrentCommittedRoomJson } from "./slice/levelEditorSlice";
 import { loadEditorRoom } from "./slice/loadEditorRoom";
 
 /**
@@ -67,6 +65,9 @@ export const EditorRoomStateProvider = ({
   const roomJsonWithPreviews = useEditorAppSelector(
     selectCurrentEditingRoomJsonWithPreviews,
   );
+  const committedRoomJson = useEditorAppSelector(
+    selectCurrentCommittedRoomJson,
+  );
   /** the loaded room; replaced only on a full reload, patched in place otherwise */
   const roomStateRef = useRef<EditorRoomState | undefined>(undefined);
   /** the last json (with previews) that {@link roomStateRef} matches */
@@ -85,15 +86,15 @@ export const EditorRoomStateProvider = ({
     return startEditorListening({
       predicate(_action, currentState, previousState) {
         const currentCommittedRoomJson =
-          selectCurrentRoomJsonFromLevelEditorState(currentState.levelEditor);
+          selectCurrentCommittedRoomJson(currentState);
         const previousCommittedRoomJson =
-          selectCurrentRoomJsonFromLevelEditorState(previousState.levelEditor);
+          selectCurrentCommittedRoomJson(previousState);
 
         return currentCommittedRoomJson !== previousCommittedRoomJson;
       },
       effect(_action, { getState }) {
         const latestCommittedRoomJson =
-          selectCurrentRoomJsonFromLevelEditorState(getState().levelEditor);
+          selectCurrentCommittedRoomJson(getState());
 
         roomStateRef.current = loadEditorRoom(latestCommittedRoomJson);
         revisionRef.current++;
@@ -126,12 +127,16 @@ export const EditorRoomStateProvider = ({
         roomJsonItemsIterable(roomJsonWithPreviews),
       );
 
-      const deleteInPlayItemsForJsonId = (jsonItemId: EditorRoomItemId) => {
-        for (const existingItem of roomItemsIterable(loadedRoomState.items)) {
-          if (existingItem.jsonItemId === jsonItemId) {
-            deleteItemFromRoom({ room: loadedRoomState, item: existingItem });
-          }
+      const deleteInPlayItemsForJsonId = (
+        jsonItemId: EditorRoomItemId,
+      ): EditorUnionOfAllItemInPlayTypes[] => {
+        const deletedItems = roomItemsIterable(loadedRoomState.items)
+          .filter((existingItem) => existingItem.jsonItemId === jsonItemId)
+          .toArray();
+        for (const deletedItem of deletedItems) {
+          deleteItemFromRoom({ room: loadedRoomState, item: deletedItem });
         }
+        return deletedItems;
       };
 
       const addInPlayItemsForJsonItem = (
@@ -151,25 +156,51 @@ export const EditorRoomStateProvider = ({
         }
       };
 
+      const updateItemsOverriddenByPreview = (
+        id: EditorRoomItemId,
+        prevItem: EditorJsonItemUnion | undefined,
+        deletedItems: EditorUnionOfAllItemInPlayTypes[],
+      ) => {
+        const committedItem = committedRoomJson.items[id];
+        if (prevItem !== undefined && prevItem === committedItem) {
+          // the deleted in-play items were loaded from the committed json:
+          for (const deletedItem of deletedItems) {
+            loadedRoomState.itemsOverriddenByPreview[deletedItem.id] =
+              deletedItem;
+          }
+        }
+        if (roomJsonWithPreviews.items[id] === committedItem) {
+          // back as committed, so no longer overridden by the preview:
+          for (const overriddenItem of roomItemsIterable(
+            loadedRoomState.itemsOverriddenByPreview,
+          )) {
+            if (overriddenItem.jsonItemId === id) {
+              delete loadedRoomState.itemsOverriddenByPreview[
+                overriddenItem.id
+              ];
+            }
+          }
+        }
+      };
+
       for (const [id, item] of roomJsonItemsEntriesIterable(
         roomJsonWithPreviews.items,
       )) {
-        if (prevRoomJsonWithPreviews.items[id] !== item) {
-          const wasAdded = prevRoomJsonWithPreviews.items[id] === undefined;
-          if (wasAdded) {
-            addInPlayItemsForJsonItem(id, item);
-          } else {
-            deleteInPlayItemsForJsonId(id);
-            addInPlayItemsForJsonItem(id, item);
-          }
+        const prevItem = prevRoomJsonWithPreviews.items[id];
+        if (prevItem !== item) {
+          const wasAdded = prevItem === undefined;
+          const deletedItems = wasAdded ? [] : deleteInPlayItemsForJsonId(id);
+          updateItemsOverriddenByPreview(id, prevItem, deletedItems);
+          addInPlayItemsForJsonItem(id, item);
         }
       }
-      for (const [id] of roomJsonItemsEntriesIterable(
+      for (const [id, prevItem] of roomJsonItemsEntriesIterable(
         prevRoomJsonWithPreviews.items,
       )) {
         const wasRemoved = roomJsonWithPreviews.items[id] === undefined;
         if (wasRemoved) {
-          deleteInPlayItemsForJsonId(id);
+          const deletedItems = deleteInPlayItemsForJsonId(id);
+          updateItemsOverriddenByPreview(id, prevItem, deletedItems);
         }
       }
     }

@@ -160,6 +160,9 @@ and we trust that to pre-load in the service worker for us, so the actual game e
  * files in `src/_generated/types/` (e.g. `ItemInPlayUnion.ts`) are regenerated via `pnpm gen:types`
  * if you add or change item types in `src/model/ItemInPlay.ts`, run `pnpm gen:types` to regenerate
 
+### Editor types
+* types in `src/editor/editorTypes.ts` should be used over generic types such as string or Record where possible
+
 
 ## Git
 

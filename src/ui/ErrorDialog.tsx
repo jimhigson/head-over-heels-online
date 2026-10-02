@@ -2,9 +2,12 @@ import { type UnknownAction } from "@reduxjs/toolkit";
 import { type ComponentChildren } from "preact";
 import { useEffect } from "preact/hooks";
 
-import { useMaybeGameApi } from "../game/components/GameApiContext";
+import { buildInfo, parseMajorVersion } from "../buildInfo";
+import { useGameApiIfProvided } from "../game/components/GameApiContext";
 import { type GameApi } from "../game/GameApi";
+import { useAppSelector } from "../store/hooks";
 import { getRecentActions } from "../store/recentActions";
+import { githubApiSlice } from "../store/slices/githubApiSlice";
 import { describeRuntimeEnvironment } from "../utils/detectEnv/describeRuntimeEnvironment";
 import { type SerialisableError } from "../utils/redux/createSerialisableErrors";
 import { Border } from "./Border";
@@ -52,14 +55,45 @@ const parseErrorForDisplay = (
   return { message, sanitizedStack };
 };
 
+const selectLatestRelease = githubApiSlice.endpoints.getLatestRelease.select();
+
+const describeBuild = (
+  /** the latest release's tag, if it has been fetched */
+  latestReleaseTag: string | undefined,
+): string => {
+  const { version, majorVersion, gitBranch, prNumber, prUrl, isDevBuild } =
+    buildInfo;
+  const latestMajor =
+    latestReleaseTag === undefined ? undefined : (
+      parseMajorVersion(latestReleaseTag)
+    );
+  const latestPart =
+    latestReleaseTag === undefined ? "latest release: not fetched"
+    : latestMajor !== undefined && latestMajor > majorVersion ?
+      `latest release: ${latestReleaseTag} (major ${latestMajor}) - this build is outdated`
+    : `latest release: ${latestReleaseTag} (major ${latestMajor})`;
+
+  return [
+    `version: ${version} (major ${majorVersion})${isDevBuild ? ", dev build" : ""}`,
+    latestPart,
+    gitBranch === undefined ? undefined : `git branch: ${gitBranch}`,
+    prNumber === undefined ? undefined : `pr: #${prNumber} ${prUrl}`,
+    // there is no page when running as a server:
+    `page: ${globalThis.location?.href ?? "none"}`,
+  ]
+    .filter((line) => line !== undefined)
+    .join("\n");
+};
+
 const writeErrorReport = (
   errors: SerialisableError[],
   maybeGameApi: GameApi | undefined,
+  latestReleaseTag: string | undefined,
 ) => {
   const recentActions: undefined | UnknownAction[] =
     import.meta.env.DEV ? getRecentActions() : undefined;
 
-  const environmentPart = describeRuntimeEnvironment();
+  const environmentPart = `${describeRuntimeEnvironment()}\n${describeBuild(latestReleaseTag)}`;
 
   const gameApiPart =
     maybeGameApi ?
@@ -114,7 +148,12 @@ export const ErrorDialogReport = ({
   intro,
   children,
 }: ErrorDialogReportProps) => {
-  const errorsReportText = writeErrorReport(errors, useMaybeGameApi());
+  const errorsReportText = writeErrorReport(
+    errors,
+    useGameApiIfProvided(),
+    // whatever has already been fetched - an error report never fetches:
+    useAppSelector(selectLatestRelease).data?.tag_name,
+  );
 
   useEffect(() => {
     console.error("ErrorDialogReport: Showing Report:", errorsReportText);

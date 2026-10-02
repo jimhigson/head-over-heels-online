@@ -28,6 +28,8 @@ import { CoalesceButton } from "./CoalesceButton";
 import { LazyEditorMapInsertButtonDecorator } from "./LazyEditorMapInsertButtonDecorator";
 import { LazyEditorMapNonContiguousRelationshipDecorator } from "./LazyEditorMapNonContiguousRelationshipDecorator";
 import { LazyEditorMapTeleporterLinkDecorator } from "./LazyEditorMapTeleporterLinkDecorator";
+import { mapAreaIndexOfRoom } from "./mapAreaIndexOfRoom";
+import { MapAreaSwitcher } from "./MapAreaSwitcher";
 import { useEditorMapData } from "./useEditorMapData";
 
 const editorClickableRoomBehaviour = createClickableRoomBehaviour<EditorRoomId>(
@@ -194,6 +196,9 @@ const EditorMap = () => {
   const selectedRoomIds = useEditorAppSelector(
     (state) => state.levelEditor.selectedRoomIds,
   );
+  const { roomId: cursorRoomId } = useEditorAppSelector((state) =>
+    selectCursorRoom(state.levelEditor),
+  );
 
   const mapRendering = mapContainerHeight !== 0 && !mapData.isError;
   useEffect(() => {
@@ -209,6 +214,9 @@ const EditorMap = () => {
     );
   }
 
+  const shownAreaIndex = mapAreaIndexOfRoom(mapData.areas, cursorRoomId);
+  const shownArea = mapData.areas[shownAreaIndex];
+
   if (mapContainerHeight === 0) {
     return null;
   }
@@ -216,9 +224,9 @@ const EditorMap = () => {
   return (
     // faster tooltips on the editor map: its tooltips carry a useful room
     // preview, not just help text
-    <div class="relative h-full" style={{ "--tipDelay": "50ms" }}>
+    <div class="relative h-full scale-editor" style={{ "--tipDelay": "50ms" }}>
       <div
-        class={`h-full overflow-y-auto scale-editor bg-editor-checkerboard scrollbar scrollbar-w-1 scrollbar-track-pureBlack scrollbar-thumb-metallicBlue outline-none`}
+        class={`h-full overflow-y-auto bg-editor-checkerboard scrollbar scrollbar-w-1 scrollbar-track-pureBlack scrollbar-thumb-metallicBlue outline-none`}
         ref={mapContainerRef}
         tabIndex={0}
         onKeyDown={(e: KeyboardEvent) => {
@@ -230,9 +238,9 @@ const EditorMap = () => {
             if (e.altKey) {
               insertInDirection(e.key);
             } else if (e.shiftKey) {
-              extendSelectionInDirection(e.key, mapData.gridPositions);
+              extendSelectionInDirection(e.key, shownArea.gridPositions);
             } else {
-              navigateToAdjacentRoom(e.key, mapData.gridPositions);
+              navigateToAdjacentRoom(e.key, shownArea.gridPositions);
             }
           } else if (e.key === "Delete" || e.key === "Backspace") {
             e.preventDefault();
@@ -247,9 +255,15 @@ const EditorMap = () => {
           postfixDecorators={editorPostfixDecorators}
           selectedRoomIds={selectedRoomIds}
           {...mapData}
+          areaIndex={shownAreaIndex}
         />
       </div>
       <CoalesceButton />
+      <MapAreaSwitcher
+        areas={mapData.areas}
+        shownAreaIndex={shownAreaIndex}
+        onSwitchToRoom={(roomId) => store.dispatch(changeToRoom({ roomId }))}
+      />
     </div>
   );
 };

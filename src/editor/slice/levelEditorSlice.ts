@@ -21,7 +21,7 @@ import { type PointingAtOnItem } from "../RoomEditingArea/cursor/PointingAt";
 import { type Tool } from "../RoomEditingArea/interactivity/Tool";
 import { initialLevelEditorSliceState } from "./initialLevelEditorSliceState";
 import {
-  selectCurrentRoomJsonFromLevelEditorState,
+  selectCurrentCommittedRoomJsonFromLevelEditorState,
   selectItemInLevelEditorState,
   selectItemIsSelectedInLevelEditorState,
 } from "./levelEditorSelectors";
@@ -39,6 +39,7 @@ import {
   contextMenuReducers,
 } from "./reducers/contextMenuReducers";
 import { disappearingReducers } from "./reducers/disappearingReducers";
+import { doorGameEndReducers } from "./reducers/doorGameEndReducers";
 import { dragToMoveReducers } from "./reducers/dragToMoveReducers";
 import { editorSettingsReducers } from "./reducers/editorSettingsReducers";
 import { editRoomReducers } from "./reducers/editRoomReducers";
@@ -53,6 +54,7 @@ import { rotateItemReducers } from "./reducers/rotateItemReducers";
 import { saveAndLoadReducers } from "./reducers/saveAndLoadReducers";
 import { selectionsReducers } from "./reducers/selectionsReducers";
 import { startDirectionReducers } from "./reducers/startDirectionReducers";
+import { teleporterDestinationReducers } from "./reducers/teleporterDestinationReducers";
 import { type UndoDescription } from "./reducers/undoDescription";
 import {
   type UndoEntry,
@@ -196,6 +198,8 @@ export const levelEditorSlice = createSlice({
     ...itemActivationReducers,
     ...disappearingReducers,
     ...monsterMovementReducers,
+    ...teleporterDestinationReducers,
+    ...doorGameEndReducers,
     ...startDirectionReducers,
     ...mirrorOrientationReducers,
     ...rotateItemReducers,
@@ -211,12 +215,13 @@ export const levelEditorSlice = createSlice({
     selectCurrentCampaignInProgress: (state) => state.campaignInProgress,
     selectCurrentCampaignVersion: (state) =>
       state.campaignInProgress.locator.version,
-    selectCurrentEditingRoomJson: selectCurrentRoomJsonFromLevelEditorState,
+    selectCurrentCommittedRoomJson:
+      selectCurrentCommittedRoomJsonFromLevelEditorState,
     selectItem: selectItemInLevelEditorState,
     selectCurrentEditingRoomColour: (state) =>
-      selectCurrentRoomJsonFromLevelEditorState(state).color,
+      selectCurrentCommittedRoomJsonFromLevelEditorState(state).color,
     selectCurrentEditingRoomScenery: (state) =>
-      selectCurrentRoomJsonFromLevelEditorState(state).planet,
+      selectCurrentCommittedRoomJsonFromLevelEditorState(state).planet,
     selectTool: (state) => state.tool,
     selectCmdKSearch: (state) => state.cmdKSearch,
     selectEditorCameraAngle: (state) => state.cameraAngle,
@@ -285,6 +290,8 @@ export const {
   setSelectedItemsMirrorOrientation,
   setSelectedItemsStartDirection,
   setSelectedMonstersMovement,
+  setSelectedDoorsToGameEnd,
+  setSelectedTeleportersDestination,
   setTool,
   toggleRoomInSelection,
   toggleSelectedItemInRoom,
@@ -298,7 +305,7 @@ export const {
   selectCurrentCampaignInProgress,
   selectCurrentCampaignVersion,
   selectCurrentEditingRoomColour,
-  selectCurrentEditingRoomJson,
+  selectCurrentCommittedRoomJson,
   selectCurrentEditingRoomScenery,
   selectEditorCameraAngle,
   selectForwardRooms,

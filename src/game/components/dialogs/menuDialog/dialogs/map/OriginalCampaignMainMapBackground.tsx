@@ -1,22 +1,27 @@
 import { type OriginalCampaignRoomId } from "../../../../../../_generated/originalCampaign/OriginalCampaignRoomId";
 import { type SortedObjectOfRoomGridPositionSpecs } from "../../../../../../model/map/sortRoomGridPositions";
 import { projectWorldXyzToScreenXy } from "../../../../../render/projections";
-import { type MapBackgroundProps } from "./MapBackground";
 import { MapBackgroundSection } from "./MapBackgroundSection";
 import { mapClasses } from "./mapColours";
 import { mapSvgMarginY } from "./mapConstants";
+import { type MapArea } from "./MapData";
 import { MarketSpecialBackground } from "./MarketSpecialBackground";
 import { roomWorldPosition } from "./roomWorldPosition";
+
+export type OriginalCampaignMainMapBackgroundProps<RoomId extends string> = {
+  /** the map area being drawn */
+  area: MapArea<RoomId>;
+  containerWidth: number;
+};
 
 /**
  * the central map of the original campaign is (messily) being treated as a
  * hand-edited special case:
  */
 export const OriginalCampaignMainMapBackground = <RoomId extends string>({
-  gridPositions,
-  mapBounds,
+  area: { gridPositions, mapBounds },
   containerWidth,
-}: MapBackgroundProps<RoomId>) => {
+}: OriginalCampaignMainMapBackgroundProps<RoomId>) => {
   const originalCampaignPositions =
     gridPositions as SortedObjectOfRoomGridPositionSpecs<OriginalCampaignRoomId>;
 

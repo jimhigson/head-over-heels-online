@@ -1,4 +1,5 @@
 /// <reference types="vite/client" />
+/// <reference types="webmcp-types" />
 
 declare module "*.frag" {
   const content: string;

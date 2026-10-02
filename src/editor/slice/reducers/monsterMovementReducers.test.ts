@@ -3,7 +3,7 @@ import { expect, test } from "vitest";
 
 import { type JsonItem } from "../../../model/json/JsonItem";
 import { type EditorRoomItemId } from "../../editorTypes";
-import { selectCurrentRoomJsonFromLevelEditorState } from "../levelEditorSelectors";
+import { selectCurrentCommittedRoomJsonFromLevelEditorState } from "../levelEditorSelectors";
 import {
   setSelectedItemsInRoom,
   setSelectedMonstersMovement,
@@ -33,7 +33,7 @@ const monsterAndBlock = produce(editorStateWithOneRoomWithNoItems, (draft) => {
   };
 });
 
-const setMovement = selectCurrentRoomJsonFromLevelEditorState(
+const setMovement = selectCurrentCommittedRoomJsonFromLevelEditorState(
   reduceLevelEditorActions(
     monsterAndBlock,
     setSelectedItemsInRoom({

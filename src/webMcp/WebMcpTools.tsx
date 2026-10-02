@@ -1,10 +1,11 @@
-import { useEffect } from "preact/hooks";
+import { useEffect, useMemo } from "preact/hooks";
 import { type EmptyObject } from "type-fest";
 
 import { useMaybeGameApi } from "../game/components/GameApiContext";
 import { useInputStateTracker } from "../game/input/InputStateProvider";
-import { createWebMcpTools } from "./createWebMcpTools";
+import { createGameWebMcpTools } from "./createGameWebMcpTools";
 import { getModelContext } from "./modelContext";
+import { useRegisterWebMcpTools } from "./useRegisterWebMcpTools";
 
 /** registers the debugging tools with the browser's webmcp api */
 export const WebMcpTools = (_emptyProps: EmptyObject) => {
@@ -12,17 +13,17 @@ export const WebMcpTools = (_emptyProps: EmptyObject) => {
   const inputStateTracker = useInputStateTracker();
 
   useEffect(() => {
-    const modelContext = getModelContext();
-    if (modelContext === undefined) {
-      console.warn("webmcp tools requested, but this browser has no webmcp");
-      return;
+    if (getModelContext() === undefined) {
+      console.warn("this browser has no webmcp, so can't add webmcp tools");
     }
-    const controller = new AbortController();
-    for (const tool of createWebMcpTools(gameApi, inputStateTracker)) {
-      modelContext.registerTool(tool, { signal: controller.signal });
-    }
-    return () => controller.abort();
-  }, [gameApi, inputStateTracker]);
+  }, []);
+
+  useRegisterWebMcpTools(
+    useMemo(
+      () => createGameWebMcpTools(gameApi, inputStateTracker),
+      [gameApi, inputStateTracker],
+    ),
+  );
 
   return null;
 };

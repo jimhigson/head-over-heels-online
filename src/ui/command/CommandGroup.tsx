@@ -16,7 +16,11 @@ export const CommandGroup = ({
   children,
   ...props
 }: CommandGroupProps) => (
-  <div role="group" class={cn("overflow-hidden", className)} {...props}>
+  <div
+    role="group"
+    class={cn("overflow-hidden flex flex-col", className)}
+    {...props}
+  >
     {heading}
     {children}
   </div>

@@ -21,7 +21,7 @@ export const selectCursorRoomId = (state: LevelEditorState) =>
 export const selectCursorSubRoomId = (state: LevelEditorState) =>
   selectCursorRoom(state).subRoomId;
 
-export const selectCurrentRoomJsonFromLevelEditorState = (
+export const selectCurrentCommittedRoomJsonFromLevelEditorState = (
   state: LevelEditorState,
 ) =>
   state.campaignInProgress.rooms[selectCursorRoomId(state)] as EditorRoomJson;
@@ -32,7 +32,7 @@ export const selectCursorSubRoomVerticalLink = (
   direction: "above" | "below",
 ): { room: EditorRoomId; subRoom?: string } | undefined =>
   roomVerticalLink(
-    selectCurrentRoomJsonFromLevelEditorState(state),
+    selectCurrentCommittedRoomJsonFromLevelEditorState(state),
     direction,
     selectCursorSubRoomId(state),
   );
@@ -68,7 +68,7 @@ export const selectPreviewOnlyJsonItemIds = createSelector(
   [
     (state: EditorRootState) => state.levelEditor.pendingEdits?.edits,
     (state: EditorRootState) =>
-      selectCurrentRoomJsonFromLevelEditorState(state.levelEditor),
+      selectCurrentCommittedRoomJsonFromLevelEditorState(state.levelEditor),
   ],
   (pendingEdits, committedRoomJson): ReadonlySet<EditorRoomItemId> =>
     new Set(
@@ -120,7 +120,7 @@ const selectHoveredUndoRoom = (
 export const selectCurrentEditingRoomJsonWithPreviews = createSelector(
   [
     (state: EditorRootState) =>
-      selectCurrentRoomJsonFromLevelEditorState(state.levelEditor),
+      selectCurrentCommittedRoomJsonFromLevelEditorState(state.levelEditor),
     (state: EditorRootState) => state.levelEditor.pendingEdits?.edits,
     selectHoveredUndoRoom,
   ],

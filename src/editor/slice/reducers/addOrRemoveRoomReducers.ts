@@ -11,7 +11,7 @@ import { changeCurrentRoomInPlace } from "../inPlaceMutators/changeCurrentRoomIn
 import { insertRoomInPlace } from "../inPlaceMutators/insertRoomInPlace";
 import { removeInboundRoomReferencesInPlace } from "../inPlaceMutators/removeInboundRoomReferencesInPlace";
 import {
-  selectCurrentRoomJsonFromLevelEditorState,
+  selectCurrentCommittedRoomJsonFromLevelEditorState,
   selectCursorRoomId,
 } from "../levelEditorSelectors";
 import { type LevelEditorState } from "../levelEditorSlice";
@@ -23,7 +23,8 @@ export const addOrRemoveRoomReducers = {
       payload: { roomSize, gridPositions = [{ x: 0, y: 0 }] },
     }: PayloadAction<{ roomSize?: Xy; gridPositions?: Xy[] }>,
   ) {
-    const { planet } = selectCurrentRoomJsonFromLevelEditorState(state);
+    const { planet } =
+      selectCurrentCommittedRoomJsonFromLevelEditorState(state);
 
     const newRoom = addNewRoomInPlace({
       state,

@@ -47,14 +47,6 @@ const isEmptyLeftoverRoom = (room: VerificationRoomJson): boolean =>
     structuralItemTypes.has(item.type),
   );
 
-const verifyTooltipMarkdown = `
-## Problems
-
-Your campaign has problems that may stop it working
-
-Click to see the list
-`;
-
 export type VerifyIssuesDialogProps = {
   issues: CampaignVerificationIssue<unknown>[];
   onClose: () => void;
@@ -126,10 +118,7 @@ const VerifyIssuesDialog = ({ issues, onClose }: VerifyIssuesDialogProps) => {
 
   return (
     <DialogPortal>
-      <Border
-        class="scale-editor bg-checkerboard-stifled-alphas"
-        onClick={onClose}
-      />
+      <Border class="scale-editor" scrim onClick={onClose} />
       {/* stop window-level shortcuts catching our keypresses that match their shortcuts */}
       <div class="contents no-keyboard-shortcuts">
         <Dialog ref={dialogRef} wide tall class="scale-editor p-1 allow-select">
@@ -253,23 +242,22 @@ export const VerifyCampaignButton = () => {
   const warningCount = verification.filter(
     (issue) => issue.severity === "warning",
   ).length;
-  const summary = [
-    { count: errorCount, noun: "errors" },
-    { count: warningCount, noun: "warnings" },
-  ]
-    .filter(({ count }) => count > 0)
-    .map(({ count, noun }) => `${count} ${noun}`)
-    .join(", ");
 
   return (
     <>
       <ToolbarButton
         ariaLabel="Verify and fix campaign"
-        class={`${errorCount > 0 ? "bg-midRed" : "bg-shadow"} w-full h-2`}
+        class="w-full min-h-2 mx-1 flex-col bg-transparent"
         onClick={() => setDialogOpen(true)}
-        tooltipContent={verifyTooltipMarkdown}
       >
-        <span class="relative text-single-line">{summary}</span>
+        {errorCount > 0 && (
+          <span class="text-single-line text-midRed">{errorCount} errors</span>
+        )}
+        {warningCount > 0 && (
+          <span class="text-single-line text-highlightBeige">
+            {warningCount} warnings
+          </span>
+        )}
       </ToolbarButton>
 
       {dialogOpen && (

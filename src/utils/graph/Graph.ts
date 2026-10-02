@@ -1,7 +1,3 @@
-// the cycle-breaking log is opt-in at build time via the same flag the
-// renderer's cyclic-masking logs use:
-const logCycleBreaking = import.meta.env.VITE_LOG_CYCLIC_RENDERING === "true";
-
 /** colour states for the iterative depth-first toposort */
 const white = 0;
 const grey = 1;
@@ -179,7 +175,11 @@ export class Graph<N, E = never> {
 
   /** {@link addEdge}, carrying an annotation. Only on an annotating graph */
   addAnnotatedEdge(from: N, to: N, annotation: E): void {
-    if (import.meta.env.DEV && !this.#annotateEdges) {
+    if (
+      // import.meta.env not defined under node, only for vite/vitest builds/runs
+      import.meta.env?.DEV &&
+      !this.#annotateEdges
+    ) {
       throw new Error(
         "addAnnotatedEdge on a graph constructed without annotateEdges",
       );
@@ -405,7 +405,11 @@ export class Graph<N, E = never> {
    * annotating graph
    */
   forEachAnnotatedEdgeFrom(node: N, cb: (to: N, annotation: E) => void): void {
-    if (import.meta.env.DEV && !this.#annotateEdges) {
+    if (
+      // import.meta.env not defined under node, only for vite/vitest builds/runs
+      import.meta.env?.DEV &&
+      !this.#annotateEdges
+    ) {
       throw new Error(
         "forEachAnnotatedEdgeFrom on a graph constructed without annotateEdges",
       );
@@ -433,7 +437,11 @@ export class Graph<N, E = never> {
    * {@link forEachAnnotatedEdgeFrom}, which allocates nothing
    */
   *iterateAnnotatedEdges(): Generator<{ from: N; to: N; annotation: E }> {
-    if (import.meta.env.DEV && !this.#annotateEdges) {
+    if (
+      // import.meta.env not defined under node, only for vite/vitest builds/runs
+      import.meta.env?.DEV &&
+      !this.#annotateEdges
+    ) {
       throw new Error(
         "iterateAnnotatedEdges on a graph constructed without annotateEdges",
       );
@@ -509,7 +517,10 @@ export class Graph<N, E = never> {
         const v = targets[e];
         if (colour[v] === grey) {
           // cycle: v is on the current path - break the edge u→v and skip
-          if (logCycleBreaking) {
+          if (
+            // import.meta.env not defined under node, only for vite/vitest builds/runs
+            import.meta.env?.VITE_LOG_CYCLIC_RENDERING === "true"
+          ) {
             console.log(
               "cycle found, marking edge as broken:",
               this.#nodes[u],

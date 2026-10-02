@@ -6,7 +6,7 @@ import {
   type EditorRoomItemId,
 } from "../../editorTypes";
 import { type ActivationState } from "../../itemActivation";
-import { selectCurrentRoomJsonFromLevelEditorState } from "../levelEditorSelectors";
+import { selectCurrentCommittedRoomJsonFromLevelEditorState } from "../levelEditorSelectors";
 import {
   type LevelEditorState,
   setSelectedItemsActivation,
@@ -28,7 +28,7 @@ const setActivation = (
   item: EditorJsonItemUnion,
   activation: ActivationState,
 ): EditorJsonItemUnion =>
-  selectCurrentRoomJsonFromLevelEditorState(
+  selectCurrentCommittedRoomJsonFromLevelEditorState(
     reduceLevelEditorActions(
       stateWithItem(item),
       setSelectedItemsInRoom({ jsonItemIds: ["i" as EditorRoomItemId] }),

@@ -304,6 +304,20 @@ export const loseOneLife = async (page: Page): Promise<string | undefined> => {
       state: "detached",
       timeout: 5_000 * osSlowness,
     });
+    // play carries on or the game ends - either takes game time, so the next
+    // life is only attempted once it's clear which:
+    const settled = await advanceUntil(
+      page,
+      async () =>
+        (await gameOverDialog.isVisible().catch(() => false)) ||
+        (await page.evaluate(() => {
+          const playable = window.__e2e_currentPlayable?.();
+          return playable !== undefined && playable.state.action !== "death";
+        })),
+    );
+    if (!settled) {
+      throw new Error("after a death, neither play resumed nor the game ended");
+    }
     return dialogText;
   }
   throw new Error("timed out waiting for death or game over");

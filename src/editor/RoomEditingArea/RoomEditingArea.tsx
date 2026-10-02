@@ -1,4 +1,3 @@
-import { TextureStyle } from "pixi.js";
 import { useMemo, useRef, useState } from "preact/hooks";
 
 import { boundingBoxDecorateItemRenderer } from "../../game/render/item/itemRender/boundingBoxDecorateItemRenderer";
@@ -23,7 +22,6 @@ import {
 } from "./viewport/EditorViewportProvider";
 import { useFitRoomInView } from "./viewport/useFitRoomInView";
 import { ZoomControls } from "./ZoomControls";
-TextureStyle.defaultOptions.scaleMode = "nearest";
 
 const editorRoomDecorators = [subRoomBoundariesDecorateRoomRenderer];
 

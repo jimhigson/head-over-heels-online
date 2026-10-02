@@ -109,7 +109,22 @@ const pointIntersectsAABB = (
 };
 
 export type PointerItemIntersection =
-  "intersects-rendered" | "intersects-unrendered";
+  | "intersects-rendered"
+  /**
+   * A committed item the current preview overrides by changing or removing it.
+   * Has no drawn extent according to the RoomRenderer, since it is not on
+   * the .items property on the room given to the room renderer. This item is
+   * only kept on .itemsOverriddenByPreview which is editor specific so the
+   * RoomRenderer cannot consider the item.
+   *
+   * Despite not being rendered, an item may be chosen as the target for pointer
+   * interactions, for the sake of stability where the pointer needs to travel
+   * over items it is also changing, for example selecting a wall with the door
+   * tool while the selection is also causing the wall to be cut into to show
+   * the door preview.
+   */
+  | "intersects-overridden-by-preview"
+  | "intersects-unrendered";
 export type PointerItemMaybeIntersection =
   "non-intersecting" | PointerItemIntersection;
 

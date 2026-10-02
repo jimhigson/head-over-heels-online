@@ -52,7 +52,7 @@ export const room = inferRoomJson({
     },
     em: {
       config: {
-        delay: 0,
+        delay: 1_000,
         emits: {
           config: {
             activated: "on",

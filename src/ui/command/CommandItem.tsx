@@ -1,14 +1,16 @@
 import { type ComponentProps } from "preact";
+import { type CSSProperties } from "preact/compat";
 
 import { cn } from "../cn";
 import "./commandColours.css";
-import { fuzzyMatch } from "./fuzzyMatch";
+import { fuzzyMatchRank } from "./fuzzyMatch";
 import { useCommandContext } from "./useCommandContext";
 
 export type CommandItemProps = Omit<
   ComponentProps<"div">,
-  "className" | "onSelect"
+  "className" | "onSelect" | "style"
 > & {
+  style?: CSSProperties;
   /** the value used for filtering, keyboard nav and selection */
   value: string;
   onSelect?: (value: string) => void;
@@ -18,13 +20,15 @@ export const CommandItem = ({
   value,
   onSelect,
   class: className,
+  style,
   children,
   ...props
 }: CommandItemProps) => {
   const { search, activeValue, setActiveValue } = useCommandContext();
 
+  const rank = search === "" ? 0 : fuzzyMatchRank(value, search);
   // self-filter: hide when the value doesn't fuzzy-match the search
-  if (search !== "" && fuzzyMatch(value, search) === null) {
+  if (rank === null) {
     return null;
   }
 
@@ -47,6 +51,8 @@ export const CommandItem = ({
         "command-colours relative flex cursor-default select-none items-center outline-none data-[disabled=true]:pointer-events-none data-[disabled=true]:opacity-50",
         className,
       )}
+      // the list lays items out best match first:
+      style={{ ...style, order: rank }}
       {...props}
     >
       {children}

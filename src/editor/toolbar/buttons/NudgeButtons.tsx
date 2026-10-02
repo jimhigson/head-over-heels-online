@@ -14,12 +14,12 @@ import { useGetEditorRoomState } from "../../EditorRoomStateProvider";
 import { type EditorJsonItemUnion } from "../../editorTypes";
 import { isRotatable, type RotationSense } from "../../itemRotation";
 import { itemMoveOrResizeWouldCollide } from "../../RoomEditingArea/cursor/editWouldCollide";
-import { selectCurrentRoomJsonFromLevelEditorState } from "../../slice/levelEditorSelectors";
 import {
   commitCurrentPreviewedEdits,
   moveOrResizeItemAsPreview,
   rotateCurrentToolItem,
   rotateSelectedItems,
+  selectCurrentCommittedRoomJson,
   selectEditorCameraAngle,
   selectTool,
 } from "../../slice/levelEditorSlice";
@@ -38,7 +38,7 @@ const lineContainerClassName = twClass(
 );
 
 const lineTitleHeaderClassName = twClass(
-  "inline-block mr-1 text-lightGrey leading-none pr-oneScaledPix min-w-6",
+  "inline-block mr-1 text-lightGrey pr-oneScaledPix min-w-6",
 );
 
 const useRotate = (selectedItems: EditorJsonItemUnion[]) => {
@@ -71,10 +71,7 @@ export const NudgeButtons = () => {
 
   const selectedJsonItems = useEditorAppSelector((state) =>
     state.levelEditor.selectedJsonItemIds.map(
-      (jsonItemId) =>
-        selectCurrentRoomJsonFromLevelEditorState(state.levelEditor).items[
-          jsonItemId
-        ],
+      (jsonItemId) => selectCurrentCommittedRoomJson(state).items[jsonItemId],
     ),
   );
   const anythingSelected = selectedJsonItems.length > 0;

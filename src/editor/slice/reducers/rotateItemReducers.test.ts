@@ -7,7 +7,7 @@ import {
 } from "../../editorTypes";
 import { type RotationSense } from "../../itemRotation";
 import { type ItemTool } from "../../RoomEditingArea/interactivity/Tool";
-import { selectCurrentRoomJsonFromLevelEditorState } from "../levelEditorSelectors";
+import { selectCurrentCommittedRoomJsonFromLevelEditorState } from "../levelEditorSelectors";
 import {
   type LevelEditorState,
   rotateCurrentToolItem,
@@ -31,7 +31,7 @@ const rotateSelected = (
   item: EditorJsonItemUnion,
   sense: RotationSense,
 ): EditorJsonItemUnion =>
-  selectCurrentRoomJsonFromLevelEditorState(
+  selectCurrentCommittedRoomJsonFromLevelEditorState(
     reduceLevelEditorActions(
       stateWithItem(item),
       setSelectedItemsInRoom({ jsonItemIds: ["i" as EditorRoomItemId] }),

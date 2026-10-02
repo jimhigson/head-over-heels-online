@@ -10,7 +10,7 @@ import { useEditorAppSelector } from "../../store/store";
 import { keys } from "../../utils/entries";
 import { twClass } from "../../utils/twClass";
 import { type EditorRoomJsonItems } from "../editorTypes";
-import { selectCurrentEditingRoomJson } from "../slice/levelEditorSlice";
+import { selectCurrentCommittedRoomJson } from "../slice/levelEditorSlice";
 import { getParsedJsonFromEditor } from "./getParsedJsonFromEditor";
 import { useLoadMonaco } from "./useLoadMonaco";
 
@@ -65,10 +65,10 @@ export const useItemIconDecorations = (
 ): editor.IEditorDecorationsCollection | null => {
   const monaco = useLoadMonaco();
   const jsonItems = useEditorAppSelector(
-    (state) => selectCurrentEditingRoomJson(state).items,
+    (state) => selectCurrentCommittedRoomJson(state).items,
   );
   const scenery = useEditorAppSelector(
-    (state) => selectCurrentEditingRoomJson(state).planet,
+    (state) => selectCurrentCommittedRoomJson(state).planet,
   );
 
   const collectionRef = useRef<editor.IEditorDecorationsCollection | null>(
