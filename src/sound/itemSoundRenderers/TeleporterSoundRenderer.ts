@@ -5,7 +5,7 @@ import { iterateStoodOnByItems } from "../../model/stoodOnItemsLookup";
 import { audioCtx } from "../audioCtx";
 import { type ItemSoundRenderContext } from "../ItemSoundRenderContext";
 import { type ItemSoundRenderer } from "../ItemSoundRenderer";
-import { createBracketedSound } from "../soundUtils/createBracketedSound";
+import { BracketedSound } from "../soundUtils/BracketedSound";
 import { FreeItemSoundRenderer } from "./generic/FreeItemSoundRenderer";
 
 type TeleporterContext =
@@ -29,7 +29,7 @@ export class TeleporterSoundRenderer implements ItemSoundRenderer<
 
   constructor(renderContext: TeleporterContext) {
     this.renderContext = renderContext;
-    this.#sirenBracket = createBracketedSound(
+    this.#sirenBracket = new BracketedSound(
       {
         loop: {
           soundId: "teleportWarningSiren",
@@ -52,7 +52,7 @@ export class TeleporterSoundRenderer implements ItemSoundRenderer<
       renderContext: { item, room },
     } = this;
 
-    this.#sirenBracket(
+    this.#sirenBracket.tick(
       teleporterIsActive(item) &&
         iterateStoodOnByItems(item.state.stoodOnBy, room).some(isPlayableItem),
     );
@@ -61,7 +61,7 @@ export class TeleporterSoundRenderer implements ItemSoundRenderer<
   }
 
   destroy(): void {
-    this.#sirenBracket(false);
+    this.#sirenBracket.destroy();
     this.#freeItemSoundRenderer?.destroy();
   }
 }

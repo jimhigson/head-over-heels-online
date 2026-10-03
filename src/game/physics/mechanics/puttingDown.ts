@@ -1,11 +1,14 @@
 import { type UnionOfAllItemInPlayTypes } from "../../../model/ItemInPlay";
 import { type CharacterName } from "../../../model/modelTypes";
 import { roomSpatialIndexKey, type RoomState } from "../../../model/RoomState";
-import { addXyz, boxAt } from "../../../utils/vectors/vectors";
+import { epsilon } from "../../../utils/epsilon";
 import {
-  type CollideableItem,
-  collisionItemWithIndex,
-} from "../../collision/aabbCollision";
+  boxAt,
+  subXyz,
+  type Xyz,
+  type XyzBox,
+} from "../../../utils/vectors/vectors";
+import { collisionBoxWithIndex } from "../../collision/aabbCollision";
 import { type GameState } from "../../gameState/GameState";
 import { addItemToRoom } from "../../gameState/mutators/addItemToRoom";
 import { removeStandingOn } from "../../gameState/mutators/standingOn/removeStandingOn";
@@ -17,9 +20,9 @@ import {
   isFreeItem,
   isSolid,
   type PlayableItem,
+  type PortableItem,
 } from "../itemPredicates";
-import { blockSizePx } from "../mechanicsConstants";
-import { moveItem } from "../moveItem/moveItem";
+import { moveItemInSteps } from "../moveItem/moveItemInSteps";
 
 /**
  * After pressing handling carry being pressed, how long until the action repeats?
@@ -63,113 +66,184 @@ export const puttingDown = <RoomId extends string, RoomItemId extends string>(
     return;
   }
 
-  // trying to put down
-  if (carrier.state.standingOnItemId === null) {
-    // can't put down mid-air
-    // TODO: might be cooler if you could!
-    if (carryActionPress === "tap") {
-      carrier.state.abilityFailedToUseAtGameTime = gameState.gameTime;
-    }
-    return;
-  }
+  const roomSpatialIndex = room[roomSpatialIndexKey];
+
+  const droppedItemPosition = putDownItemLocation(
+    carrier,
+    carrying,
+    roomSpatialIndex,
+  );
 
   // check if there is space above heels (and any items standing on heels):
-  if (!checkSpaceAvailableToPutDown(carrier, room[roomSpatialIndexKey])) {
+  if (
+    !checkSpaceAvailableToPutDown(
+      carrier,
+      // carrier goes on top of the dropped item:
+      droppedItemPosition.z + carrying.state.box.zd,
+      roomSpatialIndex,
+    )
+  ) {
     if (carryActionPress === "tap") {
       carrier.state.abilityFailedToUseAtGameTime = gameState.gameTime;
     }
     return;
   }
-
-  const {
-    state: { box: carrierBox },
-  } = carrier;
-
-  addItemToRoom({
-    room,
-    item: carrying,
-    atPosition: carrierBox,
-  });
 
   // ⬇ player isn't standing on whatever they were standing on before
   removeStandingOn(carrier, room);
 
+  // how far the carrier rises to stand on top of the dropped item
+  // this can be zero if there was more than the dropped item's height of free
+  // air below them when they dropped it
+  const carrierRise =
+    droppedItemPosition.z + carrying.state.box.zd - carrier.state.box.z;
+
+  // rise before adding the dropped item, so the carrier never starts inside it
+  if (carrierRise > epsilon) {
+    // item still only in the bag, so reincarnation fish touches can't duplicate it
+    // in steps, so anything above is pushed straight up, not sideways:
+    moveItemInSteps({
+      subjectItem: carrier,
+      gameState,
+      room,
+      posDelta: {
+        x: 0,
+        y: 0,
+        // up onto the top of the dropped item:
+        z: carrierRise,
+      },
+      forceful: true,
+      deltaMS,
+      onTouch: handleItemsTouchingItems,
+      visited: new Set<RoomItemId>().add(carrier.id),
+    });
+
+    if (room.items[carrier.id] === undefined) {
+      // carrier rose through a portal or was otherwise removed from the room
+      // - changing room drops the item so no need to do anything further here:
+      inputStateTracker.inputWasHandled("carry", carryingInputLatchDuration);
+      return;
+    }
+  }
+
   // not carrying it any more
   heelsAbilities.carrying = null;
 
-  // moveItem could cause collision with a reincarnation fish, so it must be called only
-  // once the room is back into a good state (eg, carrying was set to null) or the
-  // item being put down could be duplicated
-  moveItem({
-    subjectItem: carrier,
-    gameState,
+  // have cleared the space for the dropped item so now add it to the game:
+  addItemToRoom({
     room,
-    posDelta: {
-      x: 0,
-      y: 0,
-      z: carrying.state.box.zd,
-    },
-    forceful: true,
-    deltaMS,
-    onTouch: handleItemsTouchingItems,
-    visited: new Set<RoomItemId>().add(carrier.id),
+    item: carrying,
+    atPosition: droppedItemPosition,
   });
 
   // standing on needs to be set right away for case of jump-putting-down springs
   // -- needs to be registered as standing on the spring so the jumping mechanism gets
   // the extra height
-  setStandingOnWithoutRemovingOldFirst({
-    above: carrier,
-    below: carrying,
-  });
+  if (carrier.state.standingOnItemId !== null) {
+    setStandingOnWithoutRemovingOldFirst({
+      above: carrier,
+      below: carrying,
+    });
+  }
 
   inputStateTracker.inputWasHandled("carry", carryingInputLatchDuration);
 };
+
+const putDownItemLocation = <RoomId extends string, RoomItemId extends string>(
+  carrier: PlayableItem<"headOverHeels" | "heels", RoomId, RoomItemId>,
+  carrying: PortableItem<RoomId, string>,
+  roomSpatialIndex: SpatialIndex,
+): Xyz => {
+  const {
+    state: { box: carrierBox },
+  } = carrier;
+
+  if (carrier.state.standingOnItemId !== null) {
+    // new item will go exactly where the player dropping it was standing:
+    return carrierBox;
+  }
+
+  // carrier is in mid-air - the item will try to go directly below them (if there is space)
+  const droppedItemNewBox: XyzBox = boxAt(
+    subXyz(carrier.state.box, {
+      z:
+        carrying.state.box.zd +
+        // an extra 1px gap means that while mid-air the player and the thing
+        // being dropped don't start perfectly adjacent, meaning that they
+        // can fall more naturally without 'standing' on each other in a weird way
+        1,
+    }),
+    carrying.state.box,
+  );
+
+  // check if the dropped item has space to be placed at the intended location:
+  const droppedItemNewBoxCollisions = collisionBoxWithIndex(
+    droppedItemNewBox,
+    roomSpatialIndex,
+    // only check for collisions with solid items
+    (otherItem) => isSolid(otherItem, carrying),
+    carrier,
+  );
+
+  for (const {
+    state: { box: collisionItemBox },
+  } of droppedItemNewBoxCollisions) {
+    droppedItemNewBox.z = Math.max(
+      // top of the collision item:
+      collisionItemBox.z + collisionItemBox.zd,
+      droppedItemNewBox.z,
+    );
+  }
+
+  return droppedItemNewBox;
+};
+
 export const checkSpaceAvailableToPutDown = <
   T extends UnionOfAllItemInPlayTypes,
 >(
   item: T,
+  // the z the new item will be put at:
+  toZ: number,
   roomSpatialIndex: SpatialIndex,
 ) => {
-  const proposedNewLocation: CollideableItem = {
-    state: {
-      box: boxAt(addXyz(item.state.box, { z: blockSizePx.z }), item.state.box),
-    },
-    id: `item.id-proposedPutdownLocation`,
-  };
-
-  const collisions = collisionItemWithIndex(
-    proposedNewLocation,
+  const collisions = collisionBoxWithIndex(
+    boxAt({ ...item.state.box, z: toZ }, item.state.box),
     roomSpatialIndex,
     // only check for collisions with solid items
-    (otherItem) =>
-      isSolid(otherItem, item) &&
-      // while in symbiosis, a proposed space one block higher can collide
-      // the the character doing the proposing - skip that:
-      otherItem !== item,
+    (otherItem) => isSolid(otherItem, item),
+    // while in symbiosis, a proposed space one block higher can collide
+    // the the character doing the proposing - skip that:
+    item,
   );
 
-  for (const collision of collisions) {
-    if (!isFreeItem(collision)) {
+  for (const collisionItem of collisions) {
+    if (!isFreeItem(collisionItem)) {
       if (import.meta.env.DEV) {
         console.log(
           "carrying: cannot put down due to collision: item:",
           item,
           "can't move up because it would collide with non-free",
-          collision,
+          collisionItem,
         );
       }
       return false;
     }
 
-    // if there is a collision, check if it can be moved up too:
-    if (!checkSpaceAvailableToPutDown(collision, roomSpatialIndex)) {
+    // if there is a collision, recursively check if it can be moved up too:
+    if (
+      !checkSpaceAvailableToPutDown(
+        collisionItem,
+        // goes on top of this item, once moved up:
+        toZ + item.state.box.zd,
+        roomSpatialIndex,
+      )
+    ) {
       if (import.meta.env.DEV) {
         console.log(
           "carrying: cannot put down due to collision: item:",
           item,
           "can't move up because it would collide with free that has nowhere to go:",
-          collision,
+          collisionItem,
         );
       }
       return false;

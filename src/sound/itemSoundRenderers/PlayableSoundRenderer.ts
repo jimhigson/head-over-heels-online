@@ -8,12 +8,11 @@ import { lengthXy } from "../../utils/vectors/vectors";
 import { audioCtx } from "../audioCtx";
 import { type ItemSoundRenderContext } from "../ItemSoundRenderContext";
 import { type ItemSoundRenderer } from "../ItemSoundRenderer";
-import { createAudioNode } from "../soundUtils/createAudioNode";
 import {
   type BracketedSegmentOptions,
-  type BracketedSound,
-  createBracketedSound,
-} from "../soundUtils/createBracketedSound";
+  BracketedSound,
+} from "../soundUtils/BracketedSound";
+import { createAudioNode } from "../soundUtils/createAudioNode";
 import { FreeItemSoundRenderer } from "./generic/FreeItemSoundRenderer";
 
 const walkGain = 0.1;
@@ -37,7 +36,7 @@ export class PlayableSoundRenderer implements ItemSoundRenderer<CharacterName> {
 
   #carryChannel: GainNode = audioCtx.createGain();
   #failureToUseChannel: GainNode = audioCtx.createGain();
-  #carryBracketedSound = createBracketedSound(
+  #carryBracketedSound = new BracketedSound(
     {
       start: {
         soundId: "carry",
@@ -80,7 +79,7 @@ export class PlayableSoundRenderer implements ItemSoundRenderer<CharacterName> {
       this.#walkChannel = audioCtx.createGain();
       this.#walkChannel.gain.value = walkGain;
       this.#walkChannel.connect(this.output);
-      this.#walkBracketedSound = createBracketedSound(
+      this.#walkBracketedSound = new BracketedSound(
         {
           loop: {
             soundId: `${name === "headOverHeels" ? "heels" : name}Walk`,
@@ -91,13 +90,13 @@ export class PlayableSoundRenderer implements ItemSoundRenderer<CharacterName> {
       );
     }
 
-    this.#highlightedCharacterBracketedSound = createBracketedSound(
+    this.#highlightedCharacterBracketedSound = new BracketedSound(
       {
         start: {
           soundId: `${name}Accent`,
           gain: 0.3,
         },
-        noStartOnFirstFrame: false,
+        startOnFirstFrame: true,
       },
       this.output,
     );
@@ -110,7 +109,7 @@ export class PlayableSoundRenderer implements ItemSoundRenderer<CharacterName> {
     this.#failureToUseChannel.gain.value = failureToUseGain;
     this.#failureToUseChannel.connect(this.output);
 
-    this.#jumpBracketedSound = createBracketedSound(
+    this.#jumpBracketedSound = new BracketedSound(
       {
         start: {
           soundId: `${name === "headOverHeels" ? "head" : name}JumpStart`,
@@ -124,12 +123,12 @@ export class PlayableSoundRenderer implements ItemSoundRenderer<CharacterName> {
       this.#jumpChannel,
     );
 
-    this.#deathBracketedSound = createBracketedSound(
+    this.#deathBracketedSound = new BracketedSound(
       { start: { soundId: "uhOh" } },
       this.output,
     );
 
-    this.#failureToUseBracketedSound = createBracketedSound<number | undefined>(
+    this.#failureToUseBracketedSound = new BracketedSound<number | undefined>(
       {
         // the first failure is a start (no previous stamp), later ones are changes:
         start: failureToUseSoundOptions,
@@ -181,8 +180,8 @@ export class PlayableSoundRenderer implements ItemSoundRenderer<CharacterName> {
       positionZ > this.#freeItemSoundRenderer.currentPositionZ &&
       velZ > 0;
 
-    this.#jumpBracketedSound(playJumpSound);
-    this.#deathBracketedSound(action === "death");
+    this.#jumpBracketedSound.tick(playJumpSound);
+    this.#deathBracketedSound.tick(action === "death");
 
     const playFallSound =
       positionZ < this.#freeItemSoundRenderer.currentPositionZ &&
@@ -197,12 +196,12 @@ export class PlayableSoundRenderer implements ItemSoundRenderer<CharacterName> {
 
     // walking
     if (this.#walkBracketedSound !== undefined) {
-      this.#walkBracketedSound(playWalkSound);
+      this.#walkBracketedSound.tick(playWalkSound);
     }
 
     // carrying (heels)
     if (heelsAbilities !== undefined) {
-      this.#carryBracketedSound(heelsAbilities.carrying !== null);
+      this.#carryBracketedSound.tick(heelsAbilities.carrying !== null);
     }
 
     if (
@@ -224,7 +223,7 @@ export class PlayableSoundRenderer implements ItemSoundRenderer<CharacterName> {
 
     this.#currentTeleportingPhase = teleportingPhase;
 
-    this.#failureToUseBracketedSound(abilityFailedToUseAtGameTime);
+    this.#failureToUseBracketedSound.tick(abilityFailedToUseAtGameTime);
 
     this.#freeItemSoundRenderer.tick(
       tickContext,
@@ -232,16 +231,18 @@ export class PlayableSoundRenderer implements ItemSoundRenderer<CharacterName> {
       playWalkSound || action === "falling",
     );
 
-    this.#highlightedCharacterBracketedSound(
+    this.#highlightedCharacterBracketedSound.tick(
       isHighlightedPlayableItem(gameState, item),
     );
   }
 
   destroy(): void {
-    this.#walkBracketedSound?.(false);
-    this.#jumpBracketedSound(false);
-    this.#carryBracketedSound(false);
-    this.#highlightedCharacterBracketedSound(false);
+    this.#walkBracketedSound?.destroy();
+    this.#jumpBracketedSound.destroy();
+    this.#deathBracketedSound.destroy();
+    this.#carryBracketedSound.destroy();
+    this.#highlightedCharacterBracketedSound.destroy();
+    this.#failureToUseBracketedSound.destroy();
     this.#freeItemSoundRenderer.destroy();
   }
 }

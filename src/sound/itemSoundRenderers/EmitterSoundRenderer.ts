@@ -4,9 +4,8 @@ import { type ItemSoundRenderContext } from "../ItemSoundRenderContext";
 import { type ItemSoundRenderer } from "../ItemSoundRenderer";
 import {
   type BracketedSegmentOptions,
-  type BracketedSound,
-  createBracketedSound,
-} from "../soundUtils/createBracketedSound";
+  BracketedSound,
+} from "../soundUtils/BracketedSound";
 
 export class EmitterSoundRenderer implements ItemSoundRenderer<"emitter"> {
   public readonly output: GainNode = audioCtx.createGain();
@@ -26,7 +25,7 @@ export class EmitterSoundRenderer implements ItemSoundRenderer<"emitter"> {
     const { sound = "emit" } = renderContext.item.config;
     if (sound !== null) {
       const emitSoundOptions: BracketedSegmentOptions = { soundId: sound };
-      this.#emitBracketedSound = createBracketedSound<number>(
+      this.#emitBracketedSound = new BracketedSound<number>(
         {
           // the first emission is a start (no previous stamp), later ones are changes:
           start: emitSoundOptions,
@@ -40,8 +39,10 @@ export class EmitterSoundRenderer implements ItemSoundRenderer<"emitter"> {
   tick(_tickContext: ItemTickContext) {
     const { lastEmittedAtRoomTime } = this.renderContext.item.state;
 
-    this.#emitBracketedSound?.(lastEmittedAtRoomTime);
+    this.#emitBracketedSound?.tick(lastEmittedAtRoomTime);
   }
 
-  destroy(): void {}
+  destroy(): void {
+    this.#emitBracketedSound?.destroy();
+  }
 }

@@ -2,7 +2,7 @@ import { type EmptyObject } from "type-fest";
 
 import { type ItemTypeUnion } from "../_generated/types/ItemInPlayUnion";
 import { type ShadowCastSpriteOptions } from "../game/render/ShadowCastSpriteOptions";
-import { type BracketedSegmentOptions } from "../sound/soundUtils/createBracketedSound";
+import { type BracketedSegmentOptions } from "../sound/soundUtils/BracketedSound";
 import { type SceneryName } from "../sprites/planets";
 import { type Xy, type Xyz } from "../utils/vectors/vectors";
 import { type ItemState } from "./ItemState";
