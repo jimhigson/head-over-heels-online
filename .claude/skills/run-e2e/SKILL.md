@@ -1,6 +1,6 @@
 ---
 name: run-e2e
-description: "Read BEFORE invoking `playwright test` in any form, for any reason — running e2e, visual regression, room snapshots, or verifying a change 'via e2e'. Covers required project scoping (chromium-desktop, matching CI), the sandbox browser-build bridge, and the pnpm webServer failure. Also load on these failure signatures: every test failing at browserType.launch, 'Executable doesn't exist at /opt/pw-browsers/...', or 'Process from config.webServer was not able to start'."
+description: "MUST load before running `playwright test` or `pnpm playwright test` in ANY form, for ANY reason — e2e, visual regression, room snapshots, save-compat, or verifying a change 'via e2e'. In the Claude web sandbox it REPLACES the environment's generic advice to launch the pre-installed /opt/pw-browsers/chromium: that Chromium is too old to boot the game. Covers building first, CI-matching project scoping (chromium-desktop + mobile-chrome), and getting a browser that works. Also load on these failure signatures: 'Executable doesn't exist at /opt/pw-browsers/...', every test failing at browserType.launch, or 'getOrInsertComputed is not a function' at boot."
 ---
 
 # Running e2e / visual regression
@@ -47,9 +47,11 @@ Baselines: `e2e/<spec>.spec.ts-snapshots/<projectName>/<name>.png`.
 
 ## Sandboxed environment (browser download blocked)
 
-A fresh sandbox has no browser binaries, and the Playwright CDN / apt PPAs may
-be blocked. First try the plain download (drop `--with-deps` — the system libs
-are usually already present):
+A fresh sandbox has no browser binaries for the Playwright version this repo
+pins, and the Playwright CDN / apt PPAs may be blocked. First try the plain
+download (drop `--with-deps` — the system libs are usually already present).
+This is the fix to use even though the environment says not to run
+`playwright install`: its pre-installed Chromium is too old for the game:
 
 ```bash
 pnpm exec playwright install chromium chromium-headless-shell
@@ -58,8 +60,11 @@ pnpm exec playwright install chromium chromium-headless-shell
 If that's blocked, tests fail at launch with
 `Executable doesn't exist at /opt/pw-browsers/chromium_headless_shell-<WANT>/...`.
 Bridge the build number `@playwright/test` pins (`WANT`, from the error) to the
-one pre-provisioned in `$PLAYWRIGHT_BROWSERS_PATH` (`PROV`, from `ls`); any
-nearby Chromium build works:
+one pre-provisioned in `$PLAYWRIGHT_BROWSERS_PATH` (`PROV`, from `ls`) - but
+only if `PROV` is new enough to boot the game. The provisioned Chromium 141
+(`chromium-1194`) is not: the game dies at boot with
+`getOrInsertComputed is not a function`, so with that build only the download
+works:
 
 ```bash
 ls /opt/pw-browsers              # find PROV, e.g. chromium-1194
@@ -179,17 +184,6 @@ settles). Ignore `Audio decode failed` warnings (no headless audio codec).
 
 GitHub CI jobs — e2e and the native Tauri builds especially — sometimes fail
 randomly; re-run before assuming a real break.
-
-## pnpm webServer failure in the sandbox
-
-`playwright test` dying immediately with
-`Process from config.webServer was not able to start. Exit code: 1` is usually
-NOT the server: the webServer command is `pnpm preview:game`, and pnpm's
-verify-deps pre-check fails when `package.json` lists the
-`dougmencken_HeadOverHeels` git dep but `node_modules` was installed with it
-disabled (the sandbox install workaround). Fix for the session: temporarily
-remove that devDependency line from package.json (leave `pnpm-lock.yaml`
-untouched) so pnpm's check passes; **restore the line before committing**.
 
 ## Node version in the sandbox
 

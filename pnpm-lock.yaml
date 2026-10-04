@@ -147,9 +147,6 @@ importers:
       commander:
         specifier: ^14.0.0
         version: 14.0.0
-      dougmencken_HeadOverHeels:
-        specifier: github:dougmencken/HeadOverHeels#08aee0cb050405dc23d95bf288631452bec28c9f
-        version: https://codeload.github.com/dougmencken/HeadOverHeels/tar.gz/08aee0cb050405dc23d95bf288631452bec28c9f
       dpdm:
         specifier: ^3.14.0
         version: 3.14.0
@@ -273,6 +270,10 @@ importers:
       xml-js:
         specifier: ^1.6.11
         version: 1.6.11
+    optionalDependencies:
+      dougmencken_HeadOverHeels:
+        specifier: github:dougmencken/HeadOverHeels#08aee0cb050405dc23d95bf288631452bec28c9f
+        version: https://codeload.github.com/dougmencken/HeadOverHeels/tar.gz/08aee0cb050405dc23d95bf288631452bec28c9f
 
 packages:
 
@@ -8768,7 +8769,8 @@ snapshots:
       domelementtype: 2.3.0
       domhandler: 5.0.3
 
-  dougmencken_HeadOverHeels@https://codeload.github.com/dougmencken/HeadOverHeels/tar.gz/08aee0cb050405dc23d95bf288631452bec28c9f: {}
+  dougmencken_HeadOverHeels@https://codeload.github.com/dougmencken/HeadOverHeels/tar.gz/08aee0cb050405dc23d95bf288631452bec28c9f:
+    optional: true
 
   dpdm@3.14.0:
     dependencies:
