@@ -5,7 +5,6 @@ import { selectShowBoundingBoxTypesSet } from "../../../../store/slices/gameMenu
 import { store } from "../../../../store/store";
 import { nearestQuarterAngle } from "../../../../utils/vectors/cameraAngleVectors";
 import { type Aabb, type Xy } from "../../../../utils/vectors/vectors";
-import { isItemType } from "../../../physics/itemPredicates";
 import { type ItemRenderContext } from "../../ItemRenderContexts";
 import { projectWorldXyzToScreenXy } from "../../projections";
 import { TextContainer } from "../../text/TextContainer";
@@ -236,7 +235,7 @@ export class ItemBoundingBoxRenderer<
     // other at all angles - and coincide with sprites, which are anchored at their
     // footprint's near corner (see footprintNearCornerXY):
 
-    if (isItemType("portal")(item)) {
+    if (item.type === "portal") {
       const relativePointScreenXy = projectWorldXyzToScreenXy(
         item.config.relativePoint,
         cameraQuarterAngle,

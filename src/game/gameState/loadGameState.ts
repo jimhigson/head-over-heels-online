@@ -1,3 +1,4 @@
+import { isPlayableItem } from "../../model/ItemInPlayNarrowedUnions";
 import {
   type Campaign,
   type CharacterName,
@@ -6,6 +7,7 @@ import {
 import { type RoomJson } from "../../model/RoomJson";
 import {
   getRoomItem,
+  iterateRoomItemEntries,
   roomItemsIterable,
   roomSpatialIndexKey,
   type RoomState,
@@ -21,12 +23,14 @@ import {
   cheatsOn,
 } from "../components/cheats/cheatRoomIdFromUrlHash";
 import { type InputStateTrackerInterface } from "../input/InputStateTracker";
+import { attachBehaviourToItem } from "../itemBehaviours/attachBehaviourToItem";
 import { SpatialIndex } from "../physics/gridSpace/SpatialIndex";
 import {
   type CharacterRooms,
   type GameState,
   type PickupsCollected,
 } from "./GameState";
+import { selectHeelsAbilities } from "./gameStateSelectors/selectPlayableItem";
 import { loadRoom, type LoadRoomOptions } from "./loadRoom/loadRoom";
 import { changeCharacterRoom } from "./mutators/changeCharacterRoom";
 import { entryState } from "./PlayableEntryState";
@@ -124,6 +128,30 @@ type LoadGameStateOptions<RoomId extends string> = {
   writeInto?: Partial<GameState<RoomId>>;
 };
 
+/** item behaviours are not saved - re-attach them on load
+ * @param loadedCharacterRooms the rooms loaded from the saved game. Mutated in-place.
+ */
+const attachBehavioursToSavedCharacterRooms = <RoomId extends string>(
+  loadedCharacterRooms: SavedCharacterRooms<RoomId>,
+): void => {
+  // head and heels can be in the same room (the same object twice):
+  for (const loadedRoomState of new Set(valuesIter(loadedCharacterRooms))) {
+    for (const [itemId, item] of iterateRoomItemEntries(
+      loadedRoomState.items,
+    )) {
+      loadedRoomState.items[itemId] = attachBehaviourToItem(item);
+      // carried items are held in heels' state, not in the room:
+      const heelsAbilities =
+        isPlayableItem(item) ? selectHeelsAbilities(item) : undefined;
+      if (heelsAbilities !== undefined && heelsAbilities.carrying !== null) {
+        heelsAbilities.carrying = attachBehaviourToItem(
+          heelsAbilities.carrying,
+        );
+      }
+    }
+  }
+};
+
 /** spatial indexes are not saved - re-create them on load
  * @param loadedCharacterRooms the rooms loaded from the saved game. Mutated in-place.
  */
@@ -178,6 +206,8 @@ const _loadGameState = <RoomId extends string>({
     // resume such games at the base view:
     writeInto.targetCameraAngle ??= cameraAngleBase;
 
+    // before indexing, since attaching replaces each item with a copy:
+    attachBehavioursToSavedCharacterRooms(loadedCharacterRooms);
     writeInto.characterRooms =
       addIndexToIndexSavedCharacterRooms(loadedCharacterRooms);
 

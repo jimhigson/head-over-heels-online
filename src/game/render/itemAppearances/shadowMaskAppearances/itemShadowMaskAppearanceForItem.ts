@@ -6,7 +6,7 @@ import {
   type ItemInPlayType,
 } from "../../../../model/ItemInPlay";
 import { type MonsterJsonConfig } from "../../../../model/json/MonsterJsonConfig";
-import { itemInPlayTimes } from "../../../../model/times";
+import { isMultipliedItem, itemInPlayTimes } from "../../../../model/times";
 import {
   type BaseAnimationIdWithPrefix,
   type BaseTextureIdWithPrefix,
@@ -23,7 +23,6 @@ import {
   rotateAxisXyByCameraAngle,
   type Xy,
 } from "../../../../utils/vectors/vectors";
-import { isMultipliedItem } from "../../../physics/itemPredicates";
 import { blockSizePx } from "../../../physics/mechanicsConstants";
 import { type AppearanceReturn } from "../../appearance/Appearance";
 import {

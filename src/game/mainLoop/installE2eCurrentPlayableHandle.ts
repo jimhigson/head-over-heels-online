@@ -1,7 +1,7 @@
+import { type PlayableItem } from "../../model/ItemInPlayNarrowedUnions";
 import { type CharacterName } from "../../model/modelTypes";
 import { type GameState } from "../gameState/GameState";
 import { selectCurrentPlayableItem } from "../gameState/gameStateSelectors/selectPlayableItem";
-import { type PlayableItem } from "../physics/itemPredicates";
 
 /**
  * e2e-only: install `window.__e2e_currentPlayable`, giving the item the player

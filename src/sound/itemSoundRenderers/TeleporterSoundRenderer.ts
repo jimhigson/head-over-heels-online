@@ -1,6 +1,6 @@
-import { isPlayableItem } from "../../game/physics/itemPredicates";
-import { teleporterIsActive } from "../../game/physics/mechanics/teleporting";
+import { teleporterIsActive } from "../../game/physics/mechanics/teleporterIsActive";
 import { type ItemTickContext } from "../../game/render/ItemRenderContexts";
+import { isPlayableItem } from "../../model/ItemInPlayNarrowedUnions";
 import { iterateStoodOnByItems } from "../../model/stoodOnItemsLookup";
 import { audioCtx } from "../audioCtx";
 import { type ItemSoundRenderContext } from "../ItemSoundRenderContext";

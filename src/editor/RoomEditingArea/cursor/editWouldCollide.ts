@@ -3,7 +3,7 @@ import { produce } from "immer";
 import { collision1toManyIter } from "../../../game/collision/aabbCollision";
 import { buildRoomJsonDirectionalIndex } from "../../../game/gameState/loadRoom/buildRoomJsonDirectionalIndex";
 import { loadItemFromJson } from "../../../game/gameState/loadRoom/loadItemFromJson";
-import { isSolid } from "../../../game/physics/itemPredicates";
+import { itemBehaviourKey } from "../../../model/ItemInPlay";
 import { type JsonItemType } from "../../../model/json/JsonItem";
 import { roomJsonItemsIterable } from "../../../model/RoomJson";
 import { roomItemsIterable } from "../../../model/RoomState";
@@ -26,7 +26,9 @@ import { type ItemTool } from "../interactivity/Tool";
 const collideableItemsInRoom = (
   roomState: EditorRoomState,
 ): IterableIterator<EditorUnionOfAllItemInPlayTypes> => {
-  return roomItemsIterable(roomState.items).filter((item) => isSolid(item));
+  return roomItemsIterable(roomState.items).filter(
+    (item) => !item[itemBehaviourKey].isNonSolid(item),
+  );
 };
 
 const collideableForItem = (
@@ -103,7 +105,10 @@ export const itemMoveOrResizeWouldCollide = ({
       }
     })
     // ignore any non-solid items we just loaded:
-    .filter(([, , loadedItem]) => isSolid(loadedItem))
+    .filter(
+      ([, , loadedItem]) =>
+        !loadedItem[itemBehaviourKey].isNonSolid(loadedItem),
+    )
     .toArray();
 
   return loadedModifiedItemTuples.some(([, modifiedJsonItem, loadedItem]) => {
@@ -183,7 +188,7 @@ export const addingItemWouldCollide = ({
     directionalIndex,
   )
     // our new item may have some non-solid items, which are fine to collide (eg, stopAutowalk doors)
-    .filter((i) => isSolid(i));
+    .filter((i) => !i[itemBehaviourKey].isNonSolid(i));
 
   const collideableItemsForThisTool = collideableForItem(
     roomState,

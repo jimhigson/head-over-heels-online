@@ -1,6 +1,7 @@
 import { type SharedUnionFields } from "type-fest";
 
-import { defaultItemProperties } from "../../../model/defaultItemProperties";
+import { itemBehaviourKey } from "../../../model/ItemInPlay";
+import { type PlayableItem } from "../../../model/ItemInPlayNarrowedUnions";
 import {
   type HeadOverHeelsState,
   type HeadState,
@@ -14,20 +15,13 @@ import { neverTime } from "../../../utils/neverTime";
 import { unitVectors } from "../../../utils/vectors/unitVectors";
 import { boxWithSize, originXyz } from "../../../utils/vectors/vectors";
 import { headAabb, heelsAabb } from "../../collision/boundingBoxes";
-import { type PlayableItem } from "../../physics/itemPredicates";
+import { getBehaviourForItemTypeAndConfig } from "../../itemBehaviours/attachBehaviourToItem";
 import { originalGameStartingLives } from "../../physics/mechanicsConstants";
-import { type ShadowCastSpriteOptions } from "../../render/ShadowCastSpriteOptions";
 import { defaultBaseState, defaultFreeItemState } from "./itemDefaultStates";
 import { positionCentredInBlock } from "./positionCentredInBlock";
 
-const shadowPlayable: ShadowCastSpriteOptions = Object.freeze({
-  textureId: "shadow.playable",
-});
-
 export const defaultPlayableRootAttributes = {
   config: emptyObject,
-  shadowCastTexture: shadowPlayable,
-  castsShadowWhileStoodOn: true,
 } satisfies Partial<PlayableItem<CharacterName, string>>;
 
 export const defaultCommonPlayableState = () => {
@@ -85,8 +79,11 @@ export const loadPlayer = <RoomId extends string, RoomItemId extends string>(
       type: "head",
       // playables never use the hash (only used to de-synchronise animations):
       hash: 0,
-      ...defaultItemProperties,
       ...defaultPlayableRootAttributes,
+      [itemBehaviourKey]: getBehaviourForItemTypeAndConfig(
+        "head",
+        defaultPlayableRootAttributes.config,
+      ),
       state: {
         ...defaultBaseState<RoomItemId>(),
         ...defaultFreeItemState(),
@@ -109,14 +106,18 @@ export const loadPlayer = <RoomId extends string, RoomItemId extends string>(
     jsonItemId,
     type: "heels",
     hash: 0,
-    ...defaultItemProperties,
     ...defaultPlayableRootAttributes,
+    [itemBehaviourKey]: getBehaviourForItemTypeAndConfig(
+      "heels",
+      defaultPlayableRootAttributes.config,
+    ),
     state: {
       ...defaultBaseState<RoomItemId>(),
       ...defaultFreeItemState(),
       ...defaultCommonPlayableState(),
       ...defaultCommonIndividualPlayableState(pokesEnabled),
       carrying: null,
+      wouldPickUpNextItemId: null,
       hasBag: false,
       bigJumps: 0,
       isBigJump: false,

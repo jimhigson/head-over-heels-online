@@ -32,7 +32,6 @@ import {
   type CollideableItem,
   collisionItemWithIndex,
 } from "../../collision/aabbCollision";
-import { isWall } from "../../physics/itemPredicates";
 import { blockSizePx, veryHighZ } from "../../physics/mechanicsConstants";
 import { createSprite } from "../createSprite";
 import { asItemRenderContext } from "../ItemRenderContexts";
@@ -76,8 +75,8 @@ export const wallAppearance = itemAppearanceRenderMemoised<"wall">(
     // apparent facing lands on a near/hidden side resolves to right/towards
     // (which no art exists for) and draws nothing: decline to render, removing
     // any current rendering. This near/far split matches
-    // isWallDirectionHiddenAtAngle, which excludes the same wall from
-    // z-sorting in effectiveFixedZIndex - keeping draw and sort in lockstep:
+    // isWallDirectionHiddenAtAngle, which also excludes the same wall from
+    // z-sorting - keeping draw and sort in lockstep:
     const flipX = spriteFlipXAtAngle(cameraAngle);
     const resolvedFacingArtIndexXy4 = resolveSpriteDirectionIndexXy4(
       direction,
@@ -207,7 +206,11 @@ export const wallAppearance = itemAppearanceRenderMemoised<"wall">(
           sampleBuffer.state.box.y = endBlockY + cornerDiagonal.y;
 
           const wallCornerAtEndOfWall = !isEmpty(
-            collisionItemWithIndex(sampleBuffer, spatialIndex, isWall),
+            collisionItemWithIndex(
+              sampleBuffer,
+              spatialIndex,
+              (consideredItem) => consideredItem.type === "wall",
+            ),
           );
 
           if (!wallCornerAtEndOfWall) {

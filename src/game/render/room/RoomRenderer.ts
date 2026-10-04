@@ -2,9 +2,10 @@ import { Container, type Filter, RenderLayer } from "pixi.js";
 import { type SetRequired } from "type-fest";
 
 import {
+  itemBehaviourKey,
   type ItemInPlayType,
-  type UnionOfAllItemInPlayTypes,
 } from "../../../model/ItemInPlay";
+import { type UnionOfAllItemInPlayTypes } from "../../../model/ItemInPlayNarrowedUnions";
 import { roomItemsIterable } from "../../../model/RoomState";
 import { zxSpectrumColor } from "../../../originalGame";
 import { audioCtx } from "../../../sound/audioCtx";
@@ -17,7 +18,6 @@ import {
   type SceneGraphPhaseRecorder,
   type SceneGraphSubPhase,
 } from "../../mainLoop/frameTiming/FrameTimingStats";
-import { isSpatial } from "../../physics/itemPredicates";
 import { PaletteSwapFilter } from "../filters/PaletteSwapFilter";
 import { createItemLeafPixiRenderer } from "../item/itemRender/createItemLeafPixiRenderer";
 import {
@@ -304,8 +304,9 @@ export class RoomRenderer<
       if (graphics) {
         // item has a visual presence:
         this.#itemsContainer.addChild(graphics);
-        if (item.fixedZIndex) {
-          graphics.zIndex = item.fixedZIndex;
+        const { fixedZIndex } = item[itemBehaviourKey];
+        if (fixedZIndex !== undefined) {
+          graphics.zIndex = fixedZIndex;
         }
       }
 
@@ -477,7 +478,9 @@ export class RoomRenderer<
     } = this;
 
     const spatialItems = new Set(
-      roomItemsIterable(room.items).filter(isSpatial),
+      roomItemsIterable(room.items).filter(
+        (item) => !item[itemBehaviourKey].isPositionless(item),
+      ),
     );
 
     const { timingRecord } = givenTickContext;

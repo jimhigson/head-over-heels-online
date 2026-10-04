@@ -1,6 +1,11 @@
 import { type WritableDeep } from "type-fest";
 
-import { type UnionOfAllItemInPlayTypes } from "../../../model/ItemInPlay";
+import { itemBehaviourKey } from "../../../model/ItemInPlay";
+import {
+  type FreeItem,
+  isPlayableItem,
+  type UnionOfAllItemInPlayTypes,
+} from "../../../model/ItemInPlayNarrowedUnions";
 import { roomSpatialIndexKey, type RoomState } from "../../../model/RoomState";
 import { epsilon, veryClose } from "../../../utils/epsilon";
 import {
@@ -17,14 +22,6 @@ import {
   collisionItemWithIndex,
   hasCollisionItemWithIndex,
 } from "../../collision/aabbCollision";
-import {
-  type FreeItem,
-  isDeadly,
-  isNonHmvItem,
-  isPlayableItem,
-  isPushable,
-  isSolid,
-} from "../itemPredicates";
 
 // how far out of the item do the sensors stick?
 const sensorProjectionLength = 0.1;
@@ -171,11 +168,13 @@ export const helpfulMovementVector = <
     c: UnionOfAllItemInPlayTypes<RoomId, RoomItemId>,
   ): number => {
     const score: number =
-      c === subjectItem || !isSolid(c) ? slideScoreColWithNone
+      c === subjectItem || c[itemBehaviourKey].isNonSolid(c, subjectItem) ?
+        slideScoreColWithNone
       : c.type === "doorFrame" ? slideScoreColWithDoorFrame
-      : isPushable(subjectItem, c) ? slideScoreColWithPushable
+      : c[itemBehaviourKey].isPushableBy(c, subjectItem, false) ?
+        slideScoreColWithPushable
         // non-hmv items (joysticks, switches) — player should snag on these to keep pushing:
-      : isNonHmvItem(c) ? slideScoreColWithNonSliding
+      : c[itemBehaviourKey].snagsHelpfulMovement ? slideScoreColWithNonSliding
       : slideScoreColWithUnpushable;
 
     return Math.max(ac, score);
@@ -203,7 +202,9 @@ export const helpfulMovementVector = <
   const collidesNegSideBelow = hasCollisionItemWithIndex(
     belowSensorBuffer,
     room[roomSpatialIndexKey],
-    (c) => isSolid(c) && !(isPlayableItem(subjectItem) && isDeadly(c)),
+    (c) =>
+      !c[itemBehaviourKey].isNonSolid(c, subjectItem) &&
+      !(isPlayableItem(subjectItem) && c[itemBehaviourKey].isDeadly(c)),
   );
 
   const somewhereToSlideToOnNegSide = standingOnNothing || collidesNegSideBelow;
@@ -228,7 +229,9 @@ export const helpfulMovementVector = <
   const collidesPosSideBelow = hasCollisionItemWithIndex(
     belowSensorBuffer,
     room[roomSpatialIndexKey],
-    (c) => isSolid(c) && !(isPlayableItem(subjectItem) && isDeadly(c)),
+    (c) =>
+      !c[itemBehaviourKey].isNonSolid(c, subjectItem) &&
+      !(isPlayableItem(subjectItem) && c[itemBehaviourKey].isDeadly(c)),
   );
 
   const somewhereToSlideToOnPosSide = standingOnNothing || collidesPosSideBelow;

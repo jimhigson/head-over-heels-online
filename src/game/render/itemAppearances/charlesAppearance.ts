@@ -5,7 +5,6 @@ import {
   spriteFlipXAtAngle,
 } from "../../../utils/vectors/resolveCameraRelativeVector";
 import { type DirectionIndexXy4 } from "../../../utils/vectors/vectors";
-import { isJoystick } from "../../physics/itemPredicates";
 import { createStackedSprites } from "./createStackedSprites";
 import { type ItemAppearance } from "./ItemAppearance";
 
@@ -50,7 +49,7 @@ export const charlesAppearance: ItemAppearance<
 
   const controlledByJoystick =
     roomTime === roomTimeActedOn &&
-    keysIter(by).some((id) => isJoystick(items[id]));
+    keysIter(by).some((id) => items[id].type === "joystick");
 
   const render =
     currentlyRenderedProps === undefined ||

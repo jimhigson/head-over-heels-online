@@ -1,9 +1,7 @@
 import { Container, Graphics, type Sprite, TilingSprite } from "pixi.js";
 
-import {
-  type ItemInPlay,
-  type UnionOfAllItemInPlayTypes,
-} from "../../../../model/ItemInPlay";
+import { type ItemInPlay } from "../../../../model/ItemInPlay";
+import { type UnionOfAllItemInPlayTypes } from "../../../../model/ItemInPlayNarrowedUnions";
 import { roomItemsIterable, type RoomState } from "../../../../model/RoomState";
 import { zxSpectrumColors } from "../../../../originalGame";
 import { assertIsTextureId } from "../../../../sprites/assertIsTextureId";
@@ -42,7 +40,6 @@ import {
   type Xy,
   type Xyz,
 } from "../../../../utils/vectors/vectors";
-import { isWallOrDoorFrame } from "../../../physics/itemPredicates";
 import { blockSizePx } from "../../../physics/mechanicsConstants";
 import { createSprite } from "../../createSprite";
 import { ColourClashFilter } from "../../filters/ColourClashFilter";
@@ -62,10 +59,7 @@ import {
 } from "../../renderBox/makeItemRenderBoxAtCameraAngle";
 import { maxRenderBoxScreenExtentAtAnyQuarterAngle } from "../../renderBox/maxRenderBoxScreenExtentAtAnyQuarterAngle";
 import { type FilterCache } from "../../room/RoomRenderer";
-import {
-  effectiveFixedZIndex,
-  nonRenderingItemFixedZIndex,
-} from "../../sortZ/fixedZIndexes";
+import { participatesInDrawOrder } from "../../sortZ/fixedZIndexes";
 import {
   type ItemAppearance,
   itemAppearanceRenderMemoised,
@@ -126,7 +120,7 @@ const floorLeftRightCutOffMask = <
   );
 
   const { left, right } = roomItemsIterable(room.items)
-    .filter(isWallOrDoorFrame)
+    .filter((item) => item.type === "wall" || item.type === "doorFrame")
     .filter((item) => {
       const {
         state: { box },
@@ -169,9 +163,10 @@ const floorLeftRightCutOffMask = <
           config: { direction },
         } = boundingItem;
         const physicalSize: Xyz = { x: box.xd, y: box.yd, z: box.zd };
-        const nonRendering =
-          effectiveFixedZIndex(boundingItem, cameraQuarterAngle) ===
-          nonRenderingItemFixedZIndex;
+        const nonRendering = !participatesInDrawOrder(
+          boundingItem,
+          cameraQuarterAngle,
+        );
 
         // non-rendering items (on the hidden sides) draw nothing, so their
         // box's out-of-room extent must not widen the window: they bound it at

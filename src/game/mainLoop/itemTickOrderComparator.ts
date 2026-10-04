@@ -1,7 +1,5 @@
-import {
-  type ItemInPlayType,
-  type UnionOfAllItemInPlayTypes,
-} from "../../model/ItemInPlay";
+import { type ItemInPlayType } from "../../model/ItemInPlay";
+import { type UnionOfAllItemInPlayTypes } from "../../model/ItemInPlayNarrowedUnions";
 
 /**
  * it matters what order items are processed in - for example, lifts move but nothing can move a lift, so

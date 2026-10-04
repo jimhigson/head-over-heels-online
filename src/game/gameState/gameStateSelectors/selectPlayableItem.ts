@@ -1,3 +1,4 @@
+import { type PlayableItem } from "../../../model/ItemInPlayNarrowedUnions";
 import {
   type HeadAbilities,
   type HeelsAbilities,
@@ -6,12 +7,6 @@ import {
   type CharacterName,
   type IndividualCharacterName,
 } from "../../../model/modelTypes";
-import {
-  isHead,
-  isHeadOverHeels,
-  isHeels,
-  type PlayableItem,
-} from "../../physics/itemPredicates";
 import { type GameState } from "../GameState";
 
 export const selectPlayableItem = <
@@ -41,20 +36,23 @@ export const selectCurrentPlayableItem = <
 export const selectHeadAbilities = (
   playable: PlayableItem<CharacterName>,
 ): HeadAbilities | undefined => {
-  if (isHead(playable)) {
+  if (playable.type === "head") {
     return playable.state;
   }
-  if (isHeadOverHeels(playable)) {
+  if (playable.type === "headOverHeels") {
     return playable.state.head;
   }
 };
-export const selectHeelsAbilities = (
-  playable: PlayableItem<CharacterName>,
-): HeelsAbilities<string> | undefined => {
-  if (isHeels(playable)) {
+export const selectHeelsAbilities = <
+  RoomId extends string,
+  RoomItemId extends string,
+>(
+  playable: PlayableItem<CharacterName, RoomId, RoomItemId>,
+): HeelsAbilities<RoomId, RoomItemId> | undefined => {
+  if (playable.type === "heels") {
     return playable.state;
   }
-  if (isHeadOverHeels(playable)) {
+  if (playable.type === "headOverHeels") {
     return playable.state.heels;
   }
 };
@@ -63,9 +61,9 @@ const _selectAbilities = <RoomId extends string>(
   individualCharacterName: IndividualCharacterName,
 ):
   | HeadAbilities
-  | HeelsAbilities<string>
+  | HeelsAbilities<string, string>
   | undefined => /*| (I extends "head" ? HeadAbilities : never)
-  | (I extends "heels" ? HeelsAbilities<string> : never)
+  | (I extends "heels" ? HeelsAbilities<string, string> : never)
   | undefined */ {
   const playable = selectPlayableItem(
     gameState,
@@ -78,16 +76,19 @@ const _selectAbilities = <RoomId extends string>(
     return undefined;
   }
 
-  if (individualCharacterName === "head" && isHead(playable)) {
+  if (individualCharacterName === "head" && playable.type === "head") {
     return playable.state;
   }
-  if (individualCharacterName === "heels" && isHeels(playable)) {
+  if (individualCharacterName === "heels" && playable.type === "heels") {
     return playable.state;
   }
-  if (individualCharacterName === "head" && isHeadOverHeels(playable)) {
+  if (individualCharacterName === "head" && playable.type === "headOverHeels") {
     return playable.state.head;
   }
-  if (individualCharacterName === "heels" && isHeadOverHeels(playable)) {
+  if (
+    individualCharacterName === "heels" &&
+    playable.type === "headOverHeels"
+  ) {
     return playable.state.heels;
   }
 };
@@ -101,5 +102,5 @@ export const selectAbilities = _selectAbilities as <
   individualCharacterName: I,
 ) =>
   | (I extends "head" ? HeadAbilities : never)
-  | (I extends "heels" ? HeelsAbilities<RoomId> : never)
+  | (I extends "heels" ? HeelsAbilities<RoomId, string> : never)
   | undefined;

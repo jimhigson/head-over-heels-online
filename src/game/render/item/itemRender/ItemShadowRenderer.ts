@@ -1,10 +1,11 @@
 import { AlphaFilter, Container, Sprite } from "pixi.js";
-import { type SetRequired, type WritableDeep } from "type-fest";
+import { type WritableDeep } from "type-fest";
 
 import {
+  itemBehaviourKey,
   type ItemInPlayType,
-  type UnionOfAllItemInPlayTypes,
 } from "../../../../model/ItemInPlay";
+import { type UnionOfAllItemInPlayTypes } from "../../../../model/ItemInPlayNarrowedUnions";
 import { type ConsolidatableConfig } from "../../../../model/json/utilityJsonConfigTypes";
 import { roomSpatialIndexKey } from "../../../../model/RoomState";
 import { wallInPlayTimes } from "../../../../model/times";
@@ -40,14 +41,8 @@ import {
 } from "../../ItemRenderContexts";
 import { projectWorldXyzToScreenXy } from "../../projections";
 import { type RenderBox } from "../../renderBox/makeItemRenderBoxAtCameraAngle";
-import {
-  castsShadowWhileStoodOnAtAngle,
-  noShadowCastOnAtAngle,
-  shadowCastTextureAtAngle,
-} from "../../shadows/shadowAtAngle";
 import { ItemAppearancePixiRenderer } from "./ItemAppearancePixiRenderer";
 import { type ItemChainPixiRenderer } from "./ItemPixiRenderer";
-import { itemTypesExemptFromNearCornerOffset } from "./itemTypesExemptFromNearCornerOffset";
 import { wholeShadowCastersCoverReceiver } from "./wholeShadowCastersCoverReceiver";
 
 const shadowAlpha = 0.66;
@@ -80,16 +75,6 @@ const noTint = 0xff_ff_ff;
  *        (several shadows)
  */
 
-const itemCastsShadow = (
-  caster: UnionOfAllItemInPlayTypes<string, string>,
-): caster is SetRequired<typeof caster, "shadowCastTexture"> =>
-  caster.shadowCastTexture !== undefined;
-
-type ShadowCaster = SetRequired<
-  UnionOfAllItemInPlayTypes<string, string>,
-  "shadowCastTexture"
->;
-
 /**
  * the render box's aabb, or undefined for boxless items and for zero-size
  * boxes (items that draw nothing, whose box exists only for draw-ordering)
@@ -114,12 +99,14 @@ const nonZeroSizeRenderAabb = (
  * rather than just the footprint hidden under the caster.
  */
 const castsShapedShadowOnTop = (
-  caster: ShadowCaster,
+  caster: UnionOfAllItemInPlayTypes,
   receiver: CollideableItem,
   cameraQuarterAngle: Xy,
 ) =>
-  castsShadowWhileStoodOnAtAngle(caster, cameraQuarterAngle) ||
-  caster.state.box.z > receiver.state.box.z + receiver.state.box.zd;
+  caster[itemBehaviourKey].castsShadowWhileStoodOn(
+    caster,
+    cameraQuarterAngle,
+  ) || caster.state.box.z > receiver.state.box.z + receiver.state.box.zd;
 
 // Buffer to avoid allocating memory for the pseudo-item used to find shadow casters
 const spaceAboveSurfaceBuffer: WritableDeep<CollideableItem> = {
@@ -151,10 +138,7 @@ class ItemShadowRenderer<
    * record all the shadows currently being cast, to maintain some state between frames so we ca
    * cut out unnecessary extra work
    */
-  #shadowSprites = new Map() as Map<
-    SetRequired<UnionOfAllItemInPlayTypes<string, string>, "shadowCastTexture">,
-    Sprite
-  >;
+  #shadowSprites = new Map<UnionOfAllItemInPlayTypes, Sprite>();
 
   readonly renderContext: ItemRenderContext<T>;
   #appearance: "no-mask" | ItemShadowAppearanceOutsideView<T>;
@@ -213,7 +197,10 @@ class ItemShadowRenderer<
 
       // add the whole shadow mask renderer output as a child of the top-level, even though
       // the sprite will be plucked out of its output and used directly as a mask
-      if (renderContext.item.shadowOffset === undefined) {
+      const shadowOffset = renderContext.item[itemBehaviourKey].shadowOffset(
+        renderContext.item,
+      );
+      if (shadowOffset === undefined) {
         this.#output.addChild(this.#shadowMaskRenderer.output);
       } else {
         // create a new container to offset the shadow mask:
@@ -221,7 +208,7 @@ class ItemShadowRenderer<
           label: "shadowMaskOffset",
           children: [this.#shadowMaskRenderer.output],
           ...projectWorldXyzToScreenXy(
-            renderContext.item.shadowOffset,
+            shadowOffset,
             nearestQuarterAngle(renderContext.general.cameraAngle),
           ),
         });
@@ -313,12 +300,13 @@ class ItemShadowRenderer<
         shadowSprite.destroy();
         this.#shadowSprites.delete(caster);
       }
+      const shadowOffset = item[itemBehaviourKey].shadowOffset(item);
       if (
         this.#shadowMaskOffsetContainer !== undefined &&
-        item.shadowOffset !== undefined
+        shadowOffset !== undefined
       ) {
         const offsetXy = projectWorldXyzToScreenXy(
-          item.shadowOffset,
+          shadowOffset,
           cameraQuarterAngle,
         );
         this.#shadowMaskOffsetContainer.position.set(offsetXy.x, offsetXy.y);
@@ -341,19 +329,19 @@ class ItemShadowRenderer<
       collisionItemWithIndex(
         spaceAboveSurfaceBuffer,
         room[roomSpatialIndexKey],
-        (
-          maybeCaster,
-        ): maybeCaster is SetRequired<
-          typeof maybeCaster,
-          "shadowCastTexture"
-        > =>
-          maybeCaster !== item &&
-          itemCastsShadow(maybeCaster) &&
-          shadowCastTextureAtAngle(maybeCaster, cameraQuarterAngle) !==
-            undefined &&
-          !noShadowCastOnAtAngle(maybeCaster, cameraQuarterAngle)?.includes(
-            item.type,
-          ),
+        (maybeCaster) => {
+          const casterBehaviour = maybeCaster[itemBehaviourKey];
+          return (
+            maybeCaster !== item &&
+            casterBehaviour.shadowCastTexture(
+              maybeCaster,
+              cameraQuarterAngle,
+            ) !== undefined &&
+            !casterBehaviour
+              .noShadowCastOn(maybeCaster, cameraQuarterAngle)
+              ?.includes(item.type)
+          );
+        },
       ),
     );
 
@@ -362,7 +350,7 @@ class ItemShadowRenderer<
     // shadows are hard black, so a whole-item tint would erase the item into its silhouette
     const wholeShadowed =
       !this.renderContext.general.spriteOption.uncolourised &&
-      wholeShadowCastersCoverReceiver(castersAbove, item);
+      wholeShadowCastersCoverReceiver(castersAbove, item, cameraQuarterAngle);
 
     // tint the whole item when wholly shadowed, on top of (not instead of) its shaped
     // shadows, which keep rendering below:
@@ -406,9 +394,16 @@ class ItemShadowRenderer<
             wallInPlayTimes(caster.config)
           : (caster.config as ConsolidatableConfig).times;
 
+        const maybeShadowCastTexture = caster[
+          itemBehaviourKey
+        ].shadowCastTexture(caster, cameraQuarterAngle);
+        if (import.meta.env.DEV && maybeShadowCastTexture === undefined) {
+          throw new Error(
+            `caster "${caster.id}" is above, but casts no shadow at this angle`,
+          );
+        }
         const { flipsOnOddQuarterCameraTurns, ...shadowCastTexture } =
-          shadowCastTextureAtAngle(caster, cameraQuarterAngle) ??
-          caster.shadowCastTexture;
+          maybeShadowCastTexture!;
         const { general } = this.renderContext;
         const { shadowSpritesheet } = general.spritesheets;
 
@@ -468,15 +463,15 @@ class ItemShadowRenderer<
           nonZeroSizeRenderAabb(this.renderContext.renderBoxes.get(caster)),
         );
         const receiverNearCornerOffset =
-          itemTypesExemptFromNearCornerOffset.has(item.type) ? originXy : (
-            nearCornerOffsetWorldXyz(item, cameraQuarterAngle)
-          );
+          item[itemBehaviourKey].isExemptFromNearCornerOffset ?
+            originXy
+          : nearCornerOffsetWorldXyz(item, cameraQuarterAngle);
         const screenXy = projectWorldXyzToScreenXy(
           {
             ...addXy(
               subXy(caster.state.box, item.state.box, receiverNearCornerOffset),
               // use just the xy part of the shadow offset to position the shadow on the surface:
-              caster.shadowOffset ?? originXy,
+              caster[itemBehaviourKey].shadowOffset(caster) ?? originXy,
               casterNearCornerOffset,
             ),
             // on the top of the item:

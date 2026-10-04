@@ -1,12 +1,40 @@
 import { expect, test } from "vitest";
 
+import { itemBehaviourKey } from "../../../../model/ItemInPlay";
+import { type UnionOfAllItemInPlayTypes } from "../../../../model/ItemInPlayNarrowedUnions";
 import { epsilon } from "../../../../utils/epsilon";
-import { type Xyz } from "../../../../utils/vectors/vectors";
+import { type Xy, type Xyz } from "../../../../utils/vectors/vectors";
 import { type CollideableItem } from "../../../collision/aabbCollision";
-import {
-  type Caster,
-  wholeShadowCastersCoverReceiver,
-} from "./wholeShadowCastersCoverReceiver";
+import { defaultBaseState } from "../../../gameState/loadRoom/itemDefaultStates";
+import { ItemBehaviour } from "../../../itemBehaviours/ItemBehaviour";
+import { wholeShadowCastersCoverReceiver } from "./wholeShadowCastersCoverReceiver";
+
+const cameraAngle: Xy = { x: 1, y: 0 };
+
+/**
+ * stands in for a caster's behaviour, giving the whole-shadow fields under test
+ */
+class TestCasterBehaviour extends ItemBehaviour {
+  readonly #castsWholeShadows: boolean;
+  readonly #shadowOffset: Partial<Xyz> | undefined;
+
+  constructor(
+    castsWholeShadows: boolean,
+    shadowOffset: Partial<Xyz> | undefined,
+  ) {
+    super();
+    this.#castsWholeShadows = castsWholeShadows;
+    this.#shadowOffset = shadowOffset;
+  }
+
+  override castsWholeShadows(): boolean {
+    return this.#castsWholeShadows;
+  }
+
+  override shadowOffset(): Partial<Xyz> | undefined {
+    return this.#shadowOffset;
+  }
+}
 
 /** build a receiver footprint from a game-like position + size */
 const footprint = (
@@ -30,17 +58,22 @@ const caster = (
   w: number,
   h: number,
   opts?: { shadowOffset?: Partial<Xyz>; castsWholeShadows?: boolean },
-): Caster => ({
+): UnionOfAllItemInPlayTypes => ({
+  type: "block",
   id: "test",
-  state: { box: { x, y, z: 0, xd: w, yd: h, zd: 0 } },
-  shadowOffset: opts?.shadowOffset,
-  castsWholeShadows: opts?.castsWholeShadows ?? true,
+  hash: 0,
+  config: { style: "artificial" },
+  state: { ...defaultBaseState(), box: { x, y, z: 0, xd: w, yd: h, zd: 0 } },
+  [itemBehaviourKey]: new TestCasterBehaviour(
+    opts?.castsWholeShadows ?? true,
+    opts?.shadowOffset,
+  ),
 });
 
 type Case = {
   name: string;
   receiver: CollideableItem;
-  casters: Caster[];
+  casters: UnionOfAllItemInPlayTypes[];
   expected: boolean;
 };
 
@@ -183,7 +216,7 @@ const cases: Case[] = [
 ];
 
 test.for(cases)("$name", ({ receiver, casters, expected }) => {
-  expect<boolean>(wholeShadowCastersCoverReceiver(casters, receiver)).toBe(
-    expected,
-  );
+  expect<boolean>(
+    wholeShadowCastersCoverReceiver(casters, receiver, cameraAngle),
+  ).toBe(expected);
 });

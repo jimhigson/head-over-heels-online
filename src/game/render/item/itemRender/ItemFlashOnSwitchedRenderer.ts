@@ -1,11 +1,11 @@
 import { Container, type Filter } from "pixi.js";
 
 import { type ItemInPlayType } from "../../../../model/ItemInPlay";
+import { isInRoomModifierItem } from "../../../../model/ItemInPlayNarrowedUnions";
 import { roomItemsIterable } from "../../../../model/RoomState";
 import { zxSpectrumColor, zxSpectrumColors } from "../../../../originalGame";
 import { effectColour } from "../../../../sprites/palette/spritesheetPalette";
 import { getAmbientSwoppedColour } from "../../../../utils/palette/palette";
-import { isModifier } from "../../../physics/itemPredicates";
 import { OneColourFilter } from "../../filters/OneColourFilter";
 import { OutlineFilter } from "../../filters/OutlineFilter";
 import {
@@ -132,7 +132,7 @@ export const flashOnSwitchedDecorateItemRenderer: DecorateItemRenderer = (
 
   // check if this item is modified by any switch etc in the room:
   const isModifiedItem = roomItemsIterable(items)
-    .filter(isModifier)
+    .filter((roomItem) => isInRoomModifierItem(roomItem))
     .some(({ config: { modifies } }) => {
       return modifies.some((m) =>
         m.targets === undefined ?

@@ -1,4 +1,3 @@
-import { isItemType } from "../game/physics/itemPredicates";
 import { roomItemsIterable, type RoomState } from "../model/RoomState";
 import { loadSound } from "./soundsLoader";
 
@@ -11,7 +10,7 @@ export const ensureRoomSoundsLoaded = (
   const pending: Promise<void>[] = [];
 
   for (const soundEffectItem of roomItemsIterable(room.items).filter(
-    isItemType("soundEffect"),
+    (item) => item.type === "soundEffect",
   )) {
     const loading = loadSound(soundEffectItem.config.soundOptions.soundId);
     if (loading !== undefined) {

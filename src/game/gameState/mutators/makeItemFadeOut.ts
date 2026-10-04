@@ -1,20 +1,27 @@
-import { type UnionOfAllItemInPlayTypes } from "../../../model/ItemInPlay";
+import { itemBehaviourKey, type ItemInPlay } from "../../../model/ItemInPlay";
+import { type UnionOfAllItemInPlayTypes } from "../../../model/ItemInPlayNarrowedUnions";
+import { type JsonItem } from "../../../model/json/JsonItem";
 import { type RoomState } from "../../../model/RoomState";
 import { getItemInPlayTimes } from "../../../model/times";
-import { hashStringToNumber0to1 } from "../../../utils/maths/hashing";
+import {
+  hashStringToNumber0to1,
+  hashXyzToNumber0to1,
+} from "../../../utils/maths/hashing";
 import {
   addXyz,
+  boxWithSize,
   originXyz,
   scaleXyz,
   subXyz,
 } from "../../../utils/vectors/vectors";
 import { boundingBoxForItem } from "../../collision/boundingBoxes";
+import { getBehaviourForItemTypeAndConfig } from "../../itemBehaviours/attachBehaviourToItem";
 import { blockSizePx } from "../../physics/mechanicsConstants";
 import { fadeInOrOutDuration } from "../../render/animationTimings";
-import { type GameState } from "../GameState";
-import { addItemFromJsonToRoom } from "./addItemToRoom";
+import { defaultBaseState } from "../loadRoom/itemDefaultStates";
+import { positionCentredInBlock } from "../loadRoom/positionCentredInBlock";
+import { addItemToRoom } from "./addItemToRoom";
 import { deleteItemFromRoom } from "./deleteItemFromRoom";
-import { updateItemPosition } from "./updateItemBox";
 
 /**
  * remove an item (with bubbles)
@@ -25,11 +32,9 @@ export const makeItemFadeOut = <
 >({
   touchedItem,
   room,
-  gameState,
 }: {
   touchedItem: UnionOfAllItemInPlayTypes<RoomId, RoomItemId>;
   room: RoomState<RoomId, RoomItemId>;
-  gameState: GameState<RoomId>;
 }) => {
   deleteItemFromRoom({ room, item: touchedItem });
 
@@ -44,6 +49,17 @@ export const makeItemFadeOut = <
     : touchedItem.type === "firedDoughnut" ? { type: "firedDoughnut" as const }
     : { type: "disappearing" as const };
 
+  const bubblesJson: JsonItem<"bubbles", RoomId, RoomItemId> = {
+    type: "bubbles",
+    config: { style: "white", was },
+    position: originXyz,
+  };
+  const bubblesAabb = boundingBoxForItem(bubblesJson);
+  // bubbles animate from the hash of the box they would load with at the origin:
+  const bubblesHash = hashXyzToNumber0to1(
+    boxWithSize(positionCentredInBlock(bubblesJson), bubblesAabb),
+  );
+
   // need the bounding box from before it was multiplied 'times' was applied.
   // simple division doesn't work here because the multiplied takes into account
   // gaps between items
@@ -53,21 +69,9 @@ export const makeItemFadeOut = <
   for (let x = 0; x < times.x; x++) {
     for (let y = 0; y < times.y; y++) {
       for (let z = 0; z < times.z; z++) {
-        // this must be deterministic for room snapshots, since the starting animation frame
-        // of the bubbles is calculated based off this:
+        // this must be deterministic for room snapshots:
         const partUniqueId = `${touchedItem.id}/${x},${y},${z}`;
-        const bubblesItem = addItemFromJsonToRoom({
-          itemType: "bubbles",
-          config: {
-            style: "white",
-            was,
-          },
-          // give any placeholder position during loading:
-          position: originXyz,
-          room,
-          gameState,
-          additionalIdPart: partUniqueId,
-        });
+        const bubblesId = `bubbles/${partUniqueId}` as RoomItemId;
 
         // Calculate position for this segment's bubble
         const segmentOffset = {
@@ -83,31 +87,35 @@ export const makeItemFadeOut = <
           touchedItemHalfAabb,
         );
 
-        // and then give the true position:
-        const {
-          xd: bubblesXd,
-          yd: bubblesYd,
-          zd: bubblesZd,
-        } = bubblesItem.state.box;
-        updateItemPosition(
-          room,
-          bubblesItem,
-          subXyz(
-            segmentCentre,
-            // TODO: use subXyzInPlace once it is merged
-            scaleXyz({ x: bubblesXd, y: bubblesYd, z: bubblesZd }, 0.5),
-          ),
-        );
-
         // number in range 0.75...1.25
         const pseudoRandomFactor =
           hashStringToNumber0to1(partUniqueId) * 0.5 + 0.75;
 
-        // remove bubbles after a time with random variation
-        bubblesItem.state.expires =
-          room.roomTime +
-          // fade out after a pseudo-random, deterministic (hashed) duration:
-          fadeInOrOutDuration * pseudoRandomFactor;
+        const bubblesItem: ItemInPlay<"bubbles", RoomId, RoomItemId> = {
+          type: "bubbles",
+          hash: bubblesHash,
+          id: bubblesId,
+          jsonItemId: bubblesId,
+          config: bubblesJson.config,
+          [itemBehaviourKey]: getBehaviourForItemTypeAndConfig(
+            "bubbles",
+            bubblesJson.config,
+          ),
+          state: {
+            ...defaultBaseState(),
+            box: boxWithSize(
+              subXyz(segmentCentre, scaleXyz(bubblesAabb, 0.5)),
+              bubblesAabb,
+            ),
+            // remove bubbles after a time with random variation
+            expires:
+              room.roomTime +
+              // fade out after a pseudo-random, deterministic (hashed) duration:
+              fadeInOrOutDuration * pseudoRandomFactor,
+          },
+        };
+
+        addItemToRoom({ room, item: bubblesItem });
       }
     }
   }

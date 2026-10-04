@@ -1,4 +1,8 @@
-import { type UnionOfAllItemInPlayTypes } from "../../../model/ItemInPlay";
+import { itemBehaviourKey } from "../../../model/ItemInPlay";
+import {
+  type PlayableItem,
+  type UnionOfAllItemInPlayTypes,
+} from "../../../model/ItemInPlayNarrowedUnions";
 import { type CharacterName } from "../../../model/modelTypes";
 import { roomSpatialIndexKey, type RoomState } from "../../../model/RoomState";
 import { getEffectivelyStandingOnItemIdForPlayable } from "../../../model/stoodOnItemsLookup";
@@ -11,27 +15,16 @@ import { smallItemAabb } from "../../collision/boundingBoxes";
 import { type GameState } from "../../gameState/GameState";
 import { playableHasShield } from "../../gameState/gameStateSelectors/selectPickupAbilities";
 import {
-  isDeadly,
-  isPickup,
-  isPlayableItem,
-  isSolid,
-  isSpring,
-  isTeleporter,
-  type PlayableItem,
-} from "../itemPredicates";
-import {
   type Mechanic,
   type MechanicResult,
   unitMechanicalResult,
 } from "../MechanicResult";
 import {
-  blockSizePx,
   fallG,
   jumpFudge,
   originalGameJumpPxPerFrame,
   playerJumpHeightPx,
 } from "../mechanicsConstants";
-import { teleporterIsActive } from "./teleporting";
 
 const jumpRefreshCollideBufferHeight = 0.1;
 const jumpRefreshCollideBuffer = {
@@ -61,18 +54,12 @@ const jumpInitialVelocity = (apexZ: number) => {
   return velZ;
 };
 
-const jumpInitialVelocities = {
-  head: jumpInitialVelocity(playerJumpHeightPx.head),
-  // TODO: confirm that springs give one extra block of height for head - this is
-  // correct for heels (from 1 to 2) but that could be a doubling
-  headOnSpring: jumpInitialVelocity(playerJumpHeightPx.head + blockSizePx.z),
-  heels: jumpInitialVelocity(playerJumpHeightPx.heels),
-  heelsOnSpring: jumpInitialVelocity(playerJumpHeightPx.heels + blockSizePx.z),
-};
-
 const getJumpInitialVelocity = (
   playableItem: PlayableItem,
-  onSpring: boolean,
+  /**
+   * extra height given by what the playable jumps off
+   */
+  jumpBoostPx: number,
   /** only relevant for heels */
   hasBigJumps: boolean,
 ) => {
@@ -80,34 +67,15 @@ const getJumpInitialVelocity = (
     playableItem.type === "headOverHeels" ? "head"
     : playableItem.type === "heels" && hasBigJumps ? "head"
     : playableItem.type;
-  return jumpInitialVelocities[
-    `${effectiveCharacterName}${onSpring ? "OnSpring" : ""}`
-  ];
+  return jumpInitialVelocity(
+    playerJumpHeightPx[effectiveCharacterName] + jumpBoostPx,
+  );
 };
 
 const isJumpOffable = <RoomItemId extends string>(
   item: null | UnionOfAllItemInPlayTypes<RoomItemId>,
-): item is NonNullable<typeof item> => {
-  if (item === null) {
-    return false;
-  }
-  if (isTeleporter(item) && teleporterIsActive(item)) {
-    // can't jump from a teleporter (jump key teleports)
-    return false;
-  }
-  if (isPickup(item) && item.config.gives === "scroll") {
-    // can't jump off of scrolls - the jump after reading is jarring
-    return false;
-  }
-  if (isPlayableItem(item) && item.state.standingOnItemId === null) {
-    // can't jump off of a character that is jumping. This prevents
-    // a 'superjump' by going out of symbiosis while jumping and
-    // holding jump
-    return false;
-  }
-
-  return true;
-};
+): item is NonNullable<typeof item> =>
+  item !== null && item[itemBehaviourKey].isJumpOffable(item);
 
 const canRefreshJump = <RoomId extends string, RoomItemId extends string>(
   playableItem: PlayableItem<CharacterName, RoomId, RoomItemId>,
@@ -135,11 +103,11 @@ const canRefreshJump = <RoomId extends string, RoomItemId extends string>(
   const jumpoffable = (item: UnionOfAllItemInPlayTypes<RoomId, RoomItemId>) => {
     return (
       isJumpOffable(item) &&
-      (!isDeadly(item) || hasShield) &&
+      (!item[itemBehaviourKey].isDeadly(item) || hasShield) &&
       // // can't normally stand on a non-solid item to jump off of it, but jump
       // // refresh doesn't require to be standing on so also need to filter out
       // // non-solid items:
-      isSolid(item, playableItem)
+      !item[itemBehaviourKey].isNonSolid(item, playableItem)
     );
   };
 
@@ -187,7 +155,7 @@ export const jumping: Mechanic<CharacterName> = <
     // it's much harder to press on the exact frame than it was in the low frame-rate original
     const velZ = getJumpInitialVelocity(
       playableItem,
-      false,
+      0,
       playableItem.type === "heels" && playableItem.state.isBigJump,
     );
     return {
@@ -226,11 +194,9 @@ export const jumping: Mechanic<CharacterName> = <
   const isBigJump =
     playableItem.type === "heels" && playableItem.state.bigJumps > 0;
 
-  const standingOnSpring = isSpring(effectivelyStandingOn);
-
   const velZ = getJumpInitialVelocity(
     playableItem,
-    standingOnSpring,
+    effectivelyStandingOn[itemBehaviourKey].jumpBoostPx,
     isBigJump,
   );
 

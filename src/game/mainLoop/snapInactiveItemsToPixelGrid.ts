@@ -1,4 +1,9 @@
-import { type UnionOfAllItemInPlayTypes } from "../../model/ItemInPlay";
+import { itemBehaviourKey } from "../../model/ItemInPlay";
+import {
+  type FreeItem,
+  isFreeItem,
+  type UnionOfAllItemInPlayTypes,
+} from "../../model/ItemInPlayNarrowedUnions";
 import {
   roomItemsIterable,
   roomSpatialIndexKey,
@@ -10,7 +15,6 @@ import {
   hasCollisionItemWithIndex,
 } from "../collision/aabbCollision";
 import { updateItemPosition } from "../gameState/mutators/updateItemBox";
-import { type FreeItem, isFreeItem, isSolid } from "../physics/itemPredicates";
 
 const logSnapping = 0;
 
@@ -77,7 +81,7 @@ export const snapInactiveItemsToPixelGrid = <
 
     const collisionPredicate = (
       i: UnionOfAllItemInPlayTypes<RoomId, RoomItemId>,
-    ): boolean => i.id !== id && isSolid(i, item);
+    ): boolean => i.id !== id && !i[itemBehaviourKey].isNonSolid(i, item);
     const snappedCollideable = {
       id,
       state: { box: boxAt(snappedPosition, item.state.box) },

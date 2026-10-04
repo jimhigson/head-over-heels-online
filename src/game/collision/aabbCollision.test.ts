@@ -1,6 +1,5 @@
 import { describe, expect, test } from "vitest";
 
-import { defaultItemProperties } from "../../model/defaultItemProperties";
 import { SpatialIndex } from "../physics/gridSpace/SpatialIndex";
 import {
   type CollideableItem,
@@ -58,30 +57,25 @@ describe("collision1to1", () => {
 describe("collisionItemWithIndex", () => {
   test("finds the collision items using spatial index", () => {
     const subject: CollideableItem = {
-      ...defaultItemProperties,
       id: "subject",
       state: { box: { x: 0, y: 0, z: 0, xd: 2, yd: 1, zd: 1 } },
     };
 
     const colliding1: CollideableItem = {
-      ...defaultItemProperties,
       id: "colliding1",
       state: { box: { x: 1.9, y: 0, z: 0, xd: 1, yd: 1, zd: 1 } },
     };
     const colliding2: CollideableItem = {
-      ...defaultItemProperties,
       id: "colliding2",
       state: { box: { x: 0, y: 0.9, z: 0, xd: 2, yd: 1, zd: 1 } },
     };
 
     const nonColliding1: CollideableItem = {
-      ...defaultItemProperties,
       id: "nonColliding1",
       state: { box: { x: 0, y: 0, z: 1, xd: 2, yd: 1, zd: 1 } },
     };
 
     const nonColliding2: CollideableItem = {
-      ...defaultItemProperties,
       id: "nonColliding2",
       state: { box: { x: 2, y: 0, z: 0, xd: 2, yd: 1, zd: 1 } },
     };
@@ -105,18 +99,15 @@ describe("collisionItemWithIndex", () => {
 
   test("respects considerItem filter", () => {
     const subject: CollideableItem = {
-      ...defaultItemProperties,
       id: "subject",
       state: { box: { x: 0, y: 0, z: 0, xd: 2, yd: 1, zd: 1 } },
     };
 
     const colliding1: CollideableItem = {
-      ...defaultItemProperties,
       id: "colliding1",
       state: { box: { x: 1.9, y: 0, z: 0, xd: 1, yd: 1, zd: 1 } },
     };
     const colliding2: CollideableItem = {
-      ...defaultItemProperties,
       id: "colliding2",
       state: { box: { x: 0, y: 0.9, z: 0, xd: 2, yd: 1, zd: 1 } },
     };

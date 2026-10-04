@@ -1,5 +1,5 @@
+import { type FreeItem } from "../../../../model/ItemInPlayNarrowedUnions";
 import { stoodOnItem } from "../../../../model/stoodOnItemsLookup";
-import { type FreeItem } from "../../../physics/itemPredicates";
 import { type UnindexedRoomState } from "../../saving/SavedGameState";
 
 export const removeStandingOn = <

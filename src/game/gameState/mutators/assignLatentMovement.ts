@@ -1,4 +1,7 @@
-import { type UnionOfAllItemInPlayTypes } from "../../../model/ItemInPlay";
+import {
+  type FreeItem,
+  type UnionOfAllItemInPlayTypes,
+} from "../../../model/ItemInPlayNarrowedUnions";
 import { type LatentMovementFrame } from "../../../model/ItemStateMap";
 import { roomItemsIterable, type RoomState } from "../../../model/RoomState";
 import { iterateStoodOnByItems } from "../../../model/stoodOnItemsLookup";
@@ -9,7 +12,6 @@ import {
   xyEqual,
   type Xyz,
 } from "../../../utils/vectors/vectors";
-import { type FreeItem } from "../../physics/itemPredicates";
 import { originalFramePeriod } from "../../render/animationTimings";
 
 // since the original game pushes items every other frame, the practical latency

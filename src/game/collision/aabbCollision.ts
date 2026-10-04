@@ -1,4 +1,4 @@
-import { type UnionOfAllItemInPlayTypes } from "../../model/ItemInPlay";
+import { type UnionOfAllItemInPlayTypes } from "../../model/ItemInPlayNarrowedUnions";
 import { type XyzBox } from "../../utils/vectors/vectors";
 import { type SpatialIndex } from "../physics/gridSpace/SpatialIndex";
 

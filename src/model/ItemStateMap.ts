@@ -1,9 +1,9 @@
 import { type EmptyObject, type Simplify } from "type-fest";
 
-import { type PortableItem } from "../game/physics/itemPredicates";
 import { type SceneryName } from "../sprites/planets";
 import { type Xy, type Xyz } from "../utils/vectors/vectors";
 import { type ItemInPlayConfig, type SwitchSetting } from "./ItemInPlay";
+import { type UnionOfAllItemInPlayTypes } from "./ItemInPlayNarrowedUnions";
 import { type ItemConfigMap } from "./json/ItemConfigMap";
 import { type MirrorOrientation } from "./MirrorOrientation";
 import { type TimedRelationWithOtherItem } from "./TimedRelationWithOtherItem";
@@ -89,11 +89,6 @@ type SlidingItemState<RoomItemId extends string> = FreeItemState<RoomItemId> & {
   vels: {
     sliding: Xyz;
   };
-};
-
-type PortableItemState = {
-  /** if true, this item is the item heels would pick up next - and should be drawn highlighted in the room */
-  wouldPickUpNext: boolean;
 };
 
 export type PlayableState<RoomItemId extends string> =
@@ -222,11 +217,18 @@ export type HeadAbilities = CommonAbilities & {
   fastStepsStartedAtDistance: number;
 };
 
-export type HeelsAbilities<RoomId extends string> = CommonAbilities & {
+export type HeelsAbilities<
+  RoomId extends string,
+  RoomItemId extends string,
+> = CommonAbilities & {
   hasBag: boolean;
   /** how many big jumps we can do (from picking up a bunny) */
   bigJumps: number;
-  carrying: null | PortableItem<RoomId, string>;
+  carrying: null | UnionOfAllItemInPlayTypes<RoomId, RoomItemId>;
+  /**
+   * the id of the item Heels would pick up next, drawn highlighted in the room
+   */
+  wouldPickUpNextItemId: null | RoomItemId;
 };
 
 type ItemWithMovementState = {
@@ -260,7 +262,6 @@ type ItemWithMovementState = {
 };
 
 type MonsterState<RoomItemId extends string> = FreeItemState<RoomItemId> &
-  PortableItemState &
   ItemWithMovementState & {
     busyLickingDoughnutsOffFace: boolean;
   };
@@ -272,7 +273,7 @@ export type HeelsState<
   RoomItemId extends string,
   RoomId extends string = string,
 > = PlayableState<RoomItemId> &
-  HeelsAbilities<RoomId> & {
+  HeelsAbilities<RoomId, RoomItemId> & {
     /**
      * true if heels is jumping, and the jump was a big jump using a power-up. This can be used to
      * decide to show the particle effect or not
@@ -285,16 +286,16 @@ export type HeadOverHeelsState<
   RoomId extends string = string,
 > = PlayableState<RoomItemId> & {
   head: HeadAbilities;
-  heels: HeelsAbilities<RoomId>;
+  heels: HeelsAbilities<RoomId, RoomItemId>;
 };
 
 export type ItemStateMap<RoomId extends string, RoomItemId extends string> = {
   head: HeadState<RoomItemId>;
   heels: HeelsState<RoomItemId, RoomId>;
   headOverHeels: HeadOverHeelsState<RoomItemId, RoomId>;
-  spring: FreeItemState<RoomItemId> & PortableItemState;
-  portableBlock: FreeItemState<RoomItemId> & PortableItemState;
-  sceneryPlayer: FreeItemState<RoomItemId> & PortableItemState;
+  spring: FreeItemState<RoomItemId>;
+  portableBlock: FreeItemState<RoomItemId>;
+  sceneryPlayer: FreeItemState<RoomItemId>;
   emitter: Simplify<
     {
       lastEmittedAtRoomTime: number;
@@ -314,7 +315,6 @@ export type ItemStateMap<RoomId extends string, RoomItemId extends string> = {
   } & ItemConfigMap<RoomId, RoomItemId, SceneryName>["joystick"]; // copying the config into the state means that these settings are mutable at run-time. eg, changing what the joystick controls using switches
   teleporter: ItemConfigMap<RoomId, RoomItemId, SceneryName>["teleporter"]; // copying the config into the state means that these settings are mutable at run-time. eg, by switches
   portableTeleporter: FreeItemState<RoomItemId> &
-    PortableItemState &
     ItemConfigMap<RoomId, RoomItemId, SceneryName>["teleporter"]; // copying the config into the state means that these settings are mutable at run-time. eg, by switches
 
   deadlyBlock: {
@@ -323,9 +323,9 @@ export type ItemStateMap<RoomId extends string, RoomItemId extends string> = {
   pushableBlock: FreeItemState<RoomItemId>;
   movingPlatform: FreeItemState<RoomItemId> & ItemWithMovementState;
   moveableDeadly: FreeItemState<RoomItemId>;
-  sceneryCrown: FreeItemState<RoomItemId> & PortableItemState;
+  sceneryCrown: FreeItemState<RoomItemId>;
   slidingDeadly: SlidingItemState<RoomItemId>;
-  slidingBlock: PortableItemState & SlidingItemState<RoomItemId>;
+  slidingBlock: SlidingItemState<RoomItemId>;
   ball: SlidingItemState<RoomItemId>;
 
   lamp: {
@@ -371,7 +371,7 @@ export type ItemStateMap<RoomId extends string, RoomItemId extends string> = {
   };
 
   monster: MonsterState<RoomItemId>;
-  pickup: FreeItemState<RoomItemId> & PortableItemState;
+  pickup: FreeItemState<RoomItemId>;
   lift: Simplify<
     {
       direction: "down" | "up";
@@ -388,9 +388,7 @@ export type ItemStateMap<RoomId extends string, RoomItemId extends string> = {
 
   stopAutowalk: EmptyObject;
   conveyor: Simplify<
-    {
-      moving: boolean;
-    } & Omit<
+    Omit<
       ItemInPlayConfig<"conveyor", RoomId, RoomItemId>,
       /** omit disappearing since it gets this now from @see BaseItemState.disappearing with a slightly different type */
       "disappearing"

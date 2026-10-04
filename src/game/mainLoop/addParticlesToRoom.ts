@@ -1,7 +1,11 @@
 import { type ItemTypeUnion } from "../../_generated/types/ItemInPlayUnion";
-import { defaultItemProperties } from "../../model/defaultItemProperties";
-import { type ItemInPlay, type ItemInPlayConfig } from "../../model/ItemInPlay";
+import {
+  itemBehaviourKey,
+  type ItemInPlay,
+  type ItemInPlayConfig,
+} from "../../model/ItemInPlay";
 import { itemInPlayCentre } from "../../model/itemInPlayCentre";
+import { type PlayableItem } from "../../model/ItemInPlayNarrowedUnions";
 import { playablesInRoom, type RoomState } from "../../model/RoomState";
 import { epsilon } from "../../utils/epsilon";
 import {
@@ -19,7 +23,7 @@ import {
 import { fastStepsRemaining } from "../gameState/gameStateSelectors/selectPickupAbilities";
 import { defaultBaseState } from "../gameState/loadRoom/itemDefaultStates";
 import { addItemToRoom } from "../gameState/mutators/addItemToRoom";
-import { type PlayableItem } from "../physics/itemPredicates";
+import { getBehaviourForItemTypeAndConfig } from "../itemBehaviours/attachBehaviourToItem";
 import { blockSizePx } from "../physics/mechanicsConstants";
 
 const particleLifetimeMs = 300;
@@ -52,14 +56,13 @@ const createParticleItemInPlay = (
   // fold roomTime in so particles spawned at the same spot at different
   // times don't start their fade animation in sync:
   const hash = hashXyzToNumber0to1(position, roomTime);
+  const config = { forCharacter };
   return {
-    ...defaultItemProperties,
     hash,
     id: `particle.${forItemId}.${particlesAdded++}`,
     type: "particle",
-    config: {
-      forCharacter,
-    },
+    config,
+    [itemBehaviourKey]: getBehaviourForItemTypeAndConfig("particle", config),
     state: {
       ...defaultBaseState(),
       // re-hash the hash for the lifetime so it doesn't correlate with the

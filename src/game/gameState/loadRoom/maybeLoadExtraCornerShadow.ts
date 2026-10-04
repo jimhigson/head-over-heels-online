@@ -1,4 +1,8 @@
-import { type ItemInPlay } from "../../../model/ItemInPlay";
+import {
+  itemBehaviourKey,
+  type ItemInPlay,
+  type ItemInPlayConfig,
+} from "../../../model/ItemInPlay";
 import { type JsonItem } from "../../../model/json/JsonItem";
 import { emptyObject } from "../../../utils/empty";
 import { valuesIter } from "../../../utils/entries";
@@ -10,8 +14,8 @@ import {
   doorAlongAxis,
   type Xyz,
 } from "../../../utils/vectors/vectors";
+import { getBehaviourForItemTypeAndConfig } from "../../itemBehaviours/attachBehaviourToItem";
 import { blockXyzToFineXyz } from "../../render/projections";
-import { nonRenderingItemFixedZIndex } from "../../render/sortZ/fixedZIndexes";
 import { type RoomDirectionalIndex } from "./buildRoomJsonDirectionalIndex";
 import { defaultBaseState } from "./itemDefaultStates";
 
@@ -121,6 +125,7 @@ export function* maybeLoadExtraCornerShadow<
           continue;
         }
 
+        const config = emptyObject satisfies ItemInPlayConfig<"blocker">;
         // the cube pokes diagonally out of the room at the corner: on each
         // axis, out of the room is the bounding direction's outward normal:
         yield {
@@ -143,17 +148,16 @@ export function* maybeLoadExtraCornerShadow<
               cubeSize,
             ),
           },
-          shadowCastTexture: {
-            textureId: "shadow.wallCorner",
-          },
-          castsShadowWhileStoodOn: false,
           // only casts when this corner is the camera-near one:
           hintShadowDirections: [
             unitVectors[xDirection],
             unitVectors[yDirection],
           ],
-          config: emptyObject,
-          fixedZIndex: nonRenderingItemFixedZIndex,
+          config,
+          [itemBehaviourKey]: getBehaviourForItemTypeAndConfig(
+            "blocker",
+            config,
+          ),
         };
       }
     }

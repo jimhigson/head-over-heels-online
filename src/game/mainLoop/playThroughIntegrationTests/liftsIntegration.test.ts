@@ -13,7 +13,7 @@ import {
 import { heelsState, itemState } from "../../../_testUtils/characterState";
 import { resetStore } from "../../../_testUtils/initStoreForTests";
 import { playGameThrough } from "../../../_testUtils/playGameThrough";
-import { type PlayableItem } from "../../physics/itemPredicates";
+import { type PlayableItem } from "../../../model/ItemInPlayNarrowedUnions";
 import {
   blockSizePx,
   defaultRoomHeightBlocks,

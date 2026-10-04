@@ -1,7 +1,10 @@
-import { type UnionOfAllItemInPlayTypes } from "../../../model/ItemInPlay";
+import { itemBehaviourKey } from "../../../model/ItemInPlay";
+import { type UnionOfAllItemInPlayTypes } from "../../../model/ItemInPlayNarrowedUnions";
 import { roomSpatialIndexKey, type RoomState } from "../../../model/RoomState";
-import { iterateStoodOnByItems } from "../../../model/stoodOnItemsLookup";
-import { isFreeItem, isSpatial } from "../../physics/itemPredicates";
+import {
+  itemIsStandingOnSomething,
+  iterateStoodOnByItems,
+} from "../../../model/stoodOnItemsLookup";
 import { type UnindexedRoomState } from "../saving/SavedGameState";
 import { removeStandingOn } from "./standingOn/removeStandingOn";
 
@@ -16,7 +19,7 @@ export const deleteItemFromRoom = <
   item: ItemId | UnionOfAllItemInPlayTypes<RoomId, ItemId>;
 }) => {
   const item = deleteItemFromUnindexedRoom({ room, item: itemParam });
-  if (isSpatial(item)) {
+  if (!item[itemBehaviourKey].isPositionless(item)) {
     const spatialIndex = room[roomSpatialIndexKey];
     spatialIndex.removeItem(item);
   }
@@ -38,8 +41,9 @@ export const deleteItemFromUnindexedRoom = <
   const item =
     typeof itemParam === "string" ? room.items[itemParam] : itemParam;
 
-  // whatever the deleted item was standing on, it aim't no more:
-  if (isFreeItem(item)) {
+  // whatever the deleted item was standing on, it aim't no more. The room may be
+  // a saved copy, whose items have no behaviours, so this can't ask the behaviour:
+  if (itemIsStandingOnSomething(item)) {
     removeStandingOn(item, room);
   }
   // and nothing can be stood on us either:

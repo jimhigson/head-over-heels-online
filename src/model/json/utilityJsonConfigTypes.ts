@@ -2,6 +2,11 @@ import { type Xyz } from "../../utils/vectors/vectors";
 
 export type BlockStyle = "artificial" | "book" | "organic" | "tower";
 
+/**
+ * how a monster or moving platform moves itself, from its config's `movement`.
+ * In the source this is called the item's locomotion - the json keeps
+ * `movement` so existing rooms and saves stay valid
+ */
 export type JsonMovement =
   | "anticlockwise"
   | "back-forth"

@@ -1,10 +1,12 @@
 import { type ItemTypeUnion } from "../../../_generated/types/ItemInPlayUnion";
-import { defaultItemProperties } from "../../../model/defaultItemProperties";
+import {
+  itemBehaviourKey,
+  type ItemInPlayConfig,
+} from "../../../model/ItemInPlay";
 import { type JsonItem } from "../../../model/json/JsonItem";
 import { type StoodOnBy } from "../../../model/StoodOnBy";
 import { emptyObject } from "../../../utils/empty";
 import { pick } from "../../../utils/pick";
-import { octantIndexOfDirection } from "../../../utils/vectors/octantIndexOfDirection" with { type: "macro" };
 import { unitVectors } from "../../../utils/vectors/unitVectors";
 import {
   addXyz,
@@ -16,89 +18,25 @@ import {
   subXyz,
   type Xyz,
 } from "../../../utils/vectors/vectors";
+import { getBehaviourForItemTypeAndConfig } from "../../itemBehaviours/attachBehaviourToItem";
 import { blockSizePx, veryHighZ } from "../../physics/mechanicsConstants";
 import { blockXyzToFineXyz } from "../../render/projections";
-import { type ShadowCastSpriteOptions } from "../../render/ShadowCastSpriteOptions";
-import { nonRenderingItemFixedZIndex } from "../../render/sortZ/fixedZIndexes";
 import { type RoomDirectionalIndex } from "./buildRoomJsonDirectionalIndex";
 import { floorZAtPosition } from "./floorZAtPosition";
 import { isDoorOnFloorEdge } from "./isDoorOnFloorEdge";
 import { defaultBaseState } from "./itemDefaultStates";
-
-/**
- * shadow textures baked for the door's physical axis at the base angle; the
- * shadow renderer flips them when the camera rotates onto an odd quarter turn
- */
-const shadowDoorFloatingThresholdY: ShadowCastSpriteOptions = Object.freeze({
-  textureId: `shadow.door.floatingThreshold.double.d${octantIndexOfDirection(
-    "away",
-  )}`,
-  flipsOnOddQuarterCameraTurns: true,
-});
-
-const shadowDoorFloatingThresholdX: ShadowCastSpriteOptions = Object.freeze({
-  textureId: `shadow.door.floatingThreshold.double.d${octantIndexOfDirection(
-    "away",
-  )}`,
-  flipX: true,
-  flipsOnOddQuarterCameraTurns: true,
-});
-
-const shadowDoorFrameTopY: ShadowCastSpriteOptions = Object.freeze({
-  textureId: `shadow.doorFrame.top.d${octantIndexOfDirection("away")}`,
-  flipsOnOddQuarterCameraTurns: true,
-});
-
-const shadowDoorFrameTopX: ShadowCastSpriteOptions = Object.freeze({
-  textureId: `shadow.doorFrame.top.d${octantIndexOfDirection("away")}`,
-  flipX: true,
-  flipsOnOddQuarterCameraTurns: true,
-});
-
-const doorFrameTopNoCastShadowOn = ["doorLegs" as const];
-
-/**
- * this looks low when the bounding boxes are rendered, but visually
- * the playable characters go inside the doorframes a bit too much when
- * it is set to exactly match the door sprite's internal height
- */
-const doorPortalHeight = blockSizePx.z * 2;
-const doorPostHeightBlocks = 4;
-export const doorPostHeightPx = blockSizePx.z * doorPostHeightBlocks;
-
-/** how many blocks wide is the door, including frame and doorway? */
-const doorOverallWidthBlocks = 2;
-export const doorOverallWidthPx = doorOverallWidthBlocks * blockSizePx.x;
-
-/**
- * both posts are physically 8px along the wall at every camera angle. The
- * *drawn* posts are asymmetric (the apparently-nearer is 9px), which is
- * render-time-derived; freezing the physical width means the camera can
- * never change the room's geometry - at the cost of a constant 1px
- * art-vs-physics difference on exactly one post
- */
-const doorPostWidthPx = 8;
-const doorPostWidthInThroughDoorAxis = 8;
-
-/**
- * the doorway gap the player walks through, and enters relative to, is placed
- * at the ORIGINAL game's asymmetric post widths (near 9px / far 8px) - NOT the
- * frozen 8px render posts. The portal is non-rendering physics, so keeping it
- * at the original geometry preserves the exact spot the player enters at (which
- * the first-frame scroll snaps to) without affecting the camera-invariant post
- * render. Baking the 9/8 asymmetry into world space is itself camera-invariant.
- */
-const entryNearPostWidthPx = 9;
-const entryFarPostWidthPx = 8;
-
-// to be true to the original game, this should be 0.75 blocks, which is
-// enough to be completely outside the doorframe, and to fall off the ledge
-// of the door (if z>0)
-const autoWalkDistanceBlocks = 0.5;
-// the stop autowalk isn't just a plane, in case the player gets pushed
-// through a long way in one frame, like an item being introduced to
-// the room, like the other player walking through the door
-const stopAutoWalkDepthBlocks = 0.5;
+import {
+  autoWalkDistanceBlocks,
+  doorOverallWidthPx,
+  doorPortalHeight,
+  doorPostHeightPx,
+  doorPostWidthInThroughDoorAxis,
+  doorPostWidthPx,
+  doorTunnelLengthBlocks,
+  entryFarPostWidthPx,
+  entryNearPostWidthPx,
+  stopAutoWalkDepthBlocks,
+} from "./loadDoorConstants";
 
 /**
  * loads a door's items with only angle-invariant (physical) properties: the
@@ -147,10 +85,6 @@ export function* loadDoor<RoomId extends string, RoomItemId extends string>(
     [throughDoorAxis]: outIsNegative ? -0.5 : 0,
   };
 
-  // bounding boxes for doors form a long tunnel-like structure longer than the door's rendering
-  // that extends out of the room. This helps with collision detection for items entering the room
-  // to not have MTVs that snag behind the door
-  const doorTunnelLengthBlocks = 1;
   // aabbs extend positive from their position, so when the tunnel protrudes in
   // the negative (out-of-room) direction the position shifts out by the tunnel
   // length, and the rendering is offset back to the room end of the tunnel:
@@ -177,22 +111,26 @@ export function* loadDoor<RoomId extends string, RoomItemId extends string>(
     doorTunnelAabbPx,
   );
 
+  const frameFarConfig: ItemInPlayConfig<"doorFrame", RoomId, RoomItemId> = {
+    ...jsonDoor.config,
+    // the json direction name becomes a unit vector in-play:
+    direction: unitVectors[direction],
+    onFloorEdge,
+    part: "far",
+  };
   yield {
     ...jsonDoor,
-    ...defaultItemProperties,
     ...{
       type: "doorFrame",
       // doorframes never animate, so the hash (only used to de-synchronise animations) is irrelevant:
       hash: 0,
       id: `${jsonItemId}/frameFar` as RoomItemId,
       jsonItemId,
-      config: {
-        ...jsonDoor.config,
-        // the json direction name becomes a unit vector in-play:
-        direction: unitVectors[direction],
-        onFloorEdge,
-        part: "far",
-      },
+      config: frameFarConfig,
+      [itemBehaviourKey]: getBehaviourForItemTypeAndConfig(
+        "doorFrame",
+        frameFarConfig,
+      ),
       state: {
         ...defaultBaseState(),
         // the far post ends flush with the door's overall (2-block) span:
@@ -207,20 +145,24 @@ export function* loadDoor<RoomId extends string, RoomItemId extends string>(
     },
   };
 
+  const frameNearConfig: ItemInPlayConfig<"doorFrame", RoomId, RoomItemId> = {
+    ...jsonDoor.config,
+    direction: unitVectors[direction],
+    onFloorEdge,
+    part: "near",
+  };
   yield {
     ...jsonDoor,
-    ...defaultItemProperties,
     ...{
       type: "doorFrame",
       hash: 0,
       id: `${jsonItemId}/frameNear` as RoomItemId,
       jsonItemId,
-      config: {
-        ...jsonDoor.config,
-        direction: unitVectors[direction],
-        onFloorEdge,
-        part: "near",
-      },
+      config: frameNearConfig,
+      [itemBehaviourKey]: getBehaviourForItemTypeAndConfig(
+        "doorFrame",
+        frameNearConfig,
+      ),
       state: {
         ...defaultBaseState(),
         box: boxWithSize(framePartsOrigin, postAabb),
@@ -232,20 +174,24 @@ export function* loadDoor<RoomId extends string, RoomItemId extends string>(
   /**
    * the bit at the top of the frame between the two door posts
    */
+  const frameTopConfig: ItemInPlayConfig<"doorFrame", RoomId, RoomItemId> = {
+    ...jsonDoor.config,
+    direction: unitVectors[direction],
+    onFloorEdge,
+    part: "top",
+  };
   yield {
     ...jsonDoor,
-    ...defaultItemProperties,
     ...{
       type: "doorFrame",
       hash: 0,
       id: `${jsonItemId}/frameTop` as RoomItemId,
       jsonItemId,
-      config: {
-        ...jsonDoor.config,
-        direction: unitVectors[direction],
-        onFloorEdge,
-        part: "top",
-      },
+      config: frameTopConfig,
+      [itemBehaviourKey]: getBehaviourForItemTypeAndConfig(
+        "doorFrame",
+        frameTopConfig,
+      ),
       state: {
         ...defaultBaseState(),
         // the physical top bar spans the gap between the (8px) posts:
@@ -265,28 +211,23 @@ export function* loadDoor<RoomId extends string, RoomItemId extends string>(
         ),
         stoodOnBy: emptyObject as StoodOnBy<RoomItemId>,
       },
-      shadowCastTexture:
-        alongWallAxis === "x" ? shadowDoorFrameTopX : shadowDoorFrameTopY,
-      shadowOffset: {
-        [alongWallAxis]: -1,
-        [throughDoorAxis]: 1,
-      },
-      // ie, if character jumps while stood in a doorway, the top of the doorframe is now 'standing' on them:
-      castsShadowWhileStoodOn: true,
-      noShadowCastOn: doorFrameTopNoCastShadowOn,
     },
   };
 
   // wall above the door, up to the ceiling:
+  const blockerAboveConfig = emptyObject satisfies ItemInPlayConfig<"blocker">;
   yield {
     ...jsonDoor,
-    ...defaultItemProperties,
     ...{
       type: "blocker",
       hash: 0,
       id: `${jsonItemId}/blockerAbove` as RoomItemId,
       jsonItemId,
-      config: {},
+      config: blockerAboveConfig,
+      [itemBehaviourKey]: getBehaviourForItemTypeAndConfig(
+        "blocker",
+        blockerAboveConfig,
+      ),
       renders: false,
       state: {
         ...defaultBaseState(),
@@ -304,30 +245,31 @@ export function* loadDoor<RoomId extends string, RoomItemId extends string>(
         ),
         stoodOnBy: emptyObject as StoodOnBy<RoomItemId>,
       },
-      fixedZIndex: nonRenderingItemFixedZIndex,
     },
   };
 
   // door portal:
+  const portalConfig: ItemInPlayConfig<"portal", RoomId, RoomItemId> = {
+    ...pick(jsonDoor.config, "toRoom", "toDoor"),
+    relativePoint: blockXyzToFineXyz({
+      ...originXyz,
+      // the relative point gets put halfway through the doorframe
+      [throughDoorAxis]: outIsNegative ? doorTunnelLengthBlocks + 0.25 : -0.25,
+    }),
+    direction: unitVectors[direction],
+  };
   yield {
     ...jsonDoor,
-    ...defaultItemProperties,
     ...{
       type: "portal",
       hash: 0,
       id: `${jsonItemId}/portal` as RoomItemId,
       jsonItemId,
-      config: {
-        ...pick(jsonDoor.config, "toRoom", "toDoor"),
-        relativePoint: blockXyzToFineXyz({
-          ...originXyz,
-          // the relative point gets put halfway through the doorframe
-          [throughDoorAxis]:
-            outIsNegative ? doorTunnelLengthBlocks + 0.25 : -0.25,
-        }),
-        direction: unitVectors[direction],
-      },
-      fixedZIndex: nonRenderingItemFixedZIndex,
+      config: portalConfig,
+      [itemBehaviourKey]: getBehaviourForItemTypeAndConfig(
+        "portal",
+        portalConfig,
+      ),
       state: {
         ...defaultBaseState(),
         box: boxWithSize(
@@ -364,30 +306,27 @@ export function* loadDoor<RoomId extends string, RoomItemId extends string>(
 
   // door legs
   if (legHeight !== 0) {
+    const legsConfig = {
+      ...jsonDoor.config,
+      direction: unitVectors[direction],
+      onFloorEdge,
+      style: "none",
+      side: "away", // TODO: look at typings - this isn't needed for hidden walls
+      height: legHeight,
+    };
     yield {
       ...jsonDoor,
-      ...defaultItemProperties,
       ...{
         type: "doorLegs",
         hash: 0,
         id: `${jsonItemId}/legs` as RoomItemId,
         jsonItemId,
-        config: {
-          ...jsonDoor.config,
-          direction: unitVectors[direction],
-          onFloorEdge,
-          style: "none",
-          side: "away", // TODO: look at typings - this isn't needed for hidden walls
-          height: legHeight,
-        },
+        config: legsConfig,
+        [itemBehaviourKey]: getBehaviourForItemTypeAndConfig(
+          "doorLegs",
+          legsConfig,
+        ),
         renders: true,
-        // the floating threshold only shows (and casts) in a hidden wall -
-        // gated per angle by shadowCastTextureAtAngle:
-        shadowCastTexture:
-          alongWallAxis === "x" ?
-            shadowDoorFloatingThresholdX
-          : shadowDoorFloatingThresholdY,
-        castsShadowWhileStoodOn: false,
         state: {
           ...defaultBaseState(),
           box: boxWithSize(
@@ -405,23 +344,21 @@ export function* loadDoor<RoomId extends string, RoomItemId extends string>(
             ),
           ),
         },
-        shadowOffset: {
-          // bring shadows up to the top of the legs:
-          z: legHeight * blockSizePx.z,
-          [throughDoorAxis]:
-            outIsNegative ? doorTunnelAabbPx[throughDoorAxis] : undefined,
-        },
       },
     };
   }
+  const stopAutowalkConfig =
+    emptyObject satisfies ItemInPlayConfig<"stopAutowalk">;
   yield {
-    ...defaultItemProperties,
     type: "stopAutowalk",
     hash: 0,
     id: `${jsonItemId}/stopAutowalk` as RoomItemId,
     jsonItemId,
-    config: {},
-    fixedZIndex: nonRenderingItemFixedZIndex,
+    config: stopAutowalkConfig,
+    [itemBehaviourKey]: getBehaviourForItemTypeAndConfig(
+      "stopAutowalk",
+      stopAutowalkConfig,
+    ),
     state: {
       ...defaultBaseState(),
       box: boxWithSize(

@@ -78,14 +78,17 @@ export type BasicGameStateOptions = {
   secondRoomDeadlyFloor?: boolean;
 };
 
-export const setUpBasicGame = ({
+/**
+ * the campaign of the two basic test rooms
+ */
+export const basicCampaign = ({
   firstRoomItems,
   firstRoomProps = {},
   secondRoomItems = {},
   secondRoomProps = {},
   firstRoomDeadlyFloor = false,
   secondRoomDeadlyFloor = false,
-}: BasicGameStateOptions): GameStateWithMockInput => {
+}: BasicGameStateOptions): Campaign<TestRoomId> => {
   const campaign: Campaign<TestRoomId> = {
     locator: {
       campaignName: "basicGameStateTestCampaign",
@@ -125,5 +128,9 @@ export const setUpBasicGame = ({
     };
   }
 
-  return setupGameForCampaign(campaign);
+  return campaign;
 };
+
+export const setUpBasicGame = (
+  options: BasicGameStateOptions,
+): GameStateWithMockInput => setupGameForCampaign(basicCampaign(options));

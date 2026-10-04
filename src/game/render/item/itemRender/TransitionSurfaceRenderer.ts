@@ -7,9 +7,10 @@ import {
 } from "pixi.js";
 
 import {
+  itemBehaviourKey,
   type ItemInPlayType,
-  type UnionOfAllItemInPlayTypes,
 } from "../../../../model/ItemInPlay";
+import { type UnionOfAllItemInPlayTypes } from "../../../../model/ItemInPlayNarrowedUnions";
 import { emptySet } from "../../../../utils/empty";
 import { renderContainerToSprite } from "../../../../utils/pixi/bakeContainerToSprite";
 import { pixiContainerToString } from "../../../../utils/pixi/pixiContainerToString";
@@ -42,9 +43,7 @@ import {
   createCuboidTransitionMesh,
   type CuboidTransitionMesh,
 } from "./cuboidTransitionMesh";
-import { isCuboidWarpItem } from "./isCuboidWarpItem";
 import { type ItemChainPixiRenderer } from "./ItemPixiRenderer";
-import { itemTypesExemptFromNearCornerOffset } from "./itemTypesExemptFromNearCornerOffset";
 
 /**
  * symbol to use to make a container as a cyclic-mask wrapper.
@@ -228,9 +227,8 @@ export class TransitionSurfaceRenderer<
     this.#wrappedRenderer = wrappedRenderer;
     this.#artContent = wrappedRenderer.output;
     this.#maskedContent = wrappedRenderer.output;
-    this.#exemptFromNearCornerOffset = itemTypesExemptFromNearCornerOffset.has(
-      renderContext.item.type,
-    );
+    this.#exemptFromNearCornerOffset =
+      renderContext.item[itemBehaviourKey].isExemptFromNearCornerOffset;
     this.output = new Container({
       label: `TransitionSurfaceRenderer ${renderContext.item.id}`,
       children: [this.#maskedContent],
@@ -424,7 +422,7 @@ export class TransitionSurfaceRenderer<
     const cameraQuarterAngle = nearestQuarterAngle(cameraAngle);
     const midRotation = !isAtQuarterAngle(cameraAngle);
 
-    if (midRotation && isCuboidWarpItem(item)) {
+    if (midRotation && item[itemBehaviourKey].isCuboidWarped(item)) {
       this.#applyCuboidWarp(cameraQuarterAngle, cameraAngle, pixiRenderer);
       return;
     }

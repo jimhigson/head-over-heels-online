@@ -1,67 +1,11 @@
-import { type UnionOfAllItemInPlayTypes } from "../../../model/ItemInPlay";
-import {
-  type JsonItem,
-  type JsonItemConfig,
-  type JsonItemType,
-  type JsonItemUnion,
-} from "../../../model/json/JsonItem";
-import { roomJsonItemsIterable } from "../../../model/RoomJson";
+import { itemBehaviourKey } from "../../../model/ItemInPlay";
+import { type UnionOfAllItemInPlayTypes } from "../../../model/ItemInPlayNarrowedUnions";
 import {
   type Progression,
   roomSpatialIndexKey,
   type RoomState,
 } from "../../../model/RoomState";
-import { emptyObject } from "../../../utils/empty";
-import { boxAt, originXyz, type Xyz } from "../../../utils/vectors/vectors";
-import { isSpatial } from "../../physics/itemPredicates";
-import { type GameState } from "../GameState";
-import { buildRoomJsonDirectionalIndex } from "../loadRoom/buildRoomJsonDirectionalIndex";
-import { loadItemFromJson } from "../loadRoom/loadItemFromJson";
-
-export const addItemFromJsonToRoom = <
-  T extends JsonItemType,
-  RoomId extends string,
-  RoomItemId extends string,
->({
-  gameState,
-  room,
-  itemType,
-  config,
-  position,
-  additionalIdPart,
-}: {
-  gameState: GameState<RoomId>;
-  room: RoomState<RoomId, RoomItemId>;
-  itemType: T;
-  config: JsonItemConfig<T, RoomId, RoomItemId>;
-  /**
-   * the (fine, in-play) position for the new object to occupy
-   */
-  position: Xyz;
-  additionalIdPart: string;
-}) => {
-  const itemJson: JsonItem<T, RoomId, RoomItemId> = {
-    type: itemType,
-    config,
-    position: originXyz,
-  };
-
-  const itemId = `${itemType}/${additionalIdPart}`;
-  const [item] = loadItemFromJson(
-    itemId,
-    itemJson as JsonItemUnion<RoomId>,
-    room.roomJson,
-    buildRoomJsonDirectionalIndex(roomJsonItemsIterable(room.roomJson)),
-    gameState.pickupsCollected[room.id] ?? emptyObject,
-  );
-  if (item === undefined) {
-    console.error("failed to generate any items for json", itemId, itemJson);
-    throw new Error("failed to generate any items");
-  }
-
-  addItemToRoom({ room, item, atPosition: position });
-  return item;
-};
+import { boxAt, type Xyz } from "../../../utils/vectors/vectors";
 
 export const addItemToRoom = <
   RoomId extends string,
@@ -90,7 +34,7 @@ export const addItemToRoom = <
   // the progression they last handled must see fresh items:
   item.state.movedOrResizedOnProgression = ++room.progression as Progression;
 
-  if (isSpatial(item)) {
+  if (!item[itemBehaviourKey].isPositionless(item)) {
     const spatialIndex = room[roomSpatialIndexKey];
     spatialIndex.addItem(item);
   }

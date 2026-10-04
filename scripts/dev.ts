@@ -13,28 +13,36 @@
  * current window (game in this pane, editor in a new one). Outside tmux both
  * run in this terminal with interleaved output.
  *
+ * Pass --built to serve production builds (vite build, then vite preview)
+ * instead of the dev servers.
+ *
  * Extra cli args are passed through to both vite instances, eg:
  *   pnpm dev --open
  */
 import { execa } from "execa";
 import getPort, { portNumbers } from "get-port";
 
-// --panes keeps the old behaviour of splitting the current window rather than
-// opening a new one; all other args are forwarded to both vite instances
+const launcherFlags = ["--panes", "--built"];
+
+// --panes splits the current window rather than opening a new one
 const splitCurrentWindow = process.argv.includes("--panes");
-const extraArgs = process.argv.slice(2).filter((arg) => arg !== "--panes");
+const servingBuilt = process.argv.includes("--built");
+// all other args are forwarded to both vite instances
+const extraArgs = process.argv
+  .slice(2)
+  .filter((arg) => !launcherFlags.includes(arg));
 
 const gamePort = await getPort({ port: portNumbers(5_200, 5_209) });
 const editorPort = await getPort({ port: portNumbers(5_210, 5_219) });
 
 const gameUrl = `http://localhost:${gamePort}/`;
-// in dev mode the editor is served from the /editor/ base path
+// in development and production modes the editor is served from /editor/
 const editorUrl = `http://localhost:${editorPort}/editor/`;
 
 // the package scripts own which vite config (and node flags) each server
 // needs; this only adds the port it allocated
 const gamePnpmArgs = [
-  "dev:game",
+  servingBuilt ? "preview:game" : "dev:game",
   "--port",
   String(gamePort),
   "--strictPort",
@@ -42,7 +50,7 @@ const gamePnpmArgs = [
 ];
 
 const editorPnpmArgs = [
-  "dev:editor",
+  servingBuilt ? "preview:editor" : "dev:editor",
   "--port",
   String(editorPort),
   "--strictPort",
@@ -174,6 +182,26 @@ const runInterleaved = async () => {
 
   process.exitCode = results.every(({ exitCode }) => exitCode === 0) ? 0 : 1;
 };
+
+/**
+ * builds the game then the editor. Sequential because the editor builds into
+ * the game's outDir, which the game build empties. Each url is baked into the
+ * other's build, so the env is needed here, not only by the preview servers.
+ */
+const buildBoth = async () => {
+  await execa("pnpm", ["build:game"], {
+    stdio: "inherit",
+    env: { VITE_EDITOR_URL: editorUrl },
+  });
+  await execa("pnpm", ["build:editor"], {
+    stdio: "inherit",
+    env: { VITE_GAME_URL: gameUrl },
+  });
+};
+
+if (servingBuilt) {
+  await buildBoth();
+}
 
 if (process.env.TMUX === undefined) {
   await runInterleaved();

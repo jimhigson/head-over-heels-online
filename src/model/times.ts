@@ -1,4 +1,5 @@
-import { isMultipliedItem } from "../game/physics/itemPredicates";
+import { type ItemTypeUnion } from "../_generated/types/ItemInPlayUnion";
+import { type ConsolidatableJsonItemType } from "../consolidateItems/ConsolidatableJsonItem";
 import { type SceneryName } from "../sprites/planets";
 import {
   alongAxisOfDirectionXy,
@@ -8,10 +9,8 @@ import {
   type Xy,
   type Xyz,
 } from "../utils/vectors/vectors";
-import {
-  type ItemInPlayConfig,
-  type UnionOfAllItemInPlayTypes,
-} from "./ItemInPlay";
+import { type ItemInPlayConfig } from "./ItemInPlay";
+import { type UnionOfAllItemInPlayTypes } from "./ItemInPlayNarrowedUnions";
 import { type JsonItemUnion } from "./json/JsonItem";
 import { type WallJsonConfig } from "./json/WallJsonConfig";
 
@@ -32,6 +31,19 @@ export const wallInPlayTimes = (
   config: ItemInPlayConfig<"wall">,
 ): Partial<Xy> =>
   wallTimesAlong(alongAxisOfDirectionXy(config.direction), config.tiles.length);
+
+export const isMultipliedItem = <
+  RoomId extends string,
+  RoomItemId extends string,
+>(
+  item: UnionOfAllItemInPlayTypes<RoomId>,
+): item is ItemTypeUnion<ConsolidatableJsonItemType, RoomId, RoomItemId> => {
+  type ItemConfigMaybeWithMultiplication = {
+    times?: Partial<Xyz> | undefined;
+  };
+
+  return (item.config as ItemConfigMaybeWithMultiplication).times !== undefined;
+};
 
 export const itemInPlayTimes = (
   item: UnionOfAllItemInPlayTypes,
@@ -63,7 +75,7 @@ export const completeTimesXy = (xy: Partial<Xyz>): Xy => {
  * all items
  */
 export const getJsonItemTimes = (item: JsonItemUnion): Xyz => {
-  const isMultipliedItem = (
+  const isMultipliedJsonItem = (
     item: JsonItemUnion,
   ): item is JsonItemUnion & { config: { times: Partial<Xyz> } } => {
     type ItemConfigMaybeWithMultiplication = {
@@ -77,7 +89,7 @@ export const getJsonItemTimes = (item: JsonItemUnion): Xyz => {
 
   return (
     item.type === "wall" ? completeTimesXyz(wallTimes(item.config))
-    : isMultipliedItem(item) ? completeTimesXyz(item.config.times)
+    : isMultipliedJsonItem(item) ? completeTimesXyz(item.config.times)
     : unitXyz
   );
 };

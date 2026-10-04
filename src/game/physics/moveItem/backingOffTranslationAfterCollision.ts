@@ -1,11 +1,11 @@
-import { type UnionOfAllItemInPlayTypes } from "../../../model/ItemInPlay";
+import { itemBehaviourKey } from "../../../model/ItemInPlay";
+import { type UnionOfAllItemInPlayTypes } from "../../../model/ItemInPlayNarrowedUnions";
 import {
   dotProductXyz,
   lengthXyzSquared,
   subXyz,
   type Xyz,
 } from "../../../utils/vectors/vectors";
-import { isPushable } from "../itemPredicates";
 import { mtv, mtvAlongVector } from "../mtv";
 
 /**
@@ -27,11 +27,9 @@ export const backingOffTranslationAfterCollision = <
   // multiple) this will be equal to the initial position
   originalPosition: Xyz,
 ): Xyz => {
-  const collidedWithIsPushable = isPushable(
-    subjectItem,
-    collidedWithItem,
-    forceful,
-  );
+  const collidedWithIsPushable = collidedWithItem[
+    itemBehaviourKey
+  ].isPushableBy(collidedWithItem, subjectItem, forceful);
 
   const backingOffSimpleMtv = mtv(
     subjectItem.state.box,

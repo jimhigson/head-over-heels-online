@@ -1,11 +1,11 @@
 import { describe, expect, test } from "vitest";
 
 import { basicEmptyRoom } from "../../_testUtils/basicRoom";
+import { type FreeItem } from "../../model/ItemInPlayNarrowedUnions";
 import { roomJsonItemsIterable } from "../../model/RoomJson";
 import { boxAt, originXyz } from "../../utils/vectors/vectors";
 import { buildRoomJsonDirectionalIndex } from "../gameState/loadRoom/buildRoomJsonDirectionalIndex";
 import { loadItemFromJson } from "../gameState/loadRoom/loadItemFromJson";
-import { type FreeItem } from "../physics/itemPredicates";
 import { blockSizePx } from "../physics/mechanicsConstants";
 import {
   findStandingOnWithHighestPriorityAndMostOverlap,

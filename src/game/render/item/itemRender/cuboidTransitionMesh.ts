@@ -1,6 +1,6 @@
 import { Mesh, MeshGeometry, type Texture } from "pixi.js";
 
-import { type UnionOfAllItemInPlayTypes } from "../../../../model/ItemInPlay";
+import { type UnionOfAllItemInPlayTypes } from "../../../../model/ItemInPlayNarrowedUnions";
 import { addXyz, type Xy, type Xyz } from "../../../../utils/vectors/vectors";
 import { projectWorldXyzToScreenXy } from "../../projections";
 

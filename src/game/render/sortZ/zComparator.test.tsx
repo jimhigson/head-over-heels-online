@@ -1,5 +1,6 @@
 import { describe, expect, test } from "vitest";
 
+import { itemBehaviourKey } from "../../../model/ItemInPlay";
 import {
   addXyz,
   boxWithSize,
@@ -8,10 +9,15 @@ import {
   type Xy,
   type Xyz,
 } from "../../../utils/vectors/vectors";
+import { ItemBehaviour } from "../../itemBehaviours/ItemBehaviour";
 import { type RenderBox } from "../renderBox/makeItemRenderBoxAtCameraAngle";
 import { populatedBroadPhase } from "./__test__/populatedBroadPhase";
 import { worldBoxToCameraSpace } from "./__test__/worldBoxToCameraSpace";
 import { type DrawOrderComparable } from "./DrawOrderComparable";
+import {
+  floatingTextFixedZIndex,
+  nonRenderingItemFixedZIndex,
+} from "./fixedZIndexes";
 import { zComparator } from "./zComparator";
 
 const unitCube = { x: 1, y: 1, z: 1 };
@@ -166,10 +172,12 @@ describe.each(cameraAngles)("viewed at camera ($x,$y)", (cameraAngle: Xy) => {
   test("zComparator detects behind in x", () => {
     const behind: DrawOrderComparable = {
       id: "b",
+      [itemBehaviourKey]: new ItemBehaviour(),
       state: { box: boxWithSize({ x: 1, y: 0, z: 0 }, unitCube) },
     };
     const inFront: DrawOrderComparable = {
       id: "f",
+      [itemBehaviourKey]: new ItemBehaviour(),
       state: { box: boxWithSize({ x: 0, y: 0, z: 0 }, unitCube) },
     };
 
@@ -180,10 +188,12 @@ describe.each(cameraAngles)("viewed at camera ($x,$y)", (cameraAngle: Xy) => {
   test("zComparator detects behind in y", () => {
     const behind: DrawOrderComparable = {
       id: "b",
+      [itemBehaviourKey]: new ItemBehaviour(),
       state: { box: boxWithSize({ x: 0, y: 1, z: 0 }, unitCube) },
     };
     const inFront: DrawOrderComparable = {
       id: "f",
+      [itemBehaviourKey]: new ItemBehaviour(),
       state: { box: boxWithSize({ x: 0, y: 0, z: 0 }, unitCube) },
     };
 
@@ -194,10 +204,12 @@ describe.each(cameraAngles)("viewed at camera ($x,$y)", (cameraAngle: Xy) => {
   test("zComparator detects on top in z", () => {
     const bottom: DrawOrderComparable = {
       id: "b",
+      [itemBehaviourKey]: new ItemBehaviour(),
       state: { box: boxWithSize({ x: 0, y: 0, z: 0 }, unitCube) },
     };
     const top: DrawOrderComparable = {
       id: "f",
+      [itemBehaviourKey]: new ItemBehaviour(),
       state: { box: boxWithSize({ x: 0, y: 0, z: 1 }, unitCube) },
     };
 
@@ -210,10 +222,14 @@ describe.each(cameraAngles)("viewed at camera ($x,$y)", (cameraAngle: Xy) => {
       const bottom: DrawOrderComparable = {
         id: "b",
         state: { box: boxWithSize({ x: 0, y: 0, z: 0 }, unitCube) },
-        fixedZIndex: 100,
+        // a high fixed z index, as floating text has:
+        [itemBehaviourKey]: new ItemBehaviour({
+          fixedZIndex: floatingTextFixedZIndex,
+        }),
       };
       const top: DrawOrderComparable = {
         id: "f",
+        [itemBehaviourKey]: new ItemBehaviour(),
         state: { box: boxWithSize({ x: 0, y: 0, z: 1 }, unitCube) },
       };
 
@@ -227,12 +243,16 @@ describe.each(cameraAngles)("viewed at camera ($x,$y)", (cameraAngle: Xy) => {
     test("negative fixed z index on second item", () => {
       const bottom: DrawOrderComparable = {
         id: "b",
+        [itemBehaviourKey]: new ItemBehaviour(),
         state: { box: boxWithSize({ x: 0, y: 0, z: 0 }, unitCube) },
       };
       const top: DrawOrderComparable = {
         id: "f",
         state: { box: boxWithSize({ x: 0, y: 0, z: 1 }, unitCube) },
-        fixedZIndex: -1,
+        // a negative fixed z index, as non-rendering items (eg emitters) have:
+        [itemBehaviourKey]: new ItemBehaviour({
+          fixedZIndex: nonRenderingItemFixedZIndex,
+        }),
       };
 
       expect(bottom).toHaveNoOrderPreferenceWith(top, {
@@ -247,10 +267,12 @@ describe.each(cameraAngles)("viewed at camera ($x,$y)", (cameraAngle: Xy) => {
   test("zComparator gives no order preference for non-visually-overlapping diagonally left/right in x,y", () => {
     const right: DrawOrderComparable = {
       id: "b",
+      [itemBehaviourKey]: new ItemBehaviour(),
       state: { box: boxWithSize({ x: 0, y: 1, z: 0 }, unitCube) },
     };
     const left: DrawOrderComparable = {
       id: "f",
+      [itemBehaviourKey]: new ItemBehaviour(),
       state: { box: boxWithSize({ x: 1, y: 0, z: 0 }, unitCube) },
     };
 
@@ -265,10 +287,12 @@ describe.each(cameraAngles)("viewed at camera ($x,$y)", (cameraAngle: Xy) => {
   test("zComparator order preference for slightly-visually-overlapping diagonally left/right in x,y (x-overlap)", () => {
     const right: DrawOrderComparable = {
       id: "b",
+      [itemBehaviourKey]: new ItemBehaviour(),
       state: { box: boxWithSize({ x: 0, y: 1, z: 0 }, unitCube) },
     };
     const left: DrawOrderComparable = {
       id: "f",
+      [itemBehaviourKey]: new ItemBehaviour(),
       state: { box: boxWithSize({ x: 0.9, y: 0, z: 0 }, unitCube) },
     };
 
@@ -279,10 +303,12 @@ describe.each(cameraAngles)("viewed at camera ($x,$y)", (cameraAngle: Xy) => {
   test("zComparator order preference for slightly-visually-overlapping diagonally left/right in x,y (y-overlap)", () => {
     const right: DrawOrderComparable = {
       id: "b",
+      [itemBehaviourKey]: new ItemBehaviour(),
       state: { box: boxWithSize({ x: 0, y: 0.9, z: 0 }, unitCube) },
     };
     const left: DrawOrderComparable = {
       id: "f",
+      [itemBehaviourKey]: new ItemBehaviour(),
       state: { box: boxWithSize({ x: 1, y: 0, z: 0 }, unitCube) },
     };
 
@@ -295,10 +321,12 @@ describe.each(cameraAngles)("viewed at camera ($x,$y)", (cameraAngle: Xy) => {
 
     const wall: DrawOrderComparable = {
       id: "wall",
+      [itemBehaviourKey]: new ItemBehaviour(),
       state: { box: boxWithSize({ x: 1, y: 0, z: 1.1 }, unitCube) },
     };
     const floor: DrawOrderComparable = {
       id: "floor",
+      [itemBehaviourKey]: new ItemBehaviour(),
       state: { box: boxWithSize({ x: 0, y: 0, z: 0 }, unitCube) },
     };
 
@@ -315,10 +343,12 @@ describe.each(cameraAngles)("viewed at camera ($x,$y)", (cameraAngle: Xy) => {
 
     const backTop: DrawOrderComparable = {
       id: "b",
+      [itemBehaviourKey]: new ItemBehaviour(),
       state: { box: boxWithSize({ x: 0.9, y: 0, z: 1 }, unitCube) },
     };
     const frontLow: DrawOrderComparable = {
       id: "f",
+      [itemBehaviourKey]: new ItemBehaviour(),
       state: { box: boxWithSize({ x: 0, y: 0, z: 0 }, unitCube) },
     };
 
@@ -332,10 +362,12 @@ describe.each(cameraAngles)("viewed at camera ($x,$y)", (cameraAngle: Xy) => {
 
       const backTop: DrawOrderComparable = {
         id: "b",
+        [itemBehaviourKey]: new ItemBehaviour(),
         state: { box: boxWithSize({ x: 1, y: 0, z: 0.9 }, unitCube) },
       };
       const frontLow: DrawOrderComparable = {
         id: "f",
+        [itemBehaviourKey]: new ItemBehaviour(),
         state: { box: boxWithSize({ x: 0, y: 0, z: 0 }, unitCube) },
       };
 
@@ -348,10 +380,12 @@ describe.each(cameraAngles)("viewed at camera ($x,$y)", (cameraAngle: Xy) => {
 
       const wall: DrawOrderComparable = {
         id: "wall",
+        [itemBehaviourKey]: new ItemBehaviour(),
         state: { box: boxWithSize({ x: 0, y: 1, z: 1 }, unitCube) },
       };
       const floor: DrawOrderComparable = {
         id: "floor",
+        [itemBehaviourKey]: new ItemBehaviour(),
         state: { box: boxWithSize({ x: 0, y: 0, z: 0 }, unitCube) },
       };
 
@@ -362,12 +396,14 @@ describe.each(cameraAngles)("viewed at camera ($x,$y)", (cameraAngle: Xy) => {
       // wall is in the middle of the floor, but its run along the floor's length is zero-length:
       const wall: DrawOrderComparable = {
         id: "wall",
+        [itemBehaviourKey]: new ItemBehaviour(),
         state: {
           box: boxWithSize({ x: 0.5, y: 1, z: 1 }, { x: 0, y: 1, z: 1 }),
         },
       };
       const floor: DrawOrderComparable = {
         id: "floor",
+        [itemBehaviourKey]: new ItemBehaviour(),
         state: { box: boxWithSize({ x: 0, y: 0, z: 0 }, unitCube) },
       };
 
@@ -385,10 +421,12 @@ describe.each(cameraAngles)("viewed at camera ($x,$y)", (cameraAngle: Xy) => {
 
     const leftTop: DrawOrderComparable = {
       id: "b",
+      [itemBehaviourKey]: new ItemBehaviour(),
       state: { box: boxWithSize({ x: 0, y: 0.9, z: 1 }, unitCube) },
     };
     const rightLow: DrawOrderComparable = {
       id: "f",
+      [itemBehaviourKey]: new ItemBehaviour(),
       state: { box: boxWithSize({ x: 0, y: 0, z: 0 }, unitCube) },
     };
 
@@ -402,10 +440,12 @@ describe.each(cameraAngles)("viewed at camera ($x,$y)", (cameraAngle: Xy) => {
 
       const leftTop: DrawOrderComparable = {
         id: "b",
+        [itemBehaviourKey]: new ItemBehaviour(),
         state: { box: boxWithSize({ x: 0, y: 1, z: 0.9 }, unitCube) },
       };
       const rightLow: DrawOrderComparable = {
         id: "f",
+        [itemBehaviourKey]: new ItemBehaviour(),
         state: { box: boxWithSize({ x: 0, y: 0, z: 0 }, unitCube) },
       };
 
@@ -418,10 +458,12 @@ describe.each(cameraAngles)("viewed at camera ($x,$y)", (cameraAngle: Xy) => {
 
       const wall: DrawOrderComparable = {
         id: "wall",
+        [itemBehaviourKey]: new ItemBehaviour(),
         state: { box: boxWithSize({ x: 1, y: 0, z: 1 }, unitCube) },
       };
       const floor: DrawOrderComparable = {
         id: "floor",
+        [itemBehaviourKey]: new ItemBehaviour(),
         state: { box: boxWithSize({ x: 0, y: 0, z: 0 }, unitCube) },
       };
 
@@ -432,12 +474,14 @@ describe.each(cameraAngles)("viewed at camera ($x,$y)", (cameraAngle: Xy) => {
       // wall is in the middle of the floor, but its run along the floor's length is zero-length:
       const wall: DrawOrderComparable = {
         id: "wall",
+        [itemBehaviourKey]: new ItemBehaviour(),
         state: {
           box: boxWithSize({ x: 1, y: 0.5, z: 1 }, { x: 1, y: 0, z: 1 }),
         },
       };
       const floor: DrawOrderComparable = {
         id: "floor",
+        [itemBehaviourKey]: new ItemBehaviour(),
         state: { box: boxWithSize({ x: 0, y: 0, z: 0 }, unitCube) },
       };
 
@@ -473,12 +517,14 @@ describe.each(cameraAngles)("viewed at camera ($x,$y)", (cameraAngle: Xy) => {
     test("character at far wall", () => {
       const awayWall: DrawOrderComparable = {
         id: "away-wall",
+        [itemBehaviourKey]: new ItemBehaviour(),
         state: {
           box: boxWithSize({ x: 0, y: 8, z: 0 }, awayOrTowardsWallBoxInfo.size),
         },
       };
       const head: TestComparable = {
         id: "head",
+        [itemBehaviourKey]: new ItemBehaviour(),
         state: { box: boxWithSize({ x: 4, y: 7, z: 0 }, headBoxInfo.size) },
         renderBox: headBoxInfo.renderBox,
       };
@@ -490,6 +536,7 @@ describe.each(cameraAngles)("viewed at camera ($x,$y)", (cameraAngle: Xy) => {
     test("character at near wall", () => {
       const nearWall: DrawOrderComparable = {
         id: "near-wall",
+        [itemBehaviourKey]: new ItemBehaviour(),
         state: {
           box: boxWithSize(
             { x: 0, y: -1, z: 0 },
@@ -499,6 +546,7 @@ describe.each(cameraAngles)("viewed at camera ($x,$y)", (cameraAngle: Xy) => {
       };
       const head: TestComparable = {
         id: "head",
+        [itemBehaviourKey]: new ItemBehaviour(),
         state: { box: boxWithSize({ x: 4, y: 0, z: 0 }, headBoxInfo.size) },
         renderBox: headBoxInfo.renderBox,
       };
@@ -510,12 +558,14 @@ describe.each(cameraAngles)("viewed at camera ($x,$y)", (cameraAngle: Xy) => {
     test("character at right wall", () => {
       const rightWall: DrawOrderComparable = {
         id: "right-wall",
+        [itemBehaviourKey]: new ItemBehaviour(),
         state: {
           box: boxWithSize({ x: 8, y: 0, z: 0 }, leftOrRightWallBoxInfo.size),
         },
       };
       const head: TestComparable = {
         id: "head",
+        [itemBehaviourKey]: new ItemBehaviour(),
         state: { box: boxWithSize({ x: 7, y: 4, z: 0 }, headBoxInfo.size) },
         renderBox: headBoxInfo.renderBox,
       };
@@ -527,12 +577,14 @@ describe.each(cameraAngles)("viewed at camera ($x,$y)", (cameraAngle: Xy) => {
     test("character at left wall", () => {
       const leftWall: DrawOrderComparable = {
         id: "left-wall",
+        [itemBehaviourKey]: new ItemBehaviour(),
         state: {
           box: boxWithSize({ x: -1, y: 0, z: 0 }, leftOrRightWallBoxInfo.size),
         },
       };
       const head: TestComparable = {
         id: "head",
+        [itemBehaviourKey]: new ItemBehaviour(),
         state: { box: boxWithSize({ x: 0, y: 4, z: 0 }, headBoxInfo.size) },
         renderBox: headBoxInfo.renderBox,
       };
@@ -544,10 +596,12 @@ describe.each(cameraAngles)("viewed at camera ($x,$y)", (cameraAngle: Xy) => {
     test("character standing on floor", () => {
       const floor: DrawOrderComparable = {
         id: "floor",
+        [itemBehaviourKey]: new ItemBehaviour(),
         state: { box: boxWithSize({ x: 0, y: 0, z: -1 }, floorBoxInfo.size) },
       };
       const head: TestComparable = {
         id: "head",
+        [itemBehaviourKey]: new ItemBehaviour(),
         state: { box: boxWithSize({ x: 4, y: 4, z: 0 }, headBoxInfo.size) },
         renderBox: headBoxInfo.renderBox,
       };
@@ -560,6 +614,7 @@ describe.each(cameraAngles)("viewed at camera ($x,$y)", (cameraAngle: Xy) => {
   describe("original campaign comparisons", () => {
     test("#bookworld1 adjacency anti-flicker", () => {
       const wall: TestComparable = {
+        [itemBehaviourKey]: new ItemBehaviour(),
         id: "wall@0,8,0",
         renderBox: {
           renderAabb: { x: 128, y: 0, z: 50 },
@@ -571,6 +626,7 @@ describe.each(cameraAngles)("viewed at camera ($x,$y)", (cameraAngle: Xy) => {
       };
       const block: DrawOrderComparable = {
         id: "extraLanding",
+        [itemBehaviourKey]: new ItemBehaviour(),
         state: {
           box: boxWithSize({ x: 0, y: 64, z: 0 }, { x: 16, y: 16, z: 48 }),
         },
@@ -582,6 +638,7 @@ describe.each(cameraAngles)("viewed at camera ($x,$y)", (cameraAngle: Xy) => {
 
     test("#bookworld7 door in front of floor", () => {
       const doorFrame: TestComparable = {
+        [itemBehaviourKey]: new ItemBehaviour(),
         id: "door@1,0,4/frameNear",
         renderBox: {
           renderAabb: { x: 9, y: 8, z: 48 },
@@ -592,6 +649,7 @@ describe.each(cameraAngles)("viewed at camera ($x,$y)", (cameraAngle: Xy) => {
         },
       };
       const floor: TestComparable = {
+        [itemBehaviourKey]: new ItemBehaviour(),
         id: "floor@0,0,0",
         renderBox: {
           renderAabb: { x: 64, y: 144.32, z: 10 },
@@ -612,11 +670,13 @@ describe.each(cameraAngles)("viewed at camera ($x,$y)", (cameraAngle: Xy) => {
     test("#safari17fish bubbles after hush puppy vanish in front of tower", () => {
       const bubbles: TestComparable = {
         id: "bubbles",
+        [itemBehaviourKey]: new ItemBehaviour(),
         state: {
           box: boxWithSize({ x: 2, y: 66, z: 24 }, { x: 12, y: 12, z: 12 }),
         },
       };
       const tower: TestComparable = {
+        [itemBehaviourKey]: new ItemBehaviour(),
         id: "b2",
         renderBox: {
           renderAabb: { x: 30, y: 14, z: 36 },
@@ -633,6 +693,7 @@ describe.each(cameraAngles)("viewed at camera ($x,$y)", (cameraAngle: Xy) => {
 
     test("#penitentiary28 towards-side door legs in front of left-side wall", () => {
       const doorLegs: TestComparable = {
+        [itemBehaviourKey]: new ItemBehaviour(),
         id: "doorLegs",
         renderBox: {
           renderAabb: { x: 32, y: 8, z: 6 },
@@ -643,6 +704,7 @@ describe.each(cameraAngles)("viewed at camera ($x,$y)", (cameraAngle: Xy) => {
         },
       };
       const wall: TestComparable = {
+        [itemBehaviourKey]: new ItemBehaviour(),
         id: "wall",
         renderBox: {
           renderAabb: { x: 0, y: 48, z: 50 },

@@ -27,7 +27,7 @@ My name is Jim Higson and my tag on github is jimhigson
  xyz AABB). Items typically items render using their physical box for deciding z-order,
  but there can be separate renderBoxes as a renderer concern that over-rides the physical box, as a render concern these are owned by the RoomRenderer. Render boxes are quarter-angle sensitive.
  * The room renderer OWNS the boxes: it derives once per (item, angle) into its `renderBoxes` map (`Map<item, RenderBox | undefined>`) and reconciles membership each tick. An item held with an `undefined` value is deliberately boxless - it draws true to its physical aabb - while an item absent from the map is not in the render world at all. Both read back as `undefined`, so consumers MUST distinguish them with `has`, never by the value alone. Everything else consumes that map - it is passed as data on the item render context, into the sort machinery as call arguments, and exposed read-only for editor pointer picking. Nothing else calls the derive at time of use.
- * Wall-hidden-ness, apparent near/far edges, door-post apparent widths, shadow X/Y flips etc are all functions of `cameraAngle` evaluated at render time (e.g. `isWallDirectionHiddenAtAngle`, `effectiveFixedZIndex`, `isDoorPartInHiddenWall`). Door frame parts carry a world-fixed `onFloorEdge` (not an angle-stamped `inHiddenWall`).
+ * Wall-hidden-ness, apparent near/far edges, door-post apparent widths, shadow X/Y flips etc are all functions of `cameraAngle` evaluated at render time (e.g. `isWallDirectionHiddenAtAngle`, `isDoorPartInHiddenWall`, and item behaviours' angle-aware methods such as `fixedZIndexAtAngle`). Door frame parts carry a world-fixed `onFloorEdge` (not an angle-stamped `inHiddenWall`).
  * Floors: physically expand a clean **0.5 block** (integer px, on-grid at every angle) through each doorway so players can't fall out of the world under a door; the expanded sides are recorded in the floor config's `doorExpandedSides`. The apparently-far ("back") expanded edges are *drawn* a cosmetic **0.02 block** larger (`floorBackEdgeOverhangBlocks` in `makeItemRenderBoxAtCameraAngle`, applied in `floorAppearance`) so the floor meets the back wall pixel-perfectly like the original game - render-only, never in the physical aabb. Do NOT bake fractional expansion into the physical aabb: it slides the whole floor off the pixel grid.
  * z-ordering is completely rebuilt from room geometry every render tick (no cross-frame incremental edge state, no moved-tracking in the sort path): each spatial item's render box is projected
    at the continuous render angle θ, a sweep-and-prune broad phase (`DrawOrderBroadPhase`, persistent typed-array buffers) yields the overlapping candidate pairs, and a fine comparator
@@ -112,6 +112,24 @@ The app runs on Preact 11 (beta) and uses Preact's own JSX types and imports thr
 * To augment Preact's JSX types (e.g. custom CSS vars), use `declare module "preact" { namespace JSX { interface CSSProperties { … } } }` (see `SpriteTile.tsx`)
 
 ## Game engine
+### Item behaviours (Type Object pattern)
+What each type of item does is given by its behaviour - a stateless [Type Object](https://gameprogrammingpatterns.com/type-object.html) (`src/game/itemBehaviours/`):
+* behaviours never hold state: it all stays on the items, which are passed to every method (like a Flyweight's extrinsic state), so behaviours are never part of the game state or saves
+* every `ItemInPlay` holds its behaviour under the `itemBehaviourKey` symbol, required by the type - use it directly (`item[itemBehaviourKey].isNonSolid(item)`), never look a behaviour up by type at time of use
+* creation sites write the behaviour into the new item's literal, from `getBehaviourForItemTypeAndConfig(type, config)` (`attachBehaviourToItem.ts`), so items have their final shape from the start
+* `attachBehaviourToItem.ts` imports no behaviours: `itemBehaviourCache.ts` builds them all (single-behaviour types up front; monsters and moving platforms composed on first use) and registers its lookup there. Only the entry points (`gameMain.ts`, the editor's `main.tsx`) and the vitest setup import `itemBehaviourCache.ts`, for its side effect, which keeps `check:circDep` free of cycles
+* symbols don't serialise, so saved games have no behaviours: `loadGameState` re-attaches them with `attachBehaviourToItem` to every room item and Heels' carried item. Code that works on a saved copy (eg `createSavedGame`) must not use behaviours
+* behaviours form a class hierarchy (eg `ItemBehaviour` → `FreeItemBehaviour` → `LocomotiveBehaviour` → `MonsterBehaviour` → `CybermanBehaviour`); subclasses narrow item params with the generated `ItemTypeUnion` types. Types that behave the same share one instance
+* capabilities are behaviour fields and methods - `isNonSolid`, `isStandable`, `isDeadly`, `isPushableBy`, `isTeleporter`, `isHeavy`... - not functions branching on item type
+* per-type constants (capability flags, shadow texture...) are passed to the `ItemBehaviour` constructor as `ItemBehaviourOptions`; override a method only when its answer depends on the item. Types differing only in such constants share a class, as separate or shared instances (eg the monsters in `itemBehaviourCache.ts`)
+* what an item's state (or config) has is not a behaviour: free, portable, sliding and in-room modifier items are told apart by duck-typed guards - `isFreeItem`, `isPortableItem`, `isSlidingItem`, `isInRoomModifierItem` - beside their `Extract`ed types in `src/model/ItemInPlayNarrowedUnions.ts`. Which items get that state is decided once, in the per-type state builders (`itemDefaultStates.ts`)
+* to narrow to a type, compare inline (`item.type === "monster"`) - the type is the union's discriminant, so this narrows as well as a guard function would
+* ticking: `tickItem` asks the behaviour for its `mechanicResults`, pushed onto a reused array (all gathered before any apply), and its standing-on and after-mechanics hooks
+* touching: `moveItem` calls only the mover's `onTouch(item, e, isMover)`; the base passes the touch on to the touched item, and an override chooses the order by when it calls `super`
+* monsters and moving platforms compose their behaviour from mixins chosen by config: a locomotion mixin (`locomotionMixins.ts`, by `config.movement`) and an activation mixin (`activationMixinFor.ts`, by `config.activated`)
+* rendering stays with the render code (`createItemRenderer`, `appearanceForItem`, `createSoundRenderer`), keyed by item type; behaviours supply only per-type render data (shadow cast texture, casting while stood on, fixed z-index, shadow offset, near-corner exemption, cuboid warp...) - angle-aware where the camera matters - never stored on items
+* a new item type needs a behaviour in `itemBehaviourCache.ts` (its type requires one per item type) and, if it comes from json, a state builder in `itemDefaultStates.ts`
+
 ### Iterating room items
 When iterating over `RoomStateItems` (the `room.items` object), use the typed helpers from `src/model/RoomState.ts` instead of `objectValues()` directly:
 - `roomItemsIterable(roomItems)` - returns a raw `IterableIterator` with correct item types, for `for...of` loops or passing to constructors like `new Map()`
@@ -336,6 +354,23 @@ The following are banned as wastes of output tokens:
 * bullet points more than 6 points long - just say "and more if important" or better yet noting if not important, I probably stopped reading by now anyway
 * writing long-winded justifications for bad work, just say "it's junk" and move on
 * "on its final lap" - there are no laps in writing software, just say "nearly done" or something else not so lame
+* boolean params where possible should be named after the opposite of their default, and default to false, if this is not possible, not having a default may be preferable
+
+* when using Sets, use `Map.prototype.getOrInsertComputed` and other similar modern methods where appropriate rather than hand-coded branching
+
+### Typescript typing
+* use the full version of types as parameters, even if the function only uses a few properties, unless there's a good design-led reason to do a Pick instead.
+
+```ts
+//  Eg, write this:
+const someFunc = (obj: ComplexObject) => {}
+```
+```ts
+// Avoid this unless a good reason to do so:
+const someFunc = (obj: Pick<ComplexObject, 'properties' | 'we' | 'use') => {}
+```
+
+* Do NOT make run-time code edits merely to keep typescript from erroring, in ways that do not actually enhance the type safety of the program. The type system forcing us to write less efficient code is an issue, it is a very clear sign that we got the typings wrong; discuss with the user in this case.
 
 ### Comments 
  * do not add comments that only explain things that are obvious from the line they are documenting. For example, do not do this - these comments are redundant - I would rather no docs than this useless docs:
@@ -349,8 +384,9 @@ The following are banned as wastes of output tokens:
    */
   set blockSize(value: number) {
 ```
- * no single comment of more than 15 words is allowed. This is a sign that too much is being
- documented in one place.
+ * keep comments short - aim for 15 words or fewer. Longer is usually a sign that too much is being
+ documented in one place. This is a guideline, not a hard rule: go longer where cutting would lose
+ explanatory power.
  * comment on the single line that it applies to, placed precisely: eg: DO THIS:
 ```ts
 // heaviness depends on material

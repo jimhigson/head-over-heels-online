@@ -1,8 +1,7 @@
-import { type ItemInPlay } from "../../../model/ItemInPlay";
+import { type FreeItem } from "../../../model/ItemInPlayNarrowedUnions";
 import { type RoomState } from "../../../model/RoomState";
 import { scaleXyz, type Xyz } from "../../../utils/vectors/vectors";
 import { type GameState } from "../../gameState/GameState";
-import { type FreeItemTypes } from "../itemPredicates";
 
 export type ApplicableLatentMovement<RoomItemId extends string> = {
   posDelta: Xyz;
@@ -22,7 +21,7 @@ export function* latentMovement<
   RoomId extends string,
   RoomItemId extends string,
 >(
-  item: ItemInPlay<FreeItemTypes, RoomId, RoomItemId>,
+  item: FreeItem<RoomId, RoomItemId>,
   { roomTime }: RoomState<RoomId, RoomItemId>,
   _gameState: GameState<RoomId>,
   /** how much time, in ms has passed since the last tick */

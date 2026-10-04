@@ -12,11 +12,8 @@ import {
   type ItemTickContext,
 } from "../../game/render/ItemRenderContexts";
 import { TextContainer } from "../../game/render/text/TextContainer";
-import {
-  type ItemInPlay,
-  type ItemInPlayType,
-  type UnionOfAllItemInPlayTypes,
-} from "../../model/ItemInPlay";
+import { type ItemInPlay, type ItemInPlayType } from "../../model/ItemInPlay";
+import { type UnionOfAllItemInPlayTypes } from "../../model/ItemInPlayNarrowedUnions";
 import { exitGameRoomId } from "../../model/json/ItemConfigMap";
 import { type SwitchItemModificationUnion } from "../../model/json/SwitchConfig";
 import { type JsonMovement } from "../../model/json/utilityJsonConfigTypes";

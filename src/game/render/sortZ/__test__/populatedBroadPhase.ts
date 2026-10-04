@@ -6,12 +6,15 @@ import {
   type RenderBoxes,
 } from "../../renderBox/makeItemRenderBoxAtCameraAngle";
 import { DrawOrderBroadPhase } from "../DrawOrderBroadPhase";
+import { type DrawOrderComparable } from "../DrawOrderComparable";
 
 /**
  * a DrawOrderBroadPhase pre-populated with items - test convenience for the
  * construct-then-update dance the room renderer does in-game
  */
-export const populatedBroadPhase = <Item extends RenderBoxableItem & Indexable>(
+export const populatedBroadPhase = <
+  Item extends RenderBoxableItem & Indexable & DrawOrderComparable,
+>(
   items: ReadonlySet<Item>,
   renderBoxes: RenderBoxes<Item> = new Map(),
   quarterAngle: Xy = cameraAngleBase,

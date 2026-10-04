@@ -1,4 +1,4 @@
-import { type UnionOfAllItemInPlayTypes } from "../../../model/ItemInPlay";
+import { type UnionOfAllItemInPlayTypes } from "../../../model/ItemInPlayNarrowedUnions";
 import { type Xy, type Xyz } from "../../../utils/vectors/vectors";
 import { type Indexable } from "../../physics/gridSpace/SpatialIndex";
 import {
@@ -6,6 +6,7 @@ import {
   type RenderBoxableItem,
   type RenderBoxes,
 } from "../renderBox/makeItemRenderBoxAtCameraAngle";
+import { type DrawOrderComparable } from "./DrawOrderComparable";
 import { participatesInDrawOrder } from "./fixedZIndexes";
 import { projectAabbAxes, type ProjectionOnAxes } from "./projectAabbCorners";
 
@@ -60,7 +61,8 @@ const zMaxSlot = 5;
  * angle - there is no moved-tracking in the projection path.
  */
 export class DrawOrderBroadPhase<
-  Item extends RenderBoxableItem & Indexable = UnionOfAllItemInPlayTypes,
+  Item extends RenderBoxableItem & Indexable & DrawOrderComparable =
+    UnionOfAllItemInPlayTypes,
 > {
   /**
    * the quarter angle governing draw-order participation (hidden walls,

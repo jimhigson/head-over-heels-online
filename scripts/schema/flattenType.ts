@@ -5,11 +5,16 @@ import * as path from "path";
 import { type JSDoc, Project, type Type, type TypeChecker } from "ts-morph";
 import { fileURLToPath } from "url";
 
-import { freeItemTypes } from "../../src/game/physics/itemPredicates.js";
 import { normalizeTypeOutput } from "./normalizeTypeOutput.js";
 
 const __filename = fileURLToPath(import.meta.url);
 const __dirname = path.dirname(__filename);
+
+// declares the FreeItemTypes union
+const itemInPlayNarrowedUnionsPath = path.resolve(
+  __dirname,
+  "../../src/model/ItemInPlayNarrowedUnions.ts",
+);
 
 export class TypeFlattener {
   #processedTypes = new Set<string>();
@@ -1101,10 +1106,22 @@ export class TypeFlattener {
     return `{\n${propertyDefinitions.join("\n")}\n}`;
   }
 
+  // the members of the FreeItemTypes union, sorted for a stable output order
+  #freeItemTypes(): string[] {
+    return this.#getProject()
+      .getSourceFileOrThrow(itemInPlayNarrowedUnionsPath)
+      .getTypeAliasOrThrow("FreeItemTypes")
+      .getType()
+      .getUnionTypes()
+      .map((freeItemType) => freeItemType.getLiteralValueOrThrow())
+      .filter((literalValue) => typeof literalValue === "string")
+      .sort();
+  }
+
   // Special method to build the EmittableItemRecipe union for emitter.emits
   #buildEmittableItemUnion(_depth: number): string {
     // Get the list of emittable item types (FreeItemTypes | "firedDoughnut")
-    const emittableItemTypes = [...freeItemTypes, "firedDoughnut"] as const;
+    const emittableItemTypes = [...this.#freeItemTypes(), "firedDoughnut"];
 
     // Build the union of emittable items (without position)
     const unionParts: string[] = [];

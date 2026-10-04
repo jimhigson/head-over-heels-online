@@ -1,9 +1,9 @@
+import { type PlayableItem } from "../../model/ItemInPlayNarrowedUnions";
 import { characterNames } from "../../model/modelTypes";
 import { selectGameSpeed } from "../../store/slices/gameMenus/gameMenusSelectors";
 import { type GameRootState } from "../../store/store";
 import { type GameState } from "../gameState/GameState";
 import { selectCurrentRoomState } from "../gameState/gameStateSelectors/selectCurrentRoomState";
-import { type PlayableItem } from "../physics/itemPredicates";
 import { fadeInOrOutDuration } from "../render/animationTimings";
 
 const deathAnimationFreezeThreshold = 0.1;

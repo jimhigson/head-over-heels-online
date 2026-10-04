@@ -1,6 +1,9 @@
-import { type UnionOfAllItemInPlayTypes } from "../../model/ItemInPlay";
+import {
+  type FreeItem,
+  isFreeItem,
+  type UnionOfAllItemInPlayTypes,
+} from "../../model/ItemInPlayNarrowedUnions";
 import { type RoomState } from "../../model/RoomState";
-import { type FreeItem, isFreeItem } from "./itemPredicates";
 
 export const recordActedOnBy = <
   RoomId extends string,

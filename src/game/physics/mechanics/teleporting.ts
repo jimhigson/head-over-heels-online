@@ -1,34 +1,17 @@
-import { type ItemTypeUnion } from "../../../_generated/types/ItemInPlayUnion";
-import { type ItemInPlay } from "../../../model/ItemInPlay";
+import { itemBehaviourKey, type ItemInPlay } from "../../../model/ItemInPlay";
+import { type PlayableItem } from "../../../model/ItemInPlayNarrowedUnions";
 import { type CharacterName } from "../../../model/modelTypes";
 import { type RoomState } from "../../../model/RoomState";
-import { store } from "../../../store/store";
-import { getAtPath } from "../../../utils/getAtPath";
 import { type GameState } from "../../gameState/GameState";
 import { changeCharacterRoom } from "../../gameState/mutators/changeCharacterRoom";
 import { type PressStatus } from "../../input/InputStateTracker";
 import { fadeInOrOutDuration } from "../../render/animationTimings";
-import { isTeleporter, type PlayableItem } from "../itemPredicates";
 import {
   type Mechanic,
   type MechanicResult,
   unitMechanicalResult,
 } from "../MechanicResult";
-
-export const teleporterIsActive = <
-  RoomId extends string,
-  RoomItemId extends string,
->({
-  config: { activatedOnStoreValue },
-}: ItemTypeUnion<
-  "portableTeleporter" | "teleporter",
-  RoomId,
-  RoomItemId
->): boolean => {
-  return activatedOnStoreValue === undefined ? true : (
-      !!getAtPath(store.getState().gameInPlay.gameInPlay, activatedOnStoreValue)
-    );
-};
+import { teleporterIsActive } from "./teleporterIsActive";
 
 export const teleporting: Mechanic<CharacterName> = <
   RoomId extends string,
@@ -59,7 +42,7 @@ export const teleporting: Mechanic<CharacterName> = <
 
   const standingOnActivatedTeleporter =
     standingOn !== null &&
-    isTeleporter(standingOn) &&
+    standingOn[itemBehaviourKey].isTeleporter(standingOn) &&
     teleporterIsActive(standingOn);
 
   if (teleporting === null) {

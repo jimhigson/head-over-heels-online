@@ -58,8 +58,8 @@ type Test2 = Check2<GeneratedTypeUnion>;
 
 export type ItemTypeUnion<
   T extends ItemInPlayType,
-  RoomId extends string,
-  RoomItemId extends string,
+  RoomId extends string = string,
+  RoomItemId extends string = string,
   ScN extends SceneryName = SceneryName,
 > =
   | (T extends "ball" ? ItemInPlay<"ball", RoomId, RoomItemId, RoomItemId, ScN>

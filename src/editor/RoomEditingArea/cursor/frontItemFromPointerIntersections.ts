@@ -1,17 +1,19 @@
-import { type SetRequired } from "type-fest";
-
 import { type RenderBoxes } from "../../../game/render/renderBox/makeItemRenderBoxAtCameraAngle";
 import { DrawOrderBroadPhase } from "../../../game/render/sortZ/DrawOrderBroadPhase";
 import { updateZEdges } from "../../../game/render/sortZ/updateZEdges";
+import { itemBehaviourKey } from "../../../model/ItemInPlay";
 import { Graph } from "../../../utils/graph/Graph";
 import { type Xy } from "../../../utils/vectors/vectors";
 import { type EditorUnionOfAllItemInPlayTypes } from "../../editorTypes";
 import { type PointerItemIntersection } from "./pointIntersectsItemAABB";
 
+type FixedZIndexItem = EditorUnionOfAllItemInPlayTypes & {
+  readonly [itemBehaviourKey]: { readonly fixedZIndex: number };
+};
+
 const isFixedZIndexItem = (
   i: EditorUnionOfAllItemInPlayTypes,
-): i is SetRequired<EditorUnionOfAllItemInPlayTypes, "fixedZIndex"> =>
-  i.fixedZIndex !== undefined;
+): i is FixedZIndexItem => i[itemBehaviourKey].fixedZIndex !== undefined;
 
 const intersectionPrecedence = [
   // rendered are highest:
@@ -47,7 +49,12 @@ export const frontItemFromPointerIntersections = (
     // the highest from them:
     // this is how doors can get put on invisible walls, because they have fixed z-indexes
     // (but they prefer visible walls)
-    return items.toSorted((ia, ib) => ib.fixedZIndex - ia.fixedZIndex).at(0);
+    return items
+      .toSorted(
+        (ia, ib) =>
+          ib[itemBehaviourKey].fixedZIndex - ia[itemBehaviourKey].fixedZIndex,
+      )
+      .at(0);
   }
 
   const topographicallySortableItems = items.filter(

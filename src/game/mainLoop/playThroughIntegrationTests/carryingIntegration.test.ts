@@ -6,9 +6,11 @@ vi.mock("../../sprites/samplePalette", () => ({
 import { type DistributedOmit } from "type-fest";
 
 import {
+  basicCampaign,
   firstRoomId,
   secondRoomId,
   setUpBasicGame,
+  setupGameForCampaign,
   type TestRoomId,
 } from "../../../_testUtils/basicRoom";
 import {
@@ -18,9 +20,13 @@ import {
   itemState,
 } from "../../../_testUtils/characterState";
 import { resetStore } from "../../../_testUtils/initStoreForTests";
+import { type GameStateWithMockInput } from "../../../_testUtils/MockInputStateTracker";
 import { playGameThrough } from "../../../_testUtils/playGameThrough";
 import { type JsonItemUnion } from "../../../model/json/JsonItem";
+import { store } from "../../../store/store";
 import { selectCurrentRoomState } from "../../gameState/gameStateSelectors/selectCurrentRoomState";
+import { loadGameState } from "../../gameState/loadGameState";
+import { createSavedGame } from "../../gameState/saving/createSavedGame";
 import { blockSizePx } from "../../physics/mechanicsConstants";
 
 beforeEach(() => {
@@ -199,6 +205,82 @@ test.for<{
     expect(heelsState(gameState).abilityFailedToUseAtGameTime).toBeUndefined();
   },
 );
+
+test("heels can put down an item she was carrying when the game was saved", () => {
+  const campaign = basicCampaign({
+    firstRoomItems: {
+      heels: {
+        type: "player",
+        position: { x: 5, y: 5, z: 3 },
+        config: {
+          which: "heels",
+        },
+      },
+      bag: {
+        type: "pickup",
+        position: { x: 5, y: 5, z: 2 },
+        config: {
+          gives: "bag",
+        },
+      },
+      testItem: {
+        type: "portableBlock",
+        position: { x: 5, y: 5, z: 0 },
+        config: {
+          style: "cube",
+        },
+      },
+    },
+  });
+  const gameState = setupGameForCampaign(campaign);
+
+  playGameThrough(gameState, {
+    frameCallbacks(gameState) {
+      const hs = heelsState(gameState);
+
+      if (hs.standingOnItemId === "testItem" && hs.carrying === null) {
+        gameState.inputStateTracker.mockPressing("carry");
+      }
+    },
+    until() {
+      return heelsState(gameState).carrying?.id === "testItem";
+    },
+  });
+
+  playGameThrough(gameState, {
+    setupInitialInput(mockInputStateTracker) {
+      mockInputStateTracker.mockNotPressing("carry");
+    },
+    until() {
+      return heelsState(gameState).standingOnItemId === "floor";
+    },
+  });
+
+  const loadedGameState = loadGameState({
+    campaign,
+    inputStateTracker: gameState.inputStateTracker,
+    savedGame: createSavedGame(gameState, store.getState()),
+  }) as GameStateWithMockInput;
+
+  playGameThrough(loadedGameState, {
+    setupInitialInput(mockInputStateTracker) {
+      mockInputStateTracker.mockPressing("carry");
+    },
+    until() {
+      return heelsState(loadedGameState).carrying === null;
+    },
+  });
+  // the put-down item is now in the room - tick it for a while:
+  playGameThrough(loadedGameState, {
+    setupInitialInput(mockInputStateTracker) {
+      mockInputStateTracker.mockNotPressing("carry");
+    },
+  });
+
+  expect(itemState(loadedGameState, "testItem").stoodOnBy).toEqual({
+    heels: true,
+  });
+});
 
 // seems obscure, but caused issues putting down while pushing for heels in
 // #blacktooth27fish that would store inconsistent state and have a knock-on

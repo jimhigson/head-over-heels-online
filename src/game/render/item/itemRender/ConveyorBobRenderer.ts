@@ -1,9 +1,9 @@
 import { Container } from "pixi.js";
 
 import { type ItemInPlayType } from "../../../../model/ItemInPlay";
+import { isFreeItem } from "../../../../model/ItemInPlayNarrowedUnions";
 import { roomItemsIterable } from "../../../../model/RoomState";
 import { renderBobBounce } from "../../../../utils/maths/renderBob";
-import { isConveyor, isFreeItem } from "../../../physics/itemPredicates";
 import {
   type ItemRenderContext,
   type ItemTickContext,
@@ -43,7 +43,7 @@ class ConveyorBobRenderer<
       const standingOn = room.items[standingOnItemId];
       if (
         standingOn !== undefined &&
-        isConveyor(standingOn) &&
+        standingOn.type === "conveyor" &&
         !standingOn.state.disabled
       ) {
         const speedMultiplier = standingOn.config.speed ?? 1;
@@ -75,7 +75,7 @@ export const conveyorBobDecorateItemRenderer: DecorateItemRenderer = (
   childRenderer,
 ) => {
   const roomHasConveyor = roomItemsIterable(itemRenderContext.room.items).some(
-    isConveyor,
+    (roomItem) => roomItem.type === "conveyor",
   );
 
   return roomHasConveyor && isFreeItem(itemRenderContext.item) ?

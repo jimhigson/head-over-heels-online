@@ -1,19 +1,12 @@
-import { type ItemTypeUnion } from "../../../_generated/types/ItemInPlayUnion";
 import {
-  type ItemInPlayType,
+  isPlayableItem,
+  type PlayableItem,
   type UnionOfAllItemInPlayTypes,
-} from "../../../model/ItemInPlay";
+} from "../../../model/ItemInPlayNarrowedUnions";
 import { type CharacterName } from "../../../model/modelTypes";
 import { type RoomState } from "../../../model/RoomState";
 import { type Xyz } from "../../../utils/vectors/vectors";
 import { type GameState } from "../../gameState/GameState";
-import {
-  type DeadlyItemType,
-  isDeadly,
-  isItemType,
-  isPlayableItem,
-  type PlayableItem,
-} from "../itemPredicates";
 
 export type ItemTouchEvent<
   RoomId extends string,
@@ -29,58 +22,6 @@ export type ItemTouchEvent<
   gameState: GameState<RoomId>;
   deltaMS: number;
   room: RoomState<RoomId, RoomItemId>;
-};
-
-/** simplified version of ItemTouchEvent where generics can be completed with just strings: */
-export type ItemTouchEventByItemType<
-  RoomId extends string,
-  RoomItemId extends string,
-  MovingItemType extends ItemInPlayType,
-  TouchedItemType extends ItemInPlayType = ItemInPlayType,
-> = ItemTouchEvent<
-  RoomId,
-  RoomItemId,
-  ItemTypeUnion<MovingItemType, RoomId, RoomItemId>,
-  ItemTypeUnion<TouchedItemType, RoomId, RoomItemId>
->;
-
-export const touchedItemIsType = <
-  RoomId extends string,
-  RoomItemId extends string,
-  MovingItem extends UnionOfAllItemInPlayTypes<RoomId, RoomItemId>,
-  TouchedItemType extends ItemInPlayType,
->(
-  e: ItemTouchEvent<RoomId, RoomItemId, MovingItem>,
-  ...touchedItemType: Array<TouchedItemType>
-): e is ItemTouchEvent<
-  RoomId,
-  RoomItemId,
-  MovingItem,
-  ItemTypeUnion<TouchedItemType, RoomId, RoomItemId>
-> => {
-  return isItemType(...touchedItemType)(e.touchedItem);
-};
-
-export const movingItemIsType = <
-  RoomId extends string,
-  RoomItemId extends string,
-  MovingItemType extends ItemInPlayType,
-  TouchedItem extends UnionOfAllItemInPlayTypes<RoomId, RoomItemId>,
->(
-  e: ItemTouchEvent<
-    RoomId,
-    RoomItemId,
-    UnionOfAllItemInPlayTypes<RoomId, RoomItemId>,
-    TouchedItem
-  >,
-  ...movingItemType: Array<MovingItemType>
-): e is ItemTouchEvent<
-  RoomId,
-  RoomItemId,
-  ItemTypeUnion<MovingItemType, RoomId, RoomItemId>,
-  TouchedItem
-> => {
-  return isItemType(...movingItemType)(e.movingItem);
 };
 
 export const movingItemIsPlayable = <
@@ -101,39 +42,4 @@ export const movingItemIsPlayable = <
   TouchedItem
 > => {
   return isPlayableItem(e.movingItem);
-};
-
-export const touchedItemIsPlayable = <
-  RoomId extends string,
-  RoomItemId extends string,
-  MovingItem extends UnionOfAllItemInPlayTypes<RoomId, RoomItemId>,
->(
-  e: ItemTouchEvent<RoomId, RoomItemId, MovingItem>,
-): e is ItemTouchEvent<
-  RoomId,
-  RoomItemId,
-  MovingItem,
-  PlayableItem<CharacterName, RoomId, RoomItemId>
-> => {
-  return isPlayableItem(e.touchedItem);
-};
-
-export const touchedItemIsDeadly = <
-  RoomId extends string,
-  RoomItemId extends string,
-  MovingItem extends UnionOfAllItemInPlayTypes<RoomId, RoomItemId>,
->(
-  e: ItemTouchEvent<
-    RoomId,
-    RoomItemId,
-    MovingItem,
-    UnionOfAllItemInPlayTypes<RoomId, RoomItemId>
-  >,
-): e is ItemTouchEvent<
-  RoomId,
-  RoomItemId,
-  MovingItem,
-  ItemTypeUnion<"floor" | DeadlyItemType, RoomId, RoomItemId>
-> => {
-  return isDeadly(e.touchedItem as UnionOfAllItemInPlayTypes<RoomId>);
 };

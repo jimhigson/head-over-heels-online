@@ -1,10 +1,10 @@
 import { blockStackSpritesheetMeta } from "../../../../../gfx/spritesheetMeta/blockStackSpritesheetMeta";
+import { itemBehaviourKey } from "../../../../model/ItemInPlay";
 import { type RoomJson } from "../../../../model/RoomJson";
 import { roomItemsIterable, type RoomState } from "../../../../model/RoomState";
 import { Graph } from "../../../../utils/graph/Graph";
 import { type Xy } from "../../../../utils/vectors/vectors";
 import { loadRoom } from "../../../gameState/loadRoom/loadRoom";
-import { isSpatial } from "../../../physics/itemPredicates";
 import {
   makeItemRenderBoxAtCameraAngle,
   type RenderBox,
@@ -36,7 +36,9 @@ export const roomZGraphAt = (
   }) as RoomState<string, string>;
 
   const spatial = new Set(
-    [...roomItemsIterable(roomState.items)].filter(isSpatial),
+    [...roomItemsIterable(roomState.items)].filter(
+      (item) => !item[itemBehaviourKey].isPositionless(item),
+    ),
   );
   type Item = typeof spatial extends Set<infer I> ? I : never;
   const renderBoxes = new Map<Item, RenderBox | undefined>();

@@ -1,11 +1,11 @@
 import { Container } from "pixi.js";
 import { type SetRequired } from "type-fest";
 
+import { type PlayableItem } from "../../model/ItemInPlayNarrowedUnions";
 import { characterNames } from "../../model/modelTypes";
 import { type RoomStateItems } from "../../model/RoomState";
 import { store } from "../../store/store";
 import { emptyArray } from "../../utils/empty";
-import { type PlayableItem } from "../physics/itemPredicates";
 import { fadeInOrOutDuration } from "./animationTimings";
 import { ColourClashCircleEffectFilter } from "./filters/ColourClashCircleEffectFilter";
 import { projectWorldXyzToScreenXy } from "./projections";

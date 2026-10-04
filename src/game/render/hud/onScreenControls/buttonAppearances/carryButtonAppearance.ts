@@ -1,14 +1,14 @@
 import { Container, type Sprite } from "pixi.js";
 
 import { type ItemInPlayType } from "../../../../../model/ItemInPlay";
+import {
+  type PlayableItem,
+  type UnionOfAllItemInPlayTypes,
+} from "../../../../../model/ItemInPlayNarrowedUnions";
 import { type RoomState } from "../../../../../model/RoomState";
 import { type AppSpritesheetWithVariants } from "../../../../../sprites/spritesheet/AppSpritesheet";
 import { variantTextureId } from "../../../../../sprites/spritesheet/variantTextureId";
 import { selectHeelsAbilities } from "../../../../gameState/gameStateSelectors/selectPlayableItem";
-import {
-  type PlayableItem,
-  type PortableItem,
-} from "../../../../physics/itemPredicates";
 import { findItemToPickup } from "../../../../physics/mechanics/pickingUp";
 import { createSprite } from "../../../createSprite";
 import { createItemLeafPixiRenderer } from "../../../item/itemRender/createItemLeafPixiRenderer";
@@ -42,7 +42,7 @@ const createSurface = (
 export type CarryButtonRenderProps = {
   pressed: boolean;
   hasBag: boolean;
-  carrying: null | PortableItem<string, string>;
+  carrying: null | UnionOfAllItemInPlayTypes;
   disabled: boolean;
   renderedInRoom: RoomState<string, string> | undefined;
   /** the carried item's renderer, held across renders so it can be ticked */

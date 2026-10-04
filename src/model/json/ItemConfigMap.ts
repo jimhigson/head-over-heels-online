@@ -1,5 +1,4 @@
 import { type ExportedSoundId } from "../../_generated/sfxdex/sfx";
-import { type FreeItemTypes } from "../../game/physics/itemPredicates";
 import { type MarkdownPageName } from "../../manual/pages";
 import { type PlanetName, type SceneryName } from "../../sprites/planets";
 import { type GameInPlayBooleanPaths } from "../../store/slices/gameInPlay/gameInPlaySlice";
@@ -60,10 +59,32 @@ type PickupConfig =
     }
   | ScrollConfig;
 
+/**
+ * listed, not derived from FreeItemTypes: emitter state holds this type, so
+ * deriving it from in-play state would be circular
+ */
+type EmittableItemType =
+  | "ball"
+  | "charles"
+  | "firedDoughnut"
+  | "floatingText"
+  | "monster"
+  | "moveableDeadly"
+  | "movingPlatform"
+  | "pickup"
+  | "portableBlock"
+  | "portableTeleporter"
+  | "pushableBlock"
+  | "sceneryCrown"
+  | "sceneryPlayer"
+  | "slidingBlock"
+  | "slidingDeadly"
+  | "spring";
+
 export type EmittableItemJson = Extract<
   JsonItemUnion,
   {
-    type: "firedDoughnut" | "floatingText" | FreeItemTypes;
+    type: EmittableItemType;
   }
 >;
 
@@ -335,6 +356,7 @@ export type ItemConfigMap<
     activated?: boolean;
   };
   movingPlatform: {
+    // in the source, called its locomotion - see JsonMovement:
     movement: MovementsSubset<"back-forth" | "clockwise" | "towards-analogue">;
     /* if this item starts initially activated */
     activated: ActivatedWhenSubset<

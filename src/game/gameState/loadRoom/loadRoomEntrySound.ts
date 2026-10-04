@@ -2,7 +2,7 @@ import {
   type ExportedSoundId,
   isSoundId,
 } from "../../../_generated/sfxdex/sfx";
-import { type ItemInPlay } from "../../../model/ItemInPlay";
+import { itemBehaviourKey, type ItemInPlay } from "../../../model/ItemInPlay";
 import { type RoomJson, roomJsonItemsIterable } from "../../../model/RoomJson";
 import { type SceneryName } from "../../../sprites/planets";
 import { defaultUserSettings } from "../../../store/slices/userSettings/defaultUserSettings";
@@ -15,8 +15,8 @@ import {
   originXyz,
   type Xyz,
 } from "../../../utils/vectors/vectors";
+import { getBehaviourForItemTypeAndConfig } from "../../itemBehaviours/attachBehaviourToItem";
 import { blockXyzToFineXyz } from "../../render/projections";
-import { nonRenderingItemFixedZIndex } from "../../render/sortZ/fixedZIndexes";
 import { defaultBaseState } from "./itemDefaultStates";
 
 const roomEntrySoundPos: Xyz = blockXyzToFineXyz({ x: -2, y: -2, z: -2 });
@@ -117,24 +117,26 @@ export const createRoomEntrySound = <
   gain?: number;
   playbackRate?: number;
   id?: RoomItemId;
-}): ItemInPlay<"soundEffect", RoomId, RoomItemId> => ({
-  id,
-  type: "soundEffect",
-  // never animates, so the hash (only used to de-synchronise animations) is irrelevant:
-  hash: 0,
-  fixedZIndex: nonRenderingItemFixedZIndex,
-  config: {
+}): ItemInPlay<"soundEffect", RoomId, RoomItemId> => {
+  const config = {
     soundOptions: {
       soundId,
       gain,
       playbackRate,
     },
-  },
-  castsShadowWhileStoodOn: false,
-  state: {
-    ...defaultBaseState(),
-    box: boxWithSize(roomEntrySoundPos, originXyz),
-    played: false,
-  },
-  noSoundPan,
-});
+  };
+  return {
+    id,
+    type: "soundEffect",
+    // never animates, so the hash (only used to de-synchronise animations) is irrelevant:
+    hash: 0,
+    config,
+    [itemBehaviourKey]: getBehaviourForItemTypeAndConfig("soundEffect", config),
+    state: {
+      ...defaultBaseState(),
+      box: boxWithSize(roomEntrySoundPos, originXyz),
+      played: false,
+    },
+    noSoundPan,
+  };
+};

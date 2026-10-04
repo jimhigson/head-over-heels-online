@@ -3,6 +3,8 @@ import { TextureStyle } from "pixi.js";
 import "./index.css";
 import "./JsonRoomEditor/codiconFontOverrides.css";
 import "./JsonRoomEditor/monacoTooltip.css";
+// item behaviour cache must be registered before any in-play items are created:
+import "../game/itemBehaviours/itemBehaviourCache";
 
 import { render } from "preact";
 import { Provider } from "react-redux";

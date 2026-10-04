@@ -1,6 +1,6 @@
 import { expect, test } from "vitest";
 
-import { type FreeItem } from "../physics/itemPredicates";
+import { type FreeItem } from "../../model/ItemInPlayNarrowedUnions";
 import { snapFreeItemToPixelGrid } from "./snapInactiveItemsToPixelGrid";
 
 const createMockItem = ({

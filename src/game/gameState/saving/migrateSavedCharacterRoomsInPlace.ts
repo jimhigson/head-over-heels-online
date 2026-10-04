@@ -4,6 +4,7 @@ import {
   migrateWallTilesInPlace,
 } from "../../../model/inPlaceMutators/migrateWallTilesInPlace";
 import { type ItemInPlayConfig } from "../../../model/ItemInPlay";
+import { type HeelsAbilities } from "../../../model/ItemStateMap";
 import { type Progression, roomItemsIterable } from "../../../model/RoomState";
 import { valuesIter } from "../../../utils/entries";
 import { unitVectors } from "../../../utils/vectors/unitVectors";
@@ -100,6 +101,26 @@ type LegacyBoxCarrier = {
 };
 
 /**
+ * saves from before Heels held what to pick up next marked it on the item
+ */
+const deleteWouldPickUpNextInPlace = (item: { state: object }): void => {
+  delete (item.state as { wouldPickUpNext?: boolean }).wouldPickUpNext;
+};
+
+/**
+ * saves from before Heels held what to pick up next omit it, and their
+ * carried item still marks it
+ */
+const migrateHeelsAbilitiesInPlace = (
+  heelsAbilities: HeelsAbilities<string, string>,
+): void => {
+  heelsAbilities.wouldPickUpNextItemId ??= null;
+  if (heelsAbilities.carrying !== null) {
+    deleteWouldPickUpNextInPlace(heelsAbilities.carrying);
+  }
+};
+
+/**
  * saves from before `state.box` carried `state.position` + a root `aabb`;
  * merge them into the box and drop the legacy fields
  */
@@ -144,6 +165,7 @@ export const migrateSavedCharacterRoomsInPlace = <RoomId extends string>(
     for (const item of roomItemsIterable(room.items)) {
       migrateItemBoxInPlace(item as LegacyBoxCarrier);
       item.state.movedOrResizedOnProgression ??= 0 as Progression;
+      deleteWouldPickUpNextInPlace(item);
       if (item.hintShadowDirections !== undefined) {
         item.hintShadowDirections =
           item.hintShadowDirections.map(asDirectionVector);
@@ -188,14 +210,38 @@ export const migrateSavedCharacterRoomsInPlace = <RoomId extends string>(
             item.state as { direction: MaybeNamedDirection },
             "direction",
           );
+          // conveyors no longer keep this in state:
+          delete (item.state as { moving?: boolean }).moving;
           break;
         case "monster":
+          vectoriseInPlace(
+            item.config as { startDirection?: MaybeNamedDirection },
+            "startDirection",
+          );
+          // saves from before these were initialised omit them:
+          item.state.durationOfTouch ??= 0;
+          item.state.busyLickingDoughnutsOffFace ??= false;
+          break;
         case "movingPlatform":
+          vectoriseInPlace(
+            item.config as { startDirection?: MaybeNamedDirection },
+            "startDirection",
+          );
+          // saves from before these were initialised omit them:
+          item.state.durationOfTouch ??= 0;
+          item.state.timeOfLastDirectionChange ??= Number.NEGATIVE_INFINITY;
+          break;
         case "sceneryPlayer":
           vectoriseInPlace(
             item.config as { startDirection?: MaybeNamedDirection },
             "startDirection",
           );
+          break;
+        case "heels":
+          migrateHeelsAbilitiesInPlace(item.state);
+          break;
+        case "headOverHeels":
+          migrateHeelsAbilitiesInPlace(item.state.heels);
           break;
       }
     }

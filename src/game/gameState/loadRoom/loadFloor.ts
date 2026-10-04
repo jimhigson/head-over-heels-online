@@ -1,5 +1,4 @@
-import { defaultItemProperties } from "../../../model/defaultItemProperties";
-import { type ItemInPlay } from "../../../model/ItemInPlay";
+import { itemBehaviourKey, type ItemInPlay } from "../../../model/ItemInPlay";
 import { type JsonItem } from "../../../model/json/JsonItem";
 import { keys, valuesIter } from "../../../utils/entries";
 import { unitVectors } from "../../../utils/vectors/unitVectors";
@@ -10,8 +9,8 @@ import {
 } from "../../../utils/vectors/vectors";
 import { fullBlockAabb } from "../../collision/boundingBoxes";
 import { multiplyBoundingBox } from "../../collision/multiplyBoundingBox";
+import { getBehaviourForItemTypeAndConfig } from "../../itemBehaviours/attachBehaviourToItem";
 import { blockXyzToFineXyz } from "../../render/projections";
-import { type ShadowCastSpriteOptions } from "../../render/ShadowCastSpriteOptions";
 import { type RoomDirectionalIndex } from "./buildRoomJsonDirectionalIndex";
 import { defaultBaseState } from "./itemDefaultStates";
 
@@ -30,10 +29,6 @@ const floorThicknessBlocks = 3;
  * the floor's config
  */
 const extraFloorAmountForDoors = 0.5;
-
-const shadowFullBlock: ShadowCastSpriteOptions = Object.freeze({
-  textureId: "shadow.fullBlock",
-});
 
 export const loadFloor = <RoomId extends string, RoomItemId extends string>(
   itemId: RoomItemId,
@@ -194,28 +189,23 @@ export const loadFloor = <RoomId extends string, RoomItemId extends string>(
   const floorPosition = blockXyzToFineXyz(adjustedPositionBlocks);
   const floorAabb = multiplyBoundingBox(fullBlockAabb, adjustedSizeBlocks);
 
+  const config = {
+    ...floorJson.config,
+    // side names become outward unit vectors in-play:
+    doorExpandedSides: keys(expandedDirections).map((d) => unitVectors[d]),
+    naturalFootprint: {
+      aabb: multiplyBoundingBox(fullBlockAabb, naturalAabbBlocks),
+      position: blockXyzToFineXyz(naturalPositionBlocks),
+    },
+  };
   return {
-    ...defaultItemProperties,
     type: "floor",
     // floors never animate, so the hash (only used to de-synchronise animations) is irrelevant:
     hash: 0,
     id: itemId,
     jsonItemId: itemId,
-    config: {
-      ...floorJson.config,
-      // side names become outward unit vectors in-play:
-      doorExpandedSides: keys(expandedDirections).map((d) => unitVectors[d]),
-      naturalFootprint: {
-        aabb: multiplyBoundingBox(fullBlockAabb, naturalAabbBlocks),
-        position: blockXyzToFineXyz(naturalPositionBlocks),
-      },
-    },
-    // unusual for a floor to cast a shadow, but could be raised somehow in the remake engine
-    shadowCastTexture: shadowFullBlock,
-
-    // floors don't get a fixedZIndes - if there is only one
-    // of them. Otherwise, they can be in front/behind each other, and need
-    // to be sorted to get the relative z-position between floors correct
+    config,
+    [itemBehaviourKey]: getBehaviourForItemTypeAndConfig("floor", config),
     state: {
       ...defaultBaseState(),
       // lower the floor by one block, since its position in the json is relative to

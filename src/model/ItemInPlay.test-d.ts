@@ -1,12 +1,16 @@
 import { expectTypeOf, test } from "vitest";
 
 import { type ItemTypeUnion } from "../_generated/types/ItemInPlayUnion";
+import { type ItemInPlay, type ItemInPlayType } from "./ItemInPlay";
 import {
-  type ItemInPlay,
-  type ItemInPlayType,
+  type FreeItemTypes,
   type UnionOfAllItemInPlayTypes,
-} from "./ItemInPlay";
-import { type ExitGameRoomId } from "./json/ItemConfigMap";
+} from "./ItemInPlayNarrowedUnions";
+import {
+  type EmittableItemJson,
+  type ExitGameRoomId,
+} from "./json/ItemConfigMap";
+import { type JsonItemType } from "./json/JsonItem";
 
 type ItemId = "ball" | "bat";
 
@@ -28,6 +32,12 @@ test("doorframes to lead to room ids", () => {
   >["config"]["toRoom"];
 
   expectTypeOf<A>().toEqualTypeOf<"kitchen" | "livingRoom" | ExitGameRoomId>();
+});
+
+test("emitters can emit every free json item type, plus doughnuts and floating text", () => {
+  expectTypeOf<
+    Exclude<EmittableItemJson["type"], "firedDoughnut" | "floatingText">
+  >().toEqualTypeOf<Extract<FreeItemTypes, JsonItemType>>();
 });
 
 test("smaller unions are subsets of union of all items types", () => {
@@ -105,7 +115,7 @@ test("smaller unions are subsets of union of all items types", () => {
   > = GenericTypeWithExtendsAllButWithLateCompletedRoom<
     TRoomId,
     TRoomItemId,
-    // this could work - see handlePlayerTouchingDeadly's use of PlayableItem - it works because
+    // this could work - see PlayableBehaviour.onDeadlyContact's use of PlayableItem - it works because
     // the generic is already a union. Could probably codegen something similar
     SubsetOfAllItemInPlayTypes
   >;
