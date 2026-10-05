@@ -1,5 +1,6 @@
 import nanoEqual from "nano-equal";
 
+import { type SaveResult } from "../../db/campaign";
 import { sequelCampaignLocator } from "../../gameInfo";
 import { allVerifiers } from "../../model/json/verification/allVerifiers";
 import { type CampaignVerificationIssue } from "../../model/json/verification/CampaignVerification";
@@ -13,14 +14,25 @@ import { type Xy } from "../../utils/vectors/vectors";
 import { jsonResult } from "../../webMcp/jsonResult";
 import { getModelContext } from "../../webMcp/modelContext";
 import { reduxWebMcpTools } from "../../webMcp/reduxWebMcpTools";
-import { type EditorCampaign } from "../editorTypes";
-import { selectCursorRoomId } from "../slice/levelEditorSelectors";
+import { campaignIsNamed, type EditorCampaign } from "../editorTypes";
+import { openPlaytest, playtestUrl } from "../playtestUrl";
+import {
+  selectCurrentCommittedRoomJsonFromLevelEditorState,
+  selectCursorRoomId,
+} from "../slice/levelEditorSelectors";
 import {
   addRoom,
   campaignJsonAutoFixed,
+  roomJsonEdited,
   selectCurrentCampaignInProgress,
 } from "../slice/levelEditorSlice";
-import { loadCampaignIntoEditor } from "../slice/saveAndLoadThunks";
+import {
+  loadCampaignIntoEditor,
+  saveCampaign,
+  saveCampaignAs,
+  saveOutcomeShown,
+} from "../slice/saveAndLoadThunks";
+import { validateRoomJson } from "../validateRoomJson";
 import { selectVerification } from "../verify/useVerifyCampaign";
 
 const isXy = (value: unknown): value is Xy =>
@@ -69,6 +81,13 @@ const verificationIssueAsJson = ({
   // passed back unchanged to fixVerificationIssue to identify the issue:
   issueData: asJsonData(issueData),
 });
+
+const saveResultAsJson = (saveResult: SaveResult) =>
+  saveResult.ok ?
+    jsonResult({
+      saved: selectCurrentCampaignInProgress(editorStore.getState()).locator,
+    })
+  : jsonResult({ saveFailed: saveResult.failure });
 
 /**
  * the user ids going by a username, from the same directory the Open dialog
@@ -186,6 +205,133 @@ const editorWebMcpTools: WebMCP.ModelContextTool[] = [
       );
       return jsonResult({
         addedRoomId: selectCursorRoomId(editorStore.getState().levelEditor),
+      });
+    },
+  },
+  {
+    name: "saveCampaign",
+    description:
+      "save the open campaign to the db as a new version, as the toolbar's save button does; give campaignName to save under that name, as the Save As dialog does. Needs the user signed in. Saving onto another existing campaign of the user's returns needsConfirmation - ask the user, then call again with overwriteConfirmed",
+    inputSchema: {
+      type: "object",
+      properties: {
+        campaignName: {
+          type: "string",
+          description:
+            "save as this name; default the campaign's current name. Required for a never-saved campaign",
+        },
+        publish: {
+          type: "boolean",
+          description:
+            "with campaignName: whether to publish; default the campaign's current setting",
+        },
+        overwriteConfirmed: {
+          type: "boolean",
+          description:
+            "the user agreed to stack a new version onto the existing campaign with this name",
+        },
+      },
+    },
+    async execute({ campaignName, publish, overwriteConfirmed }) {
+      const campaign = selectCurrentCampaignInProgress(editorStore.getState());
+      if (typeof campaignName !== "string") {
+        if (!campaignIsNamed(campaign)) {
+          return jsonResult(
+            "the campaign has never been saved: give a campaignName",
+          );
+        }
+        const saveResult = await editorStore.dispatch(saveCampaign());
+        editorStore.dispatch(saveOutcomeShown(saveResult));
+        return saveResultAsJson(saveResult);
+      }
+      const saveAsResult = await editorStore.dispatch(
+        saveCampaignAs({
+          campaignName,
+          publish:
+            typeof publish === "boolean" ? publish : (
+              (campaign.meta?.published ?? false)
+            ),
+          overwriteConfirmed: overwriteConfirmed === true,
+        }),
+      );
+      if (saveAsResult.needsConfirmation) {
+        return jsonResult({
+          needsConfirmation: `${campaignName} already exists (latest version ${saveAsResult.latest}) - confirm with the user before overwriting`,
+        });
+      }
+      editorStore.dispatch(saveOutcomeShown(saveAsResult.saveResult));
+      return saveResultAsJson(saveAsResult.saveResult);
+    },
+  },
+  {
+    name: "setRoomItems",
+    description:
+      "add, replace or remove items in the current room, by id, as one undoable edit: each value is a whole item ({type, config, position} - see the room json) or null to remove it. Returns the room's item count. Check getVerificationIssues afterwards",
+    inputSchema: {
+      type: "object",
+      properties: {
+        items: {
+          type: "object",
+          description: "item id -> item json, or null to remove",
+          additionalProperties: { type: ["object", "null"] },
+        },
+      },
+      required: ["items"],
+    },
+    async execute({ items }) {
+      if (typeof items !== "object" || items === null) {
+        return jsonResult("items must be an object of id -> item or null");
+      }
+      const roomJson = selectCurrentCommittedRoomJsonFromLevelEditorState(
+        editorStore.getState().levelEditor,
+      );
+      const newItems: Record<string, unknown> = { ...roomJson.items };
+      for (const [id, item] of Object.entries(items)) {
+        if (item === null) {
+          delete newItems[id];
+        } else {
+          newItems[id] = item;
+        }
+      }
+      const newRoomJson: unknown = { ...roomJson, items: newItems };
+      if (!validateRoomJson(newRoomJson)) {
+        return jsonResult({ notApplied: validateRoomJson.errors });
+      }
+      editorStore.dispatch(
+        roomJsonEdited({ roomJson: newRoomJson, timestamp: Date.now() }),
+      );
+      return jsonResult({
+        roomId: newRoomJson.id,
+        itemCount: Object.keys(newItems).length,
+      });
+    },
+  },
+  {
+    name: "playtest",
+    description:
+      "play the open campaign, unsaved, as the toolbar's play button does: opens (or restarts) the local game in the `playtest` tab, in the current room. Returns the game's url, for opening it yourself if the browser blocks the tab",
+    inputSchema: {
+      type: "object",
+      properties: {
+        fromStart: {
+          type: "boolean",
+          description: "start at the campaign's start; default false",
+        },
+        playAsHeels: {
+          type: "boolean",
+          description: "play as heels; default false (head)",
+        },
+      },
+    },
+    async execute({ fromStart, playAsHeels }) {
+      const url = await playtestUrl(editorStore.getState(), {
+        baseUrl: import.meta.env.VITE_GAME_URL,
+        fromStart: fromStart === true,
+        playAsHeels: playAsHeels === true,
+      });
+      return jsonResult({
+        opened: openPlaytest(url) !== undefined,
+        url,
       });
     },
   },

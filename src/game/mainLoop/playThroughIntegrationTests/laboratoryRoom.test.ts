@@ -1,30 +1,17 @@
 import { expect, test } from "vitest";
 
-import {
-  basicEmptyRoom,
-  setupGameForCampaign,
-} from "../../../_testUtils/basicRoom";
+import { setupGameForCampaign } from "../../../_testUtils/basicRoom";
 import { playGameThrough } from "../../../_testUtils/playGameThrough";
 import { roomSpatialIndexKey } from "../../../model/RoomState";
 import { omit } from "../../../utils/pick";
 import { type UnindexedRoomState } from "../../gameState/saving/SavedGameState";
-import { complexRoom } from "./complexRoom";
+import { laboratoryCampaign } from "./laboratoryCampaign";
 
 test(
   'playing through a complex, deterministic room ("laboratory") should always give the same results after a fixed amount of time',
   { timeout: 60_000 },
   () => {
-    const gameState = setupGameForCampaign({
-      locator: {
-        campaignName: "basicGameStateTestCampaign",
-        userId: "anon",
-        version: 0,
-      },
-      rooms: {
-        laboratory: complexRoom,
-        nowhere: basicEmptyRoom("nowhere"),
-      },
-    });
+    const gameState = setupGameForCampaign(laboratoryCampaign);
 
     playGameThrough(gameState, {
       until: 30_000, // half a minute

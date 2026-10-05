@@ -171,7 +171,7 @@ export const saveCampaignAs =
  * open dialog and shows the "vN" flash on the save button; a failing one shows
  * the SaveFailedDialog
  */
-const saveOutcomeShown =
+export const saveOutcomeShown =
   (saveResult: SaveResult): EditorThunk =>
   (dispatch) => {
     if (saveResult.ok) {

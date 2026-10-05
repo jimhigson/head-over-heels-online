@@ -5,6 +5,10 @@ description: Drive the Head over Heels remake's UI via the chrome-devtools MCP. 
 
 Driving this game's UI via the chrome-devtools MCP has known quirks; following these patterns avoids the trial-and-error from prior sessions.
 
+## Connecting
+
+To attach the chrome-devtools MCP to the user's everyday Chrome (so it sees their open tabs) or to a dedicated debug Chrome, including first-time setup on a new machine (`chrome://inspect/#remote-debugging`, `chrome://flags/#enable-webmcp-testing`, the `~/.claude.json` args), follow the `use-web-mcp` skill's "Connect to a webmcp Chrome" section.
+
 ## Dev server
 
 Default URL: `http://localhost:5200/?cheats=1&track=0`. Add `?cheats=1` to expose the cheats panel; add `&track=0` to disable analytics tracking.

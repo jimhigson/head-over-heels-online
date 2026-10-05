@@ -1,18 +1,14 @@
 import { debounce } from "@github/mini-throttle";
 import { type OnChange } from "@monaco-editor/react";
-import Ajv from "ajv";
 import { type editor } from "monaco-editor";
 import nanoEqual from "nano-equal";
 import { useMemo } from "preact/hooks";
 
-import roomSchema from "../../_generated/room.schema.json";
 import { editorStore, store } from "../../store/store";
-import { type EditorRoomJson } from "../editorTypes";
 import { selectCurrentCommittedRoomJsonFromLevelEditorState } from "../slice/levelEditorSelectors";
 import { roomJsonEdited } from "../slice/levelEditorSlice";
+import { validateRoomJson } from "../validateRoomJson";
 import { fixJson } from "./fixJson";
-
-const ajvValidate = new Ajv().compile<EditorRoomJson>(roomSchema);
 
 // performance is fine without a debounce, but it can be annoying
 // if the editor changes during typing:
@@ -67,10 +63,10 @@ export const useUpdateStoreWhenJsonEdited = (
         /* checking monaco markers is not effective. They are added asynchronously
          * and not available immediately after the text change. Use ajv instead.
          */
-        if (!ajvValidate(parsedJson)) {
+        if (!validateRoomJson(parsedJson)) {
           console.warn(
             "Text in editor: after JSON parse, does not match schema. Not dispatching.",
-            ajvValidate.errors,
+            validateRoomJson.errors,
           );
           return;
         }
