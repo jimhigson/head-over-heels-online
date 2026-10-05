@@ -27,12 +27,12 @@ import { collisionBoxes } from "../collision/aabbCollision";
 const zWeight = 0.5;
 
 /**
- * Calculate the minimum translation along a specific direction vector to separate two rectangular objects.
+ * Calculate the translation forwards along a direction vector that separates two rectangular objects.
  * Uses arithmetic ray-AABB intersection to find the exact distance along the vector for separation.
  *
  * @param vector - The direction vector along which to calculate separation.
  *                 Can be any direction, not limited to axis-aligned.
- * @returns The minimum translation vector along the constraint direction to separate the objects.
+ * @returns The translation along the vector (never against it) to separate the objects.
  */
 const mtvAlongVectorWriteInto = (
   moverBox: Readonly<XyzBox>,
@@ -112,20 +112,9 @@ const mtvAlongVectorWriteInto = (
     return writeInto as Xyz;
   }
 
-  // We're currently overlapping (t=0 is in range [tMin, tMax])
-  // We need to move to t=tMax to just exit the overlap
-  // Actually, we want to move just past tMax to fully separate
-
-  // Since we start overlapping, we want to exit the overlap
-  // If tMax > 0, move forward to tMax
-  // If tMin < 0, move backward to tMin
-
-  if (tMax > 0 && (tMin >= 0 || tMax < -tMin)) {
-    // Move forward to exit
+  // overlapping (t=0 is in [tMin, tMax]) - only ever exit forwards, at tMax:
+  if (tMax > 0) {
     return scaleXyzWriteInto(writeInto, direction, tMax);
-  } else if (tMin < 0) {
-    // Move backward to exit
-    return scaleXyzWriteInto(writeInto, direction, tMin);
   }
   // Already separated or touching
   Object.assign(writeInto, originXyz);

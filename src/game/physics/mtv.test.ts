@@ -64,7 +64,7 @@ describe("mtvAlongVector", () => {
     const result = mtvAlongVector(
       boxWithSize({ x: 0, y: 0, z: 0 }, unitCubeBB),
       boxWithSize({ x: 0.5, y: 0.5, z: 0 }, unitCubeBB),
-      { x: 1, y: 0, z: 0 }, // Constrain to x-axis
+      { x: -1, y: 0, z: 0 }, // Constrain to x-axis
     );
 
     // Should move along x-axis to separate
@@ -79,7 +79,7 @@ describe("mtvAlongVector", () => {
     const result = mtvAlongVector(
       boxWithSize({ x: 0, y: 0, z: 0 }, unitCubeBB),
       boxWithSize({ x: 0.5, y: 0.5, z: 0 }, unitCubeBB),
-      { x: 0, y: 1, z: 0 }, // Constrain to y-axis
+      { x: 0, y: -1, z: 0 }, // Constrain to y-axis
     );
 
     // Should move along y-axis to separate
@@ -94,7 +94,7 @@ describe("mtvAlongVector", () => {
     const result = mtvAlongVector(
       boxWithSize({ x: 0, y: 0, z: 0 }, unitCubeBB),
       boxWithSize({ x: 0.5, y: 0.5, z: 0.5 }, unitCubeBB),
-      { x: 0, y: 0, z: 1 }, // Constrain to z-axis
+      { x: 0, y: 0, z: -1 }, // Constrain to z-axis
     );
 
     // Should move along z-axis to separate
@@ -109,7 +109,7 @@ describe("mtvAlongVector", () => {
     const result = mtvAlongVector(
       boxWithSize({ x: 0, y: 0, z: 0 }, unitCubeBB),
       boxWithSize({ x: 0.5, y: 0.5, z: 0 }, unitCubeBB),
-      { x: 1, y: 1, z: 0 }, // Constrain to diagonal
+      { x: -1, y: -1, z: 0 }, // Constrain to diagonal
     );
 
     // Should move along diagonal to separate
@@ -130,7 +130,7 @@ describe("mtvAlongVector", () => {
     expect(lengthXyz(result)).toBeCloseTo(0);
   });
 
-  test("constraint chooses positive direction when closer", () => {
+  test("moves forwards along the vector", () => {
     const unitCubeBB = { x: 1, y: 1, z: 1 };
     const result = mtvAlongVector(
       boxWithSize({ x: 0, y: 0, z: 0 }, unitCubeBB),
@@ -138,12 +138,12 @@ describe("mtvAlongVector", () => {
       { x: 1, y: 0, z: 0 }, // Constrain to x-axis
     );
 
-    // Should move in positive x direction (right) as it's shorter
+    // positive x is forwards along the vector
     expect(result.x).toBeGreaterThan(0);
     expect(result.x).toBeCloseTo(0.2);
   });
 
-  test("constraint chooses negative direction when closer", () => {
+  test("moves forwards along the vector even when backwards is shorter", () => {
     const unitCubeBB = { x: 1, y: 1, z: 1 };
     const result = mtvAlongVector(
       boxWithSize({ x: 0, y: 0, z: 0 }, unitCubeBB),
@@ -151,9 +151,8 @@ describe("mtvAlongVector", () => {
       { x: 1, y: 0, z: 0 }, // Constrain to x-axis
     );
 
-    // Should move in negative x direction (left) as it's shorter
-    expect(result.x).toBeLessThan(0);
-    expect(result.x).toBeCloseTo(-0.2);
+    // backing off 0.2 would be shorter, but only forwards is allowed:
+    expect(result.x).toBeCloseTo(1.8);
   });
 
   test("3D diagonal constraint", () => {
@@ -161,7 +160,7 @@ describe("mtvAlongVector", () => {
     const result = mtvAlongVector(
       boxWithSize({ x: 0, y: 0, z: 0 }, unitCubeBB),
       boxWithSize({ x: 0.3, y: 0.3, z: 0.3 }, unitCubeBB),
-      { x: 1, y: 1, z: 1 }, // Constrain to 3D diagonal
+      { x: -1, y: -1, z: -1 }, // Constrain to 3D diagonal
     );
 
     // Should move along 3D diagonal to separate
@@ -186,7 +185,7 @@ describe("mtvAlongVector", () => {
     const result = mtvAlongVector(
       boxWithSize({ x: 0, y: 0, z: 0 }, unitCubeBB),
       boxWithSize({ x: 0.1, y: 0.1, z: 0 }, unitCubeBB), // Almost completely overlapping
-      { x: 1, y: 0, z: 0 }, // Constrain to x-axis
+      { x: -1, y: 0, z: 0 }, // Constrain to x-axis
     );
 
     // Should move along x-axis to fully separate

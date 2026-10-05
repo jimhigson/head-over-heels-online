@@ -12,8 +12,10 @@ import {
   elementWiseProductXyz,
   lengthXyz,
   originXyz,
+  scaleXyz,
   subXyz,
   type Xyz,
+  type XyzBox,
   xyzEqual,
 } from "../../../utils/vectors/vectors";
 import { visualiseVectorForLogs } from "../../../utils/vectors/visualiseVectorForLogs";
@@ -37,7 +39,10 @@ import { helpfulMovementVector } from "./helpfulMovementVector";
 // esbuild should remove these if statements at build time
 const log = import.meta.env.VITE_LOG_MOVE_ITEM;
 
-type MoveItemOptions<RoomId extends string, RoomItemId extends string> = {
+export type MoveItemOptions<
+  RoomId extends string,
+  RoomItemId extends string,
+> = {
   // not everything that moves is a free item - fired doughnuts and lifts are non-free items that need moving
   subjectItem: UnionOfAllItemInPlayTypes<RoomId, RoomItemId>;
   posDelta: Xyz;
@@ -80,6 +85,12 @@ type MoveItemOptions<RoomId extends string, RoomItemId extends string> = {
    * can also be applied
    */
   isHelpful?: boolean;
+
+  /**
+   * resolve collisions even if posDelta is zero - for an item that has been placed
+   * where it may already be overlapping other items
+   */
+  processZeroMovement?: boolean;
 };
 
 // from an mtv, multiplying by these vectors gives the push vector to apply to the pushed item
@@ -92,6 +103,22 @@ type MoveItemOptions<RoomId extends string, RoomItemId extends string> = {
 const pushVectorMultiplierForceful = { x: -1, y: -1, z: -1 };
 const pushVectorMultiplierNormal = { x: -0.6, y: -0.6, z: -0.4 };
 const pushVectorMultiplierWithSliding = { x: -1, y: -1, z: -0.4 };
+
+/**
+ * the subject's movement, as given to the items it touches. A subject given no
+ * movement (see processZeroMovement) is overlapping the touched item, so is treated as
+ * moving into it, against the mtv that would separate them - touched items can then
+ * react to the direction they are being pushed in
+ */
+const touchMovementVector = <RoomId extends string, RoomItemId extends string>(
+  subjectItem: UnionOfAllItemInPlayTypes<RoomId, RoomItemId>,
+  touchedItem: UnionOfAllItemInPlayTypes<RoomId, RoomItemId>,
+  originalBox: Readonly<XyzBox>,
+  posDelta: Xyz,
+): Xyz =>
+  xyzEqual(posDelta, originXyz) ?
+    scaleXyz(mtv(subjectItem.state.box, touchedItem.state.box), -1)
+  : subXyz(subjectItem.state.box, originalBox);
 
 /**
  * @param subjectItem the item that is wanting to move
@@ -108,8 +135,9 @@ export const moveItem = <RoomId extends string, RoomItemId extends string>({
   forceful = subjectItem[itemBehaviourKey].pushesForcefully &&
     visited.size === 0,
   isHelpful,
+  processZeroMovement = false,
 }: MoveItemOptions<RoomId, RoomItemId>): boolean => {
-  if (xyzEqual(posDelta, originXyz)) {
+  if (!processZeroMovement && xyzEqual(posDelta, originXyz)) {
     // applying zero movement - do nothing
     return false;
   }
@@ -234,7 +262,12 @@ export const moveItem = <RoomId extends string, RoomItemId extends string>({
       const touchEvent = {
         movingItem: subjectItem,
         touchedItem: collidedWithItem,
-        movementVector: subXyz(subjectItem.state.box, originalBox),
+        movementVector: touchMovementVector(
+          subjectItem,
+          collidedWithItem,
+          originalBox,
+          posDelta,
+        ),
         gameState,
         deltaMS,
         room,

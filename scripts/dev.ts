@@ -14,7 +14,7 @@
  * run in this terminal with interleaved output.
  *
  * Pass --built to serve production builds (vite build, then vite preview)
- * instead of the dev servers.
+ * instead of the dev servers. In tmux, pressing b in a pane rebuilds its app.
  *
  * Extra cli args are passed through to both vite instances, eg:
  *   pnpm dev --open
@@ -39,10 +39,20 @@ const gameUrl = `http://localhost:${gamePort}/`;
 // in development and production modes the editor is served from /editor/
 const editorUrl = `http://localhost:${editorPort}/editor/`;
 
+// in tmux each built app gets its own pane, so its own rebuild key:
+const previewWithRebuildKey = servingBuilt && process.env.TMUX !== undefined;
+
+/** the pnpm args that start one app's server, before the port args */
+const serverPnpmArgs = (app: "editor" | "game") =>
+  previewWithRebuildKey ?
+    ["exec", "tsx", "scripts/previewWithRebuildKey.ts", app]
+  : servingBuilt ? [`preview:${app}`]
+  : [`dev:${app}`];
+
 // the package scripts own which vite config (and node flags) each server
 // needs; this only adds the port it allocated
 const gamePnpmArgs = [
-  servingBuilt ? "preview:game" : "dev:game",
+  ...serverPnpmArgs("game"),
   "--port",
   String(gamePort),
   "--strictPort",
@@ -50,7 +60,7 @@ const gamePnpmArgs = [
 ];
 
 const editorPnpmArgs = [
-  servingBuilt ? "preview:editor" : "dev:editor",
+  ...serverPnpmArgs("editor"),
   "--port",
   String(editorPort),
   "--strictPort",
