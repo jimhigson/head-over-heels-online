@@ -55,6 +55,7 @@
     "deploy:r2": "tsx scripts/deployToR2.ts",
     "toppySpritesheet": "tsx scripts/toppySpritesheet.ts",
     "gen:debugSpritesheet": "tsx scripts/debugSpritesheet.ts",
+    "skills:install": "pnpm dlx skills@1.7.0 add jimhigson/guided-review --agent claude-code --yes",
     "gen:font": "tsx scripts/genFont.ts",
     "font:editor": "vite --config scripts/font/editor/vite.config.ts",
     "iff2png": "./scripts/iff2png.sh",

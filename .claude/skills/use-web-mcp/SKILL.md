@@ -1,6 +1,6 @@
 ---
 name: use-web-mcp
-description: Get an agent talking to the Head over Heels game's and level editor's own webmcp tools - which builds expose them, launching a webmcp-enabled Chrome, pointing the chrome-devtools MCP at it, opening the app, and the calling pattern. Also lists the game's tools. For using the editor's tools, follow up with the editor-webmcp skill (or the editor's getUsageSkill tool).
+description: Get an agent talking to the Head over Heels game's and level editor's own webmcp tools - which builds expose them, connecting to the user's everyday Chrome or launching a dedicated webmcp-enabled one (incl. first-time setup on a new machine), pointing the chrome-devtools MCP at it, opening the app, and the calling pattern. Also lists the game's tools. For using the editor's tools, follow up with the editor-webmcp skill (or the editor's getUsageSkill tool).
 ---
 
 The game and the level editor register **webmcp** tools with the browser (`document.modelContext.registerTool`). They give an agent direct, typed access to the app - no DOM scraping, no `_e2e_store` visual-regression build needed.
@@ -17,9 +17,26 @@ A browser without webmcp registers nothing - the apps do without it (the game lo
 - **Editor tools**: once connected, see the `editor-webmcp` skill, or call the editor's `getUsageSkill` tool, which returns the same guide.
 - **Game tools** (`src/webMcp/createGameWebMcpTools.ts`): `getReduxState`, `dispatchAction`, `getActionLog` (shared, `src/webMcp/reduxWebMcpTools.ts`), plus `pressAction` (`action`, `holdMs?` - a game input action such as `jump`), `getMenuStack`, `getGameState` (`path?` into the running engine's state).
 
-## 1. Launch a webmcp Chrome
+## 1. Connect to a webmcp Chrome
 
-Stock Chrome has webmcp behind the `enable-webmcp-testing` flag, and the chrome-devtools MCP's own `--isolated` Chrome is a throwaway Puppeteer profile without it. Use a dedicated, persistent profile with the flag pre-set and a real debugging port:
+Stock Chrome has webmcp behind the `enable-webmcp-testing` flag, and the chrome-devtools MCP's own `--isolated` Chrome is a throwaway Puppeteer profile without it. There are two setups; the first lets the agent see the user's own tabs.
+
+### Option A (preferred): the user's everyday Chrome
+
+One-off setup per machine, done by the user in their normal Chrome:
+
+1. `chrome://inspect/#remote-debugging` - turn remote debugging on. Chrome then listens on `127.0.0.1:9222` (check: `lsof -nP -iTCP:9222 -sTCP:LISTEN`).
+2. `chrome://flags/#enable-webmcp-testing` - enable, then relaunch Chrome.
+3. In `~/.claude.json`, set `mcpServers["chrome-devtools"].args` to include `--wsEndpoint=ws://127.0.0.1:9222/devtools/browser` and `--categoryExperimentalThirdParty` (not `--browserUrl` / `--isolated` / `--autoConnect`), then `/mcp` → reconnect `chrome-devtools`.
+
+- The ws url needs no browser GUID - the bare `/devtools/browser` path is accepted.
+- `--browserUrl=http://127.0.0.1:9222` does not work: in this mode Chrome serves no `/json/version`.
+- `--autoConnect` does not work on macOS without Full Disk Access: it reads `~/Library/Application Support/Google/Chrome/DevToolsActivePort`, which macOS privacy protection blocks ("Operation not permitted") for processes under the terminal/IDE. The ws endpoint avoids reading that file.
+- Chrome may ask the user to approve the debugging connection after a relaunch.
+
+### Option B: a dedicated debug Chrome
+
+A separate, persistent profile with the flag pre-set and a real debugging port:
 
 ```sh
 PROFILE="$HOME/.cache/chrome-devtools-mcp/webmcp-profile"
@@ -31,11 +48,13 @@ curl -s http://127.0.0.1:9333/json/version   # confirms the port is up
 
 If it is already running (`curl` answers), reuse it.
 
-## 2. Point the chrome-devtools MCP at it
+Point an MCP server at it with `--browserUrl=http://127.0.0.1:9333` (eg a second `chrome-devtools-9333` entry in `~/.claude.json` alongside Option A's), then `/mcp` → reconnect.
 
-In `~/.claude.json`, `mcpServers["chrome-devtools"].args` must include `--browserUrl=http://127.0.0.1:9333` (and not `--isolated` / `--autoConnect`). Claude Code must be restarted (or `/mcp` reconnected) after changing it.
+## 2. Check the connection
 
-Don't use `--autoConnect`: on Chrome 150+ the default profile never writes `DevToolsActivePort`, so it can't connect (chrome-devtools-mcp#2283, closed not-planned); the `chrome://inspect/#remote-debugging` toggle doesn't help.
+- `list_pages` lists the browser's tabs; page ids change whenever Chrome relaunches or the MCP reconnects.
+- "Could not find DevToolsActivePort" = the server is still running with `--autoConnect`; reconnect it after editing the config.
+- webmcp present on a page: `evaluate_script` → `typeof document.modelContext === "object"`.
 
 ## 3. Open the app
 

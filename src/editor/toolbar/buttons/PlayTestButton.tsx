@@ -1,13 +1,10 @@
 import { useState } from "preact/hooks";
 
-import { campaignToDataParam } from "../../../db/campaignToDataParam";
-import { type TypedURLSearchParams } from "../../../options/queryParams";
 import { type TextureTailwindClass } from "../../../sprites/spritesheet/spritesheetData/TextureTailwindClass";
 import { editorStore } from "../../../store/store";
 import { Button } from "../../../ui/Button";
 import { Switch } from "../../../ui/Switch";
-import { selectCursorRoomId } from "../../slice/levelEditorSelectors";
-import { selectCurrentCampaignInProgress } from "../../slice/levelEditorSlice";
+import { openPlaytest, playtestUrl } from "../../playtestUrl";
 import { MenuButton } from "./MenuButton";
 import { ToolbarButton } from "./ToolbarButton";
 import { IconWithTwoLineHoverText } from "./ToolbarButtonContentPatterns";
@@ -22,20 +19,13 @@ export const PlayTestButton = () => {
   const [baseUrl, setBaseUrl] = useState(localUrl);
 
   const playtest = async () => {
-    const state = editorStore.getState();
-    const campaign = selectCurrentCampaignInProgress(state);
-
-    const url = new URL(baseUrl, window.location.href);
-    const searchParams = url.searchParams as TypedURLSearchParams;
-    searchParams.set("campaignName", await campaignToDataParam(campaign));
-    searchParams.set("cheats", "1");
-    if (playAsHeels) {
-      searchParams.set("playAsHeels", "1");
-    }
-    if (!fromStart) {
-      url.hash = selectCursorRoomId(state.levelEditor);
-    }
-    window.open(url.toString(), "playtest");
+    openPlaytest(
+      await playtestUrl(editorStore.getState(), {
+        baseUrl,
+        fromStart,
+        playAsHeels,
+      }),
+    );
   };
 
   return (

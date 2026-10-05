@@ -82,7 +82,8 @@ export const handleItemTouchingJoystick = <
     }
 
     const posDelta = scaleXyz(unitM, moveSpeedPixPerMs.charles * deltaMS);
-    controlledItem.state.facing = posDelta;
+    // the push direction, not the move: a tiny frame makes a near-zero move
+    controlledItem.state.facing = unitM;
     controlledItem.state.controlledWithJoystickAtRoomTime = roomTime;
 
     recordActedOnBy(

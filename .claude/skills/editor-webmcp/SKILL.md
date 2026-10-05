@@ -17,6 +17,7 @@ The level editor registers webmcp tools in every build, dev and production. This
 | `fixVerificationIssue` | `verifier`, `issueData` (both unchanged from `getVerificationIssues`) | auto-fixes that one issue, as the verify dialog's Fix button does; re-checks first, so stale or non-fixable issues are refused. Returns the issues remaining |
 | `fixAllVerificationIssues` | - | auto-fixes every fixable issue, as "Fix all" does. Returns the issues remaining |
 | `loadCampaign` | `username?`, `campaignName?`, `version?` | loads a campaign like the Open dialog (discards unsaved changes). No username/name = the sequel campaign |
+| `saveCampaign` | `campaignName?`, `publish?`, `overwriteConfirmed?` | saves a new version to the db like the toolbar's save button, showing the same flash/failure dialog; with `campaignName`, saves as that name like the Save As dialog. Returns `saved` (the new locator), `saveFailed`, or `needsConfirmation` when the name is another existing campaign - ask the user before re-calling with `overwriteConfirmed: true` |
 | `addRoom` | `roomSize?` `{x,y}` | adds a room like the toolbar's add-room button; returns `addedRoomId` (it becomes the current room) |
 
 ## Keeping the campaign valid
@@ -26,7 +27,7 @@ The level editor registers webmcp tools in every build, dev and production. This
 - if it is `fixable` and the fix is well understood and obvious (its `fixText` says exactly what changes, and that is clearly what's wanted), fix it with `fixVerificationIssue`
 - otherwise - not fixable, or the fix isn't clear-cut - tell the user about it and offer to fix it, rather than guessing
 
-Edits (including auto-fixes) are not saved to the database until the user saves - say so.
+Edits (including auto-fixes) are not saved to the database until saved - say so. Only call `saveCampaign` when the user asks to save.
 
 ## Recipes
 

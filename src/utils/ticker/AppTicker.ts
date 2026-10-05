@@ -137,6 +137,18 @@ export abstract class AppTicker {
     this.lastTime = currentTime;
   }
 
+  /**
+   * dev builds only: run one frame of this many ms now, outside the clock's
+   * own schedule. Lets the game's dev webmcp tools fast-forward a paused game
+   */
+  readonly emitFrame: ((elapsedMs: number) => void) | undefined =
+    import.meta.env.DEV ?
+      (elapsedMs) => {
+        this.setFrameTimings(elapsedMs);
+        this.emit();
+      }
+    : undefined;
+
   /** call every listener, in priority order */
   protected emit(): void {
     let listener = this.#head.next;
