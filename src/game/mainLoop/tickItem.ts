@@ -130,6 +130,12 @@ export const tickItem = <RoomId extends string, RoomItemId extends string>(
   mechanicsResults.length = 0;
   behaviour.mechanicResults(item, room, gameState, deltaMS, mechanicsResults);
 
+  if (room.items[item.id] === undefined) {
+    // a mechanic took the item out of this room (eg heels rising
+    // through a portal when putting down lifts them up)
+    return;
+  }
+
   // this is done after the mechanicsResults are generated, but before they are
   // applied, so that the player can do one more jump on a disappearing block
   // before the touch on that block is handled (and removes it)
