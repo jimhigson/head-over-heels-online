@@ -522,7 +522,8 @@ No not use `npx`, use `pnpm`. Do not call `pnpm vitest` directly, call `pnpm che
 * If platform differences emerge, we'll need to revisit this approach, but for now we expect pixel-perfect matches
 
 ## typechecking
-* typecheck with `pnpm check:type` - this runs `tsc`, which is the native TypeScript 7 compiler (`@typescript/native`); the `typescript` package itself is aliased to `@typescript/typescript6` only to provide the classic compiler API to tooling
+* typecheck with `pnpm check:type` - this runs `tsc`, which is the native TypeScript 7 compiler (`@typescript/native-preview`, named so the VS Code TypeScript 7 extension detects it as the workspace version); the `typescript` package itself is aliased to `@typescript/typescript6` only to provide the classic compiler API to tooling
+* these are temporary TypeScript 7 workarounds, documented in `TYPESCRIPT_README.md` - remove them proactively as the tooling matures
 
 ## Attitude
 

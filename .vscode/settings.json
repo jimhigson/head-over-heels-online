@@ -117,6 +117,7 @@
     "Substeps",
     "subtick",
     "supabase",
+    "superjump",
     "swop",
     "Swoppable",
     "Swopping",
@@ -157,7 +158,8 @@
     "xyzs",
     "zeroable"
   ],
-  "js/ts.tsdk.path": "node_modules/typescript/lib",
+  "js/ts.experimental.useTsgo": true,
+  "js/ts.tsdk.path": "node_modules/@typescript/native-preview",
   "cSpell.language": "en-GB,en-US",
   "window.commandCenter": false,
   "js/ts.preferences.importModuleSpecifier": "relative",
@@ -198,6 +200,5 @@
   "editor.codeActionsOnSave": {
     "source.fixAll.oxc": "always"
   },
-  "js/ts.experimental.useTsgo": false,
   "tailwindCSS.experimental.configFile": "tailwind.game.config.ts"
 }

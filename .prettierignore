@@ -11,7 +11,6 @@ build-stats-editor.html
 *.frag
 *.md
 .vscode
-hohjs.code-workspace
 .claude
 e2e/*-snapshots
 src-tauri/target
