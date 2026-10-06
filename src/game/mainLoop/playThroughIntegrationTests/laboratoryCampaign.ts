@@ -111,22 +111,33 @@ const laboratoryRoom = inferRoomJson({
       },
       type: "block",
     },
-    b4: {
-      type: "block",
+    db1: {
       config: {
-        style: "tower",
+        style: "volcano",
       },
       position: {
         x: 0,
-        y: 7,
-        z: 11,
+        y: 11,
+        z: 0,
       },
+      type: "deadlyBlock",
+    },
+    db: {
+      config: {
+        style: "toaster",
+      },
+      position: {
+        x: 0,
+        y: 13,
+        z: 0,
+      },
+      type: "deadlyBlock",
     },
     b: {
       config: {
         style: "book",
         times: {
-          x: 15,
+          x: 14,
         },
       },
       position: {
@@ -187,7 +198,7 @@ const laboratoryRoom = inferRoomJson({
       config: {
         style: "book",
         times: {
-          x: 14,
+          x: 13,
         },
       },
       position: {
@@ -284,7 +295,6 @@ const laboratoryRoom = inferRoomJson({
       type: "conveyor",
     },
     b9: {
-      type: "block",
       config: {
         style: "book",
         times: {
@@ -296,9 +306,9 @@ const laboratoryRoom = inferRoomJson({
         y: 9,
         z: 10,
       },
+      type: "block",
     },
     b7: {
-      type: "block",
       config: {
         style: "book",
         times: {
@@ -310,6 +320,7 @@ const laboratoryRoom = inferRoomJson({
         y: 11,
         z: 10,
       },
+      type: "block",
     },
     "block@5,0,0": {
       config: {
@@ -450,7 +461,6 @@ const laboratoryRoom = inferRoomJson({
       type: "barrier",
     },
     b10: {
-      type: "block",
       config: {
         style: "book",
         times: {
@@ -462,6 +472,7 @@ const laboratoryRoom = inferRoomJson({
         y: 0,
         z: 10,
       },
+      type: "block",
     },
     "block@13,3,3": {
       config: {
@@ -517,7 +528,6 @@ const laboratoryRoom = inferRoomJson({
       type: "block",
     },
     b11: {
-      type: "block",
       config: {
         style: "book",
         times: {
@@ -528,6 +538,18 @@ const laboratoryRoom = inferRoomJson({
         x: 13,
         y: 11,
         z: 10,
+      },
+      type: "block",
+    },
+    mr1: {
+      type: "mirror",
+      config: {
+        orientation: "awayRight",
+      },
+      position: {
+        x: 14,
+        y: 0,
+        z: 1,
       },
     },
     "block@14,3,0": {
@@ -544,8 +566,21 @@ const laboratoryRoom = inferRoomJson({
       },
       type: "block",
     },
-    b12: {
+    b4: {
+      config: {
+        style: "book",
+        times: {
+          y: 4,
+        },
+      },
+      position: {
+        x: 14,
+        y: 10,
+        z: 10,
+      },
       type: "block",
+    },
+    b12: {
       config: {
         style: "book",
       },
@@ -554,6 +589,7 @@ const laboratoryRoom = inferRoomJson({
         y: 0,
         z: 10,
       },
+      type: "block",
     },
     b2: {
       config: {
@@ -569,8 +605,36 @@ const laboratoryRoom = inferRoomJson({
       },
       type: "block",
     },
+    la1: {
+      type: "lamp",
+      config: {
+        direction: "towards",
+        activated: true,
+        times: {
+          z: 2,
+        },
+      },
+      position: {
+        x: 16,
+        y: 2,
+        z: 2,
+      },
+    },
+    mr: {
+      type: "mirror",
+      config: {
+        orientation: "awayLeft",
+        times: {
+          z: 2,
+        },
+      },
+      position: {
+        x: 17,
+        y: 0,
+        z: 0,
+      },
+    },
     b5: {
-      type: "block",
       config: {
         style: "organic",
         times: {
@@ -582,6 +646,7 @@ const laboratoryRoom = inferRoomJson({
         y: 0,
         z: 11,
       },
+      type: "block",
     },
     "deadlyBlock@17,2,0": {
       config: {
@@ -596,6 +661,18 @@ const laboratoryRoom = inferRoomJson({
         z: 0,
       },
       type: "deadlyBlock",
+    },
+    la: {
+      type: "lamp",
+      config: {
+        direction: "towards",
+        activated: true,
+      },
+      position: {
+        x: 17,
+        y: 2,
+        z: 1,
+      },
     },
     "deadlyBlock@17,3,1": {
       config: {
@@ -637,7 +714,6 @@ const laboratoryRoom = inferRoomJson({
       type: "deadlyBlock",
     },
     b6: {
-      type: "block",
       config: {
         style: "organic",
         times: {
@@ -649,9 +725,9 @@ const laboratoryRoom = inferRoomJson({
         y: 10,
         z: 11,
       },
+      type: "block",
     },
     b8: {
-      type: "block",
       config: {
         style: "organic",
         times: {
@@ -663,6 +739,7 @@ const laboratoryRoom = inferRoomJson({
         y: 13,
         z: 11,
       },
+      type: "block",
     },
     "wall@18,0,0": {
       config: {
@@ -712,6 +789,34 @@ const laboratoryRoom = inferRoomJson({
         z: 1,
       },
       type: "block",
+    },
+    br: {
+      config: {
+        axis: "y",
+        times: {
+          z: 2,
+        },
+      },
+      position: {
+        x: 6.625,
+        y: 6,
+        z: 0,
+      },
+      type: "barrier",
+    },
+    br1: {
+      config: {
+        axis: "x",
+        times: {
+          z: 2,
+        },
+      },
+      position: {
+        x: 3,
+        y: 5.375,
+        z: 0,
+      },
+      type: "barrier",
     },
     "ball@10,4,0": {
       config: {},
@@ -795,6 +900,17 @@ const laboratoryRoom = inferRoomJson({
       },
       type: "charles",
     },
+    db2: {
+      config: {
+        style: "toaster",
+      },
+      position: {
+        x: 1,
+        y: 13,
+        z: 0,
+      },
+      type: "deadlyBlock",
+    },
     "door@5,0,2": {
       config: {
         direction: "towards",
@@ -806,6 +922,24 @@ const laboratoryRoom = inferRoomJson({
         z: 2,
       },
       type: "door",
+    },
+    e: {
+      config: {
+        emits: {
+          config: {
+            direction: "right",
+          },
+          type: "firedDoughnut",
+        },
+        maximum: 40,
+        period: 20_000,
+      },
+      position: {
+        x: 12,
+        y: 12,
+        z: 10,
+      },
+      type: "emitter",
     },
     "emitter@17,0,7": {
       config: {
@@ -920,6 +1054,168 @@ const laboratoryRoom = inferRoomJson({
         z: 0,
       },
       type: "lift",
+    },
+    m: {
+      config: {
+        activated: "on",
+        movement: "towards-tripped-on-axis-xy4",
+        which: "homingBot",
+      },
+      position: {
+        x: 17,
+        y: 0,
+        z: 15,
+      },
+      type: "monster",
+    },
+    m1: {
+      config: {
+        activated: "on",
+        movement: "towards-tripped-on-axis-xy4",
+        which: "homingBot",
+      },
+      position: {
+        x: 0,
+        y: 9,
+        z: 12,
+      },
+      type: "monster",
+    },
+    m10: {
+      config: {
+        activated: "after-player-near",
+        movement: "towards-on-shortest-axis-xy4",
+        startDirection: "left",
+        which: "cyberman",
+      },
+      position: {
+        x: 0,
+        y: 11,
+        z: 1,
+      },
+      type: "monster",
+    },
+    m11: {
+      config: {
+        activated: "on",
+        movement: "patrol-randomly-xy4",
+        startDirection: "towards",
+        which: "monkey",
+      },
+      position: {
+        x: 13,
+        y: 7,
+        z: 12,
+      },
+      type: "monster",
+    },
+    m2: {
+      config: {
+        activated: "on",
+        movement: "towards-tripped-on-axis-xy4",
+        which: "homingBot",
+      },
+      position: {
+        x: 17,
+        y: 10,
+        z: 15,
+      },
+      type: "monster",
+    },
+    m3: {
+      config: {
+        activated: "on",
+        movement: "towards-tripped-on-axis-xy4",
+        which: "homingBot",
+      },
+      position: {
+        x: 17,
+        y: 13,
+        z: 17,
+      },
+      type: "monster",
+    },
+    m4: {
+      config: {
+        activated: "on",
+        movement: "towards-tripped-on-axis-xy4",
+        which: "homingBot",
+      },
+      position: {
+        x: 10,
+        y: 7,
+        z: 6,
+      },
+      type: "monster",
+    },
+    m5: {
+      config: {
+        activated: "on",
+        movement: "turn-to-player",
+        startDirection: "towards",
+        which: "elephantHead",
+      },
+      position: {
+        x: 4,
+        y: 9,
+        z: 12,
+      },
+      type: "monster",
+    },
+    m6: {
+      config: {
+        activated: "on",
+        movement: "turn-to-player",
+        startDirection: "towards",
+        which: "elephantHead",
+      },
+      position: {
+        x: 13,
+        y: 1,
+        z: 3,
+      },
+      type: "monster",
+    },
+    m7: {
+      config: {
+        activated: "on",
+        movement: "patrol-randomly-diagonal",
+        which: "dalek",
+      },
+      position: {
+        x: 6,
+        y: 6,
+        z: 3,
+      },
+      type: "monster",
+    },
+    m8: {
+      config: {
+        activated: "off",
+        movement: "towards-on-shortest-axis-xy4",
+        startDirection: "right",
+        which: "cyberman",
+      },
+      position: {
+        x: 0,
+        y: 13,
+        z: 1,
+      },
+      type: "monster",
+    },
+    m9: {
+      config: {
+        activated: "after-player-near",
+        movement: "towards-on-shortest-axis-xy4",
+        startDirection: "right",
+        which: "cyberman",
+      },
+      position: {
+        x: 1,
+        y: 13,
+        z: 1,
+      },
+      type: "monster",
     },
     "monster@0,4,1": {
       config: {
@@ -1038,6 +1334,30 @@ const laboratoryRoom = inferRoomJson({
       },
       type: "movingPlatform",
     },
+    mp1: {
+      config: {
+        activated: "on",
+        movement: "towards-analogue",
+        startDirection: "towards",
+      },
+      position: {
+        x: 13,
+        y: 7,
+        z: 11,
+      },
+      type: "movingPlatform",
+    },
+    pi: {
+      config: {
+        gives: "shield",
+      },
+      position: {
+        x: 16,
+        y: 13,
+        z: 13,
+      },
+      type: "pickup",
+    },
     "pickup@0,4,9": {
       config: {
         gives: "doughnuts",
@@ -1071,39 +1391,6 @@ const laboratoryRoom = inferRoomJson({
       },
       type: "pickup",
     },
-    "pickup@15,1,0": {
-      config: {
-        gives: "shield",
-      },
-      position: {
-        x: 15,
-        y: 1,
-        z: 0,
-      },
-      type: "pickup",
-    },
-    "pickup@16,1,0": {
-      config: {
-        gives: "shield",
-      },
-      position: {
-        x: 16,
-        y: 1,
-        z: 0,
-      },
-      type: "pickup",
-    },
-    "pickup@16,1,1": {
-      config: {
-        gives: "shield",
-      },
-      position: {
-        x: 16,
-        y: 1,
-        z: 1,
-      },
-      type: "pickup",
-    },
     "pickup@17,1,0": {
       config: {
         gives: "shield",
@@ -1112,28 +1399,6 @@ const laboratoryRoom = inferRoomJson({
         x: 17,
         y: 1,
         z: 0,
-      },
-      type: "pickup",
-    },
-    "pickup@17,1,1": {
-      config: {
-        gives: "shield",
-      },
-      position: {
-        x: 17,
-        y: 1,
-        z: 1,
-      },
-      type: "pickup",
-    },
-    "pickup@17,1,2": {
-      config: {
-        gives: "shield",
-      },
-      position: {
-        x: 17,
-        y: 1,
-        z: 2,
       },
       type: "pickup",
     },
@@ -1288,17 +1553,6 @@ const laboratoryRoom = inferRoomJson({
         x: 13,
         y: 4,
         z: 0,
-      },
-      type: "portableBlock",
-    },
-    "portableBlock@13.5,3,2": {
-      config: {
-        style: "drum",
-      },
-      position: {
-        x: 13.5,
-        y: 3,
-        z: 2,
       },
       type: "portableBlock",
     },
@@ -1474,6 +1728,28 @@ const laboratoryRoom = inferRoomJson({
       },
       type: "pushableBlock",
     },
+    sb: {
+      config: {
+        style: "book",
+      },
+      position: {
+        x: 0,
+        y: 9,
+        z: 11,
+      },
+      type: "slidingBlock",
+    },
+    sb1: {
+      config: {
+        style: "book",
+      },
+      position: {
+        x: 2,
+        y: 10,
+        z: 11,
+      },
+      type: "slidingBlock",
+    },
     "spring@13,0,0": {
       config: {},
       position: {
@@ -1491,6 +1767,41 @@ const laboratoryRoom = inferRoomJson({
         z: 0,
       },
       type: "spring",
+    },
+    sw: {
+      config: {
+        initialSetting: "left",
+        modifies: [
+          {
+            activates: true,
+            expectType: "monster",
+            targets: ["m", "m1", "m2", "m3"],
+          },
+        ],
+      },
+      position: {
+        x: 5,
+        y: 12,
+        z: 10,
+      },
+      type: "switch",
+    },
+    sw1: {
+      config: {
+        initialSetting: "left",
+        modifies: [
+          {
+            expectType: "conveyor",
+            reverses: false,
+          },
+        ],
+      },
+      position: {
+        x: 0,
+        y: 7,
+        z: 11,
+      },
+      type: "switch",
     },
     "switch@17,12,0": {
       config: {
@@ -1545,168 +1856,20 @@ const laboratoryRoom = inferRoomJson({
       },
       type: "monster",
     },
-    m: {
-      type: "monster",
+    bu: {
+      type: "button",
       config: {
-        which: "homingBot",
-        activated: "on",
-        movement: "towards-tripped-on-axis-xy4",
-      },
-      position: {
-        x: 17,
-        y: 0,
-        z: 15,
-      },
-    },
-    m1: {
-      type: "monster",
-      config: {
-        which: "homingBot",
-        activated: "on",
-        movement: "towards-tripped-on-axis-xy4",
-      },
-      position: {
-        x: 0,
-        y: 9,
-        z: 12,
-      },
-    },
-    m2: {
-      type: "monster",
-      config: {
-        which: "homingBot",
-        activated: "on",
-        movement: "towards-tripped-on-axis-xy4",
-      },
-      position: {
-        x: 17,
-        y: 10,
-        z: 15,
-      },
-    },
-    m3: {
-      type: "monster",
-      config: {
-        which: "homingBot",
-        activated: "on",
-        movement: "towards-tripped-on-axis-xy4",
-      },
-      position: {
-        x: 17,
-        y: 13,
-        z: 17,
-      },
-    },
-    sb: {
-      type: "slidingBlock",
-      config: {
-        style: "book",
-      },
-      position: {
-        x: 0,
-        y: 9,
-        z: 11,
-      },
-    },
-    sb1: {
-      type: "slidingBlock",
-      config: {
-        style: "book",
-      },
-      position: {
-        x: 0,
-        y: 11,
-        z: 11,
-      },
-    },
-    e: {
-      type: "emitter",
-      config: {
-        emits: {
-          type: "firedDoughnut",
-          config: {
-            direction: "right",
-          },
-        },
-        period: 20_000,
-        maximum: 40,
-      },
-      position: {
-        x: 12,
-        y: 12,
-        z: 10,
-      },
-    },
-    sw: {
-      type: "switch",
-      config: {
-        initialSetting: "left",
         modifies: [
           {
-            expectType: "monster",
-            activates: true,
-            targets: ["m", "m1", "m2", "m3"],
+            expectType: "lamp",
+            activates: false,
           },
         ],
       },
       position: {
-        x: 5,
-        y: 12,
-        z: 10,
-      },
-    },
-    m4: {
-      type: "monster",
-      config: {
-        which: "homingBot",
-        activated: "on",
-        movement: "towards-tripped-on-axis-xy4",
-      },
-      position: {
-        x: 10,
-        y: 7,
-        z: 6,
-      },
-    },
-    m5: {
-      type: "monster",
-      config: {
-        which: "elephantHead",
-        activated: "on",
-        movement: "turn-to-player",
-        startDirection: "towards",
-      },
-      position: {
-        x: 4,
-        y: 9,
-        z: 12,
-      },
-    },
-    m6: {
-      type: "monster",
-      config: {
-        which: "elephantHead",
-        activated: "on",
-        movement: "turn-to-player",
-        startDirection: "towards",
-      },
-      position: {
-        x: 13,
-        y: 1,
-        z: 3,
-      },
-    },
-    m7: {
-      type: "monster",
-      config: {
-        which: "dalek",
-        movement: "patrol-randomly-diagonal",
-        activated: "on",
-      },
-      position: {
-        x: 6,
-        y: 6,
-        z: 3,
+        x: 15,
+        y: 13,
+        z: 0,
       },
     },
   },
