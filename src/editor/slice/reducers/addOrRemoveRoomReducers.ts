@@ -46,7 +46,7 @@ export const addOrRemoveRoomReducers = {
   removeRoom(
     state,
     {
-      payload: { roomId } = {},
+      payload: { roomId } = { roomId: undefined },
     }: PayloadAction<{ roomId?: EditorRoomId } | undefined>,
   ) {
     // delete the named room when given one, otherwise the current selection
