@@ -1872,6 +1872,34 @@ const laboratoryRoom = inferRoomJson({
         z: 0,
       },
     },
+    m12: {
+      type: "monster",
+      config: {
+        which: "skiHead",
+        style: "greenAndPink",
+        activated: "on",
+        movement: "forwards",
+        startDirection: "right",
+      },
+      position: {
+        x: 3,
+        y: 4,
+        z: 1,
+      },
+    },
+    pi1: {
+      type: "pickup",
+      config: {
+        gives: "scroll",
+        source: "inline",
+        markdown: "What a strange room!",
+      },
+      position: {
+        x: 0,
+        y: 9,
+        z: 13,
+      },
+    },
   },
   planet: "egyptus",
 });
