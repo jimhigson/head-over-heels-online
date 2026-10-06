@@ -122,7 +122,6 @@
     "chalk": "^5.4.1",
     "chokidar-cli": "^3.0.0",
     "commander": "^14.0.0",
-    "dougmencken_HeadOverHeels": "github:dougmencken/HeadOverHeels#08aee0cb050405dc23d95bf288631452bec28c9f",
     "dpdm": "^3.14.0",
     "eslint-plugin-unused-imports": "^4.1.4",
     "execa": "^9.6.1",
@@ -164,6 +163,9 @@
     "workbox-window": "^7.4.1",
     "wrangler": "^4.100.0",
     "xml-js": "^1.6.11"
+  },
+  "optionalDependencies": {
+    "dougmencken_HeadOverHeels": "github:dougmencken/HeadOverHeels#08aee0cb050405dc23d95bf288631452bec28c9f"
   },
   "engines": {
     "node": ">=26.5.0"
