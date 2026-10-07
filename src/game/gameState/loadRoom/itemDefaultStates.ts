@@ -106,12 +106,18 @@ export const initialState = (
         ...structuredClone(jsonItem.config),
       } satisfies StateFragment<typeof jsonItem.type>)
     : emptyObject),
+    ...(jsonItem.type === "joystick" ?
+      ({
+        lastPushDirection: undefined,
+      } satisfies StateFragment<typeof jsonItem.type>)
+    : emptyObject),
     ...(jsonItem.type === "conveyor" ?
       // conveyors also copy their config into state (mutable by switches), with
       // the json direction name becoming a unit vector in-play:
       ({
         ...structuredClone(jsonItem.config),
         direction: unitVectors[jsonItem.config.direction],
+        moving: false,
       } satisfies StateFragment<typeof jsonItem.type>)
     : emptyObject),
     ...(jsonItem.type === "emitter" ?
@@ -128,6 +134,8 @@ export const initialState = (
         activated: jsonItem.config.activated === "on",
         everActivated: jsonItem.config.activated === "on",
         timeOfLastDirectionChange: Number.NEGATIVE_INFINITY,
+        durationOfTouch: 0,
+        busyLickingDoughnutsOffFace: false,
         ...((
           jsonItem.config.which === "skiHead" ||
           jsonItem.config.which === "turtle" ||
@@ -169,6 +177,8 @@ export const initialState = (
       ({
         activated: jsonItem.config.activated === "on",
         everActivated: jsonItem.config.activated === "on",
+        timeOfLastDirectionChange: Number.NEGATIVE_INFINITY,
+        durationOfTouch: 0,
         facing: unitVectors[jsonItem.config.startDirection],
       } satisfies StateFragment<typeof jsonItem.type>)
     : emptyObject),

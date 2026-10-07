@@ -52,7 +52,7 @@ export const confirmClearRoomThunk: EditorThunk<Promise<void>> = async (
     await confirm({
       heading: "Clear room?",
       body: (
-        <BlockyMarkdown>{`**This can't be undone!**
+        <BlockyMarkdown>{`Will leave an empty room for:
 
 * ${roomId}`}</BlockyMarkdown>
       ),
