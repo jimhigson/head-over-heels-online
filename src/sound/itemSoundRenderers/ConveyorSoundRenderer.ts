@@ -2,14 +2,14 @@ import { isStoodOn } from "../../model/StoodOnBy";
 import { audioCtx } from "../audioCtx";
 import { type ItemSoundRenderContext } from "../ItemSoundRenderContext";
 import { type ItemSoundRenderer } from "../ItemSoundRenderer";
-import { createBracketedSound } from "../soundUtils/createBracketedSound";
+import { BracketedSound } from "../soundUtils/BracketedSound";
 
 const playbackRate = 2;
 
 export class ConveyorSoundRenderer implements ItemSoundRenderer<"conveyor"> {
   public readonly output: GainNode = audioCtx.createGain();
 
-  #bracketedSound = createBracketedSound(
+  #bracketedSound = new BracketedSound(
     {
       start: { soundId: "conveyorStart", playbackRate },
       loop: { soundId: "conveyorLoop", playbackRate },
@@ -34,11 +34,10 @@ export class ConveyorSoundRenderer implements ItemSoundRenderer<"conveyor"> {
     } = this;
     const stoodOn = !disabled && isStoodOn(stoodOnBy);
 
-    this.#bracketedSound(stoodOn);
+    this.#bracketedSound.tick(stoodOn);
   }
 
   destroy(): void {
-    // conveyors can be destroyed - ie, #bookworld2
-    this.#bracketedSound(false);
+    this.#bracketedSound.destroy();
   }
 }

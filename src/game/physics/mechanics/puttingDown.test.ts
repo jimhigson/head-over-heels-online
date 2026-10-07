@@ -7,6 +7,7 @@ import { emptyRoomJsonDirectionalIndex } from "../../gameState/loadRoom/buildRoo
 import { loadItemFromJson } from "../../gameState/loadRoom/loadItemFromJson";
 import { combinePlayablesInSymbiosis } from "../../gameState/mutators/symbiosis";
 import { SpatialIndex } from "../gridSpace/SpatialIndex";
+import { blockSizePx } from "../mechanicsConstants";
 import { checkSpaceAvailableToPutDown } from "./puttingDown";
 
 const makeHeels = (position: Xyz) => {
@@ -83,9 +84,13 @@ describe("checkSpaceAvailableToPutDown", () => {
   test("if heels is the only item in the room, can put down", () => {
     const heels = makeHeels({ x: 0, y: 0, z: 0 });
 
-    expect(checkSpaceAvailableToPutDown(heels, new SpatialIndex([heels]))).toBe(
-      true,
-    );
+    expect(
+      checkSpaceAvailableToPutDown(
+        heels,
+        blockSizePx.z,
+        new SpatialIndex([heels]),
+      ),
+    ).toBe(true);
   });
 
   test("if headOverHeels is the only item in the room, can put down", () => {
@@ -94,6 +99,7 @@ describe("checkSpaceAvailableToPutDown", () => {
     expect(
       checkSpaceAvailableToPutDown(
         headOverHeels,
+        blockSizePx.z,
         new SpatialIndex([headOverHeels]),
       ),
     ).toBe(true);
@@ -104,7 +110,11 @@ describe("checkSpaceAvailableToPutDown", () => {
     const block = makeBlock({ x: 0, y: 0, z: 1 });
 
     expect(
-      checkSpaceAvailableToPutDown(heels, new SpatialIndex([heels, block])),
+      checkSpaceAvailableToPutDown(
+        heels,
+        blockSizePx.z,
+        new SpatialIndex([heels, block]),
+      ),
     ).toBe(false);
   });
 
@@ -116,6 +126,7 @@ describe("checkSpaceAvailableToPutDown", () => {
       expect(
         checkSpaceAvailableToPutDown(
           heels,
+          blockSizePx.z,
           new SpatialIndex([heels, portableBlock]),
         ),
       ).toBe(true);
@@ -128,6 +139,7 @@ describe("checkSpaceAvailableToPutDown", () => {
       expect(
         checkSpaceAvailableToPutDown(
           heels,
+          blockSizePx.z,
           new SpatialIndex([heels, portableBlock, block]),
         ),
       ).toBe(true);
@@ -140,9 +152,25 @@ describe("checkSpaceAvailableToPutDown", () => {
       expect(
         checkSpaceAvailableToPutDown(
           heels,
+          blockSizePx.z,
           new SpatialIndex([heels, portableBlock, block]),
         ),
       ).toBe(false);
+    });
+    test("a portable block with a gap above heels only needs rising to heels' new top", () => {
+      const heels = makeHeels({ x: 0, y: 0, z: 0 });
+      // half a block of air between heels and this block:
+      const portableBlock = makePortableBlock({ x: 0, y: 0, z: 1.5 });
+      // exactly touching the portable block once risen onto heels:
+      const block = makeBlock({ x: 0, y: 0, z: 3 });
+
+      expect(
+        checkSpaceAvailableToPutDown(
+          heels,
+          blockSizePx.z,
+          new SpatialIndex([heels, portableBlock, block]),
+        ),
+      ).toBe(true);
     });
   });
 });

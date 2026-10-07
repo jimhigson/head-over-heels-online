@@ -63,7 +63,7 @@ export const GitRepoInfo = () => {
           )}
         </a>
         {(isDevBuild || prNumber !== undefined) && (
-          <span class="text-single-line ml-1 screenshot-mask mr-1 inline-block max-w-24 whitespace-nowrap text-pastelBlueHalfbrite zx:text-zxBlack">
+          <span class="text-single-line ml-1 screenshot-mask mr-1 inline-block max-w-14 whitespace-nowrap text-pastelBlueHalfbrite zx:text-zxBlack">
             {" "}
             {prNumber !== undefined && (
               <a

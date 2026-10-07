@@ -63,6 +63,50 @@ const alwaysUseForCollision = <C extends CollideableItem, G extends C = C>(
 ): item is G => true;
 
 /**
+ * Check for collisions between a box and items in the spatial index
+ */
+export function collisionBoxWithIndex<C extends CollideableItem>(
+  box: Readonly<XyzBox>,
+  index: SpatialIndex<string, string, C>,
+): Generator<C>;
+export function collisionBoxWithIndex<
+  C extends CollideableItem,
+  GuardedType extends C,
+>(
+  box: Readonly<XyzBox>,
+  index: SpatialIndex<string, string, C>,
+  considerItem: (item: C) => item is GuardedType,
+  /** an item to leave out of the results, usually the one querying */
+  excludeItem?: CollideableItem,
+): Generator<GuardedType>;
+export function collisionBoxWithIndex<C extends CollideableItem>(
+  box: Readonly<XyzBox>,
+  index: SpatialIndex<string, string, C>,
+  considerItem: (item: C) => boolean,
+  /** an item to leave out of the results, usually the one querying */
+  excludeItem?: CollideableItem,
+): Generator<C>;
+export function* collisionBoxWithIndex<
+  C extends CollideableItem,
+  GuardedType extends C = C,
+>(
+  box: Readonly<XyzBox>,
+  index: SpatialIndex<string, string, C>,
+  considerItem: (item: C) => boolean = alwaysUseForCollision,
+  excludeItem?: CollideableItem,
+): Generator<C | GuardedType> {
+  const neighbours = index.getCuboidNeighbourhood(box, excludeItem);
+  for (const candidateItem of neighbours) {
+    if (
+      considerItem(candidateItem) &&
+      collisionBoxes(box, candidateItem.state.box)
+    ) {
+      yield candidateItem as GuardedType & C;
+    }
+  }
+}
+
+/**
  * Check for collisions between a single item and multiple others, using the spatial index
  * so that the function scales well as number of items grows
  */
@@ -83,27 +127,37 @@ export function collisionItemWithIndex<C extends CollideableItem>(
   index: SpatialIndex<string, string, C>,
   considerItem: (item: C) => boolean,
 ): Generator<C>;
-export function* collisionItemWithIndex<
-  C extends CollideableItem,
-  GuardedType extends C = C,
->(
+export function* collisionItemWithIndex<C extends CollideableItem>(
   subject: CollideableItem,
   index: SpatialIndex<string, string, C>,
   considerItem: (item: C) => boolean = alwaysUseForCollision,
-): Generator<C | GuardedType> {
-  const neighbours = index.getItemCuboidNeighbourhood(subject);
+): Generator<C> {
+  yield* collisionBoxWithIndex(subject.state.box, index, considerItem, subject);
+}
+
+/**
+ * Check for collisions between a box and the items in the spatial index - similar to
+ * @see collisionBoxWithIndex, except for when the caller doesn't need to know
+ * what the collided items are, only that they exist.
+ */
+export const hasCollisionBoxWithIndex = <C extends CollideableItem>(
+  box: Readonly<XyzBox>,
+  index: SpatialIndex<string, string, C>,
+  considerItem: (item: C) => boolean = alwaysUseForCollision,
+  /** an item to leave out of the results, usually the one querying */
+  excludeItem?: CollideableItem,
+): boolean => {
+  const neighbours = index.getCuboidNeighbourhood(box, excludeItem);
   for (const candidateItem of neighbours) {
     if (
       considerItem(candidateItem) &&
-      // preventing  self- collision not needed because the neighbourhood
-      // knows not to return the item itself
-      //subject.id !== candidateItem.id &&
-      collision2Items(subject, candidateItem)
+      collisionBoxes(box, candidateItem.state.box)
     ) {
-      yield candidateItem as GuardedType & C;
+      return true;
     }
   }
-}
+  return false;
+};
 
 /**
  * Check for collisions between a single item and multiple others - similar to
@@ -120,18 +174,5 @@ export const hasCollisionItemWithIndex = <C extends CollideableItem>(
   subject: CollideableItem,
   index: SpatialIndex<string, string, C>,
   considerItem: (item: C) => boolean = alwaysUseForCollision,
-): boolean => {
-  const neighbours = index.getItemCuboidNeighbourhood(subject);
-  for (const candidateItem of neighbours) {
-    if (
-      considerItem(candidateItem) &&
-      // preventing  self- collision not needed because the neighbourhood
-      // knows not to return the item itself
-      //subject.id !== candidateItem.id &&
-      collision2Items(subject, candidateItem)
-    ) {
-      return true;
-    }
-  }
-  return false;
-};
+): boolean =>
+  hasCollisionBoxWithIndex(subject.state.box, index, considerItem, subject);

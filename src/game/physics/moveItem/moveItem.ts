@@ -40,7 +40,10 @@ import { helpfulMovementVector } from "./helpfulMovementVector";
 // esbuild should remove these if statements at build time
 const log = import.meta.env.VITE_LOG_MOVE_ITEM;
 
-type MoveItemOptions<RoomId extends string, RoomItemId extends string> = {
+export type MoveItemOptions<
+  RoomId extends string,
+  RoomItemId extends string,
+> = {
   // not everything that moves is a free item - fired doughnuts and lifts are non-free items that need moving
   subjectItem: UnionOfAllItemInPlayTypes<RoomId, RoomItemId>;
   posDelta: Xyz;

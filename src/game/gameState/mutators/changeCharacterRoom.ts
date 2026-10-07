@@ -43,7 +43,7 @@ import {
   type PlayableItem,
 } from "../../physics/itemPredicates";
 import { blockSizePx } from "../../physics/mechanicsConstants";
-import { moveItem } from "../../physics/moveItem/moveItem";
+import { moveItemInSteps } from "../../physics/moveItem/moveItemInSteps";
 import { blockXyzToFineXyz } from "../../render/projections";
 import { type GameState } from "../GameState";
 import {
@@ -276,6 +276,10 @@ const changeRoom = <RoomId extends string, RoomItemId extends string>(
   gameState.characterRooms[playableItem.id as CharacterName] = toRoom;
 };
 
+// back off one square, and push iteratively/ progressively into the room
+// by small steps:
+const backOffAndPushLength = blockSizePx.x;
+
 /**
  * when entering a room, there could be obstructions in the way. Move out of the room, and incrementally
  * back to the intended position over a series of frames to allow pushing by several small amounts, which
@@ -290,8 +294,6 @@ const backOffAndPushBack = <RoomId extends string, RoomItemId extends string>(
   gameState: GameState<RoomId>,
   toRoom: RoomState<RoomId, RoomItemId>,
 ) => {
-  // back off one square, and push progressively into the room:
-  const backOffAndPushLength = 1 * blockSizePx.x;
   updateItemPosition(
     toRoom,
     playableItem,
@@ -300,19 +302,16 @@ const backOffAndPushBack = <RoomId extends string, RoomItemId extends string>(
       scaleXyz(portalDirectionXy, backOffAndPushLength),
     ),
   );
-  // push in increments of 1px
-  for (let i = 0; i < backOffAndPushLength; i++) {
-    moveItem({
-      subjectItem: playableItem,
-      posDelta: scaleXyz(portalDirectionXy, -1),
-      gameState,
-      room: toRoom,
-      deltaMS: 16, //fiction
-      forceful: true,
-      // don't handle any touches, otherwise would collide with the portal
-      onTouch: undefined,
-    });
-  }
+  moveItemInSteps({
+    subjectItem: playableItem,
+    posDelta: scaleXyz(portalDirectionXy, -backOffAndPushLength),
+    gameState,
+    room: toRoom,
+    deltaMS: 16, //fiction
+    forceful: true,
+    // don't handle any touches, otherwise would collide with the portal
+    onTouch: undefined,
+  });
 };
 
 /**
