@@ -1,9 +1,6 @@
 import { type ItemTypeUnion } from "../../../_generated/types/ItemInPlayUnion";
-import {
-  type ItemInPlayType,
-  type UnionOfAllItemInPlayTypes,
-} from "../../../model/ItemInPlay";
-import { isMonster } from "../itemPredicates";
+import { type ItemInPlayType } from "../../../model/ItemInPlay";
+import { type UnionOfAllItemInPlayTypes } from "../../../model/ItemInPlayNarrowedUnions";
 import { moveSpeedPixPerMs } from "../mechanicsConstants";
 
 /**
@@ -12,7 +9,7 @@ import { moveSpeedPixPerMs } from "../mechanicsConstants";
 export const maybeSpeedForItem = (
   itemWithMovement: UnionOfAllItemInPlayTypes<string, string>,
 ): number | undefined => {
-  if (isMonster(itemWithMovement)) {
+  if (itemWithMovement.type === "monster") {
     return moveSpeedPixPerMs[itemWithMovement.config.which];
   }
   return (moveSpeedPixPerMs as { [i in ItemInPlayType]?: number })[
@@ -33,7 +30,7 @@ export const speedForItem = (
     string
   >,
 ): number => {
-  if (isMonster(itemWithMovement)) {
+  if (itemWithMovement.type === "monster") {
     return moveSpeedPixPerMs[itemWithMovement.config.which];
   }
   return moveSpeedPixPerMs[itemWithMovement.type];

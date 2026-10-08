@@ -1,5 +1,6 @@
 import { expect, test } from "vitest";
 
+import { itemBehaviourKey } from "../../../model/ItemInPlay";
 import { quarterCameraAngles } from "../../../utils/vectors/cameraAngleVectors";
 import {
   boxWithSize,
@@ -7,6 +8,7 @@ import {
   type Xyz,
   type XyzBox,
 } from "../../../utils/vectors/vectors";
+import { ItemBehaviour } from "../../itemBehaviours/ItemBehaviour";
 import { type RenderBoxes } from "../renderBox/makeItemRenderBoxAtCameraAngle";
 import { geometryAngleAtQuarterOffset } from "./__test__/geometryAngleAtQuarterOffset";
 import { makeLcg } from "./__test__/makeLcg";
@@ -204,10 +206,12 @@ const makePairs = (pairCount: number): PinnedPair[] => {
       category: categoryNames[category],
       a: {
         id: `a${i}`,
+        [itemBehaviourKey]: new ItemBehaviour(),
         state: { box: boxWithSize(aPos, aShape) },
       },
       b: {
         id: `b${i}`,
+        [itemBehaviourKey]: new ItemBehaviour(),
         state: { box: boxWithSize(bPos, bShape) },
       },
     });

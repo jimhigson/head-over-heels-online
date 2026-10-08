@@ -3,7 +3,8 @@ import { type Simplify, type Tagged, type ValueOf } from "type-fest";
 import { type SpatialIndex } from "../game/physics/gridSpace/SpatialIndex";
 import { type SceneryName } from "../sprites/planets";
 import { objectEntriesIter, valuesIter } from "../utils/entries";
-import { type ItemInPlay, type UnionOfAllItemInPlayTypes } from "./ItemInPlay";
+import { type ItemInPlay } from "./ItemInPlay";
+import { type UnionOfAllItemInPlayTypes } from "./ItemInPlayNarrowedUnions";
 import { type RoomJson } from "./RoomJson";
 
 /*type RoomItemIdWithKnownIds = (
@@ -74,7 +75,7 @@ export const roomItemsIterable = valuesIter as <
   ScN extends SceneryName = SceneryName,
 >(
   roomItems: RoomStateItems<RoomId, RoomItemId, ScN>,
-) => IterableIterator<ValueOf<RoomStateItems<RoomId, RoomItemId, ScN>>>;
+) => IterableIterator<UnionOfAllItemInPlayTypes<RoomId, RoomItemId, ScN>>;
 
 export const iterateRoomItemEntries = <
   RoomId extends string,

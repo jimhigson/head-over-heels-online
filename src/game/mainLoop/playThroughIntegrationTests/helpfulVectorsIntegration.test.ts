@@ -559,3 +559,44 @@ test.for(["right", "left"] as const)(
     });
   },
 );
+
+test.for([2.25, 2.4, 2.6, 2.75])(
+  "player walking into a doorway off-centre at y=%d slides through it",
+  (y) => {
+    const gameState = setUpBasicGame({
+      firstRoomItems: {
+        head: {
+          type: "player",
+          position: { x: 1, y, z: 0 },
+          config: { which: "head" },
+        },
+        doorToSecondRoom: {
+          type: "door",
+          position: { x: 0, y: 2, z: 0 },
+          config: { direction: "right", toRoom: secondRoomId },
+        },
+      },
+      secondRoomItems: {
+        doorToFirstRoom: {
+          type: "door",
+          position: { x: 8, y: 2, z: 0 },
+          config: { direction: "left", toRoom: firstRoomId },
+        },
+      },
+    });
+
+    playGameThrough(gameState, {
+      setupInitialInput(mockInputStateTracker) {
+        mockInputStateTracker.mockDirectionPressed = "right";
+      },
+      until(gameState) {
+        return (
+          selectCurrentRoomState(gameState)?.id === secondRoomId ||
+          gameState.gameTime > 3_000
+        );
+      },
+    });
+
+    expect(selectCurrentRoomState(gameState)?.id).toBe(secondRoomId);
+  },
+);

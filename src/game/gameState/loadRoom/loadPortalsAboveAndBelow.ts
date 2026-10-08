@@ -1,5 +1,4 @@
-import { defaultItemProperties } from "../../../model/defaultItemProperties";
-import { type ItemInPlay } from "../../../model/ItemInPlay";
+import { itemBehaviourKey, type ItemInPlay } from "../../../model/ItemInPlay";
 import { isWholeRoomSubRooms, type RoomJson } from "../../../model/RoomJson";
 import {
   roomItemsIterable,
@@ -8,12 +7,11 @@ import {
 import { objectEntriesIter } from "../../../utils/entries";
 import { unitVectors } from "../../../utils/vectors/unitVectors";
 import { addXyz, boxWithSize } from "../../../utils/vectors/vectors";
-import { isFloor } from "../../physics/itemPredicates";
+import { getBehaviourForItemTypeAndConfig } from "../../itemBehaviours/attachBehaviourToItem";
 import {
   blockSizePx,
   defaultRoomHeightBlocks,
 } from "../../physics/mechanicsConstants";
-import { nonRenderingItemFixedZIndex } from "../../render/sortZ/fixedZIndexes";
 import { defaultBaseState } from "./itemDefaultStates";
 
 const portalThickness = blockSizePx.z;
@@ -38,7 +36,7 @@ const floorsCombinedFootprint = <
   roomStateItems: RoomStateItems<RoomId, RoomItemId>,
 ) => {
   const limits = roomItemsIterable(roomStateItems)
-    .filter(isFloor)
+    .filter((item) => item.type === "floor")
     .reduce(
       (
         acc,
@@ -115,29 +113,29 @@ export function* loadPortalsAboveAndBelow<
     subRoomId: string,
     { minX, maxX, minY, maxY }: FloorFootprint,
     toRoom: RoomId,
-  ) =>
-    ({
-      ...defaultItemProperties,
+  ): ItemInPlay<"portal", RoomId, RoomItemId> => {
+    const config = {
+      toRoom,
+      // floor and ceiling relative points are the middle of the portal, this fixes
+      // falling into dissimilar-sized rooms, ie penitentiary21 falling into penitentiary20
+      relativePoint: {
+        x: (maxX - minX) / 2,
+        y: (maxY - minY) / 2,
+        // relative point one block high - this makes the player spawn on top of blocks when
+        // transitioning to the room above, since a lot of rooms need you to appear *on* something,
+        // and given these rooms usually have 'none' floors it probably isn't the floor
+        z: portalThickness + blockSizePx.z,
+      },
+      direction: unitVectors["down"],
+    };
+    return {
       ...{
         type: "portal",
         // portals never animate, so the hash (only used to de-synchronise animations) is irrelevant:
         hash: 0,
         id: `portal/toRoomBelow/${subRoomId}` as RoomItemId,
-        fixedZIndex: nonRenderingItemFixedZIndex,
-        config: {
-          toRoom,
-          // floor and ceiling relative points are the middle of the portal, this fixes
-          // falling into dissimilar-sized rooms, ie penitentiary21 falling into penitentiary20
-          relativePoint: {
-            x: (maxX - minX) / 2,
-            y: (maxY - minY) / 2,
-            // relative point one block high - this makes the player spawn on top of blocks when
-            // transitioning to the room above, since a lot of rooms need you to appear *on* something,
-            // and given these rooms usually have 'none' floors it probably isn't the floor
-            z: portalThickness + blockSizePx.z,
-          },
-          direction: unitVectors["down"],
-        },
+        config,
+        [itemBehaviourKey]: getBehaviourForItemTypeAndConfig("portal", config),
         state: {
           ...defaultBaseState(),
           box: {
@@ -151,30 +149,31 @@ export function* loadPortalsAboveAndBelow<
         },
         renders: false,
       },
-    }) satisfies ItemInPlay<"portal", RoomId, RoomItemId>;
+    };
+  };
 
   const abovePortal = (
     subRoomId: string,
     { minX, maxX, minY, maxY }: FloorFootprint,
     toRoom: RoomId,
-  ) =>
-    ({
-      ...defaultItemProperties,
+  ): ItemInPlay<"portal", RoomId, RoomItemId> => {
+    const config = {
+      toRoom,
+      relativePoint: {
+        x: (maxX - minX) / 2,
+        y: (maxY - minY) / 2,
+        z: -blockSizePx.z,
+      },
+      direction: unitVectors["up"],
+    };
+    return {
       ...{
         type: "portal",
         // portals never animate, so the hash (only used to de-synchronise animations) is irrelevant:
         hash: 0,
         id: `portal/toRoomAbove/${subRoomId}` as RoomItemId,
-        fixedZIndex: nonRenderingItemFixedZIndex,
-        config: {
-          toRoom,
-          relativePoint: {
-            x: (maxX - minX) / 2,
-            y: (maxY - minY) / 2,
-            z: -blockSizePx.z,
-          },
-          direction: unitVectors["up"],
-        },
+        config,
+        [itemBehaviourKey]: getBehaviourForItemTypeAndConfig("portal", config),
         state: {
           ...defaultBaseState(),
           box: boxWithSize(
@@ -188,7 +187,8 @@ export function* loadPortalsAboveAndBelow<
           ),
         },
       },
-    }) satisfies ItemInPlay<"portal", RoomId, RoomItemId>;
+    };
+  };
 
   const linkHolders: Array<
     [string, { above?: { room: RoomId }; below?: { room: RoomId } }]

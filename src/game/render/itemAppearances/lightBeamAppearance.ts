@@ -14,7 +14,7 @@ import {
   xyEqual,
   type Xyz,
 } from "../../../utils/vectors/vectors";
-import { lightBeamCrossSectionPx } from "../../physics/mechanics/lightBeams";
+import { lightBeamCrossSectionPx } from "../../physics/mechanicsConstants";
 import { createSprite } from "../createSprite";
 import { projectWorldXyzToScreenXy } from "../projections";
 import { type ItemAppearance } from "./ItemAppearance";

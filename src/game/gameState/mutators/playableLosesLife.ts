@@ -1,3 +1,4 @@
+import { type PlayableItem } from "../../../model/ItemInPlayNarrowedUnions";
 import {
   addPokeableNumbers,
   type PokeableNumber,
@@ -15,7 +16,6 @@ import { store } from "../../../store/store";
 import { emptyObject } from "../../../utils/empty";
 import { neverTime } from "../../../utils/neverTime";
 import { collision2Items } from "../../collision/aabbCollision";
-import { type PlayableItem } from "../../physics/itemPredicates";
 import { type GameState } from "../GameState";
 import {
   selectCurrentPlayableItem,
@@ -244,7 +244,7 @@ const reloadRoomWithCharacterInIt = <RoomId extends string>({
     addItemToRoom({ room: reloadedRoom, item: playableItem });
 
     if (playableItem.type === "head" || playableItem.type === "headOverHeels") {
-      removeHushPuppiesFromRoom(reloadedRoom, gameState);
+      removeHushPuppiesFromRoom(reloadedRoom);
     }
   }
 

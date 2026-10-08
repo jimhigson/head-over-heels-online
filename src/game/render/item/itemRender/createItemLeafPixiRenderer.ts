@@ -1,6 +1,6 @@
 import { type ItemInPlayType } from "../../../../model/ItemInPlay";
+import { isPlayableItem } from "../../../../model/ItemInPlayNarrowedUnions";
 import { type CharacterName } from "../../../../model/modelTypes";
-import { isPlayableItem } from "../../../physics/itemPredicates";
 import { appearanceForItem } from "../../itemAppearances/appearanceForItem";
 import { type ItemLeafRenderContext } from "../../ItemRenderContexts";
 import { ItemAppearancePixiRenderer } from "./ItemAppearancePixiRenderer";

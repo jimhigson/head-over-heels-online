@@ -1,5 +1,6 @@
 import { useId, useRef } from "preact/hooks";
 
+import { type PlayableItem } from "../../../../../../model/ItemInPlayNarrowedUnions";
 import {
   type Boundaries,
   type RoomNode,
@@ -21,7 +22,6 @@ import {
   lengthXy,
   type Xy,
 } from "../../../../../../utils/vectors/vectors";
-import { type PlayableItem } from "../../../../../physics/itemPredicates";
 import { projectWorldXyzToScreenXy } from "../../../../../render/projections";
 import { floorFillPathD } from "./floorFillPathD";
 import {

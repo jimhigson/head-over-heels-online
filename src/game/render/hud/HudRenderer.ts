@@ -52,7 +52,6 @@ import {
   selectAbilities,
   selectCurrentPlayableItem,
 } from "../../gameState/gameStateSelectors/selectPlayableItem";
-import { type PortableItem } from "../../physics/itemPredicates";
 import { outlineFilters } from "../filters/OutlineFilter";
 import { getRoomColorScheme } from "../gameColours/colourScheme";
 import { createItemLeafPixiRenderer } from "../item/itemRender/createItemLeafPixiRenderer";
@@ -611,7 +610,7 @@ export class HudRenderer<
         room !== this.#carryingItemRoom)
     ) {
       this.#carriedRenderer?.destroy();
-      const carriedItem = carrying as PortableItem<RoomId, RoomItemId>;
+      const carriedItem = carrying;
       const maybeCarriedRenderer = createItemLeafPixiRenderer({
         general: this.renderContext.general,
         item: carriedItem,
@@ -755,7 +754,7 @@ export class HudRenderer<
       abilities === undefined ? 0
       : characterName === "head" ?
         fastStepsRemaining(abilities as HeadAbilities)
-      : (abilities as HeelsAbilities<RoomId>).bigJumps;
+      : (abilities as HeelsAbilities<RoomId, RoomItemId>).bigJumps;
 
     const extraSkillVisible = extraSkillNumber > 0 || !onScreenControls;
     extraSkillContainer.visible = extraSkillVisible;

@@ -12,7 +12,6 @@ import { roomItemsIterable } from "../../../model/RoomState";
 import { type Xyz } from "../../../utils/vectors/vectors";
 import { type GameState } from "../../gameState/GameState";
 import { selectCurrentRoomState } from "../../gameState/gameStateSelectors/selectCurrentRoomState";
-import { isLightBeam } from "../../physics/itemPredicates";
 
 beforeEach(() => {
   resetStore();
@@ -50,7 +49,7 @@ const playerOutOfBeamPath = (
  */
 const beamsInRoom = (gameState: GameState<TestRoomId>) =>
   roomItemsIterable(selectCurrentRoomState(gameState)!.items)
-    .filter(isLightBeam)
+    .filter((item) => item.type === "lightBeam")
     .toArray();
 
 test("a lamp shines a beam to the room wall", () => {
@@ -863,4 +862,54 @@ test("a beam looped back through mirrors stops at its own lamp, not through it",
   // beam terminated at the lamp rather than shooting through it across the
   // turtle's path:
   expect(monsterMinY).toBeLessThan(80);
+});
+
+test("a monster partly in a beam slides out of it, and the beam reaches the wall", () => {
+  const gameState = setUpBasicGame({
+    firstRoomItems: {
+      heels: {
+        type: "player",
+        position: { x: 6, y: 1, z: 0 },
+        config: { which: "heels" },
+      },
+      block: {
+        type: "block",
+        position: { x: 7, y: 6, z: 0 },
+        config: { style: "organic" },
+      },
+      lamp: {
+        type: "lamp",
+        position: { x: 7, y: 7, z: 0 },
+        config: { direction: "right", activated: true },
+      },
+      // starts overlapping the beam's row, walking towards the block and lamp:
+      skiHead: {
+        type: "monster",
+        position: { x: 3.625, y: 6.625, z: 0 },
+        config: {
+          which: "skiHead",
+          style: "greenAndPink",
+          activated: "on",
+          movement: "back-forth",
+          startDirection: "left",
+        },
+      },
+    },
+  });
+
+  playGameThrough(gameState, { until: 10_000 });
+
+  const { box: monsterBox } = itemState<"monster">(gameState, "skiHead");
+  const beams = beamsInRoom(gameState);
+  expect({
+    beamCount: beams.length,
+    beamLength: beams[0]?.state.box.xd,
+    monsterClearOfBeamRow:
+      monsterBox.y + monsterBox.yd <= beams[0]?.state.box.y,
+  }).toEqual({
+    beamCount: 1,
+    // from the lamp's face at x=0 to the far wall:
+    beamLength: 112,
+    monsterClearOfBeamRow: true,
+  });
 });

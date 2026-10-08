@@ -1,5 +1,6 @@
 import { expect, test } from "vitest";
 
+import { itemBehaviourKey } from "../../../model/ItemInPlay";
 import { Graph } from "../../../utils/graph/Graph";
 import {
   cameraAngleBase,
@@ -9,6 +10,7 @@ import {
   quarterTurnClockwise,
 } from "../../../utils/vectors/cameraAngleVectors";
 import { type Xy, type XyzBox } from "../../../utils/vectors/vectors";
+import { ItemBehaviour } from "../../itemBehaviours/ItemBehaviour";
 import { projectWorldXyzToScreenXy } from "../projections";
 import { type RenderBox } from "../renderBox/makeItemRenderBoxAtCameraAngle";
 import { graphEdgeStrings } from "./__test__/graphEdgeStrings";
@@ -70,8 +72,8 @@ const makeScene = (): Set<TestItem> => {
       const z = Math.round(Math.sin(x * 1.3 + y * 0.7) * 2 + 2);
       items.add({
         id: `item-${i++}`,
+        [itemBehaviourKey]: new ItemBehaviour(),
         state: { box: { x, y, z, xd: 1, yd: 1, zd: 1 } },
-        fixedZIndex: undefined,
       });
     }
   }

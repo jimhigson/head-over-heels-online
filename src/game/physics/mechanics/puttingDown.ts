@@ -1,4 +1,9 @@
-import { type UnionOfAllItemInPlayTypes } from "../../../model/ItemInPlay";
+import { itemBehaviourKey } from "../../../model/ItemInPlay";
+import {
+  isFreeItem,
+  type PlayableItem,
+  type UnionOfAllItemInPlayTypes,
+} from "../../../model/ItemInPlayNarrowedUnions";
 import { type CharacterName } from "../../../model/modelTypes";
 import { roomSpatialIndexKey, type RoomState } from "../../../model/RoomState";
 import { addXyz, boxAt } from "../../../utils/vectors/vectors";
@@ -7,19 +12,15 @@ import {
   collisionItemWithIndex,
 } from "../../collision/aabbCollision";
 import { type GameState } from "../../gameState/GameState";
+import { selectHeelsAbilities } from "../../gameState/gameStateSelectors/selectPlayableItem";
 import { addItemToRoom } from "../../gameState/mutators/addItemToRoom";
 import { removeStandingOn } from "../../gameState/mutators/standingOn/removeStandingOn";
 import { setStandingOnWithoutRemovingOldFirst } from "../../gameState/mutators/standingOn/setStandingOnWithoutRemovingOldFirst";
 import { type SpatialIndex } from "../gridSpace/SpatialIndex";
-import { handleItemsTouchingItems } from "../handleTouch/handleItemsTouchingItems";
-import {
-  isCarrier,
-  isFreeItem,
-  isSolid,
-  type PlayableItem,
-} from "../itemPredicates";
 import { blockSizePx } from "../mechanicsConstants";
 import { moveItem } from "../moveItem/moveItem";
+
+const log = import.meta.env.VITE_LOG_PUT_DOWN;
 
 /**
  * After pressing handling carry being pressed, how long until the action repeats?
@@ -40,15 +41,14 @@ export const puttingDown = <RoomId extends string, RoomItemId extends string>(
   const { inputStateTracker } = gameState;
 
   const carryActionPress = inputStateTracker.currentActionPress("carry");
-  if (!isCarrier(carrier)) {
+  const heelsAbilities = selectHeelsAbilities(carrier);
+  if (heelsAbilities === undefined) {
+    // not a carrier:
     if (carryActionPress === "tap") {
       carrier.state.abilityFailedToUseAtGameTime = gameState.gameTime;
     }
     return;
   }
-
-  const heelsAbilities =
-    carrier.type === "heels" ? carrier.state : carrier.state.heels;
 
   const { carrying } = heelsAbilities;
 
@@ -111,7 +111,7 @@ export const puttingDown = <RoomId extends string, RoomItemId extends string>(
     },
     forceful: true,
     deltaMS,
-    onTouch: handleItemsTouchingItems,
+    handleTouches: true,
     visited: new Set<RoomItemId>().add(carrier.id),
   });
 
@@ -143,7 +143,7 @@ export const checkSpaceAvailableToPutDown = <
     roomSpatialIndex,
     // only check for collisions with solid items
     (otherItem) =>
-      isSolid(otherItem, item) &&
+      !otherItem[itemBehaviourKey].isNonSolid(otherItem, item) &&
       // while in symbiosis, a proposed space one block higher can collide
       // the the character doing the proposing - skip that:
       otherItem !== item,
@@ -151,7 +151,7 @@ export const checkSpaceAvailableToPutDown = <
 
   for (const collision of collisions) {
     if (!isFreeItem(collision)) {
-      if (import.meta.env.DEV) {
+      if (log) {
         console.log(
           "carrying: cannot put down due to collision: item:",
           item,
@@ -164,7 +164,7 @@ export const checkSpaceAvailableToPutDown = <
 
     // if there is a collision, check if it can be moved up too:
     if (!checkSpaceAvailableToPutDown(collision, roomSpatialIndex)) {
-      if (import.meta.env.DEV) {
+      if (log) {
         console.log(
           "carrying: cannot put down due to collision: item:",
           item,

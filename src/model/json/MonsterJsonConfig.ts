@@ -51,7 +51,10 @@ export const monsterMovements = {
 
 export type MonsterWhich = keyof typeof monsterMovements;
 
-/** the movements valid for a given monster */
+/**
+ * the movements valid for a given monster (in the source, its locomotions - see
+ * `JsonMovement`)
+ */
 export type MonsterMovement<W extends MonsterWhich> =
   (typeof monsterMovements)[W][number];
 

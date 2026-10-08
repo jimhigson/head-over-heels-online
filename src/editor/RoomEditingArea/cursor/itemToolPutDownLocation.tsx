@@ -1,7 +1,7 @@
 import {
   doorOverallWidthPx,
   doorPostHeightPx,
-} from "../../../game/gameState/loadRoom/loadDoor";
+} from "../../../game/gameState/loadRoom/loadDoorConstants";
 import { fineXyzToBlockXyz } from "../../../game/render/projections";
 import { completeTimesXy, wallInPlayTimes } from "../../../model/times";
 import { epsilon } from "../../../utils/epsilon";

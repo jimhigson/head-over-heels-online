@@ -2,10 +2,27 @@ import { expect, test } from "vitest";
 
 import { setupGameForCampaign } from "../../../_testUtils/basicRoom";
 import { playGameThrough } from "../../../_testUtils/playGameThrough";
+import { itemBehaviourKey } from "../../../model/ItemInPlay";
 import { roomSpatialIndexKey } from "../../../model/RoomState";
 import { omit } from "../../../utils/pick";
 import { type UnindexedRoomState } from "../../gameState/saving/SavedGameState";
 import { laboratoryCampaign } from "./laboratoryCampaign";
+
+// don't log ItemsBehaviours when logging in-play items, these are stateless
+expect.addSnapshotSerializer({
+  test: (value: unknown) =>
+    typeof value === "object" &&
+    value !== null &&
+    Object.hasOwn(value, itemBehaviourKey),
+  serialize: (value: object, config, indentation, depth, refs, printer) =>
+    printer(
+      omit(value as { [itemBehaviourKey]: unknown }, itemBehaviourKey),
+      config,
+      indentation,
+      depth,
+      refs,
+    ),
+});
 
 test(
   'playing through a complex, deterministic room ("laboratory") should always give the same results after a fixed amount of time',

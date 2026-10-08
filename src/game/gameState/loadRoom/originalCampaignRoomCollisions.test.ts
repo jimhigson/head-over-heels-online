@@ -1,6 +1,7 @@
 import { expect, test } from "vitest";
 
 import { campaign } from "../../../_generated/originalCampaign/campaign";
+import { itemBehaviourKey } from "../../../model/ItemInPlay";
 import {
   roomItemsIterable,
   roomSpatialIndexKey,
@@ -8,7 +9,6 @@ import {
 } from "../../../model/RoomState";
 import { entries } from "../../../utils/entries";
 import { collisionItemWithIndex } from "../../collision/aabbCollision";
-import { isSolid } from "../../physics/itemPredicates";
 import { loadRoom } from "./loadRoom";
 
 const roomCases = entries(campaign.rooms).map(([roomId, roomJson]) => ({
@@ -48,8 +48,8 @@ test.for(roomCases)(
         collisionItemWithIndex(i, spatialIndex)
           .filter(
             (col) =>
-              isSolid(i) &&
-              isSolid(col) &&
+              !i[itemBehaviourKey].isNonSolid(i) &&
+              !col[itemBehaviourKey].isNonSolid(col) &&
               // walls are allowed to collide with other walls, since they have
               // thickness - only really possible in large rooms with extra walls
               !(i.type === "wall" && col.type === "wall") &&

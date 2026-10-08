@@ -1,10 +1,11 @@
 import { type AllUnionFields } from "type-fest";
 
 import { isSoundId } from "../../../_generated/sfxdex/sfx";
+import { itemBehaviourKey, type ItemInPlay } from "../../../model/ItemInPlay";
 import {
-  type ItemInPlay,
+  type PlayableItem,
   type UnionOfAllItemInPlayTypes,
-} from "../../../model/ItemInPlay";
+} from "../../../model/ItemInPlayNarrowedUnions";
 import {
   resolveTeleporterLanding,
   type UnresolvableLandingReason,
@@ -36,12 +37,6 @@ import {
   xyzEqual,
 } from "../../../utils/vectors/vectors";
 import { collisionItemWithIndex } from "../../collision/aabbCollision";
-import {
-  isPortal,
-  isSolid,
-  isTeleporter,
-  type PlayableItem,
-} from "../../physics/itemPredicates";
 import { blockSizePx } from "../../physics/mechanicsConstants";
 import { moveItem } from "../../physics/moveItem/moveItem";
 import { blockXyzToFineXyz } from "../../render/projections";
@@ -113,7 +108,7 @@ const findDestinationPortal = <
     case "portal":
       return roomItemsIterable(toRoom.items).find(
         (i): i is ItemInPlay<"portal", RoomId, RoomItemId> =>
-          isPortal(i) &&
+          i.type === "portal" &&
           i.config.toRoom === fromRoom.id &&
           (sourcePortal.config.toDoor === undefined ||
             i.jsonItemId === sourcePortal.config.toDoor) &&
@@ -129,7 +124,7 @@ const findDestinationPortal = <
       return (
         roomItemsIterable(toRoom.items).find(
           (i): i is ItemInPlay<"portal", RoomId, RoomItemId> =>
-            isPortal(i) &&
+            i.type === "portal" &&
             // find a door coming from the right room (if the level select was from
             // an adjacent room - this is not guaranteed) but makes clicking through
             // rooms less confusing
@@ -141,20 +136,20 @@ const findDestinationPortal = <
         // find a door in the right direction:
         roomItemsIterable(toRoom.items).find(
           (i): i is ItemInPlay<"portal", RoomId, RoomItemId> =>
-            isPortal(i) &&
+            i.type === "portal" &&
             // any horizontal portal (ie, not floor/ceiling)
             i.config.direction.z === 0,
           // fall back to horizontal/vertical portal:
         ) ??
         roomItemsIterable(toRoom.items).find(
           (i): i is ItemInPlay<"portal", RoomId, RoomItemId> =>
-            isPortal(i) &&
+            i.type === "portal" &&
             // any ceiling portal - the floor would mean falling
             // instantly out of the room
             i.config.direction.z > 0,
         ) ??
         // fall back to any portal:
-        roomItemsIterable(toRoom.items).find(isPortal)
+        roomItemsIterable(toRoom.items).find((i) => i.type === "portal")
       );
 
     default:
@@ -209,7 +204,7 @@ const findTeleporterDestinationPosition = <
   const landing = resolveTeleporterLanding<RoomItemId>(
     s,
     roomItemsIterable(toRoom.items)
-      .filter(isTeleporter)
+      .filter((item) => item[itemBehaviourKey].isTeleporter(item))
       .map(({ id }) => id),
     (itemId): itemId is RoomItemId => itemId in toRoom.items,
     toRoom.items[sourceItem.id] === sourceItem ? sourceItem.id : undefined,
@@ -310,7 +305,7 @@ const backOffAndPushBack = <RoomId extends string, RoomItemId extends string>(
       deltaMS: 16, //fiction
       forceful: true,
       // don't handle any touches, otherwise would collide with the portal
-      onTouch: undefined,
+      handleTouches: false,
     });
   }
 };
@@ -463,7 +458,7 @@ export function changeCharacterRoom<
 
   // hush puppies vanish the moment head enters:
   if (playableItem.type === "head" || playableItem.type === "headOverHeels") {
-    removeHushPuppiesFromRoom(toRoom, gameState);
+    removeHushPuppiesFromRoom(toRoom);
   }
 
   // remove the character from the new room if they're already there - this only really happens
@@ -609,7 +604,8 @@ export function changeCharacterRoom<
     const [collisionInDestinationRoom] = collisionItemWithIndex(
       playableItem,
       toRoom[roomSpatialIndexKey],
-      (item) => !isPortal(item) && isSolid(item),
+      (item) =>
+        item.type !== "portal" && !item[itemBehaviourKey].isNonSolid(item),
     );
     if (collisionInDestinationRoom !== undefined) {
       console.warn(

@@ -1,7 +1,6 @@
 import { type EmptyObject } from "type-fest";
 
-import { type ItemTypeUnion } from "../_generated/types/ItemInPlayUnion";
-import { type ShadowCastSpriteOptions } from "../game/render/ShadowCastSpriteOptions";
+import { type ItemBehaviour } from "../game/itemBehaviours/ItemBehaviour";
 import { type BracketedSegmentOptions } from "../sound/soundUtils/createBracketedSound";
 import { type SceneryName } from "../sprites/planets";
 import { type Xy, type Xyz } from "../utils/vectors/vectors";
@@ -47,6 +46,13 @@ export const itemInPlayTypes = [
 ] as const;
 
 export type ItemInPlayType = (typeof itemInPlayTypes)[number];
+
+/**
+ * symbol to store item behaviour objects against on the items themselves,
+ * since this is a symbol it is not serialised to json, so this property is run-time only
+ */
+export const itemBehaviourKey = Symbol("itemBehaviour");
+export type ItemBehaviourKey = typeof itemBehaviourKey;
 
 export type SwitchSetting = "left" | "right";
 
@@ -220,6 +226,11 @@ export type ItemInPlay<
   state: ItemState<T, RoomId, RoomItemId>;
 
   /**
+   * the behaviour shared by every item of this item's type
+   */
+  [itemBehaviourKey]: ItemBehaviour;
+
+  /**
    * a stable pseudo-random number in `[0, 1)`, designed to be reasonably unique
    * between items but not truly random. Used to de-synchronise animations
    * (start frame, bob phase) so identical items in a room don't move in
@@ -229,12 +240,6 @@ export type ItemInPlay<
    */
   hash: number;
 
-  /** the shadow this item casts on other items */
-  shadowCastTexture?: ShadowCastSpriteOptions;
-
-  /** items this item will cast no shadows on */
-  noShadowCastOn?: Array<ItemInPlayType>;
-
   /**
    * marks a hint shadow (eg the decorative corner cube): the shadow only
    * casts when every listed direction's (given as outward cardinal unit
@@ -242,47 +247,6 @@ export type ItemInPlay<
    */
   hintShadowDirections?: Array<Xyz>;
 
-  /**
-   * if true casts shadow while stood on. Most items can cast casting a shadow in this case, since
-   * they will completely cover up and hide their own shadow
-   */
-  castsShadowWhileStoodOn: boolean;
-
-  /**
-   * if true, an item whose footprint is entirely within this one's is darkened wholesale
-   * (a tint over its whole appearance) rather than receiving a shaped cast shadow.
-   * Cheaper than the mask + shadow-sprite path. Colourised mode only.
-   */
-  castsWholeShadows?: boolean;
-
-  /**
-   * Where this item's shadow mask is considered to be relative to its origin.
-   *
-   * For shadow masks (this item being cast on), the full xyz is considered to move the shadow mask
-   *
-   * For this item as the caster, the xy part is used but not the z, since the item's z doesn't matter
-   * for where the shadow is cast on another item
-   *
-   * Eg, door legs can be any height, and need to move their shadow
-   * masks to their top-side, so they should have a z-value
-   */
-  shadowOffset?: Partial<Xyz>;
-
-  /**
-   * if defined, the z-index for this item will not be based on
-   * topological sort of the items in the room
-   */
-  fixedZIndex?: number;
-
   /** if true, this item (exceptionally) does not play at any panned location */
   noSoundPan?: boolean;
 };
-
-/**
- * All Item types as a union
- */
-export type UnionOfAllItemInPlayTypes<
-  RoomId extends string = string,
-  RoomItemId extends string = string,
-  ScN extends SceneryName = SceneryName,
-> = ItemTypeUnion<ItemInPlayType, RoomId, RoomItemId, ScN>;

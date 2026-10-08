@@ -1,7 +1,7 @@
 import { produce } from "immer";
 
-import { defaultItemProperties } from "../../../model/defaultItemProperties";
-import { type UnionOfAllItemInPlayTypes } from "../../../model/ItemInPlay";
+import { itemBehaviourKey } from "../../../model/ItemInPlay";
+import { type UnionOfAllItemInPlayTypes } from "../../../model/ItemInPlayNarrowedUnions";
 import { type JsonItemUnion } from "../../../model/json/JsonItem";
 import { type RoomJson, roomJsonItemsIterable } from "../../../model/RoomJson";
 import { getJsonItemTimes } from "../../../model/times";
@@ -19,10 +19,7 @@ import {
 } from "../../../utils/vectors/vectors";
 import { boundingBoxForItem } from "../../collision/boundingBoxes";
 import { multiplyBoundingBox } from "../../collision/multiplyBoundingBox";
-import {
-  floatingTextFixedZIndex,
-  nonRenderingItemFixedZIndex,
-} from "../../render/sortZ/fixedZIndexes";
+import { getBehaviourForItemTypeAndConfig } from "../../itemBehaviours/attachBehaviourToItem";
 import { type RoomPickupsCollected } from "../GameState";
 import {
   buildRoomJsonDirectionalIndex,
@@ -31,7 +28,6 @@ import {
 import { initialState } from "./itemDefaultStates";
 import { loadDoor } from "./loadDoor";
 import { loadFloor } from "./loadFloor";
-import { loadItemShadowCast } from "./loadItemShadowCast";
 import { loadPlayer } from "./loadPlayer";
 import { loadWall } from "./loadWalls";
 
@@ -185,8 +181,7 @@ export function* loadItemFromJson<
         (jsonItem.config as ItemConfigMaybeWithMultiplication).times,
       );
 
-      // eslint-disable-next-line @typescript-eslint/no-explicit-any -- this is very difficult to type correctly - can probably find a way to do it by creating restricted, but discriminatable unions
-      let state: any;
+      let state;
       try {
         state = initialState(jsonItem, aabb);
       } catch (e: unknown) {
@@ -196,45 +191,22 @@ export function* loadItemFromJson<
         );
       }
 
-      const shadowCastTexture = loadItemShadowCast(jsonItem);
-
+      // eslint-disable-next-line @typescript-eslint/no-explicit-any -- this is very difficult to type correctly, but not doing so is also a source of bugs
+      const config = inPlayConfig(jsonItem) as any;
+      // each type's state matches its type, but ts can't follow that through
+      // the union of json item types:
       yield {
         ...jsonItem,
-        ...defaultItemProperties,
         hash: hashXyzToNumber0to1(state.box),
         id: `${jsonItemId}${itemIdSuffix}`,
         jsonItemId,
-        fixedZIndex:
-          jsonItem.type === "emitter" || jsonItem.type === "timer" ?
-            nonRenderingItemFixedZIndex
-          : jsonItem.type === "floatingText" ? floatingTextFixedZIndex
-          : undefined,
-        shadowCastTexture,
-        // solid full-block casters darken whatever falls entirely beneath them as a
-        // single tint rather than a shaped shadow:
-        castsWholeShadows: shadowCastTexture?.textureId === "shadow.fullBlock",
-        // items that have true here are items that let a little bit of the floor below them
-        // be seen while they are standing on it
-        castsShadowWhileStoodOn:
-          (jsonItem.type === "monster" &&
-            (jsonItem.config.which === "emperor" ||
-              jsonItem.config.which === "emperorsGuardian" ||
-              jsonItem.config.which === "cyberman" ||
-              jsonItem.config.which === "turtle" ||
-              jsonItem.config.which === "helicopterBug")) ||
-          jsonItem.type === "pickup" ||
-          jsonItem.type === "ball" ||
-          jsonItem.type === "lift" ||
-          // ie, stepstool - see its own shadow via the hole in it:
-          jsonItem.type === "pushableBlock" ||
-          jsonItem.type === "sceneryPlayer" ||
-          // spiky balls:
-          jsonItem.type === "slidingDeadly" ||
-          jsonItem.type === "spring",
-        // eslint-disable-next-line @typescript-eslint/no-explicit-any
-        config: inPlayConfig(jsonItem) as any,
+        config,
         state,
-      };
+        [itemBehaviourKey]: getBehaviourForItemTypeAndConfig(
+          jsonItem.type,
+          config,
+        ),
+      } as UnionOfAllItemInPlayTypes<RoomId>;
 
       if (jsonItem.type === "teleporter") {
         const teleporterTimes = getJsonItemTimes(jsonItem);

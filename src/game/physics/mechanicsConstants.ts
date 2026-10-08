@@ -224,3 +224,8 @@ export const walkResumeGraceTime = 120;
  * Limit not applied to repeatedly hitting the key
  */
 export const doughnutsAutofireRate = 500;
+
+/**
+ * the size of a light beam's square cross-section, in world px
+ */
+export const lightBeamCrossSectionPx = 8;

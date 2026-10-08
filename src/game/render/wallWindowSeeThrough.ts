@@ -1,7 +1,6 @@
-import { type UnionOfAllItemInPlayTypes } from "../../model/ItemInPlay";
+import { type UnionOfAllItemInPlayTypes } from "../../model/ItemInPlayNarrowedUnions";
 import { type SceneryName, type Wall } from "../../sprites/planets";
 import { type AxisXy, boxMaxOnAxis } from "../../utils/vectors/vectors";
-import { isFloor } from "../physics/itemPredicates";
 import { type ItemZGraph } from "./ItemRenderContexts";
 
 /** whether two items' extents overlap on a single axis (touching does not count) */
@@ -28,7 +27,7 @@ export const wallOccludesRoomFloorBehind = (
   zGraph.scanForEdgeToMatching(
     wall,
     (maybeBehindWall) =>
-      isFloor(maybeBehindWall) &&
+      maybeBehindWall.type === "floor" &&
       maybeBehindWall.config.floorType !== "none" &&
       // not a floor this wall runs along the edge of (the floor it bounds):
       !overlapsOnAxis(wall, maybeBehindWall, alongAxis),

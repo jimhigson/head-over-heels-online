@@ -1,3 +1,4 @@
+import { type FreeItem } from "../../../model/ItemInPlayNarrowedUnions";
 import {
   type IndividualCharacterName,
   otherIndividualCharacterName,
@@ -13,8 +14,6 @@ import {
   subXyzWriteInto,
   type Xyz,
 } from "../../../utils/vectors/vectors";
-import { handleItemsTouchingItems } from "../../physics/handleTouch/handleItemsTouchingItems";
-import { type FreeItem } from "../../physics/itemPredicates";
 import { blockSizePx } from "../../physics/mechanicsConstants";
 import { moveItem } from "../../physics/moveItem/moveItem";
 import { type GameState } from "../GameState";
@@ -64,7 +63,7 @@ const stepTowards = <RoomId extends string>(
     posDelta: remainingVectorBuffer,
     gameState,
     room,
-    onTouch: handleItemsTouchingItems,
+    handleTouches: true,
   });
 };
 

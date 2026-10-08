@@ -3,7 +3,7 @@ import { type Application } from "pixi.js";
 import { type EditorE2eApi } from "./src/editor/RoomEditingArea/useEditorE2eApi";
 import { type GameApi } from "./src/game/GameApi";
 import { type E2EEventBus } from "./src/game/mainLoop/E2EEventBus";
-import { type PlayableItem } from "./src/game/physics/itemPredicates";
+import { type PlayableItem } from "./src/model/ItemInPlayNarrowedUnions";
 import {
   type CharacterName,
   type IndividualCharacterName,

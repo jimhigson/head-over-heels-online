@@ -12,18 +12,12 @@ import { useDispatchActionCallback } from "../../../../../../store/useDispatchAc
 import { Border } from "../../../../../../ui/Border";
 import { Dialog } from "../../../../../../ui/Dialog";
 import { DialogPortal } from "../../../../../../ui/DialogPortal";
-import { isFreeItemType } from "../../../../../physics/itemPredicates";
 import { summonItemAbovePlayable } from "../../../../cheats/summonItemAbovePlayable";
 import { useGameApi } from "../../../../GameApiContext";
 
-// state-dependent entries need the editor, and only free items make sense to summon
+// state-dependent entries need the editor, so can't be summoned
 const resolveEntryForSummoning = (buttonDefinition: ButtonDefinition) =>
-  (
-    typeof buttonDefinition === "function" ||
-    !isFreeItemType(buttonDefinition.itemTool.type)
-  ) ?
-    undefined
-  : buttonDefinition;
+  typeof buttonDefinition === "function" ? undefined : buttonDefinition;
 
 /** keep typing out of the game's input; escape goes through to close the dialog */
 const stopKeydownReachingGame = (e: KeyboardEvent<HTMLDivElement>) => {

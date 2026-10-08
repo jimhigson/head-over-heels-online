@@ -1,4 +1,8 @@
-import { defaultItemProperties } from "../../../model/defaultItemProperties";
+import {
+  itemBehaviourKey,
+  type ItemInPlayConfig,
+} from "../../../model/ItemInPlay";
+import { type PlayableItem } from "../../../model/ItemInPlayNarrowedUnions";
 import { type IndividualCharacterName } from "../../../model/modelTypes";
 import { emptyObject } from "../../../utils/empty";
 import { neverTime } from "../../../utils/neverTime";
@@ -9,7 +13,7 @@ import {
   headOverHeelsAabb,
   heelsAabb,
 } from "../../collision/boundingBoxes";
-import { type PlayableItem } from "../../physics/itemPredicates";
+import { getBehaviourForItemTypeAndConfig } from "../../itemBehaviours/attachBehaviourToItem";
 import { blockSizePx } from "../../physics/mechanicsConstants";
 import {
   defaultBaseState,
@@ -31,8 +35,11 @@ export const uncombinePlayablesFromSymbiosis = <
     type: "head",
     // playables never use the hash (only used to de-synchronise animations):
     hash: 0,
-    ...defaultItemProperties,
     ...defaultPlayableRootAttributes,
+    [itemBehaviourKey]: getBehaviourForItemTypeAndConfig(
+      "head",
+      defaultPlayableRootAttributes.config,
+    ),
     state: {
       ...defaultBaseState<RoomItemId>(),
       ...defaultFreeItemState<RoomItemId>(),
@@ -61,8 +68,11 @@ export const uncombinePlayablesFromSymbiosis = <
     type: "heels",
     // playables never use the hash (only used to de-synchronise animations):
     hash: 0,
-    ...defaultItemProperties,
     ...defaultPlayableRootAttributes,
+    [itemBehaviourKey]: getBehaviourForItemTypeAndConfig(
+      "heels",
+      defaultPlayableRootAttributes.config,
+    ),
     state: {
       ...defaultBaseState<RoomItemId>(),
       ...defaultFreeItemState<RoomItemId>(),
@@ -107,15 +117,17 @@ export const combinePlayablesInSymbiosis = <
   const previouslySelectedState =
     previousPlayable === "head" ? head.state : heels.state;
 
+  const config = emptyObject satisfies ItemInPlayConfig<"headOverHeels">;
   return {
     id: "headOverHeels" as RoomItemId,
     type: "headOverHeels",
     // playables never use the hash (only used to de-synchronise animations):
     hash: 0,
-    ...defaultItemProperties,
-    shadowCastTexture: heels.shadowCastTexture,
-    castsShadowWhileStoodOn: heels.castsShadowWhileStoodOn,
-    config: emptyObject,
+    config,
+    [itemBehaviourKey]: getBehaviourForItemTypeAndConfig(
+      "headOverHeels",
+      config,
+    ),
     state: {
       ...defaultBaseState<RoomItemId>(),
       ...defaultFreeItemState(),
@@ -156,6 +168,7 @@ export const combinePlayablesInSymbiosis = <
           "hasBag",
           "bigJumps",
           "carrying",
+          "wouldPickUpNextItemId",
           "lives",
           "gameTime",
           "shieldCollectedAt",

@@ -5,7 +5,7 @@ import {
 import { type GameApi } from "../../GameApi";
 import { selectCurrentRoomState } from "../../gameState/gameStateSelectors/selectCurrentRoomState";
 import { selectCurrentPlayableItem } from "../../gameState/gameStateSelectors/selectPlayableItem";
-import { addItemFromJsonToRoom } from "../../gameState/mutators/addItemToRoom";
+import { addItemFromJsonToRoom } from "../../gameState/mutators/addItemFromJsonToRoom";
 import { blockSizePx } from "../../physics/mechanicsConstants";
 
 let summonedItemNumber = 0;

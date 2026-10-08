@@ -1,4 +1,8 @@
-import { type UnionOfAllItemInPlayTypes } from "../../../model/ItemInPlay";
+import { itemBehaviourKey } from "../../../model/ItemInPlay";
+import {
+  isFreeItem,
+  type UnionOfAllItemInPlayTypes,
+} from "../../../model/ItemInPlayNarrowedUnions";
 import { type RoomJson, roomJsonItemsIterable } from "../../../model/RoomJson";
 import {
   type Progression,
@@ -13,8 +17,6 @@ import { type UserSettings } from "../../../store/slices/userSettings/userSettin
 import { emptyObject } from "../../../utils/empty";
 import { findStandingOnWithHighestPriorityAndMostOverlap } from "../../collision/checkStandingOn";
 import { SpatialIndex } from "../../physics/gridSpace/SpatialIndex";
-import { isFreeItem, isLamp, isSpatial } from "../../physics/itemPredicates";
-import { tickLampLightBeams } from "../../physics/mechanics/lightBeams";
 import { type RoomPickupsCollected } from "../GameState";
 import { setStandingOnWithoutRemovingOldFirst } from "../mutators/standingOn/setStandingOnWithoutRemovingOldFirst";
 import { buildRoomJsonDirectionalIndex } from "./buildRoomJsonDirectionalIndex";
@@ -104,11 +106,16 @@ export const loadRoom = <RoomId extends string, RoomItemId extends string>({
   };
 
   const spatialIndex = new SpatialIndex(
-    roomItemsIterable(items).filter(isSpatial),
+    roomItemsIterable(items).filter(
+      (item) => !item[itemBehaviourKey].isPositionless(item),
+    ),
   );
 
   // check for items that are standing on other items:
-  for (const i of roomItemsIterable(items).filter(isFreeItem)) {
+  for (const i of roomItemsIterable(items)) {
+    if (!isFreeItem(i)) {
+      continue;
+    }
     const newStandingOn = findStandingOnWithHighestPriorityAndMostOverlap(
       i,
       roomItemsIterable(items).filter((j) => j.id !== i.id),
@@ -127,11 +134,10 @@ export const loadRoom = <RoomId extends string, RoomItemId extends string>({
     [roomSpatialIndexKey]: spatialIndex,
   };
 
-  // cast lamps' light beams immediately so they exist at roomTime=0 - the
-  // editor renders rooms without ever ticking them, as do screenshot tests
-  // running with gameSpeed=0:
-  for (const lamp of roomItemsIterable(items).filter(isLamp)) {
-    tickLampLightBeams(lamp, roomState);
+  // the editor renders rooms without ever ticking them, as do screenshot tests
+  // running with gameSpeed=0, so items get to set up at roomTime=0:
+  for (const item of roomItemsIterable(items)) {
+    item[itemBehaviourKey].onRoomLoaded(item, roomState);
   }
 
   return roomState;

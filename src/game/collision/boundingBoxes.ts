@@ -1,4 +1,4 @@
-import { type UnionOfAllItemInPlayTypes } from "../../model/ItemInPlay";
+import { type UnionOfAllItemInPlayTypes } from "../../model/ItemInPlayNarrowedUnions";
 import { type JsonItemUnion } from "../../model/json/JsonItem";
 import { type Aabb, originXyz } from "../../utils/vectors/vectors";
 import { blockSizePx } from "../physics/mechanicsConstants";

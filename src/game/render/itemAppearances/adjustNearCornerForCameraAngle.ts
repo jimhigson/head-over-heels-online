@@ -1,6 +1,6 @@
 import { type Container } from "pixi.js";
 
-import { type UnionOfAllItemInPlayTypes } from "../../../model/ItemInPlay";
+import { type UnionOfAllItemInPlayTypes } from "../../../model/ItemInPlayNarrowedUnions";
 import { getItemInPlayTimes } from "../../../model/times";
 import { type Xy, type Xyz } from "../../../utils/vectors/vectors";
 import { projectWorldXyzToScreenXyOnContainer } from "../projections";

@@ -1,5 +1,5 @@
+import { isFreeItem } from "../../../model/ItemInPlayNarrowedUnions";
 import { spatiallyCheckStandingOn } from "../../collision/checkStandingOn";
-import { isFreeItem } from "../itemPredicates";
 import { type ItemTouchEvent } from "./ItemTouchEvent";
 
 /**

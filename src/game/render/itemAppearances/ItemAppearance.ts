@@ -3,7 +3,7 @@ import { type EmptyObject } from "type-fest";
 
 import { type ItemTypeUnion } from "../../../_generated/types/ItemInPlayUnion";
 import { type ItemInPlayType } from "../../../model/ItemInPlay";
-import { itemInPlayTimes } from "../../../model/times";
+import { isMultipliedItem, itemInPlayTimes } from "../../../model/times";
 import {
   type BaseAnimationId,
   type BaseTextureId,
@@ -17,7 +17,6 @@ import {
 import { nearestQuarterAngle } from "../../../utils/vectors/cameraAngleVectors";
 import { spriteFlipXAtAngle } from "../../../utils/vectors/resolveCameraRelativeVector";
 import { type Xy, xyEqual } from "../../../utils/vectors/vectors";
-import { isMultipliedItem } from "../../physics/itemPredicates";
 import {
   type AppearanceOptions,
   type AppearanceReturn,

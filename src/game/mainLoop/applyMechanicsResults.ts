@@ -1,22 +1,20 @@
-import { type ItemTypeUnion } from "../../_generated/types/ItemInPlayUnion";
 import { type ItemInPlayType } from "../../model/ItemInPlay";
+import { type UnionOfAllItemInPlayTypes } from "../../model/ItemInPlayNarrowedUnions";
 import { objectEntriesIter } from "../../utils/entries";
 import {
   addXyzInPlace,
   resetXyzInPlace,
   type Xyz,
 } from "../../utils/vectors/vectors";
-import { isFreeItem, isItemType } from "../physics/itemPredicates";
 import { type MechanicResult } from "../physics/MechanicResult";
 
 export const applyMechanicsResults = <
-  T extends ItemInPlayType,
   RoomId extends string,
   RoomItemId extends string,
 >(
   writePosDataInto: Xyz,
-  item: ItemTypeUnion<T, RoomId, RoomItemId>,
-  mechanicsResults: Array<MechanicResult<T, RoomId, RoomItemId>>,
+  item: UnionOfAllItemInPlayTypes<RoomId, RoomItemId>,
+  mechanicsResults: Array<MechanicResult<ItemInPlayType, RoomId, RoomItemId>>,
 ) => {
   resetXyzInPlace(writePosDataInto);
 
@@ -26,10 +24,7 @@ export const applyMechanicsResults = <
     }
 
     // update item.state.vels
-    if (
-      mechanicResult.movementType === "vel" &&
-      (isFreeItem(item) || isItemType("lift")(item))
-    ) {
+    if (mechanicResult.movementType === "vel" && "vels" in item.state) {
       for (const [velType, vel] of objectEntriesIter(mechanicResult.vels)) {
         (item.state.vels as Record<string, Xyz>)[velType as string] = vel;
       }

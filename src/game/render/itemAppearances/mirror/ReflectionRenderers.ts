@@ -2,10 +2,8 @@ import { Container } from "pixi.js";
 import { type WritableDeep } from "type-fest";
 
 import { type ItemTypeUnion } from "../../../../_generated/types/ItemInPlayUnion";
-import {
-  type ItemInPlayType,
-  type UnionOfAllItemInPlayTypes,
-} from "../../../../model/ItemInPlay";
+import { type ItemInPlayType } from "../../../../model/ItemInPlay";
+import { type UnionOfAllItemInPlayTypes } from "../../../../model/ItemInPlayNarrowedUnions";
 import { roomSpatialIndexKey } from "../../../../model/RoomState";
 import { nearestQuarterAngle } from "../../../../utils/vectors/cameraAngleVectors";
 import { rotateXy } from "../../../../utils/vectors/rotateXy";
@@ -14,7 +12,6 @@ import {
   type CollideableItem,
   collisionItemWithIndex,
 } from "../../../collision/aabbCollision";
-import { isItemType } from "../../../physics/itemPredicates";
 import { blockSizePx } from "../../../physics/mechanicsConstants";
 import { type ItemLeafPixiRenderer } from "../../item/itemRender/ItemPixiRenderer";
 import {
@@ -65,7 +62,7 @@ const reflectionDepthCondense = 0.5;
  * items that never show in reflections: room structure, invisible/utility
  * items, and other mirrors (so two facing mirrors cannot recurse)
  */
-const isUnreflectedItemType = isItemType(
+const unreflectedItemTypes = new Set<ItemInPlayType>([
   "floor",
   "wall",
   "doorFrame",
@@ -82,10 +79,10 @@ const isUnreflectedItemType = isItemType(
   "bubbles",
   "mirror",
   "lightBeam",
-);
+]);
 
 const isReflectedItemType = (item: UnionOfAllItemInPlayTypes<string, string>) =>
-  !isUnreflectedItemType(item);
+  !unreflectedItemTypes.has(item.type);
 
 type ReflectionRenderer = ItemLeafPixiRenderer<ItemInPlayType>;
 

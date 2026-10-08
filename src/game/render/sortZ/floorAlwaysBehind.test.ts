@@ -1,7 +1,9 @@
 import { expect, test } from "vitest";
 
 import { blockStackSpritesheetMeta } from "../../../../gfx/spritesheetMeta/blockStackSpritesheetMeta";
+import { itemBehaviourKey } from "../../../model/ItemInPlay";
 import { type Xy } from "../../../utils/vectors/vectors";
+import { ItemBehaviour } from "../../itemBehaviours/ItemBehaviour";
 import {
   makeItemRenderBoxAtCameraAngle,
   type RenderBox,
@@ -26,6 +28,7 @@ import { zComparator } from "./zComparator";
 
 const floor = {
   id: "f",
+  [itemBehaviourKey]: new ItemBehaviour(),
   type: "floor" as const,
   state: { box: { x: 0, y: -8, z: -36, xd: 128, yd: 144, zd: 36 } },
   config: {
@@ -43,18 +46,21 @@ const floor = {
 const onFloor = [
   {
     id: "h",
+    [itemBehaviourKey]: new ItemBehaviour(),
     type: "hushPuppy" as const,
     state: { box: { x: 0, y: 112, z: 0, xd: 48, yd: 16, zd: 12 } },
     config: { times: { x: 3 } },
   },
   {
     id: "h1",
+    [itemBehaviourKey]: new ItemBehaviour(),
     type: "hushPuppy" as const,
     state: { box: { x: 16, y: 112, z: 12, xd: 32, yd: 16, zd: 12 } },
     config: { times: { x: 2 } },
   },
   {
     id: "d1/legs",
+    [itemBehaviourKey]: new ItemBehaviour(),
     type: "doorLegs" as const,
     state: { box: { x: 16, y: 128, z: 0, xd: 32, yd: 24, zd: 48 } },
     config: {
@@ -67,6 +73,7 @@ const onFloor = [
   },
   {
     id: "b",
+    [itemBehaviourKey]: new ItemBehaviour(),
     type: "block" as const,
     state: { box: { x: 112, y: 80, z: 0, xd: 16, yd: 48, zd: 12 } },
     config: { style: "artificial", times: { y: 3 } },
@@ -75,12 +82,14 @@ const onFloor = [
   // floor's away edge:
   {
     id: "d1/frameNear",
+    [itemBehaviourKey]: new ItemBehaviour(),
     type: "doorFrame" as const,
     state: { box: { x: 16, y: 128, z: 48, xd: 8, yd: 24, zd: 48 } },
     config: { direction: "away", onFloorEdge: true, part: "near" },
   },
   {
     id: "d1/frameFar",
+    [itemBehaviourKey]: new ItemBehaviour(),
     type: "doorFrame" as const,
     state: { box: { x: 40, y: 128, z: 48, xd: 8, yd: 24, zd: 48 } },
     config: { direction: "away", onFloorEdge: true, part: "far" },

@@ -2,6 +2,8 @@ import { Application, TextureStyle, type WebGLRenderer } from "pixi.js";
 
 // installs window.__e2e_holdCameraAtDegrees (visual-regression builds only):
 import "./gameState/mutators/__e2e_holdCameraAtDegrees";
+// item behaviour cache must be registered before any in-play items are created:
+import "./itemBehaviours/itemBehaviourCache";
 import { type CampaignLocator } from "../model/modelTypes";
 import { loadSoundCategory } from "../sound/soundsLoader";
 import { Spritesheets } from "../sprites/spritesheet/Spritesheets";

@@ -1,3 +1,4 @@
+import { isPlayableItem } from "../../../model/ItemInPlayNarrowedUnions";
 import { iterateStoodOnByItems } from "../../../model/stoodOnItemsLookup";
 import { variantTextureId } from "../../../sprites/spritesheet/variantTextureId";
 import {
@@ -7,8 +8,7 @@ import {
 import { nearestQuarterAngle } from "../../../utils/vectors/cameraAngleVectors";
 import { spriteFlipXAtAngle } from "../../../utils/vectors/resolveCameraRelativeVector";
 import { type Xy } from "../../../utils/vectors/vectors";
-import { isPlayableItem } from "../../physics/itemPredicates";
-import { teleporterIsActive } from "../../physics/mechanics/teleporting";
+import { teleporterIsActive } from "../../physics/mechanics/teleporterIsActive";
 import { createSprite } from "../createSprite";
 import { cameraQuarterAngleEqual, type ItemAppearance } from "./ItemAppearance";
 

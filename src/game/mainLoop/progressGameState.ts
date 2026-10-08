@@ -1,3 +1,4 @@
+import { isPlayableItem } from "../../model/ItemInPlayNarrowedUnions";
 import {
   iterateRoomItemEntries,
   roomItemsArray,
@@ -11,7 +12,6 @@ import { deleteItemFromRoom } from "../gameState/mutators/deleteItemFromRoom";
 import { playableLosesLife } from "../gameState/mutators/playableLosesLife";
 import { updateStandingOn } from "../gameState/mutators/standingOn/updateStandingOn";
 import { validateStandingOn } from "../gameState/mutators/standingOn/validateStandingOn";
-import { isPlayableItem } from "../physics/itemPredicates";
 import { addParticlesForPlayablesInRoom } from "./addParticlesToRoom";
 import { advanceTime } from "./advanceTime";
 import { correctFloatingPointErrorsInRoom } from "./correctFloatingPointErrorsInRoom";

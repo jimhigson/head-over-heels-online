@@ -1,7 +1,9 @@
 import { populatedBroadPhase } from "../__test__/populatedBroadPhase";
+import { itemBehaviourKey } from "../../../../model/ItemInPlay";
 import { Graph } from "../../../../utils/graph/Graph";
 import { cameraAngleBase } from "../../../../utils/vectors/cameraAngleVectors";
 import { type Xy } from "../../../../utils/vectors/vectors";
+import { ItemBehaviour } from "../../../itemBehaviours/ItemBehaviour";
 import { type RenderBox } from "../../renderBox/makeItemRenderBoxAtCameraAngle";
 import { type DrawOrderComparable } from "../DrawOrderComparable";
 import { updateZEdges } from "../updateZEdges";
@@ -37,10 +39,10 @@ const generateItems = (count: number): Set<TestItem> => {
 
     items.add({
       id: `item-${i}`,
+      [itemBehaviourKey]: new ItemBehaviour(),
       state: {
         box: { x, y, z, xd: 1, yd: 1, zd: 1 },
       },
-      fixedZIndex: undefined,
     });
   }
 

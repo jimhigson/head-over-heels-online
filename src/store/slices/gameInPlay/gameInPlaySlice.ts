@@ -8,8 +8,8 @@ import {
   type SavedGame,
   type SavedStoreGameInPlay,
 } from "../../../game/gameState/saving/SavedGameState";
-import { type PlayableItem } from "../../../game/physics/itemPredicates";
 import { type MarkdownPageName } from "../../../manual/pages";
+import { type PlayableItem } from "../../../model/ItemInPlayNarrowedUnions";
 import { type ScrollConfig } from "../../../model/json/ItemConfigMap";
 import {
   type CampaignLocator,

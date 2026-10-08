@@ -1,9 +1,13 @@
 import { Container, type Filter } from "pixi.js";
 
-import { type ItemInPlayType } from "../../../../model/ItemInPlay";
+import {
+  itemBehaviourKey,
+  type ItemInPlayType,
+} from "../../../../model/ItemInPlay";
+import { getRoomItem } from "../../../../model/RoomState";
 import { zxSpectrumColor } from "../../../../originalGame";
 import { effectColour } from "../../../../sprites/palette/spritesheetPalette";
-import { isPortable } from "../../../physics/itemPredicates";
+import { selectHeelsAbilities } from "../../../gameState/gameStateSelectors/selectPlayableItem";
 import { OutlineFilter } from "../../filters/OutlineFilter";
 import {
   type ItemRenderContext,
@@ -52,11 +56,14 @@ class PortableItemPickUpNextHighlightRenderer<
   }
 
   tick(tickContext: ItemTickContext) {
-    const { item } = this.renderContext;
-    // the decorator only wraps portable items; re-narrow here so the portable
-    // state is typed rather than cast:
+    const { item, room } = this.renderContext;
+    // only one of heels and headOverHeels can be in a room:
+    const carrier =
+      getRoomItem("heels", room.items) ??
+      getRoomItem("headOverHeels", room.items);
     const wouldPickUpNext =
-      isPortable(item) ? item.state.wouldPickUpNext : false;
+      carrier !== undefined &&
+      selectHeelsAbilities(carrier)?.wouldPickUpNextItemId === item.id;
 
     if (wouldPickUpNext !== this.#applied) {
       this.output.filters = wouldPickUpNext ? this.#outlineFilter : [];
@@ -74,7 +81,8 @@ class PortableItemPickUpNextHighlightRenderer<
 
 export const portableItemPickHighlightDecorateItemRenderer: DecorateItemRenderer =
   (itemRenderContext, childRenderer) => {
-    return isPortable(itemRenderContext.item) ?
+    const { item } = itemRenderContext;
+    return item[itemBehaviourKey].isPortable(item) ?
         new PortableItemPickUpNextHighlightRenderer(
           itemRenderContext,
           childRenderer,

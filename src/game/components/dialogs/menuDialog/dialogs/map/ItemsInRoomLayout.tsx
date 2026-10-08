@@ -2,6 +2,7 @@ import { type VNode } from "preact";
 import { useMemo } from "preact/hooks";
 
 import { itemInPlayCentre } from "../../../../../../model/itemInPlayCentre";
+import { type PlayableItem } from "../../../../../../model/ItemInPlayNarrowedUnions";
 import { type JsonItemUnion } from "../../../../../../model/json/JsonItem";
 import {
   type ConsolidatableConfig,
@@ -22,7 +23,6 @@ import {
   scaleXyz,
   type Xy,
 } from "../../../../../../utils/vectors/vectors";
-import { type PlayableItem } from "../../../../../physics/itemPredicates";
 import { blockSizePx } from "../../../../../physics/mechanicsConstants";
 import { roomJsonFloorsExtent } from "../../../../../render/room/roomRenderExtent";
 import { roomGridSizeXY } from "./mapConstants";

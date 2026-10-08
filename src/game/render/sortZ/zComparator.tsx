@@ -14,7 +14,7 @@ import {
 } from "../renderBox/makeItemRenderBoxAtCameraAngle";
 import { type DrawOrderBroadPhase } from "./DrawOrderBroadPhase";
 import { type DrawOrderComparable } from "./DrawOrderComparable";
-import { effectiveFixedZIndex } from "./fixedZIndexes";
+import { participatesInDrawOrder } from "./fixedZIndexes";
 import {
   ADJACENT_X,
   ADJACENT_Y,
@@ -100,8 +100,8 @@ export const zComparator = (
     // fixed-z-index items (including walls hidden at this angle) don't
     // participate in z-ordering - this is THE one way to take an item out of
     // z-sorting for efficiency.
-    effectiveFixedZIndex(a, quarterAngle) !== undefined ||
-    effectiveFixedZIndex(b, quarterAngle) !== undefined
+    !participatesInDrawOrder(a, quarterAngle) ||
+    !participatesInDrawOrder(b, quarterAngle)
   ) {
     return 0;
   }

@@ -181,6 +181,119 @@ test("activated:after-player-near", () => {
   expect(itemState<"monster">(gameState, "monster").activated).toBe(false);
 });
 
+test.for([
+  { activated: "after-player-near", wakes: true },
+  { activated: "off", wakes: false },
+] as const)(
+  "a cyberman set to activate $activated, approached by the player, wakes and disables the toaster it stands on: $wakes",
+  ({ activated, wakes }) => {
+    const gameState = setUpBasicGame({
+      firstRoomItems: {
+        heels: {
+          type: "player",
+          position: { x: 0, y: 0, z: 0 },
+          config: {
+            which: "heels",
+          },
+        },
+        toaster: {
+          type: "deadlyBlock",
+          position: { x: 4, y: 2, z: 0 },
+          config: {
+            style: "toaster",
+          },
+        },
+        monster: {
+          type: "monster",
+          position: { x: 4, y: 2, z: 1 },
+          config: {
+            which: "cyberman",
+            activated,
+            movement: "towards-on-shortest-axis-xy4",
+            startDirection: "left",
+          },
+        },
+      },
+    });
+
+    // walk past the cyberman, coming near it:
+    playGameThrough(gameState, {
+      setupInitialInput(mockInputStateTracker) {
+        mockInputStateTracker.mockDirectionPressed = "left";
+      },
+      until: 3_000,
+    });
+
+    expect({
+      activated: itemState<"monster">(gameState, "monster").activated,
+      toasterDisabled: itemState<"deadlyBlock">(gameState, "toaster").disabled,
+    }).toEqual({ activated: wakes, toasterDisabled: wakes });
+  },
+);
+
+test.for(["cyberman", "dalek"] as const)(
+  "a %s woken by a switch disables the toaster it stands on only if it is a cyberman",
+  (which) => {
+    const gameState = setUpBasicGame({
+      firstRoomItems: {
+        heels: {
+          type: "player",
+          position: { x: 0, y: 0, z: 0 },
+          config: {
+            which: "heels",
+          },
+        },
+        toaster: {
+          type: "deadlyBlock",
+          position: { x: 4, y: 4, z: 0 },
+          config: {
+            style: "toaster",
+          },
+        },
+        monster: {
+          type: "monster",
+          position: { x: 4, y: 4, z: 1 },
+          config:
+            which === "cyberman" ?
+              {
+                which: "cyberman",
+                activated: "off",
+                movement: "towards-on-shortest-axis-xy4",
+                startDirection: "left",
+              }
+            : {
+                which: "dalek",
+                activated: "off",
+                movement: "patrol-randomly-diagonal",
+              },
+        },
+        switch: {
+          type: "switch",
+          position: { x: 2, y: 0, z: 0 },
+          config: {
+            type: "in-room",
+            initialSetting: "right",
+            modifies: [{ expectType: "monster", activates: true }],
+          },
+        },
+      },
+    });
+
+    playGameThrough(gameState, {
+      setupInitialInput(mockInputStateTracker) {
+        mockInputStateTracker.mockDirectionPressed = "left";
+      },
+      until(gameState) {
+        return itemState<"monster">(gameState, "monster").activated;
+      },
+    });
+
+    expect(itemState<"deadlyBlock">(gameState, "toaster").disabled).toBe(
+      which === "cyberman",
+    );
+  },
+);
+
 test.for([1, 2] as const)(
   "monster can walk onto the player and player loses a life (walking from block height %i)",
   (walkFromHeight) => {

@@ -1,6 +1,8 @@
 import { bench, describe } from "vitest";
 
+import { itemBehaviourKey } from "../../../model/ItemInPlay";
 import { cameraAngleBase } from "../../../utils/vectors/cameraAngleVectors";
+import { ItemBehaviour } from "../../itemBehaviours/ItemBehaviour";
 import { blockSizePx } from "../../physics/mechanicsConstants";
 import { type RenderBox } from "../renderBox/makeItemRenderBoxAtCameraAngle";
 import { makeLcg } from "./__test__/makeLcg";
@@ -25,6 +27,7 @@ const consumeCandidatePairs = <Item>(broadPhase: {
 
 type BenchItem = {
   id: string;
+  [itemBehaviourKey]: ItemBehaviour;
   state: {
     box: {
       x: number;
@@ -106,6 +109,7 @@ const makeItems = ({ itemCount, roomBlocks }: Scenario): Set<BenchItem> => {
     const shape = shapeInBlocksForIndex(i);
     items.add({
       id: `item-${i}`,
+      [itemBehaviourKey]: new ItemBehaviour(),
       state: {
         box: {
           // on the block grid, anywhere the footprint fits inside the room:

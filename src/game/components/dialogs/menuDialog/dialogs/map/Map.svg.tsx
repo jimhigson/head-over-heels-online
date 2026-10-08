@@ -2,6 +2,7 @@ import { type FunctionComponent } from "preact";
 import { Suspense } from "preact/compat";
 import { type ValueOf } from "type-fest";
 
+import { type PlayableItem } from "../../../../../../model/ItemInPlayNarrowedUnions";
 import { findSubRoomForItem } from "../../../../../../model/map/itemIsInSubRoom";
 import {
   type CharacterName,
@@ -9,7 +10,6 @@ import {
 } from "../../../../../../model/modelTypes";
 import { getRoomItem } from "../../../../../../model/RoomState";
 import { type CharacterRooms } from "../../../../../gameState/GameState";
-import { type PlayableItem } from "../../../../../physics/itemPredicates";
 import { lowestRoomIdOfArea } from "./lowestRoomIdOfArea";
 import { MapBackground } from "./MapBackground";
 import { mapSvgMarginX, mapSvgMarginY } from "./mapConstants";

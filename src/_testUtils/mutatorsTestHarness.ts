@@ -1,6 +1,5 @@
 import { expect, vi } from "vitest";
 
-import { type ItemTypeUnion } from "../_generated/types/ItemInPlayUnion";
 import {
   selectCurrentPlayableItem,
   selectHeelsAbilities,
@@ -19,7 +18,6 @@ import { removeStandingOn } from "../game/gameState/mutators/standingOn/removeSt
 import { setStandingOnWithoutRemovingOldFirst } from "../game/gameState/mutators/standingOn/setStandingOnWithoutRemovingOldFirst";
 import { swopPlayables } from "../game/gameState/mutators/swopPlayables";
 import { updateItemPosition } from "../game/gameState/mutators/updateItemBox";
-import { type PortableItemType } from "../game/physics/itemPredicates";
 import { blockSizePx } from "../game/physics/mechanicsConstants";
 import { type ItemInPlay } from "../model/ItemInPlay";
 import { type PlayableActionState } from "../model/ItemStateMap";
@@ -394,11 +392,7 @@ export const mutatorsTestHarness = () => {
           },
           room!.roomJson,
         );
-        heelsAbilities.carrying = carrying as ItemTypeUnion<
-          PortableItemType,
-          TestCampaignRoomId,
-          string
-        >;
+        heelsAbilities.carrying = carrying;
       }
     },
     expectPlayableToBeStoodAtPortal<R extends TestCampaignRoomId>(

@@ -1,6 +1,9 @@
 import { bench } from "vitest";
 
-import { buildBeamScenario, castOnce } from "./scenario";
+import {
+  buildBeamScenario,
+  castOnce,
+} from "../../../../_testUtils/buildBeamScenario";
 
 /*
 Casts the whole beam path (2-row lamp, 3 reflections + a partial-reflection

@@ -1,8 +1,10 @@
 import { describe, expect, test } from "vitest";
 
+import { itemBehaviourKey } from "../../../model/ItemInPlay";
 import { Graph } from "../../../utils/graph/Graph";
 import { cameraAngleBase } from "../../../utils/vectors/cameraAngleVectors";
 import { collisionItemWithIndex } from "../../collision/aabbCollision";
+import { ItemBehaviour } from "../../itemBehaviours/ItemBehaviour";
 import { SpatialIndex } from "../../physics/gridSpace/SpatialIndex";
 import { type RenderBox } from "../renderBox/makeItemRenderBoxAtCameraAngle";
 import { populatedBroadPhase } from "./__test__/populatedBroadPhase";
@@ -49,18 +51,22 @@ test("detects behind in x", () => {
   const { set } = makeItems({
     1: {
       id: "1",
+      [itemBehaviourKey]: new ItemBehaviour(),
       state: { box: { x: 0, y: 0, z: 0, xd: 10, yd: 10, zd: 10 } },
     },
     2: {
       id: "2",
+      [itemBehaviourKey]: new ItemBehaviour(),
       state: { box: { x: 10, y: 0, z: 0, xd: 10, yd: 10, zd: 10 } },
     },
     3: {
       id: "3",
+      [itemBehaviourKey]: new ItemBehaviour(),
       state: { box: { x: 20, y: 0, z: 0, xd: 10, yd: 10, zd: 10 } },
     },
     4: {
       id: "4",
+      [itemBehaviourKey]: new ItemBehaviour(),
       state: { box: { x: 30, y: 0, z: 0, xd: 10, yd: 10, zd: 10 } },
     },
   });
@@ -85,18 +91,22 @@ test("detects behind in y", () => {
   const { set } = makeItems({
     1: {
       id: "1",
+      [itemBehaviourKey]: new ItemBehaviour(),
       state: { box: { x: 0, y: 0, z: 0, xd: 10, yd: 10, zd: 10 } },
     },
     2: {
       id: "2",
+      [itemBehaviourKey]: new ItemBehaviour(),
       state: { box: { x: 0, y: 10, z: 0, xd: 10, yd: 10, zd: 10 } },
     },
     3: {
       id: "3",
+      [itemBehaviourKey]: new ItemBehaviour(),
       state: { box: { x: 0, y: 20, z: 0, xd: 10, yd: 10, zd: 10 } },
     },
     4: {
       id: "4",
+      [itemBehaviourKey]: new ItemBehaviour(),
       state: { box: { x: 0, y: 30, z: 0, xd: 10, yd: 10, zd: 10 } },
     },
   });
@@ -121,18 +131,22 @@ test("detects behind in z (inverted from x and y - higher is in front)", () => {
   const { set } = makeItems({
     1: {
       id: "1",
+      [itemBehaviourKey]: new ItemBehaviour(),
       state: { box: { x: 0, y: 0, z: 0, xd: 10, yd: 10, zd: 10 } },
     },
     2: {
       id: "2",
+      [itemBehaviourKey]: new ItemBehaviour(),
       state: { box: { x: 0, y: 0, z: 10, xd: 10, yd: 10, zd: 10 } },
     },
     3: {
       id: "3",
+      [itemBehaviourKey]: new ItemBehaviour(),
       state: { box: { x: 0, y: 0, z: 20, xd: 10, yd: 10, zd: 10 } },
     },
     4: {
       id: "4",
+      [itemBehaviourKey]: new ItemBehaviour(),
       state: { box: { x: 0, y: 0, z: 30, xd: 10, yd: 10, zd: 10 } },
     },
   });
@@ -158,10 +172,12 @@ test("detects as in front if on top and set back while overlapping", () => {
   const { set } = makeItems({
     bottom: {
       id: "bottom",
+      [itemBehaviourKey]: new ItemBehaviour(),
       state: { box: { x: 0, y: 0, z: 0, xd: 10, yd: 10, zd: 10 } },
     },
     top: {
       id: "top",
+      [itemBehaviourKey]: new ItemBehaviour(),
       state: { box: { x: 9, y: 9, z: 10, xd: 10, yd: 10, zd: 10 } },
     },
   });
@@ -184,19 +200,23 @@ test("detects a tall item is front of two smaller items", () => {
   const { set } = makeItems({
     tallThinFront: {
       id: "tallThinFront",
+      [itemBehaviourKey]: new ItemBehaviour(),
       state: { box: { x: 0, y: 0, z: 0, xd: 1, yd: 0, zd: 10 } },
     },
     smallerTop: {
       id: "smallerTop",
+      [itemBehaviourKey]: new ItemBehaviour(),
       state: { box: { x: 0, y: 0, z: 9, xd: 1, yd: 1, zd: 1 } },
     },
     smallerBottom: {
       id: "smallerBottom",
+      [itemBehaviourKey]: new ItemBehaviour(),
       state: { box: { x: 0, y: 0, z: 0, xd: 1, yd: 1, zd: 1 } },
     },
     // should be ignored for the results:
     unrelatedFarAway: {
       id: "unrelatedFarAway",
+      [itemBehaviourKey]: new ItemBehaviour(),
       state: { box: { x: 20, y: 0, z: 0, xd: 1, yd: 1, zd: 1 } },
     },
   });
@@ -219,18 +239,22 @@ test("a rebuild after items move reflects their new positions", () => {
   const { set, items } = makeItems({
     1: {
       id: "1",
+      [itemBehaviourKey]: new ItemBehaviour(),
       state: { box: { x: 0, y: 0, z: 0, xd: 10, yd: 10, zd: 10 } },
     },
     2: {
       id: "2",
+      [itemBehaviourKey]: new ItemBehaviour(),
       state: { box: { x: 10, y: 0, z: 0, xd: 10, yd: 10, zd: 10 } },
     },
     3: {
       id: "3",
+      [itemBehaviourKey]: new ItemBehaviour(),
       state: { box: { x: 20, y: 0, z: 0, xd: 10, yd: 10, zd: 10 } },
     },
     4: {
       id: "4",
+      [itemBehaviourKey]: new ItemBehaviour(),
       state: { box: { x: 30, y: 0, z: 0, xd: 10, yd: 10, zd: 10 } },
     },
   });
@@ -270,14 +294,17 @@ test("an item moved clear of the others has no edges either way", () => {
   const { set, items } = makeItems({
     c: {
       id: "c",
+      [itemBehaviourKey]: new ItemBehaviour(),
       state: { box: { x: 0, y: 0, z: 20, xd: 10, yd: 10, zd: 10 } },
     },
     b: {
       id: "b",
+      [itemBehaviourKey]: new ItemBehaviour(),
       state: { box: { x: 10, y: 10, z: 10, xd: 10, yd: 10, zd: 10 } },
     },
     a: {
       id: "a",
+      [itemBehaviourKey]: new ItemBehaviour(),
       state: { box: { x: 20, y: 20, z: 0, xd: 10, yd: 10, zd: 10 } },
     },
   });
@@ -316,14 +343,17 @@ test("a rebuild of items that no longer overlap yields no edges", () => {
   const { set, items } = makeItems({
     c: {
       id: "c",
+      [itemBehaviourKey]: new ItemBehaviour(),
       state: { box: { x: 0, y: 0, z: 0, xd: 10, yd: 10, zd: 10 } },
     },
     b: {
       id: "b",
+      [itemBehaviourKey]: new ItemBehaviour(),
       state: { box: { x: 10, y: 10, z: 0, xd: 10, yd: 10, zd: 10 } },
     },
     a: {
       id: "a",
+      [itemBehaviourKey]: new ItemBehaviour(),
       state: { box: { x: 20, y: 20, z: 0, xd: 10, yd: 10, zd: 10 } },
     },
   });
@@ -373,14 +403,17 @@ describe("cyclic dependencies", () => {
     const { set } = makeItems({
       heels: {
         id: "heels",
+        [itemBehaviourKey]: new ItemBehaviour(),
         state: { box: { x: 5, y: 8, z: 10, xd: 10, yd: 10, zd: 10 } },
       },
       cube: {
         id: "cube",
+        [itemBehaviourKey]: new ItemBehaviour(),
         state: { box: { x: 0, y: 10, z: 0, xd: 5, yd: 5, zd: 10 } },
       },
       conveyor: {
         id: "conveyor",
+        [itemBehaviourKey]: new ItemBehaviour(),
         state: { box: { x: 0, y: 0, z: 0, xd: 10, yd: 10, zd: 10 } },
       },
     });
@@ -396,6 +429,7 @@ describe("cyclic dependencies", () => {
     const { set, items } = makeItems({
       pushableBlock: {
         id: "pushableBlock",
+        [itemBehaviourKey]: new ItemBehaviour(),
         state: {
           box: {
             x: 32,
@@ -409,6 +443,7 @@ describe("cyclic dependencies", () => {
       },
       monster: {
         id: "monster",
+        [itemBehaviourKey]: new ItemBehaviour(),
         state: {
           box: {
             x: 32.5,
@@ -422,6 +457,7 @@ describe("cyclic dependencies", () => {
       },
       pickup: {
         id: "pickup",
+        [itemBehaviourKey]: new ItemBehaviour(),
         state: {
           box: {
             x: 47.9,

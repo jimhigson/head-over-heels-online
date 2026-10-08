@@ -17,10 +17,7 @@ import {
 } from "../../physics/mechanicsConstants";
 import { projectWorldXyzToScreenXy } from "../projections";
 import { makeItemRenderBoxAtCameraAngle } from "../renderBox/makeItemRenderBoxAtCameraAngle";
-import {
-  effectiveFixedZIndex,
-  nonRenderingItemFixedZIndex,
-} from "../sortZ/fixedZIndexes";
+import { participatesInDrawOrder } from "../sortZ/fixedZIndexes";
 
 /**
  * Just a fudge to keep scrolling in the same place after wall render boxes got a bit taller.
@@ -145,9 +142,7 @@ export const roomRenderExtent = <
       // impact scrolling, but is being left to keep scrolling changes
       // out of the current work - a future item should be raised to deal
       // with them separately to keep work isolated to one change at once
-      if (
-        effectiveFixedZIndex(item, cameraAngle) === nonRenderingItemFixedZIndex
-      ) {
+      if (!participatesInDrawOrder(item, cameraAngle)) {
         continue;
       }
 

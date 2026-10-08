@@ -1,10 +1,8 @@
 import { type Container, type RenderLayer } from "pixi.js";
 
 import { type ItemTypeUnion } from "../../_generated/types/ItemInPlayUnion";
-import {
-  type ItemInPlayType,
-  type UnionOfAllItemInPlayTypes,
-} from "../../model/ItemInPlay";
+import { type ItemInPlayType } from "../../model/ItemInPlay";
+import { type UnionOfAllItemInPlayTypes } from "../../model/ItemInPlayNarrowedUnions";
 import { type RoomState } from "../../model/RoomState";
 import { type Graph } from "../../utils/graph/Graph";
 import { type ItemRenderPipeline } from "./item/itemRender/createItemRenderer";

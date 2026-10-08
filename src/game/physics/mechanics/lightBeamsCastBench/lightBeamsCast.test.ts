@@ -1,6 +1,9 @@
 import { expect, test } from "vitest";
 
-import { beamItemsSnapshot, buildBeamScenario } from "./scenario";
+import {
+  beamItemsSnapshot,
+  buildBeamScenario,
+} from "../../../../_testUtils/buildBeamScenario";
 
 /**
  * Snapshot of the beam items the demanding bench scenario casts - a precise

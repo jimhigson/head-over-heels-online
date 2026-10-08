@@ -2,14 +2,24 @@ import { expect, test } from "vitest";
 
 import { campaign } from "../../_generated/originalCampaign/campaign";
 import { type OriginalCampaignRoomId } from "../../_generated/originalCampaign/OriginalCampaignRoomId";
-import { type Progression, roomSpatialIndexKey } from "../../model/RoomState";
+import blacktooth33v25 from "../../../e2e/fixtures/saves/v25/blacktooth33.json";
+import bookworld21v25 from "../../../e2e/fixtures/saves/v25/bookworld21.json";
+import {
+  type Progression,
+  roomItemsIterable,
+  roomSpatialIndexKey,
+} from "../../model/RoomState";
 import { noPlanetsLiberated } from "../../store/slices/gameInPlay/gameInPlaySlice";
 import { badJsonClone } from "../../utils/badJsonClone";
+import { valuesIter } from "../../utils/entries";
 import { type HudInputState } from "../input/hudInputState";
 import { InputStateTracker } from "../input/InputStateTracker";
 import { loadGameState } from "./loadGameState";
 import { loadPlayer } from "./loadRoom/loadPlayer";
-import { type UnindexedRoomState } from "./saving/SavedGameState";
+import {
+  type SavedGame,
+  type UnindexedRoomState,
+} from "./saving/SavedGameState";
 
 test("if there is a saved game with both characters in the same room, only load one copy of that room", () => {
   const savedRoom: UnindexedRoomState<OriginalCampaignRoomId, string> = {
@@ -94,4 +104,66 @@ test("if there is a saved game with both characters in the same room, only load 
   expect
     .soft(loadedGameState.characterRooms.head![roomSpatialIndexKey])
     .toBeDefined();
+});
+
+/** the shape of a committed e2e save fixture, as far as these tests read it */
+type SaveFixture = {
+  localStorage: {
+    "persist:hohol/savedGames": {
+      saves: Record<string, SavedGame<OriginalCampaignRoomId>>;
+    };
+  };
+};
+
+const loadedRoomItemsFromFixture = (
+  /** a save the game wrote at an older version */
+  fixture: SaveFixture,
+) => {
+  const [savedGame] = Object.values(
+    fixture.localStorage["persist:hohol/savedGames"].saves,
+  );
+  const loadedGameState = loadGameState({
+    campaign,
+    inputStateTracker: new InputStateTracker(new Map(), {} as HudInputState),
+    savedGame,
+  });
+  return valuesIter(loadedGameState.characterRooms)
+    .flatMap((room) => roomItemsIterable(room.items))
+    .toArray();
+};
+
+// v25 saves mark the item Heels would pick up next on the item itself:
+test.for([
+  ["blacktooth33", blacktooth33v25],
+  ["bookworld21", bookworld21v25],
+] as const)(
+  "an old save (%s) loads with no item marking itself as next to pick up",
+  ([, fixture]) => {
+    const itemsMarkingPickUpNext = loadedRoomItemsFromFixture(
+      fixture as unknown as SaveFixture,
+    ).filter((item) => "wouldPickUpNext" in item.state);
+
+    expect(itemsMarkingPickUpNext).toEqual([]);
+  },
+);
+
+test("an old save loads Heels with nothing to pick up next", () => {
+  const heelsWouldPickUpNextItemIds = loadedRoomItemsFromFixture(
+    blacktooth33v25 as unknown as SaveFixture,
+  )
+    .filter((item) => item.type === "heels")
+    .map((heels) => heels.state.wouldPickUpNextItemId);
+
+  expect(heelsWouldPickUpNextItemIds).toEqual([null]);
+});
+
+test("old saves of monsters load with their touch timing initialised", () => {
+  const monsterDurationsOfTouch = loadedRoomItemsFromFixture(
+    blacktooth33v25 as unknown as SaveFixture,
+  )
+    .filter((item) => item.type === "monster")
+    .map((monster) => monster.state.durationOfTouch);
+
+  // the save has a cyberman and a dalek:
+  expect(monsterDurationsOfTouch).toEqual([0, 0]);
 });

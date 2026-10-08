@@ -1,6 +1,4 @@
 import { roomItemsIterable, type RoomState } from "../../../model/RoomState";
-import { isHushPuppy } from "../../physics/itemPredicates";
-import { type GameState } from "../GameState";
 import { makeItemFadeOut } from "./makeItemFadeOut";
 
 export const removeHushPuppiesFromRoom = <
@@ -8,11 +6,12 @@ export const removeHushPuppiesFromRoom = <
   RoomItemId extends string,
 >(
   room: RoomState<RoomId, RoomItemId>,
-  gameState: GameState<RoomId>,
 ) => {
-  const hushPuppyInRoomIter = roomItemsIterable(room.items).filter(isHushPuppy);
+  const hushPuppyInRoomIter = roomItemsIterable(room.items).filter(
+    (item) => item.type === "hushPuppy",
+  );
   // hush puppies don't like head:
   for (const hushPuppy of hushPuppyInRoomIter) {
-    makeItemFadeOut({ touchedItem: hushPuppy, gameState, room });
+    makeItemFadeOut({ touchedItem: hushPuppy, room });
   }
 };

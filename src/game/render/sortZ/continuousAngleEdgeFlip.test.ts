@@ -1,7 +1,9 @@
 import { expect, test } from "vitest";
 
+import { itemBehaviourKey } from "../../../model/ItemInPlay";
 import { Graph } from "../../../utils/graph/Graph";
 import { type Xy } from "../../../utils/vectors/vectors";
+import { ItemBehaviour } from "../../itemBehaviours/ItemBehaviour";
 import { type RenderBox } from "../renderBox/makeItemRenderBoxAtCameraAngle";
 import { graphEdgeStrings } from "./__test__/graphEdgeStrings";
 import { populatedBroadPhase } from "./__test__/populatedBroadPhase";
@@ -30,10 +32,12 @@ type FlipItem = DrawOrderComparable & { id: string };
 
 const a: FlipItem = {
   id: "a",
+  [itemBehaviourKey]: new ItemBehaviour(),
   state: { box: { x: 0, y: 0, z: 0, xd: 1, yd: 1, zd: 1 } },
 };
 const b: FlipItem = {
   id: "b",
+  [itemBehaviourKey]: new ItemBehaviour(),
   state: { box: { x: 0.6, y: 0.4, z: 0, xd: 1, yd: 1, zd: 1 } },
 };
 

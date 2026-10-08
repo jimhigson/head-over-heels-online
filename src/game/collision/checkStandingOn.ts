@@ -1,9 +1,12 @@
 import { type WritableDeep } from "type-fest";
 
-import { type UnionOfAllItemInPlayTypes } from "../../model/ItemInPlay";
+import { itemBehaviourKey } from "../../model/ItemInPlay";
+import {
+  type FreeItem,
+  type UnionOfAllItemInPlayTypes,
+} from "../../model/ItemInPlayNarrowedUnions";
 import { epsilon } from "../../utils/epsilon";
 import { collisionsPriorityComparator } from "../physics/collisionsOrder";
-import { type FreeItem, isSolid } from "../physics/itemPredicates";
 import { type CollideableItem, collision2Items } from "./aabbCollision";
 import { itemXyOverlapArea } from "./xyRectangleOverlap";
 
@@ -54,7 +57,12 @@ export const spatiallyCheckStandingOn = <
   */
   zOverlapAllowed: number = 0.001,
 ): boolean => {
-  if (!isSolid(itemMaybeBeingStoodOn, itemMaybeStanding)) {
+  if (
+    itemMaybeBeingStoodOn[itemBehaviourKey].isNonSolid(
+      itemMaybeBeingStoodOn,
+      itemMaybeStanding,
+    )
+  ) {
     return false;
   }
 

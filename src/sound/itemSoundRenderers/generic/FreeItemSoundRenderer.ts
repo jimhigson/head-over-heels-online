@@ -1,8 +1,8 @@
-import { type FreeItemTypes } from "../../../game/physics/itemPredicates";
 import {
   itemMovedSinceRendered,
   type ItemTickContext,
 } from "../../../game/render/ItemRenderContexts";
+import { type FreeItemTypes } from "../../../model/ItemInPlayNarrowedUnions";
 import { keysIter } from "../../../utils/entries";
 import { isEmpty } from "../../../utils/iterators/isEmpty";
 import { audioCtx } from "../../audioCtx";

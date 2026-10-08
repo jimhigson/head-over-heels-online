@@ -1,4 +1,9 @@
-import { type UnionOfAllItemInPlayTypes } from "../../../model/ItemInPlay";
+import { itemBehaviourKey } from "../../../model/ItemInPlay";
+import {
+  isFreeItem,
+  isSlidingItem,
+  type UnionOfAllItemInPlayTypes,
+} from "../../../model/ItemInPlayNarrowedUnions";
 import { roomSpatialIndexKey, type RoomState } from "../../../model/RoomState";
 import { stoodOnItem } from "../../../model/stoodOnItemsLookup";
 import { veryClose } from "../../../utils/epsilon";
@@ -21,15 +26,7 @@ import { removeStandingOn } from "../../gameState/mutators/standingOn/removeStan
 import { setStandingOnWithoutRemovingOldFirst } from "../../gameState/mutators/standingOn/setStandingOnWithoutRemovingOldFirst";
 import { updateItemPosition } from "../../gameState/mutators/updateItemBox";
 import { sortObstaclesAboutPriorityAndVector } from "../collisionsOrder";
-import { type handleItemsTouchingItems } from "../handleTouch/handleItemsTouchingItems";
-import {
-  isFreeItem,
-  isLift,
-  isPushable,
-  isSlidingItem,
-  isSolid,
-  isStandable,
-} from "../itemPredicates";
+import { handleDisappearingOnTouch } from "../handleTouch/handleDisappearingOnTouch";
 import { maxPushRecursionDepth } from "../mechanicsConstants";
 import { mtv } from "../mtv";
 import { recordActedOnBy, recordCollision } from "../recordActedOnBy";
@@ -65,7 +62,10 @@ type MoveItemOptions<RoomId extends string, RoomItemId extends string> = {
 
   recursionDepth?: number;
 
-  onTouch?: typeof handleItemsTouchingItems;
+  /**
+   * whether the items touched while moving react to the touch
+   */
+  handleTouches: boolean;
 
   /**
    * the nodes we previously visited on the path down the tree to get to here.
@@ -103,9 +103,10 @@ export const moveItem = <RoomId extends string, RoomItemId extends string>({
   gameState,
   room,
   deltaMS,
-  onTouch,
+  handleTouches,
   visited = new Set(),
-  forceful = isLift(subjectItem) && visited.size === 0,
+  forceful = subjectItem[itemBehaviourKey].pushesForcefully &&
+    visited.size === 0,
   isHelpful,
 }: MoveItemOptions<RoomId, RoomItemId>): boolean => {
   if (xyzEqual(posDelta, originXyz)) {
@@ -133,7 +134,7 @@ export const moveItem = <RoomId extends string, RoomItemId extends string>({
       subjectItem.state.box,
       `\n By:`,
       ...visualiseVectorForLogs(posDelta),
-      onTouch ? "with touch handling callback" : "skipping touch handling",
+      handleTouches ? "with touch handling" : "skipping touch handling",
     );
   }
 
@@ -224,21 +225,25 @@ export const moveItem = <RoomId extends string, RoomItemId extends string>({
       posDelta.z !== 0,
     );
 
-    if (onTouch !== undefined && log) {
-      console.group(
-        `handling onTouch() callback for ${subjectItem.id} touching ${collidedWithItem.id}`,
-      );
-    }
-    onTouch?.({
-      movingItem: subjectItem,
-      touchedItem: collidedWithItem,
-      movementVector: subXyz(subjectItem.state.box, originalBox),
-      gameState,
-      deltaMS,
-      room,
-    });
-    if (onTouch !== undefined && log) {
-      console.groupEnd();
+    if (handleTouches) {
+      if (log) {
+        console.group(
+          `handling touch of ${subjectItem.id} touching ${collidedWithItem.id}`,
+        );
+      }
+      const touchEvent = {
+        movingItem: subjectItem,
+        touchedItem: collidedWithItem,
+        movementVector: subXyz(subjectItem.state.box, originalBox),
+        gameState,
+        deltaMS,
+        room,
+      };
+      subjectItem[itemBehaviourKey].onTouch(subjectItem, touchEvent, true);
+      handleDisappearingOnTouch(touchEvent);
+      if (log) {
+        console.groupEnd();
+      }
     }
 
     // the touch handler might have removed either item from the world - in this case we can move on or stop:
@@ -260,8 +265,14 @@ export const moveItem = <RoomId extends string, RoomItemId extends string>({
       continue;
     }
 
-    // check for solidness has to be done after onTouch since touching non-solid items can have side-effects
-    if (!isSolid(collidedWithItem, subjectItem) || !isSolid(subjectItem)) {
+    // check for solidness has to be done after touch handling since touching non-solid items can have side-effects
+    if (
+      collidedWithItem[itemBehaviourKey].isNonSolid(
+        collidedWithItem,
+        subjectItem,
+      ) ||
+      subjectItem[itemBehaviourKey].isNonSolid(subjectItem)
+    ) {
       if (log) {
         console.log(
           `moving ${subjectItem.id}`,
@@ -273,11 +284,9 @@ export const moveItem = <RoomId extends string, RoomItemId extends string>({
       continue;
     }
 
-    const collidedWithIsPushable = isPushable(
-      subjectItem,
-      collidedWithItem,
-      forceful,
-    );
+    const collidedWithIsPushable = collidedWithItem[
+      itemBehaviourKey
+    ].isPushableBy(collidedWithItem, subjectItem, forceful);
 
     const backingOffMtv = backingOffTranslationAfterCollision(
       subjectItem,
@@ -356,7 +365,7 @@ export const moveItem = <RoomId extends string, RoomItemId extends string>({
           deltaMS,
           forceful,
           visited: visited.add(subjectItem.id),
-          onTouch,
+          handleTouches,
         });
         // that recursive call is done now, and path is edited in-place to reduce gc
         visited.delete(subjectItem.id);
@@ -400,7 +409,10 @@ export const moveItem = <RoomId extends string, RoomItemId extends string>({
     // check if we landed on the item we collided with to take over the standingOn slot::
     if (
       isFreeItem(subjectItem) &&
-      isStandable(collidedWithItem) &&
+      collidedWithItem[itemBehaviourKey].isStandable(
+        collidedWithItem,
+        subjectItem,
+      ) &&
       // item is pushing us off it vertically - a good sign that we're standing on it
       backingOffMtv.z > 0 &&
       // have to be moving downwards to stand on something. It is possible to have a positive
@@ -492,7 +504,7 @@ export const moveItem = <RoomId extends string, RoomItemId extends string>({
         room,
         deltaMS,
         forceful: false,
-        onTouch,
+        handleTouches,
         isHelpful: true,
         // including self in the path of the recursive call here helps
         // cases like in #moonbase20/#moonbase23 (arrow rooms) where

@@ -1,19 +1,8 @@
-import { type UnionOfAllItemInPlayTypes } from "../../../../model/ItemInPlay";
+import { itemBehaviourKey } from "../../../../model/ItemInPlay";
+import { type UnionOfAllItemInPlayTypes } from "../../../../model/ItemInPlayNarrowedUnions";
 import { epsilon } from "../../../../utils/epsilon";
-import { type XyzBox } from "../../../../utils/vectors/vectors";
+import { type Xy } from "../../../../utils/vectors/vectors";
 import { type CollideableItem } from "../../../collision/aabbCollision";
-
-/**
- * a coverer that may carry a shadowOffset - its footprint for coverage is its position
- * shifted by the xy part of that offset (where its shadow falls). castsWholeShadows marks
- * which casters are eligible to wholly shadow an item beneath them.
- */
-export type Caster = Pick<
-  UnionOfAllItemInPlayTypes,
-  "castsWholeShadows" | "id" | "shadowOffset"
-> & {
-  state: { box: Readonly<XyzBox> };
-};
 
 // scratch reused across calls to avoid per-frame allocation in the render loop. Safe as
 // module state because these functions are only ever called synchronously and reset their
@@ -21,7 +10,11 @@ export type Caster = Pick<
 const xEdges: number[] = [];
 const yEdges: number[] = [];
 const ascending = (a: number, b: number) => a - b;
-const wholeShadowCasterPool: Caster[] = [];
+const wholeShadowCasterPool: UnionOfAllItemInPlayTypes[] = [];
+// the xy of each pooled caster's shadow offset - its footprint for coverage is
+// its position shifted by this (where its shadow falls):
+const wholeShadowCasterOffsetXs: number[] = [];
+const wholeShadowCasterOffsetYs: number[] = [];
 
 // a coverer must overhang the target on at least this many sides to count as a genuine
 // overhang rather than an item flush inside a same-level wall/stack:
@@ -40,7 +33,9 @@ const minOverhangSides = 2;
  */
 const unionOfFootprintsCoversTarget = (
   target: CollideableItem,
-  coverers: readonly Caster[],
+  coverers: readonly UnionOfAllItemInPlayTypes[],
+  covererOffsetXs: readonly number[],
+  covererOffsetYs: readonly number[],
   count: number,
 ): boolean => {
   const targetMinX = target.state.box.x;
@@ -63,8 +58,8 @@ const unionOfFootprintsCoversTarget = (
     const coverer = coverers[i];
     // the coverer's footprint falls where its shadow does - its position shifted by the xy
     // part of its shadowOffset:
-    const covererMinX = coverer.state.box.x + (coverer.shadowOffset?.x ?? 0);
-    const covererMinY = coverer.state.box.y + (coverer.shadowOffset?.y ?? 0);
+    const covererMinX = coverer.state.box.x + covererOffsetXs[i];
+    const covererMinY = coverer.state.box.y + covererOffsetYs[i];
     const covererMaxX = covererMinX + coverer.state.box.xd;
     const covererMaxY = covererMinY + coverer.state.box.yd;
 
@@ -136,10 +131,8 @@ const unionOfFootprintsCoversTarget = (
       let covered = false;
       for (let k = 0; k < count; k++) {
         const coverer = coverers[k];
-        const covererMinX =
-          coverer.state.box.x + (coverer.shadowOffset?.x ?? 0);
-        const covererMinY =
-          coverer.state.box.y + (coverer.shadowOffset?.y ?? 0);
+        const covererMinX = coverer.state.box.x + covererOffsetXs[k];
+        const covererMinY = coverer.state.box.y + covererOffsetYs[k];
         if (
           midX > covererMinX &&
           midX < covererMinX + coverer.state.box.xd &&
@@ -160,26 +153,37 @@ const unionOfFootprintsCoversTarget = (
 };
 
 /**
- * true iff the whole-shadow casters among `castersAbove` (those with castsWholeShadows)
- * together cover `receiver`'s footprint and overhang it on enough sides - ie the receiver is
- * wholly within their shadow and should be tinted as such. Non-whole-shadow casters are
- * ignored.
+ * true iff the whole-shadow casters among `castersAbove` (those whose behaviours cast
+ * whole shadows) together cover `receiver`'s footprint and overhang it on enough sides -
+ * ie the receiver is wholly within their shadow and should be tinted as such.
+ * Non-whole-shadow casters are ignored.
  */
 export const wholeShadowCastersCoverReceiver = (
-  castersAbove: Iterable<Caster>,
+  castersAbove: Iterable<UnionOfAllItemInPlayTypes>,
   receiver: CollideableItem,
+  cameraAngle: Xy,
 ): boolean => {
   let count = 0;
   for (const caster of castersAbove) {
-    if (caster.castsWholeShadows === true) {
+    const casterBehaviour = caster[itemBehaviourKey];
+    if (casterBehaviour.castsWholeShadows(caster, cameraAngle)) {
+      const shadowOffset = casterBehaviour.shadowOffset(caster);
       wholeShadowCasterPool[count] = caster;
+      wholeShadowCasterOffsetXs[count] = shadowOffset?.x ?? 0;
+      wholeShadowCasterOffsetYs[count] = shadowOffset?.y ?? 0;
       count++;
     }
   }
 
   const result =
     count > 0 &&
-    unionOfFootprintsCoversTarget(receiver, wholeShadowCasterPool, count);
+    unionOfFootprintsCoversTarget(
+      receiver,
+      wholeShadowCasterPool,
+      wholeShadowCasterOffsetXs,
+      wholeShadowCasterOffsetYs,
+      count,
+    );
 
   // free memory retainers on items:
   wholeShadowCasterPool.length = 0;

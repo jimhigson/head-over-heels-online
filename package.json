@@ -12,7 +12,8 @@
     "src/game/components/App.tsx",
     "src/store/store.ts",
     "src/editor/JsonRoomEditor/monaco-loader.ts",
-    "src/game/mainLoop/frameTiming/FrameTimingStats.ts"
+    "src/game/mainLoop/frameTiming/FrameTimingStats.ts",
+    "src/game/itemBehaviours/itemBehaviourCache.ts"
   ],
   "repository": {
     "type": "git",
@@ -60,7 +61,8 @@
     "font:editor": "vite --config scripts/font/editor/vite.config.ts",
     "iff2png": "./scripts/iff2png.sh",
     "watch:iff2png": "pnpm run iff2png && chokidar gfx/sprites.iff -c \"pnpm run iff2png\"",
-    "check:circDep": "dpdm -T --exit-code circular:1 src/main.tsx",
+    "check:circDep": "dpdm -T --no-tree --exit-code circular:1 --exclude \"node_modules\" src/main.tsx",
+    "circDep:tree": "dpdm -T --exclude \"node_modules\" src/main.tsx",
     "check:campaignVerification": "tsx scripts/checkCampaignVerification.ts",
     "gen:types": "./scripts/itemTypesFromTs.ts src/model/ItemInPlay.ts ItemInPlayType | sh scripts/oxlintFixStdin.sh src/_generated/types/ItemInPlayUnion.ts | prettier --parser typescript > src/_generated/types/ItemInPlayUnion.ts",
     "gen:roomSchema:ts": "./scripts/schema/flattenType.ts --file src/model/RoomJson.ts --type AnyRoomJson --output-type RoomJsonSchema | sh scripts/oxlintFixStdin.sh src/_generated/Room.flat.d.ts | prettier --parser typescript > src/_generated/Room.flat.d.ts",

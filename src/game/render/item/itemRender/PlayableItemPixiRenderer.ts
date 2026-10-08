@@ -1,5 +1,6 @@
 import { type AnimatedSprite, Container, type Filter } from "pixi.js";
 
+import { type PlayableItem } from "../../../../model/ItemInPlayNarrowedUnions";
 import { type PlayableActionState } from "../../../../model/ItemStateMap";
 import {
   type CharacterName,
@@ -29,7 +30,6 @@ import {
 } from "../../../../utils/vectors/vectors";
 import { playerDiedRecently } from "../../../gameState/gameStateSelectors/playerDiedRecently";
 import { playableHasShield } from "../../../gameState/gameStateSelectors/selectPickupAbilities";
-import { type PlayableItem } from "../../../physics/itemPredicates";
 import {
   afterDeathInvulnerabilityFlashPeriod,
   afterDeathInvulnerabilityFlashPhaseDuration,

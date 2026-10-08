@@ -1,4 +1,3 @@
-import { isJoystick } from "../../game/physics/itemPredicates";
 import { type ItemTickContext } from "../../game/render/ItemRenderContexts";
 import { keysIter } from "../../utils/entries";
 import { audioCtx } from "../audioCtx";
@@ -65,7 +64,7 @@ export class CharlesSoundRenderer implements ItemSoundRenderer<"charles"> {
 
     const controlledByJoystick =
       roomTime === roomTimeActedOn &&
-      keysIter(by).some((id) => isJoystick(items[id]));
+      keysIter(by).some((id) => items[id].type === "joystick");
 
     this.#servoBracketed(controlledByJoystick);
     this.#activatedBracketed(item.state.activated ?? true);

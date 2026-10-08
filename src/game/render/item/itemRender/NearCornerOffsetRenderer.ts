@@ -1,9 +1,10 @@
 import { Container } from "pixi.js";
 
 import {
+  itemBehaviourKey,
   type ItemInPlayType,
-  type UnionOfAllItemInPlayTypes,
 } from "../../../../model/ItemInPlay";
+import { type UnionOfAllItemInPlayTypes } from "../../../../model/ItemInPlayNarrowedUnions";
 import {
   isAtQuarterAngle,
   nearestQuarterAngle,
@@ -23,9 +24,7 @@ import {
   projectWorldXyzToScreenX,
   projectWorldXyzToScreenY,
 } from "../../projections";
-import { isCuboidWarpItem } from "./isCuboidWarpItem";
 import { type ItemChainPixiRenderer } from "./ItemPixiRenderer";
-import { itemTypesExemptFromNearCornerOffset } from "./itemTypesExemptFromNearCornerOffset";
 
 /**
  * the projected (screen px) near-corner offset at a point part-way through a
@@ -47,7 +46,7 @@ const transitionNearCornerOffsetXy = (
   /** eased progress 0..1 (hermiteEase of the transition's linear progress) */
   eased: number,
 ): Xy => {
-  if (itemTypesExemptFromNearCornerOffset.has(item.type)) {
+  if (item[itemBehaviourKey].isExemptFromNearCornerOffset) {
     return originXy;
   }
   const fromWorld = nearCornerOffsetWorldXyz(item, fromAngle);
@@ -79,7 +78,7 @@ const nearCornerOffsetGraphics = <T extends ItemInPlayType>(
   } = renderContext;
   const cameraQuarterAngle = nearestQuarterAngle(cameraAngle);
 
-  if (itemTypesExemptFromNearCornerOffset.has(item.type)) {
+  if (item[itemBehaviourKey].isExemptFromNearCornerOffset) {
     return graphics;
   }
 
@@ -126,7 +125,7 @@ export class NearCornerOffsetRenderer<
       wrappedRenderer.output,
     );
     this.#offsetContainer =
-      itemTypesExemptFromNearCornerOffset.has(renderContext.item.type) ?
+      renderContext.item[itemBehaviourKey].isExemptFromNearCornerOffset ?
         undefined
       : this.output;
     this.#appliedNearCornerAngle = nearestQuarterAngle(
@@ -168,7 +167,7 @@ export class NearCornerOffsetRenderer<
 
     // boxy items mid-rotation are positioned by the cuboid warp (which drives
     // the discrete layer-angle offset directly), so leave the offset alone:
-    if (midRotation && isCuboidWarpItem(item)) {
+    if (midRotation && item[itemBehaviourKey].isCuboidWarped(item)) {
       return;
     }
     const offsetContainer = this.#offsetContainer;

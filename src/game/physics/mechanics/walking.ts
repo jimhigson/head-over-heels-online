@@ -1,3 +1,5 @@
+import { itemBehaviourKey } from "../../../model/ItemInPlay";
+import { type PlayableItem } from "../../../model/ItemInPlayNarrowedUnions";
 import { type CharacterName } from "../../../model/modelTypes";
 import { type RoomState } from "../../../model/RoomState";
 import {
@@ -24,7 +26,6 @@ import { type GameState } from "../../gameState/GameState";
 import { fastStepsRemaining } from "../../gameState/gameStateSelectors/selectPickupAbilities";
 import { type PressStatus } from "../../input/InputStateTracker";
 import { currentQuarterCameraAngle } from "../../mainLoop/tickCameraTransition";
-import { isSpring, type PlayableItem } from "../itemPredicates";
 import { type Mechanic, type MechanicResult } from "../MechanicResult";
 import {
   heelsJumpForwardDecel,
@@ -230,14 +231,17 @@ const walkingImpl = <RoomId extends string, RoomItemId extends string>(
       const jumpDirectionXy = unitVector(
         xyEqual(walkVector, originXy) ? facing : walkVector,
       );
-      const isStandingOnSpring = isSpring(
-        stoodOnItem(effectivelyStandingOnItemId, room),
+      const effectivelyStandingOn = stoodOnItem(
+        effectivelyStandingOnItemId,
+        room,
       );
+      const isBoostedJump =
+        effectivelyStandingOn[itemBehaviourKey].jumpBoostPx > 0;
 
       // what fraction of maximum walking speed to apply forwards
       // while making this jump:
       const walkJumpFraction =
-        isStandingOnSpring ? 1 : heelsJumpForwardSpeedFraction;
+        isBoostedJump ? 1 : heelsJumpForwardSpeedFraction;
       return {
         movementType: "vel",
         vels: {

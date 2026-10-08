@@ -1,10 +1,10 @@
 import { type ItemTypeUnion } from "../../../_generated/types/ItemInPlayUnion";
+import { itemBehaviourKey } from "../../../model/ItemInPlay";
 import { type JsonItem } from "../../../model/json/JsonItem";
 import { type StoodOnBy } from "../../../model/StoodOnBy";
 import { wallTimes } from "../../../model/times";
 import { emptyObject } from "../../../utils/empty";
 import { hashXyzToNumber0to1 } from "../../../utils/maths/hashing";
-import { octantIndexOfDirection } from "../../../utils/vectors/octantIndexOfDirection" with { type: "macro" };
 import { unitVectors } from "../../../utils/vectors/unitVectors";
 import {
   addXyz,
@@ -13,25 +13,10 @@ import {
   scaleXyz,
 } from "../../../utils/vectors/vectors";
 import { multiplyBoundingBox } from "../../collision/multiplyBoundingBox";
+import { getBehaviourForItemTypeAndConfig } from "../../itemBehaviours/attachBehaviourToItem";
 import { blockSizePx, veryHighZ } from "../../physics/mechanicsConstants";
 import { blockXyzToFineXyz } from "../../render/projections";
-import { type ShadowCastSpriteOptions } from "../../render/ShadowCastSpriteOptions";
 import { defaultBaseState } from "./itemDefaultStates";
-
-/**
- * shadow textures baked for the wall's physical axis at the base angle; the
- * shadow renderer flips them when the camera rotates onto an odd quarter turn
- */
-const shadowWallY: ShadowCastSpriteOptions = Object.freeze({
-  textureId: `shadow.wall.d${octantIndexOfDirection("away")}`,
-  flipsOnOddQuarterCameraTurns: true,
-});
-
-const shadowWallX: ShadowCastSpriteOptions = Object.freeze({
-  textureId: `shadow.wall.d${octantIndexOfDirection("away")}`,
-  flipX: true,
-  flipsOnOddQuarterCameraTurns: true,
-});
 
 // can't take room height blocks times block height, or it is still possible to
 // jump over the wall in some cases in rooms without a ceiling portal.
@@ -89,24 +74,21 @@ export const loadWall = <RoomId extends string, RoomItemId extends string>(
     addXyz(position, outOfRoomShiftBlocks),
   );
 
+  // the json direction name becomes a unit vector in-play (the json stays a
+  // name):
+  const config = { ...jsonWall.config, direction: unitVectors[direction] };
   return {
     type: "wall",
     hash: hashXyzToNumber0to1(wallPosition),
     id: jsonItemId,
     jsonItemId,
-    // the json direction name becomes a unit vector in-play (the json stays a
-    // name):
-    config: { ...jsonWall.config, direction: unitVectors[direction] },
+    config,
+    [itemBehaviourKey]: getBehaviourForItemTypeAndConfig("wall", config),
     state: {
       ...defaultBaseState(),
       box: boxWithSize(wallPosition, aabb),
       // walls can never be stood on:
       stoodOnBy: emptyObject as StoodOnBy<RoomItemId>,
     },
-    shadowCastTexture: wallTangentAxis === "y" ? shadowWallY : shadowWallX,
-    // hidden (camera-facing) walls additionally cast their hint shadow while
-    // stood on - an angle-dependent behaviour supplied by
-    // castsShadowWhileStoodOnAtAngle at render time, not stored here:
-    castsShadowWhileStoodOn: false,
   };
 };

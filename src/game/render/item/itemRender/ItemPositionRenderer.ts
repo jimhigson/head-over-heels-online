@@ -1,6 +1,9 @@
 import { Container } from "pixi.js";
 
-import { type ItemInPlayType } from "../../../../model/ItemInPlay";
+import {
+  itemBehaviourKey,
+  type ItemInPlayType,
+} from "../../../../model/ItemInPlay";
 import { assignRoundedXy } from "../../../../utils/pixi/assignRoundedXy";
 import { isAtQuarterAngle } from "../../../../utils/vectors/cameraAngleVectors";
 import {
@@ -12,7 +15,6 @@ import {
   projectWorldXyzToScreenX,
   projectWorldXyzToScreenY,
 } from "../../projections";
-import { isCuboidWarpItem } from "./isCuboidWarpItem";
 import { type ItemChainPixiRenderer } from "./ItemPixiRenderer";
 
 /**
@@ -69,7 +71,10 @@ export class ItemPositionRenderer<
     // container at the item origin's EXACT (unrounded) projection - items
     // touching at a world corner keep that corner welded on screen through the
     // turn. (Non-boxy items and settled items fall through to rounded below.)
-    if (!isAtQuarterAngle(cameraAngle) && isCuboidWarpItem(item)) {
+    if (
+      !isAtQuarterAngle(cameraAngle) &&
+      item[itemBehaviourKey].isCuboidWarped(item)
+    ) {
       this.output.position.set(screenX, screenY);
       return;
     }
