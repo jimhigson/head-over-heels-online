@@ -1,10 +1,7 @@
 import { audioCtx } from "../audioCtx";
 import { type ItemSoundRenderContext } from "../ItemSoundRenderContext";
 import { type ItemSoundRenderer } from "../ItemSoundRenderer";
-import {
-  type BracketedSound,
-  createBracketedSound,
-} from "../soundUtils/createBracketedSound";
+import { BracketedSound } from "../soundUtils/BracketedSound";
 import { activationBracketedSoundOptions } from "./generic/activationBracketedSoundOptions";
 
 /**
@@ -20,18 +17,17 @@ export class LampSoundRenderer implements ItemSoundRenderer<"lamp"> {
 
   constructor(renderContext: ItemSoundRenderContext<"lamp">) {
     this.renderContext = renderContext;
-    this.#activatedBracketed = createBracketedSound(
+    this.#activatedBracketed = new BracketedSound(
       activationBracketedSoundOptions,
       this.output,
     );
   }
 
   tick() {
-    this.#activatedBracketed(this.renderContext.item.state.activated);
+    this.#activatedBracketed.tick(this.renderContext.item.state.activated);
   }
 
   destroy(): void {
-    // don't call #activatedBracketed(false) here — that would play the
-    // deactivation sound when leaving the room, not a real deactivation
+    this.#activatedBracketed.destroy();
   }
 }

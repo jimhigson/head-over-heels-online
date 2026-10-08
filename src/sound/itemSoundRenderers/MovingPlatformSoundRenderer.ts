@@ -2,10 +2,7 @@ import { type ItemTickContext } from "../../game/render/ItemRenderContexts";
 import { audioCtx } from "../audioCtx";
 import { type ItemSoundRenderContext } from "../ItemSoundRenderContext";
 import { type ItemSoundRenderer } from "../ItemSoundRenderer";
-import {
-  type BracketedSound,
-  createBracketedSound,
-} from "../soundUtils/createBracketedSound";
+import { BracketedSound } from "../soundUtils/BracketedSound";
 import { activationBracketedSoundOptions } from "./generic/activationBracketedSoundOptions";
 import { FreeItemSoundRenderer } from "./generic/FreeItemSoundRenderer";
 
@@ -28,7 +25,7 @@ export class MovingPlatformSoundRenderer implements ItemSoundRenderer<"movingPla
       pushed: null,
     });
     this.#freeItemSoundRenderer.output.connect(this.output);
-    this.#activatedBracketed = createBracketedSound(
+    this.#activatedBracketed = new BracketedSound(
       activationBracketedSoundOptions,
       this.output,
     );
@@ -36,7 +33,7 @@ export class MovingPlatformSoundRenderer implements ItemSoundRenderer<"movingPla
     this.#walkChannel = audioCtx.createGain();
     this.#walkChannel.gain.value = walkGain;
     this.#walkChannel.connect(this.output);
-    this.#walkBracketedSound = createBracketedSound(
+    this.#walkBracketedSound = new BracketedSound(
       {
         loop: {
           soundId: "lowerSmallMotorLoop",
@@ -57,15 +54,14 @@ export class MovingPlatformSoundRenderer implements ItemSoundRenderer<"movingPla
       },
     } = this;
 
-    this.#walkBracketedSound(activated);
-    this.#activatedBracketed(this.renderContext.item.state.activated);
+    this.#walkBracketedSound.tick(activated);
+    this.#activatedBracketed.tick(this.renderContext.item.state.activated);
     this.#freeItemSoundRenderer.tick(tickContext);
   }
 
   destroy(): void {
-    this.#walkBracketedSound(false);
-    // don't call #activatedBracketed(false) here — that would play the
-    // deactivation sound when leaving the room, not a real deactivation
+    this.#walkBracketedSound.destroy();
+    this.#activatedBracketed.destroy();
     this.#freeItemSoundRenderer.destroy();
   }
 }

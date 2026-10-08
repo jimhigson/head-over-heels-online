@@ -1,7 +1,7 @@
 import { type EmptyObject } from "type-fest";
 
 import { type ItemBehaviour } from "../game/itemBehaviours/ItemBehaviour";
-import { type BracketedSegmentOptions } from "../sound/soundUtils/createBracketedSound";
+import { type BracketedSegmentOptions } from "../sound/soundUtils/BracketedSound";
 import { type SceneryName } from "../sprites/planets";
 import { type Xy, type Xyz } from "../utils/vectors/vectors";
 import { type ItemState } from "./ItemState";

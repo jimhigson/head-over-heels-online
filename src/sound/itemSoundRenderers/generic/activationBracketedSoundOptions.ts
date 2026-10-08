@@ -1,11 +1,10 @@
-import { type CreateBracketedEventOptions } from "../../soundUtils/createBracketedSound";
+import { type BracketedSoundOptions } from "../../soundUtils/BracketedSound";
 
-export const activationBracketedSoundOptions: CreateBracketedEventOptions = {
+export const activationBracketedSoundOptions: BracketedSoundOptions = {
   start: {
     soundId: "activate",
     varyPlaybackRate: true,
     randomDelayMaxMs: 100,
   },
   stop: { soundId: "deactivate", randomDelayMaxMs: 100 },
-  noStartOnFirstFrame: true,
 };

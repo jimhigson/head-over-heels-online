@@ -3,10 +3,7 @@ import { isStoodOn } from "../../model/StoodOnBy";
 import { audioCtx } from "../audioCtx";
 import { type ItemSoundRenderContext } from "../ItemSoundRenderContext";
 import { type ItemSoundRenderer } from "../ItemSoundRenderer";
-import {
-  type BracketedSound,
-  createBracketedSound,
-} from "../soundUtils/createBracketedSound";
+import { BracketedSound } from "../soundUtils/BracketedSound";
 import { FreeItemSoundRenderer } from "./generic/FreeItemSoundRenderer";
 
 export class DrumSoundRenderer implements ItemSoundRenderer<"portableBlock"> {
@@ -19,7 +16,7 @@ export class DrumSoundRenderer implements ItemSoundRenderer<"portableBlock"> {
 
   constructor(renderContext: ItemSoundRenderContext<"portableBlock">) {
     this.renderContext = renderContext;
-    this.#stoodOnBracketedSound = createBracketedSound(
+    this.#stoodOnBracketedSound = new BracketedSound(
       { start: { soundId: "drum" } },
       this.output,
     );
@@ -38,12 +35,13 @@ export class DrumSoundRenderer implements ItemSoundRenderer<"portableBlock"> {
       },
     } = this;
 
-    this.#stoodOnBracketedSound(isStoodOn(stoodOnBy));
+    this.#stoodOnBracketedSound.tick(isStoodOn(stoodOnBy));
 
     this.#freeItemSoundRenderer.tick(tickContext);
   }
 
   destroy(): void {
+    this.#stoodOnBracketedSound.destroy();
     this.#freeItemSoundRenderer.destroy();
   }
 }

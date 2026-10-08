@@ -2,7 +2,7 @@ import { type ItemTickContext } from "../../game/render/ItemRenderContexts";
 import { audioCtx } from "../audioCtx";
 import { type ItemSoundRenderContext } from "../ItemSoundRenderContext";
 import { type ItemSoundRenderer } from "../ItemSoundRenderer";
-import { createBracketedSound } from "../soundUtils/createBracketedSound";
+import { BracketedSound } from "../soundUtils/BracketedSound";
 import { FreeItemSoundRenderer } from "./generic/FreeItemSoundRenderer";
 
 const pushedSound = {
@@ -13,7 +13,7 @@ const pushedSound = {
 export class BallSoundRenderer implements ItemSoundRenderer<"ball"> {
   public readonly output: GainNode = audioCtx.createGain();
 
-  #brackets = createBracketedSound(
+  #rollingBracketedSound = new BracketedSound(
     {
       loop: pushedSound,
     },
@@ -49,13 +49,13 @@ export class BallSoundRenderer implements ItemSoundRenderer<"ball"> {
     const rolling =
       (sliding.x !== 0 || sliding.y !== 0) && standingOnItemId !== null;
 
-    this.#brackets(rolling);
+    this.#rollingBracketedSound.tick(rolling);
 
     this.#freeItemSoundRenderer.tick(tickContext, rolling);
   }
 
   destroy(): void {
-    this.#brackets(false);
+    this.#rollingBracketedSound.destroy();
     this.#freeItemSoundRenderer.destroy();
   }
 }

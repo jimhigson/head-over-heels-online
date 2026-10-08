@@ -10,9 +10,8 @@ import { type ItemSoundRenderContext } from "../../ItemSoundRenderContext";
 import { type ItemSoundRenderer } from "../../ItemSoundRenderer";
 import {
   type BracketedSegmentOptions,
-  type BracketedSound,
-  createBracketedSound,
-} from "../../soundUtils/createBracketedSound";
+  BracketedSound,
+} from "../../soundUtils/BracketedSound";
 
 export type FreeItemSoundRendererConstructorOptions = {
   fall?: BracketedSegmentOptions;
@@ -87,7 +86,7 @@ export class FreeItemSoundRenderer implements ItemSoundRenderer<FreeItemTypes> {
       renderContext.item.state.collidedWith.roomTime;
     const fallChannel: GainNode = audioCtx.createGain();
     fallChannel.connect(this.output);
-    this.#fallBracketedSound = createBracketedSound(
+    this.#fallBracketedSound = new BracketedSound(
       { loop: options?.fall ?? defaultFallSoundOptions },
       fallChannel,
     );
@@ -97,11 +96,8 @@ export class FreeItemSoundRenderer implements ItemSoundRenderer<FreeItemTypes> {
     this.#standingOnBracketedSound =
       options?.standingOn === null ?
         undefined
-      : createBracketedSound(
-          {
-            start: options?.standingOn ?? defaultStandingOnSoundOptions,
-            noStartOnFirstFrame: true,
-          },
+      : new BracketedSound(
+          { start: options?.standingOn ?? defaultStandingOnSoundOptions },
           standingOnChannel,
         );
 
@@ -109,17 +105,14 @@ export class FreeItemSoundRenderer implements ItemSoundRenderer<FreeItemTypes> {
     collisionChannel.connect(this.output);
     this.#collisionBracketedSound =
       options?.collision &&
-      createBracketedSound(
-        { start: options.collision, noStartOnFirstFrame: true },
-        collisionChannel,
-      );
+      new BracketedSound({ start: options.collision }, collisionChannel);
 
     const pushedChannel: GainNode = audioCtx.createGain();
     pushedChannel.connect(this.output);
     this.#pushedBracketedSound =
       options?.pushed === null ?
         undefined
-      : createBracketedSound(
+      : new BracketedSound(
           { loop: options?.pushed ?? defaultPushedSoundOptions },
           pushedChannel,
         );
@@ -158,7 +151,7 @@ export class FreeItemSoundRenderer implements ItemSoundRenderer<FreeItemTypes> {
       const playFallSound =
         positionZ < currentPositionZ && velZ < 0 && standingOnItemId === null;
 
-      this.#fallBracketedSound(playFallSound);
+      this.#fallBracketedSound.tick(playFallSound);
 
       this.currentPositionZ = positionZ;
     }
@@ -175,14 +168,14 @@ export class FreeItemSoundRenderer implements ItemSoundRenderer<FreeItemTypes> {
         collidedSinceLastTick &&
         collidedWith[standingOnItemId];
 
-      this.#standingOnBracketedSound(landed);
+      this.#standingOnBracketedSound.tick(landed);
     }
 
     if (this.#collisionBracketedSound !== undefined) {
       const collidedWithSomething =
         collidedSinceLastTick && !isEmpty(keysIter(collidedWith));
 
-      this.#collisionBracketedSound(collidedWithSomething);
+      this.#collisionBracketedSound.tick(collidedWithSomething);
     }
 
     if (this.#pushedBracketedSound !== undefined) {
@@ -197,12 +190,14 @@ export class FreeItemSoundRenderer implements ItemSoundRenderer<FreeItemTypes> {
         // must be moving(!)
         itemMovedSinceRendered(item, tickContext);
 
-      this.#pushedBracketedSound(beingPushed);
+      this.#pushedBracketedSound.tick(beingPushed);
     }
   }
 
   destroy(): void {
-    this.#fallBracketedSound?.(false);
-    this.#pushedBracketedSound?.(false);
+    this.#fallBracketedSound?.destroy();
+    this.#standingOnBracketedSound?.destroy();
+    this.#collisionBracketedSound?.destroy();
+    this.#pushedBracketedSound?.destroy();
   }
 }

@@ -11,10 +11,9 @@ import { type ItemSoundRenderContext } from "../ItemSoundRenderContext";
 import { type ItemSoundRenderer } from "../ItemSoundRenderer";
 import {
   type BracketedSegmentOptions,
-  type BracketedSound,
-  type CreateBracketedEventOptions,
-  createBracketedSound,
-} from "../soundUtils/createBracketedSound";
+  BracketedSound,
+  type BracketedSoundOptions,
+} from "../soundUtils/BracketedSound";
 import { activationBracketedSoundOptions } from "./generic/activationBracketedSoundOptions";
 import { FreeItemSoundRenderer } from "./generic/FreeItemSoundRenderer";
 
@@ -22,7 +21,7 @@ type PerMonsterSounds = {
   [M in MonsterWhich]?: BracketedSegmentOptions;
 };
 type PerMonsterBracketedSoundOptions = {
-  [M in MonsterWhich]?: CreateBracketedEventOptions;
+  [M in MonsterWhich]?: BracketedSoundOptions;
 };
 
 const collisionSounds: PerMonsterSounds = {
@@ -96,7 +95,7 @@ export class MonsterSoundRenderer implements ItemSoundRenderer<"monster"> {
     this.#freeItemSoundRenderer.output.connect(this.output);
 
     if (turnaroundSounds[which] !== undefined) {
-      this.#turnaroundBracketed = createBracketedSound(
+      this.#turnaroundBracketed = new BracketedSound(
         {
           change: turnaroundSounds[which],
         },
@@ -104,13 +103,13 @@ export class MonsterSoundRenderer implements ItemSoundRenderer<"monster"> {
       );
     }
     if (movingSounds[which] !== undefined) {
-      this.#movingBracketed = createBracketedSound(
+      this.#movingBracketed = new BracketedSound(
         movingSounds[which],
         this.#spotChannel,
       );
     }
     if (ambientSounds[which] !== undefined) {
-      this.#ambientBracketed = createBracketedSound(
+      this.#ambientBracketed = new BracketedSound(
         {
           loop: ambientSounds[which],
         },
@@ -118,7 +117,7 @@ export class MonsterSoundRenderer implements ItemSoundRenderer<"monster"> {
       );
     }
 
-    this.#activatedBracketed = createBracketedSound(
+    this.#activatedBracketed = new BracketedSound(
       activationBracketedSoundOptions,
       this.#spotChannel,
     );
@@ -142,30 +141,29 @@ export class MonsterSoundRenderer implements ItemSoundRenderer<"monster"> {
         facing.x,
         facing.y,
       );
-      this.#turnaroundBracketed(facingIndexXy8);
+      this.#turnaroundBracketed.tick(facingIndexXy8);
     }
 
     if (this.#ambientBracketed) {
       const online = activated && !busyLickingDoughnutsOffFace;
-      this.#ambientBracketed(online);
+      this.#ambientBracketed.tick(online);
     }
 
-    this.#activatedBracketed(activated);
+    this.#activatedBracketed.tick(activated);
 
     const isWalking = !xyzEqual(walking, originXyz);
     if (this.#movingBracketed) {
-      this.#movingBracketed(isWalking);
+      this.#movingBracketed.tick(isWalking);
     }
 
     this.#freeItemSoundRenderer.tick(tickContext, isWalking);
   }
 
   destroy(): void {
-    // turn sounds off gracefully to avoid a click:
-    this.#ambientBracketed?.(false);
-    this.#movingBracketed?.(false);
-    // don't call #activatedBracketed(false) here — that would play the
-    // deactivation sound when leaving the room, not a real deactivation
+    this.#turnaroundBracketed?.destroy();
+    this.#ambientBracketed?.destroy();
+    this.#movingBracketed?.destroy();
+    this.#activatedBracketed.destroy();
     this.#freeItemSoundRenderer.destroy();
   }
 }

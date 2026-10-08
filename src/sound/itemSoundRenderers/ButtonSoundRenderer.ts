@@ -1,10 +1,7 @@
 import { audioCtx } from "../audioCtx";
 import { type ItemSoundRenderContext } from "../ItemSoundRenderContext";
 import { type ItemSoundRenderer } from "../ItemSoundRenderer";
-import {
-  type BracketedSound,
-  createBracketedSound,
-} from "../soundUtils/createBracketedSound";
+import { BracketedSound } from "../soundUtils/BracketedSound";
 
 export class ButtonSoundRenderer implements ItemSoundRenderer<"button"> {
   public readonly output: GainNode = audioCtx.createGain();
@@ -19,7 +16,7 @@ export class ButtonSoundRenderer implements ItemSoundRenderer<"button"> {
   constructor(renderContext: ItemSoundRenderContext<"button">) {
     this.renderContext = renderContext;
     this.#channelNode.connect(this.output);
-    this.#pressedBracketedSound = createBracketedSound(
+    this.#pressedBracketedSound = new BracketedSound(
       {
         start: { soundId: "buttonOn" },
         stop: { soundId: "buttonOff" },
@@ -37,8 +34,10 @@ export class ButtonSoundRenderer implements ItemSoundRenderer<"button"> {
       },
     } = this;
 
-    this.#pressedBracketedSound(pressed);
+    this.#pressedBracketedSound.tick(pressed);
   }
 
-  destroy(): void {}
+  destroy(): void {
+    this.#pressedBracketedSound.destroy();
+  }
 }
