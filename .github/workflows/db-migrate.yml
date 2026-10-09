@@ -1,11 +1,11 @@
 name: Apply DB migrations
 
 # Applies supabase/migrations to the hosted database with `supabase db push`, on
-# the SAME trigger as the production deploy: a push to the `production` branch
-# (which happens on each release - release published -> tag copied to production ->
-# deploy-production-branch-to-gh-pages.yml). Schema ships in lockstep with prod.
+# the SAME trigger as the production deploy (deploy-to-r2.yml): a published
+# release. Schema ships in lockstep with prod. A manual run applies the latest
+# release's migrations, never unreleased ones.
 #
-# Single shared db: staging (blockstack.dev, from main) uses the same database, so
+# Single shared db: blockstack.dev (from main) uses the same database, so
 # between a change merging to main and the next prod release it runs against the
 # not-yet-applied schema. Keep migrations backwards-compatible (see DEVELOPING.md).
 #
@@ -15,9 +15,8 @@ name: Apply DB migrations
 #   supabase migration repair --status applied 20260624072125
 
 on:
-  push:
-    branches: ["production"]
-    paths: ["supabase/migrations/**"]
+  release:
+    types: [published]
   workflow_dispatch:
 
 jobs:
@@ -28,9 +27,19 @@ jobs:
       SUPABASE_DB_PASSWORD: ${{ secrets.SUPABASE_DB_PASSWORD }}
       SUPABASE_PROJECT_ID: pkswdnpftrundnewgnya
     steps:
+      # pick the release tag to check out, so only released migrations are
+      # applied: the tag of the release that triggered this run, or, on a
+      # manual run, the latest published release's tag
+      - id: release
+        env:
+          GH_TOKEN: ${{ github.token }}
+          RELEASE_TAG: ${{ github.event.release.tag_name }}
+        run: |
+          tag=${RELEASE_TAG:-$(gh release view --repo "${{ github.repository }}" --json tagName --jq .tagName)}
+          echo "tag=$tag" >> "$GITHUB_OUTPUT"
       - uses: actions/checkout@v7
         with:
-          ref: production
+          ref: ${{ steps.release.outputs.tag }}
       - uses: supabase/setup-cli@v2
         with:
           version: latest
