@@ -276,10 +276,6 @@ export const insertRoomInPlace = (
         fromRoomJson: currentRoom,
         toRoomJson: existingRoomAtTarget,
         outgoingDoorEntry: [outDoorId, outDoor],
-        outgoingDoorRelativeTo: {
-          x: currentSubRoomBounds.minX,
-          y: currentSubRoomBounds.minY,
-        },
       });
 
       changeCurrentRoomInPlace(state, existingRoomAtTarget.id as EditorRoomId);
@@ -305,10 +301,6 @@ export const insertRoomInPlace = (
           outDoorId as EditorRoomItemId,
           outDoor as EditorJsonItem<"door">,
         ],
-        outgoingDoorRelativeTo: {
-          x: currentSubRoomBounds.minX,
-          y: currentSubRoomBounds.minY,
-        },
       });
 
       outDoor.config.toRoom = newRoom.id;
@@ -391,10 +383,6 @@ export const insertRoomInPlace = (
       fromRoomJson: currentRoom,
       toRoomJson: newRoom,
       outgoingDoorEntry: [outDoorId, outDoor],
-      outgoingDoorRelativeTo: {
-        x: currentSubRoomBounds.minX,
-        y: currentSubRoomBounds.minY,
-      },
     });
   }
 

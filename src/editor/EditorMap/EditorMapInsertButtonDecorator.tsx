@@ -17,8 +17,8 @@ import {
   xyzEqual,
 } from "../../utils/vectors/vectors";
 import { type EditorRoomId } from "../editorTypes";
+import { insertRoomInDirection } from "../slice/insertRoomInDirection";
 import { selectCursorSubRoomVerticalLink } from "../slice/levelEditorSelectors";
-import { insertRoom, setRoomAboveOrBelow } from "../slice/levelEditorSlice";
 
 const half = roomGridSizeXY / 2;
 const xyOutwardOffset = 52;
@@ -123,10 +123,10 @@ const buttonLabels: Record<ButtonMode, string> = {
 const directionNames: Record<DirectionXyz4, string> = {
   left: "**↖** *left* of",
   right: "**↘** *right* of",
-  away: "**↗** *behind*",
+  away: "**↗** *away from*",
   towards: "**↙** *in front* of",
-  up: "**⬆** *above*",
-  down: "**⬇** *below*",
+  up: "**⬆** *up of*",
+  down: "**⬇** *down of*",
 };
 
 const tooltipForMode = (mode: ButtonMode, direction: DirectionXyz4): string => {
@@ -142,26 +142,6 @@ const tooltipForMode = (mode: ButtonMode, direction: DirectionXyz4): string => {
         : `Remove the *floor*`;
     case "insert":
       return `*Insert* a room ${where} this one`;
-  }
-};
-
-const dispatchForDirection = (direction: DirectionXyz4) => {
-  switch (direction) {
-    case "left":
-    case "right":
-    case "away":
-    case "towards":
-      editorStore.dispatch(insertRoom({ direction }));
-      break;
-    case "up":
-    case "down":
-      editorStore.dispatch(
-        setRoomAboveOrBelow({
-          direction: direction === "up" ? "above" : "below",
-          createNew: true,
-        }),
-      );
-      break;
   }
 };
 
@@ -318,7 +298,9 @@ const EditorMapInsertButtonDecorator = ({
             direction={direction}
             mode={mode}
             tooltipContent={tooltipForMode(mode, direction)}
-            onClick={() => dispatchForDirection(direction)}
+            onClick={() =>
+              editorStore.dispatch(insertRoomInDirection(direction))
+            }
           />
         );
       })}
