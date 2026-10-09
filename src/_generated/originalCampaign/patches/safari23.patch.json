@@ -30,13 +30,6 @@
     "value": "left"
   },
   {
-    "op": "add",
-    "path": "/items/d2/config/meta",
-    "value": {
-      "toSubRoom": "left"
-    }
-  },
-  {
     "op": "replace",
     "path": "/items/d1/position/y",
     "value": 0

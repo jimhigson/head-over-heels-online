@@ -25,6 +25,7 @@ import {
   type SubRooms,
 } from "../RoomJson";
 import { findSubRoomForItem } from "./itemIsInSubRoom";
+import { partnerDoorSubRoomId } from "./partnerDoorSubRoomId";
 
 type RoomGridPositionsOptions<RoomId extends string> = {
   /** the room to seed the traversal from */
@@ -322,26 +323,15 @@ const visit = <RoomId extends string>(
       continue;
     }
     const vector = unitVectors[doorItem.config.direction];
+    const toSubRoomId =
+      doorItem.config.meta?.toSubRoom ??
+      partnerDoorSubRoomId(campaign.rooms, roomIdIn, doorItem, toRoom);
     record(
-      cellKey(
-        toRoom,
-        resolveTargetSubRoomId(
-          campaign,
-          toRoom,
-          doorItem.config.meta?.toSubRoom,
-        ),
-      ),
+      cellKey(toRoom, resolveTargetSubRoomId(campaign, toRoom, toSubRoomId)),
       { kind: "door", vector, viaItemId: doorId },
     );
     try {
-      visit(
-        state,
-        toRoom,
-        doorItem.config.meta?.toSubRoom,
-        vector,
-        gridPosition,
-        subgraph,
-      );
+      visit(state, toRoom, toSubRoomId, vector, gridPosition, subgraph);
     } catch (e) {
       throw new Error(
         `error while traversing door ${doorId} in room ${roomIdIn} to room ${toRoom}`,

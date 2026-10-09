@@ -84,13 +84,6 @@
     "value": "left"
   },
   {
-    "op": "add",
-    "path": "/items/d1/config/meta",
-    "value": {
-      "toSubRoom": "right"
-    }
-  },
-  {
     "op": "replace",
     "path": "/items/d/position/z",
     "value": 2

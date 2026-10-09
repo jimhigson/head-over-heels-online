@@ -143,13 +143,6 @@
   },
   {
     "op": "add",
-    "path": "/items/d/config/meta",
-    "value": {
-      "toSubRoom": "middle"
-    }
-  },
-  {
-    "op": "add",
     "path": "/items/db_1",
     "value": {
       "config": {

@@ -80,13 +80,6 @@
     "value": "away"
   },
   {
-    "op": "add",
-    "path": "/items/d1/config/meta",
-    "value": {
-      "toSubRoom": "left"
-    }
-  },
-  {
     "op": "replace",
     "path": "/items/d/position/z",
     "value": 0

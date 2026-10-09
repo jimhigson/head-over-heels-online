@@ -208,13 +208,6 @@
     "value": "right"
   },
   {
-    "op": "add",
-    "path": "/items/d/config/meta",
-    "value": {
-      "toSubRoom": "left"
-    }
-  },
-  {
     "op": "replace",
     "path": "/items/b/position/y",
     "value": 1

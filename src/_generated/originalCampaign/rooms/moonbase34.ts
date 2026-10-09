@@ -6,11 +6,7 @@ export const room = inferRoomJson({
   id: "moonbase34",
   items: {
     d: {
-      config: {
-        direction: "right",
-        meta: { toSubRoom: "middle" },
-        toRoom: "moonbase33triple",
-      },
+      config: { direction: "right", toRoom: "moonbase33triple" },
       position: { x: 0, y: 1, z: 0 },
       type: "door",
     },

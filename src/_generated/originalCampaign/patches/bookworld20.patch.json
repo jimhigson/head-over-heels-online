@@ -172,13 +172,6 @@
   },
   {
     "op": "add",
-    "path": "/items/d/config/meta",
-    "value": {
-      "toSubRoom": "right"
-    }
-  },
-  {
-    "op": "add",
     "path": "/items/h3",
     "value": {
       "config": {

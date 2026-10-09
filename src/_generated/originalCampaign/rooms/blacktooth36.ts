@@ -33,11 +33,7 @@ export const room = inferRoomJson({
     bl: { config: {}, position: { x: 4, y: 0, z: 0 }, type: "ball" },
     bl1: { config: {}, position: { x: 7, y: 2, z: 0 }, type: "ball" },
     d: {
-      config: {
-        direction: "right",
-        meta: { toSubRoom: "right" },
-        toRoom: "blacktooth35",
-      },
+      config: { direction: "right", toRoom: "blacktooth35" },
       position: { x: 0, y: 2, z: 0 },
       type: "door",
     },
