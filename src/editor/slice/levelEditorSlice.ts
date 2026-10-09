@@ -22,6 +22,9 @@ import { type Tool } from "../RoomEditingArea/interactivity/Tool";
 import { initialLevelEditorSliceState } from "./initialLevelEditorSliceState";
 import {
   selectCurrentCommittedRoomJsonFromLevelEditorState,
+  selectCursorRoomFromLevelEditorState,
+  selectCursorRoomIdFromLevelEditorState,
+  selectCursorSubRoomIdFromLevelEditorState,
   selectItemInLevelEditorState,
   selectItemIsSelectedInLevelEditorState,
 } from "./levelEditorSelectors";
@@ -212,6 +215,9 @@ export const levelEditorSlice = createSlice({
     );
   },
   selectors: {
+    selectCursorRoom: selectCursorRoomFromLevelEditorState,
+    selectCursorRoomId: selectCursorRoomIdFromLevelEditorState,
+    selectCursorSubRoomId: selectCursorSubRoomIdFromLevelEditorState,
     selectCurrentCampaignInProgress: (state) => state.campaignInProgress,
     selectCurrentCampaignVersion: (state) =>
       state.campaignInProgress.locator.version,
@@ -307,6 +313,9 @@ export const {
   selectCurrentEditingRoomColour,
   selectCurrentCommittedRoomJson,
   selectCurrentEditingRoomScenery,
+  selectCursorRoom,
+  selectCursorRoomId,
+  selectCursorSubRoomId,
   selectEditorCameraAngle,
   selectForwardRooms,
   selectHoveredItem,

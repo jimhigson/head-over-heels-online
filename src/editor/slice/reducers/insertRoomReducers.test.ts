@@ -9,7 +9,10 @@ import {
   type EditorRoomId,
   type EditorRoomItemId,
 } from "../../editorTypes";
-import { selectCursorRoom, selectCursorRoomId } from "../levelEditorSelectors";
+import {
+  selectCursorRoomFromLevelEditorState,
+  selectCursorRoomIdFromLevelEditorState,
+} from "../levelEditorSelectors";
 import {
   addRoom,
   applyItemTool,
@@ -188,9 +191,11 @@ describe("insertRoom with no existing doors", () => {
       insertRoom({ direction: "away" }),
     );
 
-    expect(selectCursorRoomId(result)).not.toBe(testRoomId);
+    expect(selectCursorRoomIdFromLevelEditorState(result)).not.toBe(testRoomId);
     expect(
-      result.campaignInProgress.rooms[selectCursorRoomId(result)],
+      result.campaignInProgress.rooms[
+        selectCursorRoomIdFromLevelEditorState(result)
+      ],
     ).toBeDefined();
   });
 });
@@ -480,7 +485,7 @@ describe("insertRoom when unconnected room already exists at target grid positio
       insertRoom({ direction: "away" }),
     );
 
-    expect(selectCursorRoomId(result)).toBe(roomD);
+    expect(selectCursorRoomIdFromLevelEditorState(result)).toBe(roomD);
   });
 });
 
@@ -805,7 +810,7 @@ describe("adding a door from a single-chunk room back to a multi-chunk room", ()
 
   test("does not crash when roomGridPositions traverses the result", () => {
     const result = buildState();
-    const { roomId, subRoomId } = selectCursorRoom(result);
+    const { roomId, subRoomId } = selectCursorRoomFromLevelEditorState(result);
 
     const positions = roomGridPositions({
       campaign: result.campaignInProgress,
@@ -894,6 +899,65 @@ describe("placing a door tool in a non-origin subroom of a multi-chunk room", ()
 
     expect(returnDoor.position.x).toBeGreaterThanOrEqual(0);
     expect(returnDoor.position.x).toBeLessThan(8);
+  });
+});
+
+describe("insertRoom between a room and a non-origin subroom of a multi-chunk room", () => {
+  const stateWithDoorToSubRoom1: LevelEditorState = produce(
+    stateWithFloorAndRoomB,
+    (draft) => {
+      const roomBJson = draft.campaignInProgress.rooms[roomB];
+      roomBJson.items["floor0" as EditorRoomItemId] = {
+        type: "floor",
+        config: {
+          floorType: "standable",
+          scenery: "blacktooth",
+          times: { x: 16, y: 8 },
+        },
+        position: { x: 0, y: 0, z: 0 },
+      };
+      roomBJson.items[door2] = {
+        type: "door",
+        config: { toRoom: testRoomId, direction: "towards" },
+        position: { x: 11, y: 0, z: 0 },
+      };
+      roomBJson.meta = {
+        subRooms: {
+          "0": {
+            gridPosition: { x: 0, y: 0 },
+            physicalPosition: { from: { x: 0, y: 0 }, to: { x: 8, y: 8 } },
+          },
+          "1": {
+            gridPosition: { x: 1, y: 0 },
+            physicalPosition: { from: { x: 8, y: 0 }, to: { x: 16, y: 8 } },
+          },
+        },
+      };
+      draft.campaignInProgress.rooms[testRoomId].items[door1] = {
+        type: "door",
+        config: { toRoom: roomB, direction: "away", meta: { toSubRoom: "1" } },
+        position: { x: 3, y: 8, z: 0 },
+      };
+    },
+  );
+
+  test("the new room's door to the subroom is at the same offset along the wall as the subroom's door", () => {
+    const result = reduceLevelEditorActions(
+      stateWithDoorToSubRoom1,
+      insertRoom({ direction: "away" }),
+    );
+
+    const newRoomId = (
+      result.campaignInProgress.rooms[testRoomId].items[door1] as DoorItem
+    ).config.toRoom as EditorRoomId;
+    const doorToRoomB = Object.values(
+      result.campaignInProgress.rooms[newRoomId].items,
+    ).find(
+      (item): item is DoorItem =>
+        item.type === "door" && item.config.toRoom === roomB,
+    );
+
+    expect(doorToRoomB?.position).toEqual({ x: 3, y: 8, z: 0 });
   });
 });
 

@@ -24,7 +24,7 @@ import {
   type EditorRoomItemId,
   type EditorRoomJson,
 } from "../../editorTypes";
-import { selectCursorRoom } from "../levelEditorSelectors";
+import { selectCursorRoomFromLevelEditorState } from "../levelEditorSelectors";
 import { type LevelEditorState } from "../levelEditorSlice";
 import {
   roomFloorMaxX,
@@ -81,7 +81,7 @@ const computeLayout = (
   state: LevelEditorState,
   gridPositionLookup: ReadonlyMap<EditorRoomId, Xy>,
 ): RoomLayoutEntry[] => {
-  const cursorRoomId = selectCursorRoom(state).roomId;
+  const cursorRoomId = selectCursorRoomFromLevelEditorState(state).roomId;
   const cursorGridPos = gridPositionLookup.get(cursorRoomId)!;
 
   return state.selectedRoomIds.map((roomId) => {
@@ -567,7 +567,7 @@ const findOriginSubRoomId = (room: EditorRoomJson): string | undefined => {
 const computeGridPositionLookup = (
   state: LevelEditorState,
 ): ReadonlyMap<EditorRoomId, Xy> => {
-  const { roomId, subRoomId } = selectCursorRoom(state);
+  const { roomId, subRoomId } = selectCursorRoomFromLevelEditorState(state);
   const specs = roomGridPositions({
     campaign: state.campaignInProgress,
     roomId,
@@ -615,7 +615,7 @@ const computeGridPositionLookup = (
 export const coalesceRoomsInPlace = (state: LevelEditorState): void => {
   const gridPositionLookup = computeGridPositionLookup(state);
 
-  const cursorRoomId = selectCursorRoom(state).roomId;
+  const cursorRoomId = selectCursorRoomFromLevelEditorState(state).roomId;
   const cursorRoom = state.campaignInProgress.rooms[
     cursorRoomId
   ] as EditorRoomJson;

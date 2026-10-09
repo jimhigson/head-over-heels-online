@@ -56,3 +56,4 @@ scripts/font/.venv
 # `npx skills add`, not git-tracked source
 .agents/
 .claude/skills/guided-review
+.claude/skills/gh-stack

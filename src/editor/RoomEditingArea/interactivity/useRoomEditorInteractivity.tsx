@@ -10,7 +10,7 @@ import { type Xyz } from "../../../utils/vectors/vectors";
 import { useGetEditorRoomState } from "../../EditorRoomStateProvider";
 import { type EditorRoomRenderer } from "../../editorTypes";
 import {
-  selectCursorRoomId,
+  selectCursorRoomIdFromLevelEditorState,
   selectPreviewOnlyJsonItemIds,
 } from "../../slice/levelEditorSelectors";
 import {
@@ -212,7 +212,10 @@ export const useRoomEditorInteractivity = (
       const storeState = editorStore.getState();
       const roomState = getRoomState();
 
-      if (roomState.id !== selectCursorRoomId(storeState.levelEditor)) {
+      if (
+        roomState.id !==
+        selectCursorRoomIdFromLevelEditorState(storeState.levelEditor)
+      ) {
         return;
       }
 

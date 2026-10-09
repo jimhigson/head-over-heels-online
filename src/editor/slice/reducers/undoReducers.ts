@@ -11,7 +11,7 @@ import { type EditorRoomId, type EditorRoomJson } from "../../editorTypes";
 import { changeIdOfCurrentRoomInPlace } from "../inPlaceMutators/changeIdOfCurrentRoomInPlace";
 import {
   selectCurrentCommittedRoomJsonFromLevelEditorState,
-  selectCursorRoomId,
+  selectCursorRoomIdFromLevelEditorState,
 } from "../levelEditorSelectors";
 import { type LevelEditorState } from "../levelEditorSlice";
 import { removeNonExistingItemsFromSelection } from "./selectionsReducers";
@@ -34,7 +34,7 @@ export type UndoRedoPayload = {
 };
 
 const roomHistory = (state: LevelEditorState): RoomUndoHistory => {
-  const roomId = selectCursorRoomId(state);
+  const roomId = selectCursorRoomIdFromLevelEditorState(state);
   state.history[roomId] ??= { undo: [], redo: [] };
   return state.history[roomId];
 };
@@ -87,7 +87,8 @@ export const undoReducers = {
     const state = _state as LevelEditorState;
 
     const { campaignInProgress } = state;
-    const currentlyEditingRoomId = selectCursorRoomId(state);
+    const currentlyEditingRoomId =
+      selectCursorRoomIdFromLevelEditorState(state);
     const { undo, redo } = roomHistory(state);
 
     for (let i = 0; i < n; i++) {
@@ -131,7 +132,8 @@ export const undoReducers = {
     const state = _state as LevelEditorState;
 
     const { campaignInProgress } = state;
-    const currentlyEditingRoomId = selectCursorRoomId(state);
+    const currentlyEditingRoomId =
+      selectCursorRoomIdFromLevelEditorState(state);
     const { undo, redo } = roomHistory(state);
 
     for (let i = 0; i < n; i++) {
@@ -173,12 +175,14 @@ const emptyUndoEntries: UndoEntry[] = [];
 export const undoSelectors = {
   selectUndoHistory: createSelector(
     (state: LevelEditorState) =>
-      state.history[selectCursorRoomId(state)]?.undo ?? emptyUndoEntries,
+      state.history[selectCursorRoomIdFromLevelEditorState(state)]?.undo ??
+      emptyUndoEntries,
     extractHistoryItems,
   ),
   selectRedoHistory: createSelector(
     (state: LevelEditorState) =>
-      state.history[selectCursorRoomId(state)]?.redo ?? emptyUndoEntries,
+      state.history[selectCursorRoomIdFromLevelEditorState(state)]?.redo ??
+      emptyUndoEntries,
     extractHistoryItems,
   ),
 } satisfies SliceSelectors<LevelEditorState>;

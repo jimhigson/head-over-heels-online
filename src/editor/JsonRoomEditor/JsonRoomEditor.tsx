@@ -3,7 +3,7 @@ import { type editor } from "monaco-editor";
 import { useState } from "preact/hooks";
 
 import { useEditorAppSelector } from "../../store/store";
-import { selectCursorRoomId } from "../slice/levelEditorSelectors";
+import { selectCursorRoomIdFromLevelEditorState } from "../slice/levelEditorSelectors";
 import { useMonacoSuggestions } from "./suggestions/useMonacoSuggestions";
 import { useItemIconDecorations } from "./useItemIconDecorations";
 import { useLoadMonaco } from "./useLoadMonaco";
@@ -17,7 +17,7 @@ const JsonRoomEditor = () => {
     null,
   );
   const currentlyEditingRoomId = useEditorAppSelector((state) =>
-    selectCursorRoomId(state.levelEditor),
+    selectCursorRoomIdFromLevelEditorState(state.levelEditor),
   );
 
   const monacoLoaded = !!useLoadMonaco();

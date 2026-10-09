@@ -13,7 +13,9 @@ export const CommandList = ({
       ref={listRef}
       role="listbox"
       class={cn(
-        "overflow-y-auto overflow-x-hidden flex-grow flex flex-col",
+        // children keep their height so the list scrolls, rather than all
+        // shrinking to fit it:
+        "overflow-y-auto overflow-x-hidden flex-grow flex flex-col [&>*]:shrink-0",
         className,
       )}
       {...props}

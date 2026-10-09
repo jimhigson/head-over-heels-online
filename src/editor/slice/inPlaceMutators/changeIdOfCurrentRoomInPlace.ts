@@ -10,14 +10,14 @@ import {
 import { valuesIter } from "../../../utils/entries";
 import {
   selectCurrentCommittedRoomJsonFromLevelEditorState,
-  selectCursorRoomId,
+  selectCursorRoomIdFromLevelEditorState,
 } from "../levelEditorSelectors";
 
 export const changeIdOfCurrentRoomInPlace = (
   state: LevelEditorState,
   newRoomId: EditorRoomId,
 ) => {
-  const prevRoomId = selectCursorRoomId(state);
+  const prevRoomId = selectCursorRoomIdFromLevelEditorState(state);
   const prevRoom = selectCurrentCommittedRoomJsonFromLevelEditorState(state);
 
   for (const room of valuesIter(state.campaignInProgress.rooms)) {

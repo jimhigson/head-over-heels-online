@@ -11,13 +11,21 @@ The level editor registers webmcp tools in every build, dev and production. This
 |---|---|---|
 | `getUsageSkill` | - | returns this guide |
 | `getReduxState` | `path?` dotted, eg `levelEditor.campaignInProgress.rooms.room_1` | reads the store (or part) |
+| `getCurrentRoomId` | - | the id of the room the editor is showing |
+| `getCurrentRoomJson` | - | the json of the room the editor is showing |
+| `getSelectedItems` | - | the selected items in the current room, id -> item json |
+| `listRooms` | - | every room in the campaign, as `{id, planet}` |
+| `getOpenCampaign` | - | the open campaign's `locator` and `meta` |
+| `getEditorView` | - | camera angle, tool, current sub-room, grid resolution |
 | `dispatchAction` | `type`, `payload?` | dispatches a plain redux action |
 | `getActionLog` | `typePrefix?` | last 50 actions - **dev builds only** (empty in production) |
 | `getVerificationIssues` | - | the same errors/warnings as the toolbar's verify button, each with `fixable`, `fixText` and `issueData` |
 | `fixVerificationIssue` | `verifier`, `issueData` (both unchanged from `getVerificationIssues`) | auto-fixes that one issue, as the verify dialog's Fix button does; re-checks first, so stale or non-fixable issues are refused. Returns the issues remaining |
 | `fixAllVerificationIssues` | - | auto-fixes every fixable issue, as "Fix all" does. Returns the issues remaining |
 | `loadCampaign` | `username?`, `campaignName?`, `version?` | loads a campaign like the Open dialog (discards unsaved changes). No username/name = the sequel campaign |
+| `revertCampaign` | - | reloads the open campaign as last saved, like the toolbar's revert button (discards unsaved changes) |
 | `saveCampaign` | `campaignName?`, `publish?`, `overwriteConfirmed?` | saves a new version to the db like the toolbar's save button, showing the same flash/failure dialog; with `campaignName`, saves as that name like the Save As dialog. Returns `saved` (the new locator), `saveFailed`, or `needsConfirmation` when the name is another existing campaign - ask the user before re-calling with `overwriteConfirmed: true` |
+| `insertRoom` | `direction`: left/right/away/towards/up/down | adds a room next to the current one like the map's insert buttons (up/down create a room above/below); returns `currentRoomId` (it becomes the current room) |
 | `addRoom` | `roomSize?` `{x,y}` | adds a room like the toolbar's add-room button; returns `addedRoomId` (it becomes the current room) |
 
 ## Keeping the campaign valid
@@ -31,9 +39,9 @@ Edits (including auto-fixes) are not saved to the database until saved - say so.
 
 ## Recipes
 
-- **Current room**: `getReduxState` `levelEditor.cursorRoom` → `{roomId, subRoomId}`.
+- **Current room**: `getCurrentRoomId`, or `getCurrentRoomJson` for its whole json.
 - **Change room** (also selects it): `dispatchAction` `levelEditor/changeToRoom` payload `{roomId, subRoomId: "*"}`.
-- **Edit a room's json**: read it with `getReduxState`, edit a copy, dispatch `levelEditor/roomJsonEdited` `{roomJson, timestamp: Date.now()}`. It replaces the **current** room - `changeToRoom` first. Changing `roomJson.id` renames the room (and repoints references). Setting a `nonContiguousRelationship` on one room mirrors it onto the partner automatically.
+- **Edit a room's json**: read it with `getCurrentRoomJson`, edit a copy, dispatch `levelEditor/roomJsonEdited` `{roomJson, timestamp: Date.now()}`. It replaces the **current** room - `changeToRoom` first. Changing `roomJson.id` renames the room (and repoints references). Setting a `nonContiguousRelationship` on one room mirrors it onto the partner automatically.
 - **Scenery / colour**: `levelEditor/changeRoomScenery` `{sceneryName, timestamp}` and `levelEditor/changeRoomColour` `{colour, timestamp}` act on the **selected** rooms.
 - **Tool**: `levelEditor/setTool` eg `{type: "pointer"}` or `{type: "item", item: {type: "door", config: {direction: "away", toRoom: "+"}}}`.
 

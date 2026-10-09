@@ -1,6 +1,6 @@
 import { type RoomJson } from "../../../model/RoomJson";
 import { type EditorRoomId } from "../../editorTypes";
-import { selectCursorRoomId } from "../levelEditorSelectors";
+import { selectCursorRoomIdFromLevelEditorState } from "../levelEditorSelectors";
 import { type LevelEditorState } from "../levelEditorSlice";
 import { clearContextMenuXyInPlace } from "../reducers/contextMenuReducers";
 
@@ -34,7 +34,9 @@ export const changeCurrentRoomInPlace = (
   }
 
   if (!noPushToHistory) {
-    state.editingRoomIdHistory.back.push(selectCursorRoomId(state));
+    state.editingRoomIdHistory.back.push(
+      selectCursorRoomIdFromLevelEditorState(state),
+    );
   }
   state.selectedRoomIds = [roomId];
   state.cursorRoom = { roomId, subRoomId: resolvedSubRoomId };

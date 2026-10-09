@@ -3,7 +3,7 @@ import { useEditorAppSelector } from "../../../store/store";
 import { RoomSelect } from "../../../ui/RoomSelect";
 import { type EditorRoomId } from "../../editorTypes";
 import {
-  selectCursorRoomId,
+  selectCursorRoomIdFromLevelEditorState,
   selectCursorSubRoomVerticalLink,
 } from "../../slice/levelEditorSelectors";
 import {
@@ -23,7 +23,7 @@ const RoomsAboveOrBelowSelectOrCreate = ({
     ({ levelEditor }) => levelEditor.campaignInProgress,
   );
   const currentlyEditingRoomId = useEditorAppSelector(({ levelEditor }) =>
-    selectCursorRoomId(levelEditor),
+    selectCursorRoomIdFromLevelEditorState(levelEditor),
   );
   const dispatch = useAppDispatch();
 
