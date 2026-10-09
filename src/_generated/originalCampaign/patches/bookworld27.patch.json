@@ -41,13 +41,6 @@
   },
   {
     "op": "add",
-    "path": "/items/d/config/meta",
-    "value": {
-      "toSubRoom": "right"
-    }
-  },
-  {
-    "op": "add",
     "path": "/items/b1/config/times",
     "value": {
       "x": 2,

@@ -134,13 +134,6 @@
     "value": "away"
   },
   {
-    "op": "add",
-    "path": "/items/d/config/meta",
-    "value": {
-      "toSubRoom": "left"
-    }
-  },
-  {
     "op": "replace",
     "path": "/color/hue",
     "value": "yellow"

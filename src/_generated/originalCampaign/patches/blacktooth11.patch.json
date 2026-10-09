@@ -75,13 +75,6 @@
     "value": "towards"
   },
   {
-    "op": "add",
-    "path": "/items/d1/config/meta",
-    "value": {
-      "toSubRoom": "right"
-    }
-  },
-  {
     "op": "replace",
     "path": "/items/d/position/y",
     "value": 3
@@ -100,13 +93,6 @@
     "op": "replace",
     "path": "/items/d/config/direction",
     "value": "right"
-  },
-  {
-    "op": "add",
-    "path": "/items/d/config/meta",
-    "value": {
-      "toSubRoom": "left"
-    }
   },
   {
     "op": "add",

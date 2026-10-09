@@ -1,9 +1,10 @@
 import { produce } from "immer";
 
+import { partnerDoorSubRoomId } from "../../../map/partnerDoorSubRoomId";
 import { isWholeRoomSubRooms } from "../../../RoomJson";
 import { exitGameRoomId } from "../../ItemConfigMap";
 import { type CampaignVerifier } from "../CampaignVerification";
-import { allDoors } from "../helpers/doorPartner";
+import { allDoors, type DoorRef } from "../helpers/doorPartner";
 import {
   type VerificationCampaign,
   type VerificationRoomId,
@@ -13,53 +14,71 @@ import {
 type RedundantToSubRoom = {
   roomId: VerificationRoomId;
   doorId: VerificationRoomItemId;
-  toRoom: VerificationRoomId;
 };
 
-const destinationUndivided = (
+type RedundancyReason = "inferable" | "undivided";
+
+/** why a door's `toSubRoom` is redundant, or undefined when it isn't */
+const redundancyReason = (
   campaign: VerificationCampaign,
-  toRoom: VerificationRoomId,
-): boolean => {
+  { roomId, door }: DoorRef,
+): RedundancyReason | undefined => {
+  const { toRoom } = door.config;
+  const toSubRoom = door.config.meta?.toSubRoom;
+  if (
+    toSubRoom === undefined ||
+    toRoom === exitGameRoomId ||
+    !(toRoom in campaign.rooms)
+  ) {
+    return undefined;
+  }
   const subRooms = campaign.rooms[toRoom].meta?.subRooms;
-  return subRooms === undefined || isWholeRoomSubRooms(subRooms);
+  if (subRooms === undefined || isWholeRoomSubRooms(subRooms)) {
+    return "undivided";
+  }
+  return (
+      partnerDoorSubRoomId(campaign.rooms, roomId, door, toRoom) === toSubRoom
+    ) ?
+      "inferable"
+    : undefined;
 };
 
-/** A9: a door `meta.toSubRoom` pointing into a room that isn't divided */
+/**
+ * A9: a door `meta.toSubRoom` with no effect - its room is undivided, or its
+ * partner door's position already implies it
+ */
 export const redundantToSubRoomVerifier: CampaignVerifier<RedundantToSubRoom> =
   {
-    name: "Redundant door toSubRoom",
+    name: "Redundant property on door.config: `toSubRoom`",
     *check(campaign) {
-      for (const { roomId, doorId, door } of allDoors(campaign)) {
+      for (const doorRef of allDoors(campaign)) {
+        const reason = redundancyReason(campaign, doorRef);
+        if (reason === undefined) {
+          continue;
+        }
+        const { roomId, doorId, door } = doorRef;
         const { toRoom } = door.config;
         const toSubRoom = door.config.meta?.toSubRoom;
-        if (
-          toSubRoom === undefined ||
-          toRoom === exitGameRoomId ||
-          !(toRoom in campaign.rooms)
-        ) {
-          continue;
-        }
-        if (!destinationUndivided(campaign, toRoom)) {
-          continue;
-        }
         yield {
           severity: "warning",
           roomId,
           itemId: doorId,
-          msg: `Door ‘${doorId}’ in ‘${roomId}’ sets toSubRoom ‘${toSubRoom}’, but ‘${toRoom}’ isn't divided into sub-rooms so it has no effect`,
+          msg:
+            reason === "undivided" ?
+              `Door ‘${doorId}’ in room ‘${roomId}’ sets config.toSubRoom explicitly to ‘${toSubRoom}’, but this is redundant since ‘${toRoom}’ isn't divided into sub-rooms`
+            : `Door ‘${doorId}’ in room ‘${roomId}’ sets config.toSubRoom explicitly to ‘${toSubRoom}’, but this is redundant since the map would already find the matching door in ‘${toRoom}’ and notice it is in the same sub-room`,
           fixable: true,
-          fixText: `Remove the redundant toSubRoom from door ‘${doorId}’ in ‘${roomId}’`,
-          issueData: { roomId, doorId, toRoom },
+          fixText: `Remove the redundant config.toSubRoom from door ‘${doorId}’ in ‘${roomId}’`,
+          issueData: { roomId, doorId },
           verifier: redundantToSubRoomVerifier,
         };
       }
     },
-    fix(campaign, { roomId, doorId, toRoom }) {
+    fix(campaign, { roomId, doorId }) {
       const door = campaign.rooms[roomId].items[doorId];
       if (
         door.type !== "door" ||
-        door.config.meta?.toSubRoom === undefined ||
-        !destinationUndivided(campaign, toRoom)
+        redundancyReason(campaign, { roomId, doorId, door }) === undefined
       ) {
         throw new Error(
           `cannot auto-fix toSubRoom on door ‘${doorId}’ in ‘${roomId}’: it isn't redundant`,

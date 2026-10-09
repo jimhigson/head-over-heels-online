@@ -132,12 +132,5 @@
     "op": "replace",
     "path": "/items/d/config/direction",
     "value": "right"
-  },
-  {
-    "op": "add",
-    "path": "/items/d/config/meta",
-    "value": {
-      "toSubRoom": "right"
-    }
   }
 ]

@@ -65,11 +65,7 @@ export const room = inferRoomJson({
       type: "door",
     },
     d1: {
-      config: {
-        direction: "away",
-        meta: { toSubRoom: "middle" },
-        toRoom: "safari19triple",
-      },
+      config: { direction: "away", toRoom: "safari19triple" },
       position: { x: 0, y: 16, z: 2 },
       type: "door",
     },

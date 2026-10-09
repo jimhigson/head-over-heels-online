@@ -11,13 +11,6 @@
   },
   {
     "op": "add",
-    "path": "/items/d/config/meta",
-    "value": {
-      "toSubRoom": "left"
-    }
-  },
-  {
-    "op": "add",
     "path": "/items/b2",
     "value": {
       "config": {

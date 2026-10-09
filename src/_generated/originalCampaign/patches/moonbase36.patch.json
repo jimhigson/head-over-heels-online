@@ -131,13 +131,6 @@
   },
   {
     "op": "add",
-    "path": "/items/d/config/meta",
-    "value": {
-      "toSubRoom": "right"
-    }
-  },
-  {
-    "op": "add",
     "path": "/items/db1_3",
     "value": {
       "config": {

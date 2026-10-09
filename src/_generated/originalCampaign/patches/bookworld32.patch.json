@@ -10,13 +10,6 @@
     "value": "right"
   },
   {
-    "op": "add",
-    "path": "/items/d/config/meta",
-    "value": {
-      "toSubRoom": "right"
-    }
-  },
-  {
     "op": "replace",
     "path": "/color/hue",
     "value": "yellow"

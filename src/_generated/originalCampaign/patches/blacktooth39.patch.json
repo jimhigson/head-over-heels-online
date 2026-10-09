@@ -48,12 +48,5 @@
     "op": "replace",
     "path": "/items/l/config/top",
     "value": 11
-  },
-  {
-    "op": "add",
-    "path": "/items/d/config/meta",
-    "value": {
-      "toSubRoom": "left"
-    }
   }
 ]

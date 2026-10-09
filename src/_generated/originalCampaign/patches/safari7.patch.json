@@ -50,13 +50,6 @@
     "value": "towards"
   },
   {
-    "op": "add",
-    "path": "/items/d1/config/meta",
-    "value": {
-      "toSubRoom": "left"
-    }
-  },
-  {
     "op": "replace",
     "path": "/items/d/position/z",
     "value": 1
@@ -75,12 +68,5 @@
     "op": "replace",
     "path": "/items/d/config/direction",
     "value": "right"
-  },
-  {
-    "op": "add",
-    "path": "/items/d/config/meta",
-    "value": {
-      "toSubRoom": "right"
-    }
   }
 ]
