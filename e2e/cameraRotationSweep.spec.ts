@@ -11,6 +11,7 @@ import { type ResolutionName } from "../src/originalGame";
 import { defaultEmulatedResolution } from "../src/store/slices/userSettings/defaultUserSettings";
 import { type SpriteOption } from "../src/store/slices/userSettings/userSettingsSlice";
 import { allItemsTestRoomCampaign } from "./fixtures/allItemsTestRoom";
+import { skiHeadsMeetingRoomCampaign } from "./fixtures/skiHeadsMeetingRoom";
 import { bootPlaytestCampaign } from "./testUtils/bootPlaytestCampaign";
 import { enableUpscaledSprites } from "./testUtils/enableUpscaledSprites";
 import {
@@ -90,6 +91,7 @@ type SweepCampaign =
   | "original"
   | "quarterMaskFaultRoom"
   | "rotate-camera-test"
+  | "skiHeadsMeetingRoom"
   | "wallFloorSeamRoom";
 
 /**
@@ -139,6 +141,7 @@ type RoomsForCampaign<C extends SweepCampaign> =
   C extends "allItemsTestRoom" ? "allItemsTestRoom"
   : C extends "wallFloorSeamRoom" ? "wallFloorSeamRoom"
   : C extends "quarterMaskFaultRoom" ? "quarterMaskFaultRoom"
+  : C extends "skiHeadsMeetingRoom" ? "skiHeadsMeetingRoom"
   : C extends "original" ? OriginalCampaignRoomId
   : string;
 
@@ -197,6 +200,9 @@ type SweepScenario<C extends SweepCampaign = SweepCampaign> = {
 
   /** playwright snapshot settings */
   screenshotOptions?: Partial<PageAssertionsToHaveScreenshotOptions>;
+
+  /** run in only these projects, rather than every camera-rotation project */
+  onlyInProjects?: string[];
 
   /** which frames to screenshot, and how the camera reaches them */
   angles: SweepAngles;
@@ -292,6 +298,18 @@ const scenarios: readonly SweepScenario[] = [
       { name: "BlockStack", uncolourised: true },
     ],
     captureTimesMs: [90, 170, 260],
+  }),
+  sweepScenario({
+    // two monsters that meet and turn away from each other: guards that what
+    // is drawn follows game time only, however many frames are painted
+    roomId: "skiHeadsMeetingRoom",
+    campaign: "skiHeadsMeetingRoom",
+    enterFrom: "$$startingRoom",
+    angles: [0],
+    emulatedResolution: "zxSpectrum",
+    character: "head",
+    captureTimesMs: [0, 210, 214, 220],
+    onlyInProjects: ["chromium-desktop"],
   }),
   sweepScenario({
     // stacked hush-puppy stairs (cyclic masked pair) that are tricky to stay
@@ -705,6 +723,12 @@ const bootScenario = async (page: Page, scenario: SweepScenario) => {
       wallFloorSeamRoomCampaign,
       emulatedResolutionPayload(scenario),
     );
+  } else if (scenario.campaign === "skiHeadsMeetingRoom") {
+    await bootPlaytestCampaign(
+      page,
+      skiHeadsMeetingRoomCampaign,
+      emulatedResolutionPayload(scenario),
+    );
   } else if (scenario.campaign === "quarterMaskFaultRoom") {
     await bootPlaytestCampaign(
       page,
@@ -851,6 +875,11 @@ for (const scenario of scenarios) {
   test(`camera angles render deterministically: ${scenarioBaseName(scenario)} (${scenarioAxes(scenario)})`, async ({
     page,
   }, testInfo) => {
+    test.skip(
+      scenario.onlyInProjects !== undefined &&
+        !scenario.onlyInProjects.includes(testInfo.project.name),
+      `only run in ${scenario.onlyInProjects?.join(", ")}`,
+    );
     // smooth-sprites scenarios need longer: software-rendered environments
     // (SwiftShader in CI or a sandbox) are very slow to compile the upscale
     // shader on first bake:
