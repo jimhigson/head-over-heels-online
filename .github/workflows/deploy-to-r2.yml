@@ -1,13 +1,15 @@
 name: Deploy to R2
 
 # builds game + editor (--mode r2-<env>) and mirrors them into the hoh-*-<env>
-# buckets. <env> is the branch name: main -> blockstack.dev (staging),
-# production -> blockstack.ing. Either env can also be run on demand via the
-# "Run workflow" button.
+# buckets: a push to main deploys env "main" (blockstack.dev); a published
+# release deploys env "production" (blockstack.ing) from the release's tag.
+# Either env can also be run on demand via the "Run workflow" button.
 
 on:
   push:
-    branches: ["main", "production"] # main -> blockstack.dev, production -> blockstack.ing
+    branches: ["main"]
+  release:
+    types: [published]
   workflow_dispatch:
     inputs:
       environment:
@@ -17,7 +19,7 @@ on:
         default: "main"
 
 concurrency:
-  group: deploy-r2-${{ github.event.inputs.environment || github.ref_name }}
+  group: deploy-r2-${{ github.event_name == 'release' && 'production' || github.event.inputs.environment || 'main' }}
   cancel-in-progress: true
 
 jobs:
@@ -31,13 +33,12 @@ jobs:
       R2_ACCOUNT_ID: ${{ secrets.R2_ACCOUNT_ID }}
       R2_ACCESS_KEY_ID: ${{ secrets.R2_ACCESS_KEY_ID }}
       R2_SECRET_ACCESS_KEY: ${{ secrets.R2_SECRET_ACCESS_KEY }}
-      # the deploy environment — branch name on a push, the chosen input on a
-      # manual run. The same token is reused below as both the build-mode suffix
-      # (r2-<env>) and the bucket suffix (hoh-<app>-<env>), so one value selects
-      # everything. This works only because they all share the token:
-      # branch == environment == mode suffix == bucket suffix
+      # the deploy environment — "production" for a release, "main" for a push,
+      # the chosen input on a manual run. The same token is reused below as both
+      # the build-mode suffix (r2-<env>) and the bucket suffix (hoh-<app>-<env>),
+      # so one value selects everything
       # (main -> blockstack.dev, production -> blockstack.ing).
-      DEPLOY_ENV: ${{ github.event.inputs.environment || github.ref_name }}
+      DEPLOY_ENV: ${{ github.event_name == 'release' && 'production' || github.event.inputs.environment || 'main' }}
 
     steps:
       - uses: actions/checkout@v6

@@ -30,7 +30,7 @@ type Mode =
   | "local-db";
 
 // modes that serve the editor as its own origin (ed.<domain>) rather than the
-// /editor/ subpath it occupies when it shares the game's origin on github pages
+// /editor/ subpath it occupies when it shares the game's origin (all other builds)
 const ownOriginModes: Array<Mode> = ["r2-main", "r2-production"];
 
 const targetPort = 5_210;

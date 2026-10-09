@@ -108,26 +108,9 @@ rustup default stable - to set rust up with default target
 pnpm tauri ios dev # launch in dev mode
 ```
 
-# Releasees
+# Releases, hosting and deploys
 
-`release-please` manages
-
-# Hosting
-
-## https://blockstack.dev
-
-Hosts latest deploys from main branch
-
-* Cloudflare r2 is the web host (not just object storage) - this allows storing highly compressed pre-built brotli assets
-* Cloudflare's is also the CDN in front of R2
-
-See: scripts/deployToR2.ts, .github/workflows/deploy-to-r2.yml
-
-## https://blockstack.ing
-
-Hosts production/released deploys from `production` branch
-
-* currently on github pages, to be moved to r2 plus cf proxy once the pattern is proven
+See [DEPLOY.md](DEPLOY.md)
 
 # Database
 
@@ -136,14 +119,14 @@ is burnt into the build; everything else goes through Supabase.
 
 ## Backwards-compatible changes only
 
-Staging and production share one database and staging runs ahead of production, so old
+`.dev` and production share one database and `.dev` runs ahead of production, so old
 and new front-ends hit the same schema at once. Backwards and forwards compat is ideal,
 but breaking PR previews or .dev for a little while is ok if we got to
 
 ## Migrations are the source of truth
 
 Schema and stored procedures are SQL in `supabase/migrations/`, applied with
-`supabase db push` on merge to `main` (not at prod release — staging shares the DB and
+`supabase db push` on merge to `main` (not at prod release — `.dev` shares the DB and
 needs the schema when its front-end ships). The web UI is inspect-only; edits there are
 untracked. `db/schema.sql` is a `pg_dump` backup (`pnpm dumpDb:schema`).
 
