@@ -4,7 +4,7 @@ import { applyPreviewedEditsInPlace } from "../applyPreviewedEditsInPlace";
 import { consolidateCurrentRoomInPlace } from "../inPlaceMutators/consolidateCurrentRoomInPlace";
 import { selectCurrentCommittedRoomJsonFromLevelEditorState } from "../levelEditorSelectors";
 import { type LevelEditorState } from "../levelEditorSlice";
-import { pushUndoInPlace } from "./undoReducers";
+import { pushUndoToCursorRoomInPlace } from "./undoReducers";
 
 export const itemPreviewReducers = {
   setAutoCoalesce(_state: LevelEditorState, action: PayloadAction<boolean>) {
@@ -20,7 +20,7 @@ export const itemPreviewReducers = {
     if (state.pendingEdits === undefined) {
       return;
     }
-    pushUndoInPlace(
+    pushUndoToCursorRoomInPlace(
       state,
       state.pendingEdits.description,
       state.pendingEdits.timestamp,

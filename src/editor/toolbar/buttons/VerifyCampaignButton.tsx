@@ -7,7 +7,7 @@ import {
   type VerificationCampaign,
   type VerificationRoomJson,
 } from "../../../model/json/verification/verificationTypes";
-import { roomJsonItemsIterable } from "../../../model/RoomJson";
+import { roomJsonItemsIterable } from "../../../model/RoomJsonItemIterators";
 import { editorStore, store, useEditorAppSelector } from "../../../store/store";
 import { Border } from "../../../ui/Border";
 import { Button } from "../../../ui/Button";

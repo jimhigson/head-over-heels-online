@@ -66,7 +66,7 @@ export const initialLevelEditorSliceState: LevelEditorState = {
   cameraAngle: cameraAngleBase,
   autoCoalesce: true,
   wallsFloorsLocked: true,
-  dragInProgress: false,
+  dragInProgress: undefined,
   hoveredUndoIndex: 0,
   history: {},
 };

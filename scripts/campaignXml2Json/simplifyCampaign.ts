@@ -3,10 +3,8 @@ import { type AllUnionFields } from "type-fest";
 
 import { type JsonItemUnion } from "../../src/model/json/JsonItem";
 import { type Campaign } from "../../src/model/modelTypes";
-import {
-  iterateRoomJsonItemsWithIds,
-  type RoomJson,
-} from "../../src/model/RoomJson";
+import { type RoomJson } from "../../src/model/RoomJson";
+import { iterateRoomJsonItemsWithIds } from "../../src/model/RoomJsonItemIterators";
 import { entries } from "../../src/utils/entries";
 import { transformObject } from "../../src/utils/transformObject";
 import { xyzEqual } from "../../src/utils/vectors/vectors";

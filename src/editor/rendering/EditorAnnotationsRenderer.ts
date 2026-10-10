@@ -12,12 +12,10 @@ import {
   type ItemTickContext,
 } from "../../game/render/ItemRenderContexts";
 import { TextContainer } from "../../game/render/text/TextContainer";
-import { type ItemInPlay, type ItemInPlayType } from "../../model/ItemInPlay";
-import { type UnionOfAllItemInPlayTypes } from "../../model/ItemInPlayNarrowedUnions";
+import { type ItemInPlayType } from "../../model/ItemInPlay";
+import { getControlTargetJsonItemsInRoom } from "../../model/json/getControlTargetJsonItemsInRoom";
 import { exitGameRoomId } from "../../model/json/ItemConfigMap";
-import { type SwitchItemModificationUnion } from "../../model/json/SwitchConfig";
 import { type JsonMovement } from "../../model/json/utilityJsonConfigTypes";
-import { roomItemsIterable } from "../../model/RoomState";
 import { paletteBlockstack } from "../../sprites/palette/spritesheetPalette";
 import { editorStore, store } from "../../store/store";
 import { valuesIter } from "../../utils/entries";
@@ -25,7 +23,6 @@ import { isNegativeSideXy, type Xy } from "../../utils/vectors/vectors";
 import {
   type EditorItemInPlayUnion,
   type EditorRoomId,
-  type EditorRoomItemId,
   type EditorUnionOfAllItemInPlayTypes,
 } from "../editorTypes";
 import { editorUiScale } from "../editorUiScale";
@@ -108,30 +105,6 @@ const directionArrow = ({ x, y }: Xy): string =>
   : x > 0 ?
     `↖` // left
   : `↘`; // right
-
-const isItemThatControlsOtherItems = (
-  item: UnionOfAllItemInPlayTypes<string, string>,
-): item is
-  | (ItemInPlay<"button"> & {
-      config: {
-        type: "in-room";
-        modifies: Array<
-          SwitchItemModificationUnion<EditorRoomId, EditorRoomItemId>
-        >;
-      };
-    })
-  | (ItemInPlay<"switch"> & {
-      config: {
-        modifies: Array<
-          SwitchItemModificationUnion<EditorRoomId, EditorRoomItemId>
-        >;
-      };
-    }) => {
-  return (
-    (item.type === "switch" && item.config.type === "in-room") ||
-    (item.type === "button" && item.config.type === "in-room")
-  );
-};
 
 const movementPatternAnnotationText = (
   movement: JsonMovement,
@@ -522,59 +495,26 @@ class EditorAnnotationsRenderer<
     const isSelected =
       jsonItemId && (selectedJsonItemIds as string[]).includes(jsonItemId);
 
-    const showControlHighlight = () =>
-      jsonItemId !== undefined &&
-      // when switch is hovered, highlight the items it controls:
-      (roomItemsIterable(room.items).some((otherItem) => {
-        return (
-          otherItem.jsonItemId === hoveredJsonItem?.jsonItemId &&
-          isItemThatControlsOtherItems(otherItem) &&
-          otherItem.config.modifies.some((m) => {
-            return (
-              m.expectType === item.type &&
-              (m.targets === undefined || m.targets.includes(jsonItemId))
-            );
-          })
-        );
-      }) ||
-        // highlight the switch when the item it is connected to is hovered
-        (isItemThatControlsOtherItems(item) &&
-          roomItemsIterable(room.items).some(
-            ({
-              jsonItemId: maybeSwitchedItemJsonItemId,
-              type: maybeSwitchedItemType,
-            }) => {
-              return (
-                maybeSwitchedItemJsonItemId !== undefined &&
-                maybeSwitchedItemJsonItemId === hoveredJsonItem?.jsonItemId &&
-                item.config.modifies.some(
-                  (m) =>
-                    m.expectType === maybeSwitchedItemType &&
-                    (m.targets === undefined ||
-                      m.targets.includes(
-                        maybeSwitchedItemJsonItemId as EditorRoomItemId,
-                      )),
-                )
-              );
-            },
+    // highlight what the hovered item controls, and what controls it:
+    const showControlHighlight = () => {
+      const hoveredJsonItemId = hoveredJsonItem?.jsonItemId;
+      if (jsonItemId === undefined || hoveredJsonItemId === undefined) {
+        return false;
+      }
+      const { roomJson } = room;
+      const hoveredItemJson = roomJson.items[hoveredJsonItemId];
+      const itemJson = roomJson.items[jsonItemId];
+      return (
+        (hoveredItemJson !== undefined &&
+          getControlTargetJsonItemsInRoom(hoveredItemJson, roomJson).some(
+            (targetId) => targetId === jsonItemId,
           )) ||
-        // highlight charles when controlling joystick hovered:
-        // undefined controls = the joystick controls every charles in the room
-        (item.type === "charles" &&
-          roomItemsIterable(room.items).some((otherItem) => {
-            return (
-              otherItem.jsonItemId === hoveredJsonItem?.jsonItemId &&
-              otherItem.type === "joystick" &&
-              (otherItem.config.controls === undefined ||
-                otherItem.config.controls.some((c) => c === jsonItemId))
-            );
-          })) ||
-        // highlight joysticks when the charles they control is hovered:
-        (item.type === "joystick" &&
-          (item.config.controls === undefined ||
-            item.config.controls.some(
-              (c) => hoveredJsonItem?.jsonItemId === c,
-            ))));
+        (itemJson !== undefined &&
+          getControlTargetJsonItemsInRoom(itemJson, roomJson).some(
+            (targetId) => targetId === hoveredJsonItemId,
+          ))
+      );
+    };
 
     const {
       pointerHover: pointerHoverFilter,

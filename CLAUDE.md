@@ -149,7 +149,7 @@ iterateRoomItems(room.items).filter(isFreeItem).map(i => i.state.position);
 for (const item of objectValues(room.items)) { ... }
 ```
 
-Similarly, when iterating over `RoomJsonItems` (editor/JSON room items), use the helpers from `src/model/RoomJson.ts`:
+Similarly, when iterating over `RoomJsonItems` (editor/JSON room items), use the helpers from `src/model/RoomJsonItemIterators.ts`:
 - `roomJsonItemsIterable(roomJson)` - takes the whole `RoomJson` object, returns `IterableIterator` of items (no ids)
 - `roomJsonItemsEntriesIterable(roomJson.items)` - returns `[id, item]` tuples
 - `iterateRoomJsonItemsWithIds(roomJson.items, ...types?)` - returns iterator helper with `[id, item]` tuples, optionally filtered by item type
@@ -612,6 +612,7 @@ failing that seems unlikely, please point this out frankly rather than trying to
 using css variable --scale, which scales everything up or down. The reason for this is to maintain
 a retro upscaled blocky look even on high resolution screens. The other important variable is 
 --block, which is an 8px size but scaled using --scale.
+* colours in a UI should all come from one spritesheet's palette - eg don't mix zx spectrum colours (`zxGreen`...) with BlockStack ones (`moss`, `midRed`...) in the same UI
 
 # github
 * for all interactions with github, use the `gh` command

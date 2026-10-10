@@ -10,12 +10,14 @@ import { type JsonItemConfig } from "../../../model/json/JsonItem";
 import { roomGridPositions } from "../../../model/map/roomGridPositions";
 import {
   isWholeRoomSubRooms,
-  iterateRoomJsonItemsWithIds,
-  roomJsonItemsIterable,
   roomNonContiguousRelationship,
   roomVerticalLink,
   writeRoomNonContiguousRelationship,
 } from "../../../model/RoomJson";
+import {
+  iterateRoomJsonItemsWithIds,
+  roomJsonItemsIterable,
+} from "../../../model/RoomJsonItemIterators";
 import { type ZxSpectrumRoomColour } from "../../../originalGame";
 import { type SceneryName } from "../../../sprites/planets";
 import { keysIter } from "../../../utils/entries";
@@ -50,7 +52,7 @@ import {
   type UndoDescription,
   type UndoItemEntry,
 } from "./undoDescription";
-import { pushUndoInPlace } from "./undoReducers";
+import { pushUndoToCursorRoomInPlace } from "./undoReducers";
 
 export type SetRoomAboveOrBelowPayload =
   | {
@@ -166,7 +168,7 @@ export const editRoomReducers = {
     // the wrapped type. Since the normal type isn't readonly, this wrapping isn't needed anyway
     const state = _state as LevelEditorState;
 
-    pushUndoInPlace(state, { kind: "changeColour" }, timestamp);
+    pushUndoToCursorRoomInPlace(state, { kind: "changeColour" }, timestamp);
     for (const roomId of state.selectedRoomIds) {
       const target = state.campaignInProgress.rooms[roomId]?.color;
       if (target) {
@@ -185,7 +187,11 @@ export const editRoomReducers = {
     // the wrapped type. Since the normal type isn't readonly, this wrapping isn't needed anyway
     const state = _state as LevelEditorState;
 
-    pushUndoInPlace(state, { kind: "changeScenery", sceneryName }, timestamp);
+    pushUndoToCursorRoomInPlace(
+      state,
+      { kind: "changeScenery", sceneryName },
+      timestamp,
+    );
     for (const roomId of state.selectedRoomIds) {
       const roomJson = state.campaignInProgress.rooms[roomId];
       if (roomJson) {
@@ -224,7 +230,7 @@ export const editRoomReducers = {
       descriptionOverride ??
       describeRoomJsonEdit(prevRoomJson as EditorRoomJson, newRoomJson);
 
-    pushUndoInPlace(state, description, timestamp);
+    pushUndoToCursorRoomInPlace(state, description, timestamp);
     rooms[cursorRoomId] = newRoomJson;
 
     // selected items may no longer exist in the room after reloading - remove these selections:
@@ -373,7 +379,7 @@ export const editRoomReducers = {
       id,
       roomJson.items[id],
     ]);
-    pushUndoInPlace(
+    pushUndoToCursorRoomInPlace(
       state,
       { kind: "itemAction", verb: "Delete", items },
       timestamp,
@@ -401,7 +407,7 @@ export const editRoomReducers = {
 
     const roomJson = selectCurrentCommittedRoomJsonFromLevelEditorState(state);
 
-    pushUndoInPlace(state, { kind: "clearRoom" }, timestamp);
+    pushUndoToCursorRoomInPlace(state, { kind: "clearRoom" }, timestamp);
 
     for (const k of keysIter(roomJson.items)) {
       const item = roomJson.items[k];

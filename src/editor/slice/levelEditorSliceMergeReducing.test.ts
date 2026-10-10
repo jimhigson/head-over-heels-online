@@ -2,10 +2,8 @@ import { expect, test } from "vitest";
 
 import { roomJsonMatchers } from "../../model/json/__test__/roomJsonMatchers";
 import { roomGridPositions } from "../../model/map/roomGridPositions";
-import {
-  isWholeRoomSubRooms,
-  iterateRoomJsonItemsWithIds,
-} from "../../model/RoomJson";
+import { isWholeRoomSubRooms } from "../../model/RoomJson";
+import { iterateRoomJsonItemsWithIds } from "../../model/RoomJsonItemIterators";
 import { keys } from "../../utils/entries";
 import { type EditorRoomJson } from "../editorTypes";
 import { initialLevelEditorSliceState } from "./initialLevelEditorSliceState";

@@ -5,7 +5,7 @@ import { buildRoomJsonDirectionalIndex } from "../../../game/gameState/loadRoom/
 import { loadItemFromJson } from "../../../game/gameState/loadRoom/loadItemFromJson";
 import { itemBehaviourKey } from "../../../model/ItemInPlay";
 import { type JsonItemType } from "../../../model/json/JsonItem";
-import { roomJsonItemsIterable } from "../../../model/RoomJson";
+import { roomJsonItemsIterable } from "../../../model/RoomJsonItemIterators";
 import { roomItemsIterable } from "../../../model/RoomState";
 import { isEmpty } from "../../../utils/iterators/isEmpty";
 import { addXyz, type Xyz } from "../../../utils/vectors/vectors";
@@ -121,19 +121,9 @@ export const itemMoveOrResizeWouldCollide = ({
       (item) => item.jsonItemId && !jsonItemIds.includes(item.jsonItemId),
     );
 
-    for (const c of collision1toManyIter(
-      loadedItem,
-      collideableItemsAlreadyInRoom,
-    )) {
-      console.warn(
-        loadedItem.id,
-        "colliding with static item",
-        c.id,
-        "after moving by",
-        blockPositionDelta,
-        timesDelta ? "with timesDelta" : "",
-        timesDelta ?? "",
-      );
+    if (
+      !isEmpty(collision1toManyIter(loadedItem, collideableItemsAlreadyInRoom))
+    ) {
       return true;
     }
 
@@ -146,7 +136,6 @@ export const itemMoveOrResizeWouldCollide = ({
       // (eg, a door with overlapping frame parts for the sake of keeping the rendering on even numbers so y doesn't
       // end up on a half-pixel)
       if (c.jsonItemId !== loadedItem.jsonItemId) {
-        console.warn(loadedItem.id, "colliding with other mutating item", c.id);
         return true;
       }
     }

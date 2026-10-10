@@ -3,13 +3,11 @@ import { doorLinkNeedsToDoor } from "../../../model/json/candidatePartnerDoors";
 import { typePrefix } from "../../../model/json/typePrefix";
 import { findSubRoomForItem } from "../../../model/map/itemIsInSubRoom";
 import { roomGridPositions } from "../../../model/map/roomGridPositions";
-import { subRoomById } from "../../../model/RoomJson";
 import { keys } from "../../../utils/entries";
 import { unitVectors } from "../../../utils/vectors/unitVectors";
 import {
   type DirectionXy4,
   oppositeDirection,
-  type Xy,
   type Xyz,
   xyzEqual,
 } from "../../../utils/vectors/vectors";
@@ -21,12 +19,7 @@ import {
 import { type ItemTool } from "../../RoomEditingArea/interactivity/Tool";
 import { selectCurrentCommittedRoomJsonFromLevelEditorState } from "../levelEditorSelectors";
 import { type LevelEditorState } from "../levelEditorSlice";
-import {
-  roomFloorMaxX,
-  roomFloorMaxY,
-  roomFloorMinX,
-  roomFloorMinY,
-} from "../roomJsonSelectors";
+import { roomWallBounds } from "../roomWallBounds";
 import { addItemInPlace } from "./addItemInPlace";
 import { addNewRoomInPlace } from "./addNewRoomInPlace";
 import { cutHoleInWallsForDoorsInPlace } from "./cutHoleInWallsForDoorsInPlace";
@@ -76,25 +69,6 @@ const getDestinationRoom = ({
     : undefined;
 };
 
-type WallBounds = { from: Xy; to: Xy };
-
-// a room with no floor has no floor extent; measure it from the origin
-const finiteOrZero = (n: number) => (Number.isFinite(n) ? n : 0);
-
-/** where a (sub-)room's walls are: the sub-room's extent, or the whole floor's */
-const wallBounds = (room: EditorRoomJson, subRoomId: string): WallBounds => {
-  const subRoom = subRoomById(room, subRoomId);
-  return subRoom ?
-      subRoom.physicalPosition
-    : {
-        from: {
-          x: finiteOrZero(roomFloorMinX(room)),
-          y: finiteOrZero(roomFloorMinY(room)),
-        },
-        to: { x: roomFloorMaxX(room), y: roomFloorMaxY(room) },
-      };
-};
-
 export const addReturnDoorInPlace = ({
   state,
   fromRoomJson,
@@ -118,8 +92,8 @@ export const addReturnDoorInPlace = ({
   // and this will be added to the other room:
   const returnDoorId = nextItemId(keys(toRoomJson.items), typePrefix.door);
 
-  const fromWalls = wallBounds(fromRoomJson, fromDoorSubroom);
-  const toWalls = wallBounds(
+  const fromWalls = roomWallBounds(fromRoomJson, fromDoorSubroom);
+  const toWalls = roomWallBounds(
     toRoomJson,
     outgoingDoor.config.meta?.toSubRoom ?? "*",
   );

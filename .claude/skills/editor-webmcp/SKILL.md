@@ -25,6 +25,7 @@ The level editor registers webmcp tools in every build, dev and production. This
 | `loadCampaign` | `username?`, `campaignName?`, `version?` | loads a campaign like the Open dialog (discards unsaved changes). No username/name = the sequel campaign |
 | `revertCampaign` | - | reloads the open campaign as last saved, like the toolbar's revert button (discards unsaved changes) |
 | `saveCampaign` | `campaignName?`, `publish?`, `overwriteConfirmed?` | saves a new version to the db like the toolbar's save button, showing the same flash/failure dialog; with `campaignName`, saves as that name like the Save As dialog. Returns `saved` (the new locator), `saveFailed`, or `needsConfirmation` when the name is another existing campaign - ask the user before re-calling with `overwriteConfirmed: true` |
+| `moveItemsToRoom` | `roomId`, `subRoomId?`, `itemIds?` (default the selection) | moves items from the current room to another like dropping them on its map tile: same offset from the room's corner, nudged to the nearest free whole-block spot; walls/floors/doors stay; links between items that don't both move are dropped; teleporters follow. The other room becomes current |
 | `insertRoom` | `direction`: left/right/away/towards/up/down | adds a room next to the current one like the map's insert buttons (up/down create a room above/below); returns `currentRoomId` (it becomes the current room) |
 | `addRoom` | `roomSize?` `{x,y}` | adds a room like the toolbar's add-room button; returns `addedRoomId` (it becomes the current room) |
 

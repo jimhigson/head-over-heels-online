@@ -1,6 +1,6 @@
 import { itemBehaviourKey, type ItemInPlay } from "../../../model/ItemInPlay";
 import { type EmittableItemJson } from "../../../model/json/ItemConfigMap";
-import { roomJsonItemsIterable } from "../../../model/RoomJson";
+import { roomJsonItemsIterable } from "../../../model/RoomJsonItemIterators";
 import {
   roomItemsIterable,
   roomSpatialIndexKey,

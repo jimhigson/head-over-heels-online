@@ -1,13 +1,13 @@
 import { expect, test } from "vitest";
 
-import { iterateRoomJsonItemsWithIds } from "../../../RoomJson";
+import { iterateRoomJsonItemIds } from "../../../RoomJsonItemIterators";
 import { campaignOf, newRoom, runCheck } from "../testUtils";
 import { roomPerimeterCoverageVerifier } from "./roomPerimeterCoverageVerifier";
 
 test("flags a room with a hole in its perimeter", () => {
   const roomA = newRoom("roomA");
   // remove one perimeter wall, leaving an open edge
-  const [[wallId]] = iterateRoomJsonItemsWithIds(roomA.items, "wall").toArray();
+  const [wallId] = iterateRoomJsonItemIds(roomA.items, "wall");
   delete roomA.items[wallId];
 
   const [issue] = runCheck(

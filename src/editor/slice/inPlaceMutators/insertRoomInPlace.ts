@@ -3,10 +3,8 @@ import { exitGameRoomId } from "../../../model/json/ItemConfigMap";
 import { typePrefix } from "../../../model/json/typePrefix";
 import { findSubRoomForItem } from "../../../model/map/itemIsInSubRoom";
 import { roomGridPositions } from "../../../model/map/roomGridPositions";
-import {
-  iterateRoomJsonItemsWithIds,
-  subRoomById,
-} from "../../../model/RoomJson";
+import { subRoomById } from "../../../model/RoomJson";
+import { iterateRoomJsonItemsWithIds } from "../../../model/RoomJsonItemIterators";
 import { keys, valuesIter } from "../../../utils/entries";
 import { unitVectors } from "../../../utils/vectors/unitVectors";
 import {

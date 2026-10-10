@@ -2,7 +2,7 @@ import { describe, expect, test } from "vitest";
 
 import { basicEmptyRoom } from "../../_testUtils/basicRoom";
 import { type FreeItem } from "../../model/ItemInPlayNarrowedUnions";
-import { roomJsonItemsIterable } from "../../model/RoomJson";
+import { roomJsonItemsIterable } from "../../model/RoomJsonItemIterators";
 import { boxAt, originXyz } from "../../utils/vectors/vectors";
 import { buildRoomJsonDirectionalIndex } from "../gameState/loadRoom/buildRoomJsonDirectionalIndex";
 import { loadItemFromJson } from "../gameState/loadRoom/loadItemFromJson";

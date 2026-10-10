@@ -3,7 +3,8 @@ import {
   isFreeItem,
   type UnionOfAllItemInPlayTypes,
 } from "../../../model/ItemInPlayNarrowedUnions";
-import { type RoomJson, roomJsonItemsIterable } from "../../../model/RoomJson";
+import { type RoomJson } from "../../../model/RoomJson";
+import { roomJsonItemsIterable } from "../../../model/RoomJsonItemIterators";
 import {
   type Progression,
   roomItemsIterable,

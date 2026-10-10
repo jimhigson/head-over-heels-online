@@ -2,12 +2,14 @@ import { produce } from "immer";
 import { describe, expect, test } from "vitest";
 
 import {
-  iterateRoomJsonItemsWithIds,
-  roomJsonItemsIterable,
   roomNonContiguousRelationship,
   roomVerticalLink,
   type SubRooms,
 } from "../../../model/RoomJson";
+import {
+  iterateRoomJsonItemsWithIds,
+  roomJsonItemsIterable,
+} from "../../../model/RoomJsonItemIterators";
 import {
   type EditorJsonItem,
   type EditorJsonItemUnion,

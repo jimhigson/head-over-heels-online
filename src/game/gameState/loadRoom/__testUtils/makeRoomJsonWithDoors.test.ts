@@ -1,6 +1,6 @@
 import { describe, expect, test } from "vitest";
 
-import { roomJsonItemsIterable } from "../../../../model/RoomJson";
+import { roomJsonItemsIterable } from "../../../../model/RoomJsonItemIterators";
 import {
   type DirectionXy4,
   type Xy,

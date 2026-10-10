@@ -10,7 +10,7 @@ import { deleteItemFromRoom } from "../game/gameState/mutators/deleteItemFromRoo
 import {
   roomJsonItemsEntriesIterable,
   roomJsonItemsIterable,
-} from "../model/RoomJson";
+} from "../model/RoomJsonItemIterators";
 import { roomItemsIterable } from "../model/RoomState";
 import { startEditorListening } from "../store/listenerMiddleware";
 import { useEditorAppSelector } from "../store/store";

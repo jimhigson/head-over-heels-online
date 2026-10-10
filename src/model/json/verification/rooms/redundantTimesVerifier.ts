@@ -2,7 +2,7 @@ import { produce } from "immer";
 
 import { entries } from "../../../../utils/entries";
 import { type Xyz } from "../../../../utils/vectors/vectors";
-import { iterateRoomJsonItemsWithIds } from "../../../RoomJson";
+import { iterateRoomJsonItemsWithIds } from "../../../RoomJsonItemIterators";
 import { completeTimesXyz, optimiseTimesXyz } from "../../../times";
 import { type JsonItemUnion } from "../../JsonItem";
 import { type CampaignVerifier } from "../CampaignVerification";

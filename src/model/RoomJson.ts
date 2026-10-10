@@ -1,8 +1,7 @@
 import { type ZxSpectrumRoomColour } from "../originalGame";
 import { type SceneryName } from "../sprites/planets";
-import { objectEntriesIter, valuesIter } from "../utils/entries";
 import { type DirectionXy4, type Xy, type Xyz } from "../utils/vectors/vectors";
-import { type JsonItemType, type JsonItemUnion } from "./json/JsonItem";
+import { type JsonItemUnion } from "./json/JsonItem";
 
 /**
  * when a sub-room is key'd by '*' it actually represents
@@ -236,62 +235,4 @@ export const inferRoomJson = <
   json: RoomJson<RoomId, RoomItemId, ScN>,
 ): RoomJson<RoomId, RoomItemId, ScN> => {
   return json;
-};
-
-/** Iterate over items in a room, optionally filtering to specific item types */
-export const roomJsonItemsIterable = <
-  RoomId extends string,
-  RoomItemId extends string,
-  ScN extends SceneryName = SceneryName,
-  Types extends JsonItemType = JsonItemType,
->(
-  roomJson: Pick<RoomJson<RoomId, RoomItemId, ScN>, "items">,
-  ...types: Types[]
-) => {
-  const allItems = valuesIter(roomJson.items) as IterableIterator<
-    JsonItemUnion<RoomId, RoomItemId>
-  >;
-
-  if (types.length === 0) {
-    return allItems as IterableIterator<
-      JsonItemUnion<RoomId, RoomItemId, Types>
-    >;
-  }
-
-  return allItems.filter((item) =>
-    types.includes(item.type as Types),
-  ) as IterableIterator<JsonItemUnion<RoomId, RoomItemId, Types>>;
-};
-
-/** Re-export of objectEntriesIter under a more convenient type specialised for room JSON items */
-export const roomJsonItemsEntriesIterable = objectEntriesIter as <
-  RoomId extends string,
-  RoomItemId extends string,
->(
-  roomJsonItems: RoomJsonItems<RoomItemId, RoomId>,
-) => IterableIterator<[RoomItemId, JsonItemUnion<RoomId, RoomItemId>]>;
-
-export const iterateRoomJsonItemsWithIds = <
-  RoomId extends string,
-  RoomItemId extends string,
-  Types extends JsonItemType = JsonItemType,
->(
-  roomJsonItems: RoomJsonItems<RoomItemId, RoomId>,
-  /**
-   * if given, will filter to just these types, since needing to consider just some types
-   * is a common use case
-   */
-  ...types: Types[]
-): IterableIterator<[RoomItemId, JsonItemUnion<RoomId, RoomItemId, Types>]> => {
-  const allItemsItr = roomJsonItemsEntriesIterable(roomJsonItems);
-
-  if (types.length === 0) {
-    return allItemsItr as IterableIterator<
-      [RoomItemId, JsonItemUnion<RoomId, RoomItemId, Types>]
-    >;
-  }
-
-  return allItemsItr.filter(([, item]) =>
-    types.includes(item.type as Types),
-  ) as IterableIterator<[RoomItemId, JsonItemUnion<RoomId, RoomItemId, Types>]>;
 };

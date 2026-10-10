@@ -4,7 +4,7 @@ import {
   type SliceCaseReducers,
 } from "@reduxjs/toolkit";
 
-import { roomJsonItemsIterable } from "../../../model/RoomJson";
+import { roomJsonItemsIterable } from "../../../model/RoomJsonItemIterators";
 import { keysIter, valuesIter } from "../../../utils/entries";
 import { first } from "../../../utils/iterators/first";
 import { pick } from "../../../utils/pick";

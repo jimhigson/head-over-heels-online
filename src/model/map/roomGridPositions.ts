@@ -18,12 +18,11 @@ import { exitGameRoomId } from "../json/ItemConfigMap";
 import { type JsonItem } from "../json/JsonItem";
 import { resolveTeleporterLanding } from "../json/resolveTeleporterLanding";
 import { type Campaign } from "../modelTypes";
+import { isWholeRoomSubRooms, type RoomJson, type SubRooms } from "../RoomJson";
 import {
-  isWholeRoomSubRooms,
+  iterateRoomJsonItemIds,
   iterateRoomJsonItemsWithIds,
-  type RoomJson,
-  type SubRooms,
-} from "../RoomJson";
+} from "../RoomJsonItemIterators";
 import { findSubRoomForItem } from "./itemIsInSubRoom";
 import { partnerDoorSubRoomId } from "./partnerDoorSubRoomId";
 
@@ -99,11 +98,11 @@ const findTargetEndpoint = <RoomId extends string>(
 ): TeleporterTargetEndpoint | undefined => {
   const landing = resolveTeleporterLanding(
     config,
-    iterateRoomJsonItemsWithIds(
+    iterateRoomJsonItemIds(
       targetRoom.items,
       "teleporter",
       "portableTeleporter",
-    ).map(([teleporterId]) => teleporterId),
+    ),
     (itemId): itemId is string => itemId in targetRoom.items,
     sourceItemIdInTarget,
   );

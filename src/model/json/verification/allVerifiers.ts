@@ -4,8 +4,7 @@ import { missingPlayerStartVerifier } from "./campaign/missingPlayerStartVerifie
 import { schemaComplianceVerifier } from "./campaign/schemaComplianceVerifier";
 import { unreachableRoomVerifier } from "./campaign/unreachableRoomVerifier";
 import { type CampaignVerifier } from "./CampaignVerification";
-import { controllerExpectTypeVerifier } from "./controllers/controllerExpectTypeVerifier";
-import { deadControllerReferenceVerifier } from "./controllers/deadControllerReferenceVerifier";
+import { controllerTargetsVerifier } from "./controllers/controllerTargetsVerifier";
 import { danglingDoorTargetVerifier } from "./doors/danglingDoorTargetVerifier";
 import { doorAboveRoomHeightVerifier } from "./doors/doorAboveRoomHeightVerifier";
 import { doorAmbiguousLinkVerifier } from "./doors/doorAmbiguousLinkVerifier";
@@ -51,8 +50,7 @@ export const allVerifiers: CampaignVerifier<unknown>[] = [
   redundantToDoorVerifier,
   redundantToSubRoomVerifier,
   redundantTeleporterItemVerifier,
-  deadControllerReferenceVerifier,
-  controllerExpectTypeVerifier,
+  controllerTargetsVerifier,
   verticalLinkOneWayVerifier,
   verticalLinkBadSubRoomVerifier,
   verticalLinkCollisionVerifier,

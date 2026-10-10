@@ -3,10 +3,8 @@ import {
   type EditorRoomId,
 } from "../../../editor/editorTypes";
 import { type LevelEditorState } from "../../../editor/slice/levelEditorSlice";
-import {
-  roomJsonItemsIterable,
-  roomVerticalLinkHolders,
-} from "../../../model/RoomJson";
+import { roomVerticalLinkHolders } from "../../../model/RoomJson";
+import { roomJsonItemsIterable } from "../../../model/RoomJsonItemIterators";
 import { valuesIter } from "../../../utils/entries";
 import {
   selectCurrentCommittedRoomJsonFromLevelEditorState,

@@ -7,7 +7,7 @@ import { selectCurrentCommittedRoomJsonFromLevelEditorState } from "../levelEdit
 import { type LevelEditorState } from "../levelEditorSlice";
 import { clearContextMenuXyInPlace } from "./contextMenuReducers";
 import { type UndoItemEntry } from "./undoDescription";
-import { pushUndoInPlace } from "./undoReducers";
+import { pushUndoToCursorRoomInPlace } from "./undoReducers";
 
 export const explodeItemsReducers = {
   /**
@@ -30,7 +30,7 @@ export const explodeItemsReducers = {
       id,
       roomJson.items[id],
     ]);
-    pushUndoInPlace(
+    pushUndoToCursorRoomInPlace(
       state,
       { kind: "itemAction", verb: "Explode", items },
       timestamp,

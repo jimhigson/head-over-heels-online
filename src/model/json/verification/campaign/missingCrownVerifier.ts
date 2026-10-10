@@ -1,6 +1,6 @@
 import { type PlanetName, planets } from "../../../../sprites/planets";
 import { entries } from "../../../../utils/entries";
-import { iterateRoomJsonItemsWithIds } from "../../../RoomJson";
+import { iterateRoomJsonItemsWithIds } from "../../../RoomJsonItemIterators";
 import { type CampaignVerifier, notAutoFixable } from "../CampaignVerification";
 
 type MissingCrown = {

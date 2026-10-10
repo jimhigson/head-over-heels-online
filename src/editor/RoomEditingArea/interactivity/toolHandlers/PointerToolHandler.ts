@@ -34,6 +34,7 @@ import {
   type EditorRoomState,
 } from "../../../editorTypes";
 import {
+  changeDragInProgress,
   commitCurrentPreviewedEdits,
   moveOrResizeItemAsPreview,
   openItemContextMenu,
@@ -43,6 +44,7 @@ import {
   setSelectedItemsInRoom,
   toggleSelectedItemInRoom,
 } from "../../../slice/levelEditorSlice";
+import { type ItemsDrag } from "../../../slice/reducers/dragToMoveReducers";
 import { getMovableVector } from "../../../slice/reducers/moveOrResizeItemPreview/getMovableVector";
 import { itemMoveOrResizeWouldCollide } from "../../cursor/editWouldCollide";
 import { roundXyzProjection } from "../../cursor/findPointerPointingAt";
@@ -243,10 +245,11 @@ export class PointerToolHandler implements ToolHandler<
     storeState,
     mouseDownPointingAtRef,
     mouseEvent,
+    clientMovement,
     viewport,
     dragAccVec,
   }: MouseMoveParams<Extract<Tool, { type: "pointer" }>>) {
-    const mouseMoveXy = viewportMouseMovement(viewport, mouseEvent);
+    const mouseMoveXy = viewportMouseMovement(viewport, clientMovement);
 
     const jsonItemIds: EditorRoomItemId[] = getJsonItemIdsToUseForPointingAt(
       storeState,
@@ -307,22 +310,32 @@ export class PointerToolHandler implements ToolHandler<
       );
     }
 
-    const resizeEdge: Plane | undefined =
+    const mouseDownEdge: Plane | undefined =
       mouseDownPointingAtRef.current?.world?.onItem.edge;
-    const isResizing =
-      resizeEdge && jsonItems.every((jsonItem) => isConsolidatable(jsonItem));
+    // grabbing an edge resizes, if every item can be resized:
+    const resizeEdge =
+      jsonItems.every((jsonItem) => isConsolidatable(jsonItem)) ? mouseDownEdge
+      : undefined;
+    const itemsDrag: ItemsDrag =
+      resizeEdge === undefined ? "moveItems" : "resizeItems";
 
     const prevDragAccVec: Xyz = dragAccVec.current ?? originXyz;
 
     // accumulate some more on the drag vector:
     const nextDragAccVec = addXyz(prevDragAccVec, dragDeltaVec);
-    const nextDragAccVecRound = roundDragVector(nextDragAccVec, isResizing);
+    const nextDragAccVecRound = roundDragVector(
+      nextDragAccVec,
+      itemsDrag === "resizeItems",
+    );
 
     // store for the next frame:
     dragAccVec.current = nextDragAccVec;
 
     if (
-      xyzEqual(roundDragVector(prevDragAccVec, isResizing), nextDragAccVecRound)
+      xyzEqual(
+        roundDragVector(prevDragAccVec, itemsDrag === "resizeItems"),
+        nextDragAccVecRound,
+      )
     ) {
       // rounded acc drag vector didn't change - nothing to do
       return;
@@ -333,7 +346,7 @@ export class PointerToolHandler implements ToolHandler<
     let positionDelta: Xyz;
     let timesDelta: undefined | Xyz = undefined;
 
-    if (isResizing) {
+    if (resizeEdge !== undefined) {
       // resizing
       //
       //   ⌑
@@ -375,6 +388,9 @@ export class PointerToolHandler implements ToolHandler<
 
     if (collides) {
       return;
+    }
+    if (storeState.levelEditor.dragInProgress !== itemsDrag) {
+      dispatch(changeDragInProgress(itemsDrag));
     }
     dispatch(
       moveOrResizeItemAsPreview({

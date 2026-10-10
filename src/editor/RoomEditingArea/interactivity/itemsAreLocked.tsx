@@ -3,13 +3,11 @@ import {
   type EditorJsonItemUnion,
   type EditorUnionOfAllItemInPlayTypes,
 } from "../../editorTypes";
+import { isSceneryItem } from "./isSceneryItem";
 
 export const itemsAreLocked = (
   storeState: EditorRootState,
   ...items: EditorJsonItemUnion[] | EditorUnionOfAllItemInPlayTypes[]
 ) => {
-  return (
-    storeState.levelEditor.wallsFloorsLocked &&
-    items.some((t) => t.type === "wall" || t.type === "floor")
-  );
+  return storeState.levelEditor.wallsFloorsLocked && items.some(isSceneryItem);
 };

@@ -2,7 +2,7 @@ import { expect, test } from "vitest";
 
 import { campaign } from "../../../_generated/originalCampaign/campaign";
 import { type OriginalCampaignRoomId } from "../../../_generated/originalCampaign/OriginalCampaignRoomId";
-import { roomJsonItemsIterable } from "../../../model/RoomJson";
+import { roomJsonItemsIterable } from "../../../model/RoomJsonItemIterators";
 import { entries } from "../../../utils/entries";
 import { unitVectors } from "../../../utils/vectors/unitVectors";
 import { type Xyz } from "../../../utils/vectors/vectors";

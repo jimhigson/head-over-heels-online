@@ -1,7 +1,5 @@
-import {
-  type RoomJson,
-  roomJsonItemsEntriesIterable,
-} from "../../../../../../model/RoomJson";
+import { type RoomJson } from "../../../../../../model/RoomJson";
+import { roomJsonItemsEntriesIterable } from "../../../../../../model/RoomJsonItemIterators";
 import { fromAllEntries } from "../../../../../../utils/entries";
 import { type RoomPickupsCollected } from "../../../../../gameState/GameState";
 import { jsonItemIsNotable } from "./jsonItemIsNotable";
