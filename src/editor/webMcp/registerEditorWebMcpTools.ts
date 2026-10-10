@@ -10,24 +10,35 @@ import { type CampaignLocator } from "../../model/modelTypes";
 import { editorCampaignsApiSlice } from "../../store/slices/campaigns/editorCampaignsApiSlice";
 import { editorStore } from "../../store/store";
 import { valuesIter } from "../../utils/entries";
-import { type Xy } from "../../utils/vectors/vectors";
+import {
+  directionsXyz4,
+  type DirectionXyz4,
+  type Xy,
+} from "../../utils/vectors/vectors";
 import { jsonResult } from "../../webMcp/jsonResult";
 import { getModelContext } from "../../webMcp/modelContext";
 import { reduxWebMcpTools } from "../../webMcp/reduxWebMcpTools";
 import { campaignIsNamed, type EditorCampaign } from "../editorTypes";
 import { openPlaytest, playtestUrl } from "../playtestUrl";
+import { insertRoomInDirection } from "../slice/insertRoomInDirection";
 import {
   selectCurrentCommittedRoomJsonFromLevelEditorState,
   selectCursorRoomId,
+  selectCursorSubRoomId,
 } from "../slice/levelEditorSelectors";
 import {
   addRoom,
   campaignJsonAutoFixed,
   roomJsonEdited,
   selectCurrentCampaignInProgress,
+  selectEditorCameraAngle,
+  selectItem,
+  selectSelectedJsonItemIds,
+  selectTool,
 } from "../slice/levelEditorSlice";
 import {
   loadCampaignIntoEditor,
+  revertPressed,
   saveCampaign,
   saveCampaignAs,
   saveOutcomeShown,
@@ -42,6 +53,9 @@ const isXy = (value: unknown): value is Xy =>
   typeof value.x === "number" &&
   "y" in value &&
   typeof value.y === "number";
+
+const isDirectionXyz4 = (value: unknown): value is DirectionXyz4 =>
+  directionsXyz4.some((direction) => direction === value);
 
 const currentIssues = () => selectVerification(editorStore.getState());
 
@@ -145,6 +159,80 @@ const editorWebMcpTools: WebMCP.ModelContextTool[] = [
   },
   ...reduxWebMcpTools,
   {
+    name: "getCurrentRoomId",
+    description: "the id of the room the editor is currently showing",
+    inputSchema: { type: "object", properties: {} },
+    execute: async () =>
+      jsonResult(selectCursorRoomId(editorStore.getState().levelEditor)),
+  },
+  {
+    name: "getCurrentRoomJson",
+    description: "the json of the room the editor is currently showing",
+    inputSchema: { type: "object", properties: {} },
+    execute: async () =>
+      jsonResult(
+        selectCurrentCommittedRoomJsonFromLevelEditorState(
+          editorStore.getState().levelEditor,
+        ),
+      ),
+  },
+  {
+    name: "getSelectedItems",
+    description:
+      "the items selected in the current room, as item id -> item json",
+    inputSchema: { type: "object", properties: {} },
+    async execute() {
+      const editorState = editorStore.getState();
+      return jsonResult(
+        Object.fromEntries(
+          selectSelectedJsonItemIds(editorState).map((itemId) => [
+            itemId,
+            selectItem(editorState, itemId),
+          ]),
+        ),
+      );
+    },
+  },
+  {
+    name: "listRooms",
+    description: "every room in the open campaign, as {id, planet}",
+    inputSchema: { type: "object", properties: {} },
+    execute: async () =>
+      jsonResult(
+        valuesIter(
+          selectCurrentCampaignInProgress(editorStore.getState()).rooms,
+        )
+          .map(({ id, planet }) => ({ id, planet }))
+          .toArray(),
+      ),
+  },
+  {
+    name: "getOpenCampaign",
+    description: "the open campaign's locator (user, name, version) and meta",
+    inputSchema: { type: "object", properties: {} },
+    async execute() {
+      const { locator, meta } = selectCurrentCampaignInProgress(
+        editorStore.getState(),
+      );
+      return jsonResult({ locator, meta });
+    },
+  },
+  {
+    name: "getEditorView",
+    description:
+      "the editor's view and ui state: camera angle, current tool, current sub-room and grid resolution",
+    inputSchema: { type: "object", properties: {} },
+    async execute() {
+      const editorState = editorStore.getState();
+      return jsonResult({
+        cameraAngle: selectEditorCameraAngle(editorState),
+        tool: selectTool(editorState),
+        subRoomId: selectCursorSubRoomId(editorState.levelEditor),
+        gridResolution: editorState.levelEditor.gridResolution,
+      });
+    },
+  },
+  {
     name: "loadCampaign",
     description:
       "load a campaign from the db into the editor, as the Open dialog does; discards unsaved changes. Omit username and campaignName for the sequel",
@@ -185,6 +273,25 @@ const editorWebMcpTools: WebMCP.ModelContextTool[] = [
     },
   },
   {
+    name: "revertCampaign",
+    description:
+      "reload the open campaign as last saved, as the toolbar's revert button does; discards unsaved changes",
+    inputSchema: { type: "object", properties: {} },
+    async execute() {
+      const campaign = selectCurrentCampaignInProgress(editorStore.getState());
+      if (!campaignIsNamed(campaign)) {
+        return jsonResult(
+          "the campaign has never been saved: nothing to revert to",
+        );
+      }
+      await editorStore.dispatch(revertPressed());
+      return jsonResult({
+        reverted: selectCurrentCampaignInProgress(editorStore.getState())
+          .locator,
+      });
+    },
+  },
+  {
     name: "addRoom",
     description:
       "add a new, unconnected room with the current room's scenery, as the toolbar's add room button does; it becomes the current room",
@@ -205,6 +312,32 @@ const editorWebMcpTools: WebMCP.ModelContextTool[] = [
       );
       return jsonResult({
         addedRoomId: selectCursorRoomId(editorStore.getState().levelEditor),
+      });
+    },
+  },
+  {
+    name: "insertRoom",
+    description:
+      "add a new room next to the current one, as the map's insert buttons do: left/right/away/towards insert beside it, up/down create a room above/below. It becomes the current room",
+    inputSchema: {
+      type: "object",
+      properties: {
+        direction: {
+          type: "string",
+          enum: [...directionsXyz4],
+        },
+      },
+      required: ["direction"],
+    },
+    async execute({ direction }) {
+      if (!isDirectionXyz4(direction)) {
+        return jsonResult(
+          `direction must be one of ${directionsXyz4.join(", ")}`,
+        );
+      }
+      editorStore.dispatch(insertRoomInDirection(direction));
+      return jsonResult({
+        currentRoomId: selectCursorRoomId(editorStore.getState().levelEditor),
       });
     },
   },

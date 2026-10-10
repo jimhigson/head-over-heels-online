@@ -9,7 +9,6 @@ import { unitVectors } from "../../../utils/vectors/unitVectors";
 import {
   type DirectionXy4,
   oppositeDirection,
-  originXy,
   type Xy,
   type Xyz,
   xyzEqual,
@@ -77,19 +76,35 @@ const getDestinationRoom = ({
     : undefined;
 };
 
+type WallBounds = { from: Xy; to: Xy };
+
+// a room with no floor has no floor extent; measure it from the origin
+const finiteOrZero = (n: number) => (Number.isFinite(n) ? n : 0);
+
+/** where a (sub-)room's walls are: the sub-room's extent, or the whole floor's */
+const wallBounds = (room: EditorRoomJson, subRoomId: string): WallBounds => {
+  const subRoom = subRoomById(room, subRoomId);
+  return subRoom ?
+      subRoom.physicalPosition
+    : {
+        from: {
+          x: finiteOrZero(roomFloorMinX(room)),
+          y: finiteOrZero(roomFloorMinY(room)),
+        },
+        to: { x: roomFloorMaxX(room), y: roomFloorMaxY(room) },
+      };
+};
+
 export const addReturnDoorInPlace = ({
   state,
   fromRoomJson,
   toRoomJson,
   outgoingDoorEntry: [outgoingDoorId, outgoingDoor],
-  outgoingDoorRelativeTo = originXy,
 }: {
   state: LevelEditorState;
   fromRoomJson: EditorRoomJson;
   toRoomJson: EditorRoomJson;
   outgoingDoorEntry: [EditorRoomItemId, EditorJsonItem<"door">];
-  /** origin to subtract from the outgoing door's position for the return door's non-directional axis */
-  outgoingDoorRelativeTo?: Xy;
 }) => {
   const outgoingDirection = outgoingDoor.config.direction;
   const outgoingPosition = outgoingDoor.position;
@@ -103,30 +118,22 @@ export const addReturnDoorInPlace = ({
   // and this will be added to the other room:
   const returnDoorId = nextItemId(keys(toRoomJson.items), typePrefix.door);
 
-  const toSubRoomId = outgoingDoor.config.meta?.toSubRoom;
-  const toSubRoom =
-    toSubRoomId === undefined ? undefined : (
-      subRoomById(toRoomJson, toSubRoomId)
-    );
+  const fromWalls = wallBounds(fromRoomJson, fromDoorSubroom);
+  const toWalls = wallBounds(
+    toRoomJson,
+    outgoingDoor.config.meta?.toSubRoom ?? "*",
+  );
 
-  const wallMinX =
-    toSubRoom ? toSubRoom.physicalPosition.from.x : roomFloorMinX(toRoomJson);
-  const wallMaxX =
-    toSubRoom ? toSubRoom.physicalPosition.to.x : roomFloorMaxX(toRoomJson);
-  const wallMinY =
-    toSubRoom ? toSubRoom.physicalPosition.from.y : roomFloorMinY(toRoomJson);
-  const wallMaxY =
-    toSubRoom ? toSubRoom.physicalPosition.to.y : roomFloorMaxY(toRoomJson);
-
+  // same offset along the wall as the outgoing door has along its own wall:
   const returnDoorPosition: Xyz = {
     x:
-      outgoingDirection === "left" ? wallMinX
-      : outgoingDirection === "right" ? wallMaxX
-      : outgoingPosition.x - outgoingDoorRelativeTo.x + wallMinX,
+      outgoingDirection === "left" ? toWalls.from.x
+      : outgoingDirection === "right" ? toWalls.to.x
+      : outgoingPosition.x - fromWalls.from.x + toWalls.from.x,
     y:
-      outgoingDirection === "away" ? wallMinY
-      : outgoingDirection === "towards" ? wallMaxY
-      : outgoingPosition.y - outgoingDoorRelativeTo.y + wallMinY,
+      outgoingDirection === "away" ? toWalls.from.y
+      : outgoingDirection === "towards" ? toWalls.to.y
+      : outgoingPosition.y - fromWalls.from.y + toWalls.from.y,
     z: outgoingPosition.z,
   };
 
@@ -242,15 +249,11 @@ export const addDoorInPlace = (
   );
 
   if (!isPreview && toRoomJson) {
-    const fromSubRoom = subRoomById(fromRoomJson, fromDoorSubroom);
-
     addReturnDoorInPlace({
       state,
       fromRoomJson,
       toRoomJson,
       outgoingDoorEntry: [doorId, doorJsonItem],
-      outgoingDoorRelativeTo:
-        fromSubRoom ? fromSubRoom.physicalPosition.from : undefined,
     });
   }
 
