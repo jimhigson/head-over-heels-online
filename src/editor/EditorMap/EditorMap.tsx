@@ -24,11 +24,13 @@ import {
 } from "../slice/levelEditorSlice";
 import { confirmDeleteRoomThunk } from "../toolbar/confirmThunk";
 import { CoalesceButton } from "./CoalesceButton";
+import { EditorMapItemDropTargetBehaviour } from "./EditorMapItemDropTargetBehaviour";
 import { LazyEditorMapInsertButtonDecorator } from "./LazyEditorMapInsertButtonDecorator";
 import { LazyEditorMapNonContiguousRelationshipDecorator } from "./LazyEditorMapNonContiguousRelationshipDecorator";
 import { LazyEditorMapTeleporterLinkDecorator } from "./LazyEditorMapTeleporterLinkDecorator";
 import { mapAreaIndexOfRoom } from "./mapAreaIndexOfRoom";
 import { MapAreaSwitcher } from "./MapAreaSwitcher";
+import { useDropItemsOnMap } from "./useDropItemsOnMap";
 import { useEditorMapData } from "./useEditorMapData";
 
 const editorClickableRoomBehaviour = createClickableRoomBehaviour<EditorRoomId>(
@@ -44,6 +46,7 @@ const editorClickableRoomBehaviour = createClickableRoomBehaviour<EditorRoomId>(
 const editorBehaviours: RoomBehaviourComponent<EditorRoomId>[] = [
   EditorMapRoomTooltipBehaviour,
   editorClickableRoomBehaviour,
+  EditorMapItemDropTargetBehaviour,
 ];
 
 const editorPrefixDecorators = [
@@ -185,6 +188,7 @@ const EditorMap = () => {
       performance.mark("editor-map-ready");
     }
   }, [mapRendering]);
+  useDropItemsOnMap();
 
   if (mapData.isError) {
     throw new Error(
