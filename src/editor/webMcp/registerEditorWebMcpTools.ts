@@ -18,8 +18,14 @@ import {
 import { jsonResult } from "../../webMcp/jsonResult";
 import { getModelContext } from "../../webMcp/modelContext";
 import { reduxWebMcpTools } from "../../webMcp/reduxWebMcpTools";
-import { campaignIsNamed, type EditorCampaign } from "../editorTypes";
+import {
+  campaignIsNamed,
+  type EditorCampaign,
+  type EditorRoomId,
+  type EditorRoomItemId,
+} from "../editorTypes";
 import { openPlaytest, playtestUrl } from "../playtestUrl";
+import { dropItemsOnRoom } from "../slice/dropItemsOnRoom";
 import { insertRoomInDirection } from "../slice/insertRoomInDirection";
 import {
   selectCurrentCommittedRoomJsonFromLevelEditorState,
@@ -313,6 +319,53 @@ const editorWebMcpTools: WebMCP.ModelContextTool[] = [
       return jsonResult({
         addedRoomId: selectCursorRoomId(editorStore.getState().levelEditor),
       });
+    },
+  },
+  {
+    name: "moveItemsToRoom",
+    description:
+      "move items from the current room to another, as dropping them on its map tile does: they keep their offset from the room's corner, nudged to the nearest whole-block spot free of collisions (sideways preferred to stacking up). Walls, floors and doors stay behind. The other room becomes the current room, with the items selected. Returns their new ids, or why they couldn't move",
+    inputSchema: {
+      type: "object",
+      properties: {
+        roomId: { type: "string", description: "the room to move them to" },
+        subRoomId: {
+          type: "string",
+          description: "the sub-room to move them into; default the whole room",
+        },
+        itemIds: {
+          type: "array",
+          items: { type: "string" },
+          description: "default the selected items",
+        },
+      },
+      required: ["roomId"],
+    },
+    async execute({ roomId, subRoomId, itemIds }) {
+      if (typeof roomId !== "string") {
+        return jsonResult("roomId must be a string");
+      }
+      const { levelEditor } = editorStore.getState();
+      const placement = editorStore.dispatch(
+        dropItemsOnRoom({
+          itemIds:
+            Array.isArray(itemIds) ?
+              (itemIds as EditorRoomItemId[])
+            : levelEditor.selectedJsonItemIds,
+          toRoomId: roomId as EditorRoomId,
+          toSubRoomId: typeof subRoomId === "string" ? subRoomId : "*",
+        }),
+      );
+      return placement === undefined ?
+          jsonResult(
+            "not moved: same room, unknown room, nothing movable, or nowhere free for them",
+          )
+        : jsonResult({
+            currentRoomId: selectCursorRoomId(
+              editorStore.getState().levelEditor,
+            ),
+            movedItemIds: selectSelectedJsonItemIds(editorStore.getState()),
+          });
     },
   },
   {

@@ -102,7 +102,7 @@ export const useRoomEditorInteractivity = (
 
     const endPanSession = () => {
       if (panSessionRef.current?.active) {
-        store.dispatch(changeDragInProgress(false));
+        store.dispatch(changeDragInProgress(undefined));
       }
       panSessionRef.current = undefined;
     };
@@ -115,7 +115,7 @@ export const useRoomEditorInteractivity = (
     const abandonToolDrag = () => {
       if (dragAccVec.current !== undefined) {
         store.dispatch(resetPreviewedEdits());
-        store.dispatch(changeDragInProgress(false));
+        store.dispatch(changeDragInProgress(undefined));
       }
       dragAccVec.current = undefined;
       mouseDownPointingAtRef.current = undefined;
@@ -132,7 +132,7 @@ export const useRoomEditorInteractivity = (
           if (movedPx > panMinimumDistancePx) {
             panSession.active = true;
             // reuse the drag-in-progress state for the grabbing cursor:
-            store.dispatch(changeDragInProgress(true));
+            store.dispatch(changeDragInProgress("pan"));
           }
         }
         if (panSession.active) {
@@ -252,7 +252,7 @@ export const useRoomEditorInteractivity = (
       dragAccVec.current = undefined;
       mouseDownPointingAtRef.current = undefined;
 
-      store.dispatch(changeDragInProgress(false));
+      store.dispatch(changeDragInProgress(undefined));
 
       if (!isClick && !isDragEnd) {
         console.log("mouseUp - not a click or drag end - skipping");
@@ -314,7 +314,7 @@ export const useRoomEditorInteractivity = (
           startClientX: mouseEvent.clientX,
           startClientY: mouseEvent.clientY,
         };
-        store.dispatch(changeDragInProgress(true));
+        store.dispatch(changeDragInProgress("pan"));
         return;
       }
 

@@ -607,7 +607,7 @@ export const moveOrResizeItemPreviewReducers = {
       description: { kind: "itemAction", verb, items },
       timestamp,
     };
-    state.dragInProgress = true;
+    state.dragInProgress = isResize ? "resizeItems" : "moveItems";
   },
 } satisfies SliceCaseReducers<LevelEditorState>;
 

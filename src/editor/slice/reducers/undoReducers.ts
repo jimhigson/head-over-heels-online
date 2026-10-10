@@ -33,8 +33,10 @@ export type UndoRedoPayload = {
   steps?: number;
 };
 
-const roomHistory = (state: LevelEditorState): RoomUndoHistory => {
-  const roomId = selectCursorRoomId(state);
+const roomHistory = (
+  state: LevelEditorState,
+  roomId: EditorRoomId = selectCursorRoomId(state),
+): RoomUndoHistory => {
   state.history[roomId] ??= { undo: [], redo: [] };
   return state.history[roomId];
 };
@@ -44,13 +46,17 @@ export const snapshotRoomForUndo = (state: LevelEditorState): EditorRoomJson =>
     current(selectCurrentCommittedRoomJsonFromLevelEditorState(state)),
   );
 
-export const pushUndoInPlace = (
+/** push an undo entry for any room, not necessarily the current one */
+export const pushUndoForRoomInPlace = (
   state: LevelEditorState,
+  roomId: EditorRoomId,
   description: UndoDescription,
   timestamp: number,
 ) => {
-  const previousRoom = snapshotRoomForUndo(state);
-  const { undo, redo } = roomHistory(state);
+  const previousRoom = structuredClone(
+    current(state.campaignInProgress.rooms[roomId] as EditorRoomJson),
+  );
+  const { undo, redo } = roomHistory(state, roomId);
 
   // remove any 'redo' state that is now invalid since we forked to a new branch
   redo.length = 0;
@@ -58,6 +64,18 @@ export const pushUndoInPlace = (
 
   undo.push({ room: previousRoom, description, timestamp });
 };
+
+export const pushUndoInPlace = (
+  state: LevelEditorState,
+  description: UndoDescription,
+  timestamp: number,
+) =>
+  pushUndoForRoomInPlace(
+    state,
+    selectCursorRoomId(state),
+    description,
+    timestamp,
+  );
 
 export const undoReducers = {
   undoHovered(state, { payload: index }: PayloadAction<number>) {
