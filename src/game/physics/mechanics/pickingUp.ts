@@ -53,10 +53,20 @@ export const pickingUp = <RoomId extends string, RoomItemId extends string>(
     return;
   }
 
-  // trying to pick up
+  // has input (trying to pick up)
+
   if (itemToPickup === undefined) {
     // nothing to pick up (or already carrying)
-    if (carrying === null && carryActionPress === "tap") {
+    if (
+      // only consider a failure to pick up if trying to pick up, otherwise just exit:
+      carrying === null &&
+      // only consider it a failure at the start of the press (don't repeatedly set it per frame
+      // while holding the input)
+      carryActionPress === "tap" &&
+      // only consider it a failure if standing on something - otherwise, can't buffer the press by
+      // holding carry in advance of landing on a portable item
+      carrier.state.standingOnItemId !== null
+    ) {
       // not carrying so an actual failure to pick up, not a failure to put down
       carrier.state.abilityFailedToUseAtGameTime = gameState.gameTime;
     }

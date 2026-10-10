@@ -471,6 +471,82 @@ describe("springs", () => {
       },
     });
   });
+
+  test("heels jump-putting-down a spring gets the spring's extra height", () => {
+    const gameState = setUpBasicGame({
+      firstRoomItems: {
+        heels: {
+          type: "player",
+          position: { x: 5, y: 6, z: 1 },
+          config: {
+            which: "heels",
+          },
+        },
+        spring: {
+          type: "spring",
+          position: { x: 5, y: 6, z: 0 },
+          config: {},
+        },
+        // falls onto heels as the game starts:
+        bag: {
+          type: "pickup",
+          position: { x: 5, y: 6, z: 2 },
+          config: {
+            gives: "bag",
+          },
+        },
+      },
+    });
+
+    playGameThrough(gameState, {
+      until() {
+        const heels = heelsState(gameState);
+        return heels.hasBag && heels.standingOnItemId === "spring";
+      },
+    });
+
+    // jump off the spring, picking it up on the way:
+    playGameThrough(gameState, {
+      setupInitialInput(mockInputStateTracker) {
+        mockInputStateTracker.mockPressing("jump");
+        mockInputStateTracker.mockPressing("carry");
+      },
+      until() {
+        const heels = heelsState(gameState);
+        return (
+          heels.carrying?.type === "spring" && heels.standingOnItemId === null
+        );
+      },
+    });
+
+    // airborne - let go, and fall back down to below the spring's height:
+    playGameThrough(gameState, {
+      setupInitialInput(mockInputStateTracker) {
+        mockInputStateTracker.mockNotPressing("jump");
+        mockInputStateTracker.mockNotPressing("carry");
+      },
+      until() {
+        const heels = heelsState(gameState);
+        return heels.vels.gravity.z < 0 && heels.box.z < blockSizePx.z;
+      },
+    });
+
+    // still in mid-air, jump-put-down the spring:
+    let maxHeelsZ = Number.NEGATIVE_INFINITY;
+    playGameThrough(gameState, {
+      setupInitialInput(mockInputStateTracker) {
+        mockInputStateTracker.mockPressing("jump");
+        mockInputStateTracker.mockPressing("carry");
+      },
+      frameCallbacks(gameState) {
+        maxHeelsZ = Math.max(maxHeelsZ, heelsState(gameState).box.z);
+      },
+      until: gameState.gameTime + 1_500,
+    });
+
+    // 3 blocks high is only reachable with the spring's extra height:
+    expect(maxHeelsZ).toBeGreaterThan(3 * blockSizePx.z);
+  });
 });
 
 test.each(testFrameRates)(
