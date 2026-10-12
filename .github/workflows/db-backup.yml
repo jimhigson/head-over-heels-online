@@ -1,0 +1,44 @@
+name: Back up DB
+
+# nightly full dump of the hosted supabase db (roles, schema, and data for the
+# public + auth schemas) into the private hoh-db-backups R2 bucket, one
+# timestamped folder per run. Nothing is ever deleted.
+
+on:
+  schedule:
+    - cron: "17 3 * * *"
+  workflow_dispatch:
+
+concurrency:
+  group: db-backup
+  cancel-in-progress: false
+
+jobs:
+  backup:
+    runs-on: ubuntu-24.04
+    env:
+      SUPABASE_ACCESS_TOKEN: ${{ secrets.SUPABASE_ACCESS_TOKEN }}
+      SUPABASE_DB_PASSWORD: ${{ secrets.SUPABASE_DB_PASSWORD }}
+      SUPABASE_PROJECT_ID: pkswdnpftrundnewgnya
+      AWS_ACCESS_KEY_ID: ${{ secrets.R2_ACCESS_KEY_ID }}
+      AWS_SECRET_ACCESS_KEY: ${{ secrets.R2_SECRET_ACCESS_KEY }}
+      AWS_DEFAULT_REGION: auto
+      R2_ENDPOINT: https://${{ secrets.R2_ACCOUNT_ID }}.r2.cloudflarestorage.com
+    steps:
+      - uses: actions/checkout@v6
+      - uses: supabase/setup-cli@v2
+        with:
+          version: latest
+      - run: supabase link --project-ref "$SUPABASE_PROJECT_ID"
+      - name: Dump
+        run: |
+          mkdir dump
+          supabase db dump --linked --role-only -f dump/roles.sql
+          supabase db dump --linked -f dump/schema.sql
+          supabase db dump --linked --data-only --use-copy -s public,auth -f dump/data.sql
+          gzip -9 dump/*.sql
+          ls -l dump
+      - name: Upload to R2
+        run: |
+          aws s3 cp dump "s3://hoh-db-backups/$(date -u +%Y-%m-%dT%H%M%SZ)/" \
+            --recursive --endpoint-url "$R2_ENDPOINT"
