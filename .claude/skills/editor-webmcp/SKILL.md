@@ -13,6 +13,7 @@ The level editor registers webmcp tools in every build, dev and production. This
 | `getReduxState` | `path?` dotted, eg `levelEditor.campaignInProgress.rooms.room_1` | reads the store (or part) |
 | `getCurrentRoomId` | - | the id of the room the editor is showing |
 | `getCurrentRoomJson` | - | the json of the room the editor is showing |
+| `getRoomItems` | `pattern?`, `roomId?` | a room's items (default the current room). Without `pattern`, `{itemId: item}`; with one, `{path: value}` for just what it picks out - see [Item patterns](#item-patterns). Prefer this to `getCurrentRoomJson` |
 | `getSelectedItems` | - | the selected items in the current room, id -> item json |
 | `listRooms` | - | every room in the campaign, as `{id, planet}` |
 | `getOpenCampaign` | - | the open campaign's `locator` and `meta` |
@@ -31,6 +32,32 @@ The level editor registers webmcp tools in every build, dev and production. This
 | `moveItemsToRoom` | `roomId`, `subRoomId?`, `itemIds?` (default the selection) | moves items from the current room to another like dropping them on its map tile: same offset from the room's corner, nudged to the nearest free whole-block spot; walls/floors/doors stay; links between items that don't both move are dropped; teleporters follow. The other room becomes current |
 | `insertRoom` | `direction`: left/right/away/towards/up/down | adds a room next to the current one like the map's insert buttons (up/down create a room above/below); returns `currentRoomId` (it becomes the current room) |
 | `addRoom` | `roomSize?` `{x,y}` | adds a room like the toolbar's add-room button; returns `addedRoomId` (it becomes the current room) |
+
+## Item patterns
+
+`getRoomItems` takes a `pattern` to fetch only what you need rather than the whole room. A pattern is dot-separated parts, matched from the room's items object - so the first part matches item ids. Each part is one of:
+
+| part | matches |
+| --- | --- |
+| `door1` | exactly that key |
+| `*` | any key |
+| `door*` | any key starting `door` |
+| `[type=door]` | any key whose value has `type` `door` |
+| `[config.which=skiHead]` | the same, with a dotted (nested) property |
+
+Results are `{ path: value }`, the path being dotted from the items object, so ids always come back. Examples:
+
+| to find | pattern |
+| --- | --- |
+| one item | `door1` |
+| all doors | `[type=door]` |
+| where every door leads | `[type=door].config.toRoom` |
+| a kind of monster | `[config.which=skiHead]` |
+| every item's position | `*.position` |
+| items sitting above the floor | `[position.z=1]` |
+| a door's destination, by id prefix | `door*.config.toRoom` |
+
+Values are compared as strings, and only equality is supported - for anything else, fetch a narrower set and filter it yourself.
 
 ## Keeping the campaign valid
 

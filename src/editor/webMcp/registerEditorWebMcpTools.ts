@@ -10,6 +10,7 @@ import { type CampaignLocator } from "../../model/modelTypes";
 import { editorCampaignsApiSlice } from "../../store/slices/campaigns/editorCampaignsApiSlice";
 import { editorStore } from "../../store/store";
 import { valuesIter } from "../../utils/entries";
+import { queryJsonPattern } from "../../utils/jsonPattern/queryJsonPattern";
 import {
   directionsXyz4,
   type DirectionXyz4,
@@ -43,6 +44,7 @@ import {
   selectEditorCameraAngle,
   selectItem,
   selectOpenRoomTabs,
+  selectRoom,
   selectTool,
 } from "../slice/levelEditorSlice";
 import {
@@ -203,6 +205,39 @@ const editorWebMcpTools: WebMCP.ModelContextTool[] = [
     inputSchema: { type: "object", properties: {} },
     execute: async () =>
       jsonResult(selectCurrentCommittedRoomJson(editorStore.getState())),
+  },
+  {
+    name: "getRoomItems",
+    description:
+      'a room\'s items, or just the parts of them a pattern picks out - the current room unless roomId is given. Without a pattern, returns `{ itemId: item }`. A pattern is dot-separated parts, the first matching item ids; each part is a key (`door1`), `*` (any key), a prefix (`door*`) or an attribute selector (`[type=door]`, `[config.which=skiHead]`) matching keys whose value has that property. Returns `{ path: value }` for each match, eg `[type=door].config.toRoom` → `{ "door1.config.toRoom": "room_2" }`. Prefer this to getCurrentRoomJson, to fetch only what is needed',
+    inputSchema: {
+      type: "object",
+      properties: {
+        pattern: {
+          type: "string",
+          description:
+            "eg `door1`, `[type=door]`, `[config.which=skiHead].position`, `*.position.z`",
+        },
+        roomId: { type: "string", description: "default the current room" },
+      },
+    },
+    async execute({ pattern, roomId }) {
+      const editorState = editorStore.getState();
+      const room = selectRoom(
+        editorState,
+        typeof roomId === "string" ?
+          (roomId as EditorRoomId)
+        : selectCursorRoomId(editorState),
+      );
+      if (room === undefined) {
+        return jsonResult(`no room ${String(roomId)}`);
+      }
+      return jsonResult(
+        typeof pattern === "string" ?
+          queryJsonPattern(room.items, pattern)
+        : room.items,
+      );
+    },
   },
   {
     name: "getSelectedItems",

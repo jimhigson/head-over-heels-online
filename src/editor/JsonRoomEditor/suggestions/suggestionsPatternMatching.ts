@@ -1,6 +1,7 @@
-import { type Node } from "jsonc-parser";
+import { findNodeAtLocation, type Node } from "jsonc-parser";
 
-import { getNodePropertyValue } from "./getNodePropertyValue";
+import { matchesJsonPatternPart } from "../../../utils/jsonPattern/matchesJsonPatternPart";
+import { splitJsonPattern } from "../../../utils/jsonPattern/splitJsonPattern";
 import {
   type SuggestionGenerator,
   type SuggestionPatterns,
@@ -9,54 +10,29 @@ import {
 const log = 0;
 
 /**
- * Parse an attribute selector like [type=door] into property and value
- */
-const parseAttributeSelector = (
-  selector: string,
-): { property: string; value: string } | null => {
-  const match = selector.match(/^\[(?<property>\w+)=(?<value>\w+)\]$/);
-  if (!match?.groups) {
-    return null;
-  }
-  return { property: match.groups.property, value: match.groups.value };
-};
-
-/**
- * Check if a path and node ancestors match a single pattern
+ * Check if a path and node ancestors match a single pattern - see
+ * `matchesJsonPatternPart` for what each part of the pattern can be
  */
 export const matchesPattern = (
   pattern: string,
   path: (number | string)[],
   nodeAncestors: Node[],
 ): boolean => {
-  const patternParts = pattern.split(".").reverse();
+  const patternParts = splitJsonPattern(pattern).reverse();
 
   // Pattern must not be longer than the path
   if (patternParts.length > path.length) {
     return false;
   }
 
-  // Take the first N elements from path/ancestors to match pattern length
-  const pathHead = path.slice(0, patternParts.length);
-  const nodeHead = nodeAncestors.slice(0, patternParts.length);
-
-  // Check if pattern matches, handling wildcards and attribute selectors
-  return patternParts.every((part, index) => {
-    const attributeSelector = parseAttributeSelector(part);
-
-    if (attributeSelector) {
-      // Attribute selector checks a property on the node at this position
-      return (
-        getNodePropertyValue(nodeHead[index], attributeSelector.property) ===
-        attributeSelector.value
-      );
-    }
-
-    // Normal path element matching
-    const pathPart = pathHead[index];
-    const matches = part === "*" || String(pathPart) === part;
-    return matches;
-  });
+  return patternParts.every((part, index) =>
+    matchesJsonPatternPart(
+      part,
+      path[index],
+      (propertyPath) =>
+        findNodeAtLocation(nodeAncestors[index], propertyPath)?.value,
+    ),
+  );
 };
 
 /**
