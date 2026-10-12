@@ -14,6 +14,7 @@ import { changeCurrentRoomInPlace } from "../inPlaceMutators/changeCurrentRoomIn
 import { migrateRoomNonContiguousRelationships } from "../inPlaceMutators/migrateRoomNonContiguousRelationships";
 import { migrateRoomVerticalLinks } from "../inPlaceMutators/migrateRoomVerticalLinks";
 import { migrateRoomWallTiles } from "../inPlaceMutators/migrateRoomWallTiles";
+import { pinRoomTabInPlace } from "../inPlaceMutators/pinRoomTabInPlace";
 import { type LevelEditorState } from "../levelEditorSlice";
 import { levelEditorSliceNonPersistedFields } from "../levelEditorSliceTransientFields";
 
@@ -46,6 +47,7 @@ export const saveAndLoadReducers = {
         "history",
       ),
     );
+    state.openRoomTabs = [];
 
     // choose which room to start the editor in.
     const startingRoom =
@@ -67,6 +69,7 @@ export const saveAndLoadReducers = {
       throw new Error("could not find any rooms in this campaign");
     }
     changeCurrentRoomInPlace(state, startingRoom, undefined, true);
+    pinRoomTabInPlace(state, startingRoom);
   },
 
   setRemoteCampaign(

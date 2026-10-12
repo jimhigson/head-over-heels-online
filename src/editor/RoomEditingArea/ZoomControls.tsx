@@ -1,5 +1,6 @@
 import { type Xy } from "../../utils/vectors/vectors";
 import { ToolbarButton } from "../toolbar/buttons/ToolbarButton";
+import { buttonSmallHeightClassNames } from "../toolbar/buttonSizeClassNames";
 import { useProvidedPixiApplication } from "./PixiApplicationProvider";
 import { useEditorViewport } from "./viewport/EditorViewportProvider";
 import { useEditorViewportZoom } from "./viewport/useEditorViewportZoom";
@@ -47,7 +48,9 @@ export const ZoomControls = () => {
       >
         <span class="text-single-line">-</span>
       </ToolbarButton>
-      <span class="px-1 bg-shadow items-center flex text-single-line pt-oneScaledPix whitespace-pre">
+      <span
+        class={`px-1 bg-shadow items-center flex text-single-line pt-oneScaledPix whitespace-pre ${buttonSmallHeightClassNames}`}
+      >
         {`${percentageZoom}%`}
       </span>
       <ToolbarButton

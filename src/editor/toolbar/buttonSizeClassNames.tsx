@@ -3,6 +3,9 @@ import { twClass } from "../../utils/twClass" with { type: "macro" };
 // want to fit into the block grid with an outline, so 3blocks minus one (scales) pixel
 export const buttonSizeClassNames =
   "h-[calc(3*var(--block)-1px*var(--scale))] w-[calc(3*var(--block)-1px*var(--scale))]";
+/** the height of a small button, for things that sit in a row with them */
+export const buttonSmallHeightClassNames =
+  "h-[calc(2*var(--block)-1px*var(--scale))]";
 export const buttonSmallSizeClassNames =
   "h-[calc(2*var(--block)-1px*var(--scale))] w-[calc(2*var(--block)-1px*var(--scale))]";
 export const buttonSpriteRevertColourClasses = twClass(

@@ -8,7 +8,7 @@ import {
   closeItemContextMenu,
   selectContextMenuXy,
   selectCurrentCommittedRoomJson,
-  selectSelectedJsonItemIds,
+  selectCursorRoomSelectedJsonItemIds,
 } from "../../slice/levelEditorSlice";
 import { useEditorViewport } from "../viewport/EditorViewportProvider";
 import { ActivationMenuItems } from "./ActivationMenuItems";
@@ -46,7 +46,9 @@ export const ItemContextMenu = ({ renderArea }: ItemContextMenuProps) => {
   const dispatch = useAppDispatch();
   const contextMenuXy = useEditorAppSelector(selectContextMenuXy);
   const viewport = useEditorViewport();
-  const selectedJsonItemIds = useEditorAppSelector(selectSelectedJsonItemIds);
+  const selectedJsonItemIds = useEditorAppSelector(
+    selectCursorRoomSelectedJsonItemIds,
+  );
   const roomJson = useEditorAppSelector(selectCurrentCommittedRoomJson);
 
   const close = useCallback(() => dispatch(closeItemContextMenu()), [dispatch]);

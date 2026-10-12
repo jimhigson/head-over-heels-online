@@ -1,9 +1,11 @@
 import { createSelector } from "@reduxjs/toolkit";
 import { produce } from "immer";
+import nanoEqual from "nano-equal";
 import { type ValueOf } from "type-fest";
 
 import { roomVerticalLink } from "../../model/RoomJson";
 import { type EditorRootState } from "../../store/store";
+import { emptyArray } from "../../utils/empty";
 import { keysIter, objectEntriesIter } from "../../utils/entries";
 import {
   type EditorJsonItemUnion,
@@ -47,6 +49,17 @@ export const selectRoomFromLevelEditorState = (
   roomId: EditorRoomId,
 ) => state.campaignInProgress.rooms[roomId] as EditorRoomJson | undefined;
 
+/** whether the room differs from its last saved version (or has never been saved) */
+export const selectRoomHasUnsavedChangesFromLevelEditorState = (
+  state: LevelEditorState,
+  roomId: EditorRoomId,
+): boolean => {
+  const savedRoom = state.remoteCampaign?.rooms[roomId];
+  const room = state.campaignInProgress.rooms[roomId];
+  // untouched rooms keep their identity, so the deep compare is only for edited ones:
+  return savedRoom !== room && !nanoEqual(savedRoom, room);
+};
+
 export const selectItemInLevelEditorState = (
   state: LevelEditorState,
   itemId: EditorRoomItemId,
@@ -57,10 +70,21 @@ export const selectItemInLevelEditorState = (
     roomId ?? selectCursorRoomIdFromLevelEditorState(state)
   ]?.items[itemId] as EditorJsonItemUnion | undefined;
 
-export const selectItemIsSelectedInLevelEditorState = (
+/** the items selected in the cursor room */
+export const selectCursorRoomSelectedJsonItemIdsFromLevelEditorState = (
+  state: LevelEditorState,
+): EditorRoomItemId[] =>
+  state.selectedJsonItemIdsByRoom[
+    selectCursorRoomIdFromLevelEditorState(state)
+  ] ?? emptyArray;
+
+export const selectItemIsSelectedInCursorRoomInLevelEditorState = (
   state: LevelEditorState,
   itemId: EditorRoomItemId,
-) => state.selectedJsonItemIds.includes(itemId);
+) =>
+  selectCursorRoomSelectedJsonItemIdsFromLevelEditorState(state).includes(
+    itemId,
+  );
 
 /**
  * the json ids of items that exist only as an uncommitted preview - ie, the

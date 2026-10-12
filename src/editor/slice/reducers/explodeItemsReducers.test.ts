@@ -2,7 +2,10 @@ import { produce } from "immer";
 import { expect, test } from "vitest";
 
 import { type EditorRoomItemId } from "../../editorTypes";
-import { selectCurrentCommittedRoomJsonFromLevelEditorState } from "../levelEditorSelectors";
+import {
+  selectCurrentCommittedRoomJsonFromLevelEditorState,
+  selectCursorRoomSelectedJsonItemIdsFromLevelEditorState,
+} from "../levelEditorSelectors";
 import {
   explodeSelectedItems,
   openItemContextMenu,
@@ -54,7 +57,9 @@ test("turns off auto-coalesce so the parts do not re-join", () => {
 });
 
 test("selects the exploded parts", () => {
-  expect(explodeBlock.selectedJsonItemIds).toEqual(["bm", "bm1"]);
+  expect(
+    selectCursorRoomSelectedJsonItemIdsFromLevelEditorState(explodeBlock),
+  ).toEqual(["bm", "bm1"]);
 });
 
 test("closes the context menu", () => {

@@ -7,7 +7,10 @@ import { twClass } from "../../utils/twClass" with { type: "macro" };
 import { type EditorRoomId } from "../editorTypes";
 import { dropItemsOnRoomThunk } from "../slice/dropItemsOnRoomThunk";
 import { findItemsDropPlacement } from "../slice/findItemsDropPlacement";
-import { selectCursorRoomId } from "../slice/levelEditorSlice";
+import {
+  selectCursorRoomId,
+  selectCursorRoomSelectedJsonItemIds,
+} from "../slice/levelEditorSlice";
 
 /** tints a room while items dragged over it can (or can't) be dropped there */
 const dropHighlightClasses = twClass([
@@ -50,11 +53,11 @@ const useEditorMapItemDropTarget = ({
       if (!isDraggingItemsFromAnotherRoom()) {
         return;
       }
-      const { levelEditor } = editorStore.getState();
+      const editorState = editorStore.getState();
       canDrop =
         findItemsDropPlacement(
-          levelEditor,
-          levelEditor.selectedJsonItemIds,
+          editorState.levelEditor,
+          selectCursorRoomSelectedJsonItemIds(editorState),
           roomId,
           subRoomId,
         ) !== undefined;
@@ -75,7 +78,9 @@ const useEditorMapItemDropTarget = ({
       if (canDrop && isDraggingItemsFromAnotherRoom()) {
         editorStore.dispatch(
           dropItemsOnRoomThunk({
-            itemIds: editorStore.getState().levelEditor.selectedJsonItemIds,
+            itemIds: selectCursorRoomSelectedJsonItemIds(
+              editorStore.getState(),
+            ),
             toRoomId: roomId,
             toSubRoomId: subRoomId,
           }),

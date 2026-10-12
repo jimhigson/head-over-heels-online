@@ -3,6 +3,7 @@ import { type EditorRoomId } from "../../editorTypes";
 import { selectCursorRoomIdFromLevelEditorState } from "../levelEditorSelectors";
 import { type LevelEditorState } from "../levelEditorSlice";
 import { clearContextMenuXyInPlace } from "../reducers/contextMenuReducers";
+import { openRoomTabInPlace } from "./openRoomTabInPlace";
 
 export const firstSubRoomId = (roomJson: RoomJson<string, string>): string => {
   const subRoomKeys =
@@ -38,12 +39,12 @@ export const changeCurrentRoomInPlace = (
       selectCursorRoomIdFromLevelEditorState(state),
     );
   }
+  openRoomTabInPlace(state, roomId);
   state.selectedRoomIds = [roomId];
   state.cursorRoom = { roomId, subRoomId: resolvedSubRoomId };
 
   state.clickableAnnotationHovered = false;
   state.hoveredItem = undefined;
-  state.selectedJsonItemIds = [];
   state.hoveredUndoIndex = 0;
   clearContextMenuXyInPlace(state);
 };

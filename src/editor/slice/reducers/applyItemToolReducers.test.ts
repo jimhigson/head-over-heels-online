@@ -543,7 +543,9 @@ describe("applying tools", () => {
       const stateWithoutCyberman = reduceLevelEditorActions(
         {
           ...stateWithCyberman,
-          selectedJsonItemIds: [cybermanId],
+          selectedJsonItemIdsByRoom: {
+            [stateWithCyberman.cursorRoom.roomId]: [cybermanId],
+          },
         },
         deleteSelected({ timestamp: 0 }),
       );

@@ -3,7 +3,10 @@ import { describe, expect, test } from "vitest";
 import { iterateRoomJsonItemsWithIds } from "../../model/RoomJsonItemIterators";
 import { type EditorRoomId, type EditorRoomJson } from "../editorTypes";
 import { initialLevelEditorSliceState } from "./initialLevelEditorSliceState";
-import { selectCursorRoomIdFromLevelEditorState } from "./levelEditorSelectors";
+import {
+  selectCursorRoomIdFromLevelEditorState,
+  selectCursorRoomSelectedJsonItemIdsFromLevelEditorState,
+} from "./levelEditorSelectors";
 import {
   applyItemTool,
   changeRoomColour,
@@ -79,7 +82,9 @@ describe(// concerns of the slice that don't fit into any particular *Reducers.t
     const state3 = reduce(state2, a2);
 
     // should have selected that item:
-    expect(state3.selectedJsonItemIds).toEqual([addedBlockId]);
+    expect(
+      selectCursorRoomSelectedJsonItemIdsFromLevelEditorState(state3),
+    ).toEqual([addedBlockId]);
 
     const a3 = undo();
 
@@ -91,7 +96,9 @@ describe(// concerns of the slice that don't fit into any particular *Reducers.t
 
     expect(state4HasBlock).toBe(false);
 
-    expect(state4.selectedJsonItemIds).toEqual([]);
+    expect(
+      selectCursorRoomSelectedJsonItemIdsFromLevelEditorState(state4),
+    ).toEqual([]);
   });
 
   test("undo entry has a label describing the action", () => {

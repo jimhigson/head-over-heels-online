@@ -2,7 +2,10 @@ import { produce } from "immer";
 import { expect, test } from "vitest";
 
 import { type EditorRoomItemId } from "../../editorTypes";
-import { selectCurrentCommittedRoomJsonFromLevelEditorState } from "../levelEditorSelectors";
+import {
+  selectCurrentCommittedRoomJsonFromLevelEditorState,
+  selectCursorRoomSelectedJsonItemIdsFromLevelEditorState,
+} from "../levelEditorSelectors";
 import {
   coalesceSelectedItems,
   type LevelEditorState,
@@ -53,7 +56,11 @@ test("coalesces two adjacent matching blocks into a single multiplied item", () 
 });
 
 test("selects the resulting coalesced item", () => {
-  expect(coalesceBothBlocks().selectedJsonItemIds).toHaveLength(1);
+  expect(
+    selectCursorRoomSelectedJsonItemIdsFromLevelEditorState(
+      coalesceBothBlocks(),
+    ),
+  ).toHaveLength(1);
 });
 
 test("coalescing is undoable", () => {

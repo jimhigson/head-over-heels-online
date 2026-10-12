@@ -8,6 +8,7 @@ import { type DirectionXy4, type Xy } from "../../../utils/vectors/vectors";
 import { type EditorRoomId } from "../../editorTypes";
 import { addNewRoomInPlace } from "../inPlaceMutators/addNewRoomInPlace";
 import { changeCurrentRoomInPlace } from "../inPlaceMutators/changeCurrentRoomInPlace";
+import { deleteRoomsInPlace } from "../inPlaceMutators/deleteRoomsInPlace";
 import { insertRoomInPlace } from "../inPlaceMutators/insertRoomInPlace";
 import { removeInboundRoomReferencesInPlace } from "../inPlaceMutators/removeInboundRoomReferencesInPlace";
 import {
@@ -87,16 +88,9 @@ export const addOrRemoveRoomReducers = {
       changeCurrentRoomInPlace(state, nextRoom);
     }
 
+    deleteRoomsInPlace(state, roomIdsToDelete);
     for (const deletedRoomId of roomIdsToDelete) {
-      delete state.campaignInProgress.rooms[deletedRoomId];
       removeInboundRoomReferencesInPlace(state, deletedRoomId);
-      delete state.history[deletedRoomId];
     }
-
-    const isNotDeleted = (id: EditorRoomId) => !roomIdsToDelete.has(id);
-    state.editingRoomIdHistory.back =
-      state.editingRoomIdHistory.back.filter(isNotDeleted);
-    state.editingRoomIdHistory.forward =
-      state.editingRoomIdHistory.forward.filter(isNotDeleted);
   },
 } satisfies SliceCaseReducers<LevelEditorState>;

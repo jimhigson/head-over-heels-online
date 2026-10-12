@@ -2,9 +2,13 @@ import { consolidateItemsMap } from "../../../consolidateItems/consolidateItems"
 import { reconsolidateItems } from "../../../consolidateItems/reconsolidateItems";
 import { makeToasterConsolidationPredicate } from "../../../consolidateItems/toasterConsolidationPredicate";
 import { type EditorJsonItemUnion } from "../../editorTypes";
-import { selectCurrentCommittedRoomJsonFromLevelEditorState } from "../levelEditorSelectors";
+import {
+  selectCurrentCommittedRoomJsonFromLevelEditorState,
+  selectCursorRoomSelectedJsonItemIdsFromLevelEditorState,
+} from "../levelEditorSelectors";
 import { type LevelEditorState } from "../levelEditorSlice";
 import { clearContextMenuXyInPlace } from "../reducers/contextMenuReducers";
+import { setSelectedJsonItemIdsOnCursorRoomInPlace } from "./setSelectedJsonItemIdsOnCursorRoomInPlace";
 
 export const consolidateCurrentRoomInPlace = (
   levelEditorSliceState: LevelEditorState,
@@ -27,12 +31,17 @@ export const consolidateCurrentRoomInPlace = (
   // consolidation could have removed some items, so no longer let them
   // be selected. However, we want to avoid a state update if nothing is being filtered,
   // out, whereas directly assigning .filter in immer will always make one:
-  const filtered = levelEditorSliceState.selectedJsonItemIds.filter(
-    (jsonItemId) => currentRoom.items[jsonItemId] !== undefined,
-  );
+  const filtered = selectCursorRoomSelectedJsonItemIdsFromLevelEditorState(
+    levelEditorSliceState,
+  ).filter((jsonItemId) => currentRoom.items[jsonItemId] !== undefined);
 
-  if (filtered.length !== levelEditorSliceState.selectedJsonItemIds.length) {
-    levelEditorSliceState.selectedJsonItemIds = filtered;
+  if (
+    filtered.length !==
+    selectCursorRoomSelectedJsonItemIdsFromLevelEditorState(
+      levelEditorSliceState,
+    ).length
+  ) {
+    setSelectedJsonItemIdsOnCursorRoomInPlace(levelEditorSliceState, filtered);
   }
 
   clearContextMenuXyInPlace(levelEditorSliceState);

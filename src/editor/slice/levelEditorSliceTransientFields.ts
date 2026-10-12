@@ -7,6 +7,6 @@ export const levelEditorSliceNonPersistedFields: (keyof LevelEditorState)[] = [
   "clickableAnnotationHovered",
   "dragInProgress",
   "editingRoomIdHistory",
-  "selectedJsonItemIds",
+  "selectedJsonItemIdsByRoom",
   "cmdKSearch",
 ];

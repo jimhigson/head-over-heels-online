@@ -3,7 +3,7 @@ import { useEditorAppSelector } from "../../../store/store";
 import { ContextMenuItem } from "../../../ui/command/ContextMenuItem";
 import {
   selectCurrentCommittedRoomJson,
-  selectSelectedJsonItemIds,
+  selectCursorRoomSelectedJsonItemIds,
   setTool,
 } from "../../slice/levelEditorSlice";
 
@@ -13,7 +13,9 @@ import {
  */
 export const DuplicateMenuItem = () => {
   const dispatch = useAppDispatch();
-  const selectedJsonItemIds = useEditorAppSelector(selectSelectedJsonItemIds);
+  const selectedJsonItemIds = useEditorAppSelector(
+    selectCursorRoomSelectedJsonItemIds,
+  );
   const roomJson = useEditorAppSelector(selectCurrentCommittedRoomJson);
 
   if (selectedJsonItemIds.length !== 1) {

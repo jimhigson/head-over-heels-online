@@ -1,7 +1,11 @@
 import { type PayloadAction, type SliceCaseReducers } from "@reduxjs/toolkit";
 
 import { type EditorRoomItemId } from "../../editorTypes";
-import { selectCurrentCommittedRoomJsonFromLevelEditorState } from "../levelEditorSelectors";
+import { setSelectedJsonItemIdsOnCursorRoomInPlace } from "../inPlaceMutators/setSelectedJsonItemIdsOnCursorRoomInPlace";
+import {
+  selectCurrentCommittedRoomJsonFromLevelEditorState,
+  selectCursorRoomSelectedJsonItemIdsFromLevelEditorState,
+} from "../levelEditorSelectors";
 import { type HoveredItem, type LevelEditorState } from "../levelEditorSlice";
 import { clearContextMenuXyInPlace } from "./contextMenuReducers";
 
@@ -16,8 +20,11 @@ export const removeNonExistingItemsFromSelection = (
   const roomItems =
     selectCurrentCommittedRoomJsonFromLevelEditorState(state).items;
 
-  state.selectedJsonItemIds = state.selectedJsonItemIds.filter(
-    (jsonItemId) => jsonItemId in roomItems,
+  setSelectedJsonItemIdsOnCursorRoomInPlace(
+    state,
+    selectCursorRoomSelectedJsonItemIdsFromLevelEditorState(state).filter(
+      (jsonItemId) => jsonItemId in roomItems,
+    ),
   );
 };
 
@@ -42,7 +49,7 @@ export const selectionsReducers = {
       }
     }
 
-    state.selectedJsonItemIds = jsonItemIds;
+    setSelectedJsonItemIdsOnCursorRoomInPlace(state, jsonItemIds);
     clearContextMenuXyInPlace(state);
   },
 
@@ -60,13 +67,22 @@ export const selectionsReducers = {
       onlySelect?: boolean;
     }>,
   ) {
-    const index = state.selectedJsonItemIds.indexOf(jsonItemId);
-    if (index === -1) {
+    const selectedJsonItemIds =
+      selectCursorRoomSelectedJsonItemIdsFromLevelEditorState(state);
+    if (!selectedJsonItemIds.includes(jsonItemId)) {
       // not selected, add it
-      state.selectedJsonItemIds.push(jsonItemId);
+      setSelectedJsonItemIdsOnCursorRoomInPlace(state, [
+        ...selectedJsonItemIds,
+        jsonItemId,
+      ]);
     } else if (!onlySelect) {
       // already selected, remove it
-      state.selectedJsonItemIds.splice(index, 1);
+      setSelectedJsonItemIdsOnCursorRoomInPlace(
+        state,
+        selectedJsonItemIds.filter(
+          (selectedJsonItemId) => selectedJsonItemId !== jsonItemId,
+        ),
+      );
     }
     clearContextMenuXyInPlace(state);
   },

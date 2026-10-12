@@ -30,14 +30,19 @@ import { insertRoomInDirectionThunk } from "../slice/insertRoomInDirectionThunk"
 import {
   addRoom,
   campaignJsonAutoFixed,
+  closeOtherRoomTabs,
+  closeRoomTab,
+  type LevelEditorSliceAction,
+  pinRoomTab,
   roomJsonEdited,
   selectCurrentCampaignInProgress,
   selectCurrentCommittedRoomJson,
   selectCursorRoomId,
+  selectCursorRoomSelectedJsonItemIds,
   selectCursorSubRoomId,
   selectEditorCameraAngle,
   selectItem,
-  selectSelectedJsonItemIds,
+  selectOpenRoomTabs,
   selectTool,
 } from "../slice/levelEditorSlice";
 import {
@@ -148,6 +153,30 @@ const requestedCampaignLocator = async (
   return { userId, campaignName };
 };
 
+/** a tool that dispatches one room-tab action, returning the tabs after */
+const roomTabTool = (
+  name: string,
+  description: string,
+  roomTabAction: (roomId: EditorRoomId) => LevelEditorSliceAction,
+): WebMCP.ModelContextTool => ({
+  name,
+  description,
+  inputSchema: {
+    type: "object",
+    properties: { roomId: { type: "string" } },
+    required: ["roomId"],
+  },
+  async execute({ roomId }) {
+    if (typeof roomId !== "string") {
+      return jsonResult("roomId must be a string");
+    }
+    editorStore.dispatch(roomTabAction(roomId as EditorRoomId));
+    return jsonResult({
+      openRoomTabs: selectOpenRoomTabs(editorStore.getState()),
+    });
+  },
+});
+
 const editorWebMcpTools: WebMCP.ModelContextTool[] = [
   {
     name: "getUsageSkill",
@@ -184,7 +213,7 @@ const editorWebMcpTools: WebMCP.ModelContextTool[] = [
       const editorState = editorStore.getState();
       return jsonResult(
         Object.fromEntries(
-          selectSelectedJsonItemIds(editorState).map((itemId) => [
+          selectCursorRoomSelectedJsonItemIds(editorState).map((itemId) => [
             itemId,
             selectItem(editorState, itemId),
           ]),
@@ -219,7 +248,7 @@ const editorWebMcpTools: WebMCP.ModelContextTool[] = [
   {
     name: "getEditorView",
     description:
-      "the editor's view and ui state: camera angle, current tool, current sub-room and grid resolution",
+      "the editor's view and ui state: camera angle, current tool, current sub-room, grid resolution and the rooms open in tabs (in order; isPreview tabs are replaced by the next room browsed to)",
     inputSchema: { type: "object", properties: {} },
     async execute() {
       const editorState = editorStore.getState();
@@ -228,6 +257,7 @@ const editorWebMcpTools: WebMCP.ModelContextTool[] = [
         tool: selectTool(editorState),
         subRoomId: selectCursorSubRoomId(editorState),
         gridResolution: editorState.levelEditor.gridResolution,
+        openRoomTabs: selectOpenRoomTabs(editorState),
       });
     },
   },
@@ -271,6 +301,21 @@ const editorWebMcpTools: WebMCP.ModelContextTool[] = [
         : jsonResult({ couldNotLoad: campaignLocator });
     },
   },
+  roomTabTool(
+    "closeRoomTab",
+    "close a room's tab, as its x does; the last tab can't be closed. Closing the current room's tab moves to the next tab",
+    closeRoomTab,
+  ),
+  roomTabTool(
+    "closeOtherRoomTabs",
+    "close every tab but the room's own, as its tab's context menu does; the room becomes current",
+    closeOtherRoomTabs,
+  ),
+  roomTabTool(
+    "pinRoomTab",
+    "keep a room's preview tab open when other rooms are browsed to, as double-clicking it does",
+    pinRoomTab,
+  ),
   {
     name: "revertCampaign",
     description:
@@ -338,13 +383,12 @@ const editorWebMcpTools: WebMCP.ModelContextTool[] = [
       if (typeof roomId !== "string") {
         return jsonResult("roomId must be a string");
       }
-      const { levelEditor } = editorStore.getState();
       const placement = editorStore.dispatch(
         dropItemsOnRoomThunk({
           itemIds:
             Array.isArray(itemIds) ?
               (itemIds as EditorRoomItemId[])
-            : levelEditor.selectedJsonItemIds,
+            : selectCursorRoomSelectedJsonItemIds(editorStore.getState()),
           toRoomId: roomId as EditorRoomId,
           toSubRoomId: typeof subRoomId === "string" ? subRoomId : "*",
         }),
@@ -355,7 +399,9 @@ const editorWebMcpTools: WebMCP.ModelContextTool[] = [
           )
         : jsonResult({
             currentRoomId: selectCursorRoomId(editorStore.getState()),
-            movedItemIds: selectSelectedJsonItemIds(editorStore.getState()),
+            movedItemIds: selectCursorRoomSelectedJsonItemIds(
+              editorStore.getState(),
+            ),
           });
     },
   },

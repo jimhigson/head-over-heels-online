@@ -33,6 +33,7 @@ export const editorStateWithOneRoomWithNoItems: LevelEditorState = {
   ...initialLevelEditorSliceState,
   selectedRoomIds: [testRoomId],
   cursorRoom: { roomId: testRoomId, subRoomId: "*" },
+  openRoomTabs: [{ roomId: testRoomId, isPreview: false }],
   campaignInProgress: {
     locator: {
       campaignName: "testCampaign",

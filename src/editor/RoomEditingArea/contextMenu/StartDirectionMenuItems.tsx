@@ -5,7 +5,7 @@ import { type DirectionXy8 } from "../../../utils/vectors/vectors";
 import { directionForItem } from "../../itemDirection";
 import {
   selectCurrentCommittedRoomJson,
-  selectSelectedJsonItemIds,
+  selectCursorRoomSelectedJsonItemIds,
   setSelectedItemsStartDirection,
 } from "../../slice/levelEditorSlice";
 
@@ -34,7 +34,9 @@ const directionLabel = (direction: DirectionXy8): string =>
  */
 export const StartDirectionMenuItems = () => {
   const dispatch = useAppDispatch();
-  const selectedJsonItemIds = useEditorAppSelector(selectSelectedJsonItemIds);
+  const selectedJsonItemIds = useEditorAppSelector(
+    selectCursorRoomSelectedJsonItemIds,
+  );
   const roomJson = useEditorAppSelector(selectCurrentCommittedRoomJson);
 
   const items = selectedJsonItemIds
