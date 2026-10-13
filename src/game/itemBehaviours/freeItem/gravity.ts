@@ -4,7 +4,6 @@ import {
   type FreeItemTypes,
 } from "../../../model/ItemInPlayNarrowedUnions";
 import { type RoomState } from "../../../model/RoomState";
-import { stoodOnItem } from "../../../model/stoodOnItemsLookup";
 import { originXyz } from "../../../utils/vectors/vectors";
 import { type GameState } from "../../gameState/GameState";
 import {
@@ -31,8 +30,8 @@ export const gravity: Mechanic<FreeItemTypes> = <
   RoomItemId extends string,
 >(
   item: FreeItem<RoomId, RoomItemId>,
-  room: RoomState<RoomId, RoomItemId>,
-  gameState: GameState<RoomId>,
+  _room: RoomState<RoomId, RoomItemId>,
+  _gameState: GameState<RoomId>,
   deltaMS: number,
 ): MechanicResult<FreeItemTypes, RoomId, RoomItemId> => {
   if (item[itemBehaviourKey].isNonSolid(item)) {
@@ -49,28 +48,11 @@ export const gravity: Mechanic<FreeItemTypes> = <
     },
   } = item;
 
-  const terminalZ = item[itemBehaviourKey].terminalFallVelocity(item);
-
   if (standingOnItemId !== null) {
-    const standingOn = stoodOnItem(standingOnItemId, room);
-    // standing on something - usually no gravity will be applied
-    if (standingOn[itemBehaviourKey].keepsStandersFalling(standingOn)) {
-      // NOTE: special case - items stick to it by some kind of magic, up to their terminal
-      // velocity, even if they normally wouldn't accelerate that quickly downwards
-      return {
-        movementType: "vel",
-        vels: {
-          gravity: {
-            x: 0,
-            y: 0,
-            z: Math.max(previousVelZ - fallG * deltaMS, -terminalZ),
-          },
-        },
-      };
-    }
-
+    // riders move with what they stand on, so need no falling speed of their own
     return notFalling;
   }
+  const terminalZ = item[itemBehaviourKey].terminalFallVelocity(item);
   // not standing on anything - allow free fall up to terminal velocity
   return {
     movementType: "vel",

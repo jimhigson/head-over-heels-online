@@ -13,9 +13,10 @@ type FrameCallback = (
   mockInputStateTracker: MockInputStateTracker,
 ) => GameStateWithMockInput | void;
 
+type UntilFunction = (gameState: GameStateWithMockInput) => boolean;
+
 type PlayGameThroughOptions = {
   frameRate?: FrameRateSpec;
-  until?: ((gameState: GameStateWithMockInput) => boolean) | number;
   /**
    * allows us to change the gamestate after certain frames, for example to change the
    * joystick input while the simulation is running
@@ -23,22 +24,26 @@ type PlayGameThroughOptions = {
   frameCallbacks?: Array<FrameCallback> | FrameCallback;
 
   setupInitialInput?: (mockInputStateTracker: MockInputStateTracker) => void;
-};
+} & (
+  | {
+      forTime: number;
+    }
+  | {
+      until?: number | UntilFunction;
+    }
+);
 
 const defaultFps = { fps: [60] };
 export const playGameThrough = (
   gameState: GameStateWithMockInput,
-  {
+  options: PlayGameThroughOptions = {},
+) => {
+  const {
     frameRate = defaultFps,
-    // by default, play for 1s
-    until = gameState.gameTime + 1_000,
     frameCallbacks = [],
     setupInitialInput = () => {},
-  }: PlayGameThroughOptions = {
-    frameRate: defaultFps,
-    until: gameState.gameTime + 1_000,
-  },
-) => {
+  } = options;
+
   const frameRateIter = cycle(frameRate.fps);
   const ticker = progressWithSubTicks(progressGameState, maxSubTickDeltaMs);
 
@@ -47,10 +52,19 @@ export const playGameThrough = (
 
   setupInitialInput(gameState.inputStateTracker);
 
+  const startGameTime = gameState.gameTime;
+  const until =
+    "forTime" in options ?
+      startGameTime + options.forTime
+      // by default, play for 1s
+    : (options.until ?? startGameTime + 1_000);
+  const isFinished: UntilFunction =
+    typeof until === "number" ?
+      (gameStateNow) => gameStateNow.gameTime >= until
+    : until;
+
   let frameNumber = 0;
-  while (
-    typeof until === "number" ? gameState.gameTime < until : !until(gameState)
-  ) {
+  while (!isFinished(gameState)) {
     const fpsThisFrame = frameRateIter.next().value;
     const deltaMS = 1_000 / fpsThisFrame;
 
