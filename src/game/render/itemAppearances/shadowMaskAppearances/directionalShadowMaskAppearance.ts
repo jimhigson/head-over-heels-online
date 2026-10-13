@@ -18,6 +18,7 @@ import {
 import { blockSizePx } from "../../../physics/mechanicsConstants";
 import { createSprite } from "../../createSprite";
 import { type ItemAppearance } from "../ItemAppearance";
+import { characterAction } from "../playable/characterAction";
 
 type RenderPropsXy4 = {
   resolvedFacingIndexXy4: DirectionIndexXy4;
@@ -127,25 +128,18 @@ export const playableShadowMaskAppearanceXy8 =
     },
     currentRendering,
   }) => {
-    const action = item.type === "sceneryPlayer" ? "idle" : item.state.action;
+    const falling = characterAction(item) === "falling";
 
     const currentlyRenderedProps = currentRendering?.renderProps;
     // rotate the facing by the continuous camera angle so the shadow matches
     // how the character appears once the camera has turned. During a
     // rotation the player steps through the intermediate facings along
     // θ(t), so its shadow does too:
-    const rotatedFacing = rotateXy(
-      item.type === "sceneryPlayer" ?
-        item.config.startDirection
-      : (item.state.visualFacingVector ?? item.state.facing),
-      cameraAngle,
-    );
+    const rotatedFacing = rotateXy(item.state.visualFacingVector, cameraAngle);
     const resolvedFacingIndexXy8 = nonZeroClosestDirectionIndexXy8(
       rotatedFacing.x,
       rotatedFacing.y,
     );
-
-    const falling = action === "falling";
 
     const render =
       currentlyRenderedProps === undefined ||

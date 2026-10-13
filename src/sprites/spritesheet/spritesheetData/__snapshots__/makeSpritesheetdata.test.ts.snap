@@ -4578,6 +4578,14 @@ exports[`for tailwind plugin we must have all possible frames and animations 1`]
       "y": 452,
     },
   },
+  "head.falling.d0.sceneryPlayer": {
+    "frame": {
+      "h": 24,
+      "w": 24,
+      "x": 126,
+      "y": 452,
+    },
+  },
   "head.falling.d1": {
     "frame": {
       "h": 24,
@@ -4587,6 +4595,14 @@ exports[`for tailwind plugin we must have all possible frames and animations 1`]
     },
   },
   "head.falling.d1.mirrorReflection": {
+    "frame": {
+      "h": 24,
+      "w": 24,
+      "x": 126,
+      "y": 277,
+    },
+  },
+  "head.falling.d1.sceneryPlayer": {
     "frame": {
       "h": 24,
       "w": 24,
@@ -4610,6 +4626,14 @@ exports[`for tailwind plugin we must have all possible frames and animations 1`]
       "y": 302,
     },
   },
+  "head.falling.d2.sceneryPlayer": {
+    "frame": {
+      "h": 24,
+      "w": 24,
+      "x": 126,
+      "y": 302,
+    },
+  },
   "head.falling.d3": {
     "frame": {
       "h": 24,
@@ -4619,6 +4643,14 @@ exports[`for tailwind plugin we must have all possible frames and animations 1`]
     },
   },
   "head.falling.d3.mirrorReflection": {
+    "frame": {
+      "h": 24,
+      "w": 24,
+      "x": 126,
+      "y": 327,
+    },
+  },
+  "head.falling.d3.sceneryPlayer": {
     "frame": {
       "h": 24,
       "w": 24,
@@ -4642,6 +4674,14 @@ exports[`for tailwind plugin we must have all possible frames and animations 1`]
       "y": 352,
     },
   },
+  "head.falling.d4.sceneryPlayer": {
+    "frame": {
+      "h": 24,
+      "w": 24,
+      "x": 126,
+      "y": 352,
+    },
+  },
   "head.falling.d5": {
     "frame": {
       "h": 24,
@@ -4651,6 +4691,14 @@ exports[`for tailwind plugin we must have all possible frames and animations 1`]
     },
   },
   "head.falling.d5.mirrorReflection": {
+    "frame": {
+      "h": 24,
+      "w": 24,
+      "x": 126,
+      "y": 377,
+    },
+  },
+  "head.falling.d5.sceneryPlayer": {
     "frame": {
       "h": 24,
       "w": 24,
@@ -4674,6 +4722,14 @@ exports[`for tailwind plugin we must have all possible frames and animations 1`]
       "y": 402,
     },
   },
+  "head.falling.d6.sceneryPlayer": {
+    "frame": {
+      "h": 24,
+      "w": 24,
+      "x": 126,
+      "y": 402,
+    },
+  },
   "head.falling.d7": {
     "frame": {
       "h": 24,
@@ -4683,6 +4739,14 @@ exports[`for tailwind plugin we must have all possible frames and animations 1`]
     },
   },
   "head.falling.d7.mirrorReflection": {
+    "frame": {
+      "h": 24,
+      "w": 24,
+      "x": 126,
+      "y": 427,
+    },
+  },
+  "head.falling.d7.sceneryPlayer": {
     "frame": {
       "h": 24,
       "w": 24,
@@ -6498,6 +6562,14 @@ exports[`for tailwind plugin we must have all possible frames and animations 1`]
       "y": 452,
     },
   },
+  "heels.falling.d0.sceneryPlayer": {
+    "frame": {
+      "h": 24,
+      "w": 24,
+      "x": 351,
+      "y": 452,
+    },
+  },
   "heels.falling.d1": {
     "frame": {
       "h": 24,
@@ -6507,6 +6579,14 @@ exports[`for tailwind plugin we must have all possible frames and animations 1`]
     },
   },
   "heels.falling.d1.mirrorReflection": {
+    "frame": {
+      "h": 24,
+      "w": 24,
+      "x": 351,
+      "y": 277,
+    },
+  },
+  "heels.falling.d1.sceneryPlayer": {
     "frame": {
       "h": 24,
       "w": 24,
@@ -6530,6 +6610,14 @@ exports[`for tailwind plugin we must have all possible frames and animations 1`]
       "y": 302,
     },
   },
+  "heels.falling.d2.sceneryPlayer": {
+    "frame": {
+      "h": 24,
+      "w": 24,
+      "x": 351,
+      "y": 302,
+    },
+  },
   "heels.falling.d3": {
     "frame": {
       "h": 24,
@@ -6539,6 +6627,14 @@ exports[`for tailwind plugin we must have all possible frames and animations 1`]
     },
   },
   "heels.falling.d3.mirrorReflection": {
+    "frame": {
+      "h": 24,
+      "w": 24,
+      "x": 351,
+      "y": 327,
+    },
+  },
+  "heels.falling.d3.sceneryPlayer": {
     "frame": {
       "h": 24,
       "w": 24,
@@ -6562,6 +6658,14 @@ exports[`for tailwind plugin we must have all possible frames and animations 1`]
       "y": 352,
     },
   },
+  "heels.falling.d4.sceneryPlayer": {
+    "frame": {
+      "h": 24,
+      "w": 24,
+      "x": 351,
+      "y": 352,
+    },
+  },
   "heels.falling.d5": {
     "frame": {
       "h": 24,
@@ -6571,6 +6675,14 @@ exports[`for tailwind plugin we must have all possible frames and animations 1`]
     },
   },
   "heels.falling.d5.mirrorReflection": {
+    "frame": {
+      "h": 24,
+      "w": 24,
+      "x": 351,
+      "y": 377,
+    },
+  },
+  "heels.falling.d5.sceneryPlayer": {
     "frame": {
       "h": 24,
       "w": 24,
@@ -6594,6 +6706,14 @@ exports[`for tailwind plugin we must have all possible frames and animations 1`]
       "y": 402,
     },
   },
+  "heels.falling.d6.sceneryPlayer": {
+    "frame": {
+      "h": 24,
+      "w": 24,
+      "x": 351,
+      "y": 402,
+    },
+  },
   "heels.falling.d7": {
     "frame": {
       "h": 24,
@@ -6603,6 +6723,14 @@ exports[`for tailwind plugin we must have all possible frames and animations 1`]
     },
   },
   "heels.falling.d7.mirrorReflection": {
+    "frame": {
+      "h": 24,
+      "w": 24,
+      "x": 351,
+      "y": 427,
+    },
+  },
+  "heels.falling.d7.sceneryPlayer": {
     "frame": {
       "h": 24,
       "w": 24,

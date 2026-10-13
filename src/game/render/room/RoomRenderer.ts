@@ -1,4 +1,4 @@
-import { Container, type Filter, RenderLayer } from "pixi.js";
+import { Container, RenderLayer } from "pixi.js";
 import { type SetRequired } from "type-fest";
 
 import {
@@ -18,7 +18,7 @@ import {
   type SceneGraphPhaseRecorder,
   type SceneGraphSubPhase,
 } from "../../mainLoop/frameTiming/FrameTimingStats";
-import { PaletteSwapFilter } from "../filters/PaletteSwapFilter";
+import { destroyFilterCache, type FilterCache } from "../filters/FilterCache";
 import { createItemLeafPixiRenderer } from "../item/itemRender/createItemLeafPixiRenderer";
 import {
   createItemRenderer,
@@ -41,9 +41,6 @@ import {
   type RoomTickContext,
 } from "./RoomRenderContexts";
 import { type RoomRendererType } from "./RoomRendererType";
-
-/** shared, keyed filters that item renderers/appearances stash and reuse */
-export type FilterCache = Map<string, Filter>;
 
 /**
  * report the time since the previous sub-phase boundary to the timing
@@ -602,14 +599,7 @@ export class RoomRenderer<
     this.#itemRenderers.forEach((itemRenderer) => {
       itemRenderer.top.destroy();
     });
-    for (const filter of this.#filterCache.values()) {
-      if (filter instanceof PaletteSwapFilter) {
-        filter.destroy({ destroyLutTexture: true });
-      } else {
-        filter.destroy();
-      }
-    }
-    this.#filterCache.clear();
+    destroyFilterCache(this.#filterCache);
     this.#destroyed = true;
   }
 

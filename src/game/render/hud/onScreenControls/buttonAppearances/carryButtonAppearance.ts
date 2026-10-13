@@ -130,6 +130,7 @@ export const carryButtonAppearance: ButtonAppearance<
         item: carrying,
         room,
         isReflection: false,
+        filterCache: renderContext.filterCache,
       });
       if (import.meta.env.DEV && maybeCarriedRenderer === undefined) {
         throw new Error(`no renderer for carried item "${carrying.id}"`);

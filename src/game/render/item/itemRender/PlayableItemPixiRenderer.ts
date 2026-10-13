@@ -35,15 +35,17 @@ import {
   afterDeathInvulnerabilityFlashPhaseDuration,
 } from "../../../physics/mechanicsConstants";
 import { createSprite, type CreateSpriteOptions } from "../../createSprite";
+import { type FilterCache } from "../../filters/FilterCache";
 import { OneColourFilter } from "../../filters/OneColourFilter";
 import { OutlineFilter } from "../../filters/OutlineFilter";
 import { stackSprites } from "../../itemAppearances/createStackedSprites";
+import { characterAction } from "../../itemAppearances/playable/characterAction";
 import { isHighlightedPlayableItem } from "../../itemAppearances/playable/isHighlightedPlayableItem";
 import { type ItemLeafRenderContext } from "../../ItemRenderContexts";
-import { type FilterCache } from "../../room/RoomRenderer";
 import { type ItemLeafPixiRenderer } from "./ItemPixiRenderer";
 
-type PlayableRenderProps = {
+/** the character's current state that a body sprite is picked from */
+type BodySpriteOptions = {
   /** the directional sprite-variant index drawn */
   resolvedFacingArtIndexXy8: DirectionIndexXy8;
   /** whether the directional sprite is drawn horizontally flipped */
@@ -52,10 +54,8 @@ type PlayableRenderProps = {
   teleportingPhase: "in" | "out" | null;
   gravityZ: number;
   isStoodOn: boolean;
-
-  highlighted: boolean;
-  flashing: boolean;
-  shining: boolean;
+  paused: boolean;
+  spritesheet: AppSpritesheetWithVariants;
 };
 
 /*
@@ -76,14 +76,18 @@ const playableCreateSpriteOptions = ({
   paused,
   spritesheet,
   isStoodOn,
+  isSceneryPlayer,
+  idleStartFramePhase,
   isInSymbiosis,
   isReflection,
-}: PlayableRenderProps & {
+}: BodySpriteOptions & {
   name: IndividualCharacterName;
-  paused: boolean;
-  spritesheet: AppSpritesheetWithVariants;
   isInSymbiosis: boolean;
   isReflection: boolean;
+  /** drawn in the citizen-of-Freedom recolour */
+  isSceneryPlayer: boolean;
+  /** where in its cycle the idle animation starts */
+  idleStartFramePhase: number | undefined;
 }): CreateSpriteOptions => {
   if (action === "death") {
     return {
@@ -193,7 +197,7 @@ const playableCreateSpriteOptions = ({
           isReflection,
           false,
           false,
-          false,
+          isSceneryPlayer,
         ),
         flipX,
         spritesheet,
@@ -212,7 +216,7 @@ const playableCreateSpriteOptions = ({
           isReflection,
           false,
           false,
-          false,
+          isSceneryPlayer,
         ),
         flipX,
         spritesheet,
@@ -229,9 +233,10 @@ const playableCreateSpriteOptions = ({
         isReflection,
         false,
         false,
-        false,
+        isSceneryPlayer,
       ),
       flipX,
+      startFramePhase: idleStartFramePhase,
       paused,
       spritesheet,
     };
@@ -243,7 +248,7 @@ const playableCreateSpriteOptions = ({
       isReflection,
       false,
       false,
-      false,
+      isSceneryPlayer,
     ),
     flipX,
     spritesheet,
@@ -300,6 +305,8 @@ class IndividualPlayableRendering {
   readonly #name: IndividualCharacterName;
   readonly #isInSymbiosis: boolean;
   readonly #isReflection: boolean;
+  readonly #isSceneryPlayer: boolean;
+  readonly #idleStartFramePhase: number | undefined;
 
   constructor(
     name: IndividualCharacterName,
@@ -311,10 +318,14 @@ class IndividualPlayableRendering {
     shineSpritesheet: AppSpritesheetWithVariants,
     filterCache: FilterCache,
     isReflection: boolean,
+    isSceneryPlayer: boolean,
+    idleStartFramePhase: number | undefined,
   ) {
     this.#name = name;
     this.#isInSymbiosis = isInSymbiosis;
     this.#isReflection = isReflection;
+    this.#isSceneryPlayer = isSceneryPlayer;
+    this.#idleStartFramePhase = idleStartFramePhase;
 
     this.container.addChild(this.#bodySpriteContainer);
 
@@ -356,27 +367,28 @@ class IndividualPlayableRendering {
     ) as OneColourFilter;
   }
 
-  #refreshBodySprite(
-    renderProps: PlayableRenderProps,
-    paused: boolean,
-    spritesheet: AppSpritesheetWithVariants,
-  ) {
+  refreshBodySprite(bodySpriteOptions: BodySpriteOptions) {
     this.#bodySpriteContainer.removeChildren();
     this.#bodySpriteContainer.addChild(
       createSprite(
         playableCreateSpriteOptions({
+          ...bodySpriteOptions,
           name: this.#name,
-          ...renderProps,
-          paused,
-          spritesheet,
           isInSymbiosis: this.#isInSymbiosis,
           isReflection: this.#isReflection,
+          isSceneryPlayer: this.#isSceneryPlayer,
+          idleStartFramePhase: this.#idleStartFramePhase,
         }),
       ),
     );
   }
 
-  #applyFilters({ highlighted, flashing, shining }: PlayableRenderProps) {
+  updateEffects(highlighted: boolean, flashing: boolean, shining: boolean) {
+    this.#applyFilters(highlighted, flashing, shining);
+    this.#shineSprite.visible = shining;
+  }
+
+  #applyFilters(highlighted: boolean, flashing: boolean, shining: boolean) {
     const outlining = highlighted;
     const shieldOutlining = !highlighted && shining;
 
@@ -398,36 +410,34 @@ class IndividualPlayableRendering {
     }
     this.container.filters = activeFilters;
   }
-
-  update(
-    refreshSprites: boolean,
-    renderProps: PlayableRenderProps,
-    paused: boolean,
-    spritesheet: AppSpritesheetWithVariants,
-  ) {
-    if (refreshSprites) {
-      this.#refreshBodySprite(renderProps, paused, spritesheet);
-    }
-    this.#applyFilters(renderProps);
-    this.#shineSprite.visible = renderProps.shining;
-  }
 }
 
+/** the item types drawn as characters */
+export type PlayableRenderedType = "sceneryPlayer" | CharacterName;
+
+/** whether a playable character is being stood on, so head shuts its eyes */
+const isPlayerStoodOn = (playableItem: PlayableItem, roomTime: number) =>
+  playableItem.type !== "heels" &&
+  (!isEmptyObject(playableItem.state.stoodOnBy) ||
+    // keep eyes closed for a short time after being stepped off of, so that
+    // instantaneous jumps off head still get this effect:
+    playableItem.state.stoodOnUntilRoomTime + 300 > roomTime);
+
 /**
- * renders a playable character (head, heels, or the head-over-heels symbiosis),
- * holding its per-character rendering state (sprite, shine, filters + the
- * change-detection memos) as private fields.
+ * renders a character (head, heels, or the head-over-heels symbiosis), either
+ * playable or scenery, holding its per-character rendering state (sprite,
+ * shine, filters + the change-detection memos) as private fields.
  */
-export class PlayableItemPixiRenderer implements ItemLeafPixiRenderer<CharacterName> {
+export class PlayableItemPixiRenderer implements ItemLeafPixiRenderer<PlayableRenderedType> {
   readonly output = new Container({ label: "PlayableItemPixiRenderer" });
-  readonly renderContext: ItemLeafRenderContext<CharacterName>;
+  readonly renderContext: ItemLeafRenderContext<PlayableRenderedType>;
 
   /** one for an individual character, two ([head, heels]) in symbiosis */
   readonly #individuals: readonly IndividualPlayableRendering[];
 
   /** false until the first tick has picked the body sprite(s) at least once */
   #hasRenderedOnce = false;
-  // the previous tick's values of the render props that gate a body-sprite
+  // the previous tick's values of the state that gates a body-sprite
   // refresh, to decide whether this tick needs one:
   #prevAction: PlayableActionState | undefined;
   #prevFacingArtIndexXy8: DirectionIndexXy8 | undefined;
@@ -436,7 +446,7 @@ export class PlayableItemPixiRenderer implements ItemLeafPixiRenderer<CharacterN
   #prevGravityAboveThreshold: boolean | undefined;
   #prevIsStoodOn: boolean | undefined;
 
-  constructor(renderContext: ItemLeafRenderContext<CharacterName>) {
+  constructor(renderContext: ItemLeafRenderContext<PlayableRenderedType>) {
     this.renderContext = renderContext;
     const {
       general: { paused, spriteOption, spritesheetMeta, spritesheets },
@@ -446,12 +456,12 @@ export class PlayableItemPixiRenderer implements ItemLeafPixiRenderer<CharacterN
       item,
     } = renderContext;
 
-    // the filter cache is optional on the appearance context (standalone
-    // contexts like the hud's carried-item render have none), but playables are
-    // only ever rendered in-room, where the room renderer supplies one:
-    if (filterCache === undefined) {
-      throw new Error("PlayableItemPixiRenderer requires a filterCache");
-    }
+    const characterName =
+      item.type === "sceneryPlayer" ? item.config.which : item.type;
+
+    const isSceneryPlayer = item.type === "sceneryPlayer";
+    // so a room of scenery players don't all animate in step:
+    const idleStartFramePhase = isSceneryPlayer ? item.hash : undefined;
 
     const makeIndividualRendering = (
       name: IndividualCharacterName,
@@ -467,9 +477,11 @@ export class PlayableItemPixiRenderer implements ItemLeafPixiRenderer<CharacterN
         spritesheets.spritesheetForCurrentRoom,
         filterCache,
         isReflection,
+        isSceneryPlayer,
+        idleStartFramePhase,
       );
 
-    if (item.type === "headOverHeels") {
+    if (characterName === "headOverHeels") {
       const head = makeIndividualRendering("head", true);
       const heels = makeIndividualRendering("heels", true);
       this.#individuals = [head, heels];
@@ -477,7 +489,7 @@ export class PlayableItemPixiRenderer implements ItemLeafPixiRenderer<CharacterN
         stackSprites({ top: head.container, bottom: heels.container }),
       );
     } else {
-      const individual = makeIndividualRendering(item.type, false);
+      const individual = makeIndividualRendering(characterName, false);
       this.#individuals = [individual];
       this.output.addChild(individual.container);
     }
@@ -491,19 +503,6 @@ export class PlayableItemPixiRenderer implements ItemLeafPixiRenderer<CharacterN
       item: subject,
     } = this.renderContext;
 
-    const {
-      type,
-      state: {
-        action,
-        facing,
-        visualFacingVector,
-        teleporting,
-        vels: {
-          gravity: { z: gravityZ },
-        },
-      },
-    } = subject;
-
     // resolve the facing vector against the continuous camera angle to the
     // sprite-variant index with its paired flip (keeping the painted shading
     // on the character's world faces - the light source stays fixed in the
@@ -511,38 +510,25 @@ export class PlayableItemPixiRenderer implements ItemLeafPixiRenderer<CharacterN
     // rather than snapping old->new. Rounding happens only here, at the final
     // sprite-name pick:
     const resolvedFacingArtIndexXy8 = resolveSpriteDirectionIndexXy8(
-      visualFacingVector ?? facing,
+      subject.state.visualFacingVector,
       cameraAngle,
       isReflection,
     );
     const flipX = spriteFlipXAtAngle(cameraAngle);
 
-    const highlighted = isHighlightedPlayableItem(gameState, subject);
-    const flashing = isFlashing(subject);
-    const shining = playableHasShield(subject);
-    const teleportingPhase = teleporting?.phase ?? null;
+    const isSceneryPlayer = subject.type === "sceneryPlayer";
+    const action = characterAction(subject);
+    const teleportingPhase =
+      isSceneryPlayer ? null : (subject.state.teleporting?.phase ?? null);
+    const gravityZ = subject.state.vels.gravity.z;
     const isStoodOn =
-      type !== "heels" &&
-      (!isEmptyObject(subject.state.stoodOnBy) ||
-        // keep eyes closed for a short time after being stepped off of, so that
-        // instantaneous jumps off head still get this effect:
-        subject.state.stoodOnUntilRoomTime + 300 > roomTime);
-
-    const renderProps: PlayableRenderProps = {
-      action,
-      resolvedFacingArtIndexXy8,
-      flipX,
-      teleportingPhase,
-      flashing,
-      highlighted,
-      shining,
-      gravityZ,
-      isStoodOn,
-    };
+      isSceneryPlayer ?
+        subject.config.which !== "heels" &&
+        !isEmptyObject(subject.state.stoodOnBy)
+      : isPlayerStoodOn(subject, roomTime);
 
     const gravityAboveThreshold = gravityZ > jumpSpriteGravityZThreshold;
     const refreshSprites =
-      // note: not all props are used here!
       !this.#hasRenderedOnce ||
       this.#prevAction !== action ||
       this.#prevFacingArtIndexXy8 !== resolvedFacingArtIndexXy8 ||
@@ -551,13 +537,26 @@ export class PlayableItemPixiRenderer implements ItemLeafPixiRenderer<CharacterN
       this.#prevGravityAboveThreshold !== gravityAboveThreshold ||
       this.#prevIsStoodOn !== isStoodOn;
 
+    const highlighted =
+      !isSceneryPlayer && isHighlightedPlayableItem(gameState, subject);
+    const flashing = !isSceneryPlayer && isFlashing(subject);
+    const shining = !isSceneryPlayer && playableHasShield(subject);
+
     for (let i = 0; i < this.#individuals.length; i++) {
-      this.#individuals[i].update(
-        refreshSprites,
-        renderProps,
-        paused,
-        spritesheets.spritesheetForCurrentRoom,
-      );
+      const individual = this.#individuals[i];
+      if (refreshSprites) {
+        individual.refreshBodySprite({
+          action,
+          resolvedFacingArtIndexXy8,
+          flipX,
+          teleportingPhase,
+          gravityZ,
+          isStoodOn,
+          paused,
+          spritesheet: spritesheets.spritesheetForCurrentRoom,
+        });
+      }
+      individual.updateEffects(highlighted, flashing, shining);
     }
 
     this.#hasRenderedOnce = true;

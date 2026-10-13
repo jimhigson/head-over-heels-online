@@ -260,7 +260,7 @@ const stateBuilders: {
   sceneryPlayer: (jsonItem, aabb) => ({
     ...baseState(jsonItem, aabb),
     ...defaultFreeItemState(),
-    // just for fun/an easter egg - let pick up the characters in the final room :-)
+    visualFacingVector: unitVectors[jsonItem.config.startDirection],
   }),
   slidingBlock: (jsonItem, aabb) => ({
     ...baseState(jsonItem, aabb),

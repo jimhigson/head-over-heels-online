@@ -59,6 +59,14 @@ type VariantIdFn = {
     deactivated: false,
     sceneryPlayer: false,
   ): MaybeSuffixed<Id, "mirrorReflection">;
+  /** art that may or may not be a sceneryPlayer recolour, decided at runtime */
+  <Id extends ReflectableId & SceneryPlayerableId>(
+    id: Id,
+    reflection: boolean,
+    doughnutted: false,
+    deactivated: false,
+    sceneryPlayer: boolean,
+  ): MaybeSuffixed<Id, "mirrorReflection" | "sceneryPlayer">;
 };
 
 /**
