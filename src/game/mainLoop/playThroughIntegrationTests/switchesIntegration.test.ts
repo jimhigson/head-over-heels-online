@@ -4,7 +4,10 @@ import { setUpBasicGame, type TestRoomId } from "../../../_testUtils/basicRoom";
 import { heelsState, itemState } from "../../../_testUtils/characterState";
 import { resetStore } from "../../../_testUtils/initStoreForTests";
 import { playGameThrough } from "../../../_testUtils/playGameThrough";
-import { type SwitchConfig } from "../../../model/json/SwitchConfig";
+import {
+  type SwitchConfig,
+  type SwitchInRoomConfig,
+} from "../../../model/json/SwitchConfig";
 import { unitVectors } from "../../../utils/vectors/unitVectors";
 import { oppositeDirection, tangentAxis } from "../../../utils/vectors/vectors";
 
@@ -338,3 +341,85 @@ describe("switching conveyors", () => {
     },
   );
 });
+
+test.for([
+  {
+    name: "a ring (each flips the next)",
+    modifiesBySwitch: {
+      switch1: [{ expectType: "switch", flip: true, targets: ["switch2"] }],
+      switch2: [{ expectType: "switch", flip: true, targets: ["switch3"] }],
+      switch3: [{ expectType: "switch", flip: true, targets: ["switch1"] }],
+    },
+  },
+  {
+    name: "a gang (each flips every switch)",
+    modifiesBySwitch: {
+      switch1: [{ expectType: "switch", flip: true }],
+      switch2: [{ expectType: "switch", flip: true }],
+      switch3: [{ expectType: "switch", flip: true }],
+    },
+  },
+] satisfies Array<{
+  name: string;
+  modifiesBySwitch: Record<
+    "switch1" | "switch2" | "switch3",
+    SwitchInRoomConfig<TestRoomId, string>["modifies"]
+  >;
+}>)(
+  "flipping one of three switches in $name flips the other two",
+  ({ modifiesBySwitch }) => {
+    const gameState = setUpBasicGame({
+      firstRoomItems: {
+        heels: {
+          type: "player",
+          position: { x: 0, y: 0, z: 0 },
+          config: { which: "heels" },
+        },
+        ball: {
+          type: "ball",
+          position: { x: 6, y: 6, z: 5 },
+          config: {},
+        },
+        switch1: {
+          type: "switch",
+          position: { x: 6, y: 6, z: 0 },
+          config: {
+            type: "in-room",
+            initialSetting: "right",
+            modifies: modifiesBySwitch.switch1,
+          },
+        },
+        switch2: {
+          type: "switch",
+          position: { x: 2, y: 2, z: 0 },
+          config: {
+            type: "in-room",
+            initialSetting: "right",
+            modifies: modifiesBySwitch.switch2,
+          },
+        },
+        switch3: {
+          type: "switch",
+          position: { x: 2, y: 5, z: 0 },
+          config: {
+            type: "in-room",
+            initialSetting: "right",
+            modifies: modifiesBySwitch.switch3,
+          },
+        },
+      },
+    });
+
+    playGameThrough(gameState, {
+      until: (gameState) =>
+        itemState<"switch">(gameState, "switch1").setting === "left" ||
+        gameState.gameTime > 3_000,
+    });
+
+    expect([
+      itemState<"switch">(gameState, "switch1").setting,
+      itemState<"switch">(gameState, "switch2").setting,
+      itemState<"switch">(gameState, "switch3").setting,
+    ]).toEqual(["left", "left", "left"]);
+  },
+);

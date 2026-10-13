@@ -4,13 +4,14 @@ import { type ItemAppearance } from "./ItemAppearance";
 
 type ButtonRenderProps = {
   pressed: boolean;
+  disabled: boolean;
 };
 
 export const buttonAppearance: ItemAppearance<"button", ButtonRenderProps> = ({
   renderContext: {
     isReflection,
     item: {
-      state: { pressed },
+      state: { pressed, disabled },
     },
     general: { spritesheets },
   },
@@ -20,7 +21,8 @@ export const buttonAppearance: ItemAppearance<"button", ButtonRenderProps> = ({
 
   const render =
     currentlyRenderedProps === undefined ||
-    pressed !== currentlyRenderedProps.pressed;
+    pressed !== currentlyRenderedProps.pressed ||
+    disabled !== currentlyRenderedProps.disabled;
 
   if (!render) {
     return "no-update";
@@ -32,11 +34,11 @@ export const buttonAppearance: ItemAppearance<"button", ButtonRenderProps> = ({
         pressed ? `buttonInGame.pressed` : "buttonInGame",
         isReflection,
         false,
-        false,
+        disabled,
         false,
       ),
       spritesheet: spritesheets.spritesheetForCurrentRoom,
     }),
-    renderProps: { pressed },
+    renderProps: { pressed, disabled },
   };
 };

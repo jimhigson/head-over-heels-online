@@ -29,13 +29,14 @@ type MonsterIdPattern =
 
 /**
  * id patterns that can render from the deactivated palette: monsters plus
- * charles, conveyors, the greyable HUD pickup icons, and the head/heels
- * frames used by the HUD's inactive-character icons
+ * charles, conveyors, in-game buttons and switches, the greyable HUD pickup
+ * icons, and the head/heels frames used by the HUD's inactive-character icons
  */
 type DeactivatedIdPattern =
   | "bag"
   | "doughnuts"
   | "hooter"
+  | `buttonInGame${"" | `.${string}`}`
   | `charles.${string}`
   | `conveyor.${string}`
   | `emperorsGuardian${"" | `.${string}`}`
@@ -43,6 +44,7 @@ type DeactivatedIdPattern =
   | `head.walking.${string}`
   | `heels.standing.${string}`
   | `heels.walking.${string}`
+  | `switch.${string}`
   | MonsterIdPattern;
 
 /**
@@ -269,6 +271,9 @@ const variantEligible: Record<VariantSuffix, (id: string) => boolean> = {
     id === "bag" ||
     id === "doughnuts" ||
     id === "hooter" ||
+    id === "buttonInGame" ||
+    id.startsWith("buttonInGame.") ||
+    id.startsWith("switch.") ||
     id.startsWith("charles.") ||
     id.startsWith("conveyor.") ||
     id === "emperorsGuardian" ||

@@ -6,7 +6,7 @@ import {
 import { type UnionOfAllItemInPlayTypes } from "../../../model/ItemInPlayNarrowedUnions";
 import { type SwitchItemModificationUnion } from "../../../model/json/SwitchConfig";
 import { roomItemsIterable, type RoomState } from "../../../model/RoomState";
-import { getNewState } from "./getNewState";
+import { getNewStateForControlledItem } from "./getNewStateForControlledItem";
 
 export const applyModifiesList = <
   RoomId extends string,
@@ -18,7 +18,7 @@ export const applyModifiesList = <
   room: Pick<RoomState<RoomId, RoomItemId>, "items" | "roomTime">,
   visited: Set<UnionOfAllItemInPlayTypes<RoomId, RoomItemId>> = new Set(),
 ) => {
-  // mark that we shouldn't visit this switch again:
+  // mark that we shouldn't flip this switch again:
   visited.add(instigator);
 
   for (const modifiesItem of modifiesList) {
@@ -46,7 +46,8 @@ export const applyModifiesList = <
         continue;
       }
 
-      if (visited.has(roomItem)) {
+      // only flips chain on, so only they can loop:
+      if ("flip" in modifiesItem && visited.has(roomItem)) {
         continue;
       }
 
@@ -54,7 +55,12 @@ export const applyModifiesList = <
         state: Record<string, unknown>;
       };
 
-      const newState = getNewState(modifiesItem, newSetting, roomItem);
+      const newState = getNewStateForControlledItem(
+        modifiesItem,
+        newSetting,
+        roomItem,
+        room.roomTime,
+      );
 
       // loop the states to modify:
       targetItemCast.state = {
@@ -68,11 +74,16 @@ export const applyModifiesList = <
         roomItem[itemBehaviourKey].onActivated(roomItem, room);
       }
 
-      //mark that we shouldn't visit this room item again:
+      //mark that we shouldn't flip this room item again:
       visited.add(roomItem);
 
       // the modified item reacts in turn - eg a switch flipping its own targets:
-      roomItem[itemBehaviourKey].onModified(roomItem, room, visited);
+      roomItem[itemBehaviourKey].onModified(
+        roomItem,
+        modifiesItem,
+        room,
+        visited,
+      );
     }
   }
 };

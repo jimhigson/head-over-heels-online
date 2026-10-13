@@ -2,19 +2,52 @@ import { type SwitchSetting } from "../../../model/ItemInPlay";
 import { type UnionOfAllItemInPlayTypes } from "../../../model/ItemInPlayNarrowedUnions";
 import { type ItemState } from "../../../model/ItemState";
 import { type SwitchItemModificationUnion } from "../../../model/json/SwitchConfig";
+import { flippedMirrorOrientation } from "../../../model/MirrorOrientation";
 import { emptyObject } from "../../../utils/empty";
 import { unitVectors } from "../../../utils/vectors/unitVectors";
 import { scaleXyz } from "../../../utils/vectors/vectors";
 
-export const getNewState = <RoomId extends string, RoomItemId extends string>(
+export const getNewStateForControlledItem = <
+  RoomId extends string,
+  RoomItemId extends string,
+>(
   modifiesItem: SwitchItemModificationUnion<RoomId, RoomItemId>,
   setting: SwitchSetting,
-  targetItem: UnionOfAllItemInPlayTypes<RoomId, RoomItemId>,
+  controlledItem: UnionOfAllItemInPlayTypes<RoomId, RoomItemId>,
+  roomTime: number,
 ) => {
   // controlling other switches has a shorthand syntax:
   if (modifiesItem.expectType === "switch" && "flip" in modifiesItem) {
     // don't flip it - it will flip itself when we descend to it in the recursion
     return {};
+  }
+
+  if (
+    (modifiesItem.expectType === "switch" ||
+      modifiesItem.expectType === "button" ||
+      modifiesItem.expectType === "timer") &&
+    "disables" in modifiesItem
+  ) {
+    const { disables } = modifiesItem;
+    return (
+      setting === (disables ? "left" : "right") ?
+        { disabled: true }
+      : { disabled: false }) satisfies Partial<
+      ItemState<"button" | "switch" | "timer", RoomId, RoomItemId>
+    >;
+  }
+
+  if (modifiesItem.expectType === "mirror") {
+    // mirrors have two orientations, so every change turns them to the other:
+    return controlledItem.type === "mirror" ?
+        ({
+          orientation: flippedMirrorOrientation(
+            controlledItem.state.orientation,
+          ),
+          flipDirection: modifiesItem.rotates,
+          flippedAtRoomTime: roomTime,
+        } satisfies Partial<ItemState<"mirror", RoomId, RoomItemId>>)
+      : emptyObject;
   }
 
   if (modifiesItem.expectType === "block" && "makesStable" in modifiesItem) {
@@ -78,10 +111,10 @@ export const getNewState = <RoomId extends string, RoomItemId extends string>(
   if (
     modifiesItem.expectType === "conveyor" &&
     "reverses" in modifiesItem &&
-    targetItem.type === "conveyor"
+    controlledItem.type === "conveyor"
   ) {
     const { reverses } = modifiesItem;
-    const configDirection = targetItem.config.direction;
+    const configDirection = controlledItem.config.direction;
     return (
       setting === (reverses ? "left" : "right") ?
         { direction: scaleXyz(configDirection, -1) }
@@ -132,18 +165,6 @@ export const getNewState = <RoomId extends string, RoomItemId extends string>(
       : {
           activated: false,
         }) satisfies Partial<ItemState<"lamp", RoomId, RoomItemId>>;
-  }
-
-  if (modifiesItem.expectType === "timer" && "activates" in modifiesItem) {
-    const { activates } = modifiesItem;
-    return (
-      setting === (activates ? "left" : "right") ?
-        {
-          activated: true,
-        }
-      : {
-          activated: false,
-        }) satisfies Partial<ItemState<"timer", RoomId, RoomItemId>>;
   }
 
   return modifiesItem[`${setting}State`] ?? emptyObject;

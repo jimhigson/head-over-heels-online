@@ -151,7 +151,7 @@ test("timer can be disabled by a switch", () => {
           modifies: [
             {
               expectType: "timer",
-              activates: true,
+              disables: false,
               targets: ["timer"],
             },
           ],
@@ -191,7 +191,7 @@ test("timer can be disabled by a switch", () => {
     },
   });
 
-  expect(itemState<"timer">(gameState, "timer").activated).toBe(true);
+  expect(itemState<"timer">(gameState, "timer").disabled).toBe(false);
   expect(itemState<"movingPlatform">(gameState, "platform").activated).toBe(
     true,
   );
@@ -202,11 +202,11 @@ test("timer can be disabled by a switch", () => {
       mockInputStateTracker.mockDirectionPressed = "left";
     },
     until() {
-      return itemState<"timer">(gameState, "timer").activated === false;
+      return itemState<"timer">(gameState, "timer").disabled;
     },
   });
 
-  expect(itemState<"timer">(gameState, "timer").activated).toBe(false);
+  expect(itemState<"timer">(gameState, "timer").disabled).toBe(true);
 
   const platformActivatedAfterSwitch = itemState<"movingPlatform">(
     gameState,

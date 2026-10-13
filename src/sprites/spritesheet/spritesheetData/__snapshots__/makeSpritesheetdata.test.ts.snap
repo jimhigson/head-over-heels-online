@@ -1050,6 +1050,14 @@ exports[`for tailwind plugin we must have all possible frames and animations 1`]
       "y": 377,
     },
   },
+  "buttonInGame.deactivated": {
+    "frame": {
+      "h": 24,
+      "w": 24,
+      "x": 526,
+      "y": 377,
+    },
+  },
   "buttonInGame.mirrorReflection": {
     "frame": {
       "h": 24,
@@ -1059,6 +1067,14 @@ exports[`for tailwind plugin we must have all possible frames and animations 1`]
     },
   },
   "buttonInGame.pressed": {
+    "frame": {
+      "h": 24,
+      "w": 24,
+      "x": 551,
+      "y": 377,
+    },
+  },
+  "buttonInGame.pressed.deactivated": {
     "frame": {
       "h": 24,
       "w": 24,
@@ -10866,6 +10882,14 @@ exports[`for tailwind plugin we must have all possible frames and animations 1`]
       "y": 377,
     },
   },
+  "switch.left.deactivated": {
+    "frame": {
+      "h": 24,
+      "w": 24,
+      "x": 601,
+      "y": 377,
+    },
+  },
   "switch.left.mirrorReflection": {
     "frame": {
       "h": 24,
@@ -10875,6 +10899,14 @@ exports[`for tailwind plugin we must have all possible frames and animations 1`]
     },
   },
   "switch.right": {
+    "frame": {
+      "h": 24,
+      "w": 24,
+      "x": 626,
+      "y": 377,
+    },
+  },
+  "switch.right.deactivated": {
     "frame": {
       "h": 24,
       "w": 24,
