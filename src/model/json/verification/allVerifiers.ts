@@ -15,6 +15,7 @@ import { doorToSameRoomVerifier } from "./doors/doorToSameRoomVerifier";
 import { doorTwoWayLinkVerifier } from "./doors/doorTwoWayLinkVerifier";
 import { redundantToDoorVerifier } from "./doors/redundantToDoorVerifier";
 import { mapGeometryVerifier } from "./rooms/mapGeometryVerifier";
+import { oversizedUndividedRoomVerifier } from "./rooms/oversizedUndividedRoomVerifier";
 import { redundantTimesVerifier } from "./rooms/redundantTimesVerifier";
 import { roomPerimeterCoverageVerifier } from "./rooms/roomPerimeterCoverageVerifier";
 import { nonContiguousMirrorVerifier } from "./subRooms/nonContiguousMirrorVerifier";
@@ -58,6 +59,7 @@ export const allVerifiers: CampaignVerifier<unknown>[] = [
   subRoomInvertedExtentVerifier,
   subRoomFloorCoverageVerifier,
   subRoomAdjacencyVerifier,
+  oversizedUndividedRoomVerifier,
   roomPerimeterCoverageVerifier,
   doorAboveRoomHeightVerifier,
   redundantTimesVerifier,
