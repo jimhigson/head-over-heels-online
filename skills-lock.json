@@ -1,11 +1,17 @@
 {
   "version": 1,
   "skills": {
+    "gh-stack": {
+      "source": "github/gh-stack",
+      "sourceType": "github",
+      "skillPath": "skills/gh-stack/SKILL.md",
+      "computedHash": "6a5289601eedbeedc2d79c2d8627277afb9b9a3fbd78b4da3399a46dd788ae0a"
+    },
     "guided-review": {
       "source": "jimhigson/guided-review",
       "sourceType": "github",
       "skillPath": ".claude/skills/guided-review/SKILL.md",
-      "computedHash": "cd1fe8b339919ae07d60e1ba609260e033a3e7324c92d9a07e5a142e10c632cf"
+      "computedHash": "6a494a53d64cba3a3f37eb318158953b4376b37994845dda3a92ecbe0f19ba00"
     }
   }
 }

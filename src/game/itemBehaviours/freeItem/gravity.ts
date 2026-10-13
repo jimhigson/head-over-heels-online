@@ -11,10 +11,7 @@ import {
   type Mechanic,
   type MechanicResult,
 } from "../../physics/MechanicResult";
-import {
-  fallG,
-  terminalVelocityPixPerMs,
-} from "../../physics/mechanicsConstants";
+import { fallG } from "../../physics/mechanicsConstants";
 
 const notFalling = {
   movementType: "vel",
@@ -44,7 +41,6 @@ export const gravity: Mechanic<FreeItemTypes> = <
   }
 
   const {
-    type,
     state: {
       vels: {
         gravity: { z: previousVelZ },
@@ -53,10 +49,7 @@ export const gravity: Mechanic<FreeItemTypes> = <
     },
   } = item;
 
-  const effectiveType = type === "headOverHeels" ? "head" : type;
-
-  const terminalZ =
-    terminalVelocityPixPerMs[effectiveType === "head" ? "head" : "others"];
+  const terminalZ = item[itemBehaviourKey].terminalFallVelocity(item);
 
   if (standingOnItemId !== null) {
     const standingOn = stoodOnItem(standingOnItemId, room);

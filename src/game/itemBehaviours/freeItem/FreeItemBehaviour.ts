@@ -13,6 +13,7 @@ import { stoodOnItem } from "../../../model/stoodOnItemsLookup";
 import { originXyz } from "../../../utils/vectors/vectors";
 import { type GameState } from "../../gameState/GameState";
 import { type MechanicResult } from "../../physics/MechanicResult";
+import { terminalVelocityPixPerMs } from "../../physics/mechanicsConstants";
 import { recordActedOnBy } from "../../physics/recordActedOnBy";
 import { ItemBehaviour } from "../ItemBehaviour";
 import { gravity } from "./gravity";
@@ -23,6 +24,8 @@ const resetMovingFloor = {
     movingFloor: originXyz,
   },
 } satisfies MechanicResult<FreeItemTypes, string, string>;
+
+const fallTerminalFallVelocity = terminalVelocityPixPerMs.fall;
 
 /**
  * items that are free to move - by falling, being pushed, or being carried
@@ -37,6 +40,13 @@ export class FreeItemBehaviour extends ItemBehaviour {
     return !(
       this.isHeavy(item) && pusher[itemBehaviourKey].stoppedByHeavyItems
     );
+  }
+
+  override terminalFallVelocity<
+    RoomId extends string,
+    RoomItemId extends string,
+  >(_item: FreeItem<RoomId, RoomItemId>): number {
+    return fallTerminalFallVelocity;
   }
 
   override mechanicResults<RoomId extends string, RoomItemId extends string>(

@@ -27,6 +27,7 @@ import { pickingUp } from "../../physics/mechanics/pickingUp";
 import { puttingDown } from "../../physics/mechanics/puttingDown";
 import { teleporting } from "../../physics/mechanics/teleporting";
 import { walking } from "../../physics/mechanics/walking";
+import { terminalVelocityPixPerMs } from "../../physics/mechanicsConstants";
 import { fadeInOrOutDuration } from "../../render/animationTimings";
 import { shadowPlayable } from "../../render/shadows/shadowCastTextures";
 import { FreeItemBehaviour } from "../freeItem/FreeItemBehaviour";
@@ -94,6 +95,16 @@ export class PlayableBehaviour extends FreeItemBehaviour {
     // a 'superjump' by going out of symbiosis while jumping and
     // holding jump
     return playable.state.standingOnItemId !== null;
+  }
+
+  override terminalFallVelocity<
+    RoomId extends string,
+    RoomItemId extends string,
+  >(playable: PlayableItem<CharacterName, RoomId, RoomItemId>): number {
+    // head glides, so falls slower
+    return playable.type === "heels" ?
+        super.terminalFallVelocity(playable)
+      : terminalVelocityPixPerMs.glide;
   }
 
   override mechanicResults<RoomId extends string, RoomItemId extends string>(
