@@ -2,9 +2,10 @@ import { type UnknownAction } from "@reduxjs/toolkit";
 import { type ComponentChildren } from "preact";
 import { useEffect } from "preact/hooks";
 
-import { buildInfo, parseMajorVersion } from "../buildInfo";
+import { buildInfo } from "../buildInfo";
 import { useGameApiIfProvided } from "../game/components/GameApiContext";
 import { type GameApi } from "../game/GameApi";
+import { parseMajorVersion } from "../parseMajorVersion";
 import { useAppSelector } from "../store/hooks";
 import { getRecentActions } from "../store/recentActions";
 import { githubApiSlice } from "../store/slices/githubApiSlice";

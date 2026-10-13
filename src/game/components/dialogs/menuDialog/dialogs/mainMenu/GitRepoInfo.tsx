@@ -1,40 +1,27 @@
-import { useEffect } from "preact/hooks";
-
-import { buildInfo, parseMajorVersion } from "../../../../../../buildInfo";
 import { nerdFontGithubChar } from "../../../../../../sprites/spritesheet/spritesheetData/hudChars";
 import { useAppSelector } from "../../../../../../store/hooks";
 import { selectShouldRenderOnScreenControls } from "../../../../../../store/slices/gameMenus/gameMenusSelectors";
-import { useGetLatestReleaseQuery } from "../../../../../../store/slices/githubApiSlice";
 import { cn } from "../../../../../../ui/cn";
+import { useGitRepoInfo } from "../../../../../../useGitRepoInfo";
 import { linkOpenExternalClickHandler } from "../../../../../../utils/tauri/openExternalLink";
 import { usePointerActive } from "../../../../../input/usePointerActive";
 
-const { version: deployedVersion, majorVersion: deployedMajor } = buildInfo;
-
 export const GitRepoInfo = () => {
-  const { data: latestRelease } = useGetLatestReleaseQuery();
-
   const pointerActive = usePointerActive();
   // with touch controls there is no mouse to summon it back, so it always shows
   const onScreenControls = useAppSelector(selectShouldRenderOnScreenControls);
   const shown = onScreenControls || pointerActive;
 
-  const { prNumber, prUrl, gitBranch, releasesUrl, repositoryUrl, isDevBuild } =
-    buildInfo;
-
-  const latestTag = latestRelease?.tag_name;
-  const latestMajor =
-    latestTag === undefined ? undefined : parseMajorVersion(latestTag);
-  const isOutdated =
-    latestMajor === undefined ? undefined : latestMajor > deployedMajor;
-
-  useEffect(() => {
-    if (isOutdated) {
-      console.warn(
-        `current game version at ${deployedMajor} (from "${deployedVersion}") but latest is ${latestMajor} (from "${latestTag}")`,
-      );
-    }
-  }, [isOutdated, latestMajor, latestTag]);
+  const {
+    majorVersion,
+    isOutdated,
+    prNumber,
+    prUrl,
+    gitBranch,
+    releasesUrl,
+    repositoryUrl,
+    isDevBuild,
+  } = useGitRepoInfo();
 
   return (
     <div
@@ -53,7 +40,7 @@ export const GitRepoInfo = () => {
           <span class="text-single-line"> v</span>
           <span class="text-single-line screenshot-mask mr-1 inline-block">
             {/* extra space pulls away from rounded corners of phone screens and app windows */}
-            {deployedMajor}
+            {majorVersion}
           </span>
           {isOutdated && (
             <span class="text-single-line animate-flash text-midRed zx:text-zxRed toppy:text-toppyPink2">
