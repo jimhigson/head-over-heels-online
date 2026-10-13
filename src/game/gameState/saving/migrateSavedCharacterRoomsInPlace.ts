@@ -237,6 +237,11 @@ export const migrateSavedCharacterRoomsInPlace = <RoomId extends string>(
             "startDirection",
           );
           break;
+        case "switch":
+        case "button":
+          // used to be optional, now required
+          item.state.disabled ??= false;
+          break;
         case "heels":
           migrateHeelsAbilitiesInPlace(item.state);
           break;

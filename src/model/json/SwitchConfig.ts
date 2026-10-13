@@ -85,6 +85,23 @@ export type SwitchItemModificationUnion<
       >;
     }
   | {
+      expectType: "button" | "switch" | "timer";
+      targets?: RoomItemId[];
+      /**
+       * true is a shorthand for disabling in the left setting:
+       *   {leftState: {disabled: true}, rightState: {disabled: false}},
+       * false is a shorthand for disabling in the right setting:
+       *   {leftState: {disabled: false}, rightState: {disabled: true}},
+       */
+      disables?: boolean;
+      leftState?: Partial<
+        Pick<ItemStateMap<RoomId, RoomItemId>["switch"], "disabled">
+      >;
+      rightState?: Partial<
+        Pick<ItemStateMap<RoomId, RoomItemId>["switch"], "disabled">
+      >;
+    }
+  | {
       expectType: "charles";
       targets?: RoomItemId[];
       /**
@@ -191,6 +208,15 @@ export type SwitchItemModificationUnion<
       rightState: Partial<ItemStateMap<RoomId, RoomItemId>["lift"]>;
     }
   | {
+      expectType: "mirror";
+      targets?: RoomItemId[];
+      /**
+       * the way the mirror turns (90°, to its other orientation) every time
+       * its controller changes setting
+       */
+      rotates: "anticlockwise" | "clockwise";
+    }
+  | {
       expectType: "teleporter";
       targets?: RoomItemId[];
       leftState: Subset<
@@ -206,17 +232,6 @@ export type SwitchItemModificationUnion<
           toRoom: RoomId;
           toPosition: Xyz;
         }
-      >;
-    }
-  | {
-      expectType: "timer";
-      targets?: RoomItemId[];
-      activates?: boolean;
-      leftState?: Partial<
-        Pick<ItemStateMap<RoomId, RoomItemId>["timer"], "activated">
-      >;
-      rightState?: Partial<
-        Pick<ItemStateMap<RoomId, RoomItemId>["timer"], "activated">
       >;
     };
 
@@ -245,7 +260,11 @@ export type SwitchConfig<
   RoomId extends string,
   /** ids of items in this room */
   RoomItemId extends string,
-> = { initialSetting: SwitchSetting } & (
+> = {
+  initialSetting: SwitchSetting;
+  /** disabled switches can't be toggled until a controller enables them */
+  disabled?: boolean;
+} & (
   | SwitchConfigForUserSettings
   | SwitchInRoomConfig<
       RoomId,
@@ -278,10 +297,14 @@ export type ButtonConfig<
   RoomId extends string,
   /** ids of items in this room */
   RoomItemId extends string,
-> =
+> = {
+  /** disabled buttons can't be pressed until a controller enables them */
+  disabled?: boolean;
+} & (
   | ButtonConfigForUserSettings
   | ButtonInRoomConfig<
       RoomId,
       /** ids of items in this room */
       RoomItemId
-    >;
+    >
+);

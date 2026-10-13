@@ -5,10 +5,7 @@ import { nextSpritesOption } from "../../../store/slices/userSettings/userSettin
 import { store } from "../../../store/store";
 import { objectEmpty } from "../../../utils/objectEmpty";
 import { type GameState } from "../../gameState/GameState";
-import {
-  type MechanicResult,
-  unitMechanicalResult,
-} from "../../physics/MechanicResult";
+import { type MechanicResult } from "../../physics/MechanicResult";
 import { buttonStayPressedAfterReleasePeriod } from "../../physics/mechanicsConstants";
 import { ItemBehaviour } from "../ItemBehaviour";
 import { applyModifiesList } from "./applyModifiesList";
@@ -32,7 +29,8 @@ export class ButtonBehaviour extends ItemBehaviour {
   }
 
   /**
-   * pressed while stood on, released a while after it is stood off
+   * pressed while stood on, released a while after it is stood off. Disabled
+   * buttons stay as they are
    */
   override mechanicResults<RoomId extends string, RoomItemId extends string>(
     button: ItemTypeUnion<"button", RoomId, RoomItemId>,
@@ -42,9 +40,13 @@ export class ButtonBehaviour extends ItemBehaviour {
     into: Array<MechanicResult<ItemInPlayType, RoomId, RoomItemId>>,
   ): void {
     const {
-      state: { stoodOnUntilRoomTime, stoodOnBy, pressed },
+      state: { stoodOnUntilRoomTime, stoodOnBy, pressed, disabled },
       config,
     } = button;
+
+    if (disabled) {
+      return;
+    }
 
     const deactivateTime =
       stoodOnUntilRoomTime + buttonStayPressedAfterReleasePeriod;
@@ -73,9 +75,6 @@ export class ButtonBehaviour extends ItemBehaviour {
       into.push(
         pressedMechanicResult as MechanicResult<"button", RoomId, RoomItemId>,
       );
-      return;
     }
-
-    into.push(unitMechanicalResult);
   }
 }

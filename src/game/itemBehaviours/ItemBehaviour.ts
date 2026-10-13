@@ -5,6 +5,7 @@ import {
   type PositionlessItem,
   type UnionOfAllItemInPlayTypes,
 } from "../../model/ItemInPlayNarrowedUnions";
+import { type SwitchItemModificationUnion } from "../../model/json/SwitchConfig";
 import { type RoomState } from "../../model/RoomState";
 import { type Xy, type Xyz } from "../../utils/vectors/vectors";
 import { type GameState } from "../gameState/GameState";
@@ -289,7 +290,10 @@ export class ItemBehaviour {
     _gameState: GameState<RoomId>,
     _deltaMS: number,
     /**
-     * reused between ticks, so never kept hold of
+     * The array this mechanicsResults call should push its mechanic results into,
+     * like a 'return value'.
+     * The same array is reused between ticks, so it is not allowed to keep a reference
+     * to it
      */
     _into: Array<MechanicResult<ItemInPlayType, RoomId, RoomItemId>>,
   ): void {}
@@ -348,6 +352,8 @@ export class ItemBehaviour {
    */
   onModified<RoomId extends string, RoomItemId extends string>(
     _item: UnionOfAllItemInPlayTypes<RoomId, RoomItemId>,
+    /** the modification just applied to the item */
+    _modification: SwitchItemModificationUnion<RoomId, RoomItemId>,
     _room: Pick<RoomState<RoomId, RoomItemId>, "items" | "roomTime">,
     /**
      * the chain of items already modified, to avoid infinite loops

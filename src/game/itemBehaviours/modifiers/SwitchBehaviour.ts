@@ -1,5 +1,6 @@
 import { type ItemInPlay } from "../../../model/ItemInPlay";
 import { type UnionOfAllItemInPlayTypes } from "../../../model/ItemInPlayNarrowedUnions";
+import { type SwitchItemModificationUnion } from "../../../model/json/SwitchConfig";
 import { type RoomState } from "../../../model/RoomState";
 import { toggleUserSetting } from "../../../store/slices/userSettings/userSettingsSlice";
 import { store } from "../../../store/store";
@@ -40,18 +41,26 @@ export class SwitchBehaviour extends ItemBehaviour {
       return;
     }
 
+    if (switchItem.state.disabled) {
+      return;
+    }
+
     this.#toggle(switchItem, room);
   }
 
   /**
-   * switches modified by other switches toggle, so can chain their own targets
+   * switches flipped by other controllers toggle, so can chain their own
+   * targets. Disabled switches stay put
    */
   override onModified<RoomId extends string, RoomItemId extends string>(
     switchItem: ItemInPlay<"switch", RoomId, RoomItemId>,
+    modification: SwitchItemModificationUnion<RoomId, RoomItemId>,
     room: Pick<RoomState<RoomId, RoomItemId>, "items" | "roomTime">,
     visited: Set<UnionOfAllItemInPlayTypes<RoomId, RoomItemId>>,
   ): void {
-    this.#toggle(switchItem, room, visited);
+    if ("flip" in modification && !switchItem.state.disabled) {
+      this.#toggle(switchItem, room, visited);
+    }
   }
 
   #toggle<RoomId extends string, RoomItemId extends string>(

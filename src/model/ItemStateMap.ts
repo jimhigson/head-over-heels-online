@@ -404,15 +404,20 @@ export type ItemStateMap<RoomId extends string, RoomItemId extends string> = {
      */
     lastToggledAtRoomTime?: number;
     setting: SwitchSetting;
+    /** disabled switches can't be toggled */
+    disabled: boolean;
   };
   button: {
     pressed: boolean;
+    /** disabled buttons can't be pressed */
+    disabled: boolean;
   };
   timer: Simplify<
     {
       lastFiredAtRoomTime: number;
       setting: SwitchSetting;
-      activated: boolean;
+      /** disabled timers don't fire */
+      disabled: boolean;
     } & ItemConfigMap<RoomId, RoomItemId, SceneryName>["timer"]
   >;
   charles: FreeItemState<RoomItemId> & {

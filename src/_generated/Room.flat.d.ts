@@ -148,6 +148,10 @@ export type RoomJsonSchema = {
         config:
           | {
               /**
+               * disabled buttons can't be pressed until a controller enables them
+               */
+              disabled?: false | true;
+              /**
                * this button targets items in the room. This is the default, so
                * also used if undefined
                */
@@ -172,6 +176,29 @@ export type RoomJsonSchema = {
                     };
                     rightState: {
                       disappearing?: null;
+                    };
+                  }
+                | {
+                    expectType: "button" | "switch" | "timer";
+                    targets?: string[];
+                    /**
+                     * true is a shorthand for disabling in the left setting:
+                     *   {leftState: {disabled: true}, rightState: {disabled: false}},
+                     * false is a shorthand for disabling in the right setting:
+                     *   {leftState: {disabled: false}, rightState: {disabled: true}},
+                     */
+                    disables?: false | true;
+                    leftState?: {
+                      /**
+                       * disabled switches can't be toggled
+                       */
+                      disabled?: false | true;
+                    };
+                    rightState?: {
+                      /**
+                       * disabled switches can't be toggled
+                       */
+                      disabled?: false | true;
                     };
                   }
                 | {
@@ -961,6 +988,15 @@ export type RoomJsonSchema = {
                     };
                   }
                 | {
+                    expectType: "mirror";
+                    targets?: string[];
+                    /**
+                     * the way the mirror turns (90°, to its other orientation) every time
+                     * its controller changes setting
+                     */
+                    rotates: "anticlockwise" | "clockwise";
+                  }
+                | {
                     expectType: "monster" | "movingPlatform";
                     targets?: string[];
                     /**
@@ -1169,20 +1205,13 @@ export type RoomJsonSchema = {
                       };
                     };
                   }
-                | {
-                    expectType: "timer";
-                    targets?: string[];
-                    activates?: false | true;
-                    leftState?: {
-                      activated?: false | true;
-                    };
-                    rightState?: {
-                      activated?: false | true;
-                    };
-                  }
               )[];
             }
           | {
+              /**
+               * disabled buttons can't be pressed until a controller enables them
+               */
+              disabled?: false | true;
               type: "in-store";
               action: "nextSpritesOption";
             };
@@ -2260,6 +2289,10 @@ export type RoomJsonSchema = {
           | {
               initialSetting: "left" | "right";
               /**
+               * disabled switches can't be toggled until a controller enables them
+               */
+              disabled?: false | true;
+              /**
                * this switch targets items in the room. This is the default, so
                * also used if undefined
                */
@@ -2284,6 +2317,29 @@ export type RoomJsonSchema = {
                     };
                     rightState: {
                       disappearing?: null;
+                    };
+                  }
+                | {
+                    expectType: "button" | "switch" | "timer";
+                    targets?: string[];
+                    /**
+                     * true is a shorthand for disabling in the left setting:
+                     *   {leftState: {disabled: true}, rightState: {disabled: false}},
+                     * false is a shorthand for disabling in the right setting:
+                     *   {leftState: {disabled: false}, rightState: {disabled: true}},
+                     */
+                    disables?: false | true;
+                    leftState?: {
+                      /**
+                       * disabled switches can't be toggled
+                       */
+                      disabled?: false | true;
+                    };
+                    rightState?: {
+                      /**
+                       * disabled switches can't be toggled
+                       */
+                      disabled?: false | true;
                     };
                   }
                 | {
@@ -3073,6 +3129,15 @@ export type RoomJsonSchema = {
                     };
                   }
                 | {
+                    expectType: "mirror";
+                    targets?: string[];
+                    /**
+                     * the way the mirror turns (90°, to its other orientation) every time
+                     * its controller changes setting
+                     */
+                    rotates: "anticlockwise" | "clockwise";
+                  }
+                | {
                     expectType: "monster" | "movingPlatform";
                     targets?: string[];
                     /**
@@ -3281,21 +3346,14 @@ export type RoomJsonSchema = {
                       };
                     };
                   }
-                | {
-                    expectType: "timer";
-                    targets?: string[];
-                    activates?: false | true;
-                    leftState?: {
-                      activated?: false | true;
-                    };
-                    rightState?: {
-                      activated?: false | true;
-                    };
-                  }
               )[];
             }
           | {
               initialSetting: "left" | "right";
+              /**
+               * disabled switches can't be toggled until a controller enables them
+               */
+              disabled?: false | true;
               /**
                * this switch targets the redux store
                */
@@ -3381,6 +3439,11 @@ export type RoomJsonSchema = {
           period: number;
           delay?: number;
           initialSetting: "left" | "right";
+          /**
+           * If true, the timer will start deactivated until a controller enables it.
+           * Default is false (activated on load)
+           */
+          disabled?: false | true;
           modifies: (
             | {
                 expectType: "block";
@@ -3401,6 +3464,29 @@ export type RoomJsonSchema = {
                 };
                 rightState: {
                   disappearing?: null;
+                };
+              }
+            | {
+                expectType: "button" | "switch" | "timer";
+                targets?: string[];
+                /**
+                 * true is a shorthand for disabling in the left setting:
+                 *   {leftState: {disabled: true}, rightState: {disabled: false}},
+                 * false is a shorthand for disabling in the right setting:
+                 *   {leftState: {disabled: false}, rightState: {disabled: true}},
+                 */
+                disables?: false | true;
+                leftState?: {
+                  /**
+                   * disabled switches can't be toggled
+                   */
+                  disabled?: false | true;
+                };
+                rightState?: {
+                  /**
+                   * disabled switches can't be toggled
+                   */
+                  disabled?: false | true;
                 };
               }
             | {
@@ -4174,6 +4260,15 @@ export type RoomJsonSchema = {
                 };
               }
             | {
+                expectType: "mirror";
+                targets?: string[];
+                /**
+                 * the way the mirror turns (90°, to its other orientation) every time
+                 * its controller changes setting
+                 */
+                rotates: "anticlockwise" | "clockwise";
+              }
+            | {
                 expectType: "monster" | "movingPlatform";
                 targets?: string[];
                 /**
@@ -4380,17 +4475,6 @@ export type RoomJsonSchema = {
                     y: number;
                     z: number;
                   };
-                };
-              }
-            | {
-                expectType: "timer";
-                targets?: string[];
-                activates?: false | true;
-                leftState?: {
-                  activated?: false | true;
-                };
-                rightState?: {
-                  activated?: false | true;
                 };
               }
           )[];

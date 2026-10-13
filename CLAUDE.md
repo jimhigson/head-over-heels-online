@@ -68,7 +68,7 @@ The original campaign is burnt into the source under `src/_generated/originalCam
 * optional new properties mean that old rooms created in the editor will still comply
 ## item State
 * the item state is the values in an item that can change during gameplay
-* new properties in state should usually be optional, or at least the code should work if they are omitted, so that old save games still work
+* new properties in state should not be optional if they always have a value, preferring one-time migration on load (inc testing) over optionality that applies to every use of the value. `src/game/gameState/saving/migrateSavedCharacterRoomsInPlace.ts` handles the migration of room/item state
 
 ## Campaigns:
 * the player can play the original campaign, a sequel, or

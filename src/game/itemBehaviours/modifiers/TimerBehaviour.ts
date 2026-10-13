@@ -34,7 +34,7 @@ export class TimerBehaviour extends NonSolidBehaviour {
     const { state } = timer;
 
     if (
-      state.activated &&
+      !state.disabled &&
       periodicItemShouldAct(
         {
           delay: state.delay,
@@ -49,7 +49,8 @@ export class TimerBehaviour extends NonSolidBehaviour {
 
       applyModifiesList(state.modifies, newSetting, timer, room);
 
-      state.lastFiredAtRoomTime = room.roomTime;
+      // the timer may have modified itself, which replaces its state object:
+      timer.state.lastFiredAtRoomTime = room.roomTime;
     }
   }
 }

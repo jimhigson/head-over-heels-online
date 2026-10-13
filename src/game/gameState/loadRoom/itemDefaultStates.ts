@@ -122,6 +122,7 @@ const stateBuilders: {
   button: (jsonItem, aabb) => ({
     ...baseState(jsonItem, aabb),
     pressed: false,
+    disabled: jsonItem.config.disabled ?? false,
   }),
   charles: (jsonItem, aabb) => ({
     ...baseState(jsonItem, aabb),
@@ -277,6 +278,7 @@ const stateBuilders: {
     ...baseState(jsonItem, aabb),
     setting: jsonItem.config.initialSetting,
     lastToggledAtRoomTime: neverTime,
+    disabled: jsonItem.config.disabled ?? false,
   }),
   teleporter: (jsonItem, aabb) => ({
     ...baseState(jsonItem, aabb),
@@ -291,7 +293,7 @@ const stateBuilders: {
       (jsonItem.config.delay ?? jsonItem.config.period) -
       jsonItem.config.period,
     setting: jsonItem.config.initialSetting,
-    activated: true,
+    disabled: jsonItem.config.disabled ?? false,
   }),
 };
 

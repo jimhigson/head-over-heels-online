@@ -8,6 +8,7 @@ import { type ItemAppearance } from "./ItemAppearance";
 
 type SwitchRenderProps = {
   setting: SwitchSetting;
+  disabled: boolean;
 };
 
 const settingFromStore = (
@@ -31,7 +32,7 @@ export const switchAppearance: ItemAppearance<"switch", SwitchRenderProps> = ({
   renderContext: {
     isReflection,
     item: {
-      state: { setting: stateSetting },
+      state: { setting: stateSetting, disabled },
       config: switchConfig,
     },
     general: { spritesheets },
@@ -48,7 +49,8 @@ export const switchAppearance: ItemAppearance<"switch", SwitchRenderProps> = ({
 
   const render =
     currentlyRenderedProps === undefined ||
-    setting !== currentlyRenderedProps.setting;
+    setting !== currentlyRenderedProps.setting ||
+    disabled !== currentlyRenderedProps.disabled;
 
   if (!render) {
     return "no-update";
@@ -60,11 +62,11 @@ export const switchAppearance: ItemAppearance<"switch", SwitchRenderProps> = ({
         `switch.${setting}`,
         isReflection,
         false,
-        false,
+        disabled,
         false,
       ),
       spritesheet: spritesheets.spritesheetForCurrentRoom,
     }),
-    renderProps: { setting },
+    renderProps: { setting, disabled },
   };
 };

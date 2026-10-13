@@ -401,6 +401,11 @@ export type ItemConfigMap<
     period: number;
     delay?: number;
     initialSetting: SwitchSetting;
+    /**
+     * If true, the timer will start deactivated until a controller enables it.
+     * Default is false (activated on load)
+     */
+    disabled?: boolean;
     modifies: Array<SwitchItemModificationUnion<RoomId, RoomItemId>>;
   };
 };
