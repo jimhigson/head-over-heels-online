@@ -6,6 +6,7 @@ import {
 import { type RoomState } from "../../../model/RoomState";
 import { originXyz } from "../../../utils/vectors/vectors";
 import { type GameState } from "../../gameState/GameState";
+import { liftVelZ } from "../../physics/liftVelZ";
 import {
   type Mechanic,
   type MechanicResult,
@@ -30,7 +31,7 @@ export const gravity: Mechanic<FreeItemTypes> = <
   RoomItemId extends string,
 >(
   item: FreeItem<RoomId, RoomItemId>,
-  _room: RoomState<RoomId, RoomItemId>,
+  room: RoomState<RoomId, RoomItemId>,
   _gameState: GameState<RoomId>,
   deltaMS: number,
 ): MechanicResult<FreeItemTypes, RoomId, RoomItemId> => {
@@ -53,6 +54,12 @@ export const gravity: Mechanic<FreeItemTypes> = <
     return notFalling;
   }
   const terminalZ = item[itemBehaviourKey].terminalFallVelocity(item);
+  const startingVelZ =
+    previousVelZ > 0 ?
+      // rising (eg, jumping) - not slowed by what it left
+      previousVelZ
+      // falling away from something that carried it down keeps that speed:
+    : Math.min(previousVelZ, liftVelZ(item, room, deltaMS));
   // not standing on anything - allow free fall up to terminal velocity
   return {
     movementType: "vel",
@@ -60,7 +67,7 @@ export const gravity: Mechanic<FreeItemTypes> = <
       gravity: {
         x: 0,
         y: 0,
-        z: Math.max(previousVelZ - fallG * deltaMS, -terminalZ),
+        z: Math.max(startingVelZ - fallG * deltaMS, -terminalZ),
       },
     },
   };

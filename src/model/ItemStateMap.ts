@@ -53,6 +53,12 @@ export type FreeItemState<RoomItemId extends string> = {
   /** movement that is queued up to happen soon - this is because it was stood on an item that moved */
   latentMovement: Array<LatentMovementFrame<RoomItemId>>;
 
+  /**
+   * the vertical speed (px/ms) this was last carried at by the item it stands
+   * on, and when - so it can keep that speed on leaving
+   */
+  liftVel: { z: number; atRoomTime: number };
+
   vels: {
     /** vertical velocity - needed for parabolic jumping and falling */
     gravity: Xyz;

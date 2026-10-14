@@ -45,6 +45,7 @@ export const defaultFreeItemState = <RoomItemId extends string>() =>
   ({
     vels: defaultFreeItemStateVels(),
     latentMovement: [],
+    liftVel: { z: 0, atRoomTime: neverTime },
     collidedWith: {
       roomTime: neverTime,
       by: emptyObject as Record<RoomItemId, true>,
