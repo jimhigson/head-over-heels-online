@@ -5,9 +5,9 @@ import { projectWorldXyzToScreenXy } from "../../game/render/projections";
 import { roomItemsIterable } from "../../model/RoomState";
 import { editorStore } from "../../store/store";
 import { type Xy, type Xyz, type XyzBox } from "../../utils/vectors/vectors";
+import { editorLoadedRoom } from "../editorLoadedRoom";
 import {
   type EditorRoomItemId,
-  type EditorRoomState,
   type EditorUnionOfAllItemInPlayTypes,
 } from "../editorTypes";
 import { selectEditorCameraAngle } from "../slice/levelEditorSlice";
@@ -59,7 +59,6 @@ export type UseEditorE2eApiParams = {
   /** the element the room renders into, which mouse positions are relative to */
   renderArea: HTMLElement | null;
   viewport: EditorViewport;
-  getRoomState: () => EditorRoomState;
   pointingAtRef: RefObject<MaybePointingAtSomething | undefined>;
 };
 
@@ -71,7 +70,6 @@ export type UseEditorE2eApiParams = {
 export const useEditorE2eApi = ({
   renderArea,
   viewport,
-  getRoomState,
   pointingAtRef,
 }: UseEditorE2eApiParams): void => {
   useEffect(() => {
@@ -94,7 +92,7 @@ export const useEditorE2eApi = ({
         };
       },
       items() {
-        return roomItemsIterable(getRoomState().items)
+        return roomItemsIterable(editorLoadedRoom.getRoomState().items)
           .map(editorE2eItem)
           .toArray();
       },
@@ -106,5 +104,5 @@ export const useEditorE2eApi = ({
     return () => {
       window._e2e_editor = undefined;
     };
-  }, [renderArea, viewport, getRoomState, pointingAtRef]);
+  }, [renderArea, viewport, pointingAtRef]);
 };
