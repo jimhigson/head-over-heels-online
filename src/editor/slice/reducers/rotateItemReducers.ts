@@ -4,6 +4,7 @@ import { valuesIter } from "../../../utils/entries";
 import { type EditorJsonItemUnion } from "../../editorTypes";
 import { rotateItemInPlace, type RotationSense } from "../../itemRotation";
 import { type LevelEditorState } from "../levelEditorSlice";
+import { clearContextMenuXyInPlace } from "./contextMenuReducers";
 import { mutateSelectedItemsInPlace } from "./mutateSelectedItemsInPlace";
 
 export const rotateItemReducers = {
@@ -17,6 +18,7 @@ export const rotateItemReducers = {
     mutateSelectedItemsInPlace(state, { verb: "Rotate", timestamp }, (item) =>
       rotateItemInPlace(item, sense),
     );
+    clearContextMenuXyInPlace(state);
   },
 
   /**

@@ -1,6 +1,10 @@
 import { type KeyboardEvent } from "preact/compat";
 
-import { type ButtonDefinition } from "../../../../../../editor/toolbar/buttonDefinitions";
+import {
+  type EditorCommandDefinition,
+  type ItemToolCommand,
+} from "../../../../../../editor/commands/EditorCommand";
+import { itemToolCommandDefinitions } from "../../../../../../editor/commands/itemToolCommandDefinitions";
 import { CmdKContents } from "../../../../../../editor/toolbar/CmdKContents";
 import {
   type JsonItemConfig,
@@ -16,8 +20,9 @@ import { summonItemAbovePlayable } from "../../../../cheats/summonItemAbovePlaya
 import { useGameApi } from "../../../../GameApiContext";
 
 // state-dependent entries need the editor, so can't be summoned
-const resolveEntryForSummoning = (buttonDefinition: ButtonDefinition) =>
-  typeof buttonDefinition === "function" ? undefined : buttonDefinition;
+const resolveEntryForSummoning = (
+  commandDefinition: EditorCommandDefinition<ItemToolCommand>,
+) => (typeof commandDefinition === "function" ? undefined : commandDefinition);
 
 /** keep typing out of the game's input; escape goes through to close the dialog */
 const stopKeydownReachingGame = (e: KeyboardEvent<HTMLDivElement>) => {
@@ -40,8 +45,10 @@ export const CheatsCmdKDialog = <RoomId extends string>() => {
         ariaLabel="search for an item to summon above the player"
       >
         <CmdKContents
+          commandDefinitions={itemToolCommandDefinitions}
           resolveEntry={resolveEntryForSummoning}
-          onSelect={(itemTool) => {
+          placeholder="Search items..."
+          onSelect={({ itemTool }) => {
             summonItemAbovePlayable(
               gameApi,
               itemTool.type,

@@ -1,6 +1,7 @@
 import { type PayloadAction, type SliceCaseReducers } from "@reduxjs/toolkit";
 
 import { type LevelEditorState } from "../levelEditorSlice";
+import { clearContextMenuXyInPlace } from "./contextMenuReducers";
 import { mutateSelectedItemsInPlace } from "./mutateSelectedItemsInPlace";
 
 export const disappearingReducers = {
@@ -24,5 +25,6 @@ export const disappearingReducers = {
         }
       },
     );
+    clearContextMenuXyInPlace(state);
   },
 } satisfies SliceCaseReducers<LevelEditorState>;

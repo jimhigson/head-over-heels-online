@@ -44,6 +44,7 @@ import {
   selectEditorCameraAngle,
   selectItem,
   selectOpenRoomTabs,
+  selectPlaytestOptions,
   selectRoom,
   selectTool,
 } from "../slice/levelEditorSlice";
@@ -565,25 +566,34 @@ const editorWebMcpTools: WebMCP.ModelContextTool[] = [
   {
     name: "playtest",
     description:
-      "play the open campaign, unsaved, as the toolbar's play button does: opens (or restarts) the local game in the `playtest` tab, in the current room. Returns the game's url, for opening it yourself if the browser blocks the tab",
+      "play the open campaign, unsaved, as the toolbar's play button does: opens (or restarts) the game in the `playtest` tab, with the editor's playtest options (game, start point, character) unless overridden here. Returns the game's url, for opening it yourself if the browser blocks the tab",
     inputSchema: {
       type: "object",
       properties: {
         fromStart: {
           type: "boolean",
-          description: "start at the campaign's start; default false",
+          description:
+            "start at the campaign's start; default the editor's playtest option",
         },
         playAsHeels: {
           type: "boolean",
-          description: "play as heels; default false (head)",
+          description: "play as heels; default the editor's playtest option",
         },
       },
     },
     async execute({ fromStart, playAsHeels }) {
-      const url = await playtestUrl(editorStore.getState(), {
-        baseUrl: import.meta.env.VITE_GAME_URL,
-        fromStart: fromStart === true,
-        playAsHeels: playAsHeels === true,
+      const state = editorStore.getState();
+      const playtestOptions = selectPlaytestOptions(state);
+      const url = await playtestUrl(state, {
+        ...playtestOptions,
+        fromStart:
+          typeof fromStart === "boolean" ? fromStart : (
+            playtestOptions.fromStart
+          ),
+        playAsHeels:
+          typeof playAsHeels === "boolean" ? playAsHeels : (
+            playtestOptions.playAsHeels
+          ),
       });
       return jsonResult({
         opened: openPlaytest(url) !== undefined,

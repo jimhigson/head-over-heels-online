@@ -17,12 +17,14 @@ import {
   type EditorRoomItemId,
   type EditorRoomJsonItems,
 } from "../editorTypes";
+import { type PlaytestOptions } from "../PlaytestOptions";
 import { type PointingAtOnItem } from "../RoomEditingArea/cursor/PointingAt";
 import { type Tool } from "../RoomEditingArea/interactivity/Tool";
 import { initialLevelEditorSliceState } from "./initialLevelEditorSliceState";
 import { forgetRoomTabViewsInPlace } from "./inPlaceMutators/forgetRoomTabViewsInPlace";
 import { setSelectedJsonItemIdsOnCursorRoomInPlace } from "./inPlaceMutators/setSelectedJsonItemIdsOnCursorRoomInPlace";
 import {
+  selectCampaignHasUnsavedChangesFromLevelEditorState,
   selectCurrentCommittedRoomJsonFromLevelEditorState,
   selectCursorRoomFromLevelEditorState,
   selectCursorRoomIdFromLevelEditorState,
@@ -61,6 +63,7 @@ import { mirrorOrientationReducers } from "./reducers/mirrorOrientationReducers"
 import { monsterMovementReducers } from "./reducers/monsterMovementReducers";
 import { moveItemsToRoomReducers } from "./reducers/moveItemsToRoomReducers";
 import { moveOrResizeItemPreviewReducers } from "./reducers/moveOrResizeItemPreview/moveOrResizeItemPreviewReducers";
+import { playtestOptionsReducers } from "./reducers/playtestOptionsReducers";
 import { roomSelectionReducers } from "./reducers/roomSelectionReducers";
 import {
   roomTabsReducers,
@@ -145,6 +148,8 @@ export type LevelEditorState = {
   doorAutoAddsRoom: boolean;
   /** the room editing pane's size, in css px */
   roomPaneSize: Xy;
+  /** how the playtest button and menu open the game */
+  playtestOptions: PlaytestOptions;
   /** what the pointer is dragging in the room editing pane, if anything */
   dragInProgress: DragInProgress | undefined;
   /**
@@ -246,6 +251,7 @@ export const levelEditorSlice = createSlice({
     ...rotateItemReducers,
     ...campaignManagementReducers,
     ...contextMenuReducers,
+    ...playtestOptionsReducers,
   },
   extraReducers(builder) {
     builder.addCase(clearAllData, () =>
@@ -268,12 +274,15 @@ export const levelEditorSlice = createSlice({
       selectCurrentCommittedRoomJsonFromLevelEditorState(state).planet,
     selectTool: (state) => state.tool,
     selectCmdKSearch: (state) => state.cmdKSearch,
+    selectPlaytestOptions: (state) => state.playtestOptions,
     selectEditorCameraAngle: (state) => state.cameraAngle,
     selectContextMenuXy: (state) => state.contextMenuXy,
     selectCursorRoomSelectedJsonItemIds:
       selectCursorRoomSelectedJsonItemIdsFromLevelEditorState,
     selectHoveredItem: (state) => state.hoveredItem,
     selectItemIsSelected: selectItemIsSelectedInCursorRoomInLevelEditorState,
+    selectCampaignHasUnsavedChanges:
+      selectCampaignHasUnsavedChangesFromLevelEditorState,
     selectRoom: selectRoomFromLevelEditorState,
     selectRoomHasUnsavedChanges:
       selectRoomHasUnsavedChangesFromLevelEditorState,
@@ -334,6 +343,7 @@ export const {
   saveSuccessful,
   selectAllRooms,
   setAutoCoalesce,
+  setPlaytestOptions,
   pinRoomTab,
   setCampaignName,
   setCampaignPublished,
@@ -360,6 +370,7 @@ export const {
 } = levelEditorSlice.actions;
 export const {
   selectBackRooms,
+  selectPlaytestOptions,
   selectCmdKSearch,
   selectContextMenuXy,
   selectCurrentCampaignInProgress,
@@ -379,6 +390,7 @@ export const {
   selectItemIsSelected,
   selectOpenRoomTabs,
   selectRedoHistory,
+  selectCampaignHasUnsavedChanges,
   selectRoom,
   selectRoomHasUnsavedChanges,
   selectRoomPaneSize,

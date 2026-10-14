@@ -29,7 +29,7 @@ export const MapAreaSwitcher = ({
   };
 
   return (
-    <div class="absolute bottom-1 right-1 z-10 flex gap-half text-white">
+    <div class="absolute bottom-1 right-1 z-10 flex text-white">
       <Button
         class="px-1 py-half"
         onClick={() => switchBy(-1)}
@@ -37,7 +37,7 @@ export const MapAreaSwitcher = ({
       >
         <span class="text-single-line">{"<"}</span>
       </Button>
-      <span class="text-single-line self-center">{`${shownAreaIndex + 1}/${areas.length}`}</span>
+      <span class="px-1 bg-shadow items-center flex self-stretch text-single-line pt-oneScaledPix whitespace-pre">{`${shownAreaIndex + 1}/${areas.length}`}</span>
       <Button
         class="px-1 py-half"
         onClick={() => switchBy(1)}

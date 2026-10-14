@@ -4,7 +4,9 @@ import { type EditorRoomId } from "../editorTypes";
 import {
   clearRoom,
   type LevelEditorSliceAction,
+  newCampaign,
   removeRoom,
+  selectCampaignHasUnsavedChanges,
 } from "../slice/levelEditorSlice";
 import { confirm, type ConfirmOptions } from "./confirm";
 
@@ -19,6 +21,26 @@ export const confirmThenDispatch =
     }
   };
 
+/** start a new campaign, first confirming if that would discard unsaved changes */
+export const confirmNewCampaignThunk =
+  (): EditorThunk<Promise<void>> => async (dispatch, getState) => {
+    if (!selectCampaignHasUnsavedChanges(getState())) {
+      dispatch(newCampaign());
+      return;
+    }
+    await dispatch(
+      confirmThenDispatch(
+        {
+          heading: "New campaign",
+          body: "You have unsaved changes. Starting a new campaign will discard them.",
+          cancelText: "Cancel",
+          okText: "Discard and start new",
+        },
+        newCampaign(),
+      ),
+    );
+  };
+
 export const confirmDeleteRoomThunk =
   (
     /** the room to delete; defaults to the room the editor is currently on */
@@ -30,7 +52,7 @@ export const confirmDeleteRoomThunk =
       await confirm({
         heading: "Delete room?",
         body: (
-          <BlockyMarkdown>{`**This can't be undone!**
+          <BlockyMarkdown>{`**This can’t be undone!**
 
 * ${targetRoomId}`}</BlockyMarkdown>
         ),

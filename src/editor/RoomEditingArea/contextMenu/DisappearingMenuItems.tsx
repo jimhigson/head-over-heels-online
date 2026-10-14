@@ -1,6 +1,5 @@
-import { useAppDispatch } from "../../../store/hooks";
 import { useEditorAppSelector } from "../../../store/store";
-import { ContextMenuItem } from "../../../ui/command/ContextMenuItem";
+import { CommandContextMenuItem } from "../../commands/CommandContextMenuItem";
 import {
   selectCurrentCommittedRoomJson,
   selectCursorRoomSelectedJsonItemIds,
@@ -14,7 +13,6 @@ import {
  * menus, which list the state(s) the selection isn't uniformly already in.
  */
 export const DisappearingMenuItems = () => {
-  const dispatch = useAppDispatch();
   const selectedJsonItemIds = useEditorAppSelector(
     selectCursorRoomSelectedJsonItemIds,
   );
@@ -42,34 +40,30 @@ export const DisappearingMenuItems = () => {
   return (
     <>
       {!allDisappear && (
-        <ContextMenuItem
-          value="add-disappearing"
-          onSelect={() =>
-            dispatch(
+        <CommandContextMenuItem
+          command={{
+            type: "action",
+            label: "Disappear on stand",
+            action: () =>
               setSelectedItemsDisappearing({
                 disappearing: true,
                 timestamp: Date.now(),
               }),
-            )
-          }
-        >
-          Disappear on stand
-        </ContextMenuItem>
+          }}
+        />
       )}
       {!noneDisappear && (
-        <ContextMenuItem
-          value="remove-disappearing"
-          onSelect={() =>
-            dispatch(
+        <CommandContextMenuItem
+          command={{
+            type: "action",
+            label: "Don't disappear",
+            action: () =>
               setSelectedItemsDisappearing({
                 disappearing: false,
                 timestamp: Date.now(),
               }),
-            )
-          }
-        >
-          Don't disappear
-        </ContextMenuItem>
+          }}
+        />
       )}
     </>
   );

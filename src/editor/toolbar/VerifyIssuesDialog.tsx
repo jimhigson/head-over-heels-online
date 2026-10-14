@@ -1,0 +1,238 @@
+import { useCallback, useState } from "preact/hooks";
+
+import { BlockyMarkdown } from "../../game/components/BlockyMarkdown";
+import { type JsonItemType } from "../../model/json/JsonItem";
+import { type CampaignVerificationIssue } from "../../model/json/verification/CampaignVerification";
+import {
+  type VerificationCampaign,
+  type VerificationRoomJson,
+} from "../../model/json/verification/verificationTypes";
+import { roomJsonItemsIterable } from "../../model/RoomJsonItemIterators";
+import { editorStore, store, useEditorAppSelector } from "../../store/store";
+import { Border } from "../../ui/Border";
+import { Button } from "../../ui/Button";
+import { Dialog } from "../../ui/Dialog";
+import { DialogHeader } from "../../ui/DialogHeader";
+import { DialogPortal } from "../../ui/DialogPortal";
+import { useKeyboardShortcut } from "../../ui/useKeyboardShortcut";
+import { entries } from "../../utils/entries";
+import {
+  type EditorCampaign,
+  type EditorRoomId,
+  type EditorRoomItemId,
+} from "../editorTypes";
+import { RoomPreview } from "../roomPreview/RoomPreview";
+import {
+  campaignJsonAutoFixed,
+  changeToRoom,
+  selectCurrentCampaignInProgress,
+  setSelectedItemsInRoom,
+} from "../slice/levelEditorSlice";
+import { useVerifyCampaign } from "../verify/useVerifyCampaign";
+import { confirmDeleteRoomThunk } from "./confirmThunk";
+
+/** heading for issues that aren't tied to one room (eg a missing player start) */
+const wholeCampaignHeading = "";
+
+/** item types that are just room structure, not gameplay content */
+const structuralItemTypes = new Set<JsonItemType>(["wall", "floor", "door"]);
+
+/**
+ * a room with nothing but walls, floors and doors carries no gameplay content,
+ * so it is most likely a shell left over by mistake and safe to offer to delete
+ */
+const isEmptyLeftoverRoom = (room: VerificationRoomJson): boolean =>
+  roomJsonItemsIterable(room).every((item) =>
+    structuralItemTypes.has(item.type),
+  );
+
+export type VerifyIssuesDialogProps = {
+  onClose: () => void;
+};
+
+/**
+ * the open campaign's verification issues, each with what can be done about
+ * it - fixing, going to it, or deleting an empty leftover room. The list
+ * follows the campaign, so it shrinks as issues are fixed
+ */
+export const VerifyIssuesDialog = ({ onClose }: VerifyIssuesDialogProps) => {
+  const issues = useVerifyCampaign();
+  // the element is state, not a ref, so the shortcut is added once it exists:
+  const [dialogEl, setDialogEl] = useState<HTMLDialogElement | null>(null);
+  const dialogRef = useCallback((el: HTMLDialogElement | null) => {
+    setDialogEl(el);
+    // keys only reach the dialog's shortcuts while focus is inside it:
+    el?.focus();
+  }, []);
+
+  useKeyboardShortcut(
+    ["Escape", "Enter", "NumpadEnter"],
+    false,
+    onClose,
+    dialogEl,
+  );
+
+  // the verifiers run on plain-string ids; cast across the brand boundary here
+  const openCampaign = (): VerificationCampaign =>
+    selectCurrentCampaignInProgress(
+      editorStore.getState(),
+    ) as VerificationCampaign;
+  const loadFixedCampaign = (campaign: VerificationCampaign) =>
+    store.dispatch(
+      campaignJsonAutoFixed({ campaign: campaign as EditorCampaign }),
+    );
+
+  const applyFix = (issue: CampaignVerificationIssue<unknown>) => {
+    loadFixedCampaign(issue.verifier.fix(openCampaign(), issue.issueData));
+  };
+
+  const fixAll = () => {
+    const fixed = issues.reduce(
+      (campaign, issue) =>
+        issue.fixable ?
+          issue.verifier.fix(campaign, issue.issueData)
+        : campaign,
+      openCampaign(),
+    );
+    loadFixedCampaign(fixed);
+  };
+
+  const goToRoom = (roomId: string, itemId: string | undefined) => {
+    store.dispatch(changeToRoom(roomId as EditorRoomId));
+    if (itemId !== undefined) {
+      // select the item to update - safe because it lives in the room we just
+      // navigated to
+      store.dispatch(
+        setSelectedItemsInRoom({ jsonItemIds: [itemId as EditorRoomItemId] }),
+      );
+    }
+    onClose();
+  };
+
+  // confirm then delete a specific room - reuses the toolbar's delete-room flow
+  const deleteRoom = (roomId: string) =>
+    store.dispatch(confirmDeleteRoomThunk(roomId as EditorRoomId));
+
+  // the open campaign, used to spot empty leftover rooms; reactive so the list
+  // updates as rooms are fixed or deleted
+  const campaign = useEditorAppSelector(
+    selectCurrentCampaignInProgress,
+  ) as VerificationCampaign;
+
+  const fixableIssueCount = issues.filter((issue) => issue.fixable).length;
+
+  const issuesByRoom = Object.groupBy(
+    issues,
+    (issue) => issue.roomId ?? wholeCampaignHeading,
+  );
+
+  return (
+    <DialogPortal>
+      <Border class="scale-editor" scrim onClick={onClose} />
+      {/* stop window-level shortcuts catching our keypresses that match their shortcuts */}
+      <div class="contents no-keyboard-shortcuts">
+        <Dialog ref={dialogRef} wide tall class="scale-editor p-1 allow-select">
+          <DialogHeader>{issues.length} Issues</DialogHeader>
+          <div class="flex flex-col pt-1 flex-grow text-multi-line overflow-y-auto scrollbar scrollbar-w1 scrollbar-thumb-lightGrey pr-1 gap-2">
+            {entries(issuesByRoom)
+              .sort(([a], [b]) =>
+                a === wholeCampaignHeading ? -1
+                : b === wholeCampaignHeading ? 1
+                : 0,
+              )
+              .map(([roomHeading, roomIssues]) => {
+                const roomId = roomIssues?.[0]?.roomId;
+                const room =
+                  roomId !== undefined ? campaign.rooms[roomId] : undefined;
+                const emptyLeftover =
+                  room !== undefined && isEmptyLeftoverRoom(room);
+                return (
+                  <div key={roomHeading} class="flex flex-col gap-1">
+                    {roomHeading && (
+                      <span class="text-metallicBlue text-double-height">
+                        {roomHeading}
+                      </span>
+                    )}
+                    {roomId !== undefined && (
+                      <RoomPreview roomId={roomId as EditorRoomId} />
+                    )}
+                    {emptyLeftover && roomId !== undefined && (
+                      <div class="flex flex-col gap-half">
+                        <div class="text-midGrey">
+                          This room has only walls, floors and doors — it may be
+                          an empty room left over by mistake.
+                        </div>
+                        <div class="flex justify-end">
+                          <Button
+                            onClick={() => deleteRoom(roomId)}
+                            class="bg-midRed px-1 py-half text-white h-3"
+                          >
+                            Delete room
+                          </Button>
+                        </div>
+                      </div>
+                    )}
+                    {roomIssues?.map((issue, i) => {
+                      const { roomId, itemId } = issue;
+                      return (
+                        <div key={i} class="flex flex-col gap-half">
+                          <div
+                            class={
+                              issue.severity === "error" ?
+                                "text-midRed"
+                              : "text-shadow"
+                            }
+                          >
+                            {issue.verifier.name}
+                          </div>
+                          <BlockyMarkdown class="text-midGrey">
+                            {issue.msg}
+                          </BlockyMarkdown>
+                          <div class="flex gap-1">
+                            <div class="text-lightGrey">{issue.fixText}</div>
+                            <div class="flex-grow" />
+                            {issue.fixable && (
+                              <Button
+                                onClick={() => applyFix(issue)}
+                                class="bg-moss px-1 py-half text-white h-3"
+                              >
+                                Fix
+                              </Button>
+                            )}
+                            {roomId !== undefined && (
+                              <Button
+                                class="bg-pastelBlue px-1 py-half text-white shrink-0 hover:bg-highlightBeige h-3"
+                                onClick={() => goToRoom(roomId, itemId)}
+                              >
+                                ➡ Go to
+                              </Button>
+                            )}
+                          </div>
+                        </div>
+                      );
+                    })}
+                  </div>
+                );
+              })}
+          </div>
+          <div class="flex justify-end mt-1 text-single-line gap-1">
+            {fixableIssueCount > 0 && (
+              <Button
+                onClick={fixAll}
+                class="px-1 py-half self-stretch bg-moss h-3 text-white"
+              >
+                {`Fix ${fixableIssueCount} auto-fixable issues`}
+              </Button>
+            )}
+            <Button
+              onClick={onClose}
+              class="px-1 py-half self-stretch bg-midRed h-3 text-white"
+            >
+              x Exit
+            </Button>
+          </div>
+        </Dialog>
+      </div>
+    </DialogPortal>
+  );
+};

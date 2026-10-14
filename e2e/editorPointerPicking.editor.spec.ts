@@ -68,7 +68,7 @@ test.describe("pointing at the room", () => {
       y: blockSizePx.y,
       z: 0,
     });
-    await selectTool(page, "Pointer / select tool");
+    await selectTool(page, "Pointer tool");
 
     for (const awayAppearsAs of awayAppearsAsDirections) {
       await rotateEditorViewTo(page, awayAppearsAs);

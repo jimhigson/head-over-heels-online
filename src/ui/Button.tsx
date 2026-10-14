@@ -12,7 +12,7 @@ import {
   formatShortcutKeysAsMarkdown,
 } from "./enhanceTooltipWithHotkeys";
 import { useTip } from "./tip/useTip";
-import { type ShortcutKeys, useKeyboardShortcut } from "./useKeyboardShortcut";
+import { type ShortcutKeys } from "./useKeyboardShortcut";
 
 export type ButtonProps = Simplify<
   Pick<
@@ -31,6 +31,7 @@ export type ButtonProps = Simplify<
       disabled?: boolean;
       selected?: boolean;
       tooltipContent?: ComponentChildren;
+      /** shown in the tooltip - pressing them is listened for elsewhere */
       shortcutKeys?: ShortcutKeys;
       ref?: Ref<HTMLButtonElement>;
       /** make the event optional, in case the button wasn't triggered by clicking */
@@ -49,8 +50,6 @@ export const Button = ({
   children,
   ...props
 }: ButtonProps) => {
-  useKeyboardShortcut(shortcutKeys, disabled, onClick);
-
   const finalTooltipContent =
     typeof tooltipContent === "string" ?
       enhanceTooltipWithHotkeys(tooltipContent, shortcutKeys)

@@ -1,23 +1,16 @@
 import { campaignToDataParam } from "../db/campaignToDataParam";
 import { type TypedURLSearchParams } from "../options/queryParams";
 import { type EditorRootState } from "../store/store";
-import { selectCursorRoomIdFromLevelEditorState } from "./slice/levelEditorSelectors";
-import { selectCurrentCampaignInProgress } from "./slice/levelEditorSlice";
+import { type PlaytestOptions } from "./PlaytestOptions";
+import {
+  selectCurrentCampaignInProgress,
+  selectCursorRoomId,
+} from "./slice/levelEditorSlice";
 
 /** the game url that plays the editor's open campaign, unsaved */
 export const playtestUrl = async (
   state: EditorRootState,
-  {
-    baseUrl,
-    fromStart,
-    playAsHeels,
-  }: {
-    /** the game to open the campaign in */
-    baseUrl: string;
-    /** start at the campaign's start, not the editor's current room */
-    fromStart: boolean;
-    playAsHeels: boolean;
-  },
+  { baseUrl, fromStart, playAsHeels }: PlaytestOptions,
 ): Promise<string> => {
   const url = new URL(baseUrl, window.location.href);
   const searchParams = url.searchParams as TypedURLSearchParams;
@@ -30,7 +23,7 @@ export const playtestUrl = async (
     searchParams.set("playAsHeels", "1");
   }
   if (!fromStart) {
-    url.hash = selectCursorRoomIdFromLevelEditorState(state.levelEditor);
+    url.hash = selectCursorRoomId(state);
   }
   return url.toString();
 };

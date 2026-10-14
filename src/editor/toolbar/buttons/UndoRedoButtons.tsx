@@ -1,5 +1,7 @@
 import { useAppDispatch } from "../../../store/hooks";
 import { useEditorAppSelector } from "../../../store/store";
+import { actionCommandDefinitions } from "../../commands/actionCommandDefinitions";
+import { CommandToolbarButton } from "../../commands/CommandToolbarButton";
 import {
   redo,
   selectCurrentEditingRoomScenery,
@@ -9,8 +11,6 @@ import {
   undoHovered,
 } from "../../slice/levelEditorSlice";
 import { MenuButton, MenuItemButton } from "./MenuButton";
-import { ToolbarButton } from "./ToolbarButton";
-import { IconWithTwoLineHoverText } from "./ToolbarButtonContentPatterns";
 import {
   UndoEntryLabel,
   undoHistoryGridClassName,
@@ -34,12 +34,8 @@ export const UndoRedoButtons = () => {
       <MenuButton
         contentsClassName={undoHistoryGridClassName}
         main={
-          <ToolbarButton
-            ariaLabel="Undo"
-            disabled={nextUndo === undefined}
-            onClick={() => {
-              dispatch(undo());
-            }}
+          <CommandToolbarButton
+            command={actionCommandDefinitions.undo}
             tooltipContent={
               nextUndo ?
                 <div class="flex flex-col gap-1">
@@ -50,14 +46,7 @@ export const UndoRedoButtons = () => {
                 </div>
               : undefined
             }
-            shortcutKeys={["⌘Z", "^Z"]}
-          >
-            <IconWithTwoLineHoverText
-              icon={<span class="text-single-line">⎌</span>}
-              topText="un"
-              bottomText="do"
-            />
-          </ToolbarButton>
+          />
         }
       >
         {undoHistory
@@ -80,12 +69,8 @@ export const UndoRedoButtons = () => {
       <MenuButton
         contentsClassName={undoHistoryGridClassName}
         main={
-          <ToolbarButton
-            ariaLabel="Redo"
-            disabled={nextRedo === undefined}
-            onClick={() => {
-              dispatch(redo());
-            }}
+          <CommandToolbarButton
+            command={actionCommandDefinitions.redo}
             tooltipContent={
               nextRedo ?
                 <div class="flex flex-col gap-1">
@@ -96,14 +81,7 @@ export const UndoRedoButtons = () => {
                 </div>
               : undefined
             }
-            shortcutKeys={["⌘⇧Z", "^⇧Z"]}
-          >
-            <IconWithTwoLineHoverText
-              icon={<span class="text-single-line">⟳</span>}
-              topText="re"
-              bottomText="do"
-            />
-          </ToolbarButton>
+          />
         }
       >
         {redoHistory

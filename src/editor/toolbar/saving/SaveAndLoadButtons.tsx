@@ -1,46 +1,28 @@
-import { type TextureTailwindClass } from "../../../sprites/spritesheet/spritesheetData/TextureTailwindClass";
-import { useAppDispatch } from "../../../store/hooks";
 import { useEditorAppSelector } from "../../../store/store";
-import { cn } from "../../../ui/cn";
 import { emptyArray } from "../../../utils/empty";
+import { actionCommandDefinitions } from "../../commands/actionCommandDefinitions";
+import { CommandMenuItem } from "../../commands/CommandMenuItem";
+import { CommandToolbarButton } from "../../commands/CommandToolbarButton";
 import { campaignIsNamed } from "../../editorTypes";
-import {
-  openCampaignDialogShown,
-  saveAsDialogShown,
-  selectJustSaved,
-} from "../../slice/editorSaveSlice";
+import { selectJustSaved } from "../../slice/editorSaveSlice";
 import {
   selectCurrentCampaignInProgress,
   selectCurrentCampaignVersion,
 } from "../../slice/levelEditorSlice";
-import { revertPressed, savePressed } from "../../slice/saveAndLoadThunks";
-import { MenuButton, MenuItemButton } from "../buttons/MenuButton";
+import { MenuButton } from "../buttons/MenuButton";
+import { MenuButtonMenu } from "../buttons/MenuButtonMenu";
 import { ToolbarButton } from "../buttons/ToolbarButton";
 import { useSupabaseUser } from "../useSupabaseUser";
-import { useRemoteIsInSync } from "./useRemoteIsInSync";
-
-const saveTooltipMarkdown = `
-## Save
-
-Put your campaign on cassette tape, or even floppy disk! - to be shared or worked on later
-
-(really, saves to a cloud database)
-`;
-const loadTooltipMarkdown = `
-## Open
-
-Load your saved campaign, or anyone else's for editing
-`;
+import { useCampaignHasUnsavedChanges } from "./useCampaignHasUnsavedChanges";
 
 export const SaveAndLoadButtons = () => {
   const user = useSupabaseUser();
-  const savedIsInSync = useRemoteIsInSync();
+  const campaignHasUnsavedChanges = useCampaignHasUnsavedChanges();
   const justSaved = useEditorAppSelector(selectJustSaved);
   const haveNamedCampaign: boolean = useEditorAppSelector((state) =>
     campaignIsNamed(selectCurrentCampaignInProgress(state)),
   );
   const savedVersion = useEditorAppSelector(selectCurrentCampaignVersion);
-  const dispatch = useAppDispatch();
 
   return (
     <>
@@ -56,41 +38,18 @@ export const SaveAndLoadButtons = () => {
         </ToolbarButton>
       : <MenuButton
           main={
-            <ToolbarButton
-              ariaLabel="Save campaign"
-              disabled={user === null || savedIsInSync}
-              onClick={() => dispatch(savePressed())}
-              shortcutKeys={["^S", "⌘S"]}
-              tooltipContent={saveTooltipMarkdown}
-            >
-              <div class="flex flex-row items-center">
-                <span
-                  class={cn("text-single-line text-highlightBeige", {
-                    "text-lightGrey": user === null,
-                  })}
-                >
-                  ➡
-                </span>
-                <span
-                  class={cn(
-                    `sprite ${"texture-editor_tool_save" satisfies TextureTailwindClass} relative`,
-                    {
-                      "sprite-revert-to-two-tone-dim": user === null,
-                    },
-                  )}
-                />
-              </div>
-            </ToolbarButton>
+            <CommandToolbarButton
+              command={actionCommandDefinitions.saveCampaign}
+            />
           }
         >
           {user ?
             [
-              <MenuItemButton
-                key="save"
-                onClick={() => dispatch(saveAsDialogShown())}
-              >
-                Save as...
-              </MenuItemButton>,
+              <MenuButtonMenu key="saveAs">
+                <CommandMenuItem
+                  command={actionCommandDefinitions.saveCampaignAs}
+                />
+              </MenuButtonMenu>,
             ]
           : emptyArray}
         </MenuButton>
@@ -98,31 +57,18 @@ export const SaveAndLoadButtons = () => {
 
       <MenuButton
         main={
-          <ToolbarButton
-            ariaLabel="Open campaign"
-            onClick={() => dispatch(openCampaignDialogShown())}
-            tooltipContent={loadTooltipMarkdown}
-            shortcutKeys={["^O", "⌘O"]}
-          >
-            <div class="flex flex-row items-center">
-              <span
-                class={cn(
-                  `sprite ${"texture-editor_tool_open" satisfies TextureTailwindClass} relative`,
-                )}
-              />
-              <span class="text-single-line text-highlightBeige">➡</span>
-            </div>
-          </ToolbarButton>
+          <CommandToolbarButton
+            command={actionCommandDefinitions.openCampaign}
+          />
         }
       >
-        {haveNamedCampaign && !savedIsInSync ?
+        {haveNamedCampaign && campaignHasUnsavedChanges ?
           [
-            <MenuItemButton
-              key="revert"
-              onClick={() => dispatch(revertPressed())}
-            >
-              Revert
-            </MenuItemButton>,
+            <MenuButtonMenu key="revert">
+              <CommandMenuItem
+                command={actionCommandDefinitions.revertCampaign}
+              />
+            </MenuButtonMenu>,
           ]
         : emptyArray}
       </MenuButton>

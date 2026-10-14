@@ -1,7 +1,6 @@
-import { useAppDispatch } from "../../../store/hooks";
 import { useEditorAppSelector } from "../../../store/store";
-import { ContextMenuItem } from "../../../ui/command/ContextMenuItem";
 import { keys } from "../../../utils/entries";
+import { CommandContextMenuItem } from "../../commands/CommandContextMenuItem";
 import { chooseRoom } from "../../editorDialogs/chooseRoom";
 import {
   closeItemContextMenu,
@@ -13,7 +12,6 @@ import {
 
 /** choose where the selected teleporters lead. Hidden unless all are teleporters */
 export const TeleporterDestinationMenuItem = () => {
-  const dispatch = useAppDispatch();
   const selectedJsonItemIds = useEditorAppSelector(
     selectCursorRoomSelectedJsonItemIds,
   );
@@ -40,31 +38,32 @@ export const TeleporterDestinationMenuItem = () => {
   );
 
   return (
-    <ContextMenuItem
-      value="Destination room"
-      onSelect={async () => {
-        dispatch(closeItemContextMenu());
-        const toRoom = await chooseRoom({
-          heading: "Teleport to",
-          campaign,
-          initialRoomId,
-          mapRoomId: roomJson.id,
-          chooseText: (roomId) =>
-            roomId === undefined ? "Set destination" : (
-              `Set destination to ${roomId}`
-            ),
-        });
-        if (toRoom !== undefined) {
-          dispatch(
-            setSelectedTeleportersDestination({
-              toRoom,
-              timestamp: Date.now(),
-            }),
-          );
-        }
+    <CommandContextMenuItem
+      command={{
+        type: "action",
+        label: "Destination room…",
+        action: () => async (dispatch) => {
+          dispatch(closeItemContextMenu());
+          const toRoom = await chooseRoom({
+            heading: "Teleport to",
+            campaign,
+            initialRoomId,
+            mapRoomId: roomJson.id,
+            chooseText: (roomId) =>
+              roomId === undefined ? "Set destination" : (
+                `Set destination to ${roomId}`
+              ),
+          });
+          if (toRoom !== undefined) {
+            dispatch(
+              setSelectedTeleportersDestination({
+                toRoom,
+                timestamp: Date.now(),
+              }),
+            );
+          }
+        },
       }}
-    >
-      Destination room…
-    </ContextMenuItem>
+    />
   );
 };

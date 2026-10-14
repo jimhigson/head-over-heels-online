@@ -1,11 +1,11 @@
 import { useEditorAppSelector } from "../../../store/store";
-import { buttonDefinitions } from "../buttonDefinitions";
-import { ItemToolButton } from "../ItemToolButton";
+import { CommandToolbarButton } from "../../commands/CommandToolbarButton";
+import { itemToolCommandDefinitions } from "../../commands/itemToolCommandDefinitions";
 
 export const WallToolButton = () => {
-  const wallProps = useEditorAppSelector((state) =>
-    buttonDefinitions.wall(state.levelEditor),
+  const wallCommand = useEditorAppSelector((state) =>
+    itemToolCommandDefinitions.wall(state),
   );
 
-  return <ItemToolButton {...wallProps} />;
+  return <CommandToolbarButton command={wallCommand} />;
 };

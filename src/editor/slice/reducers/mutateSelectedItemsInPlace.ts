@@ -4,14 +4,13 @@ import {
   selectCursorRoomSelectedJsonItemIdsFromLevelEditorState,
 } from "../levelEditorSelectors";
 import { type LevelEditorState } from "../levelEditorSlice";
-import { clearContextMenuXyInPlace } from "./contextMenuReducers";
 import { type UndoItemEntry } from "./undoDescription";
 import { pushUndoToCursorRoomInPlace } from "./undoReducers";
 
 /**
  * Apply an in-place change to every selected item: snapshots the selected items
- * for undo (labelled `verb`), runs `mutate` on each, then closes the context
- * menu. The shared body of the per-config-property reducers.
+ * for undo (labelled `verb`), then runs `mutate` on each. The shared body of
+ * the per-config-property reducers.
  */
 export const mutateSelectedItemsInPlace = (
   state: LevelEditorState,
@@ -39,6 +38,4 @@ export const mutateSelectedItemsInPlace = (
       mutate(item);
     }
   }
-
-  clearContextMenuXyInPlace(state);
 };

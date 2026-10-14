@@ -10,7 +10,9 @@ import { useKeyboardShortcut } from "../../ui/useKeyboardShortcut";
 export type ConfirmDialogProps = {
   heading: string;
   body: ComponentChildren | string;
-  cancelText: string;
+  /** with none, the dialog only tells the user something, with one button */
+  cancelText?: string;
+  /** also called on escape */
   onCancel: () => void;
   okText: string;
   onOk: () => void;
@@ -48,18 +50,21 @@ export const ConfirmDialog = ({
             : body}
           </div>
           <div class="flex gap-1 justify-end text-white items-center mt-1">
-            <Button
-              aria-label={cancelText}
-              onClick={onCancel}
-              class="px-1 py-half self-stretch"
-              autoFocus
-            >
-              <span class="text-single-line">{cancelText}</span>
-            </Button>
+            {cancelText !== undefined && (
+              <Button
+                aria-label={cancelText}
+                onClick={onCancel}
+                class="px-1 py-half self-stretch"
+                autoFocus
+              >
+                <span class="text-single-line">{cancelText}</span>
+              </Button>
+            )}
             <Button
               aria-label={okText}
               onClick={onOk}
               class="bg-midRed px-1 py-half"
+              autoFocus={cancelText === undefined}
             >
               <span class="text-single-line">{okText}</span>
             </Button>

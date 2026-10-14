@@ -1,6 +1,7 @@
 import { useAppDispatch } from "../../../store/hooks";
 import { useEditorAppSelector } from "../../../store/store";
-import { ContextMenuItem } from "../../../ui/command/ContextMenuItem";
+import { cn } from "../../../ui/cn";
+import { MenuItem } from "../../../ui/menuBar/MenuItem";
 import { type DirectionXy8 } from "../../../utils/vectors/vectors";
 import { directionForItem } from "../../itemDirection";
 import {
@@ -26,9 +27,9 @@ const directionLabel = (direction: DirectionXy8): string =>
   `${direction.replace(/([a-z])([A-Z])/g, "$1 $2").toLowerCase()} ${directionArrow[direction]}`;
 
 /**
- * Direction options for the selection. Offers the directions valid for every
- * selected item (4-way, or 8-way when all are sceneryPlayers), excluding the
- * one they are all already facing. Works for any item with an editable facing -
+ * Direction arrows for the selection, one per direction valid for every
+ * selected item (4-way, or 8-way when all are sceneryPlayers), the current one
+ * highlighted. Choosing an arrow sets it, leaving the menu open. Works for any item with an editable facing -
  * a monster's start direction or a lamp's beam direction (see directionForItem)
  * - and is hidden unless every selected item has one.
  */
@@ -64,30 +65,45 @@ export const StartDirectionMenuItems = () => {
     acc.filter((direction) => supported.includes(direction)),
   );
 
-  // don't offer the direction they are all already facing:
-  const uniformCurrent = currents.size === 1 ? [...currents][0] : undefined;
-  const options = intersection.filter(
-    (direction) => direction !== uniformCurrent,
-  );
+  if (intersection.length < 2) {
+    return null;
+  }
 
   return (
-    <>
-      {options.map((direction) => (
-        <ContextMenuItem
-          key={direction}
-          value={direction}
-          onSelect={() =>
-            dispatch(
-              setSelectedItemsStartDirection({
-                startDirection: direction,
-                timestamp: Date.now(),
-              }),
-            )
-          }
-        >
-          {directionLabel(direction)}
-        </ContextMenuItem>
-      ))}
-    </>
+    <MenuItem
+      label="Direction"
+      keepsMenuOpen
+      // choosing is by the arrows:
+      onSelect={() => {}}
+      control={
+        <span class="flex">
+          {intersection.map((direction) => (
+            <button
+              key={direction}
+              type="button"
+              aria-label={directionLabel(direction)}
+              aria-pressed={currents.has(direction)}
+              class={cn(
+                "px-half text-single-line",
+                // a mixed selection highlights every direction it has:
+                currents.has(direction) ?
+                  "bg-pastelBlue text-pureBlack"
+                : "hover:text-white",
+              )}
+              onClick={() =>
+                dispatch(
+                  setSelectedItemsStartDirection({
+                    startDirection: direction,
+                    timestamp: Date.now(),
+                  }),
+                )
+              }
+            >
+              {directionArrow[direction]}
+            </button>
+          ))}
+        </span>
+      }
+    />
   );
 };

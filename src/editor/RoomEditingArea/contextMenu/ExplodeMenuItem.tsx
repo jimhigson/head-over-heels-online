@@ -1,7 +1,6 @@
 import { getJsonItemTimes } from "../../../model/times";
-import { useAppDispatch } from "../../../store/hooks";
 import { useEditorAppSelector } from "../../../store/store";
-import { ContextMenuItem } from "../../../ui/command/ContextMenuItem";
+import { CommandContextMenuItem } from "../../commands/CommandContextMenuItem";
 import {
   explodeSelectedItems,
   selectCurrentCommittedRoomJson,
@@ -13,7 +12,6 @@ import {
  * only when every selected item is a multiplied item (times > 1 on some axis).
  */
 export const ExplodeMenuItem = () => {
-  const dispatch = useAppDispatch();
   const selectedJsonItemIds = useEditorAppSelector(
     selectCursorRoomSelectedJsonItemIds,
   );
@@ -35,11 +33,12 @@ export const ExplodeMenuItem = () => {
   }
 
   return (
-    <ContextMenuItem
-      value="explode"
-      onSelect={() => dispatch(explodeSelectedItems({ timestamp: Date.now() }))}
-    >
-      Explode
-    </ContextMenuItem>
+    <CommandContextMenuItem
+      command={{
+        type: "action",
+        label: "Explode",
+        action: () => explodeSelectedItems({ timestamp: Date.now() }),
+      }}
+    />
   );
 };

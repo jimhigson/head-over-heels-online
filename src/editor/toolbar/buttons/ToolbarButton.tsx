@@ -13,6 +13,7 @@ export type ToolbarButtonProps = {
   class?: string;
   isCurrentTool?: boolean;
   disabled?: boolean;
+  /** shown in the tooltip - pressing them is listened for elsewhere */
   shortcutKeys?: ShortcutKeys;
   small?: boolean;
   tooltipContent?: ComponentChildren;

@@ -29,7 +29,7 @@ export const PixiApplicationProvider = ({
 
     appThisEffect
       .init({
-        // transparent so the pane's checkerboard shows through as the void
+        // transparent so the pane's background shows through as the void
         // around the room:
         backgroundAlpha: 0,
         // render at device pixels for crispness; the canvas is styled to fill

@@ -7,23 +7,19 @@ import {
   ToolbarSectionContents,
   ToolbarSectionHeader,
 } from "../../ui/Toolbar";
-import { selectCursorRoomIdFromLevelEditorState } from "../slice/levelEditorSelectors";
-import { changeToRoom } from "../slice/levelEditorSlice";
-import { buttonDefinitions } from "./buttonDefinitions";
+import { actionCommandDefinitions } from "../commands/actionCommandDefinitions";
+import { CommandToolbarButton } from "../commands/CommandToolbarButton";
+import { itemToolCommandDefinitions } from "../commands/itemToolCommandDefinitions";
+import { changeToRoom, selectCursorRoomId } from "../slice/levelEditorSlice";
 import { AddAndDeleteRoomButtons } from "./buttons/AddAndDeleteRoomButtons";
 import { AutoCoalesceSwitch } from "./buttons/AutoCoalesceSwitch";
 import { BackAndForwardRoomButtons } from "./buttons/BackAndForwardRoomButtons";
-import { ClearRoomButton } from "./buttons/ClearRoomButton";
 import { CopyPasteButtons } from "./buttons/CopyPasteButtons";
-import { DeleteItemToolButton } from "./buttons/DeleteItemToolButton";
 import { DoorToolButton } from "./buttons/DoorToolButton";
-import { EyeDropperButton } from "./buttons/EyeDropperButton";
 import { HalfGridResolutionSwitch } from "./buttons/HalfGridResolutionSwitch";
 import { LoggedInStatus } from "./buttons/LoggedInStatus";
-import { NewCampaignButton } from "./buttons/NewCampaignButton";
 import { NudgeButtons } from "./buttons/NudgeButtons";
 import { PlayTestButton } from "./buttons/PlayTestButton";
-import { PointerToolButton } from "./buttons/PointerToolButton";
 import { RoomColourSelect } from "./buttons/RoomColourSelect";
 import {
   RoomAboveSelectOrCreate,
@@ -31,14 +27,12 @@ import {
 } from "./buttons/RoomsAboveOrBelow";
 import { RoomScenerySelect } from "./buttons/RoomScenerySelect";
 import { ShareCampaignButton } from "./buttons/ShareCampaignButton";
-import { ShowCmdKButton } from "./buttons/ShowCmdKButton";
 import { UndoRedoButtons } from "./buttons/UndoRedoButtons";
 import { VerifyCampaignButton } from "./buttons/VerifyCampaignButton";
 import { WallsFloorsLockedSwitch } from "./buttons/WallsFloorsLockedSwitch";
 import { WallToolButton } from "./buttons/WallToolButton";
 import { CurrentCampaignInfo } from "./CurrentCampaignInfo";
 import { EditorShowBoundingBoxSelect } from "./EditorShowBoundingBoxSelect";
-import { ItemToolButton } from "./ItemToolButton";
 import { MultipleToolButtons } from "./MultipleToolButtons";
 import { SaveAndLoadButtons } from "./saving/SaveAndLoadButtons";
 
@@ -49,9 +43,7 @@ export const LevelEditorToolbar = () => {
   const campaign = useEditorAppSelector(
     (state) => state.levelEditor.campaignInProgress,
   );
-  const currentlyEditingRoomId = useEditorAppSelector((state) =>
-    selectCursorRoomIdFromLevelEditorState(state.levelEditor),
-  );
+  const currentlyEditingRoomId = useEditorAppSelector(selectCursorRoomId);
   const dispatch = useAppDispatch();
 
   return (
@@ -73,7 +65,9 @@ export const LevelEditorToolbar = () => {
           <VerticalGap />
           <VerifyCampaignButton />
           <VerticalGap />
-          <NewCampaignButton />
+          <CommandToolbarButton
+            command={actionCommandDefinitions.newCampaign}
+          />
           <HorizontalGap />
           <SaveAndLoadButtons />
           <HorizontalGap />
@@ -88,7 +82,7 @@ export const LevelEditorToolbar = () => {
           <HorizontalGap />
           <AddAndDeleteRoomButtons />
           <HorizontalGap />
-          <ClearRoomButton />
+          <CommandToolbarButton command={actionCommandDefinitions.clearRoom} />
           <RoomSelect
             value={currentlyEditingRoomId}
             campaign={campaign}
@@ -109,15 +103,21 @@ export const LevelEditorToolbar = () => {
       <ToolbarSection>
         <ToolbarSectionHeader>Edit</ToolbarSectionHeader>
         <ToolbarSectionContents>
-          <ShowCmdKButton />
-          <PointerToolButton />
-          <EyeDropperButton />
+          <CommandToolbarButton
+            command={actionCommandDefinitions.commandPalette}
+          />
+          <CommandToolbarButton
+            command={actionCommandDefinitions.pointerTool}
+          />
+          <CommandToolbarButton
+            command={actionCommandDefinitions.eyeDropperTool}
+          />
           <HorizontalGap />
           <UndoRedoButtons />
           <HorizontalGap />
           <CopyPasteButtons />
           <HorizontalGap />
-          <DeleteItemToolButton />
+          <CommandToolbarButton command={actionCommandDefinitions.delete} />
           <NudgeButtons />
           <div class="h-1 w-full" />
           <div class="flex flex-row justify-between flex-wrap gap-x-2">
@@ -130,113 +130,229 @@ export const LevelEditorToolbar = () => {
       <ToolbarSection>
         <ToolbarSectionHeader>Blocks</ToolbarSectionHeader>
         <ToolbarSectionContents>
-          <ItemToolButton {...buttonDefinitions["block.organic"]} />
-          <ItemToolButton
-            {...buttonDefinitions["block.organic.disappearing"]}
+          <CommandToolbarButton
+            command={itemToolCommandDefinitions["block.organic"]}
           />
-          <ItemToolButton {...buttonDefinitions["block.artificial"]} />
-          <ItemToolButton
-            {...buttonDefinitions["block.artificial.disappearing"]}
+          <CommandToolbarButton
+            command={itemToolCommandDefinitions["block.organic.disappearing"]}
           />
-          <ItemToolButton {...buttonDefinitions["block.tower"]} />
-          <ItemToolButton {...buttonDefinitions["block.book"]} />
+          <CommandToolbarButton
+            command={itemToolCommandDefinitions["block.artificial"]}
+          />
+          <CommandToolbarButton
+            command={
+              itemToolCommandDefinitions["block.artificial.disappearing"]
+            }
+          />
+          <CommandToolbarButton
+            command={itemToolCommandDefinitions["block.tower"]}
+          />
+          <CommandToolbarButton
+            command={itemToolCommandDefinitions["block.book"]}
+          />
           <MultipleToolButtons>
-            <ItemToolButton {...buttonDefinitions["barrier.x"]} />
-            <ItemToolButton {...buttonDefinitions["barrier.y"]} />
-            <ItemToolButton {...buttonDefinitions["barrier.x.disappearing"]} />
-            <ItemToolButton {...buttonDefinitions["barrier.y.disappearing"]} />
+            <CommandToolbarButton
+              command={itemToolCommandDefinitions["barrier.x"]}
+            />
+            <CommandToolbarButton
+              command={itemToolCommandDefinitions["barrier.y"]}
+            />
+            <CommandToolbarButton
+              command={itemToolCommandDefinitions["barrier.x.disappearing"]}
+            />
+            <CommandToolbarButton
+              command={itemToolCommandDefinitions["barrier.y.disappearing"]}
+            />
           </MultipleToolButtons>
         </ToolbarSectionContents>
       </ToolbarSection>
       <ToolbarSection>
         <ToolbarSectionHeader>Monsters</ToolbarSectionHeader>
         <ToolbarSectionContents>
-          <ItemToolButton {...buttonDefinitions["monster.dalek"]} />
-          <ItemToolButton {...buttonDefinitions["monster.cyberman"]} />
-          <ItemToolButton {...buttonDefinitions["monster.skiHead"]} />
-          <ItemToolButton {...buttonDefinitions["monster.helicopterBug"]} />
-          <ItemToolButton {...buttonDefinitions["monster.turtle"]} />
-          <ItemToolButton {...buttonDefinitions["monster.homingBot"]} />
-          <ItemToolButton {...buttonDefinitions["monster.computerBot"]} />
-          <ItemToolButton {...buttonDefinitions["monster.bubbleRobot"]} />
-          <ItemToolButton {...buttonDefinitions["monster.monkey"]} />
-          <ItemToolButton {...buttonDefinitions["monster.elephant"]} />
-          <ItemToolButton {...buttonDefinitions["monster.elephantHead"]} />
-          <ItemToolButton {...buttonDefinitions["monster.emperorsGuardian"]} />
-          <ItemToolButton {...buttonDefinitions["monster.emperor"]} />
+          <CommandToolbarButton
+            command={itemToolCommandDefinitions["monster.dalek"]}
+          />
+          <CommandToolbarButton
+            command={itemToolCommandDefinitions["monster.cyberman"]}
+          />
+          <CommandToolbarButton
+            command={itemToolCommandDefinitions["monster.skiHead"]}
+          />
+          <CommandToolbarButton
+            command={itemToolCommandDefinitions["monster.helicopterBug"]}
+          />
+          <CommandToolbarButton
+            command={itemToolCommandDefinitions["monster.turtle"]}
+          />
+          <CommandToolbarButton
+            command={itemToolCommandDefinitions["monster.homingBot"]}
+          />
+          <CommandToolbarButton
+            command={itemToolCommandDefinitions["monster.computerBot"]}
+          />
+          <CommandToolbarButton
+            command={itemToolCommandDefinitions["monster.bubbleRobot"]}
+          />
+          <CommandToolbarButton
+            command={itemToolCommandDefinitions["monster.monkey"]}
+          />
+          <CommandToolbarButton
+            command={itemToolCommandDefinitions["monster.elephant"]}
+          />
+          <CommandToolbarButton
+            command={itemToolCommandDefinitions["monster.elephantHead"]}
+          />
+          <CommandToolbarButton
+            command={itemToolCommandDefinitions["monster.emperorsGuardian"]}
+          />
+          <CommandToolbarButton
+            command={itemToolCommandDefinitions["monster.emperor"]}
+          />
         </ToolbarSectionContents>
       </ToolbarSection>
       <ToolbarSection>
         <ToolbarSectionHeader>Pickups</ToolbarSectionHeader>
         <ToolbarSectionContents>
           <MultipleToolButtons>
-            <ItemToolButton {...buttonDefinitions["pickup.extraLife"]} />
-            <ItemToolButton {...buttonDefinitions["pickup.shield"]} />
-            <ItemToolButton {...buttonDefinitions["pickup.jumps"]} />
-            <ItemToolButton {...buttonDefinitions["pickup.fast"]} />
+            <CommandToolbarButton
+              command={itemToolCommandDefinitions["pickup.extraLife"]}
+            />
+            <CommandToolbarButton
+              command={itemToolCommandDefinitions["pickup.shield"]}
+            />
+            <CommandToolbarButton
+              command={itemToolCommandDefinitions["pickup.jumps"]}
+            />
+            <CommandToolbarButton
+              command={itemToolCommandDefinitions["pickup.fast"]}
+            />
           </MultipleToolButtons>
-          <ItemToolButton {...buttonDefinitions["pickup.bag"]} />
-          <ItemToolButton {...buttonDefinitions["pickup.hooter"]} />
-          <ItemToolButton {...buttonDefinitions["pickup.doughnuts"]} />
-          <ItemToolButton {...buttonDefinitions["pickup.reincarnation"]} />
-          <ItemToolButton {...buttonDefinitions["pickup.crown"]} />
-          <ItemToolButton {...buttonDefinitions["pickup.scroll"]} />
+          <CommandToolbarButton
+            command={itemToolCommandDefinitions["pickup.bag"]}
+          />
+          <CommandToolbarButton
+            command={itemToolCommandDefinitions["pickup.hooter"]}
+          />
+          <CommandToolbarButton
+            command={itemToolCommandDefinitions["pickup.doughnuts"]}
+          />
+          <CommandToolbarButton
+            command={itemToolCommandDefinitions["pickup.reincarnation"]}
+          />
+          <CommandToolbarButton
+            command={itemToolCommandDefinitions["pickup.crown"]}
+          />
+          <CommandToolbarButton
+            command={itemToolCommandDefinitions["pickup.scroll"]}
+          />
         </ToolbarSectionContents>
       </ToolbarSection>
       <ToolbarSection>
         <ToolbarSectionHeader>Deadly</ToolbarSectionHeader>
         <ToolbarSectionContents>
           <MultipleToolButtons>
-            <ItemToolButton {...buttonDefinitions["deadlyBlock.volcano"]} />
-            <ItemToolButton {...buttonDefinitions["deadlyBlock.toaster"]} />
+            <CommandToolbarButton
+              command={itemToolCommandDefinitions["deadlyBlock.volcano"]}
+            />
+            <CommandToolbarButton
+              command={itemToolCommandDefinitions["deadlyBlock.toaster"]}
+            />
           </MultipleToolButtons>
-          <ItemToolButton {...buttonDefinitions["slidingDeadly.spikyBall"]} />
-          <ItemToolButton {...buttonDefinitions["spikes"]} />
-          <ItemToolButton {...buttonDefinitions["moveableDeadly.deadFish"]} />
+          <CommandToolbarButton
+            command={itemToolCommandDefinitions["slidingDeadly.spikyBall"]}
+          />
+          <CommandToolbarButton
+            command={itemToolCommandDefinitions["spikes"]}
+          />
+          <CommandToolbarButton
+            command={itemToolCommandDefinitions["moveableDeadly.deadFish"]}
+          />
         </ToolbarSectionContents>
       </ToolbarSection>
       <ToolbarSection>
         <ToolbarSectionHeader>Control</ToolbarSectionHeader>
         <ToolbarSectionContents>
-          <ItemToolButton {...buttonDefinitions["charles"]} />
-          <ItemToolButton {...buttonDefinitions["joystick"]} />
-          <ItemToolButton {...buttonDefinitions["switch"]} />
-          <ItemToolButton {...buttonDefinitions["button"]} />
-          <ItemToolButton {...buttonDefinitions["emitter"]} />
-          <ItemToolButton {...buttonDefinitions["timer"]} />
-          <ItemToolButton {...buttonDefinitions["lamp"]} />
-          <ItemToolButton {...buttonDefinitions["mirror"]} />
+          <CommandToolbarButton
+            command={itemToolCommandDefinitions["charles"]}
+          />
+          <CommandToolbarButton
+            command={itemToolCommandDefinitions["joystick"]}
+          />
+          <CommandToolbarButton
+            command={itemToolCommandDefinitions["switch"]}
+          />
+          <CommandToolbarButton
+            command={itemToolCommandDefinitions["button"]}
+          />
+          <CommandToolbarButton
+            command={itemToolCommandDefinitions["emitter"]}
+          />
+          <CommandToolbarButton command={itemToolCommandDefinitions["timer"]} />
+          <CommandToolbarButton command={itemToolCommandDefinitions["lamp"]} />
+          <CommandToolbarButton
+            command={itemToolCommandDefinitions["mirror"]}
+          />
         </ToolbarSectionContents>
       </ToolbarSection>
       <ToolbarSection>
         <ToolbarSectionHeader>Movable</ToolbarSectionHeader>
         <ToolbarSectionContents>
-          <ItemToolButton {...buttonDefinitions["spring"]} />
+          <CommandToolbarButton
+            command={itemToolCommandDefinitions["spring"]}
+          />
           <MultipleToolButtons>
-            <ItemToolButton {...buttonDefinitions["portableBlock.cube"]} />
-            <ItemToolButton {...buttonDefinitions["portableBlock.drum"]} />
-            <ItemToolButton {...buttonDefinitions["portableBlock.sticks"]} />
+            <CommandToolbarButton
+              command={itemToolCommandDefinitions["portableBlock.cube"]}
+            />
+            <CommandToolbarButton
+              command={itemToolCommandDefinitions["portableBlock.drum"]}
+            />
+            <CommandToolbarButton
+              command={itemToolCommandDefinitions["portableBlock.sticks"]}
+            />
           </MultipleToolButtons>
-          <ItemToolButton {...buttonDefinitions["pushableBlock"]} />
-          <ItemToolButton {...buttonDefinitions["ball"]} />
-          <ItemToolButton {...buttonDefinitions["slidingBlock.puck"]} />
-          <ItemToolButton {...buttonDefinitions["slidingBlock.book"]} />
+          <CommandToolbarButton
+            command={itemToolCommandDefinitions["pushableBlock"]}
+          />
+          <CommandToolbarButton command={itemToolCommandDefinitions["ball"]} />
+          <CommandToolbarButton
+            command={itemToolCommandDefinitions["slidingBlock.puck"]}
+          />
+          <CommandToolbarButton
+            command={itemToolCommandDefinitions["slidingBlock.book"]}
+          />
         </ToolbarSectionContents>
       </ToolbarSection>
       <ToolbarSection>
         <ToolbarSectionHeader>Misc.</ToolbarSectionHeader>
         <ToolbarSectionContents>
-          <ItemToolButton {...buttonDefinitions["lift"]} />
+          <CommandToolbarButton command={itemToolCommandDefinitions["lift"]} />
           <MultipleToolButtons>
-            <ItemToolButton {...buttonDefinitions["conveyor.away"]} />
-            <ItemToolButton {...buttonDefinitions["conveyor.towards"]} />
-            <ItemToolButton {...buttonDefinitions["conveyor.left"]} />
-            <ItemToolButton {...buttonDefinitions["conveyor.right"]} />
+            <CommandToolbarButton
+              command={itemToolCommandDefinitions["conveyor.away"]}
+            />
+            <CommandToolbarButton
+              command={itemToolCommandDefinitions["conveyor.towards"]}
+            />
+            <CommandToolbarButton
+              command={itemToolCommandDefinitions["conveyor.left"]}
+            />
+            <CommandToolbarButton
+              command={itemToolCommandDefinitions["conveyor.right"]}
+            />
           </MultipleToolButtons>
-          <ItemToolButton {...buttonDefinitions["teleporter"]} />
-          <ItemToolButton {...buttonDefinitions["portableTeleporter"]} />
-          <ItemToolButton {...buttonDefinitions["movingPlatform"]} />
-          <ItemToolButton {...buttonDefinitions["hushPuppy"]} />
+          <CommandToolbarButton
+            command={itemToolCommandDefinitions["teleporter"]}
+          />
+          <CommandToolbarButton
+            command={itemToolCommandDefinitions["portableTeleporter"]}
+          />
+          <CommandToolbarButton
+            command={itemToolCommandDefinitions["movingPlatform"]}
+          />
+          <CommandToolbarButton
+            command={itemToolCommandDefinitions["hushPuppy"]}
+          />
         </ToolbarSectionContents>
       </ToolbarSection>
       <ToolbarSection>
@@ -244,23 +360,31 @@ export const LevelEditorToolbar = () => {
         <ToolbarSectionContents>
           <DoorToolButton />
           <WallToolButton />
-          <ItemToolButton {...buttonDefinitions["floor"]} />
+          <CommandToolbarButton command={itemToolCommandDefinitions["floor"]} />
         </ToolbarSectionContents>
       </ToolbarSection>
       <ToolbarSection>
         <ToolbarSectionHeader>Player</ToolbarSectionHeader>
         <ToolbarSectionContents>
-          <ItemToolButton {...buttonDefinitions["player.head"]} />
-          <ItemToolButton {...buttonDefinitions["player.heels"]} />
+          <CommandToolbarButton
+            command={itemToolCommandDefinitions["player.head"]}
+          />
+          <CommandToolbarButton
+            command={itemToolCommandDefinitions["player.heels"]}
+          />
         </ToolbarSectionContents>
       </ToolbarSection>
       <ToolbarSection>
         <ToolbarSectionHeader>NPC's</ToolbarSectionHeader>
         <ToolbarSectionContents>
-          <ItemToolButton {...buttonDefinitions["sceneryPlayer.head"]} />
-          <ItemToolButton {...buttonDefinitions["sceneryPlayer.heels"]} />
-          <ItemToolButton
-            {...buttonDefinitions["sceneryPlayer.headOverHeels"]}
+          <CommandToolbarButton
+            command={itemToolCommandDefinitions["sceneryPlayer.head"]}
+          />
+          <CommandToolbarButton
+            command={itemToolCommandDefinitions["sceneryPlayer.heels"]}
+          />
+          <CommandToolbarButton
+            command={itemToolCommandDefinitions["sceneryPlayer.headOverHeels"]}
           />
         </ToolbarSectionContents>
       </ToolbarSection>
