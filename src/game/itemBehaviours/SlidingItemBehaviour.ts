@@ -10,6 +10,7 @@ import {
   dotProductXyz,
   lengthXySquared,
   originXyz,
+  scaleXyz,
   scaleXyzInPlace,
   unitVectorInPlace,
   xyzEqual,
@@ -80,10 +81,11 @@ export class SlidingItemBehaviour extends FreeItemBehaviour {
     // of travel, but because of chain reactions it is possible for them to be orthogonal
     const mtvOverlap = mtvXy(touchingItem.state.box, slidingItemBox);
 
+    // the pusher backing off out of the item, against its movement:
     const slidingVector = mtvAlongVector(
       touchingItem.state.box,
       slidingItemBox,
-      movementVector,
+      scaleXyz(movementVector, -1),
     );
     slidingVector.z = 0; // we don't slide in z
 

@@ -1,5 +1,7 @@
 import { itemBehaviourKey } from "../../../model/ItemInPlay";
 import {
+  isFreeItem,
+  isSlidingItem,
   type PlayableItem,
   type UnionOfAllItemInPlayTypes,
 } from "../../../model/ItemInPlayNarrowedUnions";
@@ -7,6 +9,7 @@ import { type HeelsAbilities } from "../../../model/ItemStateMap";
 import { type CharacterName } from "../../../model/modelTypes";
 import { roomItemsIterable, type RoomState } from "../../../model/RoomState";
 import { getEffectivelyStandingOnItemIdForPlayable } from "../../../model/stoodOnItemsLookup";
+import { originXyz } from "../../../utils/vectors/vectors";
 import { findStandingOnWithHighestPriorityAndMostOverlap } from "../../collision/checkStandingOn";
 import { type GameState } from "../../gameState/GameState";
 import { playableHasShield } from "../../gameState/gameStateSelectors/selectPickupAbilities";
@@ -53,10 +56,20 @@ export const pickingUp = <RoomId extends string, RoomItemId extends string>(
     return;
   }
 
-  // trying to pick up
+  // has input (trying to pick up)
+
   if (itemToPickup === undefined) {
     // nothing to pick up (or already carrying)
-    if (carrying === null && carryActionPress === "tap") {
+    if (
+      // only consider a failure to pick up if trying to pick up, otherwise just exit:
+      carrying === null &&
+      // only consider it a failure at the start of the press (don't repeatedly set it per frame
+      // while holding the input)
+      carryActionPress === "tap" &&
+      // only consider it a failure if standing on something - otherwise, can't buffer the press by
+      // holding carry in advance of landing on a portable item
+      carrier.state.standingOnItemId !== null
+    ) {
       // not carrying so an actual failure to pick up, not a failure to put down
       carrier.state.abilityFailedToUseAtGameTime = gameState.gameTime;
     }
@@ -76,6 +89,15 @@ const pickUpItem = <RoomId extends string, RoomItemId extends string>(
 ) => {
   heelsAbilities.carrying = itemToCarry;
   heelsAbilities.wouldPickUpNextItemId = null;
+
+  if (isFreeItem(itemToCarry)) {
+    // still in the bag, so nothing should carry over to when it is put down:
+    itemToCarry.state.vels.gravity = originXyz;
+    itemToCarry.state.vels.movingFloor = originXyz;
+    if (isSlidingItem(itemToCarry)) {
+      itemToCarry.state.vels.sliding = originXyz;
+    }
+  }
 
   deleteItemFromRoom({ room, item: itemToCarry });
 };
