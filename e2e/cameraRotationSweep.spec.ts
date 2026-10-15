@@ -37,6 +37,7 @@ import {
 } from "./testUtils/screenshots";
 import { setSpriteOption } from "./testUtils/setSpriteOption";
 import { test } from "./testUtils/test";
+import { waitForGpuToFinish } from "./testUtils/waitForGpuToFinish";
 
 /**
  * rendered in just the 2 most important browsers so we don't have too many
@@ -912,6 +913,10 @@ for (const scenario of scenarios) {
           const heldAfterId = await snapshotE2eCursor(page);
           await holdCameraAtDegrees(page, capture.degrees);
           await waitForCameraAngleRendered(page, capture.degrees, heldAfterId);
+          // a rebuilt room can leave seconds of GPU work behind on a software
+          // rasteriser, which would otherwise be spent against the screenshot's
+          // own timeout:
+          await waitForGpuToFinish(page);
 
           // soft, so a scenario reports every capture that differs rather than
           // stopping at the first: the captures run in ascending simulated
