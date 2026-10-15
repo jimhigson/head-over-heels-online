@@ -41,10 +41,10 @@ export const fallG = 0.000_2;
 
 export const terminalVelocityPixPerMs = {
   // head glides at height of two blocks per second
-  head: (blockSizePx.z * 2) / 1_000,
+  glide: (blockSizePx.z * 2) / 1_000,
   // everyone else tops out at 2px/sec in original game
   //others: pxPerFrameSpeed(-2),
-  others: (blockSizePx.z * 6) / 1_000,
+  fall: (blockSizePx.z * 6) / 1_000,
 };
 
 // the lift moves much faster than the original game, but also slows down much
@@ -52,7 +52,7 @@ export const terminalVelocityPixPerMs = {
 // the game play though faster, while also not making it harder to get on or off
 // the lift
 export const maxLiftAcc = fallG * 0.13;
-export const maxLiftSpeed = terminalVelocityPixPerMs.others * 0.85;
+export const maxLiftSpeed = terminalVelocityPixPerMs.fall * 0.85;
 
 /**
  * when heels jumps forwards, instantly gets this fraction of her max speed forward,

@@ -266,6 +266,15 @@ export class ItemBehaviour {
   }
 
   /**
+   * the fastest (in px/ms) that this item can fall
+   */
+  terminalFallVelocity<RoomId extends string, RoomItemId extends string>(
+    _item: FreeItem<RoomId, RoomItemId>,
+  ): number {
+    return 0;
+  }
+
+  /**
    * whether this item teleports playables standing on it
    */
   isTeleporter<RoomId extends string, RoomItemId extends string>(
