@@ -5,6 +5,7 @@ import {
   snapshotE2eCursor,
   waitForEventOnBus,
 } from "./gameStateQueries";
+import { waitForGpuToFinish } from "./waitForGpuToFinish";
 
 /**
  * turn the smooth-sprites (upscaling) display setting on, and wait
@@ -30,4 +31,6 @@ export const enableUpscaledSprites = async (page: Page) => {
     arg: undefined,
     match: (payload) => payload.spritesheetUpscale > 1,
   });
+  // the bake is heavy GPU work, often still running after the frame reports
+  await waitForGpuToFinish(page);
 };
