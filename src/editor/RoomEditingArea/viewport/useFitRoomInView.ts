@@ -1,60 +1,32 @@
-import { isAnyOf } from "@reduxjs/toolkit";
-import { useCallback, useEffect } from "preact/hooks";
+import { useEffect } from "preact/hooks";
 
-import { startAppListening } from "../../../store/listenerMiddleware";
-import { editorStore } from "../../../store/store";
-import { editorLoadedRoom } from "../../editorLoadedRoom";
+import { startEditorListening } from "../../../store/listenerMiddleware";
 import {
-  changeToRoom,
-  rotateViewAnticlockwise,
-  rotateViewClockwise,
-  rotateViewTo,
-  selectEditorCameraAngle,
+  selectCursorRoomView,
+  selectRoomPaneSize,
 } from "../../slice/levelEditorSlice";
-import { useProvidedPixiApplication } from "../PixiApplicationProvider";
-import { useEditorViewport } from "./EditorViewportProvider";
-import { fitRoomInView } from "./fitRoomInView";
-
-/** a callback that fits the current room to the pane on demand */
-export const useFitRoomInViewCallback = (): (() => void) => {
-  const viewport = useEditorViewport();
-  const application = useProvidedPixiApplication();
-
-  return useCallback(
-    () =>
-      fitRoomInView(
-        viewport,
-        application.renderer,
-        editorLoadedRoom.getRoomState(),
-        // fitting happens in response to actions (eg rotating the view), so
-        // take the angle as it is now that they have been reduced:
-        selectEditorCameraAngle(editorStore.getState()),
-      ),
-    [viewport, application],
-  );
-};
+import { fitCursorRoomInViewThunk } from "./fitCursorRoomInViewThunk";
 
 /**
- * keeps the room fitted in the pane: fits on changing room and on rotating the
- * view. Returns a callback that fits on demand (for the initial fit once the
- * pane's size is first known).
+ * fits the cursor room in the pane whenever its tab has no view of its own -
+ * a newly opened tab, or after rotating - once the pane has a size
  */
-export const useFitRoomInView = (): (() => void) => {
-  const fit = useFitRoomInViewCallback();
-
-  useEffect(() => {
-    return startAppListening({
-      matcher: isAnyOf(
-        changeToRoom,
-        rotateViewClockwise,
-        rotateViewAnticlockwise,
-        rotateViewTo,
-      ),
-      effect() {
-        fit();
-      },
-    });
-  }, [fit]);
-
-  return fit;
+export const useFitRoomInView = () => {
+  useEffect(
+    () =>
+      startEditorListening({
+        predicate(_action, state) {
+          const paneSize = selectRoomPaneSize(state);
+          return (
+            selectCursorRoomView(state) === undefined &&
+            paneSize.x > 0 &&
+            paneSize.y > 0
+          );
+        },
+        effect(_action, { dispatch }) {
+          dispatch(fitCursorRoomInViewThunk());
+        },
+      }),
+    [],
+  );
 };

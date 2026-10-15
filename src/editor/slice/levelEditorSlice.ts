@@ -20,6 +20,7 @@ import {
 import { type PointingAtOnItem } from "../RoomEditingArea/cursor/PointingAt";
 import { type Tool } from "../RoomEditingArea/interactivity/Tool";
 import { initialLevelEditorSliceState } from "./initialLevelEditorSliceState";
+import { forgetRoomTabViewsInPlace } from "./inPlaceMutators/forgetRoomTabViewsInPlace";
 import { setSelectedJsonItemIdsOnCursorRoomInPlace } from "./inPlaceMutators/setSelectedJsonItemIdsOnCursorRoomInPlace";
 import {
   selectCurrentCommittedRoomJsonFromLevelEditorState,
@@ -65,6 +66,10 @@ import {
   roomTabsReducers,
   roomTabsSelectors,
 } from "./reducers/roomTabsReducers";
+import {
+  roomViewReducers,
+  roomViewSelectors,
+} from "./reducers/roomViewReducers";
 import { rotateItemReducers } from "./reducers/rotateItemReducers";
 import { saveAndLoadReducers } from "./reducers/saveAndLoadReducers";
 import { selectionsReducers } from "./reducers/selectionsReducers";
@@ -136,6 +141,10 @@ export type LevelEditorState = {
   cameraAngle: Xy;
   autoCoalesce: boolean;
   wallsFloorsLocked: boolean;
+  /** whether placing a door also adds a room beyond it */
+  doorAutoAddsRoom: boolean;
+  /** the room editing pane's size, in css px */
+  roomPaneSize: Xy;
   /** what the pointer is dragging in the room editing pane, if anything */
   dragInProgress: DragInProgress | undefined;
   /**
@@ -189,10 +198,12 @@ export const levelEditorSlice = createSlice({
     /** rotate the editor's view of the room a quarter-turn clockwise */
     rotateViewClockwise(state) {
       state.cameraAngle = rotateXy(state.cameraAngle, quarterTurnClockwise);
+      forgetRoomTabViewsInPlace(state);
     },
     /** rotate the editor's view of the room a quarter-turn anticlockwise */
     rotateViewAnticlockwise(state) {
       state.cameraAngle = rotateXy(state.cameraAngle, quarterTurnAnticlockwise);
+      forgetRoomTabViewsInPlace(state);
     },
     /**
      * rotate the editor's view to the angle named by where world "away"
@@ -204,6 +215,7 @@ export const levelEditorSlice = createSlice({
       { payload: awayAppearsAs }: PayloadAction<DirectionXy4>,
     ) {
       state.cameraAngle = rotationVectorsByDirectionXy4[awayAppearsAs];
+      forgetRoomTabViewsInPlace(state);
     },
 
     ...editorSettingsReducers,
@@ -218,6 +230,7 @@ export const levelEditorSlice = createSlice({
     ...addOrRemoveRoomReducers,
     ...changeRoomReducers,
     ...roomTabsReducers,
+    ...roomViewReducers,
     ...roomSelectionReducers,
     ...coalesceRoomsReducers,
     ...coalesceItemsReducers,
@@ -267,6 +280,8 @@ export const levelEditorSlice = createSlice({
     ...undoSelectors,
     ...changeRoomSelectors,
     ...roomTabsSelectors,
+    ...roomViewSelectors,
+    selectDoorAutoAddsRoom: (state) => state.doorAutoAddsRoom,
   },
 });
 
@@ -284,11 +299,15 @@ export const {
   changeRoomColour,
   changeRoomScenery,
   changeToRoom,
+  changeDoorAutoAddsRoom,
   changeWallsFloorsLocked,
   clearRoom,
   closeOtherRoomTabs,
   closeRoomTab,
   closeItemContextMenu,
+  cursorRoomViewChanged,
+  cursorRoomViewPanned,
+  cursorRoomViewZoomed,
   coalesceSelectedItems,
   coalesceSelectedRooms,
   commitCurrentPreviewedEdits,
@@ -306,6 +325,7 @@ export const {
   roomBack,
   roomForward,
   roomJsonEdited,
+  roomPaneResized,
   rotateCurrentToolItem,
   rotateSelectedItems,
   rotateViewAnticlockwise,
@@ -350,6 +370,8 @@ export const {
   selectCursorRoom,
   selectCursorRoomId,
   selectCursorSubRoomId,
+  selectCursorRoomView,
+  selectDoorAutoAddsRoom,
   selectEditorCameraAngle,
   selectForwardRooms,
   selectHoveredItem,
@@ -359,6 +381,7 @@ export const {
   selectRedoHistory,
   selectRoom,
   selectRoomHasUnsavedChanges,
+  selectRoomPaneSize,
   selectCursorRoomSelectedJsonItemIds,
   selectTool,
   selectUndoHistory,

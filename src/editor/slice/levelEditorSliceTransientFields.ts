@@ -9,4 +9,5 @@ export const levelEditorSliceNonPersistedFields: (keyof LevelEditorState)[] = [
   "editingRoomIdHistory",
   "selectedJsonItemIdsByRoom",
   "cmdKSearch",
+  "roomPaneSize",
 ];

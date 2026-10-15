@@ -24,6 +24,7 @@ export const openRoomTabInPlace = (
     state.openRoomTabs = roomTabs.with(previewIndex, {
       roomId,
       isPreview: true,
+      view: undefined,
     });
     return;
   }
@@ -34,5 +35,6 @@ export const openRoomTabInPlace = (
   state.openRoomTabs = roomTabs.toSpliced(cursorIndex + 1, 0, {
     roomId,
     isPreview: true,
+    view: undefined,
   });
 };

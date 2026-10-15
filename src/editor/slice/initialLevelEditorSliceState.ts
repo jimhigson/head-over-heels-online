@@ -52,7 +52,7 @@ export const initialLevelEditorSliceState: LevelEditorState = {
   remoteCampaign: undefined,
   selectedRoomIds: [initialRoomId],
   cursorRoom: { roomId: initialRoomId, subRoomId: "*" },
-  openRoomTabs: [{ roomId: initialRoomId, isPreview: false }],
+  openRoomTabs: [{ roomId: initialRoomId, isPreview: false, view: undefined }],
   editingRoomIdHistory: {
     back: [],
     forward: [],
@@ -67,6 +67,8 @@ export const initialLevelEditorSliceState: LevelEditorState = {
   cameraAngle: cameraAngleBase,
   autoCoalesce: true,
   wallsFloorsLocked: true,
+  doorAutoAddsRoom: true,
+  roomPaneSize: { x: 0, y: 0 },
   dragInProgress: undefined,
   hoveredUndoIndex: 0,
   history: {},

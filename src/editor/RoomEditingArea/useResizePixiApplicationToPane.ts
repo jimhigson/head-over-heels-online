@@ -1,6 +1,8 @@
 import { debounce } from "@github/mini-throttle";
-import { useEffect, useRef } from "preact/hooks";
+import { useEffect } from "preact/hooks";
 
+import { editorStore } from "../../store/store";
+import { roomPaneResized } from "../slice/levelEditorSlice";
 import { useProvidedPixiApplication } from "./PixiApplicationProvider";
 
 /**
@@ -11,21 +13,15 @@ import { useProvidedPixiApplication } from "./PixiApplicationProvider";
 const resizeDebounceMs = 200;
 
 /**
- * keeps the renderer's logical size matched to the pane element's css size.
- * The canvas element itself is styled to fill the pane, so between debounced
- * resizes it stretches, then sharpens.
+ * keeps the renderer's logical size matched to the pane element's css size,
+ * and the store told of it. The canvas element itself is styled to fill the
+ * pane, so between debounced resizes it stretches, then sharpens.
  */
 export const useResizePixiApplicationToPane = (
   /** the pane element the canvas fills */
   paneElement: HTMLElement | null,
-  /** called once the renderer has taken the pane's size, each time the pane
-   * element (re)mounts (not on later resizes of the same element) */
-  onPaneFirstSized?: () => void,
 ): void => {
   const application = useProvidedPixiApplication();
-
-  const onPaneFirstSizedRef = useRef(onPaneFirstSized);
-  onPaneFirstSizedRef.current = onPaneFirstSized;
 
   useEffect(() => {
     if (paneElement === null) {
@@ -33,16 +29,16 @@ export const useResizePixiApplicationToPane = (
     }
 
     const resizeToPane = () => {
-      application.renderer.resize(
-        paneElement.clientWidth,
-        paneElement.clientHeight,
+      const { clientWidth, clientHeight } = paneElement;
+      application.renderer.resize(clientWidth, clientHeight);
+      editorStore.dispatch(
+        roomPaneResized({ x: clientWidth, y: clientHeight }),
       );
     };
 
     // size immediately on mount (the observer also fires on observe, but
     // resize synchronously so the first fit sees real dimensions):
     resizeToPane();
-    onPaneFirstSizedRef.current?.();
 
     const debouncedResize = debounce(resizeToPane, resizeDebounceMs);
     const resizeObserver = new ResizeObserver(debouncedResize);
