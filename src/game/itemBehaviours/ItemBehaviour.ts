@@ -245,16 +245,6 @@ export class ItemBehaviour {
   }
 
   /**
-   * whether items standing on this keep falling, rather than coming to rest on
-   * it - so they stick to it as it moves down
-   */
-  keepsStandersFalling<RoomId extends string, RoomItemId extends string>(
-    _item: UnionOfAllItemInPlayTypes<RoomId, RoomItemId>,
-  ): boolean {
-    return false;
-  }
-
-  /**
    * the velocity that this moves the stander at, or undefined if not
    * currently a moving floor (so it isn't acting on the stander at all)
    */

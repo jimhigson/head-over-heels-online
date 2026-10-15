@@ -7,16 +7,28 @@ import { produce } from "immer";
 
 import {
   type BasicGameStateOptions,
+  type ItemsInTestRoomJson,
   setUpBasicGame,
   type TestRoomId,
 } from "../../../_testUtils/basicRoom";
 import { heelsState, itemState } from "../../../_testUtils/characterState";
 import { resetStore } from "../../../_testUtils/initStoreForTests";
 import { playGameThrough } from "../../../_testUtils/playGameThrough";
-import { type PlayableItem } from "../../../model/ItemInPlayNarrowedUnions";
+import { itemBehaviourKey } from "../../../model/ItemInPlay";
+import {
+  isFreeItem,
+  type PlayableItem,
+} from "../../../model/ItemInPlayNarrowedUnions";
+import { type LiftState } from "../../../model/ItemStateMap";
+import {
+  iterateRoomItemEntries,
+  roomItemsIterable,
+} from "../../../model/RoomState";
+import { selectCurrentRoomState } from "../../gameState/gameStateSelectors/selectCurrentRoomState";
 import {
   blockSizePx,
   defaultRoomHeightBlocks,
+  maxLiftSpeed,
 } from "../../physics/mechanicsConstants";
 
 beforeEach(() => {
@@ -44,28 +56,6 @@ describe("lifts", () => {
       },
     },
   } as const satisfies BasicGameStateOptions;
-
-  // skipping because lifts have now been sped up so much that this no longer applies
-  test.skip("heels stays stood on a lift", () => {
-    const gameState = setUpBasicGame(playerOnALift);
-    const heelsStandingOnPerFrame: Array<
-      PlayableItem<"heels", TestRoomId>["state"]["standingOnItemId"]
-    > = [];
-
-    playGameThrough(gameState, {
-      frameCallbacks(gameState) {
-        // give a little time to fall onto the lift:
-        if (gameState.gameTime > 200) {
-          heelsStandingOnPerFrame.push(heelsState(gameState).standingOnItemId);
-        }
-      },
-      until: 5_000, // run for quite a long time
-    });
-
-    expect(heelsStandingOnPerFrame).toMatchObject(
-      new Array(heelsStandingOnPerFrame.length).fill("lift"),
-    );
-  });
 
   test("heels stays stood on a stationary lift", () => {
     const gameState = setUpBasicGame(
@@ -309,5 +299,394 @@ describe("lifts", () => {
     expect(itemState(gameState, "lift")!.box.z).toBeCloseTo(0);
     expect(heelsState(gameState).box.z).toEqual(blockSizePx.z * 2);
     expect(heelsState(gameState).standingOnItemId).toEqual("heavyBlock");
+  });
+});
+
+describe("stacks of items on lifts", () => {
+  test.for<{ name: string; items: ItemsInTestRoomJson }>([
+    {
+      name: "lift carrying a scenery headOverHeels",
+      items: {
+        // load needs a playable somewhere; kept well away from the lift
+        heels: {
+          type: "player",
+          config: { which: "heels" },
+          position: { x: 7, y: 7, z: 0 },
+        },
+        sp0: {
+          type: "sceneryPlayer",
+          config: {
+            which: "headOverHeels",
+            startDirection: "towards",
+          },
+          position: {
+            x: 0,
+            y: 0,
+            z: 11,
+          },
+        },
+      },
+    },
+    {
+      name: "lift carrying the playable heels",
+      items: {
+        heels: {
+          type: "player",
+          config: {
+            which: "heels",
+          },
+          position: {
+            x: 0,
+            y: 0,
+            z: 11,
+          },
+        },
+      },
+    },
+    {
+      name: "lift carrying the playable head",
+      items: {
+        head: {
+          type: "player",
+          config: {
+            which: "head",
+          },
+          position: {
+            x: 0,
+            y: 0,
+            z: 11,
+          },
+        },
+      },
+    },
+    {
+      name: "lift carrying a stack of three portable blocks",
+      items: {
+        // load needs a playable somewhere; kept well away from the lift
+        heels: {
+          type: "player",
+          config: { which: "heels" },
+          position: { x: 7, y: 7, z: 0 },
+        },
+        pb_0_of_2: {
+          config: {
+            style: "cube",
+          },
+          position: {
+            x: 0,
+            y: 0,
+            z: 11,
+          },
+          type: "portableBlock",
+        },
+        pb_1_of_2: {
+          config: {
+            style: "cube",
+          },
+          position: {
+            x: 0,
+            y: 0,
+            z: 12,
+          },
+          type: "portableBlock",
+        },
+        pb_2_of_2: {
+          config: {
+            style: "cube",
+          },
+          position: {
+            x: 0,
+            y: 0,
+            z: 13,
+          },
+          type: "portableBlock",
+        },
+      },
+    },
+    {
+      name: "lift carrying two stacked blocks topped by scenery head",
+      items: {
+        // load needs a playable somewhere; kept well away from the lift
+        heels: {
+          type: "player",
+          config: { which: "heels" },
+          position: { x: 7, y: 7, z: 0 },
+        },
+        pb_0_of_2: {
+          config: {
+            style: "cube",
+          },
+          position: {
+            x: 0,
+            y: 0,
+            z: 11,
+          },
+          type: "portableBlock",
+        },
+        pb_1_of_2: {
+          config: {
+            style: "cube",
+          },
+          position: {
+            x: 0,
+            y: 0,
+            z: 12,
+          },
+          type: "portableBlock",
+        },
+        sp_2_of_2: {
+          config: {
+            startDirection: "towards",
+            which: "head",
+          },
+          position: {
+            x: 0,
+            y: 0,
+            z: 13,
+          },
+          type: "sceneryPlayer",
+        },
+      },
+    },
+    {
+      name: "lift carrying a block with scenery heels on it",
+      items: {
+        // load needs a playable somewhere; kept well away from the lift
+        heels: {
+          type: "player",
+          config: { which: "heels" },
+          position: { x: 7, y: 7, z: 0 },
+        },
+        pb_0_of_1: {
+          config: {
+            style: "cube",
+          },
+          position: {
+            x: 0,
+            y: 0,
+            z: 11,
+          },
+          type: "portableBlock",
+        },
+        sp_1_of_1: {
+          config: {
+            startDirection: "towards",
+            which: "heels",
+          },
+          position: {
+            x: 0,
+            y: 0,
+            z: 12,
+          },
+          type: "sceneryPlayer",
+        },
+      },
+    },
+    {
+      name: "lift carrying a scenery heels",
+      items: {
+        // load needs a playable somewhere; kept well away from the lift
+        heels: {
+          type: "player",
+          config: { which: "heels" },
+          position: { x: 7, y: 7, z: 0 },
+        },
+        sp0: {
+          config: {
+            startDirection: "towards",
+            which: "heels",
+          },
+          position: {
+            x: 0,
+            y: 0,
+            z: 11,
+          },
+          type: "sceneryPlayer",
+        },
+      },
+    },
+    {
+      name: "lift carrying a scenery head",
+      items: {
+        // load needs a playable somewhere; kept well away from the lift
+        heels: {
+          type: "player",
+          config: { which: "heels" },
+          position: { x: 7, y: 7, z: 0 },
+        },
+        sp0: {
+          config: {
+            startDirection: "towards",
+            which: "head",
+          },
+          position: {
+            x: 0,
+            y: 0,
+            z: 11,
+          },
+          type: "sceneryPlayer",
+        },
+      },
+    },
+  ])("falling on lifts: $name", ({ items }) => {
+    const gameState = setUpBasicGame({
+      firstRoomItems: {
+        ...items,
+        lift: {
+          type: "lift",
+          config: {
+            bottom: 0,
+            top: 11,
+          },
+          position: {
+            x: 0,
+            y: 0,
+            z: 10,
+          },
+        },
+      },
+    });
+
+    // just enough time for the standing on to settle (this isn't what's being tested)
+    // while lifts are initially moving upwards for one block:
+    playGameThrough(gameState, {
+      forTime: 20,
+    });
+
+    // capture what all free items are standing on:
+    const expectedStandingOns: Record<string, null | string> =
+      Object.fromEntries(
+        roomItemsIterable(selectCurrentRoomState(gameState)!.items)
+          .filter(isFreeItem)
+          .map((roomItem) => [roomItem.id, roomItem.state.standingOnItemId]),
+      );
+
+    // wait until the lift is descending:
+    playGameThrough(gameState, {
+      until(gameState) {
+        const liftState = itemState(gameState, "lift") as LiftState<
+          string,
+          string
+        >;
+        return liftState.direction === "down";
+      },
+    });
+
+    // everything that was on a lift to be standing on something initially:
+    for (const roomItem of roomItemsIterable(
+      selectCurrentRoomState(gameState)!.items,
+    )) {
+      if (!isFreeItem(roomItem)) {
+        continue;
+      }
+      expect(
+        roomItem.state.standingOnItemId,
+        `${roomItem.id} standing on`,
+      ).not.toBeNull();
+    }
+
+    const stepTotalTime = 2_000;
+    const stepTime = 50;
+
+    while (gameState.gameTime < stepTotalTime) {
+      playGameThrough(gameState, { forTime: stepTime });
+
+      const roomItems = selectCurrentRoomState(gameState)!.items;
+
+      for (const [itemId, roomItem] of iterateRoomItemEntries(roomItems)) {
+        if (!isFreeItem(roomItem)) {
+          continue;
+        }
+
+        // falls slower than a lift can descend, so can be left behind by it:
+        const isGlidingItem =
+          roomItem[itemBehaviourKey].terminalFallVelocity(roomItem) <
+          maxLiftSpeed;
+
+        const expectedStandingOnItemId = expectedStandingOns[itemId];
+        const expectedStandingOnItem =
+          expectedStandingOnItemId === null ? undefined : (
+            roomItems[expectedStandingOnItemId]
+          );
+        const actualStandingOnItemId = roomItem.state.standingOnItemId;
+
+        if (isGlidingItem && actualStandingOnItemId === null) {
+          // once we are gliding, expect to never be standing on anything again for the remainder of this test:
+          expectedStandingOns[itemId] = null;
+          continue;
+        }
+
+        expect(
+          actualStandingOnItemId,
+          `at time ${gameState.gameTime}ms, ${roomItem.type} id="${itemId}" expected to still be standing on ${expectedStandingOnItem?.type} id=${expectedStandingOnItemId}; actual is ${actualStandingOnItemId}`,
+        ).toBe(expectedStandingOnItemId);
+      }
+    }
+  });
+});
+
+describe("riding lifts", () => {
+  test("landing on a descending lift after a jump gives back control", () => {
+    const gameState = setUpBasicGame({
+      firstRoomItems: {
+        heels: {
+          type: "player",
+          config: { which: "heels" },
+          position: { x: 0, y: 0, z: 7 },
+        },
+        lift: {
+          type: "lift",
+          config: { bottom: 0, top: 6 },
+          position: { x: 0, y: 0, z: 6 },
+        },
+      },
+    });
+
+    // jump as the lift starts to descend, and land on it again on the way down:
+    playGameThrough(gameState, {
+      frameCallbacks(gameState, mockInputStateTracker) {
+        if (gameState.gameTime > 30 && gameState.gameTime < 100) {
+          mockInputStateTracker.mockPressing("jump");
+        } else {
+          mockInputStateTracker.mockNotPressing("jump");
+        }
+      },
+      until: 500,
+    });
+    playGameThrough(gameState, {
+      until: (gameState) => heelsState(gameState).standingOnItemId === "lift",
+    });
+    playGameThrough(gameState, { forTime: 100 });
+
+    expect(heelsState(gameState).action).toBe("idle");
+  });
+
+  test("riders of a lift blocked from descending do not build up falling speed", () => {
+    const gameState = setUpBasicGame({
+      firstRoomItems: {
+        // blocks the lift from descending:
+        heels: {
+          type: "player",
+          config: { which: "heels" },
+          position: { x: 0, y: 0, z: 0 },
+        },
+        lift: {
+          type: "lift",
+          config: { bottom: 0, top: 3 },
+          position: { x: 0, y: 0, z: 1 },
+        },
+        rider: {
+          type: "portableBlock",
+          config: { style: "cube" },
+          position: { x: 0, y: 0, z: 2 },
+        },
+      },
+    });
+
+    playGameThrough(gameState, { until: 3_000 });
+
+    expect(itemState<"portableBlock">(gameState, "rider").vels.gravity.z).toBe(
+      0,
+    );
   });
 });

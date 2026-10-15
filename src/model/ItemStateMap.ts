@@ -289,6 +289,18 @@ export type HeadOverHeelsState<
   heels: HeelsAbilities<RoomId, RoomItemId>;
 };
 
+export type LiftState<
+  RoomId extends string,
+  RoomItemId extends string,
+> = Simplify<
+  {
+    direction: "down" | "up";
+    vels: {
+      lift: Xyz;
+    };
+  } & ItemConfigMap<RoomId, RoomItemId, SceneryName>["lift"]
+>;
+
 export type ItemStateMap<RoomId extends string, RoomItemId extends string> = {
   head: HeadState<RoomItemId>;
   heels: HeelsState<RoomItemId, RoomId>;
@@ -372,14 +384,7 @@ export type ItemStateMap<RoomId extends string, RoomItemId extends string> = {
 
   monster: MonsterState<RoomItemId>;
   pickup: FreeItemState<RoomItemId>;
-  lift: Simplify<
-    {
-      direction: "down" | "up";
-      vels: {
-        lift: Xyz;
-      };
-    } & ItemConfigMap<RoomId, RoomItemId, SceneryName>["lift"]
-  >; // copying the config into the state means that these settings are mutable at run-time. eg, by switches;
+  lift: LiftState<RoomId, RoomItemId>; // copying the config into the state means that these settings are mutable at run-time. eg, by switches;
   firedDoughnut: {
     vels: {
       fired: Xyz;

@@ -91,18 +91,6 @@ export class LiftBehaviour extends ItemBehaviour {
   override readonly stoppedByHeavyItems = true;
 
   /**
-   * descending lifts keep what stands on them falling, to avoid it skipping
-   * down them. Keeps Heels on a descending lift but not Head (lower terminal
-   * velocity)
-   */
-  override keepsStandersFalling<
-    RoomId extends string,
-    RoomItemId extends string,
-  >(lift: ItemTypeUnion<"lift", RoomId, RoomItemId>): boolean {
-    return lift.state.vels.lift.z < 0;
-  }
-
-  /**
    * moves up and down between its bottom and top, easing at each end
    */
   override mechanicResults<RoomId extends string, RoomItemId extends string>(

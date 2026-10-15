@@ -76,6 +76,7 @@ export const puttingDown = <RoomId extends string, RoomItemId extends string>(
     carrier,
     carrying,
     roomSpatialIndex,
+    deltaMS,
   );
 
   if (
@@ -228,6 +229,7 @@ const putDownItemLocation = <RoomId extends string, RoomItemId extends string>(
   carrier: PlayableItem<CharacterName, RoomId, RoomItemId>,
   carrying: UnionOfAllItemInPlayTypes<RoomId, RoomItemId>,
   roomSpatialIndex: SpatialIndex,
+  deltaMS: number,
 ): undefined | Xyz => {
   const {
     state: { box: carrierBox },
@@ -244,7 +246,11 @@ const putDownItemLocation = <RoomId extends string, RoomItemId extends string>(
           // an extra 1px gap means that while mid-air the player and the thing
           // being dropped don't start perfectly adjacent, meaning that they
           // can fall more naturally without 'standing' on each other in a weird way
-          1,
+          1 +
+          // the dropped item only starts falling next tick, but the carrier
+          // still falls this tick - so it starts as far below as the carrier
+          // falls, keeping the gap:
+          Math.max(-carrier.state.vels.gravity.z, 0) * deltaMS,
       }),
     carrying.state.box,
   );

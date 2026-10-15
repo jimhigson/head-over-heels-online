@@ -549,45 +549,88 @@ describe("springs", () => {
   });
 });
 
-test.each(testFrameRates)(
-  "head can lift a block on top of him about 1 block higher by jumping while under it (%j)",
+describe.each(testFrameRates)(
+  "head jumping while a block in on him (%j)",
   (frameRate) => {
-    const gameState = setUpBasicGame({
-      firstRoomItems: {
-        head: {
-          type: "player",
-          position: { x: 0, y: 0, z: 0 },
-          config: {
-            which: "head",
+    test("lifts it by about 1 block", () => {
+      const gameState = setUpBasicGame({
+        firstRoomItems: {
+          head: {
+            type: "player",
+            position: { x: 0, y: 0, z: 0 },
+            config: {
+              which: "head",
+            },
+          },
+          drum: {
+            type: "portableBlock",
+            position: { x: 0, y: 0, z: 1 },
+            config: {
+              style: "drum",
+            },
           },
         },
-        drum: {
-          type: "portableBlock",
-          position: { x: 0, y: 0, z: 1 },
-          config: {
-            style: "drum",
+      });
+
+      let highestItemZ = Number.NEGATIVE_INFINITY;
+
+      playGameThrough(gameState, {
+        until: 3_000,
+        frameRate,
+        setupInitialInput(mockInputStateTracker) {
+          mockInputStateTracker.mockPressing("jump");
+        },
+        frameCallbacks(gameState) {
+          const newZ = itemState(gameState, "drum").box.z;
+          highestItemZ = Math.max(highestItemZ, newZ);
+        },
+      });
+
+      // needs to be comfortably enough to get on top of another block, but not excessively so:
+      expect(highestItemZ).toBeGreaterThan(2 * blockSizePx.z + 0.5);
+      expect(highestItemZ).toBeLessThan(2 * blockSizePx.z + 1);
+    });
+
+    test("can get it on top of another block", () => {
+      const gameState = setUpBasicGame({
+        firstRoomItems: {
+          head: {
+            type: "player",
+            position: { x: 2.5, y: 0, z: 0 },
+            config: {
+              which: "head",
+            },
+          },
+          drum: {
+            type: "portableBlock",
+            position: { x: 3, y: 0, z: 1 },
+            config: {
+              style: "drum",
+            },
+          },
+          staticBlock: {
+            type: "block",
+            position: { x: 4, y: 0, z: 0 },
+            config: {
+              style: "organic",
+              times: { z: 2 },
+            },
           },
         },
-      },
+      });
+
+      playGameThrough(gameState, {
+        frameRate,
+        setupInitialInput(mockInputStateTracker) {
+          mockInputStateTracker.mockPressing("jump");
+          mockInputStateTracker.mockDirectionPressed = "left";
+        },
+        until(gameState) {
+          const staticItemState = itemState(gameState, "staticBlock");
+          return "drum" in staticItemState.stoodOnBy;
+        },
+      });
     });
-
-    let highestItemZ = Number.NEGATIVE_INFINITY;
-
-    playGameThrough(gameState, {
-      until: 3_000,
-      frameRate,
-      setupInitialInput(mockInputStateTracker) {
-        mockInputStateTracker.mockPressing("jump");
-      },
-      frameCallbacks(gameState) {
-        const newZ = itemState(gameState, "drum").box.z;
-        highestItemZ = Math.max(highestItemZ, newZ);
-      },
-    });
-
-    // needs to be comfortably enough to get on top of another block, but not excessively so:
-    expect(highestItemZ).toBeGreaterThan(2 * blockSizePx.z + 1);
-    expect(highestItemZ).toBeLessThan(2.25 * blockSizePx.z);
   },
 );
 

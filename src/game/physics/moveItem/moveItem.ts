@@ -5,7 +5,10 @@ import {
   type UnionOfAllItemInPlayTypes,
 } from "../../../model/ItemInPlayNarrowedUnions";
 import { roomSpatialIndexKey, type RoomState } from "../../../model/RoomState";
-import { stoodOnItem } from "../../../model/stoodOnItemsLookup";
+import {
+  iterateStoodOnByItems,
+  stoodOnItem,
+} from "../../../model/stoodOnItemsLookup";
 import { veryClose } from "../../../utils/epsilon";
 import {
   addXyz,
@@ -551,9 +554,70 @@ export const moveItem = <RoomId extends string, RoomItemId extends string>({
     }
   }
 
+  const movedZ = subjectItem.state.box.z - originalBox.z;
+  if (
+    // the enclosing call's movedZ already includes this helpful movement, so it
+    // moves the riders - moving them here too would move them twice:
+    !isHelpful &&
+    // rising riders are pushed, so only riding down is handled here
+    movedZ < 0 &&
+    visited.size < maxPushRecursionDepth
+  ) {
+    moveRidersDown(
+      subjectItem,
+      movedZ,
+      gameState,
+      room,
+      deltaMS,
+      handleTouches,
+      visited,
+    );
+  }
+
   if (log) {
     console.groupEnd();
   }
 
   return causedHelpful;
+};
+
+/**
+ * riders (items standing on the moved item) ride down with it, but no faster
+ * than they can fall. Rising riders are not handled here, since they are pushed
+ * upwards using the normal physics path
+ */
+const moveRidersDown = <RoomId extends string, RoomItemId extends string>(
+  movedItem: UnionOfAllItemInPlayTypes<RoomId, RoomItemId>,
+  /**
+   * how far the moved item actually went in z, after any collisions
+   */
+  movedZ: number,
+  gameState: GameState<RoomId>,
+  room: RoomState<RoomId, RoomItemId>,
+  deltaMS: number,
+  handleTouches: MoveItemOptions<RoomId, RoomItemId>["handleTouches"],
+  visited: Set<RoomItemId>,
+) => {
+  for (const rider of iterateStoodOnByItems(movedItem.state.stoodOnBy, room)) {
+    const riderTerminalFallVelocity =
+      -rider[itemBehaviourKey].terminalFallVelocity(rider) * deltaMS;
+
+    recordActedOnBy(movedItem.id, rider, room, false, true);
+    moveItem({
+      subjectItem: rider,
+      posDelta: {
+        x: 0,
+        y: 0,
+        // move down, but only up to the termianl vall velocity of the item:
+        z: Math.max(movedZ, riderTerminalFallVelocity),
+      },
+      gameState,
+      room,
+      deltaMS,
+      forceful: false,
+      visited: visited.add(movedItem.id),
+      handleTouches,
+    });
+    visited.delete(movedItem.id);
+  }
 };
