@@ -29,12 +29,9 @@ export const playtestUrl = async (
 };
 
 /**
- * open (or restart) the game in a fresh `playtest` tab. Any open one is closed
- * first: the same url again would only be a same-document hash change, not a
- * new game. `undefined` if the browser blocked the tab
+ * open the game in a new tab, without an opener, so the game runs in its own
+ * process
  */
-export const openPlaytest = (url: string): undefined | Window => {
-  // an empty url finds the open playtest tab without navigating it:
-  window.open("", "playtest")?.close();
-  return window.open(url, "playtest") ?? undefined;
+export const openPlaytest = (url: string): void => {
+  window.open(url, "_blank", "noopener");
 };

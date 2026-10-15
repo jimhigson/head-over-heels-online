@@ -566,7 +566,7 @@ const editorWebMcpTools: WebMCP.ModelContextTool[] = [
   {
     name: "playtest",
     description:
-      "play the open campaign, unsaved, as the toolbar's play button does: opens (or restarts) the game in the `playtest` tab, with the editor's playtest options (game, start point, character) unless overridden here. Returns the game's url, for opening it yourself if the browser blocks the tab",
+      "play the open campaign, unsaved, as the toolbar's play button does: opens the game in a new tab, with the editor's playtest options (game, start point, character) unless overridden here. Returns the game's url, for opening it yourself if the browser blocks the tab",
     inputSchema: {
       type: "object",
       properties: {
@@ -595,10 +595,8 @@ const editorWebMcpTools: WebMCP.ModelContextTool[] = [
             playtestOptions.playAsHeels
           ),
       });
-      return jsonResult({
-        opened: openPlaytest(url) !== undefined,
-        url,
-      });
+      openPlaytest(url);
+      return jsonResult({ url });
     },
   },
   {
