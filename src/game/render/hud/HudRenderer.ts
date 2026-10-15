@@ -52,6 +52,7 @@ import {
   selectAbilities,
   selectCurrentPlayableItem,
 } from "../../gameState/gameStateSelectors/selectPlayableItem";
+import { destroyFilterCache, type FilterCache } from "../filters/FilterCache";
 import { outlineFilters } from "../filters/OutlineFilter";
 import { getRoomColorScheme } from "../gameColours/colourScheme";
 import { createItemLeafPixiRenderer } from "../item/itemRender/createItemLeafPixiRenderer";
@@ -194,6 +195,9 @@ export class HudRenderer<
   #carriedRenderer: ItemLeafPixiRenderer<ItemInPlayType> | undefined =
     undefined;
 
+  /** shared, keyed filters for the item renderers the hud draws */
+  readonly #filterCache: FilterCache = new Map();
+
   readonly renderContext: HudRenderContext<RoomId>;
 
   constructor(renderContext: HudRenderContext<RoomId>) {
@@ -288,6 +292,7 @@ export class HudRenderer<
       this.#onScreenControls = new OnScreenControls({
         general: renderContext.general,
         inputDirectionMode: renderContext.inputDirectionMode,
+        filterCache: this.#filterCache,
       });
       this.#container.addChild(this.#onScreenControls.output);
     }
@@ -299,6 +304,7 @@ export class HudRenderer<
         button: { which: "menu", actions: ["menu_openOrExit"], id: "menu" },
         general,
         inputStateTracker,
+        filterCache: this.#filterCache,
       },
       menuButtonAppearance,
       true,
@@ -308,6 +314,7 @@ export class HudRenderer<
         button: { which: "map", actions: ["map"], id: "map" },
         general,
         inputStateTracker,
+        filterCache: this.#filterCache,
       },
       mapButtonAppearance,
       true,
@@ -321,6 +328,7 @@ export class HudRenderer<
         },
         general,
         inputStateTracker,
+        filterCache: this.#filterCache,
       },
       rotateButtonAppearance("↺"),
       true,
@@ -334,6 +342,7 @@ export class HudRenderer<
         },
         general,
         inputStateTracker,
+        filterCache: this.#filterCache,
       },
       rotateButtonAppearance("↻"),
       true,
@@ -616,6 +625,7 @@ export class HudRenderer<
         item: carriedItem,
         room,
         isReflection: false,
+        filterCache: this.#filterCache,
       });
       if (import.meta.env.DEV && maybeCarriedRenderer === undefined) {
         throw new Error(`no renderer for carried item "${carriedItem.id}"`);
@@ -1008,6 +1018,7 @@ export class HudRenderer<
     this.#container.destroy({ children: true });
     this.#onScreenControls?.destroy();
     this.#fpsRenderer?.destroy();
+    destroyFilterCache(this.#filterCache);
     this.#pointerIdleTracker.destroy();
     this.#unlisten();
   }

@@ -3,12 +3,17 @@ import {
   migrateWallConfigInPlace,
   migrateWallTilesInPlace,
 } from "../../../model/inPlaceMutators/migrateWallTilesInPlace";
-import { type ItemInPlayConfig } from "../../../model/ItemInPlay";
+import {
+  type ItemInPlay,
+  type ItemInPlayConfig,
+} from "../../../model/ItemInPlay";
 import {
   isFreeItem,
   type UnionOfAllItemInPlayTypes,
 } from "../../../model/ItemInPlayNarrowedUnions";
+import { type ItemState } from "../../../model/ItemState";
 import { type HeelsAbilities } from "../../../model/ItemStateMap";
+import { type CharacterName } from "../../../model/modelTypes";
 import { type Progression, roomItemsIterable } from "../../../model/RoomState";
 import { valuesIter } from "../../../utils/entries";
 import { neverTime } from "../../../utils/neverTime";
@@ -112,6 +117,26 @@ const deleteWouldPickUpNextInPlace = (item: { state: object }): void => {
   delete (item.state as { wouldPickUpNext?: boolean }).wouldPickUpNext;
 };
 
+const migrateSceneryPlayerInPlace = (
+  sceneryPlayer: ItemInPlay<"sceneryPlayer", string, string>,
+): void => {
+  vectoriseInPlace(
+    sceneryPlayer.config as { startDirection?: MaybeNamedDirection },
+    "startDirection",
+  );
+  // saves from before scenery players held a facing vector omit it; they
+  // face their configured start direction:
+  sceneryPlayer.state.visualFacingVector ??=
+    sceneryPlayer.config.startDirection;
+};
+
+/** saves from before Dec '25 omit the visual facing; it starts at the facing */
+const migratePlayableStateInPlace = (
+  playableState: ItemState<CharacterName, string, string>,
+): void => {
+  playableState.visualFacingVector ??= playableState.facing;
+};
+
 /**
  * saves from before free items recorded the speed they were carried at omit it
  */
@@ -134,6 +159,10 @@ const migrateHeelsAbilitiesInPlace = (
   if (heelsAbilities.carrying !== null) {
     deleteWouldPickUpNextInPlace(heelsAbilities.carrying);
     migrateLiftVelInPlace(heelsAbilities.carrying);
+    // heels can carry a scenery player:
+    if (heelsAbilities.carrying.type === "sceneryPlayer") {
+      migrateSceneryPlayerInPlace(heelsAbilities.carrying);
+    }
   }
 };
 
@@ -250,10 +279,10 @@ export const migrateSavedCharacterRoomsInPlace = <RoomId extends string>(
           item.state.timeOfLastDirectionChange ??= Number.NEGATIVE_INFINITY;
           break;
         case "sceneryPlayer":
-          vectoriseInPlace(
-            item.config as { startDirection?: MaybeNamedDirection },
-            "startDirection",
-          );
+          migrateSceneryPlayerInPlace(item);
+          break;
+        case "head":
+          migratePlayableStateInPlace(item.state);
           break;
         case "switch":
         case "button":
@@ -261,9 +290,11 @@ export const migrateSavedCharacterRoomsInPlace = <RoomId extends string>(
           item.state.disabled ??= false;
           break;
         case "heels":
+          migratePlayableStateInPlace(item.state);
           migrateHeelsAbilitiesInPlace(item.state);
           break;
         case "headOverHeels":
+          migratePlayableStateInPlace(item.state);
           migrateHeelsAbilitiesInPlace(item.state.heels);
           break;
       }

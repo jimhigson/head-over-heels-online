@@ -118,9 +118,8 @@ export type PlayableState<RoomItemId extends string> =
 
     /**
      * The direction visually facing - used for turning around animation
-     * Added Dec '25; optional so as to not break saves from previous versions that don't have it
      */
-    visualFacingVector?: Xyz;
+    visualFacingVector: Xyz;
 
     /**
      * how many pixels have we walked since we were last not walking? Ie, in this run of
@@ -313,7 +312,10 @@ export type ItemStateMap<RoomId extends string, RoomItemId extends string> = {
   headOverHeels: HeadOverHeelsState<RoomItemId, RoomId>;
   spring: FreeItemState<RoomItemId>;
   portableBlock: FreeItemState<RoomItemId>;
-  sceneryPlayer: FreeItemState<RoomItemId>;
+  sceneryPlayer: FreeItemState<RoomItemId> & {
+    /** the direction drawn facing - scenery players never turn */
+    visualFacingVector: Xyz;
+  };
   emitter: Simplify<
     {
       lastEmittedAtRoomTime: number;

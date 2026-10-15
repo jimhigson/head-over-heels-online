@@ -7,6 +7,7 @@ import { type BooleanAction } from "../../input/actions";
 import { type InputStateTrackerInterface } from "../../input/InputStateTracker";
 import { type Appearance } from "../appearance/Appearance";
 import { AppearanceRenderer } from "../appearance/AppearanceRenderer";
+import { type FilterCache } from "../filters/FilterCache";
 import { type GeneralRenderContext } from "../room/RoomRenderContexts";
 
 export type ButtonId =
@@ -29,6 +30,8 @@ export type ButtonRenderContext<BT extends ButtonId, RoomId extends string> = {
   button: Button<BT>;
   inputStateTracker: InputStateTrackerInterface;
   general: GeneralRenderContext<RoomId>;
+  /** for buttons that render items, eg the carried item on the carry button */
+  filterCache: FilterCache;
 };
 
 export type ButtonTickContext = {

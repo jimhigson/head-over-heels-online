@@ -35,7 +35,6 @@ import { lampAppearance } from "./lampAppearance";
 import { lightBeamAppearance } from "./lightBeamAppearance";
 import { mirrorAppearance } from "./mirror/mirrorAppearance";
 import { monsterAppearance } from "./monsterAppearance";
-import { sceneryPlayerAppearance } from "./sceneryPlayerAppearance";
 import { spikyBallAppearance } from "./spikyBallAppearance";
 import { springAppearance } from "./springAppearance";
 import { switchAppearance } from "./switchAppearance";
@@ -382,8 +381,6 @@ const itemAppearancesMap: {
   ),
 
   spring: springAppearance,
-
-  sceneryPlayer: sceneryPlayerAppearance,
 
   hushPuppy: itemStaticAppearance("hushPuppy"),
 

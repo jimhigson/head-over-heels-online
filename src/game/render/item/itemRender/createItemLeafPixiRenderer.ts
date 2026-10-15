@@ -1,15 +1,18 @@
 import { type ItemInPlayType } from "../../../../model/ItemInPlay";
 import { isPlayableItem } from "../../../../model/ItemInPlayNarrowedUnions";
-import { type CharacterName } from "../../../../model/modelTypes";
 import { appearanceForItem } from "../../itemAppearances/appearanceForItem";
 import { type ItemLeafRenderContext } from "../../ItemRenderContexts";
 import { ItemAppearancePixiRenderer } from "./ItemAppearancePixiRenderer";
 import { type ItemLeafPixiRenderer } from "./ItemPixiRenderer";
-import { PlayableItemPixiRenderer } from "./PlayableItemPixiRenderer";
+import {
+  PlayableItemPixiRenderer,
+  type PlayableRenderedType,
+} from "./PlayableItemPixiRenderer";
 
 const isPlayableRenderContext = (
   renderContext: ItemLeafRenderContext<ItemInPlayType>,
-): renderContext is ItemLeafRenderContext<CharacterName> =>
+): renderContext is ItemLeafRenderContext<PlayableRenderedType> =>
+  renderContext.item.type === "sceneryPlayer" ||
   isPlayableItem(renderContext.item);
 
 /**
@@ -18,11 +21,14 @@ const isPlayableRenderContext = (
 export const createItemLeafPixiRenderer = <T extends ItemInPlayType>(
   renderContext: ItemLeafRenderContext<T>,
 ): ItemLeafPixiRenderer<T> | undefined => {
-  if (isPlayableRenderContext(renderContext)) {
+  const renderLikePlayable = isPlayableRenderContext(renderContext);
+
+  if (renderLikePlayable) {
     return new PlayableItemPixiRenderer(
       renderContext,
     ) as ItemLeafPixiRenderer<T>;
   }
+
   const appearance = appearanceForItem(renderContext.item);
   return appearance === undefined ? undefined : (
       new ItemAppearancePixiRenderer(renderContext, appearance)

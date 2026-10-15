@@ -5,11 +5,11 @@ import { type ItemInPlayType } from "../../model/ItemInPlay";
 import { type UnionOfAllItemInPlayTypes } from "../../model/ItemInPlayNarrowedUnions";
 import { type RoomState } from "../../model/RoomState";
 import { type Graph } from "../../utils/graph/Graph";
+import { type FilterCache } from "./filters/FilterCache";
 import { type ItemRenderPipeline } from "./item/itemRender/createItemRenderer";
 import { type ItemLeafPixiRenderer } from "./item/itemRender/ItemPixiRenderer";
 import { type RenderBoxes } from "./renderBox/makeItemRenderBoxAtCameraAngle";
 import { type GeneralRenderContext } from "./room/RoomRenderContexts";
-import { type FilterCache } from "./room/RoomRenderer";
 
 export type ItemZGraph<
   RoomId extends string = string,
@@ -43,14 +43,9 @@ export type ItemLeafRenderContext<T extends ItemInPlayType> = {
   renderBoxes?: RenderBoxes<UnionOfAllItemInPlayTypes>;
   /**
    * shared, keyed filters for any item renderer/appearance to stash filters
-   * that others (or itself, on a later render) can reuse.
-   *
-   * Optional because
-   * standalone contexts (eg the hud's carried-item render) have no room renderer
-   * behind them to own one; every appearance that reads it is only ever rendered
-   * in-room, where {@link ItemRenderContext} guarantees it
+   * that others (or itself, on a later render) can reuse
    */
-  filterCache?: FilterCache;
+  filterCache: FilterCache;
 };
 
 /**
@@ -62,7 +57,6 @@ export type ItemRenderContext<T extends ItemInPlayType> =
   ItemLeafRenderContext<T> & {
     frontLayer: RenderLayer;
     renderBoxes: RenderBoxes<UnionOfAllItemInPlayTypes>;
-    filterCache: FilterCache;
     /**
      * the container positioned at this item's projected origin - the
      * ItemPositionRenderer's output, set once that renderer is constructed. Debug

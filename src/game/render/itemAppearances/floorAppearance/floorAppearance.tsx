@@ -43,6 +43,7 @@ import {
 import { blockSizePx } from "../../../physics/mechanicsConstants";
 import { createSprite } from "../../createSprite";
 import { ColourClashFilter } from "../../filters/ColourClashFilter";
+import { type FilterCache } from "../../filters/FilterCache";
 import { OutlineFilter } from "../../filters/OutlineFilter";
 import { floorTextureId } from "../../floorTextureId";
 import { edgeOriginalGameColour } from "../../gameColours/colourScheme";
@@ -58,7 +59,6 @@ import {
   type RenderBoxes,
 } from "../../renderBox/makeItemRenderBoxAtCameraAngle";
 import { maxRenderBoxScreenExtentAtAnyQuarterAngle } from "../../renderBox/maxRenderBoxScreenExtentAtAnyQuarterAngle";
-import { type FilterCache } from "../../room/RoomRenderer";
 import { participatesInDrawOrder } from "../../sortZ/fixedZIndexes";
 import {
   type ItemAppearance,
@@ -386,17 +386,10 @@ export const floorAppearance: ItemAppearance<"floor", RenderOnceProps> =
         },
         colourClashLayer,
         renderBoxes,
-        filterCache: maybeFilterCache,
+        filterCache,
       },
       currentRendering,
     }) => {
-      if (import.meta.env.DEV && maybeFilterCache === undefined) {
-        throw new Error(
-          "floorAppearance requires a filterCache but was rendered without one",
-        );
-      }
-      const filterCache = maybeFilterCache!;
-
       const cameraQuarterAngle = nearestQuarterAngle(cameraAngle);
       const {
         color: { shade },

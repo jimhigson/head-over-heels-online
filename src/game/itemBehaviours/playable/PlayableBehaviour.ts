@@ -127,8 +127,7 @@ export class PlayableBehaviour extends FreeItemBehaviour {
       movementType: "steady",
       stateDelta: {
         visualFacingVector: rotateVectorTowards(
-          // visualFacingVector will be undefined if this a game is loaded from a save from before this was implemented
-          visualFacingVector ?? facing,
+          visualFacingVector,
           facing,
           playableTurnVisualAngularVelocityRadiansPerMs,
           deltaMS,

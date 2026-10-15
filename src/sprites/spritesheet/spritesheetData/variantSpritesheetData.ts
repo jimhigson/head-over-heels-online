@@ -50,16 +50,18 @@ type DeactivatedIdPattern =
 /**
  * id patterns the sceneryPlayer (citizen of Freedom) appearance samples: the
  * idle and walking animations, including the blinking/looking frames the idle
- * animations play through
+ * animations play through, and falling
  */
 type SceneryPlayerIdPattern =
   | `head.blinking.${string}`
+  | `head.falling.${string}`
   | `head.idle.${string}`
   | `head.looking1.${string}`
   | `head.looking2.${string}`
   | `head.standing.${string}`
   | `head.walking.${string}`
   | `heels.blinking.${string}`
+  | `heels.falling.${string}`
   | `heels.idle.${string}`
   | `heels.looking1.${string}`
   | `heels.looking2.${string}`
@@ -282,7 +284,7 @@ const variantEligible: Record<VariantSuffix, (id: string) => boolean> = {
   doughnutted: isMonsterId,
   mirrorReflection: (id) => !matchesAny(id, neverReflectedPrefixes),
   sceneryPlayer: (id) =>
-    /^(head|heels)\.(blinking|idle|looking1|looking2|standing|walking)\./.test(
+    /^(head|heels)\.(blinking|falling|idle|looking1|looking2|standing|walking)\./.test(
       id,
     ),
   "hue=cyan": isDoorFrameId,

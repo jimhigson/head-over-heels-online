@@ -4,6 +4,7 @@ import { campaign } from "../../_generated/originalCampaign/campaign";
 import { type OriginalCampaignRoomId } from "../../_generated/originalCampaign/OriginalCampaignRoomId";
 import blacktooth33v25 from "../../../e2e/fixtures/saves/v25/blacktooth33.json";
 import bookworld21v25 from "../../../e2e/fixtures/saves/v25/bookworld21.json";
+import finalroomV25 from "../../../e2e/fixtures/saves/v25/finalroom.json";
 import { isFreeItem } from "../../model/ItemInPlayNarrowedUnions";
 import {
   type Progression,
@@ -177,4 +178,46 @@ test("old saves load free items with no carried speed", () => {
     .filter((freeItem) => freeItem.state.liftVel.z !== 0);
 
   expect(freeItemsWithCarriedSpeed).toEqual([]);
+});
+
+test("old saves of scenery players load facing their start direction", () => {
+  const sceneryPlayersFacingElsewhere = loadedRoomItemsFromFixture(
+    finalroomV25 as unknown as SaveFixture,
+  )
+    .filter((item) => item.type === "sceneryPlayer")
+    .filter(
+      (sceneryPlayer) =>
+        sceneryPlayer.state.visualFacingVector !==
+        sceneryPlayer.config.startDirection,
+    );
+
+  expect(sceneryPlayersFacingElsewhere).toEqual([]);
+});
+
+test("saves without a playable's visual facing load it from its facing", () => {
+  const savedWithoutVisualFacing = badJsonClone(
+    blacktooth33v25,
+  ) as unknown as SaveFixture;
+  for (const savedGame of valuesIter(
+    savedWithoutVisualFacing.localStorage["persist:hohol/savedGames"].saves,
+  )) {
+    for (const room of valuesIter(savedGame.gameState.characterRooms)) {
+      for (const item of roomItemsIterable(room.items)) {
+        if (item.type === "head" || item.type === "heels") {
+          delete (item.state as { visualFacingVector?: unknown })
+            .visualFacingVector;
+        }
+      }
+    }
+  }
+
+  const playablesFacingElsewhere = loadedRoomItemsFromFixture(
+    savedWithoutVisualFacing,
+  )
+    .filter((item) => item.type === "head" || item.type === "heels")
+    .filter(
+      (playable) => playable.state.visualFacingVector !== playable.state.facing,
+    );
+
+  expect(playablesFacingElsewhere).toEqual([]);
 });

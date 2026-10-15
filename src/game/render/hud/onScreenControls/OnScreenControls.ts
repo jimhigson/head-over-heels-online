@@ -4,6 +4,7 @@ import { type InputDirectionMode } from "../../../../store/slices/userSettings/u
 import { valuesIter } from "../../../../utils/entries";
 import { type Xy } from "../../../../utils/vectors/vectors";
 import { selectCurrentPlayableItem } from "../../../gameState/gameStateSelectors/selectPlayableItem";
+import { type FilterCache } from "../../filters/FilterCache";
 import { type Renderer } from "../../Renderer";
 import { type InGameGeneralRenderContext } from "../../room/RoomRenderContexts";
 import { HudButtonRenderer } from "../HudButtonRenderer";
@@ -25,6 +26,7 @@ const mainNextYFromBottom = 20;
 type OnScreenControlsRenderContext<RoomId extends string> = {
   general: InGameGeneralRenderContext<RoomId>;
   inputDirectionMode: InputDirectionMode;
+  filterCache: FilterCache;
 };
 
 export class OnScreenControls<
@@ -49,6 +51,7 @@ export class OnScreenControls<
       },
       inputDirectionMode,
       general,
+      filterCache,
     } = renderContext;
 
     this.#hudElements = {
@@ -63,6 +66,7 @@ export class OnScreenControls<
             },
             general,
             inputStateTracker,
+            filterCache,
           },
           jumpButtonAppearance,
         ),
@@ -71,6 +75,7 @@ export class OnScreenControls<
             button: { which: "fire", actions: ["fire"], id: "fire" },
             general,
             inputStateTracker,
+            filterCache,
           },
           fireButtonAppearance,
         ),
@@ -79,6 +84,7 @@ export class OnScreenControls<
             button: { which: "carry", actions: ["carry"], id: "carry" },
             general,
             inputStateTracker,
+            filterCache,
           },
           carryButtonAppearance,
         ),
@@ -91,6 +97,7 @@ export class OnScreenControls<
             },
             general,
             inputStateTracker,
+            filterCache,
           },
           carryAndJumpButtonAppearance,
         ),

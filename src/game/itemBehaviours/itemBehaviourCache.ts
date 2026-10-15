@@ -72,6 +72,7 @@ import { PortableBlockBehaviour } from "./PortableBlockBehaviour";
 import { PortableTeleporterBehaviour } from "./PortableTeleporterBehaviour";
 import { PortalBehaviour } from "./PortalBehaviour";
 import { PushableBlockBehaviour } from "./PushableBlockBehaviour";
+import { SceneryPlayerBehaviour } from "./SceneryPlayerBehaviour";
 import { SlidingBlockBehaviour } from "./SlidingBlockBehaviour";
 import { SlidingItemBehaviour } from "./SlidingItemBehaviour";
 import { SpikesBehaviour } from "./SpikesBehaviour";
@@ -196,10 +197,7 @@ const behaviours = new Map<ItemBehaviourCacheKey, ItemBehaviour>(
     // the crowns in the final room:
     sceneryCrown: new FreeItemBehaviour({ isPortable: true }),
     // the (non-playable) characters in the final room:
-    sceneryPlayer: new FreeItemBehaviour({
-      castsShadowWhileStoodOn: true,
-      isPortable: true,
-    }),
+    sceneryPlayer: new SceneryPlayerBehaviour(),
     slidingBlock: new SlidingBlockBehaviour(),
     // spiky balls:
     slidingDeadly: new SlidingItemBehaviour({
