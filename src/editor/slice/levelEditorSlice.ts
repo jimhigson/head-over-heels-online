@@ -29,6 +29,7 @@ import {
   selectCursorSubRoomIdFromLevelEditorState,
   selectItemInLevelEditorState,
   selectItemIsSelectedInCursorRoomInLevelEditorState,
+  selectRoomFromLevelEditorState,
   selectRoomHasUnsavedChangesFromLevelEditorState,
 } from "./levelEditorSelectors";
 import { addOrRemoveRoomReducers } from "./reducers/addOrRemoveRoomReducers";
@@ -98,7 +99,7 @@ export type LevelEditorState = {
   cursorRoom: { roomId: EditorRoomId; subRoomId: string };
   /**
    * the rooms open in the editing pane's tabs, in order. The cursor room's tab
-   * is the active one
+   * is the front tab
    */
   openRoomTabs: RoomTab[];
   editingRoomIdHistory: {
@@ -125,7 +126,10 @@ export type LevelEditorState = {
   contextMenuXy?: Xy;
   hoveredItem?: HoveredItem;
   clickableAnnotationHovered: boolean;
-  /** each room's selected items, kept while other rooms are being edited */
+  /**
+   * each room's selected items, maintained per-room and kept while other rooms are being edited,
+   * removed when its tab is closed
+   */
   selectedJsonItemIdsByRoom: Partial<Record<EditorRoomId, EditorRoomItemId[]>>;
   gridResolution: GridResolution;
   /** the 90°-increment camera rotation the editor is viewing the room from */
@@ -257,6 +261,7 @@ export const levelEditorSlice = createSlice({
       selectCursorRoomSelectedJsonItemIdsFromLevelEditorState,
     selectHoveredItem: (state) => state.hoveredItem,
     selectItemIsSelected: selectItemIsSelectedInCursorRoomInLevelEditorState,
+    selectRoom: selectRoomFromLevelEditorState,
     selectRoomHasUnsavedChanges:
       selectRoomHasUnsavedChangesFromLevelEditorState,
     ...undoSelectors,
@@ -352,6 +357,7 @@ export const {
   selectItemIsSelected,
   selectOpenRoomTabs,
   selectRedoHistory,
+  selectRoom,
   selectRoomHasUnsavedChanges,
   selectCursorRoomSelectedJsonItemIds,
   selectTool,
