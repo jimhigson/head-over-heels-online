@@ -7,6 +7,18 @@ import { ContextMenu } from "../command/ContextMenu";
 import { ContextMenuItem } from "../command/ContextMenuItem";
 import { useTip } from "../tip/useTip";
 import { TabBarContext } from "./TabBarContext";
+import { TabRenameInput } from "./TabRenameInput";
+
+/** how a tab is renamed: return takes the edited name, escape or leaving it cancels */
+export type TabRename = {
+  /** the name as edited, before any marks the label adds */
+  name: string;
+  /** whether the name can be taken - return does nothing while it can't */
+  isValid: (newName: string) => boolean;
+  /** editing the name has begun */
+  onStart: () => void;
+  onRename: (newName: string) => void;
+};
 
 export type TabProps = {
   label: string;
@@ -17,6 +29,8 @@ export type TabProps = {
   onClose: () => void;
   onCloseOthers: () => void;
   onDblClick?: () => void;
+  /** with this, clicking the front tab edits its name in place */
+  rename?: TabRename;
   /** shown on interest in the tab */
   tip?: ComponentChildren;
   class?: string;
@@ -35,12 +49,15 @@ export const Tab = ({
   onClose,
   onCloseOthers,
   onDblClick,
+  rename,
   tip: tipContent,
   class: className,
   style,
 }: TabProps) => {
   const { shortenLabels, isOnlyTab } = useContext(TabBarContext);
   const { interestfor, tip } = useTip(tipContent);
+  // the name being typed, while renaming:
+  const [editedName, setEditedName] = useState<string | undefined>(undefined);
   const [contextMenuXy, setContextMenuXy] = useState<undefined | Xy>(undefined);
   const closeContextMenu = useCallback(() => setContextMenuXy(undefined), []);
   const contextMenuAnchor = useCallback(
@@ -60,6 +77,9 @@ export const Tab = ({
         onClick={() => {
           if (!isActive) {
             onSelect();
+          } else if (rename !== undefined && editedName === undefined) {
+            setEditedName(rename.name);
+            rename.onStart();
           }
         }}
         onDblClick={onDblClick}
@@ -82,15 +102,25 @@ export const Tab = ({
           }
         }}
       >
-        {/* a button, as only buttons and links can invoke a tip by interest: */}
-        <button
-          type="button"
-          tabIndex={-1}
-          interestfor={interestfor}
-          class="text-single-line"
-        >
-          {shortenLabels ? shortLabel : label}
-        </button>
+        {
+          rename !== undefined && editedName !== undefined ?
+            <TabRenameInput
+              rename={rename}
+              editedName={editedName}
+              onEdit={setEditedName}
+              onDone={() => setEditedName(undefined)}
+            />
+            // a button, as only buttons and links can invoke a tip by interest:
+          : <button
+              type="button"
+              tabIndex={-1}
+              interestfor={interestfor}
+              class="text-single-line"
+            >
+              {shortenLabels ? shortLabel : label}
+            </button>
+
+        }
         {tip}
         {!isOnlyTab && (
           <button
