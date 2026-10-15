@@ -1,8 +1,8 @@
 name: Back up DB
 
 # nightly full dump of the hosted supabase db (roles, schema, and data for the
-# public + auth schemas), brotli-compressed, into the private hoh-db-backups R2
-# bucket, one timestamped folder per run. Nothing is ever deleted.
+# public + auth schemas) as a single brotli-compressed tarball per run, named by
+# timestamp, flat in the private hoh-db-backups R2 bucket. Nothing is ever deleted.
 
 on:
   schedule:
@@ -33,13 +33,16 @@ jobs:
       - run: sudo apt-get update -q && sudo apt-get install -y -q brotli
       - name: Dump
         run: |
+          echo "BACKUP_FILE=$(date -u +%Y-%m-%dT%H%M%SZ).tar.br" >> "$GITHUB_ENV"
           mkdir dump
           supabase db dump --linked --role-only -f dump/roles.sql
           supabase db dump --linked -f dump/schema.sql
           supabase db dump --linked --data-only --use-copy -s public,auth -f dump/data.sql
-          brotli -q 11 -w 24 --rm dump/*.sql
-          ls -l dump
+      - name: Compress
+        run: |
+          tar -C dump -cf - . | brotli -q 11 -w 24 -o "$BACKUP_FILE"
+          ls -l dump "$BACKUP_FILE"
       - name: Upload to R2
         run: |
-          aws s3 cp dump "s3://hoh-db-backups/$(date -u +%Y-%m-%dT%H%M%SZ)/" \
-            --recursive --endpoint-url "$R2_ENDPOINT"
+          aws s3 cp "$BACKUP_FILE" "s3://hoh-db-backups/$BACKUP_FILE" \
+            --endpoint-url "$R2_ENDPOINT"
