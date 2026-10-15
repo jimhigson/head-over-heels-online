@@ -1,7 +1,10 @@
 import { Menu } from "../../ui/menuBar/Menu";
 import { MenuBar } from "../../ui/menuBar/MenuBar";
+import { MenuBarTitle } from "../../ui/menuBar/MenuBarTitle";
 import { CampaignMenuItems } from "./CampaignMenuItems";
 import { EditMenuItems } from "./EditMenuItems";
+import { EditorBuildInfo } from "./EditorBuildInfo";
+import { EditorMenuBarTitle } from "./EditorMenuBarTitle";
 import { ItemMenuItems } from "./ItemMenuItems";
 import { PlaytestMenuItems } from "./PlaytestMenuItems";
 import { ProfileMenuItems } from "./ProfileMenuItems";
@@ -26,6 +29,13 @@ export const EditorMenuBar = () => (
     <Menu label="Playtest">
       <PlaytestMenuItems />
     </Menu>
+    <MenuBarTitle>
+      <EditorMenuBarTitle />
+    </MenuBarTitle>
+    {/* clipped, rather than pushing the profile menu out, when there's no room: */}
+    <div class="flex min-w-0 overflow-hidden">
+      <EditorBuildInfo />
+    </div>
     <Menu label="Profile" name={<ProfileMenuName />} alignEnd>
       <ProfileMenuItems />
     </Menu>
