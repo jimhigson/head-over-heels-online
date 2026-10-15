@@ -11,13 +11,13 @@ import { type Upscale } from "../../store/slices/upscale/Upscale";
 import { store } from "../../store/store";
 import { type AppTicker } from "../../utils/ticker/AppTicker";
 import { appTicker } from "../../utils/ticker/appTickerInstance";
-import { useEditorRoomState } from "../EditorRoomStateProvider";
 import {
   type EditorRoomId,
   type EditorRoomRenderer,
   type EditorRoomState,
 } from "../editorTypes";
 import { selectEditorCameraAngle } from "../slice/levelEditorSlice";
+import { useEditorLoadedRoom } from "../useEditorLoadedRoom";
 import { useEditorRoomRenderDimensions } from "./editorRoomRenderDimensions";
 import { useProvidedPixiApplication } from "./PixiApplicationProvider";
 import { roomEditingAreaMarginPx } from "./roomEditingAreaMarginPx";
@@ -80,7 +80,7 @@ export const useEditorMainLoop = (
     throw new Error("this should never be falsey (typescript violation)");
   }
 
-  const currentEditingRoomState = useEditorRoomState();
+  const { roomState: currentEditingRoomState } = useEditorLoadedRoom();
   const roomRenderSize = useEditorRoomRenderDimensions();
 
   useEffect(() => {

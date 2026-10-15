@@ -3,7 +3,7 @@ import { useCallback, useEffect } from "preact/hooks";
 
 import { startAppListening } from "../../../store/listenerMiddleware";
 import { editorStore } from "../../../store/store";
-import { useGetEditorRoomState } from "../../EditorRoomStateProvider";
+import { editorLoadedRoom } from "../../editorLoadedRoom";
 import {
   changeToRoom,
   rotateViewAnticlockwise,
@@ -19,19 +19,18 @@ import { fitRoomInView } from "./fitRoomInView";
 export const useFitRoomInViewCallback = (): (() => void) => {
   const viewport = useEditorViewport();
   const application = useProvidedPixiApplication();
-  const getRoomState = useGetEditorRoomState();
 
   return useCallback(
     () =>
       fitRoomInView(
         viewport,
         application.renderer,
-        getRoomState(),
+        editorLoadedRoom.getRoomState(),
         // fitting happens in response to actions (eg rotating the view), so
         // take the angle as it is now that they have been reduced:
         selectEditorCameraAngle(editorStore.getState()),
       ),
-    [viewport, application, getRoomState],
+    [viewport, application],
   );
 };
 

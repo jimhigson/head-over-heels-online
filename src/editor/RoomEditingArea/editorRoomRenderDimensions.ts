@@ -5,9 +5,9 @@ import { spritesheetMetas } from "../../sprites/spritesheet/spritesheetData/spri
 import { useEditorAppSelector } from "../../store/store";
 import { useStableValue } from "../../utils/preact/useStableValue";
 import { type Xy } from "../../utils/vectors/vectors";
-import { useEditorRoomStateContext } from "../EditorRoomStateProvider";
 import { type EditorRoomState } from "../editorTypes";
 import { selectEditorCameraAngle } from "../slice/levelEditorSlice";
+import { useEditorLoadedRoom } from "../useEditorLoadedRoom";
 
 export type RenderedRoomDimensions = {
   l: number;
@@ -40,14 +40,13 @@ export const editorRoomRenderDimensions = (
 };
 
 export const useEditorRoomRenderDimensions = (): RenderedRoomDimensions => {
-  const editorRoomState = useEditorRoomStateContext();
+  const loadedRoom = useEditorLoadedRoom();
   const cameraAngle = useEditorAppSelector(selectEditorCameraAngle);
 
-  // the room is patched in place, so it is the context value - re-minted on
-  // every change to the room - that says the extents need re-measuring:
+  /** useEditorLoadedRoom return changes when the room changes */
   const measured = useMemo(
-    () => editorRoomRenderDimensions(editorRoomState.roomState, cameraAngle),
-    [editorRoomState, cameraAngle],
+    () => editorRoomRenderDimensions(loadedRoom.roomState, cameraAngle),
+    [loadedRoom, cameraAngle],
   );
 
   // most edits leave the extents exactly where they were, and everything sized

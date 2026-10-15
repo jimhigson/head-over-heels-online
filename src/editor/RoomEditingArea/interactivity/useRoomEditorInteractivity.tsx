@@ -7,7 +7,7 @@ import { editorStore, store } from "../../../store/store";
 import { useMouseWheel } from "../../../ui/useMouseWheel";
 import { catchErrors } from "../../../utils/errors/errors";
 import { type Xy, type Xyz } from "../../../utils/vectors/vectors";
-import { useGetEditorRoomState } from "../../EditorRoomStateProvider";
+import { editorLoadedRoom } from "../../editorLoadedRoom";
 import { type EditorRoomRenderer } from "../../editorTypes";
 import {
   selectCursorRoomIdFromLevelEditorState,
@@ -64,10 +64,6 @@ export const useRoomEditorInteractivity = (
 ) => {
   const viewport = useEditorViewport();
   const pixiApplication = useProvidedPixiApplication();
-  // the same room instance the renderer draws, so its render boxes can be
-  // looked up by the items picking iterates:
-  const getRoomState = useGetEditorRoomState();
-
   const dispatch = useAppDispatch();
   const pointingAtRef = useRef<MaybePointingAtSomething | undefined>(undefined);
   const mouseDownPointingAtRef = useRef<MaybePointingAtSomething | undefined>(
@@ -84,7 +80,7 @@ export const useRoomEditorInteractivity = (
    */
   const itemDragLeftPaneAtRef = useRef<undefined | Xy>(undefined);
 
-  useEditorE2eApi({ renderArea, viewport, getRoomState, pointingAtRef });
+  useEditorE2eApi({ renderArea, viewport, pointingAtRef });
 
   // wheel zooming: one normalised wheel notch walks the zoom a quarter-step
   // along the wheelZoomStep grid, about the cursor:
@@ -207,7 +203,7 @@ export const useRoomEditorInteractivity = (
 
       // no point in re-running this effect when it changes so select it 'live':
       const storeState = editorStore.getState();
-      const roomState = getRoomState();
+      const roomState = editorLoadedRoom.getRoomState();
       const mouseXy = viewportMousePosition(viewport, mouseEvent);
 
       const tool = selectTool(storeState);
@@ -266,7 +262,7 @@ export const useRoomEditorInteractivity = (
       }
 
       const storeState = editorStore.getState();
-      const roomState = getRoomState();
+      const roomState = editorLoadedRoom.getRoomState();
 
       if (
         roomState.id !==
@@ -343,7 +339,7 @@ export const useRoomEditorInteractivity = (
       }
 
       const storeState = editorStore.getState();
-      const roomState = getRoomState();
+      const roomState = editorLoadedRoom.getRoomState();
       const tool = selectTool(storeState);
 
       const handler = toolHandlers[tool.type] as ToolHandler<Tool>;
@@ -379,7 +375,7 @@ export const useRoomEditorInteractivity = (
       }
 
       const storeState = editorStore.getState();
-      const roomState = getRoomState();
+      const roomState = editorLoadedRoom.getRoomState();
       const mouseXy = viewportMousePosition(viewport, mouseEvent);
       const tool = selectTool(storeState);
 
@@ -475,12 +471,5 @@ export const useRoomEditorInteractivity = (
       renderArea.removeEventListener("contextmenu", handleContextMenu);
       window.removeEventListener("keydown", handleKeyDown);
     };
-  }, [
-    renderArea,
-    dispatch,
-    viewport,
-    roomRendererRef,
-    getRoomState,
-    pixiApplication,
-  ]);
+  }, [renderArea, dispatch, viewport, roomRendererRef, pixiApplication]);
 };
