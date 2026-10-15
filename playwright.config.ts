@@ -1,5 +1,5 @@
 import { defineConfig, devices } from "@playwright/test";
-import getPort from "get-port";
+import getPort, { portNumbers } from "get-port";
 import { produce } from "immer";
 import { tmpdir } from "node:os";
 import path from "node:path";
@@ -38,8 +38,13 @@ const phoneSize = {
 // parent and stash it in an env var that forked workers inherit.
 const inheritedPort: string | undefined = process.env.PW_WEBSERVER_PORT;
 const isRootPlaywrightProcess = inheritedPort === undefined;
+// below every OS's ephemeral range (linux 32768+, macos/windows 49152+): an
+// ephemeral port can be handed to an outgoing socket between this check and
+// the server binding it
 const webserverPort =
-  isRootPlaywrightProcess ? await getPort() : Number(inheritedPort);
+  isRootPlaywrightProcess ?
+    await getPort({ port: portNumbers(5_300, 5_399) })
+  : Number(inheritedPort);
 
 if (isRootPlaywrightProcess) {
   console.log("playwright.config.ts: webserverPort:", webserverPort);
@@ -149,8 +154,12 @@ export default defineConfig<ScreenshotTestOptions>({
   ],
 
   webServer: {
-    command: `pnpm preview:game --port ${webserverPort}`,
+    // strict: a taken port fails loudly, rather than vite serving on another
+    // port while this waits on the original until it times out
+    command: `pnpm preview:game --port ${webserverPort} --strictPort`,
     url: `http://localhost:${webserverPort}`,
+    // vite reports its port and any bind trouble on stdout
+    stdout: "pipe",
     // Each run picks a fresh port above, so there is never a previous
     // server to reuse
     reuseExistingServer: false,
